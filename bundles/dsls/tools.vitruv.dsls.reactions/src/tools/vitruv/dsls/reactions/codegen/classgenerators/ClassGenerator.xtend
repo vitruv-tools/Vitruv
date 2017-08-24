@@ -62,7 +62,7 @@ abstract class ClassGenerator extends TypesBuilderExtensionProvider implements I
 	}
 	
 	protected def getCommentWithoutMarkers(String documentation) {
-		if (documentation?.length > 4) {
+		if (documentation !== null && documentation.length > 4) {
 			val withoutMultilineCommentMarkers = documentation.replaceAll("\\n \\* ","\\n")
 			return withoutMultilineCommentMarkers.substring(2,withoutMultilineCommentMarkers.length-2)
 		} else {

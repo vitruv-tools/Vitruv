@@ -12,5 +12,12 @@
       <domainProvider
             class="tools.vitruv.framework.testutils.domains.AllElementTypesDomainProvider"></domainProvider>
    </extension>
+   <extension
+         id="allElementTypes2DomainProvider"
+         name="AllElementTypes2 Domain Provider"
+         point="tools.vitruv.framework.metamodel.domain">
+      <domainProvider
+            class="tools.vitruv.framework.testutils.domains.AllElementTypes2DomainProvider"></domainProvider>
+   </extension>
 
 </plugin>

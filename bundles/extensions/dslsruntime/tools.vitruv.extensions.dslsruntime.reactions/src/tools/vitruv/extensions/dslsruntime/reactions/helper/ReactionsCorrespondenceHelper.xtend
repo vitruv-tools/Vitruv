@@ -23,11 +23,11 @@ final class ReactionsCorrespondenceHelper {
 	}
 
 	public static def removeCorrespondencesBetweenElements(CorrespondenceModel correspondenceModel,
-		EObject source, EObject target) {
+		EObject source, EObject target, String tag) {
 		val correspondenceModelView = correspondenceModel.reactionsView;
 		val sourceTuid = correspondenceModel.getTuid(source);
 		val targetTuid = correspondenceModel.getTuid(target);
-		val correspondences = correspondenceModelView.getCorrespondencesForTuids(#[sourceTuid]);
+		val correspondences = correspondenceModelView.getCorrespondencesForTuids(#[sourceTuid]).filter[it.tag == tag];
 		for (correspondence : correspondences.toList) {
 			if ((correspondence.ATuids.contains(sourceTuid) && correspondence.BTuids.contains(targetTuid)) ||
 				(correspondence.BTuids.contains(sourceTuid) && correspondence.ATuids.contains(targetTuid))) {

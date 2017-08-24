@@ -33,6 +33,7 @@ import tools.vitruv.dsls.mirbase.mirBase.NamedMetaclassReference
 import static extension tools.vitruv.dsls.reactions.codegen.helper.ClassNamesGenerators.*
 import tools.vitruv.dsls.reactions.codegen.helper.AccessibleElement
 import tools.vitruv.dsls.reactions.codegen.typesbuilder.TypesBuilderExtensionProvider
+import tools.vitruv.dsls.reactions.reactionsLanguage.ExecuteActionStatement
 
 class RoutineClassGenerator extends ClassGenerator {
 	protected final Routine routine;
@@ -134,7 +135,7 @@ class RoutineClassGenerator extends ClassGenerator {
 	}
 
 	private def dispatch StringConcatenationClient createStatements(CreateModelElement createElement) {
-		this.currentlyAccessibleElements += new AccessibleElement(createElement.name, createElement.javaClass)
+		this.currentlyAccessibleElements += new AccessibleElement(createElement.name, createElement.javaClassName)
 		val initializeMethod = if (createElement.initializationBlock !== null)
 				generateUpdateElementMethod(createElement.name, createElement.initializationBlock,
 					currentlyAccessibleElements);
@@ -152,7 +153,7 @@ class RoutineClassGenerator extends ClassGenerator {
 		val affectedElementClass = retrieveElement.metaclass;
 		val StringConcatenationClient statements = '''
 			«IF !retrieveElement.name.nullOrEmpty»
-				«affectedElementClass.javaClass» «retrieveElement.name» = «retrieveStatement»;
+				«affectedElementClass.javaClassName» «retrieveElement.name» = «retrieveStatement»;
 				«IF !retrieveElement.optional && !retrieveElement.abscence»
 					if («retrieveElement.name» == null) {
 						return;
@@ -172,7 +173,7 @@ class RoutineClassGenerator extends ClassGenerator {
 			«ENDIF»
 		'''
 		if (!retrieveElement.abscence) {
-			currentlyAccessibleElements += new AccessibleElement(retrieveElement.name, retrieveElement.javaClass);
+			currentlyAccessibleElements += new AccessibleElement(retrieveElement.name, retrieveElement.javaClassName);
 		}
 		return statements;
 	}
@@ -228,18 +229,31 @@ class RoutineClassGenerator extends ClassGenerator {
 		val getSecondElementMethod = generateMethodGetElement(removeCorrespondence.secondElement,
 			currentlyAccessibleElements);
 		val getSecondElementMethodCall = getSecondElementMethod.userExecutionMethodCallString;
+		val tagMethod = if (removeCorrespondence.tag !== null) generateMethodGetCreateTag(removeCorrespondence,
+				currentlyAccessibleElements);
+		val tagMethodCall = if (tagMethod !== null) tagMethod.userExecutionMethodCallString else '''""''';
 		return '''
-			removeCorrespondenceBetween(«getFirstElementMethodCall», «getSecondElementMethodCall»);
+			removeCorrespondenceBetween(«getFirstElementMethodCall», «getSecondElementMethodCall», «tagMethodCall»);
 		'''
 	}
 
 	private def dispatch StringConcatenationClient createStatements(RoutineCallStatement routineCall) {
 		val callRoutineMethod = generateMethodCallRoutine(routineCall, currentlyAccessibleElements,
 			typeRef(routinesFacadeClassNameGenerator.qualifiedName));
-		val parameterCallList = routineCall.generateCurrentlyAccessibleElementsParameters.generateMethodParameterCallList
-		val StringConcatenationClient callRoutineMethodCall = '''«USER_EXECUTION_FIELD_NAME».«callRoutineMethod.simpleName»(«
+		return generateExecutionMethodCall(callRoutineMethod);
+	}
+	
+	private def dispatch StringConcatenationClient createStatements(ExecuteActionStatement executeAction) {
+		val executeActionMethod = generateMethodExecuteAction(executeAction, currentlyAccessibleElements,
+			typeRef(routinesFacadeClassNameGenerator.qualifiedName));
+		return generateExecutionMethodCall(executeActionMethod);
+	}
+	
+	private def StringConcatenationClient generateExecutionMethodCall(JvmOperation executionMethod) {
+		val parameterCallList = executionMethod.generateCurrentlyAccessibleElementsParameters.generateMethodParameterCallList
+		val StringConcatenationClient methodCall = '''«USER_EXECUTION_FIELD_NAME».«executionMethod.simpleName»(«
 			parameterCallList»«IF !parameterCallList.toString.empty», «ENDIF»«EFFECT_FACADE_FIELD_NAME»);''';
-		return callRoutineMethodCall;
+		return methodCall;
 	}
 
 	protected def generateMethodExecuteEffect() {
@@ -257,7 +271,7 @@ class RoutineClassGenerator extends ClassGenerator {
 			body = '''
 				getLogger().debug("Called routine «routineClassNameGenerator.simpleName» with input:");
 				«FOR inputParameter : inputParameters»
-					getLogger().debug("   «inputParameter.parameterType.type.simpleName»: " + this.«inputParameter.name»);
+					getLogger().debug("   «inputParameter.name»: " + this.«inputParameter.name»);
 				«ENDFOR»
 				
 				«FOR matcherStatement : matcherStatements»
@@ -282,7 +296,7 @@ class RoutineClassGenerator extends ClassGenerator {
 	}
 
 	private def StringConcatenationClient getPreconditionChecker(RetrieveModelElement retrieveElement) {
-		val affectedElementClass = retrieveElement.javaClass;
+		val affectedElementClass = retrieveElement.javaClassName;
 		if (retrieveElement.precondition === null) {
 			return '''(«affectedElementClass» _element) -> true''';
 		}
@@ -291,7 +305,7 @@ class RoutineClassGenerator extends ClassGenerator {
 	}
 
 	private def StringConcatenationClient getGetCorrespondingElementStatement(RetrieveModelElement retrieveElement) {
-		val affectedElementClass = retrieveElement.javaClass;
+		val affectedElementClass = retrieveElement.javaClassName;
 		val correspondingElementPreconditionChecker = getPreconditionChecker(retrieveElement);
 		val correspondenceSourceMethod = generateMethodGetCorrespondenceSource(retrieveElement,
 			currentlyAccessibleElements);
@@ -307,9 +321,9 @@ class RoutineClassGenerator extends ClassGenerator {
 
 	private def StringConcatenationClient getElementCreationCode(CreateModelElement elementCreate) {
 		val affectedElementClass = elementCreate.metaclass;
-		val createdClassFactory = affectedElementClass.EPackage.EFactoryInstance.class;
+		val createdClassFactory = affectedElementClass.EPackage.EFactoryInstance.runtimeClassName
 		return '''
-		«affectedElementClass.javaClass» «elementCreate.name» = «createdClassFactory».eINSTANCE.create«affectedElementClass.name»();
+		«affectedElementClass.javaClassName» «elementCreate.name» = «createdClassFactory».eINSTANCE.create«affectedElementClass.name»();
 		notifyObjectCreated(«elementCreate.name»);'''
 	}
 

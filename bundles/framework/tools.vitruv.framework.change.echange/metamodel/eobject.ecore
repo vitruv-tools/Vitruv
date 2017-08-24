@@ -55,6 +55,7 @@
         <details key="documentation" value="*&#xA;The staging area where the created object will be placed or the deleted&#xA;object be removed from."/>
       </eAnnotations>
     </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="objectId" eType="ecore:EDataType ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="CreateEObject">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">

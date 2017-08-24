@@ -8,7 +8,6 @@ import org.eclipse.xtext.common.types.JvmTypeReference
 import tools.vitruv.framework.userinteraction.UserInteracting
 import tools.vitruv.dsls.mirbase.mirBase.NamedJavaElement
 import tools.vitruv.dsls.reactions.reactionsLanguage.Trigger
-import java.util.List
 import tools.vitruv.extensions.dslsruntime.reactions.ReactionExecutionState
 import org.eclipse.emf.ecore.EClass
 import tools.vitruv.dsls.reactions.reactionsLanguage.inputTypes.InputTypesPackage
@@ -38,7 +37,7 @@ class ParameterGenerator {
 	
 	public def JvmFormalParameter generateModelElementParameter(EObject parameterContext, MetaclassReference metaclassReference, String elementName) {
 		if (metaclassReference?.metaclass !== null) {
-			return parameterContext.generateParameter(elementName, metaclassReference.javaClass);
+			return parameterContext.generateParameter(elementName, typeRef(metaclassReference.javaClassName))
 		}	
 		return null;
 	}
@@ -63,8 +62,8 @@ class ParameterGenerator {
 	}
 
 		
-	public def generateParameterFromClasses(EObject context, String parameterName, Class<?> parameterClass, List<Class<?>> typeParameterClasses) {
-		return generateParameter(context, parameterName, parameterClass, typeParameterClasses.map[name]);
+	public def generateParameterFromClasses(EObject context, String parameterName, Class<?> parameterClass, Iterable<String> typeParameterClasses) {
+		return generateParameter(context, parameterName, parameterClass, typeParameterClasses);
 	}
 	
 	public def generateParameter(EObject context, String parameterName, Class<?> parameterClass, String... typeParameterClassNames) {
@@ -80,7 +79,7 @@ class ParameterGenerator {
 	}
 	
 	public def Iterable<AccessibleElement> getInputElements(EObject contextObject, Iterable<NamedMetaclassReference> metaclassReferences, Iterable<NamedJavaElement> javaElements) {
-		return metaclassReferences.map[new AccessibleElement(it.name, it.metaclass.mappedInstanceClass)]
+		return metaclassReferences.map[new AccessibleElement(it.name, it.metaclass.mappedInstanceClassCanonicalName)]
 			+ javaElements.map[new AccessibleElement(it.name, it.type.qualifiedName)];
 	}
 	
@@ -90,28 +89,19 @@ class ParameterGenerator {
 		];
 	}
 	
-	private def getMappedInstanceClass(EClass eClass) {
-		if (eClass.equals(InputTypesPackage.Literals.STRING)) {
-			return String;
-		} else if (eClass.equals(InputTypesPackage.Literals.INTEGER)) {
-			return Integer;
-		} else if (eClass.equals(InputTypesPackage.Literals.LONG)) {
-			return Long;
-		} else if (eClass.equals(InputTypesPackage.Literals.SHORT)) {
-			return Short;
-		} else if (eClass.equals(InputTypesPackage.Literals.BOOLEAN)) {
-			return Boolean;
-		} else if (eClass.equals(InputTypesPackage.Literals.CHARACTER)) {
-			return Character;
-		} else if (eClass.equals(InputTypesPackage.Literals.BYTE)) {
-			return Byte;
-		} else if (eClass.equals(InputTypesPackage.Literals.FLOAT)) {
-			return Float;
-		} else if (eClass.equals(InputTypesPackage.Literals.DOUBLE)) {
-			return Double;
+	private def getMappedInstanceClassCanonicalName(EClass eClass) {
+		switch eClass {
+			case InputTypesPackage.Literals.STRING: String.name
+			case InputTypesPackage.Literals.INTEGER: Integer.name
+			case InputTypesPackage.Literals.LONG: Long.name
+			case InputTypesPackage.Literals.SHORT: Short.name
+			case InputTypesPackage.Literals.BOOLEAN: Boolean.name
+			case InputTypesPackage.Literals.CHARACTER: Character.name
+			case InputTypesPackage.Literals.BYTE: Byte.name
+			case InputTypesPackage.Literals.FLOAT: Float.name
+			case InputTypesPackage.Literals.DOUBLE: Double.name
+			default: eClass.javaClassName
 		}
-		
-		return eClass.instanceClass
 	}
 	
 	public def JvmFormalParameter generateUntypedChangeParameter(EObject parameterContext) {
@@ -120,7 +110,7 @@ class ParameterGenerator {
 	
 	public def JvmFormalParameter generateChangeParameter(EObject parameterContext, Trigger trigger) {
 		val changeRepresentation = extractChangeTypeRepresentation(trigger);
-		var List<Class<?>> changeTypeParameters = <Class<?>>newArrayList;
+		var Iterable<String> changeTypeParameters = new ArrayList<String>
 		if (trigger instanceof ConcreteModelChange) {
 			changeTypeParameters = changeRepresentation.genericTypeParameters	
 		}

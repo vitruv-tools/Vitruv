@@ -25,6 +25,7 @@ import tools.vitruv.framework.change.echange.resolve.StagingArea;
  * <ul>
  *   <li>{@link tools.vitruv.framework.change.echange.eobject.impl.EObjectExistenceEChangeImpl#getAffectedEObject <em>Affected EObject</em>}</li>
  *   <li>{@link tools.vitruv.framework.change.echange.eobject.impl.EObjectExistenceEChangeImpl#getStagingArea <em>Staging Area</em>}</li>
+ *   <li>{@link tools.vitruv.framework.change.echange.eobject.impl.EObjectExistenceEChangeImpl#getObjectId <em>Object Id</em>}</li>
  * </ul>
  *
  * @generated
@@ -59,6 +60,26 @@ public abstract class EObjectExistenceEChangeImpl<A extends EObject> extends Ato
 	 * @ordered
 	 */
 	protected StagingArea stagingArea = STAGING_AREA_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #getObjectId() <em>Object Id</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getObjectId()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String OBJECT_ID_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getObjectId() <em>Object Id</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getObjectId()
+	 * @generated
+	 * @ordered
+	 */
+	protected String objectId = OBJECT_ID_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -144,6 +165,27 @@ public abstract class EObjectExistenceEChangeImpl<A extends EObject> extends Ato
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public String getObjectId() {
+		return objectId;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setObjectId(String newObjectId) {
+		String oldObjectId = objectId;
+		objectId = newObjectId;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, EobjectPackage.EOBJECT_EXISTENCE_ECHANGE__OBJECT_ID, oldObjectId, objectId));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
@@ -152,6 +194,8 @@ public abstract class EObjectExistenceEChangeImpl<A extends EObject> extends Ato
 				return basicGetAffectedEObject();
 			case EobjectPackage.EOBJECT_EXISTENCE_ECHANGE__STAGING_AREA:
 				return getStagingArea();
+			case EobjectPackage.EOBJECT_EXISTENCE_ECHANGE__OBJECT_ID:
+				return getObjectId();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -171,6 +215,9 @@ public abstract class EObjectExistenceEChangeImpl<A extends EObject> extends Ato
 			case EobjectPackage.EOBJECT_EXISTENCE_ECHANGE__STAGING_AREA:
 				setStagingArea((StagingArea)newValue);
 				return;
+			case EobjectPackage.EOBJECT_EXISTENCE_ECHANGE__OBJECT_ID:
+				setObjectId((String)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -189,6 +236,9 @@ public abstract class EObjectExistenceEChangeImpl<A extends EObject> extends Ato
 			case EobjectPackage.EOBJECT_EXISTENCE_ECHANGE__STAGING_AREA:
 				setStagingArea(STAGING_AREA_EDEFAULT);
 				return;
+			case EobjectPackage.EOBJECT_EXISTENCE_ECHANGE__OBJECT_ID:
+				setObjectId(OBJECT_ID_EDEFAULT);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -205,6 +255,8 @@ public abstract class EObjectExistenceEChangeImpl<A extends EObject> extends Ato
 				return affectedEObject != null;
 			case EobjectPackage.EOBJECT_EXISTENCE_ECHANGE__STAGING_AREA:
 				return STAGING_AREA_EDEFAULT == null ? stagingArea != null : !STAGING_AREA_EDEFAULT.equals(stagingArea);
+			case EobjectPackage.EOBJECT_EXISTENCE_ECHANGE__OBJECT_ID:
+				return OBJECT_ID_EDEFAULT == null ? objectId != null : !OBJECT_ID_EDEFAULT.equals(objectId);
 		}
 		return super.eIsSet(featureID);
 	}
@@ -221,6 +273,8 @@ public abstract class EObjectExistenceEChangeImpl<A extends EObject> extends Ato
 		StringBuffer result = new StringBuffer(super.toString());
 		result.append(" (stagingArea: ");
 		result.append(stagingArea);
+		result.append(", objectId: ");
+		result.append(objectId);
 		result.append(')');
 		return result.toString();
 	}

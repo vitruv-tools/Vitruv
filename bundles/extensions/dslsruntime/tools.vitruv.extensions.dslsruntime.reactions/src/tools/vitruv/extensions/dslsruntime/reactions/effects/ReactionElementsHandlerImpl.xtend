@@ -38,9 +38,9 @@ class ReactionElementsHandlerImpl implements ReactionElementsHandler {
 		TuidManager.instance.updateTuidsOfRegisteredObjects();
 	}
 	
-	override void removeCorrespondenceBetween(EObject firstElement, EObject secondElement) {
+	override void removeCorrespondenceBetween(EObject firstElement, EObject secondElement, String tag) {
 		ReactionsCorrespondenceHelper.removeCorrespondencesBetweenElements(correspondenceModel, 
-			firstElement, secondElement);
+			firstElement, secondElement, tag);
 	}
 	
 	override registerObjectUnderModification(EObject element) {

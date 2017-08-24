@@ -6,7 +6,6 @@ Bundle-ClassPath: .
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
 Bundle-SymbolicName: tools.vitruv.dsls.reactions;singleton:=true
-Bundle-ActivationPolicy: lazy
 Require-Bundle: org.eclipse.xtext,
  org.eclipse.xtext.xbase,
  org.eclipse.equinox.common;bundle-version="3.5.0",
@@ -33,8 +32,9 @@ Require-Bundle: org.eclipse.xtext,
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Export-Package: tools.vitruv.dsls.reactions,
  tools.vitruv.dsls.reactions.api.generator,
+ tools.vitruv.dsls.reactions.builder,
  tools.vitruv.dsls.reactions.codegen.changetyperepresentation,
- tools.vitruv.dsls.reactions.generator,
+ tools.vitruv.dsls.reactions.generator;x-friends:="tools.vitruv.dsls.reactions.tests",
  tools.vitruv.dsls.reactions.helper,
  tools.vitruv.dsls.reactions.jvmmodel,
  tools.vitruv.dsls.reactions.parser.antlr,

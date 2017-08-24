@@ -3,7 +3,6 @@ package tools.vitruv.dsls.reactions.tests.simpleChangesTests
 import com.google.inject.Inject
 import org.eclipse.xtext.testing.util.ParseHelper
 import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsFile
-import tools.vitruv.dsls.reactions.generator.ReactionsGenerator
 import com.google.inject.Provider
 import java.util.function.Supplier
 import tools.vitruv.framework.change.processing.ChangePropagationSpecification
@@ -20,6 +19,7 @@ import org.eclipse.emf.common.util.URI
 import org.eclipse.jdt.core.compiler.batch.BatchCompiler
 import java.io.PrintWriter
 import org.osgi.framework.FrameworkUtil
+import tools.vitruv.dsls.reactions.api.generator.IReactionsGenerator
 
 class SimpleChangeReactionsCompiler {
 	static val INPUT_REACTION_FILES = #["SimpleChangesTests.reactions", "SimpleChangesRootTests.reactions"]
@@ -34,7 +34,7 @@ class SimpleChangeReactionsCompiler {
 	static var compiled = false
 
 	@Inject ParseHelper<ReactionsFile> parseHelper
-	@Inject Provider<ReactionsGenerator> generatorProvider
+	@Inject Provider<IReactionsGenerator> generatorProvider
 	@Inject Provider<XtextResourceSet> resourceSetProvider
 	@Inject Provider<JavaIoFileSystemAccess> fsaProvider
 
@@ -51,7 +51,7 @@ class SimpleChangeReactionsCompiler {
 			val reactionFileUri = URI.createURI(class.getResource(reactionFile).toString)
 			parseHelper.parse(reactionFileContent, reactionFileUri, resultResourceSet)
 		}
-		generator.addReactionFiles(resultResourceSet)
+		generator.addReactionsFiles(resultResourceSet)
 		generator.generate(fsa)
 
 		compileGeneratedJavaClasses(outputFolder)

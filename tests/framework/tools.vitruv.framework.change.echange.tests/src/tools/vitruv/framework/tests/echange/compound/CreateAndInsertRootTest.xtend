@@ -205,6 +205,6 @@ class CreateAndInsertRootTest extends EChangeTest {
 	 * Creates new unresolved change.
 	 */
 	def private CreateAndInsertRoot<Root> createUnresolvedChange(Root newObject, int index) {
-		return compoundFactory.createCreateAndInsertRootChange(newObject, resource, index)	
+		return compoundFactory.createCreateAndInsertRootChange(newObject, resource, index, null)	
 	}
 }

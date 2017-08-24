@@ -1,8 +1,6 @@
 package tools.vitruv.dsls.reactions.codegen.changetyperepresentation
 
-import java.util.List
 import org.eclipse.xtend2.lib.StringConcatenationClient
-import java.util.Map
 
 /**
  * This class is responsible for representing the relevant change information for generating reactions
@@ -12,15 +10,11 @@ import java.util.Map
  */
 public abstract class ChangeTypeRepresentation {
 	
-	protected static def Class<?> mapToNonPrimitiveType(Class<?> potentiallyPrimitiveType) {
-		return 
-			if (primitveToWrapperTypesMap.containsKey(potentiallyPrimitiveType)) 
-				primitveToWrapperTypesMap.get(potentiallyPrimitiveType) 
-			else 
-				potentiallyPrimitiveType;
+	protected static def mapToNonPrimitiveType(String potentiallyPrimitiveTypeCName) {
+		return primitveToWrapperTypesMap.getOrDefault(potentiallyPrimitiveTypeCName, potentiallyPrimitiveTypeCName)
 	}	
 
-	private static Map<Class<?>, Class<?>> primitveToWrapperTypesMap = #{
+	static val primitveToWrapperTypesMap = newHashMap(#[
 		short -> Short,
 		int-> Integer,
 		long -> Long,
@@ -30,11 +24,11 @@ public abstract class ChangeTypeRepresentation {
 		char -> Character,
 		byte -> Byte,
 		void -> Void
-	}
+	].map [key.canonicalName -> value.canonicalName])
 
 	public def Class<?> getChangeType();
 
-	public def List<Class<?>> getGenericTypeParameters();
+	public def Iterable<String> getGenericTypeParameters()
 
 	public def StringConcatenationClient getUntypedChangeTypeRepresentation() {
 		return '''«changeType»'''
