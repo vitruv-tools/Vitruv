@@ -33,7 +33,7 @@ class EChangeIdManager {
 	new(UuidResolver globalUuidResolver, UuidGeneratorAndResolver localUuidGeneratorAndResolver, boolean strictMode) {
 		this.globalUuidResolver = globalUuidResolver;
 		this.localUuidGeneratorAndResolver = localUuidGeneratorAndResolver;
-		this.strictMode = false;
+		this.strictMode = strictMode;
 	}
 
 	def void setOrGenerateIds(EChange eChange) {
@@ -105,46 +105,4 @@ class EChangeIdManager {
 		featureChange.affectedEObjectID = getOrGenerateValue(featureChange.affectedEObject, strictMode);
 	}
 
-	def void updateRegisteredObject(EChange eChange) {
-		switch eChange {
-			EObjectAddedEChange<?>:
-				updateNewValueId(eChange)
-			EObjectSubtractedEChange<?>:
-				updateOldValueId(eChange)
-			EObjectExistenceEChange<?>:
-				updateAffectedEObjectId(eChange)
-			FeatureEChange<?,?>:
-				updateAffectedEObjectId(eChange)
-			CompoundEChange:
-				eChange.atomicChanges.forEach[updateRegisteredObject]
-		}
-	}
-
-	private def updateNewValueId(EObjectAddedEChange<?> addedEChange) {
-		if(addedEChange.newValue === null) {
-			return;
-		}
-		globalUuidResolver.registerEObject(addedEChange.newValueID, addedEChange.newValue);
-	}
-
-	private def updateOldValueId(EObjectSubtractedEChange<?> subtractedEChange) {
-		if(subtractedEChange.oldValue === null) {
-			return;
-		}
-		globalUuidResolver.registerEObject(subtractedEChange.oldValueID, subtractedEChange.oldValue);
-	}
-
-	private def updateAffectedEObjectId(EObjectExistenceEChange<?> existenceChange) {
-		if(existenceChange.affectedEObject === null) {
-			throw new IllegalStateException();
-		}
-		globalUuidResolver.registerEObject(existenceChange.affectedEObjectID, existenceChange.affectedEObject);
-	}
-
-	private def updateAffectedEObjectId(FeatureEChange<?, ?> featureChange) {
-		if(featureChange.affectedEObject === null) {
-			throw new IllegalStateException();
-		}
-		globalUuidResolver.registerEObject(featureChange.affectedEObjectID, featureChange.affectedEObject);
-	}
 }

@@ -77,10 +77,6 @@ class VirtualModelImpl implements InternalVirtualModel {
 		change.unresolveIfApplicable
 		// Save is done by the change propagator because it has to be performed before finishing sync
 		val result = changePropagator.propagateChange(change);
-		resourceRepository.executeRecordingCommand(EMFCommandBridge.createVitruviusRecordingCommand [
-			change.EChanges.forEach[eChangeIdManager.updateRegisteredObject(it)]
-			return null;
-		]);
 		return result;
 	}
 	
