@@ -12,7 +12,7 @@ class ChangeCopyFactoryImpl implements ChangeCopyFactory {
 	}
 
 	override createEChangeCopier(Set<Pair<String, String>> replacePairs) {
-		new EChangeCopierImpl(replacePairs)
+		new ChangeCopierImpl(replacePairs)
 	}
 
 }

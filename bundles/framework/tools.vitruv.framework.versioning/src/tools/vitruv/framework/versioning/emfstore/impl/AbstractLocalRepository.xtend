@@ -11,13 +11,13 @@ import org.apache.log4j.Logger
 import org.eclipse.xtend.lib.annotations.Accessors
 import org.eclipse.xtext.xbase.lib.Functions.Function1
 
-import tools.vitruv.framework.change.copy.EChangeCopier
 import tools.vitruv.framework.change.description.PropagatedChange
 import tools.vitruv.framework.change.description.PropagatedChangeWithCorrespondent
 import tools.vitruv.framework.change.description.VitruviusChange
 import tools.vitruv.framework.change.description.VitruviusChangeFactory
 import tools.vitruv.framework.change.description.impl.PropagatedChangeImpl
 import tools.vitruv.framework.change.echange.EChange
+import tools.vitruv.framework.change.echange.copy.EChangeCopier
 import tools.vitruv.framework.tests.TestUserInteractor
 import tools.vitruv.framework.util.ResourceSetUtil
 import tools.vitruv.framework.util.XtendAssertHelper
@@ -37,9 +37,9 @@ import tools.vitruv.framework.versioning.common.commit.SimpleCommit
 import tools.vitruv.framework.versioning.emfstore.InternalTestLocalRepository
 import tools.vitruv.framework.versioning.extensions.URIRemapper
 import tools.vitruv.framework.vsum.InternalModelRepository
+import tools.vitruv.framework.vsum.InternalTestVersioningVirtualModel
 import tools.vitruv.framework.vsum.InternalTestVirtualModel
 import tools.vitruv.framework.vsum.VersioningVirtualModel
-import tools.vitruv.framework.vsum.InternalTestVersioningVirtualModel
 
 import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.mapFixed
 

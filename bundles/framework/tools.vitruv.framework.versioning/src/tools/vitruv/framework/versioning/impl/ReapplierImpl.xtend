@@ -5,15 +5,15 @@ import java.util.Map
 
 import org.eclipse.xtext.xbase.lib.Functions.Function0
 
-import tools.vitruv.framework.change.copy.EChangeCopier
 import tools.vitruv.framework.change.description.PropagatedChange
 import tools.vitruv.framework.change.description.VitruviusChangeFactory
 import tools.vitruv.framework.change.echange.EChange
+import tools.vitruv.framework.change.echange.copy.EChangeCopier
 import tools.vitruv.framework.util.datatypes.VURI
 import tools.vitruv.framework.versioning.Reapplier
 import tools.vitruv.framework.versioning.extensions.URIRemapper
-import tools.vitruv.framework.vsum.VersioningVirtualModel
 import tools.vitruv.framework.vsum.InternalTestVersioningVirtualModel
+import tools.vitruv.framework.vsum.VersioningVirtualModel
 
 import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.mapFixed
 

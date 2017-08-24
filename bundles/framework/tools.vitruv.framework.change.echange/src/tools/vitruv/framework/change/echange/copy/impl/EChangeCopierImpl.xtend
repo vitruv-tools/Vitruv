@@ -1,4 +1,4 @@
-package tools.vitruv.framework.change.copy.impl
+package tools.vitruv.framework.change.echange.copy.impl
 
 import java.util.Set
 
@@ -9,9 +9,6 @@ import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.InternalEObject
 import org.eclipse.emf.ecore.util.EcoreUtil
 
-import tools.vitruv.framework.change.copy.EChangeCopier
-import tools.vitruv.framework.change.description.VitruviusChange
-import tools.vitruv.framework.change.description.VitruviusChangeFactory
 import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.change.echange.TypeInferringUnresolvingAtomicEChangeFactory
 import tools.vitruv.framework.change.echange.TypeInferringUnresolvingCompoundEChangeFactory
@@ -20,6 +17,7 @@ import tools.vitruv.framework.change.echange.compound.CreateAndInsertRoot
 import tools.vitruv.framework.change.echange.compound.CreateAndReplaceNonRoot
 import tools.vitruv.framework.change.echange.feature.attribute.ReplaceSingleValuedEAttribute
 import tools.vitruv.framework.change.echange.resolve.EChangeUnresolver
+import tools.vitruv.framework.change.echange.copy.EChangeCopier
 
 class EChangeCopierImpl implements EChangeCopier {
 	// Extensions.
@@ -54,22 +52,8 @@ class EChangeCopierImpl implements EChangeCopier {
 		level = Level::DEBUG
 	}
 
-	override copyEChanges(EChange changeToCopy) {
-		val copiedEChange = copyThisEChange(changeToCopy)
-		return VitruviusChangeFactory::instance.createEMFModelChangeFromEChanges(#[copiedEChange]) as VitruviusChange
-	}
-
-	override copyEMFModelChangeToList(VitruviusChange changeToCopy) {
-		val newChanges = changeToCopy.copiedEChangeIterator.map [
-			VitruviusChangeFactory::instance.createEMFModelChangeFromEChanges(#[it]) as VitruviusChange
-		].toList
-		return newChanges
-	}
-
-	override copyEMFModelChangeToSingleChange(VitruviusChange changeToCopy) {
-		val newEchanges = changeToCopy.copiedEChangeIterator.toList
-		val newChange = VitruviusChangeFactory::instance.createEMFModelChangeFromEChanges(newEchanges)
-		return newChange
+	override copy(EChange e) {
+		copyThisEChange(e)
 	}
 
 	private dispatch def EChange copyThisEChange(EChange e) {
@@ -161,14 +145,6 @@ class EChangeCopierImpl implements EChangeCopier {
 
 	private def adjustName(String oldName) {
 		adjustString(nameReplacePairs, oldName)
-	}
-
-	private def getCopiedEChangeIterator(VitruviusChange changeToCopy) {
-		changeToCopy.getEChanges.map[copyThisEChange].filterNull
-	}
-
-	override copy(EChange e) {
-		copyThisEChange(e)
 	}
 
 }
