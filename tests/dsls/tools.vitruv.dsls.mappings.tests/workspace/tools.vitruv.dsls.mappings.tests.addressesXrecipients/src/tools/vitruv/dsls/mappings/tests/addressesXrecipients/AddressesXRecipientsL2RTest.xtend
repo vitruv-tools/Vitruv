@@ -1,6 +1,7 @@
 package tools.vitruv.dsls.mappings.tests.addressesXrecipients
 
 import edu.kit.ipd.sdq.mdsd.addresses.Address
+import edu.kit.ipd.sdq.mdsd.addresses.Addresses
 import edu.kit.ipd.sdq.mdsd.addresses.AddressesFactory
 import edu.kit.ipd.sdq.mdsd.recipients.City
 import edu.kit.ipd.sdq.mdsd.recipients.Location
@@ -32,11 +33,15 @@ class AddressesXRecipientsL2RTest extends AddressesXRecipientsTest {
 	@Test
 	def void createAndDeleteRoot() {
 		val roots = createAndSyncRoot()
-		deleteAndAssertRoot(roots.key, roots.value)
+		deleteAndAssertCorrespondingDeletion(roots.key, roots.value)
 	}
 		
 	@Test
 	def void createChild() {
+		createAndSyncChild()
+	}
+	
+	private def Pair<Address,Recipient> createAndSyncChild() {
 		val roots = createAndSyncRoot()
 		val parent = roots.key
 		val correspondingParent = roots.value
@@ -55,18 +60,7 @@ class AddressesXRecipientsL2RTest extends AddressesXRecipientsTest {
 		// "address model after 2nd change" (Table 7.4)
 		
 		saveAndSynchronizeChanges(child)
-		// check recipient
-		val correspondingRecipient = getCorrespondingChild(child, Recipient)?.get(0)
-		assertNotNull(correspondingRecipient)
-		assertRecipient(correspondingRecipient, correspondingParent)
-		// check location
-		val correspondingLocation = getCorrespondingChild(child, Location)?.get(0)
-		assertNotNull(correspondingLocation)
-		assertLocation(correspondingLocation, correspondingRecipient, child, parent)
-		// check city
-		val correspondingCity = getCorrespondingChild(child, City)?.get(0)
-		assertNotNull(correspondingCity)
-		assertCity(correspondingCity, correspondingRecipient, child, parent)
+		assertChild(child, parent, correspondingParent)
 	}
 	
 	private def saveAndAssertNoAddressCorrespondences(Address address) {
@@ -81,5 +75,49 @@ class AddressesXRecipientsL2RTest extends AddressesXRecipientsTest {
 		assertTrue(correspondingLocations.empty)
 		val correspondingCities = getCorrespondingChild(address, City)
 		assertTrue(correspondingCities.empty)
+	}
+	
+	@Test
+	def void createAndDeleteChild() {
+		val pair = createAndSyncChild()
+		val address = pair.key
+		val recipient = pair.value
+		val location = recipient.locatedAt
+		val city = recipient.locatedIn
+		deleteAndAssertCorrespondingDeletion(address, recipient, location, city)
+	}
+	
+	@Test 
+	def void createAndModifyChildNumber() {
+		val pair = createAndSyncChild()
+		val address = pair.key
+		val newNumber = number + number
+		address.number = newNumber
+		saveAndSynchronizeChanges(address)
+		val recipient = pair.value
+		val location = recipient.locatedAt
+		assertChild(address, address.parent, recipient.parent)
+		assertEquals(location.number, newNumber)
+		
+		address.number = -number
+		val city = recipient.locatedIn
+		syncAndAssertCorrespondingDeletion(address, recipient, location, city)
+	}
+	
+	@Test 
+	def void createAndModifyChildZipCode() {
+		val pair = createAndSyncChild()
+		val address = pair.key
+		val newZipCode = zipCode + zipCode
+		address.zipCode = newZipCode
+		saveAndSynchronizeChanges(address)
+		val recipient = pair.value
+		val city = recipient.locatedIn
+		assertChild(address, address.parent, recipient.parent)
+		assertEquals(city.zipCode, newZipCode)
+		
+		address.zipCode = null
+		val location = recipient.locatedAt
+		syncAndAssertCorrespondingDeletion(address, recipient, location, city)
 	}
 }

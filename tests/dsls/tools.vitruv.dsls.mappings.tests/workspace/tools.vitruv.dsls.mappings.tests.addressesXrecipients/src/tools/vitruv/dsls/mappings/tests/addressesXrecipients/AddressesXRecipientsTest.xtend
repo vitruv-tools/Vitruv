@@ -16,6 +16,7 @@ import edu.kit.ipd.sdq.mdsd.recipients.Location
 import edu.kit.ipd.sdq.mdsd.addresses.Address
 import edu.kit.ipd.sdq.mdsd.recipients.City
 import edu.kit.ipd.sdq.mdsd.addresses.Addresses
+import org.eclipse.xtext.xbase.lib.Procedures.Procedure1
 
 abstract class AddressesXRecipientsTest extends VitruviusApplicationTest {
 	override protected cleanup() {
@@ -55,22 +56,52 @@ abstract class AddressesXRecipientsTest extends VitruviusApplicationTest {
 	
 	protected def <T> T syncAndAssertRoot(EObject root, String path, Class<T> typeOfCorrespondingRoot) {
 		createAndSynchronizeModel(path, root)
+		return assertRoot(root, typeOfCorrespondingRoot)
+	}
+	
+	protected def <T> T assertRoot(EObject root, Class<T> typeOfCorrespondingRoot) {
 		val correspondingRoot = getCorrespondingObjectsOfType(root, rootMappingName, typeOfCorrespondingRoot)?.get(0)
 		assertNotNull(correspondingRoot)
 		return correspondingRoot
 	}
 	
-	protected def void deleteAndAssertRoot(EObject root, EObject correspondingRoot) {
-		val resource = root.eResource
-		val correspondingResource = correspondingRoot.eResource
-		assertNotNull(correspondingResource)
-		EcoreUtil.remove(root)
+	protected def void deleteAndAssertCorrespondingDeletion(EObject eObject, EObject... correspondingEObjects) {
+		doAndSyncAndAssertCorrespondingDeletion(eObject, [
+			EcoreUtil.remove(it)
+		], correspondingEObjects)
+	}
+	
+	protected def void syncAndAssertCorrespondingDeletion(EObject eObject, EObject... correspondingEObjects) {
+		doAndSyncAndAssertCorrespondingDeletion(eObject, null, correspondingEObjects)
+	}
+
+	private def doAndSyncAndAssertCorrespondingDeletion(EObject eObject, Procedure1<EObject> procedure, EObject... correspondingEObjects) {
+		correspondingEObjects.forEach[assertNotNull(it.eResource)]
+		val resource = eObject.eResource
+		procedure?.apply(eObject)
 		saveAndSynchronizeChanges(resource)
-		assertNull(correspondingRoot.eResource)
+		correspondingEObjects.forEach[assertNull(it.eResource)]
 	}
 	
 	protected def <T> getCorrespondingChild(EObject object, Class<T> clazz) {
 		return getCorrespondingObjectsOfType(object, childMappingName, clazz)
+	}
+	
+	protected def Pair<Address, Recipient> assertChild(Address child, Addresses supposedAddressParent, Recipients correspondingParent) {
+		// check recipient
+		val correspondingRecipient = getCorrespondingChild(child, Recipient)?.get(0)
+		assertNotNull(correspondingRecipient)
+		assertRecipient(correspondingRecipient, correspondingParent)
+		// check location
+		val correspondingLocation = getCorrespondingChild(child, Location)?.get(0)
+		assertNotNull(correspondingLocation)
+		assertLocation(correspondingLocation, correspondingRecipient, child, supposedAddressParent)
+		// check city
+		val correspondingCity = getCorrespondingChild(child, City)?.get(0)
+		assertNotNull(correspondingCity)
+		assertCity(correspondingCity, correspondingRecipient, child, supposedAddressParent)
+		
+		return new Pair(child, correspondingRecipient)
 	}
 	
 	protected def void assertAddress(Address address, Addresses supposedParent) {
