@@ -44,6 +44,9 @@ class EChangeUtil {
 	}
 	
 	public static def boolean alreadyContainsObject(EObject affectedEObject, EReference feature, EObject value) {
+		if (!affectedEObject.eClass.EAllStructuralFeatures.contains(feature)) {
+			throw new IllegalStateException("Given object " + affectedEObject + " does not contain reference " + feature);
+		}
 		val List<EObject> featureContents = 
 			if (feature.many) {
 				affectedEObject.eGet(feature) as List<EObject>
