@@ -109,11 +109,7 @@ class EChangeIdManager {
 			throw new IllegalStateException();
 		}
 		val affectedObject = createChange.affectedEObject
-		createChange.affectedEObjectID = if (globalUuidResolver.hasUuid(affectedObject)) {
-			globalUuidResolver.getUuid(affectedObject);
-		} else {
-			localUuidGeneratorAndResolver.getOrRegisterUuid(affectedObject);
-		}
+		createChange.affectedEObjectID = localUuidGeneratorAndResolver.getOrRegisterUuid(affectedObject);
 	}
 	
 	private def dispatch void setOrGenerateAffectedEObjectId(DeleteEObject<?> deleteChange) {
