@@ -14,6 +14,7 @@ class MirBaseFormatter extends AbstractFormatter2 {
 	
 	def protected void formatStatic(MirBaseFile mirBaseFile, extension IFormattableDocument document) {
 		mirBaseFile.metamodelImports.tail.forEach [prepend [newLine]]
+		mirBaseFile.metamodelImports.last?.append [newLines = 2]
 	}
 	
 	def protected void formatStatic(MetaclassReference metaclassReference, extension IFormattableDocument document) {
