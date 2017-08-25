@@ -18,6 +18,8 @@ import com.google.common.collect.Multimap
 import org.eclipse.emf.ecore.EObject
 import com.google.common.collect.ArrayListMultimap
 import tools.vitruv.framework.change.echange.compound.CreateAndInsertEObject
+import tools.vitruv.framework.change.description.CompositeTransactionalChange
+import tools.vitruv.framework.change.description.impl.ConcreteApplicableChangeImpl
 
 class AtomicEmfChangeRecorder {
 	val Set<Notifier> elementsToObserve
@@ -110,9 +112,11 @@ class AtomicEmfChangeRecorder {
 		].toList
 		relevantChangeDescriptions.reverseView.forEach[applyAndReverse];
 		val changes = relevantChangeDescriptions.filterNull.map[createModelChange(updateTuids)].filterNull.toList;
+		removeDuplicateCreates(changes);
+		reorderChanges(changes);
 		// Allow null provider and resolver for test purposes
 		if(localUuidGeneratorAndResolver !== null && globalUuidResolver !== null) {
-			generateIdsAndReorder(changes);
+			changes.forEach[EChanges.forEach[eChangeIdManager.setOrGenerateIds(it)]]
 		}
 		this.changes = changes;
 	}
@@ -135,15 +139,52 @@ class AtomicEmfChangeRecorder {
 		return result
 	}
 	
-	private def void generateIdsAndReorder(List<TransactionalChange> changes) {
-		var boolean reordered = true;
-		val Multimap<TransactionalChange, EObject> createdObjects = ArrayListMultimap.create;
-		for (change : changes) {
-			val createAndInsertChanges = change.EChanges.filter(CreateAndInsertEObject).typeCreateAndInsertChanges
-			val createChanges = change.EChanges.filter(CreateEObject).typeCreateChanges + createAndInsertChanges.map[createChange];
-			createdObjects.putAll(change, createChanges.map[affectedEObject]);
-			
+	/**
+	 * Removes duplicate create operations, which can occur, if an element is created and inserted into 
+	 * a resource (CreateAndInsertRoot) and afterwards also inserted into a containment relation
+	 * (CreateAndInsertNonRoot), because the resource creation is performed lazy and thus the containment
+	 * insertion operation is interpreted as a creation as well.
+	 */
+	private def void removeDuplicateCreates(List<TransactionalChange> changes) {
+		val createdObjects = changes.generateCreateChangesMultimap
+		for (var i = 0; i < changes.size; i++) {
+			val currentCreatedObjects = createdObjects.get(changes.get(i))
+			for (var k = i + 1; k < changes.size; k++) {
+				for (var object = 0; object < currentCreatedObjects.size; object++) {
+					if (createdObjects.get(changes.get(k)).contains(currentCreatedObjects.get(object))) {
+						val affectedChange = changes.get(k)
+						removeCreate(affectedChange as CompositeTransactionalChange, currentCreatedObjects.get(object));
+					}
+				}			
+			}
 		}
+	}
+	
+	private def void removeCreate(CompositeTransactionalChange change, EObject createdObject) {
+		for (var i = 0; i < change.changes.size; i++) {
+			val currentChange = change.changes.get(i);
+			if (currentChange instanceof ConcreteApplicableChangeImpl) {
+				val eChange = currentChange.EChange
+				if (eChange instanceof CreateAndInsertEObject<?,?>) {
+					if (eChange.createChange.affectedEObject == createdObject) {
+						change.changes.remove(i);
+						change.changes.add(VitruviusChangeFactory.instance.createConcreteApplicableChange(eChange.insertChange));
+					}
+				}
+			} else if (currentChange instanceof CompositeTransactionalChange) {
+				removeCreate(currentChange, createdObject);			
+			}
+		} 
+	}
+	
+	/** 
+	 * Reorders changes so that create changes are always present before insertion changes of the same element.
+	 * Some metamodels produce insertions of elements before inserting them into a containment, resulting in a
+	 * create change after an insertion, which would not be resolvable.
+	 */
+	private def void reorderChanges(List<TransactionalChange> changes) {
+		val createdObjects = changes.generateCreateChangesMultimap
+		var boolean reordered = true;
 		var counter = 0;
 		while(reordered) {
 			reordered = false;
@@ -165,8 +206,19 @@ class AtomicEmfChangeRecorder {
 			counter++;
 		}
 		
-		changes.forEach[EChanges.forEach[eChangeIdManager.setOrGenerateIds(it)]]
+		
  	}
+ 	
+ 		
+	private def generateCreateChangesMultimap(List<TransactionalChange> changes) {
+		val Multimap<TransactionalChange, EObject> createdObjects = ArrayListMultimap.create;
+		for (change : changes) {
+			val createAndInsertChanges = change.EChanges.filter(CreateAndInsertEObject).typeCreateAndInsertChanges
+			val createChanges = change.EChanges.filter(CreateEObject).typeCreateChanges + createAndInsertChanges.map[createChange];
+			createdObjects.putAll(change, createChanges.map[affectedEObject]);
+		}
+		return createdObjects;
+	}
 
 	public def List<TransactionalChange> getChanges() {
 		return changes;
