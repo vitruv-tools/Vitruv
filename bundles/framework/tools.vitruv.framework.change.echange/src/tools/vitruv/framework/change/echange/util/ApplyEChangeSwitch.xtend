@@ -36,7 +36,12 @@ public class ApplyEChangeSwitch {
 		if (commands !== null) {
 			for (Command c : commands) {
 				if (c.canExecute()) {
-					c.execute()
+					try {
+						c.execute()
+					} catch (UnsupportedOperationException e) {
+						// Some features are derived but not marked as such an cannot be modified,
+						// so catch that exception and move on
+					}
 				} else {
 					throw new RuntimeException("EChange could not be applied.")
 				}
