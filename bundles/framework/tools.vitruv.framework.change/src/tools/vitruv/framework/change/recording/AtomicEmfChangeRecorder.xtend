@@ -20,6 +20,8 @@ import com.google.common.collect.ArrayListMultimap
 import tools.vitruv.framework.change.echange.compound.CreateAndInsertEObject
 import tools.vitruv.framework.change.description.CompositeTransactionalChange
 import tools.vitruv.framework.change.description.impl.ConcreteApplicableChangeImpl
+import tools.vitruv.framework.change.echange.compound.RemoveAndDeleteEObject
+import tools.vitruv.framework.change.echange.eobject.DeleteEObject
 
 class AtomicEmfChangeRecorder {
 	val Set<Notifier> elementsToObserve
@@ -113,12 +115,29 @@ class AtomicEmfChangeRecorder {
 		relevantChangeDescriptions.reverseView.forEach[applyAndReverse];
 		val changes = relevantChangeDescriptions.filterNull.map[createModelChange(updateTuids)].filterNull.toList;
 		removeDuplicateCreates(changes);
+		removeCreateFollowedByDelete(changes);
 		reorderChanges(changes);
 		// Allow null provider and resolver for test purposes
 		if(localUuidGeneratorAndResolver !== null && globalUuidResolver !== null) {
 			changes.forEach[EChanges.forEach[eChangeIdManager.setOrGenerateIds(it)]]
 		}
 		this.changes = changes;
+	}
+	
+	def removeCreateFollowedByDelete(List<TransactionalChange> changes) {
+		val createdObjects = changes.generateCreateChangesMultimap
+		val deletedObjects = changes.generateDeleteChangesMultimap
+		for (var i = 0; i < changes.size; i++) {
+			val currentDeletedObjects = deletedObjects.get(changes.get(i))
+			for (var k = i + 1; k < changes.size; k++) {
+				for (var object = 0; object < currentDeletedObjects.size; object++) {
+					if (createdObjects.get(changes.get(k)).contains(currentDeletedObjects.get(object))) {
+						removeCreateOrDelete(changes.get(i) as CompositeTransactionalChange, currentDeletedObjects.get(object), false);
+						removeCreateOrDelete(changes.get(k) as CompositeTransactionalChange, currentDeletedObjects.get(object), true);
+					}
+				}			
+			}
+		}
 	}
 
 	// Necessary because of stupid Xtend generic type inference
@@ -139,6 +158,24 @@ class AtomicEmfChangeRecorder {
 		return result
 	}
 	
+	// Necessary because of stupid Xtend generic type inference
+	private static def Iterable<RemoveAndDeleteEObject<?, ?>> typeRemoveAndDeleteChanges(Iterable<?> iterable) {
+		val result = newArrayList
+		for (item : iterable) {
+			result += item as RemoveAndDeleteEObject<?, ?>;
+		}
+		return result
+	}
+	
+	// Necessary because of stupid Xtend generic type inference
+	private static def Iterable<DeleteEObject<?>> typeDeleteChanges(Iterable<?> iterable) {
+		val result = newArrayList
+		for (item : iterable) {
+			result += item as DeleteEObject<?>;
+		}
+		return result
+	}
+	
 	/**
 	 * Removes duplicate create operations, which can occur, if an element is created and inserted into 
 	 * a resource (CreateAndInsertRoot) and afterwards also inserted into a containment relation
@@ -153,26 +190,35 @@ class AtomicEmfChangeRecorder {
 				for (var object = 0; object < currentCreatedObjects.size; object++) {
 					if (createdObjects.get(changes.get(k)).contains(currentCreatedObjects.get(object))) {
 						val affectedChange = changes.get(k)
-						removeCreate(affectedChange as CompositeTransactionalChange, currentCreatedObjects.get(object));
+						removeCreateOrDelete(affectedChange as CompositeTransactionalChange, currentCreatedObjects.get(object), true);
 					}
 				}			
 			}
 		}
 	}
 	
-	private def void removeCreate(CompositeTransactionalChange change, EObject createdObject) {
+	private def void removeCreateOrDelete(CompositeTransactionalChange change, EObject createdObject, boolean create) {
 		for (var i = 0; i < change.changes.size; i++) {
 			val currentChange = change.changes.get(i);
 			if (currentChange instanceof ConcreteApplicableChangeImpl) {
 				val eChange = currentChange.EChange
-				if (eChange instanceof CreateAndInsertEObject<?,?>) {
-					if (eChange.createChange.affectedEObject == createdObject) {
-						change.changes.remove(i);
-						change.changes.add(VitruviusChangeFactory.instance.createConcreteApplicableChange(eChange.insertChange));
+				if (create) {
+					if (eChange instanceof CreateAndInsertEObject<?,?>) {
+						if (eChange.createChange.affectedEObject == createdObject) {
+							change.changes.remove(i);
+							change.changes.add(VitruviusChangeFactory.instance.createConcreteApplicableChange(eChange.insertChange));
+						}
+					}
+				} else {
+					if (eChange instanceof RemoveAndDeleteEObject<?,?>) {
+						if (eChange.deleteChange.affectedEObject == createdObject) {
+							change.changes.remove(i);
+							change.changes.add(VitruviusChangeFactory.instance.createConcreteApplicableChange(eChange.removeChange));
+						}
 					}
 				}
 			} else if (currentChange instanceof CompositeTransactionalChange) {
-				removeCreate(currentChange, createdObject);			
+				removeCreateOrDelete(currentChange, createdObject, create);			
 			}
 		} 
 	}
@@ -209,7 +255,16 @@ class AtomicEmfChangeRecorder {
 		
  	}
  	
- 		
+ 	private def generateDeleteChangesMultimap(List<TransactionalChange> changes) {
+		val Multimap<TransactionalChange, EObject> createdObjects = ArrayListMultimap.create;
+		for (change : changes) {
+			val createAndInsertChanges = change.EChanges.filter(RemoveAndDeleteEObject).typeRemoveAndDeleteChanges
+			val createChanges = change.EChanges.filter(DeleteEObject).typeDeleteChanges + createAndInsertChanges.map[deleteChange];
+			createdObjects.putAll(change, createChanges.map[affectedEObject]);
+		}
+		return createdObjects;
+	}
+ 	
 	private def generateCreateChangesMultimap(List<TransactionalChange> changes) {
 		val Multimap<TransactionalChange, EObject> createdObjects = ArrayListMultimap.create;
 		for (change : changes) {
