@@ -1,5 +1,6 @@
 package tools.vitruv.dsls.commonalities.generator
 
+import edu.kit.ipd.sdq.activextendannotations.Lazy
 import java.util.Collections
 import org.eclipse.emf.codegen.ecore.generator.Generator
 import org.eclipse.emf.codegen.ecore.generator.GeneratorAdapterFactory
@@ -13,12 +14,16 @@ import org.eclipse.emf.common.util.BasicMonitor
 import org.eclipse.emf.common.util.Diagnostic
 import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.EPackage
+import org.eclipse.emf.ecore.plugin.EcorePlugin
+import tools.vitruv.extensions.dslruntime.commonalities.resources.ResourcesPackage
 
 import static extension tools.vitruv.dsls.commonalities.generator.GeneratorConstants.*
 
 package class IntermediateModelCodeGenerator extends SubGenerator {
 	static val GENERATED_CODE_COMPLIANCE_LEVEL = GenJDKLevel.JDK80_LITERAL
 	static val GENERATED_CODE_FOLDER = "."
+	static val RESOURCES_GENMODEL_URI = EcorePlugin.getEPackageNsURIToGenModelLocationMap(true).get(ResourcesPackage.eINSTANCE.nsURI)
+	@Lazy val GenModel resourcesGenModel = commonalityFile.eResource.resourceSet.getResource(RESOURCES_GENMODEL_URI, true).contents.head as GenModel
 
 	override generate() {
 		val generatedCodeDirectory = fsa.getURI(GENERATED_CODE_FOLDER)
@@ -35,8 +40,9 @@ package class IntermediateModelCodeGenerator extends SubGenerator {
 			modelDirectory = codeGenerationTargetFolder.normalized.path
 			canGenerate = true
 			modelName = conceptName
+			usedGenPackages += resourcesGenModel.genPackages.head
 			initialize(Collections.singleton(generatedPackage))
-			genPackages.get(0) => [
+			genPackages.head => [
 				prefix = conceptName.intermediateModelClassesPrefix
 				basePackage = conceptName.conceptPackagePathPart
 				adapterFactory = false

@@ -28,7 +28,7 @@ class VitruvDomainAdapter extends VitruvDomainImpl implements Wrapper<VitruvDoma
 	
 	override getMetaclasses() {
 		if (metaclasses === null) {
-			super.getMetaclasses().addAll(loadMetaclasses())
+			super.getMetaclasses() += loadMetaclasses()
 		}
 		metaclasses
 	}
@@ -48,9 +48,11 @@ class VitruvDomainAdapter extends VitruvDomainImpl implements Wrapper<VitruvDoma
 					wrapEClass(eClass)
 				]
 			]
+			+ #[LanguageElementsFactory.eINSTANCE.createResourceMetaclass]
 	}
 
 	override getName() {
+		if (eIsProxy) return null
 		checkWrappedVitruvDomainIsSet()
 		wrappedVitruvDomain.name
 	}

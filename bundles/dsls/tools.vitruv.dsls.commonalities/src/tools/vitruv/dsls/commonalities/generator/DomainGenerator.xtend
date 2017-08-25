@@ -3,6 +3,7 @@ package tools.vitruv.dsls.commonalities.generator
 import com.google.inject.Inject
 import com.google.inject.Provider
 import java.util.Arrays
+import java.util.Collections
 import org.eclipse.xtend2.lib.StringConcatenationClient
 import org.eclipse.xtext.common.types.JvmDeclaredType
 import org.eclipse.xtext.common.types.JvmGenericType
@@ -14,6 +15,8 @@ import org.eclipse.xtext.xbase.compiler.CompilationTemplateAdapter
 import org.eclipse.xtext.xbase.compiler.JvmModelGenerator
 import org.eclipse.xtext.xbase.jvmmodel.JvmTypeReferenceBuilder
 import tools.vitruv.domains.emf.builder.VitruviusEmfBuilderApplicator
+import tools.vitruv.extensions.dslruntime.commonalities.IntermediateVitruvDomain
+import tools.vitruv.extensions.dslruntime.commonalities.resources.ResourcesPackage
 import tools.vitruv.framework.domains.VitruvDomainProvider
 import tools.vitruv.framework.domains.VitruviusProjectBuilderApplicator
 import tools.vitruv.framework.tuid.AttributeTuidCalculatorAndResolver
@@ -23,7 +26,6 @@ import static extension tools.vitruv.dsls.commonalities.generator.GeneratorConst
 
 package class DomainGenerator extends SubGenerator {
 
-	static val IntermediateVitruvDomain = 'tools.vitruv.extensions.dslruntime.commonalities.IntermediateVitruvDomain'
 	@Inject JvmModelGenerator delegate
 	@Inject JvmTypeReferenceBuilder.Factory typeReferenceFactory
 	@Inject Provider<XtextResource> resourceProvider
@@ -52,10 +54,12 @@ package class DomainGenerator extends SubGenerator {
 			members += Arrays.asList(
 				TypesFactory.eINSTANCE.createJvmConstructor => [
 					visibility = JvmVisibility.PUBLIC
-					body = '''super("«conceptName.conceptDomainName»", «
-						»«'''«conceptName.intermediateModelClassesPrefix»Package'''».eINSTANCE, «
-						»new «AttributeTuidCalculatorAndResolver.typeRef»("", "«INTERMEDIATE_MODEL_ID_ATTRIBUTE»"), «
-						»"«conceptName.intermediateModelFileExtension»");'''
+					body = '''
+					super("«conceptName.conceptDomainName»",
+						«'''«conceptName.intermediateModelClassesPrefix»Package'''».eINSTANCE,
+						«Collections.typeRef».singleton(«ResourcesPackage.typeRef».eINSTANCE),
+						new «AttributeTuidCalculatorAndResolver.typeRef»("", "«INTERMEDIATE_MODEL_ID_ATTRIBUTE»"),
+						"«conceptName.intermediateModelFileExtension»");'''
 				],
 				TypesFactory.eINSTANCE.createJvmOperation => [
 					visibility = JvmVisibility.PUBLIC

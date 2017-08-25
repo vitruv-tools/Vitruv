@@ -1,8 +1,8 @@
 package tools.vitruv.extensions.dslruntime.commonalities
 
-import tools.vitruv.framework.domains.AbstractVitruvDomain
-import org.eclipse.emf.ecore.EPackage
 import java.util.Set
+import org.eclipse.emf.ecore.EPackage
+import tools.vitruv.framework.domains.AbstractVitruvDomain
 import tools.vitruv.framework.tuid.TuidCalculatorAndResolver
 
 abstract class IntermediateVitruvDomain extends AbstractVitruvDomain {

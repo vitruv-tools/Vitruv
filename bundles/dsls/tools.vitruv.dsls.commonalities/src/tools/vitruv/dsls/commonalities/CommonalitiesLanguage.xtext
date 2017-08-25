@@ -1,71 +1,140 @@
-grammar tools.vitruv.dsls.commonalities.CommonalitiesLanguage
-	with org.eclipse.xtext.xbase.Xbase hidden(WS, ML_COMMENT, SL_COMMENT)
+grammar tools.vitruv.dsls.commonalities.CommonalitiesLanguage with org.eclipse.xtext.xbase.Xbase hidden(WS, ML_COMMENT,
+SL_COMMENT)
 
 generate language "http://vitruv.tools/dsls/commonalities/language"
-
 import "http://www.eclipse.org/emf/2002/Ecore" as ecore
 import "http://vitruv.tools/dsls/commonalities/elements"
+import "http://www.eclipse.org/xtext/common/JavaVMTypes" as jvmTypes
 
 CommonalityFile:
-	concept = ConceptDeclaration
-	commonality = CommonalityDeclaration
+	concept=ConceptDeclaration
+	commonality=CommonalityDeclaration
 ;
 
 ConceptDeclaration:
 	'concept' name=ID
 ;
 
-
-/***********************
- * Concept Declaration *
- ***********************/
- 
 CommonalityDeclaration:
- 	'commonality' name=ID '{'
- 		participations += ParticipationDeclaration*
- 		attributes += AttributeDeclaration*
- 	'}'
+	'commonality' name=ID '{'
+	participations+=ParticipationDecl*
+	attributes+=AttributeDeclaration*
+	'}'
 ;
 
-DomainReference:
-	domain=[Domain]
+/******************
+ * Participations *
+ ******************/
+// this rule’s sole purpose is to tell Xtext we want *subclass* Participation
+// see https://eclipse.org/Xtext/documentation/301_grammarlanguage.html#feature-and-type-hierarchy-generation
+ParticipationDecl returns Participation:
+	ParticipationDeclaration;
+
+ParticipationDeclaration:
+	'with' (SimpleParticipationDeclaration | TupleParticipationDeclaration)
+	('called' alias=QUOTED_NAME)?
+	('whereat' condition=ParticipationConditionDeclaration | condition=ParticipationNoCondition);
+
+SimpleParticipationDeclaration:
+	participationClass=QualifiedParticipationClassDeclaration
 ;
 
-QualifiedMetaclass:
-	ID ':' ID
+TupleParticipationDeclaration:
+	domain=[Domain|DomainReference] ':' '(' parts+=TupleParticipationDeclarationPart (','
+	parts+=TupleParticipationDeclarationPart)* ')'
 ;
 
-QualifiedParticipationAttribute:
-	QualifiedMetaclass '.' ID
+TupleParticipationDeclarationPart:
+	SimpleTupleParticipationDeclarationPart | ParticipationRelationDeclaration
 ;
 
-ParticipationDeclaration returns Participation:
-	'with' (SimpleParticipationClassDeclaration | TupleParticipationDeclaration) ('as' alias=ID)?
+SimpleTupleParticipationDeclarationPart:
+	participationClass=UnqualifiedParticipationClassDeclaration
 ;
 
-fragment SimpleParticipationClassDeclaration returns Participation:
-	classes+=ParticipationClassDeclaration
+ParticipationRelationDeclaration returns TupleParticipationDeclarationPart:
+	SimpleParticipationRelationDeclaration | BracedParticipationRelationDeclartion
 ;
 
-fragment TupleParticipationDeclaration returns Participation:
-	'(' classes+=ParticipationClassDeclaration (',' classes+=ParticipationClassDeclaration)* ')'
+SimpleParticipationRelationDeclaration returns ParticipationRelationDeclaration:
+	leftClasses+=UnqualifiedParticipationClassDeclaration operator=[jvmTypes::JvmDeclaredType]
+	rightClasses+=UnqualifiedParticipationClassDeclaration
 ;
 
-ParticipationClassDeclaration returns ParticipationClass:
-	superMetaclass=[Metaclass|QualifiedMetaclass] ('called' alias=ID)?
+BracedParticipationRelationDeclartion returns ParticipationRelationDeclaration:
+	'(' leftClasses+=UnqualifiedParticipationClassDeclaration (',' leftClasses+=UnqualifiedParticipationClassDeclaration)*
+	operator=[jvmTypes::JvmDeclaredType]
+	rightClasses+=UnqualifiedParticipationClassDeclaration (',' rightClasses+=UnqualifiedParticipationClassDeclaration)*
+	')'
 ;
 
+fragment Aliasable:
+	('as' alias=QUOTED_NAME)?
+;
+
+QualifiedParticipationClassDeclaration returns ParticipationClass:
+	superMetaclass=[Metaclass|QualifiedMetaclass] Aliasable
+;
+
+UnqualifiedParticipationClassDeclaration returns ParticipationClass:
+	superMetaclass=[Metaclass|UnqualifiedMetaclass] Aliasable
+;
+
+ParticipationConditionDeclaration returns ParticipationCondition:
+	{SpecialParticipationCondition}
+;
+
+ParticipationNoCondition returns ParticipationCondition:
+	{ParticipationNoCondition}
+;
+
+
+
+/**************
+ * Attributes *
+ **************/
 AttributeDeclaration:
 	'has' name=ID '{'
-		mappings += AttributeMappingSpecifiation*
+	mappings+=AttributeMappingSpecifiation*
 	'}'
 ;
 
 AttributeMappingSpecifiation:
-	AttributeEqualitySpecification
+	('=' {AttributeEqualitySpecification} | '->' {AttributeSetSpecification} | '<-' {AttributeReadSpecification})
+	attribute=[ParticipationAttribute|QualifiedParticipationAttribute]
 ;
 
 
-AttributeEqualitySpecification:
-	'=' attribute = [ParticipationAttribute|QualifiedParticipationAttribute]
+
+/******************
+ * Datatype Rules *
+ ******************/
+fragment QualifiedClasslike:
+	ID ':' ID;
+	
+QualifiedMetaclass:
+	QualifiedClasslike
 ;
+
+DomainReference:
+	ID;
+
+UnqualifiedMetaclass:
+	ID;
+
+QualifiedParticipationAttribute:
+	QualifiedClasslike '.' ID;
+	
+	
+	
+/******************
+ * Terminal Rules *
+ ******************/
+terminal QUOTED_NAME:
+	("'" NAME "'") | ('"' NAME '"') | ("“" NAME "”") | ("»" NAME "«") | ("«" NAME "»") | ("„" NAME "“")
+;
+
+terminal fragment NAME:
+	('a'..'z' | 'A'..'Z') ('a'..'Z' | 'A'..'Z' | '0'..'9' | '-' | '_')*
+;
+	

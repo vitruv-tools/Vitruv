@@ -4,6 +4,7 @@ import edu.kit.ipd.sdq.activextendannotations.Utility
 import org.eclipse.emf.common.util.URI
 import tools.vitruv.dsls.common.helper.GenericClassNameGenerator
 import tools.vitruv.dsls.commonalities.language.CommonalityFile
+import tools.vitruv.extensions.dslruntime.commonalities.CommonalitiesConstants
 
 @Utility
 class GeneratorConstants {
@@ -11,12 +12,13 @@ class GeneratorConstants {
 	public static val MODEL_OUTPUT_FILE_EXTENSION = ".ecore"
 	static val DOMAIN_TYPES_BASE_URI = URI.createURI('synthetic:/domainTypes')
 
-	// These must be updated in CommonalitiesConstanst, too!	
-	static val INTERMEDIATE_MODEL_ROOT_CLASS = 'IntermediateModelRoot'
-	public static val INTERMEDIATE_MODEL_ROOT_CLASS_CONTAINER_NAME = 'children'
-	public static val INTERMEDIATE_MODEL_ROOT_CLASS_ID_COUNTER = 'uuidCounter'
-	static val INTERMEDIATE_MODEL_NONROOT_CLASS = 'IntermediateModelNonRootObject'
-	public static val INTERMEDIATE_MODEL_ID_ATTRIBUTE = 'intermediateModelUuid'
+	public static val INTERMEDIATE_MODEL_ROOT_CLASS_CONTAINER_NAME = CommonalitiesConstants.
+		INTERMEDIATE_MODEL_ROOT_CLASS_CONTAINER_NAME
+	public static val INTERMEDIATE_MODEL_ROOT_CLASS_ID_COUNTER = CommonalitiesConstants.
+		INTERMEDIATE_MODEL_ROOT_CLASS_ID_COUNTER
+	public static val INTERMEDIATE_MODEL_ID_ATTRIBUTE = CommonalitiesConstants.INTERMEDIATE_MODEL_ID_ATTRIBUTE
+	public static val INTERMEDIATE_MODEL_ROOT_RESOURCES_NAME = CommonalitiesConstants.
+		INTERMEDIATE_MODEL_ROOT_RESOURCES_NAME
 
 	@Pure
 	def static getIntermediateModelClass(CommonalityFile commonalityFile) {
@@ -36,12 +38,19 @@ class GeneratorConstants {
 
 	@Pure
 	def static getIntermediateModelRootClass(String conceptName) {
-		new GenericClassNameGenerator(conceptName.conceptPackageFullName, INTERMEDIATE_MODEL_ROOT_CLASS)
+		new GenericClassNameGenerator(conceptName.conceptPackageFullName,
+			CommonalitiesConstants.INTERMEDIATE_MODEL_ROOT_CLASS)
+	}
+
+	@Pure
+	def static getIntermediateModelNonRootClass(CommonalityFile commonalityFile) {
+		commonalityFile.concept.name.intermediateModelNonRootClass
 	}
 
 	@Pure
 	def static getIntermediateModelNonRootClass(String conceptName) {
-		new GenericClassNameGenerator(conceptName.conceptPackageFullName, INTERMEDIATE_MODEL_NONROOT_CLASS)
+		new GenericClassNameGenerator(conceptName.conceptPackageFullName,
+			CommonalitiesConstants.INTERMEDIATE_MODEL_NONROOT_CLASS)
 	}
 
 	@Pure

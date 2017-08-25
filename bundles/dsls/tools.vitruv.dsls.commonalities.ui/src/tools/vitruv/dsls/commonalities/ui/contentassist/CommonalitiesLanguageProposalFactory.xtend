@@ -13,8 +13,10 @@ import org.eclipse.jface.viewers.StyledString
 import org.eclipse.jface.viewers.ILabelProvider
 import org.eclipse.emf.ecore.EClass
 import org.eclipse.xtext.ui.editor.contentassist.PrefixMatcher
+import org.eclipse.xtext.xbase.lib.Functions.Function1
+import org.eclipse.emf.ecore.EObject
 
-abstract class CommonailitiesLanguageProposalFactory implements Function<IEObjectDescription, ICompletionProposal>, com.google.common.base.Function<IEObjectDescription, ICompletionProposal> {
+abstract class CommonalitiesLanguageProposalFactory implements Function<IEObjectDescription, ICompletionProposal>, Function1<IEObjectDescription, ICompletionProposal>, com.google.common.base.Function<IEObjectDescription, ICompletionProposal> {
 
 	@Inject IQualifiedNameConverter descriptionConverter
 	@Inject ILabelProvider labelProvider
@@ -40,42 +42,48 @@ abstract class CommonailitiesLanguageProposalFactory implements Function<IEObjec
 	def protected completionProposal(String completion) {
 		new CompletionProposalBuilder(this).forCompletion(completion)
 	}
+	
+	/**
+	 * Needed because Xtend’s type inference cannot handle any case that’s not
+	 * completely obvious.
+	 */
+	def Function1<IEObjectDescription, ICompletionProposal> fun() {
+		return this
+	}
 
 	protected static class CompletionProposalBuilder {
-		val CommonailitiesLanguageProposalFactory factory
+		val extension CommonalitiesLanguageProposalFactory factory
 		String completion
 		StyledString text = new StyledString()
 		Image image
-		ContentAssistContext context
 
-		private new(CommonailitiesLanguageProposalFactory factory) {
+		private new(CommonalitiesLanguageProposalFactory factory) {
 			this.factory = factory
-			this.context = factory.contentAssistContext
 		}
-		
+
 		def protected forCompletion(String completion) {
 			this.completion = completion
 			this
 		}
-		
+
 		def protected withImage(Image image) {
 			this.image = image
 			this
-		} 
-		
-		def protected withImageOf(EClass clazz) {
-			withImage(factory.labelProvider.getImage(clazz))
 		}
-		
+
+		def protected withImageOf(EObject object) {
+			withImage(factory.labelProvider.getImage(object))
+		}
+
 		def protected appendText(String text) {
 			this.text.append(text)
 			this
 		}
-		
+
 		def protected usePrefixMatcher(PrefixMatcher prefixMatcher) {
 			context = (context.copy => [
 				matcher = prefixMatcher
-			]).toContext		
+			]).toContext
 			this
 		}
 		
@@ -83,7 +91,7 @@ abstract class CommonailitiesLanguageProposalFactory implements Function<IEObjec
 			this.text.append(text, StyledString.QUALIFIER_STYLER)
 			this
 		}
-		
+
 		def protected propose() {
 			factory.proposalProvider.createCompletionProposal(completion, text, image, context)
 		}

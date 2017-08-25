@@ -8,6 +8,13 @@
 			genModel = "model-gen/CommonalitiesLanguage.genmodel" />
 	</extension>
  <extension
+       point="org.eclipse.emf.ecore.factory_override">
+    <factory
+          class="tools.vitruv.dsls.commonalities.language.CommonalitiesLanguageImplementationFactory"
+          uri="http://vitruv.tools/dsls/commonalities/language">
+    </factory>
+ </extension>
+ <extension
        point="org.eclipse.emf.ecore.generated_package">
     <package
           class="tools.vitruv.dsls.commonalities.language.elements.LanguageElementsPackage"

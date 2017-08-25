@@ -8,7 +8,9 @@ import static com.google.common.base.Preconditions.*
 package class EClassAdapter extends EClassMetaclassImpl implements Wrapper<EClass> {
 
 	EClass wrappedEClass
-
+	var attributesInitialized = false
+	var referencesInitialized = false
+	
 	override wrapEClass(EClass eClass) {
 		checkState(wrappedEClass === null, "This object already has an EClass!")
 		wrappedEClass = checkNotNull(eClass)
@@ -19,20 +21,25 @@ package class EClassAdapter extends EClassMetaclassImpl implements Wrapper<EClas
 	}
 
 	override getName() {
+		if (eIsProxy) return null
 		checkWrappedEClassIsSet()
 		wrappedEClass.name
 	}
 	
 	override getAttributes() {
-		if (attributes === null) {
-			super.getAttributes().addAll(loadAttributes())
+		val attributes = super.getAttributes()
+		if (!attributesInitialized && !eIsProxy) {
+			attributes.addAll(loadAttributes())
+			attributesInitialized = true
 		}
 		attributes
 	}
 	
 	override getReferences() {
-		if (references === null) {
-			super.getReferences().addAll(loadReferences())
+		val references = super.getReferences()
+		if (!referencesInitialized && !eIsProxy) {
+			references.addAll(loadReferences())
+			referencesInitialized = true
 		}
 		references
 	}

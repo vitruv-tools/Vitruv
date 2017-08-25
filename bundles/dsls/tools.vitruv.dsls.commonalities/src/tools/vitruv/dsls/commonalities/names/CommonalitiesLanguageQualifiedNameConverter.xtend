@@ -1,7 +1,6 @@
 package tools.vitruv.dsls.commonalities.names
 
 import com.google.inject.Singleton
-import java.util.regex.Pattern
 import org.eclipse.xtext.naming.IQualifiedNameConverter
 import org.eclipse.xtext.naming.QualifiedName
 
@@ -10,31 +9,33 @@ class CommonalitiesLanguageQualifiedNameConverter implements IQualifiedNameConve
 
 	public static val DOMAIN_METACLASS_SEPARATOR = ":";
 	public static val METACLASS_ATTRIBUTE_SEPARATOR = ".";
+	static val NOT_FOUND = -1
 
+	/*
+	 * 'a:b.c' -> #['a', 'b', 'c']
+	 * 'a:b' -> #['a', 'b']
+	 * 'b.c' -> #['', 'b', 'c']
+	 * 'a' -> #['a']
+	 */
 	override toQualifiedName(String qualifiedNameAsText) {
 		var String[] parts
-		if (qualifiedNameAsText.contains(DOMAIN_METACLASS_SEPARATOR)) {
-			val domainSplit = qualifiedNameAsText.split(DOMAIN_METACLASS_SEPARATOR)
-			if (domainSplit.length == 1) {
-				// special case: DOMAIN_METACLASS_SEPARATOR at end
-				parts = #[domainSplit.get(0), ""]
-			} else if (domainSplit.get(1).contains(METACLASS_ATTRIBUTE_SEPARATOR)) {
-				// we have an attribute specification
-				
-				val metaclassSplit = domainSplit.get(1).split(Pattern.quote(METACLASS_ATTRIBUTE_SEPARATOR))
-				if (metaclassSplit.length == 1) {
-					// special case: dot at end
-					parts = #[domainSplit.get(0), metaclassSplit.get(0), ""]
-				} else {
-					// domain, metaclass and attribute
-					parts = #[domainSplit.get(0)] + metaclassSplit
-				}
-			} else {
-				// domain with metaclass
-				parts = domainSplit
-			}
+		var classPartToSplit = qualifiedNameAsText
+		var domainPart = ''
+
+		val classSplitIndex = qualifiedNameAsText.indexOf(DOMAIN_METACLASS_SEPARATOR)
+		if (classSplitIndex !== NOT_FOUND) {
+			domainPart = qualifiedNameAsText.substring(0, classSplitIndex)
+			classPartToSplit = qualifiedNameAsText.substring(classSplitIndex + 1)
+		}
+
+		val attributeSplitIndex = classPartToSplit.indexOf(METACLASS_ATTRIBUTE_SEPARATOR)
+		if (attributeSplitIndex !== NOT_FOUND) {
+			var classPart = classPartToSplit.substring(0, attributeSplitIndex)
+			val attributePart = classPartToSplit.substring(attributeSplitIndex + 1)
+			parts = #[domainPart, classPart, attributePart]
+		} else if (classSplitIndex !== NOT_FOUND) {
+			parts = #[domainPart, classPartToSplit]
 		} else {
-			// only a domain
 			parts = #[qualifiedNameAsText]
 		}
 		QualifiedName.create(parts)

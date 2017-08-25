@@ -1,5 +1,7 @@
 package tools.vitruv.dsls.commonalities.language.elements
 
+import org.eclipse.emf.ecore.EObject
+import org.eclipse.emf.ecore.EStructuralFeature
 import tools.vitruv.dsls.commonalities.language.elements.impl.ParticipationClassImpl
 
 package class ParticipationClassI extends ParticipationClassImpl {
@@ -8,7 +10,7 @@ package class ParticipationClassI extends ParticipationClassImpl {
 	var referencesLoaded = false
 
 	override getName() {
-		alias ?: superMetaclass.name
+		alias ?: getSuperMetaclass()?.name
 	}
 	
 	def private isSuperMetaclassSet() {
@@ -51,6 +53,21 @@ package class ParticipationClassI extends ParticipationClassImpl {
 	
 	override basicGetPackageLikeContainer() {
 		participation
+	}
+	
+	override basicGetParticipation() {
+		var EObject container = eContainer
+		while (container !== null) {
+			if (container instanceof Participation) {
+				return container
+			}
+			container = container.eContainer
+		}
+		throw new IllegalStateException('''ParticipationCass is not contained in a Participation!''')
+	}
+	
+	override eIsSet(EStructuralFeature eFeature) {
+		super.eIsSet(eFeature)
 	}
 	
 }

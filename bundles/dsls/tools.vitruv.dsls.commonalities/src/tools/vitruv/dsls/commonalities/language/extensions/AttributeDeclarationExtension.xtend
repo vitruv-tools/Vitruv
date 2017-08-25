@@ -1,8 +1,6 @@
 package tools.vitruv.dsls.commonalities.language.extensions
 
 import edu.kit.ipd.sdq.activextendannotations.Utility
-import org.eclipse.emf.ecore.EClass
-import org.eclipse.emf.ecore.EClassifier
 import org.eclipse.emf.ecore.EDataType
 import org.eclipse.emf.ecore.EcorePackage
 import tools.vitruv.dsls.commonalities.language.AttributeDeclaration
@@ -10,11 +8,15 @@ import tools.vitruv.dsls.commonalities.language.AttributeMappingSpecifiation
 
 import static extension tools.vitruv.dsls.commonalities.language.extensions.AttributeMappingSpecificationExtension.*
 
-@Utility package class AttributeDeclarationExtension {
+@Utility
+package class AttributeDeclarationExtension {
 
 	/**
-	 * Foo bar
+	 * A data type that will be handled as if every other data type is a
+	 * supertype of it.
 	 */
+	public static val EDataType MOST_SPECIFIC_DATA_TYPE = null
+
 	def static EDataType getType(AttributeDeclaration attribute) {
 		if (attribute.mappings.length === 0) return EcorePackage.eINSTANCE.EJavaObject
 
@@ -40,17 +42,15 @@ import static extension tools.vitruv.dsls.commonalities.language.extensions.Attr
 			}
 		}
 
-		// assert requiredType.isSuperTypeOf(providedType)
-		return providedType
+		// we know that requiredType.isSuperTypeOf(providedType)
+		return if (providedType != MOST_SPECIFIC_DATA_TYPE) providedType else requiredType
 	}
 
-	def private static isSuperTypeOf(EClassifier a, EClassifier b) {
+	def private static isSuperTypeOf(EDataType a, EDataType b) {
 		if (a == b) return true
-		if (a instanceof EClass) {
-			if (b instanceof EClass) {
-				return a.isSuperTypeOf(b)
-			}
-		}
+		if (b === MOST_SPECIFIC_DATA_TYPE) return true
+		if (a === MOST_SPECIFIC_DATA_TYPE) return false
+		a.instanceClass.isAssignableFrom(b.instanceClass)
 		return false
 	}
 }

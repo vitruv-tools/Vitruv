@@ -2,30 +2,38 @@ package tools.vitruv.dsls.commonalities.generator
 
 import com.google.inject.Inject
 import com.google.inject.Provider
-import java.util.Arrays
+import java.util.LinkedList
 import java.util.function.Supplier
-import org.eclipse.xtext.common.types.JvmConstructor
-import org.eclipse.xtext.common.types.JvmDeclaredType
-import org.eclipse.xtext.common.types.JvmGenericType
-import org.eclipse.xtext.common.types.JvmOperation
-import org.eclipse.xtext.common.types.JvmType
-import org.eclipse.xtext.common.types.access.IJvmTypeProvider
+import org.eclipse.emf.ecore.EClass
+import org.eclipse.emf.ecore.EObject
+import org.eclipse.emf.ecore.EReference
+import org.eclipse.xtext.xbase.XExpression
 import org.eclipse.xtext.xbase.XFeatureCall
 import org.eclipse.xtext.xbase.XbaseFactory
-import tools.vitruv.dsls.commonalities.language.CommonalityFile
+import tools.vitruv.dsls.commonalities.language.AttributeDeclaration
+import tools.vitruv.dsls.commonalities.language.AttributeEqualitySpecification
+import tools.vitruv.dsls.commonalities.language.AttributeMappingSpecifiation
+import tools.vitruv.dsls.commonalities.language.AttributeReadSpecification
+import tools.vitruv.dsls.commonalities.language.AttributeSetSpecification
 import tools.vitruv.dsls.commonalities.language.elements.Participation
 import tools.vitruv.dsls.commonalities.language.elements.ParticipationClass
+import tools.vitruv.dsls.commonalities.language.elements.ResourceMetaclass
 import tools.vitruv.dsls.reactions.api.generator.IReactionsGenerator
+import tools.vitruv.dsls.reactions.builder.FluentReactionBuilder
+import tools.vitruv.dsls.reactions.builder.FluentReactionBuilder.ReactionTypeProvider
 import tools.vitruv.dsls.reactions.builder.FluentReactionsLanguageBuilder
-import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.TypeProvider
+import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.RoutineTypeProvider
+import tools.vitruv.extensions.dslruntime.commonalities.IntermediateModelManagement
 import tools.vitruv.framework.domains.VitruvDomainProviderRegistry
 
 import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
-import static extension tools.vitruv.dsls.commonalities.generator.GeneratorConstants.*
+import static extension org.eclipse.xtext.EcoreUtil2.isAssignableFrom
+import static extension tools.vitruv.dsls.commonalities.generator.JvmTypeProviderHelper.*
+import static extension tools.vitruv.dsls.commonalities.generator.XbaseHelper.*
+import static extension tools.vitruv.dsls.commonalities.language.extensions.CommonalitiesLanguageModelExtensions.*
 
 package class ReactionsGenerator extends SubGenerator {
 
-	static val IntermediateModelUtil = 'tools.vitruv.extensions.dslruntime.commonalities.IntermediateModelUtil'
 	static val DEBUG_WRITE_REACTIONS = true
 
 	Supplier<IReactionsGenerator> reactionsGeneratorProvider
@@ -39,23 +47,21 @@ package class ReactionsGenerator extends SubGenerator {
 			]
 		]
 	}
-	
+
 	override generate() {
 		val generator = reactionsGeneratorProvider.get()
 
 		val reactionFile = create.reactionsFile(commonality.name)
 		for (participation : commonalityFile.commonality.participations) {
 			reactionFile +=
-				create.reactionsSegment('''«commonality.name»To«participation.name»''')
-					.inReactionToChangesIn(commonalityFile.conceptDomain)
-					.executeActionsIn(participation.domain.vitruvDomain) +=
-						commonalityChangeReactions(participation)
+				create.reactionsSegment('''«commonality.name»To«participation.name»''').inReactionToChangesIn(
+					commonalityFile.conceptDomain).executeActionsIn(participation.domain.vitruvDomain) +=
+					commonalityChangeReactions(participation)
 
 			reactionFile +=
-				create.reactionsSegment('''«commonality.name»From«participation.name»''')
-					.inReactionToChangesIn(participation.domain.vitruvDomain)
-					.executeActionsIn(commonalityFile.concept.name) +=
-						participationChangeReactions(participation)
+				create.reactionsSegment('''«commonality.name»From«participation.name»''').inReactionToChangesIn(
+					participation.domain.vitruvDomain).executeActionsIn(commonalityFile.concept.name) +=
+					participationChangeReactions(participation)
 
 		}
 
@@ -74,223 +80,291 @@ package class ReactionsGenerator extends SubGenerator {
 		}
 	}
 
-	def private reactionForCommonalityDelete(ParticipationClass participationClass) {
-		create.reaction('''«commonality.name»Delete''')
-			.afterElement(commonalityFile.changeClass).deleted
-			.call [
-				match [
-					vall("danglingCorrespondence").retrieve(participationClass.changeClass).correspondingTo.affectedEObject
-				]
-				action [
-					delete("danglingCorrespondence")
-				]
-			]
+	def private commonalityChangeReactions(Participation participation) {
+		(#[reactionForCommonalityCreate(participation), reactionForCommonalityDelete(participation)] +
+			participation.reactionsForCommonalityAttributeChange).filterNull
 	}
 
-	def private reactionForParticipationDelete(ParticipationClass participationClass) {
-		create.reaction('''«participationClass.name»Delete''')
-			.afterElement(participationClass.changeClass).deleted
-			.call [
-				match [
-					// checkAll [domainProviderIsRegistered(commonalityFile)]
-					vall("danglingCorrespondence").retrieve(commonalityFile.changeClass).correspondingTo.affectedEObject
-				]
-				action [
-					delete("danglingCorrespondence")
-				// execute [unregisterDomainProvider(commonalityFile)]
-				]
-			]
+	def private participationChangeReactions(Participation participation) {
+		(participation.classes.flatMap [
+			#[reactionForParticipationClassDelete, reactionForParticipationClassCreate] +
+				reactionsForParticipationInsert
+		] + participation.reactionsForParticipationAttributeChange).filterNull
+
 	}
 
-	def private reactionForCommonalityCreate(ParticipationClass participationClass) {
-		create.reaction('''«commonality.name»Create''')
-			.afterElement(commonalityFile.changeClass).created
-			.call [
-				action [
-					vall("newCorrespondence").create(participationClass.changeClass)
-					addCorrespondenceBetween.affectedEObject.and("newCorrespondence")
-				]
+	def private reactionForCommonalityDelete(Participation participation) {
+		create.reaction('''«commonality.name»Delete''').afterElement(commonalityFile.changeClass).deleted.call [
+			match [
+				for (participationClass : participation.classes) {
+					vall('''corresponding_«participationClass.name»''').retrieve(participationClass.changeClass).
+						correspondingTo.affectedEObject
+				}
 			]
+			action [
+				for (participationClass : participation.classes) {
+					delete('''corresponding_«participationClass.name»''')
+				}
+			]
+		]
 	}
 
-	def private reactionForParticipationCreate(ParticipationClass participationClass) {
-		create.reaction('''«participationClass.name»Create''')
-			.afterElement(participationClass.changeClass).created
-			.call [
-				action [
-					// execute [registerDomainProvider(commonalityFile)]
-					vall("newCorrespondence").create(commonalityFile.changeClass).andInitialize [
-						assignStagingId("newCorrespondence")
+	def private reactionForParticipationClassDelete(ParticipationClass participationClass) {
+		if (participationClass.forResourceMetaclass) return null
+		create.reaction('''«participationClass.name»Delete''').afterElement(participationClass.changeClass).deleted.call [
+			match [
+				vall("corresponding_intermediate").retrieve(commonalityFile.changeClass).correspondingTo.affectedEObject
+			]
+			action [
+				delete("corresponding_intermediate")
+			]
+		]
+	}
+
+	def private String commonalityCreateReactionCorrespondingName(
+		ParticipationClass participationClass) '''corresponding_«participationClass.name»'''
+
+	def private reactionForCommonalityCreate(Participation participation) {
+		create.reaction('''«commonality.name»Create''').afterElement(commonalityFile.changeClass).created.call [
+			action [
+				for (participationClass : participation.classes) {
+					val corresponding = participationClass.commonalityCreateReactionCorrespondingName
+					val specialInitConstruct = new ParticipationClassSpecialInitializationConstructor(participationClass)
+					vall(corresponding).create(participationClass.changeClass) => [
+						if (specialInitConstruct.hasSpecialInitialization) {
+							andInitialize [ typeProvider |
+								specialInitConstruct.getSpecialInitializer(typeProvider, [
+									typeProvider.variable(commonalityCreateReactionCorrespondingName)
+								])
+							]
+						}
 					]
-					addCorrespondenceBetween.affectedEObject.and("newCorrespondence")
-				// execute [unregisterDomainProvider(commonalityFile)]
-				]
+					addCorrespondenceBetween.affectedEObject.and(corresponding)
+				}
 			]
+		]
+	}
+
+	def private reactionForParticipationClassCreate(ParticipationClass participationClass) {
+		if (participationClass.forResourceMetaclass) return null
+		create.reaction('''«participationClass.name»Create''').afterElement(participationClass.changeClass).created.call [
+			action [
+				vall("newCorrespondence").create(commonalityFile.changeClass).andInitialize [
+					assignStagingId(variable("newCorrespondence"))
+				]
+				addCorrespondenceBetween("newCorrespondence").and.affectedEObject
+			]
+		]
 	}
 
 	def private reactionForCommonalityRootInsert() {
 	}
 
-	def private reactionForParticipationRootInsert(ParticipationClass participationClass) {
-		create.reaction('''«participationClass.name»RootInsert''').
-			afterElement(participationClass.changeClass).insertedAsRoot
-			.call [
+	def private reactionsForParticipationInsert(ParticipationClass participationClass) {
+		val insertRoutine = create.routine('''«participationClass.name.toFirstLower»RecursiveInsert''').match [
+			vall("nonRoot").retrieve(commonalityFile.intermediateModelNonRootType).correspondingTo.newValue
+		].action [
+			execute [insertIntermediateNonRoot(variable("nonRoot"))]
+		]
+
+		val reactions = new LinkedList<FluentReactionBuilder>
+
+		reactions +=
+			create.reaction('''«participationClass.name»RootInsert''').afterElement(participationClass.changeClass).
+				insertedAsRoot.call(insertRoutine)
+
+		for (insertionPoint : participationClass.potentialInsertionPoints) {
+			val referenceName = insertionPoint.name
+			val className = insertionPoint.EContainingClass.name
+			val packageName = insertionPoint.EContainingClass.EPackage.name
+			reactions +=
+				create.
+					reaction('''«participationClass.name»InsertIn«packageName.toFirstUpper»«className.toFirstUpper»«referenceName.toFirstUpper»''').
+					afterElement(participationClass.changeClass).insertedIn(insertionPoint).with[resource(newValue)].
+					call(insertRoutine)
+		}
+		return reactions
+	}
+
+	def private reactionsForCommonalityAttributeChange(Participation participation) {
+		commonality.attributes.map[reactionForAttributeLeftChange(participation)]
+	}
+
+	def private reactionForAttributeLeftChange(AttributeDeclaration attribute, Participation participation) {
+		val relevantMappings = attribute.getWriteMappingsOfParticipation(participation)
+		if (relevantMappings.size == 0) return null
+		create.reaction('''«commonality.name»«attribute.name.toFirstUpper»Change''').afterAttributeReplacedAt(
+			attribute.EAttributeToReference).call [
+			input [newValue]
+			match [
+				for (mapping : relevantMappings) {
+					val participationClass = mapping.attribute.participationClass
+					vall('''corresponding_«participationClass.name»''').retrieve(participationClass.changeClass).
+						correspondingTo.affectedEObject
+				}
+			]
+			action [
+				for (mapping : relevantMappings) {
+					val participationClass = mapping.attribute.participationClass
+					update('''corresponding_«participationClass.name»''') [
+						setAttribute(variable('''corresponding_«participationClass.name»'''), mapping.attribute.name,
+							newValue)
+					]
+				}
+			]
+		]
+	}
+
+	def private static getWriteMappingsOfParticipation(AttributeDeclaration attribute, Participation participation) {
+		attribute.mappings.filter [
+			isWrite && it.participation == participation
+		].toList
+	}
+
+	def private reactionForAttributeWriteChange(AttributeMappingSpecifiation spec) {
+		val participationClass = spec.attribute.participationClass
+		val corresponding = '''corresponding_«participationClass.name»'''
+		create.
+			reaction('''«commonality.name»«spec.declaringAttribute.name.toFirstUpper»ChangeTo«spec.participation.name»«spec.attribute.name.toFirstUpper»''').
+			afterAttributeReplacedAt(spec.declaringAttribute.EAttributeToReference).call [
+				input [newValue]
 				match [
-					vall("inserted").retrieve(commonalityFile.changeClass).correspondingTo.newValue
+					vall(corresponding).retrieve(participationClass.changeClass).correspondingTo.affectedEObject
 				]
 				action [
-					vall("intermediateRoot").create(commonalityFile.intermediateModelRootType).andInitialize [
-						insertNonRootElement(variable("intermediateRoot"), variable("inserted"))
+					update(corresponding) [
+						setAttribute(variable(corresponding), spec.attribute.name, newValue)
 					]
-					execute [createNewIntermediateModel(variable("intermediateRoot"), newValue)]
 				]
 			]
 	}
 
-	def insertNonRootElement(extension TypeProvider typeProvider, XFeatureCall root, XFeatureCall nonRoot) {
-		XbaseFactory.eINSTANCE.createXMemberFeatureCall => [
-			feature = typeProvider.findMethod(IntermediateModelUtil, 'addIntermediateModelNonRoot').staticExtensionImported
-			memberCallTarget = root
-			memberCallArguments += nonRoot //
-		]
+	def private reactionsForParticipationAttributeChange(Participation participation) {
+		commonality.attributes.flatMap[mappings].filter [
+			attribute.participationClass.participation == participation
+		].map[reactionForAttributeMappingRightChange]
+
+	}
+
+	def private dispatch reactionForAttributeMappingRightChange(AttributeSetSpecification spec) {}
+
+	def private dispatch reactionForAttributeMappingRightChange(AttributeReadSpecification spec) {
+		spec.reactionForAttributeReadChange
+	}
+
+	def private dispatch reactionForAttributeMappingRightChange(AttributeEqualitySpecification spec) {
+		spec.reactionForAttributeReadChange
+	}
+
+	def private reactionForAttributeReadChange(AttributeMappingSpecifiation spec) {
+		create.reaction('''«spec.participation.name»«spec.attribute.name.toFirstUpper»Change''').
+			afterAttributeReplacedAt(spec.attribute.changeAttribute.EAttributeToReference).call [
+				input [newValue]
+				match [
+					vall('correspondingIntermediate').retrieve(commonalityFile.intermediateModelNonRootType).
+						correspondingTo.affectedEObject
+				]
+				action [
+					update('correspondingIntermediate') [
+						setAttribute(variable('correspondingIntermediate'), spec.declaringAttribute.name, newValue)
+					]
+				]
+			]
 	}
 
 	def private getChangeClass(ParticipationClass participationClass) {
 		participationClass.superMetaclass.changeClass
 	}
 
-	def private commonalityChangeReactions(Participation participation) {
-		participation.classes.flatMap[#[reactionForCommonalityDelete, reactionForCommonalityCreate]]
-	}
-
-	def private participationChangeReactions(Participation participation) {
-		participation.classes.flatMap [
-			#[reactionForParticipationDelete, reactionForParticipationCreate, reactionForParticipationRootInsert]
-		]
-	}
-
-	def private domainProviderIsRegistered(extension TypeProvider typeProvider, CommonalityFile commonalityFile) {
-		#[
-			registerDomainProvider(typeProvider, commonalityFile),
-			XbaseFactory.eINSTANCE.createXReturnExpression => [
-				expression = XbaseFactory.eINSTANCE.createXBooleanLiteral => [
-					isTrue = true
-				]
+	def private static resource(extension ReactionTypeProvider typeProvider, XFeatureCall element) {
+		XbaseFactory.eINSTANCE.createXBinaryOperation => [
+			leftOperand = XbaseFactory.eINSTANCE.createXMemberFeatureCall => [
+				memberCallTarget = element
+				feature = typeProvider.findMethod(EClass, 'eResource')
 			]
+			feature = typeProvider.findMethod(ObjectExtensions, 'operator_tripleNotEquals')
+			rightOperand = XbaseFactory.eINSTANCE.createXNullLiteral
 		]
 	}
 
-	def private registerDomainProvider(extension TypeProvider typeProvider, CommonalityFile commonalityFile) {
-		XbaseFactory.eINSTANCE.createXMemberFeatureCall => [
-			explicitOperationCall = true
-			staticWithDeclaringType = true
-			feature = typeProvider.findMethod(VitruvDomainProviderRegistry, 'registerDomainProvider')
-			memberCallTarget = XbaseFactory.eINSTANCE.createXFeatureCall => [
-				feature = typeProvider.findType(VitruvDomainProviderRegistry)
-				typeLiteral = true
-			]
-			memberCallArguments += Arrays.asList(
-				XbaseFactory.eINSTANCE.createXStringLiteral => [
-					value = commonalityFile.conceptDomainName
-				],
-				XbaseFactory.eINSTANCE.createXConstructorCall => [
-					constructor = commonalityFile.conceptDomainProviderType.defaultConstructor.imported
-					explicitConstructorCall = true
-				]
-			)
-		]
-	}
-	
-	def private assignStagingId(extension TypeProvider typeProvider, String elementVariableName) {
-		XbaseFactory.eINSTANCE.createXFeatureCall => [
-			explicitOperationCall = true
-			feature = typeProvider.findMethod(IntermediateModelUtil, 'assignStagingId')
-			featureCallArguments += variable(elementVariableName)
-		]
-	}
-
-	def private createNewIntermediateModel(extension TypeProvider typeProvider, XFeatureCall root, XFeatureCall existingElement) {
-		XbaseFactory.eINSTANCE.createXFeatureCall => [
-			feature = routineUserExecutionType.findMethod('persistProjectRelative')
-			implicitReceiver = routineUserExecution
-			featureCallArguments += Arrays.asList(
-				existingElement,
-				root,
-				XbaseFactory.eINSTANCE.createXFeatureCall => [
-					explicitOperationCall = true
-					feature = typeProvider.findMethod(IntermediateModelUtil, 'computeNewIntermediateModelName').staticImported
-					featureCallArguments += XbaseFactory.eINSTANCE.createXStringLiteral => [
-						value = commonalityFile.intermediateModelFileExtension
+	def private insertIntermediateNonRoot(extension RoutineTypeProvider typeProvider, XFeatureCall nonRoot) {
+		val resourceVariableDeclaration = XbaseFactory.eINSTANCE.createXVariableDeclaration => [
+			name = 'intermediateModelResource'
+			right = XbaseFactory.eINSTANCE.createXFeatureCall => [
+				implicitReceiver = routineUserExecution
+				feature = routineUserExecutionType.findMethod('getMetadataResource')
+				// this string is intentionally hardcoded into the reactions
+				// and not computed by a runtime class, as this allows to
+				// change the way the identifier is computed without breaking
+				// existing intermediate models
+				featureCallArguments += expressions(
+					XbaseFactory.eINSTANCE.createXStringLiteral => [
+						value = 'commonalities'
+					],
+					XbaseFactory.eINSTANCE.createXStringLiteral => [
+						value = commonalityFile.concept.name
+					],
+					XbaseFactory.eINSTANCE.createXStringLiteral => [
+						value = commonality.name + '.intermediate'
 					]
+				)
+				explicitOperationCall = true
+			]
+		]
+		XbaseFactory.eINSTANCE.createXBlockExpression => [
+			expressions += expressions(
+				resourceVariableDeclaration,
+				XbaseFactory.eINSTANCE.createXMemberFeatureCall => [
+					memberCallTarget = XbaseFactory.eINSTANCE.createXFeatureCall => [
+						feature = resourceVariableDeclaration
+					]
+					feature = typeProvider.findMethod(IntermediateModelManagement, 'addNonRoot').staticExtensionWildcardImported
+					memberCallArguments += nonRoot
+					explicitOperationCall = true
 				]
 			)
 		]
+
 	}
 
-	def private unregisterDomainProvider(extension TypeProvider typeProvider, CommonalityFile commonalityFile) {
+	def private assignStagingId(extension RoutineTypeProvider typeProvider, XFeatureCall element) {
 		XbaseFactory.eINSTANCE.createXMemberFeatureCall => [
+			memberCallTarget = element
+			feature = typeProvider.findMethod(IntermediateModelManagement, 'assignStagingId').staticExtensionWildcardImported
 			explicitOperationCall = true
-			staticWithDeclaringType = true
-			feature = typeProvider.findMethod(VitruvDomainProviderRegistry, 'unregisterDomainProvider')
-			memberCallTarget = XbaseFactory.eINSTANCE.createXFeatureCall => [
-				feature = typeProvider.findType(VitruvDomainProviderRegistry)
-				typeLiteral = true
-			]
-			memberCallArguments += XbaseFactory.eINSTANCE.createXStringLiteral => [
-				value = commonalityFile.conceptDomainName
-			]
 		]
 	}
 
-	def private static findType(IJvmTypeProvider typeProvider, Class<?> clazz) {
-		val result = typeProvider.findTypeByName(clazz.canonicalName)
-		if (result !== null) {
-			return result
-		}
-		throw new IllegalStateException('''Could not find type “«clazz.canonicalName»”!''')
-	}
-
-	def private static checkGenericType(JvmType type) {
-		if (type instanceof JvmGenericType) {
-			return type
-		}
-		if (type === null) {
-			throw new IllegalStateException('''Type not found!''')
-		}
-		throw new IllegalStateException('''Expected “«type.qualifiedName»” to resolve to a JvmGenericType!''')
-	}
-
-	def private static getDefaultConstructor(JvmGenericType type) {
-		val result = type.members.filter(JvmConstructor).findFirst[parameters.length == 0]
-		if (result !== null) {
-			return result
-		}
-		throw new IllegalStateException('''Could not find a zero argument constructor in “«type.qualifiedName»”!''')
-	}
-
-	def private static findMethod(JvmDeclaredType type, String methodName) {
-		var result = type.getOptionalMethod(methodName)
-		if (result !== null) {
-			return result
-		}
-		throw new IllegalStateException('''Could not find the method “«methodName»” in “«type.qualifiedName»”!''')
-	}
-	
-	def private static JvmOperation getOptionalMethod(JvmDeclaredType declaredType, String methodName) {
-		var result = declaredType.members.filter(JvmOperation).findFirst [
-			simpleName == methodName
+	def private setAttribute(extension RoutineTypeProvider typeProvider, XFeatureCall element, String attributeName,
+		XExpression newValue) {
+		XbaseFactory.eINSTANCE.createXMemberFeatureCall => [
+			memberCallTarget = element.newFeatureCall
+			feature = typeProvider.findMethod(EObject, 'eSet')
+			explicitOperationCall = true
+			memberCallArguments += XbaseFactory.eINSTANCE.createXMemberFeatureCall => [
+				memberCallTarget = XbaseFactory.eINSTANCE.createXMemberFeatureCall => [
+					memberCallTarget = element.newFeatureCall
+					feature = typeProvider.findMethod(EObject, 'eClass')
+				]
+				feature = typeProvider.findMethod(EClass, 'getEStructuralFeature', String)
+				explicitOperationCall = true
+				memberCallArguments += XbaseFactory.eINSTANCE.createXStringLiteral => [
+					value = attributeName
+				]
+			]
+			memberCallArguments += newValue
 		]
-		if (result !== null) {
-			return result
-		}
-		return declaredType.superTypes.map [type].filter(JvmDeclaredType).map [getOptionalMethod(methodName)].filterNull.head
 	}
 
-	def private static findMethod(IJvmTypeProvider typeProvider, Class<?> clazz, String methodName) {
-		typeProvider.findType(clazz).checkGenericType.findMethod(methodName)
+	@Pure
+	def private static forResourceMetaclass(ParticipationClass participationClass) {
+		participationClass.superMetaclass instanceof ResourceMetaclass
 	}
 
-	def private static findMethod(IJvmTypeProvider typeProvider, String className, String methodName) {
-		typeProvider.findTypeByName(className).checkGenericType.findMethod(methodName)
+	def private getPotentialInsertionPoints(ParticipationClass participationClass) {
+		participationClass.superMetaclass.domain.metaclasses.map[changeClass].flatMap[EStructuralFeatures].filter(
+			EReference).filter[isContainment].filter [
+			(EType as EClass).isAssignableFrom(participationClass.superMetaclass.changeClass)
+		]
 	}
 }

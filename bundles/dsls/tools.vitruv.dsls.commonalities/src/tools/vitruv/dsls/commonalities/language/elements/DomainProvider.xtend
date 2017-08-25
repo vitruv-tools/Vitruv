@@ -18,9 +18,10 @@ class DomainProvider {
 	val static CONTAINER_RESOURCE_URI = URI.createURI('http://vitruv.tools/framework/domains/vitruvdomains')
 	val container = containerResource
 	
-	// the members registered at the extension point will not change at runtime, so we can cache them.
-	@Lazy(PRIVATE) HashMap<String, Domain> vitruvDomainsFromExtensionPoint = newHashMap(
-		VitruvDomainProviderRegistry.allDomainProviders.map[domain].map [ domain |
+	// there is currently no way to change the domains while developing, so
+	// it’s okay to cache them.
+	@Lazy(PRIVATE) HashMap<String, Domain> allDomainProviders = newHashMap(
+		VitruvDomainProviderRegistry.allDomainProviders.map [domain].map [ domain |
 		domain.name -> (LanguageElementsFactory.eINSTANCE.createVitruvDomain => [
 			wrapVitruvDomain(domain)
 			container.contents += it
@@ -33,10 +34,10 @@ class DomainProvider {
 	}
 
 	def getDomainByName(String name) {
-		vitruvDomainsFromExtensionPoint.get(name)
+		allDomainProviders.get(name)
 	}
 	
 	def getAllDomains() {
-		vitruvDomainsFromExtensionPoint.values
+		allDomainProviders.values
 	}
 }

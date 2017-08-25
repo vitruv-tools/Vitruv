@@ -5,7 +5,6 @@ package tools.vitruv.dsls.commonalities.ui.labeling
 
 import org.eclipse.xtext.xbase.ui.labeling.XbaseDescriptionLabelProvider
 import org.eclipse.xtext.resource.IEObjectDescription
-import org.eclipse.xtext.naming.QualifiedName
 import org.eclipse.emf.ecore.EObject
 import tools.vitruv.dsls.commonalities.language.elements.Metaclass
 import org.eclipse.jface.viewers.StyledString
@@ -27,9 +26,9 @@ class CommonalitiesLanguageDescriptionLabelProvider extends XbaseDescriptionLabe
 		super.text(description)
 	}
 	
-	def dispatch text(Metaclass metaclass, IEObjectDescription description) {
+/* 	def dispatch text(Metaclass metaclass, IEObjectDescription description) {
 		new StyledString().append(description.name.firstSegment, QUALIFIER_STYLER).append(DOMAIN_METACLASS_SEPARATOR, QUALIFIER_STYLER).append(description.name.getSegment(1))
-	}
+	}*/
 
 	// Labels and icons can be computed like this:
 	

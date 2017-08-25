@@ -4,7 +4,7 @@ import org.eclipse.emf.ecore.EAttribute
 import org.eclipse.xtend.lib.annotations.FinalFieldsConstructor
 
 @FinalFieldsConstructor
-package class EAttributeAdapter implements Attribute, Wrapper<EAttribute> {
+class EAttributeAdapter implements Attribute, Wrapper<EAttribute> {
 
 	val EAttribute wrappedEAttribute
 

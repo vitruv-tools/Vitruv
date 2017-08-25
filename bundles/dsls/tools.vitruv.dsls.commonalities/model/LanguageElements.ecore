@@ -3,7 +3,7 @@
     xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="elements" nsURI="http://vitruv.tools/dsls/commonalities/elements"
     nsPrefix="languagelements">
   <eClassifiers xsi:type="ecore:EClass" name="NamedElement" abstract="true" interface="true">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
         changeable="false" volatile="true" defaultValueLiteral="" derived="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="PackageLike" abstract="true" interface="true"
@@ -51,26 +51,28 @@
       <eParameters name="eClass" lowerBound="1" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EClass"/>
     </eOperations>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ResourceMetaclass" eSuperTypes="#//Metaclass"/>
   <eClassifiers xsi:type="ecore:EClass" name="Aliasable" abstract="true" interface="true">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="alias" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Participation" eSuperTypes="#//Aliasable #//PackageLike">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="classes" upperBound="-1"
-        eType="#//ParticipationClass" containment="true" eOpposite="#//ParticipationClass/participation"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Participation" abstract="true" interface="true"
+      eSuperTypes="#//Aliasable #//PackageLike">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="classes" lowerBound="1"
+        upperBound="-1" eType="#//ParticipationClass" changeable="false" derived="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="domain" lowerBound="1"
-        eType="#//Domain" changeable="false" volatile="true" derived="true"/>
+        eType="#//Domain"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ParticipationClass" eSuperTypes="#//Aliasable #//ClassLike">
     <eStructuralFeatures xsi:type="ecore:EReference" name="superMetaclass" lowerBound="1"
         eType="#//Metaclass" derived="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="participation" lowerBound="1"
-        eType="#//Participation" eOpposite="#//Participation/classes"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="attributes" ordered="false"
         upperBound="-1" eType="#//ParticipationAttribute" changeable="false" derived="true"
         containment="true" eOpposite="#//ParticipationAttribute/participationClass"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="references" ordered="false"
         upperBound="-1" eType="#//ParticipationReference" changeable="false" derived="true"
         containment="true" eOpposite="#//ParticipationReference/participationClass"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="participation" lowerBound="1"
+        eType="#//Participation" volatile="true" derived="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ParticipationMember" abstract="true"
       interface="true" eSuperTypes="#//MemberLike">
@@ -85,6 +87,8 @@
         eType="#//ParticipationClass" changeable="false" derived="true" eOpposite="#//ParticipationClass/attributes"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="type" lowerBound="1" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EDataType"
         changeable="false" volatile="true" derived="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="changeAttribute" lowerBound="1"
+        eType="#//Attribute" changeable="false" volatile="true" derived="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ParticipationReference" eSuperTypes="#//ParticipationMember">
     <eOperations name="wrapReference">

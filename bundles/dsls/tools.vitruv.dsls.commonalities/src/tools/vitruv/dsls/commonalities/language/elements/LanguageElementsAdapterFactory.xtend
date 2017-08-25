@@ -12,10 +12,6 @@ class LanguageElementsAdapterFactory extends LanguageElementsFactoryImpl {
 		new EClassAdapter
 	}
 	
-	override createParticipation() {
-		new ParticipationI
-	}
-	
 	override createParticipationClass() {
 		new ParticipationClassI
 	}
@@ -28,4 +24,7 @@ class LanguageElementsAdapterFactory extends LanguageElementsFactoryImpl {
 		new ParticipationReferenceI
 	}
 	
+	override createResourceMetaclass() {
+		new ResourceMetaclassI
+	}
 }

@@ -3,14 +3,17 @@ package tools.vitruv.dsls.commonalities.generator
 import java.util.Collections
 import java.util.HashMap
 import java.util.Map
+import org.eclipse.emf.ecore.EAttribute
 import org.eclipse.emf.ecore.EClass
 import org.eclipse.emf.ecore.EPackage
 import org.eclipse.emf.ecore.resource.ResourceSet
 import org.eclipse.xtend.lib.annotations.Accessors
 import org.eclipse.xtext.common.types.JvmGenericType
 import org.eclipse.xtext.generator.IFileSystemAccess2
+import tools.vitruv.dsls.commonalities.language.AttributeDeclaration
 import tools.vitruv.dsls.commonalities.language.CommonalityFile
 import tools.vitruv.dsls.commonalities.language.ConceptDeclaration
+import tools.vitruv.dsls.commonalities.language.elements.EAttributeAdapter
 
 import static com.google.common.base.Preconditions.*
 
@@ -57,6 +60,14 @@ package class GenerationContext {
 		])
 	}
 
+	// TODO cache?
+	def package getIntermediateModelNonRootType(CommonalityFile commonalityFile) {
+		commonalityFile.concept.generatedIntermediateModelPackage.EClassifiers.findFirst [
+			name == commonalityFile.intermediateModelNonRootClass.simpleName
+		] as EClass
+	}
+
+	// TODO cache?
 	def package getIntermediateModelRootType(CommonalityFile commonalityFile) {
 		commonalityFile.concept.generatedIntermediateModelPackage.EClassifiers.findFirst [
 			name == commonalityFile.intermediateModelRootClass.simpleName
@@ -99,5 +110,14 @@ package class GenerationContext {
 
 	def package getIntermediateModelOutputUri(String conceptName) {
 		fsa.getURI(conceptName + MODEL_OUTPUT_FILE_EXTENSION)
+	}
+	
+	def package dispatch EAttribute getEAttributeToReference(AttributeDeclaration attribute) {
+		commonalityFile.generatedIntermediateModelClass.getEStructuralFeature(attribute.name) as EAttribute
+	}
+	
+	// TODO reconsider when referencing of other commonalities is supported
+	def package dispatch EAttribute getEAttributeToReference(EAttributeAdapter adapter) {
+		adapter.wrapped
 	}
 }

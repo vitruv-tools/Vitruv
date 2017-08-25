@@ -1,14 +1,14 @@
 package tools.vitruv.dsls.commonalities.ui.executiontests
 
-import tools.vitruv.framework.testutils.domains.AllElementTypes2DomainProvider
-import org.junit.runner.RunWith
-import org.eclipse.xtext.testing.XtextRunner
-import org.eclipse.xtext.testing.InjectWith
+import allElementTypes2.AllElementTypes2Factory
 import com.google.inject.Inject
+import org.eclipse.xtext.testing.InjectWith
+import org.eclipse.xtext.testing.XtextRunner
 import org.junit.Test
+import org.junit.runner.RunWith
 import tools.vitruv.dsls.commonalities.ui.tests.CommonalitiesLanguageUiInjectorProvider
-import allElementTypes.AllElementTypesFactory
 import tools.vitruv.framework.domains.VitruvDomainProvider
+import tools.vitruv.framework.testutils.domains.AllElementTypes2DomainProvider
 
 @RunWith(XtextRunner)
 @InjectWith(CommonalitiesLanguageUiInjectorProvider)
@@ -25,13 +25,18 @@ class IdentifiedExecutionTest extends CommonalitiesExecutionTest {
 	override protected createChangePropagationSpecifications() {
 		compiler.changePropagationDefinitions
 	}
+	
+	override protected unresolveChanges() {
+		true
+	}
 
 	@Test
 	def void rootInsert() {
-		val root = AllElementTypesFactory.eINSTANCE.createRoot => [
-			id = 'testid'
+		val root = AllElementTypes2Factory.eINSTANCE.createRoot2 => [
+			id2 = 'testid'
 		]
 		createAndSynchronizeModel(AllElementTypes2DomainProvider.sourceModelName, root)
+		println()
 	}
 	
 	def private String getSourceModelName(Class<? extends VitruvDomainProvider<?>> domain) {

@@ -28,4 +28,8 @@ class ParticipationAttributeI extends ParticipationAttributeImpl implements Wrap
 	override getWrapped() {
 		wrappedAttribute
 	}
+	
+	override getChangeAttribute() {
+		wrappedAttribute
+	}
 }
