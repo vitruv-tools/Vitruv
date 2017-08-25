@@ -2,7 +2,11 @@ package tools.vitruv.dsls.reactions.builder
 
 import java.util.ArrayList
 import java.util.function.Consumer
+import java.util.function.Function
+import org.eclipse.emf.ecore.EAttribute
 import org.eclipse.emf.ecore.EClass
+import org.eclipse.emf.ecore.EClassifier
+import org.eclipse.emf.ecore.EReference
 import org.eclipse.xtext.common.types.JvmOperation
 import org.eclipse.xtext.xbase.XExpression
 import org.eclipse.xtext.xbase.XbaseFactory
@@ -20,7 +24,7 @@ class FluentReactionBuilder extends FluentReactionsSegmentChildBuilder {
 
 	var Reaction reaction
 	var anonymousRoutineCounter = 0
-	var EClass valueType
+	var EClassifier valueType
 	var EClass affectedElementType
 
 	package new(String reactionName, FluentBuilderContext context) {
@@ -59,6 +63,33 @@ class FluentReactionBuilder extends FluentReactionsSegmentChildBuilder {
 			reaction.trigger = change
 			return new ChangeTypeBuilder(builder, change, element)
 		}
+		
+		def afterAttributeInsertIn(EAttribute attribute) {
+			valueType = attribute.EType
+			affectedElementType = attribute.EContainingClass
+			reaction.trigger = ReactionsLanguageFactory.eINSTANCE.createModelAttributeInsertedChange => [
+				feature = MirBaseFactory.eINSTANCE.createMetaclassEAttributeReference.reference(attribute)
+			]
+			return new PreconditionOrRoutineCallBuilder(builder)
+		}
+		
+		def afterAttributeReplacedAt(EAttribute attribute) {
+			valueType = attribute.EType
+			affectedElementType = attribute.EContainingClass
+			reaction.trigger = ReactionsLanguageFactory.eINSTANCE.createModelAttributeReplacedChange => [
+				feature = MirBaseFactory.eINSTANCE.createMetaclassEAttributeReference.reference(attribute)
+			]
+			return new PreconditionOrRoutineCallBuilder(builder)
+		}
+		
+		def afterAttributeRemoveFrom(EAttribute attribute) {
+			valueType = attribute.EType
+			affectedElementType = attribute.EContainingClass
+			reaction.trigger = ReactionsLanguageFactory.eINSTANCE.createModelAttributeRemovedChange => [
+				feature = MirBaseFactory.eINSTANCE.createMetaclassEAttributeReference.reference(attribute)
+			]
+			return new PreconditionOrRoutineCallBuilder(builder)
+		}
 	}
 
 	static class ChangeTypeBuilder {
@@ -81,12 +112,19 @@ class FluentReactionBuilder extends FluentReactionsSegmentChildBuilder {
 			affectedElementType = element
 			continueWithChangeType(ReactionsLanguageFactory.eINSTANCE.createElementDeletionChangeType)
 		}
-		
+
 		def insertedAsRoot() {
 			valueType = element
 			continueWithChangeType(ReactionsLanguageFactory.eINSTANCE.createElementInsertionAsRootChangeType)
 		}
-		
+
+		def insertedIn(EReference reference) {
+			valueType = element
+			continueWithChangeType(ReactionsLanguageFactory.eINSTANCE.createElementInsertionInListChangeType => [
+				feature = MirBaseFactory.eINSTANCE.createMetaclassEReferenceReference.reference(reference)
+			])
+		}
+
 		def private continueWithChangeType(ElementChangeType changeType) {
 			modelElementChange.changeType = changeType
 			return new RoutineCallBuilder(builder)
@@ -142,15 +180,15 @@ class FluentReactionBuilder extends FluentReactionsSegmentChildBuilder {
 	}
 
 	def private requiredArgumentsFrom(FluentRoutineBuilder routineBuilder, JvmOperation routineCallMethod) {
-		val parameterList = new ArrayList<XExpression>(2)
+		val parameterList = new ArrayList<XExpression>(3)
+		if (routineBuilder.requireAffectedEObject) {
+			parameterList += routineCallMethod.argument(CHANGE_AFFECTED_ELEMENT_ATTRIBUTE)
+		}
 		if (routineBuilder.requireNewValue) {
 			parameterList += routineCallMethod.argument(CHANGE_NEW_VALUE_ATTRIBUTE)
 		}
 		if (routineBuilder.requireOldValue) {
 			parameterList += routineCallMethod.argument(CHANGE_OLD_VALUE_ATTRIBUTE)
-		}
-		if (routineBuilder.requireAffectedEObject) {
-			parameterList += routineCallMethod.argument(CHANGE_AFFECTED_ELEMENT_ATTRIBUTE)
 		}
 		return parameterList
 	}
@@ -179,6 +217,14 @@ class FluentReactionBuilder extends FluentReactionsSegmentChildBuilder {
 
 	override toString() {
 		'''reaction builder for “«reaction.name»”'''
+	}
+
+	override protected getCreatedElementName() {
+		reaction.name
+	}
+
+	override protected getCreatedElementType() {
+		"reaction"
 	}
 
 }

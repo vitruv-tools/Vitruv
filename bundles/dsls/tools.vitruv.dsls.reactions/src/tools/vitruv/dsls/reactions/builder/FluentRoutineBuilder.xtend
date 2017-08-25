@@ -3,8 +3,10 @@ package tools.vitruv.dsls.reactions.builder
 import java.util.function.Consumer
 import java.util.function.Function
 import org.eclipse.emf.ecore.EClass
+import org.eclipse.emf.ecore.EClassifier
+import org.eclipse.emf.ecore.EDataType
 import org.eclipse.xtend.lib.annotations.Accessors
-import org.eclipse.xtext.common.types.JvmIdentifiableElement
+import org.eclipse.xtext.EcoreUtil2
 import org.eclipse.xtext.common.types.JvmOperation
 import org.eclipse.xtext.common.types.access.IJvmTypeProvider
 import org.eclipse.xtext.xbase.XBlockExpression
@@ -23,8 +25,6 @@ import tools.vitruv.dsls.reactions.reactionsLanguage.Routine
 import static com.google.common.base.Preconditions.*
 import static tools.vitruv.dsls.reactions.codegen.helper.ReactionsLanguageConstants.*
 
-import static extension org.eclipse.xtext.EcoreUtil2.isAssignableFrom
-
 class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 
 	@Accessors(PACKAGE_GETTER)
@@ -38,7 +38,7 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 	@Accessors(PACKAGE_GETTER)
 	var requireAffectedValue = false
 
-	var EClass valueType
+	var EClassifier valueType
 	var EClass affectedObjectType
 
 	package new(String routineName, FluentBuilderContext context) {
@@ -52,18 +52,18 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 	override protected attachmentPreparation() {
 		super.attachmentPreparation()
 		checkState(routine.action !== null, "No action was set on this routine!")
-		checkState((!requireOldValue && !requireNewValue && !requireAffectedValue) || valueType !== null,
-			"Although required, there was no value type set on the «this»")
+		checkState((!requireOldValue && !requireNewValue && !requireAffectedValue) ||
+			valueType !== null, '''Although required, there was no value type set on the «this»''')
 		checkState(!requireAffectedEObject ||
 			affectedObjectType !== null, '''Although required, there was no affected object type set on the «this»''')
+		if (requireAffectedEObject) {
+			addInputElementIfNotExists(affectedObjectType, CHANGE_AFFECTED_ELEMENT_ATTRIBUTE)
+		}
 		if (requireOldValue) {
 			addInputElementIfNotExists(valueType, CHANGE_OLD_VALUE_ATTRIBUTE)
 		}
 		if (requireNewValue) {
 			addInputElementIfNotExists(valueType, CHANGE_NEW_VALUE_ATTRIBUTE)
-		}
-		if (requireAffectedEObject) {
-			addInputElementIfNotExists(affectedObjectType, CHANGE_AFFECTED_ELEMENT_ATTRIBUTE)
 		}
 	}
 
@@ -71,18 +71,28 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 		new RoutineStartBuilder(this)
 	}
 
-	def private addInputElementIfNotExists(EClass type, String parameterName) {
+	def private addInputElementIfNotExists(EClassifier type, String parameterName) {
 		if (routine.input.modelInputElements.findFirst[name == parameterName] !== null) return;
 		addInputElement(type, parameterName)
 	}
 
-	def private addInputElement(EClass type, String parameterName) {
+	def private dispatch addInputElement(EClass type, String parameterName) {
 		routine.input.modelInputElements += (MirBaseFactory.eINSTANCE.createNamedMetaclassReference => [
 			name = parameterName
 		]).reference(type)
 	}
 
-	def package setValueType(EClass type) {
+	def private dispatch addInputElement(EDataType type, String parameterName) {
+		addInputElement(type.instanceClass, parameterName)
+	}
+
+	def private addInputElement(Class<?> type, String parameterName) {
+		routine.input.javaInputElements += (MirBaseFactory.eINSTANCE.createNamedJavaElement => [
+			name = parameterName
+		]).reference(type)
+	}
+
+	def package setValueType(EClassifier type) {
 		if (valueType === null) {
 			valueType = type
 		}
@@ -98,6 +108,22 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 		if (!affectedObjectType.isAssignableFrom(type)) {
 			throw new IllegalStateException('''The «this» already has the affected element type “«affectedObjectType.name»” set, which is not a super type of “«type.name»”. The affected element type can thus not be set to “«type.name»”!''')
 		}
+	}
+
+	def static dispatch isAssignableFrom(EDataType a, EClass b) {
+		false
+	}
+
+	def static dispatch isAssignableFrom(EClass a, EDataType b) {
+		false
+	}
+
+	def static dispatch isAssignableFrom(EClass a, EClass b) {
+		EcoreUtil2.isAssignableFrom(a, b)
+	}
+
+	def static dispatch isAssignableFrom(EDataType a, EDataType b) {
+		a.instanceClass.isAssignableFrom(b.instanceClass)
 	}
 
 	static class MatcherOrActionBuilder extends ActionBuilder {
@@ -149,7 +175,7 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 		}
 
 		def void plain(Class<?> javaClass, String parameterName) {
-			throw new RuntimeException("not yet implemented") // TODO
+			addInputElement(javaClass, parameterName)
 		}
 	}
 
