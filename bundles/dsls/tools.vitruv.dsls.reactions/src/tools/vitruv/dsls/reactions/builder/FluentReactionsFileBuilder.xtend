@@ -30,7 +30,7 @@ class FluentReactionsFileBuilder extends FluentReactionElementBuilder {
 	}
 
 	def attachTo(Resource resource) {
-		triggerBeforeAttached(reactionsFile)
+		triggerBeforeAttached(reactionsFile, resource)
 		val resourceContentLength = resource.contents.size 
 		resource.contents += reactionsFile
 		

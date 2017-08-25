@@ -8,6 +8,7 @@ import org.eclipse.emf.ecore.EClass
 import org.eclipse.emf.ecore.EClassifier
 import org.eclipse.emf.ecore.EReference
 import org.eclipse.xtext.common.types.JvmOperation
+import org.eclipse.xtext.common.types.access.IJvmTypeProvider
 import org.eclipse.xtext.xbase.XExpression
 import org.eclipse.xtext.xbase.XbaseFactory
 import tools.vitruv.dsls.mirbase.mirBase.MirBaseFactory
@@ -53,7 +54,7 @@ class FluentReactionBuilder extends FluentReactionsSegmentChildBuilder {
 
 		def afterAnyChange() {
 			reaction.trigger = ReactionsLanguageFactory.eINSTANCE.createArbitraryModelChange
-			return new RoutineCallBuilder(builder)
+			return new PreconditionOrRoutineCallBuilder(builder)
 		}
 
 		def afterElement(EClass element) {
@@ -127,12 +128,12 @@ class FluentReactionBuilder extends FluentReactionsSegmentChildBuilder {
 
 		def private continueWithChangeType(ElementChangeType changeType) {
 			modelElementChange.changeType = changeType
-			return new RoutineCallBuilder(builder)
+			return new PreconditionOrRoutineCallBuilder(builder)
 		}
 	}
 
 	static class RoutineCallBuilder {
-		val extension FluentReactionBuilder builder
+		protected val extension FluentReactionBuilder builder
 
 		private new(FluentReactionBuilder builder) {
 			this.builder = builder
@@ -179,6 +180,31 @@ class FluentReactionBuilder extends FluentReactionsSegmentChildBuilder {
 		}
 	}
 
+	static class PreconditionOrRoutineCallBuilder extends RoutineCallBuilder {
+		private new(FluentReactionBuilder builder) {
+			super(builder)
+		}
+
+		def with(Function<ReactionTypeProvider, XExpression> expressionProvider) {
+			reaction.trigger.precondition = ReactionsLanguageFactory.eINSTANCE.createPreconditionCodeBlock => [
+				code = XbaseFactory.eINSTANCE.createXBlockExpression.whenJvmTypes [
+					expressions += extractExpressions(expressionProvider.apply(typeProvider))
+				]
+			]
+			return new RoutineCallBuilder(builder)
+		}
+
+	}
+
+	static class ReactionTypeProvider extends AbstractTypeProvider<FluentReactionBuilder> {
+		val extension FluentReactionBuilder builderAsExtension
+
+		protected new(IJvmTypeProvider delegate, FluentReactionBuilder builder, XExpression scopeExpression) {
+			super(delegate, builder, scopeExpression)
+			builderAsExtension = builder
+		}
+	}
+
 	def private requiredArgumentsFrom(FluentRoutineBuilder routineBuilder, JvmOperation routineCallMethod) {
 		val parameterList = new ArrayList<XExpression>(3)
 		if (routineBuilder.requireAffectedEObject) {
@@ -213,6 +239,12 @@ class FluentReactionBuilder extends FluentReactionsSegmentChildBuilder {
 
 	def package getReaction() {
 		reaction
+	}
+
+	def private getTypeProvider(XExpression scopeExpression) {
+		val delegateTypeProvider = context.typeProviderFactory.findOrCreateTypeProvider(
+			attachedReactionsFile.eResource.resourceSet)
+		new ReactionTypeProvider(delegateTypeProvider, this, scopeExpression)
 	}
 
 	override toString() {

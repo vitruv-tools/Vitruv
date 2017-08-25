@@ -1,11 +1,15 @@
 package tools.vitruv.dsls.reactions.builder
 
+import java.util.ArrayList
 import java.util.Collections
 import java.util.LinkedList
 import java.util.List
 import java.util.function.Consumer
+import org.eclipse.emf.ecore.EAttribute
 import org.eclipse.emf.ecore.EClass
 import org.eclipse.emf.ecore.EPackage
+import org.eclipse.emf.ecore.EReference
+import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.xtend.lib.annotations.Accessors
 import org.eclipse.xtend.lib.annotations.Delegate
 import org.eclipse.xtext.common.types.JvmDeclaredType
@@ -13,8 +17,11 @@ import org.eclipse.xtext.common.types.JvmIdentifiableElement
 import org.eclipse.xtext.common.types.JvmMember
 import org.eclipse.xtext.common.types.JvmOperation
 import org.eclipse.xtext.xtype.XtypeFactory
+import tools.vitruv.dsls.mirbase.mirBase.MetaclassEAttributeReference
+import tools.vitruv.dsls.mirbase.mirBase.MetaclassEReferenceReference
 import tools.vitruv.dsls.mirbase.mirBase.MetaclassReference
 import tools.vitruv.dsls.mirbase.mirBase.MirBaseFactory
+import tools.vitruv.dsls.mirbase.mirBase.NamedJavaElement
 import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsFile
 
 import static com.google.common.base.Preconditions.*
@@ -62,15 +69,18 @@ abstract package class FluentReactionElementBuilder {
 	val childBuilders = new PatientList<FluentReactionElementBuilder>
 	@Accessors(PROTECTED_GETTER)
 	var ReactionsFile attachedReactionsFile
+	@Accessors(PROTECTED_GETTER)
+	var Resource targetResource
 
 	protected new(FluentBuilderContext context) {
 		this.context = context
 	}
 
-	def package void triggerBeforeAttached(ReactionsFile reactionsFile) {
+	def package void triggerBeforeAttached(ReactionsFile reactionsFile, Resource targetResource) {
 		checkState(attachedReactionsFile === null, "This builder was already attached to a reactions file!")
-		childBuilders.patientForEach[triggerBeforeAttached(reactionsFile)]
-		attachedReactionsFile = reactionsFile
+		childBuilders.patientForEach[triggerBeforeAttached(reactionsFile, targetResource)]
+		this.attachedReactionsFile = reactionsFile
+		this.targetResource = targetResource
 		attachmentPreparation()
 		beforeAttached.patientForEach[run()]
 		beforeAttached.discardAndClose()
@@ -105,8 +115,7 @@ abstract package class FluentReactionElementBuilder {
 	}
 
 	def protected <T extends JvmDeclaredType> imported(T type) {
-		XImportSection.importDeclarations.findFirst[importedType == type] ?:
-			createTypeImport(type)
+		XImportSection.importDeclarations.findFirst[importedType == type] ?: createTypeImport(type)
 		return type
 	}
 
@@ -118,20 +127,41 @@ abstract package class FluentReactionElementBuilder {
 		return type
 	}
 
+	def protected staticExtensionAllImported(JvmDeclaredType declaredType) {
+		(XImportSection.importDeclarations.findFirst [
+			isWildcard && importedType == declaredType
+		] ?: createTypeWildcardImport(declaredType)) => [
+			extension = true
+		]
+		return declaredType
+	} 
+
 	def protected staticExtensionImported(JvmOperation operation) {
 		staticImport(operation, true)
 	}
 	
+	def protected staticExtensionWildcardImported(JvmOperation operation) {
+		operation.declaringType.staticExtensionAllImported
+		return operation
+	}
+
 	def protected staticImported(JvmOperation operation) {
 		staticImport(operation, false)
 	}
-
+	
 	def private staticImport(JvmOperation operation, boolean asExtension) {
-		(attachedReactionsFile.namespaceImports.importDeclarations.findFirst [
-			importedType == operation.declaringType && memberName == operation.simpleName && static == true
-		] ?: createStaticOperationImport(operation)) => [
-			extension = extension || asExtension
+		val existingStarImport = XImportSection.importDeclarations.findFirst [
+			isWildcard && importedType == operation.declaringType
 		]
+		if (existingStarImport !== null) {
+			existingStarImport.extension = existingStarImport.extension || asExtension
+		} else {
+			(XImportSection.importDeclarations.findFirst [
+				importedType == operation.declaringType && memberName == operation.simpleName && static == true
+			] ?: createStaticOperationImport(operation)) => [
+				extension = extension || asExtension
+			]
+		}
 		return operation
 	}
 
@@ -143,16 +173,34 @@ abstract package class FluentReactionElementBuilder {
 			XImportSection.importDeclarations += it
 		]
 	}
-
-	def private createTypeImport(JvmDeclaredType type) {
-		XImportSection.importDeclarations +=
-			XtypeFactory.eINSTANCE.createXImportDeclaration => [
-				importedType = type
-			]
+	
+	def private createTypeWildcardImport(JvmDeclaredType type) {
+		val newDeclaration = XtypeFactory.eINSTANCE.createXImportDeclaration => [
+			importedType = type
+			XImportSection.importDeclarations += it
+			static = true
+			wildcard = true
+		]
+		val oldImports = new ArrayList(XImportSection.importDeclarations)
+		XImportSection.importDeclarations.clear()
+		XImportSection.importDeclarations += oldImports.filter [
+			!static || importedType != type
+		]
+		XImportSection.importDeclarations += newDeclaration
+		return newDeclaration
 	}
 	
+	def private createTypeImport(JvmDeclaredType type) {
+		XtypeFactory.eINSTANCE.createXImportDeclaration => [
+			importedType = type
+			XImportSection.importDeclarations += it
+		]
+	}
+
 	def private getXImportSection() {
-		attachedReactionsFile.namespaceImports ?: XtypeFactory.eINSTANCE.createXImportSection => [attachedReactionsFile.namespaceImports = it]
+		attachedReactionsFile.namespaceImports ?: XtypeFactory.eINSTANCE.createXImportSection => [
+			attachedReactionsFile.namespaceImports = it
+		]
 	}
 
 	def protected metamodelImport(EPackage ePackage) {
@@ -176,6 +224,30 @@ abstract package class FluentReactionElementBuilder {
 			metaclass = eClass
 		]).beforeAttached [
 			metamodel = eClass.EPackage.metamodelImport
+		]
+	}
+
+	def protected <T extends MetaclassEReferenceReference> reference(T referenceReference, EReference reference) {
+		(referenceReference => [
+			feature = reference
+			metaclass = reference.EContainingClass
+		]).beforeAttached [
+			metamodel = reference.EContainingClass.EPackage.metamodelImport
+		]
+	}
+
+	def protected <T extends MetaclassEAttributeReference> reference(T attributeReference, EAttribute attribute) {
+		(attributeReference => [
+			feature = attribute
+			metaclass = attribute.EContainingClass
+		]).beforeAttached [
+			metamodel = attribute.EContainingClass.EPackage.metamodelImport
+		]
+	}
+
+	def protected <T extends NamedJavaElement> reference(T javaElementReference, Class<?> clazz) {
+		javaElementReference.beforeAttached [
+			type = context.typeReferences.getTypeForName(clazz, targetResource)
 		]
 	}
 

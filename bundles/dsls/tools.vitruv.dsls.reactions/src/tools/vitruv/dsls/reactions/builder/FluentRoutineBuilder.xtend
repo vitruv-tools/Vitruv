@@ -9,7 +9,6 @@ import org.eclipse.xtend.lib.annotations.Accessors
 import org.eclipse.xtext.EcoreUtil2
 import org.eclipse.xtext.common.types.JvmOperation
 import org.eclipse.xtext.common.types.access.IJvmTypeProvider
-import org.eclipse.xtext.xbase.XBlockExpression
 import org.eclipse.xtext.xbase.XExpression
 import org.eclipse.xtext.xbase.XbaseFactory
 import tools.vitruv.dsls.mirbase.mirBase.MirBaseFactory
@@ -172,6 +171,18 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 				case CHANGE_NEW_VALUE_ATTRIBUTE: valueType = eClass
 				case CHANGE_AFFECTED_ELEMENT_ATTRIBUTE: affectedObjectType = eClass
 			}
+		}
+
+		def newValue() {
+			requireNewValue = true
+		}
+
+		def oldValue() {
+			requireOldValue = true
+		}
+
+		def affectedEObject() {
+			requireAffectedEObject = true
 		}
 
 		def void plain(Class<?> javaClass, String parameterName) {
@@ -350,78 +361,12 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 		}
 	}
 
-	static class TypeProvider implements IJvmTypeProvider {
-		val IJvmTypeProvider delegate
-		val extension FluentRoutineBuilder builder
-		val XExpression scopeExpression
+	static class RoutineTypeProvider extends AbstractTypeProvider<FluentRoutineBuilder> {
+		extension val FluentRoutineBuilder builderAsExtension
 
 		private new(IJvmTypeProvider delegate, FluentRoutineBuilder builder, XExpression scopeExpression) {
-			this.delegate = delegate
-			this.builder = builder
-			this.scopeExpression = scopeExpression
-		}
-
-		override findTypeByName(String name) {
-			delegate.findTypeByName(name).possiblyImported
-		}
-
-		override findTypeByName(String name, boolean binaryNestedTypeDelimiter) {
-			delegate.findTypeByName(name, binaryNestedTypeDelimiter).possiblyImported
-		}
-
-		override getResourceSet() {
-			delegate.resourceSet
-		}
-
-		def <T extends JvmIdentifiableElement> imported(T type) {
-			builder.possiblyImported(type)
-		}
-
-		def staticImported(JvmOperation operation) {
-			builder.staticImported(operation)
-		}
-
-		def staticExtensionImported(JvmOperation operation) {
-			builder.staticExtensionImported(operation)
-		}
-
-		/**
-		 * Retrieves a feature call to the routine’s “affectedEObejct” parameter if
-		 * it’s present.
-		 */
-		def affectedEObject() {
-			variable(CHANGE_AFFECTED_ELEMENT_ATTRIBUTE)
-		}
-
-		/**
-		 * Retrieves a feature call to the routine’s “oldValue” parameter if
-		 * it’s present.
-		 */
-		def oldValue() {
-			variable(CHANGE_OLD_VALUE_ATTRIBUTE)
-		}
-
-		/**
-		 * Retrieves a feature call to the routine’s “newValue” parameter if
-		 * it’s present.
-		 */
-		def newValue() {
-			variable(CHANGE_NEW_VALUE_ATTRIBUTE)
-		}
-
-		/**
-		 * Retrieves a feature call to a previously declared variable or custom
-		 * routine parameter if it’s present
-		 */
-		def variable(String variableName) {
-			scopeExpression.correspondingMethodParameter(variableName).featureCall
-		}
-		
-		def private featureCall(JvmIdentifiableElement element) {
-			if (element === null) return null
-			XbaseFactory.eINSTANCE.createXFeatureCall => [
-				feature = element
-			]
+			super(delegate, builder, scopeExpression)
+			builderAsExtension = builder
 		}
 
 		/**
@@ -430,7 +375,7 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 		def routineUserExecutionType() {
 			scopeExpression.correspondingMethod.declaringType
 		}
-		
+
 		/**
 		 * Retrieves a feature call to the routine’s user execution class.
 		 */
@@ -556,24 +501,6 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 		'''routine builder for “«routine.name»”'''
 	}
 
-	def private getCorrespondingMethod(XExpression correpondingExpression) {
-		val retrievalMethod = context.jvmModelAssociator.getPrimaryJvmElement(correpondingExpression)
-		if (retrievalMethod instanceof JvmOperation) {
-			return retrievalMethod
-		}
-		throw new IllegalStateException('''Could not find the method corresponding to “«correpondingExpression»” in the routine “«routine.name»”''')
-	}
-
-	def private correspondingMethodParameter(XExpression correpondingExpression, String parameterName) {
-		val retrievalMethod = correpondingExpression.correspondingMethod
-		val result = retrievalMethod.parameters.findFirst[name == parameterName]
-		if (result === null) {
-			// most likely an error by the client
-			throw new IllegalStateException('''Could not find the variable or parameter “«parameterName»” in the routine “«routine.name»”''')
-		}
-		return result
-	}
-
 	def package getJvmOperation() {
 		val jvmMethod = context.jvmModelAssociator.getPrimaryJvmElement(routine)
 		if (jvmMethod instanceof JvmOperation) {
@@ -582,10 +509,13 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 		throw new IllegalStateException('''Could not find the routine facade method corresponding to the routine “«routine.name»”''')
 	}
 
-	def private static extractExpressions(XExpression expression) {
-		switch expression {
-			XBlockExpression: expression.expressions
+	override protected getCreatedElementName() {
+		routine.name
 			default: #[expression]
-		}
 	}
+
+	override protected getCreatedElementType() {
+		"routine"
+	}
+
 }
