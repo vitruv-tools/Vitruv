@@ -58,6 +58,11 @@ class EChangeIdManager {
 	}
 
 	private def String getOrGenerateValue(EObject object) {
+		// First check local mapping because an element may have the same URI than a previous one
+		// so it would be resolved to another object globally, giving a false UUID
+		if (localUuidGeneratorAndResolver.hasUuid(object)) {
+			return localUuidGeneratorAndResolver.getUuid(object);
+		}
 		if (globalUuidResolver.hasUuid(object)) {
 			return globalUuidResolver.getUuid(object);
 		} else {
