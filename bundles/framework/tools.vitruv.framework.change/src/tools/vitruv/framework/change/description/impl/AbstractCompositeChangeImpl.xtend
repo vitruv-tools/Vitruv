@@ -20,7 +20,7 @@ abstract class AbstractCompositeChangeImpl<C extends VitruviusChange> implements
     }
 
     override List<C> getChanges() {
-        return new LinkedList<C>(this.changes);
+        return this.changes;
     }
 
     override addChange(C change) {
