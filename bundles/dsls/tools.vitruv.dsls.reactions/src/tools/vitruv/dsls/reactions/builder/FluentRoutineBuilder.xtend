@@ -133,9 +133,12 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 
 		def match(Consumer<UndecidedMatcherStatementBuilder> matchers) {
 			val matcher = ReactionsLanguageFactory.eINSTANCE.createMatcher
-			builder.routine.matcher = matcher
+			routine.matcher = matcher
 			val statementsBuilder = new UndecidedMatcherStatementBuilder(builder)
 			matchers.accept(statementsBuilder)
+			if (routine.matcher.matcherStatements.size == 0) {
+				throw new IllegalStateException('''No matcher statements were created in the «builder»!''')
+			}
 			new ActionBuilder(builder)
 		}
 	}
@@ -239,12 +242,12 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 		}
 
 		def void affectedEObject() {
-			builder.requireAffectedEObject = true
+			requireAffectedEObject = true
 			statement.correspondenceSource = correspondingElement(CHANGE_AFFECTED_ELEMENT_ATTRIBUTE)
 		}
 
 		def void newValue() {
-			builder.requireNewValue = true
+			requireNewValue = true
 			statement.correspondenceSource = correspondingElement(CHANGE_NEW_VALUE_ATTRIBUTE)
 		}
 	}
@@ -260,7 +263,7 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 			val statement = ReactionsLanguageFactory.eINSTANCE.createRetrieveModelElement => [
 				name = valName
 			]
-			builder.routine.matcher.matcherStatements += statement
+			routine.matcher.matcherStatements += statement
 			new RetrieveModelElementMatcherStatementBuilder(builder, statement)
 		}
 
@@ -268,16 +271,15 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 			val statement = (ReactionsLanguageFactory.eINSTANCE.createRetrieveModelElement => [
 				abscence = true
 			]).reference(absentMetaclass)
-			builder.routine.matcher.matcherStatements += statement
+			routine.matcher.matcherStatements += statement
 		}
 
-		def void check(Function<TypeProvider, XExpression> expressionBuilder) {
-			builder.routine.matcher.matcherStatements +=
-				ReactionsLanguageFactory.eINSTANCE.createMatcherCheckStatement => [
-					code = XbaseFactory.eINSTANCE.createXBlockExpression.whenJvmTypes [
-						expressions += extractExpressions(expressionBuilder.apply(typeProvider))
-					]
+		def void check(Function<RoutineTypeProvider, XExpression> expressionBuilder) {
+			routine.matcher.matcherStatements += ReactionsLanguageFactory.eINSTANCE.createMatcherCheckStatement => [
+				code = XbaseFactory.eINSTANCE.createXBlockExpression.whenJvmTypes [
+					expressions += extractExpressions(expressionBuilder.apply(typeProvider))
 				]
+			]
 		}
 	}
 
@@ -289,9 +291,12 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 		}
 
 		def action(Consumer<ActionStatementBuilder> actions) {
-			this.builder.routine.action = ReactionsLanguageFactory.eINSTANCE.createAction
+			routine.action = ReactionsLanguageFactory.eINSTANCE.createAction
 			val statementBuilder = new ActionStatementBuilder(builder)
 			actions.accept(statementBuilder)
+			if (routine.action.actionStatements.size == 0) {
+				throw new IllegalStateException('''No actions were created in the «builder»!''')
+			}
 			readyToBeAttached = true
 			return builder
 		}
@@ -308,20 +313,20 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 			val statement = ReactionsLanguageFactory.eINSTANCE.createDeleteModelElement => [
 				element = existingElement(existingElement)
 			]
-			builder.routine.action.actionStatements += statement
+			routine.action.actionStatements += statement
 		}
 
 		def vall(String vallName) {
 			val statement = ReactionsLanguageFactory.eINSTANCE.createCreateModelElement => [
 				name = vallName
 			]
-			builder.routine.action.actionStatements += statement
+			routine.action.actionStatements += statement
 			new CreateStatementBuilder(builder, statement)
 		}
 
 		def addCorrespondenceBetween() {
 			val statement = ReactionsLanguageFactory.eINSTANCE.createCreateCorrespondence
-			builder.routine.action.actionStatements += statement
+			routine.action.actionStatements += statement
 			new CorrespondenceElementBuilder(builder, new CorrespondenceTargetBuilder(builder, statement), [
 				statement.firstElement = it
 			])
@@ -331,13 +336,24 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 			val statement = ReactionsLanguageFactory.eINSTANCE.createCreateCorrespondence => [
 				firstElement = existingElement(existingElement)
 			]
-			builder.routine.action.actionStatements += statement
+			routine.action.actionStatements += statement
 			new CorrespondenceTargetBuilder(builder, statement)
+		}
+
+		def void update(String existingElement, Function<RoutineTypeProvider, XExpression> expressionBuilder) {
+			routine.action.actionStatements += ReactionsLanguageFactory.eINSTANCE.createUpdateModelElement => [
+				element = existingElement(existingElement)
+				updateBlock = ReactionsLanguageFactory.eINSTANCE.createExecutionCodeBlock => [
+					code = XbaseFactory.eINSTANCE.createXBlockExpression.whenJvmTypes [
+						expressions += extractExpressions(expressionBuilder.apply(typeProvider))
+					]
+				]
+			]
 		}
 
 		def removeCorrespondenceBetween() {
 			val statement = ReactionsLanguageFactory.eINSTANCE.createRemoveCorrespondence
-			builder.routine.action.actionStatements += statement
+			routine.action.actionStatements += statement
 			new CorrespondenceElementBuilder(builder, new CorrespondenceTargetBuilder(builder, statement), [
 				statement.firstElement = it
 			])
@@ -347,17 +363,16 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 			val statement = ReactionsLanguageFactory.eINSTANCE.createRemoveCorrespondence => [
 				firstElement = existingElement(existingElement)
 			]
-			builder.routine.action.actionStatements += statement
+			routine.action.actionStatements += statement
 			new CorrespondenceTargetBuilder(builder, statement)
 		}
 
-		def void execute(Function<TypeProvider, XExpression> expressionBuilder) {
-			builder.routine.action.actionStatements +=
-				ReactionsLanguageFactory.eINSTANCE.createExecuteActionStatement => [
-					code = XbaseFactory.eINSTANCE.createXBlockExpression.whenJvmTypes [
-						expressions += extractExpressions(expressionBuilder.apply(typeProvider))
-					]
+		def void execute(Function<RoutineTypeProvider, XExpression> expressionBuilder) {
+			routine.action.actionStatements += ReactionsLanguageFactory.eINSTANCE.createExecuteActionStatement => [
+				code = XbaseFactory.eINSTANCE.createXBlockExpression.whenJvmTypes [
+					expressions += extractExpressions(expressionBuilder.apply(typeProvider))
 				]
+			]
 		}
 	}
 
@@ -387,7 +402,7 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 	def private getTypeProvider(XExpression scopeExpression) {
 		val delegateTypeProvider = context.typeProviderFactory.findOrCreateTypeProvider(
 			attachedReactionsFile.eResource.resourceSet)
-		new TypeProvider(delegateTypeProvider, this, scopeExpression)
+		new RoutineTypeProvider(delegateTypeProvider, this, scopeExpression)
 	}
 
 	static class CreateStatementBuilder {
@@ -414,7 +429,7 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 			this.statement = statement
 		}
 
-		def andInitialize(Function<TypeProvider, XExpression> expressionBuilder) {
+		def andInitialize(Function<RoutineTypeProvider, XExpression> expressionBuilder) {
 			statement.initializationBlock = ReactionsLanguageFactory.eINSTANCE.createExecutionCodeBlock => [
 				code = XbaseFactory.eINSTANCE.createXBlockExpression.whenJvmTypes [
 					expressions += extractExpressions(expressionBuilder.apply(typeProvider))
@@ -435,19 +450,19 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 		}
 
 		def oldValue() {
-			builder.requireOldValue = true
+			requireOldValue = true
 			elementConsumer.accept(existingElement(CHANGE_OLD_VALUE_ATTRIBUTE))
 			next
 		}
 
 		def newValue() {
-			builder.requireNewValue = true
+			requireNewValue = true
 			elementConsumer.accept(existingElement(CHANGE_NEW_VALUE_ATTRIBUTE))
 			next
 		}
 
 		def affectedEObject() {
-			builder.requireAffectedEObject = true
+			requireAffectedEObject = true
 			elementConsumer.accept(existingElement(CHANGE_AFFECTED_ELEMENT_ATTRIBUTE))
 			next
 		}
@@ -511,7 +526,6 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 
 	override protected getCreatedElementName() {
 		routine.name
-			default: #[expression]
 	}
 
 	override protected getCreatedElementType() {

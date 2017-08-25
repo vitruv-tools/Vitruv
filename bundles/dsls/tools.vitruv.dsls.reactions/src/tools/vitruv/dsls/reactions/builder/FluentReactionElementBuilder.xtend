@@ -104,11 +104,20 @@ abstract package class FluentReactionElementBuilder {
 		checkState(readyToBeAttached, '''The «this» is not sufficiently initialised to be attached to a resource!''')
 	}
 
+	/**
+	 * Executes the given {@code initializer} just before this builder is being
+	 * attached to a resource. The initializer may rely on that the client will
+	 * not change the builder anymore. 
+	 */
 	def protected <T> T beforeAttached(T element, Consumer<? super T> initializer) {
 		beforeAttached.add([initializer.accept(element)])
 		element
 	}
 
+	/**
+	 * Executes the given {@code initializer} after this builder has been added
+	 * to a resource and inferred JVM types are available.
+	 */
 	def protected <T> T whenJvmTypes(T element, Consumer<? super T> initializer) {
 		afterJvmTypeCreation.add([initializer.accept(element)])
 		element
