@@ -32,7 +32,7 @@ class ChangeDescriptionComplexSequencesTest extends ChangeDescription2ChangeTran
 		changes.claimChange(2).assertUnsetSingleValuedEReference(this.rootElement, ROOT__SINGLE_VALUED_CONTAINMENT_EREFERENCE,
 			nonRoot, true, true);
 		changes.claimChange(3).assertSetSingleValuedEReference(this.rootElement, ROOT__SINGLE_VALUED_CONTAINMENT_EREFERENCE,
-			nonRoot, true, true);
+			nonRoot, true, false);
 		// There is no 5th change setting the ID again, because the element is stored in a ChangeDescription in between, which means 
 		// that is always contained somewhere. When editing real models, such a problem will not arise
 		// changes.claimChange(4).assertReplaceSingleValuedEAttribute(nonRoot, IDENTIFIED__ID, null, nonRoot.id);
