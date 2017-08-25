@@ -130,6 +130,8 @@ public class ChangeDescription2EChangesTransformation {
 			// add all first level changes
 			changeDescription.objectChanges?.forEach[addChangesForObjectChange(it)]
 
+			// TODO HK We currently decide by objectsToAttach if an insertion is recursive.
+			// It would be better to make the recursive insertion in the moment when its decided that an element was created
 			for (objectToAttach : changeDescription.getObjectsToAttach) {
 				this.eChanges += recursiveAddition(objectToAttach)
 //				addChangeForObjectToAttach(objectToAttach, changeDescription.getNewContainer(objectToAttach))
