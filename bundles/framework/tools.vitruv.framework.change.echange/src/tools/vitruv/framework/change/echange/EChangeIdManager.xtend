@@ -68,9 +68,7 @@ class EChangeIdManager {
 		} else {
 			if(!localUuidGeneratorAndResolver.hasUuid(object)) {
 				val result = localUuidGeneratorAndResolver.registerEObject(object);
-				// TODO HK Remove this check when strictMode is always on (also in Repository)
-				if (strictMode)
-					registerGlobally(result, object);
+				registerGlobally(result, object);
 				return result;
 			} else {
 				return localUuidGeneratorAndResolver.getUuid(object);

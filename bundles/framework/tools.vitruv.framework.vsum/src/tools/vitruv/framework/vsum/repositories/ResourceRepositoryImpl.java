@@ -75,7 +75,7 @@ public class ResourceRepositoryImpl implements ModelRepository, CorrespondencePr
 
         initializeUuidProviderAndResolver();
         this.changeRecorder = new AtomicEmfChangeRecorder(this.uuidGeneratorAndResolver, this.uuidGeneratorAndResolver,
-                false, false);
+                true, false);
 
         initializeCorrespondenceModel();
         loadVURIsOfVSMUModelInstances();
