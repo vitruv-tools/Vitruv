@@ -10,12 +10,15 @@ import tools.vitruv.framework.change.echange.eobject.CreateEObject
 import tools.vitruv.framework.change.uuid.UuidGeneratorAndResolver
 import tools.vitruv.framework.change.uuid.UuidResolver
 import org.eclipse.emf.ecore.EObject
+import org.apache.log4j.Logger
+import org.eclipse.emf.ecore.util.EcoreUtil
 
 /**
  * Provides logic for initializing the IDs within changes and for updating
  * the object references in the {@link UuidProviderAndResolver}. 
  */
 class EChangeIdManager {
+	val static Logger logger = Logger.getLogger(EChangeIdManager)
 	val UuidResolver globalUuidResolver;
 	val UuidGeneratorAndResolver localUuidGeneratorAndResolver;
 	val boolean strictMode;
@@ -54,18 +57,36 @@ class EChangeIdManager {
 		}
 	}
 
-	private def String getOrGenerateValue(EObject object, boolean strictMode) {
+	private def String getOrGenerateValue(EObject object) {
 		if (globalUuidResolver.hasUuid(object)) {
 			return globalUuidResolver.getUuid(object);
 		} else {
 			if(!localUuidGeneratorAndResolver.hasUuid(object)) {
-				if(strictMode) {
-					throw new IllegalStateException("No UUID registered for existing EObject: " + object);
-				}
-				return localUuidGeneratorAndResolver.registerEObject(object);
+				val result = localUuidGeneratorAndResolver.registerEObject(object);
+				// TODO HK Remove this check when strictMode is always on (also in Repository)
+				if (strictMode)
+					registerGlobally(result, object);
+				return result;
 			} else {
 				return localUuidGeneratorAndResolver.getUuid(object);
 			}
+		}
+	}
+	
+	private def void registerGlobally(String uuid, EObject object) {
+		// Register UUID globally for third party elements that are statically accessible and are never created
+		var EObject globallyResolvedObject = null
+		try {
+			globallyResolvedObject = globalUuidResolver.resourceSet.getEObject(EcoreUtil.getURI(object), true)
+		} catch (Exception e) {
+			// If object cannot be resolved, it is null and will be correctly handled in the following
+		}
+		if (globallyResolvedObject !== null) {
+			globalUuidResolver.registerEObject(uuid, globallyResolvedObject);	
+		} else if (strictMode) {
+			throw new IllegalStateException("Object has no UUID and is not globally accessible: " + object);
+		} else {
+			logger.warn("Object is not statically accessible but also has no globally mapped UUID: " + object);
 		}
 	}
 
@@ -73,28 +94,33 @@ class EChangeIdManager {
 		if(addedEChange.newValue === null) {
 			return;
 		}
-		addedEChange.newValueID = getOrGenerateValue(addedEChange.newValue, strictMode);
+		addedEChange.newValueID = getOrGenerateValue(addedEChange.newValue);
 	}	
 
 	private def void setOrGenerateOldValueId(EObjectSubtractedEChange<?> subtractedEChange) {
 		if(subtractedEChange.oldValue === null) {
 			return;
 		}
-		subtractedEChange.oldValueID = getOrGenerateValue(subtractedEChange.oldValue, false);
+		subtractedEChange.oldValueID = getOrGenerateValue(subtractedEChange.oldValue);
 	}
 
 	private def dispatch void setOrGenerateAffectedEObjectId(CreateEObject<?> createChange) {
 		if(createChange.affectedEObject === null) {
 			throw new IllegalStateException();
 		}
-		createChange.affectedEObjectID = getOrGenerateValue(createChange.affectedEObject, false);
+		val affectedObject = createChange.affectedEObject
+		createChange.affectedEObjectID = if (globalUuidResolver.hasUuid(affectedObject)) {
+			globalUuidResolver.getUuid(affectedObject);
+		} else {
+			localUuidGeneratorAndResolver.getOrRegisterUuid(affectedObject);
+		}
 	}
 	
 	private def dispatch void setOrGenerateAffectedEObjectId(DeleteEObject<?> deleteChange) {
 		if(deleteChange.affectedEObject === null) {
 			throw new IllegalStateException();
 		}
-		deleteChange.affectedEObjectID = getOrGenerateValue(deleteChange.affectedEObject, false);
+		deleteChange.affectedEObjectID = getOrGenerateValue(deleteChange.affectedEObject);
 		deleteChange.consequentialRemoveChanges.forEach[setOrGenerateIds]
 	}
 
@@ -102,7 +128,7 @@ class EChangeIdManager {
 		if(featureChange.affectedEObject === null) {
 			throw new IllegalStateException();
 		}
-		featureChange.affectedEObjectID = getOrGenerateValue(featureChange.affectedEObject, strictMode);
+		featureChange.affectedEObjectID = getOrGenerateValue(featureChange.affectedEObject);
 	}
 
 }
