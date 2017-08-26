@@ -108,4 +108,11 @@ abstract class AbstractCompositeChangeImpl<C extends VitruviusChange> implements
 		changes.forEach[unresolveIfApplicable]
 	}
 	
+	override toString() '''
+	«this.class.simpleName»:
+		«FOR change : changes»
+			«change»
+		«ENDFOR»
+	'''
+		
 }
