@@ -12,7 +12,6 @@ import org.eclipse.xtext.common.types.access.IJvmTypeProvider
 import org.eclipse.xtext.xbase.XExpression
 import org.eclipse.xtext.xbase.XbaseFactory
 import tools.vitruv.dsls.mirbase.mirBase.MirBaseFactory
-import tools.vitruv.dsls.reactions.reactionsLanguage.ActionStatement
 import tools.vitruv.dsls.reactions.reactionsLanguage.CreateCorrespondence
 import tools.vitruv.dsls.reactions.reactionsLanguage.CreateModelElement
 import tools.vitruv.dsls.reactions.reactionsLanguage.ExistingElementReference
@@ -20,6 +19,7 @@ import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsLanguageFactory
 import tools.vitruv.dsls.reactions.reactionsLanguage.RemoveCorrespondence
 import tools.vitruv.dsls.reactions.reactionsLanguage.RetrieveModelElement
 import tools.vitruv.dsls.reactions.reactionsLanguage.Routine
+import tools.vitruv.dsls.reactions.reactionsLanguage.Taggable
 
 import static com.google.common.base.Preconditions.*
 import static tools.vitruv.dsls.reactions.codegen.helper.ReactionsLanguageConstants.*
@@ -227,8 +227,9 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 			new RetrieveModelElementMatcherStatementCorrespondenceElementBuilder(builder, statement)
 		}
 
-		def void correspondingTo(String element) {
+		def correspondingTo(String element) {
 			statement.correspondenceSource = correspondingElement(element)
+			new TaggedWithBuilder(builder, statement)
 		}
 	}
 
@@ -241,14 +242,16 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 			this.statement = statement
 		}
 
-		def void affectedEObject() {
+		def affectedEObject() {
 			requireAffectedEObject = true
 			statement.correspondenceSource = correspondingElement(CHANGE_AFFECTED_ELEMENT_ATTRIBUTE)
+			new TaggedWithBuilder(builder, statement)
 		}
 
-		def void newValue() {
+		def newValue() {
 			requireNewValue = true
 			statement.correspondenceSource = correspondingElement(CHANGE_NEW_VALUE_ATTRIBUTE)
+			new TaggedWithBuilder(builder, statement)
 		}
 	}
 
@@ -278,6 +281,32 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 			routine.matcher.matcherStatements += ReactionsLanguageFactory.eINSTANCE.createMatcherCheckStatement => [
 				code = XbaseFactory.eINSTANCE.createXBlockExpression.whenJvmTypes [
 					expressions += extractExpressions(expressionBuilder.apply(typeProvider))
+				]
+			]
+		}
+	}
+	
+	static class TaggedWithBuilder {
+		val extension FluentRoutineBuilder builder
+		val Taggable taggable
+		
+		private new(FluentRoutineBuilder builder, Taggable taggable) {
+			this.builder = builder
+			this.taggable = taggable
+		}
+		
+		def void taggedWith(String tag) {
+			taggable.tag = ReactionsLanguageFactory.eINSTANCE.createTagCodeBlock => [
+				code = XbaseFactory.eINSTANCE.createXStringLiteral => [
+					value = tag
+				]
+			]
+		}
+		
+		def void taggedWith(Function<RoutineTypeProvider, XExpression> tagExpressionBuilder) {
+			taggable.tag = ReactionsLanguageFactory.eINSTANCE.createTagCodeBlock => [
+				code = XbaseFactory.eINSTANCE.createXBlockExpression.whenJvmTypes [
+					expressions += extractExpressions(tagExpressionBuilder.apply(typeProvider))
 				]
 			]
 		}
@@ -470,19 +499,21 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 
 	static class CorrespondenceTargetBuilder {
 		val extension FluentRoutineBuilder builder
-		val ActionStatement statement
+		val Taggable statement
 
-		private new(FluentRoutineBuilder builder, ActionStatement statement) {
+		private new(FluentRoutineBuilder builder, Taggable statement) {
 			this.builder = builder
 			this.statement = statement
 		}
 
 		def and() {
-			new CorrespondenceElementBuilder(builder, null, [statement.secondElement = it])
+			val tagBuilder = new TaggedWithBuilder(builder, statement)
+			new CorrespondenceElementBuilder(builder, tagBuilder, [statement.secondElement = it])
 		}
 
 		def and(String existingElement) {
 			statement.secondElement = existingElement(existingElement)
+			new TaggedWithBuilder(builder, statement)
 		}
 
 		def private dispatch setSecondElement(CreateCorrespondence correspondenceStatement,
