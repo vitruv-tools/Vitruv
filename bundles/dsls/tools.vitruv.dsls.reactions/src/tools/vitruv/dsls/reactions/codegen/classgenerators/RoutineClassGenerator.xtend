@@ -156,17 +156,17 @@ class RoutineClassGenerator extends ClassGenerator {
 				«affectedElementClass.javaClassName» «retrieveElement.name» = «retrieveStatement»;
 				«IF !retrieveElement.optional && !retrieveElement.abscence»
 					if («retrieveElement.name» == null) {
-						return;
+						return false;
 					}
 				«ENDIF»
 				registerObjectUnderModification(«retrieveElement.name»);
 			«ELSEIF retrieveElement.abscence»
 				if («retrieveStatement» != null) {
-					return;
+					return false;
 				}
 			«ELSE»
 				if («retrieveStatement» == null) {
-					return;
+					return false;
 				} else {
 					registerObjectUnderModification(«retrieveStatement»);
 				}
@@ -183,7 +183,7 @@ class RoutineClassGenerator extends ClassGenerator {
 		val checkMethodCall = checkMethod.userExecutionMethodCallString;
 		return '''
 		if (!«checkMethodCall») {
-			return;
+			return false;
 		}''';
 	}
 
@@ -265,7 +265,7 @@ class RoutineClassGenerator extends ClassGenerator {
 		matcherStatements.mapFixed[matcherStatementsMap.put(it, createStatements(it))];
 		val effectStatementsMap = <ActionStatement, StringConcatenationClient>newHashMap();
 		effectStatements.mapFixed[effectStatementsMap.put(it, createStatements(it))];
-		return generateUnassociatedMethod(methodName, typeRef(Void.TYPE)) [
+		return generateUnassociatedMethod(methodName, typeRef(Boolean.TYPE)) [
 			visibility = JvmVisibility.PROTECTED;
 			exceptions += typeRef(IOException);
 			body = '''
@@ -282,6 +282,8 @@ class RoutineClassGenerator extends ClassGenerator {
 					
 				«ENDFOR»
 				postprocessElements();
+				
+				return true;
 			'''
 		];
 	}

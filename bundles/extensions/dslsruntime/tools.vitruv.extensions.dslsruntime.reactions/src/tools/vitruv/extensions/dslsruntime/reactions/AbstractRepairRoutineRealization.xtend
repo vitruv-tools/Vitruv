@@ -60,12 +60,12 @@ abstract class AbstractRepairRoutineRealization extends CallHierarchyHaving impl
 		return retrievedElement;
 	}
 
-	public override void applyRoutine() {
+	public override boolean applyRoutine() {
 		// Exception handling could be added here when productively used
 		executeRoutine();
 	}
 
-	protected abstract def void executeRoutine() throws IOException;
+	protected abstract def boolean executeRoutine() throws IOException;
 
 	public static class UserExecution extends Loggable {
 		protected final UserInteracting userInteracting;
