@@ -2,12 +2,18 @@ package tools.vitruv.dsls.reactions.builder
 
 import java.util.ArrayList
 import java.util.function.Consumer
+import java.util.function.Function
+import org.eclipse.emf.ecore.EAttribute
 import org.eclipse.emf.ecore.EClass
+import org.eclipse.emf.ecore.EClassifier
+import org.eclipse.emf.ecore.EReference
 import org.eclipse.xtext.common.types.JvmOperation
+import org.eclipse.xtext.common.types.access.IJvmTypeProvider
 import org.eclipse.xtext.xbase.XExpression
 import org.eclipse.xtext.xbase.XbaseFactory
 import tools.vitruv.dsls.mirbase.mirBase.MirBaseFactory
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.RoutineStartBuilder
+import tools.vitruv.dsls.reactions.reactionsLanguage.ElementChangeType
 import tools.vitruv.dsls.reactions.reactionsLanguage.ModelElementChange
 import tools.vitruv.dsls.reactions.reactionsLanguage.Reaction
 import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsLanguageFactory
@@ -19,7 +25,7 @@ class FluentReactionBuilder extends FluentReactionsSegmentChildBuilder {
 
 	var Reaction reaction
 	var anonymousRoutineCounter = 0
-	var EClass valueType
+	var EClassifier valueType
 	var EClass affectedElementType
 
 	package new(String reactionName, FluentBuilderContext context) {
@@ -48,7 +54,7 @@ class FluentReactionBuilder extends FluentReactionsSegmentChildBuilder {
 
 		def afterAnyChange() {
 			reaction.trigger = ReactionsLanguageFactory.eINSTANCE.createArbitraryModelChange
-			return new RoutineCallBuilder(builder)
+			return new PreconditionOrRoutineCallBuilder(builder)
 		}
 
 		def afterElement(EClass element) {
@@ -56,33 +62,78 @@ class FluentReactionBuilder extends FluentReactionsSegmentChildBuilder {
 				elementType = MirBaseFactory.eINSTANCE.createMetaclassReference.reference(element)
 			]
 			reaction.trigger = change
-			affectedElementType = element
-			return new ChangeTypeBuilder(builder, change)
+			return new ChangeTypeBuilder(builder, change, element)
+		}
+		
+		def afterAttributeInsertIn(EAttribute attribute) {
+			valueType = attribute.EType
+			affectedElementType = attribute.EContainingClass
+			reaction.trigger = ReactionsLanguageFactory.eINSTANCE.createModelAttributeInsertedChange => [
+				feature = MirBaseFactory.eINSTANCE.createMetaclassEAttributeReference.reference(attribute)
+			]
+			return new PreconditionOrRoutineCallBuilder(builder)
+		}
+		
+		def afterAttributeReplacedAt(EAttribute attribute) {
+			valueType = attribute.EType
+			affectedElementType = attribute.EContainingClass
+			reaction.trigger = ReactionsLanguageFactory.eINSTANCE.createModelAttributeReplacedChange => [
+				feature = MirBaseFactory.eINSTANCE.createMetaclassEAttributeReference.reference(attribute)
+			]
+			return new PreconditionOrRoutineCallBuilder(builder)
+		}
+		
+		def afterAttributeRemoveFrom(EAttribute attribute) {
+			valueType = attribute.EType
+			affectedElementType = attribute.EContainingClass
+			reaction.trigger = ReactionsLanguageFactory.eINSTANCE.createModelAttributeRemovedChange => [
+				feature = MirBaseFactory.eINSTANCE.createMetaclassEAttributeReference.reference(attribute)
+			]
+			return new PreconditionOrRoutineCallBuilder(builder)
 		}
 	}
 
 	static class ChangeTypeBuilder {
 		val extension FluentReactionBuilder builder
 		val ModelElementChange modelElementChange
+		val EClass element
 
-		private new(FluentReactionBuilder builder, ModelElementChange modelElementChange) {
+		private new(FluentReactionBuilder builder, ModelElementChange modelElementChange, EClass element) {
 			this.builder = builder
 			this.modelElementChange = modelElementChange
+			this.element = element
 		}
 
 		def created() {
-			modelElementChange.changeType = ReactionsLanguageFactory.eINSTANCE.createElementCreationChangeType
-			return new RoutineCallBuilder(builder)
+			affectedElementType = element
+			continueWithChangeType(ReactionsLanguageFactory.eINSTANCE.createElementCreationChangeType)
 		}
 
 		def deleted() {
-			modelElementChange.changeType = ReactionsLanguageFactory.eINSTANCE.createElementDeletionChangeType
-			return new RoutineCallBuilder(builder)
+			affectedElementType = element
+			continueWithChangeType(ReactionsLanguageFactory.eINSTANCE.createElementDeletionChangeType)
+		}
+
+		def insertedAsRoot() {
+			valueType = element
+			continueWithChangeType(ReactionsLanguageFactory.eINSTANCE.createElementInsertionAsRootChangeType)
+		}
+
+		def insertedIn(EReference reference) {
+			valueType = element
+			continueWithChangeType(ReactionsLanguageFactory.eINSTANCE.createElementInsertionInListChangeType => [
+				feature = MirBaseFactory.eINSTANCE.createMetaclassEReferenceReference.reference(reference)
+			])
+		}
+
+		def private continueWithChangeType(ElementChangeType changeType) {
+			modelElementChange.changeType = changeType
+			return new PreconditionOrRoutineCallBuilder(builder)
 		}
 	}
 
 	static class RoutineCallBuilder {
-		val extension FluentReactionBuilder builder
+		protected val extension FluentReactionBuilder builder
 
 		private new(FluentReactionBuilder builder) {
 			this.builder = builder
@@ -129,16 +180,41 @@ class FluentReactionBuilder extends FluentReactionsSegmentChildBuilder {
 		}
 	}
 
+	static class PreconditionOrRoutineCallBuilder extends RoutineCallBuilder {
+		private new(FluentReactionBuilder builder) {
+			super(builder)
+		}
+
+		def with(Function<ReactionTypeProvider, XExpression> expressionProvider) {
+			reaction.trigger.precondition = ReactionsLanguageFactory.eINSTANCE.createPreconditionCodeBlock => [
+				code = XbaseFactory.eINSTANCE.createXBlockExpression.whenJvmTypes [
+					expressions += extractExpressions(expressionProvider.apply(typeProvider))
+				]
+			]
+			return new RoutineCallBuilder(builder)
+		}
+
+	}
+
+	static class ReactionTypeProvider extends AbstractTypeProvider<FluentReactionBuilder> {
+		val extension FluentReactionBuilder builderAsExtension
+
+		protected new(IJvmTypeProvider delegate, FluentReactionBuilder builder, XExpression scopeExpression) {
+			super(delegate, builder, scopeExpression)
+			builderAsExtension = builder
+		}
+	}
+
 	def private requiredArgumentsFrom(FluentRoutineBuilder routineBuilder, JvmOperation routineCallMethod) {
-		val parameterList = new ArrayList<XExpression>(2)
+		val parameterList = new ArrayList<XExpression>(3)
+		if (routineBuilder.requireAffectedEObject) {
+			parameterList += routineCallMethod.argument(CHANGE_AFFECTED_ELEMENT_ATTRIBUTE)
+		}
 		if (routineBuilder.requireNewValue) {
 			parameterList += routineCallMethod.argument(CHANGE_NEW_VALUE_ATTRIBUTE)
 		}
 		if (routineBuilder.requireOldValue) {
 			parameterList += routineCallMethod.argument(CHANGE_OLD_VALUE_ATTRIBUTE)
-		}
-		if (routineBuilder.requireAffectedEObject) {
-			parameterList += routineCallMethod.argument(CHANGE_AFFECTED_ELEMENT_ATTRIBUTE)
 		}
 		return parameterList
 	}
@@ -165,8 +241,22 @@ class FluentReactionBuilder extends FluentReactionsSegmentChildBuilder {
 		reaction
 	}
 
+	def private getTypeProvider(XExpression scopeExpression) {
+		val delegateTypeProvider = context.typeProviderFactory.findOrCreateTypeProvider(
+			attachedReactionsFile.eResource.resourceSet)
+		new ReactionTypeProvider(delegateTypeProvider, this, scopeExpression)
+	}
+
 	override toString() {
 		'''reaction builder for “«reaction.name»”'''
+	}
+
+	override protected getCreatedElementName() {
+		reaction.name
+	}
+
+	override protected getCreatedElementType() {
+		"reaction"
 	}
 
 }
