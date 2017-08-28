@@ -1,15 +1,27 @@
 package tools.vitruv.dsls.reactions.builder
 
+import java.util.ArrayList
 import java.util.Collections
 import java.util.LinkedList
 import java.util.List
 import java.util.function.Consumer
+import org.eclipse.emf.ecore.EAttribute
 import org.eclipse.emf.ecore.EClass
 import org.eclipse.emf.ecore.EPackage
+import org.eclipse.emf.ecore.EReference
+import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.xtend.lib.annotations.Accessors
 import org.eclipse.xtend.lib.annotations.Delegate
+import org.eclipse.xtext.common.types.JvmDeclaredType
+import org.eclipse.xtext.common.types.JvmIdentifiableElement
+import org.eclipse.xtext.common.types.JvmMember
+import org.eclipse.xtext.common.types.JvmOperation
+import org.eclipse.xtext.xtype.XtypeFactory
+import tools.vitruv.dsls.mirbase.mirBase.MetaclassEAttributeReference
+import tools.vitruv.dsls.mirbase.mirBase.MetaclassEReferenceReference
 import tools.vitruv.dsls.mirbase.mirBase.MetaclassReference
 import tools.vitruv.dsls.mirbase.mirBase.MirBaseFactory
+import tools.vitruv.dsls.mirbase.mirBase.NamedJavaElement
 import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsFile
 
 import static com.google.common.base.Preconditions.*
@@ -31,11 +43,11 @@ import static com.google.common.base.Preconditions.*
  * </ol>
  */
 abstract package class FluentReactionElementBuilder {
-	
+
 	val beforeAttached = new PatientList<Runnable>
 	val afterJvmTypeCreation = new PatientList<Runnable>
 	protected val FluentBuilderContext context
-	
+
 	/**
 	 * Signals whether enough methods have been called on this builder and its
 	 * subbuilders. If this is {@code false}, attaching the builder to a
@@ -43,10 +55,10 @@ abstract package class FluentReactionElementBuilder {
 	 * {@code true}.
 	 */
 	protected var readyToBeAttached = false
-	
+
 	@Accessors(PROTECTED_GETTER)
 	protected var jvmTypesAvailable = false
-	
+
 	/**
 	 * Builders mimic the tree structure of the elements they create. Events
 	 * ({@link #triggerBeforeAttached} and {@link #triggerAfterJvmTypeCreation})
@@ -57,49 +69,152 @@ abstract package class FluentReactionElementBuilder {
 	val childBuilders = new PatientList<FluentReactionElementBuilder>
 	@Accessors(PROTECTED_GETTER)
 	var ReactionsFile attachedReactionsFile
-	
+	@Accessors(PROTECTED_GETTER)
+	var Resource targetResource
+
 	protected new(FluentBuilderContext context) {
 		this.context = context
 	}
-	
-	def package void triggerBeforeAttached(ReactionsFile reactionsFile) {
+
+	def package void triggerBeforeAttached(ReactionsFile reactionsFile, Resource targetResource) {
 		checkState(attachedReactionsFile === null, "This builder was already attached to a reactions file!")
-		childBuilders.patientForEach [triggerBeforeAttached(reactionsFile)]
-		attachedReactionsFile = reactionsFile
+		childBuilders.patientForEach[triggerBeforeAttached(reactionsFile, targetResource)]
+		this.attachedReactionsFile = reactionsFile
+		this.targetResource = targetResource
 		attachmentPreparation()
-		beforeAttached.patientForEach [run()]
+		beforeAttached.patientForEach[run()]
 		beforeAttached.discardAndClose()
 	}
 
 	def package void triggerAfterJvmTypeCreation() {
 		checkState(attachedReactionsFile !== null, "This builder was not yet attached to a reactions file!")
 		jvmTypesAvailable = true
-		childBuilders.patientForEach [triggerAfterJvmTypeCreation()]
+		childBuilders.patientForEach[triggerAfterJvmTypeCreation()]
 		childBuilders.discardAndClose()
-		afterJvmTypeCreation.patientForEach [run()]
+		afterJvmTypeCreation.patientForEach[run()]
 		afterJvmTypeCreation.discardAndClose()
 	}
-	
+
 	def protected checkNotYetAttached() {
-		checkState(attachedReactionsFile === null, '''This operation is only allowed before the «this» is attached to a resource!''')
+		checkState(attachedReactionsFile ===
+			null, '''This operation is only allowed before the «this» is attached to a resource!''')
 	}
-	
+
 	def protected attachmentPreparation() {
 		checkState(readyToBeAttached, '''The «this» is not sufficiently initialised to be attached to a resource!''')
 	}
-	
+
+	/**
+	 * Executes the given {@code initializer} just before this builder is being
+	 * attached to a resource. The initializer may rely on that the client will
+	 * not change the builder anymore. 
+	 */
 	def protected <T> T beforeAttached(T element, Consumer<? super T> initializer) {
 		beforeAttached.add([initializer.accept(element)])
 		element
 	}
-	
+
+	/**
+	 * Executes the given {@code initializer} after this builder has been added
+	 * to a resource and inferred JVM types are available.
+	 */
 	def protected <T> T whenJvmTypes(T element, Consumer<? super T> initializer) {
 		afterJvmTypeCreation.add([initializer.accept(element)])
 		element
 	}
+
+	def protected <T extends JvmDeclaredType> imported(T type) {
+		XImportSection.importDeclarations.findFirst[importedType == type] ?: createTypeImport(type)
+		return type
+	}
+
+	def protected <T extends JvmIdentifiableElement> possiblyImported(T type) {
+		switch type {
+			JvmDeclaredType: imported(type as JvmDeclaredType)
+			JvmMember: imported(type.declaringType)
+		}
+		return type
+	}
+
+	def protected staticExtensionAllImported(JvmDeclaredType declaredType) {
+		(XImportSection.importDeclarations.findFirst [
+			isWildcard && importedType == declaredType
+		] ?: createTypeWildcardImport(declaredType)) => [
+			extension = true
+		]
+		return declaredType
+	} 
+
+	def protected staticExtensionImported(JvmOperation operation) {
+		staticImport(operation, true)
+	}
 	
+	def protected staticExtensionWildcardImported(JvmOperation operation) {
+		operation.declaringType.staticExtensionAllImported
+		return operation
+	}
+
+	def protected staticImported(JvmOperation operation) {
+		staticImport(operation, false)
+	}
+	
+	def private staticImport(JvmOperation operation, boolean asExtension) {
+		val existingStarImport = XImportSection.importDeclarations.findFirst [
+			isWildcard && importedType == operation.declaringType
+		]
+		if (existingStarImport !== null) {
+			existingStarImport.extension = existingStarImport.extension || asExtension
+		} else {
+			(XImportSection.importDeclarations.findFirst [
+				importedType == operation.declaringType && memberName == operation.simpleName && static == true
+			] ?: createStaticOperationImport(operation)) => [
+				extension = extension || asExtension
+			]
+		}
+		return operation
+	}
+
+	def private createStaticOperationImport(JvmOperation operation) {
+		XtypeFactory.eINSTANCE.createXImportDeclaration => [
+			importedType = operation.declaringType
+			memberName = operation.simpleName
+			static = true
+			XImportSection.importDeclarations += it
+		]
+	}
+	
+	def private createTypeWildcardImport(JvmDeclaredType type) {
+		val newDeclaration = XtypeFactory.eINSTANCE.createXImportDeclaration => [
+			importedType = type
+			XImportSection.importDeclarations += it
+			static = true
+			wildcard = true
+		]
+		val oldImports = new ArrayList(XImportSection.importDeclarations)
+		XImportSection.importDeclarations.clear()
+		XImportSection.importDeclarations += oldImports.filter [
+			!static || importedType != type
+		]
+		XImportSection.importDeclarations += newDeclaration
+		return newDeclaration
+	}
+	
+	def private createTypeImport(JvmDeclaredType type) {
+		XtypeFactory.eINSTANCE.createXImportDeclaration => [
+			importedType = type
+			XImportSection.importDeclarations += it
+		]
+	}
+
+	def private getXImportSection() {
+		attachedReactionsFile.namespaceImports ?: XtypeFactory.eINSTANCE.createXImportSection => [
+			attachedReactionsFile.namespaceImports = it
+		]
+	}
+
 	def protected metamodelImport(EPackage ePackage) {
-		checkState(attachedReactionsFile !== null && !jvmTypesAvailable, "Metamodel imports can only be created in the attachment preparation phase!")
+		checkState(attachedReactionsFile !== null && !jvmTypesAvailable,
+			"Metamodel imports can only be created in the attachment preparation phase!")
 		// there will usually only be a few metamodel imports, so no need for caching
 		attachedReactionsFile.metamodelImports.findFirst[package == ePackage] ?: createMetamodelImport(ePackage)
 	}
@@ -120,13 +235,37 @@ abstract package class FluentReactionElementBuilder {
 			metamodel = eClass.EPackage.metamodelImport
 		]
 	}
-	 
+
+	def protected <T extends MetaclassEReferenceReference> reference(T referenceReference, EReference reference) {
+		(referenceReference => [
+			feature = reference
+			metaclass = reference.EContainingClass
+		]).beforeAttached [
+			metamodel = reference.EContainingClass.EPackage.metamodelImport
+		]
+	}
+
+	def protected <T extends MetaclassEAttributeReference> reference(T attributeReference, EAttribute attribute) {
+		(attributeReference => [
+			feature = attribute
+			metaclass = attribute.EContainingClass
+		]).beforeAttached [
+			metamodel = attribute.EContainingClass.EPackage.metamodelImport
+		]
+	}
+
+	def protected <T extends NamedJavaElement> reference(T javaElementReference, Class<?> clazz) {
+		javaElementReference.beforeAttached [
+			type = context.typeReferences.getTypeForName(clazz, targetResource)
+		]
+	}
+
 	/**
 	 * List offering iteration while the list is being modified.
 	 */
 	package static class PatientList<T> implements List<T> {
 		@Delegate List<T> delegate = new LinkedList
-			
+
 		/**
 		 * Calls the provided {@code consumer} on every element in this list.
 		 * If elements are attempted to be added to this list during the
@@ -144,7 +283,7 @@ abstract package class FluentReactionElementBuilder {
 			}
 			delegate = allList
 		}
-		
+
 		/**
 		 * Discards all elements stored in this list. After this method was
 		 * called, attempting to modify (but not read from) this list will
