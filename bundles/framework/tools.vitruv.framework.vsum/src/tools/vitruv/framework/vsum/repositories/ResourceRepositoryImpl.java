@@ -2,7 +2,10 @@ package tools.vitruv.framework.vsum.repositories;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -115,19 +118,21 @@ public class ResourceRepositoryImpl implements ModelRepository, CorrespondencePr
     private ModelInstance getModelInstanceOriginal(final VURI modelURI) {
         ModelInstance modelInstance = this.modelInstances.get(modelURI);
         if (modelInstance == null) {
-            createRecordingCommandAndExecuteCommandOnTransactionalDomain(new Callable<Void>() {
-                @Override
-                public Void call() {
-                    // case 2 or 3
-                    ModelInstance internalModelInstance = getOrCreateUnregisteredModelInstance(modelURI);
-                    ResourceRepositoryImpl.this.modelInstances.put(modelURI, internalModelInstance);
-                    saveVURIsOfVsumModelInstances();
-                    return null;
-                }
+            createRecordingCommandAndExecuteCommandOnTransactionalDomain(() -> {
+                // case 2 or 3
+                ModelInstance internalModelInstance = getOrCreateUnregisteredModelInstance(modelURI);
+                registerModelInstance(modelURI, internalModelInstance);
+                return null;
             });
             modelInstance = this.modelInstances.get(modelURI);
         }
         return modelInstance;
+    }
+
+    private void registerModelInstance(final VURI modelUri, final ModelInstance modelInstance) {
+        ResourceRepositoryImpl.this.modelInstances.put(modelUri, modelInstance);
+        ResourceRepositoryImpl.this.changeRecorder.addToRecording(modelInstance.getResource());
+        saveVURIsOfVsumModelInstances();
     }
 
     private boolean existsModelInstance(final VURI modelURI) {
@@ -140,8 +145,11 @@ public class ResourceRepositoryImpl implements ModelRepository, CorrespondencePr
             public Void call() throws Exception {
                 VitruvDomain metamodel = getMetamodelByURI(modelInstance.getURI());
                 Resource resourceToSave = modelInstance.getResource();
+                final Map<Object, Object> saveOptions = metamodel != null ? metamodel.getDefaultSaveOptions()
+                        : Collections.emptyMap();
                 try {
-                    EcoreResourceBridge.saveResource(resourceToSave, metamodel.getDefaultSaveOptions());
+                    // we allow resources without a domain for internal uses.
+                    EcoreResourceBridge.saveResource(resourceToSave, saveOptions);
                 } catch (IOException e) {
                     throw new RuntimeException("Could not save VURI + " + modelInstance.getURI() + ": " + e);
                 }
@@ -152,7 +160,7 @@ public class ResourceRepositoryImpl implements ModelRepository, CorrespondencePr
     }
 
     @Override
-    public void persistRootElement(final VURI vuri, final EObject rootEObject) {
+    public void persistAsRoot(final EObject rootEObject, final VURI vuri) {
         final ModelInstance modelInstance = getModelInstanceOriginal(vuri);
         createRecordingCommandAndExecuteCommandOnTransactionalDomain(new Callable<Void>() {
             @Override
@@ -227,6 +235,19 @@ public class ResourceRepositoryImpl implements ModelRepository, CorrespondencePr
     private ModelInstance loadModelInstance(final VURI modelURI, final VitruvDomain metamodel) {
         URI emfURI = modelURI.getEMFUri();
         Resource modelResource = URIUtil.loadResourceAtURI(emfURI, this.resourceSet, metamodel.getDefaultLoadOptions());
+        ModelInstance modelInstance = new ModelInstance(modelURI, modelResource);
+        return modelInstance;
+    }
+
+    /**
+     * Create a model instance for which it’s not necessary to have a domain.
+     *
+     * @param modelURI
+     *            The uri to create the resource at.
+     */
+    private ModelInstance loadModelInstanceWithoutDomain(final VURI modelURI) {
+        URI emfURI = modelURI.getEMFUri();
+        Resource modelResource = URIUtil.loadResourceAtURI(emfURI, this.resourceSet, Collections.emptyMap());
         ModelInstance modelInstance = new ModelInstance(modelURI, modelResource);
         return modelInstance;
     }
@@ -363,5 +384,65 @@ public class ResourceRepositoryImpl implements ModelRepository, CorrespondencePr
     @Override
     public void executeRecordingCommand(final VitruviusRecordingCommand command) {
         executeRecordingCommandOnTransactionalDomain(command);
+    }
+
+    @Override
+    public Resource getResourceForMetadataStorage(final String... storageKey) {
+        final StringBuilder safeStorageKey = new StringBuilder();
+        if (storageKey.length == 0) {
+            throw new IllegalArgumentException("The key must have at least one part!");
+        }
+
+        try {
+            for (int i = 0; i < storageKey.length; i++) {
+                final String keyPart = storageKey[i];
+                if (keyPart == null) {
+                    throw new IllegalArgumentException("A key part must not be null!");
+                }
+                // URL-encoding the string makes it save for being a file part,
+                // except for the cases '', '.' and '..'
+                // we thus use _ as a escape character
+                final String preparedKeyPart;
+                switch (keyPart) {
+                case ".":
+                    preparedKeyPart = "_.";
+                    break;
+                case "..":
+                    preparedKeyPart = "_._.";
+                    break;
+                case "":
+                    preparedKeyPart = "_";
+                    break;
+                default:
+                    preparedKeyPart = keyPart.replaceAll("_", "__");
+                    break;
+                }
+                String encodedKeyPart = URLEncoder.encode(preparedKeyPart, "UTF-8");
+                safeStorageKey.append(encodedKeyPart);
+
+                // ensure a file extension is present
+                if (i == storageKey.length - 1) {
+                    if (!encodedKeyPart.contains(".")) {
+                        safeStorageKey.append(".metadata");
+                    }
+                } else {
+                    safeStorageKey.append(File.separatorChar);
+                }
+            }
+        } catch (UnsupportedEncodingException e) {
+            throw new IllegalStateException("UTF-8 encoding is not present on this platform!");
+        }
+        final VURI storageVuri = this.fileSystemHelper.getConsistencyMetadataVURI(safeStorageKey.toString());
+        ModelInstance modelInstance = this.modelInstances.get(storageVuri);
+        if (modelInstance == null) {
+            createRecordingCommandAndExecuteCommandOnTransactionalDomain(() -> {
+                // case 2 or 3
+                ModelInstance internalModelInstance = loadModelInstanceWithoutDomain(storageVuri);
+                registerModelInstance(storageVuri, internalModelInstance);
+                return null;
+            });
+            modelInstance = this.modelInstances.get(storageVuri);
+        }
+        return modelInstance.getResource();
     }
 }

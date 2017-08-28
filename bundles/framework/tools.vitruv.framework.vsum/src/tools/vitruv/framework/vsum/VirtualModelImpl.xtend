@@ -59,7 +59,7 @@ class VirtualModelImpl implements InternalVirtualModel {
 	}
 	
 	override persistRootElement(VURI persistenceVuri, EObject rootElement) {
-		this.resourceRepository.persistRootElement(persistenceVuri, rootElement);
+		this.resourceRepository.persistAsRoot(rootElement, persistenceVuri);
 	}
 	
 	override executeCommand(Callable<Void> command) {
@@ -76,10 +76,10 @@ class VirtualModelImpl implements InternalVirtualModel {
 	}
 	
 	override reverseChanges(List<PropagatedChange> changes) {
-		val command = EMFCommandBridge.createVitruviusTransformationRecordingCommand([|
-			changes.reverseView.forEach[applyBackward];
-			return null;
-		])
+		val command = EMFCommandBridge.createVitruviusRecordingCommand [
+			changes.reverseView.forEach[applyBackward]
+			return null
+		]
 		resourceRepository.executeRecordingCommandOnTransactionalDomain(command);
 
 		val changedEObjects = command.getAffectedObjects().filter(EObject)

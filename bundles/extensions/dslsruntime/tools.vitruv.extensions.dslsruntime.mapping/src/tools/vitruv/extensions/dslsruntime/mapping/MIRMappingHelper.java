@@ -21,7 +21,7 @@ import tools.vitruv.framework.change.echange.EChange;
 import tools.vitruv.framework.change.echange.feature.FeatureEChange;
 import tools.vitruv.framework.change.echange.feature.reference.UpdateReferenceEChange;
 import tools.vitruv.framework.change.echange.root.InsertRootEObject;
-import tools.vitruv.framework.util.command.ChangePropagationResult;
+import tools.vitruv.framework.util.command.ResourceAccess;
 import tools.vitruv.framework.util.datatypes.VURI;
 
 /**
@@ -48,8 +48,8 @@ public final class MIRMappingHelper {
 	public static Collection<EObject> getAllAffectedObjects(EChange eChange) {
 		Collection<EObject> result = new HashSet<EObject>();
 
-		if (eChange instanceof FeatureEChange<?,?>) {
-			EObject newAffectedEObject = ((FeatureEChange<?,?>) eChange).getAffectedEObject();
+		if (eChange instanceof FeatureEChange<?, ?>) {
+			EObject newAffectedEObject = ((FeatureEChange<?, ?>) eChange).getAffectedEObject();
 			result.add(newAffectedEObject);
 
 			if (eChange instanceof UpdateReferenceEChange<?>) {
@@ -79,12 +79,11 @@ public final class MIRMappingHelper {
 		return eObjects.stream().map(it -> it.eResource()).distinct().collect(Collectors.toList());
 	}
 
-	public static void addEmptyResourcesToTransformationResult(Iterable<Resource> resources,
-			ChangePropagationResult result) {
+	public static void addEmptyResourcesToTransformationResult(Iterable<Resource> resources) {
 		for (Resource res : resources) {
 			if (res.getContents().isEmpty()) {
 				// Not necessary any more, because VSUM removes empty resources
-				//result.addVuriToDeleteIfNotNull(VURI.getInstance(res));
+				// result.addVuriToDeleteIfNotNull(VURI.getInstance(res));
 			}
 		}
 	}
@@ -99,32 +98,29 @@ public final class MIRMappingHelper {
 		return (eObject.eContainer() != null || eObject.eResource() != null);
 	}
 
-	public static boolean hasContainment(EObject eObject, ChangePropagationResult result) {
-		return (hasContainment(eObject) || ((result != null)
-				&& (result.getElementToPersistenceMap().keySet().stream().anyMatch(it -> it.equals(eObject)))));
-	}
-
 	/**
-	 * Checks the {@link EObject EObjects} supplied by <code>elementSupplier</code> for containment. If no containment is
-	 * found for an object, a containment is requested from the <code>vuriProvider</code> and appended to the given
-	 * {@link ChangePropagationResult} as well as to the return value of the function.
+	 * Checks the {@link EObject EObjects} supplied by <code>elementSupplier</code>
+	 * for containment. If no containment is found for an object, a containment is
+	 * requested from the <code>vuriProvider</code> and appended to the given
+	 * {@link ChangePropagationResult} as well as to the return value of the
+	 * function.
 	 */
-	public static Set<EObject> ensureContainments(ChangePropagationResult transformationResult,
-			Supplier<Iterable<EObject>> elementSupplier, Consumer<EObject> containmentEnsurer) {
-		
+	public static Set<EObject> ensureContainments(Supplier<Iterable<EObject>> elementSupplier,
+			Consumer<EObject> containmentEnsurer) {
+
 		Set<EObject> result = new HashSet<EObject>();
 		boolean nonContainedFound;
 		do {
 			nonContainedFound = false;
 			for (EObject eObject : elementSupplier.get()) {
-				if (!result.contains(eObject) && !MIRMappingHelper.hasContainment(eObject, transformationResult)) {
+				if (!result.contains(eObject) && !MIRMappingHelper.hasContainment(eObject)) {
 					nonContainedFound = true;
 					containmentEnsurer.accept(eObject);
 					result.add(eObject);
 				}
 			}
 		} while (nonContainedFound);
-		
+
 		return result;
 	}
 
