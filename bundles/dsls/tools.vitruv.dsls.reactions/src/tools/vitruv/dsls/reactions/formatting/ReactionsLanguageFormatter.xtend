@@ -75,15 +75,14 @@ class ReactionsLanguageFormatter extends MirBaseFormatter {
 	def dispatch void formatIndividually(ModelElementChange modelElementChange,
 		extension IFormattableDocument document) {
 		modelElementChange.elementType.formatMetaclassReference(document)
-		modelElementChange.changeType.formatIndividually(document)
+		modelElementChange.changeType.formatChangeType(document)
 		modelElementChange?.precondition?.code?.formatIndividually(document)
 	}
-
-	def dispatch void formatIndividually(ElementChangeType anyChangeType, extension IFormattableDocument document) {}
-
-	def dispatch void formatIndividually(ElementReferenceChangeType referenceChangeType,
-		extension IFormattableDocument document) {
-		referenceChangeType.feature.formatEReferenceReference(document)
+	
+	def dispatch void formatChangeType(ElementChangeType changeType, extension IFormattableDocument document) {
+		if (changeType instanceof ElementReferenceChangeType) {
+			changeType.feature.formatEReferenceReference(document)
+		}
 	}
 
 	def dispatch void formatIndividually(ModelAttributeChange modelAttributeChange,
