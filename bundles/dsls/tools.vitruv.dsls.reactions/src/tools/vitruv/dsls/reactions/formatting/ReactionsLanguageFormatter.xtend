@@ -11,13 +11,13 @@ import org.eclipse.xtext.xbase.XListLiteral
 import org.eclipse.xtext.xbase.XMemberFeatureCall
 import org.eclipse.xtext.xbase.XVariableDeclaration
 import tools.vitruv.dsls.mirbase.formatting.MirBaseFormatter
-import tools.vitruv.dsls.mirbase.mirBase.MetaclassReference
-import tools.vitruv.dsls.mirbase.mirBase.MirBaseFile
 import tools.vitruv.dsls.reactions.reactionsLanguage.Action
 import tools.vitruv.dsls.reactions.reactionsLanguage.ActionStatement
 import tools.vitruv.dsls.reactions.reactionsLanguage.CreateCorrespondence
 import tools.vitruv.dsls.reactions.reactionsLanguage.CreateModelElement
 import tools.vitruv.dsls.reactions.reactionsLanguage.DeleteModelElement
+import tools.vitruv.dsls.reactions.reactionsLanguage.ElementChangeType
+import tools.vitruv.dsls.reactions.reactionsLanguage.ElementReferenceChangeType
 import tools.vitruv.dsls.reactions.reactionsLanguage.ExecuteActionStatement
 import tools.vitruv.dsls.reactions.reactionsLanguage.Matcher
 import tools.vitruv.dsls.reactions.reactionsLanguage.MatcherStatement
@@ -31,104 +31,119 @@ import tools.vitruv.dsls.reactions.reactionsLanguage.RetrieveModelElement
 import tools.vitruv.dsls.reactions.reactionsLanguage.Routine
 import tools.vitruv.dsls.reactions.reactionsLanguage.RoutineCallStatement
 import tools.vitruv.dsls.reactions.reactionsLanguage.RoutineInput
+import tools.vitruv.dsls.reactions.reactionsLanguage.Taggable
 import tools.vitruv.dsls.reactions.reactionsLanguage.Trigger
 import tools.vitruv.dsls.reactions.reactionsLanguage.UpdateModelElement
 
 class ReactionsLanguageFormatter extends MirBaseFormatter {
-
+	
 	def dispatch void format(ReactionsFile reactionsFile, extension IFormattableDocument document) {
-		(reactionsFile as MirBaseFile).formatStatic(document)
-		reactionsFile.formatStatic(document)
+		reactionsFile.formatMirBaseFile(document)
+		reactionsFile.formatReactionsFile(document)
 	}
 
-	def formatStatic(ReactionsFile reactionsFile, extension IFormattableDocument document) {
-		reactionsFile.namespaceImports?.importDeclarations?.tail?.forEach [prepend [newLine]]
-		reactionsFile.namespaceImports?.append [newLines = 2]
-		reactionsFile.reactionsSegments.forEach[formatStatic(document)]
+	def formatReactionsFile(ReactionsFile reactionsFile, extension IFormattableDocument document) {
+		reactionsFile.namespaceImports?.importDeclarations?.tail?.forEach[prepend [newLine]]
+		reactionsFile.namespaceImports?.append[newLines = 2]
+		reactionsFile.reactionsSegments.forEach[formatReactionsSegment(document)]
 		reactionsFile.reactionsSegments.tail.forEach[prepend [newLines = 4]]
 	}
 
-	def formatStatic(ReactionsSegment segment, extension IFormattableDocument document) {
+	def formatReactionsSegment(ReactionsSegment segment, extension IFormattableDocument document) {
 		segment.regionFor.keyword('in reaction to changes in').prepend[newLine]
 		segment.regionFor.keyword('execute').prepend[newLine]
-		segment.reactions.forEach[formatStatic(document)]
-		segment.routines.forEach[formatStatic(document)]
+		segment.reactions.forEach[formatReaction(document)]
+		segment.routines.forEach[formatRoutine(document)]
 	}
 
-	def formatStatic(Reaction reaction, extension IFormattableDocument document) {
+	def formatReaction(Reaction reaction, extension IFormattableDocument document) {
 		reaction.prepend[newLines = 2]
 		if (reaction.documentation !== null) {
 			reaction.regionFor.keyword('reaction').prepend[newLine]
 		}
 		reaction.formatInteriorBlock(document)
-		reaction.trigger.formatStatic(document)
+		reaction.trigger.formatTrigger(document)
 		reaction.callRoutine.prepend[newLine]
 		reaction.callRoutine.code.formatIndividually(document)
 	}
 
-	def formatStatic(Trigger trigger, extension IFormattableDocument document) {
+	def formatTrigger(Trigger trigger, extension IFormattableDocument document) {
 		trigger.regionFor.keyword('with').prepend[newLine; indent]
 		trigger.formatIndividually(document)
 	}
 
 	def dispatch void formatIndividually(ModelElementChange modelElementChange,
 		extension IFormattableDocument document) {
-		modelElementChange.elementType.formatStatic(document)
+		modelElementChange.elementType.formatMetaclassReference(document)
+		modelElementChange.changeType.formatIndividually(document)
+		modelElementChange?.precondition?.code?.formatIndividually(document)
+	}
+
+	def dispatch void formatIndividually(ElementChangeType anyChangeType, extension IFormattableDocument document) {}
+
+	def dispatch void formatIndividually(ElementReferenceChangeType referenceChangeType,
+		extension IFormattableDocument document) {
+		referenceChangeType.feature.formatEReferenceReference(document)
 	}
 
 	def dispatch void formatIndividually(ModelAttributeChange modelAttributeChange,
 		extension IFormattableDocument document) {
-		modelAttributeChange.feature.formatStatic(document)
+		modelAttributeChange.feature.formatEAttributeReference(document)
 	}
 
-	def formatStatic(Routine routine, extension IFormattableDocument document) {
+	def formatRoutine(Routine routine, extension IFormattableDocument document) {
 		routine.prepend[newLines = 2]
 		if (routine.documentation !== null) {
 			routine.regionFor.keyword('routine').prepend[newLine]
 		}
-		routine.input.formatStatic(document)
+		routine.input.formatRoutineInput(document)
 		routine.formatInteriorBlock(document)
-		routine.matcher?.formatStatic(document)
-		routine.action.formatStatic(document)
+		routine.matcher?.formatMatcher(document)
+		routine.action.formatAction(document)
 	}
 
-	def formatStatic(RoutineInput routineInput, extension IFormattableDocument document) {
+	def formatRoutineInput(RoutineInput routineInput, extension IFormattableDocument document) {
 		routineInput.regionFor.keyword('(').prepend[noSpace].append[noSpace]
-		routineInput.modelInputElements.forEach[formatStatic(document)]
+		routineInput.modelInputElements.forEach[formatMetaclassReference(document)]
 		routineInput.allRegionsFor.keyword(',').prepend[noSpace].append[oneSpace]
 		routineInput.regionFor.keyword(')').prepend[noSpace]
 	}
 
-	def formatStatic(Matcher matcher, extension IFormattableDocument document) {
+	def formatMatcher(Matcher matcher, extension IFormattableDocument document) {
 		matcher.prepend[newLine]
 		matcher.formatInteriorBlock(document)
-		matcher.matcherStatements.forEach[formatStatic(document)]
+		matcher.matcherStatements.forEach[formatMatcherStatement(document)]
 	}
 
-	def formatStatic(MatcherStatement matcherStatement, extension IFormattableDocument document) {
+	def formatMatcherStatement(MatcherStatement matcherStatement, extension IFormattableDocument document) {
 		matcherStatement.prepend[newLine]
 		matcherStatement.formatIndividually(document)
 	}
 
 	def dispatch void formatIndividually(RetrieveModelElement retrieveStatement,
 		extension IFormattableDocument document) {
-		(retrieveStatement as MetaclassReference).formatStatic(document)
+		retrieveStatement.formatMetaclassReference(document)
+		retrieveStatement.formatTaggable(document)
 	}
 
-	def formatStatic(Action action, extension IFormattableDocument document) {
+	def formatAction(Action action, extension IFormattableDocument document) {
 		action.prepend[newLine]
 		action.formatInteriorBlock(document)
-		action.actionStatements.forEach[formatStatic(document)]
+		action.actionStatements.forEach[formatActionStatement(document)]
 	}
 
-	def formatStatic(ActionStatement actionStatement, extension IFormattableDocument document) {
+	def formatActionStatement(ActionStatement actionStatement, extension IFormattableDocument document) {
 		actionStatement.prepend[newLine]
 		actionStatement.formatIndividually(document)
 	}
 
+	def formatTaggable(Taggable taggable, extension IFormattableDocument document) {
+		taggable.regionFor.keyword('tagged with').prepend[newLine]
+	}
+
 	def dispatch void formatIndividually(CreateModelElement createModelElement,
 		extension IFormattableDocument document) {
-		(createModelElement as MetaclassReference).formatStatic(document)
+		createModelElement.formatMetaclassReference(document)
 		createModelElement.initializationBlock?.code?.formatIndividually(document)
 	}
 
@@ -136,6 +151,7 @@ class ReactionsLanguageFormatter extends MirBaseFormatter {
 		extension IFormattableDocument document) {
 		createCorrespondence.firstElement.code.formatIndividually(document)
 		createCorrespondence.secondElement.code.formatIndividually(document)
+		createCorrespondence.formatTaggable(document)
 	}
 
 	def dispatch void formatIndividually(DeleteModelElement deleteElement, extension IFormattableDocument document) {
@@ -146,6 +162,7 @@ class ReactionsLanguageFormatter extends MirBaseFormatter {
 		extension IFormattableDocument document) {
 		removeCorrespondence.firstElement.code.formatIndividually(document)
 		removeCorrespondence.secondElement.code.formatIndividually(document)
+		removeCorrespondence.formatTaggable(document)
 	}
 
 	def dispatch void formatIndividually(RoutineCallStatement routineCall, extension IFormattableDocument document) {
@@ -184,13 +201,13 @@ class ReactionsLanguageFormatter extends MirBaseFormatter {
 		memberFeatureCall.allRegionsFor.keyword(",").prepend[noSpace].append[oneSpace]
 		memberFeatureCall.regionFor.keyword(')').prepend[noSpace]
 	}
-	
+
 	def dispatch void formatIndividually(XConstructorCall constructorCall, extension IFormattableDocument document) {
-		constructorCall.regionFor.keyword('new').append [oneSpace]
-		constructorCall.regionFor.keyword('(').prepend [noSpace].append [noSpace]
-		constructorCall.arguments.forEach [formatIndividually(document)]
+		constructorCall.regionFor.keyword('new').append[oneSpace]
+		constructorCall.regionFor.keyword('(').prepend[noSpace].append[noSpace]
+		constructorCall.arguments.forEach[formatIndividually(document)]
 		constructorCall.allRegionsFor.keyword(",").prepend[noSpace].append[oneSpace]
-		constructorCall.regionFor.keyword(')').prepend [noSpace]
+		constructorCall.regionFor.keyword(')').prepend[noSpace]
 	}
 
 	def dispatch void formatIndividually(XListLiteral listLiteral, extension IFormattableDocument document) {
@@ -200,15 +217,16 @@ class ReactionsLanguageFormatter extends MirBaseFormatter {
 		listLiteral.elements.forEach[formatIndividually(document)]
 		listLiteral.allRegionsFor.keyword(',').prepend[noSpace].append[oneSpace]
 	}
-	
+
 	def dispatch void formatIndividually(XAssignment assignment, extension IFormattableDocument document) {
 		assignment.assignable.formatIndividually(document)
-		assignment.regionFor.keyword('.').prepend [noSpace].append [noSpace]
-		assignment.regionFor.keyword('=').prepend [oneSpace].append [oneSpace]
+		assignment.regionFor.keyword('.').prepend[noSpace].append[noSpace]
+		assignment.regionFor.keyword('=').prepend[oneSpace].append[oneSpace]
 		assignment.value.formatIndividually(document)
 	}
-	
-	def dispatch void formatIndividually(XVariableDeclaration variableDeclaration, extension IFormattableDocument document) {
+
+	def dispatch void formatIndividually(XVariableDeclaration variableDeclaration,
+		extension IFormattableDocument document) {
 		variableDeclaration.right?.formatIndividually(document)
 	}
 
