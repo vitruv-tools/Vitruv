@@ -145,7 +145,7 @@ class ReactionClassGenerator extends ClassGenerator {
 
 	protected def JvmOperation generateMethodCheckUserDefinedPrecondition(PreconditionCodeBlock preconditionBlock) {
 		val methodName = USER_DEFINED_TRIGGER_PRECONDITION_METHOD_NAME;
-		return preconditionBlock.getOrGenerateMethod(methodName, typeRef(Boolean.TYPE)) [
+		return preconditionBlock.code.getOrGenerateMethod(methodName, typeRef(Boolean.TYPE)) [
 			visibility = JvmVisibility.PRIVATE;
 			parameters += generateAccessibleElementsParameters(relevantAtomicChangeTypeRepresentation.generatePropertiesParameterList());
 			body = preconditionBlock.code;
