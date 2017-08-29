@@ -17,7 +17,7 @@ class ConcreteApplicableChangeImpl extends ConcreteChangeImpl {
 
 	override resolveBeforeAndApplyForward(UuidResolver uuidResolver) {
 		this.EChange = this.EChange.resolveBefore(uuidResolver)
-		this.registerOldObjectTuidsForUpdate(this.affectedEObjects)
+		this.registerOldObjectTuidsForUpdate(getObjectsWithPotentiallyModifiedTuids)
 		this.canBeBackwardsApplied = false;
 		applyForward()
 		this.updateTuids
@@ -25,10 +25,17 @@ class ConcreteApplicableChangeImpl extends ConcreteChangeImpl {
 	
 	override resolveAfterAndApplyBackward(UuidResolver uuidResolver) {
 		this.EChange = this.EChange.resolveAfter(uuidResolver)
-		this.registerOldObjectTuidsForUpdate(this.affectedEObjects)
+		this.registerOldObjectTuidsForUpdate(getObjectsWithPotentiallyModifiedTuids)
 		this.canBeBackwardsApplied = true;
 		applyBackward()
 		this.updateTuids
+	}
+	
+	private def getObjectsWithPotentiallyModifiedTuids() {
+		// We currently support 3 hierarchy layers upwards update. This is necessary
+		// e.g. for Operations whose TUIDs depend on the values of their parameter type references.
+		// This number of layers may still be too few, this is just a random number.
+		this.affectedEObjects.map[#{it, it.eContainer, it.eContainer?.eContainer, it.eContainer?.eContainer?.eContainer}].flatten.filterNull.toSet
 	}
 	
 	override applyForward() {
