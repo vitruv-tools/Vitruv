@@ -31,6 +31,7 @@ class UserExecutionClassGenerator extends ClassGenerator {
 	var counterCallRoutineMethods = 1
 	var counterExecuteActionMethods = 1
 	var counterCheckMatcherPreconditionMethods = 1
+	var counterGetCorrespondenceSource = 1
 
 	new(TypesBuilderExtensionProvider typesBuilderExtensionProvider, EObject objectMappedToClass,
 		String qualifiedClassName) {
@@ -116,9 +117,9 @@ class UserExecutionClassGenerator extends ClassGenerator {
 
 	protected def generateMethodGetCorrespondenceSource(RetrieveModelElement elementRetrieve,
 		Iterable<AccessibleElement> accessibleElements) {
-		val methodName = "getCorrepondenceSource" + elementRetrieve.name.toFirstUpper;
+		val methodName = "getCorrepondenceSource" + (elementRetrieve.name?.toFirstUpper ?: counterGetCorrespondenceSource++);
 
-		val correspondenceSourceBlock = elementRetrieve.correspondenceSource?.code;
+		val correspondenceSourceBlock = elementRetrieve.correspondenceSource.code;
 		return correspondenceSourceBlock.getOrGenerateMethod(methodName, typeRef(EObject)) [
 			parameters += generateAccessibleElementsParameters(accessibleElements);
 			if (correspondenceSourceBlock instanceof SimpleTextXBlockExpression) {
