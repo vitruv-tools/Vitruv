@@ -15,6 +15,26 @@
 
 		<plugins>
 			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-clean-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>gen-clean</id>
+						<configuration>
+							<filesets combine.children="append">
+								<fileset>
+									<directory>src-gen/</directory>
+									<includes>
+										<include>**/*</include>
+									</includes>
+								</fileset>
+							</filesets>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			
+			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>exec-maven-plugin</artifactId>
 				<version>1.4.0</version>
@@ -33,7 +53,7 @@
 					<includePluginDependencies>true</includePluginDependencies>
 					<cleanupDaemonThreads>false</cleanupDaemonThreads><!-- see https://bugs.eclipse.org/bugs/show_bug.cgi?id=475098#c3 -->
 					<arguments>
-						<argument>/${project.basedir}/src/tools/vitruv/extensions/dslruntime/commonalities/resources/GenerateResourcesMetamodel.mwe2</argument>
+						<argument>/${project.basedir}/src/tools/vitruv/extensions/dslruntime/commonalities/GenerateRuntimeMetamodels.mwe2</argument>
 						<argument>-p</argument>
 						<argument>rootPath=/${project.basedir}/..</argument>
 					</arguments>

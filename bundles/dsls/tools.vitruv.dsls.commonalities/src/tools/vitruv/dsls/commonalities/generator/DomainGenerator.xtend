@@ -23,6 +23,7 @@ import tools.vitruv.framework.tuid.AttributeTuidCalculatorAndResolver
 
 import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
 import static extension tools.vitruv.dsls.commonalities.generator.GeneratorConstants.*
+import tools.vitruv.extensions.dslruntime.commonalities.intermediatemodelbase.IntermediateModelBasePackage
 
 package class DomainGenerator extends SubGenerator {
 
@@ -42,7 +43,7 @@ package class DomainGenerator extends SubGenerator {
 			val domainType = createDomain(typeReferenceBuilder)
 			val domainProviderType = createDomainProvider(typeReferenceBuilder, domainType)
 			return #[domainType, domainProviderType]
-		].forEach [generateType()]
+		].forEach[generateType()]
 	}
 
 	def private createDomain(String conceptName, extension JvmTypeReferenceBuilder typeReferenceBuilder) {
@@ -56,9 +57,14 @@ package class DomainGenerator extends SubGenerator {
 					visibility = JvmVisibility.PUBLIC
 					body = '''
 					super("«conceptName.conceptDomainName»",
-						«'''«conceptName.intermediateModelClassesPrefix»Package'''».eINSTANCE,
-						«Collections.typeRef».singleton(«ResourcesPackage.typeRef».eINSTANCE),
-						new «AttributeTuidCalculatorAndResolver.typeRef»("", "«INTERMEDIATE_MODEL_ID_ATTRIBUTE»"),
+						«'''«conceptName.intermediateModelClassesPrefix»Package'''».eINSTANCE,«
+						// TODO remove once resource creation is handled by domains
+						»
+						«Collections.typeRef».singleton(«ResourcesPackage.typeRef».eINSTANCE),«
+						// 'fullPath' for resource bridge resources
+						// TODO remove once resource creation is handled by domains
+						»
+						new «AttributeTuidCalculatorAndResolver.typeRef»("", "«IntermediateModelBasePackage.eINSTANCE.intermediate_IntermediateId.name»"),
 						"«conceptName.intermediateModelFileExtension»");'''
 				],
 				TypesFactory.eINSTANCE.createJvmOperation => [
@@ -71,7 +77,8 @@ package class DomainGenerator extends SubGenerator {
 		]
 	}
 
-	def private createDomainProvider(String conceptName, extension JvmTypeReferenceBuilder typeReferenceBuilder, JvmGenericType domainType) {
+	def private createDomainProvider(String conceptName, extension JvmTypeReferenceBuilder typeReferenceBuilder,
+		JvmGenericType domainType) {
 		TypesFactory.eINSTANCE.createJvmGenericType => [
 			simpleName = conceptName.conceptDomainProvider.simpleName
 			packageName = conceptName.conceptDomainProvider.packageName

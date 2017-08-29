@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/tools.vitruv.extensions.dslsruntime.commonalities/src-gen"
+    editDirectory="" editorDirectory="" modelPluginID="tools.vitruv.extensions.dslsruntime.commonalities"
+    modelName="Commonalities Runtime Models" rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container"
+    importerID="org.eclipse.emf.importer.ecore" complianceLevel="8.0" copyrightFields="false"
+    operationReflection="true" importOrganizing="true">
+  <foreignModel>IntermediateModelBase.ecore</foreignModel>
+  <genPackages prefix="IntermediateModelBase" basePackage="tools.vitruv.extensions.dslruntime.commonalities"
+      disposableProviderFactory="true" adapterFactory="false" ecorePackage="IntermediateModelBase.ecore#/">
+    <genClasses ecoreClass="IntermediateModelBase.ecore#//Root">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute IntermediateModelBase.ecore#//Root/intermediateIdCounter"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference IntermediateModelBase.ecore#//Root/intermediates"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference IntermediateModelBase.ecore#//Root/resourceBridges"/>
+      <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute IntermediateModelBase.ecore#//Root/intermediateId"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="IntermediateModelBase.ecore#//Intermediate">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute IntermediateModelBase.ecore#//Intermediate/intermediateId"/>
+    </genClasses>
+  </genPackages>
+  <genPackages prefix="Resources" basePackage="tools.vitruv.extensions.dslruntime.commonalities"
+      disposableProviderFactory="true" adapterFactory="false" ecorePackage="Resources.ecore#/">
+    <genDataTypes ecoreDataType="Resources.ecore#//ResourceAccess"/>
+    <genDataTypes ecoreDataType="Resources.ecore#//CorrespondenceModel"/>
+    <genDataTypes ecoreDataType="Resources.ecore#//URI"/>
+    <genClasses ecoreClass="Resources.ecore#//Resource">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Resources.ecore#//Resource/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Resources.ecore#//Resource/fileExtension"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Resources.ecore#//Resource/path"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Resources.ecore#//Resource/content"/>
+      <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute Resources.ecore#//Resource/fullPath"/>
+    </genClasses>
+    <genClasses ecoreClass="Resources.ecore#//IntermediateResourceBridge">
+      <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute Resources.ecore#//IntermediateResourceBridge/baseURI"/>
+      <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute Resources.ecore#//IntermediateResourceBridge/isPersisted"/>
+      <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute Resources.ecore#//IntermediateResourceBridge/intermediateId"/>
+      <genOperations ecoreOperation="Resources.ecore#//IntermediateResourceBridge/remove"/>
+      <genOperations ecoreOperation="Resources.ecore#//IntermediateResourceBridge/setResourceAccess">
+        <genParameters ecoreParameter="Resources.ecore#//IntermediateResourceBridge/setResourceAccess/resourceAccess"/>
+      </genOperations>
+      <genOperations ecoreOperation="Resources.ecore#//IntermediateResourceBridge/setCorrespondenceModel">
+        <genParameters ecoreParameter="Resources.ecore#//IntermediateResourceBridge/setCorrespondenceModel/correspondenceModel"/>
+      </genOperations>
+      <genOperations ecoreOperation="Resources.ecore#//IntermediateResourceBridge/initialiseForModelElement">
+        <genParameters ecoreParameter="Resources.ecore#//IntermediateResourceBridge/initialiseForModelElement/eObject"/>
+      </genOperations>
+    </genClasses>
+  </genPackages>
+</genmodel:GenModel>

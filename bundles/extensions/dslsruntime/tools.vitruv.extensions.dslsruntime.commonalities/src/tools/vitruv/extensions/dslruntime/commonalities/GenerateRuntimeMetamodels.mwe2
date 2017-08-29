@@ -11,7 +11,7 @@ var basePath = "${rootPath}/${baseName}"
 
 Workflow {
     bean = StandaloneSetup {
-        platformUri = ".."
+        platformUri = rootPath
     }
 	
     component = DirectoryCleaner {
@@ -20,7 +20,7 @@ Workflow {
 
 	component = EcoreGenerator {
 		srcPath = 'platform:/resource/tools.vitruv.dsls.commonalities/src'
-		genModel = 'platform:/resource/tools.vitruv.extensions.dslsruntime.commonalities/model/Resources.genmodel'
+		genModel = 'platform:/resource/tools.vitruv.extensions.dslsruntime.commonalities/model/RuntimeMetamodels.genmodel'
 		generateCustomClasses = false
 	}
 }

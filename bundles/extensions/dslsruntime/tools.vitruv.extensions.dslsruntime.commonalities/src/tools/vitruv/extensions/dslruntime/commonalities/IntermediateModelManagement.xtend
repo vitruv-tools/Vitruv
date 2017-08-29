@@ -5,17 +5,17 @@ import java.nio.file.Files
 import java.nio.file.Path
 import java.util.Collections
 import java.util.concurrent.atomic.AtomicInteger
-import org.eclipse.emf.common.util.EList
 import org.eclipse.emf.ecore.EClass
-import org.eclipse.emf.ecore.EObject
-import org.eclipse.emf.ecore.EcoreFactory
-import org.eclipse.emf.ecore.EcorePackage
+import org.eclipse.emf.ecore.EPackage
 import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.emf.ecore.resource.ResourceSet
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
+import tools.vitruv.extensions.dslruntime.commonalities.intermediatemodelbase.Intermediate
+import tools.vitruv.extensions.dslruntime.commonalities.intermediatemodelbase.IntermediateModelBasePackage
+import tools.vitruv.extensions.dslruntime.commonalities.intermediatemodelbase.Root
 import tools.vitruv.extensions.dslruntime.commonalities.resources.ResourceRemover
 
-import static tools.vitruv.extensions.dslruntime.commonalities.CommonalitiesConstants.*
+import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
 
 class IntermediateModelManagement {
 
@@ -28,65 +28,50 @@ class IntermediateModelManagement {
 
 	static val stagingUuidCounter = new AtomicInteger
 
-	def private static checkIsNonRoot(EObject object, String providedName) {
-		if (object.eClass.ESuperTypes.findFirst[name == INTERMEDIATE_MODEL_NONROOT_CLASS] === null) {
-			throw new IllegalArgumentException('''The EObject ‹«object»› provided as «providedName» is not an intermediate model non root class!''')
-		}
+	def static void addIntermediate(Resource targetResource, Intermediate nonRoot) {
+		val root = getOrCreateRootIn(targetResource, nonRoot.eClass.EPackage)
+		nonRoot.intermediateId = String.valueOf(root.nextId)
+		root.intermediates += nonRoot
+		targetResource.save(Collections.emptyMap())
 	}
 
-	def private static checkIsRoot(EObject object) {
-		if (!object.isRoot) {
-			throw new IllegalArgumentException('''The EObject ‹«object»› provided as root is not an intermediate model root class!''')
-		}
+	def static void addResourceBridge(Resource targetResource,
+		tools.vitruv.extensions.dslruntime.commonalities.resources.Resource intermediateResource,
+		Intermediate intermediate) {
+		val root = getOrCreateRootIn(targetResource, intermediate.eClass.EPackage)
+		root.resourceBridges += intermediateResource
+		targetResource.save(Collections.emptyMap())
 	}
 
-	def package static getChildrenList(EObject root) {
-		checkIsRoot(root)
-		val containment = root.eClass.EAllContainments.findFirst[name == INTERMEDIATE_MODEL_ROOT_CLASS_CONTAINER_NAME]
-		if (containment === null) {
-			throw new IllegalStateException('''The intermediate model root ‹«root»› does not have the containment called “«INTERMEDIATE_MODEL_ROOT_CLASS_CONTAINER_NAME»”!''')
-		}
-		root.eGet(containment) as EList<EObject>
-	}
-
-	def package static isRoot(EObject root) {
-		root.eClass.name == INTERMEDIATE_MODEL_ROOT_CLASS
-	}
-
-	def static void addNonRoot(Resource targetResource, EObject nonRoot) {
-		var EObject root
+	def static getOrCreateRootIn(Resource targetResource, EPackage ePackage) {
 		synchronized (targetResource) {
 			if (targetResource.contents.isEmpty) {
-				val intermediatePackage = nonRoot.eClass.EPackage
-				val intermediateRootClass = intermediatePackage.EClassifiers.filter(EClass).filter [
-					name == INTERMEDIATE_MODEL_ROOT_CLASS
-				].head
-				root = intermediatePackage.EFactoryInstance.create(intermediateRootClass)
+				val rootClass = ePackage.EClassifiers.filter(EClass).findFirst [
+					ESuperTypes.containsAny [it == IntermediateModelBasePackage.eINSTANCE.root]
+				]
+				val root = ePackage.EFactoryInstance.create(rootClass) as Root
 				root.eAdapters += #[
-					IntermediateModelNonRootIdAssigner.INSTANCE,
 					IntermediateModelRootDisposer.INSTANCE,
 					ResourceRemover.INSTANCE
 				]
 				targetResource.contents += root
-			} else {
-				root = targetResource.contents.get(0)
+				return root
 			}
+			return targetResource.contents.get(0) as Root
 		}
-		root.childrenList += nonRoot
-		targetResource.save(Collections.emptyMap())
 	}
 
-	def static assignStagingId(EObject nonRoot) {
-		nonRoot.assignId(stagingUuidCounter.getAndIncrement())
+	def static claimStagingId(Intermediate nonRoot) {
+		nonRoot.intermediateId = String.valueOf(stagingUuidCounter.getAndIncrement())
 	}
 
-	def package static assignId(EObject nonRoot, int id) {
-		checkIsNonRoot(nonRoot, 'non root')
-		val uuidFeature = nonRoot.eClass.EAllStructuralFeatures.findFirst[name == INTERMEDIATE_MODEL_ID_ATTRIBUTE]
-		if (uuidFeature === null) {
-			throw new IllegalStateException('''The intermediate model non-root ‹«nonRoot»› does not have the id feature “«INTERMEDIATE_MODEL_ID_ATTRIBUTE»!”''')
+	def private static getNextId(Root root) {
+		var int oldCounter
+		synchronized (root) {
+			oldCounter = root.intermediateIdCounter
+			root.intermediateIdCounter = oldCounter + 1
 		}
-		nonRoot.eSet(uuidFeature,
-			EcoreFactory.eINSTANCE.createFromString(EcorePackage.eINSTANCE.EString, String.valueOf(id)))
+		return oldCounter
 	}
 }
+	

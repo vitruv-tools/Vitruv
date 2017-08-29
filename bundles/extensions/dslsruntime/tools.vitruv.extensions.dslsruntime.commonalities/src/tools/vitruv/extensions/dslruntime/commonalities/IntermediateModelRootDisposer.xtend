@@ -2,12 +2,9 @@ package tools.vitruv.extensions.dslruntime.commonalities
 
 import org.eclipse.emf.common.notify.Notification
 import org.eclipse.emf.common.notify.impl.AdapterImpl
-import org.eclipse.emf.ecore.EObject
-import org.eclipse.emf.ecore.util.EcoreUtil
+import tools.vitruv.extensions.dslruntime.commonalities.intermediatemodelbase.Root
 
 import static org.eclipse.emf.common.notify.Notification.*
-
-import static extension tools.vitruv.extensions.dslruntime.commonalities.IntermediateModelManagement.*
 
 /**
  * Deletes intermediate model root objects 
@@ -19,10 +16,11 @@ package class IntermediateModelRootDisposer extends AdapterImpl {
 	private new(){}
 
 	override notifyChanged(extension Notification msg) {
-		val root = notifier as EObject
+		val root = notifier as Root
 		if (eventType == REMOVE || eventType == REMOVE_MANY) {
-			if (root.childrenList.isEmpty) {
-				EcoreUtil.remove(root)
+			if (root.intermediates.isEmpty) {
+				// TODO this breaks change reverse application
+				//EcoreUtil.remove(root)
 			}
 		}
 	}

@@ -60,20 +60,6 @@ package class GenerationContext {
 		])
 	}
 
-	// TODO cache?
-	def package getIntermediateModelNonRootType(CommonalityFile commonalityFile) {
-		commonalityFile.concept.generatedIntermediateModelPackage.EClassifiers.findFirst [
-			name == commonalityFile.intermediateModelNonRootClass.simpleName
-		] as EClass
-	}
-
-	// TODO cache?
-	def package getIntermediateModelRootType(CommonalityFile commonalityFile) {
-		commonalityFile.concept.generatedIntermediateModelPackage.EClassifiers.findFirst [
-			name == commonalityFile.intermediateModelRootClass.simpleName
-		] as EClass
-	}
-
 	def private findDomainGeneratedType(String name) {
 		val domainTypeResource = commonalityFile.eResource.resourceSet.getResource(name.domainTypeUri, false)
 		val result = domainTypeResource.contents.head
@@ -111,11 +97,11 @@ package class GenerationContext {
 	def package getIntermediateModelOutputUri(String conceptName) {
 		fsa.getURI(conceptName + MODEL_OUTPUT_FILE_EXTENSION)
 	}
-	
+
 	def package dispatch EAttribute getEAttributeToReference(AttributeDeclaration attribute) {
 		commonalityFile.generatedIntermediateModelClass.getEStructuralFeature(attribute.name) as EAttribute
 	}
-	
+
 	// TODO reconsider when referencing of other commonalities is supported
 	def package dispatch EAttribute getEAttributeToReference(EAttributeAdapter adapter) {
 		adapter.wrapped
