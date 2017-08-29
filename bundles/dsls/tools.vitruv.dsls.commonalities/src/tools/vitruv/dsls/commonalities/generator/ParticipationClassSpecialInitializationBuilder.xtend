@@ -17,12 +17,13 @@ import tools.vitruv.extensions.dslruntime.commonalities.resources.IntermediateRe
 
 import static extension tools.vitruv.dsls.commonalities.generator.JvmTypeProviderHelper.*
 import static extension tools.vitruv.dsls.commonalities.generator.XbaseHelper.*
+import static extension tools.vitruv.dsls.commonalities.generator.ParticipationRelationUtil.*
 
 /**
  * Decides whether a created model class requires special initialization and
  * provides expressions for these initializations.
  */
-package class ParticipationClassSpecialInitializationConstructor {
+package class ParticipationClassSpecialInitializationBuilder {
 	extension var RoutineTypeProvider typeProvider
 	val ParticipationClass participationClass
 	var Function<ParticipationClass, XFeatureCall> participationClassReferenceProvider
@@ -97,26 +98,14 @@ package class ParticipationClassSpecialInitializationConstructor {
 	}
 
 	def private getAfterCreatedCode(ParticipationRelationDeclaration participationRelation) {
-		XbaseFactory.eINSTANCE.createXMemberFeatureCall => [
-			memberCallTarget = participationRelation.createRelationOperationInstance
-			feature = participationRelation.operator.findMethod('afterCreated')
-			explicitOperationCall = true
-		]
-	}
-
-	def private createRelationOperationInstance(ParticipationRelationDeclaration participationRelation) {
-		XbaseFactory.eINSTANCE.createXConstructorCall => [
-			constructor = participationRelation.operator.imported.findConstructor(EObject.arrayClass, EObject.arrayClass)
-			explicitConstructorCall = true
-			arguments += expressions(
-				XbaseFactory.eINSTANCE.createXListLiteral => [
-					elements += participationRelation.leftClasses.map(participationClassReferenceProvider)
-				],
-				XbaseFactory.eINSTANCE.createXListLiteral => [
-					elements += participationRelation.leftClasses.map(participationClassReferenceProvider)
-				]
-			)
-		]
+		val afterCreatedMethod = participationRelation.operator.findOptionalImplementedMethod('afterCreated')
+		if (afterCreatedMethod !== null) {
+			XbaseFactory.eINSTANCE.createXMemberFeatureCall => [
+				memberCallTarget = createOperatorConstructorCall(participationRelation, typeProvider, participationClassReferenceProvider)
+				feature = afterCreatedMethod
+				explicitOperationCall = true
+			]
+		}
 	}
 
 	def private registerResource(XFeatureCall resource, JvmDeclaredType userExecution) {
@@ -126,9 +115,9 @@ package class ParticipationClassSpecialInitializationConstructor {
 					assignable = XbaseFactory.eINSTANCE.createXFeatureCall => [
 						feature = resource.feature
 					]
-					feature = typeProvider.findMethod(IntermediateResourceBridge, 'setPropagationResult')
+					feature = typeProvider.findMethod(IntermediateResourceBridge, 'setResourceAccess')
 					value = XbaseFactory.eINSTANCE.createXFeatureCall => [
-						feature = userExecution.findAttribute('transformationResult')
+						feature = userExecution.findAttribute('resourceAccess')
 						implicitReceiver = XbaseFactory.eINSTANCE.createXFeatureCall => [
 							feature = userExecution
 						]

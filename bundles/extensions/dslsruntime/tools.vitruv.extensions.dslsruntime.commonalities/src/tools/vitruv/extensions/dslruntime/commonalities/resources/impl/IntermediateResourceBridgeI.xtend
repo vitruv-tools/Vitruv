@@ -1,77 +1,60 @@
 package tools.vitruv.extensions.dslruntime.commonalities.resources.impl
 
-import org.eclipse.emf.common.notify.Notification
-import org.eclipse.emf.common.notify.impl.AdapterImpl
 import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.EObject
-import org.eclipse.emf.ecore.util.EcoreUtil
-import tools.vitruv.extensions.dslruntime.commonalities.resources.ResourcesPackage
+import tools.vitruv.extensions.dslruntime.commonalities.IntermediateModelManagement
+import tools.vitruv.extensions.dslruntime.commonalities.intermediatemodelbase.Intermediate
 import tools.vitruv.extensions.dslsruntime.reactions.helper.PersistenceHelper
 import tools.vitruv.extensions.dslsruntime.reactions.helper.ReactionsCorrespondenceHelper
 import tools.vitruv.framework.correspondence.CorrespondenceModel
-import tools.vitruv.framework.util.command.ChangePropagationResult
+import tools.vitruv.framework.util.command.ResourceAccess
 import tools.vitruv.framework.util.datatypes.VURI
 
-import static tools.vitruv.extensions.dslruntime.commonalities.CommonalitiesConstants.*
-
+// TODO remove once resources are handled by domains
 class IntermediateResourceBridgeI extends IntermediateResourceBridgeImpl {
 
-	static val WATCHER = new ResourceIWatcher()
-	
-	// TODO is this too hacky?
-	ChangePropagationResult propagationResult
+	static val SAME_FOLDER = URI.createURI('.')
+
+	ResourceAccess resourceAccess
 	CorrespondenceModel correspondenceModel
+	Intermediate intermediateCorrespondence
 
-	new() {
-		eAdapters.add(WATCHER);
-	}
-
-	private static class ResourceIWatcher extends AdapterImpl {
-		override notifyChanged(extension Notification msg) {
-			if (eventType != Notification.SET) return;
-			val resource = notifier as IntermediateResourceBridgeI
-			switch feature {
-				case ResourcesPackage.RESOURCE__NAME:
-					resource.nameChanged(oldValue as String)
-				case ResourcesPackage.RESOURCE__PATH:
-					resource.pathChanged(oldValue as String)
-				case ResourcesPackage.RESOURCE__FILE_EXTENSION:
-					resource.fileExtensionChanged(oldValue as String)
-				case ResourcesPackage.RESOURCE__CONTENT:
-					resource.contentChanged()
-			}
-		}
-	}
-
-	def fileExtensionChanged(String oldFileExtension) {
-		if (this.canBePersisted) {
-			discardOldAndPersistNew(fullPath(path, name, oldFileExtension))
-		}
+	def private fileExtensionChanged(String oldFileExtension) {
+		this.fullPathChanged(path, name, oldFileExtension)
 	}
 
 	def private nameChanged(String oldName) {
-		if (this.canBePersisted) {
-			discardOldAndPersistNew(fullPath(path, oldName, fileExtension))
-		}
+		this.fullPathChanged(path, oldName, fileExtension)
 	}
 
 	def private pathChanged(String oldPath) {
-		if (!this.canBePersisted) {
-			discardOldAndPersistNew(fullPath(oldPath, name, fileExtension))
+		this.fullPathChanged(oldPath, name, fileExtension)
+	}
+
+	def private fullPathChanged(String oldPath, String oldName, String oldFileExtension) {
+		if (this.isPersisted) {
+			discard(getPersistanceUri(oldPath, oldName, oldFileExtension))
+		}
+		if (this.canBePersisted) {
+			persist()
 		}
 	}
 
 	def private contentChanged() {
+		if (this.isPersisted) {
+			discard(persistanceUri)
+		}
 		if (this.canBePersisted) {
-			discardOldAndPersistNew(fullPath)
+			persist()
 		}
 	}
 
-	def private getFullPath() {
+	override getFullPath() {
 		fullPath(path, name, fileExtension)
 	}
 
 	def private static fullPath(String path, String name, String fileExtension) {
+		if (path === null || name === null || fileExtension === null) return null
 		path + '/' + name + '.' + fileExtension
 	}
 
@@ -79,50 +62,111 @@ class IntermediateResourceBridgeI extends IntermediateResourceBridgeImpl {
 		path !== null && name !== null && fileExtension !== null && content !== null
 	}
 
-	def private discardOldAndPersistNew(String oldPath) {
-		val alreadyPersistedObject = content.existingCorrespondence
-		if (this.wasPersisted) {
-			val oldUri = PersistenceHelper.getURIFromSourceProjectFolder(alreadyPersistedObject, oldPath)
-			alreadyPersistedObject.eResource.resourceSet.getResource(oldUri, true).contents.clear()
+	def private discard(URI oldUri) {
+		// TODO how to do that in a way Vitruv will recognize it?		
+		isPersisted = false
+	}
+
+	def private persist() {
+		resourceAccess.persistAsRoot(content, VURI.getInstance(persistanceUri))
+		this.isPersisted = true
+		if (eContainer === null) {
+			IntermediateModelManagement.addResourceBridge(intermediateCorrespondence.eResource, this, intermediateCorrespondence)
 		}
-		val newUri = PersistenceHelper.getURIFromSourceProjectFolder(alreadyPersistedObject, fullPath)
-		persistTo(newUri)
+	}
+	
+	def private getPersistanceUri() {
+		getPersistanceUri(path, name, fileExtension)
+	}
+
+	def private getPersistanceUri(String path, String name, String fileExtension) {
+		baseURI.appendSegments(path.split('/')).appendSegment(name).appendFileExtension(fileExtension)
 	}
 
 	override remove() {
-		val alreadyPersistedObject = content.existingCorrespondence
-		val uri = PersistenceHelper.getURIFromSourceProjectFolder(alreadyPersistedObject, fullPath)
-		alreadyPersistedObject.eResource.resourceSet.getResource(uri, true).contents.clear()
+		discard(persistanceUri)
 	}
 
-	def private persistTo(URI targetUri) {
-		val toPersist = content
-		EcoreUtil.remove(toPersist)
-		propagationResult.registerForEstablishPersistence(toPersist, VURI.getInstance(targetUri))
-		wasPersisted = true
-	}
-
-	override setPropagationResult(ChangePropagationResult executionState) {
-		this.propagationResult = propagationResult
+	override setContent(EObject newContent) {
+		// hack ahead:
+		// we may not keep the element in the containment reference, as this
+		// breaks TUID calculation. But the content reference must be a
+		// containment reference to be used with the in-operator. So we’re
+		// avoiding any notifications here so the framework will not realize we
+		// modified a containment referenceinternalContent
+		if (content == newContent) return;
+		this.content = newContent
+		intermediateCorrespondence = newContent.intermediateCorrespondence
+		if (baseURI === null) {
+			val uri = PersistenceHelper.getURIFromSourceProjectFolder(newContent.existingCorrespondence, 'fake.ext')
+			baseURI = SAME_FOLDER.resolve(uri)
+		}
+		contentChanged()
 	}
 
 	override setCorrespondenceModel(CorrespondenceModel correspondenceModel) {
 		this.correspondenceModel = correspondenceModel
 	}
 
+	override setResourceAccess(ResourceAccess resourceAccess) {
+		this.resourceAccess = resourceAccess
+	}
+	
+	override getIntermediateId() {
+		fullPath
+	}
+
+	override setPath(String newPath) {
+		if (path == newPath) return;
+		val oldPath = path
+		super.setPath(newPath)
+		this.pathChanged(oldPath)
+	}
+
+	override setName(String newName) {
+		if (name == newName) return;
+		val oldName = name
+		super.setName(newName)
+		this.nameChanged(oldName)
+	}
+
+	override setFileExtension(String newFileExtension) {
+		if (fileExtension == newFileExtension) return;
+		val oldFileExtension = fileExtension
+		super.setFileExtension(newFileExtension)
+		this.fileExtensionChanged(oldFileExtension)
+	}
+
 	def private getExistingCorrespondence(EObject object) {
-		val intermediateCorrespondence = ReactionsCorrespondenceHelper.
-			getCorrespondingModelElements(object, EObject, '', [
-				eClass.ESuperTypes.findFirst[name == INTERMEDIATE_MODEL_NONROOT_CLASS] !== null
-			], correspondenceModel).head
-		if (intermediateCorrespondence === null) {
-			throw new IllegalStateException('''Could not find the intermediate correspondence of <«object»>!''')
-		}
+		if (object.eResource !== null) return object
+
+		// TODO transitive over referenced intermediate model instances
 		val resourceHaving = ReactionsCorrespondenceHelper.getCorrespondingModelElements(intermediateCorrespondence,
-			EObject, '', [eResource !== null], correspondenceModel).head
+			EObject, null, [eResource !== null], correspondenceModel).head
 		if (resourceHaving === null) {
-			throw new IllegalStateException('''Could not find any transitive correspondence of <«object»> that already has a resource!''')
+			throw new IllegalStateException('''Could not find any transitive correspondence of ‹«object»› that already has a resource!''')
 		}
 		return resourceHaving
 	}
+
+	def private getIntermediateCorrespondence(EObject object) {
+		val result = ReactionsCorrespondenceHelper.getCorrespondingModelElements(object, Intermediate, null, null,
+			correspondenceModel).head
+		if (result === null) {
+			throw new IllegalStateException('''Could not find the intermediate correspondence of ‹«object»›!''')
+		}
+		return result
+	}
+
+	override initialiseForModelElement(EObject eObject) {
+		val objectResourceUri = eObject.eResource.URI
+		val projectUri = PersistenceHelper.getURIFromSourceProjectFolder(eObject, 'fake.ext')
+		baseURI = SAME_FOLDER.resolve(projectUri)
+		path = SAME_FOLDER.resolve(objectResourceUri).deresolve(baseURI).toString
+		fileExtension = objectResourceUri.fileExtension
+		name = objectResourceUri.lastSegment.toString
+		content = eObject
+		intermediateCorrespondence = eObject.intermediateCorrespondence
+	}
+
 }

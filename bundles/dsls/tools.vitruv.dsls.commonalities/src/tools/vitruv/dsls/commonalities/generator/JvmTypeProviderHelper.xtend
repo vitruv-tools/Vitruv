@@ -48,6 +48,37 @@ class JvmTypeProviderHelper {
 		type.findMethod(methodName, -1, parameterTypeRestrictions)
 	}
 
+	def package static findImplementedMethod(JvmDeclaredType declaredType, String methodName, int parameterCount,
+		Class<?>... parameterTypeRestrictions) {
+		declaredType.getImplementedMethodList(methodName, parameterCount, parameterTypeRestrictions)
+			.onlyResultFor("implemented method", methodName, parameterTypeRestrictions, parameterCount, declaredType)
+	}
+
+	def package static findOptionalImplementedMethod(JvmDeclaredType declaredType, String methodName,
+		Class<?>... parameterTypeRestrictions) {
+		declaredType.findOptionalImplementedMethod(methodName, -1, parameterTypeRestrictions)
+	}
+
+	def package static findOptionalImplementedMethod(JvmDeclaredType declaredType, String methodName,
+		int parameterCount, Class<?>... parameterTypeRestrictions) {
+		declaredType.getImplementedMethodList(methodName, parameterCount, parameterTypeRestrictions)
+			.maxOneResultFor("implemented method", methodName, parameterTypeRestrictions, parameterCount, declaredType)
+			.head
+	}
+
+	def private static getImplementedMethodList(JvmDeclaredType declaredType, String methodName,
+		int parameterCount, Class<?>... parameterTypeRestrictions) {
+		val extension argumentChecker = new ArgumentRestrictionChecker(parameterTypeRestrictions, parameterCount)
+		declaredType.members.filter(JvmOperation).filter [
+			simpleName == methodName && confirmsToArgumentRestrictions
+		].toList
+	}
+
+	def package static findImplementedMethod(JvmDeclaredType type, String methodName,
+		Class<?>... parameterTypeRestrictions) {
+		type.findImplementedMethod(methodName, -1, parameterTypeRestrictions)
+	}
+
 	def package static findMethod(JvmDeclaredType type, String methodName, int parameterCount,
 		Class<?>... parameterTypeRestrictions) {
 		val extension argumentChecker = new ArgumentRestrictionChecker(parameterTypeRestrictions, parameterCount)
@@ -57,19 +88,31 @@ class JvmTypeProviderHelper {
 		return results.onlyResultFor('method', methodName, parameterTypeRestrictions, parameterCount, type)
 	}
 
-	def private static <T extends JvmMember> onlyResultFor(Collection<T> result, String memberType,
+	def private static <T extends JvmMember> onlyResultFor(Collection<T> result, String memberType, String memberName,
+		Class<?>[] parameterTypeRestrictions, int parameterCount, JvmDeclaredType type) {
+		result.maxOneResultFor(memberType, memberName, parameterTypeRestrictions, parameterCount, type).
+			atLeastOneResultFor(memberType, memberName, parameterTypeRestrictions, parameterCount, type)
+	}
+
+	def private static <T extends JvmMember> atLeastOneResultFor(Collection<T> result, String memberType,
 		String memberName, Class<?>[] parameterTypeRestrictions, int parameterCount, JvmDeclaredType type) {
 		if (result.size === 0) {
 			val description = description(memberType, memberName, parameterTypeRestrictions, parameterCount, type)
 			throw new IllegalStateException('''Could not find a «description»!''')
-		} else if (result.size > 1) {
+		}
+		return result.get(0)
+	}
+
+	def private static <T extends JvmMember> maxOneResultFor(Collection<T> result, String memberType, String memberName,
+		Class<?>[] parameterTypeRestrictions, int parameterCount, JvmDeclaredType type) {
+		if (result.size > 1) {
 			val description = description(memberType, memberName, parameterTypeRestrictions, parameterCount, type)
 			throw new IllegalStateException('''Found more that one «description»:
 			«FOR resultElement : result»
 				«resultElement.identifier»
 			«ENDFOR»''')
 		}
-		return result.get(0)
+		return result
 	}
 
 	def private static description(String memberType, String memberName, Class<?>[] parameterTypeRestrictions,
@@ -116,17 +159,18 @@ class JvmTypeProviderHelper {
 	def package static findAttribute(IJvmTypeProvider typeProvider, Class<?> clazz, String attributeName) {
 		typeProvider.findType(clazz).checkGenericType.findAttribute(attributeName)
 	}
-	
+
 	def package static findConstructor(JvmDeclaredType type, Class<?>... parameterTypeRestrictions) {
 		findConstructor(type, -1, parameterTypeRestrictions)
 	}
 
-	def package static findConstructor(JvmDeclaredType type, int parameterCount, Class<?>... parameterTypeRestrictions) {
+	def package static findConstructor(JvmDeclaredType type, int parameterCount,
+		Class<?>... parameterTypeRestrictions) {
 		val extension argumentChecker = new ArgumentRestrictionChecker(parameterTypeRestrictions, parameterCount)
-		val results = type.declaredConstructors.filter [confirmsToArgumentRestrictions].toList
+		val results = type.declaredConstructors.filter[confirmsToArgumentRestrictions].toList
 		return results.onlyResultFor('constructor', null, parameterTypeRestrictions, parameterCount, type)
 	}
-	
+
 	/**
 	 * Helper method to get array class references, as you cannot write
 	 * "Type[].class" in Xtend.

@@ -5,6 +5,7 @@ import org.eclipse.emf.ecore.EClass
 import tools.vitruv.dsls.commonalities.language.elements.impl.ResourceMetaclassImpl
 import tools.vitruv.extensions.dslruntime.commonalities.resources.ResourcesPackage
 
+// TODO remove once resources are handled by domains
 class ResourceMetaclassI extends ResourceMetaclassImpl implements Wrapper<EClass> {
 
 	static val RESOURCE_METACLASS_NAME = 'Resource'
