@@ -212,7 +212,7 @@ public final class TestUtil {
 				addTimestampAndMakeNameUnique, metamodels, changePropagationSpecifications, userInteracting);
 	}
 	
-	private static File createTestWorkspace() {
+	public static File createTestWorkspace() {
 		String testWorkspacePath = System.getProperty(VM_ARGUMENT_TEST_WORKSPACE_PATH);
 		File testWorkspace = null;
 		if (testWorkspacePath == null) {
@@ -232,8 +232,11 @@ public final class TestUtil {
 	}
 	
 	public static File createProjectFolder(String projectName, boolean addTimestampAndMakeNameUnique) {
-		File testWorkspace = createTestWorkspace();
-		File projectFolder = new File(testWorkspace, projectName);
+		return createProjectFolder(createTestWorkspace(), projectName, addTimestampAndMakeNameUnique);
+	}
+	
+	public static File createProjectFolder(File workspace, String projectName, boolean addTimestampAndMakeNameUnique) {
+		File projectFolder = new File(workspace, projectName);
 		if (addTimestampAndMakeNameUnique) {
 			projectFolder = addTimestampToProjectNameAndMakeUnique(projectFolder);
 		}
