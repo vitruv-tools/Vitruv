@@ -39,7 +39,7 @@ package class XbaseHelper {
 		]
 	}
 
-	// Neded to convince the Xtend type system.
+	// Needed to convince the Xtend type system.
 	def package static expressions(XExpression... expressions) {
 		Arrays.asList(expressions)
 	}
