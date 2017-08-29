@@ -167,6 +167,10 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 			detectWellKnownType(eClass, parameterName)
 			addInputElement(eClass, parameterName)
 		}
+		
+		def void model(EClass eClass, WellKnownModelInput wellKnown) {
+			wellKnown.apply(eClass)
+		}
 
 		def private detectWellKnownType(EClass eClass, String parameterName) {
 			switch (parameterName) {
@@ -176,21 +180,28 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 			}
 		}
 
-		def newValue() {
+		def WellKnownModelInput newValue() {
 			requireNewValue = true
+			return [valueType = it]
 		}
 
-		def oldValue() {
+		def WellKnownModelInput oldValue() {
 			requireOldValue = true
+			return [valueType = it]
 		}
 
-		def affectedEObject() {
+		def WellKnownModelInput affectedEObject() {
 			requireAffectedEObject = true
+			return [affectedObjectType = it]
 		}
 
 		def void plain(Class<?> javaClass, String parameterName) {
 			addInputElement(javaClass, parameterName)
 		}
+	}
+	
+	interface WellKnownModelInput {
+		def void apply(EClass type)
 	}
 
 	static class RetrieveModelElementMatcherStatementBuilder {
