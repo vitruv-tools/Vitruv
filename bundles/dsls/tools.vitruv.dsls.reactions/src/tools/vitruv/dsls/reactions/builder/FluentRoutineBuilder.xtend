@@ -270,11 +270,12 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 			new RetrieveModelElementMatcherStatementBuilder(builder, statement)
 		}
 
-		def void requireAbsenceOf(EClass absentMetaclass) {
+		def requireAbsenceOf(EClass absentMetaclass) {
 			val statement = (ReactionsLanguageFactory.eINSTANCE.createRetrieveModelElement => [
 				abscence = true
 			]).reference(absentMetaclass)
 			routine.matcher.matcherStatements += statement
+			return new RetrieveModelElementMatcherStatementCorrespondenceBuilder(builder, statement)
 		}
 
 		def void check(Function<RoutineTypeProvider, XExpression> expressionBuilder) {
