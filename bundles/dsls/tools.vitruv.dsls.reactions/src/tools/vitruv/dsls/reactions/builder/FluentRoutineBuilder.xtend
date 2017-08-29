@@ -295,6 +295,10 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 			builder.routine.action.actionStatements += statement
 			new CorrespondenceTargetBuilder(builder, statement)
 		}
+		
+		def call(String routineName, Consumer<RoutineStartBuilder> routineInitializer) {
+			// FIXME MK reuse FluentReactionBuilder.RoutineCallBuilder	
+		}
 	}
 
 	static class CreateStatementBuilder {

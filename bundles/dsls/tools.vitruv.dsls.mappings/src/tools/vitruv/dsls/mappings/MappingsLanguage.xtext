@@ -13,7 +13,6 @@ MappingsFile:
 ;
 
 MappingsSegment:
-	Documentable
 	'mappings:' name=ValidID
 	'for' leftDomain=DomainReference 
 	'and' rightDomain=DomainReference
