@@ -9,26 +9,6 @@ public class EMFCommandBridge {
 
     private EMFCommandBridge() {
     }
-
-    public static VitruviusTransformationRecordingCommand createVitruviusTransformationRecordingCommand(
-            final Callable<ChangePropagationResult> callable) {
-        final VitruviusTransformationRecordingCommand recordingCommand = new VitruviusTransformationRecordingCommand() {
-            @Override
-            protected void doExecute() {
-                try {
-                    ChangePropagationResult transformationResult = callable.call();
-                    if (null == transformationResult) {
-                        logger.warn(
-                                "Transformation change result is null. This indicates that the previous transformation had an error.");
-                    }
-                    this.transformationResult = transformationResult;
-                } catch (Throwable e) {
-                    storeAndRethrowException(e);
-                }
-            }
-        };
-        return recordingCommand;
-    }
    
     public static VitruviusRecordingCommand createVitruviusRecordingCommand(final Callable<Void> callable) {
         VitruviusRecordingCommand recordingCommand = new VitruviusRecordingCommand() {
@@ -43,7 +23,7 @@ public class EMFCommandBridge {
         };
         return recordingCommand;
     }
-
+    
     public static void executeVitruviusRecordingCommand(final TransactionalEditingDomain domain,
             final VitruviusRecordingCommand command) {
         command.setTransactionDomain(domain);

@@ -13,7 +13,6 @@ import tools.vitruv.framework.change.description.VitruviusChange
 import tools.vitruv.framework.change.processing.ChangePropagationSpecification
 import tools.vitruv.framework.change.processing.ChangePropagationSpecificationProvider
 import tools.vitruv.framework.correspondence.CorrespondenceProviding
-import tools.vitruv.framework.util.command.ChangePropagationResult
 import tools.vitruv.framework.util.command.EMFCommandBridge
 import tools.vitruv.framework.domains.repository.VitruvDomainRepository
 import org.eclipse.emf.ecore.resource.ResourceSet
@@ -71,6 +70,7 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 		val List<PropagatedChange> thisChangePropagationResult = new ArrayList
 		val changedResourcesTracker = new ChangedResourcesTracker();
 		propagateSingleChange(change, thisChangePropagationResult, changedResourcesTracker);
+		handleObjectsWithoutResource();
 		changedResourcesTracker.markNonSourceResourceAsChanged();
 		// FIXME HK This is not clear! VirtualModel knows how to save, we bypass that, but currently this is necessary
 		// because saving has to be performed before finishing propagation. Maybe we should move the observable to the VirtualModel
@@ -140,14 +140,11 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 		}
 		val changeDomain = change.changeDomain
 		val consequentialChanges = newArrayList();
-		val propagationResult = new ChangePropagationResult();
 		resourceRepository.startRecording;
 		for (propagationSpecification : changePropagationProvider.
 			getChangePropagationSpecifications(changeDomain)) {
-			propagateChangeForChangePropagationSpecification(change, propagationSpecification, propagationResult,
-				changedResourcesTracker);
+			propagateChangeForChangePropagationSpecification(change, propagationSpecification, changedResourcesTracker);
 		}
-		handleObjectsWithoutResource();
 		consequentialChanges += resourceRepository.endRecording();
 		consequentialChanges.forEach[logger.debug(it)];
 		propagatedChanges.add(
@@ -175,38 +172,24 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 	}
 
 	private def void propagateChangeForChangePropagationSpecification(TransactionalChange change,
-		ChangePropagationSpecification propagationSpecification, ChangePropagationResult propagationResult,
+		ChangePropagationSpecification propagationSpecification,
 		ChangedResourcesTracker changedResourcesTracker) {
 		val correspondenceModel = correspondenceProviding.getCorrespondenceModel();
 
 		// TODO HK: Clone the changes for each synchronization! Should even be cloned for
 		// each consistency repair routines that uses it,
 		// or: make them read only, i.e. give them a read-only interface!
-		val command = EMFCommandBridge.createVitruviusTransformationRecordingCommand([|
-			val propResult = propagationSpecification.propagateChange(change, correspondenceModel);
+		val command = EMFCommandBridge.createVitruviusRecordingCommand [
+			propagationSpecification.propagateChange(change, correspondenceModel, resourceRepository);
 			modelRepository.cleanupRootElements();
-			return propResult;
-		])
+			null
+		]
 		resourceRepository.executeRecordingCommandOnTransactionalDomain(command);
 
 		// Store modification information
 		val changedEObjects = command.getAffectedObjects().filter(EObject)
 		changedEObjects.forEach[changedResourcesTracker.addInvolvedModelResource(it.eResource)];
 		changedResourcesTracker.addSourceResourceOfChange(change);
-
-		executePropagationResult(command.transformationResult);
-		propagationResult.integrateResult(command.transformationResult);
-	}
-
-	def private void executePropagationResult(ChangePropagationResult changePropagationResult) {
-		if (null === changePropagationResult) {
-			logger.info("Current propagation result is null. Can not save new root EObjects.")
-			return;
-		}
-		val elementsToPersist = changePropagationResult.getElementToPersistenceMap();
-		for (element : elementsToPersist.keySet) {
-			resourceRepository.persistRootElement(elementsToPersist.get(element), element);
-		}
 	}
 
 	override objectCreated(EObject createdObject) {
