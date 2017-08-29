@@ -19,10 +19,8 @@
 			<plugin>
 				<groupId>org.eclipse.tycho</groupId>
 				<artifactId>tycho-surefire-plugin</artifactId>
-				<version>${tycho.version}</version>
 				<configuration>
-					<failIfNoTests>false</failIfNoTests>
-					<useUIHarness>true</useUIHarness>
+					<useUIHarness>false</useUIHarness>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -30,11 +28,11 @@
 				<artifactId>target-platform-configuration</artifactId>
 				<configuration>
 					<dependency-resolution>
+					      <optionalDependencies>require</optionalDependencies>
 						<extraRequirements>
-							<!-- to get the org.eclipse.osgi.compatibility.state plugin
-							if the target platform is Luna or later.
-							(backward compatible with kepler and previous versions)
-							see https://bugs.eclipse.org/bugs/show_bug.cgi?id=492149 -->
+							<!-- to get the org.eclipse.osgi.compatibility.state plugin if the 
+								target platform is Luna or later. (backward compatible with kepler and previous 
+								versions) see https://bugs.eclipse.org/bugs/show_bug.cgi?id=492149 -->
 							<requirement>
 								<type>eclipse-feature</type>
 								<id>org.eclipse.rcp</id>
@@ -47,7 +45,8 @@
 		</plugins>
 		<pluginManagement>
 			<plugins>
-				<!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
+				<!--This plugin's configuration is used to store Eclipse m2e settings 
+					only. It has no influence on the Maven build itself. -->
 				<plugin>
 					<groupId>org.eclipse.m2e</groupId>
 					<artifactId>lifecycle-mapping</artifactId>

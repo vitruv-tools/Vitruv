@@ -36,7 +36,6 @@ class IdentifiedExecutionTest extends CommonalitiesExecutionTest {
 			id2 = 'testid'
 		]
 		createAndSynchronizeModel(AllElementTypes2DomainProvider.sourceModelName, root)
-		println()
 	}
 	
 	def private String getSourceModelName(Class<? extends VitruvDomainProvider<?>> domain) {
