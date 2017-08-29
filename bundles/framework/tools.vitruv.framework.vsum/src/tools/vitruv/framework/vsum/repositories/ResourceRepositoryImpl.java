@@ -173,7 +173,9 @@ public class ResourceRepositoryImpl implements ModelRepository, CorrespondencePr
 
                 logger.debug("Create model with resource: " + resource);
                 TuidManager.getInstance().updateTuidsOfRegisteredObjects();
-                TuidManager.getInstance().flushRegisteredObjectsUnderModification();
+                // Usually we should deregister the object, but since we do not know if it was
+                // registered before and if the other objects should still be registered
+                // we cannot remove it or flush the registry
                 return null;
             }
         });

@@ -15,6 +15,7 @@ import tools.vitruv.extensions.dslsruntime.reactions.structure.Loggable
 import tools.vitruv.extensions.dslsruntime.reactions.effects.ReactionElementsHandlerImpl
 import tools.vitruv.framework.change.processing.ChangePropagationObservable
 import tools.vitruv.framework.util.command.ResourceAccess
+import tools.vitruv.framework.tuid.TuidManager
 
 abstract class AbstractRepairRoutineRealization extends CallHierarchyHaving implements RepairRoutine, ReactionElementsHandler {
 	private extension val ReactionExecutionState executionState;
@@ -101,9 +102,11 @@ abstract class AbstractRepairRoutineRealization extends CallHierarchyHaving impl
 
 			val _resourceURI = PersistenceHelper.getURIFromSourceProjectFolder(alreadyPersistedObject, persistencePath);
 			logger.debug("Registered to persist root " + elementToPersist + " in: " + VURI.getInstance(_resourceURI));
-
+			
+			// Update TUID after removal, as persistence will also change it and rely on an up-to-date value			
+			TuidManager.getInstance().registerObjectUnderModification(elementToPersist);
 			EcoreUtil.remove(elementToPersist);
-
+			TuidManager.getInstance().updateTuidsOfRegisteredObjects();
 			resourceAccess.persistAsRoot(elementToPersist, VURI.getInstance(_resourceURI));
 		}
 
