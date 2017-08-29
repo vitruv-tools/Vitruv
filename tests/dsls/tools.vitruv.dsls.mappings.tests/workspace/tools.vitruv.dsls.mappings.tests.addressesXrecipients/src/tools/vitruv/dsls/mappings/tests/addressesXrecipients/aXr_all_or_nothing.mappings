@@ -1,7 +1,7 @@
 import "http://edu.kit.ipd.sdq.mdsd.addresses" as ad
 import "http://edu.kit.ipd.sdq.mdsd.recipients" as re
 
-mappings: adXre for Addresses and Recipients
+mappings: aXr_all_or_nothing for Addresses and Recipients
 
 mapping AdRootXReRoot {
   map (ad::Addresses aRoot)
@@ -15,6 +15,7 @@ mapping AddressXRecipientLocationCity
 	a in rootXroot:aRoot.addresses
 	a.number > 0
 	a.zipCode != null
+	a.number > callSomeNonPureMethod()
     }
     and (re::Recipient r, re::Location l, re:City c) 
       with { 
@@ -24,6 +25,10 @@ mapping AddressXRecipientLocationCity
 	l.number > 0
 	r.locatedIn == c
 	c.zipCode != null
+	check {
+	}
+	enforce {
+	}
     }
     such that {
       a.number = l.number
@@ -39,3 +44,15 @@ mapping AddressXRecipientLocationCity
 // bidirectionalizable conditions: instances
 // calls to checks and all management of candidates and instancesare not shown in reactions but hidden in generic mapping code
 // calls to enforcements are shown in reactions
+
+
+
+//neu aufbauen aus resourcen
+//enforcen nicht direkt printen sondern für jeden Operator eine Klasse haben und deren enforce-Methode aufrufen
+//testen ob zweimal enforced wird
+//2phasig indem die Ergebnisse erst ganz am Ende in den Cache eingehängt werden?
+//execute statt call verwenden?
+//
+//update zum enforcen damit nur reactions->platform und nicht reactions->platform->xtendGen->reactions
+//auch zum checken routine?
+//attributeReference statt XExpressions etc.
