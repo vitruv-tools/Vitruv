@@ -14,7 +14,7 @@ public class DefaultContainmentMapping extends AbstractMappingRealization {
 	
 	@Override
 	public void applyEChange(EChange eChange, Blackboard blackboard, MappingExecutionState state) {
-		MIRMappingHelper.ensureContainments(state.getTransformationResult(), state::getAllAffectedEObjects, (objectToCreateContainmentFor) -> {
+		MIRMappingHelper.ensureContainments(state::getAllAffectedEObjects, (objectToCreateContainmentFor) -> {
 			state.addObjectForTuidUpdate(objectToCreateContainmentFor);
 			
 			VURI userChosenVuri = null;
@@ -25,7 +25,7 @@ public class DefaultContainmentMapping extends AbstractMappingRealization {
 				}
 			}
 			
-			state.getTransformationResult().registerForEstablishPersistence(objectToCreateContainmentFor, userChosenVuri);
+			state.getResourceAccess().persistAsRoot(objectToCreateContainmentFor, userChosenVuri);
 		});
 		
 		state.updateAllTuidsOfCachedObjects();

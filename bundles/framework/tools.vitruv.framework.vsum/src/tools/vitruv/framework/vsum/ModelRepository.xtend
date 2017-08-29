@@ -3,15 +3,14 @@ package tools.vitruv.framework.vsum
 import tools.vitruv.framework.util.datatypes.ModelInstance
 import tools.vitruv.framework.util.datatypes.VURI
 import java.util.function.Consumer
-import org.eclipse.emf.ecore.EObject
 import java.util.concurrent.Callable
 import tools.vitruv.framework.util.command.VitruviusRecordingCommand
 import org.eclipse.emf.ecore.resource.ResourceSet
 import tools.vitruv.framework.util.command.VitruviusRecordingCommandExecutor
 import tools.vitruv.framework.change.description.TransactionalChange
+import tools.vitruv.framework.util.command.ResourceAccess
 
-interface ModelRepository extends VitruviusRecordingCommandExecutor{
-	def void persistRootElement(VURI persistenceVuri, EObject rootElement);
+interface ModelRepository extends VitruviusRecordingCommandExecutor, ResourceAccess {
 	def ModelInstance getModel(VURI modelVuri);
 	def void forceReloadModelIfExisting(VURI modelVuri);
     def void saveAllModels();
