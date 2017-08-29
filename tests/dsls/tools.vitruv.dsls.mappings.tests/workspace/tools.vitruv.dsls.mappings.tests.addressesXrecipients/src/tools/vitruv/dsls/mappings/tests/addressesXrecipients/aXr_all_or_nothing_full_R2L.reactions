@@ -14,7 +14,7 @@ execute actions in Addresses
 /******************************************************
 ********** BEGIN GLOBAL REACTION AND ROUTINE **********
 *******************************************************/
-reaction AnyChange {
+reaction AnyChange { 
 	after any change
 	call {
 		ensureAllMappings()
@@ -47,7 +47,7 @@ routine ensureAdRootXReRootMapping() {
 routine deleteAdRootXReRootMappingInstances() {
 	action {
 		call {
-			val instances = adRootXReRootMapping.getRightInstances()
+			val instances = adRootXReRootMapping.getRightInstanceHalvesClone()
 			for (instance : instances) {
 				deleteAdRootXReRootMappingInstance(instance.RRoot)
 			}
@@ -76,7 +76,7 @@ routine deleteAdRootXReRootMappingInstance(re::Recipients rRoot) {
 routine createAdRootXReRootMappingInstances() {
 	action {
 		call {
-			val candidates = adRootXReRootMapping.getRightCandidates()
+			val candidates = adRootXReRootMapping.getRightCandidatesClone()
 			for (candidate : candidates) {
 				createAdRootXReRootMappingInstance(candidate.RRoot)
 			}
@@ -106,7 +106,7 @@ routine createAdRootXReRootMappingInstance(re::Recipients rRoot) {
 routine updateAdRootXReRootMappingInstances() {
 	action {
 		call {
-			val instances = adRootXReRootMapping.getRightInstances()
+			val instances = adRootXReRootMapping.getRightInstanceHalvesClone()
 			for (instance : instances) {
 				updateAdRootXReRootMappingInstance(instance.RRoot)
 			}
@@ -146,7 +146,7 @@ routine ensureAddressXRecipientLocationCityMapping() {
 routine deleteAddressXRecipientLocationCityMappingInstances() {
 	action {
 		call {
-			val instances = addressXRecipientLocationCityMapping.getRightInstances()
+			val instances = addressXRecipientLocationCityMapping.getRightInstanceHalvesClone()
 			for (instance : instances) {
 				deleteAddressXRecipientLocationCityMappingInstance(instance.rootXroot.RRoot, instance.r, instance.l, instance.c)
 			}
@@ -174,7 +174,7 @@ routine deleteAddressXRecipientLocationCityMappingInstance(re::Recipients rRoot,
 routine createAddressXRecipientLocationCityMappingInstances() {
 	action {
 		call {
-			val candidates = addressXRecipientLocationCityMapping.getRightCandidates()
+			val candidates = addressXRecipientLocationCityMapping.getRightCandidatesClone()
 			for (candidate : candidates) {
 				createAddressXRecipientLocationCityMappingInstance(candidate.rootXroot.RRoot, candidate.r, candidate.l, candidate.c)
 			}
@@ -209,7 +209,7 @@ routine createAddressXRecipientLocationCityMappingInstance(re::Recipients rRoot,
 routine updateAddressXRecipientLocationCityMappingInstances() {
 	action {
 		call {
-			val instances = addressXRecipientLocationCityMapping.getRightInstances()
+			val instances = addressXRecipientLocationCityMapping.getRightInstanceHalvesClone()
 			for (instance : instances) {
 				updateAddressXRecipientLocationCityMappingInstance(instance.rootXroot.RRoot, instance.r, instance.l, instance.c)
 			}

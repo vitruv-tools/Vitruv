@@ -12,7 +12,7 @@ class AddressXRecipientLocationCityConditions {
 	static val singleton = new AddressXRecipientLocationCityConditions
 	
 	private new() {
-		// empty
+		// empty singleton constructor
 	}
 	
 	static def addressXRecipientLocationCityConditions() {
@@ -26,7 +26,7 @@ class AddressXRecipientLocationCityConditions {
 		&& a.zipCode != null
 	}
 		
-	def void enforceLeftConditions(Addresses aRoot, Address a) {
+	private def void enforceLeftConditions(Addresses aRoot, Address a) {
 		// enforce a in rootXroot:aRoot.addresses
 		aRoot.addresses.add(a)
 		// enforce a.number > 0
@@ -49,7 +49,7 @@ class AddressXRecipientLocationCityConditions {
 		&& c.zipCode != null
 	}
 	
-	def void enforceRightConditions(Recipients rRoot, Recipient r, Location l, City c) {
+	private def void enforceRightConditions(Recipients rRoot, Recipient r, Location l, City c) {
 		// enforce r in rootXroot:rRoot.recipients
 		rRoot.recipients.add(r)
 		// enforce r.business == true

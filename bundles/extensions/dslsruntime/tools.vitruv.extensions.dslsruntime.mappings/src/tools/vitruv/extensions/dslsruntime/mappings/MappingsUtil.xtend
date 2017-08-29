@@ -19,7 +19,8 @@ class MappingsUtil {
 	}
 	
 	/**
-	 * Returns the cartesian product of the given sets. Used by generated Mapping code for computing all mapping candidate combinations.
+	 * Returns the cartesian product of the given sets. 
+	 * Used by generated mapping code for computing all mapping candidate combinations.
 	 */
 	def static <T> Iterable<List<T>> cartesianProduct(Set<? extends T>... sets) {
 		return Sets.cartesianProduct(sets)

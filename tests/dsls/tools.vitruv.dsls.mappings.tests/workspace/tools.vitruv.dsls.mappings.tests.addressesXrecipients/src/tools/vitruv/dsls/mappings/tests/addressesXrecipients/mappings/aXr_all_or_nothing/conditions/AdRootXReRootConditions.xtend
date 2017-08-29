@@ -8,7 +8,7 @@ class AdRootXReRootConditions {
 	static val singleton = new AdRootXReRootConditions
 	
 	private new() {
-		// empty
+		// empty singleton constructor
 	}
 	
 	static def adRootXReRootConditions() {
@@ -19,23 +19,25 @@ class AdRootXReRootConditions {
 		return MappingsUtil.allElementsStillExisting(aRoot)
 	}
 		
-	def void enforceLeftConditions(Addresses aRoot) {
-		// empty
+	private def void enforceLeftConditions(Addresses aRoot) {
+		// empty (no single-sided conditions for left side)
 	}
 	
 	def boolean checkRightConditions(Recipients rRoot) {
 		return MappingsUtil.allElementsStillExisting(rRoot)
 	}
 	
-	def void enforceRightConditions(Recipients rRoot) {
-		// empty
+	private def void enforceRightConditions(Recipients rRoot) {
+		// empty (no single-sided conditions for right side)
 	}
 	
 	def void enforceConditionsFromLeftToRight(Addresses aRoot, Recipients rRoot) {
 		enforceRightConditions(rRoot)
+		// empty (no bidirectionalizable conditions)
 	}
 	
 	def void enforceConditionsFromRightToLeft(Addresses aRoot, Recipients rRoot) {
 		enforceLeftConditions(aRoot)
+		// empty (no bidirectionalizable conditions)
 	}
 }

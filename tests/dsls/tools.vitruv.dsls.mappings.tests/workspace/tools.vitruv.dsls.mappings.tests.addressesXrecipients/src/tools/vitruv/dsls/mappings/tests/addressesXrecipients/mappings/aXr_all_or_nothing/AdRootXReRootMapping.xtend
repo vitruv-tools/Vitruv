@@ -10,7 +10,9 @@ import tools.vitruv.extensions.dslsruntime.mappings.AbstractMappingRuntime
 class AdRootXReRootMapping extends AbstractMappingRuntime<LeftAdRootXReRootInstanceHalf,RightAdRootXReRootInstanceHalf> {
 	static val singleton = new AdRootXReRootMapping
 	
-	extension AdRootXReRootCandidatesGenerator = new AdRootXReRootCandidatesGenerator(this)
+	// no dependencies to other mappings
+	
+	extension AdRootXReRootCandidatesGenerator = new AdRootXReRootCandidatesGenerator(registry.elementsRegistry)
 
 	private new() {
 		super("AdRootXReRootMapping")
@@ -20,49 +22,40 @@ class AdRootXReRootMapping extends AbstractMappingRuntime<LeftAdRootXReRootInsta
 		return singleton
 	}
 	
-	/********** BEGIN PUBLIC ELEMENT METHODS **********/
+	/********** BEGIN PUBLIC LEFT ELEMENT METHODS **********/
 	def void addAddresses(Addresses addresses) {
-		mappingRegistry.addElement(Addresses, addresses)
+		registry.elementsRegistry.addElement(Addresses, addresses)
 		val newLeftCandidates = getNewCandidatesForAddresses(addresses)
-		mappingRegistry.addLeftCandidates(newLeftCandidates)
+		registry.leftAndRightRegistry.addLeftCandidates(newLeftCandidates)
 	}
 	
 	def void removeAddresses(Addresses addresses) {
-		mappingRegistry.removeLeftCandidatesForElement(Addresses, addresses)
-	}
-	
-	def void addRecipients(Recipients recipients) {
-		mappingRegistry.addElement(Recipients, recipients)
-		val newRightCandidates = getNewCandidatesForRecipients(recipients)
-		mappingRegistry.addRightCandidates(newRightCandidates)
-	}
-	
-	def void removeRecipients(Recipients recipients) {
-		mappingRegistry.removeRightCandidatesForElement(Recipients, recipients)
+		registry.removeLeftElementAndCandidates(Addresses, addresses)
 	}
 	
 	def void registerLeftElementsAndPromoteCandidates(Addresses aRoot, Recipients rRoot) {
 		addAddresses(aRoot)
-		mappingRegistry.promoteValidatedCandidatesToInstances(#[aRoot], #[rRoot])
+		registry.promoteValidatedCandidatesToInstances(#[aRoot], #[rRoot])
+	}
+	
+	/********** BEGIN PUBLIC RIGHT ELEMENT METHODS **********/
+	def void addRecipients(Recipients recipients) {
+		registry.elementsRegistry.addElement(Recipients, recipients)
+		val newRightCandidates = getNewCandidatesForRecipients(recipients)
+		registry.leftAndRightRegistry.addRightCandidates(newRightCandidates)
+	}
+	
+	def void removeRecipients(Recipients recipients) {
+		registry.removeRightElementAndCandidates(Recipients, recipients)
 	}
 	
 	def void registerRightElementsAndPromoteCandidates(Addresses aRoot, Recipients rRoot) {
 		addRecipients(rRoot)
-		mappingRegistry.promoteValidatedCandidatesToInstances(#[aRoot], #[rRoot])
+		registry.promoteValidatedCandidatesToInstances(#[aRoot], #[rRoot])
 	}
 	
 	/********** BEGIN PUBLIC INSTANCE METHODS **********/
-	def void registerLeftInstanceHalf(Addresses aRoot, Recipients rRoot) {
-		val leftInstance = new LeftAdRootXReRootInstanceHalf(aRoot)
-		mappingRegistry.addLeftInstanceHalf(leftInstance)
-	}
-	
-	def void registerRightInstanceHalf(Addresses aRoot, Recipients rRoot) {
-		val rightInstance = new RightAdRootXReRootInstanceHalf(rRoot)
-		mappingRegistry.addRightInstanceHalf(rightInstance)
-	}
-	
 	def void removeInvalidatedInstanceHalves(Addresses aRoot, Recipients rRoot) {
-		mappingRegistry.removeInvalidatedInstanceHalves(#[aRoot], #[rRoot])
+		registry.removeInvalidatedInstanceHalves(#[aRoot], #[rRoot])
 	}
 }

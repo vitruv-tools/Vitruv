@@ -1,4 +1,4 @@
-package tools.vitruv.extensions.dslsruntime.mappings
+package tools.vitruv.extensions.dslsruntime.mappings.registry
 
 import java.util.List
 import org.eclipse.emf.ecore.EObject

@@ -2,9 +2,10 @@ package tools.vitruv.dsls.mappings.tests.addressesXrecipients.mappings.aXr_all_o
 
 import edu.kit.ipd.sdq.mdsd.addresses.Address
 import org.eclipse.xtend.lib.annotations.Data
-import tools.vitruv.extensions.dslsruntime.mappings.MappingInstanceHalf
+import tools.vitruv.extensions.dslsruntime.mappings.registry.MappingInstanceHalf
 
-@Data class LeftAddressXRecipientLocationCityInstanceHalf implements MappingInstanceHalf {
+@Data 
+class LeftAddressXRecipientLocationCityInstanceHalf implements MappingInstanceHalf {
 	LeftAdRootXReRootInstanceHalf rootXroot
 	Address a
 	

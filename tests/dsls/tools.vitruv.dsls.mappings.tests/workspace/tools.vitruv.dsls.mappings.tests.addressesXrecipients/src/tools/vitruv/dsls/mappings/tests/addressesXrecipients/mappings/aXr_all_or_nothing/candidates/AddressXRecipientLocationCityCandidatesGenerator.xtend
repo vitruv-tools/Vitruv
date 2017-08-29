@@ -9,14 +9,14 @@ import edu.kit.ipd.sdq.mdsd.recipients.City
 import tools.vitruv.dsls.mappings.tests.addressesXrecipients.mappings.aXr_all_or_nothing.AdRootXReRootMapping
 import tools.vitruv.extensions.dslsruntime.mappings.MappingsUtil
 import tools.vitruv.dsls.mappings.tests.addressesXrecipients.mappings.aXr_all_or_nothing.halves.LeftAdRootXReRootInstanceHalf
-import tools.vitruv.extensions.dslsruntime.mappings.ElementRuntime
 import tools.vitruv.dsls.mappings.tests.addressesXrecipients.mappings.aXr_all_or_nothing.halves.RightAdRootXReRootInstanceHalf
+import tools.vitruv.extensions.dslsruntime.mappings.registry.IElementsRegistry
 
 class AddressXRecipientLocationCityCandidatesGenerator {
 	val AdRootXReRootMapping rootXrootMapping
-	val ElementRuntime candidateElementsRuntime
+	val IElementsRegistry candidateElementsRuntime
 	
-	new(AdRootXReRootMapping rootXrootMapping, ElementRuntime candidateElementsRuntime) {
+	new(AdRootXReRootMapping rootXrootMapping, IElementsRegistry candidateElementsRuntime) {
 		this.rootXrootMapping = rootXrootMapping
 		this.candidateElementsRuntime = candidateElementsRuntime
 	}

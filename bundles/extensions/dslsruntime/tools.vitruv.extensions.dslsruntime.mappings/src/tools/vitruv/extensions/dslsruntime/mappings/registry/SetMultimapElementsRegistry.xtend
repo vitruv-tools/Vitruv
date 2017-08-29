@@ -1,12 +1,12 @@
-package tools.vitruv.extensions.dslsruntime.mappings
+package tools.vitruv.extensions.dslsruntime.mappings.registry
 
 import com.google.common.collect.SetMultimap
 import org.eclipse.emf.ecore.EObject
 import com.google.common.collect.HashMultimap
 import java.util.Set
 
-abstract class AbstractElementRuntime implements ElementRuntime {
-	val SetMultimap<Class<?>, EObject> elementsMap
+class SetMultimapElementsRegistry implements IElementsRegistry {
+	val SetMultimap<Class<? extends EObject>, EObject> elementsMap
 	val String mappingName
 
 	new(String mappingName) {
@@ -14,7 +14,7 @@ abstract class AbstractElementRuntime implements ElementRuntime {
 		this.mappingName = mappingName
 	}
 	
-	override <C> Set<?> getElements(Class<C> clazz) {
+	override <C extends EObject> Set<? extends EObject> getElements(Class<C> clazz) {
 		return elementsMap.get(clazz)
 	}
 	
@@ -26,7 +26,7 @@ abstract class AbstractElementRuntime implements ElementRuntime {
 		}
 	}
 	
-	protected def <C> void removeElement(Class<C> clazz, C element) {
+	override def <C extends EObject> void removeElement(Class<C> clazz, C element) {
 		val wasMapped = elementsMap.remove(clazz, element)
 		if (!wasMapped) {
 			throw new IllegalStateException('''Cannot deregister the element '«element»' for the mapping '«mappingName»'

@@ -1,4 +1,4 @@
-package tools.vitruv.extensions.dslsruntime.mappings
+package tools.vitruv.extensions.dslsruntime.mappings.registry
 
 import java.util.List
 import java.util.Map
@@ -6,8 +6,8 @@ import java.util.Set
 import org.apache.log4j.Logger
 import org.eclipse.emf.ecore.EObject
 
-class MappingRegistryHalf<H extends MappingInstanceHalf> {
-	static extension Logger LOGGER = Logger.getLogger(MappingRegistryHalf.getSimpleName())
+class HashMapCandidatesAndInstanceHalvesRegistry<H extends MappingInstanceHalf> {
+	static extension Logger LOGGER = Logger.getLogger(HashMapCandidatesAndInstanceHalvesRegistry.getSimpleName())
 	val String mappingName
 	val String sideName
 	val Map<List<EObject>,H> candidatesRegistry = newHashMap()
@@ -19,24 +19,24 @@ class MappingRegistryHalf<H extends MappingInstanceHalf> {
 	}
 	
 	/********** BEGIN GETTER METHODS **********/
-	def Iterable<H> getCandidates() {
-		return candidatesRegistry.values
+	protected def Iterable<H> getCandidatesClone() {
+		return candidatesRegistry.values.clone
 	}
 	
-	def Iterable<H> getInstanceHalves() {
-		return instanceHalvesRegistry.values
+	protected def Iterable<H> getInstanceHalvesClone() {
+		return instanceHalvesRegistry.values.clone
 	}
 	
-	def H getCandidateForElements(List<Object> elements) {
+	protected def H getCandidateForElements(List<Object> elements) {
 		return candidatesRegistry.get(elements)
 	}
 	
-	def H getInstanceHalfForElements(List<Object> elements) {
+	protected def H getInstanceHalfForElements(List<Object> elements) {
 		return instanceHalvesRegistry.get(elements)
 	}
 	
 	/********** BEGIN SETTER METHODS **********/	
-	def void addCandidates(Iterable<H> candidates) {
+	protected def void addCandidates(Iterable<H> candidates) {
 		candidates.forEach[addCandidatesOrInstanceHalf(candidatesRegistry, it, "candidate")]
 	}
 	
@@ -44,11 +44,11 @@ class MappingRegistryHalf<H extends MappingInstanceHalf> {
 		removeCandidateOrInstanceHalf(candidatesRegistry, candidate, "candidate")
 	}
 	
-	def void addInstanceHalf(H instanceHalf) {
+	private def void addInstanceHalf(H instanceHalf) {
 		addCandidatesOrInstanceHalf(instanceHalvesRegistry, instanceHalf, "instance half")
 	}
 	
-	def void removeInstanceHalf(H instanceHalf) {
+	protected def void removeInstanceHalf(H instanceHalf) {
 		removeCandidateOrInstanceHalf(instanceHalvesRegistry, instanceHalf, "instance half")
 	}
 	
@@ -74,7 +74,7 @@ class MappingRegistryHalf<H extends MappingInstanceHalf> {
 			and the «sideName» elements '«candidateOrInstanceHalf.getElements()» because «mapped»was registered for these elements!'''
 	
 	/********** BEGIN CANDIDATE METHODS **********/
-	def void removeCandidatesForElement(EObject element) {
+	protected def void removeCandidatesForElement(EObject element) {
 		val iterator = candidatesRegistry.keySet().iterator()
 		var atLeastOneSetRemoved = false
 		while (iterator.hasNext()) {
@@ -90,15 +90,15 @@ class MappingRegistryHalf<H extends MappingInstanceHalf> {
 		}
 	}
 	
-	def Set<H> getCandidatesAndInstances() {
+	protected def Set<H> getCandidatesAndInstances() {
 		val candidatesAndInstances = newHashSet()
-		candidatesAndInstances.addAll(candidates)
-		candidatesAndInstances.addAll(instanceHalves)
+		candidatesAndInstances.addAll(candidatesClone)
+		candidatesAndInstances.addAll(instanceHalvesClone)
 		return candidatesAndInstances
 	}
 
 	/********** BEGIN INSTANCE METHODS **********/
-	def promoteCandidateToInstanceHalf(H candidate) {
+	protected def void promoteCandidateToInstanceHalf(H candidate) {
 		removeCandidate(candidate)
 		addInstanceHalf(candidate)
 	}
