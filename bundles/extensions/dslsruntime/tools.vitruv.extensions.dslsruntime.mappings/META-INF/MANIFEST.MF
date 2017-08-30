@@ -11,7 +11,8 @@ Require-Bundle: com.google.guava,
  org.eclipse.xtend.lib.macro,
  org.apache.log4j,
  org.eclipse.emf.ecore,
- edu.kit.ipd.sdq.activextendannotations
+ edu.kit.ipd.sdq.activextendannotations,
+ edu.kit.ipd.sdq.commons.util.java
 Export-Package: tools.vitruv.extensions.dslsruntime.mappings,
- tools.vitruv.extensions.dslsruntime.mappings.registry
+ tools.vitruv.extensions.dslsruntime.mappings.interfaces
 

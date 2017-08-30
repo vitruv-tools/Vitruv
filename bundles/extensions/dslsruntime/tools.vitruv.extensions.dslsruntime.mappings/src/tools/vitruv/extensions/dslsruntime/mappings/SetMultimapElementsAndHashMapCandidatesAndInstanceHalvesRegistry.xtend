@@ -1,16 +1,27 @@
-package tools.vitruv.extensions.dslsruntime.mappings.registry
+package tools.vitruv.extensions.dslsruntime.mappings
 
 import java.util.List
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.xtend.lib.annotations.Accessors
 import org.eclipse.xtend.lib.annotations.Delegate
+import tools.vitruv.extensions.dslsruntime.mappings.interfaces.IElementsRegistry
+import tools.vitruv.extensions.dslsruntime.mappings.interfaces.IMappingInstanceHalf
+import tools.vitruv.extensions.dslsruntime.mappings.interfaces.IMappingRegistry
+import tools.vitruv.extensions.dslsruntime.mappings.interfaces.IBothSidesCombiningRegistry
 
-class SetMultimapElementsAndHashMapCandidatesAndInstanceHalvesRegistry<L extends MappingInstanceHalf, R extends MappingInstanceHalf> implements IElementsCandidatesAndInstanceHalvesRegistry<L,R>, CandidatesAndInstanceHalves4ReactionsRegistry<L,R> {
-	@Accessors(PUBLIC_GETTER)
+/**
+ * An object of this class maintains runtime information about instances of relevant
+ * metaclasses, current instances and candidates for instances of a certain mapping
+ * by using a registry for the metaclass instances (also called elements), and 
+ * another registry that combines two registries for left and right instantiation halves and candidates
+ * for these halves.
+ */
+class SetMultimapElementsAndHashMapCandidatesAndInstanceHalvesRegistry<L extends IMappingInstanceHalf, R extends IMappingInstanceHalf> implements IBothSidesCombiningRegistry<L,R>, IMappingRegistry<L,R> {
+	@Accessors(PROTECTED_GETTER)
 	val IElementsRegistry elementsRegistry
-	@Accessors(PUBLIC_GETTER)
+	@Accessors(PROTECTED_GETTER)
 	@Delegate
-	val ILeftAndRightInstanceHalvesRegistry<L,R> leftAndRightRegistry
+	val HashMapLeftAndRightInstanceHalfRegistry<L,R> leftAndRightRegistry
 	
 	new(String mappingName) {
 		this.leftAndRightRegistry = new HashMapLeftAndRightInstanceHalfRegistry(mappingName)

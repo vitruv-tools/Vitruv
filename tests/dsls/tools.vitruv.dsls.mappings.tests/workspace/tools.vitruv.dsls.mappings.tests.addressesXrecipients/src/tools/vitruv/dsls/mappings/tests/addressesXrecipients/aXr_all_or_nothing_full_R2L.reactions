@@ -9,7 +9,7 @@ import "http://edu.kit.ipd.sdq.mdsd.addresses" as ad
 
 reactions: adXre_R2L 
 in reaction to changes in Recipients
-execute actions in Addresses
+execute actions in Addresses 
 
 /******************************************************
 ********** BEGIN GLOBAL REACTION AND ROUTINE **********

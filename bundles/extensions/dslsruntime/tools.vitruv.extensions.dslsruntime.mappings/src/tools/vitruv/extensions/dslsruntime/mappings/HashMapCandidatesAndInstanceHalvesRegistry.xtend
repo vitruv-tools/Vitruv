@@ -1,12 +1,19 @@
-package tools.vitruv.extensions.dslsruntime.mappings.registry
+package tools.vitruv.extensions.dslsruntime.mappings
 
 import java.util.List
 import java.util.Map
 import java.util.Set
 import org.apache.log4j.Logger
 import org.eclipse.emf.ecore.EObject
+import tools.vitruv.extensions.dslsruntime.mappings.interfaces.IMappingInstanceHalf
 
-class HashMapCandidatesAndInstanceHalvesRegistry<H extends MappingInstanceHalf> {
+/**
+ * An object of this class keeps track of current mapping instantiations and of candidates, which are combinations
+ * of model elements that can become future mapping instantiations, for <b>one side of a certain mapping</b>.
+ * That is, two objects of this class are necessary to keep track of the left and the right half of each 
+ * mapping instantiation and each mapping instantiation candidate.
+ */
+class HashMapCandidatesAndInstanceHalvesRegistry<H extends IMappingInstanceHalf> {
 	static extension Logger LOGGER = Logger.getLogger(HashMapCandidatesAndInstanceHalvesRegistry.getSimpleName())
 	val String mappingName
 	val String sideName
