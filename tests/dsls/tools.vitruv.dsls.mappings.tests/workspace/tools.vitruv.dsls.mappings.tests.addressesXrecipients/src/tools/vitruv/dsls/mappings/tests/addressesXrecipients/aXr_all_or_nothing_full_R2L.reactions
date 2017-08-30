@@ -94,11 +94,30 @@ routine createAdRootXReRootMappingInstance(re::Recipients rRoot) {
 		val aRoot = create ad::Addresses
 		add correspondence between aRoot and rRoot
 			tagged with "AdRootXReRootMapping"
+		call {
+			enforceAdRootXReRootMappingConditionsFromRightToLeft(aRoot, rRoot)
+		}
 		execute {
 			adRootXReRootMapping.registerLeftElementsAndPromoteCandidates(aRoot, rRoot)
-			adRootXReRootConditions.enforceConditionsFromRightToLeft(aRoot, rRoot)
 			persistProjectRelative(rRoot, aRoot, rRoot.eResource.URI.trimFileExtension.lastSegment + "." + AddressesNamespace.FILE_EXTENSION)
 		}
+	}
+}
+
+routine enforceLeftAdRootXReRootMappingConditions(ad::Addresses aRoot) {
+	action {
+		update aRoot {	
+			// no single-sided conditions for aRoot
+		}
+	}
+}
+
+routine enforceAdRootXReRootMappingConditionsFromRightToLeft(ad::Addresses aRoot, re::Recipients rRoot) {
+	action {
+		call { 
+			enforceLeftAdRootXReRootMappingConditions(aRoot)
+		}
+		// no bidirectionalizable conditions for aRoot
 	}
 }
 
@@ -123,8 +142,8 @@ routine updateAdRootXReRootMappingInstance(re::Recipients rRoot) {
 			tagged with "AdRootXReRootMapping"
 	}
 	action {
-		execute {
-			adRootXReRootConditions.enforceConditionsFromRightToLeft(aRoot, rRoot)
+		call {
+			enforceAdRootXReRootMappingConditionsFromRightToLeft(aRoot, rRoot)
 		}
 	}
 }
@@ -198,9 +217,43 @@ routine createAddressXRecipientLocationCityMappingInstance(re::Recipients rRoot,
 			tagged with "AddressXRecipientLocationCityMapping"
 		add correspondence between a and c
 			tagged with "AddressXRecipientLocationCityMapping"
+		call {
+			enforceAddressXRecipientLocationCityMappingConditionsFromRightToLeft(aRoot, rRoot, a, r, l, c)
+		}
 		execute {
 			addressXRecipientLocationCityMapping.registerLeftElementsAndPromoteCandidates(aRoot, rRoot, a, r, l, c)
-			addressXRecipientLocationCityConditions.enforceConditionsFromRightToLeft(aRoot, rRoot, a, r, l, c)
+		}
+	}
+}
+
+routine enforceLeftAddressXRecipientLocationCityMappingConditions(ad::Addresses aRoot, ad::Address a) {
+	action {
+		update aRoot {
+			// enforce a in rootXroot:aRoot.addresses
+			aRoot.addresses.add(a)
+		}
+		update a {
+			// enforce a.number > 0
+	      	if (a.number <= 0) {
+				a.number = 0
+			}
+	      	// enforce a.zipCode != null
+	      	if (a.zipCode === null) {
+				a.zipCode == ""
+			}
+		}
+	}
+}
+
+routine enforceAddressXRecipientLocationCityMappingConditionsFromRightToLeft(ad::Addresses aRoot, re::Recipients rRoot, ad::Address a, re::Recipient r, re::Location l, re::City c) {
+	action {
+		call {
+			enforceLeftAddressXRecipientLocationCityMappingConditions(aRoot, a)
+		}
+		update a {
+			a.number = l.number
+			a.street = l.street
+			a.zipCode = c.zipCode
 		}
 	}
 }
@@ -228,8 +281,8 @@ routine updateAddressXRecipientLocationCityMappingInstance(re::Recipients rRoot,
 		}
 	}
 	action {
-		execute {
-			addressXRecipientLocationCityConditions.enforceConditionsFromRightToLeft(aRoot, rRoot, a, r, l, c)
+		call {
+			enforceAddressXRecipientLocationCityMappingConditionsFromRightToLeft(aRoot, rRoot, a, r, l, c)
 		}
 	}
 }
