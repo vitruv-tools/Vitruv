@@ -1,15 +1,16 @@
 package tools.vitruv.dsls.reactions.builder
 
+import org.eclipse.emf.ecore.resource.Resource
+import org.eclipse.xtend.lib.annotations.Accessors
 import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsFile
 import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsLanguageFactory
-import static com.google.common.base.Preconditions.*
-import org.eclipse.xtend.lib.annotations.Accessors
-import org.eclipse.emf.ecore.resource.Resource
 
-@Accessors(PACKAGE_GETTER)
+import static com.google.common.base.Preconditions.*
+
 class FluentReactionsFileBuilder extends FluentReactionElementBuilder {
 
 	val ReactionsFile reactionsFile = ReactionsLanguageFactory.eINSTANCE.createReactionsFile
+	
 	@Accessors(PUBLIC_GETTER)
 	var String fileName
 
@@ -21,7 +22,7 @@ class FluentReactionsFileBuilder extends FluentReactionElementBuilder {
 	override protected attachmentPreparation() {
 		super.attachmentPreparation()
 		checkState(reactionsFile.reactionsSegments.size >
-			0, '''No reaction segments were added to this reactions file («fileName»)!''')	}
+			0, '''No reactions segments were added to this reactions file («fileName»)!''')	}
 
 	def package start() {
 		readyToBeAttached = true
@@ -29,7 +30,7 @@ class FluentReactionsFileBuilder extends FluentReactionElementBuilder {
 	}
 
 	def attachTo(Resource resource) {
-		triggerBeforeAttached(reactionsFile)
+		triggerBeforeAttached(reactionsFile, resource)
 		val resourceContentLength = resource.contents.size 
 		resource.contents += reactionsFile
 		

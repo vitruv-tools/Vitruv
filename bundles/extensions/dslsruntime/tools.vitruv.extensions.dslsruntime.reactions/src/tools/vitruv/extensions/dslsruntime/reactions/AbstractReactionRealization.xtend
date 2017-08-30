@@ -26,8 +26,6 @@ abstract class AbstractReactionRealization extends CallHierarchyHaving implement
 				TuidManager.instance.flushRegisteredObjectsUnderModification();	
 			}
 		}
-		
-		return executionState.transformationResult;
 	}
 	
 	protected def void executeReaction(EChange change);

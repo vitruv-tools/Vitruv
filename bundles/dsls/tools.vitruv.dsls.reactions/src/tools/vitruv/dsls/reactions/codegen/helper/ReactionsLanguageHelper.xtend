@@ -1,6 +1,5 @@
 package tools.vitruv.dsls.reactions.codegen.helper
 
-import org.eclipse.emf.ecore.EClass
 import org.eclipse.xtext.nodemodel.util.NodeModelUtils
 import org.eclipse.xtext.xbase.XExpression
 import org.eclipse.xtext.xbase.XBlockExpression
@@ -15,6 +14,9 @@ import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsFile
 import org.eclipse.emf.ecore.resource.Resource
 import static com.google.common.base.Preconditions.*
 import tools.vitruv.framework.domains.VitruvDomainProviderRegistry
+import tools.vitruv.dsls.reactions.api.generator.ReferenceClassNameAdapter
+import org.eclipse.emf.ecore.EObject
+import org.eclipse.emf.ecore.EClassifier
 
 final class ReactionsLanguageHelper {
 	private new() {
@@ -32,9 +34,17 @@ final class ReactionsLanguageHelper {
 	public static def dispatch String getXBlockExpressionText(SimpleTextXBlockExpression blockExpression) {
 		blockExpression.text.toString;
 	}
+	
+	private static def getOptionalReferenceAdapter(EObject element) {
+		element.eAdapters.findFirst [isAdapterForType(ReferenceClassNameAdapter)] as ReferenceClassNameAdapter
+	}
 
-	public static def getJavaClassName(EClass element) {
-		element.instanceClassName;
+	public static def getJavaClassName(EClassifier eClassifier) {
+		eClassifier.optionalReferenceAdapter?.qualifiedNameForReference ?: eClassifier.instanceClassName
+	}
+	
+	public static def getRuntimeClassName(EObject element) {
+		element.optionalReferenceAdapter?.qualifiedNameForReference ?: element.class.canonicalName
 	}
 
 	public static def getJavaClassName(MetaclassReference metaclassReference) {

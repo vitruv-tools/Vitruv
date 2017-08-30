@@ -43,14 +43,14 @@ class RoutineFacadeClassGenerator extends ClassGenerator {
 
 	private def JvmOperation generateCallMethod(Routine routine) {
 		val routineNameGenerator = routine.routineClassNameGenerator;
-		routine.associatePrimary(routine.toMethod(routine.name, typeRef(Void.TYPE)) [
+		routine.associatePrimary(routine.toMethod(routine.name, typeRef(Boolean.TYPE)) [
 			visibility = JvmVisibility.PUBLIC;
 			parameters +=
 				generateMethodInputParameters(routine.input.modelInputElements, routine.input.javaInputElements);
 			body = '''
 				«routineNameGenerator.qualifiedName» effect = new «routineNameGenerator.qualifiedName»(this.executionState, «EFFECT_FACADE_CALLED_BY_FIELD_NAME»«
 					»«FOR parameter : parameters BEFORE ', ' SEPARATOR ', '»«parameter.name»«ENDFOR»);
-				effect.applyRoutine();
+				return effect.applyRoutine();
 			'''
 		])
 	}

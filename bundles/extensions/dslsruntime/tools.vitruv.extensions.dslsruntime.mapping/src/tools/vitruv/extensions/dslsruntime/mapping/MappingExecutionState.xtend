@@ -15,12 +15,12 @@ import static extension tools.vitruv.framework.util.bridges.JavaHelper.*
 import tools.vitruv.framework.userinteraction.UserInteracting
 import tools.vitruv.framework.correspondence.CorrespondenceModel
 import tools.vitruv.framework.correspondence.Correspondence
-import tools.vitruv.framework.util.command.ChangePropagationResult
 import tools.vitruv.framework.vsum.ModelRepository
+import tools.vitruv.framework.util.command.ResourceAccess
 
 @Accessors(PUBLIC_GETTER)
 class MappingExecutionState {
-	private final ChangePropagationResult transformationResult
+	private final ResourceAccess resourceAccess
 	private final UserInteracting userInteracting
 	
 	private Map<EObject, Map<CorrespondenceModel, List<Tuid>>> oldTuidMap = newHashMap
@@ -35,9 +35,9 @@ class MappingExecutionState {
 	
 	private final List<Resource> resourcesToSave = newArrayList
 	
-	new(ChangePropagationResult transformationResult, UserInteracting userInteracting, Blackboard bb) {
+	new(ResourceAccess resourceAccess, UserInteracting userInteracting, Blackboard bb) {
 		super()
-		this.transformationResult = transformationResult
+		this.resourceAccess = resourceAccess
 		this.userInteracting = userInteracting
 		this.mci = bb.correspondenceModel as MappedCorrespondenceModel;
 		this.bb = bb;

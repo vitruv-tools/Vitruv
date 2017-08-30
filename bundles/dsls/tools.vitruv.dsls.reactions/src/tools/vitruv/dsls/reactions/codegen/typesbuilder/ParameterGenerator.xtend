@@ -12,7 +12,6 @@ import tools.vitruv.extensions.dslsruntime.reactions.ReactionExecutionState
 import org.eclipse.emf.ecore.EClass
 import tools.vitruv.dsls.reactions.reactionsLanguage.inputTypes.InputTypesPackage
 import tools.vitruv.framework.change.echange.EChange
-import tools.vitruv.framework.util.command.ChangePropagationResult
 import tools.vitruv.dsls.mirbase.mirBase.MetaclassReference
 import static extension tools.vitruv.dsls.reactions.codegen.helper.ReactionsLanguageHelper.*;
 import tools.vitruv.dsls.mirbase.mirBase.NamedMetaclassReference
@@ -44,10 +43,6 @@ class ParameterGenerator {
 	
 	public def JvmFormalParameter generateReactionExecutionStateParameter(EObject parameterContext) {
 		return generateParameter(parameterContext, REACTION_EXECUTION_STATE_PARAMETER_NAME, ReactionExecutionState);
-	}
-	
-	public def JvmFormalParameter generateTransformationResultParameter(EObject parameterContext) {
-		return generateParameter(parameterContext, TRANSFORMATION_RESULT_PARAMETER_NAME, ChangePropagationResult);
 	}
 	
 	public def JvmFormalParameter generateUserInteractingParameter(EObject parameterContext) {
@@ -100,7 +95,7 @@ class ParameterGenerator {
 			case InputTypesPackage.Literals.BYTE: Byte.name
 			case InputTypesPackage.Literals.FLOAT: Float.name
 			case InputTypesPackage.Literals.DOUBLE: Double.name
-			default: eClass.instanceClassName
+			default: eClass.javaClassName
 		}
 	}
 	

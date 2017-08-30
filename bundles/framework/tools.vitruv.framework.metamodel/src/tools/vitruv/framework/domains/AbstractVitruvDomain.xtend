@@ -185,4 +185,12 @@ abstract class AbstractVitruvDomain extends AbstractURIHaving implements TuidCal
 		TuidManager.instance.addTuidUpdateListener(this);
 	}
 	
+	override isUserVisible() {
+		true
+	}
+	
+	override shouldTransitivelyPropagateChanges() {
+		false
+	}
+	
 }

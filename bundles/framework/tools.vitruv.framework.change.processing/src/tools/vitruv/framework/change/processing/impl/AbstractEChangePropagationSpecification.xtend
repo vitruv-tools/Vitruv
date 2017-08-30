@@ -4,16 +4,16 @@ import tools.vitruv.framework.correspondence.CorrespondenceModel
 import tools.vitruv.framework.change.echange.EChange
 import org.apache.log4j.Logger
 import tools.vitruv.framework.change.description.TransactionalChange
-import tools.vitruv.framework.util.command.ChangePropagationResult
 import tools.vitruv.framework.domains.VitruvDomain
+import tools.vitruv.framework.util.command.ResourceAccess
 
 abstract class AbstractEChangePropagationSpecification extends AbstractChangePropagationSpecification {
 	private final static val LOGGER = Logger.getLogger(AbstractEChangePropagationSpecification);
-	
+
 	new(VitruvDomain sourceDomain, VitruvDomain targetDomain) {
 		super(sourceDomain, targetDomain);
 	}
-	
+
 	override doesHandleChange(TransactionalChange change, CorrespondenceModel correspondenceModel) {
 		for (eChange : change.getEChanges) {
 			if (doesHandleChange(eChange, correspondenceModel)) {
@@ -22,20 +22,18 @@ abstract class AbstractEChangePropagationSpecification extends AbstractChangePro
 		}
 		return false;
 	}
-	
-	override propagateChange(TransactionalChange change, CorrespondenceModel correspondenceModel) {
-		val propagationResult = new ChangePropagationResult();
+
+	override propagateChange(TransactionalChange change, CorrespondenceModel correspondenceModel,
+		ResourceAccess resourceAccess) {
 		for (eChange : change.getEChanges) {
 			LOGGER.debug('''Transforming eChange  «eChange» of change «change»''');
-			val currentPropagationResult = propagateChange(eChange, correspondenceModel);
-			propagationResult.integrateResult(currentPropagationResult);
+			propagateChange(eChange, correspondenceModel, resourceAccess);
 		}
-		
-		return propagationResult;
 	}
-	
+
 	protected def boolean doesHandleChange(EChange change, CorrespondenceModel correspondenceModel);
-	protected def ChangePropagationResult propagateChange(EChange change, CorrespondenceModel correspondenceModel);
-	
+
+	protected def void propagateChange(EChange change, CorrespondenceModel correspondenceModel,
+		ResourceAccess resourceAccess);
+
 }
-			
