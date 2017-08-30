@@ -42,6 +42,12 @@ abstract class AbstractMappingRuntime<L extends IMappingInstanceHalf, R extends 
 	 */
 	protected new(String mappingName) {
 		this.registry = new SetMultimapElementsAndHashMapCandidatesAndInstanceHalvesRegistry(mappingName)
+		// TODO MK reestablish all mapping runtime information from previous runs of Vitruvius
+		// As discussed with HK and JG, the goal is to visit all correspondences after they were loaded
+		// and to build up the instance part of the registry by looking at the correspondence tags.
+		// The elements part of the registry has to be reestablished by visiting 
+		// all contents of all models and afterwards the candidates part has to be restablished by computing
+		// all cartesian products of these elements but subtracting the instances that were restablished from the correspondences.
 	}
 	
 	protected def IMappingRegistry4DependingCandidatesGenerators<L,R> getRegistry4DependingCandidatesGenerator() {

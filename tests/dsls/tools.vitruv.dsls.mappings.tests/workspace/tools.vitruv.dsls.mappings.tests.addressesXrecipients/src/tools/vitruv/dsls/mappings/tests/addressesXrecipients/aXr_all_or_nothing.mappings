@@ -37,22 +37,8 @@ mapping AddressXRecipientLocationCity
     }
 }
 
-
-// correspondences are not misused for candidates or dependencies between mappings
-// condition code is printed without changes to halves and instances and can easily be changed or extended there
-// single sided conditions: halves
-// bidirectionalizable conditions: instances
-// calls to checks and all management of candidates and instancesare not shown in reactions but hidden in generic mapping code
-// calls to enforcements are shown in reactions
-
-
-
-//neu aufbauen aus resourcen
+// Ergebnisse Review des code to be generated vom 25.8.2017:
 //enforcen nicht direkt printen sondern für jeden Operator eine Klasse haben und deren enforce-Methode aufrufen
 //testen ob zweimal enforced wird
 //2phasig indem die Ergebnisse erst ganz am Ende in den Cache eingehängt werden?
-//execute statt call verwenden?
-//
-//update zum enforcen damit nur reactions->platform und nicht reactions->platform->xtendGen->reactions
-//auch zum checken routine?
 //attributeReference statt XExpressions etc.
