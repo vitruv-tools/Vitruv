@@ -61,6 +61,13 @@ class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 					if(resolvedKey !== null) {
 						return resolvedKey;
 					}
+				} else {
+					// Finally look for a proxy in the repository (due to a deleted object) and match the URI
+					for (proxyObject : repository.EObjectToUuid.keySet.filter[eIsProxy]){
+						if (EcoreUtil.getURI(proxyObject).equals(EcoreUtil.getURI(eObject))) {
+							return repository.EObjectToUuid.get(proxyObject);
+						}
+					}
 				}
 			} catch(RuntimeException e) {
 				return null;
