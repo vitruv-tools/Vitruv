@@ -1,4 +1,4 @@
-package tools.vitruv.extensions.dslsruntime.mappings
+package tools.vitruv.extensions.dslsruntime.mappings.impl
 
 import java.util.List
 import org.eclipse.emf.ecore.EObject
@@ -17,9 +17,9 @@ import tools.vitruv.extensions.dslsruntime.mappings.interfaces.IBothSidesCombini
  * for these halves.
  */
 class SetMultimapElementsAndHashMapCandidatesAndInstanceHalvesRegistry<L extends IMappingInstanceHalf, R extends IMappingInstanceHalf> implements IBothSidesCombiningRegistry<L,R>, IMappingRegistry<L,R> {
-	@Accessors(PROTECTED_GETTER)
+	@Accessors(PUBLIC_GETTER)
 	val IElementsRegistry elementsRegistry
-	@Accessors(PROTECTED_GETTER)
+	@Accessors(PUBLIC_GETTER)
 	@Delegate
 	val HashMapLeftAndRightInstanceHalfRegistry<L,R> leftAndRightRegistry
 	

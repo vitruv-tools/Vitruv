@@ -1,4 +1,4 @@
-package tools.vitruv.extensions.dslsruntime.mappings
+package tools.vitruv.extensions.dslsruntime.mappings.impl
 
 import com.google.common.collect.SetMultimap
 import org.eclipse.emf.ecore.EObject

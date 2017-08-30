@@ -7,6 +7,7 @@ import tools.vitruv.extensions.dslsruntime.mappings.interfaces.IMappingRegistry4
 import tools.vitruv.extensions.dslsruntime.mappings.interfaces.IMappingRegistry4DependingCandidatesGenerators
 import tools.vitruv.extensions.dslsruntime.mappings.interfaces.IBothSidesCombiningRegistry
 import tools.vitruv.extensions.dslsruntime.mappings.interfaces.ILeftAndRightCandidatesRegistry
+import tools.vitruv.extensions.dslsruntime.mappings.impl.SetMultimapElementsAndHashMapCandidatesAndInstanceHalvesRegistry
 
 /**
  * <p>Base class instantiated by all runtime registry classes that are generated

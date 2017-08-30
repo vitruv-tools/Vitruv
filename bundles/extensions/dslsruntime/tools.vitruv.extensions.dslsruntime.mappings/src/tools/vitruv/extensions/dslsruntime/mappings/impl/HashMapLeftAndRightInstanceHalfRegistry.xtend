@@ -1,4 +1,4 @@
-package tools.vitruv.extensions.dslsruntime.mappings
+package tools.vitruv.extensions.dslsruntime.mappings.impl
 
 import java.util.List
 import java.util.Set
