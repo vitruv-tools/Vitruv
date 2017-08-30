@@ -48,6 +48,11 @@
 			<layout>p2</layout>
 			<url>https://kit-sdq.github.io/updatesite/nightly/xannotations</url>
 		</repository>
+		<repository>
+			<id>Demo Metamodels</id>
+			<layout>p2</layout>
+			<url>https://kit-sdq.github.io/updatesite/nightly/demometamodels</url>
+		</repository>
 	</repositories>
 
 	<build>

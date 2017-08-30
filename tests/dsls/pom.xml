@@ -14,9 +14,10 @@
 	<name>DSLs Test Modules</name>
 
 	<modules>
-		<module>tools.vitruv.dsls.mapping.testframework</module>
+		<module>tools.vitruv.dsls.mappings.tests.addressesXrecipients</module>
+		<!--<module>tools.vitruv.dsls.mapping.testframework</module>
 		<module>tools.vitruv.dsls.mapping.tests</module>
-		<!--<module>tools.vitruv.dsls.mapping.ui.tests</module>-->
+		<module>tools.vitruv.dsls.mapping.ui.tests</module>-->
 		<module>tools.vitruv.dsls.mirbase.tests</module>
 		<!--<module>tools.vitruv.dsls.mirbase.ui.tests</module>-->
 		<module>tools.vitruv.dsls.reactions.tests</module>

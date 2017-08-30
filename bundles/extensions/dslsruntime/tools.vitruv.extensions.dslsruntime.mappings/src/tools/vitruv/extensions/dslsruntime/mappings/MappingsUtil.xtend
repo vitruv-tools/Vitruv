@@ -40,7 +40,7 @@ class MappingsUtil {
 	 */
 	def static <A> Iterable<Monuple<A>> typedCartesianProduct(Set<A> aSet) {
 		return untypedCartesianProduct(aSet).map[new Monuple<A>(
-			it.get(0) as A
+			it.get(0)
 		)]
 	}
 	

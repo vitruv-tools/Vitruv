@@ -14,6 +14,7 @@
 	<name>Bundle Modules</name>
 
 	<modules>
+		<module>demo</module>
 		<module>framework</module>
 		<module>extensions</module>
 		<module>dsls</module>
