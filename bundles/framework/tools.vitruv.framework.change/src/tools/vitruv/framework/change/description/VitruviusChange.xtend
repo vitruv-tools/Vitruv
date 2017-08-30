@@ -57,4 +57,6 @@ interface VitruviusChange extends URIHaving {
 	def void unresolveIfApplicable();
 	
 	def Iterable<EObject> getAffectedEObjects();
+	
+	def Iterable<String> getAffectedEObjectIds();
 }

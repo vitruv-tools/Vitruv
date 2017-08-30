@@ -82,9 +82,56 @@ abstract class AbstractConcreteChange implements ConcreteChange {
 		return this.eChange.affectedEObjects.filterNull
 	}
 	
+	override getAffectedEObjectIds() {
+		return this.eChange.affectedEObjectIds.filterNull
+	}
+	
 	override getAffectedEObjects() {
 		return affectedNotReferencedEObjects + this.eChange.referencedEObjects.filterNull
 	}
+	
+	
+	private def dispatch Iterable<String> getAffectedEObjectIds(CompoundEChange eChange) {
+		var List<String> objects = new BasicEList<String>
+		for (atomicChange : eChange.atomicChanges) {
+			objects.addAll(atomicChange.getAffectedEObjectIds)
+		}
+		return objects.filterNull
+	}
+	
+	
+	private def dispatch List<String> getAffectedEObjectIds(EChange eChange) {
+		return #[]
+	}
+	
+	private def dispatch List<String> getAffectedEObjectIds(InsertRootEObject<EObject> eChange) {
+		return #[eChange.newValueID]
+	}
+
+	private def dispatch List<String> getAffectedEObjectIds(RemoveRootEObject<EObject> eChange) {
+		return #[eChange.oldValueID]
+	}
+	
+	private def dispatch List<String> getAffectedEObjectIds(InsertEReference<EObject, EObject> eChange) {
+		return #[eChange.affectedEObjectID, eChange.newValueID]
+	}
+	
+	private def dispatch List<String> getAffectedEObjectIds(RemoveEReference<EObject, EObject> eChange) {
+		return #[eChange.affectedEObjectID, eChange.oldValueID]
+	}
+	
+	private def dispatch List<String> getAffectedEObjectIds(ReplaceSingleValuedEReference<EObject, EObject> eChange) {
+		return #[eChange.affectedEObjectID, eChange.newValueID, eChange.oldValueID]
+	}
+	
+	private def dispatch List<String> getAffectedEObjectIds(FeatureEChange<EObject, ?> eChange) {
+		return #[eChange.affectedEObjectID]
+	}
+	
+	private def dispatch List<String> getAffectedEObjectIds(EObjectExistenceEChange<EObject> eChange) {
+		return #[eChange.affectedEObjectID]
+	}
+	
 	
 	private def dispatch Iterable<EObject> getAffectedEObjects(CompoundEChange eChange) {
 		var List<EObject> objects = new BasicEList<EObject>
