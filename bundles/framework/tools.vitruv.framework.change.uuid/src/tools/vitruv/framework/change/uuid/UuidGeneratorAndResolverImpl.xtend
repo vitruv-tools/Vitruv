@@ -28,11 +28,10 @@ class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 	def private loadAndRegisterUuidProviderAndResolver(Resource uuidResource) {
 		var UuidToEObjectRepository repository = if(uuidResource !== null)
 				EcoreResourceBridge::getResourceContentRootIfUnique(uuidResource)?.dynamicCast(UuidToEObjectRepository,
-					"uuid provider and resovler model")
+					"uuid provider and resolver model")
 		if(repository === null) {
 			repository = UuidFactory.eINSTANCE.createUuidToEObjectRepository;
 			if(uuidResource !== null) {
-				// TODO HK Reenable resource creation
 				uuidResource.getContents().add(repository)
 			}
 		}
