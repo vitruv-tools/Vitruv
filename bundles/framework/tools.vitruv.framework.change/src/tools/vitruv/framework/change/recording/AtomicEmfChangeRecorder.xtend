@@ -182,6 +182,8 @@ class AtomicEmfChangeRecorder {
 	 * (CreateAndInsertNonRoot), because the resource creation is performed lazy and thus the containment
 	 * insertion operation is interpreted as a creation as well.
 	 */
+	 // TODO In fact, we have the same problem with remove changes. We have to monitor the concrete models instead
+	 // of the resources to get rid of that
 	private def void removeDuplicateCreates(List<TransactionalChange> changes) {
 		val createdObjects = changes.generateCreateChangesMultimap
 		for (var i = 0; i < changes.size; i++) {
