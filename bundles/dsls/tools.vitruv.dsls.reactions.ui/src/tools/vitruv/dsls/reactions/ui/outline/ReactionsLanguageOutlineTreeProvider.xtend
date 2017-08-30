@@ -6,23 +6,19 @@ package tools.vitruv.dsls.reactions.ui.outline
 import org.eclipse.xtext.ui.editor.outline.impl.DefaultOutlineTreeProvider
 import org.eclipse.xtext.ui.editor.outline.impl.DocumentRootNode
 import tools.vitruv.dsls.reactions.reactionsLanguage.Trigger
-import tools.vitruv.dsls.reactions.reactionsLanguage.CodeBlock
 import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsLanguagePackage
 import org.eclipse.xtext.ui.editor.outline.impl.EStructuralFeatureNode
 import tools.vitruv.dsls.mirbase.mirBase.MetamodelImport
 import tools.vitruv.dsls.mirbase.mirBase.MirBasePackage
-import tools.vitruv.dsls.reactions.reactionsLanguage.PreconditionCodeBlock
 import tools.vitruv.dsls.reactions.reactionsLanguage.Routine
-import tools.vitruv.dsls.reactions.reactionsLanguage.CreateCorrespondence
-import tools.vitruv.dsls.reactions.reactionsLanguage.RemoveCorrespondence
-import tools.vitruv.dsls.reactions.reactionsLanguage.MatcherCheckStatement
 import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsFile
 import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsSegment
 import tools.vitruv.dsls.reactions.reactionsLanguage.Reaction
 import tools.vitruv.dsls.reactions.reactionsLanguage.Action
-import tools.vitruv.dsls.reactions.reactionsLanguage.RetrieveModelElement
 import tools.vitruv.dsls.reactions.reactionsLanguage.ConcreteModelChange
 import static extension tools.vitruv.dsls.reactions.codegen.changetyperepresentation.ChangeTypeRepresentationExtractor.*
+import tools.vitruv.dsls.reactions.reactionsLanguage.Matcher
+import tools.vitruv.dsls.reactions.reactionsLanguage.RoutineInput
 
 /**
  * Outline structure definition for a reactions file.
@@ -42,13 +38,16 @@ class ReactionsLanguageOutlineTreeProvider extends DefaultOutlineTreeProvider {
 		}
 	}
 	
-	protected def void _createChildren(EStructuralFeatureNode parentNode, ReactionsSegment reactionsSegment) {
+	protected def void _createChildren(DocumentRootNode parentNode, ReactionsSegment reactionsSegment) {
 		val segmentNode = createEObjectNode(parentNode, reactionsSegment);
+		val reactionsNode = createEStructuralFeatureNode(segmentNode, reactionsSegment, 
+			ReactionsLanguagePackage.Literals.REACTIONS_SEGMENT__REACTIONS, imageDispatcher.invoke(reactionsSegment), "reactions", false)
 		for (reaction : reactionsSegment.reactions) {
-			createChildren(segmentNode, reaction);	
+			createChildren(reactionsNode, reaction);	
 		}
+		val routinesNode = createEStructuralFeatureNode(segmentNode, reactionsSegment, ReactionsLanguagePackage.Literals.REACTIONS_SEGMENT__ROUTINES, imageDispatcher.invoke(reactionsSegment), "routines", false)
 		for (routine : reactionsSegment.routines) {
-			createChildren(segmentNode, routine);	
+			createChildren(routinesNode, routine);	
 		}
 	}
 	
@@ -68,68 +67,17 @@ class ReactionsLanguageOutlineTreeProvider extends DefaultOutlineTreeProvider {
 				imageDispatcher.invoke(reaction.documentation),
 				"documentation", true);
 		}
-		val triggerNode = createEStructuralFeatureNode(reactionNode, reaction, 
-			ReactionsLanguagePackage.Literals.REACTION__TRIGGER,
-			imageDispatcher.invoke(reaction.trigger), "trigger", reaction.trigger === null);
 		if (reaction.trigger !== null) {
-			createChildren(triggerNode, reaction.trigger);
-		}
-		if (reaction.trigger?.precondition !== null) {
-			createChildren(triggerNode, reaction.trigger.precondition)
+			createChildren(reactionNode, reaction.trigger);
 		}
 	}
 	
-	protected def void _createChildren(EStructuralFeatureNode parentNode, PreconditionCodeBlock preconditionBlock) {
-		createEObjectNode(parentNode, preconditionBlock);
+	protected def void _createChildren(EStructuralFeatureNode parentNode, Routine routine) {
+		createEObjectNode(parentNode, routine);
 	}
 	
 	protected def void _createChildren(EStructuralFeatureNode parentNode, Trigger trigger) {
 		createEObjectNode(parentNode, trigger);
-	}
-	
-//	protected def void _createChildren(EStructuralFeatureNode parentNode, ModelElementChange event) {
-//		createEObjectNode(parentNode, event);
-//		val changeType = event.changeType;
-//		switch (changeType) {
-//			ElementFeatureChangeType:
-//				if (changeType.feature !== null) {
-//					createEObjectNode(parentNode, changeType.feature.metaclass);
-//					if (changeType.feature.feature !== null) {
-//						createEObjectNode(parentNode, changeType.feature.feature);
-//					}
-//				}
-//			ElementRootChangeType:
-//				if (event.elementType !== null) {
-//					createEObjectNode(parentNode, event.elementType.metaclass);
-//				}
-//		}
-//	}
-	
-	protected def void _createChildren(EStructuralFeatureNode parentNode, Routine routine) {
-		if (routine.matcher !== null) {
-			for (element : routine.matcher.matcherStatements) {
-				createEObjectNode(parentNode, element);	
-			}
-		}		
-		createChildren(parentNode, routine.action);
-	}
-	
-	protected def void _createChildren(EStructuralFeatureNode parentNode, Action action) {
-		// TODO HK Add missing elements: create / delete / update / call routine
-		for (element : action.actionStatements.filter(CreateCorrespondence)) {
-			createEObjectNode(parentNode, element);	
-		}
-		for (element : action.actionStatements.filter(RemoveCorrespondence)) {
-			createEObjectNode(parentNode, element);	
-		}
-	}
-	
-	protected def void _createChildren(EStructuralFeatureNode parentNode, CreateCorrespondence createCorrespondence) {
-		createEObjectNode(parentNode, createCorrespondence);
-	}
-	
-	protected def void _createChildren(EStructuralFeatureNode parentNode, CodeBlock codeBlock) {
-		createEObjectNode(parentNode, codeBlock);
 	}
 	
 	protected def Object _text(MetamodelImport imp) {
@@ -141,7 +89,19 @@ class ReactionsLanguageOutlineTreeProvider extends DefaultOutlineTreeProvider {
 	}
 	
 	protected def Object _text(Routine routine) {
-		return "action: " + routine.name;
+		return "routine: " + routine.name;
+	}
+	
+	protected def Object _text(RoutineInput routineInput) {
+		return "parameters";
+	}
+	
+	protected def Object _text(Matcher matcher) {
+		return "matcher";
+	}
+	
+	protected def Object _text(Action action) {
+		return "action";
 	}
 	
 	protected def Object _text(ReactionsSegment reactionsSegment) {
@@ -156,63 +116,15 @@ class ReactionsLanguageOutlineTreeProvider extends DefaultOutlineTreeProvider {
 		return event.extractChangeTypeRepresentation.changeType?.simpleName;
 	}
 	
-	protected def Object _text(PreconditionCodeBlock preconditionBlock) {
-		return "precondition Block"
-	}
-	
-	protected def Object _text(CodeBlock codeBlock) {
-		return "execution Block"
-	}
-	
-	protected def Object _text(RetrieveModelElement elementRetrieve) {
-		"retrieve element: " + elementRetrieve.elementText;
-	}
-	
-	protected def Object _text(MatcherCheckStatement checkStatement) {
-		"custom check statement";
-	}
-	
-	protected def Object _text(CreateCorrespondence createCorrespondence) {
-		"new correspondence";
-	}
-	
-	protected def Object _text(RemoveCorrespondence removeCorrespondence) {
-		"remove correspondence";
-	}
-	
-//	protected def Object _text(CorrespondingModelElementDelete elementDelete) {
-//		"Delete element: " + elementDelete.elementText;
-//	}
-	
-	private def String getElementText(RetrieveModelElement retrieveElement) {
-		return retrieveElement.name + " (" + retrieveElement.metaclass?.name + ")"
-	}
-	
-	protected def boolean _isLeaf(PreconditionCodeBlock compareBlock) {
+	protected def boolean _isLeaf(Trigger element) {
 		return true;
 	}
 	
-	protected def boolean _isLeaf(CodeBlock codeBlock) {
+	protected def boolean _isLeaf(Matcher element) {
 		return true;
 	}
 	
-	protected def boolean _isLeaf(ConcreteModelChange event) {
-		return true;
-	}
-	
-	protected def boolean _isLeaf(RetrieveModelElement element) {
-		return true;
-	}
-	
-	protected def boolean _isLeaf(MatcherCheckStatement element) {
-		return true;
-	}
-	
-	protected def boolean _isLeaf(CreateCorrespondence correspondenceCreate) {
-		return true;
-	}
-	
-	protected def boolean _isLeaf(RemoveCorrespondence element) {
+	protected def boolean _isLeaf(Action element) {
 		return true;
 	}
 	
