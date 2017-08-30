@@ -64,7 +64,7 @@ routine deleteAdRootXReRootMappingInstance(re::Recipients rRoot) {
 			tagged with "AdRootXReRootMapping"
 	}
 	action {
-		remove correspondence between aRoot and rRoot // FIXME MK: tagged with "AdRootXReRoot"
+		remove correspondence between aRoot and rRoot tagged with "AdRootXReRoot"
 		delete aRoot
 		execute {
 			adRootXReRootMapping.removeInvalidatedInstanceHalves(aRoot, rRoot)
@@ -178,13 +178,13 @@ routine deleteAddressXRecipientLocationCityMappingInstance(re::Recipients rRoot,
 		check {
 			!addressXRecipientLocationCityConditions.checkRightConditions(rRoot, r, l, c)
 		}
-		val a = retrieve ad::Address corresponding to r//FIXME MK: ,l,c
+		val a = retrieve ad::Address corresponding to r//FIXME MK when m2n correspondences are supported, add: ,l,c
 			tagged with "AddressXRecipientLocationCityMapping"
 	}
 	action {
-		remove correspondence between a and r // FIXME MK: tagged with "AddressXRecipientLocationCity"
-		remove correspondence between a and l // FIXME MK: tagged with "AddressXRecipientLocationCity"
-		remove correspondence between a and c // FIXME MK: tagged with "AddressXRecipientLocationCity"
+		remove correspondence between a and r tagged with "AddressXRecipientLocationCity"
+		remove correspondence between a and l tagged with "AddressXRecipientLocationCity"
+		remove correspondence between a and c tagged with "AddressXRecipientLocationCity"
 		delete a
 	}
 }
@@ -274,7 +274,7 @@ routine updateAddressXRecipientLocationCityMappingInstance(re::Recipients rRoot,
 	match {
 		val aRoot = retrieve ad::Addresses corresponding to rRoot
 			tagged with "AdRootXReRootMapping"
-		val a = retrieve ad::Address corresponding to r//FIXME MK: ,l,c
+		val a = retrieve ad::Address corresponding to r//FIXME MK when m2n correspondences are supported, add: ,l,c
 			tagged with "AddressXRecipientLocationCityMapping"
 		check {
 			addressXRecipientLocationCityConditions.checkRightConditions(rRoot, r, l, c)

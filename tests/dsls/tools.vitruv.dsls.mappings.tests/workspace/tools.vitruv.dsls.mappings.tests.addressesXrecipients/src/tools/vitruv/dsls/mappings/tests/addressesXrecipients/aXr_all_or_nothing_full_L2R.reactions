@@ -60,32 +60,19 @@ routine deleteAdRootXReRootMappingInstance(ad::Addresses aRoot) {
 	match {
 		check {
 			!adRootXReRootConditions.checkLeftConditions(aRoot)
-// TODO MK move checking code from static methods to check routines as soon as calling routines from match checks is supported
-//			checkLeftAdRootXReRootMappingConditions(aRoot)
 		}
 		val rRoot = retrieve re::Recipients corresponding to aRoot
 			tagged with "AdRootXReRootMapping"
 	}
 	action {
 		// TODO MK if CorrespondenceModel performs cleanup do not explicitly delete c here
-		remove correspondence between aRoot and rRoot // FIXME MK: tagged with "AdRootXReRoot"
+		remove correspondence between aRoot and rRoot tagged with "AdRootXReRoot"
 		delete rRoot
 		execute {
 			adRootXReRootMapping.removeInvalidatedInstanceHalves(aRoot, rRoot)
 		}
 	}
 }
-
-//routine checkLeftAdRootXReRootMappingConditions(ad::Addresses aRoot) {
-//	match {
-//		check {
-//			tools.vitruv.extensions.dslsruntime.mappings.MappingsUtil.allElementsStillExisting(aRoot)
-//		}
-//	}
-//	action {
-//		execute {}
-//	}
-//}
 
 /********** BEGIN AdRootXReRoot CREATE ROUTINES **********/
 routine createAdRootXReRootMappingInstances() {
@@ -201,9 +188,9 @@ routine deleteAddressXRecipientLocationCityMappingInstance(ad::Addresses aRoot, 
 			tagged with "AddressXRecipientLocationCityMapping"
 	}
 	action {
-		remove correspondence between a and r // FIXME MK: tagged with "AddressXRecipientLocationCity"
-		remove correspondence between a and l // FIXME MK: tagged with "AddressXRecipientLocationCity"
-		remove correspondence between a and c // FIXME MK: tagged with "AddressXRecipientLocationCity"
+		remove correspondence between a and r tagged with "AddressXRecipientLocationCity"
+		remove correspondence between a and l tagged with "AddressXRecipientLocationCity"
+		remove correspondence between a and c tagged with "AddressXRecipientLocationCity"
 		delete r
 		delete l
 		delete c
