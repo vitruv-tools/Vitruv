@@ -26,10 +26,6 @@ class IdentifiedExecutionTest extends CommonalitiesExecutionTest {
 		compiler.changePropagationDefinitions
 	}
 	
-	override protected unresolveChanges() {
-		true
-	}
-
 	@Test
 	def void rootInsert() {
 		val root = AllElementTypes2Factory.eINSTANCE.createRoot2 => [
