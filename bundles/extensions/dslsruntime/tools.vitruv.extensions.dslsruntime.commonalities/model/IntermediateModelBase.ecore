@@ -11,7 +11,7 @@
         upperBound="-1" eType="ecore:EClass Resources.ecore#//Resource" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="intermediateId" lowerBound="1"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString" changeable="false"
-        volatile="true" derived="true">
+        volatile="true" transient="true" derived="true" iD="true">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
         <details key="get" value="return &quot;root&quot;;"/>
       </eAnnotations>

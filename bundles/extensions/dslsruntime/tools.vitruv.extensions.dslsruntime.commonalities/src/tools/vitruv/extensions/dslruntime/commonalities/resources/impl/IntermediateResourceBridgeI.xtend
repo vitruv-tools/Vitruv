@@ -4,10 +4,9 @@ import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.EObject
 import tools.vitruv.extensions.dslruntime.commonalities.IntermediateModelManagement
 import tools.vitruv.extensions.dslruntime.commonalities.intermediatemodelbase.Intermediate
+import tools.vitruv.extensions.dslruntime.commonalities.resources.ResourcesPackage
 import tools.vitruv.extensions.dslsruntime.reactions.helper.PersistenceHelper
 import tools.vitruv.extensions.dslsruntime.reactions.helper.ReactionsCorrespondenceHelper
-import tools.vitruv.framework.correspondence.CorrespondenceModel
-import tools.vitruv.framework.util.command.ResourceAccess
 import tools.vitruv.framework.util.datatypes.VURI
 
 // TODO remove once resources are handled by domains
@@ -15,8 +14,6 @@ class IntermediateResourceBridgeI extends IntermediateResourceBridgeImpl {
 
 	static val SAME_FOLDER = URI.createURI('.')
 
-	ResourceAccess resourceAccess
-	CorrespondenceModel correspondenceModel
 	Intermediate intermediateCorrespondence
 
 	def private fileExtensionChanged(String oldFileExtension) {
@@ -59,7 +56,8 @@ class IntermediateResourceBridgeI extends IntermediateResourceBridgeImpl {
 	}
 
 	def private canBePersisted() {
-		path !== null && name !== null && fileExtension !== null && content !== null
+		path !== null && name !== null && fileExtension !== null && content !== null && correspondenceModel !== null &&
+			resourceAccess !== null
 	}
 
 	def private discard(URI oldUri) {
@@ -71,10 +69,11 @@ class IntermediateResourceBridgeI extends IntermediateResourceBridgeImpl {
 		resourceAccess.persistAsRoot(content, VURI.getInstance(persistanceUri))
 		this.isPersisted = true
 		if (eContainer === null) {
-			IntermediateModelManagement.addResourceBridge(intermediateCorrespondence.eResource, this, intermediateCorrespondence)
+			IntermediateModelManagement.addResourceBridge(intermediateCorrespondence.eResource, this,
+				intermediateCorrespondence)
 		}
 	}
-	
+
 	def private getPersistanceUri() {
 		getPersistanceUri(path, name, fileExtension)
 	}
@@ -97,21 +96,24 @@ class IntermediateResourceBridgeI extends IntermediateResourceBridgeImpl {
 		if (content == newContent) return;
 		this.content = newContent
 		intermediateCorrespondence = newContent.intermediateCorrespondence
-		if (baseURI === null) {
+		if (baseURI === null && correspondenceModel !== null) { // TODO
 			val uri = PersistenceHelper.getURIFromSourceProjectFolder(newContent.existingCorrespondence, 'fake.ext')
 			baseURI = SAME_FOLDER.resolve(uri)
 		}
 		contentChanged()
 	}
-
-	override setCorrespondenceModel(CorrespondenceModel correspondenceModel) {
-		this.correspondenceModel = correspondenceModel
-	}
-
-	override setResourceAccess(ResourceAccess resourceAccess) {
-		this.resourceAccess = resourceAccess
+	
+	override getContent() {
+		return null;
 	}
 	
+	override eIsSet(int featureID) {
+		if (featureID == ResourcesPackage.RESOURCE__CONTENT) {
+			return false;
+		}
+		return super.eIsSet(featureID)
+	}
+
 	override getIntermediateId() {
 		fullPath
 	}
@@ -150,6 +152,7 @@ class IntermediateResourceBridgeI extends IntermediateResourceBridgeImpl {
 	}
 
 	def private getIntermediateCorrespondence(EObject object) {
+		if (correspondenceModel === null) return null; // TODO
 		val result = ReactionsCorrespondenceHelper.getCorrespondingModelElements(object, Intermediate, null, null,
 			correspondenceModel).head
 		if (result === null) {

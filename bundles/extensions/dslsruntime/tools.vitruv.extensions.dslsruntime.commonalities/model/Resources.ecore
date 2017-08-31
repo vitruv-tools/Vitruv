@@ -14,12 +14,6 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="IntermediateResourceBridge" eSuperTypes="#//Resource">
     <eOperations name="remove"/>
-    <eOperations name="setResourceAccess">
-      <eParameters name="resourceAccess" eType="#//ResourceAccess"/>
-    </eOperations>
-    <eOperations name="setCorrespondenceModel">
-      <eParameters name="correspondenceModel" eType="#//CorrespondenceModel"/>
-    </eOperations>
     <eOperations name="initialiseForModelElement">
       <eParameters name="eObject" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
     </eOperations>
@@ -29,7 +23,11 @@
         changeable="false"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="intermediateId" lowerBound="1"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString" changeable="false"
-        volatile="true" derived="true"/>
+        volatile="true" transient="true" derived="true" iD="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="resourceAccess" eType="#//ResourceAccess"
+        transient="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="correspondenceModel" eType="#//CorrespondenceModel"
+        transient="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EDataType" name="ResourceAccess" instanceClassName="tools.vitruv.framework.util.command.ResourceAccess"/>
   <eClassifiers xsi:type="ecore:EDataType" name="CorrespondenceModel" instanceClassName="tools.vitruv.framework.correspondence.CorrespondenceModel"/>
