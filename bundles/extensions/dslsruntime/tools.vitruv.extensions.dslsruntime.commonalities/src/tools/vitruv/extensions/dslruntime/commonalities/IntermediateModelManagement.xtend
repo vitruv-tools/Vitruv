@@ -3,7 +3,6 @@ package tools.vitruv.extensions.dslruntime.commonalities
 import edu.kit.ipd.sdq.activextendannotations.Lazy
 import java.nio.file.Files
 import java.nio.file.Path
-import java.util.Collections
 import java.util.concurrent.atomic.AtomicInteger
 import org.eclipse.emf.ecore.EClass
 import org.eclipse.emf.ecore.EPackage
@@ -32,7 +31,7 @@ class IntermediateModelManagement {
 		val root = getOrCreateRootIn(targetResource, nonRoot.eClass.EPackage)
 		nonRoot.intermediateId = String.valueOf(root.nextId)
 		root.intermediates += nonRoot
-		targetResource.save(Collections.emptyMap())
+		targetResource.modified = true
 	}
 
 	def static void addResourceBridge(Resource targetResource,
@@ -40,7 +39,7 @@ class IntermediateModelManagement {
 		Intermediate intermediate) {
 		val root = getOrCreateRootIn(targetResource, intermediate.eClass.EPackage)
 		root.resourceBridges += intermediateResource
-		targetResource.save(Collections.emptyMap())
+		targetResource.modified = true
 	}
 
 	def static getOrCreateRootIn(Resource targetResource, EPackage ePackage) {

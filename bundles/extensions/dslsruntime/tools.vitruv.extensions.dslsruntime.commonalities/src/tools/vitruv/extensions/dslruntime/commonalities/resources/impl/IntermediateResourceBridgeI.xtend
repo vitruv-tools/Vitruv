@@ -8,6 +8,12 @@ import tools.vitruv.extensions.dslruntime.commonalities.resources.ResourcesPacka
 import tools.vitruv.extensions.dslsruntime.reactions.helper.PersistenceHelper
 import tools.vitruv.extensions.dslsruntime.reactions.helper.ReactionsCorrespondenceHelper
 import tools.vitruv.framework.util.datatypes.VURI
+import java.util.HashSet
+import java.util.Set
+import static com.google.common.base.Preconditions.*
+
+import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
+import tools.vitruv.extensions.dslruntime.commonalities.resources.Resource
 
 // TODO remove once resources are handled by domains
 class IntermediateResourceBridgeI extends IntermediateResourceBridgeImpl {
@@ -97,16 +103,17 @@ class IntermediateResourceBridgeI extends IntermediateResourceBridgeImpl {
 		this.content = newContent
 		intermediateCorrespondence = newContent.intermediateCorrespondence
 		if (baseURI === null && correspondenceModel !== null) { // TODO
-			val uri = PersistenceHelper.getURIFromSourceProjectFolder(newContent.existingCorrespondence, 'fake.ext')
+			val uri = PersistenceHelper.getURIFromSourceProjectFolder(persistedNonIntermediateCorrespondence,
+				'fake.ext')
 			baseURI = SAME_FOLDER.resolve(uri)
 		}
 		contentChanged()
 	}
-	
+
 	override getContent() {
 		return null;
 	}
-	
+
 	override eIsSet(int featureID) {
 		if (featureID == ResourcesPackage.RESOURCE__CONTENT) {
 			return false;
@@ -139,16 +146,30 @@ class IntermediateResourceBridgeI extends IntermediateResourceBridgeImpl {
 		this.fileExtensionChanged(oldFileExtension)
 	}
 
-	def private getExistingCorrespondence(EObject object) {
-		if (object.eResource !== null) return object
-
-		// TODO transitive over referenced intermediate model instances
-		val resourceHaving = ReactionsCorrespondenceHelper.getCorrespondingModelElements(intermediateCorrespondence,
-			EObject, null, [eResource !== null], correspondenceModel).head
+	def private getPersistedNonIntermediateCorrespondence() {
+		val resourceHaving = transitiveIntermediateCorrespondences.flatMap [
+			ReactionsCorrespondenceHelper.getCorrespondingModelElements(intermediateCorrespondence, EObject, null, [
+				!(it instanceof Intermediate) && !(it instanceof Resource) && eResource !== null
+			], correspondenceModel)
+		].head
 		if (resourceHaving === null) {
-			throw new IllegalStateException('''Could not find any transitive correspondence of ‹«object»› that already has a resource!''')
+			throw new IllegalStateException('''Could not find any transitive correspondence of ‹«content»› that already has a resource!''')
 		}
 		return resourceHaving
+	}
+
+	def private getTransitiveIntermediateCorrespondences() {
+		val existingIntermediate = new HashSet<Intermediate>
+		existingIntermediate.add(intermediateCorrespondence)
+		return existingIntermediate.transitiveIntermediateCorrespondences
+	}
+
+	def private Iterable<Intermediate> getTransitiveIntermediateCorrespondences(Set<Intermediate> foundIntermediates) {
+		foundIntermediates + foundIntermediates.flatMap [ intermediate |
+			ReactionsCorrespondenceHelper.getCorrespondingModelElements(intermediate, Intermediate, null, [
+				!foundIntermediates.contains(it)
+			], correspondenceModel)
+		].toSet.flatMap[transitiveIntermediateCorrespondences]
 	}
 
 	def private getIntermediateCorrespondence(EObject object) {
@@ -161,14 +182,21 @@ class IntermediateResourceBridgeI extends IntermediateResourceBridgeImpl {
 		return result
 	}
 
+	def private static withoutFileExtension(String s) {
+		val dotIndex = s.lastIndexOf('.')
+		return if (dotIndex != -1) s.substring(0, dotIndex) else s
+	}
+
 	override initialiseForModelElement(EObject eObject) {
+		checkArgument(eObject.eResource !== null, "The provided object must be in a resource!")
 		val objectResourceUri = eObject.eResource.URI
 		val projectUri = PersistenceHelper.getURIFromSourceProjectFolder(eObject, 'fake.ext')
 		baseURI = SAME_FOLDER.resolve(projectUri)
 		path = SAME_FOLDER.resolve(objectResourceUri).deresolve(baseURI).toString
 		fileExtension = objectResourceUri.fileExtension
-		name = objectResourceUri.lastSegment.toString
+		name = objectResourceUri.lastSegment.toString.withoutFileExtension
 		content = eObject
+		isPersisted = true
 		intermediateCorrespondence = eObject.intermediateCorrespondence
 	}
 
