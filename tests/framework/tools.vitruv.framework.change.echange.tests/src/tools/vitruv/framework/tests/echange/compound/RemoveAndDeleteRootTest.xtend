@@ -190,9 +190,8 @@ class RemoveAndDeleteRootTest extends EChangeTest {
 		Assert.assertFalse(change.isResolved)
 		Assert.assertFalse(change.removeChange.isResolved)
 		Assert.assertFalse(change.deleteChange.isResolved)
-		Assert.assertNotSame(change.removeChange.oldValue, affectedRootObject)
-		Assert.assertNotSame(change.deleteChange.affectedEObject, affectedRootObject)
-		Assert.assertNotSame(change.deleteChange.affectedEObject, change.removeChange.oldValue)
+		Assert.assertNull(change.removeChange.oldValue)
+		Assert.assertNull(change.deleteChange.affectedEObject)
 	}
 	
 	/**

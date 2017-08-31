@@ -2,6 +2,7 @@
  */
 package tools.vitruv.framework.change.echange.compound.impl;
 
+import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EGenericType;
 import org.eclipse.emf.ecore.EOperation;
@@ -308,6 +309,15 @@ public class CompoundPackageImpl extends EPackageImpl implements CompoundPackage
 	 */
 	public EReference getExplicitUnsetEFeature_AffectedFeature() {
 		return (EReference)explicitUnsetEFeatureEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getExplicitUnsetEFeature_AffectedEObjectID() {
+		return (EAttribute)explicitUnsetEFeatureEClass.getEStructuralFeatures().get(2);
 	}
 
 	/**
@@ -623,6 +633,7 @@ public class CompoundPackageImpl extends EPackageImpl implements CompoundPackage
 		explicitUnsetEFeatureEClass = createEClass(EXPLICIT_UNSET_EFEATURE);
 		createEReference(explicitUnsetEFeatureEClass, EXPLICIT_UNSET_EFEATURE__AFFECTED_EOBJECT);
 		createEReference(explicitUnsetEFeatureEClass, EXPLICIT_UNSET_EFEATURE__AFFECTED_FEATURE);
+		createEAttribute(explicitUnsetEFeatureEClass, EXPLICIT_UNSET_EFEATURE__AFFECTED_EOBJECT_ID);
 
 		explicitUnsetEAttributeEClass = createEClass(EXPLICIT_UNSET_EATTRIBUTE);
 		createEOperation(explicitUnsetEAttributeEClass, EXPLICIT_UNSET_EATTRIBUTE___GET_ATOMIC_CHANGES);
@@ -884,6 +895,7 @@ public class CompoundPackageImpl extends EPackageImpl implements CompoundPackage
 		initEReference(getExplicitUnsetEFeature_AffectedEObject(), g1, null, "affectedEObject", null, 1, 1, ExplicitUnsetEFeature.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		g1 = createEGenericType(explicitUnsetEFeatureEClass_F);
 		initEReference(getExplicitUnsetEFeature_AffectedFeature(), g1, null, "affectedFeature", null, 1, 1, ExplicitUnsetEFeature.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getExplicitUnsetEFeature_AffectedEObjectID(), theEcorePackage.getEString(), "affectedEObjectID", null, 0, 1, ExplicitUnsetEFeature.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(explicitUnsetEAttributeEClass, ExplicitUnsetEAttribute.class, "ExplicitUnsetEAttribute", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 

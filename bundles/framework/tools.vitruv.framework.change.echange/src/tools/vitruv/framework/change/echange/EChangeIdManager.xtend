@@ -12,6 +12,7 @@ import tools.vitruv.framework.change.uuid.UuidResolver
 import org.eclipse.emf.ecore.EObject
 import org.apache.log4j.Logger
 import org.eclipse.emf.ecore.util.EcoreUtil
+import tools.vitruv.framework.change.echange.compound.ExplicitUnsetEFeature
 
 /**
  * Provides logic for initializing the IDs within changes and for updating
@@ -44,6 +45,10 @@ class EChangeIdManager {
 			EObjectExistenceEChange<?>,
 			FeatureEChange<?,?>:
 				setOrGenerateAffectedEObjectId(eChange)
+			ExplicitUnsetEFeature<?,?>: {
+				setOrGenerateAffectedEObjectId(eChange)
+				eChange.atomicChanges.forEach[setOrGenerateIds]
+			}
 			CompoundEChange:
 				eChange.atomicChanges.forEach[setOrGenerateIds]
 		}
@@ -91,6 +96,14 @@ class EChangeIdManager {
 		} else {
 			logger.warn("Object is not statically accessible but also has no globally mapped UUID: " + object);
 		}
+	}
+	
+	private def dispatch void setOrGenerateAffectedEObjectId(ExplicitUnsetEFeature<?,?> unsetFeatureChange) {
+		if(unsetFeatureChange.affectedEObject === null) {
+			throw new IllegalStateException();
+		}
+		val affectedObject = unsetFeatureChange.affectedEObject
+		unsetFeatureChange.affectedEObjectID = localUuidGeneratorAndResolver.getOrRegisterUuid(affectedObject);
 	}
 
 	private def void setOrGenerateNewValueId(EObjectAddedEChange<?> addedEChange) {

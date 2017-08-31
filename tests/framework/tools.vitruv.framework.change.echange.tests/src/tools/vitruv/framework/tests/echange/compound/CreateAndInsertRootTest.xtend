@@ -184,9 +184,8 @@ class CreateAndInsertRootTest extends EChangeTest {
 		Assert.assertFalse(change.isResolved)
 		Assert.assertFalse(change.createChange.isResolved)
 		Assert.assertFalse(change.insertChange.isResolved)
-		Assert.assertNotSame(change.createChange.affectedEObject, newRoot)
-		Assert.assertNotSame(change.insertChange.newValue, newRoot)
-		Assert.assertNotSame(change.createChange.affectedEObject, change.insertChange.newValue)
+		Assert.assertNull(change.createChange.affectedEObject)
+		Assert.assertNull(change.insertChange.newValue)
 	}
 	
 	/**

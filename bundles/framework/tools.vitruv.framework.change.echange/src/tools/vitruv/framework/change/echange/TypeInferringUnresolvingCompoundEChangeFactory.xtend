@@ -12,13 +12,21 @@ import static extension tools.vitruv.framework.change.echange.resolve.EChangeUnr
 import tools.vitruv.framework.change.uuid.UuidGeneratorAndResolver
 
 final class TypeInferringUnresolvingCompoundEChangeFactory extends TypeInferringCompoundEChangeFactory {
+	val EChangeIdManager eChangeIdManager;
+	
 	new(UuidGeneratorAndResolver uuidProviderAndResolver) {
 		super(new TypeInferringUnresolvingAtomicEChangeFactory(uuidProviderAndResolver));
+		this.eChangeIdManager = new EChangeIdManager(uuidProviderAndResolver, uuidProviderAndResolver, false);
+	}
+	
+	def private setIds(EChange change) {
+		eChangeIdManager.setOrGenerateIds(change);
 	}
 	
 	override protected <A extends EObject, F extends EStructuralFeature> setUnsetChangeFeatures(
 		ExplicitUnsetEFeature<A, F> change, A affectedEObject, F affectedFeature) {
 		super.setUnsetChangeFeatures(change, affectedEObject, affectedFeature)
+		setIds(change);
 		change.unresolveExplicitUnsetEFeature
 	}
 

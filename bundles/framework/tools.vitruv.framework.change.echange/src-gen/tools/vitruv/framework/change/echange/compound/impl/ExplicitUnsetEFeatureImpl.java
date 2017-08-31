@@ -24,6 +24,7 @@ import tools.vitruv.framework.change.echange.compound.ExplicitUnsetEFeature;
  * <ul>
  *   <li>{@link tools.vitruv.framework.change.echange.compound.impl.ExplicitUnsetEFeatureImpl#getAffectedEObject <em>Affected EObject</em>}</li>
  *   <li>{@link tools.vitruv.framework.change.echange.compound.impl.ExplicitUnsetEFeatureImpl#getAffectedFeature <em>Affected Feature</em>}</li>
+ *   <li>{@link tools.vitruv.framework.change.echange.compound.impl.ExplicitUnsetEFeatureImpl#getAffectedEObjectID <em>Affected EObject ID</em>}</li>
  * </ul>
  *
  * @generated
@@ -48,6 +49,26 @@ public abstract class ExplicitUnsetEFeatureImpl<A extends EObject, F extends ESt
 	 * @ordered
 	 */
 	protected F affectedFeature;
+
+	/**
+	 * The default value of the '{@link #getAffectedEObjectID() <em>Affected EObject ID</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getAffectedEObjectID()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String AFFECTED_EOBJECT_ID_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getAffectedEObjectID() <em>Affected EObject ID</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getAffectedEObjectID()
+	 * @generated
+	 * @ordered
+	 */
+	protected String affectedEObjectID = AFFECTED_EOBJECT_ID_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -151,6 +172,27 @@ public abstract class ExplicitUnsetEFeatureImpl<A extends EObject, F extends ESt
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public String getAffectedEObjectID() {
+		return affectedEObjectID;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setAffectedEObjectID(String newAffectedEObjectID) {
+		String oldAffectedEObjectID = affectedEObjectID;
+		affectedEObjectID = newAffectedEObjectID;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, CompoundPackage.EXPLICIT_UNSET_EFEATURE__AFFECTED_EOBJECT_ID, oldAffectedEObjectID, affectedEObjectID));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
@@ -160,6 +202,8 @@ public abstract class ExplicitUnsetEFeatureImpl<A extends EObject, F extends ESt
 			case CompoundPackage.EXPLICIT_UNSET_EFEATURE__AFFECTED_FEATURE:
 				if (resolve) return getAffectedFeature();
 				return basicGetAffectedFeature();
+			case CompoundPackage.EXPLICIT_UNSET_EFEATURE__AFFECTED_EOBJECT_ID:
+				return getAffectedEObjectID();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -179,6 +223,9 @@ public abstract class ExplicitUnsetEFeatureImpl<A extends EObject, F extends ESt
 			case CompoundPackage.EXPLICIT_UNSET_EFEATURE__AFFECTED_FEATURE:
 				setAffectedFeature((F)newValue);
 				return;
+			case CompoundPackage.EXPLICIT_UNSET_EFEATURE__AFFECTED_EOBJECT_ID:
+				setAffectedEObjectID((String)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -197,6 +244,9 @@ public abstract class ExplicitUnsetEFeatureImpl<A extends EObject, F extends ESt
 			case CompoundPackage.EXPLICIT_UNSET_EFEATURE__AFFECTED_FEATURE:
 				setAffectedFeature((F)null);
 				return;
+			case CompoundPackage.EXPLICIT_UNSET_EFEATURE__AFFECTED_EOBJECT_ID:
+				setAffectedEObjectID(AFFECTED_EOBJECT_ID_EDEFAULT);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -213,8 +263,26 @@ public abstract class ExplicitUnsetEFeatureImpl<A extends EObject, F extends ESt
 				return affectedEObject != null;
 			case CompoundPackage.EXPLICIT_UNSET_EFEATURE__AFFECTED_FEATURE:
 				return affectedFeature != null;
+			case CompoundPackage.EXPLICIT_UNSET_EFEATURE__AFFECTED_EOBJECT_ID:
+				return AFFECTED_EOBJECT_ID_EDEFAULT == null ? affectedEObjectID != null : !AFFECTED_EOBJECT_ID_EDEFAULT.equals(affectedEObjectID);
 		}
 		return super.eIsSet(featureID);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public String toString() {
+		if (eIsProxy()) return super.toString();
+
+		StringBuffer result = new StringBuffer(super.toString());
+		result.append(" (affectedEObjectID: ");
+		result.append(affectedEObjectID);
+		result.append(')');
+		return result.toString();
 	}
 
 } //ExplicitUnsetEFeatureImpl

@@ -21,6 +21,7 @@ import org.eclipse.emf.ecore.EStructuralFeature;
  * <ul>
  *   <li>{@link tools.vitruv.framework.change.echange.compound.ExplicitUnsetEFeature#getAffectedEObject <em>Affected EObject</em>}</li>
  *   <li>{@link tools.vitruv.framework.change.echange.compound.ExplicitUnsetEFeature#getAffectedFeature <em>Affected Feature</em>}</li>
+ *   <li>{@link tools.vitruv.framework.change.echange.compound.ExplicitUnsetEFeature#getAffectedEObjectID <em>Affected EObject ID</em>}</li>
  * </ul>
  *
  * @see tools.vitruv.framework.change.echange.compound.CompoundPackage#getExplicitUnsetEFeature()
@@ -79,5 +80,31 @@ public interface ExplicitUnsetEFeature<A extends EObject, F extends EStructuralF
 	 * @generated
 	 */
 	void setAffectedFeature(F value);
+
+	/**
+	 * Returns the value of the '<em><b>Affected EObject ID</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Affected EObject ID</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Affected EObject ID</em>' attribute.
+	 * @see #setAffectedEObjectID(String)
+	 * @see tools.vitruv.framework.change.echange.compound.CompoundPackage#getExplicitUnsetEFeature_AffectedEObjectID()
+	 * @model
+	 * @generated
+	 */
+	String getAffectedEObjectID();
+
+	/**
+	 * Sets the value of the '{@link tools.vitruv.framework.change.echange.compound.ExplicitUnsetEFeature#getAffectedEObjectID <em>Affected EObject ID</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Affected EObject ID</em>' attribute.
+	 * @see #getAffectedEObjectID()
+	 * @generated
+	 */
+	void setAffectedEObjectID(String value);
 
 } // ExplicitUnsetEFeature

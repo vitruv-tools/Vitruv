@@ -2,6 +2,7 @@
  */
 package tools.vitruv.framework.change.echange.compound;
 
+import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EPackage;
@@ -134,13 +135,22 @@ public interface CompoundPackage extends EPackage {
 	int EXPLICIT_UNSET_EFEATURE__AFFECTED_FEATURE = COMPOUND_ECHANGE_FEATURE_COUNT + 1;
 
 	/**
+	 * The feature id for the '<em><b>Affected EObject ID</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EXPLICIT_UNSET_EFEATURE__AFFECTED_EOBJECT_ID = COMPOUND_ECHANGE_FEATURE_COUNT + 2;
+
+	/**
 	 * The number of structural features of the '<em>Explicit Unset EFeature</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int EXPLICIT_UNSET_EFEATURE_FEATURE_COUNT = COMPOUND_ECHANGE_FEATURE_COUNT + 2;
+	int EXPLICIT_UNSET_EFEATURE_FEATURE_COUNT = COMPOUND_ECHANGE_FEATURE_COUNT + 3;
 
 	/**
 	 * The operation id for the '<em>Is Resolved</em>' operation.
@@ -262,13 +272,22 @@ public interface CompoundPackage extends EPackage {
 	int EXPLICIT_UNSET_EATTRIBUTE__AFFECTED_FEATURE = COMPOUND_SUBTRACTION_FEATURE_COUNT + 1;
 
 	/**
+	 * The feature id for the '<em><b>Affected EObject ID</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EXPLICIT_UNSET_EATTRIBUTE__AFFECTED_EOBJECT_ID = COMPOUND_SUBTRACTION_FEATURE_COUNT + 2;
+
+	/**
 	 * The number of structural features of the '<em>Explicit Unset EAttribute</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int EXPLICIT_UNSET_EATTRIBUTE_FEATURE_COUNT = COMPOUND_SUBTRACTION_FEATURE_COUNT + 2;
+	int EXPLICIT_UNSET_EATTRIBUTE_FEATURE_COUNT = COMPOUND_SUBTRACTION_FEATURE_COUNT + 3;
 
 	/**
 	 * The operation id for the '<em>Is Resolved</em>' operation.
@@ -324,6 +343,15 @@ public interface CompoundPackage extends EPackage {
 	 * @ordered
 	 */
 	int EXPLICIT_UNSET_EREFERENCE__AFFECTED_FEATURE = EXPLICIT_UNSET_EFEATURE__AFFECTED_FEATURE;
+
+	/**
+	 * The feature id for the '<em><b>Affected EObject ID</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EXPLICIT_UNSET_EREFERENCE__AFFECTED_EOBJECT_ID = EXPLICIT_UNSET_EFEATURE__AFFECTED_EOBJECT_ID;
 
 	/**
 	 * The feature id for the '<em><b>Changes</b></em>' containment reference list.
@@ -1072,6 +1100,17 @@ public interface CompoundPackage extends EPackage {
 	EReference getExplicitUnsetEFeature_AffectedFeature();
 
 	/**
+	 * Returns the meta object for the attribute '{@link tools.vitruv.framework.change.echange.compound.ExplicitUnsetEFeature#getAffectedEObjectID <em>Affected EObject ID</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Affected EObject ID</em>'.
+	 * @see tools.vitruv.framework.change.echange.compound.ExplicitUnsetEFeature#getAffectedEObjectID()
+	 * @see #getExplicitUnsetEFeature()
+	 * @generated
+	 */
+	EAttribute getExplicitUnsetEFeature_AffectedEObjectID();
+
+	/**
 	 * Returns the meta object for class '{@link tools.vitruv.framework.change.echange.compound.ExplicitUnsetEAttribute <em>Explicit Unset EAttribute</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1457,6 +1496,14 @@ public interface CompoundPackage extends EPackage {
 		 * @generated
 		 */
 		EReference EXPLICIT_UNSET_EFEATURE__AFFECTED_FEATURE = eINSTANCE.getExplicitUnsetEFeature_AffectedFeature();
+
+		/**
+		 * The meta object literal for the '<em><b>Affected EObject ID</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute EXPLICIT_UNSET_EFEATURE__AFFECTED_EOBJECT_ID = eINSTANCE.getExplicitUnsetEFeature_AffectedEObjectID();
 
 		/**
 		 * The meta object literal for the '{@link tools.vitruv.framework.change.echange.compound.impl.ExplicitUnsetEAttributeImpl <em>Explicit Unset EAttribute</em>}' class.

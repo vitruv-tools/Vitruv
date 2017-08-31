@@ -9,7 +9,6 @@ import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.change.echange.compound.CompoundEChange
 import tools.vitruv.framework.change.echange.compound.ExplicitUnsetEFeature
 import tools.vitruv.framework.change.echange.util.ApplyEChangeSwitch
-import tools.vitruv.framework.change.echange.util.EChangeUtil
 import tools.vitruv.framework.change.uuid.UuidResolver
 import tools.vitruv.framework.change.echange.EChangeResolverAndApplicator
 
@@ -94,12 +93,15 @@ class CompoundEChangeResolver {
 	 * 								the compound change.
 	 */	
 	def package static dispatch boolean resolve(ExplicitUnsetEFeature<EObject, EStructuralFeature> change, UuidResolver uuidResolver, boolean resolveBefore, boolean revertAfterResolving) {
-		if (change.affectedEObject === null || change.affectedFeature === null 
-			|| !resolveCompoundEChange(change, uuidResolver, resolveBefore, revertAfterResolving)) {
+		if (change.affectedEObjectID === null || change.affectedFeature === null) {
+			return false;
+		} 
+					
+		change.affectedEObject = uuidResolver.getEObject(change.affectedEObjectID)
+
+		if (!resolveCompoundEChange(change, uuidResolver, resolveBefore, revertAfterResolving)) {
 			return false
 		}
-			
-		change.affectedEObject = EChangeUtil.resolveProxy(change.affectedEObject, uuidResolver.resourceSet)
 
 		if (change.affectedEObject === null || change.affectedEObject.eIsProxy) {
 			return false

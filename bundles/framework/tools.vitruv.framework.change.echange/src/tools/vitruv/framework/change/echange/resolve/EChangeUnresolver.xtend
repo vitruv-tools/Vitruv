@@ -2,8 +2,6 @@ package tools.vitruv.framework.change.echange.resolve
 
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EStructuralFeature
-import org.eclipse.emf.ecore.InternalEObject
-import org.eclipse.emf.ecore.util.EcoreUtil
 import tools.vitruv.framework.change.echange.compound.CompoundEChange
 import tools.vitruv.framework.change.echange.compound.ExplicitUnsetEFeature
 import tools.vitruv.framework.change.echange.eobject.EObjectAddedEChange
@@ -27,22 +25,6 @@ import tools.vitruv.framework.change.echange.eobject.CreateEObject
 public class EChangeUnresolver {
 	private new() {}
 	
-	/**
-	 * Creates the a proxy object of a given EObject.
-	 * @param resolvedObject The resolved EObject whose proxy should be created.
-	 * @return The proxy object of the given EObject.
-	 */
-	def static public <A extends EObject> A createProxy(A resolvedObject) {
-		if (resolvedObject !== null) {
-			// TODO: Elbert S. Change when eobjects are removed recursively
-			val proxy = EcoreUtil.copy(resolvedObject) as InternalEObject
-			//val proxy = EcoreUtil.create(resolvedObject.eClass) as InternalEObject
-			proxy.eSetProxyURI(EcoreUtil.getURI(resolvedObject))
-			return proxy as A			
-		}
-		return null
-	}
-
 	/**
 	 * Unresolves the attributes of the {@link RootEChange} class.
 	 * @param The RootEChange.
@@ -98,7 +80,7 @@ public class EChangeUnresolver {
 	 * @param The ExplicitUnsetEFeature change.
 	 */		
 	def static public <A extends EObject, F extends EStructuralFeature> void unresolveExplicitUnsetEFeature(ExplicitUnsetEFeature<A, F> change) {
-		change.affectedEObject = createProxy(change.affectedEObject)
+		change.affectedEObject = null
 	}
 	
 	def dispatch public static void unresolve(EChange change) {
@@ -125,7 +107,7 @@ public class EChangeUnresolver {
 	 */	
 	def dispatch public static void unresolve(InsertRootEObject<EObject> change) {
 		change.unresolveRootEChange
-		change.newValue = createProxy(change.newValue)
+		change.newValue = null
 	}	
 	/**
 	 * Dispatch method for {@link RemoveRootEObject} to unresolve it.
@@ -133,7 +115,7 @@ public class EChangeUnresolver {
 	 */
 	def dispatch public static void unresolve(RemoveRootEObject<EObject> change) {
 		change.unresolveRootEChange
-		change.oldValue = createProxy(change.oldValue)
+		change.oldValue = null
 	}
 	/**
 	 * Dispatch method for {@link CreateEObject} to unresolve it.
