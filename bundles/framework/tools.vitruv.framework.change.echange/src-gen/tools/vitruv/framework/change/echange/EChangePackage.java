@@ -3,7 +3,6 @@
 package tools.vitruv.framework.change.echange;
 
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EPackage;
 
@@ -224,27 +223,6 @@ public interface EChangePackage extends EPackage {
 	int SUBTRACTIVE_ECHANGE_OPERATION_COUNT = ATOMIC_ECHANGE_OPERATION_COUNT + 1;
 
 	/**
-	 * The meta object id for the '<em>Command</em>' data type.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see org.eclipse.emf.common.command.Command
-	 * @see tools.vitruv.framework.change.echange.impl.EChangePackageImpl#getCommand()
-	 * @generated
-	 */
-	int COMMAND = 4;
-
-	/**
-	 * The meta object id for the '<em>Resource Set</em>' data type.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see org.eclipse.emf.ecore.resource.ResourceSet
-	 * @see tools.vitruv.framework.change.echange.impl.EChangePackageImpl#getResourceSet()
-	 * @generated
-	 */
-	int RESOURCE_SET = 5;
-
-
-	/**
 	 * Returns the meta object for class '{@link tools.vitruv.framework.change.echange.EChange <em>EChange</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -313,28 +291,6 @@ public interface EChangePackage extends EPackage {
 	 * @generated
 	 */
 	EOperation getSubtractiveEChange__GetOldValue();
-
-	/**
-	 * Returns the meta object for data type '{@link org.eclipse.emf.common.command.Command <em>Command</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for data type '<em>Command</em>'.
-	 * @see org.eclipse.emf.common.command.Command
-	 * @model instanceClass="org.eclipse.emf.common.command.Command"
-	 * @generated
-	 */
-	EDataType getCommand();
-
-	/**
-	 * Returns the meta object for data type '{@link org.eclipse.emf.ecore.resource.ResourceSet <em>Resource Set</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for data type '<em>Resource Set</em>'.
-	 * @see org.eclipse.emf.ecore.resource.ResourceSet
-	 * @model instanceClass="org.eclipse.emf.ecore.resource.ResourceSet"
-	 * @generated
-	 */
-	EDataType getResourceSet();
 
 	/**
 	 * Returns the factory that creates the instances of the model.
@@ -422,26 +378,6 @@ public interface EChangePackage extends EPackage {
 		 * @generated
 		 */
 		EOperation SUBTRACTIVE_ECHANGE___GET_OLD_VALUE = eINSTANCE.getSubtractiveEChange__GetOldValue();
-
-		/**
-		 * The meta object literal for the '<em>Command</em>' data type.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @see org.eclipse.emf.common.command.Command
-		 * @see tools.vitruv.framework.change.echange.impl.EChangePackageImpl#getCommand()
-		 * @generated
-		 */
-		EDataType COMMAND = eINSTANCE.getCommand();
-
-		/**
-		 * The meta object literal for the '<em>Resource Set</em>' data type.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @see org.eclipse.emf.ecore.resource.ResourceSet
-		 * @see tools.vitruv.framework.change.echange.impl.EChangePackageImpl#getResourceSet()
-		 * @generated
-		 */
-		EDataType RESOURCE_SET = eINSTANCE.getResourceSet();
 
 	}
 

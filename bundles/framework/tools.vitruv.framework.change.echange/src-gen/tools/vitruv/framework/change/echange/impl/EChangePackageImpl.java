@@ -2,10 +2,7 @@
  */
 package tools.vitruv.framework.change.echange.impl;
 
-import org.eclipse.emf.common.command.Command;
-
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EGenericType;
 import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EPackage;
@@ -13,9 +10,6 @@ import org.eclipse.emf.ecore.ETypeParameter;
 import org.eclipse.emf.ecore.EcorePackage;
 
 import org.eclipse.emf.ecore.impl.EPackageImpl;
-
-import org.eclipse.emf.ecore.resource.ResourceSet;
-
 import tools.vitruv.framework.change.echange.AdditiveEChange;
 import tools.vitruv.framework.change.echange.AtomicEChange;
 import tools.vitruv.framework.change.echange.EChange;
@@ -74,20 +68,6 @@ public class EChangePackageImpl extends EPackageImpl implements EChangePackage {
 	 * @generated
 	 */
 	private EClass subtractiveEChangeEClass = null;
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	private EDataType commandEDataType = null;
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	private EDataType resourceSetEDataType = null;
 
 	/**
 	 * Creates an instance of the model <b>Package</b>, registered with
@@ -248,24 +228,6 @@ public class EChangePackageImpl extends EPackageImpl implements EChangePackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EDataType getCommand() {
-		return commandEDataType;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EDataType getResourceSet() {
-		return resourceSetEDataType;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public EChangeFactory getEChangeFactory() {
 		return (EChangeFactory)getEFactoryInstance();
 	}
@@ -299,10 +261,6 @@ public class EChangePackageImpl extends EPackageImpl implements EChangePackage {
 
 		subtractiveEChangeEClass = createEClass(SUBTRACTIVE_ECHANGE);
 		createEOperation(subtractiveEChangeEClass, SUBTRACTIVE_ECHANGE___GET_OLD_VALUE);
-
-		// Create data types
-		commandEDataType = createEDataType(COMMAND);
-		resourceSetEDataType = createEDataType(RESOURCE_SET);
 	}
 
 	/**
@@ -364,10 +322,6 @@ public class EChangePackageImpl extends EPackageImpl implements EChangePackage {
 		op = initEOperation(getSubtractiveEChange__GetOldValue(), null, "getOldValue", 1, 1, !IS_UNIQUE, IS_ORDERED);
 		g1 = createEGenericType(subtractiveEChangeEClass_T);
 		initEOperation(op, g1);
-
-		// Initialize data types
-		initEDataType(commandEDataType, Command.class, "Command", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
-		initEDataType(resourceSetEDataType, ResourceSet.class, "ResourceSet", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
 
 		// Create resource
 		createResource(eNS_URI);

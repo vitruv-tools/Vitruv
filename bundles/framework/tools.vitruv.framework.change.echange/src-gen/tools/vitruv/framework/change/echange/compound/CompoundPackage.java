@@ -3,7 +3,6 @@
 package tools.vitruv.framework.change.echange.compound;
 
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
@@ -1021,26 +1020,6 @@ public interface CompoundPackage extends EPackage {
 	int CREATE_AND_REPLACE_AND_DELETE_NON_ROOT_OPERATION_COUNT = COMPOUND_ECHANGE_OPERATION_COUNT + 1;
 
 	/**
-	 * The meta object id for the '<em>Command</em>' data type.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see org.eclipse.emf.common.command.Command
-	 * @see tools.vitruv.framework.change.echange.compound.impl.CompoundPackageImpl#getCommand()
-	 * @generated
-	 */
-	int COMMAND = 15;
-
-	/**
-	 * The meta object id for the '<em>Resource Set</em>' data type.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see org.eclipse.emf.ecore.resource.ResourceSet
-	 * @see tools.vitruv.framework.change.echange.compound.impl.CompoundPackageImpl#getResourceSet()
-	 * @generated
-	 */
-	int RESOURCE_SET = 16;
-
-	/**
 	 * Returns the meta object for class '{@link tools.vitruv.framework.change.echange.compound.CompoundEChange <em>EChange</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1413,28 +1392,6 @@ public interface CompoundPackage extends EPackage {
 	EOperation getCreateAndReplaceAndDeleteNonRoot__GetAtomicChanges();
 
 	/**
-	 * Returns the meta object for data type '{@link org.eclipse.emf.common.command.Command <em>Command</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for data type '<em>Command</em>'.
-	 * @see org.eclipse.emf.common.command.Command
-	 * @model instanceClass="org.eclipse.emf.common.command.Command"
-	 * @generated
-	 */
-	EDataType getCommand();
-
-	/**
-	 * Returns the meta object for data type '{@link org.eclipse.emf.ecore.resource.ResourceSet <em>Resource Set</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for data type '<em>Resource Set</em>'.
-	 * @see org.eclipse.emf.ecore.resource.ResourceSet
-	 * @model instanceClass="org.eclipse.emf.ecore.resource.ResourceSet"
-	 * @generated
-	 */
-	EDataType getResourceSet();
-
-	/**
 	 * Returns the factory that creates the instances of the model.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1774,26 +1731,6 @@ public interface CompoundPackage extends EPackage {
 		 * @generated
 		 */
 		EOperation CREATE_AND_REPLACE_AND_DELETE_NON_ROOT___GET_ATOMIC_CHANGES = eINSTANCE.getCreateAndReplaceAndDeleteNonRoot__GetAtomicChanges();
-
-		/**
-		 * The meta object literal for the '<em>Command</em>' data type.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @see org.eclipse.emf.common.command.Command
-		 * @see tools.vitruv.framework.change.echange.compound.impl.CompoundPackageImpl#getCommand()
-		 * @generated
-		 */
-		EDataType COMMAND = eINSTANCE.getCommand();
-
-		/**
-		 * The meta object literal for the '<em>Resource Set</em>' data type.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @see org.eclipse.emf.ecore.resource.ResourceSet
-		 * @see tools.vitruv.framework.change.echange.compound.impl.CompoundPackageImpl#getResourceSet()
-		 * @generated
-		 */
-		EDataType RESOURCE_SET = eINSTANCE.getResourceSet();
 
 	}
 

@@ -3,7 +3,6 @@
 package tools.vitruv.framework.change.echange.feature.reference;
 
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EPackage;
 
@@ -700,27 +699,6 @@ public interface ReferencePackage extends EPackage {
 	int REPLACE_SINGLE_VALUED_EREFERENCE_OPERATION_COUNT = SinglePackage.REPLACE_SINGLE_VALUED_FEATURE_ECHANGE_OPERATION_COUNT + 1;
 
 	/**
-	 * The meta object id for the '<em>Resource Set</em>' data type.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see org.eclipse.emf.ecore.resource.ResourceSet
-	 * @see tools.vitruv.framework.change.echange.feature.reference.impl.ReferencePackageImpl#getResourceSet()
-	 * @generated
-	 */
-	int RESOURCE_SET = 6;
-
-	/**
-	 * The meta object id for the '<em>Command</em>' data type.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see org.eclipse.emf.common.command.Command
-	 * @see tools.vitruv.framework.change.echange.feature.reference.impl.ReferencePackageImpl#getCommand()
-	 * @generated
-	 */
-	int COMMAND = 7;
-
-
-	/**
 	 * Returns the meta object for class '{@link tools.vitruv.framework.change.echange.feature.reference.UpdateReferenceEChange <em>Update Reference EChange</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -789,28 +767,6 @@ public interface ReferencePackage extends EPackage {
 	 * @generated
 	 */
 	EClass getReplaceSingleValuedEReference();
-
-	/**
-	 * Returns the meta object for data type '{@link org.eclipse.emf.ecore.resource.ResourceSet <em>Resource Set</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for data type '<em>Resource Set</em>'.
-	 * @see org.eclipse.emf.ecore.resource.ResourceSet
-	 * @model instanceClass="org.eclipse.emf.ecore.resource.ResourceSet"
-	 * @generated
-	 */
-	EDataType getResourceSet();
-
-	/**
-	 * Returns the meta object for data type '{@link org.eclipse.emf.common.command.Command <em>Command</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for data type '<em>Command</em>'.
-	 * @see org.eclipse.emf.common.command.Command
-	 * @model instanceClass="org.eclipse.emf.common.command.Command"
-	 * @generated
-	 */
-	EDataType getCommand();
 
 	/**
 	 * Returns the factory that creates the instances of the model.
@@ -902,26 +858,6 @@ public interface ReferencePackage extends EPackage {
 		 * @generated
 		 */
 		EClass REPLACE_SINGLE_VALUED_EREFERENCE = eINSTANCE.getReplaceSingleValuedEReference();
-
-		/**
-		 * The meta object literal for the '<em>Resource Set</em>' data type.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @see org.eclipse.emf.ecore.resource.ResourceSet
-		 * @see tools.vitruv.framework.change.echange.feature.reference.impl.ReferencePackageImpl#getResourceSet()
-		 * @generated
-		 */
-		EDataType RESOURCE_SET = eINSTANCE.getResourceSet();
-
-		/**
-		 * The meta object literal for the '<em>Command</em>' data type.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @see org.eclipse.emf.common.command.Command
-		 * @see tools.vitruv.framework.change.echange.feature.reference.impl.ReferencePackageImpl#getCommand()
-		 * @generated
-		 */
-		EDataType COMMAND = eINSTANCE.getCommand();
 
 	}
 

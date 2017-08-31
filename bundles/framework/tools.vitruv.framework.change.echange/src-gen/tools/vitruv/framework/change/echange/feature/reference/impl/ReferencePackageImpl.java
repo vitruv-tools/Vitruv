@@ -2,10 +2,7 @@
  */
 package tools.vitruv.framework.change.echange.feature.reference.impl;
 
-import org.eclipse.emf.common.command.Command;
-
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EGenericType;
 import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EPackage;
@@ -13,9 +10,6 @@ import org.eclipse.emf.ecore.ETypeParameter;
 import org.eclipse.emf.ecore.EcorePackage;
 
 import org.eclipse.emf.ecore.impl.EPackageImpl;
-
-import org.eclipse.emf.ecore.resource.ResourceSet;
-
 import tools.vitruv.framework.change.echange.EChangePackage;
 
 import tools.vitruv.framework.change.echange.compound.CompoundPackage;
@@ -106,20 +100,6 @@ public class ReferencePackageImpl extends EPackageImpl implements ReferencePacka
 	 * @generated
 	 */
 	private EClass replaceSingleValuedEReferenceEClass = null;
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	private EDataType resourceSetEDataType = null;
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	private EDataType commandEDataType = null;
 
 	/**
 	 * Creates an instance of the model <b>Package</b>, registered with
@@ -280,24 +260,6 @@ public class ReferencePackageImpl extends EPackageImpl implements ReferencePacka
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EDataType getResourceSet() {
-		return resourceSetEDataType;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EDataType getCommand() {
-		return commandEDataType;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public ReferenceFactory getReferenceFactory() {
 		return (ReferenceFactory)getEFactoryInstance();
 	}
@@ -333,10 +295,6 @@ public class ReferencePackageImpl extends EPackageImpl implements ReferencePacka
 		removeEReferenceEClass = createEClass(REMOVE_EREFERENCE);
 
 		replaceSingleValuedEReferenceEClass = createEClass(REPLACE_SINGLE_VALUED_EREFERENCE);
-
-		// Create data types
-		resourceSetEDataType = createEDataType(RESOURCE_SET);
-		commandEDataType = createEDataType(COMMAND);
 	}
 
 	/**
@@ -492,10 +450,6 @@ public class ReferencePackageImpl extends EPackageImpl implements ReferencePacka
 		initEClass(removeEReferenceEClass, RemoveEReference.class, "RemoveEReference", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		initEClass(replaceSingleValuedEReferenceEClass, ReplaceSingleValuedEReference.class, "ReplaceSingleValuedEReference", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-
-		// Initialize data types
-		initEDataType(resourceSetEDataType, ResourceSet.class, "ResourceSet", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
-		initEDataType(commandEDataType, Command.class, "Command", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
 
 		// Create resource
 		createResource(eNS_URI);
