@@ -17,10 +17,12 @@ ConceptDeclaration:
 
 CommonalityDeclaration:
 	'commonality' name=ID '{'
-	participations+=ParticipationDecl*
-	attributes+=AttributeDeclaration*
+		participations+=ParticipationDecl*
+		(attributes+=AttributeDeclaration|references+=ReferenceDeclaration)*
 	'}'
 ;
+
+
 
 /******************
  * Participations *
@@ -95,15 +97,31 @@ ParticipationNoCondition returns ParticipationCondition:
  **************/
 AttributeDeclaration:
 	'has' name=ID '{'
-	mappings+=AttributeMappingSpecifiation*
+		mappings+=AttributeMappingSpecifiation*
 	'}'
 ;
 
 AttributeMappingSpecifiation:
 	('=' {AttributeEqualitySpecification} | '->' {AttributeSetSpecification} | '<-' {AttributeReadSpecification})
-	attribute=[ParticipationAttribute|QualifiedParticipationAttribute]
+	attribute=[ParticipationAttribute|QualifiedParticipationMember]
 ;
 
+
+
+/**************
+ * Attributes *
+ **************/
+ ReferenceDeclaration:
+ 	'has' name=ID 'referencing' referenceType=[Metaclass|QualifiedMetaclass] '{'
+ 		mappings+=ReferenceMappingSpecification*
+ 	'}'
+ ;
+ 
+ ReferenceMappingSpecification:
+ 	('=' {ReferenceEqualitySpecification})
+ 	reference=[ParticipationReference|QualifiedParticipationMember]
+ 	('via' referenceTargets+=[ParticipationClass|QualifiedParticipationClass] (',' referenceTargets+=[ParticipationClass|QualifiedParticipationClass])*)?
+ ;
 
 
 /******************
@@ -116,14 +134,21 @@ QualifiedMetaclass:
 	QualifiedClasslike
 ;
 
+QualifiedParticipationClass:
+	QualifiedClasslike
+;
+
 DomainReference:
-	ID;
+	ID
+;
 
 UnqualifiedMetaclass:
-	ID;
+	ID
+;
 
-QualifiedParticipationAttribute:
-	QualifiedClasslike '.' ID;
+QualifiedParticipationMember:
+	QualifiedClasslike '.' ID
+;
 	
 	
 	
