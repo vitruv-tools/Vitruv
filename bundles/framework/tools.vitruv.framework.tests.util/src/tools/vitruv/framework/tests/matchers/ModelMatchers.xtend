@@ -72,10 +72,10 @@ package class ModelTreeEqualityMatcher extends TypeSafeMatcher<EObject> {
 	var Map<Object, Object> checkCache = new HashMap
 
 	override protected matchesSafely(EObject item) {
-		return expectedObject.equalsDeeply(item)
+		return expectedObject.equalsDeeply(item, false)
 	}
 
-	def private dispatch boolean equalsDeeply(EObject expected, EObject item) {
+	def private dispatch boolean equalsDeeply(EObject expected, EObject item, boolean ordered) {
 		if (checkCache.get(item) == expected) {
 			return true;
 		}
@@ -88,7 +88,7 @@ package class ModelTreeEqualityMatcher extends TypeSafeMatcher<EObject> {
 		}
 		for (feature : expected.eClass.EAllStructuralFeatures) {
 			navigationStack.push('''.«feature.name»''')
-			if (!expected.eGet(feature).equalsDeeply(item.eGet(feature))) {
+			if (!expected.eGet(feature).equalsDeeply(item.eGet(feature), feature.ordered)) {
 				return false;
 			}
 			navigationStack.pop()
@@ -97,27 +97,68 @@ package class ModelTreeEqualityMatcher extends TypeSafeMatcher<EObject> {
 		return true;
 	}
 
-	def private dispatch boolean equalsDeeply(Collection<?> expected, Collection<?> item) {
+	def private dispatch boolean equalsDeeply(Collection<?> expected, Collection<?> item, boolean ordered) {
 		if (expected.size() > item.size()) {
+			mismatch = [
+				appendText("did not contain enough elements. Expected ").appendValue(expected.size).appendText(
+					" elements but found only ").appendValue(item.size).appendText(".")
+			]
 			return false;
 		} else if (expected.size() < item.size()) {
+			mismatch = [
+				appendText("contained too many elements. Expected ").appendValue(expected.size).appendText(
+					" elements but found ").appendValue(item.size).appendText(".")
+			]
 			return false;
 		} else {
 			var count = 0;
 			val expectedIter = expected.iterator()
-			val itemIter = item.iterator()
+			val itemOrdered = if (ordered) item else item.iterator.toList 
+			var itemIter = itemOrdered.iterator()
+			var usedItemIndeces = if (ordered) null else newBooleanArrayOfSize(itemOrdered.size)
+
 			while (expectedIter.hasNext()) {
-				navigationStack.push('''[«count++»]''')
-				if (!expectedIter.next.equalsDeeply(itemIter.next)) {
-					return false;
+				navigationStack.push('''[«count»]''')
+				val expectedElement = expectedIter.next
+				if (!expectedElement.equalsDeeply(itemIter.next, false)) {
+					if (!ordered) {
+						// if not ordered, retry with all elements not matched yet.
+						if (!itemOrdered.containsDeepEqual(expectedElement, usedItemIndeces)) {
+							val notFoundCount = count
+							navigationStack.pop()
+							mismatch = [
+								appendText('''did not contain an element equal to the «notFoundCount». element.''').
+									appendValue(expectedElement)
+							]
+							return false
+						}
+					} else {
+						return false
+					}
+				} else if (!ordered) {
+					usedItemIndeces.set(count, true)
 				}
 				navigationStack.pop()
+				count++
 			}
 		}
 		return true
 	}
 
-	def private dispatch boolean equalsDeeply(Object expected, Object item) {
+	def private containsDeepEqual(Collection<?> unordered, Object expected, boolean[] usedItemIndeces) {
+		var itemCount = 0
+		val itemIter = unordered.iterator()
+		while (itemIter.hasNext()) {
+			if (itemIter.next.equalsDeeply(expected, false) && !usedItemIndeces.get(itemCount)) {
+				usedItemIndeces.set(itemCount, true)
+				return true
+			}
+			itemCount++
+		}
+		return false
+	}
+
+	def private dispatch boolean equalsDeeply(Object expected, Object item, boolean ordered) {
 		if (expected != item) {
 			equalityMismatch(expected, item)
 			return false
@@ -125,17 +166,17 @@ package class ModelTreeEqualityMatcher extends TypeSafeMatcher<EObject> {
 		return true
 	}
 
-	def private dispatch boolean equalsDeeply(Void expected, Object item) {
+	def private dispatch boolean equalsDeeply(Void expected, Object item, boolean ordered) {
 		equalityMismatch(expected, item)
 		false
 	}
 
-	def private dispatch boolean equalsDeeply(Object expected, Void item) {
+	def private dispatch boolean equalsDeeply(Object expected, Void item, boolean ordered) {
 		equalityMismatch(expected, item)
 		false
 	}
 
-	def private dispatch boolean equalsDeeply(Void expected, Void item) {
+	def private dispatch boolean equalsDeeply(Void expected, Void item, boolean ordered) {
 		true
 	}
 
