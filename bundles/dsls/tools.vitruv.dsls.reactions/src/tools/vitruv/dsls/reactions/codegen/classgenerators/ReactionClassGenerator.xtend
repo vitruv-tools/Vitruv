@@ -123,11 +123,11 @@ class ReactionClassGenerator extends ClassGenerator {
 				if (!(«changeParameter.name» instanceof «changeTypeRepresentation.changeType»)) {
 					return false;
 				}
-				getLogger().debug("Passed change type check of reaction " + this.getClass().getName());
+				getLogger().trace("Passed change type check of reaction " + this.getClass().getName());
 				if (!«changePropertiesCheckMethod.simpleName»(«changeParameter.name»)) {
 					return false;
 				}
-				getLogger().debug("Passed change properties check of reaction " + this.getClass().getName());
+				getLogger().trace("Passed change properties check of reaction " + this.getClass().getName());
 				«IF hasPreconditionBlock»
 					«changeTypeRepresentation.getRelevantChangeAssignmentCode(changeParameter.name, typedChangeVariableName)»
 					«relevantAtomicChangeTypeRepresentation.generatePropertiesAssignmentCode(typedChangeVariableName)»
@@ -137,7 +137,7 @@ class ReactionClassGenerator extends ClassGenerator {
 						return false;
 					}
 				«ENDIF»
-				getLogger().debug("Passed complete precondition check of reaction " + this.getClass().getName());
+				getLogger().trace("Passed complete precondition check of reaction " + this.getClass().getName());
 				return true;
 				'''
 		];

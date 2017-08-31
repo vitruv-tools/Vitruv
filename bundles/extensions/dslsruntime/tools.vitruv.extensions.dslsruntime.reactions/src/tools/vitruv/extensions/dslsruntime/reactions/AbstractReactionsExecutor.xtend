@@ -42,9 +42,9 @@ abstract class AbstractReactionsExecutor extends AbstractEChangePropagationSpeci
 			}
 		}
 		val relevantReactions = event.relevantReactions;
-		LOGGER.debug("Call relevant reactions");
+		LOGGER.trace("Call relevant reactions");
 		for (reactions : relevantReactions) {
-			LOGGER.debug(reactions.toString());
+			LOGGER.debug("Calling reaction: " + reactions.class.simpleName + " with event: " + event);
 			val executionState = new ReactionExecutionState(userInteracting, correspondenceModel, resourceAccess, this);
 			reactions.applyEvent(event, executionState)
 		}
