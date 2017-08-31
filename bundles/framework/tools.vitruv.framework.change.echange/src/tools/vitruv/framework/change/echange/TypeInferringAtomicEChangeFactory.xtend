@@ -24,7 +24,6 @@ import tools.vitruv.framework.change.echange.root.RemoveRootEObject
 import tools.vitruv.framework.change.echange.root.RootEChange
 import tools.vitruv.framework.change.echange.root.RootFactory
 import org.eclipse.emf.ecore.resource.Resource
-import tools.vitruv.framework.change.echange.resolve.StagingArea
 
 /**
  * Factory singleton class for elements of change models.
@@ -99,9 +98,9 @@ class TypeInferringAtomicEChangeFactory {
 	 */
 	def protected <A extends EObject> void setEObjectExistenceChange(EObjectExistenceEChange<A> change,
 		A affectedEObject, Resource resource, String objectId) {
-		change.stagingArea = StagingArea.getStagingArea(resource)
 		change.affectedEObject = affectedEObject;
-		change.objectId = objectId;
+		change.affectedEObjectType = change.affectedEObject.eClass
+		change.idAttributeValue = objectId;
 	}
 
 	/**
@@ -241,6 +240,9 @@ class TypeInferringAtomicEChangeFactory {
 	 * @return The created CreateEObject EChange.
 	 */
 	def <A extends EObject> CreateEObject<A> createCreateEObjectChange(A affectedEObject, Resource resource, String objectId) {
+		if (affectedEObject === null) {
+			throw new IllegalArgumentException();
+		}
 		val c = EobjectFactory.eINSTANCE.createCreateEObject()
 		setEObjectExistenceChange(c, affectedEObject, resource, objectId)
 		return c
@@ -253,6 +255,9 @@ class TypeInferringAtomicEChangeFactory {
 	 * @return The created DeleteEObject EChange.
 	 */
 	def <A extends EObject> DeleteEObject<A> createDeleteEObjectChange(A affectedEObject, Resource resource, String objectId) {
+		if (affectedEObject === null) {
+			throw new IllegalArgumentException();
+		}
 		val c = EobjectFactory.eINSTANCE.createDeleteEObject()
 		setEObjectExistenceChange(c, affectedEObject, resource, objectId)
 		return c

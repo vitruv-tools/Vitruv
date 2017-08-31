@@ -12,6 +12,7 @@ import tools.vitruv.framework.change.echange.compound.CreateAndInsertNonRoot
 import tools.vitruv.framework.tests.echange.feature.reference.ReferenceEChangeTest
 
 import static extension tools.vitruv.framework.tests.echange.util.EChangeAssertHelper.*
+import static extension tools.vitruv.framework.change.echange.EChangeResolverAndApplicator.*;
 
 /**
  * Test class for the concrete {@link CreateAndInsertNonRoot} EChange,
@@ -41,7 +42,7 @@ public class CreateAndInsertNonRootTest extends ReferenceEChangeTest {
 		unresolvedChange.assertIsNotResolved(affectedEObject, newValue)
 			
 		// Resolve
-		val resolvedChange = unresolvedChange.resolveBefore(resourceSet) 
+		val resolvedChange = unresolvedChange.resolveBefore(uuidGeneratorAndResolver) 
 			as CreateAndInsertNonRoot<Root, NonRoot>
 		resolvedChange.assertIsResolved(affectedEObject, newValue)	
 			
@@ -63,7 +64,7 @@ public class CreateAndInsertNonRootTest extends ReferenceEChangeTest {
 		prepareStateAfter
 			
 		// Resolve
-		val resolvedChange = unresolvedChange.resolveAfter(resourceSet) 
+		val resolvedChange = unresolvedChange.resolveAfter(uuidGeneratorAndResolver) 
 			as CreateAndInsertNonRoot<Root, NonRoot>
 		resolvedChange.assertIsResolved(affectedEObject, newValue)	
 		
@@ -81,7 +82,7 @@ public class CreateAndInsertNonRootTest extends ReferenceEChangeTest {
 		val unresolvedChange = createUnresolvedChange(affectedEObject, newValue, 0)
 		
 		// Resolve		
- 		val resolvedChange = unresolvedChange.resolveBefore(resourceSet)
+ 		val resolvedChange = unresolvedChange.resolveBefore(uuidGeneratorAndResolver)
 		unresolvedChange.assertDifferentChangeSameClass(resolvedChange)
 	}
 	
@@ -93,16 +94,15 @@ public class CreateAndInsertNonRootTest extends ReferenceEChangeTest {
 	@Test
 	def public void applyForwardTest() {
 		// Create and resolve and apply change
-		val resolvedChange = createUnresolvedChange(affectedEObject, newValue, 0).resolveBefore(resourceSet)
+		val resolvedChange = createUnresolvedChange(affectedEObject, newValue, 0).resolveBefore(uuidGeneratorAndResolver)
 			as CreateAndInsertNonRoot<Root, NonRoot>
 		resolvedChange.assertApplyForward
 		
 		Assert.assertEquals(referenceContent.size, 1)
 		Assert.assertTrue(referenceContent.contains(resolvedChange.createChange.affectedEObject))
-		Assert.assertTrue(stagingArea.empty)
 		
 		// Create and resolve and apply change 2	
-		val resolvedChange2 = createUnresolvedChange(affectedEObject, newValue2, 1).resolveBefore(resourceSet)
+		val resolvedChange2 = createUnresolvedChange(affectedEObject, newValue2, 1).resolveBefore(uuidGeneratorAndResolver)
 			as CreateAndInsertNonRoot<Root, NonRoot>
 		resolvedChange2.assertApplyForward
 		
@@ -118,12 +118,12 @@ public class CreateAndInsertNonRootTest extends ReferenceEChangeTest {
 	@Test
 	def public void applyBackwardTest() {
 		// Create and resolve and apply change 1
-		val resolvedChange = createUnresolvedChange(affectedEObject, newValue, 0).resolveBefore(resourceSet)
+		val resolvedChange = createUnresolvedChange(affectedEObject, newValue, 0).resolveBefore(uuidGeneratorAndResolver)
 			as CreateAndInsertNonRoot<Root, NonRoot>
 		resolvedChange.assertApplyForward
 		
 		// Create and resolve change 2
-		val resolvedChange2 = createUnresolvedChange(affectedEObject, newValue2, 1).resolveBefore(resourceSet)
+		val resolvedChange2 = createUnresolvedChange(affectedEObject, newValue2, 1).resolveBefore(uuidGeneratorAndResolver)
 			as CreateAndInsertNonRoot<Root, NonRoot>
 		resolvedChange2.assertApplyForward
 				
@@ -136,7 +136,6 @@ public class CreateAndInsertNonRootTest extends ReferenceEChangeTest {
 		Assert.assertTrue(referenceContent.contains(resolvedChange.createChange.affectedEObject))
 		Assert.assertFalse(referenceContent.contains(resolvedChange2.createChange.affectedEObject))	
 		Assert.assertEquals(referenceContent.size, 1)
-		Assert.assertTrue(stagingArea.empty)
 			
 		// Apply backward 1	
 		resolvedChange.assertApplyBackward
@@ -159,7 +158,6 @@ public class CreateAndInsertNonRootTest extends ReferenceEChangeTest {
 	 */
 	def private void assertIsStateBefore() {
 		Assert.assertEquals(referenceContent.size, 0)
-		Assert.assertTrue(stagingArea.empty)
 	}
 	
 	/**
@@ -169,7 +167,6 @@ public class CreateAndInsertNonRootTest extends ReferenceEChangeTest {
 		Assert.assertEquals(referenceContent.size, 2)
 		newValue.assertEqualsOrCopy(referenceContent.get(0))
 		newValue2.assertEqualsOrCopy(referenceContent.get(1))
-		Assert.assertTrue(stagingArea.empty)
 	}
 	
 	/**
@@ -180,10 +177,10 @@ public class CreateAndInsertNonRootTest extends ReferenceEChangeTest {
 		Assert.assertFalse(change.isResolved)
 		Assert.assertFalse(change.createChange.isResolved)
 		Assert.assertFalse(change.insertChange.isResolved)
-		Assert.assertNotSame(change.createChange.affectedEObject, newNonRoot)
-		Assert.assertNotSame(change.insertChange.newValue, newNonRoot)
-		Assert.assertNotSame(change.insertChange.affectedEObject, affectedEObject)
-		Assert.assertNotSame(change.createChange.affectedEObject, change.insertChange.newValue)
+		Assert.assertNull(change.createChange.affectedEObject)
+		Assert.assertNull(change.insertChange.newValue)
+		Assert.assertNull(change.insertChange.affectedEObject);
+		Assert.assertEquals(change.insertChange.newValueID, change.createChange.affectedEObjectID)
 	}
 	
 	/**

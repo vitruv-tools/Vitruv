@@ -1,10 +1,10 @@
 package tools.vitruv.framework.change.echange.resolve
 
-import org.eclipse.emf.ecore.resource.ResourceSet
 import org.eclipse.emf.ecore.util.EcoreUtil
 import tools.vitruv.framework.change.echange.AtomicEChange
 import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.change.echange.compound.CompoundEChange
+import tools.vitruv.framework.change.uuid.UuidResolver
 
 /**
  * Utility class for resolving an given EChange. Dispatches AtomicEChange and CompoundEChange.
@@ -17,8 +17,7 @@ class EChangeResolver {
 	 * change to a given set of resources with concrete EObjects.
 	 * Before the change can be applied all proxy objects need to be resolved.
 	 * @param change					The {@link EChange} which shall be resolved.
-	 * @param resourceSet 				The {@code ResourceSet} which contains the concrete EObjects the proxy objects of
-	 * 									the unresolved should be resolved to.
+	 * @param uuidResolver 				The {@link UuidResolver} to resolve {@link EObject}s from
 	 * @param resolveBefore				{@code true} if the model is in the state before the change,
 	 * 									{@code false} if the model is in the state after.
 	 * @param revertAfterResolving		If {@code true} all applied changes while resolving the change will be reverted after resolving.
@@ -27,10 +26,10 @@ class EChangeResolver {
 	 * 									is {@code null}, it returns {@code null}. If the change was already resolved an exception is thrown.
 	 * @throws IllegalStateException 	The change is already resolved.
 	 */
-	def public static EChange resolveCopy(EChange change, ResourceSet resourceSet, boolean resolveBefore,
+	def public static EChange resolveCopy(EChange change, UuidResolver uuidResolver, boolean resolveBefore,
 		boolean revertAfterResolving) {
 		var EChange copy = EcoreUtil.copy(change)
-		if (resolve(copy, resourceSet, resolveBefore, revertAfterResolving)) {
+		if (resolve(copy, uuidResolver, resolveBefore, revertAfterResolving)) {
 			return copy
 		} else {
 			return null
@@ -41,8 +40,7 @@ class EChangeResolver {
 	 * Resolves the unresolved proxy EObjects of a given {@code EChange} to a given set of resources with concrete EObjects.
 	 * Before the change can be applied all proxy objects need to be resolved.
 	 * @param change					The {@link EChange} which shall be resolved.
-	 * @param resourceSet 				The {@code ResourceSet} which contains the concrete EObjects the proxy objects of
-	 * 									the unresolved should be resolved to.
+	 * @param uuidResolver 				The {@link UuidResolver} to resolve {@link EObject}s from
 	 * @param resolveBefore				{@code true} if the model is in the state before the change,
 	 * 									{@code false} if the model is in the state after.
 	 * @param revertAfterResolving		If {@code true} all applied changes while resolving the change will be reverted after resolving.
@@ -51,12 +49,12 @@ class EChangeResolver {
 	 * 									is {@code null}, it returns {@code null}. If the change was already resolved an exception is thrown.
 	 * @throws IllegalStateException 	The change is already resolved.
 	 */
-	def public static boolean resolve(EChange change, ResourceSet resourceSet, boolean resolveBefore,
+	def public static boolean resolve(EChange change, UuidResolver uuidResolver, boolean resolveBefore,
 		boolean revertAfterResolving) {
 		if (change.isResolved) {
 			throw new IllegalArgumentException
 		}
-		if (!resolveChange(change, resourceSet, resolveBefore, revertAfterResolving)) {
+		if (!resolveChange(change, uuidResolver, resolveBefore, revertAfterResolving)) {
 			return false
 		}
 		return true
@@ -65,7 +63,7 @@ class EChangeResolver {
 	/**
 	 * Dispatch method for resolving an {@link EChange}.
 	 */
-	def private static dispatch boolean resolveChange(EChange change, ResourceSet resourceSet, boolean resolveBefore,
+	def private static dispatch boolean resolveChange(EChange change, UuidResolver uuidResolver, boolean resolveBefore,
 		boolean revertAfterResolving) {
 		// If an EChange reaches this point, there is a dispatch method missing for the concrete type.
 		throw new UnsupportedOperationException
@@ -74,16 +72,16 @@ class EChangeResolver {
 	/**
 	 * Dispatch method for resolving {@link AtomicEChange}s.
 	 */
-	def private static dispatch boolean resolveChange(AtomicEChange change, ResourceSet resourceSet,
+	def private static dispatch boolean resolveChange(AtomicEChange change, UuidResolver uuidResolver,
 		boolean resolveBefore, boolean revertAfterResolving) {
-		AtomicEChangeResolver.resolve(change, resourceSet, resolveBefore)
+		AtomicEChangeResolver.resolve(change, uuidResolver, resolveBefore)
 	}
 
 	/**
 	 * Dispatch method for resolving an {@link CompoundEChange}s.
 	 */
-	def private static dispatch boolean resolveChange(CompoundEChange change, ResourceSet resourceSet,
+	def private static dispatch boolean resolveChange(CompoundEChange change, UuidResolver uuidResolver,
 		boolean resolveBefore, boolean revertAfterResolving) {
-		CompoundEChangeResolver.resolve(change, resourceSet, resolveBefore, revertAfterResolving)
+		CompoundEChangeResolver.resolve(change, uuidResolver, resolveBefore, revertAfterResolving)
 	}
 }

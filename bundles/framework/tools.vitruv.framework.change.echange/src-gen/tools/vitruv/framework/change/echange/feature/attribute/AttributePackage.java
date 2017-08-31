@@ -91,6 +91,15 @@ public interface AttributePackage extends EPackage {
 	int UPDATE_ATTRIBUTE_ECHANGE__AFFECTED_EOBJECT = FeaturePackage.FEATURE_ECHANGE__AFFECTED_EOBJECT;
 
 	/**
+	 * The feature id for the '<em><b>Affected EObject ID</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int UPDATE_ATTRIBUTE_ECHANGE__AFFECTED_EOBJECT_ID = FeaturePackage.FEATURE_ECHANGE__AFFECTED_EOBJECT_ID;
+
+	/**
 	 * The number of structural features of the '<em>Update Attribute EChange</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -107,60 +116,6 @@ public interface AttributePackage extends EPackage {
 	 * @ordered
 	 */
 	int UPDATE_ATTRIBUTE_ECHANGE___IS_RESOLVED = FeaturePackage.FEATURE_ECHANGE___IS_RESOLVED;
-
-	/**
-	 * The operation id for the '<em>Resolve Before</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int UPDATE_ATTRIBUTE_ECHANGE___RESOLVE_BEFORE__RESOURCESET = FeaturePackage.FEATURE_ECHANGE___RESOLVE_BEFORE__RESOURCESET;
-
-	/**
-	 * The operation id for the '<em>Resolve After</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int UPDATE_ATTRIBUTE_ECHANGE___RESOLVE_AFTER__RESOURCESET = FeaturePackage.FEATURE_ECHANGE___RESOLVE_AFTER__RESOURCESET;
-
-	/**
-	 * The operation id for the '<em>Resolve Before And Apply Forward</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int UPDATE_ATTRIBUTE_ECHANGE___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET = FeaturePackage.FEATURE_ECHANGE___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET;
-
-	/**
-	 * The operation id for the '<em>Resolve After And Apply Backward</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int UPDATE_ATTRIBUTE_ECHANGE___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET = FeaturePackage.FEATURE_ECHANGE___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET;
-
-	/**
-	 * The operation id for the '<em>Apply Forward</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int UPDATE_ATTRIBUTE_ECHANGE___APPLY_FORWARD = FeaturePackage.FEATURE_ECHANGE___APPLY_FORWARD;
-
-	/**
-	 * The operation id for the '<em>Apply Backward</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int UPDATE_ATTRIBUTE_ECHANGE___APPLY_BACKWARD = FeaturePackage.FEATURE_ECHANGE___APPLY_BACKWARD;
 
 	/**
 	 * The number of operations of the '<em>Update Attribute EChange</em>' class.
@@ -200,6 +155,15 @@ public interface AttributePackage extends EPackage {
 	int ADDITIVE_ATTRIBUTE_ECHANGE__AFFECTED_EOBJECT = UPDATE_ATTRIBUTE_ECHANGE__AFFECTED_EOBJECT;
 
 	/**
+	 * The feature id for the '<em><b>Affected EObject ID</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ADDITIVE_ATTRIBUTE_ECHANGE__AFFECTED_EOBJECT_ID = UPDATE_ATTRIBUTE_ECHANGE__AFFECTED_EOBJECT_ID;
+
+	/**
 	 * The feature id for the '<em><b>New Value</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -225,60 +189,6 @@ public interface AttributePackage extends EPackage {
 	 * @ordered
 	 */
 	int ADDITIVE_ATTRIBUTE_ECHANGE___IS_RESOLVED = UPDATE_ATTRIBUTE_ECHANGE___IS_RESOLVED;
-
-	/**
-	 * The operation id for the '<em>Resolve Before</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ADDITIVE_ATTRIBUTE_ECHANGE___RESOLVE_BEFORE__RESOURCESET = UPDATE_ATTRIBUTE_ECHANGE___RESOLVE_BEFORE__RESOURCESET;
-
-	/**
-	 * The operation id for the '<em>Resolve After</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ADDITIVE_ATTRIBUTE_ECHANGE___RESOLVE_AFTER__RESOURCESET = UPDATE_ATTRIBUTE_ECHANGE___RESOLVE_AFTER__RESOURCESET;
-
-	/**
-	 * The operation id for the '<em>Resolve Before And Apply Forward</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ADDITIVE_ATTRIBUTE_ECHANGE___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET = UPDATE_ATTRIBUTE_ECHANGE___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET;
-
-	/**
-	 * The operation id for the '<em>Resolve After And Apply Backward</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ADDITIVE_ATTRIBUTE_ECHANGE___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET = UPDATE_ATTRIBUTE_ECHANGE___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET;
-
-	/**
-	 * The operation id for the '<em>Apply Forward</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ADDITIVE_ATTRIBUTE_ECHANGE___APPLY_FORWARD = UPDATE_ATTRIBUTE_ECHANGE___APPLY_FORWARD;
-
-	/**
-	 * The operation id for the '<em>Apply Backward</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ADDITIVE_ATTRIBUTE_ECHANGE___APPLY_BACKWARD = UPDATE_ATTRIBUTE_ECHANGE___APPLY_BACKWARD;
 
 	/**
 	 * The operation id for the '<em>Get New Value</em>' operation.
@@ -327,6 +237,15 @@ public interface AttributePackage extends EPackage {
 	int SUBTRACTIVE_ATTRIBUTE_ECHANGE__AFFECTED_EOBJECT = UPDATE_ATTRIBUTE_ECHANGE__AFFECTED_EOBJECT;
 
 	/**
+	 * The feature id for the '<em><b>Affected EObject ID</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SUBTRACTIVE_ATTRIBUTE_ECHANGE__AFFECTED_EOBJECT_ID = UPDATE_ATTRIBUTE_ECHANGE__AFFECTED_EOBJECT_ID;
+
+	/**
 	 * The feature id for the '<em><b>Old Value</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -352,60 +271,6 @@ public interface AttributePackage extends EPackage {
 	 * @ordered
 	 */
 	int SUBTRACTIVE_ATTRIBUTE_ECHANGE___IS_RESOLVED = UPDATE_ATTRIBUTE_ECHANGE___IS_RESOLVED;
-
-	/**
-	 * The operation id for the '<em>Resolve Before</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int SUBTRACTIVE_ATTRIBUTE_ECHANGE___RESOLVE_BEFORE__RESOURCESET = UPDATE_ATTRIBUTE_ECHANGE___RESOLVE_BEFORE__RESOURCESET;
-
-	/**
-	 * The operation id for the '<em>Resolve After</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int SUBTRACTIVE_ATTRIBUTE_ECHANGE___RESOLVE_AFTER__RESOURCESET = UPDATE_ATTRIBUTE_ECHANGE___RESOLVE_AFTER__RESOURCESET;
-
-	/**
-	 * The operation id for the '<em>Resolve Before And Apply Forward</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int SUBTRACTIVE_ATTRIBUTE_ECHANGE___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET = UPDATE_ATTRIBUTE_ECHANGE___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET;
-
-	/**
-	 * The operation id for the '<em>Resolve After And Apply Backward</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int SUBTRACTIVE_ATTRIBUTE_ECHANGE___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET = UPDATE_ATTRIBUTE_ECHANGE___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET;
-
-	/**
-	 * The operation id for the '<em>Apply Forward</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int SUBTRACTIVE_ATTRIBUTE_ECHANGE___APPLY_FORWARD = UPDATE_ATTRIBUTE_ECHANGE___APPLY_FORWARD;
-
-	/**
-	 * The operation id for the '<em>Apply Backward</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int SUBTRACTIVE_ATTRIBUTE_ECHANGE___APPLY_BACKWARD = UPDATE_ATTRIBUTE_ECHANGE___APPLY_BACKWARD;
 
 	/**
 	 * The operation id for the '<em>Get Old Value</em>' operation.
@@ -454,6 +319,15 @@ public interface AttributePackage extends EPackage {
 	int INSERT_EATTRIBUTE_VALUE__AFFECTED_EOBJECT = ListPackage.INSERT_IN_LIST_ECHANGE__AFFECTED_EOBJECT;
 
 	/**
+	 * The feature id for the '<em><b>Affected EObject ID</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int INSERT_EATTRIBUTE_VALUE__AFFECTED_EOBJECT_ID = ListPackage.INSERT_IN_LIST_ECHANGE__AFFECTED_EOBJECT_ID;
+
+	/**
 	 * The feature id for the '<em><b>Index</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -488,60 +362,6 @@ public interface AttributePackage extends EPackage {
 	 * @ordered
 	 */
 	int INSERT_EATTRIBUTE_VALUE___IS_RESOLVED = ListPackage.INSERT_IN_LIST_ECHANGE___IS_RESOLVED;
-
-	/**
-	 * The operation id for the '<em>Resolve Before</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int INSERT_EATTRIBUTE_VALUE___RESOLVE_BEFORE__RESOURCESET = ListPackage.INSERT_IN_LIST_ECHANGE___RESOLVE_BEFORE__RESOURCESET;
-
-	/**
-	 * The operation id for the '<em>Resolve After</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int INSERT_EATTRIBUTE_VALUE___RESOLVE_AFTER__RESOURCESET = ListPackage.INSERT_IN_LIST_ECHANGE___RESOLVE_AFTER__RESOURCESET;
-
-	/**
-	 * The operation id for the '<em>Resolve Before And Apply Forward</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int INSERT_EATTRIBUTE_VALUE___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET = ListPackage.INSERT_IN_LIST_ECHANGE___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET;
-
-	/**
-	 * The operation id for the '<em>Resolve After And Apply Backward</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int INSERT_EATTRIBUTE_VALUE___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET = ListPackage.INSERT_IN_LIST_ECHANGE___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET;
-
-	/**
-	 * The operation id for the '<em>Apply Forward</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int INSERT_EATTRIBUTE_VALUE___APPLY_FORWARD = ListPackage.INSERT_IN_LIST_ECHANGE___APPLY_FORWARD;
-
-	/**
-	 * The operation id for the '<em>Apply Backward</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int INSERT_EATTRIBUTE_VALUE___APPLY_BACKWARD = ListPackage.INSERT_IN_LIST_ECHANGE___APPLY_BACKWARD;
 
 	/**
 	 * The operation id for the '<em>Get New Value</em>' operation.
@@ -590,6 +410,15 @@ public interface AttributePackage extends EPackage {
 	int REMOVE_EATTRIBUTE_VALUE__AFFECTED_EOBJECT = ListPackage.REMOVE_FROM_LIST_ECHANGE__AFFECTED_EOBJECT;
 
 	/**
+	 * The feature id for the '<em><b>Affected EObject ID</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REMOVE_EATTRIBUTE_VALUE__AFFECTED_EOBJECT_ID = ListPackage.REMOVE_FROM_LIST_ECHANGE__AFFECTED_EOBJECT_ID;
+
+	/**
 	 * The feature id for the '<em><b>Index</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -624,60 +453,6 @@ public interface AttributePackage extends EPackage {
 	 * @ordered
 	 */
 	int REMOVE_EATTRIBUTE_VALUE___IS_RESOLVED = ListPackage.REMOVE_FROM_LIST_ECHANGE___IS_RESOLVED;
-
-	/**
-	 * The operation id for the '<em>Resolve Before</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REMOVE_EATTRIBUTE_VALUE___RESOLVE_BEFORE__RESOURCESET = ListPackage.REMOVE_FROM_LIST_ECHANGE___RESOLVE_BEFORE__RESOURCESET;
-
-	/**
-	 * The operation id for the '<em>Resolve After</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REMOVE_EATTRIBUTE_VALUE___RESOLVE_AFTER__RESOURCESET = ListPackage.REMOVE_FROM_LIST_ECHANGE___RESOLVE_AFTER__RESOURCESET;
-
-	/**
-	 * The operation id for the '<em>Resolve Before And Apply Forward</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REMOVE_EATTRIBUTE_VALUE___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET = ListPackage.REMOVE_FROM_LIST_ECHANGE___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET;
-
-	/**
-	 * The operation id for the '<em>Resolve After And Apply Backward</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REMOVE_EATTRIBUTE_VALUE___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET = ListPackage.REMOVE_FROM_LIST_ECHANGE___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET;
-
-	/**
-	 * The operation id for the '<em>Apply Forward</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REMOVE_EATTRIBUTE_VALUE___APPLY_FORWARD = ListPackage.REMOVE_FROM_LIST_ECHANGE___APPLY_FORWARD;
-
-	/**
-	 * The operation id for the '<em>Apply Backward</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REMOVE_EATTRIBUTE_VALUE___APPLY_BACKWARD = ListPackage.REMOVE_FROM_LIST_ECHANGE___APPLY_BACKWARD;
 
 	/**
 	 * The operation id for the '<em>Get Old Value</em>' operation.
@@ -726,6 +501,15 @@ public interface AttributePackage extends EPackage {
 	int REPLACE_SINGLE_VALUED_EATTRIBUTE__AFFECTED_EOBJECT = SinglePackage.REPLACE_SINGLE_VALUED_FEATURE_ECHANGE__AFFECTED_EOBJECT;
 
 	/**
+	 * The feature id for the '<em><b>Affected EObject ID</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REPLACE_SINGLE_VALUED_EATTRIBUTE__AFFECTED_EOBJECT_ID = SinglePackage.REPLACE_SINGLE_VALUED_FEATURE_ECHANGE__AFFECTED_EOBJECT_ID;
+
+	/**
 	 * The feature id for the '<em><b>New Value</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -760,60 +544,6 @@ public interface AttributePackage extends EPackage {
 	 * @ordered
 	 */
 	int REPLACE_SINGLE_VALUED_EATTRIBUTE___IS_RESOLVED = SinglePackage.REPLACE_SINGLE_VALUED_FEATURE_ECHANGE___IS_RESOLVED;
-
-	/**
-	 * The operation id for the '<em>Resolve Before</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REPLACE_SINGLE_VALUED_EATTRIBUTE___RESOLVE_BEFORE__RESOURCESET = SinglePackage.REPLACE_SINGLE_VALUED_FEATURE_ECHANGE___RESOLVE_BEFORE__RESOURCESET;
-
-	/**
-	 * The operation id for the '<em>Resolve After</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REPLACE_SINGLE_VALUED_EATTRIBUTE___RESOLVE_AFTER__RESOURCESET = SinglePackage.REPLACE_SINGLE_VALUED_FEATURE_ECHANGE___RESOLVE_AFTER__RESOURCESET;
-
-	/**
-	 * The operation id for the '<em>Resolve Before And Apply Forward</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REPLACE_SINGLE_VALUED_EATTRIBUTE___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET = SinglePackage.REPLACE_SINGLE_VALUED_FEATURE_ECHANGE___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET;
-
-	/**
-	 * The operation id for the '<em>Resolve After And Apply Backward</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REPLACE_SINGLE_VALUED_EATTRIBUTE___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET = SinglePackage.REPLACE_SINGLE_VALUED_FEATURE_ECHANGE___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET;
-
-	/**
-	 * The operation id for the '<em>Apply Forward</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REPLACE_SINGLE_VALUED_EATTRIBUTE___APPLY_FORWARD = SinglePackage.REPLACE_SINGLE_VALUED_FEATURE_ECHANGE___APPLY_FORWARD;
-
-	/**
-	 * The operation id for the '<em>Apply Backward</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REPLACE_SINGLE_VALUED_EATTRIBUTE___APPLY_BACKWARD = SinglePackage.REPLACE_SINGLE_VALUED_FEATURE_ECHANGE___APPLY_BACKWARD;
 
 	/**
 	 * The operation id for the '<em>Get New Value</em>' operation.

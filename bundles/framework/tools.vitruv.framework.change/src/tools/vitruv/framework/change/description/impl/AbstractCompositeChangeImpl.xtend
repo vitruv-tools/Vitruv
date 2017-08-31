@@ -3,10 +3,10 @@ package tools.vitruv.framework.change.description.impl
 import java.util.ArrayList
 import java.util.LinkedList
 import java.util.List
-import org.eclipse.emf.ecore.resource.ResourceSet
 import tools.vitruv.framework.change.description.CompositeChange
 import tools.vitruv.framework.change.description.VitruviusChange
 import tools.vitruv.framework.change.echange.EChange
+import tools.vitruv.framework.change.uuid.UuidResolver
 
 abstract class AbstractCompositeChangeImpl<C extends VitruviusChange> implements CompositeChange<C> {
 	List<C> changes;
@@ -19,9 +19,9 @@ abstract class AbstractCompositeChangeImpl<C extends VitruviusChange> implements
 		this.changes = new LinkedList<C>(changes);
 	}
 
-	override List<C> getChanges() {
-		return new LinkedList<C>(this.changes);
-	}
+    override List<C> getChanges() {
+        return this.changes;
+    }
 
 	override addChange(C change) {
 		if (change !== null) this.changes.add(change);
@@ -41,10 +41,11 @@ abstract class AbstractCompositeChangeImpl<C extends VitruviusChange> implements
 	}
 
 	override getURI() {
-		if (changes.empty) {
-			return null;
+		val uris = this.changes.map[URI].filterNull
+		if (!uris.empty) {
+			return uris.get(0);
 		} else {
-			return changes.get(0).URI;
+			return null;
 		}
 	}
 
@@ -85,20 +86,35 @@ abstract class AbstractCompositeChangeImpl<C extends VitruviusChange> implements
 		}
 	}
 
-	override resolveBeforeAndApplyForward(ResourceSet resourceSet) {
+	override resolveBeforeAndApplyForward(UuidResolver uuidResolver) {
 		for (c : changes) {
-			c.resolveBeforeAndApplyForward(resourceSet)
+			c.resolveBeforeAndApplyForward(uuidResolver)
 		}
 	}
 
-	override applyBackwardIfLegacy() {
-		for (change : changes.reverseView) {
-			change.applyBackwardIfLegacy();
+	override resolveAfterAndApplyBackward(UuidResolver uuidResolver) {
+		for (c : changes.reverseView) {
+			c.resolveAfterAndApplyBackward(uuidResolver)
 		}
 	}
 
 	override getAffectedEObjects() {
 		return changes.fold(newArrayList, [list, element|list += element.affectedEObjects; return list]).filterNull;
 	}
-
+	
+	override getAffectedEObjectIds() {
+		return changes.fold(newArrayList, [list, element|list += element.affectedEObjectIds; return list]).filterNull;
+	}
+	
+	override unresolveIfApplicable() {
+		changes.forEach[unresolveIfApplicable]
+	}
+	
+	override toString() '''
+	«this.class.simpleName»:
+		«FOR change : changes»
+			«change»
+		«ENDFOR»
+	'''
+		
 }

@@ -37,7 +37,7 @@ public abstract class VitruviusApplicationTest extends VitruviusUnmonitoredAppli
 	@Override
 	public final void beforeTest() {
 		super.beforeTest();
-		this.changeRecorder = new AtomicEmfChangeRecorder(unresolveChanges());
+		this.changeRecorder = new AtomicEmfChangeRecorder(getVirtualModel().getUuidGeneratorAndResolver(), getLocalUuidGeneratorAndResolver(), true);
 		setup();
 	}
 
@@ -49,16 +49,6 @@ public abstract class VitruviusApplicationTest extends VitruviusUnmonitoredAppli
 		cleanup();
 	}
 	
-	/**
-	 * Defines, if recorded changes shall be unresolved and resolved by the change propagation in the VSUM.
-	 * This defaults to <code>false</code>. If the used metamodel allows to use the
-	 * deresolution mechanism, overwrite this method an return <code>true</code>
-	 * @return <code>true</code> if recored changes shall be unresolved, <code>false</code> otherwise
-	 */
-	protected boolean unresolveChanges() {
-		return false;
-	}
-
 	/**
 	 * This method gets called at the beginning of each test case, after the
 	 * test project and VSUM have been initialized. It can be used, for example,
@@ -74,7 +64,7 @@ public abstract class VitruviusApplicationTest extends VitruviusUnmonitoredAppli
 
 	private List<PropagatedChange> propagateChanges() {
 		this.changeRecorder.endRecording();
-		final List<TransactionalChange> changes = unresolveChanges() ? changeRecorder.getUnresolvedChanges() : changeRecorder.getResolvedChanges();
+		final List<TransactionalChange> changes = changeRecorder.getChanges();
 		CompositeContainerChange compositeChange = VitruviusChangeFactory.getInstance().createCompositeChange(changes);
 		List<PropagatedChange> propagationResult = this.getVirtualModel().propagateChange(compositeChange);
 		this.changeRecorder.beginRecording();

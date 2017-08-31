@@ -2,6 +2,7 @@
  */
 package tools.vitruv.framework.change.echange.feature;
 
+import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
@@ -87,13 +88,22 @@ public interface FeaturePackage extends EPackage {
 	int FEATURE_ECHANGE__AFFECTED_EOBJECT = EChangePackage.ATOMIC_ECHANGE_FEATURE_COUNT + 1;
 
 	/**
+	 * The feature id for the '<em><b>Affected EObject ID</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int FEATURE_ECHANGE__AFFECTED_EOBJECT_ID = EChangePackage.ATOMIC_ECHANGE_FEATURE_COUNT + 2;
+
+	/**
 	 * The number of structural features of the '<em>EChange</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int FEATURE_ECHANGE_FEATURE_COUNT = EChangePackage.ATOMIC_ECHANGE_FEATURE_COUNT + 2;
+	int FEATURE_ECHANGE_FEATURE_COUNT = EChangePackage.ATOMIC_ECHANGE_FEATURE_COUNT + 3;
 
 	/**
 	 * The operation id for the '<em>Is Resolved</em>' operation.
@@ -103,60 +113,6 @@ public interface FeaturePackage extends EPackage {
 	 * @ordered
 	 */
 	int FEATURE_ECHANGE___IS_RESOLVED = EChangePackage.ATOMIC_ECHANGE___IS_RESOLVED;
-
-	/**
-	 * The operation id for the '<em>Resolve Before</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int FEATURE_ECHANGE___RESOLVE_BEFORE__RESOURCESET = EChangePackage.ATOMIC_ECHANGE___RESOLVE_BEFORE__RESOURCESET;
-
-	/**
-	 * The operation id for the '<em>Resolve After</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int FEATURE_ECHANGE___RESOLVE_AFTER__RESOURCESET = EChangePackage.ATOMIC_ECHANGE___RESOLVE_AFTER__RESOURCESET;
-
-	/**
-	 * The operation id for the '<em>Resolve Before And Apply Forward</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int FEATURE_ECHANGE___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET = EChangePackage.ATOMIC_ECHANGE___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET;
-
-	/**
-	 * The operation id for the '<em>Resolve After And Apply Backward</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int FEATURE_ECHANGE___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET = EChangePackage.ATOMIC_ECHANGE___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET;
-
-	/**
-	 * The operation id for the '<em>Apply Forward</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int FEATURE_ECHANGE___APPLY_FORWARD = EChangePackage.ATOMIC_ECHANGE___APPLY_FORWARD;
-
-	/**
-	 * The operation id for the '<em>Apply Backward</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int FEATURE_ECHANGE___APPLY_BACKWARD = EChangePackage.ATOMIC_ECHANGE___APPLY_BACKWARD;
 
 	/**
 	 * The number of operations of the '<em>EChange</em>' class.
@@ -196,6 +152,15 @@ public interface FeaturePackage extends EPackage {
 	int UPDATE_MULTI_VALUED_FEATURE_ECHANGE__AFFECTED_EOBJECT = FEATURE_ECHANGE__AFFECTED_EOBJECT;
 
 	/**
+	 * The feature id for the '<em><b>Affected EObject ID</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int UPDATE_MULTI_VALUED_FEATURE_ECHANGE__AFFECTED_EOBJECT_ID = FEATURE_ECHANGE__AFFECTED_EOBJECT_ID;
+
+	/**
 	 * The number of structural features of the '<em>Update Multi Valued Feature EChange</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -212,60 +177,6 @@ public interface FeaturePackage extends EPackage {
 	 * @ordered
 	 */
 	int UPDATE_MULTI_VALUED_FEATURE_ECHANGE___IS_RESOLVED = FEATURE_ECHANGE___IS_RESOLVED;
-
-	/**
-	 * The operation id for the '<em>Resolve Before</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int UPDATE_MULTI_VALUED_FEATURE_ECHANGE___RESOLVE_BEFORE__RESOURCESET = FEATURE_ECHANGE___RESOLVE_BEFORE__RESOURCESET;
-
-	/**
-	 * The operation id for the '<em>Resolve After</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int UPDATE_MULTI_VALUED_FEATURE_ECHANGE___RESOLVE_AFTER__RESOURCESET = FEATURE_ECHANGE___RESOLVE_AFTER__RESOURCESET;
-
-	/**
-	 * The operation id for the '<em>Resolve Before And Apply Forward</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int UPDATE_MULTI_VALUED_FEATURE_ECHANGE___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET = FEATURE_ECHANGE___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET;
-
-	/**
-	 * The operation id for the '<em>Resolve After And Apply Backward</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int UPDATE_MULTI_VALUED_FEATURE_ECHANGE___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET = FEATURE_ECHANGE___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET;
-
-	/**
-	 * The operation id for the '<em>Apply Forward</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int UPDATE_MULTI_VALUED_FEATURE_ECHANGE___APPLY_FORWARD = FEATURE_ECHANGE___APPLY_FORWARD;
-
-	/**
-	 * The operation id for the '<em>Apply Backward</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int UPDATE_MULTI_VALUED_FEATURE_ECHANGE___APPLY_BACKWARD = FEATURE_ECHANGE___APPLY_BACKWARD;
 
 	/**
 	 * The number of operations of the '<em>Update Multi Valued Feature EChange</em>' class.
@@ -305,6 +216,15 @@ public interface FeaturePackage extends EPackage {
 	int UPDATE_SINGLE_VALUED_FEATURE_ECHANGE__AFFECTED_EOBJECT = FEATURE_ECHANGE__AFFECTED_EOBJECT;
 
 	/**
+	 * The feature id for the '<em><b>Affected EObject ID</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int UPDATE_SINGLE_VALUED_FEATURE_ECHANGE__AFFECTED_EOBJECT_ID = FEATURE_ECHANGE__AFFECTED_EOBJECT_ID;
+
+	/**
 	 * The number of structural features of the '<em>Update Single Valued Feature EChange</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -321,60 +241,6 @@ public interface FeaturePackage extends EPackage {
 	 * @ordered
 	 */
 	int UPDATE_SINGLE_VALUED_FEATURE_ECHANGE___IS_RESOLVED = FEATURE_ECHANGE___IS_RESOLVED;
-
-	/**
-	 * The operation id for the '<em>Resolve Before</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int UPDATE_SINGLE_VALUED_FEATURE_ECHANGE___RESOLVE_BEFORE__RESOURCESET = FEATURE_ECHANGE___RESOLVE_BEFORE__RESOURCESET;
-
-	/**
-	 * The operation id for the '<em>Resolve After</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int UPDATE_SINGLE_VALUED_FEATURE_ECHANGE___RESOLVE_AFTER__RESOURCESET = FEATURE_ECHANGE___RESOLVE_AFTER__RESOURCESET;
-
-	/**
-	 * The operation id for the '<em>Resolve Before And Apply Forward</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int UPDATE_SINGLE_VALUED_FEATURE_ECHANGE___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET = FEATURE_ECHANGE___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET;
-
-	/**
-	 * The operation id for the '<em>Resolve After And Apply Backward</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int UPDATE_SINGLE_VALUED_FEATURE_ECHANGE___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET = FEATURE_ECHANGE___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET;
-
-	/**
-	 * The operation id for the '<em>Apply Forward</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int UPDATE_SINGLE_VALUED_FEATURE_ECHANGE___APPLY_FORWARD = FEATURE_ECHANGE___APPLY_FORWARD;
-
-	/**
-	 * The operation id for the '<em>Apply Backward</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int UPDATE_SINGLE_VALUED_FEATURE_ECHANGE___APPLY_BACKWARD = FEATURE_ECHANGE___APPLY_BACKWARD;
 
 	/**
 	 * The number of operations of the '<em>Update Single Valued Feature EChange</em>' class.
@@ -416,6 +282,17 @@ public interface FeaturePackage extends EPackage {
 	 * @generated
 	 */
 	EReference getFeatureEChange_AffectedEObject();
+
+	/**
+	 * Returns the meta object for the attribute '{@link tools.vitruv.framework.change.echange.feature.FeatureEChange#getAffectedEObjectID <em>Affected EObject ID</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Affected EObject ID</em>'.
+	 * @see tools.vitruv.framework.change.echange.feature.FeatureEChange#getAffectedEObjectID()
+	 * @see #getFeatureEChange()
+	 * @generated
+	 */
+	EAttribute getFeatureEChange_AffectedEObjectID();
 
 	/**
 	 * Returns the meta object for class '{@link tools.vitruv.framework.change.echange.feature.UpdateMultiValuedFeatureEChange <em>Update Multi Valued Feature EChange</em>}'.
@@ -485,6 +362,14 @@ public interface FeaturePackage extends EPackage {
 		 * @generated
 		 */
 		EReference FEATURE_ECHANGE__AFFECTED_EOBJECT = eINSTANCE.getFeatureEChange_AffectedEObject();
+
+		/**
+		 * The meta object literal for the '<em><b>Affected EObject ID</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute FEATURE_ECHANGE__AFFECTED_EOBJECT_ID = eINSTANCE.getFeatureEChange_AffectedEObjectID();
 
 		/**
 		 * The meta object literal for the '{@link tools.vitruv.framework.change.echange.feature.impl.UpdateMultiValuedFeatureEChangeImpl <em>Update Multi Valued Feature EChange</em>}' class.

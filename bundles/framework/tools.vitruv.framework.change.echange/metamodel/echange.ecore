@@ -6,8 +6,6 @@
     <details key="prefix" value="EChange"/>
     <details key="basePackage" value="tools.vitruv.framework.change"/>
   </eAnnotations>
-  <eClassifiers xsi:type="ecore:EDataType" name="Command" instanceClassName="org.eclipse.emf.common.command.Command"/>
-  <eClassifiers xsi:type="ecore:EDataType" name="ResourceSet" instanceClassName="org.eclipse.emf.ecore.resource.ResourceSet"/>
   <eClassifiers xsi:type="ecore:EClass" name="EChange" abstract="true">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
       <details key="documentation" value="*&#xA;Abstract change, which can be applied forward or backward, after it was resolved to a specific instance of a model."/>
@@ -16,46 +14,6 @@
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
         <details key="documentation" value="*&#xA;Returns if all proxy EObjects of the change are resolved to concrete EObjects of a resource set.&#xA;Needs to be true to apply the change.&#xA;@return&#x9;All proxy EObjects are resolved to concrete EObjects."/>
         <details key="body" value="return tools.vitruv.framework.change.echange.resolve.ResolutionChecker.isResolved(this);"/>
-      </eAnnotations>
-    </eOperations>
-    <eOperations name="resolveBefore" unique="false" eType="#//EChange">
-      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-        <details key="documentation" value="*&#xA;Creates a copy of the change and resolves the unresolved proxy EObjects of the change to a given set of&#xA;resources with concrete EObjects.&#xA;The model has to be in the state before the change is applied forward. If the model is in state after the&#xA;change and it will be applied backward, {@link resolveAfter} has to be called instead.&#xA;Before the change can be applied all proxy objects need to be resolved.&#xA;@param &#x9;resourceSet The {@code ResourceSet} which contains the concrete EObjects the proxy objects of&#xA;&#x9;&#x9;&#x9;the unresolved should be resolved to.&#xA;@return &#x9;Returns a resolved copy of the change. If the copy could not be resolved or the resource set&#xA;&#x9;&#x9;&#x9;is {@code null}, it returns {@code null}. If the change is already resolved an exception is thrown.&#xA;@throws IllegalStateException The change is already resolved."/>
-        <details key="body" value="return &lt;%tools.vitruv.framework.change.echange.resolve.EChangeResolver%>.resolveCopy(this, resourceSet, true, true);"/>
-      </eAnnotations>
-      <eParameters name="resourceSet" unique="false" eType="#//ResourceSet"/>
-    </eOperations>
-    <eOperations name="resolveAfter" unique="false" eType="#//EChange">
-      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-        <details key="documentation" value="*&#xA;Creates a copy of the change and resolves the unresolved proxy EObjects of the change to a given set&#xA;of resources with concrete EObjects.&#xA;The model has to be in the state after the change is applied backward. If the model is in state before&#xA;the change and it will be applied forward, {@link resolveBefore} has to be called instead.&#xA;Before the change can be applied all proxy objects need to be resolved.&#xA;@param &#x9;resourceSet The {@code ResourceSet} which contains the concrete EObjects the proxy objects of&#xA;&#x9;&#x9;&#x9;the unresolved should be resolved to.&#xA;@return &#x9;Returns a resolved copy of the change. If the copy could not be resolved or the resource set&#xA;&#x9;&#x9;&#x9;is {@code null}, it returns {@code null}. If the change is already resolved and exception is thrown.&#xA;@throws IllegalStateException The change is already resolved."/>
-        <details key="body" value="return &lt;%tools.vitruv.framework.change.echange.resolve.EChangeResolver%>.resolveCopy(this, resourceSet, false, true);"/>
-      </eAnnotations>
-      <eParameters name="resourceSet" unique="false" eType="#//ResourceSet"/>
-    </eOperations>
-    <eOperations name="resolveBeforeAndApplyForward" unique="false" eType="#//EChange">
-      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-        <details key="documentation" value="*&#xA;Resolves the change like {@link resolveBefore}, but also applies the change forward.&#xA;If the change was already resolved, it returns the original change and applies it forward.&#xA;@param &#x9;resourceSet The {@code ResourceSet} which contains the concrete EObjects the proxy objects of&#xA;&#x9;&#x9;&#x9;the unresolved should be resolved to.&#xA;@return &#x9;Returns the resolved change if the change could be applied forward. The returned change&#xA;&#x9;&#x9;&#x9;is a copy of the change or, if the change was already resolved, the original change.&#xA;&#x9;&#x9;&#x9;If the change could not be resolved and / or applied or the&#xA;&#x9;&#x9;&#x9;resource set is {@code null}, it returns {@code null}&#xA;@throws IllegalStateException The change is already resolved.&#xA;@throws RuntimeException The change could not be applied."/>
-        <details key="body" value="final &lt;%tools.vitruv.framework.change.echange.EChange%> resolvedChange = this.resolveBefore(resourceSet);&#xA;if (((!&lt;%com.google.common.base.Objects%>.equal(resolvedChange, null)) &amp;&amp; resolvedChange.applyForward()))&#xA;{&#xA;&#x9;return resolvedChange;&#xA;}&#xA;else&#xA;{&#xA;&#x9;return null;&#xA;}"/>
-      </eAnnotations>
-      <eParameters name="resourceSet" unique="false" eType="#//ResourceSet"/>
-    </eOperations>
-    <eOperations name="resolveAfterAndApplyBackward" unique="false" eType="#//EChange">
-      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-        <details key="documentation" value="*&#xA;Resolves the change like {@link resolveAfter}, but also applies the change backward.&#xA;If the change was already resolved, it returns the original change and applies it backward.&#xA;@param &#x9;resourceSet The {@code ResourceSet} which contains the concrete EObjects the proxy objects of&#xA;&#x9;&#x9;&#x9;the unresolved should be resolved to.&#xA;@return &#x9;Returns the resolved change if the change could be applied backward. The returned change&#xA;&#x9;&#x9;&#x9;is a copy of the change or, if the change was already resolved, the original change.&#xA;&#x9;&#x9;&#x9;If the change could not be resolved and / or applied or the resource set is {@code null},&#xA;&#x9;&#x9;&#x9;it returns {@code null}&#xA;@throws IllegalStateException The change is already resolved.&#xA;@throws RuntimeException The change could not be applied."/>
-        <details key="body" value="final &lt;%tools.vitruv.framework.change.echange.EChange%> resolvedChange = this.resolveAfter(resourceSet);&#xA;if (((!&lt;%com.google.common.base.Objects%>.equal(resolvedChange, null)) &amp;&amp; resolvedChange.applyBackward()))&#xA;{&#xA;&#x9;return resolvedChange;&#xA;}&#xA;else&#xA;{&#xA;&#x9;return null;&#xA;}"/>
-      </eAnnotations>
-      <eParameters name="resourceSet" unique="false" eType="#//ResourceSet"/>
-    </eOperations>
-    <eOperations name="applyForward" unique="false" eType="ecore:EDataType ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EBoolean">
-      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-        <details key="documentation" value="*&#xA;Applies the change to the model which the change was resolved to.&#xA;The change must be resolved before it can be applied.&#xA;@return&#x9;Returns whether the change was successfully applied forward. If the&#xA;&#x9;&#x9;&#x9;change was not resolved an Exception is thrown.&#xA;&#x9;&#x9;&#x9;If the change could not be applied it returns {@code false}.&#xA;&#x9;&#x9;&#x9;Otherwise it returns {@code true}.&#xA;@throws IllegalStateException The change is not resolved&#xA;@throws RuntimeException The change could not be applied."/>
-        <details key="body" value="return &lt;%tools.vitruv.framework.change.echange.util.ApplyEChangeSwitch%>.applyEChange(this, true);"/>
-      </eAnnotations>
-    </eOperations>
-    <eOperations name="applyBackward" unique="false" eType="ecore:EDataType ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EBoolean">
-      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-        <details key="documentation" value="*&#xA;Reverts the change on the model which the change was resolved to.&#xA;The change must be resolved before it can be reverted.&#xA;@return&#x9;Returns whether the change was successfully applied backward. If the&#xA;&#x9;&#x9;&#x9;change was not resolved an Exception is thrown.&#xA;&#x9;&#x9;&#x9;If the change could not be applied it returns {@code false}.&#xA;&#x9;&#x9;&#x9;Otherwise it returns {@code true}.&#xA;@throws IllegalStateException The change is not resolved.&#xA;@throws RuntimeException The change could not be applied."/>
-        <details key="body" value="return &lt;%tools.vitruv.framework.change.echange.util.ApplyEChangeSwitch%>.applyEChange(this, false);"/>
       </eAnnotations>
     </eOperations>
   </eClassifiers>

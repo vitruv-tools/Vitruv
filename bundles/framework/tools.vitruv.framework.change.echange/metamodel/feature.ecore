@@ -30,6 +30,7 @@
       </eAnnotations>
       <eGenericType eTypeParameter="#//FeatureEChange/A"/>
     </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="affectedEObjectID" eType="ecore:EDataType ../../tools.vitruv.framework.change.uuid/model/Uuid.ecore#//Uuid"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="UpdateMultiValuedFeatureEChange" abstract="true">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">

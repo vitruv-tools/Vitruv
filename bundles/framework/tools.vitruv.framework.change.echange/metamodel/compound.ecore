@@ -5,8 +5,6 @@
     <details key="modelName" value="Change"/>
     <details key="basePackage" value="tools.vitruv.framework.change.echange"/>
   </eAnnotations>
-  <eClassifiers xsi:type="ecore:EDataType" name="Command" instanceClassName="org.eclipse.emf.common.command.Command"/>
-  <eClassifiers xsi:type="ecore:EDataType" name="ResourceSet" instanceClassName="org.eclipse.emf.ecore.resource.ResourceSet"/>
   <eClassifiers xsi:type="ecore:EClass" name="CompoundEChange" abstract="true" eSuperTypes="echange.ecore#//EChange">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
       <details key="documentation" value="*&#xA;Abstract EChange which is a sequence of several atomic changes."/>
@@ -15,20 +13,6 @@
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
         <details key="documentation" value="*&#xA;Returns the atomic changes of the compound changes, in the same order as they are&#xA;resolved / applied."/>
       </eAnnotations>
-    </eOperations>
-    <eOperations name="resolveBeforeAndApplyForward" unique="false" eType="ecore:EClass echange.ecore#//EChange">
-      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-        <details key="documentation" value="*&#xA;Resolves the compound change like {@link resolveBefore}, but also applies the change forward.&#xA;If the change was already resolved, it returns the original change and applies it forward.&#xA;@param resourceSet &#x9;&#x9;&#x9;&#x9;The {@code ResourceSet} which contains the concrete EObjects the proxy objects of&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;the unresolved should be resolved to.&#xA;@return &#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;Returns the resolved change if the change could be applied forward. The returned change&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;is a copy of the change or, if the change was already resolved, the original change.&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;If the change could not be resolved and / or applied or the&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;resource set is {@code null}, it returns {@code null}&#xA;@throws IllegalStateException &#x9;The change is already resolved."/>
-        <details key="body" value="return &lt;%tools.vitruv.framework.change.echange.resolve.EChangeResolver%>.resolveCopy(this, resourceSet, true, false);"/>
-      </eAnnotations>
-      <eParameters name="resourceSet" unique="false" eType="#//ResourceSet"/>
-    </eOperations>
-    <eOperations name="resolveAfterAndApplyBackward" unique="false" eType="ecore:EClass echange.ecore#//EChange">
-      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-        <details key="documentation" value="*&#xA;Resolves the compound change like {@link resolveAfter}, but also applies the change backward.&#xA;If the change was already resolved, it returns the original change and applies it backward.&#xA;@param resourceSet &#x9;&#x9;&#x9;&#x9;The {@code ResourceSet} which contains the concrete EObjects the proxy objects of&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;the unresolved should be resolved to.&#xA;@return &#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;Returns the resolved change if the change could be applied backward. The returned change&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;is a copy of the change or, if the change was already resolved, the original change.&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;If the change could not be resolved and / or applied or the resource set is {@code null},&#xA;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;it returns {@code null}&#xA;@throws IllegalStateException &#x9;The change is already resolved."/>
-        <details key="body" value="return &lt;%tools.vitruv.framework.change.echange.resolve.EChangeResolver%>.resolveCopy(this, resourceSet, false, false);"/>
-      </eAnnotations>
-      <eParameters name="resourceSet" unique="false" eType="#//ResourceSet"/>
     </eOperations>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ExplicitUnsetEFeature" abstract="true"

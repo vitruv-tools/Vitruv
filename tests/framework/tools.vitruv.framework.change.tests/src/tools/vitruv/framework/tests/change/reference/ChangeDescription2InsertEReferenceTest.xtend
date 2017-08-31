@@ -70,7 +70,7 @@ class ChangeDescription2InsertEReferenceTest extends ChangeDescription2EReferenc
 	
 	def private void assertCreateAndInsertNonRoot(NonRoot nonRoot, EStructuralFeature feature, int expectedIndex) {
 		changes.assertChangeCount(2);
-		changes.claimChange(0).assertCreateAndInsertNonRoot(this.rootElement, feature, nonRoot, expectedIndex, unresolveAndResolveRecordedEChanges)
+		changes.claimChange(0).assertCreateAndInsertNonRoot(this.rootElement, feature, nonRoot, expectedIndex)
 		changes.claimChange(1).assertReplaceSingleValuedEAttribute(nonRoot, IDENTIFIED__ID, null, nonRoot.id);
 	}
 }

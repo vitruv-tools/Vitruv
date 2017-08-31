@@ -25,6 +25,9 @@ import tools.vitruv.domains.emf.monitorededitor.tools.ResourceReloadListener;
 import tools.vitruv.domains.emf.monitorededitor.tools.SaveEventListenerMgr;
 import tools.vitruv.framework.change.description.TransactionalChange;
 import tools.vitruv.framework.change.recording.AtomicEmfChangeRecorder;
+import tools.vitruv.framework.change.uuid.UuidGeneratorAndResolver;
+import tools.vitruv.framework.change.uuid.UuidGeneratorAndResolverImpl;
+import tools.vitruv.framework.vsum.VirtualModel;
 
 /**
  * <p>
@@ -62,6 +65,8 @@ public abstract class EMFModelChangeRecordingEditorSaveListener {
 
     /** The listener getting fired when the user saves the edited file. */
     private final SaveEventListenerMgr saveActionListenerManager;
+
+    private VirtualModel virtualModel;
 
     /**
      * A constructor for {@link EMFModelChangeRecordingEditorSaveListener} instances. The listener
@@ -142,7 +147,12 @@ public abstract class EMFModelChangeRecordingEditorSaveListener {
      */
     protected void resetChangeRecorder() {
         deactivateChangeRecorder();
-        changeRecorder = new AtomicEmfChangeRecorder(false);
+        UuidGeneratorAndResolver localUuidResolver = new UuidGeneratorAndResolverImpl(targetResource.getResourceSet(),
+                null);
+        UuidGeneratorAndResolver globalUuidGeneratorAndResolver = virtualModel != null
+                ? virtualModel.getUuidGeneratorAndResolver()
+                : localUuidResolver;
+        changeRecorder = new AtomicEmfChangeRecorder(globalUuidGeneratorAndResolver, localUuidResolver, false);
         changeRecorder.addToRecording(targetResource);
         changeRecorder.beginRecording();
     }
@@ -152,14 +162,14 @@ public abstract class EMFModelChangeRecordingEditorSaveListener {
      */
     protected List<TransactionalChange> readOutChangesAndEndRecording() {
         changeRecorder.endRecording();
-        return changeRecorder.getResolvedChanges();
+        return changeRecorder.getChanges();
     }
 
     /**
      * Initializes the listener. After calling this method, the listener is active until
      * <code>dispose()</code> is called.
      */
-    public void initialize() {
+    public void initialize(VirtualModel virtualModel) {
         if (!isInitialized) {
             resetChangeRecorder();
             installResourceReloadListener();
@@ -168,6 +178,7 @@ public abstract class EMFModelChangeRecordingEditorSaveListener {
         } else {
             LOGGER.warn("Called initialize() for an initialized instance," + " ignoring the call");
         }
+        this.virtualModel = virtualModel;
     }
 
     /**

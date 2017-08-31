@@ -51,6 +51,7 @@ import tools.vitruv.framework.change.echange.impl.EChangePackageImpl;
 import tools.vitruv.framework.change.echange.root.RootPackage;
 
 import tools.vitruv.framework.change.echange.root.impl.RootPackageImpl;
+import tools.vitruv.framework.change.uuid.UuidPackage;
 
 /**
  * <!-- begin-user-doc -->
@@ -149,6 +150,7 @@ public class AttributePackageImpl extends EPackageImpl implements AttributePacka
 
 		// Initialize simple dependencies
 		EcorePackage.eINSTANCE.eClass();
+		UuidPackage.eINSTANCE.eClass();
 
 		// Obtain or create and register interdependencies
 		FeaturePackageImpl theFeaturePackage = (FeaturePackageImpl)(EPackage.Registry.INSTANCE.getEPackage(FeaturePackage.eNS_URI) instanceof FeaturePackageImpl ? EPackage.Registry.INSTANCE.getEPackage(FeaturePackage.eNS_URI) : FeaturePackage.eINSTANCE);

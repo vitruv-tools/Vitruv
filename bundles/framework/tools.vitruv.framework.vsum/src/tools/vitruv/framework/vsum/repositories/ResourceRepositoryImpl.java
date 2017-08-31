@@ -25,6 +25,9 @@ import org.eclipse.emf.transaction.TransactionalEditingDomain;
 import edu.kit.ipd.sdq.commons.util.org.eclipse.emf.common.util.URIUtil;
 import tools.vitruv.framework.change.description.TransactionalChange;
 import tools.vitruv.framework.change.recording.AtomicEmfChangeRecorder;
+import tools.vitruv.framework.change.uuid.UuidGeneratorAndResolver;
+import tools.vitruv.framework.change.uuid.UuidGeneratorAndResolverImpl;
+import tools.vitruv.framework.change.uuid.UuidResolver;
 import tools.vitruv.framework.correspondence.CorrespondenceModel;
 import tools.vitruv.framework.correspondence.CorrespondenceModelImpl;
 import tools.vitruv.framework.correspondence.CorrespondenceProviding;
@@ -42,8 +45,6 @@ import tools.vitruv.framework.vsum.ModelRepository;
 import tools.vitruv.framework.vsum.helper.FileSystemHelper;
 
 public class ResourceRepositoryImpl implements ModelRepository, CorrespondenceProviding {
-    private static final String VM_ARGUMENT_UNRESOLVE_PROPAGATED_CHANGES = "unresolvePropagatedChanges";
-
     private static final Logger logger = Logger.getLogger(ResourceRepositoryImpl.class.getSimpleName());
 
     private final ResourceSet resourceSet;
@@ -54,6 +55,11 @@ public class ResourceRepositoryImpl implements ModelRepository, CorrespondencePr
     private final FileSystemHelper fileSystemHelper;
     private final File folder;
     private final AtomicEmfChangeRecorder changeRecorder;
+    private UuidGeneratorAndResolver uuidGeneratorAndResolver;
+
+    public UuidGeneratorAndResolver getUuidGeneratorAndResolver() {
+        return this.uuidGeneratorAndResolver;
+    }
 
     public ResourceRepositoryImpl(final File folder, final VitruvDomainRepository metamodelRepository) {
         this(folder, metamodelRepository, null);
@@ -70,12 +76,12 @@ public class ResourceRepositoryImpl implements ModelRepository, CorrespondencePr
         this.modelInstances = new HashMap<VURI, ModelInstance>();
         this.fileSystemHelper = new FileSystemHelper(this.folder);
 
+        initializeUuidProviderAndResolver();
+        this.changeRecorder = new AtomicEmfChangeRecorder(this.uuidGeneratorAndResolver, this.uuidGeneratorAndResolver,
+                true, false);
+
         initializeCorrespondenceModel();
         loadVURIsOfVSMUModelInstances();
-
-        String unresolvePropagatedChanges = System.getProperty(VM_ARGUMENT_UNRESOLVE_PROPAGATED_CHANGES);
-        this.changeRecorder = new AtomicEmfChangeRecorder(unresolvePropagatedChanges != null, false);
-        this.changeRecorder.addToRecording(this.resourceSet);
     }
 
     /**
@@ -264,8 +270,27 @@ public class ResourceRepositoryImpl implements ModelRepository, CorrespondencePr
             } else {
                 correspondencesResource = this.resourceSet.createResource(correspondencesVURI.getEMFUri());
             }
+            this.changeRecorder.addToRecording(correspondencesResource);
+            this.changeRecorder.beginRecording();
             this.correspondenceModel = new CorrespondenceModelImpl(new TuidResolverImpl(this.metamodelRepository, this),
                     this, this.metamodelRepository, correspondencesVURI, correspondencesResource);
+            this.changeRecorder.endRecording();
+            return null;
+        });
+    }
+
+    private void initializeUuidProviderAndResolver() {
+        createRecordingCommandAndExecuteCommandOnTransactionalDomain(() -> {
+            VURI uuidProviderVURI = this.fileSystemHelper.getUuidProviderAndResolverVURI();
+            Resource uuidProviderResource = null;
+            if (URIUtil.existsResourceAtUri(uuidProviderVURI.getEMFUri())) {
+                logger.debug("Loading uuid provider and resolver model from: "
+                        + this.fileSystemHelper.getUuidProviderAndResolverVURI());
+                uuidProviderResource = this.resourceSet.getResource(uuidProviderVURI.getEMFUri(), true);
+            } else {
+                uuidProviderResource = this.resourceSet.createResource(uuidProviderVURI.getEMFUri());
+            }
+            this.uuidGeneratorAndResolver = new UuidGeneratorAndResolverImpl(this.resourceSet, uuidProviderResource);
             return null;
         });
     }
@@ -322,17 +347,15 @@ public class ResourceRepositoryImpl implements ModelRepository, CorrespondencePr
             this.changeRecorder.endRecording();
             return null;
         }));
-        List<TransactionalChange> relevantChanges;
-        if (this.changeRecorder.getUnresolvedChanges() != null) {
-            relevantChanges = this.changeRecorder.getUnresolvedChanges();
-        } else {
-            relevantChanges = this.changeRecorder.getResolvedChanges();
-        }
+        List<TransactionalChange> relevantChanges = this.changeRecorder.getChanges();
         // TODO HK: Replace this correspondence exclusion with an inclusion of only file extensions that are
         // supported by the domains of the VirtualModel
         result.addAll(relevantChanges.stream().filter(
                 change -> change.getURI() == null || !change.getURI().getEMFUri().toString().endsWith("correspondence"))
                 .collect(Collectors.toList()));
+        for (TransactionalChange change : relevantChanges) {
+            change.unresolveIfApplicable();
+        }
         logger.debug("End recording virtual model");
         return result;
     }
@@ -373,11 +396,11 @@ public class ResourceRepositoryImpl implements ModelRepository, CorrespondencePr
     }
 
     @Override
-    public void executeOnResourceSet(final Consumer<ResourceSet> function) {
+    public void executeOnUuidResolver(final Consumer<UuidResolver> function) {
         createRecordingCommandAndExecuteCommandOnTransactionalDomain(new Callable<Void>() {
             @Override
             public Void call() {
-                function.accept(ResourceRepositoryImpl.this.resourceSet);
+                function.accept(ResourceRepositoryImpl.this.uuidGeneratorAndResolver);
                 return null;
             }
         });

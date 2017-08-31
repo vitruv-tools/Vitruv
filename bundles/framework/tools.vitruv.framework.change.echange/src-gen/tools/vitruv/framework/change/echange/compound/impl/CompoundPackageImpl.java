@@ -2,10 +2,7 @@
  */
 package tools.vitruv.framework.change.echange.compound.impl;
 
-import org.eclipse.emf.common.command.Command;
-
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EGenericType;
 import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EPackage;
@@ -14,9 +11,6 @@ import org.eclipse.emf.ecore.ETypeParameter;
 import org.eclipse.emf.ecore.EcorePackage;
 
 import org.eclipse.emf.ecore.impl.EPackageImpl;
-
-import org.eclipse.emf.ecore.resource.ResourceSet;
-
 import tools.vitruv.framework.change.echange.EChangePackage;
 
 import tools.vitruv.framework.change.echange.compound.CompoundAddition;
@@ -66,6 +60,7 @@ import tools.vitruv.framework.change.echange.impl.EChangePackageImpl;
 import tools.vitruv.framework.change.echange.root.RootPackage;
 
 import tools.vitruv.framework.change.echange.root.impl.RootPackageImpl;
+import tools.vitruv.framework.change.uuid.UuidPackage;
 
 /**
  * <!-- begin-user-doc -->
@@ -180,20 +175,6 @@ public class CompoundPackageImpl extends EPackageImpl implements CompoundPackage
 	private EClass createAndReplaceAndDeleteNonRootEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	private EDataType commandEDataType = null;
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	private EDataType resourceSetEDataType = null;
-
-	/**
 	 * Creates an instance of the model <b>Package</b>, registered with
 	 * {@link org.eclipse.emf.ecore.EPackage.Registry EPackage.Registry} by the package
 	 * package URI value.
@@ -241,6 +222,7 @@ public class CompoundPackageImpl extends EPackageImpl implements CompoundPackage
 
 		// Initialize simple dependencies
 		EcorePackage.eINSTANCE.eClass();
+		UuidPackage.eINSTANCE.eClass();
 
 		// Obtain or create and register interdependencies
 		AttributePackageImpl theAttributePackage = (AttributePackageImpl)(EPackage.Registry.INSTANCE.getEPackage(AttributePackage.eNS_URI) instanceof AttributePackageImpl ? EPackage.Registry.INSTANCE.getEPackage(AttributePackage.eNS_URI) : AttributePackage.eINSTANCE);
@@ -299,24 +281,6 @@ public class CompoundPackageImpl extends EPackageImpl implements CompoundPackage
 	 */
 	public EOperation getCompoundEChange__GetAtomicChanges() {
 		return compoundEChangeEClass.getEOperations().get(0);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EOperation getCompoundEChange__ResolveBeforeAndApplyForward__ResourceSet() {
-		return compoundEChangeEClass.getEOperations().get(1);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EOperation getCompoundEChange__ResolveAfterAndApplyBackward__ResourceSet() {
-		return compoundEChangeEClass.getEOperations().get(2);
 	}
 
 	/**
@@ -630,24 +594,6 @@ public class CompoundPackageImpl extends EPackageImpl implements CompoundPackage
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EDataType getCommand() {
-		return commandEDataType;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EDataType getResourceSet() {
-		return resourceSetEDataType;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public CompoundFactory getCompoundFactory() {
 		return (CompoundFactory)getEFactoryInstance();
 	}
@@ -673,8 +619,6 @@ public class CompoundPackageImpl extends EPackageImpl implements CompoundPackage
 		// Create classes and their features
 		compoundEChangeEClass = createEClass(COMPOUND_ECHANGE);
 		createEOperation(compoundEChangeEClass, COMPOUND_ECHANGE___GET_ATOMIC_CHANGES);
-		createEOperation(compoundEChangeEClass, COMPOUND_ECHANGE___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET);
-		createEOperation(compoundEChangeEClass, COMPOUND_ECHANGE___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET);
 
 		explicitUnsetEFeatureEClass = createEClass(EXPLICIT_UNSET_EFEATURE);
 		createEReference(explicitUnsetEFeatureEClass, EXPLICIT_UNSET_EFEATURE__AFFECTED_EOBJECT);
@@ -723,10 +667,6 @@ public class CompoundPackageImpl extends EPackageImpl implements CompoundPackage
 		createEReference(createAndReplaceAndDeleteNonRootEClass, CREATE_AND_REPLACE_AND_DELETE_NON_ROOT__REPLACE_CHANGE);
 		createEReference(createAndReplaceAndDeleteNonRootEClass, CREATE_AND_REPLACE_AND_DELETE_NON_ROOT__DELETE_CHANGE);
 		createEOperation(createAndReplaceAndDeleteNonRootEClass, CREATE_AND_REPLACE_AND_DELETE_NON_ROOT___GET_ATOMIC_CHANGES);
-
-		// Create data types
-		commandEDataType = createEDataType(COMMAND);
-		resourceSetEDataType = createEDataType(RESOURCE_SET);
 	}
 
 	/**
@@ -939,12 +879,6 @@ public class CompoundPackageImpl extends EPackageImpl implements CompoundPackage
 
 		initEOperation(getCompoundEChange__GetAtomicChanges(), theEChangePackage.getAtomicEChange(), "getAtomicChanges", 1, -1, IS_UNIQUE, IS_ORDERED);
 
-		EOperation op = initEOperation(getCompoundEChange__ResolveBeforeAndApplyForward__ResourceSet(), theEChangePackage.getEChange(), "resolveBeforeAndApplyForward", 0, 1, !IS_UNIQUE, IS_ORDERED);
-		addEParameter(op, this.getResourceSet(), "resourceSet", 0, 1, !IS_UNIQUE, IS_ORDERED);
-
-		op = initEOperation(getCompoundEChange__ResolveAfterAndApplyBackward__ResourceSet(), theEChangePackage.getEChange(), "resolveAfterAndApplyBackward", 0, 1, !IS_UNIQUE, IS_ORDERED);
-		addEParameter(op, this.getResourceSet(), "resourceSet", 0, 1, !IS_UNIQUE, IS_ORDERED);
-
 		initEClass(explicitUnsetEFeatureEClass, ExplicitUnsetEFeature.class, "ExplicitUnsetEFeature", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		g1 = createEGenericType(explicitUnsetEFeatureEClass_A);
 		initEReference(getExplicitUnsetEFeature_AffectedEObject(), g1, null, "affectedEObject", null, 1, 1, ExplicitUnsetEFeature.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -1023,10 +957,6 @@ public class CompoundPackageImpl extends EPackageImpl implements CompoundPackage
 		initEReference(getCreateAndReplaceAndDeleteNonRoot_DeleteChange(), g1, null, "deleteChange", null, 1, 1, CreateAndReplaceAndDeleteNonRoot.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEOperation(getCreateAndReplaceAndDeleteNonRoot__GetAtomicChanges(), theEChangePackage.getAtomicEChange(), "getAtomicChanges", 1, -1, IS_UNIQUE, IS_ORDERED);
-
-		// Initialize data types
-		initEDataType(commandEDataType, Command.class, "Command", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
-		initEDataType(resourceSetEDataType, ResourceSet.class, "ResourceSet", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
 
 		// Create resource
 		createResource(eNS_URI);

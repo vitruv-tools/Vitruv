@@ -87,6 +87,15 @@ public interface SinglePackage extends EPackage {
 	int REPLACE_SINGLE_VALUED_FEATURE_ECHANGE__AFFECTED_EOBJECT = FeaturePackage.UPDATE_SINGLE_VALUED_FEATURE_ECHANGE__AFFECTED_EOBJECT;
 
 	/**
+	 * The feature id for the '<em><b>Affected EObject ID</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REPLACE_SINGLE_VALUED_FEATURE_ECHANGE__AFFECTED_EOBJECT_ID = FeaturePackage.UPDATE_SINGLE_VALUED_FEATURE_ECHANGE__AFFECTED_EOBJECT_ID;
+
+	/**
 	 * The number of structural features of the '<em>Replace Single Valued Feature EChange</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -103,60 +112,6 @@ public interface SinglePackage extends EPackage {
 	 * @ordered
 	 */
 	int REPLACE_SINGLE_VALUED_FEATURE_ECHANGE___IS_RESOLVED = FeaturePackage.UPDATE_SINGLE_VALUED_FEATURE_ECHANGE___IS_RESOLVED;
-
-	/**
-	 * The operation id for the '<em>Resolve Before</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REPLACE_SINGLE_VALUED_FEATURE_ECHANGE___RESOLVE_BEFORE__RESOURCESET = FeaturePackage.UPDATE_SINGLE_VALUED_FEATURE_ECHANGE___RESOLVE_BEFORE__RESOURCESET;
-
-	/**
-	 * The operation id for the '<em>Resolve After</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REPLACE_SINGLE_VALUED_FEATURE_ECHANGE___RESOLVE_AFTER__RESOURCESET = FeaturePackage.UPDATE_SINGLE_VALUED_FEATURE_ECHANGE___RESOLVE_AFTER__RESOURCESET;
-
-	/**
-	 * The operation id for the '<em>Resolve Before And Apply Forward</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REPLACE_SINGLE_VALUED_FEATURE_ECHANGE___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET = FeaturePackage.UPDATE_SINGLE_VALUED_FEATURE_ECHANGE___RESOLVE_BEFORE_AND_APPLY_FORWARD__RESOURCESET;
-
-	/**
-	 * The operation id for the '<em>Resolve After And Apply Backward</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REPLACE_SINGLE_VALUED_FEATURE_ECHANGE___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET = FeaturePackage.UPDATE_SINGLE_VALUED_FEATURE_ECHANGE___RESOLVE_AFTER_AND_APPLY_BACKWARD__RESOURCESET;
-
-	/**
-	 * The operation id for the '<em>Apply Forward</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REPLACE_SINGLE_VALUED_FEATURE_ECHANGE___APPLY_FORWARD = FeaturePackage.UPDATE_SINGLE_VALUED_FEATURE_ECHANGE___APPLY_FORWARD;
-
-	/**
-	 * The operation id for the '<em>Apply Backward</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REPLACE_SINGLE_VALUED_FEATURE_ECHANGE___APPLY_BACKWARD = FeaturePackage.UPDATE_SINGLE_VALUED_FEATURE_ECHANGE___APPLY_BACKWARD;
 
 	/**
 	 * The operation id for the '<em>Get New Value</em>' operation.

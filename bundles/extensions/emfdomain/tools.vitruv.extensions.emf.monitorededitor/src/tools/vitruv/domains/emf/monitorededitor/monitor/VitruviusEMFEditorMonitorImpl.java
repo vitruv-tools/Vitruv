@@ -56,8 +56,7 @@ public class VitruviusEMFEditorMonitorImpl implements IVitruviusEMFEditorMonitor
     private final ISynchronizingMonitoredEmfEditor changeRecorderMonitor;
 
     /**
-     * An accessor to the Vitruvius framework used to determine which resources need to be
-     * monitored.
+     * An accessor to the Vitruvius framework used to determine which resources need to be monitored.
      */
     private final IVitruviusAccessor vitruvAccessor;
 
@@ -72,10 +71,10 @@ public class VitruviusEMFEditorMonitorImpl implements IVitruviusEMFEditorMonitor
     private final Map<VURI, Long> lastSynchronizationRequestTimestamps;
 
     /**
-     * Setting this flag to <code>true</code> disables timestamp-based recognition of
-     * synchronization lags, i.e. situations when triggerSynchronization() is called for a file
-     * before all corresponding changes for that have been applied to that file up to the point of
-     * (file modification) time of calling triggerSynchronization().
+     * Setting this flag to <code>true</code> disables timestamp-based recognition of synchronization
+     * lags, i.e. situations when triggerSynchronization() is called for a file before all corresponding
+     * changes for that have been applied to that file up to the point of (file modification) time of
+     * calling triggerSynchronization().
      */
     private boolean isSynchronizationLagRecognitionDisabled = false;
 
@@ -97,8 +96,8 @@ public class VitruviusEMFEditorMonitorImpl implements IVitruviusEMFEditorMonitor
      * @param factory
      *            The {@link IEditorPartAdapterFactory} providing access to the EMF editors.
      * @param changeSync
-     *            The {@link ChangePropagator} object getting passed the changes to the EMF model
-     *            when the user saves the editing session.
+     *            The {@link ChangePropagator} object getting passed the changes to the EMF model when
+     *            the user saves the editing session.
      * @param modelCopyProviding
      *            The Vitruvius model copy provider.
      * @param vitruvAccessor
@@ -108,7 +107,8 @@ public class VitruviusEMFEditorMonitorImpl implements IVitruviusEMFEditorMonitor
     public VitruviusEMFEditorMonitorImpl(IEditorPartAdapterFactory factory, VirtualModel virtualModel,
             IVitruviusAccessor vitruvAccessor) {
         ResourceChangeSynchronizing internalChangeSync = createInternalChangeSynchronizing();
-        changeRecorderMonitor = new SynchronizingMonitoredEmfEditorImpl(internalChangeSync, factory, monitoringDecider);
+        changeRecorderMonitor = new SynchronizingMonitoredEmfEditorImpl(virtualModel, internalChangeSync, factory,
+                monitoringDecider);
         this.vitruvAccessor = vitruvAccessor;
         this.editorPartAdapterFactory = factory;
         this.virtualModel = virtualModel;
@@ -117,13 +117,13 @@ public class VitruviusEMFEditorMonitorImpl implements IVitruviusEMFEditorMonitor
     }
 
     /**
-     * A convenience constructor for {@link VitruviusEMFEditorMonitorImpl} instances initializing
-     * the instance with an {@link IEditorPartAdapterFactory} such that all editors are monitored
-     * whose resource set contains an EMF model registered with the Vitruvius framework.
+     * A convenience constructor for {@link VitruviusEMFEditorMonitorImpl} instances initializing the
+     * instance with an {@link IEditorPartAdapterFactory} such that all editors are monitored whose
+     * resource set contains an EMF model registered with the Vitruvius framework.
      * 
      * @param changeSync
-     *            The {@link ChangePropagator} object getting passed the changes to the EMF model
-     *            when the user saves the editing session.
+     *            The {@link ChangePropagator} object getting passed the changes to the EMF model when
+     *            the user saves the editing session.
      * @param modelCopyProviding
      *            The Vitruvius model copy provider.
      * @param vitruvAccessor
@@ -250,8 +250,8 @@ public class VitruviusEMFEditorMonitorImpl implements IVitruviusEMFEditorMonitor
     }
 
     /*
-     * The internal change synchronizing is passed to the SynchronizingMonitoredEmfEditorImpl and
-     * gets called when a resource is saved. It adds the changes to the collected changes that are
+     * The internal change synchronizing is passed to the SynchronizingMonitoredEmfEditorImpl and gets
+     * called when a resource is saved. It adds the changes to the collected changes that are
      * interpreted whenever triggerSynchronization is called here
      */
     @Override
@@ -271,8 +271,8 @@ public class VitruviusEMFEditorMonitorImpl implements IVitruviusEMFEditorMonitor
 
     /**
      * Calling this method timestamp-based recognition of synchronization lags, i.e. situations when
-     * triggerSynchronization() is called for a file before all corresponding changes for that have
-     * been applied to that file up to the point of (file modification) time of calling
+     * triggerSynchronization() is called for a file before all corresponding changes for that have been
+     * applied to that file up to the point of (file modification) time of calling
      * triggerSynchronization().
      * 
      * This method should ONLY be called from single-threaded testing code.

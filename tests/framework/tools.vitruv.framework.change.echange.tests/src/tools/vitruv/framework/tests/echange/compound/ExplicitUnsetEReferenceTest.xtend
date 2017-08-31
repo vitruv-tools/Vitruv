@@ -20,6 +20,7 @@ import tools.vitruv.framework.tests.echange.EChangeTest
 
 import static extension tools.vitruv.framework.tests.echange.util.EChangeAssertHelper.*
 import tools.vitruv.framework.change.echange.compound.ReplaceAndDeleteNonRoot
+import static extension tools.vitruv.framework.change.echange.EChangeResolverAndApplicator.*;
 
 /**
  * Test class for the concrete {@link ExplicitUnsetEReference} EChange,
@@ -159,7 +160,7 @@ class ExplicitUnsetEReferenceTest extends EChangeTest {
 		val unresolvedChange = createUnresolvedChange()
 
 		// Resolve		
- 		val resolvedChange = unresolvedChange.resolveBefore(resourceSet)
+ 		val resolvedChange = unresolvedChange.resolveBefore(uuidGeneratorAndResolver)
 		unresolvedChange.assertDifferentChangeSameClass(resolvedChange)			
 	}
 
@@ -501,7 +502,7 @@ class ExplicitUnsetEReferenceTest extends EChangeTest {
 		unresolvedChange.assertIsNotResolved()
 		
 		// Resolve 1
-		val resolvedChange = unresolvedChange.resolveBefore(resourceSet)
+		val resolvedChange = unresolvedChange.resolveBefore(uuidGeneratorAndResolver)
 			as ExplicitUnsetEReference<Root>
 		resolvedChange.assertIsResolved()
 		
@@ -509,7 +510,7 @@ class ExplicitUnsetEReferenceTest extends EChangeTest {
 		assertIsStateBefore
 		
 		// Resolve 2
-		var resolvedAndAppliedChange = unresolvedChange.resolveBeforeAndApplyForward(resourceSet)
+		var resolvedAndAppliedChange = unresolvedChange.resolveBeforeAndApplyForward(uuidGeneratorAndResolver)
 			as ExplicitUnsetEReference<Root>
 		resolvedAndAppliedChange.assertIsResolved()
 		
@@ -533,7 +534,7 @@ class ExplicitUnsetEReferenceTest extends EChangeTest {
 		assertIsStateAfter		
 		
 		// Resolve 1
-		var resolvedChange = unresolvedChange.resolveAfter(resourceSet)
+		var resolvedChange = unresolvedChange.resolveAfter(uuidGeneratorAndResolver)
 			as ExplicitUnsetEReference<Root>
 		resolvedChange.assertIsResolved()
 		
@@ -541,7 +542,7 @@ class ExplicitUnsetEReferenceTest extends EChangeTest {
 		assertIsStateAfter	
 		
 		// Resolve 2
-		var resolvedAndAppliedChange = unresolvedChange.resolveAfterAndApplyBackward(resourceSet)
+		var resolvedAndAppliedChange = unresolvedChange.resolveAfterAndApplyBackward(uuidGeneratorAndResolver)
 			as ExplicitUnsetEReference<Root>
 		resolvedAndAppliedChange.assertIsResolved()
 		
@@ -557,7 +558,7 @@ class ExplicitUnsetEReferenceTest extends EChangeTest {
 		assertIsStateBefore
 		
 		// Create and resolve change
-		val resolvedChange = createUnresolvedChange().resolveBefore(resourceSet)
+		val resolvedChange = createUnresolvedChange().resolveBefore(uuidGeneratorAndResolver)
 			as ExplicitUnsetEReference<Root>
 			
 		// Apply forward
@@ -575,7 +576,7 @@ class ExplicitUnsetEReferenceTest extends EChangeTest {
 		assertIsStateBefore
 		
 		// Create and resolve change
-		val resolvedChange = createUnresolvedChange().resolveBefore(resourceSet)
+		val resolvedChange = createUnresolvedChange().resolveBefore(uuidGeneratorAndResolver)
 			as ExplicitUnsetEReference<Root>
 			
 		// Set state after

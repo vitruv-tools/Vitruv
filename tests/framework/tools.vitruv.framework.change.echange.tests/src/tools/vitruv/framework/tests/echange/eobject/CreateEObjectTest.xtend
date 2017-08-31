@@ -1,12 +1,12 @@
 package tools.vitruv.framework.tests.echange.eobject
 
 import allElementTypes.Root
-import org.junit.Assert
 import org.junit.Test
 import tools.vitruv.framework.change.echange.eobject.CreateEObject
 import org.junit.Before
 
 import static extension tools.vitruv.framework.tests.echange.util.EChangeAssertHelper.*
+import static extension tools.vitruv.framework.change.echange.EChangeResolverAndApplicator.*;
 
 /**
  * Test class for the concrete {@link CreateEObject} EChange,
@@ -29,7 +29,7 @@ class CreateEObjectTest extends EObjectTest {
 		val unresolvedChange = createUnresolvedChange(createdObject)
 			
 		// Resolve		
- 		val resolvedChange = unresolvedChange.resolveBefore(resourceSet)
+ 		val resolvedChange = unresolvedChange.resolveBefore(uuidGeneratorAndResolver)
 		unresolvedChange.assertDifferentChangeSameClass(resolvedChange)
 	}
 	
@@ -40,7 +40,7 @@ class CreateEObjectTest extends EObjectTest {
 	@Test
 	def public void applyForwardTest() {
 		// Create change and resolve
-		val resolvedChange = createUnresolvedChange(createdObject).resolveBefore(resourceSet)
+		val resolvedChange = createUnresolvedChange(createdObject).resolveBefore(uuidGeneratorAndResolver)
 			as CreateEObject<Root>
 			
 		// Apply forward
@@ -53,7 +53,7 @@ class CreateEObjectTest extends EObjectTest {
 		prepareStateBefore
 		
 		// Create change and resolve 2
-		val resolvedChange2 = createUnresolvedChange(createdObject2).resolveBefore(resourceSet)
+		val resolvedChange2 = createUnresolvedChange(createdObject2).resolveBefore(uuidGeneratorAndResolver)
 			as CreateEObject<Root>
 			
 		// Apply forward 2
@@ -73,7 +73,7 @@ class CreateEObjectTest extends EObjectTest {
 		prepareStateAfter(createdObject)
 
 		// Create change and resolve
-		val resolvedChange = createUnresolvedChange(createdObject).resolveAfter(resourceSet)
+		val resolvedChange = createUnresolvedChange(createdObject).resolveAfter(uuidGeneratorAndResolver)
 			as CreateEObject<Root>
 		
 		// Apply backward
@@ -84,7 +84,6 @@ class CreateEObjectTest extends EObjectTest {
 	 * Sets the state of the model before the change.
 	 */
 	def private void prepareStateBefore() {
-		stagingArea.clear
 		assertIsStateBefore
 	}
 	
@@ -92,8 +91,6 @@ class CreateEObjectTest extends EObjectTest {
 	 * Sets the state of the model after the change.
 	 */
 	def private void prepareStateAfter(Root object) {
-		stagingArea.clear
-		stagingArea.add(object)
 		assertIsStateAfter(object)
 	}
 	
@@ -101,15 +98,12 @@ class CreateEObjectTest extends EObjectTest {
 	 * Model is in state before the change.
 	 */
 	def private void assertIsStateBefore() {
-		Assert.assertTrue(stagingArea.empty)
 	}
 	
 	/**
 	 * Model is in state after the change.
 	 */
 	def private void assertIsStateAfter(Root object) {
-		Assert.assertFalse(stagingArea.empty)
-		object.assertEqualsOrCopy(stagingArea.peek)
 	}
 	
 	/**

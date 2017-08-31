@@ -12,6 +12,7 @@ import tools.vitruv.framework.change.echange.feature.attribute.ReplaceSingleValu
 import tools.vitruv.framework.tests.echange.EChangeTest
 
 import static extension tools.vitruv.framework.tests.echange.util.EChangeAssertHelper.*
+import static extension tools.vitruv.framework.change.echange.EChangeResolverAndApplicator.*;
 
 /**
  * Test class for the concrete {@link ReplaceSingleValuedEAttribute} EChange, 
@@ -46,7 +47,7 @@ public class ReplaceSingleValuedEAttributeTest extends EChangeTest {
 		val unresolvedChange = createUnresolvedChange()
 		
 		// Resolve
-		val resolvedChange = unresolvedChange.resolveBefore(resourceSet)
+		val resolvedChange = unresolvedChange.resolveBefore(uuidGeneratorAndResolver)
 		unresolvedChange.assertDifferentChangeSameClass(resolvedChange)
 	}
 	
@@ -57,7 +58,7 @@ public class ReplaceSingleValuedEAttributeTest extends EChangeTest {
 	 @Test
 	 def public void applyForwardTest() {
 		// Create change
-		val resolvedChange = createUnresolvedChange().resolveBefore(resourceSet)
+		val resolvedChange = createUnresolvedChange().resolveBefore(uuidGeneratorAndResolver)
 			as ReplaceSingleValuedEAttribute<Root, String>
 	 	
 	 	// Apply forward
@@ -74,7 +75,7 @@ public class ReplaceSingleValuedEAttributeTest extends EChangeTest {
 	 @Test
 	 def public void applyBackwardTest() {
 		// Create change
-		val resolvedChange = createUnresolvedChange().resolveBefore(resourceSet)
+		val resolvedChange = createUnresolvedChange().resolveBefore(uuidGeneratorAndResolver)
 			as ReplaceSingleValuedEAttribute<Root, String>
 			
 		// Set state after
@@ -101,7 +102,7 @@ public class ReplaceSingleValuedEAttributeTest extends EChangeTest {
 	 	
 	 	// Resolving the change will be tested in EFeatureChange
 	 	val resolvedChange = atomicFactory.<NonRoot, Integer>createReplaceSingleAttributeChange
-	 	(affectedNonRootEObject, affectedRootFeature, oldIntValue, newIntValue).resolveBefore(resourceSet)
+	 	(affectedNonRootEObject, affectedRootFeature, oldIntValue, newIntValue).resolveBefore(uuidGeneratorAndResolver)
 	 	
 	 	// NonRoot has no such feature
 	 	Assert.assertEquals(affectedNonRootEObject.eClass.getFeatureID(affectedRootFeature), -1)	
@@ -122,7 +123,7 @@ public class ReplaceSingleValuedEAttributeTest extends EChangeTest {
 	 	// Create and resolve change
 	 	val resolvedChange = atomicFactory.<Root, Integer>createReplaceSingleAttributeChange
 	 		(affectedEObject, affectedFeature, oldIntValue, newIntValue).
-	 		resolveBefore(resourceSet)
+	 		resolveBefore(uuidGeneratorAndResolver)
 	 	Assert.assertTrue(resolvedChange.isResolved)
 	 		
 	 	// Type of attribute is String not Integer
