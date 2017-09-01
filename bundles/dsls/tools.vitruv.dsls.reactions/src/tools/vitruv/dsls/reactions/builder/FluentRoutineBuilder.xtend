@@ -23,6 +23,8 @@ import tools.vitruv.dsls.reactions.reactionsLanguage.Taggable
 
 import static com.google.common.base.Preconditions.*
 import static tools.vitruv.dsls.reactions.codegen.helper.ReactionsLanguageConstants.*
+import tools.vitruv.dsls.reactions.reactionsLanguage.RetrieveOneElementType
+import tools.vitruv.dsls.reactions.reactionsLanguage.RetrieveOrRequireAbscenceOfModelElement
 
 class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 
@@ -167,6 +169,10 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 			detectWellKnownType(eClass, parameterName)
 			addInputElement(eClass, parameterName)
 		}
+		
+		def void model(EClass eClass, WellKnownModelInput wellKnown) {
+			wellKnown.apply(eClass)
+		}
 
 		def private detectWellKnownType(EClass eClass, String parameterName) {
 			switch (parameterName) {
@@ -176,21 +182,28 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 			}
 		}
 
-		def newValue() {
+		def WellKnownModelInput newValue() {
 			requireNewValue = true
+			return [valueType = it]
 		}
 
-		def oldValue() {
+		def WellKnownModelInput oldValue() {
 			requireOldValue = true
+			return [valueType = it]
 		}
 
-		def affectedEObject() {
+		def WellKnownModelInput affectedEObject() {
 			requireAffectedEObject = true
+			return [affectedObjectType = it]
 		}
 
 		def void plain(Class<?> javaClass, String parameterName) {
 			addInputElement(javaClass, parameterName)
 		}
+	}
+	
+	interface WellKnownModelInput {
+		def void apply(EClass type)
 	}
 
 	static class RetrieveModelElementMatcherStatementBuilder {
@@ -201,24 +214,47 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 			this.builder = builder
 			this.statement = statement
 		}
-
+		
 		def retrieve(EClass modelElement) {
-			statement.reference(modelElement)
-			new RetrieveModelElementMatcherStatementCorrespondenceBuilder(builder, statement)
+			internalRetrieve(modelElement)
+			return new RetrieveModelElementMatcherStatementCorrespondenceBuilder(builder, statement)
+		}
+		
+		private def internalRetrieve(EClass modelElement) {
+			reference(modelElement)
+			val retrieveOneElement = ReactionsLanguageFactory.eINSTANCE.createRetrieveOneModelElement();
+			statement.retrievalType = retrieveOneElement
+			return retrieveOneElement
+		}
+		
+		def retrieveOptional(EClass modelElement) {
+			val retrieveOneStatement = internalRetrieve(modelElement);
+			retrieveOneStatement.optional = true
+			return new RetrieveModelElementMatcherStatementCorrespondenceBuilder(builder, statement)
+		}
+		
+		def retrieveAsserted(EClass modelElement) {
+			val retrieveOneStatement = internalRetrieve(modelElement);
+			retrieveOneStatement.asserted = true
+			return new RetrieveModelElementMatcherStatementCorrespondenceBuilder(builder, statement)
 		}
 
-		def retrieveOptional(EClass modelElement) {
-			statement.optional = true
-			retrieve(modelElement)
+		def void retrieveMany(EClass modelElement) {
+			reference(modelElement)
+			statement.retrievalType = ReactionsLanguageFactory.eINSTANCE.createRetrieveManyModelElements();
+		}
+
+		def void reference(EClass modelElement) {
+			statement.reference(modelElement)
 		}
 
 	}
 
 	static class RetrieveModelElementMatcherStatementCorrespondenceBuilder {
 		val extension FluentRoutineBuilder builder
-		val RetrieveModelElement statement
+		val RetrieveOrRequireAbscenceOfModelElement statement
 
-		private new(FluentRoutineBuilder builder, RetrieveModelElement statement) {
+		private new(FluentRoutineBuilder builder, RetrieveOrRequireAbscenceOfModelElement statement) {
 			this.builder = builder
 			this.statement = statement
 		}
@@ -235,9 +271,9 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 
 	static class RetrieveModelElementMatcherStatementCorrespondenceElementBuilder {
 		val extension FluentRoutineBuilder builder
-		val RetrieveModelElement statement
+		val RetrieveOrRequireAbscenceOfModelElement statement
 
-		private new(FluentRoutineBuilder builder, RetrieveModelElement statement) {
+		private new(FluentRoutineBuilder builder, RetrieveOrRequireAbscenceOfModelElement statement) {
 			this.builder = builder
 			this.statement = statement
 		}
@@ -270,19 +306,25 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 			new RetrieveModelElementMatcherStatementBuilder(builder, statement)
 		}
 
-		def void requireAbsenceOf(EClass absentMetaclass) {
-			val statement = (ReactionsLanguageFactory.eINSTANCE.createRetrieveModelElement => [
-				abscence = true
-			]).reference(absentMetaclass)
+		def requireAbsenceOf(EClass absentMetaclass) {
+			val statement = ReactionsLanguageFactory.eINSTANCE.createRequireAbscenceOfModelElement.reference(absentMetaclass)
 			routine.matcher.matcherStatements += statement
+			return new RetrieveModelElementMatcherStatementCorrespondenceBuilder(builder, statement)
 		}
 
-		def void check(Function<RoutineTypeProvider, XExpression> expressionBuilder) {
-			routine.matcher.matcherStatements += ReactionsLanguageFactory.eINSTANCE.createMatcherCheckStatement => [
+		def check(Function<RoutineTypeProvider, XExpression> expressionBuilder) {
+			val statement = ReactionsLanguageFactory.eINSTANCE.createMatcherCheckStatement => [
 				code = XbaseFactory.eINSTANCE.createXBlockExpression.whenJvmTypes [
 					expressions += extractExpressions(expressionBuilder.apply(typeProvider))
 				]
 			]
+			routine.matcher.matcherStatements += statement
+			return statement
+		}
+		
+		def checkAsserted(Function<RoutineTypeProvider, XExpression> expressionBuilder) {
+			val statement = check(expressionBuilder);
+			statement.asserted = true;
 		}
 	}
 	

@@ -480,11 +480,11 @@ class ExplicitUnsetEReferenceTest extends EChangeTest {
 			}
 		} else {
 			if (!affectedFeature.many) {
-				changes.add(compoundFactory.createReplaceAndDeleteNonRootChange(affectedEObject, affectedFeature, oldValue, null))
+				changes.add(compoundFactory.createReplaceAndDeleteNonRootChange(affectedEObject, affectedFeature, oldValue))
 			} else {
-				changes.add(compoundFactory.createRemoveAndDeleteNonRootChange(affectedEObject, affectedFeature, oldValue3, 2, null))
-				changes.add(compoundFactory.createRemoveAndDeleteNonRootChange(affectedEObject, affectedFeature, oldValue2, 1, null))
-				changes.add(compoundFactory.createRemoveAndDeleteNonRootChange(affectedEObject, affectedFeature, oldValue, 0, null))
+				changes.add(compoundFactory.createRemoveAndDeleteNonRootChange(affectedEObject, affectedFeature, oldValue3, 2))
+				changes.add(compoundFactory.createRemoveAndDeleteNonRootChange(affectedEObject, affectedFeature, oldValue2, 1))
+				changes.add(compoundFactory.createRemoveAndDeleteNonRootChange(affectedEObject, affectedFeature, oldValue, 0))
 			}
 		}
 		return compoundFactory.<Root, NonRoot>createExplicitUnsetEReferenceChange(affectedEObject, affectedFeature, changes)

@@ -110,7 +110,7 @@ class CreateEObjectTest extends EObjectTest {
 	 * Creates new unresolved change.
 	 */
 	def private CreateEObject<Root> createUnresolvedChange(Root newObject) {
-		return atomicFactory.createCreateEObjectChange(newObject, resource, null)
+		return atomicFactory.createCreateEObjectChange(newObject, resource)
 	}
 		
 }

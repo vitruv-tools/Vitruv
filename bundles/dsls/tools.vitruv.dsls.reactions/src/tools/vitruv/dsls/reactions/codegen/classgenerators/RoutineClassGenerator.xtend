@@ -34,6 +34,10 @@ import static extension tools.vitruv.dsls.reactions.codegen.helper.ClassNamesGen
 import tools.vitruv.dsls.reactions.codegen.helper.AccessibleElement
 import tools.vitruv.dsls.reactions.codegen.typesbuilder.TypesBuilderExtensionProvider
 import tools.vitruv.dsls.reactions.reactionsLanguage.ExecuteActionStatement
+import tools.vitruv.dsls.reactions.reactionsLanguage.RetrieveOneModelElement
+import tools.vitruv.dsls.reactions.reactionsLanguage.RequireAbscenceOfModelElement
+import tools.vitruv.dsls.reactions.reactionsLanguage.RetrieveOrRequireAbscenceOfModelElement
+import tools.vitruv.dsls.reactions.reactionsLanguage.RetrieveManyModelElements
 
 class RoutineClassGenerator extends ClassGenerator {
 	protected final Routine routine;
@@ -70,7 +74,7 @@ class RoutineClassGenerator extends ClassGenerator {
 	}
 
 	protected def generateCurrentlyAccessibleElementsParameters(EObject sourceObject) {
-		this.currentlyAccessibleElements.map[sourceObject.toParameter(name, typeRef(fullyQualifiedType))];
+		sourceObject.generateMethodInputParameters(currentlyAccessibleElements);
 	}
 
 	protected def generateMethodParameterCallList(JvmOperation method) {
@@ -148,34 +152,60 @@ class RoutineClassGenerator extends ClassGenerator {
 		'''
 	}
 
-	private def dispatch StringConcatenationClient createStatements(RetrieveModelElement retrieveElement) {
-		val retrieveStatement = getGetCorrespondingElementStatement(retrieveElement);
-		val affectedElementClass = retrieveElement.metaclass;
+	private def dispatch StringConcatenationClient createStatements(RequireAbscenceOfModelElement elementAbscence) {
+		val retrieveStatementArguments = getGeneralGetCorrespondingElementStatementArguments(elementAbscence, null);
 		val StringConcatenationClient statements = '''
-			«IF !retrieveElement.name.nullOrEmpty»
-				«affectedElementClass.javaClassName» «retrieveElement.name» = «retrieveStatement»;
-				«IF !retrieveElement.optional && !retrieveElement.abscence»
-					if («retrieveElement.name» == null) {
-						return false;
-					}
-				«ENDIF»
-				registerObjectUnderModification(«retrieveElement.name»);
-			«ELSEIF retrieveElement.abscence»
-				if («retrieveStatement» != null) {
-					return false;
-				}
-			«ELSE»
-				if («retrieveStatement» == null) {
-					return false;
-				} else {
-					registerObjectUnderModification(«retrieveStatement»);
-				}
-			«ENDIF»
+			if (!getCorrespondingElements(
+				«retrieveStatementArguments»
+			).isEmpty()) {
+				return false;
+			}
 		'''
-		if (!retrieveElement.abscence) {
-			currentlyAccessibleElements += new AccessibleElement(retrieveElement.name, retrieveElement.javaClassName);
-		}
 		return statements;
+	}
+
+	private def dispatch StringConcatenationClient createStatements(RetrieveModelElement retrieveElement) {
+		val retrieveStatementArguments = getGeneralGetCorrespondingElementStatementArguments(retrieveElement, retrieveElement.name);
+		val affectedElementClass = retrieveElement.metaclass;
+		return createStatements(retrieveElement.retrievalType, retrieveElement.name, affectedElementClass.javaClassName, retrieveStatementArguments)
+	}
+	
+	private def dispatch StringConcatenationClient createStatements(RetrieveManyModelElements retrieveElement, String name, String typeName, StringConcatenationClient generalArguments) {
+		val StringConcatenationClient statement = '''
+			«IF !name.nullOrEmpty»«List»<«typeName»> «name» = «ENDIF»getCorrespondingElements(
+				«generalArguments»
+			);
+			for (EObject _element : «name») {	
+				registerObjectUnderModification(_element);
+			}
+			'''
+		currentlyAccessibleElements += new AccessibleElement(name, List.name, typeName);
+		return statement;
+	}
+	
+	private def dispatch StringConcatenationClient createStatements(RetrieveOneModelElement retrieveElement, String name, String typeName, StringConcatenationClient generalArguments) {
+		val retrieveStatement = '''
+		getCorrespondingElement(
+			«generalArguments», 
+			«retrieveElement.asserted» // asserted
+			)''';
+		if (name.nullOrEmpty) {
+			if (!retrieveElement.optional) {
+				return '''if («retrieveStatement» == null) {
+					return false;
+				}'''
+			}
+		} else {
+			val StringConcatenationClient statement = '''
+				«typeName» «name» = «retrieveStatement»;
+				if («name» != null) {
+					registerObjectUnderModification(«name»);
+				}«IF !retrieveElement.optional» else {
+					return false;
+				}«ENDIF»'''
+			currentlyAccessibleElements += new AccessibleElement(name, typeName);
+			return statement;
+		}
 	}
 
 	private def dispatch StringConcatenationClient createStatements(MatcherCheckStatement checkStatement) {
@@ -183,7 +213,11 @@ class RoutineClassGenerator extends ClassGenerator {
 		val checkMethodCall = checkMethod.userExecutionMethodCallString;
 		return '''
 		if (!«checkMethodCall») {
-			return false;
+			«IF checkStatement.asserted»
+				throw new «IllegalStateException»();
+			«ELSE»
+				return false;
+			«ENDIF»
 		}''';
 	}
 
@@ -288,7 +322,7 @@ class RoutineClassGenerator extends ClassGenerator {
 		];
 	}
 
-	private def StringConcatenationClient getTagString(RetrieveModelElement retrieveElement) {
+	private def StringConcatenationClient getTagString(RetrieveOrRequireAbscenceOfModelElement retrieveElement) {
 		if (retrieveElement.tag !== null) {
 			val tagMethod = generateMethodGetRetrieveTag(retrieveElement, currentlyAccessibleElements);
 			return '''«tagMethod.userExecutionMethodCallString»'''
@@ -297,28 +331,27 @@ class RoutineClassGenerator extends ClassGenerator {
 		}
 	}
 
-	private def StringConcatenationClient getPreconditionChecker(RetrieveModelElement retrieveElement) {
+	private def StringConcatenationClient getPreconditionChecker(RetrieveOrRequireAbscenceOfModelElement retrieveElement, String name) {
 		val affectedElementClass = retrieveElement.javaClassName;
 		if (retrieveElement.precondition === null) {
 			return '''(«affectedElementClass» _element) -> true''';
 		}
-		val preconditionMethod = generateMethodCorrespondencePrecondition(retrieveElement, currentlyAccessibleElements);
-		return '''(«affectedElementClass» _element) -> «USER_EXECUTION_FIELD_NAME».«preconditionMethod.simpleName»(«preconditionMethod.generateMethodParameterCallList.toString.replace(retrieveElement.name, "_element")»)'''
+		val preconditionMethod = generateMethodCorrespondencePrecondition(retrieveElement, name, currentlyAccessibleElements);
+		return '''(«affectedElementClass» _element) -> «USER_EXECUTION_FIELD_NAME».«preconditionMethod.simpleName»(«preconditionMethod.generateMethodParameterCallList.toString.replace(name?: RETRIEVAL_PRECONDITION_METHOD_TARGET, "_element")»)'''
 	}
 
-	private def StringConcatenationClient getGetCorrespondingElementStatement(RetrieveModelElement retrieveElement) {
+	private def StringConcatenationClient getGeneralGetCorrespondingElementStatementArguments(RetrieveOrRequireAbscenceOfModelElement retrieveElement, String name) {
 		val affectedElementClass = retrieveElement.javaClassName;
-		val correspondingElementPreconditionChecker = getPreconditionChecker(retrieveElement);
+		val correspondingElementPreconditionChecker = getPreconditionChecker(retrieveElement, name);
 		val correspondenceSourceMethod = generateMethodGetCorrespondenceSource(retrieveElement,
 			currentlyAccessibleElements);
 		val correspondenceSourceMethodCall = correspondenceSourceMethod.userExecutionMethodCallString;
 		val tagString = getTagString(retrieveElement);
 		return '''
-		getCorrespondingElement(
 			«correspondenceSourceMethodCall», // correspondence source supplier
 			«affectedElementClass».class,
 			«correspondingElementPreconditionChecker», // correspondence precondition checker
-			«tagString»)'''
+			«tagString»'''
 	}
 
 	private def StringConcatenationClient getElementCreationCode(CreateModelElement elementCreate) {

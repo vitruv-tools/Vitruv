@@ -11,11 +11,14 @@ import tools.vitruv.framework.domains.VitruvDomain
 import tools.vitruv.framework.change.processing.ChangePropagationObserver
 import org.eclipse.emf.ecore.EObject
 import tools.vitruv.framework.util.command.ResourceAccess
+import org.eclipse.xtend.lib.annotations.Accessors
 
 abstract class CompositeChangePropagationSpecification extends AbstractChangePropagationSpecification implements ChangePropagationObserver {
 	private static val logger = Logger.getLogger(CompositeChangePropagationSpecification);
 
+	@Accessors(PROTECTED_GETTER)
 	private val List<ChangePropagationSpecification> changePreprocessors;
+	@Accessors(PROTECTED_GETTER)
 	private val List<ChangePropagationSpecification> changeMainprocessors;
 
 	new(VitruvDomain sourceDomain, VitruvDomain targetDomain) {
@@ -55,8 +58,22 @@ abstract class CompositeChangePropagationSpecification extends AbstractChangePro
 
 	override propagateChange(TransactionalChange change, CorrespondenceModel correspondenceModel,
 		ResourceAccess resourceAccess) {
-		for (changeProcessor : allProcessors) {
-			logger.debug('''Calling change processor «changeProcessor» for change event «change»''');
+		propagateChangeViaPreprocessors(change, correspondenceModel, resourceAccess);
+		propagateChangeViaMainprocessors(change, correspondenceModel, resourceAccess);
+	}
+	
+	protected def propagateChangeViaPreprocessors(TransactionalChange change, CorrespondenceModel correspondenceModel,
+		ResourceAccess resourceAccess) {
+		for (changeProcessor : changePreprocessors) {
+			logger.debug('''Calling change preprocessor «changeProcessor» for change event «change»''');
+			changeProcessor.propagateChange(change, correspondenceModel, resourceAccess);
+		}
+	}
+	
+	protected def propagateChangeViaMainprocessors(TransactionalChange change, CorrespondenceModel correspondenceModel,
+		ResourceAccess resourceAccess) {
+		for (changeProcessor : changeMainprocessors) {
+			logger.debug('''Calling change mainprocessor «changeProcessor» for change event «change»''');
 			changeProcessor.propagateChange(change, correspondenceModel, resourceAccess);
 		}
 	}
