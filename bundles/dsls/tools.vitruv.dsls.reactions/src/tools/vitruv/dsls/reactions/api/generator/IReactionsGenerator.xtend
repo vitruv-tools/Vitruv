@@ -6,8 +6,6 @@ import tools.vitruv.dsls.reactions.reactionsLanguage.Reaction
 import tools.vitruv.dsls.reactions.generator.ReactionBuilder
 import org.eclipse.xtext.resource.XtextResourceSet
 import tools.vitruv.dsls.reactions.builder.FluentReactionsFileBuilder
-import java.nio.file.Path
-import org.eclipse.emf.common.util.URI
 import tools.vitruv.dsls.reactions.generator.ExternalReactionsGenerator
 import org.eclipse.emf.ecore.resource.ResourceSet
 import java.io.IOException

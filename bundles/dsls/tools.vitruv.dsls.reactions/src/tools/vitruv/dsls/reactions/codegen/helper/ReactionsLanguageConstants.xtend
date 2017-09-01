@@ -3,6 +3,7 @@ package tools.vitruv.dsls.reactions.codegen.helper
 import edu.kit.ipd.sdq.activextendannotations.Utility
 
 @Utility class ReactionsLanguageConstants {
+	public static val RETRIEVAL_PRECONDITION_METHOD_TARGET = "potentialTarget"
 	private static val USER_INTERACTING_NAME = "userInteracting";
 	public static val USER_INTERACTING_PARAMETER_NAME = USER_INTERACTING_NAME;
 	public static val USER_INTERACTING_FIELD_NAME = USER_INTERACTING_NAME;
