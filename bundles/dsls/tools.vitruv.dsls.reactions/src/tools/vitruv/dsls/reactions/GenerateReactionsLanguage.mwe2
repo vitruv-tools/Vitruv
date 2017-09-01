@@ -48,8 +48,15 @@ Workflow {
 	}
 	
 	component = EcoreGenerator {
-		srcPath = "platform:/resource/tools.vitruv.dsls.commonalities/src"
+		srcPath = "platform:/resource/tools.vitruv.dsls.reactions/model-gen"
 		genModel = "platform:/resource/tools.vitruv.dsls.reactions/model/InputTypes.genmodel"
+		generateCustomClasses = false
+	}
+	
+	// Execute EMF model code generator again, as otherwise some feature ID references are broken
+	component = EcoreGenerator {
+		srcPath = "platform:/resource/tools.vitruv.dsls.reactions/src-gen"
+		genModel = "platform:/resource/tools.vitruv.dsls.reactions/model/generated/ReactionsLanguage.genmodel"
 		generateCustomClasses = false
 	}
 }

@@ -149,14 +149,27 @@ MatcherBlock returns Matcher:
 	'}';
 
 MatcherStatement:
-	RetrieveModelElementStatement | MatcherCheckStatement;
+	RetrieveOrRequireAbscenceOfModelElement | MatcherCheckStatement;
 
-RetrieveModelElementStatement returns RetrieveModelElement:
-	{RetrieveModelElement}
-	// TODO remove uses of required property or set it to something like required?=!optional
-	((('val' name=ValidID '=')? 'retrieve' optional?='optional'?) | abscence?='require absence of') 
-	MetaclassReference 'corresponding to' correspondenceSource=CorrespondingObjectCodeBlock
-	('tagged with' Taggable)? ('with' precondition=PreconditionCodeBlock)?;
+RetrieveOrRequireAbscenceOfModelElement:
+	(RequireAbscenceOfModelElement | RetrieveModelElement) MetaclassReference 
+	'corresponding to' correspondenceSource=CorrespondingObjectCodeBlock ('tagged with' Taggable)? 
+	('with' precondition=PreconditionCodeBlock)?; 
+
+RequireAbscenceOfModelElement returns RequireAbscenceOfModelElement:
+	{RequireAbscenceOfModelElement}
+	'require absence of';
+	
+RetrieveModelElement:
+	('val' name=ValidID '=')? 'retrieve' retrievalType=RetrieveModelElementTypeStatement;
+
+
+RetrieveModelElementTypeStatement returns RetrieveModelElementType:
+	{RetrieveOneModelElement} 'one' type=RetrieveOneElementType |
+	{RetrieveManyModelElements} 'many';
+
+enum RetrieveOneElementType:
+	optional='optional' | matching='matching' | asserted='asserted' ;
 
 MatcherCheckStatement:
 	{MatcherCheckStatement}

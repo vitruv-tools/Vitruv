@@ -25,7 +25,7 @@ abstract class ClassGenerator extends TypesBuilderExtensionProvider implements I
 
 	protected def generateAccessibleElementsParameters(EObject sourceObject,
 		Iterable<AccessibleElement> accessibleElements) {
-		accessibleElements.map[sourceObject.toParameter(name, typeRef(fullyQualifiedType))];
+			sourceObject.generateMethodInputParameters(accessibleElements)
 	}
 
 	public new(TypesBuilderExtensionProvider typesBuilderExtensionProvider) {
