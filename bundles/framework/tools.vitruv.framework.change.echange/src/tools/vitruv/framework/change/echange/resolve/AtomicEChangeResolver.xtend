@@ -128,7 +128,11 @@ class AtomicEChangeResolver {
 		}
 		
 		if (change.idAttributeValue !== null) {
-			EcoreUtil.setID(change.affectedEObject, change.idAttributeValue);
+			val idAttribute = change.affectedEObject.eClass.EIDAttribute
+			// ECoreUtil will throw the exception for us if there is no ID attribute.
+		 	if (idAttribute === null || !idAttribute.isDerived) {
+				EcoreUtil.setID(change.affectedEObject, change.idAttributeValue);
+			}
 		}
 		
 		return true
