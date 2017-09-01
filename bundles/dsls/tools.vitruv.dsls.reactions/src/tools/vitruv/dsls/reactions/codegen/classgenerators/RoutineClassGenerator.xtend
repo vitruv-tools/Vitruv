@@ -39,6 +39,7 @@ import tools.vitruv.dsls.reactions.reactionsLanguage.RetrieveOneElementType
 import tools.vitruv.dsls.reactions.reactionsLanguage.RequireAbscenceOfModelElement
 import tools.vitruv.dsls.reactions.reactionsLanguage.RetrieveOrRequireAbscenceOfModelElement
 import tools.vitruv.dsls.reactions.reactionsLanguage.RetrieveManyModelElements
+import tools.vitruv.dsls.reactions.reactionsLanguage.CheckType
 
 class RoutineClassGenerator extends ClassGenerator {
 	protected final Routine routine;
@@ -213,7 +214,11 @@ class RoutineClassGenerator extends ClassGenerator {
 		val checkMethodCall = checkMethod.userExecutionMethodCallString;
 		return '''
 		if (!«checkMethodCall») {
-			return false;
+			«IF checkStatement.checkType == CheckType.ASSERTED»
+				throw new «IllegalStateException»();
+			«ELSE»
+				return false;
+			«ENDIF»
 		}''';
 	}
 

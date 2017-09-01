@@ -173,7 +173,10 @@ enum RetrieveOneElementType:
 
 MatcherCheckStatement:
 	{MatcherCheckStatement}
-	'check' CodeBlock;
+	'check' checkType=CheckType CodeBlock;
+	
+enum CheckType:
+	asserted='asserted' | matching='matching';
 
 // *********** EFFECTS ***********
 
