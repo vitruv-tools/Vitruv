@@ -16,6 +16,7 @@ import tools.vitruv.extensions.dslsruntime.reactions.effects.ReactionElementsHan
 import tools.vitruv.framework.change.processing.ChangePropagationObservable
 import tools.vitruv.framework.util.command.ResourceAccess
 import tools.vitruv.framework.tuid.TuidManager
+import java.util.List
 
 abstract class AbstractRepairRoutineRealization extends CallHierarchyHaving implements RepairRoutine, ReactionElementsHandler {
 	private extension val ReactionExecutionState executionState;
@@ -44,8 +45,8 @@ abstract class AbstractRepairRoutineRealization extends CallHierarchyHaving impl
 	protected def void notifyObjectCreated(EObject createdObject) {
 		executionState.changePropagationObservable.notifyObjectCreated(createdObject);
 	}
-
-	protected def <T extends EObject> getCorrespondingElement(
+	
+	protected def <T extends EObject> List<T> getCorrespondingElements(
 		EObject correspondenceSource,
 		Class<T> elementClass,
 		Function<T, Boolean> correspondencePreconditionMethod,
@@ -53,7 +54,23 @@ abstract class AbstractRepairRoutineRealization extends CallHierarchyHaving impl
 	) {
 		val retrievedElements = ReactionsCorrespondenceHelper.getCorrespondingModelElements(correspondenceSource,
 			elementClass, tag, correspondencePreconditionMethod, correspondenceModel);
+		return retrievedElements;
+	}
+
+	protected def <T extends EObject> T getCorrespondingElement(
+		EObject correspondenceSource,
+		Class<T> elementClass,
+		Function<T, Boolean> correspondencePreconditionMethod,
+		String tag,
+		boolean asserted
+	) {
+		val retrievedElements = getCorrespondingElements(correspondenceSource,
+			elementClass, correspondencePreconditionMethod, tag);
 		if (retrievedElements.size > 1) {
+			CorrespondenceFailHandlerFactory.createExceptionHandler().handle(retrievedElements, correspondenceSource,
+				elementClass, executionState.userInteracting);
+		}
+		if (asserted && retrievedElements.size == 0) {
 			CorrespondenceFailHandlerFactory.createExceptionHandler().handle(retrievedElements, correspondenceSource,
 				elementClass, executionState.userInteracting);
 		}

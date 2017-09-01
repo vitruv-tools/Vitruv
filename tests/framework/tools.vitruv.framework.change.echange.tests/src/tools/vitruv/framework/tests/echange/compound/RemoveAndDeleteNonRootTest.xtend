@@ -210,7 +210,7 @@ public class RemoveAndDeleteNonRootTest extends ReferenceEChangeTest {
 	 * Creates new unresolved change.
 	 */
 	def private RemoveAndDeleteNonRoot<Root, NonRoot> createUnresolvedChange(Root affectedRootObject, NonRoot newNonRoot, int index) {
-		return compoundFactory.createRemoveAndDeleteNonRootChange(affectedRootObject, affectedFeature, newNonRoot, index, null)	
+		return compoundFactory.createRemoveAndDeleteNonRootChange(affectedRootObject, affectedFeature, newNonRoot, index)	
 	}	
 		
 }

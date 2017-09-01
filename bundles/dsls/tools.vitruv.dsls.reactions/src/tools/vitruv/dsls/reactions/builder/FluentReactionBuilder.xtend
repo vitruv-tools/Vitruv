@@ -64,7 +64,7 @@ class FluentReactionBuilder extends FluentReactionsSegmentChildBuilder {
 			reaction.trigger = change
 			return new ChangeTypeBuilder(builder, change, element)
 		}
-		
+
 		def afterAttributeInsertIn(EAttribute attribute) {
 			valueType = attribute.EType
 			affectedElementType = attribute.EContainingClass
@@ -73,7 +73,7 @@ class FluentReactionBuilder extends FluentReactionsSegmentChildBuilder {
 			]
 			return new PreconditionOrRoutineCallBuilder(builder)
 		}
-		
+
 		def afterAttributeReplacedAt(EAttribute attribute) {
 			valueType = attribute.EType
 			affectedElementType = attribute.EContainingClass
@@ -82,7 +82,7 @@ class FluentReactionBuilder extends FluentReactionsSegmentChildBuilder {
 			]
 			return new PreconditionOrRoutineCallBuilder(builder)
 		}
-		
+
 		def afterAttributeRemoveFrom(EAttribute attribute) {
 			valueType = attribute.EType
 			affectedElementType = attribute.EContainingClass
@@ -139,29 +139,40 @@ class FluentReactionBuilder extends FluentReactionsSegmentChildBuilder {
 			this.builder = builder
 		}
 
-		def call(FluentRoutineBuilder routineBuilder) {
-			checkNotNull(routineBuilder)
-			checkState(routineBuilder.
-				readyToBeAttached, '''The «routineBuilder» is not sufficiently initialised to be set on the «builder»''')
-			checkState((!routineBuilder.requireNewValue && !routineBuilder.requireOldValue) || valueType !==
-				null, '''The «routineBuilder» requires a model value type, but the «builder» doesn’t have one!''')
-			builder.transferReactionsSegmentTo(routineBuilder)
-			reaction.callRoutine = ReactionsLanguageFactory.eINSTANCE.createReactionRoutineCall => [
-				code = (XbaseFactory.eINSTANCE.createXFeatureCall => [
-					explicitOperationCall = true
-				]).whenJvmTypes [
-					val routineCallMethod = routineCallMethod
-					feature = routineBuilder.jvmOperation
-					implicitReceiver = routineCallMethod.argument(
-						REACTION_USER_EXECUTION_ROUTINE_CALL_FACADE_PARAMETER_NAME)
-					featureCallArguments += routineBuilder.requiredArgumentsFrom(routineCallMethod)
-				]
-			]
-			if (affectedElementType !== null) {
-				routineBuilder.affectedElementType = affectedElementType
+		def call(FluentRoutineBuilder... routineBuilders) {
+			checkNotNull(routineBuilders)
+			checkArgument(routineBuilders.length > 0, "Must provide at least one routineBuilder!")
+			for (routineBuilder : routineBuilders) {
+				checkState(routineBuilder.readyToBeAttached,
+					'''The «routineBuilder» is not sufficiently initialised to be set on the «builder»''')
+				checkState(!routineBuilder.requireNewValue || valueType !==	null, 
+					'''The «routineBuilder» requires a new value, but the «builder» doesn’t create one!''')
+				checkState(!routineBuilder.requireOldValue || valueType !==	null,
+					'''The «routineBuilder» requires an old value, but the «builder» doesn’t create one!''')
+				checkState(!routineBuilder.requireAffectedEObject || affectedElementType !== null,
+					'''The «routineBuilder» requires an affectedElement, but the «builder» doesn’t create one!''')
+				builder.transferReactionsSegmentTo(routineBuilder)
 			}
-			if (valueType !== null) {
-				routineBuilder.valueType = valueType
+			if (routineBuilders.length === 1) {
+				val routineBuilder = routineBuilders.get(0)
+				reaction.callRoutine = ReactionsLanguageFactory.eINSTANCE.createReactionRoutineCall => [
+					code = routineBuilder.routineCall
+				]
+			} else {
+				reaction.callRoutine = ReactionsLanguageFactory.eINSTANCE.createReactionRoutineCall => [
+					code = XbaseFactory.eINSTANCE.createXBlockExpression => [
+						expressions += routineBuilders.map [routineCall]
+					]
+				]
+			}
+
+			for (routineBuilder : routineBuilders) {
+			 	if (affectedElementType !== null) {
+					routineBuilder.affectedElementType = affectedElementType
+				}
+				if (valueType !== null) {
+					routineBuilder.valueType = valueType
+				}
 			}
 			readyToBeAttached = true
 			return builder
@@ -177,6 +188,18 @@ class FluentReactionBuilder extends FluentReactionsSegmentChildBuilder {
 			anonymousRoutineCounter++
 			call('''«reaction.name.toFirstLower»Repair«IF anonymousRoutineCounter !== 1»anonymousRoutineCounter«ENDIF»''',
 				routineInitializer)
+		}
+		
+		def private routineCall(FluentRoutineBuilder routineBuilder) {
+			(XbaseFactory.eINSTANCE.createXFeatureCall => [
+				explicitOperationCall = true
+			]).whenJvmTypes [
+				val routineCallMethod = routineCallMethod
+				feature = routineBuilder.jvmOperation
+				implicitReceiver = routineCallMethod.argument(
+					REACTION_USER_EXECUTION_ROUTINE_CALL_FACADE_PARAMETER_NAME)
+				featureCallArguments += routineBuilder.requiredArgumentsFrom(routineCallMethod)
+			]
 		}
 	}
 

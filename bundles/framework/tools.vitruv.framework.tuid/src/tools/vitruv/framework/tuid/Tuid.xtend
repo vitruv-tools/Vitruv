@@ -42,7 +42,8 @@ import org.eclipse.emf.ecore.EObject
  * @author kramerm
  */
 final class Tuid implements Serializable {
-
+	public static final String META_ELEMENT_PREFIX = "MetaElement"
+	 
 	protected static final long serialVersionUID = 5018494116382201707L
 
 	static var SEGMENTS = generateForwardHashedBackwardLinkedTree()
@@ -251,4 +252,7 @@ lastSegment2TuidMap:
 				return true
 			}
 
+	def boolean isMetaElementTuid() {
+		return this.toString().startsWith(META_ELEMENT_PREFIX);
+	}
 }

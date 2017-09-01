@@ -24,6 +24,7 @@ import tools.vitruv.framework.change.echange.root.RemoveRootEObject
 import tools.vitruv.framework.change.echange.root.RootEChange
 import tools.vitruv.framework.change.echange.root.RootFactory
 import org.eclipse.emf.ecore.resource.Resource
+import tools.vitruv.framework.change.echange.util.EChangeUtil
 
 /**
  * Factory singleton class for elements of change models.
@@ -97,10 +98,10 @@ class TypeInferringAtomicEChangeFactory {
 	 * @param resource The resource which contains the staging area, where the object will be placed in / removed from.
 	 */
 	def protected <A extends EObject> void setEObjectExistenceChange(EObjectExistenceEChange<A> change,
-		A affectedEObject, Resource resource, String objectId) {
+		A affectedEObject, Resource resource) {
 		change.affectedEObject = affectedEObject;
 		change.affectedEObjectType = change.affectedEObject.eClass
-		change.idAttributeValue = objectId;
+		change.idAttributeValue = EChangeUtil.getID(change.affectedEObject);
 	}
 
 	/**
@@ -239,12 +240,12 @@ class TypeInferringAtomicEChangeFactory {
 	 * @param resource The resource, in which staging area the EObject is inserted.
 	 * @return The created CreateEObject EChange.
 	 */
-	def <A extends EObject> CreateEObject<A> createCreateEObjectChange(A affectedEObject, Resource resource, String objectId) {
+	def <A extends EObject> CreateEObject<A> createCreateEObjectChange(A affectedEObject, Resource resource) {
 		if (affectedEObject === null) {
 			throw new IllegalArgumentException();
 		}
 		val c = EobjectFactory.eINSTANCE.createCreateEObject()
-		setEObjectExistenceChange(c, affectedEObject, resource, objectId)
+		setEObjectExistenceChange(c, affectedEObject, resource)
 		return c
 	}
 
@@ -254,12 +255,12 @@ class TypeInferringAtomicEChangeFactory {
 	 * @param resource The resource, from which staging area the EObject is removed.
 	 * @return The created DeleteEObject EChange.
 	 */
-	def <A extends EObject> DeleteEObject<A> createDeleteEObjectChange(A affectedEObject, Resource resource, String objectId) {
+	def <A extends EObject> DeleteEObject<A> createDeleteEObjectChange(A affectedEObject, Resource resource) {
 		if (affectedEObject === null) {
 			throw new IllegalArgumentException();
 		}
 		val c = EobjectFactory.eINSTANCE.createDeleteEObject()
-		setEObjectExistenceChange(c, affectedEObject, resource, objectId)
+		setEObjectExistenceChange(c, affectedEObject, resource)
 		return c
 	}
 

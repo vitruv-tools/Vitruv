@@ -19,7 +19,7 @@ reaction ReplacedSingleValuedPrimitiveTypeEAttribute {
 
 routine replaceSingleValuedPrimitiveTypeEAttribute(minimal::Root rootElement, Integer value) {
 	match {
-		val targetElement = retrieve minimal::Root corresponding to rootElement
+		val targetElement = retrieve asserted minimal::Root corresponding to rootElement
 	}
 	action {
 		update targetElement {
@@ -42,8 +42,8 @@ reaction ReplacedSingleValuedEAttribute {
 routine replaceSingleValuedEAttribute(minimal::Root rootElement, Integer value) {
 	match {
 		// The check statements do only test that multiple check statements work
-		check { rootElement !== null }
-		val targetElement = retrieve minimal::Root corresponding to rootElement
+		check asserted { rootElement !== null }
+		val targetElement = retrieve asserted minimal::Root corresponding to rootElement
 		check { value !== null }
 	}
 	action {
@@ -66,7 +66,7 @@ reaction ReplacedIdentifiedId {
 
 routine replaceIdentifiedId(minimal::Identified identified, String value) {
 	match {
-		val targetElement = retrieve minimal::Identified corresponding to identified
+		val targetElement = retrieve asserted minimal::Identified corresponding to identified
 	}
 	action {
 		update targetElement {
@@ -85,7 +85,7 @@ reaction CreatedNonRootEObjectInList {
 
 routine insertNonRoot(minimal::Root rootElement, minimal::NonRoot insertedNonRoot) {
 	match {
-		val targetElement = retrieve minimal::Root corresponding to rootElement
+		val targetElement = retrieve asserted minimal::Root corresponding to rootElement
 	}
 	action {
 		val newNonRoot = create minimal::NonRoot and initialize {
@@ -111,7 +111,7 @@ reaction DeletedNonRootEObjectInList {
 
 routine removeNonRoot(minimal::NonRoot removedNonRoot) {
 	match {
-		val targetElement = retrieve minimal::NonRoot corresponding to removedNonRoot
+		val targetElement = retrieve asserted minimal::NonRoot corresponding to removedNonRoot
 	}
 	action {
 		call {
@@ -138,7 +138,7 @@ reaction ReplacedNonRootEObjectSingleReaction {
 
 routine deleteNonRootEObjectSingle(minimal::NonRoot containedObject) {
 	match {
-		val targetElement = retrieve minimal::NonRoot corresponding to containedObject
+		val targetElement = retrieve asserted minimal::NonRoot corresponding to containedObject
 	}
 	action {
 		delete targetElement
@@ -150,7 +150,7 @@ routine deleteNonRootEObjectSingle(minimal::NonRoot containedObject) {
 
 routine createNonRootEObjectSingle(minimal::Root sourceRoot, minimal::NonRoot containedObject) {
 	match {
-		val targetElement = retrieve minimal::Root corresponding to sourceRoot
+		val targetElement = retrieve asserted minimal::Root corresponding to sourceRoot
 	}
 	action {
 		val newNonRoot = create minimal::NonRoot and initialize {
@@ -177,8 +177,8 @@ reaction ReplacedSingleValuedNonContainmentEReference {
 routine replaceSingleValuedNonContainmentReference(minimal::Root rootElement, minimal::NonRoot newReferencedElement
 ) {
 	match {
-		val targetContainer = retrieve minimal::Root corresponding to rootElement
-		val targetElement = retrieve minimal::NonRoot corresponding to newReferencedElement
+		val targetContainer = retrieve asserted minimal::Root corresponding to rootElement
+		val targetElement = retrieve asserted minimal::NonRoot corresponding to newReferencedElement
 	}
 	action {
 		update targetContainer {
@@ -200,7 +200,7 @@ reaction InsertedEAttributeValue {
 
 routine insertEAttribute(minimal::Root rootElement, Integer attributeValue) {
 	match {
-		val targetElement = retrieve minimal::Root corresponding to rootElement
+		val targetElement = retrieve asserted minimal::Root corresponding to rootElement
 	}
 	action {
 		update targetElement {
@@ -222,7 +222,7 @@ reaction RemovedEAttributeValue {
 
 routine removeEAttribute(minimal::Root rootElement, Integer removedAttributeValue) {
 	match {
-		val targetElement = retrieve minimal::Root corresponding to rootElement
+		val targetElement = retrieve asserted minimal::Root corresponding to rootElement
 	}
 	action {
 		update targetElement {
@@ -245,7 +245,7 @@ reaction InsertedNonContainmentEReference {
 
 routine insertNonContainmentReference(minimal::Root rootElement, minimal::NonRoot insertedNonRoot) {
 	match {
-		val targetElement = retrieve minimal::Root corresponding to rootElement
+		val targetElement = retrieve asserted minimal::Root corresponding to rootElement
 	}
 	action {
 		update targetElement {
@@ -269,7 +269,7 @@ reaction RemovedNonContainmentEReference {
 
 routine removeNonContainmentReference(minimal::Root rootElement, minimal::NonRoot removedNonRoot) {
 	match {
-		val targetRoot = retrieve minimal::Root corresponding to rootElement
+		val targetRoot = retrieve asserted minimal::Root corresponding to rootElement
 	}
 	action {
 		update targetRoot {
@@ -294,7 +294,7 @@ reaction HelperReactionForNonRootObjectContainerInitialization {
 
 routine createNonRootObjectContainer(minimal::Root rootElement, minimal::NonRootObjectContainerHelper nonRootObjectContainer) {
 	match {
-		val targetElement = retrieve minimal::Root corresponding to rootElement
+		val targetElement = retrieve asserted minimal::Root corresponding to rootElement
 	}
 	action {
 		val newNonRootContainer = create minimal::NonRootObjectContainerHelper and initialize {
@@ -317,7 +317,7 @@ reaction HelperReactionForNonRootObjectContainerContentsInitialization {
 
 routine createNonRootInContainer(minimal::NonRootObjectContainerHelper container, minimal::NonRoot insertedNonRoot) {
 	match {
-		val nonRootContainer = retrieve minimal::NonRootObjectContainerHelper corresponding to container
+		val nonRootContainer = retrieve asserted minimal::NonRootObjectContainerHelper corresponding to container
 	}
 	action {
 		val newNonRoot = create minimal::NonRoot and initialize {
@@ -373,3 +373,19 @@ routine testJavaTypes(plain SimpleChangesTestsExecutionMonitor as monitor) {
 		execute {}
 	}
 }
+
+reaction CheckManyCorrespondenceRetrievalWorks {
+	after attribute replaced at minimal::Root[singleValuedEAttribute]
+	call checkManyCorrespondenceRetrievalWorks(affectedEObject)
+}
+
+routine checkManyCorrespondenceRetrievalWorks(minimal::Root rootElement) {
+	match {
+		val targetElements = retrieve many minimal::Root corresponding to rootElement
+		check asserted { return targetElements !== null && !targetElements.empty }
+	}
+	action {
+		call { }
+	}
+}
+

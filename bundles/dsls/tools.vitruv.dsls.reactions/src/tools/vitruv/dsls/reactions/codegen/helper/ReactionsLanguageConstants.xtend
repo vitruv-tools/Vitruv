@@ -3,15 +3,10 @@ package tools.vitruv.dsls.reactions.codegen.helper
 import edu.kit.ipd.sdq.activextendannotations.Utility
 
 @Utility class ReactionsLanguageConstants {
-	private static val BLACKBOARD_NAME = "blackboard";
-	public static val BLACKBOARD_PARAMETER_NAME = BLACKBOARD_NAME;
-	public static val BLACKBOARD_FIELD_NAME = BLACKBOARD_NAME;
+	public static val RETRIEVAL_PRECONDITION_METHOD_TARGET = "potentialTarget"
 	private static val USER_INTERACTING_NAME = "userInteracting";
 	public static val USER_INTERACTING_PARAMETER_NAME = USER_INTERACTING_NAME;
 	public static val USER_INTERACTING_FIELD_NAME = USER_INTERACTING_NAME;
-	private static val TRANSFORMATION_RESULT_NAME = "transformationResult";
-	public static val TRANSFORMATION_RESULT_PARAMETER_NAME = TRANSFORMATION_RESULT_NAME;
-	public static val TRANSFORMATION_RESULT_FIELD_NAME = TRANSFORMATION_RESULT_NAME;
 	private static val REACTION_EXECUTION_STATE_NAME = "reactionExecutionState";
 	public static val REACTION_EXECUTION_STATE_PARAMETER_NAME = REACTION_EXECUTION_STATE_NAME;
 	public static val REACTION_EXECUTION_STATE_FIELD_NAME = REACTION_EXECUTION_STATE_NAME;

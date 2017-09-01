@@ -1,5 +1,6 @@
 package tools.vitruv.framework.tests;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
@@ -146,5 +147,15 @@ public abstract class VitruviusApplicationTest extends VitruviusUnmonitoredAppli
 		propagateChanges();
 		this.changeRecorder.removeFromRecording(resource);
 	}
-
+	
+	protected Resource resourceAt(String modelPathInProject) {
+		try {
+			return getModelResource(modelPathInProject);
+		} catch (RuntimeException e) {
+			if (e.getCause() instanceof FileNotFoundException) {
+				return createModelResource(modelPathInProject);
+			}
+			throw e;
+		}
+	}
 }
