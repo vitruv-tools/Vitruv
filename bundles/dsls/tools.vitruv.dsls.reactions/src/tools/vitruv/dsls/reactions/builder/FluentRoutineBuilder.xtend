@@ -313,11 +313,13 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 		}
 
 		def check(Function<RoutineTypeProvider, XExpression> expressionBuilder) {
-			routine.matcher.matcherStatements ReactionsLanguageFactory.eINSTANCE.createMatcherCheckStatement => [
+			val statement = ReactionsLanguageFactory.eINSTANCE.createMatcherCheckStatement => [
 				code = XbaseFactory.eINSTANCE.createXBlockExpression.whenJvmTypes [
 					expressions += extractExpressions(expressionBuilder.apply(typeProvider))
 				]
 			]
+			routine.matcher.matcherStatements += statement
+			return statement
 		}
 		
 		def checkAsserted(Function<RoutineTypeProvider, XExpression> expressionBuilder) {
