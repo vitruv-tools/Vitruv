@@ -167,6 +167,10 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 			detectWellKnownType(eClass, parameterName)
 			addInputElement(eClass, parameterName)
 		}
+		
+		def void model(EClass eClass, WellKnownModelInput wellKnown) {
+			wellKnown.apply(eClass)
+		}
 
 		def private detectWellKnownType(EClass eClass, String parameterName) {
 			switch (parameterName) {
@@ -176,21 +180,28 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 			}
 		}
 
-		def newValue() {
+		def WellKnownModelInput newValue() {
 			requireNewValue = true
+			return [valueType = it]
 		}
 
-		def oldValue() {
+		def WellKnownModelInput oldValue() {
 			requireOldValue = true
+			return [valueType = it]
 		}
 
-		def affectedEObject() {
+		def WellKnownModelInput affectedEObject() {
 			requireAffectedEObject = true
+			return [affectedObjectType = it]
 		}
 
 		def void plain(Class<?> javaClass, String parameterName) {
 			addInputElement(javaClass, parameterName)
 		}
+	}
+	
+	interface WellKnownModelInput {
+		def void apply(EClass type)
 	}
 
 	static class RetrieveModelElementMatcherStatementBuilder {
@@ -270,11 +281,12 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 			new RetrieveModelElementMatcherStatementBuilder(builder, statement)
 		}
 
-		def void requireAbsenceOf(EClass absentMetaclass) {
+		def requireAbsenceOf(EClass absentMetaclass) {
 			val statement = (ReactionsLanguageFactory.eINSTANCE.createRetrieveModelElement => [
 				abscence = true
 			]).reference(absentMetaclass)
 			routine.matcher.matcherStatements += statement
+			return new RetrieveModelElementMatcherStatementCorrespondenceBuilder(builder, statement)
 		}
 
 		def void check(Function<RoutineTypeProvider, XExpression> expressionBuilder) {
