@@ -111,6 +111,6 @@ class EObjectExistenceEChangeTest extends EObjectTest {
 	 */
 	def private EObjectExistenceEChange<Root> createUnresolvedChange(Root createdObject) {
 		// The concrete change type CreateEObject will be used for the tests.
-		return atomicFactory.createCreateEObjectChange(createdObject, resource, null)
+		return atomicFactory.createCreateEObjectChange(createdObject, resource)
 	}
 }

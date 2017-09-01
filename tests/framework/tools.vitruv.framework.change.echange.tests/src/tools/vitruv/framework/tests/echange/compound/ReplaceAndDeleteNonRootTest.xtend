@@ -186,6 +186,6 @@ class ReplaceAndDeleteNonRootTest extends EChangeTest {
 	 * Creates new unresolved change.
 	 */
 	def private ReplaceAndDeleteNonRoot<Root, NonRoot> createUnresolvedChange(NonRoot oldNonRoot) {
-		return compoundFactory.createReplaceAndDeleteNonRootChange(affectedEObject, affectedFeature, oldNonRoot, null)
+		return compoundFactory.createReplaceAndDeleteNonRootChange(affectedEObject, affectedFeature, oldNonRoot)
 	}
 }
