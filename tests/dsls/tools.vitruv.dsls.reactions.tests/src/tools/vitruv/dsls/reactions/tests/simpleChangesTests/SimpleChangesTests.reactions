@@ -42,9 +42,9 @@ reaction ReplacedSingleValuedEAttribute {
 routine replaceSingleValuedEAttribute(minimal::Root rootElement, Integer value) {
 	match {
 		// The check statements do only test that multiple check statements work
-		check { rootElement !== null }
+		check asserted { rootElement !== null }
 		val targetElement = retrieve one asserted minimal::Root corresponding to rootElement
-		check { value !== null }
+		check matching { value !== null }
 	}
 	action {
 		update targetElement {
@@ -382,7 +382,7 @@ reaction CheckManyCorrespondenceRetrievalWorks {
 routine checkManyCorrespondenceRetrievalWorks(minimal::Root rootElement) {
 	match {
 		val targetElements = retrieve many minimal::Root corresponding to rootElement
-		check { return targetElements !== null && !targetElements.empty }
+		check asserted { return targetElements !== null && !targetElements.empty }
 	}
 	action {
 		call { }
