@@ -69,7 +69,7 @@ public abstract class VitruviusUnmonitoredApplicationTest extends VitruviusTest 
 		String currentTestProjectVsumName = testName + "_vsum_";
 		Iterable<VitruvDomain> domains = this.getVitruvDomains();
 		this.testUserInteractor = new TestUserInteractor();
-		this.virtualModel = TestUtil.createVirtualModel(currentTestProjectVsumName, true, domains,
+		this.virtualModel = TestUtil.createVirtualModel(new File(workspace, currentTestProjectVsumName), true, domains,
 				createChangePropagationSpecifications(), testUserInteractor);
 		this.correspondenceModel = virtualModel.getCorrespondenceModel();
 	}

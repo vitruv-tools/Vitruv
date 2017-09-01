@@ -22,7 +22,7 @@ public abstract class VitruviusTest {
 	@Rule
 	public TestName testName = new TestName();
 
-	private static File workspace;
+	protected static File workspace;
 	private File folder;
 	private Function<String, File> testProjectCreator;
 
