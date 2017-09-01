@@ -16,7 +16,6 @@ import tools.vitruv.framework.util.datatypes.VURI
 import tools.vitruv.framework.change.preparation.ChangeDescription2EChangesTransformation
 import tools.vitruv.framework.change.description.impl.ConcreteApplicableChangeImpl
 import tools.vitruv.framework.change.description.impl.ConcreteChangeWithUriImpl
-import tools.vitruv.framework.change.echange.util.EChangeUtil
 
 class VitruviusChangeFactory {
 	private static val logger = Logger.getLogger(VitruviusChangeFactory);
@@ -112,7 +111,7 @@ class VitruviusChangeFactory {
             return null;
         }
         val CreateAndInsertRoot<EObject> createRootEObj =  TypeInferringCompoundEChangeFactory.
-        	instance.createCreateAndInsertRootChange(rootElement, resource, index, EChangeUtil.getID(rootElement));
+        	instance.createCreateAndInsertRootChange(rootElement, resource, index);
         return createRootEObj; 
 	}
 	
@@ -121,7 +120,7 @@ class VitruviusChangeFactory {
 			val index = 0
             val EObject rootElement = resource.getContents().get(index);
             val RemoveAndDeleteRoot<EObject> deleteRootObj = TypeInferringCompoundEChangeFactory.
-            	instance.createRemoveAndDeleteRootChange(rootElement, resource, index, EChangeUtil.getID(rootElement));
+            	instance.createRemoveAndDeleteRootChange(rootElement, resource, index);
             return deleteRootObj;
         }
         logger.info("Deleted resource " + VURI.getInstance(resource) + " did not contain any EObject");
