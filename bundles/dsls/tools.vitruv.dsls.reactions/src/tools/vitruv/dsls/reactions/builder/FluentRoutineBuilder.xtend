@@ -26,6 +26,8 @@ import static tools.vitruv.dsls.reactions.codegen.helper.ReactionsLanguageConsta
 import tools.vitruv.dsls.reactions.reactionsLanguage.RetrieveOneModelElement
 import tools.vitruv.dsls.reactions.reactionsLanguage.RetrieveOneElementType
 import tools.vitruv.dsls.reactions.reactionsLanguage.RetrieveOrRequireAbscenceOfModelElement
+import tools.vitruv.dsls.reactions.reactionsLanguage.MatcherCheckStatement
+import tools.vitruv.dsls.reactions.reactionsLanguage.CheckType
 
 class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 
@@ -324,12 +326,32 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 			return new RetrieveModelElementMatcherStatementCorrespondenceBuilder(builder, statement)
 		}
 
-		def void check(Function<RoutineTypeProvider, XExpression> expressionBuilder) {
-			routine.matcher.matcherStatements += ReactionsLanguageFactory.eINSTANCE.createMatcherCheckStatement => [
+		def check(Function<RoutineTypeProvider, XExpression> expressionBuilder) {
+			val statement = ReactionsLanguageFactory.eINSTANCE.createMatcherCheckStatement => [
 				code = XbaseFactory.eINSTANCE.createXBlockExpression.whenJvmTypes [
 					expressions += extractExpressions(expressionBuilder.apply(typeProvider))
 				]
 			]
+			routine.matcher.matcherStatements += statement
+			return new MatcherCheckTypeBuilder(builder, statement);
+		}
+	}
+	
+	static class MatcherCheckTypeBuilder {
+		val extension FluentRoutineBuilder builder
+		val MatcherCheckStatement statement
+
+		private new(FluentRoutineBuilder builder, MatcherCheckStatement statement) {
+			this.builder = builder
+			this.statement = statement
+		}
+
+		def void asserted() {
+			statement.checkType = CheckType.ASSERTED
+		}
+
+		def void matching() {
+			statement.checkType = CheckType.MATCHING
 		}
 	}
 	
