@@ -26,15 +26,15 @@ final class TypeInferringUnresolvingAtomicEChangeFactory extends TypeInferringAt
 		eChangeIdManager.setOrGenerateIds(change);
 	}
 	
-	override <A extends EObject> createCreateEObjectChange(A affectedEObject, Resource resource, String objectId) {
-		val result = super.<A>createCreateEObjectChange(affectedEObject, resource, objectId)
+	override <A extends EObject> createCreateEObjectChange(A affectedEObject, Resource resource) {
+		val result = super.<A>createCreateEObjectChange(affectedEObject, resource)
 		setIds(result);
 		result.unresolve
 		return result;
 	}
 	
-	override <A extends EObject> createDeleteEObjectChange(A affectedEObject, Resource resource, String objectId) {
-		val result = super.<A>createDeleteEObjectChange(affectedEObject, resource, objectId)
+	override <A extends EObject> createDeleteEObjectChange(A affectedEObject, Resource resource) {
+		val result = super.<A>createDeleteEObjectChange(affectedEObject, resource)
 		setIds(result);
 		result.unresolve
 		return result;
