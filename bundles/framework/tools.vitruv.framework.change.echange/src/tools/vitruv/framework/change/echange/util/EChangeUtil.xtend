@@ -7,6 +7,7 @@ import org.eclipse.emf.edit.provider.ComposedAdapterFactory
 import org.eclipse.emf.common.command.BasicCommandStack
 import org.eclipse.emf.ecore.EReference
 import java.util.List
+import org.eclipse.emf.ecore.util.EcoreUtil
 
 /**
  * Static utility class for the EChange package and subpackages.
@@ -41,5 +42,25 @@ class EChangeUtil {
 			return true;
 		}
 		return false;
+	}
+	
+	/**
+	 * Return the value of the ID attribute of the given {@link EObject}, according to
+	 * {@link EcoreUtil#getID(EObject) EcoreUtil}.
+	 * If the object has no ID attribute or if is marked as <code>derived</code>, 
+	 * <code>null</code> will be returned.
+	 * 
+	 * @see 	EcoreUtil#getID(EObject)
+	 * @param 	eObject
+	 * 			The object to get the ID attribute value from
+	 * @return 	The ID attribute value of the given {@link EObject} or <code>null</code> 
+	 * 			if it has no ID attribute or if it is marked as <code>derived</code>.
+	 */
+	public static def String getID(EObject eObject) {
+		val idAttribute = eObject.eClass.EIDAttribute
+		if (idAttribute !== null && !idAttribute.derived) {
+			return EcoreUtil.getID(eObject);
+		}
+		return null;
 	}
 }
