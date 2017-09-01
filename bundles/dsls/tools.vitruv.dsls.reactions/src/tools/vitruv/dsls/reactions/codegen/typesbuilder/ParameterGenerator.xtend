@@ -18,14 +18,9 @@ import tools.vitruv.dsls.mirbase.mirBase.NamedMetaclassReference
 import tools.vitruv.dsls.reactions.reactionsLanguage.ConcreteModelChange
 import static extension tools.vitruv.dsls.reactions.codegen.changetyperepresentation.ChangeTypeRepresentationExtractor.*
 import tools.vitruv.dsls.reactions.codegen.helper.AccessibleElement
+import static tools.vitruv.dsls.reactions.codegen.helper.ReactionsLanguageConstants.*;
 
 class ParameterGenerator {
-	package static val CHANGE_PARAMETER_NAME = "change";
-	package static val BLACKBOARD_PARAMETER_NAME = "blackboard";
-	package static val TRANSFORMATION_RESULT_PARAMETER_NAME = "transformationResult";
-	package static val USER_INTERACTING_PARAMETER_NAME = "userInteracting";
-	package static val REACTION_EXECUTION_STATE_PARAMETER_NAME = "reactionExecutionState";
-	
 	protected final extension JvmTypeReferenceBuilder _typeReferenceBuilder;
 	protected final extension JvmTypesBuilderWithoutAssociations _typesBuilder;	
 	
