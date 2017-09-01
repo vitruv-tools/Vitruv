@@ -13,6 +13,7 @@ import java.util.List
 import tools.vitruv.framework.util.datatypes.VURI
 import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.resource.URIConverter
+import org.eclipse.emf.ecore.EClass
 
 /** 
  * Base class for Tuid calculators and resolvers. It handles the default parts of the Tuid like
@@ -70,6 +71,9 @@ abstract class TuidCalculatorAndResolverBase implements TuidCalculatorAndResolve
     }
 
 	override String calculateTuidFromEObject(EObject eObject) {
+		if (eObject instanceof EClass) {
+			return calculateMetaElementTuid(eObject)
+		}
 		var EObject root = getMostDistantParentOfSameMetamodel(eObject)
 		var String tuidPrefix = null
 		if (root.eResource() === null) {
@@ -92,6 +96,18 @@ abstract class TuidCalculatorAndResolverBase implements TuidCalculatorAndResolve
 		}
 		var EObject virtualRootEObject = root.eContainer()
 		return calculateTuidFromEObject(eObject, virtualRootEObject, tuidPrefix)
+	}
+	
+	def private String calculateMetaElementTuid(EClass eClass) {
+		val packages = newArrayList()
+		var currentPackage = eClass.EPackage;
+		while (currentPackage !== null) {
+			packages.add(0, currentPackage);
+			currentPackage = currentPackage.ESuperPackage
+		}
+		// Fold with strings may be rather inefficient, better use StringBuilder or the like
+		val packagePath = packages.fold("", [accumulatedString, element | accumulatedString + element.name + "." ])
+		return Tuid.META_ELEMENT_PREFIX + VitruviusConstants.getTuidSegmentSeperator() + tuidPrefixAndSeparator + packagePath + eClass.name
 	}
 
 	def private void addRootToCache(EObject root) {
