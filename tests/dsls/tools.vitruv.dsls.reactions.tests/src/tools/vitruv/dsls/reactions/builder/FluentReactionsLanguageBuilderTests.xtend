@@ -80,7 +80,7 @@ class FluentReactionsLanguageBuilderTests {
 					.afterElement(Root).deleted
 					.call [
 						match [
-							vall('toDelete').retrieveOne(Root).matching.correspondingTo.affectedEObject
+							vall('toDelete').retrieve(Root).correspondingTo.affectedEObject
 						].action [
 							delete('toDelete')
 						]
@@ -100,7 +100,7 @@ class FluentReactionsLanguageBuilderTests {
 			
 			routine deleteRootTestRepair(allElementTypes::Root affectedEObject) {
 				match {
-					val toDelete = retrieve one matching allElementTypes::Root corresponding to affectedEObject
+					val toDelete = retrieve allElementTypes::Root corresponding to affectedEObject
 				}
 				action {
 					delete toDelete

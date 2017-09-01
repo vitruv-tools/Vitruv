@@ -23,11 +23,8 @@ import tools.vitruv.dsls.reactions.reactionsLanguage.Taggable
 
 import static com.google.common.base.Preconditions.*
 import static tools.vitruv.dsls.reactions.codegen.helper.ReactionsLanguageConstants.*
-import tools.vitruv.dsls.reactions.reactionsLanguage.RetrieveOneModelElement
 import tools.vitruv.dsls.reactions.reactionsLanguage.RetrieveOneElementType
 import tools.vitruv.dsls.reactions.reactionsLanguage.RetrieveOrRequireAbscenceOfModelElement
-import tools.vitruv.dsls.reactions.reactionsLanguage.MatcherCheckStatement
-import tools.vitruv.dsls.reactions.reactionsLanguage.CheckType
 
 class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 
@@ -218,11 +215,28 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 			this.statement = statement
 		}
 		
-		def retrieveOne(EClass modelElement) {
+		def retrieve(EClass modelElement) {
+			internalRetrieve(modelElement)
+			return new RetrieveModelElementMatcherStatementCorrespondenceBuilder(builder, statement)
+		}
+		
+		private def internalRetrieve(EClass modelElement) {
 			reference(modelElement)
 			val retrieveOneElement = ReactionsLanguageFactory.eINSTANCE.createRetrieveOneModelElement();
 			statement.retrievalType = retrieveOneElement
-			new RetrieveOneModelElementMatcherStatementBuilder(builder, statement, retrieveOneElement)
+			return retrieveOneElement
+		}
+		
+		def retrieveOptional(EClass modelElement) {
+			val retrieveOneStatement = internalRetrieve(modelElement);
+			retrieveOneStatement.optional = true
+			return new RetrieveModelElementMatcherStatementCorrespondenceBuilder(builder, statement)
+		}
+		
+		def retrieveAsserted(EClass modelElement) {
+			val retrieveOneStatement = internalRetrieve(modelElement);
+			retrieveOneStatement.asserted = true
+			return new RetrieveModelElementMatcherStatementCorrespondenceBuilder(builder, statement)
 		}
 
 		def void retrieveMany(EClass modelElement) {
@@ -232,34 +246,6 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 
 		def void reference(EClass modelElement) {
 			statement.reference(modelElement)
-		}
-
-	}
-	
-	static class RetrieveOneModelElementMatcherStatementBuilder {
-		val extension FluentRoutineBuilder builder
-		val RetrieveModelElement elementStatement
-		val RetrieveOneModelElement oneElementStatement
-
-		private new(FluentRoutineBuilder builder, RetrieveModelElement elementStatement, RetrieveOneModelElement oneElementStatement) {
-			this.builder = builder
-			this.oneElementStatement = oneElementStatement
-			this.elementStatement = elementStatement
-		}
-		
-		def asserted() {
-			oneElementStatement.type = RetrieveOneElementType.ASSERTED
-			return new RetrieveModelElementMatcherStatementCorrespondenceBuilder(builder, elementStatement)
-		}
-
-		def matching() {
-			oneElementStatement.type = RetrieveOneElementType.MATCHING
-			return new RetrieveModelElementMatcherStatementCorrespondenceBuilder(builder, elementStatement)
-		}
-
-		def optional() {
-			oneElementStatement.type = RetrieveOneElementType.OPTIONAL;
-			return new RetrieveModelElementMatcherStatementCorrespondenceBuilder(builder, elementStatement)
 		}
 
 	}
@@ -327,31 +313,16 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 		}
 
 		def check(Function<RoutineTypeProvider, XExpression> expressionBuilder) {
-			val statement = ReactionsLanguageFactory.eINSTANCE.createMatcherCheckStatement => [
+			routine.matcher.matcherStatements ReactionsLanguageFactory.eINSTANCE.createMatcherCheckStatement => [
 				code = XbaseFactory.eINSTANCE.createXBlockExpression.whenJvmTypes [
 					expressions += extractExpressions(expressionBuilder.apply(typeProvider))
 				]
 			]
-			routine.matcher.matcherStatements += statement
-			return new MatcherCheckTypeBuilder(builder, statement);
 		}
-	}
-	
-	static class MatcherCheckTypeBuilder {
-		val extension FluentRoutineBuilder builder
-		val MatcherCheckStatement statement
-
-		private new(FluentRoutineBuilder builder, MatcherCheckStatement statement) {
-			this.builder = builder
-			this.statement = statement
-		}
-
-		def void asserted() {
-			statement.checkType = CheckType.ASSERTED
-		}
-
-		def void matching() {
-			statement.checkType = CheckType.MATCHING
+		
+		def checkAsserted(Function<RoutineTypeProvider, XExpression> expressionBuilder) {
+			val statement = check(expressionBuilder);
+			statement.asserted = true;
 		}
 	}
 	

@@ -35,11 +35,9 @@ import tools.vitruv.dsls.reactions.codegen.helper.AccessibleElement
 import tools.vitruv.dsls.reactions.codegen.typesbuilder.TypesBuilderExtensionProvider
 import tools.vitruv.dsls.reactions.reactionsLanguage.ExecuteActionStatement
 import tools.vitruv.dsls.reactions.reactionsLanguage.RetrieveOneModelElement
-import tools.vitruv.dsls.reactions.reactionsLanguage.RetrieveOneElementType
 import tools.vitruv.dsls.reactions.reactionsLanguage.RequireAbscenceOfModelElement
 import tools.vitruv.dsls.reactions.reactionsLanguage.RetrieveOrRequireAbscenceOfModelElement
 import tools.vitruv.dsls.reactions.reactionsLanguage.RetrieveManyModelElements
-import tools.vitruv.dsls.reactions.reactionsLanguage.CheckType
 
 class RoutineClassGenerator extends ClassGenerator {
 	protected final Routine routine;
@@ -186,22 +184,23 @@ class RoutineClassGenerator extends ClassGenerator {
 	}
 	
 	private def dispatch StringConcatenationClient createStatements(RetrieveOneModelElement retrieveElement, String name, String typeName, StringConcatenationClient generalArguments) {
-		val retrieveType = retrieveElement.type
 		val retrieveStatement = '''
 		getCorrespondingElement(
 			«generalArguments», 
-			«retrieveType == RetrieveOneElementType.ASSERTED» // asserted
+			«retrieveElement.asserted» // asserted
 			)''';
-		if (name.nullOrEmpty && retrieveType != RetrieveOneElementType.OPTIONAL) {
-			return '''if («retrieveStatement» == null) {
-				return false;
-			}'''
+		if (name.nullOrEmpty) {
+			if (!retrieveElement.optional) {
+				return '''if («retrieveStatement» == null) {
+					return false;
+				}'''
+			}
 		} else {
 			val StringConcatenationClient statement = '''
 				«typeName» «name» = «retrieveStatement»;
 				if («name» != null) {
 					registerObjectUnderModification(«name»);
-				}«IF retrieveType != RetrieveOneElementType.OPTIONAL» else {
+				}«IF !retrieveElement.optional» else {
 					return false;
 				}«ENDIF»'''
 			currentlyAccessibleElements += new AccessibleElement(name, typeName);
@@ -214,7 +213,7 @@ class RoutineClassGenerator extends ClassGenerator {
 		val checkMethodCall = checkMethod.userExecutionMethodCallString;
 		return '''
 		if (!«checkMethodCall») {
-			«IF checkStatement.checkType == CheckType.ASSERTED»
+			«IF checkStatement.asserted»
 				throw new «IllegalStateException»();
 			«ELSE»
 				return false;

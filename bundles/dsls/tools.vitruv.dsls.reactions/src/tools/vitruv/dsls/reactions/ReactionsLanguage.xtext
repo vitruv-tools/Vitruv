@@ -165,19 +165,16 @@ RetrieveModelElement:
 
 
 RetrieveModelElementTypeStatement returns RetrieveModelElementType:
-	{RetrieveOneModelElement} 'one' type=RetrieveOneElementType |
+	{RetrieveOneModelElement} (optional?='optional' | asserted?='asserted')? |
 	{RetrieveManyModelElements} 'many';
 
 enum RetrieveOneElementType:
-	optional='optional' | matching='matching' | asserted='asserted' ;
+	optional='optional' | asserted='asserted' ;
 
 MatcherCheckStatement:
 	{MatcherCheckStatement}
-	'check' checkType=CheckType CodeBlock;
+	'check' (asserted?='asserted')? CodeBlock;
 	
-enum CheckType:
-	asserted='asserted' | matching='matching';
-
 // *********** EFFECTS ***********
 
 ActionBlock returns Action:
