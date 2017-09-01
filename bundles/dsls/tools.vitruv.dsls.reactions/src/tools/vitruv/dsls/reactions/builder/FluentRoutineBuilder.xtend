@@ -23,6 +23,9 @@ import tools.vitruv.dsls.reactions.reactionsLanguage.Taggable
 
 import static com.google.common.base.Preconditions.*
 import static tools.vitruv.dsls.reactions.codegen.helper.ReactionsLanguageConstants.*
+import tools.vitruv.dsls.reactions.reactionsLanguage.RetrieveOneModelElement
+import tools.vitruv.dsls.reactions.reactionsLanguage.RetrieveOneElementType
+import tools.vitruv.dsls.reactions.reactionsLanguage.RetrieveOrRequireAbscenceOfModelElement
 
 class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 
@@ -212,24 +215,58 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 			this.builder = builder
 			this.statement = statement
 		}
-
-		def retrieve(EClass modelElement) {
-			statement.reference(modelElement)
-			new RetrieveModelElementMatcherStatementCorrespondenceBuilder(builder, statement)
+		
+		def retrieveOne(EClass modelElement) {
+			reference(modelElement)
+			val retrieveOneElement = ReactionsLanguageFactory.eINSTANCE.createRetrieveOneModelElement();
+			statement.retrievalType = retrieveOneElement
+			new RetrieveOneModelElementMatcherStatementBuilder(builder, statement, retrieveOneElement)
 		}
 
-		def retrieveOptional(EClass modelElement) {
-			statement.optional = true
-			retrieve(modelElement)
+		def void retrieveMany(EClass modelElement) {
+			reference(modelElement)
+			statement.retrievalType = ReactionsLanguageFactory.eINSTANCE.createRetrieveManyModelElements();
+		}
+
+		def void reference(EClass modelElement) {
+			statement.reference(modelElement)
+		}
+
+	}
+	
+	static class RetrieveOneModelElementMatcherStatementBuilder {
+		val extension FluentRoutineBuilder builder
+		val RetrieveModelElement elementStatement
+		val RetrieveOneModelElement oneElementStatement
+
+		private new(FluentRoutineBuilder builder, RetrieveModelElement elementStatement, RetrieveOneModelElement oneElementStatement) {
+			this.builder = builder
+			this.oneElementStatement = oneElementStatement
+			this.elementStatement = elementStatement
+		}
+		
+		def asserted() {
+			oneElementStatement.type = RetrieveOneElementType.ASSERTED
+			return new RetrieveModelElementMatcherStatementCorrespondenceBuilder(builder, elementStatement)
+		}
+
+		def matching() {
+			oneElementStatement.type = RetrieveOneElementType.MATCHING
+			return new RetrieveModelElementMatcherStatementCorrespondenceBuilder(builder, elementStatement)
+		}
+
+		def optional() {
+			oneElementStatement.type = RetrieveOneElementType.OPTIONAL;
+			return new RetrieveModelElementMatcherStatementCorrespondenceBuilder(builder, elementStatement)
 		}
 
 	}
 
 	static class RetrieveModelElementMatcherStatementCorrespondenceBuilder {
 		val extension FluentRoutineBuilder builder
-		val RetrieveModelElement statement
+		val RetrieveOrRequireAbscenceOfModelElement statement
 
-		private new(FluentRoutineBuilder builder, RetrieveModelElement statement) {
+		private new(FluentRoutineBuilder builder, RetrieveOrRequireAbscenceOfModelElement statement) {
 			this.builder = builder
 			this.statement = statement
 		}
@@ -246,9 +283,9 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 
 	static class RetrieveModelElementMatcherStatementCorrespondenceElementBuilder {
 		val extension FluentRoutineBuilder builder
-		val RetrieveModelElement statement
+		val RetrieveOrRequireAbscenceOfModelElement statement
 
-		private new(FluentRoutineBuilder builder, RetrieveModelElement statement) {
+		private new(FluentRoutineBuilder builder, RetrieveOrRequireAbscenceOfModelElement statement) {
 			this.builder = builder
 			this.statement = statement
 		}
@@ -282,9 +319,7 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 		}
 
 		def requireAbsenceOf(EClass absentMetaclass) {
-			val statement = (ReactionsLanguageFactory.eINSTANCE.createRetrieveModelElement => [
-				abscence = true
-			]).reference(absentMetaclass)
+			val statement = ReactionsLanguageFactory.eINSTANCE.createRequireAbscenceOfModelElement.reference(absentMetaclass)
 			routine.matcher.matcherStatements += statement
 			return new RetrieveModelElementMatcherStatementCorrespondenceBuilder(builder, statement)
 		}
