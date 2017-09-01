@@ -38,6 +38,7 @@ import tools.vitruv.dsls.reactions.reactionsLanguage.RetrieveOneModelElement
 import tools.vitruv.dsls.reactions.reactionsLanguage.RequireAbscenceOfModelElement
 import tools.vitruv.dsls.reactions.reactionsLanguage.RetrieveOrRequireAbscenceOfModelElement
 import tools.vitruv.dsls.reactions.reactionsLanguage.RetrieveManyModelElements
+import java.util.Optional
 
 class RoutineClassGenerator extends ClassGenerator {
 	protected final Routine routine;
@@ -197,13 +198,22 @@ class RoutineClassGenerator extends ClassGenerator {
 			}
 		} else {
 			val StringConcatenationClient statement = '''
-				«typeName» «name» = «retrieveStatement»;
+				«IF retrieveElement.optional»
+					«Optional»<«typeName»> «name» = «Optional».ofNullable(«retrieveStatement»
+				);
+				«ELSE»
+					«typeName» «name» = «retrieveStatement»;
+				«ENDIF»
 				if («name» != null) {
-					registerObjectUnderModification(«name»);
+					registerObjectUnderModification(«IF retrieveElement.optional»«name».isPresent() ? «name».get() : null«ELSE»«name»«ENDIF»);
 				}«IF !retrieveElement.optional» else {
 					return false;
 				}«ENDIF»'''
-			currentlyAccessibleElements += new AccessibleElement(name, typeName);
+			if (retrieveElement.optional) {
+				currentlyAccessibleElements += new AccessibleElement(name, Optional.name, typeName);
+			} else {
+				currentlyAccessibleElements += new AccessibleElement(name, typeName);
+			}
 			return statement;
 		}
 	}
