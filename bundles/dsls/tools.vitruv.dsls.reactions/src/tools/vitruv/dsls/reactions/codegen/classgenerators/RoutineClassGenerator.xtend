@@ -204,11 +204,12 @@ class RoutineClassGenerator extends ClassGenerator {
 				«ELSE»
 					«typeName» «name» = «retrieveStatement»;
 				«ENDIF»
-				if («name» != null) {
-					registerObjectUnderModification(«IF retrieveElement.optional»«name».isPresent() ? «name».get() : null«ELSE»«name»«ENDIF»);
-				}«IF !retrieveElement.optional» else {
+				«IF !retrieveElement.optional»
+				if («name» == null) {
 					return false;
-				}«ENDIF»'''
+				}«ENDIF»
+				registerObjectUnderModification(«IF retrieveElement.optional»«name».isPresent() ? «name».get() : null«ELSE»«name»«ENDIF»);
+				'''
 			if (retrieveElement.optional) {
 				currentlyAccessibleElements += new AccessibleElement(name, Optional.name, typeName);
 			} else {
