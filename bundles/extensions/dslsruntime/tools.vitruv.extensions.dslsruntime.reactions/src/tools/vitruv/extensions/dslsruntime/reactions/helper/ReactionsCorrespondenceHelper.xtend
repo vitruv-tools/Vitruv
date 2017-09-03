@@ -75,6 +75,9 @@ final class ReactionsCorrespondenceHelper {
 
 	public static def <T> List<T> getCorrespondingModelElements(EObject sourceElement, Class<T> affectedElementClass,
 		String expectedTag, Function1<T, Boolean> preconditionMethod, CorrespondenceModel correspondenceModel) {
+		if (sourceElement === null) {
+			return #[];	
+		}
 		val nonNullPreconditionMethod = if (preconditionMethod !== null) preconditionMethod else [T input|true];
 		val targetElements = new ArrayList<T>();
 		val correspondingObjects = getCorrespondingObjectsOfType(correspondenceModel, sourceElement, expectedTag,
