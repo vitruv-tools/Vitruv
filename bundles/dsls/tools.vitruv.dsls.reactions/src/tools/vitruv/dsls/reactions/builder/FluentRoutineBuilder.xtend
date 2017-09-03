@@ -216,35 +216,36 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 		}
 		
 		def retrieve(EClass modelElement) {
-			internalRetrieve(modelElement)
+			internalRetrieveOne(modelElement)
 			return new RetrieveModelElementMatcherStatementCorrespondenceBuilder(builder, statement)
 		}
 		
-		private def internalRetrieve(EClass modelElement) {
+		def retrieveOptional(EClass modelElement) {
+			val retrieveOneStatement = internalRetrieveOne(modelElement);
+			retrieveOneStatement.optional = true
+			return new RetrieveModelElementMatcherStatementCorrespondenceBuilder(builder, statement)
+		}
+		
+		def retrieveAsserted(EClass modelElement) {
+			val retrieveOneStatement = internalRetrieveOne(modelElement);
+			retrieveOneStatement.asserted = true
+			return new RetrieveModelElementMatcherStatementCorrespondenceBuilder(builder, statement)
+		}
+
+		def retrieveMany(EClass modelElement) {
+			reference(modelElement)
+			statement.retrievalType = ReactionsLanguageFactory.eINSTANCE.createRetrieveManyModelElements();
+			return new RetrieveModelElementMatcherStatementCorrespondenceBuilder(builder, statement)
+		}
+
+		private def internalRetrieveOne(EClass modelElement) {
 			reference(modelElement)
 			val retrieveOneElement = ReactionsLanguageFactory.eINSTANCE.createRetrieveOneModelElement();
 			statement.retrievalType = retrieveOneElement
 			return retrieveOneElement
 		}
 		
-		def retrieveOptional(EClass modelElement) {
-			val retrieveOneStatement = internalRetrieve(modelElement);
-			retrieveOneStatement.optional = true
-			return new RetrieveModelElementMatcherStatementCorrespondenceBuilder(builder, statement)
-		}
-		
-		def retrieveAsserted(EClass modelElement) {
-			val retrieveOneStatement = internalRetrieve(modelElement);
-			retrieveOneStatement.asserted = true
-			return new RetrieveModelElementMatcherStatementCorrespondenceBuilder(builder, statement)
-		}
-
-		def void retrieveMany(EClass modelElement) {
-			reference(modelElement)
-			statement.retrievalType = ReactionsLanguageFactory.eINSTANCE.createRetrieveManyModelElements();
-		}
-
-		def void reference(EClass modelElement) {
+		private def void reference(EClass modelElement) {
 			statement.reference(modelElement)
 		}
 
