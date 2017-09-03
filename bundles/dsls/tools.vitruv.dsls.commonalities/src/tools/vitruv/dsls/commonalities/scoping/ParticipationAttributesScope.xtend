@@ -4,48 +4,42 @@ import com.google.inject.Inject
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.xtext.naming.QualifiedName
 import org.eclipse.xtext.scoping.IScope
-import tools.vitruv.dsls.commonalities.language.CommonalityDeclaration
+import tools.vitruv.dsls.commonalities.language.ParticipationClass
 import tools.vitruv.dsls.commonalities.names.IEObjectDescriptionProvider
 
 import static com.google.common.base.Preconditions.*
 
-import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
-
 class ParticipationAttributesScope implements IScope {
 
 	@Inject IEObjectDescriptionProvider descriptionProvider
-	var CommonalityDeclaration commonality
+	var ParticipationClass participationClass
 
-	def forCommonality(CommonalityDeclaration commonality) {
-		this.commonality = checkNotNull(commonality)
+	def forParticipationClass(ParticipationClass participationClass) {
+		this.participationClass = checkNotNull(participationClass)
 		this			
 	}
 	
-	def private checkCommonalitySet() {
-		checkState(this.commonality !== null, "No commonality to get attributes from was set!")
+	def private checkParticipationClassSet() {
+		checkState(participationClass !== null, "No participation class to get attributes from was set!")
+	}
+	
+	def private allAttributes() {
+		checkParticipationClassSet()
+		
+		participationClass.superMetaclass.attributes
 	}
 	
 	override getAllElements() {
-		checkCommonalitySet()
-		
-		commonality.participations.flatMap [classes].flatMap [attributes].map(descriptionProvider)
+		allAttributes.map(descriptionProvider)
 	}
 
 	override getElements(QualifiedName qName) {
-		checkCommonalitySet()
-		
-		if (qName.segmentCount != 3) return #[]
-		commonality.participations
-			.filter [name == qName.getSegment(0)]
-			.flatMap [classes]
-			.filter [name == qName.getSegment(1)]
-			.flatMap [attributes]
-			.filter [name == qName.getSegment(2)]
-			.map(descriptionProvider)
+		if (qName.segmentCount > 1) return #[]
+		allAttributes.filter [name == qName.firstSegment].map(descriptionProvider)
 	}
 
 	override getElements(EObject object) {
-		checkCommonalitySet()
+		checkParticipationClassSet()
 		
 		throw new UnsupportedOperationException("I don’t know what to do here!")
 	}

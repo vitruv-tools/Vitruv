@@ -1,43 +1,17 @@
 package tools.vitruv.dsls.commonalities.language
 
-import tools.vitruv.dsls.commonalities.language.elements.Domain
 import tools.vitruv.dsls.commonalities.language.impl.SimpleParticipationDeclarationImpl
 
-package class SimpleParticipationDeclarationI extends SimpleParticipationDeclarationImpl implements ParticipationNameDerived {
+import static extension tools.vitruv.dsls.commonalities.language.extensions.CommonalitiesLanguageModelExtensions.*
 
-	override getClasses() {
-		if (classes === null) {
-			super.getClasses().add(participationClass)
-		}
-		classes
-	}
-
-	override setDomain(Domain newDomain) {
-		if (newDomain !== null) {
-			throw new UnsupportedOperationException('''Cannot set the domain on a «class.simpleName»''')
-		}
-	}
-
-	def private deriveDomain() {
-		domain = getClasses().head?.superMetaclass.domain
-	}
-
-	override getDomain() {
-		basicGetDomain() ?: deriveDomain()
-	}
+package class SimpleParticipationDeclarationI extends SimpleParticipationDeclarationImpl {
 
 	override getName() {
-		ParticipationNameDerived.super.getName()
+		alias ?: participationClass?.domain?.name
 	}
 	
-	override eIsSet(int featureID) {
-		switch featureID {
-			case LanguagePackage.PARTICIPATION_DECLARATION__DOMAIN:
-				super.eIsSet(LanguagePackage.PARTICIPATION_DECLARATION__CLASSES)
-				
-			default:
-				super.eIsSet(featureID)
-		}
+	override toString() {
+		'''«name»'''
 	}
 	
 }

@@ -1,71 +1,108 @@
 package tools.vitruv.dsls.commonalities.language.elements
 
+import org.eclipse.emf.common.util.DelegatingEList.UnmodifiableEList
 import org.eclipse.emf.ecore.EClass
+import org.eclipse.emf.ecore.EcorePackage
 import tools.vitruv.dsls.commonalities.language.elements.impl.EClassMetaclassImpl
 
 import static com.google.common.base.Preconditions.*
 
-package class EClassAdapter extends EClassMetaclassImpl implements Wrapper<EClass> {
+class EClassAdapter extends EClassMetaclassImpl implements Wrapper<EClass> {
 
 	EClass wrappedEClass
-	var attributesInitialized = false
-	var referencesInitialized = false
-	
-	override wrapEClass(EClass eClass) {
-		checkState(wrappedEClass === null, "This object already has an EClass!")
-		wrappedEClass = checkNotNull(eClass)
+	extension ClassifierProvider classifierProvider
+	Domain containingDomain
+
+	override withClassifierProvider(ClassifierProvider classifierProvider) {
+		this.classifierProvider = checkNotNull(classifierProvider)
+		return this
 	}
 
-	def private checkWrappedEClassIsSet() {
-		checkState(wrappedEClass !== null, "No EClass was set on this object!");
+	override forEClass(EClass eClass) {
+		this.wrappedEClass = checkNotNull(eClass)
+		return this
+	}
+	
+	override fromDomain(Domain domain) {
+		this.containingDomain = domain
+		return this
+	}
+	
+	def private checkEClassSet() {
+		checkState(wrappedEClass !== null, "No EClass was set on this adapter!")
+	}
+	
+	def private checkClassifierProviderSet() {
+		checkState(classifierProvider !== null, "No classifier provider was set on this element!")
+	}
+	
+	def private checkDomainSet() {
+		checkState(containingDomain !== null, "No domain was set on this metaclass!")
 	}
 
 	override getName() {
 		if (eIsProxy) return null
-		checkWrappedEClassIsSet()
+		checkEClassSet()
 		wrappedEClass.name
 	}
-	
+
 	override getAttributes() {
-		val attributes = super.getAttributes()
-		if (!attributesInitialized && !eIsProxy) {
-			attributes.addAll(loadAttributes())
-			attributesInitialized = true
+		if (attributes === null) {
+			checkEClassSet()
+			checkClassifierProviderSet()
+			super.getAttributes() += loadAttributes()
+			classifierProvider = null
 		}
+		/* 		val attributes = super.getAttributes()
+		 * 		if (!attributesInitialized && !eIsProxy) {
+		 * 			attributes.addAll(loadAttributes())
+		 * 			attributesInitialized = true
+		 }*/
 		attributes
 	}
-	
-	override getReferences() {
-		val references = super.getReferences()
-		if (!referencesInitialized && !eIsProxy) {
-			references.addAll(loadReferences())
-			referencesInitialized = true
-		}
-		references
-	}
-	
+
 	def private loadAttributes() {
-		checkWrappedEClassIsSet()
-
-		wrappedEClass.EAllAttributes.map [new EAttributeAdapter(it)]
-	}
-
-	def private loadReferences() {
-		checkWrappedEClassIsSet()
-
-		wrappedEClass.EAllReferences.map [new EReferenceAdapter(it)]
+		wrappedEClass.EAllStructuralFeatures.map [ eFeature |
+			LanguageElementsFactory.eINSTANCE.createEFeatureAttribute.withClassifierProvider(classifierProvider).
+				forEFeature(eFeature).fromMetaclass(this)
+		]
 	}
 
 	override getWrapped() {
 		wrappedEClass
 	}
-	
+
 	override basicGetPackageLikeContainer() {
+		checkDomainSet()
 		domain
 	}
 	
-	override basicGetChangeClass() {
-		wrappedEClass
+	override basicGetDomain() {
+		checkDomainSet()
+		return containingDomain
+	}
+	
+	def dispatch isSuperTypeOf(Classifier subType) {
+		false
+	}
+
+	def dispatch isSuperTypeOf(EClassAdapter eClassAdapter) {
+		if (this === eClassAdapter) return true
+		if (eClassAdapter == WellKnownClassifiers.MOST_SPECIFIC_TYPE) return true
+		if (wrappedEClass == EcorePackage.eINSTANCE.EObject) return true
+		return this.wrappedEClass.isSuperTypeOf(eClassAdapter.wrappedEClass)
+	}
+	
+	def dispatch isSuperTypeOf(MostSpecificType mostSpecificType) {
+		true
+	}
+	
+	override getAllMembers() {
+		new UnmodifiableEList(attributes)
+	}
+	
+	override toString() {
+		'''{{«wrappedEClass?.name»}}'''
 	}
 
 }

@@ -2,61 +2,71 @@ package tools.vitruv.dsls.commonalities.generator
 
 import com.google.inject.Inject
 import com.google.inject.Provider
+import java.util.HashMap
 import java.util.LinkedList
+import java.util.Map
 import java.util.function.Supplier
 import org.eclipse.emf.ecore.EClass
-import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EReference
-import org.eclipse.xtext.xbase.XExpression
+import org.eclipse.emf.ecore.EcorePackage
+import org.eclipse.xtext.common.types.JvmOperation
 import org.eclipse.xtext.xbase.XFeatureCall
 import org.eclipse.xtext.xbase.XbaseFactory
-import tools.vitruv.dsls.commonalities.language.AttributeDeclaration
-import tools.vitruv.dsls.commonalities.language.AttributeEqualitySpecification
-import tools.vitruv.dsls.commonalities.language.AttributeMappingSpecifiation
-import tools.vitruv.dsls.commonalities.language.AttributeReadSpecification
-import tools.vitruv.dsls.commonalities.language.AttributeSetSpecification
-import tools.vitruv.dsls.commonalities.language.elements.Participation
-import tools.vitruv.dsls.commonalities.language.elements.ParticipationClass
+import tools.vitruv.dsls.commonalities.language.Participation
+import tools.vitruv.dsls.commonalities.language.ParticipationClass
+import tools.vitruv.dsls.commonalities.language.ParticipationRelationDeclaration
+import tools.vitruv.dsls.commonalities.language.elements.ResourceMetaclass
 import tools.vitruv.dsls.reactions.api.generator.IReactionsGenerator
 import tools.vitruv.dsls.reactions.builder.FluentReactionBuilder
 import tools.vitruv.dsls.reactions.builder.FluentReactionBuilder.ReactionTypeProvider
 import tools.vitruv.dsls.reactions.builder.FluentReactionsLanguageBuilder
+import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.RoutineTypeProvider
 import tools.vitruv.extensions.dslruntime.commonalities.IntermediateModelManagement
+import tools.vitruv.extensions.dslruntime.commonalities.intermediatemodelbase.IntermediateModelBasePackage
+import tools.vitruv.extensions.dslruntime.commonalities.resources.IntermediateResourceBridge
+import tools.vitruv.extensions.dslruntime.commonalities.resources.ResourcesPackage
 import tools.vitruv.framework.domains.VitruvDomainProviderRegistry
+
+import static tools.vitruv.dsls.commonalities.generator.ParticipationRelationUtil.*
 
 import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
 import static extension org.eclipse.xtext.EcoreUtil2.isAssignableFrom
 import static extension tools.vitruv.dsls.commonalities.generator.JvmTypeProviderHelper.*
+import static extension tools.vitruv.dsls.commonalities.generator.ReactionsGeneratorConventions.*
 import static extension tools.vitruv.dsls.commonalities.generator.XbaseHelper.*
 import static extension tools.vitruv.dsls.commonalities.language.extensions.CommonalitiesLanguageModelExtensions.*
-import static extension tools.vitruv.dsls.commonalities.generator.ParticipationRelationUtil.*
-import tools.vitruv.dsls.commonalities.language.ParticipationRelationDeclaration
-import org.eclipse.xtext.common.types.JvmOperation
-import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder
-import java.util.Map
-import java.util.HashMap
-import tools.vitruv.extensions.dslruntime.commonalities.resources.ResourcesPackage
-import tools.vitruv.extensions.dslruntime.commonalities.resources.IntermediateResourceBridge
-import tools.vitruv.dsls.commonalities.language.elements.ResourceMetaclass
-import tools.vitruv.extensions.dslruntime.commonalities.intermediatemodelbase.IntermediateModelBasePackage
-import org.eclipse.emf.ecore.EcorePackage
 
 package class ReactionsGenerator extends SubGenerator {
 
 	static val DEBUG_WRITE_REACTIONS = false
 
-	Supplier<IReactionsGenerator> reactionsGeneratorProvider
+	val Supplier<IReactionsGenerator> reactionsGeneratorProvider
 	@Inject FluentReactionsLanguageBuilder create
+	val Supplier<CommonalityAttributeChangeReactionsBuilder> commonalityAttributeChangeReactionsBuilder
+	val Supplier<ParticipationAttributeChangeReactionsBuilder> participationAttributeChangeReactionsBuilder
+	val Supplier<ParticipationClassSpecialInitializationBuilder> participationClassSpecialInitializationBuilder
 	val Map<Participation, FluentRoutineBuilder> intermediateResourcePrepareRoutineCache = new HashMap
 	val Map<Participation, FluentRoutineBuilder> participationClassInsertRoutineCache = new HashMap
 
 	@Inject
-	new(Provider<IReactionsGenerator> reactionsGeneratorProvider) {
+	new(Provider<IReactionsGenerator> reactionsGeneratorProvider,
+		Provider<CommonalityAttributeChangeReactionsBuilder> commonalityAttributeChangeReactionsBuilderProvider,
+		Provider<ParticipationAttributeChangeReactionsBuilder> participationAttributeChangeReactionsBuilderProvider,
+		Provider<ParticipationClassSpecialInitializationBuilder> participationClassSpecialInitBuilderProvider) {
 		this.reactionsGeneratorProvider = [
 			reactionsGeneratorProvider.get() => [
 				useResourceSet(commonalityFile.eResource.resourceSet)
 			]
+		]
+		this.commonalityAttributeChangeReactionsBuilder = [
+			commonalityAttributeChangeReactionsBuilderProvider.get().withGenerationContext(generationContext)
+		]
+		this.participationAttributeChangeReactionsBuilder = [
+			participationAttributeChangeReactionsBuilderProvider.get().withGenerationContext(generationContext)
+		]
+		this.participationClassSpecialInitializationBuilder = [
+			participationClassSpecialInitBuilderProvider.get().withGenerationContext(generationContext)
 		]
 	}
 
@@ -67,7 +77,7 @@ package class ReactionsGenerator extends SubGenerator {
 		for (participation : commonalityFile.commonality.participations) {
 			reactionFile +=
 				create.reactionsSegment('''«commonality.name»To«participation.name»''').
-					inReactionToChangesIn(commonalityFile.conceptDomain)
+					inReactionToChangesIn(commonalityFile.concept.vitruvDomain)
 					.executeActionsIn(participation.domain.vitruvDomain) +=
 						commonalityChangeReactions(participation)
 
@@ -80,7 +90,7 @@ package class ReactionsGenerator extends SubGenerator {
 		}
 
 		VitruvDomainProviderRegistry.registerDomainProvider(commonalityFile.concept.name,
-			commonalityFile.conceptDomain.provider)
+			commonalityFile.concept.vitruvDomain.provider)
 		// TODO participation domains
 		try {
 			generator.addReactionsFile(reactionFile)
@@ -144,8 +154,7 @@ package class ReactionsGenerator extends SubGenerator {
 			]
 	}
 
-	def private String correspondingVariableName(
-		ParticipationClass participationClass) '''corresponding_«participationClass.name»'''
+
 
 	def private reactionForCommonalityCreate(Participation participation) {
 		create.reaction('''«commonality.name»Create''')
@@ -160,7 +169,7 @@ package class ReactionsGenerator extends SubGenerator {
 				.action [
 					for (participationClass : participation.classes) {
 						val corresponding = participationClass.correspondingVariableName
-						val specialInitBuilder = new ParticipationClassSpecialInitializationBuilder(participationClass)
+						val specialInitBuilder = participationClassSpecialInitializationBuilder.get.forParticipationClass(participationClass)
 						vall(corresponding).create(participationClass.changeClass) => [
 							if (specialInitBuilder.hasSpecialInitialization) {
 								andInitialize [ typeProvider |
@@ -279,73 +288,13 @@ package class ReactionsGenerator extends SubGenerator {
 	}
 
 	def private reactionsForCommonalityAttributeChange(Participation participation) {
-		commonality.attributes.map[reactionForAttributeLeftChange(participation)]
-	}
-
-	def private reactionForAttributeLeftChange(AttributeDeclaration attribute, Participation participation) {
-		val relevantMappings = attribute.getWriteMappingsOfParticipation(participation)
-		if (relevantMappings.size == 0) return null
-		
-		create.reaction('''«commonality.name»«attribute.name.toFirstUpper»Change''')
-			.afterAttributeReplacedAt(attribute.EAttributeToReference)
-			.call [
-				input [newValue]
-				.match [
-					for (mapping : relevantMappings) {
-						val participationClass = mapping.attribute.participationClass
-						vall('''corresponding_«participationClass.name»''').retrieve(participationClass.changeClass)
-							.correspondingTo.affectedEObject
-							.taggedWith(participationClass.correspondenceTag)
-					}
-				]
-				.action [
-					for (mapping : relevantMappings) {
-						val participationClass = mapping.attribute.participationClass
-						val corresponding = '''corresponding_«participationClass.name»'''
-						update(corresponding) [
-							setAttribute(variable(corresponding), mapping.attribute.name,	newValue)
-						]
-					}
-				]
-			]
-	}
-
-	def private static getWriteMappingsOfParticipation(AttributeDeclaration attribute, Participation participation) {
-		attribute.mappings.filter [
-			isWrite && it.participation == participation
-		].toList
+		commonality.attributes.flatMap [ attribute |
+			commonalityAttributeChangeReactionsBuilder.get.forAttribute(attribute).regardingParticipation(participation).reactions
+		]
 	}
 
 	def private reactionsForParticipationAttributeChange(Participation participation) {
-		commonality.attributes.flatMap[mappings].filter [
-			attribute.participationClass.participation == participation
-		].map[reactionForAttributeMappingRightChange]
-
-	}
-
-	def private dispatch reactionForAttributeMappingRightChange(AttributeSetSpecification spec) {}
-
-	def private dispatch reactionForAttributeMappingRightChange(AttributeReadSpecification spec) {
-		spec.reactionForAttributeReadChange
-	}
-
-	def private dispatch reactionForAttributeMappingRightChange(AttributeEqualitySpecification spec) {
-		spec.reactionForAttributeReadChange
-	}
-
-	def private reactionForAttributeReadChange(AttributeMappingSpecifiation spec) {
-		create.reaction('''«spec.participation.name»«spec.attribute.name.toFirstUpper»Change''').
-			afterAttributeReplacedAt(spec.attribute.changeAttribute.EAttributeToReference).call [
-				input [newValue]
-				.match [
-					vall('intermediate').retrieve(commonalityFile.changeClass).correspondingTo.affectedEObject
-				]
-				.action [
-					update('intermediate') [
-						setAttribute(variable('intermediate'), spec.declaringAttribute.name, newValue)
-					]
-				]
-			]
+		participationAttributeChangeReactionsBuilder.get.forParticipation(participation).reactions
 	}
 
 	def hasResource(extension ReactionTypeProvider typeProvider, XFeatureCall element) {
@@ -461,28 +410,6 @@ package class ReactionsGenerator extends SubGenerator {
 		]
 	}
 
-
-	def private setAttribute(extension RoutineTypeProvider typeProvider, XFeatureCall element, String attributeName,
-		XExpression newValue) {
-		XbaseFactory.eINSTANCE.createXMemberFeatureCall => [
-			memberCallTarget = element.newFeatureCall
-			feature = typeProvider.findMethod(EObject, 'eSet')
-			explicitOperationCall = true
-			memberCallArguments += XbaseFactory.eINSTANCE.createXMemberFeatureCall => [
-				memberCallTarget = XbaseFactory.eINSTANCE.createXMemberFeatureCall => [
-					memberCallTarget = element.newFeatureCall
-					feature = typeProvider.findMethod(EObject, 'eClass')
-				]
-				feature = typeProvider.findMethod(EClass, 'getEStructuralFeature', String)
-				explicitOperationCall = true
-				memberCallArguments += XbaseFactory.eINSTANCE.createXStringLiteral => [
-					value = attributeName
-				]
-			]
-			memberCallArguments += newValue
-		]
-	}
-	
 	def private hasResourceParticipation(Participation participation) {
 		participation.classes.containsAny [isForResource]
 	}
@@ -498,7 +425,7 @@ package class ReactionsGenerator extends SubGenerator {
 	def private getPotentialInsertionPoints(ParticipationClass participationClass) {
 		participationClass.superMetaclass.domain.metaclasses.map[changeClass].flatMap[EStructuralFeatures].filter(
 			EReference).filter[isContainment].filter [
-			(EType as EClass).isAssignableFrom(participationClass.superMetaclass.changeClass)
+			(EType as EClass).isAssignableFrom(participationClass.changeClass)
 		]
 	}
 	
@@ -510,11 +437,4 @@ package class ReactionsGenerator extends SubGenerator {
 			explicitOperationCall = true
 		]
 	}
-	
-	def private getChangeClass(ParticipationClass participationClass) {
-		participationClass.superMetaclass.changeClass
-	}
-	
-	def private String getCorrespondenceTag(ParticipationClass participationClass) '''
-		«commonalityFile.concept.name».«commonality.name»/«participationClass.participation.name».«participationClass.name»'''
 }

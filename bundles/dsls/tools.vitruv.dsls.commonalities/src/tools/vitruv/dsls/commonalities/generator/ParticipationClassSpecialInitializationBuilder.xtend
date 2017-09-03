@@ -1,23 +1,24 @@
 package tools.vitruv.dsls.commonalities.generator
 
 import java.util.function.Function
-import org.eclipse.emf.ecore.EObject
 import org.eclipse.xtext.common.types.JvmDeclaredType
 import org.eclipse.xtext.xbase.XExpression
 import org.eclipse.xtext.xbase.XFeatureCall
 import org.eclipse.xtext.xbase.XbaseFactory
-import tools.vitruv.dsls.commonalities.language.ParticipationDeclaration
+import tools.vitruv.dsls.commonalities.language.Participation
+import tools.vitruv.dsls.commonalities.language.ParticipationClass
 import tools.vitruv.dsls.commonalities.language.ParticipationRelationDeclaration
 import tools.vitruv.dsls.commonalities.language.TupleParticipationDeclaration
 import tools.vitruv.dsls.commonalities.language.TupleParticipationDeclarationPart
-import tools.vitruv.dsls.commonalities.language.elements.ParticipationClass
 import tools.vitruv.dsls.commonalities.language.elements.ResourceMetaclass
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.RoutineTypeProvider
 import tools.vitruv.extensions.dslruntime.commonalities.resources.IntermediateResourceBridge
 
+import static tools.vitruv.dsls.commonalities.generator.ParticipationRelationUtil.*
+
 import static extension tools.vitruv.dsls.commonalities.generator.JvmTypeProviderHelper.*
 import static extension tools.vitruv.dsls.commonalities.generator.XbaseHelper.*
-import static extension tools.vitruv.dsls.commonalities.generator.ParticipationRelationUtil.*
+import static extension tools.vitruv.dsls.commonalities.language.extensions.CommonalitiesLanguageModelExtensions.*
 
 /**
  * Decides whether a created model class requires special initialization and
@@ -25,18 +26,25 @@ import static extension tools.vitruv.dsls.commonalities.generator.ParticipationR
  */
 package class ParticipationClassSpecialInitializationBuilder {
 	extension var RoutineTypeProvider typeProvider
-	val ParticipationClass participationClass
-	var Function<ParticipationClass, XFeatureCall> participationClassReferenceProvider
+	ParticipationClass participationClass
+	Function<ParticipationClass, XFeatureCall> participationClassReferenceProvider
+	extension GenerationContext generationContext
 
-	new(ParticipationClass participationClass) {
+	def package forParticipationClass(ParticipationClass participationClass) {
 		this.participationClass = participationClass
+		return this
+	}
+	
+	def package withGenerationContext(GenerationContext context) {
+		this.generationContext = context
+		this
 	}
 
 	def package hasSpecialInitialization() {
 		participationClass.isForResourceMetaclass || participationClass.participation.hasSpecialInitialization
 	}
 
-	def private dispatch hasSpecialInitialization(ParticipationDeclaration declaration) {
+	def private dispatch hasSpecialInitialization(Participation participation) {
 		false
 	}
 
@@ -74,7 +82,7 @@ package class ParticipationClassSpecialInitializationBuilder {
 		return result.join(participationClass.participation.specialInitializer)
 	}
 
-	def private dispatch XExpression getSpecialInitializer(ParticipationDeclaration delaration) {}
+	def private dispatch XExpression getSpecialInitializer(Participation participation) {}
 
 	def private dispatch XExpression getSpecialInitializer(TupleParticipationDeclaration declaration) {
 		var XExpression result

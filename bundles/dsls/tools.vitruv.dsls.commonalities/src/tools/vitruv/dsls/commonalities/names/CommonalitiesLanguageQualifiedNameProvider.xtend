@@ -35,6 +35,10 @@ class CommonalitiesLanguageQualifiedNameProvider extends IQualifiedNameProvider.
 		return null
 	}
 	
+	def private dispatch List<String> getFullyQualifiedNameSegments(Void nill) {
+		return null
+	}
+	
 	def private segmentList(List<String> existing, String element) {
 		if (element === null) return null
 		existing.add(element)

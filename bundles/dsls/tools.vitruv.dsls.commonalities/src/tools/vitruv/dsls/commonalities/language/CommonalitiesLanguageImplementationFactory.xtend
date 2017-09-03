@@ -11,4 +11,25 @@ class CommonalitiesLanguageImplementationFactory extends LanguageFactoryImpl {
 	override createTupleParticipationDeclaration() {
 		new TupleParticipationDeclarationI
 	}
+	
+	override createParticipationClass() {
+		new ParticipationClassI
+	}
+	
+	override createCommonalityDeclaration() {
+		new CommonalityDeclarationI
+	}
+	
+	override createParticipationAttribute() {
+		new ParticipationAttributeI
+	}
+	
+	override createAttributeDeclaration() {
+		new AttributeDeclarationI
+	}
+	
+	override createConceptDeclaration() {
+		new ConceptDeclarationI
+	}
+	
 }

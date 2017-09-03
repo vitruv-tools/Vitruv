@@ -3,21 +3,31 @@ package tools.vitruv.dsls.commonalities.generator
 import java.util.Collections
 import java.util.HashMap
 import java.util.Map
-import org.eclipse.emf.ecore.EAttribute
 import org.eclipse.emf.ecore.EClass
 import org.eclipse.emf.ecore.EPackage
+import org.eclipse.emf.ecore.EStructuralFeature
 import org.eclipse.emf.ecore.resource.ResourceSet
 import org.eclipse.xtend.lib.annotations.Accessors
 import org.eclipse.xtext.common.types.JvmGenericType
 import org.eclipse.xtext.generator.IFileSystemAccess2
 import tools.vitruv.dsls.commonalities.language.AttributeDeclaration
+import tools.vitruv.dsls.commonalities.language.CommonalityDeclaration
 import tools.vitruv.dsls.commonalities.language.CommonalityFile
 import tools.vitruv.dsls.commonalities.language.ConceptDeclaration
-import tools.vitruv.dsls.commonalities.language.elements.EAttributeAdapter
+import tools.vitruv.dsls.commonalities.language.ParticipationAttribute
+import tools.vitruv.dsls.commonalities.language.ParticipationClass
+import tools.vitruv.dsls.commonalities.language.elements.Domain
+import tools.vitruv.dsls.commonalities.language.elements.EClassAdapter
+import tools.vitruv.dsls.commonalities.language.elements.EFeatureAdapter
+import tools.vitruv.dsls.commonalities.language.elements.Metaclass
+import tools.vitruv.dsls.commonalities.language.elements.ResourceMetaclass
+import tools.vitruv.dsls.commonalities.language.elements.VitruvDomainAdapter
+import tools.vitruv.extensions.dslruntime.commonalities.resources.ResourcesPackage
 
 import static com.google.common.base.Preconditions.*
 
 import static extension tools.vitruv.dsls.commonalities.generator.GeneratorConstants.*
+import static extension tools.vitruv.dsls.commonalities.language.extensions.CommonalitiesLanguageModelExtensions.*
 
 package class GenerationContext {
 	@Accessors(PACKAGE_SETTER, PACKAGE_GETTER)
@@ -42,6 +52,26 @@ package class GenerationContext {
 
 	def package getChangeClass(CommonalityFile commonalityFile) {
 		commonalityFile.generatedIntermediateModelClass
+	}
+
+	def package getChangeClass(ParticipationClass participationClass) {
+		participationClass.superMetaclass.findChangeClass
+	}
+
+	def package getChangeClass(Metaclass metaclass) {
+		metaclass.findChangeClass
+	}
+
+	def private dispatch findChangeClass(CommonalityDeclaration commonality) {
+		commonality.containingCommonalityFile.changeClass
+	}
+
+	def private dispatch findChangeClass(EClassAdapter eClassAdapter) {
+		eClassAdapter.wrapped
+	}
+
+	def private dispatch findChangeClass(ResourceMetaclass resourceMetaclass) {
+		ResourcesPackage.eINSTANCE.intermediateResourceBridge
 	}
 
 	def package getGeneratedIntermediateModelPackage(ConceptDeclaration concept) {
@@ -88,22 +118,40 @@ package class GenerationContext {
 	}
 
 	def package getConceptDomain(CommonalityFile commonalityFile) {
-		val conceptName = commonalityFile.concept.name
-		val ePackage = conceptName.generatedIntermediateModelPackage
-		checkState(ePackage !== null, '''No ePackage was registered for the concept “«conceptName»”!''')
-		new ConceptDomain(conceptName, ePackage)
 	}
 
 	def package getIntermediateModelOutputUri(String conceptName) {
 		fsa.getURI(conceptName + MODEL_OUTPUT_FILE_EXTENSION)
 	}
 
-	def package dispatch EAttribute getEAttributeToReference(AttributeDeclaration attribute) {
-		commonalityFile.generatedIntermediateModelClass.getEStructuralFeature(attribute.name) as EAttribute
+	def package dispatch EStructuralFeature getEFeatureToReference(AttributeDeclaration attribute) {
+		commonalityFile.generatedIntermediateModelClass.getEStructuralFeature(attribute.name)
 	}
 
 	// TODO reconsider when referencing of other commonalities is supported
-	def package dispatch EAttribute getEAttributeToReference(EAttributeAdapter adapter) {
+	def package dispatch EStructuralFeature getEFeatureToReference(EFeatureAdapter adapter) {
 		adapter.wrapped
+	}
+
+	def package dispatch EStructuralFeature getEFeatureToReference(ParticipationAttribute participationAttribute) {
+		participationAttribute.attribute.EFeatureToReference
+	}
+
+	def package getVitruvDomain(Domain domain) {
+		domain.findVitruvDomain
+	}
+
+	def private dispatch findVitruvDomain(VitruvDomainAdapter adapter) {
+		adapter.wrapped
+	}
+
+	def private dispatch findVitruvDomain(ConceptDeclaration concept) {
+		concept.vitruvDomain
+	}
+
+	def package getVitruvDomain(ConceptDeclaration domain) {
+		val ePackage = domain.name.generatedIntermediateModelPackage
+		checkState(ePackage !== null, '''No ePackage was registered for the concept “«domain.name»”!''')
+		new ConceptDomain(domain.name, ePackage)
 	}
 }

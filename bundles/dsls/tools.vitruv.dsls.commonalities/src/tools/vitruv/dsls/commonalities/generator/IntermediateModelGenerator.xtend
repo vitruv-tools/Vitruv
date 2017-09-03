@@ -16,12 +16,13 @@ import org.eclipse.emf.ecore.xmi.impl.XMLResourceFactoryImpl
 import tools.vitruv.dsls.common.helper.ClassNameGenerator
 import tools.vitruv.dsls.commonalities.language.AttributeDeclaration
 import tools.vitruv.dsls.commonalities.language.CommonalityFile
+import tools.vitruv.dsls.commonalities.language.elements.EClassAdapter
+import tools.vitruv.dsls.commonalities.language.elements.EDataTypeAdapter
 import tools.vitruv.dsls.reactions.api.generator.ReferenceClassNameAdapter
+import tools.vitruv.extensions.dslruntime.commonalities.intermediatemodelbase.IntermediateModelBasePackage
 
 import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
 import static extension tools.vitruv.dsls.commonalities.generator.GeneratorConstants.*
-import static extension tools.vitruv.dsls.commonalities.language.extensions.CommonalitiesLanguageModelExtensions.*
-import tools.vitruv.extensions.dslruntime.commonalities.intermediatemodelbase.IntermediateModelBasePackage
 
 package class IntermediateModelGenerator extends SubGenerator {
 
@@ -102,22 +103,34 @@ package class IntermediateModelGenerator extends SubGenerator {
 			EcoreFactory.eINSTANCE.createEClass => [
 				name = commonalityFile.intermediateModelClass.simpleName
 				ESuperTypes += IntermediateModelBasePackage.eINSTANCE.intermediate
-				EStructuralFeatures += commonality.attributes.map [generateEAttribute()]
+				EStructuralFeatures += commonality.attributes.map [generateEFeature()]
 				referencedAs(commonalityFile.intermediateModelClass)
 			]
 		}
 
-		def private generateEAttribute(AttributeDeclaration attributeDeclaration) {
-			EcoreFactory.eINSTANCE.createEAttribute => [
-				name = attributeDeclaration.name
-				EType = attributeDeclaration.type.getOrGenerateEDataType()
-			]
+		def private generateEFeature(AttributeDeclaration attributeDeclaration) {
+			val attributeType = attributeDeclaration.type
+			switch (attributeType) {
+				EDataTypeAdapter:
+					EcoreFactory.eINSTANCE.createEAttribute => [
+						name = attributeDeclaration.name
+						EType = attributeType.getOrGenerateEDataType()
+					]
+				EClassAdapter:
+					EcoreFactory.eINSTANCE.createEReference => [
+						name = attributeDeclaration.name
+						EType = attributeType.wrapped
+					]
+				default:
+					throw new IllegalStateException('''The Attribute declaration ‹«attributeDeclaration»› has the type «
+					»‹«attributeType»› which does not correspond to an EClassifier!''')
+			}
 		}
 
-		def private getOrGenerateEDataType(EDataType classifier) {
+		def private getOrGenerateEDataType(EDataTypeAdapter dataTypeAdapter) {
 			#[generatedEPackage, EcorePackage.eINSTANCE].flatMap[EClassifiers].findFirst [
-				instanceClass == classifier.instanceClass
-			] ?: generateEDataType(classifier)
+				instanceClass == dataTypeAdapter.wrapped.instanceClass
+			] ?: generateEDataType(dataTypeAdapter.wrapped)
 		}
 
 		def private generateEDataType(EDataType classifier) {

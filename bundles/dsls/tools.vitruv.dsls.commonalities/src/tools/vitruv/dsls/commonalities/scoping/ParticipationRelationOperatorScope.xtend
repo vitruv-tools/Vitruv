@@ -14,7 +14,7 @@ import org.eclipse.xtext.resource.EObjectDescription
 import org.eclipse.xtext.scoping.IScope
 
 @Singleton
-class ParticipationRelationScope implements IScope {
+class ParticipationRelationOperatorScope implements IScope {
 
 	@Inject IJvmTypeProvider.Factory typeProviderFactory
 	@Inject extension IQualifiedNameConverter qualifiedNameConverter;

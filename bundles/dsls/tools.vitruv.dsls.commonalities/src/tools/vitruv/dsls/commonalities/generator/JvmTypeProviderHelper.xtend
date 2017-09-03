@@ -10,6 +10,7 @@ import org.eclipse.xtext.common.types.JvmGenericType
 import org.eclipse.xtext.common.types.JvmMember
 import org.eclipse.xtext.common.types.JvmOperation
 import org.eclipse.xtext.common.types.JvmType
+import org.eclipse.xtext.common.types.JvmTypeParameter
 import org.eclipse.xtext.common.types.access.IJvmTypeProvider
 
 import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
@@ -150,6 +151,10 @@ class JvmTypeProviderHelper {
 		}
 		return true
 	}
+	
+	def package static findMethod(IJvmTypeProvider typeProvider, String typeQualifiedName, String methodName, Class<?>... argumentRestrictions) {
+		typeProvider.findTypeByName(typeQualifiedName).checkGenericType.findMethod(methodName, argumentRestrictions)
+	}
 
 	def package static findMethod(IJvmTypeProvider typeProvider, Class<?> clazz, String methodName,
 		Class<?>... argumentRestrictions) {
@@ -169,6 +174,10 @@ class JvmTypeProviderHelper {
 		val extension argumentChecker = new ArgumentRestrictionChecker(parameterTypeRestrictions, parameterCount)
 		val results = type.declaredConstructors.filter[confirmsToArgumentRestrictions].toList
 		return results.onlyResultFor('constructor', null, parameterTypeRestrictions, parameterCount, type)
+	}
+	
+	def package static Class<?> typeVariable() {
+		TypeVariable
 	}
 
 	/**
@@ -209,11 +218,15 @@ class JvmTypeProviderHelper {
 				if (!parameterIter.hasNext) {
 					return false
 				}
-				if (parameterIter.next.parameterType.qualifiedName != restriction.canonicalName) {
+				val parameterType = parameterIter.next.parameterType
+				if (parameterType.qualifiedName != restriction.canonicalName
+					&& !(parameterType.type instanceof JvmTypeParameter && restriction == TypeVariable)) {
 					return false
 				}
 			}
 			return true
 		}
 	}
+	
+	private static class TypeVariable {}
 }

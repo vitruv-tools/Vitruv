@@ -4,27 +4,24 @@ import tools.vitruv.dsls.commonalities.language.elements.impl.LanguageElementsFa
 
 class LanguageElementsAdapterFactory extends LanguageElementsFactoryImpl {
 	
-	override createVitruvDomain() {
+	override createVitruviusDomain() {
 		new VitruvDomainAdapter
+	}
+	
+	override createEFeatureAttribute() {
+		new EFeatureAdapter
 	}
 	
 	override createEClassMetaclass() {
 		new EClassAdapter
 	}
 	
-	override createParticipationClass() {
-		new ParticipationClassI
-	}
-	
-	override createParticipationAttribute() {
-		new ParticipationAttributeI
-	}
-	
-	override createParticipationReference() {
-		new ParticipationReferenceI
-	}
-	
 	override createResourceMetaclass() {
 		new ResourceMetaclassI
 	}
+	
+	override createEDataTypeClassifier() {
+		new EDataTypeAdapter
+	}
+	
 }

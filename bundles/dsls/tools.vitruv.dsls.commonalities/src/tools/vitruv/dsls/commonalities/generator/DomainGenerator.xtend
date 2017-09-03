@@ -16,6 +16,7 @@ import org.eclipse.xtext.xbase.compiler.JvmModelGenerator
 import org.eclipse.xtext.xbase.jvmmodel.JvmTypeReferenceBuilder
 import tools.vitruv.domains.emf.builder.VitruviusEmfBuilderApplicator
 import tools.vitruv.extensions.dslruntime.commonalities.IntermediateVitruvDomain
+import tools.vitruv.extensions.dslruntime.commonalities.intermediatemodelbase.IntermediateModelBasePackage
 import tools.vitruv.extensions.dslruntime.commonalities.resources.ResourcesPackage
 import tools.vitruv.framework.domains.VitruvDomainProvider
 import tools.vitruv.framework.domains.VitruviusProjectBuilderApplicator
@@ -23,7 +24,6 @@ import tools.vitruv.framework.tuid.AttributeTuidCalculatorAndResolver
 
 import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
 import static extension tools.vitruv.dsls.commonalities.generator.GeneratorConstants.*
-import tools.vitruv.extensions.dslruntime.commonalities.intermediatemodelbase.IntermediateModelBasePackage
 
 package class DomainGenerator extends SubGenerator {
 

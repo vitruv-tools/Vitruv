@@ -2,12 +2,12 @@ package tools.vitruv.dsls.commonalities.ui.contentassist
 
 import org.eclipse.xtext.resource.IEObjectDescription
 import static tools.vitruv.dsls.commonalities.names.CommonalitiesLanguageQualifiedNameConverter.*
-import tools.vitruv.dsls.commonalities.language.elements.ParticipationAttribute
 import org.eclipse.emf.ecore.EObject
 import com.google.inject.Inject
 import org.eclipse.xtext.naming.IQualifiedNameConverter
 import org.eclipse.xtext.naming.QualifiedName
 import com.google.inject.Singleton
+import tools.vitruv.dsls.commonalities.language.ParticipationAttribute
 
 class QualifiedParticipationAttributeProposalFactory extends CommonalitiesLanguageProposalFactory {
 	

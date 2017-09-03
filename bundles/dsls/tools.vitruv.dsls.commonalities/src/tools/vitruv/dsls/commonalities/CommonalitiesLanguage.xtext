@@ -12,13 +12,22 @@ CommonalityFile:
 	commonality=CommonalityDeclaration
 ;
 
+Domain:
+	ConceptDeclaration
+;
+
 ConceptDeclaration:
 	'concept' name=ID
 ;
 
+Metaclass: 
+	CommonalityDeclaration
+;
+
 CommonalityDeclaration:
+	{CommonalityDeclaration}
 	'commonality' name=ID '{'
-		participations+=ParticipationDecl*
+		participations+=Participation*
 		(attributes+=AttributeDeclaration|references+=ReferenceDeclaration)*
 	'}'
 ;
@@ -28,15 +37,15 @@ CommonalityDeclaration:
 /******************
  * Participations *
  ******************/
-// this rule’s sole purpose is to tell Xtext we want *subclass* Participation
-// see https://eclipse.org/Xtext/documentation/301_grammarlanguage.html#feature-and-type-hierarchy-generation
-ParticipationDecl returns Participation:
-	ParticipationDeclaration;
+PackageLike:
+	Participation
+;
 
-ParticipationDeclaration:
+Participation:
 	'with' (SimpleParticipationDeclaration | TupleParticipationDeclaration)
 	('called' alias=QUOTED_NAME)?
-	('whereat' condition=ParticipationConditionDeclaration | condition=ParticipationNoCondition);
+	('whereat' condition=ParticipationConditionDeclaration | condition=ParticipationNoCondition)
+;
 
 SimpleParticipationDeclaration:
 	participationClass=QualifiedParticipationClassDeclaration
@@ -55,7 +64,7 @@ SimpleTupleParticipationDeclarationPart:
 	participationClass=UnqualifiedParticipationClassDeclaration
 ;
 
-ParticipationRelationDeclaration returns TupleParticipationDeclarationPart:
+ParticipationRelationDeclaration:
 	SimpleParticipationRelationDeclaration | BracedParticipationRelationDeclartion
 ;
 
@@ -73,6 +82,14 @@ BracedParticipationRelationDeclartion returns ParticipationRelationDeclaration:
 
 fragment Aliasable:
 	('as' alias=QUOTED_NAME)?
+;
+
+ClassLike:
+	ParticipationClass
+;
+
+ParticipationClass:
+	QualifiedParticipationClassDeclaration | UnqualifiedParticipationClassDeclaration
 ;
 
 QualifiedParticipationClassDeclaration returns ParticipationClass:
@@ -96,6 +113,10 @@ ParticipationNoCondition returns ParticipationCondition:
 /**************
  * Attributes *
  **************/
+Attribute:
+	AttributeDeclaration | ParticipationAttribute
+;
+ 
 AttributeDeclaration:
 	'has' name=ID '{'
 		mappings+=AttributeMappingSpecifiation*
@@ -104,13 +125,17 @@ AttributeDeclaration:
 
 AttributeMappingSpecifiation:
 	('=' {AttributeEqualitySpecification} | '->' {AttributeSetSpecification} | '<-' {AttributeReadSpecification})
-	attribute=[ParticipationAttribute|QualifiedParticipationMember]
+	attribute=ParticipationAttribute
+;
+
+ParticipationAttribute:
+	participationClass=[ParticipationClass|QualifiedParticipationClass] '.' attribute=[Attribute|UnqualifiedParticipationMember]
 ;
 
 
 
 /**************
- * Attributes *
+ * References *
  **************/
  ReferenceDeclaration:
  	'has' name=ID 'referencing' referenceType=[Metaclass|QualifiedMetaclass] '{'
@@ -120,7 +145,7 @@ AttributeMappingSpecifiation:
  
  ReferenceMappingSpecification:
  	('=' {ReferenceEqualitySpecification})
- 	reference=[ParticipationReference|QualifiedParticipationMember]
+ 	reference=ParticipationAttribute
  	('via' referenceTargets+=[ParticipationClass|QualifiedParticipationClass] (',' referenceTargets+=[ParticipationClass|QualifiedParticipationClass])*)?
  ;
 
@@ -147,10 +172,9 @@ UnqualifiedMetaclass:
 	ID
 ;
 
-QualifiedParticipationMember:
-	QualifiedClasslike '.' ID
+UnqualifiedParticipationMember:
+	ID
 ;
-	
 	
 	
 /******************

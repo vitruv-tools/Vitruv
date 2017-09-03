@@ -3,8 +3,7 @@
     xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="elements" nsURI="http://vitruv.tools/dsls/commonalities/elements"
     nsPrefix="languagelements">
   <eClassifiers xsi:type="ecore:EClass" name="NamedElement" abstract="true" interface="true">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
-        changeable="false" volatile="true" defaultValueLiteral="" derived="true"/>
+    <eOperations name="getName" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="PackageLike" abstract="true" interface="true"
       eSuperTypes="#//NamedElement"/>
@@ -13,93 +12,94 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="packageLikeContainer" lowerBound="1"
         eType="#//PackageLike" changeable="false" volatile="true" derived="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="MemberLike" eSuperTypes="#//NamedElement">
+  <eClassifiers xsi:type="ecore:EClass" name="MemberLike" abstract="true" interface="true"
+      eSuperTypes="#//NamedElement">
     <eStructuralFeatures xsi:type="ecore:EReference" name="classLikeContainer" lowerBound="1"
         eType="#//ClassLike" changeable="false" volatile="true" derived="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Domain" abstract="true" interface="true"
       eSuperTypes="#//PackageLike">
     <eStructuralFeatures xsi:type="ecore:EReference" name="metaclasses" ordered="false"
-        upperBound="-1" eType="#//Metaclass" changeable="false" derived="true" containment="true"
-        eOpposite="#//Metaclass/domain"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="vitruvDomain" lowerBound="1"
-        eType="#//FrameworkVitruvDomain" changeable="false" volatile="true" derived="true"/>
+        upperBound="-1" eType="#//Metaclass" changeable="false" derived="true" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Classifier" abstract="true" interface="true"
+      eSuperTypes="#//NamedElement">
+    <eOperations name="isSuperTypeOf" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+      <eParameters name="subType" lowerBound="1" eType="#//Classifier"/>
+    </eOperations>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Metaclass" abstract="true" interface="true"
-      eSuperTypes="#//ClassLike">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="domain" lowerBound="1"
-        eType="#//Domain" changeable="false" derived="true" eOpposite="#//Domain/metaclasses"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="attributes" ordered="false"
-        upperBound="-1" eType="#//Attribute" changeable="false" derived="true"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="references" ordered="false"
-        upperBound="-1" eType="#//Reference" changeable="false" derived="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="changeClass" lowerBound="1"
-        eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EClass" changeable="false"
-        volatile="true" derived="true">
-      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-        <details key="documentation" value="The EClass to watch for changes to this Metaclass."/>
-      </eAnnotations>
-    </eStructuralFeatures>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="VitruvDomain" eSuperTypes="#//Domain">
-    <eOperations name="wrapVitruvDomain">
-      <eParameters name="vitruvDomain" lowerBound="1" eType="#//FrameworkVitruvDomain"/>
+      eSuperTypes="#//ClassLike #//Classifier">
+    <eOperations name="getAttributes" upperBound="-1">
+      <eGenericType eTypeParameter="#//Metaclass/getAttributes/A"/>
+      <eTypeParameters name="A">
+        <eBounds eClassifier="#//Attribute"/>
+      </eTypeParameters>
     </eOperations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="domain" lowerBound="1"
+        eType="#//Domain" changeable="false" volatile="true" derived="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="allMembers" upperBound="-1"
+        eType="#//MetaclassMember" changeable="false" volatile="true" transient="true"
+        derived="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="MetaclassMember" abstract="true" interface="true"
+      eSuperTypes="#//MemberLike">
+    <eOperations name="getType" lowerBound="1" eType="#//Classifier"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Attribute" abstract="true" interface="true"
+      eSuperTypes="#//MetaclassMember">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="multiValued" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean" changeable="false"
+        volatile="true" transient="true" derived="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="EClassMetaclass" eSuperTypes="#//Metaclass">
-    <eOperations name="wrapEClass">
-      <eParameters name="eClass" lowerBound="1" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EClass"/>
+    <eOperations name="forEClass" lowerBound="1" eType="#//EClassMetaclass">
+      <eParameters name="eClass" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EClass"/>
+    </eOperations>
+    <eOperations name="withClassifierProvider" lowerBound="1" eType="#//EClassMetaclass">
+      <eParameters name="classifierProvider" eType="#//ClassifierProvider"/>
+    </eOperations>
+    <eOperations name="fromDomain" lowerBound="1" eType="#//EClassMetaclass">
+      <eParameters name="domain" lowerBound="1" eType="#//Domain"/>
+    </eOperations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="attributes" upperBound="-1"
+        eType="#//Attribute" changeable="false" derived="true" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="EDataTypeClassifier" eSuperTypes="#//Classifier">
+    <eOperations name="forEDataType" lowerBound="1" eType="#//EDataTypeClassifier">
+      <eParameters name="eDataType" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EDataType"/>
     </eOperations>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="ResourceMetaclass" eSuperTypes="#//Metaclass"/>
-  <eClassifiers xsi:type="ecore:EClass" name="Aliasable" abstract="true" interface="true">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="alias" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Participation" abstract="true" interface="true"
-      eSuperTypes="#//Aliasable #//PackageLike">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="classes" lowerBound="1"
-        upperBound="-1" eType="#//ParticipationClass" changeable="false" derived="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="domain" lowerBound="1"
-        eType="#//Domain"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="ParticipationClass" eSuperTypes="#//Aliasable #//ClassLike">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="superMetaclass" lowerBound="1"
-        eType="#//Metaclass" derived="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="attributes" ordered="false"
-        upperBound="-1" eType="#//ParticipationAttribute" changeable="false" derived="true"
-        containment="true" eOpposite="#//ParticipationAttribute/participationClass"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="references" ordered="false"
-        upperBound="-1" eType="#//ParticipationReference" changeable="false" derived="true"
-        containment="true" eOpposite="#//ParticipationReference/participationClass"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="participation" lowerBound="1"
-        eType="#//Participation" volatile="true" derived="true"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="ParticipationMember" abstract="true"
-      interface="true" eSuperTypes="#//MemberLike">
-    <eOperations name="getParticipationClass" lowerBound="1" eType="#//ParticipationClass"/>
-    <eOperations name="getType" lowerBound="1" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EClassifier"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="ParticipationAttribute" eSuperTypes="#//ParticipationMember">
-    <eOperations name="wrapAttribute">
-      <eParameters name="attribute" lowerBound="1" eType="#//Attribute"/>
+  <eClassifiers xsi:type="ecore:EClass" name="VitruviusDomain" eSuperTypes="#//Domain">
+    <eOperations name="forVitruvDomain" lowerBound="1" eType="#//VitruviusDomain">
+      <eParameters name="vitruvDomain" eType="#//FrameworkVitruvDomain"/>
     </eOperations>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="participationClass" lowerBound="1"
-        eType="#//ParticipationClass" changeable="false" derived="true" eOpposite="#//ParticipationClass/attributes"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="type" lowerBound="1" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EDataType"
-        changeable="false" volatile="true" derived="true"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="changeAttribute" lowerBound="1"
-        eType="#//Attribute" changeable="false" volatile="true" derived="true"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="ParticipationReference" eSuperTypes="#//ParticipationMember">
-    <eOperations name="wrapReference">
-      <eParameters name="attribute" lowerBound="1" eType="#//Reference"/>
+    <eOperations name="withClassifierProvider" lowerBound="1" eType="#//VitruviusDomain">
+      <eParameters name="classifierProvider" eType="#//ClassifierProvider"/>
     </eOperations>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="participationClass" lowerBound="1"
-        eType="#//ParticipationClass" changeable="false" derived="true" eOpposite="#//ParticipationClass/references"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="type" lowerBound="1" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EClassifier"
-        changeable="false" volatile="true" derived="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EDataType" name="Attribute" instanceClassName="tools.vitruv.dsls.commonalities.language.elements.Attribute"/>
-  <eClassifiers xsi:type="ecore:EDataType" name="Reference" instanceClassName="tools.vitruv.dsls.commonalities.language.elements.Reference"/>
+  <eClassifiers xsi:type="ecore:EClass" name="ResourceMetaclass" eSuperTypes="#//Metaclass">
+    <eOperations name="withClassifierProvider" lowerBound="1" eType="#//ResourceMetaclass">
+      <eParameters name="classifierProvider" eType="#//ClassifierProvider"/>
+    </eOperations>
+    <eOperations name="fromDomain" lowerBound="1" eType="#//ResourceMetaclass">
+      <eParameters name="domain" lowerBound="1" eType="#//Domain"/>
+    </eOperations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="attributes" upperBound="-1"
+        eType="#//Attribute" changeable="false" derived="true" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="EFeatureAttribute" eSuperTypes="#//Attribute">
+    <eOperations name="forEFeature" lowerBound="1" eType="#//EFeatureAttribute">
+      <eParameters name="eFeature" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EStructuralFeature"/>
+    </eOperations>
+    <eOperations name="withClassifierProvider" lowerBound="1" eType="#//EFeatureAttribute">
+      <eParameters name="classifierProvider" eType="#//ClassifierProvider"/>
+    </eOperations>
+    <eOperations name="fromMetaclass" lowerBound="1" eType="#//EFeatureAttribute">
+      <eParameters name="metaclass" lowerBound="1" eType="#//Metaclass"/>
+    </eOperations>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EDataType" name="FrameworkVitruvDomain" instanceClassName="tools.vitruv.framework.domains.VitruvDomain"/>
+  <eClassifiers xsi:type="ecore:EDataType" name="ClassifierProvider" instanceClassName="tools.vitruv.dsls.commonalities.language.elements.ClassifierProvider"/>
+  <eClassifiers xsi:type="ecore:EClass" name="MostSpecificType" eSuperTypes="#//Classifier"/>
 </ecore:EPackage>
