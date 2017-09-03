@@ -7,7 +7,7 @@ import static extension tools.vitruv.dsls.commonalities.language.extensions.Comm
 package class ParticipationClassI extends ParticipationClassImpl {
 
 	override getName() {
-		alias ?: superMetaclass?.name
+		alias ?: getSuperMetaclass?.name
 	}
 	
 	override basicGetPackageLikeContainer() {
