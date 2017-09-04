@@ -5,8 +5,13 @@ package tools.vitruv.dsls.commonalities.ui.labeling
 
 import com.google.inject.Inject
 import org.eclipse.emf.edit.ui.provider.AdapterFactoryLabelProvider
+import org.eclipse.jface.viewers.StyledString
 import org.eclipse.xtext.xbase.ui.labeling.XbaseLabelProvider
+import tools.vitruv.dsls.commonalities.language.AttributeDeclaration
+import tools.vitruv.dsls.commonalities.language.Participation
 import tools.vitruv.dsls.commonalities.language.elements.Wrapper
+
+import static extension tools.vitruv.dsls.commonalities.language.extensions.CommonalitiesLanguageModelExtensions.*
 
 /**
  * Provides labels for EObjects.
@@ -30,7 +35,26 @@ class CommonalitiesLanguageLabelProvider extends XbaseLabelProvider {
 //		'Greeting.gif'
 //	}
 
+	def text(Participation participation) {
+		val participationClasses = participation.classes.toList
+		val result = new StyledString().append(participation.domainName ?: '?')
+		if (participationClasses.size == 1) {
+			result.append(':').append(participationClasses.head.name)
+		} else if (participationClasses.size > 1) {
+			result.append(':(').append(participationClasses.map[name].join(', ')).append(')')
+		}
+		return result
+	}
+
+	def text(AttributeDeclaration attribute) {
+		new StyledString().append(attribute.name).appendInfo(': ').appendInfo(attribute.type.name)
+	}
+
 	def image(Wrapper<?> wrapper) {
 		getImage(wrapper.wrapped)
+	}
+	
+	def private appendInfo(StyledString sstring, String text) {
+		sstring.append(text, StyledString.QUALIFIER_STYLER)
 	}
 }

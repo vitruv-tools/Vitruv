@@ -3,13 +3,9 @@
  */
 package tools.vitruv.dsls.commonalities.ui.labeling
 
-import org.eclipse.xtext.xbase.ui.labeling.XbaseDescriptionLabelProvider
-import org.eclipse.xtext.resource.IEObjectDescription
 import org.eclipse.emf.ecore.EObject
-import tools.vitruv.dsls.commonalities.language.elements.Metaclass
-import org.eclipse.jface.viewers.StyledString
-import static org.eclipse.jface.viewers.StyledString.*;
-import static tools.vitruv.dsls.commonalities.names.CommonalitiesLanguageQualifiedNameConverter.*
+import org.eclipse.xtext.resource.IEObjectDescription
+import org.eclipse.xtext.xbase.ui.labeling.XbaseDescriptionLabelProvider
 
 /**
  * Provides labels for IEObjectDescriptions and IResourceDescriptions.
