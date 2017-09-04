@@ -78,6 +78,7 @@ class EClassAdapter extends EClassMetaclassImpl implements Wrapper<EClass> {
 	}
 	
 	override basicGetDomain() {
+		if (eIsProxy) return null
 		checkDomainSet()
 		return containingDomain
 	}
@@ -102,7 +103,11 @@ class EClassAdapter extends EClassMetaclassImpl implements Wrapper<EClass> {
 	}
 	
 	override toString() {
-		'''{{«wrappedEClass?.name»}}'''
+		if (eIsProxy) {
+			'''unresolved «class.simpleName»: «eProxyURI»'''
+		} else {
+			'''{{«containingDomain.name»:«wrappedEClass?.name»}}'''
+		}
 	}
 
 }

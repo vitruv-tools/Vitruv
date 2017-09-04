@@ -37,6 +37,10 @@ class EDataTypeAdapter extends EDataTypeClassifierImpl implements Wrapper<EDataT
 		true
 	}
 	
+	override getName() {
+		wrappedDataType.name
+	}
+	
 	override toString() {
 		'''{{«wrappedDataType?.name»}}'''
 	}

@@ -8,7 +8,7 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import tools.vitruv.framework.domains.VitruvDomainProviderRegistry
 
 @Singleton
-class DomainProvider {
+class VitruviusDomainProvider {
 
 	/*
 	 * To be referenced from an Xtext language, EObjects must be contained in
@@ -20,7 +20,7 @@ class DomainProvider {
 
 	// there is currently no way to change the domains while developing, so
 	// it’s okay to cache them.
-	@Lazy(PRIVATE) HashMap<String, ? extends Domain> allDomainsByName = loadDomains()
+	@Lazy(PRIVATE) HashMap<String, VitruviusDomain> allVitruviusDomainsByName = loadDomains()
 
 	def private loadDomains() {
 		val classifierProvider = new ClassifierProvider
@@ -39,10 +39,10 @@ class DomainProvider {
 	}
 
 	def getDomainByName(String name) {
-		allDomainsByName.get(name)
+		allVitruviusDomainsByName.get(name)
 	}
 
 	def getAllDomains() {
-		allDomainsByName.values
+		allVitruviusDomainsByName.values
 	}
 }

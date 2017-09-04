@@ -7,7 +7,6 @@ import java.util.LinkedList
 import java.util.Map
 import java.util.function.Supplier
 import org.eclipse.emf.ecore.EClass
-import org.eclipse.emf.ecore.EReference
 import org.eclipse.emf.ecore.EcorePackage
 import org.eclipse.xtext.common.types.JvmOperation
 import org.eclipse.xtext.xbase.XFeatureCall
@@ -31,7 +30,6 @@ import tools.vitruv.framework.domains.VitruvDomainProviderRegistry
 import static tools.vitruv.dsls.commonalities.generator.ParticipationRelationUtil.*
 
 import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
-import static extension org.eclipse.xtext.EcoreUtil2.isAssignableFrom
 import static extension tools.vitruv.dsls.commonalities.generator.JvmTypeProviderHelper.*
 import static extension tools.vitruv.dsls.commonalities.generator.ReactionsGeneratorConventions.*
 import static extension tools.vitruv.dsls.commonalities.generator.XbaseHelper.*
@@ -207,7 +205,7 @@ package class ReactionsGenerator extends SubGenerator {
 			.afterElement(participationClass.changeClass).insertedAsRoot
 			.call(#[participationClass.intermediateResourceBridgeRoutine, participationClass.insertRoutine].filterNull)
 
-		for (insertionPoint : participationClass.potentialInsertionPoints) {
+/*		for (insertionPoint : participationClass.potentialInsertionPoints) {
 			val referenceName = insertionPoint.name
 			val className = insertionPoint.EContainingClass.name
 			val packageName = insertionPoint.EContainingClass.EPackage.name
@@ -215,7 +213,7 @@ package class ReactionsGenerator extends SubGenerator {
 				.afterElement(participationClass.changeClass).insertedIn(insertionPoint)
 				.with[hasResource(newValue)]
 				.call(participationClass.insertRoutine)
-		}
+		}*/
 		return reactions
 	}
 	
@@ -420,13 +418,6 @@ package class ReactionsGenerator extends SubGenerator {
 	
 	def private isForResource(ParticipationClass participationClass) {
 		participationClass.superMetaclass instanceof ResourceMetaclass
-	}
-
-	def private getPotentialInsertionPoints(ParticipationClass participationClass) {
-		participationClass.superMetaclass.domain.metaclasses.map[changeClass].flatMap[EStructuralFeatures].filter(
-			EReference).filter[isContainment].filter [
-			(EType as EClass).isAssignableFrom(participationClass.changeClass)
-		]
 	}
 	
 	def private callOperationOnRelation(extension RoutineTypeProvider typeProvider,

@@ -52,7 +52,7 @@ SimpleParticipationDeclaration:
 ;
 
 TupleParticipationDeclaration:
-	domain=[Domain|DomainReference] ':' '(' parts+=TupleParticipationDeclarationPart (','
+	domainName=DomainReference ':' '(' parts+=TupleParticipationDeclarationPart (','
 	parts+=TupleParticipationDeclarationPart)* ')'
 ;
 

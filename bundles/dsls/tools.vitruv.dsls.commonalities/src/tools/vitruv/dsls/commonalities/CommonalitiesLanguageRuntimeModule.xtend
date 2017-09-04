@@ -7,6 +7,7 @@ import tools.vitruv.dsls.commonalities.names.CommonalitiesLanguageQualifiedNameC
 import tools.vitruv.dsls.commonalities.names.CommonalitiesLanguageQualifiedNameProvider
 import tools.vitruv.dsls.commonalities.names.IEObjectDescriptionProvider
 import tools.vitruv.dsls.commonalities.names.QualifiedNameProviderDescriptionProvider
+import tools.vitruv.dsls.commonalities.scoping.CommonalitiesLanguageGlobalScopeProvider
 
 /**
  * Use this class to register components to be used at runtime / without the Equinox extension registry.
@@ -31,6 +32,10 @@ class CommonalitiesLanguageRuntimeModule extends AbstractCommonalitiesLanguageRu
 	
 	override bindIDefaultResourceDescriptionStrategy() {
 		CommonalityFileResourceDescriptionStrategy
+	}
+	
+	override bindIGlobalScopeProvider() {
+		CommonalitiesLanguageGlobalScopeProvider
 	}
 	
 }	

@@ -1,30 +1,34 @@
 package tools.vitruv.dsls.commonalities.scoping
 
 import com.google.inject.Inject
+import com.google.inject.Singleton
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.xtext.naming.QualifiedName
 import org.eclipse.xtext.scoping.IScope
-import tools.vitruv.dsls.commonalities.language.elements.DomainProvider
+import tools.vitruv.dsls.commonalities.language.elements.Metaclass
+import tools.vitruv.dsls.commonalities.language.elements.VitruviusDomainProvider
 import tools.vitruv.dsls.commonalities.names.IEObjectDescriptionProvider
 
 import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
 
-class MetaclassScope implements IScope {
+@Singleton
+class VitruvDomainMetaclassesScope implements IScope {
 
-	@Inject DomainProvider domainProvider
+	@Inject VitruviusDomainProvider vitruviusDomainProvider
 	@Inject IEObjectDescriptionProvider descriptionProvider
 
 	override getAllElements() {
-		domainProvider.allDomains.flatMap[metaclasses].map(descriptionProvider)
+		vitruviusDomainProvider.allDomains.flatMap [metaclasses].map(descriptionProvider)
 	}
 
 	override getElements(QualifiedName qName) {
-		if (qName.segmentCount != 2) return #[]
-		domainProvider.getDomainByName(qName.firstSegment)
-			?.metaclasses
-			?.filter[name == qName.getSegment(1)]
-			?.map(descriptionProvider)
-		?: #[]
+		var Iterable<Metaclass> elements = vitruviusDomainProvider.getDomainByName(qName.getSegment(0))
+			?.metaclasses ?: #[]
+			
+		if (qName.segmentCount > 1) {
+			elements = elements.filter[name == qName.getSegment(1)]
+		}
+		elements.map(descriptionProvider)
 	}
 
 	override getElements(EObject object) {
@@ -32,10 +36,10 @@ class MetaclassScope implements IScope {
 	}
 
 	override getSingleElement(QualifiedName name) {
-		getElements(name).findFirst[true]
+		getElements(name).head
 	}
 
 	override getSingleElement(EObject object) {
-		getElements(object).findFirst[true]
+		getElements(object).head
 	}
 }

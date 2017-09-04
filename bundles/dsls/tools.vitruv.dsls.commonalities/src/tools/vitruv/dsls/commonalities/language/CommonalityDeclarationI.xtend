@@ -9,10 +9,6 @@ import static extension tools.vitruv.dsls.commonalities.language.extensions.Comm
 
 package class CommonalityDeclarationI extends CommonalityDeclarationImpl {
 	
-	override basicGetDomain() {
-		containingCommonalityFile.concept
-	}
-	
 	override basicGetPackageLikeContainer() {
 		domain
 	}
@@ -31,6 +27,10 @@ package class CommonalityDeclarationI extends CommonalityDeclarationImpl {
 	
 	def dispatch isSuperTypeOf(MostSpecificType mostSpecificType) {
 		true
+	}
+	
+	override basicGetDomain() {
+		containingCommonalityFile.concept
 	}
 	
 }

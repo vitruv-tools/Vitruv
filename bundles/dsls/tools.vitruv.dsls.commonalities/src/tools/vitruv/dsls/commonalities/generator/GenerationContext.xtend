@@ -3,6 +3,7 @@ package tools.vitruv.dsls.commonalities.generator
 import java.util.Collections
 import java.util.HashMap
 import java.util.Map
+import javax.inject.Inject
 import org.eclipse.emf.ecore.EClass
 import org.eclipse.emf.ecore.EPackage
 import org.eclipse.emf.ecore.EStructuralFeature
@@ -22,6 +23,7 @@ import tools.vitruv.dsls.commonalities.language.elements.EFeatureAdapter
 import tools.vitruv.dsls.commonalities.language.elements.Metaclass
 import tools.vitruv.dsls.commonalities.language.elements.ResourceMetaclass
 import tools.vitruv.dsls.commonalities.language.elements.VitruvDomainAdapter
+import tools.vitruv.dsls.commonalities.language.elements.VitruviusDomainProvider
 import tools.vitruv.extensions.dslruntime.commonalities.resources.ResourcesPackage
 
 import static com.google.common.base.Preconditions.*
@@ -41,6 +43,8 @@ package class GenerationContext {
 
 	@Accessors(PACKAGE_SETTER, PACKAGE_GETTER)
 	var Iterable<String> generatedConcepts = Collections.emptyList
+	
+	@Inject VitruviusDomainProvider vitruviusDomainProvider
 
 	def package getGeneratedIntermediateModelClass(CommonalityFile commonalityFile) {
 		intermediateModelClassCache.computeIfAbsent(commonalityFile, [
@@ -136,7 +140,7 @@ package class GenerationContext {
 	def package dispatch EStructuralFeature getEFeatureToReference(ParticipationAttribute participationAttribute) {
 		participationAttribute.attribute.EFeatureToReference
 	}
-
+	
 	def package getVitruvDomain(Domain domain) {
 		domain.findVitruvDomain
 	}
@@ -149,9 +153,9 @@ package class GenerationContext {
 		concept.vitruvDomain
 	}
 
-	def package getVitruvDomain(ConceptDeclaration domain) {
-		val ePackage = domain.name.generatedIntermediateModelPackage
-		checkState(ePackage !== null, '''No ePackage was registered for the concept “«domain.name»”!''')
-		new ConceptDomain(domain.name, ePackage)
+	def package getVitruvDomain(ConceptDeclaration concept) {
+		val ePackage = concept.name.generatedIntermediateModelPackage
+		checkState(ePackage !== null, '''No ePackage was registered for the concept “«concept.name»”!''')
+		new ConceptDomain(concept.name, ePackage)
 	}
 }

@@ -29,7 +29,15 @@ class ParticipationExtension {
 		participationPart.leftClasses + participationPart.rightClasses
 	}
 	
+	def static dispatch getDomainName(SimpleParticipationDeclaration participation) {
+		participation?.participationClass?.superMetaclass?.domain?.name
+	}
+	
+	def static dispatch getDomainName(TupleParticipationDeclaration participation) {
+		participation.domainName
+	}
+	
 	def static getDomain(Participation participation) {
-		participation.classes.head?.superMetaclass?.domain
+		participation.classes.head?.superMetaclass?.domain		
 	}
 }

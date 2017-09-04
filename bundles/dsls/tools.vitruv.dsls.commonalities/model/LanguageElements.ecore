@@ -18,10 +18,7 @@
         eType="#//ClassLike" changeable="false" volatile="true" derived="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Domain" abstract="true" interface="true"
-      eSuperTypes="#//PackageLike">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="metaclasses" ordered="false"
-        upperBound="-1" eType="#//Metaclass" changeable="false" derived="true" containment="true"/>
-  </eClassifiers>
+      eSuperTypes="#//PackageLike"/>
   <eClassifiers xsi:type="ecore:EClass" name="Classifier" abstract="true" interface="true"
       eSuperTypes="#//NamedElement">
     <eOperations name="isSuperTypeOf" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
@@ -77,6 +74,8 @@
     <eOperations name="withClassifierProvider" lowerBound="1" eType="#//VitruviusDomain">
       <eParameters name="classifierProvider" eType="#//ClassifierProvider"/>
     </eOperations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="metaclasses" ordered="false"
+        upperBound="-1" eType="#//Metaclass" changeable="false" derived="true" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ResourceMetaclass" eSuperTypes="#//Metaclass">
     <eOperations name="withClassifierProvider" lowerBound="1" eType="#//ResourceMetaclass">
