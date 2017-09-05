@@ -353,9 +353,6 @@ public class ResourceRepositoryImpl implements ModelRepository, CorrespondencePr
         result.addAll(relevantChanges.stream().filter(
                 change -> change.getURI() == null || !change.getURI().getEMFUri().toString().endsWith("correspondence"))
                 .collect(Collectors.toList()));
-        for (TransactionalChange change : relevantChanges) {
-            change.unresolveIfApplicable();
-        }
         logger.debug("End recording virtual model");
         return result;
     }
