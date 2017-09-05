@@ -23,6 +23,7 @@ import tools.vitruv.extensions.dslruntime.commonalities.intermediatemodelbase.In
 
 import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
 import static extension tools.vitruv.dsls.commonalities.generator.GeneratorConstants.*
+import static org.eclipse.emf.ecore.ETypedElement.UNBOUNDED_MULTIPLICITY
 
 package class IntermediateModelGenerator extends SubGenerator {
 
@@ -108,23 +109,23 @@ package class IntermediateModelGenerator extends SubGenerator {
 			]
 		}
 
-		def private generateEFeature(AttributeDeclaration attributeDeclaration) {
-			val attributeType = attributeDeclaration.type
-			switch (attributeType) {
+		def private generateEFeature(AttributeDeclaration attribute) {
+			switch attributeType : attribute.type {
 				EDataTypeAdapter:
 					EcoreFactory.eINSTANCE.createEAttribute => [
-						name = attributeDeclaration.name
 						EType = attributeType.getOrGenerateEDataType()
 					]
 				EClassAdapter:
 					EcoreFactory.eINSTANCE.createEReference => [
-						name = attributeDeclaration.name
-						EType = attributeType.wrapped
+						EType = attributeType.wrapped 
 					]
 				default:
-					throw new IllegalStateException('''The Attribute declaration ‹«attributeDeclaration»› has the type «
+					throw new IllegalStateException('''The Attribute declaration ‹«attribute»› has the type «
 					»‹«attributeType»› which does not correspond to an EClassifier!''')
-			}
+			} => [
+				name = attribute.name
+				upperBound = if (attribute.isMultiValued) UNBOUNDED_MULTIPLICITY else 1
+			]
 		}
 
 		def private getOrGenerateEDataType(EDataTypeAdapter dataTypeAdapter) {
