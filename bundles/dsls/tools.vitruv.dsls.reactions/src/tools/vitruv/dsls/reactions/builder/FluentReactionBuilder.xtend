@@ -21,7 +21,6 @@ import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsLanguageFactory
 import static com.google.common.base.Preconditions.*
 import static tools.vitruv.dsls.reactions.codegen.helper.ReactionsLanguageConstants.*
 import org.eclipse.emf.ecore.EcorePackage
-import org.eclipse.emf.ecore.EcoreFactory
 
 class FluentReactionBuilder extends FluentReactionsSegmentChildBuilder {
 
@@ -79,7 +78,7 @@ class FluentReactionBuilder extends FluentReactionsSegmentChildBuilder {
 		
 		def afterAttributeInsertIn(EClass eClass, EAttribute attribute) {
 			valueType = attribute.EType
-			affectedElementType = attribute.EContainingClass
+			affectedElementType = eClass
 			reaction.trigger = ReactionsLanguageFactory.eINSTANCE.createModelAttributeInsertedChange => [
 				feature = MirBaseFactory.eINSTANCE.createMetaclassEAttributeReference.reference(eClass, attribute)
 			]
@@ -92,7 +91,7 @@ class FluentReactionBuilder extends FluentReactionsSegmentChildBuilder {
 		
 		def afterAttributeReplacedAt(EClass eClass, EAttribute attribute) {
 			valueType = attribute.EType
-			affectedElementType = attribute.EContainingClass
+			affectedElementType = eClass
 			reaction.trigger = ReactionsLanguageFactory.eINSTANCE.createModelAttributeReplacedChange => [
 				feature = MirBaseFactory.eINSTANCE.createMetaclassEAttributeReference.reference(eClass, attribute)
 			]
@@ -105,7 +104,7 @@ class FluentReactionBuilder extends FluentReactionsSegmentChildBuilder {
 
 		def afterAttributeRemoveFrom(EClass eClass, EAttribute attribute) {
 			valueType = attribute.EType
-			affectedElementType = attribute.EContainingClass
+			affectedElementType = eClass
 			reaction.trigger = ReactionsLanguageFactory.eINSTANCE.createModelAttributeRemovedChange => [
 				feature = MirBaseFactory.eINSTANCE.createMetaclassEAttributeReference.reference(eClass, attribute)
 			]
@@ -145,6 +144,7 @@ class FluentReactionBuilder extends FluentReactionsSegmentChildBuilder {
 		
 		def insertedIn(EClass eClass, EReference reference) {
 			valueType = element ?: reference.EReferenceType
+			affectedElementType = eClass
 			continueWithChangeType(ReactionsLanguageFactory.eINSTANCE.createElementInsertionInListChangeType => [
 				feature = MirBaseFactory.eINSTANCE.createMetaclassEReferenceReference.reference(eClass, reference)
 			])
@@ -156,6 +156,7 @@ class FluentReactionBuilder extends FluentReactionsSegmentChildBuilder {
 		
 		def removedFrom(EClass eClass, EReference reference) {
 			valueType = element ?: reference.EReferenceType
+			affectedElementType = eClass
 			continueWithChangeType(ReactionsLanguageFactory.eINSTANCE.createElementRemovalFromListChangeType => [
 				feature = MirBaseFactory.eINSTANCE.createMetaclassEReferenceReference.reference(eClass, reference)
 			])
@@ -167,6 +168,7 @@ class FluentReactionBuilder extends FluentReactionsSegmentChildBuilder {
 		
 		def replacedAt(EClass eClass, EReference reference) {
 			valueType = element ?: reference.EReferenceType
+			affectedElementType = eClass
 			continueWithChangeType(ReactionsLanguageFactory.eINSTANCE.createElementReplacementChangeType => [
 				feature = MirBaseFactory.eINSTANCE.createMetaclassEReferenceReference.reference(eClass, reference)
 			])
