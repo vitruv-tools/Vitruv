@@ -323,17 +323,6 @@ public class ResourceRepositoryImpl implements ModelRepository, CorrespondencePr
         return this.metamodelRepository.getDomain(fileExtension);
     }
 
-    // private void loadAndMapCorrepondenceInstances() {
-    // for (Metamodel metamodel : this.metamodelManaging) {
-    // for (Metamodel metamodel2 : this.metamodelManaging) {
-    // if (metamodel != metamodel2
-    // && getCorrespondenceModel(metamodel.getURI(), metamodel2.getURI()) == null) {
-    // createCorrespondenceModel(new MetamodelPair(metamodel, metamodel2));
-    // }
-    // }
-    // }
-    // }
-
     @Override
     public void startRecording() {
         this.changeRecorder.beginRecording();
