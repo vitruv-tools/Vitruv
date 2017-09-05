@@ -1,9 +1,10 @@
 package tools.vitruv.dsls.commonalities.ui.contentassist
 
-import org.eclipse.xtext.resource.IEObjectDescription
-import static tools.vitruv.dsls.commonalities.names.CommonalitiesLanguageQualifiedNameConverter.DOMAIN_METACLASS_SEPARATOR
-import org.eclipse.xtext.ui.editor.contentassist.PrefixMatcher
 import com.google.inject.Inject
+import org.eclipse.xtext.resource.IEObjectDescription
+import org.eclipse.xtext.ui.editor.contentassist.PrefixMatcher
+
+import static tools.vitruv.dsls.commonalities.names.CommonalitiesLanguageQualifiedNameConverter.DOMAIN_METACLASS_SEPARATOR
 
 class DomainPrefixProposalFactory extends CommonalitiesLanguageProposalFactory {
 	

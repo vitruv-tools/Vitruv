@@ -3,9 +3,9 @@
  */
 package tools.vitruv.dsls.commonalities.ui.contentassist
 
-import org.eclipse.xtext.ui.editor.contentassist.ContentAssistContext
 import com.google.inject.Inject
 import com.google.inject.Provider
+import org.eclipse.xtext.ui.editor.contentassist.ContentAssistContext
 
 /**
  * See https://www.eclipse.org/Xtext/documentation/304_ide_concepts.html#content-assist

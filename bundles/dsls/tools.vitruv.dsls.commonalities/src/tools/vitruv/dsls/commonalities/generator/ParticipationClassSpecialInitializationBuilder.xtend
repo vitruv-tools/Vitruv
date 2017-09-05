@@ -7,9 +7,9 @@ import org.eclipse.xtext.xbase.XFeatureCall
 import org.eclipse.xtext.xbase.XbaseFactory
 import tools.vitruv.dsls.commonalities.language.Participation
 import tools.vitruv.dsls.commonalities.language.ParticipationClass
-import tools.vitruv.dsls.commonalities.language.ParticipationRelationDeclaration
-import tools.vitruv.dsls.commonalities.language.TupleParticipationDeclaration
-import tools.vitruv.dsls.commonalities.language.TupleParticipationDeclarationPart
+import tools.vitruv.dsls.commonalities.language.ParticipationRelation
+import tools.vitruv.dsls.commonalities.language.TupleParticipation
+import tools.vitruv.dsls.commonalities.language.TupleParticipationPart
 import tools.vitruv.dsls.commonalities.language.elements.ResourceMetaclass
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.RoutineTypeProvider
 import tools.vitruv.extensions.dslruntime.commonalities.resources.IntermediateResourceBridge
@@ -48,7 +48,7 @@ package class ParticipationClassSpecialInitializationBuilder {
 		false
 	}
 
-	def private dispatch boolean hasSpecialInitialization(TupleParticipationDeclaration declaration) {
+	def private dispatch boolean hasSpecialInitialization(TupleParticipation declaration) {
 		for (part : declaration.parts) {
 			if (part.hasSpecialInitialization) {
 				return true
@@ -57,11 +57,11 @@ package class ParticipationClassSpecialInitializationBuilder {
 		return false
 	}
 
-	def private dispatch hasSpecialInitialization(TupleParticipationDeclarationPart declarationPart) {
+	def private dispatch hasSpecialInitialization(TupleParticipationPart declarationPart) {
 		false
 	}
 
-	def private dispatch hasSpecialInitialization(ParticipationRelationDeclaration relation) {
+	def private dispatch hasSpecialInitialization(ParticipationRelation relation) {
 		relation.leftClasses.size > 0 && relation.rightClasses.size > 0 &&
 			relation.rightClasses.indexOf(participationClass) == relation.rightClasses.size - 1
 	}
@@ -84,7 +84,7 @@ package class ParticipationClassSpecialInitializationBuilder {
 
 	def private dispatch XExpression getSpecialInitializer(Participation participation) {}
 
-	def private dispatch XExpression getSpecialInitializer(TupleParticipationDeclaration declaration) {
+	def private dispatch XExpression getSpecialInitializer(TupleParticipation declaration) {
 		var XExpression result
 		for (part : declaration.parts) {
 			result = result.join(part.specialInitializer)
@@ -92,20 +92,20 @@ package class ParticipationClassSpecialInitializationBuilder {
 		return result
 	}
 
-	def private dispatch XExpression getSpecialInitializer(ParticipationRelationDeclaration relation) {
+	def private dispatch XExpression getSpecialInitializer(ParticipationRelation relation) {
 		if (relation.rightClasses.indexOf(participationClass) == relation.rightClasses.size - 1) {
 			relation.afterCreatedCode
 		}
 	}
 
-	def private dispatch XExpression getSpecialInitializer(TupleParticipationDeclarationPart part) {}
+	def private dispatch XExpression getSpecialInitializer(TupleParticipationPart part) {}
 
 	@Pure
 	def private static isForResourceMetaclass(ParticipationClass participationClass) {
 		participationClass.superMetaclass instanceof ResourceMetaclass
 	}
 
-	def private getAfterCreatedCode(ParticipationRelationDeclaration participationRelation) {
+	def private getAfterCreatedCode(ParticipationRelation participationRelation) {
 		val afterCreatedMethod = participationRelation.operator.findOptionalImplementedMethod('afterCreated')
 		if (afterCreatedMethod !== null) {
 			XbaseFactory.eINSTANCE.createXMemberFeatureCall => [

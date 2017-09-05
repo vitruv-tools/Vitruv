@@ -1,6 +1,6 @@
 package tools.vitruv.extensions.dslruntime.commonalities.participationrelations
 
-interface ParticipationRelation {
+interface ParticipationRelationOperator {
 	def void afterCreated(){}
 	def void afterInserted(){}
 }	

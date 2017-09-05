@@ -25,7 +25,7 @@ class CommonalitiesLanguageGlobalScopeProvider extends TypesAwareDefaultGlobalSc
 			case PARTICIPATION_CLASS__SUPER_METACLASS:
 				allMetaclassesScope.get()
 				
-			case PARTICIPATION_RELATION_DECLARATION__OPERATOR:
+			case PARTICIPATION_RELATION__OPERATOR:
 				participationRelationOperatorScope.get.forResourceSet(resource.resourceSet)
 		}
 	}

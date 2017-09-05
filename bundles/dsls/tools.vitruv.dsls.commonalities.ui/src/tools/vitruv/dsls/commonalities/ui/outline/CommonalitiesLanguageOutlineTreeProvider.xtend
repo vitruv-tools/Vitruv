@@ -6,12 +6,12 @@ package tools.vitruv.dsls.commonalities.ui.outline
 import org.eclipse.xtext.ui.editor.outline.IOutlineNode
 import org.eclipse.xtext.ui.editor.outline.impl.DefaultOutlineTreeProvider
 import org.eclipse.xtext.ui.editor.outline.impl.DocumentRootNode
-import tools.vitruv.dsls.commonalities.language.AttributeDeclaration
-import tools.vitruv.dsls.commonalities.language.CommonalityDeclaration
+import tools.vitruv.dsls.commonalities.language.Commonality
+import tools.vitruv.dsls.commonalities.language.CommonalityAttribute
 import tools.vitruv.dsls.commonalities.language.CommonalityFile
-import tools.vitruv.dsls.commonalities.language.ConceptDeclaration
+import tools.vitruv.dsls.commonalities.language.CommonalityReference
+import tools.vitruv.dsls.commonalities.language.Concept
 import tools.vitruv.dsls.commonalities.language.Participation
-import tools.vitruv.dsls.commonalities.language.ReferenceDeclaration
 
 import static tools.vitruv.dsls.commonalities.language.LanguagePackage.Literals.*
 
@@ -27,26 +27,26 @@ class CommonalitiesLanguageOutlineTreeProvider extends DefaultOutlineTreeProvide
 		createNode(root, commonalityFile.commonality)
 	}
 
-	def protected boolean _isLeaf(ConceptDeclaration concept) {
+	def protected boolean _isLeaf(Concept concept) {
 		true
 	}
 
-	def protected void _createChildren(IOutlineNode parent, CommonalityDeclaration commonality) {
-		createEStructuralFeatureNode(parent, commonality, COMMONALITY_DECLARATION__PARTICIPATIONS,
+	def protected void _createChildren(IOutlineNode parent, Commonality commonality) {
+		createEStructuralFeatureNode(parent, commonality, COMMONALITY__PARTICIPATIONS,
 			labelProvider.getImage(PARTICIPATION), commonality.participations.size + ' Participations', false)
 		commonality.attributes.forEach [createNode(parent, it)]
 		commonality.references.forEach [createNode(parent, it)]
 	}
-	
+
 	def protected boolean _isLeaf(Participation participation) {
 		true
 	}
-	
-	def protected boolean _isLeaf(AttributeDeclaration attribute) {
+
+	def protected boolean _isLeaf(CommonalityAttribute attribute) {
 		true
 	}
-	
-	def protected boolean _isLeaf(ReferenceDeclaration referenceDeclaration) {
+
+	def protected boolean _isLeaf(CommonalityReference reference) {
 		true
 	}
 }

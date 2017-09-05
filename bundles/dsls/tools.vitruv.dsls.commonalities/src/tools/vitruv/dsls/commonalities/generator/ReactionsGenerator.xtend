@@ -13,7 +13,7 @@ import org.eclipse.xtext.xbase.XFeatureCall
 import org.eclipse.xtext.xbase.XbaseFactory
 import tools.vitruv.dsls.commonalities.language.Participation
 import tools.vitruv.dsls.commonalities.language.ParticipationClass
-import tools.vitruv.dsls.commonalities.language.ParticipationRelationDeclaration
+import tools.vitruv.dsls.commonalities.language.ParticipationRelation
 import tools.vitruv.dsls.commonalities.language.elements.ResourceMetaclass
 import tools.vitruv.dsls.reactions.api.generator.IReactionsGenerator
 import tools.vitruv.dsls.reactions.builder.FluentReactionBuilder
@@ -421,7 +421,7 @@ package class ReactionsGenerator extends SubGenerator {
 	}
 	
 	def private callOperationOnRelation(extension RoutineTypeProvider typeProvider,
-		ParticipationRelationDeclaration relation, JvmOperation operation) {
+		ParticipationRelation relation, JvmOperation operation) {
 		XbaseFactory.eINSTANCE.createXMemberFeatureCall => [
 			memberCallTarget = createOperatorConstructorCall(relation, typeProvider, [variable(correspondingVariableName)])
 			feature = operation

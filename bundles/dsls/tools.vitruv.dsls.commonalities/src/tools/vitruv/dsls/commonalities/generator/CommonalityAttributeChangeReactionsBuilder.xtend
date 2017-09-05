@@ -1,39 +1,33 @@
 package tools.vitruv.dsls.commonalities.generator
 
-import java.util.Collection
 import java.util.Collections
 import java.util.List
 import javax.inject.Inject
 import org.eclipse.emf.ecore.EAttribute
 import org.eclipse.emf.ecore.EReference
-import org.eclipse.emf.ecore.EStructuralFeature
-import org.eclipse.xtext.xbase.XExpression
-import org.eclipse.xtext.xbase.XFeatureCall
-import org.eclipse.xtext.xbase.XbaseFactory
-import tools.vitruv.dsls.commonalities.language.AttributeDeclaration
-import tools.vitruv.dsls.commonalities.language.AttributeMappingSpecifiation
+import tools.vitruv.dsls.commonalities.language.CommonalityAttribute
+import tools.vitruv.dsls.commonalities.language.CommonalityAttributeMapping
 import tools.vitruv.dsls.commonalities.language.Participation
 import tools.vitruv.dsls.commonalities.language.elements.EClassAdapter
 import tools.vitruv.dsls.commonalities.language.elements.EDataTypeAdapter
 import tools.vitruv.dsls.reactions.builder.FluentReactionBuilder
 import tools.vitruv.dsls.reactions.builder.FluentReactionsLanguageBuilder
-import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.RoutineTypeProvider
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.UndecidedMatcherStatementBuilder
 
 import static com.google.common.base.Preconditions.*
 
-import static extension tools.vitruv.dsls.commonalities.generator.JvmTypeProviderHelper.*
+import static extension tools.vitruv.dsls.commonalities.generator.EmfAccessExpressions.*
 import static extension tools.vitruv.dsls.commonalities.generator.ReactionsGeneratorConventions.*
 import static extension tools.vitruv.dsls.commonalities.language.extensions.CommonalitiesLanguageModelExtensions.*
 
 package class CommonalityAttributeChangeReactionsBuilder {
-	AttributeDeclaration attribute
+	CommonalityAttribute attribute
 	Participation targetParticipation
-	List<AttributeMappingSpecifiation> relevantMappings
+	List<CommonalityAttributeMapping> relevantMappings
 	extension GenerationContext generationContext
 	@Inject FluentReactionsLanguageBuilder create
 
-	def package forAttribute(AttributeDeclaration attribute) {
+	def package forAttribute(CommonalityAttribute attribute) {
 		this.attribute = attribute
 		this
 	}
@@ -54,7 +48,7 @@ package class CommonalityAttributeChangeReactionsBuilder {
 		checkState(generationContext !== null, "No generation context was set!")
 
 		relevantMappings = attribute.mappings.filter [
-			isWrite && it.participation == targetParticipation
+			isWrite && participation == targetParticipation
 		].toList
 
 		if (relevantMappings.size === 0) return Collections.emptyList
@@ -190,43 +184,7 @@ package class CommonalityAttributeChangeReactionsBuilder {
 		}
 	}
 
-	def private correspondingVariableName(AttributeMappingSpecifiation mappingSpecification) {
+	def private correspondingVariableName(CommonalityAttributeMapping mappingSpecification) {
 		mappingSpecification.attribute.participationClass.correspondingVariableName
 	}
-
-	def private static setFeature(extension RoutineTypeProvider typeProvider, XExpression element,
-		EStructuralFeature eFeature, XExpression newValue) {
-		XbaseFactory.eINSTANCE.createXAssignment => [
-			assignable = element
-			feature = typeProvider.findMethod(eFeature.EContainingClass.instanceClassName, 'set' + eFeature.name.toFirstUpper)
-			value = newValue
-		]
-	}
-
-	def package static addToFeatureList(extension RoutineTypeProvider typeProvider, XFeatureCall element,
-		EStructuralFeature eFeature, XExpression newValue) {
-		XbaseFactory.eINSTANCE.createXBinaryOperation => [
-			leftOperand = getEFeature(typeProvider, element, eFeature)
-			feature = typeProvider.findMethod(CollectionExtensions, 'operator_add', Collection, typeVariable)
-			rightOperand = newValue
-		]
-	}
-
-	def package static removeFromFeatureList(extension RoutineTypeProvider typeProvider, XFeatureCall element,
-		EStructuralFeature eFeature, XExpression newValue) {
-		XbaseFactory.eINSTANCE.createXBinaryOperation => [
-			leftOperand = getEFeature(typeProvider, element, eFeature)
-			feature = typeProvider.findMethod(CollectionExtensions, 'operator_remove', Collection, typeVariable)
-			rightOperand = newValue
-		]
-	}
-
-	def private static getEFeature(extension RoutineTypeProvider typeProvider, XExpression element,
-		EStructuralFeature eFeature) {
-		XbaseFactory.eINSTANCE.createXMemberFeatureCall => [
-			memberCallTarget = element
-			feature = typeProvider.findMethod(eFeature.EContainingClass.instanceClassName, 'get' + eFeature.name.toFirstUpper)
-		]
-	}
-
 }

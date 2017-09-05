@@ -1,18 +1,18 @@
 package tools.vitruv.dsls.commonalities.ui.executiontests
 
+import allElementTypes.AllElementTypesFactory
 import allElementTypes2.AllElementTypes2Factory
 import com.google.inject.Inject
 import org.eclipse.xtext.testing.InjectWith
 import org.eclipse.xtext.testing.XtextRunner
 import org.junit.Test
 import org.junit.runner.RunWith
-import tools.vitruv.dsls.commonalities.ui.tests.CommonalitiesLanguageUiInjectorProvider
-
-import static tools.vitruv.framework.tests.matchers.ModelMatchers.*
-import static org.hamcrest.MatcherAssert.assertThat
-import allElementTypes.AllElementTypesFactory
 import pcm_mockup.Pcm_mockupFactory
+import tools.vitruv.dsls.commonalities.ui.tests.CommonalitiesLanguageUiInjectorProvider
 import uml_mockup.Uml_mockupFactory
+
+import static org.hamcrest.MatcherAssert.assertThat
+import static tools.vitruv.framework.tests.matchers.ModelMatchers.*
 
 @RunWith(XtextRunner)
 @InjectWith(CommonalitiesLanguageUiInjectorProvider)

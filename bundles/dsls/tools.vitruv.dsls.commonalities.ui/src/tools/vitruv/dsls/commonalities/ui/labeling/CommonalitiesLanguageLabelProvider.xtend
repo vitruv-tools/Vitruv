@@ -7,7 +7,7 @@ import com.google.inject.Inject
 import org.eclipse.emf.edit.ui.provider.AdapterFactoryLabelProvider
 import org.eclipse.jface.viewers.StyledString
 import org.eclipse.xtext.xbase.ui.labeling.XbaseLabelProvider
-import tools.vitruv.dsls.commonalities.language.AttributeDeclaration
+import tools.vitruv.dsls.commonalities.language.CommonalityAttribute
 import tools.vitruv.dsls.commonalities.language.Participation
 import tools.vitruv.dsls.commonalities.language.elements.Wrapper
 
@@ -46,7 +46,7 @@ class CommonalitiesLanguageLabelProvider extends XbaseLabelProvider {
 		return result
 	}
 
-	def text(AttributeDeclaration attribute) {
+	def text(CommonalityAttribute attribute) {
 		new StyledString().append(attribute.name).appendInfo(': ').appendInfo(attribute.type.name)
 	}
 

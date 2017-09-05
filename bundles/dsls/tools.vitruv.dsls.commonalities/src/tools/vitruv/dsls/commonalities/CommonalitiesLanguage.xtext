@@ -8,27 +8,26 @@ import "http://vitruv.tools/dsls/commonalities/elements"
 import "http://www.eclipse.org/xtext/common/JavaVMTypes" as jvmTypes
 
 CommonalityFile:
-	concept=ConceptDeclaration
-	commonality=CommonalityDeclaration
+	concept=Concept
+	commonality=Commonality
 ;
 
 Domain:
-	ConceptDeclaration
+	Concept
 ;
 
-ConceptDeclaration:
+Concept:
 	'concept' name=ID
 ;
 
 Metaclass: 
-	CommonalityDeclaration
+	Commonality
 ;
 
-CommonalityDeclaration:
-	{CommonalityDeclaration}
+Commonality:
 	'commonality' name=ID '{'
 		participations+=Participation*
-		(attributes+=AttributeDeclaration|references+=ReferenceDeclaration)*
+		(attributes+=CommonalityAttribute|references+=CommonalityReference)*
 	'}'
 ;
 
@@ -42,38 +41,38 @@ PackageLike:
 ;
 
 Participation:
-	'with' (SimpleParticipationDeclaration | TupleParticipationDeclaration)
+	'with' (SimpleParticipation | TupleParticipation)
 	('called' alias=QUOTED_NAME)?
 	('whereat' condition=ParticipationConditionDeclaration | condition=ParticipationNoCondition)
 ;
 
-SimpleParticipationDeclaration:
+SimpleParticipation:
 	participationClass=QualifiedParticipationClassDeclaration
 ;
 
-TupleParticipationDeclaration:
-	domainName=DomainReference ':' '(' parts+=TupleParticipationDeclarationPart (','
-	parts+=TupleParticipationDeclarationPart)* ')'
+TupleParticipation:
+	domainName=DomainReference ':' '(' parts+=TupleParticipationPart (','
+	parts+=TupleParticipationPart)* ')'
 ;
 
-TupleParticipationDeclarationPart:
-	SimpleTupleParticipationDeclarationPart | ParticipationRelationDeclaration
+TupleParticipationPart:
+	SimpleTupleParticipationPart | ParticipationRelation
 ;
 
-SimpleTupleParticipationDeclarationPart:
+SimpleTupleParticipationPart:
 	participationClass=UnqualifiedParticipationClassDeclaration
 ;
 
-ParticipationRelationDeclaration:
-	SimpleParticipationRelationDeclaration | BracedParticipationRelationDeclartion
+ParticipationRelation:
+	SimpleParticipationRelation | BracedParticipationRelation
 ;
 
-SimpleParticipationRelationDeclaration returns ParticipationRelationDeclaration:
+SimpleParticipationRelation returns ParticipationRelation:
 	leftClasses+=UnqualifiedParticipationClassDeclaration operator=[jvmTypes::JvmDeclaredType]
 	rightClasses+=UnqualifiedParticipationClassDeclaration
 ;
 
-BracedParticipationRelationDeclartion returns ParticipationRelationDeclaration:
+BracedParticipationRelation returns ParticipationRelation:
 	'(' leftClasses+=UnqualifiedParticipationClassDeclaration (',' leftClasses+=UnqualifiedParticipationClassDeclaration)*
 	operator=[jvmTypes::JvmDeclaredType]
 	rightClasses+=UnqualifiedParticipationClassDeclaration (',' rightClasses+=UnqualifiedParticipationClassDeclaration)*
@@ -114,16 +113,16 @@ ParticipationNoCondition returns ParticipationCondition:
  * Attributes *
  **************/
 Attribute:
-	AttributeDeclaration | ParticipationAttribute
+	CommonalityAttribute | ParticipationAttribute
 ;
  
-AttributeDeclaration:
+CommonalityAttribute:
 	'has' name=ID '{'
-		mappings+=AttributeMappingSpecifiation*
+		mappings+=CommonalityAttributeMapping*
 	'}'
 ;
 
-AttributeMappingSpecifiation:
+CommonalityAttributeMapping:
 	('=' {AttributeEqualitySpecification} | '->' {AttributeSetSpecification} | '<-' {AttributeReadSpecification})
 	attribute=ParticipationAttribute
 ;
@@ -137,14 +136,14 @@ ParticipationAttribute:
 /**************
  * References *
  **************/
- ReferenceDeclaration:
- 	'has' name=ID 'referencing' referenceType=[Metaclass|QualifiedMetaclass] '{'
- 		mappings+=ReferenceMappingSpecification*
+ CommonalityReference:
+ 	'has' name=ID 'referencing' referenceType=[Commonality|QualifiedMetaclass] '{'
+ 		mappings+=CommonalityReferenceMapping*
  	'}'
  ;
  
- ReferenceMappingSpecification:
- 	('=' {ReferenceEqualitySpecification})
+ CommonalityReferenceMapping:
+ 	('=' {ReferenceEqualitySpecification} | '->' {ReferenceSetSpecification} | '<-' {ReferenceReadSpecification})
  	reference=ParticipationAttribute
  	('via' referenceTargets+=[ParticipationClass|QualifiedParticipationClass] (',' referenceTargets+=[ParticipationClass|QualifiedParticipationClass])*)?
  ;

@@ -1,12 +1,12 @@
 package tools.vitruv.dsls.commonalities.language
 
 import tools.vitruv.dsls.commonalities.language.elements.WellKnownClassifiers
-import tools.vitruv.dsls.commonalities.language.impl.AttributeDeclarationImpl
+import tools.vitruv.dsls.commonalities.language.impl.CommonalityAttributeImpl
 
 import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
 import static extension tools.vitruv.dsls.commonalities.language.extensions.CommonalitiesLanguageModelExtensions.*
 
-class AttributeDeclarationI extends AttributeDeclarationImpl {
+class CommonalityAttributeI extends CommonalityAttributeImpl {
 
 	override basicGetClassLikeContainer() {
 		containingCommonalityFile.commonality
@@ -23,7 +23,7 @@ class AttributeDeclarationI extends AttributeDeclarationImpl {
 		val firstMapping = mappingIterator.next
 		var requiredType = firstMapping.requiredType
 		var providedType = firstMapping.providedType
-		for (var AttributeMappingSpecifiation mapping; mappingIterator.hasNext; mapping = mappingIterator.next) {
+		for (var CommonalityAttributeMapping mapping; mappingIterator.hasNext; mapping = mappingIterator.next) {
 			// if this is not the case, the specification itself is invalid, so we skip it.
 			if (mapping !== null && mapping.requiredType.isSuperTypeOf(mapping.providedType)) {
 				if (!mapping.requiredType.isSuperTypeOf(requiredType)) {

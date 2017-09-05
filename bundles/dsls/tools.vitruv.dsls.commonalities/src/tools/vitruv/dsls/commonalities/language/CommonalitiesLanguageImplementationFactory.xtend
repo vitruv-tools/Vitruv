@@ -4,32 +4,32 @@ import tools.vitruv.dsls.commonalities.language.impl.LanguageFactoryImpl
 
 class CommonalitiesLanguageImplementationFactory extends LanguageFactoryImpl {
 	
-	override createSimpleParticipationDeclaration() {
-		new SimpleParticipationDeclarationI
+	override createSimpleParticipation() {
+		new SimpleParticipationI
 	}
 	
-	override createTupleParticipationDeclaration() {
-		new TupleParticipationDeclarationI
+	override createTupleParticipation() {
+		new TupleParticipationI
 	}
 	
 	override createParticipationClass() {
 		new ParticipationClassI
 	}
 	
-	override createCommonalityDeclaration() {
-		new CommonalityDeclarationI
+	override createCommonality() {
+		new CommonalityI
 	}
 	
 	override createParticipationAttribute() {
 		new ParticipationAttributeI
 	}
 	
-	override createAttributeDeclaration() {
-		new AttributeDeclarationI
+	override createCommonalityAttribute() {
+		new CommonalityAttributeI
 	}
 	
-	override createConceptDeclaration() {
-		new ConceptDeclarationI
+	override createConcept() {
+		new ConceptI
 	}
 	
 }

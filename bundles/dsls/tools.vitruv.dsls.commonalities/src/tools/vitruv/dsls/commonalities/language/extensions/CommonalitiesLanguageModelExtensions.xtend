@@ -4,13 +4,13 @@ import edu.kit.ipd.sdq.activextendannotations.StaticDelegate
 import edu.kit.ipd.sdq.activextendannotations.Utility
 
 @StaticDelegate(#[
-	AttributeDeclarationExtension,
-	CommonalityDeclarationExtension,
+	CommonalityExtension,
 	CommonalitiesLanguageElementExtension,
-	AttributeMappingSpecificationExtension,
-	ParticipationDeclarationPartExtension,
+	CommonalityAttributeMappingExtension,
+	ParticipationPartExtension,
 	ParticipationClassExtension,
-	ParticipationExtension
+	ParticipationExtension,
+	CommonalityReferenceMappingExtension
 ])
 @Utility class CommonalitiesLanguageModelExtensions {
 }

@@ -3,7 +3,6 @@ package tools.vitruv.dsls.commonalities.generator
 import java.util.Collections
 import java.util.HashMap
 import java.util.Map
-import javax.inject.Inject
 import org.eclipse.emf.ecore.EClass
 import org.eclipse.emf.ecore.EPackage
 import org.eclipse.emf.ecore.EStructuralFeature
@@ -11,10 +10,10 @@ import org.eclipse.emf.ecore.resource.ResourceSet
 import org.eclipse.xtend.lib.annotations.Accessors
 import org.eclipse.xtext.common.types.JvmGenericType
 import org.eclipse.xtext.generator.IFileSystemAccess2
-import tools.vitruv.dsls.commonalities.language.AttributeDeclaration
-import tools.vitruv.dsls.commonalities.language.CommonalityDeclaration
+import tools.vitruv.dsls.commonalities.language.Commonality
+import tools.vitruv.dsls.commonalities.language.CommonalityAttribute
 import tools.vitruv.dsls.commonalities.language.CommonalityFile
-import tools.vitruv.dsls.commonalities.language.ConceptDeclaration
+import tools.vitruv.dsls.commonalities.language.Concept
 import tools.vitruv.dsls.commonalities.language.ParticipationAttribute
 import tools.vitruv.dsls.commonalities.language.ParticipationClass
 import tools.vitruv.dsls.commonalities.language.elements.Domain
@@ -23,7 +22,6 @@ import tools.vitruv.dsls.commonalities.language.elements.EFeatureAdapter
 import tools.vitruv.dsls.commonalities.language.elements.Metaclass
 import tools.vitruv.dsls.commonalities.language.elements.ResourceMetaclass
 import tools.vitruv.dsls.commonalities.language.elements.VitruvDomainAdapter
-import tools.vitruv.dsls.commonalities.language.elements.VitruviusDomainProvider
 import tools.vitruv.extensions.dslruntime.commonalities.resources.ResourcesPackage
 
 import static com.google.common.base.Preconditions.*
@@ -44,8 +42,6 @@ package class GenerationContext {
 	@Accessors(PACKAGE_SETTER, PACKAGE_GETTER)
 	var Iterable<String> generatedConcepts = Collections.emptyList
 	
-	@Inject VitruviusDomainProvider vitruviusDomainProvider
-
 	def package getGeneratedIntermediateModelClass(CommonalityFile commonalityFile) {
 		intermediateModelClassCache.computeIfAbsent(commonalityFile, [
 			commonalityFile.concept.generatedIntermediateModelPackage.EClassifiers.findFirst [
@@ -53,6 +49,11 @@ package class GenerationContext {
 			] as EClass
 		])
 	}
+	
+	def package getGeneratedIntermediateModelClass(Commonality commonality) {
+		commonality.containingCommonalityFile.generatedIntermediateModelClass
+	}
+	
 
 	def package getChangeClass(CommonalityFile commonalityFile) {
 		commonalityFile.generatedIntermediateModelClass
@@ -66,7 +67,7 @@ package class GenerationContext {
 		metaclass.findChangeClass
 	}
 
-	def private dispatch findChangeClass(CommonalityDeclaration commonality) {
+	def private dispatch findChangeClass(Commonality commonality) {
 		commonality.containingCommonalityFile.changeClass
 	}
 
@@ -78,7 +79,7 @@ package class GenerationContext {
 		ResourcesPackage.eINSTANCE.intermediateResourceBridge
 	}
 
-	def package getGeneratedIntermediateModelPackage(ConceptDeclaration concept) {
+	def package getGeneratedIntermediateModelPackage(Concept concept) {
 		concept.name.generatedIntermediateModelPackage
 	}
 
@@ -128,7 +129,7 @@ package class GenerationContext {
 		fsa.getURI(conceptName + MODEL_OUTPUT_FILE_EXTENSION)
 	}
 
-	def package dispatch EStructuralFeature getEFeatureToReference(AttributeDeclaration attribute) {
+	def package dispatch EStructuralFeature getEFeatureToReference(CommonalityAttribute attribute) {
 		commonalityFile.generatedIntermediateModelClass.getEStructuralFeature(attribute.name)
 	}
 
@@ -149,11 +150,11 @@ package class GenerationContext {
 		adapter.wrapped
 	}
 
-	def private dispatch findVitruvDomain(ConceptDeclaration concept) {
+	def private dispatch findVitruvDomain(Concept concept) {
 		concept.vitruvDomain
 	}
 
-	def package getVitruvDomain(ConceptDeclaration concept) {
+	def package getVitruvDomain(Concept concept) {
 		val ePackage = concept.name.generatedIntermediateModelPackage
 		checkState(ePackage !== null, '''No ePackage was registered for the concept “«concept.name»”!''')
 		new ConceptDomain(concept.name, ePackage)

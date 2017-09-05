@@ -4,17 +4,17 @@ import edu.kit.ipd.sdq.activextendannotations.Utility
 import org.eclipse.emf.ecore.EObject
 import tools.vitruv.dsls.commonalities.language.Participation
 import tools.vitruv.dsls.commonalities.language.ParticipationClass
-import tools.vitruv.dsls.commonalities.language.ParticipationRelationDeclaration
+import tools.vitruv.dsls.commonalities.language.ParticipationRelation
 
 @Utility package class ParticipationClassExtension {
-	def static ParticipationRelationDeclaration getOptionalParticipationRelation(ParticipationClass participationClass) {
+	def static ParticipationRelation getOptionalParticipationRelation(ParticipationClass participationClass) {
 		findOptionalParticipationRelation(participationClass.eContainer)
 	}
 
 	def private static dispatch findOptionalParticipationRelation(EObject catchAll) {}
 
 	def private static dispatch findOptionalParticipationRelation(
-		ParticipationRelationDeclaration relationDeclaration) {
+		ParticipationRelation relationDeclaration) {
 		relationDeclaration
 	}
 	

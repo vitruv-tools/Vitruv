@@ -1,19 +1,20 @@
 package tools.vitruv.extensions.dslruntime.commonalities.resources.impl
 
+import java.util.HashSet
+import java.util.Set
 import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.EObject
 import tools.vitruv.extensions.dslruntime.commonalities.IntermediateModelManagement
-import tools.vitruv.extensions.dslruntime.commonalities.intermediatemodelbase.Intermediate
+import tools.vitruv.extensions.dslruntime.commonalities.resources.Resource
 import tools.vitruv.extensions.dslruntime.commonalities.resources.ResourcesPackage
+import tools.vitruv.extensions.dslruntime.commonalities.intermediatemodelbase.Intermediate
 import tools.vitruv.extensions.dslsruntime.reactions.helper.PersistenceHelper
 import tools.vitruv.extensions.dslsruntime.reactions.helper.ReactionsCorrespondenceHelper
 import tools.vitruv.framework.util.datatypes.VURI
-import java.util.HashSet
-import java.util.Set
+
 import static com.google.common.base.Preconditions.*
 
 import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
-import tools.vitruv.extensions.dslruntime.commonalities.resources.Resource
 
 // TODO remove once resources are handled by domains
 class IntermediateResourceBridgeI extends IntermediateResourceBridgeImpl {

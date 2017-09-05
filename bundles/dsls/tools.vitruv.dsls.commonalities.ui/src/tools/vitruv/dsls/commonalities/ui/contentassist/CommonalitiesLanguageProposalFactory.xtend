@@ -1,20 +1,19 @@
 package tools.vitruv.dsls.commonalities.ui.contentassist
 
-import org.eclipse.xtext.ui.editor.contentassist.ContentAssistContext
-import org.eclipse.xtext.resource.IEObjectDescription
-import org.eclipse.jface.text.contentassist.ICompletionProposal
-import java.util.function.Function
-import org.eclipse.xtext.ui.editor.contentassist.AbstractContentProposalProvider
-import org.eclipse.swt.graphics.Image
 import com.google.inject.Inject
-import org.eclipse.xtext.naming.QualifiedName
-import org.eclipse.xtext.naming.IQualifiedNameConverter
-import org.eclipse.jface.viewers.StyledString
+import java.util.function.Function
+import org.eclipse.emf.ecore.EObject
+import org.eclipse.jface.text.contentassist.ICompletionProposal
 import org.eclipse.jface.viewers.ILabelProvider
-import org.eclipse.emf.ecore.EClass
+import org.eclipse.jface.viewers.StyledString
+import org.eclipse.swt.graphics.Image
+import org.eclipse.xtext.naming.IQualifiedNameConverter
+import org.eclipse.xtext.naming.QualifiedName
+import org.eclipse.xtext.resource.IEObjectDescription
+import org.eclipse.xtext.ui.editor.contentassist.AbstractContentProposalProvider
+import org.eclipse.xtext.ui.editor.contentassist.ContentAssistContext
 import org.eclipse.xtext.ui.editor.contentassist.PrefixMatcher
 import org.eclipse.xtext.xbase.lib.Functions.Function1
-import org.eclipse.emf.ecore.EObject
 
 abstract class CommonalitiesLanguageProposalFactory implements Function<IEObjectDescription, ICompletionProposal>, Function1<IEObjectDescription, ICompletionProposal>, com.google.common.base.Function<IEObjectDescription, ICompletionProposal> {
 

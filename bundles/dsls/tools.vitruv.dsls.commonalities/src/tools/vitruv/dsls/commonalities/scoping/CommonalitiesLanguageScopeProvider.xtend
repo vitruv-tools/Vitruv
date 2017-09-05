@@ -9,7 +9,7 @@ import org.eclipse.xtext.scoping.IGlobalScopeProvider
 import tools.vitruv.dsls.commonalities.language.Participation
 import tools.vitruv.dsls.commonalities.language.ParticipationAttribute
 import tools.vitruv.dsls.commonalities.language.ParticipationClass
-import tools.vitruv.dsls.commonalities.language.TupleParticipationDeclaration
+import tools.vitruv.dsls.commonalities.language.TupleParticipation
 
 import static tools.vitruv.dsls.commonalities.language.LanguagePackage.Literals.*
 
@@ -42,7 +42,7 @@ class CommonalitiesLanguageScopeProvider extends AbstractCommonalitiesLanguageSc
 				}
 				val globalScope = globalScopeProvider.getScope(context.eResource, reference, null)
 				switch participation {
-					TupleParticipationDeclaration:
+					TupleParticipation:
 						new QualifiedNameTransformingScope(globalScope, [
 							QualifiedName.create(#[participation.domainName] + segments)
 						])

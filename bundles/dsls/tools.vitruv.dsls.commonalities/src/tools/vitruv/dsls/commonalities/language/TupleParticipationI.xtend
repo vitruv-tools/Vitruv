@@ -1,13 +1,13 @@
 package tools.vitruv.dsls.commonalities.language
 
-import tools.vitruv.dsls.commonalities.language.impl.SimpleParticipationDeclarationImpl
+import tools.vitruv.dsls.commonalities.language.impl.TupleParticipationImpl
 
 import static extension tools.vitruv.dsls.commonalities.language.extensions.CommonalitiesLanguageModelExtensions.*
 
-package class SimpleParticipationDeclarationI extends SimpleParticipationDeclarationImpl {
-
+package class TupleParticipationI extends TupleParticipationImpl {
+	
 	override getName() {
-		alias ?: participationClass?.domain?.name
+		alias ?: classes.head?.domain?.name
 	}
 	
 	override toString() {

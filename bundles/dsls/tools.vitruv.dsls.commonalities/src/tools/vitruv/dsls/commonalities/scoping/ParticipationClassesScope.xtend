@@ -4,7 +4,7 @@ import com.google.inject.Inject
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.xtext.naming.QualifiedName
 import org.eclipse.xtext.scoping.IScope
-import tools.vitruv.dsls.commonalities.language.CommonalityDeclaration
+import tools.vitruv.dsls.commonalities.language.Commonality
 import tools.vitruv.dsls.commonalities.names.IEObjectDescriptionProvider
 
 import static com.google.common.base.Preconditions.*
@@ -15,9 +15,9 @@ import static extension tools.vitruv.dsls.commonalities.language.extensions.Comm
 class ParticipationClassesScope implements IScope {
 
 	@Inject IEObjectDescriptionProvider descriptionProvider
-	var CommonalityDeclaration commonality
+	var Commonality commonality
 
-	def forCommonality(CommonalityDeclaration commonality) {
+	def forCommonality(Commonality commonality) {
 		this.commonality = checkNotNull(commonality)
 		this
 	}

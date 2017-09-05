@@ -1,8 +1,8 @@
 package tools.vitruv.dsls.commonalities.ui.contentassist
 
+import com.google.inject.Inject
 import org.eclipse.xtext.naming.QualifiedName
 import org.eclipse.xtext.ui.editor.contentassist.PrefixMatcher
-import com.google.inject.Inject
 
 package abstract class LanguageElementPrefixMatcher extends PrefixMatcher {
 	@Inject PrefixMatcher.IgnoreCase ignoreCase

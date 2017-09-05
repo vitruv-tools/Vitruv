@@ -4,6 +4,7 @@ import java.util.ArrayList
 import java.util.Collections
 import java.util.HashSet
 import java.util.List
+import java.util.function.Consumer
 import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.EDataType
 import org.eclipse.emf.ecore.EObject
@@ -14,16 +15,17 @@ import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.emf.ecore.resource.ResourceSet
 import org.eclipse.emf.ecore.xmi.impl.XMLResourceFactoryImpl
 import tools.vitruv.dsls.common.helper.ClassNameGenerator
-import tools.vitruv.dsls.commonalities.language.AttributeDeclaration
+import tools.vitruv.dsls.commonalities.language.CommonalityAttribute
 import tools.vitruv.dsls.commonalities.language.CommonalityFile
 import tools.vitruv.dsls.commonalities.language.elements.EClassAdapter
 import tools.vitruv.dsls.commonalities.language.elements.EDataTypeAdapter
 import tools.vitruv.dsls.reactions.api.generator.ReferenceClassNameAdapter
 import tools.vitruv.extensions.dslruntime.commonalities.intermediatemodelbase.IntermediateModelBasePackage
 
+import static org.eclipse.emf.ecore.ETypedElement.UNBOUNDED_MULTIPLICITY
+
 import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
 import static extension tools.vitruv.dsls.commonalities.generator.GeneratorConstants.*
-import static org.eclipse.emf.ecore.ETypedElement.UNBOUNDED_MULTIPLICITY
 
 package class IntermediateModelGenerator extends SubGenerator {
 
@@ -109,7 +111,7 @@ package class IntermediateModelGenerator extends SubGenerator {
 			]
 		}
 
-		def private generateEFeature(AttributeDeclaration attribute) {
+		def private generateEFeature(CommonalityAttribute attribute) {
 			switch attributeType : attribute.type {
 				EDataTypeAdapter:
 					EcoreFactory.eINSTANCE.createEAttribute => [
