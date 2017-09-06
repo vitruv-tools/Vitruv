@@ -15,8 +15,10 @@ class PropagatedChange {
 	'''
 	
 	def applyBackward(UuidResolver uuidResolver) {
+		consequentialChanges.unresolveIfApplicable;
+		originalChange.unresolveIfApplicable;
 		consequentialChanges.resolveAfterAndApplyBackward(uuidResolver);
-		originalChange.applyBackward;
+		originalChange.resolveAfterAndApplyBackward(uuidResolver);
 	}
 	
 }

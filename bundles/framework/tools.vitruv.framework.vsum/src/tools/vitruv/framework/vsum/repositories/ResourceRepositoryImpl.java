@@ -323,17 +323,6 @@ public class ResourceRepositoryImpl implements ModelRepository, CorrespondencePr
         return this.metamodelRepository.getDomain(fileExtension);
     }
 
-    // private void loadAndMapCorrepondenceInstances() {
-    // for (Metamodel metamodel : this.metamodelManaging) {
-    // for (Metamodel metamodel2 : this.metamodelManaging) {
-    // if (metamodel != metamodel2
-    // && getCorrespondenceModel(metamodel.getURI(), metamodel2.getURI()) == null) {
-    // createCorrespondenceModel(new MetamodelPair(metamodel, metamodel2));
-    // }
-    // }
-    // }
-    // }
-
     @Override
     public void startRecording() {
         this.changeRecorder.beginRecording();
@@ -353,9 +342,6 @@ public class ResourceRepositoryImpl implements ModelRepository, CorrespondencePr
         result.addAll(relevantChanges.stream().filter(
                 change -> change.getURI() == null || !change.getURI().getEMFUri().toString().endsWith("correspondence"))
                 .collect(Collectors.toList()));
-        for (TransactionalChange change : relevantChanges) {
-            change.unresolveIfApplicable();
-        }
         logger.debug("End recording virtual model");
         return result;
     }
