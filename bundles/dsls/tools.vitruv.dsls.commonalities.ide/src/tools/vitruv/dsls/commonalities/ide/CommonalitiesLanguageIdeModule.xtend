@@ -3,7 +3,6 @@
  */
 package tools.vitruv.dsls.commonalities.ide
 
-
 /**
  * Use this class to register ide components.
  */

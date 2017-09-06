@@ -1,8 +1,8 @@
 package tools.vitruv.dsls.commonalities.tests.matchers
 
-import org.hamcrest.TypeSafeDiagnosingMatcher
-import org.hamcrest.Description
 import org.eclipse.emf.ecore.resource.Resource
+import org.hamcrest.Description
+import org.hamcrest.TypeSafeDiagnosingMatcher
 
 class EResourceMatchers {
 	def static hasNoErrors() {
