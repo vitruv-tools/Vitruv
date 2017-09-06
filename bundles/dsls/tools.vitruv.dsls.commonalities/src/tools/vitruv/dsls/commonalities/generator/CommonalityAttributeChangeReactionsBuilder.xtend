@@ -2,7 +2,6 @@ package tools.vitruv.dsls.commonalities.generator
 
 import java.util.Collections
 import java.util.List
-import javax.inject.Inject
 import org.eclipse.emf.ecore.EAttribute
 import org.eclipse.emf.ecore.EReference
 import tools.vitruv.dsls.commonalities.language.CommonalityAttribute
@@ -11,7 +10,6 @@ import tools.vitruv.dsls.commonalities.language.Participation
 import tools.vitruv.dsls.commonalities.language.elements.EClassAdapter
 import tools.vitruv.dsls.commonalities.language.elements.EDataTypeAdapter
 import tools.vitruv.dsls.reactions.builder.FluentReactionBuilder
-import tools.vitruv.dsls.reactions.builder.FluentReactionsLanguageBuilder
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.UndecidedMatcherStatementBuilder
 
 import static com.google.common.base.Preconditions.*
@@ -20,12 +18,11 @@ import static extension tools.vitruv.dsls.commonalities.generator.EmfAccessExpre
 import static extension tools.vitruv.dsls.commonalities.generator.ReactionsGeneratorConventions.*
 import static extension tools.vitruv.dsls.commonalities.language.extensions.CommonalitiesLanguageModelExtensions.*
 
-package class CommonalityAttributeChangeReactionsBuilder {
+package class CommonalityAttributeChangeReactionsBuilder 
+	extends ReactionsSubGenerator<CommonalityAttributeChangeReactionsBuilder> {
 	CommonalityAttribute attribute
 	Participation targetParticipation
 	List<CommonalityAttributeMapping> relevantMappings
-	extension GenerationContext generationContext
-	@Inject FluentReactionsLanguageBuilder create
 
 	def package forAttribute(CommonalityAttribute attribute) {
 		this.attribute = attribute
@@ -34,11 +31,6 @@ package class CommonalityAttributeChangeReactionsBuilder {
 
 	def package regardingParticipation(Participation targetParticipation) {
 		this.targetParticipation = targetParticipation
-		this
-	}
-
-	def package withGenerationContext(GenerationContext context) {
-		this.generationContext = context
 		this
 	}
 
@@ -53,8 +45,7 @@ package class CommonalityAttributeChangeReactionsBuilder {
 
 		if (relevantMappings.size === 0) return Collections.emptyList
 
-		val attributeType = attribute.type
-		switch (attributeType) {
+		switch attribute.type {
 			EDataTypeAdapter case !attribute.isMultiValued:
 				Collections.singleton(singleAttributeSetReaction)
 			EDataTypeAdapter case attribute.isMultiValued:
@@ -67,10 +58,11 @@ package class CommonalityAttributeChangeReactionsBuilder {
 	}
 
 	def private singleAttributeSetReaction() {
-		create.reaction('''«commonality.name»«attribute.name.toFirstUpper»Change''')
+		create.reaction('''«attribute.commonalityAttributeReactionName»Change''')
 			.afterAttributeReplacedAt(attribute.EFeatureToReference as EAttribute)
 			.call [
-				input [newValue].match [
+				input [newValue]
+				.match [
 					retrieveRelevantCorrespondences()
 				]
 				.action [
@@ -85,7 +77,7 @@ package class CommonalityAttributeChangeReactionsBuilder {
 	}
 
 	def private multiAttributeAddReaction() {
-		create.reaction('''«commonality.name»«attribute.name.toFirstUpper»ElementInsert''')
+		create.reaction('''«attribute.commonalityAttributeReactionName»Insert''')
 			.afterAttributeInsertIn(attribute.EFeatureToReference as EAttribute)
 			.call [
 				input [newValue].match [
@@ -103,17 +95,18 @@ package class CommonalityAttributeChangeReactionsBuilder {
 	}
 
 	def private multiAttributeRemoveReaction() {
-		create.reaction('''«commonality.name»«attribute.name.toFirstUpper»ElementRemove''')
+		create.reaction('''«attribute.commonalityAttributeReactionName»Remove''')
 			.afterAttributeInsertIn(attribute.EFeatureToReference as EAttribute)
 			.call [
-				input [newValue].match [
+				input [oldValue]
+				.match [
 					retrieveRelevantCorrespondences()
 				]
 				.action [
 					for (mapping : relevantMappings) {
 						val corresponding = mapping.correspondingVariableName
 						update(corresponding) [
-							removeFromFeatureList(variable(corresponding), mapping.attribute.EFeatureToReference, newValue)
+							removeFromFeatureList(variable(corresponding), mapping.attribute.EFeatureToReference, oldValue)
 						]
 					}
 				]
@@ -121,10 +114,11 @@ package class CommonalityAttributeChangeReactionsBuilder {
 	}
 
 	def private singleReferenceSetReaction() {
-		create.reaction('''«commonality.name»«attribute.name.toFirstUpper»Change''')
+		create.reaction('''«attribute.commonalityAttributeReactionName»Change''')
 			.afterElement.replacedAt(attribute.EFeatureToReference as EReference)
 			.call [
-				input [newValue].match [
+				input [newValue]
+				.match [
 					retrieveRelevantCorrespondences()
 				]
 				.action [
@@ -139,7 +133,7 @@ package class CommonalityAttributeChangeReactionsBuilder {
 	}
 
 	def private multiReferenceAddReaction() {
-		create.reaction('''«commonality.name»«attribute.name.toFirstUpper»ElementInsert''')
+		create.reaction('''«attribute.commonalityAttributeReactionName»ElementInsert''')
 			.afterAttributeInsertIn(attribute.EFeatureToReference as EAttribute)
 			.call [
 				input [newValue]
@@ -158,7 +152,7 @@ package class CommonalityAttributeChangeReactionsBuilder {
 	}
 
 	def private multiReferenceRemoveReaction() {
-		create.reaction('''«commonality.name»«attribute.name.toFirstUpper»ElementRemove''')
+		create.reaction('''«attribute.commonalityAttributeReactionName»ElementRemove''')
 			.afterAttributeInsertIn(attribute.EFeatureToReference as EAttribute)
 			.call [
 				input [newValue]
@@ -169,7 +163,7 @@ package class CommonalityAttributeChangeReactionsBuilder {
 					for (mapping : relevantMappings) {
 						val corresponding = mapping.correspondingVariableName
 						update(corresponding) [
-							removeFromFeatureList(variable(corresponding), mapping.attribute.EFeatureToReference, newValue)
+							removeFromFeatureList(variable(corresponding), mapping.attribute.EFeatureToReference, oldValue)
 						]
 					}
 				]

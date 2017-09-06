@@ -2,9 +2,6 @@
 <ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="elements" nsURI="http://vitruv.tools/dsls/commonalities/elements"
     nsPrefix="languagelements">
-  <eClassifiers xsi:type="ecore:EClass" name="NamedElement" abstract="true" interface="true">
-    <eOperations name="getName" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="PackageLike" abstract="true" interface="true"
       eSuperTypes="#//NamedElement"/>
   <eClassifiers xsi:type="ecore:EClass" name="ClassLike" abstract="true" interface="true"
@@ -16,6 +13,9 @@
       eSuperTypes="#//NamedElement">
     <eStructuralFeatures xsi:type="ecore:EReference" name="classLikeContainer" lowerBound="1"
         eType="#//ClassLike" changeable="false" volatile="true" derived="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="NamedElement" abstract="true" interface="true">
+    <eOperations name="getName" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Domain" abstract="true" interface="true"
       eSuperTypes="#//PackageLike"/>
@@ -38,6 +38,9 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="allMembers" upperBound="-1"
         eType="#//MetaclassMember" changeable="false" volatile="true" transient="true"
         derived="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="abstract" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean" changeable="false"
+        volatile="true" transient="true" derived="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="MetaclassMember" abstract="true" interface="true"
       eSuperTypes="#//MemberLike">

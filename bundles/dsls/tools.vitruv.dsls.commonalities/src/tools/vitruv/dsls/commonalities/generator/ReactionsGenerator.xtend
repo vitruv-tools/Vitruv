@@ -2,29 +2,19 @@ package tools.vitruv.dsls.commonalities.generator
 
 import com.google.inject.Inject
 import com.google.inject.Provider
-import java.util.HashMap
-import java.util.LinkedList
-import java.util.Map
 import java.util.function.Supplier
 import org.eclipse.emf.ecore.EClass
-import org.eclipse.emf.ecore.EcorePackage
 import org.eclipse.xtext.common.types.JvmOperation
 import org.eclipse.xtext.xbase.XFeatureCall
 import org.eclipse.xtext.xbase.XbaseFactory
 import tools.vitruv.dsls.commonalities.language.Participation
 import tools.vitruv.dsls.commonalities.language.ParticipationClass
 import tools.vitruv.dsls.commonalities.language.ParticipationRelation
-import tools.vitruv.dsls.commonalities.language.elements.ResourceMetaclass
 import tools.vitruv.dsls.reactions.api.generator.IReactionsGenerator
-import tools.vitruv.dsls.reactions.builder.FluentReactionBuilder
 import tools.vitruv.dsls.reactions.builder.FluentReactionBuilder.ReactionTypeProvider
-import tools.vitruv.dsls.reactions.builder.FluentReactionsLanguageBuilder
-import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.RoutineTypeProvider
 import tools.vitruv.extensions.dslruntime.commonalities.IntermediateModelManagement
 import tools.vitruv.extensions.dslruntime.commonalities.intermediatemodelbase.IntermediateModelBasePackage
-import tools.vitruv.extensions.dslruntime.commonalities.resources.IntermediateResourceBridge
-import tools.vitruv.extensions.dslruntime.commonalities.resources.ResourcesPackage
 import tools.vitruv.framework.domains.VitruvDomainProviderRegistry
 
 import static tools.vitruv.dsls.commonalities.generator.ParticipationRelationUtil.*
@@ -32,44 +22,55 @@ import static tools.vitruv.dsls.commonalities.generator.ParticipationRelationUti
 import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
 import static extension tools.vitruv.dsls.commonalities.generator.JvmTypeProviderHelper.*
 import static extension tools.vitruv.dsls.commonalities.generator.ReactionsGeneratorConventions.*
-import static extension tools.vitruv.dsls.commonalities.generator.XbaseHelper.*
 import static extension tools.vitruv.dsls.commonalities.language.extensions.CommonalitiesLanguageModelExtensions.*
 
 package class ReactionsGenerator extends SubGenerator {
 
-	static val DEBUG_WRITE_REACTIONS = false
+	static val DEBUG_WRITE_REACTIONS = true
 
 	val Supplier<IReactionsGenerator> reactionsGeneratorProvider
-	@Inject FluentReactionsLanguageBuilder create
 	val Supplier<CommonalityAttributeChangeReactionsBuilder> commonalityAttributeChangeReactionsBuilder
 	val Supplier<ParticipationAttributeChangeReactionsBuilder> participationAttributeChangeReactionsBuilder
 	val Supplier<ParticipationClassSpecialInitializationBuilder> participationClassSpecialInitializationBuilder
-	val Map<Participation, FluentRoutineBuilder> intermediateResourcePrepareRoutineCache = new HashMap
-	val Map<Participation, FluentRoutineBuilder> participationClassInsertRoutineCache = new HashMap
+	val Supplier<ParticipationReferenceChangeReactionsBuilder> participationReferenceChangeReactionsBuilder
+	val Supplier<CommonalityReferenceChangeReactionsBuilder> commonalityReferenceChangeReactionsBuilder
+	@Inject Provider<ReactionsGenerationContext> reactionsGeneratorContextProvider
+	extension ReactionsGenerationContext reactionsGenerationContext
 
 	@Inject
-	new(Provider<IReactionsGenerator> reactionsGeneratorProvider,
+	new(
+		Provider<IReactionsGenerator> reactionsGeneratorProvider,
 		Provider<CommonalityAttributeChangeReactionsBuilder> commonalityAttributeChangeReactionsBuilderProvider,
 		Provider<ParticipationAttributeChangeReactionsBuilder> participationAttributeChangeReactionsBuilderProvider,
-		Provider<ParticipationClassSpecialInitializationBuilder> participationClassSpecialInitBuilderProvider) {
+		Provider<ParticipationClassSpecialInitializationBuilder> participationClassSpecialInitBuilderProvider,
+		Provider<ParticipationReferenceChangeReactionsBuilder> participationReferenceChangeReactionsBuilderProvider,
+		Provider<CommonalityReferenceChangeReactionsBuilder> commonalityReferenceChangeReactionsBuilderProvider
+	) {
 		this.reactionsGeneratorProvider = [
 			reactionsGeneratorProvider.get() => [
 				useResourceSet(commonalityFile.eResource.resourceSet)
 			]
 		]
 		this.commonalityAttributeChangeReactionsBuilder = [
-			commonalityAttributeChangeReactionsBuilderProvider.get().withGenerationContext(generationContext)
+			commonalityAttributeChangeReactionsBuilderProvider.get.withGenerationContext(reactionsGenerationContext)
 		]
 		this.participationAttributeChangeReactionsBuilder = [
-			participationAttributeChangeReactionsBuilderProvider.get().withGenerationContext(generationContext)
+			participationAttributeChangeReactionsBuilderProvider.get.withGenerationContext(reactionsGenerationContext)
 		]
 		this.participationClassSpecialInitializationBuilder = [
-			participationClassSpecialInitBuilderProvider.get().withGenerationContext(generationContext)
+			participationClassSpecialInitBuilderProvider.get.withGenerationContext(reactionsGenerationContext)
+		]
+		this.participationReferenceChangeReactionsBuilder = [
+			participationReferenceChangeReactionsBuilderProvider.get.withGenerationContext(reactionsGenerationContext)
+		]
+		this.commonalityReferenceChangeReactionsBuilder = [
+			commonalityReferenceChangeReactionsBuilderProvider.get.withGenerationContext(reactionsGenerationContext)
 		]
 	}
-
+	
 	override generate() {
 		val generator = reactionsGeneratorProvider.get()
+		reactionsGenerationContext = reactionsGeneratorContextProvider.get.wrappingContext(generationContext)
 
 		val reactionFile = create.reactionsFile(commonality.name)
 		for (participation : commonalityFile.commonality.participations) {
@@ -103,20 +104,27 @@ package class ReactionsGenerator extends SubGenerator {
 	}
 
 	def private commonalityChangeReactions(Participation participation) {
-		(#[
-			reactionForCommonalityCreate(participation),
-			reactionForCommonalityDelete(participation),
-			reactionForCommonalityInsert(participation)
-		] 
-		+ participation.reactionsForCommonalityAttributeChange).filterNull
+		(
+			#[
+				reactionForCommonalityCreate(participation),
+				reactionForCommonalityDelete(participation),
+				reactionForCommonalityInsert(participation)
+			] 
+			+ participation.reactionsForCommonalityAttributeChange
+			+ participation.reactionsForCommonalityReferenceChange
+		).filterNull
 	}
 
 	def private participationChangeReactions(Participation participation) {
-		(participation.classes.flatMap [
-			#[reactionForParticipationClassDelete, reactionForParticipationClassCreate] +
-				reactionsForParticipationInsert
-		] + participation.reactionsForParticipationAttributeChange).filterNull
-
+		(
+			participation.classes.flatMap [#[
+				reactionForParticipationClassCreate,
+				reactionForParticipationClassDelete,  
+				reactionForParticipationRootInsert
+			]]
+			+ participation.reactionsForParticipationAttributeChange
+			+ participation.reactionsForParticipationReferenceChange
+		).filterNull
 	}
 
 	def private reactionForCommonalityDelete(Participation participation) {
@@ -198,61 +206,13 @@ package class ReactionsGenerator extends SubGenerator {
 			]
 	}
 
-	def private reactionsForParticipationInsert(ParticipationClass participationClass) {
-		val reactions = new LinkedList<FluentReactionBuilder>
-
-		reactions += create.reaction('''«participationClass.name»RootInsert''')
+	def private reactionForParticipationRootInsert(ParticipationClass participationClass) {
+		create.reaction('''«participationClass.name»RootInsert''')
 			.afterElement(participationClass.changeClass).insertedAsRoot
-			.call(#[participationClass.intermediateResourceBridgeRoutine, participationClass.insertRoutine].filterNull)
-
-/*		for (insertionPoint : participationClass.potentialInsertionPoints) {
-			val referenceName = insertionPoint.name
-			val className = insertionPoint.EContainingClass.name
-			val packageName = insertionPoint.EContainingClass.EPackage.name
-			reactions += create.reaction('''«participationClass.name»InsertIn«packageName.toFirstUpper»«className.toFirstUpper»«referenceName.toFirstUpper»''')
-				.afterElement(participationClass.changeClass).insertedIn(insertionPoint)
-				.with[hasResource(newValue)]
-				.call(participationClass.insertRoutine)
-		}*/
-		return reactions
-	}
-	
-	def private getInsertRoutine(ParticipationClass participationClass) {
-		participationClassInsertRoutineCache.computeIfAbsent(participationClass.participation) [ participation |
-			create.routine('''«participationClass.name.toFirstLower»RecursiveInsert''')
-				.input [model(EcorePackage.eINSTANCE.EObject, newValue)]
-				.match [
-					vall('intermediate').retrieve(commonalityFile.changeClass).correspondingTo.newValue
-					for (partClass : participation.classes) {
-						vall(partClass.correspondingVariableName).retrieve(partClass.changeClass).correspondingTo('intermediate')
-							.taggedWith(partClass.correspondenceTag)
-					}
-				]
-				.action [
-					execute [insertIntermediate(variable('intermediate'))]
-				]
-			]
-	}
-	
-	def private getIntermediateResourceBridgeRoutine(ParticipationClass participationClass) {
-		intermediateResourcePrepareRoutineCache.computeIfAbsent(participationClass.participation, [ participation |
-			if (participation.hasResourceParticipation) {
-				create.routine('''rootInsertIntermediateResoureBridge''')
-					.input [model(EcorePackage.eINSTANCE.EObject, newValue)]
-					.match [
-						vall('contentIntermediate').retrieve(commonalityFile.changeClass).correspondingTo.newValue
-					]
-					.action [
-						vall('resourceBridge').create(ResourcesPackage.eINSTANCE.intermediateResourceBridge)
-							.andInitialize [
-								initIntermediateResourceBridge(variable('resourceBridge'), newValue)
-							]
-						execute [insertResourceBridge(variable('resourceBridge'), variable('contentIntermediate'))]
-						addCorrespondenceBetween('resourceBridge').and('contentIntermediate')
-							.taggedWith(participation.resourceParticipation.correspondenceTag)
-					]
-			}
-		])
+			.call(#[
+				participationClass.intermediateResourceBridgeRoutine,
+				participationClass.participation.insertRoutine
+			].filterNull)
 	}
 	
 	def private reactionForCommonalityInsert(Participation participation) {
@@ -291,8 +251,18 @@ package class ReactionsGenerator extends SubGenerator {
 		]
 	}
 
+	def private reactionsForCommonalityReferenceChange(Participation participation) {
+		commonality.references.flatMap [ reference |
+			commonalityReferenceChangeReactionsBuilder.get.forReference(reference).regardingParticipation(participation).reactions
+		]
+	}
+
 	def private reactionsForParticipationAttributeChange(Participation participation) {
 		participationAttributeChangeReactionsBuilder.get.forParticipation(participation).reactions
+	}
+	
+	def private reactionsForParticipationReferenceChange(Participation participation) {
+		participationReferenceChangeReactionsBuilder.get.forParticipation(participation).reactions
 	}
 
 	def hasResource(extension ReactionTypeProvider typeProvider, XFeatureCall element) {
@@ -306,118 +276,12 @@ package class ReactionsGenerator extends SubGenerator {
 		]
 	}
 
-	def private insertIntermediate(extension RoutineTypeProvider typeProvider, XFeatureCall intermediate) {
-		val resourceVariableDeclaration = XbaseFactory.eINSTANCE.createXVariableDeclaration => [
-			name = 'intermediateModelResource'
-			right = createMetadataResource(typeProvider)
-		]
-		XbaseFactory.eINSTANCE.createXBlockExpression => [
-			expressions += expressions(
-				resourceVariableDeclaration,
-				XbaseFactory.eINSTANCE.createXMemberFeatureCall => [
-					memberCallTarget = XbaseFactory.eINSTANCE.createXFeatureCall => [
-						feature = resourceVariableDeclaration
-					]
-					feature = typeProvider.findMethod(IntermediateModelManagement, 'addIntermediate').staticExtensionWildcardImported
-					memberCallArguments += intermediate
-					explicitOperationCall = true
-				]
-			)
-		]
-	}
-	
-	def private createMetadataResource(extension RoutineTypeProvider typeProvider) {
-		XbaseFactory.eINSTANCE.createXFeatureCall => [
-			implicitReceiver = routineUserExecution
-			feature = routineUserExecutionType.findMethod('getMetadataResource')
-			// this string is intentionally hardcoded into the reactions
-			// and not computed by a runtime class, as this allows to
-			// change the way the identifier is computed without breaking
-			// existing intermediate models
-			featureCallArguments += expressions(
-				XbaseFactory.eINSTANCE.createXStringLiteral => [
-					value = 'commonalities'
-				],
-				XbaseFactory.eINSTANCE.createXStringLiteral => [
-					value = commonalityFile.concept.name
-				],
-				XbaseFactory.eINSTANCE.createXStringLiteral => [
-					value = commonality.name + '.intermediate'
-				]
-			)
-			explicitOperationCall = true
-		]
-	}
-
 	def private assignStagingId(extension RoutineTypeProvider typeProvider, XFeatureCall element) {
 		XbaseFactory.eINSTANCE.createXMemberFeatureCall => [
 			memberCallTarget = element
 			feature = typeProvider.findMethod(IntermediateModelManagement, 'claimStagingId').staticExtensionWildcardImported
 			explicitOperationCall = true
 		]
-	}
-	
-	def private initIntermediateResourceBridge(extension RoutineTypeProvider typeProvider, XFeatureCall resourceBridge,
-		XFeatureCall modelElement) {
-		XbaseFactory.eINSTANCE.createXBlockExpression => [
-			expressions += expressions(
-				XbaseFactory.eINSTANCE.createXAssignment => [
-					assignable = resourceBridge.newFeatureCall
-					feature = typeProvider.findMethod(IntermediateResourceBridge, 'setCorrespondenceModel')
-					value = XbaseFactory.eINSTANCE.createXFeatureCall => [
-						feature = routineUserExecutionType.findAttribute('correspondenceModel')
-						implicitReceiver = routineUserExecution
-					]
-				],
-				XbaseFactory.eINSTANCE.createXAssignment => [
-					assignable = resourceBridge.newFeatureCall
-					feature = typeProvider.findMethod(IntermediateResourceBridge, 'setResourceAccess')
-					value = XbaseFactory.eINSTANCE.createXFeatureCall => [
-						feature = routineUserExecutionType.findAttribute('resourceAccess')
-						implicitReceiver = routineUserExecution
-					]
-				],
-				XbaseFactory.eINSTANCE.createXMemberFeatureCall => [
-					memberCallTarget = resourceBridge.newFeatureCall
-					feature = typeProvider.findMethod(IntermediateResourceBridge, 'initialiseForModelElement')
-					explicitOperationCall = true
-					memberCallArguments += modelElement
-				]
-			)
-		]
-	}
-	
-	def private insertResourceBridge(extension RoutineTypeProvider typeProvider, XFeatureCall resourceBridge,
-		XFeatureCall intermediate) {
-		val resourceVariableDeclaration = XbaseFactory.eINSTANCE.createXVariableDeclaration => [
-			name = 'intermediateModelResource'
-			right = createMetadataResource(typeProvider)
-		]
-		XbaseFactory.eINSTANCE.createXBlockExpression => [
-			expressions += expressions(
-				resourceVariableDeclaration,
-				XbaseFactory.eINSTANCE.createXMemberFeatureCall => [
-					memberCallTarget = XbaseFactory.eINSTANCE.createXFeatureCall => [
-						feature = resourceVariableDeclaration
-					]
-					feature = typeProvider.findMethod(IntermediateModelManagement, 'addResourceBridge').staticExtensionWildcardImported
-					memberCallArguments += #[resourceBridge, intermediate]
-					explicitOperationCall = true
-				]
-			)
-		]
-	}
-
-	def private hasResourceParticipation(Participation participation) {
-		participation.classes.containsAny [isForResource]
-	}
-	
-	def private getResourceParticipation(Participation participation) {
-		participation.classes.findFirst [isForResource]
-	}
-	
-	def private isForResource(ParticipationClass participationClass) {
-		participationClass.superMetaclass instanceof ResourceMetaclass
 	}
 	
 	def private callOperationOnRelation(extension RoutineTypeProvider typeProvider,

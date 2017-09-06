@@ -54,7 +54,6 @@ class VitruvDomainAdapter extends VitruviusDomainImpl implements Wrapper<VitruvD
 			.flatMap [recursiveSubPackages]
 			.flatMap [EClassifiers]
 			.filter(EClass)
-			.filter [!isAbstract]
 			.map [toMetaclass(this)]
 			+ #[LanguageElementsFactory.eINSTANCE.createResourceMetaclass
 				.withClassifierProvider(classifierProvider).fromDomain(this)]

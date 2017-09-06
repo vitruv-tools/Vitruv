@@ -17,6 +17,7 @@ import org.eclipse.emf.ecore.xmi.impl.XMLResourceFactoryImpl
 import tools.vitruv.dsls.common.helper.ClassNameGenerator
 import tools.vitruv.dsls.commonalities.language.CommonalityAttribute
 import tools.vitruv.dsls.commonalities.language.CommonalityFile
+import tools.vitruv.dsls.commonalities.language.CommonalityReference
 import tools.vitruv.dsls.commonalities.language.elements.EClassAdapter
 import tools.vitruv.dsls.commonalities.language.elements.EDataTypeAdapter
 import tools.vitruv.dsls.reactions.api.generator.ReferenceClassNameAdapter
@@ -26,6 +27,7 @@ import static org.eclipse.emf.ecore.ETypedElement.UNBOUNDED_MULTIPLICITY
 
 import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
 import static extension tools.vitruv.dsls.commonalities.generator.GeneratorConstants.*
+import static extension tools.vitruv.dsls.commonalities.language.extensions.CommonalitiesLanguageModelExtensions.*
 
 package class IntermediateModelGenerator extends SubGenerator {
 
@@ -41,20 +43,21 @@ package class IntermediateModelGenerator extends SubGenerator {
 
 		if (resourceSet.hashCode != lastSeenResourceSetHash) {
 			val conceptToCommonalityFile = resourceSet.resources
-				.map [containedCommonalityFile]
+				.map [optionalContainedCommonalityFile]
 				.filterNull
 				.groupBy [concept.name]
 				
 			outputResources = new ArrayList(conceptToCommonalityFile.size)
 			resourceSet.resourceFactoryRegistry.extensionToFactoryMap.computeIfAbsent('ecore', [new XMLResourceFactoryImpl])
 
-			conceptToCommonalityFile.entrySet.forEach [
+			conceptToCommonalityFile.entrySet.map [
 				val concept = key
 				val commonalityFiles = value
 
-				val generatedPackage = generateCommonalityEPackage(concept, commonalityFiles, resourceSet)
-				reportGeneratedConcept(concept, generatedPackage)
-			]
+				val packageGenerator = generateCommonalityEPackage(concept, commonalityFiles, resourceSet)
+				reportGeneratedConcept(concept, packageGenerator.generatedEPackage)
+				return packageGenerator
+			].forEach [link]
 			
 			generatedConcepts = new HashSet(conceptToCommonalityFile.keySet)
 
@@ -72,10 +75,11 @@ package class IntermediateModelGenerator extends SubGenerator {
 		val outputResource = resourceSet.getResource(conceptIntermediateModelOutputUri, false) ?:
 			resourceSet.createResource(conceptIntermediateModelOutputUri)
 
-		val generatedPackage = new EPackageGenerator(conceptName, commonalityFiles, generationContext).generateEPackage()
+		val packageGenerator = new EPackageGenerator(conceptName, commonalityFiles, generationContext)
+		val generatedPackage = packageGenerator.generateEPackage()
 		outputResource.contents += generatedPackage
 		outputResources += outputResource
-		return generatedPackage
+		return packageGenerator
 	}
 
 	private static class EPackageGenerator {
@@ -83,11 +87,21 @@ package class IntermediateModelGenerator extends SubGenerator {
 		val Iterable<CommonalityFile> commonalityFiles
 		val String conceptName
 		val extension GenerationContext generationContext
+		val List<Runnable> linkCallbacks = new ArrayList
 
 		private new(String conceptName, Iterable<CommonalityFile> commonalityFiles, GenerationContext generationContext) {
 			this.conceptName = conceptName
 			this.commonalityFiles = commonalityFiles
 			this.generationContext = generationContext
+		}
+		
+		def private <T> whenLinking(T object, Consumer<T> linker) {
+			linkCallbacks.add([linker.accept(object)])
+			return object
+		}
+		
+		def link() {
+			linkCallbacks.forEach [run]
 		}
 
 		def private generateEPackage() {
@@ -107,6 +121,7 @@ package class IntermediateModelGenerator extends SubGenerator {
 				name = commonalityFile.intermediateModelClass.simpleName
 				ESuperTypes += IntermediateModelBasePackage.eINSTANCE.intermediate
 				EStructuralFeatures += commonality.attributes.map [generateEFeature()]
+				EStructuralFeatures += commonality.references.map [generateEReference()]
 				referencedAs(commonalityFile.intermediateModelClass)
 			]
 		}
@@ -127,6 +142,15 @@ package class IntermediateModelGenerator extends SubGenerator {
 			} => [
 				name = attribute.name
 				upperBound = if (attribute.isMultiValued) UNBOUNDED_MULTIPLICITY else 1
+			]
+		}
+		
+		def private generateEReference(CommonalityReference reference) {
+			(EcoreFactory.eINSTANCE.createEReference => [
+				name = reference.name
+				upperBound = if (reference.isMultiValued) UNBOUNDED_MULTIPLICITY else 1
+			]).whenLinking [
+				EType = reference.referenceType.generatedIntermediateModelClass
 			]
 		}
 
@@ -152,10 +176,6 @@ package class IntermediateModelGenerator extends SubGenerator {
 				referencedAs(commonalityFile.intermediateModelRootClass)
 			]
 		}
-	}
-	
-	def private static containedCommonalityFile(Resource resource) {
-		resource.contents.filter(CommonalityFile).head
 	}
 	
 	def private static referencedAs(EObject element, ClassNameGenerator className) {

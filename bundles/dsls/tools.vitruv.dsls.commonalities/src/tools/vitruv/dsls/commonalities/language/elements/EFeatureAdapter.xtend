@@ -51,6 +51,7 @@ class EFeatureAdapter extends EFeatureAttributeImpl implements Wrapper<EStructur
 	}
 	
 	override basicGetClassLikeContainer() {
+		if (eIsProxy) return null
 		checkMetaclassSet()
 		containingMetaclass
 	}
@@ -62,6 +63,7 @@ class EFeatureAdapter extends EFeatureAttributeImpl implements Wrapper<EStructur
 	}
 
 	override getType() {
+		if (eIsProxy) return null
 		checkAdaptedTypeRead()
 		adaptedType
 	}

@@ -13,6 +13,7 @@ import org.eclipse.xtext.generator.IFileSystemAccess2
 import tools.vitruv.dsls.commonalities.language.Commonality
 import tools.vitruv.dsls.commonalities.language.CommonalityAttribute
 import tools.vitruv.dsls.commonalities.language.CommonalityFile
+import tools.vitruv.dsls.commonalities.language.CommonalityReference
 import tools.vitruv.dsls.commonalities.language.Concept
 import tools.vitruv.dsls.commonalities.language.ParticipationAttribute
 import tools.vitruv.dsls.commonalities.language.ParticipationClass
@@ -53,7 +54,6 @@ package class GenerationContext {
 	def package getGeneratedIntermediateModelClass(Commonality commonality) {
 		commonality.containingCommonalityFile.generatedIntermediateModelClass
 	}
-	
 
 	def package getChangeClass(CommonalityFile commonalityFile) {
 		commonalityFile.generatedIntermediateModelClass
@@ -128,7 +128,7 @@ package class GenerationContext {
 	def package getIntermediateModelOutputUri(String conceptName) {
 		fsa.getURI(conceptName + MODEL_OUTPUT_FILE_EXTENSION)
 	}
-
+	
 	def package dispatch EStructuralFeature getEFeatureToReference(CommonalityAttribute attribute) {
 		commonalityFile.generatedIntermediateModelClass.getEStructuralFeature(attribute.name)
 	}
@@ -153,7 +153,11 @@ package class GenerationContext {
 	def private dispatch findVitruvDomain(Concept concept) {
 		concept.vitruvDomain
 	}
-
+	
+	def package dispatch EStructuralFeature getEFeatureToReference(CommonalityReference reference) {
+		commonalityFile.generatedIntermediateModelClass.getEStructuralFeature(reference.name)
+	}
+	
 	def package getVitruvDomain(Concept concept) {
 		val ePackage = concept.name.generatedIntermediateModelPackage
 		checkState(ePackage !== null, '''No ePackage was registered for the concept “«concept.name»”!''')

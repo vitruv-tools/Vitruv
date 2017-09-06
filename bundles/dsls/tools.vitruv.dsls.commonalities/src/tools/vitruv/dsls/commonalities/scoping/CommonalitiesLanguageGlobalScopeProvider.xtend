@@ -7,6 +7,7 @@ import org.eclipse.emf.ecore.EReference
 import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.xtext.common.types.xtext.TypesAwareDefaultGlobalScopeProvider
 import org.eclipse.xtext.resource.IEObjectDescription
+import org.eclipse.xtext.scoping.IScope
 
 import static tools.vitruv.dsls.commonalities.language.LanguagePackage.Literals.*
 
@@ -27,6 +28,9 @@ class CommonalitiesLanguageGlobalScopeProvider extends TypesAwareDefaultGlobalSc
 				
 			case PARTICIPATION_RELATION__OPERATOR:
 				participationRelationOperatorScope.get.forResourceSet(resource.resourceSet)
+				
+			default:
+				IScope.NULLSCOPE
 		}
 	}
 }

@@ -14,7 +14,7 @@ package class CommonalityI extends CommonalityImpl {
 	}
 	
 	override getAllMembers() {
-		new UnmodifiableEList(attributes)
+		new UnmodifiableEList((getAttributes() + getReferences()).toList)
 	}
 	
 	def dispatch isSuperTypeOf(Classifier classifier) {
@@ -26,10 +26,15 @@ package class CommonalityI extends CommonalityImpl {
 	}
 	
 	override basicGetDomain() {
-		containingCommonalityFile.concept
+		optionalContainingCommonalityFile?.concept
 	}
 	
 	override toString() {
 		'''«packageLikeContainer»:«name»'''
 	}
+	
+	override isAbstract() {
+		false
+	}
+	
 }

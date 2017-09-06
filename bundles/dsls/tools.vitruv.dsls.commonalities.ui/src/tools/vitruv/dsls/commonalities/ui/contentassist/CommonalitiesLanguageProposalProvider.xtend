@@ -11,7 +11,6 @@ import org.eclipse.xtext.ui.editor.contentassist.ContentAssistContext
 class CommonalitiesLanguageProposalProvider extends AbstractCommonalitiesLanguageProposalProvider {
 	
 	@Inject Provider<QualifiedMetaclassProposalFactory> qMetaclassProposalFactory
-	@Inject Provider<QualifiedParticipationAttributeProposalFactory> qPartAttributeProposalFactory
 	@Inject Provider<UnqualifiedMetaclassProposalFactory> uMetaclassProposalFactory
 	@Inject Provider<DomainPrefixProposalFactory> domainPrefixProposalFactory
 	
@@ -23,9 +22,6 @@ class CommonalitiesLanguageProposalProvider extends AbstractCommonalitiesLanguag
 			case "UnqualifiedMetaclass":
 				uMetaclassProposalFactory.init(contentAssistContext)
 			
-			case "QualifiedParticipationAttribute":
-				qPartAttributeProposalFactory.init(contentAssistContext)
-				
 			case "DomainReference":
 				domainPrefixProposalFactory.init(contentAssistContext)
 			
@@ -33,28 +29,6 @@ class CommonalitiesLanguageProposalProvider extends AbstractCommonalitiesLanguag
 				super.getProposalFactory(ruleName, contentAssistContext)
 		}
 	}
-	
-	/*
-	override completeParticipationClassDeclaration_SuperMetaclass(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
-		super.completeParticipationClassDeclaration_SuperMetaclass(model, assignment, context, acceptor)
-	}
-	
-	override completeParticipationDeclaration_Domain(EObject model, Assignment assignment, ContentAssistContext context, extension ICompletionProposalAcceptor acceptor) {
-		// propose not only domains but also domain attributes
-		val scopeDomains = scopeProvider.getScope(model, PARTICIPATION__DOMAIN).allElements
-		
-		scopeDomains
-			.map(domainPrefixProposalFactory.init(context).fun)
-			.forEach [accept]
-		
-		scopeDomains
-			.map [EObjectOrProxy]
-			.filter(Domain)
-			.flatMap [metaclasses]
-			.map(descriptionProvider)
-			.map(qMetaclassProposalFactory.init(context).fun)
-			.forEach [accept]
-	}*/
 	
 	def private <T extends CommonalitiesLanguageProposalFactory> init(Provider<T> factory, ContentAssistContext contentAssistContext) {
 		factory.get() => [

@@ -6,8 +6,6 @@ import org.eclipse.xtext.resource.IEObjectDescription
 import org.eclipse.xtext.resource.impl.DefaultResourceDescriptionStrategy
 import org.eclipse.xtext.util.IAcceptor
 import tools.vitruv.dsls.commonalities.language.Commonality
-import tools.vitruv.dsls.commonalities.language.CommonalityAttribute
-import tools.vitruv.dsls.commonalities.language.ParticipationClass
 import tools.vitruv.dsls.commonalities.names.IEObjectDescriptionProvider
 
 class CommonalityFileResourceDescriptionStrategy extends DefaultResourceDescriptionStrategy {
@@ -20,10 +18,10 @@ class CommonalityFileResourceDescriptionStrategy extends DefaultResourceDescript
 	
 	def dispatch createEObjectDescriptions(Commonality commonality, IAcceptor<IEObjectDescription> acceptor) {
 		acceptor.accept(describe(commonality))
-		return true
+		return false
 	}
 	
-	def dispatch createEObjectDescriptions(ParticipationClass participationClass, IAcceptor<IEObjectDescription> acceptor) {
+	/*def dispatch createEObjectDescriptions(ParticipationClass participationClass, IAcceptor<IEObjectDescription> acceptor) {
 		acceptor.accept(describe(participationClass))
 		return false
 	}
@@ -31,5 +29,5 @@ class CommonalityFileResourceDescriptionStrategy extends DefaultResourceDescript
 	def dispatch createEObjectDescriptions(CommonalityAttribute attribute, IAcceptor<IEObjectDescription> acceptor) {
 		acceptor.accept(describe(attribute))
 		return false
-	}
+	}*/
 }

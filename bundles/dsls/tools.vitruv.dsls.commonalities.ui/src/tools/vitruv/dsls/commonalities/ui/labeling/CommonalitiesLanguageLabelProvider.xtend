@@ -8,6 +8,7 @@ import org.eclipse.emf.edit.ui.provider.AdapterFactoryLabelProvider
 import org.eclipse.jface.viewers.StyledString
 import org.eclipse.xtext.xbase.ui.labeling.XbaseLabelProvider
 import tools.vitruv.dsls.commonalities.language.CommonalityAttribute
+import tools.vitruv.dsls.commonalities.language.CommonalityReference
 import tools.vitruv.dsls.commonalities.language.Participation
 import tools.vitruv.dsls.commonalities.language.elements.Wrapper
 
@@ -26,7 +27,6 @@ class CommonalitiesLanguageLabelProvider extends XbaseLabelProvider {
 	}
 
 	// Labels and icons can be computed like this:
-	
 //	def text(Greeting ele) {
 //		'A greeting to ' + ele.name
 //	}
@@ -34,12 +34,11 @@ class CommonalitiesLanguageLabelProvider extends XbaseLabelProvider {
 //	def image(Greeting ele) {
 //		'Greeting.gif'
 //	}
-
 	def text(Participation participation) {
 		val participationClasses = participation.classes.toList
 		val result = new StyledString().append(participation.domainName ?: '?')
 		if (participationClasses.size == 1) {
-			result.append(':').append(participationClasses.head.name)
+			result.append(':').append(participationClasses.head.name ?: '?')
 		} else if (participationClasses.size > 1) {
 			result.append(':(').append(participationClasses.map[name].join(', ')).append(')')
 		}
@@ -47,13 +46,27 @@ class CommonalitiesLanguageLabelProvider extends XbaseLabelProvider {
 	}
 
 	def text(CommonalityAttribute attribute) {
-		new StyledString().append(attribute.name).appendInfo(': ').appendInfo(attribute.type.name)
+		val typeName = attribute.type?.name
+		val sstring = new StyledString(attribute.name)
+		if (typeName !== null) {
+			sstring.appendInfo(': ').appendInfo(typeName)
+		}
+		return sstring
+	}
+
+	def text(CommonalityReference reference) {
+		val typeName = reference.referenceType?.name
+		val sstring = new StyledString(reference.name)
+		if (typeName !== null) {
+			sstring.appendInfo(' -> ').appendInfo(typeName)
+		}
+		return sstring
 	}
 
 	def image(Wrapper<?> wrapper) {
 		getImage(wrapper.wrapped)
 	}
-	
+
 	def private appendInfo(StyledString sstring, String text) {
 		sstring.append(text, StyledString.QUALIFIER_STYLER)
 	}

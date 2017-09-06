@@ -24,22 +24,17 @@ import static extension tools.vitruv.dsls.commonalities.language.extensions.Comm
  * Decides whether a created model class requires special initialization and
  * provides expressions for these initializations.
  */
-package class ParticipationClassSpecialInitializationBuilder {
+package class ParticipationClassSpecialInitializationBuilder 
+	extends ReactionsSubGenerator<ParticipationClassSpecialInitializationBuilder> {
 	extension var RoutineTypeProvider typeProvider
 	ParticipationClass participationClass
 	Function<ParticipationClass, XFeatureCall> participationClassReferenceProvider
-	extension GenerationContext generationContext
 
 	def package forParticipationClass(ParticipationClass participationClass) {
 		this.participationClass = participationClass
 		return this
 	}
 	
-	def package withGenerationContext(GenerationContext context) {
-		this.generationContext = context
-		this
-	}
-
 	def package hasSpecialInitialization() {
 		participationClass.isForResourceMetaclass || participationClass.participation.hasSpecialInitialization
 	}

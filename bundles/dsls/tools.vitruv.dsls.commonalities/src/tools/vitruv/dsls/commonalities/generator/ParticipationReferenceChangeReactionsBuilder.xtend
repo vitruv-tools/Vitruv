@@ -1,12 +1,9 @@
 package tools.vitruv.dsls.commonalities.generator
 
-import com.google.inject.Inject
 import org.eclipse.emf.ecore.EReference
-import tools.vitruv.dsls.commonalities.language.CommonalityReference
 import tools.vitruv.dsls.commonalities.language.CommonalityReferenceMapping
 import tools.vitruv.dsls.commonalities.language.Participation
 import tools.vitruv.dsls.reactions.builder.FluentReactionBuilder
-import tools.vitruv.dsls.reactions.builder.FluentReactionsLanguageBuilder
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.RoutineTypeProvider
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.UndecidedMatcherStatementBuilder
 
@@ -14,11 +11,11 @@ import static com.google.common.base.Preconditions.*
 
 import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
 import static extension tools.vitruv.dsls.commonalities.generator.EmfAccessExpressions.*
+import static extension tools.vitruv.dsls.commonalities.generator.ReactionsGeneratorConventions.*
 import static extension tools.vitruv.dsls.commonalities.language.extensions.CommonalitiesLanguageModelExtensions.*
 
-class ParticipationReferenceChangeReactionsBuilder {
-	@Inject FluentReactionsLanguageBuilder create
-	extension GenerationContext generationContext
+class ParticipationReferenceChangeReactionsBuilder 
+	extends ReactionsSubGenerator<ParticipationReferenceChangeReactionsBuilder> {
 	Participation targetParticipation
 
 	def package forParticipation(Participation targetParticipation) {
@@ -26,11 +23,6 @@ class ParticipationReferenceChangeReactionsBuilder {
 		this
 	}
 
-	def package withGenerationContext(GenerationContext context) {
-		this.generationContext = context
-		this
-	}	
-	
 	def package Iterable<FluentReactionBuilder> getReactions() {
 		checkState(targetParticipation !== null, "No participation to create reactions for was set!")
 		checkState(generationContext !== null, "No generation context was set!")
@@ -42,53 +34,59 @@ class ParticipationReferenceChangeReactionsBuilder {
 	
 	def reactionsForReferenceMappingRightChange(CommonalityReferenceMapping mapping) {
 		if (mapping.reference.isMultiValued) {
-			#[singleReferenceSetReaction(mapping)]
-		} else {
 			#[multiReferenceAddReaction(mapping), multiReferenceRemoveReaction(mapping)]
+		} else {
+			#[singleReferenceSetReaction(mapping)]
 		}
 	}
 	
 	def private singleReferenceSetReaction(CommonalityReferenceMapping mapping) {
-		create.reaction('''«mapping.participation.name»«mapping.reference.name.toFirstUpper»Change''')
+		create.reaction('''«mapping.participationAttributeReactionName»Change''')
 			.afterElement.replacedAt(mapping.participationReferenceChangeClass, mapping.participationEReference)
 			.call [
 				match [
 					retrieveIntermediate()
-					retrieveReferencedIntermediate(mapping.declaringReference)
-					
+					retrieveReferencedIntermediateOf(mapping).correspondingTo.newValue
 				]
 				.action [
 					update('intermediate') [
 						eSetFeature(variable('intermediate'), mapping.declaringReference.name, referencedIntermediate)
 					]
 				]
+			] => [
+				if (mapping.participationEReference.isContainment) {
+					call(targetParticipation.insertRoutine)
+				}
 			]
 	}
 
 	def private multiReferenceAddReaction(CommonalityReferenceMapping mapping) {
-		create.reaction('''«mapping.participation.name»«mapping.reference.name.toFirstUpper»ElementInsert''')
+		create.reaction('''«mapping.participationAttributeReactionName»Insert''')
 			.afterElement.insertedIn(mapping.participationReferenceChangeClass, mapping.participationEReference)
 			.call [
 				match [
 					retrieveIntermediate()
-					retrieveReferencedIntermediate(mapping.declaringReference)
-					
+					retrieveReferencedIntermediateOf(mapping).correspondingTo.newValue
 				]
 				.action [
 					update('intermediate') [
 						eAddToFeatureList(variable('intermediate'), mapping.declaringReference.name, referencedIntermediate)
 					]
 				]
+			] => [
+				if (mapping.participationEReference.isContainment) {
+					call(targetParticipation.insertRoutine)
+				}
 			]
 	}
 
 	def private multiReferenceRemoveReaction(CommonalityReferenceMapping mapping) {
-		create.reaction('''«mapping.participation.name»«mapping.reference.name.toFirstUpper»ElementRemove''').
+		create.reaction('''«mapping.participationAttributeReactionName»Remove''').
 			afterElement.removedFrom(mapping.participationReferenceChangeClass, mapping.participationEReference)
 			.call [
 				match [
 					retrieveIntermediate()
-					retrieveReferencedIntermediate(mapping.declaringReference)
+					retrieveReferencedIntermediateOf(mapping).correspondingTo.oldValue
 				]
 				.action [
 					update('intermediate') [
@@ -96,6 +94,13 @@ class ParticipationReferenceChangeReactionsBuilder {
 					]
 				]
 			]
+	}
+	
+	def private retrieveReferencedIntermediateOf(
+		extension UndecidedMatcherStatementBuilder statementBuilder,
+		CommonalityReferenceMapping mapping
+	) {
+		vall('referencedIntermediate').retrieveAsserted(mapping.referenceTypeChangeClass)
 	}
 	
 	def private getReferencedIntermediate(extension RoutineTypeProvider builder) {
@@ -106,12 +111,12 @@ class ParticipationReferenceChangeReactionsBuilder {
 		mapping.reference.participationClass.changeClass
 	}
 	
-	def private retrieveIntermediate(extension UndecidedMatcherStatementBuilder builder) {
-		vall('intermediate').retrieve(commonalityFile.changeClass).correspondingTo.affectedEObject
+	def private getReferenceTypeChangeClass(CommonalityReferenceMapping mapping) {
+		mapping.declaringReference.referenceType.changeClass
 	}
 	
-	def private retrieveReferencedIntermediate(extension UndecidedMatcherStatementBuilder builder, CommonalityReference reference) {
-		vall('referencedIntermediate').retrieve(reference.referenceType.changeClass).correspondingTo.newValue
+	def private retrieveIntermediate(extension UndecidedMatcherStatementBuilder builder) {
+		vall('intermediate').retrieve(commonalityFile.changeClass).correspondingTo.affectedEObject
 	}
 	
 	def private getParticipationEReference(CommonalityReferenceMapping mapping) {

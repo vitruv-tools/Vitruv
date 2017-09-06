@@ -137,7 +137,7 @@ ParticipationAttribute:
  * References *
  **************/
  CommonalityReference:
- 	'has' name=ID 'referencing' referenceType=[Commonality|QualifiedMetaclass] '{'
+ 	'has' name=ID 'referencing' referenceType=[Commonality|QualifiedCommonality] '{'
  		mappings+=CommonalityReferenceMapping*
  	'}'
  ;
@@ -147,7 +147,7 @@ ParticipationAttribute:
  	reference=ParticipationAttribute
  	('via' referenceTargets+=[ParticipationClass|QualifiedParticipationClass] (',' referenceTargets+=[ParticipationClass|QualifiedParticipationClass])*)?
  ;
-
+ 
 
 /******************
  * Datatype Rules *
@@ -156,6 +156,10 @@ fragment QualifiedClasslike:
 	ID ':' ID;
 	
 QualifiedMetaclass:
+	QualifiedClasslike
+;
+
+QualifiedCommonality:
 	QualifiedClasslike
 ;
 

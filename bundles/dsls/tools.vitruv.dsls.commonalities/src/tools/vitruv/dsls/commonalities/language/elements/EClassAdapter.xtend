@@ -110,4 +110,10 @@ class EClassAdapter extends EClassMetaclassImpl implements Wrapper<EClass> {
 		}
 	}
 
+	override isAbstract() {
+		if (eIsProxy) return false
+		checkEClassSet()
+		wrappedEClass.isAbstract
+	}
+	
 }

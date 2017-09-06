@@ -22,7 +22,7 @@ class JvmTypeProviderHelper {
 		if (result !== null) {
 			return result
 		}
-		throw new IllegalStateException('''Could not find type “«clazz.canonicalName»”!''')
+		throw new NoSuchJvmElementException('''Could not find type “«clazz.canonicalName»”!''')
 	}
 
 	def private static checkGenericType(JvmType type) {
@@ -30,9 +30,9 @@ class JvmTypeProviderHelper {
 			return type
 		}
 		if (type === null) {
-			throw new IllegalStateException('''Type not found!''')
+			throw new NoSuchJvmElementException('''Type not found!''')
 		}
-		throw new IllegalStateException('''Expected ‹«type.qualifiedName»› to resolve to a JvmGenericType!''')
+		throw new NoSuchJvmElementException('''Expected ‹«type.qualifiedName»› to resolve to a JvmGenericType!''')
 	}
 
 	def package static JvmField findAttribute(JvmDeclaredType declaredType, String attributeName) {
@@ -42,7 +42,7 @@ class JvmTypeProviderHelper {
 		if (result !== null) {
 			return result
 		}
-		throw new IllegalStateException('''Could not find the attribute “«attributeName»” in ‹«declaredType.qualifiedName»›!''')
+		throw new NoSuchJvmElementException('''Could not find the attribute “«attributeName»” in ‹«declaredType.qualifiedName»›!''')
 	}
 
 	def package static findMethod(JvmDeclaredType type, String methodName, Class<?>... parameterTypeRestrictions) {
@@ -51,8 +51,8 @@ class JvmTypeProviderHelper {
 
 	def package static findImplementedMethod(JvmDeclaredType declaredType, String methodName, int parameterCount,
 		Class<?>... parameterTypeRestrictions) {
-		declaredType.getImplementedMethodList(methodName, parameterCount, parameterTypeRestrictions)
-			.onlyResultFor("implemented method", methodName, parameterTypeRestrictions, parameterCount, declaredType)
+		declaredType.getImplementedMethodList(methodName, parameterCount, parameterTypeRestrictions).onlyResultFor(
+			"implemented method", methodName, parameterTypeRestrictions, parameterCount, declaredType)
 	}
 
 	def package static findOptionalImplementedMethod(JvmDeclaredType declaredType, String methodName,
@@ -62,13 +62,12 @@ class JvmTypeProviderHelper {
 
 	def package static findOptionalImplementedMethod(JvmDeclaredType declaredType, String methodName,
 		int parameterCount, Class<?>... parameterTypeRestrictions) {
-		declaredType.getImplementedMethodList(methodName, parameterCount, parameterTypeRestrictions)
-			.maxOneResultFor("implemented method", methodName, parameterTypeRestrictions, parameterCount, declaredType)
-			.head
+		declaredType.getImplementedMethodList(methodName, parameterCount, parameterTypeRestrictions).maxOneResultFor(
+			"implemented method", methodName, parameterTypeRestrictions, parameterCount, declaredType).head
 	}
 
-	def private static getImplementedMethodList(JvmDeclaredType declaredType, String methodName,
-		int parameterCount, Class<?>... parameterTypeRestrictions) {
+	def private static getImplementedMethodList(JvmDeclaredType declaredType, String methodName, int parameterCount,
+		Class<?>... parameterTypeRestrictions) {
 		val extension argumentChecker = new ArgumentRestrictionChecker(parameterTypeRestrictions, parameterCount)
 		declaredType.members.filter(JvmOperation).filter [
 			simpleName == methodName && confirmsToArgumentRestrictions
@@ -99,7 +98,7 @@ class JvmTypeProviderHelper {
 		String memberName, Class<?>[] parameterTypeRestrictions, int parameterCount, JvmDeclaredType type) {
 		if (result.size === 0) {
 			val description = description(memberType, memberName, parameterTypeRestrictions, parameterCount, type)
-			throw new IllegalStateException('''Could not find a «description»!''')
+			throw new NoSuchJvmElementException('''Could not find a «description»!''')
 		}
 		return result.get(0)
 	}
@@ -108,10 +107,12 @@ class JvmTypeProviderHelper {
 		Class<?>[] parameterTypeRestrictions, int parameterCount, JvmDeclaredType type) {
 		if (result.size > 1) {
 			val description = description(memberType, memberName, parameterTypeRestrictions, parameterCount, type)
-			throw new IllegalStateException('''Found more that one «description»:
+			throw new NoSuchJvmElementException('''
+			Found more that one «description»:
 			«FOR resultElement : result»
 				«resultElement.identifier»
-			«ENDFOR»''')
+			«ENDFOR»
+			''')
 		}
 		return result
 	}
@@ -120,7 +121,10 @@ class JvmTypeProviderHelper {
 		int parameterCount, JvmDeclaredType type) '''
 		«memberType»«IF memberName !== null» “«memberName»”«ENDIF»«
 			»«IF parameterTypeRestrictions.length > 0»«
-				» with the parameters «FOR a : parameterTypeRestrictions SEPARATOR ", "»‹a›«ENDFOR»«
+				» with the parameters («
+				»«FOR restriction : parameterTypeRestrictions SEPARATOR ", "»«
+					»‹«IF (restriction == TypeVariable)»Type Variable«ELSE»«restriction»«ENDIF»›«
+				»«ENDFOR»)«
 			»«ENDIF»«
 			»«IF parameterCount != -1»«» having exactly «parameterCount» parameters«ENDIF»«
 			» in ‹«type.qualifiedName»›!
@@ -152,13 +156,25 @@ class JvmTypeProviderHelper {
 		return true
 	}
 	
-	def package static findMethod(IJvmTypeProvider typeProvider, String typeQualifiedName, String methodName, Class<?>... argumentRestrictions) {
-		typeProvider.findTypeByName(typeQualifiedName).checkGenericType.findMethod(methodName, argumentRestrictions)
+	def package static findMethod(IJvmTypeProvider typeProvider, String typeQualifiedName, String methodName,
+		Class<?>... parameterTypeRestrictions) {
+		typeProvider.findMethod(typeQualifiedName, methodName, -1, parameterTypeRestrictions)
+	}
+
+	def package static findMethod(IJvmTypeProvider typeProvider, String typeQualifiedName, String methodName,
+		int parameterCount, Class<?>... parameterTypeRestrictions) {
+		typeProvider.findTypeByName(typeQualifiedName).checkGenericType
+			.findMethod(methodName, parameterCount, parameterTypeRestrictions)
 	}
 
 	def package static findMethod(IJvmTypeProvider typeProvider, Class<?> clazz, String methodName,
-		Class<?>... argumentRestrictions) {
-		typeProvider.findType(clazz).checkGenericType.findMethod(methodName, argumentRestrictions)
+		Class<?>... parameterTypeRestrictions) {
+		typeProvider.findMethod(clazz, methodName, -1, parameterTypeRestrictions)
+	}
+	
+	def package static findMethod(IJvmTypeProvider typeProvider, Class<?> clazz, String methodName, int parameterCount,
+		Class<?>... parameterTypeRestrictions) {
+		typeProvider.findType(clazz).checkGenericType.findMethod(methodName, parameterCount, parameterTypeRestrictions)
 	}
 
 	def package static findAttribute(IJvmTypeProvider typeProvider, Class<?> clazz, String attributeName) {
@@ -175,7 +191,7 @@ class JvmTypeProviderHelper {
 		val results = type.declaredConstructors.filter[confirmsToArgumentRestrictions].toList
 		return results.onlyResultFor('constructor', null, parameterTypeRestrictions, parameterCount, type)
 	}
-	
+
 	def package static Class<?> typeVariable() {
 		TypeVariable
 	}
@@ -218,15 +234,22 @@ class JvmTypeProviderHelper {
 				if (!parameterIter.hasNext) {
 					return false
 				}
-				val parameterType = parameterIter.next.parameterType
-				if (parameterType.qualifiedName != restriction.canonicalName
-					&& !(parameterType.type instanceof JvmTypeParameter && restriction == TypeVariable)) {
+				val parameterType = parameterIter.next.parameterType.type
+				if (parameterType.qualifiedName != restriction.canonicalName &&
+					!(parameterType instanceof JvmTypeParameter && restriction == TypeVariable)) {
 					return false
 				}
 			}
 			return true
 		}
 	}
-	
-	private static class TypeVariable {}
+
+	private static class TypeVariable {
+	}
+}
+
+public class NoSuchJvmElementException extends IllegalStateException {
+	new(String message) {
+		super(message)
+	}
 }

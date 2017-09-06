@@ -84,5 +84,9 @@ class ResourceMetaclassI extends ResourceMetaclassImpl implements Wrapper<EClass
 	override toString() {
 		'''Resource Metaclass (‹«domain»›)'''
 	}
+	
+	override isAbstract() {
+		false
+	}
 
 }

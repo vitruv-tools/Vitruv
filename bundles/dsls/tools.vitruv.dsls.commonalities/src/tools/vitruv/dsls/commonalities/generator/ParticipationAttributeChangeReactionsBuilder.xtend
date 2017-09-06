@@ -1,6 +1,5 @@
 package tools.vitruv.dsls.commonalities.generator
 
-import com.google.inject.Inject
 import java.util.Collections
 import org.eclipse.emf.ecore.EAttribute
 import org.eclipse.emf.ecore.EReference
@@ -9,27 +8,21 @@ import tools.vitruv.dsls.commonalities.language.Participation
 import tools.vitruv.dsls.commonalities.language.elements.EClassAdapter
 import tools.vitruv.dsls.commonalities.language.elements.EDataTypeAdapter
 import tools.vitruv.dsls.reactions.builder.FluentReactionBuilder
-import tools.vitruv.dsls.reactions.builder.FluentReactionsLanguageBuilder
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.UndecidedMatcherStatementBuilder
 
 import static com.google.common.base.Preconditions.*
 
 import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
 import static extension tools.vitruv.dsls.commonalities.generator.EmfAccessExpressions.*
+import static extension tools.vitruv.dsls.commonalities.generator.ReactionsGeneratorConventions.*
 import static extension tools.vitruv.dsls.commonalities.language.extensions.CommonalitiesLanguageModelExtensions.*
 
-package class ParticipationAttributeChangeReactionsBuilder {
-	@Inject FluentReactionsLanguageBuilder create
-	extension GenerationContext generationContext
+package class ParticipationAttributeChangeReactionsBuilder 
+	extends ReactionsSubGenerator<ParticipationAttributeChangeReactionsBuilder> {
 	Participation targetParticipation
 
 	def package forParticipation(Participation targetParticipation) {
 		this.targetParticipation = targetParticipation
-		this
-	}
-
-	def package withGenerationContext(GenerationContext context) {
-		this.generationContext = context
 		this
 	}
 
@@ -60,7 +53,7 @@ package class ParticipationAttributeChangeReactionsBuilder {
 	}
 
 	def private singleAttributeSetReaction(CommonalityAttributeMapping mapping) {
-		create.reaction('''«mapping.participation.name»«mapping.attribute.name.toFirstUpper»Change''')
+		create.reaction('''«mapping.participationAttributeReactionName»Change''')
 			.afterAttributeReplacedAt(mapping.participationAttributeChangeClass, mapping.participationEAttribute)
 			.call [
 				input [newValue]
@@ -76,7 +69,7 @@ package class ParticipationAttributeChangeReactionsBuilder {
 	}
 
 	def private multiAttributeAddReaction(CommonalityAttributeMapping mapping) {
-		create.reaction('''«mapping.participation.name»«mapping.attribute.name.toFirstUpper»ElementInsert''')
+		create.reaction('''«mapping.participationAttributeReactionName»Insert''')
 			.afterAttributeInsertIn(mapping.participationAttributeChangeClass, mapping.participationEAttribute)
 			.call [
 				input [newValue].match [
@@ -90,7 +83,7 @@ package class ParticipationAttributeChangeReactionsBuilder {
 	}
 
 	def private multiAttributeRemoveReaction(CommonalityAttributeMapping mapping) {
-		create.reaction('''«mapping.participation.name»«mapping.attribute.name.toFirstUpper»ElementRemove''')
+		create.reaction('''«mapping.participationAttributeReactionName»Remove''')
 			.afterAttributeRemoveFrom(mapping.participationAttributeChangeClass, mapping.participationEAttribute)
 			.call [
 				input [newValue]
@@ -106,7 +99,7 @@ package class ParticipationAttributeChangeReactionsBuilder {
 	}
 
 	def private singleReferenceSetReaction(CommonalityAttributeMapping mapping) {
-		create.reaction('''«mapping.participation.name»«mapping.attribute.name.toFirstUpper»Change''')
+		create.reaction('''«mapping.participationAttributeReactionName»Change''')
 			.afterElement.replacedAt(mapping.participationAttributeChangeClass, mapping.participationEReference)
 			.call [
 				input [newValue]
@@ -122,7 +115,7 @@ package class ParticipationAttributeChangeReactionsBuilder {
 	}
 
 	def private multiReferenceAddReaction(CommonalityAttributeMapping mapping) {
-		create.reaction('''«mapping.participation.name»«mapping.attribute.name.toFirstUpper»ElementInsert''')
+		create.reaction('''«mapping.participation.name»«mapping.attribute.name.toFirstUpper»Insert''')
 			.afterElement.insertedIn(mapping.participationAttributeChangeClass, mapping.participationEReference)
 			.call [
 				input [newValue]
@@ -138,7 +131,7 @@ package class ParticipationAttributeChangeReactionsBuilder {
 	}
 
 	def private multiReferenceRemoveReaction(CommonalityAttributeMapping mapping) {
-		create.reaction('''«mapping.participation.name»«mapping.attribute.name.toFirstUpper»ElementRemove''').
+		create.reaction('''«mapping.participationAttributeReactionName»Remove''').
 			afterElement.removedFrom(mapping.participationAttributeChangeClass, mapping.participationEReference)
 			.call [
 				input [newValue]

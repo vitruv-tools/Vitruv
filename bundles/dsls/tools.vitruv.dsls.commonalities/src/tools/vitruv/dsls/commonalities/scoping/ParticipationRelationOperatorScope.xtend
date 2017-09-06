@@ -27,14 +27,13 @@ class ParticipationRelationOperatorScope implements IScope {
 	static val WELL_KNOWN_RELATIONS = #[
 		DEFAULT_PACKAGE + '.ContainmentRelation'
 	]
+	Map<QualifiedName, JvmDeclaredType> relations
 
 	def forResourceSet(ResourceSet resourceSet) {
 		this.resourceSet = resourceSet
 		relations = readRelations()
 		return this
 	}
-
-	Map<QualifiedName, JvmDeclaredType> relations
 
 	def private readRelations() {
 		val extension typeProvider = typeProviderFactory.findOrCreateTypeProvider(resourceSet)
