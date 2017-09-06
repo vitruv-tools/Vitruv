@@ -290,6 +290,12 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 			statement.correspondenceSource = correspondingElement(CHANGE_NEW_VALUE_ATTRIBUTE)
 			new TaggedWithBuilder(builder, statement)
 		}
+		
+		def oldValue() {
+			requireOldValue = true
+			statement.correspondenceSource = correspondingElement(CHANGE_OLD_VALUE_ATTRIBUTE)
+			new TaggedWithBuilder(builder, statement)
+		}
 	}
 
 	static class UndecidedMatcherStatementBuilder {
