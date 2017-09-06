@@ -38,7 +38,7 @@ import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
 
 @Singleton
 class ExecutionTestCompiler {
-	static val TO_COMPILE = #['Identified.com']
+	static val TO_COMPILE = #['Identified.com', 'Sub.com']
 	static val String COMPLIANCE_LEVEL = "1.8";
 
 	static val TEST_PROJECT_GENERATED_SOURCES_FOLDER_NAME = 'src-gen'
@@ -59,9 +59,9 @@ class ExecutionTestCompiler {
 			]).map[compiledFolder.relativize(it)].map[toString.replace('.class', '').replace(File.separator, '.')].map [
 				classLoader.loadClass(it) as Class<? extends ChangePropagationSpecification>
 			].collect(Collectors.toList)
-
-			checkState(loadedChangePropagationClasses.size > 0, 'Failed to load change propagations!')
 		}
+		
+		checkState(loadedChangePropagationClasses.size > 0, 'Failed to load change propagations!')
 
 		return loadedChangePropagationClasses.mapFixed[newInstance]
 	}

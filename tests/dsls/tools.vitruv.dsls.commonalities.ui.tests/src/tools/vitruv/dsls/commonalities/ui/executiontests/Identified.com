@@ -17,4 +17,11 @@ commonality Identified {
 		-> PcmMockup:Resource.name
 		-> UmlMockup:Resource.name
 	}
+	
+	has sub referencing test:Sub {
+		= AllElementTypes:Root.multiValuedContainmentEReference
+		= AllElementTypes2:Root2.multiValuedContainmentEReference2
+		= PcmMockup:Repository.components
+		= UmlMockup:UPackage.classes
+	}
 }
