@@ -42,4 +42,10 @@ class VitruvDomainMetaclassesScope implements IScope {
 	override getSingleElement(EObject object) {
 		getElements(object).head
 	}
+	
+	override toString() {
+		'''«VitruvDomainMetaclassesScope.simpleName» for domains «
+		»[«FOR domain : vitruviusDomainProvider.allDomains SEPARATOR ', '»«domain»«ENDFOR»]'''
+	}
+	
 }

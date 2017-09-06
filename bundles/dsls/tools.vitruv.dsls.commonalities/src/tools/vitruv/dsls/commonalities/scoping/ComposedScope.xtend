@@ -44,11 +44,13 @@ class ComposedScope implements IScope {
 	}
 	
 	override toString() {
-		'''[
+		'''
+		[
 			«FOR delegate : delegates»
 			-> «delegate»
 			«ENDFOR»
-		]'''
+		]
+		'''
 	}
 	
 }

@@ -71,5 +71,10 @@ class ParticipationRelationOperatorScope implements IScope {
 			 ?.filter(JvmStringAnnotationValue)?.head
 			 ?.values?.head
 	}
+	
+	override toString() {
+		'''«ParticipationRelationOperatorScope.simpleName»«
+		»[«FOR name : relations.keySet SEPARATOR ', '»«name.lastSegment»«ENDFOR»]'''
+	}
 
 }
