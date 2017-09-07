@@ -34,21 +34,12 @@ public abstract class ChangeTypeRepresentation {
 		return '''«changeType»'''
 	}
 
-	/**
-	 * Returns the relevant change type representation that is used by the consistency preservation.
-	 * Is one of the atomic changes if dealing with a compound type representation , or otherwise the change itself
-	 */
-	public def AtomicChangeTypeRepresentation getRelevantAtomicChangeTypeRepresentation();
-
 	public def StringConcatenationClient getTypedChangeTypeRepresentation() {
 		return '''«changeType»«FOR param : genericTypeParameters BEFORE "<" SEPARATOR ", " AFTER ">"»«param»«ENDFOR»'''
 	}
+	
+	public def StringConcatenationClient getChangeTypeRepresentationWithWildcards() {
+		return '''«changeType»«FOR param : genericTypeParameters BEFORE "<" SEPARATOR ", " AFTER ">"»?«ENDFOR»'''
+	}
 
-	/**
-	 * Returns code for extracting the relevant atomic change, according to 
-	 * {@link #getRelevantAtomicChangeTypeRepresentation() getRelevantAtomicChangeTypeRepresentation},
-	 * from an {@link tools.vitruv.framework.change.echange.EChange EChange} given in the variable specified by <code>untypedChangeVariableName</code> 
-	 * and assigning it to the variable with the name <code>typedChangeVariableName</code>.
-	 */
-	public def StringConcatenationClient getRelevantChangeAssignmentCode(String untypedChangeVariableName, String typedChangeVariableName);
 }

@@ -5,6 +5,7 @@ import tools.vitruv.extensions.dslsruntime.reactions.structure.CallHierarchyHavi
 import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.tuid.TuidManager
 import tools.vitruv.framework.userinteraction.UserInteracting
+import org.eclipse.xtend.lib.annotations.Accessors
 
 abstract class AbstractReactionRealization extends CallHierarchyHaving implements IReactionRealization {
 	protected UserInteracting userInteracting;
@@ -14,7 +15,6 @@ abstract class AbstractReactionRealization extends CallHierarchyHaving implement
     	this.executionState = reactionExecutionState;
     	this.userInteracting = reactionExecutionState.userInteracting;
     	
-    	if (checkPrecondition(change)) {
     		try {	
 				executeReaction(change);
 			} finally {
@@ -23,9 +23,15 @@ abstract class AbstractReactionRealization extends CallHierarchyHaving implement
 				// even if there was an exception!
 				TuidManager.instance.flushRegisteredObjectsUnderModification();	
 			}
-		}
 	}
 	
 	protected def void executeReaction(EChange change);
 	
+	
+	static abstract class ChangeMatcher<T extends EChange> {
+		@Accessors(PUBLIC_GETTER)
+		T change
+
+		def boolean check(EChange change);
+	}
 }

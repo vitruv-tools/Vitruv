@@ -113,7 +113,7 @@ class ReactionsLanguageOutlineTreeProvider extends DefaultOutlineTreeProvider {
 	}
 	
 	protected def Object _text(ConcreteModelChange event) {
-		return event.extractChangeTypeRepresentation.changeType?.simpleName;
+		return '''«FOR change : event.extractChangeSequenceRepresentation.atomicChanges SEPARATOR ", "»«change.name»«ENDFOR»''';
 	}
 	
 	protected def boolean _isLeaf(Trigger element) {
