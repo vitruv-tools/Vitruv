@@ -35,7 +35,7 @@ final class ChangeTypeRepresentationExtractor {
 	private static val INSERT_CHANGE_NAME = "insertChange";
 	private static val REMOVE_CHANGE_NAME = "removeChange";
 	private static val REPLACE_CHANGE_NAME = "replaceChange";
-	private static val GENERAL_CHANGE_NAME = "generalChange";
+	private static val GENERAL_CHANGE_NAME = "change";
 	
 	public static def dispatch ChangeSequenceRepresentation extractChangeSequenceRepresentation(Trigger trigger) {
 		val atomicChange = new AtomicChangeTypeRepresentation(GENERAL_CHANGE_NAME, EChange, null, null, false, false, null);
