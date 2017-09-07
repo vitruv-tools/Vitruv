@@ -173,8 +173,9 @@ package class CommonalityAttributeChangeReactionsBuilder
 	def private retrieveRelevantCorrespondences(extension UndecidedMatcherStatementBuilder matcherBuilder) {
 		for (mapping : relevantMappings) {
 			val participationClass = mapping.attribute.participationClass
-			vall(participationClass.correspondingVariableName).retrieve(participationClass.changeClass).correspondingTo.
-				affectedEObject.taggedWith(participationClass.correspondenceTag)
+			vall(participationClass.correspondingVariableName).retrieveAsserted(participationClass.changeClass)
+				.correspondingTo.affectedEObject
+				.taggedWith(participationClass.correspondenceTag)
 		}
 	}
 

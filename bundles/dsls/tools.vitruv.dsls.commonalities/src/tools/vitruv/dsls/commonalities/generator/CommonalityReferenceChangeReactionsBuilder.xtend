@@ -136,7 +136,8 @@ class CommonalityReferenceChangeReactionsBuilder
 		CommonalityReferenceMapping mapping
 	) {
 		val participationClass = mapping.reference.participationClass
-		vall(participationClass.correspondingVariableName).retrieve(participationClass.changeClass).correspondingTo.affectedEObject
+		vall(participationClass.correspondingVariableName).retrieveAsserted(participationClass.changeClass)
+			.correspondingTo.affectedEObject
 			.taggedWith(participationClass.correspondenceTag)
 	}
 	
@@ -153,7 +154,7 @@ class CommonalityReferenceChangeReactionsBuilder
 		CommonalityReferenceMapping mapping
 	) {
 		val referencedParticipationClass = mapping.matchingReferencedParticipations.head
-		vall(referencedParticipationClass.changedVariableName).retrieve(referencedParticipationClass.changeClass)
+		vall(referencedParticipationClass.changedVariableName).retrieveAsserted(referencedParticipationClass.changeClass)
 	}
 	
 	def private static String getChangedVariableName(ParticipationClass participationClass) {

@@ -133,7 +133,7 @@ package class ReactionsGenerator extends SubGenerator {
 			.call [
 				match [
 					for (participationClass : participation.classes) {
-						vall('''corresponding_«participationClass.name»''').retrieve(participationClass.changeClass)
+						vall('''corresponding_«participationClass.name»''').retrieveAsserted(participationClass.changeClass)
 							.correspondingTo.affectedEObject
 							.taggedWith(participationClass.correspondenceTag)
 					}
@@ -151,7 +151,7 @@ package class ReactionsGenerator extends SubGenerator {
 			.afterElement(participationClass.changeClass).deleted
 			.call [
 				match [
-					vall('corresponding_intermediate').retrieve(commonalityFile.changeClass)
+					vall('corresponding_intermediate').retrieveAsserted(commonalityFile.changeClass)
 						.correspondingTo.affectedEObject
 				]
 				action [
@@ -228,7 +228,8 @@ package class ReactionsGenerator extends SubGenerator {
 				.call [
 					match [
 						for (partClass : relations.keySet.flatMap [participationClasses]) {
-							vall(partClass.correspondingVariableName).retrieve(partClass.changeClass).correspondingTo.newValue
+							vall(partClass.correspondingVariableName).retrieveAsserted(partClass.changeClass)
+								.correspondingTo.newValue
 								.taggedWith(partClass.correspondenceTag)
 						}
 					]
