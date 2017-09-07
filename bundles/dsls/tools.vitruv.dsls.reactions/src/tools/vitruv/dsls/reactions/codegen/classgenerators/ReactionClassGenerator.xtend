@@ -29,7 +29,7 @@ class ReactionClassGenerator extends ClassGenerator {
 	private final UserExecutionClassGenerator userExecutionClassGenerator
 	private final ClassNameGenerator routinesFacadeClassNameGenerator
 	private final static val typedChangeVariableName = "typedChange"
-	var JvmGenericType userExecutionClass
+	var JvmGenericType generatedClass
 	
 	new(Reaction reaction, TypesBuilderExtensionProvider typesBuilderExtensionProvider) {
 		super(typesBuilderExtensionProvider);
@@ -47,8 +47,8 @@ class ReactionClassGenerator extends ClassGenerator {
 	}
 		
 	public override JvmGenericType generateEmptyClass() {
-		userExecutionClass = userExecutionClassGenerator.generateEmptyClass()
-		reaction.toClass(reactionClassNameGenerator.qualifiedName) [
+		userExecutionClassGenerator.generateEmptyClass()
+		generatedClass = reaction.toClass(reactionClassNameGenerator.qualifiedName) [
 			visibility = JvmVisibility.DEFAULT
 		]
 	}
@@ -62,7 +62,7 @@ class ReactionClassGenerator extends ClassGenerator {
 			documentation = getCommentWithoutMarkers(reaction.documentation)
 			superTypes += typeRef(AbstractReactionRealization)
 			members += generatedMethods
-			members += userExecutionClassGenerator.generateBody(userExecutionClass)
+			members += userExecutionClassGenerator.generateBody()
 		]
 	}
 	

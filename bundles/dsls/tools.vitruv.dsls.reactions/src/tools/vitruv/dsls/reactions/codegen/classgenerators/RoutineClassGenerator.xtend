@@ -52,6 +52,7 @@ class RoutineClassGenerator extends ClassGenerator {
 	var List<AccessibleElement> currentlyAccessibleElements;
 	static val USER_EXECUTION_FIELD_NAME = "userExecution";
 	int elementUpdateCounter;
+	var JvmGenericType generatedClass
 	var JvmGenericType userExecutionClass
 
 	public new(Routine routine, TypesBuilderExtensionProvider typesBuilderExtensionProvider) {
@@ -94,12 +95,12 @@ class RoutineClassGenerator extends ClassGenerator {
 		}
 
 		userExecutionClass = userExecutionClassGenerator.generateEmptyClass()
-		routine.toClass(routineClassNameGenerator.qualifiedName) [
+		generatedClass = routine.toClass(routineClassNameGenerator.qualifiedName) [
 			visibility = JvmVisibility.PUBLIC
 		]
 	}
 
-	override generateBody(JvmGenericType generatedClass) {
+	override generateBody() {
 		val executeMethod = generateMethodExecuteEffect()
 
 		generatedClass => [
@@ -107,7 +108,7 @@ class RoutineClassGenerator extends ClassGenerator {
 			superTypes += typeRef(AbstractRepairRoutineRealization)
 			members += routine.toField(EFFECT_FACADE_FIELD_NAME, typeRef(routinesFacadeClassNameGenerator.qualifiedName))
 			members += routine.toField(USER_EXECUTION_FIELD_NAME, typeRef(userExecutionClass))
-			members += userExecutionClassGenerator.generateBody(userExecutionClass)
+			members += userExecutionClassGenerator.generateBody()
 			members += routine.generateConstructor()
 			members += generateInputFields()
 			members += executeMethod
