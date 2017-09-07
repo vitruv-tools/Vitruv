@@ -10,6 +10,7 @@ import tools.vitruv.extensions.dslruntime.commonalities.resources.Resource
 import tools.vitruv.extensions.dslruntime.commonalities.resources.ResourcesPackage
 import tools.vitruv.extensions.dslsruntime.reactions.helper.PersistenceHelper
 import tools.vitruv.extensions.dslsruntime.reactions.helper.ReactionsCorrespondenceHelper
+import tools.vitruv.framework.tuid.TuidManager
 import tools.vitruv.framework.util.datatypes.VURI
 
 import static com.google.common.base.Preconditions.*
@@ -28,6 +29,10 @@ class IntermediateResourceBridgeI extends IntermediateResourceBridgeImpl {
 	}
 
 	def private nameChanged(String oldName) {
+		// TODO continuing here breaks stuff when changes are reapplied by Vitruv
+		// Remove the following line once changes are recorded directly and ther’s no need
+		// for rolling them back anymore.
+		if (isPersisted) return;
 		this.fullPathChanged(path, oldName, fileExtension)
 	}
 
@@ -68,11 +73,12 @@ class IntermediateResourceBridgeI extends IntermediateResourceBridgeImpl {
 	}
 
 	def private discard(URI oldUri) {
-		// TODO how to do that in a way Vitruv will recognize it?		
+		// TODO handling if content == null
 		isPersisted = false
 	}
 
 	def private persist() {
+		TuidManager.instance.updateTuidsOfRegisteredObjects()
 		resourceAccess.persistAsRoot(content, VURI.getInstance(persistanceUri))
 		this.isPersisted = true
 		if (eContainer === null) {
