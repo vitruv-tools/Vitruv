@@ -26,8 +26,6 @@ import static extension tools.vitruv.dsls.commonalities.language.extensions.Comm
 
 package class ReactionsGenerator extends SubGenerator {
 
-	static val DEBUG_WRITE_REACTIONS = true
-
 	val Supplier<IReactionsGenerator> reactionsGeneratorProvider
 	val Supplier<CommonalityAttributeChangeReactionsBuilder> commonalityAttributeChangeReactionsBuilder
 	val Supplier<ParticipationAttributeChangeReactionsBuilder> participationAttributeChangeReactionsBuilder
@@ -35,6 +33,7 @@ package class ReactionsGenerator extends SubGenerator {
 	val Supplier<ParticipationReferenceChangeReactionsBuilder> participationReferenceChangeReactionsBuilder
 	val Supplier<CommonalityReferenceChangeReactionsBuilder> commonalityReferenceChangeReactionsBuilder
 	@Inject Provider<ReactionsGenerationContext> reactionsGeneratorContextProvider
+	@Inject CommonalitiesGenerationSettings generationSettings
 	extension ReactionsGenerationContext reactionsGenerationContext
 
 	@Inject
@@ -95,7 +94,7 @@ package class ReactionsGenerator extends SubGenerator {
 			generator.addReactionsFile(reactionFile)
 			generator.generate(fsa)
 
-			if (DEBUG_WRITE_REACTIONS) {
+			if (generationSettings.createReactionFiles) {
 				generator.writeReactions(fsa)
 			}
 		} finally {
