@@ -1,5 +1,6 @@
 package tools.vitruv.dsls.commonalities.ui.executiontests
 
+import com.google.inject.Inject
 import com.google.inject.Singleton
 import java.io.ByteArrayInputStream
 import java.io.File
@@ -30,6 +31,7 @@ import org.eclipse.xtend.lib.annotations.FinalFieldsConstructor
 import org.eclipse.xtext.ui.XtextProjectHelper
 import org.eclipse.xtext.ui.util.JREContainerProvider
 import tools.vitruv.dsls.common.VitruviusDslsCommonConstants
+import tools.vitruv.dsls.commonalities.generator.CommonalitiesGenerationSettings
 import tools.vitruv.framework.change.processing.ChangePropagationSpecification
 
 import static com.google.common.base.Preconditions.*
@@ -47,6 +49,7 @@ class ExecutionTestCompiler {
 
 	var Iterable<Class<? extends ChangePropagationSpecification>> loadedChangePropagationClasses
 	var compiled = false
+	@Inject CommonalitiesGenerationSettings generationSettings
 
 	def getChangePropagationDefinitions() {
 		if (!compiled) {
@@ -69,6 +72,7 @@ class ExecutionTestCompiler {
 	def private compile() {
 
 		val testProject = prepareTestProject()
+		setGenerationSettings()
 
 		// Disable automatic building 
 		ResourcesPlugin.workspace.description = ResourcesPlugin.workspace.description => [autoBuilding = false]
@@ -133,6 +137,18 @@ class ExecutionTestCompiler {
 		]
 
 		return new Project(eclipseProject, sourcesFolder, javaProjectBinFolder)
+	}
+	
+	def private setGenerationSettings() {
+		val eclipseApplication = System.getProperty('eclipse.application')
+		if (eclipseApplication === null) return;
+		if (eclipseApplication.contains('org.eclipse.pde.junit')) {
+			// always generate reactions when run from Eclipse, as they are helpful for debugging.
+			generationSettings.createReactionFiles = true			
+		} else if (eclipseApplication.contains('surefire')) {
+			// never create reactions when run from Maven because it is unnecessary and logs errors.
+			generationSettings.createReactionFiles = false
+		}
 	}
 
 	def private createManifestMf(IProject project) {
