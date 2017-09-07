@@ -139,7 +139,7 @@ class ReactionClassGenerator extends ClassGenerator {
 	
 	// FIXME HK Use better change matching that using a counter, e.g. with state handling matcher classes
 	protected def generateMatchChangesMethod() {
-		val methodName = PRECONDITION_METHOD_NAME;
+		val methodName = MATCH_METHOD_NAME;
 		val matchMethods = changeSequenceRepresentation.atomicChanges.mapFixed[generateMatchChangeMethod]
 		val resetChangesMethod = generateResetChangesMethod;
 		return getOrGenerateMethod(methodName, typeRef(Boolean.TYPE)) [
