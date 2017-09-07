@@ -15,7 +15,8 @@ import org.eclipse.xtext.common.types.JvmGenericType
 class RoutineFacadeClassGenerator extends ClassGenerator {
 	val ReactionsSegment reactionsSegment
 	val ClassNameGenerator routinesFacadeNameGenerator;
-
+	var JvmGenericType generatedClass
+	
 	new(ReactionsSegment reactionsSegment, TypesBuilderExtensionProvider typesBuilderExtensionProvider) {
 		super(typesBuilderExtensionProvider);
 		this.reactionsSegment = reactionsSegment
@@ -23,10 +24,10 @@ class RoutineFacadeClassGenerator extends ClassGenerator {
 	}
 
 	public override generateEmptyClass() {
-		reactionsSegment.toClass(routinesFacadeNameGenerator.qualifiedName)[]
+		generatedClass = reactionsSegment.toClass(routinesFacadeNameGenerator.qualifiedName)[]
 	}
 
-	override generateBody(JvmGenericType generatedClass) {
+	override generateBody() {
 		generatedClass => [
 			superTypes += typeRef(AbstractRepairRoutinesFacade);
 			members += reactionsSegment.toConstructor() [

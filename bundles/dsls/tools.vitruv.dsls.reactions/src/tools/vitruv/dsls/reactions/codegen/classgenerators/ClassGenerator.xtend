@@ -35,7 +35,7 @@ abstract class ClassGenerator extends TypesBuilderExtensionProvider implements I
 
 	def JvmGenericType generateEmptyClass()
 
-	def JvmGenericType generateBody(JvmGenericType generatedClass) {}
+	def JvmGenericType generateBody() {}
 
 	override JvmOperation getOrGenerateMethod(EObject contextObject, String methodName, JvmTypeReference returnType,
 		Procedure1<? super JvmOperation> initializer) {

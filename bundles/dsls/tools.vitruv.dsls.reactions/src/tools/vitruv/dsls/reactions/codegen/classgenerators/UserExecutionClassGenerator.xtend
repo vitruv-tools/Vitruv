@@ -32,7 +32,8 @@ class UserExecutionClassGenerator extends ClassGenerator {
 	var counterExecuteActionMethods = 1
 	var counterCheckMatcherPreconditionMethods = 1
 	var counterGetCorrespondenceSource = 1
-
+	private var JvmGenericType generatedClass
+	
 	new(TypesBuilderExtensionProvider typesBuilderExtensionProvider, EObject objectMappedToClass,
 		String qualifiedClassName) {
 		super(typesBuilderExtensionProvider)
@@ -45,13 +46,14 @@ class UserExecutionClassGenerator extends ClassGenerator {
 	}
 
 	override generateEmptyClass() {
-		return objectMappedToClass.toClass(qualifiedClassName) [
+		this.generatedClass = objectMappedToClass.toClass(qualifiedClassName) [
 			visibility = JvmVisibility.PRIVATE
 			static = true
 		]
+		return generatedClass;
 	}
 
-	override generateBody(JvmGenericType generatedClass) {
+	override generateBody() {
 		generatedClass => [
 			superTypes += typeRef(AbstractRepairRoutineRealization.UserExecution)
 			members += generateConstructor()
