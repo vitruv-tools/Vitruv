@@ -158,4 +158,10 @@ public abstract class VitruviusApplicationTest extends VitruviusUnmonitoredAppli
 			throw e;
 		}
 	}
-}
+	
+	protected <T> T from(Class<T> clazz, String modelPathInProject) {
+		final Resource requestedResource = getModelResource(modelPathInProject);
+		startRecordingChanges(requestedResource);
+		return clazz.cast(requestedResource.getContents().get(0));
+	}
+ }
