@@ -7,7 +7,6 @@ import java.util.ArrayList
 import org.eclipse.xtext.common.types.JvmTypeReference
 import tools.vitruv.framework.userinteraction.UserInteracting
 import tools.vitruv.dsls.mirbase.mirBase.NamedJavaElement
-import tools.vitruv.dsls.reactions.reactionsLanguage.Trigger
 import tools.vitruv.extensions.dslsruntime.reactions.ReactionExecutionState
 import org.eclipse.emf.ecore.EClass
 import tools.vitruv.dsls.reactions.reactionsLanguage.inputTypes.InputTypesPackage
@@ -15,8 +14,6 @@ import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.dsls.mirbase.mirBase.MetaclassReference
 import static extension tools.vitruv.dsls.reactions.codegen.helper.ReactionsLanguageHelper.*;
 import tools.vitruv.dsls.mirbase.mirBase.NamedMetaclassReference
-import tools.vitruv.dsls.reactions.reactionsLanguage.ConcreteModelChange
-import static extension tools.vitruv.dsls.reactions.codegen.changetyperepresentation.ChangeTypeRepresentationExtractor.*
 import tools.vitruv.dsls.reactions.codegen.helper.AccessibleElement
 import static tools.vitruv.dsls.reactions.codegen.helper.ReactionsLanguageConstants.*;
 
@@ -78,7 +75,7 @@ class ParameterGenerator {
 	}
 	
 	public def Iterable<JvmFormalParameter> generateMethodInputParameters(EObject contextObject, Iterable<AccessibleElement> elements) {
-		elements.map[toParameter(contextObject, it.name, typeRef(it.fullyQualifiedTypeName, it.typeParameters.map[typeRef]))]
+		elements.map[toParameter(contextObject, it.name, it.generateTypeRef(_typeReferenceBuilder))]
 	}
 	
 	private def getMappedInstanceClassCanonicalName(EClass eClass) {
@@ -100,16 +97,5 @@ class ParameterGenerator {
 		return parameterContext.generateParameter(CHANGE_PARAMETER_NAME, EChange);
 	}
 	
-	public def JvmFormalParameter generateChangeParameter(EObject parameterContext, Trigger trigger) {
-		val changeRepresentation = extractChangeTypeRepresentation(trigger);
-		var Iterable<String> changeTypeParameters = new ArrayList<String>
-		if (trigger instanceof ConcreteModelChange) {
-			changeTypeParameters = changeRepresentation.genericTypeParameters	
-		}
-		val changeParameter = parameterContext.generateParameterFromClasses(CHANGE_PARAMETER_NAME, changeRepresentation.changeType, changeTypeParameters);
-		if (changeParameter !== null) {
-			return changeParameter;
-		}
-	}
 }
 							
