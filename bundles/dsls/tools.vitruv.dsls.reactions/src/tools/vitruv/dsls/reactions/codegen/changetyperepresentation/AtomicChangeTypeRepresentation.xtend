@@ -71,7 +71,7 @@ public class AtomicChangeTypeRepresentation extends ChangeTypeRepresentation {
 	}
 
 	def StringConcatenationClient getSetFieldCode(String parameterName) '''
-		«name» = («typedChangeTypeRepresentation») «parameterName»;
+		this.«name» = («typedChangeTypeRepresentation») «parameterName»;
 	'''
 	
 	def StringConcatenationClient getResetFieldCode() '''
