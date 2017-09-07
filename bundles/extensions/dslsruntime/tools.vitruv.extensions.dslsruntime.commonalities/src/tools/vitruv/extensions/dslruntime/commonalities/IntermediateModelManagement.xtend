@@ -12,7 +12,6 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import tools.vitruv.extensions.dslruntime.commonalities.intermediatemodelbase.Intermediate
 import tools.vitruv.extensions.dslruntime.commonalities.intermediatemodelbase.IntermediateModelBasePackage
 import tools.vitruv.extensions.dslruntime.commonalities.intermediatemodelbase.Root
-import tools.vitruv.extensions.dslruntime.commonalities.resources.ResourceRemover
 
 import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
 
@@ -34,9 +33,11 @@ class IntermediateModelManagement {
 		targetResource.modified = true
 	}
 
-	def static void addResourceBridge(Resource targetResource,
+	def static void addResourceBridge(
+		Resource targetResource,
 		tools.vitruv.extensions.dslruntime.commonalities.resources.Resource intermediateResource,
-		Intermediate intermediate) {
+		Intermediate intermediate
+	) {
 		val root = getOrCreateRootIn(targetResource, intermediate.eClass.EPackage)
 		root.resourceBridges += intermediateResource
 		targetResource.modified = true
@@ -49,10 +50,7 @@ class IntermediateModelManagement {
 					ESuperTypes.containsAny [it == IntermediateModelBasePackage.eINSTANCE.root]
 				]
 				val root = ePackage.EFactoryInstance.create(rootClass) as Root
-				root.eAdapters += #[
-					IntermediateModelRootDisposer.INSTANCE,
-					ResourceRemover.INSTANCE
-				]
+				root.eAdapters += IntermediateModelRootDisposer.INSTANCE
 				targetResource.contents += root
 				return root
 			}
