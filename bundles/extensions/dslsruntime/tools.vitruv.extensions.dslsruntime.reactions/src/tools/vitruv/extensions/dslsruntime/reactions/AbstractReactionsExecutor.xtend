@@ -36,11 +36,6 @@ abstract class AbstractReactionsExecutor extends AbstractEChangePropagationSpeci
 
 	public override propagateChange(EChange event, CorrespondenceModel correspondenceModel,
 		ResourceAccess resourceAccess) {
-		if (event instanceof CompoundEChange) {
-			for (atomicChange : event.atomicChanges) {
-				propagateChange(atomicChange, correspondenceModel, resourceAccess);
-			}
-		}
 		val relevantReactions = event.relevantReactions;
 		LOGGER.trace("Call relevant reactions");
 		for (reactions : relevantReactions) {
