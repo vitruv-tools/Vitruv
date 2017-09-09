@@ -2,8 +2,6 @@ package tools.vitruv.framework.change.echange.resolve
 
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EStructuralFeature
-import tools.vitruv.framework.change.echange.compound.CompoundEChange
-import tools.vitruv.framework.change.echange.compound.ExplicitUnsetEFeature
 import tools.vitruv.framework.change.echange.eobject.EObjectAddedEChange
 import tools.vitruv.framework.change.echange.eobject.EObjectExistenceEChange
 import tools.vitruv.framework.change.echange.eobject.EObjectSubtractedEChange
@@ -14,7 +12,6 @@ import tools.vitruv.framework.change.echange.feature.reference.ReplaceSingleValu
 import tools.vitruv.framework.change.echange.root.InsertRootEObject
 import tools.vitruv.framework.change.echange.root.RemoveRootEObject
 import tools.vitruv.framework.change.echange.root.RootEChange
-import tools.vitruv.framework.change.echange.AtomicEChange
 import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.change.echange.eobject.DeleteEObject
 import tools.vitruv.framework.change.echange.eobject.CreateEObject
@@ -65,42 +62,10 @@ public class EChangeUnresolver {
 		change.oldValue = null
 	}
 
-	/** 
-	 * Unresolves the atomic changes of the {@link CompoundEChange} class.
-	 * @param The CompoundEChange.
-	 */		
-	def static public void unresolveCompoundEChange(CompoundEChange change) {
-		for (AtomicEChange c : change.atomicChanges) {
-			c.unresolve
-		}		
+	def dispatch static public void unresolve(EChange change) {
+		// Do nothing
 	}
-	
-	/** 
-	 * Unresolves the attributes of the {@link ExplicitUnsetEFeature} class.
-	 * @param The ExplicitUnsetEFeature change.
-	 */		
-	def static public <A extends EObject, F extends EStructuralFeature> void unresolveExplicitUnsetEFeature(ExplicitUnsetEFeature<A, F> change) {
-		change.affectedEObject = null
-	}
-	
-	def dispatch public static void unresolve(EChange change) {
-	}
-	
-	/**
-	 * Dispatch method for {@link CompoundEChange} to unresolve it.
-	 * @param change The CompoundEChange.
-	 */	
-	def dispatch public static void unresolve(CompoundEChange change) {
-		change.unresolveCompoundEChange
-	}
-	/**
-	 * Dispatch method for {@link ExplicitUnsetEFeature} to unresolve it.
-	 * @param change The ExplicitUnsetEFeature.
-	 */	
-	def dispatch public static void unresolve(ExplicitUnsetEFeature<EObject, EStructuralFeature> change) {
-		change.unresolveExplicitUnsetEFeature
-		change.unresolveCompoundEChange
-	}
+
 	/**
 	 * Dispatch method for {@link InsertRootEObject} to unresolve it.
 	 * @param change The InsertRootEObject.
@@ -132,6 +97,7 @@ public class EChangeUnresolver {
 		change.unresolveEObjectExistenceEChange
 		change.consequentialRemoveChanges.forEach[unresolve];
 	}
+	
 	/**
 	 * Dispatch method for {@link ReplaceSingleValuedEReference} to unresolve it.
 	 * @param change The ReplaceSingleValuedEReference.

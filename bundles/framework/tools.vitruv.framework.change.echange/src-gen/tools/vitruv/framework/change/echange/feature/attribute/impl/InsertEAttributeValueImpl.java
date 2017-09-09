@@ -26,6 +26,7 @@ import tools.vitruv.framework.change.echange.feature.list.impl.InsertInListEChan
  * </p>
  * <ul>
  *   <li>{@link tools.vitruv.framework.change.echange.feature.attribute.impl.InsertEAttributeValueImpl#getNewValue <em>New Value</em>}</li>
+ *   <li>{@link tools.vitruv.framework.change.echange.feature.attribute.impl.InsertEAttributeValueImpl#isWasUnset <em>Was Unset</em>}</li>
  * </ul>
  *
  * @generated
@@ -40,6 +41,25 @@ public class InsertEAttributeValueImpl<A extends EObject, T extends Object> exte
 	 * @ordered
 	 */
 	protected T newValue;
+
+	/**
+	 * The default value of the '{@link #isWasUnset() <em>Was Unset</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isWasUnset()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final boolean WAS_UNSET_EDEFAULT = false;
+	/**
+	 * The cached value of the '{@link #isWasUnset() <em>Was Unset</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isWasUnset()
+	 * @generated
+	 * @ordered
+	 */
+	protected boolean wasUnset = WAS_UNSET_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -86,11 +106,34 @@ public class InsertEAttributeValueImpl<A extends EObject, T extends Object> exte
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public boolean isWasUnset() {
+		return wasUnset;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setWasUnset(boolean newWasUnset) {
+		boolean oldWasUnset = wasUnset;
+		wasUnset = newWasUnset;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, AttributePackage.INSERT_EATTRIBUTE_VALUE__WAS_UNSET, oldWasUnset, wasUnset));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 			case AttributePackage.INSERT_EATTRIBUTE_VALUE__NEW_VALUE:
 				return getNewValue();
+			case AttributePackage.INSERT_EATTRIBUTE_VALUE__WAS_UNSET:
+				return isWasUnset();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -107,6 +150,9 @@ public class InsertEAttributeValueImpl<A extends EObject, T extends Object> exte
 			case AttributePackage.INSERT_EATTRIBUTE_VALUE__NEW_VALUE:
 				setNewValue((T)newValue);
 				return;
+			case AttributePackage.INSERT_EATTRIBUTE_VALUE__WAS_UNSET:
+				setWasUnset((Boolean)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -122,6 +168,9 @@ public class InsertEAttributeValueImpl<A extends EObject, T extends Object> exte
 			case AttributePackage.INSERT_EATTRIBUTE_VALUE__NEW_VALUE:
 				setNewValue((T)null);
 				return;
+			case AttributePackage.INSERT_EATTRIBUTE_VALUE__WAS_UNSET:
+				setWasUnset(WAS_UNSET_EDEFAULT);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -136,6 +185,8 @@ public class InsertEAttributeValueImpl<A extends EObject, T extends Object> exte
 		switch (featureID) {
 			case AttributePackage.INSERT_EATTRIBUTE_VALUE__NEW_VALUE:
 				return newValue != null;
+			case AttributePackage.INSERT_EATTRIBUTE_VALUE__WAS_UNSET:
+				return wasUnset != WAS_UNSET_EDEFAULT;
 		}
 		return super.eIsSet(featureID);
 	}
@@ -155,6 +206,7 @@ public class InsertEAttributeValueImpl<A extends EObject, T extends Object> exte
 		if (baseClass == AdditiveAttributeEChange.class) {
 			switch (derivedFeatureID) {
 				case AttributePackage.INSERT_EATTRIBUTE_VALUE__NEW_VALUE: return AttributePackage.ADDITIVE_ATTRIBUTE_ECHANGE__NEW_VALUE;
+				case AttributePackage.INSERT_EATTRIBUTE_VALUE__WAS_UNSET: return AttributePackage.ADDITIVE_ATTRIBUTE_ECHANGE__WAS_UNSET;
 				default: return -1;
 			}
 		}
@@ -176,6 +228,7 @@ public class InsertEAttributeValueImpl<A extends EObject, T extends Object> exte
 		if (baseClass == AdditiveAttributeEChange.class) {
 			switch (baseFeatureID) {
 				case AttributePackage.ADDITIVE_ATTRIBUTE_ECHANGE__NEW_VALUE: return AttributePackage.INSERT_EATTRIBUTE_VALUE__NEW_VALUE;
+				case AttributePackage.ADDITIVE_ATTRIBUTE_ECHANGE__WAS_UNSET: return AttributePackage.INSERT_EATTRIBUTE_VALUE__WAS_UNSET;
 				default: return -1;
 			}
 		}
@@ -194,6 +247,8 @@ public class InsertEAttributeValueImpl<A extends EObject, T extends Object> exte
 		StringBuffer result = new StringBuffer(super.toString());
 		result.append(" (newValue: ");
 		result.append(newValue);
+		result.append(", wasUnset: ");
+		result.append(wasUnset);
 		result.append(')');
 		return result.toString();
 	}

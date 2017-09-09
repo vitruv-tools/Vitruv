@@ -21,6 +21,7 @@ import tools.vitruv.framework.change.echange.feature.attribute.AttributePackage;
  * </p>
  * <ul>
  *   <li>{@link tools.vitruv.framework.change.echange.feature.attribute.impl.AdditiveAttributeEChangeImpl#getNewValue <em>New Value</em>}</li>
+ *   <li>{@link tools.vitruv.framework.change.echange.feature.attribute.impl.AdditiveAttributeEChangeImpl#isWasUnset <em>Was Unset</em>}</li>
  * </ul>
  *
  * @generated
@@ -35,6 +36,25 @@ public abstract class AdditiveAttributeEChangeImpl<A extends EObject, T extends 
 	 * @ordered
 	 */
 	protected T newValue;
+
+	/**
+	 * The default value of the '{@link #isWasUnset() <em>Was Unset</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isWasUnset()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final boolean WAS_UNSET_EDEFAULT = false;
+	/**
+	 * The cached value of the '{@link #isWasUnset() <em>Was Unset</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isWasUnset()
+	 * @generated
+	 * @ordered
+	 */
+	protected boolean wasUnset = WAS_UNSET_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -81,11 +101,34 @@ public abstract class AdditiveAttributeEChangeImpl<A extends EObject, T extends 
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public boolean isWasUnset() {
+		return wasUnset;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setWasUnset(boolean newWasUnset) {
+		boolean oldWasUnset = wasUnset;
+		wasUnset = newWasUnset;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, AttributePackage.ADDITIVE_ATTRIBUTE_ECHANGE__WAS_UNSET, oldWasUnset, wasUnset));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 			case AttributePackage.ADDITIVE_ATTRIBUTE_ECHANGE__NEW_VALUE:
 				return getNewValue();
+			case AttributePackage.ADDITIVE_ATTRIBUTE_ECHANGE__WAS_UNSET:
+				return isWasUnset();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -102,6 +145,9 @@ public abstract class AdditiveAttributeEChangeImpl<A extends EObject, T extends 
 			case AttributePackage.ADDITIVE_ATTRIBUTE_ECHANGE__NEW_VALUE:
 				setNewValue((T)newValue);
 				return;
+			case AttributePackage.ADDITIVE_ATTRIBUTE_ECHANGE__WAS_UNSET:
+				setWasUnset((Boolean)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -117,6 +163,9 @@ public abstract class AdditiveAttributeEChangeImpl<A extends EObject, T extends 
 			case AttributePackage.ADDITIVE_ATTRIBUTE_ECHANGE__NEW_VALUE:
 				setNewValue((T)null);
 				return;
+			case AttributePackage.ADDITIVE_ATTRIBUTE_ECHANGE__WAS_UNSET:
+				setWasUnset(WAS_UNSET_EDEFAULT);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -131,6 +180,8 @@ public abstract class AdditiveAttributeEChangeImpl<A extends EObject, T extends 
 		switch (featureID) {
 			case AttributePackage.ADDITIVE_ATTRIBUTE_ECHANGE__NEW_VALUE:
 				return newValue != null;
+			case AttributePackage.ADDITIVE_ATTRIBUTE_ECHANGE__WAS_UNSET:
+				return wasUnset != WAS_UNSET_EDEFAULT;
 		}
 		return super.eIsSet(featureID);
 	}
@@ -147,6 +198,8 @@ public abstract class AdditiveAttributeEChangeImpl<A extends EObject, T extends 
 		StringBuffer result = new StringBuffer(super.toString());
 		result.append(" (newValue: ");
 		result.append(newValue);
+		result.append(", wasUnset: ");
+		result.append(wasUnset);
 		result.append(')');
 		return result.toString();
 	}

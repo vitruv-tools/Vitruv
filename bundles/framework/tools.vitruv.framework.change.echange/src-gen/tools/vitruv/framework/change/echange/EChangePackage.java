@@ -288,7 +288,7 @@ public interface EChangePackage extends EPackage {
 	 * @see tools.vitruv.framework.change.echange.EChange#getInvolvedEObjects()
 	 * @generated
 	 */
-	EOperation getEChange__GetInvolvedEObjects_1();
+	EOperation getEChange__GetInvolvedEObjects();
 
 	/**
 	 * Returns the meta object for class '{@link tools.vitruv.framework.change.echange.AtomicEChange <em>Atomic EChange</em>}'.
@@ -387,7 +387,7 @@ public interface EChangePackage extends EPackage {
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EOperation ECHANGE___GET_INVOLVED_EOBJECTS = eINSTANCE.getEChange__GetInvolvedEObjects_1();
+		EOperation ECHANGE___GET_INVOLVED_EOBJECTS = eINSTANCE.getEChange__GetInvolvedEObjects();
 
 		/**
 		 * The meta object literal for the '{@link tools.vitruv.framework.change.echange.impl.AtomicEChangeImpl <em>Atomic EChange</em>}' class.

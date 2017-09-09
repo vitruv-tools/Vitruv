@@ -11,8 +11,7 @@ import org.eclipse.emf.ecore.EObject;
 
 import org.eclipse.emf.ecore.util.EObjectResolvingEList;
 
-import tools.vitruv.framework.change.echange.EChange;
-
+import tools.vitruv.framework.change.echange.AtomicEChange;
 import tools.vitruv.framework.change.echange.eobject.DeleteEObject;
 import tools.vitruv.framework.change.echange.eobject.EobjectPackage;
 
@@ -38,7 +37,7 @@ public class DeleteEObjectImpl<A extends EObject> extends EObjectExistenceEChang
 	 * @generated
 	 * @ordered
 	 */
-	protected EList<EChange> consequentialRemoveChanges;
+	protected EList<AtomicEChange> consequentialRemoveChanges;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -64,9 +63,9 @@ public class DeleteEObjectImpl<A extends EObject> extends EObjectExistenceEChang
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EList<EChange> getConsequentialRemoveChanges() {
+	public EList<AtomicEChange> getConsequentialRemoveChanges() {
 		if (consequentialRemoveChanges == null) {
-			consequentialRemoveChanges = new EObjectResolvingEList<EChange>(EChange.class, this, EobjectPackage.DELETE_EOBJECT__CONSEQUENTIAL_REMOVE_CHANGES);
+			consequentialRemoveChanges = new EObjectResolvingEList<AtomicEChange>(AtomicEChange.class, this, EobjectPackage.DELETE_EOBJECT__CONSEQUENTIAL_REMOVE_CHANGES);
 		}
 		return consequentialRemoveChanges;
 	}
@@ -96,7 +95,7 @@ public class DeleteEObjectImpl<A extends EObject> extends EObjectExistenceEChang
 		switch (featureID) {
 			case EobjectPackage.DELETE_EOBJECT__CONSEQUENTIAL_REMOVE_CHANGES:
 				getConsequentialRemoveChanges().clear();
-				getConsequentialRemoveChanges().addAll((Collection<? extends EChange>)newValue);
+				getConsequentialRemoveChanges().addAll((Collection<? extends AtomicEChange>)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);

@@ -1,14 +1,11 @@
 package tools.vitruv.framework.change.echange.util
 
-import java.util.ArrayList
 import java.util.List
 import org.eclipse.emf.common.command.Command
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.edit.command.AddCommand
 import org.eclipse.emf.edit.command.SetCommand
-import tools.vitruv.framework.change.echange.AtomicEChange
 import tools.vitruv.framework.change.echange.command.RemoveAtCommand
-import tools.vitruv.framework.change.echange.compound.CompoundEChange
 import tools.vitruv.framework.change.echange.eobject.CreateEObject
 import tools.vitruv.framework.change.echange.eobject.DeleteEObject
 import tools.vitruv.framework.change.echange.feature.attribute.InsertEAttributeValue
@@ -21,6 +18,7 @@ import tools.vitruv.framework.change.echange.root.InsertRootEObject
 import tools.vitruv.framework.change.echange.root.RemoveRootEObject
 import org.eclipse.emf.edit.command.RemoveCommand
 import org.apache.log4j.Logger
+import tools.vitruv.framework.change.echange.EChange
 
 /**
  * Switch to create commands for all EChange classes.
@@ -29,14 +27,21 @@ import org.apache.log4j.Logger
 package class ApplyBackwardCommandSwitch {
 	static val Logger logger = Logger.getLogger(ApplyBackwardCommandSwitch)
 	
+	def package dispatch static List<Command> getCommands(EChange change) {
+		#[]
+	}
+	
 	/**
 	 * Dispatch method to create commands to apply a {@link InsertEAttributeValue} change backward.
 	 * @param object The change which commands should be created.
 	 */
 	def package dispatch static List<Command> getCommands(InsertEAttributeValue<EObject, Object> change) {
 		val editingDomain = EChangeUtil.getEditingDomain(change.affectedEObject)
-		return #[new RemoveAtCommand(editingDomain, change.affectedEObject, change.affectedFeature, change.newValue,
-				change.index)]
+		if (change.wasUnset) {
+			return #[new SetCommand(editingDomain, change.affectedEObject, change.affectedFeature, SetCommand.UNSET_VALUE)]
+		} else {
+			return #[new RemoveAtCommand(editingDomain, change.affectedEObject, change.affectedFeature, change.newValue, change.index)]
+		}
 	}
 
 	/**
@@ -55,7 +60,7 @@ package class ApplyBackwardCommandSwitch {
 	 */
 	def package dispatch static List<Command> getCommands(ReplaceSingleValuedEAttribute<EObject, Object> change) {
 		val editingDomain = EChangeUtil.getEditingDomain(change.affectedEObject)
-		return #[new SetCommand(editingDomain, change.affectedEObject, change.affectedFeature, change.oldValue)]
+		return #[new SetCommand(editingDomain, change.affectedEObject, change.affectedFeature, if (change.isWasUnset) SetCommand.UNSET_VALUE else change.oldValue)]
 	}
 
 	/**
@@ -70,7 +75,11 @@ package class ApplyBackwardCommandSwitch {
 			} 
 			return #[];
 		}
-		return #[new RemoveAtCommand(editingDomain, change.affectedEObject, change.affectedFeature, change.newValue, change.index)]
+		if (change.wasUnset) {
+			return #[new SetCommand(editingDomain, change.affectedEObject, change.affectedFeature, SetCommand.UNSET_VALUE)]
+		} else {
+			return #[new RemoveAtCommand(editingDomain, change.affectedEObject, change.affectedFeature, change.newValue, change.index)]
+		}
 	}
 
 	/**
@@ -94,7 +103,7 @@ package class ApplyBackwardCommandSwitch {
 	 */
 	def package dispatch static List<Command> getCommands(ReplaceSingleValuedEReference<EObject, EObject> change) {
 		val editingDomain = EChangeUtil.getEditingDomain(change.affectedEObject)
-		return #[new SetCommand(editingDomain, change.affectedEObject, change.affectedFeature, change.oldValue)]
+		return #[new SetCommand(editingDomain, change.affectedEObject, change.affectedFeature, if (change.isWasUnset) SetCommand.UNSET_VALUE else change.oldValue)]
 	}
 
 	/**
@@ -132,15 +141,4 @@ package class ApplyBackwardCommandSwitch {
 		return change.consequentialRemoveChanges.reverseView.map[commands].flatten.toList;
 	}
 
-	/**
-	 * Dispatch method to create commands to apply a compound change backward.
-	 * @param object The change which commands should be created.
-	 */
-	def package dispatch static List<Command> getCommands(CompoundEChange change) {
-		val commands = new ArrayList<Command>
-		for (AtomicEChange c : change.atomicChanges.reverseView) {
-			commands.addAll(getCommands(c))
-		}
-		return commands
-	}
 }

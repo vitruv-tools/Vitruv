@@ -24,7 +24,7 @@ class EChangeAssertHelper {
  	/**
  	 * Tests whether a unresolved changes and a resolved changes are the same classes.
  	 */
- 	def public static void assertDifferentChangeSameClass(List<EChange> unresolvedChange, List<EChange> resolvedChange)	 {
+ 	def public static void assertDifferentChangeSameClass(List<? extends EChange> unresolvedChange, List<? extends EChange> resolvedChange)	 {
  		Assert.assertEquals(unresolvedChange.size, resolvedChange.size)
  		for (var i = 0; i < unresolvedChange.size; i++) {
  			assertDifferentChangeSameClass(unresolvedChange.get(i), resolvedChange.get(i))
@@ -72,7 +72,7 @@ class EChangeAssertHelper {
 	 * Tests whether a change sequence is resolved and applies it backward.
 	 */
 	def public static void assertApplyBackward(List<EChange> change) {
-		change.forEach[assertApplyBackward]
+		change.reverseView.forEach[assertApplyBackward]
 	}
 	
 	/**

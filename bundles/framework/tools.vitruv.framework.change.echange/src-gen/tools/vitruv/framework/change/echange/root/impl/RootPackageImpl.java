@@ -16,10 +16,6 @@ import org.eclipse.emf.ecore.resource.Resource;
 
 import tools.vitruv.framework.change.echange.EChangePackage;
 
-import tools.vitruv.framework.change.echange.compound.CompoundPackage;
-
-import tools.vitruv.framework.change.echange.compound.impl.CompoundPackageImpl;
-
 import tools.vitruv.framework.change.echange.eobject.EobjectPackage;
 
 import tools.vitruv.framework.change.echange.eobject.impl.EobjectPackageImpl;
@@ -145,7 +141,6 @@ public class RootPackageImpl extends EPackageImpl implements RootPackage {
 		EChangePackageImpl theEChangePackage = (EChangePackageImpl)(EPackage.Registry.INSTANCE.getEPackage(EChangePackage.eNS_URI) instanceof EChangePackageImpl ? EPackage.Registry.INSTANCE.getEPackage(EChangePackage.eNS_URI) : EChangePackage.eINSTANCE);
 		ListPackageImpl theListPackage = (ListPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(ListPackage.eNS_URI) instanceof ListPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(ListPackage.eNS_URI) : ListPackage.eINSTANCE);
 		SinglePackageImpl theSinglePackage = (SinglePackageImpl)(EPackage.Registry.INSTANCE.getEPackage(SinglePackage.eNS_URI) instanceof SinglePackageImpl ? EPackage.Registry.INSTANCE.getEPackage(SinglePackage.eNS_URI) : SinglePackage.eINSTANCE);
-		CompoundPackageImpl theCompoundPackage = (CompoundPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(CompoundPackage.eNS_URI) instanceof CompoundPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(CompoundPackage.eNS_URI) : CompoundPackage.eINSTANCE);
 		ReferencePackageImpl theReferencePackage = (ReferencePackageImpl)(EPackage.Registry.INSTANCE.getEPackage(ReferencePackage.eNS_URI) instanceof ReferencePackageImpl ? EPackage.Registry.INSTANCE.getEPackage(ReferencePackage.eNS_URI) : ReferencePackage.eINSTANCE);
 		EobjectPackageImpl theEobjectPackage = (EobjectPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(EobjectPackage.eNS_URI) instanceof EobjectPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(EobjectPackage.eNS_URI) : EobjectPackage.eINSTANCE);
 
@@ -156,7 +151,6 @@ public class RootPackageImpl extends EPackageImpl implements RootPackage {
 		theEChangePackage.createPackageContents();
 		theListPackage.createPackageContents();
 		theSinglePackage.createPackageContents();
-		theCompoundPackage.createPackageContents();
 		theReferencePackage.createPackageContents();
 		theEobjectPackage.createPackageContents();
 
@@ -167,7 +161,6 @@ public class RootPackageImpl extends EPackageImpl implements RootPackage {
 		theEChangePackage.initializePackageContents();
 		theListPackage.initializePackageContents();
 		theSinglePackage.initializePackageContents();
-		theCompoundPackage.initializePackageContents();
 		theReferencePackage.initializePackageContents();
 		theEobjectPackage.initializePackageContents();
 

@@ -2,6 +2,7 @@
  */
 package tools.vitruv.framework.change.echange.feature.reference.impl;
 
+import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EGenericType;
 import org.eclipse.emf.ecore.EOperation;
@@ -12,10 +13,6 @@ import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.impl.EPackageImpl;
 
 import tools.vitruv.framework.change.echange.EChangePackage;
-
-import tools.vitruv.framework.change.echange.compound.CompoundPackage;
-
-import tools.vitruv.framework.change.echange.compound.impl.CompoundPackageImpl;
 
 import tools.vitruv.framework.change.echange.eobject.EobjectPackage;
 
@@ -159,7 +156,6 @@ public class ReferencePackageImpl extends EPackageImpl implements ReferencePacka
 		EChangePackageImpl theEChangePackage = (EChangePackageImpl)(EPackage.Registry.INSTANCE.getEPackage(EChangePackage.eNS_URI) instanceof EChangePackageImpl ? EPackage.Registry.INSTANCE.getEPackage(EChangePackage.eNS_URI) : EChangePackage.eINSTANCE);
 		ListPackageImpl theListPackage = (ListPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(ListPackage.eNS_URI) instanceof ListPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(ListPackage.eNS_URI) : ListPackage.eINSTANCE);
 		SinglePackageImpl theSinglePackage = (SinglePackageImpl)(EPackage.Registry.INSTANCE.getEPackage(SinglePackage.eNS_URI) instanceof SinglePackageImpl ? EPackage.Registry.INSTANCE.getEPackage(SinglePackage.eNS_URI) : SinglePackage.eINSTANCE);
-		CompoundPackageImpl theCompoundPackage = (CompoundPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(CompoundPackage.eNS_URI) instanceof CompoundPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(CompoundPackage.eNS_URI) : CompoundPackage.eINSTANCE);
 		EobjectPackageImpl theEobjectPackage = (EobjectPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(EobjectPackage.eNS_URI) instanceof EobjectPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(EobjectPackage.eNS_URI) : EobjectPackage.eINSTANCE);
 		RootPackageImpl theRootPackage = (RootPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(RootPackage.eNS_URI) instanceof RootPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(RootPackage.eNS_URI) : RootPackage.eINSTANCE);
 
@@ -170,7 +166,6 @@ public class ReferencePackageImpl extends EPackageImpl implements ReferencePacka
 		theEChangePackage.createPackageContents();
 		theListPackage.createPackageContents();
 		theSinglePackage.createPackageContents();
-		theCompoundPackage.createPackageContents();
 		theEobjectPackage.createPackageContents();
 		theRootPackage.createPackageContents();
 
@@ -181,7 +176,6 @@ public class ReferencePackageImpl extends EPackageImpl implements ReferencePacka
 		theEChangePackage.initializePackageContents();
 		theListPackage.initializePackageContents();
 		theSinglePackage.initializePackageContents();
-		theCompoundPackage.initializePackageContents();
 		theEobjectPackage.initializePackageContents();
 		theRootPackage.initializePackageContents();
 
@@ -226,8 +220,26 @@ public class ReferencePackageImpl extends EPackageImpl implements ReferencePacka
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EAttribute getAdditiveReferenceEChange_WasUnset() {
+		return (EAttribute)additiveReferenceEChangeEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EClass getSubtractiveReferenceEChange() {
 		return subtractiveReferenceEChangeEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getSubtractiveReferenceEChange_IsUnset() {
+		return (EAttribute)subtractiveReferenceEChangeEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
@@ -289,8 +301,10 @@ public class ReferencePackageImpl extends EPackageImpl implements ReferencePacka
 		createEOperation(updateReferenceEChangeEClass, UPDATE_REFERENCE_ECHANGE___IS_CONTAINMENT);
 
 		additiveReferenceEChangeEClass = createEClass(ADDITIVE_REFERENCE_ECHANGE);
+		createEAttribute(additiveReferenceEChangeEClass, ADDITIVE_REFERENCE_ECHANGE__WAS_UNSET);
 
 		subtractiveReferenceEChangeEClass = createEClass(SUBTRACTIVE_REFERENCE_ECHANGE);
+		createEAttribute(subtractiveReferenceEChangeEClass, SUBTRACTIVE_REFERENCE_ECHANGE__IS_UNSET);
 
 		insertEReferenceEClass = createEClass(INSERT_EREFERENCE);
 
@@ -444,8 +458,10 @@ public class ReferencePackageImpl extends EPackageImpl implements ReferencePacka
 		initEOperation(getUpdateReferenceEChange__IsContainment(), theEcorePackage.getEBoolean(), "isContainment", 1, 1, !IS_UNIQUE, IS_ORDERED);
 
 		initEClass(additiveReferenceEChangeEClass, AdditiveReferenceEChange.class, "AdditiveReferenceEChange", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getAdditiveReferenceEChange_WasUnset(), theEcorePackage.getEBoolean(), "wasUnset", null, 0, 1, AdditiveReferenceEChange.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(subtractiveReferenceEChangeEClass, SubtractiveReferenceEChange.class, "SubtractiveReferenceEChange", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getSubtractiveReferenceEChange_IsUnset(), theEcorePackage.getEBoolean(), "isUnset", null, 0, 1, SubtractiveReferenceEChange.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(insertEReferenceEClass, InsertEReference.class, "InsertEReference", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 

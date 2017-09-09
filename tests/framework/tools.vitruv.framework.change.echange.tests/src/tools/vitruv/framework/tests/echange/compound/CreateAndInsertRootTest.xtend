@@ -180,7 +180,7 @@ class CreateAndInsertRootTest extends EChangeTest {
 	/**
 	 * Change is not resolved.
 	 */
-	def protected static void assertIsNotResolved(List<EChange> changes) {
+	def protected static void assertIsNotResolved(List<? extends EChange> changes) {
 		EChangeTest.assertIsNotResolved(changes);
 		Assert.assertEquals(2, changes.size);
 		val createChange = assertType(changes.get(0), CreateEObject);
