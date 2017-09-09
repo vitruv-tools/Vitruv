@@ -6,7 +6,6 @@ import tools.vitruv.framework.userinteraction.UserInteracting
 import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.correspondence.CorrespondenceModel
 import tools.vitruv.framework.change.processing.impl.AbstractEChangePropagationSpecification
-import tools.vitruv.framework.change.echange.compound.CompoundEChange
 import tools.vitruv.framework.domains.VitruvDomain
 import tools.vitruv.framework.util.command.ResourceAccess
 import java.util.List
@@ -32,17 +31,11 @@ abstract class AbstractReactionsExecutor extends AbstractEChangePropagationSpeci
 
 	public override propagateChange(EChange change, CorrespondenceModel correspondenceModel,
 		ResourceAccess resourceAccess) {
-		if (change instanceof CompoundEChange) {
-			for (atomicChange : change.atomicChanges) {
-				propagateChange(atomicChange, correspondenceModel, resourceAccess);
-			}
-		} else {
-			LOGGER.trace("Call relevant reactions");
-			for (reaction : reactions) {
-				LOGGER.debug("Calling reaction: " + reaction.class.simpleName + " with change: " + change);
-				val executionState = new ReactionExecutionState(userInteracting, correspondenceModel, resourceAccess, this);
-				reaction.applyEvent(change, executionState)
-			}
+		LOGGER.trace("Call relevant reactions");
+		for (reaction : reactions) {
+			LOGGER.debug("Calling reaction: " + reaction.class.simpleName + " with change: " + change);
+			val executionState = new ReactionExecutionState(userInteracting, correspondenceModel, resourceAccess, this);
+			reaction.applyEvent(change, executionState)
 		}
 	}
 
