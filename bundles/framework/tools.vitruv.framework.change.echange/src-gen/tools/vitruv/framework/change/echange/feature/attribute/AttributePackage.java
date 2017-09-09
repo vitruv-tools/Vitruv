@@ -118,6 +118,15 @@ public interface AttributePackage extends EPackage {
 	int UPDATE_ATTRIBUTE_ECHANGE___IS_RESOLVED = FeaturePackage.FEATURE_ECHANGE___IS_RESOLVED;
 
 	/**
+	 * The operation id for the '<em>Get Involved EObjects</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int UPDATE_ATTRIBUTE_ECHANGE___GET_INVOLVED_EOBJECTS = FeaturePackage.FEATURE_ECHANGE___GET_INVOLVED_EOBJECTS;
+
+	/**
 	 * The number of operations of the '<em>Update Attribute EChange</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -189,6 +198,15 @@ public interface AttributePackage extends EPackage {
 	 * @ordered
 	 */
 	int ADDITIVE_ATTRIBUTE_ECHANGE___IS_RESOLVED = UPDATE_ATTRIBUTE_ECHANGE___IS_RESOLVED;
+
+	/**
+	 * The operation id for the '<em>Get Involved EObjects</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ADDITIVE_ATTRIBUTE_ECHANGE___GET_INVOLVED_EOBJECTS = UPDATE_ATTRIBUTE_ECHANGE___GET_INVOLVED_EOBJECTS;
 
 	/**
 	 * The operation id for the '<em>Get New Value</em>' operation.
@@ -271,6 +289,15 @@ public interface AttributePackage extends EPackage {
 	 * @ordered
 	 */
 	int SUBTRACTIVE_ATTRIBUTE_ECHANGE___IS_RESOLVED = UPDATE_ATTRIBUTE_ECHANGE___IS_RESOLVED;
+
+	/**
+	 * The operation id for the '<em>Get Involved EObjects</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SUBTRACTIVE_ATTRIBUTE_ECHANGE___GET_INVOLVED_EOBJECTS = UPDATE_ATTRIBUTE_ECHANGE___GET_INVOLVED_EOBJECTS;
 
 	/**
 	 * The operation id for the '<em>Get Old Value</em>' operation.
@@ -364,6 +391,15 @@ public interface AttributePackage extends EPackage {
 	int INSERT_EATTRIBUTE_VALUE___IS_RESOLVED = ListPackage.INSERT_IN_LIST_ECHANGE___IS_RESOLVED;
 
 	/**
+	 * The operation id for the '<em>Get Involved EObjects</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int INSERT_EATTRIBUTE_VALUE___GET_INVOLVED_EOBJECTS = ListPackage.INSERT_IN_LIST_ECHANGE___GET_INVOLVED_EOBJECTS;
+
+	/**
 	 * The operation id for the '<em>Get New Value</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -455,6 +491,15 @@ public interface AttributePackage extends EPackage {
 	int REMOVE_EATTRIBUTE_VALUE___IS_RESOLVED = ListPackage.REMOVE_FROM_LIST_ECHANGE___IS_RESOLVED;
 
 	/**
+	 * The operation id for the '<em>Get Involved EObjects</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REMOVE_EATTRIBUTE_VALUE___GET_INVOLVED_EOBJECTS = ListPackage.REMOVE_FROM_LIST_ECHANGE___GET_INVOLVED_EOBJECTS;
+
+	/**
 	 * The operation id for the '<em>Get Old Value</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -544,6 +589,15 @@ public interface AttributePackage extends EPackage {
 	 * @ordered
 	 */
 	int REPLACE_SINGLE_VALUED_EATTRIBUTE___IS_RESOLVED = SinglePackage.REPLACE_SINGLE_VALUED_FEATURE_ECHANGE___IS_RESOLVED;
+
+	/**
+	 * The operation id for the '<em>Get Involved EObjects</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REPLACE_SINGLE_VALUED_EATTRIBUTE___GET_INVOLVED_EOBJECTS = SinglePackage.REPLACE_SINGLE_VALUED_FEATURE_ECHANGE___GET_INVOLVED_EOBJECTS;
 
 	/**
 	 * The operation id for the '<em>Get New Value</em>' operation.

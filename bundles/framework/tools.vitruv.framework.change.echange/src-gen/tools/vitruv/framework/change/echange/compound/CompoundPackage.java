@@ -89,6 +89,15 @@ public interface CompoundPackage extends EPackage {
 	int COMPOUND_ECHANGE___IS_RESOLVED = EChangePackage.ECHANGE___IS_RESOLVED;
 
 	/**
+	 * The operation id for the '<em>Get Involved EObjects</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int COMPOUND_ECHANGE___GET_INVOLVED_EOBJECTS = EChangePackage.ECHANGE___GET_INVOLVED_EOBJECTS;
+
+	/**
 	 * The operation id for the '<em>Get Atomic Changes</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -162,6 +171,15 @@ public interface CompoundPackage extends EPackage {
 	int EXPLICIT_UNSET_EFEATURE___IS_RESOLVED = COMPOUND_ECHANGE___IS_RESOLVED;
 
 	/**
+	 * The operation id for the '<em>Get Involved EObjects</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EXPLICIT_UNSET_EFEATURE___GET_INVOLVED_EOBJECTS = COMPOUND_ECHANGE___GET_INVOLVED_EOBJECTS;
+
+	/**
 	 * The operation id for the '<em>Get Atomic Changes</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -215,6 +233,15 @@ public interface CompoundPackage extends EPackage {
 	 * @ordered
 	 */
 	int COMPOUND_SUBTRACTION___IS_RESOLVED = COMPOUND_ECHANGE___IS_RESOLVED;
+
+	/**
+	 * The operation id for the '<em>Get Involved EObjects</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int COMPOUND_SUBTRACTION___GET_INVOLVED_EOBJECTS = COMPOUND_ECHANGE___GET_INVOLVED_EOBJECTS;
 
 	/**
 	 * The operation id for the '<em>Get Atomic Changes</em>' operation.
@@ -299,6 +326,15 @@ public interface CompoundPackage extends EPackage {
 	int EXPLICIT_UNSET_EATTRIBUTE___IS_RESOLVED = COMPOUND_SUBTRACTION___IS_RESOLVED;
 
 	/**
+	 * The operation id for the '<em>Get Involved EObjects</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EXPLICIT_UNSET_EATTRIBUTE___GET_INVOLVED_EOBJECTS = COMPOUND_SUBTRACTION___GET_INVOLVED_EOBJECTS;
+
+	/**
 	 * The operation id for the '<em>Get Atomic Changes</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -381,6 +417,15 @@ public interface CompoundPackage extends EPackage {
 	int EXPLICIT_UNSET_EREFERENCE___IS_RESOLVED = EXPLICIT_UNSET_EFEATURE___IS_RESOLVED;
 
 	/**
+	 * The operation id for the '<em>Get Involved EObjects</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EXPLICIT_UNSET_EREFERENCE___GET_INVOLVED_EOBJECTS = EXPLICIT_UNSET_EFEATURE___GET_INVOLVED_EOBJECTS;
+
+	/**
 	 * The operation id for the '<em>Get Contained Changes</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -443,6 +488,15 @@ public interface CompoundPackage extends EPackage {
 	 * @ordered
 	 */
 	int COMPOUND_ADDITION___IS_RESOLVED = COMPOUND_ECHANGE___IS_RESOLVED;
+
+	/**
+	 * The operation id for the '<em>Get Involved EObjects</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int COMPOUND_ADDITION___GET_INVOLVED_EOBJECTS = COMPOUND_ECHANGE___GET_INVOLVED_EOBJECTS;
 
 	/**
 	 * The operation id for the '<em>Get Atomic Changes</em>' operation.
@@ -509,6 +563,15 @@ public interface CompoundPackage extends EPackage {
 	int CREATE_AND_INSERT_EOBJECT___IS_RESOLVED = COMPOUND_ECHANGE___IS_RESOLVED;
 
 	/**
+	 * The operation id for the '<em>Get Involved EObjects</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CREATE_AND_INSERT_EOBJECT___GET_INVOLVED_EOBJECTS = COMPOUND_ECHANGE___GET_INVOLVED_EOBJECTS;
+
+	/**
 	 * The operation id for the '<em>Get Atomic Changes</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -571,6 +634,15 @@ public interface CompoundPackage extends EPackage {
 	 * @ordered
 	 */
 	int REMOVE_AND_DELETE_EOBJECT___IS_RESOLVED = COMPOUND_ECHANGE___IS_RESOLVED;
+
+	/**
+	 * The operation id for the '<em>Get Involved EObjects</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REMOVE_AND_DELETE_EOBJECT___GET_INVOLVED_EOBJECTS = COMPOUND_ECHANGE___GET_INVOLVED_EOBJECTS;
 
 	/**
 	 * The operation id for the '<em>Get Atomic Changes</em>' operation.
@@ -637,6 +709,15 @@ public interface CompoundPackage extends EPackage {
 	int CREATE_AND_INSERT_ROOT___IS_RESOLVED = CREATE_AND_INSERT_EOBJECT___IS_RESOLVED;
 
 	/**
+	 * The operation id for the '<em>Get Involved EObjects</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CREATE_AND_INSERT_ROOT___GET_INVOLVED_EOBJECTS = CREATE_AND_INSERT_EOBJECT___GET_INVOLVED_EOBJECTS;
+
+	/**
 	 * The operation id for the '<em>Get Atomic Changes</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -699,6 +780,15 @@ public interface CompoundPackage extends EPackage {
 	 * @ordered
 	 */
 	int REMOVE_AND_DELETE_ROOT___IS_RESOLVED = REMOVE_AND_DELETE_EOBJECT___IS_RESOLVED;
+
+	/**
+	 * The operation id for the '<em>Get Involved EObjects</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REMOVE_AND_DELETE_ROOT___GET_INVOLVED_EOBJECTS = REMOVE_AND_DELETE_EOBJECT___GET_INVOLVED_EOBJECTS;
 
 	/**
 	 * The operation id for the '<em>Get Atomic Changes</em>' operation.
@@ -765,6 +855,15 @@ public interface CompoundPackage extends EPackage {
 	int CREATE_AND_INSERT_NON_ROOT___IS_RESOLVED = CREATE_AND_INSERT_EOBJECT___IS_RESOLVED;
 
 	/**
+	 * The operation id for the '<em>Get Involved EObjects</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CREATE_AND_INSERT_NON_ROOT___GET_INVOLVED_EOBJECTS = CREATE_AND_INSERT_EOBJECT___GET_INVOLVED_EOBJECTS;
+
+	/**
 	 * The operation id for the '<em>Get Atomic Changes</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -827,6 +926,15 @@ public interface CompoundPackage extends EPackage {
 	 * @ordered
 	 */
 	int REMOVE_AND_DELETE_NON_ROOT___IS_RESOLVED = REMOVE_AND_DELETE_EOBJECT___IS_RESOLVED;
+
+	/**
+	 * The operation id for the '<em>Get Involved EObjects</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REMOVE_AND_DELETE_NON_ROOT___GET_INVOLVED_EOBJECTS = REMOVE_AND_DELETE_EOBJECT___GET_INVOLVED_EOBJECTS;
 
 	/**
 	 * The operation id for the '<em>Get Atomic Changes</em>' operation.
@@ -893,6 +1001,15 @@ public interface CompoundPackage extends EPackage {
 	int CREATE_AND_REPLACE_NON_ROOT___IS_RESOLVED = CREATE_AND_INSERT_EOBJECT___IS_RESOLVED;
 
 	/**
+	 * The operation id for the '<em>Get Involved EObjects</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CREATE_AND_REPLACE_NON_ROOT___GET_INVOLVED_EOBJECTS = CREATE_AND_INSERT_EOBJECT___GET_INVOLVED_EOBJECTS;
+
+	/**
 	 * The operation id for the '<em>Get Atomic Changes</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -955,6 +1072,15 @@ public interface CompoundPackage extends EPackage {
 	 * @ordered
 	 */
 	int REPLACE_AND_DELETE_NON_ROOT___IS_RESOLVED = REMOVE_AND_DELETE_EOBJECT___IS_RESOLVED;
+
+	/**
+	 * The operation id for the '<em>Get Involved EObjects</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REPLACE_AND_DELETE_NON_ROOT___GET_INVOLVED_EOBJECTS = REMOVE_AND_DELETE_EOBJECT___GET_INVOLVED_EOBJECTS;
 
 	/**
 	 * The operation id for the '<em>Get Atomic Changes</em>' operation.
@@ -1028,6 +1154,15 @@ public interface CompoundPackage extends EPackage {
 	 * @ordered
 	 */
 	int CREATE_AND_REPLACE_AND_DELETE_NON_ROOT___IS_RESOLVED = COMPOUND_ECHANGE___IS_RESOLVED;
+
+	/**
+	 * The operation id for the '<em>Get Involved EObjects</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CREATE_AND_REPLACE_AND_DELETE_NON_ROOT___GET_INVOLVED_EOBJECTS = COMPOUND_ECHANGE___GET_INVOLVED_EOBJECTS;
 
 	/**
 	 * The operation id for the '<em>Get Atomic Changes</em>' operation.

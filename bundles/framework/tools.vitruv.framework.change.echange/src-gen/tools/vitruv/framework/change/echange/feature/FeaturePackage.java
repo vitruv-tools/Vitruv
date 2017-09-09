@@ -115,6 +115,15 @@ public interface FeaturePackage extends EPackage {
 	int FEATURE_ECHANGE___IS_RESOLVED = EChangePackage.ATOMIC_ECHANGE___IS_RESOLVED;
 
 	/**
+	 * The operation id for the '<em>Get Involved EObjects</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int FEATURE_ECHANGE___GET_INVOLVED_EOBJECTS = EChangePackage.ATOMIC_ECHANGE___GET_INVOLVED_EOBJECTS;
+
+	/**
 	 * The number of operations of the '<em>EChange</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -179,6 +188,15 @@ public interface FeaturePackage extends EPackage {
 	int UPDATE_MULTI_VALUED_FEATURE_ECHANGE___IS_RESOLVED = FEATURE_ECHANGE___IS_RESOLVED;
 
 	/**
+	 * The operation id for the '<em>Get Involved EObjects</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int UPDATE_MULTI_VALUED_FEATURE_ECHANGE___GET_INVOLVED_EOBJECTS = FEATURE_ECHANGE___GET_INVOLVED_EOBJECTS;
+
+	/**
 	 * The number of operations of the '<em>Update Multi Valued Feature EChange</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -241,6 +259,15 @@ public interface FeaturePackage extends EPackage {
 	 * @ordered
 	 */
 	int UPDATE_SINGLE_VALUED_FEATURE_ECHANGE___IS_RESOLVED = FEATURE_ECHANGE___IS_RESOLVED;
+
+	/**
+	 * The operation id for the '<em>Get Involved EObjects</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int UPDATE_SINGLE_VALUED_FEATURE_ECHANGE___GET_INVOLVED_EOBJECTS = FEATURE_ECHANGE___GET_INVOLVED_EOBJECTS;
 
 	/**
 	 * The number of operations of the '<em>Update Single Valued Feature EChange</em>' class.

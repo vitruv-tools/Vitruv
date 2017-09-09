@@ -106,6 +106,15 @@ public interface EobjectPackage extends EPackage {
 	int EOBJECT_ADDED_ECHANGE___IS_RESOLVED = EChangePackage.ADDITIVE_ECHANGE___IS_RESOLVED;
 
 	/**
+	 * The operation id for the '<em>Get Involved EObjects</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EOBJECT_ADDED_ECHANGE___GET_INVOLVED_EOBJECTS = EChangePackage.ADDITIVE_ECHANGE___GET_INVOLVED_EOBJECTS;
+
+	/**
 	 * The operation id for the '<em>Get New Value</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -168,6 +177,15 @@ public interface EobjectPackage extends EPackage {
 	 * @ordered
 	 */
 	int EOBJECT_SUBTRACTED_ECHANGE___IS_RESOLVED = EChangePackage.SUBTRACTIVE_ECHANGE___IS_RESOLVED;
+
+	/**
+	 * The operation id for the '<em>Get Involved EObjects</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EOBJECT_SUBTRACTED_ECHANGE___GET_INVOLVED_EOBJECTS = EChangePackage.SUBTRACTIVE_ECHANGE___GET_INVOLVED_EOBJECTS;
 
 	/**
 	 * The operation id for the '<em>Get Old Value</em>' operation.
@@ -252,6 +270,15 @@ public interface EobjectPackage extends EPackage {
 	int EOBJECT_EXISTENCE_ECHANGE___IS_RESOLVED = EChangePackage.ATOMIC_ECHANGE___IS_RESOLVED;
 
 	/**
+	 * The operation id for the '<em>Get Involved EObjects</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int EOBJECT_EXISTENCE_ECHANGE___GET_INVOLVED_EOBJECTS = EChangePackage.ATOMIC_ECHANGE___GET_INVOLVED_EOBJECTS;
+
+	/**
 	 * The number of operations of the '<em>EObject Existence EChange</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -323,6 +350,15 @@ public interface EobjectPackage extends EPackage {
 	 * @ordered
 	 */
 	int CREATE_EOBJECT___IS_RESOLVED = EOBJECT_EXISTENCE_ECHANGE___IS_RESOLVED;
+
+	/**
+	 * The operation id for the '<em>Get Involved EObjects</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CREATE_EOBJECT___GET_INVOLVED_EOBJECTS = EOBJECT_EXISTENCE_ECHANGE___GET_INVOLVED_EOBJECTS;
 
 	/**
 	 * The number of operations of the '<em>Create EObject</em>' class.
@@ -405,6 +441,15 @@ public interface EobjectPackage extends EPackage {
 	 * @ordered
 	 */
 	int DELETE_EOBJECT___IS_RESOLVED = EOBJECT_EXISTENCE_ECHANGE___IS_RESOLVED;
+
+	/**
+	 * The operation id for the '<em>Get Involved EObjects</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int DELETE_EOBJECT___GET_INVOLVED_EOBJECTS = EOBJECT_EXISTENCE_ECHANGE___GET_INVOLVED_EOBJECTS;
 
 	/**
 	 * The number of operations of the '<em>Delete EObject</em>' class.

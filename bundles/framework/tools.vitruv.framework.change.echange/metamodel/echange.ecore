@@ -6,14 +6,23 @@
     <details key="prefix" value="EChange"/>
     <details key="basePackage" value="tools.vitruv.framework.change"/>
   </eAnnotations>
+  <eAnnotations source="http://www.eclipse.org/OCL/Import">
+    <details key="ecore" value="http://www.eclipse.org/emf/2002/Ecore"/>
+  </eAnnotations>
   <eClassifiers xsi:type="ecore:EClass" name="EChange" abstract="true">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
       <details key="documentation" value="*&#xA;Abstract change, which can be applied forward or backward, after it was resolved to a specific instance of a model."/>
     </eAnnotations>
-    <eOperations name="isResolved" unique="false" eType="ecore:EDataType ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EBoolean">
+    <eOperations name="isResolved" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-        <details key="documentation" value="*&#xA;Returns if all proxy EObjects of the change are resolved to concrete EObjects of a resource set.&#xA;Needs to be true to apply the change.&#xA;@return&#x9;All proxy EObjects are resolved to concrete EObjects."/>
         <details key="body" value="return tools.vitruv.framework.change.echange.resolve.ResolutionChecker.isResolved(this);"/>
+        <details key="documentation" value="*&#xA;Returns if all IDs in this chang eare resolved to {@link EObjects}.&#xA;Needs to be true to apply the change.&#xA;@return&#x9;Whether elements in this change are resolved or not."/>
+      </eAnnotations>
+    </eOperations>
+    <eOperations name="getInvolvedEObjects" upperBound="-1" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="body" value="org.eclipse.emf.common.util.EList&lt;EObject> result = new org.eclipse.emf.common.util.BasicEList&lt;EObject>();&#xD;&#xA;for (EObject involvedEObject : tools.vitruv.framework.change.echange.EChangeInformationExtractor.getInvolvedEObjects(this)) {&#xD;&#xA;&#x9;result.add(involvedEObject);&#xD;&#xA;}&#xD;&#xA;return result;"/>
+        <details key="documentation" value="*&#xA;Returns the objects involved in this change, which includes all affected objects, new values and old values.&#xA;@return&#x9;All elements involved in this change."/>
       </eAnnotations>
     </eOperations>
   </eClassifiers>
@@ -27,9 +36,9 @@
       <details key="documentation" value="*&#xA;Abstract EChange which adds a new value, like an EObject or primitive type."/>
     </eAnnotations>
     <eTypeParameters name="T">
-      <eBounds eClassifier="ecore:EDataType ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EJavaObject"/>
+      <eBounds eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
     </eTypeParameters>
-    <eOperations name="getNewValue" unique="false" lowerBound="1">
+    <eOperations name="getNewValue" lowerBound="1">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
         <details key="documentation" value="*&#xA;Get the added value.&#xA;@return The newly added value."/>
       </eAnnotations>
@@ -42,9 +51,9 @@
       <details key="documentation" value="*&#xA;Abstract EChange which removes an existing value, like an EObject or primitive type."/>
     </eAnnotations>
     <eTypeParameters name="T">
-      <eBounds eClassifier="ecore:EDataType ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EJavaObject"/>
+      <eBounds eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
     </eTypeParameters>
-    <eOperations name="getOldValue" unique="false" lowerBound="1">
+    <eOperations name="getOldValue" lowerBound="1">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
         <details key="documentation" value="*&#xA;Get the removed value.&#xA;@return The value which will be removed."/>
       </eAnnotations>
