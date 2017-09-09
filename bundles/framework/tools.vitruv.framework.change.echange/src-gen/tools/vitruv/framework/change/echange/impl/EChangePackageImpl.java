@@ -183,6 +183,15 @@ public class EChangePackageImpl extends EPackageImpl implements EChangePackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EOperation getEChange__GetInvolvedEObjects_1() {
+		return eChangeEClass.getEOperations().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EClass getAtomicEChange() {
 		return atomicEChangeEClass;
 	}
@@ -253,6 +262,7 @@ public class EChangePackageImpl extends EPackageImpl implements EChangePackage {
 		// Create classes and their features
 		eChangeEClass = createEClass(ECHANGE);
 		createEOperation(eChangeEClass, ECHANGE___IS_RESOLVED);
+		createEOperation(eChangeEClass, ECHANGE___GET_INVOLVED_EOBJECTS);
 
 		atomicEChangeEClass = createEClass(ATOMIC_ECHANGE);
 
@@ -286,17 +296,14 @@ public class EChangePackageImpl extends EPackageImpl implements EChangePackage {
 		setNsPrefix(eNS_PREFIX);
 		setNsURI(eNS_URI);
 
-		// Obtain other dependent packages
-		EcorePackage theEcorePackage = (EcorePackage)EPackage.Registry.INSTANCE.getEPackage(EcorePackage.eNS_URI);
-
 		// Create type parameters
 		ETypeParameter additiveEChangeEClass_T = addETypeParameter(additiveEChangeEClass, "T");
 		ETypeParameter subtractiveEChangeEClass_T = addETypeParameter(subtractiveEChangeEClass, "T");
 
 		// Set bounds for type parameters
-		EGenericType g1 = createEGenericType(theEcorePackage.getEJavaObject());
+		EGenericType g1 = createEGenericType(ecorePackage.getEJavaObject());
 		additiveEChangeEClass_T.getEBounds().add(g1);
-		g1 = createEGenericType(theEcorePackage.getEJavaObject());
+		g1 = createEGenericType(ecorePackage.getEJavaObject());
 		subtractiveEChangeEClass_T.getEBounds().add(g1);
 
 		// Add supertypes to classes
@@ -307,24 +314,46 @@ public class EChangePackageImpl extends EPackageImpl implements EChangePackage {
 		// Initialize classes, features, and operations; add parameters
 		initEClass(eChangeEClass, EChange.class, "EChange", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
-		initEOperation(getEChange__IsResolved(), theEcorePackage.getEBoolean(), "isResolved", 0, 1, !IS_UNIQUE, IS_ORDERED);
+		initEOperation(getEChange__IsResolved(), ecorePackage.getEBoolean(), "isResolved", 1, 1, IS_UNIQUE, IS_ORDERED);
+
+		initEOperation(getEChange__GetInvolvedEObjects_1(), ecorePackage.getEObject(), "getInvolvedEObjects", 0, -1, IS_UNIQUE, IS_ORDERED);
 
 		initEClass(atomicEChangeEClass, AtomicEChange.class, "AtomicEChange", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		initEClass(additiveEChangeEClass, AdditiveEChange.class, "AdditiveEChange", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
-		EOperation op = initEOperation(getAdditiveEChange__GetNewValue(), null, "getNewValue", 1, 1, !IS_UNIQUE, IS_ORDERED);
+		EOperation op = initEOperation(getAdditiveEChange__GetNewValue(), null, "getNewValue", 1, 1, IS_UNIQUE, IS_ORDERED);
 		g1 = createEGenericType(additiveEChangeEClass_T);
 		initEOperation(op, g1);
 
 		initEClass(subtractiveEChangeEClass, SubtractiveEChange.class, "SubtractiveEChange", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
-		op = initEOperation(getSubtractiveEChange__GetOldValue(), null, "getOldValue", 1, 1, !IS_UNIQUE, IS_ORDERED);
+		op = initEOperation(getSubtractiveEChange__GetOldValue(), null, "getOldValue", 1, 1, IS_UNIQUE, IS_ORDERED);
 		g1 = createEGenericType(subtractiveEChangeEClass_T);
 		initEOperation(op, g1);
 
 		// Create resource
 		createResource(eNS_URI);
+
+		// Create annotations
+		// http://www.eclipse.org/OCL/Import
+		createImportAnnotations();
+	}
+
+	/**
+	 * Initializes the annotations for <b>http://www.eclipse.org/OCL/Import</b>.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void createImportAnnotations() {
+		String source = "http://www.eclipse.org/OCL/Import";	
+		addAnnotation
+		  (this, 
+		   source, 
+		   new String[] {
+			 "ecore", "http://www.eclipse.org/emf/2002/Ecore"
+		   });
 	}
 
 } //EChangePackageImpl

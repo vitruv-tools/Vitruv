@@ -123,6 +123,15 @@ public interface ListPackage extends EPackage {
 	int UPDATE_SINGLE_LIST_ENTRY_ECHANGE___IS_RESOLVED = FeaturePackage.UPDATE_MULTI_VALUED_FEATURE_ECHANGE___IS_RESOLVED;
 
 	/**
+	 * The operation id for the '<em>Get Involved EObjects</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int UPDATE_SINGLE_LIST_ENTRY_ECHANGE___GET_INVOLVED_EOBJECTS = FeaturePackage.UPDATE_MULTI_VALUED_FEATURE_ECHANGE___GET_INVOLVED_EOBJECTS;
+
+	/**
 	 * The number of operations of the '<em>Update Single List Entry EChange</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -194,6 +203,15 @@ public interface ListPackage extends EPackage {
 	 * @ordered
 	 */
 	int INSERT_IN_LIST_ECHANGE___IS_RESOLVED = UPDATE_SINGLE_LIST_ENTRY_ECHANGE___IS_RESOLVED;
+
+	/**
+	 * The operation id for the '<em>Get Involved EObjects</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int INSERT_IN_LIST_ECHANGE___GET_INVOLVED_EOBJECTS = UPDATE_SINGLE_LIST_ENTRY_ECHANGE___GET_INVOLVED_EOBJECTS;
 
 	/**
 	 * The operation id for the '<em>Get New Value</em>' operation.
@@ -276,6 +294,15 @@ public interface ListPackage extends EPackage {
 	 * @ordered
 	 */
 	int REMOVE_FROM_LIST_ECHANGE___IS_RESOLVED = UPDATE_SINGLE_LIST_ENTRY_ECHANGE___IS_RESOLVED;
+
+	/**
+	 * The operation id for the '<em>Get Involved EObjects</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REMOVE_FROM_LIST_ECHANGE___GET_INVOLVED_EOBJECTS = UPDATE_SINGLE_LIST_ENTRY_ECHANGE___GET_INVOLVED_EOBJECTS;
 
 	/**
 	 * The operation id for the '<em>Get Old Value</em>' operation.

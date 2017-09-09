@@ -27,7 +27,7 @@ public interface SubtractiveEChange<T extends Object> extends AtomicEChange {
 	 * Get the removed value.
 	 * @return The value which will be removed.
 	 * <!-- end-model-doc -->
-	 * @model kind="operation" unique="false" required="true"
+	 * @model kind="operation" required="true"
 	 * @generated
 	 */
 	T getOldValue();

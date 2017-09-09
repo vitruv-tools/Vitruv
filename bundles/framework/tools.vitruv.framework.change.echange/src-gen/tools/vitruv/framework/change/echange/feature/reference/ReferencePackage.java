@@ -118,6 +118,15 @@ public interface ReferencePackage extends EPackage {
 	int UPDATE_REFERENCE_ECHANGE___IS_RESOLVED = FeaturePackage.FEATURE_ECHANGE___IS_RESOLVED;
 
 	/**
+	 * The operation id for the '<em>Get Involved EObjects</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int UPDATE_REFERENCE_ECHANGE___GET_INVOLVED_EOBJECTS = FeaturePackage.FEATURE_ECHANGE___GET_INVOLVED_EOBJECTS;
+
+	/**
 	 * The operation id for the '<em>Is Containment</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -207,6 +216,15 @@ public interface ReferencePackage extends EPackage {
 	 * @ordered
 	 */
 	int ADDITIVE_REFERENCE_ECHANGE___IS_RESOLVED = UPDATE_REFERENCE_ECHANGE___IS_RESOLVED;
+
+	/**
+	 * The operation id for the '<em>Get Involved EObjects</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int ADDITIVE_REFERENCE_ECHANGE___GET_INVOLVED_EOBJECTS = UPDATE_REFERENCE_ECHANGE___GET_INVOLVED_EOBJECTS;
 
 	/**
 	 * The operation id for the '<em>Is Containment</em>' operation.
@@ -307,6 +325,15 @@ public interface ReferencePackage extends EPackage {
 	 * @ordered
 	 */
 	int SUBTRACTIVE_REFERENCE_ECHANGE___IS_RESOLVED = UPDATE_REFERENCE_ECHANGE___IS_RESOLVED;
+
+	/**
+	 * The operation id for the '<em>Get Involved EObjects</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int SUBTRACTIVE_REFERENCE_ECHANGE___GET_INVOLVED_EOBJECTS = UPDATE_REFERENCE_ECHANGE___GET_INVOLVED_EOBJECTS;
 
 	/**
 	 * The operation id for the '<em>Is Containment</em>' operation.
@@ -418,6 +445,15 @@ public interface ReferencePackage extends EPackage {
 	int INSERT_EREFERENCE___IS_RESOLVED = ListPackage.INSERT_IN_LIST_ECHANGE___IS_RESOLVED;
 
 	/**
+	 * The operation id for the '<em>Get Involved EObjects</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int INSERT_EREFERENCE___GET_INVOLVED_EOBJECTS = ListPackage.INSERT_IN_LIST_ECHANGE___GET_INVOLVED_EOBJECTS;
+
+	/**
 	 * The operation id for the '<em>Get New Value</em>' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -525,6 +561,15 @@ public interface ReferencePackage extends EPackage {
 	 * @ordered
 	 */
 	int REMOVE_EREFERENCE___IS_RESOLVED = ListPackage.REMOVE_FROM_LIST_ECHANGE___IS_RESOLVED;
+
+	/**
+	 * The operation id for the '<em>Get Involved EObjects</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REMOVE_EREFERENCE___GET_INVOLVED_EOBJECTS = ListPackage.REMOVE_FROM_LIST_ECHANGE___GET_INVOLVED_EOBJECTS;
 
 	/**
 	 * The operation id for the '<em>Get Old Value</em>' operation.
@@ -643,6 +688,15 @@ public interface ReferencePackage extends EPackage {
 	 * @ordered
 	 */
 	int REPLACE_SINGLE_VALUED_EREFERENCE___IS_RESOLVED = SinglePackage.REPLACE_SINGLE_VALUED_FEATURE_ECHANGE___IS_RESOLVED;
+
+	/**
+	 * The operation id for the '<em>Get Involved EObjects</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REPLACE_SINGLE_VALUED_EREFERENCE___GET_INVOLVED_EOBJECTS = SinglePackage.REPLACE_SINGLE_VALUED_FEATURE_ECHANGE___GET_INVOLVED_EOBJECTS;
 
 	/**
 	 * The operation id for the '<em>Get New Value</em>' operation.
