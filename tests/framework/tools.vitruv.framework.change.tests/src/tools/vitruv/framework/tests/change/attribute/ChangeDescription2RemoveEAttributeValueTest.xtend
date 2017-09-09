@@ -14,7 +14,7 @@ class ChangeDescription2RemoveEAttributeValueTest extends ChangeDescription2Chan
 	 * Remove attribute value from multi-valued EAttribute
 	 */
 	@Test
-	def public testRemoveEAttributeValue() {
+	def void testRemoveEAttributeValue() {
 		this.rootElement.multiValuedEAttribute.add(42)
 		this.rootElement.multiValuedEAttribute.add(55)
 		this.rootElement.multiValuedEAttribute.add(66)
@@ -27,16 +27,17 @@ class ChangeDescription2RemoveEAttributeValueTest extends ChangeDescription2Chan
 		this.rootElement.multiValuedEAttribute.remove(0)
 
 		changes.assertChangeCount(3);
-		changes.claimChange(0).assertRemoveEAttribute(this.rootElement, ROOT__MULTI_VALUED_EATTRIBUTE, 66, 2)
-		changes.claimChange(1).assertRemoveEAttribute(this.rootElement, ROOT__MULTI_VALUED_EATTRIBUTE, 42, 0)
-		changes.claimChange(2).assertRemoveEAttribute(this.rootElement, ROOT__MULTI_VALUED_EATTRIBUTE, 55, 0)
+		changes.assertRemoveEAttribute(this.rootElement, ROOT__MULTI_VALUED_EATTRIBUTE, 66, 2)
+			.assertRemoveEAttribute(this.rootElement, ROOT__MULTI_VALUED_EATTRIBUTE, 42, 0)
+			.assertRemoveEAttribute(this.rootElement, ROOT__MULTI_VALUED_EATTRIBUTE, 55, 0)
+			.assertEmpty;
 	}
 	
 	/**
 	 * Clear several attributes in a multi-valued EAttribute
 	 */
 	@Test
-	def public testClearEAttributeValue() {
+	def void testClearEAttributeValue() {
 		this.rootElement.multiValuedEAttribute.add(42)
 		this.rootElement.multiValuedEAttribute.add(55)
 		// test
@@ -46,15 +47,16 @@ class ChangeDescription2RemoveEAttributeValueTest extends ChangeDescription2Chan
 		this.rootElement.multiValuedEAttribute.clear
 
 		changes.assertChangeCount(2);
-		changes.claimChange(0).assertRemoveEAttribute(this.rootElement, ROOT__MULTI_VALUED_EATTRIBUTE, 55, 1)
-		changes.claimChange(1).assertRemoveEAttribute(this.rootElement, ROOT__MULTI_VALUED_EATTRIBUTE, 42, 0)
+		changes.assertRemoveEAttribute(this.rootElement, ROOT__MULTI_VALUED_EATTRIBUTE, 55, 1)
+			.assertRemoveEAttribute(this.rootElement, ROOT__MULTI_VALUED_EATTRIBUTE, 42, 0)
+			.assertEmpty;
 	}
 	
 	/**
 	 * Remove attribute value from unsettable multi-valued EAttribute (should not be an unset)
 	 */
 	@Test
-	def public testRemoveUnsettableEAttributeValue() {
+	def void testRemoveUnsettableEAttributeValue() {
 		Assert.assertFalse(this.rootElement.eIsSet(ROOT__MULTI_VALUED_UNSETTABLE_EATTRIBUTE));
 		this.rootElement.multiValuedUnsettableEAttribute.add(42)
 		Assert.assertTrue(this.rootElement.eIsSet(ROOT__MULTI_VALUED_UNSETTABLE_EATTRIBUTE));
@@ -65,13 +67,14 @@ class ChangeDescription2RemoveEAttributeValueTest extends ChangeDescription2Chan
 		this.rootElement.multiValuedUnsettableEAttribute.remove(0)
 
 		changes.assertChangeCount(1);
-		changes.claimChange(0).assertRemoveEAttribute(this.rootElement, ROOT__MULTI_VALUED_UNSETTABLE_EATTRIBUTE, 42, 0)
+		changes.assertRemoveEAttribute(this.rootElement, ROOT__MULTI_VALUED_UNSETTABLE_EATTRIBUTE, 42, 0)
+			.assertEmpty;
 		Assert.assertTrue(this.rootElement.eIsSet(ROOT__MULTI_VALUED_UNSETTABLE_EATTRIBUTE));
 	}
 
 
 	@Test
-	def public testUnsetEAttributeValue() {
+	def void testUnsetEAttributeValue() {
 		this.rootElement.multiValuedUnsettableEAttribute.add(42)
 		// test
 		startRecording
@@ -82,11 +85,12 @@ class ChangeDescription2RemoveEAttributeValueTest extends ChangeDescription2Chan
 		changes.assertChangeCount(1);
 		val subtractiveChanges = changes.claimChange(0).assertExplicitUnsetEAttribute.subtractiveChanges
 		subtractiveChanges.assertChangeCount(1);
-		subtractiveChanges.get(0).assertRemoveEAttribute(this.rootElement, ROOT__MULTI_VALUED_UNSETTABLE_EATTRIBUTE, 42, 0)
+		subtractiveChanges.assertRemoveEAttribute(this.rootElement, ROOT__MULTI_VALUED_UNSETTABLE_EATTRIBUTE, 42, 0)
+			.assertEmpty;
 	}
 	
 	@Test
-	def public testUnsetEAttributeValuesWithSeveralValues() {
+	def void testUnsetEAttributeValuesWithSeveralValues() {
 		Assert.assertFalse(rootElement.isSetMultiValuedUnsettableEAttribute);
 		this.rootElement.multiValuedUnsettableEAttribute.add(42)
 		Assert.assertTrue(rootElement.isSetMultiValuedUnsettableEAttribute);
@@ -101,8 +105,9 @@ class ChangeDescription2RemoveEAttributeValueTest extends ChangeDescription2Chan
 		changes.assertChangeCount(1);
 		val subtractiveChanges = changes.claimChange(0).assertExplicitUnsetEAttribute.subtractiveChanges
 		subtractiveChanges.assertChangeCount(2);
-		subtractiveChanges.get(0).assertRemoveEAttribute(this.rootElement, ROOT__MULTI_VALUED_UNSETTABLE_EATTRIBUTE, 22, 1)
-		subtractiveChanges.get(1).assertRemoveEAttribute(this.rootElement, ROOT__MULTI_VALUED_UNSETTABLE_EATTRIBUTE, 42, 0)
+		subtractiveChanges.assertRemoveEAttribute(this.rootElement, ROOT__MULTI_VALUED_UNSETTABLE_EATTRIBUTE, 22, 1)
+			.assertRemoveEAttribute(this.rootElement, ROOT__MULTI_VALUED_UNSETTABLE_EATTRIBUTE, 42, 0)
+			.assertEmpty;
 	}
 	
 }

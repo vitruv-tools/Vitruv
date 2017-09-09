@@ -25,14 +25,12 @@ class ChangeDescriptionComplexSequencesTest extends ChangeDescription2ChangeTran
 		this.rootElement.singleValuedContainmentEReference = nonRoot;
 				
 		// assert
-		changes.assertChangeCount(4)
-		changes.claimChange(0).assertSetSingleValuedEReference(this.rootElement, ROOT__SINGLE_VALUED_CONTAINMENT_EREFERENCE,
-			nonRoot, true, true);
-		changes.claimChange(1).assertReplaceSingleValuedEAttribute(nonRoot, IDENTIFIED__ID, null, nonRoot.id);
-		changes.claimChange(2).assertUnsetSingleValuedEReference(this.rootElement, ROOT__SINGLE_VALUED_CONTAINMENT_EREFERENCE,
-			nonRoot, true, true);
-		changes.claimChange(3).assertSetSingleValuedEReference(this.rootElement, ROOT__SINGLE_VALUED_CONTAINMENT_EREFERENCE,
-			nonRoot, true, false);
+		changes.assertChangeCount(6)
+		changes.assertSetSingleValuedEReference(this.rootElement, ROOT__SINGLE_VALUED_CONTAINMENT_EREFERENCE, nonRoot, true, true)
+			.assertReplaceSingleValuedEAttribute(nonRoot, IDENTIFIED__ID, null, nonRoot.id)
+			.assertUnsetSingleValuedEReference(this.rootElement, ROOT__SINGLE_VALUED_CONTAINMENT_EREFERENCE, nonRoot, true, true)
+			.assertSetSingleValuedEReference(this.rootElement, ROOT__SINGLE_VALUED_CONTAINMENT_EREFERENCE, nonRoot, true, false)
+			.assertEmpty;
 		// There is no 5th change setting the ID again, because the element is stored in a ChangeDescription in between, which means 
 		// that is always contained somewhere. When editing real models, such a problem will not arise
 		// changes.claimChange(4).assertReplaceSingleValuedEAttribute(nonRoot, IDENTIFIED__ID, null, nonRoot.id);
@@ -52,17 +50,12 @@ class ChangeDescriptionComplexSequencesTest extends ChangeDescription2ChangeTran
 		this.rootElement.nonRootObjectContainerHelper = nonRootObjectsContainer;
 				
 		// assert
-		changes.assertChangeCount(4);
-		val containerChange = changes.claimChange(0);
-		containerChange.assertSetSingleValuedEReference(rootElement, ROOT__NON_ROOT_OBJECT_CONTAINER_HELPER,
-			nonRootObjectsContainer, true, true);
-		changes.claimChange(1).assertReplaceSingleValuedEAttribute(nonRootObjectsContainer, IDENTIFIED__ID, null, nonRootObjectsContainer.id);
-		val nonRootChange = changes.claimChange(2);
-		nonRootChange.assertCreateAndInsertNonRoot(nonRootObjectsContainer, NON_ROOT_OBJECT_CONTAINER_HELPER__NON_ROOT_OBJECTS_CONTAINMENT,
-			nonRoot, 0);
-		changes.claimChange(3).assertReplaceSingleValuedEAttribute(nonRoot, IDENTIFIED__ID, null, nonRoot.id);
-		
-		
+		changes.assertChangeCount(6);
+		changes.assertSetSingleValuedEReference(rootElement, ROOT__NON_ROOT_OBJECT_CONTAINER_HELPER, nonRootObjectsContainer, true, true)
+			.assertReplaceSingleValuedEAttribute(nonRootObjectsContainer, IDENTIFIED__ID, null, nonRootObjectsContainer.id)
+			.assertCreateAndInsertNonRoot(nonRootObjectsContainer, NON_ROOT_OBJECT_CONTAINER_HELPER__NON_ROOT_OBJECTS_CONTAINMENT, nonRoot, 0)
+			.assertReplaceSingleValuedEAttribute(nonRoot, IDENTIFIED__ID, null, nonRoot.id)
+			.assertEmpty;
 	}
 	
 	@Test
@@ -82,16 +75,15 @@ class ChangeDescriptionComplexSequencesTest extends ChangeDescription2ChangeTran
 		this.rootElement.recursiveRoot = secondRoot;
 				
 		// assert
-		changes.assertChangeCount(7);
-		changes.claimChange(0).assertSetSingleValuedEReference(rootElement, ROOT__RECURSIVE_ROOT, secondRoot, true, true);
-		changes.claimChange(1).assertReplaceSingleValuedEAttribute(secondRoot, IDENTIFIED__ID, null, secondRoot.id);
-		changes.claimChange(2).assertSetSingleValuedEReference(secondRoot, ROOT__NON_ROOT_OBJECT_CONTAINER_HELPER, nonRootObjectsContainer, true, true);
-		changes.claimChange(3).assertReplaceSingleValuedEAttribute(nonRootObjectsContainer, IDENTIFIED__ID, null, nonRootObjectsContainer.id);
-		changes.claimChange(4).assertCreateAndInsertNonRoot(nonRootObjectsContainer, NON_ROOT_OBJECT_CONTAINER_HELPER__NON_ROOT_OBJECTS_CONTAINMENT,
-			nonRoot, 0);
-		changes.claimChange(5).assertReplaceSingleValuedEAttribute(nonRoot, IDENTIFIED__ID, null, nonRoot.id);
-		changes.claimChange(6).assertReplaceSingleValuedEReference(secondRoot, ROOT__SINGLE_VALUED_NON_CONTAINMENT_EREFERENCE,
-			null, nonRoot, false);		
+		changes.assertChangeCount(10);
+		changes.assertSetSingleValuedEReference(rootElement, ROOT__RECURSIVE_ROOT, secondRoot, true, true)
+			.assertReplaceSingleValuedEAttribute(secondRoot, IDENTIFIED__ID, null, secondRoot.id)
+			.assertSetSingleValuedEReference(secondRoot, ROOT__NON_ROOT_OBJECT_CONTAINER_HELPER, nonRootObjectsContainer, true, true)
+			.assertReplaceSingleValuedEAttribute(nonRootObjectsContainer, IDENTIFIED__ID, null, nonRootObjectsContainer.id)
+			.assertCreateAndInsertNonRoot(nonRootObjectsContainer, NON_ROOT_OBJECT_CONTAINER_HELPER__NON_ROOT_OBJECTS_CONTAINMENT, nonRoot, 0)
+			.assertReplaceSingleValuedEAttribute(nonRoot, IDENTIFIED__ID, null, nonRoot.id)
+			.assertReplaceSingleValuedEReference(secondRoot, ROOT__SINGLE_VALUED_NON_CONTAINMENT_EREFERENCE, null, nonRoot, false)
+			.assertEmpty;		
 	}
 	
 }

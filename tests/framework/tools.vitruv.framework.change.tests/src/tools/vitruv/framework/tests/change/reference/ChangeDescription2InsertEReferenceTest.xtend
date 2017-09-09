@@ -8,6 +8,7 @@ import static allElementTypes.AllElementTypesPackage.Literals.*
 
 import static extension tools.vitruv.framework.tests.change.util.AtomicEChangeAssertHelper.*
 import static extension tools.vitruv.framework.tests.change.util.CompoundEChangeAssertHelper.*
+import tools.vitruv.framework.change.echange.EChange
 
 class ChangeDescription2InsertEReferenceTest extends ChangeDescription2EReferenceTest {
 
@@ -58,19 +59,21 @@ class ChangeDescription2InsertEReferenceTest extends ChangeDescription2EReferenc
 	}
 	
 	def private void assertInsertEReference(NonRoot nonRoot, EStructuralFeature feature, int expectedIndex, boolean isContainment) {
+		var Iterable<? extends EChange> changes = changes;
 		if (isContainment) {
 			changes.assertChangeCount(2);
-			changes.claimChange(1).assertReplaceSingleValuedEAttribute(nonRoot, IDENTIFIED__ID, null, nonRoot.id);
+			changes = changes.assertReplaceSingleValuedEAttribute(nonRoot, IDENTIFIED__ID, null, nonRoot.id);
 		} else {
 			changes.assertChangeCount(1);
 		}
-		changes.claimChange(0).assertInsertEReference(this.rootElement, feature, nonRoot,
-			expectedIndex, isContainment)
+		changes.assertInsertEReference(this.rootElement, feature, nonRoot, expectedIndex, isContainment)
+			.assertEmpty;
 	}
 	
 	def private void assertCreateAndInsertNonRoot(NonRoot nonRoot, EStructuralFeature feature, int expectedIndex) {
-		changes.assertChangeCount(2);
-		changes.claimChange(0).assertCreateAndInsertNonRoot(this.rootElement, feature, nonRoot, expectedIndex)
-		changes.claimChange(1).assertReplaceSingleValuedEAttribute(nonRoot, IDENTIFIED__ID, null, nonRoot.id);
+		changes.assertChangeCount(3);
+		changes.assertCreateAndInsertNonRoot(this.rootElement, feature, nonRoot, expectedIndex)
+			.assertReplaceSingleValuedEAttribute(nonRoot, IDENTIFIED__ID, null, nonRoot.id)
+			.assertEmpty;
 	}
 }
