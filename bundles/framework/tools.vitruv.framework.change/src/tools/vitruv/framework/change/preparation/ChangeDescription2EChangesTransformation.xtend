@@ -20,7 +20,6 @@ import tools.vitruv.framework.change.echange.feature.attribute.SubtractiveAttrib
 
 import static extension tools.vitruv.framework.change.preparation.EMFModelChangeTransformationUtil.*
 import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
-import tools.vitruv.framework.change.echange.compound.CompoundEChange
 import tools.vitruv.framework.change.echange.eobject.DeleteEObject
 
 public class ChangeDescription2EChangesTransformation {
@@ -171,7 +170,7 @@ public class ChangeDescription2EChangesTransformation {
 			var oldRootContainer = rootToAdd.eContainer
 			var oldRootResource = rootToAdd.eResource
 			var index = listChange.index
-			eChanges.add(createInsertRootChange(rootToAdd, oldRootContainer, oldRootResource, newResource, index))
+			eChanges.addAll(createInsertRootChange(rootToAdd, oldRootContainer, oldRootResource, newResource, index))
 		}
 }
 
@@ -186,7 +185,7 @@ public class ChangeDescription2EChangesTransformation {
 
 		val removeChange = createRemoveRootChange(rootToRemove, newRootContainer, newRootResource,
 				oldResource, rootElementListIndex)
-		val deleteChange = (removeChange as CompoundEChange).atomicChanges.filter(DeleteEObject).claimOne;
+		val deleteChange = removeChange.filter(DeleteEObject).claimOne;
 		deleteChange.consequentialRemoveChanges += recursiveRemoval(rootToRemove);
 		eChanges += removeChange;
 	}
@@ -371,10 +370,10 @@ public class ChangeDescription2EChangesTransformation {
 		val oldReferenceValue = affectedEObject.getReferenceValueList(affectedReference).claimNotMany;
 		val removeChange = createReplaceSingleValuedReferenceChange(affectedEObject, affectedReference, oldReferenceValue, newReferenceValue, false);
 		if (affectedReference.containment && oldReferenceValue !== null) {
-			val deleteChange = (removeChange as CompoundEChange).atomicChanges.filter(DeleteEObject).claimOne;
+			val deleteChange = removeChange.filter(DeleteEObject).claimOne;
 			deleteChange.consequentialRemoveChanges += recursiveRemoval(oldReferenceValue);
 		} 
-		return #[removeChange];
+		return removeChange;
 	}
 
 	def private List<EChange> createChangeForMultiReferenceChange(EObject affectedEObject, EReference affectedReference,
@@ -382,7 +381,7 @@ public class ChangeDescription2EChangesTransformation {
 		switch changeKind {
 			case ChangeKind.ADD_LITERAL: referenceValues.mapFixed [
 				createInsertReferenceChange(affectedEObject, affectedReference, index, it, false)
-			]
+			].flatten.toList
 			case ChangeKind.REMOVE_LITERAL: createChangeForRemoveReferenceChange(affectedEObject, affectedReference,
 				index, affectedEObject.getReferenceValueList(affectedReference))
 			default: Collections.emptyList()
@@ -399,10 +398,10 @@ public class ChangeDescription2EChangesTransformation {
 				referenceValue, newContainer, newResource, false)
 		// }
 		if (affectedReference.containment) {
-			val deleteChange = (removeChange as CompoundEChange).atomicChanges.filter(DeleteEObject).claimOne;
+			val deleteChange = removeChange.filter(DeleteEObject).claimOne;
 			deleteChange.consequentialRemoveChanges += recursiveRemoval(referenceValue);
 		} 
-		return #[removeChange]
+		return removeChange
 }
 
 	def private dispatch List<EChange> createChangesForFeatureChange(EObject affectedEObject,
