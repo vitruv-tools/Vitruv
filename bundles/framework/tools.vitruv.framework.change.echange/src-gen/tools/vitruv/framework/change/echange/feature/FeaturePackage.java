@@ -76,7 +76,7 @@ public interface FeaturePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int FEATURE_ECHANGE__AFFECTED_FEATURE = EChangePackage.ATOMIC_ECHANGE_FEATURE_COUNT + 0;
+	int FEATURE_ECHANGE__AFFECTED_FEATURE = EChangePackage.ECHANGE_FEATURE_COUNT + 0;
 
 	/**
 	 * The feature id for the '<em><b>Affected EObject</b></em>' reference.
@@ -85,7 +85,7 @@ public interface FeaturePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int FEATURE_ECHANGE__AFFECTED_EOBJECT = EChangePackage.ATOMIC_ECHANGE_FEATURE_COUNT + 1;
+	int FEATURE_ECHANGE__AFFECTED_EOBJECT = EChangePackage.ECHANGE_FEATURE_COUNT + 1;
 
 	/**
 	 * The feature id for the '<em><b>Affected EObject ID</b></em>' attribute.
@@ -94,7 +94,7 @@ public interface FeaturePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int FEATURE_ECHANGE__AFFECTED_EOBJECT_ID = EChangePackage.ATOMIC_ECHANGE_FEATURE_COUNT + 2;
+	int FEATURE_ECHANGE__AFFECTED_EOBJECT_ID = EChangePackage.ECHANGE_FEATURE_COUNT + 2;
 
 	/**
 	 * The number of structural features of the '<em>EChange</em>' class.
@@ -103,7 +103,7 @@ public interface FeaturePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int FEATURE_ECHANGE_FEATURE_COUNT = EChangePackage.ATOMIC_ECHANGE_FEATURE_COUNT + 3;
+	int FEATURE_ECHANGE_FEATURE_COUNT = EChangePackage.ECHANGE_FEATURE_COUNT + 3;
 
 	/**
 	 * The operation id for the '<em>Is Resolved</em>' operation.
@@ -112,7 +112,7 @@ public interface FeaturePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int FEATURE_ECHANGE___IS_RESOLVED = EChangePackage.ATOMIC_ECHANGE___IS_RESOLVED;
+	int FEATURE_ECHANGE___IS_RESOLVED = EChangePackage.ECHANGE___IS_RESOLVED;
 
 	/**
 	 * The operation id for the '<em>Get Involved EObjects</em>' operation.
@@ -121,7 +121,7 @@ public interface FeaturePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int FEATURE_ECHANGE___GET_INVOLVED_EOBJECTS = EChangePackage.ATOMIC_ECHANGE___GET_INVOLVED_EOBJECTS;
+	int FEATURE_ECHANGE___GET_INVOLVED_EOBJECTS = EChangePackage.ECHANGE___GET_INVOLVED_EOBJECTS;
 
 	/**
 	 * The number of operations of the '<em>EChange</em>' class.
@@ -130,7 +130,7 @@ public interface FeaturePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int FEATURE_ECHANGE_OPERATION_COUNT = EChangePackage.ATOMIC_ECHANGE_OPERATION_COUNT + 0;
+	int FEATURE_ECHANGE_OPERATION_COUNT = EChangePackage.ECHANGE_OPERATION_COUNT + 0;
 
 	/**
 	 * The meta object id for the '{@link tools.vitruv.framework.change.echange.feature.impl.UpdateMultiValuedFeatureEChangeImpl <em>Update Multi Valued Feature EChange</em>}' class.

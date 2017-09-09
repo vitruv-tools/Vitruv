@@ -410,7 +410,7 @@ public class EobjectPackageImpl extends EPackageImpl implements EobjectPackage {
 		g2 = createEGenericType(eObjectSubtractedEChangeEClass_T);
 		g1.getETypeArguments().add(g2);
 		eObjectSubtractedEChangeEClass.getEGenericSuperTypes().add(g1);
-		eObjectExistenceEChangeEClass.getESuperTypes().add(theEChangePackage.getAtomicEChange());
+		eObjectExistenceEChangeEClass.getESuperTypes().add(theEChangePackage.getEChange());
 		g1 = createEGenericType(this.getEObjectExistenceEChange());
 		g2 = createEGenericType(createEObjectEClass_A);
 		g1.getETypeArguments().add(g2);
@@ -441,7 +441,7 @@ public class EobjectPackageImpl extends EPackageImpl implements EobjectPackage {
 		initEClass(createEObjectEClass, CreateEObject.class, "CreateEObject", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		initEClass(deleteEObjectEClass, DeleteEObject.class, "DeleteEObject", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getDeleteEObject_ConsequentialRemoveChanges(), theEChangePackage.getAtomicEChange(), null, "consequentialRemoveChanges", null, 0, -1, DeleteEObject.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getDeleteEObject_ConsequentialRemoveChanges(), theEChangePackage.getEChange(), null, "consequentialRemoveChanges", null, 0, -1, DeleteEObject.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		// Create resource
 		createResource(eNS_URI);

@@ -8,7 +8,6 @@ import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.util.Switch;
 
 import tools.vitruv.framework.change.echange.AdditiveEChange;
-import tools.vitruv.framework.change.echange.AtomicEChange;
 import tools.vitruv.framework.change.echange.EChange;
 import tools.vitruv.framework.change.echange.SubtractiveEChange;
 
@@ -75,7 +74,6 @@ public class EobjectSwitch<T1> extends Switch<T1> {
 				EObjectAddedEChange<?> eObjectAddedEChange = (EObjectAddedEChange<?>)theEObject;
 				T1 result = caseEObjectAddedEChange(eObjectAddedEChange);
 				if (result == null) result = caseAdditiveEChange(eObjectAddedEChange);
-				if (result == null) result = caseAtomicEChange(eObjectAddedEChange);
 				if (result == null) result = caseEChange(eObjectAddedEChange);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
@@ -84,7 +82,6 @@ public class EobjectSwitch<T1> extends Switch<T1> {
 				EObjectSubtractedEChange<?> eObjectSubtractedEChange = (EObjectSubtractedEChange<?>)theEObject;
 				T1 result = caseEObjectSubtractedEChange(eObjectSubtractedEChange);
 				if (result == null) result = caseSubtractiveEChange(eObjectSubtractedEChange);
-				if (result == null) result = caseAtomicEChange(eObjectSubtractedEChange);
 				if (result == null) result = caseEChange(eObjectSubtractedEChange);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
@@ -92,7 +89,6 @@ public class EobjectSwitch<T1> extends Switch<T1> {
 			case EobjectPackage.EOBJECT_EXISTENCE_ECHANGE: {
 				EObjectExistenceEChange<?> eObjectExistenceEChange = (EObjectExistenceEChange<?>)theEObject;
 				T1 result = caseEObjectExistenceEChange(eObjectExistenceEChange);
-				if (result == null) result = caseAtomicEChange(eObjectExistenceEChange);
 				if (result == null) result = caseEChange(eObjectExistenceEChange);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
@@ -101,7 +97,6 @@ public class EobjectSwitch<T1> extends Switch<T1> {
 				CreateEObject<?> createEObject = (CreateEObject<?>)theEObject;
 				T1 result = caseCreateEObject(createEObject);
 				if (result == null) result = caseEObjectExistenceEChange(createEObject);
-				if (result == null) result = caseAtomicEChange(createEObject);
 				if (result == null) result = caseEChange(createEObject);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
@@ -110,7 +105,6 @@ public class EobjectSwitch<T1> extends Switch<T1> {
 				DeleteEObject<?> deleteEObject = (DeleteEObject<?>)theEObject;
 				T1 result = caseDeleteEObject(deleteEObject);
 				if (result == null) result = caseEObjectExistenceEChange(deleteEObject);
-				if (result == null) result = caseAtomicEChange(deleteEObject);
 				if (result == null) result = caseEChange(deleteEObject);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
@@ -206,21 +200,6 @@ public class EobjectSwitch<T1> extends Switch<T1> {
 	 * @generated
 	 */
 	public T1 caseEChange(EChange object) {
-		return null;
-	}
-
-	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Atomic EChange</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Atomic EChange</em>'.
-	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-	 * @generated
-	 */
-	public T1 caseAtomicEChange(AtomicEChange object) {
 		return null;
 	}
 

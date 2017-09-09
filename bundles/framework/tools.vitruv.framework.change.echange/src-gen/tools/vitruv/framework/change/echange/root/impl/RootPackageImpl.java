@@ -316,7 +316,7 @@ public class RootPackageImpl extends EPackageImpl implements RootPackage {
 		removeRootEObjectEClass_T.getEBounds().add(g1);
 
 		// Add supertypes to classes
-		rootEChangeEClass.getESuperTypes().add(theEChangePackage.getAtomicEChange());
+		rootEChangeEClass.getESuperTypes().add(theEChangePackage.getEChange());
 		g1 = createEGenericType(this.getRootEChange());
 		insertRootEObjectEClass.getEGenericSuperTypes().add(g1);
 		g1 = createEGenericType(theEobjectPackage.getEObjectAddedEChange());

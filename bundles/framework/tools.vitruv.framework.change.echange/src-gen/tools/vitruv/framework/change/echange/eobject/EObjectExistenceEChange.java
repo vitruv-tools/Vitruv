@@ -5,7 +5,7 @@ package tools.vitruv.framework.change.echange.eobject;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 
-import tools.vitruv.framework.change.echange.AtomicEChange;
+import tools.vitruv.framework.change.echange.EChange;
 
 /**
  * <!-- begin-user-doc -->
@@ -31,7 +31,7 @@ import tools.vitruv.framework.change.echange.AtomicEChange;
  * @model abstract="true"
  * @generated
  */
-public interface EObjectExistenceEChange<A extends EObject> extends AtomicEChange {
+public interface EObjectExistenceEChange<A extends EObject> extends EChange {
 	/**
 	 * Returns the value of the '<em><b>Affected EObject</b></em>' reference.
 	 * <!-- begin-user-doc -->

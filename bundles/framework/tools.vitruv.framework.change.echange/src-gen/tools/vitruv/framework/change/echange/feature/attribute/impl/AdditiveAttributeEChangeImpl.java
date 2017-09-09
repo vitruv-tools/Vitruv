@@ -46,6 +46,7 @@ public abstract class AdditiveAttributeEChangeImpl<A extends EObject, T extends 
 	 * @ordered
 	 */
 	protected static final boolean WAS_UNSET_EDEFAULT = false;
+
 	/**
 	 * The cached value of the '{@link #isWasUnset() <em>Was Unset</em>}' attribute.
 	 * <!-- begin-user-doc -->

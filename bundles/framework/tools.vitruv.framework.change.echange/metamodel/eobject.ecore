@@ -36,7 +36,7 @@
     </eGenericSuperTypes>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="EObjectExistenceEChange" abstract="true"
-      eSuperTypes="echange.ecore#//AtomicEChange">
+      eSuperTypes="echange.ecore#//EChange">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
       <details key="documentation" value="*&#xA;Abstract EChange which creates or deletes an EObject."/>
     </eAnnotations>
@@ -72,7 +72,7 @@
       <eBounds eClassifier="ecore:EClass ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EObject"/>
     </eTypeParameters>
     <eStructuralFeatures xsi:type="ecore:EReference" name="consequentialRemoveChanges"
-        upperBound="-1" eType="ecore:EClass echange.ecore#//AtomicEChange"/>
+        upperBound="-1" eType="ecore:EClass echange.ecore#//EChange"/>
     <eGenericSuperTypes eClassifier="#//EObjectExistenceEChange">
       <eTypeArguments eTypeParameter="#//DeleteEObject/A"/>
     </eGenericSuperTypes>
