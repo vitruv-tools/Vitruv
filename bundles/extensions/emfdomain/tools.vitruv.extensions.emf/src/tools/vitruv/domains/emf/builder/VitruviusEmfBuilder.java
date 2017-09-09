@@ -1,5 +1,6 @@
 package tools.vitruv.domains.emf.builder;
 
+import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
@@ -19,6 +20,7 @@ import tools.vitruv.domains.emf.monitorededitor.IVitruviusEMFEditorMonitor;
 import tools.vitruv.domains.emf.monitorededitor.IVitruviusEMFEditorMonitor.IVitruviusAccessor;
 import tools.vitruv.domains.emf.monitorededitor.monitor.DefaultEditorPartAdapterFactoryImpl;
 import tools.vitruv.domains.emf.monitorededitor.monitor.EMFEditorMonitorFactory;
+import tools.vitruv.framework.change.description.CompositeChange;
 import tools.vitruv.framework.change.description.ConcreteChange;
 import tools.vitruv.framework.change.description.VitruviusChangeFactory;
 import tools.vitruv.framework.change.description.VitruviusChangeFactory.FileChangeKind;
@@ -229,8 +231,9 @@ public class VitruviusEmfBuilder extends VitruviusProjectBuilder {
             ModelInstance modelInstance = this.getVirtualModel().getModelInstance(vuri);
             if (modelInstance != null) {
             	Resource modelResource = this.getVirtualModel().getModelInstance(vuri).getResource();
-            	final ConcreteChange fileChange = VitruviusChangeFactory.getInstance().createFileChange(fileChangeKind, modelResource);
-            	this.getVirtualModel().propagateChange(fileChange);
+            	final List<ConcreteChange> fileChange = VitruviusChangeFactory.getInstance().createFileChange(fileChangeKind, modelResource);
+            	CompositeChange<?> compositeChange = VitruviusChangeFactory.getInstance().createCompositeChange(fileChange);
+            	this.getVirtualModel().propagateChange(compositeChange);
             }
         }
     }
