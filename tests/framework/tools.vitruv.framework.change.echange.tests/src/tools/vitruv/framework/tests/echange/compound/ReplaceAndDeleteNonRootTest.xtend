@@ -7,7 +7,6 @@ import org.eclipse.emf.ecore.EReference
 import org.junit.Before
 import org.junit.Assert
 import org.junit.Test
-import tools.vitruv.framework.change.echange.compound.ReplaceAndDeleteNonRoot
 import tools.vitruv.framework.tests.echange.EChangeTest
 import allElementTypes.AllElementTypesFactory
 
