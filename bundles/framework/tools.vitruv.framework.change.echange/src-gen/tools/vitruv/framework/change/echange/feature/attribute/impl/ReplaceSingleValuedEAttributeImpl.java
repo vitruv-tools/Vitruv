@@ -140,6 +140,27 @@ public class ReplaceSingleValuedEAttributeImpl<A extends EObject, T extends Obje
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public boolean isWasUnset() {
+		return wasUnset;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setWasUnset(boolean newWasUnset) {
+		boolean oldWasUnset = wasUnset;
+		wasUnset = newWasUnset;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, AttributePackage.REPLACE_SINGLE_VALUED_EATTRIBUTE__WAS_UNSET, oldWasUnset, wasUnset));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public T getOldValue() {
 		return oldValue;
 	}
@@ -175,27 +196,6 @@ public class ReplaceSingleValuedEAttributeImpl<A extends EObject, T extends Obje
 		isUnset = newIsUnset;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, AttributePackage.REPLACE_SINGLE_VALUED_EATTRIBUTE__IS_UNSET, oldIsUnset, isUnset));
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public boolean isWasUnset() {
-		return wasUnset;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public void setWasUnset(boolean newWasUnset) {
-		boolean oldWasUnset = wasUnset;
-		wasUnset = newWasUnset;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, AttributePackage.REPLACE_SINGLE_VALUED_EATTRIBUTE__WAS_UNSET, oldWasUnset, wasUnset));
 	}
 
 	/**

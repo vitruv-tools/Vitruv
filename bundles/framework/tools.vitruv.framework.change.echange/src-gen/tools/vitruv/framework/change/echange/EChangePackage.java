@@ -104,52 +104,6 @@ public interface EChangePackage extends EPackage {
 	int ECHANGE_OPERATION_COUNT = 2;
 
 	/**
-	 * The meta object id for the '{@link tools.vitruv.framework.change.echange.impl.AtomicEChangeImpl <em>Atomic EChange</em>}' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see tools.vitruv.framework.change.echange.impl.AtomicEChangeImpl
-	 * @see tools.vitruv.framework.change.echange.impl.EChangePackageImpl#getAtomicEChange()
-	 * @generated
-	 */
-	int ATOMIC_ECHANGE = 1;
-
-	/**
-	 * The number of structural features of the '<em>Atomic EChange</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ATOMIC_ECHANGE_FEATURE_COUNT = ECHANGE_FEATURE_COUNT + 0;
-
-	/**
-	 * The operation id for the '<em>Is Resolved</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ATOMIC_ECHANGE___IS_RESOLVED = ECHANGE___IS_RESOLVED;
-
-	/**
-	 * The operation id for the '<em>Get Involved EObjects</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ATOMIC_ECHANGE___GET_INVOLVED_EOBJECTS = ECHANGE___GET_INVOLVED_EOBJECTS;
-
-	/**
-	 * The number of operations of the '<em>Atomic EChange</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int ATOMIC_ECHANGE_OPERATION_COUNT = ECHANGE_OPERATION_COUNT + 0;
-
-	/**
 	 * The meta object id for the '{@link tools.vitruv.framework.change.echange.impl.AdditiveEChangeImpl <em>Additive EChange</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -157,7 +111,7 @@ public interface EChangePackage extends EPackage {
 	 * @see tools.vitruv.framework.change.echange.impl.EChangePackageImpl#getAdditiveEChange()
 	 * @generated
 	 */
-	int ADDITIVE_ECHANGE = 2;
+	int ADDITIVE_ECHANGE = 1;
 
 	/**
 	 * The number of structural features of the '<em>Additive EChange</em>' class.
@@ -166,7 +120,7 @@ public interface EChangePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ADDITIVE_ECHANGE_FEATURE_COUNT = ATOMIC_ECHANGE_FEATURE_COUNT + 0;
+	int ADDITIVE_ECHANGE_FEATURE_COUNT = ECHANGE_FEATURE_COUNT + 0;
 
 	/**
 	 * The operation id for the '<em>Is Resolved</em>' operation.
@@ -175,7 +129,7 @@ public interface EChangePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ADDITIVE_ECHANGE___IS_RESOLVED = ATOMIC_ECHANGE___IS_RESOLVED;
+	int ADDITIVE_ECHANGE___IS_RESOLVED = ECHANGE___IS_RESOLVED;
 
 	/**
 	 * The operation id for the '<em>Get Involved EObjects</em>' operation.
@@ -184,7 +138,7 @@ public interface EChangePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ADDITIVE_ECHANGE___GET_INVOLVED_EOBJECTS = ATOMIC_ECHANGE___GET_INVOLVED_EOBJECTS;
+	int ADDITIVE_ECHANGE___GET_INVOLVED_EOBJECTS = ECHANGE___GET_INVOLVED_EOBJECTS;
 
 	/**
 	 * The operation id for the '<em>Get New Value</em>' operation.
@@ -193,7 +147,7 @@ public interface EChangePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ADDITIVE_ECHANGE___GET_NEW_VALUE = ATOMIC_ECHANGE_OPERATION_COUNT + 0;
+	int ADDITIVE_ECHANGE___GET_NEW_VALUE = ECHANGE_OPERATION_COUNT + 0;
 
 	/**
 	 * The number of operations of the '<em>Additive EChange</em>' class.
@@ -202,7 +156,7 @@ public interface EChangePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int ADDITIVE_ECHANGE_OPERATION_COUNT = ATOMIC_ECHANGE_OPERATION_COUNT + 1;
+	int ADDITIVE_ECHANGE_OPERATION_COUNT = ECHANGE_OPERATION_COUNT + 1;
 
 	/**
 	 * The meta object id for the '{@link tools.vitruv.framework.change.echange.impl.SubtractiveEChangeImpl <em>Subtractive EChange</em>}' class.
@@ -212,7 +166,7 @@ public interface EChangePackage extends EPackage {
 	 * @see tools.vitruv.framework.change.echange.impl.EChangePackageImpl#getSubtractiveEChange()
 	 * @generated
 	 */
-	int SUBTRACTIVE_ECHANGE = 3;
+	int SUBTRACTIVE_ECHANGE = 2;
 
 	/**
 	 * The number of structural features of the '<em>Subtractive EChange</em>' class.
@@ -221,7 +175,7 @@ public interface EChangePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int SUBTRACTIVE_ECHANGE_FEATURE_COUNT = ATOMIC_ECHANGE_FEATURE_COUNT + 0;
+	int SUBTRACTIVE_ECHANGE_FEATURE_COUNT = ECHANGE_FEATURE_COUNT + 0;
 
 	/**
 	 * The operation id for the '<em>Is Resolved</em>' operation.
@@ -230,7 +184,7 @@ public interface EChangePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int SUBTRACTIVE_ECHANGE___IS_RESOLVED = ATOMIC_ECHANGE___IS_RESOLVED;
+	int SUBTRACTIVE_ECHANGE___IS_RESOLVED = ECHANGE___IS_RESOLVED;
 
 	/**
 	 * The operation id for the '<em>Get Involved EObjects</em>' operation.
@@ -239,7 +193,7 @@ public interface EChangePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int SUBTRACTIVE_ECHANGE___GET_INVOLVED_EOBJECTS = ATOMIC_ECHANGE___GET_INVOLVED_EOBJECTS;
+	int SUBTRACTIVE_ECHANGE___GET_INVOLVED_EOBJECTS = ECHANGE___GET_INVOLVED_EOBJECTS;
 
 	/**
 	 * The operation id for the '<em>Get Old Value</em>' operation.
@@ -248,7 +202,7 @@ public interface EChangePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int SUBTRACTIVE_ECHANGE___GET_OLD_VALUE = ATOMIC_ECHANGE_OPERATION_COUNT + 0;
+	int SUBTRACTIVE_ECHANGE___GET_OLD_VALUE = ECHANGE_OPERATION_COUNT + 0;
 
 	/**
 	 * The number of operations of the '<em>Subtractive EChange</em>' class.
@@ -257,7 +211,7 @@ public interface EChangePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int SUBTRACTIVE_ECHANGE_OPERATION_COUNT = ATOMIC_ECHANGE_OPERATION_COUNT + 1;
+	int SUBTRACTIVE_ECHANGE_OPERATION_COUNT = ECHANGE_OPERATION_COUNT + 1;
 
 
 	/**
@@ -289,16 +243,6 @@ public interface EChangePackage extends EPackage {
 	 * @generated
 	 */
 	EOperation getEChange__GetInvolvedEObjects();
-
-	/**
-	 * Returns the meta object for class '{@link tools.vitruv.framework.change.echange.AtomicEChange <em>Atomic EChange</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>Atomic EChange</em>'.
-	 * @see tools.vitruv.framework.change.echange.AtomicEChange
-	 * @generated
-	 */
-	EClass getAtomicEChange();
 
 	/**
 	 * Returns the meta object for class '{@link tools.vitruv.framework.change.echange.AdditiveEChange <em>Additive EChange</em>}'.
@@ -388,16 +332,6 @@ public interface EChangePackage extends EPackage {
 		 * @generated
 		 */
 		EOperation ECHANGE___GET_INVOLVED_EOBJECTS = eINSTANCE.getEChange__GetInvolvedEObjects();
-
-		/**
-		 * The meta object literal for the '{@link tools.vitruv.framework.change.echange.impl.AtomicEChangeImpl <em>Atomic EChange</em>}' class.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @see tools.vitruv.framework.change.echange.impl.AtomicEChangeImpl
-		 * @see tools.vitruv.framework.change.echange.impl.EChangePackageImpl#getAtomicEChange()
-		 * @generated
-		 */
-		EClass ATOMIC_ECHANGE = eINSTANCE.getAtomicEChange();
 
 		/**
 		 * The meta object literal for the '{@link tools.vitruv.framework.change.echange.impl.AdditiveEChangeImpl <em>Additive EChange</em>}' class.

@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
-    name="compound" nsURI="http://tools.vitruv/EChange/Compound/1.0" nsPrefix="compound">
-  <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-    <details key="modelName" value="Change"/>
-    <details key="basePackage" value="tools.vitruv.framework.change.echange"/>
-  </eAnnotations>
-</ecore:EPackage>

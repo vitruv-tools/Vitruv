@@ -28,7 +28,6 @@ import tools.vitruv.framework.change.echange.eobject.EObjectAddedEChange;
  * @generated
  */
 public interface AdditiveReferenceEChange<A extends EObject, T extends EObject> extends UpdateReferenceEChange<A>, EObjectAddedEChange<T> {
-
 	/**
 	 * Returns the value of the '<em><b>Was Unset</b></em>' attribute.
 	 * <!-- begin-user-doc -->
@@ -54,4 +53,5 @@ public interface AdditiveReferenceEChange<A extends EObject, T extends EObject> 
 	 * @generated
 	 */
 	void setWasUnset(boolean value);
+
 } // AdditiveReferenceEChange

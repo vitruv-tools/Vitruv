@@ -4,7 +4,7 @@ package tools.vitruv.framework.change.echange.root;
 
 import org.eclipse.emf.ecore.resource.Resource;
 
-import tools.vitruv.framework.change.echange.AtomicEChange;
+import tools.vitruv.framework.change.echange.EChange;
 
 /**
  * <!-- begin-user-doc -->
@@ -29,7 +29,7 @@ import tools.vitruv.framework.change.echange.AtomicEChange;
  * @model abstract="true"
  * @generated
  */
-public interface RootEChange extends AtomicEChange {
+public interface RootEChange extends EChange {
 	/**
 	 * Returns the value of the '<em><b>Uri</b></em>' attribute.
 	 * <!-- begin-user-doc -->

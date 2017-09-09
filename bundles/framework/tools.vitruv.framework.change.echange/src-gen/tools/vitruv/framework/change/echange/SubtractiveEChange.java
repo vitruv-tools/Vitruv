@@ -18,7 +18,7 @@ package tools.vitruv.framework.change.echange;
  * @model abstract="true" TBounds="org.eclipse.emf.ecore.EJavaObject"
  * @generated
  */
-public interface SubtractiveEChange<T extends Object> extends AtomicEChange {
+public interface SubtractiveEChange<T extends Object> extends EChange {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

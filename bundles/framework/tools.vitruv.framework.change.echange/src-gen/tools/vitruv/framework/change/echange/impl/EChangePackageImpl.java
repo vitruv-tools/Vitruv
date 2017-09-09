@@ -12,7 +12,6 @@ import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.impl.EPackageImpl;
 
 import tools.vitruv.framework.change.echange.AdditiveEChange;
-import tools.vitruv.framework.change.echange.AtomicEChange;
 import tools.vitruv.framework.change.echange.EChange;
 import tools.vitruv.framework.change.echange.EChangeFactory;
 import tools.vitruv.framework.change.echange.EChangePackage;
@@ -61,13 +60,6 @@ public class EChangePackageImpl extends EPackageImpl implements EChangePackage {
 	 * @generated
 	 */
 	private EClass eChangeEClass = null;
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	private EClass atomicEChangeEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -203,15 +195,6 @@ public class EChangePackageImpl extends EPackageImpl implements EChangePackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EClass getAtomicEChange() {
-		return atomicEChangeEClass;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public EClass getAdditiveEChange() {
 		return additiveEChangeEClass;
 	}
@@ -275,8 +258,6 @@ public class EChangePackageImpl extends EPackageImpl implements EChangePackage {
 		createEOperation(eChangeEClass, ECHANGE___IS_RESOLVED);
 		createEOperation(eChangeEClass, ECHANGE___GET_INVOLVED_EOBJECTS);
 
-		atomicEChangeEClass = createEClass(ATOMIC_ECHANGE);
-
 		additiveEChangeEClass = createEClass(ADDITIVE_ECHANGE);
 		createEOperation(additiveEChangeEClass, ADDITIVE_ECHANGE___GET_NEW_VALUE);
 
@@ -318,9 +299,8 @@ public class EChangePackageImpl extends EPackageImpl implements EChangePackage {
 		subtractiveEChangeEClass_T.getEBounds().add(g1);
 
 		// Add supertypes to classes
-		atomicEChangeEClass.getESuperTypes().add(this.getEChange());
-		additiveEChangeEClass.getESuperTypes().add(this.getAtomicEChange());
-		subtractiveEChangeEClass.getESuperTypes().add(this.getAtomicEChange());
+		additiveEChangeEClass.getESuperTypes().add(this.getEChange());
+		subtractiveEChangeEClass.getESuperTypes().add(this.getEChange());
 
 		// Initialize classes, features, and operations; add parameters
 		initEClass(eChangeEClass, EChange.class, "EChange", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -328,8 +308,6 @@ public class EChangePackageImpl extends EPackageImpl implements EChangePackage {
 		initEOperation(getEChange__IsResolved(), ecorePackage.getEBoolean(), "isResolved", 1, 1, IS_UNIQUE, IS_ORDERED);
 
 		initEOperation(getEChange__GetInvolvedEObjects(), ecorePackage.getEObject(), "getInvolvedEObjects", 0, -1, IS_UNIQUE, IS_ORDERED);
-
-		initEClass(atomicEChangeEClass, AtomicEChange.class, "AtomicEChange", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		initEClass(additiveEChangeEClass, AdditiveEChange.class, "AdditiveEChange", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 

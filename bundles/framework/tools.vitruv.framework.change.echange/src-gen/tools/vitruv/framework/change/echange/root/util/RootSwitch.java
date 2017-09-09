@@ -8,7 +8,6 @@ import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.util.Switch;
 
 import tools.vitruv.framework.change.echange.AdditiveEChange;
-import tools.vitruv.framework.change.echange.AtomicEChange;
 import tools.vitruv.framework.change.echange.EChange;
 import tools.vitruv.framework.change.echange.SubtractiveEChange;
 
@@ -77,7 +76,6 @@ public class RootSwitch<T1> extends Switch<T1> {
 			case RootPackage.ROOT_ECHANGE: {
 				RootEChange rootEChange = (RootEChange)theEObject;
 				T1 result = caseRootEChange(rootEChange);
-				if (result == null) result = caseAtomicEChange(rootEChange);
 				if (result == null) result = caseEChange(rootEChange);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
@@ -88,7 +86,6 @@ public class RootSwitch<T1> extends Switch<T1> {
 				if (result == null) result = caseRootEChange(insertRootEObject);
 				if (result == null) result = caseEObjectAddedEChange(insertRootEObject);
 				if (result == null) result = caseAdditiveEChange(insertRootEObject);
-				if (result == null) result = caseAtomicEChange(insertRootEObject);
 				if (result == null) result = caseEChange(insertRootEObject);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
@@ -99,7 +96,6 @@ public class RootSwitch<T1> extends Switch<T1> {
 				if (result == null) result = caseRootEChange(removeRootEObject);
 				if (result == null) result = caseEObjectSubtractedEChange(removeRootEObject);
 				if (result == null) result = caseSubtractiveEChange(removeRootEObject);
-				if (result == null) result = caseAtomicEChange(removeRootEObject);
 				if (result == null) result = caseEChange(removeRootEObject);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
@@ -165,21 +161,6 @@ public class RootSwitch<T1> extends Switch<T1> {
 	 * @generated
 	 */
 	public T1 caseEChange(EChange object) {
-		return null;
-	}
-
-	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Atomic EChange</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Atomic EChange</em>'.
-	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-	 * @generated
-	 */
-	public T1 caseAtomicEChange(AtomicEChange object) {
 		return null;
 	}
 

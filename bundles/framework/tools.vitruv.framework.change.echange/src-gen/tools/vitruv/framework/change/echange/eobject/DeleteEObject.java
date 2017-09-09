@@ -6,7 +6,7 @@ import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EObject;
 
-import tools.vitruv.framework.change.echange.AtomicEChange;
+import tools.vitruv.framework.change.echange.EChange;
 
 /**
  * <!-- begin-user-doc -->
@@ -33,7 +33,7 @@ import tools.vitruv.framework.change.echange.AtomicEChange;
 public interface DeleteEObject<A extends EObject> extends EObjectExistenceEChange<A> {
 	/**
 	 * Returns the value of the '<em><b>Consequential Remove Changes</b></em>' reference list.
-	 * The list contents are of type {@link tools.vitruv.framework.change.echange.AtomicEChange}.
+	 * The list contents are of type {@link tools.vitruv.framework.change.echange.EChange}.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Consequential Remove Changes</em>' reference list isn't clear,
@@ -45,6 +45,6 @@ public interface DeleteEObject<A extends EObject> extends EObjectExistenceEChang
 	 * @model
 	 * @generated
 	 */
-	EList<AtomicEChange> getConsequentialRemoveChanges();
+	EList<EChange> getConsequentialRemoveChanges();
 
 } // DeleteEObject

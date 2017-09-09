@@ -222,7 +222,7 @@ public interface EobjectPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int EOBJECT_EXISTENCE_ECHANGE__AFFECTED_EOBJECT = EChangePackage.ATOMIC_ECHANGE_FEATURE_COUNT + 0;
+	int EOBJECT_EXISTENCE_ECHANGE__AFFECTED_EOBJECT = EChangePackage.ECHANGE_FEATURE_COUNT + 0;
 
 	/**
 	 * The feature id for the '<em><b>Id Attribute Value</b></em>' attribute.
@@ -231,7 +231,7 @@ public interface EobjectPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int EOBJECT_EXISTENCE_ECHANGE__ID_ATTRIBUTE_VALUE = EChangePackage.ATOMIC_ECHANGE_FEATURE_COUNT + 1;
+	int EOBJECT_EXISTENCE_ECHANGE__ID_ATTRIBUTE_VALUE = EChangePackage.ECHANGE_FEATURE_COUNT + 1;
 
 	/**
 	 * The feature id for the '<em><b>Affected EObject ID</b></em>' attribute.
@@ -240,7 +240,7 @@ public interface EobjectPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int EOBJECT_EXISTENCE_ECHANGE__AFFECTED_EOBJECT_ID = EChangePackage.ATOMIC_ECHANGE_FEATURE_COUNT + 2;
+	int EOBJECT_EXISTENCE_ECHANGE__AFFECTED_EOBJECT_ID = EChangePackage.ECHANGE_FEATURE_COUNT + 2;
 
 	/**
 	 * The feature id for the '<em><b>Affected EObject Type</b></em>' reference.
@@ -249,7 +249,7 @@ public interface EobjectPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int EOBJECT_EXISTENCE_ECHANGE__AFFECTED_EOBJECT_TYPE = EChangePackage.ATOMIC_ECHANGE_FEATURE_COUNT + 3;
+	int EOBJECT_EXISTENCE_ECHANGE__AFFECTED_EOBJECT_TYPE = EChangePackage.ECHANGE_FEATURE_COUNT + 3;
 
 	/**
 	 * The number of structural features of the '<em>EObject Existence EChange</em>' class.
@@ -258,7 +258,7 @@ public interface EobjectPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int EOBJECT_EXISTENCE_ECHANGE_FEATURE_COUNT = EChangePackage.ATOMIC_ECHANGE_FEATURE_COUNT + 4;
+	int EOBJECT_EXISTENCE_ECHANGE_FEATURE_COUNT = EChangePackage.ECHANGE_FEATURE_COUNT + 4;
 
 	/**
 	 * The operation id for the '<em>Is Resolved</em>' operation.
@@ -267,7 +267,7 @@ public interface EobjectPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int EOBJECT_EXISTENCE_ECHANGE___IS_RESOLVED = EChangePackage.ATOMIC_ECHANGE___IS_RESOLVED;
+	int EOBJECT_EXISTENCE_ECHANGE___IS_RESOLVED = EChangePackage.ECHANGE___IS_RESOLVED;
 
 	/**
 	 * The operation id for the '<em>Get Involved EObjects</em>' operation.
@@ -276,7 +276,7 @@ public interface EobjectPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int EOBJECT_EXISTENCE_ECHANGE___GET_INVOLVED_EOBJECTS = EChangePackage.ATOMIC_ECHANGE___GET_INVOLVED_EOBJECTS;
+	int EOBJECT_EXISTENCE_ECHANGE___GET_INVOLVED_EOBJECTS = EChangePackage.ECHANGE___GET_INVOLVED_EOBJECTS;
 
 	/**
 	 * The number of operations of the '<em>EObject Existence EChange</em>' class.
@@ -285,7 +285,7 @@ public interface EobjectPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int EOBJECT_EXISTENCE_ECHANGE_OPERATION_COUNT = EChangePackage.ATOMIC_ECHANGE_OPERATION_COUNT + 0;
+	int EOBJECT_EXISTENCE_ECHANGE_OPERATION_COUNT = EChangePackage.ECHANGE_OPERATION_COUNT + 0;
 
 	/**
 	 * The meta object id for the '{@link tools.vitruv.framework.change.echange.eobject.impl.CreateEObjectImpl <em>Create EObject</em>}' class.

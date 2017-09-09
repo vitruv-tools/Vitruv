@@ -307,7 +307,7 @@ public class FeaturePackageImpl extends EPackageImpl implements FeaturePackage {
 		updateSingleValuedFeatureEChangeEClass_F.getEBounds().add(g1);
 
 		// Add supertypes to classes
-		featureEChangeEClass.getESuperTypes().add(theEChangePackage.getAtomicEChange());
+		featureEChangeEClass.getESuperTypes().add(theEChangePackage.getEChange());
 		g1 = createEGenericType(this.getFeatureEChange());
 		EGenericType g2 = createEGenericType(updateMultiValuedFeatureEChangeEClass_A);
 		g1.getETypeArguments().add(g2);

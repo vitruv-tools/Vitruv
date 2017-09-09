@@ -230,6 +230,27 @@ public class ReplaceSingleValuedEReferenceImpl<A extends EObject, T extends EObj
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public boolean isWasUnset() {
+		return wasUnset;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setWasUnset(boolean newWasUnset) {
+		boolean oldWasUnset = wasUnset;
+		wasUnset = newWasUnset;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, ReferencePackage.REPLACE_SINGLE_VALUED_EREFERENCE__WAS_UNSET, oldWasUnset, wasUnset));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	@SuppressWarnings("unchecked")
 	public T getOldValue() {
 		if (oldValue != null && oldValue.eIsProxy()) {
@@ -304,27 +325,6 @@ public class ReplaceSingleValuedEReferenceImpl<A extends EObject, T extends EObj
 		isUnset = newIsUnset;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, ReferencePackage.REPLACE_SINGLE_VALUED_EREFERENCE__IS_UNSET, oldIsUnset, isUnset));
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public boolean isWasUnset() {
-		return wasUnset;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public void setWasUnset(boolean newWasUnset) {
-		boolean oldWasUnset = wasUnset;
-		wasUnset = newWasUnset;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, ReferencePackage.REPLACE_SINGLE_VALUED_EREFERENCE__WAS_UNSET, oldWasUnset, wasUnset));
 	}
 
 	/**
