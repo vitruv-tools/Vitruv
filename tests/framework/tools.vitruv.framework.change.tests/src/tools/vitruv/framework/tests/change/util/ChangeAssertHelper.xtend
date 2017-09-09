@@ -129,4 +129,16 @@ class ChangeAssertHelper {
 	def public static assertEqualsOrCopy(String message, EObject object1, EObject object2) {
 		Assert.assertTrue(message, EcoreUtil.equals(object1, object2))
 	}
+	
+	static def <T> T assertType(Object original, Class<T> type) {
+		if (type.isAssignableFrom(original.class)) {
+			return original as T
+		}
+		Assert.fail("Object " + original + " is not expected type " + type);
+		return null;
+	}
+	
+	static def void assertSizeGreaterEquals(Iterable<?> iterable, int size) {
+		Assert.assertTrue(iterable.size >= size)
+	}
 }
