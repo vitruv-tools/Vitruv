@@ -341,7 +341,7 @@ class AtomicEChangeResolver {
 		}
 		result = result && change.resolveEObjectExistenceEChange(uuidResolver, !resolveBefore)
 		if (!resolveBefore) {
-			result = consequentialChanges.resolveChangeList(uuidResolver, resolveBefore);	
+			result = consequentialChanges.reverseView.resolveChangeList(uuidResolver, resolveBefore);	
 		}
 		return result;
 	}
