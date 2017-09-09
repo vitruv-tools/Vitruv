@@ -3,6 +3,7 @@
 package tools.vitruv.framework.change.echange.compound;
 
 import org.eclipse.emf.common.util.EList;
+
 import tools.vitruv.framework.change.echange.AtomicEChange;
 import tools.vitruv.framework.change.echange.EChange;
 

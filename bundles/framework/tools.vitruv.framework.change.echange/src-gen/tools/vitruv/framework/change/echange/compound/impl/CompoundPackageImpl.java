@@ -12,6 +12,7 @@ import org.eclipse.emf.ecore.ETypeParameter;
 import org.eclipse.emf.ecore.EcorePackage;
 
 import org.eclipse.emf.ecore.impl.EPackageImpl;
+
 import tools.vitruv.framework.change.echange.EChangePackage;
 
 import tools.vitruv.framework.change.echange.compound.CompoundAddition;
@@ -19,18 +20,9 @@ import tools.vitruv.framework.change.echange.compound.CompoundEChange;
 import tools.vitruv.framework.change.echange.compound.CompoundFactory;
 import tools.vitruv.framework.change.echange.compound.CompoundPackage;
 import tools.vitruv.framework.change.echange.compound.CompoundSubtraction;
-import tools.vitruv.framework.change.echange.compound.CreateAndInsertEObject;
-import tools.vitruv.framework.change.echange.compound.CreateAndInsertNonRoot;
-import tools.vitruv.framework.change.echange.compound.CreateAndInsertRoot;
-import tools.vitruv.framework.change.echange.compound.CreateAndReplaceAndDeleteNonRoot;
-import tools.vitruv.framework.change.echange.compound.CreateAndReplaceNonRoot;
 import tools.vitruv.framework.change.echange.compound.ExplicitUnsetEAttribute;
 import tools.vitruv.framework.change.echange.compound.ExplicitUnsetEFeature;
 import tools.vitruv.framework.change.echange.compound.ExplicitUnsetEReference;
-import tools.vitruv.framework.change.echange.compound.RemoveAndDeleteEObject;
-import tools.vitruv.framework.change.echange.compound.RemoveAndDeleteNonRoot;
-import tools.vitruv.framework.change.echange.compound.RemoveAndDeleteRoot;
-import tools.vitruv.framework.change.echange.compound.ReplaceAndDeleteNonRoot;
 
 import tools.vitruv.framework.change.echange.eobject.EobjectPackage;
 
@@ -61,6 +53,7 @@ import tools.vitruv.framework.change.echange.impl.EChangePackageImpl;
 import tools.vitruv.framework.change.echange.root.RootPackage;
 
 import tools.vitruv.framework.change.echange.root.impl.RootPackageImpl;
+
 import tools.vitruv.framework.change.uuid.UuidPackage;
 
 /**
@@ -111,69 +104,6 @@ public class CompoundPackageImpl extends EPackageImpl implements CompoundPackage
 	 * @generated
 	 */
 	private EClass compoundAdditionEClass = null;
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	private EClass createAndInsertEObjectEClass = null;
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	private EClass removeAndDeleteEObjectEClass = null;
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	private EClass createAndInsertRootEClass = null;
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	private EClass removeAndDeleteRootEClass = null;
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	private EClass createAndInsertNonRootEClass = null;
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	private EClass removeAndDeleteNonRootEClass = null;
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	private EClass createAndReplaceNonRootEClass = null;
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	private EClass replaceAndDeleteNonRootEClass = null;
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	private EClass createAndReplaceAndDeleteNonRootEClass = null;
 
 	/**
 	 * Creates an instance of the model <b>Package</b>, registered with
@@ -433,177 +363,6 @@ public class CompoundPackageImpl extends EPackageImpl implements CompoundPackage
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EClass getCreateAndInsertEObject() {
-		return createAndInsertEObjectEClass;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EReference getCreateAndInsertEObject_CreateChange() {
-		return (EReference)createAndInsertEObjectEClass.getEStructuralFeatures().get(0);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EReference getCreateAndInsertEObject_InsertChange() {
-		return (EReference)createAndInsertEObjectEClass.getEStructuralFeatures().get(1);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EOperation getCreateAndInsertEObject__GetAtomicChanges() {
-		return createAndInsertEObjectEClass.getEOperations().get(0);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EClass getRemoveAndDeleteEObject() {
-		return removeAndDeleteEObjectEClass;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EReference getRemoveAndDeleteEObject_RemoveChange() {
-		return (EReference)removeAndDeleteEObjectEClass.getEStructuralFeatures().get(0);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EReference getRemoveAndDeleteEObject_DeleteChange() {
-		return (EReference)removeAndDeleteEObjectEClass.getEStructuralFeatures().get(1);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EOperation getRemoveAndDeleteEObject__GetAtomicChanges() {
-		return removeAndDeleteEObjectEClass.getEOperations().get(0);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EClass getCreateAndInsertRoot() {
-		return createAndInsertRootEClass;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EClass getRemoveAndDeleteRoot() {
-		return removeAndDeleteRootEClass;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EClass getCreateAndInsertNonRoot() {
-		return createAndInsertNonRootEClass;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EClass getRemoveAndDeleteNonRoot() {
-		return removeAndDeleteNonRootEClass;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EClass getCreateAndReplaceNonRoot() {
-		return createAndReplaceNonRootEClass;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EClass getReplaceAndDeleteNonRoot() {
-		return replaceAndDeleteNonRootEClass;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EClass getCreateAndReplaceAndDeleteNonRoot() {
-		return createAndReplaceAndDeleteNonRootEClass;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EReference getCreateAndReplaceAndDeleteNonRoot_CreateChange() {
-		return (EReference)createAndReplaceAndDeleteNonRootEClass.getEStructuralFeatures().get(0);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EReference getCreateAndReplaceAndDeleteNonRoot_ReplaceChange() {
-		return (EReference)createAndReplaceAndDeleteNonRootEClass.getEStructuralFeatures().get(1);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EReference getCreateAndReplaceAndDeleteNonRoot_DeleteChange() {
-		return (EReference)createAndReplaceAndDeleteNonRootEClass.getEStructuralFeatures().get(2);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EOperation getCreateAndReplaceAndDeleteNonRoot__GetAtomicChanges() {
-		return createAndReplaceAndDeleteNonRootEClass.getEOperations().get(0);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public CompoundFactory getCompoundFactory() {
 		return (CompoundFactory)getEFactoryInstance();
 	}
@@ -650,34 +409,6 @@ public class CompoundPackageImpl extends EPackageImpl implements CompoundPackage
 		compoundAdditionEClass = createEClass(COMPOUND_ADDITION);
 		createEReference(compoundAdditionEClass, COMPOUND_ADDITION__ADDITIVE_CHANGES);
 		createEOperation(compoundAdditionEClass, COMPOUND_ADDITION___GET_ATOMIC_CHANGES);
-
-		createAndInsertEObjectEClass = createEClass(CREATE_AND_INSERT_EOBJECT);
-		createEReference(createAndInsertEObjectEClass, CREATE_AND_INSERT_EOBJECT__CREATE_CHANGE);
-		createEReference(createAndInsertEObjectEClass, CREATE_AND_INSERT_EOBJECT__INSERT_CHANGE);
-		createEOperation(createAndInsertEObjectEClass, CREATE_AND_INSERT_EOBJECT___GET_ATOMIC_CHANGES);
-
-		removeAndDeleteEObjectEClass = createEClass(REMOVE_AND_DELETE_EOBJECT);
-		createEReference(removeAndDeleteEObjectEClass, REMOVE_AND_DELETE_EOBJECT__REMOVE_CHANGE);
-		createEReference(removeAndDeleteEObjectEClass, REMOVE_AND_DELETE_EOBJECT__DELETE_CHANGE);
-		createEOperation(removeAndDeleteEObjectEClass, REMOVE_AND_DELETE_EOBJECT___GET_ATOMIC_CHANGES);
-
-		createAndInsertRootEClass = createEClass(CREATE_AND_INSERT_ROOT);
-
-		removeAndDeleteRootEClass = createEClass(REMOVE_AND_DELETE_ROOT);
-
-		createAndInsertNonRootEClass = createEClass(CREATE_AND_INSERT_NON_ROOT);
-
-		removeAndDeleteNonRootEClass = createEClass(REMOVE_AND_DELETE_NON_ROOT);
-
-		createAndReplaceNonRootEClass = createEClass(CREATE_AND_REPLACE_NON_ROOT);
-
-		replaceAndDeleteNonRootEClass = createEClass(REPLACE_AND_DELETE_NON_ROOT);
-
-		createAndReplaceAndDeleteNonRootEClass = createEClass(CREATE_AND_REPLACE_AND_DELETE_NON_ROOT);
-		createEReference(createAndReplaceAndDeleteNonRootEClass, CREATE_AND_REPLACE_AND_DELETE_NON_ROOT__CREATE_CHANGE);
-		createEReference(createAndReplaceAndDeleteNonRootEClass, CREATE_AND_REPLACE_AND_DELETE_NON_ROOT__REPLACE_CHANGE);
-		createEReference(createAndReplaceAndDeleteNonRootEClass, CREATE_AND_REPLACE_AND_DELETE_NON_ROOT__DELETE_CHANGE);
-		createEOperation(createAndReplaceAndDeleteNonRootEClass, CREATE_AND_REPLACE_AND_DELETE_NON_ROOT___GET_ATOMIC_CHANGES);
 	}
 
 	/**
@@ -707,9 +438,6 @@ public class CompoundPackageImpl extends EPackageImpl implements CompoundPackage
 		EChangePackage theEChangePackage = (EChangePackage)EPackage.Registry.INSTANCE.getEPackage(EChangePackage.eNS_URI);
 		EcorePackage theEcorePackage = (EcorePackage)EPackage.Registry.INSTANCE.getEPackage(EcorePackage.eNS_URI);
 		AttributePackage theAttributePackage = (AttributePackage)EPackage.Registry.INSTANCE.getEPackage(AttributePackage.eNS_URI);
-		EobjectPackage theEobjectPackage = (EobjectPackage)EPackage.Registry.INSTANCE.getEPackage(EobjectPackage.eNS_URI);
-		RootPackage theRootPackage = (RootPackage)EPackage.Registry.INSTANCE.getEPackage(RootPackage.eNS_URI);
-		ReferencePackage theReferencePackage = (ReferencePackage)EPackage.Registry.INSTANCE.getEPackage(ReferencePackage.eNS_URI);
 
 		// Create type parameters
 		ETypeParameter explicitUnsetEFeatureEClass_A = addETypeParameter(explicitUnsetEFeatureEClass, "A");
@@ -721,22 +449,6 @@ public class CompoundPackageImpl extends EPackageImpl implements CompoundPackage
 		ETypeParameter compoundSubtractionEClass_S = addETypeParameter(compoundSubtractionEClass, "S");
 		ETypeParameter compoundAdditionEClass_T = addETypeParameter(compoundAdditionEClass, "T");
 		ETypeParameter compoundAdditionEClass_S = addETypeParameter(compoundAdditionEClass, "S");
-		ETypeParameter createAndInsertEObjectEClass_T = addETypeParameter(createAndInsertEObjectEClass, "T");
-		ETypeParameter createAndInsertEObjectEClass_C = addETypeParameter(createAndInsertEObjectEClass, "C");
-		ETypeParameter removeAndDeleteEObjectEClass_T = addETypeParameter(removeAndDeleteEObjectEClass, "T");
-		ETypeParameter removeAndDeleteEObjectEClass_C = addETypeParameter(removeAndDeleteEObjectEClass, "C");
-		ETypeParameter createAndInsertRootEClass_T = addETypeParameter(createAndInsertRootEClass, "T");
-		ETypeParameter removeAndDeleteRootEClass_T = addETypeParameter(removeAndDeleteRootEClass, "T");
-		ETypeParameter createAndInsertNonRootEClass_A = addETypeParameter(createAndInsertNonRootEClass, "A");
-		ETypeParameter createAndInsertNonRootEClass_T = addETypeParameter(createAndInsertNonRootEClass, "T");
-		ETypeParameter removeAndDeleteNonRootEClass_A = addETypeParameter(removeAndDeleteNonRootEClass, "A");
-		ETypeParameter removeAndDeleteNonRootEClass_T = addETypeParameter(removeAndDeleteNonRootEClass, "T");
-		ETypeParameter createAndReplaceNonRootEClass_A = addETypeParameter(createAndReplaceNonRootEClass, "A");
-		ETypeParameter createAndReplaceNonRootEClass_T = addETypeParameter(createAndReplaceNonRootEClass, "T");
-		ETypeParameter replaceAndDeleteNonRootEClass_A = addETypeParameter(replaceAndDeleteNonRootEClass, "A");
-		ETypeParameter replaceAndDeleteNonRootEClass_T = addETypeParameter(replaceAndDeleteNonRootEClass, "T");
-		ETypeParameter createAndReplaceAndDeleteNonRootEClass_A = addETypeParameter(createAndReplaceAndDeleteNonRootEClass, "A");
-		ETypeParameter createAndReplaceAndDeleteNonRootEClass_T = addETypeParameter(createAndReplaceAndDeleteNonRootEClass, "T");
 
 		// Set bounds for type parameters
 		EGenericType g1 = createEGenericType(theEcorePackage.getEObject());
@@ -761,42 +473,6 @@ public class CompoundPackageImpl extends EPackageImpl implements CompoundPackage
 		g2 = createEGenericType(compoundAdditionEClass_T);
 		g1.getETypeArguments().add(g2);
 		compoundAdditionEClass_S.getEBounds().add(g1);
-		g1 = createEGenericType(theEcorePackage.getEObject());
-		createAndInsertEObjectEClass_T.getEBounds().add(g1);
-		g1 = createEGenericType(theEobjectPackage.getEObjectAddedEChange());
-		g2 = createEGenericType(createAndInsertEObjectEClass_T);
-		g1.getETypeArguments().add(g2);
-		createAndInsertEObjectEClass_C.getEBounds().add(g1);
-		g1 = createEGenericType(theEcorePackage.getEObject());
-		removeAndDeleteEObjectEClass_T.getEBounds().add(g1);
-		g1 = createEGenericType(theEobjectPackage.getEObjectSubtractedEChange());
-		g2 = createEGenericType(removeAndDeleteEObjectEClass_T);
-		g1.getETypeArguments().add(g2);
-		removeAndDeleteEObjectEClass_C.getEBounds().add(g1);
-		g1 = createEGenericType(theEcorePackage.getEObject());
-		createAndInsertRootEClass_T.getEBounds().add(g1);
-		g1 = createEGenericType(theEcorePackage.getEObject());
-		removeAndDeleteRootEClass_T.getEBounds().add(g1);
-		g1 = createEGenericType(theEcorePackage.getEObject());
-		createAndInsertNonRootEClass_A.getEBounds().add(g1);
-		g1 = createEGenericType(theEcorePackage.getEObject());
-		createAndInsertNonRootEClass_T.getEBounds().add(g1);
-		g1 = createEGenericType(theEcorePackage.getEObject());
-		removeAndDeleteNonRootEClass_A.getEBounds().add(g1);
-		g1 = createEGenericType(theEcorePackage.getEObject());
-		removeAndDeleteNonRootEClass_T.getEBounds().add(g1);
-		g1 = createEGenericType(theEcorePackage.getEObject());
-		createAndReplaceNonRootEClass_A.getEBounds().add(g1);
-		g1 = createEGenericType(theEcorePackage.getEObject());
-		createAndReplaceNonRootEClass_T.getEBounds().add(g1);
-		g1 = createEGenericType(theEcorePackage.getEObject());
-		replaceAndDeleteNonRootEClass_A.getEBounds().add(g1);
-		g1 = createEGenericType(theEcorePackage.getEObject());
-		replaceAndDeleteNonRootEClass_T.getEBounds().add(g1);
-		g1 = createEGenericType(theEcorePackage.getEObject());
-		createAndReplaceAndDeleteNonRootEClass_A.getEBounds().add(g1);
-		g1 = createEGenericType(theEcorePackage.getEObject());
-		createAndReplaceAndDeleteNonRootEClass_T.getEBounds().add(g1);
 
 		// Add supertypes to classes
 		compoundEChangeEClass.getESuperTypes().add(theEChangePackage.getEChange());
@@ -825,65 +501,6 @@ public class CompoundPackageImpl extends EPackageImpl implements CompoundPackage
 		explicitUnsetEReferenceEClass.getEGenericSuperTypes().add(g1);
 		compoundSubtractionEClass.getESuperTypes().add(this.getCompoundEChange());
 		compoundAdditionEClass.getESuperTypes().add(this.getCompoundEChange());
-		createAndInsertEObjectEClass.getESuperTypes().add(this.getCompoundEChange());
-		removeAndDeleteEObjectEClass.getESuperTypes().add(this.getCompoundEChange());
-		g1 = createEGenericType(this.getCreateAndInsertEObject());
-		g2 = createEGenericType(createAndInsertRootEClass_T);
-		g1.getETypeArguments().add(g2);
-		g2 = createEGenericType(theRootPackage.getInsertRootEObject());
-		g1.getETypeArguments().add(g2);
-		g3 = createEGenericType(createAndInsertRootEClass_T);
-		g2.getETypeArguments().add(g3);
-		createAndInsertRootEClass.getEGenericSuperTypes().add(g1);
-		g1 = createEGenericType(this.getRemoveAndDeleteEObject());
-		g2 = createEGenericType(removeAndDeleteRootEClass_T);
-		g1.getETypeArguments().add(g2);
-		g2 = createEGenericType(theRootPackage.getRemoveRootEObject());
-		g1.getETypeArguments().add(g2);
-		g3 = createEGenericType(removeAndDeleteRootEClass_T);
-		g2.getETypeArguments().add(g3);
-		removeAndDeleteRootEClass.getEGenericSuperTypes().add(g1);
-		g1 = createEGenericType(this.getCreateAndInsertEObject());
-		g2 = createEGenericType(createAndInsertNonRootEClass_T);
-		g1.getETypeArguments().add(g2);
-		g2 = createEGenericType(theReferencePackage.getInsertEReference());
-		g1.getETypeArguments().add(g2);
-		g3 = createEGenericType(createAndInsertNonRootEClass_A);
-		g2.getETypeArguments().add(g3);
-		g3 = createEGenericType(createAndInsertNonRootEClass_T);
-		g2.getETypeArguments().add(g3);
-		createAndInsertNonRootEClass.getEGenericSuperTypes().add(g1);
-		g1 = createEGenericType(this.getRemoveAndDeleteEObject());
-		g2 = createEGenericType(removeAndDeleteNonRootEClass_T);
-		g1.getETypeArguments().add(g2);
-		g2 = createEGenericType(theReferencePackage.getRemoveEReference());
-		g1.getETypeArguments().add(g2);
-		g3 = createEGenericType(removeAndDeleteNonRootEClass_A);
-		g2.getETypeArguments().add(g3);
-		g3 = createEGenericType(removeAndDeleteNonRootEClass_T);
-		g2.getETypeArguments().add(g3);
-		removeAndDeleteNonRootEClass.getEGenericSuperTypes().add(g1);
-		g1 = createEGenericType(this.getCreateAndInsertEObject());
-		g2 = createEGenericType(createAndReplaceNonRootEClass_T);
-		g1.getETypeArguments().add(g2);
-		g2 = createEGenericType(theReferencePackage.getReplaceSingleValuedEReference());
-		g1.getETypeArguments().add(g2);
-		g3 = createEGenericType(createAndReplaceNonRootEClass_A);
-		g2.getETypeArguments().add(g3);
-		g3 = createEGenericType(createAndReplaceNonRootEClass_T);
-		g2.getETypeArguments().add(g3);
-		createAndReplaceNonRootEClass.getEGenericSuperTypes().add(g1);
-		g1 = createEGenericType(this.getRemoveAndDeleteEObject());
-		g2 = createEGenericType(replaceAndDeleteNonRootEClass_T);
-		g1.getETypeArguments().add(g2);
-		g2 = createEGenericType(theReferencePackage.getReplaceSingleValuedEReference());
-		g1.getETypeArguments().add(g2);
-		g3 = createEGenericType(replaceAndDeleteNonRootEClass_A);
-		g2.getETypeArguments().add(g3);
-		g3 = createEGenericType(replaceAndDeleteNonRootEClass_T);
-		g2.getETypeArguments().add(g3);
-		replaceAndDeleteNonRootEClass.getEGenericSuperTypes().add(g1);
-		createAndReplaceAndDeleteNonRootEClass.getESuperTypes().add(this.getCompoundEChange());
 
 		// Initialize classes, features, and operations; add parameters
 		initEClass(compoundEChangeEClass, CompoundEChange.class, "CompoundEChange", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -919,56 +536,6 @@ public class CompoundPackageImpl extends EPackageImpl implements CompoundPackage
 		initEReference(getCompoundAddition_AdditiveChanges(), g1, null, "additiveChanges", null, 1, -1, CompoundAddition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEOperation(getCompoundAddition__GetAtomicChanges(), theEChangePackage.getAtomicEChange(), "getAtomicChanges", 1, -1, IS_UNIQUE, IS_ORDERED);
-
-		initEClass(createAndInsertEObjectEClass, CreateAndInsertEObject.class, "CreateAndInsertEObject", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		g1 = createEGenericType(theEobjectPackage.getCreateEObject());
-		g2 = createEGenericType(createAndInsertEObjectEClass_T);
-		g1.getETypeArguments().add(g2);
-		initEReference(getCreateAndInsertEObject_CreateChange(), g1, null, "createChange", null, 1, 1, CreateAndInsertEObject.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		g1 = createEGenericType(createAndInsertEObjectEClass_C);
-		initEReference(getCreateAndInsertEObject_InsertChange(), g1, null, "insertChange", null, 1, 1, CreateAndInsertEObject.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-		initEOperation(getCreateAndInsertEObject__GetAtomicChanges(), theEChangePackage.getAtomicEChange(), "getAtomicChanges", 1, -1, IS_UNIQUE, IS_ORDERED);
-
-		initEClass(removeAndDeleteEObjectEClass, RemoveAndDeleteEObject.class, "RemoveAndDeleteEObject", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		g1 = createEGenericType(removeAndDeleteEObjectEClass_C);
-		initEReference(getRemoveAndDeleteEObject_RemoveChange(), g1, null, "removeChange", null, 1, 1, RemoveAndDeleteEObject.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		g1 = createEGenericType(theEobjectPackage.getDeleteEObject());
-		g2 = createEGenericType(removeAndDeleteEObjectEClass_T);
-		g1.getETypeArguments().add(g2);
-		initEReference(getRemoveAndDeleteEObject_DeleteChange(), g1, null, "deleteChange", null, 1, 1, RemoveAndDeleteEObject.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-		initEOperation(getRemoveAndDeleteEObject__GetAtomicChanges(), theEChangePackage.getAtomicEChange(), "getAtomicChanges", 1, -1, IS_UNIQUE, IS_ORDERED);
-
-		initEClass(createAndInsertRootEClass, CreateAndInsertRoot.class, "CreateAndInsertRoot", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-
-		initEClass(removeAndDeleteRootEClass, RemoveAndDeleteRoot.class, "RemoveAndDeleteRoot", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-
-		initEClass(createAndInsertNonRootEClass, CreateAndInsertNonRoot.class, "CreateAndInsertNonRoot", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-
-		initEClass(removeAndDeleteNonRootEClass, RemoveAndDeleteNonRoot.class, "RemoveAndDeleteNonRoot", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-
-		initEClass(createAndReplaceNonRootEClass, CreateAndReplaceNonRoot.class, "CreateAndReplaceNonRoot", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-
-		initEClass(replaceAndDeleteNonRootEClass, ReplaceAndDeleteNonRoot.class, "ReplaceAndDeleteNonRoot", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-
-		initEClass(createAndReplaceAndDeleteNonRootEClass, CreateAndReplaceAndDeleteNonRoot.class, "CreateAndReplaceAndDeleteNonRoot", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		g1 = createEGenericType(theEobjectPackage.getCreateEObject());
-		g2 = createEGenericType(createAndReplaceAndDeleteNonRootEClass_T);
-		g1.getETypeArguments().add(g2);
-		initEReference(getCreateAndReplaceAndDeleteNonRoot_CreateChange(), g1, null, "createChange", null, 1, 1, CreateAndReplaceAndDeleteNonRoot.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		g1 = createEGenericType(theReferencePackage.getReplaceSingleValuedEReference());
-		g2 = createEGenericType(createAndReplaceAndDeleteNonRootEClass_A);
-		g1.getETypeArguments().add(g2);
-		g2 = createEGenericType(createAndReplaceAndDeleteNonRootEClass_T);
-		g1.getETypeArguments().add(g2);
-		initEReference(getCreateAndReplaceAndDeleteNonRoot_ReplaceChange(), g1, null, "replaceChange", null, 1, 1, CreateAndReplaceAndDeleteNonRoot.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		g1 = createEGenericType(theEobjectPackage.getDeleteEObject());
-		g2 = createEGenericType(createAndReplaceAndDeleteNonRootEClass_T);
-		g1.getETypeArguments().add(g2);
-		initEReference(getCreateAndReplaceAndDeleteNonRoot_DeleteChange(), g1, null, "deleteChange", null, 1, 1, CreateAndReplaceAndDeleteNonRoot.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-		initEOperation(getCreateAndReplaceAndDeleteNonRoot__GetAtomicChanges(), theEChangePackage.getAtomicEChange(), "getAtomicChanges", 1, -1, IS_UNIQUE, IS_ORDERED);
 
 		// Create resource
 		createResource(eNS_URI);

@@ -278,6 +278,7 @@ public interface FeaturePackage extends EPackage {
 	 */
 	int UPDATE_SINGLE_VALUED_FEATURE_ECHANGE_OPERATION_COUNT = FEATURE_ECHANGE_OPERATION_COUNT + 0;
 
+
 	/**
 	 * Returns the meta object for class '{@link tools.vitruv.framework.change.echange.feature.FeatureEChange <em>EChange</em>}'.
 	 * <!-- begin-user-doc -->

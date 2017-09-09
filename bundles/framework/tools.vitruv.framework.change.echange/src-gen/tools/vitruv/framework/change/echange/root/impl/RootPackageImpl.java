@@ -17,26 +17,41 @@ import org.eclipse.emf.ecore.resource.Resource;
 import tools.vitruv.framework.change.echange.EChangePackage;
 
 import tools.vitruv.framework.change.echange.compound.CompoundPackage;
+
 import tools.vitruv.framework.change.echange.compound.impl.CompoundPackageImpl;
+
 import tools.vitruv.framework.change.echange.eobject.EobjectPackage;
 
 import tools.vitruv.framework.change.echange.eobject.impl.EobjectPackageImpl;
+
 import tools.vitruv.framework.change.echange.feature.FeaturePackage;
+
 import tools.vitruv.framework.change.echange.feature.attribute.AttributePackage;
+
 import tools.vitruv.framework.change.echange.feature.attribute.impl.AttributePackageImpl;
+
 import tools.vitruv.framework.change.echange.feature.impl.FeaturePackageImpl;
+
 import tools.vitruv.framework.change.echange.feature.list.ListPackage;
+
 import tools.vitruv.framework.change.echange.feature.list.impl.ListPackageImpl;
+
 import tools.vitruv.framework.change.echange.feature.reference.ReferencePackage;
+
 import tools.vitruv.framework.change.echange.feature.reference.impl.ReferencePackageImpl;
+
 import tools.vitruv.framework.change.echange.feature.single.SinglePackage;
+
 import tools.vitruv.framework.change.echange.feature.single.impl.SinglePackageImpl;
+
 import tools.vitruv.framework.change.echange.impl.EChangePackageImpl;
+
 import tools.vitruv.framework.change.echange.root.InsertRootEObject;
 import tools.vitruv.framework.change.echange.root.RemoveRootEObject;
 import tools.vitruv.framework.change.echange.root.RootEChange;
 import tools.vitruv.framework.change.echange.root.RootFactory;
 import tools.vitruv.framework.change.echange.root.RootPackage;
+
 import tools.vitruv.framework.change.uuid.UuidPackage;
 
 /**

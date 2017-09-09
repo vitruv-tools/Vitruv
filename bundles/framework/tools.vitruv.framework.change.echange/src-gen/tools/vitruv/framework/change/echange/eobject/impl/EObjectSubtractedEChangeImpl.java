@@ -49,6 +49,7 @@ public abstract class EObjectSubtractedEChangeImpl<T extends EObject> extends Su
 	 * @ordered
 	 */
 	protected static final String OLD_VALUE_ID_EDEFAULT = null;
+
 	/**
 	 * The cached value of the '{@link #getOldValueID() <em>Old Value ID</em>}' attribute.
 	 * <!-- begin-user-doc -->

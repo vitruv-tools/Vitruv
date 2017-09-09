@@ -23,5 +23,4 @@ import tools.vitruv.framework.change.echange.eobject.EObjectAddedEChange;
  * @generated
  */
 public interface InsertRootEObject<T extends EObject> extends RootEChange, EObjectAddedEChange<T> {
-
 } // InsertRootEObject

@@ -14,8 +14,10 @@ import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+
 import tools.vitruv.framework.change.echange.eobject.EObjectSubtractedEChange;
 import tools.vitruv.framework.change.echange.eobject.EobjectPackage;
+
 import tools.vitruv.framework.change.echange.feature.list.impl.RemoveFromListEChangeImpl;
 
 import tools.vitruv.framework.change.echange.feature.reference.ReferencePackage;
@@ -57,6 +59,7 @@ public class RemoveEReferenceImpl<A extends EObject, T extends EObject> extends 
 	 * @ordered
 	 */
 	protected static final String OLD_VALUE_ID_EDEFAULT = null;
+
 	/**
 	 * The cached value of the '{@link #getOldValueID() <em>Old Value ID</em>}' attribute.
 	 * <!-- begin-user-doc -->

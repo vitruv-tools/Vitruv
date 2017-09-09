@@ -28,5 +28,4 @@ import tools.vitruv.framework.change.echange.feature.single.ReplaceSingleValuedF
  * @generated
  */
 public interface ReplaceSingleValuedEReference<A extends EObject, T extends EObject> extends ReplaceSingleValuedFeatureEChange<A, EReference, T>, AdditiveReferenceEChange<A, T>, SubtractiveReferenceEChange<A, T> {
-
 } // ReplaceSingleValuedEReference

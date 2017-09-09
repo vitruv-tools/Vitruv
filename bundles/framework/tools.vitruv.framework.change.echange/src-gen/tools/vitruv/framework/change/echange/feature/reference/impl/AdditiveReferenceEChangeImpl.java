@@ -52,6 +52,7 @@ public abstract class AdditiveReferenceEChangeImpl<A extends EObject, T extends 
 	 * @ordered
 	 */
 	protected static final String NEW_VALUE_ID_EDEFAULT = null;
+
 	/**
 	 * The cached value of the '{@link #getNewValueID() <em>New Value ID</em>}' attribute.
 	 * <!-- begin-user-doc -->

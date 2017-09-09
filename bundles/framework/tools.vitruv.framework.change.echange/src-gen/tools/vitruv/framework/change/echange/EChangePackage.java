@@ -259,6 +259,7 @@ public interface EChangePackage extends EPackage {
 	 */
 	int SUBTRACTIVE_ECHANGE_OPERATION_COUNT = ATOMIC_ECHANGE_OPERATION_COUNT + 1;
 
+
 	/**
 	 * Returns the meta object for class '{@link tools.vitruv.framework.change.echange.EChange <em>EChange</em>}'.
 	 * <!-- begin-user-doc -->

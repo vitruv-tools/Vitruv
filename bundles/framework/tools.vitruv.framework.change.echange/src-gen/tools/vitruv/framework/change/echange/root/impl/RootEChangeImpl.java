@@ -3,11 +3,13 @@
 package tools.vitruv.framework.change.echange.root.impl;
 
 import org.eclipse.emf.common.notify.Notification;
+
 import org.eclipse.emf.ecore.EClass;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
 import org.eclipse.emf.ecore.resource.Resource;
+
 import tools.vitruv.framework.change.echange.impl.AtomicEChangeImpl;
 
 import tools.vitruv.framework.change.echange.root.RootEChange;

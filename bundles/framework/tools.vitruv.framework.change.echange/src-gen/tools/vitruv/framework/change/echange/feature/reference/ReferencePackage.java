@@ -752,6 +752,7 @@ public interface ReferencePackage extends EPackage {
 	 */
 	int REPLACE_SINGLE_VALUED_EREFERENCE_OPERATION_COUNT = SinglePackage.REPLACE_SINGLE_VALUED_FEATURE_ECHANGE_OPERATION_COUNT + 1;
 
+
 	/**
 	 * Returns the meta object for class '{@link tools.vitruv.framework.change.echange.feature.reference.UpdateReferenceEChange <em>Update Reference EChange</em>}'.
 	 * <!-- begin-user-doc -->

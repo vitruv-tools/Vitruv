@@ -52,6 +52,7 @@ public abstract class SubtractiveReferenceEChangeImpl<A extends EObject, T exten
 	 * @ordered
 	 */
 	protected static final String OLD_VALUE_ID_EDEFAULT = null;
+
 	/**
 	 * The cached value of the '{@link #getOldValueID() <em>Old Value ID</em>}' attribute.
 	 * <!-- begin-user-doc -->

@@ -3,7 +3,9 @@
 package tools.vitruv.framework.change.echange.eobject;
 
 import org.eclipse.emf.common.util.EList;
+
 import org.eclipse.emf.ecore.EObject;
+
 import tools.vitruv.framework.change.echange.EChange;
 
 /**
@@ -29,7 +31,6 @@ import tools.vitruv.framework.change.echange.EChange;
  * @generated
  */
 public interface DeleteEObject<A extends EObject> extends EObjectExistenceEChange<A> {
-
 	/**
 	 * Returns the value of the '<em><b>Consequential Remove Changes</b></em>' reference list.
 	 * The list contents are of type {@link tools.vitruv.framework.change.echange.EChange}.
@@ -45,4 +46,5 @@ public interface DeleteEObject<A extends EObject> extends EObjectExistenceEChang
 	 * @generated
 	 */
 	EList<EChange> getConsequentialRemoveChanges();
+
 } // DeleteEObject
