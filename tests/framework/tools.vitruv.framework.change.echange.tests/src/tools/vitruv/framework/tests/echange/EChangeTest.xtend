@@ -17,6 +17,11 @@ import tools.vitruv.framework.change.echange.TypeInferringUnresolvingAtomicEChan
 import tools.vitruv.framework.change.echange.TypeInferringUnresolvingCompoundEChangeFactory
 import tools.vitruv.framework.change.uuid.UuidGeneratorAndResolverImpl
 import tools.vitruv.framework.change.uuid.UuidGeneratorAndResolver
+import java.util.List
+import tools.vitruv.framework.change.echange.EChange
+import org.junit.Assert
+import tools.vitruv.framework.change.uuid.UuidResolver
+import static extension tools.vitruv.framework.change.echange.EChangeResolverAndApplicator.*;
 
 /**
  * Default class for testing EChange changes.
@@ -78,4 +83,61 @@ import tools.vitruv.framework.change.uuid.UuidGeneratorAndResolver
  	def void afterTest() {
  	}
  	
+ 	/**
+	 * Assert that change is not resolved.
+	 */
+	def protected static void assertIsNotResolved(List<EChange> changes) {
+		for (change : changes) {
+			Assert.assertFalse(change.isResolved);
+			for (involvedObject : change.involvedEObjects) {
+				Assert.assertNull(involvedObject);	
+			}
+		}
+	}
+	
+	/**
+	 * Assert that change is resolved.
+	 */
+	def protected static void assertIsResolved(List<EChange> changes) {
+		for (change : changes) {
+			Assert.assertTrue(change.isResolved);
+			for (involvedObject : change.involvedEObjects) {
+				Assert.assertNotNull(involvedObject);	
+			}
+		}
+	}
+	
+	static def protected List<EChange> resolveBefore(List<EChange> changes, UuidResolver uuidResolver) {
+		val result = newArrayList
+		for (change : changes) {
+			result += change.resolveBefore(uuidResolver);
+		}
+		return result;
+	}
+	
+	static def protected List<EChange> resolveAfter(List<EChange> changes, UuidResolver uuidResolver) {
+		val result = newArrayList
+		for (change : changes.reverseView) {
+			result.add(0, change.resolveAfter(uuidResolver));
+		}
+		return result;
+	} 
+	
+	static def protected boolean applyBackward(List<EChange> changes) {
+		assertIsResolved(changes);
+		var result = true;
+		for (change : changes.reverseView) {
+			result = result && change.applyBackward
+		}
+		return result;
+	}
+	
+	static def protected boolean applyForward(List<EChange> changes) {
+		assertIsResolved(changes);
+		var result = true;
+		for (change : changes) {
+			result = result && change.applyForward
+		}
+		return result;
+	}
  }

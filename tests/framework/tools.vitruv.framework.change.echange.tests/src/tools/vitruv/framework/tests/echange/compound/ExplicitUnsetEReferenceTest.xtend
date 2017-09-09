@@ -14,13 +14,15 @@ import org.junit.Before
 import org.junit.Test
 import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.change.echange.compound.ExplicitUnsetEReference
-import tools.vitruv.framework.change.echange.compound.RemoveAndDeleteNonRoot
 import tools.vitruv.framework.change.echange.feature.reference.SubtractiveReferenceEChange
 import tools.vitruv.framework.tests.echange.EChangeTest
 
 import static extension tools.vitruv.framework.tests.echange.util.EChangeAssertHelper.*
-import tools.vitruv.framework.change.echange.compound.ReplaceAndDeleteNonRoot
 import static extension tools.vitruv.framework.change.echange.EChangeResolverAndApplicator.*;
+import tools.vitruv.framework.change.echange.feature.reference.RemoveEReference
+import tools.vitruv.framework.change.echange.eobject.DeleteEObject
+import org.eclipse.emf.ecore.EObject
+import tools.vitruv.framework.change.echange.feature.reference.ReplaceSingleValuedEReference
 
 /**
  * Test class for the concrete {@link ExplicitUnsetEReference} EChange,
@@ -430,13 +432,27 @@ class ExplicitUnsetEReferenceTest extends EChangeTest {
 			}
 		} else {
 			if (!affectedFeature.many) {
-				Assert.assertNotSame((change.changes.get(0) as ReplaceAndDeleteNonRoot<Root, NonRoot>).removeChange.oldValue, oldValue)
+				assertUnresolvedRemoveAndDelete(change.changes.get(0), true, change.changes.get(1));
 			} else {
-				Assert.assertNotSame((change.changes.get(0) as RemoveAndDeleteNonRoot<Root, NonRoot>).removeChange.oldValue, oldValue3)
-				Assert.assertNotSame((change.changes.get(1) as RemoveAndDeleteNonRoot<Root, NonRoot>).removeChange.oldValue, oldValue2)
-				Assert.assertNotSame((change.changes.get(2) as RemoveAndDeleteNonRoot<Root, NonRoot>).removeChange.oldValue, oldValue)
+				assertUnresolvedRemoveAndDelete(change.changes.get(0), false, change.changes.get(1));
+				assertUnresolvedRemoveAndDelete(change.changes.get(2), false, change.changes.get(3));
+				assertUnresolvedRemoveAndDelete(change.changes.get(4), false, change.changes.get(5));
 			}
 		} 
+	}
+	
+	private static def assertUnresolvedRemoveAndDelete(EChange removeChange, boolean replace, 
+		EChange deleteChange
+	) {
+		assertIsNotResolved(#[removeChange, deleteChange]);
+		val typedRemoveChange = if (replace) {
+			assertType(removeChange, ReplaceSingleValuedEReference);	
+		} else {
+			assertType(removeChange, RemoveEReference);
+		}
+				
+		val typedDeleteChange = assertType(deleteChange, DeleteEObject);
+		Assert.assertEquals(typedRemoveChange.oldValueID, typedDeleteChange.affectedEObjectID);
 	}
 	
 	/**
@@ -456,13 +472,27 @@ class ExplicitUnsetEReferenceTest extends EChangeTest {
 			}
 		} else {
 			if (!affectedFeature.many) {
-				oldValue.assertEqualsOrCopy((change.changes.get(0) as ReplaceAndDeleteNonRoot<Root, NonRoot>).removeChange.oldValue)					
+				assertResolvedRemoveAndDelete(change.changes.get(0), true, change.changes.get(1), oldValue);
 			} else {
-				oldValue3.assertEqualsOrCopy((change.changes.get(0) as RemoveAndDeleteNonRoot<Root, NonRoot>).removeChange.oldValue)
-				oldValue2.assertEqualsOrCopy((change.changes.get(1) as RemoveAndDeleteNonRoot<Root, NonRoot>).removeChange.oldValue)
-				oldValue.assertEqualsOrCopy((change.changes.get(2) as RemoveAndDeleteNonRoot<Root, NonRoot>).removeChange.oldValue)				
+				assertResolvedRemoveAndDelete(change.changes.get(0), false, change.changes.get(1), oldValue3);
+				assertResolvedRemoveAndDelete(change.changes.get(2), false, change.changes.get(3), oldValue2);
+				assertResolvedRemoveAndDelete(change.changes.get(4), false, change.changes.get(5), oldValue);
 			}
 		}
+	}
+	
+	private static def assertResolvedRemoveAndDelete(EChange removeChange, boolean replace,
+		EChange deleteChange, EObject oldValue
+	) {
+		assertIsResolved(#[removeChange, deleteChange]);
+		val typedRemoveChange = if (replace) {
+			assertType(removeChange, ReplaceSingleValuedEReference);	
+		} else {
+			assertType(removeChange, RemoveEReference);
+		}
+		val typedDeleteChange = assertType(deleteChange, DeleteEObject);
+		oldValue.assertEqualsOrCopy(typedRemoveChange.oldValue)
+		oldValue.assertEqualsOrCopy(typedDeleteChange.affectedEObject)
 	}
 	
 	/**
@@ -480,11 +510,11 @@ class ExplicitUnsetEReferenceTest extends EChangeTest {
 			}
 		} else {
 			if (!affectedFeature.many) {
-				changes.add(compoundFactory.createReplaceAndDeleteNonRootChange(affectedEObject, affectedFeature, oldValue))
+				changes.addAll(compoundFactory.createReplaceAndDeleteNonRootChange(affectedEObject, affectedFeature, oldValue))
 			} else {
-				changes.add(compoundFactory.createRemoveAndDeleteNonRootChange(affectedEObject, affectedFeature, oldValue3, 2))
-				changes.add(compoundFactory.createRemoveAndDeleteNonRootChange(affectedEObject, affectedFeature, oldValue2, 1))
-				changes.add(compoundFactory.createRemoveAndDeleteNonRootChange(affectedEObject, affectedFeature, oldValue, 0))
+				changes.addAll(compoundFactory.createRemoveAndDeleteNonRootChange(affectedEObject, affectedFeature, oldValue3, 2))
+				changes.addAll(compoundFactory.createRemoveAndDeleteNonRootChange(affectedEObject, affectedFeature, oldValue2, 1))
+				changes.addAll(compoundFactory.createRemoveAndDeleteNonRootChange(affectedEObject, affectedFeature, oldValue, 0))
 			}
 		}
 		return compoundFactory.<Root, NonRoot>createExplicitUnsetEReferenceChange(affectedEObject, affectedFeature, changes)
