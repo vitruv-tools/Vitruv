@@ -62,18 +62,18 @@ class ChangeDescription2InsertEReferenceTest extends ChangeDescription2EReferenc
 		var Iterable<? extends EChange> changes = changes;
 		if (isContainment) {
 			changes.assertChangeCount(2);
-			changes = changes.assertReplaceSingleValuedEAttribute(nonRoot, IDENTIFIED__ID, null, nonRoot.id);
+			changes = changes.assertReplaceSingleValuedEAttribute(nonRoot, IDENTIFIED__ID, null, nonRoot.id, false, false);
 		} else {
 			changes.assertChangeCount(1);
 		}
-		changes.assertInsertEReference(this.rootElement, feature, nonRoot, expectedIndex, isContainment)
+		changes.assertInsertEReference(this.rootElement, feature, nonRoot, expectedIndex, isContainment, false)
 			.assertEmpty;
 	}
 	
 	def private void assertCreateAndInsertNonRoot(NonRoot nonRoot, EStructuralFeature feature, int expectedIndex) {
 		changes.assertChangeCount(3);
-		changes.assertCreateAndInsertNonRoot(this.rootElement, feature, nonRoot, expectedIndex)
-			.assertReplaceSingleValuedEAttribute(nonRoot, IDENTIFIED__ID, null, nonRoot.id)
+		changes.assertCreateAndInsertNonRoot(this.rootElement, feature, nonRoot, expectedIndex, false)
+			.assertReplaceSingleValuedEAttribute(nonRoot, IDENTIFIED__ID, null, nonRoot.id, false, false)
 			.assertEmpty;
 	}
 }

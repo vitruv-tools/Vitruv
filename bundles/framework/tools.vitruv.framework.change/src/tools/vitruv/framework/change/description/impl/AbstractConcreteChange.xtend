@@ -7,8 +7,6 @@ import tools.vitruv.framework.util.datatypes.VURI
 import org.apache.log4j.Logger
 import java.util.List
 import org.eclipse.emf.ecore.EObject
-import tools.vitruv.framework.change.echange.compound.CompoundEChange
-import org.eclipse.emf.common.util.BasicEList
 import tools.vitruv.framework.change.echange.root.InsertRootEObject
 import tools.vitruv.framework.change.echange.root.RemoveRootEObject
 import tools.vitruv.framework.change.echange.feature.reference.InsertEReference
@@ -91,15 +89,6 @@ abstract class AbstractConcreteChange implements ConcreteChange {
 	}
 	
 	
-	private def dispatch Iterable<String> getAffectedEObjectIds(CompoundEChange eChange) {
-		var List<String> objects = new BasicEList<String>
-		for (atomicChange : eChange.atomicChanges) {
-			objects.addAll(atomicChange.getAffectedEObjectIds)
-		}
-		return objects.filterNull
-	}
-	
-	
 	private def dispatch List<String> getAffectedEObjectIds(EChange eChange) {
 		return #[]
 	}
@@ -132,14 +121,6 @@ abstract class AbstractConcreteChange implements ConcreteChange {
 		return #[eChange.affectedEObjectID]
 	}
 	
-	
-	private def dispatch Iterable<EObject> getAffectedEObjects(CompoundEChange eChange) {
-		var List<EObject> objects = new BasicEList<EObject>
-		for (atomicChange : eChange.atomicChanges) {
-			objects.addAll(atomicChange.getAffectedEObjects)
-		}
-		return objects.filterNull
-	}
 	
 	private def dispatch List<EObject> getAffectedEObjects(EChange eChange) {
 		return #[]

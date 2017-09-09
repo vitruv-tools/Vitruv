@@ -4,7 +4,6 @@ import tools.vitruv.framework.tests.change.ChangeDescription2ChangeTransformatio
 import org.junit.Test
 
 import static extension tools.vitruv.framework.tests.change.util.AtomicEChangeAssertHelper.*
-import static extension tools.vitruv.framework.tests.change.util.CompoundEChangeAssertHelper.*
 import static allElementTypes.AllElementTypesPackage.Literals.*
 import org.junit.Assert
 
@@ -27,9 +26,9 @@ class ChangeDescription2RemoveEAttributeValueTest extends ChangeDescription2Chan
 		this.rootElement.multiValuedEAttribute.remove(0)
 
 		changes.assertChangeCount(3);
-		changes.assertRemoveEAttribute(this.rootElement, ROOT__MULTI_VALUED_EATTRIBUTE, 66, 2)
-			.assertRemoveEAttribute(this.rootElement, ROOT__MULTI_VALUED_EATTRIBUTE, 42, 0)
-			.assertRemoveEAttribute(this.rootElement, ROOT__MULTI_VALUED_EATTRIBUTE, 55, 0)
+		changes.assertRemoveEAttribute(this.rootElement, ROOT__MULTI_VALUED_EATTRIBUTE, 66, 2, false)
+			.assertRemoveEAttribute(this.rootElement, ROOT__MULTI_VALUED_EATTRIBUTE, 42, 0, false)
+			.assertRemoveEAttribute(this.rootElement, ROOT__MULTI_VALUED_EATTRIBUTE, 55, 0, false)
 			.assertEmpty;
 	}
 	
@@ -47,8 +46,8 @@ class ChangeDescription2RemoveEAttributeValueTest extends ChangeDescription2Chan
 		this.rootElement.multiValuedEAttribute.clear
 
 		changes.assertChangeCount(2);
-		changes.assertRemoveEAttribute(this.rootElement, ROOT__MULTI_VALUED_EATTRIBUTE, 55, 1)
-			.assertRemoveEAttribute(this.rootElement, ROOT__MULTI_VALUED_EATTRIBUTE, 42, 0)
+		changes.assertRemoveEAttribute(this.rootElement, ROOT__MULTI_VALUED_EATTRIBUTE, 55, 1, false)
+			.assertRemoveEAttribute(this.rootElement, ROOT__MULTI_VALUED_EATTRIBUTE, 42, 0, false)
 			.assertEmpty;
 	}
 	
@@ -67,7 +66,7 @@ class ChangeDescription2RemoveEAttributeValueTest extends ChangeDescription2Chan
 		this.rootElement.multiValuedUnsettableEAttribute.remove(0)
 
 		changes.assertChangeCount(1);
-		changes.assertRemoveEAttribute(this.rootElement, ROOT__MULTI_VALUED_UNSETTABLE_EATTRIBUTE, 42, 0)
+		changes.assertRemoveEAttribute(this.rootElement, ROOT__MULTI_VALUED_UNSETTABLE_EATTRIBUTE, 42, 0, false)
 			.assertEmpty;
 		Assert.assertTrue(this.rootElement.eIsSet(ROOT__MULTI_VALUED_UNSETTABLE_EATTRIBUTE));
 	}
@@ -83,10 +82,9 @@ class ChangeDescription2RemoveEAttributeValueTest extends ChangeDescription2Chan
 		this.rootElement.eUnset(ROOT__MULTI_VALUED_UNSETTABLE_EATTRIBUTE)
 
 		changes.assertChangeCount(1);
-		val subtractiveChanges = changes.claimChange(0).assertExplicitUnsetEAttribute.subtractiveChanges
-		subtractiveChanges.assertChangeCount(1);
-		subtractiveChanges.assertRemoveEAttribute(this.rootElement, ROOT__MULTI_VALUED_UNSETTABLE_EATTRIBUTE, 42, 0)
+		changes.assertRemoveEAttribute(this.rootElement, ROOT__MULTI_VALUED_UNSETTABLE_EATTRIBUTE, 42, 0, true)
 			.assertEmpty;
+
 	}
 	
 	@Test
@@ -102,11 +100,9 @@ class ChangeDescription2RemoveEAttributeValueTest extends ChangeDescription2Chan
 		Assert.assertTrue(rootElement.isSetMultiValuedUnsettableEAttribute); 
 		this.rootElement.eUnset(ROOT__MULTI_VALUED_UNSETTABLE_EATTRIBUTE)
 		Assert.assertFalse(rootElement.isSetMultiValuedUnsettableEAttribute);
-		changes.assertChangeCount(1);
-		val subtractiveChanges = changes.claimChange(0).assertExplicitUnsetEAttribute.subtractiveChanges
-		subtractiveChanges.assertChangeCount(2);
-		subtractiveChanges.assertRemoveEAttribute(this.rootElement, ROOT__MULTI_VALUED_UNSETTABLE_EATTRIBUTE, 22, 1)
-			.assertRemoveEAttribute(this.rootElement, ROOT__MULTI_VALUED_UNSETTABLE_EATTRIBUTE, 42, 0)
+		changes.assertChangeCount(2);
+		changes.assertRemoveEAttribute(this.rootElement, ROOT__MULTI_VALUED_UNSETTABLE_EATTRIBUTE, 22, 1, false)
+			.assertRemoveEAttribute(this.rootElement, ROOT__MULTI_VALUED_UNSETTABLE_EATTRIBUTE, 42, 0, true)
 			.assertEmpty;
 	}
 	

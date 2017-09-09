@@ -3,50 +3,45 @@ package tools.vitruv.framework.tests.change.util
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EStructuralFeature
 import org.eclipse.emf.ecore.resource.Resource
-import org.junit.Assert
 import tools.vitruv.framework.change.echange.EChange
-import tools.vitruv.framework.change.echange.compound.ExplicitUnsetEAttribute
-import tools.vitruv.framework.change.echange.compound.ExplicitUnsetEReference
-import tools.vitruv.framework.change.echange.feature.attribute.SubtractiveAttributeEChange
-import tools.vitruv.framework.change.echange.feature.reference.SubtractiveReferenceEChange
 
 import static extension tools.vitruv.framework.tests.change.util.AtomicEChangeAssertHelper.*
 import static extension tools.vitruv.framework.tests.change.util.ChangeAssertHelper.*
 
 class CompoundEChangeAssertHelper {
 	def static Iterable<? extends EChange> assertCreateAndInsertNonRoot(
-			Iterable<? extends EChange> changes, EObject affectedEObject, EStructuralFeature affectedFeature, EObject expectedNewValue, int expectedIndex) {
+			Iterable<? extends EChange> changes, EObject affectedEObject, EStructuralFeature affectedFeature, EObject expectedNewValue, int expectedIndex, boolean wasUnset) {
 		changes.assertSizeGreaterEquals(2);
 		return changes.assertCreateEObject(expectedNewValue)
-			.assertInsertEReference(affectedEObject, affectedFeature, expectedNewValue,	expectedIndex, true);
+			.assertInsertEReference(affectedEObject, affectedFeature, expectedNewValue,	expectedIndex, true, wasUnset);
 	}
 
 	def static Iterable<? extends EChange> assertRemoveAndDeleteNonRoot(
-			Iterable<? extends EChange> changes, EObject affectedEObject, EStructuralFeature affectedFeature, EObject expectedOldValue, int expectedOldIndex) {
+			Iterable<? extends EChange> changes, EObject affectedEObject, EStructuralFeature affectedFeature, EObject expectedOldValue, int expectedOldIndex, boolean isUnset) {
 		changes.assertSizeGreaterEquals(2);
-		return changes.assertRemoveEReference(affectedEObject, affectedFeature, expectedOldValue, expectedOldIndex, true)
+		return changes.assertRemoveEReference(affectedEObject, affectedFeature, expectedOldValue, expectedOldIndex, true, isUnset)
 			.assertDeleteEObject(expectedOldValue);
 	}
 	
 	def static Iterable<? extends EChange> assertCreateAndReplaceAndDeleteNonRoot(Iterable<? extends EChange> changes, EObject expectedOldValue,
-			EObject expectedNewValue, EStructuralFeature affectedFeature, EObject affectedEObject, boolean isContainment) {
+			EObject expectedNewValue, EStructuralFeature affectedFeature, EObject affectedEObject, boolean isContainment, boolean wasUnset, boolean isUnset) {
 		changes.assertSizeGreaterEquals(3);
 		return changes.assertCreateEObject(expectedNewValue)
-			.assertReplaceSingleValuedEReference(affectedEObject, affectedFeature, expectedOldValue, expectedNewValue, isContainment)
+			.assertReplaceSingleValuedEReference(affectedEObject, affectedFeature, expectedOldValue, expectedNewValue, isContainment, wasUnset, isUnset)
 			.assertDeleteEObject(expectedOldValue)
 	}
 	
 	def static Iterable<? extends EChange> assertCreateAndReplaceNonRoot(Iterable<? extends EChange> changes, EObject expectedNewValue,
-		EObject affectedEObject, EStructuralFeature affectedFeature) {
+		EObject affectedEObject, EStructuralFeature affectedFeature, boolean wasUnset) {
 		changes.assertSizeGreaterEquals(2);
 		return changes.assertCreateEObject(expectedNewValue)
-			.assertReplaceSingleValuedEReference(affectedEObject, affectedFeature, null, expectedNewValue, true);
+			.assertReplaceSingleValuedEReference(affectedEObject, affectedFeature, null, expectedNewValue, true, wasUnset, false);
 	}
 	
 	def static Iterable<? extends EChange> assertReplaceAndDeleteNonRoot(Iterable<? extends EChange> changes, EObject expectedOldValue,
-		EObject affectedEObject, EStructuralFeature affectedFeature) {
+		EObject affectedEObject, EStructuralFeature affectedFeature, boolean isUnset) {
 		changes.assertSizeGreaterEquals(2);
-		return changes.assertReplaceSingleValuedEReference(affectedEObject, affectedFeature, expectedOldValue, null, true)
+		return changes.assertReplaceSingleValuedEReference(affectedEObject, affectedFeature, expectedOldValue, null, true, false, isUnset)
 			.assertDeleteEObject(expectedOldValue);
 	}
 
@@ -61,22 +56,5 @@ class CompoundEChangeAssertHelper {
 		return changes.assertRemoveRootEObject(expectedOldValue, uri, resource)
 			.assertDeleteEObject(expectedOldValue);
 	}
-
-	def public static <A extends EObject, T, S extends SubtractiveAttributeEChange<A, T>> ExplicitUnsetEAttribute<A, T> assertExplicitUnsetEAttribute(
-			EChange change) {
-		val unsetChange = change.assertObjectInstanceOf(ExplicitUnsetEAttribute)
-		Assert.assertEquals("atomic changes should be the same than the subtractive changes",
-			unsetChange.atomicChanges, unsetChange.subtractiveChanges)
-		return unsetChange
-	}
-	
-	def public static <A extends EObject, T extends EObject, S extends SubtractiveReferenceEChange<A, T>> ExplicitUnsetEReference<A> assertExplicitUnsetEReference(
-			EChange change) {
-		val unsetChange = change.assertObjectInstanceOf(ExplicitUnsetEReference)
-		//Assert.assertEquals("atomic changes should be the same than the subtractive changes",
-			//unsetChange.atomicChanges, unsetChange.changes)
-		return unsetChange
-	}
-	
 }
 		

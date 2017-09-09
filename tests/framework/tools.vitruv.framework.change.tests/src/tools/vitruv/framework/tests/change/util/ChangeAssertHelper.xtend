@@ -10,7 +10,6 @@ import org.junit.Assert
 import tools.vitruv.framework.change.echange.AdditiveEChange
 import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.change.echange.SubtractiveEChange
-import tools.vitruv.framework.change.echange.compound.CompoundEChange
 import tools.vitruv.framework.change.echange.eobject.EObjectExistenceEChange
 import tools.vitruv.framework.change.echange.feature.FeatureEChange
 import tools.vitruv.framework.change.echange.feature.list.UpdateSingleListEntryEChange
@@ -102,11 +101,6 @@ class ChangeAssertHelper {
 
 	def static void assertIndex(UpdateSingleListEntryEChange<?, ?> change, int expectedIndex) {
 		Assert.assertEquals("The value is not at the correct index", expectedIndex, change.index)
-	}
-
-	def public static assertAtomicChanges(CompoundEChange eCompoundChange, int atomicChanges) {
-		Assert.assertEquals("Expected exactly " + atomicChanges + " changes in move EObject",
-			eCompoundChange.atomicChanges.size, atomicChanges)
 	}
 
 	def public static assertEqualsOrCopy(String message, EObject object1, EObject object2) {
