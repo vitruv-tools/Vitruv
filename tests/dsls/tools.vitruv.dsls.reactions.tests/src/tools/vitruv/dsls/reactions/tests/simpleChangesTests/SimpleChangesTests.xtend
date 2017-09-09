@@ -21,7 +21,8 @@ import org.junit.runner.RunWith
 import tools.vitruv.dsls.reactions.tests.ReactionsLanguageInjectorProvider
 import com.google.inject.Inject
 import org.eclipse.xtext.testing.InjectWith
-import tools.vitruv.framework.change.echange.compound.CreateAndReplaceNonRoot
+import tools.vitruv.framework.change.echange.eobject.CreateEObject
+import tools.vitruv.framework.change.echange.feature.reference.ReplaceSingleValuedEReference
 
 @RunWith(XtextRunner)
 @InjectWith(ReactionsLanguageInjectorProvider)
@@ -547,7 +548,8 @@ class SimpleChangesTests extends AbstractAllElementTypesReactionsTests {
 		val propagatedChanges = saveAndSynchronizeChanges(targetRoot);
 		assertEquals(1, propagatedChanges.size);
 		val compositePropagatedChange = propagatedChanges.get(0).consequentialChanges as CompositeContainerChange
-		assertTrue(compositePropagatedChange.EChanges.get(0) instanceof CreateAndReplaceNonRoot<?, ?>)
+		assertTrue(compositePropagatedChange.EChanges.get(0) instanceof CreateEObject<?>)
+		assertTrue(compositePropagatedChange.EChanges.get(1) instanceof ReplaceSingleValuedEReference<?,?>)
 		assertPersistedModelsEqual(TEST_SOURCE_MODEL_NAME.projectModelPath, TEST_TARGET_MODEL_NAME.projectModelPath);
 		val testResourceSet = new ResourceSetImpl();
 		testResourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("*", new XMIResourceFactoryImpl());
