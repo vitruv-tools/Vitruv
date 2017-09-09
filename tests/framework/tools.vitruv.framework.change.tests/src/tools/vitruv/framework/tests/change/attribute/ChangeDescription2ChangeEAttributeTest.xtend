@@ -18,7 +18,7 @@ abstract class ChangeDescription2ChangeEAttributeTest extends ChangeDescription2
 
 		// assert
 		changes.assertChangeCount(1);
-		changes.assertInsertEAttribute(rootElement, ROOT__MULTI_VALUED_EATTRIBUTE, expectedValue, index)
+		changes.assertInsertEAttribute(rootElement, ROOT__MULTI_VALUED_EATTRIBUTE, expectedValue, index, false)
 			.assertEmpty
 	}
 }

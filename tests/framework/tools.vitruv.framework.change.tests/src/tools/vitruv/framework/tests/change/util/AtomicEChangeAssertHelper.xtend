@@ -64,59 +64,65 @@ class AtomicEChangeAssertHelper {
 	}
 	
 	
-	def public static Iterable<? extends EChange>  assertReplaceSingleValuedEAttribute(Iterable<? extends EChange> changes, EObject affectedEObject, EStructuralFeature affectedFeature,
-			Object expectedOldValue, Object expectedNewValue) {
+	def public static Iterable<? extends EChange> assertReplaceSingleValuedEAttribute(Iterable<? extends EChange> changes, EObject affectedEObject, EStructuralFeature affectedFeature,
+			Object expectedOldValue, Object expectedNewValue, boolean wasUnset, boolean isUnset) {
 		changes.assertSizeGreaterEquals(1);
 		val removeEAttributeValue = assertType(changes.get(0), ReplaceSingleValuedEAttribute);
 		removeEAttributeValue.assertAffectedEObject(affectedEObject)
 		removeEAttributeValue.assertAffectedEFeature(affectedFeature)
 		removeEAttributeValue.assertOldValue(expectedOldValue)
 		removeEAttributeValue.assertNewValue(expectedNewValue)
+		Assert.assertEquals(wasUnset, removeEAttributeValue.wasUnset)
+		Assert.assertEquals(isUnset, removeEAttributeValue.isUnset)
 		return changes.tail;
 	}
 	
 	def public static Iterable<? extends EChange> assertInsertEAttribute(Iterable<? extends EChange> changes, EObject affectedEObject, EStructuralFeature affectedFeature,
-			Object expectedNewValue, int expectedIndex) {
+			Object expectedNewValue, int expectedIndex, boolean wasUnset) {
 		changes.assertSizeGreaterEquals(1);
 		val insertEAttributValue = assertType(changes.get(0), InsertEAttributeValue);
 		insertEAttributValue.assertAffectedEObject(insertEAttributValue.affectedEObject)
 		insertEAttributValue.assertNewValue(expectedNewValue)
 		insertEAttributValue.assertIndex(expectedIndex)
 		insertEAttributValue.assertAffectedEFeature(affectedFeature)
+		Assert.assertEquals(wasUnset, insertEAttributValue.wasUnset)
 		return changes.tail;
 	}
 	
 	def public static Iterable<? extends EChange> assertRemoveEAttribute(Iterable<? extends EChange> changes, EObject affectedEObject, EStructuralFeature affectedFeature,
-			Object expectedOldValue, int expectedOldIndex) {
+			Object expectedOldValue, int expectedOldIndex, boolean isUnset) {
 		changes.assertSizeGreaterEquals(1);
 		val removeEAttributeValue = assertType(changes.get(0), RemoveEAttributeValue);
 		removeEAttributeValue.assertAffectedEObject(affectedEObject)
 		removeEAttributeValue.assertAffectedEFeature(affectedFeature)
 		removeEAttributeValue.assertOldValue(expectedOldValue)
 		removeEAttributeValue.assertIndex(expectedOldIndex)
+		Assert.assertEquals(isUnset, removeEAttributeValue.isIsUnset)
 		return changes.tail;
 	}
 	
 	
 	def static Iterable<? extends EChange> assertReplaceSingleValuedEReference(Iterable<? extends EChange> changes, EObject affectedEObject, EStructuralFeature affectedFeature,
-			Object expectedOldValue, Object expectedNewValue, boolean isContainment) {
+			Object expectedOldValue, Object expectedNewValue, boolean isContainment, boolean wasUnset, boolean isUnset) {
 		changes.assertSizeGreaterEquals(1);
 		val replaceChange = assertType(changes.get(0), ReplaceSingleValuedEReference);
 		replaceChange.assertOldAndNewValue(expectedOldValue, expectedNewValue)
 		replaceChange.assertAffectedEFeature(affectedFeature)
 		replaceChange.assertAffectedEObject(affectedEObject)
 		replaceChange.assertContainment(isContainment)
+		Assert.assertEquals(wasUnset, replaceChange.wasUnset)
+		Assert.assertEquals(isUnset, replaceChange.isUnset)
 		return changes.tail;
 	}
 	
 	def static Iterable<? extends EChange> assertSetSingleValuedEReference(Iterable<? extends EChange> changes,	EObject affectedEObject, EStructuralFeature affectedFeature, 
-			EObject expectedNewValue, boolean isContainment, boolean isCreate) {
+			EObject expectedNewValue, boolean isContainment, boolean isCreate, boolean wasUnset) {
 		if (isContainment && isCreate) {
-			return changes.assertCreateAndReplaceNonRoot(expectedNewValue, affectedEObject, affectedFeature)
+			return changes.assertCreateAndReplaceNonRoot(expectedNewValue, affectedEObject, affectedFeature, wasUnset)
 		} else {
 			changes.assertSizeGreaterEquals(1);
 			val replaceChange = assertType(changes.get(0), ReplaceSingleValuedEReference);
-			changes.assertReplaceSingleValuedEReference(affectedEObject, affectedFeature, null, expectedNewValue, isContainment);
+			changes.assertReplaceSingleValuedEReference(affectedEObject, affectedFeature, null, expectedNewValue, isContainment, wasUnset, false);
 			assertFalse(replaceChange.isFromNonDefaultValue);
 			assertTrue(replaceChange.isToNonDefaultValue);	
 			return changes.tail;		
@@ -124,13 +130,13 @@ class AtomicEChangeAssertHelper {
 	}
 		
 	def static Iterable<? extends EChange> assertUnsetSingleValuedEReference(Iterable<? extends EChange> changes, EObject affectedEObject, EStructuralFeature affectedFeature,
-			EObject expectedOldValue, boolean isContainment, boolean isDelete) {
+			EObject expectedOldValue, boolean isContainment, boolean isDelete, boolean isUnset) {
 		if (isContainment && isDelete) {
-			return changes.assertReplaceAndDeleteNonRoot(expectedOldValue, affectedEObject, affectedFeature)
+			return changes.assertReplaceAndDeleteNonRoot(expectedOldValue, affectedEObject, affectedFeature, isUnset)
 		} else {
 			changes.assertSizeGreaterEquals(1);
 			val replaceChange = assertType(changes.get(0), ReplaceSingleValuedEReference);
-			changes.assertReplaceSingleValuedEReference(affectedEObject, affectedFeature, expectedOldValue, null, isContainment);
+			changes.assertReplaceSingleValuedEReference(affectedEObject, affectedFeature, expectedOldValue, null, isContainment, false, isUnset);
 			assertTrue(replaceChange.isFromNonDefaultValue);
 			assertFalse(replaceChange.isToNonDefaultValue);
 			return changes.tail;			
@@ -139,7 +145,7 @@ class AtomicEChangeAssertHelper {
 	
 	// FIXME GENERICS
 	def public static Iterable<? extends EChange> assertInsertEReference(Iterable<? extends EChange> changes, EObject affectedEObject, EStructuralFeature affectedFeature, 
-			EObject expectedNewValue, int expectedIndex, boolean isContainment) {
+			EObject expectedNewValue, int expectedIndex, boolean isContainment, boolean wasUnset) {
 		changes.assertSizeGreaterEquals(1);
 		val insertEReference = assertType(changes.get(0), InsertEReference);
 		insertEReference.assertAffectedEObject(affectedEObject)
@@ -147,11 +153,12 @@ class AtomicEChangeAssertHelper {
 		insertEReference.assertNewValue(expectedNewValue)
 		insertEReference.assertIndex(expectedIndex)
 		insertEReference.assertContainment(isContainment)
+		Assert.assertEquals(wasUnset, insertEReference.wasUnset)
 		return changes.tail;
 	}
 	
 	def public static Iterable<? extends EChange> assertRemoveEReference(Iterable<? extends EChange> changes, EObject affectedEObject, EStructuralFeature affectedFeature,
-			EObject expectedOldValue, int expectedOldIndex, boolean isContainment) {
+			EObject expectedOldValue, int expectedOldIndex, boolean isContainment, boolean isUnset) {
 		changes.assertSizeGreaterEquals(1);
 		val subtractiveChange = assertType(changes.get(0), RemoveEReference);
 		subtractiveChange.assertAffectedEFeature(affectedFeature)
@@ -159,6 +166,7 @@ class AtomicEChangeAssertHelper {
 		subtractiveChange.assertOldValue(expectedOldValue)
 		subtractiveChange.assertIndex(expectedOldIndex)
 		subtractiveChange.assertContainment(isContainment)
+		Assert.assertEquals(isUnset, subtractiveChange.isIsUnset)
 		return changes.tail;
 	}
 	

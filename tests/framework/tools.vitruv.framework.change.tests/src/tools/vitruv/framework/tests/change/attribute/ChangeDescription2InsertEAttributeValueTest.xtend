@@ -37,9 +37,9 @@ class ChangeDescription2InsertEAttributeValueTest extends ChangeDescription2Chan
 		this.rootElement.multiValuedEAttribute.add(66)
 
 		changes.assertChangeCount(3);
-		changes.assertInsertEAttribute(this.rootElement, ROOT__MULTI_VALUED_EATTRIBUTE, 42, 0)
-			.assertInsertEAttribute(this.rootElement, ROOT__MULTI_VALUED_EATTRIBUTE, 55, 1)
-			.assertInsertEAttribute(this.rootElement, ROOT__MULTI_VALUED_EATTRIBUTE, 66, 2)
+		changes.assertInsertEAttribute(this.rootElement, ROOT__MULTI_VALUED_EATTRIBUTE, 42, 0, false)
+			.assertInsertEAttribute(this.rootElement, ROOT__MULTI_VALUED_EATTRIBUTE, 55, 1, false)
+			.assertInsertEAttribute(this.rootElement, ROOT__MULTI_VALUED_EATTRIBUTE, 66, 2, false)
 			.assertEmpty
 	}
 
@@ -52,10 +52,10 @@ class ChangeDescription2InsertEAttributeValueTest extends ChangeDescription2Chan
 		this.rootElement.recursiveRoot = recursiveRoot;
 		
 		changes.assertChangeCount(5);
-		changes.assertCreateAndReplaceNonRoot(recursiveRoot, this.rootElement, ROOT__RECURSIVE_ROOT)
-			.assertReplaceSingleValuedEAttribute(recursiveRoot, IDENTIFIED__ID, null, recursiveRoot.id)
-			.assertInsertEAttribute(recursiveRoot, ROOT__MULTI_VALUED_EATTRIBUTE, 1, 0)
-			.assertInsertEAttribute(recursiveRoot, ROOT__MULTI_VALUED_EATTRIBUTE, 2, 1)
+		changes.assertCreateAndReplaceNonRoot(recursiveRoot, this.rootElement, ROOT__RECURSIVE_ROOT, false)
+			.assertReplaceSingleValuedEAttribute(recursiveRoot, IDENTIFIED__ID, null, recursiveRoot.id, false, false)
+			.assertInsertEAttribute(recursiveRoot, ROOT__MULTI_VALUED_EATTRIBUTE, 1, 0, false)
+			.assertInsertEAttribute(recursiveRoot, ROOT__MULTI_VALUED_EATTRIBUTE, 2, 1, false)
 			.assertEmpty;
 	}
 
