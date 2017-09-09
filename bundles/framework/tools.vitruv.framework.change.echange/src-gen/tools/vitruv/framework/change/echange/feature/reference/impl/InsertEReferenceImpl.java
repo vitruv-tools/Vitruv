@@ -35,6 +35,7 @@ import tools.vitruv.framework.change.echange.feature.reference.UpdateReferenceEC
  * <ul>
  *   <li>{@link tools.vitruv.framework.change.echange.feature.reference.impl.InsertEReferenceImpl#getNewValue <em>New Value</em>}</li>
  *   <li>{@link tools.vitruv.framework.change.echange.feature.reference.impl.InsertEReferenceImpl#getNewValueID <em>New Value ID</em>}</li>
+ *   <li>{@link tools.vitruv.framework.change.echange.feature.reference.impl.InsertEReferenceImpl#isWasUnset <em>Was Unset</em>}</li>
  * </ul>
  *
  * @generated
@@ -69,6 +70,26 @@ public class InsertEReferenceImpl<A extends EObject, T extends EObject> extends 
 	 * @ordered
 	 */
 	protected String newValueID = NEW_VALUE_ID_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #isWasUnset() <em>Was Unset</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isWasUnset()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final boolean WAS_UNSET_EDEFAULT = false;
+
+	/**
+	 * The cached value of the '{@link #isWasUnset() <em>Was Unset</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isWasUnset()
+	 * @generated
+	 * @ordered
+	 */
+	protected boolean wasUnset = WAS_UNSET_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -154,6 +175,27 @@ public class InsertEReferenceImpl<A extends EObject, T extends EObject> extends 
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public boolean isWasUnset() {
+		return wasUnset;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setWasUnset(boolean newWasUnset) {
+		boolean oldWasUnset = wasUnset;
+		wasUnset = newWasUnset;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, ReferencePackage.INSERT_EREFERENCE__WAS_UNSET, oldWasUnset, wasUnset));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public boolean isContainment() {
 		EReference _affectedFeature = this.getAffectedFeature();
 		return _affectedFeature.isContainment();
@@ -172,6 +214,8 @@ public class InsertEReferenceImpl<A extends EObject, T extends EObject> extends 
 				return basicGetNewValue();
 			case ReferencePackage.INSERT_EREFERENCE__NEW_VALUE_ID:
 				return getNewValueID();
+			case ReferencePackage.INSERT_EREFERENCE__WAS_UNSET:
+				return isWasUnset();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -191,6 +235,9 @@ public class InsertEReferenceImpl<A extends EObject, T extends EObject> extends 
 			case ReferencePackage.INSERT_EREFERENCE__NEW_VALUE_ID:
 				setNewValueID((String)newValue);
 				return;
+			case ReferencePackage.INSERT_EREFERENCE__WAS_UNSET:
+				setWasUnset((Boolean)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -209,6 +256,9 @@ public class InsertEReferenceImpl<A extends EObject, T extends EObject> extends 
 			case ReferencePackage.INSERT_EREFERENCE__NEW_VALUE_ID:
 				setNewValueID(NEW_VALUE_ID_EDEFAULT);
 				return;
+			case ReferencePackage.INSERT_EREFERENCE__WAS_UNSET:
+				setWasUnset(WAS_UNSET_EDEFAULT);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -225,6 +275,8 @@ public class InsertEReferenceImpl<A extends EObject, T extends EObject> extends 
 				return newValue != null;
 			case ReferencePackage.INSERT_EREFERENCE__NEW_VALUE_ID:
 				return NEW_VALUE_ID_EDEFAULT == null ? newValueID != null : !NEW_VALUE_ID_EDEFAULT.equals(newValueID);
+			case ReferencePackage.INSERT_EREFERENCE__WAS_UNSET:
+				return wasUnset != WAS_UNSET_EDEFAULT;
 		}
 		return super.eIsSet(featureID);
 	}
@@ -250,6 +302,7 @@ public class InsertEReferenceImpl<A extends EObject, T extends EObject> extends 
 		}
 		if (baseClass == AdditiveReferenceEChange.class) {
 			switch (derivedFeatureID) {
+				case ReferencePackage.INSERT_EREFERENCE__WAS_UNSET: return ReferencePackage.ADDITIVE_REFERENCE_ECHANGE__WAS_UNSET;
 				default: return -1;
 			}
 		}
@@ -277,6 +330,7 @@ public class InsertEReferenceImpl<A extends EObject, T extends EObject> extends 
 		}
 		if (baseClass == AdditiveReferenceEChange.class) {
 			switch (baseFeatureID) {
+				case ReferencePackage.ADDITIVE_REFERENCE_ECHANGE__WAS_UNSET: return ReferencePackage.INSERT_EREFERENCE__WAS_UNSET;
 				default: return -1;
 			}
 		}
@@ -335,6 +389,8 @@ public class InsertEReferenceImpl<A extends EObject, T extends EObject> extends 
 		StringBuffer result = new StringBuffer(super.toString());
 		result.append(" (newValueID: ");
 		result.append(newValueID);
+		result.append(", wasUnset: ");
+		result.append(wasUnset);
 		result.append(')');
 		return result.toString();
 	}

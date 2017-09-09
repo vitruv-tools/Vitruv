@@ -14,10 +14,6 @@ import org.eclipse.emf.ecore.impl.EPackageImpl;
 
 import tools.vitruv.framework.change.echange.EChangePackage;
 
-import tools.vitruv.framework.change.echange.compound.CompoundPackage;
-
-import tools.vitruv.framework.change.echange.compound.impl.CompoundPackageImpl;
-
 import tools.vitruv.framework.change.echange.eobject.CreateEObject;
 import tools.vitruv.framework.change.echange.eobject.DeleteEObject;
 import tools.vitruv.framework.change.echange.eobject.EObjectAddedEChange;
@@ -152,7 +148,6 @@ public class EobjectPackageImpl extends EPackageImpl implements EobjectPackage {
 		EChangePackageImpl theEChangePackage = (EChangePackageImpl)(EPackage.Registry.INSTANCE.getEPackage(EChangePackage.eNS_URI) instanceof EChangePackageImpl ? EPackage.Registry.INSTANCE.getEPackage(EChangePackage.eNS_URI) : EChangePackage.eINSTANCE);
 		ListPackageImpl theListPackage = (ListPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(ListPackage.eNS_URI) instanceof ListPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(ListPackage.eNS_URI) : ListPackage.eINSTANCE);
 		SinglePackageImpl theSinglePackage = (SinglePackageImpl)(EPackage.Registry.INSTANCE.getEPackage(SinglePackage.eNS_URI) instanceof SinglePackageImpl ? EPackage.Registry.INSTANCE.getEPackage(SinglePackage.eNS_URI) : SinglePackage.eINSTANCE);
-		CompoundPackageImpl theCompoundPackage = (CompoundPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(CompoundPackage.eNS_URI) instanceof CompoundPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(CompoundPackage.eNS_URI) : CompoundPackage.eINSTANCE);
 		ReferencePackageImpl theReferencePackage = (ReferencePackageImpl)(EPackage.Registry.INSTANCE.getEPackage(ReferencePackage.eNS_URI) instanceof ReferencePackageImpl ? EPackage.Registry.INSTANCE.getEPackage(ReferencePackage.eNS_URI) : ReferencePackage.eINSTANCE);
 		RootPackageImpl theRootPackage = (RootPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(RootPackage.eNS_URI) instanceof RootPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(RootPackage.eNS_URI) : RootPackage.eINSTANCE);
 
@@ -163,7 +158,6 @@ public class EobjectPackageImpl extends EPackageImpl implements EobjectPackage {
 		theEChangePackage.createPackageContents();
 		theListPackage.createPackageContents();
 		theSinglePackage.createPackageContents();
-		theCompoundPackage.createPackageContents();
 		theReferencePackage.createPackageContents();
 		theRootPackage.createPackageContents();
 
@@ -174,7 +168,6 @@ public class EobjectPackageImpl extends EPackageImpl implements EobjectPackage {
 		theEChangePackage.initializePackageContents();
 		theListPackage.initializePackageContents();
 		theSinglePackage.initializePackageContents();
-		theCompoundPackage.initializePackageContents();
 		theReferencePackage.initializePackageContents();
 		theRootPackage.initializePackageContents();
 
@@ -448,7 +441,7 @@ public class EobjectPackageImpl extends EPackageImpl implements EobjectPackage {
 		initEClass(createEObjectEClass, CreateEObject.class, "CreateEObject", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		initEClass(deleteEObjectEClass, DeleteEObject.class, "DeleteEObject", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getDeleteEObject_ConsequentialRemoveChanges(), theEChangePackage.getEChange(), null, "consequentialRemoveChanges", null, 0, -1, DeleteEObject.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getDeleteEObject_ConsequentialRemoveChanges(), theEChangePackage.getAtomicEChange(), null, "consequentialRemoveChanges", null, 0, -1, DeleteEObject.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		// Create resource
 		createResource(eNS_URI);

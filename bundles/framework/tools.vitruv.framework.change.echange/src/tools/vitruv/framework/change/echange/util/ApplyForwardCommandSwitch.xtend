@@ -1,16 +1,11 @@
 package tools.vitruv.framework.change.echange.util;
 
-import java.util.ArrayList
 import java.util.List
 import org.eclipse.emf.common.command.Command
 import org.eclipse.emf.ecore.EObject
-import org.eclipse.emf.ecore.EStructuralFeature
 import org.eclipse.emf.edit.command.AddCommand
 import org.eclipse.emf.edit.command.SetCommand
-import tools.vitruv.framework.change.echange.AtomicEChange
 import tools.vitruv.framework.change.echange.command.RemoveAtCommand
-import tools.vitruv.framework.change.echange.compound.CompoundEChange
-import tools.vitruv.framework.change.echange.compound.ExplicitUnsetEFeature
 import tools.vitruv.framework.change.echange.eobject.CreateEObject
 import tools.vitruv.framework.change.echange.eobject.DeleteEObject
 import tools.vitruv.framework.change.echange.feature.attribute.InsertEAttributeValue
@@ -23,6 +18,7 @@ import tools.vitruv.framework.change.echange.root.InsertRootEObject
 import tools.vitruv.framework.change.echange.root.RemoveRootEObject
 import org.eclipse.emf.edit.command.RemoveCommand
 import org.apache.log4j.Logger
+import tools.vitruv.framework.change.echange.EChange
 
 /**
  * Switch to create commands for all EChange classes.
@@ -30,6 +26,10 @@ import org.apache.log4j.Logger
  */
 package class ApplyForwardCommandSwitch {
 	static val Logger logger = Logger.getLogger(ApplyForwardCommandSwitch)
+	
+	def package dispatch static List<Command> getCommands(EChange change) {
+		#[]
+	}
 	
 	/**
 	 * Dispatch method to create commands to apply a {@link InsertEAttributeValue} change forward.
@@ -47,8 +47,11 @@ package class ApplyForwardCommandSwitch {
 	 */
 	def package dispatch static List<Command> getCommands(RemoveEAttributeValue<EObject, Object> change) {
 		val editingDomain = EChangeUtil.getEditingDomain(change.affectedEObject)
-		return #[new RemoveAtCommand(editingDomain, change.affectedEObject, change.affectedFeature, change.oldValue,
-				change.index)]
+		if (change.isIsUnset) {
+			return #[new SetCommand(editingDomain, change.affectedEObject, change.affectedFeature, SetCommand.UNSET_VALUE)]
+		} else {
+			return #[new RemoveAtCommand(editingDomain, change.affectedEObject, change.affectedFeature, change.oldValue, change.index)]
+		}
 	}
 
 	/**
@@ -57,7 +60,7 @@ package class ApplyForwardCommandSwitch {
 	 */
 	def package dispatch static List<Command> getCommands(ReplaceSingleValuedEAttribute<EObject, Object> change) {
 		val editingDomain = EChangeUtil.getEditingDomain(change.affectedEObject)
-		return #[new SetCommand(editingDomain, change.affectedEObject, change.affectedFeature, change.newValue)]
+		return #[new SetCommand(editingDomain, change.affectedEObject, change.affectedFeature, if (change.isIsUnset) SetCommand.UNSET_VALUE else change.newValue)]
 	}
 
 	/**
@@ -88,8 +91,11 @@ package class ApplyForwardCommandSwitch {
 			} 
 			return #[];
 		}
-		return #[new RemoveAtCommand(editingDomain, change.affectedEObject, change.affectedFeature, change.oldValue,
-				change.index)];
+		if (change.isIsUnset) {
+			return #[new SetCommand(editingDomain, change.affectedEObject, change.affectedFeature, SetCommand.UNSET_VALUE)]
+		} else {
+			return #[new RemoveAtCommand(editingDomain, change.affectedEObject, change.affectedFeature, change.oldValue, change.index)]
+		}
 	}
 
 	/**
@@ -98,7 +104,7 @@ package class ApplyForwardCommandSwitch {
 	 */
 	def package dispatch static List<Command> getCommands(ReplaceSingleValuedEReference<EObject, EObject> change) {
 		val editingDomain = EChangeUtil.getEditingDomain(change.affectedEObject)
-		return #[new SetCommand(editingDomain, change.affectedEObject, change.affectedFeature, change.newValue)]
+		return #[new SetCommand(editingDomain, change.affectedEObject, change.affectedFeature, if (change.isIsUnset) SetCommand.UNSET_VALUE else change.newValue)]
 	}
 
 	/**
@@ -136,24 +142,4 @@ package class ApplyForwardCommandSwitch {
 		return #[]
 	}
 
-	/**
-	 * Dispatch method to create commands to apply a compound change forward.
-	 * @param object The change which commands should be created.
-	 */
-	def package dispatch static List<Command> getCommands(CompoundEChange change) {
-		val commands = new ArrayList<Command>
-		for (AtomicEChange c : change.atomicChanges) {
-			commands.addAll(getCommands(c))
-		}
-		return commands
-	}
-
-	/**
-	 * Dispatch method to create command to apply an unset change forward.
-	 * @param object The change which command should be created.
-	 */
-	def package dispatch static List<Command> getCommands(ExplicitUnsetEFeature<EObject, EStructuralFeature> change) {
-		val editingDomain = EChangeUtil.getEditingDomain(change.affectedEObject)
-		return #[new SetCommand(editingDomain, change.affectedEObject, change.affectedFeature, SetCommand.UNSET_VALUE)]
-	}
 }

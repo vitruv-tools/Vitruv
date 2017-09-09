@@ -34,6 +34,7 @@
     <eTypeParameters name="T">
       <eBounds eClassifier="ecore:EClass ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EObject"/>
     </eTypeParameters>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="wasUnset" eType="ecore:EDataType ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EBoolean"/>
     <eGenericSuperTypes eClassifier="#//UpdateReferenceEChange">
       <eTypeArguments eTypeParameter="#//AdditiveReferenceEChange/A"/>
     </eGenericSuperTypes>
@@ -51,6 +52,7 @@
     <eTypeParameters name="T">
       <eBounds eClassifier="ecore:EClass ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EObject"/>
     </eTypeParameters>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="isUnset" eType="ecore:EDataType ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EBoolean"/>
     <eGenericSuperTypes eClassifier="#//UpdateReferenceEChange">
       <eTypeArguments eTypeParameter="#//SubtractiveReferenceEChange/A"/>
     </eGenericSuperTypes>

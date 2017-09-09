@@ -13,10 +13,6 @@ import org.eclipse.emf.ecore.impl.EPackageImpl;
 
 import tools.vitruv.framework.change.echange.EChangePackage;
 
-import tools.vitruv.framework.change.echange.compound.CompoundPackage;
-
-import tools.vitruv.framework.change.echange.compound.impl.CompoundPackageImpl;
-
 import tools.vitruv.framework.change.echange.eobject.EobjectPackage;
 
 import tools.vitruv.framework.change.echange.eobject.impl.EobjectPackageImpl;
@@ -118,7 +114,6 @@ public class SinglePackageImpl extends EPackageImpl implements SinglePackage {
 		FeaturePackageImpl theFeaturePackage = (FeaturePackageImpl)(EPackage.Registry.INSTANCE.getEPackage(FeaturePackage.eNS_URI) instanceof FeaturePackageImpl ? EPackage.Registry.INSTANCE.getEPackage(FeaturePackage.eNS_URI) : FeaturePackage.eINSTANCE);
 		EChangePackageImpl theEChangePackage = (EChangePackageImpl)(EPackage.Registry.INSTANCE.getEPackage(EChangePackage.eNS_URI) instanceof EChangePackageImpl ? EPackage.Registry.INSTANCE.getEPackage(EChangePackage.eNS_URI) : EChangePackage.eINSTANCE);
 		ListPackageImpl theListPackage = (ListPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(ListPackage.eNS_URI) instanceof ListPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(ListPackage.eNS_URI) : ListPackage.eINSTANCE);
-		CompoundPackageImpl theCompoundPackage = (CompoundPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(CompoundPackage.eNS_URI) instanceof CompoundPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(CompoundPackage.eNS_URI) : CompoundPackage.eINSTANCE);
 		ReferencePackageImpl theReferencePackage = (ReferencePackageImpl)(EPackage.Registry.INSTANCE.getEPackage(ReferencePackage.eNS_URI) instanceof ReferencePackageImpl ? EPackage.Registry.INSTANCE.getEPackage(ReferencePackage.eNS_URI) : ReferencePackage.eINSTANCE);
 		EobjectPackageImpl theEobjectPackage = (EobjectPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(EobjectPackage.eNS_URI) instanceof EobjectPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(EobjectPackage.eNS_URI) : EobjectPackage.eINSTANCE);
 		RootPackageImpl theRootPackage = (RootPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(RootPackage.eNS_URI) instanceof RootPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(RootPackage.eNS_URI) : RootPackage.eINSTANCE);
@@ -129,7 +124,6 @@ public class SinglePackageImpl extends EPackageImpl implements SinglePackage {
 		theFeaturePackage.createPackageContents();
 		theEChangePackage.createPackageContents();
 		theListPackage.createPackageContents();
-		theCompoundPackage.createPackageContents();
 		theReferencePackage.createPackageContents();
 		theEobjectPackage.createPackageContents();
 		theRootPackage.createPackageContents();
@@ -140,7 +134,6 @@ public class SinglePackageImpl extends EPackageImpl implements SinglePackage {
 		theFeaturePackage.initializePackageContents();
 		theEChangePackage.initializePackageContents();
 		theListPackage.initializePackageContents();
-		theCompoundPackage.initializePackageContents();
 		theReferencePackage.initializePackageContents();
 		theEobjectPackage.initializePackageContents();
 		theRootPackage.initializePackageContents();

@@ -86,7 +86,7 @@ import static extension tools.vitruv.framework.change.echange.EChangeResolverAnd
  	/**
 	 * Assert that change is not resolved.
 	 */
-	def protected static void assertIsNotResolved(List<EChange> changes) {
+	def protected static void assertIsNotResolved(List<? extends EChange> changes) {
 		for (change : changes) {
 			Assert.assertFalse(change.isResolved);
 			for (involvedObject : change.involvedEObjects) {
@@ -98,7 +98,7 @@ import static extension tools.vitruv.framework.change.echange.EChangeResolverAnd
 	/**
 	 * Assert that change is resolved.
 	 */
-	def protected static void assertIsResolved(List<EChange> changes) {
+	def protected static void assertIsResolved(List<? extends EChange> changes) {
 		for (change : changes) {
 			Assert.assertTrue(change.isResolved);
 			for (involvedObject : change.involvedEObjects) {
@@ -107,7 +107,7 @@ import static extension tools.vitruv.framework.change.echange.EChangeResolverAnd
 		}
 	}
 	
-	static def protected List<EChange> resolveBefore(List<EChange> changes, UuidResolver uuidResolver) {
+	static def protected List<EChange> resolveBefore(List<? extends EChange> changes, UuidResolver uuidResolver) {
 		val result = newArrayList
 		for (change : changes) {
 			result += change.resolveBefore(uuidResolver);
@@ -115,7 +115,7 @@ import static extension tools.vitruv.framework.change.echange.EChangeResolverAnd
 		return result;
 	}
 	
-	static def protected List<EChange> resolveAfter(List<EChange> changes, UuidResolver uuidResolver) {
+	static def protected List<EChange> resolveAfter(List<? extends EChange> changes, UuidResolver uuidResolver) {
 		val result = newArrayList
 		for (change : changes.reverseView) {
 			result.add(0, change.resolveAfter(uuidResolver));

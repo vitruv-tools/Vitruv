@@ -3,7 +3,6 @@ package tools.vitruv.framework.change.echange.resolve
 import org.eclipse.emf.ecore.util.EcoreUtil
 import tools.vitruv.framework.change.echange.AtomicEChange
 import tools.vitruv.framework.change.echange.EChange
-import tools.vitruv.framework.change.echange.compound.CompoundEChange
 import tools.vitruv.framework.change.uuid.UuidResolver
 
 /**
@@ -77,11 +76,4 @@ class EChangeResolver {
 		AtomicEChangeResolver.resolve(change, uuidResolver, resolveBefore)
 	}
 
-	/**
-	 * Dispatch method for resolving an {@link CompoundEChange}s.
-	 */
-	def private static dispatch boolean resolveChange(CompoundEChange change, UuidResolver uuidResolver,
-		boolean resolveBefore, boolean revertAfterResolving) {
-		CompoundEChangeResolver.resolve(change, uuidResolver, resolveBefore, revertAfterResolving)
-	}
 }

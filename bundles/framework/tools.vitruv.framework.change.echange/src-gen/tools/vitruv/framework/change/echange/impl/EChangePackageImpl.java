@@ -18,10 +18,6 @@ import tools.vitruv.framework.change.echange.EChangeFactory;
 import tools.vitruv.framework.change.echange.EChangePackage;
 import tools.vitruv.framework.change.echange.SubtractiveEChange;
 
-import tools.vitruv.framework.change.echange.compound.CompoundPackage;
-
-import tools.vitruv.framework.change.echange.compound.impl.CompoundPackageImpl;
-
 import tools.vitruv.framework.change.echange.eobject.EobjectPackage;
 
 import tools.vitruv.framework.change.echange.eobject.impl.EobjectPackageImpl;
@@ -142,7 +138,6 @@ public class EChangePackageImpl extends EPackageImpl implements EChangePackage {
 		FeaturePackageImpl theFeaturePackage = (FeaturePackageImpl)(EPackage.Registry.INSTANCE.getEPackage(FeaturePackage.eNS_URI) instanceof FeaturePackageImpl ? EPackage.Registry.INSTANCE.getEPackage(FeaturePackage.eNS_URI) : FeaturePackage.eINSTANCE);
 		ListPackageImpl theListPackage = (ListPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(ListPackage.eNS_URI) instanceof ListPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(ListPackage.eNS_URI) : ListPackage.eINSTANCE);
 		SinglePackageImpl theSinglePackage = (SinglePackageImpl)(EPackage.Registry.INSTANCE.getEPackage(SinglePackage.eNS_URI) instanceof SinglePackageImpl ? EPackage.Registry.INSTANCE.getEPackage(SinglePackage.eNS_URI) : SinglePackage.eINSTANCE);
-		CompoundPackageImpl theCompoundPackage = (CompoundPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(CompoundPackage.eNS_URI) instanceof CompoundPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(CompoundPackage.eNS_URI) : CompoundPackage.eINSTANCE);
 		ReferencePackageImpl theReferencePackage = (ReferencePackageImpl)(EPackage.Registry.INSTANCE.getEPackage(ReferencePackage.eNS_URI) instanceof ReferencePackageImpl ? EPackage.Registry.INSTANCE.getEPackage(ReferencePackage.eNS_URI) : ReferencePackage.eINSTANCE);
 		EobjectPackageImpl theEobjectPackage = (EobjectPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(EobjectPackage.eNS_URI) instanceof EobjectPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(EobjectPackage.eNS_URI) : EobjectPackage.eINSTANCE);
 		RootPackageImpl theRootPackage = (RootPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(RootPackage.eNS_URI) instanceof RootPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(RootPackage.eNS_URI) : RootPackage.eINSTANCE);
@@ -153,7 +148,6 @@ public class EChangePackageImpl extends EPackageImpl implements EChangePackage {
 		theFeaturePackage.createPackageContents();
 		theListPackage.createPackageContents();
 		theSinglePackage.createPackageContents();
-		theCompoundPackage.createPackageContents();
 		theReferencePackage.createPackageContents();
 		theEobjectPackage.createPackageContents();
 		theRootPackage.createPackageContents();
@@ -164,7 +158,6 @@ public class EChangePackageImpl extends EPackageImpl implements EChangePackage {
 		theFeaturePackage.initializePackageContents();
 		theListPackage.initializePackageContents();
 		theSinglePackage.initializePackageContents();
-		theCompoundPackage.initializePackageContents();
 		theReferencePackage.initializePackageContents();
 		theEobjectPackage.initializePackageContents();
 		theRootPackage.initializePackageContents();
@@ -201,7 +194,7 @@ public class EChangePackageImpl extends EPackageImpl implements EChangePackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EOperation getEChange__GetInvolvedEObjects_1() {
+	public EOperation getEChange__GetInvolvedEObjects() {
 		return eChangeEClass.getEOperations().get(1);
 	}
 
@@ -334,7 +327,7 @@ public class EChangePackageImpl extends EPackageImpl implements EChangePackage {
 
 		initEOperation(getEChange__IsResolved(), ecorePackage.getEBoolean(), "isResolved", 1, 1, IS_UNIQUE, IS_ORDERED);
 
-		initEOperation(getEChange__GetInvolvedEObjects_1(), ecorePackage.getEObject(), "getInvolvedEObjects", 0, -1, IS_UNIQUE, IS_ORDERED);
+		initEOperation(getEChange__GetInvolvedEObjects(), ecorePackage.getEObject(), "getInvolvedEObjects", 0, -1, IS_UNIQUE, IS_ORDERED);
 
 		initEClass(atomicEChangeEClass, AtomicEChange.class, "AtomicEChange", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
