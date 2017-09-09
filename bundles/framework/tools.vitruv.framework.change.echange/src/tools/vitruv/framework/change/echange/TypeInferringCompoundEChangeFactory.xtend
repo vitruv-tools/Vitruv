@@ -7,15 +7,9 @@ import org.eclipse.emf.ecore.EReference
 import org.eclipse.emf.ecore.EStructuralFeature
 import org.eclipse.emf.ecore.resource.Resource
 import tools.vitruv.framework.change.echange.compound.CompoundFactory
-import tools.vitruv.framework.change.echange.compound.CreateAndInsertNonRoot
-import tools.vitruv.framework.change.echange.compound.CreateAndInsertRoot
-import tools.vitruv.framework.change.echange.compound.CreateAndReplaceAndDeleteNonRoot
-import tools.vitruv.framework.change.echange.compound.CreateAndReplaceNonRoot
 import tools.vitruv.framework.change.echange.compound.ExplicitUnsetEAttribute
 import tools.vitruv.framework.change.echange.compound.ExplicitUnsetEFeature
 import tools.vitruv.framework.change.echange.compound.ExplicitUnsetEReference
-import tools.vitruv.framework.change.echange.compound.RemoveAndDeleteNonRoot
-import tools.vitruv.framework.change.echange.compound.ReplaceAndDeleteNonRoot
 import tools.vitruv.framework.change.echange.feature.attribute.SubtractiveAttributeEChange
 
 class TypeInferringCompoundEChangeFactory {

@@ -460,6 +460,7 @@ public interface EobjectPackage extends EPackage {
 	 */
 	int DELETE_EOBJECT_OPERATION_COUNT = EOBJECT_EXISTENCE_ECHANGE_OPERATION_COUNT + 0;
 
+
 	/**
 	 * Returns the meta object for class '{@link tools.vitruv.framework.change.echange.eobject.EObjectAddedEChange <em>EObject Added EChange</em>}'.
 	 * <!-- begin-user-doc -->

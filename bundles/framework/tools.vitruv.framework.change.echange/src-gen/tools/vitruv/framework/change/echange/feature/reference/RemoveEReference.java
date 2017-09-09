@@ -25,5 +25,4 @@ import tools.vitruv.framework.change.echange.feature.list.RemoveFromListEChange;
  * @generated
  */
 public interface RemoveEReference<A extends EObject, T extends EObject> extends RemoveFromListEChange<A, EReference, T>, SubtractiveReferenceEChange<A, T> {
-
 } // RemoveEReference

@@ -9,6 +9,7 @@ import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.impl.EFactoryImpl;
 
 import org.eclipse.emf.ecore.plugin.EcorePlugin;
+
 import tools.vitruv.framework.change.echange.compound.*;
 
 /**
@@ -57,13 +58,6 @@ public class CompoundFactoryImpl extends EFactoryImpl implements CompoundFactory
 		switch (eClass.getClassifierID()) {
 			case CompoundPackage.EXPLICIT_UNSET_EATTRIBUTE: return createExplicitUnsetEAttribute();
 			case CompoundPackage.EXPLICIT_UNSET_EREFERENCE: return createExplicitUnsetEReference();
-			case CompoundPackage.CREATE_AND_INSERT_ROOT: return createCreateAndInsertRoot();
-			case CompoundPackage.REMOVE_AND_DELETE_ROOT: return createRemoveAndDeleteRoot();
-			case CompoundPackage.CREATE_AND_INSERT_NON_ROOT: return createCreateAndInsertNonRoot();
-			case CompoundPackage.REMOVE_AND_DELETE_NON_ROOT: return createRemoveAndDeleteNonRoot();
-			case CompoundPackage.CREATE_AND_REPLACE_NON_ROOT: return createCreateAndReplaceNonRoot();
-			case CompoundPackage.REPLACE_AND_DELETE_NON_ROOT: return createReplaceAndDeleteNonRoot();
-			case CompoundPackage.CREATE_AND_REPLACE_AND_DELETE_NON_ROOT: return createCreateAndReplaceAndDeleteNonRoot();
 			default:
 				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
 		}
@@ -87,76 +81,6 @@ public class CompoundFactoryImpl extends EFactoryImpl implements CompoundFactory
 	public <A extends EObject> ExplicitUnsetEReference<A> createExplicitUnsetEReference() {
 		ExplicitUnsetEReferenceImpl<A> explicitUnsetEReference = new ExplicitUnsetEReferenceImpl<A>();
 		return explicitUnsetEReference;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public <T extends EObject> CreateAndInsertRoot<T> createCreateAndInsertRoot() {
-		CreateAndInsertRootImpl<T> createAndInsertRoot = new CreateAndInsertRootImpl<T>();
-		return createAndInsertRoot;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public <T extends EObject> RemoveAndDeleteRoot<T> createRemoveAndDeleteRoot() {
-		RemoveAndDeleteRootImpl<T> removeAndDeleteRoot = new RemoveAndDeleteRootImpl<T>();
-		return removeAndDeleteRoot;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public <A extends EObject, T extends EObject> CreateAndInsertNonRoot<A, T> createCreateAndInsertNonRoot() {
-		CreateAndInsertNonRootImpl<A, T> createAndInsertNonRoot = new CreateAndInsertNonRootImpl<A, T>();
-		return createAndInsertNonRoot;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public <A extends EObject, T extends EObject> RemoveAndDeleteNonRoot<A, T> createRemoveAndDeleteNonRoot() {
-		RemoveAndDeleteNonRootImpl<A, T> removeAndDeleteNonRoot = new RemoveAndDeleteNonRootImpl<A, T>();
-		return removeAndDeleteNonRoot;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public <A extends EObject, T extends EObject> CreateAndReplaceNonRoot<A, T> createCreateAndReplaceNonRoot() {
-		CreateAndReplaceNonRootImpl<A, T> createAndReplaceNonRoot = new CreateAndReplaceNonRootImpl<A, T>();
-		return createAndReplaceNonRoot;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public <A extends EObject, T extends EObject> ReplaceAndDeleteNonRoot<A, T> createReplaceAndDeleteNonRoot() {
-		ReplaceAndDeleteNonRootImpl<A, T> replaceAndDeleteNonRoot = new ReplaceAndDeleteNonRootImpl<A, T>();
-		return replaceAndDeleteNonRoot;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public <A extends EObject, T extends EObject> CreateAndReplaceAndDeleteNonRoot<A, T> createCreateAndReplaceAndDeleteNonRoot() {
-		CreateAndReplaceAndDeleteNonRootImpl<A, T> createAndReplaceAndDeleteNonRoot = new CreateAndReplaceAndDeleteNonRootImpl<A, T>();
-		return createAndReplaceAndDeleteNonRoot;
 	}
 
 	/**

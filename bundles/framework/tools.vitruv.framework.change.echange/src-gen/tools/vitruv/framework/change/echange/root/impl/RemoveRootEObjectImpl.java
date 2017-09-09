@@ -3,11 +3,13 @@
 package tools.vitruv.framework.change.echange.root.impl;
 
 import org.eclipse.emf.common.notify.Notification;
+
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+
 import tools.vitruv.framework.change.echange.SubtractiveEChange;
 
 import tools.vitruv.framework.change.echange.eobject.EObjectSubtractedEChange;
@@ -50,6 +52,7 @@ public class RemoveRootEObjectImpl<T extends EObject> extends RootEChangeImpl im
 	 * @ordered
 	 */
 	protected static final String OLD_VALUE_ID_EDEFAULT = null;
+
 	/**
 	 * The cached value of the '{@link #getOldValueID() <em>Old Value ID</em>}' attribute.
 	 * <!-- begin-user-doc -->

@@ -41,69 +41,6 @@ public interface CompoundFactory extends EFactory {
 	<A extends EObject> ExplicitUnsetEReference<A> createExplicitUnsetEReference();
 
 	/**
-	 * Returns a new object of class '<em>Create And Insert Root</em>'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Create And Insert Root</em>'.
-	 * @generated
-	 */
-	<T extends EObject> CreateAndInsertRoot<T> createCreateAndInsertRoot();
-
-	/**
-	 * Returns a new object of class '<em>Remove And Delete Root</em>'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Remove And Delete Root</em>'.
-	 * @generated
-	 */
-	<T extends EObject> RemoveAndDeleteRoot<T> createRemoveAndDeleteRoot();
-
-	/**
-	 * Returns a new object of class '<em>Create And Insert Non Root</em>'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Create And Insert Non Root</em>'.
-	 * @generated
-	 */
-	<A extends EObject, T extends EObject> CreateAndInsertNonRoot<A, T> createCreateAndInsertNonRoot();
-
-	/**
-	 * Returns a new object of class '<em>Remove And Delete Non Root</em>'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Remove And Delete Non Root</em>'.
-	 * @generated
-	 */
-	<A extends EObject, T extends EObject> RemoveAndDeleteNonRoot<A, T> createRemoveAndDeleteNonRoot();
-
-	/**
-	 * Returns a new object of class '<em>Create And Replace Non Root</em>'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Create And Replace Non Root</em>'.
-	 * @generated
-	 */
-	<A extends EObject, T extends EObject> CreateAndReplaceNonRoot<A, T> createCreateAndReplaceNonRoot();
-
-	/**
-	 * Returns a new object of class '<em>Replace And Delete Non Root</em>'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Replace And Delete Non Root</em>'.
-	 * @generated
-	 */
-	<A extends EObject, T extends EObject> ReplaceAndDeleteNonRoot<A, T> createReplaceAndDeleteNonRoot();
-
-	/**
-	 * Returns a new object of class '<em>Create And Replace And Delete Non Root</em>'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Create And Replace And Delete Non Root</em>'.
-	 * @generated
-	 */
-	<A extends EObject, T extends EObject> CreateAndReplaceAndDeleteNonRoot<A, T> createCreateAndReplaceAndDeleteNonRoot();
-
-	/**
 	 * Returns the package supported by this factory.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

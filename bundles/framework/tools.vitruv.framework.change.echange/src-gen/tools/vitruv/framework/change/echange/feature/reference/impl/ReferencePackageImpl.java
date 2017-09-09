@@ -10,6 +10,7 @@ import org.eclipse.emf.ecore.ETypeParameter;
 import org.eclipse.emf.ecore.EcorePackage;
 
 import org.eclipse.emf.ecore.impl.EPackageImpl;
+
 import tools.vitruv.framework.change.echange.EChangePackage;
 
 import tools.vitruv.framework.change.echange.compound.CompoundPackage;
@@ -50,6 +51,7 @@ import tools.vitruv.framework.change.echange.impl.EChangePackageImpl;
 import tools.vitruv.framework.change.echange.root.RootPackage;
 
 import tools.vitruv.framework.change.echange.root.impl.RootPackageImpl;
+
 import tools.vitruv.framework.change.uuid.UuidPackage;
 
 /**
