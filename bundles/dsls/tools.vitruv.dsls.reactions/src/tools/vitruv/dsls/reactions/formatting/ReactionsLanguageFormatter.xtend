@@ -34,6 +34,10 @@ import tools.vitruv.dsls.reactions.reactionsLanguage.RoutineInput
 import tools.vitruv.dsls.reactions.reactionsLanguage.Taggable
 import tools.vitruv.dsls.reactions.reactionsLanguage.Trigger
 import tools.vitruv.dsls.reactions.reactionsLanguage.UpdateModelElement
+import tools.vitruv.dsls.reactions.reactionsLanguage.RetrieveOrRequireAbscenceOfModelElement
+import org.eclipse.xtext.xbase.XBinaryOperation
+import org.eclipse.xtext.xbase.XCastedExpression
+import org.eclipse.xtext.common.types.JvmTypeReference
 
 class ReactionsLanguageFormatter extends MirBaseFormatter {
 	
@@ -119,7 +123,7 @@ class ReactionsLanguageFormatter extends MirBaseFormatter {
 		matcherStatement.formatIndividually(document)
 	}
 
-	def dispatch void formatIndividually(RetrieveModelElement retrieveStatement,
+	def dispatch void formatIndividually(RetrieveOrRequireAbscenceOfModelElement retrieveStatement,
 		extension IFormattableDocument document) {
 		retrieveStatement.formatMetaclassReference(document)
 		retrieveStatement.formatTaggable(document)
@@ -223,10 +227,27 @@ class ReactionsLanguageFormatter extends MirBaseFormatter {
 		assignment.regionFor.keyword('=').prepend[oneSpace].append[oneSpace]
 		assignment.value.formatIndividually(document)
 	}
+	
+	def dispatch void formatIndividually(XBinaryOperation binaryOperation, extension IFormattableDocument document) {
+		binaryOperation.leftOperand.formatIndividually(document)
+		binaryOperation.rightOperand.formatIndividually(document)
+	}
 
 	def dispatch void formatIndividually(XVariableDeclaration variableDeclaration,
 		extension IFormattableDocument document) {
 		variableDeclaration.right?.formatIndividually(document)
+	}
+	
+	def dispatch void formatIndividually(XCastedExpression cast, extension IFormattableDocument document) {
+		cast.target.formatIndividually(document)
+		cast.type.formatIndividually(document)
+	}
+	
+	def dispatch void formatIndividually(JvmTypeReference typeReference, extension IFormattableDocument document) {
+		typeReference.allRegionsFor.keyword('.').prepend [noSpace].append [noSpace]
+		typeReference.regionFor.keyword('<').prepend [noSpace].append [noSpace]
+		typeReference.allRegionsFor.keyword(',').prepend [noSpace].append [oneSpace]
+		typeReference.regionFor.keyword('>').prepend [noSpace]
 	}
 
 	def formatInteriorBlock(EObject element, extension IFormattableDocument document) {
