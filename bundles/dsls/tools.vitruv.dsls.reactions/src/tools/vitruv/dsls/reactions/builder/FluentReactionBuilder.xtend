@@ -20,6 +20,8 @@ import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsLanguageFactory
 
 import static com.google.common.base.Preconditions.*
 import static tools.vitruv.dsls.reactions.codegen.helper.ReactionsLanguageConstants.*
+import org.eclipse.emf.ecore.EcorePackage
+import org.eclipse.xtext.xbase.XBlockExpression
 
 class FluentReactionBuilder extends FluentReactionsSegmentChildBuilder {
 
@@ -65,29 +67,47 @@ class FluentReactionBuilder extends FluentReactionsSegmentChildBuilder {
 			return new ChangeTypeBuilder(builder, change, element)
 		}
 
+		def afterElement() {
+			val change = ReactionsLanguageFactory.eINSTANCE.createModelElementChange
+			reaction.trigger = change
+			return new ChangeTypeBuilder(builder, change, null)
+		}
+
 		def afterAttributeInsertIn(EAttribute attribute) {
+			afterAttributeInsertIn(attribute.EContainingClass, attribute)
+		}
+		
+		def afterAttributeInsertIn(EClass eClass, EAttribute attribute) {
 			valueType = attribute.EType
-			affectedElementType = attribute.EContainingClass
+			affectedElementType = eClass
 			reaction.trigger = ReactionsLanguageFactory.eINSTANCE.createModelAttributeInsertedChange => [
-				feature = MirBaseFactory.eINSTANCE.createMetaclassEAttributeReference.reference(attribute)
+				feature = MirBaseFactory.eINSTANCE.createMetaclassEAttributeReference.reference(eClass, attribute)
 			]
 			return new PreconditionOrRoutineCallBuilder(builder)
 		}
 
 		def afterAttributeReplacedAt(EAttribute attribute) {
+			afterAttributeReplacedAt(attribute.EContainingClass, attribute)
+		}
+		
+		def afterAttributeReplacedAt(EClass eClass, EAttribute attribute) {
 			valueType = attribute.EType
-			affectedElementType = attribute.EContainingClass
+			affectedElementType = eClass
 			reaction.trigger = ReactionsLanguageFactory.eINSTANCE.createModelAttributeReplacedChange => [
-				feature = MirBaseFactory.eINSTANCE.createMetaclassEAttributeReference.reference(attribute)
+				feature = MirBaseFactory.eINSTANCE.createMetaclassEAttributeReference.reference(eClass, attribute)
 			]
 			return new PreconditionOrRoutineCallBuilder(builder)
 		}
 
 		def afterAttributeRemoveFrom(EAttribute attribute) {
+			afterAttributeRemoveFrom(attribute.EContainingClass, attribute)
+		}
+
+		def afterAttributeRemoveFrom(EClass eClass, EAttribute attribute) {
 			valueType = attribute.EType
-			affectedElementType = attribute.EContainingClass
+			affectedElementType = eClass
 			reaction.trigger = ReactionsLanguageFactory.eINSTANCE.createModelAttributeRemovedChange => [
-				feature = MirBaseFactory.eINSTANCE.createMetaclassEAttributeReference.reference(attribute)
+				feature = MirBaseFactory.eINSTANCE.createMetaclassEAttributeReference.reference(eClass, attribute)
 			]
 			return new PreconditionOrRoutineCallBuilder(builder)
 		}
@@ -105,24 +125,53 @@ class FluentReactionBuilder extends FluentReactionsSegmentChildBuilder {
 		}
 
 		def created() {
-			affectedElementType = element
+			affectedElementType = element ?: EcorePackage.eINSTANCE.EObject
 			continueWithChangeType(ReactionsLanguageFactory.eINSTANCE.createElementCreationChangeType)
 		}
 
 		def deleted() {
-			affectedElementType = element
+			affectedElementType = element ?: EcorePackage.eINSTANCE.EObject
 			continueWithChangeType(ReactionsLanguageFactory.eINSTANCE.createElementDeletionChangeType)
 		}
 
 		def insertedAsRoot() {
-			valueType = element
+			valueType = element ?: EcorePackage.eINSTANCE.EObject
 			continueWithChangeType(ReactionsLanguageFactory.eINSTANCE.createElementInsertionAsRootChangeType)
 		}
 
 		def insertedIn(EReference reference) {
-			valueType = element
+			insertedIn(reference.EContainingClass, reference)
+		}
+		
+		def insertedIn(EClass eClass, EReference reference) {
+			valueType = element ?: reference.EReferenceType
+			affectedElementType = eClass
 			continueWithChangeType(ReactionsLanguageFactory.eINSTANCE.createElementInsertionInListChangeType => [
-				feature = MirBaseFactory.eINSTANCE.createMetaclassEReferenceReference.reference(reference)
+				feature = MirBaseFactory.eINSTANCE.createMetaclassEReferenceReference.reference(eClass, reference)
+			])
+		}
+
+		def removedFrom(EReference reference) {
+			removedFrom(reference.EContainingClass, reference)
+		}
+		
+		def removedFrom(EClass eClass, EReference reference) {
+			valueType = element ?: reference.EReferenceType
+			affectedElementType = eClass
+			continueWithChangeType(ReactionsLanguageFactory.eINSTANCE.createElementRemovalFromListChangeType => [
+				feature = MirBaseFactory.eINSTANCE.createMetaclassEReferenceReference.reference(eClass, reference)
+			])
+		}
+
+		def replacedAt(EReference reference) {
+			replacedAt(reference.EContainingClass, reference)
+		}
+		
+		def replacedAt(EClass eClass, EReference reference) {
+			valueType = element ?: reference.EReferenceType
+			affectedElementType = eClass
+			continueWithChangeType(ReactionsLanguageFactory.eINSTANCE.createElementReplacementChangeType => [
+				feature = MirBaseFactory.eINSTANCE.createMetaclassEReferenceReference.reference(eClass, reference)
 			])
 		}
 
@@ -152,30 +201,41 @@ class FluentReactionBuilder extends FluentReactionsSegmentChildBuilder {
 				checkState(!routineBuilder.requireAffectedEObject || affectedElementType !== null,
 					'''The «routineBuilder» requires an affectedElement, but the «builder» doesn’t create one!''')
 				builder.transferReactionsSegmentTo(routineBuilder)
+				
+				addRoutineCall(routineBuilder)
+				
+				if (affectedElementType !== null && routineBuilder.requireAffectedEObject) {
+					routineBuilder.affectedElementType = affectedElementType
+				}
+				if (valueType !== null && (routineBuilder.requireNewValue || routineBuilder.requireOldValue)) {
+					routineBuilder.valueType = valueType
+				}
 			}
-			if (routineBuilders.length === 1) {
-				val routineBuilder = routineBuilders.get(0)
+			
+			readyToBeAttached = true
+			return builder
+		}
+		
+		def private addRoutineCall(FluentRoutineBuilder routineBuilder) {
+			if (reaction.callRoutine === null) {
 				reaction.callRoutine = ReactionsLanguageFactory.eINSTANCE.createReactionRoutineCall => [
 					code = routineBuilder.routineCall
 				]
 			} else {
-				reaction.callRoutine = ReactionsLanguageFactory.eINSTANCE.createReactionRoutineCall => [
-					code = XbaseFactory.eINSTANCE.createXBlockExpression => [
-						expressions += routineBuilders.map [routineCall]
+				val callRoutineCode = reaction.callRoutine.code
+				if (callRoutineCode instanceof XBlockExpression) {
+					callRoutineCode.expressions += routineBuilder.routineCall
+				} else {
+					reaction.callRoutine.code = XbaseFactory.eINSTANCE.createXBlockExpression => [
+						expressions += callRoutineCode
+						expressions += routineBuilder.routineCall
 					]
-				]
-			}
-
-			for (routineBuilder : routineBuilders) {
-			 	if (affectedElementType !== null) {
-					routineBuilder.affectedElementType = affectedElementType
-				}
-				if (valueType !== null) {
-					routineBuilder.valueType = valueType
 				}
 			}
-			readyToBeAttached = true
-			return builder
+		}
+		
+		def private getCallRoutine() {
+			reaction.callRoutine = reaction.callRoutine ?: ReactionsLanguageFactory.eINSTANCE.createReactionRoutineCall
 		}
 
 		def call(String routineName, Consumer<RoutineStartBuilder> routineInitializer) {
@@ -189,7 +249,7 @@ class FluentReactionBuilder extends FluentReactionsSegmentChildBuilder {
 			call('''«reaction.name.toFirstLower»Repair«IF anonymousRoutineCounter !== 1»anonymousRoutineCounter«ENDIF»''',
 				routineInitializer)
 		}
-		
+
 		def private routineCall(FluentRoutineBuilder routineBuilder) {
 			(XbaseFactory.eINSTANCE.createXFeatureCall => [
 				explicitOperationCall = true
@@ -281,5 +341,16 @@ class FluentReactionBuilder extends FluentReactionsSegmentChildBuilder {
 	override protected getCreatedElementType() {
 		"reaction"
 	}
+	
+	def call(FluentRoutineBuilder... routineBuilders) {
+		new RoutineCallBuilder(this).call(routineBuilders)
+	}
 
+	def call(String routineName, Consumer<RoutineStartBuilder> routineInitializer) {
+		new RoutineCallBuilder(this).call(routineName, routineInitializer)
+	}
+
+	def call(Consumer<RoutineStartBuilder> routineInitializer) {
+		new RoutineCallBuilder(this).call(routineInitializer)
+	}
 }

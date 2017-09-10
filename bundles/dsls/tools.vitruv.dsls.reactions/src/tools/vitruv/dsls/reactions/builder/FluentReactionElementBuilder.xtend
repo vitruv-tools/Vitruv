@@ -236,21 +236,21 @@ abstract package class FluentReactionElementBuilder {
 		]
 	}
 
-	def protected <T extends MetaclassEReferenceReference> reference(T referenceReference, EReference reference) {
+	def protected <T extends MetaclassEReferenceReference> reference(T referenceReference, EClass eClass, EReference reference) {
 		(referenceReference => [
 			feature = reference
-			metaclass = reference.EContainingClass
+			metaclass = eClass
 		]).beforeAttached [
-			metamodel = reference.EContainingClass.EPackage.metamodelImport
+			metamodel = eClass.EPackage.metamodelImport
 		]
 	}
 
-	def protected <T extends MetaclassEAttributeReference> reference(T attributeReference, EAttribute attribute) {
+	def protected <T extends MetaclassEAttributeReference> reference(T attributeReference, EClass eClass, EAttribute attribute) {
 		(attributeReference => [
 			feature = attribute
-			metaclass = attribute.EContainingClass
+			metaclass = eClass
 		]).beforeAttached [
-			metamodel = attribute.EContainingClass.EPackage.metamodelImport
+			metamodel = eClass.EPackage.metamodelImport
 		]
 	}
 
