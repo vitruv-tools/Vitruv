@@ -10,28 +10,41 @@ import org.eclipse.emf.ecore.ETypeParameter;
 import org.eclipse.emf.ecore.EcorePackage;
 
 import org.eclipse.emf.ecore.impl.EPackageImpl;
+
 import tools.vitruv.framework.change.echange.AdditiveEChange;
-import tools.vitruv.framework.change.echange.AtomicEChange;
 import tools.vitruv.framework.change.echange.EChange;
 import tools.vitruv.framework.change.echange.EChangeFactory;
 import tools.vitruv.framework.change.echange.EChangePackage;
 import tools.vitruv.framework.change.echange.SubtractiveEChange;
-import tools.vitruv.framework.change.echange.compound.CompoundPackage;
-import tools.vitruv.framework.change.echange.compound.impl.CompoundPackageImpl;
+
 import tools.vitruv.framework.change.echange.eobject.EobjectPackage;
+
 import tools.vitruv.framework.change.echange.eobject.impl.EobjectPackageImpl;
+
 import tools.vitruv.framework.change.echange.feature.FeaturePackage;
+
 import tools.vitruv.framework.change.echange.feature.attribute.AttributePackage;
+
 import tools.vitruv.framework.change.echange.feature.attribute.impl.AttributePackageImpl;
+
 import tools.vitruv.framework.change.echange.feature.impl.FeaturePackageImpl;
+
 import tools.vitruv.framework.change.echange.feature.list.ListPackage;
+
 import tools.vitruv.framework.change.echange.feature.list.impl.ListPackageImpl;
+
 import tools.vitruv.framework.change.echange.feature.reference.ReferencePackage;
+
 import tools.vitruv.framework.change.echange.feature.reference.impl.ReferencePackageImpl;
+
 import tools.vitruv.framework.change.echange.feature.single.SinglePackage;
+
 import tools.vitruv.framework.change.echange.feature.single.impl.SinglePackageImpl;
+
 import tools.vitruv.framework.change.echange.root.RootPackage;
+
 import tools.vitruv.framework.change.echange.root.impl.RootPackageImpl;
+
 import tools.vitruv.framework.change.uuid.UuidPackage;
 
 /**
@@ -47,13 +60,6 @@ public class EChangePackageImpl extends EPackageImpl implements EChangePackage {
 	 * @generated
 	 */
 	private EClass eChangeEClass = null;
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	private EClass atomicEChangeEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -124,7 +130,6 @@ public class EChangePackageImpl extends EPackageImpl implements EChangePackage {
 		FeaturePackageImpl theFeaturePackage = (FeaturePackageImpl)(EPackage.Registry.INSTANCE.getEPackage(FeaturePackage.eNS_URI) instanceof FeaturePackageImpl ? EPackage.Registry.INSTANCE.getEPackage(FeaturePackage.eNS_URI) : FeaturePackage.eINSTANCE);
 		ListPackageImpl theListPackage = (ListPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(ListPackage.eNS_URI) instanceof ListPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(ListPackage.eNS_URI) : ListPackage.eINSTANCE);
 		SinglePackageImpl theSinglePackage = (SinglePackageImpl)(EPackage.Registry.INSTANCE.getEPackage(SinglePackage.eNS_URI) instanceof SinglePackageImpl ? EPackage.Registry.INSTANCE.getEPackage(SinglePackage.eNS_URI) : SinglePackage.eINSTANCE);
-		CompoundPackageImpl theCompoundPackage = (CompoundPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(CompoundPackage.eNS_URI) instanceof CompoundPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(CompoundPackage.eNS_URI) : CompoundPackage.eINSTANCE);
 		ReferencePackageImpl theReferencePackage = (ReferencePackageImpl)(EPackage.Registry.INSTANCE.getEPackage(ReferencePackage.eNS_URI) instanceof ReferencePackageImpl ? EPackage.Registry.INSTANCE.getEPackage(ReferencePackage.eNS_URI) : ReferencePackage.eINSTANCE);
 		EobjectPackageImpl theEobjectPackage = (EobjectPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(EobjectPackage.eNS_URI) instanceof EobjectPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(EobjectPackage.eNS_URI) : EobjectPackage.eINSTANCE);
 		RootPackageImpl theRootPackage = (RootPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(RootPackage.eNS_URI) instanceof RootPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(RootPackage.eNS_URI) : RootPackage.eINSTANCE);
@@ -135,7 +140,6 @@ public class EChangePackageImpl extends EPackageImpl implements EChangePackage {
 		theFeaturePackage.createPackageContents();
 		theListPackage.createPackageContents();
 		theSinglePackage.createPackageContents();
-		theCompoundPackage.createPackageContents();
 		theReferencePackage.createPackageContents();
 		theEobjectPackage.createPackageContents();
 		theRootPackage.createPackageContents();
@@ -146,7 +150,6 @@ public class EChangePackageImpl extends EPackageImpl implements EChangePackage {
 		theFeaturePackage.initializePackageContents();
 		theListPackage.initializePackageContents();
 		theSinglePackage.initializePackageContents();
-		theCompoundPackage.initializePackageContents();
 		theReferencePackage.initializePackageContents();
 		theEobjectPackage.initializePackageContents();
 		theRootPackage.initializePackageContents();
@@ -183,8 +186,8 @@ public class EChangePackageImpl extends EPackageImpl implements EChangePackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EClass getAtomicEChange() {
-		return atomicEChangeEClass;
+	public EOperation getEChange__GetInvolvedEObjects() {
+		return eChangeEClass.getEOperations().get(1);
 	}
 
 	/**
@@ -253,8 +256,7 @@ public class EChangePackageImpl extends EPackageImpl implements EChangePackage {
 		// Create classes and their features
 		eChangeEClass = createEClass(ECHANGE);
 		createEOperation(eChangeEClass, ECHANGE___IS_RESOLVED);
-
-		atomicEChangeEClass = createEClass(ATOMIC_ECHANGE);
+		createEOperation(eChangeEClass, ECHANGE___GET_INVOLVED_EOBJECTS);
 
 		additiveEChangeEClass = createEClass(ADDITIVE_ECHANGE);
 		createEOperation(additiveEChangeEClass, ADDITIVE_ECHANGE___GET_NEW_VALUE);
@@ -286,45 +288,61 @@ public class EChangePackageImpl extends EPackageImpl implements EChangePackage {
 		setNsPrefix(eNS_PREFIX);
 		setNsURI(eNS_URI);
 
-		// Obtain other dependent packages
-		EcorePackage theEcorePackage = (EcorePackage)EPackage.Registry.INSTANCE.getEPackage(EcorePackage.eNS_URI);
-
 		// Create type parameters
 		ETypeParameter additiveEChangeEClass_T = addETypeParameter(additiveEChangeEClass, "T");
 		ETypeParameter subtractiveEChangeEClass_T = addETypeParameter(subtractiveEChangeEClass, "T");
 
 		// Set bounds for type parameters
-		EGenericType g1 = createEGenericType(theEcorePackage.getEJavaObject());
+		EGenericType g1 = createEGenericType(ecorePackage.getEJavaObject());
 		additiveEChangeEClass_T.getEBounds().add(g1);
-		g1 = createEGenericType(theEcorePackage.getEJavaObject());
+		g1 = createEGenericType(ecorePackage.getEJavaObject());
 		subtractiveEChangeEClass_T.getEBounds().add(g1);
 
 		// Add supertypes to classes
-		atomicEChangeEClass.getESuperTypes().add(this.getEChange());
-		additiveEChangeEClass.getESuperTypes().add(this.getAtomicEChange());
-		subtractiveEChangeEClass.getESuperTypes().add(this.getAtomicEChange());
+		additiveEChangeEClass.getESuperTypes().add(this.getEChange());
+		subtractiveEChangeEClass.getESuperTypes().add(this.getEChange());
 
 		// Initialize classes, features, and operations; add parameters
 		initEClass(eChangeEClass, EChange.class, "EChange", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
-		initEOperation(getEChange__IsResolved(), theEcorePackage.getEBoolean(), "isResolved", 0, 1, !IS_UNIQUE, IS_ORDERED);
+		initEOperation(getEChange__IsResolved(), ecorePackage.getEBoolean(), "isResolved", 1, 1, IS_UNIQUE, IS_ORDERED);
 
-		initEClass(atomicEChangeEClass, AtomicEChange.class, "AtomicEChange", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEOperation(getEChange__GetInvolvedEObjects(), ecorePackage.getEObject(), "getInvolvedEObjects", 0, -1, IS_UNIQUE, IS_ORDERED);
 
 		initEClass(additiveEChangeEClass, AdditiveEChange.class, "AdditiveEChange", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
-		EOperation op = initEOperation(getAdditiveEChange__GetNewValue(), null, "getNewValue", 1, 1, !IS_UNIQUE, IS_ORDERED);
+		EOperation op = initEOperation(getAdditiveEChange__GetNewValue(), null, "getNewValue", 1, 1, IS_UNIQUE, IS_ORDERED);
 		g1 = createEGenericType(additiveEChangeEClass_T);
 		initEOperation(op, g1);
 
 		initEClass(subtractiveEChangeEClass, SubtractiveEChange.class, "SubtractiveEChange", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
-		op = initEOperation(getSubtractiveEChange__GetOldValue(), null, "getOldValue", 1, 1, !IS_UNIQUE, IS_ORDERED);
+		op = initEOperation(getSubtractiveEChange__GetOldValue(), null, "getOldValue", 1, 1, IS_UNIQUE, IS_ORDERED);
 		g1 = createEGenericType(subtractiveEChangeEClass_T);
 		initEOperation(op, g1);
 
 		// Create resource
 		createResource(eNS_URI);
+
+		// Create annotations
+		// http://www.eclipse.org/OCL/Import
+		createImportAnnotations();
+	}
+
+	/**
+	 * Initializes the annotations for <b>http://www.eclipse.org/OCL/Import</b>.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void createImportAnnotations() {
+		String source = "http://www.eclipse.org/OCL/Import";	
+		addAnnotation
+		  (this, 
+		   source, 
+		   new String[] {
+			 "ecore", "http://www.eclipse.org/emf/2002/Ecore"
+		   });
 	}
 
 } //EChangePackageImpl

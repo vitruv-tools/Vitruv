@@ -313,7 +313,6 @@ public class ReplaceSingleValuedEReferenceTest extends ReferenceEChangeTest {
 		
 		// Create change (resolved)
 		val resolvedChange = createUnresolvedChange().resolveBefore(uuidGeneratorAndResolver)
-			as ReplaceSingleValuedEReference<Root, NonRoot>	
 		
 		// Set state after
 		prepareReference(newValue)

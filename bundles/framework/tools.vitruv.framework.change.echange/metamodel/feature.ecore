@@ -8,7 +8,7 @@
     <details key="classNamePattern" value=""/>
     <details key="basePackage" value="tools.vitruv.framework.change.echange"/>
   </eAnnotations>
-  <eClassifiers xsi:type="ecore:EClass" name="FeatureEChange" abstract="true" eSuperTypes="echange.ecore#//AtomicEChange">
+  <eClassifiers xsi:type="ecore:EClass" name="FeatureEChange" abstract="true" eSuperTypes="echange.ecore#//EChange">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
       <details key="documentation" value="*&#xA;Abstract EChange which changes an attribute or reference of an EObject."/>
     </eAnnotations>

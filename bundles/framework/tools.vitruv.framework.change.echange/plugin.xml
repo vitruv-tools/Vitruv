@@ -15,14 +15,6 @@
    </extension>
 
    <extension point="org.eclipse.emf.ecore.generated_package">
-      <!-- @generated Compound -->
-      <package
-            uri="http://tools.vitruv/EChange/Compound/1.0"
-            class="tools.vitruv.framework.change.echange.compound.CompoundPackage"
-            genModel="metamodel/echange.genmodel"/>
-   </extension>
-
-   <extension point="org.eclipse.emf.ecore.generated_package">
       <!-- @generated EChange -->
       <package
             uri="http://tools.vitruv/EChange/1.0"

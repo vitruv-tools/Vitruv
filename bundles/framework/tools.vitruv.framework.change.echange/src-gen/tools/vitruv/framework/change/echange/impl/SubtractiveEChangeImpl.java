@@ -18,7 +18,7 @@ import tools.vitruv.framework.change.echange.SubtractiveEChange;
  *
  * @generated
  */
-public abstract class SubtractiveEChangeImpl<T extends Object> extends AtomicEChangeImpl implements SubtractiveEChange<T> {
+public abstract class SubtractiveEChangeImpl<T extends Object> extends EChangeImpl implements SubtractiveEChange<T> {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

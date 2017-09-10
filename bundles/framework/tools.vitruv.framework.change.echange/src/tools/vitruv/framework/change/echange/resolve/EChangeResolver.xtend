@@ -1,9 +1,7 @@
 package tools.vitruv.framework.change.echange.resolve
 
 import org.eclipse.emf.ecore.util.EcoreUtil
-import tools.vitruv.framework.change.echange.AtomicEChange
 import tools.vitruv.framework.change.echange.EChange
-import tools.vitruv.framework.change.echange.compound.CompoundEChange
 import tools.vitruv.framework.change.uuid.UuidResolver
 
 /**
@@ -61,27 +59,11 @@ class EChangeResolver {
 	}
 
 	/**
-	 * Dispatch method for resolving an {@link EChange}.
+	 * Dispatch method for resolving {@link EChange}s.
 	 */
-	def private static dispatch boolean resolveChange(EChange change, UuidResolver uuidResolver, boolean resolveBefore,
-		boolean revertAfterResolving) {
-		// If an EChange reaches this point, there is a dispatch method missing for the concrete type.
-		throw new UnsupportedOperationException
-	}
-
-	/**
-	 * Dispatch method for resolving {@link AtomicEChange}s.
-	 */
-	def private static dispatch boolean resolveChange(AtomicEChange change, UuidResolver uuidResolver,
+	def private static boolean resolveChange(EChange change, UuidResolver uuidResolver,
 		boolean resolveBefore, boolean revertAfterResolving) {
 		AtomicEChangeResolver.resolve(change, uuidResolver, resolveBefore)
 	}
 
-	/**
-	 * Dispatch method for resolving an {@link CompoundEChange}s.
-	 */
-	def private static dispatch boolean resolveChange(CompoundEChange change, UuidResolver uuidResolver,
-		boolean resolveBefore, boolean revertAfterResolving) {
-		CompoundEChangeResolver.resolve(change, uuidResolver, resolveBefore, revertAfterResolving)
-	}
 }

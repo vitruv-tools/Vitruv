@@ -341,7 +341,7 @@ class AtomicEChangeResolver {
 		}
 		result = result && change.resolveEObjectExistenceEChange(uuidResolver, !resolveBefore)
 		if (!resolveBefore) {
-			result = consequentialChanges.resolveChangeList(uuidResolver, resolveBefore);	
+			result = consequentialChanges.reverseView.resolveChangeList(uuidResolver, resolveBefore);	
 		}
 		return result;
 	}
@@ -353,7 +353,7 @@ class AtomicEChangeResolver {
 	 * @param resolveBefore		{@code true} if the model is in state before the change,
 	 * 							{@code false} if the model is in state after.
 	 */
-	def private static boolean resolveChangeList(List<EChange> changeList, UuidResolver uuidResolver, boolean resolveBefore) {
+	def private static boolean resolveChangeList(List<? extends EChange> changeList, UuidResolver uuidResolver, boolean resolveBefore) {
 		return changeList.fold(true, [res, localChange | res && EChangeResolver.resolve(localChange, uuidResolver, resolveBefore, false)]);	
 	}
 }

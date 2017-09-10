@@ -119,7 +119,7 @@ abstract class ChangeDescription2ChangeTransformationTest {
 		return this.rootElement
 	}
 
-	public static def assertChangeCount(List<?> changes, int expectedCount) {
+	public static def assertChangeCount(Iterable<?> changes, int expectedCount) {
 		Assert.assertEquals(
 			"There were " + changes.size + " changes, although " + expectedCount + " were expected",
 			expectedCount,

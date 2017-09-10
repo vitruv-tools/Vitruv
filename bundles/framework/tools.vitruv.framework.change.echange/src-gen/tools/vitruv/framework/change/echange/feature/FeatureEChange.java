@@ -5,7 +5,7 @@ package tools.vitruv.framework.change.echange.feature;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 
-import tools.vitruv.framework.change.echange.AtomicEChange;
+import tools.vitruv.framework.change.echange.EChange;
 
 /**
  * <!-- begin-user-doc -->
@@ -30,7 +30,7 @@ import tools.vitruv.framework.change.echange.AtomicEChange;
  * @model abstract="true"
  * @generated
  */
-public interface FeatureEChange<A extends EObject, F extends EStructuralFeature> extends AtomicEChange {
+public interface FeatureEChange<A extends EObject, F extends EStructuralFeature> extends EChange {
 	/**
 	 * Returns the value of the '<em><b>Affected Feature</b></em>' reference.
 	 * <!-- begin-user-doc -->

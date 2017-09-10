@@ -10,12 +10,11 @@ import tools.vitruv.framework.change.description.impl.ConcreteChangeImpl
 import tools.vitruv.framework.change.description.impl.EmptyChangeImpl
 import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.change.echange.TypeInferringCompoundEChangeFactory
-import tools.vitruv.framework.change.echange.compound.CreateAndInsertRoot
-import tools.vitruv.framework.change.echange.compound.RemoveAndDeleteRoot
 import tools.vitruv.framework.util.datatypes.VURI
 import tools.vitruv.framework.change.preparation.ChangeDescription2EChangesTransformation
 import tools.vitruv.framework.change.description.impl.ConcreteApplicableChangeImpl
 import tools.vitruv.framework.change.description.impl.ConcreteChangeWithUriImpl
+import java.util.List
 
 class VitruviusChangeFactory {
 	private static val logger = Logger.getLogger(VitruviusChangeFactory);
@@ -62,14 +61,12 @@ class VitruviusChangeFactory {
 		return new ConcreteChangeWithUriImpl(vuri, change);
 	}
 	
-	public def ConcreteChange createFileChange(FileChangeKind kind, Resource changedFileResource) {
-		var EChange eChange = null
+	public def List<ConcreteChange> createFileChange(FileChangeKind kind, Resource changedFileResource) {
 		if (kind == FileChangeKind.Create) {
-			eChange = generateFileCreateChange(changedFileResource);
+			return generateFileCreateChange(changedFileResource).map[new ConcreteChangeImpl(it)];
 		} else {
-			eChange = generateFileDeleteChange(changedFileResource);
+			return generateFileDeleteChange(changedFileResource).map[new ConcreteChangeImpl(it)];
 		}
-		return new ConcreteChangeImpl(eChange)
 	}
 	
 	public def CompositeContainerChange createCompositeContainerChange() {
@@ -96,7 +93,7 @@ class VitruviusChangeFactory {
 		return new ChangeCloner().clone(originalChange) as T;
 	}
 		
-	private def EChange generateFileCreateChange(Resource resource) {
+	private def List<EChange> generateFileCreateChange(Resource resource) {
 		var EObject rootElement = null;
 		var index = 0
         if (1 == resource.getContents().size()) {
@@ -110,18 +107,15 @@ class VitruviusChangeFactory {
                     + ". Propagation of 'root element created' not triggered.");
             return null;
         }
-        val CreateAndInsertRoot<EObject> createRootEObj =  TypeInferringCompoundEChangeFactory.
+        return TypeInferringCompoundEChangeFactory.
         	instance.createCreateAndInsertRootChange(rootElement, resource, index);
-        return createRootEObj; 
 	}
 	
-	private def EChange generateFileDeleteChange(Resource resource) {
+	private def List<EChange> generateFileDeleteChange(Resource resource) {
 		if (0 < resource.getContents().size()) {
 			val index = 0
             val EObject rootElement = resource.getContents().get(index);
-            val RemoveAndDeleteRoot<EObject> deleteRootObj = TypeInferringCompoundEChangeFactory.
-            	instance.createRemoveAndDeleteRootChange(rootElement, resource, index);
-            return deleteRootObj;
+            return TypeInferringCompoundEChangeFactory.instance.createRemoveAndDeleteRootChange(rootElement, resource, index);
         }
         logger.info("Deleted resource " + VURI.getInstance(resource) + " did not contain any EObject");
         return null;

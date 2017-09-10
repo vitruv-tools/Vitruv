@@ -13,15 +13,21 @@ import java.util.Map
 import java.util.HashMap
 import edu.kit.ipd.sdq.activextendannotations.Utility
 import java.util.Collections
+import org.eclipse.emf.ecore.EStructuralFeature
+import org.eclipse.emf.ecore.EClass
 
 @Utility
 class ModelMatchers {
-	def static Matcher<Resource> contains(EObject root) {
-		new ResourceContainmentMatcher(root)
+	def static Matcher<Resource> contains(EObject root, FeatureMatcher... featureMatchers) {
+		new ResourceContainmentMatcher(root, featureMatchers)
 	}
 
-	def static Matcher<EObject> equalsDeeply(EObject object) {
-		new ModelTreeEqualityMatcher(object)
+	def static Matcher<EObject> equalsDeeply(EObject object, FeatureMatcher... featureMatchers) {
+		new ModelTreeEqualityMatcher(object, featureMatchers)
+	}
+	
+	def static ignoring(String featureName) {
+		return new IgnoreNamedFeature(featureName)
 	}
 }
 
@@ -31,9 +37,9 @@ package class ResourceContainmentMatcher extends TypeSafeMatcher<Resource> {
 	int contentsSize
 	boolean exists
 
-	package new(EObject expectedObject) {
+	package new(EObject expectedObject, FeatureMatcher... featureMatchers) {
 		this.expectedObject = expectedObject
-		delegateMatcher = new ModelTreeEqualityMatcher(expectedObject)
+		delegateMatcher = new ModelTreeEqualityMatcher(expectedObject, featureMatchers)
 	}
 
 	override protected describeMismatchSafely(Resource item, Description mismatchDescription) {
@@ -70,9 +76,32 @@ package class ModelTreeEqualityMatcher extends TypeSafeMatcher<EObject> {
 	var Stack<String> navigationStack = new Stack
 	var Consumer<Description> mismatch
 	var Map<Object, Object> checkCache = new HashMap
+	val FeatureMatcher[] featureMatchers
 
 	override protected matchesSafely(EObject item) {
 		return expectedObject.equalsDeeply(item, false)
+	}
+	
+	def private findFeatureChecker(EClass eClass, EStructuralFeature feature) {
+		for (featureChecker : featureMatchers) {
+			if (featureChecker.isForFeature(eClass, feature)) {
+				return featureChecker
+			}
+		}
+		return new FeatureMatcher() {
+			override isForFeature(EClass checkedClass, EStructuralFeature feature) {
+				true
+			}
+
+			override getMismatch(Object expectedValue, Object itemValue) {
+				if (expectedValue.equalsDeeply(itemValue, feature.ordered)) {
+					return null
+				} else {
+					return mismatch
+				}
+			}
+			
+		}
 	}
 
 	def private dispatch boolean equalsDeeply(EObject expected, EObject item, boolean ordered) {
@@ -88,7 +117,9 @@ package class ModelTreeEqualityMatcher extends TypeSafeMatcher<EObject> {
 		}
 		for (feature : expected.eClass.EAllStructuralFeatures) {
 			navigationStack.push('''.«feature.name»''')
-			if (!expected.eGet(feature).equalsDeeply(item.eGet(feature), feature.ordered)) {
+			val matcherMismatch = findFeatureChecker(expected.eClass, feature).getMismatch(expected.eGet(feature), item.eGet(feature))
+			if (matcherMismatch !== null) {
+				mismatch = matcherMismatch
 				return false;
 			}
 			navigationStack.pop()
@@ -113,7 +144,7 @@ package class ModelTreeEqualityMatcher extends TypeSafeMatcher<EObject> {
 		} else {
 			var count = 0;
 			val expectedIter = expected.iterator()
-			val itemOrdered = if (ordered) item else item.iterator.toList 
+			val itemOrdered = if (ordered) item else item.iterator.toList
 			var itemIter = itemOrdered.iterator()
 			var usedItemIndeces = if (ordered) null else newBooleanArrayOfSize(itemOrdered.size)
 
@@ -199,5 +230,20 @@ package class ModelTreeEqualityMatcher extends TypeSafeMatcher<EObject> {
 		}
 		mismatch.accept(mismatchDescription)
 	}
+}
 
+class IgnoreNamedFeature implements FeatureMatcher {
+	val String featureName
+
+	package new(String featureName) {
+		this.featureName = featureName
+	}
+
+	override isForFeature(EClass checkedClass, EStructuralFeature feature) {
+		feature.name == featureName
+	}
+
+	override getMismatch(Object expectedValue, Object itemValue) {
+		null
+	}
 }

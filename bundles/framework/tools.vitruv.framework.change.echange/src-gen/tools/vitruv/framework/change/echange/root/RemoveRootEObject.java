@@ -23,5 +23,4 @@ import tools.vitruv.framework.change.echange.eobject.EObjectSubtractedEChange;
  * @generated
  */
 public interface RemoveRootEObject<T extends EObject> extends RootEChange, EObjectSubtractedEChange<T> {
-
 } // RemoveRootEObject

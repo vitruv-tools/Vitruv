@@ -14,8 +14,10 @@ import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+
 import tools.vitruv.framework.change.echange.eobject.EObjectSubtractedEChange;
 import tools.vitruv.framework.change.echange.eobject.EobjectPackage;
+
 import tools.vitruv.framework.change.echange.feature.list.impl.RemoveFromListEChangeImpl;
 
 import tools.vitruv.framework.change.echange.feature.reference.ReferencePackage;
@@ -33,6 +35,7 @@ import tools.vitruv.framework.change.echange.feature.reference.UpdateReferenceEC
  * <ul>
  *   <li>{@link tools.vitruv.framework.change.echange.feature.reference.impl.RemoveEReferenceImpl#getOldValue <em>Old Value</em>}</li>
  *   <li>{@link tools.vitruv.framework.change.echange.feature.reference.impl.RemoveEReferenceImpl#getOldValueID <em>Old Value ID</em>}</li>
+ *   <li>{@link tools.vitruv.framework.change.echange.feature.reference.impl.RemoveEReferenceImpl#isIsUnset <em>Is Unset</em>}</li>
  * </ul>
  *
  * @generated
@@ -57,6 +60,7 @@ public class RemoveEReferenceImpl<A extends EObject, T extends EObject> extends 
 	 * @ordered
 	 */
 	protected static final String OLD_VALUE_ID_EDEFAULT = null;
+
 	/**
 	 * The cached value of the '{@link #getOldValueID() <em>Old Value ID</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -66,6 +70,26 @@ public class RemoveEReferenceImpl<A extends EObject, T extends EObject> extends 
 	 * @ordered
 	 */
 	protected String oldValueID = OLD_VALUE_ID_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #isIsUnset() <em>Is Unset</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isIsUnset()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final boolean IS_UNSET_EDEFAULT = false;
+
+	/**
+	 * The cached value of the '{@link #isIsUnset() <em>Is Unset</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isIsUnset()
+	 * @generated
+	 * @ordered
+	 */
+	protected boolean isUnset = IS_UNSET_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -151,6 +175,27 @@ public class RemoveEReferenceImpl<A extends EObject, T extends EObject> extends 
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public boolean isIsUnset() {
+		return isUnset;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setIsUnset(boolean newIsUnset) {
+		boolean oldIsUnset = isUnset;
+		isUnset = newIsUnset;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, ReferencePackage.REMOVE_EREFERENCE__IS_UNSET, oldIsUnset, isUnset));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public boolean isContainment() {
 		EReference _affectedFeature = this.getAffectedFeature();
 		return _affectedFeature.isContainment();
@@ -169,6 +214,8 @@ public class RemoveEReferenceImpl<A extends EObject, T extends EObject> extends 
 				return basicGetOldValue();
 			case ReferencePackage.REMOVE_EREFERENCE__OLD_VALUE_ID:
 				return getOldValueID();
+			case ReferencePackage.REMOVE_EREFERENCE__IS_UNSET:
+				return isIsUnset();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -188,6 +235,9 @@ public class RemoveEReferenceImpl<A extends EObject, T extends EObject> extends 
 			case ReferencePackage.REMOVE_EREFERENCE__OLD_VALUE_ID:
 				setOldValueID((String)newValue);
 				return;
+			case ReferencePackage.REMOVE_EREFERENCE__IS_UNSET:
+				setIsUnset((Boolean)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -206,6 +256,9 @@ public class RemoveEReferenceImpl<A extends EObject, T extends EObject> extends 
 			case ReferencePackage.REMOVE_EREFERENCE__OLD_VALUE_ID:
 				setOldValueID(OLD_VALUE_ID_EDEFAULT);
 				return;
+			case ReferencePackage.REMOVE_EREFERENCE__IS_UNSET:
+				setIsUnset(IS_UNSET_EDEFAULT);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -222,6 +275,8 @@ public class RemoveEReferenceImpl<A extends EObject, T extends EObject> extends 
 				return oldValue != null;
 			case ReferencePackage.REMOVE_EREFERENCE__OLD_VALUE_ID:
 				return OLD_VALUE_ID_EDEFAULT == null ? oldValueID != null : !OLD_VALUE_ID_EDEFAULT.equals(oldValueID);
+			case ReferencePackage.REMOVE_EREFERENCE__IS_UNSET:
+				return isUnset != IS_UNSET_EDEFAULT;
 		}
 		return super.eIsSet(featureID);
 	}
@@ -247,6 +302,7 @@ public class RemoveEReferenceImpl<A extends EObject, T extends EObject> extends 
 		}
 		if (baseClass == SubtractiveReferenceEChange.class) {
 			switch (derivedFeatureID) {
+				case ReferencePackage.REMOVE_EREFERENCE__IS_UNSET: return ReferencePackage.SUBTRACTIVE_REFERENCE_ECHANGE__IS_UNSET;
 				default: return -1;
 			}
 		}
@@ -274,6 +330,7 @@ public class RemoveEReferenceImpl<A extends EObject, T extends EObject> extends 
 		}
 		if (baseClass == SubtractiveReferenceEChange.class) {
 			switch (baseFeatureID) {
+				case ReferencePackage.SUBTRACTIVE_REFERENCE_ECHANGE__IS_UNSET: return ReferencePackage.REMOVE_EREFERENCE__IS_UNSET;
 				default: return -1;
 			}
 		}
@@ -332,6 +389,8 @@ public class RemoveEReferenceImpl<A extends EObject, T extends EObject> extends 
 		StringBuffer result = new StringBuffer(super.toString());
 		result.append(" (oldValueID: ");
 		result.append(oldValueID);
+		result.append(", isUnset: ");
+		result.append(isUnset);
 		result.append(')');
 		return result.toString();
 	}

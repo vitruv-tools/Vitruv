@@ -3,16 +3,18 @@
 package tools.vitruv.framework.change.echange.feature.impl;
 
 import org.eclipse.emf.common.notify.Notification;
+
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+
 import tools.vitruv.framework.change.echange.feature.FeatureEChange;
 import tools.vitruv.framework.change.echange.feature.FeaturePackage;
 
-import tools.vitruv.framework.change.echange.impl.AtomicEChangeImpl;
+import tools.vitruv.framework.change.echange.impl.EChangeImpl;
 
 /**
  * <!-- begin-user-doc -->
@@ -29,7 +31,7 @@ import tools.vitruv.framework.change.echange.impl.AtomicEChangeImpl;
  *
  * @generated
  */
-public abstract class FeatureEChangeImpl<A extends EObject, F extends EStructuralFeature> extends AtomicEChangeImpl implements FeatureEChange<A, F> {
+public abstract class FeatureEChangeImpl<A extends EObject, F extends EStructuralFeature> extends EChangeImpl implements FeatureEChange<A, F> {
 	/**
 	 * The cached value of the '{@link #getAffectedFeature() <em>Affected Feature</em>}' reference.
 	 * <!-- begin-user-doc -->

@@ -1,8 +1,6 @@
 package tools.vitruv.framework.change.echange.resolve
 
 import tools.vitruv.framework.change.echange.EChange
-import tools.vitruv.framework.change.echange.AtomicEChange
-import tools.vitruv.framework.change.echange.compound.CompoundEChange
 import tools.vitruv.framework.change.echange.eobject.EObjectExistenceEChange
 import tools.vitruv.framework.change.echange.feature.FeatureEChange
 import tools.vitruv.framework.change.echange.feature.reference.InsertEReference
@@ -14,16 +12,6 @@ import tools.vitruv.framework.change.echange.root.RemoveRootEObject
 
 class ResolutionChecker {
 	public static def dispatch isResolved(EChange echange) {
-		return true;
-	}
-	
-	public static def dispatch isResolved(CompoundEChange compoundChange) {
-		val atomicChanges = compoundChange.getAtomicChanges();
-		for (AtomicEChange change : atomicChanges) {
-			if (!change.isResolved()) {
-				return false;
-			}
-		}
 		return true;
 	}
 	

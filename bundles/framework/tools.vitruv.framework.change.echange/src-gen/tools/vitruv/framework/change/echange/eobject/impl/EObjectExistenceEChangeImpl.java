@@ -3,15 +3,17 @@
 package tools.vitruv.framework.change.echange.eobject.impl;
 
 import org.eclipse.emf.common.notify.Notification;
+
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+
 import tools.vitruv.framework.change.echange.eobject.EObjectExistenceEChange;
 import tools.vitruv.framework.change.echange.eobject.EobjectPackage;
 
-import tools.vitruv.framework.change.echange.impl.AtomicEChangeImpl;
+import tools.vitruv.framework.change.echange.impl.EChangeImpl;
 
 /**
  * <!-- begin-user-doc -->
@@ -29,7 +31,7 @@ import tools.vitruv.framework.change.echange.impl.AtomicEChangeImpl;
  *
  * @generated
  */
-public abstract class EObjectExistenceEChangeImpl<A extends EObject> extends AtomicEChangeImpl implements EObjectExistenceEChange<A> {
+public abstract class EObjectExistenceEChangeImpl<A extends EObject> extends EChangeImpl implements EObjectExistenceEChange<A> {
 	/**
 	 * The cached value of the '{@link #getAffectedEObject() <em>Affected EObject</em>}' reference.
 	 * <!-- begin-user-doc -->

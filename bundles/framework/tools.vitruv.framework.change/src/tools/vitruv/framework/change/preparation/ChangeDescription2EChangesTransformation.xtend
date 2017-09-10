@@ -20,8 +20,8 @@ import tools.vitruv.framework.change.echange.feature.attribute.SubtractiveAttrib
 
 import static extension tools.vitruv.framework.change.preparation.EMFModelChangeTransformationUtil.*
 import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
-import tools.vitruv.framework.change.echange.compound.CompoundEChange
 import tools.vitruv.framework.change.echange.eobject.DeleteEObject
+import tools.vitruv.framework.change.echange.feature.reference.SubtractiveReferenceEChange
 
 public class ChangeDescription2EChangesTransformation {
 	// Some tests, especially Java2Pcm need to have recursive recording disabled
@@ -171,7 +171,7 @@ public class ChangeDescription2EChangesTransformation {
 			var oldRootContainer = rootToAdd.eContainer
 			var oldRootResource = rootToAdd.eResource
 			var index = listChange.index
-			eChanges.add(createInsertRootChange(rootToAdd, oldRootContainer, oldRootResource, newResource, index))
+			eChanges.addAll(createInsertRootChange(rootToAdd, oldRootContainer, oldRootResource, newResource, index))
 		}
 }
 
@@ -186,7 +186,7 @@ public class ChangeDescription2EChangesTransformation {
 
 		val removeChange = createRemoveRootChange(rootToRemove, newRootContainer, newRootResource,
 				oldResource, rootElementListIndex)
-		val deleteChange = (removeChange as CompoundEChange).atomicChanges.filter(DeleteEObject).claimOne;
+		val deleteChange = removeChange.filter(DeleteEObject).claimOne;
 		deleteChange.consequentialRemoveChanges += recursiveRemoval(rootToRemove);
 		eChanges += removeChange;
 	}
@@ -349,18 +349,14 @@ public class ChangeDescription2EChangesTransformation {
 				}
 			}
 			if (affectedReference.isUnsettable && !featureChange.isSet) {
-				val List<EChange> typedChanges = new ArrayList<EChange>();
-				for (change : resultChanges) {
-					typedChanges.add(change);
-				}
-				return #[createExplicitUnsetEReferenceChange(affectedEObject, affectedReference, typedChanges)];
+				resultChanges.filter(SubtractiveReferenceEChange).last.isUnset = true
 			}
 			return resultChanges
 		} else {
 			val List<EChange> change = createChangeForSingleReferenceChange(affectedEObject, affectedReference,
 				featureChange.referenceValue)
 			if (affectedReference.isUnsettable && !featureChange.isSet) {
-				return #[createExplicitUnsetEReferenceChange(affectedEObject, affectedReference, change)];
+				change.filter(SubtractiveReferenceEChange).last.isUnset = true;
 			}
 			return change
 		}
@@ -371,10 +367,10 @@ public class ChangeDescription2EChangesTransformation {
 		val oldReferenceValue = affectedEObject.getReferenceValueList(affectedReference).claimNotMany;
 		val removeChange = createReplaceSingleValuedReferenceChange(affectedEObject, affectedReference, oldReferenceValue, newReferenceValue, false);
 		if (affectedReference.containment && oldReferenceValue !== null) {
-			val deleteChange = (removeChange as CompoundEChange).atomicChanges.filter(DeleteEObject).claimOne;
+			val deleteChange = removeChange.filter(DeleteEObject).claimOne;
 			deleteChange.consequentialRemoveChanges += recursiveRemoval(oldReferenceValue);
 		} 
-		return #[removeChange];
+		return removeChange;
 	}
 
 	def private List<EChange> createChangeForMultiReferenceChange(EObject affectedEObject, EReference affectedReference,
@@ -382,7 +378,7 @@ public class ChangeDescription2EChangesTransformation {
 		switch changeKind {
 			case ChangeKind.ADD_LITERAL: referenceValues.mapFixed [
 				createInsertReferenceChange(affectedEObject, affectedReference, index, it, false)
-			]
+			].flatten.toList
 			case ChangeKind.REMOVE_LITERAL: createChangeForRemoveReferenceChange(affectedEObject, affectedReference,
 				index, affectedEObject.getReferenceValueList(affectedReference))
 			default: Collections.emptyList()
@@ -399,13 +395,13 @@ public class ChangeDescription2EChangesTransformation {
 				referenceValue, newContainer, newResource, false)
 		// }
 		if (affectedReference.containment) {
-			val deleteChange = (removeChange as CompoundEChange).atomicChanges.filter(DeleteEObject).claimOne;
+			val deleteChange = removeChange.filter(DeleteEObject).claimOne;
 			deleteChange.consequentialRemoveChanges += recursiveRemoval(referenceValue);
 		} 
-		return #[removeChange]
+		return removeChange
 }
 
-	def private dispatch List<EChange> createChangesForFeatureChange(EObject affectedEObject,
+	def private dispatch List<? extends EChange> createChangesForFeatureChange(EObject affectedEObject,
 		EAttribute affectedAttribute, FeatureChange featureChange) {
 		if (affectedAttribute.isMany) {
 			val listChanges = featureChange.listChanges
@@ -424,17 +420,13 @@ public class ChangeDescription2EChangesTransformation {
 			}
 			if (affectedAttribute.isUnsettable && !featureChange.isSet) {
 				val subtractiveChanges = resultChanges.filter(SubtractiveAttributeEChange);
-				val List<SubtractiveAttributeEChange<EObject, Object>> typedChanges = new ArrayList<SubtractiveAttributeEChange<EObject, Object>>();
-				for (change : subtractiveChanges) {
-					typedChanges.add(change);
-				}
-				return #[createExplicitUnsetEAttributeChange(affectedEObject, affectedAttribute, typedChanges)];
+				subtractiveChanges.last.isUnset = true;
 			}
 			return resultChanges
 		} else {
 			val SubtractiveAttributeEChange<EObject,Object> change = createChangeForSingleAttributeChange(affectedEObject, affectedAttribute, featureChange.value)
 			if (affectedAttribute.isUnsettable && !featureChange.isSet) {
-				return #[createExplicitUnsetEAttributeChange(affectedEObject, affectedAttribute, #[change])];
+				change.isUnset = true;
 			}
 			
 			return #[change];

@@ -36,7 +36,7 @@
     </eGenericSuperTypes>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="EObjectExistenceEChange" abstract="true"
-      eSuperTypes="echange.ecore#//AtomicEChange">
+      eSuperTypes="echange.ecore#//EChange">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
       <details key="documentation" value="*&#xA;Abstract EChange which creates or deletes an EObject."/>
     </eAnnotations>

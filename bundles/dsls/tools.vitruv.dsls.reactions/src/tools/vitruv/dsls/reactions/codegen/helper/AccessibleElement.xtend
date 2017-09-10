@@ -2,13 +2,12 @@ package tools.vitruv.dsls.reactions.codegen.helper
 
 import java.util.List
 import org.eclipse.xtend.lib.annotations.Accessors
+import org.eclipse.xtext.xbase.jvmmodel.JvmTypeReferenceBuilder
 
 class AccessibleElement {
 	@Accessors(PUBLIC_GETTER)
 	private val String name;
-	@Accessors(PUBLIC_GETTER)
 	private val String fullyQualifiedTypeName;
-	@Accessors(PUBLIC_GETTER)
 	private val List<String> typeParameters;
 	
 	public new(String name, String fullyQualifiedTypeName) {
@@ -24,6 +23,10 @@ class AccessibleElement {
 	
 	public new(String name, Class<?> type) {
 		this(name, type.name)
+	}
+	
+	public def generateTypeRef(@Extension JvmTypeReferenceBuilder typeReferenceBuilder) {
+		typeRef(fullyQualifiedTypeName, typeParameters.map[typeRef])
 	}
 	
 }
