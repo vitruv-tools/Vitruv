@@ -12,7 +12,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.Callable;
 import java.util.function.Consumer;
-import java.util.stream.Collectors;
 
 import org.apache.log4j.Logger;
 import org.eclipse.emf.common.util.URI;
@@ -331,19 +330,12 @@ public class ResourceRepositoryImpl implements ModelRepository, CorrespondencePr
 
     @Override
     public Iterable<TransactionalChange> endRecording() {
-        final List<TransactionalChange> result = new ArrayList<TransactionalChange>();
+        logger.debug("End recording virtual model");
         executeRecordingCommand(EMFCommandBridge.createVitruviusRecordingCommand(() -> {
             this.changeRecorder.endRecording();
             return null;
         }));
-        List<TransactionalChange> relevantChanges = this.changeRecorder.getChanges();
-        // TODO HK: Replace this correspondence exclusion with an inclusion of only file extensions that are
-        // supported by the domains of the VirtualModel
-        result.addAll(relevantChanges.stream().filter(
-                change -> change.getURI() == null || !change.getURI().getEMFUri().toString().endsWith("correspondence"))
-                .collect(Collectors.toList()));
-        logger.debug("End recording virtual model");
-        return result;
+        return this.changeRecorder.getChanges();
     }
 
     private synchronized TransactionalEditingDomain getTransactionalEditingDomain() {

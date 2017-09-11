@@ -24,8 +24,8 @@ import tools.vitruv.framework.change.description.CompositeChange
 
 import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
 import tools.vitruv.framework.change.description.CompositeTransactionalChange
-import tools.vitruv.framework.tuid.TuidResolver
-import tools.vitruv.framework.tuid.TuidManager
+import tools.vitruv.framework.correspondence.CorrespondencePackage
+import tools.vitruv.framework.change.description.ConcreteChange
 
 class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserver {
 	static Logger logger = Logger.getLogger(ChangePropagatorImpl.getSimpleName())
@@ -148,6 +148,7 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 		resultingChanges += propagatedChange
 
 		val consequentialChangesToRePropagate = propagatedChange.consequentialChanges.transactionalChangeSequence
+			.map[rewrapWithoutCorrespondenceChanges].filter[containsConcreteChange]
 			.filter [changeDomain.shouldTransitivelyPropagateChanges]
 
 		for (changeToPropagate : consequentialChangesToRePropagate) {
@@ -155,6 +156,25 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 		}
 
 		return resultingChanges
+	}
+	
+	private def dispatch TransactionalChange rewrapWithoutCorrespondenceChanges(CompositeTransactionalChange change) {
+		val newChange = VitruviusChangeFactory.instance.createCompositeTransactionalChange()
+		change.changes.map[rewrapWithoutCorrespondenceChanges].filterNull.forEach[newChange.addChange(it)];
+		return newChange;
+	}
+	
+	private def dispatch TransactionalChange rewrapWithoutCorrespondenceChanges(ConcreteChange change) {
+		return if (!change.affectedEObjects.exists[isInCorrespondenceModel]) change else null;
+	}
+	
+	private def dispatch TransactionalChange rewrapWithoutCorrespondenceChanges(TransactionalChange change) {
+		return change;
+	}
+	
+	private def boolean isInCorrespondenceModel(EObject object) {
+		val typeAndSuperTypes = Collections.singletonList(object.eClass) + object.eClass.EAllSuperTypes
+		return typeAndSuperTypes.exists[EPackage === CorrespondencePackage.eINSTANCE]
 	}
 
 	def private dispatch Iterable<TransactionalChange> getTransactionalChangeSequence(CompositeTransactionalChange composite) {
