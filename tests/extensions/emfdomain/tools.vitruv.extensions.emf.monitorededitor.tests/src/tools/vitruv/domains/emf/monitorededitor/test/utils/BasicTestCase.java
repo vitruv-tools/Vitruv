@@ -13,7 +13,6 @@ package tools.vitruv.domains.emf.monitorededitor.test.utils;
 
 import java.net.URL;
 
-import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.eclipse.emf.common.util.URI;
 
@@ -28,7 +27,6 @@ public class BasicTestCase {
             if (!hasLoggerBeenInitialized) {
                 org.apache.log4j.BasicConfigurator.configure();
                 hasLoggerBeenInitialized = true;
-                Logger.getRootLogger().setLevel(Level.ALL);
             }
         }
     }
