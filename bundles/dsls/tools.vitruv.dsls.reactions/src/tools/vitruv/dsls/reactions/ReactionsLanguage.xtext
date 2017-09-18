@@ -133,7 +133,6 @@ Routine:
 	'routine' name=ValidID input=RoutineInput '{'
 		matcher=MatcherBlock?
 		action=ActionBlock
-		(return=ReturnStatement)?
 	'}';
 
 RoutineInput:
@@ -150,19 +149,32 @@ MatcherBlock returns Matcher:
 	'}';
 
 MatcherStatement:
-	RetrieveModelElementStatement | MatcherCheckStatement;
+	RetrieveOrRequireAbscenceOfModelElement | MatcherCheckStatement;
 
-RetrieveModelElementStatement returns RetrieveModelElement:
-	{RetrieveModelElement}
-	// TODO remove uses of required property or set it to something like required?=!optional
-	((('val' name=ValidID '=')? 'retrieve' optional?='optional'?) | abscence?='require absence of') 
-	MetaclassReference 'corresponding to' correspondenceSource=CorrespondingObjectCodeBlock
-	('tagged with' Taggable)? ('with' precondition=PreconditionCodeBlock)?;
+RetrieveOrRequireAbscenceOfModelElement:
+	(RequireAbscenceOfModelElement | RetrieveModelElement) MetaclassReference 
+	'corresponding to' correspondenceSource=CorrespondingObjectCodeBlock ('tagged with' Taggable)? 
+	('with' precondition=PreconditionCodeBlock)?; 
+
+RequireAbscenceOfModelElement returns RequireAbscenceOfModelElement:
+	{RequireAbscenceOfModelElement}
+	'require absence of';
+	
+RetrieveModelElement:
+	('val' name=ValidID '=')? 'retrieve' retrievalType=RetrieveModelElementTypeStatement;
+
+
+RetrieveModelElementTypeStatement returns RetrieveModelElementType:
+	{RetrieveOneModelElement} (optional?='optional' | asserted?='asserted')? |
+	{RetrieveManyModelElements} 'many';
+
+enum RetrieveOneElementType:
+	optional='optional' | asserted='asserted' ;
 
 MatcherCheckStatement:
 	{MatcherCheckStatement}
-	'check' CodeBlock;
-
+	'check' (asserted?='asserted')? CodeBlock;
+	
 // *********** EFFECTS ***********
 
 ActionBlock returns Action:
@@ -211,8 +223,7 @@ fragment CodeBlock:
 	code=XExpression;
 
 fragment RoutineCallBlock:
-// TODO move the variable declaration and assignment for routine returns inside the code block not before it!
-	('val' name=ValidID '=')? 'call' CodeBlock;
+	'call' CodeBlock;
 
 fragment Taggable:
 	tag=TagCodeBlock;
@@ -235,7 +246,3 @@ CorrespondingObjectCodeBlock returns CorrespondingObjectCodeBlock:
 ExecutionCodeBlock returns ExecutionCodeBlock:
 	{ExecutionCodeBlock}
 	CodeBlock;
-	
-ReturnStatement returns ReturnStatement:
-	{ReturnStatement}
-	'return' element=ExistingElementReference;

@@ -13,13 +13,14 @@ import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 import tools.vitruv.framework.change.echange.EChange
-import tools.vitruv.framework.change.echange.compound.ExplicitUnsetEReference
-import tools.vitruv.framework.change.echange.compound.RemoveAndDeleteNonRoot
 import tools.vitruv.framework.change.echange.feature.reference.SubtractiveReferenceEChange
 import tools.vitruv.framework.tests.echange.EChangeTest
 
 import static extension tools.vitruv.framework.tests.echange.util.EChangeAssertHelper.*
-import tools.vitruv.framework.change.echange.compound.ReplaceAndDeleteNonRoot
+import tools.vitruv.framework.change.echange.feature.reference.RemoveEReference
+import tools.vitruv.framework.change.echange.eobject.DeleteEObject
+import org.eclipse.emf.ecore.EObject
+import tools.vitruv.framework.change.echange.feature.reference.ReplaceSingleValuedEReference
 
 /**
  * Test class for the concrete {@link ExplicitUnsetEReference} EChange,
@@ -159,7 +160,7 @@ class ExplicitUnsetEReferenceTest extends EChangeTest {
 		val unresolvedChange = createUnresolvedChange()
 
 		// Resolve		
- 		val resolvedChange = unresolvedChange.resolveBefore(resourceSet)
+ 		val resolvedChange = unresolvedChange.resolveBefore(uuidGeneratorAndResolver)
 		unresolvedChange.assertDifferentChangeSameClass(resolvedChange)			
 	}
 
@@ -413,80 +414,111 @@ class ExplicitUnsetEReferenceTest extends EChangeTest {
 	/**
 	 * Change is not resolved.
 	 */
-	def private assertIsNotResolved(ExplicitUnsetEReference<Root> change) {
-		Assert.assertFalse(change.isResolved)
-		Assert.assertNotSame(change.affectedEObject, affectedEObject)
-		for (c : change.changes) {
-			Assert.assertFalse(c.isResolved)
-		}		
+	def protected void localAssertIsNotResolved(List<? extends EChange> changes) {
+		EChangeTest.assertIsNotResolved(changes);
 		if (!affectedFeature.containment) {
 			if (!affectedFeature.many) {
-				Assert.assertNotSame((change.changes.get(0) as SubtractiveReferenceEChange<Root, NonRoot>).affectedEObject, oldValue)
+				Assert.assertNotSame((changes.get(0) as SubtractiveReferenceEChange<Root, NonRoot>).affectedEObject, oldValue)
 			} else {
-				Assert.assertNotSame((change.changes.get(0) as SubtractiveReferenceEChange<Root, NonRoot>).affectedEObject, oldValue3)
-				Assert.assertNotSame((change.changes.get(1) as SubtractiveReferenceEChange<Root, NonRoot>).affectedEObject, oldValue2)
-				Assert.assertNotSame((change.changes.get(2) as SubtractiveReferenceEChange<Root, NonRoot>).affectedEObject, oldValue)
+				Assert.assertNotSame((changes.get(0) as SubtractiveReferenceEChange<Root, NonRoot>).affectedEObject, oldValue3)
+				Assert.assertNotSame((changes.get(1) as SubtractiveReferenceEChange<Root, NonRoot>).affectedEObject, oldValue2)
+				Assert.assertNotSame((changes.get(2) as SubtractiveReferenceEChange<Root, NonRoot>).affectedEObject, oldValue)
 			}
 		} else {
 			if (!affectedFeature.many) {
-				Assert.assertNotSame((change.changes.get(0) as ReplaceAndDeleteNonRoot<Root, NonRoot>).removeChange.oldValue, oldValue)
+				assertUnresolvedRemoveAndDelete(changes.get(0), true, changes.get(1));
 			} else {
-				Assert.assertNotSame((change.changes.get(0) as RemoveAndDeleteNonRoot<Root, NonRoot>).removeChange.oldValue, oldValue3)
-				Assert.assertNotSame((change.changes.get(1) as RemoveAndDeleteNonRoot<Root, NonRoot>).removeChange.oldValue, oldValue2)
-				Assert.assertNotSame((change.changes.get(2) as RemoveAndDeleteNonRoot<Root, NonRoot>).removeChange.oldValue, oldValue)
+				assertUnresolvedRemoveAndDelete(changes.get(0), false, changes.get(1));
+				assertUnresolvedRemoveAndDelete(changes.get(2), false, changes.get(3));
+				assertUnresolvedRemoveAndDelete(changes.get(4), false, changes.get(5));
 			}
 		} 
+	}
+	
+	private def assertUnresolvedRemoveAndDelete(EChange removeChange, boolean replace, 
+		EChange deleteChange
+	) {
+		assertIsNotResolved(#[removeChange, deleteChange]);
+		val typedRemoveChange = if (replace) {
+			assertType(removeChange, ReplaceSingleValuedEReference);	
+		} else {
+			assertType(removeChange, RemoveEReference);
+		}
+				
+		val typedDeleteChange = assertType(deleteChange, DeleteEObject);
+		Assert.assertEquals(typedRemoveChange.oldValueID, typedDeleteChange.affectedEObjectID);
 	}
 	
 	/**
 	 * Change is resolved.
 	 */
-	def private assertIsResolved(ExplicitUnsetEReference<Root> change) {
-		Assert.assertNotNull(change)
-		Assert.assertSame(change.affectedEObject, affectedEObject)
-		Assert.assertTrue(change.isResolved)
+	def protected void localAssertIsResolved(List<EChange> changes) {
+		EChangeTest.assertIsResolved(changes);
 		if (!affectedFeature.containment) {
 			if (!affectedFeature.many) {
-				Assert.assertSame((change.changes.get(0) as SubtractiveReferenceEChange<Root, NonRoot>).oldValue, oldValue)
+				Assert.assertSame((changes.get(0) as SubtractiveReferenceEChange<Root, NonRoot>).oldValue, oldValue)
 			} else {
-				Assert.assertSame((change.changes.get(0) as SubtractiveReferenceEChange<Root, NonRoot>).oldValue, oldValue3)
-				Assert.assertSame((change.changes.get(1) as SubtractiveReferenceEChange<Root, NonRoot>).oldValue, oldValue2)
-				Assert.assertSame((change.changes.get(2) as SubtractiveReferenceEChange<Root, NonRoot>).oldValue, oldValue)				
+				Assert.assertSame((changes.get(0) as SubtractiveReferenceEChange<Root, NonRoot>).oldValue, oldValue3)
+				Assert.assertSame((changes.get(1) as SubtractiveReferenceEChange<Root, NonRoot>).oldValue, oldValue2)
+				Assert.assertSame((changes.get(2) as SubtractiveReferenceEChange<Root, NonRoot>).oldValue, oldValue)				
 			}
 		} else {
 			if (!affectedFeature.many) {
-				oldValue.assertEqualsOrCopy((change.changes.get(0) as ReplaceAndDeleteNonRoot<Root, NonRoot>).removeChange.oldValue)					
+				assertResolvedRemoveAndDelete(changes.get(0), true, changes.get(1), oldValue);
 			} else {
-				oldValue3.assertEqualsOrCopy((change.changes.get(0) as RemoveAndDeleteNonRoot<Root, NonRoot>).removeChange.oldValue)
-				oldValue2.assertEqualsOrCopy((change.changes.get(1) as RemoveAndDeleteNonRoot<Root, NonRoot>).removeChange.oldValue)
-				oldValue.assertEqualsOrCopy((change.changes.get(2) as RemoveAndDeleteNonRoot<Root, NonRoot>).removeChange.oldValue)				
+				assertResolvedRemoveAndDelete(changes.get(0), false, changes.get(1), oldValue3);
+				assertResolvedRemoveAndDelete(changes.get(2), false, changes.get(3), oldValue2);
+				assertResolvedRemoveAndDelete(changes.get(4), false, changes.get(5), oldValue);
 			}
 		}
+	}
+	
+	private def assertResolvedRemoveAndDelete(EChange removeChange, boolean replace,
+		EChange deleteChange, EObject oldValue
+	) {
+		assertIsResolved(#[removeChange, deleteChange]);
+		val typedRemoveChange = if (replace) {
+			assertType(removeChange, ReplaceSingleValuedEReference);	
+		} else {
+			assertType(removeChange, RemoveEReference);
+		}
+		val typedDeleteChange = assertType(deleteChange, DeleteEObject);
+		oldValue.assertEqualsOrCopy(typedRemoveChange.oldValue)
+		oldValue.assertEqualsOrCopy(typedDeleteChange.affectedEObject)
 	}
 	
 	/**
 	 * Creates new unresolved change.
 	 */
-	def private ExplicitUnsetEReference<Root> createUnresolvedChange() {
+	def private List<? extends EChange> createUnresolvedChange() {
 		var List<EChange> changes = new ArrayList<EChange>
 		if (!affectedFeature.containment) {
 			if (!affectedFeature.many) {
-				changes.add(atomicFactory.createReplaceSingleReferenceChange(affectedEObject, affectedFeature, oldValue, null))
+				val change = atomicFactory.createReplaceSingleReferenceChange(affectedEObject, affectedFeature, oldValue, null)
+				change.setIsUnset = true;
+				changes.add(change)
 			} else {
 				changes.add(atomicFactory.createRemoveReferenceChange(affectedEObject, affectedFeature, oldValue3, 2))
 				changes.add(atomicFactory.createRemoveReferenceChange(affectedEObject, affectedFeature, oldValue2, 1))
-				changes.add(atomicFactory.createRemoveReferenceChange(affectedEObject, affectedFeature, oldValue, 0))
+				val lastChange = atomicFactory.createRemoveReferenceChange(affectedEObject, affectedFeature, oldValue, 0)
+				lastChange.isUnset = true
+				changes.add(lastChange)
 			}
 		} else {
 			if (!affectedFeature.many) {
-				changes.add(compoundFactory.createReplaceAndDeleteNonRootChange(affectedEObject, affectedFeature, oldValue, null))
+				val change = compoundFactory.createReplaceAndDeleteNonRootChange(affectedEObject, affectedFeature, oldValue)
+				(change.get(0) as ReplaceSingleValuedEReference<?,?>).isUnset = true;
+				changes.addAll(change)
 			} else {
-				changes.add(compoundFactory.createRemoveAndDeleteNonRootChange(affectedEObject, affectedFeature, oldValue3, 2, null))
-				changes.add(compoundFactory.createRemoveAndDeleteNonRootChange(affectedEObject, affectedFeature, oldValue2, 1, null))
-				changes.add(compoundFactory.createRemoveAndDeleteNonRootChange(affectedEObject, affectedFeature, oldValue, 0, null))
+				changes.addAll(compoundFactory.createRemoveAndDeleteNonRootChange(affectedEObject, affectedFeature, oldValue3, 2))
+				changes.addAll(compoundFactory.createRemoveAndDeleteNonRootChange(affectedEObject, affectedFeature, oldValue2, 1))
+				val lastChange = compoundFactory.createRemoveAndDeleteNonRootChange(affectedEObject, affectedFeature, oldValue, 0)
+				(lastChange.get(0) as RemoveEReference<?,?>).isUnset = true;
+				changes.addAll(lastChange)
 			}
 		}
-		return compoundFactory.<Root, NonRoot>createExplicitUnsetEReferenceChange(affectedEObject, affectedFeature, changes)
+		
+		return changes
 	}
 	
 	/**
@@ -498,20 +530,19 @@ class ExplicitUnsetEReferenceTest extends EChangeTest {
 		
 		// Create change
 		val unresolvedChange = createUnresolvedChange()
-		unresolvedChange.assertIsNotResolved()
+		unresolvedChange.localAssertIsNotResolved()
 		
 		// Resolve 1
-		val resolvedChange = unresolvedChange.resolveBefore(resourceSet)
-			as ExplicitUnsetEReference<Root>
-		resolvedChange.assertIsResolved()
+		val resolvedChange = unresolvedChange.resolveBefore(uuidGeneratorAndResolver)
+		resolvedChange.localAssertIsResolved()
 		
 		// Model should be unaffected
 		assertIsStateBefore
 		
 		// Resolve 2
-		var resolvedAndAppliedChange = unresolvedChange.resolveBeforeAndApplyForward(resourceSet)
-			as ExplicitUnsetEReference<Root>
-		resolvedAndAppliedChange.assertIsResolved()
+		var resolvedAndAppliedChange = unresolvedChange.resolveBefore(uuidGeneratorAndResolver)
+		resolvedAndAppliedChange.applyForward
+		resolvedAndAppliedChange.localAssertIsResolved()
 		
 		// State after
 		assertIsStateAfter
@@ -526,24 +557,23 @@ class ExplicitUnsetEReferenceTest extends EChangeTest {
 		
 		// Create change
 		val unresolvedChange = createUnresolvedChange()
-		unresolvedChange.assertIsNotResolved()
+		unresolvedChange.localAssertIsNotResolved()
 		
 		// Set state after
 		prepareStateAfter
 		assertIsStateAfter		
 		
 		// Resolve 1
-		var resolvedChange = unresolvedChange.resolveAfter(resourceSet)
-			as ExplicitUnsetEReference<Root>
-		resolvedChange.assertIsResolved()
+		var resolvedChange = unresolvedChange.resolveAfter(uuidGeneratorAndResolver)
+		resolvedChange.localAssertIsResolved
 		
 		// Model should be unaffected.
 		assertIsStateAfter	
 		
 		// Resolve 2
-		var resolvedAndAppliedChange = unresolvedChange.resolveAfterAndApplyBackward(resourceSet)
-			as ExplicitUnsetEReference<Root>
-		resolvedAndAppliedChange.assertIsResolved()
+		var resolvedAndAppliedChange = unresolvedChange.resolveAfter(uuidGeneratorAndResolver)
+		resolvedAndAppliedChange.applyBackward
+		resolvedAndAppliedChange.localAssertIsResolved
 		
 		// State before
 		assertIsStateBefore	
@@ -557,8 +587,7 @@ class ExplicitUnsetEReferenceTest extends EChangeTest {
 		assertIsStateBefore
 		
 		// Create and resolve change
-		val resolvedChange = createUnresolvedChange().resolveBefore(resourceSet)
-			as ExplicitUnsetEReference<Root>
+		val resolvedChange = createUnresolvedChange().resolveBefore(uuidGeneratorAndResolver)
 			
 		// Apply forward
 		Assert.assertTrue(resolvedChange.applyForward)
@@ -575,8 +604,7 @@ class ExplicitUnsetEReferenceTest extends EChangeTest {
 		assertIsStateBefore
 		
 		// Create and resolve change
-		val resolvedChange = createUnresolvedChange().resolveBefore(resourceSet)
-			as ExplicitUnsetEReference<Root>
+		val resolvedChange = createUnresolvedChange().resolveBefore(uuidGeneratorAndResolver)
 			
 		// Set state after
 		prepareStateAfter

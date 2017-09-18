@@ -1,6 +1,7 @@
 package tools.vitruv.framework.change.description
 
 import org.eclipse.xtend.lib.annotations.Data
+import tools.vitruv.framework.change.uuid.UuidResolver
 
 @Data
 class PropagatedChange {
@@ -13,9 +14,11 @@ class PropagatedChange {
 	Consequential change: «consequentialChanges»
 	'''
 	
-	def applyBackward() {
-		consequentialChanges.applyBackward();
-		originalChange.applyBackward();
+	def applyBackward(UuidResolver uuidResolver) {
+		consequentialChanges.unresolveIfApplicable;
+		originalChange.unresolveIfApplicable;
+		consequentialChanges.resolveAfterAndApplyBackward(uuidResolver);
+		originalChange.resolveAfterAndApplyBackward(uuidResolver);
 	}
 	
 }

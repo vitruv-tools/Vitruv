@@ -18,7 +18,7 @@ package tools.vitruv.framework.change.echange;
  * @model abstract="true" TBounds="org.eclipse.emf.ecore.EJavaObject"
  * @generated
  */
-public interface AdditiveEChange<T extends Object> extends AtomicEChange {
+public interface AdditiveEChange<T extends Object> extends EChange {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -27,7 +27,7 @@ public interface AdditiveEChange<T extends Object> extends AtomicEChange {
 	 * Get the added value.
 	 * @return The newly added value.
 	 * <!-- end-model-doc -->
-	 * @model kind="operation" unique="false" required="true"
+	 * @model kind="operation" required="true"
 	 * @generated
 	 */
 	T getNewValue();

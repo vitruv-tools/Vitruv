@@ -1,11 +1,11 @@
 package tools.vitruv.dsls.reactions.builder
 
-import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsSegment
-import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsLanguageFactory
-import tools.vitruv.framework.domains.VitruvDomain
-import tools.vitruv.dsls.mirbase.mirBase.MirBaseFactory
-import tools.vitruv.dsls.reactions.builder.FluentReactionsSegmentBuilder.ReactionsSegmentTargetBuilder
 import org.eclipse.xtend.lib.annotations.Accessors
+import tools.vitruv.dsls.mirbase.mirBase.MirBaseFactory
+import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsLanguageFactory
+import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsSegment
+import tools.vitruv.framework.domains.VitruvDomain
+
 import static com.google.common.base.Preconditions.*
 
 @Accessors(PACKAGE_GETTER)
@@ -25,8 +25,7 @@ class FluentReactionsSegmentBuilder extends FluentReactionElementBuilder {
 
 	override protected attachmentPreparation() {
 		super.attachmentPreparation()
-		checkState(segment.routines.size > 0, '''No routines were added to this reaction segment («segment.name»)!''')
-		checkState(segment.reactions.size > 0, '''No reactions were added to this reaction segment («segment.name»!''')
+		checkState(segment.routines.size + segment.reactions.size > 0, '''Neither routines nor reactions were added to the reaction segment «segment.name»!''')
 	}
 	
 	static class ReactionsSegmentSourceBuilder {

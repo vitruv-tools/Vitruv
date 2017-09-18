@@ -323,7 +323,7 @@ public class AllElementTypes2PackageImpl extends EPackageImpl implements AllElem
 		initEReference(getNonRootObjectContainerHelper2_NonRootObjectsContainment2(), this.getNonRoot2(), null, "nonRootObjectsContainment2", null, 0, -1, NonRootObjectContainerHelper2.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(identified2EClass, Identified2.class, "Identified2", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getIdentified2_Id2(), ecorePackage.getEString(), "id2", null, 1, 1, Identified2.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getIdentified2_Id2(), ecorePackage.getEString(), "id2", null, 1, 1, Identified2.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		// Create resource
 		createResource(eNS_URI);

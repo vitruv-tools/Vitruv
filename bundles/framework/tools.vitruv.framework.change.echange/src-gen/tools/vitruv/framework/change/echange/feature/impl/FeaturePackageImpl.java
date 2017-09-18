@@ -2,6 +2,7 @@
  */
 package tools.vitruv.framework.change.echange.feature.impl;
 
+import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EGenericType;
 import org.eclipse.emf.ecore.EPackage;
@@ -13,26 +14,39 @@ import org.eclipse.emf.ecore.impl.EPackageImpl;
 
 import tools.vitruv.framework.change.echange.EChangePackage;
 
-import tools.vitruv.framework.change.echange.compound.CompoundPackage;
-import tools.vitruv.framework.change.echange.compound.impl.CompoundPackageImpl;
 import tools.vitruv.framework.change.echange.eobject.EobjectPackage;
+
 import tools.vitruv.framework.change.echange.eobject.impl.EobjectPackageImpl;
+
 import tools.vitruv.framework.change.echange.feature.FeatureEChange;
 import tools.vitruv.framework.change.echange.feature.FeatureFactory;
 import tools.vitruv.framework.change.echange.feature.FeaturePackage;
 import tools.vitruv.framework.change.echange.feature.UpdateMultiValuedFeatureEChange;
 import tools.vitruv.framework.change.echange.feature.UpdateSingleValuedFeatureEChange;
+
 import tools.vitruv.framework.change.echange.feature.attribute.AttributePackage;
+
 import tools.vitruv.framework.change.echange.feature.attribute.impl.AttributePackageImpl;
+
 import tools.vitruv.framework.change.echange.feature.list.ListPackage;
+
 import tools.vitruv.framework.change.echange.feature.list.impl.ListPackageImpl;
+
 import tools.vitruv.framework.change.echange.feature.reference.ReferencePackage;
+
 import tools.vitruv.framework.change.echange.feature.reference.impl.ReferencePackageImpl;
+
 import tools.vitruv.framework.change.echange.feature.single.SinglePackage;
+
 import tools.vitruv.framework.change.echange.feature.single.impl.SinglePackageImpl;
+
 import tools.vitruv.framework.change.echange.impl.EChangePackageImpl;
+
 import tools.vitruv.framework.change.echange.root.RootPackage;
+
 import tools.vitruv.framework.change.echange.root.impl.RootPackageImpl;
+
+import tools.vitruv.framework.change.uuid.UuidPackage;
 
 /**
  * <!-- begin-user-doc -->
@@ -110,13 +124,13 @@ public class FeaturePackageImpl extends EPackageImpl implements FeaturePackage {
 
 		// Initialize simple dependencies
 		EcorePackage.eINSTANCE.eClass();
+		UuidPackage.eINSTANCE.eClass();
 
 		// Obtain or create and register interdependencies
 		AttributePackageImpl theAttributePackage = (AttributePackageImpl)(EPackage.Registry.INSTANCE.getEPackage(AttributePackage.eNS_URI) instanceof AttributePackageImpl ? EPackage.Registry.INSTANCE.getEPackage(AttributePackage.eNS_URI) : AttributePackage.eINSTANCE);
 		EChangePackageImpl theEChangePackage = (EChangePackageImpl)(EPackage.Registry.INSTANCE.getEPackage(EChangePackage.eNS_URI) instanceof EChangePackageImpl ? EPackage.Registry.INSTANCE.getEPackage(EChangePackage.eNS_URI) : EChangePackage.eINSTANCE);
 		ListPackageImpl theListPackage = (ListPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(ListPackage.eNS_URI) instanceof ListPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(ListPackage.eNS_URI) : ListPackage.eINSTANCE);
 		SinglePackageImpl theSinglePackage = (SinglePackageImpl)(EPackage.Registry.INSTANCE.getEPackage(SinglePackage.eNS_URI) instanceof SinglePackageImpl ? EPackage.Registry.INSTANCE.getEPackage(SinglePackage.eNS_URI) : SinglePackage.eINSTANCE);
-		CompoundPackageImpl theCompoundPackage = (CompoundPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(CompoundPackage.eNS_URI) instanceof CompoundPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(CompoundPackage.eNS_URI) : CompoundPackage.eINSTANCE);
 		ReferencePackageImpl theReferencePackage = (ReferencePackageImpl)(EPackage.Registry.INSTANCE.getEPackage(ReferencePackage.eNS_URI) instanceof ReferencePackageImpl ? EPackage.Registry.INSTANCE.getEPackage(ReferencePackage.eNS_URI) : ReferencePackage.eINSTANCE);
 		EobjectPackageImpl theEobjectPackage = (EobjectPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(EobjectPackage.eNS_URI) instanceof EobjectPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(EobjectPackage.eNS_URI) : EobjectPackage.eINSTANCE);
 		RootPackageImpl theRootPackage = (RootPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(RootPackage.eNS_URI) instanceof RootPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(RootPackage.eNS_URI) : RootPackage.eINSTANCE);
@@ -127,7 +141,6 @@ public class FeaturePackageImpl extends EPackageImpl implements FeaturePackage {
 		theEChangePackage.createPackageContents();
 		theListPackage.createPackageContents();
 		theSinglePackage.createPackageContents();
-		theCompoundPackage.createPackageContents();
 		theReferencePackage.createPackageContents();
 		theEobjectPackage.createPackageContents();
 		theRootPackage.createPackageContents();
@@ -138,7 +151,6 @@ public class FeaturePackageImpl extends EPackageImpl implements FeaturePackage {
 		theEChangePackage.initializePackageContents();
 		theListPackage.initializePackageContents();
 		theSinglePackage.initializePackageContents();
-		theCompoundPackage.initializePackageContents();
 		theReferencePackage.initializePackageContents();
 		theEobjectPackage.initializePackageContents();
 		theRootPackage.initializePackageContents();
@@ -177,6 +189,15 @@ public class FeaturePackageImpl extends EPackageImpl implements FeaturePackage {
 	 */
 	public EReference getFeatureEChange_AffectedEObject() {
 		return (EReference)featureEChangeEClass.getEStructuralFeatures().get(1);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getFeatureEChange_AffectedEObjectID() {
+		return (EAttribute)featureEChangeEClass.getEStructuralFeatures().get(2);
 	}
 
 	/**
@@ -228,6 +249,7 @@ public class FeaturePackageImpl extends EPackageImpl implements FeaturePackage {
 		featureEChangeEClass = createEClass(FEATURE_ECHANGE);
 		createEReference(featureEChangeEClass, FEATURE_ECHANGE__AFFECTED_FEATURE);
 		createEReference(featureEChangeEClass, FEATURE_ECHANGE__AFFECTED_EOBJECT);
+		createEAttribute(featureEChangeEClass, FEATURE_ECHANGE__AFFECTED_EOBJECT_ID);
 
 		updateMultiValuedFeatureEChangeEClass = createEClass(UPDATE_MULTI_VALUED_FEATURE_ECHANGE);
 
@@ -260,6 +282,7 @@ public class FeaturePackageImpl extends EPackageImpl implements FeaturePackage {
 		// Obtain other dependent packages
 		EcorePackage theEcorePackage = (EcorePackage)EPackage.Registry.INSTANCE.getEPackage(EcorePackage.eNS_URI);
 		EChangePackage theEChangePackage = (EChangePackage)EPackage.Registry.INSTANCE.getEPackage(EChangePackage.eNS_URI);
+		UuidPackage theUuidPackage = (UuidPackage)EPackage.Registry.INSTANCE.getEPackage(UuidPackage.eNS_URI);
 
 		// Create type parameters
 		ETypeParameter featureEChangeEClass_A = addETypeParameter(featureEChangeEClass, "A");
@@ -284,7 +307,7 @@ public class FeaturePackageImpl extends EPackageImpl implements FeaturePackage {
 		updateSingleValuedFeatureEChangeEClass_F.getEBounds().add(g1);
 
 		// Add supertypes to classes
-		featureEChangeEClass.getESuperTypes().add(theEChangePackage.getAtomicEChange());
+		featureEChangeEClass.getESuperTypes().add(theEChangePackage.getEChange());
 		g1 = createEGenericType(this.getFeatureEChange());
 		EGenericType g2 = createEGenericType(updateMultiValuedFeatureEChangeEClass_A);
 		g1.getETypeArguments().add(g2);
@@ -304,6 +327,7 @@ public class FeaturePackageImpl extends EPackageImpl implements FeaturePackage {
 		initEReference(getFeatureEChange_AffectedFeature(), g1, null, "affectedFeature", null, 1, 1, FeatureEChange.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		g1 = createEGenericType(featureEChangeEClass_A);
 		initEReference(getFeatureEChange_AffectedEObject(), g1, null, "affectedEObject", null, 1, 1, FeatureEChange.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getFeatureEChange_AffectedEObjectID(), theUuidPackage.getUuid(), "affectedEObjectID", null, 0, 1, FeatureEChange.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(updateMultiValuedFeatureEChangeEClass, UpdateMultiValuedFeatureEChange.class, "UpdateMultiValuedFeatureEChange", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 

@@ -32,7 +32,7 @@ public interface Identified extends EObject {
 	 * @return the value of the '<em>Id</em>' attribute.
 	 * @see #setId(String)
 	 * @see allElementTypes.AllElementTypesPackage#getIdentified_Id()
-	 * @model required="true"
+	 * @model id="true" required="true"
 	 * @generated
 	 */
 	String getId();

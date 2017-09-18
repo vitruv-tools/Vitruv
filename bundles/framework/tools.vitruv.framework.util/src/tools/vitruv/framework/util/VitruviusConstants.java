@@ -7,6 +7,7 @@ public class VitruviusConstants {
     private static final String PATHMAP_PREFIX = "pathmap:/";
     private static final String PLATFORM_RESOURCE_PREFIX = "platform:/resource/";
     private static final String CORRESPONDENCES_FILE_EXT = "correspondence";
+    private static final String UUID_FILE_EXT = "uuid";
     private static final String DEFAULT_NAME_OF_IDENTIFIER_FEATURE = "id";
     private static final String Tuid_SEGMENT_SEPERATOR = "#";
     private static final String DEFAULT_NAME_OF_NAME_FEAUTRE = "entityName";
@@ -41,6 +42,10 @@ public class VitruviusConstants {
 
     public static String getCorrespondencesFileExt() {
         return CORRESPONDENCES_FILE_EXT;
+    }
+    
+    public static String getUuidFileExt() {
+        return UUID_FILE_EXT;
     }
 
     public static String getDefaultNameOfIdentifierFeature() {

@@ -26,6 +26,7 @@ import tools.vitruv.framework.change.echange.feature.list.impl.RemoveFromListECh
  * </p>
  * <ul>
  *   <li>{@link tools.vitruv.framework.change.echange.feature.attribute.impl.RemoveEAttributeValueImpl#getOldValue <em>Old Value</em>}</li>
+ *   <li>{@link tools.vitruv.framework.change.echange.feature.attribute.impl.RemoveEAttributeValueImpl#isIsUnset <em>Is Unset</em>}</li>
  * </ul>
  *
  * @generated
@@ -40,6 +41,26 @@ public class RemoveEAttributeValueImpl<A extends EObject, T extends Object> exte
 	 * @ordered
 	 */
 	protected T oldValue;
+
+	/**
+	 * The default value of the '{@link #isIsUnset() <em>Is Unset</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isIsUnset()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final boolean IS_UNSET_EDEFAULT = false;
+
+	/**
+	 * The cached value of the '{@link #isIsUnset() <em>Is Unset</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isIsUnset()
+	 * @generated
+	 * @ordered
+	 */
+	protected boolean isUnset = IS_UNSET_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -86,11 +107,34 @@ public class RemoveEAttributeValueImpl<A extends EObject, T extends Object> exte
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public boolean isIsUnset() {
+		return isUnset;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setIsUnset(boolean newIsUnset) {
+		boolean oldIsUnset = isUnset;
+		isUnset = newIsUnset;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, AttributePackage.REMOVE_EATTRIBUTE_VALUE__IS_UNSET, oldIsUnset, isUnset));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 			case AttributePackage.REMOVE_EATTRIBUTE_VALUE__OLD_VALUE:
 				return getOldValue();
+			case AttributePackage.REMOVE_EATTRIBUTE_VALUE__IS_UNSET:
+				return isIsUnset();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -107,6 +151,9 @@ public class RemoveEAttributeValueImpl<A extends EObject, T extends Object> exte
 			case AttributePackage.REMOVE_EATTRIBUTE_VALUE__OLD_VALUE:
 				setOldValue((T)newValue);
 				return;
+			case AttributePackage.REMOVE_EATTRIBUTE_VALUE__IS_UNSET:
+				setIsUnset((Boolean)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -122,6 +169,9 @@ public class RemoveEAttributeValueImpl<A extends EObject, T extends Object> exte
 			case AttributePackage.REMOVE_EATTRIBUTE_VALUE__OLD_VALUE:
 				setOldValue((T)null);
 				return;
+			case AttributePackage.REMOVE_EATTRIBUTE_VALUE__IS_UNSET:
+				setIsUnset(IS_UNSET_EDEFAULT);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -136,6 +186,8 @@ public class RemoveEAttributeValueImpl<A extends EObject, T extends Object> exte
 		switch (featureID) {
 			case AttributePackage.REMOVE_EATTRIBUTE_VALUE__OLD_VALUE:
 				return oldValue != null;
+			case AttributePackage.REMOVE_EATTRIBUTE_VALUE__IS_UNSET:
+				return isUnset != IS_UNSET_EDEFAULT;
 		}
 		return super.eIsSet(featureID);
 	}
@@ -155,6 +207,7 @@ public class RemoveEAttributeValueImpl<A extends EObject, T extends Object> exte
 		if (baseClass == SubtractiveAttributeEChange.class) {
 			switch (derivedFeatureID) {
 				case AttributePackage.REMOVE_EATTRIBUTE_VALUE__OLD_VALUE: return AttributePackage.SUBTRACTIVE_ATTRIBUTE_ECHANGE__OLD_VALUE;
+				case AttributePackage.REMOVE_EATTRIBUTE_VALUE__IS_UNSET: return AttributePackage.SUBTRACTIVE_ATTRIBUTE_ECHANGE__IS_UNSET;
 				default: return -1;
 			}
 		}
@@ -176,6 +229,7 @@ public class RemoveEAttributeValueImpl<A extends EObject, T extends Object> exte
 		if (baseClass == SubtractiveAttributeEChange.class) {
 			switch (baseFeatureID) {
 				case AttributePackage.SUBTRACTIVE_ATTRIBUTE_ECHANGE__OLD_VALUE: return AttributePackage.REMOVE_EATTRIBUTE_VALUE__OLD_VALUE;
+				case AttributePackage.SUBTRACTIVE_ATTRIBUTE_ECHANGE__IS_UNSET: return AttributePackage.REMOVE_EATTRIBUTE_VALUE__IS_UNSET;
 				default: return -1;
 			}
 		}
@@ -194,6 +248,8 @@ public class RemoveEAttributeValueImpl<A extends EObject, T extends Object> exte
 		StringBuffer result = new StringBuffer(super.toString());
 		result.append(" (oldValue: ");
 		result.append(oldValue);
+		result.append(", isUnset: ");
+		result.append(isUnset);
 		result.append(')');
 		return result.toString();
 	}

@@ -9,11 +9,11 @@ import org.eclipse.emf.ecore.EAttribute
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
-import tools.vitruv.framework.change.echange.compound.ExplicitUnsetEAttribute
 import tools.vitruv.framework.change.echange.feature.attribute.SubtractiveAttributeEChange
 import tools.vitruv.framework.tests.echange.EChangeTest
 
 import static extension tools.vitruv.framework.tests.echange.util.EChangeAssertHelper.*
+import tools.vitruv.framework.change.echange.EChange
 
 /**
  * Test class for the concrete {@link ExplicitUnsetEAttribute} EChange,
@@ -100,7 +100,7 @@ class ExplicitUnsetEAttributeTest extends EChangeTest {
 		val unresolvedChange = createUnresolvedChange()
 
 		// Resolve		
- 		val resolvedChange = unresolvedChange.resolveBefore(resourceSet)
+ 		val resolvedChange = unresolvedChange.resolveBefore(uuidGeneratorAndResolver)
 		unresolvedChange.assertDifferentChangeSameClass(resolvedChange)	
 	}
 		
@@ -219,31 +219,23 @@ class ExplicitUnsetEAttributeTest extends EChangeTest {
 	/**
 	 * Change is not resolved.
 	 */
-	def private static assertIsNotResolved(ExplicitUnsetEAttribute<Root, Integer> change, Root affectedRootObject) {
-		Assert.assertFalse(change.isResolved)
-		Assert.assertNotSame(change.affectedEObject, affectedRootObject)
-		for (c : change.atomicChanges) {
-			Assert.assertFalse(c.isResolved)
-			Assert.assertNotSame((c as SubtractiveAttributeEChange<Root, Integer>).affectedEObject, affectedRootObject)
-		}
+	def protected static assertIsNotResolved(List<? extends EChange> changes) {
+		EChangeTest.assertIsNotResolved(changes);
 	}
 	
 	/**
 	 * Change is resolved.
 	 */
-	def private static assertIsResolved(ExplicitUnsetEAttribute<Root, Integer> change, Root affectedRootObject) {
-		Assert.assertNotNull(change)
-		Assert.assertTrue(change.isResolved)
-		Assert.assertSame(change.affectedEObject, affectedRootObject)
-		for (c : change.atomicChanges) {
-			Assert.assertSame((c as SubtractiveAttributeEChange<Root, Integer>).affectedEObject, affectedRootObject)
-		}		
+	def private static assertIsResolved(List<? extends EChange> changes, Root affectedRootObject) {
+		assertIsResolved(changes);
+		val unsetChange = assertType(changes.last, SubtractiveAttributeEChange);
+		Assert.assertTrue(unsetChange.isIsUnset)
 	}
 	
 	/**
 	 * Creates new unresolved change.
 	 */
-	def private ExplicitUnsetEAttribute<Root, Integer> createUnresolvedChange() {
+	def private List<? extends EChange> createUnresolvedChange() {
 		var List<SubtractiveAttributeEChange<Root, Integer>> subtractiveChanges = 
 			new ArrayList<SubtractiveAttributeEChange<Root, Integer>>
 		if (!affectedFeature.many) {
@@ -255,9 +247,10 @@ class ExplicitUnsetEAttributeTest extends EChangeTest {
 			subtractiveChanges.add(atomicFactory.<Root, Integer>createRemoveAttributeChange
 				(affectedEObject, affectedFeature, 1, OLD_VALUE_2))
 			subtractiveChanges.add(atomicFactory.<Root, Integer>createRemoveAttributeChange
-				(affectedEObject, affectedFeature, 0, OLD_VALUE))				
+				(affectedEObject, affectedFeature, 0, OLD_VALUE))		
 		}
-		return compoundFactory.<Root, Integer>createExplicitUnsetEAttributeChange(affectedEObject, affectedFeature, subtractiveChanges)
+		subtractiveChanges.last.setIsUnset = true;
+		return subtractiveChanges
 	}	
 	
 	/**
@@ -269,19 +262,18 @@ class ExplicitUnsetEAttributeTest extends EChangeTest {
 		
 		// Create change
 		val unresolvedChange = createUnresolvedChange()
-		unresolvedChange.assertIsNotResolved(affectedEObject)
+		unresolvedChange.assertIsNotResolved
 		
 		// Resolve 1
-		var resolvedChange = unresolvedChange.resolveBefore(resourceSet)
-			as ExplicitUnsetEAttribute<Root, Integer>
+		var resolvedChange = unresolvedChange.resolveBefore(uuidGeneratorAndResolver)
 		resolvedChange.assertIsResolved(affectedEObject)
 		
 		// Model should be unaffected.
 		assertIsStateBefore
 				
 		// Resolve 2
-		var resolvedAndAppliedChange = unresolvedChange.resolveBeforeAndApplyForward(resourceSet)
-			as ExplicitUnsetEAttribute<Root, Integer>
+		var resolvedAndAppliedChange = unresolvedChange.resolveBefore(uuidGeneratorAndResolver)
+		resolvedAndAppliedChange.applyForward
 		resolvedAndAppliedChange.assertIsResolved(affectedEObject)
 		
 		// State after
@@ -297,22 +289,21 @@ class ExplicitUnsetEAttributeTest extends EChangeTest {
 		
 		// Create change
 		val unresolvedChange = createUnresolvedChange()
-		unresolvedChange.assertIsNotResolved(affectedEObject)
+		unresolvedChange.assertIsNotResolved
 		
 		// Set state after
 		prepareStateAfter
 		
 		// Resolve 1
-		var resolvedChange = unresolvedChange.resolveAfter(resourceSet)
-			as ExplicitUnsetEAttribute<Root, Integer>
+		var resolvedChange = unresolvedChange.resolveAfter(uuidGeneratorAndResolver)
 		resolvedChange.assertIsResolved(affectedEObject)
 		
 		// Model should be unaffected.
 		assertIsStateAfter	
 		
 		// Resolve 2
-		var resolvedAndAppliedChange = unresolvedChange.resolveAfterAndApplyBackward(resourceSet)
-			as ExplicitUnsetEAttribute<Root, Integer>
+		var resolvedAndAppliedChange = unresolvedChange.resolveAfter(uuidGeneratorAndResolver)
+		resolvedAndAppliedChange.applyBackward
 		resolvedAndAppliedChange.assertIsResolved(affectedEObject)
 		
 		// State before
@@ -327,8 +318,7 @@ class ExplicitUnsetEAttributeTest extends EChangeTest {
 		assertIsStateBefore
 		
 		// Create and resolve change
-		val resolvedChange = createUnresolvedChange().resolveBefore(resourceSet)
-			as ExplicitUnsetEAttribute<Root, Integer>
+		val resolvedChange = createUnresolvedChange().resolveBefore(uuidGeneratorAndResolver)
 			
 		// Apply forward
 		resolvedChange.assertApplyForward
@@ -345,8 +335,7 @@ class ExplicitUnsetEAttributeTest extends EChangeTest {
 		assertIsStateBefore
 		
 		// Create and resolve change
-		val resolvedChange = createUnresolvedChange().resolveBefore(resourceSet)
-			as ExplicitUnsetEAttribute<Root, Integer>
+		val resolvedChange = createUnresolvedChange().resolveBefore(uuidGeneratorAndResolver)
 			
 		// Set state after
 		prepareStateAfter

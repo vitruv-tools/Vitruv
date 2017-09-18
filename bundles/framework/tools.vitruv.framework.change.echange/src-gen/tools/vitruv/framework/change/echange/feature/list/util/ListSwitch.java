@@ -9,7 +9,6 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.util.Switch;
 
 import tools.vitruv.framework.change.echange.AdditiveEChange;
-import tools.vitruv.framework.change.echange.AtomicEChange;
 import tools.vitruv.framework.change.echange.EChange;
 import tools.vitruv.framework.change.echange.SubtractiveEChange;
 
@@ -80,7 +79,6 @@ public class ListSwitch<T1> extends Switch<T1> {
 				T1 result = caseUpdateSingleListEntryEChange(updateSingleListEntryEChange);
 				if (result == null) result = caseUpdateMultiValuedFeatureEChange(updateSingleListEntryEChange);
 				if (result == null) result = caseFeatureEChange(updateSingleListEntryEChange);
-				if (result == null) result = caseAtomicEChange(updateSingleListEntryEChange);
 				if (result == null) result = caseEChange(updateSingleListEntryEChange);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
@@ -92,7 +90,6 @@ public class ListSwitch<T1> extends Switch<T1> {
 				if (result == null) result = caseAdditiveEChange(insertInListEChange);
 				if (result == null) result = caseUpdateMultiValuedFeatureEChange(insertInListEChange);
 				if (result == null) result = caseFeatureEChange(insertInListEChange);
-				if (result == null) result = caseAtomicEChange(insertInListEChange);
 				if (result == null) result = caseEChange(insertInListEChange);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
@@ -104,7 +101,6 @@ public class ListSwitch<T1> extends Switch<T1> {
 				if (result == null) result = caseSubtractiveEChange(removeFromListEChange);
 				if (result == null) result = caseUpdateMultiValuedFeatureEChange(removeFromListEChange);
 				if (result == null) result = caseFeatureEChange(removeFromListEChange);
-				if (result == null) result = caseAtomicEChange(removeFromListEChange);
 				if (result == null) result = caseEChange(removeFromListEChange);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
@@ -170,21 +166,6 @@ public class ListSwitch<T1> extends Switch<T1> {
 	 * @generated
 	 */
 	public T1 caseEChange(EChange object) {
-		return null;
-	}
-
-	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Atomic EChange</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Atomic EChange</em>'.
-	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-	 * @generated
-	 */
-	public T1 caseAtomicEChange(AtomicEChange object) {
 		return null;
 	}
 

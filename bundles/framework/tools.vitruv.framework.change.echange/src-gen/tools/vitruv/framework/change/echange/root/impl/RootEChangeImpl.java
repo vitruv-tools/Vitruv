@@ -3,12 +3,14 @@
 package tools.vitruv.framework.change.echange.root.impl;
 
 import org.eclipse.emf.common.notify.Notification;
+
 import org.eclipse.emf.ecore.EClass;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
 import org.eclipse.emf.ecore.resource.Resource;
-import tools.vitruv.framework.change.echange.impl.AtomicEChangeImpl;
+
+import tools.vitruv.framework.change.echange.impl.EChangeImpl;
 
 import tools.vitruv.framework.change.echange.root.RootEChange;
 import tools.vitruv.framework.change.echange.root.RootPackage;
@@ -28,7 +30,7 @@ import tools.vitruv.framework.change.echange.root.RootPackage;
  *
  * @generated
  */
-public abstract class RootEChangeImpl extends AtomicEChangeImpl implements RootEChange {
+public abstract class RootEChangeImpl extends EChangeImpl implements RootEChange {
 	/**
 	 * The default value of the '{@link #getUri() <em>Uri</em>}' attribute.
 	 * <!-- begin-user-doc -->

@@ -1,8 +1,6 @@
 package tools.vitruv.framework.change.echange.resolve
 
 import tools.vitruv.framework.change.echange.EChange
-import tools.vitruv.framework.change.echange.AtomicEChange
-import tools.vitruv.framework.change.echange.compound.CompoundEChange
 import tools.vitruv.framework.change.echange.eobject.EObjectExistenceEChange
 import tools.vitruv.framework.change.echange.feature.FeatureEChange
 import tools.vitruv.framework.change.echange.feature.reference.InsertEReference
@@ -17,20 +15,10 @@ class ResolutionChecker {
 		return true;
 	}
 	
-	public static def dispatch isResolved(CompoundEChange compoundChange) {
-		val atomicChanges = compoundChange.getAtomicChanges();
-		for (AtomicEChange change : atomicChanges) {
-			if (!change.isResolved()) {
-				return false;
-			}
-		}
-		return true;
-	}
-	
 	public static def dispatch isResolved(EObjectExistenceEChange<?> existenceChange) {
 		return (existenceChange.getAffectedEObject() !== null &&
-			!existenceChange.getAffectedEObject().eIsProxy() && 
-			existenceChange.getStagingArea() !== null);
+			!existenceChange.getAffectedEObject().eIsProxy());// && 
+			//existenceChange.getStagingArea() !== null);
 	}
 	
 	public static def dispatch isResolved(FeatureEChange<?,?> featureChange) {

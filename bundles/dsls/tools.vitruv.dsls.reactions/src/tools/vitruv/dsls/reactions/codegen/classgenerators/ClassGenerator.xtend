@@ -25,7 +25,7 @@ abstract class ClassGenerator extends TypesBuilderExtensionProvider implements I
 
 	protected def generateAccessibleElementsParameters(EObject sourceObject,
 		Iterable<AccessibleElement> accessibleElements) {
-		accessibleElements.map[sourceObject.toParameter(name, typeRef(fullyQualifiedType))];
+			sourceObject.generateMethodInputParameters(accessibleElements)
 	}
 
 	public new(TypesBuilderExtensionProvider typesBuilderExtensionProvider) {
@@ -35,7 +35,7 @@ abstract class ClassGenerator extends TypesBuilderExtensionProvider implements I
 
 	def JvmGenericType generateEmptyClass()
 
-	def JvmGenericType generateBody(JvmGenericType generatedClass) {}
+	def JvmGenericType generateBody() {}
 
 	override JvmOperation getOrGenerateMethod(EObject contextObject, String methodName, JvmTypeReference returnType,
 		Procedure1<? super JvmOperation> initializer) {

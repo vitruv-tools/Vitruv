@@ -21,6 +21,7 @@ import tools.vitruv.framework.change.echange.feature.attribute.SubtractiveAttrib
  * </p>
  * <ul>
  *   <li>{@link tools.vitruv.framework.change.echange.feature.attribute.impl.SubtractiveAttributeEChangeImpl#getOldValue <em>Old Value</em>}</li>
+ *   <li>{@link tools.vitruv.framework.change.echange.feature.attribute.impl.SubtractiveAttributeEChangeImpl#isIsUnset <em>Is Unset</em>}</li>
  * </ul>
  *
  * @generated
@@ -35,6 +36,26 @@ public abstract class SubtractiveAttributeEChangeImpl<A extends EObject, T exten
 	 * @ordered
 	 */
 	protected T oldValue;
+
+	/**
+	 * The default value of the '{@link #isIsUnset() <em>Is Unset</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isIsUnset()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final boolean IS_UNSET_EDEFAULT = false;
+
+	/**
+	 * The cached value of the '{@link #isIsUnset() <em>Is Unset</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #isIsUnset()
+	 * @generated
+	 * @ordered
+	 */
+	protected boolean isUnset = IS_UNSET_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -81,11 +102,34 @@ public abstract class SubtractiveAttributeEChangeImpl<A extends EObject, T exten
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public boolean isIsUnset() {
+		return isUnset;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setIsUnset(boolean newIsUnset) {
+		boolean oldIsUnset = isUnset;
+		isUnset = newIsUnset;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, AttributePackage.SUBTRACTIVE_ATTRIBUTE_ECHANGE__IS_UNSET, oldIsUnset, isUnset));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 			case AttributePackage.SUBTRACTIVE_ATTRIBUTE_ECHANGE__OLD_VALUE:
 				return getOldValue();
+			case AttributePackage.SUBTRACTIVE_ATTRIBUTE_ECHANGE__IS_UNSET:
+				return isIsUnset();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -102,6 +146,9 @@ public abstract class SubtractiveAttributeEChangeImpl<A extends EObject, T exten
 			case AttributePackage.SUBTRACTIVE_ATTRIBUTE_ECHANGE__OLD_VALUE:
 				setOldValue((T)newValue);
 				return;
+			case AttributePackage.SUBTRACTIVE_ATTRIBUTE_ECHANGE__IS_UNSET:
+				setIsUnset((Boolean)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -117,6 +164,9 @@ public abstract class SubtractiveAttributeEChangeImpl<A extends EObject, T exten
 			case AttributePackage.SUBTRACTIVE_ATTRIBUTE_ECHANGE__OLD_VALUE:
 				setOldValue((T)null);
 				return;
+			case AttributePackage.SUBTRACTIVE_ATTRIBUTE_ECHANGE__IS_UNSET:
+				setIsUnset(IS_UNSET_EDEFAULT);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -131,6 +181,8 @@ public abstract class SubtractiveAttributeEChangeImpl<A extends EObject, T exten
 		switch (featureID) {
 			case AttributePackage.SUBTRACTIVE_ATTRIBUTE_ECHANGE__OLD_VALUE:
 				return oldValue != null;
+			case AttributePackage.SUBTRACTIVE_ATTRIBUTE_ECHANGE__IS_UNSET:
+				return isUnset != IS_UNSET_EDEFAULT;
 		}
 		return super.eIsSet(featureID);
 	}
@@ -147,6 +199,8 @@ public abstract class SubtractiveAttributeEChangeImpl<A extends EObject, T exten
 		StringBuffer result = new StringBuffer(super.toString());
 		result.append(" (oldValue: ");
 		result.append(oldValue);
+		result.append(", isUnset: ");
+		result.append(isUnset);
 		result.append(')');
 		return result.toString();
 	}

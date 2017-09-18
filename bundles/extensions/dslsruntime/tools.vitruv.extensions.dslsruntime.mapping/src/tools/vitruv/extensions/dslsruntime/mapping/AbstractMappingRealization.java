@@ -13,7 +13,6 @@ import tools.vitruv.extensions.dslsruntime.mapping.interfaces.AbstractCorrespond
 import tools.vitruv.extensions.dslsruntime.mapping.interfaces.ElementProvider;
 import tools.vitruv.extensions.dslsruntime.mapping.interfaces.MappingRealization;
 import tools.vitruv.framework.correspondence.Correspondence;
-import tools.vitruv.framework.util.bridges.EcoreBridge;
 
 public abstract class AbstractMappingRealization implements MappingRealization {
 	protected static void destroy(ElementProvider elementProvider, MappingExecutionState state) {
@@ -21,12 +20,6 @@ public abstract class AbstractMappingRealization implements MappingRealization {
 
 		List<EObject> elements = elementProvider.getElements();
 		state.getDeletedEObjects().addAll(elements);
-
-		for (EObject element : elements) {
-			if (EcoreBridge.isRootInResource(element)) {
-				state.getTransformationResult().revokeRegistrationForPersistence(element);//addVuriToDeleteIfNotNull(VURI.getInstance(element.eResource()));
-			}
-		}
 
 		elements.forEach(element -> element.eAllContents().forEachRemaining(elementsToDelete::add));
 		elements.forEach(element -> state.addResourceToSave(element));

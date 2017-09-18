@@ -3,7 +3,7 @@ package tools.vitruv.framework.change.description.impl
 import tools.vitruv.framework.change.description.CompositeTransactionalChange
 import tools.vitruv.framework.change.description.TransactionalChange
 import tools.vitruv.framework.change.description.VitruviusChangeFactory
-import org.eclipse.emf.ecore.resource.ResourceSet
+import tools.vitruv.framework.change.uuid.UuidResolver
 
 class CompositeTransactionalChangeImpl extends AbstractCompositeChangeImpl<TransactionalChange> implements CompositeTransactionalChange {
 	
@@ -17,9 +17,9 @@ class CompositeTransactionalChangeImpl extends AbstractCompositeChangeImpl<Trans
 		super.removeChange(change);
 	}
 	
-	override resolveBeforeAndApplyForward(ResourceSet resourceSet) {
+	override resolveBeforeAndApplyForward(UuidResolver uuidResolver) {
 		for (c : changes) {
-			c.resolveBeforeAndApplyForward(resourceSet)
+			c.resolveBeforeAndApplyForward(uuidResolver)
 		}
 	}
 }

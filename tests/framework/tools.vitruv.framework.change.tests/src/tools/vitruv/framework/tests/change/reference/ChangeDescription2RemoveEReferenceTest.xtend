@@ -4,7 +4,6 @@ import org.junit.Test
 
 import static extension tools.vitruv.framework.tests.change.util.AtomicEChangeAssertHelper.*
 import static extension tools.vitruv.framework.tests.change.util.CompoundEChangeAssertHelper.*
-import tools.vitruv.framework.change.echange.EChange
 import static allElementTypes.AllElementTypesPackage.Literals.*;
 import allElementTypes.NonRoot
 import java.util.List
@@ -34,26 +33,16 @@ class ChangeDescription2RemoveEReferenceTest extends ChangeDescription2EReferenc
 	
 	
 		startRecording
-		var EChange removeChange
 		// test
 		this.rootElement.eUnset(feature);
 		
-		changes.assertChangeCount(1);
-		if (isExplicitUnset) {
-			val unsetChange = changes.claimChange(0).assertExplicitUnsetEReference()
-			unsetChange.changes.assertChangeCount(1);
-			unsetChange.atomicChanges.assertChangeCount(if (isContainment) 2 else 1);
-			removeChange = unsetChange.changes?.get(0)
-		} else {
-			removeChange = changes.claimChange(0)	
-		}
-		
 		// assert 
 		if (isContainment) {
-			removeChange.assertRemoveAndDeleteNonRoot(this.rootElement, feature, nonRoot, 0)
+			changes.assertRemoveAndDeleteNonRoot(this.rootElement, feature, nonRoot, 0, isExplicitUnset)
+				.assertEmpty;
 		} else {
-			removeChange.assertRemoveEReference(this.rootElement, feature, nonRoot, 0,
-				isContainment)
+			changes.assertRemoveEReference(this.rootElement, feature, nonRoot, 0, isContainment, isExplicitUnset)
+				.assertEmpty;
 		}
 	}
 	
@@ -95,8 +84,9 @@ class ChangeDescription2RemoveEReferenceTest extends ChangeDescription2EReferenc
 		// set to default/clear
 		this.rootElement.multiValuedContainmentEReference.clear
 
-		changes.assertChangeCount(2);
-		changes.claimChange(0).assertRemoveAndDeleteNonRoot(this.rootElement, ROOT__MULTI_VALUED_CONTAINMENT_EREFERENCE, index1Element, 1)
-		changes.claimChange(1).assertRemoveAndDeleteNonRoot(this.rootElement, ROOT__MULTI_VALUED_CONTAINMENT_EREFERENCE, index0Element, 0)
+		changes.assertChangeCount(4);
+		changes.assertRemoveAndDeleteNonRoot(this.rootElement, ROOT__MULTI_VALUED_CONTAINMENT_EREFERENCE, index1Element, 1, false)
+			.assertRemoveAndDeleteNonRoot(this.rootElement, ROOT__MULTI_VALUED_CONTAINMENT_EREFERENCE, index0Element, 0, false)
+			.assertEmpty;
 	}
 }

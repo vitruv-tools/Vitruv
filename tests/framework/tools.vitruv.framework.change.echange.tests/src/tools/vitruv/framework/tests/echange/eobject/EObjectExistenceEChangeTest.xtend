@@ -5,9 +5,9 @@ import org.junit.Assert
 import org.junit.Test
 import tools.vitruv.framework.change.echange.eobject.CreateEObject
 import tools.vitruv.framework.change.echange.eobject.EObjectExistenceEChange
-import tools.vitruv.framework.change.echange.resolve.StagingArea
 
 import static extension tools.vitruv.framework.tests.echange.util.EChangeAssertHelper.*
+import static extension tools.vitruv.framework.change.echange.EChangeResolverAndApplicator.*;
 
 /**
  * Test class for the abstract class {@link EObjectExistenceEChange} EChange,
@@ -29,9 +29,9 @@ class EObjectExistenceEChangeTest extends EObjectTest {
 		assertIsStateBefore
 		
 		// Resolve
-		val resolvedChange = unresolvedChange.resolveBefore(resourceSet)
+		val resolvedChange = unresolvedChange.resolveBefore(uuidGeneratorAndResolver)
 			as CreateEObject<Root>
-		resolvedChange.assertIsResolved(createdObject, stagingArea)
+		resolvedChange.assertIsResolved(createdObject)
 		assertIsStateBefore
 	}
 	
@@ -49,13 +49,12 @@ class EObjectExistenceEChangeTest extends EObjectTest {
 		unresolvedChange.assertIsNotResolved(createdObject)
 				
 		// Set state after
-		prepareStagingArea(createdObject)
 		assertIsStateAfter	
 		
 		// Resolve
-		val resolvedChange = unresolvedChange.resolveAfter(resourceSet)
+		val resolvedChange = unresolvedChange.resolveAfter(uuidGeneratorAndResolver)
 			as CreateEObject<Root>
-		resolvedChange.assertIsResolved(createdObject, stagingArea)	
+		resolvedChange.assertIsResolved(createdObject)	
 		
 		// State after
 		assertIsStateAfter
@@ -65,17 +64,18 @@ class EObjectExistenceEChangeTest extends EObjectTest {
 	 * Test resolves a {@link EObjectExistenceEChangeTest} EChange with a null
 	 * affected EObject.
 	 */
-	@Test
+	@Test(expected=IllegalArgumentException)
 	def public void resolveInvalidAffectedEObjectTest() {
 		createdObject = null
 		
 		// Create change
-		val unresolvedChange = createUnresolvedChange(createdObject)
-		Assert.assertFalse(unresolvedChange.isResolved)
-		
-		// Resolve
-		Assert.assertNull(unresolvedChange.resolveBefore(resourceSet) as CreateEObject<Root>)
-		Assert.assertNull(unresolvedChange.resolveAfter(resourceSet) as CreateEObject<Root>)		
+		//val unresolvedChange = 
+		createUnresolvedChange(createdObject)
+//		Assert.assertFalse(unresolvedChange.isResolved)
+//		
+//		// Resolve
+//		Assert.assertNull(unresolvedChange.resolveBefore(uuidGeneratorAndResolver) as CreateEObject<Root>)
+//		Assert.assertNull(unresolvedChange.resolveAfter(uuidGeneratorAndResolver) as CreateEObject<Root>)		
 	}
 	
 	/**
@@ -84,32 +84,26 @@ class EObjectExistenceEChangeTest extends EObjectTest {
 	def private static void assertIsNotResolved(EObjectExistenceEChange<Root> change, Root affectedEObject) {
 		Assert.assertFalse(change.isResolved)
 		Assert.assertNotSame(change.affectedEObject, affectedEObject)
-		Assert.assertNull(change.stagingArea)
 	}
 	
 	/**
 	 * Change is resolved.
 	 */
-	def private static void assertIsResolved(EObjectExistenceEChange<Root> change, Root affectedEObject, 
-		StagingArea stagingArea) {
+	def private static void assertIsResolved(EObjectExistenceEChange<Root> change, Root affectedEObject) {
 		Assert.assertTrue(change.isResolved)
 		affectedEObject.assertEqualsOrCopy(change.affectedEObject)
-		Assert.assertSame(change.stagingArea, stagingArea)	
 	}
 	
 	/**
 	 * Model is in state before the change.
 	 */
 	def private void assertIsStateBefore() {
-		Assert.assertTrue(stagingArea.empty)		
 	}
 	
 	/**
 	 * Model is in state after the change.
 	 */
 	def private void assertIsStateAfter() {
-		Assert.assertFalse(stagingArea.empty)
-		createdObject.assertEqualsOrCopy(stagingArea.peek)
 	}
 	
 	/**
@@ -117,6 +111,6 @@ class EObjectExistenceEChangeTest extends EObjectTest {
 	 */
 	def private EObjectExistenceEChange<Root> createUnresolvedChange(Root createdObject) {
 		// The concrete change type CreateEObject will be used for the tests.
-		return atomicFactory.createCreateEObjectChange(createdObject, resource, null)
+		return atomicFactory.createCreateEObjectChange(createdObject)
 	}
 }

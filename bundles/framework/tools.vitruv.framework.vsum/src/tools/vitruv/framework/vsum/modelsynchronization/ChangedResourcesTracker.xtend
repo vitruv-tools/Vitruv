@@ -3,7 +3,6 @@ package tools.vitruv.framework.vsum.modelsynchronization
 import org.eclipse.emf.ecore.resource.Resource
 import java.util.Set
 import tools.vitruv.framework.change.description.TransactionalChange
-import tools.vitruv.framework.change.echange.compound.CompoundEChange
 import tools.vitruv.framework.change.echange.feature.FeatureEChange
 import tools.vitruv.framework.change.echange.eobject.EObjectAddedEChange
 import tools.vitruv.framework.change.echange.eobject.EObjectSubtractedEChange
@@ -20,9 +19,7 @@ package class ChangedResourcesTracker {
 
 
 	public def void addSourceResourceOfChange(TransactionalChange change) {
-		val atomicChanges = change.getEChanges.map[
-			if (it instanceof CompoundEChange) it.atomicChanges else #[it]
-		].flatten
+		val atomicChanges = change.getEChanges
 		val involvedObjects = atomicChanges.map[
 			if (it instanceof FeatureEChange<?,?>) it.affectedEObject 
 				else if (it instanceof EObjectAddedEChange<?>) it.newValue 

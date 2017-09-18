@@ -23,6 +23,10 @@ class TuidResolverImpl implements tools.vitruv.framework.tuid.TuidResolver{
 	}
 
 	override EObject resolveEObjectFromTuid(Tuid tuid) {
+		if (tuid.isMetaElementTuid) {
+			// Meta element Tuids cannot be resolved
+			return null;
+		}
 		val TuidAwareVitruvDomain domain = getMetamodelHavingTuid(tuid)
 		var VURI vuri = domain.getModelVURIContainingIdentifiedEObject(tuid)
 		var ModelInstance modelInstance = null

@@ -22,12 +22,14 @@ public abstract class VitruviusTest {
 	@Rule
 	public TestName testName = new TestName();
 
+	protected static File workspace;
 	private File folder;
 	private Function<String, File> testProjectCreator;
 
 	@BeforeClass
 	public static void setUpAllTests() {
 		TestUtil.initializeLogger();
+		workspace = TestUtil.createTestWorkspace();
 	}
 
 	public VitruviusTest() {
@@ -66,7 +68,7 @@ public abstract class VitruviusTest {
 	 * @return the created test project folder
 	 */
 	private static File initializeTestProject(final String testName) {
-		return TestUtil.createProjectFolder(testName, true);
+		return TestUtil.createProjectFolder(workspace, testName, true);
 	}
 
 	protected File getCurrentTestProjectFolder() {

@@ -6,18 +6,15 @@ import tools.vitruv.framework.tuid.TuidManager
 import tools.vitruv.extensions.dslsruntime.reactions.helper.ReactionsCorrespondenceHelper
 import org.eclipse.emf.ecore.util.EcoreUtil
 import org.apache.log4j.Logger
-import tools.vitruv.framework.util.command.ChangePropagationResult
 import tools.vitruv.extensions.dslsruntime.reactions.ReactionElementsHandler
 
 class ReactionElementsHandlerImpl implements ReactionElementsHandler {
 	private static val logger = Logger.getLogger(ReactionElementsHandlerImpl);
 	
 	private final CorrespondenceModel correspondenceModel;
-	private final ChangePropagationResult transformationResult;
 	
-	public new(CorrespondenceModel correspondenceModel, ChangePropagationResult transformationResult) {
+	public new(CorrespondenceModel correspondenceModel) {
 		this.correspondenceModel = correspondenceModel;
-		this.transformationResult = transformationResult;
 	}
 	
 	override void addCorrespondenceBetween(EObject firstElement, EObject secondElement, String tag) {

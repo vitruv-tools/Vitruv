@@ -15,7 +15,8 @@ import org.eclipse.xtext.common.types.JvmGenericType
 class RoutineFacadeClassGenerator extends ClassGenerator {
 	val ReactionsSegment reactionsSegment
 	val ClassNameGenerator routinesFacadeNameGenerator;
-
+	var JvmGenericType generatedClass
+	
 	new(ReactionsSegment reactionsSegment, TypesBuilderExtensionProvider typesBuilderExtensionProvider) {
 		super(typesBuilderExtensionProvider);
 		this.reactionsSegment = reactionsSegment
@@ -23,10 +24,10 @@ class RoutineFacadeClassGenerator extends ClassGenerator {
 	}
 
 	public override generateEmptyClass() {
-		reactionsSegment.toClass(routinesFacadeNameGenerator.qualifiedName)[]
+		generatedClass = reactionsSegment.toClass(routinesFacadeNameGenerator.qualifiedName)[]
 	}
 
-	override generateBody(JvmGenericType generatedClass) {
+	override generateBody() {
 		generatedClass => [
 			superTypes += typeRef(AbstractRepairRoutinesFacade);
 			members += reactionsSegment.toConstructor() [
@@ -43,14 +44,14 @@ class RoutineFacadeClassGenerator extends ClassGenerator {
 
 	private def JvmOperation generateCallMethod(Routine routine) {
 		val routineNameGenerator = routine.routineClassNameGenerator;
-		routine.associatePrimary(routine.toMethod(routine.name, typeRef(Void.TYPE)) [
+		routine.associatePrimary(routine.toMethod(routine.name, typeRef(Boolean.TYPE)) [
 			visibility = JvmVisibility.PUBLIC;
 			parameters +=
 				generateMethodInputParameters(routine.input.modelInputElements, routine.input.javaInputElements);
 			body = '''
 				«routineNameGenerator.qualifiedName» effect = new «routineNameGenerator.qualifiedName»(this.executionState, «EFFECT_FACADE_CALLED_BY_FIELD_NAME»«
 					»«FOR parameter : parameters BEFORE ', ' SEPARATOR ', '»«parameter.name»«ENDFOR»);
-				effect.applyRoutine();
+				return effect.applyRoutine();
 			'''
 		])
 	}

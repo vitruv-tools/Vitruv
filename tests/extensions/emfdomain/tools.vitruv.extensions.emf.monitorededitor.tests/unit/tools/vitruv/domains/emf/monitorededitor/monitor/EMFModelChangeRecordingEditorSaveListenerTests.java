@@ -72,7 +72,7 @@ public class EMFModelChangeRecordingEditorSaveListenerTests extends BasicTestCas
                 ensureExecuted.markExecuted();
             }
         };
-        listener.initialize();
+        listener.initialize(null);
 
         eclipseCtrl.issueSaveEvent(SaveEventKind.SAVE);
 
@@ -105,7 +105,7 @@ public class EMFModelChangeRecordingEditorSaveListenerTests extends BasicTestCas
                 ensureExecuted.markExecuted();
             }
         };
-        listener.initialize();
+        listener.initialize(null);
 
         // Change the model.
         rootObj.setName(newRootObjName);
@@ -131,7 +131,7 @@ public class EMFModelChangeRecordingEditorSaveListenerTests extends BasicTestCas
                 ensureNotExecuted.markExecuted();
             }
         };
-        listener.initialize();
+        listener.initialize(null);
 
         eclipseCtrl.issueSaveEvent(SaveEventKind.SAVE);
 

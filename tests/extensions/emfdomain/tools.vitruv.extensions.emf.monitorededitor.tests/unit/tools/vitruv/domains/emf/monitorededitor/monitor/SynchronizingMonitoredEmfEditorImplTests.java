@@ -69,7 +69,7 @@ public class SynchronizingMonitoredEmfEditorImplTests extends BasicTestCase {
 
     @Test
     public void initializeCompletesWithoutFailures() {
-        SynchronizingMonitoredEmfEditorImpl monitor = new SynchronizingMonitoredEmfEditorImpl(
+        SynchronizingMonitoredEmfEditorImpl monitor = new SynchronizingMonitoredEmfEditorImpl(null,
                 DefaultImplementations.EFFECTLESS_CHANGESYNC, adapterFactory, IMonitoringDecider.MONITOR_ALL);
         monitor.initialize();
         monitor.dispose();
@@ -77,7 +77,7 @@ public class SynchronizingMonitoredEmfEditorImplTests extends BasicTestCase {
 
     @Test
     public void emfEditorsCreatedAfterInitializeAreMonitored() {
-        SynchronizingMonitoredEmfEditorImpl monitor = new SynchronizingMonitoredEmfEditorImpl(
+        SynchronizingMonitoredEmfEditorImpl monitor = new SynchronizingMonitoredEmfEditorImpl(null,
                 DefaultImplementations.EFFECTLESS_CHANGESYNC, adapterFactory, IMonitoringDecider.MONITOR_ALL);
         monitor.initialize();
 
@@ -89,7 +89,7 @@ public class SynchronizingMonitoredEmfEditorImplTests extends BasicTestCase {
 
     @Test
     public void nonEmfEditorsAreNotMonitored() {
-        SynchronizingMonitoredEmfEditorImpl monitor = new SynchronizingMonitoredEmfEditorImpl(
+        SynchronizingMonitoredEmfEditorImpl monitor = new SynchronizingMonitoredEmfEditorImpl(null,
                 DefaultImplementations.EFFECTLESS_CHANGESYNC, adapterFactory, IMonitoringDecider.MONITOR_ALL);
         monitor.initialize();
 
@@ -101,7 +101,7 @@ public class SynchronizingMonitoredEmfEditorImplTests extends BasicTestCase {
 
     @Test
     public void noEditorsAreMonitoredWhenMonitoringDeciderSaysNo() {
-        SynchronizingMonitoredEmfEditorImpl monitor = new SynchronizingMonitoredEmfEditorImpl(
+        SynchronizingMonitoredEmfEditorImpl monitor = new SynchronizingMonitoredEmfEditorImpl(null,
                 DefaultImplementations.EFFECTLESS_CHANGESYNC, adapterFactory, new IMonitoringDecider() {
                     @Override
                     public boolean isMonitoringEnabled(IEditorPartAdapter editor) {
@@ -120,7 +120,7 @@ public class SynchronizingMonitoredEmfEditorImplTests extends BasicTestCase {
     public void correctAdapterIsPassedToTheMonitoringDecider() {
         final EnsureExecuted ensureExecuted = new EnsureExecuted();
 
-        SynchronizingMonitoredEmfEditorImpl monitor = new SynchronizingMonitoredEmfEditorImpl(
+        SynchronizingMonitoredEmfEditorImpl monitor = new SynchronizingMonitoredEmfEditorImpl(null,
                 DefaultImplementations.EFFECTLESS_CHANGESYNC, adapterFactory, new IMonitoringDecider() {
                     @Override
                     public boolean isMonitoringEnabled(IEditorPartAdapter editor) {
@@ -152,7 +152,7 @@ public class SynchronizingMonitoredEmfEditorImplTests extends BasicTestCase {
             }
         };
 
-        SynchronizingMonitoredEmfEditorImpl monitor = new SynchronizingMonitoredEmfEditorImpl(cs, adapterFactory,
+        SynchronizingMonitoredEmfEditorImpl monitor = new SynchronizingMonitoredEmfEditorImpl(null, cs, adapterFactory,
                 IMonitoringDecider.MONITOR_ALL);
         monitor.initialize();
 
@@ -176,7 +176,7 @@ public class SynchronizingMonitoredEmfEditorImplTests extends BasicTestCase {
             }
         };
 
-        SynchronizingMonitoredEmfEditorImpl monitor = new SynchronizingMonitoredEmfEditorImpl(cs, adapterFactory,
+        SynchronizingMonitoredEmfEditorImpl monitor = new SynchronizingMonitoredEmfEditorImpl(null, cs, adapterFactory,
                 IMonitoringDecider.MONITOR_ALL);
         monitor.initialize();
 
@@ -205,7 +205,7 @@ public class SynchronizingMonitoredEmfEditorImplTests extends BasicTestCase {
             }
         };
 
-        SynchronizingMonitoredEmfEditorImpl monitor = new SynchronizingMonitoredEmfEditorImpl(cs, adapterFactory,
+        SynchronizingMonitoredEmfEditorImpl monitor = new SynchronizingMonitoredEmfEditorImpl(null, cs, adapterFactory,
                 IMonitoringDecider.MONITOR_ALL);
         monitor.initialize();
 
@@ -252,7 +252,7 @@ public class SynchronizingMonitoredEmfEditorImplTests extends BasicTestCase {
             }
         };
 
-        SynchronizingMonitoredEmfEditorImpl monitor = new SynchronizingMonitoredEmfEditorImpl(cs, adapterFactory,
+        SynchronizingMonitoredEmfEditorImpl monitor = new SynchronizingMonitoredEmfEditorImpl(null, cs, adapterFactory,
                 IMonitoringDecider.MONITOR_ALL);
         monitor.initialize();
 

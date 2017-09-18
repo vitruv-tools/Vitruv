@@ -3,16 +3,18 @@
 package tools.vitruv.framework.change.echange.feature.impl;
 
 import org.eclipse.emf.common.notify.Notification;
+
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+
 import tools.vitruv.framework.change.echange.feature.FeatureEChange;
 import tools.vitruv.framework.change.echange.feature.FeaturePackage;
 
-import tools.vitruv.framework.change.echange.impl.AtomicEChangeImpl;
+import tools.vitruv.framework.change.echange.impl.EChangeImpl;
 
 /**
  * <!-- begin-user-doc -->
@@ -24,11 +26,12 @@ import tools.vitruv.framework.change.echange.impl.AtomicEChangeImpl;
  * <ul>
  *   <li>{@link tools.vitruv.framework.change.echange.feature.impl.FeatureEChangeImpl#getAffectedFeature <em>Affected Feature</em>}</li>
  *   <li>{@link tools.vitruv.framework.change.echange.feature.impl.FeatureEChangeImpl#getAffectedEObject <em>Affected EObject</em>}</li>
+ *   <li>{@link tools.vitruv.framework.change.echange.feature.impl.FeatureEChangeImpl#getAffectedEObjectID <em>Affected EObject ID</em>}</li>
  * </ul>
  *
  * @generated
  */
-public abstract class FeatureEChangeImpl<A extends EObject, F extends EStructuralFeature> extends AtomicEChangeImpl implements FeatureEChange<A, F> {
+public abstract class FeatureEChangeImpl<A extends EObject, F extends EStructuralFeature> extends EChangeImpl implements FeatureEChange<A, F> {
 	/**
 	 * The cached value of the '{@link #getAffectedFeature() <em>Affected Feature</em>}' reference.
 	 * <!-- begin-user-doc -->
@@ -48,6 +51,26 @@ public abstract class FeatureEChangeImpl<A extends EObject, F extends EStructura
 	 * @ordered
 	 */
 	protected A affectedEObject;
+
+	/**
+	 * The default value of the '{@link #getAffectedEObjectID() <em>Affected EObject ID</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getAffectedEObjectID()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String AFFECTED_EOBJECT_ID_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getAffectedEObjectID() <em>Affected EObject ID</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getAffectedEObjectID()
+	 * @generated
+	 * @ordered
+	 */
+	protected String affectedEObjectID = AFFECTED_EOBJECT_ID_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -151,6 +174,27 @@ public abstract class FeatureEChangeImpl<A extends EObject, F extends EStructura
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public String getAffectedEObjectID() {
+		return affectedEObjectID;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setAffectedEObjectID(String newAffectedEObjectID) {
+		String oldAffectedEObjectID = affectedEObjectID;
+		affectedEObjectID = newAffectedEObjectID;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, FeaturePackage.FEATURE_ECHANGE__AFFECTED_EOBJECT_ID, oldAffectedEObjectID, affectedEObjectID));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
@@ -160,6 +204,8 @@ public abstract class FeatureEChangeImpl<A extends EObject, F extends EStructura
 			case FeaturePackage.FEATURE_ECHANGE__AFFECTED_EOBJECT:
 				if (resolve) return getAffectedEObject();
 				return basicGetAffectedEObject();
+			case FeaturePackage.FEATURE_ECHANGE__AFFECTED_EOBJECT_ID:
+				return getAffectedEObjectID();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -179,6 +225,9 @@ public abstract class FeatureEChangeImpl<A extends EObject, F extends EStructura
 			case FeaturePackage.FEATURE_ECHANGE__AFFECTED_EOBJECT:
 				setAffectedEObject((A)newValue);
 				return;
+			case FeaturePackage.FEATURE_ECHANGE__AFFECTED_EOBJECT_ID:
+				setAffectedEObjectID((String)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -197,6 +246,9 @@ public abstract class FeatureEChangeImpl<A extends EObject, F extends EStructura
 			case FeaturePackage.FEATURE_ECHANGE__AFFECTED_EOBJECT:
 				setAffectedEObject((A)null);
 				return;
+			case FeaturePackage.FEATURE_ECHANGE__AFFECTED_EOBJECT_ID:
+				setAffectedEObjectID(AFFECTED_EOBJECT_ID_EDEFAULT);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -213,8 +265,26 @@ public abstract class FeatureEChangeImpl<A extends EObject, F extends EStructura
 				return affectedFeature != null;
 			case FeaturePackage.FEATURE_ECHANGE__AFFECTED_EOBJECT:
 				return affectedEObject != null;
+			case FeaturePackage.FEATURE_ECHANGE__AFFECTED_EOBJECT_ID:
+				return AFFECTED_EOBJECT_ID_EDEFAULT == null ? affectedEObjectID != null : !AFFECTED_EOBJECT_ID_EDEFAULT.equals(affectedEObjectID);
 		}
 		return super.eIsSet(featureID);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public String toString() {
+		if (eIsProxy()) return super.toString();
+
+		StringBuffer result = new StringBuffer(super.toString());
+		result.append(" (affectedEObjectID: ");
+		result.append(affectedEObjectID);
+		result.append(')');
+		return result.toString();
 	}
 
 } //FeatureEChangeImpl

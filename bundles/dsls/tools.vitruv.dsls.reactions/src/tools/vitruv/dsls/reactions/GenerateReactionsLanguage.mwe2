@@ -48,8 +48,9 @@ Workflow {
 	}
 	
 	component = EcoreGenerator {
-		srcPath = "platform:/resource/tools.vitruv.dsls.commonalities/src"
+		srcPath = "platform:/resource/tools.vitruv.dsls.reactions/model-gen"
 		genModel = "platform:/resource/tools.vitruv.dsls.reactions/model/InputTypes.genmodel"
 		generateCustomClasses = false
 	}
+	
 }

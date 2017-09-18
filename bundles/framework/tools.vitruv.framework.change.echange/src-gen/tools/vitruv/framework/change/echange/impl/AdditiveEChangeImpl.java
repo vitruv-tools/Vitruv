@@ -18,7 +18,7 @@ import tools.vitruv.framework.change.echange.EChangePackage;
  *
  * @generated
  */
-public abstract class AdditiveEChangeImpl<T extends Object> extends AtomicEChangeImpl implements AdditiveEChange<T> {
+public abstract class AdditiveEChangeImpl<T extends Object> extends EChangeImpl implements AdditiveEChange<T> {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

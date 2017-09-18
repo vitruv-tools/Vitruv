@@ -20,8 +20,14 @@ Require-Bundle: tools.vitruv.framework.vsum;visibility:=reexport,
  org.eclipse.jdt.launching,
  tools.vitruv.framework.userinteraction;visibility:=reexport,
  tools.vitruv.framework.tuid,
- edu.kit.ipd.sdq.commons.util.java
+ edu.kit.ipd.sdq.commons.util.java,
+ com.google.guava,
+ org.eclipse.xtext.xbase.lib,
+ org.eclipse.xtend.lib,
+ org.eclipse.xtend.lib.macro,
+ edu.kit.ipd.sdq.activextendannotations;bundle-version="1.0.0"
 Export-Package: tools.vitruv.framework.tests,
+ tools.vitruv.framework.tests.matchers,
  tools.vitruv.framework.tests.util
 Bundle-Vendor: vitruv.tools
 

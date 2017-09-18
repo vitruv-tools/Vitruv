@@ -5,18 +5,17 @@
     <details key="modelName" value="Change"/>
     <details key="basePackage" value="tools.vitruv.framework.change.echange"/>
   </eAnnotations>
-  <eClassifiers xsi:type="ecore:EDataType" name="EObj" instanceClassName="org.eclipse.emf.ecore.EObject"/>
-  <eClassifiers xsi:type="ecore:EDataType" name="StagingArea" instanceClassName="tools.vitruv.framework.change.echange.resolve.StagingArea"/>
   <eClassifiers xsi:type="ecore:EClass" name="EObjectAddedEChange" abstract="true">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
       <details key="documentation" value="*&#xA;Abstract EChange which inserts an EObject into a resource or reference."/>
     </eAnnotations>
     <eTypeParameters name="T">
-      <eBounds eClassifier="#//EObj"/>
+      <eBounds eClassifier="ecore:EClass ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EObject"/>
     </eTypeParameters>
     <eStructuralFeatures xsi:type="ecore:EReference" name="newValue" lowerBound="1">
       <eGenericType eTypeParameter="#//EObjectAddedEChange/T"/>
     </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="newValueID" eType="ecore:EDataType ../../tools.vitruv.framework.change.uuid/model/Uuid.ecore#//Uuid"/>
     <eGenericSuperTypes eClassifier="ecore:EClass echange.ecore#//AdditiveEChange">
       <eTypeArguments eTypeParameter="#//EObjectAddedEChange/T"/>
     </eGenericSuperTypes>
@@ -26,22 +25,23 @@
       <details key="documentation" value="*&#xA;Abstract EChange which removes an EObject from a resource or reference."/>
     </eAnnotations>
     <eTypeParameters name="T">
-      <eBounds eClassifier="#//EObj"/>
+      <eBounds eClassifier="ecore:EClass ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EObject"/>
     </eTypeParameters>
     <eStructuralFeatures xsi:type="ecore:EReference" name="oldValue" lowerBound="1">
       <eGenericType eTypeParameter="#//EObjectSubtractedEChange/T"/>
     </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="oldValueID" eType="ecore:EDataType ../../tools.vitruv.framework.change.uuid/model/Uuid.ecore#//Uuid"/>
     <eGenericSuperTypes eClassifier="ecore:EClass echange.ecore#//SubtractiveEChange">
       <eTypeArguments eTypeParameter="#//EObjectSubtractedEChange/T"/>
     </eGenericSuperTypes>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="EObjectExistenceEChange" abstract="true"
-      eSuperTypes="echange.ecore#//AtomicEChange">
+      eSuperTypes="echange.ecore#//EChange">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
       <details key="documentation" value="*&#xA;Abstract EChange which creates or deletes an EObject."/>
     </eAnnotations>
     <eTypeParameters name="A">
-      <eBounds eClassifier="#//EObj"/>
+      <eBounds eClassifier="ecore:EClass ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EObject"/>
     </eTypeParameters>
     <eStructuralFeatures xsi:type="ecore:EReference" name="affectedEObject" lowerBound="1">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
@@ -49,20 +49,16 @@
       </eAnnotations>
       <eGenericType eTypeParameter="#//EObjectExistenceEChange/A"/>
     </eStructuralFeatures>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="stagingArea" unique="false"
-        eType="#//StagingArea">
-      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-        <details key="documentation" value="*&#xA;The staging area where the created object will be placed or the deleted&#xA;object be removed from."/>
-      </eAnnotations>
-    </eStructuralFeatures>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="objectId" eType="ecore:EDataType ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="idAttributeValue" eType="ecore:EDataType ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="affectedEObjectID" eType="ecore:EDataType ../../tools.vitruv.framework.change.uuid/model/Uuid.ecore#//Uuid"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="affectedEObjectType" eType="ecore:EClass ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EClass"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="CreateEObject">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
       <details key="documentation" value="*&#xA;EChange which creates a new EObject and places it in the staging area.&#xA;There it can be taken by another EChange."/>
     </eAnnotations>
     <eTypeParameters name="A">
-      <eBounds eClassifier="#//EObj"/>
+      <eBounds eClassifier="ecore:EClass ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EObject"/>
     </eTypeParameters>
     <eGenericSuperTypes eClassifier="#//EObjectExistenceEChange">
       <eTypeArguments eTypeParameter="#//CreateEObject/A"/>
@@ -73,8 +69,10 @@
       <details key="documentation" value="*&#xA;EChange which deletes a EObject from the staging area.&#xA;The object must be placed in the staging area by another change."/>
     </eAnnotations>
     <eTypeParameters name="A">
-      <eBounds eClassifier="#//EObj"/>
+      <eBounds eClassifier="ecore:EClass ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EObject"/>
     </eTypeParameters>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="consequentialRemoveChanges"
+        upperBound="-1" eType="ecore:EClass echange.ecore#//EChange"/>
     <eGenericSuperTypes eClassifier="#//EObjectExistenceEChange">
       <eTypeArguments eTypeParameter="#//DeleteEObject/A"/>
     </eGenericSuperTypes>

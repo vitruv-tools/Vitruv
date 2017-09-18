@@ -72,17 +72,9 @@ public class EChangeSwitch<T1> extends Switch<T1> {
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
-			case EChangePackage.ATOMIC_ECHANGE: {
-				AtomicEChange atomicEChange = (AtomicEChange)theEObject;
-				T1 result = caseAtomicEChange(atomicEChange);
-				if (result == null) result = caseEChange(atomicEChange);
-				if (result == null) result = defaultCase(theEObject);
-				return result;
-			}
 			case EChangePackage.ADDITIVE_ECHANGE: {
 				AdditiveEChange<?> additiveEChange = (AdditiveEChange<?>)theEObject;
 				T1 result = caseAdditiveEChange(additiveEChange);
-				if (result == null) result = caseAtomicEChange(additiveEChange);
 				if (result == null) result = caseEChange(additiveEChange);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
@@ -90,7 +82,6 @@ public class EChangeSwitch<T1> extends Switch<T1> {
 			case EChangePackage.SUBTRACTIVE_ECHANGE: {
 				SubtractiveEChange<?> subtractiveEChange = (SubtractiveEChange<?>)theEObject;
 				T1 result = caseSubtractiveEChange(subtractiveEChange);
-				if (result == null) result = caseAtomicEChange(subtractiveEChange);
 				if (result == null) result = caseEChange(subtractiveEChange);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
@@ -111,21 +102,6 @@ public class EChangeSwitch<T1> extends Switch<T1> {
 	 * @generated
 	 */
 	public T1 caseEChange(EChange object) {
-		return null;
-	}
-
-	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Atomic EChange</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Atomic EChange</em>'.
-	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-	 * @generated
-	 */
-	public T1 caseAtomicEChange(AtomicEChange object) {
 		return null;
 	}
 
