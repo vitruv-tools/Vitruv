@@ -1,7 +1,6 @@
 package tools.vitruv.framework.change.recording
 
 import org.eclipse.emf.common.notify.Adapter
-import java.util.Collection
 import java.util.List
 import tools.vitruv.framework.change.echange.EChange
 import org.eclipse.emf.common.notify.Notifier
@@ -9,17 +8,20 @@ import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.common.notify.Notification
 import org.eclipse.emf.ecore.resource.ResourceSet
 import org.eclipse.emf.ecore.resource.Resource
-import tools.vitruv.framework.change.echange.feature.attribute.SubtractiveAttributeEChange
 import tools.vitruv.framework.change.echange.EChangeIdManager
+import tools.vitruv.framework.change.description.TransactionalChange
+import tools.vitruv.framework.change.description.VitruviusChangeFactory
 
 class NotificationRecorder implements Adapter {
-	private Collection<? extends Notifier> rootObjects;
+	private List<Notifier> rootObjects;
 	private boolean isRecording = false
 	List<EChange> changes;
+	List<TransactionalChange> resultChanges;
 	private val EChangeIdManager idManager
 	
 	new (EChangeIdManager idManager) {
 		this.idManager = idManager;	
+		rootObjects = newArrayList();
 	}
 	
 	override getTarget() {
@@ -32,12 +34,15 @@ class NotificationRecorder implements Adapter {
 
 	override notifyChanged(Notification notification) {
 		if (notification.newValue instanceof Notifier) {
-			addAdapter(notification.newValue as Notifier);
+			addToRecording(notification.newValue as Notifier);
 		}
 		val newChanges = new NotificationToEChangeConverter(idManager).convert(new NotificationInfo(notification), changes);
 		for (newChange : newChanges) {
 			changes += newChange;
 		}
+		val transactionalChange = VitruviusChangeFactory.instance.createCompositeTransactionalChange
+		newChanges.forEach[transactionalChange.addChange(VitruviusChangeFactory.instance.createConcreteApplicableChange(it))];
+		resultChanges += transactionalChange;
 	}
 
 	override setTarget(Notifier newTarget) {
@@ -60,29 +65,25 @@ class NotificationRecorder implements Adapter {
 				}
 			}
 		}
+		addAdapter(newTarget);
 	}
 
-	protected def void addAdapter(Notifier notifier) {
+	private def void addAdapter(Notifier notifier) {
 		val eAdapters = notifier.eAdapters();
 		if (!eAdapters.contains(this)) {
 			eAdapters.add(this);
 		}
 	}
+	
+	def void addToRecording(Notifier notifier) {
+		rootObjects += notifier;
+		setTarget(notifier);
+	}
 
-	def beginRecording(Collection<? extends Notifier> rootObjects) {
+	def beginRecording() {
 		if (!isRecording) {
 			changes = newArrayList();
-			this.rootObjects = rootObjects;
-			for (rootObject : rootObjects) {
-				val elements = newArrayList;
-			if (rootObject instanceof Resource) {
-				val iter = rootObject.allContents
-				while (iter.hasNext) {
-					addAdapter(iter.next);	
-				}
-			}
-				addAdapter(rootObject)
-			}
+			resultChanges = newArrayList();
 			isRecording = true;
 		} else {
 			throw new IllegalStateException
@@ -94,7 +95,7 @@ class NotificationRecorder implements Adapter {
 	}
 
 	def getChanges() {
-		return changes;
+		return resultChanges;
 	}
 
 	def isRecording() {

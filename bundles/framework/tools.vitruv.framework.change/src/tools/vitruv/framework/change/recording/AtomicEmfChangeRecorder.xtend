@@ -22,7 +22,7 @@ import tools.vitruv.framework.change.description.impl.ConcreteApplicableChangeIm
 import tools.vitruv.framework.change.echange.eobject.DeleteEObject
 
 class AtomicEmfChangeRecorder {
-	private static val USE_LEGACY_RECORDER = true;
+	private static val USE_LEGACY_RECORDER = false;
 
 	val Set<Notifier> elementsToObserve
 	val boolean updateTuids;
@@ -73,14 +73,14 @@ class AtomicEmfChangeRecorder {
 			legacyChangeRecorder.reset;
 			legacyChangeRecorder.beginRecording(this.elementsToObserve);
 		} else {
-			changeRecorder.beginRecording(this.elementsToObserve);
+			changeRecorder.beginRecording();
 		}
 	}
 
 	def void addToRecording(Notifier elementToObserve) {
 		this.elementsToObserve += elementToObserve;
-		if (isRecording) {
-			if (USE_LEGACY_RECORDER) {
+		if (USE_LEGACY_RECORDER) {
+			if (isRecording) {
 //			val elements = newArrayList;
 //			elements += elementsToObserve;
 //			if (elementToObserve instanceof Resource) {
@@ -91,9 +91,9 @@ class AtomicEmfChangeRecorder {
 //			}
 			// changeRecorder.beginRecording(elements);
 				legacyChangeRecorder.beginRecording(elementsToObserve);
-			} else {
-				elementsToObserve.forEach[changeRecorder.addAdapter(it)];
 			}
+		} else {
+			elementsToObserve.forEach[changeRecorder.addToRecording(it)];
 		}
 	}
 
@@ -135,7 +135,7 @@ class AtomicEmfChangeRecorder {
 			changes = relevantChangeDescriptions.filterNull.map[createModelChange(updateTuids)].filterNull.toList;
 		} else {
 			changeRecorder.endRecording();
-			changes = changeRecorder.changes.map[VitruviusChangeFactory.instance.createConcreteApplicableChange(it)];
+			changes = changeRecorder.changes;
 		}
 
 		
