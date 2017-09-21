@@ -1,6 +1,5 @@
 package tools.vitruv.framework.change.echange.resolve
 
-import org.eclipse.emf.common.util.EList
 import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EStructuralFeature
@@ -76,27 +75,7 @@ class AtomicEChangeResolver {
 		if (valueId === null) {
 			return null;
 		}
-		if (!change.affectedFeature.containment) {
-			// Non containment => New object is already in resource
-			return uuidResolver.getEObject(valueId)
-		}
-		if (!isInserted) {
-			// Before => New object is in staging area.
-			return uuidResolver.getEObject(valueId);
-		} else {
-			// TODO HK Replace with UUID resolution!?
-			// After => New object is in containment reference.
-			if (change.affectedFeature.many) {
-				var list = change.affectedEObject.eGet(change.affectedFeature) as EList<T>
-				if (0 <= index && index < list.size) {
-					return list.get(index)
-				} else {
-					return value // Return unresolved
-				}
-			} else {
-				return change.affectedEObject.eGet(change.affectedFeature) as T
-			}			
-		}
+		return uuidResolver.getEObject(valueId)
 	}
 
 	/**
