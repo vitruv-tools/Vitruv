@@ -22,7 +22,7 @@ import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.EObje
  * A utility class providing extension methods for transforming change descriptions to change models.
  * 
  */
-package class EMFModelChangeTransformationUtil {
+public class EMFModelChangeTransformationUtil {
 	def static List<EChange> createAdditiveCreateChangesForValue(EObject eObject, EReference reference) {
 		return createAdditiveEChangeForReferencedObject(eObject, reference, true)
 	}
@@ -87,11 +87,11 @@ package class EMFModelChangeTransformationUtil {
 		val result = new ArrayList<EChange>(); 
 		if (reference.isMany) {
 			for (referenceValue : referencingEObject.getReferenceValueList(reference)) {
-				result += createInsertReferenceChange(referencingEObject, reference, (referencingEObject.eGet(reference) as EList<?>).indexOf(referenceValue), referenceValue, false);
+				result += createInsertReferenceChange(referencingEObject, reference, (referencingEObject.eGet(reference) as EList<?>).indexOf(referenceValue), referenceValue, forceCreate);
 			}
 		} else {
 
-			result += createReplaceSingleValuedReferenceChange(referencingEObject, reference, null, referencingEObject.getReferenceValueList(reference).get(0), false);
+			result += createReplaceSingleValuedReferenceChange(referencingEObject, reference, null, referencingEObject.getReferenceValueList(reference).get(0), forceCreate);
 		}
 		return result;
 	}
@@ -100,11 +100,11 @@ package class EMFModelChangeTransformationUtil {
 		val result = new ArrayList<EChange>(); 
 		if (reference.isMany) {
 			for (referenceValue : referencingEObject.getReferenceValueList(reference).reverseView) {
-				result += createRemoveReferenceChange(referencingEObject, reference, (referencingEObject.eGet(reference) as EList<?>).indexOf(referenceValue), referenceValue, null, null, false);
+				result += createRemoveReferenceChange(referencingEObject, reference, (referencingEObject.eGet(reference) as EList<?>).indexOf(referenceValue), referenceValue, null, null, forceDelete);
 			}
 		} else {
 
-			result += createReplaceSingleValuedReferenceChange(referencingEObject, reference, referencingEObject.getReferenceValueList(reference).get(0), null, false);
+			result += createReplaceSingleValuedReferenceChange(referencingEObject, reference, referencingEObject.getReferenceValueList(reference).get(0), null, forceDelete);
 		}
 		return result;
 	}
