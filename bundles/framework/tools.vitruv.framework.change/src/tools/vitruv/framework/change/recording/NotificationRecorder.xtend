@@ -9,14 +9,19 @@ import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.common.notify.Notification
 import org.eclipse.emf.ecore.resource.ResourceSet
 import org.eclipse.emf.ecore.resource.Resource
-import tools.vitruv.framework.change.echange.compound.ExplicitUnsetEAttribute
 import tools.vitruv.framework.change.echange.feature.attribute.SubtractiveAttributeEChange
+import tools.vitruv.framework.change.echange.EChangeIdManager
 
 class NotificationRecorder implements Adapter {
 	private Collection<? extends Notifier> rootObjects;
 	private boolean isRecording = false
 	List<EChange> changes;
-
+	private val EChangeIdManager idManager
+	
+	new (EChangeIdManager idManager) {
+		this.idManager = idManager;	
+	}
+	
 	override getTarget() {
 		return null;
 	}
@@ -26,31 +31,11 @@ class NotificationRecorder implements Adapter {
 	}
 
 	override notifyChanged(Notification notification) {
-		val newChanges = new NotificationToEChangeConverter().convert(new NotificationInfo(notification));
+		if (notification.newValue instanceof Notifier) {
+			addAdapter(notification.newValue as Notifier);
+		}
+		val newChanges = new NotificationToEChangeConverter().convert(new NotificationInfo(notification), changes, idManager);
 		for (newChange : newChanges) {
-			if (newChange instanceof ExplicitUnsetEAttribute) {
-				if (newChange.subtractiveChanges.empty) {
-					if (!(changes.last instanceof SubtractiveAttributeEChange<?, ?>)) {
-						throw new IllegalStateException
-					}
-					val lastChange = changes.last as SubtractiveAttributeEChange<?, ?>
-					var lastIndex = changes.size - 1;
-					for (var i = changes.size - 2; i >= 0 && lastIndex - 1 == i; i--) {
-						val currentChange = changes.get(i);
-						if (currentChange instanceof SubtractiveAttributeEChange<?,?>) {
-							if (currentChange.affectedEObject == lastChange.affectedEObject &&
-								currentChange.affectedFeature == lastChange.affectedFeature) {
-								lastIndex = i;
-							}
-						}
-					}
-					val size = changes.size;
-					for (var i = lastIndex; i < size; i++) {
-						val lastElement = changes.remove(lastIndex) as SubtractiveAttributeEChange<?,?>
-						newChange.subtractiveChanges.add(lastElement);
-					}
-				}
-			}
 			changes += newChange;
 		}
 	}
@@ -89,6 +74,13 @@ class NotificationRecorder implements Adapter {
 			changes = newArrayList();
 			this.rootObjects = rootObjects;
 			for (rootObject : rootObjects) {
+				val elements = newArrayList;
+			if (rootObject instanceof Resource) {
+				val iter = rootObject.allContents
+				while (iter.hasNext) {
+					addAdapter(iter.next);	
+				}
+			}
 				addAdapter(rootObject)
 			}
 			isRecording = true;

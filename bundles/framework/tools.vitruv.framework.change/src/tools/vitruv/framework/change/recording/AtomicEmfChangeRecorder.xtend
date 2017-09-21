@@ -61,11 +61,11 @@ class AtomicEmfChangeRecorder {
 		boolean updateTuids) {
 		this.elementsToObserve = newHashSet();
 		this.updateTuids = updateTuids;
-		this.changeRecorder = new NotificationRecorder();
 		this.legacyChangeRecorder = new AtomicChangeRecorder();
 		this.globalUuidResolver = globalUuidResolver;
 		this.localUuidGeneratorAndResolver = localUuidGeneratorAndResolver;
 		this.eChangeIdManager = new EChangeIdManager(globalUuidResolver, localUuidGeneratorAndResolver, strictMode)
+		this.changeRecorder = new NotificationRecorder(eChangeIdManager);
 	}
 
 	def void beginRecording() {
@@ -92,9 +92,8 @@ class AtomicEmfChangeRecorder {
 			// changeRecorder.beginRecording(elements);
 				legacyChangeRecorder.beginRecording(elementsToObserve);
 			} else {
-				changeRecorder.beginRecording(elementsToObserve);
+				elementsToObserve.forEach[changeRecorder.addAdapter(it)];
 			}
-			changeRecorder.beginRecording(elementsToObserve);
 		}
 	}
 
@@ -104,7 +103,7 @@ class AtomicEmfChangeRecorder {
 			if (USE_LEGACY_RECORDER) {
 				legacyChangeRecorder.beginRecording(elementsToObserve);
 			} else {
-				changeRecorder.beginRecording(elementsToObserve);
+				elementToObserve.eAdapters.remove(changeRecorder);
 			}
 		}
 	}
@@ -136,7 +135,7 @@ class AtomicEmfChangeRecorder {
 			changes = relevantChangeDescriptions.filterNull.map[createModelChange(updateTuids)].filterNull.toList;
 		} else {
 			changeRecorder.endRecording();
-			changes = changeRecorder.changes.map[VitruviusChangeFactory.instance.createConcreteChange(it)];
+			changes = changeRecorder.changes.map[VitruviusChangeFactory.instance.createConcreteApplicableChange(it)];
 		}
 
 		
