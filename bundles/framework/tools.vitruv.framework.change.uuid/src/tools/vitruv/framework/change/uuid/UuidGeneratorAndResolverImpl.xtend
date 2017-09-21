@@ -77,6 +77,9 @@ class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 
 	override getEObject(String uuid) {
 		val eObject = repository.uuidToEObject.get(uuid);
+		if (eObject === null) {
+			throw new IllegalStateException();
+		}
 		if(eObject.eIsProxy) {
 			val resolvedObject = EcoreUtil.resolve(eObject, resourceSet);
 			if(resolvedObject === null || resolvedObject.eIsProxy) {
