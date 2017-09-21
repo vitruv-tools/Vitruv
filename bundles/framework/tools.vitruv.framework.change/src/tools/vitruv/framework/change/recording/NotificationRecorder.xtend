@@ -34,7 +34,7 @@ class NotificationRecorder implements Adapter {
 		if (notification.newValue instanceof Notifier) {
 			addAdapter(notification.newValue as Notifier);
 		}
-		val newChanges = new NotificationToEChangeConverter().convert(new NotificationInfo(notification), changes, idManager);
+		val newChanges = new NotificationToEChangeConverter(idManager).convert(new NotificationInfo(notification), changes);
 		for (newChange : newChanges) {
 			changes += newChange;
 		}
