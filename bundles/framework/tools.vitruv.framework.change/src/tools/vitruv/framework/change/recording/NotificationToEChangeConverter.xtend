@@ -175,37 +175,37 @@ final class NotificationToEChangeConverter {
 	private def handleInsertReference(EObject affectedEObject, EReference affectedReference, EObject newValue, int position) {
 		val change = TypeInferringAtomicEChangeFactory.instance.createInsertReferenceChange(affectedEObject,
 			affectedReference, newValue, position);
-		return change.addIdsAndMakeCreateIfNecessary
+		val beforeAndAfterCreateChanges = change.getCreateBeforeAndAfterChangesIfNecessary;
+		eChangeIdManager.setOrGenerateIds(change);
+		return beforeAndAfterCreateChanges.key + #[change] + beforeAndAfterCreateChanges.value
 	}
 	
 	private def handleRemoveReference(EObject affectedEObject, EReference affectedReference, EObject oldValue, int position, boolean unset) {
 		val change = TypeInferringAtomicEChangeFactory.instance.
 			createRemoveReferenceChange(affectedEObject, affectedReference, oldValue, position);
 		change.isUnset = unset;
-		return change.addIdsAndMakeDeleteIfNecessary(change.affectedFeature.containment)
+		eChangeIdManager.setOrGenerateIds(change);
+		return #[change] + change.getDeleteChangesIfNecessary(change.affectedFeature.containment)
 	}
 
-	private def Iterable<EChange> addIdsAndMakeCreateIfNecessary(EObjectAddedEChange<?> change) {
-		val changes = <EChange>newArrayList();
+	private def Pair<Iterable<EChange>, Iterable<EChange>> getCreateBeforeAndAfterChangesIfNecessary(EObjectAddedEChange<?> change) {
+		val beforeChanges = <EChange>newArrayList();
+		val afterChanges = <EChange>newArrayList();
 		val created = eChangeIdManager.isCreateChange(change)
 		if (created) {
 			val createChange = TypeInferringAtomicEChangeFactory.instance.createCreateEObjectChange(change.newValue)
 			eChangeIdManager.setOrGenerateIds(createChange);
-			changes.add(createChange);
+			beforeChanges.add(createChange);
 		}
-		eChangeIdManager.setOrGenerateIds(change);
-		changes.add(change)
 		if (created) {
-			changes += recursiveAddition(change.newValue);
+			afterChanges += recursiveAddition(change.newValue);
 		}
-		return changes;
+		return new Pair(beforeChanges, afterChanges);
 	}
 
-	private def Iterable<EChange> addIdsAndMakeDeleteIfNecessary(EObjectSubtractedEChange<?> change,
+	private def Iterable<EChange> getDeleteChangesIfNecessary(EObjectSubtractedEChange<?> change,
 		boolean containment) {
 		val changes = <EChange>newArrayList();
-		changes += change;
-		eChangeIdManager.setOrGenerateIds(change);
 		val deleted = change.oldValue !== null && containment;
 		if (deleted) {
 			val deleteChange = TypeInferringAtomicEChangeFactory.instance.createDeleteEObjectChange(change.oldValue);
@@ -222,7 +222,9 @@ final class NotificationToEChangeConverter {
 			case Notification.ADD: {
 				val change = TypeInferringAtomicEChangeFactory.instance.createInsertRootChange(
 					info.newModelElementValue, info.notifier as Resource, info.position)
-				changes += change.addIdsAndMakeCreateIfNecessary
+				val beforeAndAfterCreateChanges = change.getCreateBeforeAndAfterChangesIfNecessary;
+				eChangeIdManager.setOrGenerateIds(change);
+				changes += beforeAndAfterCreateChanges.key + #[change] + beforeAndAfterCreateChanges.value
 			}
 			case Notification.ADD_MANY: {
 				// Not supported
@@ -230,7 +232,9 @@ final class NotificationToEChangeConverter {
 			case Notification.REMOVE: {
 				val change = TypeInferringAtomicEChangeFactory.instance.createRemoveRootChange(
 					info.oldModelElementValue, info.notifier as Resource, info.position);
-				changes += change.addIdsAndMakeDeleteIfNecessary(true);
+				eChangeIdManager.setOrGenerateIds(change);
+				changes += change;
+				changes += change.getDeleteChangesIfNecessary(true);
 			}
 			case Notification.REMOVE_MANY: {
 				// Not supported
@@ -378,9 +382,14 @@ final class NotificationToEChangeConverter {
 			}
 
 			val List<EChange> result = newArrayList;
-			result += change.addIdsAndMakeCreateIfNecessary
+			val beforeAndAfterCreateChanges = change.getCreateBeforeAndAfterChangesIfNecessary;
+			eChangeIdManager.setOrGenerateIds(change);
+			val deleteChanges = change.getDeleteChangesIfNecessary(change.affectedFeature.containment);
 			// Remove first element as it is the original change again
-			result += change.addIdsAndMakeDeleteIfNecessary(change.affectedFeature.containment).tail;
+			result += beforeAndAfterCreateChanges.key;
+			result += change;
+			result += beforeAndAfterCreateChanges.value;
+			result += deleteChanges;
 			return result;
 
 		} else {
