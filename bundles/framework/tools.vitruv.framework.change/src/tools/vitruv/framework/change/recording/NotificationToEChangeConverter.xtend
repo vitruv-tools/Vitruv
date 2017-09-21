@@ -8,8 +8,6 @@ import org.eclipse.emf.ecore.EAttribute
 import org.eclipse.emf.ecore.EObject
 import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.change.echange.feature.attribute.AttributeFactory
-import tools.vitruv.framework.change.echange.feature.attribute.InsertEAttributeValue
-import tools.vitruv.framework.change.echange.feature.attribute.RemoveEAttributeValue
 import tools.vitruv.framework.change.echange.feature.attribute.ReplaceSingleValuedEAttribute
 import tools.vitruv.framework.change.echange.feature.attribute.SubtractiveAttributeEChange
 import tools.vitruv.framework.change.echange.TypeInferringAtomicEChangeFactory
@@ -102,53 +100,30 @@ final class NotificationToEChangeConverter {
 
 	def private Iterable<EChange> handleMultiAttribute(NotificationInfo n) {
 		var List<EChange> changes = new ArrayList()
-
+		val affectedEObject = n.notifierModelElement;
+		val affectedFeature = n.attribute;
 		switch (n.getEventType()) {
 			case Notification.ADD: {
-				var InsertEAttributeValue<EObject, Object> op = AttributeFactory.eINSTANCE.createInsertEAttributeValue()
-				op.setAffectedFeature((n.getFeature() as EAttribute))
-				op.setNewValue(n.getNewValue())
-				op.setAffectedEObject((n.getNotifier() as EObject))
-				op.setIndex(n.getPosition())
-				changes.add(op)
+				changes += handleInsertAttribute(affectedEObject, affectedFeature, n.newValue, n.position);
 			}
 			case Notification.ADD_MANY: {
 				var List<Object> list = (n.getNewValue() as List<Object>)
 				for (var int i = 0; i < list.size(); i++) {
-					var InsertEAttributeValue<EObject, Object> operation = AttributeFactory.eINSTANCE.
-						createInsertEAttributeValue()
-					operation.setAffectedFeature((n.getFeature() as EAttribute))
-					operation.setNewValue(list.get(i))
-					operation.setAffectedEObject((n.getNotifier() as EObject))
-					operation.setIndex(n.getInitialIndex() + i)
-					changes.add(operation)
+					changes += handleInsertAttribute(affectedEObject, affectedFeature, list.get(i), n.initialIndex + i);
 				}
 			}
 			case Notification.REMOVE: {
-				var RemoveEAttributeValue<EObject, Object> operation = AttributeFactory.eINSTANCE.
-					createRemoveEAttributeValue()
-				operation.setOldValue(n.getOldValue())
-				operation.setAffectedFeature((n.getFeature() as EAttribute))
-				operation.setAffectedEObject((n.getNotifier() as EObject))
-				operation.setIndex(n.getPosition())
-				changes.add(operation)
+				changes += handleRemoveAttribute(affectedEObject, affectedFeature, n.oldValue, n.position, n.wasUnset);
 			}
-			case Notification.REMOVE_MANY: /* FIXME unsupported fall-through */ {
-				var List<Object> list2 = (n.getOldValue() as List<Object>)
+			case Notification.REMOVE_MANY: {
+				var List<Object> list = (n.getOldValue() as List<Object>)
 				if (n.getNewValue() === null) {
-					for (var int i = list2.size() - 1; i >= 0; i--) {
-						var RemoveEAttributeValue<EObject, Object> ope = AttributeFactory.eINSTANCE.
-							createRemoveEAttributeValue()
-						ope.setOldValue(list2.get(i))
-						ope.setAffectedFeature((n.getFeature() as EAttribute))
-						ope.setAffectedEObject((n.getNotifier() as EObject))
-						ope.setIndex(n.getInitialIndex() + i)
-						changes.add(ope)
+					for (var int i = list.size() - 1; i >= 0; i--) {
+						changes += handleRemoveAttribute(affectedEObject, affectedFeature, list.get(i), n.initialIndex + i, n.wasUnset && i == list.size - 1);
 					}
 				}
 			}
 		}
-		changes.forEach[eChangeIdManager.setOrGenerateIds(it)];
 		return changes
 	}
 
@@ -168,13 +143,13 @@ final class NotificationToEChangeConverter {
 				}
 			}
 			case Notification.REMOVE: {
-				changes += handleRemoveReference(affectedEObject, affectedReference, n.oldModelElementValue, n.position);
+				changes += handleRemoveReference(affectedEObject, affectedReference, n.oldModelElementValue, n.position, n.wasUnset);
 			}
 			case Notification.REMOVE_MANY: {
 				var List<EObject> list = (n.getOldValue() as List<EObject>)
 				if (n.getNewValue() === null) {
 					for (var int i = list.size() - 1; i >= 0; i--) {
-						changes += handleRemoveReference(affectedEObject, affectedReference, list.get(i), n.initialIndex + i);
+						changes += handleRemoveReference(affectedEObject, affectedReference, list.get(i), n.initialIndex + i, n.wasUnset && i == list.size - 1);
 					}
 				}
 			}
@@ -182,15 +157,31 @@ final class NotificationToEChangeConverter {
 		return changes;
 	}
 	
+	private def handleInsertAttribute(EObject affectedEObject, EAttribute affectedReference, Object newValue, int position) {
+		val change = TypeInferringAtomicEChangeFactory.instance.createInsertAttributeChange(affectedEObject,
+			affectedReference, position, newValue);
+		eChangeIdManager.setOrGenerateIds(change);
+		return change; 
+	}
+	
+	private def handleRemoveAttribute(EObject affectedEObject, EAttribute affectedReference, Object oldValue, int position, boolean unset) {
+		val change = TypeInferringAtomicEChangeFactory.instance.createRemoveAttributeChange(affectedEObject,
+			affectedReference, position, oldValue);
+		change.isUnset = unset;
+		eChangeIdManager.setOrGenerateIds(change);
+		return change; 
+	}
+	
 	private def handleInsertReference(EObject affectedEObject, EReference affectedReference, EObject newValue, int position) {
 		val change = TypeInferringAtomicEChangeFactory.instance.createInsertReferenceChange(affectedEObject,
-						affectedReference, newValue, position);
+			affectedReference, newValue, position);
 		return change.addIdsAndMakeCreateIfNecessary
 	}
 	
-	private def handleRemoveReference(EObject affectedEObject, EReference affectedReference, EObject oldValue, int position) {
+	private def handleRemoveReference(EObject affectedEObject, EReference affectedReference, EObject oldValue, int position, boolean unset) {
 		val change = TypeInferringAtomicEChangeFactory.instance.
-							createRemoveReferenceChange(affectedEObject, affectedReference, oldValue, position);
+			createRemoveReferenceChange(affectedEObject, affectedReference, oldValue, position);
+		change.isUnset = unset;
 		return change.addIdsAndMakeDeleteIfNecessary(change.affectedFeature.containment)
 	}
 
@@ -316,24 +307,15 @@ final class NotificationToEChangeConverter {
 	// return operation;
 	// }
 	def private Iterable<EChange> handleSetAttribute(NotificationInfo n) {
-		var List<EChange> changes = new ArrayList()
+		val List<EChange> changes = new ArrayList();
+		val affectedEObject = n.notifierModelElement;
+		val affectedFeature = n.attribute; 
 		if (n.getAttribute().isMany()) {
-		// special handling for diagram layout changes
-			if (n.getOldValue() !== null) {
-				var RemoveEAttributeValue<EObject, Object> op=AttributeFactory.eINSTANCE.createRemoveEAttributeValue() 
-				op.setOldValue(n.getOldValue()) 
-				op.setAffectedFeature((n.getFeature() as EAttribute)) 
-				op.setAffectedEObject((n.getNotifier() as EObject)) 
-				op.setIndex(n.getPosition()) 
-				changes.add(op) 
+			if (n.oldValue !== null) {
+				changes += handleRemoveAttribute(affectedEObject, affectedFeature, n.oldValue, n.position, n.wasUnset);
 			} 
-			if (n.getNewValue() !== null) {
-				var InsertEAttributeValue<EObject, Object> op=AttributeFactory.eINSTANCE.createInsertEAttributeValue() 
-				op.setAffectedFeature((n.getFeature() as EAttribute)) 
-				op.setNewValue(n.getNewValue()) 
-				op.setAffectedEObject((n.getNotifier() as EObject)) 
-				op.setIndex(n.getPosition()) 
-				changes.add(op) 
+			if (n.newValue !== null) {
+				changes += handleInsertAttribute(affectedEObject, affectedFeature, n.newValue, n.position);
 			}
 		} else {
 			var ReplaceSingleValuedEAttribute<EObject, Object> op = AttributeFactory.eINSTANCE.
@@ -342,12 +324,12 @@ final class NotificationToEChangeConverter {
 			op.setNewValue(n.getNewValue())
 			op.setAffectedFeature((n.getFeature() as EAttribute))
 			op.setAffectedEObject((n.getNotifier() as EObject))
+			if (n.wasUnset) {
+				op.isUnset = true;
+			}
+			eChangeIdManager.setOrGenerateIds(op);
 			changes.add(op)
 		}
-		if (n.wasUnset()) {
-			((changes.get(changes.size() - 1) as SubtractiveAttributeEChange<EObject, Object>)).setIsUnset(true)
-		}
-		changes.forEach[eChangeIdManager.setOrGenerateIds(it)];
 		return changes
 	}
 
@@ -404,7 +386,7 @@ final class NotificationToEChangeConverter {
 		} else {
 			val changes = newArrayList;
 			if (oldValue !== null)
-				changes += handleRemoveReference(n.notifierModelElement, n.reference, oldValue, n.position);
+				changes += handleRemoveReference(n.notifierModelElement, n.reference, oldValue, n.position, n.wasUnset);
 			if (newValue !== null)
 				changes += handleInsertReference(n.notifierModelElement, n.reference, newValue, n.position);
 			return changes;
