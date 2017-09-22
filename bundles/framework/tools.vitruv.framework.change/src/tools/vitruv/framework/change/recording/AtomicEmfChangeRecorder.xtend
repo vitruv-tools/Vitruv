@@ -17,25 +17,11 @@ import tools.vitruv.framework.change.echange.eobject.DeleteEObject
 
 class AtomicEmfChangeRecorder {
 	val Set<Notifier> elementsToObserve
-	val boolean updateTuids;
 	val NotificationRecorder changeRecorder;
 	var List<TransactionalChange> changes;
 	val UuidResolver globalUuidResolver;
 	val UuidGeneratorAndResolver localUuidGeneratorAndResolver;
 	val EChangeIdManager eChangeIdManager;
-
-	/**
-	 * Constructors which updates {@link Tuid}s.
-	 * 
-	 * @param uuidProviderAndResolver -
-	 * 		the {@link UuidProviderAndResolver} for ID generation
-	 * @param strictMode -
-	 * 		specifies whether exceptions shall be thrown if no ID exists for an element that should already have one.
-	 * 		Should be set to <code>false</code> if model is not recorded from beginning
-	 */
-	new(UuidResolver globalUuidResolver, UuidGeneratorAndResolver localUuidGeneratorAndResolver, boolean strictMode) {
-		this(globalUuidResolver, localUuidGeneratorAndResolver, strictMode, true);
-	}
 
 	/**
 	 * Constructor for AtomicEMFChangeRecorder.
@@ -45,13 +31,9 @@ class AtomicEmfChangeRecorder {
 	 * @param strictMode -
 	 * 		specifies whether exceptions shall be thrown if no ID exists for an element that should already have one.
 	 * 		Should be set to <code>false</code> if model is not recorded from beginning
-	 * @param updateTuids -
-	 * 		specifies whether TUIDs shall be updated or not.
 	 */
-	new(UuidResolver globalUuidResolver, UuidGeneratorAndResolver localUuidGeneratorAndResolver, boolean strictMode,
-		boolean updateTuids) {
+	new(UuidResolver globalUuidResolver, UuidGeneratorAndResolver localUuidGeneratorAndResolver, boolean strictMode) {
 		this.elementsToObserve = newHashSet();
-		this.updateTuids = updateTuids;
 		this.globalUuidResolver = globalUuidResolver;
 		this.localUuidGeneratorAndResolver = localUuidGeneratorAndResolver;
 		this.eChangeIdManager = new EChangeIdManager(globalUuidResolver, localUuidGeneratorAndResolver, strictMode)
