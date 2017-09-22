@@ -34,6 +34,9 @@ class EChangeIdManager {
 	 * 		necessary if model changes are not recorded from beginning of model creation
 	 */
 	new(UuidResolver globalUuidResolver, UuidGeneratorAndResolver localUuidGeneratorAndResolver, boolean strictMode) {
+		if (globalUuidResolver === null || localUuidGeneratorAndResolver === null) {
+			throw new IllegalArgumentException;
+		}
 		this.globalUuidResolver = globalUuidResolver;
 		this.localUuidGeneratorAndResolver = localUuidGeneratorAndResolver;
 		this.strictMode = strictMode;
