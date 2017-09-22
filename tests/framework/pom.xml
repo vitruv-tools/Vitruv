@@ -14,9 +14,9 @@
 	<name>Framework Test Modules</name>
 
 	<modules>
+		<module>tools.vitruv.framework.change.echange.tests</module>
 		<module>tools.vitruv.framework.change.tests</module>
 		<module>tools.vitruv.framework.vsum.tests</module>
-		<module>tools.vitruv.framework.change.echange.tests</module>
 	</modules>
 	
 	<build>
