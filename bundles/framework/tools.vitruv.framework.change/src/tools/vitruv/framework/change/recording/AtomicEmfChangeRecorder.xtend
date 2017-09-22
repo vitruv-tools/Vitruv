@@ -1,15 +1,9 @@
 package tools.vitruv.framework.change.recording
 
-import java.util.Collection
 import java.util.List
 import java.util.Set
-import org.eclipse.emf.common.notify.Notification
 import org.eclipse.emf.common.notify.Notifier
-import org.eclipse.emf.ecore.change.ChangeDescription
-import org.eclipse.emf.ecore.change.util.ChangeRecorder
-import org.eclipse.xtend.lib.annotations.Accessors
 import tools.vitruv.framework.change.description.TransactionalChange
-import tools.vitruv.framework.change.description.VitruviusChangeFactory
 import tools.vitruv.framework.change.echange.EChangeIdManager
 import tools.vitruv.framework.change.uuid.UuidGeneratorAndResolver
 import tools.vitruv.framework.change.uuid.UuidResolver
@@ -22,12 +16,9 @@ import tools.vitruv.framework.change.description.impl.ConcreteApplicableChangeIm
 import tools.vitruv.framework.change.echange.eobject.DeleteEObject
 
 class AtomicEmfChangeRecorder {
-	private static val USE_LEGACY_RECORDER = false;
-
 	val Set<Notifier> elementsToObserve
 	val boolean updateTuids;
 	val NotificationRecorder changeRecorder;
-	val AtomicChangeRecorder legacyChangeRecorder;
 	var List<TransactionalChange> changes;
 	val UuidResolver globalUuidResolver;
 	val UuidGeneratorAndResolver localUuidGeneratorAndResolver;
@@ -61,7 +52,6 @@ class AtomicEmfChangeRecorder {
 		boolean updateTuids) {
 		this.elementsToObserve = newHashSet();
 		this.updateTuids = updateTuids;
-		this.legacyChangeRecorder = new AtomicChangeRecorder();
 		this.globalUuidResolver = globalUuidResolver;
 		this.localUuidGeneratorAndResolver = localUuidGeneratorAndResolver;
 		this.eChangeIdManager = new EChangeIdManager(globalUuidResolver, localUuidGeneratorAndResolver, strictMode)
@@ -69,42 +59,18 @@ class AtomicEmfChangeRecorder {
 	}
 
 	def void beginRecording() {
-		if (USE_LEGACY_RECORDER) {
-			legacyChangeRecorder.reset;
-			legacyChangeRecorder.beginRecording(this.elementsToObserve);
-		} else {
-			changeRecorder.beginRecording();
-		}
+		changeRecorder.beginRecording();
 	}
 
 	def void addToRecording(Notifier elementToObserve) {
 		this.elementsToObserve += elementToObserve;
-		if (USE_LEGACY_RECORDER) {
-			if (isRecording) {
-//			val elements = newArrayList;
-//			elements += elementsToObserve;
-//			if (elementToObserve instanceof Resource) {
-//				val iter = elementToObserve.allContents
-//				while (iter.hasNext) {
-//					elements += iter.next;	
-//				}
-//			}
-			// changeRecorder.beginRecording(elements);
-				legacyChangeRecorder.beginRecording(elementsToObserve);
-			}
-		} else {
-			elementsToObserve.forEach[changeRecorder.addToRecording(it)];
-		}
+		elementsToObserve.forEach[changeRecorder.addToRecording(it)];
 	}
 
 	def void removeFromRecording(Notifier elementToObserve) {
 		this.elementsToObserve -= elementToObserve;
 		if (isRecording) {
-			if (USE_LEGACY_RECORDER) {
-				legacyChangeRecorder.beginRecording(elementsToObserve);
-			} else {
-				elementToObserve.eAdapters.remove(changeRecorder);
-			}
+			elementToObserve.eAdapters.remove(changeRecorder);
 		}
 	}
 
@@ -113,31 +79,15 @@ class AtomicEmfChangeRecorder {
 		if(!isRecording) {
 			throw new IllegalStateException();
 		}
-		if (USE_LEGACY_RECORDER) {
-			legacyChangeRecorder.endRecording();
-		} else {
-			changeRecorder.endRecording();
-		}
+		changeRecorder.endRecording();
 	}
 
 	def void endRecording() {
 		if(!isRecording) {
 			throw new IllegalStateException();
 		}
-		var List<TransactionalChange> changes;
-		if (USE_LEGACY_RECORDER) {
-			legacyChangeRecorder.endRecording();
-			// Only take those that do not contain only objectsToAttach (I don't know why)
-			val relevantChangeDescriptions = legacyChangeRecorder.changeDescriptions.filter [
-				!(objectChanges.isEmpty && resourceChanges.isEmpty)
-			].toList
-			relevantChangeDescriptions.reverseView.forEach[applyAndReverse];
-			changes = relevantChangeDescriptions.filterNull.map[createModelChange(updateTuids)].filterNull.toList;
-		} else {
-			changeRecorder.endRecording();
-			changes = changeRecorder.changes;
-		}
-
+		changeRecorder.endRecording();
+		val changes = changeRecorder.changes;
 		
 		removeDuplicateCreates(changes);
 		removeCreateFollowedByDelete(changes);
@@ -166,17 +116,11 @@ class AtomicEmfChangeRecorder {
 	}
 
 	def boolean isRecording() {
-		if (USE_LEGACY_RECORDER) {
-			return legacyChangeRecorder.isRecording()
-		} else {
-			return changeRecorder.isRecording()
-		}
+		return changeRecorder.isRecording()
 	}
 
 	def void dispose() {
-		if (USE_LEGACY_RECORDER) {
-			legacyChangeRecorder.dispose()
-		}
+		// Do nothin at the moment
 	}
 	
 	// Necessary because of stupid Xtend generic type inference
@@ -296,60 +240,6 @@ class AtomicEmfChangeRecorder {
 
 	public def List<TransactionalChange> getChanges() {
 		return changes;
-	}
-
-	private def createModelChange(ChangeDescription changeDescription, boolean updateTuids) {
-		var TransactionalChange result = null;
-		result = VitruviusChangeFactory.instance.createTransactionalChange(changeDescription)
-		changeDescription.applyAndReverse()
-		return result;
-	}
-
-	/**
-	 * A change recorder that restarts after each change notification to get atomic change descriptions.
-	 */
-	static class AtomicChangeRecorder extends ChangeRecorder {
-		private Collection<?> rootObjects;
-		private boolean isDisposed = false;
-		@Accessors(PUBLIC_GETTER)
-		private var List<ChangeDescription> changeDescriptions;
-
-		new() {
-			setRecordingTransientFeatures(false);
-			setResolveProxies(true);
-			reset();
-		}
-
-		public def void reset() {
-			this.changeDescriptions = newArrayList;
-		}
-
-		override dispose() {
-			this.isDisposed = true;
-			super.dispose()
-		}
-
-		override notifyChanged(Notification notification) {
-			if(isRecording && !isDisposed) {
-				super.notifyChanged(notification);
-				endRecording();
-				beginRecording(rootObjects);
-			}
-		}
-
-		override beginRecording(Collection<?> rootObjects) {
-			if(!isDisposed) {
-				this.rootObjects = rootObjects;
-				super.beginRecording(rootObjects);
-			}
-		}
-
-		override endRecording() {
-			if(!isDisposed) {
-				changeDescriptions += super.endRecording();
-			}
-			return changeDescription;
-		}
 	}
 
 }

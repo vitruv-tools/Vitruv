@@ -2,7 +2,6 @@ package tools.vitruv.framework.change.description
 
 import org.apache.log4j.Logger
 import org.eclipse.emf.ecore.EObject
-import org.eclipse.emf.ecore.change.ChangeDescription
 import org.eclipse.emf.ecore.resource.Resource
 import tools.vitruv.framework.change.description.impl.CompositeContainerChangeImpl
 import tools.vitruv.framework.change.description.impl.CompositeTransactionalChangeImpl
@@ -11,7 +10,6 @@ import tools.vitruv.framework.change.description.impl.EmptyChangeImpl
 import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.change.echange.TypeInferringCompoundEChangeFactory
 import tools.vitruv.framework.util.datatypes.VURI
-import tools.vitruv.framework.change.preparation.ChangeDescription2EChangesTransformation
 import tools.vitruv.framework.change.description.impl.ConcreteApplicableChangeImpl
 import tools.vitruv.framework.change.description.impl.ConcreteChangeWithUriImpl
 import java.util.List
@@ -32,21 +30,6 @@ class VitruviusChangeFactory {
 			instance = new VitruviusChangeFactory();
 		}
 		return instance;
-	}
-	
-	/**
-	 * Generates a change from the given {@link ChangeDescription}. This factory method has to be called when the model
-	 * is in the state right before the change described by the recorded {@link ChangeDescription}.
-	 */
-	public def TransactionalChange createTransactionalChange(ChangeDescription changeDescription) {
-		val changes = new ChangeDescription2EChangesTransformation(changeDescription).transform()
-		val compositeChange = createCompositeTransactionalChange;
-		if (changes.empty) {
-			compositeChange.addChange(createEmptyChange(null));
-		} else {
-			changes.map[createConcreteApplicableChange(it)].forEach[compositeChange.addChange(it)];
-		}
-		return compositeChange
 	}
 	
 	public def ConcreteChange createConcreteApplicableChange(EChange change) {
