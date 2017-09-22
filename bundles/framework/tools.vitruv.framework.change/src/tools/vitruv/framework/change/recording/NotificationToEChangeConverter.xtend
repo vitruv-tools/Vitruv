@@ -208,7 +208,6 @@ final class NotificationToEChangeConverter {
 		val beforeAndAfterCreateChanges = change.getCreateBeforeAndAfterChangesIfNecessary;
 		eChangeIdManager.setOrGenerateIds(change);
 		val deleteChanges = change.getDeleteChangesIfNecessary(change.affectedFeature.containment);
-		// Remove first element as it is the original change again
 		result += beforeAndAfterCreateChanges.key;
 		result += change;
 		result += beforeAndAfterCreateChanges.value;
