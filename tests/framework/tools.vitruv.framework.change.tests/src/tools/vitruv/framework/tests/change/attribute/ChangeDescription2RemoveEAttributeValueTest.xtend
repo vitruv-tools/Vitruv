@@ -26,9 +26,9 @@ class ChangeDescription2RemoveEAttributeValueTest extends ChangeDescription2Chan
 		this.rootElement.multiValuedEAttribute.remove(0)
 
 		changes.assertChangeCount(3);
-		changes.assertRemoveEAttribute(this.rootElement, ROOT__MULTI_VALUED_EATTRIBUTE, 66, 2, false)
-			.assertRemoveEAttribute(this.rootElement, ROOT__MULTI_VALUED_EATTRIBUTE, 42, 0, false)
-			.assertRemoveEAttribute(this.rootElement, ROOT__MULTI_VALUED_EATTRIBUTE, 55, 0, false)
+		changes.assertRemoveEAttribute(this.rootElement, ROOT__MULTI_VALUED_EATTRIBUTE, 66, 2)
+			.assertRemoveEAttribute(this.rootElement, ROOT__MULTI_VALUED_EATTRIBUTE, 42, 0)
+			.assertRemoveEAttribute(this.rootElement, ROOT__MULTI_VALUED_EATTRIBUTE, 55, 0)
 			.assertEmpty;
 	}
 	
@@ -46,8 +46,8 @@ class ChangeDescription2RemoveEAttributeValueTest extends ChangeDescription2Chan
 		this.rootElement.multiValuedEAttribute.clear
 
 		changes.assertChangeCount(2);
-		changes.assertRemoveEAttribute(this.rootElement, ROOT__MULTI_VALUED_EATTRIBUTE, 55, 1, false)
-			.assertRemoveEAttribute(this.rootElement, ROOT__MULTI_VALUED_EATTRIBUTE, 42, 0, false)
+		changes.assertRemoveEAttribute(this.rootElement, ROOT__MULTI_VALUED_EATTRIBUTE, 55, 1)
+			.assertRemoveEAttribute(this.rootElement, ROOT__MULTI_VALUED_EATTRIBUTE, 42, 0)
 			.assertEmpty;
 	}
 	
@@ -66,7 +66,7 @@ class ChangeDescription2RemoveEAttributeValueTest extends ChangeDescription2Chan
 		this.rootElement.multiValuedUnsettableEAttribute.remove(0)
 
 		changes.assertChangeCount(1);
-		changes.assertRemoveEAttribute(this.rootElement, ROOT__MULTI_VALUED_UNSETTABLE_EATTRIBUTE, 42, 0, false)
+		changes.assertRemoveEAttribute(this.rootElement, ROOT__MULTI_VALUED_UNSETTABLE_EATTRIBUTE, 42, 0)
 			.assertEmpty;
 		Assert.assertTrue(this.rootElement.eIsSet(ROOT__MULTI_VALUED_UNSETTABLE_EATTRIBUTE));
 	}
@@ -81,8 +81,9 @@ class ChangeDescription2RemoveEAttributeValueTest extends ChangeDescription2Chan
 		// unset 
 		this.rootElement.eUnset(ROOT__MULTI_VALUED_UNSETTABLE_EATTRIBUTE)
 
-		changes.assertChangeCount(1);
-		changes.assertRemoveEAttribute(this.rootElement, ROOT__MULTI_VALUED_UNSETTABLE_EATTRIBUTE, 42, 0, true)
+		changes.assertChangeCount(2);
+		changes.assertRemoveEAttribute(this.rootElement, ROOT__MULTI_VALUED_UNSETTABLE_EATTRIBUTE, 42, 0)
+			.assertUnsetFeature(this.rootElement, ROOT__MULTI_VALUED_UNSETTABLE_EATTRIBUTE)
 			.assertEmpty;
 
 	}
@@ -100,9 +101,10 @@ class ChangeDescription2RemoveEAttributeValueTest extends ChangeDescription2Chan
 		Assert.assertTrue(rootElement.isSetMultiValuedUnsettableEAttribute); 
 		this.rootElement.eUnset(ROOT__MULTI_VALUED_UNSETTABLE_EATTRIBUTE)
 		Assert.assertFalse(rootElement.isSetMultiValuedUnsettableEAttribute);
-		changes.assertChangeCount(2);
-		changes.assertRemoveEAttribute(this.rootElement, ROOT__MULTI_VALUED_UNSETTABLE_EATTRIBUTE, 22, 1, false)
-			.assertRemoveEAttribute(this.rootElement, ROOT__MULTI_VALUED_UNSETTABLE_EATTRIBUTE, 42, 0, true)
+		changes.assertChangeCount(3);
+		changes.assertRemoveEAttribute(this.rootElement, ROOT__MULTI_VALUED_UNSETTABLE_EATTRIBUTE, 22, 1)
+			.assertRemoveEAttribute(this.rootElement, ROOT__MULTI_VALUED_UNSETTABLE_EATTRIBUTE, 42, 0)
+			.assertUnsetFeature(this.rootElement, ROOT__MULTI_VALUED_UNSETTABLE_EATTRIBUTE)
 			.assertEmpty;
 	}
 	

@@ -22,6 +22,7 @@ import static org.junit.Assert.*
 import static extension tools.vitruv.framework.tests.change.util.ChangeAssertHelper.*
 import static extension tools.vitruv.framework.tests.change.util.CompoundEChangeAssertHelper.*
 import org.junit.Assert
+import tools.vitruv.framework.change.echange.feature.UnsetFeature
 
 class AtomicEChangeAssertHelper {
 	public def static void assertEObjectExistenceChange(EObjectExistenceEChange<?> change, EObject affectedEObject) {
@@ -90,14 +91,13 @@ class AtomicEChangeAssertHelper {
 	}
 	
 	def public static Iterable<? extends EChange> assertRemoveEAttribute(Iterable<? extends EChange> changes, EObject affectedEObject, EStructuralFeature affectedFeature,
-			Object expectedOldValue, int expectedOldIndex, boolean isUnset) {
+			Object expectedOldValue, int expectedOldIndex) {
 		changes.assertSizeGreaterEquals(1);
 		val removeEAttributeValue = assertType(changes.get(0), RemoveEAttributeValue);
 		removeEAttributeValue.assertAffectedEObject(affectedEObject)
 		removeEAttributeValue.assertAffectedEFeature(affectedFeature)
 		removeEAttributeValue.assertOldValue(expectedOldValue)
 		removeEAttributeValue.assertIndex(expectedOldIndex)
-		Assert.assertEquals(isUnset, removeEAttributeValue.isIsUnset)
 		return changes.tail;
 	}
 	
@@ -158,7 +158,7 @@ class AtomicEChangeAssertHelper {
 	}
 	
 	def public static Iterable<? extends EChange> assertRemoveEReference(Iterable<? extends EChange> changes, EObject affectedEObject, EStructuralFeature affectedFeature,
-			EObject expectedOldValue, int expectedOldIndex, boolean isContainment, boolean isUnset) {
+			EObject expectedOldValue, int expectedOldIndex, boolean isContainment) {
 		changes.assertSizeGreaterEquals(1);
 		val subtractiveChange = assertType(changes.get(0), RemoveEReference);
 		subtractiveChange.assertAffectedEFeature(affectedFeature)
@@ -166,7 +166,14 @@ class AtomicEChangeAssertHelper {
 		subtractiveChange.assertOldValue(expectedOldValue)
 		subtractiveChange.assertIndex(expectedOldIndex)
 		subtractiveChange.assertContainment(isContainment)
-		Assert.assertEquals(isUnset, subtractiveChange.isIsUnset)
+		return changes.tail;
+	}
+	
+	def public static Iterable<? extends EChange> assertUnsetFeature(Iterable<? extends EChange> changes, EObject affectedEObject, EStructuralFeature affectedFeature) {
+		changes.assertSizeGreaterEquals(1);
+		val unsetChange = assertType(changes.get(0), UnsetFeature);
+		unsetChange.assertAffectedEFeature(affectedFeature)
+		unsetChange.assertAffectedEObject(affectedEObject)
 		return changes.tail;
 	}
 	
