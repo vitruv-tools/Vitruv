@@ -63,6 +63,12 @@ abstract class ChangeDescription2ChangeTransformationTest {
 		val uuidGeneratorAndResolver = new UuidGeneratorAndResolverImpl(rs, null)
 		this.uuidGeneratorAndResolver = uuidGeneratorAndResolver;
 		this.changeRecorder = new AtomicEmfChangeRecorder(uuidGeneratorAndResolver, uuidGeneratorAndResolver, false)
+		prepareRootElement();
+	}
+	
+	def void prepareRootElement() {
+		changeRecorder.addToRecording(rs);
+		changeRecorder.beginRecording;
 		this.rootElement = createRootInResource(1);
 	}
 
@@ -110,6 +116,9 @@ abstract class ChangeDescription2ChangeTransformationTest {
 	}
 
 	public def startRecording() {
+		if (changeRecorder.isRecording) {
+			changeRecorder.stopRecording;
+		}
 		this.changes = null
 		this.changeRecorder.addToRecording(rs)
 		this.changeRecorder.beginRecording()
