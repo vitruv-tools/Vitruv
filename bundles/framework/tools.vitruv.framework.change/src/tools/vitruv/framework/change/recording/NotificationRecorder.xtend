@@ -40,9 +40,11 @@ class NotificationRecorder implements Adapter {
 		for (newChange : newChanges) {
 			changes += newChange;
 		}
-		val transactionalChange = VitruviusChangeFactory.instance.createCompositeTransactionalChange
-		newChanges.forEach[transactionalChange.addChange(VitruviusChangeFactory.instance.createConcreteApplicableChange(it))];
-		resultChanges += transactionalChange;
+		if (!newChanges.empty) {
+			val transactionalChange = VitruviusChangeFactory.instance.createCompositeTransactionalChange
+			newChanges.forEach[transactionalChange.addChange(VitruviusChangeFactory.instance.createConcreteApplicableChange(it))];
+			resultChanges += transactionalChange;
+		}
 	}
 
 	override setTarget(Notifier newTarget) {
