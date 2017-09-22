@@ -2,7 +2,6 @@ package tools.vitruv.framework.tests.echange.compound
 
 import allElementTypes.AllElementTypesPackage
 import allElementTypes.Root
-import java.util.ArrayList
 import java.util.List
 import org.eclipse.emf.common.util.EList
 import org.eclipse.emf.ecore.EAttribute
@@ -14,6 +13,7 @@ import tools.vitruv.framework.tests.echange.EChangeTest
 
 import static extension tools.vitruv.framework.tests.echange.util.EChangeAssertHelper.*
 import tools.vitruv.framework.change.echange.EChange
+import tools.vitruv.framework.change.echange.feature.UnsetFeature
 
 /**
  * Test class for the concrete {@link ExplicitUnsetEAttribute} EChange,
@@ -226,31 +226,29 @@ class ExplicitUnsetEAttributeTest extends EChangeTest {
 	/**
 	 * Change is resolved.
 	 */
-	def private static assertIsResolved(List<? extends EChange> changes, Root affectedRootObject) {
+	def private static void assertIsResolved(List<? extends EChange> changes, Root affectedRootObject) {
 		assertIsResolved(changes);
-		val unsetChange = assertType(changes.last, SubtractiveAttributeEChange);
-		Assert.assertTrue(unsetChange.isIsUnset)
+		assertType(changes.get(changes.size - 2), SubtractiveAttributeEChange);
+		assertType(changes.last, UnsetFeature);
 	}
 	
 	/**
 	 * Creates new unresolved change.
 	 */
 	def private List<? extends EChange> createUnresolvedChange() {
-		var List<SubtractiveAttributeEChange<Root, Integer>> subtractiveChanges = 
-			new ArrayList<SubtractiveAttributeEChange<Root, Integer>>
+		var List<EChange> subtractiveChanges = newArrayList()
 		if (!affectedFeature.many) {
-			subtractiveChanges.add(atomicFactory.<Root, Integer>createReplaceSingleAttributeChange
+			subtractiveChanges.add(atomicFactory.createReplaceSingleAttributeChange
 				(affectedEObject, affectedFeature, OLD_VALUE, affectedFeature.defaultValue as Integer))			
 		} else {
-			subtractiveChanges.add(atomicFactory.<Root, Integer>createRemoveAttributeChange
+			subtractiveChanges.add(atomicFactory.createRemoveAttributeChange
 				(affectedEObject, affectedFeature, 2, OLD_VALUE_3))
-			subtractiveChanges.add(atomicFactory.<Root, Integer>createRemoveAttributeChange
+			subtractiveChanges.add(atomicFactory.createRemoveAttributeChange
 				(affectedEObject, affectedFeature, 1, OLD_VALUE_2))
-			subtractiveChanges.add(atomicFactory.<Root, Integer>createRemoveAttributeChange
+			subtractiveChanges.add(atomicFactory.createRemoveAttributeChange
 				(affectedEObject, affectedFeature, 0, OLD_VALUE))		
 		}
-		subtractiveChanges.last.setIsUnset = true;
-		return subtractiveChanges
+		return (subtractiveChanges + #[atomicFactory.createUnsetFeatureChange(affectedEObject, affectedFeature)]).toList;
 	}	
 	
 	/**

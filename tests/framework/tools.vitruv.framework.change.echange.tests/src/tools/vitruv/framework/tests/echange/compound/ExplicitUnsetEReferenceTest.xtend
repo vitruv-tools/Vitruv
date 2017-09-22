@@ -500,9 +500,8 @@ class ExplicitUnsetEReferenceTest extends EChangeTest {
 			} else {
 				changes.add(atomicFactory.createRemoveReferenceChange(affectedEObject, affectedFeature, oldValue3, 2))
 				changes.add(atomicFactory.createRemoveReferenceChange(affectedEObject, affectedFeature, oldValue2, 1))
-				val lastChange = atomicFactory.createRemoveReferenceChange(affectedEObject, affectedFeature, oldValue, 0)
-				lastChange.isUnset = true
-				changes.add(lastChange)
+				changes.add(atomicFactory.createRemoveReferenceChange(affectedEObject, affectedFeature, oldValue, 0))
+				changes.add(atomicFactory.createUnsetFeatureChange(affectedEObject, affectedFeature))
 			}
 		} else {
 			if (!affectedFeature.many) {
@@ -512,9 +511,8 @@ class ExplicitUnsetEReferenceTest extends EChangeTest {
 			} else {
 				changes.addAll(compoundFactory.createRemoveAndDeleteNonRootChange(affectedEObject, affectedFeature, oldValue3, 2))
 				changes.addAll(compoundFactory.createRemoveAndDeleteNonRootChange(affectedEObject, affectedFeature, oldValue2, 1))
-				val lastChange = compoundFactory.createRemoveAndDeleteNonRootChange(affectedEObject, affectedFeature, oldValue, 0)
-				(lastChange.get(0) as RemoveEReference<?,?>).isUnset = true;
-				changes.addAll(lastChange)
+				changes.addAll(compoundFactory.createRemoveAndDeleteNonRootChange(affectedEObject, affectedFeature, oldValue, 0))
+				changes.add(atomicFactory.createUnsetFeatureChange(affectedEObject, affectedFeature))
 			}
 		}
 		
