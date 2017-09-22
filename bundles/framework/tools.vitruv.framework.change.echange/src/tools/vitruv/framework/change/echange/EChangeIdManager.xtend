@@ -11,6 +11,7 @@ import tools.vitruv.framework.change.uuid.UuidResolver
 import org.eclipse.emf.ecore.EObject
 import org.apache.log4j.Logger
 import org.eclipse.emf.ecore.util.EcoreUtil
+import tools.vitruv.framework.change.echange.feature.reference.UpdateReferenceEChange
 
 /**
  * Provides logic for initializing the IDs within changes and for updating
@@ -58,7 +59,12 @@ class EChangeIdManager {
 		// TODO Currently, we only look for the UUID locally. If we look globally, resolving the URI can result
 		// in an old element with the same URI being matched. Nevertheless, this currently requires the local
 		// UUID repository to be always complete
-		return addedEChange.newValue !== null && !(localUuidGeneratorAndResolver.hasUuid(addedEChange.newValue))
+		var create = addedEChange.newValue !== null && !(localUuidGeneratorAndResolver.hasUuid(addedEChange.newValue))
+		// Look if the new value has no resource or if it is a reference change, if the resource of the affected
+		// object is the same. Otherwise, the create has to be handled by an insertion/reference in that resource, as
+		// it can be potentially a reference to a third party model, for which no create shall be instantiated		
+		create = create && (addedEChange.newValue.eResource === null || !(addedEChange instanceof UpdateReferenceEChange<?>) || addedEChange.newValue.eResource == (addedEChange as UpdateReferenceEChange<?>).affectedEObject.eResource)
+		return create;
 	}
 	
 	private def String getOrGenerateValue(EObject object) {
