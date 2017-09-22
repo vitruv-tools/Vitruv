@@ -101,18 +101,7 @@ abstract class ChangeDescription2ChangeTransformationTest {
 	public def List<EChange> endRecording() {
 		changeRecorder.endRecording()
 		val changeDescriptions = changeRecorder.changes
-//		for (var i = changeDescriptions.size -1; i>= 0; i--) {
-//			changeDescriptions.get(i).changeDescription.applyAndReverse();
-//		}
-		// FIXME HK dont use the calculate method, prepare all changes in forall loop and take the changes afterwards
-		return changeDescriptions.map [
-			val changes = it.EChanges;
-//			it.changeDescription.applyAndReverse();
-			return changes;
-		].flatten.toList;
-//		val change = new changes.changepreparerTransformation(changeDescriptions, true).getChange();
-//		val changes = if (change instanceof ProcessableCompositeChange)
-//		map[it.EChanges].flatten.toList;
+		return changeDescriptions.map[EChanges].flatten.toList;
 	}
 
 	public def startRecording() {
@@ -150,9 +139,6 @@ abstract class ChangeDescription2ChangeTransformationTest {
 	}
 
 	protected def createAndAddNonRootToContainment(boolean shouldStartRecording) {
-		// prepare --> insert the non root in the containment - but do not test the containment
-//		createAndAddNonRootToFeature(this.rootElement.getFeatureByName(SINGLE_VALUED_CONTAINMENT_E_REFERENCE_NAME),
-//			shouldStartRecording)
 		val nonRoot = AllElementTypesFactory.eINSTANCE.createNonRoot;
 		this.rootElement.singleValuedContainmentEReference = nonRoot;
 		if (shouldStartRecording) {
@@ -162,7 +148,6 @@ abstract class ChangeDescription2ChangeTransformationTest {
 	}
 
 	protected def createAndAddNonRootToRootContainer(boolean shouldStartRecording) {
-		// prepare --> insert the non root in the containment - but do not test the containment
 		val nonRoot = AllElementTypesFactory.eINSTANCE.createNonRoot
 		this.rootElement.nonRootObjectContainerHelper.nonRootObjectsContainment.add(nonRoot)
 		if (shouldStartRecording) {
