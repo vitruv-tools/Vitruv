@@ -13,7 +13,6 @@ import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.change.echange.TypeInferringAtomicEChangeFactory
 import tools.vitruv.framework.change.echange.TypeInferringCompoundEChangeFactory
 import tools.vitruv.framework.change.echange.feature.attribute.AdditiveAttributeEChange
-import tools.vitruv.framework.change.echange.feature.attribute.ReplaceSingleValuedEAttribute
 import tools.vitruv.framework.change.echange.feature.attribute.SubtractiveAttributeEChange
 
 import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.EObjectUtil.*
@@ -109,19 +108,6 @@ public class EMFModelChangeTransformationUtil {
 		return result;
 	}
 	
-	def static boolean isRootAfterChange(EObject eObject, EObject newContainer) {
-		return isRootContainer(newContainer)
-	}
-	
-	def static boolean wasRootBeforeChange(EObject eObject) {
-		val oldContainer = eObject.eContainer()
-		return isRootContainer(oldContainer)
-	}
-	
-	def private static boolean isRootContainer(EObject container) {
-		return container === null //|| container instanceof ChangeDescription
-}
-	
 	def static boolean hasNonDefaultValue(EObject eObject) {
 		var hasNonDefaultValue = false
 		for (feature : eObject.eClass.EAllStructuralFeatures) {
@@ -132,7 +118,6 @@ public class EMFModelChangeTransformationUtil {
 		return hasNonDefaultValue
 	}
 	
-
 	def static private boolean isChangeableUnderivedPersistedNotContainingFeature(EObject eObject, EStructuralFeature feature) {
 
 		// Ensure that its not the containing feature by checking if the value equals the container value.
@@ -157,35 +142,10 @@ public class EMFModelChangeTransformationUtil {
 		return isChangeableUnderivedPersistedNotContainingFeature(eObject, feature) && valueIsNonDefault(eObject, feature)
 	}
 	
-	def static List<EChange> createInsertRootChange(EObject rootToInsert, EObject oldRootContainer, Resource oldRootResource, Resource newResource, int index) {
-		val isCreate = isCreate(oldRootContainer, oldRootResource)
-		if (isCreate) {
-			return TypeInferringCompoundEChangeFactory.instance.createCreateAndInsertRootChange(rootToInsert, newResource, index);
-		} else {
-
-			return #[TypeInferringAtomicEChangeFactory.instance.createInsertRootChange(rootToInsert, newResource, index)]
-		}
-	}
-	
-	def static boolean isCreate(EObject oldContainer, Resource oldResource) {
-		return (oldContainer === null || oldContainer instanceof ChangeDescription) && oldResource === null
-	}
-	
 	def static boolean isDelete(EObject newContainer, Resource newResource) {
 		return (newContainer === null || newContainer instanceof ChangeDescription) && newResource === null
 	}
 
-	def static List<EChange> createRemoveRootChange(EObject rootToRemove, EObject newRootContainer, Resource newRootResource, Resource oldResource, int index) {
-		val isDelete = isDelete(newRootContainer, newRootResource)
-		if (isDelete) {
-
-			return TypeInferringCompoundEChangeFactory.instance.createRemoveAndDeleteRootChange(rootToRemove, oldResource, index);
-		} else {
-
-			return #[TypeInferringAtomicEChangeFactory.instance.createRemoveRootChange(rootToRemove, oldResource, index)];
-		}
-	}
-	
 	def static List<EChange> createInsertReferenceChange(EObject affectedEObject, EReference affectedReference, int index, EObject referenceValue, boolean forceCreate) {
 		val isContainment = affectedReference.containment
 
@@ -231,21 +191,4 @@ public class EMFModelChangeTransformationUtil {
 		}
 	}
 	
-	def static EChange createInsertAttributeChange(EObject affectedEObject, EAttribute affectedAttribute, int index, Object newValue) {
-
-		return TypeInferringAtomicEChangeFactory.instance.createInsertAttributeChange(affectedEObject, affectedAttribute, index, newValue)
-	}
-
-
-	def static EChange createRemoveAttributeChange(EObject affectedEObject, 
-		EAttribute affectedAttribute, int index, Object oldValue) {
-		return TypeInferringAtomicEChangeFactory.instance.createRemoveAttributeChange(affectedEObject, affectedAttribute, index, oldValue)
-	}
-	
-	def static ReplaceSingleValuedEAttribute<EObject, Object> createReplaceSingleValuedAttributeChange(EObject affectedEObject, EAttribute affectedAttribute, Object oldValue, Object newValue) {
-
-		return TypeInferringAtomicEChangeFactory.instance.createReplaceSingleAttributeChange(affectedEObject, affectedAttribute, oldValue, newValue)
-	}
-	
-
 }
