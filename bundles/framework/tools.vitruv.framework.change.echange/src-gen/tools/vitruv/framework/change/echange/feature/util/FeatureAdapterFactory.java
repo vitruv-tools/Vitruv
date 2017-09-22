@@ -83,6 +83,10 @@ public class FeatureAdapterFactory extends AdapterFactoryImpl {
 				return createUpdateSingleValuedFeatureEChangeAdapter();
 			}
 			@Override
+			public <A extends EObject, F extends EStructuralFeature> Adapter caseUnsetFeature(UnsetFeature<A, F> object) {
+				return createUnsetFeatureAdapter();
+			}
+			@Override
 			public Adapter caseEChange(EChange object) {
 				return createEChangeAdapter();
 			}
@@ -145,6 +149,20 @@ public class FeatureAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createUpdateSingleValuedFeatureEChangeAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link tools.vitruv.framework.change.echange.feature.UnsetFeature <em>Unset Feature</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see tools.vitruv.framework.change.echange.feature.UnsetFeature
+	 * @generated
+	 */
+	public Adapter createUnsetFeatureAdapter() {
 		return null;
 	}
 

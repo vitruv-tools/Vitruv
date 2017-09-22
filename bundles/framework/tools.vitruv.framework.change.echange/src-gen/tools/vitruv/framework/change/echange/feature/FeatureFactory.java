@@ -3,6 +3,8 @@
 package tools.vitruv.framework.change.echange.feature;
 
 import org.eclipse.emf.ecore.EFactory;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EStructuralFeature;
 
 /**
  * <!-- begin-user-doc -->
@@ -20,6 +22,15 @@ public interface FeatureFactory extends EFactory {
 	 * @generated
 	 */
 	FeatureFactory eINSTANCE = tools.vitruv.framework.change.echange.feature.impl.FeatureFactoryImpl.init();
+
+	/**
+	 * Returns a new object of class '<em>Unset Feature</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Unset Feature</em>'.
+	 * @generated
+	 */
+	<A extends EObject, F extends EStructuralFeature> UnsetFeature<A, F> createUnsetFeature();
 
 	/**
 	 * Returns the package supported by this factory.

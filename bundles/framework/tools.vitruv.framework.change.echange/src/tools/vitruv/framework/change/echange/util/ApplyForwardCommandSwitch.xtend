@@ -19,6 +19,7 @@ import tools.vitruv.framework.change.echange.root.RemoveRootEObject
 import org.eclipse.emf.edit.command.RemoveCommand
 import org.apache.log4j.Logger
 import tools.vitruv.framework.change.echange.EChange
+import tools.vitruv.framework.change.echange.feature.UnsetFeature
 
 /**
  * Switch to create commands for all EChange classes.
@@ -29,6 +30,15 @@ package class ApplyForwardCommandSwitch {
 	
 	def package dispatch static List<Command> getCommands(EChange change) {
 		#[]
+	}
+	
+	/**
+	 * Dispatch method to create commands to apply a {@link UnsetFeature} change forward.
+	 * @param object The change which commands should be created.
+	 */
+	def package dispatch static List<Command> getCommands(UnsetFeature<EObject, ?> change) {
+		val editingDomain = EChangeUtil.getEditingDomain(change.affectedEObject)
+		return #[new SetCommand(editingDomain, change.affectedEObject, change.affectedFeature, SetCommand.UNSET_VALUE)]
 	}
 	
 	/**
@@ -47,11 +57,7 @@ package class ApplyForwardCommandSwitch {
 	 */
 	def package dispatch static List<Command> getCommands(RemoveEAttributeValue<EObject, Object> change) {
 		val editingDomain = EChangeUtil.getEditingDomain(change.affectedEObject)
-		if (change.isIsUnset) {
-			return #[new SetCommand(editingDomain, change.affectedEObject, change.affectedFeature, SetCommand.UNSET_VALUE)]
-		} else {
-			return #[new RemoveAtCommand(editingDomain, change.affectedEObject, change.affectedFeature, change.oldValue, change.index)]
-		}
+		return #[new RemoveAtCommand(editingDomain, change.affectedEObject, change.affectedFeature, change.oldValue, change.index)]
 	}
 
 	/**
@@ -91,11 +97,7 @@ package class ApplyForwardCommandSwitch {
 			} 
 			return #[];
 		}
-		if (change.isIsUnset) {
-			return #[new SetCommand(editingDomain, change.affectedEObject, change.affectedFeature, SetCommand.UNSET_VALUE)]
-		} else {
-			return #[new RemoveAtCommand(editingDomain, change.affectedEObject, change.affectedFeature, change.oldValue, change.index)]
-		}
+		return #[new RemoveAtCommand(editingDomain, change.affectedEObject, change.affectedFeature, change.oldValue, change.index)]
 	}
 
 	/**

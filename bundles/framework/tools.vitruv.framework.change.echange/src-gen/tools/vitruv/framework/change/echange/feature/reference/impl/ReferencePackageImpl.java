@@ -238,15 +238,6 @@ public class ReferencePackageImpl extends EPackageImpl implements ReferencePacka
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getSubtractiveReferenceEChange_IsUnset() {
-		return (EAttribute)subtractiveReferenceEChangeEClass.getEStructuralFeatures().get(0);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public EClass getInsertEReference() {
 		return insertEReferenceEClass;
 	}
@@ -304,7 +295,6 @@ public class ReferencePackageImpl extends EPackageImpl implements ReferencePacka
 		createEAttribute(additiveReferenceEChangeEClass, ADDITIVE_REFERENCE_ECHANGE__WAS_UNSET);
 
 		subtractiveReferenceEChangeEClass = createEClass(SUBTRACTIVE_REFERENCE_ECHANGE);
-		createEAttribute(subtractiveReferenceEChangeEClass, SUBTRACTIVE_REFERENCE_ECHANGE__IS_UNSET);
 
 		insertEReferenceEClass = createEClass(INSERT_EREFERENCE);
 
@@ -461,7 +451,6 @@ public class ReferencePackageImpl extends EPackageImpl implements ReferencePacka
 		initEAttribute(getAdditiveReferenceEChange_WasUnset(), theEcorePackage.getEBoolean(), "wasUnset", null, 0, 1, AdditiveReferenceEChange.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(subtractiveReferenceEChangeEClass, SubtractiveReferenceEChange.class, "SubtractiveReferenceEChange", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getSubtractiveReferenceEChange_IsUnset(), theEcorePackage.getEBoolean(), "isUnset", null, 0, 1, SubtractiveReferenceEChange.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(insertEReferenceEClass, InsertEReference.class, "InsertEReference", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 

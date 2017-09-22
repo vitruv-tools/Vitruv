@@ -29,7 +29,6 @@ import tools.vitruv.framework.change.echange.feature.single.impl.ReplaceSingleVa
  *   <li>{@link tools.vitruv.framework.change.echange.feature.attribute.impl.ReplaceSingleValuedEAttributeImpl#getNewValue <em>New Value</em>}</li>
  *   <li>{@link tools.vitruv.framework.change.echange.feature.attribute.impl.ReplaceSingleValuedEAttributeImpl#isWasUnset <em>Was Unset</em>}</li>
  *   <li>{@link tools.vitruv.framework.change.echange.feature.attribute.impl.ReplaceSingleValuedEAttributeImpl#getOldValue <em>Old Value</em>}</li>
- *   <li>{@link tools.vitruv.framework.change.echange.feature.attribute.impl.ReplaceSingleValuedEAttributeImpl#isIsUnset <em>Is Unset</em>}</li>
  * </ul>
  *
  * @generated
@@ -74,26 +73,6 @@ public class ReplaceSingleValuedEAttributeImpl<A extends EObject, T extends Obje
 	 * @ordered
 	 */
 	protected T oldValue;
-
-	/**
-	 * The default value of the '{@link #isIsUnset() <em>Is Unset</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #isIsUnset()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final boolean IS_UNSET_EDEFAULT = false;
-
-	/**
-	 * The cached value of the '{@link #isIsUnset() <em>Is Unset</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #isIsUnset()
-	 * @generated
-	 * @ordered
-	 */
-	protected boolean isUnset = IS_UNSET_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -182,27 +161,6 @@ public class ReplaceSingleValuedEAttributeImpl<A extends EObject, T extends Obje
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public boolean isIsUnset() {
-		return isUnset;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public void setIsUnset(boolean newIsUnset) {
-		boolean oldIsUnset = isUnset;
-		isUnset = newIsUnset;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, AttributePackage.REPLACE_SINGLE_VALUED_EATTRIBUTE__IS_UNSET, oldIsUnset, isUnset));
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
@@ -212,8 +170,6 @@ public class ReplaceSingleValuedEAttributeImpl<A extends EObject, T extends Obje
 				return isWasUnset();
 			case AttributePackage.REPLACE_SINGLE_VALUED_EATTRIBUTE__OLD_VALUE:
 				return getOldValue();
-			case AttributePackage.REPLACE_SINGLE_VALUED_EATTRIBUTE__IS_UNSET:
-				return isIsUnset();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -236,9 +192,6 @@ public class ReplaceSingleValuedEAttributeImpl<A extends EObject, T extends Obje
 			case AttributePackage.REPLACE_SINGLE_VALUED_EATTRIBUTE__OLD_VALUE:
 				setOldValue((T)newValue);
 				return;
-			case AttributePackage.REPLACE_SINGLE_VALUED_EATTRIBUTE__IS_UNSET:
-				setIsUnset((Boolean)newValue);
-				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -260,9 +213,6 @@ public class ReplaceSingleValuedEAttributeImpl<A extends EObject, T extends Obje
 			case AttributePackage.REPLACE_SINGLE_VALUED_EATTRIBUTE__OLD_VALUE:
 				setOldValue((T)null);
 				return;
-			case AttributePackage.REPLACE_SINGLE_VALUED_EATTRIBUTE__IS_UNSET:
-				setIsUnset(IS_UNSET_EDEFAULT);
-				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -281,8 +231,6 @@ public class ReplaceSingleValuedEAttributeImpl<A extends EObject, T extends Obje
 				return wasUnset != WAS_UNSET_EDEFAULT;
 			case AttributePackage.REPLACE_SINGLE_VALUED_EATTRIBUTE__OLD_VALUE:
 				return oldValue != null;
-			case AttributePackage.REPLACE_SINGLE_VALUED_EATTRIBUTE__IS_UNSET:
-				return isUnset != IS_UNSET_EDEFAULT;
 		}
 		return super.eIsSet(featureID);
 	}
@@ -309,7 +257,6 @@ public class ReplaceSingleValuedEAttributeImpl<A extends EObject, T extends Obje
 		if (baseClass == SubtractiveAttributeEChange.class) {
 			switch (derivedFeatureID) {
 				case AttributePackage.REPLACE_SINGLE_VALUED_EATTRIBUTE__OLD_VALUE: return AttributePackage.SUBTRACTIVE_ATTRIBUTE_ECHANGE__OLD_VALUE;
-				case AttributePackage.REPLACE_SINGLE_VALUED_EATTRIBUTE__IS_UNSET: return AttributePackage.SUBTRACTIVE_ATTRIBUTE_ECHANGE__IS_UNSET;
 				default: return -1;
 			}
 		}
@@ -338,7 +285,6 @@ public class ReplaceSingleValuedEAttributeImpl<A extends EObject, T extends Obje
 		if (baseClass == SubtractiveAttributeEChange.class) {
 			switch (baseFeatureID) {
 				case AttributePackage.SUBTRACTIVE_ATTRIBUTE_ECHANGE__OLD_VALUE: return AttributePackage.REPLACE_SINGLE_VALUED_EATTRIBUTE__OLD_VALUE;
-				case AttributePackage.SUBTRACTIVE_ATTRIBUTE_ECHANGE__IS_UNSET: return AttributePackage.REPLACE_SINGLE_VALUED_EATTRIBUTE__IS_UNSET;
 				default: return -1;
 			}
 		}
@@ -361,8 +307,6 @@ public class ReplaceSingleValuedEAttributeImpl<A extends EObject, T extends Obje
 		result.append(wasUnset);
 		result.append(", oldValue: ");
 		result.append(oldValue);
-		result.append(", isUnset: ");
-		result.append(isUnset);
 		result.append(')');
 		return result.toString();
 	}

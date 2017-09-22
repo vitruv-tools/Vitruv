@@ -40,7 +40,6 @@ import tools.vitruv.framework.change.echange.feature.single.impl.ReplaceSingleVa
  *   <li>{@link tools.vitruv.framework.change.echange.feature.reference.impl.ReplaceSingleValuedEReferenceImpl#isWasUnset <em>Was Unset</em>}</li>
  *   <li>{@link tools.vitruv.framework.change.echange.feature.reference.impl.ReplaceSingleValuedEReferenceImpl#getOldValue <em>Old Value</em>}</li>
  *   <li>{@link tools.vitruv.framework.change.echange.feature.reference.impl.ReplaceSingleValuedEReferenceImpl#getOldValueID <em>Old Value ID</em>}</li>
- *   <li>{@link tools.vitruv.framework.change.echange.feature.reference.impl.ReplaceSingleValuedEReferenceImpl#isIsUnset <em>Is Unset</em>}</li>
  * </ul>
  *
  * @generated
@@ -125,26 +124,6 @@ public class ReplaceSingleValuedEReferenceImpl<A extends EObject, T extends EObj
 	 * @ordered
 	 */
 	protected String oldValueID = OLD_VALUE_ID_EDEFAULT;
-
-	/**
-	 * The default value of the '{@link #isIsUnset() <em>Is Unset</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #isIsUnset()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final boolean IS_UNSET_EDEFAULT = false;
-
-	/**
-	 * The cached value of the '{@link #isIsUnset() <em>Is Unset</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #isIsUnset()
-	 * @generated
-	 * @ordered
-	 */
-	protected boolean isUnset = IS_UNSET_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -311,27 +290,6 @@ public class ReplaceSingleValuedEReferenceImpl<A extends EObject, T extends EObj
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public boolean isIsUnset() {
-		return isUnset;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public void setIsUnset(boolean newIsUnset) {
-		boolean oldIsUnset = isUnset;
-		isUnset = newIsUnset;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, ReferencePackage.REPLACE_SINGLE_VALUED_EREFERENCE__IS_UNSET, oldIsUnset, isUnset));
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public boolean isContainment() {
 		EReference _affectedFeature = this.getAffectedFeature();
 		return _affectedFeature.isContainment();
@@ -357,8 +315,6 @@ public class ReplaceSingleValuedEReferenceImpl<A extends EObject, T extends EObj
 				return basicGetOldValue();
 			case ReferencePackage.REPLACE_SINGLE_VALUED_EREFERENCE__OLD_VALUE_ID:
 				return getOldValueID();
-			case ReferencePackage.REPLACE_SINGLE_VALUED_EREFERENCE__IS_UNSET:
-				return isIsUnset();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -387,9 +343,6 @@ public class ReplaceSingleValuedEReferenceImpl<A extends EObject, T extends EObj
 			case ReferencePackage.REPLACE_SINGLE_VALUED_EREFERENCE__OLD_VALUE_ID:
 				setOldValueID((String)newValue);
 				return;
-			case ReferencePackage.REPLACE_SINGLE_VALUED_EREFERENCE__IS_UNSET:
-				setIsUnset((Boolean)newValue);
-				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -417,9 +370,6 @@ public class ReplaceSingleValuedEReferenceImpl<A extends EObject, T extends EObj
 			case ReferencePackage.REPLACE_SINGLE_VALUED_EREFERENCE__OLD_VALUE_ID:
 				setOldValueID(OLD_VALUE_ID_EDEFAULT);
 				return;
-			case ReferencePackage.REPLACE_SINGLE_VALUED_EREFERENCE__IS_UNSET:
-				setIsUnset(IS_UNSET_EDEFAULT);
-				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -442,8 +392,6 @@ public class ReplaceSingleValuedEReferenceImpl<A extends EObject, T extends EObj
 				return oldValue != null;
 			case ReferencePackage.REPLACE_SINGLE_VALUED_EREFERENCE__OLD_VALUE_ID:
 				return OLD_VALUE_ID_EDEFAULT == null ? oldValueID != null : !OLD_VALUE_ID_EDEFAULT.equals(oldValueID);
-			case ReferencePackage.REPLACE_SINGLE_VALUED_EREFERENCE__IS_UNSET:
-				return isUnset != IS_UNSET_EDEFAULT;
 		}
 		return super.eIsSet(featureID);
 	}
@@ -482,7 +430,6 @@ public class ReplaceSingleValuedEReferenceImpl<A extends EObject, T extends EObj
 		}
 		if (baseClass == SubtractiveReferenceEChange.class) {
 			switch (derivedFeatureID) {
-				case ReferencePackage.REPLACE_SINGLE_VALUED_EREFERENCE__IS_UNSET: return ReferencePackage.SUBTRACTIVE_REFERENCE_ECHANGE__IS_UNSET;
 				default: return -1;
 			}
 		}
@@ -523,7 +470,6 @@ public class ReplaceSingleValuedEReferenceImpl<A extends EObject, T extends EObj
 		}
 		if (baseClass == SubtractiveReferenceEChange.class) {
 			switch (baseFeatureID) {
-				case ReferencePackage.SUBTRACTIVE_REFERENCE_ECHANGE__IS_UNSET: return ReferencePackage.REPLACE_SINGLE_VALUED_EREFERENCE__IS_UNSET;
 				default: return -1;
 			}
 		}
@@ -596,8 +542,6 @@ public class ReplaceSingleValuedEReferenceImpl<A extends EObject, T extends EObj
 		result.append(wasUnset);
 		result.append(", oldValueID: ");
 		result.append(oldValueID);
-		result.append(", isUnset: ");
-		result.append(isUnset);
 		result.append(')');
 		return result.toString();
 	}

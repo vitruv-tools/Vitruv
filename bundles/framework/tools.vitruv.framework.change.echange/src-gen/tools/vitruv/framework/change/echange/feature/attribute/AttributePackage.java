@@ -282,22 +282,13 @@ public interface AttributePackage extends EPackage {
 	int SUBTRACTIVE_ATTRIBUTE_ECHANGE__OLD_VALUE = UPDATE_ATTRIBUTE_ECHANGE_FEATURE_COUNT + 0;
 
 	/**
-	 * The feature id for the '<em><b>Is Unset</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int SUBTRACTIVE_ATTRIBUTE_ECHANGE__IS_UNSET = UPDATE_ATTRIBUTE_ECHANGE_FEATURE_COUNT + 1;
-
-	/**
 	 * The number of structural features of the '<em>Subtractive Attribute EChange</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int SUBTRACTIVE_ATTRIBUTE_ECHANGE_FEATURE_COUNT = UPDATE_ATTRIBUTE_ECHANGE_FEATURE_COUNT + 2;
+	int SUBTRACTIVE_ATTRIBUTE_ECHANGE_FEATURE_COUNT = UPDATE_ATTRIBUTE_ECHANGE_FEATURE_COUNT + 1;
 
 	/**
 	 * The operation id for the '<em>Is Resolved</em>' operation.
@@ -500,22 +491,13 @@ public interface AttributePackage extends EPackage {
 	int REMOVE_EATTRIBUTE_VALUE__OLD_VALUE = ListPackage.REMOVE_FROM_LIST_ECHANGE_FEATURE_COUNT + 0;
 
 	/**
-	 * The feature id for the '<em><b>Is Unset</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REMOVE_EATTRIBUTE_VALUE__IS_UNSET = ListPackage.REMOVE_FROM_LIST_ECHANGE_FEATURE_COUNT + 1;
-
-	/**
 	 * The number of structural features of the '<em>Remove EAttribute Value</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int REMOVE_EATTRIBUTE_VALUE_FEATURE_COUNT = ListPackage.REMOVE_FROM_LIST_ECHANGE_FEATURE_COUNT + 2;
+	int REMOVE_EATTRIBUTE_VALUE_FEATURE_COUNT = ListPackage.REMOVE_FROM_LIST_ECHANGE_FEATURE_COUNT + 1;
 
 	/**
 	 * The operation id for the '<em>Is Resolved</em>' operation.
@@ -591,6 +573,15 @@ public interface AttributePackage extends EPackage {
 	int REPLACE_SINGLE_VALUED_EATTRIBUTE__AFFECTED_EOBJECT_ID = SinglePackage.REPLACE_SINGLE_VALUED_FEATURE_ECHANGE__AFFECTED_EOBJECT_ID;
 
 	/**
+	 * The feature id for the '<em><b>Is Unset</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REPLACE_SINGLE_VALUED_EATTRIBUTE__IS_UNSET = SinglePackage.REPLACE_SINGLE_VALUED_FEATURE_ECHANGE__IS_UNSET;
+
+	/**
 	 * The feature id for the '<em><b>New Value</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -618,22 +609,13 @@ public interface AttributePackage extends EPackage {
 	int REPLACE_SINGLE_VALUED_EATTRIBUTE__OLD_VALUE = SinglePackage.REPLACE_SINGLE_VALUED_FEATURE_ECHANGE_FEATURE_COUNT + 2;
 
 	/**
-	 * The feature id for the '<em><b>Is Unset</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REPLACE_SINGLE_VALUED_EATTRIBUTE__IS_UNSET = SinglePackage.REPLACE_SINGLE_VALUED_FEATURE_ECHANGE_FEATURE_COUNT + 3;
-
-	/**
 	 * The number of structural features of the '<em>Replace Single Valued EAttribute</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int REPLACE_SINGLE_VALUED_EATTRIBUTE_FEATURE_COUNT = SinglePackage.REPLACE_SINGLE_VALUED_FEATURE_ECHANGE_FEATURE_COUNT + 4;
+	int REPLACE_SINGLE_VALUED_EATTRIBUTE_FEATURE_COUNT = SinglePackage.REPLACE_SINGLE_VALUED_FEATURE_ECHANGE_FEATURE_COUNT + 3;
 
 	/**
 	 * The operation id for the '<em>Is Resolved</em>' operation.
@@ -763,17 +745,6 @@ public interface AttributePackage extends EPackage {
 	EAttribute getSubtractiveAttributeEChange_OldValue();
 
 	/**
-	 * Returns the meta object for the attribute '{@link tools.vitruv.framework.change.echange.feature.attribute.SubtractiveAttributeEChange#isIsUnset <em>Is Unset</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Is Unset</em>'.
-	 * @see tools.vitruv.framework.change.echange.feature.attribute.SubtractiveAttributeEChange#isIsUnset()
-	 * @see #getSubtractiveAttributeEChange()
-	 * @generated
-	 */
-	EAttribute getSubtractiveAttributeEChange_IsUnset();
-
-	/**
 	 * Returns the meta object for class '{@link tools.vitruv.framework.change.echange.feature.attribute.InsertEAttributeValue <em>Insert EAttribute Value</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -879,14 +850,6 @@ public interface AttributePackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute SUBTRACTIVE_ATTRIBUTE_ECHANGE__OLD_VALUE = eINSTANCE.getSubtractiveAttributeEChange_OldValue();
-
-		/**
-		 * The meta object literal for the '<em><b>Is Unset</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EAttribute SUBTRACTIVE_ATTRIBUTE_ECHANGE__IS_UNSET = eINSTANCE.getSubtractiveAttributeEChange_IsUnset();
 
 		/**
 		 * The meta object literal for the '{@link tools.vitruv.framework.change.echange.feature.attribute.impl.InsertEAttributeValueImpl <em>Insert EAttribute Value</em>}' class.

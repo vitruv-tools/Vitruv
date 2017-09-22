@@ -246,15 +246,6 @@ public class AttributePackageImpl extends EPackageImpl implements AttributePacka
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getSubtractiveAttributeEChange_IsUnset() {
-		return (EAttribute)subtractiveAttributeEChangeEClass.getEStructuralFeatures().get(1);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public EClass getInsertEAttributeValue() {
 		return insertEAttributeValueEClass;
 	}
@@ -313,7 +304,6 @@ public class AttributePackageImpl extends EPackageImpl implements AttributePacka
 
 		subtractiveAttributeEChangeEClass = createEClass(SUBTRACTIVE_ATTRIBUTE_ECHANGE);
 		createEAttribute(subtractiveAttributeEChangeEClass, SUBTRACTIVE_ATTRIBUTE_ECHANGE__OLD_VALUE);
-		createEAttribute(subtractiveAttributeEChangeEClass, SUBTRACTIVE_ATTRIBUTE_ECHANGE__IS_UNSET);
 
 		insertEAttributeValueEClass = createEClass(INSERT_EATTRIBUTE_VALUE);
 
@@ -472,7 +462,6 @@ public class AttributePackageImpl extends EPackageImpl implements AttributePacka
 		initEClass(subtractiveAttributeEChangeEClass, SubtractiveAttributeEChange.class, "SubtractiveAttributeEChange", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		g1 = createEGenericType(subtractiveAttributeEChangeEClass_T);
 		initEAttribute(getSubtractiveAttributeEChange_OldValue(), g1, "oldValue", null, 1, 1, SubtractiveAttributeEChange.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getSubtractiveAttributeEChange_IsUnset(), theEcorePackage.getEBoolean(), "isUnset", null, 0, 1, SubtractiveAttributeEChange.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(insertEAttributeValueEClass, InsertEAttributeValue.class, "InsertEAttributeValue", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 

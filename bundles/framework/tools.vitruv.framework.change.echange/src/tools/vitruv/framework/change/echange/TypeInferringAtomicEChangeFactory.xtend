@@ -25,6 +25,8 @@ import tools.vitruv.framework.change.echange.root.RootEChange
 import tools.vitruv.framework.change.echange.root.RootFactory
 import org.eclipse.emf.ecore.resource.Resource
 import tools.vitruv.framework.change.echange.util.EChangeUtil
+import tools.vitruv.framework.change.echange.feature.FeatureFactory
+import tools.vitruv.framework.change.echange.feature.UnsetFeature
 
 /**
  * Factory singleton class for elements of change models.
@@ -261,4 +263,18 @@ class TypeInferringAtomicEChangeFactory {
 		return c
 	}
 
+	/**
+	 * Creates a new {@link UnsetFeature} EChange.
+	 * @param affectedEObject The EObject of which the feature was unset.
+	 * @param affectedFeature The feature that was unset.
+	 * @return The created UnsetFeature EChange.
+	 */
+	def <A extends EObject, F extends EStructuralFeature> createUnsetFeatureChange(A affectedEObject, F affectedFeature) {
+		if (affectedEObject === null) {
+			throw new IllegalArgumentException();
+		}
+		val c = FeatureFactory.eINSTANCE.createUnsetFeature
+		setFeatureChangeFeatures(c, affectedEObject, affectedFeature)
+		return c
+	}
 }

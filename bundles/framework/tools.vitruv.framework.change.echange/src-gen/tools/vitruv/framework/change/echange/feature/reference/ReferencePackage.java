@@ -319,22 +319,13 @@ public interface ReferencePackage extends EPackage {
 	int SUBTRACTIVE_REFERENCE_ECHANGE__OLD_VALUE_ID = UPDATE_REFERENCE_ECHANGE_FEATURE_COUNT + 1;
 
 	/**
-	 * The feature id for the '<em><b>Is Unset</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int SUBTRACTIVE_REFERENCE_ECHANGE__IS_UNSET = UPDATE_REFERENCE_ECHANGE_FEATURE_COUNT + 2;
-
-	/**
 	 * The number of structural features of the '<em>Subtractive Reference EChange</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int SUBTRACTIVE_REFERENCE_ECHANGE_FEATURE_COUNT = UPDATE_REFERENCE_ECHANGE_FEATURE_COUNT + 3;
+	int SUBTRACTIVE_REFERENCE_ECHANGE_FEATURE_COUNT = UPDATE_REFERENCE_ECHANGE_FEATURE_COUNT + 2;
 
 	/**
 	 * The operation id for the '<em>Is Resolved</em>' operation.
@@ -573,22 +564,13 @@ public interface ReferencePackage extends EPackage {
 	int REMOVE_EREFERENCE__OLD_VALUE_ID = ListPackage.REMOVE_FROM_LIST_ECHANGE_FEATURE_COUNT + 1;
 
 	/**
-	 * The feature id for the '<em><b>Is Unset</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REMOVE_EREFERENCE__IS_UNSET = ListPackage.REMOVE_FROM_LIST_ECHANGE_FEATURE_COUNT + 2;
-
-	/**
 	 * The number of structural features of the '<em>Remove EReference</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int REMOVE_EREFERENCE_FEATURE_COUNT = ListPackage.REMOVE_FROM_LIST_ECHANGE_FEATURE_COUNT + 3;
+	int REMOVE_EREFERENCE_FEATURE_COUNT = ListPackage.REMOVE_FROM_LIST_ECHANGE_FEATURE_COUNT + 2;
 
 	/**
 	 * The operation id for the '<em>Is Resolved</em>' operation.
@@ -673,6 +655,15 @@ public interface ReferencePackage extends EPackage {
 	int REPLACE_SINGLE_VALUED_EREFERENCE__AFFECTED_EOBJECT_ID = SinglePackage.REPLACE_SINGLE_VALUED_FEATURE_ECHANGE__AFFECTED_EOBJECT_ID;
 
 	/**
+	 * The feature id for the '<em><b>Is Unset</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REPLACE_SINGLE_VALUED_EREFERENCE__IS_UNSET = SinglePackage.REPLACE_SINGLE_VALUED_FEATURE_ECHANGE__IS_UNSET;
+
+	/**
 	 * The feature id for the '<em><b>New Value</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -718,22 +709,13 @@ public interface ReferencePackage extends EPackage {
 	int REPLACE_SINGLE_VALUED_EREFERENCE__OLD_VALUE_ID = SinglePackage.REPLACE_SINGLE_VALUED_FEATURE_ECHANGE_FEATURE_COUNT + 4;
 
 	/**
-	 * The feature id for the '<em><b>Is Unset</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int REPLACE_SINGLE_VALUED_EREFERENCE__IS_UNSET = SinglePackage.REPLACE_SINGLE_VALUED_FEATURE_ECHANGE_FEATURE_COUNT + 5;
-
-	/**
 	 * The number of structural features of the '<em>Replace Single Valued EReference</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int REPLACE_SINGLE_VALUED_EREFERENCE_FEATURE_COUNT = SinglePackage.REPLACE_SINGLE_VALUED_FEATURE_ECHANGE_FEATURE_COUNT + 6;
+	int REPLACE_SINGLE_VALUED_EREFERENCE_FEATURE_COUNT = SinglePackage.REPLACE_SINGLE_VALUED_FEATURE_ECHANGE_FEATURE_COUNT + 5;
 
 	/**
 	 * The operation id for the '<em>Is Resolved</em>' operation.
@@ -860,17 +842,6 @@ public interface ReferencePackage extends EPackage {
 	EClass getSubtractiveReferenceEChange();
 
 	/**
-	 * Returns the meta object for the attribute '{@link tools.vitruv.framework.change.echange.feature.reference.SubtractiveReferenceEChange#isIsUnset <em>Is Unset</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Is Unset</em>'.
-	 * @see tools.vitruv.framework.change.echange.feature.reference.SubtractiveReferenceEChange#isIsUnset()
-	 * @see #getSubtractiveReferenceEChange()
-	 * @generated
-	 */
-	EAttribute getSubtractiveReferenceEChange_IsUnset();
-
-	/**
 	 * Returns the meta object for class '{@link tools.vitruv.framework.change.echange.feature.reference.InsertEReference <em>Insert EReference</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -968,14 +939,6 @@ public interface ReferencePackage extends EPackage {
 		 * @generated
 		 */
 		EClass SUBTRACTIVE_REFERENCE_ECHANGE = eINSTANCE.getSubtractiveReferenceEChange();
-
-		/**
-		 * The meta object literal for the '<em><b>Is Unset</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EAttribute SUBTRACTIVE_REFERENCE_ECHANGE__IS_UNSET = eINSTANCE.getSubtractiveReferenceEChange_IsUnset();
 
 		/**
 		 * The meta object literal for the '{@link tools.vitruv.framework.change.echange.feature.reference.impl.InsertEReferenceImpl <em>Insert EReference</em>}' class.
