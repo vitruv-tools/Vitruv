@@ -55,7 +55,10 @@ class EChangeIdManager {
 	}
 
 	public def boolean isCreateChange(EObjectAddedEChange<?> addedEChange) {
-		return addedEChange.newValue !== null && !(localUuidGeneratorAndResolver.hasUuid(addedEChange.newValue) || globalUuidResolver.hasUuid(addedEChange.newValue))
+		// TODO Currently, we only look for the UUID locally. If we look globally, resolving the URI can result
+		// in an old element with the same URI being matched. Nevertheless, this currently requires the local
+		// UUID repository to be always complete
+		return addedEChange.newValue !== null && !(localUuidGeneratorAndResolver.hasUuid(addedEChange.newValue))
 	}
 	
 	private def String getOrGenerateValue(EObject object) {
