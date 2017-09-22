@@ -31,57 +31,56 @@ final class NotificationToEChangeConverter {
 	}
 
 	/** 
-	 * Converts given notification to an Echange. May return null if the
-	 * notification signifies a no-op.
-	 * @param nthe notification to convert
-	 * @return the EChange or null
+	 * Converts the given notification to a list of {@link EChange}s.
+	 * @param n the notification to convert
+	 * @return the  {@link Iterable} of {@link EChange}s
 	 */
-	def Iterable<EChange> convert(NotificationInfo n, List<EChange> previousChanges) {
-		if (n.isTouch() || n.isTransient()) {
+	def Iterable<EChange> convert(NotificationInfo notification, List<EChange> previousChanges) {
+		if (notification.isTouch() || notification.isTransient()) {
 			return #[]
 		}
 
-		switch (n.getEventType()) {
+		switch (notification.getEventType()) {
 			case Notification.SET: {
-				if (n.isAttributeNotification()) {
-					return handleSetAttribute(n)
-				} else if (n.isReferenceNotification) {
-					return handleSetReference(n);
+				if (notification.isAttributeNotification()) {
+					return handleSetAttribute(notification)
+				} else if (notification.isReferenceNotification) {
+					return handleSetReference(notification);
 				}
 			}
 			case Notification.UNSET: {
-				if (n.isAttributeNotification()) {
-					return handleUnsetAttribute(n, previousChanges)
-				} else if (n.isReferenceNotification) {
-					return handleUnsetReference(n, previousChanges);
+				if (notification.isAttributeNotification()) {
+					return handleUnsetAttribute(notification, previousChanges)
+				} else if (notification.isReferenceNotification) {
+					return handleUnsetReference(notification, previousChanges);
 				}
 			}
 			case Notification.ADD: {
-				if (n.isAttributeNotification()) {
-					return handleMultiAttribute(n)
-				} else if (n.isReferenceNotification) {
-					return handleMultiReference(n);
+				if (notification.isAttributeNotification()) {
+					return handleMultiAttribute(notification)
+				} else if (notification.isReferenceNotification) {
+					return handleMultiReference(notification);
 				}
 			}
 			case Notification.ADD_MANY: {
-				if (n.isAttributeNotification()) {
-					return handleMultiAttribute(n)
-				} else if (n.isReferenceNotification) {
-					return handleMultiReference(n);
+				if (notification.isAttributeNotification()) {
+					return handleMultiAttribute(notification)
+				} else if (notification.isReferenceNotification) {
+					return handleMultiReference(notification);
 				}
 			}
 			case Notification.REMOVE: {
-				if (n.isAttributeNotification()) {
-					return handleMultiAttribute(n)
-				} else if (n.isReferenceNotification) {
-					return handleMultiReference(n);
+				if (notification.isAttributeNotification()) {
+					return handleMultiAttribute(notification)
+				} else if (notification.isReferenceNotification) {
+					return handleMultiReference(notification);
 				}
 			}
 			case Notification.REMOVE_MANY: {
-				if (n.isAttributeNotification()) {
-					return handleMultiAttribute(n)
-				} else if (n.isReferenceNotification) {
-					return handleMultiReference(n);
+				if (notification.isAttributeNotification()) {
+					return handleMultiAttribute(notification)
+				} else if (notification.isReferenceNotification) {
+					return handleMultiReference(notification);
 				}
 			}
 		//
@@ -91,8 +90,8 @@ final class NotificationToEChangeConverter {
 		// }
 		// return handleReferenceMove(n);
 		}
-		if (n.notifier instanceof Resource) {
-			return handleResourceChange(n)
+		if (notification.notifier instanceof Resource) {
+			return handleResourceChange(notification)
 		}
 		return #[]
 	}
@@ -198,7 +197,7 @@ final class NotificationToEChangeConverter {
 		eChangeIdManager.setOrGenerateIds(change);
 		return #[change] + change.getDeleteChangesIfNecessary(change.affectedFeature.containment)
 	}
-	
+
 	private def List<EChange> handleReplaceReference(EObject affectedEObject, EReference reference, EObject oldValue,
 		EObject newValue, boolean unset) {
 		val change = TypeInferringAtomicEChangeFactory.instance.
@@ -245,100 +244,46 @@ final class NotificationToEChangeConverter {
 		return changes;
 	}
 
-	def handleResourceChange(NotificationInfo info) {
+	private def handleResourceChange(NotificationInfo notification) {
 		val changes = <EChange>newArrayList();
-		switch (info.getEventType()) {
+		val resource = notification.notifier as Resource
+		switch (notification.getEventType()) {
 			case Notification.ADD: {
-				val change = TypeInferringAtomicEChangeFactory.instance.createInsertRootChange(
-					info.newModelElementValue, info.notifier as Resource, info.position)
-				val beforeAndAfterCreateChanges = change.getCreateBeforeAndAfterChangesIfNecessary;
-				eChangeIdManager.setOrGenerateIds(change);
-				changes += beforeAndAfterCreateChanges.key + #[change] + beforeAndAfterCreateChanges.value
+				changes += handleInsertRootChange(resource, notification.newModelElementValue, notification.position)
 			}
 			case Notification.ADD_MANY: {
-				// Not supported
+				var List<EObject> list = (notification.getNewValue() as List<EObject>)
+				for (var int i = 0; i < list.size(); i++) {
+					changes += handleInsertRootChange(resource, list.get(i), notification.initialIndex + i)
+				}
 			}
 			case Notification.REMOVE: {
-				val change = TypeInferringAtomicEChangeFactory.instance.createRemoveRootChange(
-					info.oldModelElementValue, info.notifier as Resource, info.position);
-				eChangeIdManager.setOrGenerateIds(change);
-				changes += change;
-				changes += change.getDeleteChangesIfNecessary(true);
+				changes += handleRemoveRootChange(resource, notification.oldModelElementValue, notification.position)
 			}
 			case Notification.REMOVE_MANY: {
-				// Not supported
+				var List<EObject> list = (notification.getOldValue() as List<EObject>)
+				for (var int i = list.size() - 1; i >= 0; i--) {
+					changes += handleRemoveRootChange(resource, list.get(i), notification.initialIndex + i)
+				}
 			}
 		}
 		return changes;
 	}
 
-	// /**
-	// * Creates a multi reference operation based on the given information.
-	// *
-	// * @param collection
-	// *            the collection the <code>modelElement</code> is contained in
-	// * @param modelElement
-	// *            the model element holding the reference
-	// * @param reference
-	// *            the actual reference
-	// * @param referencedElements
-	// *            the elements referenced by the reference
-	// * @param isAdd
-	// *            whether any referenced model elements were added to the <code>collection</code>
-	// * @param position
-	// *            the index of the model element within the <code>referenceElements</code> affected by
-	// *            the generated operation
-	// * @return a multi reference operation
-	// */
-	// public static MultiReferenceOperation createMultiReferenceOperation(IdEObjectCollectionImpl collection,
-	// EObject modelElement, EReference reference, List<EObject> referencedElements, boolean isAdd, int position) {
-	// final MultiReferenceOperation op = OperationsFactory.eINSTANCE.createMultiReferenceOperation();
-	// setCommonValues(collection, op, modelElement);
-	// setBidirectionalAndContainmentInfo(op, reference);
-	// op.setFeatureName(reference.getName());
-	// op.setAdd(isAdd);
-	// op.setIndex(position);
-	// final List<ModelElementId> referencedModelElements = op.getReferencedModelElements();
-	//
-	// for (final EObject valueElement : referencedElements) {
-	// ModelElementId id = collection.getModelElementId(valueElement);
-	// if (id == null) {
-	// id = collection.getDeletedModelElementId(valueElement);
-	// }
-	// if (id != null) {
-	// referencedModelElements.add(id);
-	// } else if (ModelUtil.getProject(valueElement) == collection) {
-	// throw new IllegalStateException(
-	// Messages.NotificationToOperationConverter_Element_Has_No_ID + valueElement);
-	// }
-	// // ignore value elements outside of the current project, they are
-	// // not tracked
-	// }
-	// return op;
-	//
-	// }
-	//
-	// private AbstractOperation handleReferenceMove(NotificationInfo n) {
-	//
-	// final MultiReferenceMoveOperation op = OperationsFactory.eINSTANCE.createMultiReferenceMoveOperation();
-	// setCommonValues(project, op, n.getNotifierModelElement());
-	// op.setFeatureName(n.getReference().getName());
-	// op.setReferencedModelElementId(project.getModelElementId(n.getNewModelElementValue()));
-	// op.setNewIndex(n.getPosition());
-	// op.setOldIndex((Integer) n.getOldValue());
-	//
-	// return op;
-	// }
-	//
-	// private AbstractOperation handleAttributeMove(NotificationInfo n) {
-	// final MultiAttributeMoveOperation operation = OperationsFactory.eINSTANCE.createMultiAttributeMoveOperation();
-	// setCommonValues(project, operation, n.getNotifierModelElement());
-	// operation.setFeatureName(n.getAttribute().getName());
-	// operation.setNewIndex(n.getPosition());
-	// operation.setOldIndex((Integer) n.getOldValue());
-	// operation.setReferencedValue(n.getNewValue());
-	// return operation;
-	// }
+	private def handleInsertRootChange(Resource resource, EObject rootElement, int position) {
+		val change = TypeInferringAtomicEChangeFactory.instance.createInsertRootChange(rootElement, resource, position)
+		val beforeAndAfterCreateChanges = change.getCreateBeforeAndAfterChangesIfNecessary;
+		eChangeIdManager.setOrGenerateIds(change);
+		return beforeAndAfterCreateChanges.key + #[change] + beforeAndAfterCreateChanges.value
+	}
+
+	private def handleRemoveRootChange(Resource resource, EObject oldRootElement, int position) {
+		val change = TypeInferringAtomicEChangeFactory.instance.createRemoveRootChange(oldRootElement, resource,
+			position);
+		eChangeIdManager.setOrGenerateIds(change);
+		return #[change] + change.getDeleteChangesIfNecessary(true);
+	}
+
 	def private Iterable<EChange> handleSetAttribute(NotificationInfo n) {
 		val List<EChange> changes = new ArrayList();
 		val affectedEObject = n.notifierModelElement;
@@ -366,36 +311,6 @@ final class NotificationToEChangeConverter {
 		return changes
 	}
 
-	// /**
-	// * Creates a single reference operation based on the given information.
-	// *
-	// * @param collection
-	// *            the collection the <code>modelElement</code> is contained in
-	// * @param oldReference
-	// *            the {@link ModelElementId} of the model element the reference was pointing to
-	// * @param newReference
-	// *            the {@link ModelElementId} of the model element the reference is now pointing to
-	// * @param reference
-	// *            the actual reference
-	// * @param modelElement
-	// *            the model element holding the reference
-	// * @return a single reference operation
-	// */
-	// public static SingleReferenceOperation createSingleReferenceOperation(IdEObjectCollectionImpl collection,
-	// ModelElementId oldReference, ModelElementId newReference, EReference reference, EObject modelElement) {
-	//
-	// final SingleReferenceOperation op = OperationsFactory.eINSTANCE.createSingleReferenceOperation();
-	// setCommonValues(collection, op, modelElement);
-	// op.setFeatureName(reference.getName());
-	// setBidirectionalAndContainmentInfo(op, reference);
-	//
-	// op.setOldValue(oldReference);
-	// op.setNewValue(newReference);
-	//
-	// return op;
-	// }
-	//
-	
 	private def List<EChange> handleSetReference(NotificationInfo n) {
 		val oldValue = n.getOldModelElementValue()
 		val newValue = n.getNewModelElementValue()
@@ -410,62 +325,8 @@ final class NotificationToEChangeConverter {
 				changes += handleInsertReference(n.notifierModelElement, n.reference, newValue, n.position);
 			return changes;
 		}
-
-//			final MultiReferenceSetOperation setOperation = OperationsFactory.eINSTANCE
-//				.createMultiReferenceSetOperation();
-//			setCommonValues(project, setOperation, (EObject) n.getNotifier());
-//			setOperation.setFeatureName(n.getReference().getName());
-//			setBidirectionalAndContainmentInfo(setOperation, n.getReference());
-//	
-//			setOperation.setIndex(n.getPosition());
-//	
-//			if (n.getOldValue() != null) {
-//				setOperation.setOldValue(oldModelElementId);
-//			}
-//	
-//			if (n.getNewValue() != null) {
-//				setOperation.setNewValue(newModelElementId);
-//			}
-//	
-//			if (n.wasUnset()) {
-//				setOperation.setUnset(UnsetType.WAS_UNSET);
-//			}
-//	
-//			return setOperation;
 	}
 
-	//
-	// // utility methods
-	// private static void setCommonValues(IdEObjectCollectionImpl collection, AbstractOperation operation,
-	// EObject modelElement) {
-	// operation.setClientDate(new Date());
-	// ModelElementId id = collection.getModelElementId(modelElement);
-	// if (id == null) {
-	// id = collection.getDeletedModelElementId(modelElement);
-	// }
-	// if (id == null) {
-	// WorkspaceUtil.handleException(new IllegalStateException(
-	// Messages.NotificationToOperationConverter_Element_Has_No_ID
-	// + modelElement));
-	// }
-	// operation.setModelElementId(id);
-	// }
-	//
-	// private static void setBidirectionalAndContainmentInfo(ReferenceOperation referenceOperation, EReference reference) {
-	// if (reference.getEOpposite() != null) {
-	// referenceOperation.setBidirectional(true);
-	// referenceOperation.setOppositeFeatureName(reference.getEOpposite().getName());
-	// } else {
-	// referenceOperation.setBidirectional(false);
-	// }
-	// if (reference.isContainer()) {
-	// referenceOperation.setContainmentType(ContainmentType.CONTAINER);
-	// }
-	// if (reference.isContainment()) {
-	// referenceOperation.setContainmentType(ContainmentType.CONTAINMENT);
-	// }
-	// }
-	//
 	def private Iterable<EChange> handleUnsetAttribute(NotificationInfo n, List<EChange> previousChanges) {
 		var Iterable<EChange> op = null
 		if (!n.getAttribute().isMany()) {
@@ -492,9 +353,7 @@ final class NotificationToEChangeConverter {
 			val lastChange = previousChanges.last as SubtractiveReferenceEChange<?, ?>
 			lastChange.isUnset = true
 			return Collections.emptyList()
-		// op = (FeatureOperation) handleMultiReference(n);
 		}
-		// op.setUnset(UnsetType.IS_UNSET);
 		return op;
 	}
 
