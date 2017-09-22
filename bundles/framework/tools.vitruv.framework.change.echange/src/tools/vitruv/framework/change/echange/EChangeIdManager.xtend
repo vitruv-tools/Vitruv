@@ -11,7 +11,6 @@ import tools.vitruv.framework.change.uuid.UuidResolver
 import org.eclipse.emf.ecore.EObject
 import org.apache.log4j.Logger
 import org.eclipse.emf.ecore.util.EcoreUtil
-import tools.vitruv.framework.change.echange.feature.reference.UpdateReferenceEChange
 
 /**
  * Provides logic for initializing the IDs within changes and for updating
@@ -56,8 +55,7 @@ class EChangeIdManager {
 	}
 
 	public def boolean isCreateChange(EObjectAddedEChange<?> addedEChange) {
-		return addedEChange.newValue !== null && !(localUuidGeneratorAndResolver.hasUuid(addedEChange.newValue) || globalUuidResolver.hasUuid(addedEChange.newValue)) && 
-			!(addedEChange instanceof UpdateReferenceEChange<?> && !(addedEChange as UpdateReferenceEChange<?>).affectedFeature.isContainment)
+		return addedEChange.newValue !== null && !(localUuidGeneratorAndResolver.hasUuid(addedEChange.newValue) || globalUuidResolver.hasUuid(addedEChange.newValue))
 	}
 	
 	private def String getOrGenerateValue(EObject object) {
