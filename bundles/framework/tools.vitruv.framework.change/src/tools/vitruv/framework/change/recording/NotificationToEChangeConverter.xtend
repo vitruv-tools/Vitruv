@@ -1,7 +1,6 @@
 package tools.vitruv.framework.change.recording
 
 import java.util.ArrayList
-import java.util.Collections
 import java.util.List
 import org.eclipse.emf.common.notify.Notification
 import org.eclipse.emf.ecore.EAttribute
@@ -9,15 +8,14 @@ import org.eclipse.emf.ecore.EObject
 import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.change.echange.feature.attribute.AttributeFactory
 import tools.vitruv.framework.change.echange.feature.attribute.ReplaceSingleValuedEAttribute
-import tools.vitruv.framework.change.echange.feature.attribute.SubtractiveAttributeEChange
 import tools.vitruv.framework.change.echange.TypeInferringAtomicEChangeFactory
-import tools.vitruv.framework.change.echange.feature.reference.SubtractiveReferenceEChange
 import static extension tools.vitruv.framework.change.preparation.EMFModelChangeTransformationUtil.*
 import org.eclipse.emf.ecore.EReference
 import org.eclipse.emf.ecore.resource.Resource
 import tools.vitruv.framework.change.echange.eobject.EObjectAddedEChange
 import tools.vitruv.framework.change.echange.eobject.EObjectSubtractedEChange
 import tools.vitruv.framework.change.echange.EChangeIdManager
+import org.eclipse.emf.ecore.EStructuralFeature
 
 /** 
  * Converts an EMF notification to an {@link EChange}.
@@ -111,16 +109,22 @@ final class NotificationToEChangeConverter {
 				}
 			}
 			case Notification.REMOVE: {
-				changes += handleRemoveAttribute(affectedEObject, affectedFeature, n.oldValue, n.position, n.wasUnset);
+				changes += handleRemoveAttribute(affectedEObject, affectedFeature, n.oldValue, n.position);
+				if (n.wasUnset) {
+					changes += TypeInferringAtomicEChangeFactory.instance.createUnsetFeatureChange(affectedEObject, affectedFeature);
+				}
 			}
 			case Notification.REMOVE_MANY: {
 				var List<Object> list = (n.getOldValue() as List<Object>)
+				// TODO HK Is that check necessary?
 				if (n.getNewValue() === null) {
 					for (var int i = list.size() - 1; i >= 0; i--) {
 						changes +=
-							handleRemoveAttribute(affectedEObject, affectedFeature, list.get(i), n.initialIndex + i,
-								n.wasUnset && i == list.size - 1);
+							handleRemoveAttribute(affectedEObject, affectedFeature, list.get(i), n.initialIndex + i);
 					}
+				}
+				if (n.wasUnset) {
+					changes += TypeInferringAtomicEChangeFactory.instance.createUnsetFeatureChange(affectedEObject, affectedFeature);
 				}
 			}
 		}
@@ -146,17 +150,21 @@ final class NotificationToEChangeConverter {
 			}
 			case Notification.REMOVE: {
 				changes +=
-					handleRemoveReference(affectedEObject, affectedReference, n.oldModelElementValue, n.position,
-						n.wasUnset);
+					handleRemoveReference(affectedEObject, affectedReference, n.oldModelElementValue, n.position);
+				if (n.wasUnset) {
+					changes += TypeInferringAtomicEChangeFactory.instance.createUnsetFeatureChange(affectedEObject, affectedReference);
+				}
 			}
 			case Notification.REMOVE_MANY: {
 				var List<EObject> list = (n.getOldValue() as List<EObject>)
 				if (n.getNewValue() === null) {
 					for (var int i = list.size() - 1; i >= 0; i--) {
 						changes +=
-							handleRemoveReference(affectedEObject, affectedReference, list.get(i), n.initialIndex + i,
-								n.wasUnset && i == list.size - 1);
+							handleRemoveReference(affectedEObject, affectedReference, list.get(i), n.initialIndex + i);
 					}
+				}
+				if (n.wasUnset) {
+					changes += TypeInferringAtomicEChangeFactory.instance.createUnsetFeatureChange(affectedEObject, affectedReference);
 				}
 			}
 		}
@@ -172,10 +180,9 @@ final class NotificationToEChangeConverter {
 	}
 
 	private def handleRemoveAttribute(EObject affectedEObject, EAttribute affectedReference, Object oldValue,
-		int position, boolean unset) {
+		int position) {
 		val change = TypeInferringAtomicEChangeFactory.instance.createRemoveAttributeChange(affectedEObject,
 			affectedReference, position, oldValue);
-		change.isUnset = unset;
 		eChangeIdManager.setOrGenerateIds(change);
 		return change;
 	}
@@ -190,10 +197,9 @@ final class NotificationToEChangeConverter {
 	}
 
 	private def handleRemoveReference(EObject affectedEObject, EReference affectedReference, EObject oldValue,
-		int position, boolean unset) {
+		int position) {
 		val change = TypeInferringAtomicEChangeFactory.instance.createRemoveReferenceChange(affectedEObject,
 			affectedReference, oldValue, position);
-		change.isUnset = unset;
 		eChangeIdManager.setOrGenerateIds(change);
 		return #[change] + change.getDeleteChangesIfNecessary(change.affectedFeature.containment)
 	}
@@ -210,8 +216,8 @@ final class NotificationToEChangeConverter {
 		val deleteChanges = change.getDeleteChangesIfNecessary(change.affectedFeature.containment);
 		result += beforeAndAfterCreateChanges.key;
 		result += change;
-		result += beforeAndAfterCreateChanges.value;
 		result += deleteChanges;
+		result += beforeAndAfterCreateChanges.value;
 		return result;
 	}
 
@@ -289,7 +295,10 @@ final class NotificationToEChangeConverter {
 		val affectedFeature = n.attribute;
 		if (n.getAttribute().isMany()) {
 			if (n.oldValue !== null) {
-				changes += handleRemoveAttribute(affectedEObject, affectedFeature, n.oldValue, n.position, n.wasUnset);
+				changes += handleRemoveAttribute(affectedEObject, affectedFeature, n.oldValue, n.position);
+				if (n.wasUnset) {
+					changes += TypeInferringAtomicEChangeFactory.instance.createUnsetFeatureChange(affectedEObject, affectedFeature);
+				}
 			}
 			if (n.newValue !== null) {
 				changes += handleInsertAttribute(affectedEObject, affectedFeature, n.newValue, n.position);
@@ -319,7 +328,10 @@ final class NotificationToEChangeConverter {
 		} else {
 			val changes = newArrayList;
 			if (oldValue !== null)
-				changes += handleRemoveReference(n.notifierModelElement, n.reference, oldValue, n.position, n.wasUnset);
+				changes += handleRemoveReference(n.notifierModelElement, n.reference, oldValue, n.position);
+				if (n.wasUnset) {
+					changes += TypeInferringAtomicEChangeFactory.instance.createUnsetFeatureChange(n.notifierModelElement, n.reference);
+				}
 			if (newValue !== null)
 				changes += handleInsertReference(n.notifierModelElement, n.reference, newValue, n.position);
 			return changes;
@@ -331,12 +343,7 @@ final class NotificationToEChangeConverter {
 		if (!n.getAttribute().isMany()) {
 			op = handleSetAttribute(n)
 		} else {
-			if (!(previousChanges.last instanceof SubtractiveAttributeEChange<?, ?>)) {
-				throw new IllegalStateException
-			}
-			val lastChange = previousChanges.last as SubtractiveAttributeEChange<?, ?>
-			lastChange.isUnset = true
-			return Collections.emptyList()
+			op = #[TypeInferringAtomicEChangeFactory.instance.createUnsetFeatureChange(n.notifierModelElement, n.feature as EStructuralFeature)];
 		}
 		return op
 	}
@@ -346,12 +353,7 @@ final class NotificationToEChangeConverter {
 		if (!n.getReference().isMany()) {
 			op = handleSetReference(n);
 		} else {
-			if (!(previousChanges.last instanceof SubtractiveReferenceEChange<?, ?>)) {
-				throw new IllegalStateException
-			}
-			val lastChange = previousChanges.last as SubtractiveReferenceEChange<?, ?>
-			lastChange.isUnset = true
-			return Collections.emptyList()
+			op = #[TypeInferringAtomicEChangeFactory.instance.createUnsetFeatureChange(n.notifierModelElement, n.feature as EStructuralFeature)];
 		}
 		return op;
 	}
