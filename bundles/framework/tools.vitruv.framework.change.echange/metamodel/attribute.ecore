@@ -60,7 +60,6 @@
       </eAnnotations>
       <eGenericType eTypeParameter="#//SubtractiveAttributeEChange/T"/>
     </eStructuralFeatures>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="isUnset" eType="ecore:EDataType ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EBoolean"/>
     <eGenericSuperTypes eClassifier="#//UpdateAttributeEChange">
       <eTypeArguments eTypeParameter="#//SubtractiveAttributeEChange/A"/>
     </eGenericSuperTypes>

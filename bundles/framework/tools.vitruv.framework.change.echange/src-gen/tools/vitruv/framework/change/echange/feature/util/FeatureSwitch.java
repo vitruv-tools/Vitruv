@@ -92,6 +92,14 @@ public class FeatureSwitch<T> extends Switch<T> {
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
+			case FeaturePackage.UNSET_FEATURE: {
+				UnsetFeature<?, ?> unsetFeature = (UnsetFeature<?, ?>)theEObject;
+				T result = caseUnsetFeature(unsetFeature);
+				if (result == null) result = caseFeatureEChange(unsetFeature);
+				if (result == null) result = caseEChange(unsetFeature);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
 			default: return defaultCase(theEObject);
 		}
 	}
@@ -138,6 +146,21 @@ public class FeatureSwitch<T> extends Switch<T> {
 	 * @generated
 	 */
 	public <A extends EObject, F extends EStructuralFeature> T caseUpdateSingleValuedFeatureEChange(UpdateSingleValuedFeatureEChange<A, F> object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Unset Feature</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Unset Feature</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public <A extends EObject, F extends EStructuralFeature> T caseUnsetFeature(UnsetFeature<A, F> object) {
 		return null;
 	}
 

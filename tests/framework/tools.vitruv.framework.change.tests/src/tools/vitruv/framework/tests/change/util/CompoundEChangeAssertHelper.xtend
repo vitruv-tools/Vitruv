@@ -17,9 +17,9 @@ class CompoundEChangeAssertHelper {
 	}
 
 	def static Iterable<? extends EChange> assertRemoveAndDeleteNonRoot(
-			Iterable<? extends EChange> changes, EObject affectedEObject, EStructuralFeature affectedFeature, EObject expectedOldValue, int expectedOldIndex, boolean isUnset) {
+			Iterable<? extends EChange> changes, EObject affectedEObject, EStructuralFeature affectedFeature, EObject expectedOldValue, int expectedOldIndex) {
 		changes.assertSizeGreaterEquals(2);
-		return changes.assertRemoveEReference(affectedEObject, affectedFeature, expectedOldValue, expectedOldIndex, true, isUnset)
+		return changes.assertRemoveEReference(affectedEObject, affectedFeature, expectedOldValue, expectedOldIndex, true)
 			.assertDeleteEObject(expectedOldValue);
 	}
 	

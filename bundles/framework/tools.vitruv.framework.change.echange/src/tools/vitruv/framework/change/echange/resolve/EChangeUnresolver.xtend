@@ -133,4 +133,5 @@ public class EChangeUnresolver {
 	def dispatch public static void unresolve(FeatureEChange<EObject, EStructuralFeature> change) {
 		change.unresolveFeatureEChange
 	}
+	
 }

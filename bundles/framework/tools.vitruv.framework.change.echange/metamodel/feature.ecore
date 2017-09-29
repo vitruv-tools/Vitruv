@@ -62,4 +62,16 @@
       <eTypeArguments eTypeParameter="#//UpdateSingleValuedFeatureEChange/F"/>
     </eGenericSuperTypes>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="UnsetFeature">
+    <eTypeParameters name="A">
+      <eBounds eClassifier="ecore:EClass ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EObject"/>
+    </eTypeParameters>
+    <eTypeParameters name="F">
+      <eBounds eClassifier="ecore:EClass ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EStructuralFeature"/>
+    </eTypeParameters>
+    <eGenericSuperTypes eClassifier="#//FeatureEChange">
+      <eTypeArguments eTypeParameter="#//UnsetFeature/A"/>
+      <eTypeArguments eTypeParameter="#//UnsetFeature/F"/>
+    </eGenericSuperTypes>
+  </eClassifiers>
 </ecore:EPackage>

@@ -2,6 +2,7 @@
  */
 package tools.vitruv.framework.change.echange.feature.single.impl;
 
+import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EGenericType;
 import org.eclipse.emf.ecore.EOperation;
@@ -161,6 +162,15 @@ public class SinglePackageImpl extends EPackageImpl implements SinglePackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EAttribute getReplaceSingleValuedFeatureEChange_IsUnset() {
+		return (EAttribute)replaceSingleValuedFeatureEChangeEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EOperation getReplaceSingleValuedFeatureEChange__IsFromNonDefaultValue() {
 		return replaceSingleValuedFeatureEChangeEClass.getEOperations().get(0);
 	}
@@ -203,6 +213,7 @@ public class SinglePackageImpl extends EPackageImpl implements SinglePackage {
 
 		// Create classes and their features
 		replaceSingleValuedFeatureEChangeEClass = createEClass(REPLACE_SINGLE_VALUED_FEATURE_ECHANGE);
+		createEAttribute(replaceSingleValuedFeatureEChangeEClass, REPLACE_SINGLE_VALUED_FEATURE_ECHANGE__IS_UNSET);
 		createEOperation(replaceSingleValuedFeatureEChangeEClass, REPLACE_SINGLE_VALUED_FEATURE_ECHANGE___IS_FROM_NON_DEFAULT_VALUE);
 		createEOperation(replaceSingleValuedFeatureEChangeEClass, REPLACE_SINGLE_VALUED_FEATURE_ECHANGE___IS_TO_NON_DEFAULT_VALUE);
 	}
@@ -266,6 +277,7 @@ public class SinglePackageImpl extends EPackageImpl implements SinglePackage {
 
 		// Initialize classes, features, and operations; add parameters
 		initEClass(replaceSingleValuedFeatureEChangeEClass, ReplaceSingleValuedFeatureEChange.class, "ReplaceSingleValuedFeatureEChange", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getReplaceSingleValuedFeatureEChange_IsUnset(), theEcorePackage.getEBoolean(), "isUnset", null, 0, 1, ReplaceSingleValuedFeatureEChange.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEOperation(getReplaceSingleValuedFeatureEChange__IsFromNonDefaultValue(), theEcorePackage.getEBoolean(), "isFromNonDefaultValue", 0, 1, !IS_UNIQUE, IS_ORDERED);
 

@@ -21,6 +21,7 @@ import tools.vitruv.framework.change.echange.eobject.impl.EobjectPackageImpl;
 import tools.vitruv.framework.change.echange.feature.FeatureEChange;
 import tools.vitruv.framework.change.echange.feature.FeatureFactory;
 import tools.vitruv.framework.change.echange.feature.FeaturePackage;
+import tools.vitruv.framework.change.echange.feature.UnsetFeature;
 import tools.vitruv.framework.change.echange.feature.UpdateMultiValuedFeatureEChange;
 import tools.vitruv.framework.change.echange.feature.UpdateSingleValuedFeatureEChange;
 
@@ -75,6 +76,13 @@ public class FeaturePackageImpl extends EPackageImpl implements FeaturePackage {
 	 * @generated
 	 */
 	private EClass updateSingleValuedFeatureEChangeEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass unsetFeatureEClass = null;
 
 	/**
 	 * Creates an instance of the model <b>Package</b>, registered with
@@ -223,6 +231,15 @@ public class FeaturePackageImpl extends EPackageImpl implements FeaturePackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EClass getUnsetFeature() {
+		return unsetFeatureEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public FeatureFactory getFeatureFactory() {
 		return (FeatureFactory)getEFactoryInstance();
 	}
@@ -254,6 +271,8 @@ public class FeaturePackageImpl extends EPackageImpl implements FeaturePackage {
 		updateMultiValuedFeatureEChangeEClass = createEClass(UPDATE_MULTI_VALUED_FEATURE_ECHANGE);
 
 		updateSingleValuedFeatureEChangeEClass = createEClass(UPDATE_SINGLE_VALUED_FEATURE_ECHANGE);
+
+		unsetFeatureEClass = createEClass(UNSET_FEATURE);
 	}
 
 	/**
@@ -291,6 +310,8 @@ public class FeaturePackageImpl extends EPackageImpl implements FeaturePackage {
 		ETypeParameter updateMultiValuedFeatureEChangeEClass_F = addETypeParameter(updateMultiValuedFeatureEChangeEClass, "F");
 		ETypeParameter updateSingleValuedFeatureEChangeEClass_A = addETypeParameter(updateSingleValuedFeatureEChangeEClass, "A");
 		ETypeParameter updateSingleValuedFeatureEChangeEClass_F = addETypeParameter(updateSingleValuedFeatureEChangeEClass, "F");
+		ETypeParameter unsetFeatureEClass_A = addETypeParameter(unsetFeatureEClass, "A");
+		ETypeParameter unsetFeatureEClass_F = addETypeParameter(unsetFeatureEClass, "F");
 
 		// Set bounds for type parameters
 		EGenericType g1 = createEGenericType(theEcorePackage.getEObject());
@@ -305,6 +326,10 @@ public class FeaturePackageImpl extends EPackageImpl implements FeaturePackage {
 		updateSingleValuedFeatureEChangeEClass_A.getEBounds().add(g1);
 		g1 = createEGenericType(theEcorePackage.getEStructuralFeature());
 		updateSingleValuedFeatureEChangeEClass_F.getEBounds().add(g1);
+		g1 = createEGenericType(theEcorePackage.getEObject());
+		unsetFeatureEClass_A.getEBounds().add(g1);
+		g1 = createEGenericType(theEcorePackage.getEStructuralFeature());
+		unsetFeatureEClass_F.getEBounds().add(g1);
 
 		// Add supertypes to classes
 		featureEChangeEClass.getESuperTypes().add(theEChangePackage.getEChange());
@@ -320,6 +345,12 @@ public class FeaturePackageImpl extends EPackageImpl implements FeaturePackage {
 		g2 = createEGenericType(updateSingleValuedFeatureEChangeEClass_F);
 		g1.getETypeArguments().add(g2);
 		updateSingleValuedFeatureEChangeEClass.getEGenericSuperTypes().add(g1);
+		g1 = createEGenericType(this.getFeatureEChange());
+		g2 = createEGenericType(unsetFeatureEClass_A);
+		g1.getETypeArguments().add(g2);
+		g2 = createEGenericType(unsetFeatureEClass_F);
+		g1.getETypeArguments().add(g2);
+		unsetFeatureEClass.getEGenericSuperTypes().add(g1);
 
 		// Initialize classes, features, and operations; add parameters
 		initEClass(featureEChangeEClass, FeatureEChange.class, "FeatureEChange", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -332,6 +363,8 @@ public class FeaturePackageImpl extends EPackageImpl implements FeaturePackage {
 		initEClass(updateMultiValuedFeatureEChangeEClass, UpdateMultiValuedFeatureEChange.class, "UpdateMultiValuedFeatureEChange", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		initEClass(updateSingleValuedFeatureEChangeEClass, UpdateSingleValuedFeatureEChange.class, "UpdateSingleValuedFeatureEChange", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+		initEClass(unsetFeatureEClass, UnsetFeature.class, "UnsetFeature", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		// Create resource
 		createResource(eNS_URI);

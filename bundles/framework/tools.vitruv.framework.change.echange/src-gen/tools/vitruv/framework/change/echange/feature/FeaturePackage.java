@@ -280,6 +280,80 @@ public interface FeaturePackage extends EPackage {
 
 
 	/**
+	 * The meta object id for the '{@link tools.vitruv.framework.change.echange.feature.impl.UnsetFeatureImpl <em>Unset Feature</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see tools.vitruv.framework.change.echange.feature.impl.UnsetFeatureImpl
+	 * @see tools.vitruv.framework.change.echange.feature.impl.FeaturePackageImpl#getUnsetFeature()
+	 * @generated
+	 */
+	int UNSET_FEATURE = 3;
+
+	/**
+	 * The feature id for the '<em><b>Affected Feature</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int UNSET_FEATURE__AFFECTED_FEATURE = FEATURE_ECHANGE__AFFECTED_FEATURE;
+
+	/**
+	 * The feature id for the '<em><b>Affected EObject</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int UNSET_FEATURE__AFFECTED_EOBJECT = FEATURE_ECHANGE__AFFECTED_EOBJECT;
+
+	/**
+	 * The feature id for the '<em><b>Affected EObject ID</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int UNSET_FEATURE__AFFECTED_EOBJECT_ID = FEATURE_ECHANGE__AFFECTED_EOBJECT_ID;
+
+	/**
+	 * The number of structural features of the '<em>Unset Feature</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int UNSET_FEATURE_FEATURE_COUNT = FEATURE_ECHANGE_FEATURE_COUNT + 0;
+
+	/**
+	 * The operation id for the '<em>Is Resolved</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int UNSET_FEATURE___IS_RESOLVED = FEATURE_ECHANGE___IS_RESOLVED;
+
+	/**
+	 * The operation id for the '<em>Get Involved EObjects</em>' operation.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int UNSET_FEATURE___GET_INVOLVED_EOBJECTS = FEATURE_ECHANGE___GET_INVOLVED_EOBJECTS;
+
+	/**
+	 * The number of operations of the '<em>Unset Feature</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int UNSET_FEATURE_OPERATION_COUNT = FEATURE_ECHANGE_OPERATION_COUNT + 0;
+
+
+	/**
 	 * Returns the meta object for class '{@link tools.vitruv.framework.change.echange.feature.FeatureEChange <em>EChange</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -341,6 +415,16 @@ public interface FeaturePackage extends EPackage {
 	 * @generated
 	 */
 	EClass getUpdateSingleValuedFeatureEChange();
+
+	/**
+	 * Returns the meta object for class '{@link tools.vitruv.framework.change.echange.feature.UnsetFeature <em>Unset Feature</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Unset Feature</em>'.
+	 * @see tools.vitruv.framework.change.echange.feature.UnsetFeature
+	 * @generated
+	 */
+	EClass getUnsetFeature();
 
 	/**
 	 * Returns the factory that creates the instances of the model.
@@ -418,6 +502,16 @@ public interface FeaturePackage extends EPackage {
 		 * @generated
 		 */
 		EClass UPDATE_SINGLE_VALUED_FEATURE_ECHANGE = eINSTANCE.getUpdateSingleValuedFeatureEChange();
+
+		/**
+		 * The meta object literal for the '{@link tools.vitruv.framework.change.echange.feature.impl.UnsetFeatureImpl <em>Unset Feature</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see tools.vitruv.framework.change.echange.feature.impl.UnsetFeatureImpl
+		 * @see tools.vitruv.framework.change.echange.feature.impl.FeaturePackageImpl#getUnsetFeature()
+		 * @generated
+		 */
+		EClass UNSET_FEATURE = eINSTANCE.getUnsetFeature();
 
 	}
 

@@ -34,7 +34,7 @@ public final class PersistenceHelper {
 			// FIXME HK This is a prototypical implementation: It is not easy
 			// to extract the project from a file URI.
 			var shortenedUri = elementUri//.trimSegments(1);
-			val possibleDirectories = #["src", "src-gen", "xtend-gen", "model", "models", "code"];
+			val possibleDirectories = #["src", "src-gen", "xtend-gen", "model", "models", "code", "repository"];
 			// Remove last segment as long as we are not in src directory or in the test project directory
 			while (!possibleDirectories.contains(shortenedUri.lastSegment)
 				&& !isUriTestProject(shortenedUri)) {

@@ -45,8 +45,8 @@ public class DefaultEditorPartAdapterFactoryImpl implements IEditorPartAdapterFa
     private final Collection<String> allowedSuffixes;
 
     /**
-     * Constructor for {@link DefaultEditorPartAdapterFactoryImpl} instances creating adapters only
-     * for editors whose EMF model resource's URI has the given suffix.
+     * Constructor for {@link DefaultEditorPartAdapterFactoryImpl} instances creating adapters only for
+     * editors whose EMF model resource's URI has the given suffix.
      * 
      * @param resourceSuffix
      *            The URI suffix restriction.
@@ -56,8 +56,8 @@ public class DefaultEditorPartAdapterFactoryImpl implements IEditorPartAdapterFa
     }
 
     /**
-     * Constructor for {@link DefaultEditorPartAdapterFactoryImpl} instances creating adapters only
-     * for editors whose EMF model resource's URI has one of the given suffixes.
+     * Constructor for {@link DefaultEditorPartAdapterFactoryImpl} instances creating adapters only for
+     * editors whose EMF model resource's URI has one of the given suffixes.
      * 
      * @param resourceSuffixes
      *            The URI suffix restriction.
@@ -67,8 +67,8 @@ public class DefaultEditorPartAdapterFactoryImpl implements IEditorPartAdapterFa
     }
 
     /**
-     * Constructor for {@link DefaultEditorPartAdapterFactoryImpl} instances creating adapters for
-     * all EMF/GMF editors.
+     * Constructor for {@link DefaultEditorPartAdapterFactoryImpl} instances creating adapters for all
+     * EMF/GMF editors.
      */
     public DefaultEditorPartAdapterFactoryImpl() {
         this(new HashSet<String>());
@@ -134,8 +134,8 @@ public class DefaultEditorPartAdapterFactoryImpl implements IEditorPartAdapterFa
                 DiagramDocumentEditor dde = (DiagramDocumentEditor) editorPart;
                 return dde.getEditingDomain();
             } else {
-                throw new IllegalArgumentException("Don't know how to handle class "
-                        + editorPart.getClass().getCanonicalName());
+                throw new IllegalArgumentException(
+                        "Don't know how to handle class " + editorPart.getClass().getCanonicalName());
             }
         }
 
@@ -155,14 +155,16 @@ public class DefaultEditorPartAdapterFactoryImpl implements IEditorPartAdapterFa
             for (Resource r : getEditingDomain().getResourceSet().getResources()) {
 
                 String rPath = r.getURI().fileExtension();
-                if (!allowedSuffixes.isEmpty() && endsWithAnySuffix(rPath, allowedSuffixes)) {
-                    if (r.getURI().isPlatform() || r.getURI().isFile()) {
+                if (rPath != null) {
+                    if (!allowedSuffixes.isEmpty() && endsWithAnySuffix(rPath, allowedSuffixes)) {
+                        if (r.getURI().isPlatform() || r.getURI().isFile()) {
+                            result = r;
+                        }
+                    } else if (allowedSuffixes.isEmpty() && !rPath.endsWith("diagram")) {
+                        // TODO: This is crummy, There needs to be a better way
+                        // of determining wheter r is a diagram resource...
                         result = r;
                     }
-                } else if (allowedSuffixes.isEmpty() && !rPath.endsWith("diagram")) {
-                    // TODO: This is crummy, There needs to be a better way
-                    // of determining wheter r is a diagram resource...
-                    result = r;
                 }
             }
 

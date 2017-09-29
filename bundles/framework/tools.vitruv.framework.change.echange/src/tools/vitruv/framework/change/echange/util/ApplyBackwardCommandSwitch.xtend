@@ -19,6 +19,7 @@ import tools.vitruv.framework.change.echange.root.RemoveRootEObject
 import org.eclipse.emf.edit.command.RemoveCommand
 import org.apache.log4j.Logger
 import tools.vitruv.framework.change.echange.EChange
+import tools.vitruv.framework.change.echange.feature.UnsetFeature
 
 /**
  * Switch to create commands for all EChange classes.
@@ -29,6 +30,14 @@ package class ApplyBackwardCommandSwitch {
 	
 	def package dispatch static List<Command> getCommands(EChange change) {
 		#[]
+	}
+	
+	/**
+	 * Dispatch method to create commands to apply a {@link UnsetFeature} change backward.
+	 * @param object The change which commands should be created.
+	 */
+	def package dispatch static List<Command> getCommands(UnsetFeature<EObject, ?> change) {
+		return #[]
 	}
 	
 	/**

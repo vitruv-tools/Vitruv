@@ -55,7 +55,10 @@ class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 		if(uri !== null) {
 			try {
 				val resolvedObject = resourceSet.getEObject(uri, false);
-				if(resolvedObject !== null) {
+				// The EClass check avoids that an objects of another type with the same URI is resolved
+				// This is, for example, the case if a modifier in a UML model is changed, as it is only a
+				// marker class that is replaced, having always the same URI on the same model element.
+				if(resolvedObject !== null && resolvedObject.eClass == eObject.eClass) {
 					val resolvedKey = repository.EObjectToUuid.get(resolvedObject);
 					if(resolvedKey !== null) {
 						return resolvedKey;
@@ -77,6 +80,9 @@ class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 
 	override getEObject(String uuid) {
 		val eObject = repository.uuidToEObject.get(uuid);
+		if (eObject === null) {
+			throw new IllegalStateException();
+		}
 		if(eObject.eIsProxy) {
 			val resolvedObject = EcoreUtil.resolve(eObject, resourceSet);
 			if(resolvedObject === null || resolvedObject.eIsProxy) {

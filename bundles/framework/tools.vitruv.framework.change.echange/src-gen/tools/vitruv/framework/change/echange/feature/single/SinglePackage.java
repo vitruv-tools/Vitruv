@@ -2,6 +2,7 @@
  */
 package tools.vitruv.framework.change.echange.feature.single;
 
+import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EPackage;
@@ -96,13 +97,22 @@ public interface SinglePackage extends EPackage {
 	int REPLACE_SINGLE_VALUED_FEATURE_ECHANGE__AFFECTED_EOBJECT_ID = FeaturePackage.UPDATE_SINGLE_VALUED_FEATURE_ECHANGE__AFFECTED_EOBJECT_ID;
 
 	/**
+	 * The feature id for the '<em><b>Is Unset</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REPLACE_SINGLE_VALUED_FEATURE_ECHANGE__IS_UNSET = FeaturePackage.UPDATE_SINGLE_VALUED_FEATURE_ECHANGE_FEATURE_COUNT + 0;
+
+	/**
 	 * The number of structural features of the '<em>Replace Single Valued Feature EChange</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int REPLACE_SINGLE_VALUED_FEATURE_ECHANGE_FEATURE_COUNT = FeaturePackage.UPDATE_SINGLE_VALUED_FEATURE_ECHANGE_FEATURE_COUNT + 0;
+	int REPLACE_SINGLE_VALUED_FEATURE_ECHANGE_FEATURE_COUNT = FeaturePackage.UPDATE_SINGLE_VALUED_FEATURE_ECHANGE_FEATURE_COUNT + 1;
 
 	/**
 	 * The operation id for the '<em>Is Resolved</em>' operation.
@@ -179,6 +189,17 @@ public interface SinglePackage extends EPackage {
 	EClass getReplaceSingleValuedFeatureEChange();
 
 	/**
+	 * Returns the meta object for the attribute '{@link tools.vitruv.framework.change.echange.feature.single.ReplaceSingleValuedFeatureEChange#isIsUnset <em>Is Unset</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Is Unset</em>'.
+	 * @see tools.vitruv.framework.change.echange.feature.single.ReplaceSingleValuedFeatureEChange#isIsUnset()
+	 * @see #getReplaceSingleValuedFeatureEChange()
+	 * @generated
+	 */
+	EAttribute getReplaceSingleValuedFeatureEChange_IsUnset();
+
+	/**
 	 * Returns the meta object for the '{@link tools.vitruv.framework.change.echange.feature.single.ReplaceSingleValuedFeatureEChange#isFromNonDefaultValue() <em>Is From Non Default Value</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -230,6 +251,14 @@ public interface SinglePackage extends EPackage {
 		 * @generated
 		 */
 		EClass REPLACE_SINGLE_VALUED_FEATURE_ECHANGE = eINSTANCE.getReplaceSingleValuedFeatureEChange();
+
+		/**
+		 * The meta object literal for the '<em><b>Is Unset</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute REPLACE_SINGLE_VALUED_FEATURE_ECHANGE__IS_UNSET = eINSTANCE.getReplaceSingleValuedFeatureEChange_IsUnset();
 
 		/**
 		 * The meta object literal for the '<em><b>Is From Non Default Value</b></em>' operation.

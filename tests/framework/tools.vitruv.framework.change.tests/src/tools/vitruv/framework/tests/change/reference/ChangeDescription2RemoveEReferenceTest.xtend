@@ -37,13 +37,15 @@ class ChangeDescription2RemoveEReferenceTest extends ChangeDescription2EReferenc
 		this.rootElement.eUnset(feature);
 		
 		// assert 
-		if (isContainment) {
-			changes.assertRemoveAndDeleteNonRoot(this.rootElement, feature, nonRoot, 0, isExplicitUnset)
-				.assertEmpty;
+		var remaining = if (isContainment) {
+			changes.assertRemoveAndDeleteNonRoot(this.rootElement, feature, nonRoot, 0)
 		} else {
-			changes.assertRemoveEReference(this.rootElement, feature, nonRoot, 0, isContainment, isExplicitUnset)
-				.assertEmpty;
+			changes.assertRemoveEReference(this.rootElement, feature, nonRoot, 0, isContainment)
 		}
+		if (isExplicitUnset) {
+			remaining = remaining.assertUnsetFeature(this.rootElement, feature);
+		}
+		remaining.assertEmpty;
 	}
 	
 	@Test
@@ -85,8 +87,8 @@ class ChangeDescription2RemoveEReferenceTest extends ChangeDescription2EReferenc
 		this.rootElement.multiValuedContainmentEReference.clear
 
 		changes.assertChangeCount(4);
-		changes.assertRemoveAndDeleteNonRoot(this.rootElement, ROOT__MULTI_VALUED_CONTAINMENT_EREFERENCE, index1Element, 1, false)
-			.assertRemoveAndDeleteNonRoot(this.rootElement, ROOT__MULTI_VALUED_CONTAINMENT_EREFERENCE, index0Element, 0, false)
+		changes.assertRemoveAndDeleteNonRoot(this.rootElement, ROOT__MULTI_VALUED_CONTAINMENT_EREFERENCE, index1Element, 1)
+			.assertRemoveAndDeleteNonRoot(this.rootElement, ROOT__MULTI_VALUED_CONTAINMENT_EREFERENCE, index0Element, 0)
 			.assertEmpty;
 	}
 }

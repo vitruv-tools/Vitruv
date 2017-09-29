@@ -76,8 +76,10 @@ public class ResourceRepositoryImpl implements ModelRepository, CorrespondencePr
         this.fileSystemHelper = new FileSystemHelper(this.folder);
 
         initializeUuidProviderAndResolver();
+        // TODO HK Use one monitor per model and turn on strict mode depending on the kind of model/view
+        // (textual vs. semantic)
         this.changeRecorder = new AtomicEmfChangeRecorder(this.uuidGeneratorAndResolver, this.uuidGeneratorAndResolver,
-                true, false);
+                false);
 
         initializeCorrespondenceModel();
         loadVURIsOfVSMUModelInstances();

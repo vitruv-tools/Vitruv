@@ -4,6 +4,11 @@ import org.junit.Test
 
 class ChangeDescription2InsertRootEObjectTest extends ChangeDescription2RootChangeTest {
 	
+	override prepareRootElement() {
+		this.rootElement = createRootInResource(1);
+		this.rootElement2 = createRootInResource(2);
+	}
+	
 	@Test
 	def void insertCreateRootEObjectInResource(){
 		val resource = this.rootElement.eResource;

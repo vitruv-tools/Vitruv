@@ -2,7 +2,6 @@ package tools.vitruv.framework.tests.change.rootobject
 
 import tools.vitruv.framework.tests.change.ChangeDescription2ChangeTransformationTest
 import org.eclipse.emf.ecore.resource.Resource
-import org.junit.Before
 
 import static extension tools.vitruv.framework.tests.change.util.AtomicEChangeAssertHelper.*
 import static extension tools.vitruv.framework.tests.change.util.CompoundEChangeAssertHelper.*
@@ -13,9 +12,8 @@ import tools.vitruv.framework.change.echange.EChange
 class ChangeDescription2RootChangeTest extends ChangeDescription2ChangeTransformationTest{
 	var protected Root rootElement2;
 	
-	@Before
-	def override beforeTest(){
-		super.beforeTest
+	def override prepareRootElement(){
+		super.prepareRootElement
 		rootElement2 = createRootInResource(2);
 	}
 	

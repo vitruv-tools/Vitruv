@@ -148,7 +148,7 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 		resultingChanges += propagatedChange
 
 		val consequentialChangesToRePropagate = propagatedChange.consequentialChanges.transactionalChangeSequence
-			.map[rewrapWithoutCorrespondenceChanges].filter[containsConcreteChange]
+			.map[rewrapWithoutCorrespondenceChanges].filterNull.filter[containsConcreteChange]
 			.filter [changeDomain.shouldTransitivelyPropagateChanges]
 
 		for (changeToPropagate : consequentialChangesToRePropagate) {
