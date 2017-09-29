@@ -16,7 +16,6 @@ import static org.junit.Assert.fail;
 import java.io.IOException;
 import java.net.URL;
 
-import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -33,10 +32,6 @@ public class Models {
     private static Logger LOGGER = Logger.getLogger(Models.class);
 
     public static final String ROOT_OBJECT_URI = "/";
-
-    static {
-        LOGGER.setLevel(Level.ALL);
-    }
 
     private static void setupURIPathmaps() {
         URIConverter.URI_MAP.put(URI.createURI("pathmap://PCM_MODELS/PrimitiveTypes.repository"),

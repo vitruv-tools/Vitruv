@@ -9,9 +9,6 @@ Bundle-Localization: plugin
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Export-Package: tools.vitruv.framework.change.echange,
  tools.vitruv.framework.change.echange.command,
- tools.vitruv.framework.change.echange.compound,
- tools.vitruv.framework.change.echange.compound.impl,
- tools.vitruv.framework.change.echange.compound.util,
  tools.vitruv.framework.change.echange.eobject,
  tools.vitruv.framework.change.echange.eobject.impl,
  tools.vitruv.framework.change.echange.eobject.util,
@@ -40,11 +37,14 @@ Require-Bundle: com.google.guava,
  org.eclipse.xtext.xbase.lib,
  org.eclipse.xtend.lib,
  org.eclipse.xtend.lib.macro,
+ org.apache.log4j,
  org.eclipse.core.runtime,
  org.eclipse.emf.ecore;visibility:=reexport,
  edu.kit.ipd.sdq.commons.util.emf,
  tools.vitruv.framework.change.echange;visibility:=reexport,
  org.eclipse.emf.ecore.edit,
- tools.vitruv.framework.util
+ tools.vitruv.framework.util,
+ tools.vitruv.framework.change.uuid;visibility:=reexport,
+ edu.kit.ipd.sdq.activextendannotations
 Bundle-ActivationPolicy: lazy
 

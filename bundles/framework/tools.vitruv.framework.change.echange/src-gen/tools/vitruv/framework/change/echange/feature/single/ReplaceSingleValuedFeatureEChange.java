@@ -20,12 +20,44 @@ import tools.vitruv.framework.change.echange.feature.UpdateSingleValuedFeatureEC
  * Abstract EChange which replaces a single valued attribute or reference.
  * <!-- end-model-doc -->
  *
+ * <p>
+ * The following features are supported:
+ * </p>
+ * <ul>
+ *   <li>{@link tools.vitruv.framework.change.echange.feature.single.ReplaceSingleValuedFeatureEChange#isIsUnset <em>Is Unset</em>}</li>
+ * </ul>
  *
  * @see tools.vitruv.framework.change.echange.feature.single.SinglePackage#getReplaceSingleValuedFeatureEChange()
  * @model abstract="true" TBounds="org.eclipse.emf.ecore.EJavaObject"
  * @generated
  */
 public interface ReplaceSingleValuedFeatureEChange<A extends EObject, F extends EStructuralFeature, T extends Object> extends UpdateSingleValuedFeatureEChange<A, F>, AdditiveEChange<T>, SubtractiveEChange<T> {
+	/**
+	 * Returns the value of the '<em><b>Is Unset</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Is Unset</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Is Unset</em>' attribute.
+	 * @see #setIsUnset(boolean)
+	 * @see tools.vitruv.framework.change.echange.feature.single.SinglePackage#getReplaceSingleValuedFeatureEChange_IsUnset()
+	 * @model
+	 * @generated
+	 */
+	boolean isIsUnset();
+
+	/**
+	 * Sets the value of the '{@link tools.vitruv.framework.change.echange.feature.single.ReplaceSingleValuedFeatureEChange#isIsUnset <em>Is Unset</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Is Unset</em>' attribute.
+	 * @see #isIsUnset()
+	 * @generated
+	 */
+	void setIsUnset(boolean value);
+
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

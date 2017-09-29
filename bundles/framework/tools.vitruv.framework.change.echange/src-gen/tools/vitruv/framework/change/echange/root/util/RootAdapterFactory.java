@@ -10,7 +10,6 @@ import org.eclipse.emf.common.notify.impl.AdapterFactoryImpl;
 import org.eclipse.emf.ecore.EObject;
 
 import tools.vitruv.framework.change.echange.AdditiveEChange;
-import tools.vitruv.framework.change.echange.AtomicEChange;
 import tools.vitruv.framework.change.echange.EChange;
 import tools.vitruv.framework.change.echange.SubtractiveEChange;
 
@@ -90,10 +89,6 @@ public class RootAdapterFactory extends AdapterFactoryImpl {
 			@Override
 			public Adapter caseEChange(EChange object) {
 				return createEChangeAdapter();
-			}
-			@Override
-			public Adapter caseAtomicEChange(AtomicEChange object) {
-				return createAtomicEChangeAdapter();
 			}
 			@Override
 			public <T extends Object> Adapter caseAdditiveEChange(AdditiveEChange<T> object) {
@@ -184,20 +179,6 @@ public class RootAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createEChangeAdapter() {
-		return null;
-	}
-
-	/**
-	 * Creates a new adapter for an object of class '{@link tools.vitruv.framework.change.echange.AtomicEChange <em>Atomic EChange</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
-	 * @return the new adapter.
-	 * @see tools.vitruv.framework.change.echange.AtomicEChange
-	 * @generated
-	 */
-	public Adapter createAtomicEChangeAdapter() {
 		return null;
 	}
 

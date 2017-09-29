@@ -10,17 +10,11 @@ import org.junit.Assert
 import tools.vitruv.framework.change.echange.AdditiveEChange
 import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.change.echange.SubtractiveEChange
-import tools.vitruv.framework.change.echange.compound.CompoundEChange
-import tools.vitruv.framework.change.echange.compound.MoveEObject
-import tools.vitruv.framework.change.echange.eobject.EObjectAddedEChange
 import tools.vitruv.framework.change.echange.eobject.EObjectExistenceEChange
-import tools.vitruv.framework.change.echange.eobject.EObjectSubtractedEChange
 import tools.vitruv.framework.change.echange.feature.FeatureEChange
 import tools.vitruv.framework.change.echange.feature.list.UpdateSingleListEntryEChange
 import tools.vitruv.framework.change.echange.feature.reference.UpdateReferenceEChange
-import tools.vitruv.framework.change.echange.resolve.StagingArea
 import tools.vitruv.framework.change.echange.root.RootEChange
-import edu.kit.ipd.sdq.commons.util.java.Quadruple
 
 class ChangeAssertHelper {
 
@@ -105,34 +99,23 @@ class ChangeAssertHelper {
 			rootChange.resource, resource)
 	}
 
-	def static void assertStagingArea(EObjectExistenceEChange<?> existenceChange, StagingArea stagingArea) {
-		Assert.assertEquals("Change " + existenceChange + " shall have the staging area " + stagingArea,
-			existenceChange.stagingArea, stagingArea)
-	}
-	
 	def static void assertIndex(UpdateSingleListEntryEChange<?, ?> change, int expectedIndex) {
 		Assert.assertEquals("The value is not at the correct index", expectedIndex, change.index)
 	}
 
-	def public static assertMoveEObject(EChange change, int atomicChanges) {
-		val moveEObject = assertObjectInstanceOf(change, MoveEObject)
-		moveEObject.assertAtomicChanges(atomicChanges)
-		val subtractiveReferenceChange = moveEObject.subtractWhatChange
-		val removeUpdateEReferenceChange = moveEObject.subtractWhereChange
-		val addEReferenceChange = moveEObject.addWhatChange
-		val addUpdateEReferenceChange = moveEObject.
-			addWhereChange
-		return new Quadruple<EObjectSubtractedEChange<?>, UpdateReferenceEChange<?>, EObjectAddedEChange<?>, UpdateReferenceEChange<?>>(
-			subtractiveReferenceChange, removeUpdateEReferenceChange, addEReferenceChange, addUpdateEReferenceChange)
-
-	}
-
-	def public static assertAtomicChanges(CompoundEChange eCompoundChange, int atomicChanges) {
-		Assert.assertEquals("Expected exactly " + atomicChanges + " changes in move EObject",
-			eCompoundChange.atomicChanges.size, atomicChanges)
-	}
-
 	def public static assertEqualsOrCopy(String message, EObject object1, EObject object2) {
 		Assert.assertTrue(message, EcoreUtil.equals(object1, object2))
+	}
+	
+	static def <T> T assertType(Object original, Class<T> type) {
+		if (type.isAssignableFrom(original.class)) {
+			return original as T
+		}
+		Assert.fail("Object " + original + " is not expected type " + type);
+		return null;
+	}
+	
+	static def void assertSizeGreaterEquals(Iterable<?> iterable, int size) {
+		Assert.assertTrue(iterable.size >= size)
 	}
 }

@@ -30,7 +30,7 @@ class ExecutorClassGenerator extends ClassGenerator {
 				body = '''
 					«FOR reaction : reactionsSegment.reactions»
 						«val reactionsNameGenerator = reaction.reactionClassNameGenerator»
-						this.addReaction(«reactionsNameGenerator.qualifiedName».getExpectedChangeType(), new «reactionsNameGenerator.qualifiedName»());
+						this.addReaction(new «reactionsNameGenerator.qualifiedName»());
 					«ENDFOR»
 				'''
 			]

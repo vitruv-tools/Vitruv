@@ -5,6 +5,8 @@ package tools.vitruv.framework.change.echange.feature.impl;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
+
+import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.impl.EFactoryImpl;
 
 import org.eclipse.emf.ecore.plugin.EcorePlugin;
@@ -55,9 +57,20 @@ public class FeatureFactoryImpl extends EFactoryImpl implements FeatureFactory {
 	@Override
 	public EObject create(EClass eClass) {
 		switch (eClass.getClassifierID()) {
+			case FeaturePackage.UNSET_FEATURE: return createUnsetFeature();
 			default:
 				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
 		}
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public <A extends EObject, F extends EStructuralFeature> UnsetFeature<A, F> createUnsetFeature() {
+		UnsetFeatureImpl<A, F> unsetFeature = new UnsetFeatureImpl<A, F>();
+		return unsetFeature;
 	}
 
 	/**

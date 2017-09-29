@@ -18,6 +18,7 @@
 		<module>tools.vitruv.framework.change</module>
 		<module>tools.vitruv.framework.change.echange</module>
 		<module>tools.vitruv.framework.change.processing</module>
+		<module>tools.vitruv.framework.change.uuid</module>
 		<module>tools.vitruv.framework.correspondence</module>
 		<module>tools.vitruv.framework.metamodel</module>
 		<module>tools.vitruv.framework.modelsynchronization</module>

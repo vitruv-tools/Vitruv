@@ -9,6 +9,7 @@ import org.junit.Test
 import tools.vitruv.framework.change.echange.feature.attribute.RemoveEAttributeValue
 
 import static extension tools.vitruv.framework.tests.echange.util.EChangeAssertHelper.*
+import static extension tools.vitruv.framework.change.echange.EChangeResolverAndApplicator.*;
 
 /**
  * Test class for the concrete {@link RemoveEAttributeValue} EChange,
@@ -31,7 +32,7 @@ public class RemoveEAttributeValueTest extends InsertRemoveEAttributeTest {
 		val unresolvedChange = createUnresolvedChange(NEW_VALUE, 0)
 		
 		// Resolve		
- 		val resolvedChange = unresolvedChange.resolveBefore(resourceSet)
+ 		val resolvedChange = unresolvedChange.resolveBefore(uuidGeneratorAndResolver)
 		unresolvedChange.assertDifferentChangeSameClass(resolvedChange)
 	}
 	
@@ -42,7 +43,7 @@ public class RemoveEAttributeValueTest extends InsertRemoveEAttributeTest {
 	@Test
 	def public void applyForwardTest() {
 		// Create change and resolve
-		val resolvedChange = createUnresolvedChange(NEW_VALUE, 0).resolveBefore(resourceSet)
+		val resolvedChange = createUnresolvedChange(NEW_VALUE, 0).resolveBefore(uuidGeneratorAndResolver)
 			as RemoveEAttributeValue<Root, String>
 			
 		// Apply forward
@@ -52,7 +53,7 @@ public class RemoveEAttributeValueTest extends InsertRemoveEAttributeTest {
 		Assert.assertEquals(attributeContent.get(0), NEW_VALUE_2)
 		
 		// Create change and resolve 2
-		val resolvedChange2 = createUnresolvedChange(NEW_VALUE_2, 0).resolveBefore(resourceSet)
+		val resolvedChange2 = createUnresolvedChange(NEW_VALUE_2, 0).resolveBefore(uuidGeneratorAndResolver)
 			as RemoveEAttributeValue<Root, String>
 		
 		// Apply forward 2	
@@ -69,12 +70,12 @@ public class RemoveEAttributeValueTest extends InsertRemoveEAttributeTest {
 	@Test
 	def public void applyBackwardTest() {
 		// Create change and resolve and apply
-		val resolvedChange = createUnresolvedChange(NEW_VALUE, 0).resolveBefore(resourceSet)
+		val resolvedChange = createUnresolvedChange(NEW_VALUE, 0).resolveBefore(uuidGeneratorAndResolver)
 			as RemoveEAttributeValue<Root, String>
 		resolvedChange.assertApplyForward
 		
 		// Create change and resolve and apply 2
-		val resolvedChange2 = createUnresolvedChange(NEW_VALUE_2, 0).resolveBefore(resourceSet)
+		val resolvedChange2 = createUnresolvedChange(NEW_VALUE_2, 0).resolveBefore(uuidGeneratorAndResolver)
 			as RemoveEAttributeValue<Root, String>		
 		resolvedChange2.assertApplyForward	
 		
@@ -102,7 +103,7 @@ public class RemoveEAttributeValueTest extends InsertRemoveEAttributeTest {
 		var index = 5 // > 2
 		
 		// Create change and resolve
-		val resolvedChange = createUnresolvedChange(NEW_VALUE, index).resolveBefore(resourceSet)
+		val resolvedChange = createUnresolvedChange(NEW_VALUE, index).resolveBefore(uuidGeneratorAndResolver)
 			as RemoveEAttributeValue<Root, String>	
 		Assert.assertTrue(resolvedChange.isResolved)
 	
@@ -122,7 +123,7 @@ public class RemoveEAttributeValueTest extends InsertRemoveEAttributeTest {
 		// Create change and resolve
 		val resolvedChange = atomicFactory.<NonRoot, Integer>createRemoveAttributeChange
 			(affectedNonRootEObject, affectedFeature, 0, NEW_VALUE).
-			resolveBefore(resourceSet)
+			resolveBefore(uuidGeneratorAndResolver)
 		Assert.assertTrue(resolvedChange.isResolved)	
 			
 		// NonRoot has no such feature
@@ -143,7 +144,7 @@ public class RemoveEAttributeValueTest extends InsertRemoveEAttributeTest {
 		// Create change and resolve
 		val resolvedChange = atomicFactory.<Root, String>createRemoveAttributeChange
 			(affectedEObject, affectedFeature, 0, newInvalidValue).
-			resolveBefore(resourceSet)
+			resolveBefore(uuidGeneratorAndResolver)
 		Assert.assertTrue(resolvedChange.isResolved)
 		
 		// Type of attribute is Integer not String

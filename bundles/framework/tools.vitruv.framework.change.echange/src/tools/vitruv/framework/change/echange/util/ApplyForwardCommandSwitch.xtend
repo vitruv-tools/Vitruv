@@ -1,19 +1,11 @@
 package tools.vitruv.framework.change.echange.util;
 
-import java.util.ArrayList
 import java.util.List
 import org.eclipse.emf.common.command.Command
-import org.eclipse.emf.common.command.CompoundCommand
 import org.eclipse.emf.ecore.EObject
-import org.eclipse.emf.ecore.EStructuralFeature
 import org.eclipse.emf.edit.command.AddCommand
 import org.eclipse.emf.edit.command.SetCommand
-import tools.vitruv.framework.change.echange.AtomicEChange
-import tools.vitruv.framework.change.echange.command.AddToStagingAreaCommand
 import tools.vitruv.framework.change.echange.command.RemoveAtCommand
-import tools.vitruv.framework.change.echange.command.RemoveFromStagingAreaCommand
-import tools.vitruv.framework.change.echange.compound.CompoundEChange
-import tools.vitruv.framework.change.echange.compound.ExplicitUnsetEFeature
 import tools.vitruv.framework.change.echange.eobject.CreateEObject
 import tools.vitruv.framework.change.echange.eobject.DeleteEObject
 import tools.vitruv.framework.change.echange.feature.attribute.InsertEAttributeValue
@@ -22,15 +14,33 @@ import tools.vitruv.framework.change.echange.feature.attribute.ReplaceSingleValu
 import tools.vitruv.framework.change.echange.feature.reference.InsertEReference
 import tools.vitruv.framework.change.echange.feature.reference.RemoveEReference
 import tools.vitruv.framework.change.echange.feature.reference.ReplaceSingleValuedEReference
-import tools.vitruv.framework.change.echange.resolve.StagingArea
 import tools.vitruv.framework.change.echange.root.InsertRootEObject
 import tools.vitruv.framework.change.echange.root.RemoveRootEObject
+import org.eclipse.emf.edit.command.RemoveCommand
+import org.apache.log4j.Logger
+import tools.vitruv.framework.change.echange.EChange
+import tools.vitruv.framework.change.echange.feature.UnsetFeature
 
 /**
  * Switch to create commands for all EChange classes.
  * The commands applies the EChanges forward.
  */
 package class ApplyForwardCommandSwitch {
+	static val Logger logger = Logger.getLogger(ApplyForwardCommandSwitch)
+	
+	def package dispatch static List<Command> getCommands(EChange change) {
+		#[]
+	}
+	
+	/**
+	 * Dispatch method to create commands to apply a {@link UnsetFeature} change forward.
+	 * @param object The change which commands should be created.
+	 */
+	def package dispatch static List<Command> getCommands(UnsetFeature<EObject, ?> change) {
+		val editingDomain = EChangeUtil.getEditingDomain(change.affectedEObject)
+		return #[new SetCommand(editingDomain, change.affectedEObject, change.affectedFeature, SetCommand.UNSET_VALUE)]
+	}
+	
 	/**
 	 * Dispatch method to create commands to apply a {@link InsertEAttributeValue} change forward.
 	 * @param object The change which commands should be created.
@@ -47,8 +57,7 @@ package class ApplyForwardCommandSwitch {
 	 */
 	def package dispatch static List<Command> getCommands(RemoveEAttributeValue<EObject, Object> change) {
 		val editingDomain = EChangeUtil.getEditingDomain(change.affectedEObject)
-		return #[new RemoveAtCommand(editingDomain, change.affectedEObject, change.affectedFeature, change.oldValue,
-				change.index)]
+		return #[new RemoveAtCommand(editingDomain, change.affectedEObject, change.affectedFeature, change.oldValue, change.index)]
 	}
 
 	/**
@@ -57,7 +66,7 @@ package class ApplyForwardCommandSwitch {
 	 */
 	def package dispatch static List<Command> getCommands(ReplaceSingleValuedEAttribute<EObject, Object> change) {
 		val editingDomain = EChangeUtil.getEditingDomain(change.affectedEObject)
-		return #[new SetCommand(editingDomain, change.affectedEObject, change.affectedFeature, change.newValue)]
+		return #[new SetCommand(editingDomain, change.affectedEObject, change.affectedFeature, if (change.isIsUnset) SetCommand.UNSET_VALUE else change.newValue)]
 	}
 
 	/**
@@ -66,34 +75,29 @@ package class ApplyForwardCommandSwitch {
 	 */
 	def package dispatch static List<Command> getCommands(InsertEReference<EObject, EObject> change) {
 		val editingDomain = EChangeUtil.getEditingDomain(change.affectedEObject)
-		val compoundCommand = new CompoundCommand()
-		if (change.containment) {
-			// Remove from staging area first
-			val stagingArea = StagingArea.getStagingArea(change.affectedEObject.eResource)
-			compoundCommand.append(new RemoveFromStagingAreaCommand(editingDomain, stagingArea, change.newValue))
+		if(EChangeUtil.alreadyContainsObject(change.affectedEObject, change.affectedFeature, change.newValue)) {
+			if (change.affectedFeature.EOpposite === null) {
+				logger.warn("Tried to add value " + change.newValue + ", but although not opposite feature was not contained in " + change.affectedEObject);
+			} 
+			return #[];
 		}
-		compoundCommand.append(new AddCommand(editingDomain, change.affectedEObject, change.affectedFeature, change.newValue,
-				change.index))
-		return #[compoundCommand]
+		return #[new AddCommand(editingDomain, change.affectedEObject, change.affectedFeature, change.newValue,
+			change.index)];
 	}
-
+	
 	/**
 	 * Dispatch method to create commands to apply a {@link RemoveEReference} change forward.
 	 * @param object The change which commands should be created.
 	 */
 	def package dispatch static List<Command> getCommands(RemoveEReference<EObject, EObject> change) {
 		val editingDomain = EChangeUtil.getEditingDomain(change.affectedEObject)
-		val compoundCommand = new CompoundCommand()
-
-		compoundCommand.append(new RemoveAtCommand(editingDomain, change.affectedEObject, change.affectedFeature, change.oldValue,
-				change.index))
-		if (change.containment) {
-			// Insert in staging area after removing reference
-			val stagingArea = StagingArea.getStagingArea(change.affectedEObject.eResource)
-			compoundCommand.append(new AddToStagingAreaCommand(editingDomain, stagingArea, change.oldValue))
+		if(!EChangeUtil.alreadyContainsObject(change.affectedEObject, change.affectedFeature, change.oldValue)) {
+			if (change.affectedFeature.EOpposite === null) {
+				logger.warn("Tried to remove value " + change.oldValue + ", but although not opposite feature was not contained in " + change.affectedEObject);
+			} 
+			return #[];
 		}
-
-		return #[compoundCommand]
+		return #[new RemoveAtCommand(editingDomain, change.affectedEObject, change.affectedFeature, change.oldValue, change.index)]
 	}
 
 	/**
@@ -102,18 +106,7 @@ package class ApplyForwardCommandSwitch {
 	 */
 	def package dispatch static List<Command> getCommands(ReplaceSingleValuedEReference<EObject, EObject> change) {
 		val editingDomain = EChangeUtil.getEditingDomain(change.affectedEObject)
-		val stagingArea = StagingArea.getStagingArea(change.affectedEObject.eResource)
-		val compoundCommand = new CompoundCommand()
-
-		if (change.containment && change.newValue !== null) {
-			compoundCommand.append(new RemoveFromStagingAreaCommand(editingDomain, stagingArea, change.newValue))
-		}
-		compoundCommand.append(new SetCommand(editingDomain, change.affectedEObject, change.affectedFeature, change.newValue))
-		if (change.containment && change.oldValue !== null) {
-			compoundCommand.append(new AddToStagingAreaCommand(editingDomain, stagingArea, change.oldValue))
-		}
-
-		return #[compoundCommand]
+		return #[new SetCommand(editingDomain, change.affectedEObject, change.affectedFeature, if (change.isIsUnset) SetCommand.UNSET_VALUE else change.newValue)]
 	}
 
 	/**
@@ -132,9 +125,7 @@ package class ApplyForwardCommandSwitch {
 	 */
 	def package dispatch static List<Command> getCommands(RemoveRootEObject<EObject> change) {
 		val editingDomain = EChangeUtil.getEditingDomain(change.oldValue)
-		// Will be automatically removed from resource because object can only be in one resource.	
-		val stagingArea = StagingArea.getStagingArea(change.resource)
-		return #[new AddToStagingAreaCommand(editingDomain, stagingArea, change.oldValue)]
+		return #[new RemoveCommand(editingDomain, change.resource.getContents, change.oldValue)];
 	}
 
 	/**
@@ -142,8 +133,7 @@ package class ApplyForwardCommandSwitch {
 	 * @param object The change which commands should be created.
 	 */
 	def package dispatch static List<Command> getCommands(CreateEObject<EObject> change) {
-		val editingDomain = EChangeUtil.getEditingDomain(change.affectedEObject)
-		return #[new AddToStagingAreaCommand(editingDomain, change.stagingArea, change.affectedEObject)]
+		return #[]
 	}
 
 	/**
@@ -151,28 +141,7 @@ package class ApplyForwardCommandSwitch {
 	 * @param object The change which commands should be created.
 	 */
 	def package dispatch static List<Command> getCommands(DeleteEObject<EObject> change) {
-		val editingDomain = EChangeUtil.getEditingDomain(change.affectedEObject)
-		return #[new RemoveFromStagingAreaCommand(editingDomain, change.stagingArea, change.affectedEObject)]
+		return #[]
 	}
 
-	/**
-	 * Dispatch method to create commands to apply a compound change forward.
-	 * @param object The change which commands should be created.
-	 */
-	def package dispatch static List<Command> getCommands(CompoundEChange change) {
-		val commands = new ArrayList<Command>
-		for (AtomicEChange c : change.atomicChanges) {
-			commands.addAll(getCommands(c))
-		}
-		return commands
-	}
-
-	/**
-	 * Dispatch method to create command to apply an unset change forward.
-	 * @param object The change which command should be created.
-	 */
-	def package dispatch static List<Command> getCommands(ExplicitUnsetEFeature<EObject, EStructuralFeature> change) {
-		val editingDomain = EChangeUtil.getEditingDomain(change.affectedEObject)
-		return #[new SetCommand(editingDomain, change.affectedEObject, change.affectedFeature, SetCommand.UNSET_VALUE)]
-	}
 }

@@ -21,6 +21,7 @@ import tools.vitruv.framework.change.echange.AdditiveEChange;
  * </p>
  * <ul>
  *   <li>{@link tools.vitruv.framework.change.echange.feature.attribute.AdditiveAttributeEChange#getNewValue <em>New Value</em>}</li>
+ *   <li>{@link tools.vitruv.framework.change.echange.feature.attribute.AdditiveAttributeEChange#isWasUnset <em>Was Unset</em>}</li>
  * </ul>
  *
  * @see tools.vitruv.framework.change.echange.feature.attribute.AttributePackage#getAdditiveAttributeEChange()
@@ -53,5 +54,31 @@ public interface AdditiveAttributeEChange<A extends EObject, T extends Object> e
 	 * @generated
 	 */
 	void setNewValue(T value);
+
+	/**
+	 * Returns the value of the '<em><b>Was Unset</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Was Unset</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Was Unset</em>' attribute.
+	 * @see #setWasUnset(boolean)
+	 * @see tools.vitruv.framework.change.echange.feature.attribute.AttributePackage#getAdditiveAttributeEChange_WasUnset()
+	 * @model
+	 * @generated
+	 */
+	boolean isWasUnset();
+
+	/**
+	 * Sets the value of the '{@link tools.vitruv.framework.change.echange.feature.attribute.AdditiveAttributeEChange#isWasUnset <em>Was Unset</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Was Unset</em>' attribute.
+	 * @see #isWasUnset()
+	 * @generated
+	 */
+	void setWasUnset(boolean value);
 
 } // AdditiveAttributeEChange

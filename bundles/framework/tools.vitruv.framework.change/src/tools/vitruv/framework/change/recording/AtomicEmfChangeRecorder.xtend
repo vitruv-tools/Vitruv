@@ -1,130 +1,100 @@
 package tools.vitruv.framework.change.recording
 
-import java.util.Collection
 import java.util.List
-import org.eclipse.emf.common.notify.Notification
-import org.eclipse.emf.common.notify.Notifier
-import org.eclipse.emf.ecore.EObject
-import org.eclipse.emf.ecore.change.ChangeDescription
-import org.eclipse.emf.ecore.change.util.ChangeRecorder
-import org.eclipse.emf.ecore.util.EcoreUtil
-import tools.vitruv.framework.change.description.TransactionalChange
-import tools.vitruv.framework.change.description.VitruviusChangeFactory
-import tools.vitruv.framework.change.echange.EChange
-import tools.vitruv.framework.change.echange.compound.CompoundEChange
-import tools.vitruv.framework.change.echange.eobject.CreateEObject
-import tools.vitruv.framework.change.echange.resolve.EChangeUnresolver
-import tools.vitruv.framework.change.echange.resolve.StagingArea
-import tools.vitruv.framework.change.description.impl.LegacyEMFModelChangeImpl
 import java.util.Set
-import org.eclipse.xtend.lib.annotations.Accessors
+import org.eclipse.emf.common.notify.Notifier
+import tools.vitruv.framework.change.description.TransactionalChange
+import tools.vitruv.framework.change.echange.EChangeIdManager
+import tools.vitruv.framework.change.uuid.UuidGeneratorAndResolver
+import tools.vitruv.framework.change.uuid.UuidResolver
+import tools.vitruv.framework.change.echange.eobject.CreateEObject
+import com.google.common.collect.Multimap
+import org.eclipse.emf.ecore.EObject
+import com.google.common.collect.ArrayListMultimap
+import tools.vitruv.framework.change.description.CompositeTransactionalChange
+import tools.vitruv.framework.change.description.impl.ConcreteApplicableChangeImpl
+import tools.vitruv.framework.change.echange.eobject.DeleteEObject
 
 class AtomicEmfChangeRecorder {
 	val Set<Notifier> elementsToObserve
-	var boolean unresolveRecordedChanges
-	val boolean updateTuids;
-	var List<TransactionalChange> resolvedChanges;
-	var List<TransactionalChange> unresolvedChanges;
-	val AtomicChangeRecorder changeRecorder;
-	
-	/**
-	 * Constructor for the AtmoicEMFChangeRecorder, which does not unresolve
-	 * the recorded changes, but updated Tuids.
-	 */
-	new() {
-		this(false, true)
-	}
+	val NotificationRecorder changeRecorder;
+	var List<TransactionalChange> changes;
+	val UuidResolver globalUuidResolver;
+	val UuidGeneratorAndResolver localUuidGeneratorAndResolver;
+	val EChangeIdManager eChangeIdManager;
 
 	/**
-	 * Constructors which updated Tuids
+	 * Constructor for AtomicEMFChangeRecorder.
 	 * 
-	 * @param unresolveRecordedChanges -
-	 * 		The recorded changes will be replaced by unresolved changes, which referenced EObjects are proxy objects.
+	 * @param uuidProviderAndResolver -
+	 * 		the {@link UuidProviderAndResolver} for ID generation
+	 * @param strictMode -
+	 * 		specifies whether exceptions shall be thrown if no ID exists for an element that should already have one.
+	 * 		Should be set to <code>false</code> if model is not recorded from beginning
 	 */
-	new(boolean unresolveRecordedChanges) {
-		this(unresolveRecordedChanges, true);
-	}
-
-	/**
-	 * Constructor for AtomicEMFChangeRecorder
-	 * @param unresolveRecordedChanges -
-	 * 		The recorded changes will be replaced by unresolved changes, which referenced EObjects are proxy objects.
-	 * @param updateTuids -
-	 * 		specifies whether TUIDs shall be updated or not.
-	 */
-	new(boolean unresolveRecordedChanges, boolean updateTuids) {
+	new(UuidResolver globalUuidResolver, UuidGeneratorAndResolver localUuidGeneratorAndResolver, boolean strictMode) {
 		this.elementsToObserve = newHashSet();
-		this.unresolveRecordedChanges = unresolveRecordedChanges
-		this.updateTuids = updateTuids;
-		this.changeRecorder = new AtomicChangeRecorder();
+		this.globalUuidResolver = globalUuidResolver;
+		this.localUuidGeneratorAndResolver = localUuidGeneratorAndResolver;
+		this.eChangeIdManager = new EChangeIdManager(globalUuidResolver, localUuidGeneratorAndResolver, strictMode)
+		this.changeRecorder = new NotificationRecorder(eChangeIdManager);
 	}
 
 	def void beginRecording() {
-		changeRecorder.reset;
-		changeRecorder.beginRecording(this.elementsToObserve);
+		changeRecorder.beginRecording();
 	}
-	
+
 	def void addToRecording(Notifier elementToObserve) {
 		this.elementsToObserve += elementToObserve;
-		if (isRecording) {
-			changeRecorder.beginRecording(elementsToObserve);
-		}
+		elementsToObserve.forEach[changeRecorder.addToRecording(it)];
 	}
-	
+
 	def void removeFromRecording(Notifier elementToObserve) {
 		this.elementsToObserve -= elementToObserve;
 		if (isRecording) {
-			changeRecorder.beginRecording(elementsToObserve);
+			elementToObserve.eAdapters.remove(changeRecorder);
 		}
 	}
 
 	/** Stops recording without returning a result */
 	def void stopRecording() {
-		if (!isRecording) {
+		if(!isRecording) {
 			throw new IllegalStateException();
 		}
 		changeRecorder.endRecording();
 	}
 
 	def void endRecording() {
-		if (!isRecording) {
+		if(!isRecording) {
 			throw new IllegalStateException();
 		}
 		changeRecorder.endRecording();
-		// Only take those that do not contain only objectsToAttach (I don't know why)
-		val relevantChangeDescriptions = 
-			changeRecorder.changeDescriptions.filter[!(objectChanges.isEmpty && resourceChanges.isEmpty)].toList
-		if (unresolveRecordedChanges) {
-			relevantChangeDescriptions.reverseView.forEach[applyAndReverse];
-			unresolvedChanges = relevantChangeDescriptions.filterNull.map[createModelChange(true, unresolveRecordedChanges && updateTuids)].filterNull.toList;
-			correctChanges(unresolvedChanges)
+		val changes = changeRecorder.changes;
+		
+		removeDuplicateCreates(changes);
+		removeCreateFollowedByDelete(changes);
+		reorderChanges(changes);
+		// Allow null provider and resolver for test purposes
+		if(localUuidGeneratorAndResolver !== null && globalUuidResolver !== null) {
+			changes.forEach[EChanges.forEach[eChangeIdManager.setOrGenerateIds(it)]]
 		}
-		relevantChangeDescriptions.reverseView.forEach[applyAndReverse];
-		resolvedChanges = relevantChangeDescriptions.filterNull.map[createModelChange(false, !unresolveRecordedChanges && updateTuids)].filterNull.toList;
+		this.changes = changes;
 	}
 	
-	public def List<TransactionalChange> getUnresolvedChanges() {
-		return unresolvedChanges;
-	}
-	
-	public def List<TransactionalChange> getResolvedChanges() {
-		return resolvedChanges;
-	}
-
-	private def createModelChange(ChangeDescription changeDescription, boolean unresolveChanges, boolean updateTuids) {
-		var TransactionalChange result = null;
-		if (unresolveChanges) {
-			result = VitruviusChangeFactory.instance.createEMFModelChange(changeDescription)
-			changeDescription.applyAndReverse()
-		} else {
-			result = VitruviusChangeFactory.instance.createLegacyEMFModelChange(changeDescription);
-			if (updateTuids) {
-				result.applyForward();
-			} else {
-				(result as LegacyEMFModelChangeImpl).applyForwardWithoutTuidUpdate();
+	def removeCreateFollowedByDelete(List<TransactionalChange> changes) {
+		val createdObjects = changes.generateCreateChangesMultimap
+		val deletedObjects = changes.generateDeleteChangesMultimap
+		for (var i = 0; i < changes.size; i++) {
+			val currentDeletedObjects = deletedObjects.get(changes.get(i))
+			for (var k = i + 1; k < changes.size; k++) {
+				for (var object = 0; object < currentDeletedObjects.size; object++) {
+					if (createdObjects.get(changes.get(k)).contains(currentDeletedObjects.get(object))) {
+						removeCreateOrDelete(changes.get(i) as CompositeTransactionalChange, currentDeletedObjects.get(object), false);
+						removeCreateOrDelete(changes.get(k) as CompositeTransactionalChange, currentDeletedObjects.get(object), true);
+					}
+				}			
 			}
 		}
-		return result;
 	}
 
 	def boolean isRecording() {
@@ -132,102 +102,126 @@ class AtomicEmfChangeRecorder {
 	}
 
 	def void dispose() {
-		changeRecorder.dispose()
+		// Do nothin at the moment
 	}
-
-	/*
-	 * The recorder doesn't produce the correct changes, because all created changes of one change
-	 * description are resolved to the same state before all changes were applied. Every atomic change must be resolved 
-	 * directly to the state before itself is applied => roll everything back and re-apply all changes, while
-	 * correcting the wrong changes.
-	 */
-	def private void correctChanges(List<TransactionalChange> changes) {
-		var eChanges = changes.map [
-			val echanges = it.EChanges;
-			return echanges;
-		].flatten.toList;
-		// Roll back
-		for (c : eChanges.reverseView) {
-			updateStagingArea(c) // corrects the missing or wrong staging area of CreateEObject changes.
-			if (c.isResolved) {
-				c.applyBackward
-			}
+	
+	// Necessary because of stupid Xtend generic type inference
+	private static def Iterable<CreateEObject<?>> typeCreateChanges(Iterable<?> iterable) {
+		val result = newArrayList
+		for (item : iterable) {
+			result += item as CreateEObject<?>;
 		}
-		// Apply again and unresolve the results if necessary
-		for (c : eChanges) {
-			val EChange copy = EcoreUtil.copy(c)
-			EChangeUnresolver.unresolve(c)
-			if (copy.isResolved) {
-				copy.applyForward
-			}
+		return result
+	}
+	
+	// Necessary because of stupid Xtend generic type inference
+	private static def Iterable<DeleteEObject<?>> typeDeleteChanges(Iterable<?> iterable) {
+		val result = newArrayList
+		for (item : iterable) {
+			result += item as DeleteEObject<?>;
 		}
+		return result
 	}
-
-	/*
-	 * Updates the staging area to the current state of the model.
-	 */
-	def private dispatch void updateStagingArea(EChange change) {
-		// Is needed to create a dispatch method which is applicable for EChange base class.
-	}
-
-	def private dispatch void updateStagingArea(CreateEObject<EObject> change) {
-		// The newly created object is in an resource after the change, so
-		// the correct staging area can be chosen, before the change
-		// is applied backward.
-		change.stagingArea = StagingArea.getStagingArea(change.affectedEObject.eResource)
-	}
-
-	def private dispatch void updateStagingArea(CompoundEChange change) {
-		for (a : change.atomicChanges) {
-			updateStagingArea(a)
-		}
-	}
-
+	
 	/**
-	 * A change recorder that restarts after each change notification to get atomic change descriptions.
+	 * Removes duplicate create operations, which can occur, if an element is created and inserted into 
+	 * a resource (CreateAndInsertRoot) and afterwards also inserted into a containment relation
+	 * (CreateAndInsertNonRoot), because the resource creation is performed lazy and thus the containment
+	 * insertion operation is interpreted as a creation as well.
 	 */
-	static class AtomicChangeRecorder extends ChangeRecorder {
-		private Collection<?> rootObjects;
-		private boolean isDisposed = false;
-		@Accessors(PUBLIC_GETTER)
-		private var List<ChangeDescription> changeDescriptions;
-		
-		new() {
-			setRecordingTransientFeatures(false);
-			setResolveProxies(true);
-			reset();
-		}
-		
-		public def void reset() {
-			this.changeDescriptions = newArrayList;
-		}
-		
-		override dispose() {
-			this.isDisposed = true;
-			super.dispose()
-		}
-
-		override notifyChanged(Notification notification) {
-			if (isRecording && !isDisposed) {
-				super.notifyChanged(notification);
-				endRecording();
-				beginRecording(rootObjects);
+	 // TODO In fact, we have the same problem with remove changes. We have to monitor the concrete models instead
+	 // of the resources to get rid of that
+	private def void removeDuplicateCreates(List<TransactionalChange> changes) {
+		val createdObjects = changes.generateCreateChangesMultimap
+		for (var i = 0; i < changes.size; i++) {
+			val currentCreatedObjects = createdObjects.get(changes.get(i))
+			for (var k = i + 1; k < changes.size; k++) {
+				for (var object = 0; object < currentCreatedObjects.size; object++) {
+					if (createdObjects.get(changes.get(k)).contains(currentCreatedObjects.get(object))) {
+						val affectedChange = changes.get(k)
+						removeCreateOrDelete(affectedChange as CompositeTransactionalChange, currentCreatedObjects.get(object), true);
+					}
+				}			
 			}
 		}
-
-		override beginRecording(Collection<?> rootObjects) {
-			if (!isDisposed) {
-				this.rootObjects = rootObjects;
-				super.beginRecording(rootObjects);
+	}
+	
+	private def void removeCreateOrDelete(CompositeTransactionalChange change, EObject createdObject, boolean create) {
+		for (var i = 0; i < change.changes.size; i++) {
+			val currentChange = change.changes.get(i);
+			if (currentChange instanceof ConcreteApplicableChangeImpl) {
+				val eChange = currentChange.EChange
+				if (create) {
+					if (eChange instanceof CreateEObject<?>) {
+						if (eChange.affectedEObject == createdObject) {
+							change.changes.remove(i);
+						}
+					}
+				} else {
+					if (eChange instanceof DeleteEObject<?>) {
+						if (eChange.affectedEObject == createdObject) {
+							change.changes.remove(i);
+						}
+					}
+				}
+			} else if (currentChange instanceof CompositeTransactionalChange) {
+				removeCreateOrDelete(currentChange, createdObject, create);			
 			}
-		}
-
-		override endRecording() {
-			if (!isDisposed) {
-				changeDescriptions += super.endRecording();
+		} 
+	}
+	
+	/** 
+	 * Reorders changes so that create changes are always present before insertion changes of the same element.
+	 * Some metamodels produce insertions of elements before inserting them into a containment, resulting in a
+	 * create change after an insertion, which would not be resolvable.
+	 */
+	private def void reorderChanges(List<TransactionalChange> changes) {
+		val createdObjects = changes.generateCreateChangesMultimap
+		var boolean reordered = true;
+		var counter = 0;
+		while(reordered) {
+			reordered = false;
+			for (var i = 0; i < changes.size && !reordered; i++) {	
+				val affectedEObjects = changes.get(i).affectedEObjects;
+				for (var k = i + 1; k < changes.size && !reordered; k++) {
+					for (var object = 0; object < affectedEObjects.size && !reordered; object++) {
+						if (createdObjects.get(changes.get(k)).contains(affectedEObjects.get(object))) {
+							changes.add(i, changes.remove(k));
+							reordered = true;
+						}
+					}
+				}			
 			}
-			return changeDescription;
+			// We are playing ping-pong: There must be duplicate create changes so changes are repeatedly reordered
+			if (counter > changes.size * changes.size) {
+				throw new IllegalStateException("Reordering is in endless loop")
+			}
+			counter++;
 		}
+		
+		
+ 	}
+ 	
+ 	private def generateDeleteChangesMultimap(List<TransactionalChange> changes) {
+		val Multimap<TransactionalChange, EObject> deletedObjects = ArrayListMultimap.create;
+		for (change : changes) {
+			val deleteChange = change.EChanges.filter(DeleteEObject).typeDeleteChanges;
+			deletedObjects.putAll(change, deleteChange.map[affectedEObject]);
+		}
+		return deletedObjects;
+	}
+ 	
+	private def generateCreateChangesMultimap(List<TransactionalChange> changes) {
+		val Multimap<TransactionalChange, EObject> createdObjects = ArrayListMultimap.create;
+		for (change : changes) {
+			val createChanges = change.EChanges.filter(CreateEObject).typeCreateChanges;
+			createdObjects.putAll(change, createChanges.map[affectedEObject]);
+		}
+		return createdObjects;
+	}
+
+	public def List<TransactionalChange> getChanges() {
+		return changes;
 	}
 
 }

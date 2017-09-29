@@ -13,19 +13,25 @@ import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.change.echange.TypeInferringAtomicEChangeFactory
 import tools.vitruv.framework.change.echange.TypeInferringCompoundEChangeFactory
 import tools.vitruv.framework.change.echange.feature.attribute.AdditiveAttributeEChange
-import tools.vitruv.framework.change.echange.feature.attribute.ReplaceSingleValuedEAttribute
 import tools.vitruv.framework.change.echange.feature.attribute.SubtractiveAttributeEChange
 
 import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.EObjectUtil.*
-import org.eclipse.emf.ecore.util.EcoreUtil
 
 /**
  * A utility class providing extension methods for transforming change descriptions to change models.
  * 
  */
-package class EMFModelChangeTransformationUtil {
+public class EMFModelChangeTransformationUtil {
 	def static List<EChange> createAdditiveCreateChangesForValue(EObject eObject, EReference reference) {
 		return createAdditiveEChangeForReferencedObject(eObject, reference, true)
+	}
+	
+	def static dispatch List<EChange> createSubtractiveChangesForValue(EObject eObject, EReference reference) {
+		return createSubtractiveEChangeForReferencedObject(eObject, reference, false)
+	}
+	
+	def static dispatch List<SubtractiveAttributeEChange<?,Object>> createSubtractiveChangesForValue(EObject eObject, EAttribute attribute) {
+		return createSubtractiveEChangeForAttribute(eObject, attribute)
 	}
 	
 	def static dispatch List<EChange> createAdditiveChangesForValue(EObject eObject, EReference reference) {
@@ -41,7 +47,6 @@ package class EMFModelChangeTransformationUtil {
 			val newValues = affectedEObject.getFeatureValues(affectedAttribute)
 			val resultChanges = new ArrayList<AdditiveAttributeEChange<?, Object>>();
 			for (var index = 0; index < newValues.size; index++) {
-
 				resultChanges += TypeInferringAtomicEChangeFactory.instance.createInsertAttributeChange(affectedEObject, affectedAttribute, index, newValues.get(index));
 			}
 			return resultChanges;
@@ -49,6 +54,22 @@ package class EMFModelChangeTransformationUtil {
 			val oldValue = affectedAttribute.defaultValue
 			val newValue = affectedEObject.getFeatureValue(affectedAttribute)
 
+			return #[TypeInferringAtomicEChangeFactory.instance.createReplaceSingleAttributeChange(affectedEObject, affectedAttribute, oldValue, newValue)]
+		}
+	}
+	
+	def static <A extends EObject> List<SubtractiveAttributeEChange<?, Object>> createSubtractiveEChangeForAttribute(A affectedEObject, EAttribute affectedAttribute) {
+		if (affectedAttribute.many) {
+			val oldValues = affectedEObject.getFeatureValues(affectedAttribute)
+			val resultChanges = new ArrayList<SubtractiveAttributeEChange<?, Object>>();
+			for (var index = oldValues.size - 1; index >= 0; index--) {
+				resultChanges += TypeInferringAtomicEChangeFactory.instance.createRemoveAttributeChange(affectedEObject, affectedAttribute, index, oldValues.get(index));
+			}
+			return resultChanges;
+		} else {
+			val oldValue = affectedEObject.getFeatureValue(affectedAttribute)
+			val newValue = affectedAttribute.defaultValue
+			
 			return #[TypeInferringAtomicEChangeFactory.instance.createReplaceSingleAttributeChange(affectedEObject, affectedAttribute, oldValue, newValue)]
 		}
 	}
@@ -65,28 +86,27 @@ package class EMFModelChangeTransformationUtil {
 		val result = new ArrayList<EChange>(); 
 		if (reference.isMany) {
 			for (referenceValue : referencingEObject.getReferenceValueList(reference)) {
-
-				result += createInsertReferenceChange(referencingEObject, reference, (referencingEObject.eGet(reference) as EList<?>).indexOf(referenceValue), referenceValue, false);
+				result += createInsertReferenceChange(referencingEObject, reference, (referencingEObject.eGet(reference) as EList<?>).indexOf(referenceValue), referenceValue, forceCreate);
 			}
 		} else {
 
-			result += createReplaceSingleValuedReferenceChange(referencingEObject, reference, null, referencingEObject.getReferenceValueList(reference).get(0), false);
+			result += createReplaceSingleValuedReferenceChange(referencingEObject, reference, null, referencingEObject.getReferenceValueList(reference).get(0), forceCreate);
 		}
 		return result;
 	}
 	
-	def static boolean isRootAfterChange(EObject eObject, EObject newContainer) {
-		return isRootContainer(newContainer)
+	def static List<EChange> createSubtractiveEChangeForReferencedObject(EObject referencingEObject, EReference reference, boolean forceDelete) {
+		val result = new ArrayList<EChange>(); 
+		if (reference.isMany) {
+			for (referenceValue : referencingEObject.getReferenceValueList(reference).reverseView) {
+				result += createRemoveReferenceChange(referencingEObject, reference, (referencingEObject.eGet(reference) as EList<?>).indexOf(referenceValue), referenceValue, null, null, forceDelete);
+			}
+		} else {
+
+			result += createReplaceSingleValuedReferenceChange(referencingEObject, reference, referencingEObject.getReferenceValueList(reference).get(0), null, forceDelete);
+		}
+		return result;
 	}
-	
-	def static boolean wasRootBeforeChange(EObject eObject) {
-		val oldContainer = eObject.eContainer()
-		return isRootContainer(oldContainer)
-	}
-	
-	def private static boolean isRootContainer(EObject container) {
-		return container === null //|| container instanceof ChangeDescription
-}
 	
 	def static boolean hasNonDefaultValue(EObject eObject) {
 		var hasNonDefaultValue = false
@@ -98,7 +118,6 @@ package class EMFModelChangeTransformationUtil {
 		return hasNonDefaultValue
 	}
 	
-
 	def static private boolean isChangeableUnderivedPersistedNotContainingFeature(EObject eObject, EStructuralFeature feature) {
 
 		// Ensure that its not the containing feature by checking if the value equals the container value.
@@ -123,40 +142,11 @@ package class EMFModelChangeTransformationUtil {
 		return isChangeableUnderivedPersistedNotContainingFeature(eObject, feature) && valueIsNonDefault(eObject, feature)
 	}
 	
-
-	
-
-
-	def static EChange createInsertRootChange(EObject rootToInsert, EObject oldRootContainer, Resource oldRootResource, Resource newResource, int index) {
-		val isCreate = isCreate(oldRootContainer, oldRootResource)
-		if (isCreate) {
-			return TypeInferringCompoundEChangeFactory.instance.createCreateAndInsertRootChange(rootToInsert, newResource, index, EcoreUtil.getID(rootToInsert));
-		} else {
-
-			return TypeInferringAtomicEChangeFactory.instance.createInsertRootChange(rootToInsert, newResource, index)
-		}
-	}
-	
-	def static boolean isCreate(EObject oldContainer, Resource oldResource) {
-		return (oldContainer === null || oldContainer instanceof ChangeDescription) && oldResource === null
-	}
-	
 	def static boolean isDelete(EObject newContainer, Resource newResource) {
 		return (newContainer === null || newContainer instanceof ChangeDescription) && newResource === null
 	}
 
-	def static EChange createRemoveRootChange(EObject rootToRemove, EObject newRootContainer, Resource newRootResource, Resource oldResource, int index) {
-		val isDelete = isDelete(newRootContainer, newRootResource)
-		if (isDelete) {
-
-			return TypeInferringCompoundEChangeFactory.instance.createRemoveAndDeleteRootChange(rootToRemove, oldResource, index, EcoreUtil.getID(rootToRemove));
-		} else {
-
-			return TypeInferringAtomicEChangeFactory.instance.createRemoveRootChange(rootToRemove, oldResource, index);
-		}
-	}
-	
-	def static EChange createInsertReferenceChange(EObject affectedEObject, EReference affectedReference, int index, EObject referenceValue, boolean forceCreate) {
+	def static List<EChange> createInsertReferenceChange(EObject affectedEObject, EReference affectedReference, int index, EObject referenceValue, boolean forceCreate) {
 		val isContainment = affectedReference.containment
 
 		val oldResource = referenceValue.eResource
@@ -164,67 +154,41 @@ package class EMFModelChangeTransformationUtil {
 		val isCreate = forceCreate || (isContainment && oldResource === null)
 		if (isCreate) {
 
-			return TypeInferringCompoundEChangeFactory.instance.createCreateAndInsertNonRootChange(affectedEObject, affectedReference, referenceValue, index, EcoreUtil.getID(referenceValue));
+			return TypeInferringCompoundEChangeFactory.instance.createCreateAndInsertNonRootChange(affectedEObject, affectedReference, referenceValue, index);
 		} else {
 
-			return TypeInferringAtomicEChangeFactory.instance.createInsertReferenceChange(affectedEObject, affectedReference, referenceValue, index);
+			return #[TypeInferringAtomicEChangeFactory.instance.createInsertReferenceChange(affectedEObject, affectedReference, referenceValue, index)];
 		}
 	}
 	
-	def static EChange createRemoveReferenceChange(EObject affectedEObject, EReference affectedReference, int index, EObject referenceValue, EObject newContainer, Resource newResource) {
+	def static List<EChange> createRemoveReferenceChange(EObject affectedEObject, EReference affectedReference, int index, EObject referenceValue, EObject newContainer, Resource newResource, boolean forceDelete) {
 		val isContainment = affectedReference.containment
 
-		val isDelete = isContainment && isDelete(newContainer, newResource)
+		val isDelete = forceDelete || (isContainment && isDelete(newContainer, newResource))
 		if (isDelete) {
 
-			return TypeInferringCompoundEChangeFactory.instance.createRemoveAndDeleteNonRootChange(affectedEObject, affectedReference, referenceValue, index, EcoreUtil.getID(referenceValue));
+			return TypeInferringCompoundEChangeFactory.instance.createRemoveAndDeleteNonRootChange(affectedEObject, affectedReference, referenceValue, index);
 		} else {
 
-			return TypeInferringAtomicEChangeFactory.instance.createRemoveReferenceChange(affectedEObject, affectedReference, referenceValue, index);
+			return #[TypeInferringAtomicEChangeFactory.instance.createRemoveReferenceChange(affectedEObject, affectedReference, referenceValue, index)];
 		}
 	}
 	
-	def static EChange createReplaceSingleValuedReferenceChange(EObject affectedEObject, EReference affectedReference, EObject oldReferenceValue, EObject newReferenceValue, boolean forceCreate) {
+	def static List<EChange> createReplaceSingleValuedReferenceChange(EObject affectedEObject, EReference affectedReference, EObject oldReferenceValue, EObject newReferenceValue, boolean forceCreate) {
 		val isContainment = affectedReference.containment
 
 		if (forceCreate || isContainment) {
 			if (oldReferenceValue === null) {
-				return TypeInferringCompoundEChangeFactory.instance.createCreateAndReplaceNonRootChange(affectedEObject, affectedReference, newReferenceValue, EcoreUtil.getID(newReferenceValue))
+				return TypeInferringCompoundEChangeFactory.instance.createCreateAndReplaceNonRootChange(affectedEObject, affectedReference, newReferenceValue)
 			} else if (newReferenceValue === null) {
-				return TypeInferringCompoundEChangeFactory.instance.createReplaceAndDeleteNonRootChange(affectedEObject, affectedReference, oldReferenceValue, EcoreUtil.getID(oldReferenceValue))
+				return TypeInferringCompoundEChangeFactory.instance.createReplaceAndDeleteNonRootChange(affectedEObject, affectedReference, oldReferenceValue)
 			} else {
-				return TypeInferringCompoundEChangeFactory.instance.createCreateAndReplaceAndDeleteNonRootChange(affectedEObject, affectedReference, oldReferenceValue, newReferenceValue, EcoreUtil.getID(oldReferenceValue), EcoreUtil.getID(newReferenceValue));				
+				return TypeInferringCompoundEChangeFactory.instance.createCreateAndReplaceAndDeleteNonRootChange(affectedEObject, affectedReference, oldReferenceValue, newReferenceValue);				
 			}
 		} else {
 
-			return TypeInferringAtomicEChangeFactory.instance.createReplaceSingleReferenceChange(affectedEObject, affectedReference, oldReferenceValue, newReferenceValue);
+			return #[TypeInferringAtomicEChangeFactory.instance.createReplaceSingleReferenceChange(affectedEObject, affectedReference, oldReferenceValue, newReferenceValue)];
 		}
-	}
-	
-	def static EChange createInsertAttributeChange(EObject affectedEObject, EAttribute affectedAttribute, int index, Object newValue) {
-
-		return TypeInferringAtomicEChangeFactory.instance.createInsertAttributeChange(affectedEObject, affectedAttribute, index, newValue)
-	}
-
-
-	def static EChange createRemoveAttributeChange(EObject affectedEObject, 
-		EAttribute affectedAttribute, int index, Object oldValue) {
-		return TypeInferringAtomicEChangeFactory.instance.createRemoveAttributeChange(affectedEObject, affectedAttribute, index, oldValue)
-	}
-	
-	def static ReplaceSingleValuedEAttribute<EObject, Object> createReplaceSingleValuedAttributeChange(EObject affectedEObject, EAttribute affectedAttribute, Object oldValue, Object newValue) {
-
-		return TypeInferringAtomicEChangeFactory.instance.createReplaceSingleAttributeChange(affectedEObject, affectedAttribute, oldValue, newValue)
-	}
-	
-
-	def static createExplicitUnsetEAttributeChange(EObject affectedEObject, EAttribute affectedAttribute, List<SubtractiveAttributeEChange<EObject, Object>> changes) {
-
-		return TypeInferringCompoundEChangeFactory.instance.createExplicitUnsetEAttributeChange(affectedEObject, affectedAttribute, changes);
-	}
-	
-	def static EChange createExplicitUnsetEReferenceChange(EObject affectedEObject, EReference affectedReference, List<EChange> changes) {
-		return TypeInferringCompoundEChangeFactory.instance.createExplicitUnsetEReferenceChange(affectedEObject, affectedReference, changes);
 	}
 	
 }

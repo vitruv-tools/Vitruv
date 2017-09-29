@@ -31,6 +31,7 @@
         <details key="body" value="T _newValue = this.getNewValue();&#xA;F _affectedFeature = this.getAffectedFeature();&#xA;&lt;%java.lang.Object%> _defaultValue = _affectedFeature.getDefaultValue();&#xA;boolean _equals = &lt;%java.util.Objects%>.equals(_newValue, _defaultValue);&#xA;return (!_equals);"/>
       </eAnnotations>
     </eOperations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="isUnset" eType="ecore:EDataType ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EBoolean"/>
     <eGenericSuperTypes eClassifier="ecore:EClass feature.ecore#//UpdateSingleValuedFeatureEChange">
       <eTypeArguments eTypeParameter="#//ReplaceSingleValuedFeatureEChange/A"/>
       <eTypeArguments eTypeParameter="#//ReplaceSingleValuedFeatureEChange/F"/>

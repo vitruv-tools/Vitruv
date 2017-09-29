@@ -35,6 +35,7 @@ import tools.vitruv.domains.emf.monitorededitor.tools.IEditorManagementListener;
 import tools.vitruv.framework.change.description.TransactionalChange;
 import tools.vitruv.framework.change.description.VitruviusChange;
 import tools.vitruv.framework.util.datatypes.VURI;
+import tools.vitruv.framework.vsum.VirtualModel;
 
 /**
  * <p>
@@ -68,8 +69,8 @@ public class SynchronizingMonitoredEmfEditorImpl implements ISynchronizingMonito
     private final IMonitoringDecider monitoringDecider;
 
     /**
-     * A {@link ResourceChangeSynchronizing} instance whose synchronization method gets called
-     * whenever the user saves a monitored EMF/GMF editor.
+     * A {@link ResourceChangeSynchronizing} instance whose synchronization method gets called whenever
+     * the user saves a monitored EMF/GMF editor.
      */
     private final ResourceChangeSynchronizing changeSynchronizing;
 
@@ -93,6 +94,8 @@ public class SynchronizingMonitoredEmfEditorImpl implements ISynchronizingMonito
      */
     private final IEclipseAdapter eclipseAdapter = EclipseAdapterProvider.getInstance().getEclipseAdapter();
 
+    private final VirtualModel virtualModel;
+
     /**
      * A {@link SynchronizingMonitoredEmfEditorImpl} constructor setting up the new monitor with a
      * synchronization callback object and a suitable {@link IEditorPartAdapter} factory.
@@ -104,11 +107,13 @@ public class SynchronizingMonitoredEmfEditorImpl implements ISynchronizingMonito
      *            The {@link IEditorPartAdapter} factory providing access to Eclipse EMF/GMF editors
      *            which need to be monitored.
      * @param monitoringDecider
-     *            An {@link IMonitoringDecider} object telling the new instance which editors need
-     *            to be monitored.
+     *            An {@link IMonitoringDecider} object telling the new instance which editors need to be
+     *            monitored.
      */
-    public SynchronizingMonitoredEmfEditorImpl(final ResourceChangeSynchronizing changeSynchronizing,
+    public SynchronizingMonitoredEmfEditorImpl(final VirtualModel virtualModel,
+            final ResourceChangeSynchronizing changeSynchronizing,
             final IEditorPartAdapterFactory editorPartAdapterFact, final IMonitoringDecider monitoringDecider) {
+        this.virtualModel = virtualModel;
         this.changeSynchronizing = changeSynchronizing;
         this.editorPartAdapterFact = editorPartAdapterFact;
         this.monitoringDecider = monitoringDecider;
@@ -206,7 +211,7 @@ public class SynchronizingMonitoredEmfEditorImpl implements ISynchronizingMonito
         addEditor(editorPart.getEditorPart(), listener);
 
         LOGGER.trace("Initializing resource change listener.");
-        listener.initialize();
+        listener.initialize(virtualModel);
         fireEditorStateListeners(editorPart.getEditorPart(), EditorStateChange.MONITORING_STARTED);
     }
 

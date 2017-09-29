@@ -5,11 +5,8 @@ import tools.vitruv.framework.change.description.ConcreteChange
 import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.util.datatypes.VURI
 import org.apache.log4j.Logger
-import org.eclipse.emf.ecore.resource.ResourceSet
 import java.util.List
 import org.eclipse.emf.ecore.EObject
-import tools.vitruv.framework.change.echange.compound.CompoundEChange
-import org.eclipse.emf.common.util.BasicEList
 import tools.vitruv.framework.change.echange.root.InsertRootEObject
 import tools.vitruv.framework.change.echange.root.RemoveRootEObject
 import tools.vitruv.framework.change.echange.feature.reference.InsertEReference
@@ -18,6 +15,7 @@ import tools.vitruv.framework.change.echange.feature.reference.RemoveEReference
 import tools.vitruv.framework.change.echange.feature.FeatureEChange
 import tools.vitruv.framework.change.echange.eobject.EObjectExistenceEChange
 import org.eclipse.emf.ecore.InternalEObject
+import tools.vitruv.framework.change.uuid.UuidResolver
 
 abstract class AbstractConcreteChange implements ConcreteChange {
 	private static val logger = Logger.getLogger(AbstractConcreteChange);
@@ -66,29 +64,63 @@ abstract class AbstractConcreteChange implements ConcreteChange {
 		logger.warn("The applyForward method is not implemented for " + this.class.simpleName + " yet.");
 	}
 	
-	override resolveBeforeAndApplyForward(ResourceSet resourceSet) {
+	override resolveBeforeAndApplyForward(UuidResolver uuidResolver) {
 		logger.warn("The resolveBeforeAndapplyForward method is not implemented for " + this.class.simpleName + " yet.");
 	}
 	
-	override applyBackwardIfLegacy() {
-		// Do nothing
+	override resolveAfterAndApplyBackward(UuidResolver uuidResolver) {
+		logger.warn("The resolveAfterAndApplyBackward method is not implemented for " + this.class.simpleName + " yet.");
 	}
 	
+	override unresolveIfApplicable() {
+		// Do nothing	
+	}
+		
 	def getAffectedNotReferencedEObjects() {
 		return this.eChange.affectedEObjects.filterNull
+	}
+	
+	override getAffectedEObjectIds() {
+		return this.eChange.affectedEObjectIds.filterNull
 	}
 	
 	override getAffectedEObjects() {
 		return affectedNotReferencedEObjects + this.eChange.referencedEObjects.filterNull
 	}
 	
-	private def dispatch Iterable<EObject> getAffectedEObjects(CompoundEChange eChange) {
-		var List<EObject> objects = new BasicEList<EObject>
-		for (atomicChange : eChange.atomicChanges) {
-			objects.addAll(atomicChange.getAffectedEObjects)
-		}
-		return objects.filterNull
+	
+	private def dispatch List<String> getAffectedEObjectIds(EChange eChange) {
+		return #[]
 	}
+	
+	private def dispatch List<String> getAffectedEObjectIds(InsertRootEObject<EObject> eChange) {
+		return #[eChange.newValueID]
+	}
+
+	private def dispatch List<String> getAffectedEObjectIds(RemoveRootEObject<EObject> eChange) {
+		return #[eChange.oldValueID]
+	}
+	
+	private def dispatch List<String> getAffectedEObjectIds(InsertEReference<EObject, EObject> eChange) {
+		return #[eChange.affectedEObjectID, eChange.newValueID]
+	}
+	
+	private def dispatch List<String> getAffectedEObjectIds(RemoveEReference<EObject, EObject> eChange) {
+		return #[eChange.affectedEObjectID, eChange.oldValueID]
+	}
+	
+	private def dispatch List<String> getAffectedEObjectIds(ReplaceSingleValuedEReference<EObject, EObject> eChange) {
+		return #[eChange.affectedEObjectID, eChange.newValueID, eChange.oldValueID]
+	}
+	
+	private def dispatch List<String> getAffectedEObjectIds(FeatureEChange<EObject, ?> eChange) {
+		return #[eChange.affectedEObjectID]
+	}
+	
+	private def dispatch List<String> getAffectedEObjectIds(EObjectExistenceEChange<EObject> eChange) {
+		return #[eChange.affectedEObjectID]
+	}
+	
 	
 	private def dispatch List<EObject> getAffectedEObjects(EChange eChange) {
 		return #[]

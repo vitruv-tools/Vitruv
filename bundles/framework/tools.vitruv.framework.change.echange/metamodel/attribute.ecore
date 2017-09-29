@@ -35,6 +35,7 @@
       </eAnnotations>
       <eGenericType eTypeParameter="#//AdditiveAttributeEChange/T"/>
     </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="wasUnset" eType="ecore:EDataType ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EBoolean"/>
     <eGenericSuperTypes eClassifier="#//UpdateAttributeEChange">
       <eTypeArguments eTypeParameter="#//AdditiveAttributeEChange/A"/>
     </eGenericSuperTypes>

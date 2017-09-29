@@ -7,10 +7,13 @@ import org.eclipse.emf.ecore.EObject
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
-import tools.vitruv.framework.change.echange.compound.RemoveAndDeleteRoot
 import tools.vitruv.framework.tests.echange.EChangeTest
 
 import static extension tools.vitruv.framework.tests.echange.util.EChangeAssertHelper.*
+import tools.vitruv.framework.change.echange.EChange
+import java.util.List
+import tools.vitruv.framework.change.echange.root.RemoveRootEObject
+import tools.vitruv.framework.change.echange.eobject.DeleteEObject
 
 /**
  * Test class for the concrete {@link RemoveAndDeleteRoot} EChange,
@@ -40,11 +43,10 @@ class RemoveAndDeleteRootTest extends EChangeTest {
 	def public void resolveBeforeTest() {		
 		// Create change
 		val unresolvedChange = createUnresolvedChange(newRootObject, 0)
-		unresolvedChange.assertIsNotResolved(newRootObject)
+		unresolvedChange.assertIsNotResolved
 		
 		// Resolve
-		val resolvedChange = unresolvedChange.resolveBefore(resourceSet) 
-			as RemoveAndDeleteRoot<Root>
+		val resolvedChange = unresolvedChange.resolveBefore(uuidGeneratorAndResolver) 
 		resolvedChange.assertIsResolved(newRootObject)	
 		
 		// Resolving applies all changes and reverts them, so the model should be unaffected.		
@@ -60,14 +62,12 @@ class RemoveAndDeleteRootTest extends EChangeTest {
 	def public void resolveAftertTest() {
 		// Create change
 		val unresolvedChange = createUnresolvedChange(newRootObject, 0)
-		unresolvedChange.assertIsNotResolved(newRootObject)
-		
+		unresolvedChange.assertIsNotResolved		
 		// State after
 		prepareStateAfter	
 		
 		// Resolve
-		val resolvedChange = unresolvedChange.resolveAfter(resourceSet) 
-			as RemoveAndDeleteRoot<Root>
+		val resolvedChange = unresolvedChange.resolveAfter(uuidGeneratorAndResolver) 
 		resolvedChange.assertIsResolved(newRootObject)	
 			
 		// Resolving applies all changes and reverts them, so the model should be unaffected.			
@@ -84,7 +84,7 @@ class RemoveAndDeleteRootTest extends EChangeTest {
 		val unresolvedChange = createUnresolvedChange(newRootObject, 0)
 		
 		// Resolve		
- 		val resolvedChange = unresolvedChange.resolveBefore(resourceSet)
+ 		val resolvedChange = unresolvedChange.resolveBefore(uuidGeneratorAndResolver)
 		unresolvedChange.assertDifferentChangeSameClass(resolvedChange)
 	}
 	
@@ -95,8 +95,7 @@ class RemoveAndDeleteRootTest extends EChangeTest {
 	@Test
 	def public void applyForwardTest() {
 		// Create and resolve change 1
-		val resolvedChange = createUnresolvedChange(newRootObject, 1).resolveBefore(resourceSet)
-			 as RemoveAndDeleteRoot<Root>
+		val resolvedChange = createUnresolvedChange(newRootObject, 1).resolveBefore(uuidGeneratorAndResolver)
 			
 		// Apply 1
 		resolvedChange.assertApplyForward
@@ -104,11 +103,9 @@ class RemoveAndDeleteRootTest extends EChangeTest {
 		Assert.assertEquals(resourceContent.size, 2)
 		Assert.assertFalse(resourceContent.contains(newRootObject))	
 		Assert.assertTrue(resourceContent.contains(newRootObject2))	
-		Assert.assertTrue(stagingArea.empty)
 		
 		// Create and resolve change 2
-		val resolvedChange2 = createUnresolvedChange(newRootObject2, 1).resolveBefore(resourceSet)
-			 as RemoveAndDeleteRoot<Root>
+		val resolvedChange2 = createUnresolvedChange(newRootObject2, 1).resolveBefore(uuidGeneratorAndResolver)
 			
 		// Apply 1
 		resolvedChange2.assertApplyForward
@@ -124,13 +121,11 @@ class RemoveAndDeleteRootTest extends EChangeTest {
 	@Test
 	def public void applyBackwardTest() {
 		// Create and resolve and apply change 1
-		val resolvedChange = createUnresolvedChange(newRootObject, 0).resolveBefore(resourceSet)
-			 as RemoveAndDeleteRoot<Root>
+		val resolvedChange = createUnresolvedChange(newRootObject, 0).resolveBefore(uuidGeneratorAndResolver)
 		resolvedChange.assertApplyForward
 		
 		// Create and resolve and apply change 2
-		val resolvedChange2 = createUnresolvedChange(newRootObject2, 0).resolveBefore(resourceSet)
-			 as RemoveAndDeleteRoot<Root>
+		val resolvedChange2 = createUnresolvedChange(newRootObject2, 0).resolveBefore(uuidGeneratorAndResolver)
 		resolvedChange2.assertApplyForward
 		
 		// State after
@@ -141,7 +136,6 @@ class RemoveAndDeleteRootTest extends EChangeTest {
 
 		Assert.assertEquals(resourceContent.size, 2)
 		Assert.assertTrue(resourceContent.contains(newRootObject2))
-		Assert.assertTrue(stagingArea.empty)	
 			
 		// Apply backward 1
 		resolvedChange.assertApplyBackward
@@ -175,7 +169,6 @@ class RemoveAndDeleteRootTest extends EChangeTest {
 		Assert.assertEquals(resourceContent.size, 3)
 		newRootObject.assertEqualsOrCopy(resourceContent.get(1))
 		newRootObject2.assertEqualsOrCopy(resourceContent.get(2))
-		Assert.assertTrue(stagingArea.empty)		
 	}
 	
 	/** 
@@ -183,34 +176,35 @@ class RemoveAndDeleteRootTest extends EChangeTest {
 	 */
 	def private void assertIsStateAfter() {
 		Assert.assertEquals(resourceContent.size, 1)
-		Assert.assertTrue(stagingArea.empty)
 	}
 
 	/**
 	 * Change is not resolved.
 	 */
-	def private static void assertIsNotResolved(RemoveAndDeleteRoot<Root> change, Root affectedRootObject) {
-		Assert.assertFalse(change.isResolved)
-		Assert.assertFalse(change.removeChange.isResolved)
-		Assert.assertFalse(change.deleteChange.isResolved)
-		Assert.assertNotSame(change.removeChange.oldValue, affectedRootObject)
-		Assert.assertNotSame(change.deleteChange.affectedEObject, affectedRootObject)
-		Assert.assertNotSame(change.deleteChange.affectedEObject, change.removeChange.oldValue)
+	def protected static void assertIsNotResolved(List<? extends EChange> changes) {
+		EChangeTest.assertIsNotResolved(changes);
+		Assert.assertEquals(2, changes.size);
+		val removeChange = assertType(changes.get(0), RemoveRootEObject);
+		val deleteChange = assertType(changes.get(1), DeleteEObject);
+		Assert.assertEquals(removeChange.oldValueID, deleteChange.affectedEObjectID)
 	}
 	
 	/**
 	 * Change is resolved.
 	 */
-	def private static void assertIsResolved(RemoveAndDeleteRoot<Root> change, Root affectedRootObject) {
-		Assert.assertTrue(change.isResolved)
-		change.removeChange.oldValue.assertEqualsOrCopy(affectedRootObject)
-		change.deleteChange.affectedEObject.assertEqualsOrCopy(affectedRootObject)
+	def private static void assertIsResolved(List<EChange> changes, Root affectedRootObject) {
+		changes.assertIsResolved;
+		Assert.assertEquals(2, changes.size);
+		val removeChange = assertType(changes.get(0), RemoveRootEObject);
+		val deleteChange = assertType(changes.get(1), DeleteEObject);
+		removeChange.oldValue.assertEqualsOrCopy(affectedRootObject)
+		deleteChange.affectedEObject.assertEqualsOrCopy(affectedRootObject)
 	}
 	
 	/**
 	 * Creates new unresolved change.
 	 */
-	def private RemoveAndDeleteRoot<Root> createUnresolvedChange(Root newObject, int index) {
-		return compoundFactory.createRemoveAndDeleteRootChange(newObject, resource, index, null)	
+	def private List<EChange> createUnresolvedChange(Root newObject, int index) {
+		return compoundFactory.createRemoveAndDeleteRootChange(newObject, resource, index)	
 	}	
 }

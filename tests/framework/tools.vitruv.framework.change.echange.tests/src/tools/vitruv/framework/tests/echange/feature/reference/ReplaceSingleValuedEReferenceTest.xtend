@@ -12,6 +12,7 @@ import org.junit.Test
 import tools.vitruv.framework.change.echange.feature.reference.ReplaceSingleValuedEReference
 
 import static extension tools.vitruv.framework.tests.echange.util.EChangeAssertHelper.*
+import static extension tools.vitruv.framework.change.echange.EChangeResolverAndApplicator.*;
 
 /**
  * Test class for the concrete {@link ReplaceSingleValuedEReference} EChange,
@@ -43,7 +44,7 @@ public class ReplaceSingleValuedEReferenceTest extends ReferenceEChangeTest {
 		unresolvedChange.assertIsNotResolved(affectedEObject, oldValue, newValue)
 		
 		// Resolve
-		val resolvedChange = unresolvedChange.resolveBefore(resourceSet) as ReplaceSingleValuedEReference<Root, NonRoot>	
+		val resolvedChange = unresolvedChange.resolveBefore(uuidGeneratorAndResolver) as ReplaceSingleValuedEReference<Root, NonRoot>	
 		resolvedChange.assertIsResolved(affectedEObject, oldValue, newValue)
 	}
 	
@@ -62,7 +63,7 @@ public class ReplaceSingleValuedEReferenceTest extends ReferenceEChangeTest {
 		unresolvedChange.assertIsNotResolved(affectedEObject, oldValue, newValue)
 		
 		// Resolve
-		val resolvedChange = unresolvedChange.resolveBefore(resourceSet) as ReplaceSingleValuedEReference<Root, NonRoot>
+		val resolvedChange = unresolvedChange.resolveBefore(uuidGeneratorAndResolver) as ReplaceSingleValuedEReference<Root, NonRoot>
 		resolvedChange.assertIsResolved(affectedEObject, oldValue, newValue)
 	}
 	
@@ -84,7 +85,7 @@ public class ReplaceSingleValuedEReferenceTest extends ReferenceEChangeTest {
 		prepareReference(newValue)
 		
 		// Resolve	
-		val resolvedChange = unresolvedChange.resolveAfter(resourceSet) as ReplaceSingleValuedEReference<Root, NonRoot>
+		val resolvedChange = unresolvedChange.resolveAfter(uuidGeneratorAndResolver) as ReplaceSingleValuedEReference<Root, NonRoot>
 		resolvedChange.assertIsResolved(affectedEObject, oldValue, newValue)	
 	}
 	
@@ -104,10 +105,9 @@ public class ReplaceSingleValuedEReferenceTest extends ReferenceEChangeTest {
 		
 		// Set state after
 		prepareReference(newValue)
-		prepareStagingArea(oldValue)
 		
 		// Resolve
-		val resolvedChange = unresolvedChange.resolveAfter(resourceSet) as ReplaceSingleValuedEReference<Root, NonRoot>
+		val resolvedChange = unresolvedChange.resolveAfter(uuidGeneratorAndResolver) as ReplaceSingleValuedEReference<Root, NonRoot>
 		resolvedChange.assertIsResolved(affectedEObject, oldValue, newValue)		 	
 	 }
 
@@ -124,7 +124,7 @@ public class ReplaceSingleValuedEReferenceTest extends ReferenceEChangeTest {
 		val unresolvedChange = createUnresolvedChange()
 			
 		// Resolve
-		val resolvedChange = unresolvedChange.resolveBefore(resourceSet)
+		val resolvedChange = unresolvedChange.resolveBefore(uuidGeneratorAndResolver)
 		unresolvedChange.assertDifferentChangeSameClass(resolvedChange)
 	}
 	
@@ -138,7 +138,7 @@ public class ReplaceSingleValuedEReferenceTest extends ReferenceEChangeTest {
 		isNonContainmentTest
 				
 		// Create change (resolved)
-		val resolvedChange = createUnresolvedChange().resolveBefore(resourceSet)
+		val resolvedChange = createUnresolvedChange().resolveBefore(uuidGeneratorAndResolver)
 			as ReplaceSingleValuedEReference<Root, NonRoot>
 		resolvedChange.assertIsResolved(affectedEObject, oldValue, newValue)
 		
@@ -161,7 +161,7 @@ public class ReplaceSingleValuedEReferenceTest extends ReferenceEChangeTest {
 		isContainmentTest
 		
 		// Create change (resolved)
-		val resolvedChange = createUnresolvedChange().resolveBefore(resourceSet)
+		val resolvedChange = createUnresolvedChange().resolveBefore(uuidGeneratorAndResolver)
 			as ReplaceSingleValuedEReference<Root, NonRoot>
 		
 		// State before
@@ -186,7 +186,7 @@ public class ReplaceSingleValuedEReferenceTest extends ReferenceEChangeTest {
 		isContainmentTest
 		
 		// Create change (resolved)
-		val resolvedChange = createUnresolvedChange().resolveBefore(resourceSet)
+		val resolvedChange = createUnresolvedChange().resolveBefore(uuidGeneratorAndResolver)
 			as ReplaceSingleValuedEReference<Root, NonRoot>
 		resolvedChange.assertIsResolved(affectedEObject, oldValue, newValue)
 		
@@ -212,7 +212,7 @@ public class ReplaceSingleValuedEReferenceTest extends ReferenceEChangeTest {
 		isContainmentTest
 		
 		// Create change (resolved)
-		val resolvedChange = createUnresolvedChange().resolveBefore(resourceSet)
+		val resolvedChange = createUnresolvedChange().resolveBefore(uuidGeneratorAndResolver)
 			as ReplaceSingleValuedEReference<Root, NonRoot>
 		resolvedChange.assertIsResolved(affectedEObject, oldValue, newValue)
 		
@@ -236,7 +236,7 @@ public class ReplaceSingleValuedEReferenceTest extends ReferenceEChangeTest {
 		isNonContainmentTest
 		
 		// Create change (resolved)
-		val resolvedChange = createUnresolvedChange().resolveBefore(resourceSet)
+		val resolvedChange = createUnresolvedChange().resolveBefore(uuidGeneratorAndResolver)
 			as ReplaceSingleValuedEReference<Root, NonRoot>	
 			
 		// Set state after
@@ -260,12 +260,11 @@ public class ReplaceSingleValuedEReferenceTest extends ReferenceEChangeTest {
 		isContainmentTest
 		
 		// Create change (resolved)
-		val resolvedChange = createUnresolvedChange().resolveBefore(resourceSet)
+		val resolvedChange = createUnresolvedChange().resolveBefore(uuidGeneratorAndResolver)
 			as ReplaceSingleValuedEReference<Root, NonRoot>	
 		
 		// Set state after
 		prepareReference(newValue)
-		prepareStagingArea(oldValue)
 		assertIsStateAfter(oldValue)		
 		
 		// Apply backward
@@ -287,12 +286,11 @@ public class ReplaceSingleValuedEReferenceTest extends ReferenceEChangeTest {
 		isContainmentTest
 		
 		// Create change (resolved)
-		val resolvedChange = createUnresolvedChange().resolveBefore(resourceSet)
+		val resolvedChange = createUnresolvedChange().resolveBefore(uuidGeneratorAndResolver)
 			as ReplaceSingleValuedEReference<Root, NonRoot>	
 		
 		// Set state after
 		prepareReference(newValue)
-		prepareStagingArea(oldValue)
 		assertIsStateAfter(oldValue)
 		
 		// Apply backward
@@ -314,8 +312,7 @@ public class ReplaceSingleValuedEReferenceTest extends ReferenceEChangeTest {
 		isContainmentTest
 		
 		// Create change (resolved)
-		val resolvedChange = createUnresolvedChange().resolveBefore(resourceSet)
-			as ReplaceSingleValuedEReference<Root, NonRoot>	
+		val resolvedChange = createUnresolvedChange().resolveBefore(uuidGeneratorAndResolver)
 		
 		// Set state after
 		prepareReference(newValue)
@@ -334,7 +331,6 @@ public class ReplaceSingleValuedEReferenceTest extends ReferenceEChangeTest {
 	def private void isContainmentTest() {
 		affectedFeature = AllElementTypesPackage.Literals.ROOT__SINGLE_VALUED_CONTAINMENT_EREFERENCE
 		prepareReference(oldValue)
-		prepareStagingArea(newValue)
 	}
 	
 	/**
@@ -368,11 +364,6 @@ public class ReplaceSingleValuedEReferenceTest extends ReferenceEChangeTest {
 	def private void assertIsStateBefore(NonRoot valueInStagingArea) {
 		resourceIsStateBefore
 		oldValue.assertEqualsOrCopy(affectedEObject.eGet(affectedFeature) as EObject)
-		if (affectedFeature.containment && valueInStagingArea !== null) {
-			valueInStagingArea.assertEqualsOrCopy(stagingArea.peek)
-		} else {
-			Assert.assertTrue(stagingArea.empty)
-		}
 	}
 	
 	/**
@@ -395,11 +386,6 @@ public class ReplaceSingleValuedEReferenceTest extends ReferenceEChangeTest {
 	def private void assertIsStateAfter(NonRoot valueInStagingArea) {
 		resourceIsStateBefore
 		newValue.assertEqualsOrCopy(affectedEObject.eGet(affectedFeature) as EObject)		
-		if (affectedFeature.containment && valueInStagingArea !== null) {
-			valueInStagingArea.assertEqualsOrCopy(stagingArea.peek)
-		} else {
-			Assert.assertTrue(stagingArea.empty)
-		}
 	}
 	
 	/**

@@ -8,10 +8,14 @@ import org.eclipse.emf.ecore.EReference
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
-import tools.vitruv.framework.change.echange.compound.CreateAndInsertNonRoot
 import tools.vitruv.framework.tests.echange.feature.reference.ReferenceEChangeTest
 
 import static extension tools.vitruv.framework.tests.echange.util.EChangeAssertHelper.*
+import tools.vitruv.framework.change.echange.EChange
+import java.util.List
+import tools.vitruv.framework.change.echange.eobject.CreateEObject
+import tools.vitruv.framework.change.echange.feature.reference.InsertEReference
+import tools.vitruv.framework.tests.echange.EChangeTest
 
 /**
  * Test class for the concrete {@link CreateAndInsertNonRoot} EChange,
@@ -38,11 +42,10 @@ public class CreateAndInsertNonRootTest extends ReferenceEChangeTest {
 	def public void resolveBeforeTest() {
 		// Create change
 		val unresolvedChange = createUnresolvedChange(affectedEObject, newValue, 0)
-		unresolvedChange.assertIsNotResolved(affectedEObject, newValue)
+		unresolvedChange.assertIsNotResolved
 			
 		// Resolve
-		val resolvedChange = unresolvedChange.resolveBefore(resourceSet) 
-			as CreateAndInsertNonRoot<Root, NonRoot>
+		val resolvedChange = unresolvedChange.resolveBefore(uuidGeneratorAndResolver) 
 		resolvedChange.assertIsResolved(affectedEObject, newValue)	
 			
 		// Resolving applies all changes and reverts them, so the model should be unaffected.			
@@ -57,14 +60,13 @@ public class CreateAndInsertNonRootTest extends ReferenceEChangeTest {
 	def public void resolveAfterTest() {
 		// Create change
 		val unresolvedChange = createUnresolvedChange(affectedEObject, newValue, 0)
-		unresolvedChange.assertIsNotResolved(affectedEObject, newValue)		
+		unresolvedChange.assertIsNotResolved		
 		
 		// Set state after
 		prepareStateAfter
 			
 		// Resolve
-		val resolvedChange = unresolvedChange.resolveAfter(resourceSet) 
-			as CreateAndInsertNonRoot<Root, NonRoot>
+		val resolvedChange = unresolvedChange.resolveAfter(uuidGeneratorAndResolver) 
 		resolvedChange.assertIsResolved(affectedEObject, newValue)	
 		
 		// Resolving applies all changes and reverts them, so the model should be unaffected.		
@@ -81,7 +83,7 @@ public class CreateAndInsertNonRootTest extends ReferenceEChangeTest {
 		val unresolvedChange = createUnresolvedChange(affectedEObject, newValue, 0)
 		
 		// Resolve		
- 		val resolvedChange = unresolvedChange.resolveBefore(resourceSet)
+ 		val resolvedChange = unresolvedChange.resolveBefore(uuidGeneratorAndResolver)
 		unresolvedChange.assertDifferentChangeSameClass(resolvedChange)
 	}
 	
@@ -93,17 +95,15 @@ public class CreateAndInsertNonRootTest extends ReferenceEChangeTest {
 	@Test
 	def public void applyForwardTest() {
 		// Create and resolve and apply change
-		val resolvedChange = createUnresolvedChange(affectedEObject, newValue, 0).resolveBefore(resourceSet)
-			as CreateAndInsertNonRoot<Root, NonRoot>
+		val resolvedChange = createUnresolvedChange(affectedEObject, newValue, 0).resolveBefore(uuidGeneratorAndResolver)
 		resolvedChange.assertApplyForward
 		
 		Assert.assertEquals(referenceContent.size, 1)
-		Assert.assertTrue(referenceContent.contains(resolvedChange.createChange.affectedEObject))
-		Assert.assertTrue(stagingArea.empty)
+		val createChange = assertType(resolvedChange.get(0), CreateEObject)
+		Assert.assertTrue(referenceContent.contains(createChange.affectedEObject))
 		
 		// Create and resolve and apply change 2	
-		val resolvedChange2 = createUnresolvedChange(affectedEObject, newValue2, 1).resolveBefore(resourceSet)
-			as CreateAndInsertNonRoot<Root, NonRoot>
+		val resolvedChange2 = createUnresolvedChange(affectedEObject, newValue2, 1).resolveBefore(uuidGeneratorAndResolver)
 		resolvedChange2.assertApplyForward
 		
 		// State after
@@ -118,13 +118,11 @@ public class CreateAndInsertNonRootTest extends ReferenceEChangeTest {
 	@Test
 	def public void applyBackwardTest() {
 		// Create and resolve and apply change 1
-		val resolvedChange = createUnresolvedChange(affectedEObject, newValue, 0).resolveBefore(resourceSet)
-			as CreateAndInsertNonRoot<Root, NonRoot>
+		val resolvedChange = createUnresolvedChange(affectedEObject, newValue, 0).resolveBefore(uuidGeneratorAndResolver)
 		resolvedChange.assertApplyForward
 		
 		// Create and resolve change 2
-		val resolvedChange2 = createUnresolvedChange(affectedEObject, newValue2, 1).resolveBefore(resourceSet)
-			as CreateAndInsertNonRoot<Root, NonRoot>
+		val resolvedChange2 = createUnresolvedChange(affectedEObject, newValue2, 1).resolveBefore(uuidGeneratorAndResolver)
 		resolvedChange2.assertApplyForward
 				
 		// State after
@@ -133,10 +131,11 @@ public class CreateAndInsertNonRootTest extends ReferenceEChangeTest {
 		// Apply backward 2
 		resolvedChange2.assertApplyBackward
 		
-		Assert.assertTrue(referenceContent.contains(resolvedChange.createChange.affectedEObject))
-		Assert.assertFalse(referenceContent.contains(resolvedChange2.createChange.affectedEObject))	
+		val createChange = assertType(resolvedChange.get(0), CreateEObject)
+		val createChange2 = assertType(resolvedChange2.get(0), CreateEObject)
+		Assert.assertTrue(referenceContent.contains(createChange.affectedEObject))
+		Assert.assertFalse(referenceContent.contains(createChange2.affectedEObject))	
 		Assert.assertEquals(referenceContent.size, 1)
-		Assert.assertTrue(stagingArea.empty)
 			
 		// Apply backward 1	
 		resolvedChange.assertApplyBackward
@@ -159,7 +158,6 @@ public class CreateAndInsertNonRootTest extends ReferenceEChangeTest {
 	 */
 	def private void assertIsStateBefore() {
 		Assert.assertEquals(referenceContent.size, 0)
-		Assert.assertTrue(stagingArea.empty)
 	}
 	
 	/**
@@ -169,38 +167,37 @@ public class CreateAndInsertNonRootTest extends ReferenceEChangeTest {
 		Assert.assertEquals(referenceContent.size, 2)
 		newValue.assertEqualsOrCopy(referenceContent.get(0))
 		newValue2.assertEqualsOrCopy(referenceContent.get(1))
-		Assert.assertTrue(stagingArea.empty)
 	}
 	
 	/**
 	 * Change is not resolved.
 	 */
-	def private static void assertIsNotResolved(CreateAndInsertNonRoot<Root, NonRoot> change, Root affectedEObject,
-		NonRoot newNonRoot) {
-		Assert.assertFalse(change.isResolved)
-		Assert.assertFalse(change.createChange.isResolved)
-		Assert.assertFalse(change.insertChange.isResolved)
-		Assert.assertNotSame(change.createChange.affectedEObject, newNonRoot)
-		Assert.assertNotSame(change.insertChange.newValue, newNonRoot)
-		Assert.assertNotSame(change.insertChange.affectedEObject, affectedEObject)
-		Assert.assertNotSame(change.createChange.affectedEObject, change.insertChange.newValue)
+	def protected static void assertIsNotResolved(List<? extends EChange> changes) {
+		EChangeTest.assertIsNotResolved(changes)
+		Assert.assertEquals(2, changes.size);
+		val createChange = assertType(changes.get(0), CreateEObject);
+		val insertChange = assertType(changes.get(1), InsertEReference);
+		Assert.assertEquals(insertChange.newValueID, createChange.affectedEObjectID)
 	}
 	
 	/**
 	 * Change is resolved.
 	 */
-	def private static void assertIsResolved(CreateAndInsertNonRoot<Root, NonRoot> change, Root affectedEObject,
+	def private static void assertIsResolved(List<EChange> changes, Root affectedEObject,
 		NonRoot newNonRoot) {
-		Assert.assertTrue(change.isResolved)
-		change.insertChange.newValue.assertEqualsOrCopy(newNonRoot)
-		change.createChange.affectedEObject.assertEqualsOrCopy(newNonRoot)
-		Assert.assertSame(change.insertChange.affectedEObject, affectedEObject)	
+		changes.assertIsResolved;
+		Assert.assertEquals(2, changes.size);
+		val createChange = assertType(changes.get(0), CreateEObject);
+		val insertChange = assertType(changes.get(1), InsertEReference);
+		insertChange.newValue.assertEqualsOrCopy(newNonRoot)
+		createChange.affectedEObject.assertEqualsOrCopy(newNonRoot)
+		Assert.assertSame(insertChange.affectedEObject, affectedEObject)	
 	}
 		
 	/**
 	 * Creates new unresolved change.
 	 */
-	def private CreateAndInsertNonRoot<Root, NonRoot> createUnresolvedChange(Root affectedRootObject, NonRoot newNonRoot, int index) {
-		return compoundFactory.createCreateAndInsertNonRootChange(affectedRootObject, affectedFeature, newNonRoot, index, null)
+	def private List<EChange> createUnresolvedChange(Root affectedRootObject, NonRoot newNonRoot, int index) {
+		return compoundFactory.createCreateAndInsertNonRootChange(affectedRootObject, affectedFeature, newNonRoot, index)
 	}
 }

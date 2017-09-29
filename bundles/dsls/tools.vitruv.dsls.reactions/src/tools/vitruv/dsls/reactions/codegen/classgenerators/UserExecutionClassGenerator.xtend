@@ -20,7 +20,7 @@ import org.eclipse.xtext.common.types.JvmGenericType
 import org.eclipse.xtext.xbase.XExpression
 import tools.vitruv.dsls.reactions.reactionsLanguage.ExecuteActionStatement
 import static tools.vitruv.dsls.reactions.codegen.helper.ReactionsLanguageConstants.*
-
+import tools.vitruv.dsls.reactions.reactionsLanguage.RetrieveOrRequireAbscenceOfModelElement
 
 class UserExecutionClassGenerator extends ClassGenerator {
 	private val EObject objectMappedToClass;
@@ -31,7 +31,9 @@ class UserExecutionClassGenerator extends ClassGenerator {
 	var counterCallRoutineMethods = 1
 	var counterExecuteActionMethods = 1
 	var counterCheckMatcherPreconditionMethods = 1
-
+	var counterGetCorrespondenceSource = 1
+	private var JvmGenericType generatedClass
+	
 	new(TypesBuilderExtensionProvider typesBuilderExtensionProvider, EObject objectMappedToClass,
 		String qualifiedClassName) {
 		super(typesBuilderExtensionProvider)
@@ -44,13 +46,14 @@ class UserExecutionClassGenerator extends ClassGenerator {
 	}
 
 	override generateEmptyClass() {
-		return objectMappedToClass.toClass(qualifiedClassName) [
+		this.generatedClass = objectMappedToClass.toClass(qualifiedClassName) [
 			visibility = JvmVisibility.PRIVATE
 			static = true
 		]
+		return generatedClass;
 	}
 
-	override generateBody(JvmGenericType generatedClass) {
+	override generateBody() {
 		generatedClass => [
 			superTypes += typeRef(AbstractRepairRoutineRealization.UserExecution)
 			members += generateConstructor()
@@ -72,9 +75,9 @@ class UserExecutionClassGenerator extends ClassGenerator {
 
 	protected def JvmOperation generateUpdateElementMethod(String elementName, CodeBlock codeBlock,
 		Iterable<AccessibleElement> accessibleElements) {
-		return codeBlock.getOrGenerateMethod("update" + elementName.toFirstUpper + "Element", typeRef(Void.TYPE)) [
+		val code = codeBlock.code;
+		return code.getOrGenerateMethod("update" + elementName.toFirstUpper + "Element", typeRef(Void.TYPE)) [
 			parameters += generateAccessibleElementsParameters(accessibleElements);
-			val code = codeBlock.code;
 			if (code instanceof SimpleTextXBlockExpression) {
 				body = code.text;
 			} else {
@@ -103,22 +106,22 @@ class UserExecutionClassGenerator extends ClassGenerator {
 		];
 	}
 
-	protected def generateMethodCorrespondencePrecondition(RetrieveModelElement elementRetrieve,
+	protected def generateMethodCorrespondencePrecondition(RetrieveOrRequireAbscenceOfModelElement elementRetrieve, String name,
 		Iterable<AccessibleElement> accessibleElements) {
-		val methodName = "getCorrespondingModelElementsPrecondition" + elementRetrieve.name.toFirstUpper;
+		val methodName = "getCorrespondingModelElementsPrecondition" + (elementRetrieve.retrieveOrRequireAbscenceMethodSuffix?: counterGetCorrespondenceSource++);
 		return elementRetrieve.precondition.getOrGenerateMethod(methodName, typeRef(Boolean.TYPE)) [
-			val elementParameter = generateModelElementParameter(elementRetrieve, elementRetrieve.name);
+			val elementParameter = generateModelElementParameter(elementRetrieve, name?: RETRIEVAL_PRECONDITION_METHOD_TARGET);
 			parameters += generateAccessibleElementsParameters(accessibleElements);
 			parameters += elementParameter;
 			body = elementRetrieve.precondition.code;
 		];
 	}
 
-	protected def generateMethodGetCorrespondenceSource(RetrieveModelElement elementRetrieve,
+	protected def generateMethodGetCorrespondenceSource(RetrieveOrRequireAbscenceOfModelElement elementRetrieve,
 		Iterable<AccessibleElement> accessibleElements) {
-		val methodName = "getCorrepondenceSource" + elementRetrieve.name.toFirstUpper;
+		val methodName = "getCorrepondenceSource" + (elementRetrieve.retrieveOrRequireAbscenceMethodSuffix?: counterGetCorrespondenceSource++);
 
-		val correspondenceSourceBlock = elementRetrieve.correspondenceSource?.code;
+		val correspondenceSourceBlock = elementRetrieve.correspondenceSource.code;
 		return correspondenceSourceBlock.getOrGenerateMethod(methodName, typeRef(EObject)) [
 			parameters += generateAccessibleElementsParameters(accessibleElements);
 			if (correspondenceSourceBlock instanceof SimpleTextXBlockExpression) {
@@ -178,7 +181,8 @@ class UserExecutionClassGenerator extends ClassGenerator {
 		}
 		return codeBlock.getOrGenerateMethod(methodName, typeRef(Void.TYPE)) [
 			parameters += generateAccessibleElementsParameters(accessibleElements);
-			val facadeParam = toParameter(REACTION_USER_EXECUTION_ROUTINE_CALL_FACADE_PARAMETER_NAME, facadeClassTypeReference);
+			val facadeParam = toParameter(REACTION_USER_EXECUTION_ROUTINE_CALL_FACADE_PARAMETER_NAME,
+				facadeClassTypeReference);
 			facadeParam.annotations += annotationRef(Extension);
 			parameters += facadeParam
 			if (codeBlock instanceof SimpleTextXBlockExpression) {
@@ -187,5 +191,17 @@ class UserExecutionClassGenerator extends ClassGenerator {
 				body = codeBlock;
 			}
 		]
+	}
+	
+	protected def dispatch getRetrieveOrRequireAbscenceMethodSuffix(RetrieveOrRequireAbscenceOfModelElement statement) {
+		null
+	}
+	
+	protected def dispatch getRetrieveOrRequireAbscenceMethodSuffix(RetrieveModelElement statement) {
+		if (statement.name.nullOrEmpty) {
+			return null
+		} else {
+			return statement.name.toFirstUpper
+		}
 	}
 }

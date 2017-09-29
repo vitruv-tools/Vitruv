@@ -22,4 +22,5 @@ import tools.vitruv.framework.change.echange.eobject.EObjectSubtractedEChange;
  * @generated
  */
 public interface SubtractiveReferenceEChange<A extends EObject, T extends EObject> extends UpdateReferenceEChange<A>, EObjectSubtractedEChange<T> {
+
 } // SubtractiveReferenceEChange

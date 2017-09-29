@@ -32,7 +32,7 @@ public interface Identified2 extends EObject {
 	 * @return the value of the '<em>Id2</em>' attribute.
 	 * @see #setId2(String)
 	 * @see allElementTypes2.AllElementTypes2Package#getIdentified2_Id2()
-	 * @model required="true"
+	 * @model id="true" required="true"
 	 * @generated
 	 */
 	String getId2();

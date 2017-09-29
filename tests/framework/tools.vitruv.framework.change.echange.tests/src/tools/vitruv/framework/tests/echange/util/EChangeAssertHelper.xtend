@@ -4,6 +4,8 @@ import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.util.EcoreUtil
 import org.junit.Assert
 import tools.vitruv.framework.change.echange.EChange
+import static extension tools.vitruv.framework.change.echange.EChangeResolverAndApplicator.*;
+import java.util.List
 
 /**
  * Utility class for frequently used assert methods in the tests.
@@ -20,10 +22,25 @@ class EChangeAssertHelper {
  	}
  	
  	/**
+ 	 * Tests whether a unresolved changes and a resolved changes are the same classes.
+ 	 */
+ 	def public static void assertDifferentChangeSameClass(List<? extends EChange> unresolvedChange, List<? extends EChange> resolvedChange)	 {
+ 		Assert.assertEquals(unresolvedChange.size, resolvedChange.size)
+ 		for (var i = 0; i < unresolvedChange.size; i++) {
+ 			assertDifferentChangeSameClass(unresolvedChange.get(i), resolvedChange.get(i))
+ 		}
+ 	}
+ 	
+ 	/**
  	 * Tests whether two objects are the same object or copies of each other.
  	 */
- 	def public static void assertEqualsOrCopy(EObject object1, EObject object2) {
-		EcoreUtil.equals(object1, object2)
+ 	def public static void assertEqualsOrCopy(Object object1, Object object2) {
+ 		if (object1 === null && object2 === null) {
+ 			return;
+ 		}
+ 		val typedObject1 = assertType(object1, EObject);
+ 		val typedObject2 = assertType(object2, EObject);
+		EcoreUtil.equals(typedObject1, typedObject2)
 	}
 	
 	/**
@@ -36,12 +53,26 @@ class EChangeAssertHelper {
 	}
 	
 	/**
+	 * Tests whether a change sequence is resolved and applies it forward.
+	 */
+	def public static void assertApplyForward(List<EChange> change) {
+		change.forEach[assertApplyForward]
+	}
+	
+	/**
 	 * Tests whether a change is resolved and applies it backward.
 	 */
 	def public static void assertApplyBackward(EChange change) {
 		Assert.assertNotNull(change)
 		Assert.assertTrue(change.isResolved)
 		Assert.assertTrue(change.applyBackward)
+	}
+	
+	/**
+	 * Tests whether a change sequence is resolved and applies it backward.
+	 */
+	def public static void assertApplyBackward(List<EChange> change) {
+		change.reverseView.forEach[assertApplyBackward]
 	}
 	
 	/**
@@ -72,5 +103,13 @@ class EChangeAssertHelper {
 		if (!exceptionThrown) {
 			Assert.fail("No RuntimeException thrown.")
 		}		
+	}
+	
+	static def <T> T assertType(Object original, Class<T> type) {
+		if (type.isAssignableFrom(original.class)) {
+			return original as T
+		}
+		Assert.fail("Object " + original + " is not expected type " + type);
+		return null;
 	}
 }

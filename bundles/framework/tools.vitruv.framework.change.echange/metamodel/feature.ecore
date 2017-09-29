@@ -8,7 +8,7 @@
     <details key="classNamePattern" value=""/>
     <details key="basePackage" value="tools.vitruv.framework.change.echange"/>
   </eAnnotations>
-  <eClassifiers xsi:type="ecore:EClass" name="FeatureEChange" abstract="true" eSuperTypes="echange.ecore#//AtomicEChange">
+  <eClassifiers xsi:type="ecore:EClass" name="FeatureEChange" abstract="true" eSuperTypes="echange.ecore#//EChange">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
       <details key="documentation" value="*&#xA;Abstract EChange which changes an attribute or reference of an EObject."/>
     </eAnnotations>
@@ -30,6 +30,7 @@
       </eAnnotations>
       <eGenericType eTypeParameter="#//FeatureEChange/A"/>
     </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="affectedEObjectID" eType="ecore:EDataType ../../tools.vitruv.framework.change.uuid/model/Uuid.ecore#//Uuid"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="UpdateMultiValuedFeatureEChange" abstract="true">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
@@ -59,6 +60,18 @@
     <eGenericSuperTypes eClassifier="#//FeatureEChange">
       <eTypeArguments eTypeParameter="#//UpdateSingleValuedFeatureEChange/A"/>
       <eTypeArguments eTypeParameter="#//UpdateSingleValuedFeatureEChange/F"/>
+    </eGenericSuperTypes>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="UnsetFeature">
+    <eTypeParameters name="A">
+      <eBounds eClassifier="ecore:EClass ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EObject"/>
+    </eTypeParameters>
+    <eTypeParameters name="F">
+      <eBounds eClassifier="ecore:EClass ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EStructuralFeature"/>
+    </eTypeParameters>
+    <eGenericSuperTypes eClassifier="#//FeatureEChange">
+      <eTypeArguments eTypeParameter="#//UnsetFeature/A"/>
+      <eTypeArguments eTypeParameter="#//UnsetFeature/F"/>
     </eGenericSuperTypes>
   </eClassifiers>
 </ecore:EPackage>

@@ -25,5 +25,4 @@ import tools.vitruv.framework.change.echange.feature.list.InsertInListEChange;
  * @generated
  */
 public interface InsertEReference<A extends EObject, T extends EObject> extends InsertInListEChange<A, EReference, T>, AdditiveReferenceEChange<A, T> {
-
 } // InsertEReference

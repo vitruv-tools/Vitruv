@@ -26,7 +26,8 @@ Require-Bundle: org.eclipse.ui,
  tools.vitruv.framework.change.processing,
  tools.vitruv.framework.tuid,
  tools.vitruv.framework.modelsynchronization,
- tools.vitruv.framework.vsum
+ tools.vitruv.framework.vsum,
+ tools.vitruv.framework.tests.util
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Export-Package: tools.vitruv.domains.emf.monitorededitor.test.emfmodels.advancedfeatures,

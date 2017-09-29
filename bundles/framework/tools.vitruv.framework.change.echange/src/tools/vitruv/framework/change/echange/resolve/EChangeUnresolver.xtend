@@ -2,10 +2,6 @@ package tools.vitruv.framework.change.echange.resolve
 
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EStructuralFeature
-import org.eclipse.emf.ecore.InternalEObject
-import org.eclipse.emf.ecore.util.EcoreUtil
-import tools.vitruv.framework.change.echange.compound.CompoundEChange
-import tools.vitruv.framework.change.echange.compound.ExplicitUnsetEFeature
 import tools.vitruv.framework.change.echange.eobject.EObjectAddedEChange
 import tools.vitruv.framework.change.echange.eobject.EObjectExistenceEChange
 import tools.vitruv.framework.change.echange.eobject.EObjectSubtractedEChange
@@ -16,7 +12,9 @@ import tools.vitruv.framework.change.echange.feature.reference.ReplaceSingleValu
 import tools.vitruv.framework.change.echange.root.InsertRootEObject
 import tools.vitruv.framework.change.echange.root.RemoveRootEObject
 import tools.vitruv.framework.change.echange.root.RootEChange
-import tools.vitruv.framework.change.echange.AtomicEChange
+import tools.vitruv.framework.change.echange.EChange
+import tools.vitruv.framework.change.echange.eobject.DeleteEObject
+import tools.vitruv.framework.change.echange.eobject.CreateEObject
 
 /**
  * Utility class to unresolve a given EChange.
@@ -24,22 +22,6 @@ import tools.vitruv.framework.change.echange.AtomicEChange
 public class EChangeUnresolver {
 	private new() {}
 	
-	/**
-	 * Creates the a proxy object of a given EObject.
-	 * @param resolvedObject The resolved EObject whose proxy should be created.
-	 * @return The proxy object of the given EObject.
-	 */
-	def static public <A extends EObject> A createProxy(A resolvedObject) {
-		if (resolvedObject !== null) {
-			// TODO: Elbert S. Change when eobjects are removed recursively
-			val proxy = EcoreUtil.copy(resolvedObject) as InternalEObject
-			//val proxy = EcoreUtil.create(resolvedObject.eClass) as InternalEObject
-			proxy.eSetProxyURI(EcoreUtil.getURI(resolvedObject))
-			return proxy as A			
-		}
-		return null
-	}
-
 	/**
 	 * Unresolves the attributes of the {@link RootEChange} class.
 	 * @param The RootEChange.
@@ -53,7 +35,7 @@ public class EChangeUnresolver {
 	 * @param The FeatureEChange.
 	 */
 	def static public <A extends EObject, F extends EStructuralFeature> void unresolveFeatureEChange(FeatureEChange<A,F> change) {
-		change.affectedEObject = createProxy(change.affectedEObject)
+		change.affectedEObject = null
 	}
 	
 	/** 
@@ -61,57 +43,36 @@ public class EChangeUnresolver {
 	 * @param The EObjectAddedEChange.
 	 */
 	def static public <T extends EObject> void unresolveEObjectAddedEChange(EObjectAddedEChange<T> change) {
-		change.newValue = createProxy(change.newValue)
+		change.newValue = null
 	}	
 
+	/** 
+	 * Unresolves the attributes of the {@link EObjectExistenceEChange} class.
+	 * @param The EObjectExistenceEChange.
+	 */	
+	def static public <T extends EObject> void unresolveEObjectExistenceEChange(EObjectExistenceEChange<T> change) {
+		change.affectedEObject = null
+	}
+	
 	/** 
 	 * Unresolves the attributes of the {@link EObjectSubtractedEChange} class.
 	 * @param The EObjectSubtractedEChange.
 	 */	
 	def static public <T extends EObject> void unresolveEObjectSubtractedEChange(EObjectSubtractedEChange<T> change) {
-		change.oldValue = createProxy(change.oldValue)
+		change.oldValue = null
 	}
 
-	/** 
-	 * Unresolves the atomic changes of the {@link CompoundEChange} class.
-	 * @param The CompoundEChange.
-	 */		
-	def static public void unresolveCompoundEChange(CompoundEChange change) {
-		for (AtomicEChange c : change.atomicChanges) {
-			c.unresolve
-		}		
+	def dispatch static public void unresolve(EChange change) {
+		// Do nothing
 	}
-	
-	/** 
-	 * Unresolves the attributes of the {@link ExplicitUnsetEFeature} class.
-	 * @param The ExplicitUnsetEFeature change.
-	 */		
-	def static public <A extends EObject, F extends EStructuralFeature> void unresolveExplicitUnsetEFeature(ExplicitUnsetEFeature<A, F> change) {
-		change.affectedEObject = createProxy(change.affectedEObject)
-	}
-	
-	/**
-	 * Dispatch method for {@link CompoundEChange} to unresolve it.
-	 * @param change The CompoundEChange.
-	 */	
-	def dispatch public static void unresolve(CompoundEChange change) {
-		change.unresolveCompoundEChange
-	}
-	/**
-	 * Dispatch method for {@link ExplicitUnsetEFeature} to unresolve it.
-	 * @param change The ExplicitUnsetEFeature.
-	 */	
-	def dispatch public static void unresolve(ExplicitUnsetEFeature<EObject, EStructuralFeature> change) {
-		change.unresolveExplicitUnsetEFeature
-		change.unresolveCompoundEChange
-	}
+
 	/**
 	 * Dispatch method for {@link InsertRootEObject} to unresolve it.
 	 * @param change The InsertRootEObject.
 	 */	
 	def dispatch public static void unresolve(InsertRootEObject<EObject> change) {
 		change.unresolveRootEChange
-		change.newValue = createProxy(change.newValue)
+		change.newValue = null
 	}	
 	/**
 	 * Dispatch method for {@link RemoveRootEObject} to unresolve it.
@@ -119,16 +80,24 @@ public class EChangeUnresolver {
 	 */
 	def dispatch public static void unresolve(RemoveRootEObject<EObject> change) {
 		change.unresolveRootEChange
-		change.oldValue = createProxy(change.oldValue)
+		change.oldValue = null
 	}
 	/**
-	 * Dispatch method for {@link EObjectExistenceEChange} to unresolve it.
-	 * @param change The EObjectExistenceEChange.
+	 * Dispatch method for {@link CreateEObject} to unresolve it.
+	 * @param change The CreateEObject change.
 	 */	
-	def dispatch public static void unresolve(EObjectExistenceEChange<EObject> change) {
-		change.affectedEObject = createProxy(change.affectedEObject)
-		change.stagingArea = null
-	}	
+	def dispatch public static void unresolve(CreateEObject<EObject> change) {
+		change.unresolveEObjectExistenceEChange
+	}
+	/**
+	 * Dispatch method for {@link DeleteEObject} to unresolve it.
+	 * @param change The DeleteEObject change.
+	 */	
+	def dispatch public static void unresolve(DeleteEObject<EObject> change) {
+		change.unresolveEObjectExistenceEChange
+		change.consequentialRemoveChanges.forEach[unresolve];
+	}
+	
 	/**
 	 * Dispatch method for {@link ReplaceSingleValuedEReference} to unresolve it.
 	 * @param change The ReplaceSingleValuedEReference.
@@ -164,4 +133,5 @@ public class EChangeUnresolver {
 	def dispatch public static void unresolve(FeatureEChange<EObject, EStructuralFeature> change) {
 		change.unresolveFeatureEChange
 	}
+	
 }

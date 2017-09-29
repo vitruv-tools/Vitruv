@@ -16,24 +16,21 @@ import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl
 import java.util.ArrayList
 import tools.vitruv.framework.change.recording.AtomicEmfChangeRecorder
 import tools.vitruv.framework.util.bridges.EMFBridge
-import org.junit.runner.RunWith
-import org.junit.runners.Parameterized
-import org.junit.runners.Parameterized.Parameters
-import org.junit.runners.Parameterized.Parameter
-import java.util.Collection
+import tools.vitruv.framework.change.uuid.UuidGeneratorAndResolverImpl
+import static extension tools.vitruv.framework.change.echange.EChangeResolverAndApplicator.*;
+import tools.vitruv.framework.change.uuid.UuidGeneratorAndResolver
+import tools.vitruv.framework.change.echange.resolve.EChangeUnresolver
 
 /** 
  * @author langhamm
  */
- @RunWith(Parameterized)
 abstract class ChangeDescription2ChangeTransformationTest {
 	var protected AtomicEmfChangeRecorder changeRecorder
 	var protected Root rootElement
 	var private List<EChange> changes
 	
-	@Parameter
-	public boolean unresolveAndResolveRecordedEChanges
 	var rs = new ResourceSetImpl
+	var UuidGeneratorAndResolver uuidGeneratorAndResolver;
 	val private List<File> filesToDelete = new ArrayList<File>();
 
 	public static val SINGLE_VALUED_CONTAINMENT_E_REFERENCE_NAME = "singleValuedContainmentEReference"
@@ -43,11 +40,6 @@ abstract class ChangeDescription2ChangeTransformationTest {
 	public static val MULTI_VALUED_NON_CONTAINMENT_E_REFERENCE_NAME = "multiValuedNonContainmentEReference"
 	public static val MULTI_VALUE_E_ATTRIBUTE_NAME = "multiValuedEAttribute"
 
-	@Parameters
-	public def static Collection<Boolean> data() {
-		return #[true, false];
-	}
-	
 	new() {
 		rs.resourceFactoryRegistry.extensionToFactoryMap.put("xmi", new XMIResourceFactoryImpl());
 	}
@@ -68,7 +60,15 @@ abstract class ChangeDescription2ChangeTransformationTest {
 	 */
 	@Before
 	def void beforeTest() {
-		this.changeRecorder = new AtomicEmfChangeRecorder(this.unresolveAndResolveRecordedEChanges)
+		val uuidGeneratorAndResolver = new UuidGeneratorAndResolverImpl(rs, null)
+		this.uuidGeneratorAndResolver = uuidGeneratorAndResolver;
+		this.changeRecorder = new AtomicEmfChangeRecorder(uuidGeneratorAndResolver, uuidGeneratorAndResolver, false)
+		prepareRootElement();
+	}
+	
+	def void prepareRootElement() {
+		changeRecorder.addToRecording(rs);
+		changeRecorder.beginRecording;
 		this.rootElement = createRootInResource(1);
 	}
 
@@ -87,13 +87,12 @@ abstract class ChangeDescription2ChangeTransformationTest {
 	protected def List<EChange> getChanges() {
 		if (this.changes === null) {
 			this.changes = endRecording()
-			if (this.unresolveAndResolveRecordedEChanges) {
-				for (var i = this.changes.length - 1; i >= 0; i--) {
-					this.changes.set(i, changes.get(i).resolveAfterAndApplyBackward(this.rs));
-				}	
-				for (change : this.changes) {
-					change.applyForward;
-				}
+			this.changes.forEach[EChangeUnresolver.unresolve(it)]
+			for (var i = this.changes.length - 1; i >= 0; i--) {
+				this.changes.set(i, changes.get(i).resolveAfterAndApplyBackward(this.uuidGeneratorAndResolver));
+			}	
+			for (change : this.changes) {
+				change.applyForward;
 			}
 		}
 		return this.changes
@@ -101,26 +100,14 @@ abstract class ChangeDescription2ChangeTransformationTest {
 
 	public def List<EChange> endRecording() {
 		changeRecorder.endRecording()
-		val changeDescriptions = if (unresolveAndResolveRecordedEChanges) {
-			changeRecorder.unresolvedChanges
-		} else {
-			changeRecorder.resolvedChanges
-		}
-//		for (var i = changeDescriptions.size -1; i>= 0; i--) {
-//			changeDescriptions.get(i).changeDescription.applyAndReverse();
-//		}
-		// FIXME HK dont use the calculate method, prepare all changes in forall loop and take the changes afterwards
-		return changeDescriptions.map [
-			val changes = it.EChanges;
-//			it.changeDescription.applyAndReverse();
-			return changes;
-		].flatten.toList;
-//		val change = new changes.changepreparerTransformation(changeDescriptions, true).getChange();
-//		val changes = if (change instanceof ProcessableCompositeChange)
-//		map[it.EChanges].flatten.toList;
+		val changeDescriptions = changeRecorder.changes
+		return changeDescriptions.map[EChanges].flatten.toList;
 	}
 
 	public def startRecording() {
+		if (changeRecorder.isRecording) {
+			changeRecorder.stopRecording;
+		}
 		this.changes = null
 		this.changeRecorder.addToRecording(rs)
 		this.changeRecorder.beginRecording()
@@ -130,7 +117,7 @@ abstract class ChangeDescription2ChangeTransformationTest {
 		return this.rootElement
 	}
 
-	public static def assertChangeCount(List<?> changes, int expectedCount) {
+	public static def assertChangeCount(Iterable<?> changes, int expectedCount) {
 		Assert.assertEquals(
 			"There were " + changes.size + " changes, although " + expectedCount + " were expected",
 			expectedCount,
@@ -152,9 +139,6 @@ abstract class ChangeDescription2ChangeTransformationTest {
 	}
 
 	protected def createAndAddNonRootToContainment(boolean shouldStartRecording) {
-		// prepare --> insert the non root in the containment - but do not test the containment
-//		createAndAddNonRootToFeature(this.rootElement.getFeatureByName(SINGLE_VALUED_CONTAINMENT_E_REFERENCE_NAME),
-//			shouldStartRecording)
 		val nonRoot = AllElementTypesFactory.eINSTANCE.createNonRoot;
 		this.rootElement.singleValuedContainmentEReference = nonRoot;
 		if (shouldStartRecording) {
@@ -164,7 +148,6 @@ abstract class ChangeDescription2ChangeTransformationTest {
 	}
 
 	protected def createAndAddNonRootToRootContainer(boolean shouldStartRecording) {
-		// prepare --> insert the non root in the containment - but do not test the containment
 		val nonRoot = AllElementTypesFactory.eINSTANCE.createNonRoot
 		this.rootElement.nonRootObjectContainerHelper.nonRootObjectsContainment.add(nonRoot)
 		if (shouldStartRecording) {

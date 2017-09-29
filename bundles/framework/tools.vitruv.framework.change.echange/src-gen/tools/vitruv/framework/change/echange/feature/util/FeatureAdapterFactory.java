@@ -10,7 +10,6 @@ import org.eclipse.emf.common.notify.impl.AdapterFactoryImpl;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 
-import tools.vitruv.framework.change.echange.AtomicEChange;
 import tools.vitruv.framework.change.echange.EChange;
 
 import tools.vitruv.framework.change.echange.feature.*;
@@ -84,12 +83,12 @@ public class FeatureAdapterFactory extends AdapterFactoryImpl {
 				return createUpdateSingleValuedFeatureEChangeAdapter();
 			}
 			@Override
-			public Adapter caseEChange(EChange object) {
-				return createEChangeAdapter();
+			public <A extends EObject, F extends EStructuralFeature> Adapter caseUnsetFeature(UnsetFeature<A, F> object) {
+				return createUnsetFeatureAdapter();
 			}
 			@Override
-			public Adapter caseAtomicEChange(AtomicEChange object) {
-				return createAtomicEChangeAdapter();
+			public Adapter caseEChange(EChange object) {
+				return createEChangeAdapter();
 			}
 			@Override
 			public Adapter defaultCase(EObject object) {
@@ -154,6 +153,20 @@ public class FeatureAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
+	 * Creates a new adapter for an object of class '{@link tools.vitruv.framework.change.echange.feature.UnsetFeature <em>Unset Feature</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see tools.vitruv.framework.change.echange.feature.UnsetFeature
+	 * @generated
+	 */
+	public Adapter createUnsetFeatureAdapter() {
+		return null;
+	}
+
+	/**
 	 * Creates a new adapter for an object of class '{@link tools.vitruv.framework.change.echange.EChange <em>EChange</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
@@ -164,20 +177,6 @@ public class FeatureAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createEChangeAdapter() {
-		return null;
-	}
-
-	/**
-	 * Creates a new adapter for an object of class '{@link tools.vitruv.framework.change.echange.AtomicEChange <em>Atomic EChange</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
-	 * @return the new adapter.
-	 * @see tools.vitruv.framework.change.echange.AtomicEChange
-	 * @generated
-	 */
-	public Adapter createAtomicEChangeAdapter() {
 		return null;
 	}
 

@@ -18,7 +18,7 @@ routine createRoot(minimal::Root rootElement) {
 
 routine deleteRoot(minimal::Root rootElement) {
 	match {
-		val oldModel = retrieve minimal::Root corresponding to rootElement
+		val oldModel = retrieve asserted minimal::Root corresponding to rootElement
 	}
 	action {
 		delete oldModel

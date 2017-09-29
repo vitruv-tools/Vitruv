@@ -7,7 +7,6 @@ import org.eclipse.xtext.generator.IFileSystemAccess2
 import edu.kit.ipd.sdq.commons.util.java.Pair
 import static extension tools.vitruv.dsls.reactions.codegen.helper.ClassNamesGenerators.*
 import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
-import tools.vitruv.framework.change.processing.impl.CompositeChangePropagationSpecification
 import tools.vitruv.dsls.reactions.helper.XtendImportHelper
 import org.eclipse.emf.ecore.resource.ResourceSet
 import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsSegment
@@ -25,6 +24,7 @@ import java.util.concurrent.ExecutionException
 import java.util.concurrent.Callable
 import java.util.Arrays
 import tools.vitruv.dsls.reactions.codegen.helper.ClassNamesGenerators
+import tools.vitruv.framework.change.processing.impl.CompositeDecomposingChangePropagationSpecification
 
 class ReactionsEnvironmentGenerator {
 
@@ -96,14 +96,14 @@ class ReactionsEnvironmentGenerator {
 		val changePropagationSpecificationNameGenerator = modelPair.changePropagationSpecificationClassNameGenerator
 		'''
 			/**
-			 * The {@link «CompositeChangePropagationSpecification»} for transformations between the metamodels «modelPair.first.name» and «modelPair.second.name».
+			 * The {@link «CompositeDecomposingChangePropagationSpecification»} for transformations between the metamodels «modelPair.first.name» and «modelPair.second.name».
 			 * To add further change processors override the setup method.
 			 *
 			 * <p> This file is generated! Do not edit it but extend it by inheriting from it!
 			 * 
 			 * <p> «VERSION_MARKER» «TEMPLATE_VERSION»
 			 */
-			public class «changePropagationSpecificationNameGenerator.simpleName» extends «CompositeChangePropagationSpecification.typeRef» {
+			public class «changePropagationSpecificationNameGenerator.simpleName» extends «CompositeDecomposingChangePropagationSpecification.typeRef» {
 				
 				private final «List.typeRef»<«Supplier.typeRef»<? extends «ChangePropagationSpecification.typeRef»>> executors = «Arrays.typeRef».asList(
 					«EXECUTORS_MARKER_START»

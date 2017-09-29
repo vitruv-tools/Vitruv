@@ -4,19 +4,24 @@ import org.eclipse.emf.ecore.EStructuralFeature
 import org.eclipse.xtend2.lib.StringConcatenationClient
 import tools.vitruv.dsls.reactions.codegen.helper.AccessibleElement
 import static tools.vitruv.dsls.reactions.codegen.helper.ReactionsLanguageConstants.*
+import tools.vitruv.framework.change.echange.feature.single.ReplaceSingleValuedFeatureEChange
+import org.eclipse.xtend.lib.annotations.Accessors
 
 public class AtomicChangeTypeRepresentation extends ChangeTypeRepresentation {
-	public static final String changeName = "change";
-
+	private static final String TEMPORARY_TYPED_CHANGE_NAME = "_localTypedChange";
+	
 	protected final Class<?> changeType;
 	protected final String affectedElementClassCanonicalName
 	protected final String affectedValueClassCanonicalName
 	protected final boolean hasOldValue;
 	protected final boolean hasNewValue;
 	protected final EStructuralFeature affectedFeature;
-
-	protected new(Class<?> changeType, String affectedElementClassCanonicalName, String affectedValueClassCanonicalName, boolean hasOldValue,
+	@Accessors(PUBLIC_GETTER)
+	protected final String name;
+	
+	protected new(String name, Class<?> changeType, String affectedElementClassCanonicalName, String affectedValueClassCanonicalName, boolean hasOldValue,
 		boolean hasNewValue, EStructuralFeature affectedFeature) {
+		this.name = name;
 		this.changeType = changeType
 		this.affectedElementClassCanonicalName = affectedElementClassCanonicalName.mapToNonPrimitiveType
 		this.affectedValueClassCanonicalName = affectedValueClassCanonicalName.mapToNonPrimitiveType
@@ -65,9 +70,53 @@ public class AtomicChangeTypeRepresentation extends ChangeTypeRepresentation {
 		return '''«changeType»'''
 	}
 
-	override getRelevantAtomicChangeTypeRepresentation() {
-		return this;
+	def StringConcatenationClient getSetFieldCode(String parameterName) '''
+		this.«name» = («typedChangeTypeRepresentation») «parameterName»;
+	'''
+	
+	def StringConcatenationClient getResetFieldCode() '''
+		«name» = null;
+	'''
+	
+	def AccessibleElement getAccessibleElement() {
+		return new AccessibleElement(name, changeType.name, genericTypeParameters);
 	}
+	
+	def StringConcatenationClient generateCheckMethodBody(String parameterName) '''
+		if («parameterName» instanceof «changeTypeRepresentationWithWildcards») {
+			«typedChangeTypeRepresentation» «TEMPORARY_TYPED_CHANGE_NAME» = («typedChangeTypeRepresentation») «parameterName»;
+			«TEMPORARY_TYPED_CHANGE_NAME.generateElementChecks»
+			«parameterName.setFieldCode»
+			return true;
+		}
+		
+		return false;
+	'''
+	
+	private def StringConcatenationClient generateElementChecks(String parameterName) '''
+		«IF hasAffectedElement»
+			if (!(«parameterName».getAffectedEObject() instanceof «affectedElementClass»)) {
+				return false;
+			}
+		«ENDIF»
+		«IF hasAffectedFeature»
+			if (!«parameterName».getAffectedFeature().getName().equals("«affectedFeature.name»")) {
+				return false;
+			}
+		«ENDIF»
+		«IF hasOldValue»
+			if («IF ReplaceSingleValuedFeatureEChange.isAssignableFrom(changeType)»«parameterName».isFromNonDefaultValue() && «
+				ENDIF»!(«parameterName».getOldValue() instanceof «affectedValueClass»)) {
+				return false;
+			}
+		«ENDIF»
+		«IF hasNewValue»
+			if («IF ReplaceSingleValuedFeatureEChange.isAssignableFrom(changeType)»«parameterName».isToNonDefaultValue() && «
+				ENDIF»!(«parameterName».getNewValue() instanceof «affectedValueClass»)) {
+				return false;
+			}
+		«ENDIF»
+	'''
 
 	public def Iterable<AccessibleElement> generatePropertiesParameterList() {
 		val result = <AccessibleElement>newArrayList();
@@ -84,34 +133,25 @@ public class AtomicChangeTypeRepresentation extends ChangeTypeRepresentation {
 			result.add(new AccessibleElement(CHANGE_NEW_VALUE_ATTRIBUTE, affectedValueClass));
 		}
 		if (result.empty) {
-			result.add(new AccessibleElement(changeName, changeType));
+			result.add(new AccessibleElement(name, changeType.name, genericTypeParameters));
 		}
 		return result;
 	}
 
-	public def StringConcatenationClient generatePropertiesAssignmentCode(String typedChangeVariableName) {
+	public def StringConcatenationClient generatePropertiesAssignmentCode() {
 		'''
 			«IF affectedElementClass !== null»
-				«affectedElementClass» «CHANGE_AFFECTED_ELEMENT_ATTRIBUTE» = «typedChangeVariableName».get«CHANGE_AFFECTED_ELEMENT_ATTRIBUTE.toFirstUpper»();
+				«affectedElementClass» «CHANGE_AFFECTED_ELEMENT_ATTRIBUTE» = «name».get«CHANGE_AFFECTED_ELEMENT_ATTRIBUTE.toFirstUpper»();
 			«ENDIF»
 			«IF affectedFeature !== null»
-				«affectedFeature.eClass.instanceClass» «CHANGE_AFFECTED_FEATURE_ATTRIBUTE» = «typedChangeVariableName».get«CHANGE_AFFECTED_FEATURE_ATTRIBUTE.toFirstUpper»();
+				«affectedFeature.eClass.instanceClass» «CHANGE_AFFECTED_FEATURE_ATTRIBUTE» = «name».get«CHANGE_AFFECTED_FEATURE_ATTRIBUTE.toFirstUpper»();
 			«ENDIF»
 			«IF hasOldValue»
-				«affectedValueClass» «CHANGE_OLD_VALUE_ATTRIBUTE» = «typedChangeVariableName».get«CHANGE_OLD_VALUE_ATTRIBUTE.toFirstUpper»();
+				«affectedValueClass» «CHANGE_OLD_VALUE_ATTRIBUTE» = «name».get«CHANGE_OLD_VALUE_ATTRIBUTE.toFirstUpper»();
 			«ENDIF»
 			«IF hasNewValue»
-				«affectedValueClass» «CHANGE_NEW_VALUE_ATTRIBUTE» = «typedChangeVariableName».get«CHANGE_NEW_VALUE_ATTRIBUTE.toFirstUpper»();
+				«affectedValueClass» «CHANGE_NEW_VALUE_ATTRIBUTE» = «name».get«CHANGE_NEW_VALUE_ATTRIBUTE.toFirstUpper»();
 			«ENDIF»
-		'''
-	}
-
-	public override StringConcatenationClient getRelevantChangeAssignmentCode(String untypedChangeVariableName,
-			String typedChangeVariableName) {
-		val typedRelevantChangeString = relevantAtomicChangeTypeRepresentation.
-			typedChangeTypeRepresentation;
-		return '''
-			«typedRelevantChangeString» «typedChangeVariableName» = («typedChangeTypeRepresentation»)«untypedChangeVariableName»;
 		'''
 	}
 
