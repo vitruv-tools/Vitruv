@@ -68,6 +68,11 @@ package class ReactionsGenerator extends SubGenerator {
 	}
 	
 	override generate() {
+		if (commonality.participations.length + commonality.allMembers.length == 0) {
+			// nothing to generate
+			return;
+		}
+		
 		val generator = reactionsGeneratorProvider.get()
 		reactionsGenerationContext = reactionsGeneratorContextProvider.get.wrappingContext(generationContext)
 
