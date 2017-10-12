@@ -42,7 +42,7 @@ PackageLike:
 
 Participation:
 	'with' (SimpleParticipation | TupleParticipation)
-	('called' alias=QUOTED_NAME)?
+	('as' alias=QUOTED_NAME)?
 	('whereat' condition=ParticipationConditionDeclaration | condition=ParticipationNoCondition)
 ;
 
@@ -80,7 +80,7 @@ BracedParticipationRelation returns ParticipationRelation:
 ;
 
 fragment Aliasable:
-	('as' alias=QUOTED_NAME)?
+	('called' alias=QUOTED_NAME)?
 ;
 
 ClassLike:
