@@ -188,6 +188,6 @@ terminal QUOTED_NAME:
 ;
 
 terminal fragment NAME:
-	('a'..'z' | 'A'..'Z') ('a'..'Z' | 'A'..'Z' | '0'..'9' | '-' | '_')*
+	('a'..'z' | 'A'..'Z') ('a'..'z' | 'A'..'Z' | '0'..'9' | '-' | '_')*
 ;
 	
