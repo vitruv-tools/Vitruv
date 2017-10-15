@@ -29,7 +29,8 @@ package class ParticipationClassSpecialInitializationBuilder
 	extension var RoutineTypeProvider typeProvider
 	ParticipationClass participationClass
 	Function<ParticipationClass, XFeatureCall> participationClassReferenceProvider
-
+	static val AFTER_CREATED_RELATION_OPERATOR_HOOK = 'afterCreated'
+	
 	def package forParticipationClass(ParticipationClass participationClass) {
 		this.participationClass = participationClass
 		return this
@@ -59,6 +60,7 @@ package class ParticipationClassSpecialInitializationBuilder
 	def private dispatch hasSpecialInitialization(ParticipationRelation relation) {
 		relation.leftClasses.size > 0 && relation.rightClasses.size > 0 &&
 			relation.rightClasses.indexOf(participationClass) == relation.rightClasses.size - 1
+			&& relation.operator.findOptionalImplementedMethod(AFTER_CREATED_RELATION_OPERATOR_HOOK) !== null
 	}
 
 	def package getSpecialInitializer(RoutineTypeProvider typeProvider,
@@ -101,7 +103,7 @@ package class ParticipationClassSpecialInitializationBuilder
 	}
 
 	def private getAfterCreatedCode(ParticipationRelation participationRelation) {
-		val afterCreatedMethod = participationRelation.operator.findOptionalImplementedMethod('afterCreated')
+		val afterCreatedMethod = participationRelation.operator.findOptionalImplementedMethod(AFTER_CREATED_RELATION_OPERATOR_HOOK)
 		if (afterCreatedMethod !== null) {
 			XbaseFactory.eINSTANCE.createXMemberFeatureCall => [
 				memberCallTarget = createOperatorConstructorCall(participationRelation, typeProvider, participationClassReferenceProvider)
