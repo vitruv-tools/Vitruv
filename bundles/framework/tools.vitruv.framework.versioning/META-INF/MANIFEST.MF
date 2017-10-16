@@ -20,7 +20,6 @@ Bundle-Localization: plugin
 Require-Bundle: org.apache.log4j,
  tools.vitruv.framework.tests.util,
  tools.vitruv.framework.tests.util.metamodels,
- tools.vitruv.dsls.reactions,
  tools.vitruv.extensions.dslsruntime.reactions,
  org.eclipse.xtend.lib,
  org.graphstream;bundle-version="1.3.0";visibility:=reexport,

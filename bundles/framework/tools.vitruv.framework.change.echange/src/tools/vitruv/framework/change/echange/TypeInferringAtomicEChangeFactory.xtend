@@ -97,7 +97,11 @@ interface TypeInferringAtomicEChangeFactory {
 	 * @return The created ReplaceSingleValuedEReference EChange.
 	 */
 	def <A extends EObject, T extends EObject> ReplaceSingleValuedEReference<A, T> createReplaceSingleReferenceChange(
-		A affectedEObject, EReference affectedReference, T oldValue, T newValue)
+		A affectedEObject,
+		EReference affectedReference,
+		T oldValue,
+		T newValue
+	)
 
 	/**
 	 * Creates a new {@link RemoveEReference} EChange.

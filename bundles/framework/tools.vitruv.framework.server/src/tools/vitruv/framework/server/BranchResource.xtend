@@ -6,12 +6,13 @@ import javax.ws.rs.POST
 import javax.ws.rs.Path
 import javax.ws.rs.PathParam
 import javax.ws.rs.Produces
+import javax.ws.rs.core.MediaType
+
 import org.bson.Document
 
 import static com.mongodb.client.model.Filters.eq
 import static com.mongodb.client.model.Projections.excludeId
 import static com.mongodb.client.model.Projections.fields
-import javax.ws.rs.core.MediaType
 
 @Path("/branch")
 class BranchResource extends MongoResource {

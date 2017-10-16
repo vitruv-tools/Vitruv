@@ -45,7 +45,7 @@ class DependencyGraphCreatorImpl implements DependencyGraphCreator {
 
 		changeMatches.forEach [ c |
 			c.originalChange.EChanges.forEach [ echange, i |
-				if (!c.consequentialChanges.EChanges.empty) {
+				if(!c.consequentialChanges.EChanges.empty) {
 					val triggeredEchange = c.consequentialChanges.EChanges.get(i)
 					graph.addEdge(echange, triggeredEchange, EdgeType::TRIGGERS)
 				}
@@ -76,11 +76,11 @@ class DependencyGraphCreatorImpl implements DependencyGraphCreator {
 			node.vuri = vuri
 		]
 		graph.savePicture
-		if (echanges.exists[resolved])
+		if(echanges.exists[resolved])
 			throw new IllegalStateException("A change was resolved")
 		val Map<EChange, EChange> unresolvedToResolvedMap = newHashMap
 		echanges.forEach [
-			if (it instanceof CreateAndInsertRoot<?>) {
+			if(it instanceof CreateAndInsertRoot<?>) {
 				val fileUri = vuri.EMFUri
 				resourceSet.createResource(fileUri)
 			}
@@ -93,11 +93,11 @@ class DependencyGraphCreatorImpl implements DependencyGraphCreator {
 			echanges.filter[it !== echange].forEach [ otherEchange |
 				val otherResolved = unresolvedToResolvedMap.get(otherEchange)
 				val isParent = checkForRequireEdge(resolved, otherResolved)
-				if (isParent)
+				if(isParent)
 					graph.addEdge(echange, otherEchange, EdgeType::REQUIRED)
 			]
 		]
 		// TODO PS Remove
-		if (print) graph.savePicture
+		if(print) graph.savePicture
 	}
 }

@@ -30,7 +30,7 @@ class EChangeNodeImpl extends SingleNode implements EChangeNode {
 	override setEChange(EChange e) {
 		eChange = e
 		val x = getAttribute(GraphStreamConstants::uiClass)
-		val prefix = if (null === x || "" === x) "" else x + ", "
+		val prefix = if(null === x || "" === x) "" else x + ", "
 		val String s = '''«prefix»«e.class.simpleName»'''
 		setAttribute(GraphStreamConstants::uiClass, s)
 	}

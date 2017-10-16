@@ -26,10 +26,12 @@ target/
 # Custom
 EvaluationData
 **/.polyglot.build.properties
-tests/dsls/tools.vitruv.dsls.reactions.tests/*.png
+tests/framework/tools.vitruv.framework.versioning.tests/*.png
 
 bundles/others/org/org\.eclipse\.uml2\.uml/
 
 bundles/others/org/org\.glassfish\.jersey/
 
 Dockerfile
+
+bundles/others/org\.eclipse\.uml2\.uml/

@@ -18,6 +18,8 @@ import tools.vitruv.framework.change.echange.compound.CreateAndReplaceNonRoot
 import tools.vitruv.framework.change.echange.feature.attribute.ReplaceSingleValuedEAttribute
 import tools.vitruv.framework.change.echange.resolve.EChangeUnresolver
 import tools.vitruv.framework.change.echange.copy.EChangeCopier
+import tools.vitruv.framework.change.echange.compound.RemoveAndDeleteNonRoot
+import tools.vitruv.framework.change.echange.feature.reference.ReplaceSingleValuedEReference
 
 class EChangeCopierImpl implements EChangeCopier {
 	// Extensions.
@@ -78,6 +80,24 @@ class EChangeCopierImpl implements EChangeCopier {
 		)
 		return change
 	}
+	private dispatch def RemoveAndDeleteNonRoot<?, ?> copyThisEChange(
+		RemoveAndDeleteNonRoot<?, ?> createAndInsertNonRoot
+	) {
+		val removeChange = createAndInsertNonRoot.removeChange
+		val affectedEObject = removeChange.affectedEObject as InternalEObject
+		val newAffectedEObject = adjust(affectedEObject)
+		val affectedFeature = removeChange.affectedFeature
+		val index = removeChange.index
+		val oldValue = removeChange.oldValue
+		val change = TypeInferringUnresolvingCompoundEChangeFactory::instance.createRemoveAndDeleteNonRootChange(
+			newAffectedEObject,
+			affectedFeature,
+			oldValue,
+			index,
+			EcoreUtil::getID(oldValue)
+		)
+		return change
+	}
 
 	private dispatch def CreateAndInsertRoot<?> copyThisEChange(
 		CreateAndInsertRoot<?> createAndInsertRoot
@@ -120,6 +140,23 @@ class EChangeCopierImpl implements EChangeCopier {
 				newValueAfterAjustment = adjustName(newValue)
 		}
 		val x = TypeInferringUnresolvingAtomicEChangeFactory::instance.createReplaceSingleAttributeChange(
+			newAffectedEObject,
+			affectedAttribute,
+			oldValue,
+			newValueAfterAjustment
+		)
+		return x
+	}
+	private dispatch def ReplaceSingleValuedEReference<?, ?> copyThisEChange(
+		ReplaceSingleValuedEReference<?, ?> replaceSingleValuedEAttribute
+	) {
+		val affectedAttribute = replaceSingleValuedEAttribute.affectedFeature
+		val affectedEObject = replaceSingleValuedEAttribute.affectedEObject as InternalEObject
+		val newAffectedEObject = adjust(affectedEObject)
+		val newValue = replaceSingleValuedEAttribute.newValue
+		val oldValue = replaceSingleValuedEAttribute.oldValue
+		var newValueAfterAjustment = newValue
+		val x = TypeInferringUnresolvingAtomicEChangeFactory::instance.createReplaceSingleReferenceChange(
 			newAffectedEObject,
 			affectedAttribute,
 			oldValue,

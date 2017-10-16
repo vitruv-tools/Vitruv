@@ -44,9 +44,7 @@ class EChangeGraphImpl extends SingleGraph implements EChangeGraph {
 			fill-color: yellow;
 		}
 		node.«NodeType::UNPAIRED.toString» {
-			shadow-color: red; 
-			shadow-width: 60px; 
-			shadow-mode: plain;
+			fill-color: red;
 		}
 		node.«CreateAndInsertRootImpl.simpleName» {
 			size: 50px;
@@ -147,6 +145,10 @@ class EChangeGraphImpl extends SingleGraph implements EChangeGraph {
 			node.EChange = oldNode.EChange
 			node.triggered = oldNode.triggered
 			node.vuri = oldNode.vuri
+			val uiLabel = oldNode.<String>getAttribute(GraphStreamConstants::uiLabel)
+			node.setAttribute(GraphStreamConstants::uiLabel, uiLabel)
+			val uiClass = oldNode.<String>getAttribute(GraphStreamConstants::uiClass)
+			node.setAttribute(GraphStreamConstants::uiClass, uiClass)
 		]
 		this.<EChangeEdge>edgeSet.filter [
 			nodePredicate.apply(sourceNode) && nodePredicate.apply(targetNode)
@@ -208,16 +210,18 @@ class EChangeGraphImpl extends SingleGraph implements EChangeGraph {
 				graphMap.remove(this)
 			} else
 				0
-
 		graphToAdd.<EChangeNode>nodeSet.forEach [ node |
 			val newNode = <EChangeNode>addNode(node.id)
 			attributeKeySet.forEach [ attKey |
 				val attribute = <String>getAttribute(attKey)
 				newNode.addAttribute(attKey, attribute)
 			]
-			newNode.setAttribute(GraphStreamConstants::uiClass, '''graph«x»''')
+			val uiLabel = node.<String>getAttribute(GraphStreamConstants::uiLabel)
+			newNode.setAttribute(GraphStreamConstants::uiLabel, uiLabel)
+			newNode.setAttribute(GraphStreamConstants::uiClass, '''graph«x», «node.getAttribute(GraphStreamConstants::uiClass, String)»''')
 			newNode.EChange = node.EChange
 			newNode.vuri = node.vuri
+			
 		]
 		graphMap.put(this, x + 1)
 		graphToAdd.edgeSet.forEach [ currentEdge |

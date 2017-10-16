@@ -11,6 +11,7 @@ import tools.vitruv.framework.versioning.ConflictDetectionStrategy
 import tools.vitruv.framework.versioning.ConflictSeverity
 import tools.vitruv.framework.versioning.ConflictType
 import tools.vitruv.framework.versioning.extensions.EChangeCompareUtil
+import tools.vitruv.framework.change.echange.compound.RemoveAndDeleteNonRoot
 
 class ConflictDetectionStrategyImpl implements ConflictDetectionStrategy {
 	// Extensions.
@@ -82,6 +83,28 @@ class ConflictDetectionStrategyImpl implements ConflictDetectionStrategy {
 		return returnValue
 	}
 
+	private static dispatch def boolean isConflicting(
+		ReplaceSingleValuedEAttribute<?, ?> e1,
+		RemoveAndDeleteNonRoot<?, ?> e2
+	) {
+		isConflicting(e2, e1)
+	}
+
+	private static dispatch def boolean isConflicting(
+		RemoveAndDeleteNonRoot<?, ?> e1,
+		ReplaceSingleValuedEAttribute<?, ?> e2
+	) {
+		val affectedObjectIsEqual = isEObjectEqual(e1.deleteChange.affectedEObject, e2.affectedEObject)
+		val affectedContainer1 = e1.deleteChange.affectedEObject as InternalEObject
+		val affectedContainerPlatformString1 = affectedContainer1.eProxyURI.comparableString
+		val containerIsRootAndMapped = containerIsRootAndMapped(
+			affectedContainerPlatformString1,
+			e2.affectedEObject as InternalEObject
+		)
+		val returnValue = (affectedObjectIsEqual || containerIsRootAndMapped)
+		return returnValue
+	}
+
 	private static dispatch def determineConflictSolvability(EChange e1, EChange e2, ConflictType type) {
 		ConflictSeverity::HARD
 	}
@@ -99,7 +122,7 @@ class ConflictDetectionStrategyImpl implements ConflictDetectionStrategy {
 		CreateAndInsertNonRoot<?, ?> e2,
 		ConflictType type
 	) {
-		return if (type === ConflictType::INSERTING_IN_SAME_CONTANER)
+		return if(type === ConflictType::INSERTING_IN_SAME_CONTANER)
 			ConflictSeverity::SOFT
 		else
 			ConflictSeverity::HARD

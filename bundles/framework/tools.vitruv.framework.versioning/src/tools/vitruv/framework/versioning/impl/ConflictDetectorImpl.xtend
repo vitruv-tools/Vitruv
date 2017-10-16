@@ -4,13 +4,11 @@ import java.util.Collection
 import java.util.List
 import java.util.Map
 import java.util.Set
-
+import java.util.stream.Collectors
 import org.apache.log4j.Level
 import org.apache.log4j.Logger
-
 import org.eclipse.xtend.lib.annotations.Accessors
 import org.eclipse.xtext.xbase.lib.Functions.Function1
-
 import tools.vitruv.framework.change.description.PropagatedChange
 import tools.vitruv.framework.change.description.VitruviusChange
 import tools.vitruv.framework.change.echange.EChange
@@ -25,9 +23,8 @@ import tools.vitruv.framework.versioning.EdgeType
 import tools.vitruv.framework.versioning.IsomorphismTesterAlgorithm
 import tools.vitruv.framework.versioning.SimpleChangeConflict
 import tools.vitruv.framework.versioning.extensions.EChangeCompareUtil
-import tools.vitruv.framework.versioning.extensions.EChangeNode
 import tools.vitruv.framework.versioning.extensions.EChangeEdge
-import java.util.stream.Collectors
+import tools.vitruv.framework.versioning.extensions.EChangeNode
 
 class ConflictDetectorImpl implements ConflictDetector {
 	// Extensions.
@@ -153,12 +150,12 @@ class ConflictDetectorImpl implements ConflictDetector {
 		// PS Determine my EChanges.
 		val myOriginalEChanges = branchDiff.baseChanges.originalEChanges
 		val myTriggeredEChanges = branchDiff.baseChanges.triggeredEChanges
-		val myChanges = myOriginalEChanges + myTriggeredEChanges
+//		val myChanges = myOriginalEChanges + myTriggeredEChanges
 
 		// PS Determine their EChanges.
 		val theirOriginalEChanges = branchDiff.compareChanges.originalEChanges
 		val theirTriggeredEChanges = branchDiff.compareChanges.triggeredEChanges
-		val theirChanges = theirOriginalEChanges + theirTriggeredEChanges
+//		val theirChanges = theirOriginalEChanges + theirTriggeredEChanges
 
 		val tester = IsomorphismTesterAlgorithm::createIsomorphismTester
 		tester.init(graph1, graph2)
@@ -194,7 +191,7 @@ class ConflictDetectorImpl implements ConflictDetector {
 
 		// PS Traverse through my unpaired changes to find conflicts in their changes. 
 		myUnpairedChanges.forEach [ myChange |
-			theirChanges.filter[conflictDetectionStrategy.conflicts(myChange, it)].forEach [
+			theirUnpairedChanges.filter[conflictDetectionStrategy.conflicts(myChange, it)].forEach [
 				processConflict(myChange, it, naiveConflicts)
 				combinedGraph.addEdge(myChange, it, EdgeType::CONFLICTS)
 			]
@@ -202,7 +199,7 @@ class ConflictDetectorImpl implements ConflictDetector {
 		// PS Traverse through their unpaired changes to find conflicts in my changes.
 		theirUnpairedChanges.forEach [ theirChange |
 			// PS Exclude already found conflicts
-			myChanges.filter[!combinedGraph.checkIfEdgeExists(theirChange, it, EdgeType::CONFLICTS)].filter [
+			myUnpairedChanges.filter[!combinedGraph.checkIfEdgeExists(theirChange, it, EdgeType::CONFLICTS)].filter [
 				conflictDetectionStrategy.conflicts(theirChange, it)
 			].forEach [
 				processConflict(it, theirChange, naiveConflicts)

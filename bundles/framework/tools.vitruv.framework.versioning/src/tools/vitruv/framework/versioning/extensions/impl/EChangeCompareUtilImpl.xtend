@@ -103,9 +103,9 @@ class EChangeCompareUtilImpl implements EChangeCompareUtil {
 			val otherId2 = idToIdMap.get(id1)
 			return otherId2 == id2
 		}
-		if (idToIdMap.containsValue(id2)) {
-			val otherID1 = idToIdMap.inverse.get(id2)
-			return otherID1 == id1
+		if (idToIdMap.containsValue(id1)) {
+			val otherID1 = idToIdMap.inverse.get(id1)
+			return otherID1 == id2
 		}
 		return false
 

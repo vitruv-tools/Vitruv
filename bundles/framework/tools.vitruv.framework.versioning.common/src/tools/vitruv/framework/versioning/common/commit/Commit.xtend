@@ -23,3 +23,4 @@ interface Commit extends JSONSerializable {
 	// Other user selection cannot be handled yet.
 	def List<Integer> getUserInteractions()
 }
+ 

@@ -12,6 +12,8 @@ import tools.vitruv.framework.change.echange.compound.CreateAndInsertNonRoot
 import tools.vitruv.framework.change.echange.compound.CreateAndInsertRoot
 import org.apache.log4j.Logger
 import org.eclipse.xtext.xbase.lib.Functions.Function1
+import tools.vitruv.framework.change.echange.feature.reference.ReplaceSingleValuedEReference
+import tools.vitruv.framework.change.echange.compound.RemoveAndDeleteNonRoot
 
 class URIRemapperImpl implements URIRemapper {
 	static extension Logger = Logger::getLogger(URIRemapperImpl)
@@ -38,6 +40,22 @@ class URIRemapperImpl implements URIRemapper {
 	}
 
 	private static dispatch def processEchange(
+		ReplaceSingleValuedEReference<?, ?> e,
+		Consumer<EObject> cb,
+		Function1<String, String> newValueCallback
+	) {
+		cb.accept(e.affectedEObject)
+	}
+
+	private static dispatch def processEchange(
+		RemoveAndDeleteNonRoot<?, ?> e,
+		Consumer<EObject> cb,
+		Function1<String, String> newValueCallback
+	) {
+		cb.accept(e.removeChange.affectedEObject)
+	}
+
+	private static dispatch def processEchange(
 		CreateAndInsertRoot<?> e,
 		Consumer<EObject> cb,
 		Function1<String, String> newValueCallback
@@ -59,7 +77,7 @@ class URIRemapperImpl implements URIRemapper {
 		String to
 	) {
 		val oldUri = e.insertChange.uri
-		if (oldUri.contains(from)) {
+		if(oldUri.contains(from)) {
 			val newUri = oldUri.replace(from, to)
 			e.insertChange.uri = newUri
 		}
@@ -78,16 +96,16 @@ class URIRemapperImpl implements URIRemapper {
 
 	public static val REMAP_URI_String = [ String from, String to, EObject e |
 		val internalEObject = e as InternalEObject
-		if (null === internalEObject) {
+		if(null === internalEObject) {
 			error('''Null as parameter''')
 			return;
 		}
 		val proxyString = internalEObject.eProxyURI?.toString
-		if (null === proxyString) {
+		if(null === proxyString) {
 			error('''EObject «e» has no proxyURI''')
 			return;
 		}
-		if (proxyString.contains(from)) {
+		if(proxyString.contains(from)) {
 			val newProxyString = proxyString.replace(from, to)
 			val newUri = URI::createURI(newProxyString)
 			internalEObject.eSetProxyURI(newUri)
@@ -95,7 +113,7 @@ class URIRemapperImpl implements URIRemapper {
 	]
 
 	override createRemapFunction(VURI from, VURI to) {
-		if (null === from || null === to)
+		if(null === from || null === to)
 			return []
 		val fromVURIString = from.EMFUri.toString
 		val toVURIString = to.EMFUri.toString
@@ -107,7 +125,7 @@ class URIRemapperImpl implements URIRemapper {
 	}
 
 	private static def Function1<String, String> createMyNameRemapFunction(VURI from, VURI to) {
-		if (null === from || null === to)
+		if(null === from || null === to)
 			return []
 		val fromVURIString = from.EMFUri.toString
 		val toVURIString = to.EMFUri.toString
@@ -129,7 +147,7 @@ class URIRemapperImpl implements URIRemapper {
 	}
 
 	public static val REMAP_ROOT_VALUE = [ String from, String to, String toApply |
-		if (toApply.contains(from))
+		if(toApply.contains(from))
 			toApply.replace(from, to)
 		else
 			toApply
@@ -139,7 +157,7 @@ class URIRemapperImpl implements URIRemapper {
 		val remapMyUriFunction = createRemapFunction(from, to)
 		val remapMyNameFunction = createMyNameRemapFunction(from, to)
 		return [ EChange e |
-			if (e instanceof CreateAndInsertRoot<?>)
+			if(e instanceof CreateAndInsertRoot<?>)
 				remapCreateAndInsertRootUri(e, from, to)
 			else
 				processEchange(e, remapMyUriFunction, remapMyNameFunction)
@@ -150,7 +168,7 @@ class URIRemapperImpl implements URIRemapper {
 		val remapTheirUriFunction = createRemapFunction(from, to)
 		val remapMyNameFunction = createMyNameRemapFunction(from, to)
 		return [ EChange e |
-			if (e instanceof CreateAndInsertRoot<?>)
+			if(e instanceof CreateAndInsertRoot<?>)
 				remapCreateAndInsertRootUri(e, from, to)
 			else
 				processEchange(e, remapTheirUriFunction, remapMyNameFunction)
@@ -167,9 +185,9 @@ class URIRemapperImpl implements URIRemapper {
 	override getCorrespondentURI(VURI vuri) {
 		// PS TODO This is a mock. Please implement!
 		val vuriString = vuri.EMFUri.toString
-		val newVuriString = if (vuriString.contains("my_model"))
+		val newVuriString = if(vuriString.contains("my_model"))
 				vuriString.replace("my_model", "their_model")
-			else if (vuriString.contains("their_model"))
+			else if(vuriString.contains("their_model"))
 				vuriString.replace("their_model", "my_model")
 			else
 				vuriString
