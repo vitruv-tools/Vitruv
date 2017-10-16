@@ -1,4 +1,4 @@
-package tools.vitruv.framework.versioning.emfstore
+package tools.vitruv.framework.versioning.mococo
 
 import tools.vitruv.framework.versioning.branch.Branch
 import java.util.List

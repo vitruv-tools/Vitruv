@@ -1,12 +1,12 @@
-package tools.vitruv.framework.versioning.emfstore.impl
+package tools.vitruv.framework.versioning.mococo.impl
 
 import java.util.Set
 import org.eclipse.xtend.lib.annotations.Accessors
 import tools.vitruv.framework.versioning.branch.Branch
-import tools.vitruv.framework.versioning.emfstore.RemoteRepository
+import tools.vitruv.framework.versioning.mococo.RemoteRepository
 import tools.vitruv.framework.versioning.exceptions.RemoteBranchNotFoundException
 import tools.vitruv.framework.versioning.exceptions.NoSuchCommitException
-import tools.vitruv.framework.versioning.emfstore.PushState
+import tools.vitruv.framework.versioning.mococo.PushState
 import tools.vitruv.framework.versioning.common.commit.Commit
 import tools.vitruv.framework.versioning.common.commit.SimpleCommit
 import tools.vitruv.framework.versioning.common.commit.MergeCommit

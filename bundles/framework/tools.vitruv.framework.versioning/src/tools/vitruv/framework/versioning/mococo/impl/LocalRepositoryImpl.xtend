@@ -1,10 +1,10 @@
-package tools.vitruv.framework.versioning.emfstore.impl
+package tools.vitruv.framework.versioning.mococo.impl
 
 import org.apache.log4j.Logger
 import tools.vitruv.framework.versioning.branch.LocalBranch
 import tools.vitruv.framework.versioning.branch.impl.RemoteBranchImpl
-import tools.vitruv.framework.versioning.emfstore.PushState
-import tools.vitruv.framework.versioning.emfstore.RemoteRepository
+import tools.vitruv.framework.versioning.mococo.PushState
+import tools.vitruv.framework.versioning.mococo.RemoteRepository
 import tools.vitruv.framework.versioning.exceptions.LocalBranchNotFoundException
 import tools.vitruv.framework.versioning.exceptions.RemoteBranchNotFoundException
 import tools.vitruv.framework.versioning.exceptions.RepositoryNotFoundException

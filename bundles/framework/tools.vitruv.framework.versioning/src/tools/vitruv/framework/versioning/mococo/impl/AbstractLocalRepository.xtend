@@ -1,4 +1,4 @@
-package tools.vitruv.framework.versioning.emfstore.impl
+package tools.vitruv.framework.versioning.mococo.impl
 
 import java.util.List
 import java.util.Map
@@ -34,7 +34,7 @@ import tools.vitruv.framework.versioning.branch.RemoteBranch
 import tools.vitruv.framework.versioning.branch.impl.LocalBranchImpl
 import tools.vitruv.framework.versioning.common.commit.Commit
 import tools.vitruv.framework.versioning.common.commit.SimpleCommit
-import tools.vitruv.framework.versioning.emfstore.InternalTestLocalRepository
+import tools.vitruv.framework.versioning.mococo.InternalTestLocalRepository
 import tools.vitruv.framework.versioning.extensions.URIRemapper
 import tools.vitruv.framework.vsum.InternalModelRepository
 import tools.vitruv.framework.vsum.InternalTestVersioningVirtualModel

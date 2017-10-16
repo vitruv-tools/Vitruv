@@ -1,4 +1,4 @@
-package tools.vitruv.framework.versioning.emfstore
+package tools.vitruv.framework.versioning.mococo
 
 import tools.vitruv.framework.versioning.common.commit.SimpleCommit
 import tools.vitruv.framework.util.datatypes.VURI

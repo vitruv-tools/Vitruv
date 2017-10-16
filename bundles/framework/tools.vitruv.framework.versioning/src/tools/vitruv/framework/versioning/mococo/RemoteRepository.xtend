@@ -1,4 +1,4 @@
-package tools.vitruv.framework.versioning.emfstore
+package tools.vitruv.framework.versioning.mococo
 
 import java.util.List
 import java.util.Set

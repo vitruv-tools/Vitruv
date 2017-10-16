@@ -20,11 +20,11 @@ import tools.vitruv.framework.versioning.MultiChangeConflict
 import tools.vitruv.framework.versioning.SimpleChangeConflict
 import tools.vitruv.framework.versioning.author.Author
 import tools.vitruv.framework.versioning.common.commit.SimpleCommit
-import tools.vitruv.framework.versioning.emfstore.InternalTestLocalRepository
-import tools.vitruv.framework.versioning.emfstore.PushState
-import tools.vitruv.framework.versioning.emfstore.RemoteRepository
-import tools.vitruv.framework.versioning.emfstore.impl.LocalRepositoryImpl
-import tools.vitruv.framework.versioning.emfstore.impl.RemoteRepositoryImpl
+import tools.vitruv.framework.versioning.mococo.InternalTestLocalRepository
+import tools.vitruv.framework.versioning.mococo.PushState
+import tools.vitruv.framework.versioning.mococo.RemoteRepository
+import tools.vitruv.framework.versioning.mococo.impl.LocalRepositoryImpl
+import tools.vitruv.framework.versioning.mococo.impl.RemoteRepositoryImpl
 import tools.vitruv.framework.versioning.extensions.CommitSerializer
 import tools.vitruv.framework.versioning.extensions.URIRemapper
 import tools.vitruv.framework.vsum.InternalTestVersioningVirtualModel

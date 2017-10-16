@@ -1,4 +1,4 @@
-package tools.vitruv.framework.versioning.emfstore.impl
+package tools.vitruv.framework.versioning.mococo.impl
 
 import java.util.UUID
 
@@ -12,7 +12,7 @@ import tools.vitruv.framework.versioning.branch.impl.LocalBranchImpl
 import tools.vitruv.framework.versioning.common.commit.Commit
 import tools.vitruv.framework.versioning.common.commit.CommitFactory
 import tools.vitruv.framework.versioning.common.commit.SimpleCommit
-import tools.vitruv.framework.versioning.emfstore.AbstractRepository
+import tools.vitruv.framework.versioning.mococo.AbstractRepository
 
 class AbstractRepositoryImpl implements AbstractRepository {
 	// Extensions.

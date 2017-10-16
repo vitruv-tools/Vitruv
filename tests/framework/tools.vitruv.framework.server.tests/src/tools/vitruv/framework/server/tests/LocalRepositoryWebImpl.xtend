@@ -9,8 +9,8 @@ import com.google.gson.JsonParser
 
 import tools.vitruv.framework.versioning.branch.LocalBranch
 import tools.vitruv.framework.versioning.branch.impl.RemoteBranchImpl
-import tools.vitruv.framework.versioning.emfstore.PushState
-import tools.vitruv.framework.versioning.emfstore.impl.AbstractLocalRepository
+import tools.vitruv.framework.versioning.mococo.PushState
+import tools.vitruv.framework.versioning.mococo.impl.AbstractLocalRepository
 import tools.vitruv.framework.versioning.exceptions.LocalBranchNotFoundException
 import tools.vitruv.framework.versioning.exceptions.RemoteBranchNotFoundException
 import tools.vitruv.framework.versioning.exceptions.RepositoryNotFoundException
