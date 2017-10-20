@@ -64,17 +64,19 @@ class EmfAccessExpressions {
 	def package static setFeature(extension RoutineTypeProvider typeProvider, XFeatureCall element,
 		EStructuralFeature eFeature, XExpression newValue) {
 		try {
-			// trying to guess the accesors …
-			XbaseFactory.eINSTANCE.createXAssignment => [
-				assignable = element
-				feature = typeProvider.findMethod(eFeature.EContainingClass.instanceClassName,
-					'set' + eFeature.name.toFirstUpper)
-				value = newValue
-			]
+			// trying to guess the accessors …
+			val containingInstanceClassName = eFeature.EContainingClass.instanceClassName
+			if (containingInstanceClassName !== null) {
+				return XbaseFactory.eINSTANCE.createXAssignment => [
+					assignable = element
+					feature = typeProvider.findMethod(containingInstanceClassName, 'set' + eFeature.name.toFirstUpper)
+					value = newValue
+				]
+			}
 		} catch (NoSuchJvmElementException e) {
-			// if that files, use EMF’s reflection
-			return eSetFeature(typeProvider, element, eFeature.name, newValue)
 		}
+		// if that fails or is not possible, use EMF’s reflection
+		return eSetFeature(typeProvider, element, eFeature.name, newValue)
 	}
 
 	def package static addToFeatureList(extension RoutineTypeProvider typeProvider, XFeatureCall element,
@@ -115,7 +117,7 @@ class EmfAccessExpressions {
 				type = TypesFactory.eINSTANCE.createJvmParameterizedTypeReference => [
 					type = typeProvider.findType(Collection)
 					arguments += TypesFactory.eINSTANCE.createJvmParameterizedTypeReference => [
-						type = typeProvider.findType(EObject)
+						type = typeProvider.findType(Object)
 					]
 				]
 				target = XbaseFactory.eINSTANCE.createXMemberFeatureCall => [
