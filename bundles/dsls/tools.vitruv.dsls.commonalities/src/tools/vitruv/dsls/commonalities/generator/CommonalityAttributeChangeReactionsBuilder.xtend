@@ -80,7 +80,8 @@ package class CommonalityAttributeChangeReactionsBuilder
 		create.reaction('''«attribute.commonalityAttributeReactionName»Insert''')
 			.afterAttributeInsertIn(attribute.EFeatureToReference as EAttribute)
 			.call [
-				input [newValue].match [
+				input [newValue]
+				.match [
 					retrieveRelevantCorrespondences()
 				]
 				.action [
@@ -96,7 +97,7 @@ package class CommonalityAttributeChangeReactionsBuilder
 
 	def private multiAttributeRemoveReaction() {
 		create.reaction('''«attribute.commonalityAttributeReactionName»Remove''')
-			.afterAttributeInsertIn(attribute.EFeatureToReference as EAttribute)
+			.afterAttributeRemoveFrom(attribute.EFeatureToReference as EAttribute)
 			.call [
 				input [oldValue]
 				.match [
@@ -134,7 +135,7 @@ package class CommonalityAttributeChangeReactionsBuilder
 
 	def private multiReferenceAddReaction() {
 		create.reaction('''«attribute.commonalityAttributeReactionName»ElementInsert''')
-			.afterAttributeInsertIn(attribute.EFeatureToReference as EAttribute)
+			.afterElement.insertedIn(attribute.EFeatureToReference as EReference)
 			.call [
 				input [newValue]
 				.match [
@@ -153,9 +154,9 @@ package class CommonalityAttributeChangeReactionsBuilder
 
 	def private multiReferenceRemoveReaction() {
 		create.reaction('''«attribute.commonalityAttributeReactionName»ElementRemove''')
-			.afterAttributeInsertIn(attribute.EFeatureToReference as EAttribute)
+			.afterElement.removedFrom(attribute.EFeatureToReference as EReference)
 			.call [
-				input [newValue]
+				input [oldValue]
 				.match [
 					retrieveRelevantCorrespondences()
 				]

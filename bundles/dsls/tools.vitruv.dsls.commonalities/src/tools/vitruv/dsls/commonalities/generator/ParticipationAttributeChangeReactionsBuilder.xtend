@@ -86,13 +86,13 @@ package class ParticipationAttributeChangeReactionsBuilder
 		create.reaction('''«mapping.participationAttributeReactionName»Remove''')
 			.afterAttributeRemoveFrom(mapping.participationAttributeChangeClass, mapping.participationEAttribute)
 			.call [
-				input [newValue]
+				input [oldValue]
 				.match [
 					retrieveIntermediate()
 				]
 				.action [
 					update('intermediate') [
-						eRemoveFromFeatureList(variable('intermediate'), mapping.declaringAttribute.name, newValue)
+						eRemoveFromFeatureList(variable('intermediate'), mapping.declaringAttribute.name, oldValue)
 					]
 				]
 			]
@@ -134,13 +134,13 @@ package class ParticipationAttributeChangeReactionsBuilder
 		create.reaction('''«mapping.participationAttributeReactionName»Remove''').
 			afterElement.removedFrom(mapping.participationAttributeChangeClass, mapping.participationEReference)
 			.call [
-				input [newValue]
+				input [oldValue]
 				.match [
 					retrieveIntermediate()
 				]
 				.action [
 					update('intermediate') [
-						eRemoveFromFeatureList(variable('intermediate'), mapping.declaringAttribute.name, newValue)
+						eRemoveFromFeatureList(variable('intermediate'), mapping.declaringAttribute.name, oldValue)
 					]
 				]
 			]

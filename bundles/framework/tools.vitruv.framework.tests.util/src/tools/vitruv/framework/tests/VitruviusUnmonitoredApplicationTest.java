@@ -41,7 +41,7 @@ import static org.junit.Assert.assertTrue;
  */
 public abstract class VitruviusUnmonitoredApplicationTest extends VitruviusTest {
 
-	private ResourceSet resourceSet;
+	protected ResourceSet resourceSet;
 	private UuidGeneratorAndResolver uuidGeneratorAndResolver;
 	
 	private TestUserInteractor testUserInteractor;
