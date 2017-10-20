@@ -171,7 +171,7 @@ package class IntermediateModelGenerator extends SubGenerator {
 		
 		def private generateRootClass() {
 			EcoreFactory.eINSTANCE.createEClass => [
-				name = commonalityFile.intermediateModelRootClass.simpleName
+				name = conceptName.intermediateModelRootClass.simpleName
 				ESuperTypes += IntermediateModelBasePackage.eINSTANCE.root
 				referencedAs(commonalityFile.intermediateModelRootClass)
 			]
