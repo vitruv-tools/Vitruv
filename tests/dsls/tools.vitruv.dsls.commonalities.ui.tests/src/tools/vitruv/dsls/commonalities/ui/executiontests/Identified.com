@@ -18,6 +18,16 @@ commonality Identified {
 		-> UmlMockup:Resource.name
 	}
 	
+	has number {
+		= AllElementTypes:Root.singleValuedEAttribute
+		= AllElementTypes2:Root2.singleValuedEAttribute2
+	}
+	
+	has numberList {
+		= AllElementTypes:Root.multiValuedEAttribute
+		= AllElementTypes2:Root2.multiValuedEAttribute2
+	}
+	
 	has sub referencing test:Sub {
 		= AllElementTypes:Root.multiValuedContainmentEReference
 		= AllElementTypes2:Root2.multiValuedContainmentEReference2
