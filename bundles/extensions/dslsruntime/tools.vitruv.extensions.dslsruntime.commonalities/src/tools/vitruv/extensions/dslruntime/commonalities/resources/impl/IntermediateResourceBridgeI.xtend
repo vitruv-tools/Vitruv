@@ -92,7 +92,7 @@ class IntermediateResourceBridgeI extends IntermediateResourceBridgeImpl {
 	}
 
 	def private getPersistanceUri(String path, String name, String fileExtension) {
-		baseURI.appendSegments(path.split('/')).appendSegment(name).appendFileExtension(fileExtension)
+		baseURI.appendSegments(path.split('/').filter [length > 0]).appendSegment(name).appendFileExtension(fileExtension)
 	}
 
 	override remove() {
@@ -112,7 +112,7 @@ class IntermediateResourceBridgeI extends IntermediateResourceBridgeImpl {
 		if (baseURI === null && correspondenceModel !== null) { // TODO
 			val uri = PersistenceHelper.getURIFromSourceProjectFolder(persistedNonIntermediateCorrespondence,
 				'fake.ext')
-			baseURI = SAME_FOLDER.resolve(uri)
+			baseURI = SAME_FOLDER.resolve(uri).withoutTrailingSlash
 		}
 		contentChanged()
 	}
@@ -198,13 +198,20 @@ class IntermediateResourceBridgeI extends IntermediateResourceBridgeImpl {
 		checkArgument(eObject.eResource !== null, "The provided object must be in a resource!")
 		val objectResourceUri = eObject.eResource.URI
 		val projectUri = PersistenceHelper.getURIFromSourceProjectFolder(eObject, 'fake.ext')
-		baseURI = SAME_FOLDER.resolve(projectUri)
+		baseURI = SAME_FOLDER.resolve(projectUri).withoutTrailingSlash
 		path = SAME_FOLDER.resolve(objectResourceUri).deresolve(baseURI).toString
 		fileExtension = objectResourceUri.fileExtension
 		name = objectResourceUri.lastSegment.toString.withoutFileExtension
 		content = eObject
 		isPersisted = true
 		intermediateCorrespondence = eObject.intermediateCorrespondence
+	}
+	
+	def URI withoutTrailingSlash(URI uri) {
+		if (uri.lastSegment.length === 0) {
+			return uri.trimSegments(1)
+		}
+		return uri
 	}
 
 }
