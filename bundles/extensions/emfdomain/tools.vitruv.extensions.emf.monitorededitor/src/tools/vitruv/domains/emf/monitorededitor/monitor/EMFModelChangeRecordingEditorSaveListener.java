@@ -170,6 +170,7 @@ public abstract class EMFModelChangeRecordingEditorSaveListener {
      * <code>dispose()</code> is called.
      */
     public void initialize(VirtualModel virtualModel) {
+        this.virtualModel = virtualModel;
         if (!isInitialized) {
             resetChangeRecorder();
             installResourceReloadListener();
@@ -178,7 +179,6 @@ public abstract class EMFModelChangeRecordingEditorSaveListener {
         } else {
             LOGGER.warn("Called initialize() for an initialized instance," + " ignoring the call");
         }
-        this.virtualModel = virtualModel;
     }
 
     /**
