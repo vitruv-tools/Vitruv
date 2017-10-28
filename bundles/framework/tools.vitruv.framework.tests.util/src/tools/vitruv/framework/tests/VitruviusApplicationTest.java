@@ -7,6 +7,8 @@ import java.util.List;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 
 import edu.kit.ipd.sdq.commons.util.java.lang.StringUtil;
 import tools.vitruv.framework.change.description.CompositeContainerChange;
@@ -150,7 +152,8 @@ public abstract class VitruviusApplicationTest extends VitruviusUnmonitoredAppli
 	
 	protected Resource resourceAt(String modelPathInProject) {
 		try {
-			return getModelResource(modelPathInProject);
+			final ResourceSet resourceSet = new ResourceSetImpl();
+			return getModelResource(modelPathInProject, resourceSet);
 		} catch (RuntimeException e) {
 			if (e.getCause() instanceof FileNotFoundException) {
 				return createModelResource(modelPathInProject);
