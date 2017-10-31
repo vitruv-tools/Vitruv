@@ -11,7 +11,7 @@ Vitruv can be installed in Eclipse Oxygen via the [nightly update site](http://v
 
 ## Project Development
 
-Vitruv is short for Vitruvius (VIew-cenTRic engineering Using a VIrtual Underlying Single model) and is developed at the
+Vitruv aka Vitruvius (VIew-cenTRic engineering Using a VIrtual Underlying Single model) and is developed at the
 Chair for Software Design and Quality (SDQ) at the Karlsruhe Institute of Technology (KIT): http://sdq.ipd.kit.edu/
 
 The project page can be found at: https://sdqweb.ipd.kit.edu/wiki/Vitruvius
