@@ -23,7 +23,7 @@ class ModelMatchers {
 	}
 	
 	def static Matcher<Resource> doesNotExist() {
-		new ResourceInexistencMatcher()
+		new ResourceInexistenceMatcher()
 	}
 
 	def static Matcher<EObject> equalsDeeply(EObject object, FeatureMatcher... featureMatchers) {
@@ -74,7 +74,7 @@ package class ResourceContainmentMatcher extends TypeSafeMatcher<Resource> {
 }
 
 
-package class ResourceInexistencMatcher extends TypeSafeMatcher<Resource> {
+package class ResourceInexistenceMatcher extends TypeSafeMatcher<Resource> {
 	boolean exists
 
 	override protected describeMismatchSafely(Resource item, Description mismatchDescription) {
