@@ -1,8 +1,8 @@
 package tools.vitruv.dsls.mappings.tests.addressesXrecipients.mappings.aXr_all_or_nothing
 
 import tools.vitruv.dsls.mappings.tests.addressesXrecipients.mappings.aXr_all_or_nothing.halves.LeftAdRootXReRootInstanceHalf
-import edu.kit.ipd.sdq.mdsd.addresses.Addresses
-import edu.kit.ipd.sdq.mdsd.recipients.Recipients
+import edu.kit.ipd.sdq.metamodels.addresses.Addresses
+import edu.kit.ipd.sdq.metamodels.recipients.Recipients
 import tools.vitruv.extensions.dslsruntime.mappings.MappingsUtil
 import tools.vitruv.dsls.mappings.tests.addressesXrecipients.mappings.aXr_all_or_nothing.halves.RightAdRootXReRootInstanceHalf
 import tools.vitruv.extensions.dslsruntime.mappings.interfaces.IElementsRegistry

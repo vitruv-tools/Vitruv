@@ -36,11 +36,13 @@ public class EnsureAddressXRecipientLocationCityMappingRoutine extends AbstractR
     this.actionsFacade = new mir.routines.adXre_R2L.RoutinesFacade(getExecutionState(), this);
   }
   
-  protected void executeRoutine() throws IOException {
+  protected boolean executeRoutine() throws IOException {
     getLogger().debug("Called routine EnsureAddressXRecipientLocationCityMappingRoutine with input:");
     
     userExecution.callRoutine1(actionsFacade);
     
     postprocessElements();
+    
+    return true;
   }
 }

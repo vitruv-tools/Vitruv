@@ -15,33 +15,50 @@ import tools.vitruv.framework.change.echange.EChange;
  */
 @SuppressWarnings("all")
 class AnyChangeReaction extends AbstractReactionRealization {
+  private EChange change;
+  
+  private int currentlyMatchedChange;
+  
   public void executeReaction(final EChange change) {
-    EChange typedChange = (EChange)change;
+    if (!checkPrecondition(change)) {
+    	return;
+    }
+    				
+    getLogger().trace("Passed complete precondition check of Reaction " + this.getClass().getName());
+    				
     mir.routines.adXre_L2R.RoutinesFacade routinesFacade = new mir.routines.adXre_L2R.RoutinesFacade(this.executionState, this);
     mir.reactions.reactionsAddressesToRecipients.adXre_L2R.AnyChangeReaction.ActionUserExecution userExecution = new mir.reactions.reactionsAddressesToRecipients.adXre_L2R.AnyChangeReaction.ActionUserExecution(this.executionState, this);
-    userExecution.callRoutine1(typedChange, routinesFacade);
+    userExecution.callRoutine1(change, routinesFacade);
+    
+    resetChanges();
   }
   
-  public static Class<? extends EChange> getExpectedChangeType() {
-    return EChange.class;
-  }
-  
-  private boolean checkChangeProperties(final EChange change) {
-    EChange relevantChange = (EChange)change;
-    return true;
+  private void resetChanges() {
+    change = null;
+    currentlyMatchedChange = 0;
   }
   
   public boolean checkPrecondition(final EChange change) {
-    if (!(change instanceof EChange)) {
-    	return false;
+    if (currentlyMatchedChange == 0) {
+    	if (!matchChange(change)) {
+    		resetChanges();
+    		return false;
+    	} else {
+    		currentlyMatchedChange++;
+    	}
     }
-    getLogger().debug("Passed change type check of reaction " + this.getClass().getName());
-    if (!checkChangeProperties(change)) {
-    	return false;
-    }
-    getLogger().debug("Passed change properties check of reaction " + this.getClass().getName());
-    getLogger().debug("Passed complete precondition check of reaction " + this.getClass().getName());
+    
     return true;
+  }
+  
+  private boolean matchChange(final EChange change) {
+    if (change instanceof EChange) {
+    	EChange _localTypedChange = (EChange) change;
+    	this.change = (EChange) change;
+    	return true;
+    }
+    
+    return false;
   }
   
   private static class ActionUserExecution extends AbstractRepairRoutineRealization.UserExecution {

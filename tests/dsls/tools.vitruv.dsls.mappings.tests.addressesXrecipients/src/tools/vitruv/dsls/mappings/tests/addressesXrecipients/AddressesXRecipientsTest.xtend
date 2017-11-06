@@ -1,11 +1,11 @@
 package tools.vitruv.dsls.mappings.tests.addressesXrecipients
 
-import edu.kit.ipd.sdq.mdsd.addresses.Address
-import edu.kit.ipd.sdq.mdsd.addresses.Addresses
-import edu.kit.ipd.sdq.mdsd.recipients.City
-import edu.kit.ipd.sdq.mdsd.recipients.Location
-import edu.kit.ipd.sdq.mdsd.recipients.Recipient
-import edu.kit.ipd.sdq.mdsd.recipients.Recipients
+import edu.kit.ipd.sdq.metamodels.addresses.Address
+import edu.kit.ipd.sdq.metamodels.addresses.Addresses
+import edu.kit.ipd.sdq.metamodels.recipients.City
+import edu.kit.ipd.sdq.metamodels.recipients.Location
+import edu.kit.ipd.sdq.metamodels.recipients.Recipient
+import edu.kit.ipd.sdq.metamodels.recipients.Recipients
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.util.EcoreUtil
 import org.eclipse.xtext.xbase.lib.Procedures.Procedure1

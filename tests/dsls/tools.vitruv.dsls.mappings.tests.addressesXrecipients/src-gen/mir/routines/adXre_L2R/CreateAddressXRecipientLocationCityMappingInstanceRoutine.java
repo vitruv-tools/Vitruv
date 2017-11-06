@@ -1,11 +1,11 @@
 package mir.routines.adXre_L2R;
 
-import edu.kit.ipd.sdq.mdsd.addresses.Address;
-import edu.kit.ipd.sdq.mdsd.addresses.Addresses;
-import edu.kit.ipd.sdq.mdsd.recipients.City;
-import edu.kit.ipd.sdq.mdsd.recipients.Location;
-import edu.kit.ipd.sdq.mdsd.recipients.Recipient;
-import edu.kit.ipd.sdq.mdsd.recipients.Recipients;
+import edu.kit.ipd.sdq.metamodels.addresses.Address;
+import edu.kit.ipd.sdq.metamodels.addresses.Addresses;
+import edu.kit.ipd.sdq.metamodels.recipients.City;
+import edu.kit.ipd.sdq.metamodels.recipients.Location;
+import edu.kit.ipd.sdq.metamodels.recipients.Recipient;
+import edu.kit.ipd.sdq.metamodels.recipients.Recipients;
 import java.io.IOException;
 import mir.routines.adXre_L2R.RoutinesFacade;
 import org.eclipse.emf.ecore.EObject;
@@ -95,30 +95,32 @@ public class CreateAddressXRecipientLocationCityMappingInstanceRoutine extends A
   
   private Address a;
   
-  protected void executeRoutine() throws IOException {
+  protected boolean executeRoutine() throws IOException {
     getLogger().debug("Called routine CreateAddressXRecipientLocationCityMappingInstanceRoutine with input:");
     getLogger().debug("   aRoot: " + this.aRoot);
     getLogger().debug("   a: " + this.a);
     
-    edu.kit.ipd.sdq.mdsd.recipients.Recipients rRoot = getCorrespondingElement(
+    edu.kit.ipd.sdq.metamodels.recipients.Recipients rRoot = getCorrespondingElement(
     	userExecution.getCorrepondenceSourceRRoot(aRoot, a), // correspondence source supplier
-    	edu.kit.ipd.sdq.mdsd.recipients.Recipients.class,
-    	(edu.kit.ipd.sdq.mdsd.recipients.Recipients _element) -> true, // correspondence precondition checker
-    	userExecution.getRetrieveTag1(aRoot, a));
+    	edu.kit.ipd.sdq.metamodels.recipients.Recipients.class,
+    	(edu.kit.ipd.sdq.metamodels.recipients.Recipients _element) -> true, // correspondence precondition checker
+    	userExecution.getRetrieveTag1(aRoot, a), 
+    	false // asserted
+    	);
     if (rRoot == null) {
-    	return;
+    	return false;
     }
     registerObjectUnderModification(rRoot);
     if (!userExecution.checkMatcherPrecondition1(aRoot, a, rRoot)) {
-    	return;
+    	return false;
     }
-    edu.kit.ipd.sdq.mdsd.recipients.Recipient r = edu.kit.ipd.sdq.mdsd.recipients.impl.RecipientsFactoryImpl.eINSTANCE.createRecipient();
+    edu.kit.ipd.sdq.metamodels.recipients.Recipient r = edu.kit.ipd.sdq.metamodels.recipients.impl.RecipientsFactoryImpl.eINSTANCE.createRecipient();
     notifyObjectCreated(r);
     
-    edu.kit.ipd.sdq.mdsd.recipients.Location l = edu.kit.ipd.sdq.mdsd.recipients.impl.RecipientsFactoryImpl.eINSTANCE.createLocation();
+    edu.kit.ipd.sdq.metamodels.recipients.Location l = edu.kit.ipd.sdq.metamodels.recipients.impl.RecipientsFactoryImpl.eINSTANCE.createLocation();
     notifyObjectCreated(l);
     
-    edu.kit.ipd.sdq.mdsd.recipients.City c = edu.kit.ipd.sdq.mdsd.recipients.impl.RecipientsFactoryImpl.eINSTANCE.createCity();
+    edu.kit.ipd.sdq.metamodels.recipients.City c = edu.kit.ipd.sdq.metamodels.recipients.impl.RecipientsFactoryImpl.eINSTANCE.createCity();
     notifyObjectCreated(c);
     
     addCorrespondenceBetween(userExecution.getElement1(aRoot, a, rRoot, r, l, c), userExecution.getElement2(aRoot, a, rRoot, r, l, c), userExecution.getTag1(aRoot, a, rRoot, r, l, c));
@@ -132,5 +134,7 @@ public class CreateAddressXRecipientLocationCityMappingInstanceRoutine extends A
     userExecution.executeAction1(aRoot, a, rRoot, r, l, c, actionsFacade);
     
     postprocessElements();
+    
+    return true;
   }
 }

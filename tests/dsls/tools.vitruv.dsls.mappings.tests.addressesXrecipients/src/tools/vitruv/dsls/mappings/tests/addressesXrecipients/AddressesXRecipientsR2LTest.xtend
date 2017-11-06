@@ -1,9 +1,9 @@
 package tools.vitruv.dsls.mappings.tests.addressesXrecipients
 
-import edu.kit.ipd.sdq.mdsd.addresses.Address
-import edu.kit.ipd.sdq.mdsd.addresses.Addresses
-import edu.kit.ipd.sdq.mdsd.recipients.Recipient
-import edu.kit.ipd.sdq.mdsd.recipients.RecipientsFactory
+import edu.kit.ipd.sdq.metamodels.addresses.Address
+import edu.kit.ipd.sdq.metamodels.addresses.Addresses
+import edu.kit.ipd.sdq.metamodels.recipients.Recipient
+import edu.kit.ipd.sdq.metamodels.recipients.RecipientsFactory
 import mir.reactions.RecipientsToAddressesChangePropagationSpecification
 import org.eclipse.emf.ecore.EObject
 import org.junit.Test

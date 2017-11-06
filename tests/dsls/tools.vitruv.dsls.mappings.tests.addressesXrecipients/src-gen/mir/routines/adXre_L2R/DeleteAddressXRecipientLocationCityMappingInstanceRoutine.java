@@ -1,10 +1,10 @@
 package mir.routines.adXre_L2R;
 
-import edu.kit.ipd.sdq.mdsd.addresses.Address;
-import edu.kit.ipd.sdq.mdsd.addresses.Addresses;
-import edu.kit.ipd.sdq.mdsd.recipients.City;
-import edu.kit.ipd.sdq.mdsd.recipients.Location;
-import edu.kit.ipd.sdq.mdsd.recipients.Recipient;
+import edu.kit.ipd.sdq.metamodels.addresses.Address;
+import edu.kit.ipd.sdq.metamodels.addresses.Addresses;
+import edu.kit.ipd.sdq.metamodels.recipients.City;
+import edu.kit.ipd.sdq.metamodels.recipients.Location;
+import edu.kit.ipd.sdq.metamodels.recipients.Recipient;
 import java.io.IOException;
 import mir.routines.adXre_L2R.RoutinesFacade;
 import org.eclipse.emf.ecore.EObject;
@@ -113,39 +113,45 @@ public class DeleteAddressXRecipientLocationCityMappingInstanceRoutine extends A
   
   private Address a;
   
-  protected void executeRoutine() throws IOException {
+  protected boolean executeRoutine() throws IOException {
     getLogger().debug("Called routine DeleteAddressXRecipientLocationCityMappingInstanceRoutine with input:");
     getLogger().debug("   aRoot: " + this.aRoot);
     getLogger().debug("   a: " + this.a);
     
     if (!userExecution.checkMatcherPrecondition1(aRoot, a)) {
-    	return;
+    	return false;
     }
-    edu.kit.ipd.sdq.mdsd.recipients.Recipient r = getCorrespondingElement(
+    edu.kit.ipd.sdq.metamodels.recipients.Recipient r = getCorrespondingElement(
     	userExecution.getCorrepondenceSourceR(aRoot, a), // correspondence source supplier
-    	edu.kit.ipd.sdq.mdsd.recipients.Recipient.class,
-    	(edu.kit.ipd.sdq.mdsd.recipients.Recipient _element) -> true, // correspondence precondition checker
-    	userExecution.getRetrieveTag1(aRoot, a));
+    	edu.kit.ipd.sdq.metamodels.recipients.Recipient.class,
+    	(edu.kit.ipd.sdq.metamodels.recipients.Recipient _element) -> true, // correspondence precondition checker
+    	userExecution.getRetrieveTag1(aRoot, a), 
+    	false // asserted
+    	);
     if (r == null) {
-    	return;
+    	return false;
     }
     registerObjectUnderModification(r);
-    edu.kit.ipd.sdq.mdsd.recipients.Location l = getCorrespondingElement(
+    edu.kit.ipd.sdq.metamodels.recipients.Location l = getCorrespondingElement(
     	userExecution.getCorrepondenceSourceL(aRoot, a, r), // correspondence source supplier
-    	edu.kit.ipd.sdq.mdsd.recipients.Location.class,
-    	(edu.kit.ipd.sdq.mdsd.recipients.Location _element) -> true, // correspondence precondition checker
-    	userExecution.getRetrieveTag2(aRoot, a, r));
+    	edu.kit.ipd.sdq.metamodels.recipients.Location.class,
+    	(edu.kit.ipd.sdq.metamodels.recipients.Location _element) -> true, // correspondence precondition checker
+    	userExecution.getRetrieveTag2(aRoot, a, r), 
+    	false // asserted
+    	);
     if (l == null) {
-    	return;
+    	return false;
     }
     registerObjectUnderModification(l);
-    edu.kit.ipd.sdq.mdsd.recipients.City c = getCorrespondingElement(
+    edu.kit.ipd.sdq.metamodels.recipients.City c = getCorrespondingElement(
     	userExecution.getCorrepondenceSourceC(aRoot, a, r, l), // correspondence source supplier
-    	edu.kit.ipd.sdq.mdsd.recipients.City.class,
-    	(edu.kit.ipd.sdq.mdsd.recipients.City _element) -> true, // correspondence precondition checker
-    	userExecution.getRetrieveTag3(aRoot, a, r, l));
+    	edu.kit.ipd.sdq.metamodels.recipients.City.class,
+    	(edu.kit.ipd.sdq.metamodels.recipients.City _element) -> true, // correspondence precondition checker
+    	userExecution.getRetrieveTag3(aRoot, a, r, l), 
+    	false // asserted
+    	);
     if (c == null) {
-    	return;
+    	return false;
     }
     registerObjectUnderModification(c);
     removeCorrespondenceBetween(userExecution.getElement1(aRoot, a, r, l, c), userExecution.getElement2(aRoot, a, r, l, c), userExecution.getTag1(aRoot, a, r, l, c));
@@ -161,5 +167,7 @@ public class DeleteAddressXRecipientLocationCityMappingInstanceRoutine extends A
     deleteObject(userExecution.getElement9(aRoot, a, r, l, c));
     
     postprocessElements();
+    
+    return true;
   }
 }

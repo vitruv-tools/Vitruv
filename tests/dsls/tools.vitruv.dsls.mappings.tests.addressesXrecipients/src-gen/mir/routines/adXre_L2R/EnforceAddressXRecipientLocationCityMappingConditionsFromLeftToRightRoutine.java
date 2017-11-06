@@ -1,11 +1,11 @@
 package mir.routines.adXre_L2R;
 
-import edu.kit.ipd.sdq.mdsd.addresses.Address;
-import edu.kit.ipd.sdq.mdsd.addresses.Addresses;
-import edu.kit.ipd.sdq.mdsd.recipients.City;
-import edu.kit.ipd.sdq.mdsd.recipients.Location;
-import edu.kit.ipd.sdq.mdsd.recipients.Recipient;
-import edu.kit.ipd.sdq.mdsd.recipients.Recipients;
+import edu.kit.ipd.sdq.metamodels.addresses.Address;
+import edu.kit.ipd.sdq.metamodels.addresses.Addresses;
+import edu.kit.ipd.sdq.metamodels.recipients.City;
+import edu.kit.ipd.sdq.metamodels.recipients.Location;
+import edu.kit.ipd.sdq.metamodels.recipients.Recipient;
+import edu.kit.ipd.sdq.metamodels.recipients.Recipients;
 import java.io.IOException;
 import mir.routines.adXre_L2R.RoutinesFacade;
 import org.eclipse.emf.ecore.EObject;
@@ -66,7 +66,7 @@ public class EnforceAddressXRecipientLocationCityMappingConditionsFromLeftToRigh
   
   private City c;
   
-  protected void executeRoutine() throws IOException {
+  protected boolean executeRoutine() throws IOException {
     getLogger().debug("Called routine EnforceAddressXRecipientLocationCityMappingConditionsFromLeftToRightRoutine with input:");
     getLogger().debug("   aRoot: " + this.aRoot);
     getLogger().debug("   rRoot: " + this.rRoot);
@@ -84,5 +84,7 @@ public class EnforceAddressXRecipientLocationCityMappingConditionsFromLeftToRigh
     userExecution.update1Element(aRoot, rRoot, a, r, l, c);
     
     postprocessElements();
+    
+    return true;
   }
 }

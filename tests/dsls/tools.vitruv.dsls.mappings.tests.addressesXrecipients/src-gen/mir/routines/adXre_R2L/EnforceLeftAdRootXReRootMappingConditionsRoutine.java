@@ -1,6 +1,6 @@
 package mir.routines.adXre_R2L;
 
-import edu.kit.ipd.sdq.mdsd.addresses.Addresses;
+import edu.kit.ipd.sdq.metamodels.addresses.Addresses;
 import java.io.IOException;
 import mir.routines.adXre_R2L.RoutinesFacade;
 import org.eclipse.emf.ecore.EObject;
@@ -36,7 +36,7 @@ public class EnforceLeftAdRootXReRootMappingConditionsRoutine extends AbstractRe
   
   private Addresses aRoot;
   
-  protected void executeRoutine() throws IOException {
+  protected boolean executeRoutine() throws IOException {
     getLogger().debug("Called routine EnforceLeftAdRootXReRootMappingConditionsRoutine with input:");
     getLogger().debug("   aRoot: " + this.aRoot);
     
@@ -44,5 +44,7 @@ public class EnforceLeftAdRootXReRootMappingConditionsRoutine extends AbstractRe
     userExecution.update0Element(aRoot);
     
     postprocessElements();
+    
+    return true;
   }
 }

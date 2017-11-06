@@ -37,11 +37,13 @@ public class UpdateAddressXRecipientLocationCityMappingInstancesRoutine extends 
     this.actionsFacade = new mir.routines.adXre_R2L.RoutinesFacade(getExecutionState(), this);
   }
   
-  protected void executeRoutine() throws IOException {
+  protected boolean executeRoutine() throws IOException {
     getLogger().debug("Called routine UpdateAddressXRecipientLocationCityMappingInstancesRoutine with input:");
     
     userExecution.callRoutine1(actionsFacade);
     
     postprocessElements();
+    
+    return true;
   }
 }

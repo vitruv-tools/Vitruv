@@ -1,6 +1,6 @@
 package mir.routines.adXre_L2R;
 
-import edu.kit.ipd.sdq.mdsd.recipients.Recipients;
+import edu.kit.ipd.sdq.metamodels.recipients.Recipients;
 import java.io.IOException;
 import mir.routines.adXre_L2R.RoutinesFacade;
 import org.eclipse.emf.ecore.EObject;
@@ -36,7 +36,7 @@ public class EnforceRightAdRootXReRootMappingConditionsRoutine extends AbstractR
   
   private Recipients rRoot;
   
-  protected void executeRoutine() throws IOException {
+  protected boolean executeRoutine() throws IOException {
     getLogger().debug("Called routine EnforceRightAdRootXReRootMappingConditionsRoutine with input:");
     getLogger().debug("   rRoot: " + this.rRoot);
     
@@ -44,5 +44,7 @@ public class EnforceRightAdRootXReRootMappingConditionsRoutine extends AbstractR
     userExecution.update0Element(rRoot);
     
     postprocessElements();
+    
+    return true;
   }
 }

@@ -1,8 +1,8 @@
 package mir.routines.adXre_R2L;
 
 import com.google.common.base.Objects;
-import edu.kit.ipd.sdq.mdsd.addresses.Address;
-import edu.kit.ipd.sdq.mdsd.addresses.Addresses;
+import edu.kit.ipd.sdq.metamodels.addresses.Address;
+import edu.kit.ipd.sdq.metamodels.addresses.Addresses;
 import java.io.IOException;
 import mir.routines.adXre_R2L.RoutinesFacade;
 import org.eclipse.emf.ecore.EObject;
@@ -59,7 +59,7 @@ public class EnforceLeftAddressXRecipientLocationCityMappingConditionsRoutine ex
   
   private Address a;
   
-  protected void executeRoutine() throws IOException {
+  protected boolean executeRoutine() throws IOException {
     getLogger().debug("Called routine EnforceLeftAddressXRecipientLocationCityMappingConditionsRoutine with input:");
     getLogger().debug("   aRoot: " + this.aRoot);
     getLogger().debug("   a: " + this.a);
@@ -71,5 +71,7 @@ public class EnforceLeftAddressXRecipientLocationCityMappingConditionsRoutine ex
     userExecution.update1Element(aRoot, a);
     
     postprocessElements();
+    
+    return true;
   }
 }

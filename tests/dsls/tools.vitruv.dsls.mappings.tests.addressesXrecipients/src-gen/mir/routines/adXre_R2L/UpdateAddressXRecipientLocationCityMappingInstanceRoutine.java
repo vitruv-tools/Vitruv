@@ -1,11 +1,11 @@
 package mir.routines.adXre_R2L;
 
-import edu.kit.ipd.sdq.mdsd.addresses.Address;
-import edu.kit.ipd.sdq.mdsd.addresses.Addresses;
-import edu.kit.ipd.sdq.mdsd.recipients.City;
-import edu.kit.ipd.sdq.mdsd.recipients.Location;
-import edu.kit.ipd.sdq.mdsd.recipients.Recipient;
-import edu.kit.ipd.sdq.mdsd.recipients.Recipients;
+import edu.kit.ipd.sdq.metamodels.addresses.Address;
+import edu.kit.ipd.sdq.metamodels.addresses.Addresses;
+import edu.kit.ipd.sdq.metamodels.recipients.City;
+import edu.kit.ipd.sdq.metamodels.recipients.Location;
+import edu.kit.ipd.sdq.metamodels.recipients.Recipient;
+import edu.kit.ipd.sdq.metamodels.recipients.Recipients;
 import java.io.IOException;
 import mir.routines.adXre_R2L.RoutinesFacade;
 import org.eclipse.emf.ecore.EObject;
@@ -66,36 +66,42 @@ public class UpdateAddressXRecipientLocationCityMappingInstanceRoutine extends A
   
   private City c;
   
-  protected void executeRoutine() throws IOException {
+  protected boolean executeRoutine() throws IOException {
     getLogger().debug("Called routine UpdateAddressXRecipientLocationCityMappingInstanceRoutine with input:");
     getLogger().debug("   rRoot: " + this.rRoot);
     getLogger().debug("   r: " + this.r);
     getLogger().debug("   l: " + this.l);
     getLogger().debug("   c: " + this.c);
     
-    edu.kit.ipd.sdq.mdsd.addresses.Addresses aRoot = getCorrespondingElement(
+    edu.kit.ipd.sdq.metamodels.addresses.Addresses aRoot = getCorrespondingElement(
     	userExecution.getCorrepondenceSourceARoot(rRoot, r, l, c), // correspondence source supplier
-    	edu.kit.ipd.sdq.mdsd.addresses.Addresses.class,
-    	(edu.kit.ipd.sdq.mdsd.addresses.Addresses _element) -> true, // correspondence precondition checker
-    	userExecution.getRetrieveTag1(rRoot, r, l, c));
+    	edu.kit.ipd.sdq.metamodels.addresses.Addresses.class,
+    	(edu.kit.ipd.sdq.metamodels.addresses.Addresses _element) -> true, // correspondence precondition checker
+    	userExecution.getRetrieveTag1(rRoot, r, l, c), 
+    	false // asserted
+    	);
     if (aRoot == null) {
-    	return;
+    	return false;
     }
     registerObjectUnderModification(aRoot);
-    edu.kit.ipd.sdq.mdsd.addresses.Address a = getCorrespondingElement(
+    edu.kit.ipd.sdq.metamodels.addresses.Address a = getCorrespondingElement(
     	userExecution.getCorrepondenceSourceA(rRoot, r, l, c, aRoot), // correspondence source supplier
-    	edu.kit.ipd.sdq.mdsd.addresses.Address.class,
-    	(edu.kit.ipd.sdq.mdsd.addresses.Address _element) -> true, // correspondence precondition checker
-    	userExecution.getRetrieveTag2(rRoot, r, l, c, aRoot));
+    	edu.kit.ipd.sdq.metamodels.addresses.Address.class,
+    	(edu.kit.ipd.sdq.metamodels.addresses.Address _element) -> true, // correspondence precondition checker
+    	userExecution.getRetrieveTag2(rRoot, r, l, c, aRoot), 
+    	false // asserted
+    	);
     if (a == null) {
-    	return;
+    	return false;
     }
     registerObjectUnderModification(a);
     if (!userExecution.checkMatcherPrecondition1(rRoot, r, l, c, aRoot, a)) {
-    	return;
+    	return false;
     }
     userExecution.callRoutine1(rRoot, r, l, c, aRoot, a, actionsFacade);
     
     postprocessElements();
+    
+    return true;
   }
 }

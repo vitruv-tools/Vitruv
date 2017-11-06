@@ -1,7 +1,7 @@
 package mir.routines.adXre_R2L;
 
-import edu.kit.ipd.sdq.mdsd.addresses.Addresses;
-import edu.kit.ipd.sdq.mdsd.recipients.Recipients;
+import edu.kit.ipd.sdq.metamodels.addresses.Addresses;
+import edu.kit.ipd.sdq.metamodels.recipients.Recipients;
 import java.io.IOException;
 import mir.routines.adXre_R2L.RoutinesFacade;
 import org.eclipse.xtext.xbase.lib.Extension;
@@ -36,7 +36,7 @@ public class EnforceAdRootXReRootMappingConditionsFromRightToLeftRoutine extends
   
   private Recipients rRoot;
   
-  protected void executeRoutine() throws IOException {
+  protected boolean executeRoutine() throws IOException {
     getLogger().debug("Called routine EnforceAdRootXReRootMappingConditionsFromRightToLeftRoutine with input:");
     getLogger().debug("   aRoot: " + this.aRoot);
     getLogger().debug("   rRoot: " + this.rRoot);
@@ -44,5 +44,7 @@ public class EnforceAdRootXReRootMappingConditionsFromRightToLeftRoutine extends
     userExecution.callRoutine1(aRoot, rRoot, actionsFacade);
     
     postprocessElements();
+    
+    return true;
   }
 }

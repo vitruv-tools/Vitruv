@@ -1,7 +1,7 @@
 package mir.routines.adXre_R2L;
 
-import edu.kit.ipd.sdq.mdsd.addresses.Addresses;
-import edu.kit.ipd.sdq.mdsd.recipients.Recipients;
+import edu.kit.ipd.sdq.metamodels.addresses.Addresses;
+import edu.kit.ipd.sdq.metamodels.recipients.Recipients;
 import java.io.IOException;
 import mir.routines.adXre_R2L.RoutinesFacade;
 import org.eclipse.emf.ecore.EObject;
@@ -66,20 +66,22 @@ public class DeleteAdRootXReRootMappingInstanceRoutine extends AbstractRepairRou
   
   private Recipients rRoot;
   
-  protected void executeRoutine() throws IOException {
+  protected boolean executeRoutine() throws IOException {
     getLogger().debug("Called routine DeleteAdRootXReRootMappingInstanceRoutine with input:");
     getLogger().debug("   rRoot: " + this.rRoot);
     
     if (!userExecution.checkMatcherPrecondition1(rRoot)) {
-    	return;
+    	return false;
     }
-    edu.kit.ipd.sdq.mdsd.addresses.Addresses aRoot = getCorrespondingElement(
+    edu.kit.ipd.sdq.metamodels.addresses.Addresses aRoot = getCorrespondingElement(
     	userExecution.getCorrepondenceSourceARoot(rRoot), // correspondence source supplier
-    	edu.kit.ipd.sdq.mdsd.addresses.Addresses.class,
-    	(edu.kit.ipd.sdq.mdsd.addresses.Addresses _element) -> true, // correspondence precondition checker
-    	userExecution.getRetrieveTag1(rRoot));
+    	edu.kit.ipd.sdq.metamodels.addresses.Addresses.class,
+    	(edu.kit.ipd.sdq.metamodels.addresses.Addresses _element) -> true, // correspondence precondition checker
+    	userExecution.getRetrieveTag1(rRoot), 
+    	false // asserted
+    	);
     if (aRoot == null) {
-    	return;
+    	return false;
     }
     registerObjectUnderModification(aRoot);
     removeCorrespondenceBetween(userExecution.getElement1(rRoot, aRoot), userExecution.getElement2(rRoot, aRoot), userExecution.getTag1(rRoot, aRoot));
@@ -89,5 +91,7 @@ public class DeleteAdRootXReRootMappingInstanceRoutine extends AbstractRepairRou
     userExecution.executeAction1(rRoot, aRoot, actionsFacade);
     
     postprocessElements();
+    
+    return true;
   }
 }

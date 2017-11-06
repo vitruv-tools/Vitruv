@@ -10,10 +10,10 @@ public class ExecutorAddressesToRecipients extends AbstractReactionsExecutor {
   }
   
   protected void setup() {
-    this.addReaction(mir.reactions.reactionsAddressesToRecipients.adXre_L2R.AnyChangeReaction.getExpectedChangeType(), new mir.reactions.reactionsAddressesToRecipients.adXre_L2R.AnyChangeReaction());
-    this.addReaction(mir.reactions.reactionsAddressesToRecipients.adXre_L2R.AddressesCreatedReaction.getExpectedChangeType(), new mir.reactions.reactionsAddressesToRecipients.adXre_L2R.AddressesCreatedReaction());
-    this.addReaction(mir.reactions.reactionsAddressesToRecipients.adXre_L2R.AddressCreatedReaction.getExpectedChangeType(), new mir.reactions.reactionsAddressesToRecipients.adXre_L2R.AddressCreatedReaction());
-    this.addReaction(mir.reactions.reactionsAddressesToRecipients.adXre_L2R.AddressesDeletedReaction.getExpectedChangeType(), new mir.reactions.reactionsAddressesToRecipients.adXre_L2R.AddressesDeletedReaction());
-    this.addReaction(mir.reactions.reactionsAddressesToRecipients.adXre_L2R.AddressDeletedReaction.getExpectedChangeType(), new mir.reactions.reactionsAddressesToRecipients.adXre_L2R.AddressDeletedReaction());
+    this.addReaction(new mir.reactions.reactionsAddressesToRecipients.adXre_L2R.AnyChangeReaction());
+    this.addReaction(new mir.reactions.reactionsAddressesToRecipients.adXre_L2R.AddressesCreatedReaction());
+    this.addReaction(new mir.reactions.reactionsAddressesToRecipients.adXre_L2R.AddressCreatedReaction());
+    this.addReaction(new mir.reactions.reactionsAddressesToRecipients.adXre_L2R.AddressesDeletedReaction());
+    this.addReaction(new mir.reactions.reactionsAddressesToRecipients.adXre_L2R.AddressDeletedReaction());
   }
 }

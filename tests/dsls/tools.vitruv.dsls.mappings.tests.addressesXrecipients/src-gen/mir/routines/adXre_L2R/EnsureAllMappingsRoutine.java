@@ -30,11 +30,13 @@ public class EnsureAllMappingsRoutine extends AbstractRepairRoutineRealization {
     this.actionsFacade = new mir.routines.adXre_L2R.RoutinesFacade(getExecutionState(), this);
   }
   
-  protected void executeRoutine() throws IOException {
+  protected boolean executeRoutine() throws IOException {
     getLogger().debug("Called routine EnsureAllMappingsRoutine with input:");
     
     userExecution.callRoutine1(actionsFacade);
     
     postprocessElements();
+    
+    return true;
   }
 }

@@ -1,5 +1,5 @@
-import "http://edu.kit.ipd.sdq.mdsd.addresses" as ad
-import "http://edu.kit.ipd.sdq.mdsd.recipients" as re
+import "http://edu.kit.ipd.sdq.metamodels.addresses" as ad
+import "http://edu.kit.ipd.sdq.metamodels.recipients" as re
 
 mappings: aXr_all_or_nothing for Addresses and Recipients
 

@@ -1,7 +1,7 @@
 package mir.routines.adXre_L2R;
 
-import edu.kit.ipd.sdq.mdsd.addresses.Addresses;
-import edu.kit.ipd.sdq.mdsd.recipients.Recipients;
+import edu.kit.ipd.sdq.metamodels.addresses.Addresses;
+import edu.kit.ipd.sdq.metamodels.recipients.Recipients;
 import java.io.IOException;
 import mir.routines.adXre_L2R.RoutinesFacade;
 import org.eclipse.emf.ecore.EObject;
@@ -66,20 +66,22 @@ public class DeleteAdRootXReRootMappingInstanceRoutine extends AbstractRepairRou
   
   private Addresses aRoot;
   
-  protected void executeRoutine() throws IOException {
+  protected boolean executeRoutine() throws IOException {
     getLogger().debug("Called routine DeleteAdRootXReRootMappingInstanceRoutine with input:");
     getLogger().debug("   aRoot: " + this.aRoot);
     
     if (!userExecution.checkMatcherPrecondition1(aRoot)) {
-    	return;
+    	return false;
     }
-    edu.kit.ipd.sdq.mdsd.recipients.Recipients rRoot = getCorrespondingElement(
+    edu.kit.ipd.sdq.metamodels.recipients.Recipients rRoot = getCorrespondingElement(
     	userExecution.getCorrepondenceSourceRRoot(aRoot), // correspondence source supplier
-    	edu.kit.ipd.sdq.mdsd.recipients.Recipients.class,
-    	(edu.kit.ipd.sdq.mdsd.recipients.Recipients _element) -> true, // correspondence precondition checker
-    	userExecution.getRetrieveTag1(aRoot));
+    	edu.kit.ipd.sdq.metamodels.recipients.Recipients.class,
+    	(edu.kit.ipd.sdq.metamodels.recipients.Recipients _element) -> true, // correspondence precondition checker
+    	userExecution.getRetrieveTag1(aRoot), 
+    	false // asserted
+    	);
     if (rRoot == null) {
-    	return;
+    	return false;
     }
     registerObjectUnderModification(rRoot);
     removeCorrespondenceBetween(userExecution.getElement1(aRoot, rRoot), userExecution.getElement2(aRoot, rRoot), userExecution.getTag1(aRoot, rRoot));
@@ -89,5 +91,7 @@ public class DeleteAdRootXReRootMappingInstanceRoutine extends AbstractRepairRou
     userExecution.executeAction1(aRoot, rRoot, actionsFacade);
     
     postprocessElements();
+    
+    return true;
   }
 }

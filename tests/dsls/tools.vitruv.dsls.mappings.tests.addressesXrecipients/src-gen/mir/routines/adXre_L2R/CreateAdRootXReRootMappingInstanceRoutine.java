@@ -1,7 +1,7 @@
 package mir.routines.adXre_L2R;
 
-import edu.kit.ipd.sdq.mdsd.addresses.Addresses;
-import edu.kit.ipd.sdq.mdsd.recipients.Recipients;
+import edu.kit.ipd.sdq.metamodels.addresses.Addresses;
+import edu.kit.ipd.sdq.metamodels.recipients.Recipients;
 import java.io.IOException;
 import mir.routines.adXre_L2R.RoutinesFacade;
 import org.eclipse.emf.ecore.EObject;
@@ -62,14 +62,14 @@ public class CreateAdRootXReRootMappingInstanceRoutine extends AbstractRepairRou
   
   private Addresses aRoot;
   
-  protected void executeRoutine() throws IOException {
+  protected boolean executeRoutine() throws IOException {
     getLogger().debug("Called routine CreateAdRootXReRootMappingInstanceRoutine with input:");
     getLogger().debug("   aRoot: " + this.aRoot);
     
     if (!userExecution.checkMatcherPrecondition1(aRoot)) {
-    	return;
+    	return false;
     }
-    edu.kit.ipd.sdq.mdsd.recipients.Recipients rRoot = edu.kit.ipd.sdq.mdsd.recipients.impl.RecipientsFactoryImpl.eINSTANCE.createRecipients();
+    edu.kit.ipd.sdq.metamodels.recipients.Recipients rRoot = edu.kit.ipd.sdq.metamodels.recipients.impl.RecipientsFactoryImpl.eINSTANCE.createRecipients();
     notifyObjectCreated(rRoot);
     
     addCorrespondenceBetween(userExecution.getElement1(aRoot, rRoot), userExecution.getElement2(aRoot, rRoot), userExecution.getTag1(aRoot, rRoot));
@@ -79,5 +79,7 @@ public class CreateAdRootXReRootMappingInstanceRoutine extends AbstractRepairRou
     userExecution.executeAction1(aRoot, rRoot, actionsFacade);
     
     postprocessElements();
+    
+    return true;
   }
 }

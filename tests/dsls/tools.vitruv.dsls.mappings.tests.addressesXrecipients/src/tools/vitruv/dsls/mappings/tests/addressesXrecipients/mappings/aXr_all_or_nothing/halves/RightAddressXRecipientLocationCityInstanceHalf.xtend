@@ -1,9 +1,9 @@
 package tools.vitruv.dsls.mappings.tests.addressesXrecipients.mappings.aXr_all_or_nothing.halves
 
 import tools.vitruv.extensions.dslsruntime.mappings.interfaces.IMappingInstanceHalf
-import edu.kit.ipd.sdq.mdsd.recipients.Recipient
-import edu.kit.ipd.sdq.mdsd.recipients.Location
-import edu.kit.ipd.sdq.mdsd.recipients.City
+import edu.kit.ipd.sdq.metamodels.recipients.Recipient
+import edu.kit.ipd.sdq.metamodels.recipients.Location
+import edu.kit.ipd.sdq.metamodels.recipients.City
 import org.eclipse.xtend.lib.annotations.Data
 
 @Data 

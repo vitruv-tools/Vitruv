@@ -1,11 +1,11 @@
 package tools.vitruv.dsls.mappings.tests.addressesXrecipients.mappings.aXr_all_or_nothing
 
-import edu.kit.ipd.sdq.mdsd.addresses.Address
-import edu.kit.ipd.sdq.mdsd.addresses.Addresses
-import edu.kit.ipd.sdq.mdsd.recipients.City
-import edu.kit.ipd.sdq.mdsd.recipients.Location
-import edu.kit.ipd.sdq.mdsd.recipients.Recipient
-import edu.kit.ipd.sdq.mdsd.recipients.Recipients
+import edu.kit.ipd.sdq.metamodels.addresses.Address
+import edu.kit.ipd.sdq.metamodels.addresses.Addresses
+import edu.kit.ipd.sdq.metamodels.recipients.City
+import edu.kit.ipd.sdq.metamodels.recipients.Location
+import edu.kit.ipd.sdq.metamodels.recipients.Recipient
+import edu.kit.ipd.sdq.metamodels.recipients.Recipients
 import tools.vitruv.dsls.mappings.tests.addressesXrecipients.mappings.aXr_all_or_nothing.halves.LeftAddressXRecipientLocationCityInstanceHalf
 import tools.vitruv.dsls.mappings.tests.addressesXrecipients.mappings.aXr_all_or_nothing.halves.RightAddressXRecipientLocationCityInstanceHalf
 import tools.vitruv.extensions.dslsruntime.mappings.AbstractMappingRuntime

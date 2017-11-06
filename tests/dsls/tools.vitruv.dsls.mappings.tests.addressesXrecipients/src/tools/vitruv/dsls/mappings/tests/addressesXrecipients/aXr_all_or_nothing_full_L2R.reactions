@@ -4,8 +4,8 @@ import static tools.vitruv.dsls.mappings.tests.addressesXrecipients.mappings.aXr
 import static tools.vitruv.dsls.mappings.tests.addressesXrecipients.mappings.aXr_all_or_nothing.conditions.AddressXRecipientLocationCityConditions.*
 import tools.vitruv.demo.domains.recipients.RecipientsNamespace
 
-import "http://edu.kit.ipd.sdq.mdsd.addresses" as ad
-import "http://edu.kit.ipd.sdq.mdsd.recipients" as re
+import "edu.kit.ipd.sdq.metamodels.addresses" as ad
+import "edu.kit.ipd.sdq.metamodels.recipients" as re
 
 reactions: adXre_L2R 
 in reaction to changes in Addresses
