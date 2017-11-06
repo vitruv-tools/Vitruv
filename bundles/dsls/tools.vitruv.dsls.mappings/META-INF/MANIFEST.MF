@@ -4,7 +4,6 @@ Bundle-Name: %pluginName
 Bundle-Version: 0.2.0.qualifier
 Bundle-ClassPath: .
 Bundle-Vendor: %providerName
-Bundle-Localization: plugin
 Bundle-SymbolicName: tools.vitruv.dsls.mappings; singleton:=true
 Require-Bundle: org.eclipse.xtext,
  org.eclipse.xtext.xbase,
