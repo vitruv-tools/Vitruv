@@ -6,7 +6,7 @@ class RecipientsDomainProvider implements VitruvDomainProvider<RecipientsDomain>
 	private static var RecipientsDomain instance;
 	
 	override public RecipientsDomain getDomain() {
-		if (instance == null) {
+		if (instance === null) {
 			instance = new RecipientsDomain();
 		}
 		return instance;

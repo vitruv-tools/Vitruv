@@ -2,7 +2,7 @@ package tools.vitruv.demo.domains.recipients
 
 import tools.vitruv.framework.tuid.AttributeTuidCalculatorAndResolver
 import tools.vitruv.framework.tuid.TuidCalculatorAndResolver
-import edu.kit.ipd.sdq.mdsd.recipients.RecipientsPackage
+import edu.kit.ipd.sdq.metamodels.recipients.RecipientsPackage
 import static tools.vitruv.demo.domains.recipients.RecipientsNamespace.*;
 import tools.vitruv.framework.domains.AbstractVitruvDomain
 import tools.vitruv.domains.emf.builder.VitruviusEmfBuilderApplicator

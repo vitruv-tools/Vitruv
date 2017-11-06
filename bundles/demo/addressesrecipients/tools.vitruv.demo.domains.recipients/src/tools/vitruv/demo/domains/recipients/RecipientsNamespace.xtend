@@ -1,7 +1,7 @@
 package tools.vitruv.demo.domains.recipients
 
 import org.eclipse.emf.ecore.EPackage
-import edu.kit.ipd.sdq.mdsd.recipients.RecipientsPackage
+import edu.kit.ipd.sdq.metamodels.recipients.RecipientsPackage
 
 final class RecipientsNamespace {
 	private new() {
