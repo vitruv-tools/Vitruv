@@ -9,14 +9,16 @@
 		<version>0.2.0-SNAPSHOT</version>
 		<relativePath>../</relativePath>
 	</parent>
-	<artifactId>addressesrecipients</artifactId>
+	<artifactId>familiespersons</artifactId>
 	<packaging>pom</packaging>
-	<name>Demo Addresses Recipients Modules</name>
+	<name>Demo Families Persons Modules</name>
 
 	<modules>
-	  <module>tools.vitruv.demo.domains.addresses</module>
-	  <module>tools.vitruv.demo.domains.recipients</module>
-	  <module>tools.vitruv.demo.applications.addressesrecipients</module>
+	  <module>tools.vitruv.demo.domains.persons</module>
+	  <module>tools.vitruv.demo.domains.families</module>
+	  <module>tools.vitruv.demo.applications.familiespersons</module>
+	  <module>tools.vitruv.demo.applications.familiespersons.families2persons</module>
+	  <module>tools.vitruv.demo.applications.familiespersons.persons2families</module>
 	</modules>
 
 	<build>

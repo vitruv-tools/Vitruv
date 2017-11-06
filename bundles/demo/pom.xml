@@ -15,6 +15,7 @@
 
 	<modules>
 		<module>addressesrecipients</module>
+		<module>familiespersons</module>
 	</modules>
 
 </project>
