@@ -12,8 +12,7 @@ Require-Bundle: tools.vitruv.dsls.mappings,
  org.eclipse.xtext.xbase.lib,
  org.objectweb.asm;bundle-version="[5.0.1,6.0.0)";resolution:=optional
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Export-Package: tools.vitruv.dsls.tests;x-internal=true,
- tools.vitruv.dsls.mappings.tests;x-internal=true
+Export-Package: tools.vitruv.dsls.mappings.tests;x-internal=true
 Import-Package: org.hamcrest.core,
  org.junit;version="4.5.0",
  org.junit.runners.model;version="4.5.0",
