@@ -1,7 +1,7 @@
 package tools.vitruv.demo.domains.addresses
 
 import org.eclipse.emf.ecore.EPackage
-import edu.kit.ipd.sdq.mdsd.addresses.AddressesPackage
+import edu.kit.ipd.sdq.metamodels.addresses.AddressesPackage
 
 final class AddressesNamespace {
 	private new() {

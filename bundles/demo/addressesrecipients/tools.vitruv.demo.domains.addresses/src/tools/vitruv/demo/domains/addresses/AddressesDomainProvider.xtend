@@ -6,7 +6,7 @@ class AddressesDomainProvider implements VitruvDomainProvider<AddressesDomain> {
 	private static var AddressesDomain instance;
 	
 	override public AddressesDomain getDomain() {
-		if (instance == null) {
+		if (instance === null) {
 			instance = new AddressesDomain();
 		}
 		return instance;
