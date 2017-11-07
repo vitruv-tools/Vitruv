@@ -21,6 +21,5 @@ Require-Bundle: org.apache.log4j,
   tools.vitruv.demo.domains.families;visibility:=reexport,
   tools.vitruv.demo.domains.persons;visibility:=reexport,
   edu.kit.ipd.sdq.metamodels.persons,
-  edu.kit.ipd.sdq.metamodels.families,
-  edu.kit.ipd.sdq.metamodels.addresses
+  edu.kit.ipd.sdq.metamodels.families
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
