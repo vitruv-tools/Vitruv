@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="tools.vitruv.demo.familiespersons.feature"
+      label="%featureName"
+      version="0.2.0.qualifier"
+      provider-name="%providerName"
+      license-feature="tools.vitruv.license.feature"
+      license-feature-version="1.0.0">
+
+   <description>
+      %description
+   </description>
+
+   <copyright url="%copyrightURL">
+      %copyright
+   </copyright>
+
+   <license url="%licenseURL">
+      %license
+   </license>
+
+   <requires>
+      <import plugin="org.apache.log4j"/>
+      <import plugin="com.google.guava"/>
+      <import plugin="org.eclipse.emf.ecore"/>
+      <import plugin="org.eclipse.core.resources"/>
+      <import plugin="org.eclipse.xtend.lib"/>
+      <import plugin="org.eclipse.xtend.lib.macro"/>
+      <import feature="edu.kit.ipd.sdq.commons.util.eclipse.feature" version="1.1.0"/>
+      <import feature="edu.kit.ipd.sdq.commons.util.emf.feature" version="1.1.0"/>
+      <import feature="edu.kit.ipd.sdq.commons.util.java.feature" version="1.1.0"/>
+      <import feature="org.eclipse.xtend.sdk" version="2.12.0" match="greaterOrEqual"/>
+      <import feature="org.eclipse.xtext.xbase.lib" version="2.12.0" match="greaterOrEqual"/>
+      <import feature="tools.vitruv.extensions.dslsruntime.feature" version="0.2.0.qualifier"/>
+      <import feature="edu.kit.ipd.sdq.metamodels.persons.feature" version="1.0.0.201711061638"/>
+      <import feature="edu.kit.ipd.sdq.metamodels.families.feature" version="1.0.0.201711061638"/>
+   </requires>
+
+   <plugin
+         id="tools.vitruv.demo.applications.familiespersons"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="tools.vitruv.demo.applications.familiespersons.families2persons"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="tools.vitruv.demo.applications.familiespersons.persons2families"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="tools.vitruv.demo.domains.families"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="tools.vitruv.demo.domains.persons"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+</feature>
