@@ -25,9 +25,7 @@ public class ChangeFullNameFromLastRoutine extends AbstractRepairRoutineRealizat
     }
     
     public void update0Element(final Family family, final Person person) {
-      String _fullName = person.getFullName();
-      String[] _split = _fullName.split(" ");
-      String _get = _split[0];
+      String _get = person.getFullName().split(" ")[0];
       String _plus = (_get + " ");
       String _lastName = family.getLastName();
       String _plus_1 = (_plus + _lastName);
@@ -48,22 +46,26 @@ public class ChangeFullNameFromLastRoutine extends AbstractRepairRoutineRealizat
   
   private Family family;
   
-  protected void executeRoutine() throws IOException {
+  protected boolean executeRoutine() throws IOException {
     getLogger().debug("Called routine ChangeFullNameFromLastRoutine with input:");
-    getLogger().debug("   Family: " + this.family);
+    getLogger().debug("   family: " + this.family);
     
-    Person person = getCorrespondingElement(
+    edu.kit.ipd.sdq.metamodels.persons.Person person = getCorrespondingElement(
     	userExecution.getCorrepondenceSourcePerson(family), // correspondence source supplier
-    	Person.class,
-    	(Person _element) -> true, // correspondence precondition checker
-    	null);
+    	edu.kit.ipd.sdq.metamodels.persons.Person.class,
+    	(edu.kit.ipd.sdq.metamodels.persons.Person _element) -> true, // correspondence precondition checker
+    	null, 
+    	false // asserted
+    	);
     if (person == null) {
-    	return;
+    	return false;
     }
     registerObjectUnderModification(person);
     // val updatedElement userExecution.getElement1(family, person);
     userExecution.update0Element(family, person);
     
     postprocessElements();
+    
+    return true;
   }
 }

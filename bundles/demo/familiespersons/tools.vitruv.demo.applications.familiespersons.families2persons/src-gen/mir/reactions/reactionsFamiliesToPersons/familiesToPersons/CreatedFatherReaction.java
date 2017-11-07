@@ -14,49 +14,66 @@ import tools.vitruv.framework.change.echange.feature.reference.ReplaceSingleValu
 
 @SuppressWarnings("all")
 class CreatedFatherReaction extends AbstractReactionRealization {
+  private ReplaceSingleValuedEReference<Family, Member> replaceChange;
+  
+  private int currentlyMatchedChange;
+  
   public void executeReaction(final EChange change) {
-    ReplaceSingleValuedEReference<Family, Member> typedChange = (ReplaceSingleValuedEReference<Family, Member>)change;
-    Family affectedEObject = typedChange.getAffectedEObject();
-    EReference affectedFeature = typedChange.getAffectedFeature();
-    Member oldValue = typedChange.getOldValue();
-    Member newValue = typedChange.getNewValue();
+    if (!checkPrecondition(change)) {
+    	return;
+    }
+    edu.kit.ipd.sdq.metamodels.families.Family affectedEObject = replaceChange.getAffectedEObject();
+    EReference affectedFeature = replaceChange.getAffectedFeature();
+    edu.kit.ipd.sdq.metamodels.families.Member oldValue = replaceChange.getOldValue();
+    edu.kit.ipd.sdq.metamodels.families.Member newValue = replaceChange.getNewValue();
+    				
+    getLogger().trace("Passed complete precondition check of Reaction " + this.getClass().getName());
+    				
     mir.routines.familiesToPersons.RoutinesFacade routinesFacade = new mir.routines.familiesToPersons.RoutinesFacade(this.executionState, this);
     mir.reactions.reactionsFamiliesToPersons.familiesToPersons.CreatedFatherReaction.ActionUserExecution userExecution = new mir.reactions.reactionsFamiliesToPersons.familiesToPersons.CreatedFatherReaction.ActionUserExecution(this.executionState, this);
     userExecution.callRoutine1(affectedEObject, affectedFeature, oldValue, newValue, routinesFacade);
+    
+    resetChanges();
   }
   
-  public static Class<? extends EChange> getExpectedChangeType() {
-    return ReplaceSingleValuedEReference.class;
-  }
-  
-  private boolean checkChangeProperties(final EChange change) {
-    ReplaceSingleValuedEReference<Family, Member> relevantChange = (ReplaceSingleValuedEReference<Family, Member>)change;
-    if (!(relevantChange.getAffectedEObject() instanceof Family)) {
-    	return false;
-    }
-    if (!relevantChange.getAffectedFeature().getName().equals("father")) {
-    	return false;
-    }
-    if (relevantChange.isFromNonDefaultValue() && !(relevantChange.getOldValue() instanceof Member)) {
-    	return false;
-    }
-    if (relevantChange.isToNonDefaultValue() && !(relevantChange.getNewValue() instanceof Member)) {
-    	return false;
-    }
-    return true;
+  private void resetChanges() {
+    replaceChange = null;
+    currentlyMatchedChange = 0;
   }
   
   public boolean checkPrecondition(final EChange change) {
-    if (!(change instanceof ReplaceSingleValuedEReference)) {
-    	return false;
+    if (currentlyMatchedChange == 0) {
+    	if (!matchReplaceChange(change)) {
+    		resetChanges();
+    		return false;
+    	} else {
+    		currentlyMatchedChange++;
+    	}
     }
-    getLogger().debug("Passed change type check of reaction " + this.getClass().getName());
-    if (!checkChangeProperties(change)) {
-    	return false;
-    }
-    getLogger().debug("Passed change properties check of reaction " + this.getClass().getName());
-    getLogger().debug("Passed complete precondition check of reaction " + this.getClass().getName());
+    
     return true;
+  }
+  
+  private boolean matchReplaceChange(final EChange change) {
+    if (change instanceof ReplaceSingleValuedEReference<?, ?>) {
+    	ReplaceSingleValuedEReference<edu.kit.ipd.sdq.metamodels.families.Family, edu.kit.ipd.sdq.metamodels.families.Member> _localTypedChange = (ReplaceSingleValuedEReference<edu.kit.ipd.sdq.metamodels.families.Family, edu.kit.ipd.sdq.metamodels.families.Member>) change;
+    	if (!(_localTypedChange.getAffectedEObject() instanceof edu.kit.ipd.sdq.metamodels.families.Family)) {
+    		return false;
+    	}
+    	if (!_localTypedChange.getAffectedFeature().getName().equals("father")) {
+    		return false;
+    	}
+    	if (_localTypedChange.isFromNonDefaultValue() && !(_localTypedChange.getOldValue() instanceof edu.kit.ipd.sdq.metamodels.families.Member)) {
+    		return false;
+    	}
+    	if (_localTypedChange.isToNonDefaultValue() && !(_localTypedChange.getNewValue() instanceof edu.kit.ipd.sdq.metamodels.families.Member)) {
+    		return false;
+    	}
+    	this.replaceChange = (ReplaceSingleValuedEReference<edu.kit.ipd.sdq.metamodels.families.Family, edu.kit.ipd.sdq.metamodels.families.Member>) change;
+    	return true;
+    }
+    
+    return false;
   }
   
   private static class ActionUserExecution extends AbstractRepairRoutineRealization.UserExecution {

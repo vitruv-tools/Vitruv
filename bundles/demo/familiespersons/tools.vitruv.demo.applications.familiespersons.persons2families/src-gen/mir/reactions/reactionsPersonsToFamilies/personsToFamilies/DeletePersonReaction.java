@@ -12,36 +12,53 @@ import tools.vitruv.framework.change.echange.eobject.DeleteEObject;
 
 @SuppressWarnings("all")
 class DeletePersonReaction extends AbstractReactionRealization {
+  private DeleteEObject<Person> deleteChange;
+  
+  private int currentlyMatchedChange;
+  
   public void executeReaction(final EChange change) {
-    DeleteEObject<Person> typedChange = (DeleteEObject<Person>)change;
-    Person affectedEObject = typedChange.getAffectedEObject();
+    if (!checkPrecondition(change)) {
+    	return;
+    }
+    edu.kit.ipd.sdq.metamodels.persons.Person affectedEObject = deleteChange.getAffectedEObject();
+    				
+    getLogger().trace("Passed complete precondition check of Reaction " + this.getClass().getName());
+    				
     mir.routines.personsToFamilies.RoutinesFacade routinesFacade = new mir.routines.personsToFamilies.RoutinesFacade(this.executionState, this);
     mir.reactions.reactionsPersonsToFamilies.personsToFamilies.DeletePersonReaction.ActionUserExecution userExecution = new mir.reactions.reactionsPersonsToFamilies.personsToFamilies.DeletePersonReaction.ActionUserExecution(this.executionState, this);
     userExecution.callRoutine1(affectedEObject, routinesFacade);
+    
+    resetChanges();
   }
   
-  public static Class<? extends EChange> getExpectedChangeType() {
-    return DeleteEObject.class;
-  }
-  
-  private boolean checkChangeProperties(final EChange change) {
-    DeleteEObject<Person> relevantChange = (DeleteEObject<Person>)change;
-    if (!(relevantChange.getAffectedEObject() instanceof Person)) {
-    	return false;
+  private boolean matchDeleteChange(final EChange change) {
+    if (change instanceof DeleteEObject<?>) {
+    	DeleteEObject<edu.kit.ipd.sdq.metamodels.persons.Person> _localTypedChange = (DeleteEObject<edu.kit.ipd.sdq.metamodels.persons.Person>) change;
+    	if (!(_localTypedChange.getAffectedEObject() instanceof edu.kit.ipd.sdq.metamodels.persons.Person)) {
+    		return false;
+    	}
+    	this.deleteChange = (DeleteEObject<edu.kit.ipd.sdq.metamodels.persons.Person>) change;
+    	return true;
     }
-    return true;
+    
+    return false;
+  }
+  
+  private void resetChanges() {
+    deleteChange = null;
+    currentlyMatchedChange = 0;
   }
   
   public boolean checkPrecondition(final EChange change) {
-    if (!(change instanceof DeleteEObject)) {
-    	return false;
+    if (currentlyMatchedChange == 0) {
+    	if (!matchDeleteChange(change)) {
+    		resetChanges();
+    		return false;
+    	} else {
+    		currentlyMatchedChange++;
+    	}
     }
-    getLogger().debug("Passed change type check of reaction " + this.getClass().getName());
-    if (!checkChangeProperties(change)) {
-    	return false;
-    }
-    getLogger().debug("Passed change properties check of reaction " + this.getClass().getName());
-    getLogger().debug("Passed complete precondition check of reaction " + this.getClass().getName());
+    
     return true;
   }
   

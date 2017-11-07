@@ -38,21 +38,25 @@ public class DeletePersonRegisterRoutine extends AbstractRepairRoutineRealizatio
   
   private FamilyRegister familyRegister;
   
-  protected void executeRoutine() throws IOException {
+  protected boolean executeRoutine() throws IOException {
     getLogger().debug("Called routine DeletePersonRegisterRoutine with input:");
-    getLogger().debug("   FamilyRegister: " + this.familyRegister);
+    getLogger().debug("   familyRegister: " + this.familyRegister);
     
-    PersonRegister personRegister = getCorrespondingElement(
+    edu.kit.ipd.sdq.metamodels.persons.PersonRegister personRegister = getCorrespondingElement(
     	userExecution.getCorrepondenceSourcePersonRegister(familyRegister), // correspondence source supplier
-    	PersonRegister.class,
-    	(PersonRegister _element) -> true, // correspondence precondition checker
-    	null);
+    	edu.kit.ipd.sdq.metamodels.persons.PersonRegister.class,
+    	(edu.kit.ipd.sdq.metamodels.persons.PersonRegister _element) -> true, // correspondence precondition checker
+    	null, 
+    	false // asserted
+    	);
     if (personRegister == null) {
-    	return;
+    	return false;
     }
     registerObjectUnderModification(personRegister);
     deleteObject(userExecution.getElement1(familyRegister, personRegister));
     
     postprocessElements();
+    
+    return true;
   }
 }

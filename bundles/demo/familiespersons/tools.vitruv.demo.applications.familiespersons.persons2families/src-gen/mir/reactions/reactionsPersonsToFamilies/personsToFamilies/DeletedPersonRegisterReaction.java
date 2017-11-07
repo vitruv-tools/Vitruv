@@ -12,36 +12,53 @@ import tools.vitruv.framework.change.echange.eobject.DeleteEObject;
 
 @SuppressWarnings("all")
 class DeletedPersonRegisterReaction extends AbstractReactionRealization {
+  private DeleteEObject<PersonRegister> deleteChange;
+  
+  private int currentlyMatchedChange;
+  
   public void executeReaction(final EChange change) {
-    DeleteEObject<PersonRegister> typedChange = (DeleteEObject<PersonRegister>)change;
-    PersonRegister affectedEObject = typedChange.getAffectedEObject();
+    if (!checkPrecondition(change)) {
+    	return;
+    }
+    edu.kit.ipd.sdq.metamodels.persons.PersonRegister affectedEObject = deleteChange.getAffectedEObject();
+    				
+    getLogger().trace("Passed complete precondition check of Reaction " + this.getClass().getName());
+    				
     mir.routines.personsToFamilies.RoutinesFacade routinesFacade = new mir.routines.personsToFamilies.RoutinesFacade(this.executionState, this);
     mir.reactions.reactionsPersonsToFamilies.personsToFamilies.DeletedPersonRegisterReaction.ActionUserExecution userExecution = new mir.reactions.reactionsPersonsToFamilies.personsToFamilies.DeletedPersonRegisterReaction.ActionUserExecution(this.executionState, this);
     userExecution.callRoutine1(affectedEObject, routinesFacade);
+    
+    resetChanges();
   }
   
-  public static Class<? extends EChange> getExpectedChangeType() {
-    return DeleteEObject.class;
-  }
-  
-  private boolean checkChangeProperties(final EChange change) {
-    DeleteEObject<PersonRegister> relevantChange = (DeleteEObject<PersonRegister>)change;
-    if (!(relevantChange.getAffectedEObject() instanceof PersonRegister)) {
-    	return false;
+  private boolean matchDeleteChange(final EChange change) {
+    if (change instanceof DeleteEObject<?>) {
+    	DeleteEObject<edu.kit.ipd.sdq.metamodels.persons.PersonRegister> _localTypedChange = (DeleteEObject<edu.kit.ipd.sdq.metamodels.persons.PersonRegister>) change;
+    	if (!(_localTypedChange.getAffectedEObject() instanceof edu.kit.ipd.sdq.metamodels.persons.PersonRegister)) {
+    		return false;
+    	}
+    	this.deleteChange = (DeleteEObject<edu.kit.ipd.sdq.metamodels.persons.PersonRegister>) change;
+    	return true;
     }
-    return true;
+    
+    return false;
+  }
+  
+  private void resetChanges() {
+    deleteChange = null;
+    currentlyMatchedChange = 0;
   }
   
   public boolean checkPrecondition(final EChange change) {
-    if (!(change instanceof DeleteEObject)) {
-    	return false;
+    if (currentlyMatchedChange == 0) {
+    	if (!matchDeleteChange(change)) {
+    		resetChanges();
+    		return false;
+    	} else {
+    		currentlyMatchedChange++;
+    	}
     }
-    getLogger().debug("Passed change type check of reaction " + this.getClass().getName());
-    if (!checkChangeProperties(change)) {
-    	return false;
-    }
-    getLogger().debug("Passed change properties check of reaction " + this.getClass().getName());
-    getLogger().debug("Passed complete precondition check of reaction " + this.getClass().getName());
+    
     return true;
   }
   

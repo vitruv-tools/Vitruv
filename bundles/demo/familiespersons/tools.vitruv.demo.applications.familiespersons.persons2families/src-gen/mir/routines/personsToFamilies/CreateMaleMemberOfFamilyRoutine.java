@@ -4,7 +4,6 @@ import com.google.common.collect.Iterables;
 import edu.kit.ipd.sdq.metamodels.families.Family;
 import edu.kit.ipd.sdq.metamodels.families.FamilyRegister;
 import edu.kit.ipd.sdq.metamodels.families.Member;
-import edu.kit.ipd.sdq.metamodels.families.impl.FamiliesFactoryImpl;
 import edu.kit.ipd.sdq.metamodels.persons.Male;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -42,10 +41,7 @@ public class CreateMaleMemberOfFamilyRoutine extends AbstractRepairRoutineRealiz
     }
     
     public void updateMemberElement(final Male person, final FamilyRegister familiesRegister, final Member member) {
-      String _fullName = person.getFullName();
-      String[] _split = _fullName.split(" ");
-      String _get = _split[0];
-      member.setFirstName(_get);
+      member.setFirstName(person.getFullName().split(" ")[0]);
     }
     
     public EObject getElement2(final Male person, final FamilyRegister familiesRegister, final Member member) {
@@ -57,16 +53,12 @@ public class CreateMaleMemberOfFamilyRoutine extends AbstractRepairRoutineRealiz
       int _size = collectionFamilies.size();
       final List<String> familiesNames = new ArrayList<String>(_size);
       for (final Family f : collectionFamilies) {
-        String _lastName = f.getLastName();
-        familiesNames.add(_lastName);
+        familiesNames.add(f.getLastName());
       }
       final String selectMsg = "Please select the family to which the person belongs.";
       final int selected = this.userInteracting.selectFromMessage(UserInteractionType.MODAL, selectMsg, ((String[])Conversions.unwrapArray(familiesNames, String.class)));
       final Family selectedFamily = collectionFamilies.get(selected);
-      String _fullName = person.getFullName();
-      String[] _split = _fullName.split(" ");
-      String _get = _split[1];
-      selectedFamily.setLastName(_get);
+      selectedFamily.setLastName(person.getFullName().split(" ")[1]);
       List<String> collectionRoles = new ArrayList<String>();
       Iterables.<String>addAll(collectionRoles, Collections.<String>unmodifiableList(CollectionLiterals.<String>newArrayList("Father", "Son")));
       final String selectMsgRoles = "Please select whether the person is a father or a son.";
@@ -75,8 +67,7 @@ public class CreateMaleMemberOfFamilyRoutine extends AbstractRepairRoutineRealiz
       if ((selectedRole == 0)) {
         selectedFamily.setFather(member);
       } else {
-        EList<Member> _sons = selectedFamily.getSons();
-        _sons.add(member);
+        selectedFamily.getSons().add(member);
       }
       _routinesFacade.addCorr(person, selectedFamily);
     }
@@ -91,20 +82,22 @@ public class CreateMaleMemberOfFamilyRoutine extends AbstractRepairRoutineRealiz
   
   private Male person;
   
-  protected void executeRoutine() throws IOException {
+  protected boolean executeRoutine() throws IOException {
     getLogger().debug("Called routine CreateMaleMemberOfFamilyRoutine with input:");
-    getLogger().debug("   Male: " + this.person);
+    getLogger().debug("   person: " + this.person);
     
-    FamilyRegister familiesRegister = getCorrespondingElement(
+    edu.kit.ipd.sdq.metamodels.families.FamilyRegister familiesRegister = getCorrespondingElement(
     	userExecution.getCorrepondenceSourceFamiliesRegister(person), // correspondence source supplier
-    	FamilyRegister.class,
-    	(FamilyRegister _element) -> true, // correspondence precondition checker
-    	null);
+    	edu.kit.ipd.sdq.metamodels.families.FamilyRegister.class,
+    	(edu.kit.ipd.sdq.metamodels.families.FamilyRegister _element) -> true, // correspondence precondition checker
+    	null, 
+    	false // asserted
+    	);
     if (familiesRegister == null) {
-    	return;
+    	return false;
     }
     registerObjectUnderModification(familiesRegister);
-    Member member = FamiliesFactoryImpl.eINSTANCE.createMember();
+    edu.kit.ipd.sdq.metamodels.families.Member member = edu.kit.ipd.sdq.metamodels.families.impl.FamiliesFactoryImpl.eINSTANCE.createMember();
     notifyObjectCreated(member);
     userExecution.updateMemberElement(person, familiesRegister, member);
     
@@ -113,5 +106,7 @@ public class CreateMaleMemberOfFamilyRoutine extends AbstractRepairRoutineRealiz
     userExecution.callRoutine1(person, familiesRegister, member, actionsFacade);
     
     postprocessElements();
+    
+    return true;
   }
 }

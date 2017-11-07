@@ -14,7 +14,7 @@
 	<name>Extensions DSLs Runtime Module</name>
 
 	<modules>
-		<module>tools.vitruv.extensions.dslsruntime.mapping</module>
+		<module>tools.vitruv.extensions.dslsruntime.mappings</module>
 		<module>tools.vitruv.extensions.dslsruntime.reactions</module>
 	</modules>
 

@@ -24,7 +24,7 @@
    </requires>
 
    <plugin
-         id="tools.vitruv.extensions.dslsruntime.mapping"
+         id="tools.vitruv.extensions.dslsruntime.mappings"
          download-size="0"
          install-size="0"
          version="0.0.0"

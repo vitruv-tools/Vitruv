@@ -1,6 +1,5 @@
 package mir.routines.familiesToPersons;
 
-import edu.kit.ipd.sdq.metamodels.families.Family;
 import edu.kit.ipd.sdq.metamodels.families.Member;
 import edu.kit.ipd.sdq.metamodels.persons.Person;
 import java.io.IOException;
@@ -28,8 +27,7 @@ public class ChangeFullNameFromFirstRoutine extends AbstractRepairRoutineRealiza
     public void update0Element(final Member member, final Person person) {
       String _firstName = member.getFirstName();
       String _plus = (_firstName + " ");
-      Family _familyFather = member.getFamilyFather();
-      String _lastName = _familyFather.getLastName();
+      String _lastName = member.getFamilyFather().getLastName();
       String _plus_1 = (_plus + _lastName);
       person.setFullName(_plus_1);
     }
@@ -48,22 +46,26 @@ public class ChangeFullNameFromFirstRoutine extends AbstractRepairRoutineRealiza
   
   private Member member;
   
-  protected void executeRoutine() throws IOException {
+  protected boolean executeRoutine() throws IOException {
     getLogger().debug("Called routine ChangeFullNameFromFirstRoutine with input:");
-    getLogger().debug("   Member: " + this.member);
+    getLogger().debug("   member: " + this.member);
     
-    Person person = getCorrespondingElement(
+    edu.kit.ipd.sdq.metamodels.persons.Person person = getCorrespondingElement(
     	userExecution.getCorrepondenceSourcePerson(member), // correspondence source supplier
-    	Person.class,
-    	(Person _element) -> true, // correspondence precondition checker
-    	null);
+    	edu.kit.ipd.sdq.metamodels.persons.Person.class,
+    	(edu.kit.ipd.sdq.metamodels.persons.Person _element) -> true, // correspondence precondition checker
+    	null, 
+    	false // asserted
+    	);
     if (person == null) {
-    	return;
+    	return false;
     }
     registerObjectUnderModification(person);
     // val updatedElement userExecution.getElement1(member, person);
     userExecution.update0Element(member, person);
     
     postprocessElements();
+    
+    return true;
   }
 }

@@ -13,49 +13,66 @@ import tools.vitruv.framework.change.echange.feature.attribute.ReplaceSingleValu
 
 @SuppressWarnings("all")
 class ChangedFullNameReaction extends AbstractReactionRealization {
+  private ReplaceSingleValuedEAttribute<Person, String> replaceChange;
+  
+  private int currentlyMatchedChange;
+  
   public void executeReaction(final EChange change) {
-    ReplaceSingleValuedEAttribute<Person, String> typedChange = (ReplaceSingleValuedEAttribute<Person, String>)change;
-    Person affectedEObject = typedChange.getAffectedEObject();
-    EAttribute affectedFeature = typedChange.getAffectedFeature();
-    String oldValue = typedChange.getOldValue();
-    String newValue = typedChange.getNewValue();
+    if (!checkPrecondition(change)) {
+    	return;
+    }
+    edu.kit.ipd.sdq.metamodels.persons.Person affectedEObject = replaceChange.getAffectedEObject();
+    EAttribute affectedFeature = replaceChange.getAffectedFeature();
+    java.lang.String oldValue = replaceChange.getOldValue();
+    java.lang.String newValue = replaceChange.getNewValue();
+    				
+    getLogger().trace("Passed complete precondition check of Reaction " + this.getClass().getName());
+    				
     mir.routines.personsToFamilies.RoutinesFacade routinesFacade = new mir.routines.personsToFamilies.RoutinesFacade(this.executionState, this);
     mir.reactions.reactionsPersonsToFamilies.personsToFamilies.ChangedFullNameReaction.ActionUserExecution userExecution = new mir.reactions.reactionsPersonsToFamilies.personsToFamilies.ChangedFullNameReaction.ActionUserExecution(this.executionState, this);
     userExecution.callRoutine1(affectedEObject, affectedFeature, oldValue, newValue, routinesFacade);
+    
+    resetChanges();
   }
   
-  public static Class<? extends EChange> getExpectedChangeType() {
-    return ReplaceSingleValuedEAttribute.class;
-  }
-  
-  private boolean checkChangeProperties(final EChange change) {
-    ReplaceSingleValuedEAttribute<Person, String> relevantChange = (ReplaceSingleValuedEAttribute<Person, String>)change;
-    if (!(relevantChange.getAffectedEObject() instanceof Person)) {
-    	return false;
-    }
-    if (!relevantChange.getAffectedFeature().getName().equals("fullName")) {
-    	return false;
-    }
-    if (relevantChange.isFromNonDefaultValue() && !(relevantChange.getOldValue() instanceof String)) {
-    	return false;
-    }
-    if (relevantChange.isToNonDefaultValue() && !(relevantChange.getNewValue() instanceof String)) {
-    	return false;
-    }
-    return true;
+  private void resetChanges() {
+    replaceChange = null;
+    currentlyMatchedChange = 0;
   }
   
   public boolean checkPrecondition(final EChange change) {
-    if (!(change instanceof ReplaceSingleValuedEAttribute)) {
-    	return false;
+    if (currentlyMatchedChange == 0) {
+    	if (!matchReplaceChange(change)) {
+    		resetChanges();
+    		return false;
+    	} else {
+    		currentlyMatchedChange++;
+    	}
     }
-    getLogger().debug("Passed change type check of reaction " + this.getClass().getName());
-    if (!checkChangeProperties(change)) {
-    	return false;
-    }
-    getLogger().debug("Passed change properties check of reaction " + this.getClass().getName());
-    getLogger().debug("Passed complete precondition check of reaction " + this.getClass().getName());
+    
     return true;
+  }
+  
+  private boolean matchReplaceChange(final EChange change) {
+    if (change instanceof ReplaceSingleValuedEAttribute<?, ?>) {
+    	ReplaceSingleValuedEAttribute<edu.kit.ipd.sdq.metamodels.persons.Person, java.lang.String> _localTypedChange = (ReplaceSingleValuedEAttribute<edu.kit.ipd.sdq.metamodels.persons.Person, java.lang.String>) change;
+    	if (!(_localTypedChange.getAffectedEObject() instanceof edu.kit.ipd.sdq.metamodels.persons.Person)) {
+    		return false;
+    	}
+    	if (!_localTypedChange.getAffectedFeature().getName().equals("fullName")) {
+    		return false;
+    	}
+    	if (_localTypedChange.isFromNonDefaultValue() && !(_localTypedChange.getOldValue() instanceof java.lang.String)) {
+    		return false;
+    	}
+    	if (_localTypedChange.isToNonDefaultValue() && !(_localTypedChange.getNewValue() instanceof java.lang.String)) {
+    		return false;
+    	}
+    	this.replaceChange = (ReplaceSingleValuedEAttribute<edu.kit.ipd.sdq.metamodels.persons.Person, java.lang.String>) change;
+    	return true;
+    }
+    
+    return false;
   }
   
   private static class ActionUserExecution extends AbstractRepairRoutineRealization.UserExecution {

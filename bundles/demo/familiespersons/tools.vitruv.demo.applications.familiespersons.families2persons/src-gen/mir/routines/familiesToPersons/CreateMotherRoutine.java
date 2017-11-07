@@ -5,7 +5,6 @@ import edu.kit.ipd.sdq.metamodels.families.Member;
 import edu.kit.ipd.sdq.metamodels.persons.Female;
 import edu.kit.ipd.sdq.metamodels.persons.Person;
 import edu.kit.ipd.sdq.metamodels.persons.PersonRegister;
-import edu.kit.ipd.sdq.metamodels.persons.impl.PersonsFactoryImpl;
 import java.io.IOException;
 import mir.routines.familiesToPersons.RoutinesFacade;
 import org.eclipse.emf.common.util.EList;
@@ -26,9 +25,8 @@ public class CreateMotherRoutine extends AbstractRepairRoutineRealization {
     }
     
     public EObject getCorrepondenceSourcePersonsRegister(final Member member) {
-      EObject _eContainer = member.eContainer();
-      EObject _eContainer_1 = _eContainer.eContainer();
-      return _eContainer_1;
+      EObject _eContainer = member.eContainer().eContainer();
+      return _eContainer;
     }
     
     public EObject getElement1(final Member member, final PersonRegister personsRegister, final Female person) {
@@ -60,8 +58,7 @@ public class CreateMotherRoutine extends AbstractRepairRoutineRealization {
     public void updatePersonElement(final Member member, final PersonRegister personsRegister, final Female person) {
       String _firstName = member.getFirstName();
       String _plus = (_firstName + " ");
-      Family _familyMother = member.getFamilyMother();
-      String _lastName = _familyMother.getLastName();
+      String _lastName = member.getFamilyMother().getLastName();
       String _plus_1 = (_plus + _lastName);
       person.setFullName(_plus_1);
     }
@@ -76,20 +73,22 @@ public class CreateMotherRoutine extends AbstractRepairRoutineRealization {
   
   private Member member;
   
-  protected void executeRoutine() throws IOException {
+  protected boolean executeRoutine() throws IOException {
     getLogger().debug("Called routine CreateMotherRoutine with input:");
-    getLogger().debug("   Member: " + this.member);
+    getLogger().debug("   member: " + this.member);
     
-    PersonRegister personsRegister = getCorrespondingElement(
+    edu.kit.ipd.sdq.metamodels.persons.PersonRegister personsRegister = getCorrespondingElement(
     	userExecution.getCorrepondenceSourcePersonsRegister(member), // correspondence source supplier
-    	PersonRegister.class,
-    	(PersonRegister _element) -> true, // correspondence precondition checker
-    	null);
+    	edu.kit.ipd.sdq.metamodels.persons.PersonRegister.class,
+    	(edu.kit.ipd.sdq.metamodels.persons.PersonRegister _element) -> true, // correspondence precondition checker
+    	null, 
+    	false // asserted
+    	);
     if (personsRegister == null) {
-    	return;
+    	return false;
     }
     registerObjectUnderModification(personsRegister);
-    Female person = PersonsFactoryImpl.eINSTANCE.createFemale();
+    edu.kit.ipd.sdq.metamodels.persons.Female person = edu.kit.ipd.sdq.metamodels.persons.impl.PersonsFactoryImpl.eINSTANCE.createFemale();
     notifyObjectCreated(person);
     userExecution.updatePersonElement(member, personsRegister, person);
     
@@ -101,5 +100,7 @@ public class CreateMotherRoutine extends AbstractRepairRoutineRealization {
     addCorrespondenceBetween(userExecution.getElement4(member, personsRegister, person), userExecution.getElement5(member, personsRegister, person), "");
     
     postprocessElements();
+    
+    return true;
   }
 }

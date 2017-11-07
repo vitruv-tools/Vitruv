@@ -104,6 +104,10 @@ public abstract class VitruviusApplicationTest extends VitruviusUnmonitoredAppli
 	 */
 	protected List<PropagatedChange> saveAndSynchronizeChanges(EObject object) throws IOException {
 		Resource resource = object.eResource();
+		return saveAndSynchronizeChanges(resource);
+	}
+	
+	protected  List<PropagatedChange> saveAndSynchronizeChanges(Resource resource) throws IOException {
 		EcoreResourceBridge.saveResource(resource);
 		List<PropagatedChange> result = this.propagateChanges();
 		this.startRecordingChanges(resource);

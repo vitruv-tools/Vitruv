@@ -30,10 +30,7 @@ public class ChangeNamesRoutine extends AbstractRepairRoutineRealization {
     }
     
     public void update0Element(final Person person, final Family family, final Member member) {
-      String _fullName = person.getFullName();
-      String[] _split = _fullName.split(" ");
-      String _get = _split[1];
-      family.setLastName(_get);
+      family.setLastName(person.getFullName().split(" ")[1]);
     }
     
     public EObject getCorrepondenceSourceMember(final Person person, final Family family) {
@@ -45,10 +42,7 @@ public class ChangeNamesRoutine extends AbstractRepairRoutineRealization {
     }
     
     public void update1Element(final Person person, final Family family, final Member member) {
-      String _fullName = person.getFullName();
-      String[] _split = _fullName.split(" ");
-      String _get = _split[0];
-      member.setFirstName(_get);
+      member.setFirstName(person.getFullName().split(" ")[0]);
     }
   }
   
@@ -61,26 +55,30 @@ public class ChangeNamesRoutine extends AbstractRepairRoutineRealization {
   
   private Person person;
   
-  protected void executeRoutine() throws IOException {
+  protected boolean executeRoutine() throws IOException {
     getLogger().debug("Called routine ChangeNamesRoutine with input:");
-    getLogger().debug("   Person: " + this.person);
+    getLogger().debug("   person: " + this.person);
     
-    Family family = getCorrespondingElement(
+    edu.kit.ipd.sdq.metamodels.families.Family family = getCorrespondingElement(
     	userExecution.getCorrepondenceSourceFamily(person), // correspondence source supplier
-    	Family.class,
-    	(Family _element) -> true, // correspondence precondition checker
-    	null);
+    	edu.kit.ipd.sdq.metamodels.families.Family.class,
+    	(edu.kit.ipd.sdq.metamodels.families.Family _element) -> true, // correspondence precondition checker
+    	null, 
+    	false // asserted
+    	);
     if (family == null) {
-    	return;
+    	return false;
     }
     registerObjectUnderModification(family);
-    Member member = getCorrespondingElement(
+    edu.kit.ipd.sdq.metamodels.families.Member member = getCorrespondingElement(
     	userExecution.getCorrepondenceSourceMember(person, family), // correspondence source supplier
-    	Member.class,
-    	(Member _element) -> true, // correspondence precondition checker
-    	null);
+    	edu.kit.ipd.sdq.metamodels.families.Member.class,
+    	(edu.kit.ipd.sdq.metamodels.families.Member _element) -> true, // correspondence precondition checker
+    	null, 
+    	false // asserted
+    	);
     if (member == null) {
-    	return;
+    	return false;
     }
     registerObjectUnderModification(member);
     // val updatedElement userExecution.getElement1(person, family, member);
@@ -90,5 +88,7 @@ public class ChangeNamesRoutine extends AbstractRepairRoutineRealization {
     userExecution.update1Element(person, family, member);
     
     postprocessElements();
+    
+    return true;
   }
 }

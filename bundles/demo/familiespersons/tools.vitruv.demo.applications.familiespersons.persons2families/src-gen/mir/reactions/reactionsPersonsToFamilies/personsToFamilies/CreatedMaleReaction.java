@@ -10,50 +10,93 @@ import tools.vitruv.extensions.dslsruntime.reactions.AbstractRepairRoutineRealiz
 import tools.vitruv.extensions.dslsruntime.reactions.ReactionExecutionState;
 import tools.vitruv.extensions.dslsruntime.reactions.structure.CallHierarchyHaving;
 import tools.vitruv.framework.change.echange.EChange;
-import tools.vitruv.framework.change.echange.compound.CreateAndInsertNonRoot;
+import tools.vitruv.framework.change.echange.eobject.CreateEObject;
 import tools.vitruv.framework.change.echange.feature.reference.InsertEReference;
 
 @SuppressWarnings("all")
 class CreatedMaleReaction extends AbstractReactionRealization {
+  private CreateEObject<Male> createChange;
+  
+  private InsertEReference<PersonRegister, Male> insertChange;
+  
+  private int currentlyMatchedChange;
+  
   public void executeReaction(final EChange change) {
-    InsertEReference<PersonRegister, Male> typedChange = ((CreateAndInsertNonRoot<PersonRegister, Male>)change).getInsertChange();
-    PersonRegister affectedEObject = typedChange.getAffectedEObject();
-    EReference affectedFeature = typedChange.getAffectedFeature();
-    Male newValue = typedChange.getNewValue();
+    if (!checkPrecondition(change)) {
+    	return;
+    }
+    edu.kit.ipd.sdq.metamodels.persons.PersonRegister affectedEObject = insertChange.getAffectedEObject();
+    EReference affectedFeature = insertChange.getAffectedFeature();
+    edu.kit.ipd.sdq.metamodels.persons.Male newValue = insertChange.getNewValue();
+    				
+    getLogger().trace("Passed complete precondition check of Reaction " + this.getClass().getName());
+    				
     mir.routines.personsToFamilies.RoutinesFacade routinesFacade = new mir.routines.personsToFamilies.RoutinesFacade(this.executionState, this);
     mir.reactions.reactionsPersonsToFamilies.personsToFamilies.CreatedMaleReaction.ActionUserExecution userExecution = new mir.reactions.reactionsPersonsToFamilies.personsToFamilies.CreatedMaleReaction.ActionUserExecution(this.executionState, this);
     userExecution.callRoutine1(affectedEObject, affectedFeature, newValue, routinesFacade);
+    
+    resetChanges();
   }
   
-  public static Class<? extends EChange> getExpectedChangeType() {
-    return CreateAndInsertNonRoot.class;
+  private void resetChanges() {
+    createChange = null;
+    insertChange = null;
+    currentlyMatchedChange = 0;
   }
   
-  private boolean checkChangeProperties(final EChange change) {
-    InsertEReference<PersonRegister, Male> relevantChange = ((CreateAndInsertNonRoot<PersonRegister, Male>)change).getInsertChange();
-    if (!(relevantChange.getAffectedEObject() instanceof PersonRegister)) {
-    	return false;
+  private boolean matchCreateChange(final EChange change) {
+    if (change instanceof CreateEObject<?>) {
+    	CreateEObject<edu.kit.ipd.sdq.metamodels.persons.Male> _localTypedChange = (CreateEObject<edu.kit.ipd.sdq.metamodels.persons.Male>) change;
+    	if (!(_localTypedChange.getAffectedEObject() instanceof edu.kit.ipd.sdq.metamodels.persons.Male)) {
+    		return false;
+    	}
+    	this.createChange = (CreateEObject<edu.kit.ipd.sdq.metamodels.persons.Male>) change;
+    	return true;
     }
-    if (!relevantChange.getAffectedFeature().getName().equals("persons")) {
-    	return false;
-    }
-    if (!(relevantChange.getNewValue() instanceof Male)) {
-    	return false;
-    }
-    return true;
+    
+    return false;
   }
   
   public boolean checkPrecondition(final EChange change) {
-    if (!(change instanceof CreateAndInsertNonRoot)) {
-    	return false;
+    if (currentlyMatchedChange == 0) {
+    	if (!matchCreateChange(change)) {
+    		resetChanges();
+    		return false;
+    	} else {
+    		currentlyMatchedChange++;
+    	}
+    	return false; // Only proceed on the last of the expected changes
     }
-    getLogger().debug("Passed change type check of reaction " + this.getClass().getName());
-    if (!checkChangeProperties(change)) {
-    	return false;
+    if (currentlyMatchedChange == 1) {
+    	if (!matchInsertChange(change)) {
+    		resetChanges();
+    		checkPrecondition(change); // Reexecute to potentially register this as first change
+    		return false;
+    	} else {
+    		currentlyMatchedChange++;
+    	}
     }
-    getLogger().debug("Passed change properties check of reaction " + this.getClass().getName());
-    getLogger().debug("Passed complete precondition check of reaction " + this.getClass().getName());
+    
     return true;
+  }
+  
+  private boolean matchInsertChange(final EChange change) {
+    if (change instanceof InsertEReference<?, ?>) {
+    	InsertEReference<edu.kit.ipd.sdq.metamodels.persons.PersonRegister, edu.kit.ipd.sdq.metamodels.persons.Male> _localTypedChange = (InsertEReference<edu.kit.ipd.sdq.metamodels.persons.PersonRegister, edu.kit.ipd.sdq.metamodels.persons.Male>) change;
+    	if (!(_localTypedChange.getAffectedEObject() instanceof edu.kit.ipd.sdq.metamodels.persons.PersonRegister)) {
+    		return false;
+    	}
+    	if (!_localTypedChange.getAffectedFeature().getName().equals("persons")) {
+    		return false;
+    	}
+    	if (!(_localTypedChange.getNewValue() instanceof edu.kit.ipd.sdq.metamodels.persons.Male)) {
+    		return false;
+    	}
+    	this.insertChange = (InsertEReference<edu.kit.ipd.sdq.metamodels.persons.PersonRegister, edu.kit.ipd.sdq.metamodels.persons.Male>) change;
+    	return true;
+    }
+    
+    return false;
   }
   
   private static class ActionUserExecution extends AbstractRepairRoutineRealization.UserExecution {

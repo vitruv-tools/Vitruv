@@ -12,36 +12,53 @@ import tools.vitruv.framework.change.echange.eobject.DeleteEObject;
 
 @SuppressWarnings("all")
 class DeletedFamilyRegisterReaction extends AbstractReactionRealization {
+  private DeleteEObject<FamilyRegister> deleteChange;
+  
+  private int currentlyMatchedChange;
+  
   public void executeReaction(final EChange change) {
-    DeleteEObject<FamilyRegister> typedChange = (DeleteEObject<FamilyRegister>)change;
-    FamilyRegister affectedEObject = typedChange.getAffectedEObject();
+    if (!checkPrecondition(change)) {
+    	return;
+    }
+    edu.kit.ipd.sdq.metamodels.families.FamilyRegister affectedEObject = deleteChange.getAffectedEObject();
+    				
+    getLogger().trace("Passed complete precondition check of Reaction " + this.getClass().getName());
+    				
     mir.routines.familiesToPersons.RoutinesFacade routinesFacade = new mir.routines.familiesToPersons.RoutinesFacade(this.executionState, this);
     mir.reactions.reactionsFamiliesToPersons.familiesToPersons.DeletedFamilyRegisterReaction.ActionUserExecution userExecution = new mir.reactions.reactionsFamiliesToPersons.familiesToPersons.DeletedFamilyRegisterReaction.ActionUserExecution(this.executionState, this);
     userExecution.callRoutine1(affectedEObject, routinesFacade);
+    
+    resetChanges();
   }
   
-  public static Class<? extends EChange> getExpectedChangeType() {
-    return DeleteEObject.class;
-  }
-  
-  private boolean checkChangeProperties(final EChange change) {
-    DeleteEObject<FamilyRegister> relevantChange = (DeleteEObject<FamilyRegister>)change;
-    if (!(relevantChange.getAffectedEObject() instanceof FamilyRegister)) {
-    	return false;
+  private boolean matchDeleteChange(final EChange change) {
+    if (change instanceof DeleteEObject<?>) {
+    	DeleteEObject<edu.kit.ipd.sdq.metamodels.families.FamilyRegister> _localTypedChange = (DeleteEObject<edu.kit.ipd.sdq.metamodels.families.FamilyRegister>) change;
+    	if (!(_localTypedChange.getAffectedEObject() instanceof edu.kit.ipd.sdq.metamodels.families.FamilyRegister)) {
+    		return false;
+    	}
+    	this.deleteChange = (DeleteEObject<edu.kit.ipd.sdq.metamodels.families.FamilyRegister>) change;
+    	return true;
     }
-    return true;
+    
+    return false;
+  }
+  
+  private void resetChanges() {
+    deleteChange = null;
+    currentlyMatchedChange = 0;
   }
   
   public boolean checkPrecondition(final EChange change) {
-    if (!(change instanceof DeleteEObject)) {
-    	return false;
+    if (currentlyMatchedChange == 0) {
+    	if (!matchDeleteChange(change)) {
+    		resetChanges();
+    		return false;
+    	} else {
+    		currentlyMatchedChange++;
+    	}
     }
-    getLogger().debug("Passed change type check of reaction " + this.getClass().getName());
-    if (!checkChangeProperties(change)) {
-    	return false;
-    }
-    getLogger().debug("Passed change properties check of reaction " + this.getClass().getName());
-    getLogger().debug("Passed complete precondition check of reaction " + this.getClass().getName());
+    
     return true;
   }
   

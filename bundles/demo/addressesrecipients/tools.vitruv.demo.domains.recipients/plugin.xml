@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+
+<!--
+-->
+
+<plugin>
+   <extension
+         id="recipientsDomainProvider"
+         name="Recipients Domain Provider"
+         point="tools.vitruv.framework.metamodel.domain">
+      <domainProvider
+            class="tools.vitruv.demo.domains.recipients.RecipientsDomainProvider"></domainProvider>
+   </extension>
+
+</plugin>

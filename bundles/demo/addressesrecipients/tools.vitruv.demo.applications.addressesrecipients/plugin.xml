@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         id="tools.vitruv.demo.applications.addressesrecipients"
+         name="Addresses Recipients Application"
+         point="tools.vitruv.framework.applications.application">
+   <application class="tools.vitruv.demo.applications.addressesrecipients.AddressesRecipientsApplication"></application>
+   </extension>
+
+</plugin>

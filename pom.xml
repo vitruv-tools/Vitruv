@@ -39,6 +39,11 @@
 			<url>http://kit-sdq.github.io/updatesite/nightly/commons</url>
 		</repository>
 		<repository>
+			<id>Demo Metamodels</id>
+			<layout>p2</layout>
+			<url>http://kit-sdq.github.io/updatesite/nightly/metamodels/demo</url>
+		</repository>
+		<repository>
 			<id>Vitruv License</id>
 			<layout>p2</layout>
 			<url>http://vitruv-tools.github.io/updatesite/release/license</url>
