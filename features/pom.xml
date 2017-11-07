@@ -19,6 +19,7 @@
 		<module>tools.vitruv.extensions.constructionsimulation.feature</module>
 		<module>tools.vitruv.extensions.integration.feature</module>
 		<module>tools.vitruv.dsls.feature</module>
+		<module>tools.vitruv.demo.familiespersons.feature</module>
 	</modules>
 
 </project>
