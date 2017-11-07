@@ -26,9 +26,15 @@
    </feature>
    <feature url="features/tools.vitruv.dsls.feature_0.2.0.qualifier.jar" id="tools.vitruv.dsls.feature" version="0.2.0.qualifier">
       <category name="Vitruv Application Development"/>
-   </feature>   
+   </feature>
    <feature id="tools.vitruv.dsls.feature.source" version="0.2.0.qualifier">
       <category name="Vitruv Application Development"/>
+   </feature>
+   <feature url="features/tools.vitruv.demo.familiespersons.feature_0.2.0.qualifier.jar" id="tools.vitruv.demo.familiespersons.feature" version="0.2.0.qualifier">
+      <category name="Vitruv Demo Applications"/>
+   </feature>
+   <feature id="tools.vitruv.demo.familiespersons.feature.source" version="0.2.0.qualifier">
+      <category name="Vitruv Demo Applications"/>
    </feature>
    <category-def name="Vitruv Framework" label="Vitruv Framework">
       <description>
@@ -38,6 +44,11 @@
    <category-def name="Vitruv Application Development" label="Vitruv Application Development">
       <description>
          DSLs for developing consistency-preserving Vitruv applications
+      </description>
+   </category-def>
+   <category-def name="Vitruv Demo Applications" label="Vitruv Demo Applications">
+      <description>
+         Demo Applications for the Vitruv framework
       </description>
    </category-def>
 </site>
