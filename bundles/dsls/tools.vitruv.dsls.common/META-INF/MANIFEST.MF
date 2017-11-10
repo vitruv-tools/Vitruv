@@ -7,7 +7,10 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: com.google.guava,
  org.eclipse.xtext.xbase.lib,
  org.eclipse.xtend.lib,
- org.eclipse.xtend.lib.macro
-Export-Package: tools.vitruv.dsls.common
+ org.eclipse.xtend.lib.macro,
+ org.eclipse.emf.ecore;bundle-version="2.13.0",
+ edu.kit.ipd.sdq.activextendannotations;bundle-version="1.0.0"
+Export-Package: tools.vitruv.dsls.common,
+ tools.vitruv.dsls.common.helper
 Bundle-Vendor: vitruv.tools
 

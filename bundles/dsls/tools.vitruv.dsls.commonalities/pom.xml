@@ -1,0 +1,63 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>tools.vitruv</groupId>
+		<artifactId>dsls</artifactId>
+		<version>0.2.0-SNAPSHOT</version>
+		<relativePath>../</relativePath>
+	</parent>
+	<artifactId>tools.vitruv.dsls.commonalities</artifactId>
+	<packaging>eclipse-plugin</packaging>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>exec-maven-plugin</artifactId>
+				<configuration>
+					<arguments>
+						<argument>/${project.basedir}/src/tools/vitruv/dsls/commonalities/GenerateCommonalitiesLanguage.mwe2</argument>
+						<argument>-p</argument>
+						<argument>rootPath=/${project.basedir}/..</argument>
+					</arguments>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.eclipse.xtend</groupId>
+				<artifactId>xtend-maven-plugin</artifactId>
+				<configuration>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-compiler-plugin</artifactId>
+				<version>${tycho.version}</version>
+				<configuration>
+					<useProjectSettings>false</useProjectSettings>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-clean-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>clean-xtext</id>
+						<phase>clean</phase>
+						<configuration>
+							<fileset>
+								<directory>${basedir}/model-gen/</directory>
+								<includes>
+									<include>**/*</include>
+								</includes>
+							</fileset>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+</project>

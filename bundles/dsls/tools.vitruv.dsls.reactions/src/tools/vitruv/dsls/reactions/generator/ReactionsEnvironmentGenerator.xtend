@@ -6,8 +6,8 @@ import java.util.List
 import org.eclipse.xtext.generator.IFileSystemAccess2
 import edu.kit.ipd.sdq.commons.util.java.Pair
 import static extension tools.vitruv.dsls.reactions.codegen.helper.ClassNamesGenerators.*
+import static extension tools.vitruv.dsls.common.helper.JavaFileGenerator.*
 import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
-import tools.vitruv.dsls.reactions.helper.XtendImportHelper
 import org.eclipse.emf.ecore.resource.ResourceSet
 import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsSegment
 import org.eclipse.xtext.util.RuntimeIOException
@@ -23,7 +23,7 @@ import java.util.concurrent.Executors
 import java.util.concurrent.ExecutionException
 import java.util.concurrent.Callable
 import java.util.Arrays
-import tools.vitruv.dsls.reactions.codegen.helper.ClassNamesGenerators
+import tools.vitruv.dsls.common.helper.JavaImportHelper
 import tools.vitruv.framework.change.processing.impl.CompositeDecomposingChangePropagationSpecification
 
 class ReactionsEnvironmentGenerator {
@@ -49,7 +49,7 @@ class ReactionsEnvironmentGenerator {
 
 	def private ensureChangePropagationSpecification(Pair<VitruvDomain, VitruvDomain> modelCombination,
 		List<ReactionsSegment> segments, IFileSystemAccess2 fsa) {
-		val specificationPath = modelCombination.changePropagationSpecificationClassNameGenerator.qualifiedName.filePath
+		val specificationPath = modelCombination.changePropagationSpecificationClassNameGenerator.qualifiedName.javaFilePath
 		val executors = segments.map [executorClassNameGenerator.qualifiedName]
 		var generateNew = false
 		try {
@@ -81,7 +81,7 @@ class ReactionsEnvironmentGenerator {
 	}
 
 	def private shouldKeepExecutor(String executorName, IFileSystemAccess2 fsa) {
-		fsa.isFile('''«executorName.replace('.', ClassNamesGenerators.FSA_SEPARATOR)».java''')
+		fsa.isFile('''«executorName.replace('.', FSA_SEPARATOR)».java''')
 	}
 
 	/**
@@ -92,7 +92,7 @@ class ReactionsEnvironmentGenerator {
 
 	def private generateChangePropagationSpecification(Pair<VitruvDomain, VitruvDomain> modelPair,
 		List<String> executorsNames) {
-		val extension ih = new XtendImportHelper();
+		val extension ih = new JavaImportHelper();
 		val changePropagationSpecificationNameGenerator = modelPair.changePropagationSpecificationClassNameGenerator
 		'''
 			/**

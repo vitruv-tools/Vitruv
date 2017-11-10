@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<plugin>
+	<extension point="org.eclipse.emf.ecore.generated_package">
+		<package 
+			uri = "http://vitruv.tools/dsls/commonalities/language"
+			class = "tools.vitruv.dsls.commonalities.language.LanguagePackage"
+			genModel = "model-gen/CommonalitiesLanguage.genmodel" />
+	</extension>
+ <extension
+       point="org.eclipse.emf.ecore.factory_override">
+    <factory
+          class="tools.vitruv.dsls.commonalities.language.CommonalitiesLanguageImplementationFactory"
+          uri="http://vitruv.tools/dsls/commonalities/language">
+    </factory>
+ </extension>
+ <extension
+       point="org.eclipse.emf.ecore.generated_package">
+    <package
+          class="tools.vitruv.dsls.commonalities.language.elements.LanguageElementsPackage"
+          genModel="model/LanguageElements.genmodel"
+          uri="http://vitruv.tools/dsls/commonalities/elements">
+    </package>
+ </extension>
+ <extension
+       point="org.eclipse.emf.ecore.factory_override">
+    <factory
+          class="tools.vitruv.dsls.commonalities.language.elements.LanguageElementsAdapterFactory"
+          uri="http://vitruv.tools/dsls/commonalities/elements">
+    </factory>
+ </extension>
+</plugin>
