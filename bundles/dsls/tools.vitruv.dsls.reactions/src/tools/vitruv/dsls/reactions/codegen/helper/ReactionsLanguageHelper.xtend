@@ -87,7 +87,7 @@ final class ReactionsLanguageHelper {
 	}
 	
 	def static getOptionalReactionsFile(Resource resource) {
-		val firstContentElement = resource?.contents?.get(0)
+		val firstContentElement = resource?.contents?.head
 		if (firstContentElement instanceof ReactionsFile) {
 			firstContentElement
 		} else {

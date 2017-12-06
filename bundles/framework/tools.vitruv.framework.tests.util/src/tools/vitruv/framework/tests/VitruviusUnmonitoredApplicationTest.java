@@ -41,7 +41,7 @@ import static org.junit.Assert.assertTrue;
  */
 public abstract class VitruviusUnmonitoredApplicationTest extends VitruviusTest {
 
-	private ResourceSet resourceSet;
+	protected ResourceSet resourceSet;
 	private UuidGeneratorAndResolver uuidGeneratorAndResolver;
 	
 	private TestUserInteractor testUserInteractor;
@@ -108,7 +108,7 @@ public abstract class VitruviusUnmonitoredApplicationTest extends VitruviusTest 
 		return resourceSet.createResource(getModelVuri(modelPathWithinProject).getEMFUri());
 	}
 
-	private Resource getModelResource(String modelPathWithinProject, ResourceSet resourceSet) {
+	protected Resource getModelResource(String modelPathWithinProject, ResourceSet resourceSet) {
 		return resourceSet.getResource(getModelVuri(modelPathWithinProject).getEMFUri(), true);
 	}
 
@@ -210,5 +210,4 @@ public abstract class VitruviusUnmonitoredApplicationTest extends VitruviusTest 
 	protected UuidGeneratorAndResolver getLocalUuidGeneratorAndResolver() {
 		return uuidGeneratorAndResolver;
 	}
-
 }

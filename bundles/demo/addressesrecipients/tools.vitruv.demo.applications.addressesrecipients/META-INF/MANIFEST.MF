@@ -1,0 +1,14 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Addresses Recipients Application
+Bundle-SymbolicName: tools.vitruv.demo.applications.addressesrecipients;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-Vendor: SDQ
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Require-Bundle: com.google.guava,
+ org.eclipse.xtext.xbase.lib,
+ org.eclipse.xtend.lib,
+ org.eclipse.xtend.lib.macro,
+ tools.vitruv.framework.applications,
+ tools.vitruv.dsls.mappings.tests.addressesXrecipients
+

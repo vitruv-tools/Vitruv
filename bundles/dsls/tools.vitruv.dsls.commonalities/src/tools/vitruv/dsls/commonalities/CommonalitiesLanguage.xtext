@@ -1,0 +1,193 @@
+grammar tools.vitruv.dsls.commonalities.CommonalitiesLanguage
+	with org.eclipse.xtext.xbase.Xbase
+	hidden(WS, ML_COMMENT, SL_COMMENT)
+
+generate language "http://vitruv.tools/dsls/commonalities/language"
+import "http://www.eclipse.org/emf/2002/Ecore" as ecore
+import "http://vitruv.tools/dsls/commonalities/elements"
+import "http://www.eclipse.org/xtext/common/JavaVMTypes" as jvmTypes
+
+CommonalityFile:
+	concept=Concept
+	commonality=Commonality
+;
+
+Domain:
+	Concept
+;
+
+Concept:
+	'concept' name=ID
+;
+
+Metaclass: 
+	Commonality
+;
+
+Commonality:
+	'commonality' name=ID '{'
+		participations+=Participation*
+		(attributes+=CommonalityAttribute|references+=CommonalityReference)*
+	'}'
+;
+
+
+
+/******************
+ * Participations *
+ ******************/
+PackageLike:
+	Participation
+;
+
+Participation:
+	'with' (SimpleParticipation | TupleParticipation)
+	('as' alias=QUOTED_NAME)?
+	('whereat' condition=ParticipationConditionDeclaration | condition=ParticipationNoCondition)
+;
+
+SimpleParticipation:
+	participationClass=QualifiedParticipationClassDeclaration
+;
+
+TupleParticipation:
+	domainName=DomainReference ':' '(' parts+=TupleParticipationPart (','
+	parts+=TupleParticipationPart)* ')'
+;
+
+TupleParticipationPart:
+	SimpleTupleParticipationPart | ParticipationRelation
+;
+
+SimpleTupleParticipationPart:
+	participationClass=UnqualifiedParticipationClassDeclaration
+;
+
+ParticipationRelation:
+	SimpleParticipationRelation | BracedParticipationRelation
+;
+
+SimpleParticipationRelation returns ParticipationRelation:
+	leftClasses+=UnqualifiedParticipationClassDeclaration operator=[jvmTypes::JvmDeclaredType]
+	rightClasses+=UnqualifiedParticipationClassDeclaration
+;
+
+BracedParticipationRelation returns ParticipationRelation:
+	'(' leftClasses+=UnqualifiedParticipationClassDeclaration (',' leftClasses+=UnqualifiedParticipationClassDeclaration)*
+	operator=[jvmTypes::JvmDeclaredType]
+	rightClasses+=UnqualifiedParticipationClassDeclaration (',' rightClasses+=UnqualifiedParticipationClassDeclaration)*
+	')'
+;
+
+fragment Aliasable:
+	('called' alias=QUOTED_NAME)?
+;
+
+ClassLike:
+	ParticipationClass
+;
+
+ParticipationClass:
+	QualifiedParticipationClassDeclaration | UnqualifiedParticipationClassDeclaration
+;
+
+QualifiedParticipationClassDeclaration returns ParticipationClass:
+	superMetaclass=[Metaclass|QualifiedMetaclass] Aliasable
+;
+
+UnqualifiedParticipationClassDeclaration returns ParticipationClass:
+	superMetaclass=[Metaclass|UnqualifiedMetaclass] Aliasable
+;
+
+ParticipationConditionDeclaration returns ParticipationCondition:
+	{SpecialParticipationCondition}
+;
+
+ParticipationNoCondition returns ParticipationCondition:
+	{ParticipationNoCondition}
+;
+
+
+
+/**************
+ * Attributes *
+ **************/
+Attribute:
+	CommonalityAttribute | ParticipationAttribute
+;
+ 
+CommonalityAttribute:
+	'has' name=ID '{'
+		mappings+=CommonalityAttributeMapping*
+	'}'
+;
+
+CommonalityAttributeMapping:
+	('=' {AttributeEqualitySpecification} | '->' {AttributeSetSpecification} | '<-' {AttributeReadSpecification})
+	attribute=ParticipationAttribute
+;
+
+ParticipationAttribute:
+	participationClass=[ParticipationClass|QualifiedParticipationClass] '.' attribute=[Attribute|UnqualifiedParticipationMember]
+;
+
+
+
+/**************
+ * References *
+ **************/
+ CommonalityReference:
+ 	'has' name=ID 'referencing' referenceType=[Commonality|QualifiedCommonality] '{'
+ 		mappings+=CommonalityReferenceMapping*
+ 	'}'
+ ;
+ 
+ CommonalityReferenceMapping:
+ 	('=' {ReferenceEqualitySpecification} | '->' {ReferenceSetSpecification} | '<-' {ReferenceReadSpecification})
+ 	reference=ParticipationAttribute
+ 	('via' referenceTargets+=[ParticipationClass|QualifiedParticipationClass] (',' referenceTargets+=[ParticipationClass|QualifiedParticipationClass])*)?
+ ;
+ 
+
+/******************
+ * Datatype Rules *
+ ******************/
+fragment QualifiedClasslike:
+	ID ':' ID;
+	
+QualifiedMetaclass:
+	QualifiedClasslike
+;
+
+QualifiedCommonality:
+	QualifiedClasslike
+;
+
+QualifiedParticipationClass:
+	QualifiedClasslike
+;
+
+DomainReference:
+	ID
+;
+
+UnqualifiedMetaclass:
+	ID
+;
+
+UnqualifiedParticipationMember:
+	ID
+;
+	
+	
+/******************
+ * Terminal Rules *
+ ******************/
+terminal QUOTED_NAME:
+	("'" NAME "'") | ('"' NAME '"') | ("“" NAME "”") | ("»" NAME "«") | ("«" NAME "»") | ("„" NAME "“")
+;
+
+terminal fragment NAME:
+	('a'..'z' | 'A'..'Z') ('a'..'z' | 'A'..'Z' | '0'..'9' | '-' | '_')*
+;
+	

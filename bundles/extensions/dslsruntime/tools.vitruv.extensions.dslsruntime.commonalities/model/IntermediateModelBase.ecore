@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="intermediatemodelbase" nsURI="http://vitruv.tools/dsls/commonalities/runtime/intermediatemodelbase"
+    nsPrefix="base">
+  <eClassifiers xsi:type="ecore:EClass" name="Root">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="intermediateIdCounter"
+        lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="intermediates" ordered="false"
+        upperBound="-1" eType="#//Intermediate" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="resourceBridges" ordered="false"
+        upperBound="-1" eType="ecore:EClass Resources.ecore#//Resource" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="intermediateId" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString" changeable="false"
+        volatile="true" transient="true" derived="true" iD="true">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="get" value="return &quot;root&quot;;"/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Intermediate" abstract="true">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="intermediateId" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString" iD="true"/>
+  </eClassifiers>
+</ecore:EPackage>

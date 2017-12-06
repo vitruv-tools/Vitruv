@@ -1,0 +1,18 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Mappings DSL Runtime
+Bundle-SymbolicName: tools.vitruv.extensions.dslsruntime.mappings
+Bundle-Version: 1.0.0.qualifier
+Bundle-Vendor: SDQ
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Require-Bundle: com.google.guava,
+ org.eclipse.xtext.xbase.lib,
+ org.eclipse.xtend.lib,
+ org.eclipse.xtend.lib.macro,
+ org.apache.log4j,
+ org.eclipse.emf.ecore,
+ edu.kit.ipd.sdq.activextendannotations,
+ edu.kit.ipd.sdq.commons.util.java
+Export-Package: tools.vitruv.extensions.dslsruntime.mappings,
+ tools.vitruv.extensions.dslsruntime.mappings.interfaces
+

@@ -71,28 +71,21 @@
          unpack="false"/>
 
    <plugin
-         id="tools.vitruv.dsls.mapping"
+         id="tools.vitruv.dsls.mappings"
          download-size="0"
          install-size="0"
          version="0.0.0"
          unpack="false"/>
 
    <plugin
-         id="tools.vitruv.dsls.mapping.ide"
+         id="tools.vitruv.dsls.mappings.ide"
          download-size="0"
          install-size="0"
          version="0.0.0"
          unpack="false"/>
 
    <plugin
-         id="tools.vitruv.dsls.mapping.ui"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="tools.vitruv.dsls.mapping.util"
+         id="tools.vitruv.dsls.mappings.ui"
          download-size="0"
          install-size="0"
          version="0.0.0"

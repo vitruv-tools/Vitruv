@@ -18,13 +18,15 @@
 		<module>tools.vitruv.dsls.mirbase</module>
 		<module>tools.vitruv.dsls.mirbase.ide</module>
 		<module>tools.vitruv.dsls.mirbase.ui</module>
-		<module>tools.vitruv.dsls.mapping</module>
-		<module>tools.vitruv.dsls.mapping.ide</module>
-		<module>tools.vitruv.dsls.mapping.ui</module>
-		<module>tools.vitruv.dsls.mapping.util</module>
+		<module>tools.vitruv.dsls.mappings</module>
+		<module>tools.vitruv.dsls.mappings.ide</module>
+		<module>tools.vitruv.dsls.mappings.ui</module>
 		<module>tools.vitruv.dsls.reactions</module>
 		<module>tools.vitruv.dsls.reactions.ide</module>
 		<module>tools.vitruv.dsls.reactions.ui</module>
+		<module>tools.vitruv.dsls.commonalities</module>
+		<module>tools.vitruv.dsls.commonalities.ide</module>
+		<module>tools.vitruv.dsls.commonalities.ui</module>
 	</modules>
 
 	<build>
@@ -249,5 +251,4 @@
 			</plugins>
 		</pluginManagement>
 	</build>
-
 </project>

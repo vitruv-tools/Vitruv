@@ -40,13 +40,15 @@ public class AddCorrRoutine extends AbstractRepairRoutineRealization {
   
   private Family family;
   
-  protected void executeRoutine() throws IOException {
+  protected boolean executeRoutine() throws IOException {
     getLogger().debug("Called routine AddCorrRoutine with input:");
-    getLogger().debug("   Person: " + this.person);
-    getLogger().debug("   Family: " + this.family);
+    getLogger().debug("   person: " + this.person);
+    getLogger().debug("   family: " + this.family);
     
     addCorrespondenceBetween(userExecution.getElement1(person, family), userExecution.getElement2(person, family), "");
     
     postprocessElements();
+    
+    return true;
   }
 }

@@ -12,36 +12,53 @@ import tools.vitruv.framework.change.echange.eobject.DeleteEObject;
 
 @SuppressWarnings("all")
 class DeletedMemberReaction extends AbstractReactionRealization {
+  private DeleteEObject<Member> deleteChange;
+  
+  private int currentlyMatchedChange;
+  
   public void executeReaction(final EChange change) {
-    DeleteEObject<Member> typedChange = (DeleteEObject<Member>)change;
-    Member affectedEObject = typedChange.getAffectedEObject();
+    if (!checkPrecondition(change)) {
+    	return;
+    }
+    edu.kit.ipd.sdq.metamodels.families.Member affectedEObject = deleteChange.getAffectedEObject();
+    				
+    getLogger().trace("Passed complete precondition check of Reaction " + this.getClass().getName());
+    				
     mir.routines.familiesToPersons.RoutinesFacade routinesFacade = new mir.routines.familiesToPersons.RoutinesFacade(this.executionState, this);
     mir.reactions.reactionsFamiliesToPersons.familiesToPersons.DeletedMemberReaction.ActionUserExecution userExecution = new mir.reactions.reactionsFamiliesToPersons.familiesToPersons.DeletedMemberReaction.ActionUserExecution(this.executionState, this);
     userExecution.callRoutine1(affectedEObject, routinesFacade);
+    
+    resetChanges();
   }
   
-  public static Class<? extends EChange> getExpectedChangeType() {
-    return DeleteEObject.class;
-  }
-  
-  private boolean checkChangeProperties(final EChange change) {
-    DeleteEObject<Member> relevantChange = (DeleteEObject<Member>)change;
-    if (!(relevantChange.getAffectedEObject() instanceof Member)) {
-    	return false;
+  private boolean matchDeleteChange(final EChange change) {
+    if (change instanceof DeleteEObject<?>) {
+    	DeleteEObject<edu.kit.ipd.sdq.metamodels.families.Member> _localTypedChange = (DeleteEObject<edu.kit.ipd.sdq.metamodels.families.Member>) change;
+    	if (!(_localTypedChange.getAffectedEObject() instanceof edu.kit.ipd.sdq.metamodels.families.Member)) {
+    		return false;
+    	}
+    	this.deleteChange = (DeleteEObject<edu.kit.ipd.sdq.metamodels.families.Member>) change;
+    	return true;
     }
-    return true;
+    
+    return false;
+  }
+  
+  private void resetChanges() {
+    deleteChange = null;
+    currentlyMatchedChange = 0;
   }
   
   public boolean checkPrecondition(final EChange change) {
-    if (!(change instanceof DeleteEObject)) {
-    	return false;
+    if (currentlyMatchedChange == 0) {
+    	if (!matchDeleteChange(change)) {
+    		resetChanges();
+    		return false;
+    	} else {
+    		currentlyMatchedChange++;
+    	}
     }
-    getLogger().debug("Passed change type check of reaction " + this.getClass().getName());
-    if (!checkChangeProperties(change)) {
-    	return false;
-    }
-    getLogger().debug("Passed change properties check of reaction " + this.getClass().getName());
-    getLogger().debug("Passed complete precondition check of reaction " + this.getClass().getName());
+    
     return true;
   }
   

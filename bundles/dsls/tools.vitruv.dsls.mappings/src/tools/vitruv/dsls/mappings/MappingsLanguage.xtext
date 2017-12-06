@@ -1,0 +1,240 @@
+grammar tools.vitruv.dsls.mappings.MappingsLanguage with tools.vitruv.dsls.mirbase.MirBase
+hidden(WS, SL_COMMENT)
+
+generate mappingsLanguage "http://vitruv.tools/dsls/mappings/MappingsLanguage"
+
+import "http://www.eclipse.org/emf/2002/Ecore" as ecore
+import "http://www.kit.edu/ipd/sdq/vitruvius/dsls/mirbase/MirBase" as mirbase
+
+MappingsFile:
+	(namespaceImports=XImportSection)?
+	MirBaseFile
+	(mappingsSegments+=MappingsSegment)+
+;
+
+MappingsSegment:
+	'mappings:' name=ValidID
+	'for' leftDomain=DomainReference 
+	'and' rightDomain=DomainReference
+	(mappings+=Mapping |
+		bootstrappings+=Bootstrapping)*
+;
+
+/******************/
+/* BEGIN MAPPINGS */		
+/******************/
+Mapping:
+	'mapping' name=ValidID
+		('depends on (' 
+			dependencies+=Dependency
+		')')?
+	'{'
+		'map (' (leftParameters+=ClassicallyNamedModelElement)+ ')'
+			('with {' 
+				(leftConditions+=SingleSidedCondition)+
+			'}')?
+		'and (' (rightParameters+=ClassicallyNamedModelElement)+ ')'
+			('with {' 
+				(rightConditions+=SingleSidedCondition)+
+			'}')?
+		('such that {'
+			(bidirectionalizableConditions+=BidirectionalizableCondition)+
+		'}')?
+		('forward execute {'
+			forwardExecutionExpression=UnidirectionalExpression
+		'} backward execute {'
+			backwardExecutionExpression=UnidirectionalExpression
+		'}')?
+	'}'
+;
+
+
+// DW: RequiredMapping
+Dependency:
+	mapping=[Mapping]
+	shortName=ValidID
+;
+	
+SingleSidedCondition: // returns Condition:
+	EnforceableCondition |
+	CheckAndEnforceCondition
+;
+
+/* BEGIN ENFORCEABLE CONDITIONS */
+EnforceableCondition: //  returns SingleSidedCondition:
+	FeatureCondition |
+	ResourceCondition
+;
+
+FeatureCondition: //  returns EnforceableCondition:
+	(SingleValueCondition |
+	 MultiValueCondition |
+	 ElementCondition |
+	 NotEmptyCondition
+	)
+	feature=MetaclassFeatureReference
+;
+
+FeatureReference:
+	DependentFeatureReference |
+	{MetaclassFeatureReference}
+;
+
+// DW: FeatureOfContextVariable
+DependentFeatureReference:
+	dependeeShortName=[Dependency|ValidID]
+	':'
+	dependeeFeature=MetaclassFeatureReference
+;
+
+SingleValueCondition: //  returns ValueCondition:
+	IndexCondition |
+	NumCompareCondition
+;
+
+ValueCondition: //  returns FeatureCondition:
+	valueExpression=ValueExpression
+;
+
+ValueExpression:
+	{CodeBlock}
+;
+
+IndexCondition: //  returns SingleValueCondition:
+	negated?='not'
+	'at index'
+	indexValueExpression=ValueExpression
+	'in'
+;
+
+NumCompareCondition: //  returns SingleValueCondition:
+	operator=NumCompareOperator
+;
+
+enum NumCompareOperator:
+	NOT_GREATER = '<=' |
+	LESS = "<" |
+	NOT_LESS = ">=" |
+	GREATER = ">"
+;
+
+/*
+NumCompareOperator returns SingleValueConditionOperator:
+	NotGreaterOperator |
+	LessOperator |
+	NotLessOperator |
+	GreaterOperator
+;
+
+NotGreaterOperator returns NumCompareOperator: '<=';
+
+LessOperator returns NumCompareOperator: '<';
+
+NotLessOperator returns NumCompareOperator: '>=';
+
+GreaterOperator returns NumCompareOperator: '>';
+*/
+
+MultiValueCondition: //  returns FeatureCondition:
+	negated?='not'
+	operator=MultiValueConditionOperator
+;
+
+enum MultiValueConditionOperator:
+	EQUALS = 'equals' | 
+	IN = 'in'
+;
+
+ElementCondition: //  returns FeatureCondition:
+	elementExpression=ElementExpression
+	'default contained in'
+;
+
+ElementExpression:
+	{CodeBlock}
+;
+
+NotEmptyCondition: //  returns FeatureCondition:
+	negated?='not'
+	'empty'
+;
+
+ResourceCondition: //  returns EnforceableCondition:
+	'default path for'
+	elementExpression=ElementExpression
+	'='
+	('path of' pathExpression=ElementExpression "+")?
+	path=STRING
+;
+/* END ENFORCEABLE CONDITIONS */
+
+/* BEGIN CHECK AND ENFORCE CONDITION*/
+CheckAndEnforceCondition: //  returns SingleSidedCondition:
+	'check {'
+		checkExpression=CheckExpression
+	'}
+	enforce {'
+		enforceExpression=CheckExpression
+	'}' 
+;
+
+CheckExpression:
+	{CodeBlock}
+;
+
+EnforceExpression:
+	{CodeBlock}
+;
+/* END CHECK AND ENFORCE CONDITION */
+
+/* BEGIN BIDIRECTIONALIZABLE CONDITION */
+BidirectionalizableCondition: //  returns Condition:
+	featureToBeAssigned=MetaclassFeatureReference
+	'='
+	bidirectionalizableExpression=BidirectionalizableExpression
+	('update' featureToBeUpdated=MetaclassFeatureReference)?
+;
+
+BidirectionalizableExpression:
+	{CodeBlock}
+;
+/* END BIDIRECTIONALIZABLE CONDITION */
+
+UnidirectionalExpression:
+	{CodeBlock}
+;
+/******************/
+/* END MAPPINGS */		
+/******************/
+	
+/***************************/
+/* BEGIN BOOTSTRAPPING */		
+/***************************/
+Bootstrapping: 
+	'bootstrapping' name=ValidID
+	'{'
+		'create (' (parameters+=ClassicallyNamedModelElement)+ ')' 
+		('with {'
+			bootstrapConditon=SingleSidedCondition
+		'}')?
+	'}'
+;
+/***************************/
+/* END BOOTSTRAPPING */		
+/***************************/
+
+
+/***************************/
+/* BEGIN REFACTOR */		
+/***************************/
+// TODO MK: move fragment CodeBlock to MirBase (not MetaBase :-)
+fragment CodeBlock:
+	code=XExpression;
+	
+// TODO MK: move documentable to MetaBase and use it in Reactions	
+fragment Documentable:
+	(documentation=ML_COMMENT)?
+;
+/***************************/
+/* END REFACTOR */		
+/***************************/

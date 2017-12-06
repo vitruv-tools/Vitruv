@@ -14,6 +14,6 @@ class VitruviusDslsCommonConstants {
 		"tools.vitruv.framework.correspondence",
 		"tools.vitruv.framework.userinteraction",
  		"tools.vitruv.extensions.dslsruntime.reactions",
- 		"tools.vitruv.extensions.dslsruntime.mapping"
+ 		"tools.vitruv.extensions.dslsruntime.mappings"
 	]
 }

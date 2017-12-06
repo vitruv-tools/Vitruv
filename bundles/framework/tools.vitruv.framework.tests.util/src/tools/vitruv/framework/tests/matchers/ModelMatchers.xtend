@@ -21,6 +21,10 @@ class ModelMatchers {
 	def static Matcher<Resource> contains(EObject root, FeatureMatcher... featureMatchers) {
 		new ResourceContainmentMatcher(root, featureMatchers)
 	}
+	
+	def static Matcher<Resource> doesNotExist() {
+		new ResourceInexistenceMatcher()
+	}
 
 	def static Matcher<EObject> equalsDeeply(EObject object, FeatureMatcher... featureMatchers) {
 		new ModelTreeEqualityMatcher(object, featureMatchers)
@@ -65,6 +69,25 @@ package class ResourceContainmentMatcher extends TypeSafeMatcher<Resource> {
 		contentsSize = item.contents.size
 		if (contentsSize != 1) return false
 		return delegateMatcher.matches(item.contents.get(0))
+	}
+
+}
+
+
+package class ResourceInexistenceMatcher extends TypeSafeMatcher<Resource> {
+	boolean exists
+
+	override protected describeMismatchSafely(Resource item, Description mismatchDescription) {
+		mismatchDescription.appendText("there was a resource at ").appendValue(item.URI)
+	}
+
+	override describeTo(Description description) {
+		description.appendText("the resource not to exist");
+	}
+
+	override protected matchesSafely(Resource item) {
+		exists = item.resourceSet.URIConverter.exists(item.URI, Collections.emptyMap)
+		return !exists
 	}
 
 }

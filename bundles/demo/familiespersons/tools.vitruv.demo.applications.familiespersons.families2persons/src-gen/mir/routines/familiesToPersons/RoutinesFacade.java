@@ -13,57 +13,48 @@ public class RoutinesFacade extends AbstractRepairRoutinesFacade {
     super(reactionExecutionState, calledBy);
   }
   
-  public void createPersonRegister(final FamilyRegister familyRegister) {
-    mir.routines.familiesToPersons.CreatePersonRegisterRoutine effect = new mir.routines.familiesToPersons.CreatePersonRegisterRoutine(this.executionState, calledBy,
-    	familyRegister);
-    effect.applyRoutine();
+  public boolean createPersonRegister(final FamilyRegister familyRegister) {
+    mir.routines.familiesToPersons.CreatePersonRegisterRoutine effect = new mir.routines.familiesToPersons.CreatePersonRegisterRoutine(this.executionState, calledBy, familyRegister);
+    return effect.applyRoutine();
   }
   
-  public void deletePersonRegister(final FamilyRegister familyRegister) {
-    mir.routines.familiesToPersons.DeletePersonRegisterRoutine effect = new mir.routines.familiesToPersons.DeletePersonRegisterRoutine(this.executionState, calledBy,
-    	familyRegister);
-    effect.applyRoutine();
+  public boolean deletePersonRegister(final FamilyRegister familyRegister) {
+    mir.routines.familiesToPersons.DeletePersonRegisterRoutine effect = new mir.routines.familiesToPersons.DeletePersonRegisterRoutine(this.executionState, calledBy, familyRegister);
+    return effect.applyRoutine();
   }
   
-  public void createFather(final Member member) {
-    mir.routines.familiesToPersons.CreateFatherRoutine effect = new mir.routines.familiesToPersons.CreateFatherRoutine(this.executionState, calledBy,
-    	member);
-    effect.applyRoutine();
+  public boolean createFather(final Member member) {
+    mir.routines.familiesToPersons.CreateFatherRoutine effect = new mir.routines.familiesToPersons.CreateFatherRoutine(this.executionState, calledBy, member);
+    return effect.applyRoutine();
   }
   
-  public void createSon(final Member member) {
-    mir.routines.familiesToPersons.CreateSonRoutine effect = new mir.routines.familiesToPersons.CreateSonRoutine(this.executionState, calledBy,
-    	member);
-    effect.applyRoutine();
+  public boolean createSon(final Member member) {
+    mir.routines.familiesToPersons.CreateSonRoutine effect = new mir.routines.familiesToPersons.CreateSonRoutine(this.executionState, calledBy, member);
+    return effect.applyRoutine();
   }
   
-  public void createMother(final Member member) {
-    mir.routines.familiesToPersons.CreateMotherRoutine effect = new mir.routines.familiesToPersons.CreateMotherRoutine(this.executionState, calledBy,
-    	member);
-    effect.applyRoutine();
+  public boolean createMother(final Member member) {
+    mir.routines.familiesToPersons.CreateMotherRoutine effect = new mir.routines.familiesToPersons.CreateMotherRoutine(this.executionState, calledBy, member);
+    return effect.applyRoutine();
   }
   
-  public void createDaughter(final Member member) {
-    mir.routines.familiesToPersons.CreateDaughterRoutine effect = new mir.routines.familiesToPersons.CreateDaughterRoutine(this.executionState, calledBy,
-    	member);
-    effect.applyRoutine();
+  public boolean createDaughter(final Member member) {
+    mir.routines.familiesToPersons.CreateDaughterRoutine effect = new mir.routines.familiesToPersons.CreateDaughterRoutine(this.executionState, calledBy, member);
+    return effect.applyRoutine();
   }
   
-  public void deletePerson(final Member member) {
-    mir.routines.familiesToPersons.DeletePersonRoutine effect = new mir.routines.familiesToPersons.DeletePersonRoutine(this.executionState, calledBy,
-    	member);
-    effect.applyRoutine();
+  public boolean deletePerson(final Member member) {
+    mir.routines.familiesToPersons.DeletePersonRoutine effect = new mir.routines.familiesToPersons.DeletePersonRoutine(this.executionState, calledBy, member);
+    return effect.applyRoutine();
   }
   
-  public void changeFullNameFromFirst(final Member member) {
-    mir.routines.familiesToPersons.ChangeFullNameFromFirstRoutine effect = new mir.routines.familiesToPersons.ChangeFullNameFromFirstRoutine(this.executionState, calledBy,
-    	member);
-    effect.applyRoutine();
+  public boolean changeFullNameFromFirst(final Member member) {
+    mir.routines.familiesToPersons.ChangeFullNameFromFirstRoutine effect = new mir.routines.familiesToPersons.ChangeFullNameFromFirstRoutine(this.executionState, calledBy, member);
+    return effect.applyRoutine();
   }
   
-  public void changeFullNameFromLast(final Family family) {
-    mir.routines.familiesToPersons.ChangeFullNameFromLastRoutine effect = new mir.routines.familiesToPersons.ChangeFullNameFromLastRoutine(this.executionState, calledBy,
-    	family);
-    effect.applyRoutine();
+  public boolean changeFullNameFromLast(final Family family) {
+    mir.routines.familiesToPersons.ChangeFullNameFromLastRoutine effect = new mir.routines.familiesToPersons.ChangeFullNameFromLastRoutine(this.executionState, calledBy, family);
+    return effect.applyRoutine();
   }
 }

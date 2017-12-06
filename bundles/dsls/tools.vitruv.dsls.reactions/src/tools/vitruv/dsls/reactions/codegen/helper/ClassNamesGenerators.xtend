@@ -2,33 +2,19 @@ package tools.vitruv.dsls.reactions.codegen.helper
 
 import edu.kit.ipd.sdq.commons.util.java.Pair
 import static extension tools.vitruv.dsls.reactions.codegen.helper.ReactionsLanguageHelper.*;
-import tools.vitruv.dsls.reactions.helper.XtendImportHelper
 import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsSegment
 import tools.vitruv.dsls.reactions.reactionsLanguage.Routine
 import tools.vitruv.dsls.reactions.reactionsLanguage.Reaction
 import tools.vitruv.framework.domains.VitruvDomain
+import edu.kit.ipd.sdq.activextendannotations.Utility
+import tools.vitruv.dsls.common.helper.ClassNameGenerator
 
-final class ClassNamesGenerators {
-	public static val FSA_SEPARATOR = "/";
-	private static String BASIC_PACKAGE = "mir";
-	private static val XTEND_FILE_EXTENSION = ".java";
-	private static val REACTIONS_PACKAGE = "reactions";
-	private static String ROUTINES_PACKAGE = "routines";
-	private static String ROUTINES_FACADE_CLASS_NAME = "RoutinesFacade";
+@Utility class ClassNamesGenerators {
+	static val String BASIC_PACKAGE = "mir"
+	private static val REACTIONS_PACKAGE = "reactions"
+	static val String ROUTINES_PACKAGE = "routines"
+	static val String ROUTINES_FACADE_CLASS_NAME = "RoutinesFacade"
 	
-	private new() {}
-	
-	static def generateClass(CharSequence classImplementation, String packageName, XtendImportHelper importHelper) '''
-		package «packageName»;
-		
-		«importHelper.generateImportCode»
-		
-		«classImplementation»
-		'''
-
-	public static def String getFilePath(String qualifiedClassName) '''
-		«qualifiedClassName.replace('.', FSA_SEPARATOR)»«XTEND_FILE_EXTENSION»'''
-		
 	public static def String getBasicMirPackageQualifiedName() '''
 		«BASIC_PACKAGE»'''
 		
@@ -83,15 +69,7 @@ final class ClassNamesGenerators {
 		return new RoutineClassNameGenerator(routine);
 	}
 	
-	public static abstract class ClassNameGenerator {
-		public def String getQualifiedName() '''
-			«packageName».«simpleName»'''
-			
-		public def String getSimpleName();
-		public def String getPackageName();
-	}
-	
-	private static class ChangePropagationSpecificationClassNameGenerator extends ClassNameGenerator {
+	private static class ChangePropagationSpecificationClassNameGenerator implements ClassNameGenerator {
 		private val String metamodelPairName;
 		
 		public new(Pair<VitruvDomain, VitruvDomain> metamodelPair) {
@@ -104,7 +82,7 @@ final class ClassNamesGenerators {
 		public override getPackageName(){ basicReactionsPackageQualifiedName}	
 	}	
 	
-	private static class ExecutorClassNameGenerator extends ClassNameGenerator {
+	private static class ExecutorClassNameGenerator implements ClassNameGenerator {
 		private val ReactionsSegment reactionSegment;
 		
 		public new(ReactionsSegment reactionSegment) {
@@ -118,7 +96,7 @@ final class ClassNamesGenerators {
 			«reactionSegment.qualifiedPackageName».«reactionSegment.name.toFirstLower»'''		
 	}
 	
-	private static class ReactionClassNameGenerator extends ClassNameGenerator {
+	private static class ReactionClassNameGenerator implements ClassNameGenerator {
 		private val Reaction reaction;
 		public new(Reaction reaction) {
 			this.reaction = reaction;
@@ -131,7 +109,7 @@ final class ClassNamesGenerators {
 			«reaction.reactionsSegment.qualifiedPackageName».«reaction.reactionsSegment.name.toFirstLower»'''		
 	}
 	
-	private static class RoutineClassNameGenerator extends ClassNameGenerator {
+	private static class RoutineClassNameGenerator implements ClassNameGenerator {
 		private val Routine routine;
 		public new(Routine routine) {
 			this.routine = routine;
@@ -145,7 +123,7 @@ final class ClassNamesGenerators {
 		
 	}
 	
-	private static class RoutinesFacadeClassNameGenerator extends ClassNameGenerator {
+	private static class RoutinesFacadeClassNameGenerator implements ClassNameGenerator {
 		private val ReactionsSegment reactionSegment;
 		public new(ReactionsSegment reactionSegment) {
 			this.reactionSegment = reactionSegment;

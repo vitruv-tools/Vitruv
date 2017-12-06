@@ -19,5 +19,18 @@
       <domainProvider
             class="tools.vitruv.framework.testutils.domains.AllElementTypes2DomainProvider"></domainProvider>
    </extension>
-
+   <extension
+         id="pcmMockupDomainProvider"
+         name="PCM Mockup Domain Provider"
+         point="tools.vitruv.framework.metamodel.domain">
+      <domainProvider
+            class="tools.vitruv.framework.testutils.domains.PcmMockupDomainProvider"></domainProvider>
+   </extension>
+   <extension
+         id="umlMockupDomainProvider"
+         name="UML Mockup Domain Provider"
+         point="tools.vitruv.framework.metamodel.domain">
+      <domainProvider
+            class="tools.vitruv.framework.testutils.domains.UmlMockupDomainProvider"></domainProvider>
+   </extension>
 </plugin>

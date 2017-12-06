@@ -1,0 +1,17 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Commonalities Language Shared IDE Integration
+Bundle-SymbolicName: tools.vitruv.dsls.commonalities.ide;singleton:=true
+Bundle-Version: 0.2.0.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-ActivationPolicy: lazy
+Export-Package: tools.vitruv.dsls.commonalities.ide.contentassist.antlr,
+ tools.vitruv.dsls.commonalities.ide.contentassist.antlr.internal
+Require-Bundle: org.antlr.runtime,
+ com.google.inject,
+ org.eclipse.xtext.ide,
+ org.eclipse.xtext.xbase.ide,
+ org.eclipse.xtext,
+ tools.vitruv.dsls.commonalities
+Bundle-Vendor: Vitruv-Tools
+

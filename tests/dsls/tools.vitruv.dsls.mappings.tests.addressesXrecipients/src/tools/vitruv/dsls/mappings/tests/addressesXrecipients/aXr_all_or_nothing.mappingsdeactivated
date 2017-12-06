@@ -1,0 +1,44 @@
+import "http://edu.kit.ipd.sdq.metamodels.addresses" as ad
+import "http://edu.kit.ipd.sdq.metamodels.recipients" as re
+
+mappings: aXr_all_or_nothing for Addresses and Recipients
+
+mapping AdRootXReRoot {
+  map (ad::Addresses aRoot)
+  and (re::Recipients rRoot)
+}
+
+mapping AddressXRecipientLocationCity 
+  depends on (AdRootXReRoot rootXroot) {
+    map (ad::Address a) 
+      with { 
+	a in rootXroot:aRoot.addresses
+	a.number > 0
+	a.zipCode != null
+	a.number > callSomeNonPureMethod()
+    }
+    and (re::Recipient r, re::Location l, re:City c) 
+      with { 
+      	r in rootXroot:rRoot.recipients
+	r.business == true
+	r.locatedAt == l
+	l.number > 0
+	r.locatedIn == c
+	c.zipCode != null
+	check {
+	}
+	enforce {
+	}
+    }
+    such that {
+      a.number = l.number
+      a.street = l.street
+      a.zipCode = c.zipCode
+    }
+}
+
+// Ergebnisse Review des code to be generated vom 25.8.2017:
+//enforcen nicht direkt printen sondern für jeden Operator eine Klasse haben und deren enforce-Methode aufrufen
+//testen ob zweimal enforced wird
+//2phasig indem die Ergebnisse erst ganz am Ende in den Cache eingehängt werden?
+//attributeReference statt XExpressions etc.

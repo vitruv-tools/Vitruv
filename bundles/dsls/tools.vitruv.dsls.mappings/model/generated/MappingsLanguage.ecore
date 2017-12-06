@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="mappingsLanguage" nsURI="http://vitruv.tools/dsls/mappings/MappingsLanguage"
+    nsPrefix="mappingsLanguage">
+  <eClassifiers xsi:type="ecore:EClass" name="MappingsFile" eSuperTypes="platform:/resource/tools.vitruv.dsls.mirbase/model/generated/MirBase.ecore#//MirBaseFile">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="namespaceImports" eType="ecore:EClass platform:/resource/org.eclipse.xtext.xbase/model/Xtype.ecore#//XImportSection"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="mappingsSegments" upperBound="-1"
+        eType="#//MappingsSegment" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="MappingsSegment" eSuperTypes="#//Documentable">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="leftDomain" eType="ecore:EClass platform:/resource/tools.vitruv.dsls.mirbase/model/generated/MirBase.ecore#//DomainReference"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="rightDomain" eType="ecore:EClass platform:/resource/tools.vitruv.dsls.mirbase/model/generated/MirBase.ecore#//DomainReference"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="mappings" upperBound="-1"
+        eType="#//Mapping" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="bootstrappings" upperBound="-1"
+        eType="#//Bootstrapping" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Mapping">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="dependencies" upperBound="-1"
+        eType="#//Dependency" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="leftParameters" upperBound="-1"
+        eType="ecore:EClass platform:/resource/tools.vitruv.dsls.mirbase/model/generated/MirBase.ecore#//NamedMetaclassReference"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="leftConditions" upperBound="-1"
+        eType="#//SingleSidedCondition" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="rightParameters" upperBound="-1"
+        eType="ecore:EClass platform:/resource/tools.vitruv.dsls.mirbase/model/generated/MirBase.ecore#//NamedMetaclassReference"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="rightConditions" upperBound="-1"
+        eType="#//SingleSidedCondition" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="bidirectionalizableConditions"
+        upperBound="-1" eType="#//BidirectionalizableCondition" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="forwardExecutionExpression"
+        eType="#//UnidirectionalExpression" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="backwardExecutionExpression"
+        eType="#//UnidirectionalExpression" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Dependency">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="mapping" eType="#//Mapping"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="shortName" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="SingleSidedCondition"/>
+  <eClassifiers xsi:type="ecore:EClass" name="EnforceableCondition" eSuperTypes="#//SingleSidedCondition"/>
+  <eClassifiers xsi:type="ecore:EClass" name="FeatureCondition" eSuperTypes="#//EnforceableCondition">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="feature" eType="ecore:EClass platform:/resource/tools.vitruv.dsls.mirbase/model/generated/MirBase.ecore#//MetaclassFeatureReference"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="FeatureReference"/>
+  <eClassifiers xsi:type="ecore:EClass" name="DependentFeatureReference" eSuperTypes="#//FeatureReference">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="dependeeShortName" eType="#//Dependency"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="dependeeFeature" eType="ecore:EClass platform:/resource/tools.vitruv.dsls.mirbase/model/generated/MirBase.ecore#//MetaclassFeatureReference"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="SingleValueCondition" eSuperTypes="#//FeatureCondition"/>
+  <eClassifiers xsi:type="ecore:EClass" name="ValueCondition">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="valueExpression" eType="#//ValueExpression"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ValueExpression"/>
+  <eClassifiers xsi:type="ecore:EClass" name="IndexCondition" eSuperTypes="#//SingleValueCondition">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="negated" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="indexValueExpression" eType="#//ValueExpression"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="NumCompareCondition" eSuperTypes="#//SingleValueCondition">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="operator" eType="#//NumCompareOperator"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="NumCompareOperator">
+    <eLiterals name="NOT_GREATER" literal="&lt;="/>
+    <eLiterals name="LESS" value="1" literal="&lt;"/>
+    <eLiterals name="NOT_LESS" value="2" literal=">="/>
+    <eLiterals name="GREATER" value="3" literal=">"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="MultiValueCondition" eSuperTypes="#//FeatureCondition">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="negated" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="operator" eType="#//MultiValueConditionOperator"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="MultiValueConditionOperator">
+    <eLiterals name="EQUALS" literal="equals"/>
+    <eLiterals name="IN" value="1" literal="in"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ElementCondition" eSuperTypes="#//FeatureCondition">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="elementExpression" eType="#//ElementExpression"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ElementExpression"/>
+  <eClassifiers xsi:type="ecore:EClass" name="NotEmptyCondition" eSuperTypes="#//FeatureCondition">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="negated" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ResourceCondition" eSuperTypes="#//EnforceableCondition">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="elementExpression" eType="#//ElementExpression"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="pathExpression" eType="#//ElementExpression"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="path" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="CheckAndEnforceCondition" eSuperTypes="#//SingleSidedCondition">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="checkExpression" eType="#//CheckExpression"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="enforceExpression" eType="#//CheckExpression"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="CheckExpression"/>
+  <eClassifiers xsi:type="ecore:EClass" name="EnforceExpression"/>
+  <eClassifiers xsi:type="ecore:EClass" name="BidirectionalizableCondition">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="featureToBeAssigned" eType="ecore:EClass platform:/resource/tools.vitruv.dsls.mirbase/model/generated/MirBase.ecore#//MetaclassFeatureReference"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="bidirectionalizableExpression"
+        eType="#//BidirectionalizableExpression" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="featureToBeUpdated" eType="ecore:EClass platform:/resource/tools.vitruv.dsls.mirbase/model/generated/MirBase.ecore#//MetaclassFeatureReference"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="BidirectionalizableExpression"/>
+  <eClassifiers xsi:type="ecore:EClass" name="UnidirectionalExpression"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Bootstrapping">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="parameters" upperBound="-1"
+        eType="ecore:EClass platform:/resource/tools.vitruv.dsls.mirbase/model/generated/MirBase.ecore#//NamedMetaclassReference"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="bootstrapConditon" eType="#//SingleSidedCondition"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="CodeBlock" eSuperTypes="#//ValueExpression #//ElementExpression #//CheckExpression #//EnforceExpression #//BidirectionalizableExpression #//UnidirectionalExpression">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="code" eType="ecore:EClass platform:/resource/org.eclipse.xtext.xbase/model/Xbase.ecore#//XExpression"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Documentable">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="documentation" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="MetaclassFeatureReference" eSuperTypes="#//FeatureReference"/>
+</ecore:EPackage>

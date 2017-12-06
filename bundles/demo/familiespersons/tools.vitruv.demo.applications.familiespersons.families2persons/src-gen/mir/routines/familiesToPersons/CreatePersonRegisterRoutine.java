@@ -2,7 +2,6 @@ package mir.routines.familiesToPersons;
 
 import edu.kit.ipd.sdq.metamodels.families.FamilyRegister;
 import edu.kit.ipd.sdq.metamodels.persons.PersonRegister;
-import edu.kit.ipd.sdq.metamodels.persons.impl.PersonsFactoryImpl;
 import java.io.IOException;
 import mir.routines.familiesToPersons.RoutinesFacade;
 import org.eclipse.emf.ecore.EObject;
@@ -43,16 +42,18 @@ public class CreatePersonRegisterRoutine extends AbstractRepairRoutineRealizatio
   
   private FamilyRegister familyRegister;
   
-  protected void executeRoutine() throws IOException {
+  protected boolean executeRoutine() throws IOException {
     getLogger().debug("Called routine CreatePersonRegisterRoutine with input:");
-    getLogger().debug("   FamilyRegister: " + this.familyRegister);
+    getLogger().debug("   familyRegister: " + this.familyRegister);
     
-    PersonRegister personRegister = PersonsFactoryImpl.eINSTANCE.createPersonRegister();
+    edu.kit.ipd.sdq.metamodels.persons.PersonRegister personRegister = edu.kit.ipd.sdq.metamodels.persons.impl.PersonsFactoryImpl.eINSTANCE.createPersonRegister();
     notifyObjectCreated(personRegister);
     userExecution.updatePersonRegisterElement(familyRegister, personRegister);
     
     addCorrespondenceBetween(userExecution.getElement1(familyRegister, personRegister), userExecution.getElement2(familyRegister, personRegister), "");
     
     postprocessElements();
+    
+    return true;
   }
 }

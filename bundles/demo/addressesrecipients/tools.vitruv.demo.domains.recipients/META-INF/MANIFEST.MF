@@ -1,0 +1,18 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Vitruvius Domain ASEM Metamodel
+Bundle-SymbolicName: tools.vitruv.demo.domains.recipients;singleton:=true
+Bundle-Version: 0.2.0.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Require-Bundle: org.junit, 
+ tools.vitruv.framework.metamodel;visibility:=reexport,
+ tools.vitruv.framework.tuid,
+ tools.vitruv.framework.util,
+ edu.kit.ipd.sdq.metamodels.recipients;visibility:=reexport,
+ com.google.guava,
+ org.eclipse.xtext.xbase.lib,
+ org.eclipse.xtend.lib,
+ org.eclipse.xtend.lib.macro,
+ tools.vitruv.extensions.emf
+Export-Package: tools.vitruv.demo.domains.recipients
+Bundle-Vendor: vitruv.tools

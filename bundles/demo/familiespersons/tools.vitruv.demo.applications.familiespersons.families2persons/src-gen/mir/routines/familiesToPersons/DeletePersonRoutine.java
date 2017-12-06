@@ -38,21 +38,25 @@ public class DeletePersonRoutine extends AbstractRepairRoutineRealization {
   
   private Member member;
   
-  protected void executeRoutine() throws IOException {
+  protected boolean executeRoutine() throws IOException {
     getLogger().debug("Called routine DeletePersonRoutine with input:");
-    getLogger().debug("   Member: " + this.member);
+    getLogger().debug("   member: " + this.member);
     
-    Person person = getCorrespondingElement(
+    edu.kit.ipd.sdq.metamodels.persons.Person person = getCorrespondingElement(
     	userExecution.getCorrepondenceSourcePerson(member), // correspondence source supplier
-    	Person.class,
-    	(Person _element) -> true, // correspondence precondition checker
-    	null);
+    	edu.kit.ipd.sdq.metamodels.persons.Person.class,
+    	(edu.kit.ipd.sdq.metamodels.persons.Person _element) -> true, // correspondence precondition checker
+    	null, 
+    	false // asserted
+    	);
     if (person == null) {
-    	return;
+    	return false;
     }
     registerObjectUnderModification(person);
     deleteObject(userExecution.getElement1(member, person));
     
     postprocessElements();
+    
+    return true;
   }
 }
