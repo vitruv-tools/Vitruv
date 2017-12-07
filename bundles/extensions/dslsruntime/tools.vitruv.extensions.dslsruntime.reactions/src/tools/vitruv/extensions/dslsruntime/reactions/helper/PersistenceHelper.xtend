@@ -58,8 +58,9 @@ public final class PersistenceHelper {
 		}
 		// TODO This is really hacky:
 		// Test projects contain the time zone identifier in short and English, so check for it
-		val timezoneID = TimeZone.^default.getDisplayName(true, TimeZone.SHORT, Locale.ENGLISH);
-		return lastSegment.contains(timezoneID);
+		val timezoneDaylightSavingID = TimeZone.^default.getDisplayName(true, TimeZone.SHORT, Locale.ENGLISH);
+		val timezoneNoDaylighSavingID = TimeZone.^default.getDisplayName(false, TimeZone.SHORT, Locale.ENGLISH);
+		return lastSegment.contains(timezoneDaylightSavingID) || lastSegment.contains(timezoneNoDaylighSavingID);
 	}
 
 	private static def URI appendPathToURI(URI baseURI, String relativePath) {
