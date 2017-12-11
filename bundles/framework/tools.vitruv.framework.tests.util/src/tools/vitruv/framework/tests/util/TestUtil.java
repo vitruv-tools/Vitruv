@@ -32,6 +32,7 @@ import tools.vitruv.framework.domains.VitruviusProjectBuilderApplicator;
 import tools.vitruv.framework.domains.AbstractVitruvDomain;
 import tools.vitruv.framework.tuid.AttributeTuidCalculatorAndResolver;
 import tools.vitruv.framework.userinteraction.UserInteracting;
+import tools.vitruv.framework.util.VitruviusConstants;
 import tools.vitruv.framework.vsum.InternalVirtualModel;
 import tools.vitruv.framework.vsum.VirtualModel;
 import tools.vitruv.framework.vsum.VirtualModelConfiguration;
@@ -45,7 +46,6 @@ import tools.vitruv.framework.vsum.VirtualModelImpl;
  *
  */
 public final class TestUtil {
-
 	private static final String VM_ARGUMENT_LOG_OUTPUT_LEVEL = "logOutputLevel";
 	private static final String VM_ARGUMENT_TEST_WORKSPACE_PATH = "testWorkspacePath";
 	public static final String SOURCE_FOLDER = "src";
@@ -235,12 +235,18 @@ public final class TestUtil {
 		return createProjectFolder(createTestWorkspace(), projectName, addTimestampAndMakeNameUnique);
 	}
 	
-	public static File createProjectFolder(File workspace, String projectName, boolean addTimestampAndMakeNameUnique) {
+	public static File createProjectFolder(File workspace, String projectName, boolean addTimestampAndMakeNameUniqueAndAddIdentifierFile) {
 		File projectFolder = new File(workspace, projectName);
-		if (addTimestampAndMakeNameUnique) {
+		if (addTimestampAndMakeNameUniqueAndAddIdentifierFile) {
 			projectFolder = addTimestampToProjectNameAndMakeUnique(projectFolder);
 		}
 		projectFolder.mkdir();
+		File identifierFile = new File(projectFolder, VitruviusConstants.getTestProjectMarkerFileName());
+		try {
+			identifierFile.createNewFile();
+		} catch (IOException e) {
+			throw new IllegalStateException("Identifier file " + identifierFile.toString() + " could not be created.");
+		}
 		return projectFolder;
 	}
 
