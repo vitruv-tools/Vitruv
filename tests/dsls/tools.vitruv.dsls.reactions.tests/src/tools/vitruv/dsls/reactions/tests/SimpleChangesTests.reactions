@@ -311,7 +311,7 @@ routine createNonRootObjectContainer(minimal::Root rootElement, minimal::NonRoot
 /**
  * Initializes the nonRootObjectContainer for second model
  */
-reaction HelperReactionForNonRootObjectContainerContentsInitialization {
+reaction AddNonRootObjectToHelperContainer {
 	after element minimal::NonRoot created and inserted in minimal::NonRootObjectContainerHelper[nonRootObjectsContainment]
 	call createNonRootInContainer(affectedEObject, newValue)
 }
@@ -328,6 +328,20 @@ routine createNonRootInContainer(minimal::NonRootObjectContainerHelper container
 			nonRootContainer.nonRootObjectsContainment += newNonRoot;	
 		}
 		add correspondence between newNonRoot and insertedNonRoot
+	}
+}
+
+reaction RemovedNonRootObjectFromHelperContainer {
+	after element minimal::NonRoot deleted and removed from minimal::NonRootObjectContainerHelper[nonRootObjectsContainment]
+	call deleteNonRootFromContainer(oldValue)
+}
+
+routine deleteNonRootFromContainer(minimal::NonRoot removedNonRoot) {
+	match {
+		val correspondingNonRoot = retrieve asserted minimal::NonRoot corresponding to removedNonRoot
+	}
+	action {
+		delete correspondingNonRoot
 	}
 }
 
