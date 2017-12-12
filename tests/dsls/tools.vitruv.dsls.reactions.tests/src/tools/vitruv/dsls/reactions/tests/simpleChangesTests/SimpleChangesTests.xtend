@@ -16,13 +16,12 @@ import allElementTypes.AllElementTypesPackage
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl
 import tools.vitruv.framework.change.description.CompositeContainerChange
-import org.eclipse.xtext.testing.XtextRunner
-import org.junit.runner.RunWith
-import tools.vitruv.dsls.reactions.tests.ReactionsLanguageInjectorProvider
-import com.google.inject.Inject
-import org.eclipse.xtext.testing.InjectWith
 import tools.vitruv.framework.change.echange.eobject.CreateEObject
 import tools.vitruv.framework.change.echange.feature.reference.ReplaceSingleValuedEReference
+import tools.vitruv.framework.change.echange.feature.reference.RemoveEReference
+import tools.vitruv.framework.change.echange.eobject.DeleteEObject
+import org.eclipse.emf.ecore.util.EcoreUtil
+import tools.vitruv.framework.change.echange.root.RemoveRootEObject
 
 class SimpleChangesTests extends AbstractAllElementTypesReactionsTests {
 	private static val TEST_SOURCE_MODEL_NAME = "EachTestModelSource";
@@ -507,30 +506,6 @@ class SimpleChangesTests extends AbstractAllElementTypesReactionsTests {
 	}
 
 	@Test
-	public def void testReverse() {
-		val root = AllElementTypesFactory.eINSTANCE.createRoot();
-		root.setId(FURTHER_SOURCE_TEST_MODEL_NAME);
-		createAndSynchronizeModel(FURTHER_SOURCE_TEST_MODEL_NAME.projectModelPath, root);
-		assertPersistedModelsEqual(FURTHER_SOURCE_TEST_MODEL_NAME.projectModelPath,
-			FURTHER_TARGET_TEST_MODEL_NAME.projectModelPath);
-		val nonRoot = AllElementTypesFactory.eINSTANCE.createNonRoot();
-		nonRoot.id = "testId";
-		root.singleValuedContainmentEReference = nonRoot;
-		val result = saveAndSynchronizeChanges(root);
-		this.virtualModel.reverseChanges(result);
-//		assertPersistedModelsEqual(FURTHER_SOURCE_TEST_MODEL_NAME.projectModelPath,
-//			FURTHER_TARGET_TEST_MODEL_NAME.projectModelPath);
-		val testResourceSet = new ResourceSetImpl();
-		testResourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("*", new XMIResourceFactoryImpl());
-		val sourceModel = testResourceSet.getResource(FURTHER_SOURCE_TEST_MODEL_NAME.projectModelPath.modelVuri.EMFUri,
-			true);
-		assertEquals(null, (sourceModel.contents.get(0) as Root).singleValuedContainmentEReference);
-		val targetModel = testResourceSet.getResource(FURTHER_TARGET_TEST_MODEL_NAME.projectModelPath.modelVuri.EMFUri,
-			true);
-		assertEquals(null, (targetModel.contents.get(0) as Root).singleValuedContainmentEReference);
-	}
-
-	@Test
 	public def void testApplyBidirectional() {
 		val targetRoot = TEST_TARGET_MODEL_NAME.projectModelPath.firstRootElement as Root;
 		startRecordingChanges(targetRoot);
@@ -550,4 +525,5 @@ class SimpleChangesTests extends AbstractAllElementTypesReactionsTests {
 		val targetModel = testResourceSet.getResource(TEST_TARGET_MODEL_NAME.projectModelPath.modelVuri.EMFUri, true);
 		assertEquals(newNonRoot.id, (targetModel.contents.get(0) as Root).singleValuedContainmentEReference.id);
 	}
+	
 }
