@@ -144,14 +144,15 @@ public abstract class VitruviusApplicationTest extends VitruviusUnmonitoredAppli
 	 *            path within project to remove model from
 	 * @throws IOException
 	 */
-	protected void deleteAndSynchronizeModel(String modelPathInProject) throws IOException {
+	protected List<PropagatedChange> deleteAndSynchronizeModel(String modelPathInProject) throws IOException {
 		if (StringUtil.isEmpty(modelPathInProject)) {
 			throw new IllegalArgumentException();
 		}
 		Resource resource = getModelResource(modelPathInProject);
 		resource.delete(Collections.EMPTY_MAP);
-		propagateChanges();
+		List<PropagatedChange> changes = propagateChanges();
 		this.changeRecorder.removeFromRecording(resource);
+		return changes;
 	}
 	
 	protected Resource resourceAt(String modelPathInProject) {
