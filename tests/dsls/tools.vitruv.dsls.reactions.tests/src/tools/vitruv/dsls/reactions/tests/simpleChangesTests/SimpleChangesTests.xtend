@@ -505,25 +505,4 @@ class SimpleChangesTests extends AbstractAllElementTypesReactionsTests {
 		assertModelNotExists(FURTHER_TARGET_TEST_MODEL_NAME.projectModelPath);
 	}
 
-	@Test
-	public def void testApplyBidirectional() {
-		val targetRoot = TEST_TARGET_MODEL_NAME.projectModelPath.firstRootElement as Root;
-		startRecordingChanges(targetRoot);
-		val newNonRoot = AllElementTypesFactory.eINSTANCE.createNonRoot;
-		newNonRoot.id = "bidirectionalId";
-		targetRoot.singleValuedContainmentEReference = newNonRoot;
-		val propagatedChanges = saveAndSynchronizeChanges(targetRoot);
-		assertEquals(1, propagatedChanges.size);
-		val compositePropagatedChange = propagatedChanges.get(0).consequentialChanges as CompositeContainerChange
-		assertTrue(compositePropagatedChange.EChanges.get(0) instanceof CreateEObject<?>)
-		assertTrue(compositePropagatedChange.EChanges.get(1) instanceof ReplaceSingleValuedEReference<?,?>)
-		assertPersistedModelsEqual(TEST_SOURCE_MODEL_NAME.projectModelPath, TEST_TARGET_MODEL_NAME.projectModelPath);
-		val testResourceSet = new ResourceSetImpl();
-		testResourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("*", new XMIResourceFactoryImpl());
-		val sourceModel = testResourceSet.getResource(TEST_SOURCE_MODEL_NAME.projectModelPath.modelVuri.EMFUri, true);
-		assertEquals(newNonRoot.id, (sourceModel.contents.get(0) as Root).singleValuedContainmentEReference.id);
-		val targetModel = testResourceSet.getResource(TEST_TARGET_MODEL_NAME.projectModelPath.modelVuri.EMFUri, true);
-		assertEquals(newNonRoot.id, (targetModel.contents.get(0) as Root).singleValuedContainmentEReference.id);
-	}
-	
 }
