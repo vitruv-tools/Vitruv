@@ -12,7 +12,7 @@ import org.eclipse.xtext.testing.InjectWith
 abstract class AbstractAllElementTypesReactionsTests extends VitruviusApplicationTest {
 	protected static val MODEL_FILE_EXTENSION = new AllElementTypesDomainProvider().domain.fileExtensions.get(0);
 	
-	@Inject SimpleChangeReactionsCompiler reactionCompiler
+	@Inject AllElementTypesRedundancyReactionsCompiler reactionCompiler
 
 	override protected createChangePropagationSpecifications() {
 		#[reactionCompiler.newConcreteChangePropagationSpecification()]
