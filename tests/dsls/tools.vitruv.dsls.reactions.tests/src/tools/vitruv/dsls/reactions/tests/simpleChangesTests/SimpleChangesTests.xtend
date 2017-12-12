@@ -24,20 +24,12 @@ import org.eclipse.xtext.testing.InjectWith
 import tools.vitruv.framework.change.echange.eobject.CreateEObject
 import tools.vitruv.framework.change.echange.feature.reference.ReplaceSingleValuedEReference
 
-@RunWith(XtextRunner)
-@InjectWith(ReactionsLanguageInjectorProvider)
 class SimpleChangesTests extends AbstractAllElementTypesReactionsTests {
 	private static val TEST_SOURCE_MODEL_NAME = "EachTestModelSource";
 	private static val TEST_TARGET_MODEL_NAME = "EachTestModelTarget";
 	private static val FURTHER_SOURCE_TEST_MODEL_NAME = "Further_Source_Test_Model";
 	private static val FURTHER_TARGET_TEST_MODEL_NAME = "Further_Target_Test_Model"
 	
-	@Inject SimpleChangeReactionsCompiler reactionCompiler
-
-	override protected createChangePropagationSpecifications() {
-		#[reactionCompiler.newConcreteChangePropagationSpecification()]
-	}
-
 	private String[] nonContainmentNonRootIds = #["NonRootHelper0", "NonRootHelper1", "NonRootHelper2"];
 
 	private def Root getRootElement() {

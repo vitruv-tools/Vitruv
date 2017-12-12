@@ -1,4 +1,4 @@
-package tools.vitruv.dsls.reactions.tests.simpleChangesTests
+package tools.vitruv.dsls.reactions.tests
 
 import com.google.inject.Inject
 import org.eclipse.xtext.testing.util.ParseHelper
