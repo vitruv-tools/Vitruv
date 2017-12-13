@@ -12,16 +12,46 @@ import static extension tools.vitruv.framework.util.bridges.JavaBridge.*;
 import org.eclipse.emf.transaction.TransactionalEditingDomain
 import tools.vitruv.framework.util.command.EMFCommandBridge
 import java.util.concurrent.Callable
+import org.eclipse.emf.common.util.URI
 
 class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 	static val logger = Logger.getLogger(UuidGeneratorAndResolverImpl)
+	final ResourceSet resourceSet;
+	final Resource uuidResource;
+	final UuidResolver parentUuidResolver;
 	UuidToEObjectRepository repository;
-	ResourceSet resourceSet;
-	Resource uuidResource;
-
+	
+	/**
+	 * Instantiates a UUID generator and resolver with no parent resolver, 
+	 * the given {@link ResourceSet} for resolving objects
+	 * and no {@link Resource} in which the mapping is stored.
+	 */
+	new(ResourceSet resourceSet) {
+		this(null, resourceSet, null)
+	}
+	
+	/**
+	 * Instantiates a UUID generator and resolver with no parent resolver, 
+	 * the given {@link ResourceSet} for resolving objects
+	 * and the given {@link Resource} for storing the mapping.
+	 */
 	new(ResourceSet resourceSet, Resource uuidResource) {
+		this(null, resourceSet, uuidResource)
+	}
+	
+	/**
+	 * Instantiates a UUID generator and resolver with the given parent resolver, used when
+	 * this resolver cannot resolve a UUID, the given {@link ResourceSet} for resolving objects
+	 * and the given {@link Resource} for storing the mapping.
+	 */
+	new(UuidResolver parentUuidResolver, ResourceSet resourceSet, Resource uuidResource) {
 		this.uuidResource = uuidResource;
 		this.resourceSet = resourceSet;
+		this.parentUuidResolver = if (parentUuidResolver !== null) {
+			parentUuidResolver;
+		} else {
+			UuidResolver.EMPTY;
+		}
 		loadAndRegisterUuidProviderAndResolver(uuidResource);
 	}
 
@@ -144,6 +174,20 @@ class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 	
 	override getResourceSet() {
 		return resourceSet;
+	}
+	
+	override registerUuidForGlobalUri(String uuid, URI uri) {
+		try {
+			val localObject = resourceSet.getEObject(uri, true)
+			if (localObject !== null) {
+				registerEObject(uuid, localObject);
+				return true;
+			}
+		} catch (Exception e) {
+		}
+		// Recursively do that
+		parentUuidResolver.registerUuidForGlobalUri(uuid, uri);
+		return false;
 	}
 
 }
