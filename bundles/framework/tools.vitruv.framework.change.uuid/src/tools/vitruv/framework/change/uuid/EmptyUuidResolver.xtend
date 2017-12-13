@@ -12,11 +12,15 @@ class EmptyUuidResolver implements UuidResolver {
 	}
 	
 	override getUuid(EObject object) {
-		throw new UnsupportedOperationException("This resolver is empty. Use hasUuid to check that before!");
+		throw new IllegalStateException("This resolver is empty. Use hasUuid to check that before!");
 	}
 	
 	override getEObject(String uuid) {
-		throw new UnsupportedOperationException("This resolver is empty.");
+		throw new IllegalStateException("This resolver is empty.");
+	}
+	
+	override registerEObject(EObject eObject) {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
 	}
 	
 	override registerEObject(String uuid, EObject eObject) {

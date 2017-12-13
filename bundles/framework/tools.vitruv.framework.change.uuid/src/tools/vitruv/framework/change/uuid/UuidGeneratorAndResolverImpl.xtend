@@ -203,5 +203,15 @@ class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 		}
 		return false;
 	}
+	
+	override registerEObject(EObject eObject) {
+		if (parentUuidResolver.hasUuid(eObject)) {
+			registerEObject(parentUuidResolver.getUuid(eObject), eObject);
+		} else if (hasUuid(eObject)) {
+			registerEObject(getUuid(eObject), eObject);
+		} else {
+			//throw new IllegalStateException("Given EObject has no UUID yet: " + eObject);
+		}
+	}
 
 }

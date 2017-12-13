@@ -68,20 +68,20 @@ class AtomicEmfChangeRecorder {
 	}
 	
 	private def dispatch void registerContentsAtUuidResolver(EObject eObjectToObserve) {
-		eObjectToObserve.registerAtUuidResolver
+		localUuidGeneratorAndResolver.registerEObject(eObjectToObserve)
 		val containedObjects = eObjectToObserve.eContents()
 		for (containedObject : containedObjects) {
 			containedObject.registerContentsAtUuidResolver
 		}
 	}
 	
-	private def void registerAtUuidResolver(EObject object) {
-		if (globalUuidResolver.hasUuid(object)) {
-			localUuidGeneratorAndResolver.registerEObject(globalUuidResolver.getUuid(object), object);
-		} else if (localUuidGeneratorAndResolver.hasUuid(object)) {
-			localUuidGeneratorAndResolver.registerEObject(localUuidGeneratorAndResolver.getUuid(object), object);
-		}
-	}
+//	private def void registerAtUuidResolver(EObject object) {
+//		if (globalUuidResolver.hasUuid(object)) {
+//			localUuidGeneratorAndResolver.registerEObject(globalUuidResolver.getUuid(object), object);
+//		} else if (localUuidGeneratorAndResolver.hasUuid(object)) {
+//			localUuidGeneratorAndResolver.registerEObject(localUuidGeneratorAndResolver.getUuid(object), object);
+//		}
+//	}
 
 	def void removeFromRecording(Notifier elementToObserve) {
 		this.elementsToObserve -= elementToObserve;
