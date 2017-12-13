@@ -133,14 +133,14 @@ class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 		}
 	}
 
-	override String registerEObject(EObject eObject) {
+	override String generateUuid(EObject eObject) {
 		val uuid = generateUuid;
 		registerEObject(uuid, eObject);
 		return uuid;
 	}
 	
-	public override String registerNotCreatedEObject(EObject eObject, boolean strictMode) {
-		val uuid = registerEObject(eObject);
+	public override String generateUuidWithoutCreate(EObject eObject, boolean strictMode) {
+		val uuid = generateUuid(eObject);
 		// Register UUID globally for third party elements that are statically accessible and are never created.
 		// Since this is called in the moment when an element gets created, the object can only be globally resolved
 		// if it a third party element.

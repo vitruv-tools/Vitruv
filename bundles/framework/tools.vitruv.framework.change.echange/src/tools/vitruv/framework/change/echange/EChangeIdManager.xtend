@@ -65,7 +65,7 @@ class EChangeIdManager {
 		if (uuidGeneratorAndResolver.hasUuid(object)) {
 			return uuidGeneratorAndResolver.getUuid(object);
 		}
-		return uuidGeneratorAndResolver.registerNotCreatedEObject(object, strictMode);
+		return uuidGeneratorAndResolver.generateUuidWithoutCreate(object, strictMode);
 	}
 	
 	private def void setOrGenerateNewValueId(EObjectAddedEChange<?> addedEChange) {
@@ -88,7 +88,7 @@ class EChangeIdManager {
 		}
 		val affectedObject = createChange.affectedEObject
 		if (!uuidGeneratorAndResolver.hasUuid(affectedObject)) {
-			createChange.affectedEObjectID = uuidGeneratorAndResolver.registerEObject(affectedObject);	
+			createChange.affectedEObjectID = uuidGeneratorAndResolver.generateUuid(affectedObject);	
 		} else {
 			createChange.affectedEObjectID = uuidGeneratorAndResolver.getUuid(affectedObject);
 		}
