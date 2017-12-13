@@ -16,7 +16,6 @@ import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.change.echange.feature.FeatureEChange
 import tools.vitruv.framework.tests.echange.EChangeTest
 import org.junit.After
-import org.junit.Ignore
 import static extension tools.vitruv.framework.change.echange.resolve.EChangeResolverAndApplicator.*
 import org.eclipse.emf.ecore.resource.ResourceSet
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
@@ -73,33 +72,9 @@ import tools.vitruv.framework.change.uuid.UuidGeneratorAndResolverImpl
  		resolvedChange.assertIsResolved(affectedEObject, affectedFeature)
  	}
  	
- 	/**
- 	 * Tests if a feature change, which affected object and feature references 
- 	 * to the changed model instance, resolved correctly to another model instance,
- 	 * after unresolving the object.
- 	 */
- 	@Ignore // FIXME HK Ignore until UuidProviderAndResolver is not static anymore
- 	@Test
- 	def public void resolveOnSeconduuidGeneratorAndResolver() {
-		// Create change 		
- 		val unresolvedChange = createUnresolvedChange()
- 		unresolvedChange.assertIsNotResolved(affectedEObject, affectedFeature)
- 			
-  		// Resolve 1
- 		val resolvedChange = unresolvedChange.resolveBefore(uuidGeneratorAndResolver)
- 			as FeatureEChange<Root, EAttribute>
- 		resolvedChange.assertIsResolved(rootObject, affectedFeature)  		
-  		
-  		// Resolve 2
- 		val resolvedChange2 = unresolvedChange.resolveBefore(uuidResolver2)
- 			as FeatureEChange<Root, EAttribute>
- 		resolvedChange2.assertIsResolved(rootObject2, affectedFeature)
- 	}
-
 	/**
 	 * Tests a failed resolve.
 	 */
-	@Ignore // FIXME HK Ignore until UuidProviderAndResolver is not static anymore
 	@Test
 	def public void resolveEFeatureChangeFails() {
 		// Change first resource by insert second root element
