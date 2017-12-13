@@ -7,35 +7,32 @@ import tools.vitruv.framework.change.echange.feature.FeatureEChange
 import tools.vitruv.framework.change.echange.eobject.DeleteEObject
 import tools.vitruv.framework.change.echange.eobject.CreateEObject
 import tools.vitruv.framework.change.uuid.UuidGeneratorAndResolver
-import tools.vitruv.framework.change.uuid.UuidResolver
 import org.eclipse.emf.ecore.EObject
 import tools.vitruv.framework.change.echange.feature.reference.UpdateReferenceEChange
 
 /**
  * Provides logic for initializing the IDs within changes and for updating
- * the object references in the {@link UuidProviderAndResolver}. 
+ * the object references in the {@link UuidGeneratorAndResolver}. 
  */
 class EChangeIdManager {
-	val UuidResolver globalUuidResolver;
-	val UuidGeneratorAndResolver localUuidGeneratorAndResolver;
+	val UuidGeneratorAndResolver uuidGeneratorAndResolver;
 	val boolean strictMode;
 
 	/**
-	 * Initializes the manager with a {@link UuidProviderAndResolver}.
+	 * Initializes the manager with a {@link UuidGeneratorAndResolver}.
 	 * 
-	 * @param uuidProviderAndResolver -
-	 * 		the {@link UuidProviderAndResolver} to use for ID management
+	 * @param uuidGeneratorAndResolver -
+	 * 		the {@link UuidGeneratorAndResolver} to use for ID management
 	 * @param strictMode -
 	 * 		defines if the manager should run in strict mode, which throws {@link IllegalStateExceptions} 
 	 * 		if an element that should already have an ID does no have one. Using non-strict mode can be 
 	 * 		necessary if model changes are not recorded from beginning of model creation
 	 */
-	new(UuidResolver globalUuidResolver, UuidGeneratorAndResolver localUuidGeneratorAndResolver, boolean strictMode) {
-		if (globalUuidResolver === null || localUuidGeneratorAndResolver === null) {
+	new(UuidGeneratorAndResolver uuidGeneratorAndResolver, boolean strictMode) {
+		if (uuidGeneratorAndResolver === null) {
 			throw new IllegalArgumentException;
 		}
-		this.globalUuidResolver = globalUuidResolver;
-		this.localUuidGeneratorAndResolver = localUuidGeneratorAndResolver;
+		this.uuidGeneratorAndResolver = uuidGeneratorAndResolver;
 		this.strictMode = strictMode;
 	}
 
@@ -56,7 +53,7 @@ class EChangeIdManager {
 	}
 
 	public def boolean isCreateChange(EObjectAddedEChange<?> addedEChange) {
-		var create = addedEChange.newValue !== null && !(localUuidGeneratorAndResolver.hasUuid(addedEChange.newValue))
+		var create = addedEChange.newValue !== null && !(uuidGeneratorAndResolver.hasUuid(addedEChange.newValue))
 		// Look if the new value has no resource or if it is a reference change, if the resource of the affected
 		// object is the same. Otherwise, the create has to be handled by an insertion/reference in that resource, as
 		// it can be potentially a reference to a third party model, for which no create shall be instantiated		
@@ -65,10 +62,10 @@ class EChangeIdManager {
 	}
 	
 	private def String getOrGenerateValue(EObject object) {
-		if (localUuidGeneratorAndResolver.hasUuid(object)) {
-			return localUuidGeneratorAndResolver.getUuid(object);
+		if (uuidGeneratorAndResolver.hasUuid(object)) {
+			return uuidGeneratorAndResolver.getUuid(object);
 		}
-		return localUuidGeneratorAndResolver.registerNotCreatedEObject(object, strictMode);
+		return uuidGeneratorAndResolver.registerNotCreatedEObject(object, strictMode);
 	}
 	
 	private def void setOrGenerateNewValueId(EObjectAddedEChange<?> addedEChange) {
@@ -90,10 +87,10 @@ class EChangeIdManager {
 			throw new IllegalStateException();
 		}
 		val affectedObject = createChange.affectedEObject
-		if (!localUuidGeneratorAndResolver.hasUuid(affectedObject)) {
-			createChange.affectedEObjectID = localUuidGeneratorAndResolver.registerEObject(affectedObject);	
+		if (!uuidGeneratorAndResolver.hasUuid(affectedObject)) {
+			createChange.affectedEObjectID = uuidGeneratorAndResolver.registerEObject(affectedObject);	
 		} else {
-			createChange.affectedEObjectID = localUuidGeneratorAndResolver.getUuid(affectedObject);
+			createChange.affectedEObjectID = uuidGeneratorAndResolver.getUuid(affectedObject);
 		}
 		
 	}

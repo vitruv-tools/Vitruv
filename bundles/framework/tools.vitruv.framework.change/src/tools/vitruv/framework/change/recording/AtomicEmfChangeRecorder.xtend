@@ -28,8 +28,8 @@ class AtomicEmfChangeRecorder {
 	/**
 	 * Constructor for AtomicEMFChangeRecorder.
 	 * 
-	 * @param uuidProviderAndResolver -
-	 * 		the {@link UuidProviderAndResolver} for ID generation
+	 * @param uuidGeneratorAndResolver -
+	 * 		the {@link UuidGeneratorAndResolver} for ID generation
 	 * @param strictMode -
 	 * 		specifies whether exceptions shall be thrown if no ID exists for an element that should already have one.
 	 * 		Should be set to <code>false</code> if model is not recorded from beginning
@@ -38,7 +38,7 @@ class AtomicEmfChangeRecorder {
 		this.elementsToObserve = newHashSet();
 		this.globalUuidResolver = globalUuidResolver;
 		this.localUuidGeneratorAndResolver = localUuidGeneratorAndResolver;
-		this.eChangeIdManager = new EChangeIdManager(globalUuidResolver, localUuidGeneratorAndResolver, strictMode)
+		this.eChangeIdManager = new EChangeIdManager(localUuidGeneratorAndResolver, strictMode)
 		this.changeRecorder = new NotificationRecorder(eChangeIdManager);
 	}
 
