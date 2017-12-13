@@ -204,7 +204,7 @@ public abstract class VitruviusUnmonitoredApplicationTest extends VitruviusTest 
 		ResourceSetUtil.addExistingFactoriesToResourceSet(testResourceSet);
 		EObject firstRoot = getFirstRootElement(firstModelPathWithinProject, testResourceSet);
 		EObject secondRoot = getFirstRootElement(secondModelPathWithinProject, testResourceSet);
-		assertTrue(EcoreUtil.equals(firstRoot, secondRoot));
+		assertTrue("Models " + firstRoot.eResource().getURI() + " and " + secondRoot.eResource().getURI() + " are different", EcoreUtil.equals(firstRoot, secondRoot));
 	}
 
 	protected UuidGeneratorAndResolver getLocalUuidGeneratorAndResolver() {
