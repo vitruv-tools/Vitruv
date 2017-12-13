@@ -10,6 +10,10 @@ class EmptyUuidResolver implements UuidResolver {
 	override hasUuid(EObject object) {
 		return false;
 	}
+		
+	override hasEObject(String uuid) {
+		return false;
+	}
 	
 	override getUuid(EObject object) {
 		throw new IllegalStateException("This resolver is empty. Use hasUuid to check that before!");
@@ -34,5 +38,6 @@ class EmptyUuidResolver implements UuidResolver {
 	override registerUuidForGlobalUri(String uuid, URI uri) {
 		return true;
 	}
+
 	
 }

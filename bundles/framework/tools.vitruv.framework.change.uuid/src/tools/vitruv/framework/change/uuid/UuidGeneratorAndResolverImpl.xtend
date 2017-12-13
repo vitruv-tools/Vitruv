@@ -140,14 +140,22 @@ class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 	}
 
 	override getEObject(String uuid) {
+		val eObject = internalGetEObject(uuid);
+		if (eObject === null) {
+			throw new IllegalStateException("No EObject could be found for UUID: " + uuid);
+		}
+		return eObject;
+	}
+
+	private def EObject internalGetEObject(String uuid) {
 		val eObject = repository.uuidToEObject.get(uuid);
 		if (eObject === null) {
-			throw new IllegalStateException();
+			return null;
 		}
 		if(eObject.eIsProxy) {
 			val resolvedObject = EcoreUtil.resolve(eObject, resourceSet);
 			if(resolvedObject === null || resolvedObject.eIsProxy) {
-				throw new IllegalStateException("No EObject could be found for UUID: " + uuid);
+				return null;
 			}
 			return resolvedObject;
 		} else {
@@ -207,6 +215,10 @@ class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 
 	override hasUuid(EObject object) {
 		return internalGetUuid(object) !== null;
+	}
+	
+	override hasEObject(String uuid) {
+		return internalGetEObject(uuid) !== null;
 	}
 
 	override getResourceSet() {

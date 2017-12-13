@@ -13,6 +13,11 @@ interface UuidResolver {
 	def boolean hasUuid(EObject eObject);
 	
 	/**
+	 * Returns whether an {@link EObject} is registered for the given UUID or not. 
+	 */
+	def boolean hasEObject(String uuid);
+	
+	/**
 	 * Returns the UUID for the given {@link EObject}.
 	 * If no UUID is registered for it, an {@link IllegalStateException} is thrown.
 	 */
