@@ -42,7 +42,7 @@ class RemoveAndDeleteRootTest extends EChangeTest {
 	@Test
 	def public void resolveBeforeTest() {		
 		// Create change
-		val unresolvedChange = createUnresolvedChange(newRootObject, 0)
+		val unresolvedChange = createUnresolvedChange(newRootObject, 1)
 		unresolvedChange.assertIsNotResolved
 		
 		// Resolve
@@ -61,7 +61,7 @@ class RemoveAndDeleteRootTest extends EChangeTest {
 	@Test
 	def public void resolveAftertTest() {
 		// Create change
-		val unresolvedChange = createUnresolvedChange(newRootObject, 0)
+		val unresolvedChange = createUnresolvedChange(newRootObject, 1)
 		unresolvedChange.assertIsNotResolved		
 		// State after
 		prepareStateAfter	

@@ -1,4 +1,4 @@
-package tools.vitruv.dsls.reactions.tests.simpleChangesTests
+package tools.vitruv.dsls.reactions.tests
 
 import com.google.inject.Inject
 import org.eclipse.xtext.testing.util.ParseHelper
@@ -21,8 +21,8 @@ import java.io.PrintWriter
 import org.osgi.framework.FrameworkUtil
 import tools.vitruv.dsls.reactions.api.generator.IReactionsGenerator
 
-class SimpleChangeReactionsCompiler {
-	static val INPUT_REACTION_FILES = #["SimpleChangesTests.reactions", "SimpleChangesRootTests.reactions"]
+class AllElementTypesRedundancyReactionsCompiler {
+	static val INPUT_REACTION_FILES = #["AllElementTypesRedundancy.reactions", "AllElementTypesRedundancyRoot.reactions"]
 
 	static val SIMPLE_CHANGES_PROPAGATION_SPEC_FQN = "mir.reactions.AllElementTypesToAllElementTypesChangePropagationSpecification"
 	static var Supplier<? extends ChangePropagationSpecification> SIMPLE_CHANGES_PROPGATION_SPEC_SUPLLIER
@@ -61,7 +61,7 @@ class SimpleChangeReactionsCompiler {
 
 	def private compileGeneratedJavaClasses(Path outputFolder) {
 		// copy in compile dependencies
-		val bundle = FrameworkUtil.getBundle(SimpleChangeReactionsCompiler)
+		val bundle = FrameworkUtil.getBundle(AllElementTypesRedundancyReactionsCompiler)
 		val availableClassFiles = bundle.adapt(BundleWiring).listResources('/', '*.class',
 			BundleWiring.LISTRESOURCES_RECURSE)
 		val neededClassFiles = availableClassFiles.filter [ classFile |
@@ -93,7 +93,7 @@ class SimpleChangeReactionsCompiler {
 			val compiledReactionsFolder = compileTestReactions()
 
 			val url = compiledReactionsFolder.toUri.toURL
-			val loader = new URLClassLoader(#[url], SimpleChangeReactionsCompiler.classLoader)
+			val loader = new URLClassLoader(#[url], AllElementTypesRedundancyReactionsCompiler.classLoader)
 
 			val clazz = loader.loadClass(
 				SIMPLE_CHANGES_PROPAGATION_SPEC_FQN) as Class<? extends ChangePropagationSpecification>

@@ -7,18 +7,17 @@ import allElementTypes2.Root2
 import com.google.inject.Inject
 import org.eclipse.xtext.testing.InjectWith
 import org.eclipse.xtext.testing.XtextRunner
-import org.junit.Ignore
 import org.junit.Test
 import org.junit.runner.RunWith
 import pcm_mockup.Pcm_mockupFactory
 import pcm_mockup.Repository
 import tools.vitruv.dsls.commonalities.ui.tests.CommonalitiesLanguageUiInjectorProvider
-import uml_mockup.UClass
 import uml_mockup.Uml_mockupFactory
 
 import static org.hamcrest.MatcherAssert.assertThat
 import static tools.vitruv.framework.tests.matchers.ModelMatchers.*
 import org.eclipse.emf.ecore.util.EcoreUtil
+import uml_mockup.UPackage
 
 @RunWith(XtextRunner)
 @InjectWith(CommonalitiesLanguageUiInjectorProvider)
@@ -69,19 +68,18 @@ class IdentifiedExecutionTest extends CommonalitiesExecutionTest {
 	}
 	
 	@Test
-	@Ignore
-	// TODO does not work: ID resolution fails.
 	def void rootDelete() {
 		createAndSynchronizeModel('first.allElementTypes2', root2 => [id2 = 'first'])
 		createAndSynchronizeModel('second.allElementTypes2', root2 => [id2 = 'second'])
 		createAndSynchronizeModel('third.allElementTypes2', root2 => [id2 = 'third'])
 
 		EcoreUtil.delete(Root.from('second.allElementTypes'))
+		resourceAt('second.allElementTypes').delete(null);
 		assertThat(resourceAt('second.allElementTypes'), doesNotExist)
+		// TODO Extend assertions
 	}
 
 	@Test
-	@Ignore
 	def void setIdAttribute() {
 		createAndSynchronizeModel('startid.allElementTypes2', root2 => [id2 = 'startid'])
 
@@ -104,7 +102,7 @@ class IdentifiedExecutionTest extends CommonalitiesExecutionTest {
 		assertThat(resourceAt('startid.pcm_mockup'), contains(repository => [id = '3th id']))
 		assertThat(resourceAt('startid.uml_mockup'), contains(uPackage => [id = '3th id']))
 
-		saveAndSynchronizeChanges(UClass.from('startid.uml_mockup') => [id = '4th id'])
+		saveAndSynchronizeChanges(UPackage.from('startid.uml_mockup') => [id = '4th id'])
 		assertThat(resourceAt('startid.allElementTypes2'), contains(root2 => [id2 = '4th id']))
 		assertThat(resourceAt('startid.allElementTypes'), contains(root => [id = '4th id']))
 		assertThat(resourceAt('startid.pcm_mockup'), contains(repository => [id = '4th id']))

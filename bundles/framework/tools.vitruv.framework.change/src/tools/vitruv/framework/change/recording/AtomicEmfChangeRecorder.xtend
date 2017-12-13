@@ -14,6 +14,8 @@ import com.google.common.collect.ArrayListMultimap
 import tools.vitruv.framework.change.description.CompositeTransactionalChange
 import tools.vitruv.framework.change.description.impl.ConcreteApplicableChangeImpl
 import tools.vitruv.framework.change.echange.eobject.DeleteEObject
+import org.eclipse.emf.ecore.resource.ResourceSet
+import org.eclipse.emf.ecore.resource.Resource
 
 class AtomicEmfChangeRecorder {
 	val Set<Notifier> elementsToObserve
@@ -47,6 +49,38 @@ class AtomicEmfChangeRecorder {
 	def void addToRecording(Notifier elementToObserve) {
 		this.elementsToObserve += elementToObserve;
 		elementsToObserve.forEach[changeRecorder.addToRecording(it)];
+		elementToObserve.registerContentsAtUuidResolver
+	}
+	
+	
+	private def dispatch void registerContentsAtUuidResolver(ResourceSet resourceSetToObserve) {
+		val resources = resourceSetToObserve.getResources()
+		for (resource : resources) {
+			resource.registerContentsAtUuidResolver
+		}
+	}
+	
+	private def dispatch void registerContentsAtUuidResolver(Resource resourceToObserve) {
+		val rootObjects = resourceToObserve.getContents()
+		for (rootObject : rootObjects) {
+			rootObject.registerContentsAtUuidResolver
+		}
+	}
+	
+	private def dispatch void registerContentsAtUuidResolver(EObject eObjectToObserve) {
+		eObjectToObserve.registerAtUuidResolver
+		val containedObjects = eObjectToObserve.eContents()
+		for (containedObject : containedObjects) {
+			containedObject.registerContentsAtUuidResolver
+		}
+	}
+	
+	private def void registerAtUuidResolver(EObject object) {
+		if (globalUuidResolver.hasUuid(object)) {
+			localUuidGeneratorAndResolver.registerEObject(globalUuidResolver.getUuid(object), object);
+		} else if (localUuidGeneratorAndResolver.hasUuid(object)) {
+			localUuidGeneratorAndResolver.registerEObject(localUuidGeneratorAndResolver.getUuid(object), object);
+		}
 	}
 
 	def void removeFromRecording(Notifier elementToObserve) {
