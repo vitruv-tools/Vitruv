@@ -51,7 +51,9 @@ class AtomicEChangeResolver {
 			return false
 		}
 
-		change.affectedEObject = uuidResolver.getEObject(change.affectedEObjectID) as A
+		if (uuidResolver.hasEObject(change.affectedEObjectID)) {
+			change.affectedEObject = uuidResolver.getEObject(change.affectedEObjectID) as A		
+		}
 
 		if (change.affectedFeature === null || change.affectedEObject === null || change.affectedEObject.eIsProxy) {
 			return false
