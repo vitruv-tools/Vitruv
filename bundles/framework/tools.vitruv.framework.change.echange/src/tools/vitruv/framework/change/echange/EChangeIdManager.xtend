@@ -79,36 +79,10 @@ class EChangeIdManager {
 		if (globalUuidResolver.hasUuid(object)) {
 			return globalUuidResolver.getUuid(object);
 		} else {
-			return registerObjectWithoutCreate(object);
+			return localUuidGeneratorAndResolver.registerNotCreatedEObject(object, strictMode);
 		}
 	}
 	
-	/**
-	 * Registers an object that was not created before and thus has no UUID.
-	 * This is only successful if the element is globally accessible (third party element) or if
-	 * we are not in strict mode. Otherwise an exception is thrown, because a previous create is missing. 
-	 */
-	private def String registerObjectWithoutCreate(EObject object) {
-		val uuid = localUuidGeneratorAndResolver.registerEObject(object);
-		// Register UUID globally for third party elements that are statically accessible and are never created.
-		// Since this is called in the moment when an element gets created, the object can only be globally resolved
-		// if it a third party element.
-		var EObject globallyResolvedObject = null
-		try {
-			globallyResolvedObject = globalUuidResolver.resourceSet.getEObject(EcoreUtil.getURI(object), true)
-		} catch (Exception e) {
-			// If object cannot be resolved, it is null and will be correctly handled in the following
-		}
-		if (globallyResolvedObject !== null) {
-			globalUuidResolver.registerEObject(uuid, globallyResolvedObject);	
-		} else if (strictMode) {
-			throw new IllegalStateException("Object has no UUID and is not globally accessible: " + object);
-		} else {
-			logger.warn("Object is not statically accessible but also has no globally mapped UUID: " + object);
-		}
-		return uuid;
-	}
-
 	private def void setOrGenerateNewValueId(EObjectAddedEChange<?> addedEChange) {
 		if(addedEChange.newValue === null) {
 			return;
