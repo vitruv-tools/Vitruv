@@ -181,12 +181,11 @@ class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 			val localObject = resourceSet.getEObject(uri, true)
 			if (localObject !== null) {
 				registerEObject(uuid, localObject);
-				return true;
+				// Recursively do that
+				return parentUuidResolver.registerUuidForGlobalUri(uuid, uri);
 			}
 		} catch (Exception e) {
 		}
-		// Recursively do that
-		parentUuidResolver.registerUuidForGlobalUri(uuid, uri);
 		return false;
 	}
 

@@ -28,7 +28,7 @@ class EmptyUuidResolver implements UuidResolver {
 	}
 	
 	override registerUuidForGlobalUri(String uuid, URI uri) {
-		return false;
+		return true;
 	}
 	
 }
