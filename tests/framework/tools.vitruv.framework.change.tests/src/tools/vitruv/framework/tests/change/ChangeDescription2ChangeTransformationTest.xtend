@@ -62,7 +62,7 @@ abstract class ChangeDescription2ChangeTransformationTest {
 	def void beforeTest() {
 		val uuidGeneratorAndResolver = new UuidGeneratorAndResolverImpl(rs)
 		this.uuidGeneratorAndResolver = uuidGeneratorAndResolver;
-		this.changeRecorder = new AtomicEmfChangeRecorder(uuidGeneratorAndResolver, uuidGeneratorAndResolver, false)
+		this.changeRecorder = new AtomicEmfChangeRecorder(uuidGeneratorAndResolver, false)
 		prepareRootElement();
 	}
 	
