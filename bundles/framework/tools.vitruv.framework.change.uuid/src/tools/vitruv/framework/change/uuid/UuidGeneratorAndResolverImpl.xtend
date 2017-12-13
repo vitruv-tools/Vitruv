@@ -102,9 +102,13 @@ class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 					}
 				}
 			} catch(RuntimeException e) {
-				return null;
 			}
 		}
+		
+//		if (parentUuidResolver.hasUuid(eObject)) {
+//			return parentUuidResolver.getUuid(eObject);
+//		}
+		
 		return null;
 	}
 
@@ -127,6 +131,21 @@ class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 	override String registerEObject(EObject eObject) {
 		val uuid = generateUuid;
 		registerEObject(uuid, eObject);
+		return uuid;
+	}
+	
+	public override String registerNotCreatedEObject(EObject eObject, boolean strictMode) {
+		val uuid = registerEObject(eObject);
+		// Register UUID globally for third party elements that are statically accessible and are never created.
+		// Since this is called in the moment when an element gets created, the object can only be globally resolved
+		// if it a third party element.
+		if (!parentUuidResolver.registerUuidForGlobalUri(uuid, EcoreUtil.getURI(eObject))) {
+			if (strictMode) {
+				throw new IllegalStateException("Object has no UUID and is not globally accessible: " + eObject);
+			} else {
+				logger.warn("Object is not statically accessible but also has no globally mapped UUID: " + eObject);
+			}
+		}
 		return uuid;
 	}
 
