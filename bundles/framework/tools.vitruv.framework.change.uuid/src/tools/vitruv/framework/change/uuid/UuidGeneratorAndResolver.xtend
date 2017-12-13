@@ -3,8 +3,6 @@ package tools.vitruv.framework.change.uuid
 import org.eclipse.emf.ecore.EObject
 
 interface UuidGeneratorAndResolver extends UuidResolver {
-	def String getOrRegisterUuid(EObject object);
-	
 	/**
 	 * Registers an object and returns the generated UUID for it.
 	 */

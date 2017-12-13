@@ -182,15 +182,6 @@ class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 		return internalGetUuid(object) !== null;
 	}
 
-	override getOrRegisterUuid(EObject object) {
-		val existingUuid = internalGetUuid(object);
-		if(existingUuid === null) {
-			return registerEObject(object);
-		} else {
-			return existingUuid;
-		}
-	}
-	
 	override getResourceSet() {
 		return resourceSet;
 	}
