@@ -29,14 +29,23 @@ class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 	new(ResourceSet resourceSet) {
 		this(null, resourceSet, null)
 	}
-	
+
+	/**
+	 * Instantiates a UUID generator and resolver with the given parent resolver, used when
+	 * this resolver cannot resolve a UUID, the given {@link ResourceSet} for resolving objects
+	 * and no {@link Resource} in which the mapping is stored.
+	 */
+	new(UuidResolver parentUuidResolver, ResourceSet resourceSet) {
+		this(parentUuidResolver, resourceSet, null);
+	}
+
 	/**
 	 * Instantiates a UUID generator and resolver with no parent resolver, 
 	 * the given {@link ResourceSet} for resolving objects
 	 * and the given {@link Resource} for storing the mapping.
 	 */
-	new(ResourceSet resourceSet, Resource uuidResource) {
-		this(null, resourceSet, uuidResource)
+	new(ResourceSet resourceSet, Resource resource) {
+		this(null, resourceSet, resource);
 	}
 	
 	/**
