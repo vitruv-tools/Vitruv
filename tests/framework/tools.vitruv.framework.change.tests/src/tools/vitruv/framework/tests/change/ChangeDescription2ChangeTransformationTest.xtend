@@ -17,7 +17,7 @@ import java.util.ArrayList
 import tools.vitruv.framework.change.recording.AtomicEmfChangeRecorder
 import tools.vitruv.framework.util.bridges.EMFBridge
 import tools.vitruv.framework.change.uuid.UuidGeneratorAndResolverImpl
-import static extension tools.vitruv.framework.change.echange.EChangeResolverAndApplicator.*;
+import static extension tools.vitruv.framework.change.echange.resolve.EChangeResolverAndApplicator.*;
 import tools.vitruv.framework.change.uuid.UuidGeneratorAndResolver
 import tools.vitruv.framework.change.echange.resolve.EChangeUnresolver
 

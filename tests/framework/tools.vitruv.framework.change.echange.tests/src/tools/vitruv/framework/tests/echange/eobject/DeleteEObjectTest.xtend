@@ -6,7 +6,7 @@ import org.junit.Test
 import tools.vitruv.framework.change.echange.eobject.DeleteEObject
 
 import static extension tools.vitruv.framework.tests.echange.util.EChangeAssertHelper.*
-import static extension tools.vitruv.framework.change.echange.EChangeResolverAndApplicator.*;
+import static extension tools.vitruv.framework.change.echange.resolve.EChangeResolverAndApplicator.*
 
 /**
  * Test class for the concrete {@link DeleteEObject} EChange,

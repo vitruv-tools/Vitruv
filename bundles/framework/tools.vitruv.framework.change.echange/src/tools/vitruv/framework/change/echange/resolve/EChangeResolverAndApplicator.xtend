@@ -1,15 +1,51 @@
 package tools.vitruv.framework.change.echange.resolve
 
+import tools.vitruv.framework.change.uuid.UuidResolver
+import tools.vitruv.framework.change.echange.util.ApplyEChangeSwitch
+import com.google.common.base.Objects
 import org.eclipse.emf.ecore.util.EcoreUtil
 import tools.vitruv.framework.change.echange.EChange
-import tools.vitruv.framework.change.uuid.UuidResolver
 
 /**
- * Utility class for resolving an given EChange. Dispatches AtomicEChange and CompoundEChange.
- * The xcore-model doesn't provide private methods and to provide a clean EChange interface,
- * the resolve method is placed in this utility class.
+ * Utility class for applying and resolving a given EChange.
  */
-class EChangeResolver {
+class EChangeResolverAndApplicator {
+	static def EChange resolveBefore(EChange eChange, UuidResolver uuidResolver) {
+		return resolveCopy(eChange, uuidResolver, true, true);
+	}
+
+	static def EChange resolveAfter(EChange eChange, UuidResolver uuidResolver) {
+		return resolveCopy(eChange, uuidResolver, false, true);
+	}
+	
+	static def EChange resolveBeforeAndApplyForward(EChange eChange, UuidResolver uuidResolver) {
+		val EChange resolvedChange = resolveBefore(eChange, uuidResolver);
+		if (((!Objects.equal(resolvedChange, null)) && resolvedChange.applyForward())) {
+			return resolvedChange;
+		}
+		else {
+			return null;
+		}
+	}
+
+	static def EChange resolveAfterAndApplyBackward(EChange eChange, UuidResolver uuidResolver) {
+		val EChange resolvedChange = resolveAfter(eChange, uuidResolver);
+		if (((!Objects.equal(resolvedChange, null)) && resolvedChange.applyBackward())) {
+			return resolvedChange;
+		}
+		else {
+			return null;
+		}
+	}
+
+	static def boolean applyForward(EChange eChange) {
+		return ApplyEChangeSwitch.applyEChange(eChange, true);
+	}
+
+	static def boolean applyBackward(EChange eChange) {
+		return ApplyEChangeSwitch.applyEChange(eChange, false);
+	}
+	
 	/**
 	 * Creates a copy of the change and resolves the unresolved proxy EObjects of the 
 	 * change to a given set of resources with concrete EObjects.
@@ -24,7 +60,7 @@ class EChangeResolver {
 	 * 									is {@code null}, it returns {@code null}. If the change was already resolved an exception is thrown.
 	 * @throws IllegalStateException 	The change is already resolved.
 	 */
-	def public static EChange resolveCopy(EChange change, UuidResolver uuidResolver, boolean resolveBefore,
+	def private static EChange resolveCopy(EChange change, UuidResolver uuidResolver, boolean resolveBefore,
 		boolean revertAfterResolving) {
 		var EChange copy = EcoreUtil.copy(change)
 		if (resolve(copy, uuidResolver, resolveBefore, revertAfterResolving)) {
@@ -33,7 +69,7 @@ class EChangeResolver {
 			return null
 		}
 	}
-
+	
 	/**
 	 * Resolves the unresolved proxy EObjects of a given {@code EChange} to a given set of resources with concrete EObjects.
 	 * Before the change can be applied all proxy objects need to be resolved.
@@ -47,23 +83,14 @@ class EChangeResolver {
 	 * 									is {@code null}, it returns {@code null}. If the change was already resolved an exception is thrown.
 	 * @throws IllegalStateException 	The change is already resolved.
 	 */
-	def public static boolean resolve(EChange change, UuidResolver uuidResolver, boolean resolveBefore,
+	def package static boolean resolve(EChange change, UuidResolver uuidResolver, boolean resolveBefore,
 		boolean revertAfterResolving) {
 		if (change.isResolved) {
 			throw new IllegalArgumentException
 		}
-		if (!resolveChange(change, uuidResolver, resolveBefore, revertAfterResolving)) {
+		if (!AtomicEChangeResolver.resolve(change, uuidResolver, resolveBefore)) {
 			return false
 		}
 		return true
 	}
-
-	/**
-	 * Dispatch method for resolving {@link EChange}s.
-	 */
-	def private static boolean resolveChange(EChange change, UuidResolver uuidResolver,
-		boolean resolveBefore, boolean revertAfterResolving) {
-		AtomicEChangeResolver.resolve(change, uuidResolver, resolveBefore)
-	}
-
 }

@@ -21,7 +21,7 @@ import java.util.List
 import tools.vitruv.framework.change.echange.EChange
 import org.junit.Assert
 import tools.vitruv.framework.change.uuid.UuidResolver
-import static extension tools.vitruv.framework.change.echange.EChangeResolverAndApplicator.*;
+import static extension tools.vitruv.framework.change.echange.resolve.EChangeResolverAndApplicator.*
 
 /**
  * Default class for testing EChange changes.

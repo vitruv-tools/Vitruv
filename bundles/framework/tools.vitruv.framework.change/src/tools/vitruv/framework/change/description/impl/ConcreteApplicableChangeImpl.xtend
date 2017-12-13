@@ -3,7 +3,7 @@ package tools.vitruv.framework.change.description.impl
 import org.eclipse.emf.ecore.EObject
 import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.tuid.TuidManager
-import static extension tools.vitruv.framework.change.echange.EChangeResolverAndApplicator.*
+import static extension tools.vitruv.framework.change.echange.resolve.EChangeResolverAndApplicator.*
 import tools.vitruv.framework.change.uuid.UuidResolver
 import tools.vitruv.framework.change.echange.resolve.EChangeUnresolver
 
