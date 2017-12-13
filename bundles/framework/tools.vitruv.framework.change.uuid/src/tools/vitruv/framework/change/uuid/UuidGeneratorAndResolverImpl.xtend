@@ -114,10 +114,6 @@ class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 			}
 		}
 		
-//		if (parentUuidResolver.hasUuid(eObject)) {
-//			return parentUuidResolver.getUuid(eObject);
-//		}
-		
 		return null;
 	}
 

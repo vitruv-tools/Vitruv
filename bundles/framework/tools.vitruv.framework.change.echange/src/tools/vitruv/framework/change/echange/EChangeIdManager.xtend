@@ -9,8 +9,6 @@ import tools.vitruv.framework.change.echange.eobject.CreateEObject
 import tools.vitruv.framework.change.uuid.UuidGeneratorAndResolver
 import tools.vitruv.framework.change.uuid.UuidResolver
 import org.eclipse.emf.ecore.EObject
-import org.apache.log4j.Logger
-import org.eclipse.emf.ecore.util.EcoreUtil
 import tools.vitruv.framework.change.echange.feature.reference.UpdateReferenceEChange
 
 /**
@@ -18,7 +16,6 @@ import tools.vitruv.framework.change.echange.feature.reference.UpdateReferenceEC
  * the object references in the {@link UuidProviderAndResolver}. 
  */
 class EChangeIdManager {
-	val static Logger logger = Logger.getLogger(EChangeIdManager)
 	val UuidResolver globalUuidResolver;
 	val UuidGeneratorAndResolver localUuidGeneratorAndResolver;
 	val boolean strictMode;
@@ -59,9 +56,6 @@ class EChangeIdManager {
 	}
 
 	public def boolean isCreateChange(EObjectAddedEChange<?> addedEChange) {
-		// TODO Currently, we only look for the UUID locally. If we look globally, resolving the URI can result
-		// in an old element with the same URI being matched. Nevertheless, this currently requires the local
-		// UUID repository to be always complete
 		var create = addedEChange.newValue !== null && !(localUuidGeneratorAndResolver.hasUuid(addedEChange.newValue))
 		// Look if the new value has no resource or if it is a reference change, if the resource of the affected
 		// object is the same. Otherwise, the create has to be handled by an insertion/reference in that resource, as
@@ -71,16 +65,10 @@ class EChangeIdManager {
 	}
 	
 	private def String getOrGenerateValue(EObject object) {
-		// First check local mapping because an element may have the same URI than a previous one
-		// so it would be resolved to another object globally, giving a false UUID
 		if (localUuidGeneratorAndResolver.hasUuid(object)) {
 			return localUuidGeneratorAndResolver.getUuid(object);
 		}
-		if (globalUuidResolver.hasUuid(object)) {
-			return globalUuidResolver.getUuid(object);
-		} else {
-			return localUuidGeneratorAndResolver.registerNotCreatedEObject(object, strictMode);
-		}
+		return localUuidGeneratorAndResolver.registerNotCreatedEObject(object, strictMode);
 	}
 	
 	private def void setOrGenerateNewValueId(EObjectAddedEChange<?> addedEChange) {
