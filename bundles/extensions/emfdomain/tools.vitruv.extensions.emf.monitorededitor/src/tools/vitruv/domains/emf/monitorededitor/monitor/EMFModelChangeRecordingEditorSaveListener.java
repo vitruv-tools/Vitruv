@@ -151,9 +151,9 @@ public abstract class EMFModelChangeRecordingEditorSaveListener {
                 ? virtualModel.getUuidGeneratorAndResolver()
                 : null;
         UuidGeneratorAndResolver localUuidResolver = new UuidGeneratorAndResolverImpl(globalUuidGeneratorAndResolver,
-                targetResource.getResourceSet(), null);
+                targetResource.getResourceSet(), true);
 
-        changeRecorder = new AtomicEmfChangeRecorder(localUuidResolver, false);
+        changeRecorder = new AtomicEmfChangeRecorder(localUuidResolver);
         changeRecorder.addToRecording(targetResource);
         changeRecorder.beginRecording();
     }

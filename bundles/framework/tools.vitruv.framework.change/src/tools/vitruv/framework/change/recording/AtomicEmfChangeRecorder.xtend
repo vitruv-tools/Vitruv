@@ -32,10 +32,10 @@ class AtomicEmfChangeRecorder {
 	 * 		specifies whether exceptions shall be thrown if no ID exists for an element that should already have one.
 	 * 		Should be set to <code>false</code> if model is not recorded from beginning
 	 */
-	new(UuidGeneratorAndResolver uuidGeneratorAndResolver, boolean strictMode) {
+	new(UuidGeneratorAndResolver uuidGeneratorAndResolver) {
 		this.elementsToObserve = newHashSet();
 		this.uuidGeneratorAndResolver = uuidGeneratorAndResolver;
-		this.eChangeIdManager = new EChangeIdManager(uuidGeneratorAndResolver, strictMode)
+		this.eChangeIdManager = new EChangeIdManager(uuidGeneratorAndResolver)
 		this.changeRecorder = new NotificationRecorder(eChangeIdManager);
 	}
 

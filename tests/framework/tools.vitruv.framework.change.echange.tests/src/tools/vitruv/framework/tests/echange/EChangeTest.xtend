@@ -70,7 +70,7 @@ import static extension tools.vitruv.framework.change.echange.resolve.EChangeRes
  		resource.save(null)
  		
  		// Factorys for creating changes
- 		this.uuidGeneratorAndResolver = new UuidGeneratorAndResolverImpl(resourceSet)
+ 		this.uuidGeneratorAndResolver = new UuidGeneratorAndResolverImpl(resourceSet, true)
  		atomicFactory = new TypeInferringUnresolvingAtomicEChangeFactory(uuidGeneratorAndResolver);
  		compoundFactory = new TypeInferringUnresolvingCompoundEChangeFactory(uuidGeneratorAndResolver);
  	}

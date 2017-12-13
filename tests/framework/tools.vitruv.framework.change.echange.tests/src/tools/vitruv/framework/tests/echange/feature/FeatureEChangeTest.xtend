@@ -48,7 +48,7 @@ import tools.vitruv.framework.change.uuid.UuidGeneratorAndResolverImpl
  		resourceSet2.getResourceFactoryRegistry().getExtensionToFactoryMap().put(METAMODEL, new XMIResourceFactoryImpl())
  		resource2 = resourceSet2.getResource(fileUri, true)
  		rootObject2 = resource2.getEObject(EcoreUtil.getURI(rootObject).fragment()) as Root
- 		this.uuidResolver2 = new UuidGeneratorAndResolverImpl(resourceSet2);
+ 		this.uuidResolver2 = new UuidGeneratorAndResolverImpl(resourceSet2, true);
  	}
  	
  	@After

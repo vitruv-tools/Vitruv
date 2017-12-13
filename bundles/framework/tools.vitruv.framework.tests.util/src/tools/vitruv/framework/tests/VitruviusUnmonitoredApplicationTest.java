@@ -62,7 +62,7 @@ public abstract class VitruviusUnmonitoredApplicationTest extends VitruviusTest 
 		ResourceSetUtil.addExistingFactoriesToResourceSet(resourceSet);
 		String testMethodName = testName.getMethodName();
 		createVirtualModel(testMethodName);
-		this.uuidGeneratorAndResolver = new UuidGeneratorAndResolverImpl(virtualModel.getUuidGeneratorAndResolver(), this.resourceSet);
+		this.uuidGeneratorAndResolver = new UuidGeneratorAndResolverImpl(virtualModel.getUuidGeneratorAndResolver(), this.resourceSet, true);
 	}
 
 	private void createVirtualModel(final String testName) {

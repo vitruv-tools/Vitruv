@@ -16,24 +16,18 @@ import tools.vitruv.framework.change.echange.feature.reference.UpdateReferenceEC
  */
 class EChangeIdManager {
 	val UuidGeneratorAndResolver uuidGeneratorAndResolver;
-	val boolean strictMode;
 
 	/**
 	 * Initializes the manager with a {@link UuidGeneratorAndResolver}.
 	 * 
 	 * @param uuidGeneratorAndResolver -
 	 * 		the {@link UuidGeneratorAndResolver} to use for ID management
-	 * @param strictMode -
-	 * 		defines if the manager should run in strict mode, which throws {@link IllegalStateExceptions} 
-	 * 		if an element that should already have an ID does no have one. Using non-strict mode can be 
-	 * 		necessary if model changes are not recorded from beginning of model creation
 	 */
-	new(UuidGeneratorAndResolver uuidGeneratorAndResolver, boolean strictMode) {
+	new(UuidGeneratorAndResolver uuidGeneratorAndResolver) {
 		if (uuidGeneratorAndResolver === null) {
 			throw new IllegalArgumentException;
 		}
 		this.uuidGeneratorAndResolver = uuidGeneratorAndResolver;
-		this.strictMode = strictMode;
 	}
 
 	def void setOrGenerateIds(EChange eChange) {
@@ -65,7 +59,7 @@ class EChangeIdManager {
 		if (uuidGeneratorAndResolver.hasUuid(object)) {
 			return uuidGeneratorAndResolver.getUuid(object);
 		}
-		return uuidGeneratorAndResolver.generateUuidWithoutCreate(object, strictMode);
+		return uuidGeneratorAndResolver.generateUuidWithoutCreate(object);
 	}
 	
 	private def void setOrGenerateNewValueId(EObjectAddedEChange<?> addedEChange) {

@@ -19,43 +19,65 @@ class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 	final ResourceSet resourceSet;
 	final Resource uuidResource;
 	final UuidResolver parentUuidResolver;
+	final boolean strictMode;
 	UuidToEObjectRepository repository;
 	
 	/**
 	 * Instantiates a UUID generator and resolver with no parent resolver, 
 	 * the given {@link ResourceSet} for resolving objects
 	 * and no {@link Resource} in which the mapping is stored.
+	 * @param strictMode -
+	 * 		defines if the generator should run in strict mode, which throws {@link IllegalStateException}s 
+	 * 		if an element that should already have an ID as it was created before does no have one. 
+	 * 		Using non-strict mode can be necessary if model changes are not recorded from beginning of model creation.
+	 * 		Third party library are handled correctly (there is never a create change).
 	 */
-	new(ResourceSet resourceSet) {
-		this(null, resourceSet, null)
+	new(ResourceSet resourceSet, boolean strictMode) {
+		this(null, resourceSet, null, strictMode)
 	}
 
 	/**
 	 * Instantiates a UUID generator and resolver with the given parent resolver, used when
 	 * this resolver cannot resolve a UUID, the given {@link ResourceSet} for resolving objects
 	 * and no {@link Resource} in which the mapping is stored.
+	 * @param strictMode -
+	 * 		defines if the generator should run in strict mode, which throws {@link IllegalStateException}s 
+	 * 		if an element that should already have an ID as it was created before does no have one. 
+	 * 		Using non-strict mode can be necessary if model changes are not recorded from beginning of model creation.
+	 * 		Third party library are handled correctly (there is never a create change).
 	 */
-	new(UuidResolver parentUuidResolver, ResourceSet resourceSet) {
-		this(parentUuidResolver, resourceSet, null);
+	new(UuidResolver parentUuidResolver, ResourceSet resourceSet, boolean strictMode) {
+		this(parentUuidResolver, resourceSet, null, strictMode);
 	}
 
 	/**
 	 * Instantiates a UUID generator and resolver with no parent resolver, 
 	 * the given {@link ResourceSet} for resolving objects
 	 * and the given {@link Resource} for storing the mapping.
+	 * @param strictMode -
+	 * 		defines if the generator should run in strict mode, which throws {@link IllegalStateException}s 
+	 * 		if an element that should already have an ID as it was created before does no have one. 
+	 * 		Using non-strict mode can be necessary if model changes are not recorded from beginning of model creation.
+	 * 		Third party library are handled correctly (there is never a create change).
 	 */
-	new(ResourceSet resourceSet, Resource resource) {
-		this(null, resourceSet, resource);
+	new(ResourceSet resourceSet, Resource resource, boolean strictMode) {
+		this(null, resourceSet, resource, strictMode);
 	}
 	
 	/**
 	 * Instantiates a UUID generator and resolver with the given parent resolver, used when
 	 * this resolver cannot resolve a UUID, the given {@link ResourceSet} for resolving objects
 	 * and the given {@link Resource} for storing the mapping.
+	 * @param strictMode -
+	 * 		defines if the generator should run in strict mode, which throws {@link IllegalStateException}s 
+	 * 		if an element that should already have an ID as it was created before does no have one. 
+	 * 		Using non-strict mode can be necessary if model changes are not recorded from beginning of model creation.
+	 * 		Third party library are handled correctly (there is never a create change).
 	 */
-	new(UuidResolver parentUuidResolver, ResourceSet resourceSet, Resource uuidResource) {
+	new(UuidResolver parentUuidResolver, ResourceSet resourceSet, Resource uuidResource, boolean strictMode) {
 		this.uuidResource = uuidResource;
 		this.resourceSet = resourceSet;
+		this.strictMode = strictMode;
 		this.parentUuidResolver = if (parentUuidResolver !== null) {
 			parentUuidResolver;
 		} else {
@@ -139,7 +161,7 @@ class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 		return uuid;
 	}
 	
-	public override String generateUuidWithoutCreate(EObject eObject, boolean strictMode) {
+	public override String generateUuidWithoutCreate(EObject eObject) {
 		val uuid = generateUuid(eObject);
 		// Register UUID globally for third party elements that are statically accessible and are never created.
 		// Since this is called in the moment when an element gets created, the object can only be globally resolved

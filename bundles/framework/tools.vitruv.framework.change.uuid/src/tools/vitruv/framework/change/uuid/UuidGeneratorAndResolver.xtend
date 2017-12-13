@@ -13,5 +13,5 @@ interface UuidGeneratorAndResolver extends UuidResolver {
 	 * This is only successful if the element is globally accessible (third party element) or if
 	 * we are not in strict mode. Otherwise an exception is thrown, because a previous create is missing. 
 	 */
-	def String generateUuidWithoutCreate(EObject eObject, boolean strictMode);
+	def String generateUuidWithoutCreate(EObject eObject);
 }

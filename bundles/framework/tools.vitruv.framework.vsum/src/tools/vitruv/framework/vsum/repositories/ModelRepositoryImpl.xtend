@@ -83,7 +83,7 @@ class ModelRepositoryImpl {
 		if (rootToRecorder.containsKey(element)) {
 			throw new IllegalStateException("Duplicate recording on element")
 		}
-		val recorder = new AtomicEmfChangeRecorder(new UuidGeneratorAndResolverImpl(null), false);
+		val recorder = new AtomicEmfChangeRecorder(new UuidGeneratorAndResolverImpl(null, false));
 		recorder.addToRecording(element);
 		recorder.beginRecording();
 		rootToRecorder.put(element, recorder);
