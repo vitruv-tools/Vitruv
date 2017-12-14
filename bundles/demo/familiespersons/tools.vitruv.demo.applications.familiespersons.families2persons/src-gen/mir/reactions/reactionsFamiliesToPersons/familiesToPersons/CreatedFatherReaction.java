@@ -31,7 +31,7 @@ class CreatedFatherReaction extends AbstractReactionRealization {
     				
     mir.routines.familiesToPersons.RoutinesFacade routinesFacade = new mir.routines.familiesToPersons.RoutinesFacade(this.executionState, this);
     mir.reactions.reactionsFamiliesToPersons.familiesToPersons.CreatedFatherReaction.ActionUserExecution userExecution = new mir.reactions.reactionsFamiliesToPersons.familiesToPersons.CreatedFatherReaction.ActionUserExecution(this.executionState, this);
-    userExecution.callRoutine1(affectedEObject, affectedFeature, oldValue, newValue, routinesFacade);
+    userExecution.callRoutine1(replaceChange, affectedEObject, affectedFeature, oldValue, newValue, routinesFacade);
     
     resetChanges();
   }
@@ -81,7 +81,7 @@ class CreatedFatherReaction extends AbstractReactionRealization {
       super(reactionExecutionState);
     }
     
-    public void callRoutine1(final Family affectedEObject, final EReference affectedFeature, final Member oldValue, final Member newValue, @Extension final RoutinesFacade _routinesFacade) {
+    public void callRoutine1(final ReplaceSingleValuedEReference replaceChange, final Family affectedEObject, final EReference affectedFeature, final Member oldValue, final Member newValue, @Extension final RoutinesFacade _routinesFacade) {
       _routinesFacade.createFather(newValue);
     }
   }

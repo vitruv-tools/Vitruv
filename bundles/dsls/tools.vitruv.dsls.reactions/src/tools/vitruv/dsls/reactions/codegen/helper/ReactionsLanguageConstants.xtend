@@ -22,4 +22,5 @@ import edu.kit.ipd.sdq.activextendannotations.Utility
 	public static val CHANGE_AFFECTED_FEATURE_ATTRIBUTE = "affectedFeature"
 	public static val CHANGE_OLD_VALUE_ATTRIBUTE = "oldValue"
 	public static val CHANGE_NEW_VALUE_ATTRIBUTE = "newValue"
+	public static val CHANGE_INDEX_ATTRIBUTE = "index"
 }

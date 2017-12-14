@@ -28,12 +28,13 @@ class CreatedFemaleReaction extends AbstractReactionRealization {
     edu.kit.ipd.sdq.metamodels.persons.PersonRegister affectedEObject = insertChange.getAffectedEObject();
     EReference affectedFeature = insertChange.getAffectedFeature();
     edu.kit.ipd.sdq.metamodels.persons.Female newValue = insertChange.getNewValue();
+    int index = insertChange.getIndex();
     				
     getLogger().trace("Passed complete precondition check of Reaction " + this.getClass().getName());
     				
     mir.routines.personsToFamilies.RoutinesFacade routinesFacade = new mir.routines.personsToFamilies.RoutinesFacade(this.executionState, this);
     mir.reactions.reactionsPersonsToFamilies.personsToFamilies.CreatedFemaleReaction.ActionUserExecution userExecution = new mir.reactions.reactionsPersonsToFamilies.personsToFamilies.CreatedFemaleReaction.ActionUserExecution(this.executionState, this);
-    userExecution.callRoutine1(affectedEObject, affectedFeature, newValue, routinesFacade);
+    userExecution.callRoutine1(insertChange, affectedEObject, affectedFeature, newValue, index, routinesFacade);
     
     resetChanges();
   }
@@ -104,7 +105,7 @@ class CreatedFemaleReaction extends AbstractReactionRealization {
       super(reactionExecutionState);
     }
     
-    public void callRoutine1(final PersonRegister affectedEObject, final EReference affectedFeature, final Female newValue, @Extension final RoutinesFacade _routinesFacade) {
+    public void callRoutine1(final InsertEReference insertChange, final PersonRegister affectedEObject, final EReference affectedFeature, final Female newValue, final int index, @Extension final RoutinesFacade _routinesFacade) {
       _routinesFacade.createFemaleMemberOfFamily(newValue);
     }
   }
