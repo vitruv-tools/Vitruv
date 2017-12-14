@@ -391,6 +391,7 @@ routine testJavaTypes(plain SimpleChangesTestsExecutionMonitor as monitor) {
 
 reaction CheckManyCorrespondenceRetrievalWorks {
 	after attribute replaced at minimal::Root[singleValuedEAttribute]
+	with !replaceChange.wasUnset
 	call checkManyCorrespondenceRetrievalWorks(affectedEObject)
 }
 

@@ -120,6 +120,7 @@ public class AtomicChangeTypeRepresentation extends ChangeTypeRepresentation {
 
 	public def Iterable<AccessibleElement> generatePropertiesParameterList() {
 		val result = <AccessibleElement>newArrayList();
+		result.add(new AccessibleElement(name, changeType));
 		if (affectedElementClass !== null) {
 			result.add(new AccessibleElement(CHANGE_AFFECTED_ELEMENT_ATTRIBUTE, affectedElementClass));
 		}
