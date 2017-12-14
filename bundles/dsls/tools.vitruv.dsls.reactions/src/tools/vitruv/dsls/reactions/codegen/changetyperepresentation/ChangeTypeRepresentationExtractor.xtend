@@ -38,24 +38,27 @@ final class ChangeTypeRepresentationExtractor {
 	private static val GENERAL_CHANGE_NAME = "change";
 	
 	public static def dispatch ChangeSequenceRepresentation extractChangeSequenceRepresentation(Trigger trigger) {
-		val atomicChange = new AtomicChangeTypeRepresentation(GENERAL_CHANGE_NAME, EChange, null, null, false, false, null);
+		val atomicChange = new AtomicChangeTypeRepresentation(GENERAL_CHANGE_NAME, EChange, null, null, false, false, null, false);
 		return new ChangeSequenceRepresentation(#[atomicChange]);
 	}
 	
 	public static def dispatch ChangeSequenceRepresentation extractChangeSequenceRepresentation(ModelAttributeChange modelAttributeChange) {
 		var hasOldValue = false;
 		var hasNewValue = false;
+		var hasIndex = false;
 		var EClass clazz = null;
 		var name = "";
 		switch (modelAttributeChange) {
 			ModelAttributeInsertedChange: {
 				clazz = AttributePackage.Literals.INSERT_EATTRIBUTE_VALUE
 				hasNewValue = true
+				hasIndex = true
 				name = INSERT_CHANGE_NAME
 			}
 			ModelAttributeRemovedChange: {
 				clazz = AttributePackage.Literals.REMOVE_EATTRIBUTE_VALUE
 				hasOldValue = true
+				hasIndex = true
 				name = REMOVE_CHANGE_NAME
 			}
 			ModelAttributeReplacedChange: {
@@ -68,14 +71,14 @@ final class ChangeTypeRepresentationExtractor {
 		val affectedEObject = modelAttributeChange.feature.metaclass.javaClassName
 		val affectedValue = modelAttributeChange.feature.feature.EType.javaClassName
 		val affectedFeature = modelAttributeChange.feature.feature;
-		val atomicChange = new AtomicChangeTypeRepresentation(name, clazz.instanceClass, affectedEObject, affectedValue, hasOldValue, hasNewValue, affectedFeature);
+		val atomicChange = new AtomicChangeTypeRepresentation(name, clazz.instanceClass, affectedEObject, affectedValue, hasOldValue, hasNewValue, affectedFeature, hasIndex);
 		return new ChangeSequenceRepresentation(#[atomicChange]);
 	}
 			
 	public static def dispatch ChangeSequenceRepresentation extractChangeSequenceRepresentation(ModelElementChange modelElementChange) {
 		var atomicChanges = newArrayList;
 		if (modelElementChange?.changeType === null) {
-			atomicChanges += new AtomicChangeTypeRepresentation(GENERAL_CHANGE_NAME, EChange, null, null, false, false, null);
+			atomicChanges += new AtomicChangeTypeRepresentation(GENERAL_CHANGE_NAME, EChange, null, null, false, false, null, false);
 		} else {
 			atomicChanges += generateChangeTypeRepresentation(modelElementChange.changeType, modelElementChange.elementType?.metaclass)
 		}
@@ -99,23 +102,26 @@ final class ChangeTypeRepresentationExtractor {
 		} 
 		val affectedEObject = null;
 		val affectedValue = if (elementClass !== null) elementClass.javaClassName else EObject.canonicalName
-		return #[new AtomicChangeTypeRepresentation(name, clazz.instanceClass, affectedEObject, affectedValue, !hasNewValue, hasNewValue, null)];
+		return #[new AtomicChangeTypeRepresentation(name, clazz.instanceClass, affectedEObject, affectedValue, !hasNewValue, hasNewValue, null, true)];
 	}
 	
 	private static def dispatch Iterable<AtomicChangeTypeRepresentation> generateChangeTypeRepresentation(ElementReferenceChangeType modelElementChange, EClass elementClass) {
 		var hasOldValue = false;
 		var hasNewValue = false;
+		var hasIndex = false;
 		var EClass clazz = null;
 		var name = "";
 		switch (modelElementChange) {
 			ElementInsertionInListChangeType: {
 				clazz = ReferencePackage.Literals.INSERT_EREFERENCE
 				hasNewValue = true
+				hasIndex = true
 				name = INSERT_CHANGE_NAME
 			}
 			ElementRemovalFromListChangeType: {
 				clazz = ReferencePackage.Literals.REMOVE_EREFERENCE
 				hasOldValue = true
+				hasIndex = true
 				name = REMOVE_CHANGE_NAME
 			}
 			ElementReplacementChangeType: {
@@ -128,7 +134,7 @@ final class ChangeTypeRepresentationExtractor {
 		val affectedEObject = modelElementChange.feature.metaclass.javaClassName;
 		val affectedValue = if (elementClass !== null) elementClass.javaClassName else modelElementChange.feature.feature.EType.javaClassName;
 		val affectedFeature = modelElementChange.feature.feature; 
-		return #[new AtomicChangeTypeRepresentation(name, clazz.instanceClass, affectedEObject, affectedValue, hasOldValue, hasNewValue, affectedFeature)];
+		return #[new AtomicChangeTypeRepresentation(name, clazz.instanceClass, affectedEObject, affectedValue, hasOldValue, hasNewValue, affectedFeature, hasIndex)];
 	}
 	
 	private static def dispatch Iterable<AtomicChangeTypeRepresentation> generateChangeTypeRepresentation(ElementExistenceChangeType modelElementChange, EClass elementClass) {
@@ -146,7 +152,7 @@ final class ChangeTypeRepresentationExtractor {
 		}
 		val affectedEObject = if (elementClass !== null) elementClass.javaClassName else EcorePackage.eINSTANCE.EObject.javaClassName;
 		val affectedValue = null; 
-		return #[new AtomicChangeTypeRepresentation(name, clazz.instanceClass, affectedEObject, affectedValue, false, false, null)];
+		return #[new AtomicChangeTypeRepresentation(name, clazz.instanceClass, affectedEObject, affectedValue, false, false, null, false)];
 	}
 	
 	private static def dispatch Iterable<AtomicChangeTypeRepresentation> generateChangeTypeRepresentation(ElementCreationAndInsertionChangeType modelElementChange, EClass elementClass) {

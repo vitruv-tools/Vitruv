@@ -15,12 +15,13 @@ public class AtomicChangeTypeRepresentation extends ChangeTypeRepresentation {
 	protected final String affectedValueClassCanonicalName
 	protected final boolean hasOldValue;
 	protected final boolean hasNewValue;
+	protected final boolean hasIndex;
 	protected final EStructuralFeature affectedFeature;
 	@Accessors(PUBLIC_GETTER)
 	protected final String name;
 	
 	protected new(String name, Class<?> changeType, String affectedElementClassCanonicalName, String affectedValueClassCanonicalName, boolean hasOldValue,
-		boolean hasNewValue, EStructuralFeature affectedFeature) {
+		boolean hasNewValue, EStructuralFeature affectedFeature, boolean hasIndex) {
 		this.name = name;
 		this.changeType = changeType
 		this.affectedElementClassCanonicalName = affectedElementClassCanonicalName.mapToNonPrimitiveType
@@ -28,6 +29,7 @@ public class AtomicChangeTypeRepresentation extends ChangeTypeRepresentation {
 		this.affectedFeature = affectedFeature
 		this.hasOldValue = hasOldValue
 		this.hasNewValue = hasNewValue
+		this.hasIndex = hasIndex
 	}
 
 	public override Class<?> getChangeType() {
@@ -60,6 +62,10 @@ public class AtomicChangeTypeRepresentation extends ChangeTypeRepresentation {
 
 	public def boolean hasNewValue() {
 		return hasNewValue;
+	}
+	
+	public def boolean hasIndex() {
+		return hasIndex;
 	}
 
 	public override getGenericTypeParameters() {
@@ -133,6 +139,9 @@ public class AtomicChangeTypeRepresentation extends ChangeTypeRepresentation {
 		if (hasNewValue) {
 			result.add(new AccessibleElement(CHANGE_NEW_VALUE_ATTRIBUTE, affectedValueClass));
 		}
+		if (hasIndex) {
+			result.add(new AccessibleElement(CHANGE_INDEX_ATTRIBUTE, int));
+		}
 		if (result.empty) {
 			result.add(new AccessibleElement(name, changeType.name, genericTypeParameters));
 		}
@@ -152,6 +161,9 @@ public class AtomicChangeTypeRepresentation extends ChangeTypeRepresentation {
 			«ENDIF»
 			«IF hasNewValue»
 				«affectedValueClass» «CHANGE_NEW_VALUE_ATTRIBUTE» = «name».get«CHANGE_NEW_VALUE_ATTRIBUTE.toFirstUpper»();
+			«ENDIF»
+			«IF hasIndex»
+				int «CHANGE_INDEX_ATTRIBUTE» = «name».get«CHANGE_INDEX_ATTRIBUTE.toFirstUpper»();
 			«ENDIF»
 		'''
 	}
