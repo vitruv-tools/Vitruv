@@ -13,15 +13,6 @@ import static org.junit.Assert.assertEquals
 import static org.junit.Assert.assertNull
 import static org.junit.Assert.assertTrue
 import allElementTypes.AllElementTypesPackage
-import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
-import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl
-import tools.vitruv.framework.change.description.CompositeContainerChange
-import tools.vitruv.framework.change.echange.eobject.CreateEObject
-import tools.vitruv.framework.change.echange.feature.reference.ReplaceSingleValuedEReference
-import tools.vitruv.framework.change.echange.feature.reference.RemoveEReference
-import tools.vitruv.framework.change.echange.eobject.DeleteEObject
-import org.eclipse.emf.ecore.util.EcoreUtil
-import tools.vitruv.framework.change.echange.root.RemoveRootEObject
 
 class SimpleChangesTests extends AbstractAllElementTypesReactionsTests {
 	private static val TEST_SOURCE_MODEL_NAME = "EachTestModelSource";
