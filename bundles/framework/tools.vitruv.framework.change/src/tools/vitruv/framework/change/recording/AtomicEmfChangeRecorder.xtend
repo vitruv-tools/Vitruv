@@ -6,7 +6,6 @@ import org.eclipse.emf.common.notify.Notifier
 import tools.vitruv.framework.change.description.TransactionalChange
 import tools.vitruv.framework.change.echange.EChangeIdManager
 import tools.vitruv.framework.change.uuid.UuidGeneratorAndResolver
-import tools.vitruv.framework.change.uuid.UuidResolver
 import tools.vitruv.framework.change.echange.eobject.CreateEObject
 import com.google.common.collect.Multimap
 import org.eclipse.emf.ecore.EObject
@@ -21,24 +20,22 @@ class AtomicEmfChangeRecorder {
 	val Set<Notifier> elementsToObserve
 	val NotificationRecorder changeRecorder;
 	var List<TransactionalChange> changes;
-	val UuidResolver globalUuidResolver;
-	val UuidGeneratorAndResolver localUuidGeneratorAndResolver;
+	val UuidGeneratorAndResolver uuidGeneratorAndResolver;
 	val EChangeIdManager eChangeIdManager;
 
 	/**
 	 * Constructor for AtomicEMFChangeRecorder.
 	 * 
-	 * @param uuidProviderAndResolver -
-	 * 		the {@link UuidProviderAndResolver} for ID generation
+	 * @param uuidGeneratorAndResolver -
+	 * 		the {@link UuidGeneratorAndResolver} for ID generation
 	 * @param strictMode -
 	 * 		specifies whether exceptions shall be thrown if no ID exists for an element that should already have one.
 	 * 		Should be set to <code>false</code> if model is not recorded from beginning
 	 */
-	new(UuidResolver globalUuidResolver, UuidGeneratorAndResolver localUuidGeneratorAndResolver, boolean strictMode) {
+	new(UuidGeneratorAndResolver uuidGeneratorAndResolver) {
 		this.elementsToObserve = newHashSet();
-		this.globalUuidResolver = globalUuidResolver;
-		this.localUuidGeneratorAndResolver = localUuidGeneratorAndResolver;
-		this.eChangeIdManager = new EChangeIdManager(globalUuidResolver, localUuidGeneratorAndResolver, strictMode)
+		this.uuidGeneratorAndResolver = uuidGeneratorAndResolver;
+		this.eChangeIdManager = new EChangeIdManager(uuidGeneratorAndResolver)
 		this.changeRecorder = new NotificationRecorder(eChangeIdManager);
 	}
 
@@ -68,21 +65,13 @@ class AtomicEmfChangeRecorder {
 	}
 	
 	private def dispatch void registerContentsAtUuidResolver(EObject eObjectToObserve) {
-		eObjectToObserve.registerAtUuidResolver
+		uuidGeneratorAndResolver.registerEObject(eObjectToObserve)
 		val containedObjects = eObjectToObserve.eContents()
 		for (containedObject : containedObjects) {
 			containedObject.registerContentsAtUuidResolver
 		}
 	}
 	
-	private def void registerAtUuidResolver(EObject object) {
-		if (globalUuidResolver.hasUuid(object)) {
-			localUuidGeneratorAndResolver.registerEObject(globalUuidResolver.getUuid(object), object);
-		} else if (localUuidGeneratorAndResolver.hasUuid(object)) {
-			localUuidGeneratorAndResolver.registerEObject(localUuidGeneratorAndResolver.getUuid(object), object);
-		}
-	}
-
 	def void removeFromRecording(Notifier elementToObserve) {
 		this.elementsToObserve -= elementToObserve;
 		if (isRecording) {
@@ -109,7 +98,7 @@ class AtomicEmfChangeRecorder {
 		removeCreateFollowedByDelete(changes);
 		reorderChanges(changes);
 		// Allow null provider and resolver for test purposes
-		if(localUuidGeneratorAndResolver !== null && globalUuidResolver !== null) {
+		if(uuidGeneratorAndResolver !== null) {
 			changes.forEach[EChanges.forEach[eChangeIdManager.setOrGenerateIds(it)]]
 		}
 		this.changes = changes;

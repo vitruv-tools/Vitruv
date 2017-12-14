@@ -12,16 +12,77 @@ import static extension tools.vitruv.framework.util.bridges.JavaBridge.*;
 import org.eclipse.emf.transaction.TransactionalEditingDomain
 import tools.vitruv.framework.util.command.EMFCommandBridge
 import java.util.concurrent.Callable
+import org.eclipse.emf.common.util.URI
 
 class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 	static val logger = Logger.getLogger(UuidGeneratorAndResolverImpl)
+	final ResourceSet resourceSet;
+	final Resource uuidResource;
+	final UuidResolver parentUuidResolver;
+	final boolean strictMode;
 	UuidToEObjectRepository repository;
-	ResourceSet resourceSet;
-	Resource uuidResource;
+	
+	/**
+	 * Instantiates a UUID generator and resolver with no parent resolver, 
+	 * the given {@link ResourceSet} for resolving objects
+	 * and no {@link Resource} in which the mapping is stored.
+	 * @param strictMode -
+	 * 		defines if the generator should run in strict mode, which throws {@link IllegalStateException}s 
+	 * 		if an element that should already have an ID as it was created before does no have one. 
+	 * 		Using non-strict mode can be necessary if model changes are not recorded from beginning of model creation.
+	 * 		Third party library are handled correctly (there is never a create change).
+	 */
+	new(ResourceSet resourceSet, boolean strictMode) {
+		this(null, resourceSet, null, strictMode)
+	}
 
-	new(ResourceSet resourceSet, Resource uuidResource) {
+	/**
+	 * Instantiates a UUID generator and resolver with the given parent resolver, used when
+	 * this resolver cannot resolve a UUID, the given {@link ResourceSet} for resolving objects
+	 * and no {@link Resource} in which the mapping is stored.
+	 * @param strictMode -
+	 * 		defines if the generator should run in strict mode, which throws {@link IllegalStateException}s 
+	 * 		if an element that should already have an ID as it was created before does no have one. 
+	 * 		Using non-strict mode can be necessary if model changes are not recorded from beginning of model creation.
+	 * 		Third party library are handled correctly (there is never a create change).
+	 */
+	new(UuidResolver parentUuidResolver, ResourceSet resourceSet, boolean strictMode) {
+		this(parentUuidResolver, resourceSet, null, strictMode);
+	}
+
+	/**
+	 * Instantiates a UUID generator and resolver with no parent resolver, 
+	 * the given {@link ResourceSet} for resolving objects
+	 * and the given {@link Resource} for storing the mapping.
+	 * @param strictMode -
+	 * 		defines if the generator should run in strict mode, which throws {@link IllegalStateException}s 
+	 * 		if an element that should already have an ID as it was created before does no have one. 
+	 * 		Using non-strict mode can be necessary if model changes are not recorded from beginning of model creation.
+	 * 		Third party library are handled correctly (there is never a create change).
+	 */
+	new(ResourceSet resourceSet, Resource resource, boolean strictMode) {
+		this(null, resourceSet, resource, strictMode);
+	}
+	
+	/**
+	 * Instantiates a UUID generator and resolver with the given parent resolver, used when
+	 * this resolver cannot resolve a UUID, the given {@link ResourceSet} for resolving objects
+	 * and the given {@link Resource} for storing the mapping.
+	 * @param strictMode -
+	 * 		defines if the generator should run in strict mode, which throws {@link IllegalStateException}s 
+	 * 		if an element that should already have an ID as it was created before does no have one. 
+	 * 		Using non-strict mode can be necessary if model changes are not recorded from beginning of model creation.
+	 * 		Third party library are handled correctly (there is never a create change).
+	 */
+	new(UuidResolver parentUuidResolver, ResourceSet resourceSet, Resource uuidResource, boolean strictMode) {
 		this.uuidResource = uuidResource;
 		this.resourceSet = resourceSet;
+		this.strictMode = strictMode;
+		this.parentUuidResolver = if (parentUuidResolver !== null) {
+			parentUuidResolver;
+		} else {
+			UuidResolver.EMPTY;
+		}
 		loadAndRegisterUuidProviderAndResolver(uuidResource);
 	}
 
@@ -72,21 +133,29 @@ class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 					}
 				}
 			} catch(RuntimeException e) {
-				return null;
 			}
 		}
+		
 		return null;
 	}
 
 	override getEObject(String uuid) {
+		val eObject = internalGetEObject(uuid);
+		if (eObject === null) {
+			throw new IllegalStateException("No EObject could be found for UUID: " + uuid);
+		}
+		return eObject;
+	}
+
+	private def EObject internalGetEObject(String uuid) {
 		val eObject = repository.uuidToEObject.get(uuid);
 		if (eObject === null) {
-			throw new IllegalStateException();
+			return null;
 		}
 		if(eObject.eIsProxy) {
 			val resolvedObject = EcoreUtil.resolve(eObject, resourceSet);
 			if(resolvedObject === null || resolvedObject.eIsProxy) {
-				throw new IllegalStateException("No EObject could be found for UUID: " + uuid);
+				return null;
 			}
 			return resolvedObject;
 		} else {
@@ -94,9 +163,24 @@ class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 		}
 	}
 
-	override String registerEObject(EObject eObject) {
+	override String generateUuid(EObject eObject) {
 		val uuid = generateUuid;
 		registerEObject(uuid, eObject);
+		return uuid;
+	}
+	
+	public override String generateUuidWithoutCreate(EObject eObject) {
+		val uuid = generateUuid(eObject);
+		// Register UUID globally for third party elements that are statically accessible and are never created.
+		// Since this is called in the moment when an element gets created, the object can only be globally resolved
+		// if it a third party element.
+		if (!parentUuidResolver.registerUuidForGlobalUri(uuid, EcoreUtil.getURI(eObject))) {
+			if (strictMode) {
+				throw new IllegalStateException("Object has no UUID and is not globally accessible: " + eObject);
+			} else {
+				logger.warn("Object is not statically accessible but also has no globally mapped UUID: " + eObject);
+			}
+		}
 		return uuid;
 	}
 
@@ -132,18 +216,36 @@ class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 	override hasUuid(EObject object) {
 		return internalGetUuid(object) !== null;
 	}
-
-	override getOrRegisterUuid(EObject object) {
-		val existingUuid = internalGetUuid(object);
-		if(existingUuid === null) {
-			return registerEObject(object);
-		} else {
-			return existingUuid;
-		}
-	}
 	
+	override hasEObject(String uuid) {
+		return internalGetEObject(uuid) !== null;
+	}
+
 	override getResourceSet() {
 		return resourceSet;
+	}
+	
+	override registerUuidForGlobalUri(String uuid, URI uri) {
+		try {
+			val localObject = resourceSet.getEObject(uri, true)
+			if (localObject !== null) {
+				registerEObject(uuid, localObject);
+				// Recursively do that
+				return parentUuidResolver.registerUuidForGlobalUri(uuid, uri);
+			}
+		} catch (Exception e) {
+		}
+		return false;
+	}
+	
+	override registerEObject(EObject eObject) {
+		if (parentUuidResolver.hasUuid(eObject)) {
+			registerEObject(parentUuidResolver.getUuid(eObject), eObject);
+		} else if (hasUuid(eObject)) {
+			registerEObject(getUuid(eObject), eObject);
+		} else {
+			//throw new IllegalStateException("Given EObject has no UUID yet: " + eObject);
+		}
 	}
 
 }

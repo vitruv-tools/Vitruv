@@ -76,10 +76,7 @@ public class ResourceRepositoryImpl implements ModelRepository, CorrespondencePr
         this.fileSystemHelper = new FileSystemHelper(this.folder);
 
         initializeUuidProviderAndResolver();
-        // TODO HK Use one monitor per model and turn on strict mode depending on the kind of model/view
-        // (textual vs. semantic)
-        this.changeRecorder = new AtomicEmfChangeRecorder(this.uuidGeneratorAndResolver, this.uuidGeneratorAndResolver,
-                false);
+        this.changeRecorder = new AtomicEmfChangeRecorder(this.uuidGeneratorAndResolver);
 
         initializeCorrespondenceModel();
         loadVURIsOfVSMUModelInstances();
@@ -291,7 +288,11 @@ public class ResourceRepositoryImpl implements ModelRepository, CorrespondencePr
             } else {
                 uuidProviderResource = this.resourceSet.createResource(uuidProviderVURI.getEMFUri());
             }
-            this.uuidGeneratorAndResolver = new UuidGeneratorAndResolverImpl(this.resourceSet, uuidProviderResource);
+            // TODO HK We cannot enable strict mode here, because for textual views we will not get create
+            // changes in any case. We should therefore use one monitor per model and turn on strict mode
+            // depending on the kind of model/view (textual vs. semantic)
+            this.uuidGeneratorAndResolver = new UuidGeneratorAndResolverImpl(this.resourceSet, uuidProviderResource,
+                    false);
             return null;
         });
     }

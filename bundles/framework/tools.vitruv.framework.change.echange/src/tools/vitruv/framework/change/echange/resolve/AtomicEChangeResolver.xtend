@@ -51,7 +51,9 @@ class AtomicEChangeResolver {
 			return false
 		}
 
-		change.affectedEObject = uuidResolver.getEObject(change.affectedEObjectID) as A
+		if (uuidResolver.hasEObject(change.affectedEObjectID)) {
+			change.affectedEObject = uuidResolver.getEObject(change.affectedEObjectID) as A		
+		}
 
 		if (change.affectedFeature === null || change.affectedEObject === null || change.affectedEObject.eIsProxy) {
 			return false
@@ -333,7 +335,7 @@ class AtomicEChangeResolver {
 	 * 							{@code false} if the model is in state after.
 	 */
 	def private static boolean resolveChangeList(List<? extends EChange> changeList, UuidResolver uuidResolver, boolean resolveBefore) {
-		return changeList.fold(true, [res, localChange | res && EChangeResolver.resolve(localChange, uuidResolver, resolveBefore, false)]);	
+		return changeList.fold(true, [res, localChange | res && EChangeResolverAndApplicator.resolve(localChange, uuidResolver, resolveBefore, false)]);	
 	}
 }
 	

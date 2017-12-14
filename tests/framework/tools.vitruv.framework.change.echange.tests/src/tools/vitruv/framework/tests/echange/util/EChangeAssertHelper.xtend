@@ -4,7 +4,7 @@ import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.util.EcoreUtil
 import org.junit.Assert
 import tools.vitruv.framework.change.echange.EChange
-import static extension tools.vitruv.framework.change.echange.EChangeResolverAndApplicator.*;
+import static extension tools.vitruv.framework.change.echange.resolve.EChangeResolverAndApplicator.*
 import java.util.List
 
 /**
