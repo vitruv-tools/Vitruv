@@ -24,12 +24,13 @@ class CreatedPersonRegisterReaction extends AbstractReactionRealization {
     	return;
     }
     edu.kit.ipd.sdq.metamodels.persons.PersonRegister newValue = insertChange.getNewValue();
+    int index = insertChange.getIndex();
     				
     getLogger().trace("Passed complete precondition check of Reaction " + this.getClass().getName());
     				
     mir.routines.personsToFamilies.RoutinesFacade routinesFacade = new mir.routines.personsToFamilies.RoutinesFacade(this.executionState, this);
     mir.reactions.reactionsPersonsToFamilies.personsToFamilies.CreatedPersonRegisterReaction.ActionUserExecution userExecution = new mir.reactions.reactionsPersonsToFamilies.personsToFamilies.CreatedPersonRegisterReaction.ActionUserExecution(this.executionState, this);
-    userExecution.callRoutine1(newValue, routinesFacade);
+    userExecution.callRoutine1(insertChange, newValue, index, routinesFacade);
     
     resetChanges();
   }
@@ -94,7 +95,7 @@ class CreatedPersonRegisterReaction extends AbstractReactionRealization {
       super(reactionExecutionState);
     }
     
-    public void callRoutine1(final PersonRegister newValue, @Extension final RoutinesFacade _routinesFacade) {
+    public void callRoutine1(final InsertRootEObject insertChange, final PersonRegister newValue, final int index, @Extension final RoutinesFacade _routinesFacade) {
       _routinesFacade.createFamilyRegister(newValue);
     }
   }

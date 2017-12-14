@@ -26,7 +26,7 @@ class DeletePersonReaction extends AbstractReactionRealization {
     				
     mir.routines.personsToFamilies.RoutinesFacade routinesFacade = new mir.routines.personsToFamilies.RoutinesFacade(this.executionState, this);
     mir.reactions.reactionsPersonsToFamilies.personsToFamilies.DeletePersonReaction.ActionUserExecution userExecution = new mir.reactions.reactionsPersonsToFamilies.personsToFamilies.DeletePersonReaction.ActionUserExecution(this.executionState, this);
-    userExecution.callRoutine1(affectedEObject, routinesFacade);
+    userExecution.callRoutine1(deleteChange, affectedEObject, routinesFacade);
     
     resetChanges();
   }
@@ -67,7 +67,7 @@ class DeletePersonReaction extends AbstractReactionRealization {
       super(reactionExecutionState);
     }
     
-    public void callRoutine1(final Person affectedEObject, @Extension final RoutinesFacade _routinesFacade) {
+    public void callRoutine1(final DeleteEObject deleteChange, final Person affectedEObject, @Extension final RoutinesFacade _routinesFacade) {
       _routinesFacade.deleteMember(affectedEObject);
     }
   }
