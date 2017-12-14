@@ -142,9 +142,6 @@ public class AtomicChangeTypeRepresentation extends ChangeTypeRepresentation {
 		if (hasIndex) {
 			result.add(new AccessibleElement(CHANGE_INDEX_ATTRIBUTE, int));
 		}
-		if (result.empty) {
-			result.add(new AccessibleElement(name, changeType.name, genericTypeParameters));
-		}
 		return result;
 	}
 
