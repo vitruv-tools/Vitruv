@@ -21,27 +21,32 @@ public class ReactionsLanguageXtext2EcorePostProcessor implements IXtext2EcorePo
 			return;
 		
 		final EPackage ePackage = metamodel.getEPackage();
+		final EClass reactionsFileEClass = getEClass(ePackage, "ReactionsFile");
 		final EClass reactionsSegmentEClass = getEClass(ePackage, "ReactionsSegment");
 		final EClass reactionEClass = getEClass(ePackage, "Reaction");
 		final EClass effectEClass = getEClass(ePackage, "Routine");
 		
 		// Add an opposite reference for the metamodel pair to the reaction
 		final EReference reactionsSegmentReactionsReference = (EReference)reactionsSegmentEClass.getEStructuralFeature("reactions");
-		addReactionsSegmentEReference(reactionEClass, reactionsSegmentReactionsReference);
+		addOppositeEReference(reactionEClass, "reactionsSegment", reactionsSegmentReactionsReference);
 		
 		final EReference reactionsSegmentEffectsReference = (EReference)reactionsSegmentEClass.getEStructuralFeature("routines");
-		addReactionsSegmentEReference(effectEClass, reactionsSegmentEffectsReference);
+		addOppositeEReference(effectEClass, "reactionsSegment", reactionsSegmentEffectsReference);
+		
+		// Add an opposite reference for the reactions file to the reactions segment
+		final EReference reactionsFileReactionsSegmentsReference = (EReference) reactionsFileEClass.getEStructuralFeature("reactionsSegments");
+		addOppositeEReference(reactionsSegmentEClass, "reactionsFile", reactionsFileReactionsSegmentsReference);
 	}
 	
-	private EReference addReactionsSegmentEReference(EClass classToAddReferenceTo, EReference oppositeReference) {
-		final EReference reactionsSegmentReference = EcoreFactory.eINSTANCE.createEReference();
-		reactionsSegmentReference.setName("reactionsSegment");
-		reactionsSegmentReference.setEType(classToAddReferenceTo.getEPackage().getEClassifier("ReactionsSegment"));
-		reactionsSegmentReference.setLowerBound(1);
-		reactionsSegmentReference.setUpperBound(1);
-		oppositeReference.setEOpposite(reactionsSegmentReference);
-		reactionsSegmentReference.setEOpposite(oppositeReference);
-		classToAddReferenceTo.getEStructuralFeatures().add(reactionsSegmentReference);
-		return reactionsSegmentReference;
+	private EReference addOppositeEReference(EClass classToAddReferenceTo, String referenceName, EReference oppositeReference) {
+		final EReference reference = EcoreFactory.eINSTANCE.createEReference();
+		reference.setName(referenceName);
+		reference.setEType(oppositeReference.getEContainingClass());
+		reference.setLowerBound(1);
+		reference.setUpperBound(1);
+		oppositeReference.setEOpposite(reference);
+		reference.setEOpposite(oppositeReference);
+		classToAddReferenceTo.getEStructuralFeatures().add(reference);
+		return reference;
 	}
 }

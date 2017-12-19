@@ -14,6 +14,7 @@ import edu.kit.ipd.sdq.activextendannotations.Utility
 	
 	public static val EFFECT_FACADE_FIELD_NAME = "actionsFacade";
 	public static val EFFECT_FACADE_CALLED_BY_FIELD_NAME = "calledBy";
+	public static val IMPORTED_ROUTINE_PREFIX_SEPARATOR = "_"
 	
 	public static val EFFECT_USER_EXECUTION_SIMPLE_NAME = "ActionUserExecution";
 	public static val REACTION_USER_EXECUTION_ROUTINE_CALL_FACADE_PARAMETER_NAME = "_routinesFacade"

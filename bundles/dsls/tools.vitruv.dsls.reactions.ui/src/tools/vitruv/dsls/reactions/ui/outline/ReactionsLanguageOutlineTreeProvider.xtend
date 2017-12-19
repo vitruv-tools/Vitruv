@@ -19,6 +19,7 @@ import tools.vitruv.dsls.reactions.reactionsLanguage.ConcreteModelChange
 import static extension tools.vitruv.dsls.reactions.codegen.changetyperepresentation.ChangeTypeRepresentationExtractor.*
 import tools.vitruv.dsls.reactions.reactionsLanguage.Matcher
 import tools.vitruv.dsls.reactions.reactionsLanguage.RoutineInput
+import tools.vitruv.dsls.reactions.reactionsLanguage.RoutinesImport
 
 /**
  * Outline structure definition for a reactions file.
@@ -32,6 +33,12 @@ class ReactionsLanguageOutlineTreeProvider extends DefaultOutlineTreeProvider {
 			imageDispatcher.invoke(reactionsFile), "imports", false);
 		for (imp : reactionsFile.metamodelImports) {
 			createChildren(importsNode, imp);
+		}
+		val routinesImportsNode = createEStructuralFeatureNode(root, reactionsFile,
+			ReactionsLanguagePackage.Literals.REACTIONS_FILE__ROUTINES_IMPORTS, imageDispatcher.invoke(reactionsFile),
+			"routinesImports", false);
+		for (imp : reactionsFile.routinesImports) {
+			createChildren(routinesImportsNode, imp);
 		}
 		for (reactionsSegment : reactionsFile.reactionsSegments) {
 			createChildren(root, reactionsSegment);
@@ -59,6 +66,12 @@ class ReactionsLanguageOutlineTreeProvider extends DefaultOutlineTreeProvider {
 			imp.package.name, true);
 	}
 	
+	protected def void _createChildren(EStructuralFeatureNode parentNode, RoutinesImport imp) {
+		val importNode = createEObjectNode(parentNode, imp);
+		createEStructuralFeatureNode(importNode, imp, ReactionsLanguagePackage.Literals.ROUTINES_IMPORT__REACTIONS_SEGMENT,
+			imageDispatcher.invoke(imp.reactionsSegment), imp.reactionsSegment.name, true);
+	}
+	
 	protected def void _createChildren(EStructuralFeatureNode parentNode, Reaction reaction) {
 		val reactionNode = createEObjectNode(parentNode, reaction);
 		if (reaction.documentation !== null) {
@@ -82,6 +95,10 @@ class ReactionsLanguageOutlineTreeProvider extends DefaultOutlineTreeProvider {
 	
 	protected def Object _text(MetamodelImport imp) {
 		return imp?.name;
+	}
+	
+	protected def Object _text(RoutinesImport imp) {
+		return imp?.reactionsSegment.name;
 	}
 	
 	protected def Object _text(Reaction reaction) {

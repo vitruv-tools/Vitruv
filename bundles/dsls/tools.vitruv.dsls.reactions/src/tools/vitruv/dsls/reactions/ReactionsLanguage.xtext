@@ -10,8 +10,12 @@ import "http://www.kit.edu/ipd/sdq/vitruvius/dsls/mirbase/MirBase" as mirbase
 ReactionsFile:
 	(namespaceImports=XImportSection)?
 	MirBaseFile
+	(routinesImports+=RoutinesImport)*
 	(reactionsSegments+=ReactionsSegment)+;
-	
+
+RoutinesImport:
+	'import routines from' reactionsSegment=[ReactionsSegment] ('with prefix' prefix=ValidID)?;
+
 ReactionsSegment:
 	'reactions:' name=ValidID
 	'in reaction to changes in' fromDomain=DomainReference 

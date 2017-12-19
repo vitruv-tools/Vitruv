@@ -1,5 +1,7 @@
 package tools.vitruv.dsls.reactions.scoping
 
+import com.google.inject.Inject
+
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EReference
 import org.eclipse.xtext.resource.EObjectDescription
@@ -7,10 +9,12 @@ import org.eclipse.xtext.scoping.IScope
 import org.eclipse.xtext.scoping.impl.SimpleScope
 
 import static tools.vitruv.dsls.mirbase.mirBase.MirBasePackage.Literals.*;
+import static tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsLanguagePackage.Literals.*
 
 import org.eclipse.emf.ecore.EStructuralFeature
 import tools.vitruv.dsls.mirbase.scoping.MirBaseScopeProviderDelegate
 import org.eclipse.emf.ecore.EcorePackage
+import org.eclipse.emf.ecore.resource.Resource
 import tools.vitruv.dsls.reactions.reactionsLanguage.inputTypes.InputTypesPackage
 import tools.vitruv.dsls.reactions.reactionsLanguage.RoutineInput
 import tools.vitruv.dsls.reactions.reactionsLanguage.CreateModelElement
@@ -23,6 +27,9 @@ import org.eclipse.emf.ecore.EAttribute
 import tools.vitruv.dsls.reactions.reactionsLanguage.ElementChangeType
 
 class ReactionsLanguageScopeProviderDelegate extends MirBaseScopeProviderDelegate {
+
+	@Inject RoutinesImportScopeHelper routinesImportScopeHelper;
+
 	override getScope(EObject context, EReference reference) {
 		// context differs during content assist: 
 		// * if no input is provided yet, the container is the context as the element is not known yet
@@ -45,10 +52,17 @@ class ReactionsLanguageScopeProviderDelegate extends MirBaseScopeProviderDelegat
 			} else if (contextContainer instanceof MetaclassReference) {
 				return createQualifiedEClassScopeWithEObject(contextContainer.metamodel)
 			}
+		} else if (reference.equals(ROUTINES_IMPORT__REACTIONS_SEGMENT)) {
+			return createRoutinesImportScope(context.eResource);
 		}
 		super.getScope(context, reference)
 	}
-	
+
+	def createRoutinesImportScope(Resource resource) {
+		val visibleReactionsSegments = routinesImportScopeHelper.getVisibleReactionsSegmentDescriptions(resource, false);
+		return new SimpleScope(visibleReactionsSegments);
+	}
+
 	def createEStructuralFeatureScope(MetaclassFeatureReference featureReference) {
 		if (featureReference?.metaclass !== null) {
 			val changeType = featureReference.eContainer;
