@@ -10,7 +10,6 @@ import org.eclipse.xtext.xbase.XFeatureCall
 import org.eclipse.xtext.xbase.XListLiteral
 import org.eclipse.xtext.xbase.XMemberFeatureCall
 import org.eclipse.xtext.xbase.XVariableDeclaration
-import tools.vitruv.dsls.mirbase.formatting.MirBaseFormatter
 import tools.vitruv.dsls.reactions.reactionsLanguage.Action
 import tools.vitruv.dsls.reactions.reactionsLanguage.ActionStatement
 import tools.vitruv.dsls.reactions.reactionsLanguage.CreateCorrespondence
@@ -38,6 +37,7 @@ import tools.vitruv.dsls.reactions.reactionsLanguage.RetrieveOrRequireAbscenceOf
 import org.eclipse.xtext.xbase.XBinaryOperation
 import org.eclipse.xtext.xbase.XCastedExpression
 import org.eclipse.xtext.common.types.JvmTypeReference
+import tools.vitruv.dsls.mirbase.formatting2.MirBaseFormatter
 
 class ReactionsLanguageFormatter extends MirBaseFormatter {
 	
