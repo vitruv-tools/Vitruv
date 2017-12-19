@@ -43,6 +43,9 @@ Workflow {
 			junitSupport = junit.Junit4Fragment2 {
 				generateStub = false
 			}
+			formatter = {
+				generateStub = true
+			}
 			referencedResource = "platform:/resource/tools.vitruv.dsls.mirbase/model/generated/MirBase.genmodel"
 		}
 	}

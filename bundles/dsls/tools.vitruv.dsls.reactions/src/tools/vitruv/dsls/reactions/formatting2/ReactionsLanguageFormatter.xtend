@@ -1,4 +1,4 @@
-package tools.vitruv.dsls.reactions.formatting
+package tools.vitruv.dsls.reactions.formatting2
 
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.xtext.formatting2.IFormattableDocument
@@ -38,6 +38,8 @@ import org.eclipse.xtext.xbase.XBinaryOperation
 import org.eclipse.xtext.xbase.XCastedExpression
 import org.eclipse.xtext.common.types.JvmTypeReference
 import tools.vitruv.dsls.mirbase.formatting2.MirBaseFormatter
+import com.google.inject.Inject
+import tools.vitruv.dsls.reactions.services.ReactionsLanguageGrammarAccess
 
 class ReactionsLanguageFormatter extends MirBaseFormatter {
 	
