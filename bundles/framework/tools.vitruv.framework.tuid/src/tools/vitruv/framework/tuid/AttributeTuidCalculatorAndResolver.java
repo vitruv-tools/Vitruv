@@ -2,6 +2,7 @@ package tools.vitruv.framework.tuid;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import org.eclipse.emf.ecore.EObject;
@@ -19,7 +20,7 @@ import tools.vitruv.framework.util.bridges.EcoreBridge;
  * @author Dominik Werle
  */
 public class AttributeTuidCalculatorAndResolver extends HierarchicalTuidCalculatorAndResolver<EObject> {
-	protected final List<String> attributeNames;
+	private final List<String> attributeNames;
 
 	public AttributeTuidCalculatorAndResolver(final String tuidPrefix, final String... attributeNames) {
 		super(tuidPrefix);
@@ -60,6 +61,10 @@ public class AttributeTuidCalculatorAndResolver extends HierarchicalTuidCalculat
 
 		throw new RuntimeException(
 				"None of '" + String.join("', '", this.attributeNames) + "' found for eObject '" + obj + "'");
+	}
+	
+	protected List<String> getAttributeNames() {
+		return Collections.unmodifiableList(attributeNames);
 	}
 
 }
