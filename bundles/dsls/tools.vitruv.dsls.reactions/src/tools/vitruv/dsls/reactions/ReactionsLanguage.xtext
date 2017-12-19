@@ -14,7 +14,7 @@ ReactionsFile:
 	(reactionsSegments+=ReactionsSegment)+;
 
 RoutinesImport:
-	'import routines from' reactionsSegment=[ReactionsSegment] ('with prefix' prefix=ValidID)?;
+	'import' 'routines from' reactionsSegment=[ReactionsSegment] ('with' 'prefix' prefix=ValidID)?;
 
 ReactionsSegment:
 	'reactions:' name=ValidID
