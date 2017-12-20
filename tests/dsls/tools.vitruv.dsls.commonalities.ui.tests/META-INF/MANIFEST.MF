@@ -29,7 +29,6 @@ Require-Bundle: tools.vitruv.dsls.commonalities.ui,
  org.eclipse.xtext.common.types.ui;bundle-version="2.12.0",
  tools.vitruv.framework.change.processing;bundle-version="0.2.0",
  tools.vitruv.dsls.mirbase.ui;bundle-version="0.2.0",
- tools.vitruv.framework.vsum.ui;bundle-version="0.2.0",
  tools.vitruv.dsls.reactions.ui;bundle-version="0.2.0",
  tools.vitruv.framework.tests.util.metamodels;bundle-version="0.2.0",
  org.apache.log4j;bundle-version="1.2.15"
