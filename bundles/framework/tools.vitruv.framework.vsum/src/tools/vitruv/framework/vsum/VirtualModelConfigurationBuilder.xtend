@@ -10,8 +10,22 @@ class VirtualModelConfigurationBuilder {
 		this.modelConfiguration = new VirtualModelConfiguration();	
 	}
 	
+	public def static VirtualModelConfigurationBuilder create() {
+		return new VirtualModelConfigurationBuilder();
+	}
+	
+	public def VirtualModelConfigurationBuilder addDomains(VitruvDomain... domains) {
+		domains.forEach[addMetamodel];
+		return this;
+	}
+	
 	public def VirtualModelConfigurationBuilder addMetamodel(VitruvDomain metamodel) {
 		modelConfiguration.addMetamodel(metamodel);
+		return this;
+	}
+	
+	public def VirtualModelConfigurationBuilder addChangePropagationSpecifications(ChangePropagationSpecification... changePropagationSpecifications) {
+		changePropagationSpecifications.forEach[addChangePropagationSpecification];
 		return this;
 	}
 	
