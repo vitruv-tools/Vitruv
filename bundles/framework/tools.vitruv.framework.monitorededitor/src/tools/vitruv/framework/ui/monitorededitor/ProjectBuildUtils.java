@@ -1,4 +1,4 @@
-package tools.vitruv.framework.monitorededitor;
+package tools.vitruv.framework.ui.monitorededitor;
 
 import java.util.HashMap;
 

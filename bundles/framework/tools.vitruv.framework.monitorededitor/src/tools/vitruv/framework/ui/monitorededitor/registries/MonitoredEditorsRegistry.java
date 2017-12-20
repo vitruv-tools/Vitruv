@@ -1,4 +1,4 @@
-package tools.vitruv.framework.monitorededitor.registries;
+package tools.vitruv.framework.ui.monitorededitor.registries;
 
 /**
  * Registry for monitored editors, which implements the singleton pattern.

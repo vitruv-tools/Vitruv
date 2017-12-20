@@ -7,7 +7,7 @@ import tools.vitruv.framework.applications.VitruvApplication
 import java.util.Map
 import org.eclipse.core.resources.IProject
 import tools.vitruv.framework.userinteraction.impl.UserInteractor
-import tools.vitruv.framework.monitorededitor.ProjectBuildUtils
+import tools.vitruv.framework.ui.monitorededitor.ProjectBuildUtils
 import org.eclipse.core.resources.ResourcesPlugin
 import tools.vitruv.framework.tests.util.TestUtil
 import tools.vitruv.framework.change.processing.ChangePropagationSpecification

@@ -1,10 +1,10 @@
-package tools.vitruv.framework.monitorededitor;
+package tools.vitruv.framework.ui.monitorededitor;
 
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 
-import tools.vitruv.framework.monitorededitor.registries.MonitoredEditorsRegistry;
-import tools.vitruv.framework.monitorededitor.registries.MonitoredProjectsRegistry;
+import tools.vitruv.framework.ui.monitorededitor.registries.MonitoredEditorsRegistry;
+import tools.vitruv.framework.ui.monitorededitor.registries.MonitoredProjectsRegistry;
 
 /**
  * Activator for the monitored editor base plugin.

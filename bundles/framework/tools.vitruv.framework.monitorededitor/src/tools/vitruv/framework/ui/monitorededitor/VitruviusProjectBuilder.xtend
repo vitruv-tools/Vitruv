@@ -1,4 +1,4 @@
-package tools.vitruv.framework.monitorededitor
+package tools.vitruv.framework.ui.monitorededitor
 
 import org.apache.log4j.Logger
 import java.util.Set

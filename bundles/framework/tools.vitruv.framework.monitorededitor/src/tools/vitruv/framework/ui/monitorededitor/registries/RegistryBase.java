@@ -1,4 +1,4 @@
-package tools.vitruv.framework.monitorededitor.registries;
+package tools.vitruv.framework.ui.monitorededitor.registries;
 
 import java.util.ArrayList;
 import java.util.Collection;

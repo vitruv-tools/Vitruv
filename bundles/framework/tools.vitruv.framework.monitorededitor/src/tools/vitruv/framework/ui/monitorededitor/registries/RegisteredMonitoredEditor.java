@@ -1,4 +1,4 @@
-package tools.vitruv.framework.monitorededitor.registries;
+package tools.vitruv.framework.ui.monitorededitor.registries;
 
 /**
  * Monitored Editor, which can be registered in a registry.
