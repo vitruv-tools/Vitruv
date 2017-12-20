@@ -1,4 +1,4 @@
-package tools.vitruv.framework.testutils.domains;
+package tools.vitruv.testutils.domains;
 
 import pcm_mockup.Pcm_mockupPackage;
 import tools.vitruv.domains.emf.builder.VitruviusEmfBuilderApplicator;

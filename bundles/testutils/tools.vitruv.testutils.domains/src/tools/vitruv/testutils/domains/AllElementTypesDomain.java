@@ -1,4 +1,4 @@
-package tools.vitruv.framework.testutils.domains;
+package tools.vitruv.testutils.domains;
 
 import allElementTypes.AllElementTypesPackage;
 import tools.vitruv.domains.emf.builder.VitruviusEmfBuilderApplicator;
