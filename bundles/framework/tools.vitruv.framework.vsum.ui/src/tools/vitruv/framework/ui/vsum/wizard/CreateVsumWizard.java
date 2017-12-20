@@ -1,4 +1,4 @@
-package tools.vitruv.framework.vsum.ui.wizard;
+package tools.vitruv.framework.ui.vsum.wizard;
 
 import org.apache.log4j.Logger;
 import org.eclipse.core.resources.IProject;

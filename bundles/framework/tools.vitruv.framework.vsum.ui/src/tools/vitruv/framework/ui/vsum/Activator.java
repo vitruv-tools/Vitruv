@@ -1,4 +1,4 @@
-package tools.vitruv.framework.vsum.ui;
+package tools.vitruv.framework.ui.vsum;
 
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;

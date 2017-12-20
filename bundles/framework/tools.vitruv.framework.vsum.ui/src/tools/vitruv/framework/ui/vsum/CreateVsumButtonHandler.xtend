@@ -1,11 +1,11 @@
-package tools.vitruv.framework.vsum.ui
+package tools.vitruv.framework.ui.vsum
 
 import org.eclipse.core.commands.AbstractHandler
 import org.eclipse.core.commands.ExecutionEvent
 import org.eclipse.core.commands.ExecutionException
 import org.eclipse.ui.PlatformUI
 import org.eclipse.jface.wizard.WizardDialog
-import tools.vitruv.framework.vsum.ui.wizard.CreateVsumWizard
+import tools.vitruv.framework.ui.vsum.wizard.CreateVsumWizard
 
 class CreateVsumButtonHandler extends AbstractHandler {
 	

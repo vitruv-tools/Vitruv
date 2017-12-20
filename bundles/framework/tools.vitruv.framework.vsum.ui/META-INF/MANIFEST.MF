@@ -1,9 +1,9 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: itruv Framework UI Virtual Singl Underlying Model
-Bundle-SymbolicName: tools.vitruv.framework.vsum.ui;singleton:=true
+Bundle-Name: Vitruv Framework UI Virtual Singl Underlying Model
+Bundle-SymbolicName: tools.vitruv.framework.ui.vsum;singleton:=true
 Bundle-Version: 0.2.0.qualifier
-Bundle-Activator: tools.vitruv.framework.vsum.ui.Activator
+Bundle-Activator: tools.vitruv.framework.ui.vsum.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.core.resources;bundle-version="3.10.1",

@@ -1,4 +1,4 @@
-package tools.vitruv.framework.vsum.ui.wizard;
+package tools.vitruv.framework.ui.vsum.wizard;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;

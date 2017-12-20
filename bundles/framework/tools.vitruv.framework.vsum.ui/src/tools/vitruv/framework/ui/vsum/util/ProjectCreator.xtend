@@ -1,4 +1,4 @@
-package tools.vitruv.framework.vsum.ui.util
+package tools.vitruv.framework.ui.vsum.util
 
 import tools.vitruv.framework.tests.util.TestUtil
 
