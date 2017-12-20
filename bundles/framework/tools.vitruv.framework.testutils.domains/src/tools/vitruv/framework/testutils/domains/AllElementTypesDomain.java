@@ -21,4 +21,9 @@ public final class AllElementTypesDomain extends AbstractVitruvDomain {
 		return new VitruviusEmfBuilderApplicator();
 	}
 	
+	@Override
+	public boolean isUserVisible() {
+		return false;
+	}
+	
 }

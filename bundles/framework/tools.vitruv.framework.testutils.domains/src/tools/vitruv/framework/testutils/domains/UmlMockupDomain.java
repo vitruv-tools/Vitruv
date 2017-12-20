@@ -19,4 +19,10 @@ public final class UmlMockupDomain extends AbstractVitruvDomain {
 	public VitruviusProjectBuilderApplicator getBuilderApplicator() {
 		return new VitruviusEmfBuilderApplicator();
 	}
+	
+	@Override
+	public boolean isUserVisible() {
+		return false;
+	}
+	
 }
