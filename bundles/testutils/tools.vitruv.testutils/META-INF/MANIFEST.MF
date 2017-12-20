@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Vitruv Framework Test Utilities
-Bundle-SymbolicName: tools.vitruv.framework.tests.util
+Bundle-Name: Vitruv Test Utilities
+Bundle-SymbolicName: tools.vitruv.testutils
 Bundle-Version: 0.2.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: tools.vitruv.framework.vsum;visibility:=reexport,
@@ -26,8 +26,8 @@ Require-Bundle: tools.vitruv.framework.vsum;visibility:=reexport,
  org.eclipse.xtend.lib,
  org.eclipse.xtend.lib.macro,
  edu.kit.ipd.sdq.activextendannotations;bundle-version="1.0.0"
-Export-Package: tools.vitruv.framework.tests,
- tools.vitruv.framework.tests.matchers,
- tools.vitruv.framework.tests.util
+Export-Package: tools.vitruv.testutils,
+ tools.vitruv.testutils.matchers,
+ tools.vitruv.testutils.util
 Bundle-Vendor: vitruv.tools
 

@@ -1,4 +1,4 @@
-package tools.vitruv.framework.tests.matchers
+package tools.vitruv.testutils.matchers
 
 import java.lang.reflect.Method
 import java.util.function.Consumer

@@ -14,7 +14,7 @@ import tools.vitruv.demo.domains.addresses.AddressesNamespace
 import tools.vitruv.demo.domains.recipients.RecipientsDomainProvider
 import tools.vitruv.demo.domains.recipients.RecipientsNamespace
 import tools.vitruv.extensions.dslsruntime.reactions.helper.ReactionsCorrespondenceHelper
-import tools.vitruv.framework.tests.VitruviusApplicationTest
+import tools.vitruv.testutils.VitruviusApplicationTest
 
 import static org.junit.Assert.*
 

@@ -1,4 +1,4 @@
-package tools.vitruv.framework.tests;
+package tools.vitruv.testutils;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;

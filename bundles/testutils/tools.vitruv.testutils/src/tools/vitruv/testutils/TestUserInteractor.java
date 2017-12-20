@@ -1,4 +1,4 @@
-package tools.vitruv.framework.tests;
+package tools.vitruv.testutils;
 
 import java.util.ArrayList;
 import java.util.Arrays;

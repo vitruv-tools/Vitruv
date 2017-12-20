@@ -1,4 +1,4 @@
-package tools.vitruv.framework.tests;
+package tools.vitruv.testutils;
 
 import java.io.File;
 import java.util.List;
@@ -19,11 +19,11 @@ import tools.vitruv.framework.uuid.UuidGeneratorAndResolver;
 import tools.vitruv.framework.uuid.UuidGeneratorAndResolverImpl;
 import tools.vitruv.framework.correspondence.CorrespondenceModel;
 import tools.vitruv.framework.domains.VitruvDomain;
-import tools.vitruv.framework.tests.util.TestUtil;
 import tools.vitruv.framework.util.ResourceSetUtil;
 import tools.vitruv.framework.util.bridges.EMFBridge;
 import tools.vitruv.framework.util.datatypes.VURI;
 import tools.vitruv.framework.vsum.InternalVirtualModel;
+import tools.vitruv.testutils.util.TestUtil;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;

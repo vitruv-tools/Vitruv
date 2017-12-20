@@ -1,4 +1,4 @@
-package tools.vitruv.framework.tests.util;
+package tools.vitruv.testutils.util;
 
 import java.io.File;
 import java.io.IOException;

@@ -1,4 +1,4 @@
-package tools.vitruv.framework.tests.matchers
+package tools.vitruv.testutils.matchers
 
 import org.eclipse.emf.ecore.EClass
 import org.eclipse.emf.ecore.EStructuralFeature

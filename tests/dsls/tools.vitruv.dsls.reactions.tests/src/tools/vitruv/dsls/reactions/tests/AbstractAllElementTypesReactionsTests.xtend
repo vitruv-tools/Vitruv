@@ -1,6 +1,6 @@
 package tools.vitruv.dsls.reactions.tests
 
-import tools.vitruv.framework.tests.VitruviusApplicationTest
+import tools.vitruv.testutils.VitruviusApplicationTest
 import tools.vitruv.framework.testutils.domains.AllElementTypesDomainProvider
 import com.google.inject.Inject
 import org.junit.runner.RunWith

@@ -1,4 +1,4 @@
-package tools.vitruv.framework.tests;
+package tools.vitruv.testutils;
 
 import java.io.File;
 import java.util.function.Function;
@@ -8,8 +8,8 @@ import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.rules.TestName;
 
-import tools.vitruv.framework.tests.util.TestUtil;
 import tools.vitruv.framework.tuid.TuidManager;
+import tools.vitruv.testutils.util.TestUtil;
 
 /**
  * Basic test class for all Vitruvius tests that require a test project within
