@@ -6,7 +6,7 @@ import org.eclipse.emf.ecore.resource.Resource
 import static extension tools.vitruv.framework.change.echange.resolve.EChangeUnresolver.*
 import org.eclipse.emf.ecore.EAttribute
 import org.eclipse.emf.ecore.EReference
-import tools.vitruv.framework.change.uuid.UuidGeneratorAndResolver
+import tools.vitruv.framework.uuid.UuidGeneratorAndResolver
 import org.eclipse.emf.ecore.EStructuralFeature
 
 /**

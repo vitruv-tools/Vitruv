@@ -19,7 +19,7 @@ import tools.vitruv.framework.change.description.PropagatedChange
 import tools.vitruv.framework.change.description.VitruviusChangeFactory
 import tools.vitruv.framework.vsum.repositories.ModelRepositoryImpl
 import tools.vitruv.framework.vsum.ModelRepository
-import tools.vitruv.framework.change.uuid.UuidResolver
+import tools.vitruv.framework.uuid.UuidResolver
 import tools.vitruv.framework.change.description.CompositeChange
 
 import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*

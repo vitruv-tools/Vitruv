@@ -6,7 +6,7 @@ import tools.vitruv.framework.util.datatypes.ModelInstance
 import java.io.File
 import java.util.List
 import tools.vitruv.framework.change.description.PropagatedChange
-import tools.vitruv.framework.change.uuid.UuidGeneratorAndResolver
+import tools.vitruv.framework.uuid.UuidGeneratorAndResolver
 
 interface VirtualModel {
 	def File getFolder();

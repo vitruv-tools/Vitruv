@@ -19,8 +19,8 @@ import org.junit.After
 import static extension tools.vitruv.framework.change.echange.resolve.EChangeResolverAndApplicator.*
 import org.eclipse.emf.ecore.resource.ResourceSet
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
-import tools.vitruv.framework.change.uuid.UuidResolver
-import tools.vitruv.framework.change.uuid.UuidGeneratorAndResolverImpl
+import tools.vitruv.framework.uuid.UuidResolver
+import tools.vitruv.framework.uuid.UuidGeneratorAndResolverImpl
 
 /**
  * Test class for {@link FeatureEChange} which is used by every {@link EChange} which modifies {@link EStructuralFeature}s 

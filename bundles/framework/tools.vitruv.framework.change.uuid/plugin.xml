@@ -10,7 +10,7 @@
       <!-- @generated Uuid -->
       <package
             uri="http://tools.vitruv/Change/Uuid"
-            class="tools.vitruv.framework.change.uuid.UuidPackage"
+            class="tools.vitruv.framework.uuid.UuidPackage"
             genModel="model/Uuid.genmodel"/>
    </extension>
 

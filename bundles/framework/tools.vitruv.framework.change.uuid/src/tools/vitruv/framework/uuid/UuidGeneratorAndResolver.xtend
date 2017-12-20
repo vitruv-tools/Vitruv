@@ -1,4 +1,4 @@
-package tools.vitruv.framework.change.uuid
+package tools.vitruv.framework.uuid
 
 import org.eclipse.emf.ecore.EObject
 

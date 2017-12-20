@@ -7,7 +7,7 @@ import java.util.concurrent.Callable
 import tools.vitruv.framework.util.command.VitruviusRecordingCommand
 import tools.vitruv.framework.util.command.VitruviusRecordingCommandExecutor
 import tools.vitruv.framework.change.description.TransactionalChange
-import tools.vitruv.framework.change.uuid.UuidResolver
+import tools.vitruv.framework.uuid.UuidResolver
 import tools.vitruv.framework.util.command.ResourceAccess
 
 interface ModelRepository extends VitruviusRecordingCommandExecutor, ResourceAccess {

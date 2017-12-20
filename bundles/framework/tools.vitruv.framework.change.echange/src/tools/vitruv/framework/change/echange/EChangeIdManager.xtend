@@ -6,7 +6,7 @@ import tools.vitruv.framework.change.echange.eobject.EObjectExistenceEChange
 import tools.vitruv.framework.change.echange.feature.FeatureEChange
 import tools.vitruv.framework.change.echange.eobject.DeleteEObject
 import tools.vitruv.framework.change.echange.eobject.CreateEObject
-import tools.vitruv.framework.change.uuid.UuidGeneratorAndResolver
+import tools.vitruv.framework.uuid.UuidGeneratorAndResolver
 import org.eclipse.emf.ecore.EObject
 import tools.vitruv.framework.change.echange.feature.reference.UpdateReferenceEChange
 

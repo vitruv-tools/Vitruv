@@ -2,7 +2,7 @@ package tools.vitruv.framework.change.description.impl
 
 import tools.vitruv.framework.util.datatypes.VURI
 import tools.vitruv.framework.change.description.TransactionalChange
-import tools.vitruv.framework.change.uuid.UuidResolver
+import tools.vitruv.framework.uuid.UuidResolver
 
 class EmptyChangeImpl implements TransactionalChange {
 	private val VURI vuri;

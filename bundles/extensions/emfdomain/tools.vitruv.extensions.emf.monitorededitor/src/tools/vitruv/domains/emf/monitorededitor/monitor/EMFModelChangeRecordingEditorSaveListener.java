@@ -25,8 +25,8 @@ import tools.vitruv.domains.emf.monitorededitor.tools.ResourceReloadListener;
 import tools.vitruv.domains.emf.monitorededitor.tools.SaveEventListenerMgr;
 import tools.vitruv.framework.change.description.TransactionalChange;
 import tools.vitruv.framework.change.recording.AtomicEmfChangeRecorder;
-import tools.vitruv.framework.change.uuid.UuidGeneratorAndResolver;
-import tools.vitruv.framework.change.uuid.UuidGeneratorAndResolverImpl;
+import tools.vitruv.framework.uuid.UuidGeneratorAndResolver;
+import tools.vitruv.framework.uuid.UuidGeneratorAndResolverImpl;
 import tools.vitruv.framework.vsum.VirtualModel;
 
 /**

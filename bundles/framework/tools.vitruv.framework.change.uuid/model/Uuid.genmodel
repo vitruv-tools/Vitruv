@@ -5,17 +5,20 @@
     importerID="org.eclipse.emf.importer.ecore" complianceLevel="8.0" copyrightFields="false"
     operationReflection="true" importOrganizing="true">
   <foreignModel>Uuid.ecore</foreignModel>
-  <genPackages prefix="Uuid" basePackage="tools.vitruv.framework.change" disposableProviderFactory="true"
+  <genPackages prefix="Uuid" basePackage="tools.vitruv.framework" disposableProviderFactory="true"
       ecorePackage="Uuid.ecore#/">
+    <genDataTypes ecoreDataType="Uuid.ecore#//Uuid"/>
     <genClasses ecoreClass="Uuid.ecore#//UuidToEObjectRepository">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Uuid.ecore#//UuidToEObjectRepository/entries"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Uuid.ecore#//UuidToEObjectRepository/uuidToEObject"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Uuid.ecore#//UuidToEObjectRepository/eObjectToUuid"/>
     </genClasses>
-    <genClasses ecoreClass="Uuid.ecore#//UuidToEObjectMap">
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Uuid.ecore#//UuidToEObjectMap/key"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Uuid.ecore#//UuidToEObjectMap/value"/>
+    <genClasses ecoreClass="Uuid.ecore#//UuidToEObjectMapEntry">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Uuid.ecore#//UuidToEObjectMapEntry/key"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Uuid.ecore#//UuidToEObjectMapEntry/value"/>
     </genClasses>
-    <genClasses ecoreClass="Uuid.ecore#//Uuid">
-      <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute Uuid.ecore#//Uuid/id"/>
+    <genClasses ecoreClass="Uuid.ecore#//EObjectToUuidMapEntry">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Uuid.ecore#//EObjectToUuidMapEntry/key"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Uuid.ecore#//EObjectToUuidMapEntry/value"/>
     </genClasses>
   </genPackages>
 </genmodel:GenModel>

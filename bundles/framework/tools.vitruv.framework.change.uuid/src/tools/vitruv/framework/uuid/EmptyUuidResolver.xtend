@@ -1,6 +1,5 @@
-package tools.vitruv.framework.change.uuid
+package tools.vitruv.framework.uuid
 
-import tools.vitruv.framework.change.uuid.UuidResolver
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.common.util.URI
 

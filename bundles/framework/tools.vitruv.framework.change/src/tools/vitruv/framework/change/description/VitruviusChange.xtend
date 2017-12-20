@@ -4,7 +4,7 @@ import java.util.List
 import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.util.datatypes.URIHaving
 import org.eclipse.emf.ecore.EObject
-import tools.vitruv.framework.change.uuid.UuidResolver
+import tools.vitruv.framework.uuid.UuidResolver
 
 /** 
  * Base interface for all kinds of changes in Vitruvius.

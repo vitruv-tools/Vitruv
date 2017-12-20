@@ -66,7 +66,7 @@ public interface EObjectAddedEChange<T extends EObject> extends AdditiveEChange<
 	 * @return the value of the '<em>New Value ID</em>' attribute.
 	 * @see #setNewValueID(String)
 	 * @see tools.vitruv.framework.change.echange.eobject.EobjectPackage#getEObjectAddedEChange_NewValueID()
-	 * @model dataType="tools.vitruv.framework.change.uuid.Uuid"
+	 * @model dataType="tools.vitruv.framework.uuid.Uuid"
 	 * @generated
 	 */
 	String getNewValueID();

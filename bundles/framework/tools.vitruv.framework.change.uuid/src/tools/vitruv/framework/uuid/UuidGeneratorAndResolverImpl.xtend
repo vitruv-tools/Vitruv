@@ -1,8 +1,8 @@
-package tools.vitruv.framework.change.uuid
+package tools.vitruv.framework.uuid
 
 import org.eclipse.emf.ecore.EObject
-import tools.vitruv.framework.change.uuid.UuidToEObjectRepository
-import tools.vitruv.framework.change.uuid.UuidFactory
+import tools.vitruv.framework.uuid.UuidToEObjectRepository
+import tools.vitruv.framework.uuid.UuidFactory
 import org.eclipse.emf.ecore.resource.ResourceSet
 import org.eclipse.emf.ecore.util.EcoreUtil
 import org.eclipse.emf.ecore.resource.Resource

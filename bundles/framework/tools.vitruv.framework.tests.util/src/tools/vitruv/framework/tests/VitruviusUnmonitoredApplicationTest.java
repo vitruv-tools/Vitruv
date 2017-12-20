@@ -15,8 +15,8 @@ import org.junit.Before;
 
 import edu.kit.ipd.sdq.commons.util.org.eclipse.emf.common.util.URIUtil;
 import tools.vitruv.framework.change.processing.ChangePropagationSpecification;
-import tools.vitruv.framework.change.uuid.UuidGeneratorAndResolver;
-import tools.vitruv.framework.change.uuid.UuidGeneratorAndResolverImpl;
+import tools.vitruv.framework.uuid.UuidGeneratorAndResolver;
+import tools.vitruv.framework.uuid.UuidGeneratorAndResolverImpl;
 import tools.vitruv.framework.correspondence.CorrespondenceModel;
 import tools.vitruv.framework.domains.VitruvDomain;
 import tools.vitruv.framework.tests.util.TestUtil;
