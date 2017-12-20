@@ -58,6 +58,13 @@
    </requires>
 
    <plugin
+         id="tools.vitruv.framework.applications"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+         
+   <plugin
          id="tools.vitruv.framework.change"
          download-size="0"
          install-size="0"
@@ -78,13 +85,6 @@
          version="0.0.0"
          unpack="false"/>
          
-    <plugin
-         id="tools.vitruv.framework.change.uuid"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
    <plugin
          id="tools.vitruv.framework.correspondence"
          download-size="0"
@@ -94,13 +94,6 @@
 
    <plugin
          id="tools.vitruv.framework.metamodel"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="tools.vitruv.framework.monitorededitor"
          download-size="0"
          install-size="0"
          version="0.0.0"
@@ -142,6 +135,27 @@
          unpack="false"/>
 
    <plugin
+         id="tools.vitruv.framework.ui.monitorededitor"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="tools.vitruv.framework.ui.vsum"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+         
+   <plugin
+         id="tools.vitruv.framework.uuid"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
          id="tools.vitruv.framework.util"
          download-size="0"
          install-size="0"
@@ -150,20 +164,6 @@
 
    <plugin
          id="tools.vitruv.framework.vsum"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="tools.vitruv.framework.vsum.ui"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="tools.vitruv.framework.applications"
          download-size="0"
          install-size="0"
          version="0.0.0"
