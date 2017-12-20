@@ -36,10 +36,11 @@ public class DomainSelectionPage extends WizardPage {
 	private static final String SELECTION_LABEL = "Select involved projects and their domains:";
 	private static final String PAGENAME = "Project and Domain Selection";
 	private static final String DESCRIPTION = "Select projects and their domains";
+	private static final String SHOW_DEMO_DOMAINS_LABEL = "Show demonstation domains";
 	private Map<IProject, Set<VitruvDomain>> selectedDomainsForProjects;
 	private Tree tree;
 	private Composite container;
-
+	
 	protected DomainSelectionPage() {
 		super(PAGENAME);
 		setTitle(PAGENAME);
@@ -102,6 +103,10 @@ public class DomainSelectionPage extends WizardPage {
 		button.setLayoutData(new GridData(SWT.BEGINNING, SWT.CENTER, false, false));
 		button.setText(CREATE_PROJECT_BUTTON_LABEL);
 		
+		final Button showDemoDomainsCheckbox = new Button(container, SWT.CHECK);
+		showDemoDomainsCheckbox.setText(SHOW_DEMO_DOMAINS_LABEL);
+		showDemoDomainsCheckbox.setLayoutData(new GridData(SWT.BEGINNING, SWT.CENTER, false, false));
+		
 		text.addKeyListener(new KeyListener() {
 			@Override
 			public void keyReleased(KeyEvent e) {
@@ -116,6 +121,16 @@ public class DomainSelectionPage extends WizardPage {
 			public void widgetSelected(SelectionEvent e) {
 				new ProjectCreator(text.getText()).createProject();
 				initializeProjectList();
+			}
+		});
+		showDemoDomainsCheckbox.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				if (showDemoDomainsCheckbox.getSelection()) {
+					enableDemoDomains();
+				} else {
+					disableDemoDomains();
+				}
 			}
 		});
 		
@@ -133,9 +148,39 @@ public class DomainSelectionPage extends WizardPage {
 			t.setData(project);
 			selectedDomainsForProjects.put(project, new HashSet<>());
 			for (VitruvDomainProvider<?> provider : domainProviders) {
-				TreeItem childItem = new TreeItem(t, SWT.CHECK);
-				childItem.setText(provider.getDomain().getName());
-				childItem.setData(provider.getDomain());
+				VitruvDomain domain = provider.getDomain();
+				if (domain.isUserVisible()) {
+					TreeItem childItem = new TreeItem(t, SWT.CHECK);
+					childItem.setText(provider.getDomain().getName());
+					childItem.setData(provider.getDomain());
+				}
+			}
+		}
+	}
+	
+	private void enableDemoDomains() {
+		Iterable<VitruvDomainProvider<?>> domainProviders = VitruvDomainProviderRegistry.getAllDomainProviders();
+		for (TreeItem projectEntry : tree.getItems()) {
+			for (VitruvDomainProvider<?> provider : domainProviders) {
+				VitruvDomain domain = provider.getDomain();
+				if (!domain.isUserVisible()) {
+					TreeItem childItem = new TreeItem(projectEntry, SWT.CHECK);
+					childItem.setText("Demo: " + provider.getDomain().getName());
+					childItem.setData(provider.getDomain());
+				}
+			}
+		}
+	}
+	
+	private void disableDemoDomains() {
+		for (TreeItem projectEntry : tree.getItems()) {
+			for (int i = 0; i < projectEntry.getItems().length; i++) {
+				VitruvDomain domain = (VitruvDomain)projectEntry.getItem(i).getData();
+				if (!domain.isUserVisible()) {
+					selectedDomainsForProjects.get(projectEntry.getData()).remove(domain);
+					projectEntry.getItem(i).dispose();
+					i--;
+				}
 			}
 		}
 	}
