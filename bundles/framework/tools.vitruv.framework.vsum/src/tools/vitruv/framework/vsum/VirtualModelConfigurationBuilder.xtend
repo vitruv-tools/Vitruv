@@ -15,11 +15,11 @@ class VirtualModelConfigurationBuilder {
 	}
 	
 	public def VirtualModelConfigurationBuilder addDomains(VitruvDomain... domains) {
-		domains.forEach[addMetamodel];
+		domains.forEach[addDomain];
 		return this;
 	}
 	
-	public def VirtualModelConfigurationBuilder addMetamodel(VitruvDomain metamodel) {
+	public def VirtualModelConfigurationBuilder addDomain(VitruvDomain metamodel) {
 		modelConfiguration.addMetamodel(metamodel);
 		return this;
 	}
