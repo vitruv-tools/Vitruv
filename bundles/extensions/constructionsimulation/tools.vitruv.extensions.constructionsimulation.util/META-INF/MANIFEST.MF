@@ -10,7 +10,6 @@ Require-Bundle: org.eclipse.ui,
  tools.vitruv.framework.vsum,
  tools.vitruv.framework.change,
  tools.vitruv.framework.change.processing,
- tools.vitruv.framework.modelsynchronization,
  tools.vitruv.framework.tests.util
 Import-Package: org.apache.commons.io,
  org.eclipse.emf.common.util,
