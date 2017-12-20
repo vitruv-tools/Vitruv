@@ -26,11 +26,14 @@ class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 	 * Instantiates a UUID generator and resolver with no parent resolver, 
 	 * the given {@link ResourceSet} for resolving objects
 	 * and no {@link Resource} in which the mapping is stored.
+	 * @param resourceSet -
+	 * 		the {@link ResourceSet} to load model elements from, may not be null
 	 * @param strictMode -
 	 * 		defines if the generator should run in strict mode, which throws {@link IllegalStateException}s 
 	 * 		if an element that should already have an ID as it was created before does no have one. 
 	 * 		Using non-strict mode can be necessary if model changes are not recorded from beginning of model creation.
 	 * 		Third party library are handled correctly (there is never a create change).
+	 * @throws IllegalArgumentException if given {@link ResourceSet} is null
 	 */
 	new(ResourceSet resourceSet, boolean strictMode) {
 		this(null, resourceSet, null, strictMode)
@@ -40,11 +43,16 @@ class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 	 * Instantiates a UUID generator and resolver with the given parent resolver, used when
 	 * this resolver cannot resolve a UUID, the given {@link ResourceSet} for resolving objects
 	 * and no {@link Resource} in which the mapping is stored.
+	 * @param parentUuidResolver -
+	 * 		the parent {@link UuidResolver} used to resolve UUID if this contains no appropriate mapping, may be null
+	 * @param resourceSet -
+	 * 		the {@link ResourceSet} to load model elements from, may not be null
 	 * @param strictMode -
 	 * 		defines if the generator should run in strict mode, which throws {@link IllegalStateException}s 
 	 * 		if an element that should already have an ID as it was created before does no have one. 
 	 * 		Using non-strict mode can be necessary if model changes are not recorded from beginning of model creation.
 	 * 		Third party library are handled correctly (there is never a create change).
+	 * @throws IllegalArgumentException if given {@link ResourceSet} is null
 	 */
 	new(UuidResolver parentUuidResolver, ResourceSet resourceSet, boolean strictMode) {
 		this(parentUuidResolver, resourceSet, null, strictMode);
@@ -54,27 +62,42 @@ class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 	 * Instantiates a UUID generator and resolver with no parent resolver, 
 	 * the given {@link ResourceSet} for resolving objects
 	 * and the given {@link Resource} for storing the mapping.
+	 * @param resourceSet -
+	 * 		the {@link ResourceSet} to load model elements from, may not be null
+	 * @param uuidResource -
+	 * 		the {@link Resource} to store the mapping in, may be null
 	 * @param strictMode -
 	 * 		defines if the generator should run in strict mode, which throws {@link IllegalStateException}s 
 	 * 		if an element that should already have an ID as it was created before does no have one. 
 	 * 		Using non-strict mode can be necessary if model changes are not recorded from beginning of model creation.
 	 * 		Third party library are handled correctly (there is never a create change).
+	 * @throws IllegalArgumentException if given {@link ResourceSet} is null
 	 */
-	new(ResourceSet resourceSet, Resource resource, boolean strictMode) {
-		this(null, resourceSet, resource, strictMode);
+	new(ResourceSet resourceSet, Resource uuidResource, boolean strictMode) {
+		this(null, resourceSet, uuidResource, strictMode);
 	}
 	
 	/**
 	 * Instantiates a UUID generator and resolver with the given parent resolver, used when
 	 * this resolver cannot resolve a UUID, the given {@link ResourceSet} for resolving objects
 	 * and the given {@link Resource} for storing the mapping.
+	 * @param parentUuidResolver -
+	 * 		the parent {@link UuidResolver} used to resolve UUID if this contains no appropriate mapping, may be null
+	 * @param resourceSet -
+	 * 		the {@link ResourceSet} to load model elements from, may not be null
+	 * @param uuidResource -
+	 * 		the {@link Resource} to store the mapping in, may be null
 	 * @param strictMode -
 	 * 		defines if the generator should run in strict mode, which throws {@link IllegalStateException}s 
 	 * 		if an element that should already have an ID as it was created before does no have one. 
 	 * 		Using non-strict mode can be necessary if model changes are not recorded from beginning of model creation.
 	 * 		Third party library are handled correctly (there is never a create change).
+	 * @throws IllegalArgumentException if given {@link ResourceSet} is null
 	 */
 	new(UuidResolver parentUuidResolver, ResourceSet resourceSet, Resource uuidResource, boolean strictMode) {
+		if (resourceSet === null) {
+			throw new IllegalArgumentException("Resource set may not be null");
+		}
 		this.uuidResource = uuidResource;
 		this.resourceSet = resourceSet;
 		this.strictMode = strictMode;
