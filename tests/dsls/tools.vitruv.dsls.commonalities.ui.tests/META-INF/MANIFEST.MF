@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Commonalities Language Eclipse Integration Tests
-Bundle-Vendor: Vitruv-Tools
+Bundle-Name: Vitruv DSLs Commonalities Language Eclipse Integration Tests
+Bundle-Vendor: vitruv.tools
 Bundle-Version: 0.2.0.qualifier
 Bundle-SymbolicName: tools.vitruv.dsls.commonalities.ui.tests; singleton:=true
 Bundle-ActivationPolicy: lazy

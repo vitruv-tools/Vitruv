@@ -1,9 +1,9 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: AddressesXRecipients
+Bundle-Name: Vitruv DSLs Mappings Tests AddressesXRecipients
 Bundle-SymbolicName: tools.vitruv.dsls.mappings.tests.addressesXrecipients
-Bundle-Version: 1.0.0.qualifier
-Bundle-Vendor: SDQ
+Bundle-Version: 0.2.0.qualifier
+Bundle-Vendor: vitruv.tools
 Require-Bundle: org.apache.log4j,
   com.google.guava,
   org.eclipse.emf.ecore,

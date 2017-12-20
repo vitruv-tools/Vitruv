@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Vitruvius DSLs Reactions Language IDE
+Bundle-Name: Vitruv DSLs Reactions Language Shared IDE Integration
 Bundle-Version: 0.2.0.qualifier
 Bundle-SymbolicName: tools.vitruv.dsls.reactions.ide;singleton:=true
 Bundle-ActivationPolicy: lazy
