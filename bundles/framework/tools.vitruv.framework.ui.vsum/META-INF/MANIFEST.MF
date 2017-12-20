@@ -15,7 +15,6 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.xtend.lib.macro,
  tools.vitruv.framework.vsum,
  tools.vitruv.framework.ui.monitorededitor,
- tools.vitruv.framework.tests.util,
  org.apache.log4j
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy

@@ -9,9 +9,10 @@ import org.eclipse.core.resources.IProject
 import tools.vitruv.framework.userinteraction.impl.UserInteractor
 import tools.vitruv.framework.ui.monitorededitor.ProjectBuildUtils
 import org.eclipse.core.resources.ResourcesPlugin
-import tools.vitruv.framework.tests.util.TestUtil
 import tools.vitruv.framework.change.processing.ChangePropagationSpecification
 import java.util.Set
+import tools.vitruv.framework.vsum.VirtualModelConfigurationBuilder
+import tools.vitruv.framework.vsum.VirtualModelImpl
 
 class VitruvInstanceCreator {
 	private final Map<IProject, ? extends Set<VitruvDomain>> projectToDomains;
@@ -38,13 +39,15 @@ class VitruvInstanceCreator {
 	}
 	
 	private def InternalVirtualModel createVirtualModel(String vsumName) {
-		val metamodels = this.getDomains();
+		val domains = this.getDomains();
 		val project = ResourcesPlugin.workspace.root.getProject(vsumName);
 		project.create(null);
     	project.open(null);
-		val virtualModel = TestUtil.createVirtualModel(project.location.toFile, false, metamodels, createChangePropagationSpecifications(),
-			new UserInteractor()
-		);
+    	val configuration = VirtualModelConfigurationBuilder.create()
+    		.addDomains(domains)
+    		.addChangePropagationSpecifications(createChangePropagationSpecifications)
+    		.toConfiguration();
+		val virtualModel = new VirtualModelImpl(project.location.toFile, new UserInteractor(), configuration);
 		return virtualModel;
 	}
 	

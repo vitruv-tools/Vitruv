@@ -1,6 +1,6 @@
 package tools.vitruv.framework.ui.vsum.util
 
-import tools.vitruv.framework.tests.util.TestUtil
+import static edu.kit.ipd.sdq.commons.util.org.eclipse.core.resources.IProjectUtil.*
 
 class ProjectCreator {
 	private val String projectName;
@@ -9,7 +9,7 @@ class ProjectCreator {
 		this.projectName = projectName;
 	}
 	
-	public def createProject() {
-		TestUtil.createPlatformProject(projectName, false);
+	public def void createProject() {
+		createJavaProject(projectName);
 	}
 }
