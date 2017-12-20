@@ -5,20 +5,18 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>tools.vitruv</groupId>
-		<artifactId>parent</artifactId>
+		<artifactId>bundles</artifactId>
 		<version>0.2.0-SNAPSHOT</version>
 		<relativePath>../</relativePath>
 	</parent>
-	<artifactId>bundles</artifactId>
+	<artifactId>testutils</artifactId>
 	<packaging>pom</packaging>
-	<name>Bundle Modules</name>
+	<name>TestUtils Modules</name>
 
 	<modules>
-		<module>demo</module>
-		<module>framework</module>
-		<module>testutils</module>
-		<module>extensions</module>
-		<module>dsls</module>
+		<module>tools.vitruv.testutils</module>
+		<module>tools.vitruv.testutils.metamodels</module>
+		<module>tools.vitruv.testutils.domains</module>
 	</modules>
 
 </project>

@@ -18,19 +18,15 @@
 		<module>tools.vitruv.framework.change</module>
 		<module>tools.vitruv.framework.change.echange</module>
 		<module>tools.vitruv.framework.change.processing</module>
-		<module>tools.vitruv.framework.change.uuid</module>
 		<module>tools.vitruv.framework.correspondence</module>
 		<module>tools.vitruv.framework.metamodel</module>
-		<module>tools.vitruv.framework.modelsynchronization</module>
-		<module>tools.vitruv.framework.monitorededitor</module>
-		<module>tools.vitruv.framework.tests.util</module>
-		<module>tools.vitruv.framework.tests.util.metamodels</module>
-		<module>tools.vitruv.framework.testutils.domains</module>
 		<module>tools.vitruv.framework.tuid</module>
+		<module>tools.vitruv.framework.ui.monitorededitor</module>
+		<module>tools.vitruv.framework.ui.vsum</module>
 		<module>tools.vitruv.framework.userinteracting</module>
 		<module>tools.vitruv.framework.util</module>
+		<module>tools.vitruv.framework.uuid</module>
 		<module>tools.vitruv.framework.vsum</module>
-		<module>tools.vitruv.framework.vsum.ui</module>
 	</modules>
 
 </project>
