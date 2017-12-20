@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Changedescription2change Test
+Bundle-Name: Vitruv Framework Change Metamodel Tests
 Bundle-SymbolicName: tools.vitruv.framework.change.tests
 Bundle-Version: 0.2.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8

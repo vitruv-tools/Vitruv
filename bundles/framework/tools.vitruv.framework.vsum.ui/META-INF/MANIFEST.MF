@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: itruvius Framework Virtual Single Underlying Model Ui
+Bundle-Name: itruv Framework UI Virtual Singl Underlying Model
 Bundle-SymbolicName: tools.vitruv.framework.vsum.ui;singleton:=true
 Bundle-Version: 0.2.0.qualifier
 Bundle-Activator: tools.vitruv.framework.vsum.ui.Activator
@@ -19,4 +19,5 @@ Require-Bundle: org.eclipse.ui,
  org.apache.log4j
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
+Bundle-Vendor: vitruv.tools
 

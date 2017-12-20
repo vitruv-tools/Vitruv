@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Vitruvius Framwork Tests VSUM
+Bundle-Name: Vitruv Framwork Virtual Single Underlying Model Tests
 Bundle-SymbolicName: tools.vitruv.framework.vsum.tests;singleton:=true
 Bundle-Version: 0.2.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8

@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Vitruvius Framework Synchronizing Transaction Engine
+Bundle-Name: Vitruv Framework Synchronizing Transaction Engine
 Bundle-SymbolicName: tools.vitruv.framework.modelsynchronization;singleton:=true
 Bundle-Version: 0.2.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8

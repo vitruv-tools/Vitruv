@@ -8,3 +8,4 @@ Require-Bundle: tools.vitruv.framework.metamodel,
  tools.vitruv.framework.tests.util.metamodels,
  tools.vitruv.extensions.emf
 Export-Package: tools.vitruv.framework.testutils.domains
+Bundle-Vendor: vitruv.tools

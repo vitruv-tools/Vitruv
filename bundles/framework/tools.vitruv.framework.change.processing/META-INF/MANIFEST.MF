@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Vitruvius Framework Change Preparer
+Bundle-Name: Vitruv Framework Change Processing
 Bundle-SymbolicName: tools.vitruv.framework.change.processing;singleton:=true
 Bundle-Version: 0.2.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
