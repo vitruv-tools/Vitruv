@@ -3,28 +3,14 @@ package tools.vitruv.framework.tests.util;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import org.apache.log4j.ConsoleAppender;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PatternLayout;
-import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.IProjectDescription;
-import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.emf.ecore.EPackage;
-import org.eclipse.jdt.core.IClasspathEntry;
-import org.eclipse.jdt.core.IJavaProject;
-import org.eclipse.jdt.core.IPackageFragmentRoot;
-import org.eclipse.jdt.core.JavaCore;
-import org.eclipse.jdt.launching.IVMInstall;
-import org.eclipse.jdt.launching.JavaRuntime;
-import org.eclipse.jdt.launching.LibraryLocation;
 
 import tools.vitruv.framework.change.processing.ChangePropagationSpecification;
 import tools.vitruv.framework.domains.VitruvDomain;
@@ -37,6 +23,8 @@ import tools.vitruv.framework.vsum.InternalVirtualModel;
 import tools.vitruv.framework.vsum.VirtualModel;
 import tools.vitruv.framework.vsum.VirtualModelConfiguration;
 import tools.vitruv.framework.vsum.VirtualModelImpl;
+
+import static edu.kit.ipd.sdq.commons.util.org.eclipse.core.resources.IProjectUtil.*;
 
 /**
  * Utility class for all Vitruvius test cases
@@ -76,15 +64,15 @@ public final class TestUtil {
 		if (addTimestampAndMakeNameUnique) {
 			finalProjectName = addTimestampToProjectNameAndMakeUnique(finalProjectName);
 		}
-		IProject testProject = TestUtil.getProjectByName(finalProjectName);
+		IProject testProject = getWorkspaceProject(finalProjectName);
 
 		if (testProject.exists()) {
 			throw new IllegalStateException("Project already exists");
 		}
 
-		try {
-			return initializeProject(testProject);
-		} catch (CoreException e) {
+		if (createJavaProject(testProject)) {
+			return testProject;
+		} else {
 			throw new IllegalStateException("Project could not be created");
 		}
 	}
@@ -105,50 +93,16 @@ public final class TestUtil {
 	
 	private static String addTimestampToProjectNameAndMakeUnique(String projectName) {
 		String timestampedProjectName = addTimestampToString(projectName);
-		IProject testProject = TestUtil.getProjectByName(timestampedProjectName);
+		IProject testProject = getWorkspaceProject(timestampedProjectName);
 
 		String countedProjectName = timestampedProjectName;
 		// If project exists, add an index
 		int counter = 1;
 		while (testProject.exists()) {
 			countedProjectName = timestampedProjectName + "--" + counter++;
-			testProject = TestUtil.getProjectByName(countedProjectName);
+			testProject = getWorkspaceProject(countedProjectName);
 		}
 		return countedProjectName;
-	}
-
-	private static IProject initializeProject(IProject testProject) throws CoreException {
-		// copied from:
-		// https://sdqweb.ipd.kit.edu/wiki/JDT_Tutorial:_Creating_Eclipse_Java_Projects_Programmatically
-		testProject.create(new NullProgressMonitor());
-		testProject.open(new NullProgressMonitor());
-		final IProjectDescription description = testProject.getDescription();
-		description.setNatureIds(new String[] { JavaCore.NATURE_ID });
-		testProject.setDescription(description, null);
-		final IJavaProject javaProject = JavaCore.create(testProject);
-		final IFolder binFolder = testProject.getFolder("bin");
-		binFolder.create(false, true, null);
-		javaProject.setOutputLocation(binFolder.getFullPath(), null);
-		final List<IClasspathEntry> entries = new ArrayList<IClasspathEntry>();
-		final IVMInstall vmInstall = JavaRuntime.getDefaultVMInstall();
-		if (null != vmInstall) {
-			final LibraryLocation[] locations = JavaRuntime.getLibraryLocations(vmInstall);
-			for (final LibraryLocation element : locations) {
-				entries.add(JavaCore.newLibraryEntry(element.getSystemLibraryPath(), null, null));
-			}
-		}
-		// add libs to project class path
-		javaProject.setRawClasspath(entries.toArray(new IClasspathEntry[entries.size()]), null);
-		final IFolder sourceFolder = testProject.getFolder("src");
-		sourceFolder.create(false, true, null);
-		final IPackageFragmentRoot root = javaProject.getPackageFragmentRoot(sourceFolder);
-		final IClasspathEntry[] oldEntries = javaProject.getRawClasspath();
-		final IClasspathEntry[] newEntries = new IClasspathEntry[oldEntries.length + 1];
-		java.lang.System.arraycopy(oldEntries, 0, newEntries, 0, oldEntries.length);
-		newEntries[oldEntries.length] = JavaCore.newSourceEntry(root.getPath());
-		javaProject.setRawClasspath(newEntries, null);
-
-		return testProject;
 	}
 
 	/**
@@ -298,11 +252,6 @@ public final class TestUtil {
 		} else {
 			Logger.getRootLogger().setLevel(Level.ERROR);
 		}
-	}
-
-	public static IProject getProjectByName(final String projectName) {
-		final IProject iProject = ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
-		return iProject;
 	}
 
 }
