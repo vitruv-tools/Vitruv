@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="tools.vitruv.framework.feature"
+      label="%featureName"
+      version="0.2.0.qualifier"
+      provider-name="%providerName"
+      license-feature="tools.vitruv.license.feature"
+      license-feature-version="1.0.0">
+
+   <description>
+      %description
+   </description>
+
+   <copyright url="%copyrightURL">
+      %copyright
+   </copyright>
+
+   <license url="%licenseURL">
+      %license
+   </license>
+
+   <requires>
+      <import feature="org.eclipse.xtext.xbase.lib" version="2.12.0" match="greaterOrEqual"/>
+      <import feature="edu.kit.ipd.sdq.commons.util.java.feature" version="1.1.0"/>
+      <import feature="org.eclipse.xtend.sdk" version="2.12.0" match="greaterOrEqual"/>
+      <import feature="org.eclipse.xtext.xbase.lib" version="2.12.0" match="greaterOrEqual"/>
+      <import feature="tools.vitruv.framework.feature" version="0.2.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.core.resources"/>
+      <import plugin="org.eclipse.core.runtime"/>
+      <import plugin="org.apache.log4j"/>
+      <import plugin="org.eclipse.emf.ecore"/>
+      <import plugin="org.junit"/>
+      <import plugin="org.eclipse.emf.ecore.change"/>
+      <import plugin="org.eclipse.emf.emfstore.common"/>
+      <import plugin="org.eclipse.emf.transaction"/>
+      <import plugin="org.eclipse.jdt.core"/>
+      <import plugin="org.eclipse.jdt.launching"/>
+      <import plugin="com.google.guava"/>
+      <import feature="edu.kit.ipd.sdq.activextendannotations.feature"/>
+   </requires>
+
+   <plugin
+         id="tools.vitruv.testutils"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="tools.vitruv.testutils.domains"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="tools.vitruv.testutils.metamodels"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+</feature>

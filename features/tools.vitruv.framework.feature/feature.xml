@@ -100,27 +100,6 @@
          unpack="false"/>
 
    <plugin
-         id="tools.vitruv.framework.tests.util"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="tools.vitruv.framework.tests.util.metamodels"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="tools.vitruv.framework.testutils.domains"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
          id="tools.vitruv.framework.tuid"
          download-size="0"
          install-size="0"
