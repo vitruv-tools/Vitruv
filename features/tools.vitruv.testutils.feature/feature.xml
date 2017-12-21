@@ -59,21 +59,21 @@
    </requires>
 
    <plugin
-         id="tools.vitruv.framework.testutils"
+         id="tools.vitruv.testutils"
          download-size="0"
          install-size="0"
          version="0.0.0"
          unpack="false"/>
 
    <plugin
-         id="tools.vitruv.framework.testutils.metamodels"
+         id="tools.vitruv.testutils.metamodels"
          download-size="0"
          install-size="0"
          version="0.0.0"
          unpack="false"/>
 
    <plugin
-         id="tools.vitruv.framework.testutils.domains"
+         id="tools.vitruv.testutils.domains"
          download-size="0"
          install-size="0"
          version="0.0.0"
