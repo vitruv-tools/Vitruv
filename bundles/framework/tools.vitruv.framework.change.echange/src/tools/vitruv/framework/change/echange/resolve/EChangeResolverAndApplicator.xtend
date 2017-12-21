@@ -1,6 +1,6 @@
 package tools.vitruv.framework.change.echange.resolve
 
-import tools.vitruv.framework.change.uuid.UuidResolver
+import tools.vitruv.framework.uuid.UuidResolver
 import tools.vitruv.framework.change.echange.util.ApplyEChangeSwitch
 import com.google.common.base.Objects
 import org.eclipse.emf.ecore.util.EcoreUtil

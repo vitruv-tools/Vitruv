@@ -1,6 +1,6 @@
 package tools.vitruv.applications.familiespersons.families2Persons.test
 
-import tools.vitruv.framework.tests.VitruviusApplicationTest
+import tools.vitruv.testutils.VitruviusApplicationTest
 import tools.vitruv.domains.persons.PersonsDomainProvider
 import tools.vitruv.domains.families.FamiliesDomainProvider
 import edu.kit.ipd.sdq.metamodels.families.FamilyRegister

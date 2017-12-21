@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Vitruvius Framework Metamodel Representations
+Bundle-Name: Vitruv Framework Metamodel Representations
 Bundle-SymbolicName: tools.vitruv.framework.metamodel;singleton:=true
 Bundle-Version: 0.2.0.qualifier
 Bundle-ClassPath: .

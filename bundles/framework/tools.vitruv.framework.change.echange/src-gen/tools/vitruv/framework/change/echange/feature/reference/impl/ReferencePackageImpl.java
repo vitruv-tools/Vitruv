@@ -49,7 +49,7 @@ import tools.vitruv.framework.change.echange.root.RootPackage;
 
 import tools.vitruv.framework.change.echange.root.impl.RootPackageImpl;
 
-import tools.vitruv.framework.change.uuid.UuidPackage;
+import tools.vitruv.framework.uuid.UuidPackage;
 
 /**
  * <!-- begin-user-doc -->

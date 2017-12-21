@@ -1,7 +1,7 @@
 package tools.vitruv.framework.change.description
 
 import org.eclipse.xtend.lib.annotations.Data
-import tools.vitruv.framework.change.uuid.UuidResolver
+import tools.vitruv.framework.uuid.UuidResolver
 
 @Data
 class PropagatedChange {

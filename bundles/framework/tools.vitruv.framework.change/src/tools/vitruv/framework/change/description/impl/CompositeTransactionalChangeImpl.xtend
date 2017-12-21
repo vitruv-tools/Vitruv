@@ -3,7 +3,7 @@ package tools.vitruv.framework.change.description.impl
 import tools.vitruv.framework.change.description.CompositeTransactionalChange
 import tools.vitruv.framework.change.description.TransactionalChange
 import tools.vitruv.framework.change.description.VitruviusChangeFactory
-import tools.vitruv.framework.change.uuid.UuidResolver
+import tools.vitruv.framework.uuid.UuidResolver
 
 class CompositeTransactionalChangeImpl extends AbstractCompositeChangeImpl<TransactionalChange> implements CompositeTransactionalChange {
 	

@@ -8,7 +8,7 @@ import tools.vitruv.framework.change.recording.AtomicEmfChangeRecorder
 import java.util.Map
 import java.util.HashMap
 import org.eclipse.emf.ecore.change.impl.ChangeDescriptionImpl
-import tools.vitruv.framework.change.uuid.UuidGeneratorAndResolverImpl
+import tools.vitruv.framework.uuid.UuidGeneratorAndResolverImpl
 
 class ModelRepositoryImpl {
 	private val logger = Logger.getLogger(ModelRepositoryImpl);

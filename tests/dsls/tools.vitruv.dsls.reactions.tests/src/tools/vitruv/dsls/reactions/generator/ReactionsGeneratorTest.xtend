@@ -4,7 +4,7 @@ import org.junit.Test
 import com.google.inject.Provider
 import com.google.inject.Inject
 import tools.vitruv.dsls.reactions.api.generator.ReactionBuilderFactory
-import tools.vitruv.framework.testutils.domains.AllElementTypesDomainProvider
+import tools.vitruv.testutils.domains.AllElementTypesDomainProvider
 import org.junit.runner.RunWith
 import tools.vitruv.dsls.reactions.tests.ReactionsLanguageInjectorProvider
 import org.eclipse.xtext.testing.InjectWith

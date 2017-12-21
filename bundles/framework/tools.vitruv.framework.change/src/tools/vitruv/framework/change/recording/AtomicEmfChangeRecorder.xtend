@@ -5,7 +5,7 @@ import java.util.Set
 import org.eclipse.emf.common.notify.Notifier
 import tools.vitruv.framework.change.description.TransactionalChange
 import tools.vitruv.framework.change.echange.EChangeIdManager
-import tools.vitruv.framework.change.uuid.UuidGeneratorAndResolver
+import tools.vitruv.framework.uuid.UuidGeneratorAndResolver
 import tools.vitruv.framework.change.echange.eobject.CreateEObject
 import com.google.common.collect.Multimap
 import org.eclipse.emf.ecore.EObject

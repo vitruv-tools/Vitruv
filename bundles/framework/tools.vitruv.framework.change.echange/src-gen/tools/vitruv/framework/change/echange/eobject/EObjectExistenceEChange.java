@@ -95,7 +95,7 @@ public interface EObjectExistenceEChange<A extends EObject> extends EChange {
 	 * @return the value of the '<em>Affected EObject ID</em>' attribute.
 	 * @see #setAffectedEObjectID(String)
 	 * @see tools.vitruv.framework.change.echange.eobject.EobjectPackage#getEObjectExistenceEChange_AffectedEObjectID()
-	 * @model dataType="tools.vitruv.framework.change.uuid.Uuid"
+	 * @model dataType="tools.vitruv.framework.uuid.Uuid"
 	 * @generated
 	 */
 	String getAffectedEObjectID();

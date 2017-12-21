@@ -66,7 +66,7 @@ public interface EObjectSubtractedEChange<T extends EObject> extends Subtractive
 	 * @return the value of the '<em>Old Value ID</em>' attribute.
 	 * @see #setOldValueID(String)
 	 * @see tools.vitruv.framework.change.echange.eobject.EobjectPackage#getEObjectSubtractedEChange_OldValueID()
-	 * @model dataType="tools.vitruv.framework.change.uuid.Uuid"
+	 * @model dataType="tools.vitruv.framework.uuid.Uuid"
 	 * @generated
 	 */
 	String getOldValueID();

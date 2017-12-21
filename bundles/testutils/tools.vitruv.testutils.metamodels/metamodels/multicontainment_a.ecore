@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="multicontainment_a" nsURI="http://tools.vitruv.testutils.metamodels.multicontainment_a"
+    nsPrefix="multicontainment_a">
+  <eClassifiers xsi:type="ecore:EClass" name="RootA" eSuperTypes="#//Identified">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="childrenA1a" eType="#//ChildA1"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="childrenA1b" eType="#//ChildA1"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="childrenA2a" eType="#//ChildA2"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ChildA1" eSuperTypes="#//Identified">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ChildA2" eSuperTypes="#//Identified">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Identified" abstract="true">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="id" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+</ecore:EPackage>

@@ -6,9 +6,9 @@ import java.util.Collections;
 import org.eclipse.core.resources.ResourcesPlugin;
 
 import tools.vitruv.framework.domains.VitruvDomain;
-import tools.vitruv.framework.tests.util.TestUtil;
 import tools.vitruv.framework.userinteraction.impl.UserInteractor;
 import tools.vitruv.framework.vsum.InternalVirtualModel;
+import tools.vitruv.testutils.util.TestUtil;
 
 public class IntegrationUtil {
 

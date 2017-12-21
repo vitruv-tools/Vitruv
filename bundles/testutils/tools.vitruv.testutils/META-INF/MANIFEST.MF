@@ -1,0 +1,33 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Vitruv Test Utilities
+Bundle-SymbolicName: tools.vitruv.testutils
+Bundle-Version: 0.2.0.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Require-Bundle: tools.vitruv.framework.vsum;visibility:=reexport,
+ org.eclipse.core.resources,
+ org.eclipse.core.runtime,
+ org.apache.log4j,
+ org.eclipse.emf.ecore,
+ org.junit,
+ tools.vitruv.framework.util,
+ org.eclipse.emf.ecore.change,
+ org.eclipse.emf.emfstore.common,
+ tools.vitruv.framework.change;visibility:=reexport,
+ tools.vitruv.framework.change.processing;visibility:=reexport,
+ org.eclipse.emf.transaction,
+ org.eclipse.jdt.core,
+ org.eclipse.jdt.launching,
+ tools.vitruv.framework.userinteraction;visibility:=reexport,
+ tools.vitruv.framework.tuid,
+ edu.kit.ipd.sdq.commons.util.java,
+ com.google.guava,
+ org.eclipse.xtext.xbase.lib,
+ org.eclipse.xtend.lib,
+ org.eclipse.xtend.lib.macro,
+ edu.kit.ipd.sdq.activextendannotations;bundle-version="1.0.0"
+Export-Package: tools.vitruv.testutils,
+ tools.vitruv.testutils.matchers,
+ tools.vitruv.testutils.util
+Bundle-Vendor: vitruv.tools
+

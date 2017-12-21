@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Vitruvius Extension Construction Simulation Utilities
+Bundle-Name: Vitruv Extension Construction Simulation Utilities
 Bundle-SymbolicName: tools.vitruv.extensions.constructionsimulation.util
 Bundle-Version: 0.2.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
@@ -10,8 +10,7 @@ Require-Bundle: org.eclipse.ui,
  tools.vitruv.framework.vsum,
  tools.vitruv.framework.change,
  tools.vitruv.framework.change.processing,
- tools.vitruv.framework.modelsynchronization,
- tools.vitruv.framework.tests.util
+ tools.vitruv.testutils
 Import-Package: org.apache.commons.io,
  org.eclipse.emf.common.util,
  org.eclipse.emf.ecore,

@@ -94,7 +94,7 @@ public interface FeatureEChange<A extends EObject, F extends EStructuralFeature>
 	 * @return the value of the '<em>Affected EObject ID</em>' attribute.
 	 * @see #setAffectedEObjectID(String)
 	 * @see tools.vitruv.framework.change.echange.feature.FeaturePackage#getFeatureEChange_AffectedEObjectID()
-	 * @model dataType="tools.vitruv.framework.change.uuid.Uuid"
+	 * @model dataType="tools.vitruv.framework.uuid.Uuid"
 	 * @generated
 	 */
 	String getAffectedEObjectID();

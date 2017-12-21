@@ -17,7 +17,7 @@ import tools.vitruv.framework.change.echange.root.InsertRootEObject
 import tools.vitruv.framework.change.echange.root.RemoveRootEObject
 import tools.vitruv.framework.change.echange.root.RootEChange
 import java.util.List
-import tools.vitruv.framework.change.uuid.UuidResolver
+import tools.vitruv.framework.uuid.UuidResolver
 
 /**
  * Static class for resolving EChanges internally.

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="allElementTypes" nsURI="http://tools.vitruv.testutils.metamodels.allElementTypes"
+    nsPrefix="allElementTypes">
+  <eClassifiers xsi:type="ecore:EClass" name="Root" eSuperTypes="#//Identified">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="singleValuedEAttribute"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EIntegerObject"
+        defaultValueLiteral="0"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="singleValuedPrimitiveTypeEAttribute"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="singleValuedUnsettableEAttribute"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EIntegerObject"
+        defaultValueLiteral="0" unsettable="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="singleValuedNonContainmentEReference"
+        eType="#//NonRoot"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="singleValuedUnsettableNonContainmentEReference"
+        eType="#//NonRoot" unsettable="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="singleValuedContainmentEReference"
+        eType="#//NonRoot" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="singleValuedUnsettableContainmentEReference"
+        eType="#//NonRoot" unsettable="true" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="multiValuedEAttribute"
+        upperBound="-1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EIntegerObject"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="multiValuedUnsettableEAttribute"
+        upperBound="-1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EIntegerObject"
+        unsettable="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="multiValuedNonContainmentEReference"
+        upperBound="-1" eType="#//NonRoot"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="multiValuedUnsettableNonContainmentEReference"
+        upperBound="-1" eType="#//NonRoot" unsettable="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="multiValuedContainmentEReference"
+        upperBound="-1" eType="#//NonRoot" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="multiValuedUnsettableContainmentEReference"
+        upperBound="-1" eType="#//NonRoot" unsettable="true" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="nonRootObjectContainerHelper"
+        lowerBound="1" eType="#//NonRootObjectContainerHelper" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="recursiveRoot" eType="#//Root"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="NonRoot" eSuperTypes="#//Identified"/>
+  <eClassifiers xsi:type="ecore:EClass" name="NonRootObjectContainerHelper" eSuperTypes="#//Identified">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="nonRootObjectsContainment"
+        upperBound="-1" eType="#//NonRoot" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Identified" abstract="true">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="id" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        iD="true"/>
+  </eClassifiers>
+</ecore:EPackage>

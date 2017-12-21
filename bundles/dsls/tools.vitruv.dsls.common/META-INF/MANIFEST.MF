@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Vitruvius DSLs Common
+Bundle-Name: Vitruv DSLs Common
 Bundle-SymbolicName: tools.vitruv.dsls.common
 Bundle-Version: 0.2.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8

@@ -6,11 +6,11 @@ import org.eclipse.xtext.testing.InjectWith
 import tools.vitruv.dsls.reactions.tests.ReactionsLanguageInjectorProvider
 import com.google.inject.Inject
 import org.junit.Test
-import tools.vitruv.framework.testutils.domains.AllElementTypesDomainProvider
+import tools.vitruv.testutils.domains.AllElementTypesDomainProvider
 import static org.hamcrest.MatcherAssert.assertThat
 import org.junit.Rule
 import org.junit.rules.ExpectedException
-import tools.vitruv.framework.testutils.domains.AllElementTypes2DomainProvider
+import tools.vitruv.testutils.domains.AllElementTypes2DomainProvider
 import org.eclipse.emf.ecore.EcorePackage
 import allElementTypes.AllElementTypesPackage
 import allElementTypes2.AllElementTypes2Package

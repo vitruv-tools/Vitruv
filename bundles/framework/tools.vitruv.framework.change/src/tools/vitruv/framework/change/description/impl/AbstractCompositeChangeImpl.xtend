@@ -6,7 +6,7 @@ import java.util.List
 import tools.vitruv.framework.change.description.CompositeChange
 import tools.vitruv.framework.change.description.VitruviusChange
 import tools.vitruv.framework.change.echange.EChange
-import tools.vitruv.framework.change.uuid.UuidResolver
+import tools.vitruv.framework.uuid.UuidResolver
 
 abstract class AbstractCompositeChangeImpl<C extends VitruviusChange> implements CompositeChange<C> {
 	List<C> changes;

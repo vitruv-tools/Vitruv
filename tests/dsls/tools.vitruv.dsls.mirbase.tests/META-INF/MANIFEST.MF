@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Vitruvius DSLs MIR Base Language Tests
+Bundle-Name: Vitruv DSLs MIR Base Language Tests
 Bundle-Version: 0.2.0.qualifier
 Bundle-SymbolicName: tools.vitruv.dsls.mirbase.tests; singleton:=true
 Bundle-ActivationPolicy: lazy

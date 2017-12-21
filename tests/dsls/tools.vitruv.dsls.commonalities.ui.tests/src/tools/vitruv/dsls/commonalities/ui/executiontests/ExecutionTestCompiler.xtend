@@ -164,8 +164,8 @@ class ExecutionTestCompiler {
 			Bundle-SymbolicName: commonalities-test; singleton:=true
 			Bundle-ActivationPolicy: lazy
 			Require-Bundle: tools.vitruv.extensions.dslsruntime.commonalities,
-			  tools.vitruv.framework.testutils.domains,
-			  tools.vitruv.framework.tests.util.metamodels,
+			  tools.vitruv.testutils.domains,
+			  tools.vitruv.testutils.metamodels,
 			  tools.vitruv.framework.metamodel,
 			  tools.vitruv.extensions.emf,
 			  org.eclipse.xtext.xbase.lib,

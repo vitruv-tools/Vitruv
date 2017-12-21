@@ -4,7 +4,7 @@
     editDirectory="" editorDirectory="" modelPluginID="tools.vitruv.framework.change.echange"
     modelName="Change" rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container"
     testsDirectory="" containmentProxies="true"
-    complianceLevel="8.0" copyrightFields="false" usedGenPackages="../../org.eclipse.emf.ecore/model/Ecore.genmodel#//ecore ../../tools.vitruv.framework.change.uuid/model/Uuid.genmodel#//uuid"
+    complianceLevel="8.0" copyrightFields="false" usedGenPackages="../../org.eclipse.emf.ecore/model/Ecore.genmodel#//ecore ../../tools.vitruv.framework.uuid/model/Uuid.genmodel#//uuid"
     operationReflection="true" importOrganizing="true">
   <genAnnotations source="http://www.eclipse.org/emf/2002/GenModel/exporter/org.eclipse.xsd.ecore.exporter">
     <genAnnotations source="selectedPackages">

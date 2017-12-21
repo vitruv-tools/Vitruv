@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+
+<!--
+-->
+
+<plugin>
+   <extension
+         id="allElementTypesDomainProvider"
+         name="AllElementTypes Domain Provider"
+         point="tools.vitruv.framework.metamodel.domain">
+      <domainProvider
+            class="tools.vitruv.testutils.domains.AllElementTypesDomainProvider"></domainProvider>
+   </extension>
+   <extension
+         id="allElementTypes2DomainProvider"
+         name="AllElementTypes2 Domain Provider"
+         point="tools.vitruv.framework.metamodel.domain">
+      <domainProvider
+            class="tools.vitruv.testutils.domains.AllElementTypes2DomainProvider"></domainProvider>
+   </extension>
+   <extension
+         id="pcmMockupDomainProvider"
+         name="PCM Mockup Domain Provider"
+         point="tools.vitruv.framework.metamodel.domain">
+      <domainProvider
+            class="tools.vitruv.testutils.domains.PcmMockupDomainProvider"></domainProvider>
+   </extension>
+   <extension
+         id="umlMockupDomainProvider"
+         name="UML Mockup Domain Provider"
+         point="tools.vitruv.framework.metamodel.domain">
+      <domainProvider
+            class="tools.vitruv.testutils.domains.UmlMockupDomainProvider"></domainProvider>
+   </extension>
+</plugin>

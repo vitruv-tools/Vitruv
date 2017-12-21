@@ -24,10 +24,10 @@ import pcm_mockup.Component;
 import pcm_mockup.Pcm_mockupFactory;
 import pcm_mockup.Pcm_mockupPackage;
 import pcm_mockup.Repository;
-import tools.vitruv.framework.tests.util.TestUtil;
 import tools.vitruv.framework.tuid.AttributeTuidCalculatorAndResolver;
 import tools.vitruv.framework.tuid.TuidCalculatorAndResolver;
 import tools.vitruv.framework.util.bridges.EcoreResourceBridge;
+import tools.vitruv.testutils.util.TestUtil;
 
 /**
  * These tests can be executed as simple JUnit tests (no Plug-in tests)

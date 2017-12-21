@@ -23,4 +23,8 @@ class FamiliesDomain extends AbstractVitruvDomain {
 		return new VitruviusEmfBuilderApplicator();
 	}
 	
+	override boolean isUserVisible() {
+		return false;
+	}
+	
 }

@@ -1,19 +1,18 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Vitruvius Framwork Tests VSUM
+Bundle-Name: Vitruv Framwork Virtual Single Underlying Model Tests
 Bundle-SymbolicName: tools.vitruv.framework.vsum.tests;singleton:=true
 Bundle-Version: 0.2.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Export-Package: tools.vitruv.framework.tests.vsum
 Require-Bundle: org.junit,
  tools.vitruv.framework.vsum,
- tools.vitruv.framework.modelsynchronization,
  org.apache.log4j,
  tools.vitruv.framework.util,
  org.eclipse.core.runtime,
  org.eclipse.core.resources,
- tools.vitruv.framework.tests.util,
- tools.vitruv.framework.tests.util.metamodels,
+ tools.vitruv.testutils,
+ tools.vitruv.testutils.metamodels,
  org.apache.commons.lang,
  com.google.guava,
  org.eclipse.xtext.xbase.lib,

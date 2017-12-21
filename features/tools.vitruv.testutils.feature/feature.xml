@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="tools.vitruv.testutils.feature"
+      label="%featureName"
+      version="0.2.0.qualifier"
+      provider-name="%providerName"
+      license-feature="tools.vitruv.license.feature"
+      license-feature-version="1.0.0">
+
+   <description>
+      %description
+   </description>
+
+   <copyright url="%copyrightURL">
+      %copyright
+   </copyright>
+
+   <license url="%licenseURL">
+      %license
+   </license>
+
+   <requires>
+      <import plugin="org.apache.log4j"/>
+      <import plugin="com.google.guava"/>
+      <import plugin="org.eclipse.emf.ecore.change"/>
+      <import plugin="org.eclipse.core.runtime"/>
+      <import plugin="org.eclipse.emf.ecore"/>
+      <import plugin="org.eclipse.emf.ecore.edit"/>
+      <import plugin="org.eclipse.core.resources"/>
+      <import plugin="org.eclipse.emf.transaction"/>
+      <import plugin="org.eclipse.osgi"/>
+      <import plugin="org.eclipse.core.expressions"/>
+      <import plugin="org.junit"/>
+      <import plugin="org.eclipse.emf.emfstore.common"/>
+      <import plugin="org.eclipse.jdt.core"/>
+      <import plugin="org.eclipse.jdt.launching"/>
+      <import plugin="org.eclipse.emf.common"/>
+      <import plugin="org.eclipse.swt"/>
+      <import plugin="org.eclipse.ui.workbench"/>
+      <import plugin="org.eclipse.jface"/>
+      <import plugin="org.apache.commons.lang"/>
+      <import plugin="org.eclipse.equinox.registry"/>
+      <import plugin="org.eclipse.emf.ecore.xmi"/>
+      <import plugin="org.eclipse.emf.common.ui"/>
+      <import plugin="org.eclipse.ui"/>
+      <import plugin="org.eclipse.core.resources" version="3.10.1" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.core.commands"/>
+      <import plugin="org.eclipse.emf" version="2.6.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.emf.edit"/>
+      <import plugin="org.eclipse.gmf.runtime.diagram.ui" version="1.7.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.gmf.runtime.diagram.ui.resources.editor" version="1.7.0" match="greaterOrEqual"/>
+      <import feature="edu.kit.ipd.sdq.commons.util.eclipse.feature" version="1.1.0"/>
+      <import feature="edu.kit.ipd.sdq.commons.util.emf.feature" version="1.1.0"/>
+      <import feature="edu.kit.ipd.sdq.commons.util.java.feature" version="1.1.0"/>
+      <import feature="org.eclipse.xtend.sdk" version="2.12.0" match="greaterOrEqual"/>
+      <import feature="org.eclipse.xtext.xbase.lib" version="2.12.0" match="greaterOrEqual"/>
+	  <import feature="tools.vitruv.framework.feature" version="0.2.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.xtend.lib" version="2.12.0" match="greaterOrEqual"/>
+   </requires>
+
+   <plugin
+         id="tools.vitruv.testutils"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="tools.vitruv.testutils.metamodels"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="tools.vitruv.testutils.domains"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+</feature>

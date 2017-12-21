@@ -15,7 +15,7 @@ import tools.vitruv.dsls.commonalities.ui.tests.CommonalitiesLanguageUiInjectorP
 import uml_mockup.Uml_mockupFactory
 
 import static org.hamcrest.MatcherAssert.assertThat
-import static tools.vitruv.framework.tests.matchers.ModelMatchers.*
+import static tools.vitruv.testutils.matchers.ModelMatchers.*
 import org.eclipse.emf.ecore.util.EcoreUtil
 import uml_mockup.UPackage
 

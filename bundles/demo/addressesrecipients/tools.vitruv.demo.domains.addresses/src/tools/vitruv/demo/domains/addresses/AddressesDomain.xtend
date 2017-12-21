@@ -20,9 +20,12 @@ class AddressesDomain extends AbstractVitruvDomain {
 		);
 	}
 	
-	
 	override getBuilderApplicator() {
 		return new VitruviusEmfBuilderApplicator();
+	}
+	
+	override boolean isUserVisible() {
+		return false;
 	}
 	
 }
