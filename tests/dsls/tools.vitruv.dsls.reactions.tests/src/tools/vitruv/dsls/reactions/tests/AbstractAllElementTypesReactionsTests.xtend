@@ -1,7 +1,7 @@
 package tools.vitruv.dsls.reactions.tests
 
 import tools.vitruv.testutils.VitruviusApplicationTest
-import tools.vitruv.framework.testutils.domains.AllElementTypesDomainProvider
+import tools.vitruv.testutils.domains.AllElementTypesDomainProvider
 import com.google.inject.Inject
 import org.junit.runner.RunWith
 import org.eclipse.xtext.testing.XtextRunner
