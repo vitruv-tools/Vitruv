@@ -6,6 +6,12 @@
    <feature id="tools.vitruv.framework.feature.source" version="0.2.0.qualifier">
       <category name="Vitruv Framework"/>
    </feature>
+   <feature url="features/tools.vitruv.testutils.feature_0.2.0.qualifier.jar" id="tools.vitruv.testutils.feature" version="0.2.0.qualifier">
+      <category name="Vitruv Framework"/>
+   </feature>
+   <feature id="tools.vitruv.testutils.feature.source" version="0.2.0.qualifier">
+      <category name="Vitruv Framework"/>
+   </feature>
    <feature url="features/tools.vitruv.extensions.integration.feature_0.2.0.qualifier.jar" id="tools.vitruv.extensions.integration.feature" version="0.2.0.qualifier">
       <category name="Vitruv Framework"/>
    </feature>
