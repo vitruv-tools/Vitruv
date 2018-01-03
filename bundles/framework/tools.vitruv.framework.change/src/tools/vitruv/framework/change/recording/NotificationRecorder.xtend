@@ -33,6 +33,9 @@ class NotificationRecorder implements Adapter {
 	}
 
 	override notifyChanged(Notification notification) {
+		if (!isRecording) {
+			return;
+		}
 		if (notification.newValue instanceof Notifier) {
 			addToRecording(notification.newValue as Notifier);
 		}
