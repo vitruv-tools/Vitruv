@@ -44,6 +44,9 @@ class AtomicEmfChangeRecorder {
 	}
 
 	def void addToRecording(Notifier elementToObserve) {
+		if (elementToObserve === null) {
+			throw new IllegalArgumentException("Element to observe must not be null");
+		}
 		this.elementsToObserve += elementToObserve;
 		elementsToObserve.forEach[changeRecorder.addToRecording(it)];
 		elementToObserve.registerContentsAtUuidResolver
