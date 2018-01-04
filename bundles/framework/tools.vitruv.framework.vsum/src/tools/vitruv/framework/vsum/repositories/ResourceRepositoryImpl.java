@@ -349,7 +349,9 @@ public class ResourceRepositoryImpl implements ModelRepository, CorrespondencePr
 
     @Override
     public void startRecording() {
-        removeRecorderForDeletedModels();
+        // TODO HK Reactive: We have to disable this as long as intermediate models (from the commonalities
+        // language) are not persisted, as otherwise the recorder is removed from them
+        // removeRecorderForDeletedModels();
         for (AtomicEmfChangeRecorder recorder : this.uriToRecorder.values()) {
             recorder.beginRecording();
         }
@@ -376,6 +378,7 @@ public class ResourceRepositoryImpl implements ModelRepository, CorrespondencePr
         return result;
     }
 
+    @SuppressWarnings("unused")
     private void removeRecorderForDeletedModels() {
         List<VURI> nonExistentUris = new ArrayList<>();
         for (VURI recordedVuri : this.uriToRecorder.keySet()) {
