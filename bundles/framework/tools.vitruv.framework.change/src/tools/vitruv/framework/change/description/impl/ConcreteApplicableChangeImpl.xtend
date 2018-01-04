@@ -11,31 +11,29 @@ import org.eclipse.emf.ecore.InternalEObject
 import tools.vitruv.framework.change.echange.root.RootEChange
 
 class ConcreteApplicableChangeImpl extends ConcreteChangeImpl {
-	private var boolean canBeBackwardsApplied;
 	private var VURI vuri;
 	
     public new(EChange eChange) {
     	super(eChange);
     	tryToSetUri;
-    	this.canBeBackwardsApplied = true;
     }
 
 	override resolveBeforeAndApplyForward(UuidResolver uuidResolver) {
+		// TODO HK Make a copy of the complete change instead of replacing it internally
 		this.EChange = this.EChange.resolveBefore(uuidResolver)
 		tryToSetUri;
 		this.registerOldObjectTuidsForUpdate(getObjectsWithPotentiallyModifiedTuids)
-		this.canBeBackwardsApplied = false;
-		applyForward()
+		this.EChange.applyForward;
 		tryToSetUri;
 		this.updateTuids
 	}
 	
 	override resolveAfterAndApplyBackward(UuidResolver uuidResolver) {
+		// TODO HK Make a copy of the complete change instead of replacing it internally
 		this.EChange = this.EChange.resolveAfter(uuidResolver)
 		tryToSetUri;
 		this.registerOldObjectTuidsForUpdate(getObjectsWithPotentiallyModifiedTuids)
-		this.canBeBackwardsApplied = true;
-		applyBackward()
+		this.EChange.applyBackward;
 		tryToSetUri;
 		this.updateTuids
 	}
@@ -66,22 +64,6 @@ class ConcreteApplicableChangeImpl extends ConcreteChangeImpl {
 		// e.g. for Operations whose TUIDs depend on the values of their parameter type references.
 		// This number of layers may still be too few, this is just a random number.
 		this.affectedEObjects.map[#{it, it.eContainer, it.eContainer?.eContainer, it.eContainer?.eContainer?.eContainer}].flatten.filterNull.toSet
-	}
-	
-	def applyForward() {
-		if (this.canBeBackwardsApplied) {
-			throw new IllegalStateException("Change " + this + " cannot be applied forwards as was not backwards applied before.");	
-		}
-		this.EChange.applyForward
-		this.canBeBackwardsApplied = true;
-	}
-
-	def applyBackward() {
-		if (!this.canBeBackwardsApplied) {
-			throw new IllegalStateException("Change " + this + " cannot be applied backwards as was not forward applied before.");	
-		}
-		this.EChange.applyBackward
-		this.canBeBackwardsApplied = false;
 	}
 	
 	private def void registerOldObjectTuidsForUpdate(Iterable<EObject> objects) {
