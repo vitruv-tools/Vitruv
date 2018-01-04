@@ -38,7 +38,7 @@ class ConcreteApplicableChangeImpl extends ConcreteChangeImpl {
 		this.affectedEObjects.map[#{it, it.eContainer, it.eContainer?.eContainer, it.eContainer?.eContainer?.eContainer}].flatten.filterNull.toSet
 	}
 	
-	override applyForward() {
+	def applyForward() {
 		if (this.canBeBackwardsApplied) {
 			throw new IllegalStateException("Change " + this + " cannot be applied forwards as was not backwards applied before.");	
 		}
@@ -46,7 +46,7 @@ class ConcreteApplicableChangeImpl extends ConcreteChangeImpl {
 		this.canBeBackwardsApplied = true;
 	}
 
-	override applyBackward() {
+	def applyBackward() {
 		if (!this.canBeBackwardsApplied) {
 			throw new IllegalStateException("Change " + this + " cannot be applied backwards as was not forward applied before.");	
 		}
