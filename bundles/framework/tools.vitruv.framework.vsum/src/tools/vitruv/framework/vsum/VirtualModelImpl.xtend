@@ -87,6 +87,7 @@ class VirtualModelImpl implements InternalVirtualModel {
 		])
 		resourceRepository.executeRecordingCommandOnTransactionalDomain(command);
 
+		// TODO HK Instead of this make the changes set the modified flag of the resource when applied
 		val changedEObjects = changes.map[originalChange.affectedEObjects + consequentialChanges.affectedEObjects].flatten
 		changedEObjects.map[eResource].filterNull.forEach[modified = true];
 		save();
