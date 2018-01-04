@@ -202,6 +202,7 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 		// Add affected objects if change is resolved
 		resolvedObjects += change.affectedEObjects;
 		// Resolve IDs to get actual objects
+		// TODO HK Should only be called when change is resolved, so this should be omittable
 		change.affectedEObjectIds.forEach[id | resourceRepository.executeOnUuidResolver[resolvedObjects += it.getEObject(id)]]
 		metamodelRepository.getDomain(resolvedObjects.filterNull.head)
 	}
