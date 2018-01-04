@@ -111,7 +111,7 @@ abstract class AbstractCompositeChangeImpl<C extends VitruviusChange> implements
 	}
 	
 	override toString() '''
-	«this.class.simpleName»:
+	«this.class.simpleName», VURI: «URI»
 		«FOR change : changes»
 			«change»
 		«ENDFOR»

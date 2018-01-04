@@ -8,7 +8,7 @@ class ConcreteChangeImpl extends AbstractConcreteChange {
     }
 
     public override String toString() {
-        return this.class.getSimpleName() + ": VURI: " + this.URI + "\n	EChange: " + this.EChange;
+        return this.class.getSimpleName() + ", VURI: " + this.URI + "\n	EChange: " + this.EChange;
     }
 
 }
