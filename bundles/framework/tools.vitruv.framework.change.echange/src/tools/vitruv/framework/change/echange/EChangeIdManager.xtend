@@ -47,6 +47,9 @@ class EChangeIdManager {
 	}
 
 	public def boolean isCreateChange(EObjectAddedEChange<?> addedEChange) {
+		// We do not check the containment of the reference, because an element may be inserted into a non-containment
+		// reference before inserting it into a containment reference so that the create change has to be added
+		// for the inserting into the non-containment reference
 		var create = addedEChange.newValue !== null && !(uuidGeneratorAndResolver.hasUuid(addedEChange.newValue))
 		// Look if the new value has no resource or if it is a reference change, if the resource of the affected
 		// object is the same. Otherwise, the create has to be handled by an insertion/reference in that resource, as
