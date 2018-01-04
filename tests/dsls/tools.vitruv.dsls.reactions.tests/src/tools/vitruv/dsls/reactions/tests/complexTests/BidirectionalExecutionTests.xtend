@@ -15,6 +15,8 @@ import tools.vitruv.framework.change.echange.eobject.DeleteEObject
 import tools.vitruv.framework.change.echange.root.RemoveRootEObject
 import tools.vitruv.framework.change.echange.eobject.CreateEObject
 import tools.vitruv.framework.change.echange.feature.reference.ReplaceSingleValuedEReference
+import tools.vitruv.framework.change.description.PropagatedChange
+import tools.vitruv.framework.change.description.VitruviusChange
 
 class BidirectionalExecutionTests extends AbstractAllElementTypesReactionsTests {
 	private static val TEST_SOURCE_MODEL_NAME = "EachTestModelSource";
@@ -59,6 +61,10 @@ class BidirectionalExecutionTests extends AbstractAllElementTypesReactionsTests 
 		saveAndSynchronizeChanges(rootElement);
 	}
 	
+	private def VitruviusChange getSourceModelChanges(PropagatedChange propagatedChange) {
+		return (propagatedChange.consequentialChanges as CompositeContainerChange).changes.findFirst[URI.toString.endsWith(TEST_SOURCE_MODEL_NAME.projectModelPath)];
+	}
+	
 	@Test
 	public def void testBasicBidirectionalApplication() {
 		val targetRoot = TEST_TARGET_MODEL_NAME.projectModelPath.firstRootElement as Root;
@@ -68,9 +74,9 @@ class BidirectionalExecutionTests extends AbstractAllElementTypesReactionsTests 
 		targetRoot.singleValuedContainmentEReference = newNonRoot;
 		val propagatedChanges = saveAndSynchronizeChanges(targetRoot);
 		assertEquals(1, propagatedChanges.size);
-		val compositePropagatedChange = propagatedChanges.get(0).consequentialChanges as CompositeContainerChange
-		assertTrue(compositePropagatedChange.EChanges.get(0) instanceof CreateEObject<?>)
-		assertTrue(compositePropagatedChange.EChanges.get(1) instanceof ReplaceSingleValuedEReference<?,?>)
+		val consequentialSourceModelChange = propagatedChanges.get(0).sourceModelChanges;
+		assertTrue(consequentialSourceModelChange.EChanges.get(0) instanceof CreateEObject<?>)
+		assertTrue(consequentialSourceModelChange.EChanges.get(1) instanceof ReplaceSingleValuedEReference<?,?>)
 		assertPersistedModelsEqual(TEST_SOURCE_MODEL_NAME.projectModelPath, TEST_TARGET_MODEL_NAME.projectModelPath);
 		val testResourceSet = new ResourceSetImpl();
 		testResourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("*", new XMIResourceFactoryImpl());
@@ -92,9 +98,9 @@ class BidirectionalExecutionTests extends AbstractAllElementTypesReactionsTests 
 		targetRoot.nonRootObjectContainerHelper.nonRootObjectsContainment.remove(0);
 		val propagatedChanges = saveAndSynchronizeChanges(targetRoot);
 		assertEquals(1, propagatedChanges.size);
-		val compositePropagatedChange = propagatedChanges.get(0).consequentialChanges as CompositeContainerChange
-		assertTrue(compositePropagatedChange.EChanges.get(3) instanceof RemoveEReference<?,?>)
-		assertTrue(compositePropagatedChange.EChanges.get(4) instanceof DeleteEObject<?>)
+		val consequentialSourceModelChange = propagatedChanges.get(0).sourceModelChanges;
+		assertTrue(consequentialSourceModelChange.EChanges.get(0) instanceof RemoveEReference<?,?>)
+		assertTrue(consequentialSourceModelChange.EChanges.get(1) instanceof DeleteEObject<?>)
 		assertPersistedModelsEqual(TEST_SOURCE_MODEL_NAME.projectModelPath, TEST_TARGET_MODEL_NAME.projectModelPath);
 		val testResourceSet = new ResourceSetImpl();
 		testResourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("*", new XMIResourceFactoryImpl());
@@ -115,9 +121,9 @@ class BidirectionalExecutionTests extends AbstractAllElementTypesReactionsTests 
 		startRecordingChanges(targetRoot);
 		val propagatedChanges = deleteAndSynchronizeModel(TEST_TARGET_MODEL_NAME.projectModelPath);
 		assertEquals(1, propagatedChanges.size);
-		val compositePropagatedChange = propagatedChanges.get(0).consequentialChanges as CompositeContainerChange
-		assertTrue(compositePropagatedChange.EChanges.get(3) instanceof RemoveRootEObject<?>)
-		assertTrue(compositePropagatedChange.EChanges.get(4) instanceof DeleteEObject<?>)
+		val consequentialSourceModelChange = propagatedChanges.get(0).sourceModelChanges;
+		assertTrue(consequentialSourceModelChange.EChanges.get(0) instanceof RemoveRootEObject<?>)
+		assertTrue(consequentialSourceModelChange.EChanges.get(1) instanceof DeleteEObject<?>)
 		assertModelNotExists(TEST_SOURCE_MODEL_NAME.projectModelPath)
 		assertModelNotExists(TEST_TARGET_MODEL_NAME.projectModelPath)
 	}
