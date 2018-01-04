@@ -12,6 +12,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.Callable;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 import org.apache.log4j.Logger;
 import org.eclipse.emf.common.util.URI;
@@ -22,11 +23,11 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.transaction.TransactionalEditingDomain;
 
 import edu.kit.ipd.sdq.commons.util.org.eclipse.emf.common.util.URIUtil;
+import tools.vitruv.framework.change.description.CompositeTransactionalChange;
 import tools.vitruv.framework.change.description.TransactionalChange;
+import tools.vitruv.framework.change.description.VitruviusChange;
+import tools.vitruv.framework.change.description.VitruviusChangeFactory;
 import tools.vitruv.framework.change.recording.AtomicEmfChangeRecorder;
-import tools.vitruv.framework.uuid.UuidGeneratorAndResolver;
-import tools.vitruv.framework.uuid.UuidGeneratorAndResolverImpl;
-import tools.vitruv.framework.uuid.UuidResolver;
 import tools.vitruv.framework.correspondence.CorrespondenceModel;
 import tools.vitruv.framework.correspondence.CorrespondenceModelImpl;
 import tools.vitruv.framework.correspondence.CorrespondenceProviding;
@@ -40,6 +41,9 @@ import tools.vitruv.framework.util.command.EMFCommandBridge;
 import tools.vitruv.framework.util.command.VitruviusRecordingCommand;
 import tools.vitruv.framework.util.datatypes.ModelInstance;
 import tools.vitruv.framework.util.datatypes.VURI;
+import tools.vitruv.framework.uuid.UuidGeneratorAndResolver;
+import tools.vitruv.framework.uuid.UuidGeneratorAndResolverImpl;
+import tools.vitruv.framework.uuid.UuidResolver;
 import tools.vitruv.framework.vsum.ModelRepository;
 import tools.vitruv.framework.vsum.helper.FileSystemHelper;
 
@@ -53,8 +57,10 @@ public class ResourceRepositoryImpl implements ModelRepository, CorrespondencePr
     private InternalCorrespondenceModel correspondenceModel;
     private final FileSystemHelper fileSystemHelper;
     private final File folder;
-    private final AtomicEmfChangeRecorder changeRecorder;
+
     private UuidGeneratorAndResolver uuidGeneratorAndResolver;
+    private final Map<VURI, AtomicEmfChangeRecorder> uriToRecorder;
+    private boolean isRecording = false;
 
     public UuidGeneratorAndResolver getUuidGeneratorAndResolver() {
         return this.uuidGeneratorAndResolver;
@@ -76,10 +82,15 @@ public class ResourceRepositoryImpl implements ModelRepository, CorrespondencePr
         this.fileSystemHelper = new FileSystemHelper(this.folder);
 
         initializeUuidProviderAndResolver();
-        this.changeRecorder = new AtomicEmfChangeRecorder(this.uuidGeneratorAndResolver);
+        this.uriToRecorder = new HashMap<VURI, AtomicEmfChangeRecorder>();
 
         initializeCorrespondenceModel();
         loadVURIsOfVSMUModelInstances();
+    }
+
+    private AtomicEmfChangeRecorder getOrCreateChangeRecorder(final VURI vuri) {
+        this.uriToRecorder.putIfAbsent(vuri, new AtomicEmfChangeRecorder(this.uuidGeneratorAndResolver));
+        return this.uriToRecorder.get(vuri);
     }
 
     /**
@@ -134,8 +145,16 @@ public class ResourceRepositoryImpl implements ModelRepository, CorrespondencePr
     }
 
     private void registerModelInstance(final VURI modelUri, final ModelInstance modelInstance) {
-        ResourceRepositoryImpl.this.modelInstances.put(modelUri, modelInstance);
-        ResourceRepositoryImpl.this.changeRecorder.addToRecording(modelInstance.getResource());
+        this.modelInstances.put(modelUri, modelInstance);
+        // Do not record other URI types than file and platform (e.g. pathmap) because they cannot be
+        // modified
+        if (modelUri.getEMFUri().isFile() || modelUri.getEMFUri().isPlatform()) {
+            AtomicEmfChangeRecorder recorder = getOrCreateChangeRecorder(modelUri);
+            recorder.addToRecording(modelInstance.getResource());
+            if (this.isRecording && !recorder.isRecording()) {
+                recorder.beginRecording();
+            }
+        }
         saveVURIsOfVsumModelInstances();
     }
 
@@ -267,12 +286,15 @@ public class ResourceRepositoryImpl implements ModelRepository, CorrespondencePr
                 correspondencesResource = this.resourceSet.getResource(correspondencesVURI.getEMFUri(), true);
             } else {
                 correspondencesResource = this.resourceSet.createResource(correspondencesVURI.getEMFUri());
+                correspondencesResource.save(null);
             }
-            this.changeRecorder.addToRecording(correspondencesResource);
-            this.changeRecorder.beginRecording();
+            AtomicEmfChangeRecorder recorder = getOrCreateChangeRecorder(correspondencesVURI);
+            recorder.addToRecording(correspondencesResource);
+            recorder.beginRecording();
             this.correspondenceModel = new CorrespondenceModelImpl(new TuidResolverImpl(this.metamodelRepository, this),
                     this, this.metamodelRepository, correspondencesVURI, correspondencesResource);
-            this.changeRecorder.endRecording();
+            recorder.endRecording();
+            recorder.addToRecording(correspondencesResource);
             return null;
         });
     }
@@ -312,7 +334,7 @@ public class ResourceRepositoryImpl implements ModelRepository, CorrespondencePr
         for (VURI vuri : vuris) {
             VitruvDomain metamodel = getMetamodelByURI(vuri);
             ModelInstance modelInstance = loadModelInstance(vuri, metamodel);
-            this.modelInstances.put(vuri, modelInstance);
+            registerModelInstance(vuri, modelInstance);
         }
     }
 
@@ -327,18 +349,43 @@ public class ResourceRepositoryImpl implements ModelRepository, CorrespondencePr
 
     @Override
     public void startRecording() {
-        this.changeRecorder.beginRecording();
+        removeRecorderForDeletedModels();
+        for (AtomicEmfChangeRecorder recorder : this.uriToRecorder.values()) {
+            recorder.beginRecording();
+        }
+        this.isRecording = true;
         logger.debug("Start recording virtual model");
     }
 
     @Override
     public Iterable<TransactionalChange> endRecording() {
         logger.debug("End recording virtual model");
+        this.isRecording = false;
         executeRecordingCommand(EMFCommandBridge.createVitruviusRecordingCommand(() -> {
-            this.changeRecorder.endRecording();
+            for (AtomicEmfChangeRecorder recorder : this.uriToRecorder.values()) {
+                recorder.endRecording();
+            }
             return null;
         }));
-        return this.changeRecorder.getChanges();
+        Iterable<TransactionalChange> result = this.uriToRecorder.values().stream().map((recorder) -> {
+            CompositeTransactionalChange compChange = VitruviusChangeFactory.getInstance()
+                    .createCompositeTransactionalChange();
+            recorder.getChanges().stream().forEach(compChange::addChange);
+            return compChange;
+        }).filter(VitruviusChange::containsConcreteChange).collect(Collectors.toList());
+        return result;
+    }
+
+    private void removeRecorderForDeletedModels() {
+        List<VURI> nonExistentUris = new ArrayList<>();
+        for (VURI recordedVuri : this.uriToRecorder.keySet()) {
+            if (!URIUtil.existsResourceAtUri(recordedVuri.getEMFUri())) {
+                nonExistentUris.add(recordedVuri);
+            }
+        }
+        for (VURI toRemove : nonExistentUris) {
+            this.uriToRecorder.remove(toRemove);
+        }
     }
 
     private synchronized TransactionalEditingDomain getTransactionalEditingDomain() {
