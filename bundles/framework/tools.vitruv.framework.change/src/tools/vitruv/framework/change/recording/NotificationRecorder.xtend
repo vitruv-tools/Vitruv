@@ -11,9 +11,10 @@ import org.eclipse.emf.ecore.resource.Resource
 import tools.vitruv.framework.change.echange.EChangeIdManager
 import tools.vitruv.framework.change.description.TransactionalChange
 import tools.vitruv.framework.change.description.VitruviusChangeFactory
+import java.util.Set
 
 class NotificationRecorder implements Adapter {
-	private List<Notifier> rootObjects;
+	private Set<Notifier> rootObjects;
 	private boolean isRecording = false
 	List<EChange> changes;
 	List<TransactionalChange> resultChanges;
@@ -21,7 +22,7 @@ class NotificationRecorder implements Adapter {
 	
 	new (EChangeIdManager idManager) {
 		this.idManager = idManager;	
-		rootObjects = newArrayList();
+		rootObjects = newHashSet();
 	}
 	
 	override getTarget() {
@@ -33,11 +34,11 @@ class NotificationRecorder implements Adapter {
 	}
 
 	override notifyChanged(Notification notification) {
-		if (!isRecording) {
-			return;
-		}
 		if (notification.newValue instanceof Notifier) {
 			addToRecording(notification.newValue as Notifier);
+		}
+		if (!isRecording) {
+			return;
 		}
 		val newChanges = new NotificationToEChangeConverter(idManager).convert(new NotificationInfo(notification), changes);
 		for (newChange : newChanges) {
@@ -51,40 +52,19 @@ class NotificationRecorder implements Adapter {
 	}
 
 	override setTarget(Notifier newTarget) {
-		if (newTarget instanceof EObject) {
-			for (EObject eObject : newTarget.eContents()) {
-				addAdapter(eObject);
-			}
-		} else {
-			val contents = if (newTarget instanceof ResourceSet)
-					(newTarget as ResourceSet).getResources().iterator()
-				else if (newTarget instanceof Resource)
-					(newTarget as Resource).getContents().iterator()
-				else
-					null;
-
-			if (contents !== null) {
-				while (contents.hasNext()) {
-					val notifier = contents.next() as Notifier;
-					addAdapter(notifier);
-				}
-			}
-		}
-		addAdapter(newTarget);
-	}
-
-	private def void addAdapter(Notifier notifier) {
-		val eAdapters = notifier.eAdapters();
-		if (!eAdapters.contains(this)) {
-			eAdapters.add(this);
-		}
+		recursivelyAddAdapter(newTarget);
 	}
 	
 	def void addToRecording(Notifier notifier) {
 		rootObjects += notifier;
-		setTarget(notifier);
+		recursivelyAddAdapter(notifier);
 	}
-
+	
+	def void removeFromRecording(Notifier notifier) {
+		rootObjects -= notifier;
+		recursivelyRemoveAdapter(notifier);
+	}
+	
 	def beginRecording() {
 		if (!isRecording) {
 			changes = newArrayList();
@@ -105,6 +85,56 @@ class NotificationRecorder implements Adapter {
 
 	def isRecording() {
 		return isRecording;
+	}
+	
+	private def dispatch void recursivelyRemoveAdapter(Notifier notifier) {
+		notifier.removeAdapter
+	}
+	
+	private def dispatch void recursivelyRemoveAdapter(EObject object) {
+		object.eContents().forEach[recursivelyRemoveAdapter];
+		object.removeAdapter;
+	}
+	
+	private def dispatch void recursivelyRemoveAdapter(Resource resource) {
+		resource.contents.forEach[recursivelyRemoveAdapter]
+		resource.removeAdapter;
+	}
+	
+	private def dispatch void recursivelyRemoveAdapter(ResourceSet resourceSet) {
+		resourceSet.resources.forEach[recursivelyRemoveAdapter]
+		resourceSet.removeAdapter;
+	}
+
+	private def void removeAdapter(Notifier notifier) {
+		val eAdapters = notifier.eAdapters();
+		eAdapters.remove(this);
+	}
+		
+	private def dispatch void recursivelyAddAdapter(Notifier notifier) {
+		notifier.addAdapter
+	}
+	
+	private def dispatch void recursivelyAddAdapter(EObject object) {
+		object.eContents().forEach[recursivelyAddAdapter];
+		object.addAdapter;
+	}
+	
+	private def dispatch void recursivelyAddAdapter(Resource resource) {
+		resource.contents.forEach[recursivelyAddAdapter]
+		resource.addAdapter;
+	}
+	
+	private def dispatch void recursivelyAddAdapter(ResourceSet resourceSet) {
+		resourceSet.resources.forEach[recursivelyAddAdapter]
+		resourceSet.addAdapter;
+	}
+
+	private def void addAdapter(Notifier notifier) {
+		val eAdapters = notifier.eAdapters();
+		if (!eAdapters.contains(this)) {
+			eAdapters.add(this);
+		}
 	}
 
 }
