@@ -115,10 +115,10 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 			change.resolveBeforeAndApplyForward(uuidResolver)
             // If change has a URI, add the model to the repository
             if (change.URI !== null) resourceRepository.getModel(change.getURI());
+            change.affectedEObjects.forEach[modelRepository.addRootElement(it)];
             return;
     	];
 		this.resourceRepository.executeOnUuidResolver(changeApplicationFunction);
-		change.affectedEObjects.forEach[modelRepository.addRootElement(it)];
 		modelRepository.cleanupRootElements;
 
 		val changedObjects = change.affectedEObjects;
