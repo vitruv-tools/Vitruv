@@ -134,11 +134,13 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 		ChangedResourcesTracker changedResourcesTracker
 	) {
 		val consequentialChanges = newArrayList();
+		//modelRepository.startRecording;
 		resourceRepository.startRecording;
 		for (propagationSpecification : changePropagationProvider.
 			getChangePropagationSpecifications(change.changeDomain)) {
 			propagateChangeForChangePropagationSpecification(change, propagationSpecification, changedResourcesTracker);
 		}
+		//consequentialChanges += modelRepository.endRecording();
 		consequentialChanges += resourceRepository.endRecording();
 		consequentialChanges.forEach[logger.debug(it)];
 
