@@ -8,22 +8,30 @@ import tools.vitruv.framework.change.recording.AtomicEmfChangeRecorder
 import java.util.Map
 import java.util.HashMap
 import org.eclipse.emf.ecore.change.impl.ChangeDescriptionImpl
-import tools.vitruv.framework.uuid.UuidGeneratorAndResolverImpl
+import tools.vitruv.framework.uuid.UuidGeneratorAndResolver
 
 class ModelRepositoryImpl {
 	private val logger = Logger.getLogger(ModelRepositoryImpl);
 	val Set<EObject> rootElements;
 	val Map<EObject, AtomicEmfChangeRecorder> rootToRecorder;
 	var boolean isRecording = false;
+	val UuidGeneratorAndResolver uuidGeneratorAndResolver;
 	
-	new() {
+	new(UuidGeneratorAndResolver uuidGeneratorAndResolver) {
+		this.uuidGeneratorAndResolver = uuidGeneratorAndResolver;
 		rootElements = new HashSet<EObject>();
 		rootToRecorder = new HashMap<EObject, AtomicEmfChangeRecorder>();
 	}
 	
 	public def void addRootElement(EObject rootElement) {
+		if (rootElements.contains(rootElement)) {
+			return;
+		}
 		this.rootElements += rootElement;
 		logger.debug("New root in repository " + rootElement);
+		val recorder = new AtomicEmfChangeRecorder(uuidGeneratorAndResolver);
+		recorder.addToRecording(rootElement);
+		rootToRecorder.put(rootElement, recorder);
 		if (isRecording) {
 			startRecordingForElement(rootElement);
 		}
@@ -38,8 +46,8 @@ class ModelRepositoryImpl {
 		}
 		elementsToRemove.forEach[
 			removeElementFromRecording(it);
+			rootElements -= it;
 			logger.debug("Remove root from repository " + it);
-			rootElements.remove(it)
 		];
 	}
 	
@@ -51,6 +59,7 @@ class ModelRepositoryImpl {
 			}
 		}
 		elementsToRemove.forEach[
+			removeElementFromRecording(it);
 			logger.debug("Remove root without resource from repository " + it);
 			rootElements.remove(it)
 		];
@@ -68,10 +77,8 @@ class ModelRepositoryImpl {
 		for (root : rootToRecorder.keySet) {
 			rootToRecorder.get(root).endRecording();
 			result += rootToRecorder.get(root).changes;
-			
 			logger.debug("End recording for " + root);
 		}
-		rootToRecorder.clear();
 		isRecording = false;
 		return result;
 	}
@@ -80,21 +87,20 @@ class ModelRepositoryImpl {
 		if (!rootElements.contains(element)) {
 			throw new IllegalStateException();
 		}
-		if (rootToRecorder.containsKey(element)) {
-			throw new IllegalStateException("Duplicate recording on element")
+		if (!rootToRecorder.containsKey(element)) {
+			throw new IllegalStateException("Element " + element + " has no recorder")
 		}
-		val recorder = new AtomicEmfChangeRecorder(new UuidGeneratorAndResolverImpl(null, false));
-		recorder.addToRecording(element);
+		val recorder = rootToRecorder.get(element);
 		recorder.beginRecording();
-		rootToRecorder.put(element, recorder);
 		logger.debug("Start recording for " + element);
 	}
 	
 	private def void removeElementFromRecording(EObject element) {
 		val recorder = rootToRecorder.get(element);
-		if (recorder !== null) {
+		if (recorder !== null && recorder.isRecording) {
 			recorder.stopRecording;
 		}
+		recorder.removeFromRecording(element);
 		rootToRecorder.remove(element);
 		logger.debug("Abort recording for " + element);
 	}

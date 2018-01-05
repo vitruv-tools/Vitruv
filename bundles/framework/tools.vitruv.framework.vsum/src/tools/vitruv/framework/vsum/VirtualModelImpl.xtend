@@ -37,7 +37,7 @@ class VirtualModelImpl implements InternalVirtualModel {
 			metamodel.registerAtTuidManagement();
 		}
 		this.resourceRepository = new ResourceRepositoryImpl(folder, metamodelRepository);
-		this.modelRepository = new ModelRepositoryImpl();
+		this.modelRepository = new ModelRepositoryImpl(resourceRepository.uuidGeneratorAndResolver);
 		val changePropagationSpecificationRepository = new ChangePropagationSpecificationRepository();
 		for (changePropagationSpecification : modelConfiguration.changePropagationSpecifications) {
 			changePropagationSpecification.userInteracting = userInteracting;
