@@ -345,7 +345,9 @@ final class NotificationToEChangeConverter {
 		if (!n.getAttribute().isMany()) {
 			op = handleSetAttribute(n)
 		} else {
-			op = #[TypeInferringAtomicEChangeFactory.instance.createUnsetFeatureChange(n.notifierModelElement, n.feature as EStructuralFeature)];
+			val change = TypeInferringAtomicEChangeFactory.instance.createUnsetFeatureChange(n.notifierModelElement, n.feature as EStructuralFeature);
+			eChangeIdManager.setOrGenerateIds(change);
+			op = #[change];
 		}
 		return op
 	}
@@ -355,7 +357,9 @@ final class NotificationToEChangeConverter {
 		if (!n.getReference().isMany()) {
 			op = handleSetReference(n);
 		} else {
-			op = #[TypeInferringAtomicEChangeFactory.instance.createUnsetFeatureChange(n.notifierModelElement, n.feature as EStructuralFeature)];
+			val change = TypeInferringAtomicEChangeFactory.instance.createUnsetFeatureChange(n.notifierModelElement, n.feature as EStructuralFeature);
+			eChangeIdManager.setOrGenerateIds(change);
+			op = #[change];
 		}
 		return op;
 	}
