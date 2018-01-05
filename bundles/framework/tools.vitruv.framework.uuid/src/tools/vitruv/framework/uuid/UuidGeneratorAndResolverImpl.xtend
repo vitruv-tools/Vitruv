@@ -21,7 +21,7 @@ class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 	final UuidResolver parentUuidResolver;
 	final boolean strictMode;
 	UuidToEObjectRepository repository;
-	
+
 	/**
 	 * Instantiates a UUID generator and resolver with no parent resolver, 
 	 * the given {@link ResourceSet} for resolving objects
@@ -76,7 +76,7 @@ class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 	new(ResourceSet resourceSet, Resource uuidResource, boolean strictMode) {
 		this(null, resourceSet, uuidResource, strictMode);
 	}
-	
+
 	/**
 	 * Instantiates a UUID generator and resolver with the given parent resolver, used when
 	 * this resolver cannot resolve a UUID, the given {@link ResourceSet} for resolving objects
@@ -110,12 +110,12 @@ class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 	}
 
 	def private loadAndRegisterUuidProviderAndResolver(Resource uuidResource) {
-		var UuidToEObjectRepository repository = if(uuidResource !== null)
+		var UuidToEObjectRepository repository = if (uuidResource !== null)
 				EcoreResourceBridge::getResourceContentRootIfUnique(uuidResource)?.dynamicCast(UuidToEObjectRepository,
 					"uuid provider and resolver model")
-		if(repository === null) {
+		if (repository === null) {
 			repository = UuidFactory.eINSTANCE.createUuidToEObjectRepository;
-			if(uuidResource !== null) {
+			if (uuidResource !== null) {
 				uuidResource.getContents().add(repository)
 			}
 		}
@@ -124,7 +124,7 @@ class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 
 	override getUuid(EObject eObject) {
 		val result = internalGetUuid(eObject);
-		if(result === null) {
+		if (result === null) {
 			throw new IllegalStateException("No UUID registered for EObject: " + eObject);
 		}
 		return result;
@@ -132,33 +132,33 @@ class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 
 	private def internalGetUuid(EObject eObject) {
 		val localResult = repository.EObjectToUuid.get(eObject);
-		if(localResult !== null) {
+		if (localResult !== null) {
 			return localResult;
 		}
 		val uri = EcoreUtil.getURI(eObject)
-		if(uri !== null) {
+		if (uri !== null) {
 			try {
 				val resolvedObject = resourceSet.getEObject(uri, false);
 				// The EClass check avoids that an objects of another type with the same URI is resolved
 				// This is, for example, the case if a modifier in a UML model is changed, as it is only a
 				// marker class that is replaced, having always the same URI on the same model element.
-				if(resolvedObject !== null && resolvedObject.eClass == eObject.eClass) {
+				if (resolvedObject !== null && resolvedObject.eClass == eObject.eClass) {
 					val resolvedKey = repository.EObjectToUuid.get(resolvedObject);
-					if(resolvedKey !== null) {
+					if (resolvedKey !== null) {
 						return resolvedKey;
 					}
 				} else {
 					// Finally look for a proxy in the repository (due to a deleted object) and match the URI
-					for (proxyObject : repository.EObjectToUuid.keySet.filter[eIsProxy]){
+					for (proxyObject : repository.EObjectToUuid.keySet.filter[eIsProxy]) {
 						if (EcoreUtil.getURI(proxyObject).equals(EcoreUtil.getURI(eObject))) {
 							return repository.EObjectToUuid.get(proxyObject);
 						}
 					}
 				}
-			} catch(RuntimeException e) {
+			} catch (RuntimeException e) {
 			}
 		}
-		
+
 		return null;
 	}
 
@@ -175,11 +175,9 @@ class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 		if (eObject === null) {
 			return null;
 		}
-		if(eObject.eIsProxy) {
+		if (eObject.eIsProxy) {
+			// Try to resolve the proxy. This can still lead to a valid proxy element if it is a proxy on purpose
 			val resolvedObject = EcoreUtil.resolve(eObject, resourceSet);
-			if(resolvedObject === null || resolvedObject.eIsProxy) {
-				return null;
-			}
 			return resolvedObject;
 		} else {
 			return eObject;
@@ -191,7 +189,7 @@ class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 		registerEObject(uuid, eObject);
 		return uuid;
 	}
-	
+
 	public override String generateUuidWithoutCreate(EObject eObject) {
 		val uuid = generateUuid(eObject);
 		// Register UUID globally for third party elements that are statically accessible and are never created.
@@ -239,7 +237,7 @@ class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 	override hasUuid(EObject object) {
 		return internalGetUuid(object) !== null;
 	}
-	
+
 	override hasEObject(String uuid) {
 		return internalGetEObject(uuid) !== null;
 	}
@@ -247,7 +245,7 @@ class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 	override getResourceSet() {
 		return resourceSet;
 	}
-	
+
 	override registerUuidForGlobalUri(String uuid, URI uri) {
 		try {
 			val localObject = resourceSet.getEObject(uri, true)
@@ -260,14 +258,14 @@ class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 		}
 		return false;
 	}
-	
+
 	override registerEObject(EObject eObject) {
 		if (parentUuidResolver.hasUuid(eObject)) {
 			registerEObject(parentUuidResolver.getUuid(eObject), eObject);
 		} else if (hasUuid(eObject)) {
 			registerEObject(getUuid(eObject), eObject);
 		} else {
-			//throw new IllegalStateException("Given EObject has no UUID yet: " + eObject);
+			// throw new IllegalStateException("Given EObject has no UUID yet: " + eObject);
 		}
 	}
 
