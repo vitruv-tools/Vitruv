@@ -96,12 +96,7 @@ class AtomicEmfChangeRecorder {
 		}
 		changeRecorder.endRecording();
 		val changes = changeRecorder.changes;
-		
 		removeCreateFollowedByDelete(changes);
-		// Allow null provider and resolver for test purposes
-		if(uuidGeneratorAndResolver !== null) {
-			changes.forEach[EChanges.forEach[eChangeIdManager.setOrGenerateIds(it)]]
-		}
 		this.changes = changes;
 	}
 	
