@@ -254,7 +254,9 @@ final class NotificationToEChangeConverter {
 		val resource = notification.notifier as Resource
 		switch (notification.getEventType()) {
 			case Notification.ADD: {
-				changes += handleInsertRootChange(resource, notification.newModelElementValue, notification.position)
+				if (notification.newValue instanceof EObject) {
+					changes += handleInsertRootChange(resource, notification.newModelElementValue, notification.position)
+				}
 			}
 			case Notification.ADD_MANY: {
 				var List<EObject> list = (notification.getNewValue() as List<EObject>)
