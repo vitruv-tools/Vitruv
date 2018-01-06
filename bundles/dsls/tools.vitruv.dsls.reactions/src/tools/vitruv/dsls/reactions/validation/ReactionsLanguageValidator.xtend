@@ -12,9 +12,6 @@ import tools.vitruv.dsls.reactions.reactionsLanguage.RetrieveModelElement
 import tools.vitruv.dsls.reactions.reactionsLanguage.CreateModelElement
 import tools.vitruv.dsls.reactions.reactionsLanguage.Reaction
 import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsSegment
-import static extension tools.vitruv.dsls.reactions.codegen.helper.ClassNamesGenerators.*
-import static extension tools.vitruv.dsls.reactions.codegen.helper.RoutineCallMethodNames.*
-import static tools.vitruv.dsls.reactions.codegen.helper.ReactionsLanguageConstants.*
 import tools.vitruv.dsls.reactions.reactionsLanguage.ModelElementChange
 import tools.vitruv.dsls.reactions.reactionsLanguage.ElementReferenceChangeType
 import org.eclipse.emf.ecore.EClass
@@ -22,9 +19,10 @@ import tools.vitruv.dsls.reactions.reactionsLanguage.ElementCreationAndInsertion
 import tools.vitruv.dsls.reactions.reactionsLanguage.ElementChangeType
 import tools.vitruv.dsls.reactions.reactionsLanguage.ElementDeletionAndRemovalChangeType
 import tools.vitruv.dsls.reactions.reactionsLanguage.ElementDeletionAndCreationAndReplacementChangeType
-import tools.vitruv.dsls.reactions.scoping.RoutinesImportScopeHelper
 import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsFile
-import tools.vitruv.dsls.reactions.reactionsLanguage.RoutinesImport
+import static extension tools.vitruv.dsls.reactions.codegen.helper.ReactionsLanguageHelper.*
+import tools.vitruv.dsls.reactions.scoping.ReactionsImportScopeHelper
+import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsImport
 
 /**
  * This class contains custom validation rules. 
@@ -33,22 +31,10 @@ import tools.vitruv.dsls.reactions.reactionsLanguage.RoutinesImport
  */
 class ReactionsLanguageValidator extends AbstractReactionsLanguageValidator {
 
-	@Inject RoutinesImportScopeHelper routinesImportScopeHelper;
+	@Inject ReactionsImportScopeHelper reactionsImportScopeHelper;
 
 	@Check
 	def checkReactionsFile(ReactionsFile reactionsFile) {
-		// check for duplicate routines imports:
-		val alreadyCheckedRoutinesImports = new HashMap<String, RoutinesImport>();
-		for (routinesImport : reactionsFile.routinesImports) {
-			val importedSegmentName = routinesImport.reactionsSegment.name;
-			if (alreadyCheckedRoutinesImports.putIfAbsent(importedSegmentName, routinesImport) !== null) {
-				val errorMessage = "Duplicate routines import: " + importedSegmentName;
-				error(errorMessage, routinesImport, ReactionsLanguagePackage.Literals.ROUTINES_IMPORT__REACTIONS_SEGMENT);
-				val duplicateRoutinesImport = alreadyCheckedRoutinesImports.get(importedSegmentName);
-				error(errorMessage, duplicateRoutinesImport, ReactionsLanguagePackage.Literals.ROUTINES_IMPORT__REACTIONS_SEGMENT);
-			}
-		}
-
 		// check for duplicate reactions segment names in same file:
 		val alreadyCheckedSegments = new HashMap<String, ReactionsSegment>();
 		for (reactionsSegment : reactionsFile.reactionsSegments) {
@@ -63,13 +49,13 @@ class ReactionsLanguageValidator extends AbstractReactionsLanguageValidator {
 
 		// check for duplicate reactions segment names globally:
 		val resource = reactionsFile.eResource;
-		val visibleReactionsSegments = routinesImportScopeHelper.getVisibleReactionsSegmentDescriptions(resource, false);
+		val visibleReactionsSegmentDescs = reactionsImportScopeHelper.getVisibleReactionsSegmentDescriptions(resource, false);
 		for (reactionsSegment : reactionsFile.reactionsSegments) {
 			val reactionsSegmentName = reactionsSegment.name;
-			val duplicateNameSegment = visibleReactionsSegments.findFirst[name.toString.equals(reactionsSegmentName)];
-			if (duplicateNameSegment !== null) {
+			val duplicateNameSegmentDesc = visibleReactionsSegmentDescs.findFirst[name.toString.equals(reactionsSegmentName)];
+			if (duplicateNameSegmentDesc !== null) {
 				// path relative to current file:
-				val pathToOtherSegment = duplicateNameSegment.EObjectURI.trimFragment.deresolve(resource.URI);
+				val pathToOtherSegment = duplicateNameSegmentDesc.EObjectURI.trimFragment.deresolve(resource.URI);
 				warning(
 					"Duplicate reactions segment name '" + reactionsSegmentName + "': Already defined in " + pathToOtherSegment,
 					reactionsSegment,
@@ -80,11 +66,37 @@ class ReactionsLanguageValidator extends AbstractReactionsLanguageValidator {
 	}
 
 	@Check
-	def checkReactionsFile(ReactionsSegment reactionsSegment) {
+	def checkReactionsSegment(ReactionsSegment reactionsSegment) {
+		val reactionsSegmentName = reactionsSegment.name;
+
+		// check for duplicate and cyclic reactions imports:
+		val alreadyCheckedImportedSegments = new HashMap<String, ReactionsImport>();
+		for (reactionsImport : reactionsSegment.reactionsImports) {
+			val directlyImportedSegment = reactionsImport.importedReactionsSegment;
+			val allImportedSegments = directlyImportedSegment.importedReactionsSegments;
+			allImportedSegments.put(directlyImportedSegment, reactionsImport);
+			for (importedSegment : allImportedSegments.keySet) {
+				val importedSegmentName = importedSegment.name;
+				if (reactionsSegmentName.equals(importedSegmentName)) {
+					// cyclic import:
+					val errorMessage = "Cyclic reactions import: Cannot transitively import itself";
+					error(errorMessage, reactionsImport, ReactionsLanguagePackage.Literals.REACTIONS_IMPORT__IMPORTED_REACTIONS_SEGMENT);
+				} else {
+					val duplicateReactionsImport = alreadyCheckedImportedSegments.putIfAbsent(importedSegmentName, reactionsImport);
+					if (duplicateReactionsImport !== null) {
+						// duplicate import:
+						val errorMessage = "Duplicate reactions import (possibly transitive): " + importedSegmentName;
+						error(errorMessage, reactionsImport, ReactionsLanguagePackage.Literals.REACTIONS_IMPORT__IMPORTED_REACTIONS_SEGMENT);
+						error(errorMessage, duplicateReactionsImport, ReactionsLanguagePackage.Literals.REACTIONS_IMPORT__IMPORTED_REACTIONS_SEGMENT);
+					}
+				}
+			}
+		}
+
 		// check for duplicate reaction names in same segment:
 		val alreadyCheckedReactions = new HashMap<String, Reaction>();
 		for (reaction : reactionsSegment.reactions) {
-			val reactionName = reaction.reactionClassNameGenerator.simpleName;
+			val reactionName = reaction.formattedReactionName;
 			if (alreadyCheckedReactions.putIfAbsent(reactionName, reaction) !== null) {
 				val errorMessage = "Duplicate reaction name: " + reactionName;
 				error(errorMessage, reaction, ReactionsLanguagePackage.Literals.REACTION__NAME);
@@ -102,42 +114,12 @@ class ReactionsLanguageValidator extends AbstractReactionsLanguageValidator {
 //			alreadyCheckedEffects.put(implicitRoutine.routineClassNameGenerator.simpleName, implicitRoutine);
 //		}
 		for (routine : reactionsSegment.routines) {
-			val routineName = routine.callMethodName
+			val routineName = routine.formattedRoutineName;
 			if (alreadyCheckedRoutines.putIfAbsent(routineName, routine) !== null) {
 				val errorMessage = "Duplicate routine name: " + routineName;
 				error(errorMessage, routine, ReactionsLanguagePackage.Literals.ROUTINE__NAME);
 				val duplicateNameRoutine = alreadyCheckedRoutines.get(routineName);
 				error(errorMessage, duplicateNameRoutine, ReactionsLanguagePackage.Literals.ROUTINE__NAME);
-			}
-		}
-
-		// check for duplicate routine names across imports:
-		val alreadyCheckedImportedRoutines = new HashMap<String, Routine>();
-		for (routinesImport : reactionsSegment.reactionsFile.routinesImports) {
-			val importedReactionsSegment = routinesImport.reactionsSegment;
-			for (importedRoutine : importedReactionsSegment.routines) {
-				val importedRoutineName = routinesImport.getImportedCallMethodName(importedRoutine);
-
-				// name clashes with local routines:
-				if (alreadyCheckedRoutines.containsKey(importedRoutineName)) {
-					val duplicateNameRoutine = alreadyCheckedRoutines.get(importedRoutineName);
-					warning(
-						"Duplicate routine name '" + importedRoutineName + "': Hides an imported routine from " + importedReactionsSegment.name,
-						duplicateNameRoutine,
-						ReactionsLanguagePackage.Literals.ROUTINE__NAME
-					);
-				}
-
-				// name clashes with routines from other imports:
-				val duplicateNameImportedRoutine = alreadyCheckedImportedRoutines.putIfAbsent(importedRoutineName, importedRoutine);
-				if (duplicateNameImportedRoutine !== null) {
-					warning(
-						"Contains ambiguous routine name '" + importedRoutineName + "': Already defined in " 
-							+ duplicateNameImportedRoutine.reactionsSegment.name,
-						routinesImport,
-						ReactionsLanguagePackage.Literals.ROUTINES_IMPORT__REACTIONS_SEGMENT
-					);
-				}
 			}
 		}
 	}
@@ -178,10 +160,6 @@ class ReactionsLanguageValidator extends AbstractReactionsLanguageValidator {
 	def checkRoutine(Routine routine) {
 		if (!Character.isLowerCase(routine.name.charAt(0))) {
 			warning("Routine names should start lower case",
-				ReactionsLanguagePackage.Literals.ROUTINE__NAME);
-		}
-		if (routine.name.contains(IMPORTED_ROUTINE_PREFIX_SEPARATOR)) {
-			warning("Routine names should not contain '" + IMPORTED_ROUTINE_PREFIX_SEPARATOR + "'",
 				ReactionsLanguagePackage.Literals.ROUTINE__NAME);
 		}
 	}

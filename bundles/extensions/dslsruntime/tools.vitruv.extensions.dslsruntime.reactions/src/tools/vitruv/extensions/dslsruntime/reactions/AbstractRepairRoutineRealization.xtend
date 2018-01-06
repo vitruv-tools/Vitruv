@@ -19,13 +19,15 @@ import tools.vitruv.framework.tuid.TuidManager
 import java.util.List
 
 abstract class AbstractRepairRoutineRealization extends CallHierarchyHaving implements RepairRoutine, ReactionElementsHandler {
+	protected val AbstractReactionsExecutor executor;
 	private extension val ReactionExecutionState executionState;
 
 	@Delegate
 	private val ReactionElementsHandler _reactionElementsHandler;
 
-	public new(ReactionExecutionState executionState, CallHierarchyHaving calledBy) {
+	public new(AbstractReactionsExecutor executor, ReactionExecutionState executionState, CallHierarchyHaving calledBy) {
 		super(calledBy);
+		this.executor = executor;
 		this.executionState = executionState;
 		this._reactionElementsHandler = new ReactionElementsHandlerImpl(correspondenceModel);
 	}

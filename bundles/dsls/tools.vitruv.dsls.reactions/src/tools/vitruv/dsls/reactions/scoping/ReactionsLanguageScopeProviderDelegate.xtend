@@ -10,6 +10,7 @@ import org.eclipse.xtext.scoping.impl.SimpleScope
 
 import static tools.vitruv.dsls.mirbase.mirBase.MirBasePackage.Literals.*;
 import static tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsLanguagePackage.Literals.*
+import static extension tools.vitruv.dsls.reactions.codegen.helper.ReactionsLanguageHelper.*
 
 import org.eclipse.emf.ecore.EStructuralFeature
 import tools.vitruv.dsls.mirbase.scoping.MirBaseScopeProviderDelegate
@@ -25,10 +26,14 @@ import tools.vitruv.dsls.reactions.reactionsLanguage.ElementReplacementChangeTyp
 import tools.vitruv.dsls.reactions.reactionsLanguage.ModelAttributeChange
 import org.eclipse.emf.ecore.EAttribute
 import tools.vitruv.dsls.reactions.reactionsLanguage.ElementChangeType
+import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsSegment
+import tools.vitruv.dsls.reactions.reactionsLanguage.Reaction
+import tools.vitruv.dsls.reactions.reactionsLanguage.Routine
+import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsImport
 
 class ReactionsLanguageScopeProviderDelegate extends MirBaseScopeProviderDelegate {
 
-	@Inject RoutinesImportScopeHelper routinesImportScopeHelper;
+	@Inject ReactionsImportScopeHelper reactionsImportScopeHelper;
 
 	override getScope(EObject context, EReference reference) {
 		// context differs during content assist: 
@@ -52,15 +57,33 @@ class ReactionsLanguageScopeProviderDelegate extends MirBaseScopeProviderDelegat
 			} else if (contextContainer instanceof MetaclassReference) {
 				return createQualifiedEClassScopeWithEObject(contextContainer.metamodel)
 			}
-		} else if (reference.equals(ROUTINES_IMPORT__REACTIONS_SEGMENT)) {
-			return createRoutinesImportScope(context.eResource);
+		} else if (reference.equals(REACTIONS_IMPORT__IMPORTED_REACTIONS_SEGMENT)) {
+			if (context instanceof ReactionsImport) {
+				return createReactionsImportScope(context.eResource);
+			}
+		} else if (reference.equals(REACTION__OVERRIDDEN_REACTIONS_SEGMENT)) {
+			if (context instanceof Reaction) {
+				return createOverriddenReactionsSegmentScope(context.reactionsSegment);
+			}
+		} else if (reference.equals(ROUTINE__OVERRIDDEN_REACTIONS_SEGMENT)) {
+			if (context instanceof Routine) {
+				return createOverriddenReactionsSegmentScope(context.reactionsSegment);
+			}
 		}
 		super.getScope(context, reference)
 	}
 
-	def createRoutinesImportScope(Resource resource) {
-		val visibleReactionsSegments = routinesImportScopeHelper.getVisibleReactionsSegmentDescriptions(resource, false);
-		return new SimpleScope(visibleReactionsSegments);
+	def createReactionsImportScope(Resource resource) {
+		val visibleReactionsSegmentDescs = reactionsImportScopeHelper.getVisibleReactionsSegmentDescriptions(resource, false);
+		return new SimpleScope(visibleReactionsSegmentDescs);
+	}
+	
+	def createOverriddenReactionsSegmentScope(ReactionsSegment reactionsSegment) {
+		// TODO check, that this is only used after indexing phase
+		//return createReactionsImportScope(reactionsSegment.eResource);
+		return createScope(IScope.NULLSCOPE, reactionsSegment.importedReactionsSegments.keySet.iterator, [
+			EObjectDescription.create(it.name, it)
+		]);
 	}
 
 	def createEStructuralFeatureScope(MetaclassFeatureReference featureReference) {

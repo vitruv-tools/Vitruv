@@ -8,8 +8,13 @@ import tools.vitruv.framework.userinteraction.UserInteracting
 import org.eclipse.xtend.lib.annotations.Accessors
 
 abstract class AbstractReactionRealization extends CallHierarchyHaving implements IReactionRealization {
+	protected val AbstractReactionsExecutor executor;
 	protected UserInteracting userInteracting;
 	protected ReactionExecutionState executionState;
+	
+	public new(AbstractReactionsExecutor executor) {
+		this.executor = executor;
+	}
 	
 	override applyEvent(EChange change, ReactionExecutionState reactionExecutionState) {
     	this.executionState = reactionExecutionState;

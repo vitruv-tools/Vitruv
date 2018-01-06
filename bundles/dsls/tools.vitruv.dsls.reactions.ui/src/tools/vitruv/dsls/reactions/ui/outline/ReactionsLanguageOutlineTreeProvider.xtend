@@ -17,9 +17,10 @@ import tools.vitruv.dsls.reactions.reactionsLanguage.Reaction
 import tools.vitruv.dsls.reactions.reactionsLanguage.Action
 import tools.vitruv.dsls.reactions.reactionsLanguage.ConcreteModelChange
 import static extension tools.vitruv.dsls.reactions.codegen.changetyperepresentation.ChangeTypeRepresentationExtractor.*
+import static extension tools.vitruv.dsls.reactions.codegen.helper.ReactionsLanguageHelper.*
 import tools.vitruv.dsls.reactions.reactionsLanguage.Matcher
 import tools.vitruv.dsls.reactions.reactionsLanguage.RoutineInput
-import tools.vitruv.dsls.reactions.reactionsLanguage.RoutinesImport
+import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsImport
 
 /**
  * Outline structure definition for a reactions file.
@@ -34,12 +35,6 @@ class ReactionsLanguageOutlineTreeProvider extends DefaultOutlineTreeProvider {
 		for (imp : reactionsFile.metamodelImports) {
 			createChildren(importsNode, imp);
 		}
-		val routinesImportsNode = createEStructuralFeatureNode(root, reactionsFile,
-			ReactionsLanguagePackage.Literals.REACTIONS_FILE__ROUTINES_IMPORTS, imageDispatcher.invoke(reactionsFile),
-			"routinesImports", false);
-		for (imp : reactionsFile.routinesImports) {
-			createChildren(routinesImportsNode, imp);
-		}
 		for (reactionsSegment : reactionsFile.reactionsSegments) {
 			createChildren(root, reactionsSegment);
 		}
@@ -47,6 +42,12 @@ class ReactionsLanguageOutlineTreeProvider extends DefaultOutlineTreeProvider {
 	
 	protected def void _createChildren(DocumentRootNode parentNode, ReactionsSegment reactionsSegment) {
 		val segmentNode = createEObjectNode(parentNode, reactionsSegment);
+		val reactionsImportsNode = createEStructuralFeatureNode(segmentNode, reactionsSegment,
+			ReactionsLanguagePackage.Literals.REACTIONS_SEGMENT__REACTIONS_IMPORTS, imageDispatcher.invoke(reactionsSegment),
+			"reactionsImports", false);
+		for (reactionsImport : reactionsSegment.reactionsImports) {
+			createChildren(reactionsImportsNode, reactionsImport);
+		}
 		val reactionsNode = createEStructuralFeatureNode(segmentNode, reactionsSegment, 
 			ReactionsLanguagePackage.Literals.REACTIONS_SEGMENT__REACTIONS, imageDispatcher.invoke(reactionsSegment), "reactions", false)
 		for (reaction : reactionsSegment.reactions) {
@@ -66,10 +67,12 @@ class ReactionsLanguageOutlineTreeProvider extends DefaultOutlineTreeProvider {
 			imp.package.name, true);
 	}
 	
-	protected def void _createChildren(EStructuralFeatureNode parentNode, RoutinesImport imp) {
-		val importNode = createEObjectNode(parentNode, imp);
-		createEStructuralFeatureNode(importNode, imp, ReactionsLanguagePackage.Literals.ROUTINES_IMPORT__REACTIONS_SEGMENT,
-			imageDispatcher.invoke(imp.reactionsSegment), imp.reactionsSegment.name, true);
+	protected def void _createChildren(EStructuralFeatureNode parentNode, ReactionsImport reactionsImport) {
+		val importNode = createEObjectNode(parentNode, reactionsImport);
+		createEStructuralFeatureNode(importNode, reactionsImport,
+			ReactionsLanguagePackage.Literals.REACTIONS_IMPORT__IMPORTED_REACTIONS_SEGMENT,
+			imageDispatcher.invoke(reactionsImport.importedReactionsSegment),
+			reactionsImport.importedReactionsSegment.name, true);
 	}
 	
 	protected def void _createChildren(EStructuralFeatureNode parentNode, Reaction reaction) {
@@ -97,16 +100,16 @@ class ReactionsLanguageOutlineTreeProvider extends DefaultOutlineTreeProvider {
 		return imp?.name;
 	}
 	
-	protected def Object _text(RoutinesImport imp) {
-		return imp?.reactionsSegment.name;
+	protected def Object _text(ReactionsImport reactionsImport) {
+		return reactionsImport.importedReactionsSegment.name;
 	}
 	
 	protected def Object _text(Reaction reaction) {
-		return "reaction: " + reaction.name;
+		return "reaction: " + reaction.formattedReactionName;
 	}
 	
 	protected def Object _text(Routine routine) {
-		return "routine: " + routine.name;
+		return "routine: " + routine.formattedRoutineName;
 	}
 	
 	protected def Object _text(RoutineInput routineInput) {

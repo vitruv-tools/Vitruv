@@ -16,6 +16,7 @@ import static extension tools.vitruv.dsls.reactions.codegen.helper.ReactionsLang
 import tools.vitruv.dsls.mirbase.mirBase.NamedMetaclassReference
 import tools.vitruv.dsls.reactions.codegen.helper.AccessibleElement
 import static tools.vitruv.dsls.reactions.codegen.helper.ReactionsLanguageConstants.*;
+import tools.vitruv.extensions.dslsruntime.reactions.AbstractReactionsExecutor
 
 class ParameterGenerator {
 	protected final extension JvmTypeReferenceBuilder _typeReferenceBuilder;
@@ -31,6 +32,10 @@ class ParameterGenerator {
 			return parameterContext.generateParameter(elementName, typeRef(metaclassReference.javaClassName))
 		}	
 		return null;
+	}
+	
+	public def JvmFormalParameter generateExecutorParameter(EObject parameterContext) {
+		return generateParameter(parameterContext, EXECUTOR_PARAMETER_NAME, AbstractReactionsExecutor);
 	}
 	
 	public def JvmFormalParameter generateReactionExecutionStateParameter(EObject parameterContext) {

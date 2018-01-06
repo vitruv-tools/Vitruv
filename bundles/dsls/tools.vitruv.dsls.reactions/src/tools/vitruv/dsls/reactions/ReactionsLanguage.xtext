@@ -10,18 +10,18 @@ import "http://www.kit.edu/ipd/sdq/vitruvius/dsls/mirbase/MirBase" as mirbase
 ReactionsFile:
 	(namespaceImports=XImportSection)?
 	MirBaseFile
-	(routinesImports+=RoutinesImport)*
 	(reactionsSegments+=ReactionsSegment)+;
-
-RoutinesImport:
-	'import' 'routines from' reactionsSegment=[ReactionsSegment] ('with' 'prefix' prefix=ValidID)?;
 
 ReactionsSegment:
 	'reactions:' name=ValidID
 	'in reaction to changes in' fromDomain=DomainReference 
 	'execute' 'actions in' toDomain=DomainReference
+	(reactionsImports+=ReactionsImport)*
 	(reactions+=Reaction |
 		routines+=Routine)*;
+
+ReactionsImport:
+	'import' importedReactionsSegment=[ReactionsSegment];
 
 // *********************************
 // *********** REACTIONS ***********
@@ -29,7 +29,7 @@ ReactionsSegment:
 
 Reaction:
 	(documentation=ML_COMMENT)?
-	'reaction' (name=ValidID)? '{'
+	'reaction' (overriddenReactionsSegment=[ReactionsSegment] '::')? (name=ValidID)? '{'
 		trigger=Trigger
 		callRoutine=ReactionRoutineCall
 	'}';
@@ -134,7 +134,7 @@ ElementCompoundChangeType returns ElementCompoundChangeType:
 
 Routine:
 	(documentation=ML_COMMENT)?
-	'routine' name=ValidID input=RoutineInput '{'
+	'routine' (overriddenReactionsSegment=[ReactionsSegment] '::')? name=ValidID input=RoutineInput '{'
 		matcher=MatcherBlock?
 		action=ActionBlock
 	'}';

@@ -126,16 +126,18 @@ class RoutineClassGenerator extends ClassGenerator {
 	protected def JvmConstructor generateConstructor(Routine routine) {
 		return routine.toConstructor [
 			visibility = JvmVisibility.PUBLIC;
+			val executorParameter = generateExecutorParameter();
 			val executionStateParameter = generateReactionExecutionStateParameter();
 			val calledByParameter = generateParameter("calledBy", typeRef(CallHierarchyHaving));
 			val inputParameters = routine.generateInputParameters();
+			parameters += executorParameter;
 			parameters += executionStateParameter;
 			parameters += calledByParameter;
 			parameters += inputParameters;
 			body = '''
-			super(«executionStateParameter.name», «calledByParameter.name»);
+			super(«executorParameter.name», «executionStateParameter.name», «calledByParameter.name»);
 			this.«USER_EXECUTION_FIELD_NAME» = new «generalUserExecutionClassQualifiedName»(getExecutionState(), this);
-			this.«EFFECT_FACADE_FIELD_NAME» = new «routinesFacadeClassNameGenerator.qualifiedName»(getExecutionState(), this);
+			this.«EFFECT_FACADE_FIELD_NAME» = «EXECUTOR_FIELD_NAME».«EXECUTOR_ROUTINES_FACADE_FACTORY_METHOD_NAME»("«routine.reactionsSegment.name»", getExecutionState(), this);
 			«FOR inputParameter : inputParameters»this.«inputParameter.name» = «inputParameter.name»;«ENDFOR»'''
 		]
 	}

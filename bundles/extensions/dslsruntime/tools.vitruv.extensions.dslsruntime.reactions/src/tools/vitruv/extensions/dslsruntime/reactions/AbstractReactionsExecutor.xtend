@@ -2,6 +2,7 @@ package tools.vitruv.extensions.dslsruntime.reactions
 
 import org.apache.log4j.Logger
 import tools.vitruv.extensions.dslsruntime.reactions.IReactionRealization
+import tools.vitruv.extensions.dslsruntime.reactions.structure.CallHierarchyHaving
 import tools.vitruv.framework.userinteraction.UserInteracting
 import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.correspondence.CorrespondenceModel
@@ -46,5 +47,7 @@ abstract class AbstractReactionsExecutor extends AbstractEChangePropagationSpeci
 	}
 
 	protected abstract def void setup();
+
+	public abstract def <T extends AbstractRepairRoutinesFacade> T createRoutinesFacade(String reactionsSegmentName, ReactionExecutionState executionState, CallHierarchyHaving calledBy);
 
 }
