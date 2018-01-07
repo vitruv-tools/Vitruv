@@ -200,13 +200,8 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 	}
 
 	def private getChangeDomain(VitruviusChange change) {
-		val resolvedObjects = <EObject>newArrayList();
-		// Add affected objects if change is resolved
-		resolvedObjects += change.affectedEObjects;
-		// Resolve IDs to get actual objects
-		// TODO HK Should only be called when change is resolved, so this should be omittable
-		change.affectedEObjectIds.forEach[id | resourceRepository.executeOnUuidResolver[resolvedObjects += it.getEObject(id)]]
-		metamodelRepository.getDomain(resolvedObjects.filterNull.head)
+		val resolvedObjects = change.affectedEObjects.filter[!eIsProxy];
+		metamodelRepository.getDomain(resolvedObjects.head)
 	}
 
 	private def void handleObjectsWithoutResource() {
