@@ -115,10 +115,10 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 			change.resolveBeforeAndApplyForward(uuidResolver)
             // If change has a URI, add the model to the repository
             if (change.URI !== null) resourceRepository.getModel(change.getURI());
+            change.affectedEObjects.forEach[modelRepository.addRootElement(it)];
             return;
     	];
 		this.resourceRepository.executeOnUuidResolver(changeApplicationFunction);
-		change.affectedEObjects.forEach[modelRepository.addRootElement(it)];
 		modelRepository.cleanupRootElements;
 
 		val changedObjects = change.affectedEObjects;
@@ -134,11 +134,13 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 		ChangedResourcesTracker changedResourcesTracker
 	) {
 		val consequentialChanges = newArrayList();
+		//modelRepository.startRecording;
 		resourceRepository.startRecording;
 		for (propagationSpecification : changePropagationProvider.
 			getChangePropagationSpecifications(change.changeDomain)) {
 			propagateChangeForChangePropagationSpecification(change, propagationSpecification, changedResourcesTracker);
 		}
+		//consequentialChanges += modelRepository.endRecording();
 		consequentialChanges += resourceRepository.endRecording();
 		consequentialChanges.forEach[logger.debug(it)];
 
@@ -198,12 +200,8 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 	}
 
 	def private getChangeDomain(VitruviusChange change) {
-		val resolvedObjects = <EObject>newArrayList();
-		// Add affected objects if change is resolved
-		resolvedObjects += change.affectedEObjects;
-		// Resolve IDs to get actual objects
-		change.affectedEObjectIds.forEach[id | resourceRepository.executeOnUuidResolver[resolvedObjects += it.getEObject(id)]]
-		metamodelRepository.getDomain(resolvedObjects.filterNull.head)
+		val resolvedObjects = change.affectedEObjects.filter[!eIsProxy];
+		metamodelRepository.getDomain(resolvedObjects.head)
 	}
 
 	private def void handleObjectsWithoutResource() {

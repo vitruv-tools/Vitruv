@@ -56,14 +56,6 @@ abstract class AbstractConcreteChange implements ConcreteChange {
 		this.eChange = eChange;
 	}
 	
-	override applyBackward() {
-		logger.warn("The applyBackward method is not implemented for " + this.class.simpleName + " yet.");
-	}
-	
-	override applyForward() {
-		logger.warn("The applyForward method is not implemented for " + this.class.simpleName + " yet.");
-	}
-	
 	override resolveBeforeAndApplyForward(UuidResolver uuidResolver) {
 		logger.warn("The resolveBeforeAndapplyForward method is not implemented for " + this.class.simpleName + " yet.");
 	}

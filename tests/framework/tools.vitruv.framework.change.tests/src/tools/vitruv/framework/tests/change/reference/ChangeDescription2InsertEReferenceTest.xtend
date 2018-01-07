@@ -49,6 +49,7 @@ class ChangeDescription2InsertEReferenceTest extends ChangeDescription2EReferenc
 
 	def private testInsertInEReference(int expectedIndex) {
 		// prepare 
+		startRecording
 		val nonRoot = createAndAddNonRootToRootMultiReference(expectedIndex)
 		startRecording
 		// test

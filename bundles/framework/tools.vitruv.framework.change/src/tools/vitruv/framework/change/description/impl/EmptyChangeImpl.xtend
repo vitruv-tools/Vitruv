@@ -27,14 +27,6 @@ class EmptyChangeImpl implements TransactionalChange {
 		return vuri;
 	}
 	
-	override applyBackward() throws IllegalStateException {
-		// Nothing to be done
-	}
-	
-	override applyForward() throws IllegalStateException {
-		// Nothing to be done
-	}
-	
 	override resolveBeforeAndApplyForward(UuidResolver uuidResolver) {
 		
 	}

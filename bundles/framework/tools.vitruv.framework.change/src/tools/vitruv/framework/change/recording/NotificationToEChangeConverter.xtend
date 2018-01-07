@@ -254,7 +254,9 @@ final class NotificationToEChangeConverter {
 		val resource = notification.notifier as Resource
 		switch (notification.getEventType()) {
 			case Notification.ADD: {
-				changes += handleInsertRootChange(resource, notification.newModelElementValue, notification.position)
+				if (notification.newValue instanceof EObject) {
+					changes += handleInsertRootChange(resource, notification.newModelElementValue, notification.position)
+				}
 			}
 			case Notification.ADD_MANY: {
 				var List<EObject> list = (notification.getNewValue() as List<EObject>)
@@ -343,7 +345,9 @@ final class NotificationToEChangeConverter {
 		if (!n.getAttribute().isMany()) {
 			op = handleSetAttribute(n)
 		} else {
-			op = #[TypeInferringAtomicEChangeFactory.instance.createUnsetFeatureChange(n.notifierModelElement, n.feature as EStructuralFeature)];
+			val change = TypeInferringAtomicEChangeFactory.instance.createUnsetFeatureChange(n.notifierModelElement, n.feature as EStructuralFeature);
+			eChangeIdManager.setOrGenerateIds(change);
+			op = #[change];
 		}
 		return op
 	}
@@ -353,7 +357,9 @@ final class NotificationToEChangeConverter {
 		if (!n.getReference().isMany()) {
 			op = handleSetReference(n);
 		} else {
-			op = #[TypeInferringAtomicEChangeFactory.instance.createUnsetFeatureChange(n.notifierModelElement, n.feature as EStructuralFeature)];
+			val change = TypeInferringAtomicEChangeFactory.instance.createUnsetFeatureChange(n.notifierModelElement, n.feature as EStructuralFeature);
+			eChangeIdManager.setOrGenerateIds(change);
+			op = #[change];
 		}
 		return op;
 	}

@@ -44,6 +44,9 @@ class AtomicEmfChangeRecorder {
 	}
 
 	def void addToRecording(Notifier elementToObserve) {
+		if (elementToObserve === null) {
+			throw new IllegalArgumentException("Element to observe must not be null");
+		}
 		this.elementsToObserve += elementToObserve;
 		elementsToObserve.forEach[changeRecorder.addToRecording(it)];
 		elementToObserve.registerContentsAtUuidResolver
@@ -93,14 +96,7 @@ class AtomicEmfChangeRecorder {
 		}
 		changeRecorder.endRecording();
 		val changes = changeRecorder.changes;
-		
-		removeDuplicateCreates(changes);
 		removeCreateFollowedByDelete(changes);
-		reorderChanges(changes);
-		// Allow null provider and resolver for test purposes
-		if(uuidGeneratorAndResolver !== null) {
-			changes.forEach[EChanges.forEach[eChangeIdManager.setOrGenerateIds(it)]]
-		}
 		this.changes = changes;
 	}
 	
@@ -146,29 +142,6 @@ class AtomicEmfChangeRecorder {
 		return result
 	}
 	
-	/**
-	 * Removes duplicate create operations, which can occur, if an element is created and inserted into 
-	 * a resource (CreateAndInsertRoot) and afterwards also inserted into a containment relation
-	 * (CreateAndInsertNonRoot), because the resource creation is performed lazy and thus the containment
-	 * insertion operation is interpreted as a creation as well.
-	 */
-	 // TODO In fact, we have the same problem with remove changes. We have to monitor the concrete models instead
-	 // of the resources to get rid of that
-	private def void removeDuplicateCreates(List<TransactionalChange> changes) {
-		val createdObjects = changes.generateCreateChangesMultimap
-		for (var i = 0; i < changes.size; i++) {
-			val currentCreatedObjects = createdObjects.get(changes.get(i))
-			for (var k = i + 1; k < changes.size; k++) {
-				for (var object = 0; object < currentCreatedObjects.size; object++) {
-					if (createdObjects.get(changes.get(k)).contains(currentCreatedObjects.get(object))) {
-						val affectedChange = changes.get(k)
-						removeCreateOrDelete(affectedChange as CompositeTransactionalChange, currentCreatedObjects.get(object), true);
-					}
-				}			
-			}
-		}
-	}
-	
 	private def void removeCreateOrDelete(CompositeTransactionalChange change, EObject createdObject, boolean create) {
 		for (var i = 0; i < change.changes.size; i++) {
 			val currentChange = change.changes.get(i);
@@ -193,38 +166,6 @@ class AtomicEmfChangeRecorder {
 		} 
 	}
 	
-	/** 
-	 * Reorders changes so that create changes are always present before insertion changes of the same element.
-	 * Some metamodels produce insertions of elements before inserting them into a containment, resulting in a
-	 * create change after an insertion, which would not be resolvable.
-	 */
-	private def void reorderChanges(List<TransactionalChange> changes) {
-		val createdObjects = changes.generateCreateChangesMultimap
-		var boolean reordered = true;
-		var counter = 0;
-		while(reordered) {
-			reordered = false;
-			for (var i = 0; i < changes.size && !reordered; i++) {	
-				val affectedEObjects = changes.get(i).affectedEObjects;
-				for (var k = i + 1; k < changes.size && !reordered; k++) {
-					for (var object = 0; object < affectedEObjects.size && !reordered; object++) {
-						if (createdObjects.get(changes.get(k)).contains(affectedEObjects.get(object))) {
-							changes.add(i, changes.remove(k));
-							reordered = true;
-						}
-					}
-				}			
-			}
-			// We are playing ping-pong: There must be duplicate create changes so changes are repeatedly reordered
-			if (counter > changes.size * changes.size) {
-				throw new IllegalStateException("Reordering is in endless loop")
-			}
-			counter++;
-		}
-		
-		
- 	}
- 	
  	private def generateDeleteChangesMultimap(List<TransactionalChange> changes) {
 		val Multimap<TransactionalChange, EObject> deletedObjects = ArrayListMultimap.create;
 		for (change : changes) {

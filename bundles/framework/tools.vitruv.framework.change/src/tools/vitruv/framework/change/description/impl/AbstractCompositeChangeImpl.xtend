@@ -74,18 +74,6 @@ abstract class AbstractCompositeChangeImpl<C extends VitruviusChange> implements
 		);
 	}
 
-	override applyBackward() throws IllegalStateException {
-		for (change : changes.reverseView) {
-			change.applyBackward();
-		}
-	}
-
-	override applyForward() throws IllegalStateException {
-		for (change : changes.reverseView) {
-			change.applyForward();
-		}
-	}
-
 	override resolveBeforeAndApplyForward(UuidResolver uuidResolver) {
 		for (c : changes) {
 			c.resolveBeforeAndApplyForward(uuidResolver)
@@ -111,7 +99,7 @@ abstract class AbstractCompositeChangeImpl<C extends VitruviusChange> implements
 	}
 	
 	override toString() '''
-	«this.class.simpleName»:
+	«this.class.simpleName», VURI: «URI»
 		«FOR change : changes»
 			«change»
 		«ENDFOR»
