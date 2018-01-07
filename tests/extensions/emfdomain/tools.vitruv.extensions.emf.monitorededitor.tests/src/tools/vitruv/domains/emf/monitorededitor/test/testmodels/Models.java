@@ -20,12 +20,10 @@ import org.apache.log4j.Logger;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.emf.ecore.resource.URIConverter;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.impl.EcoreResourceFactoryImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 
-import tools.vitruv.domains.emf.monitorededitor.test.testmodels.pcm.PcmTestUtils;
 import tools.vitruv.domains.emf.monitorededitor.test.utils.BasicTestCase;
 
 public class Models {
@@ -33,22 +31,11 @@ public class Models {
 
     public static final String ROOT_OBJECT_URI = "/";
 
-    private static void setupURIPathmaps() {
-        URIConverter.URI_MAP.put(URI.createURI("pathmap://PCM_MODELS/PrimitiveTypes.repository"),
-                URI.createURI(PcmTestUtils.class.getResource("PrimitiveTypes.repository").getFile()));
-        URIConverter.URI_MAP.put(URI.createURI("pathmap://PCM_MODELS/Palladio.resourcetype"),
-                URI.createURI(PcmTestUtils.class.getResource("PrimitiveTypes.repository").getFile()));
-        URIConverter.URI_MAP.put(URI.createURI("pathmap://PCM_MODELS/FailureTypes.repository"),
-                URI.createURI(PcmTestUtils.class.getResource("PrimitiveTypes.repository").getFile()));
-    }
-
     public static Resource loadModel(URL modelURL) {
 
         ResourceSet resSet = new ResourceSetImpl();
         resSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(Resource.Factory.Registry.DEFAULT_EXTENSION,
                 new XMIResourceFactoryImpl());
-
-        setupURIPathmaps();
 
         EcoreResourceFactoryImpl ecoreResFact = new EcoreResourceFactoryImpl();
         URI fileName = BasicTestCase.getURI(modelURL);
