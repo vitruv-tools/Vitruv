@@ -47,7 +47,10 @@ import tools.vitruv.dsls.common.helper.ClassNameGenerator
 		«basicReactionsPackageQualifiedName».reactions«reactionSegment.metamodelPairName»'''
 	
 	public static def String getPackageName(ReactionsSegment reactionSegment) '''
-		«reactionSegment.name.toFirstLower»'''
+		«reactionSegment.name.packageName»'''
+	
+	private static def String getPackageName(String reactionSegmentName) '''
+		«reactionSegmentName.toFirstLower»'''
 	
 	public static def ClassNameGenerator getChangePropagationSpecificationClassNameGenerator(Pair<VitruvDomain, VitruvDomain> metamodelPair) {
 		return new ChangePropagationSpecificationClassNameGenerator(metamodelPair);
@@ -61,8 +64,21 @@ import tools.vitruv.dsls.common.helper.ClassNameGenerator
 		return new RoutinesFacadeClassNameGenerator(reactionSegment);
 	}
 	
-	public static def ClassNameGenerator getImportedRoutinesFacadeClassNameGenerator(ReactionsSegment reactionsSegment, ReactionsSegment importedReactionsSegment) {
-		return new ImportedRoutinesFacadeClassNameGenerator(reactionsSegment, importedReactionsSegment);
+	public static def ClassNameGenerator getImportedRoutinesFacadeClassNameGenerator(ReactionsSegment reactionsSegment, String importedReactionsSegmentName) {
+		return new ImportedRoutinesFacadeClassNameGenerator(reactionsSegment, importedReactionsSegmentName);
+	}
+	
+	// returns the the imported routines facade class name generator for directly imported reactions segments,
+	// and the routines facade class name generator of the imported reactions segment root otherwise
+	public static def ClassNameGenerator getImportedRoutinesFacadeActualClassNameGenerator(ReactionsSegment reactionsSegment,
+		ReactionsSegment importedReactionsSegment) {
+		// also considers the reactions segment itself as possible root:
+		val root = reactionsSegment.getImportedReactionsSegmentRoot(importedReactionsSegment, true);
+		if (root === null) return null; // imported segment not found in the import hierarchy
+		if (root === importedReactionsSegment) {
+			return importedReactionsSegment.routinesFacadeClassNameGenerator;
+		}
+		return root.getImportedRoutinesFacadeClassNameGenerator(importedReactionsSegment.name)
 	}
 	
 	public static def ClassNameGenerator getReactionClassNameGenerator(Reaction reaction) {
@@ -112,7 +128,8 @@ import tools.vitruv.dsls.common.helper.ClassNameGenerator
 		public override String getPackageName() {
 			var packageName = reaction.reactionsSegment.metamodelPairReactionsPackageQualifiedName + "." + reaction.reactionsSegment.packageName;
 			if (reaction.isOverriddenReaction) {
-				packageName += "." + reaction.overriddenReactionsSegment.packageName;
+				// not resolving cross-references here to get the overridden reactions segment name:
+				packageName += "." + reaction.parsedOverriddenReactionsSegmentName.packageName;
 			}
 			return packageName;
 		}
@@ -130,7 +147,8 @@ import tools.vitruv.dsls.common.helper.ClassNameGenerator
 		public override String getPackageName() {
 			var packageName = basicRoutinesPackageQualifiedName + "." + routine.reactionsSegment.packageName;
 			if (routine.isOverriddenRoutine) {
-				packageName += "." + routine.overriddenReactionsSegment.packageName;
+				// not resolving cross-references here to get the overridden reactions segment name:
+				packageName += "." + routine.parsedOverriddenReactionsSegmentName.packageName;
 			}
 			return packageName;
 		}
@@ -151,16 +169,16 @@ import tools.vitruv.dsls.common.helper.ClassNameGenerator
 	
 	private static class ImportedRoutinesFacadeClassNameGenerator implements ClassNameGenerator {
 		private val ReactionsSegment reactionsSegment;
-		private val ReactionsSegment importedReactionsSegment;
-		public new(ReactionsSegment reactionsSegment, ReactionsSegment importedReactionsSegment) {
+		private val String importedReactionsSegmentName;
+		public new(ReactionsSegment reactionsSegment, String importedReactionsSegmentName) {
 			this.reactionsSegment = reactionsSegment;
-			this.importedReactionsSegment = importedReactionsSegment;
+			this.importedReactionsSegmentName = importedReactionsSegmentName;
 		}
 		
 		public override String getSimpleName() '''
 			«ROUTINES_FACADE_CLASS_NAME»'''
 		
 		public override String getPackageName() '''
-			«basicRoutinesPackageQualifiedName».«reactionsSegment.packageName».«importedReactionsSegment.packageName»'''
+			«basicRoutinesPackageQualifiedName».«reactionsSegment.packageName».«importedReactionsSegmentName.packageName»'''
 	}
 }

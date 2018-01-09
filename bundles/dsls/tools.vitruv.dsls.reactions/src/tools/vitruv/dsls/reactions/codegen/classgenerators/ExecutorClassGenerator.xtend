@@ -70,8 +70,8 @@ class ExecutorClassGenerator extends ClassGenerator {
 						case "«reactionsSegment.name»": {
 							return (T) new «routinesFacadeClassNameGenerator.qualifiedName»(this, «executionStateParameter.name», «calledByParameter.name»);
 						}
-					«FOR importedReactionsSegment : reactionsSegment.importedReactionsSegments.keySet»
-						«val importedRoutinesFacadeClassNameGenerator = reactionsSegment.getImportedRoutinesFacadeClassNameGenerator(importedReactionsSegment)»
+					«FOR importedReactionsSegment : reactionsSegment.allImportedReactionsSegments»
+						«val importedRoutinesFacadeClassNameGenerator = reactionsSegment.getImportedRoutinesFacadeActualClassNameGenerator(importedReactionsSegment)»
 							case "«importedReactionsSegment.name»": {
 								return (T) new «importedRoutinesFacadeClassNameGenerator.qualifiedName»(this, «executionStateParameter.name», «calledByParameter.name»);
 							}

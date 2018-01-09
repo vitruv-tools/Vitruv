@@ -77,12 +77,11 @@ class ReactionsLanguageScopeProviderDelegate extends MirBaseScopeProviderDelegat
 		val visibleReactionsSegmentDescs = reactionsImportScopeHelper.getVisibleReactionsSegmentDescriptions(resource, false);
 		return new SimpleScope(visibleReactionsSegmentDescs);
 	}
-	
+
 	def createOverriddenReactionsSegmentScope(ReactionsSegment reactionsSegment) {
-		// TODO check, that this is only used after indexing phase
-		//return createReactionsImportScope(reactionsSegment.eResource);
-		return createScope(IScope.NULLSCOPE, reactionsSegment.importedReactionsSegments.keySet.iterator, [
-			EObjectDescription.create(it.name, it)
+		return new SimpleScope(IScope.NULLSCOPE, reactionsSegment.reactionsImports.map [
+			// this might get called while cross-references cannot not yet be resolved (returns proxy objects then):
+			EObjectDescription.create(it.parsedImportedReactionsSegmentName, it.importedReactionsSegment);
 		]);
 	}
 

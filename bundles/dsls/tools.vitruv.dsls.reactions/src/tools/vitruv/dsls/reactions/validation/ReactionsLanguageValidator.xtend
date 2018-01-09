@@ -67,15 +67,35 @@ class ReactionsLanguageValidator extends AbstractReactionsLanguageValidator {
 
 	@Check
 	def checkReactionsSegment(ReactionsSegment reactionsSegment) {
-		val reactionsSegmentName = reactionsSegment.name;
+		// val reactionsSegmentName = reactionsSegment.name;
 
 		// check for duplicate and cyclic reactions imports:
-		val alreadyCheckedImportedSegments = new HashMap<String, ReactionsImport>();
+		val alreadyCheckedReactionsImports = new HashMap<String, ReactionsImport>();
 		for (reactionsImport : reactionsSegment.reactionsImports) {
+			val importedSegment = reactionsImport.importedReactionsSegment;
+			val importedSegmentName = importedSegment.name;
+			val duplicateReactionsImport = alreadyCheckedReactionsImports.putIfAbsent(importedSegmentName, reactionsImport);
+			if (duplicateReactionsImport !== null) {
+				// duplicate reactions import:
+				val errorMessage = "Duplicate reactions import: " + importedSegmentName;
+				error(errorMessage, reactionsImport, ReactionsLanguagePackage.Literals.REACTIONS_IMPORT__IMPORTED_REACTIONS_SEGMENT);
+				error(errorMessage, duplicateReactionsImport, ReactionsLanguagePackage.Literals.REACTIONS_IMPORT__IMPORTED_REACTIONS_SEGMENT);
+			}
+		}
+
+		// TODO cyclic imports
+		// TODO duplicate transitive imports, issue? yes, because unclear then which overrides are used / which super class is extended
+		// maybe let each segment use its own RoutinesFacade which extends from base RoutinesFacade: root.B extends B and not A.B (A uses its own variant of B)
+		// and then allow overriding of routines inside the hierarchy by explicitly specifying it with a qualified name: import A.B, override A.B::doSth
+		// -> root.B extends B, root.A.B extends A.B extends B, B::doSth -> call to B.doSth from root -> uses root.B.doSth()
+		// but: root calls routine in A which calls routine in B (A.B) -> same B routine now has to use A.B instead of root.B
+		// -> need to pass not only root executor, but also caller's reactions segment name, so that B can ask root.Executor for A.B instead of root.B facade
+
+		/*for (reactionsImport : reactionsSegment.reactionsImports) {
 			val directlyImportedSegment = reactionsImport.importedReactionsSegment;
-			val allImportedSegments = directlyImportedSegment.importedReactionsSegments;
-			allImportedSegments.put(directlyImportedSegment, reactionsImport);
-			for (importedSegment : allImportedSegments.keySet) {
+			val allImportedSegments = directlyImportedSegment.allImportedReactionsSegments;
+			allImportedSegments.add(directlyImportedSegment);
+			for (importedSegment : allImportedSegments) {
 				val importedSegmentName = importedSegment.name;
 				if (reactionsSegmentName.equals(importedSegmentName)) {
 					// cyclic import:
@@ -91,7 +111,7 @@ class ReactionsLanguageValidator extends AbstractReactionsLanguageValidator {
 					}
 				}
 			}
-		}
+		}*/
 
 		// check for duplicate reaction names in same segment:
 		val alreadyCheckedReactions = new HashMap<String, Reaction>();

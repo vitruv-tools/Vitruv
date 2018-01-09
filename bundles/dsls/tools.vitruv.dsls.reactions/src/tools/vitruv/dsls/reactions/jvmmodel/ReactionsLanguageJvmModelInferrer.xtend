@@ -4,7 +4,6 @@
 package tools.vitruv.dsls.reactions.jvmmodel
 
 import com.google.inject.Inject
-import org.eclipse.xtext.nodemodel.util.NodeModelUtils
 import org.eclipse.xtext.xbase.jvmmodel.AbstractModelInferrer
 import org.eclipse.xtext.xbase.jvmmodel.IJvmDeclaredTypeAcceptor
 import tools.vitruv.dsls.reactions.codegen.classgenerators.ExecutorClassGenerator
@@ -18,7 +17,6 @@ import tools.vitruv.dsls.reactions.codegen.typesbuilder.JvmTypesBuilderWithoutAs
 import tools.vitruv.dsls.reactions.codegen.typesbuilder.TypesBuilderExtensionProvider
 import tools.vitruv.dsls.reactions.codegen.classgenerators.ReactionClassGenerator
 import tools.vitruv.dsls.reactions.codegen.classgenerators.ClassGenerator
-import static extension tools.vitruv.dsls.reactions.codegen.helper.ReactionsLanguageHelper.*
 
 /**
  * <p>Infers a JVM model for the Xtend code blocks of the reaction file model.</p> 
@@ -38,12 +36,10 @@ class ReactionsLanguageJvmModelInferrer extends AbstractModelInferrer  {
 	}
 	
 	def dispatch void generate(Reaction reaction, IJvmDeclaredTypeAcceptor acceptor, boolean isPreIndexingPhase) {
-		if (isPreIndexingPhase && reaction.isOverriddenReaction) return;
 		acceptor.accept(new ReactionClassGenerator(reaction, typesBuilderExtensionProvider));
 	}
 	
 	def dispatch void generate(Routine routine, IJvmDeclaredTypeAcceptor acceptor, boolean isPreIndexingPhase) {
-		if (isPreIndexingPhase && routine.isOverriddenRoutine) return;
 		acceptor.accept(new RoutineClassGenerator(routine, typesBuilderExtensionProvider));
 	}
 	
@@ -52,15 +48,8 @@ class ReactionsLanguageJvmModelInferrer extends AbstractModelInferrer  {
 		
 		for (reactionsSegment : file.reactionsSegments) {
 			acceptor.accept(new RoutineFacadeClassGenerator(reactionsSegment, typesBuilderExtensionProvider));
-			if (!isPreIndexingPhase) {
-				// TODO this doesn't properly work, because the classes are not getting added to the index
-				// but during indexing we cannot refer to the imported reactions segments.. need to solve this differently
-				for (reactionsImportEntry : reactionsSegment.importedReactionsSegments.entrySet) {
-					val importedReactionsSegment = reactionsImportEntry.key;
-					val rootReactionsImport = reactionsImportEntry.value;
-					System.out.println("Current segment: " + reactionsSegment.name + " , Imported: " + importedReactionsSegment + " , imported text: " + NodeModelUtils.getTokenText(NodeModelUtils.getNode(rootReactionsImport)) + " , root import: " + rootReactionsImport);
-					acceptor.accept(new ImportedRoutinesFacadeClassGenerator(reactionsSegment, importedReactionsSegment, rootReactionsImport, typesBuilderExtensionProvider));
-				}
+			for (reactionsImport : reactionsSegment.reactionsImports) {
+				acceptor.accept(new ImportedRoutinesFacadeClassGenerator(reactionsSegment, reactionsImport, typesBuilderExtensionProvider));
 			}
 			for (effect : reactionsSegment.routines) {
 				generate(effect, acceptor, isPreIndexingPhase);

@@ -139,7 +139,7 @@ final class ReactionsLanguageHelper {
 	}
 
 	public static def isOverriddenReaction(Reaction reaction) {
-		// check if overridden reactions segment is set, without triggering resolve:
+		// check if overridden reactions segment is set, without resolving the cross-reference:
 		return reaction.eIsSet(reaction.eClass.getEStructuralFeature(ReactionsLanguagePackage.REACTION__OVERRIDDEN_REACTIONS_SEGMENT));
 	}
 
@@ -158,7 +158,7 @@ final class ReactionsLanguageHelper {
 	}
 
 	public static def isOverriddenRoutine(Routine routine) {
-		// check if overridden reactions segment is set, without triggering resolve:
+		// check if overridden reactions segment is set, without resolving the cross-reference:
 		return routine.eIsSet(routine.eClass.getEStructuralFeature(ReactionsLanguagePackage.ROUTINE__OVERRIDDEN_REACTIONS_SEGMENT));
 	}
 
@@ -172,29 +172,84 @@ final class ReactionsLanguageHelper {
 
 	// import of reactions and routines:
 
+	/**
+	 * Gets the parsed imported reactions segment name for the given reactions import, without actually resolving the cross-reference. 
+	 */
+	public static def String getParsedImportedReactionsSegmentName(ReactionsImport reactionsImport) {
+		val nodes = NodeModelUtils.findNodesForFeature(reactionsImport, ReactionsLanguagePackage.Literals.REACTIONS_IMPORT__IMPORTED_REACTIONS_SEGMENT);
+		if (nodes.isEmpty) return null;
+		return nodes.get(0).text;
+	}
+
+	/**
+	 * Gets the parsed overridden reactions segment name for the given reaction, without actually resolving the cross-reference. 
+	 */
+	public static def String getParsedOverriddenReactionsSegmentName(Reaction reaction) {
+		val nodes = NodeModelUtils.findNodesForFeature(reaction, ReactionsLanguagePackage.Literals.REACTION__OVERRIDDEN_REACTIONS_SEGMENT);
+		if (nodes.isEmpty) return null;
+		return nodes.get(0).text;
+	}
+
+	/**
+	 * Gets the parsed overridden reactions segment name for the given routine, without actually resolving the cross-reference. 
+	 */
+	public static def String getParsedOverriddenReactionsSegmentName(Routine routine) {
+		val nodes = NodeModelUtils.findNodesForFeature(routine, ReactionsLanguagePackage.Literals.ROUTINE__OVERRIDDEN_REACTIONS_SEGMENT);
+		if (nodes.isEmpty) return null;
+		return nodes.get(0).text;
+	}
+
 	public static def String getImportedRoutinesFacadeFieldName(ReactionsSegment importedReactionsSegment) {
 		return importedReactionsSegment.name;
 	}
 
-	// keys: all imported segments (including transitively imported segments), values: the root imports the imported segments originated from
-	public static def Map<ReactionsSegment, ReactionsImport> getImportedReactionsSegments(ReactionsSegment reactionsSegment) {
-		val importedReactionsSegments = new LinkedHashMap<ReactionsSegment, ReactionsImport>();
-		for (rootReactionsImport : reactionsSegment.reactionsImports) {
-			// add imported segment and recursively all transitively imported segments:
-			addImportedReactionsSegments(rootReactionsImport, rootReactionsImport.importedReactionsSegment, importedReactionsSegments);
-		}
-		return importedReactionsSegments;
+	/**
+	 * Searches through the reactions import hierarchy for the first reactions segment that imports the specified reactions
+	 * segment. If no such reactions segment is found, the imported reactions segment itself is returned.
+	 * The search starts at the reactions imports of the given reactions segment. Depending on the checkSegmentItself parameter,
+	 * the given reactions segment gets considered as possible root (in case it directly imports the specified reactions
+	 * segment), or not (in which case only the imported reactions segments get considered as possible root). 
+	 */
+	public static def ReactionsSegment getImportedReactionsSegmentRoot(ReactionsSegment reactionsSegment,
+		ReactionsSegment importedReactionsSegment, boolean checkSegmentItself) {
+		// search recursively through all directly and transitively imported segments:
+		val root = reactionsSegment.findImportedReactionsSegmentRoot(importedReactionsSegment, checkSegmentItself);
+		// return imported reactions segment itself if no root was found:
+		return root ?: importedReactionsSegment;
 	}
 
-	private static def void addImportedReactionsSegments(ReactionsImport rootReactionsImport, ReactionsSegment importedReactionsSegment,
-		Map<ReactionsSegment, ReactionsImport> importedReactionsSegments) {
-		// add imported segment:
-		importedReactionsSegments.putIfAbsent(importedReactionsSegment, rootReactionsImport);
-
-		// recursively add all transitively imported segments:
-		for (reactionsImport : importedReactionsSegment.reactionsImports) {
-			addImportedReactionsSegments(rootReactionsImport, reactionsImport.importedReactionsSegment, importedReactionsSegments);
+	private static def ReactionsSegment findImportedReactionsSegmentRoot(ReactionsSegment reactionsSegment,
+		ReactionsSegment importedReactionsSegment, boolean checkImportsOfCurrentSegment) {
+		val importedReactionsSegments = reactionsSegment.reactionsImports.map[it.importedReactionsSegment];
+		// check if the current reactions segment imports the specified reactions segment:
+		if (checkImportsOfCurrentSegment) {
+			if (importedReactionsSegments.exists[it.name.equals(importedReactionsSegment.name)]) {
+				return reactionsSegment;
+			}
 		}
+		// search recursively through all transitively imported segments, returns null if no root was found:
+		return importedReactionsSegments.map [
+			it.findImportedReactionsSegmentRoot(importedReactionsSegment, true);
+		].findFirst[it !== null];
+	}
+
+	// includes transitively imported reactions segments:
+	public static def List<ReactionsSegment> getAllImportedReactionsSegments(ReactionsSegment reactionsSegment) {
+		val allImportedReactionsSegments = new ArrayList<ReactionsSegment>();
+		reactionsSegment.addAllImportedReactionsSegments(allImportedReactionsSegments)
+		return allImportedReactionsSegments;
+	}
+
+	private static def void addAllImportedReactionsSegments(ReactionsSegment reactionsSegment, List<ReactionsSegment> allImportedReactionsSegments) {
+		// recursively add all directly and transitively imported reactions segments that are not yet contained:
+		val importedReactionsSegments = reactionsSegment.reactionsImports.map[it.importedReactionsSegment];
+		importedReactionsSegments.forEach [
+			val importedReactionsSegmentName = it.name;
+			if (allImportedReactionsSegments.findFirst[it.name.equals(importedReactionsSegmentName)] === null) {
+				allImportedReactionsSegments.add(it);
+				it.addAllImportedReactionsSegments(allImportedReactionsSegments);
+			}
+		];
 	}
 
 	// gets all reactions of the given segment, including own reactions and directly and transitively imported reactions, with overridden reactions being replaced

@@ -35,11 +35,11 @@ class RoutineFacadeClassGenerator extends ClassGenerator {
 		generatedClass => [
 			superTypes += typeRef(AbstractRepairRoutinesFacade);
 			members += generateBaseConstructor().setupConstructor();
-			// fields for all imported routines facades:
-			for (reactionsImportEntry : reactionsSegment.importedReactionsSegments.entrySet) {
-				val importedReactionsSegment = reactionsImportEntry.key;
-				val importedRoutinesFacadeClassName = reactionsSegment.getImportedRoutinesFacadeClassNameGenerator(importedReactionsSegment).qualifiedName;
+			// fields for all directly imported routines facades:
+			for (reactionsImport : reactionsSegment.reactionsImports) {
+				val importedReactionsSegment = reactionsImport.importedReactionsSegment;
 				val importedRoutinesFacadeFieldName = importedReactionsSegment.importedRoutinesFacadeFieldName;
+				val importedRoutinesFacadeClassName = reactionsSegment.getImportedRoutinesFacadeClassNameGenerator(importedReactionsSegment.name).qualifiedName;
 				members += reactionsSegment.toField(importedRoutinesFacadeFieldName, typeRef(importedRoutinesFacadeClassName))[
 					visibility = JvmVisibility.PUBLIC;
 				]
@@ -65,8 +65,8 @@ class RoutineFacadeClassGenerator extends ClassGenerator {
 	private def JvmConstructor setupConstructor(JvmConstructor constructor) {
 		constructor.body = '''
 		super(«EXECUTOR_PARAMETER_NAME», «REACTION_EXECUTION_STATE_PARAMETER_NAME», «EFFECT_FACADE_CALLED_BY_FIELD_NAME»);
-		«FOR reactionsImportEntry : reactionsSegment.importedReactionsSegments.entrySet»
-		«val importedReactionsSegment = reactionsImportEntry.key»
+		«FOR reactionsImport : reactionsSegment.reactionsImports»
+		«val importedReactionsSegment = reactionsImport.importedReactionsSegment»
 		«val importedRoutinesFacadeFieldName = importedReactionsSegment.importedRoutinesFacadeFieldName»
 		this.«importedRoutinesFacadeFieldName» = «EXECUTOR_PARAMETER_NAME».«EXECUTOR_ROUTINES_FACADE_FACTORY_METHOD_NAME»("«importedReactionsSegment.name»", «REACTION_EXECUTION_STATE_PARAMETER_NAME», «EFFECT_FACADE_CALLED_BY_FIELD_NAME»);
 		«ENDFOR»''';
