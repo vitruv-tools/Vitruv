@@ -3,7 +3,6 @@ package tools.vitruv.dsls.reactions.api.generator;
 import org.eclipse.xtext.generator.IFileSystemAccess2
 import com.google.inject.ImplementedBy
 import tools.vitruv.dsls.reactions.reactionsLanguage.Reaction
-import tools.vitruv.dsls.reactions.generator.ReactionBuilder
 import org.eclipse.xtext.resource.XtextResourceSet
 import tools.vitruv.dsls.reactions.builder.FluentReactionsFileBuilder
 import tools.vitruv.dsls.reactions.generator.ExternalReactionsGenerator
