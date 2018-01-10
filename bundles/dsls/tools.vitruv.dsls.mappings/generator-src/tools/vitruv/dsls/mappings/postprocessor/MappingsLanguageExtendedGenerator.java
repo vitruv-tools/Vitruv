@@ -9,7 +9,6 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 
 // TODO MK: refactor commonalities with ReactionsLanguageExtendedGenerator
-@SuppressWarnings("restriction")
 public class MappingsLanguageExtendedGenerator extends XtextGenerator {
 	public MappingsLanguageExtendedGenerator() {
 		new XtextStandaloneSetup() {
