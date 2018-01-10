@@ -2,12 +2,36 @@ module tools.vitruv.dsls.GenerateMirBase
 
 import org.eclipse.xtext.xtext.generator.*
 import org.eclipse.xtext.xtext.generator.model.project.*
+import org.eclipse.emf.mwe.utils.DirectoryCleaner
 
 var rootPath = ".."
+var testRootPath = "${rootPath}/../../tests/dsls"
 var projectName = "tools.vitruv.dsls.mirbase"
-var testProjectPath = "${rootPath}/../../tests/dsls/${projectName}"
+var basePath = "${rootPath}/${projectName}"
+var testBasePath = "${testRootPath}/${projectName}"
+
 
 Workflow {
+	component = DirectoryCleaner {
+    	directory = "${basePath}/src-gen"
+    }
+    
+    component = DirectoryCleaner {
+    	directory = "${basePath}.ui/src-gen"
+    }
+    
+    component = DirectoryCleaner {
+    	directory = "${basePath}.ide/src-gen"
+    }
+
+    component = DirectoryCleaner {
+    	directory = "${testBasePath}.tests/src-gen"
+    }
+    
+    component = DirectoryCleaner {
+    	directory = "${testBasePath}.ui.tests/src-gen"
+    }
+    
 	component = XtextGenerator {
 		configuration = {
 			project = StandardProjectConfig {
@@ -15,14 +39,14 @@ Workflow {
 				rootPath = rootPath
 				runtimeTest = {
 					enabled = true
-					root = "${testProjectPath}.tests"
+					root = "${testBasePath}.tests"
 				}
 				eclipsePlugin = {
 					enabled = true
 				}
 				eclipsePluginTest = {
 					enabled = true
-					root = "${testProjectPath}.ui.tests"
+					root = "${testBasePath}.ui.tests"
 				}
 				createEclipseMetaData = true
 			}
