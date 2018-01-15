@@ -19,6 +19,12 @@ import static extension tools.vitruv.framework.change.echange.util.EChangeUtil.*
 import tools.vitruv.framework.change.echange.eobject.EObjectSubtractedEChange
 import org.eclipse.xtend.lib.annotations.Data
 
+/**
+ * This {@link Adapter} records changes to the given model elements as {@link CompositeTransactionalChanges}.
+ * Recording can be started with {@link #beginRecording} and ended with {@link #endRecording}. It is assumed 
+ * that all elements that do not have a container when ending the recording have been deleted, resulting in
+ * an appropriate delete change.
+ */
 class NotificationRecorder implements Adapter {
 	private Set<Notifier> rootObjects;
 	private boolean isRecording = false
@@ -68,16 +74,28 @@ class NotificationRecorder implements Adapter {
 		recursivelyAddAdapter(newTarget);
 	}
 	
+	/**
+	 * Add the given elements and all its contained elements ({@link Resource}s, {@link EObject}s) to the recorder.
+	 * 
+	 * @param notifier - the {@link Notifier} to add the recorder to
+	 */
 	def void addToRecording(Notifier notifier) {
 		rootObjects += notifier;
 		recursivelyAddAdapter(notifier);
 	}
 	
+	/**
+	 * Removes the given elements and all its contained elements (resources, EObjects) from the recorder.
+	 * @param notifier - the {@link Notifier} to remove the recorder from
+	 */
 	def void removeFromRecording(Notifier notifier) {
 		rootObjects -= notifier;
 		recursivelyRemoveAdapter(notifier);
 	}
 	
+	/**
+	 * Starts recording changes on the registered elements.
+	 */
 	def beginRecording() {
 		if (!isRecording) {
 			changes = newArrayList();
@@ -88,6 +106,12 @@ class NotificationRecorder implements Adapter {
 		}
 	}
 
+	/**
+	 * Ends recording changes on the registered elements.
+	 * All elements that were removed from their container and not inserted into another one
+	 * are treated as deleted and a delete change is created for them, inserted right after
+	 * the change describing the removal from the container.
+	 */
 	def endRecording() {
 		isRecording = false;
 		postprocessRemovals();
