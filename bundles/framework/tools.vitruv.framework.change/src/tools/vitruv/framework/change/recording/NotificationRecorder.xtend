@@ -12,12 +12,18 @@ import tools.vitruv.framework.change.echange.EChangeIdManager
 import tools.vitruv.framework.change.description.TransactionalChange
 import tools.vitruv.framework.change.description.VitruviusChangeFactory
 import java.util.Set
+import tools.vitruv.framework.change.description.CompositeTransactionalChange
+import tools.vitruv.framework.change.description.ConcreteChange
+import tools.vitruv.framework.change.echange.eobject.EObjectAddedEChange
+import static extension tools.vitruv.framework.change.echange.util.EChangeUtil.*
+import tools.vitruv.framework.change.echange.eobject.EObjectSubtractedEChange
+import org.eclipse.xtend.lib.annotations.Data
 
 class NotificationRecorder implements Adapter {
 	private Set<Notifier> rootObjects;
 	private boolean isRecording = false
 	List<EChange> changes;
-	List<TransactionalChange> resultChanges;
+	List<CompositeTransactionalChange> resultChanges;
 	private val EChangeIdManager idManager
 	
 	new (EChangeIdManager idManager) {
@@ -37,6 +43,13 @@ class NotificationRecorder implements Adapter {
 		if (notification.newValue instanceof Notifier) {
 			addToRecording(notification.newValue as Notifier);
 		}
+//		val notifier = notification.notifier;
+//		if (notifier instanceof EObject) {
+//			if (notifier.eContainer?.eResource !== notifier.eResource) {
+//				notifier.recursivelyRemoveAdapter;
+//			}
+//			return;
+//		}
 		if (!isRecording) {
 			return;
 		}
@@ -77,10 +90,44 @@ class NotificationRecorder implements Adapter {
 
 	def endRecording() {
 		isRecording = false;
+		postprocessRemovals();
+	}
+	
+	@Data
+	private static class PotentialRemoval {
+		CompositeTransactionalChange transactionalChange;
+		ConcreteChange removeChange;
+		EObjectSubtractedEChange<?> atomicRemoveChange;
+	}
+	
+	def postprocessRemovals() {
+		val potentialRemovals = newArrayList;
+		for (resultChange : resultChanges) {
+			for (concreteChange : resultChange.changes.filter(ConcreteChange)) {
+				val eChange = concreteChange.EChange;
+				if (eChange instanceof EObjectSubtractedEChange<?>) {
+					if (eChange.isContainmentRemoval) {
+						potentialRemovals.add(new PotentialRemoval(resultChange, concreteChange, eChange));
+					}
+				}
+				if (eChange instanceof EObjectAddedEChange<?>) {
+					if (eChange.isContainmentInsertion) {
+						potentialRemovals.removeIf[it.atomicRemoveChange.oldValueID == eChange.newValueID]
+					}
+				}
+			}
+		}
+		for (removal : potentialRemovals) {
+			val deleteChange = new NotificationToEChangeConverter(idManager).createDeleteChange(removal.atomicRemoveChange);
+			val currentChanges = removal.transactionalChange.changes;
+			val indexOfRemoveChange = currentChanges.indexOf(removal.removeChange);
+			val packagedDeleteChange = VitruviusChangeFactory.instance.createConcreteApplicableChange(deleteChange);
+			currentChanges.add(indexOfRemoveChange + 1, packagedDeleteChange);
+		}
 	}
 
-	def getChanges() {
-		return resultChanges;
+	def List<TransactionalChange> getChanges() {
+		return resultChanges.filter(TransactionalChange).toList;
 	}
 
 	def isRecording() {
@@ -116,7 +163,7 @@ class NotificationRecorder implements Adapter {
 	}
 	
 	private def dispatch void recursivelyAddAdapter(EObject object) {
-		object.eContents().forEach[recursivelyAddAdapter];
+		object.eContents().filter[eResource == object.eResource].forEach[recursivelyAddAdapter];
 		object.addAdapter;
 	}
 	

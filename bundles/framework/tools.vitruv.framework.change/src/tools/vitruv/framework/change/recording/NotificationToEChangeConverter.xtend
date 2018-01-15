@@ -93,6 +93,13 @@ final class NotificationToEChangeConverter {
 		}
 		return #[]
 	}
+		
+	public def createDeleteChange(EObjectSubtractedEChange<?> change) {
+		val deleteChange = TypeInferringAtomicEChangeFactory.instance.createDeleteEObjectChange(change.oldValue);
+		eChangeIdManager.setOrGenerateIds(deleteChange);
+		deleteChange.consequentialRemoveChanges += recursiveRemoval(change.oldValue);
+		return deleteChange;
+	}	
 
 	def private Iterable<EChange> handleMultiAttribute(NotificationInfo n) {
 		var List<EChange> changes = new ArrayList()
@@ -196,15 +203,15 @@ final class NotificationToEChangeConverter {
 		return beforeAndAfterCreateChanges.key + #[change] + beforeAndAfterCreateChanges.value
 	}
 
-	private def handleRemoveReference(EObject affectedEObject, EReference affectedReference, EObject oldValue,
+	private def Iterable<EChange> handleRemoveReference(EObject affectedEObject, EReference affectedReference, EObject oldValue,
 		int position) {
 		val change = TypeInferringAtomicEChangeFactory.instance.createRemoveReferenceChange(affectedEObject,
 			affectedReference, oldValue, position);
 		eChangeIdManager.setOrGenerateIds(change);
-		return #[change] + change.getDeleteChangesIfNecessary(change.affectedFeature.containment)
+		return #[change]
 	}
 
-	private def List<EChange> handleReplaceReference(EObject affectedEObject, EReference reference, EObject oldValue,
+	private def Iterable<EChange> handleReplaceReference(EObject affectedEObject, EReference reference, EObject oldValue,
 		EObject newValue, boolean unset) {
 		val change = TypeInferringAtomicEChangeFactory.instance.
 			createReplaceSingleReferenceChange(affectedEObject, reference, oldValue, newValue)
@@ -213,10 +220,8 @@ final class NotificationToEChangeConverter {
 		val List<EChange> result = newArrayList;
 		val beforeAndAfterCreateChanges = change.getCreateBeforeAndAfterChangesIfNecessary;
 		eChangeIdManager.setOrGenerateIds(change);
-		val deleteChanges = change.getDeleteChangesIfNecessary(change.affectedFeature.containment);
 		result += beforeAndAfterCreateChanges.key;
 		result += change;
-		result += deleteChanges;
 		result += beforeAndAfterCreateChanges.value;
 		return result;
 	}
@@ -235,18 +240,6 @@ final class NotificationToEChangeConverter {
 			afterChanges += recursiveAddition(change.newValue);
 		}
 		return new Pair(beforeChanges, afterChanges);
-	}
-
-	private def Iterable<EChange> getDeleteChangesIfNecessary(EObjectSubtractedEChange<?> change, boolean containment) {
-		val changes = <EChange>newArrayList();
-		val deleted = change.oldValue !== null && containment;
-		if (deleted) {
-			val deleteChange = TypeInferringAtomicEChangeFactory.instance.createDeleteEObjectChange(change.oldValue);
-			eChangeIdManager.setOrGenerateIds(deleteChange);
-			deleteChange.consequentialRemoveChanges += recursiveRemoval(change.oldValue);
-			changes += deleteChange;
-		}
-		return changes;
 	}
 
 	private def handleResourceChange(NotificationInfo notification) {
@@ -288,7 +281,7 @@ final class NotificationToEChangeConverter {
 		val change = TypeInferringAtomicEChangeFactory.instance.createRemoveRootChange(oldRootElement, resource,
 			position);
 		eChangeIdManager.setOrGenerateIds(change);
-		return #[change] + change.getDeleteChangesIfNecessary(true);
+		return #[change];
 	}
 
 	def private Iterable<EChange> handleSetAttribute(NotificationInfo n) {
@@ -321,7 +314,7 @@ final class NotificationToEChangeConverter {
 		return changes
 	}
 
-	private def List<EChange> handleSetReference(NotificationInfo n) {
+	private def Iterable<EChange> handleSetReference(NotificationInfo n) {
 		val oldValue = n.getOldModelElementValue()
 		val newValue = n.getNewModelElementValue()
 
