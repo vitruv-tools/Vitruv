@@ -116,7 +116,7 @@ final class ReactionsLanguageHelper {
 
 	public static def String getFormattedReactionName(Reaction reaction) {
 		var String reactionName = "";
-		if (reaction.isOverriddenReaction) {
+		if (reaction.isOverrideReaction) {
 			reactionName += reaction.overriddenReactionsSegment.packageName + OVERRIDDEN_REACTIONS_SEGMENT_SEPARATOR;
 		}
 		reactionName += reaction.name.toFirstUpper;
@@ -125,20 +125,20 @@ final class ReactionsLanguageHelper {
 
 	public static def String getFormattedRoutineName(Routine routine) {
 		var String routineName = "";
-		if (routine.isOverriddenRoutine) {
+		if (routine.isOverrideRoutine) {
 			routineName += routine.overriddenReactionsSegment.packageName + OVERRIDDEN_REACTIONS_SEGMENT_SEPARATOR;
 		}
 		routineName += routine.name.toFirstLower;
 		return routineName;
 	}
 
-	// regular vs overridden reactions:
+	// regular vs override reactions:
 
 	public static def isRegularReaction(Reaction reaction) {
-		return !reaction.isOverriddenReaction;
+		return !reaction.isOverrideReaction;
 	}
 
-	public static def isOverriddenReaction(Reaction reaction) {
+	public static def isOverrideReaction(Reaction reaction) {
 		// check if overridden reactions segment is set, without resolving the cross-reference:
 		return reaction.eIsSet(reaction.eClass.getEStructuralFeature(ReactionsLanguagePackage.REACTION__OVERRIDDEN_REACTIONS_SEGMENT));
 	}
@@ -147,17 +147,17 @@ final class ReactionsLanguageHelper {
 		return reactionsSegment.reactions.filter[isRegularReaction];
 	}
 
-	public static def getOverriddenReactions(ReactionsSegment reactionsSegment) {
-		return reactionsSegment.reactions.filter[isOverriddenReaction];
+	public static def getOverrideReactions(ReactionsSegment reactionsSegment) {
+		return reactionsSegment.reactions.filter[isOverrideReaction];
 	}
 
-	// regular vs overridden routines:
+	// regular vs override routines:
 
 	public static def isRegularRoutine(Routine routine) {
-		return !routine.isOverriddenRoutine;
+		return !routine.isOverrideRoutine;
 	}
 
-	public static def isOverriddenRoutine(Routine routine) {
+	public static def isOverrideRoutine(Routine routine) {
 		// check if overridden reactions segment is set, without resolving the cross-reference:
 		return routine.eIsSet(routine.eClass.getEStructuralFeature(ReactionsLanguagePackage.ROUTINE__OVERRIDDEN_REACTIONS_SEGMENT));
 	}
@@ -166,8 +166,8 @@ final class ReactionsLanguageHelper {
 		return reactionsSegment.routines.filter[isRegularRoutine];
 	}
 
-	public static def getOverriddenRoutines(ReactionsSegment reactionsSegment) {
-		return reactionsSegment.routines.filter[isOverriddenRoutine];
+	public static def getOverrideRoutines(ReactionsSegment reactionsSegment) {
+		return reactionsSegment.routines.filter[isOverrideRoutine];
 	}
 
 	// import of reactions and routines:
@@ -187,6 +187,7 @@ final class ReactionsLanguageHelper {
 	public static def String getParsedOverriddenReactionsSegmentName(Reaction reaction) {
 		val nodes = NodeModelUtils.findNodesForFeature(reaction, ReactionsLanguagePackage.Literals.REACTION__OVERRIDDEN_REACTIONS_SEGMENT);
 		if (nodes.isEmpty) return null;
+		// TODO use NodeModelUtils.getTokenText(), just in case?
 		return nodes.get(0).text;
 	}
 
@@ -196,6 +197,7 @@ final class ReactionsLanguageHelper {
 	public static def String getParsedOverriddenReactionsSegmentName(Routine routine) {
 		val nodes = NodeModelUtils.findNodesForFeature(routine, ReactionsLanguagePackage.Literals.ROUTINE__OVERRIDDEN_REACTIONS_SEGMENT);
 		if (nodes.isEmpty) return null;
+		// TODO use NodeModelUtils.getTokenText(), just in case?
 		return nodes.get(0).text;
 	}
 
@@ -269,12 +271,12 @@ final class ReactionsLanguageHelper {
 		}
 
 		// replace overridden reactions:
-		for (overriddenReaction : reactionsSegment.overriddenReactions) {
-			val reactions = reactionsBySegment.get(overriddenReaction.overriddenReactionsSegment);
+		for (overrideReaction : reactionsSegment.overrideReactions) {
+			val reactions = reactionsBySegment.get(overrideReaction.overriddenReactionsSegment);
 			if (reactions !== null) {
 				reactions.replaceAll([
-					if (it.name.equals(overriddenReaction.name)) {
-						return overriddenReaction;
+					if (it.name.equals(overrideReaction.name)) {
+						return overrideReaction;
 					} else {
 						return it;
 					}

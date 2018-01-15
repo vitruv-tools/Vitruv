@@ -43,8 +43,8 @@ class ImportedRoutinesFacadeClassGenerator extends RoutineFacadeClassGenerator {
 				superTypes += typeRef(importedReactionsSegmentRoot.getImportedRoutinesFacadeClassNameGenerator(importedReactionsSegmentName).qualifiedName);
 			}
 			members += generateBaseConstructor();
-			// overridden routines:
-			reactionsSegment.overriddenRoutines.filter [
+			// override routines:
+			reactionsSegment.overrideRoutines.filter [
 				importedReactionsSegmentName.equals(it.overriddenReactionsSegment.name);
 			].forEach [
 				generatedClass.members += it.generateCallMethod;
