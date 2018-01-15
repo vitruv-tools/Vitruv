@@ -120,11 +120,13 @@ abstract class AbstractRepairRoutineRealization extends CallHierarchyHaving impl
 			val _resourceURI = PersistenceHelper.getURIFromSourceProjectFolder(alreadyPersistedObject, persistencePath);
 			logger.debug("Registered to persist root " + elementToPersist + " in: " + VURI.getInstance(_resourceURI));
 			
-			// Update TUID after removal, as persistence will also change it and rely on an up-to-date value			
-			TuidManager.getInstance().registerObjectUnderModification(elementToPersist);
-			EcoreUtil.remove(elementToPersist);
-			TuidManager.getInstance().updateTuidsOfRegisteredObjects();
-			resourceAccess.persistAsRoot(elementToPersist, VURI.getInstance(_resourceURI));
+			if (elementToPersist.eResource?.URI !== _resourceURI) {
+				// Update TUID after removal, as persistence will also change it and rely on an up-to-date value			
+				TuidManager.getInstance().registerObjectUnderModification(elementToPersist);
+				EcoreUtil.remove(elementToPersist);
+				TuidManager.getInstance().updateTuidsOfRegisteredObjects();
+				resourceAccess.persistAsRoot(elementToPersist, VURI.getInstance(_resourceURI));
+			}
 		}
 
 		/**
