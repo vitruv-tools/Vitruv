@@ -25,10 +25,10 @@ class ChangeDescriptionComplexSequencesTest extends ChangeDescription2ChangeTran
 		this.rootElement.singleValuedContainmentEReference = nonRoot;
 				
 		// assert
-		changes.assertChangeCount(6)
+		changes.assertChangeCount(5)
 		changes.assertSetSingleValuedEReference(this.rootElement, ROOT__SINGLE_VALUED_CONTAINMENT_EREFERENCE, nonRoot, true, true, false)
 			.assertReplaceSingleValuedEAttribute(nonRoot, IDENTIFIED__ID, null, nonRoot.id, false, false)
-			.assertUnsetSingleValuedEReference(this.rootElement, ROOT__SINGLE_VALUED_CONTAINMENT_EREFERENCE, nonRoot, true, true, false)
+			.assertUnsetSingleValuedEReference(this.rootElement, ROOT__SINGLE_VALUED_CONTAINMENT_EREFERENCE, nonRoot, true, false, false)
 			.assertSetSingleValuedEReference(this.rootElement, ROOT__SINGLE_VALUED_CONTAINMENT_EREFERENCE, nonRoot, true, false, false)
 			.assertEmpty;
 		// There is no 5th change setting the ID again, because the element is stored in a ChangeDescription in between, which means 
