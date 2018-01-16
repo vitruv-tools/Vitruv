@@ -8,6 +8,11 @@ import org.eclipse.emf.common.command.BasicCommandStack
 import org.eclipse.emf.ecore.EReference
 import java.util.List
 import org.eclipse.emf.ecore.util.EcoreUtil
+import tools.vitruv.framework.change.echange.EChange
+import tools.vitruv.framework.change.echange.feature.reference.ReplaceSingleValuedEReference
+import tools.vitruv.framework.change.echange.feature.reference.RemoveEReference
+import tools.vitruv.framework.change.echange.root.RemoveRootEObject
+import tools.vitruv.framework.change.echange.feature.reference.AdditiveReferenceEChange
 
 /**
  * Static utility class for the EChange package and subpackages.
@@ -62,5 +67,34 @@ class EChangeUtil {
 			return EcoreUtil.getID(eObject);
 		}
 		return null;
+	}
+	
+	
+	public static def dispatch isContainmentRemoval(EChange change) {
+		return false;
+	}
+	
+	public static def dispatch isContainmentRemoval(ReplaceSingleValuedEReference<?,?> change) {
+		return change.affectedFeature.containment && change.oldValue !== null && change.oldValue !== change.newValue;
+	}
+	
+	public static def dispatch isContainmentRemoval(RemoveEReference<?,?> change) {
+		return change.affectedFeature.containment;
+	}
+	
+	public static def dispatch isContainmentRemoval(RemoveRootEObject<?> change) {
+		return true;
+	}
+	
+	public static def dispatch isContainmentInsertion(EChange change) {
+		return false;
+	}
+	
+	public static def dispatch isContainmentInsertion(AdditiveReferenceEChange<?,?> change) {
+		return change.affectedFeature.containment && change.newValue !== null;
+	}
+	
+	public static def dispatch isContainmentInsertion(RemoveRootEObject<?> change) {
+		return true;
 	}
 }

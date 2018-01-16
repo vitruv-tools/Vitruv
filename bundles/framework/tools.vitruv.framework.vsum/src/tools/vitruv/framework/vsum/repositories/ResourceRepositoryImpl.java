@@ -59,7 +59,7 @@ public class ResourceRepositoryImpl implements ModelRepository, CorrespondencePr
     private final File folder;
 
     private UuidGeneratorAndResolver uuidGeneratorAndResolver;
-    private final Map<VURI, AtomicEmfChangeRecorder> uriToRecorder;
+    private final Map<VitruvDomain, AtomicEmfChangeRecorder> domainToRecorder;
     private boolean isRecording = false;
 
     public UuidGeneratorAndResolver getUuidGeneratorAndResolver() {
@@ -82,15 +82,16 @@ public class ResourceRepositoryImpl implements ModelRepository, CorrespondencePr
         this.fileSystemHelper = new FileSystemHelper(this.folder);
 
         initializeUuidProviderAndResolver();
-        this.uriToRecorder = new HashMap<VURI, AtomicEmfChangeRecorder>();
+        this.domainToRecorder = new HashMap<VitruvDomain, AtomicEmfChangeRecorder>();
 
         initializeCorrespondenceModel();
         loadVURIsOfVSMUModelInstances();
     }
 
     private AtomicEmfChangeRecorder getOrCreateChangeRecorder(final VURI vuri) {
-        this.uriToRecorder.putIfAbsent(vuri, new AtomicEmfChangeRecorder(this.uuidGeneratorAndResolver));
-        return this.uriToRecorder.get(vuri);
+        VitruvDomain domain = getMetamodelByURI(vuri);
+        this.domainToRecorder.putIfAbsent(domain, new AtomicEmfChangeRecorder(this.uuidGeneratorAndResolver));
+        return this.domainToRecorder.get(domain);
     }
 
     /**
@@ -349,10 +350,7 @@ public class ResourceRepositoryImpl implements ModelRepository, CorrespondencePr
 
     @Override
     public void startRecording() {
-        // TODO HK Reactive: We have to disable this as long as intermediate models (from the commonalities
-        // language) are not persisted, as otherwise the recorder is removed from them
-        // removeRecorderForDeletedModels();
-        for (AtomicEmfChangeRecorder recorder : this.uriToRecorder.values()) {
+        for (AtomicEmfChangeRecorder recorder : this.domainToRecorder.values()) {
             recorder.beginRecording();
         }
         this.isRecording = true;
@@ -364,31 +362,18 @@ public class ResourceRepositoryImpl implements ModelRepository, CorrespondencePr
         logger.debug("End recording virtual model");
         this.isRecording = false;
         executeRecordingCommand(EMFCommandBridge.createVitruviusRecordingCommand(() -> {
-            for (AtomicEmfChangeRecorder recorder : this.uriToRecorder.values()) {
+            for (AtomicEmfChangeRecorder recorder : this.domainToRecorder.values()) {
                 recorder.endRecording();
             }
             return null;
         }));
-        Iterable<TransactionalChange> result = this.uriToRecorder.values().stream().map((recorder) -> {
+        Iterable<TransactionalChange> result = this.domainToRecorder.values().stream().map((recorder) -> {
             CompositeTransactionalChange compChange = VitruviusChangeFactory.getInstance()
                     .createCompositeTransactionalChange();
             recorder.getChanges().stream().forEach(compChange::addChange);
             return compChange;
         }).filter(VitruviusChange::containsConcreteChange).collect(Collectors.toList());
         return result;
-    }
-
-    @SuppressWarnings("unused")
-    private void removeRecorderForDeletedModels() {
-        List<VURI> nonExistentUris = new ArrayList<>();
-        for (VURI recordedVuri : this.uriToRecorder.keySet()) {
-            if (!URIUtil.existsResourceAtUri(recordedVuri.getEMFUri())) {
-                nonExistentUris.add(recordedVuri);
-            }
-        }
-        for (VURI toRemove : nonExistentUris) {
-            this.uriToRecorder.remove(toRemove);
-        }
     }
 
     private synchronized TransactionalEditingDomain getTransactionalEditingDomain() {
