@@ -23,7 +23,7 @@ abstract class AbstractVitruvDomain extends AbstractURIHaving implements TuidCal
 	TuidCalculatorAndResolver tuidCalculatorAndResolver
 	Set<String> nsURIs
 	EPackage metamodelRootPackage;
-	Collection<EPackage> furtherRootPackages;
+	Set<EPackage> furtherRootPackages;
 	Map<Object, Object> defaultLoadOptions
 	Map<Object, Object> defaultSaveOptions
 	String name;
