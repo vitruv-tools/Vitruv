@@ -15,7 +15,6 @@ import static extension tools.vitruv.dsls.reactions.codegen.helper.ReactionsLang
 import org.eclipse.emf.ecore.EStructuralFeature
 import tools.vitruv.dsls.mirbase.scoping.MirBaseScopeProviderDelegate
 import org.eclipse.emf.ecore.EcorePackage
-import org.eclipse.emf.ecore.resource.Resource
 import tools.vitruv.dsls.reactions.reactionsLanguage.inputTypes.InputTypesPackage
 import tools.vitruv.dsls.reactions.reactionsLanguage.RoutineInput
 import tools.vitruv.dsls.reactions.reactionsLanguage.CreateModelElement
@@ -59,7 +58,10 @@ class ReactionsLanguageScopeProviderDelegate extends MirBaseScopeProviderDelegat
 			}
 		} else if (reference.equals(REACTIONS_IMPORT__IMPORTED_REACTIONS_SEGMENT)) {
 			if (context instanceof ReactionsImport) {
-				return createReactionsImportScope(context.eResource);
+				val contextContainer = context.eContainer();
+				if (contextContainer instanceof ReactionsSegment) {
+					return createReactionsImportScope(contextContainer);
+				}
 			}
 		} else if (reference.equals(REACTION__OVERRIDDEN_REACTIONS_SEGMENT)) {
 			if (context instanceof Reaction) {
@@ -73,9 +75,9 @@ class ReactionsLanguageScopeProviderDelegate extends MirBaseScopeProviderDelegat
 		super.getScope(context, reference)
 	}
 
-	def createReactionsImportScope(Resource resource) {
-		val visibleReactionsSegmentDescs = reactionsImportScopeHelper.getVisibleReactionsSegmentDescriptions(resource, false);
-		return new SimpleScope(visibleReactionsSegmentDescs);
+	def createReactionsImportScope(ReactionsSegment reactionsSegment) {
+		val visibleReactionsSegmentDescriptions = reactionsImportScopeHelper.getVisibleReactionsSegmentDescriptions(reactionsSegment);
+		return new SimpleScope(visibleReactionsSegmentDescriptions);
 	}
 
 	def createOverriddenReactionsSegmentScope(ReactionsSegment reactionsSegment) {

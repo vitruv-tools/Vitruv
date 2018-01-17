@@ -49,8 +49,8 @@ class ReactionsLanguageValidator extends AbstractReactionsLanguageValidator {
 
 		// check for duplicate reactions segment names globally:
 		val resource = reactionsFile.eResource;
-		val visibleReactionsSegmentDescs = reactionsImportScopeHelper.getVisibleReactionsSegmentDescriptions(resource, false);
 		for (reactionsSegment : reactionsFile.reactionsSegments) {
+			val visibleReactionsSegmentDescs = reactionsImportScopeHelper.getVisibleReactionsSegmentDescriptions(reactionsSegment);
 			val reactionsSegmentName = reactionsSegment.name;
 			val duplicateNameSegmentDesc = visibleReactionsSegmentDescs.findFirst[name.toString.equals(reactionsSegmentName)];
 			if (duplicateNameSegmentDesc !== null) {
