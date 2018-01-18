@@ -17,7 +17,7 @@ import tools.vitruv.dsls.reactions.reactionsLanguage.Reaction
 import tools.vitruv.dsls.reactions.reactionsLanguage.Action
 import tools.vitruv.dsls.reactions.reactionsLanguage.ConcreteModelChange
 import static extension tools.vitruv.dsls.reactions.codegen.changetyperepresentation.ChangeTypeRepresentationExtractor.*
-import static extension tools.vitruv.dsls.reactions.codegen.helper.ReactionsLanguageHelper.*
+import static extension tools.vitruv.dsls.reactions.util.ReactionsLanguageUtil.*
 import tools.vitruv.dsls.reactions.reactionsLanguage.Matcher
 import tools.vitruv.dsls.reactions.reactionsLanguage.RoutineInput
 import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsImport

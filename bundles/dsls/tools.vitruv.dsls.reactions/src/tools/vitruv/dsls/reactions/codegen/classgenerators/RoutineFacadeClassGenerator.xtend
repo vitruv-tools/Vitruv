@@ -10,6 +10,7 @@ import tools.vitruv.extensions.dslsruntime.reactions.AbstractRepairRoutinesFacad
 import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsSegment
 import static extension tools.vitruv.dsls.reactions.codegen.helper.ClassNamesGenerators.*
 import static extension tools.vitruv.dsls.reactions.codegen.helper.ReactionsLanguageHelper.*
+import static extension tools.vitruv.dsls.reactions.util.ReactionsLanguageUtil.*
 import tools.vitruv.dsls.reactions.codegen.typesbuilder.TypesBuilderExtensionProvider
 import org.eclipse.xtext.common.types.JvmGenericType
 import tools.vitruv.dsls.common.helper.ClassNameGenerator

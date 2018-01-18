@@ -20,9 +20,9 @@ import tools.vitruv.dsls.reactions.reactionsLanguage.ElementChangeType
 import tools.vitruv.dsls.reactions.reactionsLanguage.ElementDeletionAndRemovalChangeType
 import tools.vitruv.dsls.reactions.reactionsLanguage.ElementDeletionAndCreationAndReplacementChangeType
 import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsFile
-import static extension tools.vitruv.dsls.reactions.codegen.helper.ReactionsLanguageHelper.*
 import tools.vitruv.dsls.reactions.scoping.ReactionsImportScopeHelper
 import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsImport
+import static extension tools.vitruv.dsls.reactions.util.ReactionsLanguageUtil.*
 
 /**
  * This class contains custom validation rules. 

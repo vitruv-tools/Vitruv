@@ -2,6 +2,7 @@ package tools.vitruv.dsls.reactions.codegen.helper
 
 import edu.kit.ipd.sdq.commons.util.java.Pair
 import static extension tools.vitruv.dsls.reactions.codegen.helper.ReactionsLanguageHelper.*;
+import static extension tools.vitruv.dsls.reactions.util.ReactionsLanguageUtil.*
 import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsSegment
 import tools.vitruv.dsls.reactions.reactionsLanguage.Routine
 import tools.vitruv.dsls.reactions.reactionsLanguage.Reaction
@@ -47,9 +48,9 @@ import tools.vitruv.dsls.common.helper.ClassNameGenerator
 		«basicReactionsPackageQualifiedName».reactions«reactionSegment.metamodelPairName»'''
 	
 	public static def String getPackageName(ReactionsSegment reactionSegment) '''
-		«reactionSegment.name.packageName»'''
+		«reactionSegment.name.reactionsSegmentPackageName»'''
 	
-	private static def String getPackageName(String reactionSegmentName) '''
+	public static def String getReactionsSegmentPackageName(String reactionSegmentName) '''
 		«reactionSegmentName.toFirstLower»'''
 	
 	public static def ClassNameGenerator getChangePropagationSpecificationClassNameGenerator(Pair<VitruvDomain, VitruvDomain> metamodelPair) {
@@ -129,7 +130,7 @@ import tools.vitruv.dsls.common.helper.ClassNameGenerator
 			var packageName = reaction.reactionsSegment.metamodelPairReactionsPackageQualifiedName + "." + reaction.reactionsSegment.packageName;
 			if (reaction.isOverrideReaction) {
 				// not resolving cross-references here to get the overridden reactions segment name:
-				packageName += "." + reaction.parsedOverriddenReactionsSegmentName.packageName;
+				packageName += "." + reaction.parsedOverriddenReactionsSegmentName.reactionsSegmentPackageName;
 			}
 			return packageName;
 		}
@@ -148,7 +149,7 @@ import tools.vitruv.dsls.common.helper.ClassNameGenerator
 			var packageName = basicRoutinesPackageQualifiedName + "." + routine.reactionsSegment.packageName;
 			if (routine.isOverrideRoutine) {
 				// not resolving cross-references here to get the overridden reactions segment name:
-				packageName += "." + routine.parsedOverriddenReactionsSegmentName.packageName;
+				packageName += "." + routine.parsedOverriddenReactionsSegmentName.reactionsSegmentPackageName;
 			}
 			return packageName;
 		}
@@ -179,6 +180,6 @@ import tools.vitruv.dsls.common.helper.ClassNameGenerator
 			«ROUTINES_FACADE_CLASS_NAME»'''
 		
 		public override String getPackageName() '''
-			«basicRoutinesPackageQualifiedName».«reactionsSegment.packageName».«importedReactionsSegmentName.packageName»'''
+			«basicRoutinesPackageQualifiedName».«reactionsSegment.packageName».«importedReactionsSegmentName.reactionsSegmentPackageName»'''
 	}
 }

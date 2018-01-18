@@ -8,6 +8,7 @@ import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsImport
 import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsSegment
 import static extension tools.vitruv.dsls.reactions.codegen.helper.ClassNamesGenerators.*
 import static extension tools.vitruv.dsls.reactions.codegen.helper.ReactionsLanguageHelper.*
+import static extension tools.vitruv.dsls.reactions.util.ReactionsLanguageUtil.*
 
 class ImportedRoutinesFacadeClassGenerator extends RoutineFacadeClassGenerator {
 	val ReactionsSegment reactionsSegment;

@@ -25,8 +25,7 @@ import tools.vitruv.dsls.reactions.reactionsLanguage.Reaction
 import tools.vitruv.dsls.reactions.reactionsLanguage.Routine
 import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsImport
 import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsLanguagePackage
-import static extension tools.vitruv.dsls.reactions.codegen.helper.ClassNamesGenerators.*
-import static tools.vitruv.dsls.reactions.codegen.helper.ReactionsLanguageConstants.*
+import static extension tools.vitruv.dsls.reactions.util.ReactionsLanguageUtil.*
 
 final class ReactionsLanguageHelper {
 	private new() {
@@ -114,62 +113,6 @@ final class ReactionsLanguageHelper {
 		return routine.name;
 	}
 
-	public static def String getFormattedReactionName(Reaction reaction) {
-		var String reactionName = "";
-		if (reaction.isOverrideReaction) {
-			reactionName += reaction.overriddenReactionsSegment.packageName + OVERRIDDEN_REACTIONS_SEGMENT_SEPARATOR;
-		}
-		reactionName += reaction.name.toFirstUpper;
-		return reactionName;
-	}
-
-	public static def String getFormattedRoutineName(Routine routine) {
-		var String routineName = "";
-		if (routine.isOverrideRoutine) {
-			routineName += routine.overriddenReactionsSegment.packageName + OVERRIDDEN_REACTIONS_SEGMENT_SEPARATOR;
-		}
-		routineName += routine.name.toFirstLower;
-		return routineName;
-	}
-
-	// regular vs override reactions:
-
-	public static def isRegularReaction(Reaction reaction) {
-		return !reaction.isOverrideReaction;
-	}
-
-	public static def isOverrideReaction(Reaction reaction) {
-		// check if overridden reactions segment is set, without resolving the cross-reference:
-		return reaction.eIsSet(reaction.eClass.getEStructuralFeature(ReactionsLanguagePackage.REACTION__OVERRIDDEN_REACTIONS_SEGMENT));
-	}
-
-	public static def getRegularReactions(ReactionsSegment reactionsSegment) {
-		return reactionsSegment.reactions.filter[isRegularReaction];
-	}
-
-	public static def getOverrideReactions(ReactionsSegment reactionsSegment) {
-		return reactionsSegment.reactions.filter[isOverrideReaction];
-	}
-
-	// regular vs override routines:
-
-	public static def isRegularRoutine(Routine routine) {
-		return !routine.isOverrideRoutine;
-	}
-
-	public static def isOverrideRoutine(Routine routine) {
-		// check if overridden reactions segment is set, without resolving the cross-reference:
-		return routine.eIsSet(routine.eClass.getEStructuralFeature(ReactionsLanguagePackage.ROUTINE__OVERRIDDEN_REACTIONS_SEGMENT));
-	}
-
-	public static def getRegularRoutines(ReactionsSegment reactionsSegment) {
-		return reactionsSegment.routines.filter[isRegularRoutine];
-	}
-
-	public static def getOverrideRoutines(ReactionsSegment reactionsSegment) {
-		return reactionsSegment.routines.filter[isOverrideRoutine];
-	}
-
 	// import of reactions and routines:
 
 	/**
@@ -178,6 +121,7 @@ final class ReactionsLanguageHelper {
 	public static def String getParsedImportedReactionsSegmentName(ReactionsImport reactionsImport) {
 		val nodes = NodeModelUtils.findNodesForFeature(reactionsImport, ReactionsLanguagePackage.Literals.REACTIONS_IMPORT__IMPORTED_REACTIONS_SEGMENT);
 		if (nodes.isEmpty) return null;
+		// TODO use NodeModelUtils.getTokenText(), just in case?
 		return nodes.get(0).text;
 	}
 
@@ -225,6 +169,7 @@ final class ReactionsLanguageHelper {
 		val importedReactionsSegments = reactionsSegment.reactionsImports.map[it.importedReactionsSegment];
 		// check if the current reactions segment imports the specified reactions segment:
 		if (checkImportsOfCurrentSegment) {
+			// TODO NPE during Project>Clean with open editor windows
 			if (importedReactionsSegments.exists[it.name.equals(importedReactionsSegment.name)]) {
 				return reactionsSegment;
 			}
