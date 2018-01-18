@@ -5,7 +5,6 @@ import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsLanguagePackage
 import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsSegment
 import tools.vitruv.dsls.reactions.reactionsLanguage.Routine
 import static tools.vitruv.dsls.reactions.codegen.helper.ReactionsLanguageConstants.*
-import static extension tools.vitruv.dsls.reactions.codegen.helper.ClassNamesGenerators.*
 import static extension tools.vitruv.dsls.reactions.codegen.helper.ReactionsLanguageHelper.*;
 
 /**
@@ -31,17 +30,14 @@ final class ReactionsLanguageUtil {
 		var reactionName = "";
 		if (reaction.isOverrideReaction) {
 			// not resolving cross-references here, if not required:
-			var overriddenReactionsSegmentFormattedName = reaction.parsedOverriddenReactionsSegmentName;
-			if (overriddenReactionsSegmentFormattedName !== null) {
-				// format overridden reactions segment name:
-				overriddenReactionsSegmentFormattedName = overriddenReactionsSegmentFormattedName.reactionsSegmentPackageName;
-			} else {
+			var overriddenReactionsSegmentName = reaction.parsedOverriddenReactionsSegmentName;
+			if (overriddenReactionsSegmentName === null) {
 				// We weren't able to get the overridden reactions segment's name from the node model,
 				// so we try to get it from the reactions segment directly.
 				// This might trigger a resolve of the cross-reference though:
-				overriddenReactionsSegmentFormattedName = reaction.overriddenReactionsSegment.packageName;
+				overriddenReactionsSegmentName = reaction.overriddenReactionsSegment.name;
 			}
-			reactionName += overriddenReactionsSegmentFormattedName + OVERRIDDEN_REACTIONS_SEGMENT_SEPARATOR;
+			reactionName += overriddenReactionsSegmentName.toFirstLower + OVERRIDDEN_REACTIONS_SEGMENT_SEPARATOR;
 		}
 		reactionName += reaction.name.toFirstUpper;
 		return reactionName;
@@ -61,17 +57,14 @@ final class ReactionsLanguageUtil {
 		var routineName = "";
 		if (routine.isOverrideRoutine) {
 			// not resolving cross-references here, if not required:
-			var overriddenReactionsSegmentFormattedName = routine.parsedOverriddenReactionsSegmentName;
-			if (overriddenReactionsSegmentFormattedName !== null) {
-				// format overridden reactions segment name:
-				overriddenReactionsSegmentFormattedName = overriddenReactionsSegmentFormattedName.reactionsSegmentPackageName;
-			} else {
+			var overriddenReactionsSegmentName = routine.parsedOverriddenReactionsSegmentName;
+			if (overriddenReactionsSegmentName === null) {
 				// We weren't able to get the overridden reactions segment's name from the node model,
 				// so we try to get it from the reactions segment directly.
 				// This might trigger a resolve of the cross-reference though:
-				overriddenReactionsSegmentFormattedName = routine.overriddenReactionsSegment.packageName;
+				overriddenReactionsSegmentName = routine.overriddenReactionsSegment.name;
 			}
-			routineName += overriddenReactionsSegmentFormattedName + OVERRIDDEN_REACTIONS_SEGMENT_SEPARATOR;
+			routineName += overriddenReactionsSegmentName.toFirstLower + OVERRIDDEN_REACTIONS_SEGMENT_SEPARATOR;
 		}
 		routineName += routine.name.toFirstLower;
 		return routineName;

@@ -47,10 +47,10 @@ import tools.vitruv.dsls.common.helper.ClassNameGenerator
 	private static def String getMetamodelPairReactionsPackageQualifiedName(ReactionsSegment reactionSegment) '''
 		«basicReactionsPackageQualifiedName».reactions«reactionSegment.metamodelPairName»'''
 	
-	public static def String getPackageName(ReactionsSegment reactionSegment) '''
+	private static def String getPackageName(ReactionsSegment reactionSegment) '''
 		«reactionSegment.name.reactionsSegmentPackageName»'''
 	
-	public static def String getReactionsSegmentPackageName(String reactionSegmentName) '''
+	private static def String getReactionsSegmentPackageName(String reactionSegmentName) '''
 		«reactionSegmentName.toFirstLower»'''
 	
 	public static def ClassNameGenerator getChangePropagationSpecificationClassNameGenerator(Pair<VitruvDomain, VitruvDomain> metamodelPair) {
