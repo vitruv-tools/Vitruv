@@ -8,12 +8,23 @@ import static tools.vitruv.dsls.reactions.codegen.helper.ReactionsLanguageConsta
 import static extension tools.vitruv.dsls.reactions.codegen.helper.ReactionsLanguageHelper.*;
 
 /**
- * Utility methods working with the model objects of the Reactions Language, which might be of use outside of the code generation
- * package.
+ * Utility methods working with the model objects of the Reactions Language, which might be of use outside of the code generation.
  */
 final class ReactionsLanguageUtil {
 
 	private new() {
+	}
+
+	/**
+	 * Gets a formatted representation of the metamodel pair the given reactions segment applies to.
+	 * 
+	 * @param reactionsSegment the reactions segment
+	 * @return the formatted representation of the metamodel pair
+	 */
+	public static def String getFormattedMetamodelPairName(ReactionsSegment reactionsSegment) {
+		val sourceDomainName = reactionsSegment.fromDomain?.domain;
+		val targetDomainName = reactionsSegment.toDomain?.domain;
+		return "(" + sourceDomainName + ", " + targetDomainName + ")";
 	}
 
 	/**

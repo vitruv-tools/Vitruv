@@ -22,6 +22,7 @@ import tools.vitruv.dsls.reactions.reactionsLanguage.ElementDeletionAndCreationA
 import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsFile
 import tools.vitruv.dsls.reactions.scoping.ReactionsImportScopeHelper
 import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsImport
+import static extension tools.vitruv.dsls.reactions.codegen.helper.ReactionsLanguageHelper.*
 import static extension tools.vitruv.dsls.reactions.util.ReactionsLanguageUtil.*
 
 /**
@@ -67,6 +68,17 @@ class ReactionsLanguageValidator extends AbstractReactionsLanguageValidator {
 
 	@Check
 	def checkReactionsSegment(ReactionsSegment reactionsSegment) {
+		// imported reactions segments need to use the same metamodel pair:
+		val metamodelPairName = reactionsSegment.formattedMetamodelPairName;
+		for (reactionsImport : reactionsSegment.reactionsImports) {
+			val importedReactionsSegment = reactionsImport.importedReactionsSegment;
+			val importedMetamodelPairName = importedReactionsSegment.formattedMetamodelPairName;
+			if (!metamodelPairName.equals(importedMetamodelPairName)) {
+				val errorMessage = "Cannot import reactions segment using a different metamodel pair: " + importedMetamodelPairName;
+				error(errorMessage, reactionsImport, ReactionsLanguagePackage.Literals.REACTIONS_IMPORT__IMPORTED_REACTIONS_SEGMENT);
+			}
+		}
+
 		// val reactionsSegmentName = reactionsSegment.name;
 
 		// check for duplicate and cyclic reactions imports:
@@ -182,6 +194,31 @@ class ReactionsLanguageValidator extends AbstractReactionsLanguageValidator {
 			warning("Routine names should start lower case",
 				ReactionsLanguagePackage.Literals.ROUTINE__NAME);
 		}
+
+		// routine overrides must have matching name and parameters:
+		if (routine.isOverrideRoutine) {
+			val signature = routine.methodSignature
+			val matchingSignature = routine.overriddenReactionsSegment.regularRoutines.map[methodSignature].findFirst[it.equals(signature)];
+			if (matchingSignature === null) {
+				val errorMessage = "Routine must override a routine with matching name and parameters: " + signature;
+				error(errorMessage, routine, ReactionsLanguagePackage.Literals.ROUTINE__NAME);
+			}
+		}
+	}
+	
+	private def String getMethodSignature(Routine routine) {
+		val signature = new StringBuilder();
+		signature.append(routine.name.toLowerCase);
+		signature.append('(');
+		for (modelInputElement : routine.input.modelInputElements) {
+			signature.append(modelInputElement.metaclass.javaClassName);
+		}
+		for (javaInputElement : routine.input.javaInputElements) {
+			// includes type parameters:
+			signature.append(javaInputElement.type.identifier);
+		}
+		signature.append(')');
+		return signature.toString;
 	}
 	
 	@Check
@@ -189,6 +226,16 @@ class ReactionsLanguageValidator extends AbstractReactionsLanguageValidator {
 		if (!Character.isUpperCase(reaction.name.charAt(0))) {
 			warning("Reaction names should start upper case",
 				ReactionsLanguagePackage.Literals.REACTION__NAME);
+		}
+
+		// reaction overrides must have matching name:
+		if (reaction.isOverrideReaction) {
+			val reactionName = reaction.name.toUpperCase;
+			val matchingName = reaction.overriddenReactionsSegment.regularReactions.map[it.name.toUpperCase].findFirst[it.equals(reactionName)];
+			if (matchingName === null) {
+				val errorMessage = "Reaction must override a reaction with matching name: " + reactionName;
+				error(errorMessage, reaction, ReactionsLanguagePackage.Literals.REACTION__NAME);
+			}
 		}
 	}
 	
