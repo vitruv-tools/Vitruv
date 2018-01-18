@@ -185,7 +185,7 @@ class ReactionsLanguageValidator extends AbstractReactionsLanguageValidator {
 	}
 	
 	@Check
-	def checkRoutine(Reaction reaction) {
+	def checkReaction(Reaction reaction) {
 		if (!Character.isUpperCase(reaction.name.charAt(0))) {
 			warning("Reaction names should start upper case",
 				ReactionsLanguagePackage.Literals.REACTION__NAME);
