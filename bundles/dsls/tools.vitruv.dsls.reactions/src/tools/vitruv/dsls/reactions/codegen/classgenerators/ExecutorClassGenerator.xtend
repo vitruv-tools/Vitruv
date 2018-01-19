@@ -41,7 +41,7 @@ class ExecutorClassGenerator extends ClassGenerator {
 			members += reactionsSegment.toMethod("setup", typeRef(Void.TYPE)) [
 				visibility = JvmVisibility.PROTECTED;
 				body = '''
-					«FOR reaction : reactionsSegment.allReactions.values.flatten»
+					«FOR reaction : reactionsSegment.allReactions.values»
 						«val reactionsNameGenerator = reaction.reactionClassNameGenerator»
 						this.addReaction(new «reactionsNameGenerator.qualifiedName»(this));
 					«ENDFOR»

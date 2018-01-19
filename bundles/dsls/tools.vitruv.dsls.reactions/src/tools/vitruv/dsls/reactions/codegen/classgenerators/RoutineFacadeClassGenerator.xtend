@@ -78,6 +78,7 @@ class RoutineFacadeClassGenerator extends ClassGenerator {
 		val routineNameGenerator = routine.routineClassNameGenerator;
 		routine.associatePrimary(routine.toMethod(routine.callMethodName, typeRef(Boolean.TYPE)) [
 			visibility = JvmVisibility.PUBLIC;
+			annotations += annotationRef(Override);
 			parameters +=
 				generateMethodInputParameters(routine.input.modelInputElements, routine.input.javaInputElements);
 			body = '''

@@ -69,10 +69,10 @@ class ReactionsLanguageValidator extends AbstractReactionsLanguageValidator {
 	@Check
 	def checkReactionsSegment(ReactionsSegment reactionsSegment) {
 		// imported reactions segments need to use the same metamodel pair:
-		val metamodelPairName = reactionsSegment.formattedMetamodelPairName;
+		val metamodelPairName = reactionsSegment.formattedMetamodelPair;
 		for (reactionsImport : reactionsSegment.reactionsImports) {
 			val importedReactionsSegment = reactionsImport.importedReactionsSegment;
-			val importedMetamodelPairName = importedReactionsSegment.formattedMetamodelPairName;
+			val importedMetamodelPairName = importedReactionsSegment.formattedMetamodelPair;
 			if (!metamodelPairName.equals(importedMetamodelPairName)) {
 				val errorMessage = "Cannot import reactions segment using a different metamodel pair: " + importedMetamodelPairName;
 				error(errorMessage, reactionsImport, ReactionsLanguagePackage.Literals.REACTIONS_IMPORT__IMPORTED_REACTIONS_SEGMENT);
@@ -128,7 +128,7 @@ class ReactionsLanguageValidator extends AbstractReactionsLanguageValidator {
 		// check for duplicate reaction names in same segment:
 		val alreadyCheckedReactions = new HashMap<String, Reaction>();
 		for (reaction : reactionsSegment.reactions) {
-			val reactionName = reaction.formattedReactionName;
+			val reactionName = reaction.formattedFullName;
 			if (alreadyCheckedReactions.putIfAbsent(reactionName, reaction) !== null) {
 				val errorMessage = "Duplicate reaction name: " + reactionName;
 				error(errorMessage, reaction, ReactionsLanguagePackage.Literals.REACTION__NAME);
@@ -146,7 +146,7 @@ class ReactionsLanguageValidator extends AbstractReactionsLanguageValidator {
 //			alreadyCheckedEffects.put(implicitRoutine.routineClassNameGenerator.simpleName, implicitRoutine);
 //		}
 		for (routine : reactionsSegment.routines) {
-			val routineName = routine.formattedRoutineName;
+			val routineName = routine.formattedFullName;
 			if (alreadyCheckedRoutines.putIfAbsent(routineName, routine) !== null) {
 				val errorMessage = "Duplicate routine name: " + routineName;
 				error(errorMessage, routine, ReactionsLanguagePackage.Literals.ROUTINE__NAME);
@@ -196,7 +196,8 @@ class ReactionsLanguageValidator extends AbstractReactionsLanguageValidator {
 		}
 
 		// routine overrides must have matching name and parameters:
-		if (routine.isOverrideRoutine) {
+		// TODO maybe be slightly less strict and allow overrides as long at the signatures are 'override-compatible' as defined by java?
+		if (routine.isOverride) {
 			val signature = routine.methodSignature
 			val matchingSignature = routine.overriddenReactionsSegment.regularRoutines.map[methodSignature].findFirst[it.equals(signature)];
 			if (matchingSignature === null) {
@@ -229,7 +230,7 @@ class ReactionsLanguageValidator extends AbstractReactionsLanguageValidator {
 		}
 
 		// reaction overrides must have matching name:
-		if (reaction.isOverrideReaction) {
+		if (reaction.isOverride) {
 			val reactionName = reaction.name.toUpperCase;
 			val matchingName = reaction.overriddenReactionsSegment.regularReactions.map[it.name.toUpperCase].findFirst[it.equals(reactionName)];
 			if (matchingName === null) {

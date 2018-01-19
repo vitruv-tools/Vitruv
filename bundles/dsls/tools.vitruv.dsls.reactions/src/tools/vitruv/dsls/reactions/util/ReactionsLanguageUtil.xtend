@@ -21,71 +21,136 @@ final class ReactionsLanguageUtil {
 	 * @param reactionsSegment the reactions segment
 	 * @return the formatted representation of the metamodel pair
 	 */
-	public static def String getFormattedMetamodelPairName(ReactionsSegment reactionsSegment) {
+	public static def String getFormattedMetamodelPair(ReactionsSegment reactionsSegment) {
 		val sourceDomainName = reactionsSegment.fromDomain?.domain;
 		val targetDomainName = reactionsSegment.toDomain?.domain;
 		return "(" + sourceDomainName + ", " + targetDomainName + ")";
 	}
 
+	// reaction names:
+
 	/**
-	 * Gets a formatted name for the given reaction.
-	 * 
+	 * Gets the qualified name of the given reaction.
 	 * <p>
-	 * If the reaction overrides the reaction of another reactions segment, the returned name includes a formatted name of the
-	 * overridden reactions segment.
+	 * The qualified name consists of the reaction's reactions segment name and the
+	 * {@link #getFormattedName(Reaction) formatted reaction name}, separated by <code>::</code>. In case the reaction overrides
+	 * another reaction, the name of the overridden reactions segment is used instead. The qualified name can therefore not be
+	 * used to differentiate between an original reaction and the reaction overriding it.
 	 * 
 	 * @param reaction the reaction
-	 * @return the formatted name
+	 * @return the qualified name
 	 */
-	public static def String getFormattedReactionName(Reaction reaction) {
-		var reactionName = "";
-		if (reaction.isOverrideReaction) {
+	public static def String getQualifiedName(Reaction reaction) {
+		var String reactionsSegmentName;
+		if (reaction.isOverride) {
 			// not resolving cross-references here, if not required:
-			var overriddenReactionsSegmentName = reaction.parsedOverriddenReactionsSegmentName;
-			if (overriddenReactionsSegmentName === null) {
-				// We weren't able to get the overridden reactions segment's name from the node model,
-				// so we try to get it from the reactions segment directly.
-				// This might trigger a resolve of the cross-reference though:
-				overriddenReactionsSegmentName = reaction.overriddenReactionsSegment.name;
+			reactionsSegmentName = reaction.parsedOverriddenReactionsSegmentName;
+			if (reactionsSegmentName === null) {
+				// getting the name from the overridden reactions segment directly,
+				// this might trigger a resolve of the cross-reference though:
+				reactionsSegmentName = reaction.overriddenReactionsSegment.name;
 			}
-			reactionName += overriddenReactionsSegmentName.toFirstLower + OVERRIDDEN_REACTIONS_SEGMENT_SEPARATOR;
+		} else {
+			reactionsSegmentName = reaction.reactionsSegment.name;
 		}
-		reactionName += reaction.name.toFirstUpper;
-		return reactionName;
+		return reactionsSegmentName + OVERRIDDEN_REACTIONS_SEGMENT_SEPARATOR + reaction.formattedName;
 	}
 
 	/**
-	 * Gets a formatted name for the given routine.
-	 * 
+	 * Gets the formatted full name of the given reaction.
 	 * <p>
-	 * If the routine overrides the routine of another reactions segment, the returned name includes a formatted name of the
-	 * overridden reactions segment.
+	 * In case the given reaction overrides another reaction, the returned name is equal to the reaction's
+	 * {@link #getQualifiedName(Reaction) qualified name}. Otherwise it consists of only the
+	 * {@link #getFormattedName(Reaction) formatted reaction name}.
+	 * 
+	 * @param reaction the reaction
+	 * @return the formatted full name
+	 */
+	public static def String getFormattedFullName(Reaction reaction) {
+		if (reaction.isOverride) {
+			return reaction.qualifiedName;
+		} else {
+			return reaction.formattedName;
+		}
+	}
+
+	/**
+	 * Gets the formatted name of the given reaction.
+	 * <p>
+	 * This returns the reaction's name with an upper-case first character.
+	 * 
+	 * @param reaction the reaction
+	 * @return the formatted reaction name
+	 */
+	public static def String getFormattedName(Reaction reaction) {
+		return reaction.name.toFirstUpper;
+	}
+
+	// routine names:
+
+	/**
+	 * Gets the qualified name of the given routine.
+	 * <p>
+	 * The qualified name consists of the routine's reactions segment name and the
+	 * {@link #getFormattedName(Routine) formatted routine name}, separated by <code>::</code>. In case the routine overrides
+	 * another routine, the name of the overridden reactions segment is used instead. The qualified name can therefore not be
+	 * used to differentiate between an original routine and the routine overriding it.
+	 * <p>
+	 * TODO: include routine overridden import path here
 	 * 
 	 * @param routine the routine
-	 * @return the formatted name
+	 * @return the qualified name
 	 */
-	public static def String getFormattedRoutineName(Routine routine) {
-		var routineName = "";
-		if (routine.isOverrideRoutine) {
+	public static def String getQualifiedName(Routine routine) {
+		var String reactionsSegmentName;
+		if (routine.isOverride) {
 			// not resolving cross-references here, if not required:
-			var overriddenReactionsSegmentName = routine.parsedOverriddenReactionsSegmentName;
-			if (overriddenReactionsSegmentName === null) {
-				// We weren't able to get the overridden reactions segment's name from the node model,
-				// so we try to get it from the reactions segment directly.
-				// This might trigger a resolve of the cross-reference though:
-				overriddenReactionsSegmentName = routine.overriddenReactionsSegment.name;
+			reactionsSegmentName = routine.parsedOverriddenReactionsSegmentName;
+			if (reactionsSegmentName === null) {
+				// getting the name from the overridden reactions segment directly,
+				// this might trigger a resolve of the cross-reference though:
+				reactionsSegmentName = routine.overriddenReactionsSegment.name;
 			}
-			routineName += overriddenReactionsSegmentName.toFirstLower + OVERRIDDEN_REACTIONS_SEGMENT_SEPARATOR;
+		} else {
+			reactionsSegmentName = routine.reactionsSegment.name;
 		}
-		routineName += routine.name.toFirstLower;
-		return routineName;
+		return reactionsSegmentName + OVERRIDDEN_REACTIONS_SEGMENT_SEPARATOR + routine.formattedName;
+	}
+
+	/**
+	 * Gets the formatted full name of the given routine.
+	 * <p>
+	 * In case the given routine overrides another routine, the returned name is equal to the routine's
+	 * {@link #getQualifiedName(Routine) qualified name}. Otherwise it consists of only the
+	 * {@link #getFormattedName(Routine) formatted routine name}.
+	 * 
+	 * @param routine the routine
+	 * @return the formatted full name
+	 */
+	public static def String getFormattedFullName(Routine routine) {
+		if (routine.isOverride) {
+			return routine.qualifiedName;
+		} else {
+			return routine.formattedName;
+		}
+	}
+
+	/**
+	 * Gets the formatted name of the given routine.
+	 * <p>
+	 * This returns the routine's name with a lower-case first character.
+	 * 
+	 * @param routine the routine
+	 * @return the formatted routine name
+	 */
+	public static def String getFormattedName(Routine routine) {
+		return routine.name.toFirstLower;
 	}
 
 	// regular vs override reactions:
 
 	/**
 	 * Checks whether the given reaction is a 'regular' reaction.
-	 * 
 	 * <p>
 	 * This currently means:
 	 * <ul>
@@ -95,8 +160,8 @@ final class ReactionsLanguageUtil {
 	 * @param reaction the reaction
 	 * @return <code>true</code> if the given reaction is a regular reaction
 	 */
-	public static def isRegularReaction(Reaction reaction) {
-		return !reaction.isOverrideReaction;
+	public static def isRegular(Reaction reaction) {
+		return !reaction.isOverride;
 	}
 
 	/**
@@ -105,7 +170,7 @@ final class ReactionsLanguageUtil {
 	 * @param reaction the reaction
 	 * @return <code>true</code> if the given reaction overrides another reaction
 	 */
-	public static def isOverrideReaction(Reaction reaction) {
+	public static def isOverride(Reaction reaction) {
 		// check if overridden reactions segment is set, without resolving the cross-reference:
 		return reaction.eIsSet(reaction.eClass.getEStructuralFeature(ReactionsLanguagePackage.REACTION__OVERRIDDEN_REACTIONS_SEGMENT));
 	}
@@ -115,10 +180,10 @@ final class ReactionsLanguageUtil {
 	 * 
 	 * @param reactionsSegment the reactions segment
 	 * @return the regular reactions
-	 * @see #isRegularReaction(Reaction)
+	 * @see #isRegular(Reaction)
 	 */
 	public static def getRegularReactions(ReactionsSegment reactionsSegment) {
-		return reactionsSegment.reactions.filter[isRegularReaction];
+		return reactionsSegment.reactions.filter[isRegular];
 	}
 
 	/**
@@ -126,17 +191,16 @@ final class ReactionsLanguageUtil {
 	 * 
 	 * @param reactionsSegment the reactions segment
 	 * @return the reactions overriding other reactions
-	 * @see #isOverrideReaction(Reaction)
+	 * @see #isOverride(Reaction)
 	 */
 	public static def getOverrideReactions(ReactionsSegment reactionsSegment) {
-		return reactionsSegment.reactions.filter[isOverrideReaction];
+		return reactionsSegment.reactions.filter[isOverride];
 	}
 
 	// regular vs override routines:
 
 	/**
 	 * Checks whether the given routine is a 'regular' routine.
-	 * 
 	 * <p>
 	 * This currently means:
 	 * <ul>
@@ -146,8 +210,8 @@ final class ReactionsLanguageUtil {
 	 * @param routine the routine
 	 * @return <code>true</code> if the given routine is a regular routine
 	 */
-	public static def isRegularRoutine(Routine routine) {
-		return !routine.isOverrideRoutine;
+	public static def isRegular(Routine routine) {
+		return !routine.isOverride;
 	}
 
 	/**
@@ -156,7 +220,7 @@ final class ReactionsLanguageUtil {
 	 * @param routine the routine
 	 * @return <code>true</code> if the given routine overrides another routine
 	 */
-	public static def isOverrideRoutine(Routine routine) {
+	public static def isOverride(Routine routine) {
 		// check if overridden reactions segment is set, without resolving the cross-reference:
 		return routine.eIsSet(routine.eClass.getEStructuralFeature(ReactionsLanguagePackage.ROUTINE__OVERRIDDEN_REACTIONS_SEGMENT));
 	}
@@ -166,10 +230,10 @@ final class ReactionsLanguageUtil {
 	 * 
 	 * @param reactionsSegment the reactions segment
 	 * @return the regular routines
-	 * @see #isRegularRoutine(Routine)
+	 * @see #isRegular(Routine)
 	 */
 	public static def getRegularRoutines(ReactionsSegment reactionsSegment) {
-		return reactionsSegment.routines.filter[isRegularRoutine];
+		return reactionsSegment.routines.filter[isRegular];
 	}
 
 	/**
@@ -177,9 +241,9 @@ final class ReactionsLanguageUtil {
 	 * 
 	 * @param reactionsSegment the reactions segment
 	 * @return the routines overriding other routines
-	 * @see #isOverrideRoutine(Routine)
+	 * @see #isOverride(Routine)
 	 */
 	public static def getOverrideRoutines(ReactionsSegment reactionsSegment) {
-		return reactionsSegment.routines.filter[isOverrideRoutine];
+		return reactionsSegment.routines.filter[isOverride];
 	}
 }

@@ -197,38 +197,25 @@ final class ReactionsLanguageHelper {
 		];
 	}
 
-	// gets all reactions of the given segment, including own reactions and directly and transitively imported reactions, with overridden reactions being replaced
-	// keys: the segment itself and all imported segments, values: all reactions of that segment, with overridden reactions being replaced
-	public static def Map<ReactionsSegment, List<Reaction>> getAllReactions(ReactionsSegment reactionsSegment) {
-		val reactionsBySegment = new LinkedHashMap<ReactionsSegment, List<Reaction>>();
-		addReactions(reactionsSegment, reactionsBySegment);
-		return reactionsBySegment;
+	// gets all reactions of the given segment, including own reactions as well as directly and transitively imported reactions, with overridden reactions being replaced
+	// keys: the qualified reaction names, values: the reactions, with overridden reactions being replaced
+	public static def Map<String, Reaction> getAllReactions(ReactionsSegment reactionsSegment) {
+		val reactionsByQualifiedName = new LinkedHashMap<String, Reaction>();
+		addAllReactions(reactionsSegment, reactionsByQualifiedName);
+		return reactionsByQualifiedName;
 	}
 
-	// recursively adds all transitively imported reactions, then replaces overridden reactions and adds its own reactions
-	private static def void addReactions(ReactionsSegment reactionsSegment, Map<ReactionsSegment, List<Reaction>> reactionsBySegment) {
+	// recursively adds all transitively imported reactions, and then adds its own and replaces overridden reactions
+	private static def void addAllReactions(ReactionsSegment reactionsSegment, Map<String, Reaction> reactionsByQualifiedName) {
 		// recursively add all transitively imported reactions:
-		for (reactionsImport : reactionsSegment.reactionsImports) {
-			addReactions(reactionsImport.importedReactionsSegment, reactionsBySegment);
+		for (reactionsImport : reactionsSegment.reactionsImports.filter[!isRoutinesOnly]) {
+			addAllReactions(reactionsImport.importedReactionsSegment, reactionsByQualifiedName);
 		}
 
-		// replace overridden reactions:
-		for (overrideReaction : reactionsSegment.overrideReactions) {
-			val reactions = reactionsBySegment.get(overrideReaction.overriddenReactionsSegment);
-			if (reactions !== null) {
-				reactions.replaceAll([
-					if (it.name.equals(overrideReaction.name)) {
-						return overrideReaction;
-					} else {
-						return it;
-					}
-				]);
-			}
+		// add own reactions and replace overridden reactions:
+		for (reaction : reactionsSegment.reactions) {
+			val qualifiedName = reaction.qualifiedName;
+			reactionsByQualifiedName.put(qualifiedName, reaction);
 		}
-
-		// add own reactions:
-		val ownReactions = new ArrayList<Reaction>();
-		ownReactions.addAll(reactionsSegment.regularReactions);
-		reactionsBySegment.putIfAbsent(reactionsSegment, ownReactions);
 	}
 }

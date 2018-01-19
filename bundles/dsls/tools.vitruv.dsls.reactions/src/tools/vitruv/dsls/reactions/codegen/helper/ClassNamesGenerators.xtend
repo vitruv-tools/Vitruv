@@ -128,7 +128,7 @@ import tools.vitruv.dsls.common.helper.ClassNameGenerator
 		
 		public override String getPackageName() {
 			var packageName = reaction.reactionsSegment.metamodelPairReactionsPackageQualifiedName + "." + reaction.reactionsSegment.packageName;
-			if (reaction.isOverrideReaction) {
+			if (reaction.isOverride) {
 				// not resolving cross-references here to get the overridden reactions segment name:
 				packageName += "." + reaction.parsedOverriddenReactionsSegmentName.reactionsSegmentPackageName;
 			}
@@ -147,7 +147,7 @@ import tools.vitruv.dsls.common.helper.ClassNameGenerator
 		
 		public override String getPackageName() {
 			var packageName = basicRoutinesPackageQualifiedName + "." + routine.reactionsSegment.packageName;
-			if (routine.isOverrideRoutine) {
+			if (routine.isOverride) {
 				// not resolving cross-references here to get the overridden reactions segment name:
 				packageName += "." + routine.parsedOverriddenReactionsSegmentName.reactionsSegmentPackageName;
 			}
