@@ -39,7 +39,7 @@ class ReactionsLanguageValidator extends AbstractReactionsLanguageValidator {
 		// check for duplicate reactions segment names in same file:
 		val alreadyCheckedSegments = new HashMap<String, ReactionsSegment>();
 		for (reactionsSegment : reactionsFile.reactionsSegments) {
-			val reactionsSegmentName = reactionsSegment.name;
+			val reactionsSegmentName = reactionsSegment.formattedName;
 			if (alreadyCheckedSegments.putIfAbsent(reactionsSegmentName, reactionsSegment) !== null) {
 				val errorMessage = "Duplicate reactions segment name: " + reactionsSegmentName;
 				error(errorMessage, reactionsSegment, ReactionsLanguagePackage.Literals.REACTIONS_SEGMENT__NAME);
@@ -52,7 +52,7 @@ class ReactionsLanguageValidator extends AbstractReactionsLanguageValidator {
 		val resource = reactionsFile.eResource;
 		for (reactionsSegment : reactionsFile.reactionsSegments) {
 			val visibleReactionsSegmentDescs = reactionsImportScopeHelper.getVisibleReactionsSegmentDescriptions(reactionsSegment);
-			val reactionsSegmentName = reactionsSegment.name;
+			val reactionsSegmentName = reactionsSegment.formattedName;
 			val duplicateNameSegmentDesc = visibleReactionsSegmentDescs.findFirst[name.toString.equals(reactionsSegmentName)];
 			if (duplicateNameSegmentDesc !== null) {
 				// path relative to current file:

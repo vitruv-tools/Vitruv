@@ -27,6 +27,20 @@ final class ReactionsLanguageUtil {
 		return "(" + sourceDomainName + ", " + targetDomainName + ")";
 	}
 
+	// reactions segment name:
+
+	/**
+	 * Gets the formatted name of the given reactions segment.
+	 * <p>
+	 * This returns the reaction segment's name with an upper-case first character.
+	 * 
+	 * @param reactionsSegment the reactions segment
+	 * @return the formatted reactions segment name
+	 */
+	public static def String getFormattedName(ReactionsSegment reactionsSegment) {
+		return reactionsSegment.name.toFirstUpper;
+	}
+
 	// reaction names:
 
 	/**
