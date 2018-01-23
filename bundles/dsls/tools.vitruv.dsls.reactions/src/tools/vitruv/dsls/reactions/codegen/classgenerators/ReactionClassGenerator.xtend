@@ -67,10 +67,10 @@ class ReactionClassGenerator extends ClassGenerator {
 	protected def JvmConstructor generateConstructor(Reaction reaction) {
 		return reaction.toConstructor [
 			visibility = JvmVisibility.PUBLIC;
-			val executorParameter = generateExecutorParameter();
-			parameters += executorParameter;
+			val routinesFacadeParameter = generateRoutinesFacadeParameter(reaction.reactionsSegment);
+			parameters += routinesFacadeParameter;
 			body = '''
-			super(«executorParameter.name»);'''
+			super(«routinesFacadeParameter.name»);'''
 		]
 	}
 	
@@ -135,10 +135,9 @@ class ReactionClassGenerator extends ClassGenerator {
 				«ENDIF»
 				getLogger().trace("Passed complete precondition check of Reaction " + this.getClass().getName());
 								
-				«routinesFacadeClassNameGenerator.qualifiedName» routinesFacade = «EXECUTOR_FIELD_NAME».«EXECUTOR_ROUTINES_FACADE_FACTORY_METHOD_NAME»("«reaction.reactionsSegment.name»", this.executionState, this);
 				«userExecutionClassGenerator.qualifiedClassName» userExecution = new «userExecutionClassGenerator.qualifiedClassName»(this.executionState, this);
 				userExecution.«callRoutineMethod.simpleName»(«
-					FOR argument : accessibleElementList.generateArgumentsForAccesibleElements SEPARATOR ", " AFTER ", "»«argument»«ENDFOR»routinesFacade);
+					FOR argument : accessibleElementList.generateArgumentsForAccesibleElements SEPARATOR ", " AFTER ", "»«argument»«ENDFOR»this.getRoutinesFacade());
 				
 				«resetChangesMethod.simpleName»();
 			'''

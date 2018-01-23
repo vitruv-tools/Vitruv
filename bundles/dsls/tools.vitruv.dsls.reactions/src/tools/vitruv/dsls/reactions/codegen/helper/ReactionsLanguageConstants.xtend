@@ -6,10 +6,9 @@ import edu.kit.ipd.sdq.activextendannotations.Utility
 	public static val OVERRIDDEN_REACTIONS_SEGMENT_SEPARATOR = "::";
 	
 	public static val RETRIEVAL_PRECONDITION_METHOD_TARGET = "potentialTarget"
-	private static val EXECUTOR_NAME = "executor";
-	public static val EXECUTOR_PARAMETER_NAME = EXECUTOR_NAME;
-	public static val EXECUTOR_FIELD_NAME = EXECUTOR_NAME;
-	public static val EXECUTOR_ROUTINES_FACADE_FACTORY_METHOD_NAME = "createRoutinesFacade";
+	private static val ROUTINES_FACADE_NAME = "routinesFacade";
+	public static val ROUTINES_FACADE_PARAMETER_NAME = ROUTINES_FACADE_NAME;
+	public static val ROUTINES_FACADE_FIELD_NAME = ROUTINES_FACADE_NAME;
 	private static val USER_INTERACTING_NAME = "userInteracting";
 	public static val USER_INTERACTING_PARAMETER_NAME = USER_INTERACTING_NAME;
 	public static val USER_INTERACTING_FIELD_NAME = USER_INTERACTING_NAME;
@@ -18,8 +17,7 @@ import edu.kit.ipd.sdq.activextendannotations.Utility
 	public static val REACTION_EXECUTION_STATE_FIELD_NAME = REACTION_EXECUTION_STATE_NAME;
 	public static val CHANGE_PARAMETER_NAME = "change";
 	
-	public static val EFFECT_FACADE_FIELD_NAME = "actionsFacade";
-	public static val EFFECT_FACADE_CALLED_BY_FIELD_NAME = "calledBy";
+	public static val ROUTINES_FACADE_CALLER_FIELD_NAME = "caller";
 	
 	public static val EFFECT_USER_EXECUTION_SIMPLE_NAME = "ActionUserExecution";
 	public static val REACTION_USER_EXECUTION_ROUTINE_CALL_FACADE_PARAMETER_NAME = "_routinesFacade"

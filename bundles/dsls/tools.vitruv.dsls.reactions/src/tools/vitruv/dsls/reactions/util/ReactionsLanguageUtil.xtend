@@ -4,8 +4,11 @@ import tools.vitruv.dsls.reactions.reactionsLanguage.Reaction
 import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsLanguagePackage
 import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsSegment
 import tools.vitruv.dsls.reactions.reactionsLanguage.Routine
+import tools.vitruv.extensions.dslsruntime.reactions.structure.ReactionsImportPath
+
 import static tools.vitruv.dsls.reactions.codegen.helper.ReactionsLanguageConstants.*
-import static extension tools.vitruv.dsls.reactions.codegen.helper.ReactionsLanguageHelper.*;
+
+import static extension tools.vitruv.dsls.reactions.codegen.helper.ReactionsLanguageHelper.*
 
 /**
  * Utility methods working with the model objects of the Reactions Language, which might be of use outside of the code generation.
@@ -49,7 +52,7 @@ final class ReactionsLanguageUtil {
 	 * The qualified name consists of the reaction's reactions segment name and the
 	 * {@link #getFormattedName(Reaction) formatted reaction name}, separated by <code>::</code>. In case the reaction overrides
 	 * another reaction, the name of the overridden reactions segment is used instead. The qualified name can therefore not be
-	 * used to differentiate between an original reaction and the reaction overriding it.
+	 * used to differentiate between an original reaction and the reaction overriding it!
 	 * 
 	 * @param reaction the reaction
 	 * @return the qualified name
@@ -71,7 +74,7 @@ final class ReactionsLanguageUtil {
 	}
 
 	/**
-	 * Gets the formatted full name of the given reaction.
+	 * Gets the display name of the given reaction.
 	 * <p>
 	 * In case the given reaction overrides another reaction, the returned name is equal to the reaction's
 	 * {@link #getQualifiedName(Reaction) qualified name}. Otherwise it consists of only the
@@ -80,7 +83,7 @@ final class ReactionsLanguageUtil {
 	 * @param reaction the reaction
 	 * @return the formatted full name
 	 */
-	public static def String getFormattedFullName(Reaction reaction) {
+	public static def String getDisplayName(Reaction reaction) {
 		if (reaction.isOverride) {
 			return reaction.qualifiedName;
 		} else {
@@ -106,11 +109,9 @@ final class ReactionsLanguageUtil {
 	 * Gets the qualified name of the given routine.
 	 * <p>
 	 * The qualified name consists of the routine's reactions segment name and the
-	 * {@link #getFormattedName(Routine) formatted routine name}, separated by <code>::</code>. In case the routine overrides
+	 * {@link #getFormattedName(Routine) formatted reaction name}, separated by <code>::</code>. In case the routine overrides
 	 * another routine, the name of the overridden reactions segment is used instead. The qualified name can therefore not be
-	 * used to differentiate between an original routine and the routine overriding it.
-	 * <p>
-	 * TODO: include routine overridden import path here
+	 * used to differentiate between an original routine and the routine overriding it!
 	 * 
 	 * @param routine the routine
 	 * @return the qualified name
@@ -118,13 +119,7 @@ final class ReactionsLanguageUtil {
 	public static def String getQualifiedName(Routine routine) {
 		var String reactionsSegmentName;
 		if (routine.isOverride) {
-			// not resolving cross-references here, if not required:
-			reactionsSegmentName = routine.parsedOverriddenReactionsSegmentName;
-			if (reactionsSegmentName === null) {
-				// getting the name from the overridden reactions segment directly,
-				// this might trigger a resolve of the cross-reference though:
-				reactionsSegmentName = routine.overriddenReactionsSegment.name;
-			}
+			reactionsSegmentName = ReactionsImportPath.fromPathString(routine.overriddenReactionsSegmentImportPath).lastSegment;
 		} else {
 			reactionsSegmentName = routine.reactionsSegment.name;
 		}
@@ -132,18 +127,39 @@ final class ReactionsLanguageUtil {
 	}
 
 	/**
-	 * Gets the formatted full name of the given routine.
+	 * Gets the fully qualified name of the given routine.
+	 * <p>
+	 * The qualified name consists of the routine's reactions segment name and the
+	 * {@link #getFormattedName(Routine) formatted routine name}, separated by <code>::</code>. In case the routine overrides
+	 * another routine, the <b>import path</b> to the overridden reactions segment is used instead. The fully qualified name is
+	 * therefore only valid inside the routine's own reactions segment, because it depends on the import hierarchy.
+	 * 
+	 * @param routine the routine
+	 * @return the fully qualified name
+	 */
+	public static def String getFullyQualifiedName(Routine routine) {
+		var String reactionsSegmentName;
+		if (routine.isOverride) {
+			reactionsSegmentName = routine.overriddenReactionsSegmentImportPath;
+		} else {
+			reactionsSegmentName = routine.reactionsSegment.name;
+		}
+		return reactionsSegmentName + OVERRIDDEN_REACTIONS_SEGMENT_SEPARATOR + routine.formattedName;
+	}
+
+	/**
+	 * Gets the display name of the given routine.
 	 * <p>
 	 * In case the given routine overrides another routine, the returned name is equal to the routine's
-	 * {@link #getQualifiedName(Routine) qualified name}. Otherwise it consists of only the
+	 * {@link #getFullyQualifiedName(Routine) fully qualified name}. Otherwise it consists of only the
 	 * {@link #getFormattedName(Routine) formatted routine name}.
 	 * 
 	 * @param routine the routine
 	 * @return the formatted full name
 	 */
-	public static def String getFormattedFullName(Routine routine) {
+	public static def String getDisplayName(Routine routine) {
 		if (routine.isOverride) {
-			return routine.qualifiedName;
+			return routine.fullyQualifiedName;
 		} else {
 			return routine.formattedName;
 		}
@@ -166,10 +182,7 @@ final class ReactionsLanguageUtil {
 	/**
 	 * Checks whether the given reaction is a 'regular' reaction.
 	 * <p>
-	 * This currently means:
-	 * <ul>
-	 * <li>It does not override any other reaction.
-	 * </ul>
+	 * This means that it does not override any other reaction.
 	 * 
 	 * @param reaction the reaction
 	 * @return <code>true</code> if the given reaction is a regular reaction
@@ -216,10 +229,7 @@ final class ReactionsLanguageUtil {
 	/**
 	 * Checks whether the given routine is a 'regular' routine.
 	 * <p>
-	 * This currently means:
-	 * <ul>
-	 * <li>It does not override any other routine.
-	 * </ul>
+	 * This means that it does not override any other routine.
 	 * 
 	 * @param routine the routine
 	 * @return <code>true</code> if the given routine is a regular routine
@@ -235,8 +245,7 @@ final class ReactionsLanguageUtil {
 	 * @return <code>true</code> if the given routine overrides another routine
 	 */
 	public static def isOverride(Routine routine) {
-		// check if overridden reactions segment is set, without resolving the cross-reference:
-		return routine.eIsSet(routine.eClass.getEStructuralFeature(ReactionsLanguagePackage.ROUTINE__OVERRIDDEN_REACTIONS_SEGMENT));
+		return routine.overriddenReactionsSegmentImportPath !== null;
 	}
 
 	/**

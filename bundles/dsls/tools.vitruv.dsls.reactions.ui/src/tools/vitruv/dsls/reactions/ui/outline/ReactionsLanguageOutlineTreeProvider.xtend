@@ -105,11 +105,11 @@ class ReactionsLanguageOutlineTreeProvider extends DefaultOutlineTreeProvider {
 	}
 	
 	protected def Object _text(Reaction reaction) {
-		return "reaction: " + reaction.formattedFullName;
+		return "reaction: " + reaction.displayName;
 	}
 	
 	protected def Object _text(Routine routine) {
-		return "routine: " + routine.formattedFullName;
+		return "routine: " + routine.displayName;
 	}
 	
 	protected def Object _text(RoutineInput routineInput) {

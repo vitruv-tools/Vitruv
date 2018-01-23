@@ -22,7 +22,9 @@ import tools.vitruv.dsls.reactions.reactionsLanguage.ElementDeletionAndCreationA
 import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsFile
 import tools.vitruv.dsls.reactions.scoping.ReactionsImportScopeHelper
 import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsImport
+import tools.vitruv.extensions.dslsruntime.reactions.structure.ReactionsImportPath
 import static extension tools.vitruv.dsls.reactions.codegen.helper.ReactionsLanguageHelper.*
+import static extension tools.vitruv.dsls.reactions.codegen.helper.ReactionsImportsHelper.*
 import static extension tools.vitruv.dsls.reactions.util.ReactionsLanguageUtil.*
 
 /**
@@ -128,7 +130,7 @@ class ReactionsLanguageValidator extends AbstractReactionsLanguageValidator {
 		// check for duplicate reaction names in same segment:
 		val alreadyCheckedReactions = new HashMap<String, Reaction>();
 		for (reaction : reactionsSegment.reactions) {
-			val reactionName = reaction.formattedFullName;
+			val reactionName = reaction.displayName;
 			if (alreadyCheckedReactions.putIfAbsent(reactionName, reaction) !== null) {
 				val errorMessage = "Duplicate reaction name: " + reactionName;
 				error(errorMessage, reaction, ReactionsLanguagePackage.Literals.REACTION__NAME);
@@ -139,6 +141,8 @@ class ReactionsLanguageValidator extends AbstractReactionsLanguageValidator {
 				);
 			}
 		}
+		
+		// TODO check for reaction name clashes when importing reactions
 
 		// check for duplicate routine names in same segment:
 		val alreadyCheckedRoutines = new HashMap<String, Routine>();
@@ -146,7 +150,7 @@ class ReactionsLanguageValidator extends AbstractReactionsLanguageValidator {
 //			alreadyCheckedEffects.put(implicitRoutine.routineClassNameGenerator.simpleName, implicitRoutine);
 //		}
 		for (routine : reactionsSegment.routines) {
-			val routineName = routine.formattedFullName;
+			val routineName = routine.displayName;
 			if (alreadyCheckedRoutines.putIfAbsent(routineName, routine) !== null) {
 				val errorMessage = "Duplicate routine name: " + routineName;
 				error(errorMessage, routine, ReactionsLanguagePackage.Literals.ROUTINE__NAME);
@@ -154,6 +158,7 @@ class ReactionsLanguageValidator extends AbstractReactionsLanguageValidator {
 				error(errorMessage, duplicateNameRoutine, ReactionsLanguagePackage.Literals.ROUTINE__NAME);
 			}
 		}
+		// TODO check for routine name clashes when importing routines without qualified names
 	}
 
 	@Check
@@ -190,6 +195,10 @@ class ReactionsLanguageValidator extends AbstractReactionsLanguageValidator {
 	
 	@Check
 	def checkRoutine(Routine routine) {
+		if (routine.name.startsWith("_")) {
+			error("Routine names must not start with an underscore.",
+				ReactionsLanguagePackage.Literals.ROUTINE__NAME);
+		}
 		if (!Character.isLowerCase(routine.name.charAt(0))) {
 			warning("Routine names should start lower case",
 				ReactionsLanguagePackage.Literals.ROUTINE__NAME);
@@ -198,18 +207,22 @@ class ReactionsLanguageValidator extends AbstractReactionsLanguageValidator {
 		// routine overrides must have matching name and parameters:
 		// TODO maybe be slightly less strict and allow overrides as long at the signatures are 'override-compatible' as defined by java?
 		if (routine.isOverride) {
-			val signature = routine.methodSignature
-			val matchingSignature = routine.overriddenReactionsSegment.regularRoutines.map[methodSignature].findFirst[it.equals(signature)];
-			if (matchingSignature === null) {
-				val errorMessage = "Routine must override a routine with matching name and parameters: " + signature;
-				error(errorMessage, routine, ReactionsLanguagePackage.Literals.ROUTINE__NAME);
+			val overriddenReactionsSegmentImportPath = ReactionsImportPath.fromPathString(routine.overriddenReactionsSegmentImportPath);
+			val overriddenReactionsSegment = routine.reactionsSegment.getReactionsSegment(overriddenReactionsSegmentImportPath);
+			if (overriddenReactionsSegment !== null) {
+				val signature = routine.methodSignature
+				val matchingSignature =  overriddenReactionsSegment.regularRoutines.map[methodSignature].findFirst[it.equals(signature)];
+				if (matchingSignature === null) {
+					val errorMessage = "Routine must override a routine with matching name and parameters: " + signature;
+					error(errorMessage, routine, ReactionsLanguagePackage.Literals.ROUTINE__NAME);
+				}
 			}
 		}
 	}
 	
 	private def String getMethodSignature(Routine routine) {
 		val signature = new StringBuilder();
-		signature.append(routine.name.toLowerCase);
+		signature.append(routine.formattedName);
 		signature.append('(');
 		for (modelInputElement : routine.input.modelInputElements) {
 			signature.append(modelInputElement.metaclass.javaClassName);

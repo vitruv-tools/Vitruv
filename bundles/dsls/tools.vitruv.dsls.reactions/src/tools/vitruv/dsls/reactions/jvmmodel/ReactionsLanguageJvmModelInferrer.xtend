@@ -7,7 +7,6 @@ import com.google.inject.Inject
 import org.eclipse.xtext.xbase.jvmmodel.AbstractModelInferrer
 import org.eclipse.xtext.xbase.jvmmodel.IJvmDeclaredTypeAcceptor
 import tools.vitruv.dsls.reactions.codegen.classgenerators.ExecutorClassGenerator
-import tools.vitruv.dsls.reactions.codegen.classgenerators.ImportedRoutinesFacadeClassGenerator
 import tools.vitruv.dsls.reactions.codegen.classgenerators.RoutineFacadeClassGenerator
 import tools.vitruv.dsls.reactions.codegen.classgenerators.RoutineClassGenerator
 import tools.vitruv.dsls.reactions.reactionsLanguage.Routine
@@ -17,6 +16,8 @@ import tools.vitruv.dsls.reactions.codegen.typesbuilder.JvmTypesBuilderWithoutAs
 import tools.vitruv.dsls.reactions.codegen.typesbuilder.TypesBuilderExtensionProvider
 import tools.vitruv.dsls.reactions.codegen.classgenerators.ReactionClassGenerator
 import tools.vitruv.dsls.reactions.codegen.classgenerators.ClassGenerator
+import tools.vitruv.dsls.reactions.codegen.classgenerators.OverriddenRoutinesFacadeClassGenerator
+import static extension tools.vitruv.dsls.reactions.codegen.helper.ReactionsImportsHelper.*
 
 /**
  * <p>Infers a JVM model for the Xtend code blocks of the reaction file model.</p> 
@@ -48,8 +49,8 @@ class ReactionsLanguageJvmModelInferrer extends AbstractModelInferrer  {
 		
 		for (reactionsSegment : file.reactionsSegments) {
 			acceptor.accept(new RoutineFacadeClassGenerator(reactionsSegment, typesBuilderExtensionProvider));
-			for (reactionsImport : reactionsSegment.reactionsImports) {
-				acceptor.accept(new ImportedRoutinesFacadeClassGenerator(reactionsSegment, reactionsImport, typesBuilderExtensionProvider));
+			for (overriddenRoutinesImportPath : reactionsSegment.overriddenRoutinesImportPaths) {
+				acceptor.accept(new OverriddenRoutinesFacadeClassGenerator(reactionsSegment, overriddenRoutinesImportPath, typesBuilderExtensionProvider));
 			}
 			for (effect : reactionsSegment.routines) {
 				generate(effect, acceptor, isPreIndexingPhase);

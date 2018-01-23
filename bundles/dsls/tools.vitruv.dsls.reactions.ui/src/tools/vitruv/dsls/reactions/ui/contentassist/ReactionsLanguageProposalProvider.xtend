@@ -3,10 +3,20 @@
  */
 package tools.vitruv.dsls.reactions.ui.contentassist
 
+import org.eclipse.emf.ecore.EObject
+import org.eclipse.xtext.ui.editor.contentassist.ICompletionProposalAcceptor
+import org.eclipse.xtext.ui.editor.contentassist.ContentAssistContext
+import org.eclipse.xtext.RuleCall
 
 /**
  * See https://www.eclipse.org/Xtext/documentation/304_ide_concepts.html#content-assist
  * on how to customize the content assistant.
  */
 class ReactionsLanguageProposalProvider extends AbstractReactionsLanguageProposalProvider {
+
+	override void complete_ReactionsImportPath(EObject model, RuleCall ruleCall, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+		// TODO proposals depending on import hierarchy
+		// TODO also validate inside validator
+		// subclasses may override
+	}
 }

@@ -1,16 +1,17 @@
 package tools.vitruv.dsls.reactions.codegen.classgenerators
 
+import java.util.Map
 import org.eclipse.xtext.common.types.JvmConstructor
 import org.eclipse.xtext.common.types.JvmOperation
 import org.eclipse.xtext.common.types.JvmVisibility
 import static tools.vitruv.dsls.reactions.codegen.helper.ReactionsLanguageConstants.*;
-import tools.vitruv.extensions.dslsruntime.reactions.structure.CallHierarchyHaving
 import tools.vitruv.dsls.reactions.reactionsLanguage.Routine
 import tools.vitruv.extensions.dslsruntime.reactions.AbstractRepairRoutinesFacade
+import tools.vitruv.extensions.dslsruntime.reactions.RoutinesFacadesProvider
+import tools.vitruv.extensions.dslsruntime.reactions.structure.ReactionsImportPath
 import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsSegment
 import static extension tools.vitruv.dsls.reactions.codegen.helper.ClassNamesGenerators.*
-import static extension tools.vitruv.dsls.reactions.codegen.helper.ReactionsLanguageHelper.*
-import static extension tools.vitruv.dsls.reactions.util.ReactionsLanguageUtil.*
+import static extension tools.vitruv.dsls.reactions.codegen.helper.ReactionsImportsHelper.*
 import tools.vitruv.dsls.reactions.codegen.typesbuilder.TypesBuilderExtensionProvider
 import org.eclipse.xtext.common.types.JvmGenericType
 import tools.vitruv.dsls.common.helper.ClassNameGenerator
@@ -19,11 +20,12 @@ class RoutineFacadeClassGenerator extends ClassGenerator {
 	val ReactionsSegment reactionsSegment
 	val ClassNameGenerator routinesFacadeNameGenerator;
 	var JvmGenericType generatedClass
-	
+	var Map<ReactionsSegment, ReactionsImportPath> includedRoutinesFacades;
+
 	new(ReactionsSegment reactionsSegment, TypesBuilderExtensionProvider typesBuilderExtensionProvider) {
 		super(typesBuilderExtensionProvider);
-		this.reactionsSegment = reactionsSegment
-		this.routinesFacadeNameGenerator = reactionsSegment.routinesFacadeClassNameGenerator
+		this.reactionsSegment = reactionsSegment;
+		this.routinesFacadeNameGenerator = reactionsSegment.routinesFacadeClassNameGenerator;
 	}
 
 	public override generateEmptyClass() {
@@ -33,59 +35,66 @@ class RoutineFacadeClassGenerator extends ClassGenerator {
 	}
 
 	override generateBody() {
+		this.includedRoutinesFacades =  reactionsSegment.includedRoutinesFacades;
 		generatedClass => [
 			superTypes += typeRef(AbstractRepairRoutinesFacade);
-			members += generateBaseConstructor().setupConstructor();
-			// fields for all directly imported routines facades:
-			for (reactionsImport : reactionsSegment.reactionsImports) {
-				val importedReactionsSegment = reactionsImport.importedReactionsSegment;
-				val importedRoutinesFacadeFieldName = importedReactionsSegment.importedRoutinesFacadeFieldName;
-				val importedRoutinesFacadeClassName = reactionsSegment.getImportedRoutinesFacadeClassNameGenerator(importedReactionsSegment.name).qualifiedName;
-				members += reactionsSegment.toField(importedRoutinesFacadeFieldName, typeRef(importedRoutinesFacadeClassName))[
+			members += generateConstructor();
+			// fields for all routines facades of reactions segments imported with qualified names,
+			// including transitively included routines facades for imports without qualified names:
+			members += includedRoutinesFacades.entrySet.map [
+				val includedReactionsSegment = it.key;
+				val includedRoutinesFacadeFieldName = includedReactionsSegment.name;
+				val includedRoutinesFacadeClassName = includedReactionsSegment.routinesFacadeClassNameGenerator.qualifiedName;
+				reactionsSegment.toField(includedRoutinesFacadeFieldName, typeRef(includedRoutinesFacadeClassName)) [
 					visibility = JvmVisibility.PUBLIC;
 				]
-			}
-			// routines:
-			members += reactionsSegment.regularRoutines.map[generateCallMethod];
+			]
+			// included routines: own routines and routines imported without qualified names, including transitively included routines,
+			// with overridden routines being replaced
+			members += reactionsSegment.includedRoutines.entrySet.map[generateCallMethod(it.key, it.value)];
 		]
 	}
 
-	protected final def JvmConstructor generateBaseConstructor() {
+	protected def JvmConstructor generateConstructor() {
 		return reactionsSegment.toConstructor() [
-			val executorParameter = generateExecutorParameter();
-			val reactionExecutionStateParameter = generateReactionExecutionStateParameter();
-			val calledByParameter = generateParameter(EFFECT_FACADE_CALLED_BY_FIELD_NAME, typeRef(CallHierarchyHaving));
-			parameters += executorParameter;
-			parameters += reactionExecutionStateParameter;
-			parameters += calledByParameter;
+			val routinesFacadesProviderParameter = generateParameter("routinesFacadesProvider", typeRef(RoutinesFacadesProvider));
+			val reactionsImportPathParameter = generateParameter("reactionsImportPath", typeRef(ReactionsImportPath));
+			parameters += routinesFacadesProviderParameter;
+			parameters += reactionsImportPathParameter;
 			body = '''
-			super(«executorParameter.name», «reactionExecutionStateParameter.name», «calledByParameter.name»);'''
+			super(«routinesFacadesProviderParameter.name», «reactionsImportPathParameter.name»);
+			«this.getExtendedConstructorBody()»'''
 		]
 	}
 
-	private def JvmConstructor setupConstructor(JvmConstructor constructor) {
-		constructor.body = '''
-		super(«EXECUTOR_PARAMETER_NAME», «REACTION_EXECUTION_STATE_PARAMETER_NAME», «EFFECT_FACADE_CALLED_BY_FIELD_NAME»);
-		«FOR reactionsImport : reactionsSegment.reactionsImports»
-		«val importedReactionsSegment = reactionsImport.importedReactionsSegment»
-		«val importedRoutinesFacadeFieldName = importedReactionsSegment.importedRoutinesFacadeFieldName»
-		this.«importedRoutinesFacadeFieldName» = «EXECUTOR_PARAMETER_NAME».«EXECUTOR_ROUTINES_FACADE_FACTORY_METHOD_NAME»("«importedReactionsSegment.name»", «REACTION_EXECUTION_STATE_PARAMETER_NAME», «EFFECT_FACADE_CALLED_BY_FIELD_NAME»);
-		«ENDFOR»''';
-		return constructor;
-	}
+	protected def String getExtendedConstructorBody() '''
+		«FOR includedRoutinesFacadeEntry : includedRoutinesFacades.entrySet»
+			«val includedReactionsSegment = includedRoutinesFacadeEntry.key»
+			«val includedSegmentImportPath = includedRoutinesFacadeEntry.value»
+			«val includedRoutinesFacadeFieldName = includedReactionsSegment.name»
+			this.«includedRoutinesFacadeFieldName» = «includedSegmentImportPath.generateGetRoutinesFacadeCall»;
+		«ENDFOR»
+	'''
 
-	protected def JvmOperation generateCallMethod(Routine routine) {
+	// the reactions import path used here is absolute (starting with the root of the import hierarchy):
+	protected def JvmOperation generateCallMethod(Routine routine, ReactionsImportPath reactionsImportPath) {
 		val routineNameGenerator = routine.routineClassNameGenerator;
-		routine.associatePrimary(routine.toMethod(routine.callMethodName, typeRef(Boolean.TYPE)) [
+		val routinesFacadeNameGenerator = routine.reactionsSegment.routinesFacadeClassNameGenerator;
+		routine.associatePrimary(routine.toMethod(routine.name, typeRef(Boolean.TYPE)) [
 			visibility = JvmVisibility.PUBLIC;
-			annotations += annotationRef(Override);
 			parameters +=
 				generateMethodInputParameters(routine.input.modelInputElements, routine.input.javaInputElements);
 			body = '''
-				«routineNameGenerator.qualifiedName» effect = new «routineNameGenerator.qualifiedName»(this.«EXECUTOR_FIELD_NAME», this.executionState, this.«EFFECT_FACADE_CALLED_BY_FIELD_NAME»«
+				«routinesFacadeNameGenerator.qualifiedName» _routinesFacade = «reactionsImportPath.generateGetRoutinesFacadeCall»;
+				«routineNameGenerator.qualifiedName» routine = new «routineNameGenerator.qualifiedName»(«
+					»_routinesFacade, this.«REACTION_EXECUTION_STATE_FIELD_NAME», this.«ROUTINES_FACADE_CALLER_FIELD_NAME»«
 					»«FOR parameter : parameters BEFORE ', ' SEPARATOR ', '»«parameter.name»«ENDFOR»);
-				return effect.applyRoutine();
+				return routine.applyRoutine();
 			'''
 		])
 	}
+
+	protected def String generateGetRoutinesFacadeCall(ReactionsImportPath reactionsImportPath) '''
+		this.routinesFacadesProvider.getRoutinesFacade(«typeRef(ReactionsImportPath).qualifiedName».fromPathString(«reactionsImportPath.pathString»))
+	'''
 }

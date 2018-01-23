@@ -23,17 +23,13 @@ ReactionsSegment:
 ReactionsImport:
 	'import' (routinesOnly?='routines')? importedReactionsSegment=[ReactionsSegment] (useQualifiedNames?='using qualified names')?;
 
-ReactionsImportPath:
-	//(ValidID '.')+;
-	(nodes+=[ReactionsSegment] '.')+;
-
 // *********************************
 // *********** REACTIONS ***********
 // *********************************
 
 Reaction:
 	(documentation=ML_COMMENT)?
-	'reaction' ((overriddenImportPath=ReactionsImportPath)? overriddenReactionsSegment=[ReactionsSegment] '::')? (name=ValidID)? '{'
+	'reaction' (overriddenReactionsSegment=[ReactionsSegment] '::')? name=ValidID '{'
 		trigger=Trigger
 		callRoutine=ReactionRoutineCall
 	'}';
@@ -138,10 +134,13 @@ ElementCompoundChangeType returns ElementCompoundChangeType:
 
 Routine:
 	(documentation=ML_COMMENT)?
-	'routine' ((overriddenImportPath=ReactionsImportPath)? overriddenReactionsSegment=[ReactionsSegment] '::')? name=ValidID input=RoutineInput '{'
+	'routine' (overriddenReactionsSegmentImportPath=ReactionsImportPath '::')? name=ValidID input=RoutineInput '{'
 		matcher=MatcherBlock?
 		action=ActionBlock
 	'}';
+
+ReactionsImportPath:
+	ValidID ('.' ValidID)*;
 
 RoutineInput:
 	{RoutineInput}

@@ -1,9 +1,5 @@
 package tools.vitruv.dsls.reactions.codegen.helper
 
-import java.util.Map
-import java.util.LinkedHashMap
-import java.util.List
-import java.util.ArrayList
 import org.eclipse.xtext.nodemodel.util.NodeModelUtils
 import org.eclipse.xtext.xbase.XExpression
 import org.eclipse.xtext.xbase.XBlockExpression
@@ -23,10 +19,8 @@ import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EClassifier
 import org.eclipse.emf.ecore.EStructuralFeature
 import tools.vitruv.dsls.reactions.reactionsLanguage.Reaction
-import tools.vitruv.dsls.reactions.reactionsLanguage.Routine
 import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsImport
 import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsLanguagePackage
-import static extension tools.vitruv.dsls.reactions.util.ReactionsLanguageUtil.*
 
 final class ReactionsLanguageHelper {
 	private new() {
@@ -109,12 +103,7 @@ final class ReactionsLanguageHelper {
 		resource.optionalReactionsFile !== null
 	}
 
-	// routine call method name:
-	public static def String getCallMethodName(Routine routine) {
-		return routine.name;
-	}
-
-	// import of reactions and routines:
+	// TODO: move this into ReactionsImportHelper as well?
 
 	/**
 	 * Gets the parsed imported reactions segment name for the given reactions import, without actually resolving the cross-reference. 
@@ -130,92 +119,9 @@ final class ReactionsLanguageHelper {
 		return reaction.getFeatureNodeText(ReactionsLanguagePackage.Literals.REACTION__OVERRIDDEN_REACTIONS_SEGMENT);
 	}
 
-	/**
-	 * Gets the parsed overridden reactions segment name for the given routine, without actually resolving the cross-reference. 
-	 */
-	public static def String getParsedOverriddenReactionsSegmentName(Routine routine) {
-		return routine.getFeatureNodeText(ReactionsLanguagePackage.Literals.ROUTINE__OVERRIDDEN_REACTIONS_SEGMENT);
-	}
-
 	private static def String getFeatureNodeText(EObject semanticObject, EStructuralFeature structuralFeature) {
 		val nodes = NodeModelUtils.findNodesForFeature(semanticObject, structuralFeature);
 		if (nodes.isEmpty) return null;
 		return nodes.get(0).text;
-	}
-
-	public static def String getImportedRoutinesFacadeFieldName(ReactionsSegment importedReactionsSegment) {
-		return importedReactionsSegment.name;
-	}
-
-	/**
-	 * Searches through the reactions import hierarchy for the first reactions segment that imports the specified reactions
-	 * segment. If no such reactions segment is found, the imported reactions segment itself is returned.
-	 * The search starts at the reactions imports of the given reactions segment. Depending on the checkSegmentItself parameter,
-	 * the given reactions segment gets considered as possible root (in case it directly imports the specified reactions
-	 * segment), or not (in which case only the imported reactions segments get considered as possible root). 
-	 */
-	public static def ReactionsSegment getImportedReactionsSegmentRoot(ReactionsSegment reactionsSegment,
-		ReactionsSegment importedReactionsSegment, boolean checkSegmentItself) {
-		// search recursively through all directly and transitively imported segments:
-		val root = reactionsSegment.findImportedReactionsSegmentRoot(importedReactionsSegment, checkSegmentItself);
-		// return imported reactions segment itself if no root was found:
-		return root ?: importedReactionsSegment;
-	}
-
-	private static def ReactionsSegment findImportedReactionsSegmentRoot(ReactionsSegment reactionsSegment,
-		ReactionsSegment importedReactionsSegment, boolean checkImportsOfCurrentSegment) {
-		val importedReactionsSegments = reactionsSegment.reactionsImports.map[it.importedReactionsSegment];
-		// check if the current reactions segment imports the specified reactions segment:
-		if (checkImportsOfCurrentSegment) {
-			// TODO NPE during Project>Clean with open editor windows
-			if (importedReactionsSegments.exists[it.name.equals(importedReactionsSegment.name)]) {
-				return reactionsSegment;
-			}
-		}
-		// search recursively through all transitively imported segments, returns null if no root was found:
-		return importedReactionsSegments.map [
-			it.findImportedReactionsSegmentRoot(importedReactionsSegment, true);
-		].findFirst[it !== null];
-	}
-
-	// includes transitively imported reactions segments:
-	public static def List<ReactionsSegment> getAllImportedReactionsSegments(ReactionsSegment reactionsSegment) {
-		val allImportedReactionsSegments = new ArrayList<ReactionsSegment>();
-		reactionsSegment.addAllImportedReactionsSegments(allImportedReactionsSegments)
-		return allImportedReactionsSegments;
-	}
-
-	private static def void addAllImportedReactionsSegments(ReactionsSegment reactionsSegment, List<ReactionsSegment> allImportedReactionsSegments) {
-		// recursively add all directly and transitively imported reactions segments that are not yet contained:
-		val importedReactionsSegments = reactionsSegment.reactionsImports.map[it.importedReactionsSegment];
-		importedReactionsSegments.forEach [
-			val importedReactionsSegmentName = it.name;
-			if (allImportedReactionsSegments.findFirst[it.name.equals(importedReactionsSegmentName)] === null) {
-				allImportedReactionsSegments.add(it);
-				it.addAllImportedReactionsSegments(allImportedReactionsSegments);
-			}
-		];
-	}
-
-	// gets all reactions of the given segment, including own reactions as well as directly and transitively imported reactions, with overridden reactions being replaced
-	// keys: the qualified reaction names, values: the reactions, with overridden reactions being replaced
-	public static def Map<String, Reaction> getAllReactions(ReactionsSegment reactionsSegment) {
-		val reactionsByQualifiedName = new LinkedHashMap<String, Reaction>();
-		addAllReactions(reactionsSegment, reactionsByQualifiedName);
-		return reactionsByQualifiedName;
-	}
-
-	// recursively adds all transitively imported reactions, and then adds its own and replaces overridden reactions
-	private static def void addAllReactions(ReactionsSegment reactionsSegment, Map<String, Reaction> reactionsByQualifiedName) {
-		// recursively add all transitively imported reactions:
-		for (reactionsImport : reactionsSegment.reactionsImports.filter[!isRoutinesOnly]) {
-			addAllReactions(reactionsImport.importedReactionsSegment, reactionsByQualifiedName);
-		}
-
-		// add own reactions and replace overridden reactions:
-		for (reaction : reactionsSegment.reactions) {
-			val qualifiedName = reaction.qualifiedName;
-			reactionsByQualifiedName.put(qualifiedName, reaction);
-		}
 	}
 }

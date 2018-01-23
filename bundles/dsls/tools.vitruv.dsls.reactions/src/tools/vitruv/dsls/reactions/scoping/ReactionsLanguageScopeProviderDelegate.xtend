@@ -7,10 +7,10 @@ import org.eclipse.emf.ecore.EReference
 import org.eclipse.xtext.resource.EObjectDescription
 import org.eclipse.xtext.scoping.IScope
 import org.eclipse.xtext.scoping.impl.SimpleScope
+import org.eclipse.xtext.naming.QualifiedName
 
 import static tools.vitruv.dsls.mirbase.mirBase.MirBasePackage.Literals.*;
 import static tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsLanguagePackage.Literals.*
-import static extension tools.vitruv.dsls.reactions.codegen.helper.ReactionsLanguageHelper.*
 
 import org.eclipse.emf.ecore.EStructuralFeature
 import tools.vitruv.dsls.mirbase.scoping.MirBaseScopeProviderDelegate
@@ -29,6 +29,7 @@ import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsSegment
 import tools.vitruv.dsls.reactions.reactionsLanguage.Reaction
 import tools.vitruv.dsls.reactions.reactionsLanguage.Routine
 import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsImport
+import static extension tools.vitruv.dsls.reactions.codegen.helper.ReactionsImportsHelper.*
 
 class ReactionsLanguageScopeProviderDelegate extends MirBaseScopeProviderDelegate {
 
@@ -65,11 +66,12 @@ class ReactionsLanguageScopeProviderDelegate extends MirBaseScopeProviderDelegat
 			}
 		} else if (reference.equals(REACTION__OVERRIDDEN_REACTIONS_SEGMENT)) {
 			if (context instanceof Reaction) {
-				return createOverriddenReactionsSegmentScope(context.reactionsSegment);
+				return createReactionOverrideScope(context.reactionsSegment);
 			}
-		} else if (reference.equals(ROUTINE__OVERRIDDEN_REACTIONS_SEGMENT)) {
+		} else if (reference.equals(ROUTINE__OVERRIDDEN_REACTIONS_SEGMENT_IMPORT_PATH)) {
 			if (context instanceof Routine) {
-				return createOverriddenReactionsSegmentScope(context.reactionsSegment);
+				// TODO this will probably not get called, remove this and instead move logic into content assist proposal provider and validator
+				//return createRoutineOverrideScope(context.reactionsSegment);
 			}
 		}
 		super.getScope(context, reference)
@@ -80,11 +82,28 @@ class ReactionsLanguageScopeProviderDelegate extends MirBaseScopeProviderDelegat
 		return new SimpleScope(visibleReactionsSegmentDescriptions);
 	}
 
-	def createOverriddenReactionsSegmentScope(ReactionsSegment reactionsSegment) {
-		return new SimpleScope(IScope.NULLSCOPE, reactionsSegment.reactionsImports.map [
-			// this might get called while cross-references cannot not yet be resolved (returns proxy objects then):
-			EObjectDescription.create(it.parsedImportedReactionsSegmentName, it.importedReactionsSegment);
+	def createReactionOverrideScope(ReactionsSegment reactionsSegment) {
+		return new SimpleScope(IScope.NULLSCOPE, reactionsSegment.reactionsImportHierarchy.entrySet.map [
+			EObjectDescription.create(QualifiedName.create(it.key.lastSegment), it.value);
 		]);
+		// TODO limit to import hierarchy reachable
+		//return this.createReactionsImportScope(reactionsSegment);
+		/*return new SimpleScope(IScope.NULLSCOPE, reactionsSegment.reactionsImports.map [
+			// this might get called while cross-references cannot yet be resolved (returns proxy objects then):
+			// TODO investigate under which circumstances this happens
+			EObjectDescription.create(it.parsedImportedReactionsSegmentName, it.importedReactionsSegment);
+		]);*/
+	}
+
+	def createRoutineOverrideScope(ReactionsSegment reactionsSegment) {
+		return new SimpleScope(IScope.NULLSCOPE, reactionsSegment.routinesImportHierarchy.entrySet.map [
+			EObjectDescription.create(QualifiedName.create(it.key.tail.segments), it.value);
+		]);
+		// TODO limit to import hierarchy reachable
+		/*return new SimpleScope(IScope.NULLSCOPE, reactionsSegment.reactionsImports.map [
+			// this might get called while cross-references cannot yet be resolved (returns proxy objects then):
+			EObjectDescription.create(it.parsedImportedReactionsSegmentName, it.importedReactionsSegment);
+		]);*/
 	}
 
 	def createEStructuralFeatureScope(MetaclassFeatureReference featureReference) {

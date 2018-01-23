@@ -9,14 +9,15 @@ import tools.vitruv.framework.userinteraction.UserInteracting
 import tools.vitruv.dsls.mirbase.mirBase.NamedJavaElement
 import tools.vitruv.extensions.dslsruntime.reactions.ReactionExecutionState
 import org.eclipse.emf.ecore.EClass
+import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsSegment
 import tools.vitruv.dsls.reactions.reactionsLanguage.inputTypes.InputTypesPackage
 import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.dsls.mirbase.mirBase.MetaclassReference
 import static extension tools.vitruv.dsls.reactions.codegen.helper.ReactionsLanguageHelper.*;
+import static extension tools.vitruv.dsls.reactions.codegen.helper.ClassNamesGenerators.*;
 import tools.vitruv.dsls.mirbase.mirBase.NamedMetaclassReference
 import tools.vitruv.dsls.reactions.codegen.helper.AccessibleElement
 import static tools.vitruv.dsls.reactions.codegen.helper.ReactionsLanguageConstants.*;
-import tools.vitruv.extensions.dslsruntime.reactions.AbstractReactionsExecutor
 
 class ParameterGenerator {
 	protected final extension JvmTypeReferenceBuilder _typeReferenceBuilder;
@@ -34,8 +35,8 @@ class ParameterGenerator {
 		return null;
 	}
 	
-	public def JvmFormalParameter generateExecutorParameter(EObject parameterContext) {
-		return generateParameter(parameterContext, EXECUTOR_PARAMETER_NAME, AbstractReactionsExecutor);
+	public def JvmFormalParameter generateRoutinesFacadeParameter(EObject parameterContext, ReactionsSegment reactionsSegment) {
+		return generateParameter(parameterContext, ROUTINES_FACADE_PARAMETER_NAME, typeRef(reactionsSegment.routinesFacadeClassNameGenerator.qualifiedName));
 	}
 	
 	public def JvmFormalParameter generateReactionExecutionStateParameter(EObject parameterContext) {
