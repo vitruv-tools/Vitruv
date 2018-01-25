@@ -70,8 +70,7 @@ class ReactionsLanguageScopeProviderDelegate extends MirBaseScopeProviderDelegat
 			}
 		} else if (reference.equals(ROUTINE__OVERRIDDEN_REACTIONS_SEGMENT_IMPORT_PATH)) {
 			if (context instanceof Routine) {
-				// TODO this will probably not get called, remove this and instead move logic into content assist proposal provider and validator
-				//return createRoutineOverrideScope(context.reactionsSegment);
+				return createRoutineOverrideScope(context.reactionsSegment);
 			}
 		}
 		super.getScope(context, reference)
@@ -83,7 +82,7 @@ class ReactionsLanguageScopeProviderDelegate extends MirBaseScopeProviderDelegat
 	}
 
 	def createReactionOverrideScope(ReactionsSegment reactionsSegment) {
-		return new SimpleScope(IScope.NULLSCOPE, reactionsSegment.reactionsImportHierarchy.entrySet.map [
+		return new SimpleScope(reactionsSegment.reactionsImportHierarchy.entrySet.map [
 			EObjectDescription.create(QualifiedName.create(it.key.lastSegment), it.value);
 		]);
 		// TODO limit to import hierarchy reachable
@@ -96,7 +95,7 @@ class ReactionsLanguageScopeProviderDelegate extends MirBaseScopeProviderDelegat
 	}
 
 	def createRoutineOverrideScope(ReactionsSegment reactionsSegment) {
-		return new SimpleScope(IScope.NULLSCOPE, reactionsSegment.routinesImportHierarchy.entrySet.map [
+		return new SimpleScope(reactionsSegment.routinesImportHierarchy.entrySet.map [
 			EObjectDescription.create(QualifiedName.create(it.key.tail.segments), it.value);
 		]);
 		// TODO limit to import hierarchy reachable

@@ -280,7 +280,7 @@ class ReactionsImportsHelper {
 	public static def Set<ReactionsImportPath> getOverriddenRoutinesImportPaths(ReactionsSegment reactionsSegment) {
 		val overriddenRoutinesImportPaths = new LinkedHashSet<ReactionsImportPath>();
 		for (overrideRoutine : reactionsSegment.overrideRoutines) {
-			overriddenRoutinesImportPaths.add(ReactionsImportPath.fromPathString(overrideRoutine.overriddenReactionsSegmentImportPath));
+			overriddenRoutinesImportPaths.add(ReactionsImportPath.create(overrideRoutine.overriddenReactionsSegmentImportPath));
 		}
 		return overriddenRoutinesImportPaths;
 	}

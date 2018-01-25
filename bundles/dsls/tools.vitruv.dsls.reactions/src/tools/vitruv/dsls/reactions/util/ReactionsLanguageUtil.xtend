@@ -119,7 +119,7 @@ final class ReactionsLanguageUtil {
 	public static def String getQualifiedName(Routine routine) {
 		var String reactionsSegmentName;
 		if (routine.isOverride) {
-			reactionsSegmentName = ReactionsImportPath.fromPathString(routine.overriddenReactionsSegmentImportPath).lastSegment;
+			reactionsSegmentName = routine.overriddenReactionsSegmentImportPath.last;
 		} else {
 			reactionsSegmentName = routine.reactionsSegment.name;
 		}
@@ -140,7 +140,7 @@ final class ReactionsLanguageUtil {
 	public static def String getFullyQualifiedName(Routine routine) {
 		var String reactionsSegmentName;
 		if (routine.isOverride) {
-			reactionsSegmentName = routine.overriddenReactionsSegmentImportPath;
+			reactionsSegmentName = routine.overriddenReactionsSegmentImportPath.join(ReactionsImportPath.SEPARATOR);
 		} else {
 			reactionsSegmentName = routine.reactionsSegment.name;
 		}
@@ -245,7 +245,7 @@ final class ReactionsLanguageUtil {
 	 * @return <code>true</code> if the given routine overrides another routine
 	 */
 	public static def isOverride(Routine routine) {
-		return routine.overriddenReactionsSegmentImportPath !== null;
+		return !routine.overriddenReactionsSegmentImportPath.isEmpty;
 	}
 
 	/**

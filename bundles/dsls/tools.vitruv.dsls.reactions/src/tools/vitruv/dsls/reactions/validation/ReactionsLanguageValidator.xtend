@@ -205,9 +205,8 @@ class ReactionsLanguageValidator extends AbstractReactionsLanguageValidator {
 		}
 
 		// routine overrides must have matching name and parameters:
-		// TODO maybe be slightly less strict and allow overrides as long at the signatures are 'override-compatible' as defined by java?
 		if (routine.isOverride) {
-			val overriddenReactionsSegmentImportPath = ReactionsImportPath.fromPathString(routine.overriddenReactionsSegmentImportPath);
+			val overriddenReactionsSegmentImportPath = ReactionsImportPath.create(routine.overriddenReactionsSegmentImportPath);
 			val overriddenReactionsSegment = routine.reactionsSegment.getReactionsSegment(overriddenReactionsSegmentImportPath);
 			if (overriddenReactionsSegment !== null) {
 				val signature = routine.methodSignature

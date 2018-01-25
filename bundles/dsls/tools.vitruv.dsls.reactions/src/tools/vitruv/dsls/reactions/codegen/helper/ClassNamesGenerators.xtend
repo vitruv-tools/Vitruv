@@ -156,7 +156,7 @@ import tools.vitruv.dsls.common.helper.ClassNameGenerator
 		public override String getPackageName() {
 			var packageName = basicRoutinesPackageQualifiedName + "." + routine.reactionsSegment.packageName;
 			if (routine.isOverride) {
-				val overriddenReactionsSegmentImportPath = ReactionsImportPath.fromPathString(routine.overriddenReactionsSegmentImportPath);
+				val overriddenReactionsSegmentImportPath = ReactionsImportPath.create(routine.overriddenReactionsSegmentImportPath);
 				packageName += "." + overriddenReactionsSegmentImportPath.segments.join(".", [it.reactionsSegmentPackageName]);
 			}
 			return packageName;
