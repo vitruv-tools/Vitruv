@@ -3,7 +3,7 @@ package tools.vitruv.extensions.dslsruntime.reactions
 import tools.vitruv.extensions.dslsruntime.reactions.structure.ReactionsImportPath
 
 /**
- * Provides the routines facades for all reactions segments of a specific import hierarchy.
+ * Provides the routines facades for all reactions segments of one specific import hierarchy.
  */
 interface RoutinesFacadesProvider {
 

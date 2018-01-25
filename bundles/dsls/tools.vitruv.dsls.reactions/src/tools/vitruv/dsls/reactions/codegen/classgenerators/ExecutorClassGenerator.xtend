@@ -52,7 +52,7 @@ class ExecutorClassGenerator extends ClassGenerator {
 						«val reaction = reactionEntry.key»
 						«val reactionsImportPath = reactionEntry.value»
 						«val reactionsNameGenerator = reaction.reactionClassNameGenerator»
-						this.addReaction(new «reactionsNameGenerator.qualifiedName»(this.routinesFacadesProvider.getRoutinesFacade(«
+						this.addReaction(new «reactionsNameGenerator.qualifiedName»(this.getRoutinesFacadesProvider().getRoutinesFacade(«
 							»«typeRef(ReactionsImportPath).qualifiedName».fromPathString(«reactionsImportPath.pathString»))));
 					«ENDFOR»
 				'''

@@ -14,6 +14,7 @@ import static com.google.common.base.Preconditions.*
  */
 abstract class AbstractRoutinesFacadesProvider implements RoutinesFacadesProvider {
 
+	private val RoutinesFacadeExecutionState sharedRoutinesFacadeExecutionState = new RoutinesFacadeExecutionState();
 	// the routines facades that were created so far:
 	private val Map<ReactionsImportPath, AbstractRepairRoutinesFacade> routinesFacades = new HashMap<ReactionsImportPath, AbstractRepairRoutinesFacade>();
 
@@ -21,7 +22,7 @@ abstract class AbstractRoutinesFacadesProvider implements RoutinesFacadesProvide
 	}
 
 	// creates the specified routines facade:
-	protected def abstract AbstractRepairRoutinesFacade createRoutinesFacade(ReactionsImportPath reactionsImportPath);
+	protected def abstract AbstractRepairRoutinesFacade createRoutinesFacade(ReactionsImportPath reactionsImportPath, RoutinesFacadeExecutionState sharedExecutionState);
 
 	override <T extends AbstractRepairRoutinesFacade> T getRoutinesFacade(ReactionsImportPath reactionsImportPath) {
 		checkNotNull(reactionsImportPath, "reactionsImportPath is null");
@@ -29,7 +30,7 @@ abstract class AbstractRoutinesFacadesProvider implements RoutinesFacadesProvide
 		var T routinesFacade = routinesFacades.get(reactionsImportPath) as T;
 		if (routinesFacade !== null) return routinesFacade;
 		// create the routines facade::
-		routinesFacade = this.createRoutinesFacade(reactionsImportPath) as T;
+		routinesFacade = this.createRoutinesFacade(reactionsImportPath, sharedRoutinesFacadeExecutionState) as T;
 		if (routinesFacade !== null) {
 			// store created routines facade:
 			routinesFacades.put(reactionsImportPath, routinesFacade);

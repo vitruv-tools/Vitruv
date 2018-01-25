@@ -4,7 +4,6 @@ import java.util.Map
 import org.eclipse.xtext.common.types.JvmConstructor
 import org.eclipse.xtext.common.types.JvmOperation
 import org.eclipse.xtext.common.types.JvmVisibility
-import static tools.vitruv.dsls.reactions.codegen.helper.ReactionsLanguageConstants.*;
 import tools.vitruv.dsls.reactions.reactionsLanguage.Routine
 import tools.vitruv.extensions.dslsruntime.reactions.AbstractRepairRoutinesFacade
 import tools.vitruv.extensions.dslsruntime.reactions.RoutinesFacadesProvider
@@ -15,12 +14,14 @@ import static extension tools.vitruv.dsls.reactions.codegen.helper.ReactionsImpo
 import tools.vitruv.dsls.reactions.codegen.typesbuilder.TypesBuilderExtensionProvider
 import org.eclipse.xtext.common.types.JvmGenericType
 import tools.vitruv.dsls.common.helper.ClassNameGenerator
+import tools.vitruv.extensions.dslsruntime.reactions.ReactionExecutionState
+import tools.vitruv.extensions.dslsruntime.reactions.structure.CallHierarchyHaving
 
 class RoutineFacadeClassGenerator extends ClassGenerator {
 	val ReactionsSegment reactionsSegment
 	val ClassNameGenerator routinesFacadeNameGenerator;
-	var JvmGenericType generatedClass
 	var Map<ReactionsSegment, ReactionsImportPath> includedRoutinesFacades;
+	var JvmGenericType generatedClass
 
 	new(ReactionsSegment reactionsSegment, TypesBuilderExtensionProvider typesBuilderExtensionProvider) {
 		super(typesBuilderExtensionProvider);
@@ -86,8 +87,9 @@ class RoutineFacadeClassGenerator extends ClassGenerator {
 				generateMethodInputParameters(routine.input.modelInputElements, routine.input.javaInputElements);
 			body = '''
 				«routinesFacadeNameGenerator.qualifiedName» _routinesFacade = «reactionsImportPath.generateGetRoutinesFacadeCall»;
-				«routineNameGenerator.qualifiedName» routine = new «routineNameGenerator.qualifiedName»(«
-					»_routinesFacade, this.«REACTION_EXECUTION_STATE_FIELD_NAME», this.«ROUTINES_FACADE_CALLER_FIELD_NAME»«
+				«typeRef(ReactionExecutionState).qualifiedName» _reactionExecutionState = this._getExecutionState().getReactionExecutionState();
+				«typeRef(CallHierarchyHaving).qualifiedName» _caller = this._getExecutionState().getCaller();
+				«routineNameGenerator.qualifiedName» routine = new «routineNameGenerator.qualifiedName»(_routinesFacade, _reactionExecutionState, _caller«
 					»«FOR parameter : parameters BEFORE ', ' SEPARATOR ', '»«parameter.name»«ENDFOR»);
 				return routine.applyRoutine();
 			'''
@@ -95,6 +97,6 @@ class RoutineFacadeClassGenerator extends ClassGenerator {
 	}
 
 	protected def String generateGetRoutinesFacadeCall(ReactionsImportPath reactionsImportPath) '''
-		this.routinesFacadesProvider.getRoutinesFacade(«typeRef(ReactionsImportPath).qualifiedName».fromPathString(«reactionsImportPath.pathString»))
+		this._getRoutinesFacadesProvider.getRoutinesFacade(«typeRef(ReactionsImportPath).qualifiedName».fromPathString(«reactionsImportPath.pathString»))
 	'''
 }

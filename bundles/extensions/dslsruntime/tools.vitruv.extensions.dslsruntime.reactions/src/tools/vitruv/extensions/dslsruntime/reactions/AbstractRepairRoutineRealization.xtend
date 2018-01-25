@@ -32,7 +32,7 @@ abstract class AbstractRepairRoutineRealization extends CallHierarchyHaving impl
 		this._reactionElementsHandler = new ReactionElementsHandlerImpl(correspondenceModel);
 	}
 
-	// generic return type for convenience; the requested type has to match the type of the facade provided during construction:
+	// generic return type for convenience; the requested type has to match the type of the facade provided during construction
 	protected def <T extends AbstractRepairRoutinesFacade> T getRoutinesFacade() {
 		return routinesFacade as T;
 	}
@@ -86,17 +86,17 @@ abstract class AbstractRepairRoutineRealization extends CallHierarchyHaving impl
 	}
 
 	public override boolean applyRoutine() {
-		// capture the current execution state of the facade:
-		val facadeExecutionState = routinesFacade._captureExecutionState();
+		// capture the current routines facade execution state:
+		val facadeExecutionState = routinesFacade._getExecutionState().capture();
 		// set the reaction execution state and caller to use for all following routine calls:
-		routinesFacade._setExecutionState(executionState, this);
+		routinesFacade._getExecutionState.setExecutionState(executionState, this);
 
 		try {
 			// Exception handling could be added here when productively used
 			return executeRoutine();
 		} finally {
 			// restore the previously captured execution state of the facade:
-			routinesFacade._restoreExecutionState(facadeExecutionState);
+			routinesFacade._getExecutionState().restore(facadeExecutionState);
 		}
 	}
 

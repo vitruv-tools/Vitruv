@@ -12,6 +12,7 @@ import static extension tools.vitruv.dsls.reactions.codegen.helper.ReactionsImpo
 import static extension tools.vitruv.dsls.reactions.util.ReactionsLanguageUtil.*
 
 class OverriddenRoutinesFacadeClassGenerator extends RoutineFacadeClassGenerator {
+
 	val ReactionsSegment reactionsSegment;
 	val ReactionsImportPath reactionsImportPath; // relative to reactions segment
 	val ClassNameGenerator routinesFacadeNameGenerator;
@@ -34,9 +35,9 @@ class OverriddenRoutinesFacadeClassGenerator extends RoutineFacadeClassGenerator
 		generatedClass => [
 			val overriddenReactionsSegment = reactionsSegment.getReactionsSegment(reactionsImportPath);
 			val routinesOverrideRoot = reactionsSegment.getRoutinesOverrideRoot(reactionsImportPath, false);
-			if (routinesOverrideRoot === overriddenReactionsSegment) { // TODO compare only names here?
+			if (routinesOverrideRoot.name.equals(overriddenReactionsSegment.name)) {
 				// extend the original routines facade of the overridden reactions segment:
-				superTypes += typeRef( overriddenReactionsSegment.routinesFacadeClassNameGenerator.qualifiedName);
+				superTypes += typeRef(overriddenReactionsSegment.routinesFacadeClassNameGenerator.qualifiedName);
 			} else {
 				// extend the overridden routines facade from the override root:
 				val relativeImportPath = reactionsImportPath.relativeTo(routinesOverrideRoot.name);
@@ -55,7 +56,7 @@ class OverriddenRoutinesFacadeClassGenerator extends RoutineFacadeClassGenerator
 		]
 	}
 
-	override String getExtendedConstructorBody() {
+	protected override String getExtendedConstructorBody() {
 		return "";
 	}
 }

@@ -1,42 +1,35 @@
 package tools.vitruv.extensions.dslsruntime.reactions
 
-import org.eclipse.xtend.lib.annotations.Data
-import tools.vitruv.extensions.dslsruntime.reactions.structure.CallHierarchyHaving
 import tools.vitruv.extensions.dslsruntime.reactions.structure.Loggable
 import tools.vitruv.extensions.dslsruntime.reactions.structure.ReactionsImportPath
 
+/**
+ * Note: All methods start with an underscore here to not conflict with the methods that are generated from the routines by
+ * concrete implementations.
+ */
 class AbstractRepairRoutinesFacade extends Loggable {
-	protected val RoutinesFacadesProvider routinesFacadesProvider;
-	protected val ReactionsImportPath reactionsImportPath; // absolute path inside the import hierarchy
+	// used by concrete implementations to request routines facades of executed routines: 
+	private val RoutinesFacadesProvider routinesFacadesProvider;
+	// absolute path inside the import hierarchy:
+	private val ReactionsImportPath reactionsImportPath;
+	// shared execution state among all routines facades in the import hierarchy:
+	private val RoutinesFacadeExecutionState executionState;
 
-	// execution state:
-	protected var ReactionExecutionState reactionExecutionState;
-	protected var CallHierarchyHaving caller;
-
-	public new(RoutinesFacadesProvider routinesFacadesProvider, ReactionsImportPath reactionsImportPath) {
+	public new(RoutinesFacadesProvider routinesFacadesProvider, ReactionsImportPath reactionsImportPath, RoutinesFacadeExecutionState executionState) {
 		this.routinesFacadesProvider = routinesFacadesProvider;
 		this.reactionsImportPath = reactionsImportPath;
+		this.executionState = executionState;
 	}
 
-	// sets the reaction execution state and caller to pass to called routines:
-	protected def void _setExecutionState(ReactionExecutionState reactionExecutionState, CallHierarchyHaving caller) {
-		this.reactionExecutionState = reactionExecutionState;
-		this.caller = caller;
+	protected def RoutinesFacadesProvider _getRoutinesFacadesProvider() {
+		return routinesFacadesProvider;
 	}
 
-	// captures the current execution state:
-	protected def ExecutionState _captureExecutionState() {
-		return new ExecutionState(reactionExecutionState, caller);
+	protected def ReactionsImportPath _getReactionsImportPath() {
+		return reactionsImportPath;
 	}
 
-	// restores a previously captured execution state:
-	protected def void _restoreExecutionState(ExecutionState executionState) {
-		_setExecutionState(executionState.reactionExecutionState, executionState.caller);
-	}
-
-	@Data
-	protected static class ExecutionState {
-		val ReactionExecutionState reactionExecutionState;
-		val CallHierarchyHaving caller;
+	protected def RoutinesFacadeExecutionState _getExecutionState() {
+		return executionState;
 	}
 }
