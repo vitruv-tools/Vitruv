@@ -77,8 +77,6 @@ class RoutinesFacadesProviderClassGenerator extends ClassGenerator {
 			val importedReactionsSegment = importHierarchyEntry.value;
 			val routinesOverrideRoot = rootReactionsSegment.getRoutinesOverrideRoot(relativeImportPath, true);
 			var ClassNameGenerator routinesFacadeClassNameGenerator;
-			// TODO NPE
-			System.out.println("DEBUG facade provider: imported: " + importedReactionsSegment + " , root: " + routinesOverrideRoot + " , path: " + absoluteImportPath);
 			if (routinesOverrideRoot.name.equals(importedReactionsSegment.name)) {
 				// no other reactions segment is overriding routines of this reactions segment -> using the original routines facade:
 				routinesFacadeClassNameGenerator = importedReactionsSegment.routinesFacadeClassNameGenerator;

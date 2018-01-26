@@ -225,9 +225,7 @@ class ReactionsImportsHelper {
 		val nextImportPath = currentImportPath.append(nextReactionsSegmentName);
 		val nextRemainingImportPath = remainingImportPath.tail; // can be null
 		val nextReactionsSegment = currentReactionsSegment.reactionsImports.map[it.importedReactionsSegment].findFirst [
-			// TODO debug
-			if (it.name === null) System.out.println(it);
-			nextReactionsSegmentName.equals(it.name)
+			it.name.equals(nextReactionsSegmentName);
 		];
 		if (nextReactionsSegment === null) {
 			// invalid import path:
@@ -271,8 +269,8 @@ class ReactionsImportsHelper {
 				// reached end of path:
 				return currentReactionsSegment;
 			} else {
-				// check the routine overrides of the current segment:
-				if (checkRootReactionsSegment || currentPath !== null) {
+				// check the routine overrides of the current segment, if it is not the root or we are checking the root as well:
+				if (checkRootReactionsSegment || currentPath.length > 1) {
 					// check if the current reactions segment contains a routine override for the remaining import path:
 					val overriddenRoutinesImportPaths = currentReactionsSegment.overrideRoutines.map[it.overriddenReactionsSegmentImportPath];
 					if (overriddenRoutinesImportPaths.findFirst[remainingPath.segments.equals(it)] !== null) {
