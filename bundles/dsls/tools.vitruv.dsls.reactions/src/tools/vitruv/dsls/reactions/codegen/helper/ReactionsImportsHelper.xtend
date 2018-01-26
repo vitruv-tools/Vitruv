@@ -92,7 +92,7 @@ class ReactionsImportsHelper {
 	// recursively adds all transitively included routines facades:
 	private static def void addIncludedRoutinesFacades(ReactionsSegment currentReactionsSegment, ReactionsImportPath currentImportPath,
 		Map<String, Pair<ReactionsSegment, ReactionsImportPath>> segmentsByName) {
-		for (reactionsImport : currentReactionsSegment.reactionsImports.filter[!it.useQualifiedNames]) {
+		for (reactionsImport : currentReactionsSegment.reactionsImports) {
 			val importedReactionsSegment = reactionsImport.importedReactionsSegment;
 			val importedSegmentImportPath = currentImportPath.append(importedReactionsSegment.name); 
 			if (reactionsImport.useQualifiedNames) {
@@ -224,7 +224,8 @@ class ReactionsImportsHelper {
 		val nextReactionsSegmentName = remainingImportPath.firstSegment;
 		val nextImportPath = currentImportPath.append(nextReactionsSegmentName);
 		val nextRemainingImportPath = remainingImportPath.tail; // can be null
-		val nextReactionsSegment = currentReactionsSegment.reactionsImports.map[it.importedReactionsSegment].findFirst [
+		val importedReactionsSegments = currentReactionsSegment.reactionsImports.map[it.importedReactionsSegment];
+		val nextReactionsSegment = importedReactionsSegments.findFirst [
 			it.name.equals(nextReactionsSegmentName);
 		];
 		if (nextReactionsSegment === null) {
