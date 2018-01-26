@@ -68,7 +68,7 @@ class ReactionsImportsHelper {
 		for (routine : currentReactionsSegment.routines) {
 			var fullyQualifiedName = currentImportPath.pathString;
 			if (routine.isOverride) {
-				fullyQualifiedName += routine.overriddenReactionsSegmentImportPath;
+				fullyQualifiedName += ReactionsImportPath.create(routine.overriddenReactionsSegmentImportPath).pathString;
 			}
 			fullyQualifiedName += OVERRIDDEN_REACTIONS_SEGMENT_SEPARATOR + routine.formattedName;
 
@@ -106,7 +106,8 @@ class ReactionsImportsHelper {
 		}
 	}
 
-	// follows only imports that import reactions, can contain each reactions segment only once, does not contain the root reactions segment
+	// follows only imports that import reactions, can contain each reactions segment only once, does not contain the root reactions segment,
+	// uses absolute import paths
 	public static def Map<ReactionsImportPath, ReactionsSegment> getReactionsImportHierarchy(ReactionsSegment rootReactionsSegment) {
 		val importHierarchy = new LinkedHashMap<ReactionsImportPath, ReactionsSegment>();
 		val rootImportPath = ReactionsImportPath.create(rootReactionsSegment.name);
@@ -130,11 +131,15 @@ class ReactionsImportsHelper {
 			// TODO expect hierarchy to be resolvable here? -> test if scope provider might call this while cross-refs are not resolvable
 			if (importedReactionsSegment !== null && !importedReactionsSegment.eIsProxy) {
 				addReactionsImportHierarchy(importedReactionsSegment, currentImportPath.append(importedReactionsSegment.name), importHierarchy, false);
+			} else {
+				// TODO debugging:
+				System.out.println("DEBUG reaction hierarchy: proxy " + importedReactionsSegment);
 			}
 		}
 	}
 
-	// returns the whole import hierarchy, can contain the same reactions segment multiple times at different paths, does not contain the root reactions segment
+	// returns the whole import hierarchy, can contain the same reactions segment multiple times at different paths, does not contain the root reactions segment,
+	// uses absolute import paths
 	public static def Map<ReactionsImportPath, ReactionsSegment> getRoutinesImportHierarchy(ReactionsSegment rootReactionsSegment) {
 		val importHierarchy = new LinkedHashMap<ReactionsImportPath, ReactionsSegment>();
 		val rootImportPath = ReactionsImportPath.create(rootReactionsSegment.name);
@@ -156,6 +161,9 @@ class ReactionsImportsHelper {
 			// TODO expect hierarchy to be resolvable here? -> test if scope provider might call this while cross-refs are not resolvable
 			if (importedReactionsSegment !== null && !importedReactionsSegment.eIsProxy) {
 				addRoutinesImportHierarchy(importedReactionsSegment, currentImportPath.append(importedReactionsSegment.name), importHierarchy, false);
+			} else {
+				// TODO debugging:
+				System.out.println("DEBUG routine hierarchy: proxy " + importedReactionsSegment);
 			}
 		}
 	}
@@ -217,6 +225,8 @@ class ReactionsImportsHelper {
 		val nextImportPath = currentImportPath.append(nextReactionsSegmentName);
 		val nextRemainingImportPath = remainingImportPath.tail; // can be null
 		val nextReactionsSegment = currentReactionsSegment.reactionsImports.map[it.importedReactionsSegment].findFirst [
+			// TODO debug
+			if (it.name === null) System.out.println(it);
 			nextReactionsSegmentName.equals(it.name)
 		];
 		if (nextReactionsSegment === null) {
@@ -264,9 +274,8 @@ class ReactionsImportsHelper {
 				// check the routine overrides of the current segment:
 				if (checkRootReactionsSegment || currentPath !== null) {
 					// check if the current reactions segment contains a routine override for the remaining import path:
-					val remainingPathString = remainingPath.pathString;
 					val overriddenRoutinesImportPaths = currentReactionsSegment.overrideRoutines.map[it.overriddenReactionsSegmentImportPath];
-					if (overriddenRoutinesImportPaths.findFirst[remainingPathString.equals(it)] !== null) {
+					if (overriddenRoutinesImportPaths.findFirst[remainingPath.segments.equals(it)] !== null) {
 						return currentReactionsSegment;
 					}
 				}

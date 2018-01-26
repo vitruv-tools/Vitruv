@@ -17,6 +17,7 @@ import tools.vitruv.dsls.reactions.codegen.typesbuilder.TypesBuilderExtensionPro
 import tools.vitruv.dsls.reactions.codegen.classgenerators.ReactionClassGenerator
 import tools.vitruv.dsls.reactions.codegen.classgenerators.ClassGenerator
 import tools.vitruv.dsls.reactions.codegen.classgenerators.OverriddenRoutinesFacadeClassGenerator
+import tools.vitruv.dsls.reactions.codegen.classgenerators.RoutinesFacadesProviderClassGenerator
 import static extension tools.vitruv.dsls.reactions.codegen.helper.ReactionsImportsHelper.*
 
 /**
@@ -52,6 +53,7 @@ class ReactionsLanguageJvmModelInferrer extends AbstractModelInferrer  {
 			for (overriddenRoutinesImportPath : reactionsSegment.overriddenRoutinesImportPaths) {
 				acceptor.accept(new OverriddenRoutinesFacadeClassGenerator(reactionsSegment, overriddenRoutinesImportPath, typesBuilderExtensionProvider));
 			}
+			acceptor.accept(new RoutinesFacadesProviderClassGenerator(reactionsSegment, typesBuilderExtensionProvider));
 			for (effect : reactionsSegment.routines) {
 				generate(effect, acceptor, isPreIndexingPhase);
 			}

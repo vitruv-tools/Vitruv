@@ -10,7 +10,17 @@ import static com.google.common.base.Preconditions.*
  */
 class ReactionsImportPath {
 
-	public static final String SEPARATOR = ".";
+	// path string representation:
+
+	public static final String PATH_STRING_SEPARATOR = ".";
+
+	public static def ReactionsImportPath fromPathString(String pathString) {
+		checkNotNull(pathString, "pathString is null");
+		val pathSegments = pathString.split(PATH_STRING_SEPARATOR, -1);
+		return create(pathSegments);
+	}
+
+	// construction:
 
 	public static def ReactionsImportPath create(Iterable<String> pathSegments) {
 		return new ReactionsImportPath(pathSegments);
@@ -26,12 +36,6 @@ class ReactionsImportPath {
 
 	public static def ReactionsImportPath create(Iterable<String> parentPath, Iterable<String> pathSegments) {
 		return create((parentPath ?: #[]) + (pathSegments ?: #[]));
-	}
-
-	public static def ReactionsImportPath fromPathString(String pathString) {
-		checkNotNull(pathString, "pathString is null");
-		val pathSegments = pathString.split(".", -1);
-		return create(pathSegments);
 	}
 
 	// the names of the reactions segments along the path:
@@ -73,14 +77,6 @@ class ReactionsImportPath {
 		return ReactionsImportPath.create(pathTail);
 	}
 
-	public def String getPathString() {
-		return this.getPathString(SEPARATOR);
-	}
-
-	public def String getPathString(CharSequence separator) {
-		return segments.join(separator);
-	}
-
 	/**
 	 * Creates a reactions import path with the given segments appended.
 	 * 
@@ -112,6 +108,10 @@ class ReactionsImportPath {
 		}
 		val relativePathSegments = segments.subList(index + 1, length);
 		return ReactionsImportPath.create(relativePathSegments);
+	}
+
+	public def String getPathString() {
+		return segments.join(PATH_STRING_SEPARATOR);
 	}
 
 	public override String toString() {

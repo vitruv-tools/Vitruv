@@ -140,7 +140,7 @@ final class ReactionsLanguageUtil {
 	public static def String getFullyQualifiedName(Routine routine) {
 		var String reactionsSegmentName;
 		if (routine.isOverride) {
-			reactionsSegmentName = routine.overriddenReactionsSegmentImportPath.join(ReactionsImportPath.SEPARATOR);
+			reactionsSegmentName = ReactionsImportPath.create(routine.overriddenReactionsSegmentImportPath).pathString;
 		} else {
 			reactionsSegmentName = routine.reactionsSegment.name;
 		}

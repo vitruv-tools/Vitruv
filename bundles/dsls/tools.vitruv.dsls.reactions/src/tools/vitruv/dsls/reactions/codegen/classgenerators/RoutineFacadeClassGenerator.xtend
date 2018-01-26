@@ -16,6 +16,7 @@ import org.eclipse.xtext.common.types.JvmGenericType
 import tools.vitruv.dsls.common.helper.ClassNameGenerator
 import tools.vitruv.extensions.dslsruntime.reactions.ReactionExecutionState
 import tools.vitruv.extensions.dslsruntime.reactions.structure.CallHierarchyHaving
+import tools.vitruv.extensions.dslsruntime.reactions.RoutinesFacadeExecutionState
 
 class RoutineFacadeClassGenerator extends ClassGenerator {
 	val ReactionsSegment reactionsSegment
@@ -60,10 +61,12 @@ class RoutineFacadeClassGenerator extends ClassGenerator {
 		return reactionsSegment.toConstructor() [
 			val routinesFacadesProviderParameter = generateParameter("routinesFacadesProvider", typeRef(RoutinesFacadesProvider));
 			val reactionsImportPathParameter = generateParameter("reactionsImportPath", typeRef(ReactionsImportPath));
+			val executionState = generateParameter("executionState", typeRef(RoutinesFacadeExecutionState));
 			parameters += routinesFacadesProviderParameter;
 			parameters += reactionsImportPathParameter;
+			parameters += executionState;
 			body = '''
-			super(«routinesFacadesProviderParameter.name», «reactionsImportPathParameter.name»);
+			super(«routinesFacadesProviderParameter.name», «reactionsImportPathParameter.name», «executionState.name»);
 			«this.getExtendedConstructorBody()»'''
 		]
 	}
@@ -97,6 +100,5 @@ class RoutineFacadeClassGenerator extends ClassGenerator {
 	}
 
 	protected def String generateGetRoutinesFacadeCall(ReactionsImportPath reactionsImportPath) '''
-		this._getRoutinesFacadesProvider.getRoutinesFacade(«typeRef(ReactionsImportPath).qualifiedName».fromPathString(«reactionsImportPath.pathString»))
-	'''
+		this._getRoutinesFacadesProvider().getRoutinesFacade(«typeRef(ReactionsImportPath).qualifiedName».fromPathString("«reactionsImportPath.pathString»"))'''
 }
