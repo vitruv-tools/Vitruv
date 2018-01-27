@@ -17,10 +17,6 @@ import tools.vitruv.framework.domains.VitruvDomainProviderRegistry
 import tools.vitruv.dsls.reactions.api.generator.ReferenceClassNameAdapter
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EClassifier
-import org.eclipse.emf.ecore.EStructuralFeature
-import tools.vitruv.dsls.reactions.reactionsLanguage.Reaction
-import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsImport
-import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsLanguagePackage
 
 final class ReactionsLanguageHelper {
 	private new() {
@@ -101,27 +97,5 @@ final class ReactionsLanguageHelper {
 	
 	def static containsReactionsFile(Resource resource) {
 		resource.optionalReactionsFile !== null
-	}
-
-	// TODO: move this into ReactionsImportHelper as well?
-
-	/**
-	 * Gets the parsed imported reactions segment name for the given reactions import, without actually resolving the cross-reference. 
-	 */
-	public static def String getParsedImportedReactionsSegmentName(ReactionsImport reactionsImport) {
-		return reactionsImport.getFeatureNodeText(ReactionsLanguagePackage.Literals.REACTIONS_IMPORT__IMPORTED_REACTIONS_SEGMENT);
-	}
-
-	/**
-	 * Gets the parsed overridden reactions segment name for the given reaction, without actually resolving the cross-reference. 
-	 */
-	public static def String getParsedOverriddenReactionsSegmentName(Reaction reaction) {
-		return reaction.getFeatureNodeText(ReactionsLanguagePackage.Literals.REACTION__OVERRIDDEN_REACTIONS_SEGMENT);
-	}
-
-	private static def String getFeatureNodeText(EObject semanticObject, EStructuralFeature structuralFeature) {
-		val nodes = NodeModelUtils.findNodesForFeature(semanticObject, structuralFeature);
-		if (nodes.isEmpty) return null;
-		return nodes.get(0).text;
 	}
 }

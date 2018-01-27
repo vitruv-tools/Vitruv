@@ -19,6 +19,8 @@ import tools.vitruv.dsls.reactions.codegen.classgenerators.ClassGenerator
 import tools.vitruv.dsls.reactions.codegen.classgenerators.OverriddenRoutinesFacadeClassGenerator
 import tools.vitruv.dsls.reactions.codegen.classgenerators.RoutinesFacadesProviderClassGenerator
 import static extension tools.vitruv.dsls.reactions.codegen.helper.ReactionsImportsHelper.*
+import static extension tools.vitruv.dsls.reactions.codegen.helper.ReactionsLanguageHelper.*
+import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsSegment
 
 /**
  * <p>Infers a JVM model for the Xtend code blocks of the reaction file model.</p> 
@@ -38,34 +40,38 @@ class ReactionsLanguageJvmModelInferrer extends AbstractModelInferrer  {
 	}
 	
 	def dispatch void generate(Reaction reaction, IJvmDeclaredTypeAcceptor acceptor, boolean isPreIndexingPhase) {
-		acceptor.accept(new ReactionClassGenerator(reaction, typesBuilderExtensionProvider));
+		acceptor.accept(new ReactionClassGenerator(reaction, typesBuilderExtensionProvider), reaction.reactionsSegment);
 	}
 	
 	def dispatch void generate(Routine routine, IJvmDeclaredTypeAcceptor acceptor, boolean isPreIndexingPhase) {
-		acceptor.accept(new RoutineClassGenerator(routine, typesBuilderExtensionProvider));
+		acceptor.accept(new RoutineClassGenerator(routine, typesBuilderExtensionProvider), routine.reactionsSegment);
 	}
 	
 	def dispatch void infer(ReactionsFile file, IJvmDeclaredTypeAcceptor acceptor, boolean isPreIndexingPhase) {
 		updateBuilders();
 		
 		for (reactionsSegment : file.reactionsSegments) {
-			acceptor.accept(new RoutineFacadeClassGenerator(reactionsSegment, typesBuilderExtensionProvider));
+			acceptor.accept(new RoutineFacadeClassGenerator(reactionsSegment, typesBuilderExtensionProvider), reactionsSegment);
 			for (overriddenRoutinesImportPath : reactionsSegment.overriddenRoutinesImportPaths) {
-				acceptor.accept(new OverriddenRoutinesFacadeClassGenerator(reactionsSegment, overriddenRoutinesImportPath, typesBuilderExtensionProvider));
+				acceptor.accept(new OverriddenRoutinesFacadeClassGenerator(reactionsSegment, overriddenRoutinesImportPath, typesBuilderExtensionProvider), reactionsSegment);
 			}
-			acceptor.accept(new RoutinesFacadesProviderClassGenerator(reactionsSegment, typesBuilderExtensionProvider));
+			acceptor.accept(new RoutinesFacadesProviderClassGenerator(reactionsSegment, typesBuilderExtensionProvider), reactionsSegment);
 			for (effect : reactionsSegment.routines) {
 				generate(effect, acceptor, isPreIndexingPhase);
 			}
 			for (reaction : reactionsSegment.reactions) {
 				generate(reaction, acceptor, isPreIndexingPhase);
 			}
-			acceptor.accept(new ExecutorClassGenerator(reactionsSegment, typesBuilderExtensionProvider));			
+			acceptor.accept(new ExecutorClassGenerator(reactionsSegment, typesBuilderExtensionProvider), reactionsSegment);
 		}
 
 	}
 	
-	def private static accept(IJvmDeclaredTypeAcceptor acceptor, extension ClassGenerator generator) {
-		acceptor.accept(generator.generateEmptyClass()) [generateBody]
+	def private static accept(IJvmDeclaredTypeAcceptor acceptor, extension ClassGenerator generator, ReactionsSegment reactionsSegment) {
+		acceptor.accept(generator.generateEmptyClass()) [
+			if (reactionsSegment.allImportsResolvable) {
+				generateBody();
+			}
+		]
 	}
 }

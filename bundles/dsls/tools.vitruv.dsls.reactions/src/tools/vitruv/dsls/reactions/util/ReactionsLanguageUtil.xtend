@@ -8,7 +8,7 @@ import tools.vitruv.extensions.dslsruntime.reactions.structure.ReactionsImportPa
 
 import static tools.vitruv.dsls.reactions.codegen.helper.ReactionsLanguageConstants.*
 
-import static extension tools.vitruv.dsls.reactions.codegen.helper.ReactionsLanguageHelper.*
+import static extension tools.vitruv.dsls.reactions.codegen.helper.ReactionsImportsHelper.*;
 
 /**
  * Utility methods working with the model objects of the Reactions Language, which might be of use outside of the code generation.

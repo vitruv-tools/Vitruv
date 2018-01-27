@@ -4,7 +4,12 @@ import java.util.LinkedHashMap
 import java.util.LinkedHashSet
 import java.util.Map
 import java.util.Set
+import org.eclipse.emf.ecore.EObject
+import org.eclipse.emf.ecore.EStructuralFeature
+import org.eclipse.xtext.nodemodel.util.NodeModelUtils
 import tools.vitruv.dsls.reactions.reactionsLanguage.Reaction
+import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsImport
+import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsLanguagePackage
 import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsSegment
 import tools.vitruv.dsls.reactions.reactionsLanguage.Routine
 import tools.vitruv.extensions.dslsruntime.reactions.structure.ReactionsImportPath
@@ -16,6 +21,34 @@ import static extension tools.vitruv.dsls.reactions.util.ReactionsLanguageUtil.*
 class ReactionsImportsHelper {
 
 	private new() {
+	}
+
+	/**
+	 * Gets the parsed imported reactions segment name for the given reactions import, without actually resolving the cross-reference. 
+	 */
+	public static def String getParsedImportedReactionsSegmentName(ReactionsImport reactionsImport) {
+		return reactionsImport.getFeatureNodeText(ReactionsLanguagePackage.Literals.REACTIONS_IMPORT__IMPORTED_REACTIONS_SEGMENT);
+	}
+
+	/**
+	 * Gets the parsed overridden reactions segment name for the given reaction, without actually resolving the cross-reference. 
+	 */
+	public static def String getParsedOverriddenReactionsSegmentName(Reaction reaction) {
+		return reaction.getFeatureNodeText(ReactionsLanguagePackage.Literals.REACTION__OVERRIDDEN_REACTIONS_SEGMENT);
+	}
+
+	private static def String getFeatureNodeText(EObject semanticObject, EStructuralFeature structuralFeature) {
+		val nodes = NodeModelUtils.findNodesForFeature(semanticObject, structuralFeature);
+		if (nodes.isEmpty) return null;
+		return nodes.get(0).text;
+	}
+
+	// TODO workaround: sometimes the jvm model inferrer is called AFTER indexing, but cross-references are still not resolvable
+	// we need to skip class-body generation then..
+	public static def boolean isAllImportsResolvable(ReactionsSegment reactionsSegment) {
+		// getting the imported reactions segment from the reactions import triggers a resolve,
+		// which will only still be a proxy afterwards if it wasn't resolvable
+		return reactionsSegment.reactionsImports.map[it.importedReactionsSegment].filter[it.eIsProxy].isEmpty;
 	}
 
 	// gets all reactions found in the import hierarchy of the given root reactions segment, with overridden reactions replaced,
