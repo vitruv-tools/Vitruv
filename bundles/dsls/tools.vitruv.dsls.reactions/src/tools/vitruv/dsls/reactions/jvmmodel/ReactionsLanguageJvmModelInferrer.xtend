@@ -19,7 +19,6 @@ import tools.vitruv.dsls.reactions.codegen.classgenerators.ClassGenerator
 import tools.vitruv.dsls.reactions.codegen.classgenerators.OverriddenRoutinesFacadeClassGenerator
 import tools.vitruv.dsls.reactions.codegen.classgenerators.RoutinesFacadesProviderClassGenerator
 import static extension tools.vitruv.dsls.reactions.codegen.helper.ReactionsImportsHelper.*
-import static extension tools.vitruv.dsls.reactions.codegen.helper.ReactionsLanguageHelper.*
 import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsSegment
 
 /**
@@ -69,6 +68,8 @@ class ReactionsLanguageJvmModelInferrer extends AbstractModelInferrer  {
 	
 	def private static accept(IJvmDeclaredTypeAcceptor acceptor, extension ClassGenerator generator, ReactionsSegment reactionsSegment) {
 		acceptor.accept(generator.generateEmptyClass()) [
+			// TODO workaround: sometimes the jvm model inferrer is called after indexing, but cross-references of reactions imports are still not resolvable,
+			// we need to skip class-body generation then:
 			if (reactionsSegment.allImportsResolvable) {
 				generateBody();
 			}

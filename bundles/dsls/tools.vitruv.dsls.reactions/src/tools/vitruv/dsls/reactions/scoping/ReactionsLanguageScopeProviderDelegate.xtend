@@ -82,27 +82,21 @@ class ReactionsLanguageScopeProviderDelegate extends MirBaseScopeProviderDelegat
 	}
 
 	def createReactionOverrideScope(ReactionsSegment reactionsSegment) {
-		return new SimpleScope(reactionsSegment.reactionsImportHierarchy.entrySet.map [
+		val reactionsImportHierarchyWithoutRoot = reactionsSegment.reactionsImportHierarchy.filter[k, v| k.length > 1];
+		return new SimpleScope(reactionsImportHierarchyWithoutRoot.entrySet.map [
 			EObjectDescription.create(QualifiedName.create(it.key.lastSegment), it.value);
 		]);
-		// TODO limit to import hierarchy reachable
-		//return this.createReactionsImportScope(reactionsSegment);
-		/*return new SimpleScope(IScope.NULLSCOPE, reactionsSegment.reactionsImports.map [
-			// this might get called while cross-references cannot yet be resolved (returns proxy objects then):
-			// TODO investigate under which circumstances this happens
-			EObjectDescription.create(it.parsedImportedReactionsSegmentName, it.importedReactionsSegment);
-		]);*/
+		// TODO check if this might get called while cross-references cannot yet be resolved
+		// and whether it is an issue to not return the full import hierarchy then
 	}
 
 	def createRoutineOverrideScope(ReactionsSegment reactionsSegment) {
-		return new SimpleScope(reactionsSegment.routinesImportHierarchy.entrySet.map [
+		val routinesImportHierarchyWithoutRoot = reactionsSegment.routinesImportHierarchy.filter[k, v| k.length > 1];
+		return new SimpleScope(routinesImportHierarchyWithoutRoot.entrySet.map [
 			EObjectDescription.create(QualifiedName.create(it.key.tail.segments), it.value);
 		]);
-		// TODO limit to import hierarchy reachable
-		/*return new SimpleScope(IScope.NULLSCOPE, reactionsSegment.reactionsImports.map [
-			// this might get called while cross-references cannot yet be resolved (returns proxy objects then):
-			EObjectDescription.create(it.parsedImportedReactionsSegmentName, it.importedReactionsSegment);
-		]);*/
+		// TODO check if this might get called while cross-references cannot yet be resolved
+		// and whether it is an issue to not return the full import hierarchy then
 	}
 
 	def createEStructuralFeatureScope(MetaclassFeatureReference featureReference) {
