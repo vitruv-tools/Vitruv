@@ -93,7 +93,8 @@ class ReactionsImportsHelper {
 	 * <p>
 	 * The optional <code>importFilter</code> can be used to determine which import branches in the hierarchy to follow and which
 	 * to skip. Only imports for which it returns <code>true</code> are followed further. If not specified, all imports are
-	 * followed.
+	 * followed. Any cyclic imports or imports that cannot be resolved will be considered non-existent and therefore not be
+	 * followed, nor passed to the <code>importFilter</code> in the first place.
 	 * <p>
 	 * The optional <code>earlyVisitor</code> gets called before going deeper in the hierarchy, and <code>lateVisitor</code> is
 	 * called after all deeper branches have been visited.
@@ -109,8 +110,8 @@ class ReactionsImportsHelper {
 	public static def <R, D> R walkImportHierarchy(ReactionsSegment rootReactionsSegment, Supplier<D> dataInitializer,
 		ImportHierarchyVisitor<D> earlyVisitor, ImportHierarchyVisitor<D> lateVisitor, Predicate<ReactionsImport> importFilter,
 		Function<D, R> returnValueFunction) {
+		// check for invalid arguments:
 		if (rootReactionsSegment === null || returnValueFunction === null) {
-			// invalid arguments:
 			return null;
 		}
 		// initialize the data being passed along:
@@ -129,10 +130,14 @@ class ReactionsImportsHelper {
 		earlyVisitor?.visit(sourceImport, currentImportPath, currentReactionsSegment, data);
 
 		// recursively walk along transitively imported reactions segments:
-		for (nextImport : currentReactionsSegment.reactionsImports.filter(importFilter)) {
+		for (nextImport : currentReactionsSegment.reactionsImports) {
+			// this triggers a resolve, leaving it a proxy if it wasn't resolvable:
 			val importedSegment = nextImport.importedReactionsSegment;
-			val importedSegmentImportPath = currentImportPath.append(importedSegment.name); 
-			_walkImportHierarchy(nextImport, importedSegmentImportPath, importedSegment, data, earlyVisitor, lateVisitor, importFilter);
+			// not following imports that cannot be resolved, are cyclic, or are skipped by the filter:
+			if (!importedSegment.eIsProxy && !currentImportPath.segments.contains(importedSegment.name) && importFilter.test(nextImport)) {
+				val importedSegmentImportPath = currentImportPath.append(importedSegment.name);
+				_walkImportHierarchy(nextImport, importedSegmentImportPath, importedSegment, data, earlyVisitor, lateVisitor, importFilter);
+			}
 		}
 
 		// call late visitor:
@@ -211,12 +216,13 @@ class ReactionsImportsHelper {
 	/**
 	 * Gets all reactions that are included in the executor of the given root reactions segment.
 	 * <p>
-	 * This includes all reactions found in the reactions import hierarchy, with overridden reactions being replaced.
+	 * This includes the own reactions, as well as all reactions found in the reactions import hierarchy, with overridden
+	 * reactions being replaced.
 	 * <p>
 	 * The reactions are returned together with their absolute reactions import path (starting with the root segment) denoting
 	 * their position in the import hierarchy.
 	 */
-	public static def Map<Reaction, ReactionsImportPath> getActiveReactions(ReactionsSegment rootReactionsSegment) {
+	public static def Map<Reaction, ReactionsImportPath> getIncludedReactions(ReactionsSegment rootReactionsSegment) {
 		return walkImportHierarchy(rootReactionsSegment,
 			// data initializer:
 			[
@@ -375,14 +381,25 @@ class ReactionsImportsHelper {
 	 * <p>
 	 * The given import path is expected to be relative to the specified root reactions segment.
 	 * <p>
+	 * Any cyclic imports or imports that cannot be resolved along the path will be considered non-existent and therefore not be
+	 * followed.
+	 * <p>
 	 * Returns <code>null</code> if the end of the path is reached without a <code>non-null</code> return value, or the path is
 	 * invalid / does not exist in the import hierarchy of the root reactions segment.
 	 */
 	public static def <T> T walkImportPath(ReactionsSegment rootReactionsSegment, ReactionsImportPath relativeImportPath, ImportPathVisitor<T> visitor) {
+		// check for invalid arguments:
 		if (rootReactionsSegment === null || visitor === null) {
-			// invalid arguments:
 			return null;
 		}
+		// check if the requested import path contains a cyclic sequence:
+		if (relativeImportPath !== null) {
+			val uniquePathSegments = relativeImportPath.segments.toSet;
+			if (uniquePathSegments.size != relativeImportPath.length || uniquePathSegments.contains(rootReactionsSegment.name)) {
+				return null;
+			}
+		}
+
 		val rootImportPath = ReactionsImportPath.create(rootReactionsSegment.name);
 		return _walkImportPath(null, rootImportPath, rootReactionsSegment, relativeImportPath, visitor);
 	}
@@ -401,7 +418,10 @@ class ReactionsImportsHelper {
 		val nextImportPath = currentImportPath.append(nextReactionsSegmentName);
 		val nextRemainingImportPath = remainingImportPath.tail; // can be null
 		val nextImport = currentReactionsSegment.reactionsImports.findFirst [
-			it.importedReactionsSegment.name.equals(nextReactionsSegmentName);
+			// this triggers a resolve, leaving it a proxy if it wasn't resolvable:
+			val importedReactionsSegment = it.importedReactionsSegment;
+			// not considering unresolvable imports:
+			!importedReactionsSegment.eIsProxy && nextReactionsSegmentName.equals(importedReactionsSegment.name);
 		];
 		if (nextImport=== null) {
 			// invalid import path:
