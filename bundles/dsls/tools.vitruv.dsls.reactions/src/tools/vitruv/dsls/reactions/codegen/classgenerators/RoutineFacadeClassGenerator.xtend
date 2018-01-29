@@ -81,7 +81,7 @@ class RoutineFacadeClassGenerator extends ClassGenerator {
 	'''
 
 	// the reactions import path used here is absolute (starting with the root of the import hierarchy):
-	protected def JvmOperation generateCallMethod(Routine routine, ReactionsImportPath reactionsImportPath) {
+	protected def JvmOperation generateCallMethod(Routine routine, ReactionsImportPath absoluteImportPath) {
 		val routineNameGenerator = routine.routineClassNameGenerator;
 		val routinesFacadeNameGenerator = routine.reactionsSegment.routinesFacadeClassNameGenerator;
 		routine.associatePrimary(routine.toMethod(routine.name, typeRef(Boolean.TYPE)) [
@@ -89,7 +89,7 @@ class RoutineFacadeClassGenerator extends ClassGenerator {
 			parameters +=
 				generateMethodInputParameters(routine.input.modelInputElements, routine.input.javaInputElements);
 			body = '''
-				«routinesFacadeNameGenerator.qualifiedName» _routinesFacade = «reactionsImportPath.generateGetRoutinesFacadeCall»;
+				«routinesFacadeNameGenerator.qualifiedName» _routinesFacade = «absoluteImportPath.generateGetRoutinesFacadeCall»;
 				«typeRef(ReactionExecutionState).qualifiedName» _reactionExecutionState = this._getExecutionState().getReactionExecutionState();
 				«typeRef(CallHierarchyHaving).qualifiedName» _caller = this._getExecutionState().getCaller();
 				«routineNameGenerator.qualifiedName» routine = new «routineNameGenerator.qualifiedName»(_routinesFacade, _reactionExecutionState, _caller«

@@ -11,7 +11,7 @@ import static tools.vitruv.dsls.reactions.codegen.helper.ReactionsLanguageConsta
 import static extension tools.vitruv.dsls.reactions.codegen.helper.ReactionsImportsHelper.*;
 
 /**
- * Utility methods working with the model objects of the Reactions Language, which might be of use outside of the code generation.
+ * Utility methods working with the model objects of the Reactions Language, which might be of use outside of code generation.
  */
 final class ReactionsLanguageUtil {
 
@@ -47,12 +47,26 @@ final class ReactionsLanguageUtil {
 	// reaction names:
 
 	/**
+	 * Gets the formatted name of the given reaction.
+	 * <p>
+	 * This returns the reaction's name with an upper-case first character.
+	 * 
+	 * @param reaction the reaction
+	 * @return the formatted reaction name
+	 */
+	public static def String getFormattedName(Reaction reaction) {
+		return reaction.name.toFirstUpper;
+	}
+
+	/**
 	 * Gets the qualified name of the given reaction.
 	 * <p>
 	 * The qualified name consists of the reaction's reactions segment name and the
 	 * {@link #getFormattedName(Reaction) formatted reaction name}, separated by <code>::</code>. In case the reaction overrides
-	 * another reaction, the name of the overridden reactions segment is used instead. The qualified name can therefore not be
-	 * used to differentiate between an original reaction and the reaction overriding it!
+	 * another reaction, the name of the overridden reactions segment is used instead of the reaction's own reactions segment
+	 * name.
+	 * <p>
+	 * The qualified name can therefore not be used to differentiate between an original reaction and the reaction overriding it.
 	 * 
 	 * @param reaction the reaction
 	 * @return the qualified name
@@ -91,27 +105,29 @@ final class ReactionsLanguageUtil {
 		}
 	}
 
-	/**
-	 * Gets the formatted name of the given reaction.
-	 * <p>
-	 * This returns the reaction's name with an upper-case first character.
-	 * 
-	 * @param reaction the reaction
-	 * @return the formatted reaction name
-	 */
-	public static def String getFormattedName(Reaction reaction) {
-		return reaction.name.toFirstUpper;
-	}
-
 	// routine names:
+
+	/**
+	 * Gets the formatted name of the given routine.
+	 * <p>
+	 * This returns the routine's name with a lower-case first character.
+	 * 
+	 * @param routine the routine
+	 * @return the formatted routine name
+	 */
+	public static def String getFormattedName(Routine routine) {
+		return routine.name.toFirstLower;
+	}
 
 	/**
 	 * Gets the qualified name of the given routine.
 	 * <p>
 	 * The qualified name consists of the routine's reactions segment name and the
 	 * {@link #getFormattedName(Routine) formatted reaction name}, separated by <code>::</code>. In case the routine overrides
-	 * another routine, the name of the overridden reactions segment is used instead. The qualified name can therefore not be
-	 * used to differentiate between an original routine and the routine overriding it!
+	 * another routine, the name of the overridden reactions segment is used instead of the routine's own reactions segment
+	 * name.
+	 * <p>
+	 * The qualified name can therefore not be used to differentiate between an original routine and the routine overriding it.
 	 * 
 	 * @param routine the routine
 	 * @return the qualified name
@@ -129,22 +145,53 @@ final class ReactionsLanguageUtil {
 	/**
 	 * Gets the fully qualified name of the given routine.
 	 * <p>
-	 * The qualified name consists of the routine's reactions segment name and the
-	 * {@link #getFormattedName(Routine) formatted routine name}, separated by <code>::</code>. In case the routine overrides
-	 * another routine, the <b>import path</b> to the overridden reactions segment is used instead. The fully qualified name is
-	 * therefore only valid inside the routine's own reactions segment, because it depends on the import hierarchy.
+	 * This is equivalent to calling {@link #getFullyQualifiedName(Routine, ReactionsImportPath)} with <code>null</code> as
+	 * <code>importPath</code> parameter.
 	 * 
 	 * @param routine the routine
 	 * @return the fully qualified name
+	 * 
+	 * @see #getFullyQualifiedName(Routine, ReactionsImportPath)
 	 */
 	public static def String getFullyQualifiedName(Routine routine) {
-		var String reactionsSegmentName;
-		if (routine.isOverride) {
-			reactionsSegmentName = ReactionsImportPath.create(routine.overriddenReactionsSegmentImportPath).pathString;
-		} else {
-			reactionsSegmentName = routine.reactionsSegment.name;
+		return routine.getFullyQualifiedName(null);
+	}
+
+	/**
+	 * Gets the fully qualified name of the given routine.
+	 * <p>
+	 * The fully qualified name consists of the routine's reactions segment name and the
+	 * {@link #getFormattedName(Routine) formatted routine name}, separated by <code>::</code>. In case the routine overrides
+	 * another routine, the relative <b>import path</b> to the overridden reactions segment is used instead of the routine's
+	 * own reactions segment name.
+	 * <p>
+	 * The optional <code>importPath</code> parameter allows creation of fully qualified names relative to some other reactions
+	 * segment. If it is specified, it acts as prefix for the fully qualified name. If it doesn't already point to the routine's
+	 * reactions segment, the routine's reaction segment name gets appended.
+	 * <p>
+	 * Note: The returned fully qualified name relies on relative import paths and is therefore only valid inside the routine's
+	 * own reactions segment, or, if used in conjunction with the <code>importPath</code> parameter, some root reactions segment.
+	 * 
+	 * @param routine the routine
+	 * @param importPath the import path leading to the reactions segment containing the routine, or <code>null</code>
+	 * @return the fully qualified name
+	 */
+	public static def String getFullyQualifiedName(Routine routine, ReactionsImportPath importPath) {
+		val reactionsSegmentName = routine.reactionsSegment.name;
+		var String fullyQualifiedName = "";
+		if (importPath !== null) {
+			fullyQualifiedName += importPath.pathString;
+			if (!importPath.lastSegment.equals(reactionsSegmentName)) {
+				fullyQualifiedName += reactionsSegmentName;
+			}
 		}
-		return reactionsSegmentName + OVERRIDDEN_REACTIONS_SEGMENT_SEPARATOR + routine.formattedName;
+		if (routine.isOverride) {
+			fullyQualifiedName += ReactionsImportPath.create(routine.overriddenReactionsSegmentImportPath).pathString;
+		} else if (importPath === null) {
+			fullyQualifiedName += reactionsSegmentName;
+		}
+		fullyQualifiedName += OVERRIDDEN_REACTIONS_SEGMENT_SEPARATOR + routine.formattedName;
+		return fullyQualifiedName;
 	}
 
 	/**
@@ -163,18 +210,6 @@ final class ReactionsLanguageUtil {
 		} else {
 			return routine.formattedName;
 		}
-	}
-
-	/**
-	 * Gets the formatted name of the given routine.
-	 * <p>
-	 * This returns the routine's name with a lower-case first character.
-	 * 
-	 * @param routine the routine
-	 * @return the formatted routine name
-	 */
-	public static def String getFormattedName(Routine routine) {
-		return routine.name.toFirstLower;
 	}
 
 	// regular vs override reactions:

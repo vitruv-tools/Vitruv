@@ -9,14 +9,13 @@ import java.util.function.Supplier
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EStructuralFeature
 import org.eclipse.xtext.nodemodel.util.NodeModelUtils
+import org.eclipse.xtext.util.Tuples
 import tools.vitruv.dsls.reactions.reactionsLanguage.Reaction
 import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsImport
 import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsLanguagePackage
 import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsSegment
 import tools.vitruv.dsls.reactions.reactionsLanguage.Routine
 import tools.vitruv.extensions.dslsruntime.reactions.structure.ReactionsImportPath
-
-import static tools.vitruv.dsls.reactions.codegen.helper.ReactionsLanguageConstants.*
 
 import static extension tools.vitruv.dsls.reactions.util.ReactionsLanguageUtil.*
 
@@ -217,7 +216,8 @@ class ReactionsImportsHelper {
 	 * Gets all reactions that are included in the executor of the given root reactions segment.
 	 * <p>
 	 * This includes the own reactions, as well as all reactions found in the reactions import hierarchy, with overridden
-	 * reactions being replaced.
+	 * reactions being replaced. This can contain reactions with duplicate names, as long as those originate from differently
+	 * named reactions segments.
 	 * <p>
 	 * The reactions are returned together with their absolute reactions import path (starting with the root segment) denoting
 	 * their position in the import hierarchy.
@@ -226,15 +226,19 @@ class ReactionsImportsHelper {
 		return walkImportHierarchy(rootReactionsSegment,
 			// data initializer:
 			[
-				// reactions by qualified name, and with their absolute import path:
-				return new Pair(new LinkedHashMap<String, Reaction>(), new LinkedHashMap<Reaction, ReactionsImportPath>());
+				return Tuples.create(
+					// included reactions by qualified name:
+					new LinkedHashMap<String, Reaction>(),
+					// included reactions with their absolute import path:
+					new LinkedHashMap<Reaction, ReactionsImportPath>()
+				);
 			],
 			// early visitor:
 			null,
 			// late visitor:
 			[ sourceImport, currentImportPath, currentReactionsSegment, data |
-				val reactionsByQualifiedName = data.key;
-				val reactionsToImportPath = data.value;
+				val reactionsByQualifiedName = data.first;
+				val reactionsToImportPath = data.second;
 				// add own reactions and replace overridden reactions:
 				for (reaction : currentReactionsSegment.reactions) {
 					val qualifiedName = reaction.qualifiedName;
@@ -250,7 +254,7 @@ class ReactionsImportsHelper {
 			// recursively walk along imports that include reactions:
 			[!it.isRoutinesOnly],
 			// return value:
-			[it.value]
+			[it.second]
 		);
 	}
 
@@ -258,7 +262,7 @@ class ReactionsImportsHelper {
 	 * Gets all routines that are included in the routines facade of the given root reactions segment.
 	 * <p>
 	 * This includes the own routines, as well as all routines that are directly and transitively imported without qualified
-	 * names, with overridden routines being replaced.
+	 * names, with overridden routines being replaced. Duplicately included or named routines are only contained once.
 	 * <p>
 	 * The routines are returned together with their absolute reactions import path (starting with the root segment) denoting
 	 * their position in the import hierarchy.
@@ -267,31 +271,47 @@ class ReactionsImportsHelper {
 		return walkImportHierarchy(rootReactionsSegment,
 			// data initializer:
 			[
-				// routines by fully qualified name, and with their absolute import path:
-				return new Pair(new LinkedHashMap<String, Routine>(), new LinkedHashMap<Routine, ReactionsImportPath>());
+				return Tuples.create(
+					// included routines by name:
+					new LinkedHashMap<String, Routine>(),
+					// included routines by fully qualified name:
+					new LinkedHashMap<String, Routine>(),
+					// included routines with their absolute import path:
+					new LinkedHashMap<Routine, ReactionsImportPath>()
+				);
 			],
 			// early visitor:
-			null,
+			[ sourceImport, currentImportPath, currentReactionsSegment, data |
+				val routinesByName = data.first;
+				val routinesByFullyQualifiedName = data.second;
+				val routinesToImportPath = data.third;
+				// add own routines:
+				for (routine : currentReactionsSegment.regularRoutines) {
+					// only include one (top-most) routine for each unique formatted routine name:
+					if (routinesByName.putIfAbsent(routine.formattedName, routine) === null) {
+						// fully qualified name originating from root reactions segment:
+						var fullyQualifiedName = routine.getFullyQualifiedName(currentImportPath);
+						routinesByFullyQualifiedName.put(fullyQualifiedName, routine);
+						routinesToImportPath.put(routine, currentImportPath);
+					}
+				}
+			],
 			// late visitor:
 			[ sourceImport, currentImportPath, currentReactionsSegment, data |
-				val routinesByFullyQualifiedName = data.key;
-				val routinesToImportPath = data.value;
-				// add own routines and replace overridden routines:
-				for (routine : currentReactionsSegment.routines) {
-					var fullyQualifiedName = currentImportPath.pathString;
-					if (routine.isOverride) {
-						fullyQualifiedName += ReactionsImportPath.create(routine.overriddenReactionsSegmentImportPath).pathString;
-					}
-					fullyQualifiedName += OVERRIDDEN_REACTIONS_SEGMENT_SEPARATOR + routine.formattedName;
-
-					// only include override routines if the overridden routine is included:
-					if (!routine.isOverride || routinesByFullyQualifiedName.containsKey(fullyQualifiedName)) {
-						// this replaces any overridden routine with the same fully qualified name:
-						val previousRoutine = routinesByFullyQualifiedName.put(fullyQualifiedName, routine);
-						if (previousRoutine !== null) {
-							routinesToImportPath.remove(previousRoutine);
-						}
+				val routinesByName = data.first;
+				val routinesByFullyQualifiedName = data.second;
+				val routinesToImportPath = data.third;
+				// replace overridden routines:
+				for (routine : currentReactionsSegment.overrideRoutines) {
+					// fully qualified name originating from root reactions segment:
+					var fullyQualifiedName = routine.getFullyQualifiedName(currentImportPath);
+					// only include override routines if the overridden routine (same fully qualified name) is included:
+					val previousRoutine = routinesByFullyQualifiedName.replace(fullyQualifiedName, routine);
+					if (previousRoutine !== null) {
+						// update import path and routines-by-name mappings:
+						routinesToImportPath.remove(previousRoutine);
 						routinesToImportPath.put(routine, currentImportPath);
+						routinesByName.put(routine.formattedName, routine);
 					}
 				}
 			],
@@ -299,7 +319,7 @@ class ReactionsImportsHelper {
 			// recursively walk along imports that import routines without qualified names:
 			[!it.useQualifiedNames],
 			// return value:
-			[it.value]
+			[it.third]
 		);
 	}
 
@@ -307,7 +327,8 @@ class ReactionsImportsHelper {
 	 * Gets all reactions segments whose routines facades are included in the routines facade of the given root reactions segment.
 	 * <p>
 	 * This includes all reactions segments for imports using qualified names, as well as all reactions segments for routines
-	 * facades that are transitively included via imports not using qualified names.
+	 * facades that are transitively included via imports not using qualified names. Duplicately included or named reactions
+	 * segments are only contained once.
 	 * <p>
 	 * The reactions segments are returned together with their absolute reactions import path (starting with the root segment)
 	 * denoting their position in the import hierarchy.
@@ -316,20 +337,25 @@ class ReactionsImportsHelper {
 		return walkImportHierarchy(rootReactionsSegment,
 			// data initializer:
 			[
-				// included reactions segments by name, and with their absolute import path:
-				return new Pair(new LinkedHashMap<String, ReactionsSegment>(), new LinkedHashMap<ReactionsSegment, ReactionsImportPath>());
+				return Tuples.create(
+					// included reactions segments by name:
+					new LinkedHashMap<String, ReactionsSegment>(),
+					// included reactions segments with their absolute import path:
+					new LinkedHashMap<ReactionsSegment, ReactionsImportPath>()
+				);
 			],
 			// early visitor:
 			[ sourceImport, currentImportPath, currentReactionsSegment, data |
-				val segmentsByName = data.key;
-				val segmentsToImportPath = data.value;
+				val segmentsByName = data.first;
+				val segmentsToImportPath = data.second;
 				// add included routines facades:
 				for (currentSegmentImport : currentReactionsSegment.reactionsImports.filter[it.useQualifiedNames]) {
 					val importedSegment = currentSegmentImport.importedReactionsSegment;
 					val importedSegmentName = importedSegment.name;
+					val importedSegmentFormattedName = importedSegment.formattedName;
 					val importedSegmentImportPath = currentImportPath.append(importedSegmentName); 
-					val previousSegment = segmentsByName.putIfAbsent(importedSegmentName, importedSegment);
-					if (previousSegment === null) {
+					// only include one reactions segment for each unique formatted reactions segment name:
+					if (segmentsByName.putIfAbsent(importedSegmentFormattedName, importedSegment) === null) {
 						segmentsToImportPath.put(importedSegment, importedSegmentImportPath);
 					}
 				}
@@ -341,7 +367,7 @@ class ReactionsImportsHelper {
 			// in order to include all the transitively included routines facades:
 			[!it.useQualifiedNames],
 			// return value:
-			[it.value]
+			[it.second]
 		);
 	}
 
