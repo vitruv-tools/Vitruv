@@ -82,21 +82,19 @@ class ReactionsLanguageScopeProviderDelegate extends MirBaseScopeProviderDelegat
 	}
 
 	def createReactionOverrideScope(ReactionsSegment reactionsSegment) {
+		// excluding the root reactions segment here:
 		val reactionsImportHierarchyWithoutRoot = reactionsSegment.reactionsImportHierarchy.filter[k, v| k.length > 1];
 		return new SimpleScope(reactionsImportHierarchyWithoutRoot.entrySet.map [
 			EObjectDescription.create(QualifiedName.create(it.key.lastSegment), it.value);
 		]);
-		// TODO check if this might get called while cross-references cannot yet be resolved
-		// and whether it is an issue to not return the full import hierarchy then
 	}
 
 	def createRoutineOverrideScope(ReactionsSegment reactionsSegment) {
+		// excluding the import path of the root reactions segment here:
 		val routinesImportHierarchyWithoutRoot = reactionsSegment.routinesImportHierarchy.filter[k, v| k.length > 1];
 		return new SimpleScope(routinesImportHierarchyWithoutRoot.entrySet.map [
 			EObjectDescription.create(QualifiedName.create(it.key.tail.segments), it.value);
 		]);
-		// TODO check if this might get called while cross-references cannot yet be resolved
-		// and whether it is an issue to not return the full import hierarchy then
 	}
 
 	def createEStructuralFeatureScope(MetaclassFeatureReference featureReference) {
