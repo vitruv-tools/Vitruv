@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableList
 import java.util.List
 
 import static com.google.common.base.Preconditions.*
+import java.util.regex.Pattern
 
 /**
  * This class describes the path between reactions segments inside the reactions import hierarchy.
@@ -13,10 +14,11 @@ class ReactionsImportPath {
 	// path string representation:
 
 	public static final String PATH_STRING_SEPARATOR = ".";
+	private static final Pattern PATH_STRING_SEPARATOR_PATTERN = Pattern.compile(Pattern.quote(PATH_STRING_SEPARATOR));
 
 	public static def ReactionsImportPath fromPathString(String pathString) {
 		checkNotNull(pathString, "pathString is null");
-		val pathSegments = pathString.split(PATH_STRING_SEPARATOR, -1);
+		val pathSegments = PATH_STRING_SEPARATOR_PATTERN.split(pathString, -1);
 		return create(pathSegments);
 	}
 
