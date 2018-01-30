@@ -17,6 +17,8 @@ import tools.vitruv.framework.domains.VitruvDomainProviderRegistry
 import tools.vitruv.dsls.reactions.api.generator.ReferenceClassNameAdapter
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EClassifier
+import tools.vitruv.dsls.reactions.reactionsLanguage.Reaction
+import tools.vitruv.dsls.reactions.reactionsLanguage.Routine
 
 final class ReactionsLanguageHelper {
 	private new() {
@@ -97,5 +99,19 @@ final class ReactionsLanguageHelper {
 	
 	def static containsReactionsFile(Resource resource) {
 		resource.optionalReactionsFile !== null
+	}
+	
+	def static isComplete(ReactionsSegment reactionsSegment) {
+		return reactionsSegment !== null && reactionsSegment.name !== null;
+	}
+	
+	def static isComplete(Reaction reaction) {
+		return reaction !== null && reaction.name !== null && reaction.trigger !== null && reaction.callRoutine !== null;
+	}
+	
+	def static isComplete(Routine routine) {
+		return routine !== null && routine.name !== null && routine.input !== null && routine.action !== null
+			&& (routine.input.javaInputElements.findFirst[it.name === null || it.type === null || it.type.qualifiedName === null] === null)
+			&& (routine.input.modelInputElements.findFirst[it.name === null || it.metaclass === null || it.metaclass.javaClassName === null] === null);
 	}
 }

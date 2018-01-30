@@ -11,6 +11,7 @@ import tools.vitruv.extensions.dslsruntime.reactions.structure.ReactionsImportPa
 import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsSegment
 import static extension tools.vitruv.dsls.reactions.codegen.helper.ClassNamesGenerators.*
 import static extension tools.vitruv.dsls.reactions.codegen.helper.ReactionsImportsHelper.*
+import static extension tools.vitruv.dsls.reactions.codegen.helper.ReactionsLanguageHelper.*
 import tools.vitruv.dsls.reactions.codegen.typesbuilder.TypesBuilderExtensionProvider
 import org.eclipse.xtext.common.types.JvmGenericType
 import tools.vitruv.dsls.common.helper.ClassNameGenerator
@@ -26,6 +27,9 @@ class RoutineFacadeClassGenerator extends ClassGenerator {
 
 	new(ReactionsSegment reactionsSegment, TypesBuilderExtensionProvider typesBuilderExtensionProvider) {
 		super(typesBuilderExtensionProvider);
+		if (!reactionsSegment.isComplete) {
+			throw new IllegalArgumentException("incomplete");
+		}
 		this.reactionsSegment = reactionsSegment;
 		this.routinesFacadeNameGenerator = reactionsSegment.routinesFacadeClassNameGenerator;
 	}

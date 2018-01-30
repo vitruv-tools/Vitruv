@@ -12,6 +12,7 @@ import tools.vitruv.dsls.reactions.codegen.classgenerators.RoutineClassGenerator
 import tools.vitruv.dsls.reactions.reactionsLanguage.Routine
 import tools.vitruv.dsls.reactions.reactionsLanguage.Reaction
 import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsFile
+import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsSegment
 import tools.vitruv.dsls.reactions.codegen.typesbuilder.JvmTypesBuilderWithoutAssociations
 import tools.vitruv.dsls.reactions.codegen.typesbuilder.TypesBuilderExtensionProvider
 import tools.vitruv.dsls.reactions.codegen.classgenerators.ReactionClassGenerator
@@ -19,7 +20,7 @@ import tools.vitruv.dsls.reactions.codegen.classgenerators.ClassGenerator
 import tools.vitruv.dsls.reactions.codegen.classgenerators.OverriddenRoutinesFacadeClassGenerator
 import tools.vitruv.dsls.reactions.codegen.classgenerators.RoutinesFacadesProviderClassGenerator
 import static extension tools.vitruv.dsls.reactions.codegen.helper.ReactionsImportsHelper.*
-import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsSegment
+import static extension tools.vitruv.dsls.reactions.codegen.helper.ReactionsLanguageHelper.*
 
 /**
  * <p>Infers a JVM model for the Xtend code blocks of the reaction file model.</p> 
@@ -49,16 +50,16 @@ class ReactionsLanguageJvmModelInferrer extends AbstractModelInferrer  {
 	def dispatch void infer(ReactionsFile file, IJvmDeclaredTypeAcceptor acceptor, boolean isPreIndexingPhase) {
 		updateBuilders();
 		
-		for (reactionsSegment : file.reactionsSegments) {
+		for (reactionsSegment : file.reactionsSegments.filter[it.isComplete]) {
 			acceptor.accept(new RoutineFacadeClassGenerator(reactionsSegment, typesBuilderExtensionProvider), reactionsSegment);
 			for (overriddenRoutinesImportPath : reactionsSegment.overriddenRoutinesImportPaths) {
 				acceptor.accept(new OverriddenRoutinesFacadeClassGenerator(reactionsSegment, overriddenRoutinesImportPath, typesBuilderExtensionProvider), reactionsSegment);
 			}
 			acceptor.accept(new RoutinesFacadesProviderClassGenerator(reactionsSegment, typesBuilderExtensionProvider), reactionsSegment);
-			for (effect : reactionsSegment.routines) {
+			for (effect : reactionsSegment.routines.filter[it.isComplete]) {
 				generate(effect, acceptor, isPreIndexingPhase);
 			}
-			for (reaction : reactionsSegment.reactions) {
+			for (reaction : reactionsSegment.reactions.filter[it.isComplete]) {
 				generate(reaction, acceptor, isPreIndexingPhase);
 			}
 			acceptor.accept(new ExecutorClassGenerator(reactionsSegment, typesBuilderExtensionProvider), reactionsSegment);
@@ -68,8 +69,10 @@ class ReactionsLanguageJvmModelInferrer extends AbstractModelInferrer  {
 	
 	def private static accept(IJvmDeclaredTypeAcceptor acceptor, extension ClassGenerator generator, ReactionsSegment reactionsSegment) {
 		acceptor.accept(generator.generateEmptyClass()) [
-			// TODO workaround: sometimes the jvm model inferrer is called after indexing, but cross-references of reactions imports are still not resolvable,
+			// sometimes the jvm model inferrer is called after indexing, but cross-references of reactions imports are not resolvable,
 			// we need to skip class-body generation then:
+			// TODO check if this can be removed here, and instead check whether the class-body generation can cope with not resolvable imports by now
+			// (class-body generation would run then and produce only a partly correct result, because it ignores/excludes everything that relies on the import hierarchy)
 			if (reactionsSegment.allImportsResolvable) {
 				generateBody();
 			}

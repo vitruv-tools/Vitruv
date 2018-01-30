@@ -18,6 +18,7 @@ import tools.vitruv.dsls.reactions.codegen.helper.AccessibleElement
 import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
 import tools.vitruv.dsls.reactions.codegen.changetyperepresentation.ChangeSequenceRepresentation
 import tools.vitruv.dsls.common.helper.ClassNameGenerator
+import static extension tools.vitruv.dsls.reactions.codegen.helper.ReactionsLanguageHelper.*
 
 class ReactionClassGenerator extends ClassGenerator {
 	private static val String CHANCE_COUNTER_VARIABLE = "currentlyMatchedChange";
@@ -31,8 +32,8 @@ class ReactionClassGenerator extends ClassGenerator {
 	
 	new(Reaction reaction, TypesBuilderExtensionProvider typesBuilderExtensionProvider) {
 		super(typesBuilderExtensionProvider);
-		if (reaction?.trigger === null || reaction?.callRoutine === null) {
-			throw new IllegalArgumentException();
+		if (!reaction.isComplete) {
+			throw new IllegalArgumentException("incomplete");
 		}
 		this.reaction = reaction;
 		this.hasPreconditionBlock = reaction.trigger.precondition !== null;

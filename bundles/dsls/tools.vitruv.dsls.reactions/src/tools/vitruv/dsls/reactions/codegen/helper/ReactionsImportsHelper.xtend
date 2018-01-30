@@ -18,6 +18,7 @@ import tools.vitruv.dsls.reactions.reactionsLanguage.Routine
 import tools.vitruv.extensions.dslsruntime.reactions.structure.ReactionsImportPath
 
 import static extension tools.vitruv.dsls.reactions.util.ReactionsLanguageUtil.*
+import static extension tools.vitruv.dsls.reactions.codegen.helper.ReactionsLanguageHelper.*
 
 /**
  * Contains utilities related to reactions imports, import hierarchies, and reaction and routine overrides.
@@ -62,7 +63,13 @@ class ReactionsImportsHelper {
 	public static def boolean isAllImportsResolvable(ReactionsSegment reactionsSegment) {
 		// getting the imported reactions segment from the reactions import triggers a resolve,
 		// which will only still be a proxy afterwards if it wasn't resolvable
-		return (reactionsSegment.reactionsImports.map[it.importedReactionsSegment].findFirst[it === null || it.eIsProxy] !== null);
+		return (reactionsSegment.reactionsImports.findFirst[!it.isResolvable] === null);
+	}
+
+	public static def boolean isResolvable(ReactionsImport reactionsImport) {
+		// getting the imported reactions segment from the reactions import triggers a resolve,
+		// which will only still be a proxy afterwards if it wasn't resolvable
+		return (reactionsImport !== null && reactionsImport.importedReactionsSegment !== null && !reactionsImport.importedReactionsSegment.eIsProxy);
 	}
 
 	/**
@@ -128,12 +135,11 @@ class ReactionsImportsHelper {
 		// call early visitor:
 		earlyVisitor?.visit(sourceImport, currentImportPath, currentReactionsSegment, data);
 
-		// recursively walk along transitively imported reactions segments:
-		for (nextImport : currentReactionsSegment.reactionsImports) {
-			// this triggers a resolve, leaving it a proxy if it wasn't resolvable:
-			val importedSegment = nextImport.importedReactionsSegment;
-			// not following imports that cannot be resolved, are cyclic, or are skipped by the filter:
-			if (importedSegment !== null && !importedSegment.eIsProxy && !currentImportPath.segments.contains(importedSegment.name) && importFilter.test(nextImport)) {
+		// recursively walk along transitively imported reactions segments, that are resolvable:
+		for (nextImport : currentReactionsSegment.reactionsImports.filter[it.isResolvable]) {
+			val importedSegment = nextImport.importedReactionsSegment; // not null, not proxy
+			// not following imports that are cyclic, or are skipped by the importFilter:
+			if (!currentImportPath.segments.contains(importedSegment.name) && importFilter.test(nextImport)) {
 				val importedSegmentImportPath = currentImportPath.append(importedSegment.name);
 				_walkImportHierarchy(nextImport, importedSegmentImportPath, importedSegment, data, earlyVisitor, lateVisitor, importFilter);
 			}
@@ -240,7 +246,7 @@ class ReactionsImportsHelper {
 				val reactionsByQualifiedName = data.first;
 				val reactionsToImportPath = data.second;
 				// add own reactions and replace overridden reactions:
-				for (reaction : currentReactionsSegment.reactions) {
+				for (reaction : currentReactionsSegment.reactions.filter[it.isComplete]) {
 					val qualifiedName = reaction.qualifiedName;
 					// this replaces any overridden reaction for the same qualified name:
 					val previousReaction = reactionsByQualifiedName.put(qualifiedName, reaction);
@@ -286,7 +292,7 @@ class ReactionsImportsHelper {
 				val routinesByFullyQualifiedName = data.second;
 				val routinesToImportPath = data.third;
 				// add own routines:
-				for (routine : currentReactionsSegment.regularRoutines) {
+				for (routine : currentReactionsSegment.regularRoutines.filter[it.isComplete]) {
 					// only include one (top-most) routine for each unique formatted routine name:
 					if (routinesByName.putIfAbsent(routine.formattedName, routine) === null) {
 						// fully qualified name originating from root reactions segment:
@@ -302,7 +308,7 @@ class ReactionsImportsHelper {
 				val routinesByFullyQualifiedName = data.second;
 				val routinesToImportPath = data.third;
 				// replace overridden routines:
-				for (routine : currentReactionsSegment.overrideRoutines) {
+				for (routine : currentReactionsSegment.overrideRoutines.filter[it.isComplete]) {
 					// fully qualified name originating from root reactions segment:
 					var fullyQualifiedName = routine.getFullyQualifiedName(currentImportPath);
 					// only include override routines if the overridden routine (same fully qualified name) is included:
@@ -349,15 +355,14 @@ class ReactionsImportsHelper {
 				val segmentsByName = data.first;
 				val segmentsToImportPath = data.second;
 				// add included routines facades:
-				val currentSegmentQualifiedImports = currentReactionsSegment.reactionsImports.filter[it.useQualifiedNames];
-				val currentSegmentImportedSegments = currentSegmentQualifiedImports.map[it.importedReactionsSegment].filterNull.filter[!it.eIsProxy];
-				for (importedSegment : currentSegmentImportedSegments) {
-					val importedSegmentName = importedSegment.name;
-					val importedSegmentFormattedName = importedSegment.formattedName;
-					val importedSegmentImportPath = currentImportPath.append(importedSegmentName); 
+				val currentSegmentIncludedImports = currentReactionsSegment.reactionsImports.filter[it.isResolvable && it.useQualifiedNames];
+				val currentSegmentIncludedSegments = currentSegmentIncludedImports.map[it.importedReactionsSegment];
+				for (includedSegment : currentSegmentIncludedSegments) {
+					val includedSegmentFormattedName = includedSegment.formattedName;
+					val includedSegmentImportPath = currentImportPath.append(includedSegment.name); 
 					// only include one reactions segment for each unique formatted reactions segment name:
-					if (segmentsByName.putIfAbsent(importedSegmentFormattedName, importedSegment) === null) {
-						segmentsToImportPath.put(importedSegment, importedSegmentImportPath);
+					if (segmentsByName.putIfAbsent(includedSegmentFormattedName, includedSegment) === null) {
+						segmentsToImportPath.put(includedSegment, includedSegmentImportPath);
 					}
 				}
 			],
@@ -444,11 +449,9 @@ class ReactionsImportsHelper {
 		val nextReactionsSegmentName = remainingImportPath.firstSegment;
 		val nextImportPath = currentImportPath.append(nextReactionsSegmentName);
 		val nextRemainingImportPath = remainingImportPath.tail; // can be null
-		val nextImport = currentReactionsSegment.reactionsImports.findFirst [
-			// this triggers a resolve, leaving it a proxy if it wasn't resolvable:
-			val importedReactionsSegment = it.importedReactionsSegment;
-			// not considering unresolvable imports:
-			importedReactionsSegment !== null && !importedReactionsSegment.eIsProxy && nextReactionsSegmentName.equals(importedReactionsSegment.name);
+		// skipping unresolvable imports:
+		val nextImport = currentReactionsSegment.reactionsImports.filter[it.isResolvable].findFirst [
+			nextReactionsSegmentName.equals(it.importedReactionsSegment.name);
 		];
 		if (nextImport=== null) {
 			// invalid import path:

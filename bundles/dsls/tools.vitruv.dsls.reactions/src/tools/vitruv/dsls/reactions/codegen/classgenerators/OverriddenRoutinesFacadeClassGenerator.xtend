@@ -9,6 +9,7 @@ import tools.vitruv.extensions.dslsruntime.reactions.structure.ReactionsImportPa
 
 import static extension tools.vitruv.dsls.reactions.codegen.helper.ClassNamesGenerators.*
 import static extension tools.vitruv.dsls.reactions.codegen.helper.ReactionsImportsHelper.*
+import static extension tools.vitruv.dsls.reactions.codegen.helper.ReactionsLanguageHelper.*
 import static extension tools.vitruv.dsls.reactions.util.ReactionsLanguageUtil.*
 
 class OverriddenRoutinesFacadeClassGenerator extends RoutineFacadeClassGenerator {
@@ -21,6 +22,9 @@ class OverriddenRoutinesFacadeClassGenerator extends RoutineFacadeClassGenerator
 
 	new(ReactionsSegment reactionsSegment, ReactionsImportPath relativeImportPath, TypesBuilderExtensionProvider typesBuilderExtensionProvider) {
 		super(reactionsSegment, typesBuilderExtensionProvider);
+		if (!reactionsSegment.isComplete) {
+			throw new IllegalArgumentException("incomplete");
+		}
 		this.reactionsSegment = reactionsSegment;
 		this.relativeImportPath = relativeImportPath;
 		this.absoluteImportPath = ReactionsImportPath.create(#[reactionsSegment.name], relativeImportPath.segments);
@@ -48,7 +52,7 @@ class OverriddenRoutinesFacadeClassGenerator extends RoutineFacadeClassGenerator
 			members += generateConstructor();
 
 			// override routines:
-			reactionsSegment.overrideRoutines.filter [
+			reactionsSegment.overrideRoutines.filter[it.isComplete].filter [
 				relativeImportPath.segments.equals(it.overriddenReactionsSegmentImportPath)
 			].forEach [
 				generatedClass.members += it.generateCallMethod(absoluteImportPath);

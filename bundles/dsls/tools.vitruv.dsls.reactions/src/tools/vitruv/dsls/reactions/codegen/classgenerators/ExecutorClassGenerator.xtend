@@ -18,6 +18,9 @@ class ExecutorClassGenerator extends ClassGenerator {
 	
 	new(ReactionsSegment reactionsSegment, TypesBuilderExtensionProvider typesBuilderExtensionProvider) {
 		super(typesBuilderExtensionProvider)
+		if (!reactionsSegment.isComplete) {
+			throw new IllegalArgumentException("incomplete");
+		}
 		this.reactionsSegment = reactionsSegment;
 	}
 	

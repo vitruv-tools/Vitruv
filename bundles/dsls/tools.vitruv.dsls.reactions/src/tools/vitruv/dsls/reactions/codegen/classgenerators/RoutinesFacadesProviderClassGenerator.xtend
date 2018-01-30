@@ -14,6 +14,7 @@ import tools.vitruv.extensions.dslsruntime.reactions.structure.ReactionsImportPa
 
 import static extension tools.vitruv.dsls.reactions.codegen.helper.ClassNamesGenerators.*
 import static extension tools.vitruv.dsls.reactions.codegen.helper.ReactionsImportsHelper.*
+import static extension tools.vitruv.dsls.reactions.codegen.helper.ReactionsLanguageHelper.*
 
 class RoutinesFacadesProviderClassGenerator extends ClassGenerator {
 
@@ -22,6 +23,9 @@ class RoutinesFacadesProviderClassGenerator extends ClassGenerator {
 
 	new(ReactionsSegment reactionsSegment, TypesBuilderExtensionProvider typesBuilderExtensionProvider) {
 		super(typesBuilderExtensionProvider)
+		if (!reactionsSegment.isComplete) {
+			throw new IllegalArgumentException("incomplete");
+		}
 		this.reactionsSegment = reactionsSegment;
 	}
 

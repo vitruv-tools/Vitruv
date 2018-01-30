@@ -57,6 +57,9 @@ class RoutineClassGenerator extends ClassGenerator {
 
 	public new(Routine routine, TypesBuilderExtensionProvider typesBuilderExtensionProvider) {
 		super(typesBuilderExtensionProvider)
+		if (!routine.isComplete) {
+			throw new IllegalArgumentException("incomplete");
+		}
 		this.routine = routine;
 		this._completionChecker = new ReactionElementsCompletionChecker();
 		this.routineClassNameGenerator = routine.routineClassNameGenerator;
