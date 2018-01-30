@@ -2,9 +2,9 @@ package tools.vitruv.extensions.dslsruntime.reactions.structure
 
 import com.google.common.collect.ImmutableList
 import java.util.List
+import java.util.regex.Pattern
 
 import static com.google.common.base.Preconditions.*
-import java.util.regex.Pattern
 
 /**
  * This class describes the path between reactions segments inside the reactions import hierarchy.
