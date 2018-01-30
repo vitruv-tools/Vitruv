@@ -72,7 +72,7 @@ class ReactionsLanguageOutlineTreeProvider extends DefaultOutlineTreeProvider {
 		createEStructuralFeatureNode(importNode, reactionsImport,
 			ReactionsLanguagePackage.Literals.REACTIONS_IMPORT__IMPORTED_REACTIONS_SEGMENT,
 			imageDispatcher.invoke(reactionsImport.importedReactionsSegment),
-			reactionsImport.importedReactionsSegment.name, true);
+			reactionsImport.importedReactionsSegment?.name, true);
 	}
 	
 	protected def void _createChildren(EStructuralFeatureNode parentNode, Reaction reaction) {
@@ -101,7 +101,7 @@ class ReactionsLanguageOutlineTreeProvider extends DefaultOutlineTreeProvider {
 	}
 	
 	protected def Object _text(ReactionsImport reactionsImport) {
-		return reactionsImport.importedReactionsSegment.name;
+		return reactionsImport.importedReactionsSegment?.name;
 	}
 	
 	protected def Object _text(Reaction reaction) {
