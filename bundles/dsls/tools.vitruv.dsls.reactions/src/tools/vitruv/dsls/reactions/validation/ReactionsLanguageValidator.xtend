@@ -276,8 +276,8 @@ class ReactionsLanguageValidator extends AbstractReactionsLanguageValidator {
 
 		// reaction overrides must have matching name:
 		if (reaction.isOverride) {
-			val reactionName = reaction.name.toUpperCase;
-			val matchingName = reaction.overriddenReactionsSegment.regularReactions.map[it.name.toUpperCase].findFirst[it.equals(reactionName)];
+			val reactionName = reaction.formattedName;
+			val matchingName = reaction.overriddenReactionsSegment.regularReactions.map[it.formattedName].findFirst[it.equals(reactionName)];
 			if (matchingName === null) {
 				val errorMessage = "Reaction must override a reaction with matching name: " + reactionName;
 				error(errorMessage, reaction, ReactionsLanguagePackage.Literals.REACTION__NAME);
