@@ -112,12 +112,13 @@ class ReactionsLanguageValidator extends AbstractReactionsLanguageValidator {
 
 			// check for duplicately included reactions:
 			if (!reactionsImport.isRoutinesOnly) {
-				val importIncludedReactions = importedSegment.reactionsImportHierarchy.values;
-				for (includedReactions : importIncludedReactions) {
-					val duplicateReactionsImport = alreadyCheckedIncludedReactions.putIfAbsent(importedSegmentFormattedName, reactionsImport);
+				val importIncludedReactionsSegments = importedSegment.reactionsImportHierarchy.values;
+				for (includedReactionsSegment : importIncludedReactionsSegments) {
+					val includedReactionsSegmentFormattedName = includedReactionsSegment.formattedName;
+					val duplicateReactionsImport = alreadyCheckedIncludedReactions.putIfAbsent(includedReactionsSegmentFormattedName, reactionsImport);
 					if (duplicateReactionsImport !== null) {
 						val errorMessage = "Cannot (possibly transitively) import reactions of the same reactions segment ('" 
-								+ importedSegmentFormattedName + "') more than once. Consider importing only the routines for one of them.";
+								+ includedReactionsSegmentFormattedName + "') more than once. Consider importing only the routines for one of them.";
 						error(errorMessage, reactionsImport, ReactionsLanguagePackage.Literals.REACTIONS_IMPORT__IMPORTED_REACTIONS_SEGMENT);
 						error(errorMessage, duplicateReactionsImport, ReactionsLanguagePackage.Literals.REACTIONS_IMPORT__IMPORTED_REACTIONS_SEGMENT);
 					}
