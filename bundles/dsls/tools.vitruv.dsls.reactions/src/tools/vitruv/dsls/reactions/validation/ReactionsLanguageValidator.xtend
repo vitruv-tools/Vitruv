@@ -251,14 +251,14 @@ class ReactionsLanguageValidator extends AbstractReactionsLanguageValidator {
 			val overriddenReactionsSegment = routine.reactionsSegment.getReactionsSegment(overriddenReactionsSegmentImportPath);
 			if (overriddenReactionsSegment === null) {
 				// invalid override import path:
-				val errorMessage = "Could not find overridden reactions segment for that import path: " + overriddenReactionsSegmentImportPath.pathString;
+				val errorMessage = "Can not find overridden reactions segment for this import path: " + overriddenReactionsSegmentImportPath.pathString;
 				error(errorMessage, routine, ReactionsLanguagePackage.Literals.ROUTINE__OVERRIDDEN_REACTIONS_SEGMENT_IMPORT_PATH);
 			} else {
 				// check for matching name:
 				val routineName = routine.formattedName;
 				val overriddenRoutine = overriddenReactionsSegment.regularRoutines.findFirst[it.formattedName.equals(routineName)];
 				if (overriddenRoutine === null) {
-					val errorMessage = "Could not find a routine with this name in the overridden reactions segment: " + routineName;
+					val errorMessage = "Routine name does not match any routine in the overridden reactions segment: " + routineName;
 					error(errorMessage, routine, ReactionsLanguagePackage.Literals.ROUTINE__NAME);
 				} else {
 					// check for matching parameters / signature:
@@ -299,7 +299,7 @@ class ReactionsLanguageValidator extends AbstractReactionsLanguageValidator {
 			val reactionName = reaction.formattedName;
 			val overriddenReaction = reaction.overriddenReactionsSegment.regularReactions.findFirst[it.formattedName.equals(reactionName)];
 			if (overriddenReaction === null) {
-				val errorMessage = "Could not find a reaction with this name in the overridden reactions segment: " + reactionName;
+				val errorMessage = "Reaction name does not match any reaction in the overridden reactions segment: " + reactionName;
 				error(errorMessage, reaction, ReactionsLanguagePackage.Literals.REACTION__NAME);
 			}
 		}
