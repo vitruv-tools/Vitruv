@@ -102,16 +102,30 @@ final class ReactionsLanguageHelper {
 	}
 	
 	def static isComplete(ReactionsSegment reactionsSegment) {
-		return reactionsSegment !== null && reactionsSegment.name !== null;
+		if (reactionsSegment === null) return false;
+		if (reactionsSegment.name === null) return false;
+		return true;
 	}
 	
 	def static isComplete(Reaction reaction) {
-		return reaction !== null && reaction.name !== null && reaction.trigger !== null && reaction.callRoutine !== null;
+		if (reaction === null) return false;
+		if (reaction.name === null) return false;
+		if (reaction.trigger === null) return false;
+		if (reaction.callRoutine === null) return false;
+		return true;
 	}
 	
 	def static isComplete(Routine routine) {
-		return routine !== null && routine.name !== null && routine.input !== null && routine.action !== null
-			&& (routine.input.javaInputElements.findFirst[it.name === null || it.type === null || it.type.qualifiedName === null] === null)
-			&& (routine.input.modelInputElements.findFirst[it.name === null || it.metaclass === null || it.metaclass.javaClassName === null] === null);
+		if (routine === null) return false;
+		if (routine.name === null) return false;
+		if (routine.action === null) return false;
+		if (routine.input === null) return false;
+		if (routine.input.javaInputElements.findFirst[it.name === null || it.type === null || it.type.qualifiedName === null] !== null) {
+			return false;
+		}
+		if (routine.input.modelInputElements.findFirst[it.name === null || it.metaclass === null || it.metaclass.javaClassName === null] !== null) {
+			return false;
+		}
+		return true;
 	}
 }

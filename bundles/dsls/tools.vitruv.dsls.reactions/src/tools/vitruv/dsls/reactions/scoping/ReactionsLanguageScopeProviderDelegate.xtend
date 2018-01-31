@@ -29,7 +29,6 @@ import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsSegment
 import tools.vitruv.dsls.reactions.reactionsLanguage.Reaction
 import tools.vitruv.dsls.reactions.reactionsLanguage.Routine
 import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsImport
-import static extension tools.vitruv.dsls.reactions.util.ReactionsLanguageUtil.*
 import static extension tools.vitruv.dsls.reactions.codegen.helper.ReactionsImportsHelper.*
 
 class ReactionsLanguageScopeProviderDelegate extends MirBaseScopeProviderDelegate {
@@ -69,7 +68,8 @@ class ReactionsLanguageScopeProviderDelegate extends MirBaseScopeProviderDelegat
 			if (context instanceof Reaction) {
 				return createReactionOverrideScope(context.reactionsSegment);
 			}
-		} else if (reference.equals(ROUTINE__OVERRIDE_IMPORT_PATH)) {
+		} else if (reference.equals(ROUTINE__OVERRIDDEN_REACTIONS_SEGMENT_IMPORT_PATH)) {
+			// TODO remove this and move into content proposal + validation
 			if (context instanceof Routine) {
 				return createRoutineOverrideScope(context.reactionsSegment);
 			}
@@ -92,9 +92,9 @@ class ReactionsLanguageScopeProviderDelegate extends MirBaseScopeProviderDelegat
 
 	def createRoutineOverrideScope(ReactionsSegment reactionsSegment) {
 		// excluding the import path of the root reactions segment here:
-		val routinesImportHierarchyWithoutRoot = reactionsSegment.routinesImportHierarchy.keySet.filter[it.length > 1];
-		return new SimpleScope(routinesImportHierarchyWithoutRoot.map [
-			EObjectDescription.create(QualifiedName.create(it.tail.segments), it.toRoutineOverrideImportPath);
+		val routinesImportHierarchyWithoutRoot = reactionsSegment.routinesImportHierarchy.filter[k, v| k.length > 1];
+		return new SimpleScope(routinesImportHierarchyWithoutRoot.entrySet.map [
+			EObjectDescription.create(QualifiedName.create(it.key.tail.segments), it.value);
 		]);
 	}
 

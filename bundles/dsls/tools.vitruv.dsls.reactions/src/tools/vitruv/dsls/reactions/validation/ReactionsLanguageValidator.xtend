@@ -48,29 +48,37 @@ class ReactionsLanguageValidator extends AbstractReactionsLanguageValidator {
 				error(errorMessage, duplicateNameSegment, ReactionsLanguagePackage.Literals.REACTIONS_SEGMENT__NAME);
 			}
 		}
-
-		// check for duplicate reactions segment names globally:
-		val resource = reactionsFile.eResource;
-		for (reactionsSegment : reactionsFile.reactionsSegments) {
-			val visibleReactionsSegmentDescs = reactionsImportScopeHelper.getVisibleReactionsSegmentDescriptions(reactionsSegment);
-			val reactionsSegmentName = reactionsSegment.formattedName;
-			val duplicateNameSegmentDesc = visibleReactionsSegmentDescs.findFirst[name.toString.equals(reactionsSegmentName)];
-			if (duplicateNameSegmentDesc !== null) {
-				// path relative to current file:
-				val pathToOtherSegment = duplicateNameSegmentDesc.EObjectURI.trimFragment.deresolve(resource.URI);
-				warning(
-					"Duplicate reactions segment name '" + reactionsSegmentName + "': Already defined in " + pathToOtherSegment,
-					reactionsSegment,
-					ReactionsLanguagePackage.Literals.REACTIONS_SEGMENT__NAME
-				);
-			}
-		}
 	}
 
 	@Check
 	def checkReactionsSegment(ReactionsSegment reactionsSegment) {
-		// validate reactions imports:
+		// validate segment name:
+		val segmentName = reactionsSegment.name;
 		val segmentFormattedName = reactionsSegment.formattedName;
+		if (segmentName.startsWith("_")) {
+			error("Reactions segment names must not start with an underscore.",
+				ReactionsLanguagePackage.Literals.REACTIONS_SEGMENT__NAME);
+		}
+		if (!Character.isLowerCase(segmentName.charAt(0))) {
+			warning("Reactions segment names should start lower case.",
+				ReactionsLanguagePackage.Literals.REACTIONS_SEGMENT__NAME);
+		}
+
+		// check for duplicate reactions segment names globally:
+		val resource = reactionsSegment.eResource;
+		val visibleReactionsSegmentDescs = reactionsImportScopeHelper.getVisibleReactionsSegmentDescriptions(reactionsSegment);
+		val duplicateNameSegmentDesc = visibleReactionsSegmentDescs.findFirst[it.name.toString.formattedReactionsSegmentName.equals(segmentFormattedName)];
+		if (duplicateNameSegmentDesc !== null) {
+			// path relative to current file:
+			val pathToOtherSegment = duplicateNameSegmentDesc.EObjectURI.trimFragment.deresolve(resource.URI);
+			warning(
+				"Duplicate reactions segment name '" + segmentFormattedName + "': Already defined in " + pathToOtherSegment,
+				reactionsSegment,
+				ReactionsLanguagePackage.Literals.REACTIONS_SEGMENT__NAME
+			);
+		}
+
+		// validate reactions imports:
 		val metamodelPairName = reactionsSegment.formattedMetamodelPair;
 		// imported reactions segment name -> import
 		val alreadyCheckedImports = new HashMap<String, ReactionsImport>();
@@ -237,24 +245,36 @@ class ReactionsLanguageValidator extends AbstractReactionsLanguageValidator {
 				ReactionsLanguagePackage.Literals.ROUTINE__NAME);
 		}
 
-		// routine overrides must have matching name and parameters:
+		// validate routine overrides:
 		if (routine.isOverride) {
-			val overriddenReactionsSegmentImportPath = routine.overrideImportPath.toReactionsImportPath;
+			val overriddenReactionsSegmentImportPath = routine.overrideImportPath;
 			val overriddenReactionsSegment = routine.reactionsSegment.getReactionsSegment(overriddenReactionsSegmentImportPath);
-			if (overriddenReactionsSegment !== null) {
-				val signature = routine.methodSignature
-				val matchingSignature =  overriddenReactionsSegment.regularRoutines.map[methodSignature].findFirst[it.equals(signature)];
-				if (matchingSignature === null) {
-					val errorMessage = "Routine must override a routine with matching name and parameters: " + signature;
+			if (overriddenReactionsSegment === null) {
+				// invalid override import path:
+				val errorMessage = "Could not find overridden reactions segment for that import path: " + overriddenReactionsSegmentImportPath.pathString;
+				error(errorMessage, routine, ReactionsLanguagePackage.Literals.ROUTINE__OVERRIDDEN_REACTIONS_SEGMENT_IMPORT_PATH);
+			} else {
+				// check for matching name:
+				val routineName = routine.formattedName;
+				val overriddenRoutine = overriddenReactionsSegment.regularRoutines.findFirst[it.formattedName.equals(routineName)];
+				if (overriddenRoutine === null) {
+					val errorMessage = "Could not find a routine with this name in the overridden reactions segment: " + routineName;
 					error(errorMessage, routine, ReactionsLanguagePackage.Literals.ROUTINE__NAME);
+				} else {
+					// check for matching parameters / signature:
+					val inputSignature = routine.inputSignature;
+					val overriddenInputSignature = overriddenRoutine.inputSignature;
+					if (!inputSignature.equals(overriddenInputSignature)) {
+						val errorMessage = "Input parameters need to match those of the overridden routine: " + overriddenInputSignature;
+						error(errorMessage, routine, ReactionsLanguagePackage.Literals.ROUTINE__INPUT);
+					}
 				}
 			}
 		}
 	}
 	
-	private def String getMethodSignature(Routine routine) {
+	private def String getInputSignature(Routine routine) {
 		val signature = new StringBuilder();
-		signature.append(routine.formattedName);
 		signature.append('(');
 		for (modelInputElement : routine.input.modelInputElements) {
 			signature.append(modelInputElement.metaclass.javaClassName);
@@ -277,9 +297,9 @@ class ReactionsLanguageValidator extends AbstractReactionsLanguageValidator {
 		// reaction overrides must have matching name:
 		if (reaction.isOverride) {
 			val reactionName = reaction.formattedName;
-			val matchingName = reaction.overriddenReactionsSegment.regularReactions.map[it.formattedName].findFirst[it.equals(reactionName)];
-			if (matchingName === null) {
-				val errorMessage = "Reaction must override a reaction with matching name: " + reactionName;
+			val overriddenReaction = reaction.overriddenReactionsSegment.regularReactions.findFirst[it.formattedName.equals(reactionName)];
+			if (overriddenReaction === null) {
+				val errorMessage = "Could not find a reaction with this name in the overridden reactions segment: " + reactionName;
 				error(errorMessage, reaction, ReactionsLanguagePackage.Literals.REACTION__NAME);
 			}
 		}

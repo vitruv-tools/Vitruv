@@ -134,13 +134,10 @@ ElementCompoundChangeType returns ElementCompoundChangeType:
 
 Routine:
 	(documentation=ML_COMMENT)?
-	'routine' (overrideImportPath=RoutineOverrideImportPath '::')? name=ValidID input=RoutineInput '{'
+	'routine' (overriddenReactionsSegmentImportPath+=ValidID ('.' overriddenReactionsSegmentImportPath+=ValidID)* '::')? name=ValidID input=RoutineInput '{'
 		matcher=MatcherBlock?
 		action=ActionBlock
 	'}';
-
-RoutineOverrideImportPath:
-	segments += ValidID ('.' segments += ValidID)*;
 
 RoutineInput:
 	{RoutineInput}

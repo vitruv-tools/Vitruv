@@ -45,7 +45,7 @@ class ReactionsImportsHelper {
 	private static def String getFeatureNodeText(EObject semanticObject, EStructuralFeature structuralFeature) {
 		val nodes = NodeModelUtils.findNodesForFeature(semanticObject, structuralFeature);
 		if (nodes.isEmpty) return null;
-		return nodes.get(0).text;
+		return NodeModelUtils.getTokenText(nodes.get(0));
 	}
 
 	/**
@@ -54,7 +54,7 @@ class ReactionsImportsHelper {
 	 * The returned import paths are unique, and relative to the given reactions segment.
 	 */
 	public static def Set<ReactionsImportPath> getOverriddenRoutinesImportPaths(ReactionsSegment reactionsSegment) {
-		return reactionsSegment.overrideRoutines.map[it.overrideImportPath.toReactionsImportPath].toSet;
+		return reactionsSegment.overrideRoutines.map[it.overrideImportPath].toSet;
 	}
 
 	/**
@@ -506,8 +506,8 @@ class ReactionsImportsHelper {
 					// check the routine overrides of the current segment, if it is not the root or we are checking the root as well:
 					if (checkRootReactionsSegment || currentImportPath.length > 1) {
 						// check if the current reactions segment contains a routine override for the remaining import path:
-						val overriddenRoutinesImportPaths = currentReactionsSegment.overrideRoutines.map[it.overrideImportPath];
-						if (overriddenRoutinesImportPaths.findFirst[it.segments.equals(remainingPath.segments)] !== null) {
+						val overriddenRoutinesImportPaths = currentReactionsSegment.overrideRoutines.map[it.overriddenReactionsSegmentImportPath];
+						if (overriddenRoutinesImportPaths.findFirst[it.equals(remainingPath.segments)] !== null) {
 							return currentReactionsSegment;
 						}
 					}

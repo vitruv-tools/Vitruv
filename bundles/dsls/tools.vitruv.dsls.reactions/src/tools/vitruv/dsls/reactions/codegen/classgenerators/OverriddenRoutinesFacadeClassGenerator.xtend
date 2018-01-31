@@ -38,9 +38,16 @@ class OverriddenRoutinesFacadeClassGenerator extends RoutineFacadeClassGenerator
 	}
 
 	override generateBody() {
+		val overriddenReactionsSegment = reactionsSegment.getReactionsSegment(relativeImportPath);
+		val routinesOverrideRoot = reactionsSegment.getRoutinesOverrideRoot(relativeImportPath, false);
+		if (overriddenReactionsSegment === null || routinesOverrideRoot === null) {
+			// invalid import path, skipping class-body generation:
+			// TODO debug
+			System.out.println("DEBUG: rel.path: " + relativeImportPath + " , overridden: " + overriddenReactionsSegment + " , overrideRoot: " + routinesOverrideRoot);
+			return generatedClass;
+		}
+
 		generatedClass => [
-			val overriddenReactionsSegment = reactionsSegment.getReactionsSegment(relativeImportPath);
-			val routinesOverrideRoot = reactionsSegment.getRoutinesOverrideRoot(relativeImportPath, false);
 			if (routinesOverrideRoot.name.equals(overriddenReactionsSegment.name)) {
 				// extend the original routines facade of the overridden reactions segment:
 				superTypes += typeRef(overriddenReactionsSegment.routinesFacadeClassNameGenerator.qualifiedName);
@@ -53,7 +60,7 @@ class OverriddenRoutinesFacadeClassGenerator extends RoutineFacadeClassGenerator
 
 			// override routines:
 			reactionsSegment.overrideRoutines.filter[it.isComplete].filter [
-				relativeImportPath.segments.equals(it.overrideImportPath.segments)
+				it.overriddenReactionsSegmentImportPath.equals(relativeImportPath.segments)
 			].forEach [
 				generatedClass.members += it.generateCallMethod(absoluteImportPath);
 			];

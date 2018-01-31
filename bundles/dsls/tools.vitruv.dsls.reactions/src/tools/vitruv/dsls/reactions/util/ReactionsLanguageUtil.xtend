@@ -1,11 +1,9 @@
 package tools.vitruv.dsls.reactions.util
 
 import tools.vitruv.dsls.reactions.reactionsLanguage.Reaction
-import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsLanguageFactory
 import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsLanguagePackage
 import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsSegment
 import tools.vitruv.dsls.reactions.reactionsLanguage.Routine
-import tools.vitruv.dsls.reactions.reactionsLanguage.RoutineOverrideImportPath
 import tools.vitruv.extensions.dslsruntime.reactions.structure.ReactionsImportPath
 
 import static tools.vitruv.dsls.reactions.codegen.helper.ReactionsLanguageConstants.*
@@ -43,7 +41,19 @@ final class ReactionsLanguageUtil {
 	 * @return the formatted reactions segment name
 	 */
 	public static def String getFormattedName(ReactionsSegment reactionsSegment) {
-		return reactionsSegment.name.toFirstUpper;
+		return reactionsSegment.name.formattedReactionsSegmentName;
+	}
+
+	/**
+	 * Formats the given reactions segment name.
+	 * <p>
+	 * This returns the reaction segment name with an upper-case first character.
+	 * 
+	 * @param reactionsSegmentName the reactions segment name
+	 * @return the formatted reactions segment name
+	 */
+	public static def String getFormattedReactionsSegmentName(String reactionsSegmentName) {
+		return reactionsSegmentName.toFirstUpper;
 	}
 
 	// reaction names:
@@ -137,7 +147,7 @@ final class ReactionsLanguageUtil {
 	public static def String getQualifiedName(Routine routine) {
 		var String reactionsSegmentName;
 		if (routine.isOverride) {
-			reactionsSegmentName = routine.overrideImportPath.segments.last;
+			reactionsSegmentName = routine.overriddenReactionsSegmentImportPath.last;
 		} else {
 			reactionsSegmentName = routine.reactionsSegment.name;
 		}
@@ -188,7 +198,7 @@ final class ReactionsLanguageUtil {
 			}
 		}
 		if (routine.isOverride) {
-			fullyQualifiedName += routine.overrideImportPath.toReactionsImportPath.pathString;
+			fullyQualifiedName += routine.overrideImportPath.pathString;
 		} else if (importPath === null) {
 			fullyQualifiedName += reactionsSegmentName;
 		}
@@ -282,7 +292,7 @@ final class ReactionsLanguageUtil {
 	 * @return <code>true</code> if the given routine overrides another routine
 	 */
 	public static def isOverride(Routine routine) {
-		return routine.overrideImportPath !== null && !routine.overrideImportPath.segments.isEmpty;
+		return !routine.overriddenReactionsSegmentImportPath.isEmpty;
 	}
 
 	/**
@@ -308,27 +318,13 @@ final class ReactionsLanguageUtil {
 	}
 
 	/**
-	 * Converts the given {@link RoutineOverrideImportPath} to a corresponding {@link ReactionsImportPath}.
+	 * Gets the {@link ReactionsImportPath} corresponding to the routine's overridden reactions segment import path.
 	 * 
-	 * @param routineOverrideImportPath the routine override import path, can be <code>null</code>
-	 * @return the corresponding reactions import path, can be <code>null</code>
+	 * @param routine the routine
+	 * @return the import path
 	 */
-	public static def ReactionsImportPath toReactionsImportPath(RoutineOverrideImportPath routineOverrideImportPath) {
-		if (routineOverrideImportPath === null || routineOverrideImportPath.segments.isEmpty) return null;
-		return ReactionsImportPath.create(routineOverrideImportPath.segments);
-	}
-
-	/**
-	 * Converts the given {@link ReactionsImportPath} to a corresponding {@link RoutineOverrideImportPath}.
-	 * 
-	 * @param reactionsImportPath the reactions import path, can be <code>null</code>
-	 * @return the corresponding routine override import path, can be <code>null</code>
-	 */
-	public static def RoutineOverrideImportPath toRoutineOverrideImportPath(ReactionsImportPath reactionsImportPath) {
-		if (reactionsImportPath === null) return null;
-		val routineOverrideImportPath = ReactionsLanguageFactory.eINSTANCE.createRoutineOverrideImportPath();
-		routineOverrideImportPath.segments.clear();
-		routineOverrideImportPath.segments.addAll(reactionsImportPath.segments);
-		return routineOverrideImportPath;
+	public static def ReactionsImportPath getOverrideImportPath(Routine routine) {
+		if (!routine.isOverride) return null;
+		return ReactionsImportPath.create(routine.overriddenReactionsSegmentImportPath);
 	}
 }
