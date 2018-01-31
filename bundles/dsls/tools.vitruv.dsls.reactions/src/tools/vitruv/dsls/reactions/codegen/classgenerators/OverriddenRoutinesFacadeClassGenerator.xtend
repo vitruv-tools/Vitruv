@@ -53,7 +53,7 @@ class OverriddenRoutinesFacadeClassGenerator extends RoutineFacadeClassGenerator
 
 			// override routines:
 			reactionsSegment.overrideRoutines.filter[it.isComplete].filter [
-				relativeImportPath.segments.equals(it.overriddenReactionsSegmentImportPath)
+				relativeImportPath.segments.equals(it.overrideImportPath.segments)
 			].forEach [
 				generatedClass.members += it.generateCallMethod(absoluteImportPath);
 			];

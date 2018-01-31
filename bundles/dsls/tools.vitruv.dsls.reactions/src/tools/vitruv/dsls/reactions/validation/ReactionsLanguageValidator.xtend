@@ -22,7 +22,6 @@ import tools.vitruv.dsls.reactions.reactionsLanguage.ElementDeletionAndCreationA
 import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsFile
 import tools.vitruv.dsls.reactions.scoping.ReactionsImportScopeHelper
 import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsImport
-import tools.vitruv.extensions.dslsruntime.reactions.structure.ReactionsImportPath
 import static extension tools.vitruv.dsls.reactions.codegen.helper.ReactionsLanguageHelper.*
 import static extension tools.vitruv.dsls.reactions.codegen.helper.ReactionsImportsHelper.*
 import static extension tools.vitruv.dsls.reactions.util.ReactionsLanguageUtil.*
@@ -240,7 +239,7 @@ class ReactionsLanguageValidator extends AbstractReactionsLanguageValidator {
 
 		// routine overrides must have matching name and parameters:
 		if (routine.isOverride) {
-			val overriddenReactionsSegmentImportPath = ReactionsImportPath.create(routine.overriddenReactionsSegmentImportPath);
+			val overriddenReactionsSegmentImportPath = routine.overrideImportPath.toReactionsImportPath;
 			val overriddenReactionsSegment = routine.reactionsSegment.getReactionsSegment(overriddenReactionsSegmentImportPath);
 			if (overriddenReactionsSegment !== null) {
 				val signature = routine.methodSignature

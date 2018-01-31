@@ -1,14 +1,16 @@
 package tools.vitruv.dsls.reactions.util
 
 import tools.vitruv.dsls.reactions.reactionsLanguage.Reaction
+import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsLanguageFactory
 import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsLanguagePackage
 import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsSegment
 import tools.vitruv.dsls.reactions.reactionsLanguage.Routine
+import tools.vitruv.dsls.reactions.reactionsLanguage.RoutineOverrideImportPath
 import tools.vitruv.extensions.dslsruntime.reactions.structure.ReactionsImportPath
 
 import static tools.vitruv.dsls.reactions.codegen.helper.ReactionsLanguageConstants.*
 
-import static extension tools.vitruv.dsls.reactions.codegen.helper.ReactionsImportsHelper.*;
+import static extension tools.vitruv.dsls.reactions.codegen.helper.ReactionsImportsHelper.*
 
 /**
  * Utility methods working with the model objects of the Reactions Language, which might be of use outside of code generation.
@@ -135,7 +137,7 @@ final class ReactionsLanguageUtil {
 	public static def String getQualifiedName(Routine routine) {
 		var String reactionsSegmentName;
 		if (routine.isOverride) {
-			reactionsSegmentName = routine.overriddenReactionsSegmentImportPath.last;
+			reactionsSegmentName = routine.overrideImportPath.segments.last;
 		} else {
 			reactionsSegmentName = routine.reactionsSegment.name;
 		}
@@ -186,7 +188,7 @@ final class ReactionsLanguageUtil {
 			}
 		}
 		if (routine.isOverride) {
-			fullyQualifiedName += ReactionsImportPath.create(routine.overriddenReactionsSegmentImportPath).pathString;
+			fullyQualifiedName += routine.overrideImportPath.toReactionsImportPath.pathString;
 		} else if (importPath === null) {
 			fullyQualifiedName += reactionsSegmentName;
 		}
@@ -280,7 +282,7 @@ final class ReactionsLanguageUtil {
 	 * @return <code>true</code> if the given routine overrides another routine
 	 */
 	public static def isOverride(Routine routine) {
-		return !routine.overriddenReactionsSegmentImportPath.isEmpty;
+		return routine.overrideImportPath !== null && !routine.overrideImportPath.segments.isEmpty;
 	}
 
 	/**
@@ -303,5 +305,30 @@ final class ReactionsLanguageUtil {
 	 */
 	public static def getOverrideRoutines(ReactionsSegment reactionsSegment) {
 		return reactionsSegment.routines.filter[isOverride];
+	}
+
+	/**
+	 * Converts the given {@link RoutineOverrideImportPath} to a corresponding {@link ReactionsImportPath}.
+	 * 
+	 * @param routineOverrideImportPath the routine override import path, can be <code>null</code>
+	 * @return the corresponding reactions import path, can be <code>null</code>
+	 */
+	public static def ReactionsImportPath toReactionsImportPath(RoutineOverrideImportPath routineOverrideImportPath) {
+		if (routineOverrideImportPath === null || routineOverrideImportPath.segments.isEmpty) return null;
+		return ReactionsImportPath.create(routineOverrideImportPath.segments);
+	}
+
+	/**
+	 * Converts the given {@link ReactionsImportPath} to a corresponding {@link RoutineOverrideImportPath}.
+	 * 
+	 * @param reactionsImportPath the reactions import path, can be <code>null</code>
+	 * @return the corresponding routine override import path, can be <code>null</code>
+	 */
+	public static def RoutineOverrideImportPath toRoutineOverrideImportPath(ReactionsImportPath reactionsImportPath) {
+		if (reactionsImportPath === null) return null;
+		val routineOverrideImportPath = ReactionsLanguageFactory.eINSTANCE.createRoutineOverrideImportPath();
+		routineOverrideImportPath.segments.clear();
+		routineOverrideImportPath.segments.addAll(reactionsImportPath.segments);
+		return routineOverrideImportPath;
 	}
 }
