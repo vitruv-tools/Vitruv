@@ -36,7 +36,7 @@ final class ReactionsLanguageUtil {
 	/**
 	 * Gets the formatted name of the given reactions segment.
 	 * <p>
-	 * This returns the reaction segment's name with an upper-case first character.
+	 * This returns the reaction segment's name with a lower-case first character.
 	 * 
 	 * @param reactionsSegment the reactions segment
 	 * @return the formatted reactions segment name
@@ -48,13 +48,13 @@ final class ReactionsLanguageUtil {
 	/**
 	 * Formats the given reactions segment name.
 	 * <p>
-	 * This returns the reaction segment name with an upper-case first character.
+	 * This returns the reaction segment name with a lower-case first character.
 	 * 
 	 * @param reactionsSegmentName the reactions segment name
 	 * @return the formatted reactions segment name
 	 */
 	public static def String getFormattedReactionsSegmentName(String reactionsSegmentName) {
-		return reactionsSegmentName.toFirstUpper;
+		return reactionsSegmentName.toFirstLower;
 	}
 
 	// reaction names:

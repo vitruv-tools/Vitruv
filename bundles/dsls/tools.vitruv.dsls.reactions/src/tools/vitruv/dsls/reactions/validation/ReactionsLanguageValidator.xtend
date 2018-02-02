@@ -59,8 +59,8 @@ class ReactionsLanguageValidator extends AbstractReactionsLanguageValidator {
 			error("Reactions segment names must not start with an underscore.",
 				ReactionsLanguagePackage.Literals.REACTIONS_SEGMENT__NAME);
 		}
-		if (!Character.isUpperCase(segmentName.charAt(0))) {
-			warning("Reactions segment names should start upper case.",
+		if (!Character.isLowerCase(segmentName.charAt(0))) {
+			warning("Reactions segment names should start lower case.",
 				ReactionsLanguagePackage.Literals.REACTIONS_SEGMENT__NAME);
 		}
 
