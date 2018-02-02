@@ -17,10 +17,14 @@ import tools.vitruv.framework.change.echange.eobject.CreateEObject;
  *  *****************************************************
  */
 @SuppressWarnings("all")
-class RecipientsCreatedReaction extends AbstractReactionRealization {
+public class RecipientsCreatedReaction extends AbstractReactionRealization {
   private CreateEObject<Recipients> createChange;
   
   private int currentlyMatchedChange;
+  
+  public RecipientsCreatedReaction(final RoutinesFacade routinesFacade) {
+    super(routinesFacade);
+  }
   
   public void executeReaction(final EChange change) {
     if (!checkPrecondition(change)) {
@@ -30,9 +34,8 @@ class RecipientsCreatedReaction extends AbstractReactionRealization {
     				
     getLogger().trace("Passed complete precondition check of Reaction " + this.getClass().getName());
     				
-    mir.routines.adXre_R2L.RoutinesFacade routinesFacade = new mir.routines.adXre_R2L.RoutinesFacade(this.executionState, this);
     mir.reactions.reactionsRecipientsToAddresses.adXre_R2L.RecipientsCreatedReaction.ActionUserExecution userExecution = new mir.reactions.reactionsRecipientsToAddresses.adXre_R2L.RecipientsCreatedReaction.ActionUserExecution(this.executionState, this);
-    userExecution.callRoutine1(affectedEObject, routinesFacade);
+    userExecution.callRoutine1(createChange, affectedEObject, this.getRoutinesFacade());
     
     resetChanges();
   }
@@ -73,7 +76,7 @@ class RecipientsCreatedReaction extends AbstractReactionRealization {
       super(reactionExecutionState);
     }
     
-    public void callRoutine1(final Recipients affectedEObject, @Extension final RoutinesFacade _routinesFacade) {
+    public void callRoutine1(final CreateEObject createChange, final Recipients affectedEObject, @Extension final RoutinesFacade _routinesFacade) {
       AdRootXReRootMapping.adRootXReRootMapping().addRecipients(affectedEObject);
     }
   }

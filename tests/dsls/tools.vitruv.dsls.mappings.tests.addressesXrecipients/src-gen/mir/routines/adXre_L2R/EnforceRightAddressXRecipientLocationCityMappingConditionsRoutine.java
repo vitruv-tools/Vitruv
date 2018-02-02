@@ -14,8 +14,6 @@ import tools.vitruv.extensions.dslsruntime.reactions.structure.CallHierarchyHavi
 
 @SuppressWarnings("all")
 public class EnforceRightAddressXRecipientLocationCityMappingConditionsRoutine extends AbstractRepairRoutineRealization {
-  private RoutinesFacade actionsFacade;
-  
   private EnforceRightAddressXRecipientLocationCityMappingConditionsRoutine.ActionUserExecution userExecution;
   
   private static class ActionUserExecution extends AbstractRepairRoutineRealization.UserExecution {
@@ -67,10 +65,9 @@ public class EnforceRightAddressXRecipientLocationCityMappingConditionsRoutine e
     }
   }
   
-  public EnforceRightAddressXRecipientLocationCityMappingConditionsRoutine(final ReactionExecutionState reactionExecutionState, final CallHierarchyHaving calledBy, final Recipients rRoot, final Recipient r, final Location l, final City c) {
-    super(reactionExecutionState, calledBy);
+  public EnforceRightAddressXRecipientLocationCityMappingConditionsRoutine(final RoutinesFacade routinesFacade, final ReactionExecutionState reactionExecutionState, final CallHierarchyHaving calledBy, final Recipients rRoot, final Recipient r, final Location l, final City c) {
+    super(routinesFacade, reactionExecutionState, calledBy);
     this.userExecution = new mir.routines.adXre_L2R.EnforceRightAddressXRecipientLocationCityMappingConditionsRoutine.ActionUserExecution(getExecutionState(), this);
-    this.actionsFacade = new mir.routines.adXre_L2R.RoutinesFacade(getExecutionState(), this);
     this.rRoot = rRoot;this.r = r;this.l = l;this.c = c;
   }
   

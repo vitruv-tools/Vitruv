@@ -18,8 +18,6 @@ import tools.vitruv.extensions.dslsruntime.reactions.structure.CallHierarchyHavi
 
 @SuppressWarnings("all")
 public class CreateAddressXRecipientLocationCityMappingInstanceRoutine extends AbstractRepairRoutineRealization {
-  private RoutinesFacade actionsFacade;
-  
   private CreateAddressXRecipientLocationCityMappingInstanceRoutine.ActionUserExecution userExecution;
   
   private static class ActionUserExecution extends AbstractRepairRoutineRealization.UserExecution {
@@ -84,10 +82,9 @@ public class CreateAddressXRecipientLocationCityMappingInstanceRoutine extends A
     }
   }
   
-  public CreateAddressXRecipientLocationCityMappingInstanceRoutine(final ReactionExecutionState reactionExecutionState, final CallHierarchyHaving calledBy, final Recipients rRoot, final Recipient r, final Location l, final City c) {
-    super(reactionExecutionState, calledBy);
+  public CreateAddressXRecipientLocationCityMappingInstanceRoutine(final RoutinesFacade routinesFacade, final ReactionExecutionState reactionExecutionState, final CallHierarchyHaving calledBy, final Recipients rRoot, final Recipient r, final Location l, final City c) {
+    super(routinesFacade, reactionExecutionState, calledBy);
     this.userExecution = new mir.routines.adXre_R2L.CreateAddressXRecipientLocationCityMappingInstanceRoutine.ActionUserExecution(getExecutionState(), this);
-    this.actionsFacade = new mir.routines.adXre_R2L.RoutinesFacade(getExecutionState(), this);
     this.rRoot = rRoot;this.r = r;this.l = l;this.c = c;
   }
   
@@ -129,9 +126,9 @@ public class CreateAddressXRecipientLocationCityMappingInstanceRoutine extends A
     
     addCorrespondenceBetween(userExecution.getElement5(rRoot, r, l, c, aRoot, a), userExecution.getElement6(rRoot, r, l, c, aRoot, a), userExecution.getTag3(rRoot, r, l, c, aRoot, a));
     
-    userExecution.callRoutine1(rRoot, r, l, c, aRoot, a, actionsFacade);
+    userExecution.callRoutine1(rRoot, r, l, c, aRoot, a, this.getRoutinesFacade());
     
-    userExecution.executeAction1(rRoot, r, l, c, aRoot, a, actionsFacade);
+    userExecution.executeAction1(rRoot, r, l, c, aRoot, a, this.getRoutinesFacade());
     
     postprocessElements();
     

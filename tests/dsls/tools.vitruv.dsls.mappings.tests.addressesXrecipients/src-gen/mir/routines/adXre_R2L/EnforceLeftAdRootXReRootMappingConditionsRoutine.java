@@ -10,8 +10,6 @@ import tools.vitruv.extensions.dslsruntime.reactions.structure.CallHierarchyHavi
 
 @SuppressWarnings("all")
 public class EnforceLeftAdRootXReRootMappingConditionsRoutine extends AbstractRepairRoutineRealization {
-  private RoutinesFacade actionsFacade;
-  
   private EnforceLeftAdRootXReRootMappingConditionsRoutine.ActionUserExecution userExecution;
   
   private static class ActionUserExecution extends AbstractRepairRoutineRealization.UserExecution {
@@ -27,10 +25,9 @@ public class EnforceLeftAdRootXReRootMappingConditionsRoutine extends AbstractRe
     }
   }
   
-  public EnforceLeftAdRootXReRootMappingConditionsRoutine(final ReactionExecutionState reactionExecutionState, final CallHierarchyHaving calledBy, final Addresses aRoot) {
-    super(reactionExecutionState, calledBy);
+  public EnforceLeftAdRootXReRootMappingConditionsRoutine(final RoutinesFacade routinesFacade, final ReactionExecutionState reactionExecutionState, final CallHierarchyHaving calledBy, final Addresses aRoot) {
+    super(routinesFacade, reactionExecutionState, calledBy);
     this.userExecution = new mir.routines.adXre_R2L.EnforceLeftAdRootXReRootMappingConditionsRoutine.ActionUserExecution(getExecutionState(), this);
-    this.actionsFacade = new mir.routines.adXre_R2L.RoutinesFacade(getExecutionState(), this);
     this.aRoot = aRoot;
   }
   

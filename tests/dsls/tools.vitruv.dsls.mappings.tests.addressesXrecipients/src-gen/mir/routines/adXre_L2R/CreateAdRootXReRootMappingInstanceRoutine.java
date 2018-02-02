@@ -15,8 +15,6 @@ import tools.vitruv.extensions.dslsruntime.reactions.structure.CallHierarchyHavi
 
 @SuppressWarnings("all")
 public class CreateAdRootXReRootMappingInstanceRoutine extends AbstractRepairRoutineRealization {
-  private RoutinesFacade actionsFacade;
-  
   private CreateAdRootXReRootMappingInstanceRoutine.ActionUserExecution userExecution;
   
   private static class ActionUserExecution extends AbstractRepairRoutineRealization.UserExecution {
@@ -53,10 +51,9 @@ public class CreateAdRootXReRootMappingInstanceRoutine extends AbstractRepairRou
     }
   }
   
-  public CreateAdRootXReRootMappingInstanceRoutine(final ReactionExecutionState reactionExecutionState, final CallHierarchyHaving calledBy, final Addresses aRoot) {
-    super(reactionExecutionState, calledBy);
+  public CreateAdRootXReRootMappingInstanceRoutine(final RoutinesFacade routinesFacade, final ReactionExecutionState reactionExecutionState, final CallHierarchyHaving calledBy, final Addresses aRoot) {
+    super(routinesFacade, reactionExecutionState, calledBy);
     this.userExecution = new mir.routines.adXre_L2R.CreateAdRootXReRootMappingInstanceRoutine.ActionUserExecution(getExecutionState(), this);
-    this.actionsFacade = new mir.routines.adXre_L2R.RoutinesFacade(getExecutionState(), this);
     this.aRoot = aRoot;
   }
   
@@ -74,9 +71,9 @@ public class CreateAdRootXReRootMappingInstanceRoutine extends AbstractRepairRou
     
     addCorrespondenceBetween(userExecution.getElement1(aRoot, rRoot), userExecution.getElement2(aRoot, rRoot), userExecution.getTag1(aRoot, rRoot));
     
-    userExecution.callRoutine1(aRoot, rRoot, actionsFacade);
+    userExecution.callRoutine1(aRoot, rRoot, this.getRoutinesFacade());
     
-    userExecution.executeAction1(aRoot, rRoot, actionsFacade);
+    userExecution.executeAction1(aRoot, rRoot, this.getRoutinesFacade());
     
     postprocessElements();
     

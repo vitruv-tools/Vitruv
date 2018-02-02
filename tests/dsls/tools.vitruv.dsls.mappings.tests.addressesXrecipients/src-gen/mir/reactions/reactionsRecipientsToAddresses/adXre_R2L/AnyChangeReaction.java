@@ -14,10 +14,14 @@ import tools.vitruv.framework.change.echange.EChange;
  * ******************************************************
  */
 @SuppressWarnings("all")
-class AnyChangeReaction extends AbstractReactionRealization {
+public class AnyChangeReaction extends AbstractReactionRealization {
   private EChange change;
   
   private int currentlyMatchedChange;
+  
+  public AnyChangeReaction(final RoutinesFacade routinesFacade) {
+    super(routinesFacade);
+  }
   
   public void executeReaction(final EChange change) {
     if (!checkPrecondition(change)) {
@@ -26,9 +30,8 @@ class AnyChangeReaction extends AbstractReactionRealization {
     				
     getLogger().trace("Passed complete precondition check of Reaction " + this.getClass().getName());
     				
-    mir.routines.adXre_R2L.RoutinesFacade routinesFacade = new mir.routines.adXre_R2L.RoutinesFacade(this.executionState, this);
     mir.reactions.reactionsRecipientsToAddresses.adXre_R2L.AnyChangeReaction.ActionUserExecution userExecution = new mir.reactions.reactionsRecipientsToAddresses.adXre_R2L.AnyChangeReaction.ActionUserExecution(this.executionState, this);
-    userExecution.callRoutine1(change, routinesFacade);
+    userExecution.callRoutine1(change, this.getRoutinesFacade());
     
     resetChanges();
   }

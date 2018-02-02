@@ -14,8 +14,6 @@ import tools.vitruv.extensions.dslsruntime.reactions.structure.CallHierarchyHavi
  */
 @SuppressWarnings("all")
 public class CreateAdRootXReRootMappingInstancesRoutine extends AbstractRepairRoutineRealization {
-  private RoutinesFacade actionsFacade;
-  
   private CreateAdRootXReRootMappingInstancesRoutine.ActionUserExecution userExecution;
   
   private static class ActionUserExecution extends AbstractRepairRoutineRealization.UserExecution {
@@ -31,16 +29,15 @@ public class CreateAdRootXReRootMappingInstancesRoutine extends AbstractRepairRo
     }
   }
   
-  public CreateAdRootXReRootMappingInstancesRoutine(final ReactionExecutionState reactionExecutionState, final CallHierarchyHaving calledBy) {
-    super(reactionExecutionState, calledBy);
+  public CreateAdRootXReRootMappingInstancesRoutine(final RoutinesFacade routinesFacade, final ReactionExecutionState reactionExecutionState, final CallHierarchyHaving calledBy) {
+    super(routinesFacade, reactionExecutionState, calledBy);
     this.userExecution = new mir.routines.adXre_L2R.CreateAdRootXReRootMappingInstancesRoutine.ActionUserExecution(getExecutionState(), this);
-    this.actionsFacade = new mir.routines.adXre_L2R.RoutinesFacade(getExecutionState(), this);
   }
   
   protected boolean executeRoutine() throws IOException {
     getLogger().debug("Called routine CreateAdRootXReRootMappingInstancesRoutine with input:");
     
-    userExecution.callRoutine1(actionsFacade);
+    userExecution.callRoutine1(this.getRoutinesFacade());
     
     postprocessElements();
     

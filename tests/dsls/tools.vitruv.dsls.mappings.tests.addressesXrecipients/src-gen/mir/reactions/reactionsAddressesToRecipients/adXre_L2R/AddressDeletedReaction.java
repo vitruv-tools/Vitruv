@@ -12,10 +12,14 @@ import tools.vitruv.framework.change.echange.EChange;
 import tools.vitruv.framework.change.echange.eobject.DeleteEObject;
 
 @SuppressWarnings("all")
-class AddressDeletedReaction extends AbstractReactionRealization {
+public class AddressDeletedReaction extends AbstractReactionRealization {
   private DeleteEObject<Address> deleteChange;
   
   private int currentlyMatchedChange;
+  
+  public AddressDeletedReaction(final RoutinesFacade routinesFacade) {
+    super(routinesFacade);
+  }
   
   public void executeReaction(final EChange change) {
     if (!checkPrecondition(change)) {
@@ -25,9 +29,8 @@ class AddressDeletedReaction extends AbstractReactionRealization {
     				
     getLogger().trace("Passed complete precondition check of Reaction " + this.getClass().getName());
     				
-    mir.routines.adXre_L2R.RoutinesFacade routinesFacade = new mir.routines.adXre_L2R.RoutinesFacade(this.executionState, this);
     mir.reactions.reactionsAddressesToRecipients.adXre_L2R.AddressDeletedReaction.ActionUserExecution userExecution = new mir.reactions.reactionsAddressesToRecipients.adXre_L2R.AddressDeletedReaction.ActionUserExecution(this.executionState, this);
-    userExecution.callRoutine1(affectedEObject, routinesFacade);
+    userExecution.callRoutine1(deleteChange, affectedEObject, this.getRoutinesFacade());
     
     resetChanges();
   }
@@ -68,7 +71,7 @@ class AddressDeletedReaction extends AbstractReactionRealization {
       super(reactionExecutionState);
     }
     
-    public void callRoutine1(final Address affectedEObject, @Extension final RoutinesFacade _routinesFacade) {
+    public void callRoutine1(final DeleteEObject deleteChange, final Address affectedEObject, @Extension final RoutinesFacade _routinesFacade) {
       AddressXRecipientLocationCityMapping.addressXRecipientLocationCityMapping().removeAddress(affectedEObject);
     }
   }

@@ -14,8 +14,6 @@ import tools.vitruv.extensions.dslsruntime.reactions.structure.CallHierarchyHavi
 
 @SuppressWarnings("all")
 public class DeleteAdRootXReRootMappingInstanceRoutine extends AbstractRepairRoutineRealization {
-  private RoutinesFacade actionsFacade;
-  
   private DeleteAdRootXReRootMappingInstanceRoutine.ActionUserExecution userExecution;
   
   private static class ActionUserExecution extends AbstractRepairRoutineRealization.UserExecution {
@@ -57,10 +55,9 @@ public class DeleteAdRootXReRootMappingInstanceRoutine extends AbstractRepairRou
     }
   }
   
-  public DeleteAdRootXReRootMappingInstanceRoutine(final ReactionExecutionState reactionExecutionState, final CallHierarchyHaving calledBy, final Addresses aRoot) {
-    super(reactionExecutionState, calledBy);
+  public DeleteAdRootXReRootMappingInstanceRoutine(final RoutinesFacade routinesFacade, final ReactionExecutionState reactionExecutionState, final CallHierarchyHaving calledBy, final Addresses aRoot) {
+    super(routinesFacade, reactionExecutionState, calledBy);
     this.userExecution = new mir.routines.adXre_L2R.DeleteAdRootXReRootMappingInstanceRoutine.ActionUserExecution(getExecutionState(), this);
-    this.actionsFacade = new mir.routines.adXre_L2R.RoutinesFacade(getExecutionState(), this);
     this.aRoot = aRoot;
   }
   
@@ -88,7 +85,7 @@ public class DeleteAdRootXReRootMappingInstanceRoutine extends AbstractRepairRou
     
     deleteObject(userExecution.getElement3(aRoot, rRoot));
     
-    userExecution.executeAction1(aRoot, rRoot, actionsFacade);
+    userExecution.executeAction1(aRoot, rRoot, this.getRoutinesFacade());
     
     postprocessElements();
     

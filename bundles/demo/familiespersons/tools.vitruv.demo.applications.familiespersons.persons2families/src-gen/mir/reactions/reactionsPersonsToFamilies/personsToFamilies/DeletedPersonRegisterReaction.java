@@ -11,10 +11,14 @@ import tools.vitruv.framework.change.echange.EChange;
 import tools.vitruv.framework.change.echange.eobject.DeleteEObject;
 
 @SuppressWarnings("all")
-class DeletedPersonRegisterReaction extends AbstractReactionRealization {
+public class DeletedPersonRegisterReaction extends AbstractReactionRealization {
   private DeleteEObject<PersonRegister> deleteChange;
   
   private int currentlyMatchedChange;
+  
+  public DeletedPersonRegisterReaction(final RoutinesFacade routinesFacade) {
+    super(routinesFacade);
+  }
   
   public void executeReaction(final EChange change) {
     if (!checkPrecondition(change)) {
@@ -24,9 +28,8 @@ class DeletedPersonRegisterReaction extends AbstractReactionRealization {
     				
     getLogger().trace("Passed complete precondition check of Reaction " + this.getClass().getName());
     				
-    mir.routines.personsToFamilies.RoutinesFacade routinesFacade = new mir.routines.personsToFamilies.RoutinesFacade(this.executionState, this);
     mir.reactions.reactionsPersonsToFamilies.personsToFamilies.DeletedPersonRegisterReaction.ActionUserExecution userExecution = new mir.reactions.reactionsPersonsToFamilies.personsToFamilies.DeletedPersonRegisterReaction.ActionUserExecution(this.executionState, this);
-    userExecution.callRoutine1(deleteChange, affectedEObject, routinesFacade);
+    userExecution.callRoutine1(deleteChange, affectedEObject, this.getRoutinesFacade());
     
     resetChanges();
   }

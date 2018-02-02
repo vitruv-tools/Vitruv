@@ -9,8 +9,6 @@ import tools.vitruv.extensions.dslsruntime.reactions.structure.CallHierarchyHavi
 
 @SuppressWarnings("all")
 public class EnsureAllMappingsRoutine extends AbstractRepairRoutineRealization {
-  private RoutinesFacade actionsFacade;
-  
   private EnsureAllMappingsRoutine.ActionUserExecution userExecution;
   
   private static class ActionUserExecution extends AbstractRepairRoutineRealization.UserExecution {
@@ -24,16 +22,15 @@ public class EnsureAllMappingsRoutine extends AbstractRepairRoutineRealization {
     }
   }
   
-  public EnsureAllMappingsRoutine(final ReactionExecutionState reactionExecutionState, final CallHierarchyHaving calledBy) {
-    super(reactionExecutionState, calledBy);
+  public EnsureAllMappingsRoutine(final RoutinesFacade routinesFacade, final ReactionExecutionState reactionExecutionState, final CallHierarchyHaving calledBy) {
+    super(routinesFacade, reactionExecutionState, calledBy);
     this.userExecution = new mir.routines.adXre_L2R.EnsureAllMappingsRoutine.ActionUserExecution(getExecutionState(), this);
-    this.actionsFacade = new mir.routines.adXre_L2R.RoutinesFacade(getExecutionState(), this);
   }
   
   protected boolean executeRoutine() throws IOException {
     getLogger().debug("Called routine EnsureAllMappingsRoutine with input:");
     
-    userExecution.callRoutine1(actionsFacade);
+    userExecution.callRoutine1(this.getRoutinesFacade());
     
     postprocessElements();
     

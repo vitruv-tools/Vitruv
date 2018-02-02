@@ -11,8 +11,6 @@ import tools.vitruv.extensions.dslsruntime.reactions.structure.CallHierarchyHavi
 
 @SuppressWarnings("all")
 public class ChangeFullNameFromLastRoutine extends AbstractRepairRoutineRealization {
-  private RoutinesFacade actionsFacade;
-  
   private ChangeFullNameFromLastRoutine.ActionUserExecution userExecution;
   
   private static class ActionUserExecution extends AbstractRepairRoutineRealization.UserExecution {
@@ -37,10 +35,9 @@ public class ChangeFullNameFromLastRoutine extends AbstractRepairRoutineRealizat
     }
   }
   
-  public ChangeFullNameFromLastRoutine(final ReactionExecutionState reactionExecutionState, final CallHierarchyHaving calledBy, final Family family) {
-    super(reactionExecutionState, calledBy);
+  public ChangeFullNameFromLastRoutine(final RoutinesFacade routinesFacade, final ReactionExecutionState reactionExecutionState, final CallHierarchyHaving calledBy, final Family family) {
+    super(routinesFacade, reactionExecutionState, calledBy);
     this.userExecution = new mir.routines.familiesToPersons.ChangeFullNameFromLastRoutine.ActionUserExecution(getExecutionState(), this);
-    this.actionsFacade = new mir.routines.familiesToPersons.RoutinesFacade(getExecutionState(), this);
     this.family = family;
   }
   
