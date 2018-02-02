@@ -25,11 +25,13 @@ import tools.vitruv.dsls.reactions.reactionsLanguage.ModelElementChange
 import tools.vitruv.dsls.reactions.reactionsLanguage.Reaction
 import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsFile
 import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsSegment
+import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsImport
 import tools.vitruv.dsls.reactions.reactionsLanguage.RemoveCorrespondence
 import tools.vitruv.dsls.reactions.reactionsLanguage.RetrieveModelElement
 import tools.vitruv.dsls.reactions.reactionsLanguage.Routine
 import tools.vitruv.dsls.reactions.reactionsLanguage.RoutineCallStatement
 import tools.vitruv.dsls.reactions.reactionsLanguage.RoutineInput
+import tools.vitruv.dsls.reactions.reactionsLanguage.RoutineOverrideImportPath
 import tools.vitruv.dsls.reactions.reactionsLanguage.Taggable
 import tools.vitruv.dsls.reactions.reactionsLanguage.Trigger
 import tools.vitruv.dsls.reactions.reactionsLanguage.UpdateModelElement
@@ -58,8 +60,16 @@ class ReactionsLanguageFormatter extends MirBaseFormatter {
 	def formatReactionsSegment(ReactionsSegment segment, extension IFormattableDocument document) {
 		segment.regionFor.keyword('in reaction to changes in').prepend[newLine]
 		segment.regionFor.keyword('execute').prepend[newLine]
+		segment.reactionsImports.head?.prepend[highPriority; newLines = 2]
+		segment.reactionsImports.forEach[formatReactionsImport(document)]
+		segment.reactionsImports.last?.append[newLines = 2]
 		segment.reactions.forEach[formatReaction(document)]
 		segment.routines.forEach[formatRoutine(document)]
+	}
+
+	def formatReactionsImport(ReactionsImport reactionsImport, extension IFormattableDocument document) {
+		reactionsImport.prepend[newLine]
+		reactionsImport.regionFor.keyword('import').append[oneSpace]
 	}
 
 	def formatReaction(Reaction reaction, extension IFormattableDocument document) {
@@ -67,6 +77,8 @@ class ReactionsLanguageFormatter extends MirBaseFormatter {
 		if (reaction.documentation !== null) {
 			reaction.regionFor.keyword('reaction').prepend[newLine]
 		}
+		reaction.regionFor.keyword('reaction').append[oneSpace]
+		reaction.regionFor.keyword('::').prepend[noSpace].append[noSpace]
 		reaction.formatInteriorBlock(document)
 		reaction.trigger.formatTrigger(document)
 		reaction.callRoutine.prepend[newLine]
@@ -101,10 +113,17 @@ class ReactionsLanguageFormatter extends MirBaseFormatter {
 		if (routine.documentation !== null) {
 			routine.regionFor.keyword('routine').prepend[newLine]
 		}
+		routine.regionFor.keyword('routine').append[oneSpace]
+		routine.overrideImportPath?.formatRoutineOverrideImportPath(document)
+		routine.regionFor.keyword('::').prepend[noSpace].append[noSpace]
 		routine.input.formatRoutineInput(document)
 		routine.formatInteriorBlock(document)
 		routine.matcher?.formatMatcher(document)
 		routine.action.formatAction(document)
+	}
+
+	def formatRoutineOverrideImportPath(RoutineOverrideImportPath routineOverrideImportPath, extension IFormattableDocument document) {
+		routineOverrideImportPath.allRegionsFor.keyword('.').prepend[noSpace].append[noSpace]
 	}
 
 	def formatRoutineInput(RoutineInput routineInput, extension IFormattableDocument document) {
