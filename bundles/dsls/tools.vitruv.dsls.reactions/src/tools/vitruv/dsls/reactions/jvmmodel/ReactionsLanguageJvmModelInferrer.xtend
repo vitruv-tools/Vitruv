@@ -52,7 +52,7 @@ class ReactionsLanguageJvmModelInferrer extends AbstractModelInferrer  {
 		
 		for (reactionsSegment : file.reactionsSegments.filter[it.isComplete]) {
 			acceptor.accept(new RoutineFacadeClassGenerator(reactionsSegment, typesBuilderExtensionProvider), reactionsSegment);
-			for (overriddenRoutinesImportPath : reactionsSegment.overriddenRoutinesImportPaths) {
+			for (overriddenRoutinesImportPath : reactionsSegment.parsedOverriddenRoutinesImportPaths) {
 				acceptor.accept(new OverriddenRoutinesFacadeClassGenerator(reactionsSegment, overriddenRoutinesImportPath, typesBuilderExtensionProvider), reactionsSegment);
 			}
 			acceptor.accept(new RoutinesFacadesProviderClassGenerator(reactionsSegment, typesBuilderExtensionProvider), reactionsSegment);

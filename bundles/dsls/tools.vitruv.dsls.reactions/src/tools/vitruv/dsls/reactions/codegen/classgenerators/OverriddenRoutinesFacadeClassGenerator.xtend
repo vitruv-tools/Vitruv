@@ -42,8 +42,6 @@ class OverriddenRoutinesFacadeClassGenerator extends RoutineFacadeClassGenerator
 		val routinesOverrideRoot = reactionsSegment.getRoutinesOverrideRoot(relativeImportPath, false);
 		if (overriddenReactionsSegment === null || routinesOverrideRoot === null) {
 			// invalid import path, skipping class-body generation:
-			// TODO debug
-			System.out.println("DEBUG: rel.path: " + relativeImportPath + " , overridden: " + overriddenReactionsSegment + " , overrideRoot: " + routinesOverrideRoot);
 			return generatedClass;
 		}
 
@@ -60,7 +58,7 @@ class OverriddenRoutinesFacadeClassGenerator extends RoutineFacadeClassGenerator
 
 			// override routines:
 			reactionsSegment.overrideRoutines.filter[it.isComplete].filter [
-				it.overriddenReactionsSegmentImportPath.equals(relativeImportPath.segments)
+				it.overrideImportPath.toReactionsImportPath.equals(relativeImportPath)
 			].forEach [
 				generatedClass.members += it.generateCallMethod(absoluteImportPath);
 			];

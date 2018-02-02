@@ -19,6 +19,8 @@ import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EClassifier
 import tools.vitruv.dsls.reactions.reactionsLanguage.Reaction
 import tools.vitruv.dsls.reactions.reactionsLanguage.Routine
+import tools.vitruv.dsls.reactions.reactionsLanguage.RoutineOverrideImportPath
+import static extension tools.vitruv.dsls.reactions.util.ReactionsLanguageUtil.*;
 
 final class ReactionsLanguageHelper {
 	private new() {
@@ -126,6 +128,15 @@ final class ReactionsLanguageHelper {
 		if (routine.input.modelInputElements.findFirst[it.name === null || it.metaclass === null || it.metaclass.javaClassName === null] !== null) {
 			return false;
 		}
+		return true;
+	}
+	
+	// note: this triggers a resolve of cross-references
+	def static isComplete(RoutineOverrideImportPath routineOverrideImportPath) {
+		if (routineOverrideImportPath === null) return false;
+		if (routineOverrideImportPath.fullPath.findFirst[it.reactionsSegment === null || it.reactionsSegment.name === null] !== null) {
+			return false;
+		} 
 		return true;
 	}
 }

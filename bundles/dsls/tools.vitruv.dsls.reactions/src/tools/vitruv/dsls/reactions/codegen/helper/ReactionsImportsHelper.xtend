@@ -15,10 +15,11 @@ import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsImport
 import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsLanguagePackage
 import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsSegment
 import tools.vitruv.dsls.reactions.reactionsLanguage.Routine
+import tools.vitruv.dsls.reactions.reactionsLanguage.RoutineOverrideImportPath
 import tools.vitruv.extensions.dslsruntime.reactions.structure.ReactionsImportPath
 
-import static extension tools.vitruv.dsls.reactions.util.ReactionsLanguageUtil.*
 import static extension tools.vitruv.dsls.reactions.codegen.helper.ReactionsLanguageHelper.*
+import static extension tools.vitruv.dsls.reactions.util.ReactionsLanguageUtil.*
 
 /**
  * Contains utilities related to reactions imports, import hierarchies, and reaction and routine overrides.
@@ -29,17 +30,38 @@ class ReactionsImportsHelper {
 	}
 
 	/**
-	 * Gets the parsed imported reactions segment name for the given reactions import, without actually resolving the cross-reference.
+	 * Gets the parsed imported reactions segment name for the given reactions import, without actually resolving the
+	 * cross-reference.
 	 */
 	public static def String getParsedImportedReactionsSegmentName(ReactionsImport reactionsImport) {
 		return reactionsImport.getFeatureNodeText(ReactionsLanguagePackage.Literals.REACTIONS_IMPORT__IMPORTED_REACTIONS_SEGMENT);
 	}
 
 	/**
-	 * Gets the parsed overridden reactions segment name for the given reaction, without actually resolving the cross-reference. 
+	 * Gets the parsed overridden reactions segment name for the given reaction, without actually resolving the cross-reference.
 	 */
 	public static def String getParsedOverriddenReactionsSegmentName(Reaction reaction) {
 		return reaction.getFeatureNodeText(ReactionsLanguagePackage.Literals.REACTION__OVERRIDDEN_REACTIONS_SEGMENT);
+	}
+
+	/**
+	 * Gets the parsed override import path for the given routine, without actually resolving the cross-references.
+	 */
+	public static def ReactionsImportPath getParsedOverrideImportPath(Routine routine) {
+		return routine.overrideImportPath.parsedOverrideImportPath;
+	}
+
+	/**
+	 * Gets the parsed override import path for the given {@link RoutineOverrideImportPath}, without actually resolving the
+	 * cross-references.
+	 */
+	public static def ReactionsImportPath getParsedOverrideImportPath(RoutineOverrideImportPath routineOverrideImportPath) {
+		if (routineOverrideImportPath === null) return null;
+		// getting the parsed text of each individual segment (instead of the whole import path) to skip hidden tokens in between:
+		val parsedSegments = routineOverrideImportPath.fullPath.map [
+			it.getFeatureNodeText(ReactionsLanguagePackage.Literals.ROUTINE_OVERRIDE_IMPORT_PATH__REACTIONS_SEGMENT) ?: "";
+		];
+		return ReactionsImportPath.create(parsedSegments);
 	}
 
 	private static def String getFeatureNodeText(EObject semanticObject, EStructuralFeature structuralFeature) {
@@ -49,12 +71,12 @@ class ReactionsImportsHelper {
 	}
 
 	/**
-	 * Gets the relative import paths for all routine overrides contained in the given reactions segment.
+	 * Gets the parsed import paths for all complete routine overrides contained in the given reactions segment.
 	 * <p>
 	 * The returned import paths are unique, and relative to the given reactions segment.
 	 */
-	public static def Set<ReactionsImportPath> getOverriddenRoutinesImportPaths(ReactionsSegment reactionsSegment) {
-		return reactionsSegment.overrideRoutines.map[it.overrideImportPath].toSet;
+	public static def Set<ReactionsImportPath> getParsedOverriddenRoutinesImportPaths(ReactionsSegment reactionsSegment) {
+		return reactionsSegment.overrideRoutines.filter[it.isComplete].map[it.parsedOverrideImportPath].toSet;
 	}
 
 	/**
@@ -506,8 +528,8 @@ class ReactionsImportsHelper {
 					// check the routine overrides of the current segment, if it is not the root or we are checking the root as well:
 					if (checkRootReactionsSegment || currentImportPath.length > 1) {
 						// check if the current reactions segment contains a routine override for the remaining import path:
-						val overriddenRoutinesImportPaths = currentReactionsSegment.overrideRoutines.map[it.overriddenReactionsSegmentImportPath];
-						if (overriddenRoutinesImportPaths.findFirst[it.equals(remainingPath.segments)] !== null) {
+						val overriddenRoutinesImportPaths = currentReactionsSegment.overrideRoutines.map[it.overrideImportPath.toReactionsImportPath];
+						if (overriddenRoutinesImportPaths.findFirst[it.equals(remainingPath)] !== null) {
 							return currentReactionsSegment;
 						}
 					}

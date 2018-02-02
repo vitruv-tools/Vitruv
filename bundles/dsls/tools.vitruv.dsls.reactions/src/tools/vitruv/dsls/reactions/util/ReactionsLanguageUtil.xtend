@@ -1,14 +1,15 @@
 package tools.vitruv.dsls.reactions.util
 
+import java.util.ArrayList
+import java.util.List
 import tools.vitruv.dsls.reactions.reactionsLanguage.Reaction
 import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsLanguagePackage
 import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsSegment
 import tools.vitruv.dsls.reactions.reactionsLanguage.Routine
+import tools.vitruv.dsls.reactions.reactionsLanguage.RoutineOverrideImportPath
 import tools.vitruv.extensions.dslsruntime.reactions.structure.ReactionsImportPath
 
 import static tools.vitruv.dsls.reactions.codegen.helper.ReactionsLanguageConstants.*
-
-import static extension tools.vitruv.dsls.reactions.codegen.helper.ReactionsImportsHelper.*
 
 /**
  * Utility methods working with the model objects of the Reactions Language, which might be of use outside of code generation.
@@ -86,13 +87,7 @@ final class ReactionsLanguageUtil {
 	public static def String getQualifiedName(Reaction reaction) {
 		var String reactionsSegmentName;
 		if (reaction.isOverride) {
-			// not resolving cross-references here, if not required:
-			reactionsSegmentName = reaction.parsedOverriddenReactionsSegmentName;
-			if (reactionsSegmentName === null) {
-				// getting the name from the overridden reactions segment directly,
-				// this might trigger a resolve of the cross-reference though:
-				reactionsSegmentName = reaction.overriddenReactionsSegment.name;
-			}
+			reactionsSegmentName = reaction.overriddenReactionsSegment?.name;
 		} else {
 			reactionsSegmentName = reaction.reactionsSegment.name;
 		}
@@ -147,7 +142,7 @@ final class ReactionsLanguageUtil {
 	public static def String getQualifiedName(Routine routine) {
 		var String reactionsSegmentName;
 		if (routine.isOverride) {
-			reactionsSegmentName = routine.overriddenReactionsSegmentImportPath.last;
+			reactionsSegmentName = routine.overrideImportPath.reactionsSegment?.name;
 		} else {
 			reactionsSegmentName = routine.reactionsSegment.name;
 		}
@@ -198,7 +193,7 @@ final class ReactionsLanguageUtil {
 			}
 		}
 		if (routine.isOverride) {
-			fullyQualifiedName += routine.overrideImportPath.pathString;
+			fullyQualifiedName += routine.overrideImportPath.toReactionsImportPath.pathString;
 		} else if (importPath === null) {
 			fullyQualifiedName += reactionsSegmentName;
 		}
@@ -246,7 +241,7 @@ final class ReactionsLanguageUtil {
 	 */
 	public static def isOverride(Reaction reaction) {
 		// check if overridden reactions segment is set, without resolving the cross-reference:
-		return reaction.eIsSet(reaction.eClass.getEStructuralFeature(ReactionsLanguagePackage.REACTION__OVERRIDDEN_REACTIONS_SEGMENT));
+		return reaction.eIsSet(ReactionsLanguagePackage.Literals.REACTION__OVERRIDDEN_REACTIONS_SEGMENT);
 	}
 
 	/**
@@ -292,7 +287,7 @@ final class ReactionsLanguageUtil {
 	 * @return <code>true</code> if the given routine overrides another routine
 	 */
 	public static def isOverride(Routine routine) {
-		return !routine.overriddenReactionsSegmentImportPath.isEmpty;
+		return (routine.overrideImportPath !== null);
 	}
 
 	/**
@@ -318,13 +313,44 @@ final class ReactionsLanguageUtil {
 	}
 
 	/**
-	 * Gets the {@link ReactionsImportPath} corresponding to the routine's overridden reactions segment import path.
+	 * Converts the given {@link RoutineOverrideImportPath} to a corresponding {@link ReactionsImportPath}.
+	 * <p>
+	 * Any unresolved segments inside the {@link RoutineOverrideImportPath} will get represented by the String
+	 * {@literal "<unresolved>"} inside the {@link ReactionsImportPath}.
 	 * 
-	 * @param routine the routine
-	 * @return the import path
+	 * @param routineOverrideImportPath the routine override import path, can be <code>null</code>
+	 * @return the corresponding reactions import path, or <code>null</code> if the given routine override import path was <code>null</code>
 	 */
-	public static def ReactionsImportPath getOverrideImportPath(Routine routine) {
-		if (!routine.isOverride) return null;
-		return ReactionsImportPath.create(routine.overriddenReactionsSegmentImportPath);
+	public static def ReactionsImportPath toReactionsImportPath(RoutineOverrideImportPath routineOverrideImportPath) {
+		if (routineOverrideImportPath === null) return null;
+		val fullPathSegments = routineOverrideImportPath.fullPath.map [
+			val segment = it.reactionsSegment;
+			// handle segments that are incomplete or cannot be resolved:
+			if (segment === null || segment.name === null) {
+				return "<unresolved>";
+			} else {
+				return segment.name;
+			}
+		];
+		return ReactionsImportPath.create(fullPathSegments);
+	}
+
+	/**
+	 * Gets the entries of the full routine override import path by traversing the parents of the given routine override import path.
+	 * <p>
+	 * The returned full path contains the given routine override import path as last entry.
+	 * 
+	 * @param routineOverrideImportPath the routine override import path, can be <code>null</code>
+	 * @return the segments of the full routine override import path, or <code>null</code> if the given routine override import path was <code>null</code>
+	 */
+	public static def List<RoutineOverrideImportPath> getFullPath(RoutineOverrideImportPath routineOverrideImportPath) {
+		if (routineOverrideImportPath === null) return null;
+		val pathSegments = new ArrayList<RoutineOverrideImportPath>();
+		var currentPath = routineOverrideImportPath;
+		while (currentPath !== null) {
+			pathSegments.add(currentPath);
+			currentPath = currentPath.parent;
+		}
+		return pathSegments.reverse;
 	}
 }
