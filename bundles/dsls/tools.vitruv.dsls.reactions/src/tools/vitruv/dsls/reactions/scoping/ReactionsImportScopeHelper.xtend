@@ -25,9 +25,13 @@ class ReactionsImportScopeHelper {
 		val resourceDesc = descriptionManager.getResourceDescription(resource);
 		val resourceDescriptions = descriptionsProvider.getResourceDescriptions(resource.resourceSet);
 		val visibleContainers = containerManager.getVisibleContainers(resourceDesc, resourceDescriptions);
-		val visibleResourceDescriptions = visibleContainers.map[it.resourceDescriptions].flatten;
+		val visibleReactionsResources = visibleContainers.map[it.resourceDescriptions].flatten.filter [
+			// we are only interested in .reactions resources here:
+			val lastURISegment = it.URI.lastSegment;
+			return lastURISegment !== null && lastURISegment.endsWith(".reactions");
+		];
 		val reactionsSegmentURI = EcoreUtil.getURI(reactionsSegment);
-		val visibleReactionsSegmentDescriptions = visibleResourceDescriptions.map [
+		val visibleReactionsSegmentDescriptions = visibleReactionsResources.map [
 			getExportedObjectsByType(ReactionsLanguagePackage.eINSTANCE.reactionsSegment)
 		].flatten.filter [
 			// the validator also uses this to globally find reactions segments with duplicate names,
