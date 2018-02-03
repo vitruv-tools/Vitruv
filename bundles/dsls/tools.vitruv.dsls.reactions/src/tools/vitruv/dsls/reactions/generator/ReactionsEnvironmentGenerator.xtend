@@ -42,7 +42,7 @@ class ReactionsEnvironmentGenerator {
 	}
 
 	def private generateEnvironment(Iterable<ReactionsFile> resources, IFileSystemAccess2 fsa) {
-		resources.flatMap[reactionsSegments].groupBy[sourceTargetPair].entrySet.forEach [
+		resources.flatMap[reactionsSegments].filter[isComplete].groupBy[sourceTargetPair].entrySet.forEach [
 			ensureChangePropagationSpecification(key, value, fsa)
 		]
 	}

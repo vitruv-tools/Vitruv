@@ -106,6 +106,8 @@ final class ReactionsLanguageHelper {
 	def static isComplete(ReactionsSegment reactionsSegment) {
 		if (reactionsSegment === null) return false;
 		if (reactionsSegment.name === null) return false;
+		if (reactionsSegment.fromDomain === null) return false;
+		if (reactionsSegment.toDomain === null) return false;
 		return true;
 	}
 	
