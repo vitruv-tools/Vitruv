@@ -4,6 +4,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
+import java.util.HashSet;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -17,6 +19,7 @@ import tools.vitruv.framework.change.description.TransactionalChange;
 import tools.vitruv.framework.change.description.VitruviusChangeFactory;
 import tools.vitruv.framework.change.recording.AtomicEmfChangeRecorder;
 import tools.vitruv.framework.util.bridges.EcoreResourceBridge;
+import tools.vitruv.framework.vsum.ChangeListener;
 
 /**
  * Basic test class for all Vitruvius application tests that require a test
@@ -35,6 +38,80 @@ import tools.vitruv.framework.util.bridges.EcoreResourceBridge;
 
 public abstract class VitruviusApplicationTest extends VitruviusUnmonitoredApplicationTest {
 
+	//############################ ChangeVisualization
+	/**
+	 * A list of ChangeListeners that are informed of all changes made
+	 */
+	private static Set<ChangeListener> changeListeners=new HashSet<ChangeListener>();
+
+	/**
+	 * Registers a given {@link ChangeListener}.
+	 * 
+	 * @param changeListener The listener to register
+	 */
+	public static void addChangeListener(ChangeListener changeListener) {
+		changeListeners.add(changeListener);		
+	}
+
+	/**
+	 * Removes a given ChangeListener. Does nothing if the listener is not registered.
+	 * 
+	 * @param changeListener The listener to remove
+	 */
+	public static void removeChangeListener(ChangeListener changeListener) {
+		changeListeners.remove(changeListener);
+	}	
+
+	/**
+	 * This method informs all registered {@link ChangeListener}s of changes made.
+	 * 
+	 * @param propagationResult The changes made
+	 */
+	private static void informChangeListeners(List<PropagatedChange> propagationResult) {
+		String testName=extractTestName();	
+		for(ChangeListener cl:changeListeners) {
+			cl.postChanges(testName,propagationResult);
+		}		
+	}
+
+	/**
+	 * Until a better way to get the junit test name is known, we derive the test name from the stack trace
+	 * assuming the test method has a reproduceable position. Please do not consider this method during code review
+	 * as it will for sure be altered soon and get its javadoc updated to not have this hint.
+	 * 
+	 * @return The extracted TestName
+	 */
+	private static String extractTestName() {
+		//			0:getStackTrace
+		//			1:extractTestName
+		//			2:propagateChanges
+		//			3:saveAndSynchronizeChanges
+		//			4:saveAndSynchronizeChanges
+		//			5:createAndSynchronizeModel
+		//			6:createAndSyncSystem
+		//			7:testRenameSystem
+		//			8:invoke0
+		StackTraceElement[] trace = Thread.currentThread().getStackTrace();
+		if(trace==null||trace.length<4) return "should never happen";//This should never happen
+		String last=null;
+		for(int n=0;n<trace.length;n++) {
+			//System.out.println(n+":"+trace[n].getMethodName());
+			String methodName=trace[n].getMethodName();
+			//If the name convention is fullfilled, the first method named testXYZ is the tested method
+			if(methodName.startsWith("test")) {
+				return methodName;
+			}
+			//If not, then the last method before the first method starting with invoke is considered to be the test method
+			if(last!=null&&methodName.startsWith("invoke")) {
+				return last;
+			}
+			//Save the actual methodName
+			last=methodName;
+		}
+		return "unknown";
+	}	
+	//############################  ChangeVisualization
+
 	private AtomicEmfChangeRecorder changeRecorder;
 
 	@Override
@@ -51,7 +128,7 @@ public abstract class VitruviusApplicationTest extends VitruviusUnmonitoredAppli
 		}
 		cleanup();
 	}
-	
+
 	/**
 	 * This method gets called at the beginning of each test case, after the
 	 * test project and VSUM have been initialized. It can be used, for example,
@@ -70,6 +147,11 @@ public abstract class VitruviusApplicationTest extends VitruviusUnmonitoredAppli
 		final List<TransactionalChange> changes = changeRecorder.getChanges();
 		CompositeContainerChange compositeChange = VitruviusChangeFactory.getInstance().createCompositeChange(changes);
 		List<PropagatedChange> propagationResult = this.getVirtualModel().propagateChange(compositeChange);
+
+		//###############  ChangeVisualization
+		informChangeListeners(propagationResult);
+		//###############  ChangeVisualization
+
 		this.changeRecorder.beginRecording();
 		return propagationResult;
 	}
@@ -106,7 +188,7 @@ public abstract class VitruviusApplicationTest extends VitruviusUnmonitoredAppli
 		Resource resource = object.eResource();
 		return saveAndSynchronizeChanges(resource);
 	}
-	
+
 	protected  List<PropagatedChange> saveAndSynchronizeChanges(Resource resource) throws IOException {
 		EcoreResourceBridge.saveResource(resource);
 		List<PropagatedChange> result = this.propagateChanges();
@@ -154,7 +236,7 @@ public abstract class VitruviusApplicationTest extends VitruviusUnmonitoredAppli
 		this.changeRecorder.removeFromRecording(resource);
 		return changes;
 	}
-	
+
 	protected Resource resourceAt(String modelPathInProject) {
 		try {
 			final ResourceSet resourceSet = new ResourceSetImpl();
@@ -166,10 +248,10 @@ public abstract class VitruviusApplicationTest extends VitruviusUnmonitoredAppli
 			throw e;
 		}
 	}
-	
+
 	protected <T> T from(Class<T> clazz, String modelPathInProject) {
 		final Resource requestedResource = getModelResource(modelPathInProject);
 		startRecordingChanges(requestedResource);
 		return clazz.cast(requestedResource.getContents().get(0));
 	}
- }
+}

@@ -19,8 +19,50 @@ import tools.vitruv.framework.util.command.EMFCommandBridge
 import tools.vitruv.framework.vsum.repositories.ResourceRepositoryImpl
 import tools.vitruv.framework.vsum.repositories.ModelRepositoryImpl
 import tools.vitruv.framework.change.echange.EChangeIdManager
+import java.util.HashSet
+import java.util.Set
 
 class VirtualModelImpl implements InternalVirtualModel {
+	
+	//############################ ChangeVisualization		
+	/**
+	 * A list of ChangeListeners that are informed of all changes made
+	 */
+	private static Set<ChangeListener> changeListeners=new HashSet<ChangeListener>();
+	
+	/**
+	 * This method informs all registered {@link ChangeListener}s of changes made.
+	 * 
+	 * @param propagationResult The changes made
+	 */
+	def static informChangeListeners(List<PropagatedChange> propagationResult) {
+		
+		val testName="LiveModel";	
+				
+		for(ChangeListener cl:changeListeners) {
+			cl.postChanges(testName,propagationResult);
+		}
+	}
+	
+	/**
+	 * Registers a given {@link ChangeListener}.
+	 * 
+	 * @param changeListener The listener to register
+	 */
+	def static addChangeListener(ChangeListener changeListener) {
+		changeListeners.add(changeListener);		
+	}
+
+	/**
+	 * Removes a given {@link ChangeListener}. Does nothing if the listener is not registered.
+	 * 
+	 * @param changeListener The listener to remove
+	 */
+	def static removeChangeListener(ChangeListener changeListener) {
+		changeListeners.remove(changeListener);
+	}
+	//############################ ChangeVisualization
+	
 	private val ResourceRepositoryImpl resourceRepository;
 	private val ModelRepositoryImpl modelRepository;
 	private val VitruvDomainRepository metamodelRepository;
@@ -77,6 +119,11 @@ class VirtualModelImpl implements InternalVirtualModel {
 		change.unresolveIfApplicable
 		// Save is done by the change propagator because it has to be performed before finishing sync
 		val result = changePropagator.propagateChange(change);
+		
+		//###############  ChangeVisualization
+		informChangeListeners(result);
+		//###############  ChangeVisualization
+		
 		return result;
 	}
 	
