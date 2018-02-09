@@ -53,7 +53,7 @@ class RoutinesFacadesProviderClassGenerator extends ClassGenerator {
 						«val importPath = importHierarchyEntry.key»
 						«val routinesFacadeClassNameGenerator = importHierarchyEntry.value»
 							case "«importPath.pathString»": {
-								return new «routinesFacadeClassNameGenerator.qualifiedName»(this, «reactionsImportPathParameter.name», «sharedExecutionStateParameter.name»);
+								return new «routinesFacadeClassNameGenerator.qualifiedName»(this, «reactionsImportPathParameter.name».getParent(), «sharedExecutionStateParameter.name»);
 							}
 					«ENDFOR»
 						default: {
@@ -72,7 +72,7 @@ class RoutinesFacadesProviderClassGenerator extends ClassGenerator {
 			// for each reactions segment in the import hierarchy determine the routines facade class of the top-most reactions segment
 			// in the import hierarchy overriding routines of it:
 			val absoluteImportPath = importHierarchyEntry.key;
-			val relativeImportPath = absoluteImportPath.tail; // relative to root segment, null for root segment 
+			val relativeImportPath = absoluteImportPath.relativeToRoot; // relative to root segment, null for root segment 
 			val currentReactionsSegment = importHierarchyEntry.value;
 			val routinesOverrideRoot = rootReactionsSegment.getRoutinesOverrideRoot(relativeImportPath, true);
 			var ClassNameGenerator routinesFacadeClassNameGenerator;

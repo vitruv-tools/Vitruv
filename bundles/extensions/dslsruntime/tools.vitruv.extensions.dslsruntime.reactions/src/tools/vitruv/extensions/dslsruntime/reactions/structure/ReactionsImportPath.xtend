@@ -48,35 +48,39 @@ class ReactionsImportPath {
 		this.segments = ImmutableList.copyOf(pathSegments);
 	}
 
+	/**
+	 * Gets an unmodifiable view on the segments contained in this import path.
+	 */
 	public def List<String> getSegments() {
 		return segments;
 	}
 
+	/**
+	 * Gets the length of this import path. 
+ 	*/
 	public def int getLength() {
 		return segments.size();
 	}
 
+	/**
+	 * Gets the path segment at the specified index. 
+	 */
 	public def String getSegment(int index) {
 		return segments.get(index);
 	}
 
+	/**
+	 * Gets the last path segment.
+	 */
 	public def String getLastSegment() {
 		return segments.get(segments.size() - 1);
 	}
 
+	/**
+	 * Gets the first path segment.
+	 */
 	public def String getFirstSegment() {
 		return segments.get(0);
-	}
-
-	/**
-	 * Gets reactions import path with the first segment omitted.
-	 * 
-	 * @return the resulting reactions import path, or <code>null</code> if the resulting path would be empty
-	 */
-	public def ReactionsImportPath tail() {
-		val pathTail = segments.tail;
-		if (pathTail.empty) return null;
-		return ReactionsImportPath.create(pathTail);
 	}
 
 	/**
@@ -95,6 +99,64 @@ class ReactionsImportPath {
 	 */
 	public def ReactionsImportPath append(Iterable<String> pathSegments) {
 		return ReactionsImportPath.create(this.segments, pathSegments);
+	}
+
+	/**
+	 * Creates a reactions import path with the given path appended.
+	 * 
+	 * @return the resulting reactions import path
+	 */
+	public def ReactionsImportPath append(ReactionsImportPath path) {
+		return ReactionsImportPath.create(this.segments, path?.segments);
+	}
+
+	/**
+	 * Creates a reactions import path with the given segments prepended.
+	 * 
+	 * @return the resulting reactions import path
+	 */
+	public def ReactionsImportPath prepend(String... pathSegments) {
+		return this.prepend(pathSegments as Iterable<String>);
+	}
+
+	/**
+	 * Creates a reactions import path with the given segments prepended.
+	 * 
+	 * @return the resulting reactions import path
+	 */
+	public def ReactionsImportPath prepend(Iterable<String> pathSegments) {
+		return ReactionsImportPath.create(pathSegments, this.segments);
+	}
+
+	/**
+	 * Creates a reactions import path with the given path prepended.
+	 * 
+	 * @return the resulting reactions import path
+	 */
+	public def ReactionsImportPath prepend(ReactionsImportPath path) {
+		return ReactionsImportPath.create(path?.segments, this.segments);
+	}
+
+	/**
+	 * Gets the reactions import path with the last segment omitted.
+	 * 
+	 * @return the resulting reactions import path, or <code>null</code> if the resulting path would be empty
+	 */
+	public def ReactionsImportPath getParent() {
+		val parentPath = segments.take(length - 1);
+		if (parentPath.empty) return null;
+		return ReactionsImportPath.create(parentPath);
+	}
+
+	/**
+	 * Gets the reactions import path with the first segment omitted.
+	 * 
+	 * @return the resulting reactions import path, or <code>null</code> if the resulting path would be empty
+	 */
+	public def ReactionsImportPath relativeToRoot() {
+		val tailPath = segments.tail;
+		if (tailPath.empty) return null;
+		return ReactionsImportPath.create(tailPath);
 	}
 
 	/**

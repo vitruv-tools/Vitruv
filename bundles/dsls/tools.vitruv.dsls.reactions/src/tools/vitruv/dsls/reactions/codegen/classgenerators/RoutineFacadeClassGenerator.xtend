@@ -103,6 +103,7 @@ class RoutineFacadeClassGenerator extends ClassGenerator {
 		])
 	}
 
+	// absolute reactions import path, gets prepended by facade's parent import path:
 	protected def String generateGetRoutinesFacadeCall(ReactionsImportPath reactionsImportPath) '''
-		this._getRoutinesFacadesProvider().getRoutinesFacade(«typeRef(ReactionsImportPath).qualifiedName».fromPathString("«reactionsImportPath.pathString»"))'''
+		this._getRoutinesFacadesProvider().getRoutinesFacade(«typeRef(ReactionsImportPath).qualifiedName».fromPathString("«reactionsImportPath.pathString»").prepend(this._getParentImportPath()))'''
 }

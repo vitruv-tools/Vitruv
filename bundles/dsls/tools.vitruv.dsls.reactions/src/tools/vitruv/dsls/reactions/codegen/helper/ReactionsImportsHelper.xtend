@@ -470,7 +470,7 @@ class ReactionsImportsHelper {
 		}
 		val nextReactionsSegmentName = remainingImportPath.firstSegment;
 		val nextImportPath = currentImportPath.append(nextReactionsSegmentName);
-		val nextRemainingImportPath = remainingImportPath.tail; // can be null
+		val nextRemainingImportPath = remainingImportPath.relativeToRoot; // can be null
 		// skipping unresolvable imports:
 		val nextImport = currentReactionsSegment.reactionsImports.filter[it.isResolvable].findFirst [
 			nextReactionsSegmentName.equals(it.importedReactionsSegment.name);
