@@ -71,8 +71,6 @@ class ReactionsLanguageJvmModelInferrer extends AbstractModelInferrer  {
 		acceptor.accept(generator.generateEmptyClass()) [
 			// sometimes the jvm model inferrer is called after indexing, but cross-references of reactions imports are not resolvable,
 			// we need to skip class-body generation then:
-			// TODO check if this can be removed here, and instead check whether the class-body generation can cope with not resolvable imports by now
-			// (class-body generation would run then and produce only a partly correct result, because it ignores/excludes everything that relies on the import hierarchy)
 			if (reactionsSegment.allImportsResolvable) {
 				generateBody();
 			}
