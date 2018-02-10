@@ -93,10 +93,6 @@ class RoutineClassGenerator extends ClassGenerator {
 	«FOR parameterName : parameterStrings SEPARATOR ', '»«parameterName»«ENDFOR»'''
 
 	override JvmGenericType generateEmptyClass() {
-		if (routine === null) {
-			return null;
-		}
-
 		userExecutionClass = userExecutionClassGenerator.generateEmptyClass()
 		generatedClass = routine.toClass(routineClassNameGenerator.qualifiedName) [
 			visibility = JvmVisibility.PUBLIC
