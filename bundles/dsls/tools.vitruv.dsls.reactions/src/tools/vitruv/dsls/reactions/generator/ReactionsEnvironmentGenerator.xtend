@@ -38,7 +38,13 @@ class ReactionsEnvironmentGenerator {
 	private static val executor = Executors.newCachedThreadPool
 	
 	def generateEnvironment(ResourceSet resourceSet, IFileSystemAccess2 fsa) {
-		generateEnvironment(resourceSet.resources.map[optionalReactionsFile].filterNull, fsa)
+		// TODO this is ugly..
+		val rootURI = fsa.getURI(".");
+		val platformRoot = if (rootURI.isPlatformResource) rootURI.segment(1);
+		generateEnvironment(resourceSet.resources.filter [
+			val uri = it.URI;
+			return platformRoot === null || !uri.isPlatformResource || uri.segment(1).equals(platformRoot);
+		].map[optionalReactionsFile].filterNull, fsa)
 	}
 
 	def private generateEnvironment(Iterable<ReactionsFile> resources, IFileSystemAccess2 fsa) {
