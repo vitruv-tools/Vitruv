@@ -6,19 +6,24 @@ package tools.vitruv.extensions.changevisualization.tree.decoder;
 import java.awt.Component;
 
 /**
- * @author andreas
- *
+ * Implements a feature decoder suitable to process all java object.
+ * It is used as a fallback if no special decoder for a feature exists.
+ * It creates no detail-information of either kind and uses toString()
+ * to create the simple text
+ * 
+ * @author Andreas Loeffler
  */
 public class ObjectFeatureDecoder implements FeatureDecoder{
 
 	@Override 	
-	public Class getDecodedClass(){
+	public Class<?> getDecodedClass(){
 		return Object.class;
 	}
-		
+
 	@Override
 	public String decodeSimple(Object obj) {
-		return obj.toString();
+		//String.valueOf assures no null value errors
+		return String.valueOf(obj);
 	}
 
 	@Override

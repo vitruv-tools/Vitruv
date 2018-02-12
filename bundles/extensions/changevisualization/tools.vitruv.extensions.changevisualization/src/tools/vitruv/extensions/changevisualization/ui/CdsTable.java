@@ -16,50 +16,97 @@ import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 
 import tools.vitruv.extensions.changevisualization.ChangeDataSet;
 
+/**
+ * A CdsTable displays all different ChangeDataSets of a given ChangesTab in a JTable
+ * 
+ * @author Andreas Loeffler
+ */
 public class CdsTable extends JPanel implements MouseWheelListener{
 
+	/**
+	 * Needed for eclipse to stop warning about serialVersionIds. This feature will never been used. 
+	 */
+	private static final long serialVersionUID = 1L;
+	
+	/**
+	 * The Table implementing the actual cds visualization
+	 */
 	private JTable table;
 
+	/**
+	 * Constructs a new CdsTable
+	 */
 	public CdsTable() {
 		super(new BorderLayout());	
 		createUI();
 	}
 
+	/**
+	 * Creates the ui of the CdsTable
+	 */
 	private void createUI() {
 
-		table = new JTable();
+		createTable();
 
-		table.setAutoCreateRowSorter(true);
-		table.setFont(table.getFont().deriveFont(14f));
-		table.setRowHeight(24);
-		table.getTableHeader().setFont(table.getTableHeader().getFont().deriveFont(16f).deriveFont(Font.BOLD));
-		table.setShowGrid(true);
+		table.setModel(createModel());
 
-		table.setFillsViewportHeight(true);
-		table.getTableHeader().setReorderingAllowed(false);
-		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-				
+		//Update calumn widths, has to be done after adding a model
+		table.getColumnModel().getColumn( 0 ).setPreferredWidth( 350 );//ID
+		table.getColumnModel().getColumn( 1 ).setPreferredWidth( 70 );//Time
+		table.getColumnModel().getColumn( 2 ).setPreferredWidth( 70 );//propagated changes
+		table.getColumnModel().getColumn( 3 ).setPreferredWidth( 70 );//original changes
+		table.getColumnModel().getColumn( 4 ).setPreferredWidth( 70 );//consequential changes
+
+		//Sets a new Default Renderer for Date-Object
+		table.setDefaultRenderer(Date.class,new DefaultTableCellRenderer(){			
+			private static final long serialVersionUID = 1L;
+			
+			private final SimpleDateFormat df=new SimpleDateFormat("dd.MM.yyyy - HH.mm.ss");			
+			protected void setValue(Object value) {
+				setText((value == null) ? "" : df.format((Date)value));
+			}
+		});
+
+		//Add the table to a scrollpane
+		JScrollPane scroller=new JScrollPane(table);
+		add(scroller,BorderLayout.CENTER);
+
+		//Listen to the scroller to implement zooming
+		scroller.addMouseWheelListener(this);		
+	}
+
+	/**
+	 * Creates the table model
+	 * 
+	 * @return The table model
+	 */
+	private TableModel createModel() {
+
+		//Create the column namens
 		Vector<String> columnNames = new Vector<String>();
 		columnNames.add("ID");
 		columnNames.add("Time");
 		columnNames.add("Propagated changes");
 		columnNames.add("Original changes");
 		columnNames.add("Consequential changes");
-		
-		Vector<Vector> rowData=new Vector<Vector>();	
-		table.setModel(new DefaultTableModel(rowData, columnNames){
 
+		//Create the data vector
+		Vector<Vector<?>> rowData=new Vector<Vector<?>>();	
+		return new DefaultTableModel(rowData, columnNames){	
+			/**
+			 * Needed for eclipse to stop warning about serialVersionIds. This feature will never been used. 
+			 */
+			private static final long serialVersionUID = 1L;
+			
 			public boolean isCellEditable(int row, int column) {
-				return false;
+				return false; //Table is not editable
 			}	
-
-			/*
-			 * JTable uses this method to determine the default renderer/
-			 * editor for each cell.*/
-			public Class getColumnClass(int c) {
+			//JTable uses this method to determine the default renderer editor for each cell
+			public Class<?> getColumnClass(int c) {
 				switch(c){
 				case 2:
 				case 3:
@@ -71,41 +118,30 @@ public class CdsTable extends JPanel implements MouseWheelListener{
 					return String.class;
 				}
 			}
+		};
+	}
 
-		});		
+	/**
+	 * Creates the table and sets its default behaviour
+	 */
+	private void createTable() {
+		table = new JTable();
 
-		table.getColumnModel().getColumn( 0 ).setPreferredWidth( 350 );//ID
-		table.getColumnModel().getColumn( 1 ).setPreferredWidth( 70 );//Time
-		table.getColumnModel().getColumn( 2 ).setPreferredWidth( 70 );//ID
-		table.getColumnModel().getColumn( 3 ).setPreferredWidth( 70 );//ID
-		table.getColumnModel().getColumn( 4 ).setPreferredWidth( 70 );//ID
-		
-		table.setDefaultRenderer(Date.class,new DefaultTableCellRenderer(){
-			
-			private SimpleDateFormat df=new SimpleDateFormat("dd.MM.yyyy - HH.mm.ss");
-			
-			 /* Sets the <code>String</code> object for the cell being rendered to
-		     * <code>value</code>.
-		     * 
-		     * @param value  the string value for this cell; if value is
-		     *		<code>null</code> it sets the text value to an empty string
-		     * @see JLabel#setText
-		     * 
-		     */
-		    protected void setValue(Object value) {
-		    	setText((value == null) ? "" : df.format((Date)value));
-		    }
-		});
-		
-		JScrollPane scroller=new JScrollPane(table);
-		add(scroller,BorderLayout.CENTER);
-		scroller.addMouseWheelListener(this);
-		
+		table.setAutoCreateRowSorter(true);
+		table.setFont(table.getFont().deriveFont(14f));
+		table.setRowHeight(24);
+		table.getTableHeader().setFont(table.getTableHeader().getFont().deriveFont(16f).deriveFont(Font.BOLD));
+		table.setShowGrid(true);
+
+		table.setFillsViewportHeight(true);
+		table.getTableHeader().setReorderingAllowed(false);
+		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+
 	}
 
 	@Override
-	public void mouseWheelMoved(MouseWheelEvent e) {		
-		//System.out.println(e.getModifiersExText(e.getModifiersEx()));
+	public void mouseWheelMoved(MouseWheelEvent e) {	
+		//Implements the usual strg + mousewheel behaviour for zooming
 		if ((e.getModifiersEx() & InputEvent.CTRL_DOWN_MASK) == 0) return;
 		if(e.getWheelRotation()<=-1) {
 			float newSize=table.getFont().getSize()+2;
@@ -120,21 +156,41 @@ public class CdsTable extends JPanel implements MouseWheelListener{
 		}
 	}
 
+	/**
+	 * Selects a given row of the table
+	 * 
+	 * @param row The row to select
+	 */
 	public void setSelected(int row) {
 		table.getSelectionModel().setSelectionInterval(row, row);
 	}	
 
+	/**
+	 * Adds a given ListSelectionListener to this table
+	 * @param listener The listener to add
+	 */
 	public void addListSelectionListener(ListSelectionListener listener) {
 		table.getSelectionModel().addListSelectionListener(listener);
 	}
 
+	/**
+	 * Appends a ChangeDataSet to this cdsTable
+	 * @param cds The cds to append
+	 */
 	public void appendCds(ChangeDataSet cds) {
-		Vector line=encode(cds);
+		Vector<Object> line=encode(cds);
 		((DefaultTableModel)table.getModel()).addRow(line);	
 	}
 
-	private Vector encode(ChangeDataSet cds) {
-		Vector line=new Vector();
+	/**
+	 * Creates a Vector to display in the table that shows the relevant information
+	 * of a given cds
+	 * 
+	 * @param cds The cds to process
+	 * @return Vector suitable for usage in a JTable
+	 */
+	private Vector<Object> encode(ChangeDataSet cds) {
+		Vector<Object> line=new Vector<Object>();
 		line.add(cds.getCdsID());
 		line.add(cds.getCreationTime());
 		line.add(cds.getNrPChanges());
@@ -143,6 +199,10 @@ public class CdsTable extends JPanel implements MouseWheelListener{
 		return line;
 	}
 
+	/**
+	 * Gets the selected row of this table. -1 if none is selected
+	 * @return The selected row
+	 */
 	public int getSelectedRow() {
 		return table.getSelectedRow();
 	}

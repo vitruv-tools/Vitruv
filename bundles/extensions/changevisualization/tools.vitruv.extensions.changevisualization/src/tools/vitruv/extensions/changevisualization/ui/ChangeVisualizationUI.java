@@ -1,6 +1,3 @@
-/**
- * 
- */
 package tools.vitruv.extensions.changevisualization.ui;
 
 import java.awt.Component;
@@ -23,24 +20,38 @@ import org.eclipse.emf.common.util.URI;
 /**
  * The frame in which the change visualization is displayed 
  * 
- * @author Andreas Löffler
+ * @author Andreas Loeffler
  *
  */
 public class ChangeVisualizationUI extends JFrame {
+
+	/**
+	 * Needed for eclipse to stop warning about serialVersionIds. This feature will never been used. 
+	 */
+	private static final long serialVersionUID = 1L;
 	
+	/**
+	 * Constructs a ChangeVisualizationUI and initializes its basic layout and behaviour
+	 */
 	public ChangeVisualizationUI() {
 		super("Vitruv Change Visualization");
-		
+
+		// Just dispose on close, do not close the whole VM
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setSize(1900,1020);
+
+		//Set reasonable size
+		int screenWidth=java.awt.Toolkit.getDefaultToolkit().getScreenSize().width;
+		int screenHeight=java.awt.Toolkit.getDefaultToolkit().getScreenSize().height;
+		setSize(Math.min(screenWidth-30,1890),Math.min(screenHeight-60,1020));
 		setLocationRelativeTo(null);
+
+		//set the content pane
 		setContentPane(new JTabbedPane());
 
-		//Needed for Stop-Test-Hack
+		//Needed for ChangeVisualization.waitForFrameClosing() to work
 		addWindowListener(new WindowAdapter() {
 			/**
-			 * Invoked when a window is in the process of being closed.
-			 * The close operation can be overridden at this point.
+			 * Informs the ChangeVisualization of the frame closing event
 			 */
 			public void windowClosing(WindowEvent e) {
 				synchronized(ChangeVisualizationUI.this) {
@@ -49,7 +60,7 @@ public class ChangeVisualizationUI extends JFrame {
 			}
 		});
 	}	
-		
+
 	/**
 	 * Listener for the usual zoom in/out on text elements
 	 */
@@ -59,7 +70,10 @@ public class ChangeVisualizationUI extends JFrame {
 			if(!(e.getSource() instanceof JTextArea)) {
 				return;
 			}
+
 			if ((e.getModifiersEx() & InputEvent.CTRL_DOWN_MASK) == 0) return;
+
+			//Strg is pressed
 			JTextArea area=(JTextArea) e.getSource();
 			if(e.getWheelRotation()<=-1) {
 				float newSize=area.getFont().getSize()+2;
@@ -81,7 +95,7 @@ public class ChangeVisualizationUI extends JFrame {
 	public void addTab(String title, Component component) {
 		((JTabbedPane)getContentPane()).addTab(title, component);
 	}	
-	
+
 	/**
 	 * Show a file together with the change-tabs
 	 * 

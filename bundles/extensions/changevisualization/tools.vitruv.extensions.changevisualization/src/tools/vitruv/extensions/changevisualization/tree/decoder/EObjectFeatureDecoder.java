@@ -1,29 +1,34 @@
-/**
- * 
- */
 package tools.vitruv.extensions.changevisualization.tree.decoder;
 
-import java.awt.BorderLayout;
 import java.awt.Component;
-import java.awt.GridLayout;
-
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextField;
-import javax.swing.border.EmptyBorder;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 
+import tools.vitruv.extensions.changevisualization.tree.EObjectStructuralFeaturePanel;
+
 /**
- * @author andreas
- *
+ * Feature decoder suitable for EObjects. It creates a detailedUI that shows all existent
+ * structural features and the name of the eClass as simpleText. This text is append by
+ * the name or entityName of the given eObject in brackets, if existent
+ * 
+ * @author Andreas Loeffler
  */
 public class EObjectFeatureDecoder implements FeatureDecoder {
 
+	/**
+	 * The first structural feature name to look for when extracting the eObject name
+	 */
+	private static final String FIRST_NAME_SF="entityName";
+
+	/**
+	 * The second structural feature name to look for when extracting the eObject name.
+	 * This one is only considered if the first on does not exist
+	 */
+	private static final String SECOND_NAME_SF="name";
+
 	@Override 	
-	public Class getDecodedClass(){
+	public Class<?> getDecodedClass(){
 		return EObject.class;
 	}
 
@@ -37,81 +42,53 @@ public class EObjectFeatureDecoder implements FeatureDecoder {
 			return eObj.eClass().getName()+" ["+name+"]";
 		}		
 	}		
-	
+
+	/**
+	 * Extracts the name of the eObject, if existent. It looks for FIRST_NAME_SF and SECOND_NAME_SF
+	 * to find it.
+	 * 
+	 * @param eObj The eObject to get the name of
+	 * @return The name, if existent
+	 */
 	private String getName(EObject eObj) {
+		String firstName=null;
+		String secondName=null;
+
 		for (EStructuralFeature feature:eObj.eClass().getEAllStructuralFeatures()) {
 			if(feature==null) {
-				//Why are null features listed? this may/should never happen
 				continue;
 			}
-			if(feature.getName().equals("name")){
+			if(feature.getName().equals(FIRST_NAME_SF)){
 				Object fObj=eObj.eGet(feature);
-				return fObj.toString();
+				firstName=String.valueOf(fObj);
 			}
-			if(feature.getName().equals("entityName")){
+			if(feature.getName().equals(SECOND_NAME_SF)){
 				Object fObj=eObj.eGet(feature);
-				return fObj.toString();
+				secondName=String.valueOf(fObj);
 			}
 		}
-		return null;
+
+		if(firstName!=null) {
+			return firstName;
+		}else{
+			//If secondName!=null, it is returned. Otherwise null is returned as expected
+			return secondName;
+		}
+
 	}
-	
+
 	@Override
 	public String decodeDetailed(Object obj) {
 		return null;
 	}
-	
+
 	@Override
 	public Component decodeDetailedUI(Object obj) {
-		JPanel pane = new JPanel(new BorderLayout());
-		JPanel left = new JPanel(new GridLayout(1,1));
-		left.setBorder(new EmptyBorder(5,5,5,5));
-		JPanel center=new JPanel(new GridLayout(1,1));
-		center.setBorder(new EmptyBorder(5,5,5,5));				
 
+		//Cast the object to an eObject
 		org.eclipse.emf.ecore.EObject eObj=(org.eclipse.emf.ecore.EObject)obj;
 
-		//add general information
-		{//eClass info
-			JLabel label=new JLabel("eClass",JLabel.RIGHT);
-			JTextField field=new JTextField(eObj.eClass().getName());
-			field.setEditable(false);
-			((GridLayout)left.getLayout()).setRows(((GridLayout)left.getLayout()).getRows()+1);
-			left.add(label);
-			((GridLayout)center.getLayout()).setRows(((GridLayout)center.getLayout()).getRows()+1);
-			center.add(field);
-		}
-		{//runtime class info
-			JLabel label=new JLabel("runtime class",JLabel.RIGHT);
-			JTextField field=new JTextField(eObj.getClass().getName());
-			field.setEditable(false);
-			((GridLayout)left.getLayout()).setRows(((GridLayout)left.getLayout()).getRows()+1);
-			left.add(label);
-			((GridLayout)center.getLayout()).setRows(((GridLayout)center.getLayout()).getRows()+1);
-			center.add(field);
-		}
-
-		for (EStructuralFeature feature:eObj.eClass().getEAllStructuralFeatures()) {
-			if(feature==null) {
-				//Why are null features listed? this may/should never happen
-				continue;
-			}
-			Object fObj=eObj.eGet(feature);
-			if(fObj==null) {
-				fObj="not existent";
-			}
-
-			JLabel label=new JLabel(feature.getName(),JLabel.RIGHT);
-			JTextField field=new JTextField(fObj.toString());
-			field.setEditable(false);
-			((GridLayout)left.getLayout()).setRows(((GridLayout)left.getLayout()).getRows()+1);
-			left.add(label);
-			((GridLayout)center.getLayout()).setRows(((GridLayout)center.getLayout()).getRows()+1);
-			center.add(field);
-		}				
-		pane.add(left,BorderLayout.WEST);
-		pane.add(center,BorderLayout.CENTER);
-		return new JScrollPane(pane);
+		return new EObjectStructuralFeaturePanel(eObj);
 	}		
 
 }

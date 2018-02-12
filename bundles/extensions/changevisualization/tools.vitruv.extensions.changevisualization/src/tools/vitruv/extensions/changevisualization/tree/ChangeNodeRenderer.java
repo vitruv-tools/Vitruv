@@ -1,6 +1,3 @@
-/**
- * 
- */
 package tools.vitruv.extensions.changevisualization.tree;
 
 import java.awt.Color;
@@ -20,25 +17,29 @@ import javax.swing.tree.TreeNode;
  * Used by the JTree to visualize individual nodes. The implementation is regarded as a quick hack so far and will be replaced
  * soon. Do not consider during code review.
  * 
- * @author Andreas Löffler
+ * @author Andreas Loeffler
  *
  */
 public class ChangeNodeRenderer extends DefaultTreeCellRenderer implements TreeCellRenderer {
-
+	/**
+	 * Needed for eclipse to stop warning about serialVersionIds. This feature will never been used. 
+	 */
+	private static final long serialVersionUID = 1L;
+	
 	private static final Color NAME_HIGHLIGHT_FOREGROUND_COLOR=Color.BLACK;
 	private static final Color NAME_HIGHLIGHT_BACKGROUND_COLOR=new Color(200,200,255);
 	private static final Color SEARCH_HIGHLIGHT_COLOR=new Color(200,255,200);
-	
+
 	private boolean searchHighlight=false;
 	private HashSet<TreeNode> highlightedNodes=new HashSet<TreeNode>();
 
 	@Override
 	public void paint(Graphics g) {		
-			
+
 		int firstIndex=getNameFirstIndex();
 		//System.out.println(this.getText()+" ===> "+firstIndex);				
 		if(firstIndex!=-1) {
-			
+
 			String origText=this.getText();			
 
 			//change text temporarily and rely on getPreferedSize() to determine where the name is drawn
@@ -47,8 +48,8 @@ public class ChangeNodeRenderer extends DefaultTreeCellRenderer implements TreeC
 			setText(origText);
 
 			BufferedImage img=paintToImage();
-			
-			
+
+
 			if(isSearchHighlight()) {
 				Color background=selected?this.getBackgroundSelectionColor():this.getBackground();
 				replaceColor(img,background,SEARCH_HIGHLIGHT_COLOR,0,0,size.width,img.getHeight());			
@@ -56,7 +57,7 @@ public class ChangeNodeRenderer extends DefaultTreeCellRenderer implements TreeC
 
 			Color foreground=this.getForeground();
 			Color background=selected?this.getBackgroundSelectionColor():this.getBackground();			
-			
+
 			if(NAME_HIGHLIGHT_FOREGROUND_COLOR!=null&&NAME_HIGHLIGHT_FOREGROUND_COLOR.getRGB()!=foreground.getRGB()) {
 				replaceColor(img,foreground,NAME_HIGHLIGHT_FOREGROUND_COLOR,size.width+1,0,img.getWidth(),img.getHeight());
 				//foreground=NAME_HIGHLIGHT_FOREGROUND_COLOR;//necessary for background-replacement to work
@@ -92,7 +93,7 @@ public class ChangeNodeRenderer extends DefaultTreeCellRenderer implements TreeC
 			}	
 		}
 	}
-	
+
 	/**
 	 * replace the color of all pixels that is not the given stayColor with the replacementColor
 	 * 
@@ -104,6 +105,7 @@ public class ChangeNodeRenderer extends DefaultTreeCellRenderer implements TreeC
 	 * @param width
 	 * @param height
 	 */
+	@SuppressWarnings("unused") //may be used in the future
 	private void setBackgroundToColor(BufferedImage img, Color stayColor, Color newColor, int firstX, int firstY, int width,
 			int height) {
 		for(int x=firstX;x<width;x++) {
@@ -163,7 +165,7 @@ public class ChangeNodeRenderer extends DefaultTreeCellRenderer implements TreeC
 		}
 		return comp;
 	}
-	
+
 	public void resetHighligthedNodes() {
 		highlightedNodes.clear();
 	}
@@ -172,7 +174,7 @@ public class ChangeNodeRenderer extends DefaultTreeCellRenderer implements TreeC
 		//Highlithing does not work yet as expected ==> deactivated
 		//highlightedNodes.add(node);
 	}
-	
+
 	private boolean isSearchHighlight() {
 		return this.searchHighlight;
 	}
@@ -180,5 +182,5 @@ public class ChangeNodeRenderer extends DefaultTreeCellRenderer implements TreeC
 	private boolean shouldSearchHighlight(Object value) {
 		return highlightedNodes.contains(value);
 	}
-	
+
 }

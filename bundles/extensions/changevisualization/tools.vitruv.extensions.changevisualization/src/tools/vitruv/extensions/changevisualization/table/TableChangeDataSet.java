@@ -18,43 +18,40 @@ import tools.vitruv.framework.change.echange.EChange;
  * The table visualization was the first approach and displays most information wrong
  * Do not consider it during code review, it will either be updated or removed in the final plugin
  * 
- * @author Andreas Löffler
+ * @author Andreas Loeffler
  *
  */
 public class TableChangeDataSet extends ChangeDataSet {
 
 	/**
 	 * @param cdsId
-	 * @param className
-	 * @param testName
 	 * @param propagationResult
 	 */
-	public TableChangeDataSet(String cdsId, String className, String testName,
-			List<PropagatedChange> propagationResult) {
-		super(cdsId, className, testName, propagationResult);
+	public TableChangeDataSet(String cdsId, List<PropagatedChange> propagationResult) {
+		super(cdsId, propagationResult);
 	}
-	
-	private Vector<Vector> dataVector;
-	
+
+	private Vector<Vector<Object>> dataVector;
+
 	protected void extractData(List<PropagatedChange> propagationResult) {
-		dataVector = new Vector<Vector>();
-		
+		dataVector = new Vector<Vector<Object>>();
+
 		for(PropagatedChange propChange:propagationResult) {			
 			encode(propChange);						
 		}
 	}
-	
-	
+
+
 	private void encode(PropagatedChange propChange) {
 		VitruviusChange origChange = propChange.getOriginalChange();					
 		encode(origChange,ChangeType.ORIGINAL_CHANGE);			
-		
+
 		VitruviusChange consequentialChanges=propChange.getConsequentialChanges();		
-		encode(origChange,ChangeType.CONSEQUENTIAL_CHANGE);
+		encode(consequentialChanges,ChangeType.CONSEQUENTIAL_CHANGE);
 	}
 
 	private void encode(VitruviusChange change, ChangeType type) {
-		
+
 		//Create vector dataset
 		String changeString="";
 		switch(type) {
@@ -68,19 +65,19 @@ public class TableChangeDataSet extends ChangeDataSet {
 			changeString="Unimplemented Change Type";
 			break;
 		}
-		
-		for(Vector line:encode(change)) {
+
+		for(Vector<Object> line:encode(change)) {
 			line.setElementAt(changeString+" ("+line.get(0)+")",0);
 			dataVector.add(line);
 		}		
 	}
 
 
-	private Vector<Vector> encode(VitruviusChange vChange) {
+	private Vector<Vector<Object>> encode(VitruviusChange vChange) {
 		try {
-			Vector<Vector> lines=new Vector<Vector>();		
+			Vector<Vector<Object>> lines=new Vector<Vector<Object>>();		
 			for(EChange eChange:vChange.getEChanges()) {
-				for(Vector line:encode(eChange)) {					
+				for(Vector<Object> line:encode(eChange)) {					
 					line.insertElementAt(vChange.hashCode()+"/"+ModelHelper.getRootObjectName(vChange)+"/"+ModelHelper.getRootObjectID(vChange),1);					
 					lines.add(line);
 				}
@@ -88,18 +85,18 @@ public class TableChangeDataSet extends ChangeDataSet {
 			return lines;
 		}catch(Exception ex){
 			ex.printStackTrace();
-			return new Vector<Vector>();
+			return new Vector<Vector<Object>>();
 		}
 	}
 
-	private Vector<Vector> encode(EChange eChange) {
+	private Vector<Vector<Object>> encode(EChange eChange) {
 		try {
 			ModelHelper.inspectEChangeClass(eChange.getClass());
-			Vector<Vector> lines=new Vector<Vector>();		
-//##			 eChange.eClass().getEStructuralFeatures()
-//##			eChange.eGet(EobjectPackage.Literals.EOBJECT_ADDED_ECHANGE__NEW_VALUE)
+			Vector<Vector<Object>> lines=new Vector<Vector<Object>>();		
+			//##			 eChange.eClass().getEStructuralFeatures()
+			//##			eChange.eGet(EobjectPackage.Literals.EOBJECT_ADDED_ECHANGE__NEW_VALUE)
 			for(EObject eObject:eChange.getInvolvedEObjects()) {
-				Vector line = encode(eObject);								
+				Vector<Object> line = encode(eObject);								
 				line.insertElementAt(eChange.hashCode()+"/"+eChange.getClass().getSimpleName(),0);
 				line.insertElementAt(ModelHelper.getModel(eObject),0);
 				lines.add(line);
@@ -107,12 +104,12 @@ public class TableChangeDataSet extends ChangeDataSet {
 			return lines;
 		}catch(Exception ex){
 			ex.printStackTrace();
-			return new Vector<Vector>();
+			return new Vector<Vector<Object>>();
 		}
 	}
 
-	private Vector encode(EObject eObject) {
-		Vector line=new Vector();
+	private Vector<Object> encode(EObject eObject) {
+		Vector<Object> line=new Vector<Object>();
 		//line.add(getModel(eObject));
 		line.add(eObject.hashCode()+"");
 		line.add(eObject.getClass().toString());		
@@ -121,7 +118,7 @@ public class TableChangeDataSet extends ChangeDataSet {
 		line.add(ModelHelper.getNewValue(eObject));
 		return line;
 	}
-	
+
 	//################### End Data extraction for table
 
 	@Override

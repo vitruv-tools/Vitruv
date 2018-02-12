@@ -10,9 +10,14 @@ import tools.vitruv.extensions.changevisualization.ChangeDataSet;
  * Base class for different visualization implementations. If additional implementation are needed,
  * they have to subclass this class to be usable by the change visualization framework.
  * 
- * @author Andreas Löffler
+ * @author Andreas Loeffler
  */
 public abstract class ChangeComponent extends JPanel {
+
+	/**
+	 * Needed for eclipse to stop warning about serialVersionIds. This feature will never been used. 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	/**
 	 * Mandatory constructor to use for implementations

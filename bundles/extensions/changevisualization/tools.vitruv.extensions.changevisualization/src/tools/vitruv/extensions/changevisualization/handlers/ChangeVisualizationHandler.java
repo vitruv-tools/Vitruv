@@ -21,7 +21,7 @@ public class ChangeVisualizationHandler extends AbstractHandler {
 	 * Stores the actual state of change listening
 	 */
 	private boolean active=false;
-	
+
 	/**
 	 * Controls whether a popup is shown on state changes
 	 */
@@ -30,7 +30,7 @@ public class ChangeVisualizationHandler extends AbstractHandler {
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		IWorkbenchWindow window = HandlerUtil.getActiveWorkbenchWindowChecked(event);
-		
+
 		if(active) {
 			tools.vitruv.framework.vsum.VirtualModelImpl.removeChangeListener(ChangeVisualization.getChangeListener());
 			if(SHOW_MESSAGES) {
@@ -62,6 +62,6 @@ public class ChangeVisualizationHandler extends AbstractHandler {
 	 * @param text The new text to display in the menu item
 	 */
 	private void renameMenu(IWorkbenchWindow window, String text) {
-		
+
 	}
 }

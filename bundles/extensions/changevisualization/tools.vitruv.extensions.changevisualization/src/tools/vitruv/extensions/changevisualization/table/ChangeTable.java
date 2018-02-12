@@ -19,12 +19,17 @@ import tools.vitruv.extensions.changevisualization.ui.ChangeComponent;
  * The table visualization was the first approach and displays most information wrong
  * Do not consider it during code review, it will either be updated or removed in the final plugin
  * 
- * @author Andreas Löffler
+ * @author Andreas Loeffler
  *
  */
 
 public class ChangeTable extends ChangeComponent implements MouseWheelListener{	
 
+	/**
+	 * Needed for eclipse to stop warning about serialVersionIds. This feature will never been used. 
+	 */
+	private static final long serialVersionUID = 1L;
+	
 	private JTable table;
 
 	public ChangeTable() {
@@ -45,7 +50,7 @@ public class ChangeTable extends ChangeComponent implements MouseWheelListener{
 		table.setFillsViewportHeight(true);
 		table.getTableHeader().setReorderingAllowed(false);
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-				
+
 		JScrollPane scroller=new JScrollPane(table);
 		add(scroller,BorderLayout.CENTER);
 		scroller.addMouseWheelListener(this);
@@ -85,10 +90,15 @@ public class ChangeTable extends ChangeComponent implements MouseWheelListener{
 		columnNames.add("Old");
 		columnNames.add("New");
 
-		Vector<Vector> rowData=cds==null?new Vector<Vector>():(Vector<Vector>)cds.getData();	
+		@SuppressWarnings("unchecked")
+		Vector<Vector<Object>> rowData=cds==null?new Vector<Vector<Object>>():(Vector<Vector<Object>>)cds.getData();	
 
 		table.setModel(new DefaultTableModel(rowData, columnNames){
-
+			/**
+			 * Needed for eclipse to stop warning about serialVersionIds. This feature will never been used. 
+			 */
+			private static final long serialVersionUID = 1L;
+			
 			public boolean isCellEditable(int row, int column) {
 				return false;
 			}	
@@ -96,7 +106,7 @@ public class ChangeTable extends ChangeComponent implements MouseWheelListener{
 			/*
 			 * JTable uses this method to determine the default renderer/
 			 * editor for each cell.*/
-			public Class getColumnClass(int c) {
+			public Class<?> getColumnClass(int c) {
 				switch(c){
 				default:
 					return String.class;
