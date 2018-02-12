@@ -70,7 +70,7 @@ public final class ChangeVisualization implements ChangeListener{
 	/**
 	 * Waits for this visualization ui to close before returning.
 	 * Especially useful for junit tests when the visualization results should be used
-	 * prior to vm exit
+	 * prior to java vm exit
 	 */
 	public static void waitForFrameClosing() {		
 		synchronized(INSTANCE.ui) {			

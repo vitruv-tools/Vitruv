@@ -14,6 +14,11 @@ import javax.swing.tree.TreePath;
 import org.eclipse.emf.ecore.EStructuralFeature;
 
 import tools.vitruv.extensions.changevisualization.ChangeDataSet;
+import tools.vitruv.extensions.changevisualization.tree.decoder.EObjectFeatureDecoder;
+import tools.vitruv.extensions.changevisualization.tree.decoder.FeatureDecoder;
+import tools.vitruv.extensions.changevisualization.tree.decoder.MultipleFeatureProcessor;
+import tools.vitruv.extensions.changevisualization.tree.decoder.ObjectFeatureDecoder;
+import tools.vitruv.extensions.changevisualization.tree.decoder.OldValueNewValueProcessor;
 import tools.vitruv.framework.change.description.PropagatedChange;
 import tools.vitruv.framework.change.description.VitruviusChange;
 import tools.vitruv.framework.change.echange.EChange;
@@ -29,6 +34,29 @@ public class TreeChangeDataSet extends ChangeDataSet {
 	public static final String PROPAGATED_CHANGE_STRING="Propagated Change";
 	public static final String ORIGINAL_CHANGE_STRING="Original Change";
 	public static final String CONSEQUENTIAL_CHANGE_STRING="Consequential Change";
+	
+	/**
+	 * Processors which apply multiple structural feature enhancements to structural feature leaf nodes
+	 */
+	private static Vector<MultipleFeatureProcessor> multipleFeatureProcessors=new Vector<MultipleFeatureProcessor>();
+	
+	//register additional multiple feature processors
+	static {		
+		//processor that combines oldValue / newValue pairs
+		registerMultipleFeatureProcessor(new OldValueNewValueProcessor());	
+
+		//info: i will implement a way to autoload all classes extending MultipleFeatureProcessor which reside in the decoder package
+		//until then, they get registered manually
+	}
+
+	/**
+	 * Can be called to register new processors implementing multiple structural feature enhancements
+	 * 
+	 * @param dec The processor for multi feature enhancements
+	 */
+	public static void registerMultipleFeatureProcessor(MultipleFeatureProcessor proc) {
+		multipleFeatureProcessors.add(proc);
+	}
 
 	/**
 	 * Identifies a TreeNode[] (==TreePath) of a given JTree with the help of a pathString.
@@ -256,59 +284,93 @@ public class TreeChangeDataSet extends ChangeDataSet {
 
 	/**
 	 * Creates a node representing an eChange and the nodes for the eChanges structural features.
+	 * Multiple feature processors are applied here before the new eChange node is added to the parentNode.
 	 *  
 	 * @param eChange The eChange
-	 * @param parentNode The parent node to add this node to
+	 * @param parentNode The parent node to add the new eChange node to
 	 */	
 	private void encodeTree(EChange eChange, DefaultMutableTreeNode parentNode) {	
 		//Create the eChange node
 		DefaultMutableTreeNode node=createEChangeNode(eChange);
+				
+		Hashtable<String,Integer> featureName2index=new Hashtable<String,Integer>();
+		Vector<Object> featureValues=new Vector<Object>();
 
-		//Walk all accessible information and display
-		//INFO:Many srclines will not stay here, but multi-feature-visualization is not fully implemented yet and combination
-		//INFO:of old/newvalue is simulated here. After its implementation, more than half of the code is not needed anymore
-		//INFO:or has been moved to new methods called from here. Also newValue and oldValue as magic numbers will not exist anymore.
-		int oldValueIndex=-1;
-		int newValueIndex=-1;
-		String oldValue=null;
-		String newValue=null;
-		for (EStructuralFeature feature:eChange.eClass().getEAllStructuralFeatures()) {
-			if(feature==null) {
-				//Why are null features listed? this may/should never happen
-				continue;
-			}	
-
-			Object obj=eChange.eGet(feature);
-			if(obj==null) {
-				obj="-";
-				//Assures no null values exist in the FeatureNode-Constructor
-			}
-
-			if(feature.getName().equals("newValue")){
-				newValueIndex=node.getChildCount();
-				newValue=obj.toString();
-			}else if(feature.getName().equals("oldValue")){
-				oldValueIndex=node.getChildCount();
-				oldValue=obj.toString();
-			}
-
-			DefaultMutableTreeNode featureNode=new DefaultMutableTreeNode(new FeatureNode(feature,obj));
-			node.add(featureNode);
-		}
-
-		//If old and new exist, replace with a more intuitive visualization
-		if(oldValueIndex!=-1&&newValueIndex!=-1) {
-			int higher=Math.max(oldValueIndex, newValueIndex);
-			node.remove(higher);
-			int lower=Math.min(oldValueIndex, newValueIndex);
-			node.remove(lower);
-			DefaultMutableTreeNode featureNode=new DefaultMutableTreeNode(new FeatureNode("value changed","\""+oldValue+"\" ==> \""+newValue+"\""));
-			node.add(featureNode);
-		}
-
+		//Encode Structural Feature infos
+		encodeStructuralFeatures(eChange,node,featureName2index,featureValues);	
+		
+		//Apply multiple structural feature processors
+		applyMultipleFeatureProcessors(eChange,node,featureName2index,featureValues);		
+		//Attention: Any code that comes after applyMultipleFeatureProcessor should be aware that there may now be nodes
+		//that dont exist as basic structural features but are the result of multipleFeatureProcessors
 
 		parentNode.add(node);	
 
+	}
+
+	/**
+	 * Applies the registered multiple structural feature decoders until a stable state is reached.
+	 * MultipleFeatureProcessors can potentially rely on the results of other processors, which therefore have to run first.
+	 * This is accomplished by rerunning the process until no changes occurred (=stable state reached)
+	 * 
+	 * @param eChange The eChange whose structural features are processed
+	 * @param parentNode The parent node 
+	 * @param featureName2index FeatureName ==> Index
+	 * @param featureValues Feature Values (The value of each feature is found at featureName2index index)
+	 */
+	private void applyMultipleFeatureProcessors(EChange eChange, DefaultMutableTreeNode parentNode,
+			Hashtable<String, Integer> featureName2index, Vector<Object> featureValues) {
+		
+		//Needed for multiple feature processors that rely on the result of other processors to work correctly
+		//if anything happened, again is set to true and the whole process is started over with the resulting features and nodes
+		boolean again=true;
+		
+		while(again) {
+			again=false;//is set to true if any processor accepted the features and changed something			
+			//if no processor accepted anything, we are finished and while is exited because again is still false
+			
+			for(MultipleFeatureProcessor proc:multipleFeatureProcessors) {
+				if(proc.accepts(featureName2index.keySet())) {
+					again=true; //rerun while
+					
+					//The process method updates all relevant information. For example removes the replace child nodes
+					//or similar stuff. This can lead to "race conditions" if different multi feature decoders use at least
+					//partially overlapping features which are then removed by the one first called. This cannot be prevented
+					//and is regarded as a programming fault. If this should not be the case sometime in the future, one has to implement
+					//a more advanced sequence algorithm here
+					proc.process(eChange,parentNode,featureName2index,featureValues);
+				}
+			}			
+		}
+	}
+
+	/**
+	 * Creates nodes for all structural features a given eChange has. 
+	 * featureName2index and featureValues is build up during creation to reflect the final state
+	 *  
+	 * @param eChange The eChange
+	 * @param parentNode The parentNode to add the child nodes to
+	 * @param @param featureName2index FeatureName ==> Index of the features value in featureValues
+	 * @param featureValues Feature Values
+	 */
+	private void encodeStructuralFeatures(EChange eChange, DefaultMutableTreeNode parentNode, Hashtable<String, Integer> featureName2index,
+			Vector<Object> featureValues) {
+		int index=0;
+		for (EStructuralFeature feature:eChange.eClass().getEAllStructuralFeatures()) {
+			if(feature==null) {
+				continue;
+			}	
+			Object obj=eChange.eGet(feature);
+			if(obj==null) {
+				//Assures no null values exist in the FeatureNode-Constructor
+				obj="-";				
+			}
+			DefaultMutableTreeNode featureNode=new DefaultMutableTreeNode(new FeatureNode(feature,obj));
+			parentNode.add(featureNode);
+			featureName2index.put(feature.getName(),index);
+			featureValues.add(obj);
+			index++;
+		}
 	}
 
 	/**

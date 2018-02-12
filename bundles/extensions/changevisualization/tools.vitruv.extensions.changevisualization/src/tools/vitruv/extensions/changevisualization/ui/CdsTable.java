@@ -55,7 +55,7 @@ public class CdsTable extends JPanel implements MouseWheelListener{
 		table.setModel(createModel());
 
 		//Update calumn widths, has to be done after adding a model
-		table.getColumnModel().getColumn( 0 ).setPreferredWidth( 350 );//ID
+		table.getColumnModel().getColumn( 0 ).setPreferredWidth( 500 );//ID
 		table.getColumnModel().getColumn( 1 ).setPreferredWidth( 70 );//Time
 		table.getColumnModel().getColumn( 2 ).setPreferredWidth( 70 );//propagated changes
 		table.getColumnModel().getColumn( 3 ).setPreferredWidth( 70 );//original changes

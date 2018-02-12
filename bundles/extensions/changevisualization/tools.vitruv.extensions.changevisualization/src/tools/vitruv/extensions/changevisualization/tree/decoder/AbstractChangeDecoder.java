@@ -44,7 +44,7 @@ public abstract class AbstractChangeDecoder implements ChangeDecoder {
 	@Override
 	public String decode(EChange echange) {
 		//If null as echange gets here or an echange with no eclass, return a fallback-error. this should never happen.
-		//I prefer not throwing RuntimeExceptions or any other candidates that might exit the vm "just" because of this
+		//I prefer not throwing RuntimeExceptions or any other candidates that might exit the java vm "just" because of this
 		if(echange==null||echange.eClass()==null) {
 			return "null value given";
 		}
