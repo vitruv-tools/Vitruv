@@ -19,7 +19,7 @@ import tools.vitruv.framework.change.description.TransactionalChange;
 import tools.vitruv.framework.change.description.VitruviusChangeFactory;
 import tools.vitruv.framework.change.recording.AtomicEmfChangeRecorder;
 import tools.vitruv.framework.util.bridges.EcoreResourceBridge;
-import tools.vitruv.framework.vsum.ChangeListener;
+import tools.vitruv.framework.vsum.PropagatedChangeListener;
 
 /**
  * Basic test class for all Vitruvius application tests that require a test
@@ -42,14 +42,14 @@ public abstract class VitruviusApplicationTest extends VitruviusUnmonitoredAppli
 	/**
 	 * A list of ChangeListeners that are informed of all changes made
 	 */
-	private static Set<ChangeListener> changeListeners=new HashSet<ChangeListener>();
+	private static Set<PropagatedChangeListener> changeListeners=new HashSet<PropagatedChangeListener>();
 
 	/**
-	 * Registers a given {@link ChangeListener}.
+	 * Registers a given {@link PropagatedChangeListener}.
 	 * 
 	 * @param changeListener The listener to register
 	 */
-	public static void addChangeListener(ChangeListener changeListener) {
+	public static void addChangeListener(PropagatedChangeListener changeListener) {
 		changeListeners.add(changeListener);		
 	}
 
@@ -58,18 +58,18 @@ public abstract class VitruviusApplicationTest extends VitruviusUnmonitoredAppli
 	 * 
 	 * @param changeListener The listener to remove
 	 */
-	public static void removeChangeListener(ChangeListener changeListener) {
+	public static void removeChangeListener(PropagatedChangeListener changeListener) {
 		changeListeners.remove(changeListener);
 	}	
 
 	/**
-	 * This method informs all registered {@link ChangeListener}s of changes made.
+	 * This method informs all registered {@link PropagatedChangeListener}s of changes made.
 	 * 
 	 * @param propagationResult The changes made
 	 */
 	private static void informChangeListeners(List<PropagatedChange> propagationResult) {
 		String testName=extractTestName();	
-		for(ChangeListener cl:changeListeners) {
+		for(PropagatedChangeListener cl:changeListeners) {
 			cl.postChanges(testName,propagationResult);
 		}		
 	}

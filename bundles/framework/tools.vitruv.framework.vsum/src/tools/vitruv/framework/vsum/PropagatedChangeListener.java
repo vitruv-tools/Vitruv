@@ -5,11 +5,12 @@ import java.util.List;
 import tools.vitruv.framework.change.description.PropagatedChange;
 
 /**
- * The {@link ChangeListener} is the interface used to communicate with the change visualization.
+ * The {@link PropagatedChangeListener} is the interface used to communicate with the change
+ * visualization.
  *
- * @author Andreas Löffler
+ * @author Andreas Loeffler
  */
-public interface ChangeListener {
+public interface PropagatedChangeListener {
 
     /**
      * Whenever changes are made, they must be posted with this method to the visualization-listener. An

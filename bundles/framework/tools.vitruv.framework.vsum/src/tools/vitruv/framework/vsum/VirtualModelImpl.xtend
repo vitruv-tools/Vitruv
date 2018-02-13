@@ -28,7 +28,7 @@ class VirtualModelImpl implements InternalVirtualModel {
 	/**
 	 * A list of ChangeListeners that are informed of all changes made
 	 */
-	private static Set<ChangeListener> changeListeners=new HashSet<ChangeListener>();
+	private static Set<PropagatedChangeListener> changeListeners=new HashSet<PropagatedChangeListener>();
 	
 	/**
 	 * This method informs all registered {@link ChangeListener}s of changes made.
@@ -39,7 +39,7 @@ class VirtualModelImpl implements InternalVirtualModel {
 		
 		val testName="LiveModel";	
 				
-		for(ChangeListener cl:changeListeners) {
+		for(PropagatedChangeListener cl:changeListeners) {
 			cl.postChanges(testName,propagationResult);
 		}
 	}
@@ -49,7 +49,7 @@ class VirtualModelImpl implements InternalVirtualModel {
 	 * 
 	 * @param changeListener The listener to register
 	 */
-	def static addChangeListener(ChangeListener changeListener) {
+	def static addChangeListener(PropagatedChangeListener changeListener) {
 		changeListeners.add(changeListener);		
 	}
 
@@ -58,7 +58,7 @@ class VirtualModelImpl implements InternalVirtualModel {
 	 * 
 	 * @param changeListener The listener to remove
 	 */
-	def static removeChangeListener(ChangeListener changeListener) {
+	def static removeChangeListener(PropagatedChangeListener changeListener) {
 		changeListeners.remove(changeListener);
 	}
 	//############################ ChangeVisualization
