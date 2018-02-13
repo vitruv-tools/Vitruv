@@ -2,6 +2,7 @@ package tools.vitruv.extensions.changevisualization.tree;
 
 import java.awt.Component;
 import java.util.Hashtable;
+import java.util.Map;
 
 import tools.vitruv.extensions.changevisualization.tree.decoder.ChangeDecoder;
 import tools.vitruv.extensions.changevisualization.tree.decoder.ReplaceSingleValuedEAttributeDecoder;
@@ -19,7 +20,7 @@ public class ChangeNode {
 	/**
 	 * Decoders which extract the information to display from given Object of specific eChanges
 	 */
-	private static Hashtable<String,ChangeDecoder> decoders=new Hashtable<String,ChangeDecoder>();
+	private static Map<String,ChangeDecoder> decoders=new Hashtable<String,ChangeDecoder>();
 
 	//register additional decoders
 	static {		

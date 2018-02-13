@@ -2,6 +2,7 @@ package tools.vitruv.extensions.changevisualization.tree.decoder;
 
 import java.util.Hashtable;
 import java.util.List;
+import java.util.Map;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EStructuralFeature;
@@ -55,7 +56,7 @@ public abstract class AbstractChangeDecoder implements ChangeDecoder {
 		}
 
 		//extract all structural features required
-		Hashtable<String,Object> structuralFeatures2values=extractRequiredStructuralFeatures(echange);
+		Map<String,Object> structuralFeatures2values=extractRequiredStructuralFeatures(echange);
 		//All found null values have been added by the called method under the given key, remove them.
 		//Further details can be found in extractRequiredStructuralFeatures
 		int nullValues=(Integer)structuralFeatures2values.remove("NULL_VALUES_FOUND");		
@@ -70,9 +71,9 @@ public abstract class AbstractChangeDecoder implements ChangeDecoder {
 		return generateString(echange,structuralFeatures2values);
 	}	
 
-	private Hashtable<String, Object> extractRequiredStructuralFeatures(EChange echange) {
+	private Map<String, Object> extractRequiredStructuralFeatures(EChange echange) {
 		//Generate the result hashtable
-		Hashtable<String,Object> structuralFeatures2values=new Hashtable<String,Object>();		
+		Map<String,Object> structuralFeatures2values=new Hashtable<String,Object>();		
 
 		//It is necessary to count null values, since they will not occur in the hashtable. Without this information
 		//it is not possible to decide whether all required structural features existed
@@ -120,6 +121,6 @@ public abstract class AbstractChangeDecoder implements ChangeDecoder {
 	 * 
 	 * @return The string used for display in a treenode of a jtree
 	 */
-	protected abstract String generateString(EChange eChange,Hashtable<String,Object> structuralFeatures2values);	
+	protected abstract String generateString(EChange eChange,Map<String,Object> structuralFeatures2values);	
 
 }

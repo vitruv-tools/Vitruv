@@ -1,11 +1,13 @@
 package tools.vitruv.extensions.changevisualization.ui;
 
 import java.awt.BorderLayout;
+import java.util.List;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
+import javax.swing.border.TitledBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
@@ -35,7 +37,7 @@ public class ChangesTab extends JPanel implements ListSelectionListener{
 	/**
 	 * List of ChangeDataSets that exist for this ChangeComponent
 	 */
-	private final Vector<ChangeDataSet> dataVector = new Vector<ChangeDataSet>();
+	private final List<ChangeDataSet> changeDataSets = new Vector<ChangeDataSet>();
 
 	/**
 	 * The table responsible for the display of the dataVector information
@@ -72,7 +74,9 @@ public class ChangesTab extends JPanel implements ListSelectionListener{
 
 		//add cds selection	
 		cdsTable=new CdsTable();
-		cdsTable.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(5,5,5,5),BorderFactory.createTitledBorder("Change Selection")));
+		TitledBorder cdsTitleBorder = BorderFactory.createTitledBorder("Change Selection");
+		cdsTitleBorder.setTitleFont(ChangeVisualizationUI.DEFAULT_TITLED_BORDER_FONT);
+		cdsTable.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(5,5,5,5),cdsTitleBorder));
 		panel.add(cdsTable);
 
 		cdsTable.addListSelectionListener(this);
@@ -101,7 +105,7 @@ public class ChangesTab extends JPanel implements ListSelectionListener{
 	 * @param cds The cds to add
 	 */
 	public void addChanges(ChangeDataSet cds) {
-		dataVector.add(cds);		
+		changeDataSets.add(cds);		
 		cdsTable.appendCds(cds);
 	}
 
@@ -109,8 +113,8 @@ public class ChangesTab extends JPanel implements ListSelectionListener{
 	 * Gets the ChangeDataSets of this ChangesTab
 	 * @return
 	 */
-	public Vector<ChangeDataSet> getChanges() {
-		return dataVector;
+	public List<ChangeDataSet> getChanges() {
+		return changeDataSets;
 	}
 
 
@@ -123,7 +127,7 @@ public class ChangesTab extends JPanel implements ListSelectionListener{
 			visualization.setData(null);
 		}else{
 			//System.out.println("Changing to row "+row);			
-			ChangeDataSet cds = dataVector.elementAt(row);
+			ChangeDataSet cds = changeDataSets.get(row);
 			visualization.setData(cds);
 		}
 	}	

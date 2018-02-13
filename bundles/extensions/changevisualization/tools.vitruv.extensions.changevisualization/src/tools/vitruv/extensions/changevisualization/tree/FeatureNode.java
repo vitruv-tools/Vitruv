@@ -3,6 +3,8 @@ package tools.vitruv.extensions.changevisualization.tree;
 import java.awt.Component;
 import java.util.Comparator;
 import java.util.Hashtable;
+import java.util.List;
+import java.util.Map;
 import java.util.Vector;
 
 import org.eclipse.emf.ecore.EStructuralFeature;
@@ -23,7 +25,7 @@ public class FeatureNode {
 	/**
 	 * Decoders which extract the information to display from given Object of specific classes
 	 */
-	private static Hashtable<Class<?>,FeatureDecoder> decoders=new Hashtable<Class<?>,FeatureDecoder>();
+	private static Map<Class<?>,FeatureDecoder> decoders=new Hashtable<Class<?>,FeatureDecoder>();
 
 	/**
 	 * The fallback decoder suitable for java.lang.Object (==all java classes)
@@ -137,7 +139,7 @@ public class FeatureNode {
 		if(obj==null) {			
 			value="Should not happen";
 		}else {
-			Vector<Class<?>> candidates=determineCandidates(obj);
+			List<Class<?>> candidates=determineCandidates(obj);
 
 			if(candidates.isEmpty()) {
 				//If no candidate exists, use objectFallback
@@ -146,9 +148,9 @@ public class FeatureNode {
 				detailsUI=objectFallbackDecoder.decodeDetailedUI(obj);
 			}else if(candidates.size()==1) {
 				//If one candidate exists, use it
-				value=decoders.get(candidates.firstElement()).decodeSimple(obj);
-				details=decoders.get(candidates.firstElement()).decodeDetailed(obj);
-				detailsUI=decoders.get(candidates.firstElement()).decodeDetailedUI(obj);
+				value=decoders.get(candidates.get(0)).decodeSimple(obj);
+				details=decoders.get(candidates.get(0)).decodeDetailed(obj);
+				detailsUI=decoders.get(candidates.get(0)).decodeDetailedUI(obj);
 			}else {
 				//if multiple decoders fit, use the one that is most specific
 				Class<?> mostSpecificClass=determineMostSpecificClass(candidates,obj.getClass());
@@ -173,8 +175,8 @@ public class FeatureNode {
 	 * @param obj The given Object
 	 * @return All implemented classes for which decoders exist
 	 */
-	private Vector<Class<?>> determineCandidates(Object obj) {
-		Vector<Class<?>> candidates = new Vector<Class<?>>();
+	private List<Class<?>> determineCandidates(Object obj) {
+		List<Class<?>> candidates = new Vector<Class<?>>();
 		for(Class<?> cl:decoders.keySet()) {
 			if(cl.isInstance(obj)) {
 				candidates.add(cl);
@@ -191,7 +193,7 @@ public class FeatureNode {
 	 * @param refCl The class of the given object
 	 * @return
 	 */	 
-	private Class<?> determineMostSpecificClass(Vector<Class<?>> candidates, Class<?> refCl) {
+	private Class<?> determineMostSpecificClass(List<Class<?>> candidates, Class<?> refCl) {
 		//All candidate classes must be in the superclass hierarchy of refCl.
 		//Since java has no multiple inheritance and all candidates are different classes
 		//they also have to be in an ordered hierachy.
@@ -206,7 +208,7 @@ public class FeatureNode {
 				}
 			}			
 		});
-		return candidates.firstElement();		
+		return candidates.get(0);		
 	}
 
 }

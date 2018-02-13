@@ -10,7 +10,7 @@ import tools.vitruv.extensions.changevisualization.tree.TreeChangeDataSet;
 import tools.vitruv.extensions.changevisualization.ui.ChangeVisualizationUI;
 import tools.vitruv.extensions.changevisualization.ui.ChangesTab;
 import tools.vitruv.framework.change.description.PropagatedChange;
-import tools.vitruv.framework.vsum.ChangeListener;
+import tools.vitruv.framework.vsum.PropagatedChangeListener;
 
 /**
  * This class provides a single instance of a change listener and a corresponding visualization instance.
@@ -20,10 +20,8 @@ import tools.vitruv.framework.vsum.ChangeListener;
  * @author Andreas Loeffler
  *
  */
-public final class ChangeVisualization implements ChangeListener{
-
-	
-	
+public final class ChangeVisualization implements PropagatedChangeListener{
+		
 	/**
 	 * The different modes of visualization
 	 * 
@@ -50,7 +48,7 @@ public final class ChangeVisualization implements ChangeListener{
 	 * 
 	 * @return The change listener
 	 */
-	public static ChangeListener getChangeListener() {
+	public static PropagatedChangeListener getChangeListener() {
 		return INSTANCE;
 	}	
 

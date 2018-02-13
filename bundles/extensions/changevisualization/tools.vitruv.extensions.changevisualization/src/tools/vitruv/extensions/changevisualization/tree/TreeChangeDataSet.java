@@ -2,6 +2,7 @@ package tools.vitruv.extensions.changevisualization.tree;
 
 import java.util.Hashtable;
 import java.util.List;
+import java.util.Map;
 import java.util.Vector;
 import java.util.regex.Pattern;
 
@@ -14,10 +15,7 @@ import javax.swing.tree.TreePath;
 import org.eclipse.emf.ecore.EStructuralFeature;
 
 import tools.vitruv.extensions.changevisualization.ChangeDataSet;
-import tools.vitruv.extensions.changevisualization.tree.decoder.EObjectFeatureDecoder;
-import tools.vitruv.extensions.changevisualization.tree.decoder.FeatureDecoder;
 import tools.vitruv.extensions.changevisualization.tree.decoder.MultipleFeatureProcessor;
-import tools.vitruv.extensions.changevisualization.tree.decoder.ObjectFeatureDecoder;
 import tools.vitruv.extensions.changevisualization.tree.decoder.OldValueNewValueProcessor;
 import tools.vitruv.framework.change.description.PropagatedChange;
 import tools.vitruv.framework.change.description.VitruviusChange;
@@ -38,7 +36,7 @@ public class TreeChangeDataSet extends ChangeDataSet {
 	/**
 	 * Processors which apply multiple structural feature enhancements to structural feature leaf nodes
 	 */
-	private static Vector<MultipleFeatureProcessor> multipleFeatureProcessors=new Vector<MultipleFeatureProcessor>();
+	private static List<MultipleFeatureProcessor> multipleFeatureProcessors=new Vector<MultipleFeatureProcessor>();
 	
 	//register additional multiple feature processors
 	static {		
@@ -122,12 +120,12 @@ public class TreeChangeDataSet extends ChangeDataSet {
 	/**
 	 * Stores if a given Node is expanded in the ui. The Node is identified by a TreePath, and that by its pathString.
 	 */
-	private Hashtable<String,Boolean> pathString2expanded=new Hashtable<String,Boolean>();
+	private Map<String,Boolean> pathString2expanded=new Hashtable<String,Boolean>();
 
 	/**
 	 * List of all registered pathStrings
 	 */
-	private Vector<String> pathStrings=new Vector<String>();	
+	private List<String> pathStrings=new Vector<String>();	
 
 
 	/**
@@ -293,8 +291,8 @@ public class TreeChangeDataSet extends ChangeDataSet {
 		//Create the eChange node
 		DefaultMutableTreeNode node=createEChangeNode(eChange);
 				
-		Hashtable<String,Integer> featureName2index=new Hashtable<String,Integer>();
-		Vector<Object> featureValues=new Vector<Object>();
+		Map<String,Integer> featureName2index=new Hashtable<String,Integer>();
+		List<Object> featureValues=new Vector<Object>();
 
 		//Encode Structural Feature infos
 		encodeStructuralFeatures(eChange,node,featureName2index,featureValues);	
@@ -319,7 +317,7 @@ public class TreeChangeDataSet extends ChangeDataSet {
 	 * @param featureValues Feature Values (The value of each feature is found at featureName2index index)
 	 */
 	private void applyMultipleFeatureProcessors(EChange eChange, DefaultMutableTreeNode parentNode,
-			Hashtable<String, Integer> featureName2index, Vector<Object> featureValues) {
+			Map<String, Integer> featureName2index, List<Object> featureValues) {
 		
 		//Needed for multiple feature processors that rely on the result of other processors to work correctly
 		//if anything happened, again is set to true and the whole process is started over with the resulting features and nodes
@@ -353,8 +351,8 @@ public class TreeChangeDataSet extends ChangeDataSet {
 	 * @param @param featureName2index FeatureName ==> Index of the features value in featureValues
 	 * @param featureValues Feature Values
 	 */
-	private void encodeStructuralFeatures(EChange eChange, DefaultMutableTreeNode parentNode, Hashtable<String, Integer> featureName2index,
-			Vector<Object> featureValues) {
+	private void encodeStructuralFeatures(EChange eChange, DefaultMutableTreeNode parentNode, Map<String, Integer> featureName2index,
+			List<Object> featureValues) {
 		int index=0;
 		for (EStructuralFeature feature:eChange.eClass().getEAllStructuralFeatures()) {
 			if(feature==null) {

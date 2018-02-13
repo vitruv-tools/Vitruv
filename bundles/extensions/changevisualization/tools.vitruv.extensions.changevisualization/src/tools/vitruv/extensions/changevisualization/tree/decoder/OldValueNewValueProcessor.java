@@ -1,6 +1,7 @@
 package tools.vitruv.extensions.changevisualization.tree.decoder;
 
-import java.util.Hashtable;
+import java.util.List;
+import java.util.Map;
 import java.util.Vector;
 
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -33,15 +34,15 @@ public class OldValueNewValueProcessor extends MultipleFeatureProcessor {
 	}
 
 	@Override
-	public void process(final EChange eChange, final DefaultMutableTreeNode parentNode, Hashtable<String, Integer> featureName2index,
-			Vector<Object> featureValues) {
+	public void process(final EChange eChange, final DefaultMutableTreeNode parentNode, Map<String, Integer> featureName2index,
+			List<Object> featureValues) {
 		
 		//Get the relevant values
-		Object oldValue=featureValues.elementAt(featureName2index.get(OLD_VALUE_SF));
-		Object newValue=featureValues.elementAt(featureName2index.get(NEW_VALUE_SF));
+		Object oldValue=featureValues.get(featureName2index.get(OLD_VALUE_SF));
+		Object newValue=featureValues.get(featureName2index.get(NEW_VALUE_SF));
 		
 		//Removes the old nodes consistently
-		Vector<String> featuresToRemove=new Vector<String>();
+		List<String> featuresToRemove=new Vector<String>();
 		featuresToRemove.add(OLD_VALUE_SF);
 		featuresToRemove.add(NEW_VALUE_SF);
 		removeNodes(featuresToRemove,parentNode,featureName2index,featureValues);

@@ -1,6 +1,6 @@
 package tools.vitruv.extensions.changevisualization.tree.decoder;
 
-import java.util.Hashtable;
+import java.util.Map;
 
 import org.eclipse.emf.ecore.EObject;
 
@@ -22,7 +22,7 @@ public class ReplaceSingleValuedEAttributeDecoder extends AbstractChangeDecoder 
 	}
 
 	@Override
-	protected String generateString(EChange eChange, Hashtable<String, Object> structuralFeatures2values) {
+	protected String generateString(EChange eChange, Map<String, Object> structuralFeatures2values) {
 		//At least oldValue or new Value must exist
 		if(!structuralFeatures2values.containsKey("oldValue")&&!structuralFeatures2values.containsKey("newValue")) {
 			return getFallbackString(eChange);
@@ -60,7 +60,7 @@ public class ReplaceSingleValuedEAttributeDecoder extends AbstractChangeDecoder 
 	 * @param structuralFeatures2values The relevant structural features
 	 * @return The name of the affected eAttribute
 	 */
-	private String extractEAttributeName(EChange eChange, Hashtable<String, Object> structuralFeatures2values) {
+	private String extractEAttributeName(EChange eChange, Map<String, Object> structuralFeatures2values) {
 		Object eAttribute=structuralFeatures2values.get("affectedFeature");
 		if(eAttribute==null||!(eAttribute instanceof EObject)) {
 			return null;
@@ -76,7 +76,7 @@ public class ReplaceSingleValuedEAttributeDecoder extends AbstractChangeDecoder 
 	 * @param structuralFeatures2values The relevant structural features
 	 * @return The name of the affected eObject
 	 */
-	private String extractEObjectName(EChange eChange, Hashtable<String, Object> structuralFeatures2values) {
+	private String extractEObjectName(EChange eChange, Map<String, Object> structuralFeatures2values) {
 		Object eObject=structuralFeatures2values.get("affectedEObject");
 		if(eObject==null||!(eObject instanceof EObject)) {
 			return null;

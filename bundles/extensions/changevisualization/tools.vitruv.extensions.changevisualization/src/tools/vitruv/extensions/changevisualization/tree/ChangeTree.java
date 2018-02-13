@@ -5,6 +5,9 @@ import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.InputEvent;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
 import java.util.Enumeration;
 
 import javax.swing.BorderFactory;
@@ -16,6 +19,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTextArea;
 import javax.swing.JTree;
+import javax.swing.border.TitledBorder;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -26,6 +30,7 @@ import javax.swing.tree.TreeSelectionModel;
 
 import tools.vitruv.extensions.changevisualization.ChangeDataSet;
 import tools.vitruv.extensions.changevisualization.ui.ChangeComponent;
+import tools.vitruv.extensions.changevisualization.ui.ChangeVisualizationUI;
 
 /**
  * A ChangeTree visualizes propagation results in the form of a tree.
@@ -164,6 +169,25 @@ public class ChangeTree extends ChangeComponent {
 		treeUI.getSelectionModel().addTreeSelectionListener(tsl);
 
 		treeUI.setCellRenderer(changeEventTreeRenderer);
+		
+		treeUI.addMouseWheelListener(new MouseWheelListener() {
+			@Override
+			public void mouseWheelMoved(MouseWheelEvent e) {	
+				//Implements the usual strg + mousewheel behaviour for zooming
+				if ((e.getModifiersEx() & InputEvent.CTRL_DOWN_MASK) == 0) return;
+				if(e.getWheelRotation()<=-1) {
+					float newSize=treeUI.getFont().getSize()+2;
+					if(newSize>30) newSize=30;
+					treeUI.setFont(treeUI.getFont().deriveFont(newSize));
+					treeUI.setRowHeight((int)(newSize+10));
+				}else if(e.getWheelRotation()>=1) {
+					float newSize=treeUI.getFont().getSize()-2;
+					if(newSize<5) newSize=5;
+					treeUI.setFont(treeUI.getFont().deriveFont(newSize));
+					treeUI.setRowHeight((int)(newSize+10));
+				}
+			}
+		});
 
 	}	
 
@@ -176,15 +200,19 @@ public class ChangeTree extends ChangeComponent {
 
 		treeUI=new JTree();
 		treeUI.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
-
+		treeUI.setFont(ChangeVisualizationUI.DEFAULT_TREE_FONT);
+		
 		treeScroller=new JScrollPane(treeUI);
-		detailsSplitpane.add(treeScroller);
-
+		detailsSplitpane.add(treeScroller);		
+		
 		detailsUI=new JTextArea();	
+		detailsUI.setFont(ChangeVisualizationUI.DEFAULT_TEXTAREA_FONT);		
 		detailsUI.setEditable(false);
 		detailsScroller=new JScrollPane(detailsUI);
 
-		detailsScroller.setBorder(BorderFactory.createTitledBorder("Details"));
+		TitledBorder detailsTitleBorder = BorderFactory.createTitledBorder("Details");
+		detailsTitleBorder.setTitleFont(ChangeVisualizationUI.DEFAULT_TITLED_BORDER_FONT);
+		detailsScroller.setBorder(detailsTitleBorder);
 		detailsSplitpane.add(detailsScroller);		
 		detailsSplitpane.setDividerLocation(1100);
 
@@ -202,12 +230,17 @@ public class ChangeTree extends ChangeComponent {
 	private Component createToolbar() {
 		JPanel toolbar=new JPanel(new FlowLayout());
 
-		toolbar.add(new JLabel(" Default expand behavior : "));
+		JLabel defaultExpandLabel = new JLabel(" Default expand behavior : ");
+		defaultExpandLabel.setFont(ChangeVisualizationUI.DEFAULT_LABEL_FONT);
+		toolbar.add(defaultExpandLabel);
 
 		//create expand behavior selectors
 		final JCheckBox expandPChange=new JCheckBox("Expand root",expandBehavior==ExpandBehavior.EXPAND_PROPAGATED_CHANGES);
+		expandPChange.setFont(ChangeVisualizationUI.DEFAULT_CHECKBOX_FONT);
 		final JCheckBox expandVChange=new JCheckBox("Expand vChanges",expandBehavior==ExpandBehavior.EXPAND_VCHANGES);
+		expandVChange.setFont(ChangeVisualizationUI.DEFAULT_CHECKBOX_FONT);
 		final JCheckBox expandEChange=new JCheckBox("Expand eChanges",expandBehavior==ExpandBehavior.EXPAND_ECHANGES);
+		expandEChange.setFont(ChangeVisualizationUI.DEFAULT_CHECKBOX_FONT);
 
 		//Assures only one is selected
 		ButtonGroup bg1=new ButtonGroup();

@@ -31,7 +31,7 @@ public class CdsTable extends JPanel implements MouseWheelListener{
 	 * Needed for eclipse to stop warning about serialVersionIds. This feature will never been used. 
 	 */
 	private static final long serialVersionUID = 1L;
-	
+
 	/**
 	 * The Table implementing the actual cds visualization
 	 */
@@ -60,16 +60,6 @@ public class CdsTable extends JPanel implements MouseWheelListener{
 		table.getColumnModel().getColumn( 2 ).setPreferredWidth( 70 );//propagated changes
 		table.getColumnModel().getColumn( 3 ).setPreferredWidth( 70 );//original changes
 		table.getColumnModel().getColumn( 4 ).setPreferredWidth( 70 );//consequential changes
-
-		//Sets a new Default Renderer for Date-Object
-		table.setDefaultRenderer(Date.class,new DefaultTableCellRenderer(){			
-			private static final long serialVersionUID = 1L;
-			
-			private final SimpleDateFormat df=new SimpleDateFormat("dd.MM.yyyy - HH.mm.ss");			
-			protected void setValue(Object value) {
-				setText((value == null) ? "" : df.format((Date)value));
-			}
-		});
 
 		//Add the table to a scrollpane
 		JScrollPane scroller=new JScrollPane(table);
@@ -101,7 +91,7 @@ public class CdsTable extends JPanel implements MouseWheelListener{
 			 * Needed for eclipse to stop warning about serialVersionIds. This feature will never been used. 
 			 */
 			private static final long serialVersionUID = 1L;
-			
+
 			public boolean isCellEditable(int row, int column) {
 				return false; //Table is not editable
 			}	
@@ -128,15 +118,24 @@ public class CdsTable extends JPanel implements MouseWheelListener{
 		table = new JTable();
 
 		table.setAutoCreateRowSorter(true);
-		table.setFont(table.getFont().deriveFont(14f));
 		table.setRowHeight(24);
-		table.getTableHeader().setFont(table.getTableHeader().getFont().deriveFont(16f).deriveFont(Font.BOLD));
 		table.setShowGrid(true);
-
 		table.setFillsViewportHeight(true);
 		table.getTableHeader().setReorderingAllowed(false);
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
+		table.setFont(ChangeVisualizationUI.DEFAULT_TABLE_FONT);
+		table.getTableHeader().setFont(ChangeVisualizationUI.DEFAULT_TABLE_HEADER_FONT);
+
+		//Sets a new Default Renderer for Date-Object
+		table.setDefaultRenderer(Date.class,new DefaultTableCellRenderer(){			
+			private static final long serialVersionUID = 1L;
+
+			private final SimpleDateFormat df=new SimpleDateFormat("dd.MM.yyyy - HH.mm.ss");			
+			protected void setValue(Object value) {
+				setText((value == null) ? "" : df.format((Date)value));
+			}
+		});
 	}
 
 	@Override

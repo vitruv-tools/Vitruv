@@ -1,6 +1,7 @@
 package tools.vitruv.extensions.changevisualization.tree.decoder;
 
-import java.util.Hashtable;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.Vector;
 
@@ -59,8 +60,8 @@ public abstract class MultipleFeatureProcessor {
 	 * @param featureName2index FeatureName ==> Index of feature value in featureValues
 	 * @param featureValues Feature Values (The value of each feature is found at featureName2index index)
 	 */
-	public abstract void process(EChange eChange, DefaultMutableTreeNode node, Hashtable<String, Integer> featureName2index,
-			Vector<Object> featureValues);	
+	public abstract void process(EChange eChange, DefaultMutableTreeNode node, Map<String, Integer> featureName2index,
+			List<Object> featureValues);	
 		
 	/**
 	 * Adds a node in a consistent way.
@@ -72,7 +73,7 @@ public abstract class MultipleFeatureProcessor {
 	 * @param featureValues Feature Values (The value of each feature is found at featureName2index index)
 	 */
 	protected void addNode(DefaultMutableTreeNode parentNode, DefaultMutableTreeNode newNode, 
-			Hashtable<String, Integer> featureName2index, Vector<Object> featureValues) {
+			Map<String, Integer> featureName2index, List<Object> featureValues) {
 		
 		int index=parentNode.getChildCount(); //has to be done prior to adding or -1 is necessary
 		
@@ -94,15 +95,15 @@ public abstract class MultipleFeatureProcessor {
 	 * @param featureName2index FeatureName ==> Index of feature value in featureValues
 	 * @param featureValues Feature Values (The value of each feature is found at featureName2index index)
 	 */
-	protected void removeNodes(Vector<String> featuresToRemove, DefaultMutableTreeNode parentNode,
-			Hashtable<String, Integer> featureName2index, Vector<Object> featureValues) {
+	protected void removeNodes(List<String> featuresToRemove, DefaultMutableTreeNode parentNode,
+			Map<String, Integer> featureName2index, List<Object> featureValues) {
 				
 		for(String featureToRemove:featuresToRemove) {
 			//get the index to remove
 			int indexToRemove=featureName2index.get(featureToRemove);
 			
 			//get all features whose indices are decreased
-			Vector<String> featuresToDecrease=getAllFeaturesWhoseIndicesAreDecreased(indexToRemove,featureName2index);
+			List<String> featuresToDecrease=getAllFeaturesWhoseIndicesAreDecreased(indexToRemove,featureName2index);
 			
 			//remove the feature from all relevant arguments.
 			removeFeature(featureToRemove,indexToRemove,featureName2index,featureValues,parentNode);
@@ -122,8 +123,8 @@ public abstract class MultipleFeatureProcessor {
 	 * @param featureValues Feature Values (The value of each feature is found at featureName2index index)
 	 * @param parentNode The parent node
 	 */
-	private void removeFeature(final String featureToRemove, final int indexToRemove, Hashtable<String, Integer> featureName2index,
-			Vector<Object> featureValues, DefaultMutableTreeNode parentNode) {
+	private void removeFeature(final String featureToRemove, final int indexToRemove, Map<String, Integer> featureName2index,
+			List<Object> featureValues, DefaultMutableTreeNode parentNode) {
 		//remove from featureName2index
 		featureName2index.remove(featureToRemove);
 		//remove from featureValues
@@ -140,9 +141,9 @@ public abstract class MultipleFeatureProcessor {
 	 * @param featureName2index FeatureName ==> Index of feature value in featureValues
 	 * @return All features whose indices have to be decreased
 	 */
-	private Vector<String> getAllFeaturesWhoseIndicesAreDecreased(final int indexToRemove,
-			Hashtable<String, Integer> featureName2index) {
-		Vector<String> featuresToDecrease=new Vector<String>();
+	private List<String> getAllFeaturesWhoseIndicesAreDecreased(final int indexToRemove,
+			Map<String, Integer> featureName2index) {
+		List<String> featuresToDecrease=new Vector<String>();
 		for(String feature:featureName2index.keySet()) {
 			int index=featureName2index.get(feature);
 			if(index>indexToRemove) {

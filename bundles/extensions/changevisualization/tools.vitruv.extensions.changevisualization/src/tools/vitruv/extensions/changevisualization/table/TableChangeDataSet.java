@@ -31,6 +31,12 @@ public class TableChangeDataSet extends ChangeDataSet {
 		super(cdsId, propagationResult);
 	}
 
+	
+	/**
+	 * Vector of Vectors representing the data for a table.
+	 * 
+	 * It has to be vector to be usable by the DefaultTableModel constructor 
+	 */
 	private Vector<Vector<Object>> dataVector;
 
 	protected void extractData(List<PropagatedChange> propagationResult) {
