@@ -64,7 +64,7 @@ class ExecutionTestCompiler {
 				classLoader.loadClass(it) as Class<? extends ChangePropagationSpecification>
 			].collect(Collectors.toList)
 		}
-
+		
 		checkState(loadedChangePropagationClasses.size > 0, 'Failed to load change propagations!')
 
 		return loadedChangePropagationClasses.mapFixed[newInstance]
@@ -75,7 +75,7 @@ class ExecutionTestCompiler {
 		val testProject = prepareTestProject()
 		setGenerationSettings()
 
-		// Disable automatic building
+		// Disable automatic building 
 		ResourcesPlugin.workspace.description = ResourcesPlugin.workspace.description => [autoBuilding = false]
 
 		// copy in the source files
@@ -92,10 +92,10 @@ class ExecutionTestCompiler {
 		testProject.build(PDE.SCHEMA_BUILDER_ID)
 
 		// This first Xtext build will always fail. I have no idea how to
-		// fix that.
+		// fix that. 
 		testProject.build(XtextProjectHelper.BUILDER_ID)
 		testProject.build(XtextProjectHelper.BUILDER_ID)
-
+		
 		testProject.refresh()
 		testProject.build(JavaCore.BUILDER_ID)
 
@@ -139,13 +139,13 @@ class ExecutionTestCompiler {
 
 		return new Project(eclipseProject, sourcesFolder, javaProjectBinFolder)
 	}
-
+	
 	def private setGenerationSettings() {
 		val eclipseApplication = System.getProperty('eclipse.application')
 		if (eclipseApplication === null) return;
 		if (eclipseApplication.contains('org.eclipse.pde.junit')) {
 			// always generate reactions when run from Eclipse, as they are helpful for debugging.
-			generationSettings.createReactionFiles = true
+			generationSettings.createReactionFiles = true			
 		} else if (eclipseApplication.contains('surefire')) {
 			// never create reactions when run from Maven because it is unnecessary and logs errors.
 			generationSettings.createReactionFiles = false
@@ -191,7 +191,7 @@ class ExecutionTestCompiler {
 			], null)
 			eclipseProject.build(IncrementalProjectBuilder.FULL_BUILD, new NullProgressMonitor)
 		}
-
+		
 		def private refresh() {
 			eclipseProject.refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor)
 		}
@@ -200,9 +200,9 @@ class ExecutionTestCompiler {
 	/**
 	 * Sets a target platform in the test platform. This is required to run the
 	 * tests with tycho.
-	 *
+	 * 
 	 * Taken from http://git.eclipse.org/c/gmf-tooling/org.eclipse.gmf-tooling.git/tree/tests/org.eclipse.gmf.tests/src/org/eclipse/gmf/tests/Utils.java#n146
-	 *
+	 * 
 	 * Necessary because of this bug: https://bugs.eclipse.org/bugs/show_bug.cgi?id=343156
 	 */
 	@SuppressWarnings("restriction")
