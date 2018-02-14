@@ -24,4 +24,3 @@ Require-Bundle: org.apache.log4j,
  tools.vitruv.testutils,
  org.junit
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Export-Package: mir.reactions

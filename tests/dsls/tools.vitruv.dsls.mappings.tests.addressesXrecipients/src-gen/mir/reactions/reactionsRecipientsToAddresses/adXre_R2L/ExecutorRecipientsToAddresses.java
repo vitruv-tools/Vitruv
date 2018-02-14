@@ -4,7 +4,7 @@ import tools.vitruv.extensions.dslsruntime.reactions.AbstractReactionsExecutor;
 import tools.vitruv.extensions.dslsruntime.reactions.RoutinesFacadesProvider;
 
 @SuppressWarnings("all")
-public class ExecutorRecipientsToAddresses extends AbstractReactionsExecutor {
+class ExecutorRecipientsToAddresses extends AbstractReactionsExecutor {
   public ExecutorRecipientsToAddresses() {
     super(new tools.vitruv.demo.domains.recipients.RecipientsDomainProvider().getDomain(), 
     	new tools.vitruv.demo.domains.addresses.AddressesDomainProvider().getDomain());
