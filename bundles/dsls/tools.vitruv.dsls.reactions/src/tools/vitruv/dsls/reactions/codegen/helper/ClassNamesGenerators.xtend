@@ -56,8 +56,8 @@ import tools.vitruv.dsls.common.helper.ClassNameGenerator
 	private static def String getReactionsSegmentPackageName(String reactionSegmentName) '''
 		«reactionSegmentName.toFirstLower»'''
 	
-	public static def ClassNameGenerator getChangePropagationSpecificationClassNameGenerator(Pair<VitruvDomain, VitruvDomain> metamodelPair) {
-		return new ChangePropagationSpecificationClassNameGenerator(metamodelPair);
+	public static def ClassNameGenerator getChangePropagationSpecificationClassNameGenerator(ReactionsSegment reactionSegment) {
+		return new ChangePropagationSpecificationClassNameGenerator(reactionSegment);
 	}
 	
 	public static def ClassNameGenerator getExecutorClassNameGenerator(ReactionsSegment reactionSegment) {
@@ -86,17 +86,18 @@ import tools.vitruv.dsls.common.helper.ClassNameGenerator
 	}
 	
 	private static class ChangePropagationSpecificationClassNameGenerator implements ClassNameGenerator {
-		private val String metamodelPairName;
+		private val ReactionsSegment reactionSegment;
 		
-		public new(Pair<VitruvDomain, VitruvDomain> metamodelPair) {
-			this.metamodelPairName = metamodelPair.domainPairName;
+		public new(ReactionsSegment reactionSegment) {
+			this.reactionSegment = reactionSegment;
 		}
 		
 		public override getSimpleName() '''
-			«metamodelPairName»ChangePropagationSpecification'''
+			ChangePropagationSpecification«reactionSegment.metamodelPairName»'''
 		
-		public override getPackageName(){ basicReactionsPackageQualifiedName}	
-	}	
+		public override getPackageName() '''
+			«reactionSegment.metamodelPairReactionsPackageQualifiedName».«reactionSegment.packageName»'''
+	}
 	
 	private static class ExecutorClassNameGenerator implements ClassNameGenerator {
 		private val ReactionsSegment reactionSegment;

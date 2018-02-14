@@ -26,7 +26,7 @@ class ExecutorClassGenerator extends ClassGenerator {
 	
 	override generateEmptyClass() {
 		generatedClass = reactionsSegment.toClass(reactionsSegment.executorClassNameGenerator.qualifiedName) [
-			visibility = JvmVisibility.PUBLIC;
+			visibility = JvmVisibility.DEFAULT;
 		];
 	}
 

@@ -21,6 +21,7 @@ import tools.vitruv.dsls.reactions.codegen.classgenerators.OverriddenRoutinesFac
 import tools.vitruv.dsls.reactions.codegen.classgenerators.RoutinesFacadesProviderClassGenerator
 import static extension tools.vitruv.dsls.reactions.codegen.helper.ReactionsImportsHelper.*
 import static extension tools.vitruv.dsls.reactions.codegen.helper.ReactionsLanguageHelper.*
+import tools.vitruv.dsls.reactions.codegen.classgenerators.ChangePropagationSpecificationClassGenerator
 
 /**
  * <p>Infers a JVM model for the Xtend code blocks of the reaction file model.</p> 
@@ -63,6 +64,7 @@ class ReactionsLanguageJvmModelInferrer extends AbstractModelInferrer  {
 				generate(reaction, acceptor, isPreIndexingPhase);
 			}
 			acceptor.accept(new ExecutorClassGenerator(reactionsSegment, typesBuilderExtensionProvider), reactionsSegment);
+			acceptor.accept(new ChangePropagationSpecificationClassGenerator(reactionsSegment, typesBuilderExtensionProvider), reactionsSegment);
 		}
 
 	}

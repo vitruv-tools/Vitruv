@@ -12,9 +12,6 @@ import org.eclipse.xtext.generator.InMemoryFileSystemAccess
 import tools.vitruv.dsls.reactions.api.generator.IReactionsGenerator
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.CoreMatchers.*;
-import java.util.function.Predicate
-import java.io.InputStreamReader
-import com.google.common.io.CharStreams
 import org.eclipse.xtext.resource.XtextResourceSet
 import tools.vitruv.dsls.reactions.builder.FluentReactionsLanguageBuilder
 import org.eclipse.xtext.xbase.XbaseFactory
@@ -31,14 +28,14 @@ class ReactionsGeneratorTest {
 	@Inject Provider<IReactionsGenerator> generatorProvider
 	@Inject Provider<XtextResourceSet> resourceSetProvider
 	static val allElementTypesDomain = new AllElementTypesDomainProvider().domain
-	static val EXPECTED_CHANGE_PROPAGATION_SPEC_NAME = 'AllElementTypesToAllElementTypesChangePropagationSpecification.java'
+	static val EXPECTED_CHANGE_PROPAGATION_SPEC_NAME = 'ChangePropagationSpecificationAllElementTypesToAllElementTypes'
 	static val EXECUTOR_CLASS_NAME = 'ExecutorAllElementTypesToAllElementTypes'
 	static val REACTION_NAME = 'TestReaction'
 	static val FIRST_SEGMENT = 'firstTestReaction'
 	static val SECOND_SEGMENT = 'secondTestReaction'
 	static val THIRD_SEGMENT = 'thirdTestReaction'
 	static val FOURTH_SEGMENT = 'fourthTestReaction'
-	
+
 	def private createReaction(String reactionName, String reactionsFileName) {
 		val create = new FluentReactionsLanguageBuilder()
 		val fileBuilder = create.reactionsFile(reactionsFileName);
@@ -68,8 +65,8 @@ class ReactionsGeneratorTest {
 		assertFilesForReactionWithoutExecutor(fsa, segmentName, reactionName)
 		assertThat(fsa.allFiles.keySet,
 			hasItem(endsWith(segmentName + '/' + EXECUTOR_CLASS_NAME + '.java')))
-		val spec = fsa.readMatching[endsWith(EXPECTED_CHANGE_PROPAGATION_SPEC_NAME)]
-		assertThat(spec, containsString(segmentName.toFirstLower + '.' + EXECUTOR_CLASS_NAME + '::new'))
+		assertThat(fsa.allFiles.keySet,
+			hasItem(endsWith(segmentName + '/' + EXPECTED_CHANGE_PROPAGATION_SPEC_NAME + '.java')))
 	}
 
 	private static def assertFilesForReactionWithoutExecutor(InMemoryFileSystemAccess fsa, String segmentName, String reactionName) {
@@ -111,9 +108,5 @@ class ReactionsGeneratorTest {
 		fsa.assertFilesForReactionWithoutExecutor(SECOND_SEGMENT, REACTION_NAME);
 		fsa.assertFilesForReaction(THIRD_SEGMENT, REACTION_NAME);
 		fsa.assertFilesForReaction(FOURTH_SEGMENT, REACTION_NAME);
-	}
-
-	def private static readMatching(InMemoryFileSystemAccess fsa, Predicate<String> predicate) {
-		CharStreams.toString(new InputStreamReader(fsa.readBinaryFile(fsa.allFiles.keySet.findFirst(predicate), '')))
 	}
 }

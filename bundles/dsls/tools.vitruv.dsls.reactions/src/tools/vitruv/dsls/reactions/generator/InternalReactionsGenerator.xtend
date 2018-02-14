@@ -47,8 +47,6 @@ class InternalReactionsGenerator implements IReactionsGenerator {
 	@Inject
 	IResourceFactory resourceFactory
 
-	@Inject extension ReactionsEnvironmentGenerator environmentGenerator
-
 	// the resource set we put artificially created reactions in
 	ResourceSet artificialReactionsResourceSet
 
@@ -117,9 +115,6 @@ class InternalReactionsGenerator implements IReactionsGenerator {
 		used = true
 
 		resourcesToGenerate.forEach[generateReactions(fsa)]
-
-		reactionFileResourceSets.forEach[generateEnvironment(fsa)]
-		artificialReactionsResourceSet?.generateEnvironment(fsa)
 	}
 
 	def private createSyntheticResource(String sourceFileName) {

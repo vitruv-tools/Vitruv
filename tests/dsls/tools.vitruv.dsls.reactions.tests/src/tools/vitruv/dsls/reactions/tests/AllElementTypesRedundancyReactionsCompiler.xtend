@@ -22,9 +22,9 @@ import org.osgi.framework.FrameworkUtil
 import tools.vitruv.dsls.reactions.api.generator.IReactionsGenerator
 
 class AllElementTypesRedundancyReactionsCompiler {
-	static val INPUT_REACTION_FILES = #["AllElementTypesRedundancy.reactions", "AllElementTypesRedundancyRoot.reactions"]
+	static val INPUT_REACTION_FILE = "AllElementTypesRedundancy.reactions"
 
-	static val SIMPLE_CHANGES_PROPAGATION_SPEC_FQN = "mir.reactions.AllElementTypesToAllElementTypesChangePropagationSpecification"
+	static val SIMPLE_CHANGES_PROPAGATION_SPEC_FQN = "mir.reactions.reactionsAllElementTypesToAllElementTypes.simpleChangesTests.ChangePropagationSpecificationAllElementTypesToAllElementTypes"
 	static var Supplier<? extends ChangePropagationSpecification> SIMPLE_CHANGES_PROPGATION_SPEC_SUPLLIER
 	static val String COMPLIANCE_LEVEL = "1.8";
 
@@ -46,11 +46,11 @@ class AllElementTypesRedundancyReactionsCompiler {
 
 		val generator = generatorProvider.get()
 		val resultResourceSet = resourceSetProvider.get()
-		for (reactionFile : INPUT_REACTION_FILES) {
-			val reactionFileContent = new String(ByteStreams.toByteArray(class.getResourceAsStream(reactionFile)))
-			val reactionFileUri = URI.createURI(class.getResource(reactionFile).toString)
-			parseHelper.parse(reactionFileContent, reactionFileUri, resultResourceSet)
-		}
+
+		val reactionFileContent = new String(ByteStreams.toByteArray(class.getResourceAsStream(INPUT_REACTION_FILE)))
+		val reactionFileUri = URI.createURI(class.getResource(INPUT_REACTION_FILE).toString)
+		parseHelper.parse(reactionFileContent, reactionFileUri, resultResourceSet)
+
 		generator.addReactionsFiles(resultResourceSet)
 		generator.generate(fsa)
 

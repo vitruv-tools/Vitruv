@@ -7,8 +7,42 @@ import tools.vitruv.framework.change.echange.eobject.EObjectExistenceEChange
 import "http://tools.vitruv.tests.metamodels.allElementTypes" as minimal
 
 reactions: simpleChangesTests
-in reaction to changes in AllElementTypes 
+in reaction to changes in AllElementTypes
 execute actions in AllElementTypes
+
+/*
+ * Creates the model for comparing the further test model with.
+ */
+reaction CreateRootTest {
+	after element minimal::Root created and inserted as root
+	call createRoot(newValue)
+}
+
+routine createRoot(minimal::Root rootElement) {
+	action {
+		val newRoot = create minimal::Root and initialize {
+			newRoot.id = rootElement.id;
+		}
+		add correspondence between newRoot and rootElement
+		call {
+			persistProjectRelative(rootElement, newRoot, "model/" + rootElement.id.replace("Source", "Target") + "." + rootElement.eResource.URI.fileExtension);
+		}
+	}
+}
+
+reaction DeleteRootTest {
+	after element minimal::Root deleted and removed as root
+	call deleteRoot(oldValue)
+}
+
+routine deleteRoot(minimal::Root rootElement) {
+	match {
+		val oldModel = retrieve asserted minimal::Root corresponding to rootElement
+	}
+	action {
+		delete oldModel
+	}
+}
 
 /*
  * UpdateSingleValuedEAttribute
@@ -29,7 +63,7 @@ routine replaceSingleValuedPrimitiveTypeEAttribute(minimal::Root rootElement, In
 		call {
 			SimpleChangesTestsExecutionMonitor.instance.set(UpdateSingleValuedPrimitveTypeEAttribute);
 		}
-	} 
+	}
 }
 
 /*
@@ -54,7 +88,7 @@ routine replaceSingleValuedEAttribute(minimal::Root rootElement, Integer value) 
 		call {
 			SimpleChangesTestsExecutionMonitor.instance.set(UpdateSingleValuedEAttribute);
 		}
-	} 
+	}
 }
 
 /*
@@ -95,7 +129,7 @@ routine insertNonRoot(minimal::Root rootElement, minimal::NonRoot insertedNonRoo
 		update targetElement {
 			targetElement.multiValuedContainmentEReference += newNonRoot;
 		}
-		add correspondence between newNonRoot and insertedNonRoot 
+		add correspondence between newNonRoot and insertedNonRoot
 		call {
 			SimpleChangesTestsExecutionMonitor.instance.set(CreateNonRootEObjectInList);
 		}
@@ -134,7 +168,7 @@ reaction ReplacedNonRootEObjectSingleReaction {
 		if (newValue !== null) {
 			createNonRootEObjectSingle(affectedEObject, newValue);
 		}
-	} 
+	}
 }
 
 routine deleteNonRootEObjectSingle(minimal::NonRoot containedObject) {
@@ -195,7 +229,7 @@ routine replaceSingleValuedNonContainmentReference(minimal::Root rootElement, mi
  * InsertEAttributeValue
  */
 reaction InsertedEAttributeValue {
-	after attribute insert in minimal::Root[multiValuedEAttribute] 
+	after attribute insert in minimal::Root[multiValuedEAttribute]
 	call insertEAttribute(affectedEObject, newValue)
 }
 
@@ -217,7 +251,7 @@ routine insertEAttribute(minimal::Root rootElement, Integer attributeValue) {
  * RemoveEAttributeValue
  */
 reaction RemovedEAttributeValue {
-	after attribute remove from minimal::Root[multiValuedEAttribute] 
+	after attribute remove from minimal::Root[multiValuedEAttribute]
 	call removeEAttribute(affectedEObject, oldValue)
 }
 
@@ -240,7 +274,7 @@ routine removeEAttribute(minimal::Root rootElement, Integer removedAttributeValu
  * InsertNonContainmentEReference
  */
 reaction InsertedNonContainmentEReference {
-	after element minimal::NonRoot inserted in minimal::Root[multiValuedNonContainmentEReference] 
+	after element minimal::NonRoot inserted in minimal::Root[multiValuedNonContainmentEReference]
 	call insertNonContainmentReference(affectedEObject, newValue)
 }
 
@@ -264,7 +298,7 @@ routine insertNonContainmentReference(minimal::Root rootElement, minimal::NonRoo
  * RemoveNonContainmentEReference
  */
 reaction RemovedNonContainmentEReference {
-	after element minimal::NonRoot removed from minimal::Root[multiValuedNonContainmentEReference] 
+	after element minimal::NonRoot removed from minimal::Root[multiValuedNonContainmentEReference]
 	call removeNonContainmentReference(affectedEObject, oldValue)
 }
 
@@ -325,7 +359,7 @@ routine createNonRootInContainer(minimal::NonRootObjectContainerHelper container
 			newNonRoot.id = insertedNonRoot.id;
 		}
 		update nonRootContainer {
-			nonRootContainer.nonRootObjectsContainment += newNonRoot;	
+			nonRootContainer.nonRootObjectsContainment += newNonRoot;
 		}
 		add correspondence between newNonRoot and insertedNonRoot
 	}
