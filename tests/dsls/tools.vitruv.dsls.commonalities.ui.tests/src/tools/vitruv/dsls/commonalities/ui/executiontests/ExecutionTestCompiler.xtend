@@ -58,7 +58,7 @@ class ExecutionTestCompiler {
 
 			val classLoader = new URLClassLoader(#[compiledFolder.toUri.toURL], ExecutionTestCompiler.classLoader)
 			loadedChangePropagationClasses = Files.find(compiledFolder, Integer.MAX_VALUE, [ path, info |
-				val pathLast = path.last.toString;
+				val pathLast = path.last.toString
 				pathLast.contains('ChangePropagationSpecification') && pathLast.endsWith('.class')
 			]).map[compiledFolder.relativize(it)].map[toString.replace('.class', '').replace(File.separator, '.')].map [
 				classLoader.loadClass(it) as Class<? extends ChangePropagationSpecification>
@@ -67,7 +67,11 @@ class ExecutionTestCompiler {
 		
 		checkState(loadedChangePropagationClasses.size > 0, 'Failed to load change propagations!')
 
-		return loadedChangePropagationClasses.mapFixed[newInstance]
+		return loadedChangePropagationClasses.mapFixed[newInstance].groupBy[new Pair(it.sourceDomain, it.targetDomain)].entrySet.mapFixed [
+			val sourceDomain = it.key.key;
+			val targetDomain = it.key.value;
+			new CombinedChangePropagationSpecification(sourceDomain, targetDomain, it.value) as ChangePropagationSpecification
+		]
 	}
 
 	def private compile() {
