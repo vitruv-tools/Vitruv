@@ -112,6 +112,76 @@ class FluentReactionsLanguageBuilderTests {
 	}
 
 	@Test
+	def void importSegment() {
+		val builder = create.reactionsFile('importTest')
+		val baseSegment = create.reactionsSegment('baseSegment')
+			.inReactionToChangesIn(AllElementTypes)
+			.executeActionsIn(AllElementTypes)
+		baseSegment += create.reaction('CreateRootTest').afterElement(Root).created.call [
+			action [
+				vall('newRoot').create(Root)
+				addCorrespondenceBetween('newRoot').and.affectedEObject
+			]
+		]
+
+		val extendedSegment = create.reactionsSegment('extendedSegment')
+			.inReactionToChangesIn(AllElementTypes)
+			.executeActionsIn(AllElementTypes)
+		extendedSegment += create.reaction('CreateRootTest2').afterElement(Root).created.call [
+			action [
+				vall('newRoot').create(Root)
+				addCorrespondenceBetween('newRoot').and.affectedEObject
+			]
+		]
+		extendedSegment.importSegment(baseSegment).routinesOnly.usingQualifiedRoutineNames
+
+		builder += baseSegment
+		builder += extendedSegment
+
+		val reactionResult = '''
+			import "http://tools.vitruv.tests.metamodels.allElementTypes" as allElementTypes
+
+			reactions: baseSegment
+			in reaction to changes in AllElementTypes
+			execute actions in AllElementTypes
+
+			reaction CreateRootTest {
+				after element allElementTypes::Root created
+				call createRootTestRepair(affectedEObject)
+			}
+
+			routine createRootTestRepair(allElementTypes::Root affectedEObject) {
+				action {
+					val newRoot = create allElementTypes::Root
+					add correspondence between newRoot and affectedEObject
+				}
+			}
+
+
+
+			reactions: extendedSegment
+			in reaction to changes in AllElementTypes
+			execute actions in AllElementTypes
+
+			import routines baseSegment using qualified names
+
+			reaction CreateRootTest2 {
+				after element allElementTypes::Root created
+				call createRootTest2Repair(affectedEObject)
+			}
+
+			routine createRootTest2Repair(allElementTypes::Root affectedEObject) {
+				action {
+					val newRoot = create allElementTypes::Root
+					add correspondence between newRoot and affectedEObject
+				}
+			}
+		'''
+
+		assertThat(builder, builds(reactionResult))
+	}
+
+	@Test
 	def void noEmptyReactionsFile() {
 		thrown.expectMessage("No reactions segments")
 		thrown.expect(IllegalStateException)
