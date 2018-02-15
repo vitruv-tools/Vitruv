@@ -2,6 +2,7 @@ package tools.vitruv.dsls.reactions.builder
 
 import org.eclipse.xtend.lib.annotations.Accessors
 import tools.vitruv.dsls.mirbase.mirBase.MirBaseFactory
+import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsImport
 import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsLanguageFactory
 import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsSegment
 import tools.vitruv.framework.domains.VitruvDomain
@@ -67,6 +68,38 @@ class FluentReactionsSegmentBuilder extends FluentReactionElementBuilder {
 		MirBaseFactory.eINSTANCE.createDomainReference => [
 			domain = domainName
 		]
+	}
+	
+	def importSegment(FluentReactionsSegmentBuilder reactionsSegmentBuilder) {
+		return new ReactionsSegmentImportBuilder(this, reactionsSegmentBuilder);
+	}
+	
+	static class ReactionsSegmentImportBuilder {
+		val extension FluentReactionsSegmentBuilder builder
+		val ReactionsImport reactionsImport;
+
+		private new(FluentReactionsSegmentBuilder builder, FluentReactionsSegmentBuilder reactionsSegmentBuilder) {
+			this.builder = builder
+			this.reactionsImport = ReactionsLanguageFactory.eINSTANCE.createReactionsImport => [
+				importedReactionsSegment = reactionsSegmentBuilder.segment
+			]
+			builder.segment.reactionsImports += reactionsImport
+		}
+
+		def routinesOnly() {
+			reactionsImport.routinesOnly = true;
+			this
+		}
+
+		def usingQualifiedRoutineNames() {
+			reactionsImport.useQualifiedNames = true
+			builder
+		}
+
+		def usingSimpleRoutineNames() {
+			reactionsImport.useQualifiedNames = false
+			builder
+		}
 	}
 	
 	def operator_add(FluentReactionBuilder[] reactionBuilders) {
