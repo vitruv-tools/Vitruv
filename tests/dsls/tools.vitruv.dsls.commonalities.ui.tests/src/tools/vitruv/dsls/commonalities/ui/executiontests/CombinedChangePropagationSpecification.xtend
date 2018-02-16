@@ -1,10 +1,10 @@
 package tools.vitruv.dsls.commonalities.ui.executiontests
 
-import tools.vitruv.framework.change.processing.impl.CompositeChangePropagationSpecification
-import tools.vitruv.framework.domains.VitruvDomain
 import tools.vitruv.framework.change.processing.ChangePropagationSpecification
+import tools.vitruv.framework.change.processing.impl.CompositeDecomposingChangePropagationSpecification
+import tools.vitruv.framework.domains.VitruvDomain
 
-class CombinedChangePropagationSpecification extends CompositeChangePropagationSpecification {
+class CombinedChangePropagationSpecification extends CompositeDecomposingChangePropagationSpecification {
 
 	new(VitruvDomain sourceDomain, VitruvDomain targetDomain, Iterable<ChangePropagationSpecification> processors) {
 		super(sourceDomain, targetDomain)
