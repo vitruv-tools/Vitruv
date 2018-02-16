@@ -192,7 +192,7 @@ class FluentReactionsLanguageBuilderTests {
 	
 	@Test
 	def void noEmptyReactionsSegment() {
-		thrown.expectMessage("Neither routines nor reactions")
+		thrown.expectMessage("Neither routines, nor reactions, nor imports")
 		thrown.expect(IllegalStateException)
 		
 		val builder = create.reactionsFile('Test') +=

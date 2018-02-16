@@ -26,7 +26,8 @@ class FluentReactionsSegmentBuilder extends FluentReactionElementBuilder {
 
 	override protected attachmentPreparation() {
 		super.attachmentPreparation()
-		checkState(segment.routines.size + segment.reactions.size > 0, '''Neither routines nor reactions were added to the reaction segment «segment.name»!''')
+		checkState(segment.routines.size + segment.reactions.size + segment.reactionsImports.size > 0,
+			'''Neither routines, nor reactions, nor imports were added to the reaction segment «segment.name»!''')
 	}
 	
 	static class ReactionsSegmentSourceBuilder {
