@@ -7,7 +7,6 @@ import allElementTypes2.Root2
 import com.google.inject.Inject
 import org.eclipse.xtext.testing.InjectWith
 import org.eclipse.xtext.testing.XtextRunner
-import org.junit.Ignore
 import org.junit.Test
 import org.junit.runner.RunWith
 import pcm_mockup.Pcm_mockupFactory
@@ -215,7 +214,6 @@ class IdentifiedExecutionTest extends CommonalitiesExecutionTest {
 	 ]))*/
 	}
 
-	@Ignore
 	@Test
 	def void rootWithReferenceInsert() {
 		createAndSynchronizeModel('testid.allElementTypes2', root2 => [
@@ -241,7 +239,6 @@ class IdentifiedExecutionTest extends CommonalitiesExecutionTest {
 		], ignoring('id')))
 	}
 	
-	@Ignore
 	@Test
 	def void multiReferenceInsert() {
 		createAndSynchronizeModel('testid.allElementTypes2', root2 => [
