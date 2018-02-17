@@ -315,7 +315,7 @@ final class ReactionsLanguageUtil {
 	/**
 	 * Converts the given {@link RoutineOverrideImportPath} to a corresponding {@link ReactionsImportPath}.
 	 * <p>
-	 * Any unresolved segments inside the {@link RoutineOverrideImportPath} will get represented by the String
+	 * Any incomplete or unresolvable segments inside the {@link RoutineOverrideImportPath} will get represented by the String
 	 * {@literal "<unresolved>"} inside the {@link ReactionsImportPath}.
 	 * 
 	 * @param routineOverrideImportPath the routine override import path, can be <code>null</code>
@@ -326,7 +326,7 @@ final class ReactionsLanguageUtil {
 		val fullPathSegments = routineOverrideImportPath.fullPath.map [
 			val segment = it.reactionsSegment;
 			// handle segments that are incomplete or cannot be resolved:
-			if (segment === null || segment.name === null) {
+			if ((segment?.name).nullOrEmpty) {
 				return "<unresolved>";
 			} else {
 				return segment.name;

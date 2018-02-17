@@ -38,7 +38,7 @@ class FluentReactionBuilder extends FluentReactionsSegmentChildBuilder {
 	}
 
 	def package start() {
-		return new TriggerBuilder(this)
+		return new OverrideOrTriggerBuilder(this)
 	}
 
 	override protected attachmentPreparation() {
@@ -47,8 +47,19 @@ class FluentReactionBuilder extends FluentReactionsSegmentChildBuilder {
 		checkState(reaction.callRoutine !== null, '''No routine call was set on the «this»!''')
 	}
 
+	static class OverrideOrTriggerBuilder extends TriggerBuilder {
+		private new(FluentReactionBuilder builder) {
+			super(builder)
+		}
+
+		def overrideSegment(FluentReactionsSegmentBuilder segmentBuilder) {
+			reaction.overriddenReactionsSegment = segmentBuilder?.segment;
+			new TriggerBuilder(builder)
+		}
+	}
+
 	static class TriggerBuilder {
-		val extension FluentReactionBuilder builder
+		protected val extension FluentReactionBuilder builder
 
 		private new(FluentReactionBuilder builder) {
 			this.builder = builder

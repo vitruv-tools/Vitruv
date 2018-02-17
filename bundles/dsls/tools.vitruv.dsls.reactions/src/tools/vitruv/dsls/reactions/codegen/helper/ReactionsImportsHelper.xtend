@@ -30,36 +30,44 @@ class ReactionsImportsHelper {
 	}
 
 	/**
-	 * Gets the parsed imported reactions segment name for the given reactions import, without actually resolving the
-	 * cross-reference.
-	 */
-	public static def String getParsedImportedReactionsSegmentName(ReactionsImport reactionsImport) {
-		return reactionsImport.getFeatureNodeText(ReactionsLanguagePackage.Literals.REACTIONS_IMPORT__IMPORTED_REACTIONS_SEGMENT);
-	}
-
-	/**
-	 * Gets the parsed overridden reactions segment name for the given reaction, without actually resolving the cross-reference.
+	 * Gets the name of the overridden reactions segment.
+	 * <p>
+	 * Before accessing the overridden reactions segment directly and therefore resolving the potentially still unresolved
+	 * cross-reference, this first attempts to get the parsed overridden reactions segment name.
 	 */
 	public static def String getParsedOverriddenReactionsSegmentName(Reaction reaction) {
-		return reaction.getFeatureNodeText(ReactionsLanguagePackage.Literals.REACTION__OVERRIDDEN_REACTIONS_SEGMENT);
+		val parsed = reaction.getFeatureNodeText(ReactionsLanguagePackage.Literals.REACTION__OVERRIDDEN_REACTIONS_SEGMENT);
+		if (!parsed.nullOrEmpty) return parsed;
+		return reaction.overriddenReactionsSegment?.name;
 	}
 
 	/**
-	 * Gets the parsed override import path for the given routine, without actually resolving the cross-references.
+	 * Gets the reactions segment names of the override import path for the given routine.
+	 * <p>
+	 * Before accessing the reactions segments inside the override import path directly and therefore resolving the potentially
+	 * still unresolved cross-references, this first attempts to get the parsed import path segment names.
+	 * <p>
+	 * Any incomplete or unresolvable segments inside the import path will get represented by an empty String.
 	 */
 	public static def ReactionsImportPath getParsedOverrideImportPath(Routine routine) {
 		return routine.overrideImportPath.parsedOverrideImportPath;
 	}
 
 	/**
-	 * Gets the parsed override import path for the given {@link RoutineOverrideImportPath}, without actually resolving the
-	 * cross-references.
+	 * Gets the reactions segment names of the given override import path.
+	 * <p>
+	 * Before accessing the reactions segments inside the override import path directly and therefore resolving the potentially
+	 * still unresolved cross-references, this first attempts to get the parsed import path segment names.
+	 * <p>
+	 * Any incomplete or unresolvable segments inside the import path will get represented by an empty String.
 	 */
 	public static def ReactionsImportPath getParsedOverrideImportPath(RoutineOverrideImportPath routineOverrideImportPath) {
 		if (routineOverrideImportPath === null) return null;
 		// getting the parsed text of each individual segment (instead of the whole import path) to skip hidden tokens in between:
 		val parsedSegments = routineOverrideImportPath.fullPath.map [
-			it.getFeatureNodeText(ReactionsLanguagePackage.Literals.ROUTINE_OVERRIDE_IMPORT_PATH__REACTIONS_SEGMENT) ?: "";
+			val parsed = it.getFeatureNodeText(ReactionsLanguagePackage.Literals.ROUTINE_OVERRIDE_IMPORT_PATH__REACTIONS_SEGMENT);
+			if (!parsed.isNullOrEmpty) return parsed;
+			return (it.reactionsSegment?.name) ?: "";
 		];
 		return ReactionsImportPath.create(parsedSegments);
 	}
@@ -74,6 +82,8 @@ class ReactionsImportsHelper {
 	 * Gets the parsed import paths for all complete routine overrides contained in the given reactions segment.
 	 * <p>
 	 * The returned import paths are unique, and relative to the given reactions segment.
+	 * 
+	 * @see #getParsedOverrideImportPath(Routine)
 	 */
 	public static def Set<ReactionsImportPath> getParsedOverriddenRoutinesImportPaths(ReactionsSegment reactionsSegment) {
 		return reactionsSegment.overrideRoutines.filter[it.isComplete].map[it.parsedOverrideImportPath].toSet;
