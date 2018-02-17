@@ -24,5 +24,5 @@ Require-Bundle: org.apache.log4j,
  tools.vitruv.testutils,
  org.junit
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Export-Package: mir.reactions.reactionsAddressesToRecipients.adXre_L2R,
- mir.reactions.reactionsRecipientsToAddresses.adXre_R2L
+Export-Package: mir.reactions.adXre_L2R,
+ mir.reactions.adXre_R2L

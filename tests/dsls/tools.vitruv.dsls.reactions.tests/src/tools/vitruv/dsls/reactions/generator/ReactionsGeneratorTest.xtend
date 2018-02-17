@@ -28,8 +28,8 @@ class ReactionsGeneratorTest {
 	@Inject Provider<IReactionsGenerator> generatorProvider
 	@Inject Provider<XtextResourceSet> resourceSetProvider
 	static val allElementTypesDomain = new AllElementTypesDomainProvider().domain
-	static val EXPECTED_CHANGE_PROPAGATION_SPEC_NAME = 'ChangePropagationSpecificationAllElementTypesToAllElementTypes'
-	static val EXECUTOR_CLASS_NAME = 'ExecutorAllElementTypesToAllElementTypes'
+	static val CHANGE_PROPAGATION_SPEC_NAME_SUFFIX = 'ChangePropagationSpecification'
+	static val EXECUTOR_CLASS_NAME = 'ReactionsExecutor'
 	static val REACTION_NAME = 'TestReaction'
 	static val FIRST_SEGMENT = 'firstTestReaction'
 	static val SECOND_SEGMENT = 'secondTestReaction'
@@ -66,7 +66,7 @@ class ReactionsGeneratorTest {
 		assertThat(fsa.allFiles.keySet,
 			hasItem(endsWith(segmentName + '/' + EXECUTOR_CLASS_NAME + '.java')))
 		assertThat(fsa.allFiles.keySet,
-			hasItem(endsWith(segmentName + '/' + EXPECTED_CHANGE_PROPAGATION_SPEC_NAME + '.java')))
+			hasItem(endsWith(segmentName + '/' + segmentName.toFirstUpper + CHANGE_PROPAGATION_SPEC_NAME_SUFFIX + '.java')))
 	}
 
 	private static def assertFilesForReactionWithoutExecutor(InMemoryFileSystemAccess fsa, String segmentName, String reactionName) {

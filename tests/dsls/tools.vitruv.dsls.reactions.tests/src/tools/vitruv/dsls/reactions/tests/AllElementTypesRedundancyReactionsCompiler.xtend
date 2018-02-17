@@ -24,7 +24,7 @@ import tools.vitruv.dsls.reactions.api.generator.IReactionsGenerator
 class AllElementTypesRedundancyReactionsCompiler {
 	static val INPUT_REACTION_FILE = "AllElementTypesRedundancy.reactions"
 
-	static val SIMPLE_CHANGES_PROPAGATION_SPEC_FQN = "mir.reactions.reactionsAllElementTypesToAllElementTypes.simpleChangesTests.ChangePropagationSpecificationAllElementTypesToAllElementTypes"
+	static val SIMPLE_CHANGES_PROPAGATION_SPEC_FQN = "mir.reactions.simpleChangesTests.SimpleChangesTestsChangePropagationSpecification"
 	static var Supplier<? extends ChangePropagationSpecification> SIMPLE_CHANGES_PROPGATION_SPEC_SUPLLIER
 	static val String COMPLIANCE_LEVEL = "1.8";
 

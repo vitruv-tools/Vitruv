@@ -4,7 +4,7 @@ import edu.kit.ipd.sdq.metamodels.addresses.Address
 import edu.kit.ipd.sdq.metamodels.addresses.Addresses
 import edu.kit.ipd.sdq.metamodels.recipients.Recipient
 import edu.kit.ipd.sdq.metamodels.recipients.RecipientsFactory
-import mir.reactions.reactionsRecipientsToAddresses.adXre_R2L.ChangePropagationSpecificationRecipientsToAddresses
+import mir.reactions.adXre_R2L.AdXre_R2LChangePropagationSpecification
 import org.eclipse.emf.ecore.EObject
 import org.junit.Test
 
@@ -13,7 +13,7 @@ import static org.junit.Assert.*
 class AddressesXRecipientsR2LTest extends AddressesXRecipientsTest {
 	
 	override protected createChangePropagationSpecifications() {
-		return #[new ChangePropagationSpecificationRecipientsToAddresses()]
+		return #[new AdXre_R2LChangePropagationSpecification()]
 	}
 	
 	@Test
