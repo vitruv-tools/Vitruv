@@ -7,7 +7,8 @@ import tools.vitruv.dsls.reactions.tests.TestReactionsCompiler
 class ImportTestReactionsCompiler extends TestReactionsCompiler {
 
 	static val INPUT_REACTION_FILES = #["Root.reactions", "DirectSN.reactions", "Direct2SN.reactions", "DirectRoutinesQN.reactions",
-		"TransitiveSN.reactions", "TransitiveRoutinesSN.reactions", "TransitiveRoutinesQN.reactions", "CommonRoutines.reactions"]
+		"TransitiveSN.reactions", "Transitive2SN.reactions", "Transitive3SN.reactions", "TransitiveRoutinesSN.reactions",
+		"TransitiveRoutinesQN.reactions", "CommonRoutines.reactions"]
 	static val CHANGE_PROPAGATION_SEGMENTS = #["importTestsRoot"]
 
 	new() {
