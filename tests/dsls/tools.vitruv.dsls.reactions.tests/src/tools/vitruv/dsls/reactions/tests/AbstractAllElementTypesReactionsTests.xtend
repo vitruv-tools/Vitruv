@@ -15,7 +15,7 @@ abstract class AbstractAllElementTypesReactionsTests extends VitruviusApplicatio
 	@Inject AllElementTypesRedundancyReactionsCompiler reactionCompiler
 
 	override protected createChangePropagationSpecifications() {
-		#[reactionCompiler.newConcreteChangePropagationSpecification()]
+		newArrayList(reactionCompiler.getNewChangePropagationSpecifications())
 	}
 	
 	protected override getVitruvDomains() {
