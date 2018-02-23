@@ -9,7 +9,7 @@ import static com.google.common.base.Preconditions.*
 /**
  * A RoutinesFacadesProvider which caches created routines facades.
  * <p>
- * Implementations are required to override {@link #createRoutinesFacade(ReactionsImportPath)} to create the routines facade of
+ * Implementations are required to override {@link #createRoutinesFacade(ReactionsImportPath)} to create the routines facades of
  * the handled import hierarchy there.
  */
 abstract class AbstractRoutinesFacadesProvider implements RoutinesFacadesProvider {
@@ -29,7 +29,7 @@ abstract class AbstractRoutinesFacadesProvider implements RoutinesFacadesProvide
 		// check if we already created the requested routines facade:
 		var T routinesFacade = routinesFacades.get(reactionsImportPath) as T;
 		if (routinesFacade !== null) return routinesFacade;
-		// create the routines facade::
+		// create the routines facade:
 		routinesFacade = this.createRoutinesFacade(reactionsImportPath, sharedRoutinesFacadeExecutionState) as T;
 		if (routinesFacade !== null) {
 			// store created routines facade:

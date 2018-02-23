@@ -172,7 +172,7 @@ class ReactionsLanguageValidator extends AbstractReactionsLanguageValidator {
 		val alreadyCheckedIncludedRoutines = new HashMap<String, ReactionsImport>();
 		for (reactionsImport : reactionsSegment.reactionsImports.filter[!it.useQualifiedNames]) {
 			val importedSegment = reactionsImport.importedReactionsSegment;
-			val importIncludedRoutines = importedSegment.includedRoutines.keySet;
+			val importIncludedRoutines = importedSegment.getIncludedRoutines(true, false).keySet;
 			for (includedRoutine : importIncludedRoutines) {
 				val includedRoutineName = includedRoutine.formattedName;
 

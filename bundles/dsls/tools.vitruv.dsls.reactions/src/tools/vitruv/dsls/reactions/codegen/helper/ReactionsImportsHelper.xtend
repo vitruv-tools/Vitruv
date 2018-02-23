@@ -20,9 +20,10 @@ import tools.vitruv.extensions.dslsruntime.reactions.structure.ReactionsImportPa
 
 import static extension tools.vitruv.dsls.reactions.codegen.helper.ReactionsLanguageHelper.*
 import static extension tools.vitruv.dsls.reactions.util.ReactionsLanguageUtil.*
+import static com.google.common.base.Preconditions.*
 
 /**
- * Contains utilities related to reactions imports, import hierarchies, and reaction and routine overrides.
+ * Utilities related to reactions imports, import hierarchies, and reaction and routine overrides.
  */
 class ReactionsImportsHelper {
 
@@ -34,6 +35,10 @@ class ReactionsImportsHelper {
 	 * <p>
 	 * Before accessing the overridden reactions segment directly and therefore resolving the potentially still unresolved
 	 * cross-reference, this first attempts to get the parsed overridden reactions segment name.
+	 * 
+	 * @param reaction the reaction
+	 * @return the name of the overridden reactions segment, or <code>null</code> if the given reaction doesn't override any
+	 *         other reaction
 	 */
 	public static def String getParsedOverriddenReactionsSegmentName(Reaction reaction) {
 		val parsed = reaction.getFeatureNodeText(ReactionsLanguagePackage.Literals.REACTION__OVERRIDDEN_REACTIONS_SEGMENT);
@@ -48,6 +53,10 @@ class ReactionsImportsHelper {
 	 * still unresolved cross-references, this first attempts to get the parsed import path segment names.
 	 * <p>
 	 * Any incomplete or unresolvable segments inside the import path will get represented by an empty String.
+	 * 
+	 * @param routine the routine
+	 * @return the reactions import path consisting of the found segment names, or <code>null</code> if the given routine does
+	 *         not override any other routine
 	 */
 	public static def ReactionsImportPath getParsedOverrideImportPath(Routine routine) {
 		return routine.overrideImportPath.parsedOverrideImportPath;
@@ -60,6 +69,10 @@ class ReactionsImportsHelper {
 	 * still unresolved cross-references, this first attempts to get the parsed import path segment names.
 	 * <p>
 	 * Any incomplete or unresolvable segments inside the import path will get represented by an empty String.
+	 * 
+	 * @param routineOverrideImportPath the routine override import path
+	 * @return the reactions import path consisting of the found segment names, or <code>null</code> if the given routine
+	 *         override path was <code>null</code>
 	 */
 	public static def ReactionsImportPath getParsedOverrideImportPath(RoutineOverrideImportPath routineOverrideImportPath) {
 		if (routineOverrideImportPath === null) return null;
@@ -83,6 +96,8 @@ class ReactionsImportsHelper {
 	 * <p>
 	 * The returned import paths are unique, and relative to the given reactions segment.
 	 * 
+	 * @param reactionsSegment the reactions segment
+	 * @return the parsed overridden routines import paths
 	 * @see #getParsedOverrideImportPath(Routine)
 	 */
 	public static def Set<ReactionsImportPath> getParsedOverriddenRoutinesImportPaths(ReactionsSegment reactionsSegment) {
@@ -90,7 +105,11 @@ class ReactionsImportsHelper {
 	}
 
 	/**
-	 * Checks if reactions imports can be resolved currently.
+	 * Checks if all reactions imports of the given reactions segment can be resolved currently.
+	 * 
+	 * @param reactionsSegment the reactions segment
+	 * @return <code>true</code> if all imports are resolvable
+	 * @see #isResolvable(ReactionsImport)
 	 */
 	public static def boolean isAllImportsResolvable(ReactionsSegment reactionsSegment) {
 		// getting the imported reactions segment from the reactions import triggers a resolve,
@@ -98,6 +117,20 @@ class ReactionsImportsHelper {
 		return (reactionsSegment.reactionsImports.findFirst[!it.isResolvable] === null);
 	}
 
+	/**
+	 * Checks if the given reactions import can be resolved currently.
+	 * <p>
+	 * This checks whether:
+	 * <ul>
+	 * <li>The reactions import is not <code>null</code>.
+	 * <li>The imported reactions segment is not <code>null</code>.
+	 * <li>The imported reactions segment is no proxy.
+	 * </ul>
+	 * Note: This will trigger a resolve of the potentially not yet resolved cross-reference to the imported reactions segment!
+	 * 
+	 * @param reactionsImport the reactions import
+	 * @return <code>true</code> if the given import is resolvable
+	 */
 	public static def boolean isResolvable(ReactionsImport reactionsImport) {
 		// getting the imported reactions segment from the reactions import triggers a resolve,
 		// which will only still be a proxy afterwards if it wasn't resolvable
@@ -144,14 +177,20 @@ class ReactionsImportsHelper {
 	 * 
 	 * @param <R> the type of the return value
 	 * @param <D> the type of the data being passed along
+	 * @param rootReactionsSegment the root reactions segment, not <code>null</code>
+	 * @param dataInitializer creates a data object which gets then passed around to the called visitors, optional
+	 * @param earlyVisitor the visitor that gets called right when reaching a reactions segment in the import hierarchy, optional
+	 * @param lateVisitor the visitor that gets called during backtracking, after all imports of a reactions segment have been fully followed, optional
+	 * @param importFilter a predicate that decides whether an import is further followed, optional
+	 * @param returnValueFunction the return value function, not <code>null</code>
+	 * @return the return value calculated by the return value function
 	 */
 	public static def <R, D> R walkImportHierarchy(ReactionsSegment rootReactionsSegment, Supplier<D> dataInitializer,
 		ImportHierarchyVisitor<D> earlyVisitor, ImportHierarchyVisitor<D> lateVisitor, Predicate<ReactionsImport> importFilter,
 		Function<D, R> returnValueFunction) {
-		// check for invalid arguments:
-		if (rootReactionsSegment === null || returnValueFunction === null) {
-			return null;
-		}
+		checkNotNull(rootReactionsSegment, "rootReactionsSegment is null");
+		checkNotNull(returnValueFunction, "returnValueFunction is null");
+
 		// initialize the data being passed along:
 		val data = dataInitializer?.get();
 		// start walking:
@@ -189,6 +228,9 @@ class ReactionsImportsHelper {
 	 * <p>
 	 * The reactions segments are returned together with their absolute reactions import path (starting with the root segment)
 	 * denoting their position in the import hierarchy.
+	 * 
+	 * @param rootReactionsSegment the root reactions segment, not <code>null</code>
+	 * @return all reactions segments in the import hierarchy by their absolute import paths
 	 */
 	public static def Map<ReactionsImportPath, ReactionsSegment> getRoutinesImportHierarchy(ReactionsSegment rootReactionsSegment) {
 		return walkImportHierarchy(rootReactionsSegment,
@@ -224,6 +266,9 @@ class ReactionsImportsHelper {
 	 * <p>
 	 * The reactions segments are returned together with their absolute reactions import path (starting with the root segment)
 	 * denoting their position in the import hierarchy.
+	 * 
+	 * @param rootReactionsSegment the root reactions segment, not <code>null</code>
+	 * @return all reactions segments in the import hierarchy, that contribute reactions, by their absolute import paths
 	 */
 	public static def Map<ReactionsImportPath, ReactionsSegment> getReactionsImportHierarchy(ReactionsSegment rootReactionsSegment) {
 		return walkImportHierarchy(rootReactionsSegment,
@@ -257,8 +302,11 @@ class ReactionsImportsHelper {
 	 * reactions being replaced. This can contain reactions with duplicate names, as long as those originate from differently
 	 * named reactions segments.
 	 * <p>
-	 * The reactions are returned together with their absolute reactions import path (starting with the root segment) denoting
-	 * their position in the import hierarchy.
+	 * The reactions are returned together with the absolute reactions import paths (starting with the root segment) denoting the
+	 * positions of the their reactions segments in the import hierarchy.
+	 * 
+	 * @param rootReactionsSegment the root reactions segment, not <code>null</code>
+	 * @return all included reactions with their absolute import paths
 	 */
 	public static def Map<Reaction, ReactionsImportPath> getIncludedReactions(ReactionsSegment rootReactionsSegment) {
 		return walkImportHierarchy(rootReactionsSegment,
@@ -299,13 +347,25 @@ class ReactionsImportsHelper {
 	/**
 	 * Gets all routines that are included in the routines facade of the given root reactions segment.
 	 * <p>
-	 * This includes the own routines, as well as all routines that are directly and transitively imported without qualified
-	 * names, with overridden routines being replaced. Duplicately included or named routines are only contained once.
+	 * This includes all routines that are directly and transitively imported without qualified names. Duplicately included or
+	 * named routines are only contained once.
 	 * <p>
-	 * The routines are returned together with their absolute reactions import path (starting with the root segment) denoting
-	 * their position in the import hierarchy.
+	 * The <code>includeRootRoutines</code> parameter controls whether the routines of the given root reactions segment are
+	 * included in the result.
+	 * <p>
+	 * The <code>resolveOverrides</code> parameter controls whether overridden routines get replaced with their overriding
+	 * routine. This considers the overrides of the root reactions segment regardless of the <code>includeRootRoutines</code> parameter. 
+	 * <p>
+	 * The routines are returned together with the absolute reactions import paths (starting with the root segment) denoting the
+	 * position of the their reactions segments in the import hierarchy.
+	 * 
+	 * @param rootReactionsSegment the root reactions segment, not <code>null</code>
+	 * @param includeRootRoutines whether to include the routines of the root reactions segment
+	 * @param resolveOverrides whether to replace routines with their overriding routine
+	 * @return all included routines with their absolute import paths
 	 */
-	public static def Map<Routine, ReactionsImportPath> getIncludedRoutines(ReactionsSegment rootReactionsSegment) {
+	public static def Map<Routine, ReactionsImportPath> getIncludedRoutines(ReactionsSegment rootReactionsSegment,
+		boolean includeRootRoutines, boolean resolveOverrides) {
 		return walkImportHierarchy(rootReactionsSegment,
 			// data initializer:
 			[
@@ -320,6 +380,8 @@ class ReactionsImportsHelper {
 			],
 			// early visitor:
 			[ sourceImport, currentImportPath, currentReactionsSegment, data |
+				// skip root segment if its routines shall not get included:
+				if (!includeRootRoutines && currentImportPath.length == 1) return;
 				val routinesByName = data.first;
 				val routinesByFullyQualifiedName = data.second;
 				val routinesToImportPath = data.third;
@@ -336,6 +398,7 @@ class ReactionsImportsHelper {
 			],
 			// late visitor:
 			[ sourceImport, currentImportPath, currentReactionsSegment, data |
+				if (!resolveOverrides) return;
 				val routinesByName = data.first;
 				val routinesByFullyQualifiedName = data.second;
 				val routinesToImportPath = data.third;
@@ -370,6 +433,9 @@ class ReactionsImportsHelper {
 	 * <p>
 	 * The reactions segments are returned together with their absolute reactions import path (starting with the root segment)
 	 * denoting their position in the import hierarchy.
+	 * 
+	 * @param rootReactionsSegment the root reactions segment, not <code>null</code>
+	 * @return all reactions segments whose routines facades are included, with their absolute import paths
 	 */
 	public static def Map<ReactionsSegment, ReactionsImportPath> getIncludedRoutinesFacades(ReactionsSegment rootReactionsSegment) {
 		return walkImportHierarchy(rootReactionsSegment,
@@ -430,8 +496,8 @@ class ReactionsImportsHelper {
 		 * @param currentReactionsSegment
 		 *            the current reactions segment
 		 * @param remainingImportPath
-		 *            the remaining import path to walk, relative to the current reactions segment, or <code>null</code>
-		 *            if the end of the path is reached
+		 *            the remaining import path to walk, relative to the current reactions segment, empty if the end of the path
+		 *            is reached
 		 * @return the return value, or <code>null</code> to continue walking
 		 */
 		def T visit(ReactionsImport sourceImport, ReactionsImportPath currentImportPath, ReactionsSegment currentReactionsSegment,
@@ -447,21 +513,24 @@ class ReactionsImportsHelper {
 	 * <p>
 	 * Any cyclic imports or imports that cannot be resolved along the path will be considered non-existent and therefore not be
 	 * followed.
-	 * <p>
-	 * Returns <code>null</code> if the end of the path is reached without a <code>non-null</code> return value, or the path is
-	 * invalid / does not exist in the import hierarchy of the root reactions segment.
+	 * 
+	 * @param <T> the type of the return value
+	 * @param rootReactionsSegment the reactions segment to start the walk at, not <code>null</code>
+	 * @param relativeImportPath the relative import path to walk, not <code>null</code>
+	 * @param visitor the visitor, not <code>null</code>
+	 * @return the return value provided by the visitor, or <code>null</code> if the end of the path is reached without the
+	 *         visitor providing a <code>non-null</code> return value, or if the path does not exist in the import hierarchy of
+	 *         the root reactions segment
 	 */
 	public static def <T> T walkImportPath(ReactionsSegment rootReactionsSegment, ReactionsImportPath relativeImportPath, ImportPathVisitor<T> visitor) {
-		// check for invalid arguments:
-		if (rootReactionsSegment === null || visitor === null) {
-			return null;
-		}
+		checkNotNull(rootReactionsSegment, "rootReactionsSegment is null");
+		checkNotNull(relativeImportPath, "relativeImportPath is null");
+		checkNotNull(visitor, "visitor is null");
+
 		// check if the requested import path contains a cyclic sequence:
-		if (relativeImportPath !== null) {
-			val uniquePathSegments = relativeImportPath.segments.toSet;
-			if (uniquePathSegments.size != relativeImportPath.length || uniquePathSegments.contains(rootReactionsSegment.name)) {
-				return null;
-			}
+		val uniquePathSegments = relativeImportPath.segments.toSet;
+		if (uniquePathSegments.size != relativeImportPath.length || uniquePathSegments.contains(rootReactionsSegment.name)) {
+			return null;
 		}
 
 		val rootImportPath = ReactionsImportPath.create(rootReactionsSegment.name);
@@ -474,18 +543,18 @@ class ReactionsImportsHelper {
 		val returnValue = visitor.visit(sourceImport, currentImportPath, currentReactionsSegment, remainingImportPath);
 		if (returnValue !== null) return returnValue;
 		// continue search recursively:
-		if (remainingImportPath === null) {
+		if (remainingImportPath.isEmpty) {
 			// reached end of path without non-null return value:
 			return null;
 		}
 		val nextReactionsSegmentName = remainingImportPath.firstSegment;
 		val nextImportPath = currentImportPath.append(nextReactionsSegmentName);
-		val nextRemainingImportPath = remainingImportPath.relativeToRoot; // can be null
+		val nextRemainingImportPath = remainingImportPath.relativeToRoot; // can be empty
 		// skipping unresolvable imports:
 		val nextImport = currentReactionsSegment.reactionsImports.filter[it.isResolvable].findFirst [
 			nextReactionsSegmentName.equals(it.importedReactionsSegment.name);
 		];
-		if (nextImport=== null) {
+		if (nextImport === null) {
 			// invalid import path:
 			return null;
 		}
@@ -498,13 +567,16 @@ class ReactionsImportsHelper {
 	 * <p>
 	 * This walks the import hierarchy along the specified import path, starting from the given root reactions segment. The
 	 * import path is expected to be relative to the specified root reactions segment.
-	 * <p>
-	 * Returns <code>null</code> if no reactions segment is found for the specified path.
+	 * 
+	 * @param rootReactionsSegment the reactions segment to start the walk at, not <code>null</code>
+	 * @param relativeImportPath the relative import path to walk, not <code>null</code>
+	 * @return the reactions segment at the end of the specified import path, or <code>null</code> if no reactions segment is
+	 *         found for the specified path
 	 */
 	public static def ReactionsSegment getReactionsSegment(ReactionsSegment rootReactionsSegment, ReactionsImportPath relativeImportPath) {
 		return walkImportPath(rootReactionsSegment, relativeImportPath,
 			[ sourceImport, currentImportPath, currentReactionsSegment, remainingPath |
-				if (remainingPath === null) {
+				if (remainingPath.isEmpty) {
 					// reached end of path:
 					return currentReactionsSegment;
 				} else {
@@ -524,23 +596,28 @@ class ReactionsImportsHelper {
 	 * of the specified reactions segment).
 	 * <p>
 	 * The <code>overriddenRoutineImportPath</code> is expected to be relative to the specified root reactions segment. If it is
-	 * <code>null</code>, the root reactions segment is returned (regardless of the <code>checkRootReactionsSegment</code>
-	 * parameter).
+	 * empty, the root reactions segment is returned (regardless of the <code>checkRootReactionsSegment</code> parameter).
+	 * 
+	 * @param rootReactionsSegment the reactions segment to start the walk at, not <code>null</code>
+	 * @param overriddenRoutineImportPath the relative import path to the overridden segment, not <code>null</code>
+	 * @param checkRootReactionsSegment whether to consider the root reactions segment as possible override root
+	 * @return the first reactions segment that overrides routines of the specified reactions segment, or the overridden
+	 *         reactions segment itself, together with its absolute reactions import path (starting with the root segment)
 	 */
-	public static def ReactionsSegment getRoutinesOverrideRoot(ReactionsSegment rootReactionsSegment,
+	public static def Pair<ReactionsImportPath, ReactionsSegment> getRoutinesOverrideRoot(ReactionsSegment rootReactionsSegment,
 		ReactionsImportPath overriddenRoutineImportPath, boolean checkRootReactionsSegment) {
 		return walkImportPath(rootReactionsSegment, overriddenRoutineImportPath,
 			[ sourceImport, currentImportPath, currentReactionsSegment, remainingPath |
-				if (remainingPath === null) {
+				if (remainingPath.isEmpty) {
 					// reached end of path:
-					return currentReactionsSegment;
+					return Pair.of(currentImportPath, currentReactionsSegment);
 				} else {
 					// check the routine overrides of the current segment, if it is not the root or we are checking the root as well:
 					if (checkRootReactionsSegment || currentImportPath.length > 1) {
 						// check if the current reactions segment contains a routine override for the remaining import path:
 						val overriddenRoutinesImportPaths = currentReactionsSegment.overrideRoutines.map[it.overrideImportPath.toReactionsImportPath];
 						if (overriddenRoutinesImportPaths.findFirst[it.equals(remainingPath)] !== null) {
-							return currentReactionsSegment;
+							return Pair.of(currentImportPath, currentReactionsSegment);
 						}
 					}
 					// continue walking:

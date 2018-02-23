@@ -180,21 +180,25 @@ final class ReactionsLanguageUtil {
 	 * own reactions segment, or, if used in conjunction with the <code>importPath</code> parameter, some root reactions segment.
 	 * 
 	 * @param routine the routine
-	 * @param importPath the import path leading to the reactions segment containing the routine, or <code>null</code>
+	 * @param importPath the import path leading to the reactions segment containing the routine, or <code>null</code> or empty
 	 * @return the fully qualified name
 	 */
 	public static def String getFullyQualifiedName(Routine routine, ReactionsImportPath importPath) {
 		val reactionsSegmentName = routine.reactionsSegment.name;
+		val importPathSpecified = (importPath !== null && !importPath.isEmpty);
 		var String fullyQualifiedName = "";
-		if (importPath !== null) {
+		if (importPathSpecified) {
 			fullyQualifiedName += importPath.pathString;
 			if (!importPath.lastSegment.equals(reactionsSegmentName)) {
-				fullyQualifiedName += reactionsSegmentName;
+				fullyQualifiedName += ReactionsImportPath.PATH_STRING_SEPARATOR + reactionsSegmentName;
 			}
 		}
 		if (routine.isOverride) {
+			if (importPathSpecified) {
+				fullyQualifiedName += ReactionsImportPath.PATH_STRING_SEPARATOR;
+			}
 			fullyQualifiedName += routine.overrideImportPath.toReactionsImportPath.pathString;
-		} else if (importPath === null) {
+		} else if (!importPathSpecified) {
 			fullyQualifiedName += reactionsSegmentName;
 		}
 		fullyQualifiedName += OVERRIDDEN_REACTIONS_SEGMENT_SEPARATOR + routine.formattedName;

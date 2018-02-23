@@ -14,9 +14,10 @@ import static extension tools.vitruv.dsls.reactions.util.ReactionsLanguageUtil.*
 
 class OverriddenRoutinesFacadeClassGenerator extends RoutineFacadeClassGenerator {
 
+	// the reactions segment containing the routine override(s):
 	val ReactionsSegment reactionsSegment;
-	val ReactionsImportPath relativeImportPath; // relative to reactions segment
-	val ReactionsImportPath absoluteImportPath;
+	// the import path to the overridden reactions segment, relative to the overriding reactions segment:
+	val ReactionsImportPath relativeImportPath;
 	val ClassNameGenerator routinesFacadeNameGenerator;
 	var JvmGenericType generatedClass;
 
@@ -27,7 +28,6 @@ class OverriddenRoutinesFacadeClassGenerator extends RoutineFacadeClassGenerator
 		}
 		this.reactionsSegment = reactionsSegment;
 		this.relativeImportPath = relativeImportPath;
-		this.absoluteImportPath = ReactionsImportPath.create(#[reactionsSegment.name], relativeImportPath.segments);
 		this.routinesFacadeNameGenerator = reactionsSegment.getOverriddenRoutinesFacadeClassNameGenerator(relativeImportPath);
 	}
 
@@ -38,21 +38,21 @@ class OverriddenRoutinesFacadeClassGenerator extends RoutineFacadeClassGenerator
 	}
 
 	override generateBody() {
-		val overriddenReactionsSegment = reactionsSegment.getReactionsSegment(relativeImportPath);
-		val routinesOverrideRoot = reactionsSegment.getRoutinesOverrideRoot(relativeImportPath, false);
-		if (overriddenReactionsSegment === null || routinesOverrideRoot === null) {
+		val overrideRootResult = reactionsSegment.getRoutinesOverrideRoot(relativeImportPath, false);
+		if (overrideRootResult === null) {
 			// invalid import path, skipping class-body generation:
 			return generatedClass;
 		}
+		val overrideRootSegment = overrideRootResult.value;
 
 		generatedClass => [
-			if (routinesOverrideRoot.name.equals(overriddenReactionsSegment.name)) {
-				// extend the original routines facade of the overridden reactions segment:
-				superTypes += typeRef(overriddenReactionsSegment.routinesFacadeClassNameGenerator.qualifiedName);
+			if (overrideRootSegment.name.equals(relativeImportPath.lastSegment)) {
+				// the override root is the overridden reactions segment itself: extend the original routines facade:
+				superTypes += typeRef(overrideRootSegment.routinesFacadeClassNameGenerator.qualifiedName);
 			} else {
-				// extend the overridden routines facade from the override root:
-				val overrideRootRelativeImportPath = relativeImportPath.relativeTo(routinesOverrideRoot.name);
-				superTypes += typeRef(routinesOverrideRoot.getOverriddenRoutinesFacadeClassNameGenerator(overrideRootRelativeImportPath).qualifiedName);
+				// extend the overridden routines facade of the override root:
+				val relativeImportPathFromOverrideRoot = relativeImportPath.relativeTo(overrideRootSegment.name);
+				superTypes += typeRef(overrideRootSegment.getOverriddenRoutinesFacadeClassNameGenerator(relativeImportPathFromOverrideRoot).qualifiedName);
 			}
 			members += generateConstructor();
 
@@ -60,7 +60,7 @@ class OverriddenRoutinesFacadeClassGenerator extends RoutineFacadeClassGenerator
 			reactionsSegment.overrideRoutines.filter[it.isComplete].filter [
 				it.overrideImportPath.toReactionsImportPath.equals(relativeImportPath)
 			].forEach [
-				generatedClass.members += it.generateCallMethod(absoluteImportPath);
+				generatedClass.members += it.generateCallMethod;
 			];
 		]
 	}
@@ -68,4 +68,7 @@ class OverriddenRoutinesFacadeClassGenerator extends RoutineFacadeClassGenerator
 	protected override String getExtendedConstructorBody() {
 		return "";
 	}
+
+	protected override def String generateGetOwnRoutinesFacade() '''
+		this._getRoutinesFacadesProvider().getRoutinesFacade(this._getReactionsImportPath().subPathTo("«reactionsSegment.name»"))'''
 }

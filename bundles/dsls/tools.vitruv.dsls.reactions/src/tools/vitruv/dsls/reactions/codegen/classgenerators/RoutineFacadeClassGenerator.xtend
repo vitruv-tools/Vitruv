@@ -45,6 +45,7 @@ class RoutineFacadeClassGenerator extends ClassGenerator {
 		generatedClass => [
 			superTypes += typeRef(AbstractRepairRoutinesFacade);
 			members += generateConstructor();
+
 			// fields for all routines facades of reactions segments imported with qualified names,
 			// including transitively included routines facades for imports without qualified names:
 			members += includedRoutinesFacades.entrySet.map [
@@ -55,9 +56,20 @@ class RoutineFacadeClassGenerator extends ClassGenerator {
 					visibility = JvmVisibility.PUBLIC;
 				]
 			]
-			// included routines: own routines and routines imported without qualified names, including transitively included routines,
-			// with overridden routines being replaced
-			members += reactionsSegment.includedRoutines.entrySet.map[generateCallMethod(it.key, it.value)];
+
+			// included original routines: own routines and routines imported without qualified names, including transitively included routines,
+			// without any override routines
+			members += reactionsSegment.getIncludedRoutines(true, false).entrySet.map [
+				val routine = it.key;
+				val relativeImportPath = it.value.relativeToRoot;
+				if (relativeImportPath.isEmpty) {
+					// regular local routine:
+					generateCallMethod(routine);
+				} else {
+					// included external routine:
+					generateIncludedRoutineCallMethod(routine, relativeImportPath);
+				}
+			];
 		]
 	}
 
@@ -80,20 +92,18 @@ class RoutineFacadeClassGenerator extends ClassGenerator {
 			«val includedReactionsSegment = includedRoutinesFacadeEntry.key»
 			«val includedSegmentImportPath = includedRoutinesFacadeEntry.value»
 			«val includedRoutinesFacadeFieldName = includedReactionsSegment.name»
-			this.«includedRoutinesFacadeFieldName» = «includedSegmentImportPath.generateGetRoutinesFacadeCall»;
+			this.«includedRoutinesFacadeFieldName» = «includedSegmentImportPath.relativeToRoot.generateGetRoutinesFacadeCall»;
 		«ENDFOR»
 	'''
 
-	// the reactions import path used here is absolute (starting with the root of the import hierarchy):
-	protected def JvmOperation generateCallMethod(Routine routine, ReactionsImportPath absoluteImportPath) {
+	protected def JvmOperation generateCallMethod(Routine routine) {
 		val routineNameGenerator = routine.routineClassNameGenerator;
-		val routinesFacadeNameGenerator = routine.reactionsSegment.routinesFacadeClassNameGenerator;
 		routine.associatePrimary(routine.toMethod(routine.name, typeRef(Boolean.TYPE)) [
 			visibility = JvmVisibility.PUBLIC;
 			parameters +=
 				generateMethodInputParameters(routine.input.modelInputElements, routine.input.javaInputElements);
 			body = '''
-				«routinesFacadeNameGenerator.qualifiedName» _routinesFacade = «absoluteImportPath.generateGetRoutinesFacadeCall»;
+				«routinesFacadeNameGenerator.qualifiedName» _routinesFacade = «generateGetOwnRoutinesFacade()»;
 				«typeRef(ReactionExecutionState).qualifiedName» _reactionExecutionState = this._getExecutionState().getReactionExecutionState();
 				«typeRef(CallHierarchyHaving).qualifiedName» _caller = this._getExecutionState().getCaller();
 				«routineNameGenerator.qualifiedName» routine = new «routineNameGenerator.qualifiedName»(_routinesFacade, _reactionExecutionState, _caller«
@@ -103,7 +113,23 @@ class RoutineFacadeClassGenerator extends ClassGenerator {
 		])
 	}
 
-	// absolute reactions import path, gets prepended by facade's parent import path:
-	protected def String generateGetRoutinesFacadeCall(ReactionsImportPath reactionsImportPath) '''
-		this._getRoutinesFacadesProvider().getRoutinesFacade(«typeRef(ReactionsImportPath).qualifiedName».fromPathString("«reactionsImportPath.pathString»").prepend(this._getParentImportPath()))'''
+	// included routine (original, no override), together the relative import path to the routine's segment:
+	private def JvmOperation generateIncludedRoutineCallMethod(Routine routine, ReactionsImportPath relativeImportPath) {
+		val routinesFacadeNameGenerator = routine.reactionsSegment.routinesFacadeClassNameGenerator;
+		routine.associatePrimary(routine.toMethod(routine.name, typeRef(Boolean.TYPE)) [
+			visibility = JvmVisibility.PUBLIC;
+			parameters +=
+				generateMethodInputParameters(routine.input.modelInputElements, routine.input.javaInputElements);
+			body = '''
+				«routinesFacadeNameGenerator.qualifiedName» _routinesFacade = «relativeImportPath.generateGetRoutinesFacadeCall»;
+				return _routinesFacade.«routine.name»(«FOR parameter : parameters SEPARATOR ', '»«parameter.name»«ENDFOR»);
+			'''
+		])
+	}
+
+	protected def String generateGetOwnRoutinesFacade() '''
+		this'''
+
+	private def String generateGetRoutinesFacadeCall(ReactionsImportPath relativeImportPath) '''
+		this._getRoutinesFacadesProvider().getRoutinesFacade(this._getReactionsImportPath().append(«typeRef(ReactionsImportPath).qualifiedName».fromPathString("«relativeImportPath.pathString»")))'''
 }

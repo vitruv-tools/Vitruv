@@ -10,15 +10,14 @@ import tools.vitruv.extensions.dslsruntime.reactions.structure.ReactionsImportPa
 class AbstractRepairRoutinesFacade extends Loggable {
 	// used by concrete implementations to request routines facades of executed routines: 
 	private val RoutinesFacadesProvider routinesFacadesProvider;
-	// absolute path inside the import hierarchy to the parent segment (the segment importing the segment this routines facade belongs to),
-	// or null if there is no parent:
-	private val ReactionsImportPath parentImportPath;
+	// absolute path inside the import hierarchy to the segment this routines facade belongs to, never null:
+	private val ReactionsImportPath reactionsImportPath;
 	// shared execution state among all routines facades in the import hierarchy:
 	private val RoutinesFacadeExecutionState executionState;
 
-	public new(RoutinesFacadesProvider routinesFacadesProvider, ReactionsImportPath parentImportPath, RoutinesFacadeExecutionState executionState) {
+	public new(RoutinesFacadesProvider routinesFacadesProvider, ReactionsImportPath reactionsImportPath, RoutinesFacadeExecutionState executionState) {
 		this.routinesFacadesProvider = routinesFacadesProvider;
-		this.parentImportPath = parentImportPath;
+		this.reactionsImportPath = reactionsImportPath;
 		this.executionState = executionState;
 	}
 
@@ -26,8 +25,8 @@ class AbstractRepairRoutinesFacade extends Loggable {
 		return routinesFacadesProvider;
 	}
 
-	protected def ReactionsImportPath _getParentImportPath() {
-		return parentImportPath;
+	protected def ReactionsImportPath _getReactionsImportPath() {
+		return reactionsImportPath;
 	}
 
 	protected def RoutinesFacadeExecutionState _getExecutionState() {

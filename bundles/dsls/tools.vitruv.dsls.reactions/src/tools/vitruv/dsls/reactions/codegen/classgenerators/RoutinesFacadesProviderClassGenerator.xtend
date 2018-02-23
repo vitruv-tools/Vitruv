@@ -53,11 +53,11 @@ class RoutinesFacadesProviderClassGenerator extends ClassGenerator {
 						«val importPath = importHierarchyEntry.key»
 						«val routinesFacadeClassNameGenerator = importHierarchyEntry.value»
 							case "«importPath.pathString»": {
-								return new «routinesFacadeClassNameGenerator.qualifiedName»(this, «reactionsImportPathParameter.name».getParent(), «sharedExecutionStateParameter.name»);
+								return new «routinesFacadeClassNameGenerator.qualifiedName»(this, «reactionsImportPathParameter.name», «sharedExecutionStateParameter.name»);
 							}
 					«ENDFOR»
 						default: {
-							return null;
+							throw new IllegalArgumentException("Unexpected import path: " + «reactionsImportPathParameter.name».getPathString());
 						}
 					}
 				'''
@@ -72,17 +72,20 @@ class RoutinesFacadesProviderClassGenerator extends ClassGenerator {
 			// for each reactions segment in the import hierarchy determine the routines facade class of the top-most reactions segment
 			// in the import hierarchy overriding routines of it:
 			val absoluteImportPath = importHierarchyEntry.key;
-			val relativeImportPath = absoluteImportPath.relativeToRoot; // relative to root segment, null for root segment 
+			val relativeImportPath = absoluteImportPath.relativeToRoot; // relative to root segment
 			val currentReactionsSegment = importHierarchyEntry.value;
-			val routinesOverrideRoot = rootReactionsSegment.getRoutinesOverrideRoot(relativeImportPath, true);
+
+			val overrideRootResult = rootReactionsSegment.getRoutinesOverrideRoot(relativeImportPath, true);
+			val overrideRootSegment = overrideRootResult.value;
+			
 			var ClassNameGenerator routinesFacadeClassNameGenerator;
-			if (routinesOverrideRoot.name.equals(currentReactionsSegment.name)) {
-				// no other reactions segment is overriding routines of this reactions segment -> using the original routines facade:
+			if (overrideRootSegment.name.equals(currentReactionsSegment.name)) {
+				// the override root is the overridden reactions segment itself: using the original routines facade:
 				routinesFacadeClassNameGenerator = currentReactionsSegment.routinesFacadeClassNameGenerator;
 			} else {
 				// get the overridden routines facade from the override root:
-				val overrideRootRelativeImportPath = absoluteImportPath.relativeTo(routinesOverrideRoot.name); // relative to override root
-				routinesFacadeClassNameGenerator = routinesOverrideRoot.getOverriddenRoutinesFacadeClassNameGenerator(overrideRootRelativeImportPath);
+				val relativeImportPathFromOverrideRoot = absoluteImportPath.relativeTo(overrideRootSegment.name);
+				routinesFacadeClassNameGenerator = overrideRootSegment.getOverriddenRoutinesFacadeClassNameGenerator(relativeImportPathFromOverrideRoot);
 			}
 			importHierarchyRoutinesFacades.put(absoluteImportPath, routinesFacadeClassNameGenerator);
 		}
