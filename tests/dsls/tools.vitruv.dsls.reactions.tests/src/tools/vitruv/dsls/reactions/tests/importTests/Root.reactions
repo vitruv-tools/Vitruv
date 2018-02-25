@@ -84,6 +84,18 @@ reaction RootReaction {
 				transitiveSNOverriddenRoutine3()
 			}
 		}
+
+		// test multiple imports of same routines at different import paths:
+		if (containsDataTag(data, TAG_TEST_MULTIPLE_IMPORTS_OF_SAME_ROUTINES_IMPORT_PATH_1)) {
+			// import path: directSN > transitiveSN > commonRoutines
+			importTestsCommonRoutines.commonRoutinesRoutine1()
+		}
+		if (containsDataTag(data, TAG_TEST_MULTIPLE_IMPORTS_OF_SAME_ROUTINES_IMPORT_PATH_2)) {
+			// import path: directRoutinesQN > commonRoutines
+			importTestsDirectRoutinesQN.importTestsCommonRoutines.commonRoutinesRoutine1()
+			importTestsDirectRoutinesQN.directRoutinesQNTestCommonRoutine()
+			importTestsDirectRoutinesQN.importTestsCommonRoutines.commonRoutinesRoutine3()
+		}
 	}
 }
 
@@ -193,6 +205,40 @@ routine importTestsDirectSN.importTestsTransitiveSN::transitiveSNOverriddenRouti
 		call {
 			ImportTestsExecutionMonitor.instance.set(RootTransitiveSNOverriddenRoutine2)
 			rootRoutine()
+		}
+	}
+}
+
+// test multiple imports of same routines at different import paths:
+routine importTestsDirectSN.importTestsTransitiveSN.importTestsCommonRoutines::commonRoutinesRoutine1() {
+	action {
+		call {
+			ImportTestsExecutionMonitor.instance.set(RootCommonRoutinesRoutine1)
+		}
+	}
+}
+
+routine importTestsDirectSN.importTestsTransitiveSN.importTestsCommonRoutines::commonRoutinesRoutine2() {
+	action {
+		call {
+			ImportTestsExecutionMonitor.instance.set(RootCommonRoutinesRoutine2)
+		}
+	}
+}
+
+routine importTestsDirectSN.importTestsTransitiveSN.importTestsCommonRoutines::commonRoutinesRoutine3() {
+	action {
+		call {
+			ImportTestsExecutionMonitor.instance.set(RootCommonRoutinesRoutine3)
+		}
+	}
+}
+
+// multiple overrides of same routine along different import paths:
+routine importTestsDirectRoutinesQN.importTestsCommonRoutines::commonRoutinesRoutine3() {
+	action {
+		call {
+			ImportTestsExecutionMonitor.instance.set(RootCommonRoutines2Routine3)
 		}
 	}
 }

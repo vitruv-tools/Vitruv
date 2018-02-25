@@ -17,6 +17,10 @@ final class ImportTestsExecutionMonitor {
 		RootTransitiveSNOverriddenRoutine,
 		RootTransitive3SNOverriddenRoutine,
 		RootTransitiveSNOverriddenRoutine2,
+		RootCommonRoutinesRoutine1,
+		RootCommonRoutinesRoutine2,
+		RootCommonRoutinesRoutine3,
+		RootCommonRoutines2Routine3,
 
 		DirectSNReaction,
 		DirectSNRoutine,
@@ -57,9 +61,9 @@ final class ImportTestsExecutionMonitor {
 		TransitiveRoutinesQNReaction,
 		TransitiveRoutinesQNRoutine,
 
-		CommonRoutinesFunc1,
-		CommonRoutinesFunc2,
-		CommonRoutinesFunc3
+		CommonRoutinesRoutine1,
+		CommonRoutinesRoutine2,
+		CommonRoutinesRoutine3
 	}
 
 	private static val ImportTestsExecutionMonitor INSTANCE = new ImportTestsExecutionMonitor();

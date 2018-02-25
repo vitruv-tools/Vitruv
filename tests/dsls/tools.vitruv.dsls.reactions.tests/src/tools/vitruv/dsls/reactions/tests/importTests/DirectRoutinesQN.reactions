@@ -13,6 +13,7 @@ execute actions in AllElementTypes
 import importTestsTransitive2SN
 import routines importTestsTransitiveRoutinesSN
 import routines importTestsTransitiveRoutinesQN using qualified names
+import routines importTestsCommonRoutines using qualified names
 
 reaction DirectRoutinesQNReaction {
 	after attribute replaced at minimal::Root[id]
@@ -28,6 +29,16 @@ routine directRoutinesQNRoutine() {
 	action {
 		call {
 			ImportTestsExecutionMonitor.instance.set(DirectRoutinesQNRoutine)
+		}
+	}
+}
+
+// test multiple imports of same routines at different import paths:
+routine directRoutinesQNTestCommonRoutine() {
+	action {
+		call {
+			// import path: directRoutinesQN > commonRoutines
+			importTestsCommonRoutines.commonRoutinesRoutine2()
 		}
 	}
 }

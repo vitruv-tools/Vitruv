@@ -11,7 +11,6 @@ in reaction to changes in AllElementTypes
 execute actions in AllElementTypes
 
 import importTestsTransitive3SN
-import routines importTestsCommonRoutines using qualified names
 
 reaction Direct2SNReaction {
 	after attribute replaced at minimal::Root[id]

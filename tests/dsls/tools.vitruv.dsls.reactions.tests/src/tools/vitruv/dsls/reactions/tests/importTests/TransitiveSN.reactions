@@ -37,6 +37,12 @@ reaction TransitiveSNReaction {
 				transitiveSNOverriddenRoutine3()
 			}
 		}
+
+		// test multiple imports of same routines at different import paths:
+		if (containsDataTag(data, TAG_TEST_MULTIPLE_IMPORTS_OF_SAME_ROUTINES_IMPORT_PATH_1)) {
+			// import path: directSN > transitiveSN > commonRoutines
+			importTestsCommonRoutines.commonRoutinesRoutine3()
+		}
 	}
 }
 

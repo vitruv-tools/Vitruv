@@ -62,8 +62,8 @@ class ImportTests extends AbstractReactionImportsTests {
 	 *
 	 * root -> directSN, direct2SN, directRoutinesQN r qn
 	 * directSN -> transitiveSN, transitiveRoutinesQN r qn
-	 * direct2SN -> transitive3SN, commonRoutines r qn
-	 * directRoutinesQN -> transitive2SN, transitiveRoutinesSN r, transitiveRoutinesQN r qn
+	 * direct2SN -> transitive3SN
+	 * directRoutinesQN -> transitive2SN, transitiveRoutinesSN r, transitiveRoutinesQN r qn, commonRoutines r qn
 	 * transitiveSN -> commonRoutines r qn
 	 * transitive2SN
 	 * transitive3SN
@@ -98,6 +98,9 @@ class ImportTests extends AbstractReactionImportsTests {
 	public static val TAG_FROM_ROOT = "fromRoot";
 	public static val TAG_FROM_OVERRIDDEN_SEGMENT = "fromOverriddenSegment";
 	public static val TAG_FROM_SEGMENT_IN_BETWEEN = "fromSegmentInBetween";
+
+	public static val TAG_TEST_MULTIPLE_IMPORTS_OF_SAME_ROUTINES_IMPORT_PATH_1 = "testMultipleImportsOfSameRoutinesImportPath1";
+	public static val TAG_TEST_MULTIPLE_IMPORTS_OF_SAME_ROUTINES_IMPORT_PATH_2 = "testMultipleImportsOfSameRoutinesImportPath2";
 
 	// execute imported and transitive imported reactions:
 
@@ -567,5 +570,31 @@ class ImportTests extends AbstractReactionImportsTests {
 		monitor.set(ExecutionType.DirectSNRoutine);
 		monitor.assertEqualWithStatic();
 		assertIsNotSet(ExecutionType.TransitiveSNOverriddenRoutine3);
+	}
+
+	// multiple imports and overrides of the same routines at different import paths:
+
+	@Test
+	public def void testMultipleImportsOfSameRoutines() {
+		// import path 1:
+		resetExecutionMonitor();
+		triggerReaction(TAG_TEST_MULTIPLE_IMPORTS_OF_SAME_ROUTINES_IMPORT_PATH_1);
+		val monitor1 = new ImportTestsExecutionMonitor();
+		monitor1.setAll(rootReactions);
+		monitor1.set(ExecutionType.RootCommonRoutinesRoutine1);
+		monitor1.set(ExecutionType.RootCommonRoutinesRoutine2);
+		monitor1.set(ExecutionType.RootCommonRoutinesRoutine3);
+		monitor1.assertEqualWithStatic();
+
+		// import path 2:
+		resetExecutionMonitor();
+		triggerReaction(TAG_TEST_MULTIPLE_IMPORTS_OF_SAME_ROUTINES_IMPORT_PATH_2);
+		val monitor2 = new ImportTestsExecutionMonitor();
+		monitor2.setAll(rootReactions);
+		monitor2.set(ExecutionType.CommonRoutinesRoutine1);
+		monitor2.set(ExecutionType.CommonRoutinesRoutine2);
+		// multiple overrides of same routine along different import paths:
+		monitor2.set(ExecutionType.RootCommonRoutines2Routine3);
+		monitor2.assertEqualWithStatic();
 	}
 }

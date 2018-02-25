@@ -8,26 +8,26 @@ reactions: importTestsCommonRoutines
 in reaction to changes in AllElementTypes
 execute actions in AllElementTypes
 
-routine func1(String string) {
+routine commonRoutinesRoutine1() {
 	action {
 		call {
-			ImportTestsExecutionMonitor.instance.set(CommonRoutinesFunc1)
+			ImportTestsExecutionMonitor.instance.set(CommonRoutinesRoutine1)
 		}
 	}
 }
 
-routine func2() {
+routine commonRoutinesRoutine2() {
 	action {
 		call {
-			ImportTestsExecutionMonitor.instance.set(CommonRoutinesFunc2)
+			ImportTestsExecutionMonitor.instance.set(CommonRoutinesRoutine2)
 		}
 	}
 }
 
-routine func3() {
+routine commonRoutinesRoutine3() {
 	action {
 		call {
-			ImportTestsExecutionMonitor.instance.set(CommonRoutinesFunc3)
+			ImportTestsExecutionMonitor.instance.set(CommonRoutinesRoutine3)
 		}
 	}
 }
