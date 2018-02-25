@@ -5,6 +5,7 @@ import org.eclipse.xtext.common.types.JvmVisibility
 import tools.vitruv.dsls.reactions.codegen.typesbuilder.TypesBuilderExtensionProvider
 import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsSegment
 import tools.vitruv.extensions.dslsruntime.reactions.AbstractReactionsChangePropagationSpecification
+import tools.vitruv.framework.change.processing.ChangePropagationSpecification
 
 import static extension tools.vitruv.dsls.reactions.codegen.helper.ClassNamesGenerators.*
 import static extension tools.vitruv.dsls.reactions.codegen.helper.ReactionsLanguageHelper.*
@@ -30,6 +31,7 @@ class ChangePropagationSpecificationClassGenerator extends ClassGenerator {
 	override generateBody() {
 		generatedClass => [
 			superTypes += typeRef(AbstractReactionsChangePropagationSpecification);
+			superTypes += typeRef(ChangePropagationSpecification);
 			members += reactionsSegment.toConstructor() [
 				body = '''
 				super(new «reactionsSegment.fromDomain.domainProviderForReference.canonicalNameForReference»().getDomain(), 
