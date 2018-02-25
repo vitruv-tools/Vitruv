@@ -1,6 +1,7 @@
 package tools.vitruv.dsls.reactions.codegen.classgenerators
 
 import java.util.Map
+import org.eclipse.xtend2.lib.StringConcatenationClient
 import org.eclipse.xtext.common.types.JvmConstructor
 import org.eclipse.xtext.common.types.JvmOperation
 import org.eclipse.xtext.common.types.JvmVisibility
@@ -87,7 +88,7 @@ class RoutineFacadeClassGenerator extends ClassGenerator {
 		]
 	}
 
-	protected def String getExtendedConstructorBody() '''
+	protected def StringConcatenationClient getExtendedConstructorBody() '''
 		«FOR includedRoutinesFacadeEntry : includedRoutinesFacades.entrySet»
 			«val includedReactionsSegment = includedRoutinesFacadeEntry.key»
 			«val includedSegmentImportPath = includedRoutinesFacadeEntry.value»
@@ -103,10 +104,10 @@ class RoutineFacadeClassGenerator extends ClassGenerator {
 			parameters +=
 				generateMethodInputParameters(routine.input.modelInputElements, routine.input.javaInputElements);
 			body = '''
-				«routinesFacadeNameGenerator.qualifiedName» _routinesFacade = «generateGetOwnRoutinesFacade()»;
-				«typeRef(ReactionExecutionState).qualifiedName» _reactionExecutionState = this._getExecutionState().getReactionExecutionState();
-				«typeRef(CallHierarchyHaving).qualifiedName» _caller = this._getExecutionState().getCaller();
-				«routineNameGenerator.qualifiedName» routine = new «routineNameGenerator.qualifiedName»(_routinesFacade, _reactionExecutionState, _caller«
+				«typeRef(routinesFacadeNameGenerator.qualifiedName)» _routinesFacade = «generateGetOwnRoutinesFacade()»;
+				«ReactionExecutionState» _reactionExecutionState = this._getExecutionState().getReactionExecutionState();
+				«CallHierarchyHaving» _caller = this._getExecutionState().getCaller();
+				«typeRef(routineNameGenerator.qualifiedName)» routine = new «typeRef(routineNameGenerator.qualifiedName)»(_routinesFacade, _reactionExecutionState, _caller«
 					»«FOR parameter : parameters BEFORE ', ' SEPARATOR ', '»«parameter.name»«ENDFOR»);
 				return routine.applyRoutine();
 			'''
@@ -127,9 +128,9 @@ class RoutineFacadeClassGenerator extends ClassGenerator {
 		])
 	}
 
-	protected def String generateGetOwnRoutinesFacade() '''
+	protected def StringConcatenationClient generateGetOwnRoutinesFacade() '''
 		this'''
 
-	private def String generateGetRoutinesFacadeCall(ReactionsImportPath relativeImportPath) '''
-		this._getRoutinesFacadesProvider().getRoutinesFacade(this._getReactionsImportPath().append(«typeRef(ReactionsImportPath).qualifiedName».fromPathString("«relativeImportPath.pathString»")))'''
+	private def StringConcatenationClient generateGetRoutinesFacadeCall(ReactionsImportPath relativeImportPath) '''
+		this._getRoutinesFacadesProvider().getRoutinesFacade(this._getReactionsImportPath().append(«ReactionsImportPath».fromPathString("«relativeImportPath.pathString»")))'''
 }

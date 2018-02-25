@@ -1,5 +1,6 @@
 package tools.vitruv.dsls.reactions.codegen.classgenerators
 
+import org.eclipse.xtend2.lib.StringConcatenationClient
 import org.eclipse.xtext.common.types.JvmGenericType
 import org.eclipse.xtext.common.types.JvmVisibility
 import tools.vitruv.dsls.common.helper.ClassNameGenerator
@@ -65,10 +66,9 @@ class OverriddenRoutinesFacadeClassGenerator extends RoutineFacadeClassGenerator
 		]
 	}
 
-	protected override String getExtendedConstructorBody() {
-		return "";
-	}
+	protected override StringConcatenationClient getExtendedConstructorBody() '''
+	'''
 
-	protected override def String generateGetOwnRoutinesFacade() '''
+	protected override def StringConcatenationClient generateGetOwnRoutinesFacade() '''
 		this._getRoutinesFacadesProvider().getRoutinesFacade(this._getReactionsImportPath().subPathTo("«reactionsSegment.name»"))'''
 }
