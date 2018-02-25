@@ -1,4 +1,6 @@
 import tools.vitruv.dsls.reactions.tests.importTests.ImportTestsExecutionMonitor
+
+import static tools.vitruv.dsls.reactions.tests.importTests.ImportTests.*
 import static tools.vitruv.dsls.reactions.tests.importTests.ImportTestsExecutionMonitor.ExecutionType.*
 import static tools.vitruv.dsls.reactions.tests.importTests.ImportTestsUtils.*
 
@@ -18,8 +20,8 @@ reaction Direct2SNReaction {
 
 		val data = newValue;
 		// test routine overrides:
-		if (containsData(data, "testCallOverriddenTransitiveRoutineWithSeparateOverrideHierarchy")) {
-			if (containsData(data, "fromSegmentInBetween")) {
+		if (containsDataTag(data, TAG_CALL_OVERRIDDEN_TRANSITIVE_ROUTINE_WITH_SEPARATE_OVERRIDE_HIERARCHY)) {
+			if (containsDataTag(data, TAG_FROM_SEGMENT_IN_BETWEEN)) {
 				transitive3SNOverriddenRoutine()
 			}
 		}

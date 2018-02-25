@@ -1,4 +1,6 @@
 import tools.vitruv.dsls.reactions.tests.importTests.ImportTestsExecutionMonitor
+
+import static tools.vitruv.dsls.reactions.tests.importTests.ImportTests.*
 import static tools.vitruv.dsls.reactions.tests.importTests.ImportTestsExecutionMonitor.ExecutionType.*
 import static tools.vitruv.dsls.reactions.tests.importTests.ImportTestsUtils.*
 
@@ -15,23 +17,23 @@ reaction TransitiveSNReaction {
 	call {
 		ImportTestsExecutionMonitor.instance.set(TransitiveSNReaction)
 		val data = newValue;
-		if (containsData(data, "testImportedSegmentsWorking")) {
+		if (containsDataTag(data, TAG_TEST_IMPORTED_SEGMENTS_WORKING)) {
 			transitiveSNInnerRoutine()
 		}
 
 		// test routine overrides:
-		if (containsData(data, "testCallOverriddenTransitiveRoutine")) {
-			if (containsData(data, "fromOverriddenSegment")) {
+		if (containsDataTag(data, TAG_CALL_OVERRIDDEN_TRANSITIVE_ROUTINE)) {
+			if (containsDataTag(data, TAG_FROM_OVERRIDDEN_SEGMENT)) {
 				transitiveSNOverriddenRoutine()
 			}
 		}
-		if (containsData(data, "testCallAlreadyOverriddenTransitiveRoutine")) {
-			if (containsData(data, "fromOverriddenSegment")) {
+		if (containsDataTag(data, TAG_CALL_ALREADY_OVERRIDDEN_TRANSITIVE_ROUTINE)) {
+			if (containsDataTag(data, TAG_FROM_OVERRIDDEN_SEGMENT)) {
 				transitiveSNOverriddenRoutine2()
 			}
 		}
-		if (containsData(data, "testCallTransitiveRoutineOverriddenByImportedSegment")) {
-			if (containsData(data, "fromOverriddenSegment")) {
+		if (containsDataTag(data, TAG_CALL_TRANSITIVE_ROUTINE_OVERRIDDEN_BY_IMPORTED_SEGMENT)) {
+			if (containsDataTag(data, TAG_FROM_OVERRIDDEN_SEGMENT)) {
 				transitiveSNOverriddenRoutine3()
 			}
 		}
@@ -60,7 +62,7 @@ reaction TransitiveSNOverriddenReaction {
 	after attribute replaced at minimal::Root[id]
 	call {
 		val data = newValue;
-		if (containsData(data, "testTransitiveReactionOverride")) {
+		if (containsDataTag(data, TAG_TEST_TRANSITIVE_REACTION_OVERRIDE)) {
 			ImportTestsExecutionMonitor.instance.set(TransitiveSNOverriddenReaction)
 			transitiveSNRoutine()
 		}
@@ -71,7 +73,7 @@ reaction TransitiveSNOverriddenReaction2 {
 	after attribute replaced at minimal::Root[id]
 	call {
 		val data = newValue;
-		if (containsData(data, "testTransitiveReactionOverride")) {
+		if (containsDataTag(data, TAG_TEST_TRANSITIVE_REACTION_OVERRIDE)) {
 			ImportTestsExecutionMonitor.instance.set(TransitiveSNOverriddenReaction2)
 			transitiveSNRoutine()
 		}
@@ -82,7 +84,7 @@ reaction TransitiveSNOverriddenReaction3 {
 	after attribute replaced at minimal::Root[id]
 	call {
 		val data = newValue;
-		if (containsData(data, "testTransitiveReactionOverride")) {
+		if (containsDataTag(data, TAG_TEST_TRANSITIVE_REACTION_OVERRIDE)) {
 			ImportTestsExecutionMonitor.instance.set(TransitiveSNOverriddenReaction3)
 			transitiveSNRoutine()
 		}

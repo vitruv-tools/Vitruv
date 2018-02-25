@@ -1,4 +1,6 @@
 import tools.vitruv.dsls.reactions.tests.importTests.ImportTestsExecutionMonitor
+
+import static tools.vitruv.dsls.reactions.tests.importTests.ImportTests.*
 import static tools.vitruv.dsls.reactions.tests.importTests.ImportTestsExecutionMonitor.ExecutionType.*
 import static tools.vitruv.dsls.reactions.tests.importTests.ImportTestsUtils.*
 
@@ -19,41 +21,41 @@ reaction RootReaction {
 		ImportTestsExecutionMonitor.instance.set(RootReaction)
 
 		// call routines from reaction:
-		if (containsData(newValue, "callRoutineFromReaction")) {
-			if (containsData(data, "rootRoutine")) {
+		if (containsDataTag(newValue, TAG_CALL_ROUTINE_FROM_REACTION)) {
+			if (containsDataTag(data, TAG_ROOT_ROUTINE)) {
 				rootRoutine()
 			}
-			if (containsData(data, "directRoutine_SN")) {
+			if (containsDataTag(data, TAG_DIRECT_ROUTINE_SN)) {
 				directSNRoutine()
 			}
-			if (containsData(data, "direct2Routine_SN")) {
+			if (containsDataTag(data, TAG_DIRECT2_ROUTINE_SN)) {
 				direct2SNRoutine()
 			}
-			if (containsData(data, "directRoutine_QN")) {
+			if (containsDataTag(data, TAG_DIRECT_ROUTINE_QN)) {
 				importTestsDirectRoutinesQN.directRoutinesQNRoutine()
 			}
 			// transitive routines
-			if (containsData(data, "transitiveRoutine_SN_SN")) {
+			if (containsDataTag(data, TAG_TRANSITIVE_ROUTINE_SN_SN)) {
 				transitiveSNRoutine()
 			}
-			if (containsData(data, "transitiveRoutine_SN_QN")) {
+			if (containsDataTag(data, TAG_TRANSITIVE_ROUTINE_SN_QN)) {
 				importTestsTransitiveRoutinesQN.transitiveRoutinesQNRoutine()
 			}
-			if (containsData(data, "transitiveRoutine_QN_SN")) {
+			if (containsDataTag(data, TAG_TRANSITIVE_ROUTINE_QN_SN)) {
 				importTestsDirectRoutinesQN.transitiveRoutinesSNRoutine()
 			}
-			if (containsData(data, "transitiveRoutine_QN_QN")) {
+			if (containsDataTag(data, TAG_TRANSITIVE_ROUTINE_QN_QN)) {
 				importTestsDirectRoutinesQN.importTestsTransitiveRoutinesQN.transitiveRoutinesQNRoutine
 			}
 		}
 
 		// call routines from routine:
-		if (containsData(data, "callRoutineFromRoutine")) {
+		if (containsDataTag(data, TAG_CALL_ROUTINE_FROM_ROUTINE)) {
 			callRoutinesFromRoutine(data)
 		}
 
 		// test routines-only:
-		if (containsData(data, "testRoutinesOnlyRoutines")) {
+		if (containsDataTag(data, TAG_TEST_ROUTINES_ONLY_ROUTINES)) {
 			// direct: routines-only
 			importTestsDirectRoutinesQN.directRoutinesQNRoutine()
 			// transitive: full > routines-only
@@ -65,20 +67,20 @@ reaction RootReaction {
 		}
 
 		// test routine overrides:
-		if (containsData(data, "fromRoot")) {
-			if (containsData(data, "testCallOverriddenRoutine")) {
+		if (containsDataTag(data, TAG_FROM_ROOT)) {
+			if (containsDataTag(data, TAG_CALL_OVERRIDDEN_ROUTINE)) {
 				directSNOverriddenRoutine()
 			}
-			if (containsData(data, "testCallOverriddenTransitiveRoutine")) {
+			if (containsDataTag(data, TAG_CALL_OVERRIDDEN_TRANSITIVE_ROUTINE)) {
 				transitiveSNOverriddenRoutine()
 			}
-			if (containsData(data, "testCallOverriddenTransitiveRoutineWithSeparateOverrideHierarchy")) {
+			if (containsDataTag(data, TAG_CALL_OVERRIDDEN_TRANSITIVE_ROUTINE_WITH_SEPARATE_OVERRIDE_HIERARCHY)) {
 				transitive3SNOverriddenRoutine()
 			}
-			if (containsData(data, "testCallAlreadyOverriddenTransitiveRoutine")) {
+			if (containsDataTag(data, TAG_CALL_ALREADY_OVERRIDDEN_TRANSITIVE_ROUTINE)) {
 				transitiveSNOverriddenRoutine2()
 			}
-			if (containsData(data, "testCallTransitiveRoutineOverriddenByImportedSegment")) {
+			if (containsDataTag(data, TAG_CALL_TRANSITIVE_ROUTINE_OVERRIDDEN_BY_IMPORTED_SEGMENT)) {
 				transitiveSNOverriddenRoutine3()
 			}
 		}
@@ -96,26 +98,26 @@ routine rootRoutine() {
 routine callRoutinesFromRoutine(String data) {
 	action {
 		call {
-			if (containsData(data, "rootRoutine")) {
+			if (containsDataTag(data, TAG_ROOT_ROUTINE)) {
 				rootRoutine()
 			}
-			if (containsData(data, "directRoutine_SN")) {
+			if (containsDataTag(data, TAG_DIRECT_ROUTINE_SN)) {
 				directSNRoutine()
 			}
-			if (containsData(data, "directRoutine_QN")) {
+			if (containsDataTag(data, TAG_DIRECT_ROUTINE_QN)) {
 				importTestsDirectRoutinesQN.directRoutinesQNRoutine()
 			}
 			// transitive routines
-			if (containsData(data, "transitiveRoutine_SN_SN")) {
+			if (containsDataTag(data, TAG_TRANSITIVE_ROUTINE_SN_SN)) {
 				transitiveSNRoutine()
 			}
-			if (containsData(data, "transitiveRoutine_SN_QN")) {
+			if (containsDataTag(data, TAG_TRANSITIVE_ROUTINE_SN_QN)) {
 				importTestsTransitiveRoutinesQN.transitiveRoutinesQNRoutine()
 			}
-			if (containsData(data, "transitiveRoutine_QN_SN")) {
+			if (containsDataTag(data, TAG_TRANSITIVE_ROUTINE_QN_SN)) {
 				importTestsDirectRoutinesQN.transitiveRoutinesSNRoutine()
 			}
-			if (containsData(data, "transitiveRoutine_QN_QN")) {
+			if (containsDataTag(data, TAG_TRANSITIVE_ROUTINE_QN_QN)) {
 				importTestsDirectRoutinesQN.importTestsTransitiveRoutinesQN.transitiveRoutinesQNRoutine
 			}
 		}
@@ -128,7 +130,7 @@ reaction importTestsDirectSN::DirectSNOverriddenReaction {
 	after attribute replaced at minimal::Root[id]
 	call {
 		val data = newValue;
-		if (containsData(data, "testReactionOverride")) {
+		if (containsDataTag(data, TAG_TEST_REACTION_OVERRIDE)) {
 			ImportTestsExecutionMonitor.instance.set(RootDirectSNOverriddenReaction)
 			rootRoutine()
 		}
@@ -139,7 +141,7 @@ reaction importTestsTransitiveSN::TransitiveSNOverriddenReaction {
 	after attribute replaced at minimal::Root[id]
 	call {
 		val data = newValue;
-		if (containsData(data, "testTransitiveReactionOverride")) {
+		if (containsDataTag(data, TAG_TEST_TRANSITIVE_REACTION_OVERRIDE)) {
 			ImportTestsExecutionMonitor.instance.set(RootTransitiveSNOverriddenReaction)
 			rootRoutine()
 		}
@@ -150,7 +152,7 @@ reaction importTestsTransitiveSN::TransitiveSNOverriddenReaction2 {
 	after attribute replaced at minimal::Root[id]
 	call {
 		val data = newValue;
-		if (containsData(data, "testTransitiveReactionOverride")) {
+		if (containsDataTag(data, TAG_TEST_TRANSITIVE_REACTION_OVERRIDE)) {
 			ImportTestsExecutionMonitor.instance.set(RootTransitiveSNOverriddenReaction2)
 			rootRoutine()
 		}

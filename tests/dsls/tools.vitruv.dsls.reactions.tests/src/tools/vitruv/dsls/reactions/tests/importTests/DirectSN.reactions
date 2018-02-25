@@ -1,4 +1,6 @@
 import tools.vitruv.dsls.reactions.tests.importTests.ImportTestsExecutionMonitor
+
+import static tools.vitruv.dsls.reactions.tests.importTests.ImportTests.*
 import static tools.vitruv.dsls.reactions.tests.importTests.ImportTestsExecutionMonitor.ExecutionType.*
 import static tools.vitruv.dsls.reactions.tests.importTests.ImportTestsUtils.*
 
@@ -17,30 +19,30 @@ reaction DirectSNReaction {
 		ImportTestsExecutionMonitor.instance.set(DirectSNReaction)
 
 		val data = newValue;
-		if (containsData(data, "testImportedSegmentsWorking")) {
+		if (containsDataTag(data, TAG_TEST_IMPORTED_SEGMENTS_WORKING)) {
 			directSNInnerRoutine()
 			transitiveSNRoutine()
 			importTestsTransitiveRoutinesQN.transitiveRoutinesQNRoutine()
 		}
 
 		// test routine overrides:
-		if (containsData(data, "testCallOverriddenRoutine")) {
-			if (containsData(data, "fromOverriddenSegment")) {
+		if (containsDataTag(data, TAG_CALL_OVERRIDDEN_ROUTINE)) {
+			if (containsDataTag(data, TAG_FROM_OVERRIDDEN_SEGMENT)) {
 				directSNOverriddenRoutine()
 			}
 		}
-		if (containsData(data, "testCallOverriddenTransitiveRoutine")) {
-			if (containsData(data, "fromSegmentInBetween")) {
+		if (containsDataTag(data, TAG_CALL_OVERRIDDEN_TRANSITIVE_ROUTINE)) {
+			if (containsDataTag(data, TAG_FROM_SEGMENT_IN_BETWEEN)) {
 				transitiveSNOverriddenRoutine()
 			}
 		}
-		if (containsData(data, "testCallAlreadyOverriddenTransitiveRoutine")) {
-			if (containsData(data, "fromSegmentInBetween")) {
+		if (containsDataTag(data, TAG_CALL_ALREADY_OVERRIDDEN_TRANSITIVE_ROUTINE)) {
+			if (containsDataTag(data, TAG_FROM_SEGMENT_IN_BETWEEN)) {
 				transitiveSNOverriddenRoutine2()
 			}
 		}
-		if (containsData(data, "testCallTransitiveRoutineOverriddenByImportedSegment")) {
-			if (containsData(data, "fromSegmentInBetween")) {
+		if (containsDataTag(data, TAG_CALL_TRANSITIVE_ROUTINE_OVERRIDDEN_BY_IMPORTED_SEGMENT)) {
+			if (containsDataTag(data, TAG_FROM_SEGMENT_IN_BETWEEN)) {
 				transitiveSNOverriddenRoutine3()
 			}
 		}
@@ -69,7 +71,7 @@ reaction DirectSNOverriddenReaction {
 	after attribute replaced at minimal::Root[id]
 	call {
 		val data = newValue;
-		if (containsData(data, "testReactionOverride")) {
+		if (containsDataTag(data, TAG_TEST_REACTION_OVERRIDE)) {
 			ImportTestsExecutionMonitor.instance.set(DirectSNOverriddenReaction)
 			directSNRoutine()
 		}
@@ -80,7 +82,7 @@ reaction importTestsTransitiveSN::TransitiveSNOverriddenReaction2 {
 	after attribute replaced at minimal::Root[id]
 	call {
 		val data = newValue;
-		if (containsData(data, "testTransitiveReactionOverride")) {
+		if (containsDataTag(data, TAG_TEST_TRANSITIVE_REACTION_OVERRIDE)) {
 			ImportTestsExecutionMonitor.instance.set(DirectSNTransitiveSNOverriddenReaction2)
 			directSNRoutine()
 		}
@@ -91,7 +93,7 @@ reaction importTestsTransitiveSN::TransitiveSNOverriddenReaction3 {
 	after attribute replaced at minimal::Root[id]
 	call {
 		val data = newValue;
-		if (containsData(data, "testTransitiveReactionOverride")) {
+		if (containsDataTag(data, TAG_TEST_TRANSITIVE_REACTION_OVERRIDE)) {
 			ImportTestsExecutionMonitor.instance.set(DirectSNTransitiveSNOverriddenReaction3)
 			directSNRoutine()
 		}

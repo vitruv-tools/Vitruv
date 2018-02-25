@@ -1,4 +1,6 @@
 import tools.vitruv.dsls.reactions.tests.importTests.ImportTestsExecutionMonitor
+
+import static tools.vitruv.dsls.reactions.tests.importTests.ImportTests.*
 import static tools.vitruv.dsls.reactions.tests.importTests.ImportTestsExecutionMonitor.ExecutionType.*
 import static tools.vitruv.dsls.reactions.tests.importTests.ImportTestsUtils.*
 
@@ -16,7 +18,7 @@ reaction DirectRoutinesQNReaction {
 	after attribute replaced at minimal::Root[id]
 	call {
 		val data = newValue
-		if (containsData(data, "testRoutinesOnlyReactions")) {
+		if (containsDataTag(data, TAG_TEST_ROUTINES_ONLY_REACTIONS)) {
 			ImportTestsExecutionMonitor.instance.set(DirectRoutinesQNReaction)
 		}
 	}
