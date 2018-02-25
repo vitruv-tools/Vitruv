@@ -198,21 +198,36 @@ class ReactionsLanguageValidator extends AbstractReactionsLanguageValidator {
 	private def void checkNoIncludedRoutinesFacadesNameClashes(ReactionsSegment reactionsSegment) {
 		// corresponding formatted reactions segment name -> import
 		val alreadyCheckedIncludedRoutinesFacades = new HashMap<String, ReactionsImport>();
-		for (reactionsImport : reactionsSegment.reactionsImports.filter[it.useQualifiedNames]) {
+		for (reactionsImport : reactionsSegment.reactionsImports) {
 			val importedSegment = reactionsImport.importedReactionsSegment;
-			val importIncludedRoutinesFacadeSegments = importedSegment.includedRoutinesFacades.keySet;
-			for (includedRoutinesFacadeSegment : importIncludedRoutinesFacadeSegments) {
-				val includedRoutinesFacadeName = includedRoutinesFacadeSegment.formattedName;
+			if (reactionsImport.useQualifiedNames) {
+				// imported segment's routines facade is included:
+				val includedRoutinesFacadeName = importedSegment.formattedName;
 				// check for name clashes with included routines facades from other imports:
 				val duplicateReactionsImport = alreadyCheckedIncludedRoutinesFacades.putIfAbsent(includedRoutinesFacadeName, reactionsImport);
 				if (duplicateReactionsImport !== null) {
-					val errorMessage = "Name-clash between routines imported (possibly transitively) with qualified names ('" + includedRoutinesFacadeName 
-						+ "'). Consider importing one of them without qualified names.";
-					error(errorMessage, reactionsImport, ReactionsLanguagePackage.Literals.REACTIONS_IMPORT__IMPORTED_REACTIONS_SEGMENT);
-					error(errorMessage, duplicateReactionsImport, ReactionsLanguagePackage.Literals.REACTIONS_IMPORT__IMPORTED_REACTIONS_SEGMENT);
+					errorIncludedRoutinesFacadesNameClash(reactionsImport, duplicateReactionsImport, includedRoutinesFacadeName);
+				}
+			} else {
+				// check for transitively included routines facades:
+				val importIncludedRoutinesFacadeSegments = importedSegment.includedRoutinesFacades.keySet;
+				for (includedRoutinesFacadeSegment : importIncludedRoutinesFacadeSegments) {
+					val includedRoutinesFacadeName = includedRoutinesFacadeSegment.formattedName;
+					// check for name clashes with included routines facades from other imports:
+					val duplicateReactionsImport = alreadyCheckedIncludedRoutinesFacades.putIfAbsent(includedRoutinesFacadeName, reactionsImport);
+					if (duplicateReactionsImport !== null) {
+						errorIncludedRoutinesFacadesNameClash(reactionsImport, duplicateReactionsImport, includedRoutinesFacadeName);
+					}
 				}
 			}
 		}
+	}
+
+	private def void errorIncludedRoutinesFacadesNameClash(ReactionsImport checkedImport, ReactionsImport conflictingImport, String conflictingSegmentName) {
+		val errorMessage = "Name-clash between routines imported (possibly transitively) with qualified names ('" + conflictingSegmentName
+			+ "'). Consider importing one of them without qualified names.";
+		error(errorMessage, checkedImport, ReactionsLanguagePackage.Literals.REACTIONS_IMPORT__IMPORTED_REACTIONS_SEGMENT);
+		error(errorMessage, conflictingImport, ReactionsLanguagePackage.Literals.REACTIONS_IMPORT__IMPORTED_REACTIONS_SEGMENT);
 	}
 
 	private def void checkNoDuplicateReactionNames(ReactionsSegment reactionsSegment) {
