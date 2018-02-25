@@ -2,6 +2,7 @@ package mir.reactions.familiesToPersons;
 
 import tools.vitruv.extensions.dslsruntime.reactions.AbstractReactionsExecutor;
 import tools.vitruv.extensions.dslsruntime.reactions.RoutinesFacadesProvider;
+import tools.vitruv.extensions.dslsruntime.reactions.structure.ReactionsImportPath;
 
 @SuppressWarnings("all")
 class ReactionsExecutor extends AbstractReactionsExecutor {
@@ -15,14 +16,14 @@ class ReactionsExecutor extends AbstractReactionsExecutor {
   }
   
   protected void setup() {
-    this.addReaction(new mir.reactions.familiesToPersons.CreatedFamilyRegisterReaction(this.getRoutinesFacadesProvider().getRoutinesFacade(tools.vitruv.extensions.dslsruntime.reactions.structure.ReactionsImportPath.fromPathString("FamiliesToPersons"))));
-    this.addReaction(new mir.reactions.familiesToPersons.DeletedFamilyRegisterReaction(this.getRoutinesFacadesProvider().getRoutinesFacade(tools.vitruv.extensions.dslsruntime.reactions.structure.ReactionsImportPath.fromPathString("FamiliesToPersons"))));
-    this.addReaction(new mir.reactions.familiesToPersons.CreatedFatherReaction(this.getRoutinesFacadesProvider().getRoutinesFacade(tools.vitruv.extensions.dslsruntime.reactions.structure.ReactionsImportPath.fromPathString("FamiliesToPersons"))));
-    this.addReaction(new mir.reactions.familiesToPersons.CreatedSonReaction(this.getRoutinesFacadesProvider().getRoutinesFacade(tools.vitruv.extensions.dslsruntime.reactions.structure.ReactionsImportPath.fromPathString("FamiliesToPersons"))));
-    this.addReaction(new mir.reactions.familiesToPersons.CreatedMotherReaction(this.getRoutinesFacadesProvider().getRoutinesFacade(tools.vitruv.extensions.dslsruntime.reactions.structure.ReactionsImportPath.fromPathString("FamiliesToPersons"))));
-    this.addReaction(new mir.reactions.familiesToPersons.CreatedDaughterReaction(this.getRoutinesFacadesProvider().getRoutinesFacade(tools.vitruv.extensions.dslsruntime.reactions.structure.ReactionsImportPath.fromPathString("FamiliesToPersons"))));
-    this.addReaction(new mir.reactions.familiesToPersons.DeletedMemberReaction(this.getRoutinesFacadesProvider().getRoutinesFacade(tools.vitruv.extensions.dslsruntime.reactions.structure.ReactionsImportPath.fromPathString("FamiliesToPersons"))));
-    this.addReaction(new mir.reactions.familiesToPersons.ChangedFirstNameReaction(this.getRoutinesFacadesProvider().getRoutinesFacade(tools.vitruv.extensions.dslsruntime.reactions.structure.ReactionsImportPath.fromPathString("FamiliesToPersons"))));
-    this.addReaction(new mir.reactions.familiesToPersons.ChangedLastNameReaction(this.getRoutinesFacadesProvider().getRoutinesFacade(tools.vitruv.extensions.dslsruntime.reactions.structure.ReactionsImportPath.fromPathString("FamiliesToPersons"))));
+    this.addReaction(new mir.reactions.familiesToPersons.CreatedFamilyRegisterReaction(this.getRoutinesFacadesProvider().getRoutinesFacade(ReactionsImportPath.fromPathString("FamiliesToPersons"))));
+    this.addReaction(new mir.reactions.familiesToPersons.DeletedFamilyRegisterReaction(this.getRoutinesFacadesProvider().getRoutinesFacade(ReactionsImportPath.fromPathString("FamiliesToPersons"))));
+    this.addReaction(new mir.reactions.familiesToPersons.CreatedFatherReaction(this.getRoutinesFacadesProvider().getRoutinesFacade(ReactionsImportPath.fromPathString("FamiliesToPersons"))));
+    this.addReaction(new mir.reactions.familiesToPersons.CreatedSonReaction(this.getRoutinesFacadesProvider().getRoutinesFacade(ReactionsImportPath.fromPathString("FamiliesToPersons"))));
+    this.addReaction(new mir.reactions.familiesToPersons.CreatedMotherReaction(this.getRoutinesFacadesProvider().getRoutinesFacade(ReactionsImportPath.fromPathString("FamiliesToPersons"))));
+    this.addReaction(new mir.reactions.familiesToPersons.CreatedDaughterReaction(this.getRoutinesFacadesProvider().getRoutinesFacade(ReactionsImportPath.fromPathString("FamiliesToPersons"))));
+    this.addReaction(new mir.reactions.familiesToPersons.DeletedMemberReaction(this.getRoutinesFacadesProvider().getRoutinesFacade(ReactionsImportPath.fromPathString("FamiliesToPersons"))));
+    this.addReaction(new mir.reactions.familiesToPersons.ChangedFirstNameReaction(this.getRoutinesFacadesProvider().getRoutinesFacade(ReactionsImportPath.fromPathString("FamiliesToPersons"))));
+    this.addReaction(new mir.reactions.familiesToPersons.ChangedLastNameReaction(this.getRoutinesFacadesProvider().getRoutinesFacade(ReactionsImportPath.fromPathString("FamiliesToPersons"))));
   }
 }
