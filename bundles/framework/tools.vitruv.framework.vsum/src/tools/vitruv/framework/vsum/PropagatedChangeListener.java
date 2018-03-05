@@ -3,24 +3,27 @@ package tools.vitruv.framework.vsum;
 import java.util.List;
 
 import tools.vitruv.framework.change.description.PropagatedChange;
+import tools.vitruv.framework.domains.VitruvDomain;
 
 /**
  * The {@link PropagatedChangeListener} is the interface used to communicate with the change
- * visualization.
+ * visualization. Usually the instances are created through the factory method at
+ * ChangeVisualization.
  *
  * @author Andreas Loeffler
  */
 public interface PropagatedChangeListener {
 
     /**
-     * Whenever changes are made, they must be posted with this method to the visualization-listener. An
-     * equal name is used to group all propagation results of one model into a single ui element.
+     * Whenever changes are made, they must be posted with this method to the visualization-listener.
      *
-     * @param name
-     *            An equal name is used to group different changes of one model
+     * @param sourceDomain
+     *            The sourceDomain, may be null
+     * @param targetModelInfo
+     *            The targetDomain, may be null
      * @param propagationResult
      *            The results to visualize
      */
-    void postChanges(String name, List<PropagatedChange> propagationResult);
+    void postChanges(VitruvDomain sourceDomain, VitruvDomain targetDomain, List<PropagatedChange> propagationResult);
 
 }
