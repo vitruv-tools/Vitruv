@@ -38,80 +38,6 @@ import tools.vitruv.framework.vsum.PropagatedChangeListener;
 
 public abstract class VitruviusApplicationTest extends VitruviusUnmonitoredApplicationTest {
 
-	//############################ ChangeVisualization
-	/**
-	 * A list of ChangeListeners that are informed of all changes made
-	 */
-	private static Set<PropagatedChangeListener> changeListeners=new HashSet<PropagatedChangeListener>();
-
-	/**
-	 * Registers a given {@link PropagatedChangeListener}.
-	 * 
-	 * @param changeListener The listener to register
-	 */
-	public static void addChangeListener(PropagatedChangeListener changeListener) {
-		changeListeners.add(changeListener);		
-	}
-
-	/**
-	 * Removes a given ChangeListener. Does nothing if the listener is not registered.
-	 * 
-	 * @param changeListener The listener to remove
-	 */
-	public static void removeChangeListener(PropagatedChangeListener changeListener) {
-		changeListeners.remove(changeListener);
-	}	
-
-	/**
-	 * This method informs all registered {@link PropagatedChangeListener}s of changes made.
-	 * 
-	 * @param propagationResult The changes made
-	 */
-	private static void informChangeListeners(List<PropagatedChange> propagationResult) {
-		String testName=extractTestName();	
-		for(PropagatedChangeListener cl:changeListeners) {
-			cl.postChanges(testName,propagationResult);
-		}		
-	}
-
-	/**
-	 * Until a better way to get the junit test name is known, we derive the test name from the stack trace
-	 * assuming the test method has a reproduceable position. Please do not consider this method during code review
-	 * as it will for sure be altered soon and get its javadoc updated to not have this hint.
-	 * 
-	 * @return The extracted TestName
-	 */
-	private static String extractTestName() {
-		//			0:getStackTrace
-		//			1:extractTestName
-		//			2:propagateChanges
-		//			3:saveAndSynchronizeChanges
-		//			4:saveAndSynchronizeChanges
-		//			5:createAndSynchronizeModel
-		//			6:createAndSyncSystem
-		//			7:testRenameSystem
-		//			8:invoke0
-		StackTraceElement[] trace = Thread.currentThread().getStackTrace();
-		if(trace==null||trace.length<4) return "should never happen";//This should never happen
-		String last=null;
-		for(int n=0;n<trace.length;n++) {
-			//System.out.println(n+":"+trace[n].getMethodName());
-			String methodName=trace[n].getMethodName();
-			//If the name convention is fullfilled, the first method named testXYZ is the tested method
-			if(methodName.startsWith("test")) {
-				return methodName;
-			}
-			//If not, then the last method before the first method starting with invoke is considered to be the test method
-			if(last!=null&&methodName.startsWith("invoke")) {
-				return last;
-			}
-			//Save the actual methodName
-			last=methodName;
-		}
-		return "unknown";
-	}	
-	//############################  ChangeVisualization
-
 	private AtomicEmfChangeRecorder changeRecorder;
 
 	@Override
@@ -147,11 +73,6 @@ public abstract class VitruviusApplicationTest extends VitruviusUnmonitoredAppli
 		final List<TransactionalChange> changes = changeRecorder.getChanges();
 		CompositeContainerChange compositeChange = VitruviusChangeFactory.getInstance().createCompositeChange(changes);
 		List<PropagatedChange> propagationResult = this.getVirtualModel().propagateChange(compositeChange);
-
-		//###############  ChangeVisualization
-		informChangeListeners(propagationResult);
-		//###############  ChangeVisualization
-
 		this.changeRecorder.beginRecording();
 		return propagationResult;
 	}
