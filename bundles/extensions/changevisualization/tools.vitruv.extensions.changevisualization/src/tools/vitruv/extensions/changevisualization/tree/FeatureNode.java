@@ -1,6 +1,7 @@
 package tools.vitruv.extensions.changevisualization.tree;
 
 import java.awt.Component;
+import java.io.Serializable;
 import java.util.Comparator;
 import java.util.Hashtable;
 import java.util.List;
@@ -20,7 +21,12 @@ import tools.vitruv.extensions.changevisualization.tree.decoder.ObjectFeatureDec
  * @author Andreas Loeffler
  *
  */
-public class FeatureNode {	
+public class FeatureNode implements Serializable{	
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 2466695811442401829L;
 
 	/**
 	 * Decoders which extract the information to display from given Object of specific classes
@@ -65,6 +71,11 @@ public class FeatureNode {
 	 * If details in form of a (longer) String exist, they are stored here
 	 */
 	private String details;
+	
+	/**
+	 * If details in the form of a String[][] exist, they are stored here
+	 */
+	private String[][] detailsArray;
 
 	/**
 	 * If details in the form of a Component exist, they are stored here
@@ -145,11 +156,13 @@ public class FeatureNode {
 				//If no candidate exists, use objectFallback
 				value=objectFallbackDecoder.decodeSimple(obj);
 				details=objectFallbackDecoder.decodeDetailed(obj);
+				detailsArray=objectFallbackDecoder.decodeDetailedArray(obj);
 				detailsUI=objectFallbackDecoder.decodeDetailedUI(obj);
 			}else if(candidates.size()==1) {
 				//If one candidate exists, use it
 				value=decoders.get(candidates.get(0)).decodeSimple(obj);
 				details=decoders.get(candidates.get(0)).decodeDetailed(obj);
+				detailsArray=decoders.get(candidates.get(0)).decodeDetailedArray(obj);
 				detailsUI=decoders.get(candidates.get(0)).decodeDetailedUI(obj);
 			}else {
 				//if multiple decoders fit, use the one that is most specific
@@ -158,11 +171,13 @@ public class FeatureNode {
 					//This case should not happen, use object as fallback				
 					value=objectFallbackDecoder.decodeSimple(obj);
 					details=objectFallbackDecoder.decodeDetailed(obj);
+					detailsArray=objectFallbackDecoder.decodeDetailedArray(obj);
 					detailsUI=objectFallbackDecoder.decodeDetailedUI(obj);
 				}else {
 					//Use the most specific decoder				
 					value=decoders.get(mostSpecificClass).decodeSimple(obj);	
 					details=decoders.get(mostSpecificClass).decodeDetailed(obj);
+					detailsArray=decoders.get(mostSpecificClass).decodeDetailedArray(obj);
 					detailsUI=decoders.get(mostSpecificClass).decodeDetailedUI(obj);
 				}				
 			}
@@ -209,6 +224,10 @@ public class FeatureNode {
 			}			
 		});
 		return candidates.get(0);		
+	}
+
+	public String[][] getDetailsArray() {
+		return detailsArray;
 	}
 
 }

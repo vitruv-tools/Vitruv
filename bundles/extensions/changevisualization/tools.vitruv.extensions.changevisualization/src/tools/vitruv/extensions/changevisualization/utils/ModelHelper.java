@@ -2,6 +2,8 @@ package tools.vitruv.extensions.changevisualization.utils;
 
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Vector;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
@@ -21,6 +23,70 @@ public final class ModelHelper {
 	private ModelHelper() {
 		//Should not be called
 	}
+	
+	public static String[][] extractStructuralFeatureArray(EObject eObj) {
+		List<String> labels=new Vector<String>();
+		List<String> values=new Vector<String>();
+		//add general information
+		appendEClassInformation(labels,values,eObj);
+
+		//Add runtime class information
+		appendRuntimeClassInformation(labels,values,eObj);
+
+		//add strucutral feature information
+		appendStructuralFeatureInformation(labels,values,eObj);		
+
+		String[][] array=new String[labels.size()][2];
+		for(int n=0;n<array.length;n++) {
+			array[n][0]=labels.get(n);
+			array[n][1]=values.get(n);
+		}
+		return array;
+	}
+	/**
+	 * Creates the lines for all strucutral features
+	 * 
+	 * @param center The center panel
+	 * @param left The left panel
+	 * @param eObj The eObject
+	 */
+	private static void appendStructuralFeatureInformation(List<String> labels, List<String> values, EObject eObj) {
+		for (EStructuralFeature feature:eObj.eClass().getEAllStructuralFeatures()) {
+			if(feature==null) {
+				continue;
+			}
+			Object fObj=eObj.eGet(feature);
+			if(fObj==null) {
+				fObj="";
+			}
+			labels.add(feature.getName());
+			values.add(String.valueOf(fObj));
+		}	
+	}
+
+	/**
+	 * Creates the line with the runtime class information
+	 * 
+	 * @param center The center panel
+	 * @param left The left panel
+	 * @param eObj The eObject
+	 */
+	private static void appendRuntimeClassInformation(List<String> labels, List<String> values, EObject eObj) {
+		labels.add("runtime class");
+		values.add(eObj.getClass().getName());
+	}
+
+	/**
+	 * Creates the line with the eClass information
+	 * 
+	 * @param labels The center panel
+	 * @param values The left panel
+	 * @param eObj The eObject
+	 */
+	private static void appendEClassInformation(List<String> labels, List<String> values, EObject eObj) {
+		labels.add("eClass");
+		values.add(eObj.eClass().getName());
+	}	
 
 	/**
 	 * Returns if the given structural feature of the given eObject exists

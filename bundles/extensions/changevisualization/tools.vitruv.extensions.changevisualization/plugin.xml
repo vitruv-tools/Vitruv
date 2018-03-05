@@ -6,25 +6,25 @@
          point="org.eclipse.ui.commands">
       <category
             name="Sample Category"
-            id="tools.vitruv.framework.ui.changevisualization.commands.category">
+            id="tools.vitruv.extensions.changevisualization.commands.category">
       </category>
       <command
             name="Enable change visualization"
-            categoryId="tools.vitruv.framework.ui.changevisualization.commands.category"
-            id="tools.vitruv.framework.ui.changevisualization.commands.sampleCommand">
+            categoryId="tools.vitruv.extensions.changevisualization.commands.category"
+            id="tools.vitruv.extensions.changevisualization.commands.sampleCommand">
       </command>
    </extension>
    <extension
          point="org.eclipse.ui.handlers">
       <handler
-            commandId="tools.vitruv.framework.ui.changevisualization.commands.sampleCommand"
+            commandId="tools.vitruv.extensions.changevisualization.commands.sampleCommand"
             class="tools.vitruv.extensions.changevisualization.handlers.ChangeVisualizationHandler">
       </handler>
    </extension>
    <extension
          point="org.eclipse.ui.bindings">
       <key
-            commandId="tools.vitruv.framework.ui.changevisualization.commands.sampleCommand"
+            commandId="tools.vitruv.extensions.changevisualization.commands.sampleCommand"
             contextId="org.eclipse.ui.contexts.window"
             sequence="M1+6"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration">
@@ -33,31 +33,25 @@
    <extension
          point="org.eclipse.ui.menus">
       <menuContribution
-            locationURI="menu:org.eclipse.ui.main.menu?after=additions">
-         <menu
-               label="Change Visualization"
-               mnemonic="M"
-               id="tools.vitruv.framework.ui.changevisualization.menus.sampleMenu">
-            <command
-                  commandId="tools.vitruv.framework.ui.changevisualization.commands.sampleCommand"
-                  id="tools.vitruv.framework.ui.changevisualization.menus.sampleCommand"
-                  label="De/activate change visualization"
-                  mnemonic="S">
-            </command>
-         </menu>
-      </menuContribution>
-      <menuContribution
-            locationURI="toolbar:org.eclipse.ui.main.toolbar?after=additions">
-         <toolbar
-               id="tools.vitruv.framework.ui.changevisualization.toolbars.sampleToolbar">
-            <command
-                  commandId="tools.vitruv.framework.ui.changevisualization.commands.sampleCommand"
-                  icon="icons/sample.png"
-                  id="tools.vitruv.framework.ui.changevisualization.toolbars.sampleCommand"
-                  label="De/activate change visualization"
-                  tooltip="De/activate change visualization">
-            </command>
-         </toolbar>
+            allPopups="false"
+            locationURI="popup:org.eclipse.jdt.ui.PackageExplorer">
+         <command
+               commandId="tools.vitruv.extensions.changevisualization.commands.sampleCommand"
+               label="Togglechange visualization"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <iterate>
+                  <adapt
+                        type="org.eclipse.core.resources.IProject">
+                     <test
+                           property="org.eclipse.core.resources.open"
+                           value="open">
+                     </test>
+                  </adapt>
+               </iterate>
+            </visibleWhen>
+         </command>
       </menuContribution>
    </extension>
 

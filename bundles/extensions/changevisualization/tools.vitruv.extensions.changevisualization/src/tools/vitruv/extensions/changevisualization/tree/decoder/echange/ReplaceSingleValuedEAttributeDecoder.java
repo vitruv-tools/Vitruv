@@ -1,4 +1,4 @@
-package tools.vitruv.extensions.changevisualization.tree.decoder;
+package tools.vitruv.extensions.changevisualization.tree.decoder.echange;
 
 import java.util.Map;
 
@@ -38,51 +38,19 @@ public class ReplaceSingleValuedEAttributeDecoder extends AbstractChangeDecoder 
 		String newValue=structuralFeatures2values.containsKey("newValue")?structuralFeatures2values.get("newValue").toString():"-";
 
 		//Extract the entityName of the eObject
-		String eObjectName=extractEObjectName(eChange,structuralFeatures2values);
+		String eObjectName=extractAffectedEObjectName(structuralFeatures2values);
 		if(eObjectName==null) {
 			return getFallbackString(eChange);
 		}
 
 		//extract the name of the eAttribute
-		String eAttributeName=extractEAttributeName(eChange,structuralFeatures2values);		
+		String eAttributeName=extractAffectedFeatureName(structuralFeatures2values);		
 		if(eAttributeName==null) {
 			return getFallbackString(eChange);
 		}
 
 		//Create the result string
-		return eChange.eClass().getName()+" : "+eObjectName+" / "+eAttributeName+" : \""+oldValue+"\" ==> \""+newValue+"\"";
+		return eChange.eClass().getName()+" : \""+eObjectName+"\" / \""+eAttributeName+"\" : \""+oldValue+"\" ==> \""+newValue+"\"";
 	}
-
-	/**
-	 * Extracts the name of the eAttribute that was changed
-	 * 
-	 * @param eChange The eChange
-	 * @param structuralFeatures2values The relevant structural features
-	 * @return The name of the affected eAttribute
-	 */
-	private String extractEAttributeName(EChange eChange, Map<String, Object> structuralFeatures2values) {
-		Object eAttribute=structuralFeatures2values.get("affectedFeature");
-		if(eAttribute==null||!(eAttribute instanceof EObject)) {
-			return null;
-		}
-		eAttribute=ModelHelper.getStructuralFeature((EObject)eAttribute,"name");
-		return String.valueOf(eAttribute);
-	}
-
-	/**
-	 * Extracts the name of the eObject that was changed
-	 * 
-	 * @param eChange The eChange
-	 * @param structuralFeatures2values The relevant structural features
-	 * @return The name of the affected eObject
-	 */
-	private String extractEObjectName(EChange eChange, Map<String, Object> structuralFeatures2values) {
-		Object eObject=structuralFeatures2values.get("affectedEObject");
-		if(eObject==null||!(eObject instanceof EObject)) {
-			return null;
-		}
-		eObject=ModelHelper.getStructuralFeature((EObject)eObject,"entityName");
-		return String.valueOf(eObject);
-	}	
-
+	
 }

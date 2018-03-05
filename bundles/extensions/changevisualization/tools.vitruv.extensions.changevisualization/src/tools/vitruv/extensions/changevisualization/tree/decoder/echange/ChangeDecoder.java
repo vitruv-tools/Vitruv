@@ -1,4 +1,4 @@
-package tools.vitruv.extensions.changevisualization.tree.decoder;
+package tools.vitruv.extensions.changevisualization.tree.decoder.echange;
 
 import tools.vitruv.framework.change.echange.EChange;
 
@@ -16,5 +16,11 @@ public interface ChangeDecoder {
 	 * @return The simple Info text, must not be null
 	 */
 	String decode(EChange echange);
+
+	/**
+	 * Returns the name of the eClass decoded by this decoder
+	 * @return The name of the eCLass that can be decoded
+	 */
+	String getDecodedEClassName();
 	
 }

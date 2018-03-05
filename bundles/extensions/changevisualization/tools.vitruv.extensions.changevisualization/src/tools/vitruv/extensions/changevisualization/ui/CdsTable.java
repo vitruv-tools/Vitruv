@@ -1,24 +1,29 @@
 package tools.vitruv.extensions.changevisualization.ui;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Font;
 import java.awt.event.InputEvent;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Vector;
 
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTree;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
+import javax.swing.tree.DefaultMutableTreeNode;
 
 import tools.vitruv.extensions.changevisualization.ChangeDataSet;
+import tools.vitruv.extensions.changevisualization.ChangeVisualization;
 
 /**
  * A CdsTable displays all different ChangeDataSets of a given ChangesTab in a JTable
@@ -36,6 +41,8 @@ public class CdsTable extends JPanel implements MouseWheelListener{
 	 * The Table implementing the actual cds visualization
 	 */
 	private JTable table;
+
+	private List<String> highlightedCdsIds;
 
 	/**
 	 * Constructs a new CdsTable
@@ -55,11 +62,13 @@ public class CdsTable extends JPanel implements MouseWheelListener{
 		table.setModel(createModel());
 
 		//Update calumn widths, has to be done after adding a model
-		table.getColumnModel().getColumn( 0 ).setPreferredWidth( 500 );//ID
+		table.getColumnModel().getColumn( 0 ).setPreferredWidth( 300 );//ID
 		table.getColumnModel().getColumn( 1 ).setPreferredWidth( 70 );//Time
 		table.getColumnModel().getColumn( 2 ).setPreferredWidth( 70 );//propagated changes
-		table.getColumnModel().getColumn( 3 ).setPreferredWidth( 70 );//original changes
-		table.getColumnModel().getColumn( 4 ).setPreferredWidth( 70 );//consequential changes
+		table.getColumnModel().getColumn( 3 ).setPreferredWidth( 70 );//propagated changes
+		table.getColumnModel().getColumn( 4 ).setPreferredWidth( 70 );//propagated changes
+		table.getColumnModel().getColumn( 5 ).setPreferredWidth( 70 );//original changes
+		table.getColumnModel().getColumn( 6 ).setPreferredWidth( 70 );//consequential changes
 
 		//Add the table to a scrollpane
 		JScrollPane scroller=new JScrollPane(table);
@@ -80,6 +89,8 @@ public class CdsTable extends JPanel implements MouseWheelListener{
 		Vector<String> columnNames = new Vector<String>();
 		columnNames.add("ID");
 		columnNames.add("Time");
+		columnNames.add("Source Model");
+		columnNames.add("Target Model");
 		columnNames.add("Propagated changes");
 		columnNames.add("Original changes");
 		columnNames.add("Consequential changes");
@@ -98,9 +109,9 @@ public class CdsTable extends JPanel implements MouseWheelListener{
 			//JTable uses this method to determine the default renderer editor for each cell
 			public Class<?> getColumnClass(int c) {
 				switch(c){
-				case 2:
-				case 3:
 				case 4:
+				case 5:
+				case 6:
 					return Integer.class;
 				case 1:
 					return Date.class;
@@ -135,6 +146,29 @@ public class CdsTable extends JPanel implements MouseWheelListener{
 			protected void setValue(Object value) {
 				setText((value == null) ? "" : df.format((Date)value));
 			}
+		});
+		
+		table.setDefaultRenderer(String.class,new DefaultTableCellRenderer(){			
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public Component getTableCellRendererComponent(JTable table, Object value,
+                    boolean isSelected, boolean hasFocus, int row, int column) {
+				//Reset font color
+				setForeground(table.getForeground());				
+										
+				//Get default visualization
+				Component comp=super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+				//Just as an info: comp==this
+				
+				//if the String is highlighted, set the color after super.getTableCell...
+				//to overwrite any potential coloring of the superclasses implementation
+				if(column==0&&shouldHighlight((String)value)) {
+					comp.setForeground(ChangesTab.HIGHLIGHT_COLOR);
+				}
+				
+				return comp;
+			}			
 		});
 	}
 
@@ -190,8 +224,10 @@ public class CdsTable extends JPanel implements MouseWheelListener{
 	 */
 	private Vector<Object> encode(ChangeDataSet cds) {
 		Vector<Object> line=new Vector<Object>();
-		line.add(cds.getCdsID());
+		line.add(cds.getCdsID());		
 		line.add(cds.getCreationTime());
+		line.add(cds.getSourceModelInfo());
+		line.add(cds.getTargetModelInfo());
 		line.add(cds.getNrPChanges());
 		line.add(cds.getNrOChanges());
 		line.add(cds.getNrCChanges());
@@ -204,6 +240,15 @@ public class CdsTable extends JPanel implements MouseWheelListener{
 	 */
 	public int getSelectedRow() {
 		return table.getSelectedRow();
+	}
+	
+	public synchronized void setHighlightedCdsIDs(List<String> highlightedCdsIds) {
+		this.highlightedCdsIds=highlightedCdsIds;
+	}
+	
+	private synchronized boolean shouldHighlight(String value) {
+		if(highlightedCdsIds==null||highlightedCdsIds.isEmpty()) return false;
+		return highlightedCdsIds.contains(value);
 	}
 
 }

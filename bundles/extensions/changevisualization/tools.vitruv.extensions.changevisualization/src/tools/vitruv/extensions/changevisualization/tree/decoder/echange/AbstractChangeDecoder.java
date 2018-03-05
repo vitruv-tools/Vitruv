@@ -1,12 +1,14 @@
-package tools.vitruv.extensions.changevisualization.tree.decoder;
+package tools.vitruv.extensions.changevisualization.tree.decoder.echange;
 
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 
+import tools.vitruv.extensions.changevisualization.utils.ModelHelper;
 import tools.vitruv.framework.change.echange.EChange;
 
 /**
@@ -18,6 +20,49 @@ import tools.vitruv.framework.change.echange.EChange;
  * @author Andreas Loeffler
  */
 public abstract class AbstractChangeDecoder implements ChangeDecoder {
+	
+	/**
+	 * Extracts the name of the affectedFeature
+	 * 
+	 * @param structuralFeatures2values The relevant structural features
+	 * @return The name of the affected eAttribute
+	 */
+	protected static String extractAffectedFeatureName(Map<String, Object> structuralFeatures2values) {
+		Object feature=structuralFeatures2values.get("affectedFeature");
+		if(feature==null||!(feature instanceof EObject)) {
+			return null;
+		}
+		feature=ModelHelper.getStructuralFeature((EObject)feature,"name");
+		return String.valueOf(feature);
+	}
+
+	/**
+	 * Extracts the name of the affectedEObject
+	 * 
+	 * @param structuralFeatures2values The relevant structural features
+	 * @return The name of the affected eObject
+	 */
+	protected static String extractAffectedEObjectName(Map<String, Object> structuralFeatures2values) {
+		Object eObject=structuralFeatures2values.get("affectedEObject");
+		if(eObject==null||!(eObject instanceof EObject)) {
+			return null;
+		}
+		return extractEObjectName((EObject)eObject);
+	}	
+	
+	/**
+	 * Extracts the name of the given eObject
+	 * 
+	 * @param eObject The eObject whose name (=entityName) gets queried	 
+	 * @return The name of the eObject
+	 */
+	protected static String extractEObjectName(EObject eObject) {
+		if(eObject==null) {
+			return null;
+		}
+		return String.valueOf(ModelHelper.getStructuralFeature((EObject)eObject,"entityName"));
+	}	
+
 
 	/**
 	 * the required eClass name
@@ -40,6 +85,11 @@ public abstract class AbstractChangeDecoder implements ChangeDecoder {
 	protected AbstractChangeDecoder(String eClassName, String[] requiredFeatures) {
 		this.eClassName=eClassName;
 		this.requiredFeatures=java.util.Arrays.asList(requiredFeatures);
+	}
+	
+	@Override
+	public String getDecodedEClassName() {
+		return eClassName;
 	}
 
 	@Override

@@ -1,10 +1,11 @@
-package tools.vitruv.extensions.changevisualization.tree;
+package tools.vitruv.extensions.changevisualization.ui;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.InputEvent;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
+import java.io.Serializable;
 import java.util.List;
 import java.util.Vector;
 
@@ -17,8 +18,6 @@ import javax.swing.border.EmptyBorder;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 
-import tools.vitruv.extensions.changevisualization.ui.ChangeVisualizationUI;
-
 /**
  * Displays all structural features of an EObject in a scrollable UI. It shows the names of the
  * structural features on the left and their values as TextField on the right. This information
@@ -26,12 +25,7 @@ import tools.vitruv.extensions.changevisualization.ui.ChangeVisualizationUI;
  * 
  * @author Andreas Loeffler
  */
-public class EObjectStructuralFeaturePanel extends JScrollPane{
-
-	/**
-	 * Needed for eclipse to stop warning about serialVersionIds. This feature will never been used. 
-	 */
-	private static final long serialVersionUID = 1L;
+public class LabelValuePanel extends JScrollPane{
 	
 	/**
 	 * Implements the usual strg + mousewheel zoom behaviour
@@ -82,7 +76,7 @@ public class EObjectStructuralFeaturePanel extends JScrollPane{
 	 * 
 	 * @param eObj The EObject to visualize
 	 */
-	public EObjectStructuralFeaturePanel(EObject eObj) {
+	public LabelValuePanel(String[][] array) {
 		//Create the basic layout and panel structure
 		JPanel pane = new JPanel(new BorderLayout());
 		JPanel left = new JPanel(new GridLayout(1,1));
@@ -92,15 +86,10 @@ public class EObjectStructuralFeaturePanel extends JScrollPane{
 		pane.add(left,BorderLayout.WEST);
 		pane.add(center,BorderLayout.CENTER);
 
-		//add general information
-		createEClassInformation(center,left,eObj);
-
-		//Add runtime class information
-		createRuntimeClassInformation(center,left,eObj);
-
-		//add strucutral feature information
-		createStructuralFeatureInformation(center,left,eObj);		
-
+		for(int n=0;n<array.length;n++) {
+			createLine(center,left,array[n][0],array[n][1]);
+		}
+		
 		//Put it into this scrollPane
 		setViewportView(pane);
 		
@@ -114,48 +103,6 @@ public class EObjectStructuralFeaturePanel extends JScrollPane{
 	private List<JLabel> getAllLabels() {
 		return allLabels;
 	}
-
-	/**
-	 * Creates the lines for all strucutral features
-	 * 
-	 * @param center The center panel
-	 * @param left The left panel
-	 * @param eObj The eObject
-	 */
-	private void createStructuralFeatureInformation(JPanel center, JPanel left, EObject eObj) {
-		for (EStructuralFeature feature:eObj.eClass().getEAllStructuralFeatures()) {
-			if(feature==null) {
-				continue;
-			}
-			Object fObj=eObj.eGet(feature);
-			if(fObj==null) {
-				fObj="";
-			}
-			createLine(center,left,feature.getName(),String.valueOf(fObj));
-		}	
-	}
-
-	/**
-	 * Creates the line with the runtime class information
-	 * 
-	 * @param center The center panel
-	 * @param left The left panel
-	 * @param eObj The eObject
-	 */
-	private void createRuntimeClassInformation(JPanel center, JPanel left, EObject eObj) {
-		createLine(center,left,"runtime class",eObj.getClass().getName());
-	}
-
-	/**
-	 * Creates the line with the eClass information
-	 * 
-	 * @param center The center panel
-	 * @param left The left panel
-	 * @param eObj The eObject
-	 */
-	private void createEClassInformation(JPanel center, JPanel left, EObject eObj) {
-		createLine(center,left,"eClass",eObj.eClass().getName());
-	}		
 
 	/**
 	 * Create a line in the center and left panel with the given texts
@@ -184,6 +131,6 @@ public class EObjectStructuralFeaturePanel extends JScrollPane{
 		//Add field to center and increase the layout dimension
 		((GridLayout)center.getLayout()).setRows(((GridLayout)center.getLayout()).getRows()+1);
 		center.add(field);
-	}
+	}	
 
 }

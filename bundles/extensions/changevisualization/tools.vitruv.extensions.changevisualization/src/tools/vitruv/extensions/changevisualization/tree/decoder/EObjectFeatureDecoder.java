@@ -5,7 +5,8 @@ import java.awt.Component;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 
-import tools.vitruv.extensions.changevisualization.tree.EObjectStructuralFeaturePanel;
+import tools.vitruv.extensions.changevisualization.ui.LabelValuePanel;
+import tools.vitruv.extensions.changevisualization.utils.ModelHelper;
 
 /**
  * Feature decoder suitable for EObjects. It creates a detailedUI that shows all existent
@@ -84,11 +85,12 @@ public class EObjectFeatureDecoder implements FeatureDecoder {
 
 	@Override
 	public Component decodeDetailedUI(Object obj) {
+		return null;
+	}
 
-		//Cast the object to an eObject
-		org.eclipse.emf.ecore.EObject eObj=(org.eclipse.emf.ecore.EObject)obj;
-
-		return new EObjectStructuralFeaturePanel(eObj);
+	@Override
+	public String[][] decodeDetailedArray(Object obf) {
+		return ModelHelper.extractStructuralFeatureArray((EObject)obf);
 	}		
 
 }

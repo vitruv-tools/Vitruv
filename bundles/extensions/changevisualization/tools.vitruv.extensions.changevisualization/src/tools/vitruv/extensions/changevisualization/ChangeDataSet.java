@@ -1,11 +1,16 @@
 package tools.vitruv.extensions.changevisualization;
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Hashtable;
+import java.util.Iterator;
 import java.util.List;
 
+import org.eclipse.emf.ecore.EObject;
+
 import tools.vitruv.framework.change.description.PropagatedChange;
+import tools.vitruv.framework.domains.VitruvDomain;
 
 /**
  * Base class for all visualization-dependent change-information. Each different visualization type
@@ -14,7 +19,12 @@ import tools.vitruv.framework.change.description.PropagatedChange;
  * 
  * @author Andreas Loeffler
  */
-public abstract class ChangeDataSet {
+public abstract class ChangeDataSet implements Serializable{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6142833170227828098L;
 
 	/**
 	 * The different types of changes
@@ -41,6 +51,9 @@ public abstract class ChangeDataSet {
 	 * The ID of this cds
 	 */
 	private final String cdsId;
+	
+	private final String sourceModelInfo;
+	private final String targetModelInfo;
 
 	/**
 	 * The number of propagated changes in this cds
@@ -63,12 +76,15 @@ public abstract class ChangeDataSet {
 	 * @param cdsId The ID of the cds
 	 * @param propagationResult The propagation result whose values should be represented by this cds
 	 */
-	protected ChangeDataSet(String cdsId, List<PropagatedChange> propagationResult) {
+	protected ChangeDataSet(String cdsId, VitruvDomain sourceDomain, VitruvDomain targetDomain, List<PropagatedChange> propagationResult) {
 		this.cdsId=cdsId;
 		this.creationTime=new Date();
-
+		
+		sourceModelInfo=sourceDomain==null?"-":sourceDomain.getName();
+		targetModelInfo=targetDomain==null?"-":targetDomain.getName();
+		
 		extractData(propagationResult);		
-	}
+	}	
 
 	/**
 	 * Subclasses have to implement their own visualization-dependent information extraction
@@ -195,6 +211,14 @@ public abstract class ChangeDataSet {
 	 */
 	public boolean hasUserInfo(String key) {
 		return userInfos.containsKey(key);
+	}
+
+	public String getSourceModelInfo() {
+		return sourceModelInfo;
+	}
+
+	public String getTargetModelInfo() {
+		return targetModelInfo;
 	}
 
 }

@@ -34,6 +34,11 @@ public class ObjectFeatureDecoder implements FeatureDecoder{
 	@Override
 	public Component decodeDetailedUI(Object obf) {
 		return null;
+	}
+
+	@Override
+	public String[][] decodeDetailedArray(Object obf) {
+		return null;
 	}		
 
 }

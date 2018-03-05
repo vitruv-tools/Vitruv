@@ -1,6 +1,7 @@
 package tools.vitruv.extensions.changevisualization.ui;
 
 import java.awt.LayoutManager;
+import java.util.List;
 
 import javax.swing.JPanel;
 
@@ -34,5 +35,7 @@ public abstract class ChangeComponent extends JPanel {
 	 * @param cds The ChangeDataSet to visualize
 	 */
 	public abstract void setData(ChangeDataSet cds);
+
+	public abstract List<String> determineHighlightedCdsIds(String highlightID, List<ChangeDataSet> changeDataSets);
 
 }

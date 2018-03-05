@@ -1,6 +1,8 @@
 package tools.vitruv.extensions.changevisualization.ui;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.io.Serializable;
 import java.util.List;
 import java.util.Vector;
 
@@ -13,7 +15,6 @@ import javax.swing.event.ListSelectionListener;
 
 import tools.vitruv.extensions.changevisualization.ChangeDataSet;
 import tools.vitruv.extensions.changevisualization.ChangeVisualization.VisualizationMode;
-import tools.vitruv.extensions.changevisualization.table.ChangeTable;
 import tools.vitruv.extensions.changevisualization.tree.ChangeTree;
 
 /**
@@ -28,6 +29,8 @@ public class ChangesTab extends JPanel implements ListSelectionListener{
 	 * Needed for eclipse to stop warning about serialVersionIds. This feature will never been used. 
 	 */
 	private static final long serialVersionUID = 1L;
+	
+	public static final Color HIGHLIGHT_COLOR=Color.BLUE;
 
 	/**
 	 * The ChangeComponent implementing the actual visualization
@@ -48,6 +51,8 @@ public class ChangesTab extends JPanel implements ListSelectionListener{
 	 * The active visualization mode
 	 */
 	private final VisualizationMode visualizationMode;
+
+	private String highlightID;
 
 	/**
 	 * Create a ChangesTab with a given ChangeDataSet as initial value and a given visualization mode
@@ -83,9 +88,6 @@ public class ChangesTab extends JPanel implements ListSelectionListener{
 
 		//add visualization
 		switch(visualizationMode) {
-		case TABLE:
-			visualization=new ChangeTable();
-			break;
 		case TREE:
 			visualization=new ChangeTree();
 			break;
@@ -130,5 +132,21 @@ public class ChangesTab extends JPanel implements ListSelectionListener{
 			ChangeDataSet cds = changeDataSets.get(row);
 			visualization.setData(cds);
 		}
-	}	
+	}
+
+	public VisualizationMode getVisualizationMode() {
+		return visualizationMode;
+	}
+
+	public void setHighlightID(String highlightID) {
+		this.highlightID=highlightID;
+		this.cdsTable.setHighlightedCdsIDs(visualization.determineHighlightedCdsIds(highlightID,changeDataSets));
+		this.visualization.repaint();
+		this.cdsTable.repaint();
+	}
+
+	public String getHighlightID() {
+		return highlightID;
+	}
+		
 }

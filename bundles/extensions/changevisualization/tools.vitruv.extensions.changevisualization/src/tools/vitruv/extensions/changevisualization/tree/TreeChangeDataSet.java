@@ -1,5 +1,6 @@
 package tools.vitruv.extensions.changevisualization.tree;
 
+import java.io.Serializable;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
@@ -20,6 +21,7 @@ import tools.vitruv.extensions.changevisualization.tree.decoder.OldValueNewValue
 import tools.vitruv.framework.change.description.PropagatedChange;
 import tools.vitruv.framework.change.description.VitruviusChange;
 import tools.vitruv.framework.change.echange.EChange;
+import tools.vitruv.framework.domains.VitruvDomain;
 
 /**
  * TreeChangeDataSet processes propagation results and extracts the data necessary for visualization
@@ -27,8 +29,13 @@ import tools.vitruv.framework.change.echange.EChange;
  * 
  * @author Andreas Loeffler
  */
-public class TreeChangeDataSet extends ChangeDataSet {
+public class TreeChangeDataSet extends ChangeDataSet implements Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1956649507076783962L;
+	
 	public static final String PROPAGATED_CHANGE_STRING="Propagated Change";
 	public static final String ORIGINAL_CHANGE_STRING="Original Change";
 	public static final String CONSEQUENTIAL_CHANGE_STRING="Consequential Change";
@@ -141,8 +148,8 @@ public class TreeChangeDataSet extends ChangeDataSet {
 	 * @param cdsId The ID
 	 * @param propagationResult The propation result
 	 */
-	public TreeChangeDataSet(String cdsId, List<PropagatedChange> propagationResult) {
-		super(cdsId,propagationResult);
+	public TreeChangeDataSet(String cdsId, VitruvDomain sourceDomain, VitruvDomain targetDomain, List<PropagatedChange> propagationResult) {
+		super(cdsId,sourceDomain,targetDomain,propagationResult);
 	}
 
 	@Override
@@ -215,9 +222,6 @@ public class TreeChangeDataSet extends ChangeDataSet {
 			return;
 		}
 
-		//Count the propagated changes in the list
-		setNrPChanges(propagationResult.size());
-
 		//Walk all propagated changes and create its nodes
 		for(PropagatedChange propChange:propagationResult) {			
 			encodeTree(propChange);			
@@ -229,7 +233,10 @@ public class TreeChangeDataSet extends ChangeDataSet {
 	 * Calls methods that create the original/consequential change child nodes for the propagted change 
 	 * @param propChange The propagated change
 	 */
-	private void encodeTree(PropagatedChange propChange) {		
+	private void encodeTree(PropagatedChange propChange) {
+		//Count the propagated changes in the list, prior to creating the propChangeNode so it gets counted from 1 upwards.
+		setNrPChanges(getNrPChanges()+1);
+		
 		//Create a propagated change childnode
 		DefaultMutableTreeNode propChangeNode=new DefaultMutableTreeNode(PROPAGATED_CHANGE_STRING+" "+getNrPChanges());
 

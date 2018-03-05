@@ -9,9 +9,12 @@ import java.awt.event.InputEvent;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.util.Enumeration;
+import java.util.List;
+import java.util.Vector;
 
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
+import javax.swing.Icon;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -31,6 +34,7 @@ import javax.swing.tree.TreeSelectionModel;
 import tools.vitruv.extensions.changevisualization.ChangeDataSet;
 import tools.vitruv.extensions.changevisualization.ui.ChangeComponent;
 import tools.vitruv.extensions.changevisualization.ui.ChangeVisualizationUI;
+import tools.vitruv.extensions.changevisualization.ui.LabelValuePanel;
 
 /**
  * A ChangeTree visualizes propagation results in the form of a tree.
@@ -78,7 +82,7 @@ public class ChangeTree extends ChangeComponent {
 	/**
 	 * The renderer that renders the nodes of the tree
 	 */
-	private final ChangeNodeRenderer changeEventTreeRenderer=new ChangeNodeRenderer();
+	private final ChangeTreeNodeRenderer changeEventTreeRenderer=new ChangeTreeNodeRenderer();
 
 	/**
 	 * The splitpane splitting tree from details
@@ -89,12 +93,12 @@ public class ChangeTree extends ChangeComponent {
 	 * The JScrollPane used to display detail-component bigger than the viewport available 
 	 */
 	private JScrollPane detailsScroller;
-
+	
 	/**
 	 * The TreeMouseListener responding to mouse interaction
 	 */
 	private final TreeMouseListener ml;
-
+	
 	/**
 	 * The listener processing tree selection events of the JTree component
 	 */
@@ -129,13 +133,17 @@ public class ChangeTree extends ChangeComponent {
 					if(userObj!=null) {
 						if(userObj instanceof FeatureNode) {
 							String details=((FeatureNode)userObj).getDetails();
+							String[][] detailsArray=((FeatureNode)userObj).getDetailsArray();
 							Component detailsComp=((FeatureNode)userObj).getDetailsUI();
 							if(details!=null) {
 								detailsUI.setText(details);
+							}else if(detailsArray!=null) {								
+								detailsSplitpane.setRightComponent(new LabelValuePanel(detailsArray));
 							}else if(detailsComp!=null) {								
 								detailsSplitpane.setRightComponent(detailsComp);
 							}
 						}else if(userObj instanceof ChangeNode) {
+							//ChangeNode creates the component on the fly for us
 							Component detailsComp=((ChangeNode)userObj).getDetailsUI();
 							detailsSplitpane.setRightComponent(detailsComp);							
 						}
@@ -161,7 +169,7 @@ public class ChangeTree extends ChangeComponent {
 	public ChangeTree() {
 		super(new BorderLayout());
 
-		ml=new TreeMouseListener(changeEventTreeRenderer);
+		ml=new TreeMouseListener();
 		createUI();
 
 		treeUI.addMouseListener(ml);
@@ -169,26 +177,26 @@ public class ChangeTree extends ChangeComponent {
 		treeUI.getSelectionModel().addTreeSelectionListener(tsl);
 
 		treeUI.setCellRenderer(changeEventTreeRenderer);
-		
-		treeUI.addMouseWheelListener(new MouseWheelListener() {
-			@Override
-			public void mouseWheelMoved(MouseWheelEvent e) {	
-				//Implements the usual strg + mousewheel behaviour for zooming
-				if ((e.getModifiersEx() & InputEvent.CTRL_DOWN_MASK) == 0) return;
-				if(e.getWheelRotation()<=-1) {
-					float newSize=treeUI.getFont().getSize()+2;
-					if(newSize>30) newSize=30;
-					treeUI.setFont(treeUI.getFont().deriveFont(newSize));
-					treeUI.setRowHeight((int)(newSize+10));
-				}else if(e.getWheelRotation()>=1) {
-					float newSize=treeUI.getFont().getSize()-2;
-					if(newSize<5) newSize=5;
-					treeUI.setFont(treeUI.getFont().deriveFont(newSize));
-					treeUI.setRowHeight((int)(newSize+10));
-				}
-			}
-		});
 
+		treeScroller.addMouseWheelListener(new MouseWheelListener() {
+		@Override
+		public void mouseWheelMoved(MouseWheelEvent e) {	
+			//Implements the usual strg + mousewheel behaviour for zooming
+			if ((e.getModifiersEx() & InputEvent.CTRL_DOWN_MASK) == 0) return;
+			if(e.getWheelRotation()<=-1) {
+				float newSize=treeUI.getFont().getSize()+2;
+				if(newSize>30) newSize=30;
+				treeUI.setFont(treeUI.getFont().deriveFont(newSize));
+				treeUI.setRowHeight((int)(newSize+10));
+			}else if(e.getWheelRotation()>=1) {
+				float newSize=treeUI.getFont().getSize()-2;
+				if(newSize<5) newSize=5;
+				treeUI.setFont(treeUI.getFont().deriveFont(newSize));
+				treeUI.setRowHeight((int)(newSize+10));
+			}
+		}
+	});
+		
 	}	
 
 	/**
@@ -229,6 +237,54 @@ public class ChangeTree extends ChangeComponent {
 	 */
 	private Component createToolbar() {
 		JPanel toolbar=new JPanel(new FlowLayout());
+		
+		addDefaultExpansionBehaviour(toolbar);
+		
+		toolbar.add(new JLabel("             "));//White space
+		addEChangeClassColors(toolbar);
+		
+		toolbar.add(new JLabel("             "));//White space
+		addStateChangeBoxes(toolbar);
+		
+		return toolbar;
+	}
+	
+	private void addStateChangeBoxes(JPanel toolbar) {
+		JCheckBox simpleEChangeTextBox=new JCheckBox("Simple EChange text",ChangeNode.isSimpleEChangeText());
+		simpleEChangeTextBox.setFont(ChangeVisualizationUI.DEFAULT_CHECKBOX_FONT);
+		simpleEChangeTextBox.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				ChangeNode.setSimpleEChangeText(((JCheckBox)e.getSource()).isSelected());
+				treeUI.repaint();
+			}			
+		});
+		toolbar.add(simpleEChangeTextBox);
+		
+	}
+
+	private void addEChangeClassColors(JPanel toolbar) {
+		Icon[] icons=new Icon[] {
+				ChangeTreeNodeRenderer.ATTRIBUTE_ECHANGE_OPEN_ICON,
+				ChangeTreeNodeRenderer.REFERENCE_ECHANGE_OPEN_ICON,
+				ChangeTreeNodeRenderer.EXISTENCE_ECHANGE_OPEN_ICON,
+				ChangeTreeNodeRenderer.ROOT_ECHANGE_OPEN_ICON
+		};
+		String[] names=new String[] {
+				"Attribute EChanges",
+				"Reference EChanges",
+				"Existence EChanges",
+				"Root EChanges"
+		};
+		
+		for(int n=0;n<icons.length;n++) {
+			JLabel label=new JLabel(names[n],icons[n],JLabel.RIGHT);
+			label.setFont(ChangeVisualizationUI.DEFAULT_LABEL_FONT);
+			toolbar.add(label);
+		}
+	}
+
+	private void addDefaultExpansionBehaviour(JPanel toolbar){
 
 		JLabel defaultExpandLabel = new JLabel(" Default expand behavior : ");
 		defaultExpandLabel.setFont(ChangeVisualizationUI.DEFAULT_LABEL_FONT);
@@ -275,8 +331,7 @@ public class ChangeTree extends ChangeComponent {
 		//add to ui
 		toolbar.add(expandPChange);
 		toolbar.add(expandVChange);
-		toolbar.add(expandEChange);
-		return toolbar;
+		toolbar.add(expandEChange);		
 	}
 
 	/* (non-Javadoc)
@@ -374,6 +429,39 @@ public class ChangeTree extends ChangeComponent {
 			treeUI.collapseRow(row);
 			row--;
 		}
+	}
+	
+	public List<String> determineHighlightedCdsIds(String highlightID, List<ChangeDataSet> changeDataSets) {
+		if(highlightID==null)return null;
+		if(changeDataSets==null)return null;
+		List<String> highlightedCdsIds=new Vector<String>();
+		for(ChangeDataSet cds:changeDataSets) {
+			if(cds==null||!(cds instanceof TreeChangeDataSet)) {
+				continue;
+			}
+			TreeChangeDataSet tcds=(TreeChangeDataSet)cds;
+			DefaultMutableTreeNode rootNode=(DefaultMutableTreeNode) tcds.getData();
+			String cdsID=rootNode.toString();
+			if(shouldHighlightNode(highlightID,rootNode)) {
+				highlightedCdsIds.add(cdsID);
+			}
+		}
+		return highlightedCdsIds;		
+	}
+	
+	private boolean shouldHighlightNode(String highlightID,DefaultMutableTreeNode node) {
+		Enumeration children = node.children();
+		while(children.hasMoreElements()) {
+			DefaultMutableTreeNode child=(DefaultMutableTreeNode) children.nextElement();
+			if(child.getUserObject()!=null &&child.getUserObject() instanceof ChangeNode) {
+				if(highlightID.equals(((ChangeNode)child.getUserObject()).getEObjectID())) {
+					return true;
+				}
+			}else if(shouldHighlightNode(highlightID,child)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 }

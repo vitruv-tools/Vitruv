@@ -22,117 +22,7 @@ import tools.vitruv.framework.change.echange.EChangeIdManager
 import java.util.Vector
 
 class VirtualModelImpl implements InternalVirtualModel {
-	
-	//############################ ChangeVisualization		
-	/**
-	 * A list of {@link PropagatedChangeListener} that are informed of all changes made
-	 */
-	private val List<PropagatedChangeListener> propagatedChangeListeners=new Vector<PropagatedChangeListener>();
 		
-		
-	/**
-	 * This method informs registered the {@link PropagatedChangeListener}s of the propagation result.
-	 * 
-	 * @param propagationResult The propagation result
-	 */
-	def private informPropagatedChangeListeners(List<PropagatedChange> propagationResult) {
-		if(this.propagatedChangeListeners.isEmpty()){
-			return;
-		}
-		val sourceDomain=getSourceDomain(propagationResult);
-		val targetDomain=getTargetDomain(propagationResult);
-		for(PropagatedChangeListener propagatedChangeListener:this.propagatedChangeListeners) {					
-			propagatedChangeListener.postChanges(sourceDomain,targetDomain,propagationResult);
-		}
-	}
-	
-	/**
-	 * Determines the target domain of a given propagation result
-	 * 
-	 * @param changes The propagation result
-	 * @return The target domain, null if none could be determined
-	 */	
-	def private getTargetDomain(List<PropagatedChange> changes) {
-		if(changes===null) return null;
-		
-		for(PropagatedChange change:changes){				
-			val consequentialChanges=change.getConsequentialChanges();
-			if(consequentialChanges!==null){
-				val affectedEObjects=consequentialChanges.getAffectedEObjects();
-				val domain=getDomain(affectedEObjects);
-				if(domain!==null){
-					return domain;
-				}				
-			}			
-		}
-		
-		return null;//nothing found
-	}
-	
-	/**
-	 * Determines the source domain of a given propagation result
-	 * 
-	 * @param changes The propagation result
-	 * @return The source domain, null if none could be determined
-	 */	
-	def private getSourceDomain(List<PropagatedChange> changes) {
-		if(changes===null) return null;
-		
-		for(PropagatedChange change:changes){				
-			val originalChange=change.getOriginalChange();
-			if(originalChange!==null){
-				val affectedEObjects=originalChange.getAffectedEObjects();
-				val domain=getDomain(affectedEObjects);
-				if(domain!==null){
-					return domain;
-				}
-			}	
-		}
-		
-		return null;//nothing found
-	}
-	
-	/**
-	 * Determines the domain of given eObjects
-	 * 
-	 * @param eObjects The eObjects used to determine the domain
-	 */
-	def private getDomain(Iterable<EObject> eObjects) {
-		if(eObjects!==null){
-			for(EObject eObject:eObjects){
-				try{
-					val domain=this.metamodelRepository.getDomain(eObject)
-					return domain													
-				}catch(Exception ex1){
-					//Nothing to do here. The implementation of getDomain() throws an Exception if nothing was found
-					//rather then returning null in this case
-				}
-			}					
-		}else{
-			return null;
-		}
-	}
-		
-	/**
-	 * Registers a given {@link PropagatedChangeListener}.
-	 * 
-	 * @param propagatedChangeListener The listener to register
-	 */
-	def addPropagatedChangeListener(PropagatedChangeListener propagatedChangeListener) {
-		this.propagatedChangeListeners.add(propagatedChangeListener);				
-	}
-	
-	/**
-	 * Removes a given {@link PropagatedChangeListener}. 
-	 * Does nothing if the listener was not registered before.
-	 * 
-	 * @param propagatedChangeListener The listener to register
-	 */
-	def removePropagatedChangeListener(PropagatedChangeListener propagatedChangeListener) {
-		this.propagatedChangeListeners.remove(propagatedChangeListener);				
-	}		
-	//############################ ChangeVisualization
-	
 	private val ResourceRepositoryImpl resourceRepository;
 	private val ModelRepositoryImpl modelRepository;
 	private val VitruvDomainRepository metamodelRepository;
@@ -140,6 +30,12 @@ class VirtualModelImpl implements InternalVirtualModel {
 	private val ChangePropagationSpecificationProvider changePropagationSpecificationProvider;
 	private val File folder;
 	private val EChangeIdManager eChangeIdManager;
+	
+	/**
+	 * A list of {@link PropagatedChangeListener}s that are informed of all changes made
+	 */
+	private val List<PropagatedChangeListener> propagatedChangeListeners;
+	
 	
 	public new(File folder, UserInteracting userInteracting, VirtualModelConfiguration modelConfiguration) {
 		this.folder = folder;
@@ -159,6 +55,8 @@ class VirtualModelImpl implements InternalVirtualModel {
 		this.changePropagator = new ChangePropagatorImpl(resourceRepository, changePropagationSpecificationProvider, metamodelRepository, resourceRepository, modelRepository);
 		this.eChangeIdManager = new EChangeIdManager(this.uuidGeneratorAndResolver);
 		VirtualModelManager.instance.putVirtualModel(this);
+		
+		this.propagatedChangeListeners=new Vector<PropagatedChangeListener>();
 	}
 	
 	override getCorrespondenceModel() {
@@ -190,9 +88,8 @@ class VirtualModelImpl implements InternalVirtualModel {
 		// Save is done by the change propagator because it has to be performed before finishing sync
 		val result = changePropagator.propagateChange(change);
 		
-		//###############  ChangeVisualization
+		//Inform registered PropagatedChangeListeners
 		informPropagatedChangeListeners(result);
-		//###############  ChangeVisualization
 		
 		return result;
 	}
@@ -223,5 +120,123 @@ class VirtualModelImpl implements InternalVirtualModel {
 	override getUuidGeneratorAndResolver() {
 		return resourceRepository.uuidGeneratorAndResolver
 	}
+	
+	/**
+	 * Registers a given {@link PropagatedChangeListener}.
+	 * 
+	 * @param propagatedChangeListener The listener to register
+	 */
+	override void addPropagatedChangeListener(PropagatedChangeListener propagatedChangeListener) {
+		this.propagatedChangeListeners.add(propagatedChangeListener);				
+	}
+	
+	/**
+	 * Removes a given {@link PropagatedChangeListener}. 
+	 * Does nothing if the listener was not registered before.
+	 * 
+	 * @param propagatedChangeListener The listener to remove
+	 */
+	override void removePropagatedChangeListener(PropagatedChangeListener propagatedChangeListener) {
+		this.propagatedChangeListeners.remove(propagatedChangeListener);				
+	}
+	
+	/**
+	 * This method informs the registered {@link PropagatedChangeListener}s of the propagation result.
+	 * 
+	 * @param propagationResult The propagation result
+	 */
+	def private void informPropagatedChangeListeners(List<PropagatedChange> propagationResult) {
+		if(this.propagatedChangeListeners.isEmpty()){
+			return;
+		}
+		val sourceDomain=getSourceDomain(propagationResult);
+		val targetDomain=getTargetDomain(propagationResult);
+		val virtualModelName=getName();
+		for(PropagatedChangeListener propagatedChangeListener:this.propagatedChangeListeners) {					
+			propagatedChangeListener.postChanges(virtualModelName,sourceDomain,targetDomain,propagationResult);
+		}
+	}
+	
+	/**
+	 * Returns the name of the virtual model
+	 * 
+	 * @return The name of the virtual model
+	 */
+	def getName() {
+		val name=this.getFolder.getName;
+		if(name.indexOf("_vsum")!=-1){
+			//JUnit tests use a folder named Name_vsum_...
+			return name.substring(0,name.indexOf("_vsum"))
+		}else{
+			//For live models, just return the folder's name
+			return name
+		}
+	}
+	
+	/**
+	 * Determines the target domain of a given propagation result
+	 * 
+	 * @param changes The propagation result
+	 * @return The target domain, null if none could be determined
+	 */	
+	def private getTargetDomain(List<PropagatedChange> changes) {
+		if(changes===null) return null;
+		
+		for(PropagatedChange change:changes){				
+			val domain=getDomain(change.getConsequentialChanges())
+			if(domain!==null){
+				return domain;							
+			}			
+		}
+		
+		return null;
+	}
+	
+	/**
+	 * Determines the source domain of a given propagation result
+	 * 
+	 * @param changes The propagation result
+	 * @return The source domain, null if none could be determined
+	 */	
+	def private getSourceDomain(List<PropagatedChange> changes) {
+		if(changes===null) return null;
+		
+		for(PropagatedChange change:changes){				
+			val domain=getDomain(change.getOriginalChange())
+			if(domain!==null){
+				return domain;							
+			}	
+		}
+		
+		return null;
+	}
+	
+	/**
+	 * Determines the domain of a given {@link VitruviusChange}
+	 * 
+	 * @param change The change used to determine the domain
+	 * @return The domain, null if none could be determined
+	 */
+	def private getDomain(VitruviusChange change) {
+		if(change===null){
+			return null
+		}		
+		
+		val affectedEObjects=change.getAffectedEObjects();		
+		if(affectedEObjects!==null){
+			for(EObject eObject:affectedEObjects){
+				try{
+					val domain=this.metamodelRepository.getDomain(eObject)
+					return domain													
+				}catch(Exception ex1){
+					//Nothing to do here. The implementation of getDomain() throws an Exception if nothing was found
+					//rather then returning null in this case
+				}
+			}					
+		}
+		
+		//Either no eObjects exist or none of them were known at the metamodelRepository
+		return null;
+	}	
 	
 }
