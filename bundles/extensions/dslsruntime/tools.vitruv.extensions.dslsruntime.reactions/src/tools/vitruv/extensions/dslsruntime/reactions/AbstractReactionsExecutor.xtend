@@ -13,12 +13,18 @@ import java.util.List
 abstract class AbstractReactionsExecutor extends AbstractEChangePropagationSpecification {
 	private final static val LOGGER = Logger.getLogger(AbstractReactionsExecutor);
 
+	private val RoutinesFacadesProvider routinesFacadesProvider;
 	private List<IReactionRealization> reactions;
 
 	new(VitruvDomain sourceDomain, VitruvDomain targetDomain) {
 		super(sourceDomain, targetDomain);
 		this.reactions = newArrayList;
+		this.routinesFacadesProvider = this.createRoutinesFacadesProvider();
 		this.setup();
+	}
+
+	protected def getRoutinesFacadesProvider() {
+		return routinesFacadesProvider;
 	}
 
 	protected def void addReaction(IReactionRealization reaction) {
@@ -44,6 +50,8 @@ abstract class AbstractReactionsExecutor extends AbstractEChangePropagationSpeci
 		reactions = newArrayList;
 		setup();
 	}
+
+	protected abstract def RoutinesFacadesProvider createRoutinesFacadesProvider();
 
 	protected abstract def void setup();
 

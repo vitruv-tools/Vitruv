@@ -1,5 +1,6 @@
 package tools.vitruv.dsls.reactions.codegen.classgenerators
 
+import org.eclipse.xtext.common.types.JvmConstructor
 import org.eclipse.xtext.common.types.JvmGenericType
 import org.eclipse.xtext.common.types.JvmVisibility
 import org.eclipse.xtext.common.types.JvmOperation
@@ -17,6 +18,7 @@ import tools.vitruv.dsls.reactions.codegen.helper.AccessibleElement
 import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
 import tools.vitruv.dsls.reactions.codegen.changetyperepresentation.ChangeSequenceRepresentation
 import tools.vitruv.dsls.common.helper.ClassNameGenerator
+import static extension tools.vitruv.dsls.reactions.codegen.helper.ReactionsLanguageHelper.*
 
 class ReactionClassGenerator extends ClassGenerator {
 	private static val String CHANCE_COUNTER_VARIABLE = "currentlyMatchedChange";
@@ -30,8 +32,8 @@ class ReactionClassGenerator extends ClassGenerator {
 	
 	new(Reaction reaction, TypesBuilderExtensionProvider typesBuilderExtensionProvider) {
 		super(typesBuilderExtensionProvider);
-		if (reaction?.trigger === null || reaction?.callRoutine === null) {
-			throw new IllegalArgumentException();
+		if (!reaction.isComplete) {
+			throw new IllegalArgumentException("incomplete");
 		}
 		this.reaction = reaction;
 		this.hasPreconditionBlock = reaction.trigger.precondition !== null;
@@ -45,7 +47,7 @@ class ReactionClassGenerator extends ClassGenerator {
 	public override JvmGenericType generateEmptyClass() {
 		userExecutionClassGenerator.generateEmptyClass()
 		generatedClass = reaction.toClass(reactionClassNameGenerator.qualifiedName) [
-			visibility = JvmVisibility.DEFAULT
+			visibility = JvmVisibility.PUBLIC
 		]
 	}
 	
@@ -57,8 +59,19 @@ class ReactionClassGenerator extends ClassGenerator {
 			superTypes += typeRef(AbstractReactionRealization)
 			members += changeSequenceRepresentation.fields.map[reaction.toField(name, it.generateTypeRef(_typeReferenceBuilder))]
 			members += reaction.toField(CHANCE_COUNTER_VARIABLE, typeRef(Integer.TYPE))
+			members += reaction.generateConstructor();
 			members += generatedMethods
 			members += userExecutionClassGenerator.generateBody()
+		]
+	}
+	
+	protected def JvmConstructor generateConstructor(Reaction reaction) {
+		return reaction.toConstructor [
+			visibility = JvmVisibility.PUBLIC;
+			val routinesFacadeParameter = generateRoutinesFacadeParameter(reaction.reactionsSegment);
+			parameters += routinesFacadeParameter;
+			body = '''
+			super(«routinesFacadeParameter.name»);'''
 		]
 	}
 	
@@ -123,10 +136,9 @@ class ReactionClassGenerator extends ClassGenerator {
 				«ENDIF»
 				getLogger().trace("Passed complete precondition check of Reaction " + this.getClass().getName());
 								
-				«routinesFacadeClassNameGenerator.qualifiedName» routinesFacade = new «routinesFacadeClassNameGenerator.qualifiedName»(this.executionState, this);
 				«userExecutionClassGenerator.qualifiedClassName» userExecution = new «userExecutionClassGenerator.qualifiedClassName»(this.executionState, this);
 				userExecution.«callRoutineMethod.simpleName»(«
-					FOR argument : accessibleElementList.generateArgumentsForAccesibleElements SEPARATOR ", " AFTER ", "»«argument»«ENDFOR»routinesFacade);
+					FOR argument : accessibleElementList.generateArgumentsForAccesibleElements SEPARATOR ", " AFTER ", "»«argument»«ENDFOR»this.getRoutinesFacade());
 				
 				«resetChangesMethod.simpleName»();
 			'''

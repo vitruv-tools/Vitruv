@@ -8,21 +8,39 @@ import tools.vitruv.framework.userinteraction.UserInteracting
 import org.eclipse.xtend.lib.annotations.Accessors
 
 abstract class AbstractReactionRealization extends CallHierarchyHaving implements IReactionRealization {
+	private val AbstractRepairRoutinesFacade routinesFacade;
 	protected UserInteracting userInteracting;
 	protected ReactionExecutionState executionState;
 	
+	public new(AbstractRepairRoutinesFacade routinesFacade) {
+		this.routinesFacade = routinesFacade;
+	}
+	
+	// generic return type for convenience; the requested type has to match the type of the facade provided during construction
+	protected def <T extends AbstractRepairRoutinesFacade> T getRoutinesFacade() {
+		return routinesFacade as T;
+	}
+	
 	override applyEvent(EChange change, ReactionExecutionState reactionExecutionState) {
-    	this.executionState = reactionExecutionState;
-    	this.userInteracting = reactionExecutionState.userInteracting;
-    	
-    		try {	
-				executeReaction(change);
-			} finally {
-				// The reactions was completely executed, so remove all objects registered for modification 
-				// by the effects as they are no longer under modification
-				// even if there was an exception!
-				TuidManager.instance.flushRegisteredObjectsUnderModification();	
-			}
+		this.executionState = reactionExecutionState;
+		this.userInteracting = reactionExecutionState.userInteracting;
+
+		// set the reaction execution state and caller to use for all following routine calls:
+		// note: reactions are executed one after the other, therefore we don't need to capture/restore the facade's previous execution state here,
+		// resetting it after execution is sufficient
+		routinesFacade._getExecutionState().setExecutionState(executionState, this);
+
+		try {	
+			executeReaction(change);
+		} finally {
+			// reset the routines facade execution state:
+			routinesFacade._getExecutionState().reset();
+
+			// The reactions was completely executed, so remove all objects registered for modification 
+			// by the effects as they are no longer under modification
+			// even if there was an exception!
+			TuidManager.instance.flushRegisteredObjectsUnderModification();	
+		}
 	}
 	
 	protected def void executeReaction(EChange change);

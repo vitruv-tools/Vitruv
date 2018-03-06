@@ -1,0 +1,29 @@
+import tools.vitruv.dsls.reactions.tests.importTests.ImportTestsExecutionMonitor
+
+import static tools.vitruv.dsls.reactions.tests.importTests.ImportTests.*
+import static tools.vitruv.dsls.reactions.tests.importTests.ImportTestsExecutionMonitor.ExecutionType.*
+import static tools.vitruv.dsls.reactions.tests.importTests.ImportTestsUtils.*
+
+import "http://tools.vitruv.tests.metamodels.allElementTypes" as minimal
+
+reactions: importTestsTransitiveRoutinesSN
+in reaction to changes in AllElementTypes
+execute actions in AllElementTypes
+
+reaction TransitiveRoutinesSNReaction {
+	after attribute replaced at minimal::Root[id]
+	call {
+		val data = newValue
+		if (containsDataTag(data, TAG_TEST_ROUTINES_ONLY_REACTIONS)) {
+			ImportTestsExecutionMonitor.instance.set(TransitiveRoutinesSNReaction)
+		}
+	}
+}
+
+routine transitiveRoutinesSNRoutine() {
+	action {
+		call {
+			ImportTestsExecutionMonitor.instance.set(TransitiveRoutinesSNRoutine)
+		}
+	}
+}

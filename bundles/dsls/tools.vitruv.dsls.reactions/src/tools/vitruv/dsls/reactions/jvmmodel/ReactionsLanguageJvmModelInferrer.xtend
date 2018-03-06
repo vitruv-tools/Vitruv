@@ -12,10 +12,16 @@ import tools.vitruv.dsls.reactions.codegen.classgenerators.RoutineClassGenerator
 import tools.vitruv.dsls.reactions.reactionsLanguage.Routine
 import tools.vitruv.dsls.reactions.reactionsLanguage.Reaction
 import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsFile
+import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsSegment
 import tools.vitruv.dsls.reactions.codegen.typesbuilder.JvmTypesBuilderWithoutAssociations
 import tools.vitruv.dsls.reactions.codegen.typesbuilder.TypesBuilderExtensionProvider
 import tools.vitruv.dsls.reactions.codegen.classgenerators.ReactionClassGenerator
 import tools.vitruv.dsls.reactions.codegen.classgenerators.ClassGenerator
+import tools.vitruv.dsls.reactions.codegen.classgenerators.ChangePropagationSpecificationClassGenerator
+import tools.vitruv.dsls.reactions.codegen.classgenerators.OverriddenRoutinesFacadeClassGenerator
+import tools.vitruv.dsls.reactions.codegen.classgenerators.RoutinesFacadesProviderClassGenerator
+import static extension tools.vitruv.dsls.reactions.codegen.helper.ReactionsImportsHelper.*
+import static extension tools.vitruv.dsls.reactions.codegen.helper.ReactionsLanguageHelper.*
 
 /**
  * <p>Infers a JVM model for the Xtend code blocks of the reaction file model.</p> 
@@ -35,30 +41,41 @@ class ReactionsLanguageJvmModelInferrer extends AbstractModelInferrer  {
 	}
 	
 	def dispatch void generate(Reaction reaction, IJvmDeclaredTypeAcceptor acceptor, boolean isPreIndexingPhase) {
-		acceptor.accept(new ReactionClassGenerator(reaction, typesBuilderExtensionProvider));
+		acceptor.accept(new ReactionClassGenerator(reaction, typesBuilderExtensionProvider), reaction.reactionsSegment);
 	}
 	
 	def dispatch void generate(Routine routine, IJvmDeclaredTypeAcceptor acceptor, boolean isPreIndexingPhase) {
-		acceptor.accept(new RoutineClassGenerator(routine, typesBuilderExtensionProvider));
+		acceptor.accept(new RoutineClassGenerator(routine, typesBuilderExtensionProvider), routine.reactionsSegment);
 	}
 	
 	def dispatch void infer(ReactionsFile file, IJvmDeclaredTypeAcceptor acceptor, boolean isPreIndexingPhase) {
 		updateBuilders();
 		
-		for (reactionsSegment : file.reactionsSegments) {
-			acceptor.accept(new RoutineFacadeClassGenerator(reactionsSegment, typesBuilderExtensionProvider));
-			for (effect : reactionsSegment.routines) {
+		for (reactionsSegment : file.reactionsSegments.filter[it.isComplete]) {
+			acceptor.accept(new RoutineFacadeClassGenerator(reactionsSegment, typesBuilderExtensionProvider), reactionsSegment);
+			for (overriddenRoutinesImportPath : reactionsSegment.parsedOverriddenRoutinesImportPaths) {
+				acceptor.accept(new OverriddenRoutinesFacadeClassGenerator(reactionsSegment, overriddenRoutinesImportPath, typesBuilderExtensionProvider), reactionsSegment);
+			}
+			acceptor.accept(new RoutinesFacadesProviderClassGenerator(reactionsSegment, typesBuilderExtensionProvider), reactionsSegment);
+			for (effect : reactionsSegment.routines.filter[it.isComplete]) {
 				generate(effect, acceptor, isPreIndexingPhase);
 			}
-			for (reaction : reactionsSegment.reactions) {
+			for (reaction : reactionsSegment.reactions.filter[it.isComplete]) {
 				generate(reaction, acceptor, isPreIndexingPhase);
 			}
-			acceptor.accept(new ExecutorClassGenerator(reactionsSegment, typesBuilderExtensionProvider));			
+			acceptor.accept(new ExecutorClassGenerator(reactionsSegment, typesBuilderExtensionProvider), reactionsSegment);
+			acceptor.accept(new ChangePropagationSpecificationClassGenerator(reactionsSegment, typesBuilderExtensionProvider), reactionsSegment);
 		}
 
 	}
 	
-	def private static accept(IJvmDeclaredTypeAcceptor acceptor, extension ClassGenerator generator) {
-		acceptor.accept(generator.generateEmptyClass()) [generateBody]
+	def private static accept(IJvmDeclaredTypeAcceptor acceptor, extension ClassGenerator generator, ReactionsSegment reactionsSegment) {
+		acceptor.accept(generator.generateEmptyClass()) [
+			// sometimes the jvm model inferrer is called after indexing, but cross-references of reactions imports are not resolvable,
+			// we need to skip class-body generation then:
+			if (reactionsSegment.allImportsResolvable) {
+				generateBody();
+			}
+		]
 	}
 }

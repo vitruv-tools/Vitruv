@@ -11,8 +11,6 @@ import tools.vitruv.extensions.dslsruntime.reactions.structure.CallHierarchyHavi
 
 @SuppressWarnings("all")
 public class DeletePersonRegisterRoutine extends AbstractRepairRoutineRealization {
-  private RoutinesFacade actionsFacade;
-  
   private DeletePersonRegisterRoutine.ActionUserExecution userExecution;
   
   private static class ActionUserExecution extends AbstractRepairRoutineRealization.UserExecution {
@@ -29,10 +27,9 @@ public class DeletePersonRegisterRoutine extends AbstractRepairRoutineRealizatio
     }
   }
   
-  public DeletePersonRegisterRoutine(final ReactionExecutionState reactionExecutionState, final CallHierarchyHaving calledBy, final FamilyRegister familyRegister) {
-    super(reactionExecutionState, calledBy);
+  public DeletePersonRegisterRoutine(final RoutinesFacade routinesFacade, final ReactionExecutionState reactionExecutionState, final CallHierarchyHaving calledBy, final FamilyRegister familyRegister) {
+    super(routinesFacade, reactionExecutionState, calledBy);
     this.userExecution = new mir.routines.familiesToPersons.DeletePersonRegisterRoutine.ActionUserExecution(getExecutionState(), this);
-    this.actionsFacade = new mir.routines.familiesToPersons.RoutinesFacade(getExecutionState(), this);
     this.familyRegister = familyRegister;
   }
   

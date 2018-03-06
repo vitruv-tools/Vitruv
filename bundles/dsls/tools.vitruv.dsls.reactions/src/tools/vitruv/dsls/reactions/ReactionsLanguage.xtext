@@ -11,13 +11,17 @@ ReactionsFile:
 	(namespaceImports=XImportSection)?
 	MirBaseFile
 	(reactionsSegments+=ReactionsSegment)+;
-	
+
 ReactionsSegment:
 	'reactions:' name=ValidID
 	'in reaction to changes in' fromDomain=DomainReference 
 	'execute' 'actions in' toDomain=DomainReference
+	(reactionsImports+=ReactionsImport)*
 	(reactions+=Reaction |
 		routines+=Routine)*;
+
+ReactionsImport:
+	'import' (routinesOnly?='routines')? importedReactionsSegment=[ReactionsSegment] (useQualifiedNames?='using qualified names')?;
 
 // *********************************
 // *********** REACTIONS ***********
@@ -25,7 +29,7 @@ ReactionsSegment:
 
 Reaction:
 	(documentation=ML_COMMENT)?
-	'reaction' (name=ValidID)? '{'
+	'reaction' (overriddenReactionsSegment=[ReactionsSegment] '::')? name=ValidID '{'
 		trigger=Trigger
 		callRoutine=ReactionRoutineCall
 	'}';
@@ -130,10 +134,13 @@ ElementCompoundChangeType returns ElementCompoundChangeType:
 
 Routine:
 	(documentation=ML_COMMENT)?
-	'routine' name=ValidID input=RoutineInput '{'
+	'routine' (overrideImportPath=RoutineOverrideImportPath '::')? name=ValidID input=RoutineInput '{'
 		matcher=MatcherBlock?
 		action=ActionBlock
 	'}';
+
+RoutineOverrideImportPath:
+	reactionsSegment=[ReactionsSegment] ({RoutineOverrideImportPath.parent=current} '.' reactionsSegment=[ReactionsSegment])*;
 
 RoutineInput:
 	{RoutineInput}
