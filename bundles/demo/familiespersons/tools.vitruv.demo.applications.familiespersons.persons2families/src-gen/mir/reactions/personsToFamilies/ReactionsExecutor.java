@@ -16,11 +16,11 @@ class ReactionsExecutor extends AbstractReactionsExecutor {
   }
   
   protected void setup() {
-    this.addReaction(new mir.reactions.personsToFamilies.CreatedPersonRegisterReaction(this.getRoutinesFacadesProvider().getRoutinesFacade(ReactionsImportPath.fromPathString("PersonsToFamilies"))));
-    this.addReaction(new mir.reactions.personsToFamilies.DeletedPersonRegisterReaction(this.getRoutinesFacadesProvider().getRoutinesFacade(ReactionsImportPath.fromPathString("PersonsToFamilies"))));
-    this.addReaction(new mir.reactions.personsToFamilies.CreatedMaleReaction(this.getRoutinesFacadesProvider().getRoutinesFacade(ReactionsImportPath.fromPathString("PersonsToFamilies"))));
-    this.addReaction(new mir.reactions.personsToFamilies.CreatedFemaleReaction(this.getRoutinesFacadesProvider().getRoutinesFacade(ReactionsImportPath.fromPathString("PersonsToFamilies"))));
-    this.addReaction(new mir.reactions.personsToFamilies.ChangedFullNameReaction(this.getRoutinesFacadesProvider().getRoutinesFacade(ReactionsImportPath.fromPathString("PersonsToFamilies"))));
-    this.addReaction(new mir.reactions.personsToFamilies.DeletePersonReaction(this.getRoutinesFacadesProvider().getRoutinesFacade(ReactionsImportPath.fromPathString("PersonsToFamilies"))));
+    this.addReaction(new mir.reactions.personsToFamilies.CreatedPersonRegisterReaction(this.getRoutinesFacadesProvider().getRoutinesFacade(ReactionsImportPath.fromPathString("personsToFamilies"))));
+    this.addReaction(new mir.reactions.personsToFamilies.DeletedPersonRegisterReaction(this.getRoutinesFacadesProvider().getRoutinesFacade(ReactionsImportPath.fromPathString("personsToFamilies"))));
+    this.addReaction(new mir.reactions.personsToFamilies.CreatedMaleReaction(this.getRoutinesFacadesProvider().getRoutinesFacade(ReactionsImportPath.fromPathString("personsToFamilies"))));
+    this.addReaction(new mir.reactions.personsToFamilies.CreatedFemaleReaction(this.getRoutinesFacadesProvider().getRoutinesFacade(ReactionsImportPath.fromPathString("personsToFamilies"))));
+    this.addReaction(new mir.reactions.personsToFamilies.ChangedFullNameReaction(this.getRoutinesFacadesProvider().getRoutinesFacade(ReactionsImportPath.fromPathString("personsToFamilies"))));
+    this.addReaction(new mir.reactions.personsToFamilies.DeletePersonReaction(this.getRoutinesFacadesProvider().getRoutinesFacade(ReactionsImportPath.fromPathString("personsToFamilies"))));
   }
 }
