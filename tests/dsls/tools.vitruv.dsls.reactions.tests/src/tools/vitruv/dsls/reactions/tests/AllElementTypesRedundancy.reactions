@@ -23,10 +23,10 @@ routine createRoot(minimal::Root rootElement) {
 		val newRoot = create minimal::Root and initialize {
 			newRoot.id = rootElement.id;
 		}
-		add correspondence between newRoot and rootElement
 		call {
 			persistProjectRelative(rootElement, newRoot, "model/" + rootElement.id.replace("Source", "Target") + "." + rootElement.eResource.URI.fileExtension);
 		}
+		add correspondence between newRoot and rootElement
 	}
 }
 
