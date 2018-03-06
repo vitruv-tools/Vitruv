@@ -55,7 +55,7 @@ class RoutineFacadeClassGenerator extends ClassGenerator {
 				val includedRoutinesFacadeClassName = includedReactionsSegment.routinesFacadeClassNameGenerator.qualifiedName;
 				reactionsSegment.toField(includedRoutinesFacadeFieldName, typeRef(includedRoutinesFacadeClassName)) [
 					final = true;
-					visibility = JvmVisibility.PRIVATE;
+					visibility = JvmVisibility.PUBLIC;
 				]
 			]
 
