@@ -19,6 +19,7 @@ import tools.vitruv.dsls.common.helper.ClassNameGenerator
 import tools.vitruv.extensions.dslsruntime.reactions.ReactionExecutionState
 import tools.vitruv.extensions.dslsruntime.reactions.structure.CallHierarchyHaving
 import tools.vitruv.extensions.dslsruntime.reactions.RoutinesFacadeExecutionState
+import org.eclipse.xtext.common.types.JvmMember
 
 class RoutineFacadeClassGenerator extends ClassGenerator {
 	val ReactionsSegment reactionsSegment
@@ -50,13 +51,19 @@ class RoutineFacadeClassGenerator extends ClassGenerator {
 			// fields for all routines facades of reactions segments imported with qualified names,
 			// including transitively included routines facades for imports without qualified names:
 			members += includedRoutinesFacades.entrySet.map [
+				val newMembers = <JvmMember>newArrayList;
 				val includedReactionsSegment = it.key;
 				val includedRoutinesFacadeFieldName = includedReactionsSegment.name;
 				val includedRoutinesFacadeClassName = includedReactionsSegment.routinesFacadeClassNameGenerator.qualifiedName;
-				reactionsSegment.toField(includedRoutinesFacadeFieldName, typeRef(includedRoutinesFacadeClassName)) [
-					visibility = JvmVisibility.PUBLIC;
+				newMembers += reactionsSegment.toField(includedRoutinesFacadeFieldName, typeRef(includedRoutinesFacadeClassName)) [
+					final = true;
+					visibility = JvmVisibility.PRIVATE;
 				]
-			]
+				newMembers += reactionsSegment.toMethod("get" + includedRoutinesFacadeFieldName.toFirstUpper, typeRef(includedRoutinesFacadeClassName)) [
+					body = '''return «includedRoutinesFacadeFieldName»;'''
+				]
+				return newMembers;
+			].flatten;
 
 			// included original routines: own routines and routines imported without qualified names, including transitively included routines,
 			// without any override routines
