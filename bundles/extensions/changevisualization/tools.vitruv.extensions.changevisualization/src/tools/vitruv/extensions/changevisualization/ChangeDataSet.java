@@ -4,17 +4,11 @@ import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Hashtable;
-import java.util.Iterator;
-import java.util.List;
-
-import org.eclipse.emf.ecore.EObject;
-
-import tools.vitruv.framework.change.description.PropagatedChange;
-import tools.vitruv.framework.domains.VitruvDomain;
+import java.util.Map;
 
 /**
  * Base class for all visualization-dependent change-information. Each different visualization type
- * implements its own specific ChangeDataSet. This class stores all information useful for all
+ * implements its own specific {@link ChangeDataSet}. This class stores all information useful for all
  * different implementations.
  * 
  * @author Andreas Loeffler
@@ -22,7 +16,7 @@ import tools.vitruv.framework.domains.VitruvDomain;
 public abstract class ChangeDataSet implements Serializable{
 
 	/**
-	 * 
+	 * The serial version id for java object serialization
 	 */
 	private static final long serialVersionUID = -6142833170227828098L;
 
@@ -40,83 +34,83 @@ public abstract class ChangeDataSet implements Serializable{
 	 * User infos are additional information stored as key/value pairs. The ChangeDataSet acts as the storage point,
 	 * but does not use these information directly. It only provides a common usable access to it.
 	 */
-	private final Hashtable<String,Object> userInfos=new Hashtable<String,Object>();
+	private final Map<String,Object> userInfos=new Hashtable<String,Object>();
 
 	/**
-	 * The time this cds is created
+	 * The time this changeDataSet is created
 	 */
 	private final Date creationTime;
 
 	/**
-	 * The ID of this cds
+	 * The ID of this changeDataSet
 	 */
-	private final String cdsId;
+	private final String id;
 	
+	/**
+	 * Information about the source model
+	 */
 	private final String sourceModelInfo;
+	
+	/**
+	 * Information about the target model
+	 */
 	private final String targetModelInfo;
 
 	/**
-	 * The number of propagated changes in this cds
+	 * The number of propagated changes in this changeDataSet
 	 */
-	private int nrPChanges=0;
+	private int nrPropagatedChanges=0;
 
 	/**
-	 * The number of original changes in this cds (sum over all propagated changes)
+	 * The number of original changes in this changeDataSet (sum over all propagated changes)
 	 */
-	private int nrOChanges=0;
+	private int nrOriginalChanges=0;
 
 	/**
-	 * The number of consequential changes in this cds (sum over all propagated changes)
+	 * The number of consequential changes in this changeDataSet (sum over all propagated changes)
 	 */
-	private int nrCChanges=0;	
+	private int nrConsequentialChanges=0;	
 
 	/**
 	 * This constructor is called by subclasses to initialize the general ChangeDataSet
 	 * 
-	 * @param cdsId The ID of the cds
-	 * @param propagationResult The propagation result whose values should be represented by this cds
+	 * @param id The ID of the changeDataSet
+	 * @param sourceModelInfo The source model info String
+	 * @param targetModelInfo The target model info String
+	 * @param propagationResult The propagation result whose values should be represented by this changeDataSet
 	 */
-	protected ChangeDataSet(String cdsId, VitruvDomain sourceDomain, VitruvDomain targetDomain, List<PropagatedChange> propagationResult) {
-		this.cdsId=cdsId;
+	protected ChangeDataSet(String id, String sourceModelInfo, String targetModelInfo) {
+		this.id=id;
 		this.creationTime=new Date();
+		this.sourceModelInfo=sourceModelInfo;
+		this.targetModelInfo=targetModelInfo;		
+	}
 		
-		sourceModelInfo=sourceDomain==null?"-":sourceDomain.getName();
-		targetModelInfo=targetDomain==null?"-":targetDomain.getName();
-		
-		extractData(propagationResult);		
-	}	
-
 	/**
-	 * Subclasses have to implement their own visualization-dependent information extraction
-	 * @param propagationResult The propagation result to process
-	 */
-	protected abstract void extractData(List<PropagatedChange> propagationResult);
-
-	/**
-	 * Returns the visualization-dependent object that is needed to visualize the cds 
-	 * @return The visualization-dependent object needed to visualize this cds
+	 * Returns the visualization-dependent object that is needed to visualize the changeDataSet 
+	 * @return The visualization-dependent object needed to visualize this changeDataSet
 	 */
 	public abstract Object getData();
 
 	/**
-	 * Returns the ID of this cds
+	 * Returns the ID of this changeDataSet
 	 * 
-	 * @return The ID of this cds
+	 * @return The ID of this changeDataSet
 	 */
 	public String getCdsID() {
-		return cdsId;
+		return id;
 	}	
 
 	@Override
 	public String toString() {
 		SimpleDateFormat df=new SimpleDateFormat("HH:mm:ss");
-		return cdsId+" ("+df.format(creationTime)+")";
+		return id+" ("+df.format(creationTime)+")";
 	}
 
 	/**
-	 * Returns the creation time of this cds
+	 * Returns the creation time of this changeDataSet
 	 * 
-	 * @return The creation time of this cds
+	 * @return The creation time of this changeDataSet
 	 */
 	public Date getCreationTime() {
 		return creationTime;
@@ -125,37 +119,37 @@ public abstract class ChangeDataSet implements Serializable{
 	/**
 	 * Sets the number of propagated changes
 	 * 
-	 * @param nrPChanges The number of propageted changes
+	 * @param nrPropagatedChanges The number of propagated changes
 	 */
-	protected void setNrPChanges(int nrPChanges) {
-		this.nrPChanges=nrPChanges;
+	public void setNrPropagatedChanges(int nrPropagatedChanges) {
+		this.nrPropagatedChanges=nrPropagatedChanges;
 	}
 
 	/**
 	 * Sets the number of original changes
 	 * 
-	 * @param nrOChanges The number of original changes
+	 * @param nrOriginalChanges The number of original changes
 	 */
-	protected void setNrOChanges(int nrOChanges) {
-		this.nrOChanges=nrOChanges;
+	public void setNrOriginalChanges(int nrOriginalChanges) {
+		this.nrOriginalChanges=nrOriginalChanges;
 	}
 
 	/**
 	 * Sets the number of consequential changes
 	 * 
-	 * @param nrCChanges The number of consequential changes
+	 * @param nrConsequentialChanges The number of consequential changes
 	 */
-	protected void setNrCChanges(int nrCChanges) {
-		this.nrCChanges=nrCChanges;
+	public void setNrConsequentialChanges(int nrConsequentialChanges) {
+		this.nrConsequentialChanges=nrConsequentialChanges;
 	}
 
 	/**
 	 * Gets the number of propagated changes
 	 * 
-	 * @return The number of propageted changes
+	 * @return The number of propagated changes
 	 */
-	public int getNrPChanges() {
-		return nrPChanges;
+	public int getNrPropagatedChanges() {
+		return nrPropagatedChanges;
 	}
 
 	/**
@@ -163,8 +157,8 @@ public abstract class ChangeDataSet implements Serializable{
 	 * 
 	 * @return The number of original changes
 	 */
-	public int getNrOChanges() {
-		return nrOChanges;
+	public int getNrOriginalChanges() {
+		return nrOriginalChanges;
 	}
 
 	/**
@@ -172,8 +166,24 @@ public abstract class ChangeDataSet implements Serializable{
 	 * 
 	 * @return The number of consequential changes
 	 */
-	public int getNrCChanges() {
-		return nrCChanges;
+	public int getNrConsequentialChanges() {
+		return nrConsequentialChanges;
+	}
+	
+	/**
+	 * Returns the sourceModelInfo
+	 * @return The sourceModelInfo
+	 */
+	public String getSourceModelInfo() {
+		return sourceModelInfo;
+	}
+
+	/**
+	 * Returns the targetModelInfo
+	 * @return The targetModelInfo
+	 */
+	public String getTargetModelInfo() {
+		return targetModelInfo;
 	}
 
 	/**
@@ -212,13 +222,4 @@ public abstract class ChangeDataSet implements Serializable{
 	public boolean hasUserInfo(String key) {
 		return userInfos.containsKey(key);
 	}
-
-	public String getSourceModelInfo() {
-		return sourceModelInfo;
-	}
-
-	public String getTargetModelInfo() {
-		return targetModelInfo;
-	}
-
 }

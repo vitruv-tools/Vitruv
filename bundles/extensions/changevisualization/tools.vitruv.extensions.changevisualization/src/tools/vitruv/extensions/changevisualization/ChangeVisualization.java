@@ -1,69 +1,48 @@
 package tools.vitruv.extensions.changevisualization;
 
+import java.awt.event.ContainerEvent;
+import java.awt.event.ContainerListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 
-import org.eclipse.emf.common.util.URI;
-
-import tools.vitruv.extensions.changevisualization.tree.TreeChangeDataSet;
+import tools.vitruv.extensions.changevisualization.tree.decoder.TreeChangeDataSetDecoder;
 import tools.vitruv.extensions.changevisualization.ui.ChangeVisualizationUI;
 import tools.vitruv.extensions.changevisualization.ui.ChangesTab;
+import tools.vitruv.extensions.changevisualization.ui.VisualizationMode;
 import tools.vitruv.framework.change.description.PropagatedChange;
 import tools.vitruv.framework.domains.VitruvDomain;
 import tools.vitruv.framework.vsum.PropagatedChangeListener;
 
 /**
- * This class provides a single instance of the visualization. It is also used as the factory to create
- * individual {@link PropagatedChangeListener}s.
+ * This class provides a single instance used to communicate with the visualization ui.
  * The basic visualization parameters are stored here as well as the methods necessary to interact with
- * the visualization component in an implementation independent way
+ * the {@link ChangeComponent} in an implementation independent way.
  * 
  * @author Andreas Loeffler
  *
  */
-public final class ChangeVisualization{
-		
-	/**
-	 * The different modes of visualization
-	 * 
-	 * @author Andreas Loeffler
-	 *
-	 */
-	public static enum VisualizationMode{
-		TREE
-	}
-
+public final class ChangeVisualization implements PropagatedChangeListener{	
+	
 	/**
 	 * The active visualization mode
 	 */
 	private static final VisualizationMode VISUALIZATION_MODE=VisualizationMode.TREE;
 
 	/**
-	 * The single instance of change visualization
+	 * The single instance of this class
 	 */
-	private static final ChangeVisualization INSTANCE=new ChangeVisualization();
+	private static final ChangeVisualization instance=new ChangeVisualization();
 
 	/**
 	 * Returns a {@link PropagatedChangeListener} instance used to communicate with the visualization.
-	 * The usual way to interact with the ui is through the listeners generated here. All results that
-	 * are posted to the generated listener are grouped together through the given modelID and shown in the ui.
-	 * If necessary, it is possible to interact directly with the ui at {@link ChangeVisualization#postChanges(String, VitruvDomain, VitruvDomain, List)}.
-	 * Details are found there.
-	 * 
-	 * @param modelID The id for the created listener to group results that are belonging together 
-	 * @return The change listener
+	 *  
+	 * @return The propagated change listener
 	 */
-	public static PropagatedChangeListener createPropagatedChangeListener(final String modelID) {
-		return new PropagatedChangeListener() {
-			@Override
-			public void postChanges(VitruvDomain sourceDomain, VitruvDomain targetDomain,
-					List<PropagatedChange> propagationResult) {
-				ChangeVisualization.INSTANCE.postChanges(modelID, sourceDomain, targetDomain, propagationResult);
-			}			
-		};
+	public static PropagatedChangeListener getPropagatedChangeListener() {
+		return instance;
 	}	
 
 	/**
@@ -71,25 +50,25 @@ public final class ChangeVisualization{
 	 * It is not in always on top state afterwards, just one time moved to front.
 	 */
 	public static void showUi() {
-		if(!ChangeVisualization.INSTANCE.ui.isVisible()) {
-			ChangeVisualization.INSTANCE.ui.setVisible(true);			
+		if(!ChangeVisualization.instance.ui.isVisible()) {
+			ChangeVisualization.instance.ui.setVisible(true);			
 		}
 
-		ChangeVisualization.INSTANCE.ui.setAlwaysOnTop(true);//This way the window is always moved to front, works more reliable
-		ChangeVisualization.INSTANCE.ui.setAlwaysOnTop(false);//than toFront()				
+		ChangeVisualization.instance.ui.setAlwaysOnTop(true);//This way the window is always moved to front, works more reliable
+		ChangeVisualization.instance.ui.setAlwaysOnTop(false);//than toFront()				
 	}
 
 	/**
-	 * Waits for this visualization ui to close before returning.
+	 * Waits for the visualization ui to close before returning.
 	 * Especially useful for junit tests when the visualization results should be used
-	 * prior to java vm exit
+	 * prior to java virtual machine exit
 	 */
 	public static void waitForFrameClosing() {		
-		synchronized(ChangeVisualization.INSTANCE.ui) {			
-			if(ChangeVisualization.INSTANCE.ui.isVisible()) {			
+		synchronized(ChangeVisualization.instance.ui) {			
+			if(ChangeVisualization.instance.ui.isVisible()) {			
 				//We wait until the frame gets closed. During closing, the frame issus a notifyAll()
 				try {
-					ChangeVisualization.INSTANCE.ui.wait();
+					ChangeVisualization.instance.ui.wait();
 				} catch (InterruptedException e) {
 					//nothing to do in this case. I never have had or heard of any reason for interruption
 					//that occured here besides the intentional notify
@@ -104,28 +83,20 @@ public final class ChangeVisualization{
 	 * 
 	 * @param uri The file to load and show
 	 */
-	public static void addUri(URI uri) {
-		ChangeVisualization.INSTANCE.ui.addUri(uri);
+	public static void addFile(File file) {
+		ChangeVisualization.instance.ui.addFile(file);
 	}
-	
+		
 	/**
-	 * Returns the single instance of the {@link ChangeVisualizationUI}
-	 *  
-	 * @return The changeVisualizationUI
-	 */
-	public static ChangeVisualizationUI getChangeVisualizationUI() {
-		return ChangeVisualization.INSTANCE.ui;
-	}
-	
-	/**
-	 * Saves all model data to given file
+	 * Saves all model data to given file.
+	 * No user interaction occurs. All tabs are saved.
 	 * 
 	 * @param file The file to save to
 	 * @return true if save was successful, false if no data to save exists
 	 * @throws IOException If anything went wrong saving to the file
 	 */
 	public static boolean saveToFile(File file) throws IOException {
-		return ChangeVisualization.INSTANCE.ui.saveToFile(file);		
+		return ChangeVisualization.instance.ui.saveToFile(file);		
 	}
 
 	//Instance methode and variables
@@ -143,49 +114,55 @@ public final class ChangeVisualization{
 	 * Constructs a new ChangeVisualization
 	 */
 	private ChangeVisualization() {
-		ui=new ChangeVisualizationUI();
+		ui=ChangeVisualizationUI.getInstance();
+		
+		//If tabs get closed in the ui, we remove them from our local map too
+		ui.addContainerListener(new ContainerListener() {
+			@Override
+			public void componentAdded(ContainerEvent e) {
+				//Adding is not of interest
+			}
+			@Override
+			public void componentRemoved(ContainerEvent e) {
+				//When a tab gets removed, update local state
+				ChangesTab tab=(ChangesTab) e.getChild();
+				changeTabs.values().remove(tab);
+			}			
+		});
 	}
 	
-	/**
-	 * The {@link PropagatedChangeListener} generated through the factory method {@link ChangeVisualization#createPropagatedChangeListener(String)} call this method.
-	 * It is responsible for grouping different models into individual tabs and adding them to the ui. It can be used directly from external implementations
-	 * of {@link PropagatedChangeListener} if they organize correct usage of the modelID on their own. 
-	 *  
-	 * @param modelID The model's id to group results together
-	 * @param sourceDomain The source Domain
-	 * @param targetDomain The target Domain
-	 * @param propagationResult The propagation result
-	 */
-	public synchronized void postChanges(String modelID, VitruvDomain sourceDomain,VitruvDomain targetDomain, List<PropagatedChange> propagationResult) {
+	@Override
+	public synchronized void postChanges(String virtualModelName, VitruvDomain sourceDomain,VitruvDomain targetDomain, List<PropagatedChange> propagationResult) {
 		
-		//Store in corresponding model vector
-		ChangesTab tab = changeTabs.get(modelID);	
+		//Store in corresponding changes tab
+		ChangesTab tab = changeTabs.get(virtualModelName);	
 		if(tab==null) {
 			//create the changes tab and the dataSet
-			ChangeDataSet cds=createChangeDataSet(modelID+" 1", sourceDomain,targetDomain , propagationResult);
+			ChangeDataSet cds=createChangeDataSet(virtualModelName+" 1", sourceDomain,targetDomain , propagationResult);
 			tab=createChangesTab(cds);
-			changeTabs.put(modelID,tab);
-			ui.addTab(modelID,tab);
+			changeTabs.put(virtualModelName,tab);
+			ui.addTab(virtualModelName,tab);			
 		}else{
 			//on an existing tab, append the changes made
-			ChangeDataSet cds=createChangeDataSet(modelID+" "+(tab.getChanges().size()+1), sourceDomain, targetDomain, propagationResult);
+			ChangeDataSet cds=createChangeDataSet(virtualModelName+" "+(tab.getChanges().size()+1), sourceDomain, targetDomain, propagationResult);
 			tab.addChanges(cds);
 			tab.repaint();
 		}
 	}	
 	
 	/**
-	 * Creates a visualization-specific cds object from the given parameters
-	 * 
-	 * @param id The ID of the cds to create
-	 * @param propagationResult The propagation result to process
-	 * @param className The calling classes name
-	 * @return
+	 * Creates a visualization-specific {@link ChangeDataSet} from the given parameters
+	 *  
+	 * @param id The ID of the changeDataSet to create
+	 * @param sourceDomain The source domain, may be null
+     * @param targetDomain The target domain, may be null
+	 * @param propagationResult The propagation result to process	 
+	 * @return The created changeDataSet
 	 */
 	private ChangeDataSet createChangeDataSet(String id, VitruvDomain sourceDomain, VitruvDomain targetDomain, List<PropagatedChange> propagationResult) {
 		switch(ChangeVisualization.VISUALIZATION_MODE) {
 		case TREE:
-			return new TreeChangeDataSet(id,sourceDomain,targetDomain,propagationResult);		
+			return new TreeChangeDataSetDecoder(id,sourceDomain,targetDomain,propagationResult).getChangeDataSet();		
 		default:
 			//As long as all cases are covered in switch statement, this code is never reached
 			throw new RuntimeException("Uncovered case in witch statement, missing mode "+ChangeVisualization.VISUALIZATION_MODE);
@@ -194,13 +171,13 @@ public final class ChangeVisualization{
 	}
 
 	/**
-	 * Create the tab for a new model
+	 * Create a {@link ChangesTab} for a new model
 	 * 
-	 * @param cds The cds used for the tab
-	 * @return A tab visualizing the given cds
+	 * @param changeDataSet The changeDataSet used for the tab
+	 * @return A tab visualizing the given changeDataSet
 	 */
-	private ChangesTab createChangesTab(ChangeDataSet cds) {		
-		return new ChangesTab(cds,ChangeVisualization.VISUALIZATION_MODE);
+	private ChangesTab createChangesTab(ChangeDataSet changeDataSet) {		
+		return new ChangesTab(changeDataSet,ChangeVisualization.VISUALIZATION_MODE);
 	}	
 
 }
