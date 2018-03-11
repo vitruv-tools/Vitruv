@@ -2,32 +2,11 @@ package tools.vitruv.extensions.changevisualization.tree;
 
 import java.awt.Component;
 import java.io.Serializable;
-import java.util.Hashtable;
-import java.util.Map;
-import java.util.Vector;
 
-import org.eclipse.emf.ecore.EStructuralFeature;
-
-import tools.vitruv.extensions.changevisualization.tree.decoder.echange.ChangeDecoder;
-import tools.vitruv.extensions.changevisualization.tree.decoder.echange.CreateEObjectDecoder;
-import tools.vitruv.extensions.changevisualization.tree.decoder.echange.DeleteEObjectDecoder;
-import tools.vitruv.extensions.changevisualization.tree.decoder.echange.InsertEAttributeValueDecoder;
-import tools.vitruv.extensions.changevisualization.tree.decoder.echange.InsertEReferenceDecoder;
-import tools.vitruv.extensions.changevisualization.tree.decoder.echange.InsertRootEObjectDecoder;
-import tools.vitruv.extensions.changevisualization.tree.decoder.echange.RemoveEAttributeValueDecoder;
-import tools.vitruv.extensions.changevisualization.tree.decoder.echange.RemoveEReferenceDecoder;
-import tools.vitruv.extensions.changevisualization.tree.decoder.echange.RemoveRootEObjectDecoder;
-import tools.vitruv.extensions.changevisualization.tree.decoder.echange.ReplaceSingleValuedEAttributeDecoder;
-import tools.vitruv.extensions.changevisualization.tree.decoder.echange.ReplaceSingleValuedEReferenceDecoder;
 import tools.vitruv.extensions.changevisualization.ui.LabelValuePanel;
-import tools.vitruv.extensions.changevisualization.utils.ModelHelper;
-import tools.vitruv.framework.change.echange.EChange;
-import tools.vitruv.framework.change.echange.eobject.EObjectExistenceEChange;
-import tools.vitruv.framework.change.echange.root.RootEChange;
 
 /**
  * Collects all information regarding EChange-Nodes
- * It is also the place where additional ChangeDecoders can be registered for usage.
  * 
  * @author Andreas Loeffler
  *
@@ -35,147 +14,80 @@ import tools.vitruv.framework.change.echange.root.RootEChange;
 public class ChangeNode implements Serializable{
 
 	/**
-	 * 
+	 * A serial version id for java object serialization
 	 */
 	private static final long serialVersionUID = 5499249335308821465L;
 	
+	/**
+	 * The different types of eChanges
+	 * @author Andreas Loeffler
+	 */
 	public static enum EChangeClass{
 		REFERENCE_ECHANGE,
 		EXISTENCE_ECHANGE,
 		ATTRIBUTE_ECHANGE,
 		ROOT_ECHANGE
 	}
-
-	/**
-	 * Decoders which extract the information to display from given Object of specific eChanges
-	 */
-	private static Map<String,ChangeDecoder> decoders=new Hashtable<String,ChangeDecoder>();
-
-	private static boolean simpleEChangeText=false;
-	
-	public static boolean isSimpleEChangeText() {
-		return simpleEChangeText;
-	}
-
-	public static void setSimpleEChangeText(boolean selected) {
-		simpleEChangeText=selected;
-	}
-
-
-	//register additional decoders
-	static {		
-		registerChangeDecoder(new ReplaceSingleValuedEAttributeDecoder());	
-		registerChangeDecoder(new ReplaceSingleValuedEReferenceDecoder());
-		registerChangeDecoder(new CreateEObjectDecoder());
-		registerChangeDecoder(new InsertRootEObjectDecoder());
-		registerChangeDecoder(new InsertEReferenceDecoder());
-		registerChangeDecoder(new InsertEAttributeValueDecoder());
-		registerChangeDecoder(new RemoveEAttributeValueDecoder());
-		registerChangeDecoder(new DeleteEObjectDecoder());
-		registerChangeDecoder(new RemoveRootEObjectDecoder());
-		registerChangeDecoder(new RemoveEReferenceDecoder());
-	}
-
-	/**
-	 * Can be called to register new decoders for given EChange classes
-	 * 
-	 * @param className The eClass-name to decode
-	 * @param dec The decoder used to decode objects of the class
-	 */
-	public static void registerChangeDecoder(ChangeDecoder dec) {
-		decoders.put(dec.getDecodedEClassName(),dec);
-	}
-
-	/**
-	 * The text to display for the node in the jtree when simpleName is enabled
-	 */
-	private final String simpleText;
-	
+		
 	/**
 	 * The text to display for the node in the jtree
 	 */
-	private final String text;
+	private final String individualText;
 	
 	/**
 	 * The id of the affected eObject
 	 */
 	private final String eObjectID;
 	
+	/**
+	 * Details in the form of a String[][] are stored here
+	 */
 	private final String[][] structuralFeatureLabelValues;
 	
+	/**
+	 * The type of the echange
+	 */
 	private final EChangeClass changeClass;
+	
+	/**
+	 * Simple text state
+	 */
+	private boolean simpleEChangeText=false;
+	
+	/**
+	 * Show id state
+	 */
+	private boolean showID=false;
 
 	/**
-	 * Constructs a Changenode for a given eChange
-	 * @param eChange The change to visualize, not null
+	 * The eClassName of the echange
 	 */
-	public ChangeNode(EChange eChange) {
-		if(decoders.containsKey(eChange.eClass().getName())) {
-			//Use the special decoder to derive the name
-			text=decoders.get(eChange.eClass().getName()).decode(eChange);
-			simpleText=eChange.eClass().getName();
-		}else {
-			//The default behaviour is just display the classname
-			text=eChange.eClass().getName();
-			simpleText=eChange.eClass().getName();
-		}	
-		
-		structuralFeatureLabelValues=ModelHelper.extractStructuralFeatureArray(eChange);
-				
-		//No ReferenceEChange or AttributeEChange class found to check for instanceof
-		//so class recognition is done by name so far
-		switch(eChange.eClass().getName()){
-		case "CreateEObject":
-		case "DeleteEObject":
-			changeClass=EChangeClass.EXISTENCE_ECHANGE;
-			break;
-		case "InsertRootEObject":
-		case "RemoveRootEObject":
-			changeClass=EChangeClass.ROOT_ECHANGE;
-			break;
-		case "InsertEReference":
-		case "ReplaceSingleValuedEReference":
-		case "RemoveEReference":
-			changeClass=EChangeClass.REFERENCE_ECHANGE;
-			break;
-		case "InsertEAttributeValue":
-		case "ReplaceSingleValuedEAttribute":
-		case "RemoveEAttributeValue":
-			changeClass=EChangeClass.ATTRIBUTE_ECHANGE;
-			break;
-		default:
-			changeClass=null;//unknown eChange
-			break;
-		}
-		
-		//extract eObjectID
-		eObjectID=getAffectedEObjectID(eChange);
-	
-	}
-	
-	private String getAffectedEObjectID(EChange eChange) {
-		String featureName=null;
-		switch(eChange.eClass().getName()) {
-		case "InsertRootEObject":
-			//InsertRootEObject eChanges don't have affectedEObjectIDs, they use newValueID
-			featureName="newValueID";
-			break;
-		case "RemoveRootEObject":
-			//InsertRootEObject eChanges don't have affectedEObjectIDs, they use oldValueID
-			featureName="oldValueID";
-			break;
-		default:	
-			featureName="affectedEObjectID";
-			break;
-		}
-		for(EStructuralFeature feature:eChange.eClass().getEAllStructuralFeatures()) {
-			if(feature.getName().equals(featureName)) {
-				return (String) eChange.eGet(feature); 
-			}
-		}
-		return null;
-	}
+	private final String eClassName;
 
+	/**
+	 *	The eClassName of the affected eObject 
+	 */
+	private final String affectedClass;
+
+	/**
+	 * Constrcuts a change node used to display the text in a jtree
+	 * 
+	 * @param individualText Individual text of the node, if any
+	 * @param structuralFeatureLabelValues Name/Value pairs holding all structural feature info of the echange
+	 * @param changeClass The type of the echange
+	 * @param eClassName The eClassName of the echange
+	 * @param affectedClass The eClassName of the affeced eObject
+	 * @param eObjectID The id of the affected eObject
+	 */
+	public ChangeNode(String individualText,String[][] structuralFeatureLabelValues, EChangeClass changeClass, String eClassName, String affectedClass, String eObjectID){
+		this.individualText=individualText;
+		this.structuralFeatureLabelValues=structuralFeatureLabelValues;
+		this.changeClass=changeClass;
+		this.eClassName=eClassName;
+		this.affectedClass=affectedClass;
+		this.eObjectID=eObjectID;
+	}
+	
 	/**
 	 * The detailsUI component
 	 * 
@@ -187,16 +99,75 @@ public class ChangeNode implements Serializable{
 
 	@Override
 	public String toString() {
-		//The tree renderer uses the toString() method to get the text to display
-		return isSimpleEChangeText()?simpleText:text;
+		//The tree renderer uses the toString() method to get the text to display		
+		if(isSimpleEChangeText()) {
+			if(isShowID()) {
+				//Show id and simple text
+				return eClassName+(affectedClass!=null?" : "+affectedClass:"")+" <"+getEObjectID()+">";
+			}else{
+				//Don't show id and show simple text
+				return eClassName+(affectedClass!=null?" : "+affectedClass:"");
+			}	
+		}else{
+			if(isShowID()) {
+				//Show id and individual text
+				return eClassName+(affectedClass!=null?" : "+affectedClass:"")+" <"+getEObjectID()+"> | "+individualText;
+			}else{
+				//Don't show id and show individual text
+				return eClassName+(affectedClass!=null?" : "+affectedClass:"")+" | "+individualText;
+			}
+		}
 	}
 
+	/**
+	 * Returns the type of the echange
+	 * 
+	 * @return The type
+	 */
 	public EChangeClass getChangeClass() {
 		return changeClass;
 	}
 
+	/**
+	 * Gets the id of the eobject affected by the visualized echange
+	 * @return The id of the affected eobject
+	 */
 	public String getEObjectID() {
 		return eObjectID;
 	}
+	
+	/**
+	 * Returns whether simple text is active
+	 * @return True if active
+	 */
+	public boolean isSimpleEChangeText() {
+		return simpleEChangeText;
+	}
+
+	/**
+	 * Sets the simple change text mode
+	 * 
+	 * @param simpleEChangeText True to enable
+	 */
+	public void setSimpleEChangeText(boolean simpleEChangeText) {
+		this.simpleEChangeText=simpleEChangeText;
+	}
+	
+	/**
+	 * Returns whether show id is active
+	 * @return True if active
+	 */
+	public boolean isShowID() {
+		return showID;
+	}
+
+	/**
+	 * Sets the show id 
+	 * @param showID True to show the id
+	 */
+	public void setShowID(boolean showID) {
+		this.showID=showID;
+	}
+
 
 }

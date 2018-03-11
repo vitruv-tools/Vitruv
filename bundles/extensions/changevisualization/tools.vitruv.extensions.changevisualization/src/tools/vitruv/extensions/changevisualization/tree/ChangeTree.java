@@ -47,9 +47,9 @@ public class ChangeTree extends ChangeComponent {
 	 * Needed for eclipse to stop warning about serialVersionIds. This feature will never been used. 
 	 */
 	private static final long serialVersionUID = 1L;
-	
+
 	/**
-	 * Enumeration of all different default expand states of newly added cds
+	 * Enum of all different default expand states of newly added change data sets
 	 * 
 	 * @author Andreas Loeffler
 	 */
@@ -58,14 +58,24 @@ public class ChangeTree extends ChangeComponent {
 		EXPAND_VCHANGES,
 		EXPAND_ECHANGES
 	}
+	
+	/**
+	 * The default setting for the simple echange text checkbox
+	 */
+	private static final boolean SIMPLE_ECHANGE_TEXT_DEFAULT_VALUE=false;
+	
+	/**
+	 * The default setting for the show id checkbox
+	 */
+	private static final boolean SHOW_ID_DEFAULT_VALUE=false;
 
 	/**
-	 * Key used to store the viewport rectangle of the treeScroller in the cds
+	 * Key used to store the viewport rectangle of the treeScroller in the changeDataSet
 	 */
 	private static final String VIEWPORT_RECTANGLE_KEY="VIEWPORT_RECTANGLE";
 
 	/**
-	 * The JTree that actually visualizes the cds
+	 * The JTree that actually visualizes the changeDataSet
 	 */
 	private JTree treeUI;
 
@@ -93,12 +103,12 @@ public class ChangeTree extends ChangeComponent {
 	 * The JScrollPane used to display detail-component bigger than the viewport available 
 	 */
 	private JScrollPane detailsScroller;
-	
+
 	/**
 	 * The TreeMouseListener responding to mouse interaction
 	 */
 	private final TreeMouseListener ml;
-	
+
 	/**
 	 * The listener processing tree selection events of the JTree component
 	 */
@@ -154,9 +164,9 @@ public class ChangeTree extends ChangeComponent {
 	};
 
 	/**
-	 * The actual cds
+	 * The actual changeDataSet
 	 */
-	private TreeChangeDataSet actualCds=null;
+	private TreeChangeDataSet actualChangeDataSet=null;
 
 	/**
 	 * The JScrollPane used to scroll the tree, if necessary
@@ -164,14 +174,25 @@ public class ChangeTree extends ChangeComponent {
 	private JScrollPane treeScroller;
 
 	/**
+	 * The checkbox to select the simple echange text mode
+	 */
+	private JCheckBox simpleEChangeTextBox;
+
+	/**
+	 * The checkbox to enable/disable id showing
+	 */
+	private JCheckBox showIDTextBox;
+
+	/**
 	 * Constructs a ChangeTree UI visualizing change events in the form of a tree
 	 */
 	public ChangeTree() {
 		super(new BorderLayout());
-
-		ml=new TreeMouseListener();
+		
 		createUI();
-
+		
+		//Add listeners and renderes to the treeUI and scrollpane
+		ml=new TreeMouseListener();
 		treeUI.addMouseListener(ml);
 
 		treeUI.getSelectionModel().addTreeSelectionListener(tsl);
@@ -179,40 +200,39 @@ public class ChangeTree extends ChangeComponent {
 		treeUI.setCellRenderer(changeEventTreeRenderer);
 
 		treeScroller.addMouseWheelListener(new MouseWheelListener() {
-		@Override
-		public void mouseWheelMoved(MouseWheelEvent e) {	
-			//Implements the usual strg + mousewheel behaviour for zooming
-			if ((e.getModifiersEx() & InputEvent.CTRL_DOWN_MASK) == 0) return;
-			if(e.getWheelRotation()<=-1) {
-				float newSize=treeUI.getFont().getSize()+2;
-				if(newSize>30) newSize=30;
-				treeUI.setFont(treeUI.getFont().deriveFont(newSize));
-				treeUI.setRowHeight((int)(newSize+10));
-			}else if(e.getWheelRotation()>=1) {
-				float newSize=treeUI.getFont().getSize()-2;
-				if(newSize<5) newSize=5;
-				treeUI.setFont(treeUI.getFont().deriveFont(newSize));
-				treeUI.setRowHeight((int)(newSize+10));
+			@Override
+			public void mouseWheelMoved(MouseWheelEvent e) {	
+				//Implements the usual strg + mousewheel behaviour for zooming
+				if ((e.getModifiersEx() & InputEvent.CTRL_DOWN_MASK) == 0) return;
+				if(e.getWheelRotation()<=-1) {
+					float newSize=treeUI.getFont().getSize()+2;
+					if(newSize>30) newSize=30;
+					treeUI.setFont(treeUI.getFont().deriveFont(newSize));
+					treeUI.setRowHeight((int)(newSize+10));
+				}else if(e.getWheelRotation()>=1) {
+					float newSize=treeUI.getFont().getSize()-2;
+					if(newSize<5) newSize=5;
+					treeUI.setFont(treeUI.getFont().deriveFont(newSize));
+					treeUI.setRowHeight((int)(newSize+10));
+				}
 			}
-		}
-	});
-		
+		});
+
 	}	
 
 	/**
 	 * Creates the UI
 	 */
-	private void createUI() {
-		//Create the center
+	private void createUI() {		
 		detailsSplitpane=new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
 
 		treeUI=new JTree();
 		treeUI.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
 		treeUI.setFont(ChangeVisualizationUI.DEFAULT_TREE_FONT);
-		
+
 		treeScroller=new JScrollPane(treeUI);
 		detailsSplitpane.add(treeScroller);		
-		
+
 		detailsUI=new JTextArea();	
 		detailsUI.setFont(ChangeVisualizationUI.DEFAULT_TEXTAREA_FONT);		
 		detailsUI.setEditable(false);
@@ -237,33 +257,100 @@ public class ChangeTree extends ChangeComponent {
 	 */
 	private Component createToolbar() {
 		JPanel toolbar=new JPanel(new FlowLayout());
-		
+
 		addDefaultExpansionBehaviour(toolbar);
-		
-		toolbar.add(new JLabel("             "));//White space
+
+		toolbar.add(new JLabel("     "));//White space
 		addEChangeClassColors(toolbar);
-		
-		toolbar.add(new JLabel("             "));//White space
+
+		toolbar.add(new JLabel("     "));//White space
 		addStateChangeBoxes(toolbar);
-		
+
 		return toolbar;
 	}
-	
+
+	/**
+	 * Adds the state change boxes to the toolbar
+	 * 
+	 * @param toolbar The toolbar to add the boxes to
+	 */
 	private void addStateChangeBoxes(JPanel toolbar) {
-		JCheckBox simpleEChangeTextBox=new JCheckBox("Simple EChange text",ChangeNode.isSimpleEChangeText());
+		simpleEChangeTextBox=new JCheckBox("Simple EChange text",SIMPLE_ECHANGE_TEXT_DEFAULT_VALUE);
 		simpleEChangeTextBox.setFont(ChangeVisualizationUI.DEFAULT_CHECKBOX_FONT);
 		simpleEChangeTextBox.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				ChangeNode.setSimpleEChangeText(((JCheckBox)e.getSource()).isSelected());
-				treeUI.repaint();
+				boolean simpleEChangeText=((JCheckBox)e.getSource()).isSelected();				
+				updateSimpleEChangeText(simpleEChangeText);
 			}			
 		});
 		toolbar.add(simpleEChangeTextBox);
 		
+		showIDTextBox=new JCheckBox("Show IDs",SHOW_ID_DEFAULT_VALUE);
+		showIDTextBox.setFont(ChangeVisualizationUI.DEFAULT_CHECKBOX_FONT);
+		showIDTextBox.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				boolean showID=((JCheckBox)e.getSource()).isSelected();				
+				updateShowID(showID);
+			}			
+		});
+		toolbar.add(showIDTextBox);
+
 	}
 
+	/**
+	 * Update the simpleEChangeText state for all nodes in the model
+	 * 
+	 * @param simpleEChangeText The simpleEChangeText state
+	 */
+	private void updateSimpleEChangeText(boolean simpleEChangeText) {
+		DefaultTreeModel model = (DefaultTreeModel)treeUI.getModel();
+		DefaultMutableTreeNode root=(DefaultMutableTreeNode) model.getRoot();
+		if(root!=null) {
+			Enumeration<DefaultMutableTreeNode> nodes = root.depthFirstEnumeration();
+			while(nodes.hasMoreElements()) {
+				DefaultMutableTreeNode node = nodes.nextElement();
+				if(node.getUserObject() instanceof ChangeNode) {
+					//Only EChange nodes are affected and change their size
+					((ChangeNode)node.getUserObject()).setSimpleEChangeText(simpleEChangeText);
+					model.nodeChanged(node);
+				}
+			}
+		}
+	}
+
+	/**
+	 * Update the showId state for all nodes in the model
+	 * 
+	 * @param showID The showID state
+	 */
+	private void updateShowID(boolean showID) {
+		DefaultTreeModel model = (DefaultTreeModel)treeUI.getModel();
+		DefaultMutableTreeNode root=(DefaultMutableTreeNode) model.getRoot();
+		if(root!=null) {
+			Enumeration<DefaultMutableTreeNode> nodes = root.depthFirstEnumeration();
+			while(nodes.hasMoreElements()) {
+				DefaultMutableTreeNode node = nodes.nextElement();
+				if(node.getUserObject() instanceof ChangeNode) {
+					//Only EChange nodes are affected and change their size
+					((ChangeNode)node.getUserObject()).setShowID(showID);
+					model.nodeChanged(node);
+				}
+			}
+		}
+	}
+
+	/**
+	 * Adds labels to the toolbar visualizing the colors used for the different eChange types
+	 * @param toolbar The toolbar to add the labels to
+	 */
 	private void addEChangeClassColors(JPanel toolbar) {
+		
+		JLabel changesLabel=new JLabel("EChange-Types");
+		changesLabel.setFont(ChangeVisualizationUI.DEFAULT_LABEL_FONT);
+		toolbar.add(changesLabel);
+		
 		Icon[] icons=new Icon[] {
 				ChangeTreeNodeRenderer.ATTRIBUTE_ECHANGE_OPEN_ICON,
 				ChangeTreeNodeRenderer.REFERENCE_ECHANGE_OPEN_ICON,
@@ -271,12 +358,12 @@ public class ChangeTree extends ChangeComponent {
 				ChangeTreeNodeRenderer.ROOT_ECHANGE_OPEN_ICON
 		};
 		String[] names=new String[] {
-				"Attribute EChanges",
-				"Reference EChanges",
-				"Existence EChanges",
-				"Root EChanges"
+				"Attribute",
+				"Reference",
+				"Existence",
+				"Root"
 		};
-		
+
 		for(int n=0;n<icons.length;n++) {
 			JLabel label=new JLabel(names[n],icons[n],JLabel.RIGHT);
 			label.setFont(ChangeVisualizationUI.DEFAULT_LABEL_FONT);
@@ -284,6 +371,11 @@ public class ChangeTree extends ChangeComponent {
 		}
 	}
 
+	/**
+	 * Adds checkboxes to select the default expansion behavior to the toolbar
+	 * 
+	 * @param toolbar The toolbar to add the boxes to
+	 */
 	private void addDefaultExpansionBehaviour(JPanel toolbar){
 
 		JLabel defaultExpandLabel = new JLabel(" Default expand behavior : ");
@@ -291,11 +383,11 @@ public class ChangeTree extends ChangeComponent {
 		toolbar.add(defaultExpandLabel);
 
 		//create expand behavior selectors
-		final JCheckBox expandPChange=new JCheckBox("Expand root",expandBehavior==ExpandBehavior.EXPAND_PROPAGATED_CHANGES);
+		final JCheckBox expandPChange=new JCheckBox("Root",expandBehavior==ExpandBehavior.EXPAND_PROPAGATED_CHANGES);
 		expandPChange.setFont(ChangeVisualizationUI.DEFAULT_CHECKBOX_FONT);
-		final JCheckBox expandVChange=new JCheckBox("Expand vChanges",expandBehavior==ExpandBehavior.EXPAND_VCHANGES);
+		final JCheckBox expandVChange=new JCheckBox("vChanges",expandBehavior==ExpandBehavior.EXPAND_VCHANGES);
 		expandVChange.setFont(ChangeVisualizationUI.DEFAULT_CHECKBOX_FONT);
-		final JCheckBox expandEChange=new JCheckBox("Expand eChanges",expandBehavior==ExpandBehavior.EXPAND_ECHANGES);
+		final JCheckBox expandEChange=new JCheckBox("eChanges",expandBehavior==ExpandBehavior.EXPAND_ECHANGES);
 		expandEChange.setFont(ChangeVisualizationUI.DEFAULT_CHECKBOX_FONT);
 
 		//Assures only one is selected
@@ -334,39 +426,36 @@ public class ChangeTree extends ChangeComponent {
 		toolbar.add(expandEChange);		
 	}
 
-	/* (non-Javadoc)
-	 * @see tools.vitruv.framework.util.changevisualization.ChangeVisualization#setData(tools.vitruv.framework.util.changevisualization.ChangeDataSet)
-	 */
 	@Override
-	public void setData(ChangeDataSet cds) {
-		if(!(cds instanceof TreeChangeDataSet)) {
+	public void setData(ChangeDataSet changeDataSet) {
+		if(!(changeDataSet instanceof TreeChangeDataSet)) {
 			throw new RuntimeException("Invalid ChangeDataSet");
 		}
 
 		//If something visualized so far, store its state 
-		if(actualCds!=null) {
-			actualCds.storeLayoutInfo(treeUI);
-			actualCds.setUserInfo(VIEWPORT_RECTANGLE_KEY,treeScroller.getViewport().getViewRect());
+		if(actualChangeDataSet!=null) {
+			actualChangeDataSet.storeLayoutInfo(treeUI);
+			actualChangeDataSet.setUserInfo(VIEWPORT_RECTANGLE_KEY,treeScroller.getViewport().getViewRect());
 		}
 
-		//Update actual cds to the new one and set it as the tree model
-		actualCds=(TreeChangeDataSet) cds;
-		treeUI.setModel(new DefaultTreeModel((TreeNode)actualCds.getData()));
+		//Update actualChangeDataSet to the new one and set it as the tree model
+		actualChangeDataSet=(TreeChangeDataSet) changeDataSet;
+		treeUI.setModel(new DefaultTreeModel((TreeNode)actualChangeDataSet.getData()));
 
-		//applyLayout returns tree if successfull, false is no saved layout exists
-		if(!actualCds.applyLayout(treeUI)) {
+		//applyLayout returns true if successful, false is no saved layout exists
+		if(!actualChangeDataSet.applyLayout(treeUI)) {
 			//If no layout information exists, apply the default setting of node expansion
 			expandNodes();	
 		}	
 
 		//if this information is present, reset the scrollpanes view to the one before
-		if(actualCds.hasUserInfo(VIEWPORT_RECTANGLE_KEY)) {
-			treeScroller.getViewport().scrollRectToVisible((java.awt.Rectangle)actualCds.getUserInfo(VIEWPORT_RECTANGLE_KEY));
+		if(actualChangeDataSet.hasUserInfo(VIEWPORT_RECTANGLE_KEY)) {
+			treeScroller.getViewport().scrollRectToVisible((java.awt.Rectangle)actualChangeDataSet.getUserInfo(VIEWPORT_RECTANGLE_KEY));
 		}
 	}
 
 	/**
-	 * Expand nodes depending on selected behavior
+	 * Expand nodes depending on selected default behavior
 	 */
 	private void expandNodes() {		
 		TreeNode rootNode = (TreeNode)treeUI.getModel().getRoot();
@@ -386,7 +475,6 @@ public class ChangeTree extends ChangeComponent {
 			});				
 			treeUI.expandPath(path);			
 		}else {		
-			
 			@SuppressWarnings("unchecked")
 			Enumeration<TreeNode> rootChildren = rootNode.children();
 			while(rootChildren.hasMoreElements()) {
@@ -423,6 +511,9 @@ public class ChangeTree extends ChangeComponent {
 		}
 	}
 
+	/**
+	 * Collapse all nodes in the tree
+	 */
 	private void collapseAll() {
 		int row = treeUI.getRowCount() - 1;
 		while (row >= 0) {
@@ -430,11 +521,14 @@ public class ChangeTree extends ChangeComponent {
 			row--;
 		}
 	}
-	
+
+	@Override
 	public List<String> determineHighlightedCdsIds(String highlightID, List<ChangeDataSet> changeDataSets) {
 		if(highlightID==null)return null;
 		if(changeDataSets==null)return null;
 		List<String> highlightedCdsIds=new Vector<String>();
+		
+		//Walk all changeDataSets and store their if if any of their nodes should be highlighted
 		for(ChangeDataSet cds:changeDataSets) {
 			if(cds==null||!(cds instanceof TreeChangeDataSet)) {
 				continue;
@@ -442,26 +536,13 @@ public class ChangeTree extends ChangeComponent {
 			TreeChangeDataSet tcds=(TreeChangeDataSet)cds;
 			DefaultMutableTreeNode rootNode=(DefaultMutableTreeNode) tcds.getData();
 			String cdsID=rootNode.toString();
-			if(shouldHighlightNode(highlightID,rootNode)) {
+			
+			//Rely on the renderers decision upon highlighting a given id
+			if(ChangeTreeNodeRenderer.shouldHighlightNode(highlightID,rootNode)) {
 				highlightedCdsIds.add(cdsID);
 			}
 		}
 		return highlightedCdsIds;		
-	}
-	
-	private boolean shouldHighlightNode(String highlightID,DefaultMutableTreeNode node) {
-		Enumeration children = node.children();
-		while(children.hasMoreElements()) {
-			DefaultMutableTreeNode child=(DefaultMutableTreeNode) children.nextElement();
-			if(child.getUserObject()!=null &&child.getUserObject() instanceof ChangeNode) {
-				if(highlightID.equals(((ChangeNode)child.getUserObject()).getEObjectID())) {
-					return true;
-				}
-			}else if(shouldHighlightNode(highlightID,child)) {
-				return true;
-			}
-		}
-		return false;
 	}
 
 }
