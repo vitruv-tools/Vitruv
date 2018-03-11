@@ -77,7 +77,6 @@ public abstract class ChangeDataSet implements Serializable{
 	 * @param id The ID of the changeDataSet
 	 * @param sourceModelInfo The source model info String
 	 * @param targetModelInfo The target model info String
-	 * @param propagationResult The propagation result whose values should be represented by this changeDataSet
 	 */
 	protected ChangeDataSet(String id, String sourceModelInfo, String targetModelInfo) {
 		this.id=id;
