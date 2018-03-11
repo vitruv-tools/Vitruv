@@ -1,7 +1,7 @@
 package tools.vitruv.extensions.changevisualization.handlers;
 
-import java.util.Hashtable;
-import java.util.Map;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
@@ -17,22 +17,20 @@ import org.eclipse.ui.handlers.HandlerUtil;
 
 import tools.vitruv.extensions.changevisualization.ChangeVisualization;
 import tools.vitruv.framework.vsum.InternalVirtualModel;
-import tools.vitruv.framework.vsum.PropagatedChangeListener;
-import tools.vitruv.framework.vsum.VirtualModelImpl;
 import tools.vitruv.framework.vsum.VirtualModelManager;
 
 /**
  * The plugin handler is used to react to clicks on the change visualization menu item.
- * It enables or disables the visualization through toggling its state.
+ * It enables or disables the visualization through toggling its listening state for individual projects.
  * 
  * @author Andreas Loeffler
  */
 public class ChangeVisualizationHandler extends AbstractHandler {
 
 	/**
-	 * Map of known propagated change listeners	
+	 * Set of projects for which a propagatedChangeListener is registered
 	 */
-	private Map<IProject,PropagatedChangeListener> project2listener=new Hashtable<IProject,PropagatedChangeListener>();
+	private Set<IProject> activeProjects=new HashSet<IProject>();
 	
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {		
@@ -41,57 +39,57 @@ public class ChangeVisualizationHandler extends AbstractHandler {
 		//get the project that has been right-clicked
 		IProject project = getIProject(event);
 		if(project==null) {
+			//this should not happen, since we show the menuitem to click only in the popupmenu for a project
 			return null;
 		}
 		
-		String modelID=project.getName();
-		VirtualModelImpl virtualModelImpl = getVirtualModelImpl(project);
+		//Get the virtual model for the project
+		InternalVirtualModel virtualModel = getVirtualModelImpl(project);
 		
-		if(virtualModelImpl==null) {
+		if(virtualModel==null) {
+			//Maybe the user clicked on the wrong project, give feeback
 			MessageDialog.openInformation(
 					window.getShell(),
 					"Change visualization",
-					"No registered virtual model found for path "+project.getLocation().toFile().getAbsolutePath()
+					"No registered virtual model found for project "+project.getName()
 					);
 			return null;
 		}
-			
-		boolean active=project2listener.containsKey(project);
+				
+		boolean active=activeProjects.contains(project);
 				
 		if(active) {
-			virtualModelImpl.removePropagatedChangeListener(project2listener.remove(project));
+			//Disable listening
+			activeProjects.remove(project);
+			virtualModel.removePropagatedChangeListener(ChangeVisualization.getPropagatedChangeListener());
+			
+			//Give feedback that listening is disabled
 			MessageDialog.openInformation(
 					window.getShell(),
 					"Change visualization deactivated",
-					"Change Visualization deactivated for virtual model "+modelID
+					"Change Visualization deactivated for project "+project.getName()
 					);			
 		}else{
 			//Enable listening
-			PropagatedChangeListener propagatedChangeListener=ChangeVisualization.createPropagatedChangeListener(modelID);
-			project2listener.put(project, propagatedChangeListener);
-			virtualModelImpl.addPropagatedChangeListener(propagatedChangeListener);
+			activeProjects.add(project);
+			virtualModel.addPropagatedChangeListener(ChangeVisualization.getPropagatedChangeListener());
 			
-			//bring UI to front
+			//bring UI to front. This is already enough feedback that registering was successful
 			ChangeVisualization.showUi();		
 		}		
 		return null;
 	}
 
 	/**
-	 * Retrieves the {@link VirtualModelImpl} for a given {@link IPrject}.
-	 * If no virtual model is registered for the given project or its instance is not of
-	 * class {@link VirtualModelImpl} null is returned.
+	 * Retrieves the {@link InternalVirtualModel} for a given {@link IProject}.
+	 * If no virtual model is registered for the given project null is returned.
 	 * 
 	 * @param project The project
-	 * @return The virtualModelImpl, may be null
+	 * @return The internalVirtualModel, may be null
 	 */
-	private VirtualModelImpl getVirtualModelImpl(IProject project) {
+	private InternalVirtualModel getVirtualModelImpl(IProject project) {
 	      try {
-	    	  InternalVirtualModel virtualModel = VirtualModelManager.getInstance().getVirtualModel(project.getLocation().toFile());
-	    	  if(virtualModel==null||!(virtualModel instanceof VirtualModelImpl)) {
-	    		  return null;
-	    	  }
-	    	  return (VirtualModelImpl) virtualModel;
+	    	  return VirtualModelManager.getInstance().getVirtualModel(project.getLocation().toFile());
 	      }catch(UnsupportedOperationException ex) {
 	    	  //If none is found, an exception is thrown rather than returning null
 	    	  return null;
@@ -99,7 +97,7 @@ public class ChangeVisualizationHandler extends AbstractHandler {
 	}
 
 	/**
-	 * Retrieves the {@link IPrject} for a given {@link ExecutionEvent}
+	 * Retrieves the {@link IProject} for a given {@link ExecutionEvent}
 	 * 
 	 * @param event The event
 	 * @return The project generating the event, may be null
