@@ -20,7 +20,7 @@ public interface PropagatedChangeListener {
      *            The name of the virtual model. Equal names group results together
      * @param sourceDomain
      *            The sourceDomain, may be null
-     * @param targetModelInfo
+     * @param targetDomain
      *            The targetDomain, may be null
      * @param propagationResult
      *            The results to visualize
