@@ -12,38 +12,68 @@ import org.eclipse.swt.widgets.Shell
 import org.eclipse.swt.widgets.Text
 import tools.vitruv.framework.userinteraction.WindowModality
 import org.eclipse.swt.widgets.Display
+import org.eclipse.swt.events.ModifyListener
+import org.eclipse.jface.fieldassist.ControlDecoration
+import org.eclipse.swt.events.ModifyEvent
+import org.eclipse.jface.fieldassist.FieldDecorationRegistry
+import org.eclipse.swt.widgets.Control
+import org.eclipse.swt.layout.GridLayout
+import org.eclipse.swt.layout.GridData
 
-class TextInputDialog extends Dialog {
-	private String title
-	private String message
+class TextInputDialog extends BaseDialog {
 	private String input
-	private Function<String, String> inputValidator
+	private InputFieldType inputFieldType
+	private InputValidator inputValidator
+	private Text inputField
+	private ControlDecoration inputDecorator
 	
-	new(Shell shell, WindowModality modality, String title, String message, Function<String, String> inputValidator) {
-		super(shell)
-		this. title = title
+	new(Shell shell, WindowModality modality, String title, String message, InputFieldType fieldType, InputValidator inputValidator) {
+		super(shell, modality, title, message)
+		this.title = title
 		this.message = message
+		this.inputFieldType = fieldType
 		this.inputValidator = inputValidator
 	}
 	
+	new(Shell shell, WindowModality modality, String title, String message, InputFieldType fieldType, Function<String, Boolean> inputValidator, String invalidInputMessage) {
+		this(shell, modality, title, message, fieldType, new InputValidator() {
+			override getInvalidInputMessage(String input) { "" }
+			override isInputValid(String input) { true }
+		})
+	}
+	
 	new(Shell shell, WindowModality modality, String title, String message) {
-		//super(shell)
-		this(shell, modality, title, message, [ text | text ])
+		this(shell, modality, title, message, InputFieldType.SINGLE_LINE, [ text | true ], "")
 	}
 	
 	def String getInput() { input }
-	
 	def void setInput(String newInput) { input = newInput }
 	
-	override createDialogArea(Composite parent) {
+	override Control createDialogArea(Composite parent) {
 		val composite = super.createDialogArea(parent) as Composite
-        composite.getShell().setText("Information")
+		
+		val margins = 20
+    	val spacing = 20
+		
+		val gridLayout = new GridLayout(1, false)
+    	gridLayout.marginWidth = margins
+    	gridLayout.marginHeight = margins
+    	gridLayout.verticalSpacing = spacing
+    	composite.layout = gridLayout
         
-        val msgLabel = new Label(composite, SWT.HORIZONTAL)
-        msgLabel.setText(this.message)
+        val messageLabel = new Label(composite, SWT.WRAP)
+        messageLabel.setText(this.message)
+        var gridData = new GridData()
+        gridData.horizontalAlignment = SWT.FILL
+        gridData.grabExcessHorizontalSpace = true
+        messageLabel.layoutData = gridData
         
-        val inputField = new Text(composite, SWT.SINGLE.bitwiseOr(SWT.CENTER))
-        inputField.addVerifyListener(new VerifyListener() {
+        val linesProperty = switch (inputFieldType) {
+        	case SINGLE_LINE: SWT.SINGLE
+        	case MULTI_LINE: SWT.MULTI
+        }
+        inputField = new Text(composite, linesProperty.bitwiseOr(SWT.CENTER).bitwiseOr(SWT.BORDER))
+        /*inputField.addVerifyListener(new VerifyListener() {
 									
 			override verifyText(VerifyEvent e) {
 				var currentText = (e.widget as Text).getText()
@@ -52,28 +82,33 @@ class TextInputDialog extends Dialog {
         			e.doit = false
         		}
 			}
-		})
-        /*val textObservable = WidgetProperties.text().observe(inputField)
-        val strategy = new UpdateValueStrategy();
-		strategy.setBeforeSetValidator(new IValidator() {
-			def IStatus validate(Object value) {
-				val input = value as String
-				val validatedInput = inputValidator.apply(input)
-				if (!input.equals(validatedInput)) {
-					return Status.CANCEL_STATUS // TODO
-				}
-				return Status.OK_STATUS
-			}
-		});
+		})*/
 		
-		val source = PojoProperties.value(typeof(TextInputDialog), "input")
-		var test = source.getValue(this)
-		val binding = new DataBindingContext().bindValue(target,
-		        source, 
-		        strategy, null)*/
-		
-		//ControlDecorationSupport.create(binding, SWT.TOP.bitwiseOr(SWT.LEFT))
+        inputDecorator = new ControlDecoration(inputField, SWT.CENTER)
+        inputDecorator.setDescriptionText(inputValidator.getInvalidInputMessage(""))
+        val image = FieldDecorationRegistry.getDefault().getFieldDecoration(FieldDecorationRegistry.DEC_ERROR).getImage()
+        inputDecorator.setImage(image)
+        inputDecorator.hide() // hide initially
         
+        
+		inputField.addModifyListener(new ModifyListener() {								
+			override modifyText(ModifyEvent e) {
+				val input = (e.widget as Text).text
+                if (!inputValidator.isInputValid(input)) { // place your condition here
+                	inputDecorator.setDescriptionText(inputValidator.getInvalidInputMessage(""))
+                    inputDecorator.show()
+                }
+                else {
+                    inputDecorator.hide()
+                }
+            }
+        })
+        
+        gridData = new GridData()
+        gridData.horizontalAlignment = SWT.FILL
+        gridData.grabExcessHorizontalSpace = true
+        inputField.layoutData = gridData
+		
         return composite
 	}
 	
@@ -83,21 +118,53 @@ class TextInputDialog extends Dialog {
 	}
 	
 	override void okPressed() {
-		System.out.println("OK pressed");
+		if (!inputValidator.isInputValid(inputField.text)) {
+			inputDecorator.showHoverText(inputDecorator.getDescriptionText())
+			return
+		}
+		input = inputField.text
+		close()
 	}
+	
+	override void cancelPressed() {
+		close()
+	}
+	
 	
 	def static void main(String[] args) {
 		val display = new Display()
 		val shell = new Shell(display)
 		
-		shell.setText("Title Area Shell")
-	    shell.pack()
-	    val dialog = new TextInputDialog(shell, WindowModality.MODAL, "Test", "Test Message")
-		dialog.open();
-		while (!shell.isDisposed()) {
-		      if (!display.readAndDispatch())
-		        display.sleep()
-		}
+	    val validator = [ String text | text.matches("[a-zA-Z]*") ]
+	    val invalidMessage = "Only letters allowed"
+	    val dialog = new TextInputDialog(shell, WindowModality.MODAL, "Test Title",
+	    	"Test Message which is a whole lot longer than the last one.", InputFieldType.MULTI_LINE, TextInputDialog.NumbersOnlyInputValidator)
+		dialog.blockOnOpen = true
+		dialog.show()//open();
+		System.out.println(dialog.getInput())
 		display.dispose()
+	}
+	
+	
+	public enum InputFieldType {
+		SINGLE_LINE, MULTI_LINE
+	}
+	
+	
+	public abstract static class InputValidator {
+		
+		def String getInvalidInputMessage(String input)
+		
+		def boolean isInputValid(String input)
+	}
+	
+	public static InputValidator NumbersOnlyInputValidator = new InputValidator() {
+		
+		override getInvalidInputMessage(String input) { "Only numbers are allowed as input" }
+		
+		override isInputValid(String input) {
+			input.matches("[0-9]*")
+		}
+		
 	}
 }

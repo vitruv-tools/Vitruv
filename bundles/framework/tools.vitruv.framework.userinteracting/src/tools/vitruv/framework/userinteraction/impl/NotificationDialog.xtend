@@ -65,7 +65,6 @@ class NotificationDialog extends BaseDialog {
     	composite.layout = gridLayout
     	
     	val shell = composite.getShell()
-        shell.setText(title)
         shell.setImage(icon)
         
         val iconLabel = new Label(composite, SWT.NONE);

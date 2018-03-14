@@ -4,6 +4,9 @@ import tools.vitruv.framework.userinteraction.WindowModality
 import org.eclipse.jface.dialogs.Dialog
 import org.eclipse.swt.widgets.Shell
 import org.eclipse.swt.SWT
+import org.eclipse.swt.widgets.Composite
+import org.eclipse.swt.widgets.Control
+import org.eclipse.swt.graphics.Point
 
 class BaseDialog extends Dialog {
 	private String title
@@ -49,6 +52,13 @@ class BaseDialog extends Dialog {
 			default: throw new RuntimeException("Unknown WindowModality!")
 		}
 		shellStyle = getShellStyle().bitwiseAnd(modalityFlags)
+	}
+	
+	protected override Control createDialogArea(Composite parent) {
+		val composite = super.createDialogArea(parent) as Composite
+		composite.shell.text = title
+		composite.shell.minimumSize = new Point(300, 200)
+		return composite
 	}
 	
 	override boolean isResizable() {
