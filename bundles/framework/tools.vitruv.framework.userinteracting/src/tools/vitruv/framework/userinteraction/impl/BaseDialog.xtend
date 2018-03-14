@@ -23,15 +23,12 @@ class BaseDialog extends Dialog {
 	}
 	
 	def String getTitle() { title }
-	
 	def void setTitle(String title) { this.title = title }
 	
 	def String getMessage() { message }
-	
 	def void setMessage(String message) { this.message = message }
 	
 	def WindowModality getWindowModality() { windowModality }
-	
 	def void setWindowModality(WindowModality windowModality) {
 		this.windowModality = windowModality
 		updateWindowModality()
