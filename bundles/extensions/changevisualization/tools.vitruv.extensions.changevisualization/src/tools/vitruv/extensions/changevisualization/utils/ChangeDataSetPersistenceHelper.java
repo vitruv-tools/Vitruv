@@ -1,11 +1,7 @@
-/**
- * 
- */
 package tools.vitruv.extensions.changevisualization.utils;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -16,31 +12,57 @@ import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
 import javax.swing.JFrame;
-import javax.swing.JTabbedPane;
 
 import tools.vitruv.extensions.changevisualization.ChangeDataSet;
-import tools.vitruv.extensions.changevisualization.ChangeVisualization.VisualizationMode;
 import tools.vitruv.extensions.changevisualization.ui.ChangesTab;
+import tools.vitruv.extensions.changevisualization.ui.VisualizationMode;
 
 /**
- * @author andreas
- *
+ * This class helps to store and load {@link ChangesTab}s
+ * 
+ * @author Andreas  Loeffler
  */
 public class ChangeDataSetPersistenceHelper {
 
+	/**
+	 * The default file ending
+	 */
 	public static final String FILE_ENDING=".pcf";
 	
-	public static final String FILE_DESCRIPTION="Propagated Changes Files (pcf)";
+	/**
+	 * The description to use in dialogs
+	 */
+	public static final String FILE_DESCRIPTION="Propagated Changes Files ("+FILE_ENDING+")";
 
+	/**
+	 * This marks the end of the file
+	 */
 	private static final String EOF_MARKER="THE_END";
 	
+	/**
+	 * The string is used as a prefix to loaded ChangesTab so the user can easily identify them
+	 */
 	private static final String LOAD_MARKER="*";
 	
 
+	/**
+	 * No instances of ChangeDataSetPersistenceHelper are used
+	 */
 	private ChangeDataSetPersistenceHelper() {
 		//Not used
 	}
 
+	/**
+	 * Loads {@link ChangesTab}s from a given file.
+	 * 
+	 * The user will be prompted to select which tabs to load from all that present in the file.
+	 * 
+	 * @param file The file to load
+	 * @param frame The frame used to position dialogs on screen
+	 * @return List of ChangesTabs loaded
+	 * @throws IOException
+	 * @throws ClassNotFoundException
+	 */
 	public static List<ChangesTab> load(File file, JFrame frame) throws IOException, ClassNotFoundException {
 		List<ChangesTab> changesTabs=new Vector<ChangesTab>();
 		FileInputStream fIn=new FileInputStream(file);
@@ -64,6 +86,13 @@ public class ChangeDataSetPersistenceHelper {
 		return loadedChanges;
 	}
 
+	/**
+	 * Prompts the user to select a list of {@link ChangesTab}s from a dialog to load
+	 * 
+	 * @param changesTabs The tabs to select from
+	 * @param frame The frame used to position the dialog on screen
+	 * @return List of ChangesTabs selected
+	 */
 	private static List<ChangesTab> getListOfTabsToLoad(List<ChangesTab> changesTabs, JFrame frame) {
 		String[] titles=new String[changesTabs.size()];
 		for(int n=0;n<titles.length;n++) {
@@ -84,10 +113,33 @@ public class ChangeDataSetPersistenceHelper {
 		return tabsToLoad;
 	}
 	
+	/**
+	 * Saves given {@link ChangesTab}s to a given file.
+	 * 
+	 * The user is prompted to select the tabs to save from the given list.
+	 * 
+	 * @param file The file to save to
+	 * @param changesTabs List of tabs to select from
+	 * @param frame The frame used to position the dialog on screen
+	 * @return true if saving was successful, false if nothing was saved
+	 * @throws IOException
+	 */
 	public static boolean save(File file, List<ChangesTab> changesTabs, JFrame frame) throws IOException{
 		return save(file,changesTabs,frame,false);
 	}
 
+	/**
+	 * Saves given {@link ChangesTab}s to a given file.
+	 * 
+	 * The user is prompted to select the tabs to save from the given list if noQuestion is false
+	 * 
+	 * @param file The file to save to
+	 * @param changesTabs List of tabs to select from
+	 * @param frame The frame used to position the dialog on screen
+	 * @param noQuestion If true, no use interaction will occur and every tab gets saved
+	 * @return true if saving was successful, false if nothing was saved
+	 * @throws IOException
+	 */
 	public static boolean save(File file, List<ChangesTab> changesTabs, JFrame frame, boolean noQuestion) throws IOException{
 		
 		List<ChangesTab> changesToSave=noQuestion?changesTabs:getListOfTabsToSave(changesTabs,frame);
@@ -122,6 +174,13 @@ public class ChangeDataSetPersistenceHelper {
 		return true;
 	}
 
+	/**
+	 * Prompts the user to select a list of {@link ChangesTab}s from a dialog to save
+	 * 
+	 * @param changesTabs The tabs to select from
+	 * @param frame The frame used to position the dialog on screen
+	 * @return List of ChangesTabs selected
+	 */
 	private static List<ChangesTab> getListOfTabsToSave(List<ChangesTab> changesTabs, JFrame frame) {
 		String[] titles=new String[changesTabs.size()];
 		boolean[] initialValues=new boolean[changesTabs.size()];

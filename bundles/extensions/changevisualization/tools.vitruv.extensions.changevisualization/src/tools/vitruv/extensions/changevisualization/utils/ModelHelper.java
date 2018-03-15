@@ -1,16 +1,11 @@
 package tools.vitruv.extensions.changevisualization.utils;
 
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
-import org.eclipse.emf.ecore.util.EcoreUtil;
-
-import tools.vitruv.framework.change.description.VitruviusChange;
 
 /**
  * Utility class that does some useful general tasks regarding eCore Models
@@ -20,10 +15,21 @@ import tools.vitruv.framework.change.description.VitruviusChange;
  */
 public final class ModelHelper {
 
+	/**
+	 * No instances are created
+	 */
 	private ModelHelper() {
 		//Should not be called
 	}
 	
+	/**
+	 * Extracts information from a given eobject and creates an array of label/values pairs from it.
+	 * 
+	 * The information is the runtime class, the eClass and are structural features
+	 * 
+	 * @param eObj The eObject to extract all information from
+	 * @return String array of label/value pairs
+	 */
 	public static String[][] extractStructuralFeatureArray(EObject eObj) {
 		List<String> labels=new Vector<String>();
 		List<String> values=new Vector<String>();
@@ -44,11 +50,11 @@ public final class ModelHelper {
 		return array;
 	}
 	/**
-	 * Creates the lines for all strucutral features
+	 * Creates the lines for all structural features
 	 * 
 	 * @param center The center panel
 	 * @param left The left panel
-	 * @param eObj The eObject
+	 * @param eObj The eObject to extract all structural features from
 	 */
 	private static void appendStructuralFeatureInformation(List<String> labels, List<String> values, EObject eObj) {
 		for (EStructuralFeature feature:eObj.eClass().getEAllStructuralFeatures()) {
@@ -69,7 +75,7 @@ public final class ModelHelper {
 	 * 
 	 * @param center The center panel
 	 * @param left The left panel
-	 * @param eObj The eObject
+	 * @param eObj The eObject to extract the runtime class information from
 	 */
 	private static void appendRuntimeClassInformation(List<String> labels, List<String> values, EObject eObj) {
 		labels.add("runtime class");
@@ -81,7 +87,7 @@ public final class ModelHelper {
 	 * 
 	 * @param labels The center panel
 	 * @param values The left panel
-	 * @param eObj The eObject
+	 * @param eObj The eObject to extract the eClass information from
 	 */
 	private static void appendEClassInformation(List<String> labels, List<String> values, EObject eObj) {
 		labels.add("eClass");
@@ -127,119 +133,5 @@ public final class ModelHelper {
 		}
 		return null;
 	}
-
-	/* Code below is either unneeded or should at least be revised
-	 * Most of this class is only used by the table visualization, potentially unneeded at the end.
-	 * Many of the information is gathered incorrectly. It was the first approach without
-	 * a deeper knowledge.
-	 * 
-	 * Do not consider for code review.
-	 */
-
-	public static String getOldValue(EObject eObject) {		
-		return "old";
-	}
-
-	public static String getNewValue(EObject eObject) {
-		return "new";
-	}
-
-	public static String getName(EObject eObject) {
-		return "name";			
-	}
-
-
-	public static void printHierarchy(Class<?> clstype, int classdepth ){
-		// Print the class name passed from main
-		System.out.println( "Class depth is: " + classdepth + " Class Name is: " + clstype.getName() );
-
-		printInterfaces(clstype);
-
-		// Recurse to get super class details
-		if ( clstype.getSuperclass() != null ){
-			// Get all the details 
-			printHierarchy( clstype.getSuperclass(), classdepth + 1 );			
-		}		
-	}	
-
-	public static void printInterfaces(Class<?> clstype) {
-		Class<?>[] interfaces = clstype.getInterfaces();
-		if(interfaces!=null) {
-			for(Class<?> iface:interfaces) {
-				System.out.println( "   - Interface " + iface.getName() );
-			}
-		}
-	}
-
-	public static EObject getRootObject(VitruviusChange vChange){
-		Iterable<EObject> eObjects = vChange.getAffectedEObjects();
-		Iterator<EObject> iterator = eObjects.iterator();
-		if(iterator.hasNext()) {
-			EObject eObject = iterator.next();
-			return EcoreUtil.getRootContainer(eObject);
-		}else {
-			return null;
-		}
-	}
-
-	public static String getRootObjectName(VitruviusChange vChange){
-		EObject root = getRootObject(vChange);
-		if(root==null) {
-			return "none";
-		}else {
-			return getName(root);
-		}
-	}
-
-	public static String getRootObjectID(VitruviusChange vChange){
-		EObject root = getRootObject(vChange);
-		if(root==null) {
-			return "none";
-		}else {
-			return getID(root);
-		}
-	}
-
-	public static String getID(EObject eObject) {
-		if(eObject.getClass().getName().startsWith("org.palladiosimulator.pcm")) {
-			return eObject.getClass().getSimpleName()+"_"+getName(eObject);
-		}else if(eObject.getClass().getName().startsWith("org.emftext.language.java")) {
-			return eObject.getClass().getSimpleName()+"_"+getName(eObject);
-		}else {
-			return "HC"+eObject.hashCode();
-		}
-	}
-
-	//private static HashSet<Class<?>> inspectedClasses=new HashSet<Class<?>>();
-	private static HashSet<Class<?>> inspectedEChangeClasses=new HashSet<Class<?>>();
-
-//	private static void inspectClass(Class<?> cl) {
-//		if(inspectedClasses.contains(cl)) {
-//			return;//Inspect only once
-//		}
-//		printHierarchy(cl,0);		
-//	}
-
-	public static void inspectEChangeClass(Class<?> cl) {
-		if(inspectedEChangeClasses.contains(cl)) {
-			return;//Inspect only once
-		}
-		inspectedEChangeClasses.add(cl);	
-	}
-
-	public static String getModel(EObject eObject) {
-
-		if(eObject.getClass().getName().startsWith("org.palladiosimulator.pcm")) {
-			return "PCM";
-		}else if(eObject.getClass().getName().startsWith("org.emftext.language.java")) {
-			return "Java";
-		}else if(eObject.getClass().getName().startsWith("tools.vitruv.dsls.reactions")) {
-			return "Reactions";
-		}else if(eObject.getClass().getName().startsWith("tools.vitruv.framework.correspondence")) {
-			return "Correspondence";
-		}else {		
-			return eObject.getClass().getName();
-		}
-	}	
 
 }
