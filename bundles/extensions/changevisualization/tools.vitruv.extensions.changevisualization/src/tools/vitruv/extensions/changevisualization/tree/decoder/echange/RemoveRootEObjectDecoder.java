@@ -1,42 +1,14 @@
-/**
- * 
- */
 package tools.vitruv.extensions.changevisualization.tree.decoder.echange;
 
-import java.util.Map;
-
-import org.eclipse.emf.ecore.EObject;
-
-import tools.vitruv.framework.change.echange.EChange;
-
 /**
- * @author andreas
- *
+ * Decoder for removeRootEObject changes
+ * 
+ * @author Andreas Loeffler
  */
-public class RemoveRootEObjectDecoder extends AbstractChangeDecoder {
-
-	public RemoveRootEObjectDecoder() {
-		super("RemoveRootEObject",new String[] {"oldValue","oldValueID"});
-	}
-
-	@Override
-	protected String generateString(EChange eChange, Map<String, Object> structuralFeatures2values) {
-		//oldValue and oldValueID must exist
-		if(!structuralFeatures2values.containsKey("oldValueID")||!structuralFeatures2values.containsKey("oldValue")) {
-			return getFallbackString(eChange);
-		}
+public class RemoveRootEObjectDecoder extends EObjectNameDecoder {
 	
-		
-		//Extract the entityName of the eObject
-		String oldValue=extractEObjectName((EObject) structuralFeatures2values.get("oldValue"));
-		if(oldValue==null) {
-			return getFallbackString(eChange);
-		}
-		
-		String oldValueID=(String) structuralFeatures2values.get("oldValueID");
-
-		//Create the result string
-		return eChange.eClass().getName()+" : \""+oldValue+"\" / \""+oldValueID+"\"";
-	}
+	public RemoveRootEObjectDecoder() {
+		super("RemoveRootEObject","oldValue");
+	}	
 
 }

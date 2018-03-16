@@ -22,6 +22,11 @@ import tools.vitruv.framework.change.echange.EChange;
 public abstract class AbstractChangeDecoder implements ChangeDecoder {
 	
 	/**
+	 * The string used to display null values
+	 */
+	protected static final String NULL_STRING="-";
+	
+	/**
 	 * Extracts the name of the affectedFeature
 	 * 
 	 * @param structuralFeatures2values The relevant structural features
@@ -32,7 +37,7 @@ public abstract class AbstractChangeDecoder implements ChangeDecoder {
 		if(feature==null||!(feature instanceof EObject)) {
 			return null;
 		}
-		feature=ModelHelper.getStructuralFeature((EObject)feature,"name");
+		feature=ModelHelper.getStructuralFeatureValue((EObject)feature,"name");
 		return String.valueOf(feature);
 	}
 
@@ -60,7 +65,8 @@ public abstract class AbstractChangeDecoder implements ChangeDecoder {
 		if(eObject==null) {
 			return null;
 		}
-		return String.valueOf(ModelHelper.getStructuralFeature((EObject)eObject,"entityName"));
+		Object sf = ModelHelper.getStructuralFeatureValue((EObject)eObject,"entityName");
+		return sf==null?null:sf.toString();
 	}	
 
 
@@ -75,9 +81,8 @@ public abstract class AbstractChangeDecoder implements ChangeDecoder {
 	private final List<String> requiredFeatures;
 
 	/**
-	 * Creates and ChangeDecoder that ensures only change events of the given eClassName are processed
-	 * and that all required structural features exist. If duplicate values of required structural features
-	 * exist, this decoder cannot work and will always return the fallback result (eClass name).
+	 * Creates a ChangeDecoder that ensures only change events of the given eClassName are processed
+	 * and that all required structural features exist.
 	 *  
 	 * @param eClassName
 	 * @param requiredFeatures
@@ -95,25 +100,26 @@ public abstract class AbstractChangeDecoder implements ChangeDecoder {
 	@Override
 	public String decode(EChange echange) {
 		//If null as echange gets here or an echange with no eclass, return a fallback-error. this should never happen.
-		//I prefer not throwing RuntimeExceptions or any other candidates that might exit the java vm "just" because of this
+		//I prefer not throwing RuntimeExceptions or any other candidates that might exit the java vm "just" because of this		
 		if(echange==null||echange.eClass()==null) {
 			return "null value given";
 		}
 
-		//If the wrong eChanges get here, return the eClass name as fallback
+		//If the wrong eChanges get here, return null
 		if(!eClassName.equals(echange.eClass().getName())) {
-			return getFallbackString(echange);
+			return null;
 		}
 
 		//extract all structural features required
 		Map<String,Object> structuralFeatures2values=extractRequiredStructuralFeatures(echange);
+		
 		//All found null values have been added by the called method under the given key, remove them.
 		//Further details can be found in extractRequiredStructuralFeatures
 		int nullValues=(Integer)structuralFeatures2values.remove("NULL_VALUES_FOUND");		
 
-		//If not all requiredFeatures where found, return the eClassname as fallback
+		//If not all requiredFeatures where found, return null
 		if(structuralFeatures2values.size()+nullValues!=requiredFeatures.size()) {
-			return getFallbackString(echange);
+			return null;
 		}
 
 		//let the subclass derive the string from the required features.
@@ -121,6 +127,11 @@ public abstract class AbstractChangeDecoder implements ChangeDecoder {
 		return generateString(echange,structuralFeatures2values);
 	}	
 
+	/**
+	 * Extracts all required structural features from a given eChange
+	 * @param echange The eChange
+	 * @return Map of structuralFeature names ==> values
+	 */
 	private Map<String, Object> extractRequiredStructuralFeatures(EChange echange) {
 		//Generate the result hashtable
 		Map<String,Object> structuralFeatures2values=new Hashtable<String,Object>();		
@@ -153,23 +164,13 @@ public abstract class AbstractChangeDecoder implements ChangeDecoder {
 	}
 
 	/**
-	 * Generates the fallback String if anything went wrong
-	 * @param echange
-	 * @return
-	 */
-	protected String getFallbackString(EChange echange) {
-		return echange.eClass().getName();
-	}
-
-	/**
 	 * ChangeDecoder subclassing AbstractChangeDecoder should only implement this method and not override decode(Echange echange)
-	 * This way the correct eClass is assured as well as all required structural features exist. If any requirement is not met,
-	 * the eClass name of the eChange is returned as a fallback value.
+	 * This way the correct eClass is assured as well as all required structural features exist. If any requirement is not met.
 	 * 
 	 * @param eChange The eChange object decoded
 	 * @param structuralFeatures2values The extracted values of all required structural features
 	 * 
-	 * @return The string used for display in a treenode of a jtree
+	 * @return The string used for display in a treenode of a jtree, null in case of any error
 	 */
 	protected abstract String generateString(EChange eChange,Map<String,Object> structuralFeatures2values);	
 

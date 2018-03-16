@@ -13,7 +13,7 @@ public interface ChangeDecoder {
 	 * Creates a simple and short text suitable for display in a JLabel.
 	 *  
 	 * @param eChange The eChange whose Information should be decoded
-	 * @return The simple Info text, must not be null
+	 * @return The simple Info text, can be null (=ignore)
 	 */
 	String decode(EChange echange);
 
