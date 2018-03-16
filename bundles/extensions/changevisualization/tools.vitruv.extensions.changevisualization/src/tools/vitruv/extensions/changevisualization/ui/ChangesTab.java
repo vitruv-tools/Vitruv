@@ -2,7 +2,6 @@ package tools.vitruv.extensions.changevisualization.ui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.io.Serializable;
 import java.util.List;
 import java.util.Vector;
 
@@ -14,11 +13,12 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import tools.vitruv.extensions.changevisualization.ChangeDataSet;
-import tools.vitruv.extensions.changevisualization.ChangeVisualization.VisualizationMode;
 import tools.vitruv.extensions.changevisualization.tree.ChangeTree;
 
 /**
  * The changes tab is responsible for displaying the tab of a single model.
+ * It storage the added changeDataSets, holds the component performing the actual visualizuation
+ * and a ChangeDataSetTable to displaying general information
  *  
  * @author Andreas Loeffler
  *
@@ -30,6 +30,9 @@ public class ChangesTab extends JPanel implements ListSelectionListener{
 	 */
 	private static final long serialVersionUID = 1L;
 	
+	/**
+	 * The color used to highlight objects
+	 */
 	public static final Color HIGHLIGHT_COLOR=Color.BLUE;
 
 	/**
@@ -43,31 +46,34 @@ public class ChangesTab extends JPanel implements ListSelectionListener{
 	private final List<ChangeDataSet> changeDataSets = new Vector<ChangeDataSet>();
 
 	/**
-	 * The table responsible for the display of the dataVector information
+	 * The table responsible for the display of the general changeDataSet information
 	 */
-	private CdsTable cdsTable;
+	private ChangeDataSetTable changeDataSetTable;
 
 	/**
 	 * The active visualization mode
 	 */
 	private final VisualizationMode visualizationMode;
 
+	/**
+	 * The affectedEOject id to highlight
+	 */
 	private String highlightID;
 
 	/**
 	 * Create a ChangesTab with a given ChangeDataSet as initial value and a given visualization mode
-	 * @param cds The initial cds
+	 * @param changeDataSet The initial changeDataSet
 	 * @param mode The visualization mode
 	 */
-	public ChangesTab(ChangeDataSet cds, VisualizationMode mode) {
+	public ChangesTab(ChangeDataSet changeDataSet, VisualizationMode mode) {
 		super(new BorderLayout());		
 		this.visualizationMode=mode;
 
 		createUI();
 
-		addChanges(cds);
+		addChanges(changeDataSet);
 
-		cdsTable.setSelected(0);
+		changeDataSetTable.setSelected(0);
 	}
 
 	/**
@@ -77,14 +83,14 @@ public class ChangesTab extends JPanel implements ListSelectionListener{
 
 		JSplitPane panel=new JSplitPane(JSplitPane.VERTICAL_SPLIT);
 
-		//add cds selection	
-		cdsTable=new CdsTable();
+		//add changeDataSet selection	
+		changeDataSetTable=new ChangeDataSetTable();
 		TitledBorder cdsTitleBorder = BorderFactory.createTitledBorder("Change Selection");
 		cdsTitleBorder.setTitleFont(ChangeVisualizationUI.DEFAULT_TITLED_BORDER_FONT);
-		cdsTable.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(5,5,5,5),cdsTitleBorder));
-		panel.add(cdsTable);
+		changeDataSetTable.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(5,5,5,5),cdsTitleBorder));
+		panel.add(changeDataSetTable);
 
-		cdsTable.addListSelectionListener(this);
+		changeDataSetTable.addListSelectionListener(this);
 
 		//add visualization
 		switch(visualizationMode) {
@@ -104,11 +110,11 @@ public class ChangesTab extends JPanel implements ListSelectionListener{
 
 	/**
 	 * Adds a ChangeDataSet to this ChangesTab
-	 * @param cds The cds to add
+	 * @param changeDataSet The changeDataSet to add
 	 */
-	public void addChanges(ChangeDataSet cds) {
-		changeDataSets.add(cds);		
-		cdsTable.appendCds(cds);
+	public void addChanges(ChangeDataSet changeDataSet) {
+		changeDataSets.add(changeDataSet);		
+		changeDataSetTable.appendCds(changeDataSet);
 	}
 
 	/**
@@ -122,29 +128,41 @@ public class ChangesTab extends JPanel implements ListSelectionListener{
 
 	@Override
 	public void valueChanged(ListSelectionEvent e) {
-		//Reacts to ListSelectionEvents of the cdsTable and updates the visualization
+		//Reacts to ListSelectionEvents of the changeDataSetTable and updates the visualization
 		if(e.getValueIsAdjusting()) return;
-		int row=cdsTable.getSelectedRow();
+		int row=changeDataSetTable.getSelectedRow();
 		if(row==-1) {
 			visualization.setData(null);
 		}else{
 			//System.out.println("Changing to row "+row);			
-			ChangeDataSet cds = changeDataSets.get(row);
-			visualization.setData(cds);
+			ChangeDataSet changeDataSet = changeDataSets.get(row);
+			visualization.setData(changeDataSet);
 		}
 	}
 
+	/**
+	 * Returns the visualizationMode
+	 * @return The visualization mode
+	 */
 	public VisualizationMode getVisualizationMode() {
 		return visualizationMode;
 	}
 
+	/**
+	 * Set the (affectedEObject) id to highlight
+	 * @param highlightID the id to highlight
+	 */
 	public void setHighlightID(String highlightID) {
 		this.highlightID=highlightID;
-		this.cdsTable.setHighlightedCdsIDs(visualization.determineHighlightedCdsIds(highlightID,changeDataSets));
+		this.changeDataSetTable.setHighlightedCdsIDs(visualization.determineHighlightedCdsIds(highlightID,changeDataSets));
 		this.visualization.repaint();
-		this.cdsTable.repaint();
+		this.changeDataSetTable.repaint();
 	}
 
+	/**
+	 * Gets the (affectedEObject) id highlighted
+	 * @return The highlighted id, may be null
+	 */
 	public String getHighlightID() {
 		return highlightID;
 	}

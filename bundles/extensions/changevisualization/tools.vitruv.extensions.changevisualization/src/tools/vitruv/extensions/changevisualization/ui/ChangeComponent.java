@@ -36,6 +36,13 @@ public abstract class ChangeComponent extends JPanel {
 	 */
 	public abstract void setData(ChangeDataSet cds);
 
+	/**
+	 * Returns a list of ChangeDataSet-ids that have a at least one highlighted node under the given highlightID
+	 *  
+	 * @param highlightID The (affectedEObject)id to look for highlighting in the given ChangeDataSets
+	 * @param changeDataSets The changeDataSets to process
+	 * @return List of changeDataSet ids
+	 */
 	public abstract List<String> determineHighlightedCdsIds(String highlightID, List<ChangeDataSet> changeDataSets);
 
 }

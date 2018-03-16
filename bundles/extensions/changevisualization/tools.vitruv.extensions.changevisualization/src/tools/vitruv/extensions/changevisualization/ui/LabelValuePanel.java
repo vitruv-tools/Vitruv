@@ -5,7 +5,6 @@ import java.awt.GridLayout;
 import java.awt.event.InputEvent;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
-import java.io.Serializable;
 import java.util.List;
 import java.util.Vector;
 
@@ -15,13 +14,10 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EStructuralFeature;
-
 /**
- * Displays all structural features of an EObject in a scrollable UI. It shows the names of the
- * structural features on the left and their values as TextField on the right. This information
- * is extended by the eClass name and the runtime class name of the eObject.
+ * Displays a String array in a scrollable UI. The string array must be of size [x][2].
+ * The values at [x][0] are used as label text on the left, [x][1] are displayed in textFields
+ * on the right. The usual strg+mousewheel zoom behavior is implemented
  * 
  * @author Andreas Loeffler
  */
@@ -72,7 +68,11 @@ public class LabelValuePanel extends JScrollPane{
 	private List<JLabel> allLabels=new Vector<JLabel>();
 
 	/**
-	 * Constructs an EObjectStructuralFeaturePanel visualizing all structural features of a given EObject
+	 * Constructs an LabelValuePanel visualizing a string array.
+	 * 
+	 * The string array must be of size [x][2].
+	 * The values at [x][0] are used as label text on the left, [x][1] are displayed in textFields
+	 * on the right.
 	 * 
 	 * @param eObj The EObject to visualize
 	 */
@@ -96,10 +96,18 @@ public class LabelValuePanel extends JScrollPane{
 		this.addMouseWheelListener(mwl);
 	}
 
-	protected List<JTextField> getAllFields() {
+	/**
+	 * Returns all text fields (right components)
+	 * @return The text fields
+	 */
+	private List<JTextField> getAllFields() {
 		return allFields;
 	}
 	
+	/**
+	 * Return all labels (left components)
+	 * @return The labels
+	 */
 	private List<JLabel> getAllLabels() {
 		return allLabels;
 	}

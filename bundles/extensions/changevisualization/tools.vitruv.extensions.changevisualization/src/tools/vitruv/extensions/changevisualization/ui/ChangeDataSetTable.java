@@ -2,7 +2,6 @@ package tools.vitruv.extensions.changevisualization.ui;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
-import java.awt.Font;
 import java.awt.event.InputEvent;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
@@ -14,23 +13,21 @@ import java.util.Vector;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.JTree;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
-import javax.swing.tree.DefaultMutableTreeNode;
 
 import tools.vitruv.extensions.changevisualization.ChangeDataSet;
-import tools.vitruv.extensions.changevisualization.ChangeVisualization;
 
 /**
- * A CdsTable displays all different ChangeDataSets of a given ChangesTab in a JTable
- * 
+ * A ChangeDataSetTable displays all different ChangeDataSets of a given ChangesTab in a JTable
+ * with their general information
+ *  
  * @author Andreas Loeffler
  */
-public class CdsTable extends JPanel implements MouseWheelListener{
+public class ChangeDataSetTable extends JPanel implements MouseWheelListener{
 
 	/**
 	 * Needed for eclipse to stop warning about serialVersionIds. This feature will never been used. 
@@ -42,18 +39,21 @@ public class CdsTable extends JPanel implements MouseWheelListener{
 	 */
 	private JTable table;
 
+	/**
+	 * IDs of the ChangeDataSets to highlight
+	 */
 	private List<String> highlightedCdsIds;
 
 	/**
-	 * Constructs a new CdsTable
+	 * Constructs a new ChangeDataSetTable
 	 */
-	public CdsTable() {
+	public ChangeDataSetTable() {
 		super(new BorderLayout());	
 		createUI();
 	}
 
 	/**
-	 * Creates the ui of the CdsTable
+	 * Creates the ui of the ChangeDataSetTable
 	 */
 	private void createUI() {
 
@@ -217,20 +217,20 @@ public class CdsTable extends JPanel implements MouseWheelListener{
 
 	/**
 	 * Creates a Vector to display in the table that shows the relevant information
-	 * of a given cds
+	 * of a given changeDataSet
 	 * 
-	 * @param cds The cds to process
+	 * @param changeDataSet The changeDataSet to process
 	 * @return Vector suitable for usage in a JTable
 	 */
-	private Vector<Object> encode(ChangeDataSet cds) {
+	private Vector<Object> encode(ChangeDataSet changeDataSet) {
 		Vector<Object> line=new Vector<Object>();
-		line.add(cds.getCdsID());		
-		line.add(cds.getCreationTime());
-		line.add(cds.getSourceModelInfo());
-		line.add(cds.getTargetModelInfo());
-		line.add(cds.getNrPChanges());
-		line.add(cds.getNrOChanges());
-		line.add(cds.getNrCChanges());
+		line.add(changeDataSet.getChangeDataSetID());		
+		line.add(changeDataSet.getCreationTime());
+		line.add(changeDataSet.getSourceModelInfo());
+		line.add(changeDataSet.getTargetModelInfo());
+		line.add(changeDataSet.getNrPropagatedChanges());
+		line.add(changeDataSet.getNrOriginalChanges());
+		line.add(changeDataSet.getNrConsequentialChanges());
 		return line;
 	}
 
@@ -242,13 +242,24 @@ public class CdsTable extends JPanel implements MouseWheelListener{
 		return table.getSelectedRow();
 	}
 	
+	/**
+	 * Sets the ids of ChangeDataSet to highlight
+	 * 
+	 * @param highlightedCdsIds The ChangeDataSet ids to highlight
+	 */
 	public synchronized void setHighlightedCdsIDs(List<String> highlightedCdsIds) {
 		this.highlightedCdsIds=highlightedCdsIds;
 	}
 	
-	private synchronized boolean shouldHighlight(String value) {
+	/**
+	 * Returns whether a given ChangeDataSet-ID should be highlighted
+	 * 
+	 * @param changeDataSetId The id to look for
+	 * @return true if highlighted
+	 */
+	private synchronized boolean shouldHighlight(String changeDataSetID) {
 		if(highlightedCdsIds==null||highlightedCdsIds.isEmpty()) return false;
-		return highlightedCdsIds.contains(value);
+		return highlightedCdsIds.contains(changeDataSetID);
 	}
 
 }
