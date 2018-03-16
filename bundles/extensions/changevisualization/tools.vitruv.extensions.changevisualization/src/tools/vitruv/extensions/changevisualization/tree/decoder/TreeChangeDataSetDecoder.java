@@ -329,11 +329,15 @@ public class TreeChangeDataSetDecoder {
 				//Assures no null values exist in the FeatureNode-Constructor
 				obj="-";				
 			}
-			DefaultMutableTreeNode featureNode=new DefaultMutableTreeNode(FeatureNodeDecoder.generateFeatureNode(feature,obj));
-			parentNode.add(featureNode);
-			featureName2index.put(feature.getName(),index);
-			featureValues.add(obj);
-			index++;
+			try {
+				DefaultMutableTreeNode featureNode=new DefaultMutableTreeNode(FeatureNodeDecoder.generateFeatureNode(feature,obj));
+				parentNode.add(featureNode);
+				featureName2index.put(feature.getName(),index);
+				featureValues.add(obj);
+				index++;
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
 		}
 	}
 

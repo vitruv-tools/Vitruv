@@ -96,7 +96,7 @@ public abstract class ChangeDataSet implements Serializable{
 	 * 
 	 * @return The ID of this changeDataSet
 	 */
-	public String getCdsID() {
+	public String getChangeDataSetID() {
 		return id;
 	}	
 

@@ -45,16 +45,10 @@ public class FeatureNodeDecoder {
 	/**
 	 * Can be called to register new decoders for given classes.
 	 * 
-	 * The actual implementation of {@link FeatureNodeDecoder} has not been tested to work with interfaces. 
-	 * 
 	 * @param cl The class to decode (no interfaces)
 	 * @param dec The decoder used to decode objects of the class
 	 */
 	public static void registerFeatureDecoder(Class<?> cl, FeatureDecoder dec) {
-		if(cl.isInterface()) {
-			throw new RuntimeException("please do not use interfaces or adapt "+
-					"FeatureNodeDecoder.determineMostSpecificClass() and this method");
-		}
 		decoders.put(cl,dec);
 	}
 	
@@ -139,8 +133,9 @@ public class FeatureNodeDecoder {
 		//All candidate classes must be in the superclass hierarchy of refCl.
 		//Since java has no multiple inheritance and all candidates are different classes
 		//they also have to be in an ordered hierarchy.
-		//Update : This is not true for interfaces. Yet no interface decoders are used, this may become an issue in the future
-		//         but may not be solvable. One cannot decide which interface to prefer if multiple interfaces are implemented. 
+		//Update : This is not true for interfaces. One cannot decide which interface to prefer if
+		//         multiple interfaces are implemented. This implementation has no defined order in this case.
+		//         This has to be implemented in a deterministic way if someday necessary
 		java.util.Collections.sort(candidates,new Comparator<Class<?>>() {
 			@Override
 			public int compare(Class<?> o1, Class<?> o2) {				

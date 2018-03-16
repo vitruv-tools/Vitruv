@@ -125,8 +125,12 @@ public final class ChangeVisualization implements PropagatedChangeListener{
 			@Override
 			public void componentRemoved(ContainerEvent e) {
 				//When a tab gets removed, update local state
-				ChangesTab tab=(ChangesTab) e.getChild();
-				changeTabs.values().remove(tab);
+				if(e.getChild() instanceof ChangesTab) {
+					ChangesTab tab=(ChangesTab) e.getChild();
+					changeTabs.values().remove(tab);
+				}else {
+					//Nothing to do, we do not track other user added tabs
+				}
 			}			
 		});
 	}

@@ -141,7 +141,7 @@ public class ChangeNodeDecoder {
 			featureName="affectedEObjectID";
 			break;
 		}		
-		return (String)ModelHelper.getStructuralFeature(eChange, featureName);
+		return (String)ModelHelper.getStructuralFeatureValue(eChange, featureName);
 	}
 	
 	/**
@@ -164,7 +164,7 @@ public class ChangeNodeDecoder {
 			break;
 		}
 		
-		Object obj=ModelHelper.getStructuralFeature(eChange,featureName);
+		Object obj=ModelHelper.getStructuralFeatureValue(eChange,featureName);
 		
 		if(obj==null) {
 			//feature not existent or the feature's value is null

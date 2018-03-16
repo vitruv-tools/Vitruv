@@ -17,7 +17,7 @@ import tools.vitruv.extensions.changevisualization.ui.ChangeVisualizationUI;
 import tools.vitruv.extensions.changevisualization.ui.ChangesTab;
 
 /**
- * Used by the JTree to visualize individual nodes.
+ * Used by the {@link ChangeTree} to visualize individual nodes.
  * 
  * @author Andreas Loeffler
  *
@@ -29,10 +29,10 @@ public class ChangeTreeNodeRenderer extends DefaultTreeCellRenderer{
 	private static final long serialVersionUID = 1L;
 	
 	//Different colors for the different echange types
-	private static final Color EXISTENCE_ECHANGE_COLOR=Color.BLUE;//new Color(255,255,200);
-	private static final Color REFERENCE_ECHANGE_COLOR=Color.GREEN;//new Color(200,255,255);
-	private static final Color ATTRIBUTE_ECHANGE_COLOR=Color.ORANGE;//new Color(255,200,255);
-	private static final Color ROOT_ECHANGE_COLOR=Color.YELLOW;//new Color(200,255,200);
+	private static final Color EXISTENCE_ECHANGE_COLOR=Color.BLUE;
+	private static final Color REFERENCE_ECHANGE_COLOR=Color.GREEN;
+	private static final Color ATTRIBUTE_ECHANGE_COLOR=Color.ORANGE;
+	private static final Color ROOT_ECHANGE_COLOR=Color.YELLOW;
 	
 	/**
 	 * Creates an icon with a given color for open/close state
@@ -69,7 +69,7 @@ public class ChangeTreeNodeRenderer extends DefaultTreeCellRenderer{
 	/**
 	 * Returns true if any sibling of the given node should be highlighted
 	 * 
-	 * A sibling should be highligthed if it is a change-node and its eObjectID is the actual highlighted one
+	 * A sibling should be highlighted if it is a change-node and its eObjectID is the actual highlighted one
 	 * or if a sibling is a feature node that has the highlighted id in its valueString
 	 * 
 	 * @param highlightID The id to highlight
@@ -201,6 +201,10 @@ public class ChangeTreeNodeRenderer extends DefaultTreeCellRenderer{
 	private boolean shouldHighlight(JTree tree, int row, Object value) {
 		//We dont highlight if there is nothing to highlight
 		ChangesTab activeTab=ChangeVisualizationUI.getInstance().getActiveChangesTab();
+		if(activeTab==null ) {
+			//We are currently showing some other tab but none which holds changes
+			return false;
+		}
 		String highlightID=activeTab==null?null:activeTab.getHighlightID();
 		if(highlightID==null ) {
 			return false;

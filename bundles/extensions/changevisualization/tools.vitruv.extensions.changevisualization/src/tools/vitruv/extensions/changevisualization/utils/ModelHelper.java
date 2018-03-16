@@ -122,7 +122,7 @@ public final class ModelHelper {
 	 * @param sfName The name of the structural feature, not null
 	 * @return The associated value, might be null
 	 */
-	public static Object getStructuralFeature(EObject eObject, String sfName) {
+	public static Object getStructuralFeatureValue(EObject eObject, String sfName) {
 		if(eObject==null||sfName==null) return null;
 		EList<EStructuralFeature> features = eObject.eClass().getEAllStructuralFeatures();
 		for(EStructuralFeature feature:features) {
