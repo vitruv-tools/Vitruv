@@ -1,17 +1,14 @@
-package tools.vitruv.extensions.changevisualization.tree.decoder;
+package tools.vitruv.extensions.changevisualization.tree.decoder.feature;
 
 import java.awt.Component;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 
-import tools.vitruv.extensions.changevisualization.ui.LabelValuePanel;
 import tools.vitruv.extensions.changevisualization.utils.ModelHelper;
 
 /**
- * Feature decoder suitable for EObjects. It creates a detailedUI that shows all existent
- * structural features and the name of the eClass as simpleText. This text is append by
- * the name or entityName of the given eObject in brackets, if existent
+ * Feature decoder suitable for EObjects. It creates a detailedArray as detailed visualization.
  * 
  * @author Andreas Loeffler
  */
@@ -49,33 +46,22 @@ public class EObjectFeatureDecoder implements FeatureDecoder {
 	 * to find it.
 	 * 
 	 * @param eObj The eObject to get the name of
-	 * @return The name, if existent
+	 * @return The name, if existent, or null
 	 */
 	private String getName(EObject eObj) {
-		String firstName=null;
-		String secondName=null;
-
-		for (EStructuralFeature feature:eObj.eClass().getEAllStructuralFeatures()) {
-			if(feature==null) {
-				continue;
-			}
-			if(feature.getName().equals(FIRST_NAME_SF)){
-				Object fObj=eObj.eGet(feature);
-				firstName=String.valueOf(fObj);
-			}
-			if(feature.getName().equals(SECOND_NAME_SF)){
-				Object fObj=eObj.eGet(feature);
-				secondName=String.valueOf(fObj);
-			}
+		
+		Object fObj=ModelHelper.getStructuralFeatureValue(eObj, FIRST_NAME_SF);
+		if(fObj!=null){
+				return String.valueOf(fObj);
 		}
-
-		if(firstName!=null) {
-			return firstName;
-		}else{
-			//If secondName!=null, it is returned. Otherwise null is returned as expected
-			return secondName;
+		
+		fObj=ModelHelper.getStructuralFeatureValue(eObj, SECOND_NAME_SF);
+		if(fObj!=null){
+			return String.valueOf(fObj);
 		}
-
+		
+		//Nothing found
+		return null;
 	}
 
 	@Override

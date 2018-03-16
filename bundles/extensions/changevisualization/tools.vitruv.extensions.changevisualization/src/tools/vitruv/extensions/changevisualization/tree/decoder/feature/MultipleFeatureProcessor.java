@@ -1,4 +1,4 @@
-package tools.vitruv.extensions.changevisualization.tree.decoder;
+package tools.vitruv.extensions.changevisualization.tree.decoder.feature;
 
 import java.util.List;
 import java.util.Map;
@@ -14,7 +14,7 @@ import tools.vitruv.framework.change.echange.EChange;
  * MultipleFeatureProcessors are used to process more than one structural feature at once.
  * 
  * This is the basic class for all MultipleFeatureProcessors. It implements some generally useful methods
- * for all implementations. The processing itself is done be the aubclasses. 
+ * for all implementations. The processing itself is done be the subclasses. 
  *  
  * @author Andreas Loeffler
  */
@@ -37,7 +37,7 @@ public abstract class MultipleFeatureProcessor {
 	
 	/**
 	 * Assures that all required structural features exist.
-	 * This way the subclasses implementing process can blindly rely on their existence
+	 * This way the subclasses implementation can blindly rely on their existence
 	 * 
 	 * @param structuralFeatureNames The existent structural feature names
 	 * @return True if all required SFs exist
@@ -83,7 +83,7 @@ public abstract class MultipleFeatureProcessor {
 		//Update the other arguments
 		FeatureNode fn=(FeatureNode)newNode.getUserObject();
 		featureName2index.put(fn.getFeatureName(),index);
-		featureValues.add(fn.getValue());
+		featureValues.add(fn.getValueString());
 	}
 
 	/**

@@ -1,7 +1,4 @@
-/**
- * 
- */
-package tools.vitruv.extensions.changevisualization.tree.decoder;
+package tools.vitruv.extensions.changevisualization.tree.decoder.feature;
 
 import java.awt.Component;
 
@@ -37,7 +34,7 @@ public interface FeatureDecoder {
 	String decodeDetailed(Object obf);
 
 	/**
-	 * Takes a given object and creates a String[][] Component that is used to create
+	 * Takes a given object and creates a String[][] that is used to create
 	 * a scrollable panel of label/value pairs. Therefore the returned arrays has to be of
 	 * size [n][2], where [x][0]==label text and [x][1]==the value to display 
 	 * Only one of decodeDetailed, decodeDetailedArray or decodeDetailedUI may be implemented.
@@ -48,7 +45,7 @@ public interface FeatureDecoder {
 	String[][] decodeDetailedArray(Object obf);
 
 	/**
-	 * Takes a given object and creates a Component that uses a individual display if the default behaviour of
+	 * Takes a given object and creates a Component that uses a individual display if the default behavior of
 	 * to show a detailed String is not sufficient.
 	 * Only one of decodeDetailed, decodeDetailedArray or decodeDetailedUI may be implemented.
 	 * 

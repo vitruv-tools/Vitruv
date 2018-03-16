@@ -1,14 +1,14 @@
 /**
  * 
  */
-package tools.vitruv.extensions.changevisualization.tree.decoder;
+package tools.vitruv.extensions.changevisualization.tree.decoder.feature;
 
 import java.awt.Component;
 
 /**
  * Implements a feature decoder suitable to process all java object.
  * It is used as a fallback if no special decoder for a feature exists.
- * It creates no detail-information of either kind and uses toString()
+ * It creates no detail-information of any kind and uses String.valueOf()
  * to create the simple text
  * 
  * @author Andreas Loeffler

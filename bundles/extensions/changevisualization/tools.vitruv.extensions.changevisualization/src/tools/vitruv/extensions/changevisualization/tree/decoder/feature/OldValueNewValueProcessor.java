@@ -1,4 +1,4 @@
-package tools.vitruv.extensions.changevisualization.tree.decoder;
+package tools.vitruv.extensions.changevisualization.tree.decoder.feature;
 
 import java.util.List;
 import java.util.Map;
@@ -47,8 +47,11 @@ public class OldValueNewValueProcessor extends MultipleFeatureProcessor {
 		featuresToRemove.add(NEW_VALUE_SF);
 		removeNodes(featuresToRemove,parentNode,featureName2index,featureValues);
 		
-		//Create the new node
-		DefaultMutableTreeNode newNode= new DefaultMutableTreeNode(new FeatureNode("value changed","\""+oldValue+"\" ==> \""+newValue+"\""));
+		//Create the featureNode
+		FeatureNode featureNode = new FeatureNode("value changed","\""+oldValue+"\" ==> \""+newValue+"\"",null,null,null);
+		
+		//Create the new node		
+		DefaultMutableTreeNode newNode= new DefaultMutableTreeNode(featureNode);
 		
 		//Add the new node consistently
 		addNode(parentNode,newNode,featureName2index,featureValues);		
