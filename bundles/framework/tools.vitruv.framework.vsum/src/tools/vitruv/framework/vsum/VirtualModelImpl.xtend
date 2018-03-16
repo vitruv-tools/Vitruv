@@ -164,9 +164,9 @@ class VirtualModelImpl implements InternalVirtualModel {
 	 */
 	def getName() {
 		val name=this.getFolder.getName;
-		if(name.indexOf("_vsum")!=-1){
-			//JUnit tests use a folder named Name_vsum_...
-			return name.substring(0,name.indexOf("_vsum"))
+		val separator = "_vsum";//JUnit tests use a folder named name_vsum_...
+		if(name.indexOf(separator)!=-1){			
+			return name.substring(0,name.indexOf(separator))
 		}else{
 			//For live models, just return the folder's name
 			return name
