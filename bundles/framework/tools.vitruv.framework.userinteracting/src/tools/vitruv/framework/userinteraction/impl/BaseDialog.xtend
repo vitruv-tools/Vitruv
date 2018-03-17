@@ -11,6 +11,9 @@ import org.eclipse.swt.graphics.Point
 class BaseDialog extends Dialog {
 	private String title
 	private String message
+	private String positiveButtonText = "Okay"
+	private String negativeButtonText = "No"
+	private String cancelButtonText = "Cancel"
 	private WindowModality windowModality
 	
 	new(Shell parentShell, WindowModality windowModality, String title, String message) {
@@ -30,6 +33,15 @@ class BaseDialog extends Dialog {
 	
 	def String getMessage() { message }
 	def void setMessage(String message) { this.message = message }
+	
+	def String getPositiveButtonText() { positiveButtonText }
+	def setPositiveButtonText(String positiveButtonText) { this.positiveButtonText = positiveButtonText }
+	
+	def String getNegativeButtonText() { negativeButtonText }
+	def setNegativeButtonText(String negativeButtonText) { this.negativeButtonText = negativeButtonText }
+	
+	def String getCancelButtonText() { cancelButtonText }
+	def setCancelButtonText(String cancelButtonText) { this.cancelButtonText = cancelButtonText }
 	
 	def WindowModality getWindowModality() { windowModality }
 	def void setWindowModality(WindowModality windowModality) {

@@ -15,11 +15,11 @@ import tools.vitruv.framework.userinteraction.WindowModality
 
 class NotificationDialog extends BaseDialog {
 	private NotificationType notificationType = NotificationType.INFORMATION
-	private String okButtonText = "Okay"
 	
 	new(Shell parentShell, WindowModality modality, NotificationType type, String title, String message) {
 		super(parentShell, modality, title, message)
 		this.notificationType = type
+		setPositiveButtonText("Okay")
 	}
 	
 	new(Shell parentShell, WindowModality modality, String title, String message) {
@@ -40,9 +40,6 @@ class NotificationDialog extends BaseDialog {
 	
 	def NotificationType getNotificationType() { notificationType }
 	def setNotificationType(NotificationType type) { this.notificationType = type }
-	
-	def String getOkButtonText() { okButtonText }
-	def setOkButtonText(String okButtonText) { this.okButtonText = okButtonText }
 	
     protected override Control createDialogArea(Composite parent) {
         var composite = super.createDialogArea(parent) as Composite
@@ -86,7 +83,7 @@ class NotificationDialog extends BaseDialog {
     }
     
     protected override void createButtonsForButtonBar(Composite parent) {
-        createButton(parent, IDialogConstants.OK_ID, okButtonText, true)
+        createButton(parent, IDialogConstants.OK_ID, getPositiveButtonText(), true)
     }
     
     def static void main(String[] args) {
@@ -96,7 +93,7 @@ class NotificationDialog extends BaseDialog {
 		shell.setText("Title Area Shell")
 	    shell.pack()
 	    val dialog = new NotificationDialog(shell, WindowModality.MODAL, NotificationType.INFORMATION, "Test Title", "Test Message which is a whole lot longer than the last one.")
-		dialog.okButtonText = "Copy That"
+		//dialog.positiveButtonText = "Copy That"
 		dialog.blockOnOpen = true
 		dialog.show()//open();
 		display.dispose()
