@@ -14,7 +14,8 @@ Require-Bundle: org.eclipse.osgi,
  com.google.guava,
  org.eclipse.xtext.xbase.lib,
  org.eclipse.xtend.lib,
- org.eclipse.xtend.lib.macro
+ org.eclipse.xtend.lib.macro,
+ org.eclipse.equinox.common
 Export-Package: tools.vitruv.framework.userinteraction,
  tools.vitruv.framework.userinteraction.impl
 Bundle-Vendor: vitruv.tools
