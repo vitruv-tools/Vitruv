@@ -1,5 +1,7 @@
 package tools.vitruv.framework.userinteraction.impl;
 
+import java.util.Arrays;
+
 import javax.swing.JOptionPane;
 
 import org.eclipse.emf.common.util.URI;
@@ -8,11 +10,15 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
 
 import tools.vitruv.framework.change.interaction.ConfirmationUserInput;
+import tools.vitruv.framework.change.interaction.FreeTextUserInput;
 import tools.vitruv.framework.change.interaction.InteractionFactory;
+import tools.vitruv.framework.change.interaction.MultipleChoiceMultiSelectionUserInput;
+import tools.vitruv.framework.change.interaction.MultipleChoiceSingleSelectionUserInput;
 import tools.vitruv.framework.userinteraction.NotificationType;
 import tools.vitruv.framework.userinteraction.UserInteracting;
 import tools.vitruv.framework.userinteraction.UserInteractionType;
 import tools.vitruv.framework.userinteraction.WindowModality;
+import tools.vitruv.framework.userinteraction.impl.MultipleChoiceSelectionDialog.SelectionType;
 import tools.vitruv.framework.util.bridges.EclipseUIBridge;
 
 /**
@@ -43,7 +49,8 @@ public class UserInteractor implements UserInteracting {
     	this.display.syncExec(new Runnable() {
             @Override
             public void run() {
-                NotificationDialog dialog = new NotificationDialog(shell, windowModality, notificationType, title, message);
+                NotificationDialog dialog = new NotificationDialog(shell, windowModality, notificationType, title,
+                		message);
                 dialog.show();
             }
         });
@@ -58,6 +65,56 @@ public class UserInteractor implements UserInteracting {
                 ConfirmationDialog dialog = new ConfirmationDialog(shell, windowModality, title, message);
                 dialog.show();
                 result.setConfirmed(dialog.getResult());
+            }
+        });
+		return result;
+	}
+    
+    @Override
+	public FreeTextUserInput getTextInput(String title, String message, WindowModality windowModality) {
+    	FreeTextUserInput result = InteractionFactory.eINSTANCE.createFreeTextUserInput();
+    	this.display.syncExec(new Runnable() {
+            @Override
+            public void run() {
+                TextInputDialog dialog = new TextInputDialog(shell, windowModality, title, message);
+                dialog.show();
+                result.setText(dialog.getInput());
+            }
+        });
+		return result;
+	}
+    
+    @Override
+	public MultipleChoiceSingleSelectionUserInput selectSingle(String title, String message,
+			String[] selectionDescriptions, WindowModality windowModality) {
+    	MultipleChoiceSingleSelectionUserInput result =
+    			InteractionFactory.eINSTANCE.createMultipleChoiceSingleSelectionUserInput();
+    	this.display.syncExec(new Runnable() {
+            @Override
+            public void run() {
+                MultipleChoiceSelectionDialog dialog = new MultipleChoiceSelectionDialog(shell, windowModality, title,
+                		message, selectionDescriptions, SelectionType.SINGLE_SELECT);
+                dialog.show();
+                result.setSelectedIndex(dialog.getSelectedChoices()[0]);
+            }
+        });
+		return result;
+	}
+    
+    @Override
+	public MultipleChoiceMultiSelectionUserInput selectMulti(String title, String message,
+			String[] selectionDescriptions, WindowModality windowModality) {
+    	MultipleChoiceMultiSelectionUserInput result =
+    			InteractionFactory.eINSTANCE.createMultipleChoiceMultiSelectionUserInput();
+    	this.display.syncExec(new Runnable() {
+            @Override
+            public void run() {
+                MultipleChoiceSelectionDialog dialog = new MultipleChoiceSelectionDialog(shell, windowModality, title,
+                		message, selectionDescriptions, SelectionType.MULTI_SELECT);
+                dialog.show();
+                for (int index : dialog.getSelectedChoices()) { //TODO
+                	result.getSelectedIndices().add(index);
+                }
             }
         });
 		return result;
