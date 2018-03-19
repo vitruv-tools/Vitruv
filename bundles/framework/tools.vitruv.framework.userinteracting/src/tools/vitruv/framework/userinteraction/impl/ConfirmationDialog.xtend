@@ -12,8 +12,10 @@ import org.eclipse.swt.layout.GridData
 import org.eclipse.jface.dialogs.IDialogConstants
 import org.eclipse.swt.widgets.Display
 import org.eclipse.swt.graphics.Point
+import org.eclipse.ui.PlatformUI
 
 class ConfirmationDialog extends BaseDialog {
+	private boolean confirmed = false
 	
 	new(Shell parentShell, WindowModality windowModality, String title, String message) {
 		super(parentShell, windowModality, title, message)
@@ -62,19 +64,24 @@ class ConfirmationDialog extends BaseDialog {
     }
     
     override okPressed() {
+    	this.confirmed = true
     	close()
     }
     
     override cancelPressed() {
+    	this.confirmed = false
     	close()
     }
     
+    def boolean getResult() {
+    	return confirmed
+    }
+    
     def static void main(String[] args) {
-		val display = new Display()
+		val display = Display.^default//PlatformUI.getWorkbench().display//new Display()
 		val shell = new Shell(display)
-		
-	    val dialog = new ConfirmationDialog(shell, WindowModality.MODAL, "Title", "Message?")
-		dialog.blockOnOpen = true
+		val dialog = new ConfirmationDialog(shell, WindowModality.MODAL, "Title", "Really?")
+		//dialog.blockOnOpen = true
 		dialog.show()
 		display.dispose()
 	}

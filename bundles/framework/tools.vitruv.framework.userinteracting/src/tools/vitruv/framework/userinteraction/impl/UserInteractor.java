@@ -7,8 +7,12 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
 
+import tools.vitruv.framework.change.interaction.ConfirmationUserInput;
+import tools.vitruv.framework.change.interaction.InteractionFactory;
+import tools.vitruv.framework.userinteraction.NotificationType;
 import tools.vitruv.framework.userinteraction.UserInteracting;
 import tools.vitruv.framework.userinteraction.UserInteractionType;
+import tools.vitruv.framework.userinteraction.WindowModality;
 import tools.vitruv.framework.util.bridges.EclipseUIBridge;
 
 /**
@@ -32,6 +36,32 @@ public class UserInteractor implements UserInteracting {
         this.display = PlatformUI.getWorkbench().getDisplay();
         this.shell = null;
     }
+    
+    @Override
+	public void showNotification(String title, String message, NotificationType notificationType,
+			WindowModality windowModality) {
+    	this.display.syncExec(new Runnable() {
+            @Override
+            public void run() {
+                NotificationDialog dialog = new NotificationDialog(shell, windowModality, notificationType, title, message);
+                dialog.show();
+            }
+        });
+	}
+    
+    @Override
+	public ConfirmationUserInput getUserConfirmation(String title, String message, WindowModality windowModality) {
+    	ConfirmationUserInput result = InteractionFactory.eINSTANCE.createConfirmationUserInput();
+    	this.display.syncExec(new Runnable() {
+            @Override
+            public void run() {
+                ConfirmationDialog dialog = new ConfirmationDialog(shell, windowModality, title, message);
+                dialog.show();
+                result.setConfirmed(dialog.getResult());
+            }
+        });
+		return result;
+	}
 
     @Override
     public void showMessage(final UserInteractionType type, final String message) {

@@ -7,6 +7,7 @@ import org.eclipse.swt.SWT
 import org.eclipse.swt.widgets.Composite
 import org.eclipse.swt.widgets.Control
 import org.eclipse.swt.graphics.Point
+import org.eclipse.ui.PlatformUI
 
 class BaseDialog extends Dialog {
 	private String title
@@ -17,15 +18,11 @@ class BaseDialog extends Dialog {
 	private WindowModality windowModality
 	
 	new(Shell parentShell, WindowModality windowModality, String title, String message) {
-		super(parentShell)
+		super(parentShell)//null as Shell)
 		this.windowModality = windowModality
 		this.title = title
 		this.message = message
 		updateWindowModality()
-	}
-	
-	new(Shell parentShell) {
-		super(parentShell)
 	}
 	
 	def String getTitle() { title }
@@ -58,12 +55,18 @@ class BaseDialog extends Dialog {
 	}
 	
 	private def updateWindowModality() {
-		val modalityFlags = switch (windowModality) {
-			case MODAL: SWT.APPLICATION_MODAL.bitwiseOr(SWT.MODELESS.bitwiseNot).bitwiseOr(SWT.RESIZE)
+		/*val modalityFlags = switch (windowModality) {
+			case MODAL: SWT.APPLICATION_MODAL.bitwiseOr(SWT.MODELESS.bitwiseNot)//.bitwiseOr(SWT.RESIZE)
 			case MODELESS: SWT.MODELESS.bitwiseOr(SWT.APPLICATION_MODAL.bitwiseNot)
 			default: throw new RuntimeException("Unknown WindowModality!")
+		}*/
+		shellStyle = shellStyle.bitwiseOr(SWT.APPLICATION_MODAL)
+		//setShellStyle(SWT.CLOSE.bitwiseOr(SWT.APPLICATION_MODAL).bitwiseOr(SWT.BORDER).bitwiseOr(SWT.TITLE))
+		if (windowModality == WindowModality.MODELESS) {
+			shellStyle = getShellStyle().bitwiseAnd(SWT.MODELESS.bitwiseOr(SWT.APPLICATION_MODAL.bitwiseNot))
 		}
-		shellStyle = getShellStyle().bitwiseAnd(modalityFlags)
+		//System.out.println("shellStyle: " + Integer.toBinaryString(getShellStyle()) + ", flags:" + Integer.toBinaryString(modalityFlags))
+		
 	}
 	
 	protected override Control createDialogArea(Composite parent) {
