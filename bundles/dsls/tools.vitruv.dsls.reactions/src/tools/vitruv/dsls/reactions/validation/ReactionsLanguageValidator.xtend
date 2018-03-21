@@ -101,6 +101,9 @@ class ReactionsLanguageValidator extends AbstractReactionsLanguageValidator {
 		// check for duplicate reaction names in same segment:
 		checkNoDuplicateReactionNames(reactionsSegment);
 
+		// warning when declaring regular reactions with names already existing in imported segments:
+		checkNoDuplicateReactionNamesInIncludedReactions(reactionsSegment);
+
 		// check for duplicate routine names in same segment:
 		checkNoDuplicateRoutineNames(reactionsSegment);
 	}
@@ -161,6 +164,24 @@ class ReactionsLanguageValidator extends AbstractReactionsLanguageValidator {
 					error(errorMessage, reactionsImport, ReactionsLanguagePackage.Literals.REACTIONS_IMPORT__IMPORTED_REACTIONS_SEGMENT);
 					error(errorMessage, duplicateReactionsImport, ReactionsLanguagePackage.Literals.REACTIONS_IMPORT__IMPORTED_REACTIONS_SEGMENT);
 				}
+			}
+		}
+	}
+
+	private def void checkNoDuplicateReactionNamesInIncludedReactions(ReactionsSegment reactionsSegment) {
+		// formatted reaction name -> reaction
+		val localReactions = reactionsSegment.regularReactions.toMap[formattedName];
+		val importedReactions = reactionsSegment.reactionsImportHierarchy.filter [
+			importPath, segment | importPath.length > 1
+		].values.map[regularReactions].flatten;
+		for (importedReaction : importedReactions) {
+			val importedReactionName = importedReaction.formattedName;
+			// warning if a reaction is declared locally with a name already existing in imported segments:
+			val duplicateReaction = localReactions.get(importedReactionName);
+			if (duplicateReaction !== null) {
+				val errorMessage = "A reaction with this name ('" + importedReactionName + "') already exists in segment '" 
+						+ importedReaction.reactionsSegment.formattedName + "'. Consider using a different name.";
+				warning(errorMessage, duplicateReaction, ReactionsLanguagePackage.Literals.REACTION__NAME);
 			}
 		}
 	}
