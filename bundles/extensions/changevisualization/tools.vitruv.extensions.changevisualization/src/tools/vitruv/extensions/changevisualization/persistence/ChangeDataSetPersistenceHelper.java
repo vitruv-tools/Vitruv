@@ -1,4 +1,4 @@
-package tools.vitruv.extensions.changevisualization.utils;
+package tools.vitruv.extensions.changevisualization.persistence;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -11,11 +11,9 @@ import java.util.Vector;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
-import javax.swing.JFrame;
-
-import tools.vitruv.extensions.changevisualization.ChangeDataSet;
+import tools.vitruv.extensions.changevisualization.common.ChangeDataSet;
+import tools.vitruv.extensions.changevisualization.common.VisualizationMode;
 import tools.vitruv.extensions.changevisualization.ui.ChangesTab;
-import tools.vitruv.extensions.changevisualization.ui.VisualizationMode;
 
 /**
  * This class helps to store and load {@link ChangesTab}s
@@ -40,12 +38,6 @@ public class ChangeDataSetPersistenceHelper {
 	private static final String EOF_MARKER="THE_END";
 	
 	/**
-	 * The string is used as a prefix to loaded ChangesTab so the user can easily identify them
-	 */
-	private static final String LOAD_MARKER="*";
-	
-
-	/**
 	 * No instances of ChangeDataSetPersistenceHelper are used
 	 */
 	private ChangeDataSetPersistenceHelper() {
@@ -53,96 +45,62 @@ public class ChangeDataSetPersistenceHelper {
 	}
 
 	/**
-	 * Loads {@link ChangesTab}s from a given file.
-	 * 
-	 * The user will be prompted to select which tabs to load from all that present in the file.
+	 * Loads {@link ChangesTab}s from a given file. 
 	 * 
 	 * @param file The file to load
-	 * @param frame The frame used to position dialogs on screen
 	 * @return List of ChangesTabs loaded
 	 * @throws IOException
 	 * @throws ClassNotFoundException
 	 */
-	public static List<ChangesTab> load(File file, JFrame frame) throws IOException, ClassNotFoundException {
+	public static List<ChangesTab> load(File file) throws IOException, ClassNotFoundException {
 		List<ChangesTab> changesTabs=new Vector<ChangesTab>();
+		
+		//Open a fileinputstream
 		FileInputStream fIn=new FileInputStream(file);
+		
+		//Open a gzip inputstream stream wrapping the file in
 		GZIPInputStream gzIn=new GZIPInputStream(fIn);
+		
+		//finally let the objectinputstream read from the gzip in
 		ObjectInputStream oIn=new ObjectInputStream(gzIn);
+		
+		//1. Read title String until the EOF_MARKER is read
 		String title=(String) oIn.readObject();
-		while(!EOF_MARKER.equals(title)) {				
+		while(!EOF_MARKER.equals(title)) {		
+			//2. Read the visualization mode
 			VisualizationMode mode=(VisualizationMode)oIn.readObject();
+			//3. Read the number of changeDataSets available
 			int cdsCount=oIn.readInt();
-			ChangesTab changesTab=new ChangesTab((ChangeDataSet) oIn.readObject(),mode);
+			
+			//4. The first read cds is used to create the changesTab
+			ChangesTab changesTab=new ChangesTab((ChangeDataSet) oIn.readObject(),mode,title,true);
+			
+			//We use the components otherwise not needed name feature to transfer the title
 			changesTab.setName(title);
 			for(int n=1;n<cdsCount;n++) {
+				//4. Read the remaining changeDataSets and add them to the tab
 				changesTab.addChanges((ChangeDataSet) oIn.readObject());
 			}			
 			changesTabs.add(changesTab);			
+			
+			//1. Read title String until the EOF_MARKER is read
 			title=(String) oIn.readObject();
 		}
 		oIn.close();
 		
-		List<ChangesTab> loadedChanges=getListOfTabsToLoad(changesTabs,frame);
-		return loadedChanges;
-	}
-
-	/**
-	 * Prompts the user to select a list of {@link ChangesTab}s from a dialog to load
-	 * 
-	 * @param changesTabs The tabs to select from
-	 * @param frame The frame used to position the dialog on screen
-	 * @return List of ChangesTabs selected
-	 */
-	private static List<ChangesTab> getListOfTabsToLoad(List<ChangesTab> changesTabs, JFrame frame) {
-		String[] titles=new String[changesTabs.size()];
-		for(int n=0;n<titles.length;n++) {
-			titles[n]=changesTabs.get(n).getName();
-		}
-		SelectionDialog selectionDialog=new SelectionDialog(frame,titles);
-		selectionDialog.setTitle("Select tabs to load");
-		selectionDialog.setVisible(true);
-		
-		boolean[] result=selectionDialog.getResult();		
-		List<ChangesTab> tabsToLoad=new Vector<ChangesTab>();
-		for(int n=0;n<result.length;n++) {
-			if(result[n]) {
-				changesTabs.get(n).setName(LOAD_MARKER+changesTabs.get(n).getName());
-				tabsToLoad.add(changesTabs.get(n));
-			}
-		}
-		return tabsToLoad;
-	}
+		return changesTabs;
+	}	
 	
 	/**
 	 * Saves given {@link ChangesTab}s to a given file.
-	 * 
-	 * The user is prompted to select the tabs to save from the given list.
-	 * 
+	 *  
 	 * @param file The file to save to
-	 * @param changesTabs List of tabs to select from
-	 * @param frame The frame used to position the dialog on screen
+	 * @param changesToSave List of tabs to save
 	 * @return true if saving was successful, false if nothing was saved
 	 * @throws IOException
 	 */
-	public static boolean save(File file, List<ChangesTab> changesTabs, JFrame frame) throws IOException{
-		return save(file,changesTabs,frame,false);
-	}
-
-	/**
-	 * Saves given {@link ChangesTab}s to a given file.
-	 * 
-	 * The user is prompted to select the tabs to save from the given list if noQuestion is false
-	 * 
-	 * @param file The file to save to
-	 * @param changesTabs List of tabs to select from
-	 * @param frame The frame used to position the dialog on screen
-	 * @param noQuestion If true, no use interaction will occur and every tab gets saved
-	 * @return true if saving was successful, false if nothing was saved
-	 * @throws IOException
-	 */
-	public static boolean save(File file, List<ChangesTab> changesTabs, JFrame frame, boolean noQuestion) throws IOException{
+	public static boolean save(File file, List<ChangesTab> changesToSave) throws IOException{
 		
-		List<ChangesTab> changesToSave=noQuestion?changesTabs:getListOfTabsToSave(changesTabs,frame);
 		if(changesToSave==null||changesToSave.isEmpty()){
 			return false;
 		}
@@ -154,52 +112,29 @@ public class ChangeDataSetPersistenceHelper {
 			fOut=new FileOutputStream(file);
 		}		
 		
+		//Create a gzip outputstream and wrap the fileoutputstream with it
 		GZIPOutputStream gzOut=new GZIPOutputStream(fOut);
+		
+		//And finally let the objectoutputstream write to the gzip out
 		ObjectOutputStream oOut=new ObjectOutputStream(gzOut);
-		for(ChangesTab changesTab:changesToSave) {			
-			String title=changesTab.getName();		
-			if(title.startsWith(LOAD_MARKER)) {
-				title=title.substring(LOAD_MARKER.length());//Remove prior to saving
-			}
+		for(ChangesTab changesTab:changesToSave) {
+			//1. write title
+			String title=changesTab.getTitle();			
 			oOut.writeObject(title);
+			//2. write visualization mode
 			oOut.writeObject(changesTab.getVisualizationMode());
+			//3. write the number of changeDataSets the tab holds
 			oOut.writeInt(changesTab.getChanges().size());
+			//4. Now write each changeDataSet
 			for(ChangeDataSet cds:changesTab.getChanges()) {
 				oOut.writeObject(cds);
 			}
 		}
+		//Last step, write the EOF_MARKER
 		oOut.writeObject(EOF_MARKER);
 		oOut.flush();
 		oOut.close();
 		return true;
-	}
-
-	/**
-	 * Prompts the user to select a list of {@link ChangesTab}s from a dialog to save
-	 * 
-	 * @param changesTabs The tabs to select from
-	 * @param frame The frame used to position the dialog on screen
-	 * @return List of ChangesTabs selected
-	 */
-	private static List<ChangesTab> getListOfTabsToSave(List<ChangesTab> changesTabs, JFrame frame) {
-		String[] titles=new String[changesTabs.size()];
-		boolean[] initialValues=new boolean[changesTabs.size()];
-		for(int n=0;n<titles.length;n++) {
-			titles[n]=changesTabs.get(n).getName();
-			initialValues[n]=!titles[n].startsWith(LOAD_MARKER);
-		}
-		SelectionDialog selectionDialog=new SelectionDialog(frame,titles,initialValues);
-		selectionDialog.setTitle("Select tabs to save");
-		selectionDialog.setVisible(true);
-		
-		boolean[] result=selectionDialog.getResult();		
-		List<ChangesTab> tabsToSave=new Vector<ChangesTab>();
-		for(int n=0;n<result.length;n++) {
-			if(result[n]) {
-				tabsToSave.add(changesTabs.get(n));
-			}
-		}
-		return tabsToSave;
-	}
+	}	
 
 }

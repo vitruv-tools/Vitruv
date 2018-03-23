@@ -1,4 +1,4 @@
-package tools.vitruv.extensions.changevisualization.ui;
+package tools.vitruv.extensions.changevisualization.common;
 
 /** 
  * The different modes of visualization

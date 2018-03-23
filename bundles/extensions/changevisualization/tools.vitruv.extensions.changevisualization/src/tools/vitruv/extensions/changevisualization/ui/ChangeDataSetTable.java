@@ -19,7 +19,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
-import tools.vitruv.extensions.changevisualization.ChangeDataSet;
+import tools.vitruv.extensions.changevisualization.common.ChangeDataSet;
 
 /**
  * A ChangeDataSetTable displays all different ChangeDataSets of a given ChangesTab in a JTable

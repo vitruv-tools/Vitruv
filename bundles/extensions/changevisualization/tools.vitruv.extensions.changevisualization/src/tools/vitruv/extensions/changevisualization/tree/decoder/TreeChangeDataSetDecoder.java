@@ -9,8 +9,8 @@ import javax.swing.tree.DefaultMutableTreeNode;
 
 import org.eclipse.emf.ecore.EStructuralFeature;
 
-import tools.vitruv.extensions.changevisualization.ChangeDataSet;
-import tools.vitruv.extensions.changevisualization.ChangeDataSet.ChangeType;
+import tools.vitruv.extensions.changevisualization.common.ChangeDataSet;
+import tools.vitruv.extensions.changevisualization.common.ChangeDataSet.ChangeType;
 import tools.vitruv.extensions.changevisualization.tree.FeatureNode;
 import tools.vitruv.extensions.changevisualization.tree.TreeChangeDataSet;
 import tools.vitruv.extensions.changevisualization.tree.decoder.feature.FeatureDecoder;

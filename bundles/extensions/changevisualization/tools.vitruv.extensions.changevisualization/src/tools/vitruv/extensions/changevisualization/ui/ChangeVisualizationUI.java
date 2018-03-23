@@ -30,7 +30,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.filechooser.FileFilter;
 
-import tools.vitruv.extensions.changevisualization.utils.ChangeDataSetPersistenceHelper;
+import tools.vitruv.extensions.changevisualization.persistence.ChangeDataSetPersistenceHelper;
 
 /**
  * The frame in which the change visualization is displayed.
@@ -134,6 +134,11 @@ public class ChangeVisualizationUI extends JFrame {
 	public static final Font DEFAULT_MENUITEM_FONT=createFont("MenuItem.font",16,Font.PLAIN);
 
 	/**
+	 * The string is used as a prefix to loaded ChangesTab so the user can easily identify them
+	 */
+	private static final String LOAD_MARKER="*";
+
+	/**
 	 * The single instance of the frame
 	 */
 	private static ChangeVisualizationUI instance=new ChangeVisualizationUI();
@@ -224,17 +229,17 @@ public class ChangeVisualizationUI extends JFrame {
 	}	
 
 	/**
-     * Adds the specified container listener to receive container events
-     * from the tabbedPane holding the visualized model tabs.
-     * If l is null, no exception is thrown and no action is performed.
-     * <p>Refer to <a href="doc-files/AWTThreadIssues.html#ListenersThreads"
-     * >AWT Threading Issues</a> for details on AWT's threading model.
-     *
-     * @param    l the container listener
-     *
-     * @see #removeContainerListener
-     * @see #getContainerListeners
-     */
+	 * Adds the specified container listener to receive container events
+	 * from the tabbedPane holding the visualized model tabs.
+	 * If l is null, no exception is thrown and no action is performed.
+	 * <p>Refer to <a href="doc-files/AWTThreadIssues.html#ListenersThreads"
+	 * >AWT Threading Issues</a> for details on AWT's threading model.
+	 *
+	 * @param    l the container listener
+	 *
+	 * @see #removeContainerListener
+	 * @see #getContainerListeners
+	 */
 	public void addContainerListener(ContainerListener containerListener) {
 		tabbedPane.addContainerListener(containerListener);
 	}
@@ -275,54 +280,103 @@ public class ChangeVisualizationUI extends JFrame {
 	}
 
 	/**
-	 * Loads ChangeTabs. Lets the user decide which file and which tabs from it.
+	 * Let's the user select the file to load from and load it
 	 */
 	private void loadChanges() {
-		JFileChooser chooser=new JFileChooser();
-		chooser.setFileFilter(new FileFilter() {
-			@Override
-			public boolean accept(File f) {
-				return f.isDirectory()||(f.isFile()&&f.getName().toLowerCase().endsWith(ChangeDataSetPersistenceHelper.FILE_ENDING));
-			}
-			@Override
-			public String getDescription() {
-				return ChangeDataSetPersistenceHelper.FILE_DESCRIPTION;
-			}			
-		});
-		chooser.showOpenDialog(this);
-		final File file=chooser.getSelectedFile();
-		if(file==null) return;
+		//We use a seperate Thread for that to not block the ui thread
 		Thread loader=new Thread() {
 			public void run() {
-				try {
-					if(file==null) return;
-					final List<ChangesTab> loadedTabs=ChangeDataSetPersistenceHelper.load(file,ChangeVisualizationUI.this);
-					if(loadedTabs==null||loadedTabs.isEmpty()) {
-						JOptionPane.showMessageDialog(ChangeVisualizationUI.this,"Loading changes aborted","Load aborted",JOptionPane.ERROR_MESSAGE);
-					}else {						
-						//Updating the tabbedPane has to be done in awt Thread
-						SwingUtilities.invokeLater(new Runnable() {
-							@Override
-							public void run() {
-								for(ChangesTab changesTab:loadedTabs) {		
-									//We use the components otherwise not needed name feature to transfer the title
-									addTab(changesTab.getName(), changesTab);						
-								}
-								//Feedback of success currently disabled JOptionPane.showMessageDialog(ChangeVisualizationUI.this,"Changes successfully loaded");
-							}							
-						});						
+				//Let the user select the file
+				JFileChooser chooser=new JFileChooser();
+				chooser.setFileFilter(new FileFilter() {
+					@Override
+					public boolean accept(File f) {
+						return f.isDirectory()||(f.isFile()&&f.getName().toLowerCase().endsWith(ChangeDataSetPersistenceHelper.FILE_ENDING));
 					}
-				} catch (Exception e) {
-					e.printStackTrace();
-					JOptionPane.showMessageDialog(ChangeVisualizationUI.this,"Error loading changes : "+e.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
-				}
+					@Override
+					public String getDescription() {
+						return ChangeDataSetPersistenceHelper.FILE_DESCRIPTION;
+					}			
+				});
+				chooser.showOpenDialog(ChangeVisualizationUI.this);
+				final File file=chooser.getSelectedFile();
+				
+				//Now load it
+				load(file);
 			}
 		};
 		loader.start();
 	}
 
 	/**
-	 * Save change tabs. Lets the user decide where and which tabs.
+	 * Loads {@link ChangesTabs} from the given file. The user can select which of them to load.
+	 * 
+	 * @param file The file to load
+	 */
+	private void load(final File file) {
+		//Do not load a null file
+		if(file==null) return;
+
+		try {
+			//Get all ChangesTabs from the file through the persistence helper
+			List<ChangesTab> changesTabs=ChangeDataSetPersistenceHelper.load(file);
+
+			//If the file was valid but contained nothing, map to an error
+			if(changesTabs.isEmpty()) {
+				throw new Exception("The selected file did not contain any saved data.");
+			}
+
+			//Let the user decide which changes to load
+			final List<ChangesTab> loadedTabs=selectTabsToLoad(changesTabs);
+
+			if(loadedTabs.isEmpty()) {
+				//The user actively selected not to load anything. We assume he/she knows that and just return
+				return;
+			}else {						
+				//Updating the tabbedPane has to be done back in awt Thread
+				SwingUtilities.invokeLater(new Runnable() {
+					@Override
+					public void run() {
+						for(ChangesTab changesTab:loadedTabs) {		
+							addTab(LOAD_MARKER+changesTab.getTitle(), changesTab);						
+						}
+						//Feedback of success currently disabled JOptionPane.showMessageDialog(ChangeVisualizationUI.this,"Changes successfully loaded");
+					}							
+				});						
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			JOptionPane.showMessageDialog(ChangeVisualizationUI.this,"Error loading changes : "+e.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
+		}
+	}
+
+	/**
+	 * Prompts the user to select a list of {@link ChangesTab}s from a dialog
+	 * 
+	 * @param changesTabs The tabs to select from
+	 * @return List of ChangesTabs selected
+	 */
+	private List<ChangesTab> selectTabsToLoad(List<ChangesTab> changesTabs) {
+		String[] titles=new String[changesTabs.size()];
+		for(int n=0;n<titles.length;n++) {
+			titles[n]=changesTabs.get(n).getTitle();
+		}
+		SelectionDialog selectionDialog=new SelectionDialog(this,titles);
+		selectionDialog.setTitle("Select tabs to load");
+		selectionDialog.setVisible(true);
+
+		boolean[] result=selectionDialog.getResult();		
+		List<ChangesTab> tabsToLoad=new Vector<ChangesTab>();
+		for(int n=0;n<result.length;n++) {
+			if(result[n]) {				
+				tabsToLoad.add(changesTabs.get(n));
+			}
+		}
+		return tabsToLoad;
+	}
+
+	/**
+	 * Select a file and save to it
 	 */
 	private void saveChanges() {
 		if(tabbedPane.getTabCount()==0) {
@@ -330,37 +384,80 @@ public class ChangeVisualizationUI extends JFrame {
 			return;
 		}
 
-
-		JFileChooser chooser=new JFileChooser();
-		chooser.setFileFilter(new FileFilter() {
-			@Override
-			public boolean accept(File f) {
-				return f.isDirectory()||(f.isFile()&&f.getName().toLowerCase().endsWith(ChangeDataSetPersistenceHelper.FILE_ENDING));
-			}
-			@Override
-			public String getDescription() {
-				return ChangeDataSetPersistenceHelper.FILE_DESCRIPTION;
-			}			
-		});
-		chooser.showSaveDialog(this);
-		final File file=chooser.getSelectedFile();
-		if(file==null) return;
+		//We use a seperate Thread for that to not block the ui thread
 		Thread saver=new Thread() {
 			public void run() {
-				try {
-					List<ChangesTab> changesTabs=getChangesTabs();					
-					if(ChangeDataSetPersistenceHelper.save(file,changesTabs,ChangeVisualizationUI.this)) {
-						//Feedback of success currently disabled JOptionPane.showMessageDialog(ChangeVisualizationUI.this,"Changes successfully saved");
-					}else {
-						JOptionPane.showMessageDialog(ChangeVisualizationUI.this,"Saving changes aborted","Save aborted",JOptionPane.ERROR_MESSAGE);
+				//Select the file
+				JFileChooser chooser=new JFileChooser();
+				chooser.setFileFilter(new FileFilter() {
+					@Override
+					public boolean accept(File f) {
+						return f.isDirectory()||(f.isFile()&&f.getName().toLowerCase().endsWith(ChangeDataSetPersistenceHelper.FILE_ENDING));
 					}
-				} catch (Exception e) {
-					JOptionPane.showMessageDialog(ChangeVisualizationUI.this,"Error saving changes : "+e.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
-				}		
+					@Override
+					public String getDescription() {
+						return ChangeDataSetPersistenceHelper.FILE_DESCRIPTION;
+					}			
+				});
+				chooser.showSaveDialog(ChangeVisualizationUI.this);
+				final File file=chooser.getSelectedFile();
+				//Save to it
+				save(file);
 			}
 		};
 		saver.start();
 	}	
+
+	/**
+	 * Saves to the given file. The user can select which of the active tabs to save.
+	 * 
+	 * @param file The file to save
+	 */
+	private void save(File file) {
+		if(file==null) return;
+		try {
+			List<ChangesTab> changesTabs=getChangesTabs();		
+			
+			//Let the user select which tabs to save
+			changesTabs=selectTabsToSave(changesTabs);
+			
+			if(ChangeDataSetPersistenceHelper.save(file,changesTabs)) {
+				//Feedback of success currently disabled JOptionPane.showMessageDialog(ChangeVisualizationUI.this,"Changes successfully saved");
+			}else {
+				JOptionPane.showMessageDialog(ChangeVisualizationUI.this,"Saving changes aborted","Save aborted",JOptionPane.ERROR_MESSAGE);
+			}
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(ChangeVisualizationUI.this,"Error saving changes : "+e.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
+		}
+	}
+	
+	/**
+	 * Prompts the user to select a list of {@link ChangesTab}s from a dialog to save
+	 * 
+	 * @param changesTabs The tabs to select from
+	 * @return List of ChangesTabs selected
+	 */
+	private List<ChangesTab> selectTabsToSave(List<ChangesTab> changesTabs) {
+		String[] titles=new String[changesTabs.size()];
+		boolean[] initialValues=new boolean[changesTabs.size()];
+		for(int n=0;n<titles.length;n++) {
+			titles[n]=(changesTabs.get(n).isLoadedFromFile()?"*":"")+changesTabs.get(n).getTitle();			
+			initialValues[n]=!changesTabs.get(n).isLoadedFromFile();
+		}
+		SelectionDialog selectionDialog=new SelectionDialog(this,titles,initialValues);
+		selectionDialog.setTitle("Select tabs to save");
+		selectionDialog.setVisible(true);
+		
+		boolean[] result=selectionDialog.getResult();		
+		List<ChangesTab> tabsToSave=new Vector<ChangesTab>();
+		for(int n=0;n<result.length;n++) {
+			if(result[n]) {
+				tabsToSave.add(changesTabs.get(n));
+			}
+		}		
+		
+		return tabsToSave;
+	}
 
 	/**
 	 * Called externally to save of current tabs into given file.
@@ -372,13 +469,7 @@ public class ChangeVisualizationUI extends JFrame {
 	 */
 	public boolean saveToFile(File file) throws IOException {
 		List<ChangesTab> changesTabs=getChangesTabs();
-		if(ChangeDataSetPersistenceHelper.save(file,changesTabs,null,true)) {
-			//with noQuestion==true, the headless mode is activated and no frame needed
-			return true;
-		}else {
-			return false;
-		}
-
+		return ChangeDataSetPersistenceHelper.save(file,changesTabs);
 	}
 
 	/**
@@ -403,11 +494,10 @@ public class ChangeVisualizationUI extends JFrame {
 	 */
 	public void addTab(final String title, Component component) {
 		this.tabbedPane.addTab(title, component);
-		//We use the components otherwise not needed name feature to store the title
-		component.setName(title);
+		
 		final CloseableTabComponent closeableTabComponent=new CloseableTabComponent(title);
 		closeableTabComponent.setFont(ChangeVisualizationUI.DEFAULT_TABBED_PANE_FONT);
-		
+
 		//Add a listener to the tabComponent to react on its close button
 		closeableTabComponent.addActionListener(new ActionListener() {
 			@Override

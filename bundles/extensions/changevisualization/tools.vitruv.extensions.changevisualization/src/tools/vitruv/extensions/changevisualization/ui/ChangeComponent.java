@@ -5,7 +5,7 @@ import java.util.List;
 
 import javax.swing.JPanel;
 
-import tools.vitruv.extensions.changevisualization.ChangeDataSet;
+import tools.vitruv.extensions.changevisualization.common.ChangeDataSet;
 
 /**
  * Base class for different visualization implementations. If additional implementation are needed,

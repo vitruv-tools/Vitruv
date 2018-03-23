@@ -31,7 +31,7 @@ import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 
-import tools.vitruv.extensions.changevisualization.ChangeDataSet;
+import tools.vitruv.extensions.changevisualization.common.ChangeDataSet;
 import tools.vitruv.extensions.changevisualization.ui.ChangeComponent;
 import tools.vitruv.extensions.changevisualization.ui.ChangeVisualizationUI;
 import tools.vitruv.extensions.changevisualization.ui.LabelValuePanel;
@@ -452,6 +452,10 @@ public class ChangeTree extends ChangeComponent {
 		if(actualChangeDataSet.hasUserInfo(VIEWPORT_RECTANGLE_KEY)) {
 			treeScroller.getViewport().scrollRectToVisible((java.awt.Rectangle)actualChangeDataSet.getUserInfo(VIEWPORT_RECTANGLE_KEY));
 		}
+		
+		//Update the nodes state to the one active in the checkboxes
+		updateSimpleEChangeText(this.simpleEChangeTextBox.isSelected());
+		updateShowID(this.showIDTextBox.isSelected());
 	}
 
 	/**

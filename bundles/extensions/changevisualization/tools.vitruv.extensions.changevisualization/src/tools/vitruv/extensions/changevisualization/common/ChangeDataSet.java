@@ -1,4 +1,4 @@
-package tools.vitruv.extensions.changevisualization;
+package tools.vitruv.extensions.changevisualization.common;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;

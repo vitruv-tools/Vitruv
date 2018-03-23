@@ -8,10 +8,11 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 
+import tools.vitruv.extensions.changevisualization.common.ChangeDataSet;
+import tools.vitruv.extensions.changevisualization.common.VisualizationMode;
 import tools.vitruv.extensions.changevisualization.tree.decoder.TreeChangeDataSetDecoder;
 import tools.vitruv.extensions.changevisualization.ui.ChangeVisualizationUI;
 import tools.vitruv.extensions.changevisualization.ui.ChangesTab;
-import tools.vitruv.extensions.changevisualization.ui.VisualizationMode;
 import tools.vitruv.framework.change.description.PropagatedChange;
 import tools.vitruv.framework.domains.VitruvDomain;
 import tools.vitruv.framework.vsum.PropagatedChangeListener;
@@ -143,9 +144,9 @@ public final class ChangeVisualization implements PropagatedChangeListener{
 		if(tab==null) {
 			//create the changes tab and the dataSet
 			ChangeDataSet cds=createChangeDataSet(virtualModelName+" 1", sourceDomain,targetDomain , propagationResult);
-			tab=createChangesTab(cds);
+			tab=createChangesTab(cds,virtualModelName);
 			changeTabs.put(virtualModelName,tab);
-			ui.addTab(virtualModelName,tab);			
+			ui.addTab(tab.getTitle(),tab);			
 		}else{
 			//on an existing tab, append the changes made
 			ChangeDataSet cds=createChangeDataSet(virtualModelName+" "+(tab.getChanges().size()+1), sourceDomain, targetDomain, propagationResult);
@@ -178,10 +179,11 @@ public final class ChangeVisualization implements PropagatedChangeListener{
 	 * Create a {@link ChangesTab} for a new model
 	 * 
 	 * @param changeDataSet The changeDataSet used for the tab
+	 * @param title The title for the tab
 	 * @return A tab visualizing the given changeDataSet
 	 */
-	private ChangesTab createChangesTab(ChangeDataSet changeDataSet) {		
-		return new ChangesTab(changeDataSet,ChangeVisualization.VISUALIZATION_MODE);
+	private ChangesTab createChangesTab(ChangeDataSet changeDataSet,String title) {		
+		return new ChangesTab(changeDataSet,ChangeVisualization.VISUALIZATION_MODE,title,false);
 	}	
 
 }

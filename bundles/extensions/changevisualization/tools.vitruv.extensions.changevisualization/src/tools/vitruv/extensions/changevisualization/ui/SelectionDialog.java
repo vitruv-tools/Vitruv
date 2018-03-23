@@ -1,4 +1,4 @@
-package tools.vitruv.extensions.changevisualization.utils;
+package tools.vitruv.extensions.changevisualization.ui;
 
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -9,8 +9,6 @@ import javax.swing.JCheckBox;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-
-import tools.vitruv.extensions.changevisualization.ui.ChangeVisualizationUI;
 
 /**
  * A dialog displaying some information the user can select 

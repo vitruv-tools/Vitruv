@@ -12,7 +12,8 @@ import javax.swing.border.TitledBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import tools.vitruv.extensions.changevisualization.ChangeDataSet;
+import tools.vitruv.extensions.changevisualization.common.ChangeDataSet;
+import tools.vitruv.extensions.changevisualization.common.VisualizationMode;
 import tools.vitruv.extensions.changevisualization.tree.ChangeTree;
 
 /**
@@ -59,15 +60,29 @@ public class ChangesTab extends JPanel implements ListSelectionListener{
 	 * The affectedEOject id to highlight
 	 */
 	private String highlightID;
+	
+	/**
+	 * The title of the tab
+	 */
+	private final String title;	
+
+	/**
+	 * True if the tab was created from a saved file
+	 */
+	private final boolean loadedFromFile;
 
 	/**
 	 * Create a ChangesTab with a given ChangeDataSet as initial value and a given visualization mode
 	 * @param changeDataSet The initial changeDataSet
 	 * @param mode The visualization mode
+	 * @param title The title
+	 * @param loadedFromFile True if loaded from file, false otherwise
 	 */
-	public ChangesTab(ChangeDataSet changeDataSet, VisualizationMode mode) {
+	public ChangesTab(ChangeDataSet changeDataSet, VisualizationMode mode, String title, boolean loadedFromFile) {
 		super(new BorderLayout());		
 		this.visualizationMode=mode;
+		this.loadedFromFile=loadedFromFile;
+		this.title=title;
 
 		createUI();
 
@@ -165,6 +180,22 @@ public class ChangesTab extends JPanel implements ListSelectionListener{
 	 */
 	public String getHighlightID() {
 		return highlightID;
+	}
+	
+	/**
+	 * Gets the title of the changeTab
+	 * @return The title
+	 */
+	public String getTitle() {
+		return title;
+	}
+
+	/**
+	 * Returns whether this changeTab was loaded from a file
+	 * @return True if loaded from file, false otherwise
+	 */
+	public boolean isLoadedFromFile() {
+		return loadedFromFile;
 	}
 		
 }
