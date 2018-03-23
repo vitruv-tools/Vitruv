@@ -11,10 +11,9 @@
         </sealing>
     </manifest>
     <selectedElements exportClassFiles="true" exportJavaFiles="false" exportOutputFolder="false">
-        <javaElement handleIdentifier="=tools.vitruv.extensions.changevisualization/src&lt;tools.vitruv.extensions.changevisualization.utils{ChangeDataSetPersistenceHelper.java"/>
+        <javaElement handleIdentifier="=tools.vitruv.extensions.changevisualization/src&lt;tools.vitruv.extensions.changevisualization.persistence"/>
         <javaElement handleIdentifier="=tools.vitruv.extensions.changevisualization/src&lt;tools.vitruv.extensions.changevisualization.ui"/>
         <javaElement handleIdentifier="=tools.vitruv.extensions.changevisualization/src&lt;tools.vitruv.extensions.changevisualization.tree"/>
-        <javaElement handleIdentifier="=tools.vitruv.extensions.changevisualization/src&lt;tools.vitruv.extensions.changevisualization.utils{SelectionDialog.java"/>
-        <javaElement handleIdentifier="=tools.vitruv.extensions.changevisualization/src&lt;tools.vitruv.extensions.changevisualization{ChangeDataSet.java"/>
+        <javaElement handleIdentifier="=tools.vitruv.extensions.changevisualization/src&lt;tools.vitruv.extensions.changevisualization.common"/>
     </selectedElements>
 </jardesc>
