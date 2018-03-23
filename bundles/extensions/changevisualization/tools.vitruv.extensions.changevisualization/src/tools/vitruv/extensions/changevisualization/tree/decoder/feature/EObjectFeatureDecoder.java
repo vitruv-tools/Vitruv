@@ -3,7 +3,6 @@ package tools.vitruv.extensions.changevisualization.tree.decoder.feature;
 import java.awt.Component;
 
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EStructuralFeature;
 
 import tools.vitruv.extensions.changevisualization.utils.ModelHelper;
 

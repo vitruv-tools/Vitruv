@@ -24,6 +24,11 @@ import javax.swing.border.EmptyBorder;
 public class LabelValuePanel extends JScrollPane{
 	
 	/**
+	 * Serialization id, serialization not used
+	 */
+	private static final long serialVersionUID = 1L;
+
+	/**
 	 * Implements the usual strg + mousewheel zoom behaviour
 	 */
 	private final MouseWheelListener mwl=new MouseWheelListener() {

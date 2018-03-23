@@ -89,7 +89,12 @@ public class CloseableTabComponent extends JPanel{
 	 * 
 	 * @author Andreas Loeffler
 	 */
-	private class TabButton extends JButton{		
+	private class TabButton extends JButton{	
+		
+		/**
+		 * Serialization id, serialization not used
+		 */
+		private static final long serialVersionUID = 1L;
 		
 		/**
 		 * Creates a new TabButton instance

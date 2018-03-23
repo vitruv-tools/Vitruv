@@ -308,6 +308,7 @@ public class ChangeTree extends ChangeComponent {
 		DefaultTreeModel model = (DefaultTreeModel)treeUI.getModel();
 		DefaultMutableTreeNode root=(DefaultMutableTreeNode) model.getRoot();
 		if(root!=null) {
+			@SuppressWarnings("unchecked")
 			Enumeration<DefaultMutableTreeNode> nodes = root.depthFirstEnumeration();
 			while(nodes.hasMoreElements()) {
 				DefaultMutableTreeNode node = nodes.nextElement();
@@ -329,6 +330,7 @@ public class ChangeTree extends ChangeComponent {
 		DefaultTreeModel model = (DefaultTreeModel)treeUI.getModel();
 		DefaultMutableTreeNode root=(DefaultMutableTreeNode) model.getRoot();
 		if(root!=null) {
+			@SuppressWarnings("unchecked")
 			Enumeration<DefaultMutableTreeNode> nodes = root.depthFirstEnumeration();
 			while(nodes.hasMoreElements()) {
 				DefaultMutableTreeNode node = nodes.nextElement();

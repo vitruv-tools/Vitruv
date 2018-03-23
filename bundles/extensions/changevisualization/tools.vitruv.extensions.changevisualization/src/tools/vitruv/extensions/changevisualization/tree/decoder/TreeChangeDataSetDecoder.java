@@ -11,9 +11,7 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 
 import tools.vitruv.extensions.changevisualization.common.ChangeDataSet;
 import tools.vitruv.extensions.changevisualization.common.ChangeDataSet.ChangeType;
-import tools.vitruv.extensions.changevisualization.tree.FeatureNode;
 import tools.vitruv.extensions.changevisualization.tree.TreeChangeDataSet;
-import tools.vitruv.extensions.changevisualization.tree.decoder.feature.FeatureDecoder;
 import tools.vitruv.extensions.changevisualization.tree.decoder.feature.MultipleFeatureProcessor;
 import tools.vitruv.extensions.changevisualization.tree.decoder.feature.OldValueNewValueProcessor;
 import tools.vitruv.framework.change.description.PropagatedChange;

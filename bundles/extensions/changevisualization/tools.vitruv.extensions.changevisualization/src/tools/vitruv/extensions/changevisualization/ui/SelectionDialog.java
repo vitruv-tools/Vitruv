@@ -18,6 +18,11 @@ import javax.swing.JLabel;
 public class SelectionDialog extends JDialog {
 	
 	/**
+	 * Serialization id, serialization not used
+	 */
+	private static final long serialVersionUID = 1L;
+	
+	/**
 	 * The checkBoxes the user can de/select
 	 */
 	private JCheckBox[] boxes;

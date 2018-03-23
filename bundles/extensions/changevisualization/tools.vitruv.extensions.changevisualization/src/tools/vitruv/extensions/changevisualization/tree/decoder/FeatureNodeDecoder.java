@@ -12,13 +12,10 @@ import java.util.Vector;
 
 import org.eclipse.emf.ecore.EStructuralFeature;
 
-import tools.vitruv.extensions.changevisualization.tree.ChangeNode;
 import tools.vitruv.extensions.changevisualization.tree.FeatureNode;
-import tools.vitruv.extensions.changevisualization.tree.decoder.echange.ChangeDecoder;
 import tools.vitruv.extensions.changevisualization.tree.decoder.feature.EObjectFeatureDecoder;
 import tools.vitruv.extensions.changevisualization.tree.decoder.feature.FeatureDecoder;
 import tools.vitruv.extensions.changevisualization.tree.decoder.feature.ObjectFeatureDecoder;
-import tools.vitruv.framework.change.echange.EChange;
 
 /**
  * Helper class to generate {@link FeatureNode}s from eChanges. Central place to register new {@link FeatureDecoder} 

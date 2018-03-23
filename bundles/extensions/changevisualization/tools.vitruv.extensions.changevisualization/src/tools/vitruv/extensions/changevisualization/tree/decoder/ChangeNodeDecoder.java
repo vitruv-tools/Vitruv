@@ -1,12 +1,9 @@
 package tools.vitruv.extensions.changevisualization.tree.decoder;
 
-import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Map;
-import java.util.Set;
 
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EStructuralFeature;
 
 import tools.vitruv.extensions.changevisualization.tree.ChangeNode;
 import tools.vitruv.extensions.changevisualization.tree.ChangeNode.EChangeClass;

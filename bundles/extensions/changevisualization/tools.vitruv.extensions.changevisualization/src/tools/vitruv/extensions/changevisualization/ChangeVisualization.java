@@ -11,6 +11,7 @@ import java.util.Map;
 import tools.vitruv.extensions.changevisualization.common.ChangeDataSet;
 import tools.vitruv.extensions.changevisualization.common.VisualizationMode;
 import tools.vitruv.extensions.changevisualization.tree.decoder.TreeChangeDataSetDecoder;
+import tools.vitruv.extensions.changevisualization.ui.ChangeComponent;
 import tools.vitruv.extensions.changevisualization.ui.ChangeVisualizationUI;
 import tools.vitruv.extensions.changevisualization.ui.ChangesTab;
 import tools.vitruv.framework.change.description.PropagatedChange;
