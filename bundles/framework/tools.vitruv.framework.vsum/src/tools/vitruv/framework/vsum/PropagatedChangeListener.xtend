@@ -25,7 +25,7 @@ public interface PropagatedChangeListener {
      * @param propagationResult
      *            The results to visualize
      */
-    void postChanges(String virtualModelName, VitruvDomain sourceDomain, VitruvDomain targetDomain,
+    def void postChanges(String virtualModelName, VitruvDomain sourceDomain, VitruvDomain targetDomain,
             List<PropagatedChange> propagationResult);
 
 }
