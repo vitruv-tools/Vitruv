@@ -1,21 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="interaction" nsURI="http://www.example.org/interaction" nsPrefix="interaction">
-  <eClassifiers xsi:type="ecore:EClass" name="FreeTextUserInput">
+  <eClassifiers xsi:type="ecore:EClass" name="FreeTextUserInput" eSuperTypes="#//UserInputBase">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="text" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="MultipleChoiceSingleSelectionUserInput">
+  <eClassifiers xsi:type="ecore:EClass" name="MultipleChoiceSingleSelectionUserInput"
+      eSuperTypes="#//UserInputBase">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="selectedIndex" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="choices" upperBound="-1"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="MultipleChoiceMultiSelectionUserInput">
+  <eClassifiers xsi:type="ecore:EClass" name="MultipleChoiceMultiSelectionUserInput"
+      eSuperTypes="#//UserInputBase">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="selectedIndices" upperBound="-1"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="choices" upperBound="-1"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="ConfirmationUserInput">
+  <eClassifiers xsi:type="ecore:EClass" name="ConfirmationUserInput" eSuperTypes="#//UserInputBase">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="confirmed" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="UserInputBase" abstract="true"/>
 </ecore:EPackage>

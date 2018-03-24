@@ -25,5 +25,6 @@
     <genClasses ecoreClass="interaction.ecore#//ConfirmationUserInput">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute interaction.ecore#//ConfirmationUserInput/confirmed"/>
     </genClasses>
+    <genClasses image="false" ecoreClass="interaction.ecore#//UserInputBase"/>
   </genPackages>
 </genmodel:GenModel>
