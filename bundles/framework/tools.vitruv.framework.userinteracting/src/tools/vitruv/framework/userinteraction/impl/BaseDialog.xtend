@@ -55,18 +55,17 @@ class BaseDialog extends Dialog {
 	}
 	
 	private def updateWindowModality() {
+	    /* TODO: in order for SWT.APPLICATION_MODAL hint to correctly work and make the dialog modal, the shell passed
+	    to UserInteractor and ultimately to the dialog would have to be the one used by the workbench */
 		/*val modalityFlags = switch (windowModality) {
 			case MODAL: SWT.APPLICATION_MODAL.bitwiseOr(SWT.MODELESS.bitwiseNot)//.bitwiseOr(SWT.RESIZE)
 			case MODELESS: SWT.MODELESS.bitwiseOr(SWT.APPLICATION_MODAL.bitwiseNot)
 			default: throw new RuntimeException("Unknown WindowModality!")
 		}*/
 		shellStyle = shellStyle.bitwiseOr(SWT.APPLICATION_MODAL)
-		//setShellStyle(SWT.CLOSE.bitwiseOr(SWT.APPLICATION_MODAL).bitwiseOr(SWT.BORDER).bitwiseOr(SWT.TITLE))
 		if (windowModality == WindowModality.MODELESS) {
-			shellStyle = getShellStyle().bitwiseAnd(SWT.MODELESS.bitwiseOr(SWT.APPLICATION_MODAL.bitwiseNot))
+			shellStyle = shellStyle.bitwiseOr(SWT.MODELESS.bitwiseOr(SWT.APPLICATION_MODAL.bitwiseNot))
 		}
-		//System.out.println("shellStyle: " + Integer.toBinaryString(getShellStyle()) + ", flags:" + Integer.toBinaryString(modalityFlags))
-		
 	}
 	
 	protected override Control createDialogArea(Composite parent) {
