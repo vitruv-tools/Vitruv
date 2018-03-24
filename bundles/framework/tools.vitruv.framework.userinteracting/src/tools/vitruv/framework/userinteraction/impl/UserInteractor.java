@@ -57,37 +57,37 @@ public class UserInteractor implements UserInteracting {
 	}
     
     @Override
-	public ConfirmationUserInput getUserConfirmation(String title, String message, WindowModality windowModality) {
-    	ConfirmationUserInput result = InteractionFactory.eINSTANCE.createConfirmationUserInput();
+	public boolean getUserConfirmation(String title, String message, WindowModality windowModality) {
+    	ConfirmationUserInput input = InteractionFactory.eINSTANCE.createConfirmationUserInput();
     	this.display.syncExec(new Runnable() {
             @Override
             public void run() {
                 ConfirmationDialog dialog = new ConfirmationDialog(shell, windowModality, title, message);
                 dialog.show();
-                result.setConfirmed(dialog.getResult());
+                input.setConfirmed(dialog.getResult());
             }
         });
-		return result;
+		return input.isConfirmed();
 	}
     
     @Override
-	public FreeTextUserInput getTextInput(String title, String message, WindowModality windowModality) {
-    	FreeTextUserInput result = InteractionFactory.eINSTANCE.createFreeTextUserInput();
+	public String getTextInput(String title, String message, WindowModality windowModality) {
+    	FreeTextUserInput input = InteractionFactory.eINSTANCE.createFreeTextUserInput();
     	this.display.syncExec(new Runnable() {
             @Override
             public void run() {
                 TextInputDialog dialog = new TextInputDialog(shell, windowModality, title, message);
                 dialog.show();
-                result.setText(dialog.getInput());
+                input.setText(dialog.getInput());
             }
         });
-		return result;
+		return input.getText();
 	}
     
     @Override
-	public MultipleChoiceSingleSelectionUserInput selectSingle(String title, String message,
+	public int selectSingle(String title, String message,
 			String[] selectionDescriptions, WindowModality windowModality) {
-    	MultipleChoiceSingleSelectionUserInput result =
+    	MultipleChoiceSingleSelectionUserInput input =
     			InteractionFactory.eINSTANCE.createMultipleChoiceSingleSelectionUserInput();
     	this.display.syncExec(new Runnable() {
             @Override
@@ -95,16 +95,16 @@ public class UserInteractor implements UserInteracting {
                 MultipleChoiceSelectionDialog dialog = new MultipleChoiceSelectionDialog(shell, windowModality, title,
                 		message, selectionDescriptions, SelectionType.SINGLE_SELECT);
                 dialog.show();
-                result.setSelectedIndex(dialog.getSelectedChoices()[0]);
+                input.setSelectedIndex(dialog.getSelectedChoices()[0]);
             }
         });
-		return result;
+		return input.getSelectedIndex();
 	}
     
     @Override
-	public MultipleChoiceMultiSelectionUserInput selectMulti(String title, String message,
+	public int[] selectMulti(String title, String message,
 			String[] selectionDescriptions, WindowModality windowModality) {
-    	MultipleChoiceMultiSelectionUserInput result =
+    	MultipleChoiceMultiSelectionUserInput input =
     			InteractionFactory.eINSTANCE.createMultipleChoiceMultiSelectionUserInput();
     	this.display.syncExec(new Runnable() {
             @Override
@@ -113,11 +113,11 @@ public class UserInteractor implements UserInteracting {
                 		message, selectionDescriptions, SelectionType.MULTI_SELECT);
                 dialog.show();
                 for (int index : dialog.getSelectedChoices()) { //TODO
-                	result.getSelectedIndices().add(index);
+                	input.getSelectedIndices().add(index);
                 }
             }
         });
-		return result;
+		return input.getSelectedIndices().stream().mapToInt(i -> i).toArray();
 	}
 
     @Override

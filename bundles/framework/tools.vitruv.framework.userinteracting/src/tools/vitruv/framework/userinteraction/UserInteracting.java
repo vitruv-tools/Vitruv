@@ -34,11 +34,10 @@ public interface UserInteracting {
 	 * 			the course of action/question the user shall confirm or deny.
 	 * @param windowModality
 	 * 			the modality of the window; modal or mode-less.
-	 * @return a {@link ConfirmationUserInput} object containing a {@code boolean} value that is set to true if the user
-	 * 			confirmed or false otherwise.
+	 * @return a {@code boolean} value that is set to true if the user confirmed or false otherwise.
 	 * @author Dominik Klooz
 	 */
-	ConfirmationUserInput getUserConfirmation(String title, String message, WindowModality windowModality);
+	boolean getUserConfirmation(String title, String message, WindowModality windowModality);
 	
 	/**
 	 * Get a free text input from the user.
@@ -49,11 +48,10 @@ public interface UserInteracting {
 	 * 			the message to be shown above the text input line.
 	 * @param windowModality
 	 * 			the modality of the window; modal or mode-less.
-	 * @return a {@link FreeTextUserInput} object containing a {@code String} value with the text entered by the user or
-	 * 			{@code null} if the user cancelled.
+	 * @return a {@code String} value with the text entered by the user or {@code null} if the user cancelled.
 	 * @author Dominik Klooz
 	 */
-	FreeTextUserInput getTextInput(String title, String message, WindowModality windowModality);
+	String getTextInput(String title, String message, WindowModality windowModality);
 	
 	/**
 	 * Let the user select a single entry from an array of choices represented by their descriptions given in {@code
@@ -67,10 +65,10 @@ public interface UserInteracting {
 	 * 			an array of textual descriptions for the selectable choices.
 	 * @param windowModality
 	 * 			the modality of the window; modal or mode-less.
-	 * @return a {@link MultipleChoiceSingleSelectionUserInput} object containing a zero-based {@code int} index of the
-	 * selected entries from the array of choices passed to {@code selectionDescriptions}.
+	 * @return a zero-based {@code int} index of the selected entries from the array of choices passed to
+	 * {@code selectionDescriptions}.
 	 */
-	MultipleChoiceSingleSelectionUserInput selectSingle(String title, String message, String[] selectionDescriptions,
+	int selectSingle(String title, String message, String[] selectionDescriptions,
 			WindowModality windwoModality);
 	
 	/**
@@ -86,10 +84,10 @@ public interface UserInteracting {
 	 * 			an array of textual descriptions for the selectable choices.
 	 * @param windowModality
 	 * 			the modality of the window; modal or mode-less.
-	 * @return a {@link MultipleChoiceMultiSelectionUserInput} object containing an array of zero-based {@code int}
-	 * indices of the selected entries from the array of choices passed to {@code selectionDescriptions}.
+	 * @return an array of zero-based {@code int} indices of the selected entries from the array of choices passed to
+	 * {@code selectionDescriptions}.
 	 */
-	MultipleChoiceMultiSelectionUserInput selectMulti(String title, String message, String[] selectionDescriptions,
+	int[] selectMulti(String title, String message, String[] selectionDescriptions,
 			WindowModality windowModality);
 	
     void showMessage(UserInteractionType type, String message);
