@@ -37,7 +37,47 @@
             locationURI="popup:org.eclipse.jdt.ui.PackageExplorer">
          <command
                commandId="tools.vitruv.extensions.changevisualization.commands.sampleCommand"
-               label="Togglechange visualization"
+               label="Toggle change visualization"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <iterate>
+                  <adapt
+                        type="org.eclipse.core.resources.IProject">
+                     <test
+                           property="org.eclipse.core.resources.open"
+                           value="open">
+                     </test>
+                  </adapt>
+               </iterate>
+            </visibleWhen>
+         </command>
+      </menuContribution>
+      <menuContribution
+            locationURI="popup:org.eclipse.sirius.ui.tools.views.model.explorer#PopupMenu">
+         <command
+               commandId="tools.vitruv.extensions.changevisualization.commands.sampleCommand"
+               label="Toggle change visualization"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <iterate>
+                  <adapt
+                        type="org.eclipse.core.resources.IProject">
+                     <test
+                           property="org.eclipse.core.resources.open"
+                           value="open">
+                     </test>
+                  </adapt>
+               </iterate>
+            </visibleWhen>
+         </command>
+      </menuContribution>
+      <menuContribution
+            locationURI="popup:org.eclipse.papyrus.views.modelexplorer">
+         <command
+               commandId="tools.vitruv.extensions.changevisualization.commands.sampleCommand"
+               label="Toggle change visualization"
                style="push">
             <visibleWhen
                   checkEnabled="false">
