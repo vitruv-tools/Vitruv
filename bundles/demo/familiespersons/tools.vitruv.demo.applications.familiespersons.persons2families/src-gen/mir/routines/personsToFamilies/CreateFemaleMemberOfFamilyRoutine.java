@@ -22,8 +22,6 @@ import tools.vitruv.framework.userinteraction.UserInteractionType;
 
 @SuppressWarnings("all")
 public class CreateFemaleMemberOfFamilyRoutine extends AbstractRepairRoutineRealization {
-  private RoutinesFacade actionsFacade;
-  
   private CreateFemaleMemberOfFamilyRoutine.ActionUserExecution userExecution;
   
   private static class ActionUserExecution extends AbstractRepairRoutineRealization.UserExecution {
@@ -73,10 +71,9 @@ public class CreateFemaleMemberOfFamilyRoutine extends AbstractRepairRoutineReal
     }
   }
   
-  public CreateFemaleMemberOfFamilyRoutine(final ReactionExecutionState reactionExecutionState, final CallHierarchyHaving calledBy, final Female person) {
-    super(reactionExecutionState, calledBy);
+  public CreateFemaleMemberOfFamilyRoutine(final RoutinesFacade routinesFacade, final ReactionExecutionState reactionExecutionState, final CallHierarchyHaving calledBy, final Female person) {
+    super(routinesFacade, reactionExecutionState, calledBy);
     this.userExecution = new mir.routines.personsToFamilies.CreateFemaleMemberOfFamilyRoutine.ActionUserExecution(getExecutionState(), this);
-    this.actionsFacade = new mir.routines.personsToFamilies.RoutinesFacade(getExecutionState(), this);
     this.person = person;
   }
   
@@ -103,7 +100,7 @@ public class CreateFemaleMemberOfFamilyRoutine extends AbstractRepairRoutineReal
     
     addCorrespondenceBetween(userExecution.getElement1(person, familyRegister, member), userExecution.getElement2(person, familyRegister, member), "");
     
-    userExecution.callRoutine1(person, familyRegister, member, actionsFacade);
+    userExecution.callRoutine1(person, familyRegister, member, this.getRoutinesFacade());
     
     postprocessElements();
     

@@ -17,8 +17,6 @@ import tools.vitruv.extensions.dslsruntime.reactions.structure.CallHierarchyHavi
 
 @SuppressWarnings("all")
 public class UpdateAddressXRecipientLocationCityMappingInstanceRoutine extends AbstractRepairRoutineRealization {
-  private RoutinesFacade actionsFacade;
-  
   private UpdateAddressXRecipientLocationCityMappingInstanceRoutine.ActionUserExecution userExecution;
   
   private static class ActionUserExecution extends AbstractRepairRoutineRealization.UserExecution {
@@ -67,10 +65,9 @@ public class UpdateAddressXRecipientLocationCityMappingInstanceRoutine extends A
     }
   }
   
-  public UpdateAddressXRecipientLocationCityMappingInstanceRoutine(final ReactionExecutionState reactionExecutionState, final CallHierarchyHaving calledBy, final Addresses aRoot, final Address a) {
-    super(reactionExecutionState, calledBy);
+  public UpdateAddressXRecipientLocationCityMappingInstanceRoutine(final RoutinesFacade routinesFacade, final ReactionExecutionState reactionExecutionState, final CallHierarchyHaving calledBy, final Addresses aRoot, final Address a) {
+    super(routinesFacade, reactionExecutionState, calledBy);
     this.userExecution = new mir.routines.adXre_L2R.UpdateAddressXRecipientLocationCityMappingInstanceRoutine.ActionUserExecution(getExecutionState(), this);
-    this.actionsFacade = new mir.routines.adXre_L2R.RoutinesFacade(getExecutionState(), this);
     this.aRoot = aRoot;this.a = a;
   }
   
@@ -130,7 +127,7 @@ public class UpdateAddressXRecipientLocationCityMappingInstanceRoutine extends A
     if (!userExecution.checkMatcherPrecondition1(aRoot, a, rRoot, r, l, c)) {
     	return false;
     }
-    userExecution.callRoutine1(aRoot, a, rRoot, r, l, c, actionsFacade);
+    userExecution.callRoutine1(aRoot, a, rRoot, r, l, c, this.getRoutinesFacade());
     
     postprocessElements();
     

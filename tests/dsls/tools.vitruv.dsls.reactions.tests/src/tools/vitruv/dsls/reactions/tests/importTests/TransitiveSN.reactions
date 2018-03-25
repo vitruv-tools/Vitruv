@@ -1,0 +1,127 @@
+import tools.vitruv.dsls.reactions.tests.importTests.ImportTestsExecutionMonitor
+
+import static tools.vitruv.dsls.reactions.tests.importTests.ImportTests.*
+import static tools.vitruv.dsls.reactions.tests.importTests.ImportTestsExecutionMonitor.ExecutionType.*
+import static tools.vitruv.dsls.reactions.tests.importTests.ImportTestsUtils.*
+
+import "http://tools.vitruv.tests.metamodels.allElementTypes" as minimal
+
+reactions: importTestsTransitiveSN
+in reaction to changes in AllElementTypes
+execute actions in AllElementTypes
+
+import routines importTestsCommonRoutines using qualified names
+
+reaction TransitiveSNReaction {
+	after attribute replaced at minimal::Root[id]
+	call {
+		ImportTestsExecutionMonitor.instance.set(TransitiveSNReaction)
+		val data = newValue;
+		if (containsDataTag(data, TAG_TEST_IMPORTED_SEGMENTS_WORKING)) {
+			transitiveSNInnerRoutine()
+		}
+
+		// test routine overrides:
+		if (containsDataTag(data, TAG_CALL_OVERRIDDEN_TRANSITIVE_ROUTINE)) {
+			if (containsDataTag(data, TAG_FROM_OVERRIDDEN_SEGMENT)) {
+				transitiveSNOverriddenRoutine()
+			}
+		}
+		if (containsDataTag(data, TAG_CALL_ALREADY_OVERRIDDEN_TRANSITIVE_ROUTINE)) {
+			if (containsDataTag(data, TAG_FROM_OVERRIDDEN_SEGMENT)) {
+				transitiveSNOverriddenRoutine2()
+			}
+		}
+		if (containsDataTag(data, TAG_CALL_TRANSITIVE_ROUTINE_OVERRIDDEN_BY_IMPORTED_SEGMENT)) {
+			if (containsDataTag(data, TAG_FROM_OVERRIDDEN_SEGMENT)) {
+				transitiveSNOverriddenRoutine3()
+			}
+		}
+
+		// test multiple imports of same routines at different import paths:
+		if (containsDataTag(data, TAG_TEST_MULTIPLE_IMPORTS_OF_SAME_ROUTINES_IMPORT_PATH_1)) {
+			// import path: directSN > transitiveSN > commonRoutines
+			importTestsCommonRoutines.commonRoutinesRoutine3()
+		}
+	}
+}
+
+routine transitiveSNRoutine() {
+	action {
+		call {
+			ImportTestsExecutionMonitor.instance.set(TransitiveSNRoutine)
+		}
+	}
+}
+
+routine transitiveSNInnerRoutine() {
+	action {
+		call {
+			ImportTestsExecutionMonitor.instance.set(TransitiveSNInnerRoutine)
+		}
+	}
+}
+
+// reaction overrides:
+
+reaction TransitiveSNOverriddenReaction {
+	after attribute replaced at minimal::Root[id]
+	call {
+		val data = newValue;
+		if (containsDataTag(data, TAG_TEST_TRANSITIVE_REACTION_OVERRIDE)) {
+			ImportTestsExecutionMonitor.instance.set(TransitiveSNOverriddenReaction)
+			transitiveSNRoutine()
+		}
+	}
+}
+
+reaction TransitiveSNOverriddenReaction2 {
+	after attribute replaced at minimal::Root[id]
+	call {
+		val data = newValue;
+		if (containsDataTag(data, TAG_TEST_TRANSITIVE_REACTION_OVERRIDE)) {
+			ImportTestsExecutionMonitor.instance.set(TransitiveSNOverriddenReaction2)
+			transitiveSNRoutine()
+		}
+	}
+}
+
+reaction TransitiveSNOverriddenReaction3 {
+	after attribute replaced at minimal::Root[id]
+	call {
+		val data = newValue;
+		if (containsDataTag(data, TAG_TEST_TRANSITIVE_REACTION_OVERRIDE)) {
+			ImportTestsExecutionMonitor.instance.set(TransitiveSNOverriddenReaction3)
+			transitiveSNRoutine()
+		}
+	}
+}
+
+// routine overrides:
+
+routine transitiveSNOverriddenRoutine(){
+	action {
+		call {
+			ImportTestsExecutionMonitor.instance.set(TransitiveSNOverriddenRoutine)
+			transitiveSNRoutine()
+		}
+	}
+}
+
+routine transitiveSNOverriddenRoutine2() {
+	action {
+		call {
+			ImportTestsExecutionMonitor.instance.set(TransitiveSNOverriddenRoutine2)
+			transitiveSNRoutine()
+		}
+	}
+}
+
+routine transitiveSNOverriddenRoutine3() {
+	action {
+		call {
+			ImportTestsExecutionMonitor.instance.set(TransitiveSNOverriddenRoutine3)
+			transitiveSNRoutine()
+		}
+	}
+}

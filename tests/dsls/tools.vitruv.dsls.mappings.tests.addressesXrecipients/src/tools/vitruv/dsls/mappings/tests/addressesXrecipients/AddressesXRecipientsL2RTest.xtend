@@ -6,7 +6,7 @@ import edu.kit.ipd.sdq.metamodels.recipients.City
 import edu.kit.ipd.sdq.metamodels.recipients.Location
 import edu.kit.ipd.sdq.metamodels.recipients.Recipient
 import edu.kit.ipd.sdq.metamodels.recipients.Recipients
-import mir.reactions.AddressesToRecipientsChangePropagationSpecification
+import mir.reactions.adXre_L2R.AdXre_L2RChangePropagationSpecification
 import org.junit.Test
 
 import static org.junit.Assert.*
@@ -14,7 +14,7 @@ import static org.junit.Assert.*
 class AddressesXRecipientsL2RTest extends AddressesXRecipientsTest {
 	
 	override protected createChangePropagationSpecifications() {
-		return #[new AddressesToRecipientsChangePropagationSpecification()]
+		return #[new AdXre_L2RChangePropagationSpecification()]
 	}
 	
 	@Test

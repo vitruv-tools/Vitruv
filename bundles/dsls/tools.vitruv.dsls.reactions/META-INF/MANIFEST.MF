@@ -49,6 +49,7 @@ Export-Package: tools.vitruv.dsls.reactions,
  tools.vitruv.dsls.reactions.scoping,
  tools.vitruv.dsls.reactions.serializer,
  tools.vitruv.dsls.reactions.services,
+ tools.vitruv.dsls.reactions.util,
  tools.vitruv.dsls.reactions.validation,
  tools.vitruv.dsls.reactions.formatting2
 Import-Package: org.apache.log4j,

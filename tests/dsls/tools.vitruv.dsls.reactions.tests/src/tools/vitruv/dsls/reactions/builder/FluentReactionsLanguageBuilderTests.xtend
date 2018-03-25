@@ -112,6 +112,266 @@ class FluentReactionsLanguageBuilderTests {
 	}
 
 	@Test
+	def void importSegments() {
+		val builder = create.reactionsFile('importTest')
+
+		val baseSegment = create.reactionsSegment('baseSegment')
+			.inReactionToChangesIn(AllElementTypes)
+			.executeActionsIn(AllElementTypes)
+		baseSegment += create.reaction('CreateRootTest').afterElement(Root).created.call [
+			action [
+				vall('newRoot').create(Root)
+				addCorrespondenceBetween('newRoot').and.affectedEObject
+			]
+		]
+
+		val baseSegment2 = create.reactionsSegment('baseSegment2')
+			.inReactionToChangesIn(AllElementTypes)
+			.executeActionsIn(AllElementTypes)
+		baseSegment2 += create.reaction('DeleteRootTest').afterElement(Root).deleted.call [
+			match [
+				vall('toDelete').retrieve(Root).correspondingTo.affectedEObject
+			].action [
+				delete('toDelete')
+			]
+		]
+
+		val extendedSegment = create.reactionsSegment('extendedSegment')
+			.inReactionToChangesIn(AllElementTypes)
+			.executeActionsIn(AllElementTypes)
+			.importSegment(baseSegment).usingSimpleRoutineNames
+			.importSegment(baseSegment2).routinesOnly.usingQualifiedRoutineNames
+
+		builder += baseSegment
+		builder += baseSegment2
+		builder += extendedSegment
+
+		val reactionResult = '''
+			import "http://tools.vitruv.tests.metamodels.allElementTypes" as allElementTypes
+
+			reactions: baseSegment
+			in reaction to changes in AllElementTypes
+			execute actions in AllElementTypes
+
+			reaction CreateRootTest {
+				after element allElementTypes::Root created
+				call createRootTestRepair(affectedEObject)
+			}
+
+			routine createRootTestRepair(allElementTypes::Root affectedEObject) {
+				action {
+					val newRoot = create allElementTypes::Root
+					add correspondence between newRoot and affectedEObject
+				}
+			}
+
+
+
+			reactions: baseSegment2
+			in reaction to changes in AllElementTypes
+			execute actions in AllElementTypes
+
+			reaction DeleteRootTest {
+				after element allElementTypes::Root deleted
+				call deleteRootTestRepair(affectedEObject)
+			}
+
+			routine deleteRootTestRepair(allElementTypes::Root affectedEObject) {
+				match {
+					val toDelete = retrieve allElementTypes::Root corresponding to affectedEObject
+				}
+				action {
+					delete toDelete
+				}
+			}
+
+
+
+			reactions: extendedSegment
+			in reaction to changes in AllElementTypes
+			execute actions in AllElementTypes
+
+			import baseSegment
+			import routines baseSegment2 using qualified names
+		'''
+
+		assertThat(builder, builds(reactionResult))
+	}
+
+	@Test
+	def void overrideReaction() {
+		val builder = create.reactionsFile('overrideReactionTest')
+
+		val baseSegment = create.reactionsSegment('baseSegment')
+			.inReactionToChangesIn(AllElementTypes)
+			.executeActionsIn(AllElementTypes)
+		baseSegment += create.reaction('CreateRootTest')
+			.afterElement(Root).created.call [
+				action [
+					vall('newRoot').create(Root)
+					addCorrespondenceBetween('newRoot').and.affectedEObject
+				]
+			]
+
+		val extendedSegment = create.reactionsSegment('extendedSegment')
+			.inReactionToChangesIn(AllElementTypes)
+			.executeActionsIn(AllElementTypes)
+			.importSegment(baseSegment).usingQualifiedRoutineNames
+		extendedSegment += create.reaction('CreateRootTest')
+			.overrideSegment(baseSegment)
+			.afterElement(Root).created.call [
+				action [
+					vall('newRootInOverride').create(Root)
+					addCorrespondenceBetween('newRootInOverride').and.affectedEObject
+				]
+			]
+
+		builder += baseSegment
+		builder += extendedSegment
+
+		val reactionResult = '''
+			import "http://tools.vitruv.tests.metamodels.allElementTypes" as allElementTypes
+
+			reactions: baseSegment
+			in reaction to changes in AllElementTypes
+			execute actions in AllElementTypes
+
+			reaction CreateRootTest {
+				after element allElementTypes::Root created
+				call createRootTestRepair(affectedEObject)
+			}
+
+			routine createRootTestRepair(allElementTypes::Root affectedEObject) {
+				action {
+					val newRoot = create allElementTypes::Root
+					add correspondence between newRoot and affectedEObject
+				}
+			}
+
+
+
+			reactions: extendedSegment
+			in reaction to changes in AllElementTypes
+			execute actions in AllElementTypes
+
+			import baseSegment using qualified names
+
+			reaction baseSegment::CreateRootTest {
+				after element allElementTypes::Root created
+				call createRootTestRepair(affectedEObject)
+			}
+
+			routine createRootTestRepair(allElementTypes::Root affectedEObject) {
+				action {
+					val newRootInOverride = create allElementTypes::Root
+					add correspondence between newRootInOverride and affectedEObject
+				}
+			}
+		'''
+
+		assertThat(builder, builds(reactionResult))
+	}
+
+	@Test
+	def void overrideRoutines() {
+		val builder = create.reactionsFile('overrideRoutinesTest')
+
+		val baseSegment = create.reactionsSegment('baseSegment')
+			.inReactionToChangesIn(AllElementTypes)
+			.executeActionsIn(AllElementTypes)
+		baseSegment += create.reaction('CreateRootTest').afterElement(Root).created.call[
+			action [
+				vall('newRoot').create(Root)
+				addCorrespondenceBetween('newRoot').and.affectedEObject
+			]
+		]
+
+		val extendedSegment = create.reactionsSegment('extendedSegment')
+			.inReactionToChangesIn(AllElementTypes)
+			.executeActionsIn(AllElementTypes)
+			.importSegment(baseSegment).usingQualifiedRoutineNames
+		extendedSegment += create.routine('createRootTestRepair')
+			// TODO this is not working yet
+			.overrideAlongImportPath(baseSegment)
+			.input [
+				model(Root, 'affectedEObject')
+			].action [
+				vall('newRoot2').create(Root)
+				addCorrespondenceBetween('newRoot2').and.affectedEObject
+			]
+
+		val extendedSegment2 = create.reactionsSegment('extendedSegment2')
+			.inReactionToChangesIn(AllElementTypes)
+			.executeActionsIn(AllElementTypes)
+			.importSegment(extendedSegment).usingQualifiedRoutineNames
+		extendedSegment2 += create.routine('createRootTestRepair')
+			// TODO this is not working yet
+			.overrideAlongImportPath(extendedSegment, baseSegment)
+			.input [
+				model(Root, 'affectedEObject')
+			].action [
+				vall('newRoot3').create(Root)
+				addCorrespondenceBetween('newRoot3').and.affectedEObject
+			]
+
+		builder += baseSegment
+		builder += extendedSegment
+		builder += extendedSegment2
+
+		val reactionResult = '''
+			import "http://tools.vitruv.tests.metamodels.allElementTypes" as allElementTypes
+
+			reactions: baseSegment
+			in reaction to changes in AllElementTypes
+			execute actions in AllElementTypes
+
+			reaction CreateRootTest {
+				after element allElementTypes::Root created
+				call createRootTestRepair(affectedEObject)
+			}
+
+			routine createRootTestRepair(allElementTypes::Root affectedEObject) {
+				action {
+					val newRoot = create allElementTypes::Root
+					add correspondence between newRoot and affectedEObject
+				}
+			}
+
+
+
+			reactions: extendedSegment
+			in reaction to changes in AllElementTypes
+			execute actions in AllElementTypes
+
+			import baseSegment using qualified names
+
+			routine baseSegment::createRootTestRepair(allElementTypes::Root affectedEObject) {
+				action {
+					val newRoot2 = create allElementTypes::Root
+					add correspondence between newRoot2 and affectedEObject
+				}
+			}
+
+
+
+			reactions: extendedSegment2
+			in reaction to changes in AllElementTypes
+			execute actions in AllElementTypes
+
+			import extendedSegment using qualified names
+
+			routine extendedSegment.baseSegment::createRootTestRepair(allElementTypes::Root affectedEObject) {
+				action {
+					val newRoot3 = create allElementTypes::Root
+					add correspondence between newRoot3 and affectedEObject
+				}
+			}
+		'''
+
+		assertThat(builder, builds(reactionResult))
+	}
+
+	@Test
 	def void noEmptyReactionsFile() {
 		thrown.expectMessage("No reactions segments")
 		thrown.expect(IllegalStateException)
@@ -122,7 +382,7 @@ class FluentReactionsLanguageBuilderTests {
 	
 	@Test
 	def void noEmptyReactionsSegment() {
-		thrown.expectMessage("Neither routines nor reactions")
+		thrown.expectMessage("Neither routines, nor reactions, nor imports")
 		thrown.expect(IllegalStateException)
 		
 		val builder = create.reactionsFile('Test') +=

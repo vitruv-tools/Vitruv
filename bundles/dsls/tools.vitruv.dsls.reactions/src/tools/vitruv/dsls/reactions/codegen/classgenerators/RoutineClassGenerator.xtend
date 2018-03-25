@@ -57,6 +57,9 @@ class RoutineClassGenerator extends ClassGenerator {
 
 	public new(Routine routine, TypesBuilderExtensionProvider typesBuilderExtensionProvider) {
 		super(typesBuilderExtensionProvider)
+		if (!routine.isComplete) {
+			throw new IllegalArgumentException("incomplete");
+		}
 		this.routine = routine;
 		this._completionChecker = new ReactionElementsCompletionChecker();
 		this.routineClassNameGenerator = routine.routineClassNameGenerator;
@@ -90,10 +93,6 @@ class RoutineClassGenerator extends ClassGenerator {
 	«FOR parameterName : parameterStrings SEPARATOR ', '»«parameterName»«ENDFOR»'''
 
 	override JvmGenericType generateEmptyClass() {
-		if (routine === null) {
-			return null;
-		}
-
 		userExecutionClass = userExecutionClassGenerator.generateEmptyClass()
 		generatedClass = routine.toClass(routineClassNameGenerator.qualifiedName) [
 			visibility = JvmVisibility.PUBLIC
@@ -106,7 +105,6 @@ class RoutineClassGenerator extends ClassGenerator {
 		generatedClass => [
 			documentation = getCommentWithoutMarkers(routine.documentation)
 			superTypes += typeRef(AbstractRepairRoutineRealization)
-			members += routine.toField(EFFECT_FACADE_FIELD_NAME, typeRef(routinesFacadeClassNameGenerator.qualifiedName))
 			members += routine.toField(USER_EXECUTION_FIELD_NAME, typeRef(userExecutionClass))
 			members += userExecutionClassGenerator.generateBody()
 			members += routine.generateConstructor()
@@ -126,16 +124,17 @@ class RoutineClassGenerator extends ClassGenerator {
 	protected def JvmConstructor generateConstructor(Routine routine) {
 		return routine.toConstructor [
 			visibility = JvmVisibility.PUBLIC;
+			val routinesFacadeParameter = generateRoutinesFacadeParameter(routine.reactionsSegment);
 			val executionStateParameter = generateReactionExecutionStateParameter();
 			val calledByParameter = generateParameter("calledBy", typeRef(CallHierarchyHaving));
 			val inputParameters = routine.generateInputParameters();
+			parameters += routinesFacadeParameter;
 			parameters += executionStateParameter;
 			parameters += calledByParameter;
 			parameters += inputParameters;
 			body = '''
-			super(«executionStateParameter.name», «calledByParameter.name»);
+			super(«routinesFacadeParameter.name», «executionStateParameter.name», «calledByParameter.name»);
 			this.«USER_EXECUTION_FIELD_NAME» = new «generalUserExecutionClassQualifiedName»(getExecutionState(), this);
-			this.«EFFECT_FACADE_FIELD_NAME» = new «routinesFacadeClassNameGenerator.qualifiedName»(getExecutionState(), this);
 			«FOR inputParameter : inputParameters»this.«inputParameter.name» = «inputParameter.name»;«ENDFOR»'''
 		]
 	}
@@ -298,7 +297,7 @@ class RoutineClassGenerator extends ClassGenerator {
 	private def StringConcatenationClient generateExecutionMethodCall(JvmOperation executionMethod) {
 		val parameterCallList = executionMethod.generateCurrentlyAccessibleElementsParameters.generateMethodParameterCallList
 		val StringConcatenationClient methodCall = '''«USER_EXECUTION_FIELD_NAME».«executionMethod.simpleName»(«
-			parameterCallList»«IF !parameterCallList.toString.empty», «ENDIF»«EFFECT_FACADE_FIELD_NAME»);''';
+			parameterCallList»«IF !parameterCallList.toString.empty», «ENDIF»this.getRoutinesFacade());''';
 		return methodCall;
 	}
 

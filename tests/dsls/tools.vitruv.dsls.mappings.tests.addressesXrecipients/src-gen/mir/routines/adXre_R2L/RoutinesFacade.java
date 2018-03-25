@@ -6,108 +6,187 @@ import edu.kit.ipd.sdq.metamodels.recipients.City;
 import edu.kit.ipd.sdq.metamodels.recipients.Location;
 import edu.kit.ipd.sdq.metamodels.recipients.Recipient;
 import edu.kit.ipd.sdq.metamodels.recipients.Recipients;
+import mir.routines.adXre_R2L.CreateAdRootXReRootMappingInstanceRoutine;
+import mir.routines.adXre_R2L.CreateAdRootXReRootMappingInstancesRoutine;
+import mir.routines.adXre_R2L.CreateAddressXRecipientLocationCityMappingInstanceRoutine;
+import mir.routines.adXre_R2L.CreateAddressXRecipientLocationCityMappingInstancesRoutine;
+import mir.routines.adXre_R2L.DeleteAdRootXReRootMappingInstanceRoutine;
+import mir.routines.adXre_R2L.DeleteAdRootXReRootMappingInstancesRoutine;
+import mir.routines.adXre_R2L.DeleteAddressXRecipientLocationCityMappingInstanceRoutine;
+import mir.routines.adXre_R2L.DeleteAddressXRecipientLocationCityMappingInstancesRoutine;
+import mir.routines.adXre_R2L.EnforceAdRootXReRootMappingConditionsFromRightToLeftRoutine;
+import mir.routines.adXre_R2L.EnforceAddressXRecipientLocationCityMappingConditionsFromRightToLeftRoutine;
+import mir.routines.adXre_R2L.EnforceLeftAdRootXReRootMappingConditionsRoutine;
+import mir.routines.adXre_R2L.EnforceLeftAddressXRecipientLocationCityMappingConditionsRoutine;
+import mir.routines.adXre_R2L.EnsureAdRootXReRootMappingRoutine;
+import mir.routines.adXre_R2L.EnsureAddressXRecipientLocationCityMappingRoutine;
+import mir.routines.adXre_R2L.EnsureAllMappingsRoutine;
+import mir.routines.adXre_R2L.UpdateAdRootXReRootMappingInstanceRoutine;
+import mir.routines.adXre_R2L.UpdateAdRootXReRootMappingInstancesRoutine;
+import mir.routines.adXre_R2L.UpdateAddressXRecipientLocationCityMappingInstanceRoutine;
+import mir.routines.adXre_R2L.UpdateAddressXRecipientLocationCityMappingInstancesRoutine;
 import tools.vitruv.extensions.dslsruntime.reactions.AbstractRepairRoutinesFacade;
 import tools.vitruv.extensions.dslsruntime.reactions.ReactionExecutionState;
+import tools.vitruv.extensions.dslsruntime.reactions.RoutinesFacadeExecutionState;
+import tools.vitruv.extensions.dslsruntime.reactions.RoutinesFacadesProvider;
 import tools.vitruv.extensions.dslsruntime.reactions.structure.CallHierarchyHaving;
+import tools.vitruv.extensions.dslsruntime.reactions.structure.ReactionsImportPath;
 
 @SuppressWarnings("all")
 public class RoutinesFacade extends AbstractRepairRoutinesFacade {
-  public RoutinesFacade(final ReactionExecutionState reactionExecutionState, final CallHierarchyHaving calledBy) {
-    super(reactionExecutionState, calledBy);
+  public RoutinesFacade(final RoutinesFacadesProvider routinesFacadesProvider, final ReactionsImportPath reactionsImportPath, final RoutinesFacadeExecutionState executionState) {
+    super(routinesFacadesProvider, reactionsImportPath, executionState);
   }
   
   public boolean ensureAllMappings() {
-    mir.routines.adXre_R2L.EnsureAllMappingsRoutine effect = new mir.routines.adXre_R2L.EnsureAllMappingsRoutine(this.executionState, calledBy);
-    return effect.applyRoutine();
+    RoutinesFacade _routinesFacade = this;
+    ReactionExecutionState _reactionExecutionState = this._getExecutionState().getReactionExecutionState();
+    CallHierarchyHaving _caller = this._getExecutionState().getCaller();
+    EnsureAllMappingsRoutine routine = new EnsureAllMappingsRoutine(_routinesFacade, _reactionExecutionState, _caller);
+    return routine.applyRoutine();
   }
   
   public boolean ensureAdRootXReRootMapping() {
-    mir.routines.adXre_R2L.EnsureAdRootXReRootMappingRoutine effect = new mir.routines.adXre_R2L.EnsureAdRootXReRootMappingRoutine(this.executionState, calledBy);
-    return effect.applyRoutine();
+    RoutinesFacade _routinesFacade = this;
+    ReactionExecutionState _reactionExecutionState = this._getExecutionState().getReactionExecutionState();
+    CallHierarchyHaving _caller = this._getExecutionState().getCaller();
+    EnsureAdRootXReRootMappingRoutine routine = new EnsureAdRootXReRootMappingRoutine(_routinesFacade, _reactionExecutionState, _caller);
+    return routine.applyRoutine();
   }
   
   public boolean deleteAdRootXReRootMappingInstances() {
-    mir.routines.adXre_R2L.DeleteAdRootXReRootMappingInstancesRoutine effect = new mir.routines.adXre_R2L.DeleteAdRootXReRootMappingInstancesRoutine(this.executionState, calledBy);
-    return effect.applyRoutine();
+    RoutinesFacade _routinesFacade = this;
+    ReactionExecutionState _reactionExecutionState = this._getExecutionState().getReactionExecutionState();
+    CallHierarchyHaving _caller = this._getExecutionState().getCaller();
+    DeleteAdRootXReRootMappingInstancesRoutine routine = new DeleteAdRootXReRootMappingInstancesRoutine(_routinesFacade, _reactionExecutionState, _caller);
+    return routine.applyRoutine();
   }
   
   public boolean deleteAdRootXReRootMappingInstance(final Recipients rRoot) {
-    mir.routines.adXre_R2L.DeleteAdRootXReRootMappingInstanceRoutine effect = new mir.routines.adXre_R2L.DeleteAdRootXReRootMappingInstanceRoutine(this.executionState, calledBy, rRoot);
-    return effect.applyRoutine();
+    RoutinesFacade _routinesFacade = this;
+    ReactionExecutionState _reactionExecutionState = this._getExecutionState().getReactionExecutionState();
+    CallHierarchyHaving _caller = this._getExecutionState().getCaller();
+    DeleteAdRootXReRootMappingInstanceRoutine routine = new DeleteAdRootXReRootMappingInstanceRoutine(_routinesFacade, _reactionExecutionState, _caller, rRoot);
+    return routine.applyRoutine();
   }
   
   public boolean createAdRootXReRootMappingInstances() {
-    mir.routines.adXre_R2L.CreateAdRootXReRootMappingInstancesRoutine effect = new mir.routines.adXre_R2L.CreateAdRootXReRootMappingInstancesRoutine(this.executionState, calledBy);
-    return effect.applyRoutine();
+    RoutinesFacade _routinesFacade = this;
+    ReactionExecutionState _reactionExecutionState = this._getExecutionState().getReactionExecutionState();
+    CallHierarchyHaving _caller = this._getExecutionState().getCaller();
+    CreateAdRootXReRootMappingInstancesRoutine routine = new CreateAdRootXReRootMappingInstancesRoutine(_routinesFacade, _reactionExecutionState, _caller);
+    return routine.applyRoutine();
   }
   
   public boolean createAdRootXReRootMappingInstance(final Recipients rRoot) {
-    mir.routines.adXre_R2L.CreateAdRootXReRootMappingInstanceRoutine effect = new mir.routines.adXre_R2L.CreateAdRootXReRootMappingInstanceRoutine(this.executionState, calledBy, rRoot);
-    return effect.applyRoutine();
+    RoutinesFacade _routinesFacade = this;
+    ReactionExecutionState _reactionExecutionState = this._getExecutionState().getReactionExecutionState();
+    CallHierarchyHaving _caller = this._getExecutionState().getCaller();
+    CreateAdRootXReRootMappingInstanceRoutine routine = new CreateAdRootXReRootMappingInstanceRoutine(_routinesFacade, _reactionExecutionState, _caller, rRoot);
+    return routine.applyRoutine();
   }
   
   public boolean enforceLeftAdRootXReRootMappingConditions(final Addresses aRoot) {
-    mir.routines.adXre_R2L.EnforceLeftAdRootXReRootMappingConditionsRoutine effect = new mir.routines.adXre_R2L.EnforceLeftAdRootXReRootMappingConditionsRoutine(this.executionState, calledBy, aRoot);
-    return effect.applyRoutine();
+    RoutinesFacade _routinesFacade = this;
+    ReactionExecutionState _reactionExecutionState = this._getExecutionState().getReactionExecutionState();
+    CallHierarchyHaving _caller = this._getExecutionState().getCaller();
+    EnforceLeftAdRootXReRootMappingConditionsRoutine routine = new EnforceLeftAdRootXReRootMappingConditionsRoutine(_routinesFacade, _reactionExecutionState, _caller, aRoot);
+    return routine.applyRoutine();
   }
   
   public boolean enforceAdRootXReRootMappingConditionsFromRightToLeft(final Addresses aRoot, final Recipients rRoot) {
-    mir.routines.adXre_R2L.EnforceAdRootXReRootMappingConditionsFromRightToLeftRoutine effect = new mir.routines.adXre_R2L.EnforceAdRootXReRootMappingConditionsFromRightToLeftRoutine(this.executionState, calledBy, aRoot, rRoot);
-    return effect.applyRoutine();
+    RoutinesFacade _routinesFacade = this;
+    ReactionExecutionState _reactionExecutionState = this._getExecutionState().getReactionExecutionState();
+    CallHierarchyHaving _caller = this._getExecutionState().getCaller();
+    EnforceAdRootXReRootMappingConditionsFromRightToLeftRoutine routine = new EnforceAdRootXReRootMappingConditionsFromRightToLeftRoutine(_routinesFacade, _reactionExecutionState, _caller, aRoot, rRoot);
+    return routine.applyRoutine();
   }
   
   public boolean updateAdRootXReRootMappingInstances() {
-    mir.routines.adXre_R2L.UpdateAdRootXReRootMappingInstancesRoutine effect = new mir.routines.adXre_R2L.UpdateAdRootXReRootMappingInstancesRoutine(this.executionState, calledBy);
-    return effect.applyRoutine();
+    RoutinesFacade _routinesFacade = this;
+    ReactionExecutionState _reactionExecutionState = this._getExecutionState().getReactionExecutionState();
+    CallHierarchyHaving _caller = this._getExecutionState().getCaller();
+    UpdateAdRootXReRootMappingInstancesRoutine routine = new UpdateAdRootXReRootMappingInstancesRoutine(_routinesFacade, _reactionExecutionState, _caller);
+    return routine.applyRoutine();
   }
   
   public boolean updateAdRootXReRootMappingInstance(final Recipients rRoot) {
-    mir.routines.adXre_R2L.UpdateAdRootXReRootMappingInstanceRoutine effect = new mir.routines.adXre_R2L.UpdateAdRootXReRootMappingInstanceRoutine(this.executionState, calledBy, rRoot);
-    return effect.applyRoutine();
+    RoutinesFacade _routinesFacade = this;
+    ReactionExecutionState _reactionExecutionState = this._getExecutionState().getReactionExecutionState();
+    CallHierarchyHaving _caller = this._getExecutionState().getCaller();
+    UpdateAdRootXReRootMappingInstanceRoutine routine = new UpdateAdRootXReRootMappingInstanceRoutine(_routinesFacade, _reactionExecutionState, _caller, rRoot);
+    return routine.applyRoutine();
   }
   
   public boolean ensureAddressXRecipientLocationCityMapping() {
-    mir.routines.adXre_R2L.EnsureAddressXRecipientLocationCityMappingRoutine effect = new mir.routines.adXre_R2L.EnsureAddressXRecipientLocationCityMappingRoutine(this.executionState, calledBy);
-    return effect.applyRoutine();
+    RoutinesFacade _routinesFacade = this;
+    ReactionExecutionState _reactionExecutionState = this._getExecutionState().getReactionExecutionState();
+    CallHierarchyHaving _caller = this._getExecutionState().getCaller();
+    EnsureAddressXRecipientLocationCityMappingRoutine routine = new EnsureAddressXRecipientLocationCityMappingRoutine(_routinesFacade, _reactionExecutionState, _caller);
+    return routine.applyRoutine();
   }
   
   public boolean deleteAddressXRecipientLocationCityMappingInstances() {
-    mir.routines.adXre_R2L.DeleteAddressXRecipientLocationCityMappingInstancesRoutine effect = new mir.routines.adXre_R2L.DeleteAddressXRecipientLocationCityMappingInstancesRoutine(this.executionState, calledBy);
-    return effect.applyRoutine();
+    RoutinesFacade _routinesFacade = this;
+    ReactionExecutionState _reactionExecutionState = this._getExecutionState().getReactionExecutionState();
+    CallHierarchyHaving _caller = this._getExecutionState().getCaller();
+    DeleteAddressXRecipientLocationCityMappingInstancesRoutine routine = new DeleteAddressXRecipientLocationCityMappingInstancesRoutine(_routinesFacade, _reactionExecutionState, _caller);
+    return routine.applyRoutine();
   }
   
   public boolean deleteAddressXRecipientLocationCityMappingInstance(final Recipients rRoot, final Recipient r, final Location l, final City c) {
-    mir.routines.adXre_R2L.DeleteAddressXRecipientLocationCityMappingInstanceRoutine effect = new mir.routines.adXre_R2L.DeleteAddressXRecipientLocationCityMappingInstanceRoutine(this.executionState, calledBy, rRoot, r, l, c);
-    return effect.applyRoutine();
+    RoutinesFacade _routinesFacade = this;
+    ReactionExecutionState _reactionExecutionState = this._getExecutionState().getReactionExecutionState();
+    CallHierarchyHaving _caller = this._getExecutionState().getCaller();
+    DeleteAddressXRecipientLocationCityMappingInstanceRoutine routine = new DeleteAddressXRecipientLocationCityMappingInstanceRoutine(_routinesFacade, _reactionExecutionState, _caller, rRoot, r, l, c);
+    return routine.applyRoutine();
   }
   
   public boolean createAddressXRecipientLocationCityMappingInstances() {
-    mir.routines.adXre_R2L.CreateAddressXRecipientLocationCityMappingInstancesRoutine effect = new mir.routines.adXre_R2L.CreateAddressXRecipientLocationCityMappingInstancesRoutine(this.executionState, calledBy);
-    return effect.applyRoutine();
+    RoutinesFacade _routinesFacade = this;
+    ReactionExecutionState _reactionExecutionState = this._getExecutionState().getReactionExecutionState();
+    CallHierarchyHaving _caller = this._getExecutionState().getCaller();
+    CreateAddressXRecipientLocationCityMappingInstancesRoutine routine = new CreateAddressXRecipientLocationCityMappingInstancesRoutine(_routinesFacade, _reactionExecutionState, _caller);
+    return routine.applyRoutine();
   }
   
   public boolean createAddressXRecipientLocationCityMappingInstance(final Recipients rRoot, final Recipient r, final Location l, final City c) {
-    mir.routines.adXre_R2L.CreateAddressXRecipientLocationCityMappingInstanceRoutine effect = new mir.routines.adXre_R2L.CreateAddressXRecipientLocationCityMappingInstanceRoutine(this.executionState, calledBy, rRoot, r, l, c);
-    return effect.applyRoutine();
+    RoutinesFacade _routinesFacade = this;
+    ReactionExecutionState _reactionExecutionState = this._getExecutionState().getReactionExecutionState();
+    CallHierarchyHaving _caller = this._getExecutionState().getCaller();
+    CreateAddressXRecipientLocationCityMappingInstanceRoutine routine = new CreateAddressXRecipientLocationCityMappingInstanceRoutine(_routinesFacade, _reactionExecutionState, _caller, rRoot, r, l, c);
+    return routine.applyRoutine();
   }
   
   public boolean enforceLeftAddressXRecipientLocationCityMappingConditions(final Addresses aRoot, final Address a) {
-    mir.routines.adXre_R2L.EnforceLeftAddressXRecipientLocationCityMappingConditionsRoutine effect = new mir.routines.adXre_R2L.EnforceLeftAddressXRecipientLocationCityMappingConditionsRoutine(this.executionState, calledBy, aRoot, a);
-    return effect.applyRoutine();
+    RoutinesFacade _routinesFacade = this;
+    ReactionExecutionState _reactionExecutionState = this._getExecutionState().getReactionExecutionState();
+    CallHierarchyHaving _caller = this._getExecutionState().getCaller();
+    EnforceLeftAddressXRecipientLocationCityMappingConditionsRoutine routine = new EnforceLeftAddressXRecipientLocationCityMappingConditionsRoutine(_routinesFacade, _reactionExecutionState, _caller, aRoot, a);
+    return routine.applyRoutine();
   }
   
   public boolean enforceAddressXRecipientLocationCityMappingConditionsFromRightToLeft(final Addresses aRoot, final Recipients rRoot, final Address a, final Recipient r, final Location l, final City c) {
-    mir.routines.adXre_R2L.EnforceAddressXRecipientLocationCityMappingConditionsFromRightToLeftRoutine effect = new mir.routines.adXre_R2L.EnforceAddressXRecipientLocationCityMappingConditionsFromRightToLeftRoutine(this.executionState, calledBy, aRoot, rRoot, a, r, l, c);
-    return effect.applyRoutine();
+    RoutinesFacade _routinesFacade = this;
+    ReactionExecutionState _reactionExecutionState = this._getExecutionState().getReactionExecutionState();
+    CallHierarchyHaving _caller = this._getExecutionState().getCaller();
+    EnforceAddressXRecipientLocationCityMappingConditionsFromRightToLeftRoutine routine = new EnforceAddressXRecipientLocationCityMappingConditionsFromRightToLeftRoutine(_routinesFacade, _reactionExecutionState, _caller, aRoot, rRoot, a, r, l, c);
+    return routine.applyRoutine();
   }
   
   public boolean updateAddressXRecipientLocationCityMappingInstances() {
-    mir.routines.adXre_R2L.UpdateAddressXRecipientLocationCityMappingInstancesRoutine effect = new mir.routines.adXre_R2L.UpdateAddressXRecipientLocationCityMappingInstancesRoutine(this.executionState, calledBy);
-    return effect.applyRoutine();
+    RoutinesFacade _routinesFacade = this;
+    ReactionExecutionState _reactionExecutionState = this._getExecutionState().getReactionExecutionState();
+    CallHierarchyHaving _caller = this._getExecutionState().getCaller();
+    UpdateAddressXRecipientLocationCityMappingInstancesRoutine routine = new UpdateAddressXRecipientLocationCityMappingInstancesRoutine(_routinesFacade, _reactionExecutionState, _caller);
+    return routine.applyRoutine();
   }
   
   public boolean updateAddressXRecipientLocationCityMappingInstance(final Recipients rRoot, final Recipient r, final Location l, final City c) {
-    mir.routines.adXre_R2L.UpdateAddressXRecipientLocationCityMappingInstanceRoutine effect = new mir.routines.adXre_R2L.UpdateAddressXRecipientLocationCityMappingInstanceRoutine(this.executionState, calledBy, rRoot, r, l, c);
-    return effect.applyRoutine();
+    RoutinesFacade _routinesFacade = this;
+    ReactionExecutionState _reactionExecutionState = this._getExecutionState().getReactionExecutionState();
+    CallHierarchyHaving _caller = this._getExecutionState().getCaller();
+    UpdateAddressXRecipientLocationCityMappingInstanceRoutine routine = new UpdateAddressXRecipientLocationCityMappingInstanceRoutine(_routinesFacade, _reactionExecutionState, _caller, rRoot, r, l, c);
+    return routine.applyRoutine();
   }
 }

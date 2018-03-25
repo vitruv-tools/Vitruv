@@ -1,12 +1,17 @@
 package tools.vitruv.dsls.reactions.scoping
 
+import com.google.inject.Inject
+
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EReference
 import org.eclipse.xtext.resource.EObjectDescription
 import org.eclipse.xtext.scoping.IScope
 import org.eclipse.xtext.scoping.impl.SimpleScope
+import org.eclipse.xtext.scoping.Scopes
+import org.eclipse.xtext.naming.QualifiedName
 
 import static tools.vitruv.dsls.mirbase.mirBase.MirBasePackage.Literals.*;
+import static tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsLanguagePackage.Literals.*
 
 import org.eclipse.emf.ecore.EStructuralFeature
 import tools.vitruv.dsls.mirbase.scoping.MirBaseScopeProviderDelegate
@@ -21,8 +26,19 @@ import tools.vitruv.dsls.reactions.reactionsLanguage.ElementReplacementChangeTyp
 import tools.vitruv.dsls.reactions.reactionsLanguage.ModelAttributeChange
 import org.eclipse.emf.ecore.EAttribute
 import tools.vitruv.dsls.reactions.reactionsLanguage.ElementChangeType
+import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsSegment
+import tools.vitruv.dsls.reactions.reactionsLanguage.Reaction
+import tools.vitruv.dsls.reactions.reactionsLanguage.Routine
+import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsImport
+import tools.vitruv.dsls.reactions.reactionsLanguage.RoutineOverrideImportPath
+import static extension tools.vitruv.dsls.reactions.util.ReactionsLanguageUtil.*
+import static extension tools.vitruv.dsls.reactions.codegen.helper.ReactionsImportsHelper.*
+
 
 class ReactionsLanguageScopeProviderDelegate extends MirBaseScopeProviderDelegate {
+
+	@Inject ReactionsImportScopeHelper reactionsImportScopeHelper;
+
 	override getScope(EObject context, EReference reference) {
 		// context differs during content assist: 
 		// * if no input is provided yet, the container is the context as the element is not known yet
@@ -45,10 +61,62 @@ class ReactionsLanguageScopeProviderDelegate extends MirBaseScopeProviderDelegat
 			} else if (contextContainer instanceof MetaclassReference) {
 				return createQualifiedEClassScopeWithEObject(contextContainer.metamodel)
 			}
+		} else if (reference.equals(REACTIONS_IMPORT__IMPORTED_REACTIONS_SEGMENT)) {
+			if (context instanceof ReactionsImport) {
+				val contextContainer = context.eContainer();
+				if (contextContainer instanceof ReactionsSegment) {
+					return createReactionsImportScope(contextContainer);
+				}
+			}
+		} else if (reference.equals(REACTION__OVERRIDDEN_REACTIONS_SEGMENT)) {
+			if (context instanceof Reaction) {
+				return createReactionOverrideScope(context.reactionsSegment);
+			}
+		} else if (reference.equals(ROUTINE_OVERRIDE_IMPORT_PATH__REACTIONS_SEGMENT)) {
+			if (context instanceof Routine) {
+				return createRoutineOverrideScope(context.reactionsSegment, null);
+			} else if (context instanceof RoutineOverrideImportPath) {
+				// follow the containers of the current override import path segment to find the container (the routine) which
+				// contains the import path as a whole:
+				var container = context.eContainer();
+				while (container instanceof RoutineOverrideImportPath) {
+					container = container.eContainer();
+				}
+				if (container instanceof Routine) {
+					return createRoutineOverrideScope(container.reactionsSegment, context);
+				}
+			}
 		}
 		super.getScope(context, reference)
 	}
-	
+
+	def createReactionsImportScope(ReactionsSegment reactionsSegment) {
+		val visibleReactionsSegmentDescriptions = reactionsImportScopeHelper.getVisibleReactionsSegmentDescriptions(reactionsSegment);
+		return new SimpleScope(visibleReactionsSegmentDescriptions);
+	}
+
+	def createReactionOverrideScope(ReactionsSegment reactionsSegment) {
+		// excluding the root reactions segment here:
+		val reactionsImportHierarchyWithoutRoot = reactionsSegment.reactionsImportHierarchy.filter[k, v | k.length > 1];
+		return new SimpleScope(reactionsImportHierarchyWithoutRoot.entrySet.map [
+			EObjectDescription.create(QualifiedName.create(it.key.lastSegment), it.value);
+		]);
+	}
+
+	def createRoutineOverrideScope(ReactionsSegment reactionsSegment, RoutineOverrideImportPath routineOverrideImportPath) {
+		// the reactions segment to use to determine the next possible segments in the import path:
+		var importPathLastSegment = reactionsSegment;
+		if (routineOverrideImportPath?.parent !== null) {
+			val parentImportPath = routineOverrideImportPath.parent.toReactionsImportPath;
+			importPathLastSegment = reactionsSegment.getReactionsSegment(parentImportPath);
+			if (importPathLastSegment === null) {
+				// invalid parent import path:
+				return IScope.NULLSCOPE;
+			}
+		}
+		return Scopes.scopeFor(importPathLastSegment.reactionsImports.filter[it.isResolvable].map[it.importedReactionsSegment]);
+	}
+
 	def createEStructuralFeatureScope(MetaclassFeatureReference featureReference) {
 		if (featureReference?.metaclass !== null) {
 			val changeType = featureReference.eContainer;

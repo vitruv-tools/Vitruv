@@ -11,8 +11,6 @@ import tools.vitruv.extensions.dslsruntime.reactions.structure.CallHierarchyHavi
 
 @SuppressWarnings("all")
 public class EnforceAdRootXReRootMappingConditionsFromLeftToRightRoutine extends AbstractRepairRoutineRealization {
-  private RoutinesFacade actionsFacade;
-  
   private EnforceAdRootXReRootMappingConditionsFromLeftToRightRoutine.ActionUserExecution userExecution;
   
   private static class ActionUserExecution extends AbstractRepairRoutineRealization.UserExecution {
@@ -25,10 +23,9 @@ public class EnforceAdRootXReRootMappingConditionsFromLeftToRightRoutine extends
     }
   }
   
-  public EnforceAdRootXReRootMappingConditionsFromLeftToRightRoutine(final ReactionExecutionState reactionExecutionState, final CallHierarchyHaving calledBy, final Addresses aRoot, final Recipients rRoot) {
-    super(reactionExecutionState, calledBy);
+  public EnforceAdRootXReRootMappingConditionsFromLeftToRightRoutine(final RoutinesFacade routinesFacade, final ReactionExecutionState reactionExecutionState, final CallHierarchyHaving calledBy, final Addresses aRoot, final Recipients rRoot) {
+    super(routinesFacade, reactionExecutionState, calledBy);
     this.userExecution = new mir.routines.adXre_L2R.EnforceAdRootXReRootMappingConditionsFromLeftToRightRoutine.ActionUserExecution(getExecutionState(), this);
-    this.actionsFacade = new mir.routines.adXre_L2R.RoutinesFacade(getExecutionState(), this);
     this.aRoot = aRoot;this.rRoot = rRoot;
   }
   
@@ -41,7 +38,7 @@ public class EnforceAdRootXReRootMappingConditionsFromLeftToRightRoutine extends
     getLogger().debug("   aRoot: " + this.aRoot);
     getLogger().debug("   rRoot: " + this.rRoot);
     
-    userExecution.callRoutine1(aRoot, rRoot, actionsFacade);
+    userExecution.callRoutine1(aRoot, rRoot, this.getRoutinesFacade());
     
     postprocessElements();
     

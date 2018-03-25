@@ -1,7 +1,7 @@
 import "edu.kit.ipd.sdq.metamodels.persons" as persons
 import "edu.kit.ipd.sdq.metamodels.families" as families
 
-reactions: FamiliesToPersons
+reactions: familiesToPersons
 in reaction to changes in Families
 execute actions in Persons
 

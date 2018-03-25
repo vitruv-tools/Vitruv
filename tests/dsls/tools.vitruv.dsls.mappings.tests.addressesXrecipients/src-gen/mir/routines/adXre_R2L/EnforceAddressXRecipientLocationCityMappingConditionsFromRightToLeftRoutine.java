@@ -16,8 +16,6 @@ import tools.vitruv.extensions.dslsruntime.reactions.structure.CallHierarchyHavi
 
 @SuppressWarnings("all")
 public class EnforceAddressXRecipientLocationCityMappingConditionsFromRightToLeftRoutine extends AbstractRepairRoutineRealization {
-  private RoutinesFacade actionsFacade;
-  
   private EnforceAddressXRecipientLocationCityMappingConditionsFromRightToLeftRoutine.ActionUserExecution userExecution;
   
   private static class ActionUserExecution extends AbstractRepairRoutineRealization.UserExecution {
@@ -40,10 +38,9 @@ public class EnforceAddressXRecipientLocationCityMappingConditionsFromRightToLef
     }
   }
   
-  public EnforceAddressXRecipientLocationCityMappingConditionsFromRightToLeftRoutine(final ReactionExecutionState reactionExecutionState, final CallHierarchyHaving calledBy, final Addresses aRoot, final Recipients rRoot, final Address a, final Recipient r, final Location l, final City c) {
-    super(reactionExecutionState, calledBy);
+  public EnforceAddressXRecipientLocationCityMappingConditionsFromRightToLeftRoutine(final RoutinesFacade routinesFacade, final ReactionExecutionState reactionExecutionState, final CallHierarchyHaving calledBy, final Addresses aRoot, final Recipients rRoot, final Address a, final Recipient r, final Location l, final City c) {
+    super(routinesFacade, reactionExecutionState, calledBy);
     this.userExecution = new mir.routines.adXre_R2L.EnforceAddressXRecipientLocationCityMappingConditionsFromRightToLeftRoutine.ActionUserExecution(getExecutionState(), this);
-    this.actionsFacade = new mir.routines.adXre_R2L.RoutinesFacade(getExecutionState(), this);
     this.aRoot = aRoot;this.rRoot = rRoot;this.a = a;this.r = r;this.l = l;this.c = c;
   }
   
@@ -68,7 +65,7 @@ public class EnforceAddressXRecipientLocationCityMappingConditionsFromRightToLef
     getLogger().debug("   l: " + this.l);
     getLogger().debug("   c: " + this.c);
     
-    userExecution.callRoutine1(aRoot, rRoot, a, r, l, c, actionsFacade);
+    userExecution.callRoutine1(aRoot, rRoot, a, r, l, c, this.getRoutinesFacade());
     
     // val updatedElement userExecution.getElement1(aRoot, rRoot, a, r, l, c);
     userExecution.update0Element(aRoot, rRoot, a, r, l, c);

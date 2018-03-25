@@ -19,6 +19,7 @@ import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsLanguageFactory
 import tools.vitruv.dsls.reactions.reactionsLanguage.RemoveCorrespondence
 import tools.vitruv.dsls.reactions.reactionsLanguage.RetrieveModelElement
 import tools.vitruv.dsls.reactions.reactionsLanguage.Routine
+import tools.vitruv.dsls.reactions.reactionsLanguage.RoutineOverrideImportPath
 import tools.vitruv.dsls.reactions.reactionsLanguage.Taggable
 
 import static com.google.common.base.Preconditions.*
@@ -145,7 +146,7 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 		}
 	}
 
-	static class RoutineStartBuilder extends MatcherOrActionBuilder {
+	static class InputOrMatcherOrActionBuilder extends MatcherOrActionBuilder {
 
 		private new(FluentRoutineBuilder builder) {
 			super(builder)
@@ -156,6 +157,27 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 			new MatcherOrActionBuilder(builder)
 		}
 
+	}
+
+	static class RoutineStartBuilder extends InputOrMatcherOrActionBuilder {
+
+		private new(FluentRoutineBuilder builder) {
+			super(builder)
+		}
+
+		def overrideAlongImportPath(FluentReactionsSegmentBuilder... importPathSegmentBuilders) {
+			if (!importPathSegmentBuilders.nullOrEmpty) {
+				var RoutineOverrideImportPath currentImportPath = null
+				for (pathSegmentBuilder : importPathSegmentBuilders) {
+					val nextPathSegment = ReactionsLanguageFactory.eINSTANCE.createRoutineOverrideImportPath
+					nextPathSegment.reactionsSegment = pathSegmentBuilder.segment
+					nextPathSegment.parent = currentImportPath
+					currentImportPath = nextPathSegment
+				}
+				routine.overrideImportPath = currentImportPath
+			}
+			new InputOrMatcherOrActionBuilder(builder)
+		}
 	}
 
 	static class InputBuilder {

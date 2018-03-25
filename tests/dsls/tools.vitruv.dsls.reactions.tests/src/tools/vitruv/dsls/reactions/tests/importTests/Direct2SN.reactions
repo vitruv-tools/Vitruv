@@ -1,0 +1,36 @@
+import tools.vitruv.dsls.reactions.tests.importTests.ImportTestsExecutionMonitor
+
+import static tools.vitruv.dsls.reactions.tests.importTests.ImportTests.*
+import static tools.vitruv.dsls.reactions.tests.importTests.ImportTestsExecutionMonitor.ExecutionType.*
+import static tools.vitruv.dsls.reactions.tests.importTests.ImportTestsUtils.*
+
+import "http://tools.vitruv.tests.metamodels.allElementTypes" as minimal
+
+reactions: importTestsDirect2SN
+in reaction to changes in AllElementTypes
+execute actions in AllElementTypes
+
+import importTestsTransitive3SN
+
+reaction Direct2SNReaction {
+	after attribute replaced at minimal::Root[id]
+	call {
+		ImportTestsExecutionMonitor.instance.set(Direct2SNReaction)
+
+		val data = newValue;
+		// test routine overrides:
+		if (containsDataTag(data, TAG_CALL_OVERRIDDEN_TRANSITIVE_ROUTINE_WITH_SEPARATE_OVERRIDE_HIERARCHY)) {
+			if (containsDataTag(data, TAG_FROM_SEGMENT_IN_BETWEEN)) {
+				transitive3SNOverriddenRoutine()
+			}
+		}
+	}
+}
+
+routine direct2SNRoutine() {
+	action {
+		call {
+			ImportTestsExecutionMonitor.instance.set(Direct2SNRoutine)
+		}
+	}
+}

@@ -17,8 +17,10 @@ import tools.vitruv.dsls.reactions.reactionsLanguage.Reaction
 import tools.vitruv.dsls.reactions.reactionsLanguage.Action
 import tools.vitruv.dsls.reactions.reactionsLanguage.ConcreteModelChange
 import static extension tools.vitruv.dsls.reactions.codegen.changetyperepresentation.ChangeTypeRepresentationExtractor.*
+import static extension tools.vitruv.dsls.reactions.util.ReactionsLanguageUtil.*
 import tools.vitruv.dsls.reactions.reactionsLanguage.Matcher
 import tools.vitruv.dsls.reactions.reactionsLanguage.RoutineInput
+import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsImport
 
 /**
  * Outline structure definition for a reactions file.
@@ -40,6 +42,12 @@ class ReactionsLanguageOutlineTreeProvider extends DefaultOutlineTreeProvider {
 	
 	protected def void _createChildren(DocumentRootNode parentNode, ReactionsSegment reactionsSegment) {
 		val segmentNode = createEObjectNode(parentNode, reactionsSegment);
+		val reactionsImportsNode = createEStructuralFeatureNode(segmentNode, reactionsSegment,
+			ReactionsLanguagePackage.Literals.REACTIONS_SEGMENT__REACTIONS_IMPORTS, imageDispatcher.invoke(reactionsSegment),
+			"reactionsImports", false);
+		for (reactionsImport : reactionsSegment.reactionsImports) {
+			createChildren(reactionsImportsNode, reactionsImport);
+		}
 		val reactionsNode = createEStructuralFeatureNode(segmentNode, reactionsSegment, 
 			ReactionsLanguagePackage.Literals.REACTIONS_SEGMENT__REACTIONS, imageDispatcher.invoke(reactionsSegment), "reactions", false)
 		for (reaction : reactionsSegment.reactions) {
@@ -57,6 +65,14 @@ class ReactionsLanguageOutlineTreeProvider extends DefaultOutlineTreeProvider {
 			imp, MirBasePackage.Literals.METAMODEL_IMPORT__PACKAGE,
 			imageDispatcher.invoke(imp.package),
 			imp.package.name, true);
+	}
+	
+	protected def void _createChildren(EStructuralFeatureNode parentNode, ReactionsImport reactionsImport) {
+		val importNode = createEObjectNode(parentNode, reactionsImport);
+		createEStructuralFeatureNode(importNode, reactionsImport,
+			ReactionsLanguagePackage.Literals.REACTIONS_IMPORT__IMPORTED_REACTIONS_SEGMENT,
+			imageDispatcher.invoke(reactionsImport.importedReactionsSegment),
+			reactionsImport.importedReactionsSegment?.name, true);
 	}
 	
 	protected def void _createChildren(EStructuralFeatureNode parentNode, Reaction reaction) {
@@ -84,12 +100,16 @@ class ReactionsLanguageOutlineTreeProvider extends DefaultOutlineTreeProvider {
 		return imp?.name;
 	}
 	
+	protected def Object _text(ReactionsImport reactionsImport) {
+		return reactionsImport.importedReactionsSegment?.name;
+	}
+	
 	protected def Object _text(Reaction reaction) {
-		return "reaction: " + reaction.name;
+		return "reaction: " + reaction.displayName;
 	}
 	
 	protected def Object _text(Routine routine) {
-		return "routine: " + routine.name;
+		return "routine: " + routine.displayName;
 	}
 	
 	protected def Object _text(RoutineInput routineInput) {

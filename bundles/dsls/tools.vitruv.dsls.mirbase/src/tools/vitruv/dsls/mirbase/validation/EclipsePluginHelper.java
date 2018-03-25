@@ -53,7 +53,12 @@ public class EclipsePluginHelper {
 			return false;
 		
 		for (IRequiredBundleDescription description : requiredBundles) {
-			if (description.getName().equals(bundleName)) {
+			String[] bundleNameOptionsSplit = bundleName.split(";");
+			if (bundleNameOptionsSplit.length < 1) {
+				throw new IllegalStateException("There must be at least one segment in the name");
+			}
+			String bundleWithoutOptions = bundleNameOptionsSplit[0];
+			if (description.getName().equals(bundleWithoutOptions)) {
 				return true;
 			}
 		}

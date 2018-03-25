@@ -1,0 +1,244 @@
+import tools.vitruv.dsls.reactions.tests.importTests.ImportTestsExecutionMonitor
+
+import static tools.vitruv.dsls.reactions.tests.importTests.ImportTests.*
+import static tools.vitruv.dsls.reactions.tests.importTests.ImportTestsExecutionMonitor.ExecutionType.*
+import static tools.vitruv.dsls.reactions.tests.importTests.ImportTestsUtils.*
+
+import "http://tools.vitruv.tests.metamodels.allElementTypes" as minimal
+
+reactions: importTestsRoot
+in reaction to changes in AllElementTypes
+execute actions in AllElementTypes
+
+import importTestsDirectSN
+import importTestsDirect2SN
+import routines importTestsDirectRoutinesQN using qualified names
+
+reaction RootReaction {
+	after attribute replaced at minimal::Root[id]
+	call {
+		val data = newValue
+		ImportTestsExecutionMonitor.instance.set(RootReaction)
+
+		// call routines from reaction:
+		if (containsDataTag(newValue, TAG_CALL_ROUTINE_FROM_REACTION)) {
+			if (containsDataTag(data, TAG_ROOT_ROUTINE)) {
+				rootRoutine()
+			}
+			if (containsDataTag(data, TAG_DIRECT_ROUTINE_SN)) {
+				directSNRoutine()
+			}
+			if (containsDataTag(data, TAG_DIRECT2_ROUTINE_SN)) {
+				direct2SNRoutine()
+			}
+			if (containsDataTag(data, TAG_DIRECT_ROUTINE_QN)) {
+				importTestsDirectRoutinesQN.directRoutinesQNRoutine()
+			}
+			// transitive routines
+			if (containsDataTag(data, TAG_TRANSITIVE_ROUTINE_SN_SN)) {
+				transitiveSNRoutine()
+			}
+			if (containsDataTag(data, TAG_TRANSITIVE_ROUTINE_SN_QN)) {
+				importTestsTransitiveRoutinesQN.transitiveRoutinesQNRoutine()
+			}
+			if (containsDataTag(data, TAG_TRANSITIVE_ROUTINE_QN_SN)) {
+				importTestsDirectRoutinesQN.transitiveRoutinesSNRoutine()
+			}
+			if (containsDataTag(data, TAG_TRANSITIVE_ROUTINE_QN_QN)) {
+				importTestsDirectRoutinesQN.importTestsTransitiveRoutinesQN.transitiveRoutinesQNRoutine
+			}
+		}
+
+		// call routines from routine:
+		if (containsDataTag(data, TAG_CALL_ROUTINE_FROM_ROUTINE)) {
+			callRoutinesFromRoutine(data)
+		}
+
+		// test routines-only:
+		if (containsDataTag(data, TAG_TEST_ROUTINES_ONLY_ROUTINES)) {
+			// direct: routines-only
+			importTestsDirectRoutinesQN.directRoutinesQNRoutine()
+			// transitive: full > routines-only
+			importTestsTransitiveRoutinesQN.transitiveRoutinesQNRoutine()
+			// transitive: routines-only QN > routines-only SN
+			importTestsDirectRoutinesQN.transitiveRoutinesSNRoutine()
+			// transitive: routines-only > full
+			importTestsDirectRoutinesQN.transitive2SNRoutine()
+		}
+
+		// test routine overrides:
+		if (containsDataTag(data, TAG_FROM_ROOT)) {
+			if (containsDataTag(data, TAG_CALL_OVERRIDDEN_ROUTINE)) {
+				directSNOverriddenRoutine()
+			}
+			if (containsDataTag(data, TAG_CALL_OVERRIDDEN_TRANSITIVE_ROUTINE)) {
+				transitiveSNOverriddenRoutine()
+			}
+			if (containsDataTag(data, TAG_CALL_OVERRIDDEN_TRANSITIVE_ROUTINE_WITH_SEPARATE_OVERRIDE_HIERARCHY)) {
+				transitive3SNOverriddenRoutine()
+			}
+			if (containsDataTag(data, TAG_CALL_ALREADY_OVERRIDDEN_TRANSITIVE_ROUTINE)) {
+				transitiveSNOverriddenRoutine2()
+			}
+			if (containsDataTag(data, TAG_CALL_TRANSITIVE_ROUTINE_OVERRIDDEN_BY_IMPORTED_SEGMENT)) {
+				transitiveSNOverriddenRoutine3()
+			}
+		}
+
+		// test multiple imports of same routines at different import paths:
+		if (containsDataTag(data, TAG_TEST_MULTIPLE_IMPORTS_OF_SAME_ROUTINES_IMPORT_PATH_1)) {
+			// import path: directSN > transitiveSN > commonRoutines
+			importTestsCommonRoutines.commonRoutinesRoutine1()
+		}
+		if (containsDataTag(data, TAG_TEST_MULTIPLE_IMPORTS_OF_SAME_ROUTINES_IMPORT_PATH_2)) {
+			// import path: directRoutinesQN > commonRoutines
+			importTestsDirectRoutinesQN.importTestsCommonRoutines.commonRoutinesRoutine1()
+			importTestsDirectRoutinesQN.directRoutinesQNTestCommonRoutine()
+			importTestsDirectRoutinesQN.importTestsCommonRoutines.commonRoutinesRoutine3()
+		}
+	}
+}
+
+routine rootRoutine() {
+	action {
+		call {
+			ImportTestsExecutionMonitor.instance.set(RootRoutine)
+		}
+	}
+}
+
+routine callRoutinesFromRoutine(String data) {
+	action {
+		call {
+			if (containsDataTag(data, TAG_ROOT_ROUTINE)) {
+				rootRoutine()
+			}
+			if (containsDataTag(data, TAG_DIRECT_ROUTINE_SN)) {
+				directSNRoutine()
+			}
+			if (containsDataTag(data, TAG_DIRECT_ROUTINE_QN)) {
+				importTestsDirectRoutinesQN.directRoutinesQNRoutine()
+			}
+			// transitive routines
+			if (containsDataTag(data, TAG_TRANSITIVE_ROUTINE_SN_SN)) {
+				transitiveSNRoutine()
+			}
+			if (containsDataTag(data, TAG_TRANSITIVE_ROUTINE_SN_QN)) {
+				importTestsTransitiveRoutinesQN.transitiveRoutinesQNRoutine()
+			}
+			if (containsDataTag(data, TAG_TRANSITIVE_ROUTINE_QN_SN)) {
+				importTestsDirectRoutinesQN.transitiveRoutinesSNRoutine()
+			}
+			if (containsDataTag(data, TAG_TRANSITIVE_ROUTINE_QN_QN)) {
+				importTestsDirectRoutinesQN.importTestsTransitiveRoutinesQN.transitiveRoutinesQNRoutine
+			}
+		}
+	}
+}
+
+// reaction overrides:
+
+reaction importTestsDirectSN::DirectSNOverriddenReaction {
+	after attribute replaced at minimal::Root[id]
+	call {
+		val data = newValue;
+		if (containsDataTag(data, TAG_TEST_REACTION_OVERRIDE)) {
+			ImportTestsExecutionMonitor.instance.set(RootDirectSNOverriddenReaction)
+			rootRoutine()
+		}
+	}
+}
+
+reaction importTestsTransitiveSN::TransitiveSNOverriddenReaction {
+	after attribute replaced at minimal::Root[id]
+	call {
+		val data = newValue;
+		if (containsDataTag(data, TAG_TEST_TRANSITIVE_REACTION_OVERRIDE)) {
+			ImportTestsExecutionMonitor.instance.set(RootTransitiveSNOverriddenReaction)
+			rootRoutine()
+		}
+	}
+}
+
+reaction importTestsTransitiveSN::TransitiveSNOverriddenReaction2 {
+	after attribute replaced at minimal::Root[id]
+	call {
+		val data = newValue;
+		if (containsDataTag(data, TAG_TEST_TRANSITIVE_REACTION_OVERRIDE)) {
+			ImportTestsExecutionMonitor.instance.set(RootTransitiveSNOverriddenReaction2)
+			rootRoutine()
+		}
+	}
+}
+
+// routine overrides:
+
+routine importTestsDirectSN::directSNOverriddenRoutine(){
+	action {
+		call {
+			ImportTestsExecutionMonitor.instance.set(RootDirectSNOverriddenRoutine)
+			rootRoutine()
+		}
+	}
+}
+
+routine importTestsDirectSN.importTestsTransitiveSN::transitiveSNOverriddenRoutine() {
+	action {
+		call {
+			ImportTestsExecutionMonitor.instance.set(RootTransitiveSNOverriddenRoutine)
+			rootRoutine()
+		}
+	}
+}
+
+routine importTestsDirect2SN.importTestsTransitive3SN::transitive3SNOverriddenRoutine() {
+	action {
+		call {
+			ImportTestsExecutionMonitor.instance.set(RootTransitive3SNOverriddenRoutine)
+			rootRoutine()
+		}
+	}
+}
+
+routine importTestsDirectSN.importTestsTransitiveSN::transitiveSNOverriddenRoutine2() {
+	action {
+		call {
+			ImportTestsExecutionMonitor.instance.set(RootTransitiveSNOverriddenRoutine2)
+			rootRoutine()
+		}
+	}
+}
+
+// test multiple imports of same routines at different import paths:
+routine importTestsDirectSN.importTestsTransitiveSN.importTestsCommonRoutines::commonRoutinesRoutine1() {
+	action {
+		call {
+			ImportTestsExecutionMonitor.instance.set(RootCommonRoutinesRoutine1)
+		}
+	}
+}
+
+routine importTestsDirectSN.importTestsTransitiveSN.importTestsCommonRoutines::commonRoutinesRoutine2() {
+	action {
+		call {
+			ImportTestsExecutionMonitor.instance.set(RootCommonRoutinesRoutine2)
+		}
+	}
+}
+
+routine importTestsDirectSN.importTestsTransitiveSN.importTestsCommonRoutines::commonRoutinesRoutine3() {
+	action {
+		call {
+			ImportTestsExecutionMonitor.instance.set(RootCommonRoutinesRoutine3)
+		}
+	}
+}
+
+// multiple overrides of same routine along different import paths:
+routine importTestsDirectRoutinesQN.importTestsCommonRoutines::commonRoutinesRoutine3() {
+	action {
+		call {
+			ImportTestsExecutionMonitor.instance.set(RootCommonRoutines2Routine3)
+		}
+	}
+}
