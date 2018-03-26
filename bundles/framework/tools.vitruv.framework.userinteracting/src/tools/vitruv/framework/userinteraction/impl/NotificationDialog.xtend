@@ -117,8 +117,8 @@ class NotificationDialogBuilder extends DialogBuilder {
     private NotificationDialog dialog
     private NotificationType notificationType = NotificationType.INFORMATION
     
-    new(Shell shell) {
-        super(shell)
+    new(Shell shell, Display display) {
+        super(shell, display)
         title = "Notification"
     }
     
@@ -134,7 +134,7 @@ class NotificationDialogBuilder extends DialogBuilder {
 
     override def NotificationDialog createAndShow() {
         dialog = new NotificationDialog(shell, windowModality, notificationType, title, message)
-        dialog.show()
+        openDialog()
         return dialog
     }
 }

@@ -21,6 +21,7 @@ import org.eclipse.swt.layout.GridLayout
 import org.eclipse.swt.layout.GridData
 import tools.vitruv.framework.userinteraction.impl.TextInputDialog.InputValidator
 import tools.vitruv.framework.userinteraction.impl.TextInputDialog.InputFieldType
+import org.eclipse.swt.graphics.Point
 
 class TextInputDialog extends BaseDialog {
 	private String input
@@ -87,10 +88,10 @@ class TextInputDialog extends BaseDialog {
         messageLabel.layoutData = gridData
         
         val linesProperty = switch (inputFieldType) {
-        	case SINGLE_LINE: SWT.SINGLE
-        	case MULTI_LINE: SWT.MULTI
+        	case SINGLE_LINE: SWT.SINGLE.bitwiseOr(SWT.CENTER)
+        	case MULTI_LINE: SWT.MULTI.bitwiseOr(SWT.V_SCROLL)
         }
-        inputField = new Text(composite, linesProperty.bitwiseOr(SWT.CENTER).bitwiseOr(SWT.BORDER))
+        inputField = new Text(composite, linesProperty.bitwiseOr(SWT.BORDER))
         inputField.addVerifyListener(new VerifyListener() {
 									
 			override verifyText(VerifyEvent e) {
@@ -129,6 +130,11 @@ class TextInputDialog extends BaseDialog {
         gridData = new GridData()
         gridData.horizontalAlignment = SWT.FILL
         gridData.grabExcessHorizontalSpace = true
+        if (inputFieldType == InputFieldType.MULTI_LINE) {
+            gridData.grabExcessVerticalSpace = true
+            gridData.verticalAlignment = SWT.FILL
+            composite.shell.minimumSize = new Point(300, 300)
+        }
         inputField.layoutData = gridData
 		
         return composite
@@ -160,7 +166,7 @@ class TextInputDialog extends BaseDialog {
 	    val validator = [ String text | text.matches("[a-zA-Z]*") ]
 	    val invalidMessage = "Only letters allowed"
 	    val dialog = new TextInputDialog(shell, WindowModality.MODAL, "Test Title",
-	    	"Test Message which is a whole lot longer than the last one.", InputFieldType.MULTI_LINE, TextInputDialog.NUMBERS_ONLY_INPUT_VALIDATOR)
+	    	"Test Message which is a whole lot longer than the last one.", InputFieldType.MULTI_LINE, TextInputDialog.ACCEPT_ALL_INPUT_VALIDATOR)
 		dialog.blockOnOpen = true
 		dialog.show()
 		System.out.println(dialog.getInput())
@@ -173,6 +179,12 @@ class TextInputDialog extends BaseDialog {
 	}
 	
 	
+	/**
+	 * Abstract base class for input validators used in {@link TextInputDialog}s. The
+	 * {@link #isInputValid(String) isInputValid} method is used to accept or deny input changes, the message
+	 * constructed in {@link #getInvalidInputMessage(String) getInvalidInputMessage} is displayed whenever the user
+	 * tries to enter illegal characters as determined by {@link #isInputValid(String) isInputValid}.
+	 */
 	public abstract static class InputValidator {
 		
 		def String getInvalidInputMessage(String input)
@@ -194,8 +206,8 @@ class TextInputDialogBuilder extends DialogBuilder {
     private InputFieldType inputFieldType = InputFieldType.SINGLE_LINE
     private InputValidator inputValidator = TextInputDialog.ACCEPT_ALL_INPUT_VALIDATOR
     
-    new(Shell shell) {
-        super(shell)
+    new(Shell shell, Display display) {
+        super(shell, display)
         title = "Input Text..."
     }
     
@@ -230,7 +242,7 @@ class TextInputDialogBuilder extends DialogBuilder {
 
     override def TextInputDialog createAndShow() {
         dialog = new TextInputDialog(shell, windowModality, title, message, inputFieldType, inputValidator)
-        dialog.show()
+        openDialog()
         return dialog
     }
 }

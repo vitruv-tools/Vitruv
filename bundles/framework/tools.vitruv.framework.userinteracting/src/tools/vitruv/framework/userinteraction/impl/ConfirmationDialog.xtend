@@ -100,14 +100,14 @@ class ConfirmationDialogBuilder extends DialogBuilder {
     public static final String STANDARD_TITLE = "Please Confirm"
     public static final String UNSPECIFIED_MESSAGE = "No confirmation message specified."
     
-    new(Shell shell) {
-        super(shell)
+    new(Shell shell, Display display) {
+        super(shell, display)
         title = "Please Confirm"
     }
 
     override def ConfirmationDialog createAndShow() {
         dialog = new ConfirmationDialog(shell, windowModality, title, message)
-        dialog.show()
+        openDialog()
         return dialog
     }
 }

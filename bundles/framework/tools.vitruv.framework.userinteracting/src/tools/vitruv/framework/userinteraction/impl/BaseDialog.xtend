@@ -8,6 +8,7 @@ import org.eclipse.swt.widgets.Composite
 import org.eclipse.swt.widgets.Control
 import org.eclipse.swt.graphics.Point
 import org.eclipse.ui.PlatformUI
+import org.eclipse.swt.widgets.Display
 
 class BaseDialog extends Dialog {
 	private String title
@@ -90,6 +91,7 @@ class BaseDialog extends Dialog {
 abstract class DialogBuilder {
     protected BaseDialog dialog
     protected Shell shell
+    protected Display display
     protected String title = "Unspecified Title"
     protected String message = "No message specified."
     protected WindowModality windowModality = WindowModality.MODELESS
@@ -97,8 +99,9 @@ abstract class DialogBuilder {
     protected String negativeButtonText = "No"
     protected String cancelButtonText = "Cancel"
     
-    new(Shell shell) {
+    new(Shell shell, Display display) {
         this.shell = shell
+        this.display = display
     }
     
     /**
@@ -152,5 +155,13 @@ abstract class DialogBuilder {
     def DialogBuilder setCancelButtonText(String cancelButtonText) {
         this.cancelButtonText = cancelButtonText
         return this
+    }
+    
+    protected def void openDialog() {
+        display.syncExec(new Runnable() {
+            override void run() {
+                dialog.show();
+            }
+        });
     }
 }

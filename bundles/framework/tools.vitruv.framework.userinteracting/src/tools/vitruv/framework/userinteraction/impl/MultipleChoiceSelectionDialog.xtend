@@ -119,8 +119,8 @@ class MultipleChoiceSelectionDialogBuilder extends DialogBuilder {
     private String[] choices = #["unspecified"]
     private SelectionType selectionType = SelectionType.SINGLE_SELECT
     
-    new(Shell shell) {
-        super(shell)
+    new(Shell shell, Display display) {
+        super(shell, display)
         title = "Please Select..."
     }
     
@@ -145,7 +145,7 @@ class MultipleChoiceSelectionDialogBuilder extends DialogBuilder {
 
     override def MultipleChoiceSelectionDialog createAndShow() {
         dialog = new MultipleChoiceSelectionDialog(shell, windowModality, title, message, choices, selectionType)
-        dialog.show()
+        openDialog()
         return dialog
     }
 }

@@ -6,95 +6,36 @@ import tools.vitruv.framework.change.interaction.ConfirmationUserInput;
 import tools.vitruv.framework.change.interaction.FreeTextUserInput;
 import tools.vitruv.framework.change.interaction.MultipleChoiceMultiSelectionUserInput;
 import tools.vitruv.framework.change.interaction.MultipleChoiceSingleSelectionUserInput;
+import tools.vitruv.framework.userinteraction.impl.ConfirmationDialogBuilder;
+import tools.vitruv.framework.userinteraction.impl.DialogBuilder;
+import tools.vitruv.framework.userinteraction.impl.MultipleChoiceSelectionDialogBuilder;
+import tools.vitruv.framework.userinteraction.impl.NotificationDialogBuilder;
+import tools.vitruv.framework.userinteraction.impl.TextInputDialogBuilder;
 
 public interface UserInteracting {
 	
 	/**
-	 * Display a notification to the user containing a message, an icon depicting the severity of the message and a
-	 * title and modality for the dialog window.
-	 * 
-	 * @param title
-	 * 			the window title.
-	 * @param message
-	 * 			the notification text.
-	 * @param notificationType
-	 * 			the severity of the notification content; information, warning or error.
-	 * @param windowModality
-	 * 			the modality of the window; modal or mode-less.
-	 * @author Dominik Klooz
+	 * @return a {@link DialogBuilder} used to configure and build notification dialogs to inform the user about something.
 	 */
-	void showNotification(String title, String message, NotificationType notificationType, WindowModality windowModality);
+	NotificationDialogBuilder getNotificationDialogBuilder();
 	
 	/**
-	 * Ask the user to confirm or deny some course of action described in {@code message}. 
-	 * 
-	 * @param title
-	 * 			the window title.
-	 * @param message
-	 * 			the course of action/question the user shall confirm or deny.
-	 * @param windowModality
-	 * 			the modality of the window; modal or mode-less.
-	 * @return a {@code boolean} value that is set to true if the user confirmed or false otherwise.
-	 * @author Dominik Klooz
+	 * @return a {@link DialogBuilder} used to configure and build confirmation dialogs to prompt the user to answer a
+	 * question in the positive or negative.
 	 */
-	boolean getUserConfirmation(String title, String message, WindowModality windowModality);
+	ConfirmationDialogBuilder getConfirmationDialogBuilder();
 	
 	/**
-	 * Get a free text input from the user.
-	 * 
-	 * @param title
-	 * 			the window title.
-	 * @param message
-	 * 			the message to be shown above the text input line.
-	 * @param windowModality
-	 * 			the modality of the window; modal or mode-less.
-	 * @return a {@code String} value with the text entered by the user or {@code null} if the user cancelled.
-	 * @author Dominik Klooz
+	 * @return a {@link DialogBuilder} used to configure and build text input dialogs to prompt the user to input free
+	 * text optionally restricted by a {@link InputValidator}. Can be configured to take single- or multi-line input.
 	 */
-	String getTextInput(String title, String message, WindowModality windowModality);
+	TextInputDialogBuilder getTextInputDialogBuilder();
 	
 	/**
-	 * Let the user select a single entry from an array of choices represented by their descriptions given in {@code
-	 * selectionDescriptions}. Use TODO to allow the selection of multiple entries.
-	 * 
-	 * @param title
-	 * 			the window title.
-	 * @param message
-	 * 			the message to be shown above the choices.
-	 * @param selectionDescriptions
-	 * 			an array of textual descriptions for the selectable choices.
-	 * @param windowModality
-	 * 			the modality of the window; modal or mode-less.
-	 * @return a zero-based {@code int} index of the selected entries from the array of choices passed to
-	 * {@code selectionDescriptions}.
+	 * @return a {@link DialogBuilder} used to configure and build multiple choice input dialogs to prompt the user to
+	 * choose from a list of choices. Can be configured to either provide single-select or multi-select controls.
 	 */
-	int selectSingle(String title, String message, String[] selectionDescriptions,
-			WindowModality windwoModality);
-	
-	/**
-	 * Let the user select multiple entries from an array of choices represented by their descriptions given in {@code
-	 * selectionDescriptions}. Use {@link #selectSingle(String, String, String[], WindowModality) selectSingle} method
-	 * to restrict the selection to one single entry.
-	 * 
-	 * @param title
-	 * 			the window title.
-	 * @param message
-	 * 			the message to be shown above the choices.
-	 * @param selectionDescriptions
-	 * 			an array of textual descriptions for the selectable choices.
-	 * @param windowModality
-	 * 			the modality of the window; modal or mode-less.
-	 * @return an array of zero-based {@code int} indices of the selected entries from the array of choices passed to
-	 * {@code selectionDescriptions}.
-	 */
-	int[] selectMulti(String title, String message, String[] selectionDescriptions,
-			WindowModality windowModality);
-	
-    void showMessage(UserInteractionType type, String message);
-
-    int selectFromMessage(UserInteractionType type, String message, String... selectionDescriptions);
-
-    String getTextInput(String msg);
+	MultipleChoiceSelectionDialogBuilder getMultipleChoiceSelectionDialogBuilder();
 
     /**
      * Ask for a URI.
