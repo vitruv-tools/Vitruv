@@ -17,6 +17,7 @@ import org.eclipse.swt.widgets.Display
 import java.util.Collection
 import java.util.List
 import java.util.ArrayList
+import tools.vitruv.framework.userinteraction.impl.MultipleChoiceSelectionDialog.SelectionType
 
 class MultipleChoiceSelectionDialog extends BaseDialog {
 	private SelectionType selectionType
@@ -104,4 +105,47 @@ class MultipleChoiceSelectionDialog extends BaseDialog {
 	public enum SelectionType {
 		SINGLE_SELECT, MULTI_SELECT
 	}
+}
+
+
+/**
+ * Builder class for {@link MultipleChoiceSelectionDialog}s. Use the add/set... methods to specify details and then call
+ * createAndShow() to display and get a reference to the configured dialog.
+ * Creates a dialog with a list of choices (from {@link #setChoices(String[]) setChoices}) as either radio buttons or
+ * check boxes depending on the {@link SelectionType} specified or single select by default.
+ */
+class MultipleChoiceSelectionDialogBuilder extends DialogBuilder {
+    private MultipleChoiceSelectionDialog dialog
+    private String[] choices = #["unspecified"]
+    private SelectionType selectionType = SelectionType.SINGLE_SELECT
+    
+    new(Shell shell) {
+        super(shell)
+        title = "Please Select..."
+    }
+    
+    /**
+     * Set the selection type, i.e. if several or exactly one item can be selected.
+     */
+    def MultipleChoiceSelectionDialogBuilder setSelectionType(SelectionType selectionType) {
+        this.selectionType = selectionType
+        return this
+    }
+    
+    /**
+     * Sets the choices.
+     */
+    def MultipleChoiceSelectionDialogBuilder setChoices(String[] choices) {
+        if (choices.length < 2) {
+            throw new IllegalArgumentException("Provide at least two choices to pick from.")
+        }
+        this.choices = choices
+        return this
+    }
+
+    override def MultipleChoiceSelectionDialog createAndShow() {
+        dialog = new MultipleChoiceSelectionDialog(shell, windowModality, title, message, choices, selectionType)
+        dialog.show()
+        return dialog
+    }
 }

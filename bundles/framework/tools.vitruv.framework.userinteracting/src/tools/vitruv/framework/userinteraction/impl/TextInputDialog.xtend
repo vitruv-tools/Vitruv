@@ -19,6 +19,8 @@ import org.eclipse.jface.fieldassist.FieldDecorationRegistry
 import org.eclipse.swt.widgets.Control
 import org.eclipse.swt.layout.GridLayout
 import org.eclipse.swt.layout.GridData
+import tools.vitruv.framework.userinteraction.impl.TextInputDialog.InputValidator
+import tools.vitruv.framework.userinteraction.impl.TextInputDialog.InputFieldType
 
 class TextInputDialog extends BaseDialog {
 	private String input
@@ -26,6 +28,16 @@ class TextInputDialog extends BaseDialog {
 	private InputValidator inputValidator
 	private Text inputField
 	private ControlDecoration inputDecorator
+	
+	public static final InputValidator NUMBERS_ONLY_INPUT_VALIDATOR = new InputValidator() {
+        override getInvalidInputMessage(String input) { "Only numbers are allowed as input" }
+        override isInputValid(String input) { input.matches("[0-9]*") }
+    }
+    
+    public static final InputValidator ACCEPT_ALL_INPUT_VALIDATOR = new InputValidator() {
+        override getInvalidInputMessage(String input) { "" }
+        override isInputValid(String input) { true }
+    }
 	
 	new(Shell shell, WindowModality modality, String title, String message, InputFieldType fieldType, InputValidator inputValidator) {
 		super(shell, modality, title, message)
@@ -38,7 +50,7 @@ class TextInputDialog extends BaseDialog {
 	new(Shell shell, WindowModality modality, String title, String message, InputFieldType fieldType, Function<String, Boolean> inputValidator, String invalidInputMessage) {
 		this(shell, modality, title, message, fieldType, new InputValidator() {
 			override getInvalidInputMessage(String input) { "" }
-			override isInputValid(String input) { true }
+			override isInputValid(String input) { inputValidator.apply(input) }
 		})
 	}
 	
@@ -48,6 +60,12 @@ class TextInputDialog extends BaseDialog {
 	
 	def String getInput() { input }
 	def void setInput(String newInput) { input = newInput }
+	
+	def InputValidator getInputValidator() { inputValidator }
+    def void setInputValidator(InputValidator newInputValidator) { inputValidator = newInputValidator }
+    
+    def InputFieldType getInputFieldType() { inputFieldType }
+    def void setInputFieldType(InputFieldType newInputFieldType) { inputFieldType = newInputFieldType }
 	
 	override Control createDialogArea(Composite parent) {
 		val composite = super.createDialogArea(parent) as Composite
@@ -73,16 +91,20 @@ class TextInputDialog extends BaseDialog {
         	case MULTI_LINE: SWT.MULTI
         }
         inputField = new Text(composite, linesProperty.bitwiseOr(SWT.CENTER).bitwiseOr(SWT.BORDER))
-        /*inputField.addVerifyListener(new VerifyListener() {
+        inputField.addVerifyListener(new VerifyListener() {
 									
 			override verifyText(VerifyEvent e) {
 				var currentText = (e.widget as Text).getText()
         		var newText =  currentText.substring(0, e.start) + e.text + currentText.substring(e.end)
-        		if (!newText.matches("[a-z]*")) {
+        		if (!inputValidator.isInputValid(newText)) {
         			e.doit = false
+        			inputDecorator.setDescriptionText(inputValidator.getInvalidInputMessage(newText))
+                    inputDecorator.show()
+        		} else {
+                    inputDecorator.hide()
         		}
 			}
-		})*/
+		})
 		
         inputDecorator = new ControlDecoration(inputField, SWT.CENTER)
         inputDecorator.setDescriptionText(inputValidator.getInvalidInputMessage(""))
@@ -91,7 +113,7 @@ class TextInputDialog extends BaseDialog {
         inputDecorator.hide() // hide initially
         
         
-		inputField.addModifyListener(new ModifyListener() {								
+		/*inputField.addModifyListener(new ModifyListener() {								
 			override modifyText(ModifyEvent e) {
 				val input = (e.widget as Text).text
                 if (!inputValidator.isInputValid(input)) { // place your condition here
@@ -102,7 +124,7 @@ class TextInputDialog extends BaseDialog {
                     inputDecorator.hide()
                 }
             }
-        })
+        })*/
         
         gridData = new GridData()
         gridData.horizontalAlignment = SWT.FILL
@@ -138,9 +160,9 @@ class TextInputDialog extends BaseDialog {
 	    val validator = [ String text | text.matches("[a-zA-Z]*") ]
 	    val invalidMessage = "Only letters allowed"
 	    val dialog = new TextInputDialog(shell, WindowModality.MODAL, "Test Title",
-	    	"Test Message which is a whole lot longer than the last one.", InputFieldType.MULTI_LINE, TextInputDialog.NumbersOnlyInputValidator)
+	    	"Test Message which is a whole lot longer than the last one.", InputFieldType.MULTI_LINE, TextInputDialog.NUMBERS_ONLY_INPUT_VALIDATOR)
 		dialog.blockOnOpen = true
-		dialog.show()//open();
+		dialog.show()
 		System.out.println(dialog.getInput())
 		display.dispose()
 	}
@@ -157,14 +179,58 @@ class TextInputDialog extends BaseDialog {
 		
 		def boolean isInputValid(String input)
 	}
-	
-	public static InputValidator NumbersOnlyInputValidator = new InputValidator() {
-		
-		override getInvalidInputMessage(String input) { "Only numbers are allowed as input" }
-		
-		override isInputValid(String input) {
-			input.matches("[0-9]*")
-		}
-		
-	}
+}
+
+
+/**
+ * Builder class for {@link TextInputDialog}s. Use the add/set... methods to specify details and then call
+ * createAndShow() to display and get a reference to the configured dialog.
+ * Creates a dialog with a text input field (configurable to accept single or multi-line input). A {@link InputValidator}
+ * can also be specified which limits the input to strings conforming to its
+ * {@link InputValidator#isInputValid(String) isInputValid} method (the default validator accepts all input).
+ */
+class TextInputDialogBuilder extends DialogBuilder {
+    private TextInputDialog dialog
+    private InputFieldType inputFieldType = InputFieldType.SINGLE_LINE
+    private InputValidator inputValidator = TextInputDialog.ACCEPT_ALL_INPUT_VALIDATOR
+    
+    new(Shell shell) {
+        super(shell)
+        title = "Input Text..."
+    }
+    
+    /**
+     * Adds an input validator used to restrict the input to Strings conforming to the validator's
+     * {@link InputValidator#isInputValid(String) isInputValid} method.
+     */
+    def TextInputDialogBuilder addInputValidator(InputValidator inputValidator) {
+        this.inputValidator = inputValidator
+        return this
+    }
+    
+    /**
+     * Convenience method to add an input validator by providing a validation function used to restrict input and a
+     * message displayed when the user tries to input illegal characters.
+     */
+    def TextInputDialogBuilder addInputValidator(Function<String, Boolean> validatorFunction, String invalidInputMessage) {
+        this.inputValidator = new InputValidator() {
+            override getInvalidInputMessage(String input) { invalidInputMessage }
+            override isInputValid(String input) { validatorFunction.apply(input) }
+        }
+        return this
+    }
+    
+    /**
+     * Sets the input field to be single-line or multi-line.
+     */
+    def TextInputDialogBuilder setInputFieldType(InputFieldType inputFieldType) {
+        this.inputFieldType = inputFieldType
+        return this
+    }
+
+    override def TextInputDialog createAndShow() {
+        dialog = new TextInputDialog(shell, windowModality, title, message, inputFieldType, inputValidator)
+        dialog.show()
+        return dialog
+    }
 }

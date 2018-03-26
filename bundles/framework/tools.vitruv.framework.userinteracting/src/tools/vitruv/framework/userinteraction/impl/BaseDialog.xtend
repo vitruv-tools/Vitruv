@@ -12,7 +12,7 @@ import org.eclipse.ui.PlatformUI
 class BaseDialog extends Dialog {
 	private String title
 	private String message
-	private String positiveButtonText = "Okay"
+	private String positiveButtonText = "Yes"
 	private String negativeButtonText = "No"
 	private String cancelButtonText = "Cancel"
 	private WindowModality windowModality
@@ -78,4 +78,79 @@ class BaseDialog extends Dialog {
 	override boolean isResizable() {
 		return true
 	}
+}
+
+
+/**
+ * Abstract base class for dialog builder objects. The dialog to be built is created and returned in createAndShow, the
+ * other methods are to be used beforehand to specify adjustments to the dialogs contents / behavior. Standard values
+ * for properties not specified using the respective methods are set here or in the constructor for subclasses and
+ * subclass-specific properties.
+ */
+abstract class DialogBuilder {
+    protected BaseDialog dialog
+    protected Shell shell
+    protected String title = "Unspecified Title"
+    protected String message = "No message specified."
+    protected WindowModality windowModality = WindowModality.MODELESS
+    protected String positiveButtonText = "Yes"
+    protected String negativeButtonText = "No"
+    protected String cancelButtonText = "Cancel"
+    
+    new(Shell shell) {
+        this.shell = shell
+    }
+    
+    /**
+     * Instantiates, displays and returns the dialog built by this object.
+     */
+    def abstract BaseDialog createAndShow()
+    
+    /**
+     * Specifies the window title.
+     */
+    def DialogBuilder addTitle(String title) {
+        this.title = title
+        return this
+    }
+    
+    /**
+     * Specifies the dialog's message.
+     */
+    def DialogBuilder addMessage(String message) {
+        this.message = message
+        return this
+    }
+    
+    /**
+     * Sets the dialog window's modality, see {@link WindowModality}.
+     */
+    def DialogBuilder setWindowModality(WindowModality windowModality) {
+        this.windowModality = windowModality
+        return this
+    }
+    
+    /**
+     * Sets the text of the button used to agree to the dialog's intent, like "Yes", "Okay", "Accept" etc.
+     */
+    def DialogBuilder setPositiveButtonText(String positiveButtonText) {
+        this.positiveButtonText = positiveButtonText
+        return this
+    }
+    
+    /**
+     * Sets the text of the button used to decline the dialog's intent, like "No", "Deny" etc.
+     */
+    def DialogBuilder setNegativeButtonText(String negativeButtonText) {
+        this.negativeButtonText = negativeButtonText
+        return this
+    }
+    
+    /**
+     * Sets the text of the button used to cancel the dialog's intent, like "Cancel", "Abort" etc.
+     */
+    def DialogBuilder setCancelButtonText(String cancelButtonText) {
+        this.cancelButtonText = cancelButtonText
+        return this
+    }
 }

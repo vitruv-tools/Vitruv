@@ -87,3 +87,27 @@ class ConfirmationDialog extends BaseDialog {
 	}
 	
 }
+
+
+/**
+ * Builder class for {@link ConfirmationDialog}s. Use the add/set... methods to specify details and then call
+ * createAndShow() to display and get a reference to the configured dialog.
+ * Creates a dialog with a question and buttons to give a positive or negative answer.
+ */
+class ConfirmationDialogBuilder extends DialogBuilder {
+    private ConfirmationDialog dialog
+    
+    public static final String STANDARD_TITLE = "Please Confirm"
+    public static final String UNSPECIFIED_MESSAGE = "No confirmation message specified."
+    
+    new(Shell shell) {
+        super(shell)
+        title = "Please Confirm"
+    }
+
+    override def ConfirmationDialog createAndShow() {
+        dialog = new ConfirmationDialog(shell, windowModality, title, message)
+        dialog.show()
+        return dialog
+    }
+}
