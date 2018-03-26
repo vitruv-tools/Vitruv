@@ -4,8 +4,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
-import java.util.Set;
-import java.util.HashSet;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -19,7 +17,6 @@ import tools.vitruv.framework.change.description.TransactionalChange;
 import tools.vitruv.framework.change.description.VitruviusChangeFactory;
 import tools.vitruv.framework.change.recording.AtomicEmfChangeRecorder;
 import tools.vitruv.framework.util.bridges.EcoreResourceBridge;
-import tools.vitruv.framework.vsum.PropagatedChangeListener;
 
 /**
  * Basic test class for all Vitruvius application tests that require a test
@@ -54,7 +51,7 @@ public abstract class VitruviusApplicationTest extends VitruviusUnmonitoredAppli
 		}
 		cleanup();
 	}
-
+	
 	/**
 	 * This method gets called at the beginning of each test case, after the
 	 * test project and VSUM have been initialized. It can be used, for example,
@@ -109,7 +106,7 @@ public abstract class VitruviusApplicationTest extends VitruviusUnmonitoredAppli
 		Resource resource = object.eResource();
 		return saveAndSynchronizeChanges(resource);
 	}
-
+	
 	protected  List<PropagatedChange> saveAndSynchronizeChanges(Resource resource) throws IOException {
 		EcoreResourceBridge.saveResource(resource);
 		List<PropagatedChange> result = this.propagateChanges();
@@ -157,7 +154,7 @@ public abstract class VitruviusApplicationTest extends VitruviusUnmonitoredAppli
 		this.changeRecorder.removeFromRecording(resource);
 		return changes;
 	}
-
+	
 	protected Resource resourceAt(String modelPathInProject) {
 		try {
 			final ResourceSet resourceSet = new ResourceSetImpl();
@@ -169,10 +166,10 @@ public abstract class VitruviusApplicationTest extends VitruviusUnmonitoredAppli
 			throw e;
 		}
 	}
-
+	
 	protected <T> T from(Class<T> clazz, String modelPathInProject) {
 		final Resource requestedResource = getModelResource(modelPathInProject);
 		startRecordingChanges(requestedResource);
 		return clazz.cast(requestedResource.getContents().get(0));
 	}
-}
+ }
