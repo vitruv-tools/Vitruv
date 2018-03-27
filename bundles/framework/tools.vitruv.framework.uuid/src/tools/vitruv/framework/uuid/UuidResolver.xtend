@@ -53,4 +53,13 @@ interface UuidResolver {
 	
 	def ResourceSet getResourceSet();
 	
+	def EObject getPotentiallyCachedEObject(String uuid);
+	
+	def boolean hasPotentiallyCachedEObject(String uuid);
+	
+	def String getPotentiallyCachedUuid(EObject eObject);
+	
+	def boolean hasPotentiallyCachedUuid(EObject eObject);
+	
+	def String registerCachedEObject(EObject eObject);
 }
