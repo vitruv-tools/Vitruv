@@ -76,6 +76,7 @@ public class ReactionsPackageImpl extends EPackageImpl implements ReactionsPacka
 
 		// Initialize simple dependencies
 		CorrespondencePackage.eINSTANCE.eClass();
+		tools.vitruv.framework.uuid.UuidPackage.eINSTANCE.eClass();
 
 		// Create package meta-data objects
 		theReactionsPackage.createPackageContents();

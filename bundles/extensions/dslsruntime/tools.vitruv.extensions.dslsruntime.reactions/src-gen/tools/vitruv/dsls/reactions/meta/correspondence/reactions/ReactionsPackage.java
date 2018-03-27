@@ -94,22 +94,40 @@ public interface ReactionsPackage extends EPackage {
 	int REACTIONS_CORRESPONDENCE__DEPENDED_ON_BY = CorrespondencePackage.CORRESPONDENCE__DEPENDED_ON_BY;
 
 	/**
-	 * The feature id for the '<em><b>ATUI Ds</b></em>' attribute list.
+	 * The feature id for the '<em><b>ATuids</b></em>' attribute list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int REACTIONS_CORRESPONDENCE__ATUI_DS = CorrespondencePackage.CORRESPONDENCE__ATUI_DS;
+	int REACTIONS_CORRESPONDENCE__ATUIDS = CorrespondencePackage.CORRESPONDENCE__ATUIDS;
 
 	/**
-	 * The feature id for the '<em><b>BTUI Ds</b></em>' attribute list.
+	 * The feature id for the '<em><b>BTuids</b></em>' attribute list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int REACTIONS_CORRESPONDENCE__BTUI_DS = CorrespondencePackage.CORRESPONDENCE__BTUI_DS;
+	int REACTIONS_CORRESPONDENCE__BTUIDS = CorrespondencePackage.CORRESPONDENCE__BTUIDS;
+
+	/**
+	 * The feature id for the '<em><b>AUuids</b></em>' attribute list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REACTIONS_CORRESPONDENCE__AUUIDS = CorrespondencePackage.CORRESPONDENCE__AUUIDS;
+
+	/**
+	 * The feature id for the '<em><b>BUuids</b></em>' attribute list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REACTIONS_CORRESPONDENCE__BUUIDS = CorrespondencePackage.CORRESPONDENCE__BUUIDS;
 
 	/**
 	 * The feature id for the '<em><b>Tag</b></em>' attribute.
