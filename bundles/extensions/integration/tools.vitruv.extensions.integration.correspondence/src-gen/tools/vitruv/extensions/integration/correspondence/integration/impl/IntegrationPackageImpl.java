@@ -6,6 +6,7 @@ import tools.vitruv.extensions.integration.correspondence.integration.Integratio
 import tools.vitruv.extensions.integration.correspondence.integration.IntegrationFactory;
 import tools.vitruv.extensions.integration.correspondence.integration.IntegrationPackage;
 
+import tools.vitruv.framework.correspondence.CorrespondencePackage;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EPackage;
@@ -74,7 +75,9 @@ public class IntegrationPackageImpl extends EPackageImpl implements IntegrationP
 		isInited = true;
 
 		// Initialize simple dependencies
+		CorrespondencePackage.eINSTANCE.eClass();
 		ReactionsPackage.eINSTANCE.eClass();
+		tools.vitruv.framework.uuid.UuidPackage.eINSTANCE.eClass();
 
 		// Create package meta-data objects
 		theIntegrationPackage.createPackageContents();
