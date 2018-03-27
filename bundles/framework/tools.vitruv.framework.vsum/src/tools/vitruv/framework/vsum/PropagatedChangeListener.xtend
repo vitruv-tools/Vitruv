@@ -6,24 +6,24 @@ import tools.vitruv.framework.change.description.PropagatedChange;
 import tools.vitruv.framework.domains.VitruvDomain;
 
 /**
- * The {@link PropagatedChangeListener} is the interface used to communicate with the change
- * visualization.
+ * The {@link PropagatedChangeListener} is an interface that can be registered at a {@link InternalVirtualModel} 
+ * to get notified about propagated changes.
  *
  * @author Andreas Loeffler
  */
 public interface PropagatedChangeListener {
 
     /**
-     * Whenever changes are made, they must be posted with this method to the visualization-listener.
+     * Whenever changes are made, they must are posted to this method.
      *
      * @param virtualModelName
-     *            The name of the virtual model. Equal names group results together
+     *            The name of the virtual model
      * @param sourceDomain
      *            The sourceDomain, may be null
      * @param targetDomain
      *            The targetDomain, may be null
      * @param propagationResult
-     *            The results to visualize
+     *            The list of performed {@link PropagatedChange}s
      */
     def void postChanges(String virtualModelName, VitruvDomain sourceDomain, VitruvDomain targetDomain,
             List<PropagatedChange> propagationResult);
