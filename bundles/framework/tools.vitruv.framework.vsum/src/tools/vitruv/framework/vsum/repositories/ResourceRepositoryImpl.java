@@ -110,6 +110,7 @@ public class ResourceRepositoryImpl implements ModelRepository, CorrespondencePr
                     || URIUtil.existsResourceAtUri(modelURI.getEMFUri())) {
                 modelInstance.load(getMetamodelByURI(modelURI).getDefaultLoadOptions(),
                         forceLoadByDoingUnloadBeforeLoad);
+                relinkUuids(modelInstance);
             }
         } catch (RuntimeException re) {
             // could not load model instance --> this should only be the case when the
@@ -117,6 +118,17 @@ public class ResourceRepositoryImpl implements ModelRepository, CorrespondencePr
             logger.info("Exception during loading of model instance " + modelInstance + " occured: " + re);
         }
         return modelInstance;
+    }
+
+    private void relinkUuids(final ModelInstance modelInstance) {
+        for (EObject root : modelInstance.getRootElements()) {
+            root.eAllContents().forEachRemaining(object -> {
+                if (this.uuidGeneratorAndResolver.hasUuid(object)) {
+                    this.uuidGeneratorAndResolver.registerEObject(this.uuidGeneratorAndResolver.getUuid(object),
+                            object);
+                }
+            });
+        }
     }
 
     @Override
@@ -262,6 +274,7 @@ public class ResourceRepositoryImpl implements ModelRepository, CorrespondencePr
         URI emfURI = modelURI.getEMFUri();
         Resource modelResource = URIUtil.loadResourceAtURI(emfURI, this.resourceSet, metamodel.getDefaultLoadOptions());
         ModelInstance modelInstance = new ModelInstance(modelURI, modelResource);
+        relinkUuids(modelInstance);
         return modelInstance;
     }
 
@@ -275,6 +288,7 @@ public class ResourceRepositoryImpl implements ModelRepository, CorrespondencePr
         URI emfURI = modelURI.getEMFUri();
         Resource modelResource = URIUtil.loadResourceAtURI(emfURI, this.resourceSet, Collections.emptyMap());
         ModelInstance modelInstance = new ModelInstance(modelURI, modelResource);
+        relinkUuids(modelInstance);
         return modelInstance;
     }
 
@@ -293,7 +307,8 @@ public class ResourceRepositoryImpl implements ModelRepository, CorrespondencePr
             recorder.addToRecording(correspondencesResource);
             recorder.beginRecording();
             this.correspondenceModel = new CorrespondenceModelImpl(new TuidResolverImpl(this.metamodelRepository, this),
-                    this, this.metamodelRepository, correspondencesVURI, correspondencesResource);
+                    this.uuidGeneratorAndResolver, this, this.metamodelRepository, correspondencesVURI,
+                    correspondencesResource);
             recorder.endRecording();
             recorder.addToRecording(correspondencesResource);
             return null;
