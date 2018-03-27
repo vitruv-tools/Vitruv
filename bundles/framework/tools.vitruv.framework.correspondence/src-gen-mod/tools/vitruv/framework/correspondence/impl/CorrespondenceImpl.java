@@ -93,6 +93,26 @@ public abstract class CorrespondenceImpl extends EObjectImpl implements Correspo
     protected EList<Tuid> bTuids;
 
     /**
+	 * The cached value of the '{@link #getAUuids() <em>AUuids</em>}' attribute list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getAUuids()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<String> aUuids;
+
+	/**
+	 * The cached value of the '{@link #getBUuids() <em>BUuids</em>}' attribute list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getBUuids()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<String> bUuids;
+	
+    /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
@@ -197,7 +217,7 @@ public abstract class CorrespondenceImpl extends EObjectImpl implements Correspo
     public EList<Tuid> getATuids() {
         if (this.aTuids == null) {
             this.aTuids = new EDataTypeUniqueEList<Tuid>(Tuid.class, this,
-                    CorrespondencePackage.CORRESPONDENCE__ATUI_DS);
+                    CorrespondencePackage.CORRESPONDENCE__ATUIDS);
         }
         return this.aTuids;
     }
@@ -211,10 +231,34 @@ public abstract class CorrespondenceImpl extends EObjectImpl implements Correspo
     public EList<Tuid> getBTuids() {
         if (this.bTuids == null) {
             this.bTuids = new EDataTypeUniqueEList<Tuid>(Tuid.class, this,
-                    CorrespondencePackage.CORRESPONDENCE__BTUI_DS);
+                    CorrespondencePackage.CORRESPONDENCE__BTUIDS);
         }
         return this.bTuids;
     }
+    
+    /**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EList<String> getAUuids() {
+		if (aUuids == null) {
+			aUuids = new EDataTypeUniqueEList<String>(String.class, this, CorrespondencePackage.CORRESPONDENCE__AUUIDS);
+		}
+		return aUuids;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EList<String> getBUuids() {
+		if (bUuids == null) {
+			bUuids = new EDataTypeUniqueEList<String>(String.class, this, CorrespondencePackage.CORRESPONDENCE__BUUIDS);
+		}
+		return bUuids;
+	}
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -223,7 +267,7 @@ public abstract class CorrespondenceImpl extends EObjectImpl implements Correspo
      */
     @Override
     public EList<EObject> getAs() {
-        return new BasicEList<EObject>(getParent().getCorrespondenceModel().resolveEObjectsFromTuids(getATuids()));
+        return new BasicEList<EObject>(getParent().getCorrespondenceModel().resolveEObjectsFromUuids(getAUuids()));
     }
 
     /**
@@ -233,7 +277,7 @@ public abstract class CorrespondenceImpl extends EObjectImpl implements Correspo
      */
     @Override
     public EList<EObject> getBs() {
-        return new BasicEList<EObject>(getParent().getCorrespondenceModel().resolveEObjectsFromTuids(getBTuids()));
+        return new BasicEList<EObject>(getParent().getCorrespondenceModel().resolveEObjectsFromUuids(getBUuids()));
     }
 
     /**
@@ -324,126 +368,151 @@ public abstract class CorrespondenceImpl extends EObjectImpl implements Correspo
         return super.eBasicRemoveFromContainerFeature(msgs);
     }
 
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    public Object eGet(final int featureID, final boolean resolve, final boolean coreType) {
-        switch (featureID) {
-        case CorrespondencePackage.CORRESPONDENCE__PARENT:
-            return getParent();
-        case CorrespondencePackage.CORRESPONDENCE__DEPENDS_ON:
-            return getDependsOn();
-        case CorrespondencePackage.CORRESPONDENCE__DEPENDED_ON_BY:
-            return getDependedOnBy();
-        case CorrespondencePackage.CORRESPONDENCE__ATUI_DS:
-            return getATuids();
-        case CorrespondencePackage.CORRESPONDENCE__BTUI_DS:
-            return getBTuids();
-        }
-        return super.eGet(featureID, resolve, coreType);
-    }
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Object eGet(int featureID, boolean resolve, boolean coreType) {
+		switch (featureID) {
+			case CorrespondencePackage.CORRESPONDENCE__PARENT:
+				return getParent();
+			case CorrespondencePackage.CORRESPONDENCE__DEPENDS_ON:
+				return getDependsOn();
+			case CorrespondencePackage.CORRESPONDENCE__DEPENDED_ON_BY:
+				return getDependedOnBy();
+			case CorrespondencePackage.CORRESPONDENCE__ATUIDS:
+				return getATuids();
+			case CorrespondencePackage.CORRESPONDENCE__BTUIDS:
+				return getBTuids();
+			case CorrespondencePackage.CORRESPONDENCE__AUUIDS:
+				return getAUuids();
+			case CorrespondencePackage.CORRESPONDENCE__BUUIDS:
+				return getBUuids();
+		}
+		return super.eGet(featureID, resolve, coreType);
+	}
 
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @SuppressWarnings("unchecked")
-    @Override
-    public void eSet(final int featureID, final Object newValue) {
-        switch (featureID) {
-        case CorrespondencePackage.CORRESPONDENCE__PARENT:
-            setParent((Correspondences) newValue);
-            return;
-        case CorrespondencePackage.CORRESPONDENCE__DEPENDS_ON:
-            getDependsOn().clear();
-            getDependsOn().addAll((Collection<? extends Correspondence>) newValue);
-            return;
-        case CorrespondencePackage.CORRESPONDENCE__DEPENDED_ON_BY:
-            getDependedOnBy().clear();
-            getDependedOnBy().addAll((Collection<? extends Correspondence>) newValue);
-            return;
-        case CorrespondencePackage.CORRESPONDENCE__ATUI_DS:
-            getATuids().clear();
-            getATuids().addAll((Collection<? extends Tuid>) newValue);
-            return;
-        case CorrespondencePackage.CORRESPONDENCE__BTUI_DS:
-            getBTuids().clear();
-            getBTuids().addAll((Collection<? extends Tuid>) newValue);
-            return;
-        }
-        super.eSet(featureID, newValue);
-    }
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public void eSet(int featureID, Object newValue) {
+		switch (featureID) {
+			case CorrespondencePackage.CORRESPONDENCE__PARENT:
+				setParent((Correspondences)newValue);
+				return;
+			case CorrespondencePackage.CORRESPONDENCE__DEPENDS_ON:
+				getDependsOn().clear();
+				getDependsOn().addAll((Collection<? extends Correspondence>)newValue);
+				return;
+			case CorrespondencePackage.CORRESPONDENCE__DEPENDED_ON_BY:
+				getDependedOnBy().clear();
+				getDependedOnBy().addAll((Collection<? extends Correspondence>)newValue);
+				return;
+			case CorrespondencePackage.CORRESPONDENCE__ATUIDS:
+				getATuids().clear();
+				getATuids().addAll((Collection<? extends Tuid>)newValue);
+				return;
+			case CorrespondencePackage.CORRESPONDENCE__BTUIDS:
+				getBTuids().clear();
+				getBTuids().addAll((Collection<? extends Tuid>)newValue);
+				return;
+			case CorrespondencePackage.CORRESPONDENCE__AUUIDS:
+				getAUuids().clear();
+				getAUuids().addAll((Collection<? extends String>)newValue);
+				return;
+			case CorrespondencePackage.CORRESPONDENCE__BUUIDS:
+				getBUuids().clear();
+				getBUuids().addAll((Collection<? extends String>)newValue);
+				return;
+		}
+		super.eSet(featureID, newValue);
+	}
 
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    public void eUnset(final int featureID) {
-        switch (featureID) {
-        case CorrespondencePackage.CORRESPONDENCE__PARENT:
-            setParent((Correspondences) null);
-            return;
-        case CorrespondencePackage.CORRESPONDENCE__DEPENDS_ON:
-            getDependsOn().clear();
-            return;
-        case CorrespondencePackage.CORRESPONDENCE__DEPENDED_ON_BY:
-            getDependedOnBy().clear();
-            return;
-        case CorrespondencePackage.CORRESPONDENCE__ATUI_DS:
-            getATuids().clear();
-            return;
-        case CorrespondencePackage.CORRESPONDENCE__BTUI_DS:
-            getBTuids().clear();
-            return;
-        }
-        super.eUnset(featureID);
-    }
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public void eUnset(int featureID) {
+		switch (featureID) {
+			case CorrespondencePackage.CORRESPONDENCE__PARENT:
+				setParent((Correspondences)null);
+				return;
+			case CorrespondencePackage.CORRESPONDENCE__DEPENDS_ON:
+				getDependsOn().clear();
+				return;
+			case CorrespondencePackage.CORRESPONDENCE__DEPENDED_ON_BY:
+				getDependedOnBy().clear();
+				return;
+			case CorrespondencePackage.CORRESPONDENCE__ATUIDS:
+				getATuids().clear();
+				return;
+			case CorrespondencePackage.CORRESPONDENCE__BTUIDS:
+				getBTuids().clear();
+				return;
+			case CorrespondencePackage.CORRESPONDENCE__AUUIDS:
+				getAUuids().clear();
+				return;
+			case CorrespondencePackage.CORRESPONDENCE__BUUIDS:
+				getBUuids().clear();
+				return;
+		}
+		super.eUnset(featureID);
+	}
 
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    public boolean eIsSet(final int featureID) {
-        switch (featureID) {
-        case CorrespondencePackage.CORRESPONDENCE__PARENT:
-            return getParent() != null;
-        case CorrespondencePackage.CORRESPONDENCE__DEPENDS_ON:
-            return this.dependsOn != null && !this.dependsOn.isEmpty();
-        case CorrespondencePackage.CORRESPONDENCE__DEPENDED_ON_BY:
-            return this.dependedOnBy != null && !this.dependedOnBy.isEmpty();
-        case CorrespondencePackage.CORRESPONDENCE__ATUI_DS:
-            return this.aTuids != null && !this.aTuids.isEmpty();
-        case CorrespondencePackage.CORRESPONDENCE__BTUI_DS:
-            return this.bTuids != null && !this.bTuids.isEmpty();
-        }
-        return super.eIsSet(featureID);
-    }
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public boolean eIsSet(int featureID) {
+		switch (featureID) {
+			case CorrespondencePackage.CORRESPONDENCE__PARENT:
+				return getParent() != null;
+			case CorrespondencePackage.CORRESPONDENCE__DEPENDS_ON:
+				return dependsOn != null && !dependsOn.isEmpty();
+			case CorrespondencePackage.CORRESPONDENCE__DEPENDED_ON_BY:
+				return dependedOnBy != null && !dependedOnBy.isEmpty();
+			case CorrespondencePackage.CORRESPONDENCE__ATUIDS:
+				return aTuids != null && !aTuids.isEmpty();
+			case CorrespondencePackage.CORRESPONDENCE__BTUIDS:
+				return bTuids != null && !bTuids.isEmpty();
+			case CorrespondencePackage.CORRESPONDENCE__AUUIDS:
+				return aUuids != null && !aUuids.isEmpty();
+			case CorrespondencePackage.CORRESPONDENCE__BUUIDS:
+				return bUuids != null && !bUuids.isEmpty();
+		}
+		return super.eIsSet(featureID);
+	}
 
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    public String toString() {
-        if (eIsProxy())
-            return super.toString();
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public String toString() {
+		if (eIsProxy()) return super.toString();
 
-        StringBuffer result = new StringBuffer(super.toString());
-        result.append(" (aTuids: ");
-        result.append(this.aTuids);
-        result.append(", bTuids: ");
-        result.append(this.bTuids);
-        result.append(')');
-        return result.toString();
-    }
+		StringBuffer result = new StringBuffer(super.toString());
+		result.append(" (aTuids: ");
+		result.append(aTuids);
+		result.append(", bTuids: ");
+		result.append(bTuids);
+		result.append(", aUuids: ");
+		result.append(aUuids);
+		result.append(", bUuids: ");
+		result.append(bUuids);
+		result.append(')');
+		return result.toString();
+	}
 
-} // CorrespondenceImpl
+} //CorrespondenceImpl

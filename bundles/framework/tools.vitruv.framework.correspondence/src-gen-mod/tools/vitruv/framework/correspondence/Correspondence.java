@@ -125,6 +125,38 @@ public interface Correspondence extends EObject {
     EList<Tuid> getBTuids();
 
     /**
+	 * Returns the value of the '<em><b>AUuids</b></em>' attribute list.
+	 * The list contents are of type {@link java.lang.String}.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>AUuids</em>' attribute list isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>AUuids</em>' attribute list.
+	 * @see tools.vitruv.framework.correspondence.CorrespondencePackage#getCorrespondence_AUuids()
+	 * @model dataType="uuid.Uuid"
+	 * @generated
+	 */
+	EList<String> getAUuids();
+
+	/**
+	 * Returns the value of the '<em><b>BUuids</b></em>' attribute list.
+	 * The list contents are of type {@link java.lang.String}.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>BUuids</em>' attribute list isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>BUuids</em>' attribute list.
+	 * @see tools.vitruv.framework.correspondence.CorrespondencePackage#getCorrespondence_BUuids()
+	 * @model dataType="uuid.Uuid"
+	 * @generated
+	 */
+	EList<String> getBUuids();
+	
+    /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      * @model kind="operation"
      * @generated

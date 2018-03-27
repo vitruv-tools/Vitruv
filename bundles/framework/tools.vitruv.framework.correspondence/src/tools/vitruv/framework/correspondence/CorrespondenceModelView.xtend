@@ -151,4 +151,8 @@ class CorrespondenceModelView<T extends Correspondence> implements GenericCorres
 		correspondenceModelDelegate.resolveEObjectsFromTuids(tuids);
 	}
 	
+	override resolveEObjectsFromUuids(List<String> uuids) {
+		return correspondenceModelDelegate.resolveEObjectsFromUuids(uuids);
+	}
+	
 }

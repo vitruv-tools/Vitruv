@@ -1,8 +1,9 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Vitruv Framework Correspondence Metamodel
+Bundle-Name: %pluginName
 Bundle-SymbolicName: tools.vitruv.framework.correspondence;singleton:=true
 Bundle-Version: 0.2.0.qualifier
+Bundle-ClassPath: .
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: org.apache.log4j,
  com.google.guava,
@@ -15,9 +16,11 @@ Require-Bundle: org.apache.log4j,
  org.eclipse.emf.ecore.change,
  tools.vitruv.framework.util,
  tools.vitruv.framework.tuid,
- tools.vitruv.framework.metamodel
+ tools.vitruv.framework.metamodel,
+ tools.vitruv.framework.uuid;visibility:=reexport
 Bundle-ActivationPolicy: lazy
 Export-Package: tools.vitruv.framework.correspondence,
  tools.vitruv.framework.correspondence.impl,
  tools.vitruv.framework.correspondence.util
-Bundle-Vendor: vitruv.tools
+Bundle-Vendor: %providerName
+Bundle-Localization: plugin

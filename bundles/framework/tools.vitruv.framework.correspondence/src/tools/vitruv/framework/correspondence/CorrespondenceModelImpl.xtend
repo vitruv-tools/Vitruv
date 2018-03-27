@@ -35,6 +35,7 @@ import tools.vitruv.framework.domains.repository.VitruvDomainRepository
 import tools.vitruv.framework.util.command.VitruviusRecordingCommandExecutor
 import tools.vitruv.framework.util.command.EMFCommandBridge
 import tools.vitruv.framework.tuid.TuidResolver
+import tools.vitruv.framework.uuid.UuidResolver
 
 // TODO move all methods that don't need direct instance variable access to some kind of util class
 class CorrespondenceModelImpl extends ModelInstance implements InternalCorrespondenceModel, TuidUpdateListener {
@@ -47,8 +48,9 @@ class CorrespondenceModelImpl extends ModelInstance implements InternalCorrespon
 	boolean changedAfterLastSave = false
 	final Map<String, String> saveCorrespondenceOptions
 	final TuidResolver tuidResolver;
+	final UuidResolver uuidResolver;
 	
-	new(TuidResolver tuidResolver, VitruviusRecordingCommandExecutor modelCommandExecutor, VitruvDomainRepository domainRepository, VURI correspondencesVURI, Resource correspondencesResource) {
+	new(TuidResolver tuidResolver, UuidResolver uuidResolver, VitruviusRecordingCommandExecutor modelCommandExecutor, VitruvDomainRepository domainRepository, VURI correspondencesVURI, Resource correspondencesResource) {
 		super(correspondencesVURI, correspondencesResource)
 		this.modelCommandExecutor = modelCommandExecutor
 		// TODO MK use MutatingListFixing... when necessary (for both maps!)
@@ -60,6 +62,7 @@ class CorrespondenceModelImpl extends ModelInstance implements InternalCorrespon
 		this.correspondences = loadAndRegisterCorrespondences(correspondencesResource)
 		this.domainRepository = domainRepository;
 		this.tuidResolver = tuidResolver;
+		this.uuidResolver = uuidResolver;
 		TuidManager.instance.addTuidUpdateListener(this);
 	}
 
@@ -181,15 +184,41 @@ class CorrespondenceModelImpl extends ModelInstance implements InternalCorrespon
 		}
 		return correspondences
 	}
+	
+	def Set<Correspondence> getCorrespondencesForUuids(List<String> uuids) {
+		return this.correspondences.correspondences.filter[AUuids.containsAll(uuids) || BUuids.containsAll(uuids)].toSet
+	}
 
 	override Set<List<EObject>> getCorrespondingEObjects(List<EObject> eObjects) {
 		this.getCorrespondingEObjects(Correspondence, eObjects);
 	}
 
 	override Set<List<EObject>> getCorrespondingEObjects(Class<? extends Correspondence> correspondenceType, List<EObject> eObjects) {
-		var List<Tuid> tuids = calculateTuidsFromEObjects(eObjects)
-		var Set<List<Tuid>> correspondingTuidLists = getCorrespondingTuids(correspondenceType, tuids)
-		return correspondingTuidLists.mapFixed[resolveEObjectsFromTuids(it)].toSet;
+		//var List<Tuid> tuids = calculateTuidsFromEObjects(eObjects)
+		val uuids = eObjects.map[uuidResolver.getPotentiallyCachedUuid(it)];
+		
+		var Set<List<String>> correspondingTuidLists = getCorrespondingUuids(correspondenceType, uuids)
+		return correspondingTuidLists.mapFixed[it.map[uuidResolver.getPotentiallyCachedEObject(it)].filter[eResource !== null].toList].toSet;
+	}
+	
+	def private Set<List<String>> getCorrespondingUuids(Class<? extends Correspondence> correspondenceType, List<String> uuids) {
+		var Set<Correspondence> allCorrespondences = getCorrespondencesForUuids(uuids)
+		var Set<List<String>> correspondingTuidLists = new HashSet<List<String>>(allCorrespondences.size())
+		for (Correspondence correspondence : allCorrespondences.filter(correspondenceType)) {
+			var List<String> aUuids = correspondence.getAUuids()
+			var List<String> bUuids = correspondence.getBUuids()
+			if (aUuids === null || bUuids === null || aUuids.size == 0 || bUuids.size == 0) {
+				throw new IllegalStateException(
+					'''The correspondence '«»«correspondence»' links to an empty Uuid '«»«aUuids»' or '«»«bUuids»'!'''.
+						toString)
+			}
+			if (aUuids.equals(uuids)) {
+				correspondingTuidLists.add(bUuids)
+			} else {
+				correspondingTuidLists.add(aUuids)
+			}
+		}
+		return correspondingTuidLists
 	}
 	
 	def private Set<List<Tuid>> getCorrespondingTuids(Class<? extends Correspondence> correspondenceType, List<Tuid> tuids) {
@@ -362,8 +391,21 @@ class CorrespondenceModelImpl extends ModelInstance implements InternalCorrespon
 		var bEObjects = eObjects2
 		var List<Tuid> aTuids = calculateTuidsFromEObjects(aEObjects)
 		correspondence.getATuids().addAll(aTuids)
+		correspondence.getAUuids().addAll(aEObjects.map[
+			if (uuidResolver.hasPotentiallyCachedUuid(it)) {
+				uuidResolver.getPotentiallyCachedUuid(it)
+			} else {
+				uuidResolver.registerCachedEObject(it);
+			}
+		])
 		var List<Tuid> bTuids = calculateTuidsFromEObjects(bEObjects)
 		correspondence.getBTuids().addAll(bTuids)
+		correspondence.getBUuids().addAll(bEObjects.map[
+			if (uuidResolver.hasPotentiallyCachedUuid(it)) {
+				uuidResolver.getPotentiallyCachedUuid(it)
+			} else {
+				uuidResolver.registerCachedEObject(it);
+			}])
 	}
 
 	override getAllCorrespondencesWithoutDependencies() {
@@ -476,6 +518,10 @@ class CorrespondenceModelImpl extends ModelInstance implements InternalCorrespon
 			setChangeAfterLastSaveFlag();
 			return null;
 		]));
+	}
+	
+	override resolveEObjectsFromUuids(List<String> uuids) {
+		return uuids.map[uuidResolver.getPotentiallyCachedEObject(it)]
 	}
 
 }		
