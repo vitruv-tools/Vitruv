@@ -5,20 +5,16 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>tools.vitruv</groupId>
-		<artifactId>bundles</artifactId>
+		<artifactId>extensions</artifactId>
 		<version>0.2.0-SNAPSHOT</version>
 		<relativePath>../</relativePath>
 	</parent>
-	<artifactId>extensions</artifactId>
+	<artifactId>changevisualization</artifactId>
 	<packaging>pom</packaging>
-	<name>Extensions Modules</name>
+	<name>Extensions Change Visualization Module</name>
 
 	<modules>
-		<module>changevisualization</module>
-		<module>dslsruntime</module>
-		<module>integration</module>
-		<module>constructionsimulation</module>
-		<module>emfdomain</module>
+		<module>tools.vitruv.extensions.changevisualization</module>
 	</modules>
 
 </project>
