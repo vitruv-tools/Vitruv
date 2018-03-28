@@ -9,6 +9,7 @@ import tools.vitruv.framework.util.datatypes.VURI;
 public interface VitruvDomainRepository extends Iterable<VitruvDomain> {
     void addDomain(VitruvDomain metamodel);
     VitruvDomain getDomain(EObject object);
+    boolean hasDomain(EObject object);
     VitruvDomain getDomain(Tuid tuid);
     VitruvDomain getDomain(VURI mmURI);
     VitruvDomain getDomain(String fileExtension);

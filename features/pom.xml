@@ -16,6 +16,7 @@
 	<modules>
 		<module>tools.vitruv.framework.feature</module>
 		<module>tools.vitruv.testutils.feature</module>
+		<module>tools.vitruv.extensions.changevisualization.feature</module>
 		<module>tools.vitruv.extensions.dslsruntime.feature</module>
 		<module>tools.vitruv.extensions.constructionsimulation.feature</module>
 		<module>tools.vitruv.extensions.integration.feature</module>
