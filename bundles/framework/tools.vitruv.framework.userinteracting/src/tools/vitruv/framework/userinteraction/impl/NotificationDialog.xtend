@@ -113,7 +113,7 @@ class NotificationDialog extends BaseDialog {
  * createAndShow() to display and get a reference to the configured dialog.
  * Creates a simple dialog with a message as well as an icon to depict the severity (information, warning or error).
  */
-class NotificationDialogBuilder extends DialogBuilder {
+class NotificationDialogBuilder extends DialogBuilder<NotificationDialogBuilder, Void> {
     private NotificationDialog dialog
     private NotificationType notificationType = NotificationType.INFORMATION
     
@@ -132,9 +132,9 @@ class NotificationDialogBuilder extends DialogBuilder {
         return this
     }
 
-    override def NotificationDialog createAndShow() {
+    override def showDialogAndGetInput() {
         dialog = new NotificationDialog(shell, windowModality, notificationType, title, message)
         openDialog()
-        return dialog
+        return null
     }
 }

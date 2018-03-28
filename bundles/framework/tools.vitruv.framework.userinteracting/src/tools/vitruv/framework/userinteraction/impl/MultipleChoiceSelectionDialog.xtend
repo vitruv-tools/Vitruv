@@ -114,7 +114,7 @@ class MultipleChoiceSelectionDialog extends BaseDialog {
  * Creates a dialog with a list of choices (from {@link #setChoices(String[]) setChoices}) as either radio buttons or
  * check boxes depending on the {@link SelectionType} specified or single select by default.
  */
-class MultipleChoiceSelectionDialogBuilder extends DialogBuilder {
+class MultipleChoiceSelectionDialogBuilder extends DialogBuilder<MultipleChoiceSelectionDialogBuilder, Collection<Integer>> {
     private MultipleChoiceSelectionDialog dialog
     private String[] choices = #["unspecified"]
     private SelectionType selectionType = SelectionType.SINGLE_SELECT
@@ -143,9 +143,10 @@ class MultipleChoiceSelectionDialogBuilder extends DialogBuilder {
         return this
     }
 
-    override def MultipleChoiceSelectionDialog createAndShow() {
+    override def Collection<Integer> showDialogAndGetInput() {
         dialog = new MultipleChoiceSelectionDialog(shell, windowModality, title, message, choices, selectionType)
         openDialog()
-        return dialog
+        return dialog.selectedChoices
     }
+    
 }

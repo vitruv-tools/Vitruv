@@ -94,7 +94,7 @@ class ConfirmationDialog extends BaseDialog {
  * createAndShow() to display and get a reference to the configured dialog.
  * Creates a dialog with a question and buttons to give a positive or negative answer.
  */
-class ConfirmationDialogBuilder extends DialogBuilder {
+class ConfirmationDialogBuilder extends DialogBuilder<ConfirmationDialogBuilder, Boolean> {
     private ConfirmationDialog dialog
     
     public static final String STANDARD_TITLE = "Please Confirm"
@@ -105,9 +105,9 @@ class ConfirmationDialogBuilder extends DialogBuilder {
         title = "Please Confirm"
     }
 
-    override def ConfirmationDialog createAndShow() {
+    override def Boolean showDialogAndGetInput() {
         dialog = new ConfirmationDialog(shell, windowModality, title, message)
         openDialog()
-        return dialog
+        return dialog.getResult()
     }
 }

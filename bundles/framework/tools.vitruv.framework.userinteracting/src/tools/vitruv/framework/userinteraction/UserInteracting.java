@@ -2,10 +2,6 @@ package tools.vitruv.framework.userinteraction;
 
 import org.eclipse.emf.common.util.URI;
 
-import tools.vitruv.framework.change.interaction.ConfirmationUserInput;
-import tools.vitruv.framework.change.interaction.FreeTextUserInput;
-import tools.vitruv.framework.change.interaction.MultipleChoiceMultiSelectionUserInput;
-import tools.vitruv.framework.change.interaction.MultipleChoiceSingleSelectionUserInput;
 import tools.vitruv.framework.userinteraction.impl.ConfirmationDialogBuilder;
 import tools.vitruv.framework.userinteraction.impl.DialogBuilder;
 import tools.vitruv.framework.userinteraction.impl.MultipleChoiceSelectionDialogBuilder;

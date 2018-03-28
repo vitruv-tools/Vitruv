@@ -201,7 +201,7 @@ class TextInputDialog extends BaseDialog {
  * can also be specified which limits the input to strings conforming to its
  * {@link InputValidator#isInputValid(String) isInputValid} method (the default validator accepts all input).
  */
-class TextInputDialogBuilder extends DialogBuilder {
+class TextInputDialogBuilder extends DialogBuilder<TextInputDialogBuilder, String> {
     private TextInputDialog dialog
     private InputFieldType inputFieldType = InputFieldType.SINGLE_LINE
     private InputValidator inputValidator = TextInputDialog.ACCEPT_ALL_INPUT_VALIDATOR
@@ -240,9 +240,10 @@ class TextInputDialogBuilder extends DialogBuilder {
         return this
     }
 
-    override def TextInputDialog createAndShow() {
+    override def String showDialogAndGetInput() {
         dialog = new TextInputDialog(shell, windowModality, title, message, inputFieldType, inputValidator)
         openDialog()
-        return dialog
+        return dialog.input
     }
+    
 }
