@@ -1,7 +1,6 @@
 package tools.vitruv.framework.userinteraction.impl
 
 import java.util.function.Function
-import org.eclipse.jface.dialogs.Dialog
 import org.eclipse.jface.dialogs.IDialogConstants
 import org.eclipse.swt.SWT
 import org.eclipse.swt.events.VerifyEvent
@@ -12,16 +11,14 @@ import org.eclipse.swt.widgets.Shell
 import org.eclipse.swt.widgets.Text
 import tools.vitruv.framework.userinteraction.WindowModality
 import org.eclipse.swt.widgets.Display
-import org.eclipse.swt.events.ModifyListener
 import org.eclipse.jface.fieldassist.ControlDecoration
-import org.eclipse.swt.events.ModifyEvent
 import org.eclipse.jface.fieldassist.FieldDecorationRegistry
 import org.eclipse.swt.widgets.Control
 import org.eclipse.swt.layout.GridLayout
 import org.eclipse.swt.layout.GridData
 import tools.vitruv.framework.userinteraction.impl.TextInputDialog.InputValidator
-import tools.vitruv.framework.userinteraction.impl.TextInputDialog.InputFieldType
 import org.eclipse.swt.graphics.Point
+import tools.vitruv.framework.userinteraction.InputFieldType
 
 class TextInputDialog extends BaseDialog {
 	private String input
@@ -113,7 +110,7 @@ class TextInputDialog extends BaseDialog {
         inputDecorator.setImage(image)
         inputDecorator.hide() // hide initially
         
-        
+        // use below listener instead of verify listener to (initially) allow entering illegal characters:
 		/*inputField.addModifyListener(new ModifyListener() {								
 			override modifyText(ModifyEvent e) {
 				val input = (e.widget as Text).text
@@ -166,7 +163,8 @@ class TextInputDialog extends BaseDialog {
 	    val validator = [ String text | text.matches("[a-zA-Z]*") ]
 	    val invalidMessage = "Only letters allowed"
 	    val dialog = new TextInputDialog(shell, WindowModality.MODAL, "Test Title",
-	    	"Test Message which is a whole lot longer than the last one.", InputFieldType.MULTI_LINE, TextInputDialog.ACCEPT_ALL_INPUT_VALIDATOR)
+	    	"Test Message which is a whole lot longer than the last one.", InputFieldType.MULTI_LINE, validator,
+	    	invalidMessage)
 		dialog.blockOnOpen = true
 		dialog.show()
 		System.out.println(dialog.getInput())
@@ -174,76 +172,24 @@ class TextInputDialog extends BaseDialog {
 	}
 	
 	
-	public enum InputFieldType {
-		SINGLE_LINE, MULTI_LINE
-	}
-	
-	
 	/**
-	 * Abstract base class for input validators used in {@link TextInputDialog}s. The
-	 * {@link #isInputValid(String) isInputValid} method is used to accept or deny input changes, the message
-	 * constructed in {@link #getInvalidInputMessage(String) getInvalidInputMessage} is displayed whenever the user
-	 * tries to enter illegal characters as determined by {@link #isInputValid(String) isInputValid}.
+	 * Interface for input validators used in {@link TextInputDialog}s. The {@link #isInputValid(String) isInputValid}
+	 * method is used to accept or deny input changes, the message constructed in
+	 * {@link #getInvalidInputMessage(String) getInvalidInputMessage} is displayed whenever the user tries to enter
+	 * illegal characters as determined by {@link #isInputValid(String) isInputValid}.
 	 */
-	public abstract static class InputValidator {
+	interface InputValidator {
 		
+		/**
+		 * Get a warning message to be displayed when the user tries to add illegal characters (as determined by 
+		 * {@link isInputValid(String)}).
+		 */
 		def String getInvalidInputMessage(String input)
 		
+		/**
+		 * Determines whether or not the current input is to be considered valid. If not, the illegal characters will
+		 * not be added to the input.
+		 */
 		def boolean isInputValid(String input)
 	}
-}
-
-
-/**
- * Builder class for {@link TextInputDialog}s. Use the add/set... methods to specify details and then call
- * createAndShow() to display and get a reference to the configured dialog.
- * Creates a dialog with a text input field (configurable to accept single or multi-line input). A {@link InputValidator}
- * can also be specified which limits the input to strings conforming to its
- * {@link InputValidator#isInputValid(String) isInputValid} method (the default validator accepts all input).
- */
-class TextInputDialogBuilder extends DialogBuilder<TextInputDialogBuilder, String> {
-    private TextInputDialog dialog
-    private InputFieldType inputFieldType = InputFieldType.SINGLE_LINE
-    private InputValidator inputValidator = TextInputDialog.ACCEPT_ALL_INPUT_VALIDATOR
-    
-    new(Shell shell, Display display) {
-        super(shell, display)
-        title = "Input Text..."
-    }
-    
-    /**
-     * Adds an input validator used to restrict the input to Strings conforming to the validator's
-     * {@link InputValidator#isInputValid(String) isInputValid} method.
-     */
-    def TextInputDialogBuilder addInputValidator(InputValidator inputValidator) {
-        this.inputValidator = inputValidator
-        return this
-    }
-    
-    /**
-     * Convenience method to add an input validator by providing a validation function used to restrict input and a
-     * message displayed when the user tries to input illegal characters.
-     */
-    def TextInputDialogBuilder addInputValidator(Function<String, Boolean> validatorFunction, String invalidInputMessage) {
-        this.inputValidator = new InputValidator() {
-            override getInvalidInputMessage(String input) { invalidInputMessage }
-            override isInputValid(String input) { validatorFunction.apply(input) }
-        }
-        return this
-    }
-    
-    /**
-     * Sets the input field to be single-line or multi-line.
-     */
-    def TextInputDialogBuilder setInputFieldType(InputFieldType inputFieldType) {
-        this.inputFieldType = inputFieldType
-        return this
-    }
-
-    override def String showDialogAndGetInput() {
-        dialog = new TextInputDialog(shell, windowModality, title, message, inputFieldType, inputValidator)
-        openDialog()
-        return dialog.input
-    }
-    
 }

@@ -12,7 +12,6 @@ import org.eclipse.swt.layout.GridData
 import org.eclipse.jface.dialogs.IDialogConstants
 import org.eclipse.swt.widgets.Display
 import org.eclipse.swt.graphics.Point
-import org.eclipse.ui.PlatformUI
 
 class ConfirmationDialog extends BaseDialog {
 	private boolean confirmed = false
@@ -86,28 +85,4 @@ class ConfirmationDialog extends BaseDialog {
 		display.dispose()
 	}
 	
-}
-
-
-/**
- * Builder class for {@link ConfirmationDialog}s. Use the add/set... methods to specify details and then call
- * createAndShow() to display and get a reference to the configured dialog.
- * Creates a dialog with a question and buttons to give a positive or negative answer.
- */
-class ConfirmationDialogBuilder extends DialogBuilder<ConfirmationDialogBuilder, Boolean> {
-    private ConfirmationDialog dialog
-    
-    public static final String STANDARD_TITLE = "Please Confirm"
-    public static final String UNSPECIFIED_MESSAGE = "No confirmation message specified."
-    
-    new(Shell shell, Display display) {
-        super(shell, display)
-        title = "Please Confirm"
-    }
-
-    override def Boolean showDialogAndGetInput() {
-        dialog = new ConfirmationDialog(shell, windowModality, title, message)
-        openDialog()
-        return dialog.getResult()
-    }
 }

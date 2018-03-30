@@ -5,6 +5,10 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
 
+import tools.vitruv.framework.userinteraction.ConfirmationDialogBuilder;
+import tools.vitruv.framework.userinteraction.MultipleChoiceSelectionDialogBuilder;
+import tools.vitruv.framework.userinteraction.NotificationDialogBuilder;
+import tools.vitruv.framework.userinteraction.TextInputDialogBuilder;
 import tools.vitruv.framework.userinteraction.UserInteracting;
 import tools.vitruv.framework.util.bridges.EclipseUIBridge;
 
@@ -27,26 +31,27 @@ public class UserInteractor implements UserInteracting {
         this.display = PlatformUI.getWorkbench().getDisplay();
         this.shell = null; /* TODO: setting the shell to null makes dialogs have their own task bar entry, but prevents
         the window modality flags from having any effect. */
+        getMultipleChoiceSelectionDialogBuilder().message("").choices(new String[] {""});
     }
     
     @Override
 	public NotificationDialogBuilder getNotificationDialogBuilder() {
-		return new NotificationDialogBuilder(shell, display);
+		return new NotificationDialogBuilderImpl(shell, display);
 	}
 
 	@Override
 	public ConfirmationDialogBuilder getConfirmationDialogBuilder() {
-		return new ConfirmationDialogBuilder(shell, display);
+		return new ConfirmationDialogBuilderImpl(shell, display);
 	}
 
 	@Override
 	public TextInputDialogBuilder getTextInputDialogBuilder() {
-		return new TextInputDialogBuilder(shell, display);
+		return new TextInputDialogBuilderImpl(shell, display);
 	}
 
 	@Override
 	public MultipleChoiceSelectionDialogBuilder getMultipleChoiceSelectionDialogBuilder() {
-		return new MultipleChoiceSelectionDialogBuilder(shell, display);
+		return new MultipleChoiceSelectionDialogBuilderImpl(shell, display);
 	}
 
 	@Override

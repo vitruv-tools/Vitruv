@@ -7,8 +7,6 @@ import org.eclipse.swt.SWT
 import org.eclipse.swt.widgets.Composite
 import org.eclipse.swt.widgets.Control
 import org.eclipse.swt.graphics.Point
-import org.eclipse.ui.PlatformUI
-import org.eclipse.swt.widgets.Display
 
 class BaseDialog extends Dialog {
 	private String title
@@ -79,95 +77,4 @@ class BaseDialog extends Dialog {
 	override boolean isResizable() {
 		return true
 	}
-}
-
-
-/**
- * Abstract base class for dialog builder objects. The dialog to be built is created and returned in createAndShow, the
- * other methods are to be used beforehand to specify adjustments to the dialogs contents / behavior. Standard values
- * for properties not specified using the respective methods are set here or in the constructor for subclasses and
- * subclass-specific properties.
- * 
- * @param <T> type parameter used to dynamically type the return of this in the methods defined in DialogBuilder
- *          as respective subtypes when called on subclass objects. When subclassing DialogBuilder, assign the subclass
- *          to this parameter, e.g. {@code class MyDialogBuilder extends DialogBuilder<MyDialogBuilder, V>}.
- * @param <V> type parameter for the return type of {@link #getResult() getResult()}, which returns the user input from
- *          the dialog.
- */
-abstract class DialogBuilder<T extends DialogBuilder<T, V>, V> {
-    protected BaseDialog dialog
-    protected Shell shell
-    protected Display display
-    protected String title = "Unspecified Title"
-    protected String message = "No message specified."
-    protected WindowModality windowModality = WindowModality.MODELESS
-    protected String positiveButtonText = "Yes"
-    protected String negativeButtonText = "No"
-    protected String cancelButtonText = "Cancel"
-    
-    new(Shell shell, Display display) {
-        this.shell = shell
-        this.display = display
-    }
-    
-    /**
-     * Instantiates and displays the dialog built by this object, returns the user input (if the dialog takes input).
-     */
-    def abstract V showDialogAndGetInput()
-    
-    /**
-     * Specifies the window title.
-     */
-    def T addTitle(String title) {
-        this.title = title
-        return this as T
-    }
-    
-    /**
-     * Specifies the dialog's message.
-     */
-    def T addMessage(String message) {
-        this.message = message
-        return this as T
-    }
-    
-    /**
-     * Sets the dialog window's modality, see {@link WindowModality}.
-     */
-    def T setWindowModality(WindowModality windowModality) {
-        this.windowModality = windowModality
-        return this as T
-    }
-    
-    /**
-     * Sets the text of the button used to agree to the dialog's intent, like "Yes", "Okay", "Accept" etc.
-     */
-    def T setPositiveButtonText(String positiveButtonText) {
-        this.positiveButtonText = positiveButtonText
-        return this as T
-    }
-    
-    /**
-     * Sets the text of the button used to decline the dialog's intent, like "No", "Deny" etc.
-     */
-    def T setNegativeButtonText(String negativeButtonText) {
-        this.negativeButtonText = negativeButtonText
-        return this as T
-    }
-    
-    /**
-     * Sets the text of the button used to cancel the dialog's intent, like "Cancel", "Abort" etc.
-     */
-    def T setCancelButtonText(String cancelButtonText) {
-        this.cancelButtonText = cancelButtonText
-        return this as T
-    }
-    
-    protected def void openDialog() {
-        display.syncExec(new Runnable() {
-            override void run() {
-                dialog.show();
-            }
-        });
-    }
 }

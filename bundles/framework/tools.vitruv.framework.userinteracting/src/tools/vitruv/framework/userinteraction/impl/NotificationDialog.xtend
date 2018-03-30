@@ -106,35 +106,3 @@ class NotificationDialog extends BaseDialog {
 		display.dispose()*/
 	}
 }
-
-
-/**
- * Builder class for {@link NotificationDialog}s. Use the add/set... methods to specify details and then call
- * createAndShow() to display and get a reference to the configured dialog.
- * Creates a simple dialog with a message as well as an icon to depict the severity (information, warning or error).
- */
-class NotificationDialogBuilder extends DialogBuilder<NotificationDialogBuilder, Void> {
-    private NotificationDialog dialog
-    private NotificationType notificationType = NotificationType.INFORMATION
-    
-    new(Shell shell, Display display) {
-        super(shell, display)
-        title = "Notification"
-    }
-    
-    /**
-     * Sets the severity of the notification, depicted as an icon in the dialog content area, window title bar and task
-     * bar entry. Can be one of Information, Warning or Error, defaults to Information.
-     * For a question dialog, see {@link ConfirmationDialog}.
-     */
-    def NotificationDialogBuilder setNotificationType(NotificationType notificationType) {
-        this.notificationType = notificationType
-        return this
-    }
-
-    override def showDialogAndGetInput() {
-        dialog = new NotificationDialog(shell, windowModality, notificationType, title, message)
-        openDialog()
-        return null
-    }
-}
