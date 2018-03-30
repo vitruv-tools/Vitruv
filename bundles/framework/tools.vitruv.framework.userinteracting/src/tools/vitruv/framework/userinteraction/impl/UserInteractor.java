@@ -31,7 +31,6 @@ public class UserInteractor implements UserInteracting {
         this.display = PlatformUI.getWorkbench().getDisplay();
         this.shell = null; /* TODO: setting the shell to null makes dialogs have their own task bar entry, but prevents
         the window modality flags from having any effect. */
-        getMultipleChoiceSelectionDialogBuilder().message("").choices(new String[] {""});
     }
     
     @Override

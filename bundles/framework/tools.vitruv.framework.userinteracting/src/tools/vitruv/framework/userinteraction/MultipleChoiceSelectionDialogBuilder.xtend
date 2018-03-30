@@ -7,7 +7,7 @@ import tools.vitruv.framework.userinteraction.SelectionType
  * Defines one single entry point to the build process of a {@link MultipleChoiceSelectionDialog} thus ensuring that
  * mandatory information has to be provided before continuing. The nested interfaces represent another mandatory step
  * ({@link MultipleChoiceSelectionDialogBuilder.ChoicesStep}) and optional steps as well as the build method
- * ({@link MultipleChoiceSelectionDialogBuilder.OptionalSteps}, extends {@link IDialogBuilder<T>} to provide access
+ * ({@link MultipleChoiceSelectionDialogBuilder.OptionalSteps}, extends {@link DialogBuilder} to provide access
  * to build step methods common to all types of dialogs).<br>
  * <br>
  * For further info on the rationale behind the ...DialogBuilder implementation, see the {@link DialogBuilder} javadoc.
