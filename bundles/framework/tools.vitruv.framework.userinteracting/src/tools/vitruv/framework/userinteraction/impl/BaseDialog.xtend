@@ -54,7 +54,7 @@ class BaseDialog extends Dialog {
 	}
 	
 	private def updateWindowModality() {
-	    /* TODO: in order for SWT.APPLICATION_MODAL hint to correctly work and make the dialog modal, the shell passed
+	    /* TODO DK: in order for SWT.APPLICATION_MODAL hint to correctly work and make the dialog modal, the shell passed
 	    to UserInteractor and ultimately to the dialog would have to be the one used by the workbench */
 		/*val modalityFlags = switch (windowModality) {
 			case MODAL: SWT.APPLICATION_MODAL.bitwiseOr(SWT.MODELESS.bitwiseNot)//.bitwiseOr(SWT.RESIZE)

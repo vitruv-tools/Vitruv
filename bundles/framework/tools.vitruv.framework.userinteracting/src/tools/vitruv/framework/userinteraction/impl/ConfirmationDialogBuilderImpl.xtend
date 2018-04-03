@@ -3,6 +3,8 @@ package tools.vitruv.framework.userinteraction.impl
 import tools.vitruv.framework.userinteraction.ConfirmationDialogBuilder
 import org.eclipse.swt.widgets.Shell
 import org.eclipse.swt.widgets.Display
+import tools.vitruv.framework.userinteraction.UserInteracting
+import tools.vitruv.framework.change.interaction.impl.InteractionFactoryImpl
 
 /**
  * Builder class for {@link ConfirmationDialog}s.
@@ -19,8 +21,8 @@ class ConfirmationDialogBuilderImpl extends BaseDialogBuilder<Boolean> implement
     
     public static final String STANDARD_TITLE = "Please Confirm"
     
-    new(Shell shell, Display display) {
-        super(shell, display)
+    new(Shell shell, Display display, UserInteracting.UserInputListener inputListener) {
+        super(shell, display, inputListener)
         title = STANDARD_TITLE
     }
     
@@ -32,6 +34,10 @@ class ConfirmationDialogBuilderImpl extends BaseDialogBuilder<Boolean> implement
     override def Boolean showDialogAndGetUserInput() {
         dialog = new ConfirmationDialog(shell, windowModality, title, message)
         openDialog()
-        return dialog.getResult()
+        var userInput = InteractionFactoryImpl.eINSTANCE.createConfirmationUserInput()
+        userInput.message = message
+        userInput.confirmed = dialog.getConfirmed()
+        notifyUserInputReceived(userInput)
+        return dialog.getConfirmed()
     }
 }

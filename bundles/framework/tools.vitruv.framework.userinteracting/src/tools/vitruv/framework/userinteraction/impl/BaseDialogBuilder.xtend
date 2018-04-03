@@ -4,6 +4,8 @@ import tools.vitruv.framework.userinteraction.DialogBuilder
 import org.eclipse.swt.widgets.Shell
 import org.eclipse.swt.widgets.Display
 import tools.vitruv.framework.userinteraction.WindowModality
+import tools.vitruv.framework.userinteraction.UserInteracting
+import tools.vitruv.framework.change.interaction.UserInputBase
 
 /**
  * Abstract base class for dialog builder objects. The dialog to be built is created and returned in createAndShow, the
@@ -28,17 +30,23 @@ abstract class BaseDialogBuilder<V> implements DialogBuilder<V> {
     protected String positiveButtonText = "Yes"
     protected String negativeButtonText = "No"
     protected String cancelButtonText = "Cancel"
+    private UserInteracting.UserInputListener userInputListener;
     
-    new(Shell shell, Display display) {
+    new(Shell shell, Display display, UserInteracting.UserInputListener inputListener) {
         this.shell = shell
         this.display = display
+        userInputListener = inputListener
     }
     
     /**
      * @inheritDoc
      * Implementations should call {@link #openDialog()} to make sure displaying the dialog is run on the UI thread.
      */
-    override abstract V showDialogAndGetUserInput()   
+    override abstract V showDialogAndGetUserInput()
+    
+    def notifyUserInputReceived(UserInputBase input) {
+        userInputListener.onUserInputReceived(input)
+    }
     
     protected def void openDialog() {
         display.syncExec(new Runnable() {

@@ -72,7 +72,7 @@ class ConfirmationDialog extends BaseDialog {
     	close()
     }
     
-    def boolean getResult() {
+    def boolean getConfirmed() {
     	return confirmed
     }
     

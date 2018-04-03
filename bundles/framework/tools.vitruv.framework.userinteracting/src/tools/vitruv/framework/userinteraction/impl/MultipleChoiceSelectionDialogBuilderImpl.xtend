@@ -5,6 +5,8 @@ import tools.vitruv.framework.userinteraction.MultipleChoiceSelectionDialogBuild
 import org.eclipse.swt.widgets.Shell
 import org.eclipse.swt.widgets.Display
 import tools.vitruv.framework.userinteraction.SelectionType
+import tools.vitruv.framework.userinteraction.UserInteracting
+import tools.vitruv.framework.change.interaction.impl.InteractionFactoryImpl
 
 /**
  * Builder class for {@link MultipleChoiceSelectionDialog}s.
@@ -22,8 +24,8 @@ class MultipleChoiceSelectionDialogBuilderImpl extends BaseDialogBuilder<Collect
     private String[] choices = #["unspecified"]
     private SelectionType selectionType = SelectionType.SINGLE_SELECT
     
-    new(Shell shell, Display display) {
-        super(shell, display)
+    new(Shell shell, Display display, UserInteracting.UserInputListener inputListener) {
+        super(shell, display, inputListener)
         title = "Please Select..."
     }
     
@@ -51,6 +53,17 @@ class MultipleChoiceSelectionDialogBuilderImpl extends BaseDialogBuilder<Collect
     override showDialogAndGetUserInput() {
         dialog = new MultipleChoiceSelectionDialog(shell, windowModality, title, message, choices, selectionType)
         openDialog()
+        if (selectionType == SelectionType.SINGLE_SELECT) {
+            var userInput = InteractionFactoryImpl.eINSTANCE.createMultipleChoiceSingleSelectionUserInput()
+            userInput.choices.addAll(choices)
+            userInput.selectedIndex = dialog.selectedChoices.head
+            notifyUserInputReceived(userInput)
+        } else {
+            var userInput = InteractionFactoryImpl.eINSTANCE.createMultipleChoiceMultiSelectionUserInput()
+            userInput.choices.addAll(choices)
+            userInput.selectedIndices.addAll(dialog.selectedChoices)
+            notifyUserInputReceived(userInput)
+        }
         return dialog.selectedChoices
     }
 }

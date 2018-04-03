@@ -6,6 +6,8 @@ import org.eclipse.swt.widgets.Shell
 import org.eclipse.swt.widgets.Display
 import java.util.function.Function
 import tools.vitruv.framework.userinteraction.InputFieldType
+import tools.vitruv.framework.userinteraction.UserInteracting
+import tools.vitruv.framework.change.interaction.impl.InteractionFactoryImpl
 
 /**
  * Builder class for {@link TextInputDialog}s. Use the add/set... methods to specify details and then call
@@ -25,8 +27,8 @@ class TextInputDialogBuilderImpl extends BaseDialogBuilder<String> implements Te
     private InputFieldType inputFieldType = InputFieldType.SINGLE_LINE
     private InputValidator inputValidator = TextInputDialog.ACCEPT_ALL_INPUT_VALIDATOR
     
-    new(Shell shell, Display display) {
-        super(shell, display)
+    new(Shell shell, Display display, UserInteracting.UserInputListener inputListener) {
+        super(shell, display, inputListener)
         title = "Input Text..."
     }
     
@@ -56,6 +58,10 @@ class TextInputDialogBuilderImpl extends BaseDialogBuilder<String> implements Te
     override def String showDialogAndGetUserInput() {
         dialog = new TextInputDialog(shell, windowModality, title, message, inputFieldType, inputValidator)
         openDialog()
+        var userInput = InteractionFactoryImpl.eINSTANCE.createFreeTextUserInput()
+        userInput.message = message
+        userInput.text = dialog.input
+        notifyUserInputReceived(userInput)
         return dialog.input
     }
     

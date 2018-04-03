@@ -20,7 +20,7 @@ class NotificationDialogBuilderImpl extends BaseDialogBuilder<Void> implements N
     private NotificationType notificationType = NotificationType.INFORMATION
     
     new(Shell shell, Display display) {
-        super(shell, display)
+        super(shell, display, null) // notifications take no input, so there is no need for a UserInputListener
         title = "Notification"
     }
     

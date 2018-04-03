@@ -13,6 +13,7 @@
       ecorePackage="interaction.ecore#/">
     <genClasses ecoreClass="interaction.ecore#//FreeTextUserInput">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute interaction.ecore#//FreeTextUserInput/text"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute interaction.ecore#//FreeTextUserInput/message"/>
     </genClasses>
     <genClasses ecoreClass="interaction.ecore#//MultipleChoiceSingleSelectionUserInput">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute interaction.ecore#//MultipleChoiceSingleSelectionUserInput/selectedIndex"/>
@@ -24,6 +25,7 @@
     </genClasses>
     <genClasses ecoreClass="interaction.ecore#//ConfirmationUserInput">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute interaction.ecore#//ConfirmationUserInput/confirmed"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute interaction.ecore#//ConfirmationUserInput/message"/>
     </genClasses>
     <genClasses image="false" ecoreClass="interaction.ecore#//UserInputBase"/>
   </genPackages>
