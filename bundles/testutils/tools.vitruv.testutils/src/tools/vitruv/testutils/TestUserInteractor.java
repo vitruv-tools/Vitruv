@@ -3,24 +3,28 @@ package tools.vitruv.testutils;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.function.Function;
+import java.util.stream.Stream;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.eclipse.emf.common.util.URI;
 
-import edu.kit.ipd.sdq.commons.util.java.lang.StringUtil;
-import tools.vitruv.framework.change.interaction.ConfirmationUserInput;
-import tools.vitruv.framework.change.interaction.FreeTextUserInput;
-import tools.vitruv.framework.change.interaction.InteractionFactory;
-import tools.vitruv.framework.change.interaction.MultipleChoiceMultiSelectionUserInput;
-import tools.vitruv.framework.change.interaction.MultipleChoiceSingleSelectionUserInput;
+import tools.vitruv.framework.change.interaction.UserInputBase;
+import tools.vitruv.framework.userinteraction.ConfirmationDialogBuilder;
+import tools.vitruv.framework.userinteraction.DialogBuilder;
+import tools.vitruv.framework.userinteraction.InputFieldType;
+import tools.vitruv.framework.userinteraction.MultipleChoiceSelectionDialogBuilder;
+import tools.vitruv.framework.userinteraction.NotificationDialogBuilder;
 import tools.vitruv.framework.userinteraction.NotificationType;
+import tools.vitruv.framework.userinteraction.SelectionType;
+import tools.vitruv.framework.userinteraction.TextInputDialogBuilder;
 import tools.vitruv.framework.userinteraction.UserInteracting;
-import tools.vitruv.framework.userinteraction.UserInteractionType;
 import tools.vitruv.framework.userinteraction.WindowModality;
+import tools.vitruv.framework.userinteraction.impl.TextInputDialog.InputValidator;
 
 /**
  * The {@link TestUserInteractor} can be used in tests to simulate UserInteracting. It has a queue
@@ -28,13 +32,13 @@ import tools.vitruv.framework.userinteraction.WindowModality;
  * next selection. It also allows to simulate the thinking time for a user.
  *
  */
-public class TestUserInteractor implements UserInteracting {
-
+public class TestUserInteractor implements UserInteracting, UserInteracting.UserInputListener {
     private static final Logger logger = Logger.getLogger(TestUserInteractor.class);
-
-    private final ConcurrentLinkedQueue<Integer> concurrentIntLinkedQueue;
-    private final ConcurrentLinkedQueue<String> concurrentStringLinkedQueue;
     private final ConcurrentLinkedQueue<URI> concurrentURILinkedQueue;
+    private final ConcurrentLinkedQueue<Boolean> concurrentConfirmationLinkedQueue;
+    private final ConcurrentLinkedQueue<String> concurrentFreeTextLinkedQueue;
+    private final ConcurrentLinkedQueue<Integer> concurrentSingleSelectionLinkedQueue;
+    private final ConcurrentLinkedQueue<Integer[]> concurrentMultiSelectionLinkedQueue;
     private final Random random;
     private final int minWaittime;
     private final int maxWaittime;
@@ -50,9 +54,12 @@ public class TestUserInteractor implements UserInteracting {
         this.minWaittime = minWaittime;
         this.maxWaittime = maxWaittime;
         this.waitTimeRange = maxWaittime - minWaittime;
-        this.concurrentIntLinkedQueue = new ConcurrentLinkedQueue<Integer>();
-        this.concurrentStringLinkedQueue = new ConcurrentLinkedQueue<String>();
-        this.concurrentURILinkedQueue = new ConcurrentLinkedQueue<URI>();
+        concurrentURILinkedQueue = new ConcurrentLinkedQueue<URI>();
+        concurrentConfirmationLinkedQueue = new ConcurrentLinkedQueue<Boolean>();
+        concurrentFreeTextLinkedQueue = new ConcurrentLinkedQueue<String>();
+        concurrentSingleSelectionLinkedQueue = new ConcurrentLinkedQueue<Integer>();
+        concurrentMultiSelectionLinkedQueue = new ConcurrentLinkedQueue<Integer[]>();
+        // TODO: both random and messageLog never used?! -> random mentioned in javadoc, doesn't fit actual usage
         this.random = new Random();
         this.messageLog = new ArrayList<String>();
     }
@@ -60,50 +67,37 @@ public class TestUserInteractor implements UserInteracting {
     public TestUserInteractor() {
         this(-1, -1);
     }
-
-    public void addNextSelections(final Integer... nextSelections) {
-        this.concurrentIntLinkedQueue.clear();
-        this.concurrentIntLinkedQueue.addAll(Arrays.asList(nextSelections));
-    }
-
-    public void addNextSelections(final String... nextSelections) {
-        this.concurrentStringLinkedQueue.clear();
-        this.concurrentStringLinkedQueue.addAll(Arrays.asList(nextSelections));
+    
+    public void addNextConfirmationInputs(final boolean... nextConfirmations) {
+    	this.concurrentConfirmationLinkedQueue.clear();
+    	for (int i = 0; i < nextConfirmations.length; i++) {
+    		this.concurrentConfirmationLinkedQueue.add(nextConfirmations[i]);
+    	}
     }
     
-    public void addNextSelections(final URI... nextSelections) {
+    public void addNextTextInputs(final String... nextFreeTexts) {
+    	this.concurrentFreeTextLinkedQueue.clear();
+    	this.concurrentFreeTextLinkedQueue.addAll(Arrays.asList(nextFreeTexts));
+    }
+    
+    public void addNextSingleSelections(final int... nextSingleSelections) {
+    	this.concurrentSingleSelectionLinkedQueue.clear();
+    	for (int i = 0; i < nextSingleSelections.length; i++) {
+    		this.concurrentSingleSelectionLinkedQueue.add(nextSingleSelections[i]);
+    	}
+    }
+    
+    public void addNextMultiSelections(final int[]... nextMultiSelections) {
+    	this.concurrentMultiSelectionLinkedQueue.clear();
+    	for (int i = 0; i < nextMultiSelections.length; i++) {
+    		Integer[] currentMultiSelection = Arrays.stream(nextMultiSelections[i]).boxed().toArray(Integer[]::new);
+    		this.concurrentMultiSelectionLinkedQueue.add(currentMultiSelection);
+    	}
+    }
+    
+    public void addNextUriSelections(final URI... nextSelections) {
         this.concurrentURILinkedQueue.clear();
         this.concurrentURILinkedQueue.addAll(Arrays.asList(nextSelections));
-    }
-
-    @Override
-    public void showMessage(final UserInteractionType type, final String message) {
-        logger.info("showMessage: " + message + " Type: " + type);
-        this.messageLog.add(message);
-    }
-
-    @Override
-    public int selectFromMessage(final UserInteractionType type, final String message,
-            final String... selectionDescriptions) {
-        logger.info("selectFromMessage: " + message + " Type: " + type + " Choices: "
-                + StringUtil.join(selectionDescriptions, ", "));
-        return this.selectFromMessage(selectionDescriptions.length);
-    }
-
-    private int selectFromMessage(final int maxLength) {
-        this.simulateUserThinktime();
-
-        int currentSelection;
-        if (!this.concurrentIntLinkedQueue.isEmpty()) {
-            currentSelection = this.concurrentIntLinkedQueue.poll();
-            if (currentSelection >= maxLength) {
-                logger.warn("currentSelection>maxLength - could lead to array out of bounds exception later on.");
-            }
-        } else {
-            throw new IllegalStateException("No user interaction integer selection specified");
-        }
-        logger.info(TestUserInteractor.class.getSimpleName() + " selected " + currentSelection);
-        return currentSelection;
     }
 
     private void simulateUserThinktime() {
@@ -115,19 +109,6 @@ public class TestUserInteractor implements UserInteracting {
                 logger.trace("User think time simulation thread interrupted: " + e, e);
             }
         }
-    }
-
-    @Override
-    public String getTextInput(final String msg) {
-        this.simulateUserThinktime();
-        String text = "";
-        if (!this.concurrentStringLinkedQueue.isEmpty()) {
-            text = this.concurrentStringLinkedQueue.poll();
-        } else {
-        	throw new IllegalStateException("No user interaction integer selection specified");
-        }
-        logger.info(TestUserInteractor.class.getSimpleName() + " selecteded " + text);
-        return text;
     }
 
 	@Override
@@ -150,91 +131,269 @@ public class TestUserInteractor implements UserInteracting {
 	}
 
 	@Override
-	public void showNotification(String title, String message, NotificationType notificationType,
-			WindowModality windowModality) {
-		logger.info("showNotification: " + title + ": " + message + "; Type: " + notificationType + ", Modality: " + windowModality);
-        this.messageLog.add(message);
-	}
-
-	@Override
-	public ConfirmationUserInput getUserConfirmation(String title, String message, WindowModality windowModality) {
-		logger.info("getUserConfirmation: " + title + ": " + message + "; Modality: " + windowModality);
-		
-		this.simulateUserThinktime();
-		boolean userConfirmed = random.nextBoolean();
-		String randomSelection = userConfirmed ? " confirmed" : " denied";
-        logger.info(TestUserInteractor.class.getSimpleName() + randomSelection);
-        ConfirmationUserInput result = InteractionFactory.eINSTANCE.createConfirmationUserInput();
-        result.setConfirmed(userConfirmed);
-        return result;
-	}
-
-	@Override
-	public FreeTextUserInput getTextInput(String title, String message, WindowModality windowModality) {
-		this.simulateUserThinktime();
-        String text = "";
-        if (!this.concurrentStringLinkedQueue.isEmpty()) {
-            text = this.concurrentStringLinkedQueue.poll();
-        } else {
-        	throw new IllegalStateException("No user interaction integer selection specified");
-        }
-        logger.info(TestUserInteractor.class.getSimpleName() + " selected " + text);
-        FreeTextUserInput result = InteractionFactory.eINSTANCE.createFreeTextUserInput();
-        result.setText(text);
-        return result;
-	}
-
-	@Override
-	public MultipleChoiceSingleSelectionUserInput selectSingle(String title, String message,
-			String[] selectionDescriptions, WindowModality windowModality) {
-		logger.info("selectSingle: " + title + ": " + message + "; Modality: " + windowModality + " Choices: "
-                + StringUtil.join(selectionDescriptions, ", "));
-        
-		this.simulateUserThinktime();
-
-		int maxLength = selectionDescriptions.length;
-        int currentSelection;
-        if (!this.concurrentIntLinkedQueue.isEmpty()) {
-            currentSelection = this.concurrentIntLinkedQueue.poll();
-            if (currentSelection >= maxLength) {
-                logger.warn("currentSelection>maxLength - could lead to array out of bounds exception later on.");
-            }
-        } else {
-            throw new IllegalStateException("No user interaction integer selection specified");
-        }
-        logger.info(TestUserInteractor.class.getSimpleName() + " selected " + currentSelection);
-        
-        MultipleChoiceSingleSelectionUserInput result = InteractionFactory.eINSTANCE.createMultipleChoiceSingleSelectionUserInput();
-        result.setSelectedIndex(currentSelection);
-        return result;
-	}
-
-	@Override
-	public MultipleChoiceMultiSelectionUserInput selectMulti(String title, String message,
-			String[] selectionDescriptions, WindowModality windowModality) {
-		logger.info("selectMulti: " + title + ": " + message + "; Modality: " + windowModality + " Choices: "
-                + StringUtil.join(selectionDescriptions, ", "));
-        
-		this.simulateUserThinktime();
-
-		int maxLength = selectionDescriptions.length;
-		List<Integer> selections = new ArrayList<Integer>();
-		for (int i = 0; i < random.nextInt(maxLength); i++) {
-	        int currentSelection;
-	        if (!this.concurrentIntLinkedQueue.isEmpty()) {
-	            currentSelection = this.concurrentIntLinkedQueue.poll();
-	            if (currentSelection >= maxLength) {
-	                logger.warn("currentSelection>maxLength - could lead to array out of bounds exception later on.");
-	            }
-	        } else {
-	            throw new IllegalStateException("No user interaction integer selection specified");
-	        }
-		}
-        logger.info(TestUserInteractor.class.getSimpleName() + " selected " + StringUtils.join(selections, ", "));
-        
-        MultipleChoiceMultiSelectionUserInput result = InteractionFactory.eINSTANCE.createMultipleChoiceMultiSelectionUserInput();
-        result.getSelectedIndices().addAll(selections);
-        return result;
+	public NotificationDialogBuilder getNotificationDialogBuilder() {
+		return new TestNotificationDialogBuilder(this);
 	}
 	
+	public void simulateNotification(String logMessage) {
+		logger.info(logMessage);
+	}
+
+	@Override
+	public ConfirmationDialogBuilder getConfirmationDialogBuilder() {
+		return new TestConfirmationDialogBuilder(this);
+	}
+	
+	public boolean simulateConfirmation(String logMessage) {
+		logger.info(logMessage);
+		this.simulateUserThinktime();
+		if (!this.concurrentConfirmationLinkedQueue.isEmpty()) {
+            boolean userConfirmed = this.concurrentConfirmationLinkedQueue.poll();
+            logger.info(TestUserInteractor.class.getSimpleName() + " selected " + userConfirmed);
+            /*ConfirmationUserInput result = InteractionFactory.eINSTANCE.createConfirmationUserInput();
+        	result.setConfirmed(userConfirmed);*/
+            return userConfirmed;
+        } else {
+        	throw new IllegalStateException("No user interaction confirmation specified!");
+        }       
+	}
+
+	@Override
+	public TextInputDialogBuilder getTextInputDialogBuilder() {
+		return new TestTextInputDialogBuilder(this);
+	}
+	
+	public String simulateTextInput(String logMessage) {
+		logger.info(logMessage);
+		this.simulateUserThinktime();
+		if (!this.concurrentFreeTextLinkedQueue.isEmpty()) {
+			String input = concurrentFreeTextLinkedQueue.poll();
+			logger.info(TestUserInteractor.class.getSimpleName() + " got input \"" + input + "\"");
+			return input;
+		} else {
+        	throw new IllegalStateException("No user interaction text input specified!");
+        }
+	}
+
+	@Override
+	public MultipleChoiceSelectionDialogBuilder getMultipleChoiceSelectionDialogBuilder() {
+		return new TestMultipleChoiceSelectionDialogBuilder(this);
+	}
+	
+	public int simulateSingleSelect(String logMessage, int choicesCount) {
+		logger.info(logMessage);
+		this.simulateUserThinktime();
+		if (!this.concurrentSingleSelectionLinkedQueue.isEmpty()) {
+			int selectedIndex = concurrentSingleSelectionLinkedQueue.poll();
+			if (selectedIndex >= choicesCount) {
+                logger.warn("selectedIndex > choicesCount - could lead to array out of bounds exception later on.");
+            }
+			logger.info(TestUserInteractor.class.getSimpleName() + " selected index " + selectedIndex);
+			return selectedIndex;
+		} else {
+        	throw new IllegalStateException("No user interaction single select index specified!");
+        }
+	}
+	
+	public int[] simulateMultiSelect(String logMessage, int choicesCount) {
+		logger.info(logMessage);
+		this.simulateUserThinktime();
+		if (!this.concurrentMultiSelectionLinkedQueue.isEmpty()) {
+			Stream<Integer> choicesStream = Arrays.stream(concurrentMultiSelectionLinkedQueue.poll());
+			int[] selectedIndices = choicesStream.mapToInt(Integer::intValue).toArray();
+			if (choicesStream.anyMatch(index -> index > choicesCount)) {
+				logger.warn("selectedIndices contains index > choicesCount - could lead to array out of bounds exception later on.");
+			}
+			logger.info(TestUserInteractor.class.getSimpleName() + " selected indices " + Arrays.toString(selectedIndices));
+			return selectedIndices;
+		} else {
+        	throw new IllegalStateException("No user interaction multi select indices specified!");
+        }
+	}
+
+	@Override
+	public void onUserInputReceived(UserInputBase input) {
+		// TODO DK: add some sort of bookkeeping here like in UserInteractor?
+	}
+	
+}
+
+
+abstract class TestBaseDialogBuilder<T> implements DialogBuilder<T> {
+	protected Map<String, String> dialogProperties = new HashMap<>();
+	protected TestUserInteractor testUserInteractor;
+	
+	public TestBaseDialogBuilder(TestUserInteractor testUserInteractor) {
+		this.testUserInteractor = testUserInteractor;
+	}
+	
+    @Override
+    abstract public T showDialogAndGetUserInput(); 
+    
+    protected void openDialog() { }
+    
+    @Override
+    public DialogBuilder<T> title(String title) {
+    	dialogProperties.put("title", title);
+        return this;
+    }
+    
+    @Override
+    public DialogBuilder<T> windowModality(WindowModality windowModality) {
+    	dialogProperties.put("window modality", windowModality.name());
+        return this;
+    }
+    
+    @Override
+    public DialogBuilder<T> positiveButtonText(String text) {
+    	dialogProperties.put("positive button text", text);
+        return this;
+    }
+    
+    @Override
+    public DialogBuilder<T> negativeButtonText(String text) {
+    	dialogProperties.put("negative button text", text);
+        return this;
+    }
+    
+    @Override
+    public DialogBuilder<T> cancelButtonText(String text) {
+    	dialogProperties.put("cancel button text", text);
+        return this;
+    }
+}
+
+
+class TestNotificationDialogBuilder extends TestBaseDialogBuilder<Void> implements NotificationDialogBuilder,
+		NotificationDialogBuilder.OptionalSteps {
+	
+	public TestNotificationDialogBuilder(TestUserInteractor testUserInteractor) {
+		super(testUserInteractor);
+	}
+    
+    @Override
+    public NotificationDialogBuilder.OptionalSteps notificationType(NotificationType notificationType) {
+    	dialogProperties.put("notification type", notificationType.name());
+        return this;
+    }
+
+    @Override
+    public Void showDialogAndGetUserInput() {
+    	String dialogSummary = dialogProperties.entrySet().stream().map(Object::toString).reduce("",
+    			((a, b) -> a + ", " + b));
+    	testUserInteractor.simulateNotification("Showing NotificationDialog: " + dialogSummary);
+        return null; // notifications don't have any form of user input
+    }
+    
+    @Override
+    public NotificationDialogBuilder.OptionalSteps message(String message) {
+    	dialogProperties.put("message", message);
+        return this;
+    }
+}
+
+
+class TestConfirmationDialogBuilder extends TestBaseDialogBuilder<Boolean> implements ConfirmationDialogBuilder {
+	
+	public TestConfirmationDialogBuilder(TestUserInteractor testUserInteractor) {
+		super(testUserInteractor);
+	}
+	
+	@Override
+	public Boolean showDialogAndGetUserInput() {
+		String dialogSummary = dialogProperties.entrySet().stream().map(Object::toString).reduce("", ((a, b) -> a + ", " + b));
+		return testUserInteractor.simulateConfirmation("Showing ConfirmationDialog: " + dialogSummary);
+	}
+	
+	@Override
+	public DialogBuilder<Boolean> message(String message) {
+		dialogProperties.put("message", message);
+		return this;
+	}
+}
+
+
+class TestTextInputDialogBuilder extends TestBaseDialogBuilder<String> implements TextInputDialogBuilder,
+		TextInputDialogBuilder.OptionalSteps {
+	
+	public TestTextInputDialogBuilder(TestUserInteractor testUserInteractor) {
+		super(testUserInteractor);
+	}
+	
+	@Override
+	public String showDialogAndGetUserInput() {
+		String dialogSummary = dialogProperties.entrySet().stream().map(Object::toString).reduce("", ((a, b) -> a + ", " + b));
+		return testUserInteractor.simulateTextInput("Showing TextInputDialog: " + dialogSummary);
+	}
+	
+	@Override
+	public OptionalSteps message(String message) {
+		dialogProperties.put("message", message);
+		return this;
+	}
+
+	@Override
+	public OptionalSteps inputValidator(InputValidator inputValidator) {
+		dialogProperties.put("inputValidator", inputValidator.getInvalidInputMessage("[input]"));
+		return this;
+	}
+
+	@Override
+	public OptionalSteps inputValidator(Function<String, Boolean> validatorFunction, String invalidInputMessage) {
+		dialogProperties.put("inputValidator", invalidInputMessage);
+		return this;
+	}
+
+	@Override
+	public TextInputDialogBuilder inputFieldType(InputFieldType inputFieldType) {
+		dialogProperties.put("inputFieldType", inputFieldType.name());
+		return this;
+	}
+}
+
+
+class TestMultipleChoiceSelectionDialogBuilder extends TestBaseDialogBuilder<Collection<Integer>> implements
+	MultipleChoiceSelectionDialogBuilder, MultipleChoiceSelectionDialogBuilder.ChoicesStep,
+	MultipleChoiceSelectionDialogBuilder.OptionalSteps {
+	private boolean isSingleSelect = true;
+	private String[] choices;
+	
+	public TestMultipleChoiceSelectionDialogBuilder(TestUserInteractor testUserInteractor) {
+		super(testUserInteractor);
+	}
+	
+	@Override
+	public Collection<Integer> showDialogAndGetUserInput() {
+		String dialogSummary = dialogProperties.entrySet().stream().map(Object::toString).reduce("", ((a, b) -> a + ", " + b));
+		Collection<Integer> selection = new ArrayList<>();
+		if (isSingleSelect) {
+			selection.add(testUserInteractor.simulateSingleSelect(
+					"Showing MultipleChoiceSelectionDialog (single selection mode): " + dialogSummary, choices.length));
+		} else {
+			Arrays.stream(testUserInteractor.simulateMultiSelect(
+					"Showing MultipleChoiceSelectionDialog (multi selection mode): " + dialogSummary, choices.length))
+					.forEach(e -> selection.add(e));
+		}
+		return selection;
+	}
+	
+	@Override
+	public ChoicesStep message(String message) {
+		dialogProperties.put("message", message);
+		return this;
+	}
+	
+	@Override
+	public OptionalSteps choices(String[] choices) {
+		this.choices = choices;
+		dialogProperties.put("choices", choices.toString());
+		return this;
+	}
+	
+	@Override
+	public OptionalSteps selectionType(SelectionType selectionType) {
+		isSingleSelect = (selectionType == SelectionType.SINGLE_SELECT);
+		dialogProperties.put("selectionType", selectionType.name());
+		return this;
+	}
 }
