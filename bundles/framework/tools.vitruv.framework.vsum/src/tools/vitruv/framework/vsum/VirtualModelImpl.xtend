@@ -44,7 +44,9 @@ class VirtualModelImpl implements InternalVirtualModel {
 			changePropagationSpecificationRepository.putChangePropagationSpecification(changePropagationSpecification)
 		}
 		this.changePropagationSpecificationProvider = changePropagationSpecificationRepository;
-		this.changePropagator = new ChangePropagatorImpl(resourceRepository, changePropagationSpecificationProvider, metamodelRepository, resourceRepository, modelRepository);
+		this.changePropagator = new ChangePropagatorImpl(resourceRepository, changePropagationSpecificationProvider,
+		    metamodelRepository, resourceRepository, modelRepository, userInteracting
+		);
 		this.eChangeIdManager = new EChangeIdManager(this.uuidGeneratorAndResolver);
 		VirtualModelManager.instance.putVirtualModel(this);
 	}

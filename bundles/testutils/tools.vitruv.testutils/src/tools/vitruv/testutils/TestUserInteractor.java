@@ -215,7 +215,17 @@ public class TestUserInteractor implements UserInteracting, UserInteracting.User
 	public void onUserInputReceived(UserInputBase input) {
 		// TODO DK: add some sort of bookkeeping here like in UserInteractor?
 	}
+
+	@Override
+	public Collection<UserInputBase> getUserInputs() {
+		// TODO DK: make user inputs accessible?
+		return null;
+	}
 	
+	@Override
+	public void resetUserInputs() {
+		// TODO DK: do something here?
+	}
 }
 
 

@@ -1,5 +1,7 @@
 package tools.vitruv.framework.userinteraction;
 
+import java.util.Collection;
+
 import org.eclipse.emf.common.util.URI;
 
 import tools.vitruv.framework.change.interaction.UserInputBase;
@@ -41,6 +43,10 @@ public interface UserInteracting {
      * @author Dominik Werle
      */
     URI selectURI(String message);
+    
+    Collection<UserInputBase> getUserInputs();
+    
+    void resetUserInputs();
     
     interface UserInputListener {
     	void onUserInputReceived(UserInputBase input);

@@ -1,5 +1,6 @@
 package tools.vitruv.framework.userinteraction.impl;
 
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -66,5 +67,15 @@ public class UserInteractor implements UserInteracting, UserInteracting.UserInpu
 	@Override
 	public void onUserInputReceived(UserInputBase input) {
 		userInput.add(input);
+	}
+
+	@Override
+	public Collection<UserInputBase> getUserInputs() {
+		return userInput;
+	}
+	
+	@Override
+	public void resetUserInputs() {
+		userInput.clear();
 	}
 }

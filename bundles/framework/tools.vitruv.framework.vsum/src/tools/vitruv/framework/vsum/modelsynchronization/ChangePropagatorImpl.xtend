@@ -26,6 +26,7 @@ import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
 import tools.vitruv.framework.change.description.CompositeTransactionalChange
 import tools.vitruv.framework.correspondence.CorrespondencePackage
 import tools.vitruv.framework.change.description.ConcreteChange
+import tools.vitruv.framework.userinteraction.UserInteracting
 
 class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserver {
 	static Logger logger = Logger.getLogger(ChangePropagatorImpl.getSimpleName())
@@ -36,10 +37,11 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 	Set<ChangePropagationListener> changePropagationListeners
 	final ModelRepositoryImpl modelRepository;
 	final List<EObject> objectsCreatedDuringPropagation;
+	final UserInteracting userInteracting;
 
 	new(ModelRepository resourceRepository, ChangePropagationSpecificationProvider changePropagationProvider,
 		VitruvDomainRepository metamodelRepository, CorrespondenceProviding correspondenceProviding,
-		ModelRepositoryImpl modelRepository) {
+		ModelRepositoryImpl modelRepository, UserInteracting userInteracting) {
 		this.resourceRepository = resourceRepository
 		this.modelRepository = modelRepository;
 		this.changePropagationProvider = changePropagationProvider
@@ -48,6 +50,7 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 		this.changePropagationListeners = new HashSet<ChangePropagationListener>()
 		this.metamodelRepository = metamodelRepository;
 		this.objectsCreatedDuringPropagation = newArrayList();
+		this.userInteracting = userInteracting;
 	}
 
 	override void addChangePropagationListener(ChangePropagationListener propagationListener) {
@@ -144,10 +147,12 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 		consequentialChanges += resourceRepository.endRecording();
 		consequentialChanges.forEach[logger.debug(it)];
 
+        val userInputs = userInteracting.userInputs
 		val propagatedChange = new PropagatedChange(change,
-				VitruviusChangeFactory.instance.createCompositeChange(consequentialChanges))
+				VitruviusChangeFactory.instance.createCompositeChange(consequentialChanges), userInputs)
 		val resultingChanges = new ArrayList()
 		resultingChanges += propagatedChange
+		userInteracting.resetUserInputs
 
 		val consequentialChangesToRePropagate = propagatedChange.consequentialChanges.transactionalChangeSequence
 			.map[rewrapWithoutCorrespondenceChanges].filterNull.filter[containsConcreteChange]
