@@ -8,6 +8,7 @@ import java.util.function.Function
 import tools.vitruv.framework.userinteraction.InputFieldType
 import tools.vitruv.framework.userinteraction.UserInteracting
 import tools.vitruv.framework.change.interaction.impl.InteractionFactoryImpl
+import tools.vitruv.framework.userinteraction.TextInputDialogBuilder.OptionalSteps
 
 /**
  * Builder class for {@link TextInputDialog}s. Use the add/set... methods to specify details and then call
@@ -21,8 +22,8 @@ import tools.vitruv.framework.change.interaction.impl.InteractionFactoryImpl
  * 
  * @author Dominik Klooz
  */
-class TextInputDialogBuilderImpl extends BaseDialogBuilder<String> implements TextInputDialogBuilder,
-        TextInputDialogBuilder.OptionalSteps {
+class TextInputDialogBuilderImpl extends BaseDialogBuilder<String, OptionalSteps> implements TextInputDialogBuilder,
+        OptionalSteps {
     private TextInputDialog dialog
     private InputFieldType inputFieldType = InputFieldType.SINGLE_LINE
     private InputValidator inputValidator = TextInputDialog.ACCEPT_ALL_INPUT_VALIDATOR

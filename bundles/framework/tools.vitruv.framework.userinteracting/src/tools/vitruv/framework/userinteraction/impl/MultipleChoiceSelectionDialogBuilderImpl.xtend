@@ -7,6 +7,8 @@ import org.eclipse.swt.widgets.Display
 import tools.vitruv.framework.userinteraction.SelectionType
 import tools.vitruv.framework.userinteraction.UserInteracting
 import tools.vitruv.framework.change.interaction.impl.InteractionFactoryImpl
+import tools.vitruv.framework.userinteraction.MultipleChoiceSelectionDialogBuilder.OptionalSteps
+import tools.vitruv.framework.userinteraction.MultipleChoiceSelectionDialogBuilder.ChoicesStep
 
 /**
  * Builder class for {@link MultipleChoiceSelectionDialog}s.
@@ -17,9 +19,8 @@ import tools.vitruv.framework.change.interaction.impl.InteractionFactoryImpl
  * 
  * @author Dominik Klooz
  */
-class MultipleChoiceSelectionDialogBuilderImpl extends BaseDialogBuilder<Collection<Integer>>
-        implements MultipleChoiceSelectionDialogBuilder, MultipleChoiceSelectionDialogBuilder.ChoicesStep,
-        MultipleChoiceSelectionDialogBuilder.OptionalSteps {
+class MultipleChoiceSelectionDialogBuilderImpl extends BaseDialogBuilder<Collection<Integer>, OptionalSteps>
+        implements MultipleChoiceSelectionDialogBuilder, ChoicesStep, OptionalSteps {
     private MultipleChoiceSelectionDialog dialog
     private String[] choices = #["unspecified"]
     private SelectionType selectionType = SelectionType.SINGLE_SELECT

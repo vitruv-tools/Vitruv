@@ -22,5 +22,7 @@ interface ConfirmationDialogBuilder {
      * aren't already defined for all types of dialogs in the {@link DialogBuilder} interface).<br>
      * This is a form of implementation of the Step Builder pattern.
      */
-    def DialogBuilder<Boolean> message(String message)
+    def OptionalSteps message(String message)
+    
+    interface OptionalSteps extends DialogBuilder<Boolean, OptionalSteps> { }
 }

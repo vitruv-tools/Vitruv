@@ -28,7 +28,7 @@ interface TextInputDialogBuilder {
     /**
      * Interface for optional build steps (mostly common to all DialogBuilders as defined by {@link DialogBuilder})
      */
-    interface OptionalSteps extends DialogBuilder<String> {
+    interface OptionalSteps extends DialogBuilder<String, OptionalSteps> {
         
         /**
          * Adds an input validator used to restrict the input to Strings conforming to the validator's

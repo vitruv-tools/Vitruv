@@ -17,10 +17,13 @@ import tools.vitruv.framework.change.interaction.UserInputBase
  *
  * @param <V> type parameter for the return type of {@link #getResult() getResult()}, which returns the user input from
  *          the dialog.
+ * @param <T> type parameter for the return type of methods declared in {@link DialogBuilder}. In subclasses, this is to
+ *          be set to the specific builder's {@code OptionalSteps} interface (the interface that extends
+ *          {@link DialogBuilder} and contains methods whose execution is optional when building a dialog).
  * 
  * @author Dominik Klooz
  */
-abstract class BaseDialogBuilder<V> implements DialogBuilder<V> {
+abstract class BaseDialogBuilder<V, T extends DialogBuilder<V, T>> implements DialogBuilder<V, T> {
     protected BaseDialog dialog
     protected Shell shell
     protected Display display
@@ -56,28 +59,28 @@ abstract class BaseDialogBuilder<V> implements DialogBuilder<V> {
         });
     }
     
-    override DialogBuilder<V> title(String title) {
+    override T title(String title) {
         this.title = title
-        return this
+        return this as T
     }
     
-    override DialogBuilder<V> windowModality(WindowModality windowModality) {
+    override T windowModality(WindowModality windowModality) {
         this.windowModality = windowModality
-        return this
+        return this as T
     }
     
-    override DialogBuilder<V> positiveButtonText(String text) {
+    override T positiveButtonText(String text) {
         this.positiveButtonText = text
-        return this
+        return this as T
     }
     
-    override DialogBuilder<V> negativeButtonText(String text) {
+    override T negativeButtonText(String text) {
         this.negativeButtonText = text
-        return this
+        return this as T
     }
     
-    override DialogBuilder<V> cancelButtonText(String text) {
+    override T cancelButtonText(String text) {
         this.cancelButtonText = text
-        return this
+        return this as T
     }
 }

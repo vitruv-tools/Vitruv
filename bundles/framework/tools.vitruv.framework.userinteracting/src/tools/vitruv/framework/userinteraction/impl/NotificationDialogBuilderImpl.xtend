@@ -4,6 +4,7 @@ import tools.vitruv.framework.userinteraction.NotificationDialogBuilder
 import tools.vitruv.framework.userinteraction.NotificationType
 import org.eclipse.swt.widgets.Display
 import org.eclipse.swt.widgets.Shell
+import tools.vitruv.framework.userinteraction.NotificationDialogBuilder.OptionalSteps
 
 /**
  * Builder class for {@link NotificationDialog}s.
@@ -14,8 +15,8 @@ import org.eclipse.swt.widgets.Shell
  * 
  * @author Dominik Klooz
  */
-class NotificationDialogBuilderImpl extends BaseDialogBuilder<Void> implements NotificationDialogBuilder,
-        NotificationDialogBuilder.OptionalSteps {
+class NotificationDialogBuilderImpl extends BaseDialogBuilder<Void, OptionalSteps> implements NotificationDialogBuilder,
+        OptionalSteps {
     private NotificationDialog dialog
     private NotificationType notificationType = NotificationType.INFORMATION
     

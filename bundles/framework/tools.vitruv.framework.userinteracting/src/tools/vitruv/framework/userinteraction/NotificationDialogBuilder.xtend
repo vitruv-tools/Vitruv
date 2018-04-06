@@ -25,7 +25,7 @@ interface NotificationDialogBuilder {
     /**
      * Interface for optional build steps (mostly common to all DialogBuilders as defined by {@link DialogBuilder})
      */
-    interface OptionalSteps extends DialogBuilder<Void> {
+    interface OptionalSteps extends DialogBuilder<Void, OptionalSteps> {
         
         /**
          * Sets the severity of the notification, depicted as an icon in the dialog content area, window title bar and

@@ -14,35 +14,38 @@ package tools.vitruv.framework.userinteraction
  * ...DialogBuilder interface to enable using it for all build steps.
  * 
  * @param <V> the return type for the user input.
+ * @param <T> type parameter for the return type of methods whose execution is optional when building a dialog. This
+ *      makes it possible to reuse one implementation of the common methods declared here across multiple dialog
+ *      builders. The type passed in has to implement this interface to ensure access to the methods declared here.
  * 
  * @author Dominik Klooz
  */
-interface DialogBuilder<V> {
+interface DialogBuilder<V, T extends DialogBuilder<V, T>> {
     
     /**
      * Sets the title of the dialog.
      */
-    def DialogBuilder<V> title(String title)
+    def T title(String title)
     
     /**
      * Sets the dialog window's modality, defaults to {@link WindowModality.MODELESS}.
      */
-    def DialogBuilder<V> windowModality(WindowModality windowModality)
+    def T windowModality(WindowModality windowModality)
     
     /**
      * Sets the text on the positive button, defaults to {@code "Yes"}.
      */
-    def DialogBuilder<V> positiveButtonText(String text)
+    def T positiveButtonText(String text)
     
     /**
      * Sets the text on the negative button, defaults to {@code "No"}.
      */
-    def DialogBuilder<V> negativeButtonText(String text)
+    def T negativeButtonText(String text)
     
     /**
      * Sets the text on the cancel button, defaults to {@code "Cancel"}.
      */
-    def DialogBuilder<V> cancelButtonText(String text)
+    def T cancelButtonText(String text)
 
     /**
      * Creates and shows the dialog built by this builder, returns the user input.

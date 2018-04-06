@@ -5,6 +5,7 @@ import org.eclipse.swt.widgets.Shell
 import org.eclipse.swt.widgets.Display
 import tools.vitruv.framework.userinteraction.UserInteracting
 import tools.vitruv.framework.change.interaction.impl.InteractionFactoryImpl
+import tools.vitruv.framework.userinteraction.ConfirmationDialogBuilder.OptionalSteps
 
 /**
  * Builder class for {@link ConfirmationDialog}s.
@@ -16,7 +17,8 @@ import tools.vitruv.framework.change.interaction.impl.InteractionFactoryImpl
  * 
  * @author Dominik Klooz
  */
-class ConfirmationDialogBuilderImpl extends BaseDialogBuilder<Boolean> implements ConfirmationDialogBuilder {
+class ConfirmationDialogBuilderImpl extends BaseDialogBuilder<Boolean, OptionalSteps>
+        implements ConfirmationDialogBuilder, OptionalSteps {
     private ConfirmationDialog dialog
     
     public static final String STANDARD_TITLE = "Please Confirm"

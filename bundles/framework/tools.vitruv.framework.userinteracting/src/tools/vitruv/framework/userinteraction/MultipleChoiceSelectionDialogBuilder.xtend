@@ -35,7 +35,7 @@ interface MultipleChoiceSelectionDialogBuilder {
     /**
      * Interface for optional build steps (mostly common to all DialogBuilders as defined by {@link DialogBuilder})
      */
-    interface OptionalSteps extends DialogBuilder<Collection<Integer>> {
+    interface OptionalSteps extends DialogBuilder<Collection<Integer>, OptionalSteps> {
         /**
          * Sets the selection type, whether the user can select multiple choices (e.g. via check boxes) or a single one
          * (e.g. via radio buttons). The standard type is the latter, {@link SelectionType#SINGLE_SELECT}.
