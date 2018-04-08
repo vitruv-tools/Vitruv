@@ -4,9 +4,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Map;
+import java.util.Queue;
 import java.util.Random;
-import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
@@ -28,17 +29,17 @@ import tools.vitruv.framework.userinteraction.impl.TextInputDialog.InputValidato
 
 /**
  * The {@link TestUserInteractor} can be used in tests to simulate UserInteracting. It has a queue
- * of next selections. If the queue is empty the {@link TestUserInteractor} decides randomly the
- * next selection. It also allows to simulate the thinking time for a user.
+ * of next selections. If the queue is empty an {@link IllegalStateException} is thrown. It also allows to simulate the
+ * thinking time for a user.
  *
  */
 public class TestUserInteractor implements UserInteracting, UserInteracting.UserInputListener {
     private static final Logger logger = Logger.getLogger(TestUserInteractor.class);
-    private final ConcurrentLinkedQueue<URI> concurrentURILinkedQueue;
-    private final ConcurrentLinkedQueue<Boolean> concurrentConfirmationLinkedQueue;
-    private final ConcurrentLinkedQueue<String> concurrentFreeTextLinkedQueue;
-    private final ConcurrentLinkedQueue<Integer> concurrentSingleSelectionLinkedQueue;
-    private final ConcurrentLinkedQueue<Integer[]> concurrentMultiSelectionLinkedQueue;
+    private final Queue<URI> uriQueue;
+    private final Queue<Boolean> confirmationQueue;
+    private final Queue<String> freeTextQueue;
+    private final Queue<Integer> singleSelectionQueue;
+    private final Queue<Integer[]> multiSelectionQueue;
     private final Random random;
     private final int minWaittime;
     private final int maxWaittime;
@@ -54,12 +55,12 @@ public class TestUserInteractor implements UserInteracting, UserInteracting.User
         this.minWaittime = minWaittime;
         this.maxWaittime = maxWaittime;
         this.waitTimeRange = maxWaittime - minWaittime;
-        concurrentURILinkedQueue = new ConcurrentLinkedQueue<URI>();
-        concurrentConfirmationLinkedQueue = new ConcurrentLinkedQueue<Boolean>();
-        concurrentFreeTextLinkedQueue = new ConcurrentLinkedQueue<String>();
-        concurrentSingleSelectionLinkedQueue = new ConcurrentLinkedQueue<Integer>();
-        concurrentMultiSelectionLinkedQueue = new ConcurrentLinkedQueue<Integer[]>();
-        // TODO: both random and messageLog never used?! -> random mentioned in javadoc, doesn't fit actual usage
+        uriQueue = new LinkedList<URI>();
+        confirmationQueue = new LinkedList<Boolean>();
+        freeTextQueue = new LinkedList<String>();
+        singleSelectionQueue = new LinkedList<Integer>();
+        multiSelectionQueue = new LinkedList<Integer[]>();
+        // TODO: messageLog never used?!
         this.random = new Random();
         this.messageLog = new ArrayList<String>();
     }
@@ -69,35 +70,35 @@ public class TestUserInteractor implements UserInteracting, UserInteracting.User
     }
     
     public void addNextConfirmationInputs(final boolean... nextConfirmations) {
-    	this.concurrentConfirmationLinkedQueue.clear();
+    	this.confirmationQueue.clear();
     	for (int i = 0; i < nextConfirmations.length; i++) {
-    		this.concurrentConfirmationLinkedQueue.add(nextConfirmations[i]);
+    		this.confirmationQueue.add(nextConfirmations[i]);
     	}
     }
     
     public void addNextTextInputs(final String... nextFreeTexts) {
-    	this.concurrentFreeTextLinkedQueue.clear();
-    	this.concurrentFreeTextLinkedQueue.addAll(Arrays.asList(nextFreeTexts));
+    	this.freeTextQueue.clear();
+    	this.freeTextQueue.addAll(Arrays.asList(nextFreeTexts));
     }
     
     public void addNextSingleSelections(final int... nextSingleSelections) {
-    	this.concurrentSingleSelectionLinkedQueue.clear();
+    	this.singleSelectionQueue.clear();
     	for (int i = 0; i < nextSingleSelections.length; i++) {
-    		this.concurrentSingleSelectionLinkedQueue.add(nextSingleSelections[i]);
+    		this.singleSelectionQueue.add(nextSingleSelections[i]);
     	}
     }
     
     public void addNextMultiSelections(final int[]... nextMultiSelections) {
-    	this.concurrentMultiSelectionLinkedQueue.clear();
+    	this.multiSelectionQueue.clear();
     	for (int i = 0; i < nextMultiSelections.length; i++) {
     		Integer[] currentMultiSelection = Arrays.stream(nextMultiSelections[i]).boxed().toArray(Integer[]::new);
-    		this.concurrentMultiSelectionLinkedQueue.add(currentMultiSelection);
+    		this.multiSelectionQueue.add(currentMultiSelection);
     	}
     }
     
     public void addNextUriSelections(final URI... nextSelections) {
-        this.concurrentURILinkedQueue.clear();
-        this.concurrentURILinkedQueue.addAll(Arrays.asList(nextSelections));
+        this.uriQueue.clear();
+        this.uriQueue.addAll(Arrays.asList(nextSelections));
     }
 
     private void simulateUserThinktime() {
@@ -113,17 +114,17 @@ public class TestUserInteractor implements UserInteracting, UserInteracting.User
 
 	@Override
 	public URI selectURI(String message) {
-		if (this.concurrentURILinkedQueue.isEmpty()) {
+		if (this.uriQueue.isEmpty()) {
 			throw new IllegalStateException("No URI found in " + TestUserInteractor.class.getSimpleName() + " for message " + message);
 		}
 		
-		final URI result = this.concurrentURILinkedQueue.poll();
+		final URI result = this.uriQueue.poll();
 		logger.info(TestUserInteractor.class.getSimpleName() + " selected " + result.toString());
 		return result;
 	}
 	
 	public boolean isResourceQueueEmpty() {
-		return this.concurrentURILinkedQueue.isEmpty();
+		return this.uriQueue.isEmpty();
 	}
 	
 	public Collection<String> getMessageLog(){
@@ -147,8 +148,8 @@ public class TestUserInteractor implements UserInteracting, UserInteracting.User
 	public boolean simulateConfirmation(String logMessage) {
 		logger.info(logMessage);
 		this.simulateUserThinktime();
-		if (!this.concurrentConfirmationLinkedQueue.isEmpty()) {
-            boolean userConfirmed = this.concurrentConfirmationLinkedQueue.poll();
+		if (!this.confirmationQueue.isEmpty()) {
+            boolean userConfirmed = this.confirmationQueue.poll();
             logger.info(TestUserInteractor.class.getSimpleName() + " selected " + userConfirmed);
             /*ConfirmationUserInput result = InteractionFactory.eINSTANCE.createConfirmationUserInput();
         	result.setConfirmed(userConfirmed);*/
@@ -166,8 +167,8 @@ public class TestUserInteractor implements UserInteracting, UserInteracting.User
 	public String simulateTextInput(String logMessage) {
 		logger.info(logMessage);
 		this.simulateUserThinktime();
-		if (!this.concurrentFreeTextLinkedQueue.isEmpty()) {
-			String input = concurrentFreeTextLinkedQueue.poll();
+		if (!this.freeTextQueue.isEmpty()) {
+			String input = freeTextQueue.poll();
 			logger.info(TestUserInteractor.class.getSimpleName() + " got input \"" + input + "\"");
 			return input;
 		} else {
@@ -183,8 +184,8 @@ public class TestUserInteractor implements UserInteracting, UserInteracting.User
 	public int simulateSingleSelect(String logMessage, int choicesCount) {
 		logger.info(logMessage);
 		this.simulateUserThinktime();
-		if (!this.concurrentSingleSelectionLinkedQueue.isEmpty()) {
-			int selectedIndex = concurrentSingleSelectionLinkedQueue.poll();
+		if (!this.singleSelectionQueue.isEmpty()) {
+			int selectedIndex = singleSelectionQueue.poll();
 			if (selectedIndex >= choicesCount) {
                 logger.warn("selectedIndex > choicesCount - could lead to array out of bounds exception later on.");
             }
@@ -198,8 +199,8 @@ public class TestUserInteractor implements UserInteracting, UserInteracting.User
 	public int[] simulateMultiSelect(String logMessage, int choicesCount) {
 		logger.info(logMessage);
 		this.simulateUserThinktime();
-		if (!this.concurrentMultiSelectionLinkedQueue.isEmpty()) {
-			Stream<Integer> choicesStream = Arrays.stream(concurrentMultiSelectionLinkedQueue.poll());
+		if (!this.multiSelectionQueue.isEmpty()) {
+			Stream<Integer> choicesStream = Arrays.stream(multiSelectionQueue.poll());
 			int[] selectedIndices = choicesStream.mapToInt(Integer::intValue).toArray();
 			if (choicesStream.anyMatch(index -> index > choicesCount)) {
 				logger.warn("selectedIndices contains index > choicesCount - could lead to array out of bounds exception later on.");
@@ -229,7 +230,7 @@ public class TestUserInteractor implements UserInteracting, UserInteracting.User
 }
 
 
-abstract class TestBaseDialogBuilder<T> implements DialogBuilder<T> {
+abstract class TestBaseDialogBuilder<V, T extends DialogBuilder<V, T>> implements DialogBuilder<V, T> {
 	protected Map<String, String> dialogProperties = new HashMap<>();
 	protected TestUserInteractor testUserInteractor;
 	
@@ -238,43 +239,48 @@ abstract class TestBaseDialogBuilder<T> implements DialogBuilder<T> {
 	}
 	
     @Override
-    abstract public T showDialogAndGetUserInput(); 
+    abstract public V showDialogAndGetUserInput(); 
     
     protected void openDialog() { }
     
-    @Override
-    public DialogBuilder<T> title(String title) {
+    @SuppressWarnings("unchecked")
+	@Override
+    public T title(String title) {
     	dialogProperties.put("title", title);
-        return this;
+        return (T) this;
     }
     
+    @SuppressWarnings("unchecked")
     @Override
-    public DialogBuilder<T> windowModality(WindowModality windowModality) {
+    public T windowModality(WindowModality windowModality) {
     	dialogProperties.put("window modality", windowModality.name());
-        return this;
+        return (T) this;
     }
     
+    @SuppressWarnings("unchecked")
     @Override
-    public DialogBuilder<T> positiveButtonText(String text) {
+    public T positiveButtonText(String text) {
     	dialogProperties.put("positive button text", text);
-        return this;
+        return (T) this;
     }
     
+    @SuppressWarnings("unchecked")
     @Override
-    public DialogBuilder<T> negativeButtonText(String text) {
+    public T negativeButtonText(String text) {
     	dialogProperties.put("negative button text", text);
-        return this;
+        return (T) this;
     }
     
+    @SuppressWarnings("unchecked")
     @Override
-    public DialogBuilder<T> cancelButtonText(String text) {
+    public T cancelButtonText(String text) {
     	dialogProperties.put("cancel button text", text);
-        return this;
+        return (T) this;
     }
 }
 
 
-class TestNotificationDialogBuilder extends TestBaseDialogBuilder<Void> implements NotificationDialogBuilder,
+class TestNotificationDialogBuilder extends TestBaseDialogBuilder<Void, NotificationDialogBuilder.OptionalSteps> implements NotificationDialogBuilder,
 		NotificationDialogBuilder.OptionalSteps {
 	
 	public TestNotificationDialogBuilder(TestUserInteractor testUserInteractor) {
@@ -303,7 +309,8 @@ class TestNotificationDialogBuilder extends TestBaseDialogBuilder<Void> implemen
 }
 
 
-class TestConfirmationDialogBuilder extends TestBaseDialogBuilder<Boolean> implements ConfirmationDialogBuilder {
+class TestConfirmationDialogBuilder extends TestBaseDialogBuilder<Boolean, ConfirmationDialogBuilder.OptionalSteps>
+		implements ConfirmationDialogBuilder, ConfirmationDialogBuilder.OptionalSteps {
 	
 	public TestConfirmationDialogBuilder(TestUserInteractor testUserInteractor) {
 		super(testUserInteractor);
@@ -316,15 +323,15 @@ class TestConfirmationDialogBuilder extends TestBaseDialogBuilder<Boolean> imple
 	}
 	
 	@Override
-	public DialogBuilder<Boolean> message(String message) {
+	public ConfirmationDialogBuilder.OptionalSteps message(String message) {
 		dialogProperties.put("message", message);
 		return this;
 	}
 }
 
 
-class TestTextInputDialogBuilder extends TestBaseDialogBuilder<String> implements TextInputDialogBuilder,
-		TextInputDialogBuilder.OptionalSteps {
+class TestTextInputDialogBuilder extends TestBaseDialogBuilder<String, TextInputDialogBuilder.OptionalSteps>
+		implements TextInputDialogBuilder, TextInputDialogBuilder.OptionalSteps {
 	
 	public TestTextInputDialogBuilder(TestUserInteractor testUserInteractor) {
 		super(testUserInteractor);
@@ -355,16 +362,16 @@ class TestTextInputDialogBuilder extends TestBaseDialogBuilder<String> implement
 	}
 
 	@Override
-	public TextInputDialogBuilder inputFieldType(InputFieldType inputFieldType) {
+	public OptionalSteps inputFieldType(InputFieldType inputFieldType) {
 		dialogProperties.put("inputFieldType", inputFieldType.name());
 		return this;
 	}
 }
 
 
-class TestMultipleChoiceSelectionDialogBuilder extends TestBaseDialogBuilder<Collection<Integer>> implements
-	MultipleChoiceSelectionDialogBuilder, MultipleChoiceSelectionDialogBuilder.ChoicesStep,
-	MultipleChoiceSelectionDialogBuilder.OptionalSteps {
+class TestMultipleChoiceSelectionDialogBuilder extends TestBaseDialogBuilder<Collection<Integer>,
+		MultipleChoiceSelectionDialogBuilder.OptionalSteps> implements MultipleChoiceSelectionDialogBuilder,
+		MultipleChoiceSelectionDialogBuilder.ChoicesStep, MultipleChoiceSelectionDialogBuilder.OptionalSteps {
 	private boolean isSingleSelect = true;
 	private String[] choices;
 	

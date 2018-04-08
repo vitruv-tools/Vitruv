@@ -47,6 +47,6 @@ interface TextInputDialogBuilder {
         /**
          * Sets the input field to be single-line or multi-line. Defaults to {@link InputFieldType#SINGLE_LINE}.
          */
-        def TextInputDialogBuilder inputFieldType(InputFieldType inputFieldType)
+        def OptionalSteps inputFieldType(InputFieldType inputFieldType)
     }
 }
