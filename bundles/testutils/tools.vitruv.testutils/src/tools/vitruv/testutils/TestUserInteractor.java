@@ -18,6 +18,7 @@ import tools.vitruv.framework.change.interaction.UserInputBase;
 import tools.vitruv.framework.userinteraction.ConfirmationDialogBuilder;
 import tools.vitruv.framework.userinteraction.DialogBuilder;
 import tools.vitruv.framework.userinteraction.InputFieldType;
+import tools.vitruv.framework.userinteraction.InternalUserInteracting;
 import tools.vitruv.framework.userinteraction.MultipleChoiceSelectionDialogBuilder;
 import tools.vitruv.framework.userinteraction.NotificationDialogBuilder;
 import tools.vitruv.framework.userinteraction.NotificationType;
@@ -33,7 +34,7 @@ import tools.vitruv.framework.userinteraction.impl.TextInputDialog.InputValidato
  * thinking time for a user.
  *
  */
-public class TestUserInteractor implements UserInteracting, UserInteracting.UserInputListener {
+public class TestUserInteractor implements InternalUserInteracting, UserInteracting.UserInputListener {
     private static final Logger logger = Logger.getLogger(TestUserInteractor.class);
     private final Queue<URI> uriQueue;
     private final Queue<Boolean> confirmationQueue;

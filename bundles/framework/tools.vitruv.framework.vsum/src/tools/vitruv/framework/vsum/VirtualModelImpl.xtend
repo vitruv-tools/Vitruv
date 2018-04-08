@@ -19,6 +19,7 @@ import tools.vitruv.framework.util.command.EMFCommandBridge
 import tools.vitruv.framework.vsum.repositories.ResourceRepositoryImpl
 import tools.vitruv.framework.vsum.repositories.ModelRepositoryImpl
 import tools.vitruv.framework.change.echange.EChangeIdManager
+import tools.vitruv.framework.userinteraction.InternalUserInteracting
 
 class VirtualModelImpl implements InternalVirtualModel {
 	private val ResourceRepositoryImpl resourceRepository;
@@ -29,7 +30,7 @@ class VirtualModelImpl implements InternalVirtualModel {
 	private val File folder;
 	private val EChangeIdManager eChangeIdManager;
 	
-	public new(File folder, UserInteracting userInteracting, VirtualModelConfiguration modelConfiguration) {
+	public new(File folder, InternalUserInteracting userInteracting, VirtualModelConfiguration modelConfiguration) {
 		this.folder = folder;
 		this.metamodelRepository = new VitruvDomainRepositoryImpl();
 		for (metamodel : modelConfiguration.metamodels) {

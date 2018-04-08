@@ -11,6 +11,7 @@ import org.eclipse.ui.PlatformUI;
 
 import tools.vitruv.framework.change.interaction.UserInputBase;
 import tools.vitruv.framework.userinteraction.ConfirmationDialogBuilder;
+import tools.vitruv.framework.userinteraction.InternalUserInteracting;
 import tools.vitruv.framework.userinteraction.MultipleChoiceSelectionDialogBuilder;
 import tools.vitruv.framework.userinteraction.NotificationDialogBuilder;
 import tools.vitruv.framework.userinteraction.TextInputDialogBuilder;
@@ -24,7 +25,7 @@ import tools.vitruv.framework.util.bridges.EclipseUIBridge;
  *         Platform.
  *
  */
-public class UserInteractor implements UserInteracting, UserInteracting.UserInputListener {
+public class UserInteractor implements InternalUserInteracting, UserInteracting.UserInputListener {
     protected Display display;
     protected Shell shell;
     private Queue<UserInputBase> userInput = new LinkedList<>();
