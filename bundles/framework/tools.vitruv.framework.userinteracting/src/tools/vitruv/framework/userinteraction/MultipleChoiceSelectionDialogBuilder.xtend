@@ -1,7 +1,6 @@
 package tools.vitruv.framework.userinteraction
 
 import java.util.Collection
-import tools.vitruv.framework.userinteraction.SelectionType
 
 /**
  * Defines one single entry point to the build process of a {@link MultipleChoiceSelectionDialog} thus ensuring that
@@ -14,7 +13,7 @@ import tools.vitruv.framework.userinteraction.SelectionType
  * 
  * @author Dominik Klooz
  */
-interface MultipleChoiceSelectionDialogBuilder {
+interface MultipleChoiceSelectionDialogBuilder<T> {
     
     /**
      * Specifies the message of the dialog.<br><br>
@@ -23,23 +22,23 @@ interface MultipleChoiceSelectionDialogBuilder {
      * {@link MultipleChoiceSelectionDialogBuilder.ChoicesStep} implementation to ensure that the method defined there
      * is called next, as it is also mandatory. This is a form of implementation of the Step Builder pattern.
      */
-    def ChoicesStep message(String message)
+    def ChoicesStep<T> message(String message)
     
-    interface ChoicesStep {
+    interface ChoicesStep<T> {
         /**
          * Sets the textual representations of the choices the user can select.
          */
-        def OptionalSteps choices(String[] choices)
+        def OptionalSteps<T> choices(String[] choices)
     }
     
     /**
      * Interface for optional build steps (mostly common to all DialogBuilders as defined by {@link DialogBuilder})
      */
-    interface OptionalSteps extends DialogBuilder<Collection<Integer>, OptionalSteps> {
-        /**
-         * Sets the selection type, whether the user can select multiple choices (e.g. via check boxes) or a single one
-         * (e.g. via radio buttons). The standard type is the latter, {@link SelectionType#SINGLE_SELECT}.
-         */
-        def OptionalSteps selectionType(SelectionType selectionType)
+    interface OptionalSteps<T> extends DialogBuilder<T, OptionalSteps<T>> {
+        
     }
 }
+
+interface MultipleChoiceSingleSelectionDialogBuilder extends MultipleChoiceSelectionDialogBuilder<Integer> { }
+
+interface MultipleChoiceMultiSelectionDialogBuilder extends MultipleChoiceSelectionDialogBuilder<Collection<Integer>> { }

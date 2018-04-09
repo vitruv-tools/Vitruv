@@ -19,7 +19,9 @@ import tools.vitruv.framework.userinteraction.ConfirmationDialogBuilder;
 import tools.vitruv.framework.userinteraction.DialogBuilder;
 import tools.vitruv.framework.userinteraction.InputFieldType;
 import tools.vitruv.framework.userinteraction.InternalUserInteracting;
+import tools.vitruv.framework.userinteraction.MultipleChoiceMultiSelectionDialogBuilder;
 import tools.vitruv.framework.userinteraction.MultipleChoiceSelectionDialogBuilder;
+import tools.vitruv.framework.userinteraction.MultipleChoiceSingleSelectionDialogBuilder;
 import tools.vitruv.framework.userinteraction.NotificationDialogBuilder;
 import tools.vitruv.framework.userinteraction.NotificationType;
 import tools.vitruv.framework.userinteraction.SelectionType;
@@ -178,8 +180,13 @@ public class TestUserInteractor implements InternalUserInteracting, UserInteract
 	}
 
 	@Override
-	public MultipleChoiceSelectionDialogBuilder getMultipleChoiceSelectionDialogBuilder() {
-		return new TestMultipleChoiceSelectionDialogBuilder(this);
+	public MultipleChoiceSingleSelectionDialogBuilder getSingleSelectionDialogBuilder() {
+		return new TestMultipleChoiceSingleSelectionDialogBuilder(this);
+	}
+	
+	@Override
+	public MultipleChoiceMultiSelectionDialogBuilder getMultiSelectionDialogBuilder() {
+		return new TestMultipleChoiceMultiSelectionDialogBuilder(this);
 	}
 	
 	public int simulateSingleSelect(String logMessage, int choicesCount) {
@@ -370,13 +377,43 @@ class TestTextInputDialogBuilder extends TestBaseDialogBuilder<String, TextInput
 }
 
 
-class TestMultipleChoiceSelectionDialogBuilder extends TestBaseDialogBuilder<Collection<Integer>,
-		MultipleChoiceSelectionDialogBuilder.OptionalSteps> implements MultipleChoiceSelectionDialogBuilder,
-		MultipleChoiceSelectionDialogBuilder.ChoicesStep, MultipleChoiceSelectionDialogBuilder.OptionalSteps {
-	private boolean isSingleSelect = true;
+class TestMultipleChoiceSingleSelectionDialogBuilder extends TestBaseDialogBuilder<Integer,
+		MultipleChoiceSelectionDialogBuilder.OptionalSteps<Integer>> implements MultipleChoiceSingleSelectionDialogBuilder,
+		MultipleChoiceSelectionDialogBuilder.ChoicesStep<Integer>, MultipleChoiceSelectionDialogBuilder.OptionalSteps<Integer> {
 	private String[] choices;
 	
-	public TestMultipleChoiceSelectionDialogBuilder(TestUserInteractor testUserInteractor) {
+	public TestMultipleChoiceSingleSelectionDialogBuilder(TestUserInteractor testUserInteractor) {
+		super(testUserInteractor);
+	}
+	
+	@Override
+	public Integer showDialogAndGetUserInput() {
+		String dialogSummary = dialogProperties.entrySet().stream().map(Object::toString).reduce("", ((a, b) -> a + ", " + b));
+		return testUserInteractor.simulateSingleSelect(
+				"Showing MultipleChoiceSelectionDialog (single selection mode): " + dialogSummary, choices.length);
+	}
+	
+	@Override
+	public ChoicesStep<Integer> message(String message) {
+		dialogProperties.put("message", message);
+		return this;
+	}
+	
+	@Override
+	public OptionalSteps<Integer> choices(String[] choices) {
+		this.choices = choices;
+		dialogProperties.put("choices", choices.toString());
+		return this;
+	}
+}
+
+
+class TestMultipleChoiceMultiSelectionDialogBuilder extends TestBaseDialogBuilder<Collection<Integer>,
+		MultipleChoiceSelectionDialogBuilder.OptionalSteps<Collection<Integer>>> implements MultipleChoiceMultiSelectionDialogBuilder,
+		MultipleChoiceSelectionDialogBuilder.ChoicesStep<Collection<Integer>>, MultipleChoiceSelectionDialogBuilder.OptionalSteps<Collection<Integer>> {
+	private String[] choices;
+	
+	public TestMultipleChoiceMultiSelectionDialogBuilder(TestUserInteractor testUserInteractor) {
 		super(testUserInteractor);
 	}
 	
@@ -384,34 +421,22 @@ class TestMultipleChoiceSelectionDialogBuilder extends TestBaseDialogBuilder<Col
 	public Collection<Integer> showDialogAndGetUserInput() {
 		String dialogSummary = dialogProperties.entrySet().stream().map(Object::toString).reduce("", ((a, b) -> a + ", " + b));
 		Collection<Integer> selection = new ArrayList<>();
-		if (isSingleSelect) {
-			selection.add(testUserInteractor.simulateSingleSelect(
-					"Showing MultipleChoiceSelectionDialog (single selection mode): " + dialogSummary, choices.length));
-		} else {
-			Arrays.stream(testUserInteractor.simulateMultiSelect(
-					"Showing MultipleChoiceSelectionDialog (multi selection mode): " + dialogSummary, choices.length))
-					.forEach(e -> selection.add(e));
-		}
+		Arrays.stream(testUserInteractor.simulateMultiSelect(
+				"Showing MultipleChoiceSelectionDialog (multi selection mode): " + dialogSummary, choices.length))
+				.forEach(e -> selection.add(e));
 		return selection;
 	}
 	
 	@Override
-	public ChoicesStep message(String message) {
+	public ChoicesStep<Collection<Integer>> message(String message) {
 		dialogProperties.put("message", message);
 		return this;
 	}
 	
 	@Override
-	public OptionalSteps choices(String[] choices) {
+	public OptionalSteps<Collection<Integer>> choices(String[] choices) {
 		this.choices = choices;
 		dialogProperties.put("choices", choices.toString());
-		return this;
-	}
-	
-	@Override
-	public OptionalSteps selectionType(SelectionType selectionType) {
-		isSingleSelect = (selectionType == SelectionType.SINGLE_SELECT);
-		dialogProperties.put("selectionType", selectionType.name());
 		return this;
 	}
 }

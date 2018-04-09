@@ -28,10 +28,15 @@ public interface UserInteracting {
 	
 	/**
 	 * @return a {@link MultipleChoiceSelectionDialogBuilder} used to configure, build and show multiple choice input
-	 * dialogs to prompt the user to choose from a list of choices. Can be configured to either provide single-select or
-	 * multi-select controls.
+	 * dialogs to prompt the user to choose from a list of choices. This one allows the user to select one single item.
 	 */
-	MultipleChoiceSelectionDialogBuilder getMultipleChoiceSelectionDialogBuilder();
+	MultipleChoiceSingleSelectionDialogBuilder getSingleSelectionDialogBuilder();
+	
+	/**
+	 * @return a {@link MultipleChoiceSelectionDialogBuilder} used to configure, build and show multiple choice input
+	 * dialogs to prompt the user to choose from a list of choices. This one allows the user to select multiple items.
+	 */
+	MultipleChoiceMultiSelectionDialogBuilder getMultiSelectionDialogBuilder();
 
     /**
      * Ask for a URI.

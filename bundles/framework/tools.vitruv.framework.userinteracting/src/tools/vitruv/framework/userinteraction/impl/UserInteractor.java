@@ -12,7 +12,8 @@ import org.eclipse.ui.PlatformUI;
 import tools.vitruv.framework.change.interaction.UserInputBase;
 import tools.vitruv.framework.userinteraction.ConfirmationDialogBuilder;
 import tools.vitruv.framework.userinteraction.InternalUserInteracting;
-import tools.vitruv.framework.userinteraction.MultipleChoiceSelectionDialogBuilder;
+import tools.vitruv.framework.userinteraction.MultipleChoiceMultiSelectionDialogBuilder;
+import tools.vitruv.framework.userinteraction.MultipleChoiceSingleSelectionDialogBuilder;
 import tools.vitruv.framework.userinteraction.NotificationDialogBuilder;
 import tools.vitruv.framework.userinteraction.TextInputDialogBuilder;
 import tools.vitruv.framework.userinteraction.UserInteracting;
@@ -56,8 +57,13 @@ public class UserInteractor implements InternalUserInteracting, UserInteracting.
 	}
 
 	@Override
-	public MultipleChoiceSelectionDialogBuilder getMultipleChoiceSelectionDialogBuilder() {
-		return new MultipleChoiceSelectionDialogBuilderImpl(shell, display, this);
+	public MultipleChoiceSingleSelectionDialogBuilder getSingleSelectionDialogBuilder() {
+		return new MultipleChoiceSingleSelectionDialogBuilderImpl(shell, display, this);
+	}
+	
+	@Override
+	public MultipleChoiceMultiSelectionDialogBuilder getMultiSelectionDialogBuilder() {
+		return new MultipleChoiceMultiSelectionDialogBuilderImpl(shell, display, this);
 	}
 
 	@Override
