@@ -22,7 +22,7 @@ abstract class MultipleChoiceSelectionDialogBuilderBaseImpl<T> extends BaseDialo
         title = "Please Select..."
     }
     
-    override abstract T showDialogAndGetUserInput()
+    override abstract T startInteraction()
     
     override message(String message) {
         this.message = message

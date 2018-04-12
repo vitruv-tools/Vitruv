@@ -33,7 +33,7 @@ class ConfirmationDialogBuilderImpl extends BaseDialogBuilder<Boolean, OptionalS
         return this
     }
 
-    override def Boolean showDialogAndGetUserInput() {
+    override def Boolean startInteraction() {
         dialog = new ConfirmationDialog(shell, windowModality, title, message)
         openDialog()
         var userInput = InteractionFactoryImpl.eINSTANCE.createConfirmationUserInput()

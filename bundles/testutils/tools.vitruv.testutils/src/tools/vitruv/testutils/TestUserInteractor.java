@@ -24,7 +24,6 @@ import tools.vitruv.framework.userinteraction.MultipleChoiceSelectionDialogBuild
 import tools.vitruv.framework.userinteraction.MultipleChoiceSingleSelectionDialogBuilder;
 import tools.vitruv.framework.userinteraction.NotificationDialogBuilder;
 import tools.vitruv.framework.userinteraction.NotificationType;
-import tools.vitruv.framework.userinteraction.SelectionType;
 import tools.vitruv.framework.userinteraction.TextInputDialogBuilder;
 import tools.vitruv.framework.userinteraction.UserInteracting;
 import tools.vitruv.framework.userinteraction.WindowModality;
@@ -247,7 +246,7 @@ abstract class TestBaseDialogBuilder<V, T extends DialogBuilder<V, T>> implement
 	}
 	
     @Override
-    abstract public V showDialogAndGetUserInput(); 
+    abstract public V startInteraction(); 
     
     protected void openDialog() { }
     
@@ -302,7 +301,7 @@ class TestNotificationDialogBuilder extends TestBaseDialogBuilder<Void, Notifica
     }
 
     @Override
-    public Void showDialogAndGetUserInput() {
+    public Void startInteraction() {
     	String dialogSummary = dialogProperties.entrySet().stream().map(Object::toString).reduce("",
     			((a, b) -> a + ", " + b));
     	testUserInteractor.simulateNotification("Showing NotificationDialog: " + dialogSummary);
@@ -325,7 +324,7 @@ class TestConfirmationDialogBuilder extends TestBaseDialogBuilder<Boolean, Confi
 	}
 	
 	@Override
-	public Boolean showDialogAndGetUserInput() {
+	public Boolean startInteraction() {
 		String dialogSummary = dialogProperties.entrySet().stream().map(Object::toString).reduce("", ((a, b) -> a + ", " + b));
 		return testUserInteractor.simulateConfirmation("Showing ConfirmationDialog: " + dialogSummary);
 	}
@@ -346,7 +345,7 @@ class TestTextInputDialogBuilder extends TestBaseDialogBuilder<String, TextInput
 	}
 	
 	@Override
-	public String showDialogAndGetUserInput() {
+	public String startInteraction() {
 		String dialogSummary = dialogProperties.entrySet().stream().map(Object::toString).reduce("", ((a, b) -> a + ", " + b));
 		return testUserInteractor.simulateTextInput("Showing TextInputDialog: " + dialogSummary);
 	}
@@ -387,7 +386,7 @@ class TestMultipleChoiceSingleSelectionDialogBuilder extends TestBaseDialogBuild
 	}
 	
 	@Override
-	public Integer showDialogAndGetUserInput() {
+	public Integer startInteraction() {
 		String dialogSummary = dialogProperties.entrySet().stream().map(Object::toString).reduce("", ((a, b) -> a + ", " + b));
 		return testUserInteractor.simulateSingleSelect(
 				"Showing MultipleChoiceSelectionDialog (single selection mode): " + dialogSummary, choices.length);
@@ -418,7 +417,7 @@ class TestMultipleChoiceMultiSelectionDialogBuilder extends TestBaseDialogBuilde
 	}
 	
 	@Override
-	public Collection<Integer> showDialogAndGetUserInput() {
+	public Collection<Integer> startInteraction() {
 		String dialogSummary = dialogProperties.entrySet().stream().map(Object::toString).reduce("", ((a, b) -> a + ", " + b));
 		Collection<Integer> selection = new ArrayList<>();
 		Arrays.stream(testUserInteractor.simulateMultiSelect(

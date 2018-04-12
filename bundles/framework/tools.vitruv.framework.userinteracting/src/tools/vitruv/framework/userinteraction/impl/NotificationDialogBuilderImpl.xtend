@@ -30,7 +30,7 @@ class NotificationDialogBuilderImpl extends BaseDialogBuilder<Void, OptionalStep
         return this
     }
 
-    override def showDialogAndGetUserInput() {
+    override def startInteraction() {
         dialog = new NotificationDialog(shell, windowModality, notificationType, title, message)
         openDialog()
         return null // notifications don't have any form of user input

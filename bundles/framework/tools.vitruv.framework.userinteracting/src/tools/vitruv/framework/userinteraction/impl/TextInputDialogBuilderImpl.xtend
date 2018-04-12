@@ -56,7 +56,7 @@ class TextInputDialogBuilderImpl extends BaseDialogBuilder<String, OptionalSteps
         return this
     }
 
-    override def String showDialogAndGetUserInput() {
+    override def String startInteraction() {
         dialog = new TextInputDialog(shell, windowModality, title, message, inputFieldType, inputValidator)
         openDialog()
         var userInput = InteractionFactoryImpl.eINSTANCE.createFreeTextUserInput()

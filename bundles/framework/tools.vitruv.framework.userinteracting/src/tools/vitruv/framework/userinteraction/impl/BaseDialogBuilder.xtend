@@ -45,7 +45,7 @@ abstract class BaseDialogBuilder<V, T extends DialogBuilder<V, T>> implements Di
      * @inheritDoc
      * Implementations should call {@link #openDialog()} to make sure displaying the dialog is run on the UI thread.
      */
-    override abstract V showDialogAndGetUserInput()
+    override abstract V startInteraction()
     
     def notifyUserInputReceived(UserInputBase input) {
         userInputListener.onUserInputReceived(input)

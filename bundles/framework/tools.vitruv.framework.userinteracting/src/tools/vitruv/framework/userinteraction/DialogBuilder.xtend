@@ -50,5 +50,5 @@ interface DialogBuilder<V, T extends DialogBuilder<V, T>> {
     /**
      * Creates and shows the dialog built by this builder, returns the user input.
      */
-    def V showDialogAndGetUserInput()
+    def V startInteraction()
 }

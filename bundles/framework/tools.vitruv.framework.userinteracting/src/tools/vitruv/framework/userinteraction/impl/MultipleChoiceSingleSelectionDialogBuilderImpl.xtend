@@ -25,7 +25,7 @@ class MultipleChoiceSingleSelectionDialogBuilderImpl extends MultipleChoiceSelec
         super(shell, display, inputListener)
     }
     
-    override showDialogAndGetUserInput() {
+    override startInteraction() {
         dialog = new MultipleChoiceSelectionDialog(shell, windowModality, title, message, choices, SelectionType.SINGLE_SELECT)
         openDialog()
         var userInput = InteractionFactoryImpl.eINSTANCE.createMultipleChoiceSingleSelectionUserInput()
