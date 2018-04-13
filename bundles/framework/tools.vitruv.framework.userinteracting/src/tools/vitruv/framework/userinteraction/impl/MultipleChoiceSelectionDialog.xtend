@@ -18,8 +18,12 @@ import java.util.Collection
 import java.util.ArrayList
 import tools.vitruv.framework.userinteraction.SelectionType
 
+/**
+ * Implementation of a dialog providing a list of choices for the user to select a single or multiple ones, based on the
+ * {@link SelectionType} specified
+ */
 class MultipleChoiceSelectionDialog extends BaseDialog {
-	private SelectionType selectionType
+	private SelectionType selectionType = SelectionType.SINGLE_SELECT
 	private String[] choices
 	private int[] selectedChoices = #[]
 	private Button[] choiceButtons
@@ -88,6 +92,7 @@ class MultipleChoiceSelectionDialog extends BaseDialog {
     	close()
     }
     
+    // TODO DK: remove, only here for quick testing
     def static void main(String[] args) {
 		val display = new Display()
 		val shell = new Shell(display)

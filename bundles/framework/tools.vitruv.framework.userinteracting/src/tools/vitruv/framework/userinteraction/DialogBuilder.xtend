@@ -10,8 +10,8 @@ package tools.vitruv.framework.userinteraction
  * ...DialogBuilder interfaces only declare one (mandatory) method, which then either returns further (inner) interfaces
  * representing further mandatory steps on the builder the same way, or an OptionalSteps interface, which contains
  * non-mandatory build steps as well as the common ones from the {@link DialogBuilder} interface and the method to build
- * and display the dialog as well as get the result. A ...DialogBuilderImpl implements all inner interfaces of its
- * ...DialogBuilder interface to enable using it for all build steps.
+ * and display the dialog as well as get the user input (if any). A ...DialogBuilderImpl implements all inner interfaces
+ * of its ...DialogBuilder interface to enable using it for all build steps. This is a form of a fluent Step Builder.
  * 
  * @param <V> the return type for the user input.
  * @param <T> type parameter for the return type of methods whose execution is optional when building a dialog. This
@@ -48,7 +48,7 @@ interface DialogBuilder<V, T extends DialogBuilder<V, T>> {
     def T cancelButtonText(String text)
 
     /**
-     * Creates and shows the dialog built by this builder, returns the user input.
+     * Creates and shows the dialog built by this builder, returns the user input (if any).
      */
     def V startInteraction()
 }

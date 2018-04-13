@@ -8,7 +8,13 @@ import org.eclipse.swt.widgets.Composite
 import org.eclipse.swt.widgets.Control
 import org.eclipse.swt.graphics.Point
 
-class BaseDialog extends Dialog {
+/**
+ * Base class for dialogs defining methods common to all types of dialogs like texts for common elements and code to
+ * handle changes to the window modality.
+ * 
+ * @author Dominik Klooz
+ */
+abstract class BaseDialog extends Dialog {
 	private String title
 	private String message
 	private String positiveButtonText = "Yes"
@@ -45,6 +51,9 @@ class BaseDialog extends Dialog {
 		updateWindowModality()
 	}
 	
+	/**
+	 * Opens the dialog centered on the primary monitor.
+	 */
 	def show() {
 		val screenSize = parentShell.display.getPrimaryMonitor().getBounds()
 		parentShell.setLocation((screenSize.width - parentShell.getBounds().width) / 2,
@@ -70,6 +79,6 @@ class BaseDialog extends Dialog {
 	}
 	
 	override boolean isResizable() {
-		return true
+		return true // make dialogs resizable by default
 	}
 }

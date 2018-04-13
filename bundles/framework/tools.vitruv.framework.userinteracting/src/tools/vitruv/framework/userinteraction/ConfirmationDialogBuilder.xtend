@@ -24,5 +24,10 @@ interface ConfirmationDialogBuilder {
      */
     def OptionalSteps message(String message)
     
+    /**
+     * Interface for optional build steps (none needed), build steps common to all types of dialogs and the method to
+     * create and use the dialog as declared in {@link DialogBuilder}. This represents the final step of this dialog's
+     * build process.
+     */
     interface OptionalSteps extends DialogBuilder<Boolean, OptionalSteps> { }
 }

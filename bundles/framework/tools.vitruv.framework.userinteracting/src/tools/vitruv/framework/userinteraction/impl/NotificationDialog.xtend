@@ -13,9 +13,15 @@ import org.eclipse.swt.widgets.Shell
 import tools.vitruv.framework.userinteraction.NotificationType
 import tools.vitruv.framework.userinteraction.WindowModality
 
+/**
+ * A dialog to notify the user about something.
+ * 
+ * @author Dominik Klooz
+ */
 class NotificationDialog extends BaseDialog {
 	private NotificationType notificationType = NotificationType.INFORMATION
 	
+	// TODO DK: constructor overloads still necessary after dialog builder restructuring?
 	new(Shell parentShell, WindowModality modality, NotificationType type, String title, String message) {
 		super(parentShell, modality, title, message)
 		this.notificationType = type
@@ -86,6 +92,7 @@ class NotificationDialog extends BaseDialog {
         createButton(parent, IDialogConstants.OK_ID, getPositiveButtonText(), true)
     }
     
+    // TODO DK: remove, only here for quick testing
     def static void main(String[] args) {
 		val display = new Display()
 		val shell = new Shell(display)

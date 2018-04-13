@@ -34,7 +34,7 @@ abstract class MultipleChoiceSelectionDialogBuilderBaseImpl<T> extends BaseDialo
             throw new IllegalArgumentException("Provide at least two choices to pick from.")
         }
         if (choices.length == 2) {
-            // TODO: log hint: consider using ConfirmationDialog for dialogs with two possible outcomes
+            // TODO DK: log (or something?) hint: consider using ConfirmationDialog for dialogs with two possible outcomes
         }
         this.choices = choices
         return this

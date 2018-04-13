@@ -20,6 +20,9 @@ import tools.vitruv.framework.userinteraction.impl.TextInputDialog.InputValidato
 import org.eclipse.swt.graphics.Point
 import tools.vitruv.framework.userinteraction.InputFieldType
 
+/**
+ * A dialog providing a single- or multi-line text input field, optionally restricted by a {@link InputValidator}.
+ */
 class TextInputDialog extends BaseDialog {
 	private String input
 	private InputFieldType inputFieldType
@@ -155,7 +158,7 @@ class TextInputDialog extends BaseDialog {
 		close()
 	}
 	
-	
+	// TODO DK: remove, only here for quick testing
 	def static void main(String[] args) {
 		val display = new Display()
 		val shell = new Shell(display)

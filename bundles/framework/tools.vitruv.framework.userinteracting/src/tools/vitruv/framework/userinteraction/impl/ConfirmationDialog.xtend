@@ -13,6 +13,9 @@ import org.eclipse.jface.dialogs.IDialogConstants
 import org.eclipse.swt.widgets.Display
 import org.eclipse.swt.graphics.Point
 
+/**
+ * A dialog for asking the user to provide a positive or negative answer to some kind of request.
+ */
 class ConfirmationDialog extends BaseDialog {
 	private boolean confirmed = false
 	
@@ -76,8 +79,9 @@ class ConfirmationDialog extends BaseDialog {
     	return confirmed
     }
     
+    // TODO DK: remove, only here for quick testing
     def static void main(String[] args) {
-		val display = Display.^default//PlatformUI.getWorkbench().display//new Display()
+		val display = Display.^default
 		val shell = new Shell(display)
 		val dialog = new ConfirmationDialog(shell, WindowModality.MODAL, "Title", "Really?")
 		//dialog.blockOnOpen = true

@@ -5,6 +5,12 @@ import org.eclipse.emf.common.util.URI;
 import tools.vitruv.framework.change.interaction.UserInputBase;
 import tools.vitruv.framework.userinteraction.impl.TextInputDialog.InputValidator;
 
+/**
+ * Central interface providing dialog builders to build different types of dialogs to notify the user or get input in
+ * different forms.
+ * 
+ * @author Dominik Klooz
+ */
 public interface UserInteracting {
 	
 	/**

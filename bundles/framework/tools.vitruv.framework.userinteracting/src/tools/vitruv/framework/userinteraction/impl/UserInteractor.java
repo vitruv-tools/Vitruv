@@ -20,11 +20,11 @@ import tools.vitruv.framework.userinteraction.UserInteracting;
 import tools.vitruv.framework.util.bridges.EclipseUIBridge;
 
 /**
- * @author messinger
- *
- *         Implements {@link UserInteracting} and decouples {@link UserInteractorDialog} from
- *         Platform.
- *
+ * Implementation of the {@link InternalUserInteracting} interface providing dialog builders for different cases of user
+ * interaction. Through the {@link UserInteracting.UserInputListener}, this class keeps track of user input entered
+ * through any of the dialogs constructed from here to be retrieved for bookkeeping/reuse.
+ * 
+ * @author Dominik Klooz
  */
 public class UserInteractor implements InternalUserInteracting, UserInteracting.UserInputListener {
     protected Display display;
@@ -37,8 +37,8 @@ public class UserInteractor implements InternalUserInteracting, UserInteracting.
 
     public void init() {
         this.display = PlatformUI.getWorkbench().getDisplay();
-        this.shell = null; /* TODO: setting the shell to null makes dialogs have their own task bar entry, but prevents
-        the window modality flags from having any effect. */
+        this.shell = null; /* TODO DK: setting the shell to null makes dialogs have their own task bar entry, but
+        prevents the window modality flags from having any effect. */
     }
     
     @Override
@@ -66,6 +66,7 @@ public class UserInteractor implements InternalUserInteracting, UserInteracting.
 		return new MultipleChoiceMultiSelectionDialogBuilderImpl(shell, display, this);
 	}
 
+	// TODO DK: still needed/used?
 	@Override
 	public URI selectURI(String message) {
 		return EclipseUIBridge.askForNewResource(message);

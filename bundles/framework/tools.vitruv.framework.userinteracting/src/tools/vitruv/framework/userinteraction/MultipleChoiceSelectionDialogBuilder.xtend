@@ -39,6 +39,12 @@ interface MultipleChoiceSelectionDialogBuilder<T> {
     }
 }
 
+/**
+ * Interface wrapping the generic type for single selection multiple choice dialogs.
+ */
 interface MultipleChoiceSingleSelectionDialogBuilder extends MultipleChoiceSelectionDialogBuilder<Integer> { }
 
+/**
+ * Interface wrapping the generic type for multiple selection multiple choice dialogs.
+ */
 interface MultipleChoiceMultiSelectionDialogBuilder extends MultipleChoiceSelectionDialogBuilder<Collection<Integer>> { }

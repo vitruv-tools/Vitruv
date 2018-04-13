@@ -13,6 +13,7 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 
+// TODO DK: remove, replaced by UserInteractor, dialog builder classes and dialog implementation classes.
 public class UserInteractorDialog {
 
     public static void showMessage(Shell parentShell, boolean modal, String message) {

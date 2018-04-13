@@ -10,7 +10,7 @@ import tools.vitruv.framework.userinteraction.MultipleChoiceSingleSelectionDialo
 
 /**
  * Builder class for {@link MultipleChoiceSelectionDialog}s.
- * Creates a dialog with check boxes or radio buttons to pick multiple or one entry from a list of choices.<br>
+ * Creates a dialog with check boxes or radio buttons to pick multiple or a single entry from a list of choices.<br>
  * <br>
  * For further info on the rationale behind the ...DialogBuilder implementation, see the {@link DialogBuilder} javadoc.
  * @see MultipleChoiceSelectionDialogBuilder
