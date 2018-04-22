@@ -3,24 +3,25 @@
     xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="interaction" nsURI="http://www.example.org/interaction" nsPrefix="interaction">
   <eClassifiers xsi:type="ecore:EClass" name="FreeTextUserInput" eSuperTypes="#//UserInputBase">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="text" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="message" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="MultipleChoiceSingleSelectionUserInput"
-      eSuperTypes="#//UserInputBase">
+      eSuperTypes="#//MultipleChoiceSelectionInputBase">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="selectedIndex" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="choices" lowerBound="2"
-        upperBound="-1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="MultipleChoiceMultiSelectionUserInput"
-      eSuperTypes="#//UserInputBase">
+      eSuperTypes="#//MultipleChoiceSelectionInputBase">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="selectedIndices" upperBound="-1"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="choices" upperBound="-1"
-        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ConfirmationUserInput" eSuperTypes="#//UserInputBase">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="confirmed" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="UserInputBase" abstract="true">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="message" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="UserInputBase" abstract="true"/>
+  <eClassifiers xsi:type="ecore:EClass" name="MultipleChoiceSelectionInputBase" abstract="true"
+      eSuperTypes="#//UserInputBase">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="choices" upperBound="-1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
 </ecore:EPackage>

@@ -13,20 +13,21 @@
       ecorePackage="interaction.ecore#/">
     <genClasses ecoreClass="interaction.ecore#//FreeTextUserInput">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute interaction.ecore#//FreeTextUserInput/text"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute interaction.ecore#//FreeTextUserInput/message"/>
     </genClasses>
     <genClasses ecoreClass="interaction.ecore#//MultipleChoiceSingleSelectionUserInput">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute interaction.ecore#//MultipleChoiceSingleSelectionUserInput/selectedIndex"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute interaction.ecore#//MultipleChoiceSingleSelectionUserInput/choices"/>
     </genClasses>
     <genClasses ecoreClass="interaction.ecore#//MultipleChoiceMultiSelectionUserInput">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute interaction.ecore#//MultipleChoiceMultiSelectionUserInput/selectedIndices"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute interaction.ecore#//MultipleChoiceMultiSelectionUserInput/choices"/>
     </genClasses>
     <genClasses ecoreClass="interaction.ecore#//ConfirmationUserInput">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute interaction.ecore#//ConfirmationUserInput/confirmed"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute interaction.ecore#//ConfirmationUserInput/message"/>
     </genClasses>
-    <genClasses image="false" ecoreClass="interaction.ecore#//UserInputBase"/>
+    <genClasses image="false" ecoreClass="interaction.ecore#//UserInputBase">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute interaction.ecore#//UserInputBase/message"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="interaction.ecore#//MultipleChoiceSelectionInputBase">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute interaction.ecore#//MultipleChoiceSelectionInputBase/choices"/>
+    </genClasses>
   </genPackages>
 </genmodel:GenModel>
