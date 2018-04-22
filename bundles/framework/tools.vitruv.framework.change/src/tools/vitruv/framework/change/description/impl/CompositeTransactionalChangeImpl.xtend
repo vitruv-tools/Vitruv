@@ -4,8 +4,11 @@ import tools.vitruv.framework.change.description.CompositeTransactionalChange
 import tools.vitruv.framework.change.description.TransactionalChange
 import tools.vitruv.framework.change.description.VitruviusChangeFactory
 import tools.vitruv.framework.uuid.UuidResolver
+import java.util.Collection
+import tools.vitruv.framework.change.interaction.UserInputBase
 
 class CompositeTransactionalChangeImpl extends AbstractCompositeChangeImpl<TransactionalChange> implements CompositeTransactionalChange {
+	private Collection<UserInputBase> userInputs
 	
 	override removeChange(TransactionalChange change) {
 		if (change !== null && this.changes.contains(change)) {
@@ -22,4 +25,12 @@ class CompositeTransactionalChangeImpl extends AbstractCompositeChangeImpl<Trans
 			c.resolveBeforeAndApplyForward(uuidResolver)
 		}
 	}
+	
+	override getUserInputs() {
+        return userInputs
+    }
+    
+    override setUserInputs(Collection<UserInputBase> userInputs) {
+        this.userInputs = userInputs
+    }
 }
