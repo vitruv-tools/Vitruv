@@ -13,7 +13,13 @@ import java.util.stream.Stream;
 
 import org.apache.log4j.Logger;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.PlatformUI;
 
+import tools.vitruv.framework.change.interaction.ConfirmationUserInput;
+import tools.vitruv.framework.change.interaction.InteractionFactory;
+import tools.vitruv.framework.change.interaction.MultipleChoiceSingleSelectionUserInput;
 import tools.vitruv.framework.change.interaction.UserInputBase;
 import tools.vitruv.framework.userinteraction.ConfirmationDialogBuilder;
 import tools.vitruv.framework.userinteraction.DialogBuilder;
@@ -27,6 +33,8 @@ import tools.vitruv.framework.userinteraction.NotificationType;
 import tools.vitruv.framework.userinteraction.TextInputDialogBuilder;
 import tools.vitruv.framework.userinteraction.UserInteracting;
 import tools.vitruv.framework.userinteraction.WindowModality;
+import tools.vitruv.framework.userinteraction.impl.NormalUserInteracting;
+import tools.vitruv.framework.userinteraction.impl.PredefinedInputInteractor;
 import tools.vitruv.framework.userinteraction.impl.TextInputDialog.InputValidator;
 
 /**
@@ -35,6 +43,66 @@ import tools.vitruv.framework.userinteraction.impl.TextInputDialog.InputValidato
  * thinking time for a user.
  *
  */
+public class TestUserInteractor extends PredefinedInputInteractor {
+
+	public TestUserInteractor() {//Collection<UserInputBase> userInputs, InternalUserInteracting normalUserInteractor) {
+		super(new ArrayList<UserInputBase>(), null);//userInputs, normalUserInteractor);
+	}
+	
+	@Override
+	public <T> T handleNothingPredefined(NormalUserInteracting<T> dialogBuilder) {
+		throw new IllegalStateException("Missing predefined input"); // TODO DK: somehow parameterize the exception with the type of input missing?
+	}
+	
+	public void addNextConfirmationInputs(final boolean... nextConfirmations) {
+		userInputs.removeIf(input -> input.getClass() == ConfirmationUserInput.class);
+    	for (boolean nextConfirmation : nextConfirmations) {
+    		ConfirmationUserInput input = InteractionFactory.eINSTANCE.createConfirmationUserInput();
+    		input.setConfirmed(nextConfirmation);
+    		userInputs.add(input);
+    	}
+    }
+    
+    public void addNextTextInputs(final String... nextFreeTexts) {
+    	///this.freeTextQueue.clear();
+    	///this.freeTextQueue.addAll(Arrays.asList(nextFreeTexts));
+    }
+    
+    public void addNextSingleSelections(final int... nextSingleSelections) {
+    	userInputs.removeIf(input -> input.getClass() == MultipleChoiceSingleSelectionUserInput.class);
+    	for (int nextSelection : nextSingleSelections) {
+    		MultipleChoiceSingleSelectionUserInput input = InteractionFactory.eINSTANCE.createMultipleChoiceSingleSelectionUserInput();
+    		input.setSelectedIndex(nextSelection);
+    		userInputs.add(input);
+    	}
+    }
+    
+    public void addNextMultiSelections(final int[]... nextMultiSelections) {
+    	/*this.multiSelectionQueue.clear();
+    	for (int i = 0; i < nextMultiSelections.length; i++) {
+    		Integer[] currentMultiSelection = Arrays.stream(nextMultiSelections[i]).boxed().toArray(Integer[]::new);
+    		this.multiSelectionQueue.add(currentMultiSelection);
+    	}*/
+    	throw new UnsupportedOperationException();
+    }
+    
+    public void addNextUriSelections(final URI... nextSelections) {
+        /*this.uriQueue.clear();
+        this.uriQueue.addAll(Arrays.asList(nextSelections));*/ // TODO DK
+    }
+
+    private void simulateUserThinktime() {
+        /*if (-1 < this.maxWaittime) {
+            final int currentWaittime = this.random.nextInt(this.waitTimeRange + 1) + this.minWaittime;
+            try {
+                Thread.sleep(currentWaittime);
+            } catch (final InterruptedException e) {
+                logger.trace("User think time simulation thread interrupted: " + e, e);
+            }
+        }*/ // TODO DK
+    }
+}
+/*
 public class TestUserInteractor implements InternalUserInteracting, UserInteracting.UserInputListener {
     private static final Logger logger = Logger.getLogger(TestUserInteractor.class);
     private final Queue<URI> uriQueue;
@@ -153,8 +221,6 @@ public class TestUserInteractor implements InternalUserInteracting, UserInteract
 		if (!this.confirmationQueue.isEmpty()) {
             boolean userConfirmed = this.confirmationQueue.poll();
             logger.info(TestUserInteractor.class.getSimpleName() + " selected " + userConfirmed);
-            /*ConfirmationUserInput result = InteractionFactory.eINSTANCE.createConfirmationUserInput();
-        	result.setConfirmed(userConfirmed);*/
             return userConfirmed;
         } else {
         	throw new IllegalStateException("No user interaction confirmation specified!");
@@ -233,6 +299,18 @@ public class TestUserInteractor implements InternalUserInteracting, UserInteract
 	@Override
 	public void resetUserInputs() {
 		// TODO DK: do something here?
+	}
+
+	@Override
+	public Shell getShell() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Display getDisplay() {
+		// TODO Auto-generated method stub
+		return PlatformUI.getWorkbench().getDisplay(); // TODO DK: remove eclipse platform workbench dependency again
 	}
 }
 
@@ -438,4 +516,4 @@ class TestMultipleChoiceMultiSelectionDialogBuilder extends TestBaseDialogBuilde
 		dialogProperties.put("choices", choices.toString());
 		return this;
 	}
-}
+}*/

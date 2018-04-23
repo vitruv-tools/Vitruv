@@ -2,6 +2,8 @@ package tools.vitruv.framework.userinteraction
 
 import tools.vitruv.framework.change.interaction.UserInputBase
 import java.util.Collection
+import org.eclipse.swt.widgets.Shell
+import org.eclipse.swt.widgets.Display
 
 /**
  * Internal version of the {@link UserInteracting} interface used to separate methods for internal "bookkeeping" from
@@ -18,4 +20,14 @@ interface InternalUserInteracting extends UserInteracting {
      * Clears all recorded user inputs.
      */
     def void resetUserInputs();
+    
+    /**
+     * Get the shell used by the dialogs.
+     */
+    def Shell getShell();
+    
+    /**
+     * Get the display used by the dialogs.
+     */
+    def Display getDisplay();
 }

@@ -27,6 +27,7 @@ import tools.vitruv.framework.change.description.CompositeTransactionalChange
 import tools.vitruv.framework.correspondence.CorrespondencePackage
 import tools.vitruv.framework.change.description.ConcreteChange
 import tools.vitruv.framework.userinteraction.InternalUserInteracting
+import tools.vitruv.framework.userinteraction.impl.ReuseUserInputInteractor
 
 class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserver {
 	static Logger logger = Logger.getLogger(ChangePropagatorImpl.getSimpleName())
@@ -136,18 +137,32 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 		TransactionalChange change,
 		ChangedResourcesTracker changedResourcesTracker
 	) {
+	    if (change.userInputs !== null) {
+	       throw new Exception("Info made it here!");
+	    }
+	    
+	    
 		val consequentialChanges = newArrayList();
 		//modelRepository.startRecording;
 		resourceRepository.startRecording;
+		
+		// retrieve user inputs from past changes, construct a UserInteractor which tries to reuse them:
+		var userInputs = userInteracting.userInputs
+		val reuseInteractor = new ReuseUserInputInteractor(userInputs, userInteracting)
+		
 		for (propagationSpecification : changePropagationProvider.
 			getChangePropagationSpecifications(change.changeDomain)) {
+			// set propagationSpecification's UserInteracting to the reuse interactor (which falls back to the standard
+			// user interactor when no matching user input is available for reuse)
+			propagationSpecification.setUserInteracting(reuseInteractor)
 			propagateChangeForChangePropagationSpecification(change, propagationSpecification, changedResourcesTracker);
+			// user interaction happens here ^
 		}
 		//consequentialChanges += modelRepository.endRecording();
 		consequentialChanges += resourceRepository.endRecording();
 		consequentialChanges.forEach[logger.debug(it)];
 
-        val userInputs = userInteracting.userInputs
+        userInputs = userInteracting.userInputs
 		val propagatedChange = new PropagatedChange(change,
 				VitruviusChangeFactory.instance.createCompositeChange(consequentialChanges), userInputs)
 		val resultingChanges = new ArrayList()

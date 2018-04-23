@@ -86,4 +86,14 @@ public class UserInteractor implements InternalUserInteracting, UserInteracting.
 	public void resetUserInputs() {
 		userInput.clear();
 	}
+
+	@Override
+	public Shell getShell() {
+		return shell;
+	}
+
+	@Override
+	public Display getDisplay() {
+		return display;
+	}
 }

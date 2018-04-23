@@ -6,6 +6,7 @@ import org.eclipse.swt.widgets.Display
 import tools.vitruv.framework.userinteraction.UserInteracting
 import tools.vitruv.framework.change.interaction.impl.InteractionFactoryImpl
 import tools.vitruv.framework.userinteraction.ConfirmationDialogBuilder.OptionalSteps
+import tools.vitruv.framework.userinteraction.InternalConfirmationDialogBuilder
 
 /**
  * Builder class for {@link ConfirmationDialog}s.
@@ -18,7 +19,7 @@ import tools.vitruv.framework.userinteraction.ConfirmationDialogBuilder.Optional
  * @author Dominik Klooz
  */
 class ConfirmationDialogBuilderImpl extends BaseDialogBuilder<Boolean, OptionalSteps>
-        implements ConfirmationDialogBuilder, OptionalSteps {
+        implements InternalConfirmationDialogBuilder, OptionalSteps {
     private ConfirmationDialog dialog
     
     public static final String STANDARD_TITLE = "Please Confirm"
@@ -42,4 +43,9 @@ class ConfirmationDialogBuilderImpl extends BaseDialogBuilder<Boolean, OptionalS
         notifyUserInputReceived(userInput)
         return dialog.getConfirmed()
     }
+    
+    override getIntermediateDialog() {
+        return dialog
+    }
+    
 }

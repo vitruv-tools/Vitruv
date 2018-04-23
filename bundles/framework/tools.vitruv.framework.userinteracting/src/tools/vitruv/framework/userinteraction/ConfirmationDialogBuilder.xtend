@@ -1,5 +1,7 @@
 package tools.vitruv.framework.userinteraction
 
+import tools.vitruv.framework.userinteraction.impl.ConfirmationDialog
+
 /**
  * Defines one single entry point to the build process of a {@link ConfirmationDialog} thus ensuring that mandatory
  * information has to be provided before continuing. The top-level method represents the first and only mandatory step
@@ -30,4 +32,13 @@ interface ConfirmationDialogBuilder {
      * build process.
      */
     interface OptionalSteps extends DialogBuilder<Boolean, OptionalSteps> { }
+}
+
+interface InternalConfirmationDialogBuilder extends ConfirmationDialogBuilder {
+    
+    /**
+     * Provides access to the dialog being built using this builder before it is displayed for behind-the-scenes use
+     * (e.g. for user interaction in reuse scenarios).
+     */
+    def ConfirmationDialog getIntermediateDialog()
 }
