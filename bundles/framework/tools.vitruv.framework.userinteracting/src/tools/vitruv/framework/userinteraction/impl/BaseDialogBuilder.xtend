@@ -4,8 +4,8 @@ import tools.vitruv.framework.userinteraction.DialogBuilder
 import org.eclipse.swt.widgets.Shell
 import org.eclipse.swt.widgets.Display
 import tools.vitruv.framework.userinteraction.WindowModality
-import tools.vitruv.framework.userinteraction.UserInteracting
 import tools.vitruv.framework.change.interaction.UserInputBase
+import tools.vitruv.framework.userinteraction.UserInputListener
 
 /**
  * Abstract base class for dialog builder objects. The dialog to be built is created and returned in createAndShow, the
@@ -33,9 +33,9 @@ abstract class BaseDialogBuilder<V, T extends DialogBuilder<V, T>> implements Di
     protected String positiveButtonText = "Yes"
     protected String negativeButtonText = "No"
     protected String cancelButtonText = "Cancel"
-    private UserInteracting.UserInputListener userInputListener;
+    private UserInputListener userInputListener;
     
-    new(Shell shell, Display display, UserInteracting.UserInputListener inputListener) {
+    new(Shell shell, Display display, UserInputListener inputListener) {
         this.shell = shell
         this.display = display
         userInputListener = inputListener

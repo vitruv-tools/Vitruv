@@ -133,11 +133,11 @@ class PredefinedInputInteractor implements InternalUserInteracting {
     }
     
     override getShell() {
-        return shell
+        return null
     }
     
     override getDisplay() {
-        return display
+        return null
     }
 }
 

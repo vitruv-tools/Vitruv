@@ -147,7 +147,7 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 		resourceRepository.startRecording;
 		
 		// retrieve user inputs from past changes, construct a UserInteractor which tries to reuse them:
-		var userInputs = userInteracting.userInputs
+		var userInputs = change.userInputs///userInteracting.userInputs
 		val reuseInteractor = new ReuseUserInputInteractor(userInputs, userInteracting)
 		
 		for (propagationSpecification : changePropagationProvider.

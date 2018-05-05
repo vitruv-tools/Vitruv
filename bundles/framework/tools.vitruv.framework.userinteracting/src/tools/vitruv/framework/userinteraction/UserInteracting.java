@@ -2,7 +2,6 @@ package tools.vitruv.framework.userinteraction;
 
 import org.eclipse.emf.common.util.URI;
 
-import tools.vitruv.framework.change.interaction.UserInputBase;
 import tools.vitruv.framework.userinteraction.impl.TextInputDialog.InputValidator;
 
 /**
@@ -53,9 +52,4 @@ public interface UserInteracting {
      * @author Dominik Werle
      */
     URI selectURI(String message);
-
-    
-    interface UserInputListener {
-    	void onUserInputReceived(UserInputBase input);
-    }
 }

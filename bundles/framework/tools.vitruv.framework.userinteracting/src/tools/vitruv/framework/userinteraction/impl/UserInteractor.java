@@ -16,17 +16,17 @@ import tools.vitruv.framework.userinteraction.MultipleChoiceMultiSelectionDialog
 import tools.vitruv.framework.userinteraction.MultipleChoiceSingleSelectionDialogBuilder;
 import tools.vitruv.framework.userinteraction.NotificationDialogBuilder;
 import tools.vitruv.framework.userinteraction.TextInputDialogBuilder;
-import tools.vitruv.framework.userinteraction.UserInteracting;
+import tools.vitruv.framework.userinteraction.UserInputListener;
 import tools.vitruv.framework.util.bridges.EclipseUIBridge;
 
 /**
  * Implementation of the {@link InternalUserInteracting} interface providing dialog builders for different cases of user
- * interaction. Through the {@link UserInteracting.UserInputListener}, this class keeps track of user input entered
+ * interaction. Through the {@link UserInputListener}, this class keeps track of user input entered
  * through any of the dialogs constructed from here to be retrieved for bookkeeping/reuse.
  * 
  * @author Dominik Klooz
  */
-public class UserInteractor implements InternalUserInteracting, UserInteracting.UserInputListener {
+public class UserInteractor implements InternalUserInteracting, UserInputListener {
     protected Display display;
     protected Shell shell;
     private Queue<UserInputBase> userInput = new LinkedList<>();

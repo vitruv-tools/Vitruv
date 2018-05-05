@@ -2,10 +2,10 @@ package tools.vitruv.framework.userinteraction.impl
 
 import org.eclipse.swt.widgets.Shell
 import org.eclipse.swt.widgets.Display
-import tools.vitruv.framework.userinteraction.UserInteracting.UserInputListener
 import tools.vitruv.framework.userinteraction.MultipleChoiceSelectionDialogBuilder
 import tools.vitruv.framework.userinteraction.MultipleChoiceSelectionDialogBuilder.ChoicesStep
 import tools.vitruv.framework.userinteraction.MultipleChoiceSelectionDialogBuilder.OptionalSteps
+import tools.vitruv.framework.userinteraction.UserInputListener
 
 /**
  * Base implementation of the dialog builder for single- and multi-select {@link MultipleChoiceDialog}s. Implementation
