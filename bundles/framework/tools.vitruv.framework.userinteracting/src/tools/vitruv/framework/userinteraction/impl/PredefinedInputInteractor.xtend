@@ -10,9 +10,10 @@ import tools.vitruv.framework.change.interaction.MultipleChoiceSingleSelectionUs
 import tools.vitruv.framework.change.interaction.UserInputBase
 import tools.vitruv.framework.userinteraction.InternalUserInteracting
 import tools.vitruv.framework.change.interaction.MultipleChoiceSelectionInputBase
+import org.eclipse.xtend.lib.annotations.Accessors
 
 class PredefinedInputInteractor implements InternalUserInteracting {
-    protected Collection<UserInputBase> userInputs = #[]
+    @Accessors private Collection<UserInputBase> userInputs = #[]
     private InternalUserInteracting normalUserInteractor
     /*private Shell shell;
     private Display display;*/

@@ -6,6 +6,7 @@ import tools.vitruv.framework.userinteraction.MultipleChoiceSelectionDialogBuild
 import tools.vitruv.framework.userinteraction.MultipleChoiceSelectionDialogBuilder.ChoicesStep
 import tools.vitruv.framework.userinteraction.MultipleChoiceSelectionDialogBuilder.OptionalSteps
 import tools.vitruv.framework.userinteraction.UserInputListener
+import org.eclipse.xtend.lib.annotations.Accessors
 
 /**
  * Base implementation of the dialog builder for single- and multi-select {@link MultipleChoiceDialog}s. Implementation
@@ -15,7 +16,7 @@ import tools.vitruv.framework.userinteraction.UserInputListener
  */
 abstract class MultipleChoiceSelectionDialogBuilderBaseImpl<T> extends BaseDialogBuilder<T, OptionalSteps<T>>
         implements MultipleChoiceSelectionDialogBuilder<T>, ChoicesStep<T>, OptionalSteps<T> {
-    protected String[] choices = #["unspecified"]
+    @Accessors private String[] choices = #["unspecified"]
     
     new(Shell shell, Display display, UserInputListener inputListener) {
         super(shell, display, inputListener)

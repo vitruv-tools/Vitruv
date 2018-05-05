@@ -6,6 +6,7 @@ import org.eclipse.swt.widgets.Display
 import tools.vitruv.framework.userinteraction.WindowModality
 import tools.vitruv.framework.change.interaction.UserInputBase
 import tools.vitruv.framework.userinteraction.UserInputListener
+import org.eclipse.xtend.lib.annotations.Accessors
 
 /**
  * Abstract base class for dialog builder objects. The dialog to be built is created and returned in createAndShow, the
@@ -23,17 +24,17 @@ import tools.vitruv.framework.userinteraction.UserInputListener
  * 
  * @author Dominik Klooz
  */
-abstract class BaseDialogBuilder<V, T extends DialogBuilder<V, T>> implements DialogBuilder<V, T> {
-    protected BaseDialog dialog
-    protected Shell shell
-    protected Display display
-    protected String title = "Unspecified Title"
-    protected String message = "No message specified."
-    protected WindowModality windowModality = WindowModality.MODELESS
-    protected String positiveButtonText = "Yes"
-    protected String negativeButtonText = "No"
-    protected String cancelButtonText = "Cancel"
-    private UserInputListener userInputListener;
+@Accessors abstract class BaseDialogBuilder<V, T extends DialogBuilder<V, T>> implements DialogBuilder<V, T> {
+    private BaseDialog dialog
+    private Shell shell
+    private Display display
+    private String title = "Unspecified Title"
+    private String message = "No message specified."
+    private WindowModality windowModality = WindowModality.MODELESS
+    private String positiveButtonText = "Yes"
+    private String negativeButtonText = "No"
+    private String cancelButtonText = "Cancel"
+    @Accessors(NONE) UserInputListener userInputListener;
     
     new(Shell shell, Display display, UserInputListener inputListener) {
         this.shell = shell
