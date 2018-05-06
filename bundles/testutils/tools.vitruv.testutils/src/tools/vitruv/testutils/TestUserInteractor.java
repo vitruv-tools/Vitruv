@@ -55,6 +55,7 @@ public class TestUserInteractor extends PredefinedInputInteractor {
 	}
 	
 	public void addNextConfirmationInputs(final boolean... nextConfirmations) {
+		Collection<UserInputBase> userInputs = getUserInputs();
 		userInputs.removeIf(input -> input.getClass() == ConfirmationUserInput.class);
     	for (boolean nextConfirmation : nextConfirmations) {
     		ConfirmationUserInput input = InteractionFactory.eINSTANCE.createConfirmationUserInput();
@@ -63,12 +64,13 @@ public class TestUserInteractor extends PredefinedInputInteractor {
     	}
     }
     
-    public void addNextTextInputs(final String... nextFreeTexts) {
+    public void addNextTextInput(String nextInput) {
     	///this.freeTextQueue.clear();
     	///this.freeTextQueue.addAll(Arrays.asList(nextFreeTexts));
     }
     
     public void addNextSingleSelections(final int... nextSingleSelections) {
+    	Collection<UserInputBase> userInputs = getUserInputs();
     	userInputs.removeIf(input -> input.getClass() == MultipleChoiceSingleSelectionUserInput.class);
     	for (int nextSelection : nextSingleSelections) {
     		MultipleChoiceSingleSelectionUserInput input = InteractionFactory.eINSTANCE.createMultipleChoiceSingleSelectionUserInput();
