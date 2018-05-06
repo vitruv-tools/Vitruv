@@ -12,11 +12,9 @@ import tools.vitruv.framework.userinteraction.InternalUserInteracting
 import tools.vitruv.framework.change.interaction.MultipleChoiceSelectionInputBase
 import org.eclipse.xtend.lib.annotations.Accessors
 
-class PredefinedInputInteractor implements InternalUserInteracting {
+class PredefinedInputInteractor implements InternalUserInteracting, PredefinedInputHandler {
     @Accessors private Collection<UserInputBase> userInputs = #[]
-    private InternalUserInteracting normalUserInteractor
-    /*private Shell shell;
-    private Display display;*/
+    private InternalUserInteracting normalUserInteractor // TODO DK: only used to access shell and display, pass them in separately instead?
     
     new(Collection<UserInputBase> userInputs, InternalUserInteracting normalUserInteractor) {
         this.userInputs = userInputs
@@ -55,15 +53,15 @@ class PredefinedInputInteractor implements InternalUserInteracting {
         throw new UnsupportedOperationException("TODO: auto-generated method stub")
     }
     
-    def <T> handleNothingPredefined(NormalUserInteracting<T> dialogBuilder) {
+    override <T> handleNothingPredefined(NormalUserInteracting<T> dialogBuilder) {
         return dialogBuilder.startNormalInteraction()
     }
     
-    def boolean shouldShowNotifications() {
+    override boolean shouldShowNotifications() {
         return false
     }
     
-    def void handleNotification(NormalUserInteracting<Void> notificationBuilder) {
+    override void handleNotification(NormalUserInteracting<Void> notificationBuilder) {
         notificationBuilder.startNormalInteraction()
     }
     
@@ -77,23 +75,23 @@ class PredefinedInputInteractor implements InternalUserInteracting {
         return inputToReuse
     }
     
-    def boolean hasMatchingConfirmationInputForReuse(String message) {
+    override boolean hasMatchingConfirmationInputForReuse(String message) {
         val inputToReuse = getMatchingInput(message, ConfirmationUserInput)
         return inputToReuse.length > 0
     }
     
-    def boolean handleConfirmation(String message) {
+    override boolean handleConfirmation(String message) {
         val inputToReuse = getMatchingInput(message, ConfirmationUserInput)
         userInputs.remove(inputToReuse.head)
         return inputToReuse.head.confirmed
     }
     
-    def boolean hasMatchingTextInputForReuse(String message) {
+    override boolean hasMatchingTextInputForReuse(String message) {
         val inputToReuse = getMatchingInput(message, FreeTextUserInput)
         return inputToReuse.length > 0
     }
     
-    def String handleTextInput(String message) {
+    override String handleTextInput(String message) {
         val inputToReuse = getMatchingInput(message, FreeTextUserInput)
         userInputs.remove(inputToReuse.head)
         return inputToReuse.head.text
@@ -111,48 +109,48 @@ class PredefinedInputInteractor implements InternalUserInteracting {
         return inputToReuse
     }
     
-    def boolean hasMatchingSingleSelectionInputForReuse(String message, String[] choices) {
+    override boolean hasMatchingSingleSelectionInputForReuse(String message, String[] choices) {
         val inputToReuse = getMatchingMutltipleChoiceInput(message, choices, MultipleChoiceSingleSelectionUserInput)
         return inputToReuse.length > 0
     }
     
-    def int handleSingleSelectionInput(String message, String[] choices) {
+    override int handleSingleSelectionInput(String message, String[] choices) {
         val inputToReuse = getMatchingMutltipleChoiceInput(message, choices, MultipleChoiceSingleSelectionUserInput)
         userInputs.remove(inputToReuse.head)
         return inputToReuse.head.selectedIndex
     }
     
-    def boolean hasMatchingMultiSelectionInputForReuse(String message, String[] choices) {
+    override boolean hasMatchingMultiSelectionInputForReuse(String message, String[] choices) {
         val inputToReuse = getMatchingMutltipleChoiceInput(message, choices, MultipleChoiceMultiSelectionUserInput)
         return inputToReuse.length > 0
     }
     
-    def Collection<Integer> handleMultiSelectionInput(String message, String[] choices) {
+    override Collection<Integer> handleMultiSelectionInput(String message, String[] choices) {
         val inputToReuse = getMatchingMutltipleChoiceInput(message, choices, MultipleChoiceMultiSelectionUserInput)
         userInputs.remove(inputToReuse.head)
         return inputToReuse.head.selectedIndices
     }
     
     override getShell() {
-        return null
+        return normalUserInteractor.shell
     }
     
     override getDisplay() {
-        return null
-    }
+        return normalUserInteractor.display
+    }    
 }
 
 
 class PredefinedNotificationDialogBuilder extends NotificationDialogBuilderImpl implements NormalUserInteracting<Void> {
-    private PredefinedInputInteractor interactor;
+    private PredefinedNotificationHandler notificationHandler;
     
-    new(Shell shell, Display display, PredefinedInputInteractor interactor) {
+    new(Shell shell, Display display, PredefinedNotificationHandler notificationHandler) {
         super(shell, display)
-        this.interactor = interactor
+        this.notificationHandler = notificationHandler
     }
     
     override startInteraction() {
-        if (interactor.shouldShowNotifications()) {
+        if (notificationHandler.shouldShowNotifications()) {
             super.startInteraction()
         }
     }
@@ -164,18 +162,18 @@ class PredefinedNotificationDialogBuilder extends NotificationDialogBuilderImpl 
 
 
 class PredefinedConfimrationDialogBuilder extends ConfirmationDialogBuilderImpl implements NormalUserInteracting<Boolean> {
-    private PredefinedInputInteractor interactor
+    private PredefinedConfirmationHandler confirmationHandler;
     
-    new(Shell shell, Display display, PredefinedInputInteractor interactor) {
+    new(Shell shell, Display display, PredefinedConfirmationHandler confirmationHandler) {
         super(shell, display, null) // TODO DK: make PredefinedInputInteractor implement UserInputListener and pass it along here? (=> future reuse when in reuse scenario?!)
-        this.interactor = interactor
+        this.confirmationHandler = confirmationHandler
     }
     
     override startInteraction() {
-        if (interactor.hasMatchingConfirmationInputForReuse(message)) {
-            return interactor.handleConfirmation(message)
+        if (confirmationHandler.hasMatchingConfirmationInputForReuse(message)) {
+            return confirmationHandler.handleConfirmation(message)
         } else {
-            return interactor.handleNothingPredefined(this)
+            return confirmationHandler.handleNothingPredefined(this)
         }
     }
     
@@ -186,18 +184,18 @@ class PredefinedConfimrationDialogBuilder extends ConfirmationDialogBuilderImpl 
 
 
 class PredefinedTextInputDialogBuilder extends TextInputDialogBuilderImpl implements NormalUserInteracting<String> {
-    private PredefinedInputInteractor interactor
+    private PredefinedTextInputHandler textInputHandler
     
-    new(Shell shell, Display display, PredefinedInputInteractor interactor) {
+    new(Shell shell, Display display, PredefinedTextInputHandler textInputHandler) {
         super(shell, display, null)
-        this.interactor = interactor
+        this.textInputHandler = textInputHandler
     }
     
     override startInteraction() {
-        if (interactor.hasMatchingTextInputForReuse(message)) {
-            return interactor.handleTextInput(message)
+        if (textInputHandler.hasMatchingTextInputForReuse(message)) {
+            return textInputHandler.handleTextInput(message)
         } else {
-            return interactor.handleNothingPredefined(this)
+            return textInputHandler.handleNothingPredefined(this)
         }
     }
     
@@ -209,18 +207,18 @@ class PredefinedTextInputDialogBuilder extends TextInputDialogBuilderImpl implem
 
 class PredefinedSingleSelectionDialogBuilder extends MultipleChoiceSingleSelectionDialogBuilderImpl
         implements NormalUserInteracting<Integer> {
-    private PredefinedInputInteractor interactor
+    private PredefinedSingleSelectionHandler selectionHandler
     
-    new(Shell shell, Display display, PredefinedInputInteractor interactor) {
+    new(Shell shell, Display display, PredefinedSingleSelectionHandler selectionHandler) {
         super(shell, display, null)
-        this.interactor = interactor
+        this.selectionHandler = selectionHandler
     }
     
     override startInteraction() {
-        if (interactor.hasMatchingSingleSelectionInputForReuse(message, choices)) {
-            return interactor.handleSingleSelectionInput(message, choices)
+        if (selectionHandler.hasMatchingSingleSelectionInputForReuse(message, choices)) {
+            return selectionHandler.handleSingleSelectionInput(message, choices)
         } else {
-            return interactor.handleNothingPredefined(this)
+            return selectionHandler.handleNothingPredefined(this)
         }
     }
     
@@ -232,18 +230,18 @@ class PredefinedSingleSelectionDialogBuilder extends MultipleChoiceSingleSelecti
 
 class PredefinedMultiSelectionDialogBuilder extends MultipleChoiceMultiSelectionDialogBuilderImpl
         implements NormalUserInteracting<Collection<Integer>> {
-    private PredefinedInputInteractor interactor
+    private PredefinedMultiSelectionHandler selectionHandler
     
-    new(Shell shell, Display display, PredefinedInputInteractor interactor) {
+    new(Shell shell, Display display, PredefinedMultiSelectionHandler selectionHandler) {
         super(shell, display, null)
-        this.interactor = interactor
+        this.selectionHandler = selectionHandler
     }
     
     override startInteraction() {
-        if (interactor.hasMatchingMultiSelectionInputForReuse(message, choices)) {
-            return interactor.handleMultiSelectionInput(message, choices)
+        if (selectionHandler.hasMatchingMultiSelectionInputForReuse(message, choices)) {
+            return selectionHandler.handleMultiSelectionInput(message, choices)
         } else {
-            return interactor.handleNothingPredefined(this)
+            return selectionHandler.handleNothingPredefined(this)
         }
     }
     
@@ -256,3 +254,35 @@ class PredefinedMultiSelectionDialogBuilder extends MultipleChoiceMultiSelection
 interface NormalUserInteracting<T> {
     def T startNormalInteraction()
 }
+
+interface PredefinedNotificationHandler {
+    def void handleNotification(NormalUserInteracting<Void> notificationDialogBuilder)
+    def boolean shouldShowNotifications()
+}
+
+interface PredefinedConfirmationHandler {
+    def boolean handleConfirmation(String message)
+    def boolean hasMatchingConfirmationInputForReuse(String message)
+    def <T> T handleNothingPredefined(NormalUserInteracting<T> dialogBuilder)
+}
+
+interface PredefinedTextInputHandler {
+    def String handleTextInput(String message)
+    def boolean hasMatchingTextInputForReuse(String message)
+    def <T> T handleNothingPredefined(NormalUserInteracting<T> dialogBuilder)
+}
+
+interface PredefinedSingleSelectionHandler {
+    def int handleSingleSelectionInput(String message, String[] choices)
+    def boolean hasMatchingSingleSelectionInputForReuse(String message, String[] choices)
+    def <T> T handleNothingPredefined(NormalUserInteracting<T> dialogBuilder)
+}
+
+interface PredefinedMultiSelectionHandler {
+    def Collection<Integer> handleMultiSelectionInput(String message, String[] choices)
+    def boolean hasMatchingMultiSelectionInputForReuse(String message, String[] choices)
+    def <T> T handleNothingPredefined(NormalUserInteracting<T> dialogBuilder)
+}
+
+interface PredefinedInputHandler extends PredefinedNotificationHandler, PredefinedConfirmationHandler,
+    PredefinedTextInputHandler, PredefinedSingleSelectionHandler, PredefinedMultiSelectionHandler { }
