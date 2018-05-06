@@ -24,9 +24,16 @@ class NotificationDialogBuilderImpl extends BaseDialogBuilder<Void, OptionalStep
         super(shell, display, null) // notifications take no input, so there is no need for a UserInputListener
         title = "Notification"
     }
-    
+
+    override message(String message) {
+        setMessage(message)
+        return this
+    }
+
     override notificationType(NotificationType notificationType) {
-        this.notificationType = notificationType
+        if (notificationType !== null) {
+            this.notificationType = notificationType
+        }
         return this
     }
 
@@ -34,10 +41,5 @@ class NotificationDialogBuilderImpl extends BaseDialogBuilder<Void, OptionalStep
         dialog = new NotificationDialog(shell, windowModality, notificationType, title, message)
         openDialog()
         return null // notifications don't have any form of user input
-    }
-    
-    override message(String message) {
-        this.message = message
-        return this
     }
 }

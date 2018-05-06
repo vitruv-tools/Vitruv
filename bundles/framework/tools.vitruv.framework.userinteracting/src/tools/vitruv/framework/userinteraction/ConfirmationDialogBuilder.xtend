@@ -23,6 +23,8 @@ interface ConfirmationDialogBuilder {
      * adjustments and building the adjusted dialog ({@link ConfirmationDialog}s don't provide any adjustments that
      * aren't already defined for all types of dialogs in the {@link DialogBuilder} interface).<br>
      * This is a form of implementation of the Step Builder pattern.
+     * 
+     * @param message   The message to be set, if {@code null}, an {@link IllegalArgumentException} is thrown.
      */
     def OptionalSteps message(String message)
     

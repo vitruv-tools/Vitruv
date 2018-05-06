@@ -52,6 +52,13 @@ import org.eclipse.xtend.lib.annotations.Accessors
         userInputListener.onUserInputReceived(input)
     }
     
+    def setMessage(String message) {
+        if (message === null) {
+            throw new IllegalArgumentException("Message is null!")
+        }
+        this.message = message
+    }
+    
     protected def void openDialog() {
         display.syncExec(new Runnable() {
             override void run() {
@@ -61,27 +68,37 @@ import org.eclipse.xtend.lib.annotations.Accessors
     }
     
     override T title(String title) {
-        this.title = title
+        if (title !== null) {
+            this.title = title
+        }
         return this as T
     }
     
     override T windowModality(WindowModality windowModality) {
-        this.windowModality = windowModality
+        if (windowModality !== null) {
+            this.windowModality = windowModality
+        }
         return this as T
     }
     
     override T positiveButtonText(String text) {
-        this.positiveButtonText = text
+        if (text !== null) {
+            this.positiveButtonText = text
+        }
         return this as T
     }
     
     override T negativeButtonText(String text) {
-        this.negativeButtonText = text
+        if (text !== null) {
+            this.negativeButtonText = text
+        }
         return this as T
     }
     
     override T cancelButtonText(String text) {
-        this.cancelButtonText = text
+        if (text !== null) {
+            this.cancelButtonText = text
+        }
         return this as T
     }
 }

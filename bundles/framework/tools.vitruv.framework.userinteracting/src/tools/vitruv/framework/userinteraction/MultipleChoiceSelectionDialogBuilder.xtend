@@ -21,12 +21,17 @@ interface MultipleChoiceSelectionDialogBuilder<T> {
      * the {@link MultipleChoiceSelectionDialogBuilder} interface handed out for user interaction and returns a
      * {@link MultipleChoiceSelectionDialogBuilder.ChoicesStep} implementation to ensure that the method defined there
      * is called next, as it is also mandatory. This is a form of implementation of the Step Builder pattern.
+     * 
+     * @param message   The message to be set, if {@code null}, an {@link IllegalArgumentException} is thrown.
      */
     def ChoicesStep<T> message(String message)
     
     interface ChoicesStep<T> {
         /**
          * Sets the textual representations of the choices the user can select.
+         * 
+         * @param choices   the texts for the choices to be set. If {@code null}, an {@link IllegalArgumentException} is
+         * thrown.
          */
         def OptionalSteps<T> choices(String[] choices)
     }

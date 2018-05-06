@@ -26,12 +26,12 @@ abstract class MultipleChoiceSelectionDialogBuilderBaseImpl<T> extends BaseDialo
     override abstract T startInteraction()
     
     override message(String message) {
-        this.message = message
+        setMessage(message)
         return this
     }
     
     override choices(String[] choices) {
-        if (choices.length < 2) {
+        if (choices === null || choices.length < 2) {
             throw new IllegalArgumentException("Provide at least two choices to pick from.")
         }
         if (choices.length == 2) {

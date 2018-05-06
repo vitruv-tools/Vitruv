@@ -23,27 +23,42 @@ package tools.vitruv.framework.userinteraction
 interface DialogBuilder<V, T extends DialogBuilder<V, T>> {
     
     /**
-     * Sets the title of the dialog.
+     * Sets the title of the dialog, defaults to "Unspecified Title".
+     * 
+     * @param title The title to be set, if {@code null}, nothing happens.
+     * @return a matching DialogBuilder implementation for method chaining.
      */
     def T title(String title)
     
     /**
      * Sets the dialog window's modality, defaults to {@link WindowModality.MODELESS}.
+     * 
+     * @param windowModality    The modality of the window to be set, if {@code null}, nothing happens.
+     * @return a matching DialogBuilder implementation for method chaining.
      */
     def T windowModality(WindowModality windowModality)
     
     /**
      * Sets the text on the positive button, defaults to {@code "Yes"}.
+     * 
+     * @param text  The text to be set, if {@code null}, nothing happens.
+     * @return a matching DialogBuilder implementation for method chaining.
      */
     def T positiveButtonText(String text)
     
     /**
      * Sets the text on the negative button, defaults to {@code "No"}.
+     * 
+     * @param text  The text to be set, if {@code null}, nothing happens.
+     * @return a matching DialogBuilder implementation for method chaining.
      */
     def T negativeButtonText(String text)
     
     /**
      * Sets the text on the cancel button, defaults to {@code "Cancel"}.
+     * 
+     * @param text  The text to be set, if {@code null}, nothing happens.
+     * @return a matching DialogBuilder implementation for method chaining.
      */
     def T cancelButtonText(String text)
 

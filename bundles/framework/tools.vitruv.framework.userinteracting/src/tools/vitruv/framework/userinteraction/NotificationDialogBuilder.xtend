@@ -19,6 +19,8 @@ interface NotificationDialogBuilder {
      * interface handed out for user interaction and returns a {@link NotificationDialogBuilder.OptionalSteps}
      * implementation to allow for further adjustments and building the adjusted dialog. This is a form of
      * implementation of the Step Builder pattern.
+     * 
+     * @param message   The message to be set, if {@code null}, an {@link IllegalArgumentException} is thrown.
      */
     def OptionalSteps message(String message)
     
@@ -32,6 +34,8 @@ interface NotificationDialogBuilder {
          * task bar entry. Can be one of Information, Warning or Error, defaults to Information.<br>
          * For a question dialog, see
          * {@link tools.vitruv.framework.userinteraction.impl.ConfirmationDialog ConfirmationDialog}.
+         * 
+         * @param type   The notification type to be set, if {@code null}, nothing happens.
          */
         def OptionalSteps notificationType(NotificationType type)
     }

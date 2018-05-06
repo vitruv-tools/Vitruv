@@ -34,25 +34,31 @@ class TextInputDialogBuilderImpl extends BaseDialogBuilder<String, OptionalSteps
     }
     
     override message(String message) {
-        this.message = message
+        setMessage(message)
         return this
     }
     
     override inputValidator(InputValidator inputValidator) {
-        this.inputValidator = inputValidator
+        if (inputValidator !== null) {
+            this.inputValidator = inputValidator
+        }
         return this
     }
     
     override inputValidator(Function<String, Boolean> validatorFunction, String invalidInputMessage) {
-        this.inputValidator = new InputValidator() {
-            override getInvalidInputMessage(String input) { invalidInputMessage }
-            override isInputValid(String input) { validatorFunction.apply(input) }
+        if (validatorFunction !== null && invalidInputMessage !== null) {
+            this.inputValidator = new InputValidator() {
+                override getInvalidInputMessage(String input) { invalidInputMessage }
+                override isInputValid(String input) { validatorFunction.apply(input) }
+            }
         }
         return this
     }
     
     override inputFieldType(InputFieldType inputFieldType) {
-        this.inputFieldType = inputFieldType
+        if (inputFieldType !== null) {
+            this.inputFieldType = inputFieldType
+        }
         return this
     }
 

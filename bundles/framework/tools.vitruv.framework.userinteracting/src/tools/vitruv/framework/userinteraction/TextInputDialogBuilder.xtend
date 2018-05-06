@@ -22,6 +22,8 @@ interface TextInputDialogBuilder {
      * interface handed out for user interaction and returns a {@link TextInputDialogBuilder.OptionalSteps}
      * implementation to allow for further adjustments and building the adjusted dialog. This is a form of
      * implementation of the Step Builder pattern.
+     * 
+     * @param message   The message to be set, if {@code null}, an {@link IllegalArgumentException} is thrown.
      */
     def OptionalSteps message(String message)
     
@@ -34,6 +36,8 @@ interface TextInputDialogBuilder {
          * Adds an input validator used to restrict the input to Strings conforming to the validator's
          * {@link InputValidator#isInputValid(String) isInputValid} method.<br>
          * The default input validator accepts all input.
+         * 
+         * @param inputValidator    The input validator to be set, if {@code null}, nothing happens.
          */
         def OptionalSteps inputValidator(InputValidator inputValidator)
         
@@ -46,6 +50,8 @@ interface TextInputDialogBuilder {
         
         /**
          * Sets the input field to be single-line or multi-line. Defaults to {@link InputFieldType#SINGLE_LINE}.
+         * 
+         * @param inputFieldType   The type of input field to be set, if {@code null}, nothing happens.
          */
         def OptionalSteps inputFieldType(InputFieldType inputFieldType)
     }

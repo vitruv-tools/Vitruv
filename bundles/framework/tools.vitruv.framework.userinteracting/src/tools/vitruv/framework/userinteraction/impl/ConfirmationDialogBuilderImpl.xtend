@@ -30,7 +30,7 @@ class ConfirmationDialogBuilderImpl extends BaseDialogBuilder<Boolean, OptionalS
     }
     
     override message(String message) {
-        this.message = message
+        setMessage(message)
         return this
     }
 
