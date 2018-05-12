@@ -41,6 +41,10 @@ public class TestUserInteractor extends PredefinedInputInteractor {
         this.waitTimeRange = maxWaittime - minWaittime;
         this.random = new Random();
     }
+    
+    public TestUserInteractor() {
+    	this(-1, -1);
+    }
 	
 	@Override
 	public <T> T handleNothingPredefined(NormalUserInteractor<T> dialogBuilder) {
