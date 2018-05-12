@@ -5,7 +5,7 @@ import org.eclipse.xtext.common.types.JvmFormalParameter
 import org.eclipse.emf.ecore.EObject
 import java.util.ArrayList
 import org.eclipse.xtext.common.types.JvmTypeReference
-import tools.vitruv.framework.userinteraction.UserInteracting
+import tools.vitruv.framework.userinteraction.UserInteractor
 import tools.vitruv.dsls.mirbase.mirBase.NamedJavaElement
 import tools.vitruv.extensions.dslsruntime.reactions.ReactionExecutionState
 import org.eclipse.emf.ecore.EClass
@@ -43,8 +43,8 @@ class ParameterGenerator {
 		return generateParameter(parameterContext, REACTION_EXECUTION_STATE_PARAMETER_NAME, ReactionExecutionState);
 	}
 	
-	public def JvmFormalParameter generateUserInteractingParameter(EObject parameterContext) {
-		return generateParameter(parameterContext, USER_INTERACTING_PARAMETER_NAME, UserInteracting);
+	public def JvmFormalParameter generateUserInteractorParameter(EObject parameterContext) {
+		return generateParameter(parameterContext, USER_INTERACTING_PARAMETER_NAME, UserInteractor);
 	}
 	
 	public def generateParameter(EObject context, String parameterName, JvmTypeReference parameterType) {
