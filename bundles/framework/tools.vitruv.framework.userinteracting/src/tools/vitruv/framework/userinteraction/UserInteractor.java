@@ -10,7 +10,7 @@ import tools.vitruv.framework.userinteraction.impl.TextInputDialog.InputValidato
  * 
  * @author Dominik Klooz
  */
-public interface UserInteracting {
+public interface UserInteractor {
 	
 	/**
 	 * @return a {@link NotificationDialogBuilder} used to configure, build and show notification dialogs to inform the

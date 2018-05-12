@@ -6,28 +6,30 @@ import org.eclipse.swt.widgets.Shell
 import org.eclipse.swt.widgets.Display
 
 /**
- * Internal version of the {@link UserInteracting} interface used to separate methods for internal "bookkeeping" from
+ * Internal version of the {@link UserInteractor} interface used to separate methods for internal "bookkeeping" from
  * methods for actual user interaction.
  */
-interface InternalUserInteracting extends UserInteracting {
+interface InternalUserInteractor extends UserInteractor {
     
     /**
      * @return all user inputs made after the last call to {@link #resetUserInputs resetUserInputs()}.
      */
-    def Collection<UserInputBase> getUserInputs();
+    def Collection<UserInputBase> getUserInputs()
     
     /**
      * Clears all recorded user inputs.
      */
-    def void resetUserInputs();
+    def void resetUserInputs()
     
     /**
      * Get the shell used by the dialogs.
      */
-    def Shell getShell();
+    def Shell getShell()
     
     /**
      * Get the display used by the dialogs.
      */
-    def Display getDisplay();
+    def Display getDisplay()
+    
+    def void registerUserInputListener(UserInputListener listener)
 }

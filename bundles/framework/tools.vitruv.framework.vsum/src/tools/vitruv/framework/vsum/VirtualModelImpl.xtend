@@ -4,7 +4,6 @@ import tools.vitruv.framework.util.datatypes.VURI
 import org.eclipse.emf.ecore.EObject
 import java.util.concurrent.Callable
 import tools.vitruv.framework.change.description.VitruviusChange
-import tools.vitruv.framework.userinteraction.UserInteracting
 import tools.vitruv.framework.change.processing.ChangePropagationSpecificationProvider
 import tools.vitruv.framework.change.processing.ChangePropagationSpecificationRepository
 import tools.vitruv.framework.vsum.modelsynchronization.ChangePropagator
@@ -19,7 +18,8 @@ import tools.vitruv.framework.util.command.EMFCommandBridge
 import tools.vitruv.framework.vsum.repositories.ResourceRepositoryImpl
 import tools.vitruv.framework.vsum.repositories.ModelRepositoryImpl
 import tools.vitruv.framework.change.echange.EChangeIdManager
-import tools.vitruv.framework.userinteraction.InternalUserInteracting
+import tools.vitruv.framework.userinteraction.UserInteractor
+import tools.vitruv.framework.userinteraction.InternalUserInteractor
 
 class VirtualModelImpl implements InternalVirtualModel {
 	private val ResourceRepositoryImpl resourceRepository;
@@ -30,7 +30,7 @@ class VirtualModelImpl implements InternalVirtualModel {
 	private val File folder;
 	private val EChangeIdManager eChangeIdManager;
 	
-	public new(File folder, InternalUserInteracting userInteracting, VirtualModelConfiguration modelConfiguration) {
+	public new(File folder, InternalUserInteractor userInteractor, VirtualModelConfiguration modelConfiguration) {
 		this.folder = folder;
 		this.metamodelRepository = new VitruvDomainRepositoryImpl();
 		for (metamodel : modelConfiguration.metamodels) {
@@ -41,12 +41,12 @@ class VirtualModelImpl implements InternalVirtualModel {
 		this.modelRepository = new ModelRepositoryImpl(resourceRepository.uuidGeneratorAndResolver);
 		val changePropagationSpecificationRepository = new ChangePropagationSpecificationRepository();
 		for (changePropagationSpecification : modelConfiguration.changePropagationSpecifications) {
-			changePropagationSpecification.userInteracting = userInteracting;
+			changePropagationSpecification.userInteractor = userInteractor;
 			changePropagationSpecificationRepository.putChangePropagationSpecification(changePropagationSpecification)
 		}
 		this.changePropagationSpecificationProvider = changePropagationSpecificationRepository;
 		this.changePropagator = new ChangePropagatorImpl(resourceRepository, changePropagationSpecificationProvider,
-		    metamodelRepository, resourceRepository, modelRepository, userInteracting
+		    metamodelRepository, resourceRepository, modelRepository, userInteractor
 		);
 		this.eChangeIdManager = new EChangeIdManager(this.uuidGeneratorAndResolver);
 		VirtualModelManager.instance.putVirtualModel(this);
@@ -96,9 +96,9 @@ class VirtualModelImpl implements InternalVirtualModel {
 		save();
 	}
 	
-	override setUserInteractor(UserInteracting userInteractor) {
+	override setUserInteractor(UserInteractor userInteractor) {
 		for (propagationSpecification : this.changePropagationSpecificationProvider) {
-			propagationSpecification.userInteracting = userInteractor;
+			propagationSpecification.userInteractor = userInteractor;
 		}
 	}
 	

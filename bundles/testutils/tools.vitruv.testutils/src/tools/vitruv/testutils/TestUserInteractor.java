@@ -14,11 +14,11 @@ import tools.vitruv.framework.change.interaction.MultipleChoiceMultiSelectionUse
 import tools.vitruv.framework.change.interaction.MultipleChoiceSingleSelectionUserInput;
 import tools.vitruv.framework.change.interaction.UserInputBase;
 import tools.vitruv.framework.userinteraction.NotificationDialogBuilder;
-import tools.vitruv.framework.userinteraction.impl.NormalUserInteracting;
+import tools.vitruv.framework.userinteraction.impl.NormalUserInteractor;
 import tools.vitruv.framework.userinteraction.impl.PredefinedInputInteractor;
 
 /**
- * The {@link TestUserInteractor} can be used in tests to simulate UserInteracting. It has a queue
+ * The {@link TestUserInteractor} can be used in tests to simulate UserInteractor. It has a queue
  * of next selections. If the queue is empty an {@link IllegalStateException} is thrown. It also allows to simulate the
  * thinking time for a user.
  *
@@ -43,7 +43,7 @@ public class TestUserInteractor extends PredefinedInputInteractor {
     }
 	
 	@Override
-	public <T> T handleNothingPredefined(NormalUserInteracting<T> dialogBuilder) {
+	public <T> T handleNothingPredefined(NormalUserInteractor<T> dialogBuilder) {
 		throw new IllegalStateException("Missing predefined input"); // TODO DK: somehow parameterize the exception with the type of input missing?
 	}
 	

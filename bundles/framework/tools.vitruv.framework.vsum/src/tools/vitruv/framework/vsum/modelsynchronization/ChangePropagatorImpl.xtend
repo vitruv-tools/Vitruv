@@ -26,10 +26,14 @@ import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
 import tools.vitruv.framework.change.description.CompositeTransactionalChange
 import tools.vitruv.framework.correspondence.CorrespondencePackage
 import tools.vitruv.framework.change.description.ConcreteChange
-import tools.vitruv.framework.userinteraction.InternalUserInteracting
 import tools.vitruv.framework.userinteraction.impl.ReuseUserInputInteractor
+import tools.vitruv.framework.userinteraction.UserInputListener
+import tools.vitruv.framework.change.interaction.UserInputBase
+import java.util.LinkedList
+import java.util.Collection
+import tools.vitruv.framework.userinteraction.InternalUserInteractor
 
-class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserver {
+class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserver, UserInputListener {
 	static Logger logger = Logger.getLogger(ChangePropagatorImpl.getSimpleName())
 	final VitruvDomainRepository metamodelRepository;
 	final ModelRepository resourceRepository
@@ -38,11 +42,12 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 	Set<ChangePropagationListener> changePropagationListeners
 	final ModelRepositoryImpl modelRepository;
 	final List<EObject> objectsCreatedDuringPropagation;
-	final InternalUserInteracting userInteracting;
+	final InternalUserInteractor userInteractor;
+	private final Collection<UserInputBase> userInputs = new LinkedList();
 
 	new(ModelRepository resourceRepository, ChangePropagationSpecificationProvider changePropagationProvider,
 		VitruvDomainRepository metamodelRepository, CorrespondenceProviding correspondenceProviding,
-		ModelRepositoryImpl modelRepository, InternalUserInteracting userInteracting) {
+		ModelRepositoryImpl modelRepository, InternalUserInteractor userInteracting) {
 		this.resourceRepository = resourceRepository
 		this.modelRepository = modelRepository;
 		this.changePropagationProvider = changePropagationProvider
@@ -51,7 +56,8 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 		this.changePropagationListeners = new HashSet<ChangePropagationListener>()
 		this.metamodelRepository = metamodelRepository;
 		this.objectsCreatedDuringPropagation = newArrayList();
-		this.userInteracting = userInteracting;
+		this.userInteractor = userInteracting;
+		userInteracting.registerUserInputListener(this)
 	}
 
 	override void addChangePropagationListener(ChangePropagationListener propagationListener) {
@@ -137,9 +143,9 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 		TransactionalChange change,
 		ChangedResourcesTracker changedResourcesTracker
 	) {
-	    if (change.userInputs !== null) {
+	    /*if (change.userInputs !== null) {
 	       throw new Exception("Info made it here!");
-	    }
+	    }*/
 	    
 	    
 		val consequentialChanges = newArrayList();
@@ -147,14 +153,19 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 		resourceRepository.startRecording;
 		
 		// retrieve user inputs from past changes, construct a UserInteractor which tries to reuse them:
-		var userInputs = change.userInputs///userInteracting.userInputs
-		val reuseInteractor = new ReuseUserInputInteractor(userInputs, userInteracting)
+		var pastUserInputsFromChange = change.userInputs///userInteractor.userInputs
+		/*if (pastUserInputsFromChange.isEmpty) {
+		    throw new Exception("past inputs empty")
+		}*/
+		
+		val reuseInteractor = new ReuseUserInputInteractor(pastUserInputsFromChange, userInteractor)
+		reuseInteractor.registerUserInputListener(this)
 		
 		for (propagationSpecification : changePropagationProvider.
 			getChangePropagationSpecifications(change.changeDomain)) {
-			// set propagationSpecification's UserInteracting to the reuse interactor (which falls back to the standard
+			// set propagationSpecification's UserInteractor to the reuse interactor (which falls back to the standard
 			// user interactor when no matching user input is available for reuse)
-			propagationSpecification.setUserInteracting(reuseInteractor)
+			if (pastUserInputsFromChange !== null || pastUserInputsFromChange?.isEmpty()) propagationSpecification.setUserInteractor(reuseInteractor)
 			propagateChangeForChangePropagationSpecification(change, propagationSpecification, changedResourcesTracker);
 			// user interaction happens here ^
 		}
@@ -162,12 +173,12 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 		consequentialChanges += resourceRepository.endRecording();
 		consequentialChanges.forEach[logger.debug(it)];
 
-        userInputs = userInteracting.userInputs
+        //userInputs = userInputs////userInteractor.userInputs
 		val propagatedChange = new PropagatedChange(change,
 				VitruviusChangeFactory.instance.createCompositeChange(consequentialChanges), userInputs)
 		val resultingChanges = new ArrayList()
 		resultingChanges += propagatedChange
-		userInteracting.resetUserInputs
+		userInteractor.resetUserInputs
 
 		val consequentialChangesToRePropagate = propagatedChange.consequentialChanges.transactionalChangeSequence
 			.map[rewrapWithoutCorrespondenceChanges].filterNull.filter[containsConcreteChange]
@@ -264,5 +275,9 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 		this.objectsCreatedDuringPropagation += createdObject;
 		this.modelRepository.addRootElement(createdObject);
 	}
+
+    override onUserInputReceived(UserInputBase input) {
+        userInputs.add(input)
+    }
 
 }
