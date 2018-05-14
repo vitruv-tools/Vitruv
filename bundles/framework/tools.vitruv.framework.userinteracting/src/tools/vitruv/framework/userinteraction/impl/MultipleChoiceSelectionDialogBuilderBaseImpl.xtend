@@ -5,8 +5,8 @@ import org.eclipse.swt.widgets.Display
 import tools.vitruv.framework.userinteraction.MultipleChoiceSelectionDialogBuilder
 import tools.vitruv.framework.userinteraction.MultipleChoiceSelectionDialogBuilder.ChoicesStep
 import tools.vitruv.framework.userinteraction.MultipleChoiceSelectionDialogBuilder.OptionalSteps
-import tools.vitruv.framework.userinteraction.UserInputListener
 import org.eclipse.xtend.lib.annotations.Accessors
+import tools.vitruv.framework.userinteraction.UserInteractionListener
 
 /**
  * Base implementation of the dialog builder for single- and multi-select {@link MultipleChoiceDialog}s. Implementation
@@ -18,7 +18,7 @@ abstract class MultipleChoiceSelectionDialogBuilderBaseImpl<T> extends BaseDialo
         implements MultipleChoiceSelectionDialogBuilder<T>, ChoicesStep<T>, OptionalSteps<T> {
     @Accessors private String[] choices = #["unspecified"]
     
-    new(Shell shell, Display display, UserInputListener inputListener) {
+    new(Shell shell, Display display, UserInteractionListener inputListener) {
         super(shell, display, inputListener)
         title = "Please Select..."
     }

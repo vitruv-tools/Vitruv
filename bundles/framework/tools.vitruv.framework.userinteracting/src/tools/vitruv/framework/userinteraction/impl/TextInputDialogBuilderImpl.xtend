@@ -8,7 +8,7 @@ import java.util.function.Function
 import tools.vitruv.framework.userinteraction.InputFieldType
 import tools.vitruv.framework.change.interaction.impl.InteractionFactoryImpl
 import tools.vitruv.framework.userinteraction.TextInputDialogBuilder.OptionalSteps
-import tools.vitruv.framework.userinteraction.UserInputListener
+import tools.vitruv.framework.userinteraction.UserInteractionListener
 
 /**
  * Builder class for {@link TextInputDialog}s. Use the add/set... methods to specify details and then call
@@ -28,7 +28,7 @@ class TextInputDialogBuilderImpl extends BaseDialogBuilder<String, OptionalSteps
     private InputFieldType inputFieldType = InputFieldType.SINGLE_LINE
     private InputValidator inputValidator = TextInputDialog.ACCEPT_ALL_INPUT_VALIDATOR
     
-    new(Shell shell, Display display, UserInputListener inputListener) {
+    new(Shell shell, Display display, UserInteractionListener inputListener) {
         super(shell, display, inputListener)
         title = "Input Text..."
     }
@@ -65,7 +65,7 @@ class TextInputDialogBuilderImpl extends BaseDialogBuilder<String, OptionalSteps
     override def String startInteraction() {
         dialog = new TextInputDialog(shell, windowModality, title, message, inputFieldType, inputValidator)
         openDialog()
-        var userInput = InteractionFactoryImpl.eINSTANCE.createFreeTextUserInput()
+        var userInput = InteractionFactoryImpl.eINSTANCE.createFreeTextUserInteraction()
         userInput.message = message
         userInput.text = dialog.input
         notifyUserInputReceived(userInput)

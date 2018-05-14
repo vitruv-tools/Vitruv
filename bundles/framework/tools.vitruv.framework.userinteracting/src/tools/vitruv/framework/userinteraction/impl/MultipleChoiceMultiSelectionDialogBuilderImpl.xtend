@@ -6,7 +6,7 @@ import org.eclipse.swt.widgets.Display
 import tools.vitruv.framework.userinteraction.SelectionType
 import tools.vitruv.framework.change.interaction.impl.InteractionFactoryImpl
 import tools.vitruv.framework.userinteraction.MultipleChoiceMultiSelectionDialogBuilder
-import tools.vitruv.framework.userinteraction.UserInputListener
+import tools.vitruv.framework.userinteraction.UserInteractionListener
 
 /**
  * Implementation of a dialog builder for multiple choice dialogs that allow multiple items to be selected.
@@ -17,14 +17,14 @@ class MultipleChoiceMultiSelectionDialogBuilderImpl extends MultipleChoiceSelect
         implements MultipleChoiceMultiSelectionDialogBuilder {
     private MultipleChoiceSelectionDialog dialog;
     
-    new(Shell shell, Display display, UserInputListener inputListener) {
+    new(Shell shell, Display display, UserInteractionListener inputListener) {
         super(shell, display, inputListener)
     }
     
     override startInteraction() {
         dialog = new MultipleChoiceSelectionDialog(shell, windowModality, title, message, choices, SelectionType.SINGLE_SELECT)
         openDialog()
-        var userInput = InteractionFactoryImpl.eINSTANCE.createMultipleChoiceMultiSelectionUserInput()
+        var userInput = InteractionFactoryImpl.eINSTANCE.createMultipleChoiceMultiSelectionUserInteraction()
         userInput.message = message
         userInput.choices.addAll(choices)
         userInput.selectedIndices.addAll(dialog.selectedChoices)

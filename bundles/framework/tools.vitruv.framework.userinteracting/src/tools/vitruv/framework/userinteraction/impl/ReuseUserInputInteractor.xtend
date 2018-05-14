@@ -1,25 +1,25 @@
 package tools.vitruv.framework.userinteraction.impl
 
 import java.util.Collection
-import tools.vitruv.framework.change.interaction.UserInputBase
 import tools.vitruv.framework.userinteraction.InternalUserInteractor
 import org.eclipse.ui.PlatformUI
-import tools.vitruv.framework.userinteraction.UserInputListener
+import tools.vitruv.framework.userinteraction.UserInteractionListener
+import tools.vitruv.framework.change.interaction.UserInteractionBase
 
 class ReuseUserInputInteractor extends PredefinedInputInteractor {
     private ReusePredefinedInputHandler predefinedInputHandler
     
-    new(Collection<UserInputBase> userInputs, InternalUserInteractor normalUserInteractor) {
-        super(userInputs, normalUserInteractor.shell, normalUserInteractor.display ?: PlatformUI.getWorkbench().getDisplay())
+    new(Collection<UserInteractionBase> userInteractions, InternalUserInteractor normalUserInteractor) {
+        super(userInteractions, normalUserInteractor.shell, normalUserInteractor.display ?: PlatformUI.getWorkbench().getDisplay())
         predefinedInputHandler = new ReusePredefinedInputHandler()
-        predefinedInputHandler.userInputs = userInputs
+        predefinedInputHandler.userInteractions = userInteractions
     }
     
     override getPredefinedInputHandler() {
         return predefinedInputHandler
     }
     
-    override registerUserInputListener(UserInputListener listener) {
+    override registerUserInputListener(UserInteractionListener listener) {
         // do nothing, the ReuseUserInputInteractor doesn't need to register UserInputListeners.
     }
     

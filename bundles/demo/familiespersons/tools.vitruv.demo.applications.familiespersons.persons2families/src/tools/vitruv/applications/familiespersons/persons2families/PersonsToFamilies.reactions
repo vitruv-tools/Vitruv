@@ -1,8 +1,8 @@
 import edu.kit.ipd.sdq.metamodels.families.Family
 import java.util.ArrayList
 import java.util.List
-import tools.vitruv.framework.userinteraction.UserInteractionType
 import org.eclipse.emf.common.util.EList
+import tools.vitruv.framework.userinteraction.WindowModality
 
 import "edu.kit.ipd.sdq.metamodels.persons" as persons
 import "edu.kit.ipd.sdq.metamodels.families" as families
@@ -66,8 +66,8 @@ routine createMaleMemberOfFamily(persons::Male person){
 //			}
 		}
 		val String selectMsg = "Please select the family to which the person belongs."
-		val int selected = userInteracting.selectFromMessage(UserInteractionType.MODAL, selectMsg,
-			familiesNames)
+		val int selected = userInteractor.singleSelectionDialogBuilder.message(selectMsg).choices(familiesNames)
+		    .windowModality(WindowModality.MODAL).startInteraction()
 		val Family selectedFamily = collectionFamilies.get(selected)
 	
 		selectedFamily.lastName = person.fullName.split(" ").get(1)
@@ -77,7 +77,8 @@ routine createMaleMemberOfFamily(persons::Male person){
 		var List<String> collectionRoles = new ArrayList
 		collectionRoles += #["Father", "Son"]
 		val String selectMsgRoles = "Please select whether the person is a father or a son."
-		val int selectedRole = userInteracting.selectFromMessage(UserInteractionType.MODAL, selectMsgRoles, collectionRoles)
+		val int selectedRole = userInteractor.singleSelectionDialogBuilder.message(selectMsgRoles)
+		    .choices(collectionRoles).windowModality(WindowModality.MODAL).startInteraction()
 		if(selectedRole == 0){
 			selectedFamily.father = member			
 		} else {
@@ -121,8 +122,8 @@ routine createFemaleMemberOfFamily(persons::Female person){
 //			}
 		}
 		val String selectMsg = "Please select the family to which the person belongs."
-		val int selected = userInteracting.selectFromMessage(UserInteractionType.MODAL, selectMsg,
-			familiesNames)
+		val int selected = userInteractor.singleSelectionDialogBuilder.message(selectMsg)
+            .choices(familiesNames).windowModality(WindowModality.MODAL).startInteraction()
 		val Family selectedFamily = collectionFamilies.get(selected)
 	
 		selectedFamily.lastName = person.fullName.split(" ").get(1)
@@ -132,7 +133,8 @@ routine createFemaleMemberOfFamily(persons::Female person){
 		var List<String> collectionRoles = new ArrayList
 		collectionRoles += #["Mother", "Daughter"]
 		val String selectMsgRoles = "Please select whether the person is a mother or a daughter."
-		val int selectedRole = userInteracting.selectFromMessage(UserInteractionType.MODAL, selectMsgRoles, collectionRoles)
+		val int selectedRole = userInteractor.singleSelectionDialogBuilder.message(selectMsgRoles)
+            .choices(collectionRoles).windowModality(WindowModality.MODAL).startInteraction()
 		if(selectedRole == 0){
 			selectedFamily.mother = member			
 		} else {

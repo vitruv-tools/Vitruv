@@ -17,12 +17,12 @@ import tools.vitruv.framework.change.echange.eobject.EObjectExistenceEChange
 import org.eclipse.emf.ecore.InternalEObject
 import tools.vitruv.framework.uuid.UuidResolver
 import java.util.Collection
-import tools.vitruv.framework.change.interaction.UserInputBase
+import tools.vitruv.framework.change.interaction.UserInteractionBase
 
 abstract class AbstractConcreteChange implements ConcreteChange {
 	private static val logger = Logger.getLogger(AbstractConcreteChange);
 	private var EChange eChange;
-	private Collection<UserInputBase> userInputs;
+	private Collection<UserInteractionBase> userInteractions;
 	
 	new(EChange eChange) {
 		this.eChange = eChange;
@@ -83,12 +83,12 @@ abstract class AbstractConcreteChange implements ConcreteChange {
 		return affectedNotReferencedEObjects + this.eChange.referencedEObjects.filterNull
 	}
 	
-	override getUserInputs() {
-	    return userInputs
+	override getUserInteractions() {
+	    return userInteractions
 	}
 	
-	override setUserInputs(Collection<UserInputBase> userInputs) {
-        this.userInputs = userInputs
+	override setUserInteractions(Collection<UserInteractionBase> userInteractions) {
+        this.userInteractions = userInteractions
     }
 	
 	

@@ -6,7 +6,7 @@ import org.eclipse.swt.widgets.Display
 import tools.vitruv.framework.change.interaction.impl.InteractionFactoryImpl
 import tools.vitruv.framework.userinteraction.ConfirmationDialogBuilder.OptionalSteps
 import tools.vitruv.framework.userinteraction.InternalConfirmationDialogBuilder
-import tools.vitruv.framework.userinteraction.UserInputListener
+import tools.vitruv.framework.userinteraction.UserInteractionListener
 
 /**
  * Builder class for {@link ConfirmationDialog}s.
@@ -24,7 +24,7 @@ class ConfirmationDialogBuilderImpl extends BaseDialogBuilder<Boolean, OptionalS
     
     public static final String STANDARD_TITLE = "Please Confirm"
     
-    new(Shell shell, Display display, UserInputListener inputListener) {
+    new(Shell shell, Display display, UserInteractionListener inputListener) {
         super(shell, display, inputListener)
         title = STANDARD_TITLE
     }
@@ -37,7 +37,7 @@ class ConfirmationDialogBuilderImpl extends BaseDialogBuilder<Boolean, OptionalS
     override def Boolean startInteraction() {
         dialog = new ConfirmationDialog(shell, windowModality, title, message)
         openDialog()
-        var userInput = InteractionFactoryImpl.eINSTANCE.createConfirmationUserInput()
+        var userInput = InteractionFactoryImpl.eINSTANCE.createConfirmationUserInteraction()
         userInput.message = message
         userInput.confirmed = dialog.getConfirmed()
         notifyUserInputReceived(userInput)

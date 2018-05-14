@@ -4,11 +4,11 @@ import tools.vitruv.framework.util.datatypes.VURI
 import tools.vitruv.framework.change.description.TransactionalChange
 import tools.vitruv.framework.uuid.UuidResolver
 import java.util.Collection
-import tools.vitruv.framework.change.interaction.UserInputBase
+import tools.vitruv.framework.change.interaction.UserInteractionBase
 
 class EmptyChangeImpl implements TransactionalChange {
 	private val VURI vuri;
-	private Collection<UserInputBase> userInputs;
+	private Collection<UserInteractionBase> userInteractions;
 	
 	new(VURI vuri) {
 		this.vuri = vuri;
@@ -50,11 +50,11 @@ class EmptyChangeImpl implements TransactionalChange {
 		return #[]
 	}
 	
-	override getUserInputs() {
-        return userInputs
+	override getUserInteractions() {
+        return userInteractions
     }
     
-    override setUserInputs(Collection<UserInputBase> userInputs) {
-        this.userInputs = userInputs
+    override setUserInteractions(Collection<UserInteractionBase> userInteractions) {
+        this.userInteractions = userInteractions
     }
 }

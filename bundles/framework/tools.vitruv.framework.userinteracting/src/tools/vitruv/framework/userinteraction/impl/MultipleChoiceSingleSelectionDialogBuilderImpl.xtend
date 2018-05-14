@@ -6,7 +6,7 @@ import tools.vitruv.framework.change.interaction.impl.InteractionFactoryImpl
 import tools.vitruv.framework.userinteraction.DialogBuilder
 import tools.vitruv.framework.userinteraction.SelectionType
 import tools.vitruv.framework.userinteraction.MultipleChoiceSingleSelectionDialogBuilder
-import tools.vitruv.framework.userinteraction.UserInputListener
+import tools.vitruv.framework.userinteraction.UserInteractionListener
 
 /**
  * Builder class for {@link MultipleChoiceSelectionDialog}s.
@@ -21,14 +21,14 @@ class MultipleChoiceSingleSelectionDialogBuilderImpl extends MultipleChoiceSelec
         implements MultipleChoiceSingleSelectionDialogBuilder {
     private MultipleChoiceSelectionDialog dialog;
     
-    new(Shell shell, Display display, UserInputListener inputListener) {
+    new(Shell shell, Display display, UserInteractionListener inputListener) {
         super(shell, display, inputListener)
     }
     
     override startInteraction() {
         dialog = new MultipleChoiceSelectionDialog(shell, windowModality, title, message, choices, SelectionType.SINGLE_SELECT)
         openDialog()
-        var userInput = InteractionFactoryImpl.eINSTANCE.createMultipleChoiceSingleSelectionUserInput()
+        var userInput = InteractionFactoryImpl.eINSTANCE.createMultipleChoiceSingleSelectionUserInteraction()
         userInput.message = message
         userInput.choices.addAll(choices)
         userInput.selectedIndex = dialog.selectedChoices.head

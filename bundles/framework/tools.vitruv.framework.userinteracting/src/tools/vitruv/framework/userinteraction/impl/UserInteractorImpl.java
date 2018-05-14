@@ -9,28 +9,28 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
 
-import tools.vitruv.framework.change.interaction.UserInputBase;
+import tools.vitruv.framework.change.interaction.UserInteractionBase;
 import tools.vitruv.framework.userinteraction.ConfirmationDialogBuilder;
 import tools.vitruv.framework.userinteraction.InternalUserInteractor;
 import tools.vitruv.framework.userinteraction.MultipleChoiceMultiSelectionDialogBuilder;
 import tools.vitruv.framework.userinteraction.MultipleChoiceSingleSelectionDialogBuilder;
 import tools.vitruv.framework.userinteraction.NotificationDialogBuilder;
 import tools.vitruv.framework.userinteraction.TextInputDialogBuilder;
-import tools.vitruv.framework.userinteraction.UserInputListener;
+import tools.vitruv.framework.userinteraction.UserInteractionListener;
 import tools.vitruv.framework.util.bridges.EclipseUIBridge;
 
 /**
  * Implementation of the {@link InternalUserInteractor} interface providing dialog builders for different cases of user
- * interaction. Through the {@link UserInputListener}, this class keeps track of user input entered
+ * interaction. Through the {@link UserInteractionListener}, this class keeps track of user input entered
  * through any of the dialogs constructed from here to be retrieved for bookkeeping/reuse.
  * 
  * @author Dominik Klooz
  */
-public class UserInteractorImpl implements InternalUserInteractor, UserInputListener {
+public class UserInteractorImpl implements InternalUserInteractor, UserInteractionListener {
     protected Display display;
     protected Shell shell;
-    private Queue<UserInputBase> userInput = new LinkedList<>();
-    private UserInputListener userInputListener;
+    private Queue<UserInteractionBase> userInteractions = new LinkedList<>();
+    private UserInteractionListener userInputListener;
 
     public UserInteractorImpl() {
         this.init();
@@ -43,7 +43,7 @@ public class UserInteractorImpl implements InternalUserInteractor, UserInputList
     }
     
     @Override
-    public void registerUserInputListener(UserInputListener userInputListener) {
+    public void registerUserInputListener(UserInteractionListener userInputListener) {
     	this.userInputListener = userInputListener;
     }
     
@@ -79,18 +79,18 @@ public class UserInteractorImpl implements InternalUserInteractor, UserInputList
 	}
 	
 	@Override
-	public void onUserInputReceived(UserInputBase input) {
-		userInput.add(input);
+	public void onUserInteractionReceived(UserInteractionBase input) {
+		userInteractions.add(input);
 	}
 
 	@Override
-	public Collection<UserInputBase> getUserInputs() {
-		return userInput;
+	public Collection<UserInteractionBase> getUserInteractions() {
+		return userInteractions;
 	}
 	
 	@Override
-	public void resetUserInputs() {
-		userInput.clear();
+	public void resetUserInteractions() {
+		userInteractions.clear();
 	}
 
 	@Override

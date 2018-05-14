@@ -4,9 +4,9 @@ import tools.vitruv.framework.userinteraction.DialogBuilder
 import org.eclipse.swt.widgets.Shell
 import org.eclipse.swt.widgets.Display
 import tools.vitruv.framework.userinteraction.WindowModality
-import tools.vitruv.framework.change.interaction.UserInputBase
-import tools.vitruv.framework.userinteraction.UserInputListener
+import tools.vitruv.framework.change.interaction.UserInteractionBase
 import org.eclipse.xtend.lib.annotations.Accessors
+import tools.vitruv.framework.userinteraction.UserInteractionListener
 
 /**
  * Abstract base class for dialog builder objects. The dialog to be built is created and returned in createAndShow, the
@@ -34,9 +34,9 @@ import org.eclipse.xtend.lib.annotations.Accessors
     private String positiveButtonText = "Yes"
     private String negativeButtonText = "No"
     private String cancelButtonText = "Cancel"
-    @Accessors(NONE) UserInputListener userInputListener;
+    @Accessors(NONE) UserInteractionListener userInputListener;
     
-    new(Shell shell, Display display, UserInputListener inputListener) {
+    new(Shell shell, Display display, UserInteractionListener inputListener) {
         this.shell = shell
         this.display = display
         userInputListener = inputListener
@@ -48,8 +48,8 @@ import org.eclipse.xtend.lib.annotations.Accessors
      */
     override abstract V startInteraction()
     
-    def notifyUserInputReceived(UserInputBase input) {
-        userInputListener.onUserInputReceived(input)
+    def notifyUserInputReceived(UserInteractionBase input) {
+        userInputListener.onUserInteractionReceived(input)
     }
     
     def setMessage(String message) {

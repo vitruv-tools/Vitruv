@@ -27,13 +27,13 @@ import tools.vitruv.framework.change.description.CompositeTransactionalChange
 import tools.vitruv.framework.correspondence.CorrespondencePackage
 import tools.vitruv.framework.change.description.ConcreteChange
 import tools.vitruv.framework.userinteraction.impl.ReuseUserInputInteractor
-import tools.vitruv.framework.userinteraction.UserInputListener
-import tools.vitruv.framework.change.interaction.UserInputBase
 import java.util.LinkedList
 import java.util.Collection
 import tools.vitruv.framework.userinteraction.InternalUserInteractor
+import tools.vitruv.framework.userinteraction.UserInteractionListener
+import tools.vitruv.framework.change.interaction.UserInteractionBase
 
-class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserver, UserInputListener {
+class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserver, UserInteractionListener {
 	static Logger logger = Logger.getLogger(ChangePropagatorImpl.getSimpleName())
 	final VitruvDomainRepository metamodelRepository;
 	final ModelRepository resourceRepository
@@ -43,7 +43,7 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 	final ModelRepositoryImpl modelRepository;
 	final List<EObject> objectsCreatedDuringPropagation;
 	final InternalUserInteractor userInteractor;
-	private final Collection<UserInputBase> userInputs = new LinkedList();
+	private final Collection<UserInteractionBase> userInteractions = new LinkedList();
 
 	new(ModelRepository resourceRepository, ChangePropagationSpecificationProvider changePropagationProvider,
 		VitruvDomainRepository metamodelRepository, CorrespondenceProviding correspondenceProviding,
@@ -148,7 +148,7 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 		resourceRepository.startRecording;
 		
 		// retrieve user inputs from past changes, construct a UserInteractor which tries to reuse them:
-		var pastUserInputsFromChange = change.userInputs
+		var pastUserInputsFromChange = change.getUserInteractions()
 		
 		val reuseInteractor = new ReuseUserInputInteractor(pastUserInputsFromChange, userInteractor)
 		reuseInteractor.registerUserInputListener(this)
@@ -167,12 +167,12 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 		consequentialChanges += resourceRepository.endRecording();
 		consequentialChanges.forEach[logger.debug(it)];
 
-        change.userInputs = userInputs
+        change.userInteractions = userInteractions
 		val propagatedChange = new PropagatedChange(change,
-				VitruviusChangeFactory.instance.createCompositeChange(consequentialChanges), userInputs) // TODO DK: userInputs not really needed in PropagatedChange, only the contained originalChange?!
+				VitruviusChangeFactory.instance.createCompositeChange(consequentialChanges), userInteractions) // TODO DK: userInputs not really needed in PropagatedChange, only the contained originalChange?!
 		val resultingChanges = new ArrayList()
 		resultingChanges += propagatedChange
-		userInteractor.resetUserInputs
+		userInteractor.resetUserInteractions
 
 		val consequentialChangesToRePropagate = propagatedChange.consequentialChanges.transactionalChangeSequence
 			.map[rewrapWithoutCorrespondenceChanges].filterNull.filter[containsConcreteChange]
@@ -270,8 +270,8 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 		this.modelRepository.addRootElement(createdObject);
 	}
 
-    override onUserInputReceived(UserInputBase input) {
-        userInputs.add(input)
+    override onUserInteractionReceived(UserInteractionBase interaction) {
+        userInteractions.add(interaction)
     }
 
 }

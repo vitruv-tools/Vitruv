@@ -5,7 +5,6 @@ import org.eclipse.swt.widgets.Display
 import org.eclipse.swt.widgets.Shell
 import org.eclipse.ui.PlatformUI
 import org.eclipse.xtend.lib.annotations.Accessors
-import tools.vitruv.framework.change.interaction.UserInputBase
 import tools.vitruv.framework.userinteraction.InternalUserInteractor
 import tools.vitruv.framework.userinteraction.PredefinedConfirmationHandler
 import tools.vitruv.framework.userinteraction.PredefinedInputHandlerProvider
@@ -13,25 +12,26 @@ import tools.vitruv.framework.userinteraction.PredefinedMultiSelectionHandler
 import tools.vitruv.framework.userinteraction.PredefinedNotificationHandler
 import tools.vitruv.framework.userinteraction.PredefinedSingleSelectionHandler
 import tools.vitruv.framework.userinteraction.PredefinedTextInputHandler
-import tools.vitruv.framework.userinteraction.UserInputListener
+import tools.vitruv.framework.change.interaction.UserInteractionBase
+import tools.vitruv.framework.userinteraction.UserInteractionListener
 
 abstract class PredefinedInputInteractor implements InternalUserInteractor, PredefinedInputHandlerProvider {
-    @Accessors private Collection<UserInputBase> userInputs = #[]
-    @Accessors private UserInputListener userInputListener
+    @Accessors private Collection<UserInteractionBase> userInputs = #[]
+    @Accessors private UserInteractionListener userInputListener
     private Shell shell
     private Display display
     
-    new(Collection<UserInputBase> userInputs, Shell shell, Display display) {
+    new(Collection<UserInteractionBase> userInputs, Shell shell, Display display) {
         this.userInputs = userInputs
         this.shell = shell
         this.display = display
     }
     
-    override getUserInputs() {
+    override getUserInteractions() {
         return userInputs
     }
     
-    override resetUserInputs() {
+    override resetUserInteractions() {
         userInputs.clear()
     }
     

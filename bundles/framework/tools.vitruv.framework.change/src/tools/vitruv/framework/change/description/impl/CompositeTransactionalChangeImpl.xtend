@@ -5,10 +5,10 @@ import tools.vitruv.framework.change.description.TransactionalChange
 import tools.vitruv.framework.change.description.VitruviusChangeFactory
 import tools.vitruv.framework.uuid.UuidResolver
 import java.util.Collection
-import tools.vitruv.framework.change.interaction.UserInputBase
+import tools.vitruv.framework.change.interaction.UserInteractionBase
 
 class CompositeTransactionalChangeImpl extends AbstractCompositeChangeImpl<TransactionalChange> implements CompositeTransactionalChange {
-	private Collection<UserInputBase> userInputs
+	private Collection<UserInteractionBase> userInteractions
 	
 	override removeChange(TransactionalChange change) {
 		if (change !== null && this.changes.contains(change)) {
@@ -26,11 +26,11 @@ class CompositeTransactionalChangeImpl extends AbstractCompositeChangeImpl<Trans
 		}
 	}
 	
-	override getUserInputs() {
-        return userInputs
+	override getUserInteractions() {
+        return userInteractions
     }
     
-    override setUserInputs(Collection<UserInputBase> userInputs) {
-        this.userInputs = userInputs
+    override setUserInteractions(Collection<UserInteractionBase> userInteractions) {
+        this.userInteractions = userInteractions
     }
 }

@@ -11,23 +11,24 @@
   <testsDirectory xsi:nil="true"/>
   <genPackages prefix="Interaction" basePackage="tools.vitruv.framework.change" disposableProviderFactory="true"
       ecorePackage="interaction.ecore#/">
-    <genClasses ecoreClass="interaction.ecore#//FreeTextUserInput">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute interaction.ecore#//FreeTextUserInput/text"/>
+    <genClasses ecoreClass="interaction.ecore#//FreeTextUserInteraction">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute interaction.ecore#//FreeTextUserInteraction/text"/>
     </genClasses>
-    <genClasses ecoreClass="interaction.ecore#//MultipleChoiceSingleSelectionUserInput">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute interaction.ecore#//MultipleChoiceSingleSelectionUserInput/selectedIndex"/>
+    <genClasses ecoreClass="interaction.ecore#//MultipleChoiceSingleSelectionUserInteraction">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute interaction.ecore#//MultipleChoiceSingleSelectionUserInteraction/selectedIndex"/>
     </genClasses>
-    <genClasses ecoreClass="interaction.ecore#//MultipleChoiceMultiSelectionUserInput">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute interaction.ecore#//MultipleChoiceMultiSelectionUserInput/selectedIndices"/>
+    <genClasses ecoreClass="interaction.ecore#//MultipleChoiceMultiSelectionUserInteraction">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute interaction.ecore#//MultipleChoiceMultiSelectionUserInteraction/selectedIndices"/>
     </genClasses>
-    <genClasses ecoreClass="interaction.ecore#//ConfirmationUserInput">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute interaction.ecore#//ConfirmationUserInput/confirmed"/>
+    <genClasses ecoreClass="interaction.ecore#//ConfirmationUserInteraction">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute interaction.ecore#//ConfirmationUserInteraction/confirmed"/>
     </genClasses>
-    <genClasses image="false" ecoreClass="interaction.ecore#//UserInputBase">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute interaction.ecore#//UserInputBase/message"/>
+    <genClasses image="false" ecoreClass="interaction.ecore#//UserInteractionBase">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute interaction.ecore#//UserInteractionBase/message"/>
     </genClasses>
-    <genClasses image="false" ecoreClass="interaction.ecore#//MultipleChoiceSelectionInputBase">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute interaction.ecore#//MultipleChoiceSelectionInputBase/choices"/>
+    <genClasses image="false" ecoreClass="interaction.ecore#//MultipleChoiceSelectionInteractionBase">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute interaction.ecore#//MultipleChoiceSelectionInteractionBase/choices"/>
     </genClasses>
+    <genClasses ecoreClass="interaction.ecore#//NotificationUserInteraction"/>
   </genPackages>
 </genmodel:GenModel>

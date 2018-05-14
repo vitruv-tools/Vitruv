@@ -1,15 +1,15 @@
 package tools.vitruv.framework.change.description
 
 import org.eclipse.xtend.lib.annotations.Data
-import tools.vitruv.framework.change.interaction.UserInputBase
 import tools.vitruv.framework.uuid.UuidResolver
 import java.util.Collection
+import tools.vitruv.framework.change.interaction.UserInteractionBase
 
 @Data
 class PropagatedChange {
 	private val VitruviusChange originalChange;
 	private val VitruviusChange consequentialChanges;
-	private val Collection<UserInputBase> userInputDecisions;
+	private val Collection<UserInteractionBase> userInteractions;
 	
 	override toString() '''
 	Original change:
