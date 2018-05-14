@@ -47,7 +47,7 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 
 	new(ModelRepository resourceRepository, ChangePropagationSpecificationProvider changePropagationProvider,
 		VitruvDomainRepository metamodelRepository, CorrespondenceProviding correspondenceProviding,
-		ModelRepositoryImpl modelRepository, InternalUserInteractor userInteracting) {
+		ModelRepositoryImpl modelRepository, InternalUserInteractor userInteractor) {
 		this.resourceRepository = resourceRepository
 		this.modelRepository = modelRepository;
 		this.changePropagationProvider = changePropagationProvider
@@ -56,8 +56,8 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 		this.changePropagationListeners = new HashSet<ChangePropagationListener>()
 		this.metamodelRepository = metamodelRepository;
 		this.objectsCreatedDuringPropagation = newArrayList();
-		this.userInteractor = userInteracting;
-		userInteracting.registerUserInputListener(this)
+		this.userInteractor = userInteractor;
+		userInteractor.registerUserInputListener(this)
 	}
 
 	override void addChangePropagationListener(ChangePropagationListener propagationListener) {
@@ -143,29 +143,23 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 		TransactionalChange change,
 		ChangedResourcesTracker changedResourcesTracker
 	) {
-	    /*if (change.userInputs !== null) {
-	       throw new Exception("Info made it here!");
-	    }*/
-	    
-	    
 		val consequentialChanges = newArrayList();
 		//modelRepository.startRecording;
 		resourceRepository.startRecording;
 		
 		// retrieve user inputs from past changes, construct a UserInteractor which tries to reuse them:
-		var pastUserInputsFromChange = change.userInputs///userInteractor.userInputs
-		/*if (pastUserInputsFromChange.isEmpty) {
-		    throw new Exception("past inputs empty")
-		}*/
+		var pastUserInputsFromChange = change.userInputs
 		
 		val reuseInteractor = new ReuseUserInputInteractor(pastUserInputsFromChange, userInteractor)
 		reuseInteractor.registerUserInputListener(this)
 		
 		for (propagationSpecification : changePropagationProvider.
 			getChangePropagationSpecifications(change.changeDomain)) {
-			// set propagationSpecification's UserInteractor to the reuse interactor (which falls back to the standard
-			// user interactor when no matching user input is available for reuse)
-			if (pastUserInputsFromChange !== null || pastUserInputsFromChange?.isEmpty()) propagationSpecification.setUserInteractor(reuseInteractor)
+			// set propagationSpecification's UserInteractor to the reuse interactor (which falls back to the previously
+			// used user interactor when no matching user input is available for reuse) TODO DK: cleanup below:
+			if (pastUserInputsFromChange !== null) {
+			    propagationSpecification.setUserInteractor(reuseInteractor)
+			}
 			propagateChangeForChangePropagationSpecification(change, propagationSpecification, changedResourcesTracker);
 			// user interaction happens here ^
 		}
@@ -173,9 +167,9 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 		consequentialChanges += resourceRepository.endRecording();
 		consequentialChanges.forEach[logger.debug(it)];
 
-        //userInputs = userInputs////userInteractor.userInputs
+        change.userInputs = userInputs
 		val propagatedChange = new PropagatedChange(change,
-				VitruviusChangeFactory.instance.createCompositeChange(consequentialChanges), userInputs)
+				VitruviusChangeFactory.instance.createCompositeChange(consequentialChanges), userInputs) // TODO DK: userInputs not really needed in PropagatedChange, only the contained originalChange?!
 		val resultingChanges = new ArrayList()
 		resultingChanges += propagatedChange
 		userInteractor.resetUserInputs

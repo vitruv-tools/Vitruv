@@ -18,29 +18,20 @@ interface PredefinedInputHandlerProvider {
 
 interface PredefinedNotificationHandler {
     def void handleNotification(NormalUserInteractor<Void> notificationDialogBuilder)
-    def boolean shouldShowNotifications()
 }
 
 interface PredefinedConfirmationHandler {
-    def boolean handleConfirmation(String message)
-    def boolean hasMatchingConfirmationInputForReuse(String message)
-    def <T> T handleNothingPredefined(NormalUserInteractor<T> dialogBuilder)
+    def boolean handleConfirmation(String message, NormalUserInteractor<Boolean> confirmationDialogBuilder)
 }
 
 interface PredefinedTextInputHandler {
-    def String handleTextInput(String message)
-    def boolean hasMatchingTextInputForReuse(String message)
-    def <T> T handleNothingPredefined(NormalUserInteractor<T> dialogBuilder)
+    def String handleTextInput(String message, NormalUserInteractor<String> textInputDialogBuilder)
 }
 
 interface PredefinedSingleSelectionHandler {
-    def int handleSingleSelectionInput(String message, String[] choices)
-    def boolean hasMatchingSingleSelectionInputForReuse(String message, String[] choices)
-    def <T> T handleNothingPredefined(NormalUserInteractor<T> dialogBuilder)
+    def int handleSingleSelectionInput(String message, String[] choices, NormalUserInteractor<Integer> singleSelectionDialogBuilder)
 }
 
 interface PredefinedMultiSelectionHandler {
-    def Collection<Integer> handleMultiSelectionInput(String message, String[] choices)
-    def boolean hasMatchingMultiSelectionInputForReuse(String message, String[] choices)
-    def <T> T handleNothingPredefined(NormalUserInteractor<T> dialogBuilder)
+    def Collection<Integer> handleMultiSelectionInput(String message, String[] choices, NormalUserInteractor<Collection<Integer>> multiSelectionDialogBuilder)
 }
