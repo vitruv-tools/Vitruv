@@ -19,7 +19,7 @@ class PredefinedInputHandlerImpl implements PredefinedInputHandler, UserInteract
             return #[]
         }
         val inputToReuse = userInteractions.filter(type).filter[
-            input | /* TODO DK: for testing*/ input.message === null || input.message.equals(message)
+            input | !input.isSetMessage() || input.message.equals(message)
         ]
         return inputToReuse
     }
@@ -31,7 +31,7 @@ class PredefinedInputHandlerImpl implements PredefinedInputHandler, UserInteract
             return #[]
         }
         val inputToReuse = userInteractions.filter(type).filter[
-            input | input.message === null /* TODO DK: added for quick and dirty test */ || (input.message.equals(message) && input.choices.containsAll(choices)) // TODO DK: better equality comparison
+            input | !input.isSetMessage() || (input.message.equals(message) && input.choices.containsAll(choices)) // TODO DK: better equality comparison
         ]
         return inputToReuse
     }
