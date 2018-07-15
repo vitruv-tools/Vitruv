@@ -17,7 +17,7 @@ interface PredefinedInputHandlerProvider {
             
 
 interface PredefinedNotificationHandler {
-    def void handleNotification(NormalUserInteractor<Void> notificationDialogBuilder)
+    def void handleNotification(String message, NormalUserInteractor<Void> notificationDialogBuilder)
 }
 
 interface PredefinedConfirmationHandler {

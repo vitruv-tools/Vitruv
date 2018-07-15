@@ -9,7 +9,7 @@ import edu.kit.ipd.sdq.activextendannotations.Utility
 	private static val ROUTINES_FACADE_NAME = "routinesFacade";
 	public static val ROUTINES_FACADE_PARAMETER_NAME = ROUTINES_FACADE_NAME;
 	public static val ROUTINES_FACADE_FIELD_NAME = ROUTINES_FACADE_NAME;
-	private static val USER_INTERACTING_NAME = "userInteractor"; // TODO DK: should this also be changed to reflect the new naming scheme?
+	private static val USER_INTERACTING_NAME = "userInteractor";
 	public static val USER_INTERACTING_PARAMETER_NAME = USER_INTERACTING_NAME;
 	public static val USER_INTERACTING_FIELD_NAME = USER_INTERACTING_NAME;
 	private static val REACTION_EXECUTION_STATE_NAME = "reactionExecutionState";

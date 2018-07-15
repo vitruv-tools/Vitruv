@@ -78,7 +78,8 @@ class PredefinedNotificationDialogBuilder extends NotificationDialogBuilderImpl 
     }
     
     override startInteraction() {
-        //super.startInteraction() // TODO DK: sort out the handling of notifications
+        notificationHandler.handleNotification(message, this)
+        return null
     }
     
     override startNormalInteraction() {
@@ -91,7 +92,7 @@ class PredefinedConfimrationDialogBuilder extends ConfirmationDialogBuilderImpl 
     private PredefinedConfirmationHandler confirmationHandler;
     
     new(Shell shell, Display display, PredefinedConfirmationHandler confirmationHandler) {
-        super(shell, display, null) // TODO DK: make PredefinedInputInteractor implement UserInputListener and pass it along here? (=> future reuse when in reuse scenario?!)
+        super(shell, display, null)
         this.confirmationHandler = confirmationHandler
     }
     

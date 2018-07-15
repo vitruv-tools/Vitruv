@@ -12,7 +12,7 @@ import tools.vitruv.framework.change.interaction.MultipleChoiceSingleSelectionUs
 import tools.vitruv.framework.change.interaction.MultipleChoiceMultiSelectionUserInteraction
 
 class PredefinedInputHandlerImpl implements PredefinedInputHandler, UserInteractionListener {
-    @Accessors private Collection<UserInteractionBase> userInteractions = newArrayList() // TODO DK: Accessors? Delegate from Predef.UserInteractor to here?
+    @Accessors private Collection<UserInteractionBase> userInteractions = newArrayList()
     
     protected def <T extends UserInteractionBase> Iterable<T> getMatchingInput(String message, Class<T> type) {
         if (userInteractions === null) {
@@ -31,7 +31,8 @@ class PredefinedInputHandlerImpl implements PredefinedInputHandler, UserInteract
             return #[]
         }
         val inputToReuse = userInteractions.filter(type).filter[
-            input | !input.isSetMessage() || (input.message.equals(message) && input.choices.containsAll(choices)) // TODO DK: better equality comparison
+            input | !input.isSetMessage() || (input.message.equals(message) && input.choices.containsAll(choices))
+            // TODO make ^ comparison adjustable to allow reuse when only a subset of options is available when desired
         ]
         return inputToReuse
     }
@@ -40,26 +41,38 @@ class PredefinedInputHandlerImpl implements PredefinedInputHandler, UserInteract
         return dialogBuilder.startNormalInteraction()
     }
     
-    override handleNotification(NormalUserInteractor<Void> notificationDialogBuilder) { // TODO DK: revisit once UserInputs are refactored and contain a Notification... one.
-        throw new UnsupportedOperationException("TODO: auto-generated method stub")
+    override handleNotification(String message, NormalUserInteractor<Void> notificationDialogBuilder) {
+        val inputToReuseCandidates = getMatchingInput(message, ConfirmationUserInteraction)
+        if (inputToReuseCandidates.isEmpty()) {
+            handleNothingPredefined(notificationDialogBuilder)
+        }
+        val inputToReuse = inputToReuseCandidates.head // this local variable is necessary, for some reason, directly 
+        // using inputToReuseCandidates.head in the remove() call below causes a NPE
+        userInteractions.remove(inputToReuse)
     }
     
     override handleConfirmation(String message, NormalUserInteractor<Boolean> confirmationDialogBuilder) {
-        val inputToReuse = getMatchingInput(message, ConfirmationUserInteraction)
-        if (inputToReuse.isEmpty()) {
+        val inputToReuseCandidates = getMatchingInput(message, ConfirmationUserInteraction)
+        if (inputToReuseCandidates.isEmpty()) {
             return handleNothingPredefined(confirmationDialogBuilder)
         }
-        userInteractions.remove(inputToReuse.head)
-        return inputToReuse.head.confirmed
+        val inputToReuse = inputToReuseCandidates.head // this local variable is necessary, for some reason, directly 
+        // using inputToReuseCandidates.head in the remove() call below and the return statement causes a NPE
+        userInteractions.remove(inputToReuse)
+        
+        return inputToReuse.confirmed
     }
     
     override handleTextInput(String message, NormalUserInteractor<String> textInputDialogBuilder) {
-        val inputToReuse = getMatchingInput(message, FreeTextUserInteraction)
-        if (inputToReuse.isEmpty()) {
+        val inputToReuseCandidates = getMatchingInput(message, FreeTextUserInteraction)
+        if (inputToReuseCandidates.isEmpty()) {
             return handleNothingPredefined(textInputDialogBuilder)
         }
-        userInteractions.remove(inputToReuse.head)
-        return inputToReuse.head.text
+        val inputToReuse = inputToReuseCandidates.head // this local variable is necessary, for some reason, directly 
+        // using inputToReuseCandidates.head in the remove() call below and the return statement causes a NPE
+        userInteractions.remove(inputToReuse)
+        
+        return inputToReuse.text
     }
     
     override handleSingleSelectionInput(String message, String[] choices, NormalUserInteractor<Integer> singleSelectionDialogBuilder) {
@@ -67,21 +80,23 @@ class PredefinedInputHandlerImpl implements PredefinedInputHandler, UserInteract
         if (inputToReuseCandidates.isEmpty()) {
             return handleNothingPredefined(singleSelectionDialogBuilder)
         }
-        val inputToReuse = inputToReuseCandidates.head // TODO DK: WHY is it necessary, to use this extra variable ?!?
-        // (feeding inputToReuseCandidates.head to remove below and using it in the return statement causes a NPE there)
-        // TODO DK: ...also add this to the other handle-methods
+        val inputToReuse = inputToReuseCandidates.head // this local variable is necessary, for some reason, directly 
+        // using inputToReuseCandidates.head in the remove() call below and the return statement causes a NPE
         userInteractions.remove(inputToReuse)
         
         return inputToReuse.selectedIndex
     }
     
     override handleMultiSelectionInput(String message, String[] choices, NormalUserInteractor<Collection<Integer>> multiSelectionDialogBuilder) {
-        val inputToReuse = getMatchingMutltipleChoiceInput(message, choices, MultipleChoiceMultiSelectionUserInteraction)
-        if (inputToReuse.isEmpty()) {
+        val inputToReuseCandidates = getMatchingMutltipleChoiceInput(message, choices, MultipleChoiceMultiSelectionUserInteraction)
+        if (inputToReuseCandidates.isEmpty()) {
             return handleNothingPredefined(multiSelectionDialogBuilder)
         }
-        userInteractions.remove(inputToReuse.head)
-        return inputToReuse.head.selectedIndices
+        val inputToReuse = inputToReuseCandidates.head // this local variable is necessary, for some reason, directly 
+        // using inputToReuseCandidates.head in the remove() call below and the return statement causes a NPE
+        userInteractions.remove(inputToReuse)
+        
+        return inputToReuse.selectedIndices
     }
     
     override onUserInteractionReceived(UserInteractionBase interaction) {

@@ -5,6 +5,7 @@ import tools.vitruv.framework.userinteraction.NotificationType
 import org.eclipse.swt.widgets.Display
 import org.eclipse.swt.widgets.Shell
 import tools.vitruv.framework.userinteraction.NotificationDialogBuilder.OptionalSteps
+import tools.vitruv.framework.change.interaction.impl.InteractionFactoryImpl
 
 /**
  * Builder class for {@link NotificationDialog}s.
@@ -40,6 +41,11 @@ class NotificationDialogBuilderImpl extends BaseDialogBuilder<Void, OptionalStep
     override def startInteraction() {
         dialog = new NotificationDialog(shell, windowModality, notificationType, title, message)
         openDialog()
+        
+        var userInput = InteractionFactoryImpl.eINSTANCE.createNotificationUserInteraction()
+        userInput.message = message
+        notifyUserInputReceived(userInput)
+        
         return null // notifications don't have any form of user input
     }
 }

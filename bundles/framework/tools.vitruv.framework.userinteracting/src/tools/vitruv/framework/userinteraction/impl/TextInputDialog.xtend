@@ -158,22 +158,6 @@ class TextInputDialog extends BaseDialog {
 		close()
 	}
 	
-	// TODO DK: remove, only here for quick testing
-	def static void main(String[] args) {
-		val display = new Display()
-		val shell = new Shell(display)
-		
-	    val validator = [ String text | text.matches("[a-zA-Z]*") ]
-	    val invalidMessage = "Only letters allowed"
-	    val dialog = new TextInputDialog(shell, WindowModality.MODAL, "Test Title",
-	    	"Test Message which is a whole lot longer than the last one.", InputFieldType.MULTI_LINE, validator,
-	    	invalidMessage)
-		dialog.blockOnOpen = true
-		dialog.show()
-		System.out.println(dialog.getInput())
-		display.dispose()
-	}
-	
 	
 	/**
 	 * Interface for input validators used in {@link TextInputDialog}s. The {@link #isInputValid(String) isInputValid}

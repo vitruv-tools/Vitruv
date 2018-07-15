@@ -156,7 +156,7 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 		for (propagationSpecification : changePropagationProvider.
 			getChangePropagationSpecifications(change.changeDomain)) {
 			// set propagationSpecification's UserInteractor to the reuse interactor (which falls back to the previously
-			// used user interactor when no matching user input is available for reuse) TODO DK: cleanup below:
+			// used user interactor when no matching user input is available for reuse)
 			if (pastUserInputsFromChange !== null) {
 			    propagationSpecification.setUserInteractor(reuseInteractor)
 			}
@@ -169,7 +169,7 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 
         change.userInteractions = userInteractions
 		val propagatedChange = new PropagatedChange(change,
-				VitruviusChangeFactory.instance.createCompositeChange(consequentialChanges), userInteractions) // TODO DK: userInputs not really needed in PropagatedChange, only the contained originalChange?!
+				VitruviusChangeFactory.instance.createCompositeChange(consequentialChanges))
 		val resultingChanges = new ArrayList()
 		resultingChanges += propagatedChange
 		userInteractor.resetUserInteractions

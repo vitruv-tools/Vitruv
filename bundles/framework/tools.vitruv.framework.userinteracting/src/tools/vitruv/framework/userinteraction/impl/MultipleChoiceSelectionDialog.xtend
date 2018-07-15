@@ -91,17 +91,4 @@ class MultipleChoiceSelectionDialog extends BaseDialog {
     override cancelPressed() {
     	close()
     }
-    
-    // TODO DK: remove, only here for quick testing
-    def static void main(String[] args) {
-		val display = new Display()
-		val shell = new Shell(display)
-		
-	    val dialog = new MultipleChoiceSelectionDialog(shell, WindowModality.MODAL, "Test Title",
-	    	"Test Message which is a whole lot longer than the last one.", #["AAAAAA", "B", "C"], SelectionType.SINGLE_SELECT)
-		dialog.blockOnOpen = true
-		dialog.show()
-		System.out.println(dialog.getSelectedChoices.join(", "))
-		display.dispose()
-	}
 }

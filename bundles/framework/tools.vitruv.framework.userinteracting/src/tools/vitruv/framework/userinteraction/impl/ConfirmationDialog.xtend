@@ -78,15 +78,4 @@ class ConfirmationDialog extends BaseDialog {
     def boolean getConfirmed() {
     	return confirmed
     }
-    
-    // TODO DK: remove, only here for quick testing
-    def static void main(String[] args) {
-		val display = Display.^default
-		val shell = new Shell(display)
-		val dialog = new ConfirmationDialog(shell, WindowModality.MODAL, "Title", "Really?")
-		//dialog.blockOnOpen = true
-		dialog.show()
-		display.dispose()
-	}
-	
 }

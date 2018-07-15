@@ -21,27 +21,10 @@ import tools.vitruv.framework.userinteraction.WindowModality
 class NotificationDialog extends BaseDialog {
 	private NotificationType notificationType = NotificationType.INFORMATION
 	
-	// TODO DK: constructor overloads still necessary after dialog builder restructuring?
 	new(Shell parentShell, WindowModality modality, NotificationType type, String title, String message) {
 		super(parentShell, modality, title, message)
 		this.notificationType = type
 		setPositiveButtonText("Okay")
-	}
-	
-	new(Shell parentShell, WindowModality modality, String title, String message) {
-		this(parentShell, modality, NotificationType.INFORMATION, title, message)
-	}
-	
-	new(Shell parentShell, String title, String message) {
-		this(parentShell, WindowModality.MODAL, title, message)
-	}
-	
-	new(Shell parentShell, WindowModality modality, String message) {
-		this(parentShell, modality, "Information", message)
-	}
-	
-	new(Shell parentShell, String message) {
-		this(parentShell, WindowModality.MODAL, "Information", message)
 	}
 	
 	def NotificationType getNotificationType() { notificationType }
@@ -91,25 +74,4 @@ class NotificationDialog extends BaseDialog {
     protected override void createButtonsForButtonBar(Composite parent) {
         createButton(parent, IDialogConstants.OK_ID, getPositiveButtonText(), true)
     }
-    
-    // TODO DK: remove, only here for quick testing
-    def static void main(String[] args) {
-		val display = new Display()
-		val shell = new Shell(display)
-		
-		shell.setText("Title Area Shell")
-	    shell.pack()
-	    val dialog = new NotificationDialog(shell, WindowModality.MODAL, NotificationType.INFORMATION, "Test Title", "Test Message which is a whole lot longer than the last one.")
-		//dialog.positiveButtonText = "Copy That"
-		dialog.blockOnOpen = true
-		dialog.show()//open();
-		display.dispose()
-		
-		/*while (!shell.isDisposed()) {
-		      if (!display.readAndDispatch())
-		        display.sleep()
-		}
-		
-		display.dispose()*/
-	}
 }

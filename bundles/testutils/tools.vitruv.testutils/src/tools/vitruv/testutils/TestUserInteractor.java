@@ -138,12 +138,12 @@ class PredefinedTestInputHandler extends PredefinedInputHandlerImpl {
     
     public void addNextUriSelection(final URI nextSelection) {
         /*this.uriQueue.clear();
-        this.uriQueue.addAll(Arrays.asList(nextSelections));*/ // TODO DK
+        this.uriQueue.addAll(Arrays.asList(nextSelections));*/ // TODO DK: URI stuff
     }
 	
 	@Override
 	public <T> T handleNothingPredefined(NormalUserInteractor<T> dialogBuilder) {
-		throw new IllegalStateException("Missing predefined input"); // TODO DK: somehow parameterize the exception with the type of input missing?
+		throw new IllegalStateException("Missing predefined input");
 	}
     
     @Override
