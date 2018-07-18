@@ -31,7 +31,12 @@
 			<id>Eclipse Oxygen</id>
 			<layout>p2</layout>
 			<!--<url>http://download.eclipse.org/releases/oxygen</url>-->
-			<url>https://sdqbuild.ipd.kit.edu/nexus/content/repositories/eclipse-oxygen-complete/</url>
+			<url>http://ftp-stud.hs-esslingen.de/pub/Mirrors/eclipse/releases/oxygen</url>
+		</repository>
+		<repository>
+			<id>Eclipse Oxygen Updates</id>
+			<layout>p2</layout>
+			<url>http://download.eclipse.org/eclipse/updates/4.7</url>
 		</repository>
 		<repository>
 			<id>SDQ Commons</id>
