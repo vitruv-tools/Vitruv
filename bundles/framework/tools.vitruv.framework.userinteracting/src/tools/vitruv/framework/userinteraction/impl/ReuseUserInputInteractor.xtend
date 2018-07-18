@@ -10,7 +10,7 @@ class ReuseUserInputInteractor extends PredefinedInputInteractor {
     private ReusePredefinedInputHandler predefinedInputHandler
     
     new(Collection<UserInteractionBase> userInteractions, InternalUserInteractor normalUserInteractor) {
-        super(userInteractions, normalUserInteractor.shell, normalUserInteractor.display ?: PlatformUI.getWorkbench().getDisplay())
+        super(userInteractions, normalUserInteractor.shell, normalUserInteractor.display ?: if (PlatformUI.workbenchRunning) PlatformUI.getWorkbench().getDisplay() else PlatformUI.createDisplay()) // TODO DK: workbench has not been created yet!
         predefinedInputHandler = new ReusePredefinedInputHandler()
         predefinedInputHandler.userInteractions = userInteractions
     }
