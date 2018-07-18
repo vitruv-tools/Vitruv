@@ -14,4 +14,6 @@ interface InternalVirtualModel extends VirtualModel {
 	def void executeCommand(Callable<Void> command);
 	def void addChangePropagationListener(ChangePropagationListener propagationListener);
 	def void setUserInteractor(UserInteractor userInteractor);
+	def void addPropagatedChangeListener(PropagatedChangeListener propagatedChangeListener);
+	def void removePropagatedChangeListener(PropagatedChangeListener propagatedChangeListener);
 }

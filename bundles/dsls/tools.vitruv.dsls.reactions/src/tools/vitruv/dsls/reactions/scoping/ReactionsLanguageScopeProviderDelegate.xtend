@@ -33,7 +33,7 @@ import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsImport
 import tools.vitruv.dsls.reactions.reactionsLanguage.RoutineOverrideImportPath
 import static extension tools.vitruv.dsls.reactions.util.ReactionsLanguageUtil.*
 import static extension tools.vitruv.dsls.reactions.codegen.helper.ReactionsImportsHelper.*
-
+import tools.vitruv.dsls.reactions.reactionsLanguage.ModelElementChange
 
 class ReactionsLanguageScopeProviderDelegate extends MirBaseScopeProviderDelegate {
 
@@ -47,7 +47,11 @@ class ReactionsLanguageScopeProviderDelegate extends MirBaseScopeProviderDelegat
 			return createEStructuralFeatureScope(context as MetaclassFeatureReference)
 		else if (reference.equals(METACLASS_REFERENCE__METACLASS)) {
 			val contextContainer = context.eContainer();
-			if (context instanceof CreateModelElement) {
+			if (context instanceof ModelElementChange) {
+				return createQualifiedEClassScopeWithEObject(context.elementType?.metamodel);
+			} else if (contextContainer instanceof ModelElementChange) {
+				return createQualifiedEClassScopeWithoutAbstract(contextContainer.elementType?.metamodel);
+			} else if (context instanceof CreateModelElement) {
 				return createQualifiedEClassScopeWithoutAbstract(context.metamodel);
 			} else if (contextContainer instanceof CreateModelElement) {
 				return createQualifiedEClassScopeWithoutAbstract(contextContainer.metamodel);

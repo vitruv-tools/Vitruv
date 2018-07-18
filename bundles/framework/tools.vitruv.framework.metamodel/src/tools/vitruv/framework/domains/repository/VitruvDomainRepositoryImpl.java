@@ -72,6 +72,16 @@ public class VitruvDomainRepositoryImpl implements VitruvDomainRepository {
 		}
 		throw new IllegalStateException("No domain for given object <" + object + "> registered");
 	}
+	
+	@Override
+	public boolean hasDomain(EObject object) {
+		for (VitruvDomain domain : uri2MetamodelMap.values()) {
+			if (domain.isInstanceOfDomainMetamodel(object)) {
+				return true;
+			}
+		}
+		return false;
+	}
 
 	@Override
 	public VitruvDomain getDomain(Tuid tuid) {

@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+
+   <extension
+         point="org.eclipse.ui.commands">
+      <category
+            name="Sample Category"
+            id="tools.vitruv.extensions.changevisualization.commands.category">
+      </category>
+      <command
+            name="Enable change visualization"
+            categoryId="tools.vitruv.extensions.changevisualization.commands.category"
+            id="tools.vitruv.extensions.changevisualization.commands.sampleCommand">
+      </command>
+   </extension>
+   <extension
+         point="org.eclipse.ui.handlers">
+      <handler
+            commandId="tools.vitruv.extensions.changevisualization.commands.sampleCommand"
+            class="tools.vitruv.extensions.changevisualization.handlers.ChangeVisualizationHandler">
+      </handler>
+   </extension>
+   <extension
+         point="org.eclipse.ui.bindings">
+      <key
+            commandId="tools.vitruv.extensions.changevisualization.commands.sampleCommand"
+            contextId="org.eclipse.ui.contexts.window"
+            sequence="M1+6"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration">
+      </key>
+   </extension>
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            allPopups="false"
+            locationURI="popup:org.eclipse.jdt.ui.PackageExplorer">
+         <command
+               commandId="tools.vitruv.extensions.changevisualization.commands.sampleCommand"
+               label="Toggle change visualization"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <iterate>
+                  <adapt
+                        type="org.eclipse.core.resources.IProject">
+                     <test
+                           property="org.eclipse.core.resources.open"
+                           value="open">
+                     </test>
+                  </adapt>
+               </iterate>
+            </visibleWhen>
+         </command>
+      </menuContribution>
+      <menuContribution
+            locationURI="popup:org.eclipse.sirius.ui.tools.views.model.explorer#PopupMenu">
+         <command
+               commandId="tools.vitruv.extensions.changevisualization.commands.sampleCommand"
+               label="Toggle change visualization"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <iterate>
+                  <adapt
+                        type="org.eclipse.core.resources.IProject">
+                     <test
+                           property="org.eclipse.core.resources.open"
+                           value="open">
+                     </test>
+                  </adapt>
+               </iterate>
+            </visibleWhen>
+         </command>
+      </menuContribution>
+      <menuContribution
+            locationURI="popup:org.eclipse.papyrus.views.modelexplorer">
+         <command
+               commandId="tools.vitruv.extensions.changevisualization.commands.sampleCommand"
+               label="Toggle change visualization"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <iterate>
+                  <adapt
+                        type="org.eclipse.core.resources.IProject">
+                     <test
+                           property="org.eclipse.core.resources.open"
+                           value="open">
+                     </test>
+                  </adapt>
+               </iterate>
+            </visibleWhen>
+         </command>
+      </menuContribution>
+   </extension>
+
+</plugin>

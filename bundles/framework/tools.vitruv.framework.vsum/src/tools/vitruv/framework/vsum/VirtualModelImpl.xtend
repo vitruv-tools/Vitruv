@@ -18,10 +18,15 @@ import tools.vitruv.framework.util.command.EMFCommandBridge
 import tools.vitruv.framework.vsum.repositories.ResourceRepositoryImpl
 import tools.vitruv.framework.vsum.repositories.ModelRepositoryImpl
 import tools.vitruv.framework.change.echange.EChangeIdManager
+import java.util.Vector
+import tools.vitruv.framework.vsum.helper.ChangeDomainExtractor
 import tools.vitruv.framework.userinteraction.UserInteractor
 import tools.vitruv.framework.userinteraction.InternalUserInteractor
+import java.util.Vector
+import tools.vitruv.framework.vsum.helper.ChangeDomainExtractor
 
 class VirtualModelImpl implements InternalVirtualModel {
+		
 	private val ResourceRepositoryImpl resourceRepository;
 	private val ModelRepositoryImpl modelRepository;
 	private val VitruvDomainRepository metamodelRepository;
@@ -29,6 +34,13 @@ class VirtualModelImpl implements InternalVirtualModel {
 	private val ChangePropagationSpecificationProvider changePropagationSpecificationProvider;
 	private val File folder;
 	private val EChangeIdManager eChangeIdManager;
+	private val extension ChangeDomainExtractor changeDomainExtractor;
+	
+	/**
+	 * A list of {@link PropagatedChangeListener}s that are informed of all changes made
+	 */
+	private val List<PropagatedChangeListener> propagatedChangeListeners;
+	
 	
 	public new(File folder, InternalUserInteractor userInteractor, VirtualModelConfiguration modelConfiguration) {
 		this.folder = folder;
@@ -50,6 +62,9 @@ class VirtualModelImpl implements InternalVirtualModel {
 		);
 		this.eChangeIdManager = new EChangeIdManager(this.uuidGeneratorAndResolver);
 		VirtualModelManager.instance.putVirtualModel(this);
+		
+		this.propagatedChangeListeners = new Vector<PropagatedChangeListener>();
+		this.changeDomainExtractor = new ChangeDomainExtractor(metamodelRepository);
 	}
 	
 	override getCorrespondenceModel() {
@@ -80,6 +95,7 @@ class VirtualModelImpl implements InternalVirtualModel {
 		change.unresolveIfApplicable
 		// Save is done by the change propagator because it has to be performed before finishing sync
 		val result = changePropagator.propagateChange(change);
+		informPropagatedChangeListeners(result);
 		return result;
 	}
 	
@@ -109,5 +125,56 @@ class VirtualModelImpl implements InternalVirtualModel {
 	override getUuidGeneratorAndResolver() {
 		return resourceRepository.uuidGeneratorAndResolver
 	}
+	
+	/**
+	 * Registers a given {@link PropagatedChangeListener}.
+	 * 
+	 * @param propagatedChangeListener The listener to register
+	 */
+	override void addPropagatedChangeListener(PropagatedChangeListener propagatedChangeListener) {
+		this.propagatedChangeListeners.add(propagatedChangeListener);				
+	}
+	
+	/**
+	 * Removes a given {@link PropagatedChangeListener}. 
+	 * Does nothing if the listener was not registered before.
+	 * 
+	 * @param propagatedChangeListener The listener to remove
+	 */
+	override void removePropagatedChangeListener(PropagatedChangeListener propagatedChangeListener) {
+		this.propagatedChangeListeners.remove(propagatedChangeListener);				
+	}
+	
+	/**
+	 * This method informs the registered {@link PropagatedChangeListener}s of the propagation result.
+	 * 
+	 * @param propagationResult The propagation result
+	 */
+	def private void informPropagatedChangeListeners(List<PropagatedChange> propagationResult) {
+		if (this.propagatedChangeListeners.isEmpty()) {
+			return;
+		}
+		val sourceDomain = getSourceDomain(propagationResult);
+		val targetDomain = getTargetDomain(propagationResult);
+		for (PropagatedChangeListener propagatedChangeListener : this.propagatedChangeListeners) {					
+			propagatedChangeListener.postChanges(name, sourceDomain, targetDomain, propagationResult);
+		}
+	}
+	
+	/**
+	 * Returns the name of the virtual model.
+	 * 
+	 * @return The name of the virtual model
+	 */
+	def getName() {
+		val name = this.getFolder.getName;
+		// Special treatment in JUnit tests: they use a folder named name_vsum_...
+		val separator = "_vsum";
+		if (name.indexOf(separator) != -1){			
+			return name.substring(0, name.indexOf(separator))
+		} else {
+			return name
+		}
+	}	
 	
 }
