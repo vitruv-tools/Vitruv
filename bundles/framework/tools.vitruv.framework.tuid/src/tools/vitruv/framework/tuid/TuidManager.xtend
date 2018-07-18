@@ -76,7 +76,7 @@ final class TuidManager {
 	}
 	
 	def public registerObjectUnderModification(EObject objectUnderModification) {
-		if (objectUnderModification.hasTuidCalculator) {
+		if (objectUnderModification.hasTuidCalculator && !tuidUpdateCache.containsKey(objectUnderModification)) {
 			tuidUpdateCache.put(objectUnderModification, objectUnderModification.calculateTuid);
 		}
 	}
