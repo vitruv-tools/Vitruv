@@ -36,8 +36,7 @@ public class UserInteractorImpl implements InternalUserInteractor, UserInteracti
 
     public void init() {
         this.display = PlatformUI.getWorkbench().getDisplay();
-        this.shell = null; /* TODO DK: setting the shell to null makes dialogs have their own task bar entry, but
-        prevents the window modality flags from having any effect. */
+        this.shell = display.getActiveShell();
     }
     
     @Override

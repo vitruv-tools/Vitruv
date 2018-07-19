@@ -23,7 +23,11 @@ abstract class BaseDialog extends Dialog {
 	private WindowModality windowModality
 	
 	new(Shell parentShell, WindowModality windowModality, String title, String message) {
-		super(parentShell)//null as Shell)
+		super(if (windowModality == WindowModality.MODAL) parentShell else null) // if modal, use the shell passed in,
+		// which should be the one used by the running Eclipse instance thus enabling the dialog to correctly reflect
+		// modal behavior. If not, pass null as Shell instead, which makes it so dialogs have their own taskbar entry
+		// and can't get "lost" behind the main Eclipse window (without this, modeless dialogs share the taskbar entry
+		// with the Eclipse instance, so once they're in the background, it's very easy to loose track of them).
 		this.windowModality = windowModality
 		this.title = title
 		this.message = message
@@ -64,11 +68,13 @@ abstract class BaseDialog extends Dialog {
 	}
 	
 	private def updateWindowModality() {
-	    /* TODO DK: in order for SWT.APPLICATION_MODAL hint to correctly work and make the dialog modal, the shell passed
-	    to UserInteractor and ultimately to the dialog would have to be the one used by the workbench */
-		shellStyle = shellStyle.bitwiseOr(SWT.APPLICATION_MODAL)
+	    if (windowModality == WindowModality.MODAL) {
+		  shellStyle = shellStyle.bitwiseOr(SWT.APPLICATION_MODAL)
+		  blockOnOpen = true
+		}
 		if (windowModality == WindowModality.MODELESS) {
 			shellStyle = shellStyle.bitwiseOr(SWT.MODELESS.bitwiseOr(SWT.APPLICATION_MODAL.bitwiseNot))
+			blockOnOpen = false
 		}
 	}
 	
