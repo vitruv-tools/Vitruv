@@ -30,6 +30,7 @@
         <features name="org.eclipse.emf.ecore.edit.feature.group" versionRange="2.9.0"/>
         <features name="org.eclipse.emf.transaction.feature.group" versionRange="1.10.0"/>
         <features name="org.eclipse.xtend.sdk.feature.group" versionRange="2.12.0"/>
+        <features name="org.eclipse.emf.ecore.feature.group" versionRange="2.12.0"/>
       </repositories>
     </contributions>
   </validationSets>
