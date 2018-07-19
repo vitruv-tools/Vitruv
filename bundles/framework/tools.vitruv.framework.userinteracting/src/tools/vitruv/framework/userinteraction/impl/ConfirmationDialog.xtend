@@ -10,7 +10,6 @@ import org.eclipse.swt.widgets.Label
 import org.eclipse.swt.SWT
 import org.eclipse.swt.layout.GridData
 import org.eclipse.jface.dialogs.IDialogConstants
-import org.eclipse.swt.widgets.Display
 import org.eclipse.swt.graphics.Point
 
 /**

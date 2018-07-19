@@ -13,7 +13,6 @@ import org.eclipse.swt.layout.GridData
 import org.eclipse.swt.widgets.Group
 import org.eclipse.swt.layout.RowLayout
 import org.eclipse.swt.widgets.Button
-import org.eclipse.swt.widgets.Display
 import java.util.Collection
 import java.util.ArrayList
 import tools.vitruv.framework.userinteraction.SelectionType

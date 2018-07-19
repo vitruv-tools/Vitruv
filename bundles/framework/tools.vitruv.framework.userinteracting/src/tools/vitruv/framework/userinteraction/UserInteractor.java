@@ -1,7 +1,5 @@
 package tools.vitruv.framework.userinteraction;
 
-import org.eclipse.emf.common.util.URI;
-
 import tools.vitruv.framework.userinteraction.impl.TextInputDialog.InputValidator;
 
 /**
@@ -42,14 +40,4 @@ public interface UserInteractor {
 	 * dialogs to prompt the user to choose from a list of choices. This one allows the user to select multiple items.
 	 */
 	MultipleChoiceMultiSelectionDialogBuilder getMultiSelectionDialogBuilder();
-
-    /**
-     * Ask for a URI.
-     *
-     * @param message
-     *            the message to display to the user.
-     * @return the URI of the resource.
-     * @author Dominik Werle
-     */
-    URI selectURI(String message);
 }

@@ -10,7 +10,6 @@ import org.eclipse.swt.widgets.Label
 import org.eclipse.swt.widgets.Shell
 import org.eclipse.swt.widgets.Text
 import tools.vitruv.framework.userinteraction.WindowModality
-import org.eclipse.swt.widgets.Display
 import org.eclipse.jface.fieldassist.ControlDecoration
 import org.eclipse.jface.fieldassist.FieldDecorationRegistry
 import org.eclipse.swt.widgets.Control

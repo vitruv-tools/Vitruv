@@ -22,8 +22,6 @@ import java.util.Vector
 import tools.vitruv.framework.vsum.helper.ChangeDomainExtractor
 import tools.vitruv.framework.userinteraction.UserInteractor
 import tools.vitruv.framework.userinteraction.InternalUserInteractor
-import java.util.Vector
-import tools.vitruv.framework.vsum.helper.ChangeDomainExtractor
 
 class VirtualModelImpl implements InternalVirtualModel {
 		

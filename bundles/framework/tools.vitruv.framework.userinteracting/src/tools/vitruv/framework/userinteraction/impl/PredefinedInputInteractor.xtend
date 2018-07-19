@@ -3,7 +3,6 @@ package tools.vitruv.framework.userinteraction.impl
 import java.util.Collection
 import org.eclipse.swt.widgets.Display
 import org.eclipse.swt.widgets.Shell
-import org.eclipse.ui.PlatformUI
 import org.eclipse.xtend.lib.annotations.Accessors
 import tools.vitruv.framework.userinteraction.InternalUserInteractor
 import tools.vitruv.framework.userinteraction.PredefinedConfirmationHandler
@@ -53,10 +52,6 @@ abstract class PredefinedInputInteractor implements InternalUserInteractor, Pred
     
     override getMultiSelectionDialogBuilder() {
         return new PredefinedMultiSelectionDialogBuilder(shell, display, getPredefinedInputHandler())
-    }
-    
-    override selectURI(String message) {
-        throw new UnsupportedOperationException("TODO: auto-generated method stub")
     }
     
     override getShell() {

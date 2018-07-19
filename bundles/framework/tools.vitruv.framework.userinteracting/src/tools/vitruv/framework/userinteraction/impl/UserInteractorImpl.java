@@ -4,7 +4,6 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.Queue;
 
-import org.eclipse.emf.common.util.URI;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
@@ -17,7 +16,6 @@ import tools.vitruv.framework.userinteraction.MultipleChoiceSingleSelectionDialo
 import tools.vitruv.framework.userinteraction.NotificationDialogBuilder;
 import tools.vitruv.framework.userinteraction.TextInputDialogBuilder;
 import tools.vitruv.framework.userinteraction.UserInteractionListener;
-import tools.vitruv.framework.util.bridges.EclipseUIBridge;
 
 /**
  * Implementation of the {@link InternalUserInteractor} interface providing dialog builders for different cases of user
@@ -27,8 +25,8 @@ import tools.vitruv.framework.util.bridges.EclipseUIBridge;
  * @author Dominik Klooz
  */
 public class UserInteractorImpl implements InternalUserInteractor, UserInteractionListener {
-    protected Display display;
-    protected Shell shell;
+    private Display display;
+    private Shell shell;
     private Queue<UserInteractionBase> userInteractions = new LinkedList<>();
     private UserInteractionListener userInputListener;
 
@@ -70,12 +68,6 @@ public class UserInteractorImpl implements InternalUserInteractor, UserInteracti
 	@Override
 	public MultipleChoiceMultiSelectionDialogBuilder getMultiSelectionDialogBuilder() {
 		return new MultipleChoiceMultiSelectionDialogBuilderImpl(shell, display, userInputListener);
-	}
-
-	// TODO DK: still needed/used?
-	@Override
-	public URI selectURI(String message) {
-		return EclipseUIBridge.askForNewResource(message);
 	}
 	
 	@Override

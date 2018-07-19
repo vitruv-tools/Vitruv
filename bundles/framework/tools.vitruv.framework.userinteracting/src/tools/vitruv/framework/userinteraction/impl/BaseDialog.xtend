@@ -55,10 +55,11 @@ abstract class BaseDialog extends Dialog {
 	 * Opens the dialog centered on the primary monitor.
 	 */
 	def show() {
-		val screenSize = parentShell.display.getPrimaryMonitor().getBounds()
-		parentShell.setLocation((screenSize.width - parentShell.getBounds().width) / 2,
-			(screenSize.height - parentShell.getBounds().height) / 2
-		)
+		if (parentShell !== null) {
+            val screenSize = parentShell.display.getPrimaryMonitor().getBounds()
+            parentShell.setLocation((screenSize.width - parentShell.getBounds().width) / 2,
+                (screenSize.height - parentShell.getBounds().height) / 2)
+        }
 		open()
 	}
 	

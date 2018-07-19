@@ -5,8 +5,6 @@ import java.util.Collection;
 import java.util.Random;
 
 import org.apache.log4j.Logger;
-import org.eclipse.emf.common.util.URI;
-import org.eclipse.ui.PlatformUI;
 
 import tools.vitruv.framework.change.interaction.ConfirmationUserInteraction;
 import tools.vitruv.framework.change.interaction.FreeTextUserInteraction;
@@ -31,7 +29,7 @@ public class TestUserInteractor extends PredefinedInputInteractor {
 	private UserInteractionListener userInputListener;
     
     public TestUserInteractor(final int minWaittime, final int maxWaittime) {
-    	super(new ArrayList<UserInteractionBase>(), null, null /*PlatformUI.getWorkbench().getDisplay() TODO DK: throws IllegalStateEx: Workbench has not been created yet!*/);
+    	super(new ArrayList<UserInteractionBase>(), null, null);
     	predefinedInputHandler = new PredefinedTestInputHandler(minWaittime, maxWaittime, this);
     }
     
@@ -53,10 +51,6 @@ public class TestUserInteractor extends PredefinedInputInteractor {
     
     public void addNextMultiSelection(final int[] nextSelection) {
     	predefinedInputHandler.addNextMultiSelection(nextSelection);
-    }
-    
-    public void addNextUriSelection(final URI nextSelection) {
-    	predefinedInputHandler.addNextUriSelection(nextSelection);
     }
 
 	@Override
@@ -134,11 +128,6 @@ class PredefinedTestInputHandler extends PredefinedInputHandlerImpl {
 			input.getSelectedIndices().add(selection);
 		}
 		userInputs.add(input);
-    }
-    
-    public void addNextUriSelection(final URI nextSelection) {
-        /*this.uriQueue.clear();
-        this.uriQueue.addAll(Arrays.asList(nextSelections));*/ // TODO DK: URI stuff
     }
 	
 	@Override
