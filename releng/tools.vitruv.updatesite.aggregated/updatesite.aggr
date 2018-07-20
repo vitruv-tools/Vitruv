@@ -5,12 +5,9 @@
       <repositories location="../tools.vitruv.updatesite/target/repository"/>
     </contributions>
     <contributions label="externals">
-      <repositories location="https://sdqbuild.ipd.kit.edu/nexus/content/groups/eclipse-oxygen-complete/" mirrorArtifacts="false">
-        <features name="org.eclipse.emf.ecore.edit.feature.group" versionRange="2.9.0"/>
+      <repositories location="http://download.eclipse.org/eclipse/updates/4.7" mirrorArtifacts="false">
         <features name="org.eclipse.emf.ecore.feature.group" versionRange="2.12.0"/>
         <features name="org.eclipse.emf.common.feature.group" versionRange="2.12.0"/>
-        <features name="org.eclipse.emf.transaction.feature.group" versionRange="1.10.0"/>
-        <features name="org.eclipse.xtend.sdk.feature.group" versionRange="2.12.0"/>
       </repositories>
       <repositories location="http://vitruv-tools.github.io/updatesite/release/license">
         <features name="tools.vitruv.license.feature.feature.group" versionRange="[1.0.0,1.0.1)"/>
@@ -21,13 +18,19 @@
         <features name="edu.kit.ipd.sdq.commons.util.eclipse.feature.feature.group" versionRange="[1.0.0,2.0.0]"/>
       </repositories>
       <repositories location="https://kit-sdq.github.io/updatesite/nightly/xannotations">
-        <features name="edu.kit.ipd.sdq.activextendannotations.feature.feature.group" versionRange="1.0.0.201707141530"/>
+        <features name="edu.kit.ipd.sdq.activextendannotations.feature.feature.group" versionRange="[1.0.0,2.0.0)"/>
       </repositories>
       <repositories location="https://kit-sdq.github.io/updatesite/nightly/metamodels/demo">
         <features name="edu.kit.ipd.sdq.metamodels.addresses.feature.feature.group" versionRange="[1.0.0,2.0.0)"/>
         <features name="edu.kit.ipd.sdq.metamodels.recipients.feature.feature.group" versionRange="[1.0.0,2.0.0)"/>
         <features name="edu.kit.ipd.sdq.metamodels.families.feature.feature.group" versionRange="[1.0.0,2.0.0]"/>
         <features name="edu.kit.ipd.sdq.metamodels.persons.feature.feature.group" versionRange="[1.0.0,2.0.0]"/>
+      </repositories>
+      <repositories location="http://download.eclipse.org/releases/oxygen/" mirrorArtifacts="false">
+        <features name="org.eclipse.emf.ecore.edit.feature.group" versionRange="2.9.0"/>
+        <features name="org.eclipse.emf.transaction.feature.group" versionRange="1.10.0"/>
+        <features name="org.eclipse.xtend.sdk.feature.group" versionRange="2.12.0"/>
+        <features name="org.eclipse.emf.ecore.feature.group" versionRange="2.12.0"/>
       </repositories>
     </contributions>
   </validationSets>

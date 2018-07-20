@@ -5,7 +5,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>tools.vitruv</groupId>
 	<artifactId>parent</artifactId>
-	<version>0.2.0-SNAPSHOT</version>
+	<version>0.3.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<modules>
@@ -31,7 +31,12 @@
 			<id>Eclipse Oxygen</id>
 			<layout>p2</layout>
 			<!--<url>http://download.eclipse.org/releases/oxygen</url>-->
-			<url>https://sdqbuild.ipd.kit.edu/nexus/content/repositories/eclipse-oxygen-complete/</url>
+			<url>http://ftp-stud.hs-esslingen.de/pub/Mirrors/eclipse/releases/oxygen</url>
+		</repository>
+		<repository>
+			<id>Eclipse Oxygen Updates</id>
+			<layout>p2</layout>
+			<url>http://download.eclipse.org/eclipse/updates/4.7</url>
 		</repository>
 		<repository>
 			<id>SDQ Commons</id>
@@ -95,6 +100,24 @@
 						</configuration>
 					</execution>
 				</executions>
+				<!-- Needed due to Xtext bug: https://github.com/eclipse/xtext/issues/1231 -->
+				<dependencies>
+					<dependency>
+						<groupId>org.eclipse.jdt</groupId>
+						<artifactId>org.eclipse.jdt.core</artifactId>
+						<version>3.12.2</version>
+					</dependency>
+					<dependency>
+						<groupId>org.eclipse.platform</groupId>
+						<artifactId>org.eclipse.core.runtime</artifactId>
+						<version>3.12.0</version>
+					</dependency>
+					<dependency>
+						<groupId>org.eclipse.platform</groupId>
+						<artifactId>org.eclipse.equinox.common</artifactId>
+						<version>3.8.0</version>
+					</dependency>
+				</dependencies>
 			</plugin>
 			
 			<plugin>

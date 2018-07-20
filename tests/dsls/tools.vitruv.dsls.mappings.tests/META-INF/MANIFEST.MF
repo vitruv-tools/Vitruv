@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Vitruv DSLs Mapping Language Tests
 Bundle-Vendor: vitruv.tools
-Bundle-Version: 0.2.0.qualifier
+Bundle-Version: 0.3.0.qualifier
 Bundle-SymbolicName: tools.vitruv.dsls.mappings.tests; singleton:=true
 Bundle-ActivationPolicy: lazy
 Require-Bundle: tools.vitruv.dsls.mappings,
