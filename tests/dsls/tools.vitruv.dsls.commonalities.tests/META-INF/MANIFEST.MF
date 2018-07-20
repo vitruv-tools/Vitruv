@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Vitruv DSLs Commonalities Language Core Tests
 Bundle-SymbolicName: tools.vitruv.dsls.commonalities.tests;singleton:=true
-Bundle-Version: 0.2.0.qualifier
+Bundle-Version: 0.2.0
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Export-Package: tools.vitruv.dsls.commonalities.tests;x-internal=true

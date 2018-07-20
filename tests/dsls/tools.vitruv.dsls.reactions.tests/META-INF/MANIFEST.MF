@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Vitruv DSLs Reactions Language Tests
 Bundle-SymbolicName: tools.vitruv.dsls.reactions.tests;singleton:=true
-Bundle-Version: 0.2.0.qualifier
+Bundle-Version: 0.2.0
 Bundle-Vendor: vitruv.tools
 Export-Package: tools.vitruv.dsls.reactions.tests;x-internal=true
 Require-Bundle: org.junit,
