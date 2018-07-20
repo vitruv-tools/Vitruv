@@ -5,7 +5,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>tools.vitruv</groupId>
 	<artifactId>parent</artifactId>
-	<version>0.2.0</version>
+	<version>0.3.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<modules>
@@ -41,12 +41,12 @@
 		<repository>
 			<id>SDQ Commons</id>
 			<layout>p2</layout>
-			<url>http://kit-sdq.github.io/updatesite/release/commons</url>
+			<url>http://kit-sdq.github.io/updatesite/nightly/commons</url>
 		</repository>
 		<repository>
 			<id>Demo Metamodels</id>
 			<layout>p2</layout>
-			<url>http://kit-sdq.github.io/updatesite/release/metamodels/demo</url>
+			<url>http://kit-sdq.github.io/updatesite/nightly/metamodels/demo</url>
 		</repository>
 		<repository>
 			<id>Vitruv License</id>
@@ -56,7 +56,7 @@
 		<repository>
 			<id>XAnnotations</id>
 			<layout>p2</layout>
-			<url>https://kit-sdq.github.io/updatesite/release/xannotations</url>
+			<url>https://kit-sdq.github.io/updatesite/nightly/xannotations</url>
 		</repository>
 	</repositories>
 

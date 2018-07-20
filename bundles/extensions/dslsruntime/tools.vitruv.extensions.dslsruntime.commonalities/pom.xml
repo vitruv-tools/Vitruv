@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>tools.vitruv</groupId>
 		<artifactId>dslsruntime</artifactId>
-		<version>0.2.0</version>
+		<version>0.3.0-SNAPSHOT</version>
 		<relativePath>../</relativePath>
 	</parent>
 	<artifactId>tools.vitruv.extensions.dslsruntime.commonalities</artifactId>

@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Vitruv Domain EMF Monitored Editor Tests
 Bundle-SymbolicName: tools.vitruv.extensions.emf.monitorededitor.tests;singleton:=true
-Bundle-Version: 0.2.0
+Bundle-Version: 0.3.0.qualifier
 Bundle-Activator: tools.vitruv.domains.emf.monitorededitor.Activator
 Bundle-ClassPath: ., lib/cglib-nodep-3.1.jar, lib/easymock-3.1.jar, lib/objenesis-1.2.jar
 Require-Bundle: org.eclipse.ui,

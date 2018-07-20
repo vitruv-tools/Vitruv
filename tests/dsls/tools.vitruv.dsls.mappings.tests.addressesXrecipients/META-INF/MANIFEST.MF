@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Vitruv DSLs Mappings Tests AddressesXRecipients
 Bundle-SymbolicName: tools.vitruv.dsls.mappings.tests.addressesXrecipients
-Bundle-Version: 0.2.0
+Bundle-Version: 0.3.0.qualifier
 Bundle-Vendor: vitruv.tools
 Export-Package: mir.reactions.adXre_L2R,
   mir.reactions.adXre_R2L

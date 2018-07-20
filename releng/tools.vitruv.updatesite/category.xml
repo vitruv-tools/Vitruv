@@ -1,51 +1,51 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-   <feature url="features/tools.vitruv.framework.feature_0.2.0.jar" id="tools.vitruv.framework.feature" version="0.2.0">
+   <feature url="features/tools.vitruv.framework.feature_0.3.0.qualifier.jar" id="tools.vitruv.framework.feature" version="0.3.0.qualifier">
       <category name="Vitruv Framework"/>
    </feature>
-   <feature id="tools.vitruv.framework.feature.source" version="0.2.0">
+   <feature id="tools.vitruv.framework.feature.source" version="0.3.0.qualifier">
       <category name="Vitruv Framework"/>
    </feature>
-   <feature url="features/tools.vitruv.testutils.feature_0.2.0.jar" id="tools.vitruv.testutils.feature" version="0.2.0">
+   <feature url="features/tools.vitruv.testutils.feature_0.3.0.qualifier.jar" id="tools.vitruv.testutils.feature" version="0.3.0.qualifier">
       <category name="Vitruv Framework"/>
    </feature>
-   <feature id="tools.vitruv.testutils.feature.source" version="0.2.0">
+   <feature id="tools.vitruv.testutils.feature.source" version="0.3.0.qualifier">
       <category name="Vitruv Framework"/>
    </feature>
-   <feature url="features/tools.vitruv.extensions.integration.feature_0.2.0.jar" id="tools.vitruv.extensions.integration.feature" version="0.2.0">
+   <feature url="features/tools.vitruv.extensions.integration.feature_0.3.0.qualifier.jar" id="tools.vitruv.extensions.integration.feature" version="0.3.0.qualifier">
       <category name="Vitruv Framework"/>
    </feature>
-   <feature id="tools.vitruv.extensions.integration.feature.source" version="0.2.0">
+   <feature id="tools.vitruv.extensions.integration.feature.source" version="0.3.0.qualifier">
       <category name="Vitruv Framework"/>
    </feature>
-   <feature url="features/tools.vitruv.extensions.dslsruntime.feature_0.2.0.jar" id="tools.vitruv.extensions.dslsruntime.feature" version="0.2.0">
+   <feature url="features/tools.vitruv.extensions.dslsruntime.feature_0.3.0.qualifier.jar" id="tools.vitruv.extensions.dslsruntime.feature" version="0.3.0.qualifier">
       <category name="Vitruv Framework"/>
    </feature>
-   <feature id="tools.vitruv.extensions.dslsruntime.feature.source" version="0.2.0">
+   <feature id="tools.vitruv.extensions.dslsruntime.feature.source" version="0.3.0.qualifier">
       <category name="Vitruv Framework"/>
    </feature>
-   <feature url="features/tools.vitruv.extensions.changevisualization.feature_0.2.0.jar" id="tools.vitruv.extensions.changevisualization.feature" version="0.2.0">
+   <feature url="features/tools.vitruv.extensions.changevisualization.feature_0.3.0.qualifier.jar" id="tools.vitruv.extensions.changevisualization.feature" version="0.3.0.qualifier">
       <category name="Vitruv Framework"/>
    </feature>
-   <feature id="tools.vitruv.extensions.changevisualization.feature.source" version="0.2.0">
+   <feature id="tools.vitruv.extensions.changevisualization.feature.source" version="0.3.0.qualifier">
       <category name="Vitruv Framework"/>
    </feature>
-   <feature url="features/tools.vitruv.extensions.constructionsimulation.feature_0.2.0.jar" id="tools.vitruv.extensions.constructionsimulation.feature" version="0.2.0">
+   <feature url="features/tools.vitruv.extensions.constructionsimulation.feature_0.3.0.qualifier.jar" id="tools.vitruv.extensions.constructionsimulation.feature" version="0.3.0.qualifier">
       <category name="Vitruv Framework"/>
    </feature>
-   <feature id="tools.vitruv.extensions.constructionsimulation.feature.source" version="0.2.0">
+   <feature id="tools.vitruv.extensions.constructionsimulation.feature.source" version="0.3.0.qualifier">
       <category name="Vitruv Framework"/>
    </feature>
-   <feature url="features/tools.vitruv.dsls.feature_0.2.0.jar" id="tools.vitruv.dsls.feature" version="0.2.0">
+   <feature url="features/tools.vitruv.dsls.feature_0.3.0.qualifier.jar" id="tools.vitruv.dsls.feature" version="0.3.0.qualifier">
       <category name="Vitruv Application Development"/>
    </feature>
-   <feature id="tools.vitruv.dsls.feature.source" version="0.2.0">
+   <feature id="tools.vitruv.dsls.feature.source" version="0.3.0.qualifier">
       <category name="Vitruv Application Development"/>
    </feature>
-   <feature url="features/tools.vitruv.demo.familiespersons.feature_0.2.0.jar" id="tools.vitruv.demo.familiespersons.feature" version="0.2.0">
+   <feature url="features/tools.vitruv.demo.familiespersons.feature_0.3.0.qualifier.jar" id="tools.vitruv.demo.familiespersons.feature" version="0.3.0.qualifier">
       <category name="Vitruv Demo Applications"/>
    </feature>
-   <feature id="tools.vitruv.demo.familiespersons.feature.source" version="0.2.0">
+   <feature id="tools.vitruv.demo.familiespersons.feature.source" version="0.3.0.qualifier">
       <category name="Vitruv Demo Applications"/>
    </feature>
    <category-def name="Vitruv Framework" label="Vitruv Framework">
