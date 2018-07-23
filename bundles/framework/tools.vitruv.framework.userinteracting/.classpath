@@ -4,6 +4,5 @@
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="xtend-gen"/>
-	<classpathentry kind="lib" path="C:/Users/Dominik/.p2/pool/plugins/org.eclipse.equinox.common_3.9.0.v20170207-1454.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
