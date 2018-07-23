@@ -34,7 +34,7 @@ public abstract class IntegrationHandler<T> extends AbstractHandler {
     }
 
     private final Logger logger = LogManager.getRootLogger();
-    protected int keepOldModel;
+    protected boolean keepOldModel;
     protected InternalVirtualModel vsum;
 
     /*
@@ -55,7 +55,7 @@ public abstract class IntegrationHandler<T> extends AbstractHandler {
         final Object firstElement = structuredSelection.getFirstElement();
 
         final UserInteractor dialog = new UserInteractorImpl();
-        this.keepOldModel = dialog.getConfirmationDialogBuilder().message("Keep old model?").windowModality(WindowModality.MODAL).startInteraction() ? 1 : 0;
+        this.keepOldModel = dialog.getConfirmationDialogBuilder().message("Keep old model?").windowModality(WindowModality.MODAL).startInteraction();
 
         if (this.type.isInstance(firstElement)) {
             this.handleSelectedElement((T) firstElement);
