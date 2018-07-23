@@ -14,7 +14,7 @@ Require-Bundle: org.apache.log4j,
  edu.kit.ipd.sdq.commons.util.emf,
  tools.vitruv.framework.tuid,
  tools.vitruv.framework.change.echange;visibility:=reexport,
- tools.vitruv.framework.change.interaction;bundle-version="0.2.0"
+ tools.vitruv.framework.change.interaction
 Export-Package: tools.vitruv.framework.change.description,
  tools.vitruv.framework.change.preparation,
  tools.vitruv.framework.change.recording
