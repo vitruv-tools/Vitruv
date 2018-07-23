@@ -37,7 +37,7 @@ public interface InteractionPackage extends EPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	String eNS_URI = "http://www.example.org/interaction";
+	String eNS_URI = "http://tools.vitruv/Interaction/1.0";
 
 	/**
 	 * The package namespace name.

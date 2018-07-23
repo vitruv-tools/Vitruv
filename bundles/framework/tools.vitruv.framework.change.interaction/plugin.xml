@@ -9,7 +9,7 @@
    <extension point="org.eclipse.emf.ecore.generated_package">
       <!-- @generated interaction -->
       <package
-            uri="http://www.example.org/interaction"
+            uri="http://tools.vitruv/Interaction/1.0"
             class="tools.vitruv.framework.change.interaction.InteractionPackage"
             genModel="model/interaction.genmodel"/>
    </extension>
