@@ -62,7 +62,7 @@ routine createMaleMemberOfFamily(persons::Male person){
 		val List<String> familiesNames = new ArrayList<String>(collectionFamilies.size)
 		for (Family f: collectionFamilies) {
 //			if(f.lastName.equals(person.fullName.split(" ").get(1))){
-				familiesNames.add(f.lastName)
+				familiesNames.add(f.lastName) 
 //			}
 		}
 		val String selectMsg = "Please select the family to which the person belongs."

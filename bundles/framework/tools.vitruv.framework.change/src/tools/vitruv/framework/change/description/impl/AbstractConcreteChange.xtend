@@ -26,6 +26,7 @@ abstract class AbstractConcreteChange implements ConcreteChange {
 	
 	new(EChange eChange) {
 		this.eChange = eChange;
+		this.userInteractions = new ArrayList<UserInteractionBase>();
 	}
 	
 	override containsConcreteChange() {
@@ -88,6 +89,9 @@ abstract class AbstractConcreteChange implements ConcreteChange {
 	}
 	
 	override setUserInteractions(Collection<UserInteractionBase> userInteractions) {
+		if (userInteractions === null) {
+			throw new IllegalArgumentException("Interactions must not be null");
+		}
         this.userInteractions = userInteractions
     }
 	

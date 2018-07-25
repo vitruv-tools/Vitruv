@@ -6,9 +6,10 @@ import tools.vitruv.framework.change.description.VitruviusChangeFactory
 import tools.vitruv.framework.uuid.UuidResolver
 import java.util.Collection
 import tools.vitruv.framework.change.interaction.UserInteractionBase
+import java.util.ArrayList
 
 class CompositeTransactionalChangeImpl extends AbstractCompositeChangeImpl<TransactionalChange> implements CompositeTransactionalChange {
-	private Collection<UserInteractionBase> userInteractions
+	private Collection<UserInteractionBase> userInteractions = new ArrayList<UserInteractionBase>();
 	
 	override removeChange(TransactionalChange change) {
 		if (change !== null && this.changes.contains(change)) {
@@ -31,6 +32,9 @@ class CompositeTransactionalChangeImpl extends AbstractCompositeChangeImpl<Trans
     }
     
     override setUserInteractions(Collection<UserInteractionBase> userInteractions) {
+    	if (userInteractions === null) {
+    		throw new IllegalArgumentException("Interactions must not be null");
+    	}
         this.userInteractions = userInteractions
     }
 }

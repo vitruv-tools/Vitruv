@@ -51,7 +51,7 @@ class EmptyChangeImpl implements TransactionalChange {
 	}
 	
 	override getUserInteractions() {
-        return userInteractions
+        #[]
     }
     
     override setUserInteractions(Collection<UserInteractionBase> userInteractions) {

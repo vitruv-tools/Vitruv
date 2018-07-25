@@ -26,12 +26,12 @@ import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
 import tools.vitruv.framework.change.description.CompositeTransactionalChange
 import tools.vitruv.framework.correspondence.CorrespondencePackage
 import tools.vitruv.framework.change.description.ConcreteChange
-import tools.vitruv.framework.userinteraction.impl.ReuseUserInputInteractor
 import java.util.LinkedList
 import java.util.Collection
 import tools.vitruv.framework.userinteraction.InternalUserInteractor
 import tools.vitruv.framework.userinteraction.UserInteractionListener
 import tools.vitruv.framework.change.interaction.UserInteractionBase
+import tools.vitruv.framework.userinteraction.impl.ReuseUserInputInteractorImpl
 
 class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserver, UserInteractionListener {
 	static Logger logger = Logger.getLogger(ChangePropagatorImpl.getSimpleName())
@@ -150,7 +150,7 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 		// retrieve user inputs from past changes, construct a UserInteractor which tries to reuse them:
 		var pastUserInputsFromChange = change.getUserInteractions()
 		
-		val reuseInteractor = new ReuseUserInputInteractor(pastUserInputsFromChange, userInteractor)
+		val reuseInteractor = new ReuseUserInputInteractorImpl(pastUserInputsFromChange, userInteractor)
 		reuseInteractor.registerUserInputListener(this)
 		
 		for (propagationSpecification : changePropagationProvider.
@@ -172,7 +172,7 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 				VitruviusChangeFactory.instance.createCompositeChange(consequentialChanges))
 		val resultingChanges = new ArrayList()
 		resultingChanges += propagatedChange
-		userInteractor.resetUserInteractions
+		//userInteractor.resetUserInteractions
 
 		val consequentialChangesToRePropagate = propagatedChange.consequentialChanges.transactionalChangeSequence
 			.map[rewrapWithoutCorrespondenceChanges].filterNull.filter[containsConcreteChange]
@@ -209,7 +209,7 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 			return Collections.singleton(composite)
 		} else {
 			return Collections.emptyList
-		} 
+		}
 	}
 
 	def private dispatch Iterable<TransactionalChange> getTransactionalChangeSequence(CompositeChange<?> composite) {
