@@ -1,10 +1,10 @@
 package tools.vitruv.framework.userinteraction.builder.impl
 
 import tools.vitruv.framework.userinteraction.builder.ConfirmationInteractionBuilder.OptionalSteps
-import tools.vitruv.framework.userinteraction.builder.InternalConfirmationDialogBuilder
 import tools.vitruv.framework.userinteraction.UserInteractionListener
 import tools.vitruv.framework.userinteraction.types.ConfirmationInteraction
 import tools.vitruv.framework.userinteraction.types.InteractionFactory
+import tools.vitruv.framework.userinteraction.builder.ConfirmationInteractionBuilder
 
 /**
  * Builder class for {@link ConfirmationInteraction}s.
@@ -17,9 +17,7 @@ import tools.vitruv.framework.userinteraction.types.InteractionFactory
  * @author Dominik Klooz
  * @author Heiko Klare
  */
-public class ConfirmationInteractionBuilderImpl extends BaseInteractionBuilder<Boolean, ConfirmationInteraction, OptionalSteps> implements InternalConfirmationDialogBuilder, OptionalSteps {
-	private ConfirmationInteraction dialog
-
+public class ConfirmationInteractionBuilderImpl extends BaseInteractionBuilder<Boolean, ConfirmationInteraction, OptionalSteps> implements ConfirmationInteractionBuilder, OptionalSteps {
 	new(InteractionFactory interactionFactory, Iterable<UserInteractionListener> userInteractionListener) {
 		super(interactionFactory, userInteractionListener)
 	}
@@ -35,10 +33,6 @@ public class ConfirmationInteractionBuilderImpl extends BaseInteractionBuilder<B
 		return this
 	}
 
-	override getIntermediateDialog() {
-		return dialog
-	}
-	
 	override createUserInteraction() {
 		return interactionFactory.createConfirmationInteraction();
 	}
