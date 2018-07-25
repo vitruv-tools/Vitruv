@@ -18,7 +18,7 @@ import tools.vitruv.framework.userinteraction.UserInteractionListener
  * @author Heiko Klare
  */
 public class NotificationInteractionBuilderImpl extends BaseInteractionBuilder<Void, NotificationInteraction, OptionalSteps> implements NotificationInteractionBuilder, OptionalSteps {
-	
+
 	new(InteractionFactory interactionFactory, Iterable<UserInteractionListener> userInteractionListener) {
 		super(interactionFactory, userInteractionListener)
 	}

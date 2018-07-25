@@ -14,17 +14,18 @@ import tools.vitruv.framework.userinteraction.InteractionResultProvider
 class ConfirmationInteraction extends BaseInteraction<ConfirmationUserInteraction> {
 	private static val DEFAULT_TITLE = "Please Confirm";
 	private static val DEFAULT_MESSAGE = "";
-	
+
 	protected new(InteractionResultProvider interactionResultProvider, WindowModality windowModality) {
 		super(interactionResultProvider, windowModality, DEFAULT_TITLE, DEFAULT_MESSAGE)
 	}
-	
+
 	override startInteraction() {
-		val result = interactionResultProvider.getConfirmationInteractionResult(windowModality, title, message, positiveButtonText, negativeButtonText, cancelButtonText);
+		val result = interactionResultProvider.getConfirmationInteractionResult(windowModality, title, message,
+			positiveButtonText, negativeButtonText, cancelButtonText);
 		var userInput = InteractionFactoryImpl.eINSTANCE.createConfirmationUserInteraction()
-        userInput.message = message
-        userInput.confirmed = result;
-        return userInput;
+		userInput.message = message
+		userInput.confirmed = result;
+		return userInput;
 	}
-	
+
 }

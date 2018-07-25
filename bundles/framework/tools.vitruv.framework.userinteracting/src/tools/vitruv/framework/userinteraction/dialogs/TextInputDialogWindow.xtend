@@ -29,7 +29,7 @@ class TextInputDialogWindow extends BaseDialogWindow {
 	private final InputValidator inputValidator;
 	private final String positiveButtonText;
 	private final String cancelButtonText;
-	
+
 	new(Shell parent, WindowModality windowModality, String title, String message, String positiveButtonText,
 		String cancelButtonText, InputValidator inputValidator) {
 		super(parent, windowModality, title, message)

@@ -9,11 +9,11 @@ import tools.vitruv.framework.userinteraction.PredefinedInteractionResultProvide
 
 public class TestUserInteraction {
 	private final PredefinedInteractionResultProvider interactionProvider;
-	
+
 	public TestUserInteraction(PredefinedInteractionResultProvider interactionProvider) {
 		this.interactionProvider = interactionProvider;
 	}
-	
+
 	public void addNextConfirmationInput(final boolean nextConfirmation) {
 		ConfirmationUserInteraction input = InteractionFactory.eINSTANCE.createConfirmationUserInteraction();
 		input.setConfirmed(nextConfirmation);

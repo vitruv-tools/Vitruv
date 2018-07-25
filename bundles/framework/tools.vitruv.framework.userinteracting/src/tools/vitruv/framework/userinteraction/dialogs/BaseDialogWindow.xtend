@@ -15,7 +15,7 @@ import org.eclipse.swt.SWT
 abstract class BaseDialogWindow extends Dialog {
 	protected final String title;
 	protected final String message;
-	
+
 	new(Shell parent, WindowModality windowModality, String title, String message) {
 		super(parent);
 		this.title = title;

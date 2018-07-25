@@ -23,8 +23,9 @@ class DialogInteractionResultProviderImpl implements InteractionResultProvider {
 	private final Display display;
 
 	new() {
-		this.display = if(PlatformUI.isWorkbenchRunning()) PlatformUI.getWorkbench().getDisplay() else PlatformUI.createDisplay();
-        this.parentShell = display.getActiveShell();
+		this.display = if (PlatformUI.isWorkbenchRunning()) PlatformUI.getWorkbench().getDisplay() else PlatformUI.
+			createDisplay();
+		this.parentShell = display.getActiveShell();
 	}
 
 	private def void showDialog(BaseDialogWindow dialog) {
@@ -43,35 +44,39 @@ class DialogInteractionResultProviderImpl implements InteractionResultProvider {
 		return dialog.getConfirmed;
 	}
 
-	override getNotificationInteractionResult(WindowModality windowModality, String title, String message, String positiveDecisionText, NotificationType notificationType) {
+	override getNotificationInteractionResult(WindowModality windowModality, String title, String message,
+		String positiveDecisionText, NotificationType notificationType) {
 		val dialog = new NotificationDialogWindow(parentShell, windowModality, title, message, positiveDecisionText,
 			notificationType);
 		dialog.showDialog();
 	}
-	
-	override getTextInputInteractionResult(WindowModality windowModality, String title, String message, String positiveDecisionText, String cancelDecisionText, InputValidator inputValidator) {
+
+	override getTextInputInteractionResult(WindowModality windowModality, String title, String message,
+		String positiveDecisionText, String cancelDecisionText, InputValidator inputValidator) {
 		val dialog = new TextInputDialogWindow(parentShell, windowModality, title, message, positiveDecisionText,
 			cancelDecisionText, inputValidator);
 		dialog.showDialog()
 		return dialog.inputText;
 	}
-	
-	override getMultipleChoiceSingleSelectionInteractionResult(WindowModality windowModality, String title, String message, String positiveDecisionText, String cancelDecisionText, Iterable<String> choices) {
-		val dialog = new MultipleChoiceSelectionDialogWindow(parentShell, windowModality, title, message, positiveDecisionText,
-			cancelDecisionText, false, choices);
+
+	override getMultipleChoiceSingleSelectionInteractionResult(WindowModality windowModality, String title,
+		String message, String positiveDecisionText, String cancelDecisionText, Iterable<String> choices) {
+		val dialog = new MultipleChoiceSelectionDialogWindow(parentShell, windowModality, title, message,
+			positiveDecisionText, cancelDecisionText, false, choices);
 		dialog.showDialog()
 		return dialog.selectedChoices.head;
 	}
-	
-	override getMultipleChoiceMultipleSelectionInteractionResult(WindowModality windowModality, String title, String message, String positiveDecisionText, String cancelDecisionText, Iterable<String> choices) {
-		val dialog = new MultipleChoiceSelectionDialogWindow(parentShell, windowModality, title, message, positiveDecisionText,
-			cancelDecisionText, true, choices);
+
+	override getMultipleChoiceMultipleSelectionInteractionResult(WindowModality windowModality, String title,
+		String message, String positiveDecisionText, String cancelDecisionText, Iterable<String> choices) {
+		val dialog = new MultipleChoiceSelectionDialogWindow(parentShell, windowModality, title, message,
+			positiveDecisionText, cancelDecisionText, true, choices);
 		dialog.showDialog()
 		return dialog.selectedChoices;
 	}
-	
+
 	override getDecoratedInteractionResultProvider() {
 		return this;
 	}
-	
+
 }

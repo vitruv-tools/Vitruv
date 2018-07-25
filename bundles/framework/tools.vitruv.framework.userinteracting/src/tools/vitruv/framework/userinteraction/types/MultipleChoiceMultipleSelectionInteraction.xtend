@@ -16,14 +16,16 @@ class MultipleChoiceMultipleSelectionInteraction extends MultipleChoiceSelection
 	protected new(InteractionResultProvider interactionResultProvider, WindowModality windowModality) {
 		super(interactionResultProvider, windowModality)
 	}
-	
+
 	override startInteraction() {
-		val result = interactionResultProvider.getMultipleChoiceMultipleSelectionInteractionResult(windowModality, title, message, positiveButtonText, cancelButtonText, choices)
+		val result = interactionResultProvider.
+			getMultipleChoiceMultipleSelectionInteractionResult(windowModality, title, message, positiveButtonText,
+				cancelButtonText, choices)
 		val userInput = InteractionFactoryImpl.eINSTANCE.createMultipleChoiceMultiSelectionUserInteraction()
 		userInput.message = message
 		userInput.choices.addAll(choices)
 		userInput.selectedIndices.addAll(result)
 		return userInput
 	}
-	
+
 }

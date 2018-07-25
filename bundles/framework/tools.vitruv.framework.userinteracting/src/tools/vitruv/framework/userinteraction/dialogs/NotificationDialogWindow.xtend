@@ -19,7 +19,7 @@ import tools.vitruv.framework.userinteraction.UserInteractionOptions.Notificatio
 class NotificationDialogWindow extends BaseDialogWindow {
 	private final NotificationType notificationType;
 	private final String positiveButtonText;
-	
+
 	new(Shell parent, WindowModality windowModality, String title, String message, String positiveButtonText,
 		NotificationType notificationType) {
 		super(parent, windowModality, title, message)

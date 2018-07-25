@@ -15,7 +15,7 @@ import tools.vitruv.framework.userinteraction.types.BaseInteraction
  * subclass-specific properties.<br>
  * <br>
  * For further info on the rationale behind the ...DialogBuilder implementation, see the {@link DialogBuilder} javadoc.
- *
+ * 
  * @param <V> type parameter for the return type of {@link #getResult() getResult()}, which returns the user input from
  *          the dialog.
  * @param <I> the interaction type to be built by this buidler
@@ -27,74 +27,74 @@ import tools.vitruv.framework.userinteraction.types.BaseInteraction
  * @author Heiko Klare
  */
 @Accessors public abstract class BaseInteractionBuilder<V, I extends BaseInteraction<?>, T extends InteractionBuilder<V, T>> implements InteractionBuilder<V, T> {
-    @Accessors(PROTECTED_GETTER) 
-    private final InteractionFactory interactionFactory
-    @Accessors(PROTECTED_GETTER)
-    private I interactionToBuild;
-    @Accessors(NONE) 
-    Iterable<UserInteractionListener> userInteractionListener;
-    
-    new(InteractionFactory interactionFactory, Iterable<UserInteractionListener> userInteractionListener) {
-        this.interactionFactory = interactionFactory
-        this.userInteractionListener = userInteractionListener
-        interactionToBuild = createUserInteraction();
-    }
-    
-    abstract def I createUserInteraction();
-    
-    /**
-     * @inheritDoc
-     * Implementations should call {@link #openDialog()} to make sure displaying the dialog is run on the UI thread.
-     */
-    abstract override V startInteraction();
-    
-    protected abstract def T getSelf();
-    
-    def setMessage(String message) {
-        if (message === null) {
-            throw new IllegalArgumentException("Message is null!")
-        }
-        interactionToBuild.message = message
-    }
-    
-    override T title(String title) {
-        if (title !== null) {
-            interactionToBuild.title = title
-        }
-        return self
-    }
-    
-    override T windowModality(WindowModality windowModality) {
-        if (windowModality !== null) {
-            interactionToBuild.windowModality = windowModality
-        }
-        return self
-    }
-    
-    override T positiveButtonText(String text) {
-        if (text !== null) {
-            interactionToBuild.positiveButtonText = text
-        }
-        return self
-    }
-    
-    override T negativeButtonText(String text) {
-        if (text !== null) {
-            interactionToBuild.negativeButtonText = text
-        }
-        return self
-    }
-    
-    override T cancelButtonText(String text) {
-        if (text !== null) {
-            interactionToBuild.cancelButtonText = text
-        }
-        return self
-    }
+	@Accessors(PROTECTED_GETTER)
+	private final InteractionFactory interactionFactory
+	@Accessors(PROTECTED_GETTER)
+	private I interactionToBuild;
+	@Accessors(NONE)
+	Iterable<UserInteractionListener> userInteractionListener;
 
-    def notifyUserInputReceived(UserInteractionBase input) {
-    	for (listener : userInteractionListener) {
-        	listener.onUserInteractionReceived(input)
-        }
-    }
+	new(InteractionFactory interactionFactory, Iterable<UserInteractionListener> userInteractionListener) {
+		this.interactionFactory = interactionFactory
+		this.userInteractionListener = userInteractionListener
+		interactionToBuild = createUserInteraction();
+	}
+
+	abstract def I createUserInteraction();
+
+	/**
+	 * @inheritDoc
+	 * Implementations should call {@link #openDialog()} to make sure displaying the dialog is run on the UI thread.
+	 */
+	abstract override V startInteraction();
+
+	protected abstract def T getSelf();
+
+	def setMessage(String message) {
+		if (message === null) {
+			throw new IllegalArgumentException("Message is null!")
+		}
+		interactionToBuild.message = message
+	}
+
+	override T title(String title) {
+		if (title !== null) {
+			interactionToBuild.title = title
+		}
+		return self
+	}
+
+	override T windowModality(WindowModality windowModality) {
+		if (windowModality !== null) {
+			interactionToBuild.windowModality = windowModality
+		}
+		return self
+	}
+
+	override T positiveButtonText(String text) {
+		if (text !== null) {
+			interactionToBuild.positiveButtonText = text
+		}
+		return self
+	}
+
+	override T negativeButtonText(String text) {
+		if (text !== null) {
+			interactionToBuild.negativeButtonText = text
+		}
+		return self
+	}
+
+	override T cancelButtonText(String text) {
+		if (text !== null) {
+			interactionToBuild.cancelButtonText = text
+		}
+		return self
+	}
+
+	def notifyUserInputReceived(UserInteractionBase input) {
+		for (listener : userInteractionListener) {
+			listener.onUserInteractionReceived(input)
+		}
+	}
 }

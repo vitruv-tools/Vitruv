@@ -31,7 +31,7 @@ class UserInteractorImpl implements InternalUserInteractor {
 	private final List<UserInteractionListener> userInteractionListener;
 	private InteractionResultProvider interactionResultProvider;
 	private InteractionFactory interactionFactory;
-	
+
 	new(InteractionResultProvider interactionResultProvider) {
 		if (interactionResultProvider === null) {
 			throw new IllegalArgumentException("Interaction result provider must not be null");
@@ -40,12 +40,12 @@ class UserInteractorImpl implements InternalUserInteractor {
 		this.userInteractionListener = new ArrayList<UserInteractionListener>();
 		updateInteractionFactory();
 	}
-	
+
 	new(InteractionResultProvider interactionResultProvider, WindowModality defaultWindowModality) {
 		this(interactionResultProvider);
 		this.defaultWindowModality = defaultWindowModality;
 	}
-	
+
 	public override NotificationInteractionBuilder getNotificationDialogBuilder() {
 		return new NotificationInteractionBuilderImpl(interactionFactory, userInteractionListener);
 	}
@@ -61,32 +61,33 @@ class UserInteractorImpl implements InternalUserInteractor {
 	public override MultipleChoiceSingleSelectionInteractionBuilder getSingleSelectionDialogBuilder() {
 		return new MultipleChoiceSingleSelectionInteractionBuilderImpl(interactionFactory, userInteractionListener);
 	}
-	
+
 	public override MultipleChoiceMultiSelectionInteractionBuilder getMultiSelectionDialogBuilder() {
 		return new MultipleChoiceMultiSelectionInteractionBuilderImpl(interactionFactory, userInteractionListener);
 	}
-	
+
 	override registerUserInputListener(UserInteractionListener listener) {
 		this.userInteractionListener += listener;
 	}
-	
-	override decorateUserInteractionResultProvider(Function<InteractionResultProvider, DecoratingInteractionResultProvider> decoratingInteractionResultProviderProducer) {
+
+	override decorateUserInteractionResultProvider(
+		Function<InteractionResultProvider, DecoratingInteractionResultProvider> decoratingInteractionResultProviderProducer) {
 		if (interactionResultProvider === null) {
 			throw new IllegalArgumentException("Interaction result provider must not be null");
 		}
 		this.interactionResultProvider = decoratingInteractionResultProviderProducer.apply(interactionResultProvider);
-		updateInteractionFactory(); 
+		updateInteractionFactory();
 	}
-	
+
 	override removeDecoratingUserInteractionResultProvider() {
 		if (this.interactionResultProvider.decoratedInteractionResultProvider !== null) {
 			this.interactionResultProvider = this.interactionResultProvider.decoratedInteractionResultProvider;
 			updateInteractionFactory();
 		}
 	}
-	
+
 	private def updateInteractionFactory() {
 		this.interactionFactory = new InteractionFactoryImpl(interactionResultProvider, defaultWindowModality);
 	}
-	
+
 }

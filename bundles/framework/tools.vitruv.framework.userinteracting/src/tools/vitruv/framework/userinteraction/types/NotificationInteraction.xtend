@@ -16,21 +16,23 @@ public class NotificationInteraction extends BaseInteraction<NotificationUserInt
 	private static val DEFAULT_TITLE = "NOTIFICATION";
 	private static val DEFAULT_MESSAGE = "";
 	private NotificationType notificationType;
-	
+
 	protected new(InteractionResultProvider interactionResultProvider, WindowModality windowModality) {
 		super(interactionResultProvider, windowModality, DEFAULT_TITLE, DEFAULT_MESSAGE)
 		this.notificationType = NotificationType.INFORMATION;
 		setPositiveButtonText("Okay")
 	}
-	
+
 	def NotificationType getNotificationType() { notificationType }
+
 	def setNotificationType(NotificationType type) { this.notificationType = type }
-	
+
 	override startInteraction() {
-		interactionResultProvider.getNotificationInteractionResult(windowModality, title, message, positiveButtonText, notificationType);
-        val userInput = InteractionFactoryImpl.eINSTANCE.createNotificationUserInteraction()
-        userInput.message = message
-        return userInput;
+		interactionResultProvider.getNotificationInteractionResult(windowModality, title, message, positiveButtonText,
+			notificationType);
+		val userInput = InteractionFactoryImpl.eINSTANCE.createNotificationUserInteraction()
+		userInput.message = message
+		return userInput;
 	}
-	
+
 }

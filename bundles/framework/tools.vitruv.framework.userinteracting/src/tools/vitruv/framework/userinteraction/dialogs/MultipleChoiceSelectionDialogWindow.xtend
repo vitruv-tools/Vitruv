@@ -23,9 +23,9 @@ class MultipleChoiceSelectionDialogWindow extends BaseDialogWindow {
 	private final boolean multiple;
 	private final Iterable<String> choices;
 	private List<Button> choiceButtons
-	private final String positiveButtonText; 
+	private final String positiveButtonText;
 	private final String cancelButtonText;
-	
+
 	new(Shell parent, WindowModality windowModality, String title, String message, String positiveButtonText,
 		String cancelButtonText, boolean multiple, Iterable<String> choices) {
 		super(parent, windowModality, title, message)
@@ -55,10 +55,10 @@ class MultipleChoiceSelectionDialogWindow extends BaseDialogWindow {
 		messageLabel.layoutData = gridData
 
 		val buttonType = if (multiple) {
-			SWT.CHECK;
-		} else {
-			SWT.RADIO 
-		}
+				SWT.CHECK;
+			} else {
+				SWT.RADIO
+			}
 
 		val group1 = new Group(composite, SWT.SHADOW_IN)
 		var choicesLayout = new RowLayout(SWT.VERTICAL)

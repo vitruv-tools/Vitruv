@@ -9,10 +9,10 @@ import tools.vitruv.framework.change.interaction.UserInteractionBase
  * @author Heiko Klare
  */
 abstract class PredefinedInteractionResultProvider extends DecoratingInteractionResultProvider {
-	new (InteractionResultProvider fallbackResultProvider) {
+	new(InteractionResultProvider fallbackResultProvider) {
 		super(fallbackResultProvider)
 	}
-	
+
 	/**
 	 * Adds user interaction results to be used whenever an interaction is requested.
 	 * 

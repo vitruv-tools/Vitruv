@@ -21,13 +21,13 @@ public class ConfirmationInteractionBuilderImpl extends BaseInteractionBuilder<B
 	new(InteractionFactory interactionFactory, Iterable<UserInteractionListener> userInteractionListener) {
 		super(interactionFactory, userInteractionListener)
 	}
-	
+
 	override startInteraction() {
 		val result = interactionToBuild.startInteraction();
 		notifyUserInputReceived(result);
 		return result.confirmed;
 	}
-	
+
 	override message(String message) {
 		setMessage(message)
 		return this
@@ -36,7 +36,7 @@ public class ConfirmationInteractionBuilderImpl extends BaseInteractionBuilder<B
 	override createUserInteraction() {
 		return interactionFactory.createConfirmationInteraction();
 	}
-	
+
 	override protected getSelf() {
 		return this;
 	}

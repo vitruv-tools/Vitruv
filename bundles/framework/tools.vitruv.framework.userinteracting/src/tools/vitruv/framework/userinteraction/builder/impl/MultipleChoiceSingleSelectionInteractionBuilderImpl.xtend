@@ -30,9 +30,9 @@ public class MultipleChoiceSingleSelectionInteractionBuilderImpl extends Multipl
 		notifyUserInputReceived(result)
 		return result.selectedIndex
 	}
-	
+
 	override protected getSelf() {
 		return this
 	}
-	
+
 }

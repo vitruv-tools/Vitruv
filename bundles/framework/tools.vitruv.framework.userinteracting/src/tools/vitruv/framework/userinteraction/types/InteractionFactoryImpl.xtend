@@ -12,28 +12,28 @@ import tools.vitruv.framework.userinteraction.InteractionResultProvider
 public class InteractionFactoryImpl implements InteractionFactory {
 	private final InteractionResultProvider interactionResultProvider;
 	private final WindowModality windowModality;
-	
+
 	new(InteractionResultProvider interactionResultProvider, WindowModality windowModality) {
 		this.windowModality = windowModality;
 		this.interactionResultProvider = interactionResultProvider;
 	}
-	
+
 	override createConfirmationInteraction() {
 		return new ConfirmationInteraction(interactionResultProvider, windowModality);
 	}
-	
+
 	override createNotificationInteraction() {
 		return new NotificationInteraction(interactionResultProvider, windowModality);
 	}
-	
+
 	override createTextInputInteraction() {
 		return new TextInputInteraction(interactionResultProvider, windowModality);
 	}
-	
+
 	override createMultipleChoiceSingleSelectionInteraction() {
 		return new MultipleChoiceSingleSelectionInteraction(interactionResultProvider, windowModality);
 	}
-	
+
 	override createMultipleChoiceMultipleSelectionInteraction() {
 		return new MultipleChoiceMultipleSelectionInteraction(interactionResultProvider, windowModality);
 	}

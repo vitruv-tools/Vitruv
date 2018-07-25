@@ -20,7 +20,7 @@ class ConfirmationDialogWindow extends BaseDialogWindow {
 	private final String positiveButtonText;
 	private final String negativeButtonText;
 	private final String cancelButtonText;
-	
+
 	new(Shell parent, WindowModality windowModality, String title, String message, String positiveButtonText,
 		String negativeButtonText, String cancelButtonText) {
 		super(parent, windowModality, title, message)

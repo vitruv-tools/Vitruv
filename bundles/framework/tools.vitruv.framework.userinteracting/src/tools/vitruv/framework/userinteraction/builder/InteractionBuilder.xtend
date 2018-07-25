@@ -23,49 +23,49 @@ import tools.vitruv.framework.userinteraction.UserInteractionOptions.WindowModal
  * @author Dominik Klooz
  */
 interface InteractionBuilder<V, T extends InteractionBuilder<V, T>> {
-    
-    /**
-     * Sets the title of the dialog, defaults to "Unspecified Title".
-     * 
-     * @param title The title to be set, if {@code null}, nothing happens.
-     * @return a matching DialogBuilder implementation for method chaining.
-     */
-    def T title(String title)
-    
-    /**
-     * Sets the dialog window's modality, defaults to {@link WindowModality.MODELESS}.
-     * 
-     * @param windowModality    The modality of the window to be set, if {@code null}, nothing happens.
-     * @return a matching DialogBuilder implementation for method chaining.
-     */
-    def T windowModality(WindowModality windowModality)
-    
-    /**
-     * Sets the text on the positive button, defaults to {@code "Yes"}.
-     * 
-     * @param text  The text to be set, if {@code null}, nothing happens.
-     * @return a matching DialogBuilder implementation for method chaining.
-     */
-    def T positiveButtonText(String text)
-    
-    /**
-     * Sets the text on the negative button, defaults to {@code "No"}.
-     * 
-     * @param text  The text to be set, if {@code null}, nothing happens.
-     * @return a matching DialogBuilder implementation for method chaining.
-     */
-    def T negativeButtonText(String text)
-    
-    /**
-     * Sets the text on the cancel button, defaults to {@code "Cancel"}.
-     * 
-     * @param text  The text to be set, if {@code null}, nothing happens.
-     * @return a matching DialogBuilder implementation for method chaining.
-     */
-    def T cancelButtonText(String text)
 
-    /**
-     * Creates and shows the dialog built by this builder, returns the user input (if any).
-     */
-    def V startInteraction()
+	/**
+	 * Sets the title of the dialog, defaults to "Unspecified Title".
+	 * 
+	 * @param title The title to be set, if {@code null}, nothing happens.
+	 * @return a matching DialogBuilder implementation for method chaining.
+	 */
+	def T title(String title)
+
+	/**
+	 * Sets the dialog window's modality, defaults to {@link WindowModality.MODELESS}.
+	 * 
+	 * @param windowModality    The modality of the window to be set, if {@code null}, nothing happens.
+	 * @return a matching DialogBuilder implementation for method chaining.
+	 */
+	def T windowModality(WindowModality windowModality)
+
+	/**
+	 * Sets the text on the positive button, defaults to {@code "Yes"}.
+	 * 
+	 * @param text  The text to be set, if {@code null}, nothing happens.
+	 * @return a matching DialogBuilder implementation for method chaining.
+	 */
+	def T positiveButtonText(String text)
+
+	/**
+	 * Sets the text on the negative button, defaults to {@code "No"}.
+	 * 
+	 * @param text  The text to be set, if {@code null}, nothing happens.
+	 * @return a matching DialogBuilder implementation for method chaining.
+	 */
+	def T negativeButtonText(String text)
+
+	/**
+	 * Sets the text on the cancel button, defaults to {@code "Cancel"}.
+	 * 
+	 * @param text  The text to be set, if {@code null}, nothing happens.
+	 * @return a matching DialogBuilder implementation for method chaining.
+	 */
+	def T cancelButtonText(String text)
+
+	/**
+	 * Creates and shows the dialog built by this builder, returns the user input (if any).
+	 */
+	def V startInteraction()
 }
