@@ -6,7 +6,6 @@ import tools.vitruv.framework.userinteraction.builder.MultipleChoiceSelectionInt
 import org.eclipse.xtend.lib.annotations.Accessors
 import tools.vitruv.framework.userinteraction.UserInteractionListener
 import tools.vitruv.framework.userinteraction.types.MultipleChoiceSelectionInteraction
-import java.util.List
 import tools.vitruv.framework.userinteraction.types.InteractionFactory
 
 /**
@@ -19,7 +18,7 @@ import tools.vitruv.framework.userinteraction.types.InteractionFactory
  * @author Heiko Klare
  */
 public abstract class MultipleChoiceSelectionInteractionBuilderBaseImpl<T, I extends MultipleChoiceSelectionInteraction<?>> extends BaseInteractionBuilder<T, I, OptionalSteps<T>> implements MultipleChoiceSelectionInteractionBuilder<T>, ChoicesStep<T>, OptionalSteps<T> {
-	@Accessors private List<String> choices = #["unspecified"]
+	@Accessors private Iterable<String> choices = #["unspecified"]
 
 	new(InteractionFactory interactionFactory, Iterable<UserInteractionListener> userInteractionListener) {
 		super(interactionFactory, userInteractionListener)
@@ -30,7 +29,7 @@ public abstract class MultipleChoiceSelectionInteractionBuilderBaseImpl<T, I ext
 		return this
 	}
 
-	override choices(String[] choices) {
+	override choices(Iterable<String> choices) {
 		if (choices === null || choices.length < 2) {
 			throw new IllegalArgumentException("Provide at least two choices to pick from.")
 		}

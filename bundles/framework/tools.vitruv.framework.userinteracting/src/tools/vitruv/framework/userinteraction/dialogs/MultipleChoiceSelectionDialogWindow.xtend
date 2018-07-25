@@ -72,7 +72,6 @@ class MultipleChoiceSelectionDialogWindow extends BaseDialogWindow {
 			button.setText(choice)
 			choiceButtons.add(button)
 		]
-		this.choiceButtons = choiceButtons.toArray(#[])
 
 		return composite
 	}

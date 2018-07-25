@@ -33,7 +33,7 @@ interface MultipleChoiceSelectionInteractionBuilder<T> {
          * @param choices   the texts for the choices to be set. If {@code null}, an {@link IllegalArgumentException} is
          * thrown.
          */
-        def OptionalSteps<T> choices(String[] choices)
+        def OptionalSteps<T> choices(Iterable<String> choices)
     }
     
     /**
