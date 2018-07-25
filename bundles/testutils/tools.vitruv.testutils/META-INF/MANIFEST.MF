@@ -26,11 +26,9 @@ Require-Bundle: tools.vitruv.framework.vsum;visibility:=reexport,
  org.eclipse.xtend.lib,
  org.eclipse.xtend.lib.macro,
  edu.kit.ipd.sdq.activextendannotations;bundle-version="1.0.0",
- tools.vitruv.framework.change.interaction,
- org.eclipse.ui.workbench
+ tools.vitruv.framework.change.interaction
 Export-Package: tools.vitruv.testutils,
  tools.vitruv.testutils.matchers,
  tools.vitruv.testutils.util
 Bundle-Vendor: vitruv.tools
-Import-Package: org.eclipse.swt.widgets
 
