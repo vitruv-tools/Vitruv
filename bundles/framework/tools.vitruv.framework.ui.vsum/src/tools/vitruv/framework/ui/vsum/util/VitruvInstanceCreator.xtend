@@ -12,7 +12,7 @@ import tools.vitruv.framework.change.processing.ChangePropagationSpecification
 import java.util.Set
 import tools.vitruv.framework.vsum.VirtualModelConfigurationBuilder
 import tools.vitruv.framework.vsum.VirtualModelImpl
-import tools.vitruv.framework.userinteraction.impl.UserInteractorImpl
+import tools.vitruv.framework.userinteraction.UserInteractionFactory
 
 class VitruvInstanceCreator {
 	private final Map<IProject, ? extends Set<VitruvDomain>> projectToDomains;
@@ -28,7 +28,6 @@ class VitruvInstanceCreator {
 	public def void createVsumProject() {
 		TuidManager.instance.reinitialize();
         val virtualModel = createVirtualModel(name);
-        virtualModel.userInteractor = new UserInteractorImpl();
         for (project : projectToDomains.keySet) {
         	for (domain : projectToDomains.get(project)) {
         		domain.builderApplicator.addToProject(project, virtualModel.folder, domain.fileExtensions.toList);
@@ -47,7 +46,7 @@ class VitruvInstanceCreator {
     		.addDomains(domains)
     		.addChangePropagationSpecifications(createChangePropagationSpecifications)
     		.toConfiguration();
-		val virtualModel = new VirtualModelImpl(project.location.toFile, new UserInteractorImpl(), configuration);
+		val virtualModel = new VirtualModelImpl(project.location.toFile, UserInteractionFactory.instance.createDialogUserInteractor(), configuration);
 		return virtualModel;
 	}
 	

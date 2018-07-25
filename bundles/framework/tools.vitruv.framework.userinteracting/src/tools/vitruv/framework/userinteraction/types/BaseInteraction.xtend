@@ -3,7 +3,7 @@ package tools.vitruv.framework.userinteraction.types
 import tools.vitruv.framework.userinteraction.WindowModality
 import tools.vitruv.framework.change.interaction.UserInteractionBase
 import org.eclipse.xtend.lib.annotations.Accessors
-import tools.vitruv.framework.userinteraction.resultprovider.InteractionResultProvider
+import tools.vitruv.framework.userinteraction.InteractionResultProvider
 
 /**
  * Base class for dialogs defining methods common to all types of dialogs like texts for common elements and code to

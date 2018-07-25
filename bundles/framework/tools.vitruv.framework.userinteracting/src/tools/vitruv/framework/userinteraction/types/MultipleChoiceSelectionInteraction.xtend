@@ -5,7 +5,7 @@ import tools.vitruv.framework.change.interaction.MultipleChoiceSelectionInteract
 import java.util.ArrayList
 import org.eclipse.xtend.lib.annotations.Accessors
 import tools.vitruv.framework.userinteraction.WindowModality
-import tools.vitruv.framework.userinteraction.resultprovider.InteractionResultProvider
+import tools.vitruv.framework.userinteraction.InteractionResultProvider
 
 /**
  * Implementation of a dialog providing a list of choices for the user to select a single or multiple ones, based on the

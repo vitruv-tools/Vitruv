@@ -10,6 +10,8 @@ import tools.vitruv.framework.userinteraction.dialogs.TextInputDialogWindow
 import tools.vitruv.framework.userinteraction.types.TextInputInteraction.InputValidator
 import tools.vitruv.framework.userinteraction.dialogs.MultipleChoiceSelectionDialogWindow
 import tools.vitruv.framework.userinteraction.NotificationType
+import org.eclipse.ui.PlatformUI
+import tools.vitruv.framework.userinteraction.InteractionResultProvider
 
 /**
  * @author Heiko Klare
@@ -18,9 +20,9 @@ class DialogInteractionProvider implements InteractionResultProvider {
 	private final Shell parentShell;
 	private final Display display;
 
-	new(Shell parentShell, Display display) {
-		this.parentShell = parentShell;
-		this.display = display;
+	new() {
+		this.display = if(PlatformUI.isWorkbenchRunning()) PlatformUI.getWorkbench().getDisplay() else PlatformUI.createDisplay();
+        this.parentShell = display.getActiveShell();
 	}
 
 	private def void showDialog(BaseDialogWindow dialog) {
@@ -64,6 +66,10 @@ class DialogInteractionProvider implements InteractionResultProvider {
 			cancelDecisionText, true, choices);
 		dialog.showDialog()
 		return dialog.selectedChoices;
+	}
+	
+	override getDecoratedInteractionResultProvider() {
+		return this;
 	}
 	
 }

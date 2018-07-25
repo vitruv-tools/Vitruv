@@ -16,19 +16,35 @@ import tools.vitruv.framework.userinteraction.UserInteractionListener
 import java.util.List
 import org.eclipse.xtend.lib.annotations.Accessors
 import java.util.ArrayList
-import tools.vitruv.framework.userinteraction.resultprovider.InteractionResultProvider
+import tools.vitruv.framework.userinteraction.types.InteractionFactoryImpl
+import tools.vitruv.framework.userinteraction.WindowModality
+import java.util.function.Function
+import tools.vitruv.framework.userinteraction.InteractionResultProvider
+import tools.vitruv.framework.userinteraction.DecoratingInteractionResultProvider
 
 /**
  * @author Heiko Klare
  */
-abstract class AbstractUserInteractor<T extends InteractionResultProvider> implements InternalUserInteractor {
+class UserInteractorImpl implements InternalUserInteractor {
+	private WindowModality defaultWindowModality = WindowModality.MODELESS;
 	@Accessors(PROTECTED_GETTER)
 	private final List<UserInteractionListener> userInteractionListener;
 	@Accessors(PROTECTED_GETTER)
-	private T interactionResultProvider;
+	private InteractionResultProvider interactionResultProvider;
+	private InteractionFactory interactionFactory;
 	
-	new () {
+	new(InteractionResultProvider interactionResultProvider) {
+		if (interactionResultProvider === null) {
+			throw new IllegalArgumentException("Interaction result provider must not be null");
+		}
+		this.interactionResultProvider = interactionResultProvider;
 		this.userInteractionListener = new ArrayList<UserInteractionListener>();
+		updateInteractionFactory();
+	}
+	
+	new(InteractionResultProvider interactionResultProvider, WindowModality defaultWindowModality) {
+		this(interactionResultProvider);
+		this.defaultWindowModality = defaultWindowModality;
 	}
 	
 	public override NotificationInteractionBuilder getNotificationDialogBuilder() {
@@ -55,13 +71,27 @@ abstract class AbstractUserInteractor<T extends InteractionResultProvider> imple
 		this.userInteractionListener += listener;
 	}
 	
-	protected abstract def InteractionFactory getInteractionFactory();
-	protected abstract def T createInteractionResultProvider();
-	
-	public def final T getInteractionResultProvider() {
-		if (interactionResultProvider === null) {
-			interactionResultProvider = createInteractionResultProvider();
-		}
+	public def final InteractionResultProvider getInteractionResultProvider() {
 		return interactionResultProvider;
-	} 
+	}
+	
+	override decorateUserInteractionResultProvider(Function<InteractionResultProvider, DecoratingInteractionResultProvider> decoratingInteractionResultProviderProducer) {
+		if (interactionResultProvider === null) {
+			throw new IllegalArgumentException("Interaction result provider must not be null");
+		}
+		this.interactionResultProvider = decoratingInteractionResultProviderProducer.apply(interactionResultProvider);
+		updateInteractionFactory(); 
+	}
+	
+	override removeDecoratingUserInteractionResultProvider() {
+		if (this.interactionResultProvider.decoratedInteractionResultProvider !== null) {
+			this.interactionResultProvider = this.interactionResultProvider.decoratedInteractionResultProvider;
+			updateInteractionFactory();
+		}
+	}
+	
+	private def updateInteractionFactory() {
+		this.interactionFactory = new InteractionFactoryImpl(interactionResultProvider, defaultWindowModality);
+	}
+	
 }

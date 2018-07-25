@@ -6,7 +6,7 @@ import java.util.Collections;
 import org.eclipse.core.resources.ResourcesPlugin;
 
 import tools.vitruv.framework.domains.VitruvDomain;
-import tools.vitruv.framework.userinteraction.impl.UserInteractorImpl;
+import tools.vitruv.framework.userinteraction.UserInteractionFactory;
 import tools.vitruv.framework.vsum.InternalVirtualModel;
 import tools.vitruv.testutils.util.TestUtil;
 
@@ -17,7 +17,7 @@ public class IntegrationUtil {
 
     public static InternalVirtualModel createVsum(final Iterable<VitruvDomain> metamodels) {
     	File projectFolder = ResourcesPlugin.getWorkspace().getRoot().getLocation().append("/vitruvius.meta").toFile();
-    	return TestUtil.createVirtualModel(projectFolder, true, metamodels, Collections.emptyList(), new UserInteractorImpl());
+    	return TestUtil.createVirtualModel(projectFolder, true, metamodels, Collections.emptyList(), UserInteractionFactory.instance.createDialogUserInteractor());
     }
 
 }

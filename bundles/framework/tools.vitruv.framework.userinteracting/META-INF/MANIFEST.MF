@@ -18,6 +18,5 @@ Require-Bundle: org.apache.log4j,
  org.eclipse.xtend.lib,
  org.eclipse.xtend.lib.macro
 Export-Package: tools.vitruv.framework.userinteraction,
- tools.vitruv.framework.userinteraction.impl,
  tools.vitruv.framework.userinteraction.builder
 Bundle-Vendor: vitruv.tools

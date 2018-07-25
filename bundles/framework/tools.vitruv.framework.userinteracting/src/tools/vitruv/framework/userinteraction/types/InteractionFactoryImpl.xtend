@@ -2,7 +2,7 @@ package tools.vitruv.framework.userinteraction.types
 
 import tools.vitruv.framework.userinteraction.types.InteractionFactory
 import tools.vitruv.framework.userinteraction.WindowModality
-import tools.vitruv.framework.userinteraction.resultprovider.InteractionResultProvider
+import tools.vitruv.framework.userinteraction.InteractionResultProvider
 
 /**
  * @author Heiko Klare

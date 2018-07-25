@@ -3,7 +3,7 @@ package tools.vitruv.framework.userinteraction.types
 import tools.vitruv.framework.change.interaction.impl.InteractionFactoryImpl;
 import tools.vitruv.framework.change.interaction.MultipleChoiceSingleSelectionUserInteraction
 import tools.vitruv.framework.userinteraction.WindowModality
-import tools.vitruv.framework.userinteraction.resultprovider.InteractionResultProvider
+import tools.vitruv.framework.userinteraction.InteractionResultProvider
 
 /**
  * Implementation of an interaction providing a list of choices for the user to select a single one.

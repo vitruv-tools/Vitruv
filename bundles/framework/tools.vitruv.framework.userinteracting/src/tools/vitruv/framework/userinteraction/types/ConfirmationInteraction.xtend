@@ -3,7 +3,7 @@ package tools.vitruv.framework.userinteraction.types
 import tools.vitruv.framework.change.interaction.ConfirmationUserInteraction
 import tools.vitruv.framework.change.interaction.impl.InteractionFactoryImpl
 import tools.vitruv.framework.userinteraction.WindowModality
-import tools.vitruv.framework.userinteraction.resultprovider.InteractionResultProvider
+import tools.vitruv.framework.userinteraction.InteractionResultProvider
 
 /**
  * A dialog for asking the user to provide a positive or negative answer to some kind of request.

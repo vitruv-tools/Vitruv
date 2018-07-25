@@ -5,11 +5,12 @@ import org.apache.log4j.Logger
 import java.util.Random
 import tools.vitruv.framework.userinteraction.NotificationType
 import tools.vitruv.framework.userinteraction.types.TextInputInteraction.InputValidator
+import tools.vitruv.framework.userinteraction.InteractionResultProvider
 
 /**
  * @author Heiko Klare
  */
-public class PredefinedThinktimeSimulatingInteractionProvider extends PredefinedInteractionProvider {
+public class PredefinedThinktimeSimulatingInteractionProvider extends PredefinedInteractionResultProviderImpl {
 	private static final Logger logger = Logger.getLogger(PredefinedThinktimeSimulatingInteractionProvider);
 	private final Random random;
 	private final int minWaittime;

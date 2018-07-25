@@ -1,4 +1,4 @@
-package tools.vitruv.framework.userinteraction.resultprovider
+package tools.vitruv.framework.userinteraction
 
 import tools.vitruv.framework.userinteraction.WindowModality
 import tools.vitruv.framework.userinteraction.types.TextInputInteraction.InputValidator
@@ -14,4 +14,6 @@ interface InteractionResultProvider {
 	def String getTextInputInteractionResult(WindowModality windowModality, String title, String message, String positiveDecisionText, String cancelDecisionText, InputValidator inputValidator);
 	def int getMultipleChoiceSingleSelectionInteractionResult(WindowModality windowModality, String title, String message, String positiveDecisionText, String cancelDecisionText, Iterable<String> choices);
 	def Iterable<Integer> getMultipleChoiceMultipleSelectionInteractionResult(WindowModality windowModality, String title, String message, String positiveDecisionText, String cancelDecisionText, Iterable<String> choices);
+	
+	def InteractionResultProvider getDecoratedInteractionResultProvider();
 }

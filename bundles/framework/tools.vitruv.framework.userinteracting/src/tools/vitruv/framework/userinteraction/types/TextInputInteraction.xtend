@@ -5,7 +5,7 @@ import tools.vitruv.framework.userinteraction.WindowModality
 import tools.vitruv.framework.userinteraction.types.InputFieldType
 import tools.vitruv.framework.change.interaction.FreeTextUserInteraction
 import tools.vitruv.framework.change.interaction.impl.InteractionFactoryImpl
-import tools.vitruv.framework.userinteraction.resultprovider.InteractionResultProvider
+import tools.vitruv.framework.userinteraction.InteractionResultProvider
 
 /**
  * A dialog providing a single- or multi-line text input field, optionally restricted by a {@link InputValidator}.

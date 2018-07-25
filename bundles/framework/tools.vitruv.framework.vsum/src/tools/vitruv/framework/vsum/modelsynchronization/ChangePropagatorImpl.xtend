@@ -31,7 +31,7 @@ import java.util.Collection
 import tools.vitruv.framework.userinteraction.InternalUserInteractor
 import tools.vitruv.framework.userinteraction.UserInteractionListener
 import tools.vitruv.framework.change.interaction.UserInteractionBase
-import tools.vitruv.framework.userinteraction.impl.ReuseUserInputInteractorImpl
+import tools.vitruv.framework.userinteraction.UserInteractionFactory
 
 class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserver, UserInteractionListener {
 	static Logger logger = Logger.getLogger(ChangePropagatorImpl.getSimpleName())
@@ -144,35 +144,28 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 		ChangedResourcesTracker changedResourcesTracker
 	) {
 		val consequentialChanges = newArrayList();
-		//modelRepository.startRecording;
-		resourceRepository.startRecording;
 		
 		// retrieve user inputs from past changes, construct a UserInteractor which tries to reuse them:
-		var pastUserInputsFromChange = change.getUserInteractions()
-		
-		val reuseInteractor = new ReuseUserInputInteractorImpl(pastUserInputsFromChange, userInteractor)
-		reuseInteractor.registerUserInputListener(this)
-		
+		val pastUserInputsFromChange = change.getUserInteractions()
+		if (!pastUserInputsFromChange.nullOrEmpty) {
+			userInteractor.decorateUserInteractionResultProvider([provider | UserInteractionFactory.instance.createPredefinedInteractionResultProvider(provider, pastUserInputsFromChange)]);
+		}
+		//modelRepository.startRecording;
+		resourceRepository.startRecording;
 		for (propagationSpecification : changePropagationProvider.
 			getChangePropagationSpecifications(change.changeDomain)) {
-			// set propagationSpecification's UserInteractor to the reuse interactor (which falls back to the previously
-			// used user interactor when no matching user input is available for reuse)
-			if (pastUserInputsFromChange !== null) {
-			    propagationSpecification.setUserInteractor(reuseInteractor)
-			}
 			propagateChangeForChangePropagationSpecification(change, propagationSpecification, changedResourcesTracker);
-			// user interaction happens here ^
 		}
 		//consequentialChanges += modelRepository.endRecording();
 		consequentialChanges += resourceRepository.endRecording();
 		consequentialChanges.forEach[logger.debug(it)];
 
+		userInteractor.removeDecoratingUserInteractionResultProvider();
         change.userInteractions = userInteractions
 		val propagatedChange = new PropagatedChange(change,
 				VitruviusChangeFactory.instance.createCompositeChange(consequentialChanges))
 		val resultingChanges = new ArrayList()
 		resultingChanges += propagatedChange
-		//userInteractor.resetUserInteractions
 
 		val consequentialChangesToRePropagate = propagatedChange.consequentialChanges.transactionalChangeSequence
 			.map[rewrapWithoutCorrespondenceChanges].filterNull.filter[containsConcreteChange]
