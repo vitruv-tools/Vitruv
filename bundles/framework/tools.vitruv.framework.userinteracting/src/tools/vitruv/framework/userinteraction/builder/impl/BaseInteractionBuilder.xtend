@@ -1,7 +1,7 @@
 package tools.vitruv.framework.userinteraction.builder.impl
 
 import tools.vitruv.framework.userinteraction.builder.InteractionBuilder
-import tools.vitruv.framework.userinteraction.WindowModality
+import tools.vitruv.framework.userinteraction.UserInteractionOptions.WindowModality
 import tools.vitruv.framework.change.interaction.UserInteractionBase
 import org.eclipse.xtend.lib.annotations.Accessors
 import tools.vitruv.framework.userinteraction.UserInteractionListener

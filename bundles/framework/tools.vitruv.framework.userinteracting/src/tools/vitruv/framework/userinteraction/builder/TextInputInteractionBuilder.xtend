@@ -1,8 +1,8 @@
 package tools.vitruv.framework.userinteraction.builder
 
 import java.util.function.Function
-import tools.vitruv.framework.userinteraction.types.TextInputInteraction.InputValidator
-import tools.vitruv.framework.userinteraction.types.InputFieldType
+import tools.vitruv.framework.userinteraction.UserInteractionOptions.InputFieldType
+import tools.vitruv.framework.userinteraction.UserInteractionOptions.InputValidator
 
 /**
  * Defines one single entry point to the build process of a {@link TextInputDialog} thus ensuring that mandatory

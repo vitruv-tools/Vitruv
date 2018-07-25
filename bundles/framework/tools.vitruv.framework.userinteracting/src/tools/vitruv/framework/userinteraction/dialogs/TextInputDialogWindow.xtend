@@ -1,6 +1,6 @@
 package tools.vitruv.framework.userinteraction.dialogs
 
-import tools.vitruv.framework.userinteraction.WindowModality
+import tools.vitruv.framework.userinteraction.UserInteractionOptions.WindowModality
 import org.eclipse.swt.widgets.Composite
 import org.eclipse.swt.widgets.Control
 import org.eclipse.swt.SWT
@@ -12,8 +12,8 @@ import org.eclipse.jface.dialogs.IDialogConstants
 import org.eclipse.swt.widgets.Shell
 import org.eclipse.swt.widgets.Text
 import org.eclipse.jface.fieldassist.ControlDecoration
-import tools.vitruv.framework.userinteraction.types.InputFieldType
-import tools.vitruv.framework.userinteraction.types.TextInputInteraction.InputValidator
+import tools.vitruv.framework.userinteraction.UserInteractionOptions.InputFieldType
+import tools.vitruv.framework.userinteraction.UserInteractionOptions.InputValidator
 import org.eclipse.swt.events.VerifyEvent
 import org.eclipse.swt.events.VerifyListener
 import org.eclipse.jface.fieldassist.FieldDecorationRegistry

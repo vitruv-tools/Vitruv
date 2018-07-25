@@ -18,7 +18,7 @@ import org.eclipse.xtext.xbase.lib.Extension;
 import tools.vitruv.extensions.dslsruntime.reactions.AbstractRepairRoutineRealization;
 import tools.vitruv.extensions.dslsruntime.reactions.ReactionExecutionState;
 import tools.vitruv.extensions.dslsruntime.reactions.structure.CallHierarchyHaving;
-import tools.vitruv.framework.userinteraction.WindowModality;
+import tools.vitruv.framework.userinteraction.UserInteractionOptions;
 
 @SuppressWarnings("all")
 public class CreateFemaleMemberOfFamilyRoutine extends AbstractRepairRoutineRealization {
@@ -54,14 +54,14 @@ public class CreateFemaleMemberOfFamilyRoutine extends AbstractRepairRoutineReal
         familiesNames.add(f.getLastName());
       }
       final String selectMsg = "Please select the family to which the person belongs.";
-      final int selected = (this.userInteractor.getSingleSelectionDialogBuilder().message(selectMsg).choices(((String[])Conversions.unwrapArray(familiesNames, String.class))).windowModality(WindowModality.MODAL).startInteraction()).intValue();
+      final int selected = (this.userInteractor.getSingleSelectionDialogBuilder().message(selectMsg).choices(((String[])Conversions.unwrapArray(familiesNames, String.class))).windowModality(UserInteractionOptions.WindowModality.MODAL).startInteraction()).intValue();
       final Family selectedFamily = collectionFamilies.get(selected);
       selectedFamily.setLastName(person.getFullName().split(" ")[1]);
       List<String> collectionRoles = new ArrayList<String>();
       Iterables.<String>addAll(collectionRoles, Collections.<String>unmodifiableList(CollectionLiterals.<String>newArrayList("Mother", "Daughter")));
       final String selectMsgRoles = "Please select whether the person is a mother or a daughter.";
       final List<String> _converted_collectionRoles = (List<String>)collectionRoles;
-      final int selectedRole = (this.userInteractor.getSingleSelectionDialogBuilder().message(selectMsgRoles).choices(((String[])Conversions.unwrapArray(_converted_collectionRoles, String.class))).windowModality(WindowModality.MODAL).startInteraction()).intValue();
+      final int selectedRole = (this.userInteractor.getSingleSelectionDialogBuilder().message(selectMsgRoles).choices(((String[])Conversions.unwrapArray(_converted_collectionRoles, String.class))).windowModality(UserInteractionOptions.WindowModality.MODAL).startInteraction()).intValue();
       if ((selectedRole == 0)) {
         selectedFamily.setMother(member);
       } else {

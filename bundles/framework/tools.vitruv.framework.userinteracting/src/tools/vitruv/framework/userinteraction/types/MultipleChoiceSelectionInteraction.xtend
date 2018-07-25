@@ -3,7 +3,7 @@ package tools.vitruv.framework.userinteraction.types
 import tools.vitruv.framework.change.interaction.MultipleChoiceSelectionInteractionBase
 import java.util.ArrayList
 import org.eclipse.xtend.lib.annotations.Accessors
-import tools.vitruv.framework.userinteraction.WindowModality
+import tools.vitruv.framework.userinteraction.UserInteractionOptions.WindowModality
 import tools.vitruv.framework.userinteraction.InteractionResultProvider
 
 /**

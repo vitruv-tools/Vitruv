@@ -16,7 +16,7 @@ import tools.vitruv.framework.userinteraction.UserInteractionListener
 import java.util.List
 import java.util.ArrayList
 import tools.vitruv.framework.userinteraction.types.InteractionFactoryImpl
-import tools.vitruv.framework.userinteraction.WindowModality
+import tools.vitruv.framework.userinteraction.UserInteractionOptions.WindowModality
 import java.util.function.Function
 import tools.vitruv.framework.userinteraction.InteractionResultProvider
 import tools.vitruv.framework.userinteraction.DecoratingInteractionResultProvider

@@ -1,8 +1,8 @@
 package tools.vitruv.framework.userinteraction
 
-import tools.vitruv.framework.userinteraction.WindowModality
-import tools.vitruv.framework.userinteraction.types.TextInputInteraction.InputValidator
-import tools.vitruv.framework.userinteraction.NotificationType
+import tools.vitruv.framework.userinteraction.UserInteractionOptions.WindowModality
+import tools.vitruv.framework.userinteraction.UserInteractionOptions.NotificationType
+import tools.vitruv.framework.userinteraction.UserInteractionOptions.InputValidator
 
 /**
  * A provider for interaction results. Implementations can define how the result for a certain kind of input

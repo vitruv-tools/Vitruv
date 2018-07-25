@@ -1,7 +1,7 @@
 package tools.vitruv.framework.userinteraction.builder.impl
 
 import tools.vitruv.framework.userinteraction.builder.NotificationInteractionBuilder
-import tools.vitruv.framework.userinteraction.NotificationType
+import tools.vitruv.framework.userinteraction.UserInteractionOptions.NotificationType
 import tools.vitruv.framework.userinteraction.builder.NotificationInteractionBuilder.OptionalSteps
 import tools.vitruv.framework.userinteraction.types.NotificationInteraction
 import tools.vitruv.framework.userinteraction.types.InteractionFactory

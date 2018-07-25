@@ -1,10 +1,10 @@
 package tools.vitruv.framework.userinteraction.impl
 
-import tools.vitruv.framework.userinteraction.WindowModality
+import tools.vitruv.framework.userinteraction.UserInteractionOptions.WindowModality
 import org.apache.log4j.Logger
 import java.util.Random
-import tools.vitruv.framework.userinteraction.NotificationType
-import tools.vitruv.framework.userinteraction.types.TextInputInteraction.InputValidator
+import tools.vitruv.framework.userinteraction.UserInteractionOptions.NotificationType
+import tools.vitruv.framework.userinteraction.UserInteractionOptions.InputValidator
 import tools.vitruv.framework.userinteraction.InteractionResultProvider
 
 /**

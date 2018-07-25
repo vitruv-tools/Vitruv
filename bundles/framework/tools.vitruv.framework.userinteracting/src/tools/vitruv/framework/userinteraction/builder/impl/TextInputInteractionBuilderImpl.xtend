@@ -1,8 +1,8 @@
 package tools.vitruv.framework.userinteraction.builder.impl
 
-import tools.vitruv.framework.userinteraction.types.TextInputInteraction.InputValidator
+import tools.vitruv.framework.userinteraction.UserInteractionOptions.InputValidator
 import java.util.function.Function
-import tools.vitruv.framework.userinteraction.types.InputFieldType
+import tools.vitruv.framework.userinteraction.UserInteractionOptions.InputFieldType
 import tools.vitruv.framework.userinteraction.builder.TextInputInteractionBuilder.OptionalSteps
 import tools.vitruv.framework.userinteraction.UserInteractionListener
 import tools.vitruv.framework.userinteraction.builder.TextInputInteractionBuilder

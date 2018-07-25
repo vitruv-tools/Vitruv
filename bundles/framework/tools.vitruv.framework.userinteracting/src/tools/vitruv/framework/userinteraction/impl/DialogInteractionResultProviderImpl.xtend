@@ -1,15 +1,15 @@
 package tools.vitruv.framework.userinteraction.impl
 
 import tools.vitruv.framework.userinteraction.dialogs.ConfirmationDialogWindow
-import tools.vitruv.framework.userinteraction.WindowModality
+import tools.vitruv.framework.userinteraction.UserInteractionOptions.WindowModality
 import org.eclipse.swt.widgets.Shell
 import org.eclipse.swt.widgets.Display
 import tools.vitruv.framework.userinteraction.dialogs.BaseDialogWindow
 import tools.vitruv.framework.userinteraction.dialogs.NotificationDialogWindow
 import tools.vitruv.framework.userinteraction.dialogs.TextInputDialogWindow
-import tools.vitruv.framework.userinteraction.types.TextInputInteraction.InputValidator
+import tools.vitruv.framework.userinteraction.UserInteractionOptions.InputValidator
 import tools.vitruv.framework.userinteraction.dialogs.MultipleChoiceSelectionDialogWindow
-import tools.vitruv.framework.userinteraction.NotificationType
+import tools.vitruv.framework.userinteraction.UserInteractionOptions.NotificationType
 import org.eclipse.ui.PlatformUI
 import tools.vitruv.framework.userinteraction.InteractionResultProvider
 

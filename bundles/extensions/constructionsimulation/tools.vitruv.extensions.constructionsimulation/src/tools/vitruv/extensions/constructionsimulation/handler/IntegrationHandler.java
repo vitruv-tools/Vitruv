@@ -15,7 +15,7 @@ import org.eclipse.ui.handlers.HandlerUtil;
 import tools.vitruv.extensions.constructionsimulation.LoggerConfigurator;
 import tools.vitruv.framework.userinteraction.UserInteractionFactory;
 import tools.vitruv.framework.userinteraction.UserInteractor;
-import tools.vitruv.framework.userinteraction.WindowModality;
+import tools.vitruv.framework.userinteraction.UserInteractionOptions.WindowModality;
 import tools.vitruv.framework.vsum.InternalVirtualModel;
 
 /**

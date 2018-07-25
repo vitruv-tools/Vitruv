@@ -2,7 +2,7 @@ package tools.vitruv.extensions.dslsruntime.reactions.correspondenceFailHandler
 
 import org.eclipse.emf.ecore.EObject
 import tools.vitruv.framework.userinteraction.UserInteractor
-import tools.vitruv.framework.userinteraction.WindowModality
+import tools.vitruv.framework.userinteraction.UserInteractionOptions.WindowModality
 
 class CorrespondenceFailDefaultDialog extends AbstractCorrespondenceFailHandler {
 	private final boolean abortEffect;

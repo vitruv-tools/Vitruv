@@ -1,6 +1,6 @@
 package tools.vitruv.framework.userinteraction.builder
 
-import tools.vitruv.framework.userinteraction.NotificationType
+import tools.vitruv.framework.userinteraction.UserInteractionOptions.NotificationType
 
 /**
  * Defines one single entry point to the build process of a {@link NotificationDialog} thus ensuring that mandatory

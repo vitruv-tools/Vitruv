@@ -1,6 +1,6 @@
 package tools.vitruv.framework.userinteraction.builder
 
-import tools.vitruv.framework.userinteraction.WindowModality
+import tools.vitruv.framework.userinteraction.UserInteractionOptions.WindowModality
 
 /**
  * Interface for functionality relevant to all types of dialog builders.<br>

@@ -1,11 +1,12 @@
 package tools.vitruv.framework.userinteraction.types
 
 import java.util.function.Function
-import tools.vitruv.framework.userinteraction.WindowModality
-import tools.vitruv.framework.userinteraction.types.InputFieldType
+import tools.vitruv.framework.userinteraction.UserInteractionOptions.WindowModality
+import tools.vitruv.framework.userinteraction.UserInteractionOptions.InputFieldType
 import tools.vitruv.framework.change.interaction.FreeTextUserInteraction
 import tools.vitruv.framework.change.interaction.impl.InteractionFactoryImpl
 import tools.vitruv.framework.userinteraction.InteractionResultProvider
+import tools.vitruv.framework.userinteraction.UserInteractionOptions.InputValidator
 
 /**
  * An interaction providing a single- or multi-line text input field, optionally restricted by a {@link InputValidator}.
@@ -60,25 +61,4 @@ public class TextInputInteraction extends BaseInteraction<FreeTextUserInteractio
         return userInput;
 	}
 	
-	
-	/**
-	 * Interface for input validators used in {@link TextInputDialog}s. The {@link #isInputValid(String) isInputValid}
-	 * method is used to accept or deny input changes, the message constructed in
-	 * {@link #getInvalidInputMessage(String) getInvalidInputMessage} is displayed whenever the user tries to enter
-	 * illegal characters as determined by {@link #isInputValid(String) isInputValid}.
-	 */
-	interface InputValidator {
-		
-		/**
-		 * Get a warning message to be displayed when the user tries to add illegal characters (as determined by 
-		 * {@link isInputValid(String)}).
-		 */
-		def String getInvalidInputMessage(String input)
-		
-		/**
-		 * Determines whether or not the current input is to be considered valid. If not, the illegal characters will
-		 * not be added to the input.
-		 */
-		def boolean isInputValid(String input)
-	}
 }
