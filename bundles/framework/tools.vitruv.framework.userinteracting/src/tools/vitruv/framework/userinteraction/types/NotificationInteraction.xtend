@@ -7,7 +7,7 @@ import tools.vitruv.framework.userinteraction.WindowModality
 import tools.vitruv.framework.userinteraction.InteractionResultProvider
 
 /**
- * A dialog to notify the user about something.
+ * An interaction to notify the user about something.
  * 
  * @author Dominik Klooz
  * @author Heiko Klare

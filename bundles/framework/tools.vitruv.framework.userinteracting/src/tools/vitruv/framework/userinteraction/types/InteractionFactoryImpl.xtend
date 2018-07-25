@@ -5,6 +5,8 @@ import tools.vitruv.framework.userinteraction.WindowModality
 import tools.vitruv.framework.userinteraction.InteractionResultProvider
 
 /**
+ * Implementation of {@link InteractionFactory} that creates all possible types of interactions.
+ * 
  * @author Heiko Klare
  */
 public class InteractionFactoryImpl implements InteractionFactory {

@@ -6,7 +6,7 @@ import tools.vitruv.framework.userinteraction.WindowModality
 import tools.vitruv.framework.userinteraction.InteractionResultProvider
 
 /**
- * A dialog for asking the user to provide a positive or negative answer to some kind of request.
+ * An interaction for asking the user to provide a positive or negative answer to some kind of request.
  * 
  * @author Dominik Klooz
  * @author Heiko Klare

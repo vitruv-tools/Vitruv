@@ -1,6 +1,5 @@
 package tools.vitruv.framework.userinteraction.types
 
-import tools.vitruv.framework.userinteraction.types.SelectionType
 import tools.vitruv.framework.change.interaction.MultipleChoiceSelectionInteractionBase
 import java.util.ArrayList
 import org.eclipse.xtend.lib.annotations.Accessors
@@ -8,8 +7,7 @@ import tools.vitruv.framework.userinteraction.WindowModality
 import tools.vitruv.framework.userinteraction.InteractionResultProvider
 
 /**
- * Implementation of a dialog providing a list of choices for the user to select a single or multiple ones, based on the
- * {@link SelectionType} specified.
+ * Implementation of an interaction providing a list of choices for the user to select a single or multiple ones.
  * 
  * @author Dominik Klooz
  * @author Heiko Klare

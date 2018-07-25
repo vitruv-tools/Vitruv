@@ -8,7 +8,7 @@ import tools.vitruv.framework.change.interaction.impl.InteractionFactoryImpl
 import tools.vitruv.framework.userinteraction.InteractionResultProvider
 
 /**
- * A dialog providing a single- or multi-line text input field, optionally restricted by a {@link InputValidator}.
+ * An interaction providing a single- or multi-line text input field, optionally restricted by a {@link InputValidator}.
  * 
  * @author Dominik Klooz
  * @author Heiko Klare

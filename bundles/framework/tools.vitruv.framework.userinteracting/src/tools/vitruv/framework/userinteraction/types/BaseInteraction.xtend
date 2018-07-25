@@ -6,7 +6,7 @@ import org.eclipse.xtend.lib.annotations.Accessors
 import tools.vitruv.framework.userinteraction.InteractionResultProvider
 
 /**
- * Base class for dialogs defining methods common to all types of dialogs like texts for common elements and code to
+ * Base class for interactions defining methods common to all types of interaction like texts for common elements and code to
  * handle changes to the window modality.
  * 
  * @author Dominik Klooz
