@@ -14,7 +14,6 @@ import tools.vitruv.framework.userinteraction.builder.MultipleChoiceMultiSelecti
 import tools.vitruv.framework.userinteraction.types.InteractionFactory
 import tools.vitruv.framework.userinteraction.UserInteractionListener
 import java.util.List
-import org.eclipse.xtend.lib.annotations.Accessors
 import java.util.ArrayList
 import tools.vitruv.framework.userinteraction.types.InteractionFactoryImpl
 import tools.vitruv.framework.userinteraction.WindowModality
@@ -23,13 +22,13 @@ import tools.vitruv.framework.userinteraction.InteractionResultProvider
 import tools.vitruv.framework.userinteraction.DecoratingInteractionResultProvider
 
 /**
+ * The default implementation of the {@link InternalUserInteractor}.
+ * 
  * @author Heiko Klare
  */
 class UserInteractorImpl implements InternalUserInteractor {
 	private WindowModality defaultWindowModality = WindowModality.MODELESS;
-	@Accessors(PROTECTED_GETTER)
 	private final List<UserInteractionListener> userInteractionListener;
-	@Accessors(PROTECTED_GETTER)
 	private InteractionResultProvider interactionResultProvider;
 	private InteractionFactory interactionFactory;
 	
@@ -69,10 +68,6 @@ class UserInteractorImpl implements InternalUserInteractor {
 	
 	override registerUserInputListener(UserInteractionListener listener) {
 		this.userInteractionListener += listener;
-	}
-	
-	public def final InteractionResultProvider getInteractionResultProvider() {
-		return interactionResultProvider;
 	}
 	
 	override decorateUserInteractionResultProvider(Function<InteractionResultProvider, DecoratingInteractionResultProvider> decoratingInteractionResultProviderProducer) {
