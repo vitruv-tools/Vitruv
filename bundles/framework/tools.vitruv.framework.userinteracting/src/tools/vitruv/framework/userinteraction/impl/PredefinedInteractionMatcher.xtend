@@ -10,6 +10,9 @@ import java.util.List
 import java.util.ArrayList
 
 /**
+ * A matcher class that allows to get an appropriate {@link UserInteractionBase} of those predefined using 
+ * {@link PredefinedInteractionMatcher#addInteraction(UserInteractionBase) addInteraction(UserInteractionBase)} for each kind of request.
+ * 
  * @author Dominik Klooz
  * @author Heiko Klare
  */

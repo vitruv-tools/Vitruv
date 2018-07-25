@@ -8,11 +8,22 @@ import tools.vitruv.framework.userinteraction.InteractionResultProvider
 import tools.vitruv.framework.userinteraction.PredefinedInteractionResultProvider
 
 /**
+ * An interaction result provider using predefined inputs, given using the 
+ * {@link PredefinedInteractionResultProvider#addUserInteractions(UserInteractionBase...) addUserInteractions(UserInteractionBase...)}
+ * method. The fallback result provider specified in the constructor is used, whenever no matching predefined input for a 
+ * request is found.
  * @author Heiko Klare
  */
 public class PredefinedInteractionResultProviderImpl extends PredefinedInteractionResultProvider {
 	private final PredefinedInteractionMatcher predefinedInteractionMatcher;
 	
+	/**
+	 * Instantiates a new provider.
+	 * The <code>fallbackResultProvider</code> is used whenever no matching input for a request was predefined.
+	 * If no fallback provider is specified, an exception is thrown when no matching predefined input is found.
+	 * 
+	 * @param fallbackResultProvider - the result provider to use when not matching predefined input is found
+	 */
 	new (InteractionResultProvider fallbackResultProvider) {
 		super(fallbackResultProvider)
 		this.predefinedInteractionMatcher = new PredefinedInteractionMatcher();

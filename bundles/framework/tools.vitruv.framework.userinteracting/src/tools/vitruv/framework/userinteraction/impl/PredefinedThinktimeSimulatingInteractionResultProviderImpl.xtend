@@ -8,6 +8,9 @@ import tools.vitruv.framework.userinteraction.types.TextInputInteraction.InputVa
 import tools.vitruv.framework.userinteraction.InteractionResultProvider
 
 /**
+ * A predefined result provider that also simulates a think time on each request.
+ * @see PredefinedInteractionResultProviderImpl
+ * 
  * @author Heiko Klare
  */
 public class PredefinedThinktimeSimulatingInteractionResultProviderImpl extends PredefinedInteractionResultProviderImpl {
@@ -17,6 +20,11 @@ public class PredefinedThinktimeSimulatingInteractionResultProviderImpl extends 
     private final int maxWaittime;
     private final int waitTimeRange;
     
+    /**
+     * {@inheritDoc}
+     * @param minWaittime - the minimum time to wait in milliseconds 
+     * @param maxWaittime - the maximum time to wait in milliseconds
+     */
     new(InteractionResultProvider interactionProviderFallback, int minWaittime, int maxWaittime) {
     	super(interactionProviderFallback)
     	if (minWaittime > maxWaittime) {

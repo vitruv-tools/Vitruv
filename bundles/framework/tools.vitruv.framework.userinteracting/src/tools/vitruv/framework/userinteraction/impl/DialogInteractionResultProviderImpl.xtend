@@ -14,6 +14,8 @@ import org.eclipse.ui.PlatformUI
 import tools.vitruv.framework.userinteraction.InteractionResultProvider
 
 /**
+ * A result provider based on dialog windows to make the requested input.
+ * 
  * @author Heiko Klare
  */
 class DialogInteractionResultProviderImpl implements InteractionResultProvider {
