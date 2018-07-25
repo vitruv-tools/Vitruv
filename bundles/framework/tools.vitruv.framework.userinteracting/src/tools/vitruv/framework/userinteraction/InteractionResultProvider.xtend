@@ -5,6 +5,9 @@ import tools.vitruv.framework.userinteraction.types.TextInputInteraction.InputVa
 import tools.vitruv.framework.userinteraction.NotificationType
 
 /**
+ * A provider for interaction results. Implementations can define how the result for a certain kind of input
+ * can be generated. This can, for example, be a dialog or a predefined value.
+ * 
  * @author Heiko Klare
  */
 interface InteractionResultProvider {

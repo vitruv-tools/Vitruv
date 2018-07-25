@@ -13,6 +13,7 @@ import tools.vitruv.framework.userinteraction.builder.TextInputInteractionBuilde
  * @author Dominik Klooz
  * @author Heiko Klare
  */
+// TODO Rename all "dialog" to "Interaction" -> also adapt application projects
 public interface UserInteractor {
 	
 	/**

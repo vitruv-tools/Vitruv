@@ -1,8 +1,10 @@
 package tools.vitruv.framework.userinteraction
 
+import tools.vitruv.framework.userinteraction.types.NotificationInteraction
+
 /**
- * Enum for the levels of severity for notification messages (specifies the icon used in {@link NotificationDialog}s).
- * @see tools.vitruv.framework.userinteraction.impl.NotificationDialog NotificationDialog
+ * Enum for the levels of severity for notification messages (specifies the icon used in {@link NotificationInteraction}s).
+ * @see NotificationInteraction
  * 
  * @uthor Dominik Klooz
  */
