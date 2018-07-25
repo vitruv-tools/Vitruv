@@ -3,23 +3,23 @@ package tools.vitruv.framework.userinteraction.builder
 import java.util.Collection
 
 /**
- * Defines one single entry point to the build process of a {@link MultipleChoiceSelectionDialog} thus ensuring that
+ * Defines one single entry point to the build process of a {@link MultipleChoiceSelectionInteraction} thus ensuring that
  * mandatory information has to be provided before continuing. The nested interfaces represent another mandatory step
- * ({@link MultipleChoiceSelectionDialogBuilder.ChoicesStep}) and optional steps as well as the build method
- * ({@link MultipleChoiceSelectionDialogBuilder.OptionalSteps}, extends {@link DialogBuilder} to provide access
- * to build step methods common to all types of dialogs).<br>
+ * ({@link MultipleChoiceSelectionInteractionBuilder.ChoicesStep}) and optional steps as well as the build method
+ * ({@link MultipleChoiceSelectionInteractionBuilder.OptionalSteps}, extends {@link InteractionBuilder} to provide access
+ * to build step methods common to all types of Interactions).<br>
  * <br>
- * For further info on the rationale behind the ...DialogBuilder implementation, see the {@link DialogBuilder} javadoc.
+ * For further info on the rationale behind the ...InteractionBuilder implementation, see the {@link InteractionBuilder} javadoc.
  * 
  * @author Dominik Klooz
  */
 interface MultipleChoiceSelectionInteractionBuilder<T> {
     
     /**
-     * Specifies the message of the dialog.<br><br>
+     * Specifies the message of the interaction.<br><br>
      * Calling this method is mandatory, it is thus the only method available in
-     * the {@link MultipleChoiceSelectionDialogBuilder} interface handed out for user interaction and returns a
-     * {@link MultipleChoiceSelectionDialogBuilder.ChoicesStep} implementation to ensure that the method defined there
+     * the {@link MultipleChoiceSelectionInteractionBuilder} interface handed out for user interaction and returns a
+     * {@link MultipleChoiceSelectionInteractionBuilder.ChoicesStep} implementation to ensure that the method defined there
      * is called next, as it is also mandatory. This is a form of implementation of the Step Builder pattern.
      * 
      * @param message   The message to be set, if {@code null}, an {@link IllegalArgumentException} is thrown.
@@ -37,7 +37,7 @@ interface MultipleChoiceSelectionInteractionBuilder<T> {
     }
     
     /**
-     * Interface for optional build steps (mostly common to all DialogBuilders as defined by {@link DialogBuilder})
+     * Interface for optional build steps (mostly common to all InteractionBuilders as defined by {@link InteractionBuilder})
      */
     interface OptionalSteps<T> extends InteractionBuilder<T, OptionalSteps<T>> {
         
@@ -45,11 +45,11 @@ interface MultipleChoiceSelectionInteractionBuilder<T> {
 }
 
 /**
- * Interface wrapping the generic type for single selection multiple choice dialogs.
+ * Interface wrapping the generic type for single selection multiple choice interactions.
  */
 interface MultipleChoiceSingleSelectionInteractionBuilder extends MultipleChoiceSelectionInteractionBuilder<Integer> { }
 
 /**
- * Interface wrapping the generic type for multiple selection multiple choice dialogs.
+ * Interface wrapping the generic type for multiple selection multiple choice interactions.
  */
 interface MultipleChoiceMultiSelectionInteractionBuilder extends MultipleChoiceSelectionInteractionBuilder<Collection<Integer>> { }

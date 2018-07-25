@@ -1,25 +1,26 @@
 package tools.vitruv.framework.userinteraction.builder
 
 import tools.vitruv.framework.userinteraction.UserInteractionOptions.NotificationType
+import tools.vitruv.framework.userinteraction.types.ConfirmationInteraction
 
 /**
- * Defines one single entry point to the build process of a {@link NotificationDialog} thus ensuring that mandatory
+ * Defines one single entry point to the build process of a {@link NotificationInteraction} thus ensuring that mandatory
  * information has to be provided before continuing. The top-level method represents the first and only mandatory step
  * returning the nested interface which includes optional steps as well as the build method
- * ({@link NotificationDialogBuilder.OptionalSteps} extends {@link DialogBuilder} to provide access to build step
- * methods common to all types of dialogs).<br>
+ * ({@link NotificationInteractionBuilder.OptionalSteps} extends {@link InteractionBuilder} to provide access to build step
+ * methods common to all types of interactions).<br>
  * <br>
- * For further info on the rationale behind the ...DialogBuilder implementation, see the {@link DialogBuilder} javadoc.
+ * For further info on the rationale behind the ...InteractionBuilder implementation, see the {@link InteractionBuilder} javadoc.
  * 
  * @author Dominik Klooz
  */
 interface NotificationInteractionBuilder {
     
     /**
-     * Specifies the message of the dialog.<br><br>
-     * Calling this method is mandatory, it is thus the only method available in the {@link NotificationDialogBuilder}
-     * interface handed out for user interaction and returns a {@link NotificationDialogBuilder.OptionalSteps}
-     * implementation to allow for further adjustments and building the adjusted dialog. This is a form of
+     * Specifies the message of the interaction.<br><br>
+     * Calling this method is mandatory, it is thus the only method available in the {@link NotificationInteractionBuilder}
+     * interface handed out for user interaction and returns a {@link NotificationInteractionBuilder.OptionalSteps}
+     * implementation to allow for further adjustments and building the adjusted interaction. This is a form of
      * implementation of the Step Builder pattern.
      * 
      * @param message   The message to be set, if {@code null}, an {@link IllegalArgumentException} is thrown.
@@ -27,15 +28,15 @@ interface NotificationInteractionBuilder {
     def OptionalSteps message(String message)
     
     /**
-     * Interface for optional build steps (mostly common to all DialogBuilders as defined by {@link DialogBuilder})
+     * Interface for optional build steps (mostly common to all InteractionBuilders as defined by {@link InteractionBuilder})
      */
     interface OptionalSteps extends InteractionBuilder<Void, OptionalSteps> {
         
         /**
-         * Sets the severity of the notification, depicted as an icon in the dialog content area, window title bar and
+         * Sets the severity of the notification, depicted as an icon in the interaction content area, window title bar and
          * task bar entry. Can be one of Information, Warning or Error, defaults to Information.<br>
-         * For a question dialog, see
-         * {@link tools.vitruv.framework.userinteraction.impl.ConfirmationDialog ConfirmationDialog}.
+         * For a question interaction, see
+         * {@link ConfirmationInteraction}.
          * 
          * @param type   The notification type to be set, if {@code null}, nothing happens.
          */

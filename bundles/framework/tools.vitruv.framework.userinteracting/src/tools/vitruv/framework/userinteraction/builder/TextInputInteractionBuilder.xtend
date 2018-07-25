@@ -5,23 +5,23 @@ import tools.vitruv.framework.userinteraction.UserInteractionOptions.InputFieldT
 import tools.vitruv.framework.userinteraction.UserInteractionOptions.InputValidator
 
 /**
- * Defines one single entry point to the build process of a {@link TextInputDialog} thus ensuring that mandatory
+ * Defines one single entry point to the build process of a {@link TextInputInteraction} thus ensuring that mandatory
  * information has to be provided before continuing. The top-level method represents the first and only mandatory step
  * returning the nested interface which includes optional steps as well as the build method
- * ({@link TextInputDialogBuilder.OptionalSteps} extends {@link DialogBuilder} to provide access to build step
- * methods common to all types of dialogs).<br>
+ * ({@link TextInputInteractionBuilder.OptionalSteps} extends {@link InteractionBuilder} to provide access to build step
+ * methods common to all types of interactions).<br>
  * <br>
- * For further info on the rationale behind the ...DialogBuilder implementation, see the {@link DialogBuilder} javadoc.
+ * For further info on the rationale behind the ...InteractionBuilder implementation, see the {@link InteractionBuilder} javadoc.
  * 
  * @author Dominik Klooz
  */
 interface TextInputInteractionBuilder {
     
     /**
-     * Specifies the message of the dialog.<br><br>
-     * Calling this method is mandatory, it is thus the only method available in the {@link TextInputDialogBuilder}
-     * interface handed out for user interaction and returns a {@link TextInputDialogBuilder.OptionalSteps}
-     * implementation to allow for further adjustments and building the adjusted dialog. This is a form of
+     * Specifies the message of the interaction.<br><br>
+     * Calling this method is mandatory, it is thus the only method available in the {@link TextInputInteractionBuilder}
+     * interface handed out for user interaction and returns a {@link TextInputInteractionBuilder.OptionalSteps}
+     * implementation to allow for further adjustments and building the adjusted interaction. This is a form of
      * implementation of the Step Builder pattern.
      * 
      * @param message   The message to be set, if {@code null}, an {@link IllegalArgumentException} is thrown.
@@ -29,7 +29,7 @@ interface TextInputInteractionBuilder {
     def OptionalSteps message(String message)
     
     /**
-     * Interface for optional build steps (mostly common to all DialogBuilders as defined by {@link DialogBuilder})
+     * Interface for optional build steps (mostly common to all InteractionBuilders as defined by {@link InteractionBuilder})
      */
     interface OptionalSteps extends InteractionBuilder<String, OptionalSteps> {
         
