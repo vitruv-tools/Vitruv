@@ -1,4 +1,4 @@
-package tools.vitruv.framework.userinteraction.resultprovider
+package tools.vitruv.framework.userinteraction.impl
 
 import tools.vitruv.framework.userinteraction.WindowModality
 import tools.vitruv.framework.userinteraction.NotificationType

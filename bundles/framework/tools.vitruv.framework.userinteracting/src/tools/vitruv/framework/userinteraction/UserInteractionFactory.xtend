@@ -1,10 +1,10 @@
 package tools.vitruv.framework.userinteraction
 
-import tools.vitruv.framework.userinteraction.resultprovider.DialogInteractionProvider
-import tools.vitruv.framework.userinteraction.resultprovider.PredefinedThinktimeSimulatingInteractionProvider
 import tools.vitruv.framework.userinteraction.impl.UserInteractorImpl
-import tools.vitruv.framework.userinteraction.resultprovider.PredefinedInteractionResultProviderImpl
 import tools.vitruv.framework.change.interaction.UserInteractionBase
+import tools.vitruv.framework.userinteraction.impl.DialogInteractionResultProviderImpl
+import tools.vitruv.framework.userinteraction.impl.PredefinedInteractionResultProviderImpl
+import tools.vitruv.framework.userinteraction.impl.PredefinedThinktimeSimulatingInteractionResultProviderImpl
 
 class UserInteractionFactory {
 	public static val instance = new UserInteractionFactory();
@@ -24,7 +24,7 @@ class UserInteractionFactory {
 	}
 	
 	def InteractionResultProvider createDialogInteractionResultProvider() {
-		return new DialogInteractionProvider();
+		return new DialogInteractionResultProviderImpl();
 	}
 	
 	def PredefinedInteractionResultProvider createPredefinedInteractionResultProvider(InteractionResultProvider fallbackResultProvider) {
@@ -38,6 +38,6 @@ class UserInteractionFactory {
 	}
 	
 	def PredefinedInteractionResultProvider createPredefinedThinktimeSimulatingInteractionResultProvider(InteractionResultProvider fallbackResultProvider, int minWaittime, int maxWaittime) {
-		return new PredefinedThinktimeSimulatingInteractionProvider(fallbackResultProvider, minWaittime, maxWaittime);
+		return new PredefinedThinktimeSimulatingInteractionResultProviderImpl(fallbackResultProvider, minWaittime, maxWaittime);
 	}
 }

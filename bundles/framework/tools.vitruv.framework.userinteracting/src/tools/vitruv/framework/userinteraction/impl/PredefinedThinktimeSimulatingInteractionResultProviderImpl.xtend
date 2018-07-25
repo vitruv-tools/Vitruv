@@ -1,4 +1,4 @@
-package tools.vitruv.framework.userinteraction.resultprovider
+package tools.vitruv.framework.userinteraction.impl
 
 import tools.vitruv.framework.userinteraction.WindowModality
 import org.apache.log4j.Logger
@@ -10,8 +10,8 @@ import tools.vitruv.framework.userinteraction.InteractionResultProvider
 /**
  * @author Heiko Klare
  */
-public class PredefinedThinktimeSimulatingInteractionProvider extends PredefinedInteractionResultProviderImpl {
-	private static final Logger logger = Logger.getLogger(PredefinedThinktimeSimulatingInteractionProvider);
+public class PredefinedThinktimeSimulatingInteractionResultProviderImpl extends PredefinedInteractionResultProviderImpl {
+	private static final Logger logger = Logger.getLogger(PredefinedThinktimeSimulatingInteractionResultProviderImpl);
 	private final Random random;
 	private final int minWaittime;
     private final int maxWaittime;

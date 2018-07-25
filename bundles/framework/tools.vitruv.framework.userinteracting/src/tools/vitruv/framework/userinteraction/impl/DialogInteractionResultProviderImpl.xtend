@@ -1,4 +1,4 @@
-package tools.vitruv.framework.userinteraction.resultprovider
+package tools.vitruv.framework.userinteraction.impl
 
 import tools.vitruv.framework.userinteraction.dialogs.ConfirmationDialogWindow
 import tools.vitruv.framework.userinteraction.WindowModality
@@ -16,7 +16,7 @@ import tools.vitruv.framework.userinteraction.InteractionResultProvider
 /**
  * @author Heiko Klare
  */
-class DialogInteractionProvider implements InteractionResultProvider {
+class DialogInteractionResultProviderImpl implements InteractionResultProvider {
 	private final Shell parentShell;
 	private final Display display;
 
