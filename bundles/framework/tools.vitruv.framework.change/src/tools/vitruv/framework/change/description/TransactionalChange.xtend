@@ -1,7 +1,6 @@
 package tools.vitruv.framework.change.description
 
 import tools.vitruv.framework.change.description.VitruviusChange
-import java.util.Collection
 import tools.vitruv.framework.change.interaction.UserInteractionBase
 
 /**
@@ -9,6 +8,5 @@ import tools.vitruv.framework.change.interaction.UserInteractionBase
  * together. They were recorded together and have to propagated to models completely or not at all.
  */
 interface TransactionalChange extends VitruviusChange {
-	def Collection<UserInteractionBase> getUserInteractions()
-	def void setUserInteractions(Collection<UserInteractionBase> userInputs)
+	def void setUserInteractions(Iterable<UserInteractionBase> userInputs)
 }

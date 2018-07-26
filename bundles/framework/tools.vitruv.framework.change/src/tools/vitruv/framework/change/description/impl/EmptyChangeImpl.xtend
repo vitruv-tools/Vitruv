@@ -3,58 +3,57 @@ package tools.vitruv.framework.change.description.impl
 import tools.vitruv.framework.util.datatypes.VURI
 import tools.vitruv.framework.change.description.TransactionalChange
 import tools.vitruv.framework.uuid.UuidResolver
-import java.util.Collection
 import tools.vitruv.framework.change.interaction.UserInteractionBase
 
 class EmptyChangeImpl implements TransactionalChange {
 	private val VURI vuri;
-	private Collection<UserInteractionBase> userInteractions;
-	
+
 	new(VURI vuri) {
 		this.vuri = vuri;
 	}
-	
+
 	override containsConcreteChange() {
 		return true;
 	}
-	
+
 	override validate() {
 		return true;
 	}
-	
+
 	override getEChanges() {
 		return #[];
 	}
-	
+
 	override getURI() {
 		return vuri;
 	}
-	
+
 	override resolveBeforeAndApplyForward(UuidResolver uuidResolver) {
-		
+		// Do nothing		
 	}
-	
+
 	override resolveAfterAndApplyBackward(UuidResolver uuidResolver) {
-		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+		// Do nothing
 	}
-	
+
 	override unresolveIfApplicable() {
 		// Do nothing
 	}
-	
+
 	override getAffectedEObjects() {
 		return #[]
 	}
-	
+
 	override getAffectedEObjectIds() {
 		return #[]
 	}
-	
+
 	override getUserInteractions() {
-        #[]
-    }
-    
-    override setUserInteractions(Collection<UserInteractionBase> userInteractions) {
-        this.userInteractions = userInteractions
-    }
+		#[]
+	}
+
+	override setUserInteractions(Iterable<UserInteractionBase> userInputs) {
+		throw new UnsupportedOperationException("Adding interactions to an empty change is not supported")
+	}
+
 }
