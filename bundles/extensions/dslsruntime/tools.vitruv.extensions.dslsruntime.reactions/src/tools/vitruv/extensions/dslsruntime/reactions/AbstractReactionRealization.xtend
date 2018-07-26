@@ -4,12 +4,12 @@ import tools.vitruv.extensions.dslsruntime.reactions.IReactionRealization
 import tools.vitruv.extensions.dslsruntime.reactions.structure.CallHierarchyHaving
 import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.tuid.TuidManager
-import tools.vitruv.framework.userinteraction.UserInteracting
 import org.eclipse.xtend.lib.annotations.Accessors
+import tools.vitruv.framework.userinteraction.UserInteractor
 
 abstract class AbstractReactionRealization extends CallHierarchyHaving implements IReactionRealization {
 	private val AbstractRepairRoutinesFacade routinesFacade;
-	protected UserInteracting userInteracting;
+	protected UserInteractor userInteractor;
 	protected ReactionExecutionState executionState;
 	
 	public new(AbstractRepairRoutinesFacade routinesFacade) {
@@ -23,7 +23,7 @@ abstract class AbstractReactionRealization extends CallHierarchyHaving implement
 	
 	override applyEvent(EChange change, ReactionExecutionState reactionExecutionState) {
 		this.executionState = reactionExecutionState;
-		this.userInteracting = reactionExecutionState.userInteracting;
+		this.userInteractor = reactionExecutionState.userInteractor;
 
 		// set the reaction execution state and caller to use for all following routine calls:
 		// note: reactions are executed one after the other, therefore we don't need to capture/restore the facade's previous execution state here,

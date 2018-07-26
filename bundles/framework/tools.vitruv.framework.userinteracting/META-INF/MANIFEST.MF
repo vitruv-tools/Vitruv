@@ -5,12 +5,18 @@ Bundle-SymbolicName: tools.vitruv.framework.userinteraction
 Bundle-Version: 0.3.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
-Require-Bundle: org.eclipse.osgi,
+Require-Bundle: org.apache.log4j,
+ org.eclipse.osgi,
  org.eclipse.swt,
  org.eclipse.ui.workbench,
  org.eclipse.jface,
  org.eclipse.emf.common,
- tools.vitruv.framework.util
+ tools.vitruv.framework.util,
+ tools.vitruv.framework.change.interaction;visibility:=reexport,
+ com.google.guava,
+ org.eclipse.xtext.xbase.lib,
+ org.eclipse.xtend.lib,
+ org.eclipse.xtend.lib.macro
 Export-Package: tools.vitruv.framework.userinteraction,
- tools.vitruv.framework.userinteraction.impl
+ tools.vitruv.framework.userinteraction.builder
 Bundle-Vendor: vitruv.tools

@@ -19,6 +19,9 @@ import tools.vitruv.framework.uuid.UuidGeneratorAndResolver;
 import tools.vitruv.framework.uuid.UuidGeneratorAndResolverImpl;
 import tools.vitruv.framework.correspondence.CorrespondenceModel;
 import tools.vitruv.framework.domains.VitruvDomain;
+import tools.vitruv.framework.userinteraction.InternalUserInteractor;
+import tools.vitruv.framework.userinteraction.PredefinedInteractionResultProvider;
+import tools.vitruv.framework.userinteraction.UserInteractionFactory;
 import tools.vitruv.framework.util.ResourceSetUtil;
 import tools.vitruv.framework.util.bridges.EMFBridge;
 import tools.vitruv.framework.util.datatypes.VURI;
@@ -44,7 +47,7 @@ public abstract class VitruviusUnmonitoredApplicationTest extends VitruviusTest 
 	protected ResourceSet resourceSet;
 	private UuidGeneratorAndResolver uuidGeneratorAndResolver;
 	
-	private TestUserInteractor testUserInteractor;
+	private TestUserInteraction testUserInteractor;
 	private InternalVirtualModel virtualModel;
 	private CorrespondenceModel correspondenceModel;
 
@@ -68,9 +71,11 @@ public abstract class VitruviusUnmonitoredApplicationTest extends VitruviusTest 
 	private void createVirtualModel(final String testName) {
 		String currentTestProjectVsumName = testName + "_vsum_";
 		Iterable<VitruvDomain> domains = this.getVitruvDomains();
-		this.testUserInteractor = new TestUserInteractor();
+		PredefinedInteractionResultProvider interactionProvider = UserInteractionFactory.instance.createPredefinedInteractionResultProvider(null);
+		this.testUserInteractor = new TestUserInteraction(interactionProvider);
+		InternalUserInteractor userInteractor = UserInteractionFactory.instance.createUserInteractor(interactionProvider);
 		this.virtualModel = TestUtil.createVirtualModel(new File(workspace, currentTestProjectVsumName), true, domains,
-				createChangePropagationSpecifications(), testUserInteractor);
+				createChangePropagationSpecifications(), userInteractor);
 		this.correspondenceModel = virtualModel.getCorrespondenceModel();
 	}
 
@@ -82,7 +87,7 @@ public abstract class VitruviusUnmonitoredApplicationTest extends VitruviusTest 
 		return virtualModel;
 	}
 
-	protected TestUserInteractor getUserInteractor() {
+	protected TestUserInteraction getUserInteractor() {
 		return testUserInteractor;
 	}
 

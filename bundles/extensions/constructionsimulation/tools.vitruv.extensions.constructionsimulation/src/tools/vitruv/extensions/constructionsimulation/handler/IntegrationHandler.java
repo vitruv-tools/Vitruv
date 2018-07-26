@@ -13,9 +13,9 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.handlers.HandlerUtil;
 
 import tools.vitruv.extensions.constructionsimulation.LoggerConfigurator;
-import tools.vitruv.framework.userinteraction.UserInteracting;
-import tools.vitruv.framework.userinteraction.UserInteractionType;
-import tools.vitruv.framework.userinteraction.impl.UserInteractor;
+import tools.vitruv.framework.userinteraction.UserInteractionFactory;
+import tools.vitruv.framework.userinteraction.UserInteractor;
+import tools.vitruv.framework.userinteraction.UserInteractionOptions.WindowModality;
 import tools.vitruv.framework.vsum.InternalVirtualModel;
 
 /**
@@ -34,7 +34,7 @@ public abstract class IntegrationHandler<T> extends AbstractHandler {
     }
 
     private final Logger logger = LogManager.getRootLogger();
-    protected int keepOldModel;
+    protected boolean keepOldModel;
     protected InternalVirtualModel vsum;
 
     /*
@@ -54,8 +54,8 @@ public abstract class IntegrationHandler<T> extends AbstractHandler {
 
         final Object firstElement = structuredSelection.getFirstElement();
 
-        final UserInteracting dialog = new UserInteractor();
-        this.keepOldModel = dialog.selectFromMessage(UserInteractionType.MODAL, "Keep old model?", "No", "Yes");
+        final UserInteractor dialog = UserInteractionFactory.instance.createDialogUserInteractor();
+        this.keepOldModel = dialog.getConfirmationDialogBuilder().message("Keep old model?").windowModality(WindowModality.MODAL).startInteraction();
 
         if (this.type.isInstance(firstElement)) {
             this.handleSelectedElement((T) firstElement);

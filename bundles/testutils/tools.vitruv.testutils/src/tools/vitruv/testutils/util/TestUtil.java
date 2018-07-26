@@ -17,7 +17,7 @@ import tools.vitruv.framework.domains.VitruvDomain;
 import tools.vitruv.framework.domains.VitruviusProjectBuilderApplicator;
 import tools.vitruv.framework.domains.AbstractVitruvDomain;
 import tools.vitruv.framework.tuid.AttributeTuidCalculatorAndResolver;
-import tools.vitruv.framework.userinteraction.UserInteracting;
+import tools.vitruv.framework.userinteraction.InternalUserInteractor;
 import tools.vitruv.framework.util.VitruviusConstants;
 import tools.vitruv.framework.vsum.InternalVirtualModel;
 import tools.vitruv.framework.vsum.VirtualModel;
@@ -124,7 +124,7 @@ public final class TestUtil {
 	public static InternalVirtualModel createVirtualModel(final File virtualModelFolder, boolean addTimestampAndMakeNameUnique,
 			final Iterable<VitruvDomain> metamodels,
 			final Iterable<ChangePropagationSpecification> changePropagationSpecifications,
-			final UserInteracting userInteracting) {
+			final InternalUserInteractor userInteractor) {
 		File projectFolder = virtualModelFolder;
 		if (addTimestampAndMakeNameUnique) {
 			projectFolder = addTimestampToProjectNameAndMakeUnique(projectFolder);
@@ -137,7 +137,7 @@ public final class TestUtil {
 		for (ChangePropagationSpecification changePropagationSpecification : changePropagationSpecifications) {
 			vmodelConfig.addChangePropagationSpecification(changePropagationSpecification);
 		}
-		final InternalVirtualModel vmodel = new VirtualModelImpl(projectFolder, userInteracting, vmodelConfig);
+		final InternalVirtualModel vmodel = new VirtualModelImpl(projectFolder, userInteractor, vmodelConfig);
 		return vmodel;
 	}
 	
@@ -160,10 +160,10 @@ public final class TestUtil {
 	public static InternalVirtualModel createVirtualModel(final String virtualModelName, boolean addTimestampAndMakeNameUnique,
 			final Iterable<VitruvDomain> metamodels,
 			final Iterable<ChangePropagationSpecification> changePropagationSpecifications,
-			final UserInteracting userInteracting) {
+			final InternalUserInteractor userInteractor) {
 		File testWorkspace = createTestWorkspace();
 		return createVirtualModel(new File(testWorkspace, virtualModelName), 
-				addTimestampAndMakeNameUnique, metamodels, changePropagationSpecifications, userInteracting);
+				addTimestampAndMakeNameUnique, metamodels, changePropagationSpecifications, userInteractor);
 	}
 	
 	public static File createTestWorkspace() {

@@ -25,7 +25,8 @@ Require-Bundle: tools.vitruv.framework.vsum;visibility:=reexport,
  org.eclipse.xtext.xbase.lib,
  org.eclipse.xtend.lib,
  org.eclipse.xtend.lib.macro,
- edu.kit.ipd.sdq.activextendannotations;bundle-version="1.0.0"
+ edu.kit.ipd.sdq.activextendannotations;bundle-version="1.0.0",
+ tools.vitruv.framework.change.interaction
 Export-Package: tools.vitruv.testutils,
  tools.vitruv.testutils.matchers,
  tools.vitruv.testutils.util

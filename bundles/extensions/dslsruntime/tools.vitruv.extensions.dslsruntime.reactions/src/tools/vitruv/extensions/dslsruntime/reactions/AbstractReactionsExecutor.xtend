@@ -2,7 +2,7 @@ package tools.vitruv.extensions.dslsruntime.reactions
 
 import org.apache.log4j.Logger
 import tools.vitruv.extensions.dslsruntime.reactions.IReactionRealization
-import tools.vitruv.framework.userinteraction.UserInteracting
+import tools.vitruv.framework.userinteraction.UserInteractor
 import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.correspondence.CorrespondenceModel
 import tools.vitruv.framework.change.processing.impl.AbstractEChangePropagationSpecification
@@ -40,13 +40,13 @@ abstract class AbstractReactionsExecutor extends AbstractEChangePropagationSpeci
 		LOGGER.trace("Call relevant reactions");
 		for (reaction : reactions) {
 			LOGGER.debug("Calling reaction: " + reaction.class.simpleName + " with change: " + change);
-			val executionState = new ReactionExecutionState(userInteracting, correspondenceModel, resourceAccess, this);
+			val executionState = new ReactionExecutionState(userInteractor, correspondenceModel, resourceAccess, this);
 			reaction.applyEvent(change, executionState)
 		}
 	}
 
-	override setUserInteracting(UserInteracting userInteracting) {
-		super.setUserInteracting(userInteracting);
+	override setUserInteractor(UserInteractor userInteractor) {
+		super.setUserInteractor(userInteractor);
 		reactions = newArrayList;
 		setup();
 	}

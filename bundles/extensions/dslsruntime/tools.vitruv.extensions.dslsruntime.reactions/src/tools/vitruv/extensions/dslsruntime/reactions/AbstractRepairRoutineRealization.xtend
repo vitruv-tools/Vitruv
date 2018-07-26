@@ -3,7 +3,7 @@ package tools.vitruv.extensions.dslsruntime.reactions
 import org.eclipse.emf.ecore.EObject
 import java.io.IOException
 import tools.vitruv.extensions.dslsruntime.reactions.structure.CallHierarchyHaving
-import tools.vitruv.framework.userinteraction.UserInteracting
+import tools.vitruv.framework.userinteraction.UserInteractor
 import org.eclipse.emf.ecore.util.EcoreUtil
 import tools.vitruv.extensions.dslsruntime.reactions.helper.PersistenceHelper
 import tools.vitruv.framework.util.datatypes.VURI
@@ -41,8 +41,8 @@ abstract class AbstractRepairRoutineRealization extends CallHierarchyHaving impl
 		return executionState;
 	}
 
-	protected def UserInteracting getUserInteracting() {
-		return executionState.userInteracting;
+	protected def UserInteractor getUserInteractor() {
+		return executionState.userInteractor;
 	}
 
 	protected def CorrespondenceModel getCorrespondenceModel() {
@@ -75,11 +75,11 @@ abstract class AbstractRepairRoutineRealization extends CallHierarchyHaving impl
 			elementClass, correspondencePreconditionMethod, tag);
 		if (retrievedElements.size > 1) {
 			CorrespondenceFailHandlerFactory.createExceptionHandler().handle(retrievedElements, correspondenceSource,
-				elementClass, executionState.userInteracting);
+				elementClass, executionState.userInteractor);
 		}
 		if (asserted && retrievedElements.size == 0) {
 			CorrespondenceFailHandlerFactory.createExceptionHandler().handle(retrievedElements, correspondenceSource,
-				elementClass, executionState.userInteracting);
+				elementClass, executionState.userInteractor);
 		}
 		val retrievedElement = if (!retrievedElements.empty) retrievedElements.get(0) else null;
 		return retrievedElement;
@@ -103,13 +103,13 @@ abstract class AbstractRepairRoutineRealization extends CallHierarchyHaving impl
 	protected abstract def boolean executeRoutine() throws IOException;
 
 	public static class UserExecution extends Loggable {
-		protected final UserInteracting userInteracting;
+		protected final UserInteractor userInteractor;
 		protected final ResourceAccess resourceAccess;
 		protected final CorrespondenceModel correspondenceModel;
 		protected final ChangePropagationObservable changePropagationObservable;
 
 		new(ReactionExecutionState executionState) {
-			this.userInteracting = executionState.userInteracting;
+			this.userInteractor = executionState.userInteractor;
 			this.resourceAccess = executionState.resourceAccess;
 			this.correspondenceModel = executionState.correspondenceModel;
 			this.changePropagationObservable = executionState.changePropagationObservable;
