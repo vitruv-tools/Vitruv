@@ -48,7 +48,6 @@ class PredefinedInteractionMatcher {
 		}
 		val inputToReuse = userInteractions.filter(type).filter [ input |
 			!input.isSetMessage() || (input.message.equals(message) && input.choices.containsAll(choices.toList))
-		// TODO DK make ^ comparison adjustable to allow reuse when only a subset of options is available when desired
 		]
 		return inputToReuse
 	}
