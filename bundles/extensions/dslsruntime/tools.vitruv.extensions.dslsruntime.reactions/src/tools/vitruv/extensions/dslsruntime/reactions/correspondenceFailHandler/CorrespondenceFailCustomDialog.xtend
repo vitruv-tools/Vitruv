@@ -1,8 +1,8 @@
 package tools.vitruv.extensions.dslsruntime.reactions.correspondenceFailHandler
 
 import org.eclipse.emf.ecore.EObject
-import tools.vitruv.framework.userinteraction.UserInteracting
-import tools.vitruv.framework.userinteraction.UserInteractionType
+import tools.vitruv.framework.userinteraction.UserInteractor
+import tools.vitruv.framework.userinteraction.UserInteractionOptions.WindowModality
 
 class CorrespondenceFailCustomDialog extends AbstractCorrespondenceFailHandler {
 	private final boolean abortEffect;
@@ -13,10 +13,10 @@ class CorrespondenceFailCustomDialog extends AbstractCorrespondenceFailHandler {
 		this.message = message;
 	}
 	
-	override handle(Iterable<? extends EObject> foundObjects, EObject sourceElement, Class<?> expectedType, UserInteracting userInteracting) {
+	override handle(Iterable<? extends EObject> foundObjects, EObject sourceElement, Class<?> expectedType, UserInteractor userInteractor) {
 		logFail(foundObjects, sourceElement, expectedType);
 		logger.debug("Show user dialog with message: " + message);
-		userInteracting.showMessage(UserInteractionType.MODAL, message);
+		userInteractor.notificationDialogBuilder.message(message).windowModality(WindowModality.MODAL).startInteraction();
 		return abortEffect;
 	}
 }

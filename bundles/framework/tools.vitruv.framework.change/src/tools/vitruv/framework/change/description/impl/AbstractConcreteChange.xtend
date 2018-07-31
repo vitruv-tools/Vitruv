@@ -16,13 +16,16 @@ import tools.vitruv.framework.change.echange.feature.FeatureEChange
 import tools.vitruv.framework.change.echange.eobject.EObjectExistenceEChange
 import org.eclipse.emf.ecore.InternalEObject
 import tools.vitruv.framework.uuid.UuidResolver
+import tools.vitruv.framework.change.interaction.UserInteractionBase
 
 abstract class AbstractConcreteChange implements ConcreteChange {
 	private static val logger = Logger.getLogger(AbstractConcreteChange);
 	private var EChange eChange;
+	private List<UserInteractionBase> userInteractions;
 	
 	new(EChange eChange) {
 		this.eChange = eChange;
+		this.userInteractions = new ArrayList<UserInteractionBase>();
 	}
 	
 	override containsConcreteChange() {
@@ -79,6 +82,18 @@ abstract class AbstractConcreteChange implements ConcreteChange {
 	override getAffectedEObjects() {
 		return affectedNotReferencedEObjects + this.eChange.referencedEObjects.filterNull
 	}
+	
+	override getUserInteractions() {
+	    return userInteractions
+	}
+	
+	override setUserInteractions(Iterable<UserInteractionBase> userInteractions) {
+		if (userInteractions === null) {
+			throw new IllegalArgumentException("Interactions must not be null");
+		}
+		this.userInteractions.clear();
+        this.userInteractions += userInteractions
+    }
 	
 	
 	private def dispatch List<String> getAffectedEObjectIds(EChange eChange) {

@@ -1,10 +1,10 @@
 package tools.vitruv.extensions.dslsruntime.reactions.correspondenceFailHandler
 
 import org.eclipse.emf.ecore.EObject
-import tools.vitruv.framework.userinteraction.UserInteracting
+import tools.vitruv.framework.userinteraction.UserInteractor
 
 class CorrespondenceFailException extends AbstractCorrespondenceFailHandler {
-	override handle(Iterable<? extends EObject> foundObjects, EObject sourceElement, Class<?> expectedType, UserInteracting userInteracting) {
+	override handle(Iterable<? extends EObject> foundObjects, EObject sourceElement, Class<?> expectedType, UserInteractor userInteractor) {
 		logFail(foundObjects, sourceElement, expectedType);
 		logger.debug("Throw exception due to correspondence fail");
 		throw new IllegalArgumentException(

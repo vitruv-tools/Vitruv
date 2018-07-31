@@ -19,11 +19,11 @@ import tools.vitruv.framework.domains.AbstractVitruvDomain;
 import tools.vitruv.framework.domains.VitruvDomain;
 import tools.vitruv.framework.domains.VitruviusProjectBuilderApplicator;
 import tools.vitruv.framework.tuid.AttributeTuidCalculatorAndResolver;
+import tools.vitruv.framework.userinteraction.UserInteractionFactory;
 import tools.vitruv.framework.util.bridges.EMFBridge;
 import tools.vitruv.framework.util.datatypes.ModelInstance;
 import tools.vitruv.framework.util.datatypes.VURI;
 import tools.vitruv.framework.vsum.InternalVirtualModel;
-import tools.vitruv.testutils.TestUserInteractor;
 import tools.vitruv.testutils.VitruviusTest;
 import tools.vitruv.testutils.util.TestUtil;
 import uml_mockup.UClass;
@@ -146,7 +146,7 @@ public abstract class VsumTest extends VitruviusTest {
         vitruvDomains.add(UmlDomain);
         vitruvDomains.add(PcmDomain);
         return TestUtil.createVirtualModel(vsumName, true, vitruvDomains, Collections.emptyList(),
-                new TestUserInteractor());
+                UserInteractionFactory.instance.createDummyUserInteractor());
     }
 
     private void createMockupModelsWithDefaultUris(final InternalVirtualModel vsum) {

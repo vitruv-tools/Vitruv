@@ -1,6 +1,6 @@
 package tools.vitruv.framework.change.processing.impl
 
-import tools.vitruv.framework.userinteraction.UserInteracting
+import tools.vitruv.framework.userinteraction.UserInteractor
 import tools.vitruv.framework.change.processing.ChangePropagationSpecification
 import tools.vitruv.framework.domains.VitruvDomain
 import tools.vitruv.framework.change.processing.ChangePropagationObserver
@@ -9,7 +9,7 @@ import org.eclipse.emf.ecore.EObject
 
 abstract class AbstractChangePropagationSpecification implements ChangePropagationSpecification {
 	private val List<ChangePropagationObserver> propagationObserver;
-	private var UserInteracting userInteracting;
+	private var UserInteractor userInteractor;
 	private var VitruvDomain sourceDomain;
 	private var VitruvDomain targetDomain;
 	
@@ -18,8 +18,8 @@ abstract class AbstractChangePropagationSpecification implements ChangePropagati
 		this.propagationObserver = newArrayList();
 	}
 	
-	protected def UserInteracting getUserInteracting() {
-		return userInteracting;
+	protected def UserInteractor getUserInteractor() {
+		return userInteractor;
 	}
 	
 	private def setVitruvDomains(VitruvDomain sourceDomain, VitruvDomain targetDomain) {
@@ -35,8 +35,8 @@ abstract class AbstractChangePropagationSpecification implements ChangePropagati
 		return targetDomain;
 	}
 	
-	override setUserInteracting(UserInteracting userInteracting) {
-		this.userInteracting = userInteracting;
+	override setUserInteractor(UserInteractor userInteractor) {
+		this.userInteractor = userInteractor;
 	}
 	
 	override registerObserver(ChangePropagationObserver observer) {

@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>tools.vitruv</groupId>
 		<artifactId>bundles</artifactId>
-		<version>0.2.0-SNAPSHOT</version>
+		<version>0.3.0-SNAPSHOT</version>
 		<relativePath>../</relativePath>
 	</parent>
 	<artifactId>framework</artifactId>
@@ -17,6 +17,7 @@
 		<module>tools.vitruv.framework.applications</module>
 		<module>tools.vitruv.framework.change</module>
 		<module>tools.vitruv.framework.change.echange</module>
+		<module>tools.vitruv.framework.change.interaction</module>
 		<module>tools.vitruv.framework.change.processing</module>
 		<module>tools.vitruv.framework.correspondence</module>
 		<module>tools.vitruv.framework.metamodel</module>

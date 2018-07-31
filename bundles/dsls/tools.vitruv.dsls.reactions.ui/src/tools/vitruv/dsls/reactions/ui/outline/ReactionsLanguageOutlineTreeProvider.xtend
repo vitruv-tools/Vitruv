@@ -16,7 +16,7 @@ import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsSegment
 import tools.vitruv.dsls.reactions.reactionsLanguage.Reaction
 import tools.vitruv.dsls.reactions.reactionsLanguage.Action
 import tools.vitruv.dsls.reactions.reactionsLanguage.ConcreteModelChange
-import static extension tools.vitruv.dsls.reactions.codegen.changetyperepresentation.ChangeTypeRepresentationExtractor.*
+// import static extension tools.vitruv.dsls.reactions.codegen.changetyperepresentation.ChangeTypeRepresentationExtractor.*
 import static extension tools.vitruv.dsls.reactions.util.ReactionsLanguageUtil.*
 import tools.vitruv.dsls.reactions.reactionsLanguage.Matcher
 import tools.vitruv.dsls.reactions.reactionsLanguage.RoutineInput
@@ -133,7 +133,8 @@ class ReactionsLanguageOutlineTreeProvider extends DefaultOutlineTreeProvider {
 	}
 	
 	protected def Object _text(ConcreteModelChange event) {
-		return '''«FOR change : event.extractChangeSequenceRepresentation.atomicChanges SEPARATOR ", "»«change.name»«ENDFOR»''';
+		return "change"; 
+		//''«FOR change : event.extractChangeSequenceRepresentation.atomicChanges SEPARATOR ", "»«change.name»«ENDFOR»''';
 	}
 	
 	protected def boolean _isLeaf(Trigger element) {

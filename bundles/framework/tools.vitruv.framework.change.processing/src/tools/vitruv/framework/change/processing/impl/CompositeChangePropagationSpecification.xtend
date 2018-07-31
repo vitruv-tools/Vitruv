@@ -4,7 +4,7 @@ import tools.vitruv.framework.change.description.TransactionalChange
 import tools.vitruv.framework.correspondence.CorrespondenceModel
 import java.util.List
 import java.util.ArrayList
-import tools.vitruv.framework.userinteraction.UserInteracting
+import tools.vitruv.framework.userinteraction.UserInteractor
 import tools.vitruv.framework.change.processing.ChangePropagationSpecification
 import org.apache.log4j.Logger
 import tools.vitruv.framework.domains.VitruvDomain
@@ -34,7 +34,7 @@ abstract class CompositeChangePropagationSpecification extends AbstractChangePro
 	protected def addChangePreprocessor(ChangePropagationSpecification changePropagationSpecifcation) {
 		assertMetamodelsCompatible(changePropagationSpecifcation);
 		changePreprocessors += changePropagationSpecifcation;
-		changePropagationSpecifcation.userInteracting = userInteracting;
+		changePropagationSpecifcation.userInteractor = userInteractor;
 		changePropagationSpecifcation.registerObserver(this);
 	}
 
@@ -45,7 +45,7 @@ abstract class CompositeChangePropagationSpecification extends AbstractChangePro
 	protected def addChangeMainprocessor(ChangePropagationSpecification changePropagationSpecifcation) {
 		assertMetamodelsCompatible(changePropagationSpecifcation);
 		changeMainprocessors += changePropagationSpecifcation;
-		changePropagationSpecifcation.userInteracting = userInteracting;
+		changePropagationSpecifcation.userInteractor = userInteractor;
 		changePropagationSpecifcation.registerObserver(this);
 	}
 
@@ -87,16 +87,16 @@ abstract class CompositeChangePropagationSpecification extends AbstractChangePro
 		return false;
 	}
 
-	override setUserInteracting(UserInteracting userInteracting) {
-		super.setUserInteracting(userInteracting)
+	override setUserInteractor(UserInteractor userInteractor) {
+		super.setUserInteractor(userInteractor)
 		for (changeProcessor : allProcessors) {
-			changeProcessor.setUserInteracting(userInteracting);
+			changeProcessor.setUserInteractor(userInteractor);
 		}
 	}
 
 	private def getAllProcessors() {
 		val processors = new ArrayList<ChangePropagationSpecification>();
-		// processor arrays can be null when calling setUserInteracting from the super constructor
+		// processor arrays can be null when calling setUserInteractor from the super constructor
 		if (changePreprocessors !== null) processors += changePreprocessors;
 		if (changeMainprocessors !== null) processors += changeMainprocessors;
 		return processors;

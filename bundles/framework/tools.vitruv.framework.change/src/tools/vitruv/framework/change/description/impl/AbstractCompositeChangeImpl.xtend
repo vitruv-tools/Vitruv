@@ -104,5 +104,9 @@ abstract class AbstractCompositeChangeImpl<C extends VitruviusChange> implements
 			«change»
 		«ENDFOR»
 	'''
-		
+	
+	override getUserInteractions() {
+		return changes.map[userInteractions].flatten
+	}
+	
 }

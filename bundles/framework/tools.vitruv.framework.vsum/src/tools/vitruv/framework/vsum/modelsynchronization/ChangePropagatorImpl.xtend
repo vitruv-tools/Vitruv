@@ -26,8 +26,14 @@ import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
 import tools.vitruv.framework.change.description.CompositeTransactionalChange
 import tools.vitruv.framework.correspondence.CorrespondencePackage
 import tools.vitruv.framework.change.description.ConcreteChange
+import java.util.LinkedList
+import java.util.Collection
+import tools.vitruv.framework.userinteraction.InternalUserInteractor
+import tools.vitruv.framework.userinteraction.UserInteractionListener
+import tools.vitruv.framework.change.interaction.UserInteractionBase
+import tools.vitruv.framework.userinteraction.UserInteractionFactory
 
-class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserver {
+class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserver, UserInteractionListener {
 	static Logger logger = Logger.getLogger(ChangePropagatorImpl.getSimpleName())
 	final VitruvDomainRepository metamodelRepository;
 	final ModelRepository resourceRepository
@@ -36,10 +42,12 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 	Set<ChangePropagationListener> changePropagationListeners
 	final ModelRepositoryImpl modelRepository;
 	final List<EObject> objectsCreatedDuringPropagation;
+	final InternalUserInteractor userInteractor;
+	private final Collection<UserInteractionBase> userInteractions = new LinkedList();
 
 	new(ModelRepository resourceRepository, ChangePropagationSpecificationProvider changePropagationProvider,
 		VitruvDomainRepository metamodelRepository, CorrespondenceProviding correspondenceProviding,
-		ModelRepositoryImpl modelRepository) {
+		ModelRepositoryImpl modelRepository, InternalUserInteractor userInteractor) {
 		this.resourceRepository = resourceRepository
 		this.modelRepository = modelRepository;
 		this.changePropagationProvider = changePropagationProvider
@@ -48,6 +56,8 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 		this.changePropagationListeners = new HashSet<ChangePropagationListener>()
 		this.metamodelRepository = metamodelRepository;
 		this.objectsCreatedDuringPropagation = newArrayList();
+		this.userInteractor = userInteractor;
+		userInteractor.registerUserInputListener(this)
 	}
 
 	override void addChangePropagationListener(ChangePropagationListener propagationListener) {
@@ -134,6 +144,12 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 		ChangedResourcesTracker changedResourcesTracker
 	) {
 		val consequentialChanges = newArrayList();
+		
+		// retrieve user inputs from past changes, construct a UserInteractor which tries to reuse them:
+		val pastUserInputsFromChange = change.getUserInteractions()
+		if (!pastUserInputsFromChange.nullOrEmpty) {
+			userInteractor.decorateUserInteractionResultProvider([provider | UserInteractionFactory.instance.createPredefinedInteractionResultProvider(provider, pastUserInputsFromChange)]);
+		}
 		//modelRepository.startRecording;
 		resourceRepository.startRecording;
 		for (propagationSpecification : changePropagationProvider.
@@ -144,6 +160,8 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 		consequentialChanges += resourceRepository.endRecording();
 		consequentialChanges.forEach[logger.debug(it)];
 
+		userInteractor.removeDecoratingUserInteractionResultProvider();
+        change.userInteractions = userInteractions
 		val propagatedChange = new PropagatedChange(change,
 				VitruviusChangeFactory.instance.createCompositeChange(consequentialChanges))
 		val resultingChanges = new ArrayList()
@@ -184,7 +202,7 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 			return Collections.singleton(composite)
 		} else {
 			return Collections.emptyList
-		} 
+		}
 	}
 
 	def private dispatch Iterable<TransactionalChange> getTransactionalChangeSequence(CompositeChange<?> composite) {
@@ -244,5 +262,9 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 		this.objectsCreatedDuringPropagation += createdObject;
 		this.modelRepository.addRootElement(createdObject);
 	}
+
+    override onUserInteractionReceived(UserInteractionBase interaction) {
+        userInteractions.add(interaction)
+    }
 
 }

@@ -1,7 +1,7 @@
 package tools.vitruv.extensions.dslsruntime.reactions.correspondenceFailHandler
 
 import org.eclipse.emf.ecore.EObject
-import tools.vitruv.framework.userinteraction.UserInteracting
+import tools.vitruv.framework.userinteraction.UserInteractor
 
 class CorrespondenceFailDoNothing extends AbstractCorrespondenceFailHandler {
 	private final boolean abortEffect;
@@ -10,7 +10,7 @@ class CorrespondenceFailDoNothing extends AbstractCorrespondenceFailHandler {
 		this.abortEffect = abortEffect;
 	}
 	
-	override handle(Iterable<? extends EObject> foundObjects, EObject sourceElement, Class<?> expectedType, UserInteracting userInteracting) {
+	override handle(Iterable<? extends EObject> foundObjects, EObject sourceElement, Class<?> expectedType, UserInteractor userInteractor) {
 		logFail(foundObjects, sourceElement, expectedType);
 		logger.debug("And nothing ist done");
 		return abortEffect;
