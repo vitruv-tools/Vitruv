@@ -10,7 +10,7 @@
       <wizard
             category="tools.vitruv.framework.ui.vsum.Vitruv"
             class="tools.vitruv.framework.ui.vsum.wizard.CreateVsumWizard"
-            icon="src/tools/vitruv/framework/ui/vsum/resources/vitruvian.png"
+            icon="images/vitruvian.png"
             id="tools.vitruv.framework.ui.vsum.newvitruvwizard"
             name="Vitruv Project">
       </wizard>
@@ -24,7 +24,7 @@
                id="tools.vitruv.framework.ui.vsum.toolbar">
             <command
                   commandId="tools.vitruv.framework.ui.vsum.vitruvwizardcommand"
-                  icon="src/tools/vitruv/framework/ui/vsum/resources/vitruvian.png"
+                  icon="images/vitruvian.png"
                   style="push">
             </command>
          </toolbar>
