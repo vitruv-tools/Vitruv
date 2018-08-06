@@ -39,13 +39,16 @@ package class ChangedResourcesTracker {
 		// Therefore, we have to mark them as modified manually
 		
 		// FIXME HK We remove only objects that were not in one of the change source models. This is especially necessary 
-		// to avoid overwriting Java files that were modified by the user in an editor (and changes recorded by the JAva AST)
+		// to avoid overwriting Java files that were modified by the user in an editor (and changes recorded by the Java AST)
 		// but whose JaMoPP VSUM model is not up to date because changes were not made to the EMF Model but in the text editor
 		// Therefore, saving those models would overwrite the changed ones.
 		// This will hopefully not be necessary anymore if we replay recorded changes in the VSUM isolated from their
 		// recording in editors.
+		// We recently disabled the filtering, as it is necessary for transitive change propagation, which can again
+		// modify the source model, which has to be reloaded in the view afterwards.
+		// TODO HK Remove this tracker and directly mark modified models when it operates properly in tests.
 		val changedNonSourceResources = involvedModelResources
-			.filter[!sourceModelResources.exists[sourceResource | sourceResource.getURI.equals(it.getURI)]];
+			//.filter[!sourceModelResources.exists[sourceResource | sourceResource.getURI.equals(it.getURI)]];
 		changedNonSourceResources.forEach[modified = true];
 	}
 }
