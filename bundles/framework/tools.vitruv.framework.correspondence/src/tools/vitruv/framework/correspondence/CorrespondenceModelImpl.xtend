@@ -189,7 +189,15 @@ class CorrespondenceModelImpl extends ModelInstance implements InternalCorrespon
 	override Set<List<EObject>> getCorrespondingEObjects(Class<? extends Correspondence> correspondenceType, List<EObject> eObjects) {
 		var List<Tuid> tuids = calculateTuidsFromEObjects(eObjects)
 		var Set<List<Tuid>> correspondingTuidLists = getCorrespondingTuids(correspondenceType, tuids)
-		return correspondingTuidLists.mapFixed[resolveEObjectsFromTuids(it)].toSet;
+		try {
+			return correspondingTuidLists.mapFixed[resolveEObjectsFromTuids(it)].toSet;
+		} catch (IllegalStateException e) {
+			throw new IllegalStateException('''Corresponding objects for eObjects 
+			«FOR object : eObjects BEFORE "\n" SEPARATOR "\n"»	«object»«ENDFOR»
+			cannot be resolved, because one of the TUIDs 
+			«FOR tuid : correspondingTuidLists BEFORE "\n" SEPARATOR "\n"»	«tuid»«ENDFOR»
+			cannot be resolved.''')
+		}
 	}
 	
 	def private Set<List<Tuid>> getCorrespondingTuids(Class<? extends Correspondence> correspondenceType, List<Tuid> tuids) {
