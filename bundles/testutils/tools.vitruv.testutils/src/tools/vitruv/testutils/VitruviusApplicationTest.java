@@ -80,9 +80,23 @@ public abstract class VitruviusApplicationTest extends VitruviusUnmonitoredAppli
 			this.changeRecorder.beginRecording();
 		}
 	}
+	
+	/**
+	 * Stops recording changes for the model of the given {@link EObject}.
+	 * If the object or its ressource are <code>null</code>, an {@link IllegalArgumentException} is thrown.
+	 * 
+	 * @param object
+	 *            the {@link EObject} to stop recording changes for
+	 */
+	protected void stopRecordingChanges(EObject object) {
+		if(object.eResource() == null) {
+			throw new IllegalArgumentException("Object or its ressource must not be null");
+		}
+		this.changeRecorder.removeFromRecording(object.eResource());
+	}
 
 	/**
-	 * Starts recording changes for the model of the given {@link EObject}
+	 * Starts recording changes for the model of the given {@link EObject}.
 	 * 
 	 * @param object
 	 *            the {@link EObject} to record changes for
