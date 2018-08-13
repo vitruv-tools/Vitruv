@@ -4,8 +4,10 @@ import org.eclipse.emf.ecore.EPackage
 import java.util.Map
 import java.util.Set
 import org.eclipse.emf.ecore.EObject
+import tools.vitruv.framework.util.datatypes.URIHaving
+import java.util.Collection
 
-interface VitruvDomain extends TuidAwareVitruvDomain {
+interface VitruvDomain extends URIHaving, Comparable<URIHaving> {
 	def String getName();
 
 	def EPackage getMetamodelRootPackage();
@@ -17,6 +19,7 @@ interface VitruvDomain extends TuidAwareVitruvDomain {
 	def Map<Object, Object> getDefaultSaveOptions();
 	
 	def VitruviusProjectBuilderApplicator getBuilderApplicator();
+	def Collection<String> getFileExtensions();
 	
 	/**
 	 * Whether this domain should be visible to users. Some domains exist only

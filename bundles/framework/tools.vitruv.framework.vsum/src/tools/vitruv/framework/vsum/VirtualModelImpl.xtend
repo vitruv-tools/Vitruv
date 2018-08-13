@@ -22,6 +22,7 @@ import java.util.Vector
 import tools.vitruv.framework.vsum.helper.ChangeDomainExtractor
 import tools.vitruv.framework.userinteraction.UserInteractor
 import tools.vitruv.framework.userinteraction.InternalUserInteractor
+import tools.vitruv.framework.domains.TuidAwareVitruvDomain
 
 class VirtualModelImpl implements InternalVirtualModel {
 		
@@ -45,7 +46,9 @@ class VirtualModelImpl implements InternalVirtualModel {
 		this.metamodelRepository = new VitruvDomainRepositoryImpl();
 		for (metamodel : modelConfiguration.metamodels) {
 			this.metamodelRepository.addDomain(metamodel);
-			metamodel.registerAtTuidManagement();
+			if (metamodel instanceof TuidAwareVitruvDomain) {
+				metamodel.registerAtTuidManagement();
+			}
 		}
 		this.resourceRepository = new ResourceRepositoryImpl(folder, metamodelRepository);
 		this.modelRepository = new ModelRepositoryImpl(resourceRepository.uuidGeneratorAndResolver);

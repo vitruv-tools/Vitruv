@@ -35,6 +35,7 @@ import tools.vitruv.framework.domains.repository.VitruvDomainRepository
 import tools.vitruv.framework.util.command.VitruviusRecordingCommandExecutor
 import tools.vitruv.framework.util.command.EMFCommandBridge
 import tools.vitruv.framework.tuid.TuidResolver
+import tools.vitruv.framework.domains.VitruvDomain
 
 // TODO move all methods that don't need direct instance variable access to some kind of util class
 class CorrespondenceModelImpl extends ModelInstance implements InternalCorrespondenceModel, TuidUpdateListener {
@@ -100,24 +101,26 @@ class CorrespondenceModelImpl extends ModelInstance implements InternalCorrespon
 	}
 	
 	override calculateTuidFromEObject(EObject eObject) {
-		val TuidAwareVitruvDomain metamodel = eObject.getMetamodelForEObject()
-		 if (null === metamodel){
+		val VitruvDomain metamodel = eObject.getMetamodelForEObject()
+		 if (null === metamodel || !(metamodel instanceof TuidAwareVitruvDomain)){
 		 	return null 
 		 }
-         return metamodel.calculateTuid(eObject)
+		 val typedDomain = metamodel as TuidAwareVitruvDomain;
+         return typedDomain.calculateTuid(eObject)
 	}
 	
 	@Deprecated
 	override calculateTuidFromEObject(EObject eObject, EObject virtualRootObject, String prefix) {
-		 val TuidAwareVitruvDomain metamodel = eObject.getMetamodelForEObject()
-		 if(null === metamodel){
+		 val VitruvDomain metamodel = eObject.getMetamodelForEObject()
+		 if(null === metamodel || !(metamodel instanceof TuidAwareVitruvDomain)){
 		 	return null 
 		 }
+		 val typedDomain = metamodel as TuidAwareVitruvDomain
 		 if(null === virtualRootObject || null === prefix){
 		 	logger.info("virtualRootObject or prefix is null. Using standard calculation method for EObject " + eObject)
-         	return metamodel.calculateTuid(eObject)
+         	return typedDomain.calculateTuid(eObject)
      	}
-     	return Tuid::getInstance(metamodel.calculateTuidFromEObject(eObject, virtualRootObject, prefix))
+     	return Tuid::getInstance(typedDomain.calculateTuidFromEObject(eObject, virtualRootObject, prefix))
 	}
 	
 	def private getMetamodelForEObject(EObject eObject){
