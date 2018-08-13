@@ -2,11 +2,11 @@ package tools.vitruv.testutils.domains;
 
 import pcm_mockup.Pcm_mockupPackage;
 import tools.vitruv.domains.emf.builder.VitruviusEmfBuilderApplicator;
-import tools.vitruv.framework.domains.AbstractVitruvDomain;
+import tools.vitruv.framework.domains.AbstractTuidAwareVitruvDomain;
 import tools.vitruv.framework.domains.VitruviusProjectBuilderApplicator;
 import tools.vitruv.framework.tuid.AttributeTuidCalculatorAndResolver;
 
-public final class PcmMockupDomain extends AbstractVitruvDomain {
+public final class PcmMockupDomain extends AbstractTuidAwareVitruvDomain {
 	public static final String METAMODEL_NAME = "PcmMockup";
 	public static final String FILE_EXTENSION = "pcm_mockup";
 	
