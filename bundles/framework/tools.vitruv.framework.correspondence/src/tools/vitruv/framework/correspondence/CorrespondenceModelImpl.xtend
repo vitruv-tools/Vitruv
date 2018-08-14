@@ -197,7 +197,7 @@ class CorrespondenceModelImpl extends ModelInstance implements InternalCorrespon
 		var List<Tuid> tuids = calculateTuidsFromEObjects(eObjects)
 		var Set<List<Tuid>> correspondingTuidLists = getCorrespondingTuids(correspondenceType, tuids, tag)
 		try {
-			return correspondingTuidLists.mapFixed[resolveEObjectsFromTuids(it)].toSet;
+			return correspondingTuidLists.mapFixed[it.map[resolveEObjectFromTuid(it)]].toSet;
 		} catch (IllegalStateException e) {
 			throw new IllegalStateException('''Corresponding objects for eObjects 
 			«FOR object : eObjects BEFORE "\n" SEPARATOR "\n"»	«object»«ENDFOR»
@@ -356,10 +356,6 @@ class CorrespondenceModelImpl extends ModelInstance implements InternalCorrespon
 	 */
 	override void resetChangedAfterLastSave() {
 		this.changedAfterLastSave = false
-	}
-
-	override List<EObject> resolveEObjectsFromTuids(List<Tuid> tuids) {
-		tuids.mapFixed[tuidResolver.resolveEObjectFromTuid(it)];
 	}
 
 	override EObject resolveEObjectFromTuid(Tuid tuid) {
