@@ -126,6 +126,8 @@ public class ResourceRepositoryImpl implements ModelRepository, CorrespondencePr
                 if (this.uuidGeneratorAndResolver.hasUuid(object)) {
                     this.uuidGeneratorAndResolver.registerEObject(this.uuidGeneratorAndResolver.getUuid(object),
                             object);
+                } else {
+                    logger.warn("Element " + object + " has no UUID that can be linked during resource reload");
                 }
             });
         }
@@ -503,5 +505,16 @@ public class ResourceRepositoryImpl implements ModelRepository, CorrespondencePr
             modelInstance = this.modelInstances.get(storageVuri);
         }
         return modelInstance.getResource();
+    }
+
+    @Override
+    public void reloadTextualModels() {
+        List<Resource> resources = new ArrayList<Resource>(this.resourceSet.getResources());
+        for (Resource res : resources) {
+            if (res.getURI().toString().endsWith("java")) {
+                forceReloadModelIfExisting(VURI.getInstance(res.getURI()));
+            }
+        }
+
     }
 }
