@@ -72,6 +72,11 @@ class CorrespondenceModelView<T extends Correspondence> implements GenericCorres
 		correspondenceModelDelegate.getCorrespondences(eObjects).filter(correspondenceType).toSet();
 	}
 
+	override getCorrespondencesThatInvolveAtLeast(Set<EObject> eObjects) {
+		correspondenceModelDelegate.getCorrespondencesThatInvolveAtLeast(eObjects).filter(correspondenceType).
+			toSet();
+	}
+
 	override <U extends Correspondence> getView(Class<U> correspondenceType) {
 		correspondenceModelDelegate.getView(correspondenceType);
 	}

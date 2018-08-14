@@ -381,6 +381,10 @@ class CorrespondenceModelImpl extends ModelInstance implements InternalCorrespon
 		this.correspondences.correspondences.filter[it.dependsOn === null || it.dependsOn.size == 0].toSet
 	}
 	
+	override getCorrespondencesThatInvolveAtLeast(Set<EObject> eObjects) {
+		return getCorrespondencesThatInvolveAtLeastTuids(eObjects.mapFixed[calculateTuidFromEObject(it)].toSet)
+	}
+	
 	private def getCorrespondencesThatInvolveAtLeastTuids(Set<Tuid> tuids) {
 		val supTuidLists = tuids?.mapFixed[this.tuid2tuidListsMap.get(it)].filterNull.flatten.filter[it.containsAll(tuids)]
 		val corrit = supTuidLists?.mapFixed[getCorrespondencesForTuids(it)]

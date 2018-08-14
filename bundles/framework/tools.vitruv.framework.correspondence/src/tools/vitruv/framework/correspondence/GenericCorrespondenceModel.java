@@ -70,6 +70,8 @@ public interface GenericCorrespondenceModel<T extends Correspondence> extends UR
 
     public T claimUniqueCorrespondence(final List<EObject> aEObjects, final List<EObject> bEObjects);
 
+    public Set<T> getCorrespondencesThatInvolveAtLeast(Set<EObject> eObjects);
+    
     // renamed from addSameTypeCorrespondence
     public void addCorrespondence(T correspondence);
 
