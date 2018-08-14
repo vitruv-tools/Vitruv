@@ -63,15 +63,12 @@ public interface GenericCorrespondenceModel<T extends Correspondence> extends UR
     public Set<T> getCorrespondencesForTuids(List<Tuid> tuids);
 
     public Set<List<EObject>> getCorrespondingEObjects(List<EObject> eObjects);
-
-    public Set<List<EObject>> getCorrespondingEObjects(Class<? extends Correspondence> correspondenceType,
-            List<EObject> eObjects);
+    
+    public Set<List<EObject>> getCorrespondingEObjects(List<EObject> eObjects, String tag);
+    
+    public Set<List<EObject>> getCorrespondingEObjects(Class<? extends Correspondence> correspondenceType, List<EObject> eObjects, String tag);
 
     public T claimUniqueCorrespondence(final List<EObject> aEObjects, final List<EObject> bEObjects);
-
-    public Set<T> getCorrespondencesThatInvolveAtLeast(Set<EObject> eObjects);
-
-    public Set<T> getCorrespondencesThatInvolveAtLeastTuids(Set<Tuid> tuids);
 
     // renamed from addSameTypeCorrespondence
     public void addCorrespondence(T correspondence);
@@ -88,18 +85,6 @@ public interface GenericCorrespondenceModel<T extends Correspondence> extends UR
      * @return a set containing all removed correspondences
      */
     public Set<Correspondence> removeCorrespondencesThatInvolveAtLeastAndDependend(Set<EObject> eObjects);
-
-    /**
-     * Removes all direct correspondences for the eObject with the given tuid and all
-     * correspondences for children of the eObject and for children of the eObjects corresponding to
-     * the eObject with the given tuid. Does <b>not</b> remove any model elements (only
-     * correspondences).
-     *
-     * @param tuid
-     *            for which all correspondences should be removed
-     * @return a set containing all removed correspondences
-     */
-    public Set<Correspondence> removeCorrespondencesThatInvolveAtLeastAndDependendForTuids(Set<Tuid> tuids);
 
     /**
      * Removes the given correspondence, all correspondences for the eObjects of the given

@@ -3,11 +3,11 @@ package tools.vitruv.extensions.dslsruntime.reactions.helper
 import java.util.ArrayList
 import org.eclipse.xtext.xbase.lib.Functions.Function1
 import org.eclipse.emf.ecore.EObject
-import tools.vitruv.framework.tuid.Tuid
 import tools.vitruv.dsls.reactions.meta.correspondence.reactions.ReactionsCorrespondence
 import tools.vitruv.dsls.reactions.meta.correspondence.reactions.ReactionsFactory
 import java.util.List
 import tools.vitruv.framework.correspondence.CorrespondenceModel
+import org.eclipse.emf.ecore.util.EcoreUtil
 
 final class ReactionsCorrespondenceHelper {
 	private new() {}
@@ -18,19 +18,13 @@ final class ReactionsCorrespondenceHelper {
 		]);
 	}
 
-	private static def getTuid(CorrespondenceModel correspondenceModel, EObject object) {
-		return correspondenceModel.calculateTuidFromEObject(object);
-	}
-
 	public static def removeCorrespondencesBetweenElements(CorrespondenceModel correspondenceModel,
 		EObject source, EObject target, String tag) {
 		val correspondenceModelView = correspondenceModel.reactionsView;
-		val sourceTuid = correspondenceModel.getTuid(source);
-		val targetTuid = correspondenceModel.getTuid(target);
-		val correspondences = correspondenceModelView.getCorrespondencesForTuids(#[sourceTuid]).filter[it.tag == tag];
+		val correspondences = correspondenceModelView.getCorrespondences(#[source]).filter[it.tag == tag];
 		for (correspondence : correspondences.toList) {
-			if ((correspondence.ATuids.contains(sourceTuid) && correspondence.BTuids.contains(targetTuid)) ||
-				(correspondence.BTuids.contains(sourceTuid) && correspondence.ATuids.contains(targetTuid))) {
+			if ((correspondence.^as.containsEqualElement(source) && correspondence.bs.containsEqualElement(target)) ||
+				(correspondence.bs.containsEqualElement(source) && correspondence.^as.containsEqualElement(target))) {
 				correspondenceModelView.removeCorrespondencesAndDependendCorrespondences(correspondence);
 			}
 		}
@@ -38,12 +32,15 @@ final class ReactionsCorrespondenceHelper {
 	
 	public static def removeCorrespondencesOfObject(CorrespondenceModel correspondenceModel,
 		EObject source) {
-		val sourceTuid = correspondenceModel.getTuid(source);
 		val correspondenceModelView = correspondenceModel.reactionsView;
-		val correspondences = correspondenceModelView.getCorrespondencesForTuids(#[sourceTuid]);
+		val correspondences = correspondenceModelView.getCorrespondences(#[source]);
 		for (correspondence : correspondences.toList) {
 			correspondenceModelView.removeCorrespondencesAndDependendCorrespondences(correspondence);
 		}
+	}
+	
+	private static def containsEqualElement(Iterable<EObject> eObjects, EObject searchedObject) {
+		return eObjects.exists[EcoreUtil.equals(it, searchedObject)];
 	}
 
 	public static def ReactionsCorrespondence addCorrespondence(
@@ -57,22 +54,9 @@ final class ReactionsCorrespondenceHelper {
 	public static def <T> Iterable<T> getCorrespondingObjectsOfType(
 		CorrespondenceModel correspondenceModel, EObject source, String expectedTag,
 		Class<T> type) {
-			val tuid = correspondenceModel.getTuid(source);
-			return correspondenceModel.reactionsView.getCorrespondencesForTuids(#[tuid]).filter [
-				expectedTag.nullOrEmpty || tag == expectedTag
-			].map[it.getCorrespondingObjectsOfTypeInCorrespondence(tuid, type)].flatten;
-		}
-
-	private static def <T> Iterable<T> getCorrespondingObjectsOfTypeInCorrespondence(
-		ReactionsCorrespondence correspondence, Tuid source, Class<T> type) {
-		var Iterable<T> correspondences = if (correspondence.ATuids.contains(source)) {
-				correspondence.^bs.filter(type);
-			} else {
-				correspondence.^as.filter(type);
-			}
-		return correspondences;
+			return correspondenceModel.reactionsView.getCorrespondingEObjects(#[source], expectedTag).flatten.filter(type);
 	}
-
+		
 	public static def <T> List<T> getCorrespondingModelElements(EObject sourceElement, Class<T> affectedElementClass,
 		String expectedTag, Function1<T, Boolean> preconditionMethod, CorrespondenceModel correspondenceModel) {
 		if (sourceElement === null) {
