@@ -168,12 +168,4 @@ public interface Correspondence extends EObject {
 	 */
 	EList<EObject> getBs();
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @model
-	 * @generated
-	 */
-	EList<EObject> getElementsForMetamodel(String metamodelNamespaceUri);
-
 } // Correspondence

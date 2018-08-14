@@ -273,16 +273,6 @@ public abstract class CorrespondenceImpl extends EObjectImpl implements Correspo
     	return result;
     }
     
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated not
-     */
-    @Override
-    public EList<EObject> getElementsForMetamodel(final String metamodelNamespaceUri) {
-        return resolveEObjects(getParent().getCorrespondenceModel().getTuidsForMetamodel(this, metamodelNamespaceUri));
-    }
-
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

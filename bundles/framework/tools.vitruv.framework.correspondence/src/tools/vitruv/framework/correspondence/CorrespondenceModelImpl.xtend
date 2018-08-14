@@ -397,29 +397,6 @@ class CorrespondenceModelImpl extends ModelInstance implements InternalCorrespon
 		return correspondences.correspondences
 	}
 	
-	/**
-	 * Gets the side of a correspondence for the given metamodel nsURI.
-	 * @param correspondence the correspondence for which the correct side should be chosen
-	 * @param mmNsUri the namespace URI for the requested side
-	 * 
-	 * @throws IllegalArgumentException if the <code>mmNsUri</code> is not the namespace URI of one of the mapped
-	 * meta models.
-	 * 
-	 * @author Dominik Werle 
-	 */
-	override getTuidsForMetamodel(Correspondence correspondence, String metamodelNamespaceUri) {
-		// FIXME This is really ugly, fix it!
-	 	val domainA = domainRepository.getDomain(correspondence.ATuids.get(0));
-	 	val domainB = domainRepository.getDomain(correspondence.BTuids.get(0));
-	 	if (domainA.nsUris.contains(metamodelNamespaceUri)) {
-	 		return correspondence.getATuids
-	 	} else if (domainB.nsUris.contains(metamodelNamespaceUri)) {
-	 		return correspondence.getBTuids
-	 	} else {
-	 		throw new IllegalArgumentException('''Metamodel namespace URI "«metamodelNamespaceUri»" is not a namespace URI of one of the metamodels for the associated mapping''')
-	 	}
-	 }
-	 
 	override <U extends Correspondence> getView(Class<U> correspondenceType) {
 		return new CorrespondenceModelView(correspondenceType, this);
 	}

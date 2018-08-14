@@ -72,10 +72,6 @@ class CorrespondenceModelView<T extends Correspondence> implements GenericCorres
 		correspondenceModelDelegate.getCorrespondences(eObjects).filter(correspondenceType).toSet();
 	}
 
-	override getTuidsForMetamodel(T correspondence, String metamodelNamespaceUri) {
-		correspondenceModelDelegate.getTuidsForMetamodel(correspondence, metamodelNamespaceUri);
-	}
-
 	override <U extends Correspondence> getView(Class<U> correspondenceType) {
 		correspondenceModelDelegate.getView(correspondenceType);
 	}

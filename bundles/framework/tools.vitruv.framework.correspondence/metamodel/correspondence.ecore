@@ -11,9 +11,6 @@
   <eClassifiers xsi:type="ecore:EClass" name="Correspondence" abstract="true">
     <eOperations name="getAs" upperBound="-1" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
     <eOperations name="getBs" upperBound="-1" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
-    <eOperations name="getElementsForMetamodel" upperBound="-1" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject">
-      <eParameters name="metamodelNamespaceUri" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    </eOperations>
     <eStructuralFeatures xsi:type="ecore:EReference" name="parent" lowerBound="1"
         eType="#//Correspondences" eOpposite="#//Correspondences/correspondences"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="dependsOn" ordered="false"

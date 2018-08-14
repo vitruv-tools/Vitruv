@@ -132,17 +132,6 @@ public interface GenericCorrespondenceModel<T extends Correspondence> extends UR
     public List<T> getAllCorrespondences();
 
     /**
-     * Returns the Tuids for a correspondence that belong to the side that has a metamodel whose
-     * namespace URIs include the given <code>metamodelNamespaceUri</code>
-     *
-     * @param metamodelNamespaceUri
-     *            the namespace URI for which the correct side should be returned
-     * @return
-     * @author Dominik Werle
-     */
-    public List<Tuid> getTuidsForMetamodel(T correspondence, String metamodelNamespaceUri);
-
-    /**
      * Returns a view on the {@link CorrespondenceModel} restricted to the specified kind of
      * {@link Correspondence}. The functions of the view will only act on the given implementation
      * of {@link Correspondence}s.
