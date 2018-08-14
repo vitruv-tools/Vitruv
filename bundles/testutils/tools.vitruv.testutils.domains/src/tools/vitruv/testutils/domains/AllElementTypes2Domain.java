@@ -2,11 +2,11 @@ package tools.vitruv.testutils.domains;
 
 import allElementTypes2.AllElementTypes2Package;
 import tools.vitruv.domains.emf.builder.VitruviusEmfBuilderApplicator;
-import tools.vitruv.framework.domains.AbstractVitruvDomain;
+import tools.vitruv.framework.domains.AbstractTuidAwareVitruvDomain;
 import tools.vitruv.framework.domains.VitruviusProjectBuilderApplicator;
 import tools.vitruv.framework.tuid.AttributeTuidCalculatorAndResolver;
 
-public final class AllElementTypes2Domain extends AbstractVitruvDomain {
+public final class AllElementTypes2Domain extends AbstractTuidAwareVitruvDomain {
 	public static final String METAMODEL_NAME = "AllElementTypes2";
 	public static final String FILE_EXTENSION = "allElementTypes2";
 	

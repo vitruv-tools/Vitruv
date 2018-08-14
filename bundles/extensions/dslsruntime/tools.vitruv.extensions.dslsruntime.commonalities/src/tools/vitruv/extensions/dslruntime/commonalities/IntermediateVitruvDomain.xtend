@@ -2,10 +2,10 @@ package tools.vitruv.extensions.dslruntime.commonalities
 
 import java.util.Set
 import org.eclipse.emf.ecore.EPackage
-import tools.vitruv.framework.domains.AbstractVitruvDomain
+import tools.vitruv.framework.domains.AbstractTuidAwareVitruvDomain
 import tools.vitruv.framework.tuid.TuidCalculatorAndResolver
 
-abstract class IntermediateVitruvDomain extends AbstractVitruvDomain {
+abstract class IntermediateVitruvDomain extends AbstractTuidAwareVitruvDomain {
 
 	new(String name, EPackage metamodelRootPackage, Set<EPackage> furtherRootPackages,
 		TuidCalculatorAndResolver tuidCalculator, String... fileExtensions) {

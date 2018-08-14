@@ -7,6 +7,7 @@ import java.util.Set;
 
 import org.eclipse.emf.ecore.EObject;
 
+import tools.vitruv.framework.domains.TuidAwareVitruvDomain;
 import tools.vitruv.framework.domains.VitruvDomain;
 import tools.vitruv.framework.tuid.Tuid;
 import tools.vitruv.framework.util.datatypes.ClaimableHashMap;
@@ -84,10 +85,13 @@ public class VitruvDomainRepositoryImpl implements VitruvDomainRepository {
 	}
 
 	@Override
-	public VitruvDomain getDomain(Tuid tuid) {
+	public TuidAwareVitruvDomain getDomain(Tuid tuid) {
 		for (VitruvDomain domain : uri2MetamodelMap.values()) {
-			if (domain.hasTuid(tuid.toString())) {
-				return domain;
+			if (domain instanceof TuidAwareVitruvDomain) {
+				TuidAwareVitruvDomain typedDomain = (TuidAwareVitruvDomain)domain;
+				if (typedDomain.hasTuid(tuid.toString())) {
+					return typedDomain;
+				}
 			}
 		}
 		throw new IllegalStateException("No domain for given tuid <" + tuid+ "> registered");

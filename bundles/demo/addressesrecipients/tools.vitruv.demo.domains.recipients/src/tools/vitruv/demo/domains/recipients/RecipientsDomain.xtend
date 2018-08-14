@@ -4,10 +4,10 @@ import tools.vitruv.framework.tuid.AttributeTuidCalculatorAndResolver
 import tools.vitruv.framework.tuid.TuidCalculatorAndResolver
 import edu.kit.ipd.sdq.metamodels.recipients.RecipientsPackage
 import static tools.vitruv.demo.domains.recipients.RecipientsNamespace.*;
-import tools.vitruv.framework.domains.AbstractVitruvDomain
+import tools.vitruv.framework.domains.AbstractTuidAwareVitruvDomain
 import tools.vitruv.domains.emf.builder.VitruviusEmfBuilderApplicator
 
-class RecipientsDomain extends AbstractVitruvDomain {
+class RecipientsDomain extends AbstractTuidAwareVitruvDomain {
 	public static final String METAMODEL_NAME = "Recipients"
 	
 	package new() {

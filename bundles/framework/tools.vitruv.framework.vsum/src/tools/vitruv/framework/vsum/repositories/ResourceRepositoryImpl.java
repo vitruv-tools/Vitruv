@@ -184,10 +184,12 @@ public class ResourceRepositoryImpl implements ModelRepository, CorrespondencePr
                 final Map<Object, Object> saveOptions = metamodel != null ? metamodel.getDefaultSaveOptions()
                         : Collections.emptyMap();
                 try {
-                    // we allow resources without a domain for internal uses.
-                    EcoreResourceBridge.saveResource(resourceToSave, saveOptions);
+                    if (!getTransactionalEditingDomain().isReadOnly(resourceToSave)) {
+                        // we allow resources without a domain for internal uses.
+                        EcoreResourceBridge.saveResource(resourceToSave, saveOptions);
+                    }
                 } catch (IOException e) {
-                    throw new RuntimeException("Could not save VURI + " + modelInstance.getURI() + ": " + e);
+                    throw new RuntimeException("Could not save VURI " + modelInstance.getURI() + ": " + e);
                 }
                 return null;
             }
@@ -243,6 +245,7 @@ public class ResourceRepositoryImpl implements ModelRepository, CorrespondencePr
             if (resourceToSave.isModified()) {
                 logger.debug("  Saving resource: " + resourceToSave);
                 saveModelInstance(modelInstance);
+                modelInstance.getResource().setModified(false);
             }
         }
     }

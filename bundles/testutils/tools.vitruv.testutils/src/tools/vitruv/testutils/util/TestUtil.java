@@ -16,7 +16,6 @@ import tools.vitruv.framework.change.processing.ChangePropagationSpecification;
 import tools.vitruv.framework.domains.VitruvDomain;
 import tools.vitruv.framework.domains.VitruviusProjectBuilderApplicator;
 import tools.vitruv.framework.domains.AbstractVitruvDomain;
-import tools.vitruv.framework.tuid.AttributeTuidCalculatorAndResolver;
 import tools.vitruv.framework.userinteraction.InternalUserInteractor;
 import tools.vitruv.framework.util.VitruviusConstants;
 import tools.vitruv.framework.vsum.InternalVirtualModel;
@@ -217,8 +216,7 @@ public final class TestUtil {
 	 */
 	public static VitruvDomain createVitruvDomain(final String name, final EPackage metamodelRootPackage,
 			final String fileExt) {
-		final VitruvDomain domain = new AbstractVitruvDomain(name, metamodelRootPackage,
-				new AttributeTuidCalculatorAndResolver(metamodelRootPackage.getNsURI()), fileExt) {
+		final VitruvDomain domain = new AbstractVitruvDomain(name, metamodelRootPackage, fileExt) {
 			@Override
 			public VitruviusProjectBuilderApplicator getBuilderApplicator() {
 				return null;

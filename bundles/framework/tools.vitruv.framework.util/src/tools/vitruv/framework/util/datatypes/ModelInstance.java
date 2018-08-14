@@ -22,6 +22,7 @@ public class ModelInstance extends AbstractURIHaving {
         if (resource == null) {
             throw new RuntimeException("Cannot create a model instance at the URI '" + uri + "' for a null resource!");
         }
+        LOGGER.debug("Creating model instance for loaded resource with URI: " + uri.getEMFUri());
         this.resource = resource;
     }
 
@@ -116,6 +117,7 @@ public class ModelInstance extends AbstractURIHaving {
      * forceLoadByDoingUnloadBeforeLoad to true, which means that the resource will be unloaded
      * before we load it again.
      *
+     * Throws an {@link IllegalStateException} if the resource cannot be loaded.
      */
     public void load(final Map<Object, Object> loadOptions, final boolean forceLoadByDoingUnloadBeforeLoad) {
     	EMFCommandBridge.createAndExecuteVitruviusRecordingCommand(() -> {
@@ -126,10 +128,11 @@ public class ModelInstance extends AbstractURIHaving {
     			if (this.resource.isModified() || forceLoadByDoingUnloadBeforeLoad) {
     				this.resource.unload();
     			}
-    			this.resource.load(this.lastUsedLoadOptions);
+   				this.resource.load(this.lastUsedLoadOptions);
+   				LOGGER.debug("Resource was loaded: " + resource.getURI());
     		} catch (IOException e) {
     			// 	soften
-    			throw new RuntimeException(e);
+    			throw new IllegalStateException("Problem loading resource: " + resource.getURI());
     		}
     		return null;
         }, getTransactionalEditingDomain());
