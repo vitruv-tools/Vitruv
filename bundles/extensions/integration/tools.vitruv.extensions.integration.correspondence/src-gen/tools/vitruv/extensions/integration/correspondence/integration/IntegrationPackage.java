@@ -5,6 +5,7 @@ package tools.vitruv.extensions.integration.correspondence.integration;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EPackage;
+
 import tools.vitruv.dsls.reactions.meta.correspondence.reactions.ReactionsPackage;
 
 /**

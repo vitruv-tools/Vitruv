@@ -2,15 +2,16 @@
  */
 package tools.vitruv.extensions.integration.correspondence.integration.util;
 
-import tools.vitruv.extensions.integration.correspondence.integration.*;
-
-import tools.vitruv.framework.correspondence.Correspondence;
-
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 
 import org.eclipse.emf.ecore.util.Switch;
+
 import tools.vitruv.dsls.reactions.meta.correspondence.reactions.ReactionsCorrespondence;
+
+import tools.vitruv.extensions.integration.correspondence.integration.*;
+
+import tools.vitruv.framework.correspondence.Correspondence;
 
 /**
  * <!-- begin-user-doc -->

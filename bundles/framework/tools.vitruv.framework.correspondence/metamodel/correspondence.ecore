@@ -11,11 +11,6 @@
   <eClassifiers xsi:type="ecore:EClass" name="Correspondence" abstract="true">
     <eOperations name="getAs" upperBound="-1" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
     <eOperations name="getBs" upperBound="-1" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
-    <eOperations name="getElementATuid" eType="#//Tuid"/>
-    <eOperations name="getElementBTuid" eType="#//Tuid"/>
-    <eOperations name="getElementsForMetamodel" upperBound="-1" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject">
-      <eParameters name="metamodelNamespaceUri" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    </eOperations>
     <eStructuralFeatures xsi:type="ecore:EReference" name="parent" lowerBound="1"
         eType="#//Correspondences" eOpposite="#//Correspondences/correspondences"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="dependsOn" ordered="false"
@@ -30,6 +25,7 @@
         eType="ecore:EDataType ../../tools.vitruv.framework.uuid/model/Uuid.ecore#//Uuid"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="bUuids" upperBound="-1"
         eType="ecore:EDataType ../../tools.vitruv.framework.uuid/model/Uuid.ecore#//Uuid"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="tag" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ManualCorrespondence" eSuperTypes="#//Correspondence"/>
   <eClassifiers xsi:type="ecore:EDataType" name="CorrespondenceModel" instanceClassName="tools.vitruv.framework.correspondence.CorrespondenceModel"

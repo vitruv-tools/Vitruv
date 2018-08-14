@@ -2,7 +2,6 @@
  */
 package tools.vitruv.dsls.reactions.meta.correspondence.reactions.impl;
 
-import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EPackage;
 
@@ -13,6 +12,8 @@ import tools.vitruv.dsls.reactions.meta.correspondence.reactions.ReactionsFactor
 import tools.vitruv.dsls.reactions.meta.correspondence.reactions.ReactionsPackage;
 
 import tools.vitruv.framework.correspondence.CorrespondencePackage;
+
+import tools.vitruv.framework.uuid.UuidPackage;
 
 /**
  * <!-- begin-user-doc -->
@@ -76,7 +77,7 @@ public class ReactionsPackageImpl extends EPackageImpl implements ReactionsPacka
 
 		// Initialize simple dependencies
 		CorrespondencePackage.eINSTANCE.eClass();
-		tools.vitruv.framework.uuid.UuidPackage.eINSTANCE.eClass();
+		UuidPackage.eINSTANCE.eClass();
 
 		// Create package meta-data objects
 		theReactionsPackage.createPackageContents();
@@ -100,15 +101,6 @@ public class ReactionsPackageImpl extends EPackageImpl implements ReactionsPacka
 	 */
 	public EClass getReactionsCorrespondence() {
 		return reactionsCorrespondenceEClass;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EAttribute getReactionsCorrespondence_Tag() {
-		return (EAttribute)reactionsCorrespondenceEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
@@ -140,7 +132,6 @@ public class ReactionsPackageImpl extends EPackageImpl implements ReactionsPacka
 
 		// Create classes and their features
 		reactionsCorrespondenceEClass = createEClass(REACTIONS_CORRESPONDENCE);
-		createEAttribute(reactionsCorrespondenceEClass, REACTIONS_CORRESPONDENCE__TAG);
 	}
 
 	/**
@@ -178,7 +169,6 @@ public class ReactionsPackageImpl extends EPackageImpl implements ReactionsPacka
 
 		// Initialize classes and features; add operations and parameters
 		initEClass(reactionsCorrespondenceEClass, ReactionsCorrespondence.class, "ReactionsCorrespondence", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getReactionsCorrespondence_Tag(), ecorePackage.getEString(), "Tag", null, 0, 1, ReactionsCorrespondence.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		// Create resource
 		createResource(eNS_URI);

@@ -16,6 +16,7 @@ import org.eclipse.emf.ecore.EReference;
  * <ul>
  *   <li>each class,</li>
  *   <li>each feature of each class,</li>
+ *   <li>each operation of each class,</li>
  *   <li>each enum,</li>
  *   <li>and each data type</li>
  * </ul>
@@ -177,13 +178,22 @@ public interface CorrespondencePackage extends EPackage {
 	int CORRESPONDENCE__BUUIDS = 6;
 
 	/**
+	 * The feature id for the '<em><b>Tag</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CORRESPONDENCE__TAG = 7;
+
+	/**
 	 * The number of structural features of the '<em>Correspondence</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int CORRESPONDENCE_FEATURE_COUNT = 7;
+	int CORRESPONDENCE_FEATURE_COUNT = 8;
 
 	/**
 	 * The operation id for the '<em>Get As</em>' operation.
@@ -204,40 +214,13 @@ public interface CorrespondencePackage extends EPackage {
 	int CORRESPONDENCE___GET_BS = 1;
 
 	/**
-	 * The operation id for the '<em>Get Element ATuid</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int CORRESPONDENCE___GET_ELEMENT_ATUID = 2;
-
-	/**
-	 * The operation id for the '<em>Get Element BTuid</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int CORRESPONDENCE___GET_ELEMENT_BTUID = 3;
-
-	/**
-	 * The operation id for the '<em>Get Elements For Metamodel</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int CORRESPONDENCE___GET_ELEMENTS_FOR_METAMODEL__STRING = 4;
-
-	/**
 	 * The number of operations of the '<em>Correspondence</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int CORRESPONDENCE_OPERATION_COUNT = 5;
+	int CORRESPONDENCE_OPERATION_COUNT = 2;
 
 	/**
 	 * The meta object id for the '{@link tools.vitruv.framework.correspondence.impl.ManualCorrespondenceImpl <em>Manual Correspondence</em>}' class.
@@ -313,6 +296,15 @@ public interface CorrespondencePackage extends EPackage {
 	int MANUAL_CORRESPONDENCE__BUUIDS = CORRESPONDENCE__BUUIDS;
 
 	/**
+	 * The feature id for the '<em><b>Tag</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MANUAL_CORRESPONDENCE__TAG = CORRESPONDENCE__TAG;
+
+	/**
 	 * The number of structural features of the '<em>Manual Correspondence</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -338,33 +330,6 @@ public interface CorrespondencePackage extends EPackage {
 	 * @ordered
 	 */
 	int MANUAL_CORRESPONDENCE___GET_BS = CORRESPONDENCE___GET_BS;
-
-	/**
-	 * The operation id for the '<em>Get Element ATuid</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int MANUAL_CORRESPONDENCE___GET_ELEMENT_ATUID = CORRESPONDENCE___GET_ELEMENT_ATUID;
-
-	/**
-	 * The operation id for the '<em>Get Element BTuid</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int MANUAL_CORRESPONDENCE___GET_ELEMENT_BTUID = CORRESPONDENCE___GET_ELEMENT_BTUID;
-
-	/**
-	 * The operation id for the '<em>Get Elements For Metamodel</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int MANUAL_CORRESPONDENCE___GET_ELEMENTS_FOR_METAMODEL__STRING = CORRESPONDENCE___GET_ELEMENTS_FOR_METAMODEL__STRING;
 
 	/**
 	 * The number of operations of the '<em>Manual Correspondence</em>' class.
@@ -394,6 +359,7 @@ public interface CorrespondencePackage extends EPackage {
 	 * @generated
 	 */
 	int TUID = 4;
+
 
 	/**
 	 * Returns the meta object for class '{@link tools.vitruv.framework.correspondence.Correspondences <em>Correspondences</em>}'.
@@ -515,6 +481,17 @@ public interface CorrespondencePackage extends EPackage {
 	EAttribute getCorrespondence_BUuids();
 
 	/**
+	 * Returns the meta object for the attribute '{@link tools.vitruv.framework.correspondence.Correspondence#getTag <em>Tag</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Tag</em>'.
+	 * @see tools.vitruv.framework.correspondence.Correspondence#getTag()
+	 * @see #getCorrespondence()
+	 * @generated
+	 */
+	EAttribute getCorrespondence_Tag();
+
+	/**
 	 * Returns the meta object for the '{@link tools.vitruv.framework.correspondence.Correspondence#getAs() <em>Get As</em>}' operation.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -533,36 +510,6 @@ public interface CorrespondencePackage extends EPackage {
 	 * @generated
 	 */
 	EOperation getCorrespondence__GetBs();
-
-	/**
-	 * Returns the meta object for the '{@link tools.vitruv.framework.correspondence.Correspondence#getElementATuid() <em>Get Element ATuid</em>}' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the '<em>Get Element ATuid</em>' operation.
-	 * @see tools.vitruv.framework.correspondence.Correspondence#getElementATuid()
-	 * @generated
-	 */
-	EOperation getCorrespondence__GetElementATuid();
-
-	/**
-	 * Returns the meta object for the '{@link tools.vitruv.framework.correspondence.Correspondence#getElementBTuid() <em>Get Element BTuid</em>}' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the '<em>Get Element BTuid</em>' operation.
-	 * @see tools.vitruv.framework.correspondence.Correspondence#getElementBTuid()
-	 * @generated
-	 */
-	EOperation getCorrespondence__GetElementBTuid();
-
-	/**
-	 * Returns the meta object for the '{@link tools.vitruv.framework.correspondence.Correspondence#getElementsForMetamodel(java.lang.String) <em>Get Elements For Metamodel</em>}' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the '<em>Get Elements For Metamodel</em>' operation.
-	 * @see tools.vitruv.framework.correspondence.Correspondence#getElementsForMetamodel(java.lang.String)
-	 * @generated
-	 */
-	EOperation getCorrespondence__GetElementsForMetamodel__String();
 
 	/**
 	 * Returns the meta object for class '{@link tools.vitruv.framework.correspondence.ManualCorrespondence <em>Manual Correspondence</em>}'.
@@ -611,6 +558,7 @@ public interface CorrespondencePackage extends EPackage {
 	 * <ul>
 	 *   <li>each class,</li>
 	 *   <li>each feature of each class,</li>
+	 *   <li>each operation of each class,</li>
 	 *   <li>each enum,</li>
 	 *   <li>and each data type</li>
 	 * </ul>
@@ -711,6 +659,14 @@ public interface CorrespondencePackage extends EPackage {
 		EAttribute CORRESPONDENCE__BUUIDS = eINSTANCE.getCorrespondence_BUuids();
 
 		/**
+		 * The meta object literal for the '<em><b>Tag</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute CORRESPONDENCE__TAG = eINSTANCE.getCorrespondence_Tag();
+
+		/**
 		 * The meta object literal for the '<em><b>Get As</b></em>' operation.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -725,30 +681,6 @@ public interface CorrespondencePackage extends EPackage {
 		 * @generated
 		 */
 		EOperation CORRESPONDENCE___GET_BS = eINSTANCE.getCorrespondence__GetBs();
-
-		/**
-		 * The meta object literal for the '<em><b>Get Element ATuid</b></em>' operation.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EOperation CORRESPONDENCE___GET_ELEMENT_ATUID = eINSTANCE.getCorrespondence__GetElementATuid();
-
-		/**
-		 * The meta object literal for the '<em><b>Get Element BTuid</b></em>' operation.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EOperation CORRESPONDENCE___GET_ELEMENT_BTUID = eINSTANCE.getCorrespondence__GetElementBTuid();
-
-		/**
-		 * The meta object literal for the '<em><b>Get Elements For Metamodel</b></em>' operation.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EOperation CORRESPONDENCE___GET_ELEMENTS_FOR_METAMODEL__STRING = eINSTANCE.getCorrespondence__GetElementsForMetamodel__String();
 
 		/**
 		 * The meta object literal for the '{@link tools.vitruv.framework.correspondence.impl.ManualCorrespondenceImpl <em>Manual Correspondence</em>}' class.

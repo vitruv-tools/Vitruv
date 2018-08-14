@@ -2,7 +2,6 @@
  */
 package tools.vitruv.dsls.reactions.meta.correspondence.reactions;
 
-import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EPackage;
 
@@ -136,7 +135,7 @@ public interface ReactionsPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int REACTIONS_CORRESPONDENCE__TAG = CorrespondencePackage.CORRESPONDENCE_FEATURE_COUNT + 0;
+	int REACTIONS_CORRESPONDENCE__TAG = CorrespondencePackage.CORRESPONDENCE__TAG;
 
 	/**
 	 * The number of structural features of the '<em>Correspondence</em>' class.
@@ -145,7 +144,7 @@ public interface ReactionsPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int REACTIONS_CORRESPONDENCE_FEATURE_COUNT = CorrespondencePackage.CORRESPONDENCE_FEATURE_COUNT + 1;
+	int REACTIONS_CORRESPONDENCE_FEATURE_COUNT = CorrespondencePackage.CORRESPONDENCE_FEATURE_COUNT + 0;
 
 
 	/**
@@ -157,17 +156,6 @@ public interface ReactionsPackage extends EPackage {
 	 * @generated
 	 */
 	EClass getReactionsCorrespondence();
-
-	/**
-	 * Returns the meta object for the attribute '{@link tools.vitruv.dsls.reactions.meta.correspondence.reactions.ReactionsCorrespondence#getTag <em>Tag</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Tag</em>'.
-	 * @see tools.vitruv.dsls.reactions.meta.correspondence.reactions.ReactionsCorrespondence#getTag()
-	 * @see #getReactionsCorrespondence()
-	 * @generated
-	 */
-	EAttribute getReactionsCorrespondence_Tag();
 
 	/**
 	 * Returns the factory that creates the instances of the model.
@@ -200,14 +188,6 @@ public interface ReactionsPackage extends EPackage {
 		 * @generated
 		 */
 		EClass REACTIONS_CORRESPONDENCE = eINSTANCE.getReactionsCorrespondence();
-
-		/**
-		 * The meta object literal for the '<em><b>Tag</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EAttribute REACTIONS_CORRESPONDENCE__TAG = eINSTANCE.getReactionsCorrespondence_Tag();
 
 	}
 

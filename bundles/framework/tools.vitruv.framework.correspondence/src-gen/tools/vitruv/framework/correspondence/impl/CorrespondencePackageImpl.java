@@ -2,15 +2,6 @@
  */
 package tools.vitruv.framework.correspondence.impl;
 
-import tools.vitruv.framework.correspondence.Correspondence;
-import tools.vitruv.framework.correspondence.CorrespondenceFactory;
-import tools.vitruv.framework.correspondence.CorrespondencePackage;
-import tools.vitruv.framework.correspondence.Correspondences;
-import tools.vitruv.framework.correspondence.ManualCorrespondence;
-
-import tools.vitruv.framework.tuid.Tuid;
-import tools.vitruv.framework.correspondence.CorrespondenceModel;
-
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EDataType;
@@ -19,6 +10,17 @@ import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 
 import org.eclipse.emf.ecore.impl.EPackageImpl;
+
+import tools.vitruv.framework.correspondence.Correspondence;
+import tools.vitruv.framework.correspondence.CorrespondenceFactory;
+import tools.vitruv.framework.correspondence.CorrespondenceModel;
+import tools.vitruv.framework.correspondence.CorrespondencePackage;
+import tools.vitruv.framework.correspondence.Correspondences;
+import tools.vitruv.framework.correspondence.ManualCorrespondence;
+
+import tools.vitruv.framework.tuid.Tuid;
+
+import tools.vitruv.framework.uuid.UuidPackage;
 
 /**
  * <!-- begin-user-doc -->
@@ -109,7 +111,7 @@ public class CorrespondencePackageImpl extends EPackageImpl implements Correspon
 		isInited = true;
 
 		// Initialize simple dependencies
-		tools.vitruv.framework.uuid.UuidPackage.eINSTANCE.eClass();
+		UuidPackage.eINSTANCE.eClass();
 
 		// Create package meta-data objects
 		theCorrespondencePackage.createPackageContents();
@@ -230,6 +232,15 @@ public class CorrespondencePackageImpl extends EPackageImpl implements Correspon
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EAttribute getCorrespondence_Tag() {
+		return (EAttribute)correspondenceEClass.getEStructuralFeatures().get(7);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EOperation getCorrespondence__GetAs() {
 		return correspondenceEClass.getEOperations().get(0);
 	}
@@ -241,33 +252,6 @@ public class CorrespondencePackageImpl extends EPackageImpl implements Correspon
 	 */
 	public EOperation getCorrespondence__GetBs() {
 		return correspondenceEClass.getEOperations().get(1);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EOperation getCorrespondence__GetElementATuid() {
-		return correspondenceEClass.getEOperations().get(2);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EOperation getCorrespondence__GetElementBTuid() {
-		return correspondenceEClass.getEOperations().get(3);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EOperation getCorrespondence__GetElementsForMetamodel__String() {
-		return correspondenceEClass.getEOperations().get(4);
 	}
 
 	/**
@@ -337,11 +321,9 @@ public class CorrespondencePackageImpl extends EPackageImpl implements Correspon
 		createEAttribute(correspondenceEClass, CORRESPONDENCE__BTUIDS);
 		createEAttribute(correspondenceEClass, CORRESPONDENCE__AUUIDS);
 		createEAttribute(correspondenceEClass, CORRESPONDENCE__BUUIDS);
+		createEAttribute(correspondenceEClass, CORRESPONDENCE__TAG);
 		createEOperation(correspondenceEClass, CORRESPONDENCE___GET_AS);
 		createEOperation(correspondenceEClass, CORRESPONDENCE___GET_BS);
-		createEOperation(correspondenceEClass, CORRESPONDENCE___GET_ELEMENT_ATUID);
-		createEOperation(correspondenceEClass, CORRESPONDENCE___GET_ELEMENT_BTUID);
-		createEOperation(correspondenceEClass, CORRESPONDENCE___GET_ELEMENTS_FOR_METAMODEL__STRING);
 
 		manualCorrespondenceEClass = createEClass(MANUAL_CORRESPONDENCE);
 
@@ -374,7 +356,7 @@ public class CorrespondencePackageImpl extends EPackageImpl implements Correspon
 		setNsURI(eNS_URI);
 
 		// Obtain other dependent packages
-		tools.vitruv.framework.uuid.UuidPackage theUuidPackage = (tools.vitruv.framework.uuid.UuidPackage)EPackage.Registry.INSTANCE.getEPackage(tools.vitruv.framework.uuid.UuidPackage.eNS_URI);
+		UuidPackage theUuidPackage = (UuidPackage)EPackage.Registry.INSTANCE.getEPackage(UuidPackage.eNS_URI);
 
 		// Create type parameters
 
@@ -396,17 +378,11 @@ public class CorrespondencePackageImpl extends EPackageImpl implements Correspon
 		initEAttribute(getCorrespondence_BTuids(), this.getTuid(), "bTuids", null, 0, -1, Correspondence.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getCorrespondence_AUuids(), theUuidPackage.getUuid(), "aUuids", null, 0, -1, Correspondence.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getCorrespondence_BUuids(), theUuidPackage.getUuid(), "bUuids", null, 0, -1, Correspondence.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getCorrespondence_Tag(), ecorePackage.getEString(), "tag", null, 0, 1, Correspondence.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEOperation(getCorrespondence__GetAs(), ecorePackage.getEObject(), "getAs", 0, -1, IS_UNIQUE, IS_ORDERED);
 
 		initEOperation(getCorrespondence__GetBs(), ecorePackage.getEObject(), "getBs", 0, -1, IS_UNIQUE, IS_ORDERED);
-
-		initEOperation(getCorrespondence__GetElementATuid(), this.getTuid(), "getElementATuid", 0, 1, IS_UNIQUE, IS_ORDERED);
-
-		initEOperation(getCorrespondence__GetElementBTuid(), this.getTuid(), "getElementBTuid", 0, 1, IS_UNIQUE, IS_ORDERED);
-
-		EOperation op = initEOperation(getCorrespondence__GetElementsForMetamodel__String(), ecorePackage.getEObject(), "getElementsForMetamodel", 0, -1, IS_UNIQUE, IS_ORDERED);
-		addEParameter(op, ecorePackage.getEString(), "metamodelNamespaceUri", 0, 1, IS_UNIQUE, IS_ORDERED);
 
 		initEClass(manualCorrespondenceEClass, ManualCorrespondence.class, "ManualCorrespondence", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 

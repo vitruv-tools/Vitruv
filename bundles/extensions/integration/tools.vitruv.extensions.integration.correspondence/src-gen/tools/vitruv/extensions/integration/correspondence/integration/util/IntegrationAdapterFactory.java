@@ -2,17 +2,18 @@
  */
 package tools.vitruv.extensions.integration.correspondence.integration.util;
 
-import tools.vitruv.extensions.integration.correspondence.integration.*;
-
-import tools.vitruv.framework.correspondence.Correspondence;
-
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notifier;
 
 import org.eclipse.emf.common.notify.impl.AdapterFactoryImpl;
 
 import org.eclipse.emf.ecore.EObject;
+
 import tools.vitruv.dsls.reactions.meta.correspondence.reactions.ReactionsCorrespondence;
+
+import tools.vitruv.extensions.integration.correspondence.integration.*;
+
+import tools.vitruv.framework.correspondence.Correspondence;
 
 /**
  * <!-- begin-user-doc -->
