@@ -98,16 +98,4 @@ class CorrespondenceModelUtil {
 	// return ci.allCorrespondencesWithoutDependencies.map[(it.^as + it.bs).filter(type)].flatten.toSet
 	}
 
-	def public static <T extends Correspondence> Set<T> getCorrespondencesBetweenEObjects(GenericCorrespondenceModel<T> ci,
-		Set<EObject> aS, Set<EObject> bS) {
-		val correspondencesThatInvolveAs = ci.getCorrespondencesThatInvolveAtLeast(aS)
-		val atuids = aS.mapFixed[ci.calculateTuidFromEObject(it)]
-		val btuids = bS.mapFixed[ci.calculateTuidFromEObject(it)]
-		val correspondencesBetweenEObjects = correspondencesThatInvolveAs.filter [
-			(it.getATuids.containsAll(atuids) && it.getBTuids.containsAll(btuids)) ||
-				(it.getATuids.containsAll(btuids) && it.getBTuids.containsAll(atuids))
-		]
-		return correspondencesBetweenEObjects.toSet
-	}
-
 }
