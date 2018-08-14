@@ -109,5 +109,4 @@ class CorrespondenceModelUtil {
 		]
 		return correspondencesBetweenEObjects.toSet
 	}
-
 }

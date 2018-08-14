@@ -131,22 +131,31 @@ public interface CorrespondencePackage extends EPackage {
 	int CORRESPONDENCE__DEPENDED_ON_BY = 2;
 
 	/**
-	 * The feature id for the '<em><b>ATUI Ds</b></em>' attribute list.
+	 * The feature id for the '<em><b>ATuids</b></em>' attribute list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int CORRESPONDENCE__ATUI_DS = 3;
+	int CORRESPONDENCE__ATUIDS = 3;
 
 	/**
-	 * The feature id for the '<em><b>BTUI Ds</b></em>' attribute list.
+	 * The feature id for the '<em><b>BTuids</b></em>' attribute list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int CORRESPONDENCE__BTUI_DS = 4;
+	int CORRESPONDENCE__BTUIDS = 4;
+
+	/**
+	 * The feature id for the '<em><b>Tag</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int CORRESPONDENCE__TAG = 5;
 
 	/**
 	 * The number of structural features of the '<em>Correspondence</em>' class.
@@ -155,7 +164,7 @@ public interface CorrespondencePackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int CORRESPONDENCE_FEATURE_COUNT = 5;
+	int CORRESPONDENCE_FEATURE_COUNT = 6;
 
 	/**
 	 * The meta object id for the '{@link tools.vitruv.framework.correspondence.impl.ManualCorrespondenceImpl <em>Manual Correspondence</em>}' class.
@@ -195,22 +204,31 @@ public interface CorrespondencePackage extends EPackage {
 	int MANUAL_CORRESPONDENCE__DEPENDED_ON_BY = CORRESPONDENCE__DEPENDED_ON_BY;
 
 	/**
-	 * The feature id for the '<em><b>ATUI Ds</b></em>' attribute list.
+	 * The feature id for the '<em><b>ATuids</b></em>' attribute list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int MANUAL_CORRESPONDENCE__ATUI_DS = CORRESPONDENCE__ATUI_DS;
+	int MANUAL_CORRESPONDENCE__ATUIDS = CORRESPONDENCE__ATUIDS;
 
 	/**
-	 * The feature id for the '<em><b>BTUI Ds</b></em>' attribute list.
+	 * The feature id for the '<em><b>BTuids</b></em>' attribute list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int MANUAL_CORRESPONDENCE__BTUI_DS = CORRESPONDENCE__BTUI_DS;
+	int MANUAL_CORRESPONDENCE__BTUIDS = CORRESPONDENCE__BTUIDS;
+
+	/**
+	 * The feature id for the '<em><b>Tag</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int MANUAL_CORRESPONDENCE__TAG = CORRESPONDENCE__TAG;
 
 	/**
 	 * The number of structural features of the '<em>Manual Correspondence</em>' class.
@@ -239,8 +257,7 @@ public interface CorrespondencePackage extends EPackage {
 	 * @see tools.vitruv.framework.correspondence.impl.CorrespondencePackageImpl#getTuid()
 	 * @generated
 	 */
-	int Tuid = 4;
-
+	int TUID = 4;
 
 	/**
 	 * Returns the meta object for class '{@link tools.vitruv.framework.correspondence.Correspondences <em>Correspondences</em>}'.
@@ -318,10 +335,10 @@ public interface CorrespondencePackage extends EPackage {
 	EReference getCorrespondence_DependedOnBy();
 
 	/**
-	 * Returns the meta object for the attribute list '{@link tools.vitruv.framework.correspondence.Correspondence#getATuids <em>ATUI Ds</em>}'.
+	 * Returns the meta object for the attribute list '{@link tools.vitruv.framework.correspondence.Correspondence#getATuids <em>ATuids</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute list '<em>ATUI Ds</em>'.
+	 * @return the meta object for the attribute list '<em>ATuids</em>'.
 	 * @see tools.vitruv.framework.correspondence.Correspondence#getATuids()
 	 * @see #getCorrespondence()
 	 * @generated
@@ -329,15 +346,26 @@ public interface CorrespondencePackage extends EPackage {
 	EAttribute getCorrespondence_ATuids();
 
 	/**
-	 * Returns the meta object for the attribute list '{@link tools.vitruv.framework.correspondence.Correspondence#getBTuids <em>BTUI Ds</em>}'.
+	 * Returns the meta object for the attribute list '{@link tools.vitruv.framework.correspondence.Correspondence#getBTuids <em>BTuids</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute list '<em>BTUI Ds</em>'.
+	 * @return the meta object for the attribute list '<em>BTuids</em>'.
 	 * @see tools.vitruv.framework.correspondence.Correspondence#getBTuids()
 	 * @see #getCorrespondence()
 	 * @generated
 	 */
 	EAttribute getCorrespondence_BTuids();
+
+	/**
+	 * Returns the meta object for the attribute '{@link tools.vitruv.framework.correspondence.Correspondence#getTag <em>Tag</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Tag</em>'.
+	 * @see tools.vitruv.framework.correspondence.Correspondence#getTag()
+	 * @see #getCorrespondence()
+	 * @generated
+	 */
+	EAttribute getCorrespondence_Tag();
 
 	/**
 	 * Returns the meta object for class '{@link tools.vitruv.framework.correspondence.ManualCorrespondence <em>Manual Correspondence</em>}'.
@@ -454,20 +482,28 @@ public interface CorrespondencePackage extends EPackage {
 		EReference CORRESPONDENCE__DEPENDED_ON_BY = eINSTANCE.getCorrespondence_DependedOnBy();
 
 		/**
-		 * The meta object literal for the '<em><b>ATUI Ds</b></em>' attribute list feature.
+		 * The meta object literal for the '<em><b>ATuids</b></em>' attribute list feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EAttribute CORRESPONDENCE__ATUI_DS = eINSTANCE.getCorrespondence_ATuids();
+		EAttribute CORRESPONDENCE__ATUIDS = eINSTANCE.getCorrespondence_ATuids();
 
 		/**
-		 * The meta object literal for the '<em><b>BTUI Ds</b></em>' attribute list feature.
+		 * The meta object literal for the '<em><b>BTuids</b></em>' attribute list feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EAttribute CORRESPONDENCE__BTUI_DS = eINSTANCE.getCorrespondence_BTuids();
+		EAttribute CORRESPONDENCE__BTUIDS = eINSTANCE.getCorrespondence_BTuids();
+
+		/**
+		 * The meta object literal for the '<em><b>Tag</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute CORRESPONDENCE__TAG = eINSTANCE.getCorrespondence_Tag();
 
 		/**
 		 * The meta object literal for the '{@link tools.vitruv.framework.correspondence.impl.ManualCorrespondenceImpl <em>Manual Correspondence</em>}' class.
@@ -497,7 +533,7 @@ public interface CorrespondencePackage extends EPackage {
 		 * @see tools.vitruv.framework.correspondence.impl.CorrespondencePackageImpl#getTuid()
 		 * @generated
 		 */
-		EDataType Tuid = eINSTANCE.getTuid();
+		EDataType TUID = eINSTANCE.getTuid();
 
 	}
 

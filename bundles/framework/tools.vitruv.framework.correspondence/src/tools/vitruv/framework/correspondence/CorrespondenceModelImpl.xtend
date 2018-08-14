@@ -186,14 +186,18 @@ class CorrespondenceModelImpl extends ModelInstance implements InternalCorrespon
 	}
 
 	override Set<List<EObject>> getCorrespondingEObjects(List<EObject> eObjects) {
-		this.getCorrespondingEObjects(Correspondence, eObjects);
+		this.getCorrespondingEObjects(eObjects, "");
+	}
+	
+	override Set<List<EObject>> getCorrespondingEObjects(List<EObject> eObjects, String tag) {
+		this.getCorrespondingEObjects(Correspondence, eObjects, tag);
 	}
 
-	override Set<List<EObject>> getCorrespondingEObjects(Class<? extends Correspondence> correspondenceType, List<EObject> eObjects) {
+	override Set<List<EObject>> getCorrespondingEObjects(Class<? extends Correspondence> correspondenceType, List<EObject> eObjects, String tag) {
 		var List<Tuid> tuids = calculateTuidsFromEObjects(eObjects)
-		var Set<List<Tuid>> correspondingTuidLists = getCorrespondingTuids(correspondenceType, tuids)
+		var Set<List<Tuid>> correspondingTuidLists = getCorrespondingTuids(correspondenceType, tuids, tag)
 		try {
-			return correspondingTuidLists.mapFixed[resolveEObjectsFromTuids(it)].toSet;
+			return correspondingTuidLists.mapFixed[it.map[resolveEObjectFromTuid(it)]].toSet;
 		} catch (IllegalStateException e) {
 			throw new IllegalStateException('''Corresponding objects for eObjects 
 			«FOR object : eObjects BEFORE "\n" SEPARATOR "\n"»	«object»«ENDFOR»
@@ -203,10 +207,10 @@ class CorrespondenceModelImpl extends ModelInstance implements InternalCorrespon
 		}
 	}
 	
-	def private Set<List<Tuid>> getCorrespondingTuids(Class<? extends Correspondence> correspondenceType, List<Tuid> tuids) {
+	def private Set<List<Tuid>> getCorrespondingTuids(Class<? extends Correspondence> correspondenceType, List<Tuid> tuids, String tag) {
 		var Set<Correspondence> allCorrespondences = getCorrespondencesForTuids(tuids)
 		var Set<List<Tuid>> correspondingTuidLists = new HashSet<List<Tuid>>(allCorrespondences.size())
-		for (Correspondence correspondence : allCorrespondences.filter(correspondenceType)) {
+		for (Correspondence correspondence : allCorrespondences.filter(correspondenceType).filter[tag.nullOrEmpty || tag == it.tag]) {
 			var List<Tuid> aTuids = correspondence.getATuids()
 			var List<Tuid> bTuids = correspondence.getBTuids()
 			if (aTuids === null || bTuids === null || aTuids.size == 0 || bTuids.size == 0) {
@@ -337,7 +341,7 @@ class CorrespondenceModelImpl extends ModelInstance implements InternalCorrespon
 		return removeCorrespondencesThatInvolveAtLeastAndDependendForTuids(eObjects.mapFixed[calculateTuidFromEObject(it)].toSet)
 	}
 
-	override Set<Correspondence> removeCorrespondencesThatInvolveAtLeastAndDependendForTuids(Set<Tuid> tuids) {
+	private def Set<Correspondence> removeCorrespondencesThatInvolveAtLeastAndDependendForTuids(Set<Tuid> tuids) {
 		val correspondences = getCorrespondencesThatInvolveAtLeastTuids(tuids)
 		val markedCorrespondences = correspondences.mapFixed[markCorrespondenceAndDependingCorrespondences(it)].flatten
 		removeMarkedCorrespondences(markedCorrespondences)
@@ -352,10 +356,6 @@ class CorrespondenceModelImpl extends ModelInstance implements InternalCorrespon
 	 */
 	override void resetChangedAfterLastSave() {
 		this.changedAfterLastSave = false
-	}
-
-	override List<EObject> resolveEObjectsFromTuids(List<Tuid> tuids) {
-		tuids.mapFixed[tuidResolver.resolveEObjectFromTuid(it)];
 	}
 
 	override EObject resolveEObjectFromTuid(Tuid tuid) {
@@ -385,7 +385,7 @@ class CorrespondenceModelImpl extends ModelInstance implements InternalCorrespon
 		return getCorrespondencesThatInvolveAtLeastTuids(eObjects.mapFixed[calculateTuidFromEObject(it)].toSet)
 	}
 	
-	override getCorrespondencesThatInvolveAtLeastTuids(Set<Tuid> tuids) {
+	private def getCorrespondencesThatInvolveAtLeastTuids(Set<Tuid> tuids) {
 		val supTuidLists = tuids?.mapFixed[this.tuid2tuidListsMap.get(it)].filterNull.flatten.filter[it.containsAll(tuids)]
 		val corrit = supTuidLists?.mapFixed[getCorrespondencesForTuids(it)]
 		val flatcorr = corrit.flatten
@@ -401,29 +401,6 @@ class CorrespondenceModelImpl extends ModelInstance implements InternalCorrespon
 		return correspondences.correspondences
 	}
 	
-	/**
-	 * Gets the side of a correspondence for the given metamodel nsURI.
-	 * @param correspondence the correspondence for which the correct side should be chosen
-	 * @param mmNsUri the namespace URI for the requested side
-	 * 
-	 * @throws IllegalArgumentException if the <code>mmNsUri</code> is not the namespace URI of one of the mapped
-	 * meta models.
-	 * 
-	 * @author Dominik Werle 
-	 */
-	override getTuidsForMetamodel(Correspondence correspondence, String metamodelNamespaceUri) {
-		// FIXME This is really ugly, fix it!
-	 	val domainA = domainRepository.getDomain(correspondence.ATuids.get(0));
-	 	val domainB = domainRepository.getDomain(correspondence.BTuids.get(0));
-	 	if (domainA.nsUris.contains(metamodelNamespaceUri)) {
-	 		return correspondence.getATuids
-	 	} else if (domainB.nsUris.contains(metamodelNamespaceUri)) {
-	 		return correspondence.getBTuids
-	 	} else {
-	 		throw new IllegalArgumentException('''Metamodel namespace URI "«metamodelNamespaceUri»" is not a namespace URI of one of the metamodels for the associated mapping''')
-	 	}
-	 }
-	 
 	override <U extends Correspondence> getView(Class<U> correspondenceType) {
 		return new CorrespondenceModelView(correspondenceType, this);
 	}
@@ -488,5 +465,5 @@ class CorrespondenceModelImpl extends ModelInstance implements InternalCorrespon
 			return null;
 		]));
 	}
-
+	
 }		

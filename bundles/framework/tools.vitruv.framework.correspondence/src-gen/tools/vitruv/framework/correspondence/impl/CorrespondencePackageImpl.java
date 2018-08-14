@@ -8,12 +8,12 @@ import tools.vitruv.framework.correspondence.CorrespondencePackage;
 import tools.vitruv.framework.correspondence.Correspondences;
 import tools.vitruv.framework.correspondence.ManualCorrespondence;
 
+import tools.vitruv.framework.tuid.Tuid;
 import tools.vitruv.framework.correspondence.CorrespondenceModel;
 
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EDataType;
-import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 
@@ -208,6 +208,15 @@ public class CorrespondencePackageImpl extends EPackageImpl implements Correspon
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EAttribute getCorrespondence_Tag() {
+		return (EAttribute)correspondenceEClass.getEStructuralFeatures().get(5);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EClass getManualCorrespondence() {
 		return manualCorrespondenceEClass;
 	}
@@ -266,14 +275,15 @@ public class CorrespondencePackageImpl extends EPackageImpl implements Correspon
 		createEReference(correspondenceEClass, CORRESPONDENCE__PARENT);
 		createEReference(correspondenceEClass, CORRESPONDENCE__DEPENDS_ON);
 		createEReference(correspondenceEClass, CORRESPONDENCE__DEPENDED_ON_BY);
-		createEAttribute(correspondenceEClass, CORRESPONDENCE__ATUI_DS);
-		createEAttribute(correspondenceEClass, CORRESPONDENCE__BTUI_DS);
+		createEAttribute(correspondenceEClass, CORRESPONDENCE__ATUIDS);
+		createEAttribute(correspondenceEClass, CORRESPONDENCE__BTUIDS);
+		createEAttribute(correspondenceEClass, CORRESPONDENCE__TAG);
 
 		manualCorrespondenceEClass = createEClass(MANUAL_CORRESPONDENCE);
 
 		// Create data types
 		correspondenceModelEDataType = createEDataType(CORRESPONDENCE_MODEL);
-		tuidEDataType = createEDataType(Tuid);
+		tuidEDataType = createEDataType(TUID);
 	}
 
 	/**
@@ -317,23 +327,17 @@ public class CorrespondencePackageImpl extends EPackageImpl implements Correspon
 		initEReference(getCorrespondence_DependedOnBy(), this.getCorrespondence(), this.getCorrespondence_DependsOn(), "dependedOnBy", null, 0, -1, Correspondence.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
 		initEAttribute(getCorrespondence_ATuids(), this.getTuid(), "aTuids", null, 0, -1, Correspondence.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getCorrespondence_BTuids(), this.getTuid(), "bTuids", null, 0, -1, Correspondence.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getCorrespondence_Tag(), ecorePackage.getEString(), "tag", null, 0, 1, Correspondence.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		addEOperation(correspondenceEClass, ecorePackage.getEObject(), "getAs", 0, -1, IS_UNIQUE, IS_ORDERED);
 
 		addEOperation(correspondenceEClass, ecorePackage.getEObject(), "getBs", 0, -1, IS_UNIQUE, IS_ORDERED);
 
-		addEOperation(correspondenceEClass, this.getTuid(), "getElementATuid", 0, 1, IS_UNIQUE, IS_ORDERED);
-
-		addEOperation(correspondenceEClass, this.getTuid(), "getElementBTuid", 0, 1, IS_UNIQUE, IS_ORDERED);
-
-		EOperation op = addEOperation(correspondenceEClass, ecorePackage.getEObject(), "getElementsForMetamodel", 0, -1, IS_UNIQUE, IS_ORDERED);
-		addEParameter(op, ecorePackage.getEString(), "metamodelNamespaceUri", 0, 1, IS_UNIQUE, IS_ORDERED);
-
 		initEClass(manualCorrespondenceEClass, ManualCorrespondence.class, "ManualCorrespondence", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		// Initialize data types
 		initEDataType(correspondenceModelEDataType, CorrespondenceModel.class, "CorrespondenceModel", !IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
-		initEDataType(tuidEDataType, tools.vitruv.framework.tuid.Tuid.class, "Tuid", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
+		initEDataType(tuidEDataType, Tuid.class, "Tuid", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
 
 		// Create resource
 		createResource(eNS_URI);

@@ -74,7 +74,7 @@ public class CorrespondenceFactoryImpl extends EFactoryImpl implements Correspon
 	@Override
 	public Object createFromString(EDataType eDataType, String initialValue) {
 		switch (eDataType.getClassifierID()) {
-			case CorrespondencePackage.Tuid:
+			case CorrespondencePackage.TUID:
 				return createTuidFromString(eDataType, initialValue);
 			default:
 				throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
@@ -89,7 +89,7 @@ public class CorrespondenceFactoryImpl extends EFactoryImpl implements Correspon
 	@Override
 	public String convertToString(EDataType eDataType, Object instanceValue) {
 		switch (eDataType.getClassifierID()) {
-			case CorrespondencePackage.Tuid:
+			case CorrespondencePackage.TUID:
 				return convertTuidToString(eDataType, instanceValue);
 			default:
 				throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");

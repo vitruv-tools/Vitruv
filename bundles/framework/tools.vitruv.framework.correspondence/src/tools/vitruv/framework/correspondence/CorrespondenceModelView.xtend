@@ -17,6 +17,10 @@ class CorrespondenceModelView<T extends Correspondence> implements GenericCorres
 		this(correspondenceType, correspondenceModel, null)
 	}
 
+	override getCorrespondencesForTuids(List<Tuid> tuids) {
+		correspondenceModelDelegate.getCorrespondencesForTuids(tuids).filter(correspondenceType).toSet();
+	}
+	
 	public new(Class<T> correspondenceType, GenericCorrespondenceModel<Correspondence> correspondenceModel,
 		Supplier<T> correspondenceCreator) {
 		this.correspondenceType = correspondenceType;
@@ -68,22 +72,9 @@ class CorrespondenceModelView<T extends Correspondence> implements GenericCorres
 		correspondenceModelDelegate.getCorrespondences(eObjects).filter(correspondenceType).toSet();
 	}
 
-	override getCorrespondencesForTuids(List<Tuid> tuids) {
-		correspondenceModelDelegate.getCorrespondencesForTuids(tuids).filter(correspondenceType).toSet();
-	}
-
 	override getCorrespondencesThatInvolveAtLeast(Set<EObject> eObjects) {
 		correspondenceModelDelegate.getCorrespondencesThatInvolveAtLeast(eObjects).filter(correspondenceType).
 			toSet();
-	}
-
-	override getCorrespondencesThatInvolveAtLeastTuids(Set<Tuid> tuids) {
-		correspondenceModelDelegate.getCorrespondencesThatInvolveAtLeastTuids(tuids).filter(correspondenceType).
-			toSet();
-	}
-
-	override getTuidsForMetamodel(T correspondence, String metamodelNamespaceUri) {
-		correspondenceModelDelegate.getTuidsForMetamodel(correspondence, metamodelNamespaceUri);
 	}
 
 	override <U extends Correspondence> getView(Class<U> correspondenceType) {
@@ -108,21 +99,21 @@ class CorrespondenceModelView<T extends Correspondence> implements GenericCorres
 		correspondenceModelDelegate.removeCorrespondencesThatInvolveAtLeastAndDependend(eObjects);
 	}
 
-	override removeCorrespondencesThatInvolveAtLeastAndDependendForTuids(Set<Tuid> tuids) {
-		correspondenceModelDelegate.removeCorrespondencesThatInvolveAtLeastAndDependendForTuids(tuids);
-	}
-
 	override resolveEObjectFromTuid(Tuid tuid) {
 		correspondenceModelDelegate.resolveEObjectFromTuid(tuid);
 	}
 
 	// TODO re-design the CorrespondenceModel to avoid a functionality depending on the correpondenceType
 	override getCorrespondingEObjects(List<EObject> eObjects) {
-		correspondenceModelDelegate.getCorrespondingEObjects(correspondenceType, eObjects);
+		correspondenceModelDelegate.getCorrespondingEObjects(correspondenceType, eObjects, "");
 	}
 
-	override getCorrespondingEObjects(Class<? extends Correspondence> correspondenceType, List<EObject> eObjects) {
-		correspondenceModelDelegate.getCorrespondingEObjects(correspondenceType, eObjects);
+	override getCorrespondingEObjects(List<EObject> eObjects, String tag) {
+		correspondenceModelDelegate.getCorrespondingEObjects(correspondenceType, eObjects, tag);
+	}
+
+	override getCorrespondingEObjects(Class<? extends Correspondence> correspondenceType, List<EObject> eObjects, String tag) {
+		correspondenceModelDelegate.getCorrespondingEObjects(correspondenceType, eObjects, tag);
 	}
 
 	override createAndAddCorrespondence(List<EObject> eObjects1, List<EObject> eObjects2) {
@@ -145,10 +136,6 @@ class CorrespondenceModelView<T extends Correspondence> implements GenericCorres
 	
 	override getURI() {
 		return correspondenceModelDelegate.getURI;
-	}
-	
-	override resolveEObjectsFromTuids(List<Tuid> tuids) {
-		correspondenceModelDelegate.resolveEObjectsFromTuids(tuids);
 	}
 	
 }

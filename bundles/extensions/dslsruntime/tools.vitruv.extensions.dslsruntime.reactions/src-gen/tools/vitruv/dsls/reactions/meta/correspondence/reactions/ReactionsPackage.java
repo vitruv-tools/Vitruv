@@ -2,7 +2,6 @@
  */
 package tools.vitruv.dsls.reactions.meta.correspondence.reactions;
 
-import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EPackage;
 
@@ -94,22 +93,22 @@ public interface ReactionsPackage extends EPackage {
 	int REACTIONS_CORRESPONDENCE__DEPENDED_ON_BY = CorrespondencePackage.CORRESPONDENCE__DEPENDED_ON_BY;
 
 	/**
-	 * The feature id for the '<em><b>ATUI Ds</b></em>' attribute list.
+	 * The feature id for the '<em><b>ATuids</b></em>' attribute list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int REACTIONS_CORRESPONDENCE__ATUI_DS = CorrespondencePackage.CORRESPONDENCE__ATUI_DS;
+	int REACTIONS_CORRESPONDENCE__ATUIDS = CorrespondencePackage.CORRESPONDENCE__ATUIDS;
 
 	/**
-	 * The feature id for the '<em><b>BTUI Ds</b></em>' attribute list.
+	 * The feature id for the '<em><b>BTuids</b></em>' attribute list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int REACTIONS_CORRESPONDENCE__BTUI_DS = CorrespondencePackage.CORRESPONDENCE__BTUI_DS;
+	int REACTIONS_CORRESPONDENCE__BTUIDS = CorrespondencePackage.CORRESPONDENCE__BTUIDS;
 
 	/**
 	 * The feature id for the '<em><b>Tag</b></em>' attribute.
@@ -118,7 +117,7 @@ public interface ReactionsPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int REACTIONS_CORRESPONDENCE__TAG = CorrespondencePackage.CORRESPONDENCE_FEATURE_COUNT + 0;
+	int REACTIONS_CORRESPONDENCE__TAG = CorrespondencePackage.CORRESPONDENCE__TAG;
 
 	/**
 	 * The number of structural features of the '<em>Correspondence</em>' class.
@@ -127,7 +126,7 @@ public interface ReactionsPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int REACTIONS_CORRESPONDENCE_FEATURE_COUNT = CorrespondencePackage.CORRESPONDENCE_FEATURE_COUNT + 1;
+	int REACTIONS_CORRESPONDENCE_FEATURE_COUNT = CorrespondencePackage.CORRESPONDENCE_FEATURE_COUNT + 0;
 
 
 	/**
@@ -139,17 +138,6 @@ public interface ReactionsPackage extends EPackage {
 	 * @generated
 	 */
 	EClass getReactionsCorrespondence();
-
-	/**
-	 * Returns the meta object for the attribute '{@link tools.vitruv.dsls.reactions.meta.correspondence.reactions.ReactionsCorrespondence#getTag <em>Tag</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Tag</em>'.
-	 * @see tools.vitruv.dsls.reactions.meta.correspondence.reactions.ReactionsCorrespondence#getTag()
-	 * @see #getReactionsCorrespondence()
-	 * @generated
-	 */
-	EAttribute getReactionsCorrespondence_Tag();
 
 	/**
 	 * Returns the factory that creates the instances of the model.
@@ -182,14 +170,6 @@ public interface ReactionsPackage extends EPackage {
 		 * @generated
 		 */
 		EClass REACTIONS_CORRESPONDENCE = eINSTANCE.getReactionsCorrespondence();
-
-		/**
-		 * The meta object literal for the '<em><b>Tag</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EAttribute REACTIONS_CORRESPONDENCE__TAG = eINSTANCE.getReactionsCorrespondence_Tag();
 
 	}
 
