@@ -2,7 +2,6 @@
  */
 package tools.vitruv.dsls.reactions.meta.correspondence.reactions.impl;
 
-import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EPackage;
 
@@ -106,15 +105,6 @@ public class ReactionsPackageImpl extends EPackageImpl implements ReactionsPacka
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getReactionsCorrespondence_Tag() {
-		return (EAttribute)reactionsCorrespondenceEClass.getEStructuralFeatures().get(0);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public ReactionsFactory getReactionsFactory() {
 		return (ReactionsFactory)getEFactoryInstance();
 	}
@@ -139,7 +129,6 @@ public class ReactionsPackageImpl extends EPackageImpl implements ReactionsPacka
 
 		// Create classes and their features
 		reactionsCorrespondenceEClass = createEClass(REACTIONS_CORRESPONDENCE);
-		createEAttribute(reactionsCorrespondenceEClass, REACTIONS_CORRESPONDENCE__TAG);
 	}
 
 	/**
@@ -177,7 +166,6 @@ public class ReactionsPackageImpl extends EPackageImpl implements ReactionsPacka
 
 		// Initialize classes and features; add operations and parameters
 		initEClass(reactionsCorrespondenceEClass, ReactionsCorrespondence.class, "ReactionsCorrespondence", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getReactionsCorrespondence_Tag(), ecorePackage.getEString(), "Tag", null, 0, 1, ReactionsCorrespondence.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		// Create resource
 		createResource(eNS_URI);

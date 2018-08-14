@@ -93,22 +93,22 @@ public interface IntegrationPackage extends EPackage {
 	int INTEGRATION_CORRESPONDENCE__DEPENDED_ON_BY = ReactionsPackage.REACTIONS_CORRESPONDENCE__DEPENDED_ON_BY;
 
 	/**
-	 * The feature id for the '<em><b>ATUI Ds</b></em>' attribute list.
+	 * The feature id for the '<em><b>ATuids</b></em>' attribute list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int INTEGRATION_CORRESPONDENCE__ATUI_DS = ReactionsPackage.REACTIONS_CORRESPONDENCE__ATUI_DS;
+	int INTEGRATION_CORRESPONDENCE__ATUIDS = ReactionsPackage.REACTIONS_CORRESPONDENCE__ATUIDS;
 
 	/**
-	 * The feature id for the '<em><b>BTUI Ds</b></em>' attribute list.
+	 * The feature id for the '<em><b>BTuids</b></em>' attribute list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int INTEGRATION_CORRESPONDENCE__BTUI_DS = ReactionsPackage.REACTIONS_CORRESPONDENCE__BTUI_DS;
+	int INTEGRATION_CORRESPONDENCE__BTUIDS = ReactionsPackage.REACTIONS_CORRESPONDENCE__BTUIDS;
 
 	/**
 	 * The feature id for the '<em><b>Tag</b></em>' attribute.
