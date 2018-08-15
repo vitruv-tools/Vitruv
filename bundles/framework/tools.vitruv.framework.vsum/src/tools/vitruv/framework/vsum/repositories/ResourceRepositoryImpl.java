@@ -507,14 +507,4 @@ public class ResourceRepositoryImpl implements ModelRepository, CorrespondencePr
         return modelInstance.getResource();
     }
 
-    @Override
-    public void reloadTextualModels() {
-        List<Resource> resources = new ArrayList<Resource>(this.resourceSet.getResources());
-        for (Resource res : resources) {
-            if (res.getURI().toString().endsWith("java")) {
-                forceReloadModelIfExisting(VURI.getInstance(res.getURI()));
-            }
-        }
-
-    }
 }
