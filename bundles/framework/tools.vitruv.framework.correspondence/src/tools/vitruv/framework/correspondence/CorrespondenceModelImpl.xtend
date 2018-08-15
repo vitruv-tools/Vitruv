@@ -228,9 +228,13 @@ class CorrespondenceModelImpl extends ModelInstance implements InternalCorrespon
 		
 		// If all elements support UUIDs, first get correspondences using UUIDs
 		if (eObjects.forall[domainRepository.getDomain(it).supportsUuids]) {
-			val uuids = eObjects.map[uuidResolver.getPotentiallyCachedUuid(it)];
-			var Set<List<String>> correspondingTuidLists = getCorrespondingUuids(correspondenceType, uuids, tag)
-			result += correspondingTuidLists.mapFixed[it.map[uuidResolver.getPotentiallyCachedEObject(it)].filter[eResource !== null].toList].toSet;
+			if (eObjects.forall[uuidResolver.hasPotentiallyCachedUuid(it)]) {
+				val uuids = eObjects.map[uuidResolver.getPotentiallyCachedUuid(it)];
+				var Set<List<String>> correspondingTuidLists = getCorrespondingUuids(correspondenceType, uuids, tag)
+				result += correspondingTuidLists.mapFixed[it.map[uuidResolver.getPotentiallyCachedEObject(it)].filter[eResource !== null].toList].toSet;	
+			} else {
+				logger.warn("UUID resolver has no UUID for one of the elements: " + eObjects);
+			}
 		}	
 		
 		// Afterwards, add correspondences based on TUIDs
