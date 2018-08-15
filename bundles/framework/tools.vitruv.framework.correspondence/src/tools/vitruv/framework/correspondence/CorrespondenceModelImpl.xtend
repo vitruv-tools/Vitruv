@@ -200,10 +200,14 @@ class CorrespondenceModelImpl extends ModelInstance implements InternalCorrespon
 		this.getCorrespondingEObjects(Correspondence, eObjects, tag);
 	}
 
-	def private Set<List<String>> getCorrespondingUuids(Class<? extends Correspondence> correspondenceType, List<String> uuids) {
+	def private <T extends Correspondence> Iterable<T> filterCorrespondences(Iterable<? extends Correspondence> correspondences, Class<T> correspondenceType, String tag) {
+		return correspondences.filter(correspondenceType).filter[tag.nullOrEmpty || tag == it.tag]
+	}
+	
+	def private Set<List<String>> getCorrespondingUuids(Class<? extends Correspondence> correspondenceType, List<String> uuids, String tag) {
 		var Set<Correspondence> allCorrespondences = getCorrespondencesForUuids(uuids)
 		var Set<List<String>> correspondingTuidLists = new HashSet<List<String>>(allCorrespondences.size())
-		for (Correspondence correspondence : allCorrespondences.filter(correspondenceType)) {
+		for (Correspondence correspondence : allCorrespondences.filterCorrespondences(correspondenceType, tag)) {
 			var List<String> aUuids = correspondence.getAUuids()
 			var List<String> bUuids = correspondence.getBUuids()
 			if (aUuids === null || bUuids === null || aUuids.size == 0 || bUuids.size == 0) {
@@ -221,10 +225,20 @@ class CorrespondenceModelImpl extends ModelInstance implements InternalCorrespon
 	}
 
 	override Set<List<EObject>> getCorrespondingEObjects(Class<? extends Correspondence> correspondenceType, List<EObject> eObjects, String tag) {
+		val result = newArrayList;
+		
+		// If all elements support UUIDs, first get correspondences using UUIDs
+		if (eObjects.forall[domainRepository.getDomain(it).supportsUuids]) {
+			val uuids = eObjects.map[uuidResolver.getPotentiallyCachedUuid(it)];
+			var Set<List<String>> correspondingTuidLists = getCorrespondingUuids(correspondenceType, uuids, tag)
+			result += correspondingTuidLists.mapFixed[it.map[uuidResolver.getPotentiallyCachedEObject(it)].filter[eResource !== null].toList].toSet;
+		}	
+		
+		// Afterwards, add correspondences based on TUIDs
 		var List<Tuid> tuids = calculateTuidsFromEObjects(eObjects)
 		var Set<List<Tuid>> correspondingTuidLists = getCorrespondingTuids(correspondenceType, tuids, tag)
 		try {
-			return correspondingTuidLists.mapFixed[it.map[resolveEObjectFromTuid(it)]].toSet;
+			result += correspondingTuidLists.mapFixed[it.map[resolveEObjectFromTuid(it)]].toSet;
 		} catch (IllegalStateException e) {
 			throw new IllegalStateException('''Corresponding objects for eObjects 
 			«FOR object : eObjects BEFORE "\n" SEPARATOR "\n"»	«object»«ENDFOR»
@@ -232,16 +246,13 @@ class CorrespondenceModelImpl extends ModelInstance implements InternalCorrespon
 			«FOR tuid : correspondingTuidLists BEFORE "\n" SEPARATOR "\n"»	«tuid»«ENDFOR»
 			cannot be resolved.''')
 		}
-//		val uuids = eObjects.map[uuidResolver.getPotentiallyCachedUuid(it)];
-//		
-//		var Set<List<String>> correspondingTuidLists = getCorrespondingUuids(correspondenceType, uuids)
-//		return correspondingTuidLists.mapFixed[it.map[uuidResolver.getPotentiallyCachedEObject(it)].filter[eResource !== null].toList].toSet;
+		return result.toSet;
 	}
 	
 	def private Set<List<Tuid>> getCorrespondingTuids(Class<? extends Correspondence> correspondenceType, List<Tuid> tuids, String tag) {
 		var Set<Correspondence> allCorrespondences = getCorrespondencesForTuids(tuids)
 		var Set<List<Tuid>> correspondingTuidLists = new HashSet<List<Tuid>>(allCorrespondences.size())
-		for (Correspondence correspondence : allCorrespondences.filter(correspondenceType).filter[tag.nullOrEmpty || tag == it.tag]) {
+		for (Correspondence correspondence : allCorrespondences.filterCorrespondences(correspondenceType, tag)) {
 			var List<Tuid> aTuids = correspondence.getATuids()
 			var List<Tuid> bTuids = correspondence.getBTuids()
 			if (aTuids === null || bTuids === null || aTuids.size == 0 || bTuids.size == 0) {
