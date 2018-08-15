@@ -13,6 +13,7 @@ import org.eclipse.emf.transaction.TransactionalEditingDomain
 import tools.vitruv.framework.util.command.EMFCommandBridge
 import java.util.concurrent.Callable
 import org.eclipse.emf.common.util.URI
+import org.eclipse.emf.ecore.EClass
 
 class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 	static val logger = Logger.getLogger(UuidGeneratorAndResolverImpl)
@@ -158,7 +159,11 @@ class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 			} catch (RuntimeException e) {
 			}
 		}
-
+		
+		if (eObject instanceof EClass) {
+			return eObject.generateUuid;
+		}
+		
 		return null;
 	}
 
