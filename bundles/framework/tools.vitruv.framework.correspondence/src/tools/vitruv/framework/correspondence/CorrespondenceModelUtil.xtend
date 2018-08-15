@@ -91,11 +91,7 @@ class CorrespondenceModelUtil {
 	 */
 	def public static <T, U extends Correspondence> Set<T> getAllEObjectsOfTypeInCorrespondences(
 		GenericCorrespondenceModel<U> ci, Class<T> type) {
-		val tuidSet = ci.allCorrespondencesWithoutDependencies.map[(it.getATuids + it.getBTuids)].flatten.toSet
-		val eObjectSet = Sets.newHashSet
-		tuidSet.forEach[try {eObjectSet.add(ci.resolveEObjectFromTuid(it))} catch (RuntimeException e) { }]
-		return eObjectSet.filter(type).toSet
-	// return ci.allCorrespondencesWithoutDependencies.map[(it.^as + it.bs).filter(type)].flatten.toSet
+		return ci.allCorrespondencesWithoutDependencies.map[it.^as + it.bs].flatten.filter(type).toSet
 	}
 
 	def public static <T extends Correspondence> Set<T> getCorrespondencesBetweenEObjects(GenericCorrespondenceModel<T> ci,
