@@ -52,4 +52,8 @@ package class ConceptDomain extends AbstractTuidAwareVitruvDomain {
 		
 	}
 
+	override supportsUuids() {
+		false
+	}
+	
 }
