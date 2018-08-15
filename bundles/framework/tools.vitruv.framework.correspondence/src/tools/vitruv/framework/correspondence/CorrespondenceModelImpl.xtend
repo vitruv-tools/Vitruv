@@ -176,7 +176,6 @@ class CorrespondenceModelImpl extends ModelInstance implements InternalCorrespon
 		var List<Tuid> tuids = calculateTuidsFromEObjects(eObjects)
 		return getCorrespondencesForTuids(tuids)
 	}
-
 	
 	override Set<Correspondence> getCorrespondencesForTuids(List<Tuid> tuids) {
 		var Set<Correspondence> correspondences = this.tuid2CorrespondencesMap.get(tuids)
@@ -413,23 +412,27 @@ class CorrespondenceModelImpl extends ModelInstance implements InternalCorrespon
 		List<EObject> eObjects2) {
 		var aEObjects = eObjects1
 		var bEObjects = eObjects2
-		var List<Tuid> aTuids = calculateTuidsFromEObjects(aEObjects)
-		correspondence.getATuids().addAll(aTuids)
-		correspondence.getAUuids().addAll(aEObjects.map[
-			if (uuidResolver.hasPotentiallyCachedUuid(it)) {
-				uuidResolver.getPotentiallyCachedUuid(it)
-			} else {
-				uuidResolver.registerCachedEObject(it);
-			}
-		])
-		var List<Tuid> bTuids = calculateTuidsFromEObjects(bEObjects)
-		correspondence.getBTuids().addAll(bTuids)
-		correspondence.getBUuids().addAll(bEObjects.map[
-			if (uuidResolver.hasPotentiallyCachedUuid(it)) {
-				uuidResolver.getPotentiallyCachedUuid(it)
-			} else {
-				uuidResolver.registerCachedEObject(it);
-			}])
+		if ((aEObjects + bEObjects).forall[domainRepository.getDomain(it).supportsUuids]) {
+			correspondence.getAUuids().addAll(aEObjects.map[
+				if (uuidResolver.hasPotentiallyCachedUuid(it)) {
+					uuidResolver.getPotentiallyCachedUuid(it)
+				} else {
+					uuidResolver.registerCachedEObject(it);
+				}
+			])
+			correspondence.getBUuids().addAll(bEObjects.map[
+				if (uuidResolver.hasPotentiallyCachedUuid(it)) {
+					uuidResolver.getPotentiallyCachedUuid(it)
+				} else {
+					uuidResolver.registerCachedEObject(it);
+				}
+			])
+		} else {
+			var List<Tuid> aTuids = calculateTuidsFromEObjects(aEObjects)
+			correspondence.getATuids().addAll(aTuids)
+			var List<Tuid> bTuids = calculateTuidsFromEObjects(bEObjects)
+			correspondence.getBTuids().addAll(bTuids)	
+		}
 	}
 
 	override getAllCorrespondencesWithoutDependencies() {

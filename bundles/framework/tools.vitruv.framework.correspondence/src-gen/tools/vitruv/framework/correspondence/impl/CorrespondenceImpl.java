@@ -295,7 +295,11 @@ public abstract class CorrespondenceImpl extends MinimalEObjectImpl.Container im
      */
     @Override
     public EList<EObject> getAs() {
-        return resolveEObjects(getATuids());
+    	if (getATuids().isEmpty()) {
+    		return resolveEObjectsFromUuids(getAUuids());
+    	} else {
+    		return resolveEObjectsFromTuids(getATuids());
+    	}
     }
 
     /**
@@ -305,17 +309,30 @@ public abstract class CorrespondenceImpl extends MinimalEObjectImpl.Container im
      */
     @Override
     public EList<EObject> getBs() {
-        return resolveEObjects(getBTuids());
+    	if (getBTuids().isEmpty()) {
+    		return resolveEObjectsFromUuids(getBUuids());
+    	} else {
+    		return resolveEObjectsFromTuids(getBTuids());
+    	}
     }
 
     /**
      * @generated NOT
      */
-    private EList<EObject> resolveEObjects(List<Tuid> tuids) {
+    private EList<EObject> resolveEObjectsFromTuids(List<Tuid> tuids) {
     	EList<EObject> result = new BasicEList<EObject>();
     	for (Tuid tuid : tuids) {
     		result.add(getParent().getCorrespondenceModel().resolveEObjectFromTuid(tuid));
     	}
+    	return result;
+    }
+    
+    /**
+     * @generated NOT
+     */
+    private EList<EObject> resolveEObjectsFromUuids(List<String> uuids) {
+    	EList<EObject> result = new BasicEList<EObject>();
+   		result.addAll(getParent().getCorrespondenceModel().resolveEObjectsFromUuids(uuids));
     	return result;
     }
     
