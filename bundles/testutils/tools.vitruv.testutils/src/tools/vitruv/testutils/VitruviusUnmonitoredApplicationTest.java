@@ -61,10 +61,11 @@ public abstract class VitruviusUnmonitoredApplicationTest extends VitruviusTest 
 	@Before
 	public void beforeTest() {
 		super.beforeTest();
-		this.resourceSet = new ResourceSetImpl();
-		ResourceSetUtil.addExistingFactoriesToResourceSet(resourceSet);
+		// The virtual model has to be created first because otherwise some domain overwrites may not be applied correctly before instantiating the ResourceSet
 		String testMethodName = testName.getMethodName();
 		createVirtualModel(testMethodName);
+		this.resourceSet = new ResourceSetImpl();
+		ResourceSetUtil.addExistingFactoriesToResourceSet(resourceSet);
 		this.uuidGeneratorAndResolver = new UuidGeneratorAndResolverImpl(virtualModel.getUuidGeneratorAndResolver(), this.resourceSet, true);
 	}
 
