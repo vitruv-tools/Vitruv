@@ -62,10 +62,31 @@ public interface GenericCorrespondenceModel<T extends Correspondence> extends UR
      */
     public Set<T> getCorrespondencesForTuids(List<Tuid> tuids);
 
+    /**
+     * Returns all elements corresponding to the given one.
+     * 
+     * @param eObjects - the objects to get the corresponding ones for
+     * @return the elements corresponding to the given ones
+     */
     public Set<List<EObject>> getCorrespondingEObjects(List<EObject> eObjects);
     
+    /**
+     * Returns the elements corresponding to the given one, if the correspondence contains the given tag.
+     * 
+     * @param eObjects - the objects to get the corresponding ones for
+     * @param tag - the tag to filter correspondences for. If the tag is <code>null</code>, all correspondences will be returned
+     * @return the elements corresponding to the given ones
+     */
     public Set<List<EObject>> getCorrespondingEObjects(List<EObject> eObjects, String tag);
     
+    /**
+     * Returns the elements corresponding to the given one, if the correspondence is of the given type and contains the given tag.
+     * 
+     * @param correspondenceType - the type of correspondence to filter
+     * @param eObjects - the objects to get the corresponding ones for
+     * @param tag - the tag to filter correspondences for. If the tag is <code>null</code>, all correspondences will be returned
+     * @return the elements corresponding to the given ones
+     */
     public Set<List<EObject>> getCorrespondingEObjects(Class<? extends Correspondence> correspondenceType, List<EObject> eObjects, String tag);
 
     public T claimUniqueCorrespondence(final List<EObject> aEObjects, final List<EObject> bEObjects);
