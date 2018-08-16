@@ -31,6 +31,7 @@ class DialogInteractionResultProviderImpl implements InteractionResultProvider {
 	private def void showDialog(BaseDialogWindow dialog) {
 		display.syncExec(new Runnable() {
 			override void run() {
+				dialog.blockOnOpen = true;
 				dialog.show();
 			}
 		});
