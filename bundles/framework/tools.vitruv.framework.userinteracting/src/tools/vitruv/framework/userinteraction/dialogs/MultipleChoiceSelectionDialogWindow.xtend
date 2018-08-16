@@ -14,6 +14,7 @@ import java.util.List
 import java.util.ArrayList
 import org.eclipse.swt.layout.RowLayout
 import org.eclipse.swt.widgets.Group
+import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
 
 /**
  * @author Dominik Klooz
@@ -25,6 +26,7 @@ class MultipleChoiceSelectionDialogWindow extends BaseDialogWindow {
 	private List<Button> choiceButtons
 	private final String positiveButtonText;
 	private final String cancelButtonText;
+	private Iterable<Integer> selectedChoices;
 
 	new(Shell parent, WindowModality windowModality, String title, String message, String positiveButtonText,
 		String cancelButtonText, boolean multiple, Iterable<String> choices) {
@@ -33,6 +35,7 @@ class MultipleChoiceSelectionDialogWindow extends BaseDialogWindow {
 		this.choices = choices;
 		this.positiveButtonText = positiveButtonText;
 		this.cancelButtonText = cancelButtonText;
+		this.selectedChoices = new ArrayList<Integer>();
 	}
 
 	protected override Control createDialogArea(Composite parent) {
@@ -82,6 +85,7 @@ class MultipleChoiceSelectionDialogWindow extends BaseDialogWindow {
 	}
 
 	override okPressed() {
+		selectedChoices = choiceButtons.indexed().filter(pair|pair.value.selection).mapFixed(pair|pair.key);
 		close()
 	}
 
@@ -90,6 +94,6 @@ class MultipleChoiceSelectionDialogWindow extends BaseDialogWindow {
 	}
 
 	public def Iterable<Integer> getSelectedChoices() {
-		return choiceButtons.indexed().filter(pair|pair.value.selection).map(pair|pair.key);
+		return selectedChoices
 	}
 }
