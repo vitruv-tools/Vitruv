@@ -13,6 +13,8 @@ import tools.vitruv.dsls.reactions.meta.correspondence.reactions.ReactionsPackag
 
 import tools.vitruv.framework.correspondence.CorrespondencePackage;
 
+import tools.vitruv.framework.uuid.UuidPackage;
+
 /**
  * <!-- begin-user-doc -->
  * An implementation of the model <b>Package</b>.
@@ -75,6 +77,7 @@ public class ReactionsPackageImpl extends EPackageImpl implements ReactionsPacka
 
 		// Initialize simple dependencies
 		CorrespondencePackage.eINSTANCE.eClass();
+		UuidPackage.eINSTANCE.eClass();
 
 		// Create package meta-data objects
 		theReactionsPackage.createPackageContents();

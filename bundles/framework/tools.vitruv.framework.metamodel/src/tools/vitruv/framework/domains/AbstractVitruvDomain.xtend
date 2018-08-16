@@ -121,4 +121,8 @@ abstract class AbstractVitruvDomain extends AbstractURIHaving implements VitruvD
 		false
 	}
 	
+	override supportsUuids() {
+		true
+	}
+	
 }

@@ -2,6 +2,7 @@
  */
 package tools.vitruv.framework.correspondence.impl;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
 import java.util.List;
 
@@ -15,8 +16,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-import org.eclipse.emf.ecore.impl.EObjectImpl;
-
+import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 import org.eclipse.emf.ecore.util.EDataTypeUniqueEList;
 import org.eclipse.emf.ecore.util.EObjectWithInverseResolvingEList;
 import org.eclipse.emf.ecore.util.EcoreUtil;
@@ -41,12 +41,14 @@ import tools.vitruv.framework.tuid.Tuid;
  *   <li>{@link tools.vitruv.framework.correspondence.impl.CorrespondenceImpl#getDependedOnBy <em>Depended On By</em>}</li>
  *   <li>{@link tools.vitruv.framework.correspondence.impl.CorrespondenceImpl#getATuids <em>ATuids</em>}</li>
  *   <li>{@link tools.vitruv.framework.correspondence.impl.CorrespondenceImpl#getBTuids <em>BTuids</em>}</li>
+ *   <li>{@link tools.vitruv.framework.correspondence.impl.CorrespondenceImpl#getAUuids <em>AUuids</em>}</li>
+ *   <li>{@link tools.vitruv.framework.correspondence.impl.CorrespondenceImpl#getBUuids <em>BUuids</em>}</li>
  *   <li>{@link tools.vitruv.framework.correspondence.impl.CorrespondenceImpl#getTag <em>Tag</em>}</li>
  * </ul>
  *
  * @generated
  */
-public abstract class CorrespondenceImpl extends EObjectImpl implements Correspondence {
+public abstract class CorrespondenceImpl extends MinimalEObjectImpl.Container implements Correspondence {
 	/**
      * @generated NOT
      */
@@ -92,6 +94,26 @@ public abstract class CorrespondenceImpl extends EObjectImpl implements Correspo
 	 * @ordered
 	 */
 	protected EList<Tuid> bTuids;
+
+	/**
+	 * The cached value of the '{@link #getAUuids() <em>AUuids</em>}' attribute list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getAUuids()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<String> aUuids;
+
+	/**
+	 * The cached value of the '{@link #getBUuids() <em>BUuids</em>}' attribute list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getBUuids()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<String> bUuids;
 
 	/**
 	 * The default value of the '{@link #getTag() <em>Tag</em>}' attribute.
@@ -226,6 +248,30 @@ public abstract class CorrespondenceImpl extends EObjectImpl implements Correspo
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EList<String> getAUuids() {
+		if (aUuids == null) {
+			aUuids = new EDataTypeUniqueEList<String>(String.class, this, CorrespondencePackage.CORRESPONDENCE__AUUIDS);
+		}
+		return aUuids;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EList<String> getBUuids() {
+		if (bUuids == null) {
+			bUuids = new EDataTypeUniqueEList<String>(String.class, this, CorrespondencePackage.CORRESPONDENCE__BUUIDS);
+		}
+		return bUuids;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public String getTag() {
 		return tag;
 	}
@@ -249,7 +295,11 @@ public abstract class CorrespondenceImpl extends EObjectImpl implements Correspo
      */
     @Override
     public EList<EObject> getAs() {
-        return resolveEObjects(getATuids());
+    	if (getATuids().isEmpty()) {
+    		return resolveEObjectsFromUuids(getAUuids());
+    	} else {
+    		return resolveEObjectsFromTuids(getATuids());
+    	}
     }
 
     /**
@@ -259,17 +309,30 @@ public abstract class CorrespondenceImpl extends EObjectImpl implements Correspo
      */
     @Override
     public EList<EObject> getBs() {
-        return resolveEObjects(getBTuids());
+    	if (getBTuids().isEmpty()) {
+    		return resolveEObjectsFromUuids(getBUuids());
+    	} else {
+    		return resolveEObjectsFromTuids(getBTuids());
+    	}
     }
 
     /**
      * @generated NOT
      */
-    private EList<EObject> resolveEObjects(List<Tuid> tuids) {
+    private EList<EObject> resolveEObjectsFromTuids(List<Tuid> tuids) {
     	EList<EObject> result = new BasicEList<EObject>();
     	for (Tuid tuid : tuids) {
     		result.add(getParent().getCorrespondenceModel().resolveEObjectFromTuid(tuid));
     	}
+    	return result;
+    }
+    
+    /**
+     * @generated NOT
+     */
+    private EList<EObject> resolveEObjectsFromUuids(List<String> uuids) {
+    	EList<EObject> result = new BasicEList<EObject>();
+   		result.addAll(getParent().getCorrespondenceModel().resolveEObjectsFromUuids(uuids));
     	return result;
     }
     
@@ -344,6 +407,10 @@ public abstract class CorrespondenceImpl extends EObjectImpl implements Correspo
 				return getATuids();
 			case CorrespondencePackage.CORRESPONDENCE__BTUIDS:
 				return getBTuids();
+			case CorrespondencePackage.CORRESPONDENCE__AUUIDS:
+				return getAUuids();
+			case CorrespondencePackage.CORRESPONDENCE__BUUIDS:
+				return getBUuids();
 			case CorrespondencePackage.CORRESPONDENCE__TAG:
 				return getTag();
 		}
@@ -378,6 +445,14 @@ public abstract class CorrespondenceImpl extends EObjectImpl implements Correspo
 				getBTuids().clear();
 				getBTuids().addAll((Collection<? extends Tuid>)newValue);
 				return;
+			case CorrespondencePackage.CORRESPONDENCE__AUUIDS:
+				getAUuids().clear();
+				getAUuids().addAll((Collection<? extends String>)newValue);
+				return;
+			case CorrespondencePackage.CORRESPONDENCE__BUUIDS:
+				getBUuids().clear();
+				getBUuids().addAll((Collection<? extends String>)newValue);
+				return;
 			case CorrespondencePackage.CORRESPONDENCE__TAG:
 				setTag((String)newValue);
 				return;
@@ -408,6 +483,12 @@ public abstract class CorrespondenceImpl extends EObjectImpl implements Correspo
 			case CorrespondencePackage.CORRESPONDENCE__BTUIDS:
 				getBTuids().clear();
 				return;
+			case CorrespondencePackage.CORRESPONDENCE__AUUIDS:
+				getAUuids().clear();
+				return;
+			case CorrespondencePackage.CORRESPONDENCE__BUUIDS:
+				getBUuids().clear();
+				return;
 			case CorrespondencePackage.CORRESPONDENCE__TAG:
 				setTag(TAG_EDEFAULT);
 				return;
@@ -433,10 +514,30 @@ public abstract class CorrespondenceImpl extends EObjectImpl implements Correspo
 				return aTuids != null && !aTuids.isEmpty();
 			case CorrespondencePackage.CORRESPONDENCE__BTUIDS:
 				return bTuids != null && !bTuids.isEmpty();
+			case CorrespondencePackage.CORRESPONDENCE__AUUIDS:
+				return aUuids != null && !aUuids.isEmpty();
+			case CorrespondencePackage.CORRESPONDENCE__BUUIDS:
+				return bUuids != null && !bUuids.isEmpty();
 			case CorrespondencePackage.CORRESPONDENCE__TAG:
 				return TAG_EDEFAULT == null ? tag != null : !TAG_EDEFAULT.equals(tag);
 		}
 		return super.eIsSet(featureID);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Object eInvoke(int operationID, EList<?> arguments) throws InvocationTargetException {
+		switch (operationID) {
+			case CorrespondencePackage.CORRESPONDENCE___GET_AS:
+				return getAs();
+			case CorrespondencePackage.CORRESPONDENCE___GET_BS:
+				return getBs();
+		}
+		return super.eInvoke(operationID, arguments);
 	}
 
 	/**
@@ -453,6 +554,10 @@ public abstract class CorrespondenceImpl extends EObjectImpl implements Correspo
 		result.append(aTuids);
 		result.append(", bTuids: ");
 		result.append(bTuids);
+		result.append(", aUuids: ");
+		result.append(aUuids);
+		result.append(", bUuids: ");
+		result.append(bUuids);
 		result.append(", tag: ");
 		result.append(tag);
 		result.append(')');

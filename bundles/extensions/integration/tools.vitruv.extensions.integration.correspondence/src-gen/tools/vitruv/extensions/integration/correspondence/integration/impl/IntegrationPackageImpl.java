@@ -2,17 +2,21 @@
  */
 package tools.vitruv.extensions.integration.correspondence.integration.impl;
 
-import tools.vitruv.extensions.integration.correspondence.integration.IntegrationCorrespondence;
-import tools.vitruv.extensions.integration.correspondence.integration.IntegrationFactory;
-import tools.vitruv.extensions.integration.correspondence.integration.IntegrationPackage;
-
-import tools.vitruv.framework.correspondence.CorrespondencePackage;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EPackage;
 
 import org.eclipse.emf.ecore.impl.EPackageImpl;
+
 import tools.vitruv.dsls.reactions.meta.correspondence.reactions.ReactionsPackage;
+
+import tools.vitruv.extensions.integration.correspondence.integration.IntegrationCorrespondence;
+import tools.vitruv.extensions.integration.correspondence.integration.IntegrationFactory;
+import tools.vitruv.extensions.integration.correspondence.integration.IntegrationPackage;
+
+import tools.vitruv.framework.correspondence.CorrespondencePackage;
+
+import tools.vitruv.framework.uuid.UuidPackage;
 
 /**
  * <!-- begin-user-doc -->
@@ -77,6 +81,7 @@ public class IntegrationPackageImpl extends EPackageImpl implements IntegrationP
 		// Initialize simple dependencies
 		CorrespondencePackage.eINSTANCE.eClass();
 		ReactionsPackage.eINSTANCE.eClass();
+		UuidPackage.eINSTANCE.eClass();
 
 		// Create package meta-data objects
 		theIntegrationPackage.createPackageContents();

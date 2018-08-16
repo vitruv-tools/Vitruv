@@ -10,7 +10,6 @@ import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.util.EcoreUtil
 import org.junit.Test
 import pcm_mockup.Interface
-import pcm_mockup.Pcm_mockupFactory
 import pcm_mockup.Repository
 import uml_mockup.UPackage
 
@@ -26,7 +25,6 @@ import static extension tools.vitruv.framework.util.bridges.CollectionBridge.toL
 import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
 import pcm_mockup.PInterface
 import tools.vitruv.framework.correspondence.CorrespondenceModel
-import tools.vitruv.framework.tuid.TuidManager
 import tools.vitruv.framework.vsum.InternalVirtualModel
 import tools.vitruv.framework.util.datatypes.ModelInstance
 import org.eclipse.emf.common.util.URI
@@ -52,7 +50,7 @@ class CorrespondenceTest extends VsumTest {
 		testRecursiveRemove(repo, pkg, correspondenceModel, repo2pkg) // now the correspondence instance should be empty
 		// recreate the same correspondence as before
 		repo2pkg = createRepo2PkgCorrespondence(repo, pkg, correspondenceModel) // 1. EOC: repo _r5CW0PxiEeO_U4GJ6Zitkg <=> pkg _sJD6YPxjEeOD3p0i_uuRbQ
-		testCreateRepo2PkgCorrespondenceAndUpdateTuid(repo, pkg, correspondenceModel, repo2pkg)
+		//testCreateRepo2PkgCorrespondenceAndUpdateTuid(repo, pkg, correspondenceModel, repo2pkg)
 		correspondenceModel.removeCorrespondencesThatInvolveAtLeastAndDependend(pkg.toSet) // now the correspondence instance should be empty
 		testCorrespondencePersistence(vsum, repo, pkg, correspondenceModel)
 	}
@@ -284,20 +282,20 @@ class CorrespondenceTest extends VsumTest {
 		// assertFalse(corresp.hasCorrespondences());
 	}
 
-	def private void testCreateRepo2PkgCorrespondenceAndUpdateTuid(Repository repo, UPackage pkg,
-		CorrespondenceModel corresp, Correspondence repo2pkg) {
-		var Repository newRepo = Pcm_mockupFactory.eINSTANCE.createRepository()
-		TuidManager.instance.updateTuid(repo, newRepo)
-		var Set<Correspondence> repoCorresp = corresp.getCorrespondences(repo.toList)
-		assertTrue(repoCorresp.isEmpty())
-		var Correspondence uniqueNewRepoCorrespondence = corresp.claimUniqueCorrespondence(newRepo)
-		assertEquals(uniqueNewRepoCorrespondence, repo2pkg)
-		var Correspondence uniquePkgCorrespondence = corresp.claimUniqueCorrespondence(pkg)
-		assertEquals(uniquePkgCorrespondence, repo2pkg)
-		var EObject correspForNewRepo = corresp.getCorrespondingEObjects(newRepo).claimOne
-		assertEquals(correspForNewRepo, pkg)
-		var EObject correspForPkg = corresp.getCorrespondingEObjects(pkg).claimOne
-		assertEquals(correspForPkg, newRepo) // TODO is this really enough update testing?
-	}
+//	def private void testCreateRepo2PkgCorrespondenceAndUpdateTuid(Repository repo, UPackage pkg,
+//		CorrespondenceModel corresp, Correspondence repo2pkg) {
+//		var Repository newRepo = Pcm_mockupFactory.eINSTANCE.createRepository()
+//		TuidManager.instance.updateTuid(repo, newRepo)
+//		var Set<Correspondence> repoCorresp = corresp.getCorrespondences(repo.toList)
+//		assertTrue(repoCorresp.isEmpty())
+//		var Correspondence uniqueNewRepoCorrespondence = corresp.claimUniqueCorrespondence(newRepo)
+//		assertEquals(uniqueNewRepoCorrespondence, repo2pkg)
+//		var Correspondence uniquePkgCorrespondence = corresp.claimUniqueCorrespondence(pkg)
+//		assertEquals(uniquePkgCorrespondence, repo2pkg)
+//		var EObject correspForNewRepo = corresp.getCorrespondingEObjects(newRepo).claimOne
+//		assertEquals(correspForNewRepo, pkg)
+//		var EObject correspForPkg = corresp.getCorrespondingEObjects(pkg).claimOne
+//		assertEquals(correspForPkg, newRepo) // TODO is this really enough update testing?
+//	}
 
 }

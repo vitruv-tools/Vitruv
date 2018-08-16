@@ -2,22 +2,25 @@
  */
 package tools.vitruv.framework.correspondence.impl;
 
+import org.eclipse.emf.ecore.EAttribute;
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EDataType;
+import org.eclipse.emf.ecore.EOperation;
+import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.EReference;
+
+import org.eclipse.emf.ecore.impl.EPackageImpl;
+
 import tools.vitruv.framework.correspondence.Correspondence;
 import tools.vitruv.framework.correspondence.CorrespondenceFactory;
+import tools.vitruv.framework.correspondence.CorrespondenceModel;
 import tools.vitruv.framework.correspondence.CorrespondencePackage;
 import tools.vitruv.framework.correspondence.Correspondences;
 import tools.vitruv.framework.correspondence.ManualCorrespondence;
 
 import tools.vitruv.framework.tuid.Tuid;
-import tools.vitruv.framework.correspondence.CorrespondenceModel;
 
-import org.eclipse.emf.ecore.EAttribute;
-import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EDataType;
-import org.eclipse.emf.ecore.EPackage;
-import org.eclipse.emf.ecore.EReference;
-
-import org.eclipse.emf.ecore.impl.EPackageImpl;
+import tools.vitruv.framework.uuid.UuidPackage;
 
 /**
  * <!-- begin-user-doc -->
@@ -106,6 +109,9 @@ public class CorrespondencePackageImpl extends EPackageImpl implements Correspon
 		CorrespondencePackageImpl theCorrespondencePackage = (CorrespondencePackageImpl)(EPackage.Registry.INSTANCE.get(eNS_URI) instanceof CorrespondencePackageImpl ? EPackage.Registry.INSTANCE.get(eNS_URI) : new CorrespondencePackageImpl());
 
 		isInited = true;
+
+		// Initialize simple dependencies
+		UuidPackage.eINSTANCE.eClass();
 
 		// Create package meta-data objects
 		theCorrespondencePackage.createPackageContents();
@@ -208,8 +214,44 @@ public class CorrespondencePackageImpl extends EPackageImpl implements Correspon
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getCorrespondence_Tag() {
+	public EAttribute getCorrespondence_AUuids() {
 		return (EAttribute)correspondenceEClass.getEStructuralFeatures().get(5);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getCorrespondence_BUuids() {
+		return (EAttribute)correspondenceEClass.getEStructuralFeatures().get(6);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getCorrespondence_Tag() {
+		return (EAttribute)correspondenceEClass.getEStructuralFeatures().get(7);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EOperation getCorrespondence__GetAs() {
+		return correspondenceEClass.getEOperations().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EOperation getCorrespondence__GetBs() {
+		return correspondenceEClass.getEOperations().get(1);
 	}
 
 	/**
@@ -277,7 +319,11 @@ public class CorrespondencePackageImpl extends EPackageImpl implements Correspon
 		createEReference(correspondenceEClass, CORRESPONDENCE__DEPENDED_ON_BY);
 		createEAttribute(correspondenceEClass, CORRESPONDENCE__ATUIDS);
 		createEAttribute(correspondenceEClass, CORRESPONDENCE__BTUIDS);
+		createEAttribute(correspondenceEClass, CORRESPONDENCE__AUUIDS);
+		createEAttribute(correspondenceEClass, CORRESPONDENCE__BUUIDS);
 		createEAttribute(correspondenceEClass, CORRESPONDENCE__TAG);
+		createEOperation(correspondenceEClass, CORRESPONDENCE___GET_AS);
+		createEOperation(correspondenceEClass, CORRESPONDENCE___GET_BS);
 
 		manualCorrespondenceEClass = createEClass(MANUAL_CORRESPONDENCE);
 
@@ -309,6 +355,9 @@ public class CorrespondencePackageImpl extends EPackageImpl implements Correspon
 		setNsPrefix(eNS_PREFIX);
 		setNsURI(eNS_URI);
 
+		// Obtain other dependent packages
+		UuidPackage theUuidPackage = (UuidPackage)EPackage.Registry.INSTANCE.getEPackage(UuidPackage.eNS_URI);
+
 		// Create type parameters
 
 		// Set bounds for type parameters
@@ -316,7 +365,7 @@ public class CorrespondencePackageImpl extends EPackageImpl implements Correspon
 		// Add supertypes to classes
 		manualCorrespondenceEClass.getESuperTypes().add(this.getCorrespondence());
 
-		// Initialize classes and features; add operations and parameters
+		// Initialize classes, features, and operations; add parameters
 		initEClass(correspondencesEClass, Correspondences.class, "Correspondences", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getCorrespondences_Correspondences(), this.getCorrespondence(), this.getCorrespondence_Parent(), "correspondences", null, 0, -1, Correspondences.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getCorrespondences_CorrespondenceModel(), this.getCorrespondenceModel(), "correspondenceModel", null, 1, 1, Correspondences.class, IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -327,11 +376,13 @@ public class CorrespondencePackageImpl extends EPackageImpl implements Correspon
 		initEReference(getCorrespondence_DependedOnBy(), this.getCorrespondence(), this.getCorrespondence_DependsOn(), "dependedOnBy", null, 0, -1, Correspondence.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, !IS_ORDERED);
 		initEAttribute(getCorrespondence_ATuids(), this.getTuid(), "aTuids", null, 0, -1, Correspondence.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getCorrespondence_BTuids(), this.getTuid(), "bTuids", null, 0, -1, Correspondence.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getCorrespondence_AUuids(), theUuidPackage.getUuid(), "aUuids", null, 0, -1, Correspondence.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getCorrespondence_BUuids(), theUuidPackage.getUuid(), "bUuids", null, 0, -1, Correspondence.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getCorrespondence_Tag(), ecorePackage.getEString(), "tag", null, 0, 1, Correspondence.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-		addEOperation(correspondenceEClass, ecorePackage.getEObject(), "getAs", 0, -1, IS_UNIQUE, IS_ORDERED);
+		initEOperation(getCorrespondence__GetAs(), ecorePackage.getEObject(), "getAs", 0, -1, IS_UNIQUE, IS_ORDERED);
 
-		addEOperation(correspondenceEClass, ecorePackage.getEObject(), "getBs", 0, -1, IS_UNIQUE, IS_ORDERED);
+		initEOperation(getCorrespondence__GetBs(), ecorePackage.getEObject(), "getBs", 0, -1, IS_UNIQUE, IS_ORDERED);
 
 		initEClass(manualCorrespondenceEClass, ManualCorrespondence.class, "ManualCorrespondence", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 

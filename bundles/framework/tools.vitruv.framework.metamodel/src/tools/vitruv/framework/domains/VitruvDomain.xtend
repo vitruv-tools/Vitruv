@@ -34,4 +34,13 @@ interface VitruvDomain extends URIHaving, Comparable<URIHaving> {
 	 */
 	def boolean shouldTransitivelyPropagateChanges()
 	
+	/**
+	 * Returns whether this domain supports the usage of UUIDs for object
+	 * identification. This especially depends on whether EMF changes are 
+	 * recorded and applied or if only a subset of changes is recorded and
+	 * the resource is reloaded instead, which does not provide UUIDs
+	 * for alle elements.
+	 */
+	def boolean supportsUuids()
+	
 }

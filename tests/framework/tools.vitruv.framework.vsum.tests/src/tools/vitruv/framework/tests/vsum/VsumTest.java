@@ -50,6 +50,11 @@ public abstract class VsumTest extends VitruviusTest {
         public VitruviusProjectBuilderApplicator getBuilderApplicator() {
             return null;
         };
+
+        @Override
+        public boolean supportsUuids() {
+            return false;
+        };
     };
 
     private static final VitruvDomain PcmDomain = new AbstractTuidAwareVitruvDomain("PCM", Pcm_mockupPackage.eINSTANCE,
@@ -57,6 +62,11 @@ public abstract class VsumTest extends VitruviusTest {
         @Override
         public VitruviusProjectBuilderApplicator getBuilderApplicator() {
             return null;
+        };
+
+        @Override
+        public boolean supportsUuids() {
+            return false;
         };
     };
 

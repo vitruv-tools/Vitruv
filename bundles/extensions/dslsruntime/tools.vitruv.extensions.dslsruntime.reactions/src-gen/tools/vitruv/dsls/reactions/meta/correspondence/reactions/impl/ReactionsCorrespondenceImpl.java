@@ -3,6 +3,7 @@
 package tools.vitruv.dsls.reactions.meta.correspondence.reactions.impl;
 
 import org.eclipse.emf.ecore.EClass;
+
 import tools.vitruv.dsls.reactions.meta.correspondence.reactions.ReactionsCorrespondence;
 import tools.vitruv.dsls.reactions.meta.correspondence.reactions.ReactionsPackage;
 

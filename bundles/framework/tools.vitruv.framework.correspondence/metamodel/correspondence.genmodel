@@ -1,19 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
-    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="tools.vitruv.framework.correspondence/src-gen"
-    editDirectory="/tools.vitruv.framework.correspondence.edit/src"
-    editorDirectory="/tools.vitruv.framework.correspondence.editor/src"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/tools.vitruv.framework.correspondence/src-gen"
     modelPluginID="tools.vitruv.framework.correspondence" modelName="Correspondence"
-    modelPluginClass="" editPluginClass="tools.vitruv.framework.correspondence.provider.CorrespondenceEditPlugin"
-    importerID="org.eclipse.emf.importer.ecore" complianceLevel="6.0" copyrightFields="false"
-    editPluginID="tools.vitruv.framework.correspondence.edit" editorPluginID="tools.vitruv.framework.correspondence.editor">
+    rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container" importerID="org.eclipse.emf.importer.ecore"
+    complianceLevel="8.0" copyrightFields="false" usedGenPackages="../../tools.vitruv.framework.uuid/model/Uuid.genmodel#//uuid"
+    operationReflection="true" importOrganizing="true">
   <foreignModel>correspondence.ecore</foreignModel>
-  <genPackages prefix="Correspondence" basePackage="tools.vitruv.framework"
-      disposableProviderFactory="true" ecorePackage="correspondence.ecore#/">
+  <genPackages prefix="Correspondence" basePackage="tools.vitruv.framework" disposableProviderFactory="true"
+      ecorePackage="correspondence.ecore#/">
     <genDataTypes ecoreDataType="correspondence.ecore#//CorrespondenceModel"/>
     <genDataTypes ecoreDataType="correspondence.ecore#//Tuid"/>
     <genClasses ecoreClass="correspondence.ecore#//Correspondences">
-      <genFeatures createChild="true" propertySortChoices="true" ecoreFeature="ecore:EReference correspondence.ecore#//Correspondences/correspondences"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference correspondence.ecore#//Correspondences/correspondences"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute correspondence.ecore#//Correspondences/correspondenceModel"/>
     </genClasses>
     <genClasses image="false" ecoreClass="correspondence.ecore#//Correspondence">
@@ -22,6 +20,8 @@
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference correspondence.ecore#//Correspondence/dependedOnBy"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute correspondence.ecore#//Correspondence/aTuids"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute correspondence.ecore#//Correspondence/bTuids"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute correspondence.ecore#//Correspondence/aUuids"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute correspondence.ecore#//Correspondence/bUuids"/>
       <genOperations ecoreOperation="correspondence.ecore#//Correspondence/getAs"/>
       <genOperations ecoreOperation="correspondence.ecore#//Correspondence/getBs"/>
       <genOperations ecoreOperation="correspondence.ecore#//Correspondence/getElementATuid"/>

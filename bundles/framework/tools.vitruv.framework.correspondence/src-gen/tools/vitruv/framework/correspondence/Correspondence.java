@@ -22,6 +22,8 @@ import tools.vitruv.framework.tuid.Tuid;
  *   <li>{@link tools.vitruv.framework.correspondence.Correspondence#getDependedOnBy <em>Depended On By</em>}</li>
  *   <li>{@link tools.vitruv.framework.correspondence.Correspondence#getATuids <em>ATuids</em>}</li>
  *   <li>{@link tools.vitruv.framework.correspondence.Correspondence#getBTuids <em>BTuids</em>}</li>
+ *   <li>{@link tools.vitruv.framework.correspondence.Correspondence#getAUuids <em>AUuids</em>}</li>
+ *   <li>{@link tools.vitruv.framework.correspondence.Correspondence#getBUuids <em>BUuids</em>}</li>
  *   <li>{@link tools.vitruv.framework.correspondence.Correspondence#getTag <em>Tag</em>}</li>
  * </ul>
  *
@@ -125,6 +127,38 @@ public interface Correspondence extends EObject {
 	 * @generated
 	 */
 	EList<Tuid> getBTuids();
+
+	/**
+	 * Returns the value of the '<em><b>AUuids</b></em>' attribute list.
+	 * The list contents are of type {@link java.lang.String}.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>AUuids</em>' attribute list isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>AUuids</em>' attribute list.
+	 * @see tools.vitruv.framework.correspondence.CorrespondencePackage#getCorrespondence_AUuids()
+	 * @model dataType="tools.vitruv.framework.uuid.Uuid"
+	 * @generated
+	 */
+	EList<String> getAUuids();
+
+	/**
+	 * Returns the value of the '<em><b>BUuids</b></em>' attribute list.
+	 * The list contents are of type {@link java.lang.String}.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>BUuids</em>' attribute list isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>BUuids</em>' attribute list.
+	 * @see tools.vitruv.framework.correspondence.CorrespondencePackage#getCorrespondence_BUuids()
+	 * @model dataType="tools.vitruv.framework.uuid.Uuid"
+	 * @generated
+	 */
+	EList<String> getBUuids();
 
 	/**
 	 * Returns the value of the '<em><b>Tag</b></em>' attribute.

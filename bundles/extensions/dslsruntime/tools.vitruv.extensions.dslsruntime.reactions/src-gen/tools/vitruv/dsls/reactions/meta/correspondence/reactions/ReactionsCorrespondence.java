@@ -15,5 +15,4 @@ import tools.vitruv.framework.correspondence.Correspondence;
  * @generated
  */
 public interface ReactionsCorrespondence extends Correspondence {
-
 } // ReactionsCorrespondence

@@ -19,8 +19,7 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-import org.eclipse.emf.ecore.impl.EObjectImpl;
-
+import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentWithInverseEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 
@@ -38,7 +37,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
  *
  * @generated
  */
-public class CorrespondencesImpl extends EObjectImpl implements Correspondences {
+public class CorrespondencesImpl extends MinimalEObjectImpl.Container implements Correspondences {
 	/**
 	 * The cached value of the '{@link #getCorrespondences() <em>Correspondences</em>}' containment reference list.
 	 * <!-- begin-user-doc -->

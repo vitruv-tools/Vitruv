@@ -111,6 +111,24 @@ public interface ReactionsPackage extends EPackage {
 	int REACTIONS_CORRESPONDENCE__BTUIDS = CorrespondencePackage.CORRESPONDENCE__BTUIDS;
 
 	/**
+	 * The feature id for the '<em><b>AUuids</b></em>' attribute list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REACTIONS_CORRESPONDENCE__AUUIDS = CorrespondencePackage.CORRESPONDENCE__AUUIDS;
+
+	/**
+	 * The feature id for the '<em><b>BUuids</b></em>' attribute list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int REACTIONS_CORRESPONDENCE__BUUIDS = CorrespondencePackage.CORRESPONDENCE__BUUIDS;
+
+	/**
 	 * The feature id for the '<em><b>Tag</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

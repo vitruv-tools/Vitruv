@@ -24,4 +24,9 @@ abstract class IntermediateVitruvDomain extends AbstractTuidAwareVitruvDomain {
 	override isUserVisible() {
 		false
 	}
+	
+	override supportsUuids() {
+		false
+	}
+	
 }

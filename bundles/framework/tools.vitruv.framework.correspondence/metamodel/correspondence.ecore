@@ -21,6 +21,10 @@
         eType="#//Tuid"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="bTuids" upperBound="-1"
         eType="#//Tuid"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="aUuids" upperBound="-1"
+        eType="ecore:EDataType ../../tools.vitruv.framework.uuid/model/Uuid.ecore#//Uuid"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="bUuids" upperBound="-1"
+        eType="ecore:EDataType ../../tools.vitruv.framework.uuid/model/Uuid.ecore#//Uuid"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="tag" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ManualCorrespondence" eSuperTypes="#//Correspondence"/>

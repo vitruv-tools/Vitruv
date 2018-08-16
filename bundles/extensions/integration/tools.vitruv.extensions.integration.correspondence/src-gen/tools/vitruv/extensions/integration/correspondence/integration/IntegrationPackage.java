@@ -5,6 +5,7 @@ package tools.vitruv.extensions.integration.correspondence.integration;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EPackage;
+
 import tools.vitruv.dsls.reactions.meta.correspondence.reactions.ReactionsPackage;
 
 /**
@@ -109,6 +110,24 @@ public interface IntegrationPackage extends EPackage {
 	 * @ordered
 	 */
 	int INTEGRATION_CORRESPONDENCE__BTUIDS = ReactionsPackage.REACTIONS_CORRESPONDENCE__BTUIDS;
+
+	/**
+	 * The feature id for the '<em><b>AUuids</b></em>' attribute list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int INTEGRATION_CORRESPONDENCE__AUUIDS = ReactionsPackage.REACTIONS_CORRESPONDENCE__AUUIDS;
+
+	/**
+	 * The feature id for the '<em><b>BUuids</b></em>' attribute list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int INTEGRATION_CORRESPONDENCE__BUUIDS = ReactionsPackage.REACTIONS_CORRESPONDENCE__BUUIDS;
 
 	/**
 	 * The feature id for the '<em><b>Tag</b></em>' attribute.

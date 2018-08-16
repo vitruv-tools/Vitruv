@@ -2,8 +2,6 @@
  */
 package tools.vitruv.extensions.integration.correspondence.integration.impl;
 
-import tools.vitruv.extensions.integration.correspondence.integration.*;
-
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
@@ -11,6 +9,8 @@ import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.impl.EFactoryImpl;
 
 import org.eclipse.emf.ecore.plugin.EcorePlugin;
+
+import tools.vitruv.extensions.integration.correspondence.integration.*;
 
 /**
  * <!-- begin-user-doc -->

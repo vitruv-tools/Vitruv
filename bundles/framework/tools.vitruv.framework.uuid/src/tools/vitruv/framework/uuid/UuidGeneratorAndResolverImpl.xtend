@@ -22,6 +22,7 @@ class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 	final UuidResolver parentUuidResolver;
 	final boolean strictMode;
 	UuidToEObjectRepository repository;
+	UuidToEObjectRepository cache;
 
 	/**
 	 * Instantiates a UUID generator and resolver with no parent resolver, 
@@ -121,6 +122,7 @@ class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 			}
 		}
 		this.repository = repository;
+		this.cache = UuidFactory.eINSTANCE.createUuidToEObjectRepository;
 	}
 
 	override getUuid(EObject eObject) {
@@ -174,6 +176,14 @@ class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 		}
 		return eObject;
 	}
+	
+	override getPotentiallyCachedEObject(String uuid) {
+		if (cache.uuidToEObject.containsKey(uuid)) {
+			return cache.uuidToEObject.get(uuid);
+		}
+		return getEObject(uuid);
+	}
+	
 
 	private def EObject internalGetEObject(String uuid) {
 		val eObject = repository.uuidToEObject.get(uuid);
@@ -190,7 +200,13 @@ class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 	}
 
 	override String generateUuid(EObject eObject) {
-		val uuid = generateUuid;
+		val uuid = if (cache.EObjectToUuid.containsKey(eObject)) {
+			val uuid = cache.EObjectToUuid.removeKey(eObject);
+			cache.uuidToEObject.remove(uuid);
+			uuid;
+		} else {
+			generateUuid;
+		}
 		registerEObject(uuid, eObject);
 		return uuid;
 	}
@@ -239,6 +255,13 @@ class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 		return TransactionalEditingDomain.Factory.INSTANCE.getEditingDomain(this.resourceSet);
 	}
 
+	override hasPotentiallyCachedEObject(String uuid) {
+		if (cache.uuidToEObject.containsKey(uuid)) {
+			return true;
+		}
+		return internalGetEObject(uuid) !== null;
+	}
+
 	override hasUuid(EObject object) {
 		return internalGetUuid(object) !== null;
 	}
@@ -272,6 +295,29 @@ class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 		} else {
 			// throw new IllegalStateException("Given EObject has no UUID yet: " + eObject);
 		}
+	}
+	
+	override getPotentiallyCachedUuid(EObject eObject) {
+		if (cache.EObjectToUuid.containsKey(eObject)) {
+			return cache.EObjectToUuid.get(eObject);
+		} else if (cache.EObjectToUuid.exists[EcoreUtil.equals(eObject, key)]) {
+			return cache.EObjectToUuid.findFirst[EcoreUtil.equals(eObject, key)].value;
+		}
+		return getUuid(eObject);
+	}
+	
+	override hasPotentiallyCachedUuid(EObject eObject) {
+		if (this.cache.EObjectToUuid.containsKey(eObject)) {
+			return true;
+		}
+		return hasUuid(eObject);
+	}
+	
+	override registerCachedEObject(EObject eObject) {
+		val uuid = generateUuid;
+		cache.EObjectToUuid.put(eObject, uuid);
+		cache.uuidToEObject.put(uuid, eObject);
+		return uuid;
 	}
 
 }
