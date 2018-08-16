@@ -192,7 +192,7 @@ class CorrespondenceModelImpl extends ModelInstance implements InternalCorrespon
 	}
 
 	override Set<List<EObject>> getCorrespondingEObjects(List<EObject> eObjects) {
-		this.getCorrespondingEObjects(eObjects, "");
+		this.getCorrespondingEObjects(eObjects, null);
 	}
 	
 	override Set<List<EObject>> getCorrespondingEObjects(List<EObject> eObjects, String tag) {
@@ -200,7 +200,7 @@ class CorrespondenceModelImpl extends ModelInstance implements InternalCorrespon
 	}
 
 	def private <T extends Correspondence> Iterable<T> filterCorrespondences(Iterable<? extends Correspondence> correspondences, Class<T> correspondenceType, String tag) {
-		return correspondences.filter(correspondenceType).filter[tag.nullOrEmpty || tag == it.tag]
+		return correspondences.filter(correspondenceType).filter[tag === null || tag == it.tag]
 	}
 	
 	def private Set<List<String>> getCorrespondingUuids(Class<? extends Correspondence> correspondenceType, List<String> uuids, String tag) {
