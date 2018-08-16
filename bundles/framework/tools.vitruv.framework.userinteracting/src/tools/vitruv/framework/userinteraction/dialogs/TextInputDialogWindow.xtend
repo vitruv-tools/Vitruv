@@ -29,7 +29,8 @@ class TextInputDialogWindow extends BaseDialogWindow {
 	private final InputValidator inputValidator;
 	private final String positiveButtonText;
 	private final String cancelButtonText;
-
+	private String input = "";
+	
 	new(Shell parent, WindowModality windowModality, String title, String message, String positiveButtonText,
 		String cancelButtonText, InputValidator inputValidator) {
 		super(parent, windowModality, title, message)
@@ -106,14 +107,16 @@ class TextInputDialogWindow extends BaseDialogWindow {
 			inputDecorator.showHoverText(inputDecorator.getDescriptionText())
 			return
 		}
+		this.input = inputField.text
 		close()
 	}
 
 	override void cancelPressed() {
+		this.input = null
 		close()
 	}
 
 	public def String getInputText() {
-		return inputField.text;
+		return input
 	}
 }
