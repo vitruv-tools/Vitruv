@@ -5,6 +5,7 @@ import java.util.ArrayList
 import org.eclipse.xtend.lib.annotations.Accessors
 import tools.vitruv.framework.userinteraction.UserInteractionOptions.WindowModality
 import tools.vitruv.framework.userinteraction.InteractionResultProvider
+import java.util.List
 
 /**
  * Implementation of an interaction providing a list of choices for the user to select a single or multiple ones.
@@ -17,7 +18,7 @@ abstract class MultipleChoiceSelectionInteraction<I extends MultipleChoiceSelect
 	private static val DEFAULT_MESSAGE = "";
 
 	@Accessors(PROTECTED_GETTER)
-	private final Iterable<String> choices
+	private final List<String> choices
 
 	protected new(InteractionResultProvider interactionResultProvider, WindowModality windowModality) {
 		super(interactionResultProvider, windowModality, DEFAULT_TITLE, DEFAULT_MESSAGE)
@@ -25,4 +26,7 @@ abstract class MultipleChoiceSelectionInteraction<I extends MultipleChoiceSelect
 		this.choices = new ArrayList<String>();
 	}
 
+	public def void addChoice(String choice) {
+		this.choices += choice;
+	}
 }
