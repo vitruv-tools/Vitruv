@@ -231,7 +231,7 @@ class CorrespondenceModelImpl extends ModelInstance implements InternalCorrespon
 			if (eObjects.forall[uuidResolver.hasPotentiallyCachedUuid(it)]) {
 				val uuids = eObjects.map[uuidResolver.getPotentiallyCachedUuid(it)];
 				var Set<List<String>> correspondingTuidLists = getCorrespondingUuids(correspondenceType, uuids, tag)
-				result += correspondingTuidLists.mapFixed[it.map[uuidResolver.getPotentiallyCachedEObject(it)].filter[eResource !== null].toList].toSet;	
+				result += correspondingTuidLists.mapFixed[it.map[uuidResolver.getPotentiallyCachedEObject(it)]].toSet;	
 			} else {
 				logger.warn("UUID resolver has no UUID for one of the elements: " + eObjects);
 			}
