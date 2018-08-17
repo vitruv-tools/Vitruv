@@ -25,7 +25,7 @@ class DialogInteractionResultProviderImpl implements InteractionResultProvider {
 	new() {
 		this.display = if (PlatformUI.isWorkbenchRunning()) PlatformUI.getWorkbench().getDisplay() else PlatformUI.
 			createDisplay();
-		this.parentShell = if (display.getActiveShell() === null || display.activeShell.isDisposed()) null else display.getActiveShell();
+		this.parentShell = null; // if (display.getActiveShell() === null || display.activeShell.isDisposed()) null else display.getActiveShell();
 	}
 
 	private def void showDialog(BaseDialogWindow dialog) {
