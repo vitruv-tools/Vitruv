@@ -58,4 +58,8 @@ class EmptyUuidResolver implements UuidResolver {
 		return false;
 	}
 	
+	override loadUuidsToChild(UuidResolver childResolver, URI uri) {
+		// Do nothing, as there are no entries
+	}
+	
 }

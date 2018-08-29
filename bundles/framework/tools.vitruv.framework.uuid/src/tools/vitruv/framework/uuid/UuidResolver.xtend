@@ -93,4 +93,10 @@ interface UuidResolver {
 	 * cache to the ordinary resolution mechanism.
 	 */
 	def String registerCachedEObject(EObject eObject);
+	
+	/**
+	 * Loads the UUIDs for the resource of the given {@link URI} into the given
+	 * child {@link UuidResolver}.
+	 */
+	def void loadUuidsToChild(UuidResolver childResolver, URI uri);
 }
