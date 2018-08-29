@@ -248,7 +248,7 @@ class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 		// lead to errors if the ResourceSet is also modified by the test, as these modifications
 		// would also have to be made on the TransactionalEditingDomain once it was created.
 		val domain = transactionalEditingDomain;
-		if (domain !== null && eObject.eResource?.resourceSet === resourceSet) {
+		if (domain !== null && (eObject.eResource?.resourceSet === resourceSet || eObject instanceof EClass)) {
 			EMFCommandBridge.createAndExecuteVitruviusRecordingCommand(registerEObjectCall, domain);
 		} else {
 			registerEObjectCall.call;
