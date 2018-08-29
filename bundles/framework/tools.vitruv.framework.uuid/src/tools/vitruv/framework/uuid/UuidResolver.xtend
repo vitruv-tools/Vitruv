@@ -51,15 +51,52 @@ interface UuidResolver {
 	 */
 	def boolean registerUuidForGlobalUri(String uuid, URI uri);
 	
+	/**
+	 * Returns the {@link ResourceSet} used in this UUID resolver.
+	 */
 	def ResourceSet getResourceSet();
 	
+	/**
+	 * Returns the {@link EObject} for the given UUID from the repository, or from the cache
+	 * if it was added using {@link #registerCachedEObject(EObject}.
+	 * If no object is found, an {@link IllegalStateException} is thrown.
+	 */
 	def EObject getPotentiallyCachedEObject(String uuid);
 	
+	/**
+	 * Returns whether an {@link EObject} was registered for the given UUID in the repository,
+	 * or in the cache if it was added using {@link #registerCachedEObject(EObject}.
+	 */
 	def boolean hasPotentiallyCachedEObject(String uuid);
 	
+	/**
+	 * Returns the UUID for the given {@link EObject} from the repository, or from the cache
+	 * if it was added using {@link #registerCachedEObject(EObject}.
+	 * If no UUID is found, an {@link IllegalStateException} is thrown.
+	 */
 	def String getPotentiallyCachedUuid(EObject eObject);
 	
+	/**
+	 * Returns whether a UUID was generated and registered for the given {@link EObject} in the repository,
+	 * or in the cache if it was added using {@link #registerCachedEObject(EObject}.
+	 */
 	def boolean hasPotentiallyCachedUuid(EObject eObject);
 	
+	/**
+	 * Registers the given {@link EObject} as cached object.
+	 * This means that is not resolved by the ordinary {@link #getEObject} and {@link #getUuid} methods.
+	 * This can be useful, if having a UUID assigned to an object is used as an indicator.
+	 * For example, objects having a UUID may be treated as also created and those having none are newly created.
+	 * Nevertheless, UUIDs must sometimes be referenced (e.g. in correspondences created before the element was
+	 * inserted into a monitored model) before checking for creating. So long, the object can be placed in the cache.
+	 * When {@link UuidGeneratorAndResolver#generateUuid(EObject)} is called, the object will be moved from the
+	 * cache to the ordinary resolution mechanism.
+	 */
 	def String registerCachedEObject(EObject eObject);
+	
+	/**
+	 * Loads the UUIDs for the resource of the given {@link URI} into the given
+	 * child {@link UuidResolver}.
+	 */
+	def void loadUuidsToChild(UuidResolver childResolver, URI uri);
 }

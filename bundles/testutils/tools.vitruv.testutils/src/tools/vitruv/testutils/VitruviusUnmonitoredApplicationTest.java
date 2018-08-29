@@ -43,8 +43,8 @@ import static org.junit.Assert.assertTrue;
  *
  */
 public abstract class VitruviusUnmonitoredApplicationTest extends VitruviusTest {
-
-	protected ResourceSet resourceSet;
+	// Do not manipulate this resource set, as it reacts to resource additions with UUID loading
+	private ResourceSet resourceSet;
 	private UuidGeneratorAndResolver uuidGeneratorAndResolver;
 	
 	private TestUserInteraction testUserInteractor;

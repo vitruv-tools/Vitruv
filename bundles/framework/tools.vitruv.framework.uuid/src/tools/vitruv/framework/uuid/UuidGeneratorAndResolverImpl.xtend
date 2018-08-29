@@ -14,6 +14,7 @@ import tools.vitruv.framework.util.command.EMFCommandBridge
 import java.util.concurrent.Callable
 import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.EClass
+import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.common.util.URIUtil.*
 
 class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 	static val logger = Logger.getLogger(UuidGeneratorAndResolverImpl)
@@ -109,6 +110,9 @@ class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 			UuidResolver.EMPTY;
 		}
 		loadAndRegisterUuidProviderAndResolver(uuidResource);
+		this.resourceSet.eAdapters.add(new ResourceRegistrationAdapter(
+			[resource | this.loadUuidsFromParent(resource)]
+		));
 	}
 
 	def private loadAndRegisterUuidProviderAndResolver(Resource uuidResource) {
@@ -244,7 +248,7 @@ class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 		// lead to errors if the ResourceSet is also modified by the test, as these modifications
 		// would also have to be made on the TransactionalEditingDomain once it was created.
 		val domain = transactionalEditingDomain;
-		if (domain !== null && eObject.eResource?.resourceSet === resourceSet) {
+		if (domain !== null && (eObject.eResource?.resourceSet === resourceSet || eObject instanceof EClass)) {
 			EMFCommandBridge.createAndExecuteVitruviusRecordingCommand(registerEObjectCall, domain);
 		} else {
 			registerEObjectCall.call;
@@ -318,6 +322,35 @@ class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 		cache.EObjectToUuid.put(eObject, uuid);
 		cache.uuidToEObject.put(uuid, eObject);
 		return uuid;
+	}
+	
+	override void loadUuidsToChild(UuidResolver childResolver, URI uri) {
+		// Only load UUIDs if resource exists (a pathmap resource always exists)
+		if (!(((uri.file || uri.platform) && uri.existsResourceAtUri) || uri.isPathmap)) {
+			return;
+		}
+		for (element : childResolver.resourceSet.getResource(uri, true).allContents.toList) {
+			// Not having a UUID is only supported for pathmap resources and currently Java root elements
+			if (hasUuid(element)) {
+				childResolver.registerEObject(getUuid(element), element);
+			} else {
+				if (uri.isPathmap || uri.fileExtension.equals("java")) {
+					val resolvedObject = resourceSet.getEObject(EcoreUtil.getURI(element), true);
+					if (resolvedObject !== null) {
+						childResolver.registerEObject(generateUuid(resolvedObject), element);
+						// LayoutInformation in Java elements may not be equal in different UuidResolvers (VirtualModel and view), so ignore it	
+					} else if (!element.eClass.name.contains("LayoutInformation")) {
+						throw new IllegalStateException("Object could not be resolved in this UuidResolver's resource set: " + element);
+					}
+				} else {
+					throw new IllegalStateException("Element does not have a UUID but should have one: " + element);
+				}
+			}
+		}
+	}
+	
+	def void loadUuidsFromParent(Resource resource) {
+		parentUuidResolver.loadUuidsToChild(this, resource.URI);
 	}
 
 }
