@@ -15,6 +15,8 @@ import tools.vitruv.framework.util.datatypes.VURI
 
 import static com.google.common.base.Preconditions.*
 
+import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
+
 // TODO remove once resources are handled by domains
 class IntermediateResourceBridgeI extends IntermediateResourceBridgeImpl {
 
