@@ -17,7 +17,6 @@ import tools.vitruv.framework.change.description.PropagatedChange
 import tools.vitruv.framework.util.command.EMFCommandBridge
 import tools.vitruv.framework.vsum.repositories.ResourceRepositoryImpl
 import tools.vitruv.framework.vsum.repositories.ModelRepositoryImpl
-import tools.vitruv.framework.change.echange.EChangeIdManager
 import java.util.Vector
 import tools.vitruv.framework.vsum.helper.ChangeDomainExtractor
 import tools.vitruv.framework.userinteraction.UserInteractor
@@ -32,7 +31,6 @@ class VirtualModelImpl implements InternalVirtualModel {
 	private val ChangePropagator changePropagator;
 	private val ChangePropagationSpecificationProvider changePropagationSpecificationProvider;
 	private val File folder;
-	private val EChangeIdManager eChangeIdManager;
 	private val extension ChangeDomainExtractor changeDomainExtractor;
 	
 	/**
@@ -61,7 +59,6 @@ class VirtualModelImpl implements InternalVirtualModel {
 		this.changePropagator = new ChangePropagatorImpl(resourceRepository, changePropagationSpecificationProvider,
 		    metamodelRepository, resourceRepository, modelRepository, userInteractor
 		);
-		this.eChangeIdManager = new EChangeIdManager(this.uuidGeneratorAndResolver);
 		VirtualModelManager.instance.putVirtualModel(this);
 		
 		this.propagatedChangeListeners = new Vector<PropagatedChangeListener>();

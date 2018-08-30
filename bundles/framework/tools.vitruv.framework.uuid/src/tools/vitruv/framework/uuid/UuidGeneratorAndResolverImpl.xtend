@@ -19,7 +19,6 @@ import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.common.util
 class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 	static val logger = Logger.getLogger(UuidGeneratorAndResolverImpl)
 	final ResourceSet resourceSet;
-	final Resource uuidResource;
 	final UuidResolver parentUuidResolver;
 	final boolean strictMode;
 	UuidToEObjectRepository repository;
@@ -101,7 +100,6 @@ class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 		if (resourceSet === null) {
 			throw new IllegalArgumentException("Resource set may not be null");
 		}
-		this.uuidResource = uuidResource;
 		this.resourceSet = resourceSet;
 		this.strictMode = strictMode;
 		this.parentUuidResolver = if (parentUuidResolver !== null) {
