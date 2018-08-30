@@ -22,7 +22,6 @@ import tools.vitruv.framework.vsum.ModelRepository
 import tools.vitruv.framework.uuid.UuidResolver
 import tools.vitruv.framework.change.description.CompositeChange
 
-import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
 import tools.vitruv.framework.change.description.CompositeTransactionalChange
 import tools.vitruv.framework.correspondence.CorrespondencePackage
 import tools.vitruv.framework.change.description.ConcreteChange
