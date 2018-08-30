@@ -131,6 +131,18 @@ public abstract class VitruviusUnmonitoredApplicationTest extends VitruviusTest 
 	}
 
 	/**
+	 * Loads and returns the element with the given URI from the test resource set.
+	 * 
+	 * @param modelElementUri
+	 *            - The {@link URI} of the element to load
+	 * @return the element loaded from the given {@link URI} or
+	 *         <code>null</code> if it could not be loaded
+	 */
+	protected EObject getModelElement(URI modelElementUri) {
+		return resourceSet.getEObject(modelElementUri, true);
+	}
+	
+	/**
 	 * Loads and returns the resource with the given path relative to the
 	 * project folder.
 	 * 
