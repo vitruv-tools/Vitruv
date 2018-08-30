@@ -67,7 +67,8 @@ class ConfirmationDialogWindow extends BaseDialogWindow {
 	}
 
 	protected override void createButtonsForButtonBar(Composite parent) {
-		createButton(parent, IDialogConstants.OK_ID, positiveButtonText, true)
+		createButton(parent, IDialogConstants.YES_ID, positiveButtonText, true)
+		createButton(parent, IDialogConstants.NO_ID, negativeButtonText, true)
 		createButton(parent, IDialogConstants.CANCEL_ID, cancelButtonText, true)
 	}
 
@@ -80,9 +81,18 @@ class ConfirmationDialogWindow extends BaseDialogWindow {
 		this.confirmed = false
 		close()
 	}
+	
+	override protected buttonPressed(int buttonId) {
+		if (buttonId == IDialogConstants.YES_ID) {
+			this.confirmed = true
+		} else if (buttonId == IDialogConstants.NO_ID) {
+			this.confirmed = false;
+		}
+		close();
+	}
 
 	def boolean getConfirmed() {
 		return confirmed
 	}
-
+	
 }
