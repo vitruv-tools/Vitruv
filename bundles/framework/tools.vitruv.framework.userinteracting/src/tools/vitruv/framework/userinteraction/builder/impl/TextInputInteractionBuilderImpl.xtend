@@ -23,9 +23,6 @@ import tools.vitruv.framework.userinteraction.types.InteractionFactory
  * @author Heiko Klare
  */
 public class TextInputInteractionBuilderImpl extends BaseInteractionBuilder<String, TextInputInteraction, OptionalSteps> implements TextInputInteractionBuilder, OptionalSteps {
-	private InputFieldType inputFieldType = InputFieldType.SINGLE_LINE
-	private InputValidator inputValidator = TextInputInteraction.ACCEPT_ALL_INPUT_VALIDATOR
-
 	new(InteractionFactory interactionFactory, Iterable<UserInteractionListener> userInteractionListener) {
 		super(interactionFactory, userInteractionListener)
 	}
@@ -37,14 +34,14 @@ public class TextInputInteractionBuilderImpl extends BaseInteractionBuilder<Stri
 
 	override inputValidator(InputValidator inputValidator) {
 		if (inputValidator !== null) {
-			this.inputValidator = inputValidator
+			interactionToBuild.inputValidator = inputValidator
 		}
 		return this
 	}
 
 	override inputValidator(Function<String, Boolean> validatorFunction, String invalidInputMessage) {
 		if (validatorFunction !== null && invalidInputMessage !== null) {
-			this.inputValidator = new InputValidator() {
+			interactionToBuild.inputValidator = new InputValidator() {
 				override getInvalidInputMessage(String input) { invalidInputMessage }
 
 				override isInputValid(String input) { validatorFunction.apply(input) }
@@ -55,7 +52,7 @@ public class TextInputInteractionBuilderImpl extends BaseInteractionBuilder<Stri
 
 	override inputFieldType(InputFieldType inputFieldType) {
 		if (inputFieldType !== null) {
-			this.inputFieldType = inputFieldType
+			interactionToBuild.inputFieldType = inputFieldType
 		}
 		return this
 	}
