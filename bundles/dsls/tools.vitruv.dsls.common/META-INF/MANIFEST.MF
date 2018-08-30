@@ -2,6 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Vitruv DSLs Common
 Bundle-SymbolicName: tools.vitruv.dsls.common
+Automatic-Module-Name: tools.vitruv.dsls.common
 Bundle-Version: 0.3.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: com.google.guava,
@@ -13,4 +14,3 @@ Require-Bundle: com.google.guava,
 Export-Package: tools.vitruv.dsls.common,
  tools.vitruv.dsls.common.helper
 Bundle-Vendor: vitruv.tools
-

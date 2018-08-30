@@ -2,6 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Vitruv Framework UI Virtual Singl Underlying Model
 Bundle-SymbolicName: tools.vitruv.framework.ui.vsum;singleton:=true
+Automatic-Module-Name: tools.vitruv.framework.ui.monitorededitor
 Bundle-Version: 0.3.0.qualifier
 Bundle-Activator: tools.vitruv.framework.ui.vsum.Activator
 Require-Bundle: org.eclipse.ui,
@@ -19,4 +20,3 @@ Require-Bundle: org.eclipse.ui,
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Bundle-Vendor: vitruv.tools
-

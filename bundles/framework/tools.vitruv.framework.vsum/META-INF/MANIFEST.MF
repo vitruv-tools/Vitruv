@@ -2,6 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Vitruv Framework Virtual Single Underlying Model
 Bundle-SymbolicName: tools.vitruv.framework.vsum;singleton:=true
+Automatic-Module-Name: tools.vitruv.framework.vsum
 Bundle-Version: 0.3.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: org.apache.log4j,
@@ -24,4 +25,3 @@ Export-Package: tools.vitruv.framework.vsum,
  tools.vitruv.framework.vsum.helper,
  tools.vitruv.framework.vsum.modelsynchronization
 Bundle-Vendor: vitruv.tools
-

@@ -3,6 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Vitruv DSLs Reactions Language Shared IDE Integration
 Bundle-Version: 0.3.0.qualifier
 Bundle-SymbolicName: tools.vitruv.dsls.reactions.ide;singleton:=true
+Automatic-Module-Name: tools.vitruv.dsls.reactions.ide
 Bundle-ActivationPolicy: lazy
 Require-Bundle: tools.vitruv.dsls.reactions,
  tools.vitruv.dsls.mirbase,
@@ -13,4 +14,3 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Export-Package: tools.vitruv.dsls.reactions.ide.contentassist.antlr,
  tools.vitruv.dsls.reactions.ide.contentassist.antlr.internal
 Bundle-Vendor: vitruv.tools
-
