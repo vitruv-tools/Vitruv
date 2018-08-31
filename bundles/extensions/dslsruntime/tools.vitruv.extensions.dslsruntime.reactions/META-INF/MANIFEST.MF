@@ -2,6 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
 Bundle-SymbolicName: tools.vitruv.extensions.dslsruntime.reactions;singleton:=true
+Automatic-Module-Name: tools.vitruv.extensions.dslsruntime.reactions
 Bundle-Version: 0.3.0.qualifier
 Bundle-ClassPath: .
 Bundle-Vendor: %providerName
@@ -31,4 +32,3 @@ Export-Package: tools.vitruv.dsls.reactions.meta.correspondence.reactions,
  tools.vitruv.extensions.dslsruntime.reactions.helper,
  tools.vitruv.extensions.dslsruntime.reactions.structure
 Import-Package: org.apache.log4j
-

@@ -6,6 +6,7 @@ Bundle-ClassPath: .
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
 Bundle-SymbolicName: tools.vitruv.dsls.reactions;singleton:=true
+Automatic-Module-Name: tools.vitruv.dsls.reactions
 Require-Bundle: org.eclipse.xtext,
  org.eclipse.xtext.xbase,
  org.eclipse.equinox.common;bundle-version="3.5.0",
@@ -14,7 +15,7 @@ Require-Bundle: org.eclipse.xtext,
  org.eclipse.xtext.common.types,
  org.eclipse.xtext.xbase.lib,
  org.antlr.runtime,
- org.objectweb.asm;bundle-version="[5.0.1,6.0.0)";resolution:=optional,
+ org.objectweb.asm;bundle-version="[5.0.1,7.0.0)";resolution:=optional,
  org.eclipse.xtext.util,
  org.eclipse.xtend.lib,
  org.eclipse.emf.common,

@@ -1,6 +1,5 @@
 package tools.vitruv.framework.userinteraction.types
 
-import java.util.function.Function
 import tools.vitruv.framework.userinteraction.UserInteractionOptions.WindowModality
 import tools.vitruv.framework.userinteraction.UserInteractionOptions.InputFieldType
 import tools.vitruv.framework.change.interaction.FreeTextUserInteraction
@@ -39,17 +38,8 @@ public class TextInputInteraction extends BaseInteraction<FreeTextUserInteractio
 		this.inputValidator = inputValidator
 	}
 
-	protected new(InteractionResultProvider interactionResultProvider, WindowModality windowModality,
-		InputFieldType fieldType, Function<String, Boolean> inputValidator, String invalidInputMessage) {
-		this(interactionResultProvider, windowModality, fieldType, new InputValidator() {
-			override getInvalidInputMessage(String input) { "" }
-
-			override isInputValid(String input) { inputValidator.apply(input) }
-		})
-	}
-
 	protected new(InteractionResultProvider interactionResultProvider, WindowModality windowModality) {
-		this(interactionResultProvider, windowModality, InputFieldType.SINGLE_LINE, [text|true], "")
+		this(interactionResultProvider, windowModality, InputFieldType.SINGLE_LINE, ACCEPT_ALL_INPUT_VALIDATOR)
 	}
 
 	def InputValidator getInputValidator() { inputValidator }

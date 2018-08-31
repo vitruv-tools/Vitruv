@@ -2,6 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
 Bundle-SymbolicName: tools.vitruv.framework.change.echange;singleton:=true
+Automatic-Module-Name: tools.vitruv.framework.change.echange
 Bundle-Version: 0.3.0.qualifier
 Bundle-ClassPath: .
 Bundle-Vendor: %providerName
@@ -47,4 +48,3 @@ Require-Bundle: com.google.guava,
  tools.vitruv.framework.uuid;visibility:=reexport,
  edu.kit.ipd.sdq.activextendannotations
 Bundle-ActivationPolicy: lazy
-

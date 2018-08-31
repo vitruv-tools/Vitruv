@@ -2,6 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Vitruv Extension Model Construction Simulation
 Bundle-SymbolicName: tools.vitruv.extensions.constructionsimulation;singleton:=true
+Automatic-Module-Name: tools.vitruv.extensions.constructionsimulation
 Bundle-Version: 0.3.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy

@@ -1,7 +1,8 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Vitruvius Domain ASEM Metamodel
+Bundle-Name: Vitruvius Demo Domain Recipients
 Bundle-SymbolicName: tools.vitruv.demo.domains.recipients;singleton:=true
+Automatic-Module-Name: tools.vitruv.demo.domains.recipients
 Bundle-Version: 0.3.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: org.junit, 

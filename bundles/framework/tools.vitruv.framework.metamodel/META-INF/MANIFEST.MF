@@ -2,6 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Vitruv Framework Metamodel Representations
 Bundle-SymbolicName: tools.vitruv.framework.metamodel;singleton:=true
+Automatic-Module-Name: tools.vitruv.framework.metamodel
 Bundle-Version: 0.3.0.qualifier
 Bundle-ClassPath: .
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8

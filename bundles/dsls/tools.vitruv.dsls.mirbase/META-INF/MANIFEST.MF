@@ -3,6 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Vitruv DSLs MIR Base Language
 Bundle-Version: 0.3.0.qualifier
 Bundle-SymbolicName: tools.vitruv.dsls.mirbase; singleton:=true
+Automatic-Module-Name: tools.vitruv.dsls.mirbase
 Bundle-ActivationPolicy: lazy
 Require-Bundle: org.eclipse.xtext,
  org.eclipse.xtext.xbase,
@@ -11,7 +12,7 @@ Require-Bundle: org.eclipse.xtext,
  org.eclipse.xtext.common.types,
  org.eclipse.xtext.xbase.lib,
  org.antlr.runtime,
- org.objectweb.asm;bundle-version="[5.0.1,6.0.0)";resolution:=optional,
+ org.objectweb.asm;bundle-version="[5.0.1,7.0.0)";resolution:=optional,
  org.eclipse.xtext.util,
  org.eclipse.xtend.lib,
  org.eclipse.emf.common,

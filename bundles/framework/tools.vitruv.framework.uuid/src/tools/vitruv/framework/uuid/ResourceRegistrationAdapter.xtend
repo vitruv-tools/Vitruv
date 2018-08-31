@@ -12,7 +12,6 @@ import org.eclipse.emf.common.notify.Notifier
  * callback function for that resource given to the constructor. 
  */
 package class ResourceRegistrationAdapter implements Adapter {
-	ResourceSet monitoredResourceSet;
 	val Consumer<Resource> resourceRegistrationFunction;
 
 	new(Consumer<Resource> resourceRegistrationFunction) {
@@ -39,10 +38,7 @@ package class ResourceRegistrationAdapter implements Adapter {
 	}
 
 	override setTarget(Notifier newTarget) {
-		if (!(newTarget instanceof ResourceSet)) {
-			throw new IllegalArgumentException();
-		}
-		this.monitoredResourceSet = newTarget as ResourceSet;
+		// Do nothing
 	}
 
 }

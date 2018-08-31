@@ -2,6 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Vitruv Framework Change Processing
 Bundle-SymbolicName: tools.vitruv.framework.change.processing;singleton:=true
+Automatic-Module-Name: tools.vitruv.framework.change.processing
 Bundle-Version: 0.3.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: org.apache.log4j,

@@ -38,7 +38,7 @@ public interface UserInteractor {
 	TextInputInteractionBuilder getTextInputDialogBuilder();
 
 	/**
-	 * @return a {@link MultipleChoiceMultiSelectionInteractionBuilder} used to
+	 * @return a {@link MultipleChoiceSingleSelectionInteractionBuilder} used to
 	 *         configure, build and show multiple choice input dialogs to prompt the
 	 *         user to choose from a list of choices. This one allows the user to
 	 *         select one single item.
