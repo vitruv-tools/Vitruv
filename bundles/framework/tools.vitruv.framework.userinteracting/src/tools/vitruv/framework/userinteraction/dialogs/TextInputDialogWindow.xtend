@@ -111,11 +111,6 @@ class TextInputDialogWindow extends BaseDialogWindow {
 		close()
 	}
 
-	override void cancelPressed() {
-		this.input = null
-		close()
-	}
-
 	public def String getInputText() {
 		return input
 	}

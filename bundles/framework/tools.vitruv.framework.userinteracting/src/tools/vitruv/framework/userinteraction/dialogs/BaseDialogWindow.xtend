@@ -7,6 +7,7 @@ import org.eclipse.swt.graphics.Point
 import org.eclipse.swt.widgets.Shell
 import tools.vitruv.framework.userinteraction.UserInteractionOptions.WindowModality
 import org.eclipse.swt.SWT
+import javax.swing.JOptionPane
 
 /**
  * @author Dominik Klooz
@@ -55,6 +56,10 @@ abstract class BaseDialogWindow extends Dialog {
 			shellStyle = shellStyle.bitwiseOr(SWT.MODELESS.bitwiseOr(SWT.APPLICATION_MODAL.bitwiseNot))
 			blockOnOpen = false
 		}
+	}
+	
+	override protected cancelPressed() {
+		JOptionPane.showMessageDialog(null, "Canceling decisions during consistency preservation is currently not supported", "Unsupported", JOptionPane.OK_OPTION);
 	}
 
 }
