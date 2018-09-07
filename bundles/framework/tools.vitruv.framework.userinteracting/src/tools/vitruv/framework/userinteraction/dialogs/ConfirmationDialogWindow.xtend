@@ -72,27 +72,20 @@ class ConfirmationDialogWindow extends BaseDialogWindow {
 		createButton(parent, IDialogConstants.CANCEL_ID, cancelButtonText, true)
 	}
 
-	override okPressed() {
-		this.confirmed = true
-		close()
-	}
-
-	override cancelPressed() {
-		this.confirmed = false
-		close()
-	}
-	
 	override protected buttonPressed(int buttonId) {
 		if (buttonId == IDialogConstants.YES_ID) {
 			this.confirmed = true
+			close();
 		} else if (buttonId == IDialogConstants.NO_ID) {
 			this.confirmed = false;
+			close();
+		} else {
+			cancelPressed()
 		}
-		close();
 	}
 
 	def boolean getConfirmed() {
 		return confirmed
 	}
-	
+
 }
