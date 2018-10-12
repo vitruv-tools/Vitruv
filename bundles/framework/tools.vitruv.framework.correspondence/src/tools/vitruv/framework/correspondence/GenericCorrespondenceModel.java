@@ -42,17 +42,6 @@ public interface GenericCorrespondenceModel<T extends Correspondence> extends UR
     public boolean hasCorrespondences();
 
     /**
-     * Returns all correspondences for the specified object and an empty set if the object has no
-     * correspondences. Should never return {@link null}.
-     *
-     * @param eObjects
-     * @return all correspondences for the specified object and an empty set if the object has no
-     *         correspondences.
-     */
-
-    public Set<T> getCorrespondences(List<EObject> eObjects);
-
-    /**
      * Returns all correspondences for the object with the specified tuid and an empty set if the
      * object has no correspondences. Should never return {@link null}.
      *
@@ -79,18 +68,6 @@ public interface GenericCorrespondenceModel<T extends Correspondence> extends UR
      */
     public Set<List<EObject>> getCorrespondingEObjects(List<EObject> eObjects, String tag);
     
-    /**
-     * Returns the elements corresponding to the given one, if the correspondence is of the given type and contains the given tag.
-     * 
-     * @param correspondenceType - the type of correspondence to filter
-     * @param eObjects - the objects to get the corresponding ones for
-     * @param tag - the tag to filter correspondences for. If the tag is <code>null</code>, all correspondences will be returned
-     * @return the elements corresponding to the given ones
-     */
-    public Set<List<EObject>> getCorrespondingEObjects(Class<? extends Correspondence> correspondenceType, List<EObject> eObjects, String tag);
-
-    public T claimUniqueCorrespondence(final List<EObject> aEObjects, final List<EObject> bEObjects);
-
     public Set<T> getCorrespondencesThatInvolveAtLeast(Set<EObject> eObjects);
     
     // renamed from addSameTypeCorrespondence
@@ -166,7 +143,7 @@ public interface GenericCorrespondenceModel<T extends Correspondence> extends UR
      * @return the restricted view on the {@link CorrespondenceModel}
      * @author Heiko Klare
      */
-    public <U extends Correspondence> GenericCorrespondenceModel<U> getView(Class<U> correspondenceType);
+    public <U extends Correspondence> CorrespondenceModelView<U> getView(Class<U> correspondenceType);
 
     /**
      * Creates a editable view on the {@link CorrespondenceModel} restricted to the specified
@@ -178,7 +155,9 @@ public interface GenericCorrespondenceModel<T extends Correspondence> extends UR
      * @param correspondenceCreator
      * @return the restricted editable view on the {@link CorrespondenceModel}
      */
-    public <U extends Correspondence> GenericCorrespondenceModel<U> getEditableView(Class<U> correspondenceType,
+    public <U extends Correspondence> CorrespondenceModelView<U> getEditableView(Class<U> correspondenceType,
             Supplier<U> correspondenceCreator);
+    
+    public CorrespondenceModel getGenericView();
 
 }

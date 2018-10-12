@@ -2,8 +2,6 @@
  */
 package tools.vitruv.framework.correspondence;
 
-import tools.vitruv.framework.correspondence.CorrespondenceModel;
-
 import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EObject;
@@ -53,12 +51,12 @@ public interface Correspondences extends EObject {
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Correspondence Model</em>' attribute.
-	 * @see #setCorrespondenceModel(CorrespondenceModel)
+	 * @see #setCorrespondenceModel(GenericCorrespondenceModel)
 	 * @see tools.vitruv.framework.correspondence.CorrespondencePackage#getCorrespondences_CorrespondenceModel()
-	 * @model dataType="tools.vitruv.framework.correspondence.CorrespondenceModel" required="true" transient="true"
+	 * @model dataType="tools.vitruv.framework.correspondence.GenericCorrespondenceModel" required="true" transient="true"
 	 * @generated
 	 */
-	CorrespondenceModel getCorrespondenceModel();
+	GenericCorrespondenceModel getCorrespondenceModel();
 
 	/**
 	 * Sets the value of the '{@link tools.vitruv.framework.correspondence.Correspondences#getCorrespondenceModel <em>Correspondence Model</em>}' attribute.
@@ -68,6 +66,6 @@ public interface Correspondences extends EObject {
 	 * @see #getCorrespondenceModel()
 	 * @generated
 	 */
-	void setCorrespondenceModel(CorrespondenceModel value);
+	void setCorrespondenceModel(GenericCorrespondenceModel value);
 
 } // Correspondences

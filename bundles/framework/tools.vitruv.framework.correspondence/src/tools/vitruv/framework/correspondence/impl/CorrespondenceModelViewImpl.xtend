@@ -1,19 +1,20 @@
-package tools.vitruv.framework.correspondence
+package tools.vitruv.framework.correspondence.impl
 
 import java.util.List
 import java.util.Set
 import org.eclipse.emf.ecore.EObject
 import java.util.function.Supplier
-import tools.vitruv.framework.correspondence.GenericCorrespondenceModel
 import tools.vitruv.framework.correspondence.Correspondence
 import tools.vitruv.framework.tuid.Tuid
+import tools.vitruv.framework.correspondence.CorrespondenceModelView
+import tools.vitruv.framework.correspondence.InternalCorrespondenceModel
 
-class CorrespondenceModelView<T extends Correspondence> implements GenericCorrespondenceModel<T> {
-	private final GenericCorrespondenceModel<Correspondence> correspondenceModelDelegate;
+class CorrespondenceModelViewImpl<T extends Correspondence> implements CorrespondenceModelView<T> {
+	private final InternalCorrespondenceModel correspondenceModelDelegate;
 	private final Class<T> correspondenceType;
 	private final Supplier<T> correspondenceCreator
 
-	public new(Class<T> correspondenceType, GenericCorrespondenceModel<Correspondence> correspondenceModel) {
+	public new(Class<T> correspondenceType, InternalCorrespondenceModel correspondenceModel) {
 		this(correspondenceType, correspondenceModel, null)
 	}
 
@@ -21,7 +22,7 @@ class CorrespondenceModelView<T extends Correspondence> implements GenericCorres
 		correspondenceModelDelegate.getCorrespondencesForTuids(tuids).filter(correspondenceType).toSet();
 	}
 	
-	public new(Class<T> correspondenceType, GenericCorrespondenceModel<Correspondence> correspondenceModel,
+	public new(Class<T> correspondenceType, InternalCorrespondenceModel correspondenceModel,
 		Supplier<T> correspondenceCreator) {
 		this.correspondenceType = correspondenceType;
 		this.correspondenceModelDelegate = correspondenceModel;
@@ -69,7 +70,11 @@ class CorrespondenceModelView<T extends Correspondence> implements GenericCorres
 	}
 
 	override getCorrespondences(List<EObject> eObjects) {
-		correspondenceModelDelegate.getCorrespondences(eObjects).filter(correspondenceType).toSet();
+		getCorrespondences(eObjects, null);
+	}
+	
+	override getCorrespondences(List<EObject> eObjects, String tag) {
+		correspondenceModelDelegate.getCorrespondences(eObjects, tag).filter(correspondenceType).toSet();
 	}
 
 	override getCorrespondencesThatInvolveAtLeast(Set<EObject> eObjects) {
@@ -79,6 +84,10 @@ class CorrespondenceModelView<T extends Correspondence> implements GenericCorres
 
 	override <U extends Correspondence> getView(Class<U> correspondenceType) {
 		correspondenceModelDelegate.getView(correspondenceType);
+	}
+	
+	override getGenericView() {
+		correspondenceModelDelegate.genericView;
 	}
 
 	override hasCorrespondences(List<EObject> eObjects) {
@@ -105,14 +114,10 @@ class CorrespondenceModelView<T extends Correspondence> implements GenericCorres
 
 	// TODO re-design the CorrespondenceModel to avoid a functionality depending on the correpondenceType
 	override getCorrespondingEObjects(List<EObject> eObjects) {
-		correspondenceModelDelegate.getCorrespondingEObjects(correspondenceType, eObjects, "");
+		correspondenceModelDelegate.getCorrespondingEObjects(correspondenceType, eObjects, null);
 	}
 
 	override getCorrespondingEObjects(List<EObject> eObjects, String tag) {
-		correspondenceModelDelegate.getCorrespondingEObjects(correspondenceType, eObjects, tag);
-	}
-
-	override getCorrespondingEObjects(Class<? extends Correspondence> correspondenceType, List<EObject> eObjects, String tag) {
 		correspondenceModelDelegate.getCorrespondingEObjects(correspondenceType, eObjects, tag);
 	}
 
