@@ -13,9 +13,9 @@ import org.eclipse.emf.ecore.impl.EPackageImpl;
 
 import tools.vitruv.framework.correspondence.Correspondence;
 import tools.vitruv.framework.correspondence.CorrespondenceFactory;
-import tools.vitruv.framework.correspondence.CorrespondenceModel;
 import tools.vitruv.framework.correspondence.CorrespondencePackage;
 import tools.vitruv.framework.correspondence.Correspondences;
+import tools.vitruv.framework.correspondence.GenericCorrespondenceModel;
 import tools.vitruv.framework.correspondence.ManualCorrespondence;
 
 import tools.vitruv.framework.tuid.Tuid;
@@ -55,7 +55,7 @@ public class CorrespondencePackageImpl extends EPackageImpl implements Correspon
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	private EDataType correspondenceModelEDataType = null;
+	private EDataType genericCorrespondenceModelEDataType = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -92,7 +92,7 @@ public class CorrespondencePackageImpl extends EPackageImpl implements Correspon
 
 	/**
 	 * Creates, registers, and initializes the <b>Package</b> for this model, and for any others upon which it depends.
-	 * 
+	 *
 	 * <p>This method is used to initialize {@link CorrespondencePackage#eINSTANCE} when that field is accessed.
 	 * Clients should not invoke it directly. Instead, they should simply access that field to obtain the package.
 	 * <!-- begin-user-doc -->
@@ -106,7 +106,8 @@ public class CorrespondencePackageImpl extends EPackageImpl implements Correspon
 		if (isInited) return (CorrespondencePackage)EPackage.Registry.INSTANCE.getEPackage(CorrespondencePackage.eNS_URI);
 
 		// Obtain or create and register package
-		CorrespondencePackageImpl theCorrespondencePackage = (CorrespondencePackageImpl)(EPackage.Registry.INSTANCE.get(eNS_URI) instanceof CorrespondencePackageImpl ? EPackage.Registry.INSTANCE.get(eNS_URI) : new CorrespondencePackageImpl());
+		Object registeredCorrespondencePackage = EPackage.Registry.INSTANCE.get(eNS_URI);
+		CorrespondencePackageImpl theCorrespondencePackage = registeredCorrespondencePackage instanceof CorrespondencePackageImpl ? (CorrespondencePackageImpl)registeredCorrespondencePackage : new CorrespondencePackageImpl();
 
 		isInited = true;
 
@@ -122,7 +123,6 @@ public class CorrespondencePackageImpl extends EPackageImpl implements Correspon
 		// Mark meta-data to indicate it can't be changed
 		theCorrespondencePackage.freeze();
 
-  
 		// Update the registry and return the package
 		EPackage.Registry.INSTANCE.put(CorrespondencePackage.eNS_URI, theCorrespondencePackage);
 		return theCorrespondencePackage;
@@ -268,8 +268,8 @@ public class CorrespondencePackageImpl extends EPackageImpl implements Correspon
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EDataType getCorrespondenceModel() {
-		return correspondenceModelEDataType;
+	public EDataType getGenericCorrespondenceModel() {
+		return genericCorrespondenceModelEDataType;
 	}
 
 	/**
@@ -328,7 +328,7 @@ public class CorrespondencePackageImpl extends EPackageImpl implements Correspon
 		manualCorrespondenceEClass = createEClass(MANUAL_CORRESPONDENCE);
 
 		// Create data types
-		correspondenceModelEDataType = createEDataType(CORRESPONDENCE_MODEL);
+		genericCorrespondenceModelEDataType = createEDataType(GENERIC_CORRESPONDENCE_MODEL);
 		tuidEDataType = createEDataType(TUID);
 	}
 
@@ -368,7 +368,7 @@ public class CorrespondencePackageImpl extends EPackageImpl implements Correspon
 		// Initialize classes, features, and operations; add parameters
 		initEClass(correspondencesEClass, Correspondences.class, "Correspondences", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getCorrespondences_Correspondences(), this.getCorrespondence(), this.getCorrespondence_Parent(), "correspondences", null, 0, -1, Correspondences.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getCorrespondences_CorrespondenceModel(), this.getCorrespondenceModel(), "correspondenceModel", null, 1, 1, Correspondences.class, IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getCorrespondences_CorrespondenceModel(), this.getGenericCorrespondenceModel(), "correspondenceModel", null, 1, 1, Correspondences.class, IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(correspondenceEClass, Correspondence.class, "Correspondence", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getCorrespondence_Parent(), this.getCorrespondences(), this.getCorrespondences_Correspondences(), "parent", null, 1, 1, Correspondence.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -387,7 +387,7 @@ public class CorrespondencePackageImpl extends EPackageImpl implements Correspon
 		initEClass(manualCorrespondenceEClass, ManualCorrespondence.class, "ManualCorrespondence", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		// Initialize data types
-		initEDataType(correspondenceModelEDataType, CorrespondenceModel.class, "CorrespondenceModel", !IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
+		initEDataType(genericCorrespondenceModelEDataType, GenericCorrespondenceModel.class, "GenericCorrespondenceModel", !IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
 		initEDataType(tuidEDataType, Tuid.class, "Tuid", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
 
 		// Create resource

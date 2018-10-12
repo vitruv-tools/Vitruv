@@ -6,8 +6,7 @@ import tools.vitruv.framework.correspondence.Correspondence;
 import tools.vitruv.framework.correspondence.CorrespondencePackage;
 import tools.vitruv.framework.correspondence.Correspondences;
 
-import tools.vitruv.framework.correspondence.CorrespondenceModel;
-
+import tools.vitruv.framework.correspondence.GenericCorrespondenceModel;
 import java.util.Collection;
 
 import org.eclipse.emf.common.notify.Notification;
@@ -56,7 +55,7 @@ public class CorrespondencesImpl extends MinimalEObjectImpl.Container implements
 	 * @generated
 	 * @ordered
 	 */
-	protected static final CorrespondenceModel CORRESPONDENCE_MODEL_EDEFAULT = null;
+	protected static final GenericCorrespondenceModel CORRESPONDENCE_MODEL_EDEFAULT = null;
 
 	/**
 	 * The cached value of the '{@link #getCorrespondenceModel() <em>Correspondence Model</em>}' attribute.
@@ -66,7 +65,7 @@ public class CorrespondencesImpl extends MinimalEObjectImpl.Container implements
 	 * @generated
 	 * @ordered
 	 */
-	protected CorrespondenceModel correspondenceModel = CORRESPONDENCE_MODEL_EDEFAULT;
+	protected GenericCorrespondenceModel correspondenceModel = CORRESPONDENCE_MODEL_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -104,7 +103,7 @@ public class CorrespondencesImpl extends MinimalEObjectImpl.Container implements
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public CorrespondenceModel getCorrespondenceModel() {
+	public GenericCorrespondenceModel getCorrespondenceModel() {
 		return correspondenceModel;
 	}
 
@@ -113,8 +112,8 @@ public class CorrespondencesImpl extends MinimalEObjectImpl.Container implements
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setCorrespondenceModel(CorrespondenceModel newCorrespondenceModel) {
-		CorrespondenceModel oldCorrespondenceModel = correspondenceModel;
+	public void setCorrespondenceModel(GenericCorrespondenceModel newCorrespondenceModel) {
+		GenericCorrespondenceModel oldCorrespondenceModel = correspondenceModel;
 		correspondenceModel = newCorrespondenceModel;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, CorrespondencePackage.CORRESPONDENCES__CORRESPONDENCE_MODEL, oldCorrespondenceModel, correspondenceModel));
@@ -179,7 +178,7 @@ public class CorrespondencesImpl extends MinimalEObjectImpl.Container implements
 				getCorrespondences().addAll((Collection<? extends Correspondence>)newValue);
 				return;
 			case CorrespondencePackage.CORRESPONDENCES__CORRESPONDENCE_MODEL:
-				setCorrespondenceModel((CorrespondenceModel)newValue);
+				setCorrespondenceModel((GenericCorrespondenceModel)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -228,7 +227,7 @@ public class CorrespondencesImpl extends MinimalEObjectImpl.Container implements
 	public String toString() {
 		if (eIsProxy()) return super.toString();
 
-		StringBuffer result = new StringBuffer(super.toString());
+		StringBuilder result = new StringBuilder(super.toString());
 		result.append(" (correspondenceModel: ");
 		result.append(correspondenceModel);
 		result.append(')');

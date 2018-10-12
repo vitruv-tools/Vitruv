@@ -29,7 +29,7 @@ import tools.vitruv.framework.change.description.VitruviusChange;
 import tools.vitruv.framework.change.description.VitruviusChangeFactory;
 import tools.vitruv.framework.change.recording.AtomicEmfChangeRecorder;
 import tools.vitruv.framework.correspondence.CorrespondenceModel;
-import tools.vitruv.framework.correspondence.CorrespondenceModelImpl;
+import tools.vitruv.framework.correspondence.CorrespondenceModelFactory;
 import tools.vitruv.framework.correspondence.CorrespondenceProviding;
 import tools.vitruv.framework.correspondence.InternalCorrespondenceModel;
 import tools.vitruv.framework.domains.VitruvDomain;
@@ -95,9 +95,9 @@ public class ResourceRepositoryImpl implements ModelRepository, CorrespondencePr
     }
 
     /**
-     * Supports three cases: 1) get registered 2) create non-existing 3) get unregistered but existing
-     * that contains at most a root element without children. But throws an exception if an instance
-     * that contains more than one element exists at the uri.
+     * Supports three cases: 1) get registered 2) create non-existing 3) get unregistered but
+     * existing that contains at most a root element without children. But throws an exception if an
+     * instance that contains more than one element exists at the uri.
      *
      * DECISION Since we do not throw an exception (which can happen in 3) we always return a valid
      * model. Hence the caller do not have to check whether the retrieved model is null.
@@ -161,8 +161,8 @@ public class ResourceRepositoryImpl implements ModelRepository, CorrespondencePr
 
     private void registerModelInstance(final VURI modelUri, final ModelInstance modelInstance) {
         this.modelInstances.put(modelUri, modelInstance);
-        // Do not record other URI types than file and platform (e.g. pathmap) because they cannot be
-        // modified
+        // Do not record other URI types than file and platform (e.g. pathmap) because they cannot
+        // be modified
         if (modelUri.getEMFUri().isFile() || modelUri.getEMFUri().isPlatform()) {
             AtomicEmfChangeRecorder recorder = getOrCreateChangeRecorder(modelUri);
             recorder.addToRecording(modelInstance.getResource());
@@ -256,8 +256,8 @@ public class ResourceRepositoryImpl implements ModelRepository, CorrespondencePr
         createRecordingCommandAndExecuteCommandOnTransactionalDomain(new Callable<Void>() {
             @Override
             public Void call() throws Exception {
-                logger.debug("  Saving correspondence model: "
-                        + ResourceRepositoryImpl.this.correspondenceModel.getResource());
+                logger.debug(
+                        "  Saving correspondence model: " + ResourceRepositoryImpl.this.correspondenceModel.getURI());
                 ResourceRepositoryImpl.this.correspondenceModel.saveModel();
                 ResourceRepositoryImpl.this.correspondenceModel.resetChangedAfterLastSave();
                 return null;
@@ -311,9 +311,9 @@ public class ResourceRepositoryImpl implements ModelRepository, CorrespondencePr
             AtomicEmfChangeRecorder recorder = getOrCreateChangeRecorder(correspondencesVURI);
             recorder.addToRecording(correspondencesResource);
             recorder.beginRecording();
-            this.correspondenceModel = new CorrespondenceModelImpl(new TuidResolverImpl(this.metamodelRepository, this),
-                    this.uuidGeneratorAndResolver, this, this.metamodelRepository, correspondencesVURI,
-                    correspondencesResource);
+            this.correspondenceModel = CorrespondenceModelFactory.getInstance().createCorrespondenceModel(
+                    new TuidResolverImpl(this.metamodelRepository, this), this.uuidGeneratorAndResolver, this,
+                    this.metamodelRepository, correspondencesVURI, correspondencesResource);
             recorder.endRecording();
             recorder.addToRecording(correspondencesResource);
             return null;
@@ -331,8 +331,9 @@ public class ResourceRepositoryImpl implements ModelRepository, CorrespondencePr
             } else {
                 uuidProviderResource = this.resourceSet.createResource(uuidProviderVURI.getEMFUri());
             }
-            // TODO HK We cannot enable strict mode here, because for textual views we will not get create
-            // changes in any case. We should therefore use one monitor per model and turn on strict mode
+            // TODO HK We cannot enable strict mode here, because for textual views we will not get
+            // create changes in any case. We should therefore use one monitor per model and turn on 
+            // strict mode
             // depending on the kind of model/view (textual vs. semantic)
             this.uuidGeneratorAndResolver = new UuidGeneratorAndResolverImpl(this.resourceSet, uuidProviderResource,
                     false);
@@ -347,7 +348,7 @@ public class ResourceRepositoryImpl implements ModelRepository, CorrespondencePr
      */
     @Override
     public CorrespondenceModel getCorrespondenceModel() {
-        return this.correspondenceModel;
+        return this.correspondenceModel.getGenericView();
     }
 
     private void loadVURIsOfVSMUModelInstances() {

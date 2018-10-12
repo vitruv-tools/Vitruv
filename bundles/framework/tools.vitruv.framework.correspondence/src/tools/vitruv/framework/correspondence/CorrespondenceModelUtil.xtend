@@ -9,6 +9,7 @@ import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
 import tools.vitruv.framework.correspondence.CorrespondenceModel
 import tools.vitruv.framework.correspondence.GenericCorrespondenceModel
 import tools.vitruv.framework.correspondence.Correspondence
+import java.util.List
 
 class CorrespondenceModelUtil {
 	private new() {
@@ -40,7 +41,7 @@ class CorrespondenceModelUtil {
 	 * @param b
 	 * @return
 	 */
-	def public static Correspondence claimUniqueCorrespondence(CorrespondenceModel ci,
+	def public static Correspondence claimUniqueCorrespondence(CorrespondenceModelView<Correspondence> ci,
 		EObject eObject) {
 		return ci.getCorrespondences(eObject.toList).claimOne
 	}
@@ -53,7 +54,7 @@ class CorrespondenceModelUtil {
 	 *            the object for which correspondences are to be returned
 	 * @return the correspondences for the specified object
 	 */
-	def public static Set<Correspondence> claimCorrespondences(CorrespondenceModel ci,
+	def public static Set<Correspondence> claimCorrespondences(CorrespondenceModelView<?> ci,
 		EObject eObject) {
 		return ci.getCorrespondences(eObject.toList).claimNotEmpty as Set<Correspondence>
 	}
@@ -93,16 +94,16 @@ class CorrespondenceModelUtil {
 		GenericCorrespondenceModel<U> ci, Class<T> type) {
 		return ci.allCorrespondencesWithoutDependencies.map[it.^as + it.bs].flatten.filter(type).toSet
 	}
-
-	def public static <T extends Correspondence> Set<T> getCorrespondencesBetweenEObjects(GenericCorrespondenceModel<T> ci,
-		Set<EObject> aS, Set<EObject> bS) {
-		val correspondencesThatInvolveAs = ci.getCorrespondencesThatInvolveAtLeast(aS)
-		val atuids = aS.mapFixed[ci.calculateTuidFromEObject(it)]
-		val btuids = bS.mapFixed[ci.calculateTuidFromEObject(it)]
-		val correspondencesBetweenEObjects = correspondencesThatInvolveAs.filter [
-			(it.getATuids.containsAll(atuids) && it.getBTuids.containsAll(btuids)) ||
-				(it.getATuids.containsAll(btuids) && it.getBTuids.containsAll(atuids))
-		]
-		return correspondencesBetweenEObjects.toSet
+	
+	def claimUniqueCorrespondence(InternalCorrespondenceModel correspondenceModel, List<EObject> aEObjects, List<EObject> bEObjects) {
+		val correspondences = correspondenceModel.getCorrespondences(aEObjects, null)
+		for (Correspondence correspondence : correspondences) {
+			val correspondingBs = correspondence.bs
+			if (correspondingBs !== null && correspondingBs.equals(bEObjects)) {
+				return correspondence;
+			}
+		}
+		throw new RuntimeException("No correspondence for '" + aEObjects + "' and '" + bEObjects + "' was found!");
 	}
+
 }

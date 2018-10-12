@@ -96,7 +96,7 @@ class CorrespondenceTest extends VsumTest {
 	def private void assertRepositoryCorrespondences(Repository repo,
 		CorrespondenceModel correspondenceModel) {
 		// get the correspondence of repo
-		var Set<Correspondence> correspondences = correspondenceModel.getCorrespondences(repo.toList)
+		var Set<Correspondence> correspondences = correspondenceModel.getCorrespondences(repo.toList, null)
 		assertEquals("Only one correspondence is expected for the repository.", 1, correspondences.size())
 		for (Correspondence correspondence : correspondences) {
 			var Correspondence eoc = correspondence
