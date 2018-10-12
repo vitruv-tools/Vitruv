@@ -341,14 +341,14 @@ public interface CorrespondencePackage extends EPackage {
 	int MANUAL_CORRESPONDENCE_OPERATION_COUNT = CORRESPONDENCE_OPERATION_COUNT + 0;
 
 	/**
-	 * The meta object id for the '<em>Model</em>' data type.
+	 * The meta object id for the '<em>Generic Correspondence Model</em>' data type.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see tools.vitruv.framework.correspondence.CorrespondenceModel
-	 * @see tools.vitruv.framework.correspondence.impl.CorrespondencePackageImpl#getCorrespondenceModel()
+	 * @see tools.vitruv.framework.correspondence.GenericCorrespondenceModel
+	 * @see tools.vitruv.framework.correspondence.impl.CorrespondencePackageImpl#getGenericCorrespondenceModel()
 	 * @generated
 	 */
-	int CORRESPONDENCE_MODEL = 3;
+	int GENERIC_CORRESPONDENCE_MODEL = 3;
 
 	/**
 	 * The meta object id for the '<em>Tuid</em>' data type.
@@ -522,15 +522,15 @@ public interface CorrespondencePackage extends EPackage {
 	EClass getManualCorrespondence();
 
 	/**
-	 * Returns the meta object for data type '{@link tools.vitruv.framework.correspondence.CorrespondenceModel <em>Model</em>}'.
+	 * Returns the meta object for data type '{@link tools.vitruv.framework.correspondence.GenericCorrespondenceModel <em>Generic Correspondence Model</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for data type '<em>Model</em>'.
-	 * @see tools.vitruv.framework.correspondence.CorrespondenceModel
-	 * @model instanceClass="tools.vitruv.framework.correspondence.CorrespondenceModel" serializeable="false"
+	 * @return the meta object for data type '<em>Generic Correspondence Model</em>'.
+	 * @see tools.vitruv.framework.correspondence.GenericCorrespondenceModel
+	 * @model instanceClass="tools.vitruv.framework.correspondence.GenericCorrespondenceModel" serializeable="false"
 	 * @generated
 	 */
-	EDataType getCorrespondenceModel();
+	EDataType getGenericCorrespondenceModel();
 
 	/**
 	 * Returns the meta object for data type '{@link tools.vitruv.framework.tuid.Tuid <em>Tuid</em>}'.
@@ -693,14 +693,14 @@ public interface CorrespondencePackage extends EPackage {
 		EClass MANUAL_CORRESPONDENCE = eINSTANCE.getManualCorrespondence();
 
 		/**
-		 * The meta object literal for the '<em>Model</em>' data type.
+		 * The meta object literal for the '<em>Generic Correspondence Model</em>' data type.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
-		 * @see tools.vitruv.framework.correspondence.CorrespondenceModel
-		 * @see tools.vitruv.framework.correspondence.impl.CorrespondencePackageImpl#getCorrespondenceModel()
+		 * @see tools.vitruv.framework.correspondence.GenericCorrespondenceModel
+		 * @see tools.vitruv.framework.correspondence.impl.CorrespondencePackageImpl#getGenericCorrespondenceModel()
 		 * @generated
 		 */
-		EDataType CORRESPONDENCE_MODEL = eINSTANCE.getCorrespondenceModel();
+		EDataType GENERIC_CORRESPONDENCE_MODEL = eINSTANCE.getGenericCorrespondenceModel();
 
 		/**
 		 * The meta object literal for the '<em>Tuid</em>' data type.
