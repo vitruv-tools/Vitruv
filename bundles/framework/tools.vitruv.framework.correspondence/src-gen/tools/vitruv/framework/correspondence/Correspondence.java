@@ -186,20 +186,4 @@ public interface Correspondence extends EObject {
 	 */
 	void setTag(String value);
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @model kind="operation"
-	 * @generated
-	 */
-	EList<EObject> getAs();
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @model kind="operation"
-	 * @generated
-	 */
-	EList<EObject> getBs();
-
 } // Correspondence

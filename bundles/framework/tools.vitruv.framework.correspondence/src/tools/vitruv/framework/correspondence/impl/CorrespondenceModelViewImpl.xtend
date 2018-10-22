@@ -47,14 +47,15 @@ class CorrespondenceModelViewImpl<T extends Correspondence> implements Correspon
 
 	// Re-implement this method, because we cannot claim a unique generic correspondence and restrict it to the given type afterwards 
 	override claimUniqueCorrespondence(List<EObject> aEObjects, List<EObject> bEObjects) {
-		val correspondences = getCorrespondences(aEObjects)
-		for (T correspondence : correspondences) {
-			val correspondingBs = correspondence.bs
-			if (correspondingBs !== null && correspondingBs.equals(bEObjects)) {
-				return correspondence;
-			}
+		val correspondencesA = getCorrespondences(aEObjects)
+		val correspondencesB = getCorrespondences(bEObjects)
+		correspondencesA.retainAll(correspondencesB);
+		if (correspondencesA.size > 1) {
+			throw new IllegalStateException("Only one correspondence for " + aEObjects + " and " + bEObjects + " expected, but found more");
+		} else if (correspondencesA.size == 0) {
+			throw new IllegalStateException("No correspondence for '" + aEObjects + "' and '" + bEObjects + "' was found!");
 		}
-		throw new RuntimeException("No correspondence for '" + aEObjects + "' and '" + bEObjects + "' was found!");
+		return correspondencesA.get(0);
 	}
 
 	override createAndAddManualCorrespondence(List<EObject> eObjects1, List<EObject> eObjects2) {
