@@ -199,21 +199,6 @@ class InternalCorrespondenceModelImpl extends ModelInstance implements InternalC
 		this.getCorrespondingEObjects(Correspondence, eObjects, tag);
 	}
 
-	def private <T extends Correspondence> Iterable<T> filterCorrespondences(
-		Iterable<? extends Correspondence> correspondences, Class<T> correspondenceType, String tag) {
-		return correspondences.filter(correspondenceType).filter[tag === null || tag == it.tag]
-	}
-
-	def private Set<List<String>> getCorrespondingUuids(Class<? extends Correspondence> correspondenceType,
-		List<String> uuids, String tag) {
-		var Set<Correspondence> allCorrespondences = getCorrespondencesForUuids(uuids)
-		var Set<List<String>> correspondingTuidLists = new HashSet<List<String>>(allCorrespondences.size())
-		for (Correspondence correspondence : allCorrespondences.filterCorrespondences(correspondenceType, tag)) {
-			correspondingTuidLists += correspondence.getCorrespondingUuids(uuids);
-		}
-		return correspondingTuidLists;
-	}
-
 	private def haveUuids(List<EObject> eObjects) {
 		if (eObjects.forall[domainRepository.getDomain(it).supportsUuids]) {
 			if (eObjects.forall[uuidResolver.hasPotentiallyCachedUuid(it)]) {
@@ -227,40 +212,34 @@ class InternalCorrespondenceModelImpl extends ModelInstance implements InternalC
 
 	override Set<List<EObject>> getCorrespondingEObjects(Class<? extends Correspondence> correspondenceType,
 		List<EObject> eObjects, String tag) {
-		val result = newArrayList;
-
-		// If all elements support UUIDs, first get correspondences using UUIDs
-		if (eObjects.haveUuids) {
-			val uuids = eObjects.map[uuidResolver.getPotentiallyCachedUuid(it)];
-			val correspondingUuidLists = getCorrespondingUuids(correspondenceType, uuids, tag)
-			result += correspondingUuidLists.mapFixed[it.map[uuidResolver.getPotentiallyCachedEObject(it)]].toSet;
-		}
-
-		// Afterwards, add correspondences based on TUIDs
-		var List<Tuid> tuids = calculateTuidsFromEObjects(eObjects)
-		var Set<List<Tuid>> correspondingTuidLists = getCorrespondingTuids(correspondenceType, tuids, tag)
-		try {
-			result += correspondingTuidLists.mapFixed[it.map[resolveEObjectFromTuid(it)]].toSet;
-		} catch (IllegalStateException e) {
-			throw new IllegalStateException('''Corresponding objects for eObjects 
-			«FOR object : eObjects BEFORE "\n" SEPARATOR "\n"»	«object»«ENDFOR»
-			cannot be resolved, because one of the TUIDs 
-			«FOR tuid : correspondingTuidLists BEFORE "\n" SEPARATOR "\n"»	«tuid»«ENDFOR»
-			cannot be resolved.''')
+		val Set<List<EObject>> result = newHashSet;
+		val correspondences = eObjects.getCorrespondences(tag).filter(correspondenceType);
+		for (correspondence : correspondences) {
+			result += resolveCorrespondingObjects(correspondence, eObjects);
 		}
 		return result.toSet;
 	}
-
-	def private Set<List<Tuid>> getCorrespondingTuids(Class<? extends Correspondence> correspondenceType,
-		List<Tuid> tuids, String tag) {
-		var Set<Correspondence> allCorrespondences = getCorrespondencesForTuids(tuids)
-		var Set<List<Tuid>> correspondingTuidLists = new HashSet<List<Tuid>>(allCorrespondences.size())
-		for (Correspondence correspondence : allCorrespondences.filterCorrespondences(correspondenceType, tag)) {
-			correspondingTuidLists += correspondence.getCorrespondingTuids(tuids)
-		}
-		return correspondingTuidLists
-	}
 	
+	def List<EObject> resolveCorrespondingObjects(Correspondence correspondence, List<EObject> eObjects) {
+		if (correspondence.isUuidBased) {
+			val uuids = eObjects.map[uuidResolver.getPotentiallyCachedUuid(it)];
+			val correspondingUuids = correspondence.getCorrespondingUuids(uuids);
+			return correspondingUuids.resolveEObjectsFromUuids
+		} else {
+			val tuids = eObjects.map[calculateTuidFromEObject];
+			val correspondingTuids = correspondence.getCorrespondingTuids(tuids);
+			try {
+				return correspondingTuids.map[resolveEObjectFromTuid]
+			} catch (IllegalStateException e) {
+				throw new IllegalStateException('''Corresponding objects for eObjects 
+				«FOR object : eObjects BEFORE "\n" SEPARATOR "\n"»	«object»«ENDFOR»
+				cannot be resolved, because one of the TUIDs 
+				«FOR tuid : correspondingTuids BEFORE "\n" SEPARATOR "\n"»	«tuid»«ENDFOR»
+				cannot be resolved.''')
+			}
+		}
+	}
+
 	override void saveModel() {
 		try {
 			EcoreResourceBridge::saveResource(getResource(), this.saveCorrespondenceOptions)
