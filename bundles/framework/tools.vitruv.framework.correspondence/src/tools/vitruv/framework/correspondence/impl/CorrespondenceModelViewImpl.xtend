@@ -150,5 +150,9 @@ class CorrespondenceModelViewImpl<T extends Correspondence> implements Correspon
 	override removeCorrespondencesBetween(List<EObject> aEObjects, List<EObject> bEObjects, String tag) {
 		correspondenceModelDelegate.removeCorrespondencesBetween(correspondenceType, aEObjects, bEObjects, tag);
 	}
+	
+	override <E> getAllEObjectsOfTypeInCorrespondences(Class<E> type) {
+		correspondenceModelDelegate.getAllEObjectsOfTypeInCorrespondences(correspondenceType, type);
+	}
 
 }
