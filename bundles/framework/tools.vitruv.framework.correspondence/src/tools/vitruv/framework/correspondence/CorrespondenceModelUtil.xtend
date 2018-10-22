@@ -82,16 +82,4 @@ class CorrespondenceModelUtil {
 		return retSet
 	}
 
-	/**
-	 * Returns all eObjects that have some correspondence and are an instance of the given class.
-	 * 
-	 * @param type
-	 *            the class for which instances should be returned
-	 * @return a set containing all eObjects of the given type that have a correspondence
-	 */
-	def public static <T, U extends Correspondence> Set<T> getAllEObjectsOfTypeInCorrespondences(
-		GenericCorrespondenceModel<U> ci, Class<T> type) {
-		return ci.allCorrespondencesWithoutDependencies.map[it.^as + it.bs].flatten.filter(type).toSet
-	}
-	
 }

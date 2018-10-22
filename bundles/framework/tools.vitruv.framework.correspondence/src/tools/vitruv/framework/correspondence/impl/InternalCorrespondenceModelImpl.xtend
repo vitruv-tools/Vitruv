@@ -523,4 +523,14 @@ class InternalCorrespondenceModelImpl extends ModelInstance implements InternalC
 		
 	}
 	
+	override <E> getAllEObjectsOfTypeInCorrespondences(Class<? extends Correspondence> correspondenceType, Class<E> type) {
+		allCorrespondencesWithoutDependencies.filter(correspondenceType).map[
+			if(it.isUuidBased) {
+				(it.AUuids + it.BUuids).toList.resolveEObjectsFromUuids
+			} else {
+				(it.ATuids + it.BTuids).toList.map[resolveEObjectFromTuid]
+			}
+		].flatten.filter(type).toSet
+	}
+	
 }
