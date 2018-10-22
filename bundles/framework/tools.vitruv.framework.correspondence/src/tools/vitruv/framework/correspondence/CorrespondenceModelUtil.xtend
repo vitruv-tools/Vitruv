@@ -9,7 +9,6 @@ import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
 import tools.vitruv.framework.correspondence.CorrespondenceModel
 import tools.vitruv.framework.correspondence.GenericCorrespondenceModel
 import tools.vitruv.framework.correspondence.Correspondence
-import java.util.List
 
 class CorrespondenceModelUtil {
 	private new() {
@@ -95,15 +94,4 @@ class CorrespondenceModelUtil {
 		return ci.allCorrespondencesWithoutDependencies.map[it.^as + it.bs].flatten.filter(type).toSet
 	}
 	
-	def claimUniqueCorrespondence(InternalCorrespondenceModel correspondenceModel, List<EObject> aEObjects, List<EObject> bEObjects) {
-		val correspondences = correspondenceModel.getCorrespondences(aEObjects, null)
-		for (Correspondence correspondence : correspondences) {
-			val correspondingBs = correspondence.bs
-			if (correspondingBs !== null && correspondingBs.equals(bEObjects)) {
-				return correspondence;
-			}
-		}
-		throw new RuntimeException("No correspondence for '" + aEObjects + "' and '" + bEObjects + "' was found!");
-	}
-
 }
