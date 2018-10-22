@@ -7,7 +7,6 @@ import tools.vitruv.dsls.reactions.meta.correspondence.reactions.ReactionsCorres
 import tools.vitruv.dsls.reactions.meta.correspondence.reactions.ReactionsFactory
 import java.util.List
 import tools.vitruv.framework.correspondence.CorrespondenceModel
-import org.eclipse.emf.ecore.util.EcoreUtil
 
 final class ReactionsCorrespondenceHelper {
 	private new() {}
@@ -21,13 +20,7 @@ final class ReactionsCorrespondenceHelper {
 	public static def removeCorrespondencesBetweenElements(CorrespondenceModel correspondenceModel,
 		EObject source, EObject target, String tag) {
 		val correspondenceModelView = correspondenceModel.reactionsView;
-		val correspondences = correspondenceModelView.getCorrespondences(#[source]).filter[it.tag == tag];
-		for (correspondence : correspondences.toList) {
-			if ((correspondence.^as.containsEqualElement(source) && correspondence.bs.containsEqualElement(target)) ||
-				(correspondence.bs.containsEqualElement(source) && correspondence.^as.containsEqualElement(target))) {
-				correspondenceModelView.removeCorrespondencesAndDependendCorrespondences(correspondence);
-			}
-		}
+		correspondenceModelView.removeCorrespondencesBetween(#[source], #[target], tag);
 	}
 	
 	public static def removeCorrespondencesOfObject(CorrespondenceModel correspondenceModel,
@@ -39,10 +32,6 @@ final class ReactionsCorrespondenceHelper {
 		}
 	}
 	
-	private static def containsEqualElement(Iterable<EObject> eObjects, EObject searchedObject) {
-		return eObjects.exists[EcoreUtil.equals(it, searchedObject)];
-	}
-
 	public static def ReactionsCorrespondence addCorrespondence(
 		CorrespondenceModel correspondenceModel, EObject source, EObject target, String tag) {
 		val correspondence = correspondenceModel.reactionsView.

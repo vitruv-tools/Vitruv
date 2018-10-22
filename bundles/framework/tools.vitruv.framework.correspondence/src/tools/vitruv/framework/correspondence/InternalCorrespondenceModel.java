@@ -21,4 +21,6 @@ public interface InternalCorrespondenceModel extends GenericCorrespondenceModel<
     public Set<List<EObject>> getCorrespondingEObjects(Class<? extends Correspondence> correspondenceType, List<EObject> eObjects, String tag);
 
     public Set<Correspondence> getCorrespondences(List<EObject> eObjects, String tag);
+
+    public void removeCorrespondencesBetween(Class<? extends Correspondence> correspondenceType, List<EObject> aEObjects, List<EObject> bEObjects, String tag);
 }

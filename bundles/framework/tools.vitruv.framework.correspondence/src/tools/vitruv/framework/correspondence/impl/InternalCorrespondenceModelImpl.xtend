@@ -512,4 +512,15 @@ class InternalCorrespondenceModelImpl extends ModelInstance implements InternalC
 		return uuids.map[uuidResolver.getPotentiallyCachedEObject(it)]
 	}
 
+	override removeCorrespondencesBetween(Class<? extends Correspondence> correspondenceType, List<EObject> aEObjects, List<EObject> bEObjects, String tag) {
+		val correspondences = getCorrespondences(aEObjects, tag).filter(correspondenceType);
+		for (correspondence : correspondences) { 
+			val correspondingEObjects = resolveCorrespondingObjects(correspondence, aEObjects);
+			if (EcoreUtil.equals(bEObjects, correspondingEObjects)) {
+				removeCorrespondencesAndDependendCorrespondences(correspondence);
+			}
+		}
+		
+	}
+	
 }
