@@ -30,4 +30,6 @@ public interface CorrespondenceModelView<T extends Correspondence> extends Gener
     public Set<T> getCorrespondences(List<EObject> eObjects, String tag);
     
     public T claimUniqueCorrespondence(final List<EObject> aEObjects, final List<EObject> bEObjects);
+    
+    public void removeCorrespondencesBetween(List<EObject> aEObjects, List<EObject> bEObjects, String tag);
 }
