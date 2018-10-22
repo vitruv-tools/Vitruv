@@ -5,19 +5,13 @@ package tools.vitruv.framework.correspondence.impl;
 import tools.vitruv.framework.correspondence.Correspondence;
 import tools.vitruv.framework.correspondence.CorrespondencePackage;
 import tools.vitruv.framework.correspondence.Correspondences;
-
-import tools.vitruv.framework.correspondence.GenericCorrespondenceModel;
 import java.util.Collection;
-
-import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 
 import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
-
-import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentWithInverseEList;
 import org.eclipse.emf.ecore.util.InternalEList;
@@ -31,7 +25,6 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * </p>
  * <ul>
  *   <li>{@link tools.vitruv.framework.correspondence.impl.CorrespondencesImpl#getCorrespondences <em>Correspondences</em>}</li>
- *   <li>{@link tools.vitruv.framework.correspondence.impl.CorrespondencesImpl#getCorrespondenceModel <em>Correspondence Model</em>}</li>
  * </ul>
  *
  * @generated
@@ -46,26 +39,6 @@ public class CorrespondencesImpl extends MinimalEObjectImpl.Container implements
 	 * @ordered
 	 */
 	protected EList<Correspondence> correspondences;
-
-	/**
-	 * The default value of the '{@link #getCorrespondenceModel() <em>Correspondence Model</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getCorrespondenceModel()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final GenericCorrespondenceModel CORRESPONDENCE_MODEL_EDEFAULT = null;
-
-	/**
-	 * The cached value of the '{@link #getCorrespondenceModel() <em>Correspondence Model</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getCorrespondenceModel()
-	 * @generated
-	 * @ordered
-	 */
-	protected GenericCorrespondenceModel correspondenceModel = CORRESPONDENCE_MODEL_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -96,27 +69,6 @@ public class CorrespondencesImpl extends MinimalEObjectImpl.Container implements
 			correspondences = new EObjectContainmentWithInverseEList<Correspondence>(Correspondence.class, this, CorrespondencePackage.CORRESPONDENCES__CORRESPONDENCES, CorrespondencePackage.CORRESPONDENCE__PARENT);
 		}
 		return correspondences;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public GenericCorrespondenceModel getCorrespondenceModel() {
-		return correspondenceModel;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public void setCorrespondenceModel(GenericCorrespondenceModel newCorrespondenceModel) {
-		GenericCorrespondenceModel oldCorrespondenceModel = correspondenceModel;
-		correspondenceModel = newCorrespondenceModel;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, CorrespondencePackage.CORRESPONDENCES__CORRESPONDENCE_MODEL, oldCorrespondenceModel, correspondenceModel));
 	}
 
 	/**
@@ -158,8 +110,6 @@ public class CorrespondencesImpl extends MinimalEObjectImpl.Container implements
 		switch (featureID) {
 			case CorrespondencePackage.CORRESPONDENCES__CORRESPONDENCES:
 				return getCorrespondences();
-			case CorrespondencePackage.CORRESPONDENCES__CORRESPONDENCE_MODEL:
-				return getCorrespondenceModel();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -177,9 +127,6 @@ public class CorrespondencesImpl extends MinimalEObjectImpl.Container implements
 				getCorrespondences().clear();
 				getCorrespondences().addAll((Collection<? extends Correspondence>)newValue);
 				return;
-			case CorrespondencePackage.CORRESPONDENCES__CORRESPONDENCE_MODEL:
-				setCorrespondenceModel((GenericCorrespondenceModel)newValue);
-				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -195,9 +142,6 @@ public class CorrespondencesImpl extends MinimalEObjectImpl.Container implements
 			case CorrespondencePackage.CORRESPONDENCES__CORRESPONDENCES:
 				getCorrespondences().clear();
 				return;
-			case CorrespondencePackage.CORRESPONDENCES__CORRESPONDENCE_MODEL:
-				setCorrespondenceModel(CORRESPONDENCE_MODEL_EDEFAULT);
-				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -212,26 +156,8 @@ public class CorrespondencesImpl extends MinimalEObjectImpl.Container implements
 		switch (featureID) {
 			case CorrespondencePackage.CORRESPONDENCES__CORRESPONDENCES:
 				return correspondences != null && !correspondences.isEmpty();
-			case CorrespondencePackage.CORRESPONDENCES__CORRESPONDENCE_MODEL:
-				return CORRESPONDENCE_MODEL_EDEFAULT == null ? correspondenceModel != null : !CORRESPONDENCE_MODEL_EDEFAULT.equals(correspondenceModel);
 		}
 		return super.eIsSet(featureID);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public String toString() {
-		if (eIsProxy()) return super.toString();
-
-		StringBuilder result = new StringBuilder(super.toString());
-		result.append(" (correspondenceModel: ");
-		result.append(correspondenceModel);
-		result.append(')');
-		return result.toString();
 	}
 
 } //CorrespondencesImpl

@@ -284,7 +284,6 @@ class InternalCorrespondenceModelImpl extends ModelInstance implements InternalC
 		} else {
 			registerLoadedCorrespondences(correspondences)
 		}
-		correspondences.setCorrespondenceModel(this)
 		return correspondences
 	}
 
