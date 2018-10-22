@@ -34,4 +34,7 @@ class CorrespondenceUtil {
 		}
 	}
 	
+	static def isUuidBased(Correspondence correspondence) {
+		return !correspondence.AUuids.empty && !correspondence.BUuids.empty
+	}
 }
