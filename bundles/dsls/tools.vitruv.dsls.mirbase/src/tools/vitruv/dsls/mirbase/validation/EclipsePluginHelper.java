@@ -6,15 +6,12 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.osgi.service.resolver.VersionRange;
-import org.eclipse.pde.core.plugin.IPluginExtension;
-import org.eclipse.pde.core.plugin.IPluginModelBase;
 import org.eclipse.pde.core.project.IBundleProjectDescription;
 import org.eclipse.pde.core.project.IBundleProjectService;
 import org.eclipse.pde.core.project.IRequiredBundleDescription;
 import org.eclipse.pde.internal.core.PDECore;
-import org.eclipse.pde.internal.core.PluginModelManager;
 import org.eclipse.pde.internal.core.WorkspaceModelManager;
-import org.eclipse.pde.internal.core.WorkspacePluginModelManager;
+import java.lang.reflect.*;
 
 // TODO DW: move this functionality to another plugin, if necessary. remove dependencies from this project
 @SuppressWarnings("restriction")
@@ -33,7 +30,28 @@ public class EclipsePluginHelper {
 	}
 
 	public static IBundleProjectService getBundleProjectService() {
-		return (IBundleProjectService) PDECore.getDefault().acquireService(IBundleProjectService.class.getName());
+		// The acquireService method signature was changes in 2018 from expecting the class name as string
+		// to expecting the class itself. To avoid version incompatibilities, we employ reflection to
+		// invoke the correct method version, depending on which is available.
+		try {
+			Method acquireMethod = PDECore.class.getMethod("acquireService");
+			AnnotatedType[] parameters = acquireMethod.getAnnotatedParameterTypes();
+			AnnotatedType firstParameter = parameters[0];
+			Object argument;
+			if (firstParameter.getType().getTypeName().contains("String")) {
+				argument = IBundleProjectService.class.getName();
+			} else {
+				argument = IBundleProjectService.class;
+			}
+			return (IBundleProjectService) acquireMethod.invoke(PDECore.getDefault(), argument);
+		} catch (NoSuchMethodException e) {
+			e.printStackTrace();
+			throw new IllegalStateException("Method acquireService was not found on PDECore");
+		} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException | SecurityException e) {
+			e.printStackTrace();
+			throw new IllegalStateException("Method acquireService could not be called on PDECore");
+		}
+		
 	}
 	
 	public static IBundleProjectDescription getDescription(IProject project) throws CoreException {
