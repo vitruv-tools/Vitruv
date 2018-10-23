@@ -77,8 +77,6 @@ public interface GenericCorrespondenceModel<T extends Correspondence> extends UR
 	 */
 	public Set<List<EObject>> getCorrespondingEObjects(List<EObject> eObjects, String tag);
 
-	public Set<T> getCorrespondencesThatInvolveAtLeast(Set<EObject> eObjects);
-
 	public EObject resolveEObjectFromTuid(final Tuid tuid);
 
 	public Tuid calculateTuidFromEObject(final EObject eObject);

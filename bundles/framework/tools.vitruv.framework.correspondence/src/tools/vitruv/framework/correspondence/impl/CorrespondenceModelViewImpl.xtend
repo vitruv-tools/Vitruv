@@ -76,11 +76,6 @@ class CorrespondenceModelViewImpl<T extends Correspondence> implements Correspon
 		correspondenceModelDelegate.getCorrespondences(eObjects, tag).filter(correspondenceType).toSet();
 	}
 
-	override getCorrespondencesThatInvolveAtLeast(Set<EObject> eObjects) {
-		correspondenceModelDelegate.getCorrespondencesThatInvolveAtLeast(eObjects).filter(correspondenceType).
-			toSet();
-	}
-
 	override <U extends Correspondence> getView(Class<U> correspondenceType) {
 		correspondenceModelDelegate.getView(correspondenceType);
 	}

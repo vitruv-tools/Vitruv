@@ -1,6 +1,5 @@
 package tools.vitruv.framework.correspondence.impl
 
-import com.google.common.collect.Sets
 import edu.kit.ipd.sdq.commons.util.java.Pair
 import java.io.IOException
 import java.util.ArrayList
@@ -373,24 +372,6 @@ class InternalCorrespondenceModelImpl extends ModelInstance implements InternalC
 
 	override getAllCorrespondencesWithoutDependencies() {
 		this.correspondences.correspondences.filter[it.dependsOn === null || it.dependsOn.size == 0].toSet
-	}
-
-	override getCorrespondencesThatInvolveAtLeast(Set<EObject> eObjects) {
-		return getCorrespondencesThatInvolveAtLeastTuids(eObjects.mapFixed[calculateTuidFromEObject(it)].toSet)
-	}
-
-	private def getCorrespondencesThatInvolveAtLeastTuids(Set<Tuid> tuids) {
-		val supTuidLists = tuids?.mapFixed[this.tuid2tuidListsMap.get(it)].filterNull.flatten.filter [
-			it.containsAll(tuids)
-		]
-		val corrit = supTuidLists?.mapFixed[getCorrespondencesForTuids(it)]
-		val flatcorr = corrit.flatten
-		if (flatcorr.nullOrEmpty) {
-			logger.debug("could not find correspondences for tuids: " + tuids)
-			return Sets.newHashSet
-		}
-		val corrset = flatcorr.toSet
-		return corrset
 	}
 
 	override getAllCorrespondences() {
