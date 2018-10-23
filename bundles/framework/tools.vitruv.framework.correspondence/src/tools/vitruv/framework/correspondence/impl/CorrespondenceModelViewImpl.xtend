@@ -87,20 +87,14 @@ class CorrespondenceModelViewImpl<T extends Correspondence> implements Correspon
 		correspondenceModelDelegate.hasCorrespondences();
 	}
 
-	override removeCorrespondencesAndDependendCorrespondences(T correspondence) {
-		correspondenceModelDelegate.removeCorrespondencesAndDependendCorrespondences(correspondence).filter(
-			correspondenceType).toSet();
-	}
-
-	override removeCorrespondencesThatInvolveAtLeastAndDependend(Set<EObject> eObjects) {
-		correspondenceModelDelegate.removeCorrespondencesThatInvolveAtLeastAndDependend(eObjects);
+	override Set<Correspondence> removeCorrespondencesAndDependendCorrespondences(T correspondence) {
+		correspondenceModelDelegate.removeCorrespondencesAndDependendCorrespondences(correspondence).toSet();
 	}
 
 	override resolveEObjectFromTuid(Tuid tuid) {
 		correspondenceModelDelegate.resolveEObjectFromTuid(tuid);
 	}
 
-	// TODO re-design the CorrespondenceModel to avoid a functionality depending on the correpondenceType
 	override getCorrespondingEObjects(List<EObject> eObjects) {
 		correspondenceModelDelegate.getCorrespondingEObjects(correspondenceType, eObjects, null);
 	}
@@ -127,6 +121,10 @@ class CorrespondenceModelViewImpl<T extends Correspondence> implements Correspon
 	
 	override removeCorrespondencesBetween(List<EObject> aEObjects, List<EObject> bEObjects, String tag) {
 		correspondenceModelDelegate.removeCorrespondencesBetween(correspondenceType, aEObjects, bEObjects, tag);
+	}
+
+	override removeCorrespondencesFor(List<EObject> eObjects, String tag) {
+		correspondenceModelDelegate.removeCorrespondencesFor(correspondenceType, eObjects, tag);
 	}
 	
 	override <E> getAllEObjectsOfTypeInCorrespondences(Class<E> type) {

@@ -20,7 +20,6 @@ import static org.junit.Assert.assertNull
 import static org.junit.Assert.assertTrue
 
 import static extension tools.vitruv.framework.correspondence.CorrespondenceModelUtil.*
-import static extension tools.vitruv.framework.util.bridges.CollectionBridge.toSet
 import static extension tools.vitruv.framework.util.bridges.CollectionBridge.toList
 import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
 import pcm_mockup.PInterface
@@ -51,7 +50,8 @@ class CorrespondenceTest extends VsumTest {
 		// recreate the same correspondence as before
 		repo2pkg = createRepo2PkgCorrespondence(repo, pkg, correspondenceModel) // 1. EOC: repo _r5CW0PxiEeO_U4GJ6Zitkg <=> pkg _sJD6YPxjEeOD3p0i_uuRbQ
 		//testCreateRepo2PkgCorrespondenceAndUpdateTuid(repo, pkg, correspondenceModel, repo2pkg)
-		correspondenceModel.removeCorrespondencesThatInvolveAtLeastAndDependend(pkg.toSet) // now the correspondence instance should be empty
+		val removedCorrespondences = correspondenceModel.removeCorrespondencesBetween(#[repo], #[pkg], null) // now the correspondence instance should be empty
+		assertEquals(repo2pkg, removedCorrespondences.claimOne);
 		testCorrespondencePersistence(vsum, repo, pkg, correspondenceModel)
 	}
 
@@ -237,7 +237,7 @@ class CorrespondenceTest extends VsumTest {
 		// 2. CRC: repo.ifaces _r5CW0PxiEeO_U4GJ6Zitkg <=> pkg.ifaces _sJD6YPxjEeOD3p0i_uuRbQ
 		// 3. EOC: pcmIfac _tAgfwPxjEeOD3p0i_uuRbQ <=> umlIface _vWjxIPxjEeOD3p0i_uuRbQ
 		// remove correspondence
-		corresp.removeCorrespondencesThatInvolveAtLeastAndDependend(repoInterface.toSet) // 1. EOC: repo _r5CW0PxiEeO_U4GJ6Zitkg <=> pkg _sJD6YPxjEeOD3p0i_uuRbQ
+		corresp.removeCorrespondencesFor(repoInterface.toList, null) // 1. EOC: repo _r5CW0PxiEeO_U4GJ6Zitkg <=> pkg _sJD6YPxjEeOD3p0i_uuRbQ
 		// 2. CRC: repo.ifaces _r5CW0PxiEeO_U4GJ6Zitkg <=> pkg.ifaces _sJD6YPxjEeOD3p0i_uuRbQ
 		// check whether it is removed
 		var Set<Correspondence> repoInterfaceCorresp = corresp.getCorrespondences(repoInterface.toList)
@@ -259,7 +259,8 @@ class CorrespondenceTest extends VsumTest {
 		Correspondence repo2pkg) {
 		// 1. EOC: repo _r5CW0PxiEeO_U4GJ6Zitkg <=> pkg _sJD6YPxjEeOD3p0i_uuRbQ
 		// 2. CRC: repo.ifaces _r5CW0PxiEeO_U4GJ6Zitkg <=> pkg.ifaces _sJD6YPxjEeOD3p0i_uuRbQ
-		corresp.removeCorrespondencesAndDependendCorrespondences(repo2pkg) // now the correspondence instance should be empty
+		val removedCorrespondences = corresp.removeCorrespondencesBetween(#[repo], #[pkg], null) // now the correspondence instance should be empty
+		assertEquals(repo2pkg, removedCorrespondences.claimOne);
 		var Set<Correspondence> repoCorresp = corresp.getCorrespondences(repo.toList)
 		assertTrue(repoCorresp.isEmpty())
 		var Set<Correspondence> pkgCorresp = corresp.getCorrespondences(pkg.toList)

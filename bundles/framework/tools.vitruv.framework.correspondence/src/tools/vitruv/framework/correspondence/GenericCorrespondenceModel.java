@@ -61,19 +61,6 @@ public interface GenericCorrespondenceModel<T extends Correspondence> extends UR
     public Set<T> getCorrespondencesThatInvolveAtLeast(Set<EObject> eObjects);
     
     /**
-     * React to the deletion of an object o by deleting all correspondences that
-     *
-     * Removes all direct correspondences for the given eObject and all correspondences for children
-     * of the given eObject and for children of the eObjects corresponding to the given eObject.
-     * Does <b>not</b> remove any model elements (only correspondences).
-     *
-     * @param eObject
-     *            for which all correspondences should be removed
-     * @return a set containing all removed correspondences
-     */
-    public Set<Correspondence> removeCorrespondencesThatInvolveAtLeastAndDependend(Set<EObject> eObjects);
-
-    /**
      * Removes the given correspondence, all correspondences for the eObjects of the given
      * correspondence, and all correspondences for their children on both sides. Does <b>not</b>
      * remove any model elements (only correspondences).
@@ -82,7 +69,7 @@ public interface GenericCorrespondenceModel<T extends Correspondence> extends UR
      *            that should be removed
      * @return a set containing all removed correspondences
      */
-    public Set<T> removeCorrespondencesAndDependendCorrespondences(T correspondence);
+    public Set<Correspondence> removeCorrespondencesAndDependendCorrespondences(T correspondence);
 
     public EObject resolveEObjectFromTuid(final Tuid tuid);
     

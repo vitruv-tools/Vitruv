@@ -330,48 +330,6 @@ class InternalCorrespondenceModelImpl extends ModelInstance implements InternalC
 		}
 	}
 
-	override Set<Correspondence> removeCorrespondencesAndDependendCorrespondences(Correspondence correspondence) {
-		val markedCorrespondences = markCorrespondenceAndDependingCorrespondences(correspondence)
-		removeMarkedCorrespondences(markedCorrespondences)
-		return markedCorrespondences
-	}
-
-	private def Set<Correspondence> markCorrespondenceAndDependingCorrespondences(Correspondence correspondence) {
-		var Set<Correspondence> markedCorrespondences = new HashSet<Correspondence>()
-		markCorrespondenceAndDependingCorrespondencesRecursively(markedCorrespondences, correspondence)
-		return markedCorrespondences
-	}
-
-	private def void markCorrespondenceAndDependingCorrespondencesRecursively(Set<Correspondence> markedCorrespondences,
-		Correspondence correspondence) {
-		markedCorrespondences.add(correspondence);
-		// FIXME MK detect dependency cycles in correspondences already when the reference is updated
-		for (dependingCorrespondence : correspondence.dependedOnBy) {
-			markCorrespondenceAndDependingCorrespondencesRecursively(markedCorrespondences, dependingCorrespondence)
-		}
-	}
-
-	private def removeMarkedCorrespondences(Iterable<Correspondence> markedCorrespondences) {
-		for (Correspondence markedCorrespondence : markedCorrespondences) {
-			removeCorrespondenceFromMaps(markedCorrespondence)
-			EcoreUtil::remove(markedCorrespondence)
-			setChangeAfterLastSaveFlag()
-		}
-	}
-
-	override Set<Correspondence> removeCorrespondencesThatInvolveAtLeastAndDependend(Set<EObject> eObjects) {
-		return removeCorrespondencesThatInvolveAtLeastAndDependendForTuids(eObjects.mapFixed [
-			calculateTuidFromEObject(it)
-		].toSet)
-	}
-
-	private def Set<Correspondence> removeCorrespondencesThatInvolveAtLeastAndDependendForTuids(Set<Tuid> tuids) {
-		val correspondences = getCorrespondencesThatInvolveAtLeastTuids(tuids)
-		val markedCorrespondences = correspondences.mapFixed[markCorrespondenceAndDependingCorrespondences(it)].flatten
-		removeMarkedCorrespondences(markedCorrespondences)
-		return markedCorrespondences.toSet
-	}
-
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -519,15 +477,50 @@ class InternalCorrespondenceModelImpl extends ModelInstance implements InternalC
 		return uuidResolver.getPotentiallyCachedEObject(uuid)
 	}
 
-	override removeCorrespondencesBetween(Class<? extends Correspondence> correspondenceType, List<EObject> aEObjects, List<EObject> bEObjects, String tag) {
+	override Set<Correspondence> removeCorrespondencesBetween(Class<? extends Correspondence> correspondenceType, List<EObject> aEObjects, List<EObject> bEObjects, String tag) {
+		val removedCorrespondences = newArrayList;
 		val correspondences = getCorrespondences(aEObjects, tag).filter(correspondenceType);
 		for (correspondence : correspondences) { 
 			val correspondingEObjects = resolveCorrespondingObjects(correspondence, aEObjects);
 			if (EcoreUtil.equals(bEObjects, correspondingEObjects)) {
-				removeCorrespondencesAndDependendCorrespondences(correspondence);
+				removedCorrespondences += removeCorrespondencesAndDependendCorrespondences(correspondence);
 			}
 		}
-		
+		return removedCorrespondences.toSet;
+	}
+
+	override Set<Correspondence> removeCorrespondencesFor(Class<? extends Correspondence> correspondenceType, List<EObject> eObjects, String tag) {
+		val correspondences = getCorrespondences(eObjects, tag).filter(correspondenceType);
+		return correspondences.toList.mapFixed[removeCorrespondencesAndDependendCorrespondences].flatten.toSet
+	}
+	
+	override Set<Correspondence> removeCorrespondencesAndDependendCorrespondences(Correspondence correspondence) {
+		val markedCorrespondences = markCorrespondenceAndDependingCorrespondences(correspondence)
+		removeMarkedCorrespondences(markedCorrespondences)
+		return markedCorrespondences
+	}
+
+	private def Set<Correspondence> markCorrespondenceAndDependingCorrespondences(Correspondence correspondence) {
+		var Set<Correspondence> markedCorrespondences = new HashSet<Correspondence>()
+		markCorrespondenceAndDependingCorrespondencesRecursively(markedCorrespondences, correspondence)
+		return markedCorrespondences
+	}
+
+	private def void markCorrespondenceAndDependingCorrespondencesRecursively(Set<Correspondence> markedCorrespondences,
+		Correspondence correspondence) {
+		markedCorrespondences.add(correspondence);
+		// FIXME MK detect dependency cycles in correspondences already when the reference is updated
+		for (dependingCorrespondence : correspondence.dependedOnBy) {
+			markCorrespondenceAndDependingCorrespondencesRecursively(markedCorrespondences, dependingCorrespondence)
+		}
+	}
+
+	private def removeMarkedCorrespondences(Iterable<Correspondence> markedCorrespondences) {
+		for (Correspondence markedCorrespondence : markedCorrespondences) {
+			removeCorrespondenceFromMaps(markedCorrespondence)
+			EcoreUtil::remove(markedCorrespondence)
+			setChangeAfterLastSaveFlag()
+		}
 	}
 	
 	override <E> getAllEObjectsOfTypeInCorrespondences(Class<? extends Correspondence> correspondenceType, Class<E> type) {

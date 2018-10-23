@@ -26,10 +26,7 @@ final class ReactionsCorrespondenceHelper {
 	public static def removeCorrespondencesOfObject(CorrespondenceModel correspondenceModel,
 		EObject source) {
 		val correspondenceModelView = correspondenceModel.reactionsView;
-		val correspondences = correspondenceModelView.getCorrespondences(#[source]);
-		for (correspondence : correspondences.toList) {
-			correspondenceModelView.removeCorrespondencesAndDependendCorrespondences(correspondence);
-		}
+		correspondenceModelView.removeCorrespondencesFor(#[source], null);
 	}
 	
 	public static def ReactionsCorrespondence addCorrespondence(
