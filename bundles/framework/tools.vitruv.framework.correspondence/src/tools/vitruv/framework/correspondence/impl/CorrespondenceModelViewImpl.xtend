@@ -29,10 +29,6 @@ class CorrespondenceModelViewImpl<T extends Correspondence> implements Correspon
 		this.correspondenceCreator = correspondenceCreator
 	}
 
-	override addCorrespondence(T correspondence) {
-		correspondenceModelDelegate.addCorrespondence(correspondence);
-	}
-
 	override calculateTuidFromEObject(EObject eObject) {
 		correspondenceModelDelegate.calculateTuidFromEObject(eObject);
 	}

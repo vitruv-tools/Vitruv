@@ -70,7 +70,7 @@ class InternalCorrespondenceModelImpl extends ModelInstance implements InternalC
 		TuidManager.instance.addTuidUpdateListener(this);
 	}
 
-	override void addCorrespondence(Correspondence correspondence) {
+	private def void addCorrespondence(Correspondence correspondence) {
 		this.modelCommandExecutor.executeRecordingCommand(EMFCommandBridge.createVitruviusRecordingCommand(
 				[|
 			addCorrespondenceToModel(correspondence)

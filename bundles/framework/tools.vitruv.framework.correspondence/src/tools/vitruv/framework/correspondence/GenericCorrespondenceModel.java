@@ -70,9 +70,6 @@ public interface GenericCorrespondenceModel<T extends Correspondence> extends UR
     
     public Set<T> getCorrespondencesThatInvolveAtLeast(Set<EObject> eObjects);
     
-    // renamed from addSameTypeCorrespondence
-    public void addCorrespondence(T correspondence);
-
     /**
      * React to the deletion of an object o by deleting all correspondences that
      *
