@@ -8,7 +8,6 @@ import org.eclipse.emf.ecore.EObject;
 
 import tools.vitruv.framework.correspondence.Correspondence;
 import tools.vitruv.framework.correspondence.CorrespondenceModel;
-import tools.vitruv.framework.tuid.Tuid;
 import tools.vitruv.framework.util.datatypes.URIHaving;
 
 /**
@@ -25,7 +24,7 @@ import tools.vitruv.framework.util.datatypes.URIHaving;
  * 
  * @param <T> - the type of correspondence that is handled
  */
-public interface GenericCorrespondenceModel<T extends Correspondence> extends URIHaving {
+public interface GenericCorrespondenceModel<T extends Correspondence> extends URIHaving, TuidResolvingCorrespondenceModel {
 	/**
 	 * Creates a {@link ManualCorresponendce} with the given tag between the given
 	 * lists of {@link EObject}s.
@@ -36,7 +35,8 @@ public interface GenericCorrespondenceModel<T extends Correspondence> extends UR
 	 *                  <code>null</code> if none shall be added
 	 * @return the created correspondence
 	 */
-	public Correspondence createAndAddManualCorrespondence(List<EObject> eObjects1, List<EObject> eObjects2, String tag);
+	public Correspondence createAndAddManualCorrespondence(List<EObject> eObjects1, List<EObject> eObjects2,
+			String tag);
 
 	/**
 	 * Returns whether at least one object corresponds to the given object.
@@ -72,18 +72,6 @@ public interface GenericCorrespondenceModel<T extends Correspondence> extends UR
 	 * @return the elements corresponding to the given ones
 	 */
 	public Set<List<EObject>> getCorrespondingEObjects(List<EObject> eObjects, String tag);
-
-	public EObject resolveEObjectFromTuid(final Tuid tuid);
-
-	public Tuid calculateTuidFromEObject(final EObject eObject);
-
-	/**
-	 * Is necessary to make the remove operation possible. TODO: check whether we
-	 * can remove this from the public API
-	 *
-	 * @return
-	 */
-	public Tuid calculateTuidFromEObject(final EObject eObject, EObject virtualRootObject, String prefix);
 
 	/**
 	 * Returns a view on the {@link GenericCorrespondenceModel} restricted to the
