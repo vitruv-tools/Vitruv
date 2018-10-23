@@ -2,6 +2,7 @@ package tools.vitruv.framework.correspondence;
 
 import java.util.List;
 import java.util.Set;
+import java.util.function.Supplier;
 
 import org.eclipse.emf.ecore.EObject;
 
@@ -25,4 +26,8 @@ public interface InternalCorrespondenceModel extends GenericCorrespondenceModel<
     public void removeCorrespondencesBetween(Class<? extends Correspondence> correspondenceType, List<EObject> aEObjects, List<EObject> bEObjects, String tag);
     
     public <E> Set<E> getAllEObjectsOfTypeInCorrespondences(Class<? extends Correspondence> correspondenceType, Class<E> type);
+    
+    public <C extends Correspondence> C createAndAddCorrespondence(List<EObject> eObjects1, List<EObject> eObjects2,
+            Supplier<C> correspondenceCreator);
+
 }

@@ -122,10 +122,7 @@ public interface GenericCorrespondenceModel<T extends Correspondence> extends UR
     /**
      * SWAPS eObjects1 and eObjects2 to obtain first as and then bs if necessary!
      */
-    public Correspondence createAndAddCorrespondence(List<EObject> eObjects1, List<EObject> eObjects2);
-
-    public Correspondence createAndAddCorrespondence(List<EObject> eObjects1, List<EObject> eObjects2,
-            Supplier<Correspondence> correspondenceCreator);
+    public T createAndAddCorrespondence(List<EObject> eObjects1, List<EObject> eObjects2);
 
     public Correspondence createAndAddManualCorrespondence(List<EObject> eObjects1, List<EObject> eObjects2);
 

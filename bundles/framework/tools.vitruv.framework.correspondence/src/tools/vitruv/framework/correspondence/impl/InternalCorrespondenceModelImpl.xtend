@@ -146,9 +146,9 @@ class InternalCorrespondenceModelImpl extends ModelInstance implements InternalC
 		return createAndAddManualCorrespondence(eObjects1, eObjects2)
 	}
 
-	override createAndAddCorrespondence(List<EObject> eObjects1, List<EObject> eObjects2,
-		Supplier<Correspondence> correspondenceCreator) {
-		val Correspondence correspondence = correspondenceCreator.get
+	override <C extends Correspondence> C createAndAddCorrespondence(List<EObject> eObjects1, List<EObject> eObjects2,
+		Supplier<C> correspondenceCreator) {
+		val correspondence = correspondenceCreator.get
 		createAndAddCorrespondence(eObjects1, eObjects2, correspondence)
 	}
 
@@ -157,8 +157,8 @@ class InternalCorrespondenceModelImpl extends ModelInstance implements InternalC
 		createAndAddCorrespondence(eObjects1, eObjects2, correspondence)
 	}
 
-	def private createAndAddCorrespondence(List<EObject> eObjects1, List<EObject> eObjects2,
-		Correspondence correspondence) {
+	def private <C extends Correspondence> C createAndAddCorrespondence(List<EObject> eObjects1, List<EObject> eObjects2,
+		C correspondence) {
 		setCorrespondenceFeatures(correspondence, eObjects1, eObjects2)
 		addCorrespondence(correspondence)
 		return correspondence

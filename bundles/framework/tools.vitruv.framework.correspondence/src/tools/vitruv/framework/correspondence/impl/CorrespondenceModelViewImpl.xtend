@@ -126,15 +126,9 @@ class CorrespondenceModelViewImpl<T extends Correspondence> implements Correspon
 		if (null === this.correspondenceCreator) {
 			throw new RuntimeException("The current view is not able to create new correspondences")
 		}
-		correspondenceModelDelegate.createAndAddCorrespondence(eObjects1, eObjects2, this.correspondenceCreator as Supplier<Correspondence>)
+		correspondenceModelDelegate.createAndAddCorrespondence(eObjects1, eObjects2, this.correspondenceCreator)
 	}
 
-	override createAndAddCorrespondence(List<EObject> eObjects1, List<EObject> eObjects2,
-		Supplier<Correspondence> correspondenceCreator) {
-		correspondenceModelDelegate.createAndAddCorrespondence(eObjects1, eObjects2,
-			correspondenceCreator)
-	}
-	
 	override <U extends Correspondence> getEditableView(Class<U> correspondenceType,
 		Supplier<U> correspondenceCreator) {
 		correspondenceModelDelegate.getEditableView(correspondenceType, correspondenceCreator)
