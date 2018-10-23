@@ -54,10 +54,6 @@ public interface GenericCorrespondenceModel<T extends Correspondence> extends UR
 	 */
 	public boolean hasCorrespondences();
 
-	Set<T> getAllCorrespondencesWithoutDependencies();
-
-	public List<T> getAllCorrespondences();
-
 	/**
 	 * Returns all elements corresponding to the given one.
 	 * 

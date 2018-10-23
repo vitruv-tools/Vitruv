@@ -370,10 +370,6 @@ class InternalCorrespondenceModelImpl extends ModelInstance implements InternalC
 		correspondence.tag = tag;
 	}
 
-	override getAllCorrespondencesWithoutDependencies() {
-		this.correspondences.correspondences.filter[it.dependsOn === null || it.dependsOn.size == 0].toSet
-	}
-
 	override getAllCorrespondences() {
 		return correspondences.correspondences
 	}
@@ -483,7 +479,7 @@ class InternalCorrespondenceModelImpl extends ModelInstance implements InternalC
 	}
 	
 	override <E> getAllEObjectsOfTypeInCorrespondences(Class<? extends Correspondence> correspondenceType, Class<E> type) {
-		allCorrespondencesWithoutDependencies.filter(correspondenceType).map[
+		allCorrespondences.filter(correspondenceType).map[
 			if(it.isUuidBased) {
 				(it.AUuids + it.BUuids).toList.map[resolveEObjectFromUuid]
 			} else {

@@ -60,14 +60,6 @@ class CorrespondenceModelViewImpl<T extends Correspondence> implements Correspon
 		return correspondencesA.get(0);
 	}
 
-	override getAllCorrespondences() {
-		correspondenceModelDelegate.getAllCorrespondences().filter(correspondenceType).toList;
-	}
-	
-	override getAllCorrespondencesWithoutDependencies() {
-		correspondenceModelDelegate.getAllCorrespondencesWithoutDependencies().filter(correspondenceType).toSet();
-	}
-
 	override getCorrespondences(List<EObject> eObjects) {
 		getCorrespondences(eObjects, null);
 	}
