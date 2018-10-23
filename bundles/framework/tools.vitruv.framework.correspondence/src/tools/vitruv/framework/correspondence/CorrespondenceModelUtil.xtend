@@ -59,7 +59,7 @@ class CorrespondenceModelUtil {
 	}
 
 	def public static Correspondence createAndAddCorrespondence(CorrespondenceModel ci, EObject a, EObject b) {
-		return ci.createAndAddCorrespondence(a.toList, b.toList)
+		return ci.createAndAddCorrespondence(a.toList, b.toList, null)
 	}
 
 	/**

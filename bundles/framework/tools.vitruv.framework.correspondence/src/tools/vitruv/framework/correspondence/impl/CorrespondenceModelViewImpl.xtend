@@ -25,6 +25,21 @@ class CorrespondenceModelViewImpl<T extends Correspondence> implements Correspon
 		this.correspondenceCreator = correspondenceCreator
 	}
 
+	override createAndAddCorrespondence(List<EObject> eObjects1, List<EObject> eObjects2) {
+		createAndAddCorrespondence(eObjects1, eObjects2, null)
+	}
+
+	override createAndAddCorrespondence(List<EObject> eObjects1, List<EObject> eObjects2, String tag) {
+		if (null === this.correspondenceCreator) {
+			throw new RuntimeException("The current view is not able to create new correspondences")
+		}
+		correspondenceModelDelegate.createAndAddCorrespondence(eObjects1, eObjects2, tag, this.correspondenceCreator)
+	}
+
+	override createAndAddManualCorrespondence(List<EObject> eObjects1, List<EObject> eObjects2, String tag) {
+		correspondenceModelDelegate.createAndAddManualCorrespondence(eObjects1, eObjects2, tag);
+	}
+
 	override calculateTuidFromEObject(EObject eObject) {
 		correspondenceModelDelegate.calculateTuidFromEObject(eObject);
 	}
@@ -43,10 +58,6 @@ class CorrespondenceModelViewImpl<T extends Correspondence> implements Correspon
 			throw new IllegalStateException("No correspondence for '" + aEObjects + "' and '" + bEObjects + "' was found!");
 		}
 		return correspondencesA.get(0);
-	}
-
-	override createAndAddManualCorrespondence(List<EObject> eObjects1, List<EObject> eObjects2) {
-		correspondenceModelDelegate.createAndAddManualCorrespondence(eObjects1, eObjects2);
 	}
 
 	override getAllCorrespondences() {
@@ -101,13 +112,6 @@ class CorrespondenceModelViewImpl<T extends Correspondence> implements Correspon
 
 	override getCorrespondingEObjects(List<EObject> eObjects, String tag) {
 		correspondenceModelDelegate.getCorrespondingEObjects(correspondenceType, eObjects, tag);
-	}
-
-	override createAndAddCorrespondence(List<EObject> eObjects1, List<EObject> eObjects2) {
-		if (null === this.correspondenceCreator) {
-			throw new RuntimeException("The current view is not able to create new correspondences")
-		}
-		correspondenceModelDelegate.createAndAddCorrespondence(eObjects1, eObjects2, this.correspondenceCreator)
 	}
 
 	override <U extends Correspondence> getEditableView(Class<U> correspondenceType,

@@ -141,25 +141,20 @@ class InternalCorrespondenceModelImpl extends ModelInstance implements InternalC
 		return this.changedAfterLastSave
 	}
 
-	@Deprecated
-	override Correspondence createAndAddCorrespondence(List<EObject> eObjects1, List<EObject> eObjects2) {
-		return createAndAddManualCorrespondence(eObjects1, eObjects2)
-	}
-
 	override <C extends Correspondence> C createAndAddCorrespondence(List<EObject> eObjects1, List<EObject> eObjects2,
-		Supplier<C> correspondenceCreator) {
+		String tag, Supplier<C> correspondenceCreator) {
 		val correspondence = correspondenceCreator.get
-		createAndAddCorrespondence(eObjects1, eObjects2, correspondence)
+		createAndAddCorrespondence(eObjects1, eObjects2, tag, correspondence)
 	}
 
-	override Correspondence createAndAddManualCorrespondence(List<EObject> eObjects1, List<EObject> eObjects2) {
+	override Correspondence createAndAddManualCorrespondence(List<EObject> eObjects1, List<EObject> eObjects2, String tag) {
 		val correspondence = CorrespondenceFactory.eINSTANCE.createManualCorrespondence
-		createAndAddCorrespondence(eObjects1, eObjects2, correspondence)
+		createAndAddCorrespondence(eObjects1, eObjects2, tag, correspondence)
 	}
 
 	def private <C extends Correspondence> C createAndAddCorrespondence(List<EObject> eObjects1, List<EObject> eObjects2,
-		C correspondence) {
-		setCorrespondenceFeatures(correspondence, eObjects1, eObjects2)
+		String tag, C correspondence) {
+		setCorrespondenceFeatures(correspondence, eObjects1, eObjects2, tag)
 		addCorrespondence(correspondence)
 		return correspondence
 	}
@@ -349,7 +344,7 @@ class InternalCorrespondenceModelImpl extends ModelInstance implements InternalC
 	}
 
 	def private void setCorrespondenceFeatures(Correspondence correspondence, List<EObject> eObjects1,
-		List<EObject> eObjects2) {
+		List<EObject> eObjects2, String tag) {
 		var aEObjects = eObjects1
 		var bEObjects = eObjects2
 		if ((aEObjects + bEObjects).forall[domainRepository.getDomain(it).supportsUuids]) {
@@ -373,6 +368,7 @@ class InternalCorrespondenceModelImpl extends ModelInstance implements InternalC
 			var List<Tuid> bTuids = calculateTuidsFromEObjects(bEObjects)
 			correspondence.getBTuids().addAll(bTuids)
 		}
+		correspondence.tag = tag;
 	}
 
 	override getAllCorrespondencesWithoutDependencies() {
@@ -401,19 +397,6 @@ class InternalCorrespondenceModelImpl extends ModelInstance implements InternalC
 		return correspondences.correspondences
 	}
 
-	override <U extends Correspondence> getView(Class<U> correspondenceType) {
-		return new CorrespondenceModelViewImpl(correspondenceType, this);
-	}
-
-	override <U extends Correspondence> getEditableView(Class<U> correspondenceType,
-		Supplier<U> correspondenceCreator) {
-		return new CorrespondenceModelViewImpl(correspondenceType, this, correspondenceCreator);
-	}
-
-	override getGenericView() {
-		return new GenericCorrespondenceModelViewImpl(this);
-	}
-	
 	private Iterable<Pair<List<Tuid>, Set<Correspondence>>> tuidUpdateData;
 
 	/**
@@ -531,6 +514,19 @@ class InternalCorrespondenceModelImpl extends ModelInstance implements InternalC
 				(it.ATuids + it.BTuids).toList.map[resolveEObjectFromTuid]
 			}
 		].flatten.filter(type).toSet
+	}
+
+	override <U extends Correspondence> getView(Class<U> correspondenceType) {
+		return new CorrespondenceModelViewImpl(correspondenceType, this);
+	}
+
+	override <U extends Correspondence> getEditableView(Class<U> correspondenceType,
+		Supplier<U> correspondenceCreator) {
+		return new CorrespondenceModelViewImpl(correspondenceType, this, correspondenceCreator);
+	}
+
+	override getGenericView() {
+		return new GenericCorrespondenceModelViewImpl(this);
 	}
 	
 }

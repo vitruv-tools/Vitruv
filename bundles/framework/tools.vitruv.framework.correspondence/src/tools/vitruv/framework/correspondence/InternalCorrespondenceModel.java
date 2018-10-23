@@ -6,12 +6,34 @@ import java.util.function.Supplier;
 
 import org.eclipse.emf.ecore.EObject;
 
+/**
+ * An internal representation of the {@link GenericCorrespondenceModel},
+ * providing correspondence handling logic independent from the actual type of
+ * correspondence.
+ * 
+ * @author Heiko Klare
+ */
 public interface InternalCorrespondenceModel extends GenericCorrespondenceModel<Correspondence> {
 	public boolean changedAfterLastSave();
 
 	public void resetChangedAfterLastSave();
 
 	public void saveModel();
+
+	/**
+	 * Creates a correspondence of given type <C> with the given tag between the
+	 * given lists of {@link EObject}s.
+	 * 
+	 * @param eObjects1            - the first list of {@link EObject}s
+	 * @param eObjects2            - the second list of {@link EObject}s
+	 * @param tag                  - the tag to be added to the correspondence or
+	 *                             <code>null</code> if none shall be added
+	 * @param correspondenceCreate - a supplier for creating correspondences of the
+	 *                             appropriate type
+	 * @return the created correspondence
+	 */
+	public <C extends Correspondence> C createAndAddCorrespondence(List<EObject> eObjects1, List<EObject> eObjects2,
+			String tag, Supplier<C> correspondenceCreator);
 
 	/**
 	 * Returns the elements corresponding to the given one, if the correspondence is
@@ -31,9 +53,6 @@ public interface InternalCorrespondenceModel extends GenericCorrespondenceModel<
 
 	public <E> Set<E> getAllEObjectsOfTypeInCorrespondences(Class<? extends Correspondence> correspondenceType,
 			Class<E> type);
-
-	public <C extends Correspondence> C createAndAddCorrespondence(List<EObject> eObjects1, List<EObject> eObjects2,
-			Supplier<C> correspondenceCreator);
 
 	/**
 	 * Removes the correspondences of the given type and with the given type between
