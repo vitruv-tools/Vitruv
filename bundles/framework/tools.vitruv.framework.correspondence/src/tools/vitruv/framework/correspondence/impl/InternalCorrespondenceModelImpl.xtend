@@ -224,7 +224,7 @@ class InternalCorrespondenceModelImpl extends ModelInstance implements InternalC
 		if (correspondence.isUuidBased) {
 			val uuids = eObjects.map[uuidResolver.getPotentiallyCachedUuid(it)];
 			val correspondingUuids = correspondence.getCorrespondingUuids(uuids);
-			return correspondingUuids.resolveEObjectsFromUuids
+			return correspondingUuids.map[resolveEObjectFromUuid];
 		} else {
 			val tuids = eObjects.map[calculateTuidFromEObject];
 			val correspondingTuids = correspondence.getCorrespondingTuids(tuids);
@@ -507,8 +507,8 @@ class InternalCorrespondenceModelImpl extends ModelInstance implements InternalC
 		]));
 	}
 
-	override resolveEObjectsFromUuids(List<String> uuids) {
-		return uuids.map[uuidResolver.getPotentiallyCachedEObject(it)]
+	private def resolveEObjectFromUuid(String uuid) {
+		return uuidResolver.getPotentiallyCachedEObject(uuid)
 	}
 
 	override removeCorrespondencesBetween(Class<? extends Correspondence> correspondenceType, List<EObject> aEObjects, List<EObject> bEObjects, String tag) {
@@ -525,7 +525,7 @@ class InternalCorrespondenceModelImpl extends ModelInstance implements InternalC
 	override <E> getAllEObjectsOfTypeInCorrespondences(Class<? extends Correspondence> correspondenceType, Class<E> type) {
 		allCorrespondencesWithoutDependencies.filter(correspondenceType).map[
 			if(it.isUuidBased) {
-				(it.AUuids + it.BUuids).toList.resolveEObjectsFromUuids
+				(it.AUuids + it.BUuids).toList.map[resolveEObjectFromUuid]
 			} else {
 				(it.ATuids + it.BTuids).toList.map[resolveEObjectFromTuid]
 			}

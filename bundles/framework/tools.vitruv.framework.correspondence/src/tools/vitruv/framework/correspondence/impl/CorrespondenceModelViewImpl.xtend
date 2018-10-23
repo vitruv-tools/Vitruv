@@ -138,10 +138,6 @@ class CorrespondenceModelViewImpl<T extends Correspondence> implements Correspon
 		return correspondenceModelDelegate.getURI;
 	}
 	
-	override resolveEObjectsFromUuids(List<String> uuids) {
-		return correspondenceModelDelegate.resolveEObjectsFromUuids(uuids);
-	}
-	
 	override removeCorrespondencesBetween(List<EObject> aEObjects, List<EObject> bEObjects, String tag) {
 		correspondenceModelDelegate.removeCorrespondencesBetween(correspondenceType, aEObjects, bEObjects, tag);
 	}

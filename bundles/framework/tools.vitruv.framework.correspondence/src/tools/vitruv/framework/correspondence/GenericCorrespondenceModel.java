@@ -97,8 +97,6 @@ public interface GenericCorrespondenceModel<T extends Correspondence> extends UR
      */
     public Set<T> removeCorrespondencesAndDependendCorrespondences(T correspondence);
 
-    public List<EObject> resolveEObjectsFromUuids(final List<String> uuids);
-
     public EObject resolveEObjectFromTuid(final Tuid tuid);
     
     public Tuid calculateTuidFromEObject(final EObject eObject);
