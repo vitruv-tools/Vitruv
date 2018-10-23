@@ -24,7 +24,8 @@ import tools.vitruv.framework.util.datatypes.URIHaving;
  * 
  * @param <T> - the type of correspondence that is handled
  */
-public interface GenericCorrespondenceModel<T extends Correspondence> extends URIHaving, TuidResolvingCorrespondenceModel {
+public interface GenericCorrespondenceModel<T extends Correspondence>
+		extends URIHaving, TuidResolvingCorrespondenceModel {
 	/**
 	 * Creates a {@link ManualCorresponendce} with the given tag between the given
 	 * lists of {@link EObject}s.
@@ -41,8 +42,8 @@ public interface GenericCorrespondenceModel<T extends Correspondence> extends UR
 	/**
 	 * Returns whether at least one object corresponds to the given object.
 	 *
-	 * @param eObject the object for which correspondences should be looked up
-	 * @return true if # of corresponding objects > 0
+	 * @param eObject - the object for which correspondences should be looked up
+	 * @return true if number of corresponding objects > 0
 	 */
 
 	public boolean hasCorrespondences(List<EObject> eObject);
