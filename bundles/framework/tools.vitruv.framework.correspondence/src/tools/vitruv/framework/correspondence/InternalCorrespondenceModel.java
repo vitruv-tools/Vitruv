@@ -14,10 +14,9 @@ import org.eclipse.emf.ecore.EObject;
  * @author Heiko Klare
  */
 public interface InternalCorrespondenceModel extends GenericCorrespondenceModel<Correspondence> {
-	public boolean changedAfterLastSave();
-
-	public void resetChangedAfterLastSave();
-
+	/**
+	 * Saves this correspondence model instance.
+	 */
 	public void saveModel();
 
 	/**

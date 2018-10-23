@@ -259,7 +259,6 @@ public class ResourceRepositoryImpl implements ModelRepository, CorrespondencePr
                 logger.debug(
                         "  Saving correspondence model: " + ResourceRepositoryImpl.this.correspondenceModel.getURI());
                 ResourceRepositoryImpl.this.correspondenceModel.saveModel();
-                ResourceRepositoryImpl.this.correspondenceModel.resetChangedAfterLastSave();
                 return null;
             }
         });
@@ -332,7 +331,7 @@ public class ResourceRepositoryImpl implements ModelRepository, CorrespondencePr
                 uuidProviderResource = this.resourceSet.createResource(uuidProviderVURI.getEMFUri());
             }
             // TODO HK We cannot enable strict mode here, because for textual views we will not get
-            // create changes in any case. We should therefore use one monitor per model and turn on 
+            // create changes in any case. We should therefore use one monitor per model and turn on
             // strict mode
             // depending on the kind of model/view (textual vs. semantic)
             this.uuidGeneratorAndResolver = new UuidGeneratorAndResolverImpl(this.resourceSet, uuidProviderResource,

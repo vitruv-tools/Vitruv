@@ -74,7 +74,7 @@ class InternalCorrespondenceModelImpl extends ModelInstance implements InternalC
 				[|
 			addCorrespondenceToModel(correspondence)
 			registerCorrespondence(correspondence)
-			setChangeAfterLastSaveFlag()
+			setChangedAfterLastSaveFlag()
 			return null
 		]));
 	}
@@ -134,10 +134,6 @@ class InternalCorrespondenceModelImpl extends ModelInstance implements InternalC
 
 	private def List<Tuid> calculateTuidsFromEObjects(List<EObject> eObjects) {
 		return eObjects.mapFixed[calculateTuidFromEObject(it)].toList
-	}
-
-	override def boolean changedAfterLastSave() {
-		return this.changedAfterLastSave
 	}
 
 	override <C extends Correspondence> C createAndAddCorrespondence(List<EObject> eObjects1, List<EObject> eObjects2,
@@ -243,8 +239,12 @@ class InternalCorrespondenceModelImpl extends ModelInstance implements InternalC
 	}
 
 	override void saveModel() {
+		if (!changedAfterLastSave) {
+			return;
+		}
 		try {
 			EcoreResourceBridge::saveResource(getResource(), this.saveCorrespondenceOptions)
+			this.resetChangedAfterLastSaveFlag;
 		} catch (IOException e) {
 			throw new RuntimeException(
 				'''Could not save correspondence instance '«»«this»' using the resource '«»«getResource()»' and the options '«»«this.saveCorrespondenceOptions»': «e»'''.
@@ -324,22 +324,16 @@ class InternalCorrespondenceModelImpl extends ModelInstance implements InternalC
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see CorrespondenceModel#
-	 * resetChangedAfterLastSave()
-	 */
-	override void resetChangedAfterLastSave() {
-		this.changedAfterLastSave = false
-	}
-
 	override EObject resolveEObjectFromTuid(Tuid tuid) {
 		tuidResolver.resolveEObjectFromTuid(tuid);
 	}
 
-	def public void setChangeAfterLastSaveFlag() {
+	private def void setChangedAfterLastSaveFlag() {
 		this.changedAfterLastSave = true
+	}
+	
+	private def void resetChangedAfterLastSaveFlag() {
+		this.changedAfterLastSave = false
 	}
 
 	def private void setCorrespondenceFeatures(Correspondence correspondence, List<EObject> eObjects1,
@@ -428,7 +422,7 @@ class InternalCorrespondenceModelImpl extends ModelInstance implements InternalC
 			// re-add the entry that maps the tuid to the set if tuid lists that contain it
 			tuid2tuidListsMap.put(tuid, newSetOfoldTuidLists)
 			tuidUpdateData = null;
-			setChangeAfterLastSaveFlag();
+			setChangedAfterLastSaveFlag();
 			return null;
 		]));
 	}
@@ -474,7 +468,7 @@ class InternalCorrespondenceModelImpl extends ModelInstance implements InternalC
 		for (Correspondence markedCorrespondence : markedCorrespondences) {
 			removeCorrespondenceFromMaps(markedCorrespondence)
 			EcoreUtil::remove(markedCorrespondence)
-			setChangeAfterLastSaveFlag()
+			setChangedAfterLastSaveFlag()
 		}
 	}
 	
