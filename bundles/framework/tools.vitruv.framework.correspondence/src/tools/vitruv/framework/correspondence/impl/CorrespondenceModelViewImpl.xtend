@@ -41,10 +41,6 @@ class CorrespondenceModelViewImpl<T extends Correspondence> implements Correspon
 		correspondenceModelDelegate.calculateTuidFromEObject(eObject, virtualRootObject, prefix);
 	}
 
-	override calculateTuidsFromEObjects(List<EObject> eObjects) {
-		correspondenceModelDelegate.calculateTuidsFromEObjects(eObjects);
-	}
-
 	// Re-implement this method, because we cannot claim a unique generic correspondence and restrict it to the given type afterwards 
 	override claimUniqueCorrespondence(List<EObject> aEObjects, List<EObject> bEObjects) {
 		val correspondencesA = getCorrespondences(aEObjects)

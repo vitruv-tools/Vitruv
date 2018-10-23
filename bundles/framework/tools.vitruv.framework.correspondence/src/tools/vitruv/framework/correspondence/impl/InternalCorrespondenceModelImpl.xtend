@@ -133,7 +133,7 @@ class InternalCorrespondenceModelImpl extends ModelInstance implements InternalC
 		return this.domainRepository.getDomain(eObject);
 	}
 
-	override List<Tuid> calculateTuidsFromEObjects(List<EObject> eObjects) {
+	private def List<Tuid> calculateTuidsFromEObjects(List<EObject> eObjects) {
 		return eObjects.mapFixed[calculateTuidFromEObject(it)].toList
 	}
 

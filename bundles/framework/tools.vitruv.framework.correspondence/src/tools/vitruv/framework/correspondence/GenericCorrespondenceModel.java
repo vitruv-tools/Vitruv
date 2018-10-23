@@ -110,14 +110,6 @@ public interface GenericCorrespondenceModel<T extends Correspondence> extends UR
     public Tuid calculateTuidFromEObject(final EObject eObject, EObject virtualRootObject, String prefix);
 
     /**
-     * syntactic sugar for map[{@link #calculateTuidFromEObject(EObject)}]
-     *
-     * @param eObjects
-     * @return
-     */
-    public List<Tuid> calculateTuidsFromEObjects(final List<EObject> eObjects);
-
-    /**
      * SWAPS eObjects1 and eObjects2 to obtain first as and then bs if necessary!
      */
     public T createAndAddCorrespondence(List<EObject> eObjects1, List<EObject> eObjects2);
