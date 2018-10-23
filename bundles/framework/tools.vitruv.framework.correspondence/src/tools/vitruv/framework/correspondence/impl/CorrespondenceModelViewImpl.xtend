@@ -98,10 +98,6 @@ class CorrespondenceModelViewImpl<T extends Correspondence> implements Correspon
 		correspondenceModelDelegate.hasCorrespondences();
 	}
 
-	override Set<Correspondence> removeCorrespondencesAndDependendCorrespondences(T correspondence) {
-		correspondenceModelDelegate.removeCorrespondencesAndDependendCorrespondences(correspondence).toSet();
-	}
-
 	override resolveEObjectFromTuid(Tuid tuid) {
 		correspondenceModelDelegate.resolveEObjectFromTuid(tuid);
 	}

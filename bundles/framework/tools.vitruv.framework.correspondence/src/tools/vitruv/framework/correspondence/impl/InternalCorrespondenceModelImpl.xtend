@@ -477,15 +477,10 @@ class InternalCorrespondenceModelImpl extends ModelInstance implements InternalC
 		return correspondences.toList.mapFixed[removeCorrespondencesAndDependendCorrespondences].flatten.toSet
 	}
 	
-	override Set<Correspondence> removeCorrespondencesAndDependendCorrespondences(Correspondence correspondence) {
-		val markedCorrespondences = markCorrespondenceAndDependingCorrespondences(correspondence)
-		removeMarkedCorrespondences(markedCorrespondences)
-		return markedCorrespondences
-	}
-
-	private def Set<Correspondence> markCorrespondenceAndDependingCorrespondences(Correspondence correspondence) {
+	private def Set<Correspondence> removeCorrespondencesAndDependendCorrespondences(Correspondence correspondence) {
 		var Set<Correspondence> markedCorrespondences = new HashSet<Correspondence>()
 		markCorrespondenceAndDependingCorrespondencesRecursively(markedCorrespondences, correspondence)
+		removeMarkedCorrespondences(markedCorrespondences)
 		return markedCorrespondences
 	}
 
