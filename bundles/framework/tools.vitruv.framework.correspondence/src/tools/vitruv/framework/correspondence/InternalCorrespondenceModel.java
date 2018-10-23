@@ -42,14 +42,17 @@ public interface InternalCorrespondenceModel extends GenericCorrespondenceModel<
 	public List<Correspondence> getAllCorrespondences();
 
 	/**
-	 * Returns all correspondences for the given {@link EObject}s with the given
-	 * tag.
+	 * Returns all correspondences of the given type for the given {@link EObject}s
+	 * with the given tag.
 	 * 
-	 * @param eObjects - the {@link EObject}s to find the correspondence for
-	 * @param tag      - the tag to filter the correspondences for
+	 * @param correspondenceType - the type of correspondence to filter for
+	 * @param eObjects           - the {@link EObject}s to find the correspondence
+	 *                           for
+	 * @param tag                - the tag to filter the correspondences for
 	 * @return all correspondences for the given objects with the given tag
 	 */
-	public Set<Correspondence> getCorrespondences(List<EObject> eObjects, String tag);
+	public <C extends Correspondence> Set<C> getCorrespondences(Class<C> correspondenceType,
+			List<EObject> eObjects, String tag);
 
 	/**
 	 * Returns the elements corresponding to the given one, if the correspondence is

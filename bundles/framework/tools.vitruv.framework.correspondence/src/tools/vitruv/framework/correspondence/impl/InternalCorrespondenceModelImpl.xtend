@@ -154,7 +154,7 @@ class InternalCorrespondenceModelImpl extends ModelInstance implements InternalC
 		return correspondence
 	}
 
-	override Set<Correspondence> getCorrespondences(List<EObject> eObjects, String tag) {
+	override <C extends Correspondence> Set<C> getCorrespondences(Class<C> correspondenceType, List<EObject> eObjects, String tag) {
 		val Set<Correspondence> correspondences = new HashSet<Correspondence>()
 		if (eObjects.haveUuids) {
 			val uuids = eObjects.map[uuidResolver.getPotentiallyCachedUuid(it)];
@@ -164,7 +164,7 @@ class InternalCorrespondenceModelImpl extends ModelInstance implements InternalC
 		val List<Tuid> tuids = calculateTuidsFromEObjects(eObjects)
 		correspondences += getCorrespondencesForTuids(tuids);
 		
-		return correspondences.filter[tag === null || it.tag == tag].toSet;
+		return correspondences.filter(correspondenceType).filter[tag === null || it.tag == tag].toSet;
 	}
 
 	/**
@@ -211,7 +211,7 @@ class InternalCorrespondenceModelImpl extends ModelInstance implements InternalC
 	override Set<List<EObject>> getCorrespondingEObjects(Class<? extends Correspondence> correspondenceType,
 		List<EObject> eObjects, String tag) {
 		val Set<List<EObject>> result = newHashSet;
-		val correspondences = eObjects.getCorrespondences(tag).filter(correspondenceType);
+		val correspondences = getCorrespondences(correspondenceType, eObjects, tag);
 		for (correspondence : correspondences) {
 			result += resolveCorrespondingObjects(correspondence, eObjects);
 		}
@@ -433,7 +433,7 @@ class InternalCorrespondenceModelImpl extends ModelInstance implements InternalC
 
 	override Set<Correspondence> removeCorrespondencesBetween(Class<? extends Correspondence> correspondenceType, List<EObject> aEObjects, List<EObject> bEObjects, String tag) {
 		val removedCorrespondences = newArrayList;
-		val correspondences = getCorrespondences(aEObjects, tag).filter(correspondenceType);
+		val correspondences = getCorrespondences(correspondenceType, aEObjects, tag);
 		for (correspondence : correspondences) { 
 			val correspondingEObjects = resolveCorrespondingObjects(correspondence, aEObjects);
 			if (EcoreUtil.equals(bEObjects, correspondingEObjects)) {
@@ -444,7 +444,7 @@ class InternalCorrespondenceModelImpl extends ModelInstance implements InternalC
 	}
 
 	override Set<Correspondence> removeCorrespondencesFor(Class<? extends Correspondence> correspondenceType, List<EObject> eObjects, String tag) {
-		val correspondences = getCorrespondences(eObjects, tag).filter(correspondenceType);
+		val correspondences = getCorrespondences(correspondenceType, eObjects, tag);
 		return correspondences.toList.mapFixed[removeCorrespondencesAndDependendCorrespondences].flatten.toSet
 	}
 	

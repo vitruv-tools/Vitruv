@@ -58,7 +58,7 @@ class CorrespondenceModelViewImpl<T extends Correspondence> implements Correspon
 	}
 	
 	override getCorrespondences(List<EObject> eObjects, String tag) {
-		correspondenceModelDelegate.getCorrespondences(eObjects, tag).filter(correspondenceType).toSet();
+		correspondenceModelDelegate.getCorrespondences(correspondenceType, eObjects, tag).toSet();
 	}
 
 	override claimUniqueCorrespondence(List<EObject> aEObjects, List<EObject> bEObjects) {
