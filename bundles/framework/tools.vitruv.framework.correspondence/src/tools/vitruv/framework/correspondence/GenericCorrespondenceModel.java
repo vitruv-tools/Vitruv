@@ -42,16 +42,6 @@ public interface GenericCorrespondenceModel<T extends Correspondence> extends UR
     public boolean hasCorrespondences();
 
     /**
-     * Returns all correspondences for the object with the specified tuid and an empty set if the
-     * object has no correspondences. Should never return {@link null}.
-     *
-     * @param tuids
-     * @return all correspondences for the object with the specified tuid and an empty set if the
-     *         object has no correspondences.
-     */
-    public Set<T> getCorrespondencesForTuids(List<Tuid> tuids);
-
-    /**
      * Returns all elements corresponding to the given one.
      * 
      * @param eObjects - the objects to get the corresponding ones for

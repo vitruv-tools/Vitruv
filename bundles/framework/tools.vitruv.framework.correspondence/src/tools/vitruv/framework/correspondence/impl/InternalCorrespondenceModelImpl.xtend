@@ -176,8 +176,16 @@ class InternalCorrespondenceModelImpl extends ModelInstance implements InternalC
 		
 		return correspondences.filter[tag === null || it.tag == tag].toSet;
 	}
-	
-	override Set<Correspondence> getCorrespondencesForTuids(List<Tuid> tuids) {
+
+	/**
+     * Returns all correspondences for the object with the specified tuid and an empty set if the
+     * object has no correspondences. Should never return {@link null}.
+     *
+     * @param tuids
+     * @return all correspondences for the object with the specified tuid and an empty set if the
+     *         object has no correspondences.
+     */
+	private def Set<Correspondence> getCorrespondencesForTuids(List<Tuid> tuids) {
 		var Set<Correspondence> correspondences = this.tuid2CorrespondencesMap.get(tuids)
 		if (correspondences === null) {
 			correspondences = new HashSet<Correspondence>()
@@ -187,7 +195,7 @@ class InternalCorrespondenceModelImpl extends ModelInstance implements InternalC
 		return correspondences
 	}
 
-	def Set<Correspondence> getCorrespondencesForUuids(List<String> uuids) {
+	private def Set<Correspondence> getCorrespondencesForUuids(List<String> uuids) {
 		return this.correspondences.correspondences.filter[AUuids.containsAll(uuids) || BUuids.containsAll(uuids)].toSet
 	}
 

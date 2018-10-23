@@ -18,10 +18,6 @@ class CorrespondenceModelViewImpl<T extends Correspondence> implements Correspon
 		this(correspondenceType, correspondenceModel, null)
 	}
 
-	override getCorrespondencesForTuids(List<Tuid> tuids) {
-		correspondenceModelDelegate.getCorrespondencesForTuids(tuids).filter(correspondenceType).toSet();
-	}
-	
 	public new(Class<T> correspondenceType, InternalCorrespondenceModel correspondenceModel,
 		Supplier<T> correspondenceCreator) {
 		this.correspondenceType = correspondenceType;
