@@ -275,6 +275,7 @@ class SimpleChangesTests extends AbstractAllElementTypesReactionsTests {
 	public def void testDeleteSingleValuedContainmentEReference() throws Throwable {
 		setSingleValuedContainmentNonRootObject(rootElement, "singleValuedContainmentNonRoot");
 		SimpleChangesTestsExecutionMonitor.reinitialize();
+		val oldElement = rootElement.singleValuedContainmentEReference;
 		unsetSingleValuedContainmentNonRootObject(rootElement);
 		val compareMonitor = new SimpleChangesTestsExecutionMonitor();
 		compareMonitor.set(ChangeType.DeleteEObject);
@@ -283,6 +284,7 @@ class SimpleChangesTests extends AbstractAllElementTypesReactionsTests {
 		compareMonitor.assertEqualWithStatic();
 		assertEquals(compareMonitor, SimpleChangesTestsExecutionMonitor.instance);
 		assertModelsEqual();
+		assertTrue(correspondenceModel.getCorrespondingEObjects(#[oldElement]).empty)
 	}
 
 	@Test
