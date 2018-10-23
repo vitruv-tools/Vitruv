@@ -32,7 +32,7 @@ final class ReactionsCorrespondenceHelper {
 	public static def ReactionsCorrespondence addCorrespondence(
 		CorrespondenceModel correspondenceModel, EObject source, EObject target, String tag) {
 		val correspondence = correspondenceModel.reactionsView.
-			createAndAddCorrespondence(#[source], #[target]) as ReactionsCorrespondence;
+			createAndAddCorrespondence(#[source], #[target]);
 		correspondence.tag = tag ?: "";
 		return correspondence;
 	}
