@@ -5,7 +5,6 @@ package tools.vitruv.framework.correspondence;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EDataType;
-import org.eclipse.emf.ecore.EOperation;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 
@@ -78,22 +77,13 @@ public interface CorrespondencePackage extends EPackage {
 	int CORRESPONDENCES__CORRESPONDENCES = 0;
 
 	/**
-	 * The feature id for the '<em><b>Correspondence Model</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int CORRESPONDENCES__CORRESPONDENCE_MODEL = 1;
-
-	/**
 	 * The number of structural features of the '<em>Correspondences</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int CORRESPONDENCES_FEATURE_COUNT = 2;
+	int CORRESPONDENCES_FEATURE_COUNT = 1;
 
 	/**
 	 * The number of operations of the '<em>Correspondences</em>' class.
@@ -196,31 +186,13 @@ public interface CorrespondencePackage extends EPackage {
 	int CORRESPONDENCE_FEATURE_COUNT = 8;
 
 	/**
-	 * The operation id for the '<em>Get As</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int CORRESPONDENCE___GET_AS = 0;
-
-	/**
-	 * The operation id for the '<em>Get Bs</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int CORRESPONDENCE___GET_BS = 1;
-
-	/**
 	 * The number of operations of the '<em>Correspondence</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int CORRESPONDENCE_OPERATION_COUNT = 2;
+	int CORRESPONDENCE_OPERATION_COUNT = 0;
 
 	/**
 	 * The meta object id for the '{@link tools.vitruv.framework.correspondence.impl.ManualCorrespondenceImpl <em>Manual Correspondence</em>}' class.
@@ -314,24 +286,6 @@ public interface CorrespondencePackage extends EPackage {
 	int MANUAL_CORRESPONDENCE_FEATURE_COUNT = CORRESPONDENCE_FEATURE_COUNT + 0;
 
 	/**
-	 * The operation id for the '<em>Get As</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int MANUAL_CORRESPONDENCE___GET_AS = CORRESPONDENCE___GET_AS;
-
-	/**
-	 * The operation id for the '<em>Get Bs</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int MANUAL_CORRESPONDENCE___GET_BS = CORRESPONDENCE___GET_BS;
-
-	/**
 	 * The number of operations of the '<em>Manual Correspondence</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -341,16 +295,6 @@ public interface CorrespondencePackage extends EPackage {
 	int MANUAL_CORRESPONDENCE_OPERATION_COUNT = CORRESPONDENCE_OPERATION_COUNT + 0;
 
 	/**
-	 * The meta object id for the '<em>Model</em>' data type.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see tools.vitruv.framework.correspondence.CorrespondenceModel
-	 * @see tools.vitruv.framework.correspondence.impl.CorrespondencePackageImpl#getCorrespondenceModel()
-	 * @generated
-	 */
-	int CORRESPONDENCE_MODEL = 3;
-
-	/**
 	 * The meta object id for the '<em>Tuid</em>' data type.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -358,7 +302,7 @@ public interface CorrespondencePackage extends EPackage {
 	 * @see tools.vitruv.framework.correspondence.impl.CorrespondencePackageImpl#getTuid()
 	 * @generated
 	 */
-	int TUID = 4;
+	int TUID = 3;
 
 
 	/**
@@ -381,17 +325,6 @@ public interface CorrespondencePackage extends EPackage {
 	 * @generated
 	 */
 	EReference getCorrespondences_Correspondences();
-
-	/**
-	 * Returns the meta object for the attribute '{@link tools.vitruv.framework.correspondence.Correspondences#getCorrespondenceModel <em>Correspondence Model</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Correspondence Model</em>'.
-	 * @see tools.vitruv.framework.correspondence.Correspondences#getCorrespondenceModel()
-	 * @see #getCorrespondences()
-	 * @generated
-	 */
-	EAttribute getCorrespondences_CorrespondenceModel();
 
 	/**
 	 * Returns the meta object for class '{@link tools.vitruv.framework.correspondence.Correspondence <em>Correspondence</em>}'.
@@ -492,26 +425,6 @@ public interface CorrespondencePackage extends EPackage {
 	EAttribute getCorrespondence_Tag();
 
 	/**
-	 * Returns the meta object for the '{@link tools.vitruv.framework.correspondence.Correspondence#getAs() <em>Get As</em>}' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the '<em>Get As</em>' operation.
-	 * @see tools.vitruv.framework.correspondence.Correspondence#getAs()
-	 * @generated
-	 */
-	EOperation getCorrespondence__GetAs();
-
-	/**
-	 * Returns the meta object for the '{@link tools.vitruv.framework.correspondence.Correspondence#getBs() <em>Get Bs</em>}' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the '<em>Get Bs</em>' operation.
-	 * @see tools.vitruv.framework.correspondence.Correspondence#getBs()
-	 * @generated
-	 */
-	EOperation getCorrespondence__GetBs();
-
-	/**
 	 * Returns the meta object for class '{@link tools.vitruv.framework.correspondence.ManualCorrespondence <em>Manual Correspondence</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -520,17 +433,6 @@ public interface CorrespondencePackage extends EPackage {
 	 * @generated
 	 */
 	EClass getManualCorrespondence();
-
-	/**
-	 * Returns the meta object for data type '{@link tools.vitruv.framework.correspondence.CorrespondenceModel <em>Model</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for data type '<em>Model</em>'.
-	 * @see tools.vitruv.framework.correspondence.CorrespondenceModel
-	 * @model instanceClass="tools.vitruv.framework.correspondence.CorrespondenceModel" serializeable="false"
-	 * @generated
-	 */
-	EDataType getCorrespondenceModel();
 
 	/**
 	 * Returns the meta object for data type '{@link tools.vitruv.framework.tuid.Tuid <em>Tuid</em>}'.
@@ -583,14 +485,6 @@ public interface CorrespondencePackage extends EPackage {
 		 * @generated
 		 */
 		EReference CORRESPONDENCES__CORRESPONDENCES = eINSTANCE.getCorrespondences_Correspondences();
-
-		/**
-		 * The meta object literal for the '<em><b>Correspondence Model</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EAttribute CORRESPONDENCES__CORRESPONDENCE_MODEL = eINSTANCE.getCorrespondences_CorrespondenceModel();
 
 		/**
 		 * The meta object literal for the '{@link tools.vitruv.framework.correspondence.impl.CorrespondenceImpl <em>Correspondence</em>}' class.
@@ -667,22 +561,6 @@ public interface CorrespondencePackage extends EPackage {
 		EAttribute CORRESPONDENCE__TAG = eINSTANCE.getCorrespondence_Tag();
 
 		/**
-		 * The meta object literal for the '<em><b>Get As</b></em>' operation.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EOperation CORRESPONDENCE___GET_AS = eINSTANCE.getCorrespondence__GetAs();
-
-		/**
-		 * The meta object literal for the '<em><b>Get Bs</b></em>' operation.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EOperation CORRESPONDENCE___GET_BS = eINSTANCE.getCorrespondence__GetBs();
-
-		/**
 		 * The meta object literal for the '{@link tools.vitruv.framework.correspondence.impl.ManualCorrespondenceImpl <em>Manual Correspondence</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -691,16 +569,6 @@ public interface CorrespondencePackage extends EPackage {
 		 * @generated
 		 */
 		EClass MANUAL_CORRESPONDENCE = eINSTANCE.getManualCorrespondence();
-
-		/**
-		 * The meta object literal for the '<em>Model</em>' data type.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @see tools.vitruv.framework.correspondence.CorrespondenceModel
-		 * @see tools.vitruv.framework.correspondence.impl.CorrespondencePackageImpl#getCorrespondenceModel()
-		 * @generated
-		 */
-		EDataType CORRESPONDENCE_MODEL = eINSTANCE.getCorrespondenceModel();
 
 		/**
 		 * The meta object literal for the '<em>Tuid</em>' data type.

@@ -176,6 +176,7 @@ routine deleteNonRootEObjectSingle(minimal::NonRoot containedObject) {
 		val targetElement = retrieve asserted minimal::NonRoot corresponding to containedObject
 	}
 	action {
+		remove correspondence between containedObject and targetElement
 		delete targetElement
 		call {
 			SimpleChangesTestsExecutionMonitor.instance.set(DeleteNonRootEObjectSingle);

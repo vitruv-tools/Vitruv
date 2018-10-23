@@ -40,7 +40,7 @@ class CorrespondenceModelUtil {
 	 * @param b
 	 * @return
 	 */
-	def public static Correspondence claimUniqueCorrespondence(CorrespondenceModel ci,
+	def public static Correspondence claimUniqueCorrespondence(CorrespondenceModelView<Correspondence> ci,
 		EObject eObject) {
 		return ci.getCorrespondences(eObject.toList).claimOne
 	}
@@ -53,13 +53,13 @@ class CorrespondenceModelUtil {
 	 *            the object for which correspondences are to be returned
 	 * @return the correspondences for the specified object
 	 */
-	def public static Set<Correspondence> claimCorrespondences(CorrespondenceModel ci,
+	def public static Set<Correspondence> claimCorrespondences(CorrespondenceModelView<?> ci,
 		EObject eObject) {
 		return ci.getCorrespondences(eObject.toList).claimNotEmpty as Set<Correspondence>
 	}
 
 	def public static Correspondence createAndAddCorrespondence(CorrespondenceModel ci, EObject a, EObject b) {
-		return ci.createAndAddCorrespondence(a.toList, b.toList)
+		return ci.createAndAddCorrespondence(a.toList, b.toList, null)
 	}
 
 	/**
@@ -82,27 +82,4 @@ class CorrespondenceModelUtil {
 		return retSet
 	}
 
-	/**
-	 * Returns all eObjects that have some correspondence and are an instance of the given class.
-	 * 
-	 * @param type
-	 *            the class for which instances should be returned
-	 * @return a set containing all eObjects of the given type that have a correspondence
-	 */
-	def public static <T, U extends Correspondence> Set<T> getAllEObjectsOfTypeInCorrespondences(
-		GenericCorrespondenceModel<U> ci, Class<T> type) {
-		return ci.allCorrespondencesWithoutDependencies.map[it.^as + it.bs].flatten.filter(type).toSet
-	}
-
-	def public static <T extends Correspondence> Set<T> getCorrespondencesBetweenEObjects(GenericCorrespondenceModel<T> ci,
-		Set<EObject> aS, Set<EObject> bS) {
-		val correspondencesThatInvolveAs = ci.getCorrespondencesThatInvolveAtLeast(aS)
-		val atuids = aS.mapFixed[ci.calculateTuidFromEObject(it)]
-		val btuids = bS.mapFixed[ci.calculateTuidFromEObject(it)]
-		val correspondencesBetweenEObjects = correspondencesThatInvolveAs.filter [
-			(it.getATuids.containsAll(atuids) && it.getBTuids.containsAll(btuids)) ||
-				(it.getATuids.containsAll(btuids) && it.getBTuids.containsAll(atuids))
-		]
-		return correspondencesBetweenEObjects.toSet
-	}
 }

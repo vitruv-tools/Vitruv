@@ -2,17 +2,13 @@
  */
 package tools.vitruv.framework.correspondence.impl;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
-import java.util.List;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
-import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
@@ -289,54 +285,6 @@ public abstract class CorrespondenceImpl extends MinimalEObjectImpl.Container im
 	}
 
 	/**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated NOT
-     */
-    @Override
-    public EList<EObject> getAs() {
-    	if (getATuids().isEmpty()) {
-    		return resolveEObjectsFromUuids(getAUuids());
-    	} else {
-    		return resolveEObjectsFromTuids(getATuids());
-    	}
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated NOT
-     */
-    @Override
-    public EList<EObject> getBs() {
-    	if (getBTuids().isEmpty()) {
-    		return resolveEObjectsFromUuids(getBUuids());
-    	} else {
-    		return resolveEObjectsFromTuids(getBTuids());
-    	}
-    }
-
-    /**
-     * @generated NOT
-     */
-    private EList<EObject> resolveEObjectsFromTuids(List<Tuid> tuids) {
-    	EList<EObject> result = new BasicEList<EObject>();
-    	for (Tuid tuid : tuids) {
-    		result.add(getParent().getCorrespondenceModel().resolveEObjectFromTuid(tuid));
-    	}
-    	return result;
-    }
-    
-    /**
-     * @generated NOT
-     */
-    private EList<EObject> resolveEObjectsFromUuids(List<String> uuids) {
-    	EList<EObject> result = new BasicEList<EObject>();
-   		result.addAll(getParent().getCorrespondenceModel().resolveEObjectsFromUuids(uuids));
-    	return result;
-    }
-    
-	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -530,26 +478,10 @@ public abstract class CorrespondenceImpl extends MinimalEObjectImpl.Container im
 	 * @generated
 	 */
 	@Override
-	public Object eInvoke(int operationID, EList<?> arguments) throws InvocationTargetException {
-		switch (operationID) {
-			case CorrespondencePackage.CORRESPONDENCE___GET_AS:
-				return getAs();
-			case CorrespondencePackage.CORRESPONDENCE___GET_BS:
-				return getBs();
-		}
-		return super.eInvoke(operationID, arguments);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
 	public String toString() {
 		if (eIsProxy()) return super.toString();
 
-		StringBuffer result = new StringBuffer(super.toString());
+		StringBuilder result = new StringBuilder(super.toString());
 		result.append(" (aTuids: ");
 		result.append(aTuids);
 		result.append(", bTuids: ");
