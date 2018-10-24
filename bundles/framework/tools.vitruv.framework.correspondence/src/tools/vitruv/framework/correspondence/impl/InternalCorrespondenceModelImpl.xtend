@@ -107,36 +107,9 @@ class InternalCorrespondenceModelImpl extends ModelInstance implements InternalC
 		var EList<Correspondence> correspondenceListForAddition = this.correspondences.getCorrespondences()
 		correspondenceListForAddition.add(correspondence)
 	}
-
-	override calculateTuidFromEObject(EObject eObject) {
-		val VitruvDomain metamodel = eObject.getMetamodelForEObject()
-		if (null === metamodel || !(metamodel instanceof TuidAwareVitruvDomain)) {
-			return null
-		}
-		val typedDomain = metamodel as TuidAwareVitruvDomain;
-		return typedDomain.calculateTuid(eObject)
-	}
-
-	@Deprecated
-	override calculateTuidFromEObject(EObject eObject, EObject virtualRootObject, String prefix) {
-		val VitruvDomain metamodel = eObject.getMetamodelForEObject()
-		if (null === metamodel || !(metamodel instanceof TuidAwareVitruvDomain)) {
-			return null
-		}
-		val typedDomain = metamodel as TuidAwareVitruvDomain
-		if (null === virtualRootObject || null === prefix) {
-			logger.info("virtualRootObject or prefix is null. Using standard calculation method for EObject " + eObject)
-			return typedDomain.calculateTuid(eObject)
-		}
-		return Tuid::getInstance(typedDomain.calculateTuidFromEObject(eObject, virtualRootObject, prefix))
-	}
-
+	
 	def private getMetamodelForEObject(EObject eObject) {
 		return this.domainRepository.getDomain(eObject);
-	}
-
-	private def List<Tuid> calculateTuidsFromEObjects(List<EObject> eObjects) {
-		return eObjects.mapFixed[calculateTuidFromEObject(it)].toList
 	}
 
 	override <C extends Correspondence> C createAndAddCorrespondence(List<EObject> eObjects1, List<EObject> eObjects2,
@@ -323,10 +296,6 @@ class InternalCorrespondenceModelImpl extends ModelInstance implements InternalC
 		}
 	}
 
-	override EObject resolveEObjectFromTuid(Tuid tuid) {
-		tuidResolver.resolveEObjectFromTuid(tuid);
-	}
-
 	private def void setChangedAfterLastSaveFlag() {
 		this.changedAfterLastSave = true
 	}
@@ -424,6 +393,23 @@ class InternalCorrespondenceModelImpl extends ModelInstance implements InternalC
 			setChangedAfterLastSaveFlag();
 			return null;
 		]));
+	}
+	
+	private def List<Tuid> calculateTuidsFromEObjects(List<EObject> eObjects) {
+		return eObjects.mapFixed[calculateTuidFromEObject(it)].toList
+	}
+		
+	private def calculateTuidFromEObject(EObject eObject) {
+		val VitruvDomain metamodel = eObject.getMetamodelForEObject()
+		if (null === metamodel || !(metamodel instanceof TuidAwareVitruvDomain)) {
+			return null
+		}
+		val typedDomain = metamodel as TuidAwareVitruvDomain;
+		return typedDomain.calculateTuid(eObject)
+	}
+	
+	private def EObject resolveEObjectFromTuid(Tuid tuid) {
+		tuidResolver.resolveEObjectFromTuid(tuid);
 	}
 
 	private def resolveEObjectFromUuid(String uuid) {

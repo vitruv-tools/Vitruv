@@ -2,7 +2,6 @@ package tools.vitruv.framework.tests.vsum
 
 import tools.vitruv.framework.util.datatypes.VURI
 import tools.vitruv.framework.correspondence.Correspondence
-import tools.vitruv.framework.tuid.Tuid
 import java.util.List
 import java.util.Set
 import org.apache.log4j.Logger
@@ -27,6 +26,7 @@ import tools.vitruv.framework.correspondence.CorrespondenceModel
 import tools.vitruv.framework.vsum.InternalVirtualModel
 import tools.vitruv.framework.util.datatypes.ModelInstance
 import org.eclipse.emf.common.util.URI
+import tools.vitruv.framework.tuid.TuidManager
 
 class CorrespondenceTest extends VsumTest {
 	static final Logger LOGGER = Logger.getLogger(CorrespondenceTest.getSimpleName())
@@ -63,14 +63,8 @@ class CorrespondenceTest extends VsumTest {
 			// create correspondence
 			var CorrespondenceModel correspondenceModel = testCorrespondenceModelCreation(vsum)
 			correspondenceModel.createAndAddCorrespondence(repo, pkg)
-			LOGGER.
-				trace('''Before we remove the pkg from the resource it has the tuid '«»«correspondenceModel.calculateTuidFromEObject(pkg)»'.''')
 			removePkgFromFileAndUpdateCorrespondence(pkg, correspondenceModel)
-			LOGGER.
-				trace('''After removing the pkg from the resource it has the tuid '«»«correspondenceModel.calculateTuidFromEObject(pkg)»'.''')
 			saveUPackageInNewFileAndUpdateCorrespondence(vsum, pkg, correspondenceModel)
-			LOGGER.
-				trace('''After adding the pkg to the new resource it has the tuid '«»«correspondenceModel.calculateTuidFromEObject(pkg)»'.''')
 			assertRepositoryCorrespondences(repo, correspondenceModel)
 			return null
 		])
@@ -84,8 +78,6 @@ class CorrespondenceTest extends VsumTest {
 			// create correspondence
 			var CorrespondenceModel correspondenceModel = testCorrespondenceModelCreation(vsum)
 			correspondenceModel.createAndAddCorrespondence(repo, pkg) // execute the test
-			LOGGER.
-				trace('''Before we remove the pkg from the resource it has the tuid '«»«correspondenceModel.calculateTuidFromEObject(pkg)»'.''')
 			moveUMLPackageTo(pkg, getTmpUMLInstanceURI(), vsum, correspondenceModel)
 			moveUMLPackageTo(pkg, getNewUMLInstanceURI(), vsum, correspondenceModel)
 			assertRepositoryCorrespondences(repo, correspondenceModel)
@@ -96,17 +88,14 @@ class CorrespondenceTest extends VsumTest {
 	def private void assertRepositoryCorrespondences(Repository repo,
 		CorrespondenceModel correspondenceModel) {
 		// get the correspondence of repo
-		var Set<Correspondence> correspondences = correspondenceModel.getCorrespondences(repo.toList, null)
-		assertEquals("Only one correspondence is expected for the repository.", 1, correspondences.size())
-		for (Correspondence correspondence : correspondences) {
-			var Correspondence eoc = correspondence
-			LOGGER.
-				info('''EObject with Tuid: «eoc.ATuids» corresponds to EObject with Tuid: «eoc.BTuids»''')
-			var EObject a = correspondenceModel.resolveEObjectFromTuid(eoc.ATuids.claimOne)
-			var EObject b = correspondenceModel.resolveEObjectFromTuid(eoc.BTuids.claimOne)
-			assertNotNull("Left Object is null", a)
-			assertNotNull("Right Object is null", b)
-			LOGGER.info('''A: «a» corresponds to B: «b»''')
+		correspondenceModel.getCorrespondences(repo.toList).claimOne;
+		var correspondingObjects = correspondenceModel.getCorrespondingEObjects(repo.toList).flatten
+		assertEquals("Only one corresonding object is expected for the repository.", 1, correspondingObjects.size())
+		for (correspondingObject : correspondingObjects) {
+			assertNotNull("Corresponding object is null", correspondingObject)
+			val reverseCorrespondingObjects = correspondenceModel.getCorrespondingEObjects(correspondingObject.toList).flatten
+			assertNotNull("Reverse corresponding object is null", reverseCorrespondingObjects.claimOne)
+			LOGGER.info('''A: «reverseCorrespondingObjects» corresponds to B: «correspondingObject»''')
 		}
 
 	}
@@ -132,9 +121,10 @@ class CorrespondenceTest extends VsumTest {
 
 	def private void removePkgFromFileAndUpdateCorrespondence(UPackage pkg,
 		CorrespondenceModel correspondenceModel) {
-		var Tuid oldTuid = correspondenceModel.calculateTuidFromEObject(pkg)
+		TuidManager.instance.registerObjectUnderModification(pkg);
 		EcoreUtil.remove(pkg)
-		oldTuid.updateTuid(pkg)
+		TuidManager.instance.updateTuidsOfRegisteredObjects;
+		TuidManager.instance.flushRegisteredObjectsUnderModification;
 	}
 
 	def private void testCorrespondencePersistence(InternalVirtualModel vsum, Repository repo, UPackage pkg,
