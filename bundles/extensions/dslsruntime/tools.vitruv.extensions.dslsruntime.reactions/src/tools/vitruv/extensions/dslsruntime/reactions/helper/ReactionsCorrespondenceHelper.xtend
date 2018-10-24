@@ -4,17 +4,15 @@ import java.util.ArrayList
 import org.eclipse.xtext.xbase.lib.Functions.Function1
 import org.eclipse.emf.ecore.EObject
 import tools.vitruv.dsls.reactions.meta.correspondence.reactions.ReactionsCorrespondence
-import tools.vitruv.dsls.reactions.meta.correspondence.reactions.ReactionsFactory
 import java.util.List
 import tools.vitruv.framework.correspondence.CorrespondenceModel
+import tools.vitruv.extensions.dslsruntime.reactions.ReactionsCorrespondenceModelViewFactory
 
 final class ReactionsCorrespondenceHelper {
 	private new() {}
 
 	private static def getReactionsView(CorrespondenceModel correspondenceModel) {
-		return correspondenceModel.getEditableView(ReactionsCorrespondence, [
-			ReactionsFactory.eINSTANCE.createReactionsCorrespondence()
-		]);
+		return correspondenceModel.getEditableView(ReactionsCorrespondenceModelViewFactory.instance);
 	}
 
 	public static def removeCorrespondencesBetweenElements(CorrespondenceModel correspondenceModel,

@@ -38,6 +38,9 @@ import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
 import static extension tools.vitruv.framework.util.bridges.JavaBridge.*
 import static extension tools.vitruv.framework.correspondence.CorrespondenceUtil.*
 import tools.vitruv.framework.correspondence.InternalCorrespondenceModel
+import tools.vitruv.framework.correspondence.CorrespondenceModelView
+import tools.vitruv.framework.correspondence.CorrespondenceModelViewFactory
+import java.util.function.Predicate
 
 // TODO move all methods that don't need direct instance variable access to some kind of util class
 class InternalCorrespondenceModelImpl extends ModelInstance implements InternalCorrespondenceModel, TuidUpdateListener {
@@ -189,14 +192,6 @@ class InternalCorrespondenceModelImpl extends ModelInstance implements InternalC
 		return this.correspondences.correspondences.filter[AUuids.containsAll(uuids) || BUuids.containsAll(uuids)].toSet
 	}
 
-	override Set<List<EObject>> getCorrespondingEObjects(List<EObject> eObjects) {
-		this.getCorrespondingEObjects(eObjects, null);
-	}
-
-	override Set<List<EObject>> getCorrespondingEObjects(List<EObject> eObjects, String tag) {
-		this.getCorrespondingEObjects(Correspondence, eObjects, tag);
-	}
-
 	private def haveUuids(List<EObject> eObjects) {
 		if (eObjects.forall[domainRepository.getDomain(it).supportsUuids]) {
 			if (eObjects.forall[uuidResolver.hasPotentiallyCachedUuid(it)]) {
@@ -218,7 +213,11 @@ class InternalCorrespondenceModelImpl extends ModelInstance implements InternalC
 		return result.toSet;
 	}
 	
-	def List<EObject> resolveCorrespondingObjects(Correspondence correspondence, List<EObject> eObjects) {
+	override List<EObject> getCorrespondingEObjectsInCorrespondence(Correspondence correspondence, List<EObject> eObjects) {
+		resolveCorrespondingObjects(correspondence, eObjects)	
+	}
+
+	private def List<EObject> resolveCorrespondingObjects(Correspondence correspondence, List<EObject> eObjects) {
 		if (correspondence.isUuidBased) {
 			val uuids = eObjects.map[uuidResolver.getPotentiallyCachedUuid(it)];
 			val correspondingUuids = correspondence.getCorrespondingUuids(uuids);
@@ -482,17 +481,16 @@ class InternalCorrespondenceModelImpl extends ModelInstance implements InternalC
 		].flatten.filter(type).toSet
 	}
 
-	override <U extends Correspondence> getView(Class<U> correspondenceType) {
-		return new CorrespondenceModelViewImpl(correspondenceType, this);
+	override <V extends CorrespondenceModelView<?>> getView(CorrespondenceModelViewFactory<V> correspondenceModelViewFactory) {
+		return correspondenceModelViewFactory.createCorrespondenceModelView(this);
 	}
 
-	override <U extends Correspondence> getEditableView(Class<U> correspondenceType,
-		Supplier<U> correspondenceCreator) {
-		return new CorrespondenceModelViewImpl(correspondenceType, this, correspondenceCreator);
+	override <V extends CorrespondenceModelView<?>> getEditableView(CorrespondenceModelViewFactory<V> correspondenceModelViewFactory) {
+		return correspondenceModelViewFactory.createEditableCorrespondenceModelView(this);
 	}
 
 	override getGenericView() {
 		return new GenericCorrespondenceModelViewImpl(this);
 	}
-	
+
 }
