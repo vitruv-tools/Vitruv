@@ -7,7 +7,6 @@ import org.eclipse.emf.ecore.EObject
 import static extension tools.vitruv.framework.util.bridges.CollectionBridge.toList
 import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
 import tools.vitruv.framework.correspondence.CorrespondenceModel
-import tools.vitruv.framework.correspondence.GenericCorrespondenceModel
 import tools.vitruv.framework.correspondence.Correspondence
 
 class CorrespondenceModelUtil {
@@ -24,7 +23,7 @@ class CorrespondenceModelUtil {
 	 *         no correspondences.
 	 */
 	// FIXME ML is this method correct? Is there some cool Xtend feature which makes this method shorter? 
-	def public static Set<EObject> getCorrespondingEObjects(GenericCorrespondenceModel<?> ci, EObject eObject) {
+	def public static Set<EObject> getCorrespondingEObjects(CorrespondenceModelView<?> ci, EObject eObject) {
 		val correspondingEObjects = ci.getCorrespondingEObjects(eObject.toList)
 		val eObjects = Sets.newHashSet
 		correspondingEObjects.forEach(list|eObjects.addAll(list))
@@ -74,7 +73,7 @@ class CorrespondenceModelUtil {
 	 * @return the corresponding object of the specified type for the specified object if there is
 	 *         exactly one corresponding object of this type
 	 */
-	def public static <T, U extends Correspondence> Set<T> getCorrespondingEObjectsByType(GenericCorrespondenceModel<U> ci,
+	def public static <T, U extends Correspondence> Set<T> getCorrespondingEObjectsByType(CorrespondenceModelView<U> ci,
 		EObject eObject, Class<T> type) {
 		// return getCorrespondingEObjects(ci, eObject).filter[eObj | type.isInstance(eObj)].toSet
 		val Set<T> retSet = Sets.newHashSet
