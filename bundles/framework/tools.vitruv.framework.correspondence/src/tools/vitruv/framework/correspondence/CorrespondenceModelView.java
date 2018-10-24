@@ -71,6 +71,28 @@ public interface CorrespondenceModelView<T extends Correspondence> extends Gener
 	public T claimUniqueCorrespondence(final List<EObject> aEObjects, final List<EObject> bEObjects);
 
 	/**
+	 * Returns all elements corresponding to the given one.
+	 * 
+	 * @param eObjects
+	 *            - the objects to get the corresponding ones for
+	 * @return the elements corresponding to the given ones
+	 */
+	public Set<List<EObject>> getCorrespondingEObjects(List<EObject> eObjects);
+
+	/**
+	 * Returns the elements corresponding to the given one, if the correspondence
+	 * contains the given tag.
+	 * 
+	 * @param eObjects
+	 *            - the objects to get the corresponding ones for
+	 * @param tag
+	 *            - the tag to filter correspondences for. If the tag is
+	 *            <code>null</code>, all correspondences will be returned
+	 * @return the elements corresponding to the given ones
+	 */
+	public Set<List<EObject>> getCorrespondingEObjects(List<EObject> eObjects, String tag);
+	
+	/**
 	 * Removes the correspondences between the given lists of {@link EObjects} with
 	 * the given tag.
 	 * 

@@ -1,8 +1,6 @@
 package tools.vitruv.framework.correspondence;
 
 import java.util.List;
-import java.util.Set;
-import java.util.function.Supplier;
 
 import org.eclipse.emf.ecore.EObject;
 
@@ -22,7 +20,8 @@ import tools.vitruv.framework.util.datatypes.URIHaving;
  * @author kramerm
  * @author Heiko Klare
  * 
- * @param <T> - the type of correspondence that is handled
+ * @param <T>
+ *            - the type of correspondence that is handled
  */
 public interface GenericCorrespondenceModel<T extends Correspondence>
 		extends URIHaving, TuidResolvingCorrespondenceModel {
@@ -30,10 +29,13 @@ public interface GenericCorrespondenceModel<T extends Correspondence>
 	 * Creates a {@link ManualCorresponendce} with the given tag between the given
 	 * lists of {@link EObject}s.
 	 * 
-	 * @param eObjects1 - the first list of {@link EObject}s
-	 * @param eObjects2 - the second list of {@link EObject}s
-	 * @param tag       - the tag to be added to the correspondence or
-	 *                  <code>null</code> if none shall be added
+	 * @param eObjects1
+	 *            - the first list of {@link EObject}s
+	 * @param eObjects2
+	 *            - the second list of {@link EObject}s
+	 * @param tag
+	 *            - the tag to be added to the correspondence or <code>null</code>
+	 *            if none shall be added
 	 * @return the created correspondence
 	 */
 	public Correspondence createAndAddManualCorrespondence(List<EObject> eObjects1, List<EObject> eObjects2,
@@ -42,7 +44,8 @@ public interface GenericCorrespondenceModel<T extends Correspondence>
 	/**
 	 * Returns whether at least one object corresponds to the given object.
 	 *
-	 * @param eObject - the object for which correspondences should be looked up
+	 * @param eObject
+	 *            - the object for which correspondences should be looked up
 	 * @return true if number of corresponding objects > 0
 	 */
 
@@ -54,53 +57,56 @@ public interface GenericCorrespondenceModel<T extends Correspondence>
 	 * @return true if # of correspondences > 0
 	 */
 	public boolean hasCorrespondences();
-
+	
 	/**
-	 * Returns all elements corresponding to the given one.
+	 * Returns the elements corresponding to the given ones in the given correspondence.
 	 * 
-	 * @param eObjects - the objects to get the corresponding ones for
+	 * @param correspondence
+	 *            - the correspondence to investigate
+	 * @param eObjects
+	 *            - the objects to get the corresponding ones for
 	 * @return the elements corresponding to the given ones
 	 */
-	public Set<List<EObject>> getCorrespondingEObjects(List<EObject> eObjects);
-
+	public List<EObject> getCorrespondingEObjectsInCorrespondence(Correspondence correspondence, 
+			List<EObject> eObjects);
+	
 	/**
-	 * Returns the elements corresponding to the given one, if the correspondence
-	 * contains the given tag.
+	 * Returns all correspondences in this correspondence model.
 	 * 
-	 * @param eObjects - the objects to get the corresponding ones for
-	 * @param tag      - the tag to filter correspondences for. If the tag is
-	 *                 <code>null</code>, all correspondences will be returned
-	 * @return the elements corresponding to the given ones
+	 * @return all correspondences in this correspondence model
 	 */
-	public Set<List<EObject>> getCorrespondingEObjects(List<EObject> eObjects, String tag);
+	public List<Correspondence> getAllCorrespondences();
 
 	/**
 	 * Returns a view on the {@link GenericCorrespondenceModel} restricted to the
 	 * specified kind of {@link Correspondence}. The functions of the view will only
 	 * act on the given implementation of {@link Correspondence}s.
 	 *
-	 * @param correspondenceType - the type of {@link Correspondence}s to be handled
-	 *                           by the view
+	 * @param correspondenceModelViewFactory
+	 *            - the factory for creating views for the type of
+	 *            {@link Correspondence}s of interest
 	 * @return the restricted view on the {@link GenericCorrespondenceModel}
 	 * @author Heiko Klare
 	 */
-	public <U extends Correspondence> CorrespondenceModelView<U> getView(Class<U> correspondenceType);
+	public <V extends CorrespondenceModelView<?>> V getView(
+			CorrespondenceModelViewFactory<V> correspondenceModelViewFactory);
 
 	/**
 	 * Creates a editable view on the {@link CorrespondenceModel} restricted to the
 	 * specified kind of {@link Correspondence}. To enable the creation of new
 	 * Correspondences a Supplier method has to be provided to the writable view.
 	 *
-	 * @param correspondenceType    - the type of {@link Correspondence}s to be
-	 *                              handled by the view
-	 * @param correspondenceCreator - a supplier that creates a new
-	 *                              {@link Correspondence} of appropriate type on
-	 *                              demand
+	* @param correspondenceModelViewFactory
+	 *            - the factory for creating views for the type of
+	 *            {@link Correspondence}s of interest
+	 * @param correspondenceCreator
+	 *            - a supplier that creates a new {@link Correspondence} of
+	 *            appropriate type on demand
 	 * @return the restricted editable view on the {@link CorrespondenceModel}
 	 * @author Heiko Klare
 	 */
-	public <U extends Correspondence> CorrespondenceModelView<U> getEditableView(Class<U> correspondenceType,
-			Supplier<U> correspondenceCreator);
+	public <V extends CorrespondenceModelView<?>> V getEditableView(
+			CorrespondenceModelViewFactory<V> correspondenceModelViewFactory);
 
 	/**
 	 * Creates a generic {@link CorrespondenceModel} view on the

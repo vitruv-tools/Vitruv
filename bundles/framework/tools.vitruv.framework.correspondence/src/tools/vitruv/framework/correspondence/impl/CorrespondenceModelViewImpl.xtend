@@ -8,12 +8,20 @@ import tools.vitruv.framework.correspondence.Correspondence
 import tools.vitruv.framework.tuid.Tuid
 import tools.vitruv.framework.correspondence.CorrespondenceModelView
 import tools.vitruv.framework.correspondence.InternalCorrespondenceModel
+import tools.vitruv.framework.correspondence.CorrespondenceModelViewFactory
+import org.eclipse.xtend.lib.annotations.Accessors
+import java.util.function.Predicate
 
 class CorrespondenceModelViewImpl<T extends Correspondence> implements CorrespondenceModelView<T> {
+	@Accessors(PROTECTED_GETTER)
 	private final InternalCorrespondenceModel correspondenceModelDelegate;
+	@Accessors(PROTECTED_GETTER)
 	private final Class<T> correspondenceType;
 	private final Supplier<T> correspondenceCreator
-
+	
+	@Accessors(PROTECTED_GETTER)
+	private final Predicate<T> defaultCorrespondenceFilter;
+	 
 	public new(Class<T> correspondenceType, InternalCorrespondenceModel correspondenceModel) {
 		this(correspondenceType, correspondenceModel, null)
 	}
@@ -21,6 +29,7 @@ class CorrespondenceModelViewImpl<T extends Correspondence> implements Correspon
 	public new(Class<T> correspondenceType, InternalCorrespondenceModel correspondenceModel,
 		Supplier<T> correspondenceCreator) {
 		this.correspondenceType = correspondenceType;
+		this.defaultCorrespondenceFilter =  [true];
 		this.correspondenceModelDelegate = correspondenceModel;
 		this.correspondenceCreator = correspondenceCreator
 	}
@@ -53,12 +62,17 @@ class CorrespondenceModelViewImpl<T extends Correspondence> implements Correspon
 		correspondenceModelDelegate.hasCorrespondences();
 	}
 	
+	override getAllCorrespondences() {
+		correspondenceModelDelegate.allCorrespondences;
+	}
+	
+	
 	override getCorrespondences(List<EObject> eObjects) {
 		getCorrespondences(eObjects, null);
 	}
 	
 	override getCorrespondences(List<EObject> eObjects, String tag) {
-		correspondenceModelDelegate.getCorrespondences(correspondenceType, eObjects, tag).toSet();
+		correspondenceModelDelegate.getCorrespondences(correspondenceType, defaultCorrespondenceFilter, eObjects, tag).toSet();
 	}
 
 	override claimUniqueCorrespondence(List<EObject> aEObjects, List<EObject> bEObjects) {
@@ -72,34 +86,37 @@ class CorrespondenceModelViewImpl<T extends Correspondence> implements Correspon
 		}
 		return correspondencesA.get(0);
 	}
+	
+	override getCorrespondingEObjectsInCorrespondence(Correspondence correspondence, List<EObject> eObjects) {
+		correspondenceModelDelegate.getCorrespondingEObjectsInCorrespondence(correspondence, eObjects);
+	}
 
 	override getCorrespondingEObjects(List<EObject> eObjects) {
-		correspondenceModelDelegate.getCorrespondingEObjects(correspondenceType, eObjects, null);
+		correspondenceModelDelegate.getCorrespondingEObjects(correspondenceType, defaultCorrespondenceFilter, eObjects, null);
 	}
 
 	override getCorrespondingEObjects(List<EObject> eObjects, String tag) {
-		correspondenceModelDelegate.getCorrespondingEObjects(correspondenceType, eObjects, tag);
+		correspondenceModelDelegate.getCorrespondingEObjects(correspondenceType, defaultCorrespondenceFilter, eObjects, tag);
 	}
 
 	override <E> getAllEObjectsOfTypeInCorrespondences(Class<E> type) {
-		correspondenceModelDelegate.getAllEObjectsOfTypeInCorrespondences(correspondenceType, type);
+		correspondenceModelDelegate.getAllEObjectsOfTypeInCorrespondences(correspondenceType, defaultCorrespondenceFilter, type);
 	}
 	
 	override removeCorrespondencesBetween(List<EObject> aEObjects, List<EObject> bEObjects, String tag) {
-		correspondenceModelDelegate.removeCorrespondencesBetween(correspondenceType, aEObjects, bEObjects, tag);
+		correspondenceModelDelegate.removeCorrespondencesBetween(correspondenceType, defaultCorrespondenceFilter, aEObjects, bEObjects, tag);
 	}
 
 	override removeCorrespondencesFor(List<EObject> eObjects, String tag) {
-		correspondenceModelDelegate.removeCorrespondencesFor(correspondenceType, eObjects, tag);
+		correspondenceModelDelegate.removeCorrespondencesFor(correspondenceType, defaultCorrespondenceFilter, eObjects, tag);
 	}
 	
-	override <U extends Correspondence> getView(Class<U> correspondenceType) {
-		correspondenceModelDelegate.getView(correspondenceType);
+	override <V extends CorrespondenceModelView<?>> getView(CorrespondenceModelViewFactory<V> correspondenceModelViewFactory) {
+		correspondenceModelDelegate.getView(correspondenceModelViewFactory);
 	}
 	
-	override <U extends Correspondence> getEditableView(Class<U> correspondenceType,
-		Supplier<U> correspondenceCreator) {
-		correspondenceModelDelegate.getEditableView(correspondenceType, correspondenceCreator)
+	override <V extends CorrespondenceModelView<?>> getEditableView(CorrespondenceModelViewFactory<V> correspondenceModelViewFactory) {
+		correspondenceModelDelegate.getEditableView(correspondenceModelViewFactory)
 	}
 	
 	override getGenericView() {
@@ -117,5 +134,5 @@ class CorrespondenceModelViewImpl<T extends Correspondence> implements Correspon
 	override resolveEObjectFromTuid(Tuid tuid) {
 		correspondenceModelDelegate.resolveEObjectFromTuid(tuid);
 	}
-
+	
 }
