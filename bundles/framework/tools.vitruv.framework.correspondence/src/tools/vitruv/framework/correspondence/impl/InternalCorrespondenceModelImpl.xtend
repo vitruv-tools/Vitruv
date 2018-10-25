@@ -107,7 +107,7 @@ class InternalCorrespondenceModelImpl extends ModelInstance implements InternalC
 		var EList<Correspondence> correspondenceListForAddition = this.correspondences.getCorrespondences()
 		correspondenceListForAddition.add(correspondence)
 	}
-	
+
 	def private getMetamodelForEObject(EObject eObject) {
 		return this.domainRepository.getDomain(eObject);
 	}
@@ -118,39 +118,43 @@ class InternalCorrespondenceModelImpl extends ModelInstance implements InternalC
 		createAndAddCorrespondence(eObjects1, eObjects2, tag, correspondence)
 	}
 
-	override Correspondence createAndAddManualCorrespondence(List<EObject> eObjects1, List<EObject> eObjects2, String tag) {
+	override Correspondence createAndAddManualCorrespondence(List<EObject> eObjects1, List<EObject> eObjects2,
+		String tag) {
 		val correspondence = CorrespondenceFactory.eINSTANCE.createManualCorrespondence
 		createAndAddCorrespondence(eObjects1, eObjects2, tag, correspondence)
 	}
 
-	def private <C extends Correspondence> C createAndAddCorrespondence(List<EObject> eObjects1, List<EObject> eObjects2,
-		String tag, C correspondence) {
+	def private <C extends Correspondence> C createAndAddCorrespondence(List<EObject> eObjects1,
+		List<EObject> eObjects2, String tag, C correspondence) {
 		setCorrespondenceFeatures(correspondence, eObjects1, eObjects2, tag)
 		addCorrespondence(correspondence)
 		return correspondence
 	}
 
-	override <C extends Correspondence> Set<C> getCorrespondences(Class<C> correspondenceType, Predicate<C> correspondencesFilter, List<EObject> eObjects, String tag) {
+	override <C extends Correspondence> Set<C> getCorrespondences(Class<C> correspondenceType,
+		Predicate<C> correspondencesFilter, List<EObject> eObjects, String tag) {
 		val Set<Correspondence> correspondences = new HashSet<Correspondence>()
 		if (eObjects.haveUuids) {
 			val uuids = eObjects.map[uuidResolver.getPotentiallyCachedUuid(it)];
 			correspondences += getCorrespondencesForUuids(uuids);
 		}
-		
+
 		val List<Tuid> tuids = calculateTuidsFromEObjects(eObjects)
 		correspondences += getCorrespondencesForTuids(tuids);
-		
-		return correspondences.filter(correspondenceType).filter(correspondencesFilter).filter[tag === null || it.tag == tag].toSet;
+
+		return correspondences.filter(correspondenceType).filter(correspondencesFilter).filter [
+			tag === null || it.tag == tag
+		].toSet;
 	}
 
 	/**
-     * Returns all correspondences for the object with the specified tuid and an empty set if the
-     * object has no correspondences. Should never return {@link null}.
-     *
-     * @param tuids
-     * @return all correspondences for the object with the specified tuid and an empty set if the
-     *         object has no correspondences.
-     */
+	 * Returns all correspondences for the object with the specified tuid and an empty set if the
+	 * object has no correspondences. Should never return {@link null}.
+	 * 
+	 * @param tuids
+	 * @return all correspondences for the object with the specified tuid and an empty set if the
+	 *         object has no correspondences.
+	 */
 	private def Set<Correspondence> getCorrespondencesForTuids(List<Tuid> tuids) {
 		var Set<Correspondence> correspondences = this.tuid2CorrespondencesMap.get(tuids)
 		if (correspondences === null) {
@@ -176,8 +180,8 @@ class InternalCorrespondenceModelImpl extends ModelInstance implements InternalC
 		return false;
 	}
 
-	override <C extends Correspondence> Set<List<EObject>> getCorrespondingEObjects(Class<C> correspondenceType, Predicate<C> correspondencesFilter,
-		List<EObject> eObjects, String tag) {
+	override <C extends Correspondence> Set<List<EObject>> getCorrespondingEObjects(Class<C> correspondenceType,
+		Predicate<C> correspondencesFilter, List<EObject> eObjects, String tag) {
 		val Set<List<EObject>> result = newHashSet;
 		val correspondences = getCorrespondences(correspondenceType, correspondencesFilter, eObjects, tag);
 		for (correspondence : correspondences) {
@@ -185,9 +189,10 @@ class InternalCorrespondenceModelImpl extends ModelInstance implements InternalC
 		}
 		return result.toSet;
 	}
-	
-	override List<EObject> getCorrespondingEObjectsInCorrespondence(Correspondence correspondence, List<EObject> eObjects) {
-		resolveCorrespondingObjects(correspondence, eObjects)	
+
+	override List<EObject> getCorrespondingEObjectsInCorrespondence(Correspondence correspondence,
+		List<EObject> eObjects) {
+		resolveCorrespondingObjects(correspondence, eObjects)
 	}
 
 	private def List<EObject> resolveCorrespondingObjects(Correspondence correspondence, List<EObject> eObjects) {
@@ -275,17 +280,19 @@ class InternalCorrespondenceModelImpl extends ModelInstance implements InternalC
 	}
 
 	def private void removeCorrespondenceFromMaps(Correspondence markedCorrespondence) {
-		var List<Tuid> aTuids = markedCorrespondence.getATuids
-		var List<Tuid> bTuids = markedCorrespondence.getBTuids
-		removeTuid2TuidListsEntries(aTuids)
-		removeTuid2TuidListsEntries(bTuids)
-		this.tuid2CorrespondencesMap.get(aTuids).remove(markedCorrespondence);
-		if (tuid2CorrespondencesMap.get(aTuids).empty) {
-			tuid2CorrespondencesMap.remove(aTuids);
-		}
-		this.tuid2CorrespondencesMap.get(bTuids).remove(markedCorrespondence);
-		if (tuid2CorrespondencesMap.get(bTuids).empty) {
-			tuid2CorrespondencesMap.remove(bTuids);
+		if (!markedCorrespondence.ATuids.nullOrEmpty && !markedCorrespondence.BTuids.nullOrEmpty) {
+			var List<Tuid> aTuids = markedCorrespondence.getATuids
+			var List<Tuid> bTuids = markedCorrespondence.getBTuids
+			removeTuid2TuidListsEntries(aTuids)
+			removeTuid2TuidListsEntries(bTuids)
+			this.tuid2CorrespondencesMap.get(aTuids).remove(markedCorrespondence);
+			if (tuid2CorrespondencesMap.get(aTuids).empty) {
+				tuid2CorrespondencesMap.remove(aTuids);
+			}
+			this.tuid2CorrespondencesMap.get(bTuids).remove(markedCorrespondence);
+			if (tuid2CorrespondencesMap.get(bTuids).empty) {
+				tuid2CorrespondencesMap.remove(bTuids);
+			}
 		}
 	}
 
@@ -299,7 +306,7 @@ class InternalCorrespondenceModelImpl extends ModelInstance implements InternalC
 	private def void setChangedAfterLastSaveFlag() {
 		this.changedAfterLastSave = true
 	}
-	
+
 	private def void resetChangedAfterLastSaveFlag() {
 		this.changedAfterLastSave = false
 	}
@@ -394,11 +401,11 @@ class InternalCorrespondenceModelImpl extends ModelInstance implements InternalC
 			return null;
 		]));
 	}
-	
+
 	private def List<Tuid> calculateTuidsFromEObjects(List<EObject> eObjects) {
 		return eObjects.mapFixed[calculateTuidFromEObject(it)].toList
 	}
-		
+
 	private def calculateTuidFromEObject(EObject eObject) {
 		val VitruvDomain metamodel = eObject.getMetamodelForEObject()
 		if (null === metamodel || !(metamodel instanceof TuidAwareVitruvDomain)) {
@@ -407,7 +414,7 @@ class InternalCorrespondenceModelImpl extends ModelInstance implements InternalC
 		val typedDomain = metamodel as TuidAwareVitruvDomain;
 		return typedDomain.calculateTuid(eObject)
 	}
-	
+
 	private def EObject resolveEObjectFromTuid(Tuid tuid) {
 		tuidResolver.resolveEObjectFromTuid(tuid);
 	}
@@ -416,10 +423,11 @@ class InternalCorrespondenceModelImpl extends ModelInstance implements InternalC
 		return uuidResolver.getPotentiallyCachedEObject(uuid)
 	}
 
-	override <C extends Correspondence> Set<Correspondence> removeCorrespondencesBetween(Class<C> correspondenceType, Predicate<C> correspondencesFilter, List<EObject> aEObjects, List<EObject> bEObjects, String tag) {
+	override <C extends Correspondence> Set<Correspondence> removeCorrespondencesBetween(Class<C> correspondenceType,
+		Predicate<C> correspondencesFilter, List<EObject> aEObjects, List<EObject> bEObjects, String tag) {
 		val removedCorrespondences = newArrayList;
 		val correspondences = getCorrespondences(correspondenceType, correspondencesFilter, aEObjects, tag);
-		for (correspondence : correspondences) { 
+		for (correspondence : correspondences) {
 			val correspondingEObjects = resolveCorrespondingObjects(correspondence, aEObjects);
 			if (EcoreUtil.equals(bEObjects, correspondingEObjects)) {
 				removedCorrespondences += removeCorrespondencesAndDependendCorrespondences(correspondence);
@@ -428,11 +436,12 @@ class InternalCorrespondenceModelImpl extends ModelInstance implements InternalC
 		return removedCorrespondences.toSet;
 	}
 
-	override <C extends Correspondence> Set<Correspondence> removeCorrespondencesFor(Class<C> correspondenceType, Predicate<C> correspondencesFilter, List<EObject> eObjects, String tag) {
+	override <C extends Correspondence> Set<Correspondence> removeCorrespondencesFor(Class<C> correspondenceType,
+		Predicate<C> correspondencesFilter, List<EObject> eObjects, String tag) {
 		val correspondences = getCorrespondences(correspondenceType, correspondencesFilter, eObjects, tag);
 		return correspondences.toList.mapFixed[removeCorrespondencesAndDependendCorrespondences].flatten.toSet
 	}
-	
+
 	private def Set<Correspondence> removeCorrespondencesAndDependendCorrespondences(Correspondence correspondence) {
 		var Set<Correspondence> markedCorrespondences = new HashSet<Correspondence>()
 		markCorrespondenceAndDependingCorrespondencesRecursively(markedCorrespondences, correspondence)
@@ -456,11 +465,11 @@ class InternalCorrespondenceModelImpl extends ModelInstance implements InternalC
 			setChangedAfterLastSaveFlag()
 		}
 	}
-	
+
 	override <E, C extends Correspondence> getAllEObjectsOfTypeInCorrespondences(Class<C> correspondenceType,
 		Predicate<C> correspondencesFilter, Class<E> type) {
-		allCorrespondences.filter(correspondenceType).filter(correspondencesFilter).map[
-			if(it.isUuidBased) {
+		allCorrespondences.filter(correspondenceType).filter(correspondencesFilter).map [
+			if (it.isUuidBased) {
 				(it.AUuids + it.BUuids).toList.map[resolveEObjectFromUuid]
 			} else {
 				(it.ATuids + it.BTuids).toList.map[resolveEObjectFromTuid]
@@ -468,11 +477,13 @@ class InternalCorrespondenceModelImpl extends ModelInstance implements InternalC
 		].flatten.filter(type).toSet
 	}
 
-	override <V extends CorrespondenceModelView<?>> getView(CorrespondenceModelViewFactory<V> correspondenceModelViewFactory) {
+	override <V extends CorrespondenceModelView<?>> getView(
+		CorrespondenceModelViewFactory<V> correspondenceModelViewFactory) {
 		return correspondenceModelViewFactory.createCorrespondenceModelView(this);
 	}
 
-	override <V extends CorrespondenceModelView<?>> getEditableView(CorrespondenceModelViewFactory<V> correspondenceModelViewFactory) {
+	override <V extends CorrespondenceModelView<?>> getEditableView(
+		CorrespondenceModelViewFactory<V> correspondenceModelViewFactory) {
 		return correspondenceModelViewFactory.createEditableCorrespondenceModelView(this);
 	}
 
