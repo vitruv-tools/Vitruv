@@ -23,8 +23,7 @@ import tools.vitruv.framework.util.datatypes.URIHaving;
  * @param <T>
  *            - the type of correspondence that is handled
  */
-public interface GenericCorrespondenceModel<T extends Correspondence>
-		extends URIHaving, TuidResolvingCorrespondenceModel {
+public interface GenericCorrespondenceModel<T extends Correspondence> extends URIHaving {
 	/**
 	 * Creates a {@link ManualCorresponendce} with the given tag between the given
 	 * lists of {@link EObject}s.

@@ -5,7 +5,6 @@ import java.util.Set
 import org.eclipse.emf.ecore.EObject
 import java.util.function.Supplier
 import tools.vitruv.framework.correspondence.Correspondence
-import tools.vitruv.framework.tuid.Tuid
 import tools.vitruv.framework.correspondence.CorrespondenceModelView
 import tools.vitruv.framework.correspondence.InternalCorrespondenceModel
 import tools.vitruv.framework.correspondence.CorrespondenceModelViewFactory
@@ -123,16 +122,4 @@ class CorrespondenceModelViewImpl<T extends Correspondence> implements Correspon
 		correspondenceModelDelegate.genericView;
 	}
 		
-	override calculateTuidFromEObject(EObject eObject) {
-		correspondenceModelDelegate.calculateTuidFromEObject(eObject);
-	}
-
-	override calculateTuidFromEObject(EObject eObject, EObject virtualRootObject, String prefix) {
-		correspondenceModelDelegate.calculateTuidFromEObject(eObject, virtualRootObject, prefix);
-	}
-
-	override resolveEObjectFromTuid(Tuid tuid) {
-		correspondenceModelDelegate.resolveEObjectFromTuid(tuid);
-	}
-	
 }
