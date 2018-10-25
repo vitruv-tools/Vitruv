@@ -11,7 +11,11 @@ import org.eclipse.pde.core.project.IBundleProjectService;
 import org.eclipse.pde.core.project.IRequiredBundleDescription;
 import org.eclipse.pde.internal.core.PDECore;
 import org.eclipse.pde.internal.core.WorkspaceModelManager;
+
+import com.google.common.collect.Lists;
+
 import java.lang.reflect.*;
+import java.util.Optional;
 
 // TODO DW: move this functionality to another plugin, if necessary. remove dependencies from this project
 @SuppressWarnings("restriction")
@@ -34,7 +38,11 @@ public class EclipsePluginHelper {
 		// to expecting the class itself. To avoid version incompatibilities, we employ reflection to
 		// invoke the correct method version, depending on which is available.
 		try {
-			Method acquireMethod = PDECore.class.getMethod("acquireService");
+			Optional<Method> potentialAcquireMethod = Lists.newArrayList(PDECore.class.getMethods()).stream().filter(method -> method.getName().equals("acquireService")).findFirst();
+			if (!potentialAcquireMethod.isPresent()) {
+				throw new IllegalStateException("Method acquireService was not found on PDECore");
+			}
+			Method acquireMethod = potentialAcquireMethod.get();
 			AnnotatedType[] parameters = acquireMethod.getAnnotatedParameterTypes();
 			AnnotatedType firstParameter = parameters[0];
 			Object argument;
@@ -44,9 +52,6 @@ public class EclipsePluginHelper {
 				argument = IBundleProjectService.class;
 			}
 			return (IBundleProjectService) acquireMethod.invoke(PDECore.getDefault(), argument);
-		} catch (NoSuchMethodException e) {
-			e.printStackTrace();
-			throw new IllegalStateException("Method acquireService was not found on PDECore");
 		} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException | SecurityException e) {
 			e.printStackTrace();
 			throw new IllegalStateException("Method acquireService could not be called on PDECore");
