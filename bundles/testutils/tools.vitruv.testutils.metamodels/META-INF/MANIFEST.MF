@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
 Bundle-SymbolicName: tools.vitruv.testutils.metamodels;singleton:=true
-Automatic-Module-Name: tools.vitruv.testutils
+Automatic-Module-Name: tools.vitruv.testutils.metamodels
 Bundle-Version: 0.3.0.qualifier
 Bundle-ClassPath: .
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8

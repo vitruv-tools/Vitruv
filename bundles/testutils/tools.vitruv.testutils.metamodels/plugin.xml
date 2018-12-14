@@ -9,7 +9,7 @@
    <extension point="org.eclipse.emf.ecore.generated_package">
       <!-- @generated uml_mockup -->
       <package
-            uri="http://tools.vitruv.framework.tests.util.metamodels"
+            uri="http://tools.vitruv.testutils.metamodels"
             class="uml_mockup.Uml_mockupPackage"
             genModel="metamodels/uml_mockup.genmodel"/>
    </extension>
@@ -17,7 +17,7 @@
    <extension point="org.eclipse.emf.ecore.generated_package">
       <!-- @generated pcm_mockup -->
       <package
-            uri="http://tools.vitruv.tests.metamodels.pcm_mockup"
+            uri="http://tools.vitruv.testutils.metamodels.pcm_mockup"
             class="pcm_mockup.Pcm_mockupPackage"
             genModel="metamodels/pcm_mockup.genmodel"/>
    </extension>
@@ -25,7 +25,7 @@
    <extension point="org.eclipse.emf.ecore.generated_package">
       <!-- @generated multicontainment_a -->
       <package
-            uri="http://tools.vitruv.tests.metamodels.multicontainment_a"
+            uri="http://tools.vitruv.testutils.metamodels.multicontainment_a"
             class="multicontainment_a.Multicontainment_aPackage"
             genModel="metamodels/multicontainment_a.genmodel"/>
    </extension>
@@ -33,7 +33,7 @@
    <extension point="org.eclipse.emf.ecore.generated_package">
       <!-- @generated multicontainment_b -->
       <package
-            uri="http://tools.vitruv.tests.metamodels.multicontainment_b"
+            uri="http://tools.vitruv.testutils.metamodels.multicontainment_b"
             class="multicontainment_b.Multicontainment_bPackage"
             genModel="metamodels/multicontainment_b.genmodel"/>
    </extension>
@@ -41,7 +41,7 @@
    <extension point="org.eclipse.emf.ecore.generated_package">
       <!-- @generated allElementTypes -->
       <package
-            uri="http://tools.vitruv.tests.metamodels.allElementTypes"
+            uri="http://tools.vitruv.testutils.metamodels.allElementTypes"
             class="allElementTypes.AllElementTypesPackage"
             genModel="metamodels/allElementTypes.genmodel"/>
    </extension>
@@ -49,7 +49,7 @@
    <extension point="org.eclipse.emf.ecore.generated_package">
       <!-- @generated attributeToStructureAttr -->
       <package
-            uri="http://tools.vitruv.tests.metamodels.attribute_to_structure_attr"
+            uri="http://tools.vitruv.testutils.metamodels.attribute_to_structure_attr"
             class="attribute_to_structure_attr.Attribute_to_structure_attrPackage"
             genModel="metamodels/attributeToStructureAttr.genmodel"/>
    </extension>
@@ -57,7 +57,7 @@
    <extension point="org.eclipse.emf.ecore.generated_package">
       <!-- @generated attributeToStructureStruct1 -->
       <package
-            uri="http://tools.vitruv.tests.metamodels.attribute_to_structure_struct_1"
+            uri="http://tools.vitruv.testutils.metamodels.attribute_to_structure_struct_1"
             class="attribute_to_structure_struct_1.Attribute_to_structure_struct_1Package"
             genModel="metamodels/attributeToStructureStruct1.genmodel"/>
    </extension>
@@ -65,7 +65,7 @@
    <extension point="org.eclipse.emf.ecore.generated_package">
       <!-- @generated allElementTypes2 -->
       <package
-            uri="http://tools.vitruv.tests.metamodels.allElementTypes2"
+            uri="http://tools.vitruv.testutils.metamodels.allElementTypes2"
             class="allElementTypes2.AllElementTypes2Package"
             genModel="metamodels/allElementTypes2.genmodel"/>
    </extension>

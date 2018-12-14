@@ -1,0 +1,69 @@
+module tools.vitruv.testutlis.metamodels.GenerateTestMetamodels
+
+import org.eclipse.emf.mwe2.ecore.EcoreGenerator
+import org.eclipse.emf.mwe.utils.StandaloneSetup
+import org.eclipse.emf.mwe.utils.DirectoryCleaner
+
+var rootPath = ".."
+var pluginName = "tools.vitruv.testutils.metamodels"
+var basePath = "${rootPath}/${pluginName}"
+var platformPluginPath = "platform:/resource/${pluginName}"
+var metamodelsPath = "${platformPluginPath}/metamodels"
+
+Workflow {
+	component = DirectoryCleaner {
+		directory = "${basePath}/src-gen"
+	}
+
+	bean = StandaloneSetup {
+		platformUri = ".."
+	}
+
+	component = EcoreGenerator {
+		srcPath = "${platformPluginPath}/src"
+		genModel = "${metamodelsPath}/allElementTypes.genmodel"
+		generateCustomClasses = false
+	}
+
+	component = EcoreGenerator {
+		srcPath = "${platformPluginPath}/src"
+		genModel = "${metamodelsPath}/allElementTypes2.genmodel"
+		generateCustomClasses = false
+	}
+
+	component = EcoreGenerator {
+		srcPath = "${platformPluginPath}/src"
+		genModel = "${metamodelsPath}/attributeToStructureAttr.genmodel"
+		generateCustomClasses = false
+	}
+
+	component = EcoreGenerator {
+		srcPath = "${platformPluginPath}/src"
+		genModel = "${metamodelsPath}/attributeToStructureStruct1.genmodel"
+		generateCustomClasses = false
+	}
+
+	component = EcoreGenerator {
+		srcPath = "${platformPluginPath}/src"
+		genModel = "${metamodelsPath}/multicontainment_a.genmodel"
+		generateCustomClasses = false
+	}
+
+	component = EcoreGenerator {
+		srcPath = "${platformPluginPath}/src"
+		genModel = "${metamodelsPath}/multicontainment_b.genmodel"
+		generateCustomClasses = false
+	}
+
+	component = EcoreGenerator {
+		srcPath = "${platformPluginPath}/src"
+		genModel = "${metamodelsPath}/pcm_mockup.genmodel"
+		generateCustomClasses = false
+	}
+
+	component = EcoreGenerator {
+		srcPath = "${platformPluginPath}/src"
+		genModel = "${metamodelsPath}/uml_mockup.genmodel"
+		generateCustomClasses = false
+	}
+}
