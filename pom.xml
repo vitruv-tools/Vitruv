@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
 	<modelVersion>4.0.0</modelVersion>
@@ -22,15 +23,19 @@
 		<maven.compiler.target>1.8</maven.compiler.target>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<xtext.version>2.12.0</xtext.version>
+		<mwe2.version>2.9.1.201705291010</mwe2.version>
+		<emf-codegen.version>2.14.0</emf-codegen.version>
+		<ecore-codegen.version>2.15.0</ecore-codegen.version>
 		<tycho.version>1.0.0</tycho.version>
 	</properties>
 
 	<repositories>
-		<!-- If you adjust a repository here, please also adjust the repository in the b3 aggregator. -->
+		<!-- If you adjust a repository here, please also adjust the repository 
+			in the b3 aggregator. -->
 		<repository>
 			<id>Eclipse Oxygen</id>
 			<layout>p2</layout>
-			<!--<url>http://download.eclipse.org/releases/oxygen</url>-->
+			<!--<url>http://download.eclipse.org/releases/oxygen</url> -->
 			<url>http://ftp-stud.hs-esslingen.de/pub/Mirrors/eclipse/releases/oxygen</url>
 		</repository>
 		<repository>
@@ -84,7 +89,7 @@
 					</dependency>
 				</dependencies>
 			</plugin>
-			
+
 			<plugin>
 				<groupId>org.eclipse.xtend</groupId>
 				<artifactId>xtend-maven-plugin</artifactId>
@@ -119,7 +124,7 @@
 					</dependency>
 				</dependencies>
 			</plugin>
-			
+
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-clean-plugin</artifactId>
@@ -152,7 +157,7 @@
 					<argLine>-Xms2048m</argLine>
 				</configuration>
 			</plugin>
-			
+
 			<!-- Creates source versions of bundles -->
 			<plugin>
 				<groupId>org.eclipse.tycho</groupId>
@@ -167,7 +172,7 @@
 					</execution>
 				</executions>
 			</plugin>
-			
+
 			<!-- Creates source versions of features -->
 			<plugin>
 				<groupId>org.eclipse.tycho.extras</groupId>
@@ -183,7 +188,7 @@
 					</execution>
 				</executions>
 			</plugin>
-			
+
 			<!-- Correctly handles source features on p2 update site -->
 			<plugin>
 				<groupId>org.eclipse.tycho</groupId>
@@ -199,7 +204,7 @@
 					</execution>
 				</executions>
 			</plugin>
-			
+
 			<plugin>
 				<groupId>org.eclipse.tycho</groupId>
 				<artifactId>target-platform-configuration</artifactId>
@@ -237,6 +242,63 @@
 			</plugin>
 
 		</plugins>
+
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>exec-maven-plugin</artifactId>
+					<version>1.4.0</version>
+					<executions>
+						<execution>
+							<id>generate-ecore</id>
+							<phase>none</phase>
+							<goals>
+								<goal>java</goal>
+							</goals>
+							<configuration>
+								<mainClass>org.eclipse.emf.mwe2.launch.runtime.Mwe2Launcher</mainClass>
+								<classpathScope>runtime</classpathScope>
+								<includePluginDependencies>true</includePluginDependencies>
+								<cleanupDaemonThreads>false</cleanupDaemonThreads><!-- see https://bugs.eclipse.org/bugs/show_bug.cgi?id=475098#c3 -->
+							</configuration>
+						</execution>
+					</executions>
+					<dependencies>
+						<dependency>
+							<groupId>org.eclipse.emf</groupId>
+							<artifactId>org.eclipse.emf.mwe2.launch</artifactId>
+							<version>${mwe2.version}</version>
+						</dependency>
+						<dependency>
+							<groupId>org.eclipse.emf</groupId>
+							<artifactId>org.eclipse.emf.mwe2.lib</artifactId>
+							<version>${mwe2.version}</version>
+						</dependency>
+						<dependency>
+							<groupId>org.eclipse.emf</groupId>
+							<artifactId>org.eclipse.emf.codegen</artifactId>
+							<version>${emf-codegen.version}</version>
+						</dependency>
+						<dependency>
+							<groupId>org.eclipse.emf</groupId>
+							<artifactId>org.eclipse.emf.codegen.ecore</artifactId>
+							<version>${ecore-codegen.version}</version>
+						</dependency>
+						<dependency>
+							<groupId>org.eclipse.emf</groupId>
+							<artifactId>org.eclipse.emf.mwe.utils</artifactId>
+							<version>1.3.21.201705291010</version>
+						</dependency>
+						<dependency>
+							<groupId>org.eclipse.xtext</groupId>
+							<artifactId>org.eclipse.xtext.common.types</artifactId>
+							<version>${xtext.version}</version>
+						</dependency>
+					</dependencies>
+				</plugin>
+			</plugins>
+		</pluginManagement>
 	</build>
 
 </project>
