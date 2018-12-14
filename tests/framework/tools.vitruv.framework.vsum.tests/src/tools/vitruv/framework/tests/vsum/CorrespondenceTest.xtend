@@ -1,15 +1,21 @@
 package tools.vitruv.framework.tests.vsum
 
-import tools.vitruv.framework.util.datatypes.VURI
-import tools.vitruv.framework.correspondence.Correspondence
 import java.util.List
 import java.util.Set
 import org.apache.log4j.Logger
+import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.util.EcoreUtil
 import org.junit.Test
-import pcm_mockup.Interface
+import pcm_mockup.PInterface
 import pcm_mockup.Repository
+import tools.vitruv.framework.correspondence.Correspondence
+import tools.vitruv.framework.correspondence.CorrespondenceModel
+import tools.vitruv.framework.tuid.TuidManager
+import tools.vitruv.framework.util.datatypes.ModelInstance
+import tools.vitruv.framework.util.datatypes.VURI
+import tools.vitruv.framework.vsum.InternalVirtualModel
+import uml_mockup.UInterface
 import uml_mockup.UPackage
 
 import static org.junit.Assert.assertEquals
@@ -18,15 +24,9 @@ import static org.junit.Assert.assertNotNull
 import static org.junit.Assert.assertNull
 import static org.junit.Assert.assertTrue
 
+import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
 import static extension tools.vitruv.framework.correspondence.CorrespondenceModelUtil.*
 import static extension tools.vitruv.framework.util.bridges.CollectionBridge.toList
-import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
-import pcm_mockup.PInterface
-import tools.vitruv.framework.correspondence.CorrespondenceModel
-import tools.vitruv.framework.vsum.InternalVirtualModel
-import tools.vitruv.framework.util.datatypes.ModelInstance
-import org.eclipse.emf.common.util.URI
-import tools.vitruv.framework.tuid.TuidManager
 
 class CorrespondenceTest extends VsumTest {
 	static final Logger LOGGER = Logger.getLogger(CorrespondenceTest.getSimpleName())
@@ -217,9 +217,9 @@ class CorrespondenceTest extends VsumTest {
 
 	def private void testSimpleRemove(UPackage pkg, CorrespondenceModel corresp, Correspondence repo2pkg,
 		PInterface repoInterface) {
-		var List<uml_mockup.UInterface> pkgInterfaces = pkg.getInterfaces()
+		var List<UInterface> pkgInterfaces = pkg.getInterfaces()
 		assertEquals(pkgInterfaces.size(), 1)
-		var uml_mockup.UInterface pkgInterface = pkgInterfaces.get(0)
+		var UInterface pkgInterface = pkgInterfaces.get(0)
 		// 1. EOC: repo _r5CW0PxiEeO_U4GJ6Zitkg <=> pkg _sJD6YPxjEeOD3p0i_uuRbQ
 		// 2. CRC: repo.ifaces _r5CW0PxiEeO_U4GJ6Zitkg <=> pkg.ifaces _sJD6YPxjEeOD3p0i_uuRbQ
 		// add correspondence
@@ -238,10 +238,10 @@ class CorrespondenceTest extends VsumTest {
 		assertTrue(correspForRepoInterface.isEmpty())
 		var Set<EObject> correspForPkgInterface = corresp.getCorrespondingEObjects(pkgInterface)
 		assertTrue(correspForPkgInterface.isEmpty())
-		var Set<Interface> correspForRepoInterfaceType = corresp.getAllEObjectsOfTypeInCorrespondences(Interface)
+		var Set<PInterface> correspForRepoInterfaceType = corresp.getAllEObjectsOfTypeInCorrespondences(PInterface)
 		assertTrue(correspForRepoInterfaceType.isEmpty()) 
-		var Set<uml_mockup.Interface> correspForPkgInterfaceType = corresp.
-			getAllEObjectsOfTypeInCorrespondences(uml_mockup.Interface)
+		var Set<UInterface> correspForPkgInterfaceType = corresp.
+			getAllEObjectsOfTypeInCorrespondences(UInterface)
 		assertTrue(correspForPkgInterfaceType.isEmpty())
 	}
 
