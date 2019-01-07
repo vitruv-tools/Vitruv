@@ -45,6 +45,13 @@
             class="allElementTypes.AllElementTypesPackage"
             genModel="metamodels/allElementTypes.genmodel"/>
    </extension>
+   <extension
+         point="org.eclipse.emf.ecore.factory_override">
+      <factory
+            class="tools.vitruv.testutils.metamodels.allElementTypes.RandomIdElementFactory"
+            uri="http://tools.vitruv.testutils.metamodels.allElementTypes">
+      </factory>
+   </extension>
 
    <extension point="org.eclipse.emf.ecore.generated_package">
       <!-- @generated attributeToStructureAttr -->
@@ -68,6 +75,13 @@
             uri="http://tools.vitruv.testutils.metamodels.allElementTypes2"
             class="allElementTypes2.AllElementTypes2Package"
             genModel="metamodels/allElementTypes2.genmodel"/>
+   </extension>
+   <extension
+         point="org.eclipse.emf.ecore.factory_override">
+      <factory
+            class="tools.vitruv.testutils.metamodels.allElementTypes2.RandomIdElement2Factory"
+            uri="http://tools.vitruv.testutils.metamodels.allElementTypes2">
+      </factory>
    </extension>
 
 </plugin>

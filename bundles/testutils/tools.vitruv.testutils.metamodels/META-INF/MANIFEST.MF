@@ -31,7 +31,9 @@ Export-Package: uml_mockup,
  allElementTypes2.impl,
  allElementTypes2.util
 Require-Bundle: org.eclipse.core.runtime,
- org.eclipse.emf.ecore;visibility:=reexport
+ org.eclipse.emf.ecore;visibility:=reexport,
+ org.eclipse.xtend.lib,
+ edu.kit.ipd.sdq.activextendannotations;bundle-version="1.1.0"
 Bundle-ActivationPolicy: lazy
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
