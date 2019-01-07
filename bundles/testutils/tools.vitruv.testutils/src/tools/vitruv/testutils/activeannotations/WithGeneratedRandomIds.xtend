@@ -8,12 +8,27 @@ import org.eclipse.xtend.lib.macro.TransformationContext
 import org.eclipse.emf.ecore.util.EcoreUtil
 import org.eclipse.emf.ecore.impl.EFactoryImpl
 import java.lang.annotation.Retention
+import org.eclipse.emf.ecore.EFactory
 
+/**
+ * Can be applied to a custom {@link EFactory} implementation to have EObjects’ identifier initialized with
+ * {@link EcoreUtil#generateUUID}. When this annotation is added, all {@code create}-methods of the package that
+ * return an instance of the {@code identifierMetaclass} will be overridden to return an instance where the 
+ * {@code identifierFeature} is initialized to the return value of an invocation of {@link EcoreUtil#generateUUID}. 
+ */
 @Active(WithGeneratedIdsProcessor)
 @Target(TYPE)
 @Retention(SOURCE)
 annotation WithGeneratedRandomIds {
+	/**
+	 * The generated Java type of the metaclass that declares the identifier feature. All subclasses of this metaclasses
+	 * will have their identifier initialized.
+	 */
 	Class<?> identifierMetaclass
+
+	/**
+	 * The feature that holds the identifier and will be initialized. Must be a feature of {@code identifierMetaclass}
+	 */
 	int identifierFeature
 }
 
