@@ -22,6 +22,7 @@ xtend-gen/
 
 # Maven
 target/
+.polyglot.build.properties
 
 # Custom
 EvaluationData
