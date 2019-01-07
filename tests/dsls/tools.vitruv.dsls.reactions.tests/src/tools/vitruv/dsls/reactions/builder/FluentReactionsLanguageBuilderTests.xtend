@@ -48,7 +48,7 @@ class FluentReactionsLanguageBuilderTests {
 				]
 
 		val reactionResult = '''
-			import "http://tools.vitruv.tests.metamodels.allElementTypes" as allElementTypes
+			import "http://tools.vitruv.testutils.metamodels.allElementTypes" as allElementTypes
 			
 			reactions: simpleChangesRootTests
 			in reaction to changes in AllElementTypes
@@ -87,7 +87,7 @@ class FluentReactionsLanguageBuilderTests {
 					]
 
 		val reactionResult = '''
-			import "http://tools.vitruv.tests.metamodels.allElementTypes" as allElementTypes
+			import "http://tools.vitruv.testutils.metamodels.allElementTypes" as allElementTypes
 			
 			reactions: simpleChangesRootTests
 			in reaction to changes in AllElementTypes
@@ -147,7 +147,7 @@ class FluentReactionsLanguageBuilderTests {
 		builder += extendedSegment
 
 		val reactionResult = '''
-			import "http://tools.vitruv.tests.metamodels.allElementTypes" as allElementTypes
+			import "http://tools.vitruv.testutils.metamodels.allElementTypes" as allElementTypes
 
 			reactions: baseSegment
 			in reaction to changes in AllElementTypes
@@ -230,7 +230,7 @@ class FluentReactionsLanguageBuilderTests {
 		builder += extendedSegment
 
 		val reactionResult = '''
-			import "http://tools.vitruv.tests.metamodels.allElementTypes" as allElementTypes
+			import "http://tools.vitruv.testutils.metamodels.allElementTypes" as allElementTypes
 
 			reactions: baseSegment
 			in reaction to changes in AllElementTypes
@@ -319,7 +319,7 @@ class FluentReactionsLanguageBuilderTests {
 		builder += extendedSegment2
 
 		val reactionResult = '''
-			import "http://tools.vitruv.tests.metamodels.allElementTypes" as allElementTypes
+			import "http://tools.vitruv.testutils.metamodels.allElementTypes" as allElementTypes
 
 			reactions: baseSegment
 			in reaction to changes in AllElementTypes
@@ -408,7 +408,7 @@ class FluentReactionsLanguageBuilderTests {
 					]
 		
 		val expectedReaction = '''
-			import "http://tools.vitruv.tests.metamodels.allElementTypes" as allElementTypes
+			import "http://tools.vitruv.testutils.metamodels.allElementTypes" as allElementTypes
 			
 			reactions: simpleChangesRootTests
 			in reaction to changes in AllElementTypes
@@ -450,7 +450,7 @@ class FluentReactionsLanguageBuilderTests {
 		reactionsFile += reactionsSegment
 		
 		val expectedReaction = '''
-			import "http://tools.vitruv.tests.metamodels.allElementTypes" as allElementTypes
+			import "http://tools.vitruv.testutils.metamodels.allElementTypes" as allElementTypes
 			import "http://www.eclipse.org/emf/2002/Ecore" as ecore
 			
 			reactions: simpleChangesRootTests
@@ -510,7 +510,7 @@ class FluentReactionsLanguageBuilderTests {
 		
 		val expectedReaction = '''
 			import "http://www.eclipse.org/emf/2002/Ecore" as ecore
-			import "http://tools.vitruv.tests.metamodels.allElementTypes" as allElementTypes
+			import "http://tools.vitruv.testutils.metamodels.allElementTypes" as allElementTypes
 			
 			reactions: simpleChangesRootTests
 			in reaction to changes in AllElementTypes
@@ -568,9 +568,9 @@ class FluentReactionsLanguageBuilderTests {
 					.call(commonRoutine)
 				
 		val expectedReaction = '''
-			import "http://tools.vitruv.tests.metamodels.allElementTypes" as allElementTypes
+			import "http://tools.vitruv.testutils.metamodels.allElementTypes" as allElementTypes
 			import "http://www.eclipse.org/emf/2002/Ecore" as ecore
-			import "http://tools.vitruv.tests.metamodels.allElementTypes2" as allElementTypes2
+			import "http://tools.vitruv.testutils.metamodels.allElementTypes2" as allElementTypes2
 			
 			
 			reactions: simpleChangesRootTests
@@ -639,8 +639,8 @@ class FluentReactionsLanguageBuilderTests {
 			
 				
 		val expectedReaction = '''
-		import "http://tools.vitruv.tests.metamodels.allElementTypes" as allElementTypes
-		import "http://tools.vitruv.tests.metamodels.allElementTypes2" as allElementTypes2
+		import "http://tools.vitruv.testutils.metamodels.allElementTypes" as allElementTypes
+		import "http://tools.vitruv.testutils.metamodels.allElementTypes2" as allElementTypes2
 		import "http://www.eclipse.org/emf/2002/Ecore" as ecore
 		
 		
