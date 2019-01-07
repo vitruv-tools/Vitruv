@@ -1,0 +1,10 @@
+package tools.vitruv.testutils.metamodels
+
+import allElementTypes.impl.AllElementTypesFactoryImpl
+import allElementTypes.Identified
+import tools.vitruv.testutils.activeannotations.WithGeneratedRandomIds
+import allElementTypes.AllElementTypesPackage
+
+@WithGeneratedRandomIds(identifierMetaclass=Identified, identifierFeature=AllElementTypesPackage.IDENTIFIED__ID)
+class RandomIdAllElementTypesFactory extends AllElementTypesFactoryImpl {
+}

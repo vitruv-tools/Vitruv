@@ -1,0 +1,10 @@
+package tools.vitruv.testutils.metamodels
+
+import tools.vitruv.testutils.activeannotations.WithGeneratedRandomIds
+import multicontainment_b.Identified
+import multicontainment_b.impl.Multicontainment_bFactoryImpl
+import multicontainment_b.Multicontainment_bPackage
+
+@WithGeneratedRandomIds(identifierMetaclass=Identified, identifierFeature=Multicontainment_bPackage.IDENTIFIED__ID)
+class RandomIdMulticontainmentBFactory extends Multicontainment_bFactoryImpl {
+}
