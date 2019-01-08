@@ -5,9 +5,8 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>tools.vitruv</groupId>
-		<artifactId>parent</artifactId>
+		<artifactId>tools.vitruv</artifactId>
 		<version>0.3.0-SNAPSHOT</version>
-		<relativePath>../</relativePath>
 	</parent>
 	<artifactId>tests</artifactId>
 	<packaging>pom</packaging>
@@ -18,24 +17,5 @@
 		<module>dsls</module>
 		<module>extensions</module>
 	</modules>
-
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.eclipse.tycho</groupId>
-				<artifactId>tycho-surefire-plugin</artifactId>
-				<version>${tycho.version}</version>
-				<configuration>
-					<failIfNoTests>true</failIfNoTests>
-					<includes>
-						<include>**/*Test*.class</include>
-					</includes>
-					<excludes>
-						<exclude>**/Abstract*</exclude>
-					</excludes>
-				</configuration>
-			</plugin>
-		</plugins>
-	</build>
 	
 </project>

@@ -29,22 +29,6 @@
 		<plugins>
 			<plugin>
 				<groupId>org.eclipse.tycho</groupId>
-				<artifactId>tycho-surefire-plugin</artifactId>
-				<version>${tycho.version}</version>
-				<configuration>
-					<useUIHarness>false</useUIHarness>
-					<failIfNoTests>false</failIfNoTests>
-					<includes>
-						<include>**/*Test*.class</include>
-					</includes>
-					<excludes>
-						<exclude>**/Abstract*</exclude>
-					</excludes>
-				</configuration>
-			</plugin>
-
-			<plugin>
-				<groupId>org.eclipse.tycho</groupId>
 				<artifactId>target-platform-configuration</artifactId>
 				<configuration>
 					<dependency-resolution>
