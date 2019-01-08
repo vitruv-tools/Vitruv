@@ -8,7 +8,7 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Export-Package: tools.vitruv.dsls.mirbase.ide.contentassist.antlr,
  tools.vitruv.dsls.mirbase.ide.contentassist.antlr.internal
-Require-Bundle: org.antlr.runtime,
+Require-Bundle: org.antlr.runtime;bundle-version="[3.2.0,3.2.1)",
  com.google.inject,
  org.eclipse.xtext.ide,
  org.eclipse.xtext.xbase.ide,
