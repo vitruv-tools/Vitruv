@@ -17,24 +17,5 @@
 		<module>dsls</module>
 		<module>extensions</module>
 	</modules>
-
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.eclipse.tycho</groupId>
-				<artifactId>tycho-surefire-plugin</artifactId>
-				<version>${tycho.version}</version>
-				<configuration>
-					<failIfNoTests>true</failIfNoTests>
-					<includes>
-						<include>**/*Test*.class</include>
-					</includes>
-					<excludes>
-						<exclude>**/Abstract*</exclude>
-					</excludes>
-				</configuration>
-			</plugin>
-		</plugins>
-	</build>
 	
 </project>
