@@ -205,6 +205,15 @@
 			</activeWhen>
 		</handler>
 	</extension>
+	<extension point="org.eclipse.core.contenttype.contentTypes">
+		<content-type
+			base-type="org.eclipse.core.runtime.text"
+			file-extensions="mirbase"
+			id="tools.vitruv.dsls.mirbase.MirBase.contenttype"
+			name="MirBase File"
+			priority="normal">
+		</content-type>
+	</extension>
 	<!-- adding resource factories -->
 	<extension
 		point="org.eclipse.emf.ecore.extension_parser">
@@ -453,7 +462,7 @@
 	</extension>
 	<extension point="org.eclipse.core.runtime.adapters">
 		<factory class="tools.vitruv.dsls.mirbase.ui.MirBaseExecutableExtensionFactory:org.eclipse.xtext.builder.smap.StratumBreakpointAdapterFactory"
-			adaptableType="org.eclipse.xtext.ui.editor.XtextEditor">
+			adaptableType="tools.vitruv.dsls.mirbase.ui.editor.MirBaseEditor">
 			<adapter type="org.eclipse.debug.ui.actions.IToggleBreakpointsTarget"/>
 		</factory> 
 	</extension>
@@ -547,12 +556,18 @@
 			class="tools.vitruv.dsls.mirbase.ui.MirBaseExecutableExtensionFactory:org.eclipse.xtext.ui.compare.InjectableViewerCreator"
 			extensions="mirbase">
 		</viewer>
+		<contentTypeBinding
+			contentTypeId="tools.vitruv.dsls.mirbase.MirBase.contenttype"
+			contentViewerId="tools.vitruv.dsls.mirbase.MirBase.compare.contentViewers" />
 	</extension>
 	<extension point="org.eclipse.compare.contentMergeViewers">
 		<viewer id="tools.vitruv.dsls.mirbase.MirBase.compare.contentMergeViewers"
 			class="tools.vitruv.dsls.mirbase.ui.MirBaseExecutableExtensionFactory:org.eclipse.xtext.ui.compare.InjectableViewerCreator"
 			extensions="mirbase" label="MirBase Compare">
 		</viewer>
+		<contentTypeBinding
+			contentTypeId="tools.vitruv.dsls.mirbase.MirBase.contenttype"
+			contentMergeViewerId="tools.vitruv.dsls.mirbase.MirBase.compare.contentMergeViewers" />
 	</extension>
 	<extension point="org.eclipse.ui.editors.documentProviders">
 		<provider id="tools.vitruv.dsls.mirbase.MirBase.editors.documentProviders"
