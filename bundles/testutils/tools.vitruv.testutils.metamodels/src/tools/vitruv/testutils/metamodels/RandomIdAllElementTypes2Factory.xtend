@@ -6,7 +6,4 @@ import tools.vitruv.testutils.activeannotations.WithGeneratedRandomIds
 
 @WithGeneratedRandomIds(identifierMetaclass=Identified2)
 class RandomIdAllElementTypes2Factory extends AllElementTypes2FactoryImpl {
-	override createRoot2() {
-		return super.createRoot2();
-	}
 }
