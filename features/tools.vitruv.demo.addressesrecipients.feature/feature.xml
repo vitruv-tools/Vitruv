@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="tools.vitruv.demo.addressesrecipients.feature"
+      label="%featureName"
+      version="0.3.0.qualifier"
+      provider-name="%providerName"
+      license-feature="tools.vitruv.license.feature"
+      license-feature-version="1.0.0">
+
+   <description>
+      %description
+   </description>
+
+   <copyright url="%copyrightURL">
+      %copyright
+   </copyright>
+
+   <license url="%licenseURL">
+      %license
+   </license>
+
+   <requires>
+      <import plugin="com.google.guava"/>
+      <import plugin="org.eclipse.emf.ecore"/>
+      <import plugin="org.eclipse.core.resources"/>
+      <import feature="edu.kit.ipd.sdq.metamodels.addresses.feature" version="1.0.0" match="greaterOrEqual"/>
+      <import feature="edu.kit.ipd.sdq.metamodels.recipients.feature" version="1.0.0" match="greaterOrEqual"/>
+   </requires>
+
+   <plugin
+         id="tools.vitruv.demo.domains.addresses"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="tools.vitruv.demo.domains.recipients"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+</feature>
