@@ -9,12 +9,16 @@ import org.eclipse.emf.ecore.util.EcoreUtil
 import org.eclipse.emf.ecore.impl.EFactoryImpl
 import java.lang.annotation.Retention
 import org.eclipse.emf.ecore.EFactory
+import org.eclipse.xtend.lib.macro.declaration.MethodDeclaration
+
+import static org.eclipse.xtend.lib.macro.declaration.Visibility.PRIVATE
+import org.eclipse.xtend2.lib.StringConcatenationClient
 
 /**
  * Can be applied to a custom {@link EFactory} implementation to have EObjects’ identifier initialized with
- * {@link EcoreUtil#generateUUID}. When this annotation is added, all {@code create}-methods of the package that
- * return an instance of the {@code identifierMetaclass} will be overridden to return an instance where the 
- * {@code identifierFeature} is initialized to the return value of an invocation of {@link EcoreUtil#generateUUID}. 
+ * {@link EcoreUtil#generateUUID}. When this annotation is added to a factory, it will be modified in a way such that
+ * all metaclasses inheriting from the {@code identifierMetaclass} will have their id attribute initialized with the 
+ * result of invoking {@link EcoreUtil#generateUUID}
  */
 @Active(WithGeneratedIdsProcessor)
 @Target(TYPE)
@@ -25,11 +29,6 @@ annotation WithGeneratedRandomIds {
 	 * will have their identifier initialized.
 	 */
 	Class<?> identifierMetaclass
-
-	/**
-	 * The feature that holds the identifier and will be initialized. Must be a feature of {@code identifierMetaclass}
-	 */
-	int identifierFeature
 }
 
 class WithGeneratedIdsProcessor extends AbstractClassProcessor {
@@ -49,7 +48,6 @@ class WithGeneratedIdsProcessor extends AbstractClassProcessor {
 			return
 		}
 		val identifierMetaclass = annotation.getClassValue("identifierMetaclass")
-		val identifierFeatureId = annotation.getIntValue("identifierFeature")
 
 		val createMethods = extendedFactory.declaredResolvedMethods.filter [
 			declaration.simpleName.startsWith("create") && declaration.parameters.isEmpty &&
@@ -60,25 +58,41 @@ class WithGeneratedIdsProcessor extends AbstractClassProcessor {
 		}
 
 		for (createMethod : createMethods) {
-			val createdMetaClass = createMethod.resolvedReturnType
-			val metaClassImplName = createdMetaClass.name.removeFromEnd(createdMetaClass.simpleName) + "impl." +
-				createdMetaClass.simpleName + "Impl"
-			val metaClassImpl = context.newTypeReference(metaClassImplName)
-			if (metaClassImpl === null) {
-				annotatedClass.addError('''Cannot find the implementation class of «createdMetaClass.simpleName».«
-					» Tried «metaClassImplName»''')
-			}
-			annotatedClass.addMethod(createMethod.declaration.simpleName) [
-				returnType = createdMetaClass
-				body = '''
-					return new «metaClassImpl»() {
-						private «createdMetaClass» __set_generated_id() {
-							eSet(«identifierFeatureId», «EcoreUtil».generateUUID());
-							return this;
-						}
-					}.__set_generated_id();
-				'''
+			val existingMethod = annotatedClass.declaredMethods.findFirst [
+				it.simpleName == createMethod.declaration.simpleName && it.parameters.isEmpty && !it.static
 			]
+
+			val String creatorMethod = if (existingMethod !== null) {
+					var newName = existingMethod.simpleName
+					do {
+						newName = "_" + newName
+					} while (annotatedClass.declaredMethods.existsWithName(newName))
+					annotatedClass.addMethod(newName) [
+						visibility = PRIVATE
+						returnType = existingMethod.returnType
+						body = existingMethod.body
+						primarySourceElement = existingMethod
+					]
+					newName
+				} else {
+					"super." + createMethod.declaration.simpleName
+				}
+
+			val createdMetaClass = createMethod.resolvedReturnType
+			val StringConcatenationClient idSetterBody = '''
+				final «createdMetaClass» created = «creatorMethod»();
+				«EcoreUtil».setID(created, «EcoreUtil».generateUUID());
+				return created;
+			'''
+			if (existingMethod !== null) {
+				existingMethod.body = idSetterBody
+			} else {
+				annotatedClass.addMethod(createMethod.declaration.simpleName) [
+					returnType = createdMetaClass
+					body = idSetterBody
+					primarySourceElement = annotatedClass
+				]
+			}
 		}
 	}
 
@@ -86,5 +100,9 @@ class WithGeneratedIdsProcessor extends AbstractClassProcessor {
 		val end = string.substring(string.length - substring.length, string.length)
 		if (end != substring) throw new IllegalArgumentException('''«string» does not end with «substring»!''')
 		return string.substring(0, string.length - substring.length)
+	}
+
+	def boolean existsWithName(Iterable<? extends MethodDeclaration> methods, String name) {
+		return methods.exists[it.simpleName == name]
 	}
 }
