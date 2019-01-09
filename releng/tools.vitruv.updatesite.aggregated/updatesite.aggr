@@ -9,18 +9,18 @@
         <features name="org.eclipse.emf.ecore.feature.group" versionRange="2.12.0"/>
         <features name="org.eclipse.emf.common.feature.group" versionRange="2.12.0"/>
       </repositories>
-      <repositories location="http://vitruv-tools.github.io/updatesite/release/license">
+      <repositories location="http://vitruv-tools.github.io/updatesite/release/license" mirrorArtifacts="false">
         <features name="tools.vitruv.license.feature.feature.group" versionRange="[1.0.0,1.0.1)"/>
       </repositories>
-      <repositories location="http://kit-sdq.github.io/updatesite/nightly/commons">
+      <repositories location="http://kit-sdq.github.io/updatesite/release/commons" mirrorArtifacts="false">
         <features name="edu.kit.ipd.sdq.commons.util.java.feature.feature.group" versionRange="[1.0.0,2.0.0)"/>
         <features name="edu.kit.ipd.sdq.commons.util.emf.feature.feature.group" versionRange="[1.0.0,2.0.0)"/>
         <features name="edu.kit.ipd.sdq.commons.util.eclipse.feature.feature.group" versionRange="[1.0.0,2.0.0]"/>
       </repositories>
-      <repositories location="https://kit-sdq.github.io/updatesite/nightly/xannotations">
+      <repositories location="https://kit-sdq.github.io/updatesite/release/xannotations" mirrorArtifacts="false">
         <features name="edu.kit.ipd.sdq.activextendannotations.feature.feature.group" versionRange="[1.0.0,2.0.0)"/>
       </repositories>
-      <repositories location="https://kit-sdq.github.io/updatesite/nightly/metamodels/demo">
+      <repositories location="https://kit-sdq.github.io/updatesite/release/metamodels/demo" mirrorArtifacts="false">
         <features name="edu.kit.ipd.sdq.metamodels.addresses.feature.feature.group" versionRange="[1.0.0,2.0.0)"/>
         <features name="edu.kit.ipd.sdq.metamodels.recipients.feature.feature.group" versionRange="[1.0.0,2.0.0)"/>
         <features name="edu.kit.ipd.sdq.metamodels.families.feature.feature.group" versionRange="[1.0.0,2.0.0]"/>
