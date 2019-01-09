@@ -13,6 +13,7 @@
 	<packaging>pom</packaging>
 
 	<repositories>
+		<!-- If you adjust a repository here, please also adjust the repository in the b3 aggregator. -->
 		<repository>
 			<id>Demo Metamodels</id>
 			<layout>p2</layout>
