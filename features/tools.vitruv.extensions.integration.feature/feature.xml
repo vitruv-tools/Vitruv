@@ -20,7 +20,7 @@
    </license>
 
    <requires>
-      <import feature="tools.vitruv.framework.feature" version="0.2.0"/>
+      <import feature="tools.vitruv.framework.feature" version="0.3.0"/>
    </requires>
 
    <plugin

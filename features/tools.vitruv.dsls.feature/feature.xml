@@ -59,7 +59,7 @@
       <import plugin="org.eclipse.jface.text"/>
       <import plugin="org.eclipse.emf.common.ui"/>
       <import plugin="org.eclipse.equinox.common" version="3.5.0" match="greaterOrEqual"/>
-      <import feature="tools.vitruv.framework.feature" version="0.2.0" match="greaterOrEqual"/>
+      <import feature="tools.vitruv.framework.feature" version="0.3.0" match="greaterOrEqual"/>
       <import feature="tools.vitruv.extensions.dslsruntime.feature" version="0.2.0"/>
    </requires>
 
