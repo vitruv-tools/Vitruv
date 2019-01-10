@@ -23,8 +23,8 @@
       <import plugin="com.google.guava"/>
       <import plugin="org.eclipse.emf.ecore"/>
       <import plugin="org.eclipse.core.resources"/>
-      <import feature="edu.kit.ipd.sdq.metamodels.addresses.feature" version="1.0.0" match="greaterOrEqual"/>
-      <import feature="edu.kit.ipd.sdq.metamodels.recipients.feature" version="1.0.0" match="greaterOrEqual"/>
+      <import feature="edu.kit.ipd.sdq.metamodels.addresses.feature" version="1.1.0" match="greaterOrEqual"/>
+      <import feature="edu.kit.ipd.sdq.metamodels.recipients.feature" version="1.1.0" match="greaterOrEqual"/>
    </requires>
 
    <plugin
