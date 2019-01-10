@@ -22,7 +22,7 @@
    <requires>
       <import plugin="com.google.guava"/>
       <import plugin="org.eclipse.xtext.xbase.lib"/>
-      <import plugin="org.eclipse.xtend.lib" version="2.12.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.xtend.lib" version="2.16.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.xtend.lib.macro"/>
       <import plugin="org.eclipse.ui"/>
       <import plugin="org.eclipse.core.runtime"/>
