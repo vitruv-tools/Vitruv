@@ -2,7 +2,7 @@ import tools.vitruv.dsls.reactions.tests.importTests.ImportTestsExecutionMonitor
 
 import static tools.vitruv.dsls.reactions.tests.importTests.ImportTestsExecutionMonitor.ExecutionType.*
 
-import "http://tools.vitruv.tests.metamodels.allElementTypes" as minimal
+import "http://tools.vitruv.testutils.metamodels.allElementTypes" as minimal
 
 reactions: importTestsCommonRoutines
 in reaction to changes in AllElementTypes

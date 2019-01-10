@@ -4,7 +4,7 @@ import org.eclipse.emf.ecore.change.FeatureChange
 import tools.vitruv.framework.change.echange.root.RootEChange
 import tools.vitruv.framework.change.echange.eobject.EObjectExistenceEChange
 
-import "http://tools.vitruv.tests.metamodels.allElementTypes" as minimal
+import "http://tools.vitruv.testutils.metamodels.allElementTypes" as minimal
 
 reactions: simpleChangesTests
 in reaction to changes in AllElementTypes

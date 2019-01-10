@@ -4,7 +4,7 @@ import static tools.vitruv.dsls.reactions.tests.importTests.ImportTests.*
 import static tools.vitruv.dsls.reactions.tests.importTests.ImportTestsExecutionMonitor.ExecutionType.*
 import static tools.vitruv.dsls.reactions.tests.importTests.ImportTestsUtils.*
 
-import "http://tools.vitruv.tests.metamodels.allElementTypes" as minimal
+import "http://tools.vitruv.testutils.metamodels.allElementTypes" as minimal
 
 reactions: importTestsTransitiveRoutinesQN
 in reaction to changes in AllElementTypes

@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
@@ -13,7 +14,7 @@
 	<build>
 		<!-- This is only taken into account by the maven-compiler-plugin -->
 		<sourceDirectory>generator-src</sourceDirectory>
-		
+
 		<plugins>
 			<!-- compile the code in generator-src first, as it’s required by the 
 				generator workflow -->
@@ -31,24 +32,30 @@
 					</execution>
 				</executions>
 			</plugin>
-			
+
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>exec-maven-plugin</artifactId>
-				<configuration>
-					<arguments>
-						<argument>/${project.basedir}/src/tools/vitruv/dsls/mappings/GenerateMappingsLanguage.mwe2</argument>
-						<argument>-p</argument>
-						<argument>rootPath=/${project.basedir}/..</argument>
-					</arguments>
-				</configuration>
+				<executions>
+					<execution>
+						<id>generate-xtext</id>
+						<phase>generate-sources</phase>
+						<configuration>
+							<arguments>
+								<argument>/${project.basedir}/src/tools/vitruv/dsls/mappings/GenerateMappingsLanguage.mwe2</argument>
+								<argument>-p</argument>
+								<argument>rootPath=/${project.basedir}/..</argument>
+							</arguments>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 
 			<plugin>
 				<groupId>org.eclipse.xtend</groupId>
 				<artifactId>xtend-maven-plugin</artifactId>
 			</plugin>
-			
+
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-clean-plugin</artifactId>
