@@ -48,6 +48,12 @@
    <feature id="tools.vitruv.demo.familiespersons.feature.source" version="0.3.0.qualifier">
       <category name="Vitruv Demo Applications"/>
    </feature>
+    <feature url="features/tools.vitruv.demo.addressesrecipients.feature_0.3.0.qualifier.jar" id="tools.vitruv.demo.addressesrecipients.feature" version="0.3.0.qualifier">
+      <category name="Vitruv Demo Applications"/>
+   </feature>
+   <feature id="tools.vitruv.demo.addressesrecipients.feature.source" version="0.3.0.qualifier">
+      <category name="Vitruv Demo Applications"/>
+   </feature>
    <category-def name="Vitruv Framework" label="Vitruv Framework">
       <description>
          The Vitruv framework, including the essential core and optional extensions
