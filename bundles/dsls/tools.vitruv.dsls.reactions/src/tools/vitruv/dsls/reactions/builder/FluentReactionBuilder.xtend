@@ -245,10 +245,6 @@ class FluentReactionBuilder extends FluentReactionsSegmentChildBuilder {
 			}
 		}
 		
-		def private getCallRoutine() {
-			reaction.callRoutine = reaction.callRoutine ?: ReactionsLanguageFactory.eINSTANCE.createReactionRoutineCall
-		}
-
 		def call(String routineName, Consumer<RoutineStartBuilder> routineInitializer) {
 			val routineBuilder = new FluentRoutineBuilder(routineName, context)
 			routineInitializer.accept(routineBuilder.start())
@@ -291,11 +287,8 @@ class FluentReactionBuilder extends FluentReactionsSegmentChildBuilder {
 	}
 
 	static class ReactionTypeProvider extends AbstractTypeProvider<FluentReactionBuilder> {
-		val extension FluentReactionBuilder builderAsExtension
-
 		protected new(IJvmTypeProvider delegate, FluentReactionBuilder builder, XExpression scopeExpression) {
 			super(delegate, builder, scopeExpression)
-			builderAsExtension = builder
 		}
 	}
 
