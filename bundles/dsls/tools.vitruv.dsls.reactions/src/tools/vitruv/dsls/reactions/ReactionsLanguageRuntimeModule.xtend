@@ -17,8 +17,6 @@ import tools.vitruv.dsls.reactions.generator.ReactionsLanguageGenerator
 import tools.vitruv.dsls.reactions.generator.InternalReactionsGenerator
 import tools.vitruv.dsls.reactions.api.generator.IReactionsGenerator
 import tools.vitruv.dsls.reactions.generator.ExternalReactionsGenerator
-import org.eclipse.xtext.formatting2.IFormatter2
-import tools.vitruv.dsls.reactions.formatting2.ReactionsLanguageFormatter
 import tools.vitruv.dsls.reactions.builder.FluentReactionsLanguageBuilder
 
 /**

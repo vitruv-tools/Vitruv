@@ -12,7 +12,6 @@ import org.eclipse.xtext.scoping.IScope
 import static tools.vitruv.dsls.commonalities.language.LanguagePackage.Literals.*
 import static extension tools.vitruv.dsls.commonalities.language.extensions.CommonalitiesLanguageModelExtensions.*
 import tools.vitruv.dsls.commonalities.names.IEObjectDescriptionProvider
-import org.eclipse.xtext.scoping.Scopes
 import org.eclipse.xtext.scoping.impl.SimpleScope
 import java.util.Collections
 

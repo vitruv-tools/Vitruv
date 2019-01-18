@@ -27,7 +27,6 @@ import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsFile
 import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsSegment
 import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsImport
 import tools.vitruv.dsls.reactions.reactionsLanguage.RemoveCorrespondence
-import tools.vitruv.dsls.reactions.reactionsLanguage.RetrieveModelElement
 import tools.vitruv.dsls.reactions.reactionsLanguage.Routine
 import tools.vitruv.dsls.reactions.reactionsLanguage.RoutineCallStatement
 import tools.vitruv.dsls.reactions.reactionsLanguage.RoutineInput
@@ -40,8 +39,6 @@ import org.eclipse.xtext.xbase.XBinaryOperation
 import org.eclipse.xtext.xbase.XCastedExpression
 import org.eclipse.xtext.common.types.JvmTypeReference
 import tools.vitruv.dsls.mirbase.formatting2.MirBaseFormatter
-import com.google.inject.Inject
-import tools.vitruv.dsls.reactions.services.ReactionsLanguageGrammarAccess
 
 class ReactionsLanguageFormatter extends MirBaseFormatter {
 	
@@ -97,7 +94,7 @@ class ReactionsLanguageFormatter extends MirBaseFormatter {
 		modelElementChange?.precondition?.code?.formatIndividually(document)
 	}
 	
-	def dispatch void formatChangeType(ElementChangeType changeType, extension IFormattableDocument document) {
+	def void formatChangeType(ElementChangeType changeType, extension IFormattableDocument document) {
 		if (changeType instanceof ElementReferenceChangeType) {
 			changeType.feature.formatEReferenceReference(document)
 		}
