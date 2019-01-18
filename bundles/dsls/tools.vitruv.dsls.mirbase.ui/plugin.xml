@@ -1,13 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.0"?>
 <plugin>
-	<!-- adding resource factories -->
-	<!-- marker definitions for tools.vitruv.dsls.MirBase -->
-	<!-- Quick Outline -->
-	<!-- quickfix marker resolution generator for tools.vitruv.dsls.MirBase -->
-	<!-- Rename Refactoring -->
-	<!-- Type Hierarchy  -->
-	<!-- Call Hierachy -->
-	<!-- Introduce Local Variable Refactoring -->
-	<!-- Open implementation -->
+	<!-- This plugin.xml is (almost) empty on purpose, because the MirBase language is only an abstract root language 
+		that shall not be used standalone. -->
+	<extension point="org.eclipse.core.expressions.definitions">
+		<definition id="tools.vitruv.dsls.mirbase.MirBase.Editor.opened">
+			<and>
+				<reference definitionId="isActiveEditorAnInstanceOfXtextEditor"/>
+				<with variable="activeEditor">
+					<test property="org.eclipse.xtext.ui.editor.XtextEditor.languageName"
+						value="tools.vitruv.dsls.mirbase.MirBase"
+						forcePluginActivation="true"/>
+				</with>
+			</and>
+		</definition>
+		<definition id="tools.vitruv.dsls.mirbase.MirBase.XtextEditor.opened">
+			<and>
+				<reference definitionId="isXtextEditorActive"/>
+				<with variable="activeEditor">
+					<test property="org.eclipse.xtext.ui.editor.XtextEditor.languageName"
+						value="tools.vitruv.dsls.mirbase.MirBase"
+						forcePluginActivation="true"/>
+				</with>
+			</and>
+		</definition>
+	</extension>
 </plugin>
