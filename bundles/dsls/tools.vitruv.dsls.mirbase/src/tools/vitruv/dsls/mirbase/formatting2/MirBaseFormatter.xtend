@@ -3,13 +3,8 @@
  */
 package tools.vitruv.dsls.mirbase.formatting2
 
-import com.google.inject.Inject
 import org.eclipse.xtext.formatting2.IFormattableDocument
-import org.eclipse.xtext.xbase.formatting2.XbaseFormatter
-import tools.vitruv.dsls.mirbase.mirBase.MetamodelImport
 import tools.vitruv.dsls.mirbase.mirBase.MirBaseFile
-import tools.vitruv.dsls.mirbase.mirBase.NamedJavaElement
-import tools.vitruv.dsls.mirbase.services.MirBaseGrammarAccess
 import tools.vitruv.dsls.mirbase.mirBase.MetaclassReference
 import tools.vitruv.dsls.mirbase.mirBase.MetaclassEAttributeReference
 import tools.vitruv.dsls.mirbase.mirBase.MetaclassEReferenceReference
@@ -17,8 +12,6 @@ import org.eclipse.xtext.formatting2.AbstractFormatter2
 
 class MirBaseFormatter extends AbstractFormatter2 {
 	
-	@Inject extension MirBaseGrammarAccess
-
 	def dispatch format(MirBaseFile mirBaseFile, extension IFormattableDocument document) {
 		mirBaseFile.formatMirBaseFile(document)
 	}

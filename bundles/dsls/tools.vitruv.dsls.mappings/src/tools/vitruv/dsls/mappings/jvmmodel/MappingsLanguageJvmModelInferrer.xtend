@@ -3,12 +3,9 @@
  */
 package tools.vitruv.dsls.mappings.jvmmodel
 
-import com.google.inject.Inject
 import org.eclipse.xtext.xbase.jvmmodel.AbstractModelInferrer
 import org.eclipse.xtext.xbase.jvmmodel.IJvmDeclaredTypeAcceptor
-import org.eclipse.xtext.xbase.jvmmodel.JvmTypesBuilder
 import tools.vitruv.dsls.mappings.mappingsLanguage.MappingsFile
-import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsFile
 
 /**
  * <p>Infers a JVM model from the source model.</p> 
@@ -17,11 +14,6 @@ import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsFile
  * which is generated from the source model. Other models link against the JVM model rather than the source model.</p>     
  */
 class MappingsLanguageJvmModelInferrer extends AbstractModelInferrer {
-
-	/**
-	 * convenience API to build and initialize JVM types and their members.
-	 */
-	@Inject extension JvmTypesBuilder
 
 	/**
 	 * The dispatch method {@code infer} is called for each instance of the

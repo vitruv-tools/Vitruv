@@ -2,7 +2,6 @@ package tools.vitruv.dsls.mirbase.scoping
 
 import java.util.Iterator
 import java.util.function.Function
-import org.apache.log4j.Logger
 import org.eclipse.emf.ecore.EClass
 import org.eclipse.emf.ecore.EClassifier
 import org.eclipse.emf.ecore.EObject
@@ -27,8 +26,6 @@ import tools.vitruv.dsls.mirbase.mirBase.MetaclassEAttributeReference
 import tools.vitruv.dsls.mirbase.mirBase.MetaclassEReferenceReference
 
 class MirBaseScopeProviderDelegate extends XImportSectionNamespaceScopeProvider {
-	private static val LOGGER = Logger.getLogger(MirBaseScopeProviderDelegate)
-	
 	def <T> IScope createScope(IScope parentScope, Iterator<? extends T> elements,
 		Function<T, IEObjectDescription> descriptionCreation) {
 		new SimpleScope(parentScope, elements.map [descriptionCreation.apply(it)].filterNull.toList);

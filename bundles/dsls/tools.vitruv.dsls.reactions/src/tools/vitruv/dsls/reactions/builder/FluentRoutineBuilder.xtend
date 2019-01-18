@@ -24,9 +24,7 @@ import tools.vitruv.dsls.reactions.reactionsLanguage.Taggable
 
 import static com.google.common.base.Preconditions.*
 import static tools.vitruv.dsls.reactions.codegen.helper.ReactionsLanguageConstants.*
-import tools.vitruv.dsls.reactions.reactionsLanguage.RetrieveOneElementType
 import tools.vitruv.dsls.reactions.reactionsLanguage.RetrieveOrRequireAbscenceOfModelElement
-import tools.vitruv.dsls.mirbase.mirBase.MetaclassReference
 
 class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 
