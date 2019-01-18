@@ -106,13 +106,15 @@ abstract class AddressesXRecipientsTest extends VitruviusApplicationTest {
 	
 	protected def void assertAddress(Address address, Addresses supposedParent) {
 		// check containment
-		assertTrue(supposedParent.addresses?.contains(address))
+		assertNotNull(supposedParent.addresses)
+		assertTrue(supposedParent.addresses.contains(address))
 		// no features to check
 	}
 	
 	protected def void assertRecipient(Recipient recipient, Recipients supposedParent) {
 		// check containment
-		assertTrue(supposedParent.recipients?.contains(recipient))
+		assertNotNull(supposedParent.recipients)
+		assertTrue(supposedParent.recipients.contains(recipient))
 		// check features
 		assertTrue(recipient.business)
 	}
