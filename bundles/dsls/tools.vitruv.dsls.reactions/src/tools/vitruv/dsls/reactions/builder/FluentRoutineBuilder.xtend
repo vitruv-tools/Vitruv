@@ -26,6 +26,7 @@ import static com.google.common.base.Preconditions.*
 import static tools.vitruv.dsls.reactions.codegen.helper.ReactionsLanguageConstants.*
 import tools.vitruv.dsls.reactions.reactionsLanguage.RetrieveOneElementType
 import tools.vitruv.dsls.reactions.reactionsLanguage.RetrieveOrRequireAbscenceOfModelElement
+import tools.vitruv.dsls.mirbase.mirBase.MetaclassReference
 
 class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 
@@ -78,17 +79,17 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 		addInputElement(type, parameterName)
 	}
 
-	def private dispatch addInputElement(EClass type, String parameterName) {
+	def private dispatch void addInputElement(EClass type, String parameterName) {
 		routine.input.modelInputElements += (MirBaseFactory.eINSTANCE.createNamedMetaclassReference => [
 			name = parameterName
 		]).reference(type)
 	}
 
-	def private dispatch addInputElement(EDataType type, String parameterName) {
+	def private dispatch void addInputElement(EDataType type, String parameterName) {
 		addInputElement(type.instanceClass, parameterName)
 	}
 
-	def private addInputElement(Class<?> type, String parameterName) {
+	def private dispatch void addInputElement(Class<?> type, String parameterName) {
 		routine.input.javaInputElements += (MirBaseFactory.eINSTANCE.createNamedJavaElement => [
 			name = parameterName
 		]).reference(type)
