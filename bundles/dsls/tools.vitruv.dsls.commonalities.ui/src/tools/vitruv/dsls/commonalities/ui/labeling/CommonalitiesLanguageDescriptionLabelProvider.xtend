@@ -18,7 +18,8 @@ class CommonalitiesLanguageDescriptionLabelProvider extends XbaseDescriptionLabe
 		text(description.EObjectOrProxy, description)
 	}
 	
-	def dispatch text(EObject object, IEObjectDescription description) {
+	// REMARK: should be dispatch when the other operations are not commented out
+	def text(EObject object, IEObjectDescription description) {
 		super.text(description)
 	}
 	
