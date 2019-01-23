@@ -50,7 +50,8 @@ public class CreateMaleMemberOfFamilyRoutine extends AbstractRepairRoutineRealiz
       int _size = collectionFamilies.size();
       final List<String> familiesNames = new ArrayList<String>(_size);
       for (final Family f : collectionFamilies) {
-        familiesNames.add(f.getLastName());
+        String _lastName = f.getLastName();
+        familiesNames.add(_lastName);
       }
       final String selectMsg = "Please select the family to which the person belongs.";
       final int selected = (this.userInteractor.getSingleSelectionDialogBuilder().message(selectMsg).choices(familiesNames).windowModality(UserInteractionOptions.WindowModality.MODAL).startInteraction()).intValue();
@@ -63,7 +64,8 @@ public class CreateMaleMemberOfFamilyRoutine extends AbstractRepairRoutineRealiz
       if ((selectedRole == 0)) {
         selectedFamily.setFather(member);
       } else {
-        selectedFamily.getSons().add(member);
+        EList<Member> _sons = selectedFamily.getSons();
+        _sons.add(member);
       }
       _routinesFacade.addCorr(person, selectedFamily);
     }

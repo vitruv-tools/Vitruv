@@ -15,7 +15,7 @@ execute actions in Recipients
 ********** BEGIN GLOBAL REACTION AND ROUTINE **********
 *******************************************************/
 reaction AnyChange {
-	after any change
+	after anychange
 	call {
 		ensureAllMappings()
 	}
@@ -240,7 +240,7 @@ routine enforceRightAddressXRecipientLocationCityMappingConditions(re::Recipient
 	action {
 		update rRoot {
 			// enforce r in rootXroot:rRoot.recipients
-			rRoot.recipients.add(r)
+			rRoot.recipients += r
 		}
 		update r {
 			// enforce r.business == true
