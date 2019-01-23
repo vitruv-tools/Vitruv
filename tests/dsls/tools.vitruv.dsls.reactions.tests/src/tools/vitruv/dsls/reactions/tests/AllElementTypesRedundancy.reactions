@@ -1,10 +1,10 @@
 import tools.vitruv.dsls.reactions.tests.simpleChangesTests.SimpleChangesTestsExecutionMonitor
 import static tools.vitruv.dsls.reactions.tests.simpleChangesTests.SimpleChangesTestsExecutionMonitor.ChangeType.*;
 import org.eclipse.emf.ecore.change.FeatureChange
-import tools.vitruv.framework.change.echange.root.RootEChange
+import tools.vitruv.framework.change.echange.^root.RootEChange
 import tools.vitruv.framework.change.echange.eobject.EObjectExistenceEChange
 
-import "http://tools.vitruv.testutils.metamodels.allElementTypes" as minimal
+import "http://tools.vitruv.testutils.metamodels.allElementTypes" as minimal 
 
 reactions: simpleChangesTests
 in reaction to changes in AllElementTypes
@@ -230,7 +230,7 @@ routine replaceSingleValuedNonContainmentReference(minimal::Root rootElement, mi
  * InsertEAttributeValue
  */
 reaction InsertedEAttributeValue {
-	after attribute insert in minimal::Root[multiValuedEAttribute]
+	after attribute inserted in minimal::Root[multiValuedEAttribute]
 	call insertEAttribute(affectedEObject, newValue)
 }
 
@@ -240,7 +240,7 @@ routine insertEAttribute(minimal::Root rootElement, Integer attributeValue) {
 	}
 	action {
 		update targetElement {
-			targetElement.multiValuedEAttribute.add(attributeValue);
+			targetElement.multiValuedEAttribute += attributeValue;
 		}
 		call {
 			SimpleChangesTestsExecutionMonitor.instance.set(InsertEAttributeValue);
@@ -252,7 +252,7 @@ routine insertEAttribute(minimal::Root rootElement, Integer attributeValue) {
  * RemoveEAttributeValue
  */
 reaction RemovedEAttributeValue {
-	after attribute remove from minimal::Root[multiValuedEAttribute]
+	after attribute removed from minimal::Root[multiValuedEAttribute]
 	call removeEAttribute(affectedEObject, oldValue)
 }
 
@@ -286,7 +286,7 @@ routine insertNonContainmentReference(minimal::Root rootElement, minimal::NonRoo
 	action {
 		update targetElement {
 			val addedNonRoot = targetElement.nonRootObjectContainerHelper.nonRootObjectsContainment.findFirst[it.id == insertedNonRoot.id];
-			targetElement.multiValuedNonContainmentEReference.add(addedNonRoot);
+			targetElement.multiValuedNonContainmentEReference += addedNonRoot;
 		}
 		call {
 			SimpleChangesTestsExecutionMonitor.instance.set(InsertNonContainmentEReference);
@@ -412,7 +412,7 @@ routine testPrimitiveTypesRoutine(Integer intVal, Long longVal, Short shortVal, 
 
 // Unused reaction: Only check, that change is available when reacting to any change
 reaction AnyChange {
-	after any change
+	after anychange
 	with change instanceof FeatureChange || change instanceof RootEChange || change instanceof EObjectExistenceEChange<?>
 	call { change.eClass }
 }
