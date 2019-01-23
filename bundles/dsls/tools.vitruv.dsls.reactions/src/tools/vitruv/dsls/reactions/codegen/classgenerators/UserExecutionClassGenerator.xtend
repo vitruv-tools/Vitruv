@@ -6,7 +6,6 @@ import org.eclipse.xtext.common.types.JvmVisibility
 import tools.vitruv.extensions.dslsruntime.reactions.structure.CallHierarchyHaving
 import org.eclipse.xtext.common.types.JvmOperation
 import tools.vitruv.dsls.reactions.reactionsLanguage.CodeBlock
-import tools.vitruv.dsls.reactions.generator.SimpleTextXBlockExpression
 import tools.vitruv.dsls.reactions.reactionsLanguage.Taggable
 import tools.vitruv.dsls.reactions.reactionsLanguage.ExistingElementReference
 import org.eclipse.xtext.common.types.JvmTypeReference
@@ -78,11 +77,7 @@ class UserExecutionClassGenerator extends ClassGenerator {
 		val code = codeBlock.code;
 		return code.getOrGenerateMethod("update" + elementName.toFirstUpper + "Element", typeRef(Void.TYPE)) [
 			parameters += generateAccessibleElementsParameters(accessibleElements);
-			if (code instanceof SimpleTextXBlockExpression) {
-				body = code.text;
-			} else {
-				body = code;
-			}
+			body = code;
 		]
 	}
 
@@ -124,11 +119,7 @@ class UserExecutionClassGenerator extends ClassGenerator {
 		val correspondenceSourceBlock = elementRetrieve.correspondenceSource.code;
 		return correspondenceSourceBlock.getOrGenerateMethod(methodName, typeRef(EObject)) [
 			parameters += generateAccessibleElementsParameters(accessibleElements);
-			if (correspondenceSourceBlock instanceof SimpleTextXBlockExpression) {
-				body = correspondenceSourceBlock.text;
-			} else {
-				body = correspondenceSourceBlock;
-			}
+			body = correspondenceSourceBlock;
 		];
 	}
 
@@ -139,11 +130,7 @@ class UserExecutionClassGenerator extends ClassGenerator {
 		return reference.code.getOrGenerateMethod(methodName, typeRef(EObject)) [
 			parameters += generateAccessibleElementsParameters(accessibleElements);
 			val correspondenceSourceBlock = reference?.code;
-			if (correspondenceSourceBlock instanceof SimpleTextXBlockExpression) {
-				body = correspondenceSourceBlock.text;
-			} else {
-				body = correspondenceSourceBlock;
-			}
+			body = correspondenceSourceBlock;
 		];
 	}
 
@@ -185,11 +172,7 @@ class UserExecutionClassGenerator extends ClassGenerator {
 				facadeClassTypeReference);
 			facadeParam.annotations += annotationRef(Extension);
 			parameters += facadeParam
-			if (codeBlock instanceof SimpleTextXBlockExpression) {
-				body = codeBlock.text;
-			} else {
-				body = codeBlock;
-			}
+			body = codeBlock;
 		]
 	}
 	
