@@ -15,7 +15,7 @@ execute actions in Addresses
 ********** BEGIN GLOBAL REACTION AND ROUTINE **********
 *******************************************************/
 reaction AnyChange {
-	after any change
+	after anychange
 	call {
 		ensureAllMappings()
 	}
@@ -230,7 +230,7 @@ routine enforceLeftAddressXRecipientLocationCityMappingConditions(ad::Addresses 
 	action {
 		update aRoot {
 			// enforce a in rootXroot:aRoot.addresses
-			aRoot.addresses.add(a)
+			aRoot.addresses += a
 		}
 		update a {
 			// enforce a.number > 0

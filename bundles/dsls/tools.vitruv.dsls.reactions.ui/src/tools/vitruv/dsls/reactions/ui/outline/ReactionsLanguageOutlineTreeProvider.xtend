@@ -15,12 +15,16 @@ import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsFile
 import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsSegment
 import tools.vitruv.dsls.reactions.reactionsLanguage.Reaction
 import tools.vitruv.dsls.reactions.reactionsLanguage.Action
-import tools.vitruv.dsls.reactions.reactionsLanguage.ConcreteModelChange
 // import static extension tools.vitruv.dsls.reactions.codegen.changetyperepresentation.ChangeTypeRepresentationExtractor.*
 import static extension tools.vitruv.dsls.reactions.util.ReactionsLanguageUtil.*
 import tools.vitruv.dsls.reactions.reactionsLanguage.Matcher
 import tools.vitruv.dsls.reactions.reactionsLanguage.RoutineInput
 import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsImport
+import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionRoutineCall
+import org.eclipse.xtext.ui.editor.outline.impl.EObjectNode
+import tools.vitruv.dsls.reactions.reactionsLanguage.ModelElementChange
+import tools.vitruv.dsls.reactions.reactionsLanguage.ModelAttributeChange
+import tools.vitruv.dsls.reactions.reactionsLanguage.ArbitraryModelChange
 
 /**
  * Outline structure definition for a reactions file.
@@ -88,11 +92,7 @@ class ReactionsLanguageOutlineTreeProvider extends DefaultOutlineTreeProvider {
 		}
 	}
 	
-	protected def void _createChildren(EStructuralFeatureNode parentNode, Routine routine) {
-		createEObjectNode(parentNode, routine);
-	}
-	
-	protected def void _createChildren(EStructuralFeatureNode parentNode, Trigger trigger) {
+	protected def void _createChildren(EObjectNode parentNode, Trigger trigger) {
 		createEObjectNode(parentNode, trigger);
 	}
 	
@@ -132,9 +132,18 @@ class ReactionsLanguageOutlineTreeProvider extends DefaultOutlineTreeProvider {
 		return "There is no outline for this trigger";
 	}
 	
-	protected def Object _text(ConcreteModelChange event) {
-		return "change"; 
+	protected def Object _text(ModelElementChange event) {
+		return "element change"; 
 		//''«FOR change : event.extractChangeSequenceRepresentation.atomicChanges SEPARATOR ", "»«change.name»«ENDFOR»''';
+	}
+	
+	protected def Object _text(ModelAttributeChange event) {
+		return "attribute change"; 
+		//''«FOR change : event.extractChangeSequenceRepresentation.atomicChanges SEPARATOR ", "»«change.name»«ENDFOR»''';
+	}
+	
+	protected def Object _text(ArbitraryModelChange event) {
+		return "any change";
 	}
 	
 	protected def boolean _isLeaf(Trigger element) {
@@ -146,6 +155,10 @@ class ReactionsLanguageOutlineTreeProvider extends DefaultOutlineTreeProvider {
 	}
 	
 	protected def boolean _isLeaf(Action element) {
+		return true;
+	}
+	
+	protected def boolean _isLeaf(ReactionRoutineCall element) {
 		return true;
 	}
 	

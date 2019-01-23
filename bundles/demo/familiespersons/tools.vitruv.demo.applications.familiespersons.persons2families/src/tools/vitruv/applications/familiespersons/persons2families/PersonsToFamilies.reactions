@@ -62,7 +62,7 @@ routine createMaleMemberOfFamily(persons::Male person){
 		val List<String> familiesNames = new ArrayList<String>(collectionFamilies.size)
 		for (Family f: collectionFamilies) {
 //			if(f.lastName.equals(person.fullName.split(" ").get(1))){
-				familiesNames.add(f.lastName) 
+				familiesNames += f.lastName 
 //			}
 		}
 		val String selectMsg = "Please select the family to which the person belongs."
@@ -82,7 +82,7 @@ routine createMaleMemberOfFamily(persons::Male person){
 		if(selectedRole == 0){
 			selectedFamily.father = member			
 		} else {
-			selectedFamily.sons.add(member)
+			selectedFamily.sons += member
 		}
 		addCorr(person, selectedFamily)			
 		}
@@ -118,7 +118,7 @@ routine createFemaleMemberOfFamily(persons::Female person){
 		val List<String> familiesNames = new ArrayList<String>(collectionFamilies.size)
 		for (Family f: collectionFamilies) {
 //			if(f.lastName.equals(person.fullName.split(" ").get(1))){
-				familiesNames.add(f.lastName)
+				familiesNames += f.lastName
 //			}
 		}
 		val String selectMsg = "Please select the family to which the person belongs."
@@ -138,7 +138,7 @@ routine createFemaleMemberOfFamily(persons::Female person){
 		if(selectedRole == 0){
 			selectedFamily.mother = member			
 		} else {
-			selectedFamily.daughters.add(member)
+			selectedFamily.daughters += member
 		}
 		addCorr(person, selectedFamily)	
 		}		

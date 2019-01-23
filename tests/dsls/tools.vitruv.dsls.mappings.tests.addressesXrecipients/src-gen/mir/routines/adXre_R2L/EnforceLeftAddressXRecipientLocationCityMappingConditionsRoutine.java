@@ -5,6 +5,7 @@ import edu.kit.ipd.sdq.metamodels.addresses.Address;
 import edu.kit.ipd.sdq.metamodels.addresses.Addresses;
 import java.io.IOException;
 import mir.routines.adXre_R2L.RoutinesFacade;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import tools.vitruv.extensions.dslsruntime.reactions.AbstractRepairRoutineRealization;
 import tools.vitruv.extensions.dslsruntime.reactions.ReactionExecutionState;
@@ -24,7 +25,8 @@ public class EnforceLeftAddressXRecipientLocationCityMappingConditionsRoutine ex
     }
     
     public void update0Element(final Addresses aRoot, final Address a) {
-      aRoot.getAddresses().add(a);
+      EList<Address> _addresses = aRoot.getAddresses();
+      _addresses.add(a);
     }
     
     public EObject getElement2(final Addresses aRoot, final Address a) {
