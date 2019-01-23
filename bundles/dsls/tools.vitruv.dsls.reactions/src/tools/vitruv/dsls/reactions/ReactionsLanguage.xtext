@@ -14,14 +14,14 @@ ReactionsFile:
 
 ReactionsSegment:
 	'reactions:' name=ValidID
-	'in reaction to changes in' fromDomain=DomainReference 
-	'execute' 'actions in' toDomain=DomainReference
+	'in' 'reaction' 'to' 'changes' 'in' fromDomain=DomainReference 
+	'execute' 'actions' 'in' toDomain=DomainReference
 	(reactionsImports+=ReactionsImport)*
 	(reactions+=Reaction |
 		routines+=Routine)*;
 
 ReactionsImport:
-	'import' (routinesOnly?='routines')? importedReactionsSegment=[ReactionsSegment] (useQualifiedNames?='using qualified names')?;
+	'import' (routinesOnly?='routines')? importedReactionsSegment=[ReactionsSegment] (useQualifiedNames?='using' 'qualified' 'names')?;
 
 // *********************************
 // *********** REACTIONS ***********
@@ -59,13 +59,13 @@ ModelElementChange:
 
 
 ModelAttributeChange:
-	'attribute' ({ModelAttributeInsertedChange} 'insert in' |
-		{ModelAttributeRemovedChange} 'remove from' |
-		{ModelAttributeReplacedChange} 'replaced at')
+	'attribute' ({ModelAttributeInsertedChange} 'inserted' 'in' |
+		{ModelAttributeRemovedChange} 'removed' 'from' |
+		{ModelAttributeReplacedChange} 'replaced' 'at')
 		feature=MetaclassEAttributeReference;
 
 ArbitraryModelChange:
-	{ArbitraryModelChange} 'any change';
+	{ArbitraryModelChange} 'anychange';
 
 
 // *********** Atomic element changes ***********
@@ -93,22 +93,22 @@ ElementInsertionChangeType:
 	(ElementInsertionInListChangeType | ElementInsertionAsRootChangeType);
 
 ElementInsertionInListChangeType:
-	'inserted in' ElementReferenceChangeType;
+	'inserted' 'in' ElementReferenceChangeType;
 
 ElementInsertionAsRootChangeType:
-	{ElementInsertionAsRootChangeType} 'inserted as root';
+	{ElementInsertionAsRootChangeType} 'inserted' 'as' 'root';
 
 ElementRemovalChangeType:
 	(ElementRemovalAsRootChangeType | ElementRemovalFromListChangeType);
 	
 ElementRemovalAsRootChangeType:
-	{ElementRemovalAsRootChangeType} 'removed as root';
+	{ElementRemovalAsRootChangeType} 'removed' 'as' 'root';
 		
 ElementRemovalFromListChangeType:
-	'removed from' ElementReferenceChangeType;
+	'removed' 'from' ElementReferenceChangeType;
 
 ElementReplacementChangeType:
-	'replaced at' ElementReferenceChangeType;
+	'replaced' 'at' ElementReferenceChangeType;
 
 // *********** Compound element changes ***********
 
@@ -160,12 +160,12 @@ MatcherStatement:
 
 RetrieveOrRequireAbscenceOfModelElement:
 	(RequireAbscenceOfModelElement | RetrieveModelElement) MetaclassReference 
-	'corresponding to' correspondenceSource=CorrespondingObjectCodeBlock ('tagged with' Taggable)? 
+	'corresponding' 'to' correspondenceSource=CorrespondingObjectCodeBlock ('tagged' 'with' Taggable)? 
 	('with' precondition=PreconditionCodeBlock)?; 
 
 RequireAbscenceOfModelElement returns RequireAbscenceOfModelElement:
 	{RequireAbscenceOfModelElement}
-	'require absence of';
+	'require' 'absence' 'of';
 	
 RetrieveModelElement:
 	('val' name=ValidID '=')? 'retrieve' retrievalType=RetrieveModelElementTypeStatement;
@@ -203,7 +203,7 @@ ExecuteActionStatement returns ExecuteActionStatement:
 
 CreateModelElementStatement returns CreateModelElement:
 	{CreateModelElement}
-	'val' name=ValidID '=' 'create' MetaclassReference ("and" "initialize" initializationBlock=ExecutionCodeBlock)?;
+	'val' name=ValidID '=' 'create' MetaclassReference ('and' 'initialize' initializationBlock=ExecutionCodeBlock)?;
 	
 DeleteModelElementStatement returns DeleteModelElement:
 	{DeleteModelElement}
@@ -211,17 +211,17 @@ DeleteModelElementStatement returns DeleteModelElement:
 
 UpdateModelElementStatement returns UpdateModelElement:
 	{UpdateModelElement}
-	"update" element=ExistingElementReference updateBlock=ExecutionCodeBlock;
+	'update' element=ExistingElementReference updateBlock=ExecutionCodeBlock;
 
 CreateCorrespondenceStatement returns CreateCorrespondence:
 	{CreateCorrespondence}
-	"add correspondence between" firstElement=ExistingElementReference "and" secondElement=ExistingElementReference
-	('tagged with' Taggable)?;
+	'add' 'correspondence' 'between' firstElement=ExistingElementReference 'and' secondElement=ExistingElementReference
+	('tagged' 'with' Taggable)?;
 	
 RemoveCorrespondenceStatement returns RemoveCorrespondence:
 	{RemoveCorrespondence}
-	"remove correspondence between" firstElement=ExistingElementReference "and" secondElement=ExistingElementReference
-	('tagged with' Taggable)?;
+	'remove' 'correspondence' 'between' firstElement=ExistingElementReference 'and' secondElement=ExistingElementReference
+	('tagged' 'with' Taggable)?;
 
 
 // ****** CODE BLOCKS ******
