@@ -9,7 +9,6 @@ import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsSegment
 import edu.kit.ipd.sdq.commons.util.java.Pair
 import tools.vitruv.framework.domains.VitruvDomainProvider
 import tools.vitruv.framework.domains.VitruvDomain
-import tools.vitruv.dsls.reactions.generator.SimpleTextXBlockExpression
 import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsFile
 import org.eclipse.emf.ecore.resource.Resource
 import static com.google.common.base.Preconditions.*
@@ -35,10 +34,6 @@ final class ReactionsLanguageHelper {
 		NodeModelUtils.getNode(expression).text;
 	}
 
-	public static def dispatch String getXBlockExpressionText(SimpleTextXBlockExpression blockExpression) {
-		blockExpression.text.toString;
-	}
-	
 	private static def getOptionalReferenceAdapter(EObject element) {
 		element.eAdapters.findFirst [isAdapterForType(ReferenceClassNameAdapter)] as ReferenceClassNameAdapter
 	}
