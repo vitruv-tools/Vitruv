@@ -25,24 +25,24 @@ MappingsSegment:
 /******************/
 Mapping:
 	'mapping' name=ValidID
-		('depends on (' 
+		('depends' 'on' '(' 
 			dependencies+=Dependency
 		')')?
 	'{'
-		'map (' (leftParameters+=ClassicallyNamedModelElement)+ ')'
-			('with {' 
+		'map' '(' (leftParameters+=ClassicallyNamedModelElement)+ ')'
+			('with' '{' 
 				(leftConditions+=SingleSidedCondition)+
 			'}')?
-		'and (' (rightParameters+=ClassicallyNamedModelElement)+ ')'
-			('with {' 
+		'and' '(' (rightParameters+=ClassicallyNamedModelElement)+ ')'
+			('with' '{' 
 				(rightConditions+=SingleSidedCondition)+
 			'}')?
-		('such that {'
+		('such' 'that' '{'
 			(bidirectionalizableConditions+=BidirectionalizableCondition)+
 		'}')?
-		('forward execute {'
+		('forward' 'execute' '{'
 			forwardExecutionExpression=UnidirectionalExpression
-		'} backward execute {'
+		'}' 'backward' 'execute' '{'
 			backwardExecutionExpression=UnidirectionalExpression
 		'}')?
 	'}'
@@ -102,7 +102,7 @@ ValueExpression:
 
 IndexCondition: //  returns SingleValueCondition:
 	negated?='not'
-	'at index'
+	'at' 'index'
 	indexValueExpression=ValueExpression
 	'in'
 ;
@@ -147,7 +147,7 @@ enum MultiValueConditionOperator:
 
 ElementCondition: //  returns FeatureCondition:
 	elementExpression=ElementExpression
-	'default contained in'
+	'default' 'contained' 'in'
 ;
 
 ElementExpression:
@@ -160,20 +160,20 @@ NotEmptyCondition: //  returns FeatureCondition:
 ;
 
 ResourceCondition: //  returns EnforceableCondition:
-	'default path for'
+	'default' 'path' 'for'
 	elementExpression=ElementExpression
 	'='
-	('path of' pathExpression=ElementExpression "+")?
+	('path' 'of' pathExpression=ElementExpression "+")?
 	path=STRING
 ;
 /* END ENFORCEABLE CONDITIONS */
 
 /* BEGIN CHECK AND ENFORCE CONDITION*/
 CheckAndEnforceCondition: //  returns SingleSidedCondition:
-	'check {'
+	'check' '{'
 		checkExpression=CheckExpression
-	'}
-	enforce {'
+	'}'
+	'enforce' '{'
 		enforceExpression=CheckExpression
 	'}' 
 ;
@@ -213,8 +213,8 @@ UnidirectionalExpression:
 Bootstrapping: 
 	'bootstrapping' name=ValidID
 	'{'
-		'create (' (parameters+=ClassicallyNamedModelElement)+ ')' 
-		('with {'
+		'create' '(' (parameters+=ClassicallyNamedModelElement)+ ')' 
+		('with' '{'
 			bootstrapConditon=SingleSidedCondition
 		'}')?
 	'}'
