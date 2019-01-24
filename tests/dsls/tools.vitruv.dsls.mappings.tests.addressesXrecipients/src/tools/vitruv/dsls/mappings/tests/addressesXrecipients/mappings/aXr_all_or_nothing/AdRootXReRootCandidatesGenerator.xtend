@@ -9,11 +9,11 @@ import tools.vitruv.extensions.dslsruntime.mappings.interfaces.IElementsRegistry
 
 class AdRootXReRootCandidatesGenerator {
 	// no dependencies to other mappings
-	val IElementsRegistry candidateElementsRuntime
+//	val IElementsRegistry candidateElementsRuntime
 	
 	new(IElementsRegistry candidateElementsRuntime) {
 		// no dependencies to other mappings
-		this.candidateElementsRuntime = candidateElementsRuntime
+//		this.candidateElementsRuntime = candidateElementsRuntime
 	}
 	
 	def Iterable<LeftAdRootXReRootInstanceHalf> getNewCandidatesForAddresses(Addresses aRoot) {
