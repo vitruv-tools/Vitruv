@@ -19,7 +19,6 @@ import tools.vitruv.framework.domains.VitruvDomainProviderRegistry
 
 import static tools.vitruv.dsls.commonalities.generator.ParticipationRelationUtil.*
 
-import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
 import static extension tools.vitruv.dsls.commonalities.generator.JvmTypeProviderHelper.*
 import static extension tools.vitruv.dsls.commonalities.generator.ReactionsGeneratorConventions.*
 import static extension tools.vitruv.dsls.commonalities.language.extensions.CommonalitiesLanguageModelExtensions.*

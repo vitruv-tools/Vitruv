@@ -9,8 +9,6 @@ import tools.vitruv.dsls.commonalities.language.SimpleParticipation
 import tools.vitruv.dsls.commonalities.language.SimpleTupleParticipationPart
 import tools.vitruv.dsls.commonalities.language.TupleParticipation
 
-import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
-
 @Utility
 class ParticipationExtension {
 	def static dispatch Iterable<ParticipationClass> getClasses(SimpleParticipation participation) {

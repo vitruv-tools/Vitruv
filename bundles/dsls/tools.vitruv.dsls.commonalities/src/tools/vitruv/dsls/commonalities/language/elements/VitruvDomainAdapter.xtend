@@ -7,8 +7,6 @@ import tools.vitruv.framework.domains.VitruvDomain
 
 import static com.google.common.base.Preconditions.*
 
-import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
-
 class VitruvDomainAdapter extends VitruviusDomainImpl implements Wrapper<VitruvDomain> {
 	VitruvDomain wrappedVitruvDomain
 	var extension ClassifierProvider classifierProvider

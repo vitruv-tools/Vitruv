@@ -5,8 +5,6 @@ import org.eclipse.emf.ecore.EObject
 import org.eclipse.xtext.naming.QualifiedName
 import org.eclipse.xtext.scoping.IScope
 
-import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
-
 class ComposedScope implements IScope {
 	
 	List<IScope> delegates

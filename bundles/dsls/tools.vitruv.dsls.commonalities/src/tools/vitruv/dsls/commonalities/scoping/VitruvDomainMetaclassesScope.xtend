@@ -9,8 +9,6 @@ import tools.vitruv.dsls.commonalities.language.elements.Metaclass
 import tools.vitruv.dsls.commonalities.language.elements.VitruviusDomainProvider
 import tools.vitruv.dsls.commonalities.names.IEObjectDescriptionProvider
 
-import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
-
 @Singleton
 class VitruvDomainMetaclassesScope implements IScope {
 
