@@ -5,12 +5,12 @@ import tools.vitruv.dsls.mappings.mappingsLanguage.Mapping
 import org.eclipse.xtext.generator.IFileSystemAccess2
 
 class MappingXtendGenerator extends AbstractMappingsSegmentGenerator {
-	val Mapping mapping
+//	val Mapping mapping
 	val IFileSystemAccess2 fsa
 	
 	new(String basePackage, MappingsSegment segment, Mapping mapping, IFileSystemAccess2 fsa) {
 		super(basePackage, segment)
-		this.mapping = mapping
+//		this.mapping = mapping
 		this.fsa = fsa
 	}
 		
