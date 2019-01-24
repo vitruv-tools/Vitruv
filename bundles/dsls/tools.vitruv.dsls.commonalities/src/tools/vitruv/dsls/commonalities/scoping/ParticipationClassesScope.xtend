@@ -9,7 +9,6 @@ import tools.vitruv.dsls.commonalities.names.IEObjectDescriptionProvider
 
 import static com.google.common.base.Preconditions.*
 
-import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
 import static extension tools.vitruv.dsls.commonalities.language.extensions.CommonalitiesLanguageModelExtensions.*
 
 class ParticipationClassesScope implements IScope {

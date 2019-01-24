@@ -8,7 +8,6 @@ import tools.vitruv.dsls.commonalities.language.ReferenceEqualitySpecification
 import tools.vitruv.dsls.commonalities.language.ReferenceReadSpecification
 import tools.vitruv.dsls.commonalities.language.ReferenceSetSpecification
 
-import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
 import static extension tools.vitruv.dsls.commonalities.language.extensions.ParticipationClassExtension.*
 import static extension tools.vitruv.dsls.commonalities.language.extensions.ParticipationExtension.*
 

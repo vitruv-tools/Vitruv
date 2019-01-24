@@ -13,8 +13,6 @@ import org.eclipse.xtext.common.types.JvmType
 import org.eclipse.xtext.common.types.JvmTypeParameter
 import org.eclipse.xtext.common.types.access.IJvmTypeProvider
 
-import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
-
 @Utility
 class JvmTypeProviderHelper {
 	def package static findType(IJvmTypeProvider typeProvider, Class<?> clazz) {

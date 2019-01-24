@@ -25,7 +25,6 @@ import tools.vitruv.extensions.dslruntime.commonalities.intermediatemodelbase.In
 
 import static org.eclipse.emf.ecore.ETypedElement.UNBOUNDED_MULTIPLICITY
 
-import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
 import static extension tools.vitruv.dsls.commonalities.generator.GeneratorConstants.*
 import static extension tools.vitruv.dsls.commonalities.language.extensions.CommonalitiesLanguageModelExtensions.*
 
