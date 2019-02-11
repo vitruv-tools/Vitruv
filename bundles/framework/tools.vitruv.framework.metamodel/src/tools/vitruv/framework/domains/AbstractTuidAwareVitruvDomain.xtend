@@ -1,27 +1,32 @@
 package tools.vitruv.framework.domains
 
-import tools.vitruv.framework.domains.AbstractVitruvDomain
-import tools.vitruv.framework.tuid.TuidManager
-import tools.vitruv.framework.tuid.Tuid
+import java.util.List
+import java.util.Set
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EPackage
-import java.util.Set
+import tools.vitruv.framework.tuid.Tuid
 import tools.vitruv.framework.tuid.TuidCalculatorAndResolver
-import java.util.List
-import tools.vitruv.framework.util.datatypes.VURI
+import tools.vitruv.framework.tuid.TuidManager
 import tools.vitruv.framework.tuid.TuidUpdateListener
+import tools.vitruv.framework.util.datatypes.VURI
 
 abstract class AbstractTuidAwareVitruvDomain extends AbstractVitruvDomain implements TuidAwareVitruvDomain, TuidUpdateListener {
 	TuidCalculatorAndResolver tuidCalculatorAndResolver
+	DefaultStateChangePropagationStrategy stateChangePropagationStrategy
 	
 	new(String name, EPackage metamodelRootPackage, Set<EPackage> furtherRootPackages, TuidCalculatorAndResolver tuidCalculator, String... fileExtensions) {
 		super(name, metamodelRootPackage, furtherRootPackages, fileExtensions)
 		this.tuidCalculatorAndResolver = tuidCalculator;
+		stateChangePropagationStrategy = new DefaultStateChangePropagationStrategy()
 	}
 	
 	new(String name, EPackage metamodelRootPackage, TuidCalculatorAndResolver tuidCalculator, String... fileExtensions) {
 		super(name, metamodelRootPackage, fileExtensions)
 		this.tuidCalculatorAndResolver = tuidCalculator;
+	}
+	
+	override StateChangePropagationStrategy getStateChangePropagationStrategy() {
+		return stateChangePropagationStrategy
 	}
 	
 	override String calculateTuidFromEObject(EObject eObject, EObject virtualRootObject, String prefix) {

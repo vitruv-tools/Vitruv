@@ -16,6 +16,8 @@ import tools.vitruv.framework.change.processing.ChangePropagationSpecification;
 import tools.vitruv.framework.domains.VitruvDomain;
 import tools.vitruv.framework.domains.VitruviusProjectBuilderApplicator;
 import tools.vitruv.framework.domains.AbstractVitruvDomain;
+import tools.vitruv.framework.domains.DefaultStateChangePropagationStrategy;
+import tools.vitruv.framework.domains.StateChangePropagationStrategy;
 import tools.vitruv.framework.userinteraction.InternalUserInteractor;
 import tools.vitruv.framework.util.VitruviusConstants;
 import tools.vitruv.framework.vsum.InternalVirtualModel;
@@ -221,6 +223,11 @@ public final class TestUtil {
 			public VitruviusProjectBuilderApplicator getBuilderApplicator() {
 				return null;
 			}
+
+            @Override
+            public StateChangePropagationStrategy getStateChangePropagationStrategy() {
+                return new DefaultStateChangePropagationStrategy();
+            }
 		};
 		return domain;
 	}
