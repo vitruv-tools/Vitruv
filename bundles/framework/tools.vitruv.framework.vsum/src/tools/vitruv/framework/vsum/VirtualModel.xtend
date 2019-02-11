@@ -7,10 +7,12 @@ import java.io.File
 import java.util.List
 import tools.vitruv.framework.change.description.PropagatedChange
 import tools.vitruv.framework.uuid.UuidGeneratorAndResolver
+import org.eclipse.emf.ecore.resource.Resource
 
 interface VirtualModel {
 	def File getFolder();
 	def List<PropagatedChange> propagateChange(VitruviusChange change);
+	def List<PropagatedChange> propagateChangedState(Resource newState);
 	def void reverseChanges(List<PropagatedChange> changes);
 	def ModelInstance getModelInstance(VURI modelVuri);
 	def UuidGeneratorAndResolver getUuidGeneratorAndResolver();

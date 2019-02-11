@@ -1,27 +1,28 @@
 package tools.vitruv.framework.vsum
 
-import tools.vitruv.framework.util.datatypes.VURI
-import org.eclipse.emf.ecore.EObject
+import java.io.File
+import java.util.List
+import java.util.Vector
 import java.util.concurrent.Callable
+import org.eclipse.emf.ecore.EObject
+import org.eclipse.emf.ecore.resource.Resource
+import tools.vitruv.framework.change.description.PropagatedChange
 import tools.vitruv.framework.change.description.VitruviusChange
 import tools.vitruv.framework.change.processing.ChangePropagationSpecificationProvider
 import tools.vitruv.framework.change.processing.ChangePropagationSpecificationRepository
-import tools.vitruv.framework.vsum.modelsynchronization.ChangePropagator
-import tools.vitruv.framework.vsum.modelsynchronization.ChangePropagatorImpl
-import tools.vitruv.framework.vsum.modelsynchronization.ChangePropagationListener
+import tools.vitruv.framework.domains.TuidAwareVitruvDomain
 import tools.vitruv.framework.domains.repository.VitruvDomainRepository
 import tools.vitruv.framework.domains.repository.VitruvDomainRepositoryImpl
-import java.io.File
-import java.util.List
-import tools.vitruv.framework.change.description.PropagatedChange
-import tools.vitruv.framework.util.command.EMFCommandBridge
-import tools.vitruv.framework.vsum.repositories.ResourceRepositoryImpl
-import tools.vitruv.framework.vsum.repositories.ModelRepositoryImpl
-import java.util.Vector
-import tools.vitruv.framework.vsum.helper.ChangeDomainExtractor
-import tools.vitruv.framework.userinteraction.UserInteractor
 import tools.vitruv.framework.userinteraction.InternalUserInteractor
-import tools.vitruv.framework.domains.TuidAwareVitruvDomain
+import tools.vitruv.framework.userinteraction.UserInteractor
+import tools.vitruv.framework.util.command.EMFCommandBridge
+import tools.vitruv.framework.util.datatypes.VURI
+import tools.vitruv.framework.vsum.helper.ChangeDomainExtractor
+import tools.vitruv.framework.vsum.modelsynchronization.ChangePropagationListener
+import tools.vitruv.framework.vsum.modelsynchronization.ChangePropagator
+import tools.vitruv.framework.vsum.modelsynchronization.ChangePropagatorImpl
+import tools.vitruv.framework.vsum.repositories.ModelRepositoryImpl
+import tools.vitruv.framework.vsum.repositories.ResourceRepositoryImpl
 
 class VirtualModelImpl implements InternalVirtualModel {
 		
@@ -95,6 +96,15 @@ class VirtualModelImpl implements InternalVirtualModel {
 		val result = changePropagator.propagateChange(change);
 		informPropagatedChangeListeners(result);
 		return result;
+	}
+	
+	override propagateChangedState(Resource newState) {	
+		val uri = VURI.getInstance(newState)
+		val vitruvDomain =  metamodelRepository.getDomain(uri)
+		val currentState = resourceRepository.getModel(uri).getResource() // TODO TS check if resource exists in repo
+		val strategy = vitruvDomain.stateChangePropagationStrategy
+		val compositeChange =  strategy.getChangeSequences(newState, currentState, uuidGeneratorAndResolver)
+		return propagateChange(compositeChange)
 	}
 	
 	override reverseChanges(List<PropagatedChange> changes) {
