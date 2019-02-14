@@ -12,7 +12,7 @@ import tools.vitruv.framework.util.datatypes.VURI
 
 abstract class AbstractTuidAwareVitruvDomain extends AbstractVitruvDomain implements TuidAwareVitruvDomain, TuidUpdateListener {
 	TuidCalculatorAndResolver tuidCalculatorAndResolver
-	DefaultStateChangePropagationStrategy stateChangePropagationStrategy
+	final DefaultStateChangePropagationStrategy stateChangePropagationStrategy
 	
 	new(String name, EPackage metamodelRootPackage, Set<EPackage> furtherRootPackages, TuidCalculatorAndResolver tuidCalculator, String... fileExtensions) {
 		super(name, metamodelRootPackage, furtherRootPackages, fileExtensions)
@@ -23,6 +23,7 @@ abstract class AbstractTuidAwareVitruvDomain extends AbstractVitruvDomain implem
 	new(String name, EPackage metamodelRootPackage, TuidCalculatorAndResolver tuidCalculator, String... fileExtensions) {
 		super(name, metamodelRootPackage, fileExtensions)
 		this.tuidCalculatorAndResolver = tuidCalculator;
+		stateChangePropagationStrategy = new DefaultStateChangePropagationStrategy()
 	}
 	
 	override StateChangePropagationStrategy getStateChangePropagationStrategy() {
