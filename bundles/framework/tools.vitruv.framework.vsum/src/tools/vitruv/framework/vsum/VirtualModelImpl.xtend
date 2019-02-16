@@ -1,6 +1,7 @@
 package tools.vitruv.framework.vsum
 
 import java.io.File
+import java.util.Collections
 import java.util.List
 import java.util.Vector
 import java.util.concurrent.Callable
@@ -23,40 +24,39 @@ import tools.vitruv.framework.vsum.modelsynchronization.ChangePropagator
 import tools.vitruv.framework.vsum.modelsynchronization.ChangePropagatorImpl
 import tools.vitruv.framework.vsum.repositories.ModelRepositoryImpl
 import tools.vitruv.framework.vsum.repositories.ResourceRepositoryImpl
-import edu.kit.ipd.sdq.commons.util.org.eclipse.emf.common.util.URIUtil
 
 class VirtualModelImpl implements InternalVirtualModel {
 
-	private val ResourceRepositoryImpl resourceRepository;
-	private val ModelRepositoryImpl modelRepository;
-	private val VitruvDomainRepository metamodelRepository;
-	private val ChangePropagator changePropagator;
-	private val ChangePropagationSpecificationProvider changePropagationSpecificationProvider;
-	private val File folder;
-	private val extension ChangeDomainExtractor changeDomainExtractor;
+	private val ResourceRepositoryImpl resourceRepository
+	private val ModelRepositoryImpl modelRepository
+	private val VitruvDomainRepository metamodelRepository
+	private val ChangePropagator changePropagator
+	private val ChangePropagationSpecificationProvider changePropagationSpecificationProvider
+	private val File folder
+	private val extension ChangeDomainExtractor changeDomainExtractor
 
 	/**
 	 * A list of {@link PropagatedChangeListener}s that are informed of all changes made
 	 */
-	private val List<PropagatedChangeListener> propagatedChangeListeners;
+	private val List<PropagatedChangeListener> propagatedChangeListeners
 
 	public new(File folder, InternalUserInteractor userInteractor, VirtualModelConfiguration modelConfiguration) {
-		this.folder = folder;
-		this.metamodelRepository = new VitruvDomainRepositoryImpl();
+		this.folder = folder
+		this.metamodelRepository = new VitruvDomainRepositoryImpl()
 		for (metamodel : modelConfiguration.metamodels) {
-			this.metamodelRepository.addDomain(metamodel);
+			this.metamodelRepository.addDomain(metamodel)
 			if (metamodel instanceof TuidAwareVitruvDomain) {
-				metamodel.registerAtTuidManagement();
+				metamodel.registerAtTuidManagement()
 			}
 		}
-		this.resourceRepository = new ResourceRepositoryImpl(folder, metamodelRepository);
-		this.modelRepository = new ModelRepositoryImpl(resourceRepository.uuidGeneratorAndResolver);
-		val changePropagationSpecificationRepository = new ChangePropagationSpecificationRepository();
+		this.resourceRepository = new ResourceRepositoryImpl(folder, metamodelRepository)
+		this.modelRepository = new ModelRepositoryImpl(resourceRepository.uuidGeneratorAndResolver)
+		val changePropagationSpecificationRepository = new ChangePropagationSpecificationRepository()
 		for (changePropagationSpecification : modelConfiguration.changePropagationSpecifications) {
-			changePropagationSpecification.userInteractor = userInteractor;
+			changePropagationSpecification.userInteractor = userInteractor
 			changePropagationSpecificationRepository.putChangePropagationSpecification(changePropagationSpecification)
 		}
-		this.changePropagationSpecificationProvider = changePropagationSpecificationRepository;
+		this.changePropagationSpecificationProvider = changePropagationSpecificationRepository
 		this.changePropagator = new ChangePropagatorImpl(
 			resourceRepository,
 			changePropagationSpecificationProvider,
@@ -64,79 +64,83 @@ class VirtualModelImpl implements InternalVirtualModel {
 			resourceRepository,
 			modelRepository,
 			userInteractor
-		);
-		VirtualModelManager.instance.putVirtualModel(this);
+		)
+		VirtualModelManager.instance.putVirtualModel(this)
 
-		this.propagatedChangeListeners = new Vector<PropagatedChangeListener>();
-		this.changeDomainExtractor = new ChangeDomainExtractor(metamodelRepository);
+		this.propagatedChangeListeners = new Vector<PropagatedChangeListener>()
+		this.changeDomainExtractor = new ChangeDomainExtractor(metamodelRepository)
 	}
 
 	override getCorrespondenceModel() {
-		this.resourceRepository.getCorrespondenceModel();
+		this.resourceRepository.getCorrespondenceModel()
 	}
 
 	override getModelInstance(VURI modelVuri) {
-		return this.resourceRepository.getModel(modelVuri);
+		return this.resourceRepository.getModel(modelVuri)
 	}
 
 	override save() {
-		this.resourceRepository.saveAllModels();
+		this.resourceRepository.saveAllModels()
 	}
 
 	override persistRootElement(VURI persistenceVuri, EObject rootElement) {
-		this.resourceRepository.persistAsRoot(rootElement, persistenceVuri);
+		this.resourceRepository.persistAsRoot(rootElement, persistenceVuri)
 	}
 
 	override executeCommand(Callable<Void> command) {
-		this.resourceRepository.createRecordingCommandAndExecuteCommandOnTransactionalDomain(command);
+		this.resourceRepository.createRecordingCommandAndExecuteCommandOnTransactionalDomain(command)
 	}
 
 	override addChangePropagationListener(ChangePropagationListener changePropagationListener) {
-		changePropagator.addChangePropagationListener(changePropagationListener);
+		changePropagator.addChangePropagationListener(changePropagationListener)
 	}
 
 	override propagateChange(VitruviusChange change) {
 		change.unresolveIfApplicable
 		// Save is done by the change propagator because it has to be performed before finishing sync
-		val result = changePropagator.propagateChange(change);
-		informPropagatedChangeListeners(result);
-		return result;
+		val result = changePropagator.propagateChange(change)
+		informPropagatedChangeListeners(result)
+		return result
 	}
 
 	override propagateChangedState(Resource newState) {
 		val vuri = VURI.getInstance(newState)
 		val vitruvDomain = metamodelRepository.getDomain(vuri.fileExtension)
-		val currentState = resourceRepository.getModel(vuri).getResource() // TODO TS check if resource exists in repo needed?
-		if (newState.resourceSet.URIConverter.exists(currentState.URI, null)) {
+		val currentState = resourceRepository.getModel(vuri).resource
+		if (isValid(newState, currentState)) {
 			val strategy = vitruvDomain.stateChangePropagationStrategy
 			val compositeChange = strategy.getChangeSequences(newState, currentState, uuidGeneratorAndResolver)
 			return propagateChange(compositeChange)
 		}
-		System.err.println("ERROR could not load current state for new state!")
+		System.err.println("ERROR could not load current state for new state!") // TODO TS use logger
 		return #[] // empty list
+	}
+	
+	private def boolean isValid(Resource newState, Resource currentState) {
+		newState.resourceSet.URIConverter.exists(currentState.URI, Collections.emptyMap)
 	}
 
 	override reverseChanges(List<PropagatedChange> changes) {
 		val command = EMFCommandBridge.createVitruviusRecordingCommand([|
-			changes.reverseView.forEach[it.applyBackward(uuidGeneratorAndResolver)];
-			return null;
+			changes.reverseView.forEach[it.applyBackward(uuidGeneratorAndResolver)]
+			return null
 		])
-		resourceRepository.executeRecordingCommandOnTransactionalDomain(command);
+		resourceRepository.executeRecordingCommandOnTransactionalDomain(command)
 
 		// TODO HK Instead of this make the changes set the modified flag of the resource when applied
 		val changedEObjects = changes.map[originalChange.affectedEObjects + consequentialChanges.affectedEObjects].flatten
-		changedEObjects.map[eResource].filterNull.forEach[modified = true];
-		save();
+		changedEObjects.map[eResource].filterNull.forEach[modified = true]
+		save()
 	}
 
 	override setUserInteractor(UserInteractor userInteractor) {
 		for (propagationSpecification : this.changePropagationSpecificationProvider) {
-			propagationSpecification.userInteractor = userInteractor;
+			propagationSpecification.userInteractor = userInteractor
 		}
 	}
 
 	override File getFolder() {
-		return folder;
+		return folder
 	}
 
 	override getUuidGeneratorAndResolver() {
@@ -149,7 +153,7 @@ class VirtualModelImpl implements InternalVirtualModel {
 	 * @param propagatedChangeListener The listener to register
 	 */
 	override void addPropagatedChangeListener(PropagatedChangeListener propagatedChangeListener) {
-		this.propagatedChangeListeners.add(propagatedChangeListener);
+		this.propagatedChangeListeners.add(propagatedChangeListener)
 	}
 
 	/**
@@ -159,7 +163,7 @@ class VirtualModelImpl implements InternalVirtualModel {
 	 * @param propagatedChangeListener The listener to remove
 	 */
 	override void removePropagatedChangeListener(PropagatedChangeListener propagatedChangeListener) {
-		this.propagatedChangeListeners.remove(propagatedChangeListener);
+		this.propagatedChangeListeners.remove(propagatedChangeListener)
 	}
 
 	/**
@@ -169,12 +173,12 @@ class VirtualModelImpl implements InternalVirtualModel {
 	 */
 	def private void informPropagatedChangeListeners(List<PropagatedChange> propagationResult) {
 		if (this.propagatedChangeListeners.isEmpty()) {
-			return;
+			return
 		}
-		val sourceDomain = getSourceDomain(propagationResult);
-		val targetDomain = getTargetDomain(propagationResult);
+		val sourceDomain = getSourceDomain(propagationResult)
+		val targetDomain = getTargetDomain(propagationResult)
 		for (PropagatedChangeListener propagatedChangeListener : this.propagatedChangeListeners) {
-			propagatedChangeListener.postChanges(name, sourceDomain, targetDomain, propagationResult);
+			propagatedChangeListener.postChanges(name, sourceDomain, targetDomain, propagationResult)
 		}
 	}
 
@@ -184,9 +188,9 @@ class VirtualModelImpl implements InternalVirtualModel {
 	 * @return The name of the virtual model
 	 */
 	def getName() {
-		val name = this.getFolder.getName;
+		val name = this.folder.name
 		// Special treatment in JUnit tests: they use a folder named name_vsum_...
-		val separator = "_vsum";
+		val separator = "_vsum"
 		if (name.indexOf(separator) != -1) {
 			return name.substring(0, name.indexOf(separator))
 		} else {
