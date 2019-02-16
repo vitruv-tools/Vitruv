@@ -26,7 +26,6 @@ import tools.vitruv.framework.vsum.repositories.ModelRepositoryImpl
 import tools.vitruv.framework.vsum.repositories.ResourceRepositoryImpl
 
 class VirtualModelImpl implements InternalVirtualModel {
-
 	private val ResourceRepositoryImpl resourceRepository
 	private val ModelRepositoryImpl modelRepository
 	private val VitruvDomainRepository metamodelRepository
@@ -107,17 +106,13 @@ class VirtualModelImpl implements InternalVirtualModel {
 		val vuri = VURI.getInstance(newState)
 		val vitruvDomain = metamodelRepository.getDomain(vuri.fileExtension)
 		val currentState = resourceRepository.getModel(vuri).resource
-		if (isValid(newState, currentState)) {
+		if (currentState.isValid(newState)) {
 			val strategy = vitruvDomain.stateChangePropagationStrategy
 			val compositeChange = strategy.getChangeSequences(newState, currentState, uuidGeneratorAndResolver)
 			return propagateChange(compositeChange)
 		}
 		System.err.println("ERROR could not load current state for new state!") // TODO TS use logger
 		return #[] // empty list
-	}
-	
-	private def boolean isValid(Resource newState, Resource currentState) {
-		newState.resourceSet.URIConverter.exists(currentState.URI, Collections.emptyMap)
 	}
 
 	override reverseChanges(List<PropagatedChange> changes) {
@@ -167,6 +162,22 @@ class VirtualModelImpl implements InternalVirtualModel {
 	}
 
 	/**
+	 * Returns the name of the virtual model.
+	 * 
+	 * @return The name of the virtual model
+	 */
+	def getName() {
+		val name = this.folder.name
+		// Special treatment in JUnit tests: they use a folder named name_vsum_...
+		val separator = "_vsum"
+		if (name.indexOf(separator) != -1) {
+			return name.substring(0, name.indexOf(separator))
+		} else {
+			return name
+		}
+	}
+
+	/**
 	 * This method informs the registered {@link PropagatedChangeListener}s of the propagation result.
 	 * 
 	 * @param propagationResult The propagation result
@@ -183,19 +194,10 @@ class VirtualModelImpl implements InternalVirtualModel {
 	}
 
 	/**
-	 * Returns the name of the virtual model.
-	 * 
-	 * @return The name of the virtual model
+	 * Confirms whether the current state is retrievable via its URI from the resource set of the new state.
 	 */
-	def getName() {
-		val name = this.folder.name
-		// Special treatment in JUnit tests: they use a folder named name_vsum_...
-		val separator = "_vsum"
-		if (name.indexOf(separator) != -1) {
-			return name.substring(0, name.indexOf(separator))
-		} else {
-			return name
-		}
+	private def boolean isValid(Resource currentState, Resource newState) {
+		newState.resourceSet.URIConverter.exists(currentState.URI, Collections.emptyMap)
 	}
 
 }
