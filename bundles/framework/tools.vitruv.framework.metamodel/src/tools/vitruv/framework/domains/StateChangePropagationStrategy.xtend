@@ -13,7 +13,9 @@ interface StateChangePropagationStrategy {
 	 * Resolves the state-based delta of two resources and returns the correlating change sequences.
 	 * @param newState is the new state of the resource.
 	 * @param currentState is the current or old state of the resource.
+	 * @param uuidGeneratorAndResolver is the UUID resolver of the virtual model using this propagation strategy.
 	 * @return a {@link CompositeChange} that contains the individual change sequences.
 	 */
-	def CompositeChange<VitruviusChange> getChangeSequences(Resource newState, Resource currentState, UuidGeneratorAndResolver uuidGeneratorAndResolver)
+	def CompositeChange<VitruviusChange> getChangeSequences(Resource newState, Resource currentState,
+		UuidGeneratorAndResolver uuidGeneratorAndResolver)
 }

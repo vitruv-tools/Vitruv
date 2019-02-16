@@ -14,6 +14,7 @@ import tools.vitruv.framework.change.recording.AtomicEmfChangeRecorder
 import tools.vitruv.framework.uuid.UuidGeneratorAndResolver
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import org.eclipse.emf.ecore.util.EcoreUtil
+import tools.vitruv.framework.uuid.UuidGeneratorAndResolverImpl
 
 /**
  * This default strategy for diff based state changes uses EMFCompare to resolve a 
@@ -22,35 +23,34 @@ import org.eclipse.emf.ecore.util.EcoreUtil
  */
 class DefaultStateChangePropagationStrategy implements StateChangePropagationStrategy {
 
-	override getChangeSequences(Resource newState, Resource currentState, UuidGeneratorAndResolver uuidGeneratorAndResolver) {
+	override getChangeSequences(Resource newState, Resource currentState, UuidGeneratorAndResolver resolver) {
 		/*
 		 * TODO TS Try first: create new resource set and create resource. copy content.
 		 * OR compare root object instead of resource
 		 * OR use orignal and revert
 		 */
-		val currentStateCopy = copyResource(currentState)
+		val currentStateCopy = currentState.copy()
+		val uuidGeneratorAndResolver = new UuidGeneratorAndResolverImpl(resolver, resolver.resourceSet, true)
 		// EMF Compare:
 		var scope = new DefaultComparisonScope(newState, currentStateCopy, null)
 		var comparison = EMFCompare.builder().build().compare(scope)
 		val List<Diff> diffs = comparison.getDifferences()
 		// Setup recorder:
-		// TODO TS same resolver or new one??
-		// val uuidGeneratorAndResolver = new UuidGeneratorAndResolverImpl(uuidGeneratorAndResolver, uuidGeneratorAndResolver.resourceSet, true);
 		val changeRecorder = new AtomicEmfChangeRecorder(uuidGeneratorAndResolver)
 		changeRecorder.addToRecording(currentStateCopy)
 		changeRecorder.beginRecording()
 		// replay the EMF compare diffs:
 		val mergerRegistry = IMerger.RegistryImpl.createStandaloneInstance()
 		val merger = new BatchMerger(mergerRegistry)
-		merger.copyAllLeftToRight(diffs, new BasicMonitor())
+		merger.copyAllLeftToRight(diffs, new BasicMonitor)
 		changeRecorder.endRecording()
 		// propagate vitruv changes:
 		val List<TransactionalChange> vitruvDiffs = changeRecorder.changes
 		return VitruviusChangeFactory.getInstance().createCompositeChange(vitruvDiffs);
 	}
 
-	def private Resource copyResource(Resource resource) {
-		val resourceSet = new ResourceSetImpl()
+	def private Resource copy(Resource resource) {
+		val resourceSet = new ResourceSetImpl
 		val copy = resourceSet.createResource(resource.URI)
 		copy.contents.addAll(EcoreUtil.copyAll(resource.contents))
 		return copy
