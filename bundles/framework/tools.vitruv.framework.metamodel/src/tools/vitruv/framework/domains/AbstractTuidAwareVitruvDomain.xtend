@@ -11,8 +11,8 @@ import tools.vitruv.framework.tuid.TuidUpdateListener
 import tools.vitruv.framework.util.datatypes.VURI
 
 abstract class AbstractTuidAwareVitruvDomain extends AbstractVitruvDomain implements TuidAwareVitruvDomain, TuidUpdateListener {
-	TuidCalculatorAndResolver tuidCalculatorAndResolver
-	final DefaultStateChangePropagationStrategy stateChangePropagationStrategy
+	val TuidCalculatorAndResolver tuidCalculatorAndResolver
+	val DefaultStateChangePropagationStrategy stateChangePropagationStrategy
 	
 	new(String name, EPackage metamodelRootPackage, Set<EPackage> furtherRootPackages, TuidCalculatorAndResolver tuidCalculator, String... fileExtensions) {
 		super(name, metamodelRootPackage, furtherRootPackages, fileExtensions)
