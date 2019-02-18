@@ -109,14 +109,9 @@ class VirtualModelImpl implements InternalVirtualModel {
 		if (currentState.isValid(newState)) {
 			val strategy = vitruvDomain.stateChangePropagationStrategy
 			val compositeChange = strategy.getChangeSequences(newState, currentState, uuidGeneratorAndResolver)
-			try {
-				return propagateChange(compositeChange)
-			} catch (RuntimeException exception) { // TODO TS not something we should catch here
-				System.err.println("ERROR could not propagate change!") // TODO TS use logger
-			}
-		} else {
-			System.err.println("ERROR could not load current state for new state!") // TODO TS use logger
+			return propagateChange(compositeChange)
 		}
+		System.err.println("ERROR could not load current state for new state!") // TODO TS use logger
 		return #[] // empty list
 	}
 
