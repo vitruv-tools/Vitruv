@@ -1,5 +1,8 @@
 package tools.vitruv.testutils.util;
 
+import static edu.kit.ipd.sdq.commons.util.org.eclipse.core.resources.IProjectUtil.createJavaProject;
+import static edu.kit.ipd.sdq.commons.util.org.eclipse.core.resources.IProjectUtil.getWorkspaceProject;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -13,19 +16,15 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.emf.ecore.EPackage;
 
 import tools.vitruv.framework.change.processing.ChangePropagationSpecification;
+import tools.vitruv.framework.domains.AbstractVitruvDomain;
 import tools.vitruv.framework.domains.VitruvDomain;
 import tools.vitruv.framework.domains.VitruviusProjectBuilderApplicator;
-import tools.vitruv.framework.domains.AbstractVitruvDomain;
-import tools.vitruv.framework.domains.DefaultStateChangePropagationStrategy;
-import tools.vitruv.framework.domains.StateChangePropagationStrategy;
 import tools.vitruv.framework.userinteraction.InternalUserInteractor;
 import tools.vitruv.framework.util.VitruviusConstants;
 import tools.vitruv.framework.vsum.InternalVirtualModel;
 import tools.vitruv.framework.vsum.VirtualModel;
 import tools.vitruv.framework.vsum.VirtualModelConfiguration;
 import tools.vitruv.framework.vsum.VirtualModelImpl;
-
-import static edu.kit.ipd.sdq.commons.util.org.eclipse.core.resources.IProjectUtil.*;
 
 /**
  * Utility class for all Vitruvius test cases
@@ -223,11 +222,6 @@ public final class TestUtil {
 			public VitruviusProjectBuilderApplicator getBuilderApplicator() {
 				return null;
 			}
-
-            @Override
-            public StateChangePropagationStrategy getStateChangePropagationStrategy() {
-                return new DefaultStateChangePropagationStrategy();
-            }
 		};
 		return domain;
 	}
