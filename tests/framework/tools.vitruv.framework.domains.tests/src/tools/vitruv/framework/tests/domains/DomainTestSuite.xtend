@@ -1,4 +1,4 @@
-package tools.vitruv.framework.tests.vsum
+package tools.vitruv.framework.tests.domains
 
 import org.junit.runner.RunWith
 import org.junit.runners.Suite

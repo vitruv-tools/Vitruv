@@ -1,4 +1,4 @@
-package tools.vitruv.framework.tests.vsum
+package tools.vitruv.framework.tests.domains
 
 import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl

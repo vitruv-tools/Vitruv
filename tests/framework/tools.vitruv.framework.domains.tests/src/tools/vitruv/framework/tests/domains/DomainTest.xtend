@@ -1,4 +1,4 @@
-package tools.vitruv.framework.tests.vsum
+package tools.vitruv.framework.tests.domains
 
 import java.io.File
 import java.util.ArrayList
