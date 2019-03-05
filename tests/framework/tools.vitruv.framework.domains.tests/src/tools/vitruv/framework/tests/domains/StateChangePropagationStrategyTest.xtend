@@ -12,6 +12,7 @@ import tools.vitruv.framework.util.datatypes.VURI
 import tools.vitruv.framework.uuid.UuidGeneratorAndResolverImpl
 import tools.vitruv.framework.vsum.InternalVirtualModel
 import uml_mockup.UClass
+import uml_mockup.UInterface
 import uml_mockup.UPackage
 import uml_mockup.Uml_mockupFactory
 
@@ -33,16 +34,35 @@ class StateChangePropagationStrategyTest extends DomainTest {
 
 	@Test
 	def void testNoChange() {
-		val change = strategyToTest.getChangeSequences(umlModelInstance.resource, checkpoint, vsum.uuidGeneratorAndResolver)
-		assertNotNull(change)
+		val change = changeSequenceFromComparisonWithCheckpoint
 		assertTrue("Composite change contains children!", change.EChanges.empty)
 	}
 
 	@Test
 	def void testNewClass() {
-		vsum.addNewUmlClass()
-		val change = strategyToTest.getChangeSequences(umlModelInstance.resource, checkpoint, vsum.uuidGeneratorAndResolver)
-		assertNotNull(change)
+		vsum.executeCommand([
+			var UPackage pckg = umlModelInstance.getUniqueRootEObjectIfCorrectlyTyped(UPackage)
+			val UClass uClass = Uml_mockupFactory.eINSTANCE.createUClass();
+			uClass.name = "NewlyAddedInterface"
+			uClass.id = "NewlyAddedInterface"
+			pckg.getClasses().add(uClass);
+			return null
+		])
+		val change = changeSequenceFromComparisonWithCheckpoint
+		assertFalse("Composite change is empty!", change.EChanges.empty) // TODO TS check more than that, compare with real sequences
+	}
+
+	@Test
+	def void testNewInterface() {
+		vsum.executeCommand([
+			var UPackage pckg = umlModelInstance.getUniqueRootEObjectIfCorrectlyTyped(UPackage)
+			val UInterface uInterface = Uml_mockupFactory.eINSTANCE.createUInterface;
+			uInterface.name = "NewlyAddedInterface"
+			uInterface.id = "NewlyAddedInterface"
+			pckg.getInterfaces().add(uInterface);
+			return null
+		])
+		val change = changeSequenceFromComparisonWithCheckpoint
 		assertFalse("Composite change is empty!", change.EChanges.empty) // TODO TS check more than that, compare with real sequences
 	}
 
@@ -51,13 +71,19 @@ class StateChangePropagationStrategyTest extends DomainTest {
 		val resourceSet = new ResourceSetImpl
 		val resolver = new UuidGeneratorAndResolverImpl(resourceSet, false)
 		val change = strategyToTest.getChangeSequences(null, null, resolver)
-		assertNotNull(change)
 		assertTrue("Composite change contains children!", change.EChanges.empty)
 	}
 
 	@Test(expected=IllegalArgumentException)
 	def void testNullResolver() {
 		strategyToTest.getChangeSequences(null, null, null)
+	}
+
+	private def getChangeSequenceFromComparisonWithCheckpoint() {
+		vsum.save
+		val change = strategyToTest.getChangeSequences(umlModelInstance.resource, checkpoint, vsum.uuidGeneratorAndResolver)
+		assertNotNull(change)
+		return change
 	}
 
 	def private Resource createCheckpoint(ModelInstance model) { // TODO TS model resource or root resource?
@@ -70,18 +96,5 @@ class StateChangePropagationStrategyTest extends DomainTest {
 
 	private def ModelInstance getUmlModelInstance() {
 		vsum.getModelInstance(VURI.getInstance(defaultUMLInstanceURI))
-	}
-
-	def private void addNewUmlClass(InternalVirtualModel vsum) {
-		val modelURI = VURI.getInstance(defaultUMLInstanceURI)
-		val ModelInstance model = vsum.getModelInstance(modelURI)
-		vsum.executeCommand([
-			var UPackage pckg = model.getUniqueRootEObjectIfCorrectlyTyped(UPackage)
-			val UClass uClass = Uml_mockupFactory.eINSTANCE.createUClass();
-			uClass.name = "newlyAddedClass"
-			pckg.getClasses().add(uClass);
-			return null
-		])
-		vsum.save() // (modelURI);
 	}
 }
