@@ -28,6 +28,7 @@ import uml_mockup.UPackage
 import uml_mockup.Uml_mockupFactory
 import uml_mockup.Uml_mockupPackage
 
+// TODO TS (IMPORTANT) This class is a copy of VSUMTest!
 abstract class DomainTest extends VitruviusTest {
 	protected static final String PROJECT_FOLDER_NAME = "MockupProject"
 	protected static final String VSUM_NAME = "DomainProject"
