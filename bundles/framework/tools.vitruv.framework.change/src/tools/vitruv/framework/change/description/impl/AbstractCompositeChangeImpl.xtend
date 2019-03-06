@@ -19,9 +19,9 @@ abstract class AbstractCompositeChangeImpl<C extends VitruviusChange> implements
 		this.changes = new LinkedList<C>(changes);
 	}
 
-    override List<C> getChanges() {
-        return this.changes;
-    }
+	override List<C> getChanges() {
+		return this.changes;
+	}
 
 	override addChange(C change) {
 		if (change !== null) this.changes.add(change);
@@ -89,24 +89,42 @@ abstract class AbstractCompositeChangeImpl<C extends VitruviusChange> implements
 	override getAffectedEObjects() {
 		return changes.fold(newArrayList, [list, element|list += element.affectedEObjects; return list]).filterNull;
 	}
-	
+
 	override getAffectedEObjectIds() {
 		return changes.fold(newArrayList, [list, element|list += element.affectedEObjectIds; return list]).filterNull;
 	}
-	
+
 	override unresolveIfApplicable() {
 		changes.forEach[unresolveIfApplicable]
 	}
-	
-	override toString() '''
-	«this.class.simpleName», VURI: «URI»
-		«FOR change : changes»
-			«change»
-		«ENDFOR»
-	'''
-	
+
 	override getUserInteractions() {
 		return changes.map[userInteractions].flatten
 	}
-	
+
+	override toString() '''
+		«this.class.simpleName», VURI: «URI»
+			«FOR change : changes»
+				«change»
+			«ENDFOR»
+	'''
+
+	override equals(Object other) { // TODO TS equal with order or without?
+		return other.isEqual // delegates to dynamic dispatch
+	}
+
+	private def dispatch boolean isEqual(Object object) { false }
+
+	private def dispatch boolean isEqual(CompositeChange<C> compositeChange) {
+		val List<C> remainingChanges = new LinkedList(changes)
+		for (change : changes) {
+			for (otherChange : compositeChange.changes) {
+				if (change.equals(otherChange)) {
+					remainingChanges.remove(change)
+				}
+			}
+		}
+		return remainingChanges.isEmpty
+	}
+
 }

@@ -17,6 +17,7 @@ import tools.vitruv.framework.change.echange.eobject.EObjectExistenceEChange
 import org.eclipse.emf.ecore.InternalEObject
 import tools.vitruv.framework.uuid.UuidResolver
 import tools.vitruv.framework.change.interaction.UserInteractionBase
+import org.eclipse.emf.ecore.util.EcoreUtil
 
 abstract class AbstractConcreteChange implements ConcreteChange {
 	private static val logger = Logger.getLogger(AbstractConcreteChange);
@@ -95,6 +96,15 @@ abstract class AbstractConcreteChange implements ConcreteChange {
         this.userInteractions += userInteractions
     }
 	
+	override equals(Object obj) { // TODO TS implement equals method
+		return obj.isEqual // delegate to dynamic dispatch
+	}
+	
+	private def dispatch boolean isEqual(Object object) { false }
+
+	private def dispatch boolean isEqual(ConcreteChange change) {
+		return EcoreUtil.equals(eChange, change.EChange)
+	}
 	
 	private def dispatch List<String> getAffectedEObjectIds(EChange eChange) {
 		return #[]
