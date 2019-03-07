@@ -1,15 +1,16 @@
 package tools.vitruv.framework.change.description.impl
 
 import org.eclipse.emf.ecore.EObject
-import tools.vitruv.framework.change.echange.EChange
-import tools.vitruv.framework.tuid.TuidManager
-import static extension tools.vitruv.framework.change.echange.resolve.EChangeResolverAndApplicator.*
-import tools.vitruv.framework.uuid.UuidResolver
-import tools.vitruv.framework.change.echange.resolve.EChangeUnresolver
-import tools.vitruv.framework.util.datatypes.VURI
 import org.eclipse.emf.ecore.InternalEObject
-import tools.vitruv.framework.change.echange.root.RootEChange
 import org.eclipse.emf.ecore.util.EcoreUtil
+import tools.vitruv.framework.change.echange.EChange
+import tools.vitruv.framework.change.echange.resolve.EChangeUnresolver
+import tools.vitruv.framework.change.echange.root.RootEChange
+import tools.vitruv.framework.tuid.TuidManager
+import tools.vitruv.framework.util.datatypes.VURI
+import tools.vitruv.framework.uuid.UuidResolver
+
+import static extension tools.vitruv.framework.change.echange.resolve.EChangeResolverAndApplicator.*
 
 class ConcreteApplicableChangeImpl extends ConcreteChangeImpl {
 	private var VURI vuri;
@@ -92,5 +93,4 @@ class ConcreteApplicableChangeImpl extends ConcreteChangeImpl {
 	private def dispatch boolean isEqual(ConcreteApplicableChangeImpl change) {
 		return EcoreUtil.equals(EChange, change.EChange) && vuri.equals(change.URI) // check echange AND vuri
 	}
-
 }

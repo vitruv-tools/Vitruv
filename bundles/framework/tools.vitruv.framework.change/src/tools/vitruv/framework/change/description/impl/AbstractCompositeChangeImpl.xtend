@@ -116,15 +116,16 @@ abstract class AbstractCompositeChangeImpl<C extends VitruviusChange> implements
 	private def dispatch boolean isEqual(Object object) { false }
 
 	private def dispatch boolean isEqual(CompositeChange<C> compositeChange) {
-		val List<C> remainingChanges = new LinkedList(changes)
-		for (change : changes) {
-			for (otherChange : compositeChange.changes) {
-				if (change.equals(otherChange)) {
-					remainingChanges.remove(change)
-				}
+		if (changes.size != compositeChange.changes.size) {
+			return false
+		}
+		val iterator = changes.iterator
+		val otherIterator = compositeChange.changes.iterator
+		while (iterator.hasNext()) {
+			if (!iterator.next.equals(otherIterator.next)) {
+				return false
 			}
 		}
-		return remainingChanges.isEmpty
+		return true;
 	}
-
 }
