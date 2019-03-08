@@ -74,7 +74,7 @@ class DefaultStateChangePropagationStrategy implements StateChangePropagationStr
 	/**
 	 * Replays a list of of EMFCompare differences and records the changes to receive Vitruv change sequences. 
 	 */
-	private def List<TransactionalChange> replayChanges(List<Diff> changesToReplay, Notifier currentState, UuidGeneratorAndResolverImpl resolver) {
+	private def List<TransactionalChange> replayChanges(List<Diff> changesToReplay, Notifier currentState, UuidGeneratorAndResolver resolver) {
 		// Setup recorder:
 		val changeRecorder = new AtomicEmfChangeRecorder(resolver)
 		changeRecorder.addToRecording(currentState)

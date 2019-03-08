@@ -7,14 +7,18 @@ import uml_mockup.Uml_mockupFactory
 class UmlStateChangeTest extends StateChangePropagationTest {
 
 	@Test
-	def void testRenameClass() {
+	def void testRenameTypes() {
 		vsum.executeCommand([
 			var uPackage = umlModelInstance.getUniqueRootEObjectIfCorrectlyTyped(UPackage)
 			var uClass = uPackage.classes.get(0)
 			uClass.name = "RenamedClass"
+			//uClass.id = "ClassId" //TODO
+			// var uInterface = uPackage.interfaces.get(0)
+			// uInterface.name = "RenamedInterface"
+			// uInterface.id = "InterfaceId" TODO
 			return null
 		])
-		compareWithRecordedChanges(umlModelInstance)
+		umlModelInstance.compareRecordedChanges
 	}
 
 	@Test
@@ -27,7 +31,7 @@ class UmlStateChangeTest extends StateChangePropagationTest {
 			uClass.attributes.add(uAttribute)
 			return null
 		])
-		compareWithRecordedChanges(umlModelInstance)
+		umlModelInstance.compareRecordedChanges
 	}
 
 	@Test
@@ -36,11 +40,11 @@ class UmlStateChangeTest extends StateChangePropagationTest {
 			var uPackage = umlModelInstance.getUniqueRootEObjectIfCorrectlyTyped(UPackage)
 			val uClass = Uml_mockupFactory.eINSTANCE.createUClass
 			uClass.name = "NewlyAddedInterface"
-			uClass.id = "NewlyAddedInterface"
+			//uClass.id = "NewlyAddedInterface"
 			uPackage.classes.add(uClass)
 			return null
 		])
-		compareWithRecordedChanges(umlModelInstance)
+		umlModelInstance.compareRecordedChanges
 	}
 
 	@Test
@@ -49,10 +53,10 @@ class UmlStateChangeTest extends StateChangePropagationTest {
 			var uPackage = umlModelInstance.getUniqueRootEObjectIfCorrectlyTyped(UPackage)
 			val uInterface = Uml_mockupFactory.eINSTANCE.createUInterface
 			uInterface.name = "NewlyAddedInterface"
-			uInterface.id = "NewlyAddedInterface"
+			//uInterface.id = "NewlyAddedInterface"
 			uPackage.interfaces.add(uInterface)
 			return null
 		])
-		compareWithRecordedChanges(umlModelInstance)
+		umlModelInstance.compareRecordedChanges
 	}
 }

@@ -2,29 +2,32 @@ package tools.vitruv.framework.tests.domains
 
 import java.io.IOException
 import java.util.List
+import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.resource.Resource
-import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import org.eclipse.emf.ecore.util.EcoreUtil
+import org.junit.After
+import org.junit.Before
 import tools.vitruv.framework.change.description.CompositeContainerChange
 import tools.vitruv.framework.change.description.TransactionalChange
 import tools.vitruv.framework.change.description.VitruviusChange
 import tools.vitruv.framework.change.description.VitruviusChangeFactory
+import tools.vitruv.framework.change.recording.AtomicEmfChangeRecorder
+import tools.vitruv.framework.domains.DefaultStateChangePropagationStrategy
+import tools.vitruv.framework.domains.StateChangePropagationStrategy
 import tools.vitruv.framework.util.bridges.EcoreResourceBridge
 import tools.vitruv.framework.util.datatypes.ModelInstance
 import tools.vitruv.framework.util.datatypes.VURI
+import tools.vitruv.framework.vsum.InternalVirtualModel
 
 import static org.junit.Assert.*
-import tools.vitruv.framework.domains.StateChangePropagationStrategy
-import tools.vitruv.framework.vsum.InternalVirtualModel
-import tools.vitruv.framework.change.recording.AtomicEmfChangeRecorder
-import tools.vitruv.framework.domains.DefaultStateChangePropagationStrategy
-import org.junit.Before
-import org.junit.After
+import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
+import org.eclipse.emf.common.notify.Notifier
 
 abstract class StateChangePropagationTest extends DomainTest {
 	protected var StateChangePropagationStrategy strategyToTest
 	protected var InternalVirtualModel vsum
-	protected var Resource checkpoint
+	protected var Resource umlCheckpoint
+	protected var Resource pcmCheckpoint
 	protected var AtomicEmfChangeRecorder changeRecorder
 
 	@Before
@@ -33,9 +36,11 @@ abstract class StateChangePropagationTest extends DomainTest {
 		vsum = createVirtualModelAndModelInstances
 		// fillVsum(vsum) // TODO TS remove!
 		// createMockupModelsWithDefaultUris(vsum) // TODO TS remove!
-		checkpoint = umlModelInstance.createCheckpoint
+		umlCheckpoint = umlModelInstance.createCheckpoint
+		pcmCheckpoint = pcmModelInstance.createCheckpoint
 		changeRecorder = new AtomicEmfChangeRecorder(vsum.uuidGeneratorAndResolver)
-		umlModelInstance.resource.startRecordingChanges
+		umlModelInstance.firstRootEObject.startRecordingChanges // TODO resource? object?
+		pcmModelInstance.firstRootEObject.startRecordingChanges
 	}
 
 	@After
@@ -45,15 +50,15 @@ abstract class StateChangePropagationTest extends DomainTest {
 		}
 	}
 
-	protected def void compareWithRecordedChanges(ModelInstance model) {
-		val change = changeFromComparisonWithCheckpoint
+	protected def void compareRecordedChanges(ModelInstance model) {
+		val change = model.changeFromComparisonWithCheckpoint
 		assertFalse("Composite change is empty!", change.EChanges.empty)
 		assertEquals(change, model.recordedChanges)
 	}
 
-	protected def VitruviusChange getChangeFromComparisonWithCheckpoint() {
+	protected def VitruviusChange getChangeFromComparisonWithCheckpoint(ModelInstance model) {
 		vsum.save
-		val change = strategyToTest.getChangeSequences(umlModelInstance.resource, checkpoint, vsum.uuidGeneratorAndResolver)
+		val change = strategyToTest.getChangeSequences(model.resource, model.correlatingCheckpoint, vsum.uuidGeneratorAndResolver) // TODO TS model resource? root object?
 		assertNotNull(change)
 		return change
 	}
@@ -66,15 +71,7 @@ abstract class StateChangePropagationTest extends DomainTest {
 		vsum.getModelInstance(VURI.getInstance(defaultPcmInstanceURI))
 	}
 
-	protected def void startRecordingChanges(Resource resource) {
-		changeRecorder.addToRecording(resource)
-		if (!changeRecorder.isRecording) {
-			changeRecorder.beginRecording
-		}
-	}
-
-	private def CompositeContainerChange getRecordedChanges(ModelInstance model) throws IOException {
-		// val resource = model.getUniqueRootEObjectIfCorrectlyTyped(UPackage).eResource // TODO TS
+	protected def CompositeContainerChange getRecordedChanges(ModelInstance model) throws IOException {
 		val resource = model.resource
 		EcoreResourceBridge.saveResource(resource)
 		changeRecorder.endRecording
@@ -83,11 +80,22 @@ abstract class StateChangePropagationTest extends DomainTest {
 		return compositeChange
 	}
 
+	protected def void startRecordingChanges(Notifier notifier) {
+		changeRecorder.addToRecording(notifier)
+		if (!changeRecorder.isRecording) {
+			changeRecorder.beginRecording
+		}
+	}
+
+	private def getCorrelatingCheckpoint(ModelInstance model) {
+		if (model.URI.fileExtension == umlModelInstance.URI.fileExtension) umlCheckpoint else pcmCheckpoint
+	}
+
 	private def Resource createCheckpoint(ModelInstance model) { // TODO TS model resource or root resource?
-		val resource = model.resource
+	// return EcoreUtil.copy(model.firstRootEObject)
 		val resourceSet = new ResourceSetImpl
-		val copy = resourceSet.createResource(resource.URI)
-		copy.contents.addAll(EcoreUtil.copyAll(resource.contents))
+		val copy = resourceSet.createResource(model.resource.URI)
+		copy.contents.addAll(EcoreUtil.copyAll(model.resource.contents))
 		return copy
 	}
 }
