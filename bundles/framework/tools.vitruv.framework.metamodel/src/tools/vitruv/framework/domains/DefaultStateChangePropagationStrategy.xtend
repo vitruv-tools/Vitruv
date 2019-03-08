@@ -2,12 +2,14 @@ package tools.vitruv.framework.domains
 
 import java.util.Collections
 import java.util.List
+import org.eclipse.emf.common.notify.Notifier
 import org.eclipse.emf.common.util.BasicMonitor
 import org.eclipse.emf.compare.Diff
 import org.eclipse.emf.compare.EMFCompare
 import org.eclipse.emf.compare.merge.BatchMerger
 import org.eclipse.emf.compare.merge.IMerger
 import org.eclipse.emf.compare.scope.DefaultComparisonScope
+import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import org.eclipse.emf.ecore.util.EcoreUtil
@@ -26,10 +28,18 @@ class DefaultStateChangePropagationStrategy implements StateChangePropagationStr
 	val VitruviusChangeFactory changeFactory
 
 	/**
-	 * 
+	 * Creates the strategy.
 	 */
 	new() {
 		changeFactory = VitruviusChangeFactory.instance
+	}
+
+	override getChangeSequences(Resource newState, Resource currentState, UuidGeneratorAndResolver resolver) {
+		return resolveChangeSequences(newState, currentState, resolver)
+	}
+
+	override getChangeSequences(EObject newState, EObject currentState, UuidGeneratorAndResolver resolver) {
+		return resolveChangeSequences(newState, currentState, resolver)
 	}
 
 	/*
@@ -37,7 +47,7 @@ class DefaultStateChangePropagationStrategy implements StateChangePropagationStr
 	 * OR compare root object instead of resource
 	 * OR use orignal and revert
 	 */
-	override getChangeSequences(Resource newState, Resource currentState, UuidGeneratorAndResolver resolver) {
+	def private resolveChangeSequences(Notifier newState, Notifier currentState, UuidGeneratorAndResolver resolver) {
 		if (resolver === null) {
 			throw new IllegalArgumentException("UUID generator and resolver cannot be null!")
 		} else if (newState === null || currentState === null) {
@@ -45,7 +55,7 @@ class DefaultStateChangePropagationStrategy implements StateChangePropagationStr
 		}
 		// Setup resolver and copy state:
 		val uuidGeneratorAndResolver = new UuidGeneratorAndResolverImpl(resolver, resolver.resourceSet, true)
-		val currentStateCopy = currentState.copy()
+		val currentStateCopy = currentState.copy
 		// Create change sequences:
 		val diffs = compareStates(newState, currentStateCopy)
 		val vitruvDiffs = replayChanges(diffs, currentStateCopy, uuidGeneratorAndResolver)
@@ -55,7 +65,7 @@ class DefaultStateChangePropagationStrategy implements StateChangePropagationStr
 	/**
 	 * Compares states using EMFCompare and returns a list of all differences.
 	 */
-	private def List<Diff> compareStates(Resource newState, Resource currentState) {
+	private def List<Diff> compareStates(Notifier newState, Notifier currentState) {
 		var scope = new DefaultComparisonScope(newState, currentState, null)
 		var comparison = EMFCompare.builder().build().compare(scope)
 		return comparison.getDifferences()
@@ -64,7 +74,7 @@ class DefaultStateChangePropagationStrategy implements StateChangePropagationStr
 	/**
 	 * Replays a list of of EMFCompare differences and records the changes to receive Vitruv change sequences. 
 	 */
-	private def List<TransactionalChange> replayChanges(List<Diff> changesToReplay, Resource currentState, UuidGeneratorAndResolverImpl resolver) {
+	private def List<TransactionalChange> replayChanges(List<Diff> changesToReplay, Notifier currentState, UuidGeneratorAndResolverImpl resolver) {
 		// Setup recorder:
 		val changeRecorder = new AtomicEmfChangeRecorder(resolver)
 		changeRecorder.addToRecording(currentState)
@@ -81,10 +91,14 @@ class DefaultStateChangePropagationStrategy implements StateChangePropagationStr
 	/**
 	 * Creates a new resource set, creates a resource and copies the content of the orignal resource.
 	 */
-	def private Resource copy(Resource resource) {
+	private def dispatch Resource copy(Resource resource) {
 		val resourceSet = new ResourceSetImpl
 		val copy = resourceSet.createResource(resource.URI)
 		copy.contents.addAll(EcoreUtil.copyAll(resource.contents))
 		return copy
+	}
+
+	private def dispatch EObject copy(EObject object) {
+		return EcoreUtil.copy(object)
 	}
 }

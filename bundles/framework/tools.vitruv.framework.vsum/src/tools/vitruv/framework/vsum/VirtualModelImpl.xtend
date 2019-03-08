@@ -105,7 +105,7 @@ class VirtualModelImpl implements InternalVirtualModel {
 	override propagateChangedState(Resource newState) {
 		val vuri = VURI.getInstance(newState)
 		val vitruvDomain = metamodelRepository.getDomain(vuri.fileExtension)
-		val currentState = resourceRepository.getModel(vuri).resource
+		val currentState = resourceRepository.getModel(vuri).resource // TODO TS call for roots
 		if (currentState.isValid(newState)) {
 			val strategy = vitruvDomain.stateChangePropagationStrategy
 			val compositeChange = strategy.getChangeSequences(newState, currentState, uuidGeneratorAndResolver)
