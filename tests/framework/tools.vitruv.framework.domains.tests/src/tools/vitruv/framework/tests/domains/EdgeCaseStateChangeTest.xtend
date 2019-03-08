@@ -5,28 +5,52 @@ import org.junit.Test
 import tools.vitruv.framework.uuid.UuidGeneratorAndResolverImpl
 
 import static org.junit.Assert.*
+import org.eclipse.emf.ecore.EObject
+import org.eclipse.emf.ecore.resource.Resource
 
 class EdgeCaseStateChangeTest extends StateChangePropagationTest {
 
 	/**
-	 * Tests the comparison of two states with no changes for botch mock-up models.
+	 * Tests the comparison of two states with no changes for the uml mockup model.
 	 */
 	@Test
-	def void testNoChange() {
-		val change = changeFromComparisonWithCheckpoint
+	def void testNoUmlChange() {
+		val change = umlModelInstance.changeFromComparisonWithCheckpoint
 		assertTrue("Composite change contains children!", change.EChanges.empty)
 		assertEquals(change, umlModelInstance.recordedChanges)
+	}
+
+	/**
+	 * Tests the comparison of two states with no changes for the pcm mockup model.
+	 */
+	@Test
+	def void testNoPcmChange() {
+		val change = pcmModelInstance.changeFromComparisonWithCheckpoint
+		assertTrue("Composite change contains children!", change.EChanges.empty)
 		assertEquals(change, pcmModelInstance.recordedChanges)
 	}
 
 	/**
-	 * Tests invalid input: null instead of states.
+	 * Tests invalid input: null instead of state EObjects.
+	 */
+	@Test
+	def void testNullEObject() {
+		val resourceSet = new ResourceSetImpl
+		val resolver = new UuidGeneratorAndResolverImpl(resourceSet, false)
+		val EObject nullEObject = null
+		val change = strategyToTest.getChangeSequences(nullEObject, nullEObject, resolver)
+		assertTrue("Composite change contains children!", change.EChanges.empty)
+	}
+
+	/**
+	 * Tests invalid input: null instead of state resources.
 	 */
 	@Test
 	def void testNullResources() {
 		val resourceSet = new ResourceSetImpl
 		val resolver = new UuidGeneratorAndResolverImpl(resourceSet, false)
-		val change = strategyToTest.getChangeSequences(null, null, resolver)
+		val Resource nullResource = null
+		val change = strategyToTest.getChangeSequences(nullResource, nullResource, resolver)
 		assertTrue("Composite change contains children!", change.EChanges.empty)
 	}
 
@@ -35,6 +59,7 @@ class EdgeCaseStateChangeTest extends StateChangePropagationTest {
 	 */
 	@Test(expected=IllegalArgumentException)
 	def void testNullResolver() {
-		strategyToTest.getChangeSequences(null, null, null)
+		val EObject nullEObject = null
+		strategyToTest.getChangeSequences(nullEObject, nullEObject, null)
 	}
 }
