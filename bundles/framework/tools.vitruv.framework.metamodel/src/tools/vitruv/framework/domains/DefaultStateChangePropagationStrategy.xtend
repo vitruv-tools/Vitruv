@@ -39,7 +39,7 @@ class DefaultStateChangePropagationStrategy implements StateChangePropagationStr
 	}
 
 	override getChangeSequences(EObject newState, EObject currentState, UuidGeneratorAndResolver resolver) {
-		return resolveChangeSequences(newState, currentState, resolver)
+		return resolveChangeSequences(newState.eResource, currentState.eResource, resolver)
 	}
 
 	/*
@@ -47,7 +47,7 @@ class DefaultStateChangePropagationStrategy implements StateChangePropagationStr
 	 * OR compare root object instead of resource
 	 * OR use orignal and revert
 	 */
-	def private resolveChangeSequences(Notifier newState, Notifier currentState, UuidGeneratorAndResolver resolver) {
+	def private resolveChangeSequences(Resource newState, Resource currentState, UuidGeneratorAndResolver resolver) {
 		if (resolver === null) {
 			throw new IllegalArgumentException("UUID generator and resolver cannot be null!")
 		} else if (newState === null || currentState === null) {
@@ -91,14 +91,10 @@ class DefaultStateChangePropagationStrategy implements StateChangePropagationStr
 	/**
 	 * Creates a new resource set, creates a resource and copies the content of the orignal resource.
 	 */
-	private def dispatch Resource copy(Resource resource) {
+	private def Resource copy(Resource resource) {
 		val resourceSet = new ResourceSetImpl
 		val copy = resourceSet.createResource(resource.URI)
 		copy.contents.addAll(EcoreUtil.copyAll(resource.contents))
 		return copy
-	}
-
-	private def dispatch EObject copy(EObject object) {
-		return EcoreUtil.copy(object)
 	}
 }
