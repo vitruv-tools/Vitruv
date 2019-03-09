@@ -28,4 +28,31 @@ class PcmStateChangeTest extends StateChangePropagationTest {
 		])
 		pcmModelInstance.compareRecordedChanges
 	}
+
+	@Test
+	def void testDeleteComponent() {
+		vsum.executeCommand([
+			var repository = pcmModelInstance.getUniqueRootEObjectIfCorrectlyTyped(Repository)
+			repository.components.remove(0)
+			return null
+		])
+		pcmModelInstance.compareRecordedChanges
+	}
+
+	@Test
+	def void testAddInterfaceWithMethod() {
+		vsum.executeCommand([
+			var repository = pcmModelInstance.getUniqueRootEObjectIfCorrectlyTyped(Repository)
+			val component = repository.components.get(0)
+			val pInterface = Pcm_mockupFactory.eINSTANCE.createPInterface
+			pInterface.name = "NewlyAddedInterface"
+			val pMethod = Pcm_mockupFactory.eINSTANCE.createPMethod
+			pMethod.name = "newMethod"
+			pInterface.methods.add(pMethod)
+			repository.interfaces.add(pInterface)
+			component.providedInterface = pInterface
+			return null
+		])
+		pcmModelInstance.compareRecordedChanges
+	}
 }
