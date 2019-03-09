@@ -96,7 +96,7 @@ abstract class AbstractConcreteChange implements ConcreteChange {
         this.userInteractions += userInteractions
     }
 	
-	override equals(Object obj) { // TODO TS implement equals method
+	override equals(Object obj) {
 		return obj.isEqual // delegate to dynamic dispatch
 	}
 	

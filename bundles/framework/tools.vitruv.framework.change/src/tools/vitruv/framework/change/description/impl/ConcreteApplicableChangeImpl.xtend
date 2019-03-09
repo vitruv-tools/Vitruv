@@ -2,13 +2,13 @@ package tools.vitruv.framework.change.description.impl
 
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.InternalEObject
-import org.eclipse.emf.ecore.util.EcoreUtil
 import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.change.echange.resolve.EChangeUnresolver
 import tools.vitruv.framework.change.echange.root.RootEChange
 import tools.vitruv.framework.tuid.TuidManager
 import tools.vitruv.framework.util.datatypes.VURI
 import tools.vitruv.framework.uuid.UuidResolver
+import tools.vitruv.framework.change.description.impl.EqualityHelper
 
 import static extension tools.vitruv.framework.change.echange.resolve.EChangeResolverAndApplicator.*
 
@@ -91,6 +91,10 @@ class ConcreteApplicableChangeImpl extends ConcreteChangeImpl {
 	private def dispatch boolean isEqual(Object object) { super.equals(object) } // use super implementation if anything else than ConcreteApplicableChangeImpl
 
 	private def dispatch boolean isEqual(ConcreteApplicableChangeImpl change) {
-		return EcoreUtil.equals(EChange, change.EChange) && vuri.equals(change.URI) // check echange AND vuri
+		if (vuri == change.URI) {
+			return new EqualityHelper().equals(EChange, change.EChange)
+		}
+		return false
+	// return EcoreUtil.equals(EChange, change.EChange) && vuri.equals(change.URI) // check echange AND vuri
 	}
 }
