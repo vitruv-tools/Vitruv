@@ -109,23 +109,28 @@ abstract class AbstractCompositeChangeImpl<C extends VitruviusChange> implements
 			«ENDFOR»
 	'''
 
-	override equals(Object other) { // TODO TS equal with order or without?
+	/**
+	 * Indicates whether some other object is "equal to" this composite change.
+	 * This means it is a composite change which contains the same changes as this one in no particular order.
+	 * @param other is the object to compare with.
+	 * @return true, if the object is a composite change and has the same changes in any order.
+	 */
+	override equals(Object other) {
 		return other.isEqual // delegates to dynamic dispatch
 	}
 
-	private def dispatch boolean isEqual(Object object) { false }
+	private def dispatch boolean isEqual(Object object) { super.equals(object) }
 
 	private def dispatch boolean isEqual(CompositeChange<C> compositeChange) {
 		if (changes.size != compositeChange.changes.size) {
 			return false
 		}
-		val iterator = changes.iterator
-		val otherIterator = compositeChange.changes.iterator
-		while (iterator.hasNext()) {
-			if (!iterator.next.equals(otherIterator.next)) {
-				return false
+		val remainingChanges = new LinkedList(compositeChange.changes)
+		for (ownChange : changes) {
+			if (remainingChanges.contains(ownChange)) {
+				remainingChanges.remove(ownChange)
 			}
 		}
-		return true;
+		return remainingChanges.empty
 	}
 }
