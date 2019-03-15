@@ -133,4 +133,25 @@ abstract class AbstractCompositeChangeImpl<C extends VitruviusChange> implements
 		}
 		return remainingChanges.empty
 	}
+
+	override boolean changedEObjectEquals(VitruviusChange change) {
+		return change.isChangedEObjectEqual
+	}
+
+	private def dispatch boolean isChangedEObjectEqual(VitruviusChange change) { super.equals(change) } // use super implementation if anything else than ConcreteApplicableChangeImpl
+
+	private def dispatch boolean isChangedEObjectEqual(CompositeChange<C> compositeChange) {
+		if (changes.size != compositeChange.changes.size) {
+			return false
+		}
+		val remainingChanges = new LinkedList(compositeChange.changes)
+		for (ownChange : changes) { // TODO TS remove code dupliction
+			for (otherChange : compositeChange.changes) {
+				if (ownChange.changedEObjectEquals(otherChange)) {
+					remainingChanges.remove(ownChange)
+				}
+			}
+		}
+		return remainingChanges.empty
+	}
 }

@@ -66,4 +66,9 @@ interface VitruviusChange extends URIHaving {
 	 * Returns all user interactions performed during application of this change and performing consistency preservation.
 	 */
 	def Iterable<UserInteractionBase> getUserInteractions()
+	
+	/**
+	 * Checks whether the affected EObjects of this change are equal to the EObjects of the other change.
+	 */
+	def boolean changedEObjectEquals(VitruviusChange change)
 }
