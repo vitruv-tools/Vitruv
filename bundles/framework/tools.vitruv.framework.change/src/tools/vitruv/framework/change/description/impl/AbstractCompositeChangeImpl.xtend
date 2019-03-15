@@ -126,11 +126,7 @@ abstract class AbstractCompositeChangeImpl<C extends VitruviusChange> implements
 			return false
 		}
 		val remainingChanges = new LinkedList(compositeChange.changes)
-		for (ownChange : changes) {
-			if (remainingChanges.contains(ownChange)) {
-				remainingChanges.remove(ownChange)
-			}
-		}
+		remainingChanges.removeIf([it|changes.contains(it)])
 		return remainingChanges.empty
 	}
 
@@ -145,13 +141,7 @@ abstract class AbstractCompositeChangeImpl<C extends VitruviusChange> implements
 			return false
 		}
 		val remainingChanges = new LinkedList(compositeChange.changes)
-		for (ownChange : changes) { // TODO TS remove code dupliction
-			for (otherChange : compositeChange.changes) {
-				if (ownChange.changedEObjectEquals(otherChange)) {
-					remainingChanges.remove(ownChange)
-				}
-			}
-		}
+		remainingChanges.removeIf[change|changes.exists[otherChange|change.changedEObjectEquals(otherChange)]]
 		return remainingChanges.empty
 	}
 }
