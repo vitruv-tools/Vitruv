@@ -12,6 +12,10 @@ import org.eclipse.emf.ecore.resource.Resource
 interface VirtualModel {
 	def File getFolder();
 	def List<PropagatedChange> propagateChange(VitruviusChange change);
+	/**
+	 * propagates changes from the delta between the current state and a specific new state.
+	 * @param newState is the resource of the new states {@link ModelInstance}.
+	 */
 	def List<PropagatedChange> propagateChangedState(Resource newState);
 	def void reverseChanges(List<PropagatedChange> changes);
 	def ModelInstance getModelInstance(VURI modelVuri);

@@ -102,16 +102,19 @@ class VirtualModelImpl implements InternalVirtualModel {
 		return result
 	}
 
-	override propagateChangedState(Resource newState) {
+	/**
+	 * @see tools.vitruv.framework.vsum.VirtualModel#propagateChangedState
+	 */
+	override propagateChangedState(Resource newState) { // TODO which root objects is given? compare with URI?
 		val vuri = VURI.getInstance(newState)
 		val vitruvDomain = metamodelRepository.getDomain(vuri.fileExtension)
-		val currentState = resourceRepository.getModel(vuri).resource // TODO TS use root as state instead of model resource
+		val currentState = resourceRepository.getModel(vuri).resource // TODO TS (HIGH) use root as state instead of model resource
 		if (currentState.isValid(newState)) {
 			val strategy = vitruvDomain.stateChangePropagationStrategy
 			val compositeChange = strategy.getChangeSequences(newState, currentState, uuidGeneratorAndResolver)
 			return propagateChange(compositeChange)
 		}
-		System.err.println("ERROR could not load current state for new state!") // TODO TS use logger or remove statement
+		System.err.println("ERROR could not load current state for new state!") // TODO TS (MEDIUM) use logger or remove statement
 		return #[] // empty list
 	}
 

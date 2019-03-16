@@ -42,11 +42,6 @@ class DefaultStateChangePropagationStrategy implements StateChangePropagationStr
 		return resolveChangeSequences(newState.eResource, currentState.eResource, resolver)
 	}
 
-	/*
-	 * TODO TS Try first: create new resource set and create resource. copy content.
-	 * OR compare root object instead of resource
-	 * OR use orignal and revert
-	 */
 	def private resolveChangeSequences(Resource newState, Resource currentState, UuidGeneratorAndResolver resolver) {
 		if (resolver === null) {
 			throw new IllegalArgumentException("UUID generator and resolver cannot be null!")
