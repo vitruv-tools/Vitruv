@@ -1,14 +1,12 @@
 package tools.vitruv.framework.tests.domains
 
-import java.util.List
 import org.eclipse.emf.common.notify.Notifier
 import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import org.eclipse.emf.ecore.util.EcoreUtil
 import org.junit.After
 import org.junit.Before
-import tools.vitruv.framework.change.description.CompositeContainerChange
-import tools.vitruv.framework.change.description.TransactionalChange
+import pcm_mockup.Pcm_mockupFactory
 import tools.vitruv.framework.change.description.VitruviusChange
 import tools.vitruv.framework.change.description.VitruviusChangeFactory
 import tools.vitruv.framework.change.recording.AtomicEmfChangeRecorder
@@ -18,6 +16,8 @@ import tools.vitruv.framework.util.bridges.EcoreResourceBridge
 import tools.vitruv.framework.util.datatypes.ModelInstance
 import tools.vitruv.framework.util.datatypes.VURI
 import tools.vitruv.framework.vsum.InternalVirtualModel
+import uml_mockup.UPackage
+import uml_mockup.Uml_mockupFactory
 
 import static org.junit.Assert.*
 
@@ -28,25 +28,35 @@ abstract class StateChangePropagationTest extends DomainTest {
 	protected var Resource pcmCheckpoint
 	protected var AtomicEmfChangeRecorder changeRecorder
 
+	override protected createChangePropagationSpecifications() {
+		return #[]
+	}
+
+	override protected getVitruvDomains() {
+		return #[]
+	}
+
 	/**
 	 * Creates the strategy, sets up the test model and prepares everything for detemining changes.
 	 */
 	@Before
-	def void setup() {
+	override void setup() {
 		strategyToTest = new DefaultStateChangePropagationStrategy
-		vsum = createVirtualModelAndModelInstances
 		changeRecorder = new AtomicEmfChangeRecorder(vsum.uuidGeneratorAndResolver)
+		vsum = createVirtualModel(VSUM_NAME)
+		createPcmMockupModel()
+		createUmlMockupModel()
 		umlCheckpoint = umlModelInstance.firstRootEObject.eResource.createCheckpoint
 		pcmCheckpoint = pcmModelInstance.firstRootEObject.eResource.createCheckpoint
-		umlModelInstance.firstRootEObject.startRecordingChanges
-		pcmModelInstance.firstRootEObject.startRecordingChanges
+		umlModelInstance.firstRootEObject.startRecording
+		pcmModelInstance.firstRootEObject.startRecording
 	}
 
 	/**
 	 * Stops recording in case the test does not call getRecordedChanges() or getChangeFromComparisonWithCheckpoint().
 	 */
 	@After
-	def void teardown() {
+	override void cleanup() {
 		if (changeRecorder.isRecording) {
 			changeRecorder.stopRecording
 		}
@@ -58,7 +68,7 @@ abstract class StateChangePropagationTest extends DomainTest {
 	protected def void compareRecordedChanges(ModelInstance model) {
 		val change = model.changeFromComparisonWithCheckpoint
 		assertFalse("Composite change is empty!", change.EChanges.empty)
-		assertEquals(change, model.recordedChanges)
+		assertTrue(change.changedEObjectEquals(model.recordedChanges))
 	}
 
 	/**
@@ -77,12 +87,9 @@ abstract class StateChangePropagationTest extends DomainTest {
 	 * Returns the recorded change sequences (the "original" changes) for a specific model instance.
 	 */
 	protected def VitruviusChange getRecordedChanges(ModelInstance model) {
-		val resource = model.resource
-		EcoreResourceBridge.saveResource(resource)
+		EcoreResourceBridge.saveResource(model.resource)
 		changeRecorder.endRecording
-		val List<TransactionalChange> changes = changeRecorder.changes
-		val CompositeContainerChange compositeChange = VitruviusChangeFactory.instance.createCompositeChange(changes)
-		return compositeChange
+		return VitruviusChangeFactory.instance.createCompositeChange(changeRecorder.changes)
 	}
 
 	/**
@@ -99,7 +106,33 @@ abstract class StateChangePropagationTest extends DomainTest {
 		vsum.getModelInstance(VURI.getInstance(defaultPcmInstanceURI))
 	}
 
-	private def void startRecordingChanges(Notifier notifier) {
+	def private void createPcmMockupModel() {
+		startRecording(pcmModelInstance.resource)
+		val contents = pcmModelInstance.resource.contents
+		val repository = Pcm_mockupFactory.eINSTANCE.createRepository()
+		repository.interfaces.add(Pcm_mockupFactory.eINSTANCE.createPInterface())
+		repository.components.add(Pcm_mockupFactory.eINSTANCE.createComponent())
+		contents.add(repository)
+		propagateRecordedChanges(pcmModelInstance)
+	}
+
+	def private void createUmlMockupModel() {
+		startRecording(pcmModelInstance.resource)
+		var contents = umlModelInstance.resource.contents
+		var UPackage pckg = Uml_mockupFactory.eINSTANCE.createUPackage()
+		pckg.interfaces.add(Uml_mockupFactory.eINSTANCE.createUInterface())
+		pckg.classes.add(Uml_mockupFactory.eINSTANCE.createUClass())
+		contents.add(pckg)
+		propagateRecordedChanges(pcmModelInstance)
+	}
+
+	def private void propagateRecordedChanges(ModelInstance model) {
+		val compositeChange = model.recordedChanges
+		vsum.propagateChange(compositeChange);
+		startRecording(model.resource)
+	}
+
+	private def void startRecording(Notifier notifier) {
 		changeRecorder.addToRecording(notifier)
 		if (!changeRecorder.isRecording) {
 			changeRecorder.beginRecording
