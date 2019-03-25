@@ -5,7 +5,6 @@ import java.util.ArrayList
 import java.util.Collections
 import java.util.List
 import org.eclipse.emf.common.notify.Notifier
-import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import org.eclipse.emf.ecore.util.EcoreUtil
@@ -28,13 +27,12 @@ import tools.vitruv.framework.util.bridges.EcoreResourceBridge
 import tools.vitruv.framework.util.datatypes.ModelInstance
 import tools.vitruv.framework.util.datatypes.VURI
 import tools.vitruv.framework.vsum.InternalVirtualModel
+import tools.vitruv.testutils.VitruviusTest
 import tools.vitruv.testutils.util.TestUtil
-import uml_mockup.UPackage
 import uml_mockup.Uml_mockupFactory
 import uml_mockup.Uml_mockupPackage
 
 import static org.junit.Assert.*
-import tools.vitruv.testutils.VitruviusTest
 
 abstract class StateChangePropagationTest extends VitruviusTest {
 	protected static final String VSUM_NAME = "DomainProject"
@@ -76,7 +74,9 @@ abstract class StateChangePropagationTest extends VitruviusTest {
 		strategyToTest = new DefaultStateChangePropagationStrategy
 		vsum = createVirtualModel(VSUM_NAME)
 		changeRecorder = new AtomicEmfChangeRecorder(vsum.uuidGeneratorAndResolver)
-		createPcmMockupModel()
+		umlCheckpoint = umlModelInstance.resource.createCheckpoint
+		pcmCheckpoint = pcmModelInstance.resource.createCheckpoint
+		createPcmMockupModel() // TODO (HIGH) why are there multiple roots?
 		createUmlMockupModel()
 		umlCheckpoint = umlModelInstance.firstRootEObject.eResource.createCheckpoint
 		pcmCheckpoint = pcmModelInstance.firstRootEObject.eResource.createCheckpoint
@@ -128,16 +128,17 @@ abstract class StateChangePropagationTest extends VitruviusTest {
 	 * Grants access to the UMl mockup model instance via the VSUM.
 	 */
 	protected def ModelInstance getUmlModelInstance() {
-		vsum.getModelInstance(VURI.getInstance(defaultUMLInstanceURI))
+		vsum.getModelInstance(getModelVURI("My.uml_mockup"))
 	}
 
 	/**
 	 * Grants access to the PCM mockup model instance via the VSUM.
 	 */
 	protected def ModelInstance getPcmModelInstance() {
-		vsum.getModelInstance(VURI.getInstance(defaultPcmInstanceURI))
+		vsum.getModelInstance(getModelVURI("My.pcm_mockup"))
 	}
 
+	// Methods regarding model creation:
 	def private InternalVirtualModel createVirtualModel(String vsumName) {
 		var List<VitruvDomain> vitruvDomains = new ArrayList<VitruvDomain>()
 		vitruvDomains.add(UmlDomain)
@@ -147,9 +148,9 @@ abstract class StateChangePropagationTest extends VitruviusTest {
 	}
 
 	def private void createPcmMockupModel() {
-		startRecording(pcmModelInstance.resource)
+		startRecording(pcmCheckpoint)
 		vsum.executeCommand [
-			val contents = pcmModelInstance.resource.contents
+			val contents = pcmCheckpoint.contents
 			val repository = Pcm_mockupFactory.eINSTANCE.createRepository
 			repository.interfaces.add(Pcm_mockupFactory.eINSTANCE.createPInterface)
 			repository.components.add(Pcm_mockupFactory.eINSTANCE.createComponent)
@@ -160,10 +161,10 @@ abstract class StateChangePropagationTest extends VitruviusTest {
 	}
 
 	def private void createUmlMockupModel() {
-		startRecording(umlModelInstance.resource)
+		startRecording(umlCheckpoint)
 		vsum.executeCommand [
-			var contents = umlModelInstance.resource.contents
-			var UPackage uPackage = Uml_mockupFactory.eINSTANCE.createUPackage
+			var contents = umlCheckpoint.contents
+			var uPackage = Uml_mockupFactory.eINSTANCE.createUPackage
 			uPackage.interfaces.add(Uml_mockupFactory.eINSTANCE.createUInterface)
 			uPackage.classes.add(Uml_mockupFactory.eINSTANCE.createUClass)
 			contents.add(uPackage)
@@ -172,9 +173,10 @@ abstract class StateChangePropagationTest extends VitruviusTest {
 		propagateRecordedChanges(umlModelInstance)
 	}
 
+	// Methods regarding recording and propagating changes:
 	def private void propagateRecordedChanges(ModelInstance model) {
 		val compositeChange = model.recordedChanges
-		vsum.propagateChange(compositeChange);
+		vsum.propagateChange(compositeChange)
 		startRecording(model.resource)
 	}
 
@@ -185,6 +187,7 @@ abstract class StateChangePropagationTest extends VitruviusTest {
 		}
 	}
 
+	// Methods regarding creating and accessing checkpoints:
 	private def getCorrelatingCheckpoint(ModelInstance model) {
 		if (model.URI.fileExtension == umlModelInstance.URI.fileExtension) umlCheckpoint else pcmCheckpoint
 	}
@@ -196,15 +199,10 @@ abstract class StateChangePropagationTest extends VitruviusTest {
 		return copy
 	}
 
-	def private URI getDefaultPcmInstanceURI() {
-		return EMFBridge.getEmfFileUriForFile(new File(getCurrentProjectModelFolder(), "My.pcm_mockup"))
-	}
-
-	def private URI getDefaultUMLInstanceURI() {
-		return EMFBridge.getEmfFileUriForFile(new File(getCurrentProjectModelFolder(), "My.uml_mockup"))
-	}
-
-	def private File getCurrentProjectModelFolder() {
-		return new File(getCurrentTestProjectFolder(), "model")
+	// Utility method regarding model folders:
+	def private VURI getModelVURI(String fileName) {
+		val modelFolder = new File(getCurrentTestProjectFolder(), "model")
+		val file = new File(modelFolder, fileName)
+		return VURI.getInstance(EMFBridge.getEmfFileUriForFile(file))
 	}
 }
