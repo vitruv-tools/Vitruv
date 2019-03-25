@@ -35,18 +35,22 @@ class DefaultStateChangePropagationStrategy implements StateChangePropagationStr
 	}
 
 	override getChangeSequences(Resource newState, Resource currentState, UuidGeneratorAndResolver resolver) {
+		if (newState === null || currentState === null) {
+			return changeFactory.createCompositeChange(Collections.emptyList)
+		}
 		return resolveChangeSequences(newState, currentState, resolver)
 	}
 
 	override getChangeSequences(EObject newState, EObject currentState, UuidGeneratorAndResolver resolver) {
+		if (newState === null || currentState === null) {
+			return changeFactory.createCompositeChange(Collections.emptyList)
+		}
 		return resolveChangeSequences(newState.eResource, currentState.eResource, resolver)
 	}
 
 	def private resolveChangeSequences(Resource newState, Resource currentState, UuidGeneratorAndResolver resolver) {
 		if (resolver === null) {
 			throw new IllegalArgumentException("UUID generator and resolver cannot be null!")
-		} else if (newState === null || currentState === null) {
-			return changeFactory.createCompositeChange(Collections.emptyList)
 		}
 		// Setup resolver and copy state:
 		val uuidGeneratorAndResolver = new UuidGeneratorAndResolverImpl(resolver, resolver.resourceSet, true)
