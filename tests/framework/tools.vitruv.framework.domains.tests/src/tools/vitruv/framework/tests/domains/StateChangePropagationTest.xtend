@@ -95,12 +95,16 @@ abstract class StateChangePropagationTest extends VitruviusTest {
 	}
 
 	/**
+	 * USE THIS METHOD TO COMPARE RESULTS!
 	 * Compares two changes: The recorded change sequence and the resolved changes by the state delta based strategy.
 	 */
 	protected def void compareRecordedChanges(ModelInstance model) {
-		val change = model.changeFromComparisonWithCheckpoint
-		assertFalse("Composite change is empty!", change.EChanges.empty)
-		assertTrue(change.changedEObjectEquals(model.recordedChanges))
+		val stateBasedChange = model.changeFromComparisonWithCheckpoint
+		val deltaBasedChange = model.recordedChanges
+		System.err.println("State-based " + stateBasedChange) // TODO TS (HIGH) remove this
+		System.err.println("Delta-based " + deltaBasedChange) // TODO TS (HIGH) remove this
+		assertFalse("Composite change is empty!", stateBasedChange.EChanges.empty)
+		assertTrue(stateBasedChange.changedEObjectEquals(deltaBasedChange)) // TODO TS (HIGH) readable outputs for the assertions
 	}
 
 	/**
