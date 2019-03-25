@@ -62,8 +62,8 @@ class DefaultStateChangePropagationStrategy implements StateChangePropagationStr
 	 */
 	private def List<Diff> compareStates(Notifier newState, Notifier currentState) {
 		var scope = new DefaultComparisonScope(newState, currentState, null)
-		var comparison = EMFCompare.builder().build().compare(scope)
-		return comparison.getDifferences()
+		var comparison = EMFCompare.builder.build.compare(scope)
+		return comparison.differences
 	}
 
 	/**
@@ -73,13 +73,13 @@ class DefaultStateChangePropagationStrategy implements StateChangePropagationStr
 		// Setup recorder:
 		val changeRecorder = new AtomicEmfChangeRecorder(resolver)
 		changeRecorder.addToRecording(currentState)
-		changeRecorder.beginRecording()
+		changeRecorder.beginRecording
 		// replay the EMF compare diffs:
 		val mergerRegistry = IMerger.RegistryImpl.createStandaloneInstance()
 		val merger = new BatchMerger(mergerRegistry)
 		merger.copyAllLeftToRight(changesToReplay, new BasicMonitor)
 		// Finish recording:
-		changeRecorder.endRecording()
+		changeRecorder.endRecording
 		return changeRecorder.changes
 	}
 
