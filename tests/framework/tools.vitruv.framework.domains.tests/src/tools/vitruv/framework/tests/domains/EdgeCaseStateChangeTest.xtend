@@ -15,9 +15,7 @@ class EdgeCaseStateChangeTest extends StateChangePropagationTest {
 	 */
 	@Test
 	def void testNoUmlChange() {
-		val change = umlModelInstance.changeFromComparisonWithCheckpoint
-		assertTrue("Composite change contains children!", change.EChanges.empty)
-		assertEquals(change, umlModelInstance.recordedChanges)
+		compareChanges(umlModel, umlCheckpoint)
 	}
 
 	/**
@@ -25,9 +23,7 @@ class EdgeCaseStateChangeTest extends StateChangePropagationTest {
 	 */
 	@Test
 	def void testNoPcmChange() {
-		val change = pcmModelInstance.changeFromComparisonWithCheckpoint
-		assertTrue("Composite change contains children!", change.EChanges.empty)
-		assertEquals(change, pcmModelInstance.recordedChanges)
+		compareChanges(umlModel, umlCheckpoint)
 	}
 
 	/**
