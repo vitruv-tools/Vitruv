@@ -41,6 +41,35 @@ class PcmStateChangeTest extends StateChangePropagationTest {
 	}
 
 	@Test
+	def void testInterfaceWithMultipleMethods() {
+		val pInterface = Pcm_mockupFactory.eINSTANCE.createPInterface
+		pInterface.name = "NewlyAddedInterface"
+		pcmRoot.interfaces.add(pInterface)
+		for (i : 0 .. 5) {
+			val pMethod = Pcm_mockupFactory.eINSTANCE.createPMethod
+			pMethod.name = "newMethod" + i
+			pInterface.methods.add(pMethod)
+		}
+		val component = pcmRoot.components.get(0)
+		component.providedInterface = pInterface
+		compareChanges(pcmModel, pcmCheckpoint)
+	}
+
+	@Test
+	def void testAddDifferentProvidedInterface() { // TODO TS (HIGH) breaks comparison
+		val pInterface = Pcm_mockupFactory.eINSTANCE.createPInterface
+		pInterface.name = "NewlyAddedInterface"
+		pcmRoot.interfaces.add(pInterface)
+		val component = pcmRoot.components.get(0)
+		component.providedInterface = pInterface
+		val pInterface2 = Pcm_mockupFactory.eINSTANCE.createPInterface
+		pInterface2.name = "NewlyAddedInterface2"
+		pcmRoot.interfaces.add(pInterface2)
+		component.providedInterface = pInterface2
+		compareChanges(pcmModel, pcmCheckpoint)
+	}
+
+	@Test
 	def void testAddMultipleInterfaces() {
 		// TODO (TS) remove duplication
 		val pInterface1 = Pcm_mockupFactory.eINSTANCE.createPInterface

@@ -41,6 +41,15 @@ class UmlStateChangeTest extends StateChangePropagationTest {
 	}
 
 	@Test
+	def void testReplaceClass() {
+		umlRoot.classes.remove(0)
+		val uClass = Uml_mockupFactory.eINSTANCE.createUClass
+		uClass.name = "NewlyAddedClass"
+		umlRoot.classes.add(uClass)
+		compareChanges(umlModel, umlCheckpoint)
+	}
+
+	@Test
 	def void testDeleteClass() {
 		umlRoot.classes.remove(0)
 		compareChanges(umlModel, umlCheckpoint)
