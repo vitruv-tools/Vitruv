@@ -12,9 +12,9 @@ class MappingReactionsGenerator extends MappingsReactionsFileGenerator {
 		this.mapping = mapping
 	}
 	
-	def void generateReactionsAndRoutines() {
-		reactionToAnyChange()
-		deleteRoutines()
+	def generateReactionsAndRoutines(ReactionGeneratorContext context) {
+		context.segment += reactionToAnyChange()
+	//	deleteRoutines()
 	}
 	
 	private def reactionToAnyChange() {
