@@ -27,7 +27,6 @@ import uml_mockup.Uml_mockupFactory
 import static org.junit.Assert.*
 
 abstract class StateChangePropagationTest extends VitruviusTest {
-	protected static final String VSUM_NAME = "DomainProject"
 	protected static final String PCM_FILE_EXT = "pcm_mockup"
 	protected static final String UML_FILE_EXT = "uml_mockup"
 	protected var StateChangePropagationStrategy strategyToTest
@@ -38,7 +37,8 @@ abstract class StateChangePropagationTest extends VitruviusTest {
 	protected var Repository pcmRoot
 	protected var UPackage umlRoot
 	protected var AtomicEmfChangeRecorder changeRecorder
-	protected var UuidGeneratorAndResolver resolver
+	protected var UuidGeneratorAndResolver setupResolver
+	protected var UuidGeneratorAndResolver testResolver
 	protected var ResourceSet resourceSet
 
 	/**
@@ -46,13 +46,20 @@ abstract class StateChangePropagationTest extends VitruviusTest {
 	 */
 	@Before
 	def void setup() {
+		// setup models:
 		strategyToTest = new DefaultStateChangePropagationStrategy
-		// TODO TS (MEDIUM) own uuidGeneratorAndResolver or proxy.
 		resourceSet = new ResourceSetImpl
-		resolver = new UuidGeneratorAndResolverImpl(resourceSet, true)
-		changeRecorder = new AtomicEmfChangeRecorder(resolver)
+		setupResolver = new UuidGeneratorAndResolverImpl(resourceSet, true)
+		changeRecorder = new AtomicEmfChangeRecorder(setupResolver)
+		resourceSet.startRecording
 		createPcmMockupModel()
 		createUmlMockupModel()
+		System.err.println(endRecording)
+		// change to new recorder with test resolver:
+		var resourceSet2 = new ResourceSetImpl
+		testResolver = new UuidGeneratorAndResolverImpl(setupResolver, resourceSet2, true) // TODO TS (HIGH) new resource set or existing one?
+		changeRecorder = new AtomicEmfChangeRecorder(testResolver);
+		// create model checkpoints and start recording:
 		umlCheckpoint = umlModel.createCheckpoint
 		pcmCheckpoint = pcmModel.createCheckpoint
 		umlModel.startRecording
@@ -75,38 +82,45 @@ abstract class StateChangePropagationTest extends VitruviusTest {
 	 */
 	protected def void compareChanges(Resource model, Resource checkpoint) {
 		EcoreResourceBridge.saveResource(model)
-		val stateBasedChange = strategyToTest.getChangeSequences(model, checkpoint, resolver)
+		val deltaBasedChange = endRecording
+		val stateBasedChange = strategyToTest.getChangeSequences(model, checkpoint, setupResolver)
 		assertNotNull(stateBasedChange)
-		val deltaBasedChange = model.endRecording
-		System.err.println("State-based " + stateBasedChange) // TODO TS (HIGH) remove this
-		System.err.println("Delta-based " + deltaBasedChange) // TODO TS (HIGH) remove this
-		assertTrue(stateBasedChange.changedEObjectEquals(deltaBasedChange)) // TODO TS (HIGH) readable outputs for the assertions
+
+		val message = getTextualRepresentation(stateBasedChange, deltaBasedChange)
+		assertTrue(message, stateBasedChange.changedEObjectEquals(deltaBasedChange))
 	}
 
 	/**
 	 * Returns the recorded change sequences (the "original" changes) for a specific model instance.
 	 */
-	protected def VitruviusChange endRecording(Resource model) {
+	private def VitruviusChange endRecording() {
 		changeRecorder.endRecording
 		return VitruviusChangeFactory.instance.createCompositeChange(changeRecorder.changes)
 	}
 
+	private def String getTextualRepresentation(VitruviusChange stateBasedChange, VitruviusChange deltaBasedChange) '''
+		State-based «stateBasedChange»
+		Delta-based «deltaBasedChange»
+	'''
+
 	def private void createPcmMockupModel() {
 		pcmModel = resourceSet.createResource(getModelVURI("My.pcm_mockup"))
 		pcmRoot = Pcm_mockupFactory.eINSTANCE.createRepository
+		pcmRoot.name = "RootRepository"
 		pcmRoot.interfaces.add(Pcm_mockupFactory.eINSTANCE.createPInterface)
 		pcmRoot.components.add(Pcm_mockupFactory.eINSTANCE.createComponent)
 		pcmModel.contents.add(pcmRoot)
-		EcoreResourceBridge.saveResource(pcmModel) // TODO resource as model or root/root.resource as model?
+		EcoreResourceBridge.saveResource(pcmModel)
 	}
 
 	def private void createUmlMockupModel() {
 		umlModel = resourceSet.createResource(getModelVURI("My.uml_mockup"))
 		umlRoot = Uml_mockupFactory.eINSTANCE.createUPackage
+		umlRoot.name = "RootPackage"
 		umlRoot.interfaces.add(Uml_mockupFactory.eINSTANCE.createUInterface)
 		umlRoot.classes.add(Uml_mockupFactory.eINSTANCE.createUClass)
 		umlModel.contents.add(umlRoot)
-		EcoreResourceBridge.saveResource(umlModel) // TODO resource as model or root/root.resource as model?
+		EcoreResourceBridge.saveResource(umlModel)
 	}
 
 	private def void startRecording(Notifier notifier) {
@@ -117,7 +131,7 @@ abstract class StateChangePropagationTest extends VitruviusTest {
 	}
 
 	private def Resource createCheckpoint(Resource original) {
-		// val resourceSet = new ResourceSetImpl // TODO TS (HIGH) delete this maybe
+		val resourceSet = new ResourceSetImpl // TODO TS (HIGH) new resource set for checkpoint?
 		val copy = resourceSet.createResource(original.URI)
 		copy.contents.addAll(EcoreUtil.copyAll(original.contents))
 		return copy
