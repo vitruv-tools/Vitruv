@@ -3,18 +3,49 @@ package tools.vitruv.dsls.mappings.generator
 import tools.vitruv.dsls.mappings.mappingsLanguage.Mapping
 import tools.vitruv.dsls.mappings.mappingsLanguage.MappingsSegment
 import tools.vitruv.dsls.reactions.builder.FluentReactionsLanguageBuilder
+import tools.vitruv.dsls.mirbase.mirBase.NamedMetaclassReference
 
 class MappingReactionsGenerator extends MappingsReactionsFileGenerator {
 	val Mapping mapping
 	
 	new(String basePackage, MappingsSegment segment, boolean left2right, FluentReactionsLanguageBuilder create, Mapping mapping) {
-		super(basePackage, segment, left2right, create)
+		super(basePackage, segment, left2right, create, null)
 		this.mapping = mapping
 	}
 	
 	def generateReactionsAndRoutines(ReactionGeneratorContext context) {
-		context.segment += reactionToAnyChange()
+		segment.mappings.forEach[
+			val	from = getFromParameters(it).get(0)
+			val	to = getToParameters(it).get(0)
+			context.segment += onDelete(from,to)				
+		]
 	//	deleteRoutines()
+	}
+	
+	
+	private def onDelete(NamedMetaclassReference from, NamedMetaclassReference to){
+		create.reaction('''on«from.name»Delete''')
+			.afterElement(from.eClass).deleted
+			.call [
+				match [
+						vall('''corresponding_«to.name»''').retrieveAsserted(to.eClass)
+							.correspondingTo.affectedEObject
+							.taggedWith(getCorrespondenceTag(from,to))
+				]
+				action [
+						delete('''corresponding_«to.name»''')
+				]
+			]
+	}
+	
+	private def getCorrespondenceTag(NamedMetaclassReference from, NamedMetaclassReference to){
+		var left = from.name
+		var right = to.name
+		if(!left2right){
+			left = to.name
+			right = from.name
+		}
+		'''«left»/«right»'''.toString
 	}
 	
 	private def reactionToAnyChange() {

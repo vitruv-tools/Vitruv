@@ -3,9 +3,11 @@
  */
 package tools.vitruv.dsls.mappings
 
-import org.eclipse.xtext.generator.IGenerator2
-import tools.vitruv.dsls.mappings.generator.MappingsLanguageGenerator
 import com.google.inject.Binder
+import org.eclipse.xtext.generator.IGenerator2
+import org.eclipse.xtext.scoping.IGlobalScopeProvider
+import tools.vitruv.dsls.mappings.generator.MappingsLanguageGenerator
+import tools.vitruv.dsls.mappings.scoping.MappingsLanguageGlobalScopeProvider
 
 /**
  * Use this class to register components to be used at runtime / without the Equinox extension registry.
@@ -13,6 +15,10 @@ import com.google.inject.Binder
 class MappingsLanguageRuntimeModule extends AbstractMappingsLanguageRuntimeModule {
 	def Class<? extends IGenerator2> bindIGenerator2() {
 		MappingsLanguageGenerator
+	}
+	
+	override Class<? extends IGlobalScopeProvider> bindIGlobalScopeProvider() {
+		return MappingsLanguageGlobalScopeProvider;
 	}
 	
 	override configure(Binder binder) {

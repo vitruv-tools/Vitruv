@@ -1,0 +1,9 @@
+import "http://edu.kit.ipd.sdq.metamodels.addresses" as ad
+import "http://edu.kit.ipd.sdq.metamodels.recipients" as re
+    	
+mappings: test for Addresses and Recipients
+    	
+mapping AdRootXReRoot {
+   map (ad::Addresses aRoot)
+   and (re::Recipients rRoot)
+}

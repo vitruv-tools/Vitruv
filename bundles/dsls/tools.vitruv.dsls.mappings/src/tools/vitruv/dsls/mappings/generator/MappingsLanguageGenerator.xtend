@@ -15,16 +15,11 @@ import com.google.inject.Provider
 
 class MappingsLanguageGenerator implements IGenerator2 {
 	val FluentReactionsLanguageBuilder create = new FluentReactionsLanguageBuilder()
-	val Supplier<IReactionsGenerator> reactionsGeneratorProvider
 
 	@Inject
 	new(Provider<IReactionsGenerator> reactionsGeneratorProvider)
    {
-   		this.reactionsGeneratorProvider = [
-			reactionsGeneratorProvider.get() => [
-				useResourceSet(commonalityFile.eResource.resourceSet)
-			]
-		]
+   		
    }
    	
 	override afterGenerate(Resource input, IFileSystemAccess2 fsa, IGeneratorContext context) {
@@ -42,15 +37,18 @@ class MappingsLanguageGenerator implements IGenerator2 {
 			val mappingsPackage = mappingsFile.eResource.URI.trimSegments(1) + ".mappings"
 			for (segment : segments) {
 				val basePackageForSegment = mappingsPackage + "." + segment.name 
-				val l2rReactionsContext = new MappingsReactionsFileGenerator(basePackageForSegment, segment, true, create).createAndInitializeReactionsFile()
-				val r2lReactionsContext = new MappingsReactionsFileGenerator(basePackageForSegment, segment, false, create).createAndInitializeReactionsFile()
+				val l2rReactionsFileGenerator = new MappingsReactionsFileGenerator(basePackageForSegment, segment, true, create, mappingsFile);
+				val l2rReactionsContext = l2rReactionsFileGenerator.createAndInitializeReactionsFile()
+				val r2lReactionsFileGenerator = new MappingsReactionsFileGenerator(basePackageForSegment, segment, false, create, mappingsFile);
+				val r2lReactionsContext = r2lReactionsFileGenerator.createAndInitializeReactionsFile()
 				for (mapping : segment.mappings) {
 					val l2rGenerator = new MappingReactionsGenerator(basePackageForSegment, segment, true, create, mapping)
 					val r2lGenerator = new MappingReactionsGenerator(basePackageForSegment, segment, false, create, mapping)
 					l2rGenerator.generateReactionsAndRoutines(l2rReactionsContext)
 					r2lGenerator.generateReactionsAndRoutines(r2lReactionsContext)
-//					new MappingXtendGenerator(basePackageForSegment, segment, mapping, fsa).generateXtendMappingsHalvesAndInstances()
 				}
+				l2rReactionsFileGenerator.generateFile(fsa);
+				r2lReactionsFileGenerator.generateFile(fsa);
 			}
 		}
 		
