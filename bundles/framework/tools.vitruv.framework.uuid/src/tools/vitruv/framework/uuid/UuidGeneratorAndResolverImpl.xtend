@@ -16,6 +16,9 @@ import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.EClass
 import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.common.util.URIUtil.*
 
+/**
+ * {@link UuidGeneratorAndResolver}
+ */
 class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 	static val logger = Logger.getLogger(UuidGeneratorAndResolverImpl)
 	final ResourceSet resourceSet;
