@@ -22,6 +22,10 @@ Require-Bundle: tools.vitruv.dsls.mappings,
  tools.vitruv.framework.change.processing,
  tools.vitruv.framework.correspondence,
  tools.vitruv.framework.userinteraction,
+ edu.kit.ipd.sdq.metamodels.addresses,
+ edu.kit.ipd.sdq.metamodels.recipients,
+ tools.vitruv.demo.domains.addresses,
+ tools.vitruv.demo.domains.recipients,
  tools.vitruv.extensions.dslsruntime.reactions;visibility:=reexport,
  tools.vitruv.extensions.dslsruntime.mappings
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8

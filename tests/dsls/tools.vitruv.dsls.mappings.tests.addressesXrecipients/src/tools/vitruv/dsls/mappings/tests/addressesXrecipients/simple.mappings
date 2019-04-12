@@ -8,4 +8,3 @@ mapping AdRootXReRoot {
   and (re::Recipients rRoot)
 }
 
-
