@@ -6,7 +6,6 @@ import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.emf.ecore.resource.ResourceSet
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
-import org.eclipse.emf.ecore.util.EcoreUtil
 import org.junit.After
 import org.junit.Before
 import pcm_mockup.Pcm_mockupFactory
@@ -38,9 +37,10 @@ abstract class StateChangePropagationTest extends VitruviusTest {
 	protected var UPackage umlRoot
 	protected var AtomicEmfChangeRecorder changeRecorder
 	protected var UuidGeneratorAndResolver setupResolver
-	protected var UuidGeneratorAndResolver testResolver
+	protected var UuidGeneratorAndResolver checkpointResolver
 	protected var ResourceSet resourceSet
-
+	protected var ResourceSet checkpointResourceSet
+	
 	/**
 	 * Creates the strategy, sets up the test model and prepares everything for detemining changes.
 	 */
@@ -49,6 +49,7 @@ abstract class StateChangePropagationTest extends VitruviusTest {
 		// setup models:
 		strategyToTest = new DefaultStateChangePropagationStrategy
 		resourceSet = new ResourceSetImpl
+		checkpointResourceSet = new ResourceSetImpl
 		setupResolver = new UuidGeneratorAndResolverImpl(resourceSet, true)
 		changeRecorder = new AtomicEmfChangeRecorder(setupResolver)
 		resourceSet.startRecording
@@ -56,10 +57,8 @@ abstract class StateChangePropagationTest extends VitruviusTest {
 		createUmlMockupModel()
 		System.err.println(endRecording)
 		// change to new recorder with test resolver:
-		var resourceSet2 = new ResourceSetImpl
-		testResolver = new UuidGeneratorAndResolverImpl(setupResolver, resourceSet2, true) // TODO TS (HIGH) new resource set or existing one?
-		changeRecorder = new AtomicEmfChangeRecorder(testResolver);
 		// create model checkpoints and start recording:
+		checkpointResolver = new UuidGeneratorAndResolverImpl(setupResolver, checkpointResourceSet, true)
 		umlCheckpoint = umlModel.createCheckpoint
 		pcmCheckpoint = pcmModel.createCheckpoint
 		umlModel.startRecording
@@ -83,7 +82,7 @@ abstract class StateChangePropagationTest extends VitruviusTest {
 	protected def void compareChanges(Resource model, Resource checkpoint) {
 		EcoreResourceBridge.saveResource(model)
 		val deltaBasedChange = endRecording
-		val stateBasedChange = strategyToTest.getChangeSequences(model, checkpoint, setupResolver)
+		val stateBasedChange = strategyToTest.getChangeSequences(model, checkpoint, checkpointResolver)
 		assertNotNull(stateBasedChange)
 
 		val message = getTextualRepresentation(stateBasedChange, deltaBasedChange)
@@ -131,10 +130,7 @@ abstract class StateChangePropagationTest extends VitruviusTest {
 	}
 
 	private def Resource createCheckpoint(Resource original) {
-		val resourceSet = new ResourceSetImpl // TODO TS (HIGH) new resource set for checkpoint?
-		val copy = resourceSet.createResource(original.URI)
-		copy.contents.addAll(EcoreUtil.copyAll(original.contents))
-		return copy
+		return checkpointResourceSet.getResource(original.URI, true)
 	}
 
 	// Utility method regarding model folders:
