@@ -90,8 +90,9 @@ final class TuidManager {
 			val oldTuid = tuidUpdateCache.get(object);
 			if (hasTuidCalculator(object)) {
 				val newTuid = object.calculateTuid
+				val oldTuidString = oldTuid.toString
 				oldTuid.updateTuid(newTuid);
-				logger.debug("Changed Tuid from " + oldTuid + " to " + newTuid);
+				logger.debug("Changed Tuid from " + oldTuidString + " to " + newTuid);
 				XtendAssertHelper.assertTrue(oldTuid.equals(newTuid));
 			}
 		}
