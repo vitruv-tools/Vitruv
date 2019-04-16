@@ -14,7 +14,7 @@ import com.google.inject.Provider
 //import tools.vitruv.dsls.reactions.builder.FluentReactionsLanguageBuilder
 
 class MappingsLanguageGenerator implements IGenerator2 {
-	val FluentReactionsLanguageBuilder create = new FluentReactionsLanguageBuilder()
+	@Inject FluentReactionsLanguageBuilder create
 
 	@Inject
 	new(Provider<IReactionsGenerator> reactionsGeneratorProvider)

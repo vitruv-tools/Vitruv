@@ -45,6 +45,7 @@ Mapping:
 		'}' 'backward' 'execute' '{'
 			backwardExecutionExpression=UnidirectionalExpression
 		'}')?
+		integrations+= ReactionIntegration*
 	'}'
 ;
 
@@ -118,6 +119,24 @@ enum NumCompareOperator:
 	GREATER = ">"
 ;
 
+ReactionIntegration:
+	'react' parameter=ClassicallyNamedModelElement change=TriggerChange '{'
+			CodeBlock
+	'}'
+;
+
+
+TriggerChange:
+	type = ChangeType
+;
+
+enum ChangeType:
+	CREATED = 'created' |
+	INSERTED = 'inserted' |
+	CHANGED = 'changed' |
+	DELETED ='deleted' |
+	REMOVED = 'removed'
+;
 /*
 NumCompareOperator returns SingleValueConditionOperator:
 	NotGreaterOperator |
