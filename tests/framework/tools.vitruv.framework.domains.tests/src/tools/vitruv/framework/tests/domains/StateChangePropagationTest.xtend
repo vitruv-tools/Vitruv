@@ -40,24 +40,24 @@ abstract class StateChangePropagationTest extends VitruviusTest {
 	protected var UuidGeneratorAndResolver checkpointResolver
 	protected var ResourceSet resourceSet
 	protected var ResourceSet checkpointResourceSet
-	
+
 	/**
 	 * Creates the strategy, sets up the test model and prepares everything for detemining changes.
 	 */
 	@Before
-	def void setup() {
-		// setup models:
+	def setup() {
+		// Setup:
 		strategyToTest = new DefaultStateChangePropagationStrategy
 		resourceSet = new ResourceSetImpl
 		checkpointResourceSet = new ResourceSetImpl
 		setupResolver = new UuidGeneratorAndResolverImpl(resourceSet, true)
 		changeRecorder = new AtomicEmfChangeRecorder(setupResolver)
+		// Create mockup models:
 		resourceSet.startRecording
 		createPcmMockupModel()
 		createUmlMockupModel()
-		System.err.println(endRecording)
-		// change to new recorder with test resolver:
-		// create model checkpoints and start recording:
+		endRecording
+		// change to new recorder with test resolver, create model checkpoints and start recording:
 		checkpointResolver = new UuidGeneratorAndResolverImpl(setupResolver, checkpointResourceSet, true)
 		umlCheckpoint = umlModel.createCheckpoint
 		pcmCheckpoint = pcmModel.createCheckpoint
@@ -69,7 +69,7 @@ abstract class StateChangePropagationTest extends VitruviusTest {
 	 * Stops recording in case the test does not call getRecordedChanges() or getChangeFromComparisonWithCheckpoint().
 	 */
 	@After
-	def void cleanup() {
+	def cleanup() {
 		if (changeRecorder.isRecording) {
 			changeRecorder.stopRecording
 		}
@@ -79,12 +79,11 @@ abstract class StateChangePropagationTest extends VitruviusTest {
 	 * USE THIS METHOD TO COMPARE RESULTS!
 	 * Compares two changes: The recorded change sequence and the resolved changes by the state delta based strategy.
 	 */
-	protected def void compareChanges(Resource model, Resource checkpoint) {
+	protected def compareChanges(Resource model, Resource checkpoint) {
 		EcoreResourceBridge.saveResource(model)
 		val deltaBasedChange = endRecording
 		val stateBasedChange = strategyToTest.getChangeSequences(model, checkpoint, checkpointResolver)
 		assertNotNull(stateBasedChange)
-
 		val message = getTextualRepresentation(stateBasedChange, deltaBasedChange)
 		assertTrue(message, stateBasedChange.changedEObjectEquals(deltaBasedChange))
 	}
@@ -102,7 +101,7 @@ abstract class StateChangePropagationTest extends VitruviusTest {
 		Delta-based «deltaBasedChange»
 	'''
 
-	def private void createPcmMockupModel() {
+	private def createPcmMockupModel() {
 		pcmModel = resourceSet.createResource(getModelVURI("My.pcm_mockup"))
 		pcmRoot = Pcm_mockupFactory.eINSTANCE.createRepository
 		pcmRoot.name = "RootRepository"
@@ -112,7 +111,7 @@ abstract class StateChangePropagationTest extends VitruviusTest {
 		EcoreResourceBridge.saveResource(pcmModel)
 	}
 
-	def private void createUmlMockupModel() {
+	private def createUmlMockupModel() {
 		umlModel = resourceSet.createResource(getModelVURI("My.uml_mockup"))
 		umlRoot = Uml_mockupFactory.eINSTANCE.createUPackage
 		umlRoot.name = "RootPackage"
@@ -122,19 +121,18 @@ abstract class StateChangePropagationTest extends VitruviusTest {
 		EcoreResourceBridge.saveResource(umlModel)
 	}
 
-	private def void startRecording(Notifier notifier) {
+	private def startRecording(Notifier notifier) {
 		changeRecorder.addToRecording(notifier)
 		if (!changeRecorder.isRecording) {
 			changeRecorder.beginRecording
 		}
 	}
-
+	
 	private def Resource createCheckpoint(Resource original) {
 		return checkpointResourceSet.getResource(original.URI, true)
 	}
 
-	// Utility method regarding model folders:
-	def private URI getModelVURI(String fileName) {
+	private def URI getModelVURI(String fileName) {
 		val modelFolder = new File(getCurrentTestProjectFolder(), "model")
 		val file = new File(modelFolder, fileName)
 		return EMFBridge.getEmfFileUriForFile(file)
