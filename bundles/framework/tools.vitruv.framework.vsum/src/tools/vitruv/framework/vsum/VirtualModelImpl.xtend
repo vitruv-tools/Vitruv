@@ -24,8 +24,10 @@ import tools.vitruv.framework.vsum.modelsynchronization.ChangePropagator
 import tools.vitruv.framework.vsum.modelsynchronization.ChangePropagatorImpl
 import tools.vitruv.framework.vsum.repositories.ModelRepositoryImpl
 import tools.vitruv.framework.vsum.repositories.ResourceRepositoryImpl
+import org.apache.log4j.Logger
 
 class VirtualModelImpl implements InternalVirtualModel {
+	private static val Logger LOGGER = Logger.getLogger(VirtualModelImpl.name)
 	private val ResourceRepositoryImpl resourceRepository
 	private val ModelRepositoryImpl modelRepository
 	private val VitruvDomainRepository metamodelRepository
@@ -105,7 +107,7 @@ class VirtualModelImpl implements InternalVirtualModel {
 	/**
 	 * @see tools.vitruv.framework.vsum.VirtualModel#propagateChangedState
 	 */
-	override propagateChangedState(Resource newState) { // TODO which root objects is given? compare with URI?
+	override propagateChangedState(Resource newState) { // TODO TS which root objects is given? compare with URI?
 		val vuri = VURI.getInstance(newState)
 		val vitruvDomain = metamodelRepository.getDomain(vuri.fileExtension)
 		val currentState = resourceRepository.getModel(vuri).resource // TODO TS (HIGH) use root as state instead of model resource
@@ -114,7 +116,7 @@ class VirtualModelImpl implements InternalVirtualModel {
 			val compositeChange = strategy.getChangeSequences(newState, currentState, uuidGeneratorAndResolver)
 			return propagateChange(compositeChange)
 		}
-		System.err.println("ERROR could not load current state for new state!") // TODO TS (MEDIUM) use logger or remove statement
+		LOGGER.error("Could not load current state for new state!")
 		return #[] // empty list
 	}
 
