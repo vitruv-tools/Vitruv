@@ -120,7 +120,7 @@ class VirtualModelImpl implements InternalVirtualModel {
 		}
 		val vuri = VURI.getInstance(newState) // using the URI of a resource allows using the model resource, the model root, or any model element as input.
 		val vitruvDomain = metamodelRepository.getDomain(vuri.fileExtension)
-		val currentState = resourceRepository.getModel(vuri).resource // TODO TS (HIGH) use root as state instead of model resource
+		val currentState = resourceRepository.getModel(vuri).resource
 		if (currentState.isValid(newState)) {
 			val strategy = vitruvDomain.stateChangePropagationStrategy
 			val compositeChange = strategy.getChangeSequences(newState, currentState, uuidGeneratorAndResolver)
