@@ -105,10 +105,20 @@ class VirtualModelImpl implements InternalVirtualModel {
 	}
 
 	/**
-	 * @see tools.vitruv.framework.vsum.VirtualModel#propagateChangedState
+	 * @see tools.vitruv.framework.vsum.VirtualModel#propagateChangedState(EObject)
 	 */
-	override propagateChangedState(Resource newState) { // TODO TS which root objects is given? compare with URI?
-		val vuri = VURI.getInstance(newState)
+	override propagateChangedState(EObject newState) {
+		newState?.eResource.propagateChangedState
+	}
+
+	/**
+	 * @see tools.vitruv.framework.vsum.VirtualModel#propagateChangedState(Resource)
+	 */
+	override propagateChangedState(Resource newState) {
+		if (newState === null) {
+			throw new IllegalArgumentException("New state cannot be null!")
+		}
+		val vuri = VURI.getInstance(newState) // using the URI of a resource allows using the model resource, the model root, or any model element as input.
 		val vitruvDomain = metamodelRepository.getDomain(vuri.fileExtension)
 		val currentState = resourceRepository.getModel(vuri).resource // TODO TS (HIGH) use root as state instead of model resource
 		if (currentState.isValid(newState)) {
@@ -116,7 +126,7 @@ class VirtualModelImpl implements InternalVirtualModel {
 			val compositeChange = strategy.getChangeSequences(newState, currentState, uuidGeneratorAndResolver)
 			return propagateChange(compositeChange)
 		}
-		LOGGER.error("Could not load current state for new state!")
+		LOGGER.error("Could not load current state for new state. No changes were propagated!")
 		return #[] // empty list
 	}
 
