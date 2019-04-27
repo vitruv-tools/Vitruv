@@ -7,9 +7,11 @@ import tools.vitruv.framework.uuid.UuidGeneratorAndResolver
 import org.eclipse.emf.ecore.EObject
 
 /** 
- * Strategy for resolving state-based delta changes to individual change sequences.
+ * Strategy for resolving state-based changes to individual change sequences.
+ * This strategy is used by the domains when there are no change sequences available and changes need to be propagated based on the difference between the old and new state.
  */
-interface StateChangePropagationStrategy {
+interface StateBasedChangeResolutionStrategy {
+
 	/**
 	 * Resolves the state-based delta of two resources and returns the correlating change sequences.
 	 * @param newState is the new state of the resource.

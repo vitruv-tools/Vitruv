@@ -13,8 +13,6 @@ import pcm_mockup.Repository
 import tools.vitruv.framework.change.description.VitruviusChange
 import tools.vitruv.framework.change.description.VitruviusChangeFactory
 import tools.vitruv.framework.change.recording.AtomicEmfChangeRecorder
-import tools.vitruv.framework.domains.DefaultStateChangePropagationStrategy
-import tools.vitruv.framework.domains.StateChangePropagationStrategy
 import tools.vitruv.framework.util.bridges.EMFBridge
 import tools.vitruv.framework.util.bridges.EcoreResourceBridge
 import tools.vitruv.framework.uuid.UuidGeneratorAndResolver
@@ -24,11 +22,13 @@ import uml_mockup.UPackage
 import uml_mockup.Uml_mockupFactory
 
 import static org.junit.Assert.*
+import tools.vitruv.framework.domains.StateBasedChangeResolutionStrategy
+import tools.vitruv.framework.domains.DefaultStateBasedChangeResolutionStrategy
 
 abstract class StateChangePropagationTest extends VitruviusTest {
 	protected static final String PCM_FILE_EXT = "pcm_mockup"
 	protected static final String UML_FILE_EXT = "uml_mockup"
-	protected var StateChangePropagationStrategy strategyToTest
+	protected var StateBasedChangeResolutionStrategy strategyToTest
 	protected var Resource umlCheckpoint
 	protected var Resource pcmCheckpoint
 	protected var Resource umlModel
@@ -47,7 +47,7 @@ abstract class StateChangePropagationTest extends VitruviusTest {
 	@Before
 	def setup() {
 		// Setup:
-		strategyToTest = new DefaultStateChangePropagationStrategy
+		strategyToTest = new DefaultStateBasedChangeResolutionStrategy
 		resourceSet = new ResourceSetImpl
 		checkpointResourceSet = new ResourceSetImpl
 		setupResolver = new UuidGeneratorAndResolverImpl(resourceSet, true)

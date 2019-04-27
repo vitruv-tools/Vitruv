@@ -14,7 +14,7 @@ interface VitruvDomain extends URIHaving, Comparable<URIHaving> {
 	 * Returns the state change propagation strategy responsible for the
 	 * propagation of state diff based changes. 
 	 */
-	def StateChangePropagationStrategy getStateChangePropagationStrategy();
+	def StateBasedChangeResolutionStrategy getStateChangePropagationStrategy();
 
 	def EPackage getMetamodelRootPackage();
 

@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 
 import tools.vitruv.domains.emf.monitorededitor.ISynchronizingMonitoredEmfEditor.ResourceChangeSynchronizing;
@@ -63,6 +64,11 @@ public class DefaultImplementations {
 
         @Override
         public List<PropagatedChange> propagateChangedState(Resource newState) {
+            return null;
+        }
+
+        @Override
+        public List<PropagatedChange> propagateChangedState(EObject newState) {
             return null;
         }
     };
@@ -145,6 +151,11 @@ public class DefaultImplementations {
 
         @Override
         public List<PropagatedChange> propagateChangedState(Resource newState) {
+            return null;
+        }
+
+        @Override
+        public List<PropagatedChange> propagateChangedState(EObject newState) {
             return null;
         }
 
