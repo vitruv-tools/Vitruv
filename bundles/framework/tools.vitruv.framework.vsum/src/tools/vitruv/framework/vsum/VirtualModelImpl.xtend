@@ -25,6 +25,7 @@ import tools.vitruv.framework.vsum.modelsynchronization.ChangePropagatorImpl
 import tools.vitruv.framework.vsum.repositories.ModelRepositoryImpl
 import tools.vitruv.framework.vsum.repositories.ResourceRepositoryImpl
 import org.apache.log4j.Logger
+import org.eclipse.emf.common.util.URI
 
 class VirtualModelImpl implements InternalVirtualModel {
 	private static val Logger LOGGER = Logger.getLogger(VirtualModelImpl.name)
@@ -105,13 +106,20 @@ class VirtualModelImpl implements InternalVirtualModel {
 	}
 
 	/**
-	 * @see tools.vitruv.framework.vsum.VirtualModel#propagateChangedState()
+	 * @see tools.vitruv.framework.vsum.VirtualModel#propagateChangedState(Resource)
 	 */
 	override propagateChangedState(Resource newState) {
-		if (newState === null) {
-			throw new IllegalArgumentException("New state cannot be null!")
+		return propagateChangedState(newState, newState?.URI)
+	}
+
+	/**
+	 * @see tools.vitruv.framework.vsum.VirtualModel#propagateChangedState(Resource, URI)
+	 */
+	override propagateChangedState(Resource newState, URI oldLocation) {
+		if (newState === null || oldLocation === null) {
+			throw new IllegalArgumentException("New state and old location cannot be null!")
 		}
-		val vuri = VURI.getInstance(newState) // using the URI of a resource allows using the model resource, the model root, or any model element as input.
+		val vuri = VURI.getInstance(oldLocation) // using the URI of a resource allows using the model resource, the model root, or any model element as input.
 		val vitruvDomain = metamodelRepository.getDomain(vuri.fileExtension)
 		val currentState = resourceRepository.getModel(vuri).resource
 		if (currentState.isValid(newState)) {
