@@ -105,14 +105,7 @@ class VirtualModelImpl implements InternalVirtualModel {
 	}
 
 	/**
-	 * @see tools.vitruv.framework.vsum.VirtualModel#propagateChangedState(EObject)
-	 */
-	override propagateChangedState(EObject newState) {
-		newState?.eResource.propagateChangedState
-	}
-
-	/**
-	 * @see tools.vitruv.framework.vsum.VirtualModel#propagateChangedState(Resource)
+	 * @see tools.vitruv.framework.vsum.VirtualModel#propagateChangedState()
 	 */
 	override propagateChangedState(Resource newState) {
 		if (newState === null) {
