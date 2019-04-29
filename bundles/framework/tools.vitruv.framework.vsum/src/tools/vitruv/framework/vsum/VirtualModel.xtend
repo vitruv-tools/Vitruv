@@ -16,18 +16,18 @@ interface VirtualModel {
 	def List<PropagatedChange> propagateChange(VitruviusChange change);
 
 	/**
-	 * Propagates delta-based changes. Should be used when there are no change sequences available
-	 * and consistency needs to be preserved based on the changes between the previous and new state
+	 * Propagates delta-based changes as long as the location and the name of the resource was not changed.
+	 * Should be used when there are no change sequences available and consistency needs to be preserved based on the changes between the previous and new state
 	 * of a model.
-	 * @param newState is the resource of either the {@link ModelInstance} or the model root element.
+	 * @param newState is the resource of the new state.
 	 */
 	def List<PropagatedChange> propagateChangedState(Resource newState);
 
 	/**
-	 * Propagates delta-based changes. Should be used when there are no change sequences available
-	 * and consistency needs to be preserved based on the changes between the previous and new state
+	 * Propagates delta-based changes. Allows to change the location and the name of the resource.
+	 * Should be used when there are no change sequences available and consistency needs to be preserved based on the changes between the previous and new state
 	 * of a model.
-	 * @param newState is the resource of either the {@link ModelInstance} or the model root element.
+	 * @param newState is the resource of the new state.
 	 * @param oldLocation specifies the previous location of the resource to avoid problems with renaming or moving elements.
 	 */
 	def List<PropagatedChange> propagateChangedState(Resource newState, URI oldLocation);
