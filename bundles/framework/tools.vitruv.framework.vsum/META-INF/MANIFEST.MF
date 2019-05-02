@@ -20,8 +20,7 @@ Require-Bundle: org.apache.log4j,
  org.eclipse.xtext.xbase.lib,
  org.eclipse.xtend.lib,
  org.eclipse.xtend.lib.macro,
- org.eclipse.emf.ecore.xmi,
- org.eclipse.emf.compare
+ org.eclipse.emf.ecore.xmi
 Export-Package: tools.vitruv.framework.vsum,
  tools.vitruv.framework.vsum.helper,
  tools.vitruv.framework.vsum.modelsynchronization
