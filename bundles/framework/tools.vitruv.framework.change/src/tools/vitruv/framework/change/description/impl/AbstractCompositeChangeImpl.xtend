@@ -19,9 +19,9 @@ abstract class AbstractCompositeChangeImpl<C extends VitruviusChange> implements
 		this.changes = new LinkedList<C>(changes);
 	}
 
-    override List<C> getChanges() {
-        return this.changes;
-    }
+	override List<C> getChanges() {
+		return this.changes;
+	}
 
 	override addChange(C change) {
 		if (change !== null) this.changes.add(change);
@@ -89,24 +89,59 @@ abstract class AbstractCompositeChangeImpl<C extends VitruviusChange> implements
 	override getAffectedEObjects() {
 		return changes.fold(newArrayList, [list, element|list += element.affectedEObjects; return list]).filterNull;
 	}
-	
+
 	override getAffectedEObjectIds() {
 		return changes.fold(newArrayList, [list, element|list += element.affectedEObjectIds; return list]).filterNull;
 	}
-	
+
 	override unresolveIfApplicable() {
 		changes.forEach[unresolveIfApplicable]
 	}
-	
-	override toString() '''
-	«this.class.simpleName», VURI: «URI»
-		«FOR change : changes»
-			«change»
-		«ENDFOR»
-	'''
-	
+
 	override getUserInteractions() {
 		return changes.map[userInteractions].flatten
 	}
-	
+
+	override toString() '''
+		«this.class.simpleName», VURI: «URI»
+			«FOR change : changes»
+				«change»
+			«ENDFOR»
+	'''
+
+	/**
+	 * Indicates whether some other object is "equal to" this composite change.
+	 * This means it is a composite change which contains the same changes as this one in no particular order.
+	 * @param other is the object to compare with.
+	 * @return true, if the object is a composite change and has the same changes in any order.
+	 */
+	override equals(Object other) {
+		return other.isEqual // delegates to dynamic dispatch
+	}
+
+	private def dispatch boolean isEqual(Object object) { super.equals(object) }
+
+	private def dispatch boolean isEqual(CompositeChange<C> compositeChange) {
+		if (changes.size != compositeChange.changes.size) {
+			return false
+		}
+		val remainingChanges = new LinkedList(compositeChange.changes)
+		remainingChanges.removeIf([it|changes.contains(it)])
+		return remainingChanges.empty
+	}
+
+	override boolean changedEObjectEquals(VitruviusChange change) {
+		return change.isChangedEObjectEqual
+	}
+
+	private def dispatch boolean isChangedEObjectEqual(VitruviusChange change) { super.equals(change) } // use super implementation if anything else than ConcreteApplicableChangeImpl
+
+	private def dispatch boolean isChangedEObjectEqual(CompositeChange<C> compositeChange) {
+		if (changes.size != compositeChange.changes.size) {
+			return false
+		}
+		val remainingChanges = new LinkedList(compositeChange.changes)
+		remainingChanges.removeIf[change|changes.exists[otherChange|change.changedEObjectEquals(otherChange)]]
+		return remainingChanges.empty
+	}
 }
