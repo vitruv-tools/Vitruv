@@ -6,8 +6,5 @@ mappings: test for Addresses and Recipients
 mapping AdRootXReRoot {
   map (ad::Addresses aRoot)
   and (re::Recipients rRoot)
-  react  ad::Addresses aRoot inserted {
-  	 0
-  }
 }
 

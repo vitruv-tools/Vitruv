@@ -15,13 +15,8 @@ import com.google.inject.Provider
 
 class MappingsLanguageGenerator implements IGenerator2 {
 	@Inject FluentReactionsLanguageBuilder create
+	@Inject	Provider<IReactionsGenerator> reactionsGeneratorProvider
 
-	@Inject
-	new(Provider<IReactionsGenerator> reactionsGeneratorProvider)
-   {
-   		
-   }
-   	
 	override afterGenerate(Resource input, IFileSystemAccess2 fsa, IGeneratorContext context) {
 //		throw new UnsupportedOperationException("TODO: auto-generated method stub")
 	}
@@ -31,24 +26,25 @@ class MappingsLanguageGenerator implements IGenerator2 {
 	}
 	
 	override doGenerate(Resource input, IFileSystemAccess2 fsa, IGeneratorContext context) {
+		val reactionsGenerator = reactionsGeneratorProvider.get		
 		val mappingsFiles = input?.contents?.filter(MappingsFile)
 		for (mappingsFile : mappingsFiles) {
 			val segments = mappingsFile.mappingsSegments
 			val mappingsPackage = mappingsFile.eResource.URI.trimSegments(1) + ".mappings"
 			for (segment : segments) {
 				val basePackageForSegment = mappingsPackage + "." + segment.name 
-				val l2rReactionsFileGenerator = new MappingsReactionsFileGenerator(basePackageForSegment, segment, true, create, mappingsFile);
+				val l2rReactionsFileGenerator = new MappingsReactionsFileGenerator(basePackageForSegment, segment, true, reactionsGenerator, create, mappingsFile);
 				val l2rReactionsContext = l2rReactionsFileGenerator.createAndInitializeReactionsFile()
-				val r2lReactionsFileGenerator = new MappingsReactionsFileGenerator(basePackageForSegment, segment, false, create, mappingsFile);
-				val r2lReactionsContext = r2lReactionsFileGenerator.createAndInitializeReactionsFile()
+			//	val r2lReactionsFileGenerator = new MappingsReactionsFileGenerator(basePackageForSegment, segment, false, create, mappingsFile);
+			//	val r2lReactionsContext = r2lReactionsFileGenerator.createAndInitializeReactionsFile()
 				for (mapping : segment.mappings) {
-					val l2rGenerator = new MappingReactionsGenerator(basePackageForSegment, segment, true, create, mapping)
-					val r2lGenerator = new MappingReactionsGenerator(basePackageForSegment, segment, false, create, mapping)
+					val l2rGenerator = new MappingReactionsGenerator(basePackageForSegment, segment, true, reactionsGenerator, create, mapping)
+				//	val r2lGenerator = new MappingReactionsGenerator(basePackageForSegment, segment, false, create, mapping)
 					l2rGenerator.generateReactionsAndRoutines(l2rReactionsContext)
-					r2lGenerator.generateReactionsAndRoutines(r2lReactionsContext)
+				//	r2lGenerator.generateReactionsAndRoutines(r2lReactionsContext)
 				}
 				l2rReactionsFileGenerator.generateFile(fsa);
-				r2lReactionsFileGenerator.generateFile(fsa);
+			//	r2lReactionsFileGenerator.generateFile(fsa);
 			}
 		}
 		

@@ -101,7 +101,6 @@ class RoutineClassGenerator extends ClassGenerator {
 
 	override generateBody() {
 		val executeMethod = generateMethodExecuteEffect()
-
 		generatedClass => [
 			documentation = getCommentWithoutMarkers(routine.documentation)
 			superTypes += typeRef(AbstractRepairRoutineRealization)
