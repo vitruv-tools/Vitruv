@@ -18,18 +18,17 @@ class MappingsReactionsFileGenerator extends AbstractMappingsSegmentGenerator {
 	@Accessors(PROTECTED_GETTER)
 	val FluentReactionsLanguageBuilder create
 	
-	@Inject
-	Provider<IReactionsGenerator> reactionsGeneratorProvider
 	
 	var ReactionGeneratorContext context;
-	
+	var IReactionsGenerator generator;
 	val MappingsFile mappingsFile;
 	
-	new(String basePackage, MappingsSegment segment, boolean left2right, FluentReactionsLanguageBuilder create, MappingsFile file) {
+	new(String basePackage, MappingsSegment segment, boolean left2right, IReactionsGenerator reactionsGenerator, FluentReactionsLanguageBuilder create, MappingsFile file) {
 		super(basePackage, segment)
 		this.left2right = left2right
 		this.create = create
 		this.mappingsFile = file
+		this.generator = reactionsGenerator;
 	}
 	
 	protected def String getDirectedSegmentName() '''«segment.name»«directionSuffix»'''
@@ -57,7 +56,7 @@ class MappingsReactionsFileGenerator extends AbstractMappingsSegmentGenerator {
 		//		FIXME MK add static extension imports for ALL mappings
 		//		import static tools.vitruv.dsls.mappings.tests.addressesXrecipients.mappings.AdRootXReRootMapping.*
 		//		import static tools.vitruv.dsls.mappings.tests.addressesXrecipients.mappings.AddressXRecipientLocationCityMapping.*
-		val segment = create.reactionsSegment(directedSegmentName)
+		val segment = create.reactionsSegment(directedSegmentName+"Segment")
 			.inReactionToChangesIn(fromDomain.domain)
 			.executeActionsIn(toDomain.domain)
 		reactionsFile += segment	
@@ -65,8 +64,6 @@ class MappingsReactionsFileGenerator extends AbstractMappingsSegmentGenerator {
 	}
 	
 	def generateFile(IFileSystemAccess2 fsa){
-		//val generator = reactionsGeneratorProvider.get()
-		val generator = new ExternalReactionsGenerator
 		generator.useResourceSet(mappingsFile.eResource.resourceSet)
 		generator.addReactionsFile(context.file)
 		generator.generate(fsa)

@@ -52,6 +52,7 @@ class ReactionsLanguageJvmModelInferrer extends AbstractModelInferrer  {
 		updateBuilders();
 		
 		for (reactionsSegment : file.reactionsSegments.filter[it.isComplete]) {
+			println("infer "+reactionsSegment);
 			acceptor.accept(new RoutineFacadeClassGenerator(reactionsSegment, typesBuilderExtensionProvider), reactionsSegment);
 			for (overriddenRoutinesImportPath : reactionsSegment.parsedOverriddenRoutinesImportPaths) {
 				acceptor.accept(new OverriddenRoutinesFacadeClassGenerator(reactionsSegment, overriddenRoutinesImportPath, typesBuilderExtensionProvider), reactionsSegment);
@@ -73,6 +74,7 @@ class ReactionsLanguageJvmModelInferrer extends AbstractModelInferrer  {
 		acceptor.accept(generator.generateEmptyClass()) [
 			// sometimes the jvm model inferrer is called after indexing, but cross-references of reactions imports are not resolvable,
 			// we need to skip class-body generation then:
+			println(generator+"  generatebody: "+reactionsSegment.allImportsResolvable);
 			if (reactionsSegment.allImportsResolvable) {
 				generateBody();
 			}

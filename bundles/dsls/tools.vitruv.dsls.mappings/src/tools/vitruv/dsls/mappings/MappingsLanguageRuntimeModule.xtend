@@ -14,6 +14,9 @@ import tools.vitruv.dsls.mappings.generator.MappingsLanguageGenerator
 import tools.vitruv.dsls.mappings.scoping.MappingsLanguageGlobalScopeProvider
 import tools.vitruv.dsls.mappings.scoping.MappingsLanguageScopeProviderDelegate
 import tools.vitruv.dsls.mirbase.scoping.MirBaseQualifiedNameConverter
+import tools.vitruv.dsls.reactions.api.generator.IReactionsGenerator
+import tools.vitruv.dsls.reactions.generator.InternalReactionsGenerator
+import tools.vitruv.dsls.reactions.generator.ExternalReactionsGenerator
 
 /**
  * Use this class to register components to be used at runtime / without the Equinox extension registry.
@@ -37,8 +40,16 @@ class MappingsLanguageRuntimeModule extends AbstractMappingsLanguageRuntimeModul
 		return MappingsLanguageGlobalScopeProvider;
 	}
 	
+	def Class<? extends IReactionsGenerator> bindIReactionsGenerator() {
+		InternalReactionsGenerator
+	}
+	
+	
 	override configure(Binder binder) {
 		super.configure(binder);
 		binder.bind(IGenerator2).to(bindIGenerator2())
+		binder.bind(IReactionsGenerator).to(bindIReactionsGenerator())
+		
+		binder.requestStaticInjection(ExternalReactionsGenerator)
 	}
 }
