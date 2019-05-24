@@ -11,6 +11,8 @@ import com.google.inject.Inject
 import com.google.inject.Provider
 import tools.vitruv.dsls.reactions.generator.ExternalReactionsGenerator
 import tools.vitruv.dsls.mappings.mappingsLanguage.Mapping
+import org.eclipse.xtext.resource.XtextResource
+import org.eclipse.xtext.resource.XtextResourceSet
 
 class MappingsReactionsFileGenerator extends AbstractMappingsSegmentGenerator {
 	@Accessors(PROTECTED_GETTER)
@@ -62,11 +64,5 @@ class MappingsReactionsFileGenerator extends AbstractMappingsSegmentGenerator {
 		reactionsFile += segment	
 	    context= new ReactionGeneratorContext(reactionsFile, segment);		
 	}
-	
-	def generateFile(IFileSystemAccess2 fsa){
-		generator.useResourceSet(mappingsFile.eResource.resourceSet)
-		generator.addReactionsFile(context.file)
-		generator.generate(fsa)
-		generator.writeReactions(fsa)
-	}
+
 }
