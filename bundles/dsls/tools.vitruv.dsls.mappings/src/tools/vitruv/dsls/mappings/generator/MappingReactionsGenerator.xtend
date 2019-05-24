@@ -5,13 +5,15 @@ import tools.vitruv.dsls.mappings.mappingsLanguage.MappingsSegment
 import tools.vitruv.dsls.reactions.builder.FluentReactionsLanguageBuilder
 import tools.vitruv.dsls.mirbase.mirBase.NamedMetaclassReference
 import tools.vitruv.dsls.reactions.api.generator.IReactionsGenerator
+import tools.vitruv.testutils.domains.AllElementTypesDomainProvider
+import allElementTypes.AllElementTypesPackage
 
 class MappingReactionsGenerator extends MappingsReactionsFileGenerator {
 	val Mapping mapping
 
-	new(String basePackage, MappingsSegment segment, boolean left2right,IReactionsGenerator generator, FluentReactionsLanguageBuilder create,
-		Mapping mapping) {
-		super(basePackage, segment, left2right,generator, create, null)
+	new(String basePackage, MappingsSegment segment, boolean left2right, IReactionsGenerator generator,
+		FluentReactionsLanguageBuilder create, Mapping mapping) {
+		super(basePackage, segment, left2right, generator, create, null)
 		this.mapping = mapping
 	}
 
@@ -25,23 +27,15 @@ class MappingReactionsGenerator extends MappingsReactionsFileGenerator {
 	}
 
 	private def onDelete(NamedMetaclassReference from, NamedMetaclassReference to) {
-		create.reaction('''on«from.name»Create''').afterElement(from.eClass).created.call [
+		create.reaction('''on«from.name»Delete''').afterElement(from.eClass).deleted.call [
+			match [
+				vall('''corresponding_«to.name»''').retrieveAsserted(to.eClass).correspondingTo.affectedEObject.
+					taggedWith(getCorrespondenceTag(from, to))
+			]
 			action [
-				vall('newRoot').create(to.eClass)
-				addCorrespondenceBetween('newRoot').and.affectedEObject
+				delete('''corresponding_«to.name»''')
 			]
 		]
-	/* 	.afterElement(from.eClass).deleted
-	 * 	.call [
-	 * 	 	match [
-	 * 				vall('''corresponding_«to.name»''').retrieveAsserted(to.eClass)
-	 * 					.correspondingTo.affectedEObject
-	 * 					.taggedWith(getCorrespondenceTag(from,to))
-	 * 		]
-	 * 		action [
-	 * 				delete('''corresponding_«to.name»''')
-	 * 		]
-	 ]*/
 	}
 
 	private def getCorrespondenceTag(NamedMetaclassReference from, NamedMetaclassReference to) {

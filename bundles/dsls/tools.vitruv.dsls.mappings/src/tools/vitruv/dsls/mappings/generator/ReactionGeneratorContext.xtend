@@ -6,7 +6,7 @@ import tools.vitruv.dsls.reactions.builder.FluentReactionsSegmentBuilder
 
 class ReactionGeneratorContext {
 	
-	@Accessors(PUBLIC_GETTER)
+	@Accessors(PUBLIC_GETTER, PUBLIC_SETTER)
 	var FluentReactionsFileBuilder file
 	@Accessors(PUBLIC_GETTER)
 	var FluentReactionsSegmentBuilder segment
