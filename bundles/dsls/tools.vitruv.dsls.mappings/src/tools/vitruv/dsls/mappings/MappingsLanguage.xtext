@@ -46,15 +46,27 @@ Mapping:
 		'}' 'backward' 'execute' '{'
 			backwardExecutionExpression=UnidirectionalExpression
 		'}')?
-		reactions+= ReactionIntegration*
+		(reactions+=ReactionIntegration |
+		routines+=RoutineIntegration)*
 	'}'
 ;
  
 ReactionIntegration:
 	(documentation=ML_COMMENT)?
-	'reaction' name=ValidID '{'
+	orientation = ReactionOrientation 'reaction' name=ValidID '{'
 		trigger=Trigger
 		callRoutine=ReactionRoutineCall
+	'}';
+
+enum ReactionOrientation:
+	LEFT = 'left' | RIGHT = 'right'
+;
+
+RoutineIntegration:
+	(documentation=ML_COMMENT)?
+	'routine' name=ValidID input=RoutineInput '{'
+		matcher=MatcherBlock?
+		action=ActionBlock
 	'}';
 
 // DW: RequiredMapping

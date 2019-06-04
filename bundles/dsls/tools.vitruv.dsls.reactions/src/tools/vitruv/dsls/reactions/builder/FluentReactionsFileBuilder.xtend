@@ -6,6 +6,7 @@ import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsFile
 import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsLanguageFactory
 
 import static com.google.common.base.Preconditions.*
+import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsSegment
 
 class FluentReactionsFileBuilder extends FluentReactionElementBuilder {
 

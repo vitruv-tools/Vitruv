@@ -28,7 +28,13 @@ Require-Bundle: tools.vitruv.dsls.mappings,
  tools.vitruv.demo.domains.addresses,
  tools.vitruv.demo.domains.recipients,
  tools.vitruv.extensions.dslsruntime.reactions;visibility:=reexport,
- tools.vitruv.extensions.dslsruntime.mappings
+ tools.vitruv.extensions.dslsruntime.mappings,
+ tools.vitruv.domains.pcm.util,
+ org.palladiosimulator.pcm,
+ org.palladiosimulator.pcm.resources,
+ org.eclipse.uml2.uml,
+ tools.vitruv.domains.pcm,
+ tools.vitruv.domains.uml
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Automatic-Module-Name: tools.vitruv.dsls.mappings.tests
 Import-Package: org.hamcrest.core,

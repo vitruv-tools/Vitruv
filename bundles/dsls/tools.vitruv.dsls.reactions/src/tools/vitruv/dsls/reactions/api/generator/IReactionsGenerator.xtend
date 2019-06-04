@@ -8,6 +8,7 @@ import tools.vitruv.dsls.reactions.builder.FluentReactionsFileBuilder
 import tools.vitruv.dsls.reactions.generator.ExternalReactionsGenerator
 import org.eclipse.emf.ecore.resource.ResourceSet
 import java.io.IOException
+import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsFile
 
 /**
  * Generates all code that is necessary to run reactions. Reactions to generate
@@ -79,6 +80,8 @@ interface IReactionsGenerator {
 	 * 		The builder describing the reaction file to generate code for.		
 	 */
 	def void addReactionsFile(FluentReactionsFileBuilder reactionBuilder)
+
+	def void addReactionsFile(String sourceFileName, ReactionsFile reactionsFile)
 
 	/**
 	 * Adds reaction files that were parsed by Xtext.

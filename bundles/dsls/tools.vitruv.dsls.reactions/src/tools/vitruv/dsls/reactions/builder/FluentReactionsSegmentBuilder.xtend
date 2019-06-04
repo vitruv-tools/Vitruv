@@ -8,6 +8,8 @@ import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsSegment
 import tools.vitruv.framework.domains.VitruvDomain
 
 import static com.google.common.base.Preconditions.*
+import tools.vitruv.dsls.reactions.reactionsLanguage.Routine
+import tools.vitruv.dsls.reactions.reactionsLanguage.Reaction
 
 @Accessors(PACKAGE_GETTER)
 class FluentReactionsSegmentBuilder extends FluentReactionElementBuilder {
@@ -129,6 +131,18 @@ class FluentReactionsSegmentBuilder extends FluentReactionElementBuilder {
 		segment.routines += routineBuilder.routine
 		routineBuilder.segmentBuilder = this
 		childBuilders += routineBuilder
+		this
+	}
+	
+	def operator_add(Routine routine) {
+		checkNotYetAttached()
+		segment.routines += routine
+		this
+	}
+	
+	def operator_add(Reaction reaction) {
+		checkNotYetAttached()
+		segment.reactions += reaction
 		this
 	}
 	
