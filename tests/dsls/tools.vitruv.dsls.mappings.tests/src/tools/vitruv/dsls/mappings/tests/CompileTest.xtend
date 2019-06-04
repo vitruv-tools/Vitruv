@@ -26,7 +26,6 @@ class CompileTest {
    
     @Test
     def void test(){
-    	//new MappingsLanguageStandaloneSetup().createInjectorAndDoEMFRegistration()
     	var generator = generatorProvider.get()
 		var resourceSet = resourceSetProvider.get()
 		resourceSet.addLoadOption(XtextResource.OPTION_RESOLVE_ALL, Boolean.TRUE)

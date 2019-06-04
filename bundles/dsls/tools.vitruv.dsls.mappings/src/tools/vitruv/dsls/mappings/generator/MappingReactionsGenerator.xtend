@@ -5,8 +5,7 @@ import tools.vitruv.dsls.mappings.mappingsLanguage.MappingsSegment
 import tools.vitruv.dsls.reactions.builder.FluentReactionsLanguageBuilder
 import tools.vitruv.dsls.mirbase.mirBase.NamedMetaclassReference
 import tools.vitruv.dsls.reactions.api.generator.IReactionsGenerator
-import tools.vitruv.testutils.domains.AllElementTypesDomainProvider
-import allElementTypes.AllElementTypesPackage
+
 
 class MappingReactionsGenerator extends MappingsReactionsFileGenerator {
 	val Mapping mapping
@@ -18,18 +17,18 @@ class MappingReactionsGenerator extends MappingsReactionsFileGenerator {
 	}
 
 	def generateReactionsAndRoutines(ReactionGeneratorContext context) {
-		segment.mappings.forEach [
+		segment.mappings.forEach [	
 			val from = getFromParameters(it).get(0)
 			val to = getToParameters(it).get(0)
-			context.segment += onDelete(from, to)
+			context.getSegmentBuilder += onDelete(from, to)
+			context.getSegmentBuilder += onCreate(from, to)	
 		]
-	// deleteRoutines()
 	}
 
-	private def onDelete(NamedMetaclassReference from, NamedMetaclassReference to) {
-		create.reaction('''on«from.name»Delete''').afterElement(from.eClass).deleted.call [
+	private def onDelete(NamedMetaclassReference from, NamedMetaclassReference to) {		
+		create.reaction('''«from.name»Delete''').afterElement(from.metaclass).deleted.call [
 			match [
-				vall('''corresponding_«to.name»''').retrieveAsserted(to.eClass).correspondingTo.affectedEObject.
+				vall('''corresponding_«to.name»''').retrieveAsserted(to.metaclass).correspondingTo.affectedEObject.
 					taggedWith(getCorrespondenceTag(from, to))
 			]
 			action [
@@ -37,10 +36,19 @@ class MappingReactionsGenerator extends MappingsReactionsFileGenerator {
 			]
 		]
 	}
+	
+	private def onCreate(NamedMetaclassReference from, NamedMetaclassReference to) {		
+		create.reaction('''«from.name»Create''').afterElement(from.metaclass).created.call [
+			action [
+				vall('''corresponding_«to.name»''').create(to.metaclass)
+				addCorrespondenceBetween('''corresponding_«to.name»''').and.affectedEObject.taggedWith(getCorrespondenceTag(from, to))
+			]
+		]
+	}
 
 	private def getCorrespondenceTag(NamedMetaclassReference from, NamedMetaclassReference to) {
-		var left = from.name
-		var right = to.name
+		var left = from.metaclass.name +':'+from.name
+		var right = to.metaclass.name +':'+to.name
 		if (!left2right) {
 			left = to.name
 			right = from.name
@@ -88,7 +96,4 @@ class MappingReactionsGenerator extends MappingsReactionsFileGenerator {
 
 	private def String getDeleteRoutineName(Mapping mapping) '''delete«mapping.genName»Elements'''
 
-	private def deleteRoutines() {
-		create.routine(mapping.deleteRoutineName).match[]
-	}
 }

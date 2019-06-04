@@ -154,12 +154,20 @@ class InternalReactionsGenerator implements IReactionsGenerator {
 		reactionBuilder.attachTo(resource)
 	}
 
+	override addReactionsFile(String sourceFileName, ReactionsFile reactionsFile) {
+		checkState(artificialReactionsResourceSet !== null,
+			"A resource set must be provided in order to add artificial reactions files!")
+		val reactionsFileResource = createSyntheticResource(sourceFileName)
+		reactionsFileResource.contents.add(reactionsFile);
+		resourcesToGenerate += reactionsFileResource
+	}
+
 	override writeReactions(IFileSystemAccess2 fsa) throws IOException {
 		writeReactions(fsa, null)
 	}
 
 	override writeReactions(IFileSystemAccess2 fsa, String subPath) throws IOException {
-		val pathPrefix = if (subPath === null) '' else if (subPath.endsWith('/')) subPath else subPath + '/'
+		val pathPrefix = if(subPath === null) '' else if(subPath.endsWith('/')) subPath else subPath + '/'
 		for (resource : resourcesToGenerate) {
 			try {
 				val serializationInput = new PipedOutputStream
