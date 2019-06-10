@@ -4,6 +4,7 @@ import tools.vitruv.framework.util.datatypes.VURI
 import tools.vitruv.framework.change.description.TransactionalChange
 import tools.vitruv.framework.uuid.UuidResolver
 import tools.vitruv.framework.change.interaction.UserInteractionBase
+import tools.vitruv.framework.change.description.VitruviusChange
 
 class EmptyChangeImpl implements TransactionalChange {
 	private val VURI vuri;
@@ -54,6 +55,10 @@ class EmptyChangeImpl implements TransactionalChange {
 
 	override setUserInteractions(Iterable<UserInteractionBase> userInputs) {
 		throw new UnsupportedOperationException("Adding interactions to an empty change is not supported")
+	}
+
+	override changedEObjectEquals(VitruviusChange change) {
+		return change.affectedEObjects.empty
 	}
 
 }

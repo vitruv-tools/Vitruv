@@ -16,15 +16,16 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 
 import tools.vitruv.domains.emf.monitorededitor.ISynchronizingMonitoredEmfEditor.ResourceChangeSynchronizing;
 import tools.vitruv.domains.emf.monitorededitor.IVitruviusEMFEditorMonitor.IVitruviusAccessor;
 import tools.vitruv.framework.change.description.PropagatedChange;
 import tools.vitruv.framework.change.description.VitruviusChange;
-import tools.vitruv.framework.uuid.UuidGeneratorAndResolver;
 import tools.vitruv.framework.util.datatypes.ModelInstance;
 import tools.vitruv.framework.util.datatypes.VURI;
+import tools.vitruv.framework.uuid.UuidGeneratorAndResolver;
 import tools.vitruv.framework.vsum.VirtualModel;
 
 public class DefaultImplementations {
@@ -60,6 +61,17 @@ public class DefaultImplementations {
         public UuidGeneratorAndResolver getUuidGeneratorAndResolver() {
             return null;
         }
+
+        @Override
+        public List<PropagatedChange> propagateChangedState(Resource newState) {
+            return null;
+        }
+
+        @Override
+        public List<PropagatedChange> propagateChangedState(Resource newState, URI oldLocation) {
+            return null;
+        }
+
     };
 
     public static final IVitruviusAccessor ALL_ACCEPTING_VITRUV_ACCESSOR = new IVitruviusAccessor() {
@@ -135,6 +147,16 @@ public class DefaultImplementations {
 
         @Override
         public UuidGeneratorAndResolver getUuidGeneratorAndResolver() {
+            return null;
+        }
+
+        @Override
+        public List<PropagatedChange> propagateChangedState(Resource newState) {
+            return null;
+        }
+
+        @Override
+        public List<PropagatedChange> propagateChangedState(Resource newState, URI oldLocation) {
             return null;
         }
 

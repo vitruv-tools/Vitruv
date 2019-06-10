@@ -13,6 +13,7 @@ import tools.vitruv.framework.change.echange.feature.reference.ReplaceSingleValu
 import tools.vitruv.framework.change.echange.feature.reference.RemoveEReference
 import tools.vitruv.framework.change.echange.root.RemoveRootEObject
 import tools.vitruv.framework.change.echange.feature.reference.AdditiveReferenceEChange
+import tools.vitruv.framework.change.echange.root.InsertRootEObject
 
 /**
  * Static utility class for the EChange package and subpackages.
@@ -75,7 +76,7 @@ class EChangeUtil {
 	}
 	
 	public static def dispatch isContainmentRemoval(ReplaceSingleValuedEReference<?,?> change) {
-		return change.affectedFeature.containment && change.oldValue !== null && change.oldValue !== change.newValue;
+		return change.affectedFeature.containment && change.oldValueID !== null && change.oldValueID !== change.newValueID;
 	}
 	
 	public static def dispatch isContainmentRemoval(RemoveEReference<?,?> change) {
@@ -91,10 +92,14 @@ class EChangeUtil {
 	}
 	
 	public static def dispatch isContainmentInsertion(AdditiveReferenceEChange<?,?> change) {
-		return change.affectedFeature.containment && change.newValue !== null;
+		return change.affectedFeature.containment && change.newValueID !== null;
 	}
 	
 	public static def dispatch isContainmentInsertion(RemoveRootEObject<?> change) {
+		return true;
+	}
+	
+	public static def dispatch isContainmentInsertion(InsertRootEObject<?> change) {
 		return true;
 	}
 }

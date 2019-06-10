@@ -77,9 +77,7 @@ class AtomicEmfChangeRecorder {
 	
 	def void removeFromRecording(Notifier elementToObserve) {
 		this.elementsToObserve -= elementToObserve;
-		if (isRecording) {
-			elementToObserve.eAdapters.remove(changeRecorder);
-		}
+		changeRecorder.removeFromRecording(elementToObserve)
 	}
 
 	/** Stops recording without returning a result */

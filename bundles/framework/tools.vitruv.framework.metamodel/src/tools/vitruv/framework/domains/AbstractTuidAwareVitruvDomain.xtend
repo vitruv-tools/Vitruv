@@ -1,29 +1,29 @@
 package tools.vitruv.framework.domains
 
-import tools.vitruv.framework.domains.AbstractVitruvDomain
-import tools.vitruv.framework.tuid.TuidManager
-import tools.vitruv.framework.tuid.Tuid
+import java.util.List
+import java.util.Set
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EPackage
-import java.util.Set
+import tools.vitruv.framework.tuid.Tuid
 import tools.vitruv.framework.tuid.TuidCalculatorAndResolver
-import java.util.List
-import tools.vitruv.framework.util.datatypes.VURI
+import tools.vitruv.framework.tuid.TuidManager
 import tools.vitruv.framework.tuid.TuidUpdateListener
+import tools.vitruv.framework.util.datatypes.VURI
 
 abstract class AbstractTuidAwareVitruvDomain extends AbstractVitruvDomain implements TuidAwareVitruvDomain, TuidUpdateListener {
-	TuidCalculatorAndResolver tuidCalculatorAndResolver
-	
-	new(String name, EPackage metamodelRootPackage, Set<EPackage> furtherRootPackages, TuidCalculatorAndResolver tuidCalculator, String... fileExtensions) {
+	val TuidCalculatorAndResolver tuidCalculatorAndResolver
+
+	new(String name, EPackage metamodelRootPackage, Set<EPackage> furtherRootPackages, TuidCalculatorAndResolver tuidCalculator,
+		String... fileExtensions) {
 		super(name, metamodelRootPackage, furtherRootPackages, fileExtensions)
 		this.tuidCalculatorAndResolver = tuidCalculator;
 	}
-	
+
 	new(String name, EPackage metamodelRootPackage, TuidCalculatorAndResolver tuidCalculator, String... fileExtensions) {
 		super(name, metamodelRootPackage, fileExtensions)
 		this.tuidCalculatorAndResolver = tuidCalculator;
 	}
-	
+
 	override String calculateTuidFromEObject(EObject eObject, EObject virtualRootObject, String prefix) {
 		return this.tuidCalculatorAndResolver.calculateTuidFromEObject(eObject, virtualRootObject, prefix)
 	}
@@ -53,12 +53,12 @@ abstract class AbstractTuidAwareVitruvDomain extends AbstractVitruvDomain implem
 	override performPostAction(Tuid newTuid) {
 		// Do nothing
 	}
-	
+
 	override registerAtTuidManagement() {
 		TuidManager.instance.addTuidCalculator(this);
 		TuidManager.instance.addTuidUpdateListener(this);
 	}
-	
+
 	def String calculateTuidFromEObject(EObject eObject) {
 		return this.tuidCalculatorAndResolver.calculateTuidFromEObject(eObject)
 	}
@@ -79,7 +79,7 @@ abstract class AbstractTuidAwareVitruvDomain extends AbstractVitruvDomain implem
 	def void removeIfRootAndCached(String tuid) {
 		this.tuidCalculatorAndResolver.removeIfRootAndCached(tuid)
 	}
-	
+
 	override canCalculateTuid(EObject object) {
 		return isInstanceOfDomainMetamodel(object);
 	}
@@ -87,6 +87,5 @@ abstract class AbstractTuidAwareVitruvDomain extends AbstractVitruvDomain implem
 	override calculateTuid(EObject object) {
 		return Tuid.getInstance(calculateTuidFromEObject(object));
 	}
-	
-	
+
 }
