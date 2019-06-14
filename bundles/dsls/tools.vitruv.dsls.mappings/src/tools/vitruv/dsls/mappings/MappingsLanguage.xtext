@@ -76,23 +76,37 @@ Dependency:
 ;
 	
 SingleSidedCondition: // returns Condition:
-	EnforceableCondition |
-	CheckAndEnforceCondition
+	condition = (EnforceableCondition |
+	CheckAndEnforceCondition)
 ;
 
 /* BEGIN ENFORCEABLE CONDITIONS */
 EnforceableCondition: //  returns SingleSidedCondition:
-	FeatureCondition |
-	ResourceCondition
+	condition = (FeatureCondition |
+	ResourceCondition)
 ;
 
 FeatureCondition: //  returns EnforceableCondition:
-	(SingleValueCondition |
+	left = LeftFeatureCondition
+	condition = (
+		SingleValueCondition |
 	 MultiValueCondition |
 	 ElementCondition |
 	 NotEmptyCondition
 	)
 	feature=MetaclassFeatureReference
+;
+
+LeftFeatureCondition returns EObject: 
+	(MetaClassReferenceCondition | NullValue | {String} STRING)
+;
+
+MetaClassReferenceCondition:
+	MetaclassReference ('[' feature=[ecore::EStructuralFeature|ValidID] ']')?
+;
+
+NullValue:
+	value='null'
 ;
 
 FeatureReference:
@@ -121,7 +135,7 @@ ValueExpression:
 ;
 
 IndexCondition: //  returns SingleValueCondition:
-	negated?='not'
+	(negated='not')?
 	'at' 'index'
 	indexValueExpression=ValueExpression
 	'in'
@@ -155,7 +169,7 @@ GreaterOperator returns NumCompareOperator: '>';
 */
 
 MultiValueCondition: //  returns FeatureCondition:
-	negated?='not'
+	(negated='not')?
 	operator=MultiValueConditionOperator
 ;
 
@@ -174,7 +188,7 @@ ElementExpression:
 ;
 
 NotEmptyCondition: //  returns FeatureCondition:
-	negated?='not'
+	{NotEmptyCondition} (negated='not')?
 	'empty'
 ;
 
@@ -215,7 +229,8 @@ BidirectionalizableCondition: //  returns Condition:
 ;
 
 BidirectionalizableExpression:
-	{CodeBlock}
+//	{CodeBlock}
+   feature=MetaclassFeatureReference
 ;
 /* END BIDIRECTIONALIZABLE CONDITION */
 

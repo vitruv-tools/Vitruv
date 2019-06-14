@@ -11,11 +11,16 @@ mapping RepositoryXPackage {
    	uml::Package datatypesPkg
    )
    with {
-   in	rootPkg.name
-   
+  	null  equals rootPkg[nestedPackage]
+  repositoryPkg in rootPkg[nestingPackage]
+   	contractsPkg in rootPkg[nestingPackage]
+   	datatypesPkg in rootPkg[nestingPackage]
+   	"repositories" equals repositoryPkg[name]
+   	"contracts" equals contractsPkg[name]
+   	"datatypes" equals datatypesPkg[name]
    }
    such that {
-	repository.name = rootPkg.name   	 
+	repository[entityName] =  rootPkg[name]   	 
    }
 }
 
