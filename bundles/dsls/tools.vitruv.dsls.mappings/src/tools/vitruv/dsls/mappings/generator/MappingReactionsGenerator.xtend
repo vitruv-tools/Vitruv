@@ -5,7 +5,8 @@ import tools.vitruv.dsls.mappings.mappingsLanguage.MappingsSegment
 import tools.vitruv.dsls.reactions.builder.FluentReactionsLanguageBuilder
 import tools.vitruv.dsls.mirbase.mirBase.NamedMetaclassReference
 import tools.vitruv.dsls.reactions.api.generator.IReactionsGenerator
-
+import org.eclipse.emf.common.util.EList
+import java.util.ArrayList
 
 class MappingReactionsGenerator extends MappingsReactionsFileGenerator {
 	val Mapping mapping
@@ -18,11 +19,30 @@ class MappingReactionsGenerator extends MappingsReactionsFileGenerator {
 
 	def generateReactionsAndRoutines(ReactionGeneratorContext context) {
 		segment.mappings.forEach [	
-			val from = getFromParameters(it).get(0)
-			val to = getToParameters(it).get(0)
-			context.getSegmentBuilder += onDelete(from, to)
-			context.getSegmentBuilder += onCreate(from, to)	
+			val from = fromParameters
+			val to = toParameters
+			val fromDistinct = getDistinctMetaclasses(from)
+			val fromConditions = fromConditions
+			val mappingsConditions = it.bidirectionalizableConditions
+			val reactionTriggers = fromTriggers
+			fromDistinct.forEach[ distinctMetaclass | 
+				val fromList = from.filter[metaclass == distinctMetaclass].toList
+				val reactionsBuilder = new ReactionsBuilder(distinctMetaclass,fromList, to)
+				reactionsBuilder.generate(context, fromConditions, mappingsConditions, reactionTriggers)
+			]
+		//	context.getSegmentBuilder += onDelete(from, to)
+		//	context.getSegmentBuilder += onCreate(from, to)	
 		]
+	}
+	
+	private def getDistinctMetaclasses(EList<NamedMetaclassReference> references){
+		val distinctList = new ArrayList()
+		references.forEach[
+			if(!distinctList.contains(it.metaclass)){
+				distinctList.add(it.metaclass);
+			}
+		]
+		return distinctList
 	}
 
 	private def onDelete(NamedMetaclassReference from, NamedMetaclassReference to) {		
@@ -91,9 +111,5 @@ class MappingReactionsGenerator extends MappingsReactionsFileGenerator {
 			]
 		])
 	}
-
-	private def String getGenName(Mapping mapping) '''«mapping.name»Mapping'''
-
-	private def String getDeleteRoutineName(Mapping mapping) '''delete«mapping.genName»Elements'''
 
 }

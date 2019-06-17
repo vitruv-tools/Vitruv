@@ -36,7 +36,7 @@ class CompileTest {
 		]
 		
     	val resource = resourceSet.getResource(
-   		URI.createURI("platform:/plugin/tools.vitruv.dsls.mappings.tests/src/tools/vitruv/dsls/mappings/tests/test.mappings"), true);
+   		URI.createURI("platform:/plugin/tools.vitruv.dsls.mappings.tests/src/tools/vitruv/dsls/mappings/tests/pcmuml.mappings"), true);
     	generator.doGenerate(resource, fsa, null)
     }
 }
