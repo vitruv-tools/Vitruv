@@ -30,11 +30,13 @@ Mapping:
 			dependencies+=Dependency
 		')')?
 	'{'
-		'map' '(' (leftParameters+=ClassicallyNamedModelElement)+ ')'
+		'map' '(' (leftParameters+=ClassicallyNamedModelElement)+')'
+		  'as' 'reactions' '('(leftReactionTriggers+=ReactionTrigger)+ ')'
 			('with' '{' 
 				(leftConditions+=SingleSidedCondition)+
 			'}')?
 		'and' '(' (rightParameters+=ClassicallyNamedModelElement)+ ')'
+		    'as' 'reactions' '('(righReactionTriggers+=ReactionTrigger)+ ')'
 			('with' '{' 
 				(rightConditions+=SingleSidedCondition)+
 			'}')?
@@ -50,7 +52,38 @@ Mapping:
 		routines+=RoutineIntegration)*
 	'}'
 ;
- 
+
+ReactionTrigger:
+	parameter = UnnamedMetaclassReference
+	type = (InsertedInTrigger | RemovedFromTrigger| DeletedTrigger)
+;
+
+InsertedInTrigger:
+	'inserted'
+	trigger = (InsertedInCollectionTrigger | AsRootTrigger )
+;
+
+RemovedFromTrigger:
+	'removed' 
+	trigger = (RemovedFromCollectionTrigger | AsRootTrigger)
+;
+
+DeletedTrigger:
+	{DeletedTrigger} 'deleted'
+;
+
+InsertedInCollectionTrigger: 
+	'in' collection = MetaclassFeatureReference
+;
+
+AsRootTrigger:
+	{AsRootTrigger} 'as' 'root'
+;
+
+RemovedFromCollectionTrigger:
+	'from' collection = MetaclassFeatureReference
+;
+
 ReactionIntegration:
 	(documentation=ML_COMMENT)?
 	orientation = ReactionOrientation 'reaction' name=ValidID '{'
@@ -98,15 +131,11 @@ FeatureCondition: //  returns EnforceableCondition:
 ;
 
 LeftFeatureCondition returns EObject: 
-	(MetaClassReferenceCondition | NullValue | {String} STRING)
-;
-
-MetaClassReferenceCondition:
-	MetaclassReference ('[' feature=[ecore::EStructuralFeature|ValidID] ']')?
+	(MetaclassReference | NullValue | {String} STRING)
 ;
 
 NullValue:
-	value='null'
+	{NullValue} 'null'
 ;
 
 FeatureReference:
@@ -224,13 +253,12 @@ EnforceExpression:
 BidirectionalizableCondition: //  returns Condition:
 	featureToBeAssigned=MetaclassFeatureReference
 	'='
-	bidirectionalizableExpression=BidirectionalizableExpression
+	bidirectionalizableExpression=XBlockExpression
 	('update' featureToBeUpdated=MetaclassFeatureReference)?
 ;
 
 BidirectionalizableExpression:
-//	{CodeBlock}
-   feature=MetaclassFeatureReference
+	{CodeBlock}
 ;
 /* END BIDIRECTIONALIZABLE CONDITION */
 

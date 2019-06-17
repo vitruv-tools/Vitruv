@@ -8,6 +8,7 @@ import tools.vitruv.dsls.reactions.reactionsLanguage.Reaction
 import tools.vitruv.dsls.reactions.reactionsLanguage.Routine
 import tools.vitruv.dsls.mappings.mappingsLanguage.MappingsFile
 import tools.vitruv.dsls.mappings.generator.integration.IReactionIntegrateable
+import tools.vitruv.dsls.reactions.builder.FluentReactionsLanguageBuilder
 
 class ReactionGeneratorContext implements IReactionIntegrateable{
 	
@@ -19,12 +20,15 @@ class ReactionGeneratorContext implements IReactionIntegrateable{
 	var MappingsSegment segment
 	@Accessors(PUBLIC_GETTER)
 	var MappingsFile mappingsFile
+	@Accessors(PUBLIC_GETTER)
+	val FluentReactionsLanguageBuilder create
 	
-	new(FluentReactionsFileBuilder file, FluentReactionsSegmentBuilder segmentBuilder, MappingsSegment segment, MappingsFile mappingsFile){
+	new(FluentReactionsFileBuilder file, FluentReactionsSegmentBuilder segmentBuilder, MappingsSegment segment, MappingsFile mappingsFile, FluentReactionsLanguageBuilder create){
 		this.file = file;
 		this.segmentBuilder  =segmentBuilder;
 		this.segment = segment;
 		this.mappingsFile = mappingsFile;
+		this.create = create;
 	}
 	
 	override integrate(Reaction reaction) {

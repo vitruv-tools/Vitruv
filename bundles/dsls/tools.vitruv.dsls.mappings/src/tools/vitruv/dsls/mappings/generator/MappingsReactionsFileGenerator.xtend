@@ -45,6 +45,22 @@ class MappingsReactionsFileGenerator extends AbstractMappingsSegmentGenerator {
 		if(left2right) mapping.rightParameters else mapping.leftParameters
 	}
 	
+	protected def getFromTriggers(Mapping mapping){
+		if(left2right) mapping.leftReactionTriggers else mapping.righReactionTriggers
+	}
+	
+	protected def getToTriggers(Mapping mapping){
+		if(left2right) mapping.righReactionTriggers else mapping.leftReactionTriggers
+	}
+	
+	protected def getFromConditions(Mapping mapping){
+		if(left2right) mapping.leftConditions else mapping.rightConditions
+	}
+	
+	protected def getToConditions(Mapping mapping){
+		if(left2right) mapping.rightConditions else mapping.leftConditions
+	}
+	
 	protected def getFromDomain() {
 		if (left2right) segment.leftDomain else segment.rightDomain
 	}
@@ -62,7 +78,7 @@ class MappingsReactionsFileGenerator extends AbstractMappingsSegmentGenerator {
 			.inReactionToChangesIn(fromDomain.domain)
 			.executeActionsIn(toDomain.domain)
 		reactionsFile += segmentBuilder	
-	    context= new ReactionGeneratorContext(reactionsFile, segmentBuilder, segment, mappingsFile);		
+	    context= new ReactionGeneratorContext(reactionsFile, segmentBuilder, segment, mappingsFile, create);		
 	}
 
 }

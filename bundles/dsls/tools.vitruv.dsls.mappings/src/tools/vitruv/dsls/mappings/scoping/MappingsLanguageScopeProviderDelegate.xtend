@@ -18,6 +18,11 @@ import tools.vitruv.dsls.mappings.mappingsLanguage.BidirectionalizableCondition
 import tools.vitruv.dsls.mappings.mappingsLanguage.BidirectionalizableExpression
 import org.eclipse.xtext.scoping.Scopes
 import java.util.ArrayList
+import tools.vitruv.dsls.mappings.mappingsLanguage.MultiValueCondition
+import tools.vitruv.dsls.mappings.mappingsLanguage.SingleValueCondition
+import tools.vitruv.dsls.mappings.mappingsLanguage.NumCompareCondition
+import tools.vitruv.dsls.mappings.mappingsLanguage.MultiValueConditionOperator
+import tools.vitruv.dsls.mappings.mappingsLanguage.IndexCondition
 
 class MappingsLanguageScopeProviderDelegate extends MirBaseScopeProviderDelegate {
 
@@ -36,62 +41,77 @@ class MappingsLanguageScopeProviderDelegate extends MirBaseScopeProviderDelegate
 				val mapping = singleSidedCondition.eContainer as Mapping;
 				if (mapping.leftConditions.contains(singleSidedCondition)) {
 					// left side
-					return createMappingScope(mapping,true,false);
+					return createMappingScope(mapping, true, false);
 				} else {
 					// right side			
-					return createMappingScope(mapping,false,true);					
+					return createMappingScope(mapping, false, true);
 				}
-			}
-			else if(contextContainer instanceof BidirectionalizableCondition){
-				val mapping = contextContainer.eContainer as Mapping;		
-				//both sides
-				return createMappingScope(mapping,true,true);			
-			}
-			else if(contextContainer instanceof BidirectionalizableExpression){
+			} else if (contextContainer instanceof BidirectionalizableCondition) {
+				val mapping = contextContainer.eContainer as Mapping;
+				// both sides
+				return createMappingScope(mapping, true, true);
+			} else if (contextContainer instanceof BidirectionalizableExpression) {
 				val bidirectionalizableCondition = contextContainer.eContainer;
-				val mapping = bidirectionalizableCondition.eContainer as Mapping;		
-				//both sides
-				return createMappingScope(mapping,true,true);	
+				val mapping = bidirectionalizableCondition.eContainer as Mapping;
+				// both sides
+				return createMappingScope(mapping, true, true);
 			}
 		}
 		super.getScope(context, reference)
 	}
-	
-	def createMappingScope(Mapping mapping, boolean leftSide, boolean rightSide){
+
+	def createMappingScope(Mapping mapping, boolean leftSide, boolean rightSide) {
 		val featureList = new ArrayList();
-		if(leftSide){
+		if (leftSide) {
 			featureList.addAll(mapping.leftParameters);
 		}
-		if(rightSide){
-			featureList.addAll(mapping.rightParameters);			
+		if (rightSide) {
+			featureList.addAll(mapping.rightParameters);
 		}
 		return createScope(IScope.NULLSCOPE, featureList.iterator, [
-						EObjectDescription.create(it.name, it.metaclass)
+			EObjectDescription.create(it.name, it.metaclass)
 		]);
+	}
+
+	private enum ScopeManyFeature {
+		MANY,
+		SINGLE,
+		BOTH
+		;
+	}
+
+	def ScopeManyFeature getManyScopeType(FeatureCondition featureCondition) {
+		val condition = featureCondition.condition;
+		if (condition instanceof NumCompareCondition) {
+			return ScopeManyFeature.SINGLE;
+		} else if (condition instanceof MultiValueCondition) {
+			if (condition.operator == MultiValueConditionOperator.EQUALS) {
+				return ScopeManyFeature.BOTH;
+			}
+		}
+		return ScopeManyFeature.MANY;
 	}
 
 	def createEStructuralFeatureScope(MetaclassFeatureReference featureReference) {
 		if (featureReference?.metaclass !== null) {
-			/*val changeType = featureReference.eContainer;
-			 * val multiplicityFilterFunction = if (changeType instanceof ElementReplacementChangeType) {
-			 * 	[EStructuralFeature feat | !feat.many];
-			 * } else {
-			 * 	[EStructuralFeature feat | true];
-			 * }
-			 * val typeFilterFunction = if (changeType instanceof ModelAttributeChange) {
-			 * 	[EStructuralFeature feat | feat instanceof EAttribute];
-			 * } else if (changeType instanceof ElementChangeType) {
-			 * 	[EStructuralFeature feat | feat instanceof EReference];
-			 * } else {
-			 * 	throw new IllegalStateException();
-			 * }
-			 * createScope(IScope.NULLSCOPE, featureReference.metaclass.EAllStructuralFeatures.
-			 * 	filter(multiplicityFilterFunction).filter(typeFilterFunction).iterator, [
-			 * 	EObjectDescription.create(it.name, it)
-			 ])*/
-			createScope(IScope.NULLSCOPE, featureReference.metaclass.EAllStructuralFeatures.iterator, [
-				EObjectDescription.create(it.name, it)
-			])
+			val container = featureReference.eContainer;
+			var multiplicityFilterFunction = [EStructuralFeature feat|true];
+		/*	if (container instanceof FeatureCondition) {
+				val scopeManyType = getManyScopeType(container);
+				if (scopeManyType != ScopeManyFeature.BOTH) {
+					multiplicityFilterFunction = [ EStructuralFeature feat |
+						if (scopeManyType == ScopeManyFeature.MANY) {
+							return feat.many
+						} else {
+							return !feat.many
+						}
+					];
+				}
+			} */
+			createScope(IScope.NULLSCOPE,
+				featureReference.metaclass.EAllStructuralFeatures.filter(multiplicityFilterFunction).iterator, [
+					EObjectDescription.create(it.name, it)
+				])
 		} else {
 			return IScope.NULLSCOPE
 		}

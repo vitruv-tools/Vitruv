@@ -4,12 +4,16 @@ import "http://palladiosimulator.org/PalladioComponentModel/5.2" as pcm
 mappings: umlXpcm for UML and PCM
     	
 mapping RepositoryXPackage {
-   map (pcm::Repository repository)
+   map (pcm::Repository repository  )
+   as reactions ( pcm::Repository inserted as root
+   	pcm::Repository removed as root)
    and (uml::Package rootPkg 
    	uml::Package repositoryPkg 
    	uml::Package contractsPkg 
    	uml::Package datatypesPkg
    )
+   as reactions (uml::Package inserted in uml::Package[packagedElement]
+   	uml::Package deleted)
    with {
   	null  equals rootPkg[nestedPackage]
   repositoryPkg in rootPkg[nestingPackage]
@@ -19,9 +23,9 @@ mapping RepositoryXPackage {
    	"contracts" equals contractsPkg[name]
    	"datatypes" equals datatypesPkg[name]
    }
-   such that {
-	repository[entityName] =  rootPkg[name]   	 
-   }
+  //  such that {
+//	repository[entityName] =    rootPkg[name] 
+ //  }
 }
 
 
