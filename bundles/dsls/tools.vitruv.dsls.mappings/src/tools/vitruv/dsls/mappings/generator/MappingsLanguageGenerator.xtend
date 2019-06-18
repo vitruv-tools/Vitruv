@@ -1,24 +1,26 @@
 package tools.vitruv.dsls.mappings.generator
 
+import com.google.inject.Inject
+import com.google.inject.Provider
 import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.xtext.generator.IFileSystemAccess2
 import org.eclipse.xtext.generator.IGenerator2
 import org.eclipse.xtext.generator.IGeneratorContext
-import tools.vitruv.dsls.mappings.mappingsLanguage.MappingsFile
-import tools.vitruv.dsls.reactions.builder.FluentReactionsLanguageBuilder
-import tools.vitruv.dsls.reactions.api.generator.IReactionsGenerator
-import java.util.function.Supplier
-import com.google.inject.Inject
-import com.google.inject.Provider
-import tools.vitruv.dsls.mappings.mappingsLanguage.MappingsSegment
+import org.eclipse.xtext.resource.XtextResourceSet
 import tools.vitruv.dsls.mappings.generator.integration.IReactionIntegrationGenerator
-import tools.vitruv.dsls.mappings.generator.integration.EmbeddedReactionIntegrationGenerator
 import tools.vitruv.dsls.mappings.generator.integration.StandaloneReactionIntegrationGenerator
+import tools.vitruv.dsls.mappings.mappingsLanguage.MappingsFile
+import tools.vitruv.dsls.mappings.mappingsLanguage.MappingsSegment
+import tools.vitruv.dsls.reactions.api.generator.IReactionsGenerator
+import tools.vitruv.dsls.reactions.builder.FluentReactionsLanguageBuilder
+import org.eclipse.xtext.resource.XtextResource
+import org.eclipse.xtext.xbase.util.XExpressionHelper
 
 //import tools.vitruv.dsls.reactions.builder.FluentReactionsLanguageBuilder
 class MappingsLanguageGenerator implements IGenerator2 {
 	@Inject FluentReactionsLanguageBuilder create
 	@Inject Provider<IReactionsGenerator> reactionsGeneratorProvider
+	@Inject Provider<XtextResourceSet> resourceSetProvider
 	IReactionIntegrationGenerator reactionIntegrationGenerator
 
 	override afterGenerate(Resource input, IFileSystemAccess2 fsa, IGeneratorContext context) {
@@ -32,6 +34,9 @@ class MappingsLanguageGenerator implements IGenerator2 {
 	override doGenerate(Resource input, IFileSystemAccess2 fsa, IGeneratorContext context) {
 		reactionIntegrationGenerator = new StandaloneReactionIntegrationGenerator
 		val reactionsGenerator = reactionsGeneratorProvider.get
+		val resourceSet = resourceSetProvider.get
+		resourceSet.addLoadOption(XtextResource.OPTION_RESOLVE_ALL, Boolean.TRUE)
+		XExpressionParser.initParser(resourceSet)
 		val mappingsFiles = input?.contents?.filter(MappingsFile)
 		for (mappingsFile : mappingsFiles) {
 			reactionsGenerator.useResourceSet(mappingsFile.eResource.resourceSet)

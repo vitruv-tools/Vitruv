@@ -14,7 +14,7 @@ import tools.vitruv.dsls.mappings.mappingsLanguage.NumCompareCondition
 
 class SingleSidedConditionFactory {
 
-	static def construct(SingleSidedCondition singleSidedCondition) {
+	static def AbstractSingleSidedCondition construct(SingleSidedCondition singleSidedCondition) {
 		val condition = singleSidedCondition.condition
 		if (condition instanceof EnforceableCondition) {
 			return construct(singleSidedCondition, condition)
@@ -23,7 +23,7 @@ class SingleSidedConditionFactory {
 		}
 	}
 	
-	private static def construct(SingleSidedCondition singleSidedCondition, EnforceableCondition enforceableCondition){
+	private static def AbstractSingleSidedCondition construct(SingleSidedCondition singleSidedCondition, EnforceableCondition enforceableCondition){
 		val condition = enforceableCondition.condition
 		if(condition instanceof FeatureCondition){
 			return construct(singleSidedCondition, condition)
@@ -33,12 +33,12 @@ class SingleSidedConditionFactory {
 		}
 	}
 	
-	private static def construct(SingleSidedCondition singleSidedCondition, FeatureCondition featureCondition){
+	private static def AbstractSingleSidedCondition construct(SingleSidedCondition singleSidedCondition, FeatureCondition featureCondition){
 		val condition = featureCondition.condition
 		switch(condition){
 			IndexCondition: return null
 			NumCompareCondition: return null
-			MultiValueCondition: return null
+			MultiValueCondition: return new MultiValueConditionGenerator(condition)
 			ElementCondition: return null
 			NotEmptyCondition: return null
 		}

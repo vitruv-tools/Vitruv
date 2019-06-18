@@ -21,28 +21,13 @@ class MappingReactionsGenerator extends MappingsReactionsFileGenerator {
 		segment.mappings.forEach [	
 			val from = fromParameters
 			val to = toParameters
-			val fromDistinct = getDistinctMetaclasses(from)
 			val fromConditions = fromConditions
 			val mappingsConditions = it.bidirectionalizableConditions
-			val reactionTriggers = fromTriggers
-			fromDistinct.forEach[ distinctMetaclass | 
-				val fromList = from.filter[metaclass == distinctMetaclass].toList
-				val reactionsBuilder = new ReactionsBuilder(distinctMetaclass,fromList, to)
-				reactionsBuilder.generate(context, fromConditions, mappingsConditions, reactionTriggers)
-			]
+			val reactionsBuilder = new ReactionsBuilder(from, to)
+			reactionsBuilder.generate(context, fromConditions, mappingsConditions)
 		//	context.getSegmentBuilder += onDelete(from, to)
 		//	context.getSegmentBuilder += onCreate(from, to)	
 		]
-	}
-	
-	private def getDistinctMetaclasses(EList<NamedMetaclassReference> references){
-		val distinctList = new ArrayList()
-		references.forEach[
-			if(!distinctList.contains(it.metaclass)){
-				distinctList.add(it.metaclass);
-			}
-		]
-		return distinctList
 	}
 
 	private def onDelete(NamedMetaclassReference from, NamedMetaclassReference to) {		

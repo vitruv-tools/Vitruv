@@ -5,15 +5,14 @@ mappings: umlXpcm for UML and PCM
     	
 mapping RepositoryXPackage {
    map (pcm::Repository repository  )
-   as reactions ( pcm::Repository inserted as root
-   	pcm::Repository removed as root)
+   	with{
+   		null equals repository[entityName]
+   	}
    and (uml::Package rootPkg 
    	uml::Package repositoryPkg 
    	uml::Package contractsPkg 
    	uml::Package datatypesPkg
    )
-   as reactions (uml::Package inserted in uml::Package[packagedElement]
-   	uml::Package deleted)
    with {
   	null  equals rootPkg[nestedPackage]
   repositoryPkg in rootPkg[nestingPackage]

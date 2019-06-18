@@ -2,12 +2,21 @@ package tools.vitruv.dsls.mappings.generator.trigger
 
 import tools.vitruv.dsls.mappings.generator.ReactionGeneratorContext
 import tools.vitruv.dsls.mirbase.mirBase.MetaclassReference
-import tools.vitruv.dsls.mappings.mappingsLanguage.DeletedTrigger
 
-class DeletedReactionGenerator extends AbstractReactionTypeGenerator<DeletedTrigger>{
-	
-	override generate(ReactionGeneratorContext context, MetaclassReference parameter, DeletedTrigger trigger) {
-		 context.create.reaction('''on«parameter.parameterName»Deleted''').afterElement(parameter.metaclass).deleted
+class DeletedReactionGenerator extends AbstractReactionTypeGenerator{
+		
+	new(MetaclassReference element) {
+		super(element.metaclass)
 	}
 	
+	override generateTrigger(ReactionGeneratorContext context) {
+		 context.create.reaction('''on«metaclass.parameterName»Deleted''').afterElement(metaclass).deleted
+	}
+	
+	override equals(Object obj) {
+		if(obj instanceof DeletedReactionGenerator){
+			return metaclass == obj.metaclass
+		}
+		false
+	}
 }

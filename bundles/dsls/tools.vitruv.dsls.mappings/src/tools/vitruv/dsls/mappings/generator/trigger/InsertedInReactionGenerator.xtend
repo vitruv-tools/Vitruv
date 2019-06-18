@@ -1,26 +1,46 @@
 package tools.vitruv.dsls.mappings.generator.trigger
 
+import org.eclipse.emf.ecore.EReference
 import tools.vitruv.dsls.mappings.generator.ReactionGeneratorContext
-import tools.vitruv.dsls.mappings.mappingsLanguage.InsertedInTrigger
+import tools.vitruv.dsls.mirbase.mirBase.MetaclassFeatureReference
 import tools.vitruv.dsls.mirbase.mirBase.MetaclassReference
-import tools.vitruv.dsls.mappings.mappingsLanguage.InsertedInCollectionTrigger
-import tools.vitruv.dsls.mappings.mappingsLanguage.AsRootTrigger
 
-class InsertedInReactionGenerator extends AbstractReactionTypeGenerator<InsertedInTrigger>{
-	
-	override generate(ReactionGeneratorContext context, MetaclassReference parameter, InsertedInTrigger inserterdIn) {
-		val trigger = inserterdIn.trigger;
-		if(trigger instanceof InsertedInCollectionTrigger){
-			val insertedIn = trigger.collection
-			return context.create.reaction('''on«parameter.parameterName»InsertedIn«insertedIn.parameterName»''')
-			.afterElement(parameter.metaclass).insertedIn(null) //todo		
-		}
-		else if(trigger instanceof AsRootTrigger){
-			return context.create.reaction('''on«parameter.parameterName»InsertedAsRoot''')
-			.afterElement(parameter.metaclass).insertedAsRoot
-		}
-		null
+class InsertedInReactionGenerator extends AbstractReactionTypeGenerator {
+
+	private MetaclassFeatureReference insertTarget = null
+
+	new(MetaclassReference element) {
+		super(element.metaclass)
 	}
-	
+
+	new(MetaclassReference element, MetaclassFeatureReference insertedIn) {
+		this(element)
+		this.insertTarget = insertedIn
+	}
+
+	override generateTrigger(ReactionGeneratorContext context) {
+		if (insertTarget !== null) {
+			return context.create.reaction('''on«metaclass.parameterName»InsertedIn«insertTarget.parameterName»''').
+				afterElement(metaclass).insertedIn(insertTarget.feature as EReference)
+		} else {
+			return context.create.reaction('''on«metaclass.parameterName»InsertedAsRoot''').afterElement(metaclass).
+				insertedAsRoot
+		}
+	}
+
+	override equals(Object obj) {
+		if (obj instanceof InsertedInReactionGenerator) {
+			if (metaclass == obj.metaclass) {
+				if (insertTarget === null) {
+					return obj.insertTarget === null
+				} else {
+					if (obj.insertTarget !== null) {
+						return insertTarget.feature == obj.insertTarget.feature
+					}
+				}
+			}
+		}
+		false
+	}
 
 }

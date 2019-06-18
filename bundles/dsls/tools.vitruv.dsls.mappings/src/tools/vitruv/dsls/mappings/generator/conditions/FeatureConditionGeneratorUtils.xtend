@@ -5,8 +5,8 @@ import tools.vitruv.dsls.mappings.mappingsLanguage.FeatureCondition
 
 class FeatureConditionGeneratorUtils{
 	
-	def static getFeatureCondition(EObject childCondition){
-		childCondition.eContainer		
+	def static FeatureCondition  getFeatureCondition(EObject childCondition){
+		childCondition.eContainer	as FeatureCondition 	
 	}
 	
 	
