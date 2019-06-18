@@ -45,14 +45,6 @@ class MappingsReactionsFileGenerator extends AbstractMappingsSegmentGenerator {
 		if(left2right) mapping.rightParameters else mapping.leftParameters
 	}
 	
-	protected def getFromTriggers(Mapping mapping){
-		if(left2right) mapping.leftReactionTriggers else mapping.righReactionTriggers
-	}
-	
-	protected def getToTriggers(Mapping mapping){
-		if(left2right) mapping.righReactionTriggers else mapping.leftReactionTriggers
-	}
-	
 	protected def getFromConditions(Mapping mapping){
 		if(left2right) mapping.leftConditions else mapping.rightConditions
 	}

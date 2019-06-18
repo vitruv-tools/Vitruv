@@ -2,25 +2,21 @@ package tools.vitruv.dsls.mappings.generator
 
 import java.util.ArrayList
 import java.util.List
-import org.eclipse.emf.ecore.EClass
+import tools.vitruv.dsls.mappings.generator.action.ReactionActionGenerator
 import tools.vitruv.dsls.mappings.generator.conditions.AbstractBidirectionalCondition
-import tools.vitruv.dsls.mappings.generator.trigger.ReactionTypeGenerator
+import tools.vitruv.dsls.mappings.generator.conditions.SingleSidedConditionGenerator
 import tools.vitruv.dsls.mappings.mappingsLanguage.BidirectionalizableCondition
-import tools.vitruv.dsls.mappings.mappingsLanguage.ReactionTrigger
 import tools.vitruv.dsls.mappings.mappingsLanguage.SingleSidedCondition
 import tools.vitruv.dsls.mirbase.mirBase.NamedMetaclassReference
-import tools.vitruv.dsls.mappings.generator.conditions.SingleSidedConditionGenerator
-import tools.vitruv.dsls.mappings.generator.action.ReactionActionGenerator
+import tools.vitruv.dsls.mappings.generator.conditions.ReactionTypeFactory
 
 class ReactionsBuilder {
 	
-	private EClass fromMetaClass
 	private List<NamedMetaclassReference> fromAttributes
 	private List<NamedMetaclassReference> toAttributes
 	
-	new(EClass fromMetaClass, List<NamedMetaclassReference> fromAttributes, List<NamedMetaclassReference> toAttributes) {
+	new(List<NamedMetaclassReference> fromAttributes, List<NamedMetaclassReference> toAttributes) {
 		this.fromAttributes = fromAttributes
-		this.fromMetaClass = fromMetaClass
 		this.toAttributes = toAttributes
 	}
 	
@@ -32,25 +28,16 @@ class ReactionsBuilder {
 		]
 		conditions
 	}
+
 	
-	private def List<ReactionTypeGenerator> constructReactionGenerators(List<ReactionTrigger> reactionTriggers){
-		val generators = new ArrayList<ReactionTypeGenerator>()
-		reactionTriggers.forEach[
-			val metaclass = it.parameter.metaclass
-			if(metaclass.equals(fromMetaClass)){		
-				generators.add(new ReactionTypeGenerator(it))
-			}
-		]
-		generators
-	}
-	
-	def generate(ReactionGeneratorContext context, List<SingleSidedCondition> fromConditions, List<BidirectionalizableCondition> mappingConditions, List<ReactionTrigger> reactionTriggers) {
-		val reactionGenerators = constructReactionGenerators(reactionTriggers)
-		val singleSidedConditionGenerator = new SingleSidedConditionGenerator(fromConditions)
+	def generate(ReactionGeneratorContext context, List<SingleSidedCondition> fromConditions, List<BidirectionalizableCondition> mappingConditions) {
+		val reactionFactory = new ReactionTypeFactory(fromConditions)
 		val bidirectionCondtionGenerators = generateBidirectionalMappingConditions(mappingConditions)
-		reactionGenerators.forEach[ typeGenerator |
-			val reactionTemplate = typeGenerator.generate(context)
-			val actionGenerator = new ReactionActionGenerator(typeGenerator, bidirectionCondtionGenerators)			
+		reactionFactory.constructGenerators(fromAttributes).forEach[reactionGenerator | 
+			val singleSidedConditionGenerator = new SingleSidedConditionGenerator(reactionGenerator, fromConditions)
+			val fromList = fromAttributes.filter[metaclass == reactionGenerator.metaclass].toList
+			val reactionTemplate = reactionGenerator.generateTrigger(context)
+			val actionGenerator = new ReactionActionGenerator(reactionGenerator, bidirectionCondtionGenerators)			
 			context.getSegmentBuilder += reactionTemplate.call([
 				//check single sided conditions
 				match(singleSidedConditionGenerator)
