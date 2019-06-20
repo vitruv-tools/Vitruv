@@ -1,4 +1,4 @@
-package tools.vitruv.dsls.mappings.generator.trigger
+package tools.vitruv.dsls.mappings.generator.reactions
 
 interface ConflictingTriggerCheck {
 	

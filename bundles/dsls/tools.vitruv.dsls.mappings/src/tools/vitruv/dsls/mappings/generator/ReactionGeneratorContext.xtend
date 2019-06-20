@@ -22,13 +22,16 @@ class ReactionGeneratorContext implements IReactionIntegrateable{
 	var MappingsFile mappingsFile
 	@Accessors(PUBLIC_GETTER)
 	val FluentReactionsLanguageBuilder create
+	@Accessors(PUBLIC_GETTER)	
+	var boolean left2right
 	
-	new(FluentReactionsFileBuilder file, FluentReactionsSegmentBuilder segmentBuilder, MappingsSegment segment, MappingsFile mappingsFile, FluentReactionsLanguageBuilder create){
+	new(FluentReactionsFileBuilder file, FluentReactionsSegmentBuilder segmentBuilder, MappingsSegment segment, MappingsFile mappingsFile, FluentReactionsLanguageBuilder create, boolean left2right){
 		this.file = file;
 		this.segmentBuilder  =segmentBuilder;
 		this.segment = segment;
 		this.mappingsFile = mappingsFile;
 		this.create = create;
+		this.left2right = left2right
 	}
 	
 	override integrate(Reaction reaction) {

@@ -2,10 +2,10 @@ package tools.vitruv.dsls.mappings.generator.conditions
 
 import java.util.ArrayList
 import java.util.List
-import tools.vitruv.dsls.mappings.generator.trigger.AbstractReactionTypeGenerator
-import tools.vitruv.dsls.mappings.generator.trigger.DeletedReactionGenerator
-import tools.vitruv.dsls.mappings.generator.trigger.InsertedInReactionGenerator
-import tools.vitruv.dsls.mappings.generator.trigger.RemovedFromReactionGenerator
+import tools.vitruv.dsls.mappings.generator.reactions.AbstractReactionTypeGenerator
+import tools.vitruv.dsls.mappings.generator.reactions.DeletedReactionGenerator
+import tools.vitruv.dsls.mappings.generator.reactions.InsertedInReactionGenerator
+import tools.vitruv.dsls.mappings.generator.reactions.RemovedFromReactionGenerator
 import tools.vitruv.dsls.mappings.mappingsLanguage.SingleSidedCondition
 import tools.vitruv.dsls.mirbase.mirBase.NamedMetaclassReference
 
@@ -13,18 +13,25 @@ class ReactionTypeFactory {
 
 	private List<SingleSidedCondition> conditions
 	private List<AbstractReactionTypeGenerator> generators = new ArrayList<AbstractReactionTypeGenerator>()
+	private List<NamedMetaclassReference> fromParameters
+	private List<NamedMetaclassReference> toParameters
 
 	new(List<SingleSidedCondition> conditions) {
 		this.conditions = conditions;
 	}
 
-	def List<AbstractReactionTypeGenerator> constructGenerators(List<NamedMetaclassReference> fromAttributes) {
+	def List<AbstractReactionTypeGenerator> constructGenerators(List<NamedMetaclassReference> fromParameters,
+		List<NamedMetaclassReference> toParameters) {
 		generators.clear
-		insertDefaultTriggers(fromAttributes.distinctMetaclasses)
+		this.fromParameters = fromParameters
+		this.toParameters = toParameters
+		insertDefaultTriggers
 		conditions.forEach [ condition |
-			val generator = SingleSidedConditionFactory.construct(condition)
-			if (generator !== null) {
-				generator.constructReactionTriggers.forEach[tryInsertTrigger]
+			val conditionGenerator = SingleSidedConditionFactory.construct(condition)
+			if (conditionGenerator !== null) {
+				conditionGenerator.constructReactionTriggers.forEach [ generator |
+					tryInsertTrigger(generator)
+				]
 			} else {
 				System.err.println('''No single sided condition generator found for condition «condition»''')
 			}
@@ -44,11 +51,13 @@ class ReactionTypeFactory {
 		return distinctList
 	}
 
-	private def insertDefaultTriggers(List<NamedMetaclassReference> fromAttributes) {
+	private def insertDefaultTriggers() {
 		// add insert as root and delete trigger for all distinct metaclasses
-		fromAttributes.forEach [
+		fromParameters.distinctMetaclasses.forEach [
 			val defaultInsertGenerator = new InsertedInReactionGenerator(it)
+			defaultInsertGenerator.initGenerator
 			val defaultDeleteGenerator = new DeletedReactionGenerator(it)
+			defaultDeleteGenerator.initGenerator
 			// make it subordinate to other inserted generators so it will be replaced 
 			defaultInsertGenerator.conflictingTriggerCheck = [ generator |
 				if (generator instanceof InsertedInReactionGenerator) {
@@ -72,6 +81,7 @@ class ReactionTypeFactory {
 	}
 
 	private def tryInsertTrigger(AbstractReactionTypeGenerator generator) {
+		generator.initGenerator
 		// check if the same trigger already exists
 		if (isDuplicateOfExistingTrigger(generator)) {
 			// nothing to do
@@ -93,6 +103,10 @@ class ReactionTypeFactory {
 			// no overwriting, just add
 			generators.add(generator)
 		}
+	}
+
+	private def initGenerator(AbstractReactionTypeGenerator generator) {
+		generator.init(fromParameters, toParameters)
 	}
 
 	private def boolean isDuplicateOfExistingTrigger(AbstractReactionTypeGenerator generator) {

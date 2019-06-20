@@ -70,7 +70,7 @@ class MappingsReactionsFileGenerator extends AbstractMappingsSegmentGenerator {
 			.inReactionToChangesIn(fromDomain.domain)
 			.executeActionsIn(toDomain.domain)
 		reactionsFile += segmentBuilder	
-	    context= new ReactionGeneratorContext(reactionsFile, segmentBuilder, segment, mappingsFile, create);		
+	    context= new ReactionGeneratorContext(reactionsFile, segmentBuilder, segment, mappingsFile, create, left2right);		
 	}
 
 }
