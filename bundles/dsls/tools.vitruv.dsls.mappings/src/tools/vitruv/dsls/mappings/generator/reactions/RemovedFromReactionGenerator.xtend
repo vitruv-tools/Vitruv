@@ -1,9 +1,11 @@
-package tools.vitruv.dsls.mappings.generator.trigger
+package tools.vitruv.dsls.mappings.generator.reactions
 
 import org.eclipse.emf.ecore.EReference
 import tools.vitruv.dsls.mappings.generator.ReactionGeneratorContext
 import tools.vitruv.dsls.mirbase.mirBase.MetaclassFeatureReference
 import tools.vitruv.dsls.mirbase.mirBase.MetaclassReference
+import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.ActionStatementBuilder
+import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.UndecidedMatcherStatementBuilder
 
 class RemovedFromReactionGenerator extends AbstractReactionTypeGenerator {
 
@@ -26,6 +28,20 @@ class RemovedFromReactionGenerator extends AbstractReactionTypeGenerator {
 			return context.create.reaction('''on«metaclass.parameterName»RemovedAsRoot''').afterElement(metaclass).
 				deleted // todo: is it the same?
 		}
+	}
+
+	override generateCorrespondenceMatches(UndecidedMatcherStatementBuilder builder) {
+		correspondingParameters.forEach [
+			builder.vall(it.parameterName).retrieve(it.metaclass).correspondingTo.affectedEObject.taggedWith(
+				reactionParameters.get(0), it)
+		]
+	}
+
+	override generateCorrespondenceActions(ActionStatementBuilder builder) {
+		// delete 
+		correspondingParameters.forEach [
+			builder.delete(it.parameterName)
+		]
 	}
 
 	override equals(Object obj) {

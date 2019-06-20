@@ -2,9 +2,8 @@ package tools.vitruv.dsls.mappings.generator.conditions
 
 import java.util.List
 import java.util.function.Consumer
-import tools.vitruv.dsls.mappings.generator.trigger.AbstractReactionTypeGenerator
+import tools.vitruv.dsls.mappings.generator.reactions.AbstractReactionTypeGenerator
 import tools.vitruv.dsls.mappings.mappingsLanguage.SingleSidedCondition
-import tools.vitruv.dsls.mirbase.mirBase.NamedMetaclassReference
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.UndecidedMatcherStatementBuilder
 
 class SingleSidedConditionGenerator implements Consumer<UndecidedMatcherStatementBuilder> {

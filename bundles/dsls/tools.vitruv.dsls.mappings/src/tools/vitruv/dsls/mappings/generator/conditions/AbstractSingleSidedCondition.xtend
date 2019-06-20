@@ -3,7 +3,7 @@ package tools.vitruv.dsls.mappings.generator.conditions
 import java.util.ArrayList
 import java.util.List
 import org.eclipse.emf.ecore.EObject
-import tools.vitruv.dsls.mappings.generator.trigger.AbstractReactionTypeGenerator
+import tools.vitruv.dsls.mappings.generator.reactions.AbstractReactionTypeGenerator
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.UndecidedMatcherStatementBuilder
 
 abstract class AbstractSingleSidedCondition<T extends EObject> {

@@ -2,9 +2,10 @@ package tools.vitruv.dsls.mappings.generator.conditions
 
 import java.util.List
 import org.eclipse.emf.ecore.EObject
-import tools.vitruv.dsls.mappings.generator.trigger.AbstractReactionTypeGenerator
-import tools.vitruv.dsls.mappings.generator.trigger.InsertedInReactionGenerator
-import tools.vitruv.dsls.mappings.generator.trigger.RemovedFromReactionGenerator
+import tools.vitruv.dsls.mappings.generator.reactions.AbstractReactionTypeGenerator
+import tools.vitruv.dsls.mappings.generator.reactions.AttributeReplacedReactionGenerator
+import tools.vitruv.dsls.mappings.generator.reactions.InsertedInReactionGenerator
+import tools.vitruv.dsls.mappings.generator.reactions.RemovedFromReactionGenerator
 import tools.vitruv.dsls.mappings.mappingsLanguage.MultiValueCondition
 import tools.vitruv.dsls.mappings.mappingsLanguage.MultiValueConditionOperator
 import tools.vitruv.dsls.mirbase.mirBase.MetaclassFeatureReference
@@ -12,7 +13,6 @@ import tools.vitruv.dsls.mirbase.mirBase.MetaclassReference
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.UndecidedMatcherStatementBuilder
 
 import static tools.vitruv.dsls.mappings.generator.XExpressionParser.*
-import tools.vitruv.dsls.mappings.generator.trigger.AttributeReplacedReactionGenerator
 
 class MultiValueConditionGenerator extends AbstractSingleSidedCondition<MultiValueCondition> {
 
@@ -39,7 +39,7 @@ class MultiValueConditionGenerator extends AbstractSingleSidedCondition<MultiVal
 				triggers.add(new RemovedFromReactionGenerator(leftSide, rightSide))
 			}
 		}
-		triggers.add(new AttributeReplacedReactionGenerator(rightSide))
+		//triggers.add(new AttributeReplacedReactionGenerator(rightSide))
 	}
 
 	override generate(UndecidedMatcherStatementBuilder builder) {
@@ -59,14 +59,14 @@ class MultiValueConditionGenerator extends AbstractSingleSidedCondition<MultiVal
 		MetaclassFeatureReference rightSide, boolean negated) {
 		// builder.vall('''in«leftSide»''').retrieve(rightSide.metaclass).correspondingTo('''«rightSide»''')
 		builder.check([ typeProvider |
-			parseExpression('5 == 10')
+			parseExpression('')
 		])
 	}
 
 	private def generateEquals(UndecidedMatcherStatementBuilder builder, EObject leftSide,
 		MetaclassFeatureReference rightSide, boolean negated) {
 		builder.check([ typeProvider |
-			parseExpression('5 == 10')
+			parseExpression('')
 		])
 	// builder.vall('''equals«leftSide»''').retrieve(rightSide.metaclass).correspondingTo('''«rightSide»''')		
 	/*builder.check([

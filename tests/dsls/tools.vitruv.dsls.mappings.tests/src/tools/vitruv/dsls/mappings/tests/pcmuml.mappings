@@ -5,9 +5,6 @@ mappings: umlXpcm for UML and PCM
     	
 mapping RepositoryXPackage {
    map (pcm::Repository repository  )
-   	with{
-   		null equals repository[entityName]
-   	}
    and (uml::Package rootPkg 
    	uml::Package repositoryPkg 
    	uml::Package contractsPkg 
