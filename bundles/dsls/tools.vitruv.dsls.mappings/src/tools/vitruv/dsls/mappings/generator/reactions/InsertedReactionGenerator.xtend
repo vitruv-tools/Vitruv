@@ -9,7 +9,7 @@ import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.UndecidedMatcher
 
 import static tools.vitruv.dsls.mappings.generator.XExpressionParser.*
 
-class InsertedInReactionGenerator extends AbstractReactionTypeGenerator {
+class InsertedReactionGenerator extends AbstractReactionTypeGenerator {
 
 	private MetaclassFeatureReference insertTarget = null
 
@@ -24,41 +24,33 @@ class InsertedInReactionGenerator extends AbstractReactionTypeGenerator {
 
 	override generateTrigger(ReactionGeneratorContext context) {
 		if (insertTarget !== null) {
-			return context.create.reaction('''on«metaclass.parameterName»InsertedIn«insertTarget.parameterName»''').
+			return context.create.reaction('''On«metaclass.parameterName»InsertedIn«insertTarget.parameterName»''').
 				afterElement(metaclass).insertedIn(insertTarget.feature as EReference)
 		} else {
-			return context.create.reaction('''on«metaclass.parameterName»InsertedAsRoot''').afterElement(metaclass).
+			return context.create.reaction('''On«metaclass.parameterName»InsertedAsRoot''').afterElement(metaclass).
 				created
 		}
 	}
 
 	override generateCorrespondenceMatches(UndecidedMatcherStatementBuilder builder) {
 		iterateParameters [ reactionParameter, correspondingParameter |
-			builder.vall(getParameterName(reactionParameter, correspondingParameter)).retrieveOptional(
-				reactionParameter.metaclass).correspondingTo.affectedEObject.taggedWith(reactionParameter,
-				correspondingParameter)
+			builder.requireAbsenceOf(correspondingParameter.metaclass).correspondingTo.affectedEObject.taggedWith(
+				reactionParameter, correspondingParameter)
 		]
 	}
 
 	override generateCorrespondenceActions(ActionStatementBuilder builder) {
 		// create corresponding elements
-		builder.execute([ typeProvider |
-			val expression = new StringBuilder
-			iterateParameters [ reactionParameter, correspondingParameter |
-				expression.append('''
-					if(!«getParameterName(reactionParameter,correspondingParameter)».present)
-				''')
-			]
-			parseExpression(expression.toString)
-		])
-	/*correspondingParameters.forEach[
-	 * 	builder.vall(it.parameterName).create(it.metaclass)
-	 * 	builder.addCorrespondenceBetween(it.parameterName).and.affectedEObject
-	 ]*/
+		iterateParameters [ reactionParameter, correspondingParameter |
+			val newElement = getParameterName(reactionParameter, correspondingParameter)
+			builder.vall(newElement).create(correspondingParameter.metaclass)
+			builder.addCorrespondenceBetween(newElement).and.affectedEObject.taggedWith(reactionParameter,
+				correspondingParameter)
+		]
 	}
 
 	override equals(Object obj) {
-		if (obj instanceof InsertedInReactionGenerator) {
+		if (obj instanceof InsertedReactionGenerator) {
 			if (metaclass == obj.metaclass) {
 				if (insertTarget === null) {
 					return obj.insertTarget === null

@@ -14,7 +14,7 @@ class ParameterCorrespondenceTagging {
 	public static def String getCorrespondenceTag(NamedMetaclassReference reactionParameter,
 		NamedMetaclassReference correspondingParameter) {
 		if (!context.left2right) {
-			createCorrespondenceTag(correspondingParameter, reactionParameter)
+			return createCorrespondenceTag(correspondingParameter, reactionParameter)
 		}
 		createCorrespondenceTag(reactionParameter, correspondingParameter)
 	}

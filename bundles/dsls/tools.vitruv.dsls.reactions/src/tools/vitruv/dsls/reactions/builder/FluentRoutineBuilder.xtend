@@ -25,22 +25,23 @@ import tools.vitruv.dsls.reactions.reactionsLanguage.Taggable
 import static com.google.common.base.Preconditions.*
 import static tools.vitruv.dsls.reactions.codegen.helper.ReactionsLanguageConstants.*
 import tools.vitruv.dsls.reactions.reactionsLanguage.RetrieveOrRequireAbscenceOfModelElement
+import tools.vitruv.dsls.reactions.reactionsLanguage.RoutineCallStatement
 
 class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 
 	@Accessors(PACKAGE_GETTER)
-	var Routine routine
+	protected var Routine routine
 	@Accessors(PACKAGE_GETTER)
-	var requireOldValue = false
+	protected var requireOldValue = false
 	@Accessors(PACKAGE_GETTER)
-	var requireNewValue = false
+	protected var requireNewValue = false
 	@Accessors(PACKAGE_GETTER)
-	var requireAffectedEObject = false
+	protected var requireAffectedEObject = false
 	@Accessors(PACKAGE_GETTER)
-	var requireAffectedValue = false
+	protected var requireAffectedValue = false
 
-	var EClassifier valueType
-	var EClass affectedObjectType
+	protected var EClassifier valueType
+	protected var EClass affectedObjectType
 
 	package new(String routineName, FluentBuilderContext context) {
 		super(context)
@@ -73,7 +74,7 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 	}
 
 	def private addInputElementIfNotExists(EClassifier type, String parameterName) {
-		if (routine.input.modelInputElements.findFirst[name == parameterName] !== null) return;
+		if(routine.input.modelInputElements.findFirst[name == parameterName] !== null) return;
 		addInputElement(type, parameterName)
 	}
 
@@ -190,7 +191,7 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 			detectWellKnownType(eClass, parameterName)
 			addInputElement(eClass, parameterName)
 		}
-		
+
 		def void model(EClass eClass, WellKnownModelInput wellKnown) {
 			wellKnown.apply(eClass)
 		}
@@ -222,7 +223,7 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 			addInputElement(javaClass, parameterName)
 		}
 	}
-	
+
 	interface WellKnownModelInput {
 		def void apply(EClass type)
 	}
@@ -235,18 +236,18 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 			this.builder = builder
 			this.statement = statement
 		}
-		
+
 		def retrieve(EClass modelElement) {
 			internalRetrieveOne(modelElement)
 			return new RetrieveModelElementMatcherStatementCorrespondenceBuilder(builder, statement)
 		}
-		
+
 		def retrieveOptional(EClass modelElement) {
 			val retrieveOneStatement = internalRetrieveOne(modelElement);
 			retrieveOneStatement.optional = true
 			return new RetrieveModelElementMatcherStatementCorrespondenceBuilder(builder, statement)
 		}
-		
+
 		def retrieveAsserted(EClass modelElement) {
 			val retrieveOneStatement = internalRetrieveOne(modelElement);
 			retrieveOneStatement.asserted = true
@@ -265,7 +266,7 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 			statement.retrievalType = retrieveOneElement
 			return retrieveOneElement
 		}
-		
+
 		private def void reference(EClass modelElement) {
 			statement.reference(modelElement)
 		}
@@ -311,7 +312,7 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 			statement.correspondenceSource = correspondingElement(CHANGE_NEW_VALUE_ATTRIBUTE)
 			new TaggedWithBuilder(builder, statement)
 		}
-		
+
 		def oldValue() {
 			requireOldValue = true
 			statement.correspondenceSource = correspondingElement(CHANGE_OLD_VALUE_ATTRIBUTE)
@@ -335,7 +336,8 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 		}
 
 		def requireAbsenceOf(EClass absentMetaclass) {
-			val statement = ReactionsLanguageFactory.eINSTANCE.createRequireAbscenceOfModelElement.reference(absentMetaclass)
+			val statement = ReactionsLanguageFactory.eINSTANCE.createRequireAbscenceOfModelElement.reference(
+				absentMetaclass)
 			routine.matcher.matcherStatements += statement
 			return new RetrieveModelElementMatcherStatementCorrespondenceBuilder(builder, statement)
 		}
@@ -349,22 +351,22 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 			routine.matcher.matcherStatements += statement
 			return statement
 		}
-		
+
 		def checkAsserted(Function<RoutineTypeProvider, XExpression> expressionBuilder) {
 			val statement = check(expressionBuilder);
 			statement.asserted = true;
 		}
 	}
-	
+
 	static class TaggedWithBuilder {
 		val extension FluentRoutineBuilder builder
 		val Taggable taggable
-		
+
 		private new(FluentRoutineBuilder builder, Taggable taggable) {
 			this.builder = builder
 			this.taggable = taggable
 		}
-		
+
 		def void taggedWith(String tag) {
 			taggable.tag = ReactionsLanguageFactory.eINSTANCE.createTagCodeBlock => [
 				code = XbaseFactory.eINSTANCE.createXStringLiteral => [
@@ -372,7 +374,7 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 				]
 			]
 		}
-		
+
 		def void taggedWith(Function<RoutineTypeProvider, XExpression> tagExpressionBuilder) {
 			taggable.tag = ReactionsLanguageFactory.eINSTANCE.createTagCodeBlock => [
 				code = XbaseFactory.eINSTANCE.createXBlockExpression.whenJvmTypes [
@@ -472,6 +474,58 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 					expressions += extractExpressions(expressionBuilder.apply(typeProvider))
 				]
 			]
+		}
+
+		def void call(FluentRoutineBuilder... routineBuilders) {
+			checkNotNull(routineBuilders)
+			checkArgument(routineBuilders.length > 0, "Must provide at least one routineBuilder!")
+			for (routineBuilder : routineBuilders) {
+				checkState(routineBuilder.
+					readyToBeAttached, '''The «routineBuilder» is not sufficiently initialised to be set on the «builder»''')
+				checkState(!routineBuilder.requireNewValue || valueType !==
+					null, '''The «routineBuilder» requires a new value, but the «builder» doesn’t create one!''')
+				checkState(!routineBuilder.requireOldValue || valueType !==
+					null, '''The «routineBuilder» requires an old value, but the «builder» doesn’t create one!''')
+			//	checkState(!routineBuilder.
+			//		requireAffectedEObject, '''The «routineBuilder» requires an affectedElement, but the «builder» doesn’t create one!''')
+				builder.transferReactionsSegmentTo(routineBuilder)
+				addRoutineCall(routineBuilder)
+				if (valueType !== null && (routineBuilder.requireNewValue || routineBuilder.requireOldValue)) {
+					routineBuilder.valueType = valueType
+				}
+			}
+		}
+
+		def private addRoutineCall(FluentRoutineBuilder routineBuilder) {
+			val statementIndex = routine.action.actionStatements.size
+			routine.action.actionStatements += ReactionsLanguageFactory.eINSTANCE.createRoutineCallStatement => [
+				code = routineBuilder.routineCall(statementIndex)
+			]
+		}
+
+		def private routineCall(FluentRoutineBuilder routineBuilder, int statementIndex) {
+			(XbaseFactory.eINSTANCE.createXFeatureCall => [
+				explicitOperationCall = true
+			]).whenJvmTypes [
+				val routineCallMethod = getRoutineCallMethod(statementIndex)
+				feature = routineBuilder.jvmOperation
+				implicitReceiver = routineCallMethod.argument(
+					REACTION_USER_EXECUTION_ROUTINE_CALL_FACADE_PARAMETER_NAME)
+				featureCallArguments += routineBuilder.requiredArgumentsFrom(routineCallMethod)
+			]
+		}
+
+		def private getRoutineCallMethod(int statementIndex) {
+			if (statementIndex < routine.action.actionStatements.size) {
+				val statement = routine.action.actionStatements.get(statementIndex)
+				if (statement instanceof RoutineCallStatement) {
+					val routineCallMethod = context.jvmModelAssociator.getPrimaryJvmElement(statement.code)
+					if (routineCallMethod instanceof JvmOperation) {
+						return routineCallMethod
+					}
+				}
+			}
+			throw new IllegalStateException('''Could not find the routine call method in routine at index «statementIndex»''')
 		}
 	}
 

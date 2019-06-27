@@ -7,7 +7,7 @@ import tools.vitruv.dsls.mirbase.mirBase.MetaclassReference
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.ActionStatementBuilder
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.UndecidedMatcherStatementBuilder
 
-class RemovedFromReactionGenerator extends AbstractReactionTypeGenerator {
+class RemovedReactionGenerator extends AbstractReactionTypeGenerator {
 
 	private MetaclassFeatureReference removeTarget = null
 
@@ -22,30 +22,33 @@ class RemovedFromReactionGenerator extends AbstractReactionTypeGenerator {
 
 	override generateTrigger(ReactionGeneratorContext context) {
 		if (removeTarget !== null) {
-			return context.create.reaction('''on«metaclass.parameterName»RemovedFrom«removeTarget.parameterName»''').
+			return context.create.reaction('''On«metaclass.parameterName»RemovedFrom«removeTarget.parameterName»''').
 				afterElement(metaclass).removedFrom(removeTarget.feature as EReference)
 		} else {
-			return context.create.reaction('''on«metaclass.parameterName»RemovedAsRoot''').afterElement(metaclass).
+			return context.create.reaction('''On«metaclass.parameterName»RemovedAsRoot''').afterElement(metaclass).
 				deleted // todo: is it the same?
 		}
 	}
 
 	override generateCorrespondenceMatches(UndecidedMatcherStatementBuilder builder) {
-		correspondingParameters.forEach [
-			builder.vall(it.parameterName).retrieve(it.metaclass).correspondingTo.affectedEObject.taggedWith(
-				reactionParameters.get(0), it)
+		iterateParameters [ reactionParameter, correspondingParameter |
+			val newElement = getParameterName(reactionParameter, correspondingParameter)
+			builder.vall(newElement).retrieve(correspondingParameter.metaclass).correspondingTo.affectedEObject.taggedWith(
+				reactionParameter, correspondingParameter)
 		]
 	}
 
 	override generateCorrespondenceActions(ActionStatementBuilder builder) {
 		// delete 
-		correspondingParameters.forEach [
-			builder.delete(it.parameterName)
+		iterateParameters [ reactionParameter, correspondingParameter |
+			val element = getParameterName(reactionParameter, correspondingParameter)
+			builder.removeCorrespondenceBetween(element).and.affectedEObject.taggedWith(reactionParameter,correspondingParameter)
+			builder.delete(element)		
 		]
 	}
 
 	override equals(Object obj) {
-		if (obj instanceof RemovedFromReactionGenerator) {
+		if (obj instanceof RemovedReactionGenerator) {
 			if (metaclass == obj.metaclass) {
 				if (removeTarget === null) {
 					return obj.removeTarget === null

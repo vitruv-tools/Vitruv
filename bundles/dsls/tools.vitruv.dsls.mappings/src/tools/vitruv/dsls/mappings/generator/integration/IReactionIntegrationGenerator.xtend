@@ -10,7 +10,7 @@ interface IReactionIntegrationGenerator {
 	def void init(ReactionGeneratorContext l2rContext, ReactionGeneratorContext r2lContext);
 	
 	def void check(Mapping mapping);
-	
+		
 	def void generate(IFileSystemAccess2 fsa, IReactionsGenerator reactionsGenerator);
 	
 }

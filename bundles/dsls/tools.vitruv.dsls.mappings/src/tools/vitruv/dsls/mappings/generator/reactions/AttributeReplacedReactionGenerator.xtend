@@ -6,6 +6,8 @@ import tools.vitruv.dsls.mirbase.mirBase.MetaclassFeatureReference
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.ActionStatementBuilder
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.UndecidedMatcherStatementBuilder
 import org.eclipse.emf.ecore.EReference
+import static tools.vitruv.dsls.mappings.generator.XExpressionParser.*
+
 
 class AttributeReplacedReactionGenerator extends AbstractReactionTypeGenerator{
 	
@@ -17,14 +19,12 @@ class AttributeReplacedReactionGenerator extends AbstractReactionTypeGenerator{
 	}
 	
 	override generateTrigger(ReactionGeneratorContext context) {
-		return context.create.reaction('''on«attribute.getAttributeName»ReplacedAt«metaclass.parameterName»''')
-			.afterAttributeReplacedAt(extractAttribute)
+		return context.create.reaction('''On«attribute.getAttributeName.toFirstUpper»ReplacedAt«metaclass.parameterName»''')
+		.afterAttributeReplacedAt(attribute.metaclass,extractAttribute)
 	}
 	
 	private def extractAttribute(){
-		val ref = attribute.feature as EReference
-		val type = ref.EReferenceType
-		type.EAllStructuralFeatures.findFirst[it.name.equals(attribute.feature.name)] as EAttribute
+		attribute.feature as EAttribute
 	}
 	
 	override equals(Object obj) {
@@ -34,12 +34,18 @@ class AttributeReplacedReactionGenerator extends AbstractReactionTypeGenerator{
 		false
 	}
 	
-	override generateCorrespondenceActions(ActionStatementBuilder builder) {
-		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	override generateCorrespondenceMatches(UndecidedMatcherStatementBuilder builder) {
+		builder.check([
+			parseExpression('true')
+		])
 	}
 	
-	override generateCorrespondenceMatches(UndecidedMatcherStatementBuilder builder) {
-		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	override generateCorrespondenceActions(ActionStatementBuilder builder) {
+		builder.execute([
+			parseExpression('true')
+		])
 	}
+	
+	
 	
 }

@@ -5,13 +5,26 @@ import tools.vitruv.dsls.mappings.mappingsLanguage.ReactionIntegration
 import tools.vitruv.dsls.mappings.mappingsLanguage.ReactionOrientation
 import tools.vitruv.dsls.mappings.mappingsLanguage.RoutineIntegration
 import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsLanguageFactory
+import tools.vitruv.dsls.mappings.generator.ReactionGeneratorContext
+import org.eclipse.emf.ecore.util.EcoreUtil
 
 abstract class AbstractReactionIntegrationGenerator implements IReactionIntegrationGenerator{
 	
 	protected IReactionIntegrateable l2rIntegration
 	protected IReactionIntegrateable r2lIntegration
+	protected ReactionGeneratorContext l2rContext
+	protected ReactionGeneratorContext r2lContext
+	
+	override init(ReactionGeneratorContext l2rContext, ReactionGeneratorContext r2lContext) {
+		this.l2rContext = l2rContext
+		this.r2lContext = r2lContext
+		init()
+	}
+	
+	protected abstract def void init()
 	
 	override check(Mapping mapping) {
+		//integrate reactions to the specific side
 		mapping.reactions.forEach [
 			val reaction = generateReaction(it)
 			if (orientation == ReactionOrientation.LEFT) {
@@ -20,6 +33,7 @@ abstract class AbstractReactionIntegrationGenerator implements IReactionIntegrat
 				r2lIntegration.integrate(reaction)
 			}
 		]
+		//integrate routines on both sides (since we dont know which side uses them, or maybe even both)
 	 	mapping.routines.forEach [
 			val routine = generateRoutine(it)
 			l2rIntegration.integrate(routine)
@@ -28,22 +42,22 @@ abstract class AbstractReactionIntegrationGenerator implements IReactionIntegrat
 		]
 	}
 	
-	protected def generateReaction(ReactionIntegration reactionIntegration) {
+	public static def generateReaction(ReactionIntegration reactionIntegration) {
 		val reaction = ReactionsLanguageFactory.eINSTANCE.createReaction
-		reaction.callRoutine = reactionIntegration.callRoutine
+		reaction.callRoutine = EcoreUtil.copy(reactionIntegration.callRoutine)
 		reaction.documentation = reactionIntegration.documentation
 		reaction.name = reactionIntegration.name
-		reaction.trigger = reactionIntegration.trigger
+		reaction.trigger = EcoreUtil.copy(reactionIntegration.trigger)
 		reaction
 	}
 
-	protected def generateRoutine(RoutineIntegration routineIntegration) {
+	public static def generateRoutine(RoutineIntegration routineIntegration) {
 		val routine = ReactionsLanguageFactory.eINSTANCE.createRoutine
 		routine.name = routineIntegration.name
-		routine.input = routineIntegration.input
+		routine.input = EcoreUtil.copy(routineIntegration.input)
 		routine.documentation = routineIntegration.documentation
-		routine.matcher = routineIntegration.matcher
-		routine.action = routineIntegration.action
+		routine.matcher = EcoreUtil.copy(routineIntegration.matcher)
+		routine.action = EcoreUtil.copy(routineIntegration.action)
 		routine
 	}
 }
