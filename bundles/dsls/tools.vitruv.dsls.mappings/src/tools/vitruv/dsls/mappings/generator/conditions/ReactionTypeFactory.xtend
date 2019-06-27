@@ -4,10 +4,10 @@ import java.util.ArrayList
 import java.util.List
 import tools.vitruv.dsls.mappings.generator.reactions.AbstractReactionTypeGenerator
 import tools.vitruv.dsls.mappings.generator.reactions.DeletedReactionGenerator
-import tools.vitruv.dsls.mappings.generator.reactions.InsertedInReactionGenerator
-import tools.vitruv.dsls.mappings.generator.reactions.RemovedFromReactionGenerator
 import tools.vitruv.dsls.mappings.mappingsLanguage.SingleSidedCondition
 import tools.vitruv.dsls.mirbase.mirBase.NamedMetaclassReference
+import tools.vitruv.dsls.mappings.generator.reactions.InsertedReactionGenerator
+import tools.vitruv.dsls.mappings.generator.reactions.RemovedReactionGenerator
 
 class ReactionTypeFactory {
 
@@ -54,20 +54,20 @@ class ReactionTypeFactory {
 	private def insertDefaultTriggers() {
 		// add insert as root and delete trigger for all distinct metaclasses
 		fromParameters.distinctMetaclasses.forEach [
-			val defaultInsertGenerator = new InsertedInReactionGenerator(it)
+			val defaultInsertGenerator = new InsertedReactionGenerator(it)
 			defaultInsertGenerator.initGenerator
 			val defaultDeleteGenerator = new DeletedReactionGenerator(it)
 			defaultDeleteGenerator.initGenerator
 			// make it subordinate to other inserted generators so it will be replaced 
 			defaultInsertGenerator.conflictingTriggerCheck = [ generator |
-				if (generator instanceof InsertedInReactionGenerator) {
+				if (generator instanceof InsertedReactionGenerator) {
 					return true
 				}
 				false
 			]
 			// make it subordinate to other delete generators so it will be replaced
 			defaultDeleteGenerator.conflictingTriggerCheck = [ generator |
-				if (generator instanceof RemovedFromReactionGenerator) {
+				if (generator instanceof RemovedReactionGenerator) {
 					return true
 				}
 				if (generator instanceof DeletedReactionGenerator) {

@@ -4,8 +4,6 @@ import java.util.List
 import org.eclipse.emf.ecore.EObject
 import tools.vitruv.dsls.mappings.generator.reactions.AbstractReactionTypeGenerator
 import tools.vitruv.dsls.mappings.generator.reactions.AttributeReplacedReactionGenerator
-import tools.vitruv.dsls.mappings.generator.reactions.InsertedInReactionGenerator
-import tools.vitruv.dsls.mappings.generator.reactions.RemovedFromReactionGenerator
 import tools.vitruv.dsls.mappings.mappingsLanguage.MultiValueCondition
 import tools.vitruv.dsls.mappings.mappingsLanguage.MultiValueConditionOperator
 import tools.vitruv.dsls.mirbase.mirBase.MetaclassFeatureReference
@@ -13,6 +11,9 @@ import tools.vitruv.dsls.mirbase.mirBase.MetaclassReference
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.UndecidedMatcherStatementBuilder
 
 import static tools.vitruv.dsls.mappings.generator.XExpressionParser.*
+import org.eclipse.emf.ecore.EAttribute
+import tools.vitruv.dsls.mappings.generator.reactions.InsertedReactionGenerator
+import tools.vitruv.dsls.mappings.generator.reactions.RemovedReactionGenerator
 
 class MultiValueConditionGenerator extends AbstractSingleSidedCondition<MultiValueCondition> {
 
@@ -35,11 +36,13 @@ class MultiValueConditionGenerator extends AbstractSingleSidedCondition<MultiVal
 	override protected constructReactionTriggers(List<AbstractReactionTypeGenerator> triggers) {
 		if (operator == MultiValueConditionOperator.IN) {
 			if(leftSide instanceof MetaclassReference){
-				triggers.add(new InsertedInReactionGenerator(leftSide, rightSide))
-				triggers.add(new RemovedFromReactionGenerator(leftSide, rightSide))
+				triggers.add(new InsertedReactionGenerator(leftSide, rightSide))
+				triggers.add(new RemovedReactionGenerator(leftSide, rightSide))
 			}
 		}
-		//triggers.add(new AttributeReplacedReactionGenerator(rightSide))
+		if(rightSide.feature instanceof EAttribute){
+			triggers.add(new AttributeReplacedReactionGenerator(rightSide))			
+		}
 	}
 
 	override generate(UndecidedMatcherStatementBuilder builder) {

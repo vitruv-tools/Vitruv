@@ -1,6 +1,5 @@
 package tools.vitruv.dsls.mappings.generator.integration
 
-import tools.vitruv.dsls.mappings.generator.ReactionGeneratorContext
 import org.eclipse.xtext.generator.IFileSystemAccess2
 import tools.vitruv.dsls.reactions.api.generator.IReactionsGenerator
 
@@ -8,7 +7,7 @@ class EmbeddedReactionIntegrationGenerator extends AbstractReactionIntegrationGe
 
 	private ReactionIntegrationCache cache = new ReactionIntegrationCache;
 
-	override init(ReactionGeneratorContext l2rContext, ReactionGeneratorContext r2lContext) {
+	override init() {
 		this.l2rIntegration = l2rContext;
 		this.r2lIntegration = r2lContext
 	}

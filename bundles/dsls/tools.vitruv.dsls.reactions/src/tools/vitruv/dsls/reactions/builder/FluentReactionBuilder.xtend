@@ -25,7 +25,7 @@ import org.eclipse.xtext.xbase.XBlockExpression
 
 class FluentReactionBuilder extends FluentReactionsSegmentChildBuilder {
 
-	var Reaction reaction
+	protected var Reaction reaction
 	var anonymousRoutineCounter = 0
 	var EClassifier valueType
 	var EClass affectedElementType
@@ -285,35 +285,11 @@ class FluentReactionBuilder extends FluentReactionsSegmentChildBuilder {
 		}
 
 	}
-
+	
 	static class ReactionTypeProvider extends AbstractTypeProvider<FluentReactionBuilder> {
 		protected new(IJvmTypeProvider delegate, FluentReactionBuilder builder, XExpression scopeExpression) {
 			super(delegate, builder, scopeExpression)
 		}
-	}
-
-	def private requiredArgumentsFrom(FluentRoutineBuilder routineBuilder, JvmOperation routineCallMethod) {
-		val parameterList = new ArrayList<XExpression>(3)
-		if (routineBuilder.requireAffectedEObject) {
-			parameterList += routineCallMethod.argument(CHANGE_AFFECTED_ELEMENT_ATTRIBUTE)
-		}
-		if (routineBuilder.requireNewValue) {
-			parameterList += routineCallMethod.argument(CHANGE_NEW_VALUE_ATTRIBUTE)
-		}
-		if (routineBuilder.requireOldValue) {
-			parameterList += routineCallMethod.argument(CHANGE_OLD_VALUE_ATTRIBUTE)
-		}
-		return parameterList
-	}
-
-	def private argument(JvmOperation routineCallMethod, String parameterName) {
-		val parameter = routineCallMethod.parameters.findFirst[name == parameterName]
-		if (parameter === null) {
-			throw new IllegalStateException('''The reaction “«reaction.name»” does not provide a value called “«parameterName»”!''')
-		}
-		XbaseFactory.eINSTANCE.createXFeatureCall => [
-			feature = parameter
-		]
 	}
 
 	def private getRoutineCallMethod() {

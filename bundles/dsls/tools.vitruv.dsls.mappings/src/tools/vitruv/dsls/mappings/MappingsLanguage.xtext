@@ -39,8 +39,9 @@ Mapping:
 				(rightConditions+=SingleSidedCondition)+
 			'}')?
 		('such' 'that' '{'
-			(bidirectionalizableConditions+=BidirectionalizableCondition)+
-		'}')?
+			(bidirectionalizableConditions+=BidirectionalizableCondition)*	
+			(bidirectionalizableRoutines += RoutineIntegration)*
+		'}')?		
 		('forward' 'execute' '{'
 			forwardExecutionExpression=UnidirectionalExpression
 		'}' 'backward' 'execute' '{'

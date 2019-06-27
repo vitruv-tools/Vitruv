@@ -12,19 +12,23 @@ class DeletedReactionGenerator extends AbstractReactionTypeGenerator{
 	}
 	
 	override generateTrigger(ReactionGeneratorContext context) {
-		 context.create.reaction('''on«metaclass.parameterName»Deleted''').afterElement(metaclass).deleted
+		 context.create.reaction('''On«metaclass.parameterName»Deleted''').afterElement(metaclass).deleted
 	}
 		
 	override generateCorrespondenceMatches(UndecidedMatcherStatementBuilder builder) {
-		correspondingParameters.forEach[
-			builder.vall(it.parameterName).retrieve(it.metaclass).correspondingTo.affectedEObject.taggedWith(reactionParameters.get(0),it)
+		iterateParameters [ reactionParameter, correspondingParameter |
+			val newElement = getParameterName(reactionParameter, correspondingParameter)
+			builder.vall(newElement).retrieve(correspondingParameter.metaclass).correspondingTo.affectedEObject.taggedWith(
+				reactionParameter, correspondingParameter)
 		]
 	}
-	
+
 	override generateCorrespondenceActions(ActionStatementBuilder builder) {
-		//delete 
-		correspondingParameters.forEach[
-			builder.delete(it.parameterName)
+		// delete 
+		iterateParameters [ reactionParameter, correspondingParameter |
+			val element = getParameterName(reactionParameter, correspondingParameter)
+			builder.removeCorrespondenceBetween(element).and.affectedEObject.taggedWith(reactionParameter,correspondingParameter)
+			builder.delete(element)		
 		]
 	}
 
