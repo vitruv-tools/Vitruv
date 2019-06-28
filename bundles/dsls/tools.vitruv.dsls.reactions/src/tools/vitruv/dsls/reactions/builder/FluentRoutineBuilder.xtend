@@ -135,12 +135,21 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 		}
 
 		def match(Consumer<UndecidedMatcherStatementBuilder> matchers) {
+			match(matchers, false)
+		}
+
+		def match(Consumer<UndecidedMatcherStatementBuilder> matchers, boolean skipWhenNoMatchersAdded) {
 			val matcher = ReactionsLanguageFactory.eINSTANCE.createMatcher
 			routine.matcher = matcher
 			val statementsBuilder = new UndecidedMatcherStatementBuilder(builder)
 			matchers.accept(statementsBuilder)
 			if (routine.matcher.matcherStatements.size == 0) {
-				throw new IllegalStateException('''No matcher statements were created in the «builder»!''')
+				if (skipWhenNoMatchersAdded) {
+					//remove matcher
+					routine.matcher = null
+				} else {
+					throw new IllegalStateException('''No matcher statements were created in the «builder»!''')
+				}
 			}
 			new ActionBuilder(builder)
 		}
@@ -486,8 +495,8 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 					null, '''The «routineBuilder» requires a new value, but the «builder» doesn’t create one!''')
 				checkState(!routineBuilder.requireOldValue || valueType !==
 					null, '''The «routineBuilder» requires an old value, but the «builder» doesn’t create one!''')
-			//	checkState(!routineBuilder.
-			//		requireAffectedEObject, '''The «routineBuilder» requires an affectedElement, but the «builder» doesn’t create one!''')
+				// checkState(!routineBuilder.
+				// requireAffectedEObject, '''The «routineBuilder» requires an affectedElement, but the «builder» doesn’t create one!''')
 				builder.transferReactionsSegmentTo(routineBuilder)
 				addRoutineCall(routineBuilder)
 				if (valueType !== null && (routineBuilder.requireNewValue || routineBuilder.requireOldValue)) {

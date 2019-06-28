@@ -21,7 +21,7 @@ class MappingRoutineGenerator extends AbstractBidirectionalCondition {
 
 	private RoutineIntegration routine
 	private EClass targetMetaclass
-	private FluentRoutineBuilder routineBuilder
+	private FluentRoutineBuilder targetRoutineBuilder
 
 	new(RoutineIntegration routineIntegration) {
 		this.targetMetaclass = findTargetMetaclass(routineIntegration)
@@ -53,15 +53,15 @@ class MappingRoutineGenerator extends AbstractBidirectionalCondition {
 			// integrate the routine in the file
 			integrateRoutine(context)
 			// call the routine from within this reactions action routine block
-			builder.call(routineBuilder)
+			builder.call(targetRoutineBuilder)
 		}
 	}
 
 	private def integrateRoutine(ReactionGeneratorContext context) {
-		if (routineBuilder === null) {
-			routineBuilder = context.create.routine(AbstractReactionIntegrationGenerator.generateRoutine(routine),
+		if (targetRoutineBuilder === null) {
+			targetRoutineBuilder = context.create.routine(AbstractReactionIntegrationGenerator.generateRoutine(routine),
 				targetMetaclass)
-			context.getSegmentBuilder += routineBuilder
+			context.getSegmentBuilder += targetRoutineBuilder
 		}
 	}
 }

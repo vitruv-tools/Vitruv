@@ -19,7 +19,7 @@ class ReactionMatchGenerator implements Consumer<UndecidedMatcherStatementBuilde
 		//do correspondence matches
 		generator.generateCorrespondenceMatches(builder)
 		//check additional restrictions from single sided conditions
-	//	conitionsGenerator.accept(builder)
+		conitionsGenerator.accept(builder)
 	}
 	
 }

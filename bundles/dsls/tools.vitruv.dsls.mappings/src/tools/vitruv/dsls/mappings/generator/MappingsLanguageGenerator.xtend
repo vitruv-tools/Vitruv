@@ -15,6 +15,7 @@ import tools.vitruv.dsls.reactions.api.generator.IReactionsGenerator
 import tools.vitruv.dsls.reactions.builder.FluentReactionsLanguageBuilder
 import org.eclipse.xtext.resource.XtextResource
 import org.eclipse.xtext.xbase.util.XExpressionHelper
+import tools.vitruv.dsls.mappings.generator.integration.EmbeddedReactionIntegrationGenerator
 
 //import tools.vitruv.dsls.reactions.builder.FluentReactionsLanguageBuilder
 class MappingsLanguageGenerator implements IGenerator2 {
@@ -32,7 +33,7 @@ class MappingsLanguageGenerator implements IGenerator2 {
 	}
 
 	override doGenerate(Resource input, IFileSystemAccess2 fsa, IGeneratorContext context) {
-		reactionIntegrationGenerator = new StandaloneReactionIntegrationGenerator
+		reactionIntegrationGenerator = new EmbeddedReactionIntegrationGenerator
 		val reactionsGenerator = reactionsGeneratorProvider.get
 		val resourceSet = resourceSetProvider.get
 		resourceSet.addLoadOption(XtextResource.OPTION_RESOLVE_ALL, Boolean.TRUE)
@@ -63,7 +64,7 @@ class MappingsLanguageGenerator implements IGenerator2 {
 		var reactionsContext = reactionsFileGenerator.createAndInitializeReactionsFile()
 		for (mapping : segment.mappings) {
 			val generator = new MappingReactionsGenerator(basePackageForSegment, segment, l2r, reactionsGenerator,
-				create, mapping)
+				create)
 			generator.generateReactionsAndRoutines(reactionsContext)
 		}
 		reactionsContext

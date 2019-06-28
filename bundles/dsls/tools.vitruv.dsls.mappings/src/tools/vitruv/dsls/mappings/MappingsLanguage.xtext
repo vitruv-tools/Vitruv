@@ -40,6 +40,7 @@ Mapping:
 			'}')?
 		('such' 'that' '{'
 			(bidirectionalizableConditions+=BidirectionalizableCondition)*	
+			(observeAttributes = ObserveAttributes)?
 			(bidirectionalizableRoutines += RoutineIntegration)*
 		'}')?		
 		('forward' 'execute' '{'
@@ -48,8 +49,12 @@ Mapping:
 			backwardExecutionExpression=UnidirectionalExpression
 		'}')?
 		(reactions+=ReactionIntegration |
-		routines+=RoutineIntegration)*
+		routines+=DirectedRoutineIntegration)*
 	'}'
+;
+
+ObserveAttributes:
+	'observe' '{'(attributes+=MetaclassFeatureReference)+ '}'
 ;
 
 ReactionIntegration:
@@ -63,12 +68,18 @@ enum ReactionOrientation:
 	LEFT = 'left' | RIGHT = 'right'
 ;
 
-RoutineIntegration:
+DirectedRoutineIntegration:
 	(documentation=ML_COMMENT)?
-	'routine' name=ValidID input=RoutineInput '{'
+	orientation = ReactionOrientation
+	definition = RoutineIntegration
+;	
+	
+RoutineIntegration:
+	 'routine' name=ValidID input=RoutineInput '{'
 		matcher=MatcherBlock?
 		action=ActionBlock
-	'}';
+	'}'
+;	
 
 // DW: RequiredMapping
 Dependency:

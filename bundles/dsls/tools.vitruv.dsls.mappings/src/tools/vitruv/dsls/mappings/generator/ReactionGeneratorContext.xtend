@@ -38,11 +38,11 @@ class ReactionGeneratorContext implements IReactionIntegrateable{
 	}
 	
 	override integrate(Reaction reaction) {
-		segmentBuilder+=reaction
+		segmentBuilder+=create.reaction(reaction)
 	}
 	
 	override integrate(Routine routine) {
-		segmentBuilder+=routine
+		segmentBuilder+=create.routine(routine)
 	}
 	
 }
