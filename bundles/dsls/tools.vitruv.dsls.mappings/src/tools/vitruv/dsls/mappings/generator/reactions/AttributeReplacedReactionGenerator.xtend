@@ -35,15 +35,11 @@ class AttributeReplacedReactionGenerator extends AbstractReactionTypeGenerator{
 	}
 	
 	override generateCorrespondenceMatches(UndecidedMatcherStatementBuilder builder) {
-		builder.check([
-			parseExpression('true')
-		])
+		//nothing to do, only single sided conditions create matchers
 	}
 	
 	override generateCorrespondenceActions(ActionStatementBuilder builder) {
-		builder.execute([
-			parseExpression('true')
-		])
+		//nothing to do, only bidirectional conditions create actions
 	}
 	
 	

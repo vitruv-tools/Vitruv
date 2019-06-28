@@ -20,8 +20,8 @@ mapping RepositoryXPackage {
    	"datatypes" equals datatypesPkg[name]
    }
     such that {
-     repository[entityName] =  {  rootPkg[name] }    	
-	 
+    // repository[entityName] =    rootPkg[name]   	
+	 observe {repository[entityName] rootPkg[name] }
 	 routine updatePackageNames(pcm::Repository repository) { 	
 		action {
 			execute {

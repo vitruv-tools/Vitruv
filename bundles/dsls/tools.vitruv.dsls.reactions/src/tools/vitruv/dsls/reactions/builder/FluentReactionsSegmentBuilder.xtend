@@ -133,19 +133,7 @@ class FluentReactionsSegmentBuilder extends FluentReactionElementBuilder {
 		childBuilders += routineBuilder
 		this
 	}
-	
-	def operator_add(Routine routine) {
-		checkNotYetAttached()
-		segment.routines += routine
-		this
-	}
-	
-	def operator_add(Reaction reaction) {
-		checkNotYetAttached()
-		segment.reactions += reaction
-		this
-	}
-	
+		
 	override toString() {
 		'''reaction segment builder for “«segment.name»”'''
 	}

@@ -23,6 +23,7 @@ import tools.vitruv.dsls.mappings.mappingsLanguage.SingleValueCondition
 import tools.vitruv.dsls.mappings.mappingsLanguage.NumCompareCondition
 import tools.vitruv.dsls.mappings.mappingsLanguage.MultiValueConditionOperator
 import tools.vitruv.dsls.mappings.mappingsLanguage.IndexCondition
+import tools.vitruv.dsls.mappings.mappingsLanguage.ObserveAttributes
 
 class MappingsLanguageScopeProviderDelegate extends MirBaseScopeProviderDelegate {
 
@@ -54,6 +55,10 @@ class MappingsLanguageScopeProviderDelegate extends MirBaseScopeProviderDelegate
 				val bidirectionalizableCondition = contextContainer.eContainer;
 				val mapping = bidirectionalizableCondition.eContainer as Mapping;
 				// both sides
+				return createMappingScope(mapping, true, true);
+			} else if (contextContainer instanceof ObserveAttributes) { // for observe attributes
+				// both sides 
+				val mapping = contextContainer.eContainer as Mapping;
 				return createMappingScope(mapping, true, true);
 			}
 		}
@@ -96,18 +101,18 @@ class MappingsLanguageScopeProviderDelegate extends MirBaseScopeProviderDelegate
 		if (featureReference?.metaclass !== null) {
 			val container = featureReference.eContainer;
 			var multiplicityFilterFunction = [EStructuralFeature feat|true];
-		/*	if (container instanceof FeatureCondition) {
-				val scopeManyType = getManyScopeType(container);
-				if (scopeManyType != ScopeManyFeature.BOTH) {
-					multiplicityFilterFunction = [ EStructuralFeature feat |
-						if (scopeManyType == ScopeManyFeature.MANY) {
-							return feat.many
-						} else {
-							return !feat.many
-						}
-					];
-				}
-			} */
+			/*	if (container instanceof FeatureCondition) {
+			 * 		val scopeManyType = getManyScopeType(container);
+			 * 		if (scopeManyType != ScopeManyFeature.BOTH) {
+			 * 			multiplicityFilterFunction = [ EStructuralFeature feat |
+			 * 				if (scopeManyType == ScopeManyFeature.MANY) {
+			 * 					return feat.many
+			 * 				} else {
+			 * 					return !feat.many
+			 * 				}
+			 * 			];
+			 * 		}
+			 } */
 			createScope(IScope.NULLSCOPE,
 				featureReference.metaclass.EAllStructuralFeatures.filter(multiplicityFilterFunction).iterator, [
 					EObjectDescription.create(it.name, it)

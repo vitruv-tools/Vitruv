@@ -61,20 +61,13 @@ class MultiValueConditionGenerator extends AbstractSingleSidedCondition<MultiVal
 	private def generateIn(UndecidedMatcherStatementBuilder builder, EObject leftSide,
 		MetaclassFeatureReference rightSide, boolean negated) {
 		// builder.vall('''in«leftSide»''').retrieve(rightSide.metaclass).correspondingTo('''«rightSide»''')
-		builder.check([ typeProvider |
-			parseExpression('')
-		])
+	
 	}
 
 	private def generateEquals(UndecidedMatcherStatementBuilder builder, EObject leftSide,
 		MetaclassFeatureReference rightSide, boolean negated) {
-		builder.check([ typeProvider |
-			parseExpression('')
-		])
 	// builder.vall('''equals«leftSide»''').retrieve(rightSide.metaclass).correspondingTo('''«rightSide»''')		
-	/*builder.check([
-	 * 	
-	 ])*/
+	
 	}
 	
 
