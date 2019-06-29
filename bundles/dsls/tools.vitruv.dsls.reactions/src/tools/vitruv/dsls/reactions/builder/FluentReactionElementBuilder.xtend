@@ -263,7 +263,7 @@ abstract package class FluentReactionElementBuilder {
 		]
 	}
 	
-	def protected requiredArgumentsFrom(FluentRoutineBuilder routineBuilder, JvmOperation routineCallMethod) {
+	def protected List<XExpression> requiredArgumentsFrom(FluentRoutineBuilder routineBuilder, JvmOperation routineCallMethod) {
 		val parameterList = new ArrayList<XExpression>(3)
 		if (routineBuilder.requireAffectedEObject) {
 			parameterList += routineCallMethod.argument(CHANGE_AFFECTED_ELEMENT_ATTRIBUTE)
