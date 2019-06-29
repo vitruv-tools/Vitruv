@@ -54,7 +54,7 @@ Mapping:
 ;
 
 ObserveAttributes:
-	'observe' '{'(attributes+=MetaclassFeatureReference)+ '}'
+	'observe' 'attributes' '{'(attributes+=MetaclassEAttributeReference)+ '}'
 ;
 
 ReactionIntegration:

@@ -12,6 +12,7 @@ import tools.vitruv.dsls.reactions.builder.FluentReactionBuilder.PreconditionOrR
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.ActionStatementBuilder
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.UndecidedMatcherStatementBuilder
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.TaggedWithBuilder
+import tools.vitruv.dsls.mirbase.mirBase.MetaclassEAttributeReference
 
 abstract class AbstractReactionTypeGenerator {
 
@@ -66,6 +67,10 @@ abstract class AbstractReactionTypeGenerator {
 	«parameter.metaclass.name»_«parameter.name»'''
 
 	def protected getAttributeName(MetaclassFeatureReference parameter) {
+		parameter.feature.name
+	}
+
+	def protected getAttributeName(MetaclassEAttributeReference parameter) {
 		parameter.feature.name
 	}
 

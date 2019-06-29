@@ -44,6 +44,7 @@ class DirectionalMappingReactionGenerator {
 			val actionGenerator = new ReactionActionGenerator(reactionGenerator, bidirectionCondtionGenerators, context)
 			val matchGenerator = new ReactionMatchGenerator(reactionGenerator, singleSidedConditionGenerator)
 			context.getSegmentBuilder += reactionTemplate.call([
+				alwaysRequireAffectedEObject
 				match(matchGenerator, true)
 				action(actionGenerator)
 			])

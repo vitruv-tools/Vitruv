@@ -21,15 +21,25 @@ mapping RepositoryXPackage {
    }
     such that {
     // repository[entityName] =    rootPkg[name]   	
-	 observe {repository[entityName] rootPkg[name] }
-	 routine updatePackageNames(pcm::Repository repository) { 	
-		action {
-			execute {
-				
+		observe attributes {
+			pcm::Repository[entityName] 
+		//	uml::Package[name]
+		}
+		routine updatePackageNames(pcm::Repository repository) { 	
+			action {
+				execute {
+					
+				}
 			}
 		}
-	}
-   }
+		routine updateRepoName(uml::Package package) { 	
+			action {
+				execute {
+				
+				}
+			}
+		}
+  	 }
 }
 
 

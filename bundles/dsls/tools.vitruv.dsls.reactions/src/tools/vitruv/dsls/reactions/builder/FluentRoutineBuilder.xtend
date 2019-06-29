@@ -36,7 +36,7 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 	@Accessors(PACKAGE_GETTER)
 	protected var requireNewValue = false
 	@Accessors(PACKAGE_GETTER)
-	protected var requireAffectedEObject = false
+	protected boolean requireAffectedEObject = false
 	@Accessors(PACKAGE_GETTER)
 	protected var requireAffectedValue = false
 
@@ -50,7 +50,7 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 			input = ReactionsLanguageFactory.eINSTANCE.createRoutineInput
 		]
 	}
-
+	
 	override protected attachmentPreparation() {
 		super.attachmentPreparation()
 		checkState(routine.action !== null, "No action was set on this routine!")
@@ -172,6 +172,10 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 
 		private new(FluentRoutineBuilder builder) {
 			super(builder)
+		}
+		
+		def void alwaysRequireAffectedEObject(){
+			requireAffectedEObject = true
 		}
 
 		def overrideAlongImportPath(FluentReactionsSegmentBuilder... importPathSegmentBuilders) {

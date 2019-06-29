@@ -1,29 +1,27 @@
 package tools.vitruv.dsls.mappings.scoping
 
+import java.util.ArrayList
+import java.util.List
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EReference
-import tools.vitruv.dsls.mirbase.scoping.MirBaseScopeProviderDelegate
-import static tools.vitruv.dsls.mirbase.mirBase.MirBasePackage.Literals.*;
-import static tools.vitruv.dsls.mappings.mappingsLanguage.MappingsLanguagePackage.Literals.*
-import tools.vitruv.dsls.mirbase.mirBase.MetaclassFeatureReference
 import org.eclipse.emf.ecore.EStructuralFeature
 import org.eclipse.xtext.resource.EObjectDescription
 import org.eclipse.xtext.scoping.IScope
-import org.eclipse.emf.ecore.EAttribute
-import tools.vitruv.dsls.mappings.mappingsLanguage.FeatureCondition
-import tools.vitruv.dsls.mappings.mappingsLanguage.EnforceableCondition
-import tools.vitruv.dsls.mappings.mappingsLanguage.SingleSidedCondition
-import tools.vitruv.dsls.mappings.mappingsLanguage.Mapping
 import tools.vitruv.dsls.mappings.mappingsLanguage.BidirectionalizableCondition
 import tools.vitruv.dsls.mappings.mappingsLanguage.BidirectionalizableExpression
-import org.eclipse.xtext.scoping.Scopes
-import java.util.ArrayList
+import tools.vitruv.dsls.mappings.mappingsLanguage.EnforceableCondition
+import tools.vitruv.dsls.mappings.mappingsLanguage.FeatureCondition
+import tools.vitruv.dsls.mappings.mappingsLanguage.Mapping
 import tools.vitruv.dsls.mappings.mappingsLanguage.MultiValueCondition
-import tools.vitruv.dsls.mappings.mappingsLanguage.SingleValueCondition
-import tools.vitruv.dsls.mappings.mappingsLanguage.NumCompareCondition
 import tools.vitruv.dsls.mappings.mappingsLanguage.MultiValueConditionOperator
-import tools.vitruv.dsls.mappings.mappingsLanguage.IndexCondition
+import tools.vitruv.dsls.mappings.mappingsLanguage.NumCompareCondition
 import tools.vitruv.dsls.mappings.mappingsLanguage.ObserveAttributes
+import tools.vitruv.dsls.mappings.mappingsLanguage.SingleSidedCondition
+import tools.vitruv.dsls.mirbase.mirBase.MetaclassFeatureReference
+import tools.vitruv.dsls.mirbase.mirBase.NamedMetaclassReference
+import tools.vitruv.dsls.mirbase.scoping.MirBaseScopeProviderDelegate
+
+import static tools.vitruv.dsls.mirbase.mirBase.MirBasePackage.Literals.*
 
 class MappingsLanguageScopeProviderDelegate extends MirBaseScopeProviderDelegate {
 
@@ -42,30 +40,30 @@ class MappingsLanguageScopeProviderDelegate extends MirBaseScopeProviderDelegate
 				val mapping = singleSidedCondition.eContainer as Mapping;
 				if (mapping.leftConditions.contains(singleSidedCondition)) {
 					// left side
-					return createMappingScope(mapping, true, false);
+					return createMappingNamedMetaclassesScope(mapping, true, false);
 				} else {
 					// right side			
-					return createMappingScope(mapping, false, true);
+					return createMappingNamedMetaclassesScope(mapping, false, true);
 				}
 			} else if (contextContainer instanceof BidirectionalizableCondition) {
 				val mapping = contextContainer.eContainer as Mapping;
 				// both sides
-				return createMappingScope(mapping, true, true);
+				return createMappingNamedMetaclassesScope(mapping, true, true);
 			} else if (contextContainer instanceof BidirectionalizableExpression) {
 				val bidirectionalizableCondition = contextContainer.eContainer;
 				val mapping = bidirectionalizableCondition.eContainer as Mapping;
 				// both sides
-				return createMappingScope(mapping, true, true);
+				return createMappingNamedMetaclassesScope(mapping, true, true);
 			} else if (contextContainer instanceof ObserveAttributes) { // for observe attributes
-				// both sides 
+			// both sides 
 				val mapping = contextContainer.eContainer as Mapping;
-				return createMappingScope(mapping, true, true);
+				return createMappingMetaclassesScope(mapping, true, true);
 			}
 		}
 		super.getScope(context, reference)
 	}
 
-	def createMappingScope(Mapping mapping, boolean leftSide, boolean rightSide) {
+	def createMappingNamedMetaclassesScope(Mapping mapping, boolean leftSide, boolean rightSide) {
 		val featureList = new ArrayList();
 		if (leftSide) {
 			featureList.addAll(mapping.leftParameters);
@@ -76,6 +74,29 @@ class MappingsLanguageScopeProviderDelegate extends MirBaseScopeProviderDelegate
 		return createScope(IScope.NULLSCOPE, featureList.iterator, [
 			EObjectDescription.create(it.name, it.metaclass)
 		]);
+	}
+
+	def createMappingMetaclassesScope(Mapping mapping, boolean leftSide, boolean rightSide) {
+		val featureList = new ArrayList();
+		if (leftSide) {
+			featureList.addAll(mapping.leftParameters.uniqueMetaclasses);
+		}
+		if (rightSide) {
+			featureList.addAll(mapping.rightParameters.uniqueMetaclasses);
+		}
+		return createScope(IScope.NULLSCOPE, featureList.iterator, [
+			EObjectDescription.create(it.metaclass.name, it.metaclass)
+		]);
+	}
+
+	private def uniqueMetaclasses(List<NamedMetaclassReference> references) {
+		val unique = new ArrayList<NamedMetaclassReference>
+		references.forEach [ ref |
+			if (!unique.exists[it.metaclass == ref.metaclass]) {
+				unique.add(ref)
+			}
+		]
+		unique
 	}
 
 	private enum ScopeManyFeature {
