@@ -1,19 +1,18 @@
 package tools.vitruv.dsls.mappings.generator.conditions
 
 import java.util.List
+import org.eclipse.emf.ecore.EAttribute
 import org.eclipse.emf.ecore.EObject
+import org.eclipse.xtext.xbase.XbaseFactory
 import tools.vitruv.dsls.mappings.generator.reactions.AbstractReactionTypeGenerator
 import tools.vitruv.dsls.mappings.generator.reactions.AttributeReplacedReactionGenerator
+import tools.vitruv.dsls.mappings.generator.reactions.InsertedReactionGenerator
+import tools.vitruv.dsls.mappings.generator.reactions.RemovedReactionGenerator
 import tools.vitruv.dsls.mappings.mappingsLanguage.MultiValueCondition
 import tools.vitruv.dsls.mappings.mappingsLanguage.MultiValueConditionOperator
 import tools.vitruv.dsls.mirbase.mirBase.MetaclassFeatureReference
 import tools.vitruv.dsls.mirbase.mirBase.MetaclassReference
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.UndecidedMatcherStatementBuilder
-
-import static tools.vitruv.dsls.mappings.generator.XExpressionParser.*
-import org.eclipse.emf.ecore.EAttribute
-import tools.vitruv.dsls.mappings.generator.reactions.InsertedReactionGenerator
-import tools.vitruv.dsls.mappings.generator.reactions.RemovedReactionGenerator
 
 class MultiValueConditionGenerator extends AbstractSingleSidedCondition<MultiValueCondition> {
 
@@ -52,27 +51,25 @@ class MultiValueConditionGenerator extends AbstractSingleSidedCondition<MultiVal
 			negated = true
 		}
 		if (operator == MultiValueConditionOperator.EQUALS) {
-			generateEquals(builder, leftSide, rightSide, negated)
-		} else if (operator == MultiValueConditionOperator.IN) {
-			generateIn(builder, leftSide, rightSide, negated)
+			builder.generateEquals(leftSide, rightSide, negated)
 		}
-	}
-
-	private def generateIn(UndecidedMatcherStatementBuilder builder, EObject leftSide,
-		MetaclassFeatureReference rightSide, boolean negated) {
-		// builder.vall('''in«leftSide»''').retrieve(rightSide.metaclass).correspondingTo('''«rightSide»''')
-	
 	}
 
 	private def generateEquals(UndecidedMatcherStatementBuilder builder, EObject leftSide,
 		MetaclassFeatureReference rightSide, boolean negated) {
-	// builder.vall('''equals«leftSide»''').retrieve(rightSide.metaclass).correspondingTo('''«rightSide»''')		
-	
+	 builder.vall('''test''').retrieve(rightSide.metaclass).correspondingTo.affectedEObject	
+		builder.check[typeProvider |
+			typeProvider.variable("test")
+//			val eobject = typeProvider.affectedEObject
+		//	println('''>>>>>>>>>>>>>>>>>>>>>>> «eobject»   «leftSide» == «rightSide»''')
+			XbaseFactory.eINSTANCE.createXMemberFeatureCall => [
+			memberCallTarget = null
+			feature = null
+			explicitOperationCall = true
+			]
+		]
 	}
 	
-
-	
-
 	
 
 }

@@ -41,9 +41,12 @@ class InsertedReactionGenerator extends AbstractReactionTypeGenerator {
 
 	override generateCorrespondenceActions(ActionStatementBuilder builder) {
 		// create corresponding elements
+		correspondingParameters.forEach[
+			val newElement = it.newElementName
+			builder.vall(newElement).create(it.metaclass)			
+		]
 		iterateParameters [ reactionParameter, correspondingParameter |
-			val newElement = getParameterName(reactionParameter, correspondingParameter)
-			builder.vall(newElement).create(correspondingParameter.metaclass)
+			val newElement = correspondingParameter.newElementName
 			builder.addCorrespondenceBetween(newElement).and.affectedEObject.taggedWith(reactionParameter,
 				correspondingParameter)
 		]

@@ -59,6 +59,12 @@ abstract class AbstractReactionTypeGenerator {
 			]
 		]
 	}
+
+	def protected String getRemoveElementName(NamedMetaclassReference ref)'''
+	remove«ref.parameterName.toFirstUpper»'''
+	
+	def protected String getNewElementName(NamedMetaclassReference ref)'''
+	new«ref.parameterName.toFirstUpper»'''
 	
 	def protected String getParameterName(NamedMetaclassReference p1, NamedMetaclassReference p2)'''
 	«p1.parameterName»__«p2.parameterName»'''
