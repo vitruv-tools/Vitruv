@@ -12,8 +12,12 @@ class DeletedReactionGenerator extends AbstractReactionTypeGenerator {
 	}
 
 	override generateTrigger(ReactionGeneratorContext context) {
-		context.create.reaction('''On«metaclass.parameterName»Deleted''').afterElement(metaclass).deleted
+		context.create.reaction(reactionName('''«metaclass.parameterName»Deleted''')).afterElement(metaclass).deleted
 	}
+	
+	override toString()'''
+	«metaclass.parameterName» deleted'''
+	
 
 	override generateCorrespondenceMatches(UndecidedMatcherStatementBuilder builder) {
 		iterateParameters [ reactionParameter, correspondingParameter |

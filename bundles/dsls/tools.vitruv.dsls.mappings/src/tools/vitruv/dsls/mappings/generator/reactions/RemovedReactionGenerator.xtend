@@ -22,19 +22,23 @@ class RemovedReactionGenerator extends AbstractReactionTypeGenerator {
 
 	override generateTrigger(ReactionGeneratorContext context) {
 		if (removeTarget !== null) {
-			return context.create.reaction('''On«metaclass.parameterName»RemovedFrom«removeTarget.parameterName»''').
+			return context.create.reaction(
+				reactionName('''«metaclass.parameterName»RemovedFrom«removeTarget.parameterName»''')).
 				afterElement(metaclass).removedFrom(removeTarget.feature as EReference)
 		} else {
-			return context.create.reaction('''On«metaclass.parameterName»RemovedAsRoot''').afterElement(metaclass).
-				deleted // todo: is it the same?
+			return context.create.reaction(reactionName('''«metaclass.parameterName»RemovedAsRoot''')).
+				afterElement(metaclass).removedAsRoot
 		}
 	}
+
+	override toString() '''
+	«metaclass.parameterName» removed «IF removeTarget!==null»from «removeTarget.parameterName»«ELSE»as root«ENDIF»'''
 
 	override generateCorrespondenceMatches(UndecidedMatcherStatementBuilder builder) {
 		iterateParameters [ reactionParameter, correspondingParameter |
 			val newElement = getParameterName(reactionParameter, correspondingParameter)
-			builder.vall(newElement).retrieve(correspondingParameter.metaclass).correspondingTo.affectedEObject.taggedWith(
-				reactionParameter, correspondingParameter)
+			builder.vall(newElement).retrieve(correspondingParameter.metaclass).correspondingTo.affectedEObject.
+				taggedWith(reactionParameter, correspondingParameter)
 		]
 	}
 
@@ -42,8 +46,9 @@ class RemovedReactionGenerator extends AbstractReactionTypeGenerator {
 		// delete 
 		iterateParameters [ reactionParameter, correspondingParameter |
 			val element = getParameterName(reactionParameter, correspondingParameter)
-			builder.removeCorrespondenceBetween(element).and.affectedEObject.taggedWith(reactionParameter,correspondingParameter)
-			builder.delete(element)		
+			builder.removeCorrespondenceBetween(element).and.affectedEObject.taggedWith(reactionParameter,
+				correspondingParameter)
+			builder.delete(element)
 		]
 	}
 

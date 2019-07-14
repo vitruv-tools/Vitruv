@@ -173,6 +173,12 @@ class FluentReactionBuilder extends FluentReactionsSegmentChildBuilder {
 				feature = MirBaseFactory.eINSTANCE.createMetaclassEReferenceReference.reference(eClass, reference)
 			])
 		}
+		
+		def removedAsRoot() {
+			valueType = element ?: EcorePackage.eINSTANCE.EObject
+			continueWithChangeType(ReactionsLanguageFactory.eINSTANCE.createElementRemovalAsRootChangeType)
+		}
+		
 
 		def replacedAt(EReference reference) {
 			replacedAt(reference.EContainingClass, reference)

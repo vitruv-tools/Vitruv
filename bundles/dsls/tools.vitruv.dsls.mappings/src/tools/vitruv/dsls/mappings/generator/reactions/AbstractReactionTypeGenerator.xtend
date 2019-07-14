@@ -24,6 +24,8 @@ abstract class AbstractReactionTypeGenerator {
 	private List<NamedMetaclassReference> reactionParameters
 	@Accessors(PUBLIC_GETTER)
 	private List<NamedMetaclassReference> correspondingParameters
+	@Accessors(PUBLIC_SETTER)	
+	private String mappingName
 
 	new(EClass metaclass) {
 		this.metaclass = metaclass
@@ -59,6 +61,9 @@ abstract class AbstractReactionTypeGenerator {
 			]
 		]
 	}
+	
+	def protected String reactionName(String name)'''
+	On«mappingName.toFirstUpper»«name»'''
 
 	def protected String getRemoveElementName(NamedMetaclassReference ref)'''
 	remove«ref.parameterName.toFirstUpper»'''

@@ -19,15 +19,18 @@ import tools.vitruv.dsls.mappings.mappingsLanguage.SingleSidedCondition
 import tools.vitruv.dsls.mirbase.mirBase.NamedMetaclassReference
 
 import static tools.vitruv.dsls.mappings.generator.action.ParameterCorrespondenceTagging.*
+import tools.vitruv.dsls.mappings.mappingsLanguage.Mapping
 
 class DirectionalMappingReactionGenerator {
 
 	private List<NamedMetaclassReference> fromParameters
 	private List<NamedMetaclassReference> toParameters
+	private Mapping mapping
 
-	new(List<NamedMetaclassReference> fromParameters, List<NamedMetaclassReference> toParameters) {
+	new(List<NamedMetaclassReference> fromParameters, List<NamedMetaclassReference> toParameters, Mapping mapping) {
 		this.fromParameters = fromParameters
 		this.toParameters = toParameters
+		this.mapping = mapping
 	}
 
 	def generate(ReactionGeneratorContext context, List<SingleSidedCondition> fromConditions,
@@ -39,6 +42,8 @@ class DirectionalMappingReactionGenerator {
 		val reactionGenerators = reactionFactory.constructGenerators(fromParameters, toParameters)
 		reactionGenerators.appendBidirectionalMappingAttributeReactions(mappingAttributes)
 		reactionGenerators.forEach [ reactionGenerator |
+			reactionGenerator.mappingName = mapping.name
+			println('''=> generate reaction: «reactionGenerator.toString»''')
 			val singleSidedConditionGenerator = new SingleSidedConditionGenerator(reactionGenerator, fromConditions)
 			val reactionTemplate = reactionGenerator.generateTrigger(context)
 			val actionGenerator = new ReactionActionGenerator(reactionGenerator, bidirectionCondtionGenerators, context)
