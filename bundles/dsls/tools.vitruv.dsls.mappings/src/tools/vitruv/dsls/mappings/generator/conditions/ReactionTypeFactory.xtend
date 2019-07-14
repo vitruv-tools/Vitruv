@@ -8,6 +8,7 @@ import tools.vitruv.dsls.mappings.mappingsLanguage.SingleSidedCondition
 import tools.vitruv.dsls.mirbase.mirBase.NamedMetaclassReference
 import tools.vitruv.dsls.mappings.generator.reactions.InsertedReactionGenerator
 import tools.vitruv.dsls.mappings.generator.reactions.RemovedReactionGenerator
+import tools.vitruv.dsls.mappings.generator.reactions.ElementReplacedReactionGenerator
 
 class ReactionTypeFactory {
 
@@ -63,6 +64,9 @@ class ReactionTypeFactory {
 				if (generator instanceof InsertedReactionGenerator) {
 					return true
 				}
+				if(generator instanceof ElementReplacedReactionGenerator){
+					return true
+				}
 				false
 			]
 			// make it subordinate to other delete generators so it will be replaced
@@ -71,6 +75,9 @@ class ReactionTypeFactory {
 					return true
 				}
 				if (generator instanceof DeletedReactionGenerator) {
+					return true
+				}
+				if(generator instanceof ElementReplacedReactionGenerator){
 					return true
 				}
 				false

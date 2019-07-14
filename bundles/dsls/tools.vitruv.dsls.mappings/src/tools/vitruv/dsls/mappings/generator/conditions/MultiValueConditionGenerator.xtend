@@ -13,6 +13,8 @@ import tools.vitruv.dsls.mappings.mappingsLanguage.MultiValueConditionOperator
 import tools.vitruv.dsls.mirbase.mirBase.MetaclassFeatureReference
 import tools.vitruv.dsls.mirbase.mirBase.MetaclassReference
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.UndecidedMatcherStatementBuilder
+import tools.vitruv.dsls.mappings.generator.reactions.DeletedReactionGenerator
+import tools.vitruv.dsls.mappings.generator.reactions.ElementReplacedReactionGenerator
 
 class MultiValueConditionGenerator extends AbstractSingleSidedCondition<MultiValueCondition> {
 
@@ -35,8 +37,16 @@ class MultiValueConditionGenerator extends AbstractSingleSidedCondition<MultiVal
 	override protected constructReactionTriggers(List<AbstractReactionTypeGenerator> triggers) {
 		if (operator == MultiValueConditionOperator.IN) {
 			if(leftSide instanceof MetaclassReference){
-				triggers.add(new InsertedReactionGenerator(leftSide, rightSide))
-				triggers.add(new RemovedReactionGenerator(leftSide, rightSide))
+				//check if its a collection or just a normal element
+				if(rightSide.feature.many)
+				{
+					triggers.add(new InsertedReactionGenerator(leftSide, rightSide))
+					triggers.add(new RemovedReactionGenerator(leftSide, rightSide))		
+					triggers.add(new DeletedReactionGenerator(leftSide))				
+				}
+				else{
+					triggers.add(new ElementReplacedReactionGenerator(rightSide, leftSide));
+				}
 			}
 		}
 		if(rightSide.feature instanceof EAttribute){
@@ -57,17 +67,18 @@ class MultiValueConditionGenerator extends AbstractSingleSidedCondition<MultiVal
 
 	private def generateEquals(UndecidedMatcherStatementBuilder builder, EObject leftSide,
 		MetaclassFeatureReference rightSide, boolean negated) {
-	 builder.vall('''test''').retrieve(rightSide.metaclass).correspondingTo.affectedEObject	
+	/*  builder.vall('''test''').retrieve(rightSide.metaclass).correspondingTo.affectedEObject	
 		builder.check[typeProvider |
-			typeProvider.variable("test")
-//			val eobject = typeProvider.affectedEObject
+			//typeProvider.variable("test")
+			val eobject = typeProvider.affectedEObject
 		//	println('''>>>>>>>>>>>>>>>>>>>>>>> «eobject»   «leftSide» == «rightSide»''')
-			XbaseFactory.eINSTANCE.createXMemberFeatureCall => [
+	 		XbaseFactory.eINSTANCE.createXMemberFeatureCall => [
 			memberCallTarget = null
 			feature = null
 			explicitOperationCall = true
 			]
-		]
+			
+		]*/
 	}
 	
 	

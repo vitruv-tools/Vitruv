@@ -2,9 +2,26 @@ import "http://www.eclipse.org/uml2/5.0.0/UML" as uml
 import "http://palladiosimulator.org/PalladioComponentModel/5.2" as pcm
     	
 mappings: umlXpcm for UML and PCM
-    		
+
+//1 pcm::System <> uml::Package
+mapping SystemXPackage {
+	map(pcm::System system)
+	and(uml::Package pkg)
+	with{
+		pkg in pkg[packagedElement]
+	}
+	such that {
+		observe attributes {
+			pcm::System[entityName]
+			uml::Package[name]
+		}
+	}
+	//todo: add reaction for IPREClassRemoved, IPREClassNameChanged, IPREConstructorOperationNameChanged
+}
+
+//2 pcm::Repository <> uml::Package		 		
 mapping RepositoryXPackage {
-   map (pcm::Repository repository  )
+   map (pcm::Repository repository)
    and (uml::Package rootPkg 
    	uml::Package repositoryPkg 
    	uml::Package contractsPkg 
@@ -12,9 +29,9 @@ mapping RepositoryXPackage {
    )
    with {
   	null  equals rootPkg[nestedPackage]
-  repositoryPkg in rootPkg[nestingPackage]
-   	contractsPkg in rootPkg[nestingPackage]
-   	datatypesPkg in rootPkg[nestingPackage]
+  repositoryPkg in rootPkg[packagedElement]
+   	contractsPkg in rootPkg[packagedElement]
+   	datatypesPkg in rootPkg[packagedElement]
    	"repositories" equals repositoryPkg[name]
    	"contracts" equals contractsPkg[name]
    	"datatypes" equals datatypesPkg[name]
@@ -42,4 +59,262 @@ mapping RepositoryXPackage {
   	 }
 }
 
+//3 pcm::RepositoryComponent <> uml::Package
+mapping RepositoryComponentXPackage{
+	//todo: cant find RepositoryComponent
+	map(pcm::Repository repository
+	//	pcm::RepositoryComponent repoComponent
+	)
+	//with{
+	//	repoComponent in repository[components__Repository]
+	//}
+	and(uml::Package pkg)
+	with{
+		pkg in pkg[packagedElement]
+	}
+	such that{
+		observe attributes{
+		//	pcm::RepositoryComponent[entityName]
+			uml::Package[name]
+		}
+	}
+	//todo: add reaction for IPREClassRemoved, IPREClassNameChanged, IPREConstructorOperationNameChanged
+}
 
+//4 pcm::OperationInterface <> uml::Interface
+mapping OperationInterfaceXInterface{
+	map(pcm::OperationInterface operationInterface
+		pcm::Repository repository 
+	)
+	with{
+		operationInterface in repository[interfaces__Repository]
+		operationInterface in operationInterface[parentInterfaces__Interface]
+	}
+	and(uml::Generalization generalization
+		uml::Package pkg
+		uml::Interface interface
+	)
+	with{
+		interface in pkg[packagedElement]
+		generalization in interface[generalization]
+		//todo 	element replaced at	uml::Generalization[general]		
+	}
+	such that{
+		observe attributes{
+			pcm::OperationInterface[entityName]
+			uml::Interface[name]
+		}
+	}
+}
+
+//5 pcm::InnerDeclaration <> uml::Property
+mapping InnerDeclarationXProperty{
+	map(pcm::InnerDeclaration innerDeclaration
+		pcm::CompositeDataType compDataType
+	)
+	with{
+		innerDeclaration in compDataType[innerDeclaration_CompositeDataType]
+		//todo after element pcm::DataType replaced at pcm::InnerDeclaration[datatype_InnerDeclaration]
+	}
+	and(uml::Property property
+		uml::Class class
+	)
+	with{
+		property in class[ownedAttribute]
+		//todo after element replaced at uml::Property[type]
+		//todo after element replaced at uml::Property[lowerValue]
+	}
+	such that{
+		observe attributes{
+			pcm::InnerDeclaration[entityName]
+			uml::Property[name]			
+		}
+	}
+	
+	//todo reaction after attribute replaced at uml::LiteralInteger[value]
+	//todo reaction after attribute replaced at uml::LiteralUnlimitedNatural[value]
+}
+
+//6 pcm::CompositeDataType <> uml::Class
+mapping CompositeDataTypeXClass{
+	map(pcm::CompositeDataType compDataType
+		pcm::Repository repository
+	)
+	with{
+		compDataType in repository[dataTypes__Repository]
+		compDataType in compDataType[parentType_CompositeDataType]
+	}
+	and(uml::Class class
+		uml::Package pkg
+		uml::Generalization generalization
+	)
+	with{
+		class in pkg[packagedElement]
+		generalization in class[generalization]
+		//todo after element replaced at uml::Generalization[general]
+	}
+	such that{
+		observe attributes{
+			pcm::CompositeDataType[entityName]
+			uml::Class[name]
+		}
+	}
+}
+
+//7 pcm::OperationSignature <> uml::Operation
+mapping OperationSignateXOperation{
+	map(pcm::OperationSignature operationSignature
+		pcm::OperationInterface operationInterface
+	)
+	with{
+		operationSignature in operationInterface[signatures__OperationInterface]
+		//todo after element pcm::DataType replaced at pcm::OperationSignature[returnType__OperationSignature]
+	}
+	and(uml::Operation operation
+		uml::Interface interface
+	)
+	with{
+		operation in interface[ownedOperation]
+	}
+	such that{
+		observe attributes{
+			 pcm::OperationSignature[entityName]
+			 uml::Operation[name]
+		}
+	}
+}
+
+//8 pcm::Signature <> uml::Parameter
+//todo
+//  after element replaced at uml::Parameter[type]
+//  after element replaced at uml::Parameter[lowerValue]
+//	after attribute replaced at uml::LiteralInteger[value]
+//	after element replaced at uml::Parameter[upperValue]
+//	after attribute replaced at uml::LiteralUnlimitedNatural[value]
+
+//9 pcm::Parameter <> uml::Parameter
+mapping ParameterXParameter{
+	map(pcm::Parameter pcmParameter
+		pcm::OperationSignature operationSignature
+	)
+	with{
+		pcmParameter in operationSignature[parameters__OperationSignature]
+		//todo after element pcm::DataType replaced at pcm::Parameter[dataType__Parameter]
+	}
+	and(uml::Parameter umlParameter
+		uml::Operation operation		
+	)
+	with{
+		umlParameter in operation[ownedParameter]
+		//todo after element replaced at uml::Parameter[type]
+		//todo after element replaced at uml::Parameter[lowerValue]
+		//todo after element replaced at uml::Parameter[upperValue]
+	}
+	such that{
+		observe attributes{
+			pcm::Parameter[parameterName]
+			pcm::Parameter[modifier__Parameter]
+		//todo resolve features
+		//	uml::Parameter[name]
+		//	uml::Parameter[direction]
+		}
+	}
+	
+	//todo reaction after attribute replaced at uml::LiteralInteger[value]
+	//todo reaction after attribute replaced at uml::LiteralUnlimitedNatural[value]
+}
+
+//10 pcm::AssemblyContext <> uml::Property
+mapping AssemblyContextXProperty{
+	map(pcm::AssemblyContext assemblyContext
+	//todo resolve 
+	//	pcm::ComposedProvidingRequiringEntity providingEntity
+	)
+	//with{
+	//	 assemblyContext in providingEntity[assemblyContexts__ComposedStructure]
+	//   //todo after element pcm::RepositoryComponent replaced at pcm::AssemblyContext[encapsulatedComponent__AssemblyContext]
+	//}
+	and(uml::Property property
+		uml::Class class
+	)
+	with{
+		property in class[ownedAttribute]
+		class in property[type]		
+	}
+	such that{
+		observe attributes{
+			pcm::AssemblyContext[entityName]
+			uml::Property[name]
+		}
+	}
+}
+
+//11 pcm::CollectionDataType <> uml::Properties, uml::Parameters	
+//todo 
+//after element replaced at pcm::CollectionDataType[innerType_CollectionDataType]
+
+//12 pcm::DataType <> uml::Parameter, uml::Property
+//todo
+//after element pcm::PrimitiveDataType replaced at pcm::InnerDeclaration[datatype_InnerDeclaration]
+//after element pcm::PrimitiveDataType replaced at pcm::Parameter[dataType__Parameter]
+//after element pcm::PrimitiveDataType replaced at pcm::OperationSignature[returnType__OperationSignature]
+
+//13 pcm::OperationRequiredRole <> uml::Property 
+mapping OperationRequiredRoleXProperty{
+	map(pcm::OperationRequiredRole role
+		//todo resolve
+		//pcm::InterfaceProvidingRequiringEntity requiringEntity
+	)
+	//with{
+		//role in requiringEntity[requiredRoles_InterfaceRequiringEntity]
+		//todo after element pcm::OperationInterface replaced at pcm::OperationRequiredRole[requiredInterface__OperationRequiredRole]		
+	//}
+	and(uml::Property property
+		uml::Class class
+		uml::Interface interface
+	)
+	with{
+		property in class[ownedAttribute]
+		interface in property[type]		
+	}
+	such that{
+		observe attributes{
+			pcm::OperationRequiredRole[entityName]
+			uml::Property[name]
+		}
+	}
+	
+	//todo pcm::OperationRequiredRole <> uml::Parameter
+	//is it a seperate mapping or part of this?
+	//	after element uml::Parameter inserted in uml::Operation[ownedParameter]
+	//	after element uml::Parameter removed from uml::Operation[ownedParameter]
+	//	after element uml::Parameter deleted
+	//	after attribute replaced at uml::Parameter[name]
+	//	after element uml::Interface replaced at uml::Parameter[type]
+}
+
+//14 pcm::OperationProvidedRole <> uml::InterfaceRealization
+mapping OperationProvidedRoleXInterfaceRealization{
+	map(pcm::OperationProvidedRole role
+		//todo resolve
+		//pcm::InterfaceProvidingRequiringEntity requiringEntity
+	)
+	//with{
+		//role in requiringEntity[providedRoles_InterfaceProvidingEntity]
+		//todo after element pcm::OperationInterface replaced at pcm::OperationProvidedRole[providedInterface__OperationProvidedRole]
+	//}
+	and(uml::InterfaceRealization interfaceRealization
+		uml::Class class
+		uml::Interface interface
+	)
+	with{
+		interfaceRealization in class[interfaceRealization]
+		interface in interfaceRealization[contract]
+	}
+	such that{
+		observe attributes{
+			pcm::OperationProvidedRole[entityName]
+			uml::InterfaceRealization[name]
+		}
+	}
+}
