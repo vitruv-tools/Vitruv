@@ -38,6 +38,9 @@ class FluentReactionsFileBuilder extends FluentReactionElementBuilder {
 		// this call has the (desired!) side effect to create the jvm types!
 		val newContents = resource.getContents()
 		
+		newContents.forEach[
+			println('''created content: «it»''')
+		]
 		// very rough check
 		checkState(newContents.size > resourceContentLength + 1, '''Jvm type creation for failed for the reactions file «fileName»!''')
 		triggerAfterJvmTypeCreation()

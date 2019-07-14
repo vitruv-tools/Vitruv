@@ -27,13 +27,17 @@ class ElementReplacedReactionGenerator extends AbstractReactionTypeGenerator {
 
 	override generateTrigger(ReactionGeneratorContext context) {
 		if (targetElement !== null) {
-			return context.create.reaction('''On«targetElement.parameterName»ReplacedAt«reference.parameterName»''').afterElement(targetElement.metaclass).replacedAt(
+			return context.create.reaction(reactionName('''«targetElement.parameterName»ReplacedAt«reference.parameterName»''')).afterElement(targetElement.metaclass).replacedAt(
 				reference.feature as EReference)			
 		} else {
-			return context.create.reaction('''OnElementReplacedAt«reference.parameterName»''').afterElement.replacedAt(
+			return context.create.reaction(reactionName('''ElementReplacedAt«reference.parameterName»''')).afterElement.replacedAt(
 				reference.feature as EReference)
 		}
 	}
+	
+	override toString()'''
+	«IF targetElement!==null»«targetElement.parameterName»«ELSE»element«ENDIF» replaced at «targetElement.parameterName»'''
+	
 
 	override equals(Object obj) {
 		if (obj instanceof ElementReplacedReactionGenerator) {

@@ -57,20 +57,18 @@ class MappingsLanguageGenerator implements IGenerator2 {
 		reactionsGenerator.writeReactions(fsa)
 	}
 
-	private def generateReactions(String mappingsPackage, MappingsFile mappingsFile, MappingsSegment segment, IReactionsGenerator reactionsGenerator, boolean l2r) {
+	private def generateReactions(String mappingsPackage, MappingsFile mappingsFile, MappingsSegment segment,
+		IReactionsGenerator reactionsGenerator, boolean l2r) {
 		val basePackageForSegment = mappingsPackage + "." + segment.name
 		val reactionsFileGenerator = new MappingsReactionsFileGenerator(basePackageForSegment, segment, l2r,
 			reactionsGenerator, create, mappingsFile);
 		var reactionsContext = reactionsFileGenerator.createAndInitializeReactionsFile()
-		for (mapping : segment.mappings) {
-			val generator = new MappingReactionsGenerator(basePackageForSegment, segment, l2r, reactionsGenerator,
-				create)
-			generator.generateReactionsAndRoutines(reactionsContext)
-		}
+		val generator = new MappingReactionsGenerator(basePackageForSegment, segment, l2r, reactionsGenerator, create)
+		generator.generateReactionsAndRoutines(reactionsContext)
 		reactionsContext
 	}
-	
-	private def checkIntegrations(MappingsSegment segment){
+
+	private def checkIntegrations(MappingsSegment segment) {
 		for (mapping : segment.mappings) {
 			reactionIntegrationGenerator.check(mapping)
 		}

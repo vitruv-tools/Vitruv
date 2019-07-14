@@ -24,14 +24,17 @@ class InsertedReactionGenerator extends AbstractReactionTypeGenerator {
 
 	override generateTrigger(ReactionGeneratorContext context) {
 		if (insertTarget !== null) {
-			return context.create.reaction('''On«metaclass.parameterName»InsertedIn«insertTarget.parameterName»''').
+			return context.create.reaction(reactionName('''«metaclass.parameterName»InsertedIn«insertTarget.parameterName»''')).
 				afterElement(metaclass).insertedIn(insertTarget.feature as EReference)
 		} else {
-			return context.create.reaction('''On«metaclass.parameterName»InsertedAsRoot''').afterElement(metaclass).
+			return context.create.reaction(reactionName('''«metaclass.parameterName»InsertedAsRoot''')).afterElement(metaclass).
 				created
 		}
 	}
-
+	
+	override toString()'''
+	«metaclass.parameterName» inserted «IF insertTarget!==null»in «insertTarget.parameterName»«ELSE»as root«ENDIF»'''
+	
 	override generateCorrespondenceMatches(UndecidedMatcherStatementBuilder builder) {
 		iterateParameters [ reactionParameter, correspondingParameter |
 			builder.requireAbsenceOf(correspondingParameter.metaclass).correspondingTo.affectedEObject.taggedWith(

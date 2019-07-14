@@ -19,7 +19,8 @@ class MappingReactionsGenerator extends MappingsReactionsFileGenerator {
 			val mappingsConditions = it.bidirectionalizableConditions
 			val mappingRoutines = it.bidirectionalizableRoutines
 			val mappingAttributes = it.observeAttributes
-			val reactionsBuilder = new DirectionalMappingReactionGenerator(from, to)
+			val reactionsBuilder = new DirectionalMappingReactionGenerator(from, to, it)
+			println('''generate mapping «it.name» «IF(context.left2right)»left to right«ELSE»right to left«ENDIF»:''')
 			reactionsBuilder.generate(context, fromConditions, mappingsConditions, mappingRoutines, mappingAttributes)
 		]
 	}

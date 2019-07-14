@@ -32,9 +32,12 @@ class AttributeReplacedReactionGenerator extends AbstractReactionTypeGenerator {
 
 	override generateTrigger(ReactionGeneratorContext context) {
 		return context.create.
-			reaction('''On«attribute.getAttributeName.toFirstUpper»ReplacedAt«metaclass.parameterName»''').
+			reaction(reactionName('''«attribute.getAttributeName.toFirstUpper»ReplacedAt«metaclass.parameterName»''')).
 			afterAttributeReplacedAt(metaclass, extractAttribute)		
 	}
+	
+	override toString()'''
+	«attribute.attributeName» replaced at «metaclass.parameterName»'''
 
 	private def extractAttribute() {
 		attribute.feature as EAttribute
