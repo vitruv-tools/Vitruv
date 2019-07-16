@@ -5,6 +5,7 @@ import com.google.inject.Singleton
 import org.eclipse.emf.ecore.EClass
 import tools.vitruv.dsls.reactions.reactionsLanguage.Reaction
 import tools.vitruv.dsls.reactions.reactionsLanguage.Routine
+import tools.vitruv.dsls.mirbase.mirBase.MetamodelImport
 
 /**
  * Entry point for fluent reaction builders. The offered methods each create a 
@@ -49,7 +50,7 @@ class FluentReactionsLanguageBuilder {
 	def reaction(Reaction reaction) {
 		new IntegratedReactionBuilder(reaction, context)
 	}
-
+	
 	static class IntegratedRoutineBuilder extends FluentRoutineBuilder {
 		new(Routine routine, EClass inputType, FluentBuilderContext context) {
 			super(null, context)

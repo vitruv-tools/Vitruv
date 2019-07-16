@@ -63,9 +63,6 @@ class MappingsReactionsFileGenerator extends AbstractMappingsSegmentGenerator {
 	
 	def createAndInitializeReactionsFile() {
 		val reactionsFile = create.reactionsFile(directedSegmentName)
-		//		FIXME MK add static extension imports for ALL mappings
-		//		import static tools.vitruv.dsls.mappings.tests.addressesXrecipients.mappings.AdRootXReRootMapping.*
-		//		import static tools.vitruv.dsls.mappings.tests.addressesXrecipients.mappings.AddressXRecipientLocationCityMapping.*
 		val segmentBuilder = create.reactionsSegment(directedSegmentName+"Segment")
 			.inReactionToChangesIn(fromDomain.domain)
 			.executeActionsIn(toDomain.domain)

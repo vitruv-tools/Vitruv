@@ -48,13 +48,22 @@ class MappingsLanguageGenerator implements IGenerator2 {
 				val r2lContext = generateReactions(mappingsPackage, mappingsFile, segment, reactionsGenerator, false);
 				reactionIntegrationGenerator.init(l2rContext, r2lContext)
 				checkIntegrations(segment)
-				reactionsGenerator.addReactionsFile(l2rContext.file)
-				reactionsGenerator.addReactionsFile(r2lContext.file)
+				reactionsGenerator.attachReactionsFile(l2rContext)
+				reactionsGenerator.attachReactionsFile(r2lContext)
 			}
 		}
 		reactionIntegrationGenerator.generate(fsa, reactionsGenerator)
 		reactionsGenerator.generate(fsa)
 		reactionsGenerator.writeReactions(fsa)
+	}
+	
+	private def attachReactionsFile(IReactionsGenerator generator, ReactionGeneratorContext context){
+		val file = context.file
+		//add all imports from mappingsfile to reactionfile
+	    context.mappingsFile.metamodelImports.forEach[
+	    	file.importMetamodel(it)
+	    ]
+		generator.addReactionsFile(file)			
 	}
 
 	private def generateReactions(String mappingsPackage, MappingsFile mappingsFile, MappingsSegment segment,
