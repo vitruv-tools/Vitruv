@@ -221,11 +221,21 @@ abstract package class FluentReactionElementBuilder {
 		// there will usually only be a few metamodel imports, so no need for caching
 		attachedReactionsFile.metamodelImports.findFirst[package == ePackage] ?: createMetamodelImport(ePackage)
 	}
+	
+	def protected metamodelImport(EPackage ePackage, String pname){
+	checkState(attachedReactionsFile !== null && !jvmTypesAvailable,
+			"Metamodel imports can only be created in the attachment preparation phase!")
+		createMetamodelImport(ePackage, ePackage.name)		
+	}
 
 	def private createMetamodelImport(EPackage ePackage) {
+		createMetamodelImport(ePackage, ePackage.name)
+	}
+	
+	def private createMetamodelImport(EPackage ePackage, String pname){
 		val newImport = MirBaseFactory.eINSTANCE.createMetamodelImport => [
 			package = ePackage
-			name = ePackage.name
+			name = pname
 		]
 		attachedReactionsFile.metamodelImports += newImport
 		return newImport
