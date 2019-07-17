@@ -27,7 +27,7 @@ import tools.vitruv.dsls.mirbase.mirBase.NamedJavaElement
 import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsFile
 
 import static com.google.common.base.Preconditions.*
-import static tools.vitruv.dsls.reactions.codegen.helper.ReactionsLanguageConstants.*
+import static tools.vitruv.dsls.reactions.codegen.ReactionsLanguageConstants.*
 
 /**
  * Parent class of all fluent builders. The builders work in three phases:

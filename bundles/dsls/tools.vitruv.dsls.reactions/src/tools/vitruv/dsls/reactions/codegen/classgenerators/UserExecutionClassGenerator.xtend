@@ -18,7 +18,7 @@ import tools.vitruv.dsls.reactions.codegen.typesbuilder.TypesBuilderExtensionPro
 import org.eclipse.xtext.common.types.JvmGenericType
 import org.eclipse.xtext.xbase.XExpression
 import tools.vitruv.dsls.reactions.reactionsLanguage.ExecuteActionStatement
-import static tools.vitruv.dsls.reactions.codegen.helper.ReactionsLanguageConstants.*
+import static tools.vitruv.dsls.reactions.codegen.ReactionsLanguageConstants.*
 import tools.vitruv.dsls.reactions.reactionsLanguage.RetrieveOrRequireAbscenceOfModelElement
 
 class UserExecutionClassGenerator extends ClassGenerator {

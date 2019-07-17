@@ -9,7 +9,7 @@ import org.eclipse.xtext.xbase.XBlockExpression
 import org.eclipse.xtext.xbase.XExpression
 import org.eclipse.xtext.xbase.XbaseFactory
 
-import static tools.vitruv.dsls.reactions.codegen.helper.ReactionsLanguageConstants.*
+import static tools.vitruv.dsls.reactions.codegen.ReactionsLanguageConstants.*
 
 abstract package class FluentReactionsSegmentChildBuilder extends FluentReactionElementBuilder {
 	@Accessors(PACKAGE_SETTER)

@@ -8,7 +8,7 @@ import static tools.vitruv.dsls.reactions.api.generator.ReactionsLanguageGenerat
 import tools.vitruv.dsls.reactions.reactionsLanguage.PreconditionCodeBlock
 import tools.vitruv.extensions.dslsruntime.reactions.AbstractReactionRealization
 import tools.vitruv.framework.change.echange.EChange
-import static tools.vitruv.dsls.reactions.codegen.helper.ReactionsLanguageConstants.*;
+import static tools.vitruv.dsls.reactions.codegen.ReactionsLanguageConstants.*;
 import tools.vitruv.dsls.reactions.reactionsLanguage.Reaction
 import static extension tools.vitruv.dsls.reactions.codegen.helper.ClassNamesGenerators.*
 import static extension tools.vitruv.dsls.reactions.codegen.changetyperepresentation.ChangeTypeRepresentationExtractor.*

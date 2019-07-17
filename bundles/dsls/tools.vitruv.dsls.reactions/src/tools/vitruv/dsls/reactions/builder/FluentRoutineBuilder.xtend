@@ -18,14 +18,14 @@ import tools.vitruv.dsls.reactions.reactionsLanguage.ExistingElementReference
 import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsLanguageFactory
 import tools.vitruv.dsls.reactions.reactionsLanguage.RemoveCorrespondence
 import tools.vitruv.dsls.reactions.reactionsLanguage.RetrieveModelElement
+import tools.vitruv.dsls.reactions.reactionsLanguage.RetrieveOrRequireAbscenceOfModelElement
 import tools.vitruv.dsls.reactions.reactionsLanguage.Routine
+import tools.vitruv.dsls.reactions.reactionsLanguage.RoutineCallStatement
 import tools.vitruv.dsls.reactions.reactionsLanguage.RoutineOverrideImportPath
 import tools.vitruv.dsls.reactions.reactionsLanguage.Taggable
 
 import static com.google.common.base.Preconditions.*
-import static tools.vitruv.dsls.reactions.codegen.helper.ReactionsLanguageConstants.*
-import tools.vitruv.dsls.reactions.reactionsLanguage.RetrieveOrRequireAbscenceOfModelElement
-import tools.vitruv.dsls.reactions.reactionsLanguage.RoutineCallStatement
+import static tools.vitruv.dsls.reactions.codegen.ReactionsLanguageConstants.*
 
 class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 
@@ -50,7 +50,7 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 			input = ReactionsLanguageFactory.eINSTANCE.createRoutineInput
 		]
 	}
-	
+
 	override protected attachmentPreparation() {
 		super.attachmentPreparation()
 		checkState(routine.action !== null, "No action was set on this routine!")
@@ -74,7 +74,7 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 	}
 
 	def private addInputElementIfNotExists(EClassifier type, String parameterName) {
-		if(routine.input.modelInputElements.findFirst[name == parameterName] !== null) return;
+		if (routine.input.modelInputElements.findFirst[name == parameterName] !== null) return;
 		addInputElement(type, parameterName)
 	}
 
@@ -145,7 +145,7 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 			matchers.accept(statementsBuilder)
 			if (routine.matcher.matcherStatements.size == 0) {
 				if (skipWhenNoMatchersAdded) {
-					//remove matcher
+					// remove matcher
 					routine.matcher = null
 				} else {
 					throw new IllegalStateException('''No matcher statements were created in the «builder»!''')
@@ -173,8 +173,8 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 		private new(FluentRoutineBuilder builder) {
 			super(builder)
 		}
-		
-		def void alwaysRequireAffectedEObject(){
+
+		def void alwaysRequireAffectedEObject() {
 			requireAffectedEObject = true
 		}
 
@@ -489,42 +489,36 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 			]
 		}
 
-		def void call(FluentRoutineBuilder... routineBuilders) {
-			checkNotNull(routineBuilders)
-			checkArgument(routineBuilders.length > 0, "Must provide at least one routineBuilder!")
-			for (routineBuilder : routineBuilders) {
-				checkState(routineBuilder.
-					readyToBeAttached, '''The «routineBuilder» is not sufficiently initialised to be set on the «builder»''')
-				checkState(!routineBuilder.requireNewValue || valueType !==
-					null, '''The «routineBuilder» requires a new value, but the «builder» doesn’t create one!''')
-				checkState(!routineBuilder.requireOldValue || valueType !==
-					null, '''The «routineBuilder» requires an old value, but the «builder» doesn’t create one!''')
-				// checkState(!routineBuilder.
-				// requireAffectedEObject, '''The «routineBuilder» requires an affectedElement, but the «builder» doesn’t create one!''')
-				builder.transferReactionsSegmentTo(routineBuilder)
-				addRoutineCall(routineBuilder)
-				if (valueType !== null && (routineBuilder.requireNewValue || routineBuilder.requireOldValue)) {
-					routineBuilder.valueType = valueType
-				}
-			}
+		def void call(FluentRoutineBuilder routineBuilder, String... parameters) {
+			checkNotNull(routineBuilder)
+			checkState(routineBuilder. readyToBeAttached,
+				'''The «routineBuilder» is not sufficiently initialised to be set on the «builder»''' )
+			checkState(!routineBuilder.requireNewValue,
+				'''The «routineBuilder» requires a new value, and can thus only be called from reactions, not routines!''')
+			checkState(!routineBuilder.requireOldValue || valueType !==	null,
+				'''The «routineBuilder» requires an old value, and can thus only be called from reactions, not routines!''' )
+			checkState(!routineBuilder.requireAffectedEObject,
+				'''The «routineBuilder» requires an requireAffectedEObject, and can thus only be called from reactions, not routines!''' )
+			builder.transferReactionsSegmentTo(routineBuilder)
+			addRoutineCall(routineBuilder, parameters)
 		}
 
-		def private addRoutineCall(FluentRoutineBuilder routineBuilder) {
+		def private addRoutineCall(FluentRoutineBuilder routineBuilder, String... parameters) {
 			val statementIndex = routine.action.actionStatements.size
 			routine.action.actionStatements += ReactionsLanguageFactory.eINSTANCE.createRoutineCallStatement => [
-				code = routineBuilder.routineCall(statementIndex)
+				code = routineBuilder.routineCall(statementIndex, parameters)
 			]
 		}
 
-		def private routineCall(FluentRoutineBuilder routineBuilder, int statementIndex) {
+		def private routineCall(FluentRoutineBuilder routineBuilder, int statementIndex, String... parameters) {
 			(XbaseFactory.eINSTANCE.createXFeatureCall => [
 				explicitOperationCall = true
 			]).whenJvmTypes [
 				val routineCallMethod = getRoutineCallMethod(statementIndex)
 				feature = routineBuilder.jvmOperation
-				implicitReceiver = routineCallMethod.argument(
-					REACTION_USER_EXECUTION_ROUTINE_CALL_FACADE_PARAMETER_NAME)
-				featureCallArguments += routineBuilder.requiredArgumentsFrom(routineCallMethod)
+				implicitReceiver = routineCallMethod.argument(REACTION_USER_EXECUTION_ROUTINE_CALL_FACADE_PARAMETER_NAME)
+				val typeProvider = typeProvider
+				featureCallArguments += parameters.map [typeProvider.variable(it)]
 			]
 		}
 

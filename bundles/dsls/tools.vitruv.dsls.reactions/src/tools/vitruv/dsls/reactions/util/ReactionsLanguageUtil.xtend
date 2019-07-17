@@ -9,7 +9,7 @@ import tools.vitruv.dsls.reactions.reactionsLanguage.Routine
 import tools.vitruv.dsls.reactions.reactionsLanguage.RoutineOverrideImportPath
 import tools.vitruv.extensions.dslsruntime.reactions.structure.ReactionsImportPath
 
-import static tools.vitruv.dsls.reactions.codegen.helper.ReactionsLanguageConstants.*
+import static tools.vitruv.dsls.reactions.codegen.ReactionsLanguageConstants.*
 
 /**
  * Utility methods working with the model objects of the Reactions Language, which might be of use outside of code generation.
