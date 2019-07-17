@@ -1,4 +1,4 @@
-package tools.vitruv.dsls.reactions.codegen.helper
+package tools.vitruv.dsls.reactions.codegen
 
 import edu.kit.ipd.sdq.activextendannotations.Utility
 
