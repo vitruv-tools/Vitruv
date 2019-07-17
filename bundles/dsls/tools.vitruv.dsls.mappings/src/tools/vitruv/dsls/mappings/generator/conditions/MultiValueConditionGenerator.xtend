@@ -68,7 +68,7 @@ class MultiValueConditionGenerator extends AbstractSingleSidedCondition<MultiVal
 	private def generateEquals(UndecidedMatcherStatementBuilder builder, EObject leftSide,
 		MetaclassFeatureReference rightSide, boolean negated) {
 //			builder.
-	 	builder.check[typeProvider |
+	 /*	builder.check[typeProvider |
 			//typeProvider.variable("test")
 			val eobject = typeProvider.affectedEObject
 			println('''>>>>>>>>>>>>>>>>>>>>>>> «eobject»   «leftSide» == «rightSide»''')
@@ -77,7 +77,7 @@ class MultiValueConditionGenerator extends AbstractSingleSidedCondition<MultiVal
 			feature = null
 			explicitOperationCall = true
 			]			
-		]
+		]*/
 	}
 	
 	

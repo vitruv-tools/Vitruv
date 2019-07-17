@@ -17,7 +17,7 @@ import static extension tools.vitruv.dsls.reactions.codegen.helper.ReactionsLang
 import static extension tools.vitruv.dsls.reactions.codegen.helper.ClassNamesGenerators.*;
 import tools.vitruv.dsls.mirbase.mirBase.NamedMetaclassReference
 import tools.vitruv.dsls.reactions.codegen.helper.AccessibleElement
-import static tools.vitruv.dsls.reactions.codegen.helper.ReactionsLanguageConstants.*;
+import static tools.vitruv.dsls.reactions.codegen.ReactionsLanguageConstants.*;
 
 class ParameterGenerator {
 	protected final extension JvmTypeReferenceBuilder _typeReferenceBuilder;

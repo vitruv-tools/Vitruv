@@ -35,37 +35,27 @@ class FluentReactionsLanguageBuilder {
 		new FluentRoutineBuilder(name, context).start()
 	}
 
-	def routine(Routine routine) {
-		new IntegratedRoutineBuilder(routine, null, context)
-	}
-
-	def routine(Routine routine, EClass inputType) {
-		new IntegratedRoutineBuilder(routine, inputType, context)
+	def from(Routine routine) {
+		new ExistingRoutineBuilder(routine, context)
 	}
 
 	def reaction(String name) {
 		new FluentReactionBuilder(name, context).start()
 	}
 
-	def reaction(Reaction reaction) {
-		new IntegratedReactionBuilder(reaction, context)
+	def from(Reaction reaction) {
+		new ExistingReactionBuilder(reaction, context)
 	}
 	
-	static class IntegratedRoutineBuilder extends FluentRoutineBuilder {
-		new(Routine routine, EClass inputType, FluentBuilderContext context) {
+	static class ExistingRoutineBuilder extends FluentRoutineBuilder {
+		new(Routine routine, FluentBuilderContext context) {
 			super(null, context)
 			this.routine = routine
 			this.readyToBeAttached = true
-			if (inputType !== null) {
-				this.requireAffectedEObject = true
-				this.affectedObjectType = inputType
-				// clear the model inputs, because the parameter will be reconstructed by the generator
-				this.routine.input.modelInputElements.clear
-			}
 		}
 	}
 
-	static class IntegratedReactionBuilder extends FluentReactionBuilder {
+	static class ExistingReactionBuilder extends FluentReactionBuilder {
 		new(Reaction reaction, FluentBuilderContext context) {
 			super(null, context)
 			this.reaction = reaction

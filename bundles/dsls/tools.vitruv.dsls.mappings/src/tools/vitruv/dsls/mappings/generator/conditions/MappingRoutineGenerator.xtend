@@ -10,6 +10,7 @@ import tools.vitruv.dsls.mappings.generator.integration.AbstractReactionIntegrat
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder
 import tools.vitruv.dsls.mappings.generator.reactions.DeletedReactionGenerator
 import tools.vitruv.dsls.mappings.generator.reactions.RemovedReactionGenerator
+import tools.vitruv.dsls.reactions.codegen.ReactionsLanguageConstants
 
 /**
  * 
@@ -53,14 +54,13 @@ class MappingRoutineGenerator extends AbstractBidirectionalCondition {
 			// integrate the routine in the file
 			integrateRoutine(context)
 			// call the routine from within this reactions action routine block
-			builder.call(targetRoutineBuilder)
+			builder.call(targetRoutineBuilder, ReactionsLanguageConstants.CHANGE_AFFECTED_ELEMENT_ATTRIBUTE)
 		}
 	}
 
 	private def integrateRoutine(ReactionGeneratorContext context) {
 		if (targetRoutineBuilder === null) {
-			targetRoutineBuilder = context.create.routine(AbstractReactionIntegrationGenerator.generateRoutine(routine),
-				targetMetaclass)
+			targetRoutineBuilder = context.create.from(AbstractReactionIntegrationGenerator.generateRoutine(routine))
 			context.getSegmentBuilder += targetRoutineBuilder
 		}
 	}
