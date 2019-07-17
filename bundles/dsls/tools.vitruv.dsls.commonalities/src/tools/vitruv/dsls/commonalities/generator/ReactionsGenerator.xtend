@@ -93,7 +93,6 @@ package class ReactionsGenerator extends SubGenerator {
 
 		VitruvDomainProviderRegistry.registerDomainProvider(commonalityFile.concept.name,
 			commonalityFile.concept.vitruvDomain.provider)
-		// TODO participation domains
 		try {
 			generator.addReactionsFile(reactionFile)
 			generator.generate(fsa)
@@ -226,6 +225,7 @@ package class ReactionsGenerator extends SubGenerator {
 			.filter[value !== null])
 		
 		if (relations.size > 0) {
+		// TODO participation domains
 			create.reaction('''«commonality.name»Insert''')
 				.afterElement(commonalityFile.changeClass).insertedIn(IntermediateModelBasePackage.eINSTANCE.root_Intermediates)
 				.call [

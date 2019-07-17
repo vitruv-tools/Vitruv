@@ -67,6 +67,10 @@ class MappingsReactionsFileGenerator extends AbstractMappingsSegmentGenerator {
 			.inReactionToChangesIn(fromDomain.domain)
 			.executeActionsIn(toDomain.domain)
 		reactionsFile += segmentBuilder	
+		//add all imports from mappingsfile to reactionfile
+	   /*  mappingsFile.metamodelImports.forEach[
+	    	reactionsFile.importMetamodel(it)
+	    ]*/
 	    context= new ReactionGeneratorContext(reactionsFile, segmentBuilder, segment, mappingsFile, create, left2right);		
 	}
 

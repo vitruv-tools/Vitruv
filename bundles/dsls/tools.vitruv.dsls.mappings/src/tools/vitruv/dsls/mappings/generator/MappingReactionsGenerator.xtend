@@ -12,8 +12,6 @@ class MappingReactionsGenerator extends MappingsReactionsFileGenerator {
 	}
 
 	def generateReactionsAndRoutines(ReactionGeneratorContext context) {
-				val f= XExpressionParser.parseExpression("4 == 4");
-		println(f)
 		segment.mappings.forEach [	
 			val from = fromParameters
 			val to = toParameters

@@ -22,6 +22,7 @@ import tools.vitruv.dsls.mirbase.mirBase.NamedMetaclassReference
 import tools.vitruv.dsls.mirbase.scoping.MirBaseScopeProviderDelegate
 
 import static tools.vitruv.dsls.mirbase.mirBase.MirBasePackage.Literals.*
+import tools.vitruv.dsls.reactions.scoping.ReactionsLanguageScopeProviderDelegate
 
 class MappingsLanguageScopeProviderDelegate extends MirBaseScopeProviderDelegate {
 
@@ -58,7 +59,7 @@ class MappingsLanguageScopeProviderDelegate extends MirBaseScopeProviderDelegate
 			// both sides 
 				val mapping = contextContainer.eContainer as Mapping;
 				return createMappingMetaclassesScope(mapping, true, true);
-			}
+			} 
 		}
 		super.getScope(context, reference)
 	}

@@ -2,15 +2,17 @@ package tools.vitruv.dsls.mappings.generator.conditions
 
 import org.eclipse.emf.ecore.EClass
 import tools.vitruv.dsls.mappings.generator.ReactionGeneratorContext
-import tools.vitruv.dsls.mappings.generator.reactions.AbstractReactionTypeGenerator
-import tools.vitruv.dsls.mappings.mappingsLanguage.RoutineIntegration
-import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.ActionStatementBuilder
-import static tools.vitruv.dsls.mappings.generator.XExpressionParser.*
 import tools.vitruv.dsls.mappings.generator.integration.AbstractReactionIntegrationGenerator
-import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder
+import tools.vitruv.dsls.mappings.generator.reactions.AbstractReactionTypeGenerator
 import tools.vitruv.dsls.mappings.generator.reactions.DeletedReactionGenerator
 import tools.vitruv.dsls.mappings.generator.reactions.RemovedReactionGenerator
+import tools.vitruv.dsls.mappings.mappingsLanguage.RoutineIntegration
+import tools.vitruv.dsls.mirbase.mirBase.MirBaseFactory
+import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder
+import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.ActionStatementBuilder
 import tools.vitruv.dsls.reactions.codegen.ReactionsLanguageConstants
+import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsLanguageFactory
+import org.eclipse.xtext.xbase.XbaseFactory
 
 /**
  * 
@@ -60,7 +62,39 @@ class MappingRoutineGenerator extends AbstractBidirectionalCondition {
 
 	private def integrateRoutine(ReactionGeneratorContext context) {
 		if (targetRoutineBuilder === null) {
-			targetRoutineBuilder = context.create.from(AbstractReactionIntegrationGenerator.generateRoutine(routine))
+			var generatedRoutine = AbstractReactionIntegrationGenerator.generateRoutine(routine)
+		/* 	val ref = generatedRoutine.input.modelInputElements.get(0)
+			val mm = MirBaseFactory.eINSTANCE.createMetamodelImport => [
+				package = ref.metamodel.package
+				name = ref.metamodel.name
+			]
+
+			generatedRoutine = ReactionsLanguageFactory.eINSTANCE.createRoutine => [
+				name = 'updateRepoName'
+				input = ReactionsLanguageFactory.eINSTANCE.createRoutineInput => [
+					it.modelInputElements += MirBaseFactory.eINSTANCE.createNamedMetaclassReference => [
+						name = 'affectedEObject'
+						metaclass = ref.metaclass
+						metamodel = mm
+					]
+				]
+				action = ReactionsLanguageFactory.eINSTANCE.createAction => [
+					actionStatements += ReactionsLanguageFactory.eINSTANCE.createExecuteActionStatement => [
+						code = XbaseFactory.eINSTANCE.createXStringLiteral => [
+							value = 'test'
+						]
+					]
+				]
+			]
+*/
+			targetRoutineBuilder = context.create.from(generatedRoutine)
+
+			/*val parameter = generatedRoutine.input.modelInputElements.get(0)
+			 * 		 	parameter.e
+			 * var modelRou = generatedRoutine.input.modelInputElements.get(0);
+			 * var modelNew = MirBaseFactory.eINSTANCE.createNamedMetaclassReference => [
+			 * 	it.name = ' test'
+			 ]*/
 			context.getSegmentBuilder += targetRoutineBuilder
 		}
 	}
