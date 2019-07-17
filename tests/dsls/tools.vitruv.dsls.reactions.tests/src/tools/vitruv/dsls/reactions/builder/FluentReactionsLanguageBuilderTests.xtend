@@ -550,7 +550,6 @@ class FluentReactionsLanguageBuilderTests {
 						leftOperand = XbaseFactory.eINSTANCE.createXStringLiteral => [value = 'test']
 						rightOperand = XbaseFactory.eINSTANCE.createXStringLiteral => [value = 'test']
 						feature = (typeProvider.findTypeByName(objectExtensionsFqn) as JvmDeclaredType).members.findFirst [it.simpleName == 'operator_tripleEquals']
-						println("")
 					]
 				]	
 			]
@@ -581,6 +580,65 @@ class FluentReactionsLanguageBuilderTests {
 				}
 				action {
 					val newRoot = create allElementTypes::Root
+				}
+			}
+		'''
+		assertThat(reactionsFile, builds(expectedReaction))
+	}
+	
+	@Test
+	def void routineWithAffectedEObjectInMatch() {
+		val objectExtensionsFqn = 'org.eclipse.xtext.xbase.lib.ObjectExtensions'
+		val routineWithMatch = create.routine('withMatch')
+			.match[
+				check [ typeProvider |
+					XbaseFactory.eINSTANCE.createXBinaryOperation => [
+						leftOperand = XbaseFactory.eINSTANCE.createXStringLiteral => [value = 'test']
+						rightOperand = typeProvider.affectedEObject
+						feature = (typeProvider.findTypeByName(objectExtensionsFqn) as JvmDeclaredType).members.findFirst [it.simpleName == 'operator_tripleEquals']
+					]
+				]	
+			]
+			.action [
+				vall('newRoot').create(Root)
+				addCorrespondenceBetween("newRoot").and.affectedEObject
+			]
+			
+		val reaction = create.reaction('CreateRoot')
+					.afterElement(Root).created
+					.call(routineWithMatch)
+		
+		val segment = create.reactionsSegment('routineWithMatchTest')
+				.inReactionToChangesIn(AllElementTypes)
+				.executeActionsIn(AllElementTypes) +=
+					reaction
+		segment += routineWithMatch
+						
+		val reactionsFile = create.reactionsFile('routineWithMatchTest') += segment
+		
+		val expectedReaction = '''
+			import «objectExtensionsFqn»
+			
+			import "http://tools.vitruv.testutils.metamodels.allElementTypes" as allElementTypes
+			
+			reactions: routineWithMatchTest
+			in reaction to changes in AllElementTypes
+			execute actions in AllElementTypes
+			
+			reaction CreateRoot {
+				after element allElementTypes::Root created
+				call withMatch(affectedEObject)
+			}
+			
+			routine withMatch(allElementTypes::Root affectedEObject) {
+				match {
+					check {
+						"test" === affectedEObject
+					}
+				}
+				action {
+					val newRoot = create allElementTypes::Root
+					add correspondence between newRoot and affectedEObject
 				}
 			}
 		'''
