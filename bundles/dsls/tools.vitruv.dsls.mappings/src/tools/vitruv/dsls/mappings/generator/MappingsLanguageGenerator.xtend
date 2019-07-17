@@ -59,10 +59,6 @@ class MappingsLanguageGenerator implements IGenerator2 {
 	
 	private def attachReactionsFile(IReactionsGenerator generator, ReactionGeneratorContext context){
 		val file = context.file
-		//add all imports from mappingsfile to reactionfile
-	    context.mappingsFile.metamodelImports.forEach[
-	    	file.importMetamodel(it)
-	    ]
 		generator.addReactionsFile(file)			
 	}
 

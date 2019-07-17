@@ -2,10 +2,12 @@ package tools.vitruv.dsls.reactions.builder
 
 import com.google.inject.Inject
 import com.google.inject.Singleton
-import org.eclipse.emf.ecore.EClass
+import org.eclipse.emf.ecore.util.EcoreUtil
 import tools.vitruv.dsls.reactions.reactionsLanguage.Reaction
 import tools.vitruv.dsls.reactions.reactionsLanguage.Routine
 import tools.vitruv.dsls.mirbase.mirBase.MetamodelImport
+import tools.vitruv.dsls.mirbase.mirBase.NamedMetaclassReference
+import tools.vitruv.dsls.mirbase.mirBase.MetaclassReference
 
 /**
  * Entry point for fluent reaction builders. The offered methods each create a 
@@ -46,12 +48,18 @@ class FluentReactionsLanguageBuilder {
 	def from(Reaction reaction) {
 		new ExistingReactionBuilder(reaction, context)
 	}
-	
+
 	static class ExistingRoutineBuilder extends FluentRoutineBuilder {
 		new(Routine routine, FluentBuilderContext context) {
 			super(null, context)
 			this.routine = routine
 			this.readyToBeAttached = true
+			val routineCopy = EcoreUtil.copy(routine)
+			val contents = EcoreUtil.getAllContents(#[routineCopy])
+			contents.filter[it instanceof MetaclassReference].forEach [
+				val ref = it as MetaclassReference
+				ref.reference(ref.metaclass)
+			]
 		}
 	}
 
