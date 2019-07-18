@@ -78,15 +78,15 @@ abstract package class FluentReactionsSegmentChildBuilder extends FluentReaction
 		def staticExtensionImported(JvmOperation operation) {
 			builder.staticExtensionImported(operation)
 		}
-		
+
 		def staticExtensionWildcardImported(JvmOperation operation) {
 			builder.staticExtensionWildcardImported(operation)
 		}
-		
+
 		def staticExtensionAllImported(JvmDeclaredType type) {
 			builder.staticExtensionAllImported(type)
 		}
-		
+
 		def affectedEObject() {
 			variable(CHANGE_AFFECTED_ELEMENT_ATTRIBUTE)
 		}
@@ -98,7 +98,7 @@ abstract package class FluentReactionsSegmentChildBuilder extends FluentReaction
 		def newValue() {
 			variable(CHANGE_NEW_VALUE_ATTRIBUTE)
 		}
-		
+
 		/**
 		 * Retrieves a feature call to vala previously declared variable or custom
 		 * routine parameter if it’s present
@@ -126,13 +126,13 @@ abstract package class FluentReactionsSegmentChildBuilder extends FluentReaction
 	}
 
 	def protected getCorrespondingMethod(XExpression correpondingExpression) {
-		val retrievalMethod = context.jvmModelAssociator.getPrimaryJvmElement(correpondingExpression)
+		val retrievalMethod = context.jvmModelAssociator.getLogicalContainer(correpondingExpression)
 		if (retrievalMethod instanceof JvmOperation) {
 			return retrievalMethod
 		}
 		throw new IllegalStateException('''Could not find the method corresponding to “«correpondingExpression»” in the «createdElementType» “«createdElementName»”''')
 	}
-	
+
 	def protected static extractExpressions(XExpression expression) {
 		switch expression {
 			XBlockExpression: expression.expressions
