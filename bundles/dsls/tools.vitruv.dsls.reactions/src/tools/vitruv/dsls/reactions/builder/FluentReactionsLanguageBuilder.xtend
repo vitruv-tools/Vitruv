@@ -54,12 +54,11 @@ class FluentReactionsLanguageBuilder {
 			super(null, context)
 			this.routine = routine
 			this.readyToBeAttached = true
-			val routineCopy = EcoreUtil.copy(routine)
-			val contents = EcoreUtil.getAllContents(#[routineCopy])
+		 	val contents = EcoreUtil.getAllContents(#[routine])
 			contents.filter[it instanceof MetaclassReference].forEach [
 				val ref = it as MetaclassReference
 				ref.reference(ref.metaclass)
-			]
+			] 
 		}
 	}
 
