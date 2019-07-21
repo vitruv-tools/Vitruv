@@ -8,6 +8,7 @@ import tools.vitruv.dsls.reactions.reactionsLanguage.Routine
 import tools.vitruv.dsls.mirbase.mirBase.MetamodelImport
 import tools.vitruv.dsls.mirbase.mirBase.NamedMetaclassReference
 import tools.vitruv.dsls.mirbase.mirBase.MetaclassReference
+import org.eclipse.xtext.xbase.XFeatureCall
 
 /**
  * Entry point for fluent reaction builders. The offered methods each create a 
@@ -58,7 +59,11 @@ class FluentReactionsLanguageBuilder {
 			contents.filter[it instanceof MetaclassReference].forEach [
 				val ref = it as MetaclassReference
 				ref.reference(ref.metaclass)
-			] 
+			]
+			/*contents.filter[it instanceof XFeatureCall].forEach[
+				val call = it as XFeatureCall
+				call.feature = null
+			]*/
 		}
 	}
 

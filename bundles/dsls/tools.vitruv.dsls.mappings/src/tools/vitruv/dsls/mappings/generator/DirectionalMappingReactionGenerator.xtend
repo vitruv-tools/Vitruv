@@ -3,7 +3,6 @@ package tools.vitruv.dsls.mappings.generator
 import java.util.ArrayList
 import java.util.List
 import org.eclipse.emf.ecore.EClass
-import tools.vitruv.dsls.mappings.generator.action.ParameterCorrespondenceTagging
 import tools.vitruv.dsls.mappings.generator.action.ReactionActionGenerator
 import tools.vitruv.dsls.mappings.generator.action.ReactionMatchGenerator
 import tools.vitruv.dsls.mappings.generator.conditions.AbstractBidirectionalCondition
@@ -12,14 +11,13 @@ import tools.vitruv.dsls.mappings.generator.conditions.ReactionTypeFactory
 import tools.vitruv.dsls.mappings.generator.conditions.SingleSidedConditionGenerator
 import tools.vitruv.dsls.mappings.generator.reactions.AbstractReactionTypeGenerator
 import tools.vitruv.dsls.mappings.generator.reactions.AttributeReplacedReactionGenerator
+import tools.vitruv.dsls.mappings.generator.utils.ParameterCorrespondenceTagging
 import tools.vitruv.dsls.mappings.mappingsLanguage.BidirectionalizableCondition
+import tools.vitruv.dsls.mappings.mappingsLanguage.Mapping
 import tools.vitruv.dsls.mappings.mappingsLanguage.ObserveAttributes
 import tools.vitruv.dsls.mappings.mappingsLanguage.RoutineIntegration
 import tools.vitruv.dsls.mappings.mappingsLanguage.SingleSidedCondition
 import tools.vitruv.dsls.mirbase.mirBase.NamedMetaclassReference
-
-import static tools.vitruv.dsls.mappings.generator.action.ParameterCorrespondenceTagging.*
-import tools.vitruv.dsls.mappings.mappingsLanguage.Mapping
 
 class DirectionalMappingReactionGenerator {
 

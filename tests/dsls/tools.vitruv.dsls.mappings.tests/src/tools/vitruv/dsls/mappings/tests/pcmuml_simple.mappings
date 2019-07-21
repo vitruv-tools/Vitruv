@@ -37,30 +37,33 @@ mapping RepositoryXPackage {
     such that {
     // repository[entityName] =    rootPkg[name]   	
 		observe attributes {
-			//pcm::Repository[entityName] 
+			pcm::Repository[entityName] 
 			uml::Package[name]
 		}
-	 // 	routine updateRepoPackageName(pcm::Repository affectedEObject) { 
+	  	routine updateRepoPackageName(pcm::Repository affectedEObject) { 
 		//	match{
 //				val repositoryPkg = retrieve asserted uml::Package corresponding to affectedEObject tagged with "umlXpcm_map_UML_and_PCM_correspondence_Repository:repository_with_Package:repositoryPkg"
 	//		}	
-		//	action {
+			action {
+				execute {
+					
+				}
 			//	call {}
 				//update repositoryPkg {
 				//if (repositoryPkg.name != affectedEObject.entityName.toFirstLower)
 				//repositoryPkg.name = affectedEObject.entityName.toFirstLower					
 				//}
-		//	}
-		//}
+			}
+		}
 		routine updateRepoName(uml::Package affectedEObject) {
-			match{
-				val repository = retrieve optional pcm::Repository corresponding to affectedEObject tagged with "umlXpcm_map_UML_and_PCM_correspondence_Repository:repository_with_Package:repositoryPkg"
-			} 	
+			//match{
+			//	val repository = retrieve optional pcm::Repository corresponding to affectedEObject tagged with "umlXpcm_map_UML_and_PCM_correspondence_Repository:repository_with_Package:repositoryPkg"
+			//} 	
 			action {
 				execute {
-				//	if(repository.isPresent){
-				//		repository.get.entityName = affectedEObject.name.toFirstUpper					
-				//	}
+					//if(repository.isPresent){
+					//	repository.get.entityName = affectedEObject.name.toFirstUpper					
+					//}
 				}
 			}
 		}

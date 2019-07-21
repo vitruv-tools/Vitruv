@@ -1,4 +1,4 @@
-package tools.vitruv.dsls.mappings.generator
+package tools.vitruv.dsls.mappings.generator.utils
 
 import java.io.ByteArrayInputStream
 import java.io.InputStream

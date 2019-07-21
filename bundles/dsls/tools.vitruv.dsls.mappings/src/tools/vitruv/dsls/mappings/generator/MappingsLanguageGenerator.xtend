@@ -6,16 +6,15 @@ import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.xtext.generator.IFileSystemAccess2
 import org.eclipse.xtext.generator.IGenerator2
 import org.eclipse.xtext.generator.IGeneratorContext
+import org.eclipse.xtext.resource.XtextResource
 import org.eclipse.xtext.resource.XtextResourceSet
+import tools.vitruv.dsls.mappings.generator.integration.EmbeddedReactionIntegrationGenerator
 import tools.vitruv.dsls.mappings.generator.integration.IReactionIntegrationGenerator
-import tools.vitruv.dsls.mappings.generator.integration.StandaloneReactionIntegrationGenerator
+import tools.vitruv.dsls.mappings.generator.utils.XExpressionParser
 import tools.vitruv.dsls.mappings.mappingsLanguage.MappingsFile
 import tools.vitruv.dsls.mappings.mappingsLanguage.MappingsSegment
 import tools.vitruv.dsls.reactions.api.generator.IReactionsGenerator
 import tools.vitruv.dsls.reactions.builder.FluentReactionsLanguageBuilder
-import org.eclipse.xtext.resource.XtextResource
-import org.eclipse.xtext.xbase.util.XExpressionHelper
-import tools.vitruv.dsls.mappings.generator.integration.EmbeddedReactionIntegrationGenerator
 
 //import tools.vitruv.dsls.reactions.builder.FluentReactionsLanguageBuilder
 class MappingsLanguageGenerator implements IGenerator2 {
@@ -48,8 +47,15 @@ class MappingsLanguageGenerator implements IGenerator2 {
 				val r2lContext = generateReactions(mappingsPackage, mappingsFile, segment, reactionsGenerator, false);
 				reactionIntegrationGenerator.init(l2rContext, r2lContext)
 				checkIntegrations(segment)
+			//	var routines = r2lContext.file.reactionsFile.reactionsSegments.get(0).routines
+//				val matchBeforeIntegr = routines.get(0).matcher.matcherStatements.get(0)
+//				val matchBeforeFluent = routines.get(2).matcher.matcherStatements.get(0)								
 				reactionsGenerator.attachReactionsFile(l2rContext)
 				reactionsGenerator.attachReactionsFile(r2lContext)
+			 //   val routines = r2lContext.file.reactionsFile.reactionsSegments.get(0).routines
+			//	val matchAfterIntegr = routines.get(0).matcher.matcherStatements.get(0)
+			//	val matchAfterFluent = routines.get(2).matcher.matcherStatements.get(0)				
+			//	print('')
 			}
 		}
 		reactionIntegrationGenerator.generate(fsa, reactionsGenerator)

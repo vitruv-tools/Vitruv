@@ -39,6 +39,7 @@ import org.eclipse.xtext.xbase.XBinaryOperation
 import org.eclipse.xtext.xbase.XCastedExpression
 import org.eclipse.xtext.common.types.JvmTypeReference
 import tools.vitruv.dsls.mirbase.formatting2.MirBaseFormatter
+import tools.vitruv.dsls.reactions.reactionsLanguage.MatcherCheckStatement
 
 class ReactionsLanguageFormatter extends MirBaseFormatter {
 	
@@ -134,6 +135,12 @@ class ReactionsLanguageFormatter extends MirBaseFormatter {
 		matcher.prepend[newLine]
 		matcher.formatInteriorBlock(document)
 		matcher.matcherStatements.forEach[formatMatcherStatement(document)]
+	}
+	
+	
+	def dispatch void formatIndividually(MatcherCheckStatement matcherCheckStatement,
+		extension IFormattableDocument document) {
+		matcherCheckStatement.code?.formatIndividually(document)
 	}
 
 	def formatMatcherStatement(MatcherStatement matcherStatement, extension IFormattableDocument document) {
