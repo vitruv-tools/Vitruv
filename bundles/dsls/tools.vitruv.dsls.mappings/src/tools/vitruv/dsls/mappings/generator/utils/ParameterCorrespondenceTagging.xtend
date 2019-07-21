@@ -1,4 +1,4 @@
-package tools.vitruv.dsls.mappings.generator.action
+package tools.vitruv.dsls.mappings.generator.utils
 
 import tools.vitruv.dsls.mappings.generator.ReactionGeneratorContext
 import tools.vitruv.dsls.mirbase.mirBase.NamedMetaclassReference

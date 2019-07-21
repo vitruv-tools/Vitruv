@@ -10,6 +10,7 @@ import static com.google.common.base.Preconditions.*
 
 class FluentReactionsFileBuilder extends FluentReactionElementBuilder {
 
+	@Accessors(PUBLIC_GETTER)
 	val ReactionsFile reactionsFile = ReactionsLanguageFactory.eINSTANCE.createReactionsFile
 
 	@Accessors(PUBLIC_GETTER)
@@ -38,7 +39,7 @@ class FluentReactionsFileBuilder extends FluentReactionElementBuilder {
 
 		// this call has the (desired!) side effect to create the jvm types!
 		val newContents = resource.getContents()
-
+		print('')
 		newContents.forEach [
 			println('''created content: «it»''')
 		]

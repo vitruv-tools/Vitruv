@@ -64,6 +64,7 @@ ReactionIntegration:
 		callRoutine=ReactionRoutineCall
 	'}';
 
+
 enum ReactionOrientation:
 	LEFT = 'left' | RIGHT = 'right'
 ;
@@ -73,13 +74,13 @@ DirectedRoutineIntegration:
 	orientation = ReactionOrientation
 	definition = RoutineIntegration
 ;	
-	
+
 RoutineIntegration:
 	 'routine' name=ValidID input=RoutineInput '{'
 		matcher=MatcherBlock?
 		action=ActionBlock
 	'}'
-;	
+;
 
 // DW: RequiredMapping
 Dependency:
@@ -110,7 +111,11 @@ FeatureCondition: //  returns EnforceableCondition:
 ;
 
 LeftFeatureCondition returns EObject: 
-	(MetaclassReference | NullValue | {String} STRING)
+	(MetaclassReference | NullValue | StringValue)
+;
+
+StringValue:
+	{StringValue} value = STRING
 ;
 
 NullValue:

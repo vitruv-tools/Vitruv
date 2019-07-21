@@ -7,8 +7,6 @@ import tools.vitruv.dsls.mirbase.mirBase.MetaclassReference
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.ActionStatementBuilder
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.UndecidedMatcherStatementBuilder
 
-import static tools.vitruv.dsls.mappings.generator.XExpressionParser.*
-
 class InsertedReactionGenerator extends AbstractReactionTypeGenerator {
 
 	private MetaclassFeatureReference insertTarget = null

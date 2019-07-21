@@ -8,6 +8,7 @@ import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsLanguageFactory
 import tools.vitruv.dsls.mappings.generator.ReactionGeneratorContext
 import org.eclipse.emf.ecore.util.EcoreUtil
 import tools.vitruv.dsls.mirbase.mirBase.MirBaseFactory
+import tools.vitruv.dsls.mappings.mappingsLanguage.MappingsLanguageFactory
 
 abstract class AbstractReactionIntegrationGenerator implements IReactionIntegrationGenerator {
 

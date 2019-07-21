@@ -6,17 +6,16 @@ package tools.vitruv.dsls.mappings
 import com.google.inject.Binder
 import com.google.inject.name.Names
 import org.eclipse.xtext.generator.IGenerator2
+import org.eclipse.xtext.linking.ILinkingService
 import org.eclipse.xtext.naming.IQualifiedNameConverter
 import org.eclipse.xtext.scoping.IGlobalScopeProvider
 import org.eclipse.xtext.scoping.IScopeProvider
 import org.eclipse.xtext.scoping.impl.AbstractDeclarativeScopeProvider
 import tools.vitruv.dsls.mappings.generator.MappingsLanguageGenerator
-import tools.vitruv.dsls.mappings.scoping.MappingsLanguageGlobalScopeProvider
 import tools.vitruv.dsls.mappings.scoping.MappingsLanguageScopeProviderDelegate
 import tools.vitruv.dsls.mirbase.scoping.MirBaseQualifiedNameConverter
-import tools.vitruv.dsls.reactions.api.generator.IReactionsGenerator
-import tools.vitruv.dsls.reactions.generator.InternalReactionsGenerator
-import tools.vitruv.dsls.reactions.generator.ExternalReactionsGenerator
+import tools.vitruv.dsls.reactions.linking.ReactionsLinkingService
+import tools.vitruv.dsls.reactions.scoping.ReactionsLanguageGlobalScopeProvider
 
 /**
  * Use this class to register components to be used at runtime / without the Equinox extension registry.
@@ -37,7 +36,11 @@ class MappingsLanguageRuntimeModule extends AbstractMappingsLanguageRuntimeModul
 	}
 	
 	override Class<? extends IGlobalScopeProvider> bindIGlobalScopeProvider() {
-		return MappingsLanguageGlobalScopeProvider;
+		return ReactionsLanguageGlobalScopeProvider;
+	}
+	
+	public override Class<? extends ILinkingService> bindILinkingService() {
+		return ReactionsLinkingService;
 	}
 	/* 
 	def Class<? extends IReactionsGenerator> bindIReactionsGenerator() {

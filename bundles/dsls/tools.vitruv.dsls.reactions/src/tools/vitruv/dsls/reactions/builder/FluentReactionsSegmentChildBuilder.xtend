@@ -90,7 +90,7 @@ abstract package class FluentReactionsSegmentChildBuilder extends FluentReaction
 		def affectedEObject() {
 			variable(CHANGE_AFFECTED_ELEMENT_ATTRIBUTE)
 		}
-
+		
 		def oldValue() {
 			variable(CHANGE_OLD_VALUE_ATTRIBUTE)
 		}

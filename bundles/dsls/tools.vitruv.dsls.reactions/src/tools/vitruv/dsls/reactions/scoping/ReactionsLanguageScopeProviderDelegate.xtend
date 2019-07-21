@@ -1,39 +1,38 @@
 package tools.vitruv.dsls.reactions.scoping
 
 import com.google.inject.Inject
-
+import org.eclipse.emf.ecore.EAttribute
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EReference
+import org.eclipse.emf.ecore.EStructuralFeature
+import org.eclipse.emf.ecore.EcorePackage
+import org.eclipse.xtext.naming.QualifiedName
 import org.eclipse.xtext.resource.EObjectDescription
 import org.eclipse.xtext.scoping.IScope
-import org.eclipse.xtext.scoping.impl.SimpleScope
 import org.eclipse.xtext.scoping.Scopes
-import org.eclipse.xtext.naming.QualifiedName
-
-import static tools.vitruv.dsls.mirbase.mirBase.MirBasePackage.Literals.*;
-import static tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsLanguagePackage.Literals.*
-
-import org.eclipse.emf.ecore.EStructuralFeature
-import tools.vitruv.dsls.mirbase.scoping.MirBaseScopeProviderDelegate
-import org.eclipse.emf.ecore.EcorePackage
-import tools.vitruv.dsls.reactions.reactionsLanguage.inputTypes.InputTypesPackage
-import tools.vitruv.dsls.reactions.reactionsLanguage.RoutineInput
-import tools.vitruv.dsls.reactions.reactionsLanguage.CreateModelElement
+import org.eclipse.xtext.scoping.impl.SimpleScope
 import tools.vitruv.dsls.mirbase.mirBase.MetaclassFeatureReference
 import tools.vitruv.dsls.mirbase.mirBase.MetaclassReference
 import tools.vitruv.dsls.mirbase.mirBase.MetamodelImport
+import tools.vitruv.dsls.mirbase.scoping.MirBaseScopeProviderDelegate
+import tools.vitruv.dsls.reactions.reactionsLanguage.CreateModelElement
+import tools.vitruv.dsls.reactions.reactionsLanguage.ElementChangeType
 import tools.vitruv.dsls.reactions.reactionsLanguage.ElementReplacementChangeType
 import tools.vitruv.dsls.reactions.reactionsLanguage.ModelAttributeChange
-import org.eclipse.emf.ecore.EAttribute
-import tools.vitruv.dsls.reactions.reactionsLanguage.ElementChangeType
-import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsSegment
-import tools.vitruv.dsls.reactions.reactionsLanguage.Reaction
-import tools.vitruv.dsls.reactions.reactionsLanguage.Routine
-import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsImport
-import tools.vitruv.dsls.reactions.reactionsLanguage.RoutineOverrideImportPath
-import static extension tools.vitruv.dsls.reactions.util.ReactionsLanguageUtil.*
-import static extension tools.vitruv.dsls.reactions.codegen.helper.ReactionsImportsHelper.*
 import tools.vitruv.dsls.reactions.reactionsLanguage.ModelElementChange
+import tools.vitruv.dsls.reactions.reactionsLanguage.Reaction
+import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsImport
+import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsSegment
+import tools.vitruv.dsls.reactions.reactionsLanguage.Routine
+import tools.vitruv.dsls.reactions.reactionsLanguage.RoutineInput
+import tools.vitruv.dsls.reactions.reactionsLanguage.RoutineOverrideImportPath
+import tools.vitruv.dsls.reactions.reactionsLanguage.inputTypes.InputTypesPackage
+
+import static tools.vitruv.dsls.mirbase.mirBase.MirBasePackage.Literals.*
+import static tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsLanguagePackage.Literals.*
+
+import static extension tools.vitruv.dsls.reactions.codegen.helper.ReactionsImportsHelper.*
+import static extension tools.vitruv.dsls.reactions.util.ReactionsLanguageUtil.*
 
 class ReactionsLanguageScopeProviderDelegate extends MirBaseScopeProviderDelegate {
 

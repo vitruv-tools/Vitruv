@@ -4,15 +4,15 @@ import java.util.List
 import org.eclipse.emf.ecore.EClass
 import org.eclipse.xtend.lib.annotations.Accessors
 import tools.vitruv.dsls.mappings.generator.ReactionGeneratorContext
-import tools.vitruv.dsls.mappings.generator.action.ParameterCorrespondenceTagging
+import tools.vitruv.dsls.mappings.generator.utils.ParameterCorrespondenceTagging
+import tools.vitruv.dsls.mirbase.mirBase.MetaclassEAttributeReference
 import tools.vitruv.dsls.mirbase.mirBase.MetaclassFeatureReference
 import tools.vitruv.dsls.mirbase.mirBase.MetaclassReference
 import tools.vitruv.dsls.mirbase.mirBase.NamedMetaclassReference
 import tools.vitruv.dsls.reactions.builder.FluentReactionBuilder.PreconditionOrRoutineCallBuilder
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.ActionStatementBuilder
-import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.UndecidedMatcherStatementBuilder
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.TaggedWithBuilder
-import tools.vitruv.dsls.mirbase.mirBase.MetaclassEAttributeReference
+import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.UndecidedMatcherStatementBuilder
 
 abstract class AbstractReactionTypeGenerator {
 
