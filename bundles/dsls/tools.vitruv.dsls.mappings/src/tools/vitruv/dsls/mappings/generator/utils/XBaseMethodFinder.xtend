@@ -7,18 +7,23 @@ import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.RoutineTypeProvi
 
 class XBaseMethodFinder {
 
-	private final static String PACKAGE = 'org.eclipse.xtext.xbase.lib.ObjectExtensions'
+	private final static String PACKAGE_OBJECT = 'org.eclipse.xtext.xbase.lib.ObjectExtensions'
+	private final static String PACKAGE_BOOLEAN = 'org.eclipse.xtext.xbase.lib.BooleanExtensions'
+
+	public static def and(RoutineTypeProvider typeProvider) {
+		typeProvider.findXbaseMethod(PACKAGE_BOOLEAN, 'operator_and')
+	}
 
 	public static def tripleEquals(RoutineTypeProvider typeProvider) {
-		typeProvider.findXbaseMethod('operator_tripleEquals')
+		typeProvider.findXbaseMethod(PACKAGE_OBJECT, 'operator_tripleEquals')
 	}
 
 	public static def tripleNotEquals(RoutineTypeProvider typeProvider) {
-		typeProvider.findXbaseMethod('operator_tripleNotEquals')
+		typeProvider.findXbaseMethod(PACKAGE_OBJECT, 'operator_tripleNotEquals')
 	}
 
-	public static def findXbaseMethod(RoutineTypeProvider typeProvider, String method) {
-		(typeProvider.findTypeByName(PACKAGE) as JvmDeclaredType).members.findFirst [
+	public static def findXbaseMethod(RoutineTypeProvider typeProvider, String pkg, String method) {
+		(typeProvider.findTypeByName(pkg) as JvmDeclaredType).members.findFirst [
 			it.simpleName == method
 		]
 	}

@@ -13,6 +13,8 @@ import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.ActionStatementB
 import tools.vitruv.dsls.reactions.codegen.ReactionsLanguageConstants
 import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsLanguageFactory
 import org.eclipse.xtext.xbase.XbaseFactory
+import tools.vitruv.dsls.mappings.mappingsLanguage.MappingParameter
+import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.RoutineCallParameter
 
 /**
  * 
@@ -51,42 +53,46 @@ class MappingRoutineGenerator extends AbstractBidirectionalCondition {
 	}
 
 	override generate(ReactionGeneratorContext context, AbstractReactionTypeGenerator reactionGenerator,
-		ActionStatementBuilder builder) {
+		ActionStatementBuilder builder, MappingParameter parameter) {
 		if (reactionGenerator.applicableFor) {
 			// integrate the routine in the file
 			integrateRoutine(context)
 			// call the routine from within this reactions action routine block
-			builder.call(targetRoutineBuilder, ReactionsLanguageConstants.CHANGE_AFFECTED_ELEMENT_ATTRIBUTE)
+			builder.call(
+				targetRoutineBuilder,
+				new RoutineCallParameter(ReactionsLanguageConstants.CHANGE_AFFECTED_ELEMENT_ATTRIBUTE),
+				new RoutineCallParameter(XbaseFactory.eINSTANCE.createXStringLiteral => [value = parameter.value.name])
+			)
 		}
 	}
 
 	private def integrateRoutine(ReactionGeneratorContext context) {
 		if (targetRoutineBuilder === null) {
 			var generatedRoutine = AbstractReactionIntegrationGenerator.generateRoutine(routine)
-		/* 	val ref = generatedRoutine.input.modelInputElements.get(0)
-			val mm = MirBaseFactory.eINSTANCE.createMetamodelImport => [
-				package = ref.metamodel.package
-				name = ref.metamodel.name
-			]
+			/* 	val ref = generatedRoutine.input.modelInputElements.get(0)
+			 * 	val mm = MirBaseFactory.eINSTANCE.createMetamodelImport => [
+			 * 		package = ref.metamodel.package
+			 * 		name = ref.metamodel.name
+			 * 	]
 
-			generatedRoutine = ReactionsLanguageFactory.eINSTANCE.createRoutine => [
-				name = 'updateRepoName'
-				input = ReactionsLanguageFactory.eINSTANCE.createRoutineInput => [
-					it.modelInputElements += MirBaseFactory.eINSTANCE.createNamedMetaclassReference => [
-						name = 'affectedEObject'
-						metaclass = ref.metaclass
-						metamodel = mm
-					]
-				]
-				action = ReactionsLanguageFactory.eINSTANCE.createAction => [
-					actionStatements += ReactionsLanguageFactory.eINSTANCE.createExecuteActionStatement => [
-						code = XbaseFactory.eINSTANCE.createXStringLiteral => [
-							value = 'test'
-						]
-					]
-				]
-			]
-*/
+			 * 	generatedRoutine = ReactionsLanguageFactory.eINSTANCE.createRoutine => [
+			 * 		name = 'updateRepoName'
+			 * 		input = ReactionsLanguageFactory.eINSTANCE.createRoutineInput => [
+			 * 			it.modelInputElements += MirBaseFactory.eINSTANCE.createNamedMetaclassReference => [
+			 * 				name = 'affectedEObject'
+			 * 				metaclass = ref.metaclass
+			 * 				metamodel = mm
+			 * 			]
+			 * 		]
+			 * 		action = ReactionsLanguageFactory.eINSTANCE.createAction => [
+			 * 			actionStatements += ReactionsLanguageFactory.eINSTANCE.createExecuteActionStatement => [
+			 * 				code = XbaseFactory.eINSTANCE.createXStringLiteral => [
+			 * 					value = 'test'
+			 * 				]
+			 * 			]
+			 * 		]
+			 * 	]
+			 */
 			targetRoutineBuilder = context.create.from(generatedRoutine)
 
 			/*val parameter = generatedRoutine.input.modelInputElements.get(0)

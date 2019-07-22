@@ -2,6 +2,7 @@ package tools.vitruv.dsls.mappings.generator.reactions
 
 import org.eclipse.emf.ecore.EReference
 import tools.vitruv.dsls.mappings.generator.ReactionGeneratorContext
+import tools.vitruv.dsls.mappings.mappingsLanguage.MappingParameter
 import tools.vitruv.dsls.mirbase.mirBase.MetaclassFeatureReference
 import tools.vitruv.dsls.mirbase.mirBase.MetaclassReference
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.ActionStatementBuilder
@@ -22,33 +23,31 @@ class InsertedReactionGenerator extends AbstractReactionTypeGenerator {
 
 	override generateTrigger(ReactionGeneratorContext context) {
 		if (insertTarget !== null) {
-			return context.create.reaction(reactionName('''«metaclass.parameterName»InsertedIn«insertTarget.parameterName»''')).
-				afterElement(metaclass).insertedIn(insertTarget.feature as EReference)
+			this.reactionName = '''«metaclass.parameterName»InsertedIn«insertTarget.parameterName»'''
+			return context.create.reaction(reactionName()).afterElement(metaclass).insertedIn(
+				insertTarget.feature as EReference)
 		} else {
-			return context.create.reaction(reactionName('''«metaclass.parameterName»InsertedAsRoot''')).afterElement(metaclass).
-				created
+			this.reactionName = '''«metaclass.parameterName»InsertedAsRoot'''
+			return context.create.reaction(reactionName()).afterElement(metaclass).created
 		}
 	}
-	
-	override toString()'''
+
+	override toString() '''
 	«metaclass.parameterName» inserted «IF insertTarget!==null»in «insertTarget.parameterName»«ELSE»as root«ENDIF»'''
-	
-	override generateCorrespondenceMatches(UndecidedMatcherStatementBuilder builder) {
-		iterateParameters [ reactionParameter, correspondingParameter |
-			builder.requireAbsenceOf(correspondingParameter.metaclass).correspondingTo.affectedEObject.taggedWith(
-				reactionParameter, correspondingParameter)
+
+	override generateCorrespondenceMatches(UndecidedMatcherStatementBuilder builder, MappingParameter parameter) {
+		correspondingParameters.forEach [ correspondingParameter |
+			builder.requireAbsenceOf(correspondingParameter.value.metaclass).correspondingTo.affectedEObject.taggedWith(
+				parameter, correspondingParameter)
 		]
 	}
 
-	override generateCorrespondenceActions(ActionStatementBuilder builder) {
+	override generateCorrespondenceActions(ActionStatementBuilder builder, MappingParameter parameter) {
 		// create corresponding elements
-		correspondingParameters.forEach[
-			val newElement = it.newElementName
-			builder.vall(newElement).create(it.metaclass)			
-		]
-		iterateParameters [ reactionParameter, correspondingParameter |
+		correspondingParameters.forEach [ correspondingParameter |
 			val newElement = correspondingParameter.newElementName
-			builder.addCorrespondenceBetween(newElement).and.affectedEObject.taggedWith(reactionParameter,
+			builder.vall(newElement).create(correspondingParameter.value.metaclass)
+			builder.addCorrespondenceBetween(newElement).and.affectedEObject.taggedWith(parameter,
 				correspondingParameter)
 		]
 	}

@@ -1,6 +1,7 @@
 package tools.vitruv.dsls.mappings.generator.utils
 
 import tools.vitruv.dsls.mappings.generator.ReactionGeneratorContext
+import tools.vitruv.dsls.mappings.mappingsLanguage.MappingParameter
 import tools.vitruv.dsls.mirbase.mirBase.NamedMetaclassReference
 
 class ParameterCorrespondenceTagging {
@@ -11,12 +12,12 @@ class ParameterCorrespondenceTagging {
 		ParameterCorrespondenceTagging.context = context
 	}
 
-	public static def String getCorrespondenceTag(NamedMetaclassReference reactionParameter,
-		NamedMetaclassReference correspondingParameter) {
+	public static def String getCorrespondenceTag(MappingParameter reactionParameter,
+		MappingParameter correspondingParameter) {
 		if (!context.left2right) {
-			return createCorrespondenceTag(correspondingParameter, reactionParameter)
+			return createCorrespondenceTag(correspondingParameter.value, reactionParameter.value)
 		}
-		createCorrespondenceTag(reactionParameter, correspondingParameter)
+		createCorrespondenceTag(reactionParameter.value, correspondingParameter.value)
 	}
 
 	private static def String createCorrespondenceTag(NamedMetaclassReference reactionParameter,

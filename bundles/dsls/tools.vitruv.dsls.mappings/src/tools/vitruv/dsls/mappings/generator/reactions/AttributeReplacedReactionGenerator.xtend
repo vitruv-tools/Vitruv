@@ -2,6 +2,7 @@ package tools.vitruv.dsls.mappings.generator.reactions
 
 import org.eclipse.emf.ecore.EAttribute
 import tools.vitruv.dsls.mappings.generator.ReactionGeneratorContext
+import tools.vitruv.dsls.mappings.mappingsLanguage.MappingParameter
 import tools.vitruv.dsls.mirbase.mirBase.MetaclassEAttributeReference
 import tools.vitruv.dsls.mirbase.mirBase.MetaclassFeatureReference
 import tools.vitruv.dsls.mirbase.mirBase.MirBaseFactory
@@ -31,12 +32,11 @@ class AttributeReplacedReactionGenerator extends AbstractReactionTypeGenerator {
 	}
 
 	override generateTrigger(ReactionGeneratorContext context) {
-		return context.create.
-			reaction(reactionName('''«attribute.getAttributeName.toFirstUpper»ReplacedAt«metaclass.parameterName»''')).
-			afterAttributeReplacedAt(metaclass, extractAttribute)		
+		this.reactionName = '''«attribute.getAttributeName.toFirstUpper»ReplacedAt«metaclass.parameterName»'''
+		return context.create.reaction(reactionName()).afterAttributeReplacedAt(metaclass, extractAttribute)
 	}
-	
-	override toString()'''
+
+	override toString() '''
 	«attribute.attributeName» replaced at «metaclass.parameterName»'''
 
 	private def extractAttribute() {
@@ -50,12 +50,11 @@ class AttributeReplacedReactionGenerator extends AbstractReactionTypeGenerator {
 		false
 	}
 
-	override generateCorrespondenceMatches(UndecidedMatcherStatementBuilder builder) {
+	override generateCorrespondenceMatches(UndecidedMatcherStatementBuilder builder, MappingParameter parameter) {
 		// nothing to do, only single sided conditions create matchers
-		
 	}
 
-	override generateCorrespondenceActions(ActionStatementBuilder builder) {
+	override generateCorrespondenceActions(ActionStatementBuilder builder, MappingParameter parameter) {
 		// nothing to do, only bidirectional conditions create actions
 	}
 

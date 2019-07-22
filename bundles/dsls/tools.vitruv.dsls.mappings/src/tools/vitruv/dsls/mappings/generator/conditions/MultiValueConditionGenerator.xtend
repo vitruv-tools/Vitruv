@@ -20,8 +20,10 @@ import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.UndecidedMatcher
 
 import static extension tools.vitruv.dsls.mappings.generator.conditions.FeatureConditionGeneratorUtils.*
 import static extension tools.vitruv.dsls.mappings.generator.utils.XBaseMethodFinder.*
+import tools.vitruv.dsls.mappings.generator.utils.MappingParameterScopeFinder
+import tools.vitruv.dsls.mappings.mappingsLanguage.MappingParameter
 
-class MultiValueConditionGenerator extends AbstractSingleSidedCondition<MultiValueCondition> {
+class MultiValueConditionGenerator extends AbstractSingleSidedCondition<MultiValueCondition> implements FeatureConditionGenerator {
 
 	private MultiValueConditionOperator operator
 	private EObject leftSide
@@ -33,12 +35,17 @@ class MultiValueConditionGenerator extends AbstractSingleSidedCondition<MultiVal
 		operator = condition.operator
 		featureCondition = getFeatureCondition(condition)
 		leftSide = featureCondition.left
-		rightSide = featureCondition.feature
+		rightSide = featureCondition.rightFeatureReference
 	}
 
 	override feasibleForGenerator(AbstractReactionTypeGenerator generator) {
-		// rightside must be affectedEObject
 		rightSide.metaclass == generator.metaclass
+	}
+
+	override feasibleForParameter(MappingParameter parameter) {
+		// atm we only generate conditions for equals
+		if(operator != MultiValueConditionOperator.EQUALS) return false
+		featureCondition.feature.parameter == parameter
 	}
 
 	override protected constructReactionTriggers(List<AbstractReactionTypeGenerator> triggers) {
@@ -49,46 +56,42 @@ class MultiValueConditionGenerator extends AbstractSingleSidedCondition<MultiVal
 					if (condition.negated === null) {
 						// only create reaction triggers for not negated in conditions
 						triggers.add(new InsertedReactionGenerator(leftSide, rightSide))
-						triggers.add(new RemovedReactionGenerator(leftSide, rightSide))
+					//	triggers.add(new RemovedReactionGenerator(leftSide, rightSide))
 					}
-					triggers.add(new DeletedReactionGenerator(leftSide))
+					//triggers.add(new DeletedReactionGenerator(leftSide))
 				} else {
 					triggers.add(new ElementReplacedReactionGenerator(rightSide, leftSide));
 				}
 			}
 		}
 		if (rightSide.feature instanceof EAttribute) {
-			triggers.add(new AttributeReplacedReactionGenerator(rightSide))
+//			triggers.add(new AttributeReplacedReactionGenerator(rightSide))
 		}
 	}
 
 	override generate(UndecidedMatcherStatementBuilder builder) {
+		// its a feature condition so this wont get called
+	}
+
+	override generateFeatureCondition(RoutineTypeProvider provider) {
 		var negated = condition.negated !== null
 		if (operator == MultiValueConditionOperator.EQUALS) {
-			builder.generateEquals(negated)
+			provider.generateEquals(negated)
 		} else if (operator == MultiValueConditionOperator.IN) {
-			builder.generateIn(negated)
+			// no implementation atm
 		}
 	}
 
-	private def generateIn(UndecidedMatcherStatementBuilder builder, boolean negated) {
-	//	builder.check [typeProvider | 
-			
-	//	]
-	}
-
-	private def generateEquals(UndecidedMatcherStatementBuilder builder, boolean negated) {
+	private def generateEquals(RoutineTypeProvider typeProvider, boolean negated) {
 		// builder.builder.correspondingMethodParameter()
-	 	builder.check [ typeProvider |
-			XbaseFactory.eINSTANCE.createXBinaryOperation => [
-				leftOperand = typeProvider.generateLeftFeatureConditionValue(featureCondition)
-				rightOperand = typeProvider.generateRightSideCall
-				if (negated) {
-					feature = typeProvider.tripleNotEquals
-				} else {
-					feature = typeProvider.tripleEquals
-				}
-			]
+		XbaseFactory.eINSTANCE.createXBinaryOperation => [
+			leftOperand = typeProvider.generateLeftFeatureConditionValue(featureCondition)
+			rightOperand = typeProvider.generateRightSideCall
+			if (negated) {
+				feature = typeProvider.tripleNotEquals
+			} else {
+				feature = typeProvider.tripleEquals
+			}
 		]
 	}
 
@@ -99,4 +102,5 @@ class MultiValueConditionGenerator extends AbstractSingleSidedCondition<MultiVal
 			feature = typeProvider.findMetaclassMethod(rightSide)
 		]
 	}
+
 }
