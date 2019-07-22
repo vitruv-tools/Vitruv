@@ -1,5 +1,6 @@
 package tools.vitruv.dsls.mappings.generator.action
 
+import java.util.ArrayList
 import java.util.HashMap
 import java.util.List
 import java.util.Map
@@ -12,9 +13,8 @@ import tools.vitruv.dsls.mappings.generator.reactions.AbstractReactionTypeGenera
 import tools.vitruv.dsls.mappings.mappingsLanguage.MappingParameter
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.ActionStatementBuilder
-import tools.vitruv.dsls.reactions.codegen.ReactionsLanguageConstants
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.RoutineCallParameter
-import tools.vitruv.dsls.reactions.builder.FluentReactionBuilder
+import tools.vitruv.dsls.reactions.codegen.ReactionsLanguageConstants
 
 class ReactionRoutineContentGenerator implements Consumer<ActionStatementBuilder>, FeatureRoutineCall {
 
@@ -27,7 +27,7 @@ class ReactionRoutineContentGenerator implements Consumer<ActionStatementBuilder
 	private boolean usesSubRoutines = false
 	@Accessors(PUBLIC_SETTER)
 	private FluentRoutineBuilder currentRoutine
-	
+
 	new(AbstractReactionTypeGenerator generator, List<AbstractBidirectionalCondition> conditions,
 		ReactionFeatureConditionsGenerator featureGenerator, ReactionGeneratorContext context) {
 		this.generator = generator
@@ -48,14 +48,21 @@ class ReactionRoutineContentGenerator implements Consumer<ActionStatementBuilder
 
 	override accept(ActionStatementBuilder builder) {
 		if (usesSubRoutines) {
-			featureGenerator.generate(builder,currentRoutine, this)
+			featureGenerator.generate(builder, currentRoutine, this)
 			// find all parameters for which no feature conditions exist and just call the sub routine directly
 			generator.reactionParameters.forEach [
 				if (!featureGenerator.hasFeatureConditionFor(it)) {
 					val routine = subRoutines.get(it)
+					val routineCallParameter = new ArrayList
+					routineCallParameter +=
+						new RoutineCallParameter(ReactionsLanguageConstants.CHANGE_AFFECTED_ELEMENT_ATTRIBUTE)
+					if (generator.usesNewValue) {
+						routineCallParameter +=
+							new RoutineCallParameter(ReactionsLanguageConstants.CHANGE_NEW_VALUE_ATTRIBUTE)
+					}
 					builder.call(
 						routine,
-						new RoutineCallParameter(ReactionsLanguageConstants.CHANGE_AFFECTED_ELEMENT_ATTRIBUTE)
+						routineCallParameter
 					)
 				}
 			]
@@ -77,6 +84,9 @@ class ReactionRoutineContentGenerator implements Consumer<ActionStatementBuilder
 		val name = '''«generator.reactionName»Repair«parameter.value.name.toFirstUpper»'''.toString.toFirstLower
 		val routine = context.create.routine(name).input [ builder |
 			builder.affectedEObject.apply(generator.metaclass)
+			if (generator.usesNewValue) {
+				builder.newValue.apply(generator.metaclass)
+			}
 		].match([ builder |
 			generator.generateCorrespondenceMatches(builder, parameter)
 		], true).action [ builder |
@@ -86,7 +96,7 @@ class ReactionRoutineContentGenerator implements Consumer<ActionStatementBuilder
 		context.segmentBuilder += routine
 	}
 
-	override connectRoutineCall(MappingParameter parameter,FluentRoutineBuilder callingRoutine, XFeatureCall call) {
+	override connectRoutineCall(MappingParameter parameter, FluentRoutineBuilder callingRoutine, XFeatureCall call) {
 		// connect the routine call
 		val routine = subRoutines.get(parameter)
 		call.implicitReceiver = callingRoutine.jvmOperationRoutineFacade

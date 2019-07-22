@@ -8,7 +8,7 @@ import tools.vitruv.dsls.mirbase.mirBase.MetaclassReference
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.ActionStatementBuilder
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.UndecidedMatcherStatementBuilder
 
-class InsertedReactionGenerator extends AbstractReactionTypeGenerator {
+class InsertedReactionGenerator extends AbstractContainingReactionTypeGenerator {
 
 	private MetaclassFeatureReference insertTarget = null
 
@@ -23,6 +23,7 @@ class InsertedReactionGenerator extends AbstractReactionTypeGenerator {
 
 	override generateTrigger(ReactionGeneratorContext context) {
 		if (insertTarget !== null) {
+			this.usesNewValue = true
 			this.reactionName = '''«metaclass.parameterName»InsertedIn«insertTarget.parameterName»'''
 			return context.create.reaction(reactionName()).afterElement(metaclass).insertedIn(
 				insertTarget.feature as EReference)
@@ -35,9 +36,10 @@ class InsertedReactionGenerator extends AbstractReactionTypeGenerator {
 	override toString() '''
 	«metaclass.parameterName» inserted «IF insertTarget!==null»in «insertTarget.parameterName»«ELSE»as root«ENDIF»'''
 
+	
 	override generateCorrespondenceMatches(UndecidedMatcherStatementBuilder builder, MappingParameter parameter) {
 		correspondingParameters.forEach [ correspondingParameter |
-			builder.requireAbsenceOf(correspondingParameter.value.metaclass).correspondingTo.affectedEObject.taggedWith(
+			builder.requireAbsenceOf(correspondingParameter.value.metaclass).correspondingTo.matchingElement.taggedWith(
 				parameter, correspondingParameter)
 		]
 	}
@@ -46,8 +48,8 @@ class InsertedReactionGenerator extends AbstractReactionTypeGenerator {
 		// create corresponding elements
 		correspondingParameters.forEach [ correspondingParameter |
 			val newElement = correspondingParameter.newElementName
-			builder.vall(newElement).create(correspondingParameter.value.metaclass)
-			builder.addCorrespondenceBetween(newElement).and.affectedEObject.taggedWith(parameter,
+			builder.vall(newElement).create(correspondingParameter.value.metaclass)		
+			builder.addCorrespondenceBetween(newElement).and.matchingElement.taggedWith(parameter,
 				correspondingParameter)
 		]
 	}

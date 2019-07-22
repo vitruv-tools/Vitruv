@@ -8,7 +8,7 @@ import tools.vitruv.dsls.mirbase.mirBase.MetaclassReference
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.ActionStatementBuilder
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.UndecidedMatcherStatementBuilder
 
-class ElementReplacedReactionGenerator extends AbstractReactionTypeGenerator {
+class ElementReplacedReactionGenerator extends AbstractContainingReactionTypeGenerator {
 
 	private MetaclassFeatureReference reference
 	private MetaclassReference targetElement
@@ -25,6 +25,7 @@ class ElementReplacedReactionGenerator extends AbstractReactionTypeGenerator {
 
 	override generateTrigger(ReactionGeneratorContext context) {
 		if (targetElement !== null) {
+			this.usesNewValue = true
 			this.reactionName = '''«targetElement.parameterName»ReplacedAt«reference.parameterName»'''
 			return context.create.reaction(reactionName()).afterElement(targetElement.metaclass).replacedAt(
 				reference.feature as EReference)

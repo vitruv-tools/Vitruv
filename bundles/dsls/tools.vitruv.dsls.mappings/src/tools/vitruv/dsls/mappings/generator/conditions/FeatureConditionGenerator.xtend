@@ -9,5 +9,5 @@ interface FeatureConditionGenerator {
 	
 	def boolean feasibleForParameter(MappingParameter parameter)
 	
-	def XExpression generateFeatureCondition(RoutineTypeProvider provider)
+	def XExpression generateFeatureCondition(RoutineTypeProvider provider, boolean usesNewValue)
 }

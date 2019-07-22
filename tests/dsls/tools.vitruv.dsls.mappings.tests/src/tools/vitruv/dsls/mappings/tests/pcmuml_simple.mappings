@@ -18,7 +18,7 @@ mappings: umlXpcmSimple for UML and PCM
 	//todo: add reaction for IPREClassRemoved, IPREClassNameChanged, IPREConstructorOperationNameChanged
 }
  			 			
- 			 		 			 
+ 			 		 		 
 mapping RepositoryXPackage {
 
    map (pcm::Repository repository)

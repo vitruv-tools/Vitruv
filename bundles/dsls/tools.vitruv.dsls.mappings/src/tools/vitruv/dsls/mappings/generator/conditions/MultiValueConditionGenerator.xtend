@@ -56,37 +56,35 @@ class MultiValueConditionGenerator extends AbstractSingleSidedCondition<MultiVal
 					if (condition.negated === null) {
 						// only create reaction triggers for not negated in conditions
 						triggers.add(new InsertedReactionGenerator(leftSide, rightSide))
-					//	triggers.add(new RemovedReactionGenerator(leftSide, rightSide))
+					// triggers.add(new RemovedReactionGenerator(leftSide, rightSide))
 					}
-					//triggers.add(new DeletedReactionGenerator(leftSide))
+					triggers.add(new DeletedReactionGenerator(leftSide))
 				} else {
 					triggers.add(new ElementReplacedReactionGenerator(rightSide, leftSide));
 				}
 			}
 		}
 		if (rightSide.feature instanceof EAttribute) {
-//			triggers.add(new AttributeReplacedReactionGenerator(rightSide))
+			triggers.add(new AttributeReplacedReactionGenerator(rightSide))
 		}
 	}
 
-	override generate(UndecidedMatcherStatementBuilder builder) {
-		// its a feature condition so this wont get called
-	}
-
-	override generateFeatureCondition(RoutineTypeProvider provider) {
+	override generateFeatureCondition(RoutineTypeProvider provider, boolean usesNewValue) {
 		var negated = condition.negated !== null
 		if (operator == MultiValueConditionOperator.EQUALS) {
-			provider.generateEquals(negated)
+			provider.generateEquals(negated, usesNewValue)
 		} else if (operator == MultiValueConditionOperator.IN) {
-			// no implementation atm
+			if(usesNewValue){
+				
+			}
 		}
 	}
 
-	private def generateEquals(RoutineTypeProvider typeProvider, boolean negated) {
+	private def generateEquals(RoutineTypeProvider typeProvider, boolean negated, boolean usesNewValue) {
 		// builder.builder.correspondingMethodParameter()
 		XbaseFactory.eINSTANCE.createXBinaryOperation => [
 			leftOperand = typeProvider.generateLeftFeatureConditionValue(featureCondition)
-			rightOperand = typeProvider.generateRightSideCall
+			rightOperand = typeProvider.generateRightSideCall(usesNewValue)
 			if (negated) {
 				feature = typeProvider.tripleNotEquals
 			} else {
@@ -95,12 +93,21 @@ class MultiValueConditionGenerator extends AbstractSingleSidedCondition<MultiVal
 		]
 	}
 
-	private def generateRightSideCall(RoutineTypeProvider typeProvider) {
+	private def generateRightSideCall(RoutineTypeProvider typeProvider, boolean usesNewValue) {
 		XbaseFactory.eINSTANCE.createXMemberFeatureCall => [
 			explicitOperationCall = true
-			memberCallTarget = typeProvider.affectedEObject
+			if (usesNewValue) {
+				// when we have an additional newValue, our feature is the newValue and not the affectedEobject
+				memberCallTarget = typeProvider.newValue
+			} else {
+				memberCallTarget = typeProvider.affectedEObject
+			}
 			feature = typeProvider.findMetaclassMethod(rightSide)
 		]
+	}
+
+	override generate(UndecidedMatcherStatementBuilder builder) {
+		// its a feature condition so this is not used
 	}
 
 }

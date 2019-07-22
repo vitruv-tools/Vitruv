@@ -33,7 +33,11 @@ class AttributeReplacedReactionGenerator extends AbstractReactionTypeGenerator {
 
 	override generateTrigger(ReactionGeneratorContext context) {
 		this.reactionName = '''«attribute.getAttributeName.toFirstUpper»ReplacedAt«metaclass.parameterName»'''
-		return context.create.reaction(reactionName()).afterAttributeReplacedAt(metaclass, extractAttribute)
+		val trigger = context.create.reaction(reactionName()).afterAttributeReplacedAt(metaclass, extractAttribute)
+	/* 	trigger.with[typeProvider | 
+			
+		]*/
+		trigger
 	}
 
 	override toString() '''
