@@ -30,11 +30,11 @@ Mapping:
 			dependencies+=Dependency
 		')')?
 	'{'
-		'map' '(' (leftParameters+=ClassicallyNamedModelElement)+')'
+		'map' '(' (leftParameters+=MappingParameter)+')'
 			('with' '{' 
 				(leftConditions+=SingleSidedCondition)+
 			'}')?
-		'and' '(' (rightParameters+=ClassicallyNamedModelElement)+ ')'
+		'and' '(' (rightParameters+=MappingParameter)+ ')'
 			('with' '{' 
 				(rightConditions+=SingleSidedCondition)+
 			'}')?
@@ -51,6 +51,10 @@ Mapping:
 		(reactions+=ReactionIntegration |
 		routines+=DirectedRoutineIntegration)*
 	'}'
+;
+
+MappingParameter:
+	value = ClassicallyNamedModelElement
 ;
 
 ObserveAttributes:
@@ -107,7 +111,11 @@ FeatureCondition: //  returns EnforceableCondition:
 	 ElementCondition |
 	 NotEmptyCondition
 	)
-	feature=MetaclassFeatureReference
+	feature=FeatureConditionParameter
+;
+
+FeatureConditionParameter:
+	parameter=[MappingParameter] '[' feature=[ecore::EStructuralFeature|ValidID] ']'
 ;
 
 LeftFeatureCondition returns EObject: 

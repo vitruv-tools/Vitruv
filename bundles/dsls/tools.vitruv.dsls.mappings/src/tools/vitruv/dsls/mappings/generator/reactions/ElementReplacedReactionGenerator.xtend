@@ -1,14 +1,12 @@
 package tools.vitruv.dsls.mappings.generator.reactions
 
-import org.eclipse.emf.ecore.EAttribute
+import org.eclipse.emf.ecore.EReference
 import tools.vitruv.dsls.mappings.generator.ReactionGeneratorContext
-import tools.vitruv.dsls.mirbase.mirBase.MetaclassEAttributeReference
+import tools.vitruv.dsls.mappings.mappingsLanguage.MappingParameter
 import tools.vitruv.dsls.mirbase.mirBase.MetaclassFeatureReference
-import tools.vitruv.dsls.mirbase.mirBase.MirBaseFactory
+import tools.vitruv.dsls.mirbase.mirBase.MetaclassReference
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.ActionStatementBuilder
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.UndecidedMatcherStatementBuilder
-import tools.vitruv.dsls.mirbase.mirBase.MetaclassReference
-import org.eclipse.emf.ecore.EReference
 
 class ElementReplacedReactionGenerator extends AbstractReactionTypeGenerator {
 
@@ -27,17 +25,17 @@ class ElementReplacedReactionGenerator extends AbstractReactionTypeGenerator {
 
 	override generateTrigger(ReactionGeneratorContext context) {
 		if (targetElement !== null) {
-			return context.create.reaction(reactionName('''«targetElement.parameterName»ReplacedAt«reference.parameterName»''')).afterElement(targetElement.metaclass).replacedAt(
-				reference.feature as EReference)			
-		} else {
-			return context.create.reaction(reactionName('''ElementReplacedAt«reference.parameterName»''')).afterElement.replacedAt(
+			this.reactionName = '''«targetElement.parameterName»ReplacedAt«reference.parameterName»'''
+			return context.create.reaction(reactionName()).afterElement(targetElement.metaclass).replacedAt(
 				reference.feature as EReference)
+		} else {
+			this.reactionName = '''ElementReplacedAt«reference.parameterName»'''
+			return context.create.reaction(reactionName()).afterElement.replacedAt(reference.feature as EReference)
 		}
 	}
-	
-	override toString()'''
+
+	override toString() '''
 	«IF targetElement!==null»«targetElement.parameterName»«ELSE»element«ENDIF» replaced at «targetElement.parameterName»'''
-	
 
 	override equals(Object obj) {
 		if (obj instanceof ElementReplacedReactionGenerator) {
@@ -56,11 +54,11 @@ class ElementReplacedReactionGenerator extends AbstractReactionTypeGenerator {
 		false
 	}
 
-	override generateCorrespondenceMatches(UndecidedMatcherStatementBuilder builder) {
+	override generateCorrespondenceMatches(UndecidedMatcherStatementBuilder builder, MappingParameter parameter) {
 		// nothing to do, only single sided conditions create matchers
 	}
 
-	override generateCorrespondenceActions(ActionStatementBuilder builder) {
+	override generateCorrespondenceActions(ActionStatementBuilder builder, MappingParameter parameter) {
 		// nothing to do, only bidirectional conditions create actions
 	}
 

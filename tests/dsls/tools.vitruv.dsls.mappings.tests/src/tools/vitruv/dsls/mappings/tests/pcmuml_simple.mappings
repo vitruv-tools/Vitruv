@@ -17,9 +17,13 @@ mappings: umlXpcmSimple for UML and PCM
 	}
 	//todo: add reaction for IPREClassRemoved, IPREClassNameChanged, IPREConstructorOperationNameChanged
 }
- 			
+ 			 			
+ 			 		
+ 			 
 mapping RepositoryXPackage {
+
    map (pcm::Repository repository)
+   
    and (uml::Package rootPkg 
    	uml::Package repositoryPkg 
    	uml::Package contractsPkg 
@@ -37,10 +41,11 @@ mapping RepositoryXPackage {
     such that {
     // repository[entityName] =    rootPkg[name]   	
 		observe attributes {
-			pcm::Repository[entityName] 
+		pcm::Repository[entityName] 
 			uml::Package[name]
 		}
-	  	routine updateRepoPackageName(pcm::Repository affectedEObject) { 
+	
+	  	routine updateRepoPackageName(pcm::Repository affectedEObject , plain String as mappingObject) { 
 		//	match{
 //				val repositoryPkg = retrieve asserted uml::Package corresponding to affectedEObject tagged with "umlXpcm_map_UML_and_PCM_correspondence_Repository:repository_with_Package:repositoryPkg"
 	//		}	
@@ -55,7 +60,7 @@ mapping RepositoryXPackage {
 				//}
 			}
 		}
-		routine updateRepoName(uml::Package affectedEObject) {
+		routine updateRepoName(uml::Package affectedEObject, plain String as mappingObject) {
 			//match{
 			//	val repository = retrieve optional pcm::Repository corresponding to affectedEObject tagged with "umlXpcm_map_UML_and_PCM_correspondence_Repository:repository_with_Package:repositoryPkg"
 			//} 	

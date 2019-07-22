@@ -12,6 +12,7 @@ import org.eclipse.xtext.common.types.access.IJvmTypeProvider
 import org.eclipse.xtext.xbase.XExpression
 import org.eclipse.xtext.xbase.XbaseFactory
 import tools.vitruv.dsls.mirbase.mirBase.MirBaseFactory
+import tools.vitruv.dsls.reactions.codegen.ReactionsLanguageConstants
 import tools.vitruv.dsls.reactions.reactionsLanguage.CreateCorrespondence
 import tools.vitruv.dsls.reactions.reactionsLanguage.CreateModelElement
 import tools.vitruv.dsls.reactions.reactionsLanguage.ExistingElementReference
@@ -74,7 +75,7 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 	}
 
 	def private addInputElementIfNotExists(EClassifier type, String parameterName) {
-		if (routine.input.modelInputElements.findFirst[name == parameterName] !== null) return;
+		if(routine.input.modelInputElements.findFirst[name == parameterName] !== null) return;
 		addInputElement(type, parameterName)
 	}
 
@@ -174,8 +175,9 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 			super(builder)
 		}
 
-		def void alwaysRequireAffectedEObject() {
+		def alwaysRequireAffectedEObject() {
 			requireAffectedEObject = true
+			this
 		}
 
 		def overrideAlongImportPath(FluentReactionsSegmentBuilder... importPathSegmentBuilders) {
@@ -489,51 +491,73 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 			]
 		}
 
-		def void call(FluentRoutineBuilder routineBuilder, String... parameters) {
+		def void call(Function<RoutineTypeProvider, XExpression> expressionBuilder) {
+			routine.action.actionStatements += ReactionsLanguageFactory.eINSTANCE.createRoutineCallStatement => [
+				code = XbaseFactory.eINSTANCE.createXBlockExpression.whenJvmTypes [
+					expressions += extractExpressions(expressionBuilder.apply(typeProvider))
+				]
+			]
+		}
+
+		def void call(FluentRoutineBuilder routineBuilder, RoutineCallParameter... parameters) {
 			checkNotNull(routineBuilder)
-			checkState(routineBuilder. readyToBeAttached,
-				'''The «routineBuilder» is not sufficiently initialised to be set on the «builder»''' )
-			checkState(!routineBuilder.requireNewValue,
-				'''The «routineBuilder» requires a new value, and can thus only be called from reactions, not routines!''')
-			checkState(!routineBuilder.requireOldValue || valueType !==	null,
-				'''The «routineBuilder» requires an old value, and can thus only be called from reactions, not routines!''' )
-			checkState(!routineBuilder.requireAffectedEObject,
-				'''The «routineBuilder» requires an requireAffectedEObject, and can thus only be called from reactions, not routines!''' )
+			checkState(routineBuilder.
+				readyToBeAttached, '''The «routineBuilder» is not sufficiently initialised to be set on the «builder»''')
+			checkState(!routineBuilder.
+				requireNewValue, '''The «routineBuilder» requires a new value, and can thus only be called from reactions, not routines!''')
+			checkState(!routineBuilder.requireOldValue || valueType !==
+				null, '''The «routineBuilder» requires an old value, and can thus only be called from reactions, not routines!''')
+			var hasAffectedEOjbectParameter = false
+			if (parameters.size > 0) {
+				hasAffectedEOjbectParameter = parameters.get(0) ==
+					ReactionsLanguageConstants.CHANGE_AFFECTED_ELEMENT_ATTRIBUTE
+			}
+			checkState(!routineBuilder.requireAffectedEObject || (
+				routineBuilder.requireAffectedEObject &&
+				hasAffectedEOjbectParameter), '''The «routineBuilder» requires an requireAffectedEObject, and can thus only be called from reactions, not routines!''')
 			builder.transferReactionsSegmentTo(routineBuilder)
 			addRoutineCall(routineBuilder, parameters)
 		}
 
-		def private addRoutineCall(FluentRoutineBuilder routineBuilder, String... parameters) {
-			val statementIndex = routine.action.actionStatements.size
+		def private addRoutineCall(FluentRoutineBuilder routineBuilder, RoutineCallParameter... parameters) {
 			routine.action.actionStatements += ReactionsLanguageFactory.eINSTANCE.createRoutineCallStatement => [
-				code = routineBuilder.routineCall(statementIndex, parameters)
+				code = routineBuilder.routineCall(parameters)
 			]
 		}
 
-		def private routineCall(FluentRoutineBuilder routineBuilder, int statementIndex, String... parameters) {
+		def private routineCall(FluentRoutineBuilder routineBuilder, RoutineCallParameter... parameters) {
 			(XbaseFactory.eINSTANCE.createXFeatureCall => [
 				explicitOperationCall = true
 			]).whenJvmTypes [
-				val routineCallMethod = getRoutineCallMethod(statementIndex)
 				feature = routineBuilder.jvmOperation
-				implicitReceiver = routineCallMethod.argument(REACTION_USER_EXECUTION_ROUTINE_CALL_FACADE_PARAMETER_NAME)
 				val typeProvider = typeProvider
-				featureCallArguments += parameters.map [typeProvider.variable(it)]
+				featureCallArguments += parameters.map [
+					if (it.parameterArgumentType) {
+						typeProvider.variable(it.argument as String)
+					} else {
+						it.argument as XExpression
+					}
+				]
 			]
 		}
 
-		def private getRoutineCallMethod(int statementIndex) {
-			if (statementIndex < routine.action.actionStatements.size) {
-				val statement = routine.action.actionStatements.get(statementIndex)
-				if (statement instanceof RoutineCallStatement) {
-					val routineCallMethod = context.jvmModelAssociator.getPrimaryJvmElement(statement.code)
-					if (routineCallMethod instanceof JvmOperation) {
-						return routineCallMethod
-					}
-				}
-			}
-			throw new IllegalStateException('''Could not find the routine call method in routine at index «statementIndex»''')
+	}
+
+	static class RoutineCallParameter {
+		private Object argument;
+
+		new(String parameter) {
+			this.argument = parameter
 		}
+
+		new(XExpression expression) {
+			this.argument = expression
+		}
+
+		def isParameterArgumentType() {
+			argument instanceof String
+		}
+
 	}
 
 	static class RoutineTypeProvider extends AbstractTypeProvider<FluentRoutineBuilder> {
@@ -678,7 +702,7 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 		'''routine builder for “«routine.name»”'''
 	}
 
-	def package getJvmOperation() {
+	def public getJvmOperation() {
 		val jvmMethod = context.jvmModelAssociator.getPrimaryJvmElement(routine)
 		if (jvmMethod instanceof JvmOperation) {
 			return jvmMethod

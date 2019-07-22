@@ -1,0 +1,27 @@
+import "http://www.eclipse.org/uml2/5.0.0/UML" as uml 
+import "http://palladiosimulator.org/PalladioComponentModel/5.2" as pcm
+    	
+mappings: umlXpcmSimple for UML and PCM
+ 
+ mapping SystemXPackage {
+	map(pcm::Repository repo)
+	and(uml::Package pkg)
+	with{
+		pkg in pkg[packagedElement]
+	}
+	such that {		
+		routine updateRepoName(uml::Package affectedEObject) {
+			match{
+				val repository = retrieve optional pcm::Repository corresponding to affectedEObject tagged with "umlXpcm_map_UML_and_PCM_correspondence_Repository:repository_with_Package:repositoryPkg"
+			} 	
+			action {
+				execute {
+					//if(repository.isPresent){
+					//	repository.get.entityName = affectedEObject.name.toFirstUpper					
+					//}
+				}
+			}
+		}
+	}
+	//todo: add reaction for IPREClassRemoved, IPREClassNameChanged, IPREConstructorOperationNameChanged
+}

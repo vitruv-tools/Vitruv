@@ -4,26 +4,26 @@ import java.util.ArrayList
 import java.util.List
 import tools.vitruv.dsls.mappings.generator.reactions.AbstractReactionTypeGenerator
 import tools.vitruv.dsls.mappings.generator.reactions.DeletedReactionGenerator
-import tools.vitruv.dsls.mappings.mappingsLanguage.SingleSidedCondition
-import tools.vitruv.dsls.mirbase.mirBase.NamedMetaclassReference
+import tools.vitruv.dsls.mappings.generator.reactions.ElementReplacedReactionGenerator
 import tools.vitruv.dsls.mappings.generator.reactions.InsertedReactionGenerator
 import tools.vitruv.dsls.mappings.generator.reactions.RemovedReactionGenerator
-import tools.vitruv.dsls.mappings.generator.reactions.ElementReplacedReactionGenerator
+import tools.vitruv.dsls.mappings.mappingsLanguage.MappingParameter
+import tools.vitruv.dsls.mappings.mappingsLanguage.SingleSidedCondition
+import tools.vitruv.dsls.mirbase.mirBase.NamedMetaclassReference
 
 class ReactionTypeFactory {
 
 	private List<SingleSidedCondition> conditions
 	private List<AbstractReactionTypeGenerator> generators = new ArrayList<AbstractReactionTypeGenerator>()
-	private List<NamedMetaclassReference> fromParameters
-	private List<NamedMetaclassReference> toParameters
+	private List<MappingParameter> fromParameters
+	private List<MappingParameter> toParameters
 
 	new(List<SingleSidedCondition> conditions) {
 		this.conditions = conditions;
 	}
 
-	def List<AbstractReactionTypeGenerator> constructGenerators(List<NamedMetaclassReference> fromParameters,
-		List<NamedMetaclassReference> toParameters) {
-		generators.clear
+	def List<AbstractReactionTypeGenerator> constructGenerators(List<MappingParameter> fromParameters,
+		List<MappingParameter> toParameters) {
 		this.fromParameters = fromParameters
 		this.toParameters = toParameters
 		insertDefaultTriggers
@@ -54,7 +54,7 @@ class ReactionTypeFactory {
 
 	private def insertDefaultTriggers() {
 		// add insert as root and delete trigger for all distinct metaclasses
-		fromParameters.distinctMetaclasses.forEach [
+		fromParameters.map[it.value].distinctMetaclasses.forEach [
 			val defaultInsertGenerator = new InsertedReactionGenerator(it)
 			defaultInsertGenerator.initGenerator
 			val defaultDeleteGenerator = new DeletedReactionGenerator(it)
@@ -83,7 +83,7 @@ class ReactionTypeFactory {
 				false
 			]
 			generators.add(defaultInsertGenerator)
-			generators.add(defaultDeleteGenerator)
+		//	generators.add(defaultDeleteGenerator)
 		]
 	}
 

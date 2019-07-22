@@ -3,29 +3,30 @@ package tools.vitruv.dsls.mappings.generator
 import java.util.ArrayList
 import java.util.List
 import org.eclipse.emf.ecore.EClass
-import tools.vitruv.dsls.mappings.generator.action.ReactionActionGenerator
-import tools.vitruv.dsls.mappings.generator.action.ReactionMatchGenerator
+import tools.vitruv.dsls.mappings.generator.action.SingleSidedConditionGenerator
 import tools.vitruv.dsls.mappings.generator.conditions.AbstractBidirectionalCondition
 import tools.vitruv.dsls.mappings.generator.conditions.MappingRoutineGenerator
 import tools.vitruv.dsls.mappings.generator.conditions.ReactionTypeFactory
-import tools.vitruv.dsls.mappings.generator.conditions.SingleSidedConditionGenerator
 import tools.vitruv.dsls.mappings.generator.reactions.AbstractReactionTypeGenerator
 import tools.vitruv.dsls.mappings.generator.reactions.AttributeReplacedReactionGenerator
 import tools.vitruv.dsls.mappings.generator.utils.ParameterCorrespondenceTagging
 import tools.vitruv.dsls.mappings.mappingsLanguage.BidirectionalizableCondition
 import tools.vitruv.dsls.mappings.mappingsLanguage.Mapping
+import tools.vitruv.dsls.mappings.mappingsLanguage.MappingParameter
 import tools.vitruv.dsls.mappings.mappingsLanguage.ObserveAttributes
 import tools.vitruv.dsls.mappings.mappingsLanguage.RoutineIntegration
 import tools.vitruv.dsls.mappings.mappingsLanguage.SingleSidedCondition
-import tools.vitruv.dsls.mirbase.mirBase.NamedMetaclassReference
+
+import static tools.vitruv.dsls.mappings.generator.utils.ParameterCorrespondenceTagging.*
+import tools.vitruv.dsls.mappings.generator.action.ReactionRoutineContentGenerator
 
 class DirectionalMappingReactionGenerator {
 
-	private List<NamedMetaclassReference> fromParameters
-	private List<NamedMetaclassReference> toParameters
+	private List<MappingParameter> fromParameters
+	private List<MappingParameter> toParameters
 	private Mapping mapping
 
-	new(List<NamedMetaclassReference> fromParameters, List<NamedMetaclassReference> toParameters, Mapping mapping) {
+	new(List<MappingParameter> fromParameters, List<MappingParameter> toParameters, Mapping mapping) {
 		this.fromParameters = fromParameters
 		this.toParameters = toParameters
 		this.mapping = mapping
@@ -42,14 +43,17 @@ class DirectionalMappingReactionGenerator {
 		reactionGenerators.forEach [ reactionGenerator |
 			reactionGenerator.mappingName = mapping.name
 			println('''=> generate reaction: «reactionGenerator.toString»''')
-			val singleSidedConditionGenerator = new SingleSidedConditionGenerator(reactionGenerator, fromConditions)
 			val reactionTemplate = reactionGenerator.generateTrigger(context)
-			val actionGenerator = new ReactionActionGenerator(reactionGenerator, bidirectionCondtionGenerators, context)
-			val matchGenerator = new ReactionMatchGenerator(reactionGenerator, singleSidedConditionGenerator)
+			val singleSidedConditionGenerator = new SingleSidedConditionGenerator(reactionGenerator, fromConditions)
+			val featureConditionsGenerator = singleSidedConditionGenerator.constructFeatureConditions
+			val contentGenerator = new ReactionRoutineContentGenerator(reactionGenerator, bidirectionCondtionGenerators,
+				featureConditionsGenerator, context)
+			singleSidedConditionGenerator.contentGenerator = contentGenerator
+			contentGenerator.generateSubRoutines
 			context.getSegmentBuilder += reactionTemplate.call([
 				alwaysRequireAffectedEObject
-				match(matchGenerator, true)
-				action(actionGenerator)
+				match(singleSidedConditionGenerator, true)
+				action(contentGenerator)
 			])
 		]
 	}
@@ -74,6 +78,7 @@ class DirectionalMappingReactionGenerator {
 				if (metaclass.metaclassApplicable) {
 					val generator = new AttributeReplacedReactionGenerator(it)
 					if (!generators.contains(generator)) {
+						generator.init(fromParameters, toParameters)
 						generators.add(generator)
 					}
 				}
@@ -83,7 +88,7 @@ class DirectionalMappingReactionGenerator {
 	}
 
 	private def isMetaclassApplicable(EClass metaclass) {
-		fromParameters.exists[it.metaclass == metaclass]
+		fromParameters.exists[it.value.metaclass == metaclass]
 	}
 
 }

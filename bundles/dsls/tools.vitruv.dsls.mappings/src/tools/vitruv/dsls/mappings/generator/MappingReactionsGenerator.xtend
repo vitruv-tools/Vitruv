@@ -13,8 +13,8 @@ class MappingReactionsGenerator extends MappingsReactionsFileGenerator {
 
 	def generateReactionsAndRoutines(ReactionGeneratorContext context) {
 		segment.mappings.forEach [	
-			val from = fromParameters
-			val to = toParameters
+			val from = fromParameters.map[it]
+			val to = toParameters.map[it]
 			val fromConditions = fromConditions
 			val mappingsConditions = it.bidirectionalizableConditions
 			val mappingRoutines = it.bidirectionalizableRoutines
