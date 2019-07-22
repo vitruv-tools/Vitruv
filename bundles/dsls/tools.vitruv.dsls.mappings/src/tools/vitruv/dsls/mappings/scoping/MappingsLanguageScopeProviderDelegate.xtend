@@ -37,7 +37,9 @@ class MappingsLanguageScopeProviderDelegate extends MirBaseScopeProviderDelegate
 		val contextContainer = context.eContainer();
 		if (reference.equals(METACLASS_FEATURE_REFERENCE__FEATURE))
 			return createEStructuralFeatureScope(context as MetaclassFeatureReference)
-		else if (reference.equals(Literals.FEATURE_CONDITION_PARAMETER__PARAMETER)) {
+		else if (reference.equals(Literals.FEATURE_CONDITION_PARAMETER__PARAMETER)
+			 ||			reference.equals(Literals.MAPPING_PARAMETER_REFERENCE__PARAMETER)
+			) {
 			val enforcableCondition = contextContainer.eContainer as EnforceableCondition;
 			val singleSidedCondition = enforcableCondition.eContainer as SingleSidedCondition;
 			val mapping = singleSidedCondition.eContainer as Mapping;

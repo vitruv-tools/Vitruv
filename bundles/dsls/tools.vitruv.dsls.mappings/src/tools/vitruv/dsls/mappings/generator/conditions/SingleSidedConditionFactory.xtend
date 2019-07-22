@@ -11,6 +11,9 @@ import tools.vitruv.dsls.mappings.mappingsLanguage.ElementCondition
 import tools.vitruv.dsls.mappings.mappingsLanguage.NotEmptyCondition
 import tools.vitruv.dsls.mappings.mappingsLanguage.IndexCondition
 import tools.vitruv.dsls.mappings.mappingsLanguage.NumCompareCondition
+import tools.vitruv.dsls.mappings.mappingsLanguage.MultiValueConditionOperator
+import tools.vitruv.dsls.mappings.generator.conditions.impl.EqualsValueConditionGenerator
+import tools.vitruv.dsls.mappings.generator.conditions.impl.InValueConditionGenerator
 
 class SingleSidedConditionFactory {
 
@@ -19,29 +22,41 @@ class SingleSidedConditionFactory {
 		if (condition instanceof EnforceableCondition) {
 			return construct(singleSidedCondition, condition)
 		} else if (condition instanceof CheckAndEnforceCondition) {
-			
 		}
 	}
-	
-	private static def AbstractSingleSidedCondition construct(SingleSidedCondition singleSidedCondition, EnforceableCondition enforceableCondition){
+
+	private static def  construct(SingleSidedCondition singleSidedCondition,
+		EnforceableCondition enforceableCondition) {
 		val condition = enforceableCondition.condition
-		if(condition instanceof FeatureCondition){
+		if (condition instanceof FeatureCondition) {
 			return construct(singleSidedCondition, condition)
-		}
-		else if(condition instanceof ResourceCondition){
-			
+		} else if (condition instanceof ResourceCondition) {
 		}
 	}
-	
-	private static def AbstractSingleSidedCondition construct(SingleSidedCondition singleSidedCondition, FeatureCondition featureCondition){
+
+	private static def construct(SingleSidedCondition singleSidedCondition,
+		FeatureCondition featureCondition) {
 		val condition = featureCondition.condition
-		switch(condition){
-			IndexCondition: return null
-			NumCompareCondition: return null
-			MultiValueCondition: return new MultiValueConditionGenerator(condition)
-			ElementCondition: return null
-			NotEmptyCondition: return null
+		switch (condition) {
+			IndexCondition:
+				return null
+			NumCompareCondition:
+				return null
+			MultiValueCondition:
+				return singleSidedCondition.construct(condition)
+			ElementCondition:
+				return null
+			NotEmptyCondition:
+				return null
 		}
 	}
-	
+
+	private static def construct(SingleSidedCondition singleSidedCondition,
+		MultiValueCondition multiValueCondition) {
+		if (multiValueCondition.operator == MultiValueConditionOperator.EQUALS) {
+			new EqualsValueConditionGenerator(multiValueCondition)
+		} else {
+			new InValueConditionGenerator(multiValueCondition)
+		}
+	}
 }
