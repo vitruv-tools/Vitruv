@@ -55,7 +55,8 @@ class ReactionFeatureConditionsGenerator {
 	 * should generate to the following statement:
 	 * if( condition1 && condition2 ... && conditionN) call sub-routine
 	 */
-	private def generateParameter(RoutineTypeProvider provider,FluentRoutineBuilder routineBuilder, MappingParameter parameter) {
+	private def generateParameter(RoutineTypeProvider provider, FluentRoutineBuilder routineBuilder,
+		MappingParameter parameter) {
 		XbaseFactory.eINSTANCE.createXIfExpression => [
 			it.^if = provider.generateIfStatement(parameter)
 			it.then = XbaseFactory.eINSTANCE.createXBlockExpression => [
@@ -64,18 +65,23 @@ class ReactionFeatureConditionsGenerator {
 		]
 	}
 
-	private def generateRoutineCall(RoutineTypeProvider provider,FluentRoutineBuilder routineBuilder, MappingParameter parameter) {
+	private def generateRoutineCall(RoutineTypeProvider provider, FluentRoutineBuilder routineBuilder,
+		MappingParameter parameter) {
 		val call = XbaseFactory.eINSTANCE.createXFeatureCall => [
 			featureCallArguments += provider.affectedEObject
+			if (reactionTypeGenerator.usesNewValue) {
+				featureCallArguments += provider.newValue
+			}
 			explicitOperationCall = true
 		]
-		featureRoutineCall.connectRoutineCall(parameter,routineBuilder, call)
+		featureRoutineCall.connectRoutineCall(parameter, routineBuilder, call)
 		call
 	}
 
 	private def generateIfStatement(RoutineTypeProvider provider, MappingParameter parameter) {
 		val feasibleConditions = conditions.filter[it.feasibleForParameter(parameter)]
-		val firstExpression = feasibleConditions.get(0).generateFeatureCondition(provider)
+		val firstExpression = feasibleConditions.get(0).generateFeatureCondition(provider,
+			reactionTypeGenerator.usesNewValue)
 		if (feasibleConditions.size == 1) {
 			// straight forward 
 			firstExpression
@@ -83,7 +89,7 @@ class ReactionFeatureConditionsGenerator {
 			// chain them together with &&
 			var leftExpression = firstExpression
 			for (condition : feasibleConditions.drop(1)) {
-				val expression = condition.generateFeatureCondition(provider)
+				val expression = condition.generateFeatureCondition(provider, reactionTypeGenerator.usesNewValue)
 				val andExpression = XbaseFactory.eINSTANCE.createXBinaryOperation
 				andExpression.leftOperand = leftExpression
 				andExpression.rightOperand = expression

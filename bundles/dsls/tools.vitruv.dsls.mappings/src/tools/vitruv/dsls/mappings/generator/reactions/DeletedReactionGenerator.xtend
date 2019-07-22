@@ -20,33 +20,19 @@ class DeletedReactionGenerator extends AbstractReactionTypeGenerator {
 	override toString() '''
 	«metaclass.parameterName» deleted'''
 
-	override generateCorrespondenceMatches(UndecidedMatcherStatementBuilder builder, MappingParameter parameter) {
-		iterateParameters [ reactionParameter, correspondingParameter |
-			val element = getParameterName(reactionParameter, correspondingParameter)
-			builder.vall(element).retrieve(correspondingParameter.value.metaclass).correspondingTo.affectedEObject.
-				taggedWith(reactionParameter, correspondingParameter)
-		]
-	}
-
-	override generateCorrespondenceActions(ActionStatementBuilder builder, MappingParameter parameter) {
-		// delete 
-		correspondingParameters.forEach [
-//			val element = it.removeElementName
-			// builder.delete(element)
-		]
-		iterateParameters [ reactionParameter, correspondingParameter |
-			val element = getParameterName(reactionParameter, correspondingParameter)
-			builder.removeCorrespondenceBetween(element).and.affectedEObject.taggedWith(reactionParameter,
-				correspondingParameter)
-			builder.delete(element)
-		]
-	}
-
 	override equals(Object obj) {
 		if (obj instanceof DeletedReactionGenerator) {
 			return metaclass == obj.metaclass
 		}
 		false
+	}
+	
+	override generateCorrespondenceMatches(UndecidedMatcherStatementBuilder builder, MappingParameter parameter) {
+		new AbstractDeleteReactionTypeDelegator(this).generateCorrespondenceMatches(builder, parameter)
+	}
+	
+	override generateCorrespondenceActions(ActionStatementBuilder builder, MappingParameter parameter) {
+		new AbstractDeleteReactionTypeDelegator(this).generateCorrespondenceActions(builder, parameter)
 	}
 
 }

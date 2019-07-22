@@ -27,11 +27,23 @@ abstract class AbstractReactionTypeGenerator {
 	private List<MappingParameter> correspondingParameters
 	@Accessors(PUBLIC_SETTER)
 	private String mappingName
+	@Accessors(PUBLIC_GETTER)
+	protected boolean usesNewValue = false
 
 	protected String reactionName
 
 	new(EClass metaclass) {
 		this.metaclass = metaclass
+	}
+
+	def protected void initDelegate(AbstractReactionTypeGenerator parent) {
+		this.metaclass = parent.metaclass
+		this.conflictingTriggerCheck = parent.conflictingTriggerCheck
+		this.reactionParameters = parent.reactionParameters
+		this.correspondingParameters = parent.correspondingParameters
+		this.mappingName = parent.mappingName
+		this.usesNewValue = parent.usesNewValue
+		this.reactionName = parent.reactionName
 	}
 
 	def void init(List<MappingParameter> reactionParameters, List<MappingParameter> correspondingParameters) {
@@ -69,7 +81,7 @@ abstract class AbstractReactionTypeGenerator {
 	def public String reactionName() '''
 	On«mappingName.toFirstUpper»«reactionName»'''
 
-	def protected String getRemoveElementName(NamedMetaclassReference ref) '''
+	def protected String getRemoveElementName(MappingParameter ref) '''
 	remove«ref.parameterName.toFirstUpper»'''
 
 	def protected String getNewElementName(MappingParameter ref) '''

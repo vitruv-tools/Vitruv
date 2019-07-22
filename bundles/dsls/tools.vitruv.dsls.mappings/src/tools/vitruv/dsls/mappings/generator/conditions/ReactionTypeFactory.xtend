@@ -64,7 +64,7 @@ class ReactionTypeFactory {
 				if (generator instanceof InsertedReactionGenerator) {
 					return true
 				}
-				if(generator instanceof ElementReplacedReactionGenerator){
+				if (generator instanceof ElementReplacedReactionGenerator) {
 					return true
 				}
 				false
@@ -77,13 +77,13 @@ class ReactionTypeFactory {
 				if (generator instanceof DeletedReactionGenerator) {
 					return true
 				}
-				if(generator instanceof ElementReplacedReactionGenerator){
+				if (generator instanceof ElementReplacedReactionGenerator) {
 					return true
 				}
 				false
 			]
 			generators.add(defaultInsertGenerator)
-		//	generators.add(defaultDeleteGenerator)
+			generators.add(defaultDeleteGenerator)
 		]
 	}
 

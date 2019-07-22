@@ -184,6 +184,11 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 			this
 		}
 
+		def alwaysRequireNewValue() {
+			requireNewValue = true
+			this
+		}
+
 		def overrideAlongImportPath(FluentReactionsSegmentBuilder... importPathSegmentBuilders) {
 			if (!importPathSegmentBuilders.nullOrEmpty) {
 				var RoutineOverrideImportPath currentImportPath = null
@@ -514,8 +519,8 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 			var hasFittingAffectedEOjbectParameter = false
 			if (parameters.size > 0) {
 				val param = parameters.get(0)
-				if(param.parameterArgumentType){
-					//todo: check if matching type
+				if (param.parameterArgumentType) {
+					// todo: check if matching type
 					hasFittingAffectedEOjbectParameter = true
 				}
 			}
