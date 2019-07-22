@@ -175,6 +175,10 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 			super(builder)
 		}
 
+		def retrieveRoutineBuilder() {
+			builder
+		}
+
 		def alwaysRequireAffectedEObject() {
 			requireAffectedEObject = true
 			this
@@ -507,29 +511,34 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 				requireNewValue, '''The «routineBuilder» requires a new value, and can thus only be called from reactions, not routines!''')
 			checkState(!routineBuilder.requireOldValue || valueType !==
 				null, '''The «routineBuilder» requires an old value, and can thus only be called from reactions, not routines!''')
-			var hasAffectedEOjbectParameter = false
+			var hasFittingAffectedEOjbectParameter = false
 			if (parameters.size > 0) {
-				hasAffectedEOjbectParameter = parameters.get(0) ==
-					ReactionsLanguageConstants.CHANGE_AFFECTED_ELEMENT_ATTRIBUTE
+				val param = parameters.get(0)
+				if(param.parameterArgumentType){
+					//todo: check if matching type
+					hasFittingAffectedEOjbectParameter = true
+				}
 			}
 			checkState(!routineBuilder.requireAffectedEObject || (
 				routineBuilder.requireAffectedEObject &&
-				hasAffectedEOjbectParameter), '''The «routineBuilder» requires an requireAffectedEObject, and can thus only be called from reactions, not routines!''')
+				hasFittingAffectedEOjbectParameter), '''The «routineBuilder» requires an requireAffectedEObject, and can thus only be called from reactions, not routines!''')
 			builder.transferReactionsSegmentTo(routineBuilder)
 			addRoutineCall(routineBuilder, parameters)
 		}
 
 		def private addRoutineCall(FluentRoutineBuilder routineBuilder, RoutineCallParameter... parameters) {
 			routine.action.actionStatements += ReactionsLanguageFactory.eINSTANCE.createRoutineCallStatement => [
-				code = routineBuilder.routineCall(parameters)
+				code = routineBuilder.routineCall(it, parameters)
 			]
 		}
 
-		def private routineCall(FluentRoutineBuilder routineBuilder, RoutineCallParameter... parameters) {
+		def private routineCall(FluentRoutineBuilder routineBuilder, RoutineCallStatement callStatement,
+			RoutineCallParameter... parameters) {
 			(XbaseFactory.eINSTANCE.createXFeatureCall => [
 				explicitOperationCall = true
 			]).whenJvmTypes [
 				feature = routineBuilder.jvmOperation
+				implicitReceiver = jvmOperationRoutineFacade
 				val typeProvider = typeProvider
 				featureCallArguments += parameters.map [
 					if (it.parameterArgumentType) {
@@ -703,11 +712,22 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 	}
 
 	def public getJvmOperation() {
+		context.jvmModelAssociator.getLogicalContainer(null)
 		val jvmMethod = context.jvmModelAssociator.getPrimaryJvmElement(routine)
 		if (jvmMethod instanceof JvmOperation) {
 			return jvmMethod
 		}
 		throw new IllegalStateException('''Could not find the routine facade method corresponding to the routine “«routine.name»”''')
+	}
+
+	def public getJvmOperationRoutineFacade() {
+		val code = (routine.action.actionStatements.findFirst [
+			it instanceof RoutineCallStatement
+		] as RoutineCallStatement ).code
+		if (code === null) {
+			throw new IllegalStateException('''Could not find a routineCallStatement in routine “«routine.name»”''')
+		}
+		getCorrespondingMethod(code).argument(REACTION_USER_EXECUTION_ROUTINE_CALL_FACADE_PARAMETER_NAME)
 	}
 
 	override protected getCreatedElementName() {

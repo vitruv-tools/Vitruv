@@ -1,14 +1,14 @@
 package tools.vitruv.dsls.mappings.generator.integration
 
+import java.util.function.Consumer
+import org.eclipse.emf.ecore.util.EcoreUtil
+import tools.vitruv.dsls.mappings.generator.ReactionGeneratorContext
 import tools.vitruv.dsls.mappings.mappingsLanguage.Mapping
 import tools.vitruv.dsls.mappings.mappingsLanguage.ReactionIntegration
 import tools.vitruv.dsls.mappings.mappingsLanguage.ReactionOrientation
 import tools.vitruv.dsls.mappings.mappingsLanguage.RoutineIntegration
+import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.InputBuilder
 import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsLanguageFactory
-import tools.vitruv.dsls.mappings.generator.ReactionGeneratorContext
-import org.eclipse.emf.ecore.util.EcoreUtil
-import tools.vitruv.dsls.mirbase.mirBase.MirBaseFactory
-import tools.vitruv.dsls.mappings.mappingsLanguage.MappingsLanguageFactory
 
 abstract class AbstractReactionIntegrationGenerator implements IReactionIntegrationGenerator {
 
@@ -63,5 +63,26 @@ abstract class AbstractReactionIntegrationGenerator implements IReactionIntegrat
 		routine.matcher = EcoreUtil.copy(routineIntegration.matcher)
 		routine.action = EcoreUtil.copy(routineIntegration.action)
 		routine
+	}
+
+	public static def generateRoutineInput(RoutineIntegration routineIntegration) {
+		// it should have assignedEObject as first and string as second parameter
+		if (routineIntegration.input !== null && routineIntegration.input.modelInputElements.size == 1 &&
+			routineIntegration.input.javaInputElements.size == 1) {
+			[ InputBuilder builder |
+				val affecteEObject = routineIntegration.input.modelInputElements.get(0)
+				builder.affectedEObject.apply(affecteEObject.metaclass)
+				val modelParameter = routineIntegration.input.javaInputElements.get(0)
+				val paramType = modelParameter.type.type.identifier
+				val stringType = String.name
+				if (paramType != stringType) {
+					throw new IllegalStateException('''The integrated routine «routineIntegration.name» method signature is wrong. The second parameter must be a String!''')
+				}
+				builder.plain(String, modelParameter.name)
+			] as Consumer<InputBuilder>
+
+		} else {
+			throw new IllegalStateException('''The integrated routine «routineIntegration.name» method signature is wrong. It should first have an affectedEObject and then a String parameter!''')
+		}
 	}
 }

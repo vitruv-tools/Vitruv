@@ -52,6 +52,7 @@ class DirectionalMappingReactionGenerator {
 			contentGenerator.generateSubRoutines
 			context.getSegmentBuilder += reactionTemplate.call([
 				alwaysRequireAffectedEObject
+				contentGenerator.currentRoutine = retrieveRoutineBuilder
 				match(singleSidedConditionGenerator, true)
 				action(contentGenerator)
 			])

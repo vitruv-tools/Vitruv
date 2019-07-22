@@ -5,6 +5,7 @@ import org.eclipse.xtext.xbase.XbaseFactory
 import tools.vitruv.dsls.mappings.generator.conditions.FeatureConditionGenerator
 import tools.vitruv.dsls.mappings.generator.reactions.AbstractReactionTypeGenerator
 import tools.vitruv.dsls.mappings.mappingsLanguage.MappingParameter
+import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.ActionStatementBuilder
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.RoutineTypeProvider
 
@@ -22,13 +23,14 @@ class ReactionFeatureConditionsGenerator {
 		this.conditions = conditions;
 	}
 
-	def void generate(ActionStatementBuilder builder, FeatureRoutineCall featureRoutineCall) {
+	def void generate(ActionStatementBuilder builder, FluentRoutineBuilder routineBuilder,
+		FeatureRoutineCall featureRoutineCall) {
 		this.featureRoutineCall = featureRoutineCall
 		if (hasAnyMatchingFeatureConditions) {
 			builder.call [ typeProvider |
 				XbaseFactory.eINSTANCE.createXBlockExpression => [
 					expressions += reactionTypeGenerator.reactionParameters.filter[filterEmptyConditions].map [
-						generateParameter(typeProvider, it)
+						typeProvider.generateParameter(routineBuilder, it)
 					]
 				]
 			]
@@ -53,21 +55,21 @@ class ReactionFeatureConditionsGenerator {
 	 * should generate to the following statement:
 	 * if( condition1 && condition2 ... && conditionN) call sub-routine
 	 */
-	private def generateParameter(RoutineTypeProvider provider, MappingParameter parameter) {
+	private def generateParameter(RoutineTypeProvider provider,FluentRoutineBuilder routineBuilder, MappingParameter parameter) {
 		XbaseFactory.eINSTANCE.createXIfExpression => [
 			it.^if = provider.generateIfStatement(parameter)
 			it.then = XbaseFactory.eINSTANCE.createXBlockExpression => [
-				 expressions += provider.generateRoutineCall(parameter)
+				expressions += provider.generateRoutineCall(routineBuilder, parameter)
 			]
 		]
 	}
 
-	private def generateRoutineCall(RoutineTypeProvider provider, MappingParameter parameter) {
+	private def generateRoutineCall(RoutineTypeProvider provider,FluentRoutineBuilder routineBuilder, MappingParameter parameter) {
 		val call = XbaseFactory.eINSTANCE.createXFeatureCall => [
 			featureCallArguments += provider.affectedEObject
 			explicitOperationCall = true
 		]
-		featureRoutineCall.connectRoutineCall(parameter, call)
+		featureRoutineCall.connectRoutineCall(parameter,routineBuilder, call)
 		call
 	}
 
@@ -93,22 +95,20 @@ class ReactionFeatureConditionsGenerator {
 	}
 
 /* 
-	private def generateReturn(boolean value) {
-		XbaseFactory.eINSTANCE.createXReturnExpression => [
-			expression = XbaseFactory.eINSTANCE.createXBooleanLiteral => [
-				isTrue = value
-			]
-		]
-	}*/
-
-
+ * 	private def generateReturn(boolean value) {
+ * 		XbaseFactory.eINSTANCE.createXReturnExpression => [
+ * 			expression = XbaseFactory.eINSTANCE.createXBooleanLiteral => [
+ * 				isTrue = value
+ * 			]
+ * 		]
+ }*/
 /* 
-	private def generateVarAssign(RoutineTypeProvider provider, MappingParameter parameter) {
-		XbaseFactory.eINSTANCE.createXAssignment => [
-			assignable = provider.variable(MAPPING_OBJECT)
-			value = XbaseFactory.eINSTANCE.createXStringLiteral => [
-				value = parameter.value.name
-			]
-		]
-	}*/
+ * 	private def generateVarAssign(RoutineTypeProvider provider, MappingParameter parameter) {
+ * 		XbaseFactory.eINSTANCE.createXAssignment => [
+ * 			assignable = provider.variable(MAPPING_OBJECT)
+ * 			value = XbaseFactory.eINSTANCE.createXStringLiteral => [
+ * 				value = parameter.value.name
+ * 			]
+ * 		]
+ }*/
 }

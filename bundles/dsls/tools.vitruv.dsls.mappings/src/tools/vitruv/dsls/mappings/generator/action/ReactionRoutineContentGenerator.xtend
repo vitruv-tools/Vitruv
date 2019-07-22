@@ -14,6 +14,7 @@ import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.ActionStatementBuilder
 import tools.vitruv.dsls.reactions.codegen.ReactionsLanguageConstants
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.RoutineCallParameter
+import tools.vitruv.dsls.reactions.builder.FluentReactionBuilder
 
 class ReactionRoutineContentGenerator implements Consumer<ActionStatementBuilder>, FeatureRoutineCall {
 
@@ -24,7 +25,9 @@ class ReactionRoutineContentGenerator implements Consumer<ActionStatementBuilder
 	private Map<MappingParameter, FluentRoutineBuilder> subRoutines = new HashMap
 	@Accessors(PUBLIC_GETTER)
 	private boolean usesSubRoutines = false
-
+	@Accessors(PUBLIC_SETTER)
+	private FluentRoutineBuilder currentRoutine
+	
 	new(AbstractReactionTypeGenerator generator, List<AbstractBidirectionalCondition> conditions,
 		ReactionFeatureConditionsGenerator featureGenerator, ReactionGeneratorContext context) {
 		this.generator = generator
@@ -45,7 +48,7 @@ class ReactionRoutineContentGenerator implements Consumer<ActionStatementBuilder
 
 	override accept(ActionStatementBuilder builder) {
 		if (usesSubRoutines) {
-			featureGenerator.generate(builder, this)
+			featureGenerator.generate(builder,currentRoutine, this)
 			// find all parameters for which no feature conditions exist and just call the sub routine directly
 			generator.reactionParameters.forEach [
 				if (!featureGenerator.hasFeatureConditionFor(it)) {
@@ -83,9 +86,10 @@ class ReactionRoutineContentGenerator implements Consumer<ActionStatementBuilder
 		context.segmentBuilder += routine
 	}
 
-	override connectRoutineCall(MappingParameter parameter, XFeatureCall call) {
+	override connectRoutineCall(MappingParameter parameter,FluentRoutineBuilder callingRoutine, XFeatureCall call) {
 		// connect the routine call
 		val routine = subRoutines.get(parameter)
+		call.implicitReceiver = callingRoutine.jvmOperationRoutineFacade
 		call.feature = routine.jvmOperation
 	}
 
