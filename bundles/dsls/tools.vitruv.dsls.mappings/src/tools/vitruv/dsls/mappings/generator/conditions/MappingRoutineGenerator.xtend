@@ -93,14 +93,8 @@ class MappingRoutineGenerator extends AbstractBidirectionalCondition {
 			 * 		]
 			 * 	]
 			 */
-			targetRoutineBuilder = context.create.from(generatedRoutine)
-
-			/*val parameter = generatedRoutine.input.modelInputElements.get(0)
-			 * 		 	parameter.e
-			 * var modelRou = generatedRoutine.input.modelInputElements.get(0);
-			 * var modelNew = MirBaseFactory.eINSTANCE.createNamedMetaclassReference => [
-			 * 	it.name = ' test'
-			 ]*/
+			val inputBuilder = AbstractReactionIntegrationGenerator.generateRoutineInput(routine)
+			targetRoutineBuilder = context.create.from(generatedRoutine, inputBuilder)
 			context.getSegmentBuilder += targetRoutineBuilder
 		}
 	}

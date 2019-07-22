@@ -2,13 +2,13 @@ package tools.vitruv.dsls.reactions.builder
 
 import com.google.inject.Inject
 import com.google.inject.Singleton
+import java.util.function.Consumer
 import org.eclipse.emf.ecore.util.EcoreUtil
+import tools.vitruv.dsls.mirbase.mirBase.MetaclassReference
+import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.InputBuilder
 import tools.vitruv.dsls.reactions.reactionsLanguage.Reaction
 import tools.vitruv.dsls.reactions.reactionsLanguage.Routine
-import tools.vitruv.dsls.mirbase.mirBase.MetamodelImport
-import tools.vitruv.dsls.mirbase.mirBase.NamedMetaclassReference
-import tools.vitruv.dsls.mirbase.mirBase.MetaclassReference
-import org.eclipse.xtext.xbase.XFeatureCall
+import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsLanguageFactory
 
 /**
  * Entry point for fluent reaction builders. The offered methods each create a 
@@ -38,6 +38,10 @@ class FluentReactionsLanguageBuilder {
 		new FluentRoutineBuilder(name, context).start()
 	}
 
+	def from(Routine routine, Consumer<InputBuilder> inputBuilder) {
+		new ExistingRoutineBuilder(routine, inputBuilder, context)
+	}
+
 	def from(Routine routine) {
 		new ExistingRoutineBuilder(routine, context)
 	}
@@ -51,19 +55,27 @@ class FluentReactionsLanguageBuilder {
 	}
 
 	static class ExistingRoutineBuilder extends FluentRoutineBuilder {
+		new(Routine routine, Consumer<InputBuilder> inputBuilder, FluentBuilderContext context) {
+			super(null, context)
+			this.routine = routine
+			this.routine.input = ReactionsLanguageFactory.eINSTANCE.createRoutineInput
+			start().input(inputBuilder)
+			init()
+		}
+
 		new(Routine routine, FluentBuilderContext context) {
 			super(null, context)
 			this.routine = routine
+			init()
+		}
+
+		private def init() {
 			this.readyToBeAttached = true
-		 	val contents = EcoreUtil.getAllContents(#[routine])
+			val contents = EcoreUtil.getAllContents(#[routine])
 			contents.filter[it instanceof MetaclassReference].forEach [
 				val ref = it as MetaclassReference
 				ref.reference(ref.metaclass)
 			]
-			/*contents.filter[it instanceof XFeatureCall].forEach[
-				val call = it as XFeatureCall
-				call.feature = null
-			]*/
 		}
 	}
 
