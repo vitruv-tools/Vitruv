@@ -1,8 +1,7 @@
-grammar tools.vitruv.dsls.mappings.MappingsLanguage with tools.vitruv.dsls.reactions.ReactionsLanguage
-hidden(WS, SL_COMMENT)
+grammar tools.vitruv.dsls.mappings.MappingsLanguage with tools.vitruv.dsls.reactions.ReactionsLanguage hidden(WS,
+SL_COMMENT)
 
 generate mappingsLanguage "http://vitruv.tools/dsls/mappings/MappingsLanguage"
-
 import "http://www.eclipse.org/emf/2002/Ecore" as ecore
 import "http://www.kit.edu/ipd/sdq/vitruvius/dsls/mirbase/MirBase" as mirbase
 import "http://vitruv.tools/dsls/reactions/ReactionsLanguage" as reactions
@@ -10,169 +9,142 @@ import "http://vitruv.tools/dsls/reactions/ReactionsLanguage" as reactions
 MappingsFile:
 	(namespaceImports=XImportSection)?
 	MirBaseFile
-	(mappingsSegments+=MappingsSegment)+
-;
+	(mappingsSegments+=MappingsSegment)+;
 
 MappingsSegment:
 	'mappings:' name=ValidID
-	'for' leftDomain=DomainReference 
+	'for' leftDomain=DomainReference
 	'and' rightDomain=DomainReference
 	(mappings+=Mapping |
-		bootstrappings+=Bootstrapping)*
-;
+	bootstrappings+=Bootstrapping)*;
 
 /******************/
-/* BEGIN MAPPINGS */		
+/* BEGIN MAPPINGS */
 /******************/
 Mapping:
 	'mapping' name=ValidID
-		('depends' 'on' '(' 
-			dependencies+=Dependency
-		')')?
+	('depends' 'on' '('
+	dependencies+=Dependency
+	')')?
 	'{'
-		'map' '(' (leftParameters+=MappingParameter)+')'
-			('with' '{' 
-				(leftConditions+=SingleSidedCondition)+
-			'}')?
-		'and' '(' (rightParameters+=MappingParameter)+ ')'
-			('with' '{' 
-				(rightConditions+=SingleSidedCondition)+
-			'}')?
-		('such' 'that' '{'
-			(bidirectionalizableConditions+=BidirectionalizableCondition)*	
-			(observeAttributes = ObserveAttributes)?
-			(bidirectionalizableRoutines += RoutineIntegration)*
-		'}')?		
-		('forward' 'execute' '{'
-			forwardExecutionExpression=UnidirectionalExpression
-		'}' 'backward' 'execute' '{'
-			backwardExecutionExpression=UnidirectionalExpression
-		'}')?
-		(reactions+=ReactionIntegration |
-		routines+=DirectedRoutineIntegration)*
-	'}'
-;
+	'map' '(' (leftParameters+=MappingParameter)+ ')'
+	('with' '{'
+	(leftConditions+=SingleSidedCondition)+
+	'}')?
+	'and' '(' (rightParameters+=MappingParameter)+ ')'
+	('with' '{'
+	(rightConditions+=SingleSidedCondition)+
+	'}')?
+	('such' 'that' '{'
+	(bidirectionalizableConditions+=BidirectionalizableCondition)*
+	(observeAttributes=ObserveAttributes)?
+	(bidirectionalizableRoutines+=RoutineIntegration)*
+	'}')?
+	('forward' 'execute' '{'
+	forwardExecutionExpression=UnidirectionalExpression
+	'}' 'backward' 'execute' '{'
+	backwardExecutionExpression=UnidirectionalExpression
+	'}')?
+	(reactions+=ReactionIntegration |
+	routines+=DirectedRoutineIntegration)*
+	'}';
 
 MappingParameter:
-	value = ClassicallyNamedModelElement
-;
+	value=ClassicallyNamedModelElement;
 
 ObserveAttributes:
-	'observe' 'attributes' '{'(attributes+=MetaclassEAttributeReference)+ '}'
-;
+	'observe' 'attributes' '{' (attributes+=MetaclassEAttributeReference)+ '}';
 
 ReactionIntegration:
 	(documentation=ML_COMMENT)?
-	orientation = ReactionOrientation 'reaction' name=ValidID '{'
-		trigger=Trigger
-		callRoutine=ReactionRoutineCall
+	orientation=ReactionOrientation 'reaction' name=ValidID '{'
+	trigger=Trigger
+	callRoutine=ReactionRoutineCall
 	'}';
 
-
 enum ReactionOrientation:
-	LEFT = 'left' | RIGHT = 'right'
-;
+	LEFT='left' | RIGHT='right';
 
 DirectedRoutineIntegration:
 	(documentation=ML_COMMENT)?
-	orientation = ReactionOrientation
-	definition = RoutineIntegration
-;	
+	orientation=ReactionOrientation
+	definition=RoutineIntegration;
 
 RoutineIntegration:
-	 'routine' name=ValidID input=RoutineInput '{'
-		matcher=MatcherBlock?
-		action=ActionBlock
-	'}'
-;
-
-// DW: RequiredMapping
+	'routine' name=ValidID input=RoutineInput '{'
+	matcher=MatcherBlock?
+	action=ActionBlock
+	'}';
+	// DW: RequiredMapping
 Dependency:
 	mapping=[Mapping]
-	shortName=ValidID
-;
-	
+	shortName=ValidID;
+
 SingleSidedCondition: // returns Condition:
-	condition = (EnforceableCondition |
-	CheckAndEnforceCondition)
-;
+	condition=(EnforceableCondition | CheckAndEnforceCondition);
 
 /* BEGIN ENFORCEABLE CONDITIONS */
 EnforceableCondition: //  returns SingleSidedCondition:
-	condition = (FeatureCondition |
-	ResourceCondition)
-;
+	condition=(FeatureCondition |
+	ResourceCondition);
 
 FeatureCondition: //  returns EnforceableCondition:
-	left = LeftFeatureCondition
-	condition = (
-		SingleValueCondition |
-	 MultiValueCondition |
-	 ElementCondition |
-	 NotEmptyCondition
-	)
-	feature=FeatureConditionParameter
-;
+	left=LeftFeatureCondition condition=(SingleValueCondition | MultiValueCondition | ElementCondition | NotEmptyCondition)
+	feature=FeatureConditionParameter;
 
 FeatureConditionParameter:
-	parameter=[MappingParameter] '[' feature=[ecore::EStructuralFeature|ValidID] ']'
-;
+	parameter=[MappingParameter] '[' feature=[ecore::EStructuralFeature|ValidID] ']';
 
-LeftFeatureCondition returns EObject: 
-	(MetaclassReference | NullValue | StringValue)
-;
+LeftFeatureCondition returns EObject:
+	MappingParameterReference | NullValue | StringValue |  BoolValue | NumberValue;
+
+MappingParameterReference:
+	parameter=[MappingParameter];
+
+NumberValue:
+	{NumberValue} value=XNumberLiteral;
+
+BoolValue:
+	{BoolValue} value=XBooleanLiteral;
 
 StringValue:
-	{StringValue} value = STRING
-;
+	{StringValue} value=XStringLiteral;
 
 NullValue:
-	{NullValue} 'null'
-;
+	{NullValue} 'null';
 
 FeatureReference:
-	DependentFeatureReference |
-	{MetaclassFeatureReference}
-;
+	DependentFeatureReference | {MetaclassFeatureReference};
 
-// DW: FeatureOfContextVariable
+	// DW: FeatureOfContextVariable
 DependentFeatureReference:
-	dependeeShortName=[Dependency|ValidID]
-	':'
-	dependeeFeature=MetaclassFeatureReference
-;
+	dependeeShortName=[Dependency|ValidID] ':' dependeeFeature=MetaclassFeatureReference;
 
 SingleValueCondition: //  returns ValueCondition:
 	IndexCondition |
-	NumCompareCondition
-;
+	NumCompareCondition;
 
 ValueCondition: //  returns FeatureCondition:
-	valueExpression=ValueExpression
-;
+	valueExpression=ValueExpression;
 
 ValueExpression:
-	{CodeBlock}
-;
+	{CodeBlock};
 
 IndexCondition: //  returns SingleValueCondition:
 	(negated='not')?
 	'at' 'index'
 	indexValueExpression=ValueExpression
-	'in'
-;
+	'in';
 
 NumCompareCondition: //  returns SingleValueCondition:
-	operator=NumCompareOperator
-;
+	operator=NumCompareOperator;
 
 enum NumCompareOperator:
-	NOT_GREATER = '<=' |
-	LESS = "<" |
-	NOT_LESS = ">=" |
-	GREATER = ">"
-;
-/*
+	NOT_GREATER='<=' |
+	LESS="<" |
+	NOT_LESS=">=" |
+	GREATER=">";
+	/*
 NumCompareOperator returns SingleValueConditionOperator:
 	NotGreaterOperator |
 	LessOperator |
@@ -188,104 +160,76 @@ NotLessOperator returns NumCompareOperator: '>=';
 
 GreaterOperator returns NumCompareOperator: '>';
 */
-
 MultiValueCondition: //  returns FeatureCondition:
 	(negated='not')?
-	operator=MultiValueConditionOperator
-;
+	operator=MultiValueConditionOperator;
 
 enum MultiValueConditionOperator:
-	EQUALS = 'equals' | 
-	IN = 'in'
-;
+	EQUALS='equals' |
+	IN='in';
 
 ElementCondition: //  returns FeatureCondition:
-	elementExpression=ElementExpression
-	'default' 'contained' 'in'
-;
+	elementExpression=ElementExpression 'default' 'contained' 'in';
 
 ElementExpression:
-	{CodeBlock}
-;
+	{CodeBlock};
 
 NotEmptyCondition: //  returns FeatureCondition:
 	{NotEmptyCondition} (negated='not')?
-	'empty'
-;
+	'empty';
 
 ResourceCondition: //  returns EnforceableCondition:
-	'default' 'path' 'for'
-	elementExpression=ElementExpression
-	'='
-	('path' 'of' pathExpression=ElementExpression "+")?
-	path=STRING
-;
+	'default' 'path' 'for' elementExpression=ElementExpression '=' ('path' 'of' pathExpression=ElementExpression "+")?
+	path=STRING;
 /* END ENFORCEABLE CONDITIONS */
 
 /* BEGIN CHECK AND ENFORCE CONDITION*/
 CheckAndEnforceCondition: //  returns SingleSidedCondition:
 	'check' '{'
-		checkExpression=CheckExpression
+	checkExpression=CheckExpression
 	'}'
 	'enforce' '{'
-		enforceExpression=CheckExpression
-	'}' 
-;
+	enforceExpression=CheckExpression
+	'}';
 
 CheckExpression:
-	{CodeBlock}
-;
+	{CodeBlock};
 
 EnforceExpression:
-	{CodeBlock}
-;
+	{CodeBlock};
 /* END CHECK AND ENFORCE CONDITION */
 
 /* BEGIN BIDIRECTIONALIZABLE CONDITION */
 BidirectionalizableCondition: //  returns Condition:
-	featureToBeAssigned=MetaclassFeatureReference
-	'='
-	bidirectionalizableExpression=XBlockExpression
-	('update' featureToBeUpdated=MetaclassFeatureReference)?
-;
+	featureToBeAssigned=MetaclassFeatureReference '=' bidirectionalizableExpression=XBlockExpression ('update'
+	featureToBeUpdated=MetaclassFeatureReference)?;
 
 BidirectionalizableExpression:
-	{CodeBlock}
-;
+	{CodeBlock};
 /* END BIDIRECTIONALIZABLE CONDITION */
-
 UnidirectionalExpression:
-	{CodeBlock}
-;
+	{CodeBlock};
 /******************/
-/* END MAPPINGS */		
+/* END MAPPINGS */
 /******************/
-	
-/***************************/
-/* BEGIN BOOTSTRAPPING */		
-/***************************/
-Bootstrapping: 
-	'bootstrapping' name=ValidID
-	'{'
-		'create' '(' (parameters+=ClassicallyNamedModelElement)+ ')' 
-		('with' '{'
-			bootstrapConditon=SingleSidedCondition
-		'}')?
-	'}'
-;
-/***************************/
-/* END BOOTSTRAPPING */		
-/***************************/
-
 
 /***************************/
-/* BEGIN REFACTOR */		
+/* BEGIN BOOTSTRAPPING */
 /***************************/
-	
+Bootstrapping:
+	'bootstrapping' name=ValidID '{' 'create' '(' (parameters+=ClassicallyNamedModelElement)+ ')' ('with' '{'
+	bootstrapConditon=SingleSidedCondition '}')? '}';
+/***************************/
+/* END BOOTSTRAPPING */
+/***************************/
+
+/***************************/
+/* BEGIN REFACTOR */
+/***************************/
+
 // TODO MK: move documentable to MetaBase and use it in Reactions	
 fragment Documentable:
-	(documentation=ML_COMMENT)?
-;
+	(documentation=ML_COMMENT)?;
 /***************************/
-/* END REFACTOR */		
+/* END REFACTOR */
 /***************************/
