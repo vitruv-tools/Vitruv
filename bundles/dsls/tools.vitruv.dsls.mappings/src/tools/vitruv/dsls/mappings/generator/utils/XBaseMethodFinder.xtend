@@ -1,5 +1,7 @@
 package tools.vitruv.dsls.mappings.generator.utils
 
+import org.eclipse.emf.ecore.EClass
+import org.eclipse.emf.ecore.EStructuralFeature
 import org.eclipse.xtext.common.types.JvmDeclaredType
 import org.eclipse.xtext.common.types.JvmMember
 import tools.vitruv.dsls.mirbase.mirBase.MetaclassFeatureReference
@@ -10,6 +12,7 @@ class XBaseMethodFinder {
 	private final static String PACKAGE_OBJECT = 'org.eclipse.xtext.xbase.lib.ObjectExtensions'
 	private final static String PACKAGE_BOOLEAN = 'org.eclipse.xtext.xbase.lib.BooleanExtensions'
 
+	
 	public static def and(RoutineTypeProvider typeProvider) {
 		typeProvider.findXbaseMethod(PACKAGE_BOOLEAN, 'operator_and')
 	}
@@ -26,6 +29,10 @@ class XBaseMethodFinder {
 		(typeProvider.findTypeByName(pkg) as JvmDeclaredType).members.findFirst [
 			it.simpleName == method
 		]
+	}
+
+	public static def findFeatureMethod(RoutineTypeProvider provider, EClass metaclass, EStructuralFeature feature) {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
 	}
 
 	public static def findMetaclassMethod(RoutineTypeProvider typeProvider, MetaclassFeatureReference ref) {

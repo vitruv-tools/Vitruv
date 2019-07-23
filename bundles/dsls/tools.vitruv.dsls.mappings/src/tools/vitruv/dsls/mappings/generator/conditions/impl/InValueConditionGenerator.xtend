@@ -22,6 +22,18 @@ class InValueConditionGenerator extends MultiValueConditionGenerator {
 	new(MultiValueCondition condition) {
 		super(condition, MultiValueConditionOperator.IN)
 	}
+	
+	public def getChildParameter(){
+		featureCondition.leftMappingParameter
+	}
+	
+	public def getParentParameter(){
+		featureCondition.feature.parameter
+	}
+	
+	public def getInFeature(){
+		featureCondition.feature.feature
+	}
 
 	override feasibleForGenerator(AbstractReactionTypeGenerator generator) {
 		if (!generator.usesNewValue) {

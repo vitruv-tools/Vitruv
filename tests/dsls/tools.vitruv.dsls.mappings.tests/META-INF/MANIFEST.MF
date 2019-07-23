@@ -4,12 +4,6 @@ Bundle-Name: Vitruv DSLs Mapping Language Tests
 Bundle-SymbolicName: tools.vitruv.dsls.mappings.tests;singleton:=true
 Bundle-Version: 0.3.0.qualifier
 Bundle-Vendor: vitruv.tools
-Export-Package: mir.reactions.umlXpcmSimple_L2RSegment,
- mir.reactions.umlXpcmSimple_R2LSegment,
- mir.routines.umlXpcmSimple_L2RSegment,
- mir.routines.umlXpcmSimple_R2LSegment,
- tools.vitruv.dsls.mappings.tests.pcmuml,
- tools.vitruv.dsls.mappings.tests
 Require-Bundle: tools.vitruv.dsls.mappings,
  org.junit;bundle-version="4.12.0",
  org.eclipse.xtext.testing,
@@ -33,12 +27,15 @@ Require-Bundle: tools.vitruv.dsls.mappings,
  tools.vitruv.demo.domains.recipients,
  tools.vitruv.extensions.dslsruntime.reactions;visibility:=reexport,
  tools.vitruv.extensions.dslsruntime.mappings,
- tools.vitruv.domains.pcm.util,
  org.palladiosimulator.pcm,
  org.palladiosimulator.pcm.resources,
  org.eclipse.uml2.uml,
  tools.vitruv.domains.pcm,
- tools.vitruv.domains.uml
+ tools.vitruv.domains.uml,
+ tools.vitruv.dsls.reactions,
+ tools.vitruv.dsls.mirbase,
+ tools.vitruv.dsls.mappings 
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Automatic-Module-Name: tools.vitruv.dsls.mappings.tests
 Import-Package: org.hamcrest.core,

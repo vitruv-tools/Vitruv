@@ -22,17 +22,24 @@ Require-Bundle: org.eclipse.xtext,
  org.eclipse.xtext.xtext.generator
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Export-Package: tools.vitruv.dsls.mappings.scoping,
+Export-Package: tools.vitruv.dsls.mappings,
+ tools.vitruv.dsls.mappings.generator,
+ tools.vitruv.dsls.mappings.generator.action,
+ tools.vitruv.dsls.mappings.generator.conditions,
+ tools.vitruv.dsls.mappings.generator.conditions.impl,
+ tools.vitruv.dsls.mappings.generator.integration,
+ tools.vitruv.dsls.mappings.generator.reactions,
+ tools.vitruv.dsls.mappings.generator.utils,
+ tools.vitruv.dsls.mappings.jvmmodel,
  tools.vitruv.dsls.mappings.mappingsLanguage,
- tools.vitruv.dsls.mappings.validation,
+ tools.vitruv.dsls.mappings.mappingsLanguage.impl,
+ tools.vitruv.dsls.mappings.mappingsLanguage.util,
+ tools.vitruv.dsls.mappings.parser.antlr,
+ tools.vitruv.dsls.mappings.parser.antlr.internal,
+ tools.vitruv.dsls.mappings.postprocessor,
+ tools.vitruv.dsls.mappings.scoping,
  tools.vitruv.dsls.mappings.serializer,
  tools.vitruv.dsls.mappings.services,
- tools.vitruv.dsls.mappings,
- tools.vitruv.dsls.mappings.mappingsLanguage.util,
- tools.vitruv.dsls.mappings.jvmmodel,
- tools.vitruv.dsls.mappings.mappingsLanguage.impl,
- tools.vitruv.dsls.mappings.parser.antlr.internal,
- tools.vitruv.dsls.mappings.parser.antlr,
- tools.vitruv.dsls.mappings.generator
+ tools.vitruv.dsls.mappings.validation
 Import-Package: org.apache.log4j,
  org.eclipse.xtext.builder
