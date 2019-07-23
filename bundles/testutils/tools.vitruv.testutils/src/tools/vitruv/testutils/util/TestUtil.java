@@ -19,8 +19,11 @@ import tools.vitruv.framework.change.processing.ChangePropagationSpecification;
 import tools.vitruv.framework.domains.AbstractVitruvDomain;
 import tools.vitruv.framework.domains.VitruvDomain;
 import tools.vitruv.framework.domains.VitruviusProjectBuilderApplicator;
+import tools.vitruv.framework.tuid.TuidCalculatorAndResolverBase;
+import tools.vitruv.framework.tuid.TuidManager;
 import tools.vitruv.framework.userinteraction.InternalUserInteractor;
 import tools.vitruv.framework.util.VitruviusConstants;
+import tools.vitruv.framework.uuid.UuidGeneratorAndResolverImpl;
 import tools.vitruv.framework.vsum.InternalVirtualModel;
 import tools.vitruv.framework.vsum.VirtualModel;
 import tools.vitruv.framework.vsum.VirtualModelConfiguration;
@@ -35,6 +38,7 @@ import tools.vitruv.framework.vsum.VirtualModelImpl;
  */
 public final class TestUtil {
 	private static final String VM_ARGUMENT_LOG_OUTPUT_LEVEL = "logOutputLevel";
+	private static final String VM_ARGUMENT_LOG_OUTPUT_ID_INFO = "logOutputIdInfo";
 	private static final String VM_ARGUMENT_TEST_WORKSPACE_PATH = "testWorkspacePath";
 	public static final String SOURCE_FOLDER = "src";
 
@@ -240,8 +244,8 @@ public final class TestUtil {
 	public static void initializeLogger() {
 		Logger.getRootLogger().setLevel(Level.ERROR);
 		Logger.getRootLogger().removeAllAppenders();
-		Logger.getRootLogger()
-				.addAppender(new ConsoleAppender(new PatternLayout("[%-5p] %d{HH:mm:ss,SSS} %-30C{1} - %m%n")));
+		ConsoleAppender appender = new ConsoleAppender(new PatternLayout("[%-5p] %d{HH:mm:ss,SSS} %-30C{1} - %m%n"));
+		Logger.getRootLogger().addAppender(appender);
 		String outputLevelProperty = System.getProperty(VM_ARGUMENT_LOG_OUTPUT_LEVEL);
 		if (outputLevelProperty != null) {
 			if (!Logger.getRootLogger().getAllAppenders().hasMoreElements()) {
@@ -250,6 +254,12 @@ public final class TestUtil {
 			Logger.getRootLogger().setLevel(Level.toLevel(outputLevelProperty));
 		} else {
 			Logger.getRootLogger().setLevel(Level.ERROR);
+		}
+		String outputIdInfoProperty = System.getProperty(VM_ARGUMENT_LOG_OUTPUT_ID_INFO);
+		if (outputIdInfoProperty == null) {
+			Logger.getLogger(TuidManager.class).setLevel(Level.OFF);
+			Logger.getLogger(TuidCalculatorAndResolverBase.class).setLevel(Level.OFF);
+			Logger.getLogger(UuidGeneratorAndResolverImpl.class).setLevel(Level.OFF);
 		}
 	}
 
