@@ -15,6 +15,9 @@ import org.eclipse.emf.ecore.EcorePackage
 import allElementTypes.AllElementTypesPackage
 import allElementTypes2.AllElementTypes2Package
 import org.junit.Ignore
+import org.eclipse.xtext.xbase.XbaseFactory
+import org.eclipse.emf.ecore.EDataType
+import org.eclipse.xtext.common.types.JvmDeclaredType
 
 @RunWith(XtextRunner)
 @InjectWith(ReactionsLanguageInjectorProvider)
@@ -536,6 +539,111 @@ class FluentReactionsLanguageBuilderTests {
 		
 		assertThat(reactionsFile, builds(expectedReaction))
 		}
+
+	@Test
+	def void routineWithMatch() {
+		val objectExtensionsFqn = 'org.eclipse.xtext.xbase.lib.ObjectExtensions'
+		val routineWithMatch = create.routine('withMatch')
+			.match[
+				check [ typeProvider |
+					XbaseFactory.eINSTANCE.createXBinaryOperation => [
+						leftOperand = XbaseFactory.eINSTANCE.createXStringLiteral => [value = 'test']
+						rightOperand = XbaseFactory.eINSTANCE.createXStringLiteral => [value = 'test']
+						feature = (typeProvider.findTypeByName(objectExtensionsFqn) as JvmDeclaredType).members.findFirst [it.simpleName == 'operator_tripleEquals']
+					]
+				]	
+			]
+			.action [
+				vall('newRoot').create(Root)
+			]
+		
+		val reactionsFile = create.reactionsFile('routineWithMatchTest') +=
+			create.reactionsSegment('routineWithMatchTest')
+				.inReactionToChangesIn(AllElementTypes)
+				.executeActionsIn(AllElementTypes) +=
+					routineWithMatch
+		
+		val expectedReaction = '''
+			import «objectExtensionsFqn»
+			
+			import "http://tools.vitruv.testutils.metamodels.allElementTypes" as allElementTypes
+			
+			reactions: routineWithMatchTest
+			in reaction to changes in AllElementTypes
+			execute actions in AllElementTypes
+			
+			routine withMatch() {
+				match {
+					check {
+						"test" === "test"
+					}
+				}
+				action {
+					val newRoot = create allElementTypes::Root
+				}
+			}
+		'''
+		assertThat(reactionsFile, builds(expectedReaction))
+	}
+	
+	@Test
+	def void routineWithAffectedEObjectInMatch() {
+		val objectExtensionsFqn = 'org.eclipse.xtext.xbase.lib.ObjectExtensions'
+		val routineWithMatch = create.routine('withMatch')
+			.match[
+				check [ typeProvider |
+					XbaseFactory.eINSTANCE.createXBinaryOperation => [
+						leftOperand = XbaseFactory.eINSTANCE.createXStringLiteral => [value = 'test']
+						rightOperand = typeProvider.affectedEObject
+						feature = (typeProvider.findTypeByName(objectExtensionsFqn) as JvmDeclaredType).members.findFirst [it.simpleName == 'operator_tripleEquals']
+					]
+				]	
+			]
+			.action [
+				vall('newRoot').create(Root)
+				addCorrespondenceBetween("newRoot").and.affectedEObject
+			]
+			
+		val reaction = create.reaction('CreateRoot')
+					.afterElement(Root).created
+					.call(routineWithMatch)
+		
+		val segment = create.reactionsSegment('routineWithMatchTest')
+				.inReactionToChangesIn(AllElementTypes)
+				.executeActionsIn(AllElementTypes) +=
+					reaction
+		segment += routineWithMatch
+						
+		val reactionsFile = create.reactionsFile('routineWithMatchTest') += segment
+		
+		val expectedReaction = '''
+			import «objectExtensionsFqn»
+			
+			import "http://tools.vitruv.testutils.metamodels.allElementTypes" as allElementTypes
+			
+			reactions: routineWithMatchTest
+			in reaction to changes in AllElementTypes
+			execute actions in AllElementTypes
+			
+			reaction CreateRoot {
+				after element allElementTypes::Root created
+				call withMatch(affectedEObject)
+			}
+			
+			routine withMatch(allElementTypes::Root affectedEObject) {
+				match {
+					check {
+						"test" === affectedEObject
+					}
+				}
+				action {
+					val newRoot = create allElementTypes::Root
+					add correspondence between newRoot and affectedEObject
+				}
+			}
+		'''
+		assertThat(reactionsFile, builds(expectedReaction))
+	}
 	
 	@Test
 	@Ignore // not supported from text right now
@@ -606,7 +714,7 @@ class FluentReactionsLanguageBuilderTests {
 	@Test
 	@Ignore // not supported from text right now
 	def void routineFromDifferentSegmentWithExplicitSegment() {
-				val commonRoutine = create.routine('commonRootCreate')
+			val commonRoutine = create.routine('commonRootCreate')
 			.input [
 				model(EObject, 'affectedEObject')
 			]
