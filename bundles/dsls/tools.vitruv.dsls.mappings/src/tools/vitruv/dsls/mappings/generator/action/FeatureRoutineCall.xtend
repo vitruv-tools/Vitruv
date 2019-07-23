@@ -6,5 +6,5 @@ import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder
 
 interface FeatureRoutineCall {
 
-	def void connectRoutineCall(MappingParameter parameter, FluentRoutineBuilder callingRoutine, XFeatureCall call)
+	def void connectRoutineCall(FluentRoutineBuilder callingRoutine, XFeatureCall call)
 }

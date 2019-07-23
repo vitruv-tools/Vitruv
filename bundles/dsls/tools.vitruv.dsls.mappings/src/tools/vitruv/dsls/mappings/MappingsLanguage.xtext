@@ -89,14 +89,15 @@ EnforceableCondition: //  returns SingleSidedCondition:
 	ResourceCondition);
 
 FeatureCondition: //  returns EnforceableCondition:
-	left=LeftFeatureCondition condition=(SingleValueCondition | MultiValueCondition | ElementCondition | NotEmptyCondition)
+	left=LeftFeatureCondition 
+	condition=(SingleValueCondition | MultiValueCondition | ElementCondition | NotEmptyCondition)
 	feature=FeatureConditionParameter;
 
 FeatureConditionParameter:
 	parameter=[MappingParameter] '[' feature=[ecore::EStructuralFeature|ValidID] ']';
 
 LeftFeatureCondition returns EObject:
-	MappingParameterReference | NullValue | StringValue |  BoolValue | NumberValue;
+	MappingParameterReference | NullValue | StringValue | BoolValue | NumberValue;
 
 MappingParameterReference:
 	parameter=[MappingParameter];
