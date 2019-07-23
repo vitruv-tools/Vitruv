@@ -21,7 +21,7 @@ import org.eclipse.emf.ecore.EClass
  * @author Stephan Seifermann
  */
 abstract class TuidCalculatorAndResolverBase implements TuidCalculatorAndResolver {
-	static final Logger LOGGER = Logger.getLogger(TuidCalculatorAndResolverBase.getSimpleName())
+	static final Logger LOGGER = Logger.getLogger(TuidCalculatorAndResolverBase)
 	final String tuidPrefix
 	// TODO MK check whether cachedResourcelessRoots and cachedRoot2KeyMap can be replaced with a
 	// BiMap
