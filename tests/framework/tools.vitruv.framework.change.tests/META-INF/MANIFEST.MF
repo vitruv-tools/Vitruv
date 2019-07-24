@@ -19,3 +19,9 @@ Require-Bundle: org.junit,
  tools.vitruv.framework.change.echange,
  tools.vitruv.framework.util
 Bundle-Vendor: vitruv.tools
+Export-Package: tools.vitruv.framework.tests.change;x-internal:=true,
+ tools.vitruv.framework.tests.change.attribute;x-internal:=true,
+ tools.vitruv.framework.tests.change.integration;x-internal:=true,
+ tools.vitruv.framework.tests.change.reference;x-internal:=true,
+ tools.vitruv.framework.tests.change.rootobject;x-internal:=true,
+ tools.vitruv.framework.tests.change.util;x-internal:=true
