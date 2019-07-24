@@ -16,7 +16,6 @@ import allElementTypes.AllElementTypesPackage
 import allElementTypes2.AllElementTypes2Package
 import org.junit.Ignore
 import org.eclipse.xtext.xbase.XbaseFactory
-import org.eclipse.emf.ecore.EDataType
 import org.eclipse.xtext.common.types.JvmDeclaredType
 
 @RunWith(XtextRunner)
