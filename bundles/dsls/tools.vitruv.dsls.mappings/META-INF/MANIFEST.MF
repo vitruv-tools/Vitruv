@@ -32,6 +32,8 @@ Export-Package: tools.vitruv.dsls.mappings.scoping,
  tools.vitruv.dsls.mappings.jvmmodel,
  tools.vitruv.dsls.mappings.mappingsLanguage.impl,
  tools.vitruv.dsls.mappings.parser.antlr.internal,
- tools.vitruv.dsls.mappings.parser.antlr
+ tools.vitruv.dsls.mappings.parser.antlr,
+ tools.vitruv.dsls.mappings.generator;x-internal:=true,
+ tools.vitruv.dsls.mappings.postprocessor;x-internal:=true
 Import-Package: org.apache.log4j,
  org.eclipse.xtext.builder

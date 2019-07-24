@@ -13,3 +13,4 @@ Require-Bundle: com.google.guava,
  tools.vitruv.framework.applications,
  tools.vitruv.extensions.dslsruntime.reactions,
  tools.vitruv.dsls.mappings.tests.addressesXrecipients
+Export-Package: tools.vitruv.demo.applications.addressesrecipients

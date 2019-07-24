@@ -42,4 +42,7 @@ Export-Package: tools.vitruv.dsls.commonalities,
  tools.vitruv.dsls.commonalities.serializer,
  tools.vitruv.dsls.commonalities.services,
  tools.vitruv.dsls.commonalities.validation,
- tools.vitruv.dsls.commonalities.language.impl
+ tools.vitruv.dsls.commonalities.language.impl,
+ tools.vitruv.dsls.commonalities.export;x-internal:=true,
+ tools.vitruv.dsls.commonalities.grammar;x-internal:=true,
+ tools.vitruv.dsls.commonalities.language.elements.impl;x-internal:=true

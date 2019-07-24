@@ -4,7 +4,9 @@ Bundle-Name: Vitruv Demo Persons -> Families
 Bundle-SymbolicName: tools.vitruv.demo.applications.familiespersons.persons2families
 Automatic-Module-Name: tools.vitruv.demo.applications.familiespersons.families2Persons.test
 Bundle-Version: 0.3.0.qualifier
-Export-Package: tools.vitruv.applications.familiespersons.persons2families
+Export-Package: mir.reactions.personsToFamilies;x-internal:=true,
+ mir.routines.personsToFamilies;x-internal:=true,
+ tools.vitruv.applications.familiespersons.persons2families
 Require-Bundle: org.apache.log4j,
  com.google.guava,
  org.eclipse.emf.ecore,

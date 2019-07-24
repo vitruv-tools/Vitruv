@@ -15,3 +15,12 @@ Require-Bundle: org.junit,
  org.eclipse.emf.ecore.xmi,
  org.eclipse.emf.edit,
  tools.vitruv.framework.change
+Export-Package: tools.vitruv.framework.tests.echange;x-internal:=true,
+ tools.vitruv.framework.tests.echange.command;x-internal:=true,
+ tools.vitruv.framework.tests.echange.compound;x-internal:=true,
+ tools.vitruv.framework.tests.echange.eobject;x-internal:=true,
+ tools.vitruv.framework.tests.echange.feature;x-internal:=true,
+ tools.vitruv.framework.tests.echange.feature.attribute;x-internal:=true,
+ tools.vitruv.framework.tests.echange.feature.reference;x-internal:=true,
+ tools.vitruv.framework.tests.echange.root;x-internal:=true,
+ tools.vitruv.framework.tests.echange.util;x-internal:=true

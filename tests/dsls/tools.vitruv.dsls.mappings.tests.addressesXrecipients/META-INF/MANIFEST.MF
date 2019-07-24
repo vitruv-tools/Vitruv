@@ -6,7 +6,15 @@ Automatic-Module-Name: tools.vitruv.dsls.mappings.tests.addressesXrecipients
 Bundle-Version: 0.3.0.qualifier
 Bundle-Vendor: vitruv.tools
 Export-Package: mir.reactions.adXre_L2R,
-  mir.reactions.adXre_R2L
+ mir.reactions.adXre_R2L,
+ mir.reactions.reactionsAddressesToRecipients.adXre_L2R;x-internal:=true,
+ mir.reactions.reactionsRecipientsToAddresses.adXre_R2L;x-internal:=true,
+ mir.routines.adXre_L2R;x-internal:=true,
+ mir.routines.adXre_R2L;x-internal:=true,
+ tools.vitruv.dsls.mappings.tests.addressesXrecipients;x-internal:=true,
+ tools.vitruv.dsls.mappings.tests.addressesXrecipients.mappings.aXr_all_or_nothing;x-internal:=true,
+ tools.vitruv.dsls.mappings.tests.addressesXrecipients.mappings.aXr_all_or_nothing.conditions;x-internal:=true,
+ tools.vitruv.dsls.mappings.tests.addressesXrecipients.mappings.aXr_all_or_nothing.halves;x-internal:=true
 Require-Bundle: org.apache.log4j,
   com.google.guava,
   org.eclipse.emf.ecore,
