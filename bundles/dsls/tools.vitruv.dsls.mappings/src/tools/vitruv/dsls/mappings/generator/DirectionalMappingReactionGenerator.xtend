@@ -37,7 +37,8 @@ class DirectionalMappingReactionGenerator {
 		ObserveAttributes mappingAttributes) {
 		ParameterCorrespondenceTagging.context = context
 		val reactionFactory = new ReactionTypeFactory(fromConditions)
-		val bidirectionCondtionGenerators = generateBidirectionalMappingConditions(mappingConditions, mappingRoutines)
+		val bidirectionCondtionGenerators = generateBidirectionalMappingConditions(mappingConditions, mappingRoutines,
+			fromParameters)
 		val reactionGenerators = reactionFactory.constructGenerators(fromParameters, toParameters)
 		reactionGenerators.appendBidirectionalMappingAttributeReactions(mappingAttributes)
 		reactionGenerators.forEach [ reactionGenerator |
@@ -49,7 +50,7 @@ class DirectionalMappingReactionGenerator {
 			val contentGenerator = new ReactionRoutineContentGenerator(reactionGenerator, bidirectionCondtionGenerators,
 				featureConditionsGenerator, context)
 			singleSidedConditionGenerator.contentGenerator = contentGenerator
-			contentGenerator.generateSubRoutines
+			contentGenerator.generateSubRoutine
 			context.getSegmentBuilder += reactionTemplate.call([
 				alwaysRequireAffectedEObject
 				if (reactionGenerator.usesNewValue) {
@@ -63,14 +64,15 @@ class DirectionalMappingReactionGenerator {
 	}
 
 	private def List<AbstractBidirectionalCondition> generateBidirectionalMappingConditions(
-		List<BidirectionalizableCondition> mappingConditions, List<RoutineIntegration> mappingRoutines) {
+		List<BidirectionalizableCondition> mappingConditions, List<RoutineIntegration> mappingRoutines,
+		List<MappingParameter> parameters) {
 		val conditions = new ArrayList<AbstractBidirectionalCondition>()
 		/* 
 		 * mappingConditions.forEach [ mappingCondition |
 		 * 	val leftFeature = mappingCondition.featureToBeAssigned
 		 * 	val expression = mappingCondition.bidirectionalizableExpression
 		 ]*/
-		conditions.addAll(mappingRoutines.map[new MappingRoutineGenerator(it)])
+		conditions.addAll(mappingRoutines.map[new MappingRoutineGenerator(it)].filter[it.isValidRoutine(parameters)])
 		conditions
 	}
 

@@ -54,11 +54,11 @@ class AttributeReplacedReactionGenerator extends AbstractReactionTypeGenerator {
 		false
 	}
 
-	override generateCorrespondenceMatches(UndecidedMatcherStatementBuilder builder, MappingParameter parameter) {
+	override generateCorrespondenceMatches(UndecidedMatcherStatementBuilder builder) {
 		// nothing to do, only single sided conditions create matchers
 	}
 
-	override generateCorrespondenceActions(ActionStatementBuilder builder, MappingParameter parameter) {
+	override generateCorrespondenceActions(ActionStatementBuilder builder) {
 		// nothing to do, only bidirectional conditions create actions
 	}
 

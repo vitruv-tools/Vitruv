@@ -12,19 +12,26 @@ class AbstractDeleteReactionTypeDelegator extends AbstractContainingReactionType
 		initDelegate(parentGenerator)
 	}
 
-	override generateCorrespondenceMatches(UndecidedMatcherStatementBuilder builder, MappingParameter parameter) {
+	override generateCorrespondenceMatches(UndecidedMatcherStatementBuilder builder) {
+		// just take the first element to retrieve all the corresponding elements
+		val taggingParameter = reactionParameters.get(0)
 		correspondingParameters.forEach [ correspondingParameter |
 			val element = correspondingParameter.removeElementName
 			builder.vall(element).retrieve(correspondingParameter.value.metaclass).correspondingTo.matchingElement.
-				taggedWith(parameter, correspondingParameter)
+				taggedWith(taggingParameter, correspondingParameter)
 		]
 	}
 
-	override generateCorrespondenceActions(ActionStatementBuilder builder, MappingParameter parameter) {
+	override generateCorrespondenceActions(ActionStatementBuilder builder) {
+		// 1) remove all correspondences
+		iterateParameters([ reactionParameter, correspondingParameter |
+			val element = correspondingParameter.removeElementName
+			builder.removeCorrespondenceBetween(element).and.matchingElement.taggedWith(reactionParameter,
+				correspondingParameter)
+		])
+		// 2) delete all corresponding elements
 		correspondingParameters.forEach [ correspondingParameter |
 			val element = correspondingParameter.removeElementName
-			builder.removeCorrespondenceBetween(element).and.matchingElement.taggedWith(parameter,
-				correspondingParameter)
 			builder.delete(element)
 		]
 	}

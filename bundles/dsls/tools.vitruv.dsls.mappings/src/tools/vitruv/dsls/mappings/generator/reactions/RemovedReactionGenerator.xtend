@@ -51,11 +51,11 @@ class RemovedReactionGenerator extends AbstractContainingReactionTypeGenerator {
 		false
 	}
 
-	override generateCorrespondenceMatches(UndecidedMatcherStatementBuilder builder, MappingParameter parameter) {
-		new AbstractDeleteReactionTypeDelegator(this).generateCorrespondenceMatches(builder, parameter)
+	override generateCorrespondenceMatches(UndecidedMatcherStatementBuilder builder) {
+		new AbstractDeleteReactionTypeDelegator(this).generateCorrespondenceMatches(builder)
 	}
-
-	override generateCorrespondenceActions(ActionStatementBuilder builder, MappingParameter parameter) {
-		new AbstractDeleteReactionTypeDelegator(this).generateCorrespondenceActions(builder, parameter)
+	
+	override generateCorrespondenceActions(ActionStatementBuilder builder) {
+		new AbstractDeleteReactionTypeDelegator(this).generateCorrespondenceActions(builder)
 	}
 }

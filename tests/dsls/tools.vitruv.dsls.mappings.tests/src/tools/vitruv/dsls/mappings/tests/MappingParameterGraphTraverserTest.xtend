@@ -41,6 +41,13 @@ class MappingParameterGraphTraverserTest {
 				exception.message)
 		}
 	}
+	
+	@Test
+	def void minimalGraph() {
+		createParams('nodeA')
+		createInConditions()
+		initTraverser
+	}
 
 	@Test
 	def void cyclicDetection() {
