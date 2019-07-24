@@ -9,7 +9,6 @@ import org.eclipse.xtext.xbase.XExpression
 import org.eclipse.xtext.xbase.XVariableDeclaration
 import org.eclipse.xtext.xbase.XbaseFactory
 import tools.vitruv.dsls.mappings.generator.conditions.FeatureConditionGenerator
-import tools.vitruv.dsls.mappings.generator.conditions.MappingParameterTreeTraverser
 import tools.vitruv.dsls.mappings.generator.conditions.MappingParameterTreeTraverser.TraverseStepDown
 import tools.vitruv.dsls.mappings.generator.conditions.impl.EqualsValueConditionGenerator
 import tools.vitruv.dsls.mappings.mappingsLanguage.MappingParameter
@@ -20,6 +19,7 @@ import tools.vitruv.dsls.reactions.codegen.ReactionsLanguageConstants
 
 import static extension tools.vitruv.dsls.mappings.generator.utils.XBaseMethodFinder.*
 import org.eclipse.emf.ecore.EClass
+import tools.vitruv.dsls.mappings.generator.conditions.MappingParameterGraphTraverser
 
 class ReactionFeatureConditionsGenerator {
 
@@ -27,7 +27,7 @@ class ReactionFeatureConditionsGenerator {
 	private List<MappingParameter> parameters
 	private FeatureRoutineCall featureRoutineCall
 	private FluentRoutineBuilder routineBuilder
-	private MappingParameterTreeTraverser treeTraverser
+	private MappingParameterGraphTraverser treeTraverser
 	private MappingParameter affectedEObjectParameter
 	private Map<MappingParameter, XVariableDeclaration> createdVariables
 	public final static String MAPPING_OBJECT = 'mappingObject'
@@ -35,7 +35,7 @@ class ReactionFeatureConditionsGenerator {
 	new(List<MappingParameter> parameters, List<FeatureConditionGenerator> conditions) {
 		this.parameters = parameters
 		this.conditions = conditions;
-		this.treeTraverser = new MappingParameterTreeTraverser(conditions, parameters.map[nodeName])
+		this.treeTraverser = new MappingParameterGraphTraverser(conditions, parameters.map[nodeName])
 	}
 
 	private def nodeName(MappingParameter parameter) {
