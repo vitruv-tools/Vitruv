@@ -3,9 +3,9 @@
       id="tools.vitruv.extensions.dslsruntime.feature"
       label="%featureName"
       version="0.3.0.qualifier"
-      provider-name="%providerName"	  
+      provider-name="%providerName"
       license-feature="tools.vitruv.license.feature"
-	  license-feature-version="1.0.0">
+      license-feature-version="1.0.0">
 
    <description>
       %description
@@ -20,8 +20,12 @@
    </license>
 
    <requires>
+      <import feature="org.eclipse.xtext.xbase.lib" version="2.18.0"/>
       <import feature="edu.kit.ipd.sdq.activextendannotations.feature" version="1.2.0"/>
       <import feature="tools.vitruv.framework.feature" version="0.3.0"/>
+      <import feature="org.eclipse.xtext.xbase" version="2.18.0"/>
+      <import feature="org.eclipse.xtext.xbase.lib" version="2.18.0"/>
+      <import feature="org.eclipse.emf.mwe2.launcher" version="2.10.0"/>
    </requires>
 
    <plugin
@@ -33,6 +37,13 @@
 
    <plugin
          id="tools.vitruv.extensions.dslsruntime.reactions"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="tools.vitruv.extensions.dslsruntime.commonalities"
          download-size="0"
          install-size="0"
          version="0.0.0"
