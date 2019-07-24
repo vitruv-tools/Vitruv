@@ -3,7 +3,7 @@ package tools.vitruv.dsls.mappings.generator
 import org.eclipse.xtend.lib.annotations.Accessors
 import tools.vitruv.dsls.mappings.mappingsLanguage.MappingsSegment
 
-class AbstractMappingsSegmentGenerator {
+abstract class AbstractMappingsSegmentGenerator {
 	@Accessors(PROTECTED_GETTER)
 	val String basePackage
 	@Accessors(PROTECTED_GETTER)

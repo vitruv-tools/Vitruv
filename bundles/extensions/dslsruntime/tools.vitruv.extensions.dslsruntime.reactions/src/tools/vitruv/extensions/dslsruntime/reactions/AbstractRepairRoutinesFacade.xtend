@@ -7,7 +7,7 @@ import tools.vitruv.extensions.dslsruntime.reactions.structure.ReactionsImportPa
  * Note: All methods start with an underscore here to not conflict with the methods that are generated from the routines by
  * concrete implementations.
  */
-class AbstractRepairRoutinesFacade extends Loggable {
+abstract class AbstractRepairRoutinesFacade extends Loggable {
 	// used by concrete implementations to request routines facades of executed routines: 
 	private val RoutinesFacadesProvider routinesFacadesProvider;
 	// absolute path inside the import hierarchy to the segment this routines facade belongs to, never null:

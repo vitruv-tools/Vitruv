@@ -44,7 +44,7 @@ abstract package class FluentReactionsSegmentChildBuilder extends FluentReaction
 
 	def protected String getCreatedElementType();
 
-	protected static class AbstractTypeProvider<BuilderType extends FluentReactionsSegmentChildBuilder> implements IJvmTypeProvider {
+	protected static abstract class AbstractTypeProvider<BuilderType extends FluentReactionsSegmentChildBuilder> implements IJvmTypeProvider {
 		protected val IJvmTypeProvider delegate
 		protected val extension BuilderType builder
 		protected val XExpression scopeExpression
