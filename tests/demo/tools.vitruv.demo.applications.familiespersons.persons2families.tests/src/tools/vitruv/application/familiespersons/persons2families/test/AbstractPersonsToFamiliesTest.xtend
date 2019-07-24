@@ -7,7 +7,7 @@ import tools.vitruv.domains.families.FamiliesDomainProvider
 import edu.kit.ipd.sdq.metamodels.persons.PersonsFactory
 import tools.vitruv.applications.familiespersons.persons2families.PersonsToFamiliesChangePropagationSpecification
 
-class AbstractPersonsToFamiliesTest extends VitruviusApplicationTest {
+abstract class AbstractPersonsToFamiliesTest extends VitruviusApplicationTest {
 	private static val MODEL_FILE_EXTENSION = "persons";
 	private static val MODEL_NAME = "model";
 	
