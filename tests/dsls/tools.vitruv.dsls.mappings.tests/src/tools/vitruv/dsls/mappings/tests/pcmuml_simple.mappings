@@ -19,7 +19,7 @@ mappings: umlXpcmSimple for UML and PCM
 }
 		 		 		
 		 		 		 	 			 			 				 							 		
- 										 
+ 								 
 mapping RepositoryXPackage {
 
    map (pcm::Repository repository)

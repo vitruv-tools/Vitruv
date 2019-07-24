@@ -7,5 +7,5 @@ import tools.vitruv.dsls.mappings.mappingsLanguage.MappingParameter
 
 abstract class AbstractBidirectionalCondition{
 	
-	public abstract def void generate(ReactionGeneratorContext context, AbstractReactionTypeGenerator reactionGenerator, ActionStatementBuilder builder, MappingParameter parameter);
+	public abstract def void generate(ReactionGeneratorContext context, AbstractReactionTypeGenerator reactionGenerator, ActionStatementBuilder builder);
 }

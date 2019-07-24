@@ -46,22 +46,13 @@ class SingleSidedConditionGenerator implements Consumer<UndecidedMatcherStatemen
 	override accept(UndecidedMatcherStatementBuilder builder) {
 		this.builder = builder
 		generators.forEach[generate(builder)]
-		if (!contentGenerator.usesSubRoutines) {
-			// directly integrate logic in this routine, without creating and calling subroutines
-			reactionTypeGenerator.reactionParameters.forEach [
-				reactionTypeGenerator.generateCorrespondenceMatches(
-					builder,
-					it
-				)
-			]
-		}
 	}
 
 	def constructFeatureConditions() {
 		val featureGenerators = generators.filter[it instanceof FeatureConditionGenerator].map [
 			it as FeatureConditionGenerator
 		]
-		new ReactionFeatureConditionsGenerator(reactionTypeGenerator, featureGenerators.toList)
+		new ReactionFeatureConditionsGenerator(reactionTypeGenerator.reactionParameters, featureGenerators.toList)
 	}
 
 }

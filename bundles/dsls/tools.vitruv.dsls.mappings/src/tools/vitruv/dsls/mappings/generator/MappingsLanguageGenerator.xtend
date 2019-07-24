@@ -43,6 +43,7 @@ class MappingsLanguageGenerator implements IGenerator2 {
 		val resourceSet = resourceSetProvider.get
 		resourceSet.addLoadOption(XtextResource.OPTION_RESOLVE_ALL, Boolean.TRUE)
 		XExpressionParser.initParser(resourceSet)
+		val expr = XExpressionParser.parseExpression('''for( f: x){ return }''')
 		MappingParameterScopeFinder.init(containerManager, resourceDescriptionsProivder)
 		val mappingsFiles = input?.contents?.filter(MappingsFile)
 		for (mappingsFile : mappingsFiles) {

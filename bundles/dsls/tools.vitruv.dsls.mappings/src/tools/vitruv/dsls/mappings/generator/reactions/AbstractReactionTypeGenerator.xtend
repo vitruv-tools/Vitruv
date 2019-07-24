@@ -47,16 +47,16 @@ abstract class AbstractReactionTypeGenerator {
 	}
 
 	def void init(List<MappingParameter> reactionParameters, List<MappingParameter> correspondingParameters) {
-		this.reactionParameters = reactionParameters.involvedParameters
+		this.reactionParameters = reactionParameters
 		this.correspondingParameters = correspondingParameters
 	}
-
+/* 
 	private def getInvolvedParameters(List<MappingParameter> fromParameters) {
 		fromParameters.filter [
 			it.value.metaclass == this.metaclass
 		].toList
 	}
-
+*/
 	def boolean isSubordinateToTrigger(AbstractReactionTypeGenerator generator) {
 		if (generator.metaclass == metaclass && conflictingTriggerCheck !== null) {
 			return conflictingTriggerCheck.isSubordinateTrigger(generator)
@@ -88,11 +88,11 @@ abstract class AbstractReactionTypeGenerator {
 	new«ref.parameterName.toFirstUpper»'''
 
 	def protected String getParameterName(MappingParameter p1, MappingParameter p2) '''
-	«p1.value.parameterName»__«p2.value.parameterName»'''
+	«p1.parameterName»__«p2.parameterName»'''
 
 	def protected String getParameterName(MappingParameter parameter) '''
-	«parameter.value.metaclass.name»_«parameter.value.name»'''
-
+	«parameter.value.name»'''
+	
 	def protected getAttributeName(MetaclassFeatureReference parameter) {
 		parameter.feature.name
 	}
@@ -111,9 +111,8 @@ abstract class AbstractReactionTypeGenerator {
 
 	def abstract PreconditionOrRoutineCallBuilder generateTrigger(ReactionGeneratorContext context)
 
-	def abstract void generateCorrespondenceMatches(UndecidedMatcherStatementBuilder builder,
-		MappingParameter parameter)
+	def abstract void generateCorrespondenceMatches(UndecidedMatcherStatementBuilder builder)
 
-	def abstract void generateCorrespondenceActions(ActionStatementBuilder builder, MappingParameter parameter)
+	def abstract void generateCorrespondenceActions(ActionStatementBuilder builder)
 
 }

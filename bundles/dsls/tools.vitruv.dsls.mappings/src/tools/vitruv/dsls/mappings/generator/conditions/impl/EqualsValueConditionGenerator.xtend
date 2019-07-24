@@ -1,23 +1,16 @@
 package tools.vitruv.dsls.mappings.generator.conditions.impl
 
-import java.util.List
-import org.eclipse.emf.ecore.EAttribute
 import org.eclipse.xtext.xbase.XbaseFactory
 import tools.vitruv.dsls.mappings.generator.conditions.MultiValueConditionGenerator
-import tools.vitruv.dsls.mappings.generator.reactions.AbstractReactionTypeGenerator
-import tools.vitruv.dsls.mappings.generator.reactions.AttributeReplacedReactionGenerator
-import tools.vitruv.dsls.mappings.generator.reactions.DeletedReactionGenerator
-import tools.vitruv.dsls.mappings.generator.reactions.ElementReplacedReactionGenerator
-import tools.vitruv.dsls.mappings.generator.reactions.InsertedReactionGenerator
 import tools.vitruv.dsls.mappings.mappingsLanguage.MappingParameter
 import tools.vitruv.dsls.mappings.mappingsLanguage.MultiValueCondition
 import tools.vitruv.dsls.mappings.mappingsLanguage.MultiValueConditionOperator
-import tools.vitruv.dsls.mirbase.mirBase.MetaclassReference
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.RoutineTypeProvider
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.UndecidedMatcherStatementBuilder
 
 import static extension tools.vitruv.dsls.mappings.generator.conditions.FeatureConditionGeneratorUtils.*
 import static extension tools.vitruv.dsls.mappings.generator.utils.XBaseMethodFinder.*
+import org.eclipse.xtext.xbase.XExpression
 
 class EqualsValueConditionGenerator extends MultiValueConditionGenerator {
 
@@ -29,16 +22,10 @@ class EqualsValueConditionGenerator extends MultiValueConditionGenerator {
 		featureCondition.feature.parameter == parameter
 	}
 
-	override generateFeatureCondition(RoutineTypeProvider provider, boolean usesNewValue) {
-		var negated = condition.negated !== null
-		provider.generateEquals(negated, usesNewValue)
-	}
-
-	private def generateEquals(RoutineTypeProvider typeProvider, boolean negated, boolean usesNewValue) {
-		// builder.builder.correspondingMethodParameter()
+	override generateFeatureCondition(RoutineTypeProvider typeProvider, XExpression variable) {
 		XbaseFactory.eINSTANCE.createXBinaryOperation => [
 			leftOperand = typeProvider.generateLeftFeatureConditionValue(featureCondition)
-			rightOperand = typeProvider.generateRightSideCall(usesNewValue)
+			rightOperand = typeProvider.generateRightSideCall(variable)
 			if (negated) {
 				feature = typeProvider.tripleNotEquals
 			} else {
@@ -47,15 +34,20 @@ class EqualsValueConditionGenerator extends MultiValueConditionGenerator {
 		]
 	}
 
-	private def generateRightSideCall(RoutineTypeProvider typeProvider, boolean usesNewValue) {
+	override generateCorrespondenceInitialization(RoutineTypeProvider typeProvider) {
+		if (!negated) {
+			XbaseFactory.eINSTANCE.createXAssignment => [
+				assignable = typeProvider.parameterFeatureCall(featureCondition)
+				value = typeProvider.generateLeftFeatureConditionValue(featureCondition)
+			]
+		}
+		null
+	}
+
+	private def generateRightSideCall(RoutineTypeProvider typeProvider, XExpression variable) {
 		XbaseFactory.eINSTANCE.createXMemberFeatureCall => [
 			explicitOperationCall = true
-			if (usesNewValue) {
-				// when we have an additional newValue, our feature is the newValue and not the affectedEobject
-				memberCallTarget = typeProvider.newValue
-			} else {
-				memberCallTarget = typeProvider.affectedEObject
-			}
+			memberCallTarget = variable
 			feature = typeProvider.findMetaclassMethod(rightSide)
 		]
 	}

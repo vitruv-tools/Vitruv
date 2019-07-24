@@ -1,19 +1,13 @@
 package tools.vitruv.dsls.mappings.generator.conditions
 
-import org.eclipse.emf.ecore.EClass
+import java.util.List
 import tools.vitruv.dsls.mappings.generator.ReactionGeneratorContext
 import tools.vitruv.dsls.mappings.generator.integration.AbstractReactionIntegrationGenerator
 import tools.vitruv.dsls.mappings.generator.reactions.AbstractReactionTypeGenerator
-import tools.vitruv.dsls.mappings.generator.reactions.DeletedReactionGenerator
-import tools.vitruv.dsls.mappings.generator.reactions.RemovedReactionGenerator
+import tools.vitruv.dsls.mappings.mappingsLanguage.MappingParameter
 import tools.vitruv.dsls.mappings.mappingsLanguage.RoutineIntegration
-import tools.vitruv.dsls.mirbase.mirBase.MirBaseFactory
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.ActionStatementBuilder
-import tools.vitruv.dsls.reactions.codegen.ReactionsLanguageConstants
-import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsLanguageFactory
-import org.eclipse.xtext.xbase.XbaseFactory
-import tools.vitruv.dsls.mappings.mappingsLanguage.MappingParameter
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.RoutineCallParameter
 
 /**
@@ -25,45 +19,49 @@ import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.RoutineCallParam
 class MappingRoutineGenerator extends AbstractBidirectionalCondition {
 
 	private RoutineIntegration routine
-	private EClass targetMetaclass
 	private FluentRoutineBuilder targetRoutineBuilder
 
 	new(RoutineIntegration routineIntegration) {
-		this.targetMetaclass = findTargetMetaclass(routineIntegration)
 		this.routine = routineIntegration
 	}
 
-	private def findTargetMetaclass(RoutineIntegration routineIntegration) {
-		val input = routineIntegration.input
-		val modelElements = input.modelInputElements
-		val model = modelElements.get(0)
-		model.metaclass
-	}
-
-	private def isApplicableFor(AbstractReactionTypeGenerator generator) {
-		// check if this routine should be called by the reaction
-		if (generator.metaclass == targetMetaclass) {
-			// dont call from delete reactions
-			if (generator instanceof DeletedReactionGenerator || generator instanceof RemovedReactionGenerator) {
+	def isValidRoutine(List<MappingParameter> parameters) {
+		// routine input must be exactly the mapping parameters 
+		val input = routine.input.modelInputElements
+		if (routine.input.javaInputElements.size > 0) {
+			// not allowed to have other parameters
+			return false
+		}
+		// check size
+		if (input.size != parameters.size) {
+			return false
+		}
+		// check metaclasses
+		for (var i = 0; i < input.length; i++) {
+			val inputClass = input.get(i).metaclass.classifierID
+			val parameterClass = parameters.get(i).value.metaclass.classifierID
+			if (inputClass != parameterClass) {
 				return false
 			}
-			return true
 		}
-		return false
+		true
 	}
 
 	override generate(ReactionGeneratorContext context, AbstractReactionTypeGenerator reactionGenerator,
-		ActionStatementBuilder builder, MappingParameter parameter) {
-		if (reactionGenerator.applicableFor) {
-			// integrate the routine in the file
-			integrateRoutine(context)
-			// call the routine from within this reactions action routine block
-			builder.call(
-				targetRoutineBuilder,
-				new RoutineCallParameter(ReactionsLanguageConstants.CHANGE_AFFECTED_ELEMENT_ATTRIBUTE),
-				new RoutineCallParameter(XbaseFactory.eINSTANCE.createXStringLiteral => [value = parameter.value.name])
-			)
-		}
+		ActionStatementBuilder builder) {
+		// integrate the routine in the file
+		integrateRoutine(context)
+		// call the routine from within this reactions action routine block
+		builder.call(
+			targetRoutineBuilder,
+			reactionGenerator.constructParameters
+		)
+	}
+
+	private def constructParameters(AbstractReactionTypeGenerator reactionGenerator) {
+		reactionGenerator.reactionParameters.map [
+			new RoutineCallParameter(it.value.name)
+		]
 	}
 
 	private def integrateRoutine(ReactionGeneratorContext context) {
@@ -98,4 +96,5 @@ class MappingRoutineGenerator extends AbstractBidirectionalCondition {
 			context.getSegmentBuilder += targetRoutineBuilder
 		}
 	}
+
 }

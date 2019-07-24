@@ -1,6 +1,8 @@
 package tools.vitruv.dsls.mappings.generator.conditions.impl
 
 import java.util.List
+import org.eclipse.emf.ecore.EReference
+import org.eclipse.xtext.xbase.XExpression
 import org.eclipse.xtext.xbase.XbaseFactory
 import tools.vitruv.dsls.mappings.generator.conditions.MultiValueConditionGenerator
 import tools.vitruv.dsls.mappings.generator.reactions.AbstractReactionTypeGenerator
@@ -10,28 +12,27 @@ import tools.vitruv.dsls.mappings.generator.reactions.InsertedReactionGenerator
 import tools.vitruv.dsls.mappings.mappingsLanguage.MappingParameter
 import tools.vitruv.dsls.mappings.mappingsLanguage.MultiValueCondition
 import tools.vitruv.dsls.mappings.mappingsLanguage.MultiValueConditionOperator
-import tools.vitruv.dsls.mirbase.mirBase.MetaclassReference
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.RoutineTypeProvider
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.UndecidedMatcherStatementBuilder
 
 import static extension tools.vitruv.dsls.mappings.generator.conditions.FeatureConditionGeneratorUtils.*
-import tools.vitruv.dsls.mappings.mappingsLanguage.MappingParameterReference
+import static extension tools.vitruv.dsls.mappings.generator.utils.XBaseMethodFinder.*
 
 class InValueConditionGenerator extends MultiValueConditionGenerator {
 
 	new(MultiValueCondition condition) {
 		super(condition, MultiValueConditionOperator.IN)
 	}
-	
-	public def getChildParameter(){
+
+	public def getChildParameter() {
 		featureCondition.leftMappingParameter
 	}
-	
-	public def getParentParameter(){
+
+	public def getParentParameter() {
 		featureCondition.feature.parameter
 	}
-	
-	public def getInFeature(){
+
+	public def getInFeature() {
 		featureCondition.feature.feature
 	}
 
@@ -71,19 +72,30 @@ class InValueConditionGenerator extends MultiValueConditionGenerator {
 		super.constructReactionTriggers(triggers)
 	}
 
-	override generateFeatureCondition(RoutineTypeProvider provider, boolean usesNewValue) {
-		var negated = condition.negated !== null
-		if (usesNewValue) {
-			provider.generateIn(negated)
-		}
+	override generateFeatureCondition(RoutineTypeProvider provider, XExpression variable) {
+		// in relations have no condition logic
+		null
 	}
 
-	private def generateIn(RoutineTypeProvider typeProvider, boolean negated) {
-		val parameter = featureCondition.feature.parameter
-		/*XbaseFactory.eINSTANCE.createXClosure => [
-		 * 	expression = XbaseFactory.eINSTANCE.createXBooleanLiteral
-		 ]*/
-		XbaseFactory.eINSTANCE.createXBooleanLiteral
+	override generateCorrespondenceInitialization(RoutineTypeProvider typeProvider) {
+		if (!negated && featureCondition.isLeftSideMappingParameter) {
+			val feature = featureCondition.feature.feature as EReference
+			if (feature.many) {
+				// add to collection feature
+				return XbaseFactory.eINSTANCE.createXFeatureCall => [
+					feature = typeProvider.collectionAdd
+					featureCallArguments += typeProvider.parameterFeatureCall(featureCondition)
+					featureCallArguments += typeProvider.parameter(childParameter)
+				]
+			} else {
+				// just set 
+				return XbaseFactory.eINSTANCE.createXAssignment => [
+					assignable = typeProvider.parameterFeatureCall(featureCondition)
+					value = typeProvider.parameter(childParameter)
+				]
+			}
+		}
+		null
 	}
 
 	override generate(UndecidedMatcherStatementBuilder builder) {

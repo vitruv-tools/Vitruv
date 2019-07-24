@@ -4,13 +4,15 @@ import java.util.ArrayList
 import java.util.HashMap
 import java.util.List
 import java.util.Map
+import org.eclipse.emf.ecore.EReference
 import org.eclipse.emf.ecore.EStructuralFeature
 import org.eclipse.xtext.xbase.XExpression
 import org.eclipse.xtext.xbase.XVariableDeclaration
 import org.eclipse.xtext.xbase.XbaseFactory
 import tools.vitruv.dsls.mappings.generator.conditions.FeatureConditionGenerator
-import tools.vitruv.dsls.mappings.generator.conditions.MappingParameterTreeTraverser.TraverseStepDown
-import tools.vitruv.dsls.mappings.generator.conditions.impl.EqualsValueConditionGenerator
+import tools.vitruv.dsls.mappings.generator.conditions.MappingParameterGraphTraverser
+import tools.vitruv.dsls.mappings.generator.conditions.MappingParameterGraphTraverser.TraverseStepDown
+import tools.vitruv.dsls.mappings.generator.reactions.AbstractReactionTypeGenerator
 import tools.vitruv.dsls.mappings.mappingsLanguage.MappingParameter
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.ActionStatementBuilder
@@ -18,8 +20,10 @@ import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.RoutineTypeProvi
 import tools.vitruv.dsls.reactions.codegen.ReactionsLanguageConstants
 
 import static extension tools.vitruv.dsls.mappings.generator.utils.XBaseMethodFinder.*
-import org.eclipse.emf.ecore.EClass
-import tools.vitruv.dsls.mappings.generator.conditions.MappingParameterGraphTraverser
+import org.eclipse.xtext.common.types.JvmIdentifiableElement
+import org.eclipse.xtext.XtextFactory
+import org.eclipse.xtext.common.types.TypesFactory
+import tools.vitruv.dsls.mappings.generator.conditions.impl.InValueConditionGenerator
 
 class ReactionFeatureConditionsGenerator {
 
@@ -42,27 +46,46 @@ class ReactionFeatureConditionsGenerator {
 		parameter.value.name
 	}
 
-	def void generate(ActionStatementBuilder builder, FluentRoutineBuilder routineBuilder,
-		FeatureRoutineCall featureRoutineCall) {
+	public def skipParameterCheck() {
+		parameters.size == 1 && conditions.empty
+	}
+
+	def void generateCorrespondenceInitialization(ActionStatementBuilder builder) {
+		builder.execute [ provider |
+			XbaseFactory.eINSTANCE.createXBlockExpression => [
+				expressions += conditions.map[generateCorrespondenceInitialization(provider)].filter[it !== null]
+			]
+		]
+	}
+
+	def void generate(AbstractReactionTypeGenerator generator, ActionStatementBuilder builder,
+		FluentRoutineBuilder routineBuilder, FeatureRoutineCall featureRoutineCall) {
 		createdVariables = new HashMap
 		this.routineBuilder = routineBuilder
 		this.featureRoutineCall = featureRoutineCall
-		parameters.forEach [ parameter |
-			builder.call [ typeProvider |
+		builder.call [ typeProvider |
+			if (skipParameterCheck) {
+				// if its just one parameter and no featureconditions we
+				// can just call the subroutine directly with the affectedEObject
+				typeProvider.generateResultCall
+			} else {
 				XbaseFactory.eINSTANCE.createXBlockExpression => [
-					expressions += parameters.map[typeProvider.generateConditions(parameter)]
+					expressions += parameters.filter [
+						// only check for parameters that are the type of the calling reaction trigger
+						it.value.metaclass == generator.metaclass
+					].map[typeProvider.generateConditions(it)]
 				]
-			]
+			}
 		]
 	}
 
 	private def generateConditions(RoutineTypeProvider provider, MappingParameter parameter) {
 		XbaseFactory.eINSTANCE.createXIfExpression => [
-			it.^if = provider.generateEqualsCondition(parameter)
+			it.^if = provider.generateParameterCheck(parameter)
 			affectedEObjectParameter = parameter
 			if (parameters.size > 1) {
 				val retrievedParameters = new ArrayList
-				retrievedParameters += parameter
+				retrievedParameters += parameter // affectedEObject is already retrieved
 				it.then = provider.generateInCondition(retrievedParameters)
 			} else {
 				// no other parameters
@@ -79,48 +102,112 @@ class ReactionFeatureConditionsGenerator {
 		val step = path.steps.get(0)
 		val feature = step.feature
 		if (step instanceof TraverseStepDown) {
-			// nextParameter is in fromParameters feature (when containing) / being referenced from its feature
-			return provider.generateInDownCondition(retrievedParameters, nextParameter, fromParameter, feature)
+			// nextParameter is in fromParameters feature (when containing / being referenced from its feature)
+			return provider.generateChildInParent(retrievedParameters, nextParameter, fromParameter, feature)
 		} else {
-			// nextParameter is fromParameters parent (when containing) / referencing it with its feature
+			// nextParameter is fromParameters parent (when containing / referencing it with its feature)
+			return provider.generateParentContainsChild(retrievedParameters, nextParameter, fromParameter, feature)
 		}
-		XbaseFactory.eINSTANCE.createXBlockExpression => []
 	}
 
-	private def generateInDownCondition(RoutineTypeProvider provider, List<MappingParameter> retrievedParameters,
-		MappingParameter child, MappingParameter parent, EStructuralFeature feature) {
-		retrievedParameters += child
+	private def generateParentContainsChild(RoutineTypeProvider provider, List<MappingParameter> retrievedParameters,
+		MappingParameter child, MappingParameter parent, EReference feature) {
+		retrievedParameters += parent
 		XbaseFactory.eINSTANCE.createXBlockExpression => [
-			val element = child.nodeName
-			val variable = XbaseFactory.eINSTANCE.createXVariableDeclaration => [
-				name = element
-				right = XbaseFactory.eINSTANCE.createXMemberFeatureCall => [
-					explicitOperationCall = true
-					implicitReceiver = provider.retrieveVariable(parent)
-					feature =provider.findFeatureMethod(parent.value.metaclass, feature)
-					if (feature.many) {
-						
-					}
-				]
-			]
-			createdVariables.put(child, variable)
-			expressions += variable
-			expressions += XbaseFactory.eINSTANCE.createXIfExpression => [
-				// check if the retrieved parameter is not null
-				it.^if = provider.notNull(child)
-				it.then = provider.generateEndOfInCondition(retrievedParameters)
-			]
+			if (feature.containment) {
+				// simple case: just the eContainer, retrieve and check the value from it
+				expressions +=
+					provider.generateSimpleFeatureRetrievelCheck(retrievedParameters, child, parent,
+						provider.findMetaclassMethod(parent.value.metaclass, 'eContainer'))
+			} else {
+				// todo: check via cross-references to find a possible parent element
+				throw new UnsupportedOperationException(
+					"Retrieving parent of child not implemented yet for non-containment features!")
+			}
 		]
 	}
-	
-	
+
+	private def generateChildInParent(RoutineTypeProvider provider, List<MappingParameter> retrievedParameters,
+		MappingParameter child, MappingParameter parent, EReference feature) {
+		retrievedParameters += child
+		val featureMethod = provider.findMetaclassMethod(parent.value.metaclass, feature)
+		XbaseFactory.eINSTANCE.createXBlockExpression => [
+			if (feature.many) {
+				// filter possible elements and check all of them
+				// for(val parameter: parameter.feature)
+				// {
+				// if( do checks for parameter)
+				// {	=> continue here }
+				// }
+				// XbaseFactory.eINSTANCE.createXBasicForLoopExpression
+				expressions += XbaseFactory.eINSTANCE.createXForLoopExpression => [
+					val loopParameter = TypesFactory.eINSTANCE.createJvmFormalParameter => [
+						name = child.nodeName
+					]
+					createdVariables.put(child, loopParameter)
+					declaredParam = loopParameter
+					forExpression = XbaseFactory.eINSTANCE.createXMemberFeatureCall => [
+						explicitOperationCall = true
+						implicitReceiver = provider.retrieveVariable(parent)
+						it.feature = featureMethod
+					]
+					eachExpression = XbaseFactory.eINSTANCE.createXBlockExpression => [
+						expressions += provider.generateRetrievedParameterCheck(retrievedParameters, child)
+					]
+				]
+			} else {
+				// just retrieve the value and check
+				expressions +=
+					provider.generateSimpleFeatureRetrievelCheck(retrievedParameters, parent, child, featureMethod)
+			}
+		]
+	}
+
+	def String candidatesName(MappingParameter parameter) {
+		parameter.nodeName + 'Candidates'
+	}
+
+	private def generateSimpleFeatureRetrievelCheck(RoutineTypeProvider provider,
+		List<MappingParameter> retrievedParameters, MappingParameter resource, MappingParameter parameter,
+		JvmIdentifiableElement feature) {
+		val expressions = new ArrayList<XExpression>
+		// retrieve the value
+		expressions += provider.createVariable(
+			parameter,
+			XbaseFactory.eINSTANCE.createXMemberFeatureCall => [
+				explicitOperationCall = true
+				it.implicitReceiver = provider.retrieveVariable(resource)
+				it.feature = feature
+			]
+		)
+		// check if the value is not null plus the parameter conditions
+		expressions += provider.generateRetrievedParameterCheck(retrievedParameters, parameter)
+		expressions
+	}
+
+	private def generateRetrievedParameterCheck(RoutineTypeProvider provider,
+		List<MappingParameter> retrievedParameters, MappingParameter parameter) {
+		XbaseFactory.eINSTANCE.createXIfExpression => [
+			it.^if = provider.andChain(provider.notNull(parameter), provider.generateParameterCheck(parameter))
+			it.then = provider.generateEndOfInCondition(retrievedParameters)
+		]
+	}
+
+	private def createVariable(RoutineTypeProvider provider, MappingParameter parameter, XExpression assignment) {
+		XbaseFactory.eINSTANCE.createXVariableDeclaration => [
+			createdVariables.put(parameter, it)
+			name = parameter.nodeName
+			right = assignment
+		]
+	}
 
 	private def retrieveVariable(RoutineTypeProvider provider, MappingParameter parameter) {
 		if (parameter == affectedEObjectParameter) {
 			return provider.variable(ReactionsLanguageConstants.CHANGE_AFFECTED_ELEMENT_ATTRIBUTE)
 		} else {
 			val declaration = createdVariables.get(parameter)
-		// todo			
+			XbaseFactory.eINSTANCE.creat
+			return declaration
 		}
 	}
 
@@ -147,23 +234,13 @@ class ReactionFeatureConditionsGenerator {
 		val startParameter = new ArrayList
 		startParameter += retrievedParameters.map[nodeName]
 		startParameter += parameter.nodeName
-		val path = treeTraverser.findPathToNextNode(startParameter)
-		if (path.steps.size != 1) {
-			// this should not happen, the next parameter is always reachable in one step
-			throw new IllegalStateException(
-				'Could not reach next parameter in one step, something must be terribly wrong!')
-		}
-		path
-	}
-
-	private def retrieveAndCheckParameter(RoutineTypeProvider provider, List<MappingParameter> retrievedParameters,
-		MappingParameter parameter) {
+		treeTraverser.findStepToNextNode(startParameter)
 	}
 
 	private def generateResultCall(RoutineTypeProvider provider) {
 		val expression = XbaseFactory.eINSTANCE.createXReturnExpression => [
 			val call = XbaseFactory.eINSTANCE.createXFeatureCall => [
-				featureCallArguments += provider.affectedEObject
+				featureCallArguments += parameters.map[provider.retrieveVariable(it)]
 				explicitOperationCall = true
 			]
 			expression = call
@@ -172,96 +249,27 @@ class ReactionFeatureConditionsGenerator {
 		expression
 	}
 
-	private def generateEqualsCondition(RoutineTypeProvider provider, MappingParameter parameter) {
-		// find all where conditions to this parameter
-		provider.generateAndChain(conditions.filter [
-			feasibleForParameter(parameter) && it instanceof EqualsValueConditionGenerator
-		].map [
-			it.generateFeatureCondition(provider.retrieveVariable(parameter))
-		])
+	private def generateParameterCheck(RoutineTypeProvider provider, MappingParameter parameter) {
+		provider.generateParameterCheck(parameter, provider.retrieveVariable(parameter))
 	}
 
-	private def generateAndChain(RoutineTypeProvider provider, XExpression... expressions) {
-		if (expressions.empty) {
-			return XbaseFactory.eINSTANCE.createXBooleanLiteral => [
+	private def generateParameterCheck(RoutineTypeProvider provider, MappingParameter parameter, XExpression variable) {
+		// find all conditions to this parameter (we have to filter out InValueConditions)
+		val checks = conditions.filter [
+			feasibleForParameter(parameter) && (it instanceof InValueConditionGenerator == false)
+		]
+		if (checks.empty) {
+			// no conditions for that element, so we just return true
+			XbaseFactory.eINSTANCE.createXBooleanLiteral => [
 				isTrue = true
 			]
-		}
-		var leftExpression = expressions.get(0)
-		for (expression : expressions.drop(1)) {
-			val andExpression = XbaseFactory.eINSTANCE.createXBinaryOperation
-			andExpression.leftOperand = leftExpression
-			andExpression.rightOperand = expression
-			andExpression.feature = provider.and
-			leftExpression = andExpression
-		}
-		return leftExpression
-	}
-
-	/**
-	 * should generate to the following statement:
-	 * if( condition1 && condition2 ... && conditionN) call sub-routine
-	 */
-	private def generateParameter(RoutineTypeProvider provider, FluentRoutineBuilder routineBuilder,
-		MappingParameter parameter) {
-		XbaseFactory.eINSTANCE.createXIfExpression => [
-			it.^if = provider.generateIfStatement(parameter)
-			it.then = XbaseFactory.eINSTANCE.createXBlockExpression => [
-				expressions += provider.generateRoutineCall(routineBuilder, parameter)
-			]
-		]
-	}
-
-	private def generateRoutineCall(RoutineTypeProvider provider, FluentRoutineBuilder routineBuilder,
-		MappingParameter parameter) {
-		val call = XbaseFactory.eINSTANCE.createXFeatureCall => [
-			featureCallArguments += provider.affectedEObject
-			if (reactionTypeGenerator.usesNewValue) {
-				featureCallArguments += provider.newValue
-			}
-			explicitOperationCall = true
-		]
-		featureRoutineCall.connectRoutineCall(parameter, routineBuilder, call)
-		call
-	}
-
-	private def generateIfStatement(RoutineTypeProvider provider, MappingParameter parameter) {
-		val feasibleConditions = conditions.filter[it.feasibleForParameter(parameter)]
-		val firstExpression = feasibleConditions.get(0).generateFeatureCondition(provider,
-			reactionTypeGenerator.usesNewValue)
-		if (feasibleConditions.size == 1) {
-			// straight forward 
-			firstExpression
 		} else {
-			// chain them together with &&
-			var leftExpression = firstExpression
-			for (condition : feasibleConditions.drop(1)) {
-				val expression = condition.generateFeatureCondition(provider, reactionTypeGenerator.usesNewValue)
-				val andExpression = XbaseFactory.eINSTANCE.createXBinaryOperation
-				andExpression.leftOperand = leftExpression
-				andExpression.rightOperand = expression
-				andExpression.feature = provider.and
-				leftExpression = andExpression
-			}
-			return leftExpression
+			provider.andChain(
+				checks.map [
+					it.generateFeatureCondition(provider, variable)
+				]
+			)
 		}
 	}
 
-/* 
- * 	private def generateReturn(boolean value) {
- * 		XbaseFactory.eINSTANCE.createXReturnExpression => [
- * 			expression = XbaseFactory.eINSTANCE.createXBooleanLiteral => [
- * 				isTrue = value
- * 			]
- * 		]
- }*/
-/* 
- * 	private def generateVarAssign(RoutineTypeProvider provider, MappingParameter parameter) {
- * 		XbaseFactory.eINSTANCE.createXAssignment => [
- * 			assignable = provider.variable(MAPPING_OBJECT)
- * 			value = XbaseFactory.eINSTANCE.createXStringLiteral => [
- * 				value = parameter.value.name
- * 			]
- * 		]
- }*/
 }
