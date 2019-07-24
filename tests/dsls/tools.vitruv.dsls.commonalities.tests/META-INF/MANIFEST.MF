@@ -6,7 +6,8 @@ Automatic-Module-Name: tools.vitruv.dsls.commonalities.tests
 Bundle-Version: 0.3.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
-Export-Package: tools.vitruv.dsls.commonalities.tests;x-internal=true
+Export-Package: tools.vitruv.dsls.commonalities.tests;x-internal=true,
+ tools.vitruv.dsls.commonalities.tests.matchers;x-internal:=true
 Require-Bundle: org.eclipse.xtext.testing,
  org.eclipse.xtext.xbase.testing,
  tools.vitruv.dsls.commonalities,
