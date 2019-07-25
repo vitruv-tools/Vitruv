@@ -1,40 +1,12 @@
 package tools.vitruv.dsls.reactions.builder
 
-import org.junit.runner.RunWith
-import org.eclipse.xtext.testing.XtextRunner
-import org.eclipse.xtext.testing.InjectWith
-import tools.vitruv.dsls.reactions.tests.ReactionsLanguageInjectorProvider
-import com.google.inject.Inject
 import org.junit.Test
-import tools.vitruv.testutils.domains.AllElementTypesDomainProvider
 import static org.hamcrest.MatcherAssert.assertThat
-import org.junit.Rule
-import org.junit.rules.ExpectedException
-import tools.vitruv.testutils.domains.AllElementTypes2DomainProvider
-import org.eclipse.emf.ecore.EcorePackage
-import allElementTypes.AllElementTypesPackage
-import allElementTypes2.AllElementTypes2Package
 import org.junit.Ignore
 import org.eclipse.xtext.xbase.XbaseFactory
-import org.eclipse.emf.ecore.EDataType
 import org.eclipse.xtext.common.types.JvmDeclaredType
 
-@RunWith(XtextRunner)
-@InjectWith(ReactionsLanguageInjectorProvider)
-class FluentReactionsLanguageBuilderTests {
-	protected static val AllElementTypes = new AllElementTypesDomainProvider().domain
-	protected static val AllElementTypes2 = new AllElementTypes2DomainProvider().domain
-	protected static val Root = AllElementTypesPackage.eINSTANCE.root
-	protected static val NonRoot = AllElementTypesPackage.eINSTANCE.nonRoot
-	protected static val Root2 = AllElementTypes2Package.eINSTANCE.root2
-	protected static val EObject = EcorePackage.eINSTANCE.EObject
-
-	@Rule
-	public val ExpectedException thrown = ExpectedException.none()
-
-	@Inject protected GeneratedReactionsMatcherBuilder matcher
-	@Inject protected FluentReactionsLanguageBuilder create
-
+class FluentReactionsLanguageBuilderTests extends FluentReactionsBuilderTest {
 	@Test
 	def void createRoot() {
 		val builder = create.reactionsFile('createRootTest') +=
@@ -709,9 +681,5 @@ class FluentReactionsLanguageBuilderTests {
 		'''
 
 		assertThat(reactionsFile, builds(expectedReaction))
-	}
-
-	def protected builds(String reactionsTest) {
-		matcher.builds(reactionsTest)
 	}
 }
