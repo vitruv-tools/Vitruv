@@ -6,10 +6,10 @@ import tools.vitruv.dsls.mirbase.mirBase.MetaclassReference
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.ActionStatementBuilder
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.UndecidedMatcherStatementBuilder
 
-class DeletedReactionGenerator extends AbstractReactionTypeGenerator {
+class DeletedReactionGenerator extends AbstractReactionTriggerGenerator {
 
 	new(MetaclassReference element) {
-		super(element.metaclass)
+		super(element.metaclass, ReactionTriggerType.DELETE)
 	}
 
 	override generateTrigger(ReactionGeneratorContext context) {
@@ -25,14 +25,6 @@ class DeletedReactionGenerator extends AbstractReactionTypeGenerator {
 			return metaclass == obj.metaclass
 		}
 		false
-	}
-	
-	override generateCorrespondenceMatches(UndecidedMatcherStatementBuilder builder) {
-		new AbstractDeleteReactionTypeDelegator(this).generateCorrespondenceMatches(builder)
-	}
-	
-	override generateCorrespondenceActions(ActionStatementBuilder builder) {
-		new AbstractDeleteReactionTypeDelegator(this).generateCorrespondenceActions(builder)
 	}
 
 }

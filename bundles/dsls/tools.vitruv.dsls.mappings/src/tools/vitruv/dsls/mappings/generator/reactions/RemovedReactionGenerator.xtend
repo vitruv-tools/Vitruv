@@ -13,7 +13,7 @@ class RemovedReactionGenerator extends AbstractContainingReactionTypeGenerator {
 	private MetaclassFeatureReference removeTarget = null
 
 	new(MetaclassReference element) {
-		super(element.metaclass)
+		super(element.metaclass, ReactionTriggerType.DELETE)
 	}
 
 	new(MetaclassReference element, MetaclassFeatureReference insertedIn) {
@@ -51,11 +51,4 @@ class RemovedReactionGenerator extends AbstractContainingReactionTypeGenerator {
 		false
 	}
 
-	override generateCorrespondenceMatches(UndecidedMatcherStatementBuilder builder) {
-		new AbstractDeleteReactionTypeDelegator(this).generateCorrespondenceMatches(builder)
-	}
-	
-	override generateCorrespondenceActions(ActionStatementBuilder builder) {
-		new AbstractDeleteReactionTypeDelegator(this).generateCorrespondenceActions(builder)
-	}
 }

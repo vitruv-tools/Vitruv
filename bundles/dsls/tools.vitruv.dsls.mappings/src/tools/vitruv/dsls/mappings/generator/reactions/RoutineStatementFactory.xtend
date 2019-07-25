@@ -5,9 +5,9 @@ import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.UndecidedMatcher
 
 class RoutineStatementFactory {
 	
-	private AbstractReactionTypeGenerator generator
+	private AbstractReactionTriggerGenerator generator
 	
-	new(AbstractReactionTypeGenerator generator){
+	new(AbstractReactionTriggerGenerator generator){
 		this.generator = generator	
 	}
 	

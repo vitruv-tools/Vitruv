@@ -3,12 +3,13 @@ package tools.vitruv.dsls.mappings.generator
 import java.util.ArrayList
 import java.util.List
 import org.eclipse.emf.ecore.EClass
-import tools.vitruv.dsls.mappings.generator.action.SingleSidedConditionGenerator
 import tools.vitruv.dsls.mappings.generator.conditions.AbstractBidirectionalCondition
-import tools.vitruv.dsls.mappings.generator.conditions.MappingRoutineGenerator
 import tools.vitruv.dsls.mappings.generator.conditions.ReactionTypeFactory
-import tools.vitruv.dsls.mappings.generator.reactions.AbstractReactionTypeGenerator
+import tools.vitruv.dsls.mappings.generator.conditions.SingleSidedConditionFactory
+import tools.vitruv.dsls.mappings.generator.conditions.impl.MappingRoutineGenerator
+import tools.vitruv.dsls.mappings.generator.reactions.AbstractReactionTriggerGenerator
 import tools.vitruv.dsls.mappings.generator.reactions.AttributeReplacedReactionGenerator
+import tools.vitruv.dsls.mappings.generator.routines.MappingRoutinesGenerator
 import tools.vitruv.dsls.mappings.generator.utils.ParameterCorrespondenceTagging
 import tools.vitruv.dsls.mappings.mappingsLanguage.BidirectionalizableCondition
 import tools.vitruv.dsls.mappings.mappingsLanguage.Mapping
@@ -18,7 +19,6 @@ import tools.vitruv.dsls.mappings.mappingsLanguage.RoutineIntegration
 import tools.vitruv.dsls.mappings.mappingsLanguage.SingleSidedCondition
 
 import static tools.vitruv.dsls.mappings.generator.utils.ParameterCorrespondenceTagging.*
-import tools.vitruv.dsls.mappings.generator.action.ReactionRoutineContentGenerator
 
 class DirectionalMappingReactionGenerator {
 
@@ -36,57 +36,57 @@ class DirectionalMappingReactionGenerator {
 		List<BidirectionalizableCondition> mappingConditions, List<RoutineIntegration> mappingRoutines,
 		ObserveAttributes mappingAttributes) {
 		ParameterCorrespondenceTagging.context = context
-		val reactionFactory = new ReactionTypeFactory(fromConditions)
-		val bidirectionCondtionGenerators = generateBidirectionalMappingConditions(mappingConditions, mappingRoutines,
-			fromParameters)
+		val mappingName = mapping.name
+		val reactionFactory = new ReactionTypeFactory(mappingName, fromConditions)
+		val bidirectionalCondtionGenerators = generateBidirectionalMappingConditions(context, mappingConditions,
+			mappingRoutines, fromParameters)
+		val singlesidedConditionGenerators = SingleSidedConditionFactory.construct(fromConditions)
 		val reactionGenerators = reactionFactory.constructGenerators(fromParameters, toParameters)
 		reactionGenerators.appendBidirectionalMappingAttributeReactions(mappingAttributes)
+		val routinesGenerator = new MappingRoutinesGenerator(fromParameters, toParameters)
+		routinesGenerator.generateRoutines(mappingName, context, singlesidedConditionGenerators,
+			bidirectionalCondtionGenerators)
 		reactionGenerators.forEach [ reactionGenerator |
-			reactionGenerator.mappingName = mapping.name
 			println('''=> generate reaction: «reactionGenerator.toString»''')
 			val reactionTemplate = reactionGenerator.generateTrigger(context)
-			val singleSidedConditionGenerator = new SingleSidedConditionGenerator(reactionGenerator, fromConditions)
-			val featureConditionsGenerator = singleSidedConditionGenerator.constructFeatureConditions
-			val contentGenerator = new ReactionRoutineContentGenerator(reactionGenerator, bidirectionCondtionGenerators,
-				featureConditionsGenerator, context)
-			singleSidedConditionGenerator.contentGenerator = contentGenerator
-			contentGenerator.generateSubRoutine
-			context.getSegmentBuilder += reactionTemplate.call([
-				alwaysRequireAffectedEObject
-				if (reactionGenerator.usesNewValue) {
-					alwaysRequireNewValue
-				}
-				contentGenerator.currentRoutine = retrieveRoutineBuilder
-				match(singleSidedConditionGenerator, true)
-				action(contentGenerator)
-			])
+			context.getSegmentBuilder += reactionTemplate.call(
+				routinesGenerator.generateRoutineCall(reactionGenerator)
+			)
 		]
 	}
 
 	private def List<AbstractBidirectionalCondition> generateBidirectionalMappingConditions(
-		List<BidirectionalizableCondition> mappingConditions, List<RoutineIntegration> mappingRoutines,
-		List<MappingParameter> parameters) {
+		ReactionGeneratorContext context, List<BidirectionalizableCondition> mappingConditions,
+		List<RoutineIntegration> mappingRoutines, List<MappingParameter> parameters) {
 		val conditions = new ArrayList<AbstractBidirectionalCondition>()
-		/* 
+		/*  in the future: construct from actual bidirectional conditions
 		 * mappingConditions.forEach [ mappingCondition |
 		 * 	val leftFeature = mappingCondition.featureToBeAssigned
 		 * 	val expression = mappingCondition.bidirectionalizableExpression
 		 ]*/
-		conditions.addAll(mappingRoutines.map[new MappingRoutineGenerator(it)].filter[it.isValidRoutine(parameters)])
+		// right now: using routines as the implementation
+		val routines = new ArrayList<MappingRoutineGenerator>()
+		mappingRoutines.forEach [
+			val routine = new MappingRoutineGenerator(parameters, it)
+			if (routine.validRoutine) {
+				routine.integrateRoutine(context)
+				routines += routine
+			}
+		]
+		conditions.addAll(routines)
 		conditions
 	}
 
-	private def appendBidirectionalMappingAttributeReactions(List<AbstractReactionTypeGenerator> generators,
+	private def appendBidirectionalMappingAttributeReactions(List<AbstractReactionTriggerGenerator> generators,
 		ObserveAttributes mappingAttributes) {
 		if (mappingAttributes !== null) {
 			mappingAttributes.attributes.forEach [
 				// check if its a relevant metaclass for this direction
 				if (metaclass.metaclassApplicable) {
 					val generator = new AttributeReplacedReactionGenerator(it)
-					if (!generators.contains(generator)) {
-						generator.init(fromParameters, toParameters)
-						generators.add(generator)
-					}
+					generator.derivedFromBidirectionalCondition = true
+					generator.init(mapping.name, fromParameters, toParameters)
+					generators.add(generator)
 				}
 			]
 

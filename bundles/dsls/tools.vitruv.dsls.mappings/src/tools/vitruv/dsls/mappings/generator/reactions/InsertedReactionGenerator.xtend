@@ -13,7 +13,7 @@ class InsertedReactionGenerator extends AbstractContainingReactionTypeGenerator 
 	private MetaclassFeatureReference insertTarget = null
 
 	new(MetaclassReference element) {
-		super(element.metaclass)
+		super(element.metaclass, ReactionTriggerType.CREATE)
 	}
 
 	new(MetaclassReference element, MetaclassFeatureReference insertedIn) {
@@ -35,29 +35,6 @@ class InsertedReactionGenerator extends AbstractContainingReactionTypeGenerator 
 
 	override toString() '''
 	«metaclass.parameterName» inserted «IF insertTarget!==null»in «insertTarget.parameterName»«ELSE»as root«ENDIF»'''
-
-	override generateCorrespondenceMatches(UndecidedMatcherStatementBuilder builder) {
-		// just take the first element to require absence of all corresponding elements
-		val taggingParameter = reactionParameters.get(0)
-		correspondingParameters.forEach [ correspondingParameter |
-			builder.requireAbsenceOf(correspondingParameter.value.metaclass).correspondingTo.matchingElement.taggedWith(
-				taggingParameter, correspondingParameter)
-		]
-	}
-
-	override generateCorrespondenceActions(ActionStatementBuilder builder) {
-		// 1) create corresponding elements
-		correspondingParameters.forEach [ correspondingParameter |
-			val newElement = correspondingParameter.newElementName
-			builder.vall(newElement).create(correspondingParameter.value.metaclass)
-		]
-		// 2) create all the correspondences
-		iterateParameters([ reactionParameter, correspondingParameter |
-			val newElement = correspondingParameter.newElementName
-			builder.addCorrespondenceBetween(newElement).and.matchingElement.taggedWith(reactionParameter,
-				correspondingParameter)
-		])
-	}
 
 	override equals(Object obj) {
 		if (obj instanceof InsertedReactionGenerator) {

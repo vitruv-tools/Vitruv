@@ -36,7 +36,7 @@ class EqualsValueConditionGenerator extends MultiValueConditionGenerator {
 
 	override generateCorrespondenceInitialization(RoutineTypeProvider typeProvider) {
 		if (!negated) {
-			XbaseFactory.eINSTANCE.createXAssignment => [
+			return XbaseFactory.eINSTANCE.createXAssignment => [
 				assignable = typeProvider.parameterFeatureCall(featureCondition)
 				value = typeProvider.generateLeftFeatureConditionValue(featureCondition)
 			]

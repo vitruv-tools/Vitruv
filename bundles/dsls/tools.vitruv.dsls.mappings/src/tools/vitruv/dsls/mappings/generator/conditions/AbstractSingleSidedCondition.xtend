@@ -4,13 +4,13 @@ import java.util.ArrayList
 import java.util.List
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.xtext.xbase.XbaseFactory
-import tools.vitruv.dsls.mappings.generator.reactions.AbstractReactionTypeGenerator
 import tools.vitruv.dsls.mappings.mappingsLanguage.FeatureCondition
 import tools.vitruv.dsls.mappings.mappingsLanguage.NullValue
 import tools.vitruv.dsls.mappings.mappingsLanguage.StringValue
 import tools.vitruv.dsls.mirbase.mirBase.MetaclassReference
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.RoutineTypeProvider
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.UndecidedMatcherStatementBuilder
+import tools.vitruv.dsls.mappings.generator.reactions.AbstractReactionTriggerGenerator
 
 abstract class AbstractSingleSidedCondition<T extends EObject> {
 
@@ -20,12 +20,12 @@ abstract class AbstractSingleSidedCondition<T extends EObject> {
 		this.condition = condition
 	}
 
-	abstract def boolean feasibleForGenerator(AbstractReactionTypeGenerator generator)
+	abstract def boolean feasibleForGenerator(AbstractReactionTriggerGenerator generator)
 
-	abstract protected def void constructReactionTriggers(List<AbstractReactionTypeGenerator> triggers)
+	abstract protected def void constructReactionTriggers(List<AbstractReactionTriggerGenerator> triggers)
 
-	def List<AbstractReactionTypeGenerator> constructReactionTriggers() {
-		val triggers = new ArrayList<AbstractReactionTypeGenerator>()
+	def List<AbstractReactionTriggerGenerator> constructReactionTriggers() {
+		val triggers = new ArrayList<AbstractReactionTriggerGenerator>()
 		constructReactionTriggers(triggers)
 		triggers
 	}
