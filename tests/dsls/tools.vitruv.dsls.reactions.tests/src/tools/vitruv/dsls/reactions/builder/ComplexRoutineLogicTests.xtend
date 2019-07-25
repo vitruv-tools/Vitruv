@@ -49,9 +49,7 @@ class ComplexRoutineLogicTests extends FluentReactionsBuilderTest {
 							]
 							expressions += varA
 							expressions += XbaseFactory.eINSTANCE.createXAssignment => [
-								feature = TypesFactory.eINSTANCE.createJvmFormalParameter => [
-									name = 'varA'
-								]
+								feature = varA
 								value = XbaseFactory.eINSTANCE.createXNumberLiteral => [
 									value = ' 15'
 								]

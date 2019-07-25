@@ -18,7 +18,9 @@ class DeletedCheckRoutineGenerator extends AbstractMappingRoutineGenerator {
 	}
 
 	override generateInput() {
-		generateSingleEObjectInput
+		[ builder |
+			builder.generateSingleEObjectInput
+		]
 	}
 
 	/**
@@ -52,8 +54,7 @@ class DeletedCheckRoutineGenerator extends AbstractMappingRoutineGenerator {
 				iterateParameters([ reactionParameter, correspondingParameter |
 					expressions += provider.checkRetrievedParameter(reactionParameter, correspondingParameter)
 				])
-//				expressions += provider.checkAllParametersExist
-				print('')
+				expressions += provider.checkAllParametersExist
 			]
 		]
 	}
@@ -70,12 +71,12 @@ class DeletedCheckRoutineGenerator extends AbstractMappingRoutineGenerator {
 	private def checkRetrievedParameter(RoutineTypeProvider provider, MappingParameter reactionParameter,
 		MappingParameter correspondingParameter) {
 		val name = getParameterName(reactionParameter, correspondingParameter)
-		val target = correspondingParameter.parameterName
+		val target = correspondingParameter
 		XbaseFactory.eINSTANCE.createXIfExpression => [
-			^if = provider.notNull(name)
-			then = XbaseFactory.eINSTANCE.createXAssignment => [				
-				feature = target.retrieveVariable
-				value = provider.variable(name)
+			^if = provider.optionalNotEmpty(provider.variable(name))
+			then = XbaseFactory.eINSTANCE.createXAssignment => [
+				feature = target.retrieveLocalVariable
+				value = provider.optionalGet(provider.variable(name))
 			]
 		]
 	}
@@ -83,9 +84,9 @@ class DeletedCheckRoutineGenerator extends AbstractMappingRoutineGenerator {
 	private def checkAllParametersExist(RoutineTypeProvider provider) {
 		XbaseFactory.eINSTANCE.createXIfExpression => [
 			^if = provider.andChain(correspondingParameters.map [ correspondingParameter |
-				val name = correspondingParameter.parameterName
-				provider.notNull(name.retrieveVariableCall)
+				provider.notNull(correspondingParameter.callLocalVariable)
 			])
+			//then = XbaseFactory.eINSTANCE.createXReturnExpression
 			then = provider.callViaVariables(DeleteMappingRoutine.routine, correspondingParameters)
 		]
 	}

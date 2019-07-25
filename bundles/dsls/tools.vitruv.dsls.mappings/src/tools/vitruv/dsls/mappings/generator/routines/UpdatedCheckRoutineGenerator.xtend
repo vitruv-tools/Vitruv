@@ -9,7 +9,9 @@ class UpdatedCheckRoutineGenerator extends AbstractMappingRoutineGenerator {
 	}
 
 	override generateInput() {
-		generateSingleEObjectInput
+		[ builder |
+			builder.generateSingleEObjectInput
+		]
 	}
 
 	override generate(MatcherOrActionBuilder builder) {

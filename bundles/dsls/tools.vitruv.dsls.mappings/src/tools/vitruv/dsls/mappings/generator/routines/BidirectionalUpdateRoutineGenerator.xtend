@@ -9,7 +9,9 @@ class BidirectionalUpdateRoutineGenerator extends AbstractMappingRoutineGenerato
 	}
 
 	override generateInput() {
-		generateMappingParameterInput
+		[ builder |
+			builder.generateMappingParameterInput
+		]
 	}
 
 	override generate(MatcherOrActionBuilder builder) {

@@ -7,6 +7,8 @@ import org.eclipse.xtext.xbase.XbaseFactory
 import org.eclipse.xtext.xbase.jvmmodel.JvmTypeReferenceBuilder
 import tools.vitruv.dsls.mappings.mappingsLanguage.MappingParameter
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.RoutineTypeProvider
+import java.util.Optional
+import static extension tools.vitruv.dsls.mappings.generator.utils.XBaseMethodFinder.*
 
 class XBaseMethodUtils {
 
@@ -28,7 +30,7 @@ class XBaseMethodUtils {
 	}
 
 	public static def findTypeReference(RoutineTypeProvider provider, MappingParameter parameter) {
-		
+
 		provider.jvmTypeReferenceBuilder.typeRef(provider.findType(parameter))
 	}
 
@@ -37,15 +39,19 @@ class XBaseMethodUtils {
 		provider.findTypeByName(package) as JvmDeclaredType
 	}
 
-	public static def retrieveVariableCall(String variable) {
-		XbaseFactory.eINSTANCE.createXFeatureCall => [
-			feature = variable.retrieveVariable
+	public static def optionalNotEmpty(RoutineTypeProvider provider, XExpression variable) {
+		XbaseFactory.eINSTANCE.createXMemberFeatureCall => [
+			explicitOperationCall = true
+			memberCallTarget = variable
+			feature = provider.optionalIsPresent
 		]
 	}
 
-	public static def retrieveVariable(String variable) {
-		TypesFactory.eINSTANCE.createJvmFormalParameter => [
-			name = variable
+	public static def optionalGet(RoutineTypeProvider provider, XExpression variable) {
+		XbaseFactory.eINSTANCE.createXMemberFeatureCall => [
+			explicitOperationCall = true
+			memberCallTarget = variable
+			feature = provider.optionalGet
 		]
 	}
 
