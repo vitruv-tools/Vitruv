@@ -12,7 +12,9 @@ class CreateMappingRoutine extends AbstractMappingRoutineGenerator {
 	}
 
 	override generateInput() {
-		generateMappingParameterInput
+		[ builder |
+			builder.generateMappingParameterInput
+		]
 	}
 
 	override generate(MatcherOrActionBuilder builder) {

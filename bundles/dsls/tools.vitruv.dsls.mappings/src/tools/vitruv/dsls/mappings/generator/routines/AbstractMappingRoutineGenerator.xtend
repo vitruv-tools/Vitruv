@@ -1,11 +1,13 @@
 package tools.vitruv.dsls.mappings.generator.routines
 
 import java.util.ArrayList
+import java.util.HashMap
 import java.util.List
+import java.util.Map
 import java.util.function.Consumer
 import org.eclipse.emf.ecore.EcoreFactory
 import org.eclipse.xtend.lib.annotations.Accessors
-import org.eclipse.xtext.common.types.TypesFactory
+import org.eclipse.xtext.common.types.JvmIdentifiableElement
 import org.eclipse.xtext.xbase.XExpression
 import org.eclipse.xtext.xbase.XbaseFactory
 import tools.vitruv.dsls.mappings.generator.AbstractMappingEntityGenerator
@@ -35,6 +37,7 @@ abstract class AbstractMappingRoutineGenerator extends AbstractMappingEntityGene
 	@Extension
 	protected MappingRoutineStorage routineStorage
 	protected List<RoutineCallParameter> callParameters = new ArrayList
+	protected Map<String, JvmIdentifiableElement> localVariables = new HashMap
 
 	new(String name) {
 		this.name = name
@@ -50,13 +53,24 @@ abstract class AbstractMappingRoutineGenerator extends AbstractMappingEntityGene
 	}
 
 	protected def variableDeclaration(RoutineTypeProvider provider, MappingParameter parameter) {
-		XbaseFactory.eINSTANCE.createXVariableDeclaration => [
-			it.name = parameter.parameterName
+		val name = parameter.parameterName
+		val declaration = XbaseFactory.eINSTANCE.createXVariableDeclaration => [
+			it.name = name
 			writeable = true
 			type = provider.findTypeReference(parameter)
-			TypesFactory.eINSTANCE.createJvmFormalParameter => [
-				it.
-			]
+		]
+		localVariables.put(name, declaration)
+		declaration
+	}
+
+	protected def retrieveLocalVariable(MappingParameter parameter) {
+		localVariables.get(parameter.parameterName)
+	}
+
+	protected def callLocalVariable(MappingParameter parameter) {
+		XbaseFactory.eINSTANCE.createXFeatureCall => [
+			// explicitOperationCall = true
+			feature = parameter.retrieveLocalVariable
 		]
 	}
 
@@ -65,8 +79,9 @@ abstract class AbstractMappingRoutineGenerator extends AbstractMappingEntityGene
 	}
 
 	private def createCall(RoutineTypeProvider provider, AbstractMappingRoutineGenerator routine) {
-		XbaseFactory.eINSTANCE.createXMemberFeatureCall => [
-			implicitFirstArgument = this.routine.jvmOperationRoutineFacade
+		XbaseFactory.eINSTANCE.createXFeatureCall => [
+			explicitOperationCall = true
+			implicitReceiver = this.routine.jvmOperationRoutineFacade
 			feature = routine.routine.jvmOperation
 		]
 	}
@@ -74,7 +89,7 @@ abstract class AbstractMappingRoutineGenerator extends AbstractMappingEntityGene
 	// call with any expressions
 	def call(RoutineTypeProvider provider, AbstractMappingRoutineGenerator routine, List<XExpression> arguments) {
 		val call = provider.createCall(routine)
-		call.memberCallArguments += arguments
+		call.featureCallArguments += arguments
 		call
 	}
 
@@ -84,27 +99,32 @@ abstract class AbstractMappingRoutineGenerator extends AbstractMappingEntityGene
 	}
 
 	// call with variables from the execution scope
-	def callViaVariables(RoutineTypeProvider provider, AbstractMappingRoutineGenerator routine, List<MappingParameter> parameters) {
-		provider.call(routine, parameters.map[it.parameterName.retrieveVariableCall])
+	def callViaVariables(RoutineTypeProvider provider, AbstractMappingRoutineGenerator routine,
+		List<MappingParameter> parameters) {
+		provider.call(routine, parameters.map[callLocalVariable])
 	}
 
 	def generate(FluentReactionsLanguageBuilder create) {
 		routine = create.routine('''«mappingName»_«name»'''.toString.toFirstLower).input(generateInput).generate
 	}
 
-	protected def Consumer<InputBuilder> generateSingleEObjectInput() {
-		[ builder |
-			builder.affectedEObject.apply(EcoreFactory.eINSTANCE.ecorePackage.EObject)
-			callParameters += new RoutineCallParameter(ReactionsLanguageConstants.CHANGE_AFFECTED_ELEMENT_ATTRIBUTE)
-		]
+	protected def generateSingleEObjectInput(InputBuilder builder) {
+		builder.affectedEObject.apply(EcoreFactory.eINSTANCE.ecorePackage.EObject)
+		callParameters += new RoutineCallParameter(ReactionsLanguageConstants.CHANGE_AFFECTED_ELEMENT_ATTRIBUTE)
 	}
 
-	protected def Consumer<InputBuilder> generateMappingParameterInput() {
-		[ builder |
-			reactionParameters.forEach [
-				builder.model(it.value.metaclass, it.parameterName)
-				callParameters += new RoutineCallParameter(it.parameterName)
-			]
+	protected def generateMappingParameterInput(InputBuilder builder) {
+		generateMappingParameterInput(builder, reactionParameters)
+	}
+
+	protected def generateCorrespondingMappingParameterInput(InputBuilder builder) {
+		generateMappingParameterInput(builder, correspondingParameters)
+	}
+
+	protected def generateMappingParameterInput(InputBuilder builder, List<MappingParameter> parameters) {
+		parameters.forEach [
+			builder.model(it.value.metaclass, it.parameterName)
+			callParameters += new RoutineCallParameter(it.parameterName)
 		]
 	}
 

@@ -4,16 +4,23 @@ import org.eclipse.emf.ecore.EClass
 import org.eclipse.emf.ecore.EStructuralFeature
 import org.eclipse.xtext.common.types.JvmDeclaredType
 import org.eclipse.xtext.common.types.JvmMember
-import org.eclipse.xtext.xbase.XExpression
-import org.eclipse.xtext.xbase.XbaseFactory
 import tools.vitruv.dsls.mirbase.mirBase.MetaclassFeatureReference
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.RoutineTypeProvider
 
 class XBaseMethodFinder {
 
+	private final static String PACKAGE_OPTIONAL = 'java.util.Optional'
 	private final static String PACKAGE_OBJECT = 'org.eclipse.xtext.xbase.lib.ObjectExtensions'
 	private final static String PACKAGE_BOOLEAN = 'org.eclipse.xtext.xbase.lib.BooleanExtensions'
 	private final static String PACKAGE_ITERATOR = 'org.eclipse.xtext.xbase.lib.IteratorExtensions'
+
+	public static def optionalIsPresent(RoutineTypeProvider typeProvider) {
+		typeProvider.findXbaseMethod(PACKAGE_OPTIONAL, 'isPresent')
+	}
+
+	public static def optionalGet(RoutineTypeProvider typeProvider) {
+		typeProvider.findXbaseMethod(PACKAGE_OPTIONAL, 'get')
+	}
 
 	// should find the correct filter method because it is listed first in the class
 	public static def listFilter(RoutineTypeProvider typeProvider) {

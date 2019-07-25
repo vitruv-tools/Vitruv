@@ -11,31 +11,20 @@ class DeleteMappingRoutine extends AbstractMappingRoutineGenerator {
 	}
 
 	override generateInput() {
-		generateMappingParameterInput
+		[ builder |
+			builder.generateCorrespondingMappingParameterInput
+		]
 	}
 
 	override generate(MatcherOrActionBuilder builder) {
-		builder.match [ matchBuilder |
-			matchBuilder.generateMatch
-		]
 		builder.action [ actionBuilder |
 			actionBuilder.generateAction
 		]
 	}
 
-	private def generateMatch(UndecidedMatcherStatementBuilder builder) {
-		// just take the first element to retrieve all the corresponding elements (any other would work as well)
-		val taggingParameter = reactionParameters.get(0)
-		correspondingParameters.forEach [ correspondingParameter |
-			val element = correspondingParameter.parameterName
-			builder.vall(element).retrieve(correspondingParameter.value.metaclass).correspondingTo(
-				taggingParameter.parameterName).taggedWith(taggingParameter, correspondingParameter)
-		]
-	}
-
 	private def generateAction(ActionStatementBuilder builder) {
-		// 1) remove all correspondences
-		builder.removeCorrespondences
+		// 1) remove all correspondences (is it really needed? we dont know all the reaction objects)
+	//	builder.removeCorrespondences
 		// 2) delete all corresponding elements
 		builder.deleteCorrespondingElements
 	}

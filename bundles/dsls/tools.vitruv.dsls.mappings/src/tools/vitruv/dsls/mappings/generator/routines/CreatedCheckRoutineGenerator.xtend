@@ -2,16 +2,19 @@ package tools.vitruv.dsls.mappings.generator.routines
 
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.MatcherOrActionBuilder
 
-class CreatedCheckRoutineGenerator extends AbstractMappingRoutineGenerator{
-	
+class CreatedCheckRoutineGenerator extends AbstractMappingRoutineGenerator {
+
 	new() {
 		super('ElementCreatedCheck')
 	}
-	
+
 	override generateInput() {
-		generateSingleEObjectInput
+		[ builder |
+			builder.generateSingleEObjectInput
+		]
+
 	}
-	
+
 	/*
 	 * 1) check with 
 	 * 
@@ -21,5 +24,5 @@ class CreatedCheckRoutineGenerator extends AbstractMappingRoutineGenerator{
 	override generate(MatcherOrActionBuilder builder) {
 		builder.debugRoutine
 	}
-	
+
 }
