@@ -60,20 +60,19 @@ class CreateMappingRoutine extends AbstractMappingRoutineGenerator {
 	}
 
 	private def initWithFeatureConditions(ActionStatementBuilder builder) {
-		val featureConditions = featureConditions
-		if (!featureConditions.empty) {
+		val intializations = correspondingFeatureConditions.filter[it.hasCorrespondenceInitialization]
+		if (!intializations.empty) {
 			builder.execute([ provider |
 				XbaseFactory.eINSTANCE.createXBlockExpression => [
-					expressions += featureConditions.map[it.generateCorrespondenceInitialization(provider)]
+					expressions += intializations.map[it.generateCorrespondenceInitialization(provider)]
 				]
 			])
 		}
 	}
 
 	private def initWithBidirectionalConditions(ActionStatementBuilder builder) {
-		bidirectionConditions.forEach [
-			it.generate(builder)
-		]
+		// just call the bidirectional update routine
+		builder.call(BidirectionalUpdateRoutineGenerator.routine)
 	}
 
 }

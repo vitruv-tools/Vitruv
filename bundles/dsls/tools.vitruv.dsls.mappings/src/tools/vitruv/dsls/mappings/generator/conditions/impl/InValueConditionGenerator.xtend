@@ -77,29 +77,27 @@ class InValueConditionGenerator extends MultiValueConditionGenerator {
 		null
 	}
 
-	override generateCorrespondenceInitialization(RoutineTypeProvider typeProvider) {
-		if (!negated && featureCondition.isLeftSideMappingParameter) {
-			val feature = featureCondition.feature.feature as EReference
-			if (feature.many) {
-				// add to collection feature
-				return XbaseFactory.eINSTANCE.createXFeatureCall => [
-					feature = typeProvider.collectionAdd
-					featureCallArguments += typeProvider.parameterFeatureCall(featureCondition)
-					featureCallArguments += typeProvider.parameter(childParameter)
-				]
-			} else {
-				// just set 
-				return XbaseFactory.eINSTANCE.createXAssignment => [
-					assignable = typeProvider.parameterFeatureCall(featureCondition)
-					value = typeProvider.parameter(childParameter)
-				]
-			}
-		}
-		null
+	override hasCorrespondenceInitialization() {
+		// !negated && featureCondition.isLeftSideMappingParameter
+		false
 	}
 
-	override generate(UndecidedMatcherStatementBuilder builder) {
-		// its a feature condition so this is not used
+	override generateCorrespondenceInitialization(RoutineTypeProvider typeProvider) {
+//		val feature = featureCondition.feature.feature as EReference
+//		if (feature.many) {
+//			// add to collection feature
+//			return XbaseFactory.eINSTANCE.createXFeatureCall => [
+//				feature = typeProvider.collectionAdd
+//				featureCallArguments += typeProvider.parameterFeatureCall(featureCondition)
+//				featureCallArguments += typeProvider.parameter(childParameter)
+//			]
+//		} else {
+//			// just set 
+//			return XbaseFactory.eINSTANCE.createXAssignment => [
+//				assignable = typeProvider.parameterFeatureCall(featureCondition)
+//				value = typeProvider.parameter(childParameter)
+//			]
+//		}
 	}
 
 }

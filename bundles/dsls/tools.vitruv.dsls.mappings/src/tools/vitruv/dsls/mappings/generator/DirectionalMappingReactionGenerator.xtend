@@ -33,19 +33,20 @@ class DirectionalMappingReactionGenerator {
 	}
 
 	def generate(ReactionGeneratorContext context, List<SingleSidedCondition> fromConditions,
-		List<BidirectionalizableCondition> mappingConditions, List<RoutineIntegration> mappingRoutines,
-		ObserveAttributes mappingAttributes) {
+		List<SingleSidedCondition> toConditions, List<BidirectionalizableCondition> mappingConditions,
+		List<RoutineIntegration> mappingRoutines, ObserveAttributes mappingAttributes) {
 		ParameterCorrespondenceTagging.context = context
 		val mappingName = mapping.name
 		val reactionFactory = new ReactionTypeFactory(mappingName, fromConditions)
 		val bidirectionalCondtionGenerators = generateBidirectionalMappingConditions(context, mappingConditions,
 			mappingRoutines, fromParameters)
 		val singlesidedConditionGenerators = SingleSidedConditionFactory.construct(fromConditions)
+		val correspondingSinglesidedConditionGenerators = SingleSidedConditionFactory.construct(toConditions)
 		val reactionGenerators = reactionFactory.constructGenerators(fromParameters, toParameters)
 		reactionGenerators.appendBidirectionalMappingAttributeReactions(mappingAttributes)
 		val routinesGenerator = new MappingRoutinesGenerator(fromParameters, toParameters)
 		routinesGenerator.generateRoutines(mappingName, context, singlesidedConditionGenerators,
-			bidirectionalCondtionGenerators)
+			correspondingSinglesidedConditionGenerators, bidirectionalCondtionGenerators)
 		reactionGenerators.forEach [ reactionGenerator |
 			println('''=> generate reaction: «reactionGenerator.toString»''')
 			val reactionTemplate = reactionGenerator.generateTrigger(context)

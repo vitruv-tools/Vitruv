@@ -24,24 +24,27 @@ class MappingRoutinesGenerator {
 
 	public def generateRoutines(String mappingName, ReactionGeneratorContext context,
 		List<AbstractSingleSidedCondition> singleSidedConditions,
+		List<AbstractSingleSidedCondition> correspondingSingleSidedConditions,
 		List<AbstractBidirectionalCondition> bidirectionalConditions) {
-		routineStorage.init(mappingName, context, singleSidedConditions, bidirectionalConditions)
-		new CreatedCheckRoutineGenerator().generateRoutine
-		new DeletedCheckRoutineGenerator().generateRoutine
-		new UpdatedCheckRoutineGenerator().generateRoutine
+		routineStorage.init(mappingName, context, singleSidedConditions,correspondingSingleSidedConditions, bidirectionalConditions)
+		//order is important here, because of routine calls (they have to be generated before they can be called)
 		new BidirectionalUpdateRoutineGenerator().generateRoutine
-	//	new CreateMappingRoutine().generateRoutine
-	//	new DeleteMappingRoutine().generateRoutine
+		new CreateMappingRoutine().generateRoutine // calls BidirectionalUpdateRoutineGenerator
+		new DeleteMappingRoutine().generateRoutine		
+		new BidirectionalCheckRoutineGenerator().generateRoutine // calls BidirectionalUpdateRoutineGenerator
+		new CreatedCheckRoutineGenerator().generateRoutine // calls CreateMappingRoutine
+		new DeletedCheckRoutineGenerator().generateRoutine // calls DeleteMappingRoutine
+		new UpdatedCheckRoutineGenerator().generateRoutine // calls CreateMappingRoutine or DeleteMappingRoutine
 	}
 
 	public def generateRoutineCall(AbstractReactionTriggerGenerator generator) {
 		if (generator.derivedFromBidirectionalCondition) {
-			return BidirectionalUpdateRoutineGenerator.routine
+			return BidirectionalCheckRoutineGenerator.routineBuilder
 		}
 		switch (generator.triggerType) {
-			case CREATE: return CreatedCheckRoutineGenerator.routine
-			case UPDATE: return UpdatedCheckRoutineGenerator.routine
-			case DELETE: return DeletedCheckRoutineGenerator.routine
+			case CREATE: return CreatedCheckRoutineGenerator.routineBuilder
+			case UPDATE: return UpdatedCheckRoutineGenerator.routineBuilder
+			case DELETE: return DeletedCheckRoutineGenerator.routineBuilder
 		}
 	}
 

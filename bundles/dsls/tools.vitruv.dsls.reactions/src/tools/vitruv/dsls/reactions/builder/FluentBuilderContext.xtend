@@ -6,6 +6,7 @@ import org.eclipse.xtend.lib.annotations.Accessors
 import org.eclipse.xtext.common.types.access.IJvmTypeProvider
 import org.eclipse.xtext.common.types.util.TypeReferences
 import org.eclipse.xtext.xbase.jvmmodel.JvmModelAssociator
+import org.eclipse.xtext.xbase.jvmmodel.JvmTypeReferenceBuilder
 
 /**
  * Provides access to “the outside” to 
@@ -24,4 +25,7 @@ package class FluentBuilderContext {
 	
 	@Accessors(PACKAGE_GETTER)
 	@Inject IJvmTypeProvider.Factory typeProviderFactory
+	
+	@Accessors(PACKAGE_GETTER)
+	@Inject JvmTypeReferenceBuilder.Factory referenceBuilderFactory
 }

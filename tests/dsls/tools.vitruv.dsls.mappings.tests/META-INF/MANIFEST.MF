@@ -35,8 +35,7 @@ Require-Bundle: tools.vitruv.dsls.mappings,
  tools.vitruv.domains.uml,
  tools.vitruv.dsls.reactions,
  tools.vitruv.dsls.mirbase,
- tools.vitruv.dsls.mappings 
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+ tools.vitruv.dsls.mappings
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Automatic-Module-Name: tools.vitruv.dsls.mappings.tests
 Import-Package: org.hamcrest.core,
@@ -47,3 +46,4 @@ Import-Package: org.hamcrest.core,
  org.junit.runners;version="4.5.0",
  org.junit.runners.model;version="4.5.0"
 Bundle-ActivationPolicy: lazy
+Export-Package: tools.vitruv.dsls.mappings.tests;x-internal=true

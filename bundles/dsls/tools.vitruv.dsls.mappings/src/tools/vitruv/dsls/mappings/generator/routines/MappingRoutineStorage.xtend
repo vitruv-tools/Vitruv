@@ -17,6 +17,7 @@ class MappingRoutineStorage {
 	private ReactionGeneratorContext context
 	private List<AbstractSingleSidedCondition> singleSidedConditions
 	private List<AbstractBidirectionalCondition> bidirectionalConditions
+	private List<AbstractSingleSidedCondition> correspondingSingleSidedConditions
 
 	new(List<MappingParameter> fromParameters, List<MappingParameter> toParameters) {
 		this.fromParameters = fromParameters
@@ -25,22 +26,29 @@ class MappingRoutineStorage {
 
 	public def init(String mappingName, ReactionGeneratorContext context,
 		List<AbstractSingleSidedCondition> singleSidedConditions,
+		List<AbstractSingleSidedCondition> correspondingSingleSidedConditions,
 		List<AbstractBidirectionalCondition> bidirectionalConditions) {
 		this.mappingName = mappingName
 		this.context = context
 		this.singleSidedConditions = singleSidedConditions
+		this.correspondingSingleSidedConditions = correspondingSingleSidedConditions
 		this.bidirectionalConditions = bidirectionalConditions
 	}
 
 	public def generateRoutine(AbstractMappingRoutineGenerator generator) {
 		generator.init(mappingName, fromParameters, toParameters)
-		generator.prepareGenerator(singleSidedConditions, bidirectionalConditions, this)
+		generator.prepareGenerator(singleSidedConditions, correspondingSingleSidedConditions, bidirectionalConditions,
+			this)
 		val routine = generator.generate(context.create)
 		context.segmentBuilder += routine
 		routineGenerators.put(generator.class, generator)
 	}
 
 	public def getRoutine(Class<? extends AbstractMappingRoutineGenerator> key) {
+		routineGenerators.get(key)
+	}
+
+	public def getRoutineBuilder(Class<? extends AbstractMappingRoutineGenerator> key) {
 		routineGenerators.get(key).routine
 	}
 }
