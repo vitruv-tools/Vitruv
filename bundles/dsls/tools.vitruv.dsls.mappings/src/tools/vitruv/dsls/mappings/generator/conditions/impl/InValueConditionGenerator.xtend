@@ -5,7 +5,6 @@ import org.eclipse.emf.ecore.EReference
 import org.eclipse.xtext.xbase.XExpression
 import org.eclipse.xtext.xbase.XbaseFactory
 import tools.vitruv.dsls.mappings.generator.conditions.MultiValueConditionGenerator
-import tools.vitruv.dsls.mappings.generator.reactions.AbstractReactionTypeGenerator
 import tools.vitruv.dsls.mappings.generator.reactions.DeletedReactionGenerator
 import tools.vitruv.dsls.mappings.generator.reactions.ElementReplacedReactionGenerator
 import tools.vitruv.dsls.mappings.generator.reactions.InsertedReactionGenerator
@@ -17,6 +16,7 @@ import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.UndecidedMatcher
 
 import static extension tools.vitruv.dsls.mappings.generator.conditions.FeatureConditionGeneratorUtils.*
 import static extension tools.vitruv.dsls.mappings.generator.utils.XBaseMethodFinder.*
+import tools.vitruv.dsls.mappings.generator.reactions.AbstractReactionTriggerGenerator
 
 class InValueConditionGenerator extends MultiValueConditionGenerator {
 
@@ -36,7 +36,7 @@ class InValueConditionGenerator extends MultiValueConditionGenerator {
 		featureCondition.feature.feature
 	}
 
-	override feasibleForGenerator(AbstractReactionTypeGenerator generator) {
+	override feasibleForGenerator(AbstractReactionTriggerGenerator generator) {
 		if (!generator.usesNewValue) {
 			// In-Statements only work with reactions that produce two values
 			return false
@@ -54,7 +54,7 @@ class InValueConditionGenerator extends MultiValueConditionGenerator {
 		false
 	}
 
-	override protected constructReactionTriggers(List<AbstractReactionTypeGenerator> triggers) {
+	override protected constructReactionTriggers(List<AbstractReactionTriggerGenerator> triggers) {
 		if (featureCondition.isLeftSideMappingParameter) {
 			val leftReference = featureCondition.leftMappingParameter.value
 			// check if its a collection or just a normal element

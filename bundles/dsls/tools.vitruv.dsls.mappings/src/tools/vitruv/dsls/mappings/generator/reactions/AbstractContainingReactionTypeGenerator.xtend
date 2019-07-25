@@ -5,12 +5,13 @@ import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.CorrespondenceEl
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.RetrieveModelElementMatcherStatementCorrespondenceElementBuilder
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.TaggedWithBuilder
 
-abstract class AbstractContainingReactionTypeGenerator extends AbstractReactionTypeGenerator {
+abstract class AbstractContainingReactionTypeGenerator extends AbstractReactionTriggerGenerator {
 
-	new(EClass metaclass) {
-		super(metaclass)
+	
+	new(EClass metaclass, ReactionTriggerType triggerType) {
+		super(metaclass, triggerType)
 	}
-
+	
 	def matchingElement(RetrieveModelElementMatcherStatementCorrespondenceElementBuilder builder) {
 		if (usesNewValue) {
 			builder.newValue

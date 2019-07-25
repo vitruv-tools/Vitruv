@@ -2,7 +2,6 @@ package tools.vitruv.dsls.mappings.generator.conditions
 
 import java.util.ArrayList
 import java.util.List
-import tools.vitruv.dsls.mappings.generator.reactions.AbstractReactionTypeGenerator
 import tools.vitruv.dsls.mappings.generator.reactions.DeletedReactionGenerator
 import tools.vitruv.dsls.mappings.generator.reactions.ElementReplacedReactionGenerator
 import tools.vitruv.dsls.mappings.generator.reactions.InsertedReactionGenerator
@@ -10,19 +9,22 @@ import tools.vitruv.dsls.mappings.generator.reactions.RemovedReactionGenerator
 import tools.vitruv.dsls.mappings.mappingsLanguage.MappingParameter
 import tools.vitruv.dsls.mappings.mappingsLanguage.SingleSidedCondition
 import tools.vitruv.dsls.mirbase.mirBase.NamedMetaclassReference
+import tools.vitruv.dsls.mappings.generator.reactions.AbstractReactionTriggerGenerator
 
 class ReactionTypeFactory {
 
 	private List<SingleSidedCondition> conditions
-	private List<AbstractReactionTypeGenerator> generators = new ArrayList<AbstractReactionTypeGenerator>()
+	private List<AbstractReactionTriggerGenerator> generators = new ArrayList<AbstractReactionTriggerGenerator>()
 	private List<MappingParameter> fromParameters
 	private List<MappingParameter> toParameters
+	private String mappingName
 
-	new(List<SingleSidedCondition> conditions) {
+	new(String mappingName, List<SingleSidedCondition> conditions) {
+		this.mappingName = mappingName
 		this.conditions = conditions;
 	}
 
-	def List<AbstractReactionTypeGenerator> constructGenerators(List<MappingParameter> fromParameters,
+	def List<AbstractReactionTriggerGenerator> constructGenerators(List<MappingParameter> fromParameters,
 		List<MappingParameter> toParameters) {
 		this.fromParameters = fromParameters
 		this.toParameters = toParameters
@@ -87,7 +89,7 @@ class ReactionTypeFactory {
 		]
 	}
 
-	private def tryInsertTrigger(AbstractReactionTypeGenerator generator) {
+	private def tryInsertTrigger(AbstractReactionTriggerGenerator generator) {
 		generator.initGenerator
 		// check if the same trigger already exists
 		if (isDuplicateOfExistingTrigger(generator)) {
@@ -112,11 +114,11 @@ class ReactionTypeFactory {
 		}
 	}
 
-	private def initGenerator(AbstractReactionTypeGenerator generator) {
-		generator.init(fromParameters, toParameters)
+	private def initGenerator(AbstractReactionTriggerGenerator generator) {
+		generator.init(mappingName, fromParameters, toParameters)
 	}
 
-	private def boolean isDuplicateOfExistingTrigger(AbstractReactionTypeGenerator generator) {
+	private def boolean isDuplicateOfExistingTrigger(AbstractReactionTriggerGenerator generator) {
 		generators.contains(generator)
 	}
 

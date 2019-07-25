@@ -9,12 +9,12 @@ import tools.vitruv.dsls.mirbase.mirBase.MirBaseFactory
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.ActionStatementBuilder
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.UndecidedMatcherStatementBuilder
 
-class AttributeReplacedReactionGenerator extends AbstractReactionTypeGenerator {
+class AttributeReplacedReactionGenerator extends AbstractReactionTriggerGenerator {
 
 	private MetaclassEAttributeReference attribute
 
 	new(MetaclassFeatureReference reference) {
-		super(reference.metaclass)
+		super(reference.metaclass, ReactionTriggerType.UPDATE)
 		val refFeature = reference.feature
 		if (refFeature instanceof EAttribute) {
 			this.attribute = MirBaseFactory.eINSTANCE.createMetaclassEAttributeReference => [
@@ -27,16 +27,16 @@ class AttributeReplacedReactionGenerator extends AbstractReactionTypeGenerator {
 	}
 
 	new(MetaclassEAttributeReference attribute) {
-		super(attribute.metaclass)
+		super(attribute.metaclass, ReactionTriggerType.UPDATE)
 		this.attribute = attribute
 	}
 
 	override generateTrigger(ReactionGeneratorContext context) {
 		this.reactionName = '''«attribute.getAttributeName.toFirstUpper»ReplacedAt«metaclass.parameterName»'''
 		val trigger = context.create.reaction(reactionName()).afterAttributeReplacedAt(metaclass, extractAttribute)
-	/* 	trigger.with[typeProvider | 
-			
-		]*/
+		/* 	trigger.with[typeProvider | 
+		 * 		
+		 ]*/
 		trigger
 	}
 
@@ -52,14 +52,6 @@ class AttributeReplacedReactionGenerator extends AbstractReactionTypeGenerator {
 			return attribute.feature == obj.attribute.feature && metaclass == obj.metaclass
 		}
 		false
-	}
-
-	override generateCorrespondenceMatches(UndecidedMatcherStatementBuilder builder) {
-		// nothing to do, only single sided conditions create matchers
-	}
-
-	override generateCorrespondenceActions(ActionStatementBuilder builder) {
-		// nothing to do, only bidirectional conditions create actions
 	}
 
 }
