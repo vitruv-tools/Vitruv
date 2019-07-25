@@ -11,8 +11,7 @@ import org.eclipse.xtext.common.types.TypesFactory
 
 @RunWith(XtextRunner)
 @InjectWith(ReactionsLanguageInjectorProvider)
-class ComplexRoutineLogicTests extends FluentReactionsLanguageBuilderTests {
-
+class ComplexRoutineLogicTests extends FluentReactionsBuilderTest {
 	@Test
 	def void ts() {
 		val builder = create.reactionsFile('createRootTest') +=
@@ -29,10 +28,11 @@ class ComplexRoutineLogicTests extends FluentReactionsLanguageBuilderTests {
 								writeable = true
 							]
 							expressions += firstValue*/
-							expressions += XbaseFactory.eINSTANCE.createXForLoopExpression => [
-								it.declaredParam = TypesFactory.eINSTANCE.createJvmFormalParameter => [
+							val loopVariable = TypesFactory.eINSTANCE.createJvmFormalParameter => [
 									name = 'b'
 								]
+							expressions += XbaseFactory.eINSTANCE.createXForLoopExpression => [
+								it.declaredParam = loopVariable
 								it.forExpression = XbaseFactory.eINSTANCE.createXListLiteral => [
 									it.elements += XbaseFactory.eINSTANCE.createXNumberLiteral => [
 										value = '10'
@@ -40,9 +40,7 @@ class ComplexRoutineLogicTests extends FluentReactionsLanguageBuilderTests {
 								]
 								it.eachExpression = XbaseFactory.eINSTANCE.createXBlockExpression => [
 									expressions += XbaseFactory.eINSTANCE.createXAssignment => [
-										feature = XbaseFactory.eINSTANCE.createXVariableDeclaration => [
-											name = 'b'
-										]
+										feature = loopVariable
 										value = XbaseFactory.eINSTANCE.createXNumberLiteral => [
 											value = '20'
 										]
@@ -70,7 +68,7 @@ class ComplexRoutineLogicTests extends FluentReactionsLanguageBuilderTests {
 			routine createRootTestRepair() {
 				action {
 					execute {
-						for ( b : #[10]){ b = 20}
+						for ( b : #[10]) { b = 20 }
 					}	
 				}
 			}
