@@ -126,6 +126,14 @@ abstract package class FluentReactionElementBuilder {
 		element
 	}
 
+	def protected delegateTypeProvider() {
+		context.typeProviderFactory.findOrCreateTypeProvider(attachedReactionsFile.eResource.resourceSet)
+	}
+
+	def protected referenceBuilderFactory() {
+		context.referenceBuilderFactory.create(attachedReactionsFile.eResource.resourceSet)
+	}
+
 	def protected <T extends JvmDeclaredType> imported(T type) {
 		XImportSection.importDeclarations.findFirst[importedType == type] ?: createTypeImport(type)
 		return type
@@ -146,12 +154,12 @@ abstract package class FluentReactionElementBuilder {
 			extension = true
 		]
 		return declaredType
-	} 
+	}
 
 	def protected staticExtensionImported(JvmOperation operation) {
 		staticImport(operation, true)
 	}
-	
+
 	def protected staticExtensionWildcardImported(JvmOperation operation) {
 		operation.declaringType.staticExtensionAllImported
 		return operation
@@ -160,7 +168,7 @@ abstract package class FluentReactionElementBuilder {
 	def protected staticImported(JvmOperation operation) {
 		staticImport(operation, false)
 	}
-	
+
 	def private staticImport(JvmOperation operation, boolean asExtension) {
 		val existingStarImport = XImportSection.importDeclarations.findFirst [
 			isWildcard && importedType == operation.declaringType
@@ -185,7 +193,7 @@ abstract package class FluentReactionElementBuilder {
 			XImportSection.importDeclarations += it
 		]
 	}
-	
+
 	def private createTypeWildcardImport(JvmDeclaredType type) {
 		val newDeclaration = XtypeFactory.eINSTANCE.createXImportDeclaration => [
 			importedType = type
@@ -201,7 +209,7 @@ abstract package class FluentReactionElementBuilder {
 		XImportSection.importDeclarations += newDeclaration
 		return newDeclaration
 	}
-	
+
 	def private createTypeImport(JvmDeclaredType type) {
 		XtypeFactory.eINSTANCE.createXImportDeclaration => [
 			importedType = type
@@ -221,18 +229,18 @@ abstract package class FluentReactionElementBuilder {
 		// there will usually only be a few metamodel imports, so no need for caching
 		attachedReactionsFile.metamodelImports.findFirst[package == ePackage] ?: createMetamodelImport(ePackage)
 	}
-	
-	def protected metamodelImport(EPackage ePackage, String pname){
-	checkState(attachedReactionsFile !== null && !jvmTypesAvailable,
+
+	def protected metamodelImport(EPackage ePackage, String pname) {
+		checkState(attachedReactionsFile !== null && !jvmTypesAvailable,
 			"Metamodel imports can only be created in the attachment preparation phase!")
-		createMetamodelImport(ePackage, ePackage.name)		
+		createMetamodelImport(ePackage, ePackage.name)
 	}
 
 	def private createMetamodelImport(EPackage ePackage) {
 		createMetamodelImport(ePackage, ePackage.name)
 	}
-	
-	def private createMetamodelImport(EPackage ePackage, String pname){
+
+	def private createMetamodelImport(EPackage ePackage, String pname) {
 		val newImport = MirBaseFactory.eINSTANCE.createMetamodelImport => [
 			package = ePackage
 			name = pname
@@ -249,7 +257,8 @@ abstract package class FluentReactionElementBuilder {
 		]
 	}
 
-	def protected <T extends MetaclassEReferenceReference> reference(T referenceReference, EClass eClass, EReference reference) {
+	def protected <T extends MetaclassEReferenceReference> reference(T referenceReference, EClass eClass,
+		EReference reference) {
 		(referenceReference => [
 			feature = reference
 			metaclass = eClass
@@ -258,7 +267,8 @@ abstract package class FluentReactionElementBuilder {
 		]
 	}
 
-	def protected <T extends MetaclassEAttributeReference> reference(T attributeReference, EClass eClass, EAttribute attribute) {
+	def protected <T extends MetaclassEAttributeReference> reference(T attributeReference, EClass eClass,
+		EAttribute attribute) {
 		(attributeReference => [
 			feature = attribute
 			metaclass = eClass
@@ -272,8 +282,9 @@ abstract package class FluentReactionElementBuilder {
 			type = context.typeReferences.getTypeForName(clazz, targetResource)
 		]
 	}
-	
-	def protected List<XExpression> requiredArgumentsFrom(FluentRoutineBuilder routineBuilder, JvmOperation routineCallMethod) {
+
+	def protected List<XExpression> requiredArgumentsFrom(FluentRoutineBuilder routineBuilder,
+		JvmOperation routineCallMethod) {
 		val parameterList = new ArrayList<XExpression>(3)
 		if (routineBuilder.requireAffectedEObject) {
 			parameterList += routineCallMethod.argument(CHANGE_AFFECTED_ELEMENT_ATTRIBUTE)

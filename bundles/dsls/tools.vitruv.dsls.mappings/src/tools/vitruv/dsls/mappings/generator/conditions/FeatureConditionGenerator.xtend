@@ -11,5 +11,7 @@ interface FeatureConditionGenerator {
 	
 	def XExpression generateFeatureCondition(RoutineTypeProvider provider, XExpression variable)
 	
+	def boolean hasCorrespondenceInitialization()
+	
 	def XExpression generateCorrespondenceInitialization(RoutineTypeProvider provider)
 }

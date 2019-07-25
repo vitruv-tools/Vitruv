@@ -7,11 +7,11 @@ import org.eclipse.emf.ecore.EReference
 import org.eclipse.emf.ecore.EStructuralFeature
 import org.eclipse.xtext.resource.EObjectDescription
 import org.eclipse.xtext.scoping.IScope
-import org.eclipse.xtext.scoping.Scopes
 import tools.vitruv.dsls.mappings.mappingsLanguage.BidirectionalizableCondition
 import tools.vitruv.dsls.mappings.mappingsLanguage.BidirectionalizableExpression
 import tools.vitruv.dsls.mappings.mappingsLanguage.EnforceableCondition
 import tools.vitruv.dsls.mappings.mappingsLanguage.FeatureCondition
+import tools.vitruv.dsls.mappings.mappingsLanguage.FeatureConditionParameter
 import tools.vitruv.dsls.mappings.mappingsLanguage.Mapping
 import tools.vitruv.dsls.mappings.mappingsLanguage.MappingsLanguagePackage.Literals
 import tools.vitruv.dsls.mappings.mappingsLanguage.MultiValueCondition
@@ -20,14 +20,13 @@ import tools.vitruv.dsls.mappings.mappingsLanguage.NumCompareCondition
 import tools.vitruv.dsls.mappings.mappingsLanguage.ObserveAttributes
 import tools.vitruv.dsls.mappings.mappingsLanguage.SingleSidedCondition
 import tools.vitruv.dsls.mirbase.mirBase.MetaclassFeatureReference
+import tools.vitruv.dsls.mirbase.mirBase.MetaclassReference
 import tools.vitruv.dsls.mirbase.mirBase.NamedMetaclassReference
-import tools.vitruv.dsls.mirbase.scoping.MirBaseScopeProviderDelegate
+import tools.vitruv.dsls.reactions.scoping.ReactionsLanguageScopeProviderDelegate
 
 import static tools.vitruv.dsls.mirbase.mirBase.MirBasePackage.Literals.*
-import tools.vitruv.dsls.mappings.mappingsLanguage.FeatureConditionParameter
-import tools.vitruv.dsls.mirbase.mirBase.MetaclassReference
 
-class MappingsLanguageScopeProviderDelegate extends MirBaseScopeProviderDelegate {
+class MappingsLanguageScopeProviderDelegate extends ReactionsLanguageScopeProviderDelegate {
 
 	override getScope(EObject context, EReference reference) {
 

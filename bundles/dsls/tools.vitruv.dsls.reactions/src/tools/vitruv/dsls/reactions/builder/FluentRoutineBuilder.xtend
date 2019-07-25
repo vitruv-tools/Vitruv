@@ -27,6 +27,7 @@ import tools.vitruv.dsls.reactions.reactionsLanguage.Taggable
 
 import static com.google.common.base.Preconditions.*
 import static tools.vitruv.dsls.reactions.codegen.ReactionsLanguageConstants.*
+import org.eclipse.xtext.xbase.jvmmodel.JvmTypeReferenceBuilder
 
 class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 
@@ -577,8 +578,9 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 	static class RoutineTypeProvider extends AbstractTypeProvider<FluentRoutineBuilder> {
 		extension val FluentRoutineBuilder builderAsExtension
 
-		private new(IJvmTypeProvider delegate, FluentRoutineBuilder builder, XExpression scopeExpression) {
-			super(delegate, builder, scopeExpression)
+		private new(IJvmTypeProvider delegate, JvmTypeReferenceBuilder referenceDelegate, FluentRoutineBuilder builder,
+			XExpression scopeExpression) {
+			super(delegate, referenceDelegate, builder, scopeExpression)
 			builderAsExtension = builder
 		}
 
@@ -598,9 +600,7 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 	}
 
 	def private getTypeProvider(XExpression scopeExpression) {
-		val delegateTypeProvider = context.typeProviderFactory.findOrCreateTypeProvider(
-			attachedReactionsFile.eResource.resourceSet)
-		new RoutineTypeProvider(delegateTypeProvider, this, scopeExpression)
+		new RoutineTypeProvider(delegateTypeProvider, referenceBuilderFactory, this, scopeExpression)
 	}
 
 	static class CreateStatementBuilder {

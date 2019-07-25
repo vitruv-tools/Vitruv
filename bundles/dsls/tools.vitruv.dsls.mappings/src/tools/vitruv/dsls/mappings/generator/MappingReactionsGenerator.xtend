@@ -12,16 +12,18 @@ class MappingReactionsGenerator extends MappingsReactionsFileGenerator {
 	}
 
 	def generateReactionsAndRoutines(ReactionGeneratorContext context) {
-		segment.mappings.forEach [	
+		segment.mappings.forEach [
 			val from = fromParameters.map[it]
 			val to = toParameters.map[it]
 			val fromConditions = fromConditions
+			val toConditions = toConditions
 			val mappingsConditions = it.bidirectionalizableConditions
 			val mappingRoutines = it.bidirectionalizableRoutines
 			val mappingAttributes = it.observeAttributes
 			val reactionsBuilder = new DirectionalMappingReactionGenerator(from, to, it)
-			println('''generate mapping «it.name» «IF(context.left2right)»left to right«ELSE»right to left«ENDIF»:''')
-			reactionsBuilder.generate(context, fromConditions, mappingsConditions, mappingRoutines, mappingAttributes)
+			println('''generate mapping «it.name» «IF (context.left2right)»left to right«ELSE»right to left«ENDIF»:''')
+			reactionsBuilder.generate(context, fromConditions, toConditions, mappingsConditions, mappingRoutines,
+				mappingAttributes)
 		]
 	}
 }

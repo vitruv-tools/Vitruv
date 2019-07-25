@@ -11,6 +11,7 @@ import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.UndecidedMatcher
 import static extension tools.vitruv.dsls.mappings.generator.conditions.FeatureConditionGeneratorUtils.*
 import static extension tools.vitruv.dsls.mappings.generator.utils.XBaseMethodFinder.*
 import org.eclipse.xtext.xbase.XExpression
+import org.eclipse.emf.ecore.EReference
 
 class EqualsValueConditionGenerator extends MultiValueConditionGenerator {
 
@@ -34,26 +35,26 @@ class EqualsValueConditionGenerator extends MultiValueConditionGenerator {
 		]
 	}
 
-	override generateCorrespondenceInitialization(RoutineTypeProvider typeProvider) {
-		if (!negated) {
-			return XbaseFactory.eINSTANCE.createXAssignment => [
-				assignable = typeProvider.parameterFeatureCall(featureCondition)
-				value = typeProvider.generateLeftFeatureConditionValue(featureCondition)
-			]
+	override hasCorrespondenceInitialization() {
+		val feature = featureCondition.feature.feature
+		if (feature instanceof EReference) {
+			//references have to be set with In-Relations not Equals
+			return false
 		}
-		null
+		!negated && feature.changeable
+	}
+
+	override generateCorrespondenceInitialization(RoutineTypeProvider typeProvider) {
+		return typeProvider.parameterFeatureCallSetter(featureCondition,
+			typeProvider.generateLeftFeatureConditionValue(featureCondition))
 	}
 
 	private def generateRightSideCall(RoutineTypeProvider typeProvider, XExpression variable) {
 		XbaseFactory.eINSTANCE.createXMemberFeatureCall => [
 			explicitOperationCall = true
 			memberCallTarget = variable
-			feature = typeProvider.findMetaclassMethod(rightSide)
+			feature = typeProvider.findMetaclassMethodGetter(rightSide)
 		]
-	}
-
-	override generate(UndecidedMatcherStatementBuilder builder) {
-		// its a feature condition so this is not used
 	}
 
 }
