@@ -16,7 +16,8 @@ mappings: umlXpcmTest for UML and PCM
 		//}
 	}
 	//todo: add reaction for IPREClassRemoved, IPREClassNameChanged, IPREConstructorOperationNameChanged
-}		 			 		 		 
+}		 			 		
+ 		 
 	 			 		 		 		 		 			 			 		 		 			 		 			 		 				 		 		 	 			 				 		 		 	 			 			 				 							 							
 mapping RepositoryXPackage {
 
