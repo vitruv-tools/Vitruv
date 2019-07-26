@@ -36,6 +36,7 @@ class MappingRoutineStorage {
 	}
 
 	public def generateRoutine(AbstractMappingRoutineGenerator generator) {
+		println('''=> generate routine: «generator.toString»''')
 		generator.init(mappingName, fromParameters, toParameters)
 		generator.prepareGenerator(singleSidedConditions, correspondingSingleSidedConditions, bidirectionalConditions,
 			this)

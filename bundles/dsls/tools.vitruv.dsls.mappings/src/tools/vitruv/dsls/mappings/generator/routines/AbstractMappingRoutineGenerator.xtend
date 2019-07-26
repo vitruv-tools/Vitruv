@@ -35,6 +35,10 @@ abstract class AbstractMappingRoutineGenerator extends AbstractRoutineContentGen
 	new(String name) {
 		this.name = name
 	}
+	
+	override toString() {
+		name
+	}
 
 	protected def initCallingContext(ActionStatement statement) {
 		if (statement instanceof ExecuteActionStatement) {
