@@ -1,17 +1,22 @@
 package tools.vitruv.dsls.mappings.generator.routines
 
-import java.util.HashMap
 import java.util.List
-import java.util.Map
 import tools.vitruv.dsls.mappings.generator.ReactionGeneratorContext
+import tools.vitruv.dsls.mappings.generator.conditions.AbstractBidirectionalCondition
 import tools.vitruv.dsls.mappings.generator.conditions.AbstractSingleSidedCondition
 import tools.vitruv.dsls.mappings.generator.reactions.AbstractReactionTriggerGenerator
+import tools.vitruv.dsls.mappings.generator.routines.impl.BidirectionalCheckRoutineGenerator
+import tools.vitruv.dsls.mappings.generator.routines.impl.BidirectionalUpdateRoutineGenerator
+import tools.vitruv.dsls.mappings.generator.routines.impl.CreateMappingRoutine
+import tools.vitruv.dsls.mappings.generator.routines.impl.CreatedCheckRoutineGenerator
+import tools.vitruv.dsls.mappings.generator.routines.impl.DeleteMappingRoutine
+import tools.vitruv.dsls.mappings.generator.routines.impl.DeletedCheckRoutineGenerator
+import tools.vitruv.dsls.mappings.generator.routines.impl.UpdatedCheckRoutineGenerator
 import tools.vitruv.dsls.mappings.mappingsLanguage.MappingParameter
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.ActionStatementBuilder
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.RoutineCallParameter
 import tools.vitruv.dsls.reactions.codegen.ReactionsLanguageConstants
-import tools.vitruv.dsls.mappings.generator.conditions.AbstractBidirectionalCondition
 
 class MappingRoutinesGenerator {
 
@@ -34,7 +39,7 @@ class MappingRoutinesGenerator {
 		new BidirectionalCheckRoutineGenerator().generateRoutine // calls BidirectionalUpdateRoutineGenerator
 		new CreatedCheckRoutineGenerator().generateRoutine // calls CreateMappingRoutine
 		new DeletedCheckRoutineGenerator().generateRoutine // calls DeleteMappingRoutine
-		new UpdatedCheckRoutineGenerator().generateRoutine // calls CreateMappingRoutine or DeleteMappingRoutine
+		new UpdatedCheckRoutineGenerator().generateRoutine // calls CreateMappingRoutine or DeletedCheckRoutineGenerator
 	}
 
 	public def generateRoutineCall(AbstractReactionTriggerGenerator generator) {

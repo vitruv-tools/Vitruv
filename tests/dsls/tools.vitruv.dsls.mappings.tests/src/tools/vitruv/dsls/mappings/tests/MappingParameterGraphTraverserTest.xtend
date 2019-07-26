@@ -61,7 +61,7 @@ class MappingParameterGraphTraverserTest {
 		createInConditions('nodeA'.in('nodeB', 'cFA'), 'nodeB'.in('nodeC', 'cFB'), 'nodeC'.in('nodeA', 'cFC'))
 		try {
 			initTraverser
-			fail()
+			fail() 
 		} catch (IllegalStateException exception) {
 			assertEquals('The MappingParameters in-relations contains cycles!', exception.message)
 		}

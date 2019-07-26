@@ -1,19 +1,17 @@
-package tools.vitruv.dsls.mappings.generator.routines
+package tools.vitruv.dsls.mappings.generator.routines.impl
 
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.ActionStatementBuilder
-import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.UndecidedMatcherStatementBuilder
+import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.InputBuilder
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.MatcherOrActionBuilder
 
-class DeleteMappingRoutine extends AbstractMappingRoutineGenerator {
+class DeleteMappingRoutine extends tools.vitruv.dsls.mappings.generator.routines.AbstractMappingRoutineGenerator {
 
 	new() {
 		super('DeleteMapping')
 	}
 
-	override generateInput() {
-		[ builder |
-			builder.generateCorrespondingMappingParameterInput
-		]
+	override generateInput(InputBuilder builder) {
+		builder.generateCorrespondingMappingParameterInput
 	}
 
 	override generate(MatcherOrActionBuilder builder) {
@@ -24,7 +22,7 @@ class DeleteMappingRoutine extends AbstractMappingRoutineGenerator {
 
 	private def generateAction(ActionStatementBuilder builder) {
 		// 1) remove all correspondences (is it really needed? we dont know all the reaction objects)
-	//	builder.removeCorrespondences
+		// builder.removeCorrespondences
 		// 2) delete all corresponding elements
 		builder.deleteCorrespondingElements
 	}

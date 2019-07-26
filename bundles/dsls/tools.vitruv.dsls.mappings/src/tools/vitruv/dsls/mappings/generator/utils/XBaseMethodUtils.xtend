@@ -9,10 +9,11 @@ import tools.vitruv.dsls.mappings.mappingsLanguage.MappingParameter
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.RoutineTypeProvider
 import java.util.Optional
 import static extension tools.vitruv.dsls.mappings.generator.utils.XBaseMethodFinder.*
+import org.eclipse.xtext.common.types.JvmIdentifiableElement
 
 class XBaseMethodUtils {
 
-	public static def andChain(RoutineTypeProvider provider, XExpression... expressions) {
+	public static def binaryOperationChain(RoutineTypeProvider provider,JvmIdentifiableElement operation, XExpression... expressions) {
 		if (expressions.empty) {
 			return XbaseFactory.eINSTANCE.createXBooleanLiteral => [
 				isTrue = true
@@ -23,14 +24,21 @@ class XBaseMethodUtils {
 			val andExpression = XbaseFactory.eINSTANCE.createXBinaryOperation
 			andExpression.leftOperand = leftExpression
 			andExpression.rightOperand = expression
-			andExpression.feature = XBaseMethodFinder.and(provider)
+			andExpression.feature = operation
 			leftExpression = andExpression
 		}
 		return leftExpression
 	}
+	
+	public static def andChain(RoutineTypeProvider provider, XExpression... expressions) {
+		provider.binaryOperationChain(provider.and, expressions)
+	}
+	
+	public static def orChain(RoutineTypeProvider provider, XExpression... expressions) {
+		provider.binaryOperationChain(provider.or, expressions)
+	}
 
 	public static def findTypeReference(RoutineTypeProvider provider, MappingParameter parameter) {
-
 		provider.jvmTypeReferenceBuilder.typeRef(provider.findType(parameter))
 	}
 

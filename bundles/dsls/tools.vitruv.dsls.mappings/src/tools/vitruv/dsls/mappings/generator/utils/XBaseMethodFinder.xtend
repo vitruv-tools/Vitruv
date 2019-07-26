@@ -36,6 +36,10 @@ class XBaseMethodFinder {
 		typeProvider.findXbaseMethod(PACKAGE_BOOLEAN, 'operator_and')
 	}
 
+	public static def or(RoutineTypeProvider typeProvider) {
+		typeProvider.findXbaseMethod(PACKAGE_BOOLEAN, 'operator_or')
+	}
+
 	public static def tripleEquals(RoutineTypeProvider typeProvider) {
 		typeProvider.findXbaseMethod(PACKAGE_OBJECT, 'operator_tripleEquals')
 	}

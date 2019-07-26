@@ -1,17 +1,16 @@
-package tools.vitruv.dsls.mappings.generator.routines
+package tools.vitruv.dsls.mappings.generator.routines.impl
 
+import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.InputBuilder
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.MatcherOrActionBuilder
 
-class BidirectionalUpdateRoutineGenerator extends AbstractMappingRoutineGenerator {
+class BidirectionalUpdateRoutineGenerator extends tools.vitruv.dsls.mappings.generator.routines.AbstractMappingRoutineGenerator {
 
 	new() {
 		super('BidirectionalUpdate')
 	}
 
-	override generateInput() {
-		[ builder |
-			builder.generateMappingParameterInput
-		]
+	override generateInput(InputBuilder builder) {
+		builder.generateMappingParameterInput
 	}
 
 	override generate(MatcherOrActionBuilder builder) {
