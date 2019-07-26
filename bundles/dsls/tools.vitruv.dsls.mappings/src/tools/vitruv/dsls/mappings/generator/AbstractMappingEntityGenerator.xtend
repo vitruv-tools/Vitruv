@@ -26,6 +26,10 @@ abstract class AbstractMappingEntityGenerator {
 		this.reactionParameters = reactionParameters
 		this.correspondingParameters = correspondingParameters
 	}
+	
+	def void initWith(AbstractMappingEntityGenerator entity){
+		init(entity.mappingName, entity.reactionParameters, entity.correspondingParameters)
+	}
 
 	def protected iterateParameters(CorrespondingParameterConsumer consumer) {
 		reactionParameters.forEach [ reactionParameter |

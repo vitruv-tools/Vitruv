@@ -1,26 +1,23 @@
-package tools.vitruv.dsls.mappings.generator.routines
+package tools.vitruv.dsls.mappings.generator.routines.impl
 
 import org.eclipse.xtext.xbase.XbaseFactory
 import tools.vitruv.dsls.mappings.mappingsLanguage.MappingParameter
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.ActionStatementBuilder
+import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.InputBuilder
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.MatcherOrActionBuilder
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.RoutineTypeProvider
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.UndecidedMatcherStatementBuilder
 
 import static extension tools.vitruv.dsls.mappings.generator.utils.XBaseMethodUtils.*
-import org.eclipse.xtext.common.types.TypesFactory
-import org.eclipse.xtext.common.types.JvmTypeReference
 
-class DeletedCheckRoutineGenerator extends AbstractMappingRoutineGenerator {
+class DeletedCheckRoutineGenerator extends tools.vitruv.dsls.mappings.generator.routines.AbstractMappingRoutineGenerator {
 
 	new() {
 		super('ElementDeletedCheck')
 	}
-
-	override generateInput() {
-		[ builder |
-			builder.generateSingleEObjectInput
-		]
+	
+	override generateInput(InputBuilder builder) {
+		builder.generateSingleEObjectInput
 	}
 
 	/**
@@ -49,13 +46,17 @@ class DeletedCheckRoutineGenerator extends AbstractMappingRoutineGenerator {
 
 	private def generateAction(ActionStatementBuilder builder) {
 		builder.call [ provider |
-			XbaseFactory.eINSTANCE.createXBlockExpression => [
-				expressions += provider.initParametersToRetrieve
-				iterateParameters([ reactionParameter, correspondingParameter |
-					expressions += provider.checkRetrievedParameter(reactionParameter, correspondingParameter)
-				])
-				expressions += provider.checkAllParametersExist
-			]
+			provider.generateCheckForDeletion
+		].initCallingContext
+	}
+
+	private def generateCheckForDeletion(RoutineTypeProvider provider) {
+		XbaseFactory.eINSTANCE.createXBlockExpression => [
+			expressions += provider.initParametersToRetrieve
+			iterateParameters([ reactionParameter, correspondingParameter |
+				expressions += provider.checkRetrievedParameter(reactionParameter, correspondingParameter)
+			])
+			expressions += provider.checkAllParametersExist
 		]
 	}
 
@@ -84,9 +85,8 @@ class DeletedCheckRoutineGenerator extends AbstractMappingRoutineGenerator {
 	private def checkAllParametersExist(RoutineTypeProvider provider) {
 		XbaseFactory.eINSTANCE.createXIfExpression => [
 			^if = provider.andChain(correspondingParameters.map [ correspondingParameter |
-				provider.notNull(correspondingParameter.callLocalVariable)
+				provider.notNull(correspondingParameter.referenceLocalVariable)
 			])
-			//then = XbaseFactory.eINSTANCE.createXReturnExpression
 			then = provider.callViaVariables(DeleteMappingRoutine.routine, correspondingParameters)
 		]
 	}

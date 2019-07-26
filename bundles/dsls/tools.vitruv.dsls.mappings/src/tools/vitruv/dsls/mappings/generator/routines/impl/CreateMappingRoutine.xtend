@@ -1,20 +1,19 @@
-package tools.vitruv.dsls.mappings.generator.routines
+package tools.vitruv.dsls.mappings.generator.routines.impl
 
+import org.eclipse.xtext.xbase.XbaseFactory
+import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.ActionStatementBuilder
+import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.InputBuilder
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.MatcherOrActionBuilder
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.UndecidedMatcherStatementBuilder
-import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.ActionStatementBuilder
-import org.eclipse.xtext.xbase.XbaseFactory
 
-class CreateMappingRoutine extends AbstractMappingRoutineGenerator {
+class CreateMappingRoutine extends tools.vitruv.dsls.mappings.generator.routines.AbstractMappingRoutineGenerator {
 
 	new() {
 		super('CreateMapping')
 	}
 
-	override generateInput() {
-		[ builder |
-			builder.generateMappingParameterInput
-		]
+	override generateInput(InputBuilder builder) {
+		builder.generateMappingParameterInput
 	}
 
 	override generate(MatcherOrActionBuilder builder) {

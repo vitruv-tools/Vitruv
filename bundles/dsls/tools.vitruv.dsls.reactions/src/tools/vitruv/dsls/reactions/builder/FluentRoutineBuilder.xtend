@@ -9,12 +9,14 @@ import org.eclipse.xtend.lib.annotations.Accessors
 import org.eclipse.xtext.EcoreUtil2
 import org.eclipse.xtext.common.types.JvmOperation
 import org.eclipse.xtext.common.types.access.IJvmTypeProvider
+import org.eclipse.xtext.xbase.XBlockExpression
 import org.eclipse.xtext.xbase.XExpression
 import org.eclipse.xtext.xbase.XbaseFactory
+import org.eclipse.xtext.xbase.jvmmodel.JvmTypeReferenceBuilder
 import tools.vitruv.dsls.mirbase.mirBase.MirBaseFactory
-import tools.vitruv.dsls.reactions.codegen.ReactionsLanguageConstants
 import tools.vitruv.dsls.reactions.reactionsLanguage.CreateCorrespondence
 import tools.vitruv.dsls.reactions.reactionsLanguage.CreateModelElement
+import tools.vitruv.dsls.reactions.reactionsLanguage.ExecuteActionStatement
 import tools.vitruv.dsls.reactions.reactionsLanguage.ExistingElementReference
 import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsLanguageFactory
 import tools.vitruv.dsls.reactions.reactionsLanguage.RemoveCorrespondence
@@ -27,7 +29,6 @@ import tools.vitruv.dsls.reactions.reactionsLanguage.Taggable
 
 import static com.google.common.base.Preconditions.*
 import static tools.vitruv.dsls.reactions.codegen.ReactionsLanguageConstants.*
-import org.eclipse.xtext.xbase.jvmmodel.JvmTypeReferenceBuilder
 
 class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 
@@ -493,20 +494,22 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 			new CorrespondenceTargetBuilder(builder, statement)
 		}
 
-		def void execute(Function<RoutineTypeProvider, XExpression> expressionBuilder) {
+		def execute(Function<RoutineTypeProvider, XExpression> expressionBuilder) {
 			routine.action.actionStatements += ReactionsLanguageFactory.eINSTANCE.createExecuteActionStatement => [
 				code = XbaseFactory.eINSTANCE.createXBlockExpression.whenJvmTypes [
 					expressions += extractExpressions(expressionBuilder.apply(typeProvider))
 				]
 			]
+			routine.action.actionStatements.last as ExecuteActionStatement
 		}
 
-		def void call(Function<RoutineTypeProvider, XExpression> expressionBuilder) {
+		def call(Function<RoutineTypeProvider, XExpression> expressionBuilder) {
 			routine.action.actionStatements += ReactionsLanguageFactory.eINSTANCE.createRoutineCallStatement => [
 				code = XbaseFactory.eINSTANCE.createXBlockExpression.whenJvmTypes [
 					expressions += extractExpressions(expressionBuilder.apply(typeProvider))
 				]
 			]
+			routine.action.actionStatements.last as RoutineCallStatement
 		}
 
 		def void call(FluentRoutineBuilder routineBuilder, RoutineCallParameter... parameters) {
@@ -725,14 +728,8 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 		throw new IllegalStateException('''Could not find the routine facade method corresponding to the routine “«routine.name»”''')
 	}
 
-	def public getJvmOperationRoutineFacade() {
-		val code = (routine.action.actionStatements.findFirst [
-			it instanceof RoutineCallStatement
-		] as RoutineCallStatement ).code
-		if (code === null) {
-			throw new IllegalStateException('''Could not find a routineCallStatement in routine “«routine.name»”''')
-		}
-		getCorrespondingMethod(code).argument(REACTION_USER_EXECUTION_ROUTINE_CALL_FACADE_PARAMETER_NAME)
+	def public getJvmOperationRoutineFacade(XExpression codeBlock) {
+		getCorrespondingMethod(codeBlock).argument(REACTION_USER_EXECUTION_ROUTINE_CALL_FACADE_PARAMETER_NAME)
 	}
 
 	override protected getCreatedElementName() {
@@ -741,6 +738,10 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 
 	override protected getCreatedElementType() {
 		"routine"
+	}
+
+	def getLastActionStatement() {
+		routine.action.actionStatements.last
 	}
 
 }
