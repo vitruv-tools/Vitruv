@@ -6,10 +6,13 @@ import org.eclipse.xtext.common.types.JvmDeclaredType
 import org.eclipse.xtext.common.types.JvmMember
 import tools.vitruv.dsls.mirbase.mirBase.MetaclassFeatureReference
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.RoutineTypeProvider
+import org.eclipse.emf.common.util.EList
+import java.util.List
 
 class XBaseMethodFinder {
 
 	private final static String PACKAGE_OPTIONAL = 'java.util.Optional'
+	private final static String PACKAGE_LIST = 'java.util.List'	
 	private final static String PACKAGE_OBJECT = 'org.eclipse.xtext.xbase.lib.ObjectExtensions'
 	private final static String PACKAGE_BOOLEAN = 'org.eclipse.xtext.xbase.lib.BooleanExtensions'
 	private final static String PACKAGE_ITERATOR = 'org.eclipse.xtext.xbase.lib.IteratorExtensions'
@@ -29,7 +32,7 @@ class XBaseMethodFinder {
 
 	// should find first add
 	public static def collectionAdd(RoutineTypeProvider typeProvider) {
-		typeProvider.findXbaseMethod(PACKAGE_ITERATOR, 'operator_add')
+		typeProvider.findXbaseMethod(PACKAGE_LIST, 'add')
 	}
 
 	public static def and(RoutineTypeProvider typeProvider) {
@@ -49,9 +52,13 @@ class XBaseMethodFinder {
 	}
 
 	public static def findXbaseMethod(RoutineTypeProvider typeProvider, String pkg, String method) {
-		(typeProvider.findTypeByName(pkg) as JvmDeclaredType).members.findFirst [
+		val member = (typeProvider.findTypeByName(pkg) as JvmDeclaredType).members.findFirst [
 			it.simpleName == method
 		]
+		if (member === null) {
+			throw new MethodNotFoundException('''Could not find method «method» in type «pkg»''')
+		}
+		member
 	}
 
 	public static def findMetaclassMethodGetter(RoutineTypeProvider typeProvider, EClass metaclass,

@@ -3,6 +3,7 @@ package tools.vitruv.dsls.mappings.generator.conditions.impl
 import java.util.List
 import java.util.function.Consumer
 import tools.vitruv.dsls.mappings.generator.ReactionGeneratorContext
+import tools.vitruv.dsls.mappings.generator.conditions.AbstractBidirectionalCondition
 import tools.vitruv.dsls.mappings.generator.integration.AbstractReactionIntegrationGenerator
 import tools.vitruv.dsls.mappings.mappingsLanguage.MappingParameter
 import tools.vitruv.dsls.mappings.mappingsLanguage.RoutineIntegration
@@ -17,7 +18,7 @@ import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.RoutineCallParam
  * instead of generating routine logic this calls a user defined routine (in the mappings file) which emulates the bidirectional logic 
  * 
  */
-class MappingRoutineGenerator implements tools.vitruv.dsls.mappings.generator.conditions.AbstractBidirectionalCondition {
+class BidirectionalMappingRoutineGenerator implements AbstractBidirectionalCondition {
 
 	private RoutineIntegration routine
 	private FluentRoutineBuilder targetRoutineBuilder

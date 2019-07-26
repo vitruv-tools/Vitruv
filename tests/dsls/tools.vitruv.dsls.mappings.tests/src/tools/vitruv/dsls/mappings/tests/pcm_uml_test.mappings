@@ -1,7 +1,7 @@
 import "http://www.eclipse.org/uml2/5.0.0/UML" as uml 
 import "http://palladiosimulator.org/PalladioComponentModel/5.2" as pcm
     	
-mappings: umlXpcmSimple for UML and PCM
+mappings: umlXpcmTest for UML and PCM
  
  mapping SystemXPackage {
 	map(pcm::System system)
@@ -16,9 +16,8 @@ mappings: umlXpcmSimple for UML and PCM
 		//}
 	}
 	//todo: add reaction for IPREClassRemoved, IPREClassNameChanged, IPREConstructorOperationNameChanged
-}		 		
-		 		 
-		 	 	 			 		 		 		 		 			 			 		 		 			 		 			 		 				 		 		 	 			 				 		 		 	 			 			 				 							 							
+}		 			 		 		 
+	 			 		 		 		 		 			 			 		 		 			 		 			 		 				 		 		 	 			 				 		 		 	 			 			 				 							 							
 mapping RepositoryXPackage {
 
    map (pcm::Repository repository)

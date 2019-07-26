@@ -194,8 +194,9 @@ class MappingParameterRetrievalGenerator extends AbstractRoutineContentGenerator
 	private def generateEndOfInCondition(RoutineTypeProvider provider) {
 		if (retrievedParameters.size == parameters.size) {
 			// done
-			XbaseFactory.eINSTANCE.createXReturnExpression => [
-				expression = finishedRetrievingParameters.apply
+			XbaseFactory.eINSTANCE.createXBlockExpression => [
+				expressions += finishedRetrievingParameters.apply
+				expressions += XbaseFactory.eINSTANCE.createXReturnExpression
 			]
 		} else {
 			// retrieve and check the parameters still left
