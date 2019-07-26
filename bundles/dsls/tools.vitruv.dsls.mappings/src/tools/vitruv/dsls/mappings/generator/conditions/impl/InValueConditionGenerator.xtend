@@ -78,26 +78,23 @@ class InValueConditionGenerator extends MultiValueConditionGenerator {
 	}
 
 	override hasCorrespondenceInitialization() {
-		// !negated && featureCondition.isLeftSideMappingParameter
-		false
+		!negated && featureCondition.isLeftSideMappingParameter
 	}
 
 	override generateCorrespondenceInitialization(RoutineTypeProvider typeProvider) {
-//		val feature = featureCondition.feature.feature as EReference
-//		if (feature.many) {
-//			// add to collection feature
-//			return XbaseFactory.eINSTANCE.createXFeatureCall => [
-//				feature = typeProvider.collectionAdd
-//				featureCallArguments += typeProvider.parameterFeatureCall(featureCondition)
-//				featureCallArguments += typeProvider.parameter(childParameter)
-//			]
-//		} else {
-//			// just set 
-//			return XbaseFactory.eINSTANCE.createXAssignment => [
-//				assignable = typeProvider.parameterFeatureCall(featureCondition)
-//				value = typeProvider.parameter(childParameter)
-//			]
-//		}
+		val feature = featureCondition.feature.feature as EReference
+		if (feature.many) {
+			// add to collection feature
+			return XbaseFactory.eINSTANCE.createXMemberFeatureCall => [
+				explicitOperationCall = true
+				feature = typeProvider.collectionAdd
+				memberCallTarget= typeProvider.parameterFeatureCallGetter(featureCondition)
+				memberCallArguments += typeProvider.parameter(childParameter)
+			]
+		} else {
+			// just set 
+			typeProvider.parameterFeatureCallSetter(featureCondition, typeProvider.parameter(childParameter))
+		}
 	}
 
 }

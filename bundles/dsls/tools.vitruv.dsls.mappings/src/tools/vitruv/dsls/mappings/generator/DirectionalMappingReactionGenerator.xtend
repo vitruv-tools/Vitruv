@@ -6,7 +6,6 @@ import org.eclipse.emf.ecore.EClass
 import tools.vitruv.dsls.mappings.generator.conditions.AbstractBidirectionalCondition
 import tools.vitruv.dsls.mappings.generator.conditions.ReactionTypeFactory
 import tools.vitruv.dsls.mappings.generator.conditions.SingleSidedConditionFactory
-import tools.vitruv.dsls.mappings.generator.conditions.impl.MappingRoutineGenerator
 import tools.vitruv.dsls.mappings.generator.reactions.AbstractReactionTriggerGenerator
 import tools.vitruv.dsls.mappings.generator.reactions.AttributeReplacedReactionGenerator
 import tools.vitruv.dsls.mappings.generator.routines.MappingRoutinesGenerator
@@ -19,6 +18,7 @@ import tools.vitruv.dsls.mappings.mappingsLanguage.RoutineIntegration
 import tools.vitruv.dsls.mappings.mappingsLanguage.SingleSidedCondition
 
 import static tools.vitruv.dsls.mappings.generator.utils.ParameterCorrespondenceTagging.*
+import tools.vitruv.dsls.mappings.generator.conditions.impl.BidirectionalMappingRoutineGenerator
 
 class DirectionalMappingReactionGenerator {
 
@@ -66,9 +66,9 @@ class DirectionalMappingReactionGenerator {
 		 * 	val expression = mappingCondition.bidirectionalizableExpression
 		 ]*/
 		// right now: using routines as the implementation
-		val routines = new ArrayList<MappingRoutineGenerator>()
+		val routines = new ArrayList<BidirectionalMappingRoutineGenerator>()
 		mappingRoutines.forEach [
-			val routine = new MappingRoutineGenerator(parameters, it)
+			val routine = new BidirectionalMappingRoutineGenerator(parameters, it)
 			if (routine.validRoutine) {
 				routine.integrateRoutine(context)
 				routines += routine
