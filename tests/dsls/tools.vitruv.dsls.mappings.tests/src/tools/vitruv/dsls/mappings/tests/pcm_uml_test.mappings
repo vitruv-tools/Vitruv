@@ -49,9 +49,9 @@ mapping RepositoryXPackage {
 		
 		
 	  	routine updateRepoPackageName(pcm::Repository repository) { 
-		//	match{
-		//		val repositoryPkg = retrieve asserted uml::Package corresponding to repositoryPkg tagged with "umlXpcm_map_UML_and_PCM_correspondence_Repository:repository_with_Package:repositoryPkg"		
-		//	}	
+			match{
+				val repositoryPkg = retrieve asserted uml::Package corresponding to repositoryPkg tagged with "umlXpcm_map_UML_and_PCM_correspondence_Repository:repository_with_Package:repositoryPkg"		
+			}	
 			action {
 				execute {
 					

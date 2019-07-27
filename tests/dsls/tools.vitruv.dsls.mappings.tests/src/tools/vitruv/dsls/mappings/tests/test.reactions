@@ -1,0 +1,24 @@
+
+import "http://www.eclipse.org/uml2/5.0.0/UML" as uml 
+import "http://palladiosimulator.org/PalladioComponentModel/5.2" as pcm
+
+reactions: test
+in reaction to changes in PCM
+execute actions in UML
+
+reaction RepositoryCreated {
+	after element pcm::Repository inserted as root
+	call testRoutine(newValue)
+}
+
+
+routine testRoutine(pcm::Repository pcmRepo) {
+	match {
+		val umlRepositoryPkg = retrieve optional uml::Package corresponding to pcmRepo 
+	}
+	action{
+		call {
+			if(!umlRepositoryPkg.present) return
+		}
+	}
+}

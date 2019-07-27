@@ -42,17 +42,4 @@ class MappingsLanguageRuntimeModule extends AbstractMappingsLanguageRuntimeModul
 	public override Class<? extends ILinkingService> bindILinkingService() {
 		return ReactionsLinkingService;
 	}
-	/* 
-	def Class<? extends IReactionsGenerator> bindIReactionsGenerator() {
-		ExternalReactionsGenerator
-	}*/
-	
-	/* 
-	override configure(Binder binder) {
-		super.configure(binder);
-		binder.bind(IGenerator2).to(bindIGenerator2())
-		//binder.bind(IReactionsGenerator).to(bindIReactionsGenerator())
-		
-		binder.requestStaticInjection(ExternalReactionsGenerator)
-	}*/
 }
