@@ -66,15 +66,15 @@ class BidirectionalMappingRoutineGenerator implements AbstractBidirectionalCondi
 
 	public def integrateRoutine(ReactionGeneratorContext context) {
 		var generatedRoutine = AbstractReactionIntegrationGenerator.generateRoutine(routine)
-		targetRoutineBuilder = context.create.from(generatedRoutine, generateRoutineInput)
+		targetRoutineBuilder = context.create.from(generatedRoutine)
 		context.getSegmentBuilder += targetRoutineBuilder
 	}
 
-	private def generateRoutineInput() {
-		[ InputBuilder builder |
-			routine.input.modelInputElements.forEach [
-				builder.model(it.metaclass, it.name)
-			]
-		] as Consumer<InputBuilder>
-	}
+//	private def generateRoutineInput() {
+//		[ InputBuilder builder |
+//			routine.input.modelInputElements.forEach [
+//				builder.model(it.metaclass, it.name)
+//			]
+//		] as Consumer<InputBuilder>
+//	}
 }

@@ -42,6 +42,7 @@ class ReactionsLanguageScopeProviderDelegate extends MirBaseScopeProviderDelegat
 		// context differs during content assist: 
 		// * if no input is provided yet, the container is the context as the element is not known yet
 		// * if some input is already provided, the element is the context
+		println('''reaction: get scope for «context»  reference «reference.name»''')	
 		if (reference.equals(METACLASS_FEATURE_REFERENCE__FEATURE))
 			return createEStructuralFeatureScope(context as MetaclassFeatureReference)
 		else if (reference.equals(METACLASS_REFERENCE__METACLASS)) {
@@ -90,6 +91,7 @@ class ReactionsLanguageScopeProviderDelegate extends MirBaseScopeProviderDelegat
 				}
 			}
 		}
+		println('ask mirbase scoper')
 		super.getScope(context, reference)
 	}
 

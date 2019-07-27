@@ -25,6 +25,7 @@ import tools.vitruv.dsls.mirbase.mirBase.NamedMetaclassReference
 import tools.vitruv.dsls.reactions.scoping.ReactionsLanguageScopeProviderDelegate
 
 import static tools.vitruv.dsls.mirbase.mirBase.MirBasePackage.Literals.*
+import tools.vitruv.dsls.mappings.mappingsLanguage.MappingParameter
 
 class MappingsLanguageScopeProviderDelegate extends ReactionsLanguageScopeProviderDelegate {
 
@@ -34,11 +35,11 @@ class MappingsLanguageScopeProviderDelegate extends ReactionsLanguageScopeProvid
 		// * if no input is provided yet, the container is the context as the element is not known yet
 		// * if some input is already provided, the element is the context
 		val contextContainer = context.eContainer();
+		println('''get scope for «context» reference «reference.name»''')
 		if (reference.equals(METACLASS_FEATURE_REFERENCE__FEATURE))
 			return createEStructuralFeatureScope(context as MetaclassFeatureReference)
-		else if (reference.equals(Literals.FEATURE_CONDITION_PARAMETER__PARAMETER)
-			 ||			reference.equals(Literals.MAPPING_PARAMETER_REFERENCE__PARAMETER)
-			) {
+		else if (reference.equals(Literals.FEATURE_CONDITION_PARAMETER__PARAMETER) ||
+			reference.equals(Literals.MAPPING_PARAMETER_REFERENCE__PARAMETER)) {
 			val enforcableCondition = contextContainer.eContainer as EnforceableCondition;
 			val singleSidedCondition = enforcableCondition.eContainer as SingleSidedCondition;
 			val mapping = singleSidedCondition.eContainer as Mapping;
@@ -77,8 +78,11 @@ class MappingsLanguageScopeProviderDelegate extends ReactionsLanguageScopeProvid
 			// both sides 
 				val mapping = contextContainer.eContainer as Mapping;
 				return createMappingMetaclassesScope(mapping, true, true);
+			} else if (contextContainer instanceof MappingParameter) {
+				return createQualifiedEClassScopeWithoutAbstract(contextContainer.value.metamodel);
 			}
 		}
+		println('''ask reaction scoper''')
 		super.getScope(context, reference)
 	}
 

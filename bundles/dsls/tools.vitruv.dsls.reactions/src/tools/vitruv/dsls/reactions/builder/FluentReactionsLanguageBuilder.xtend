@@ -71,11 +71,11 @@ class FluentReactionsLanguageBuilder {
 
 		private def init() {
 			this.readyToBeAttached = true
-			val contents = EcoreUtil.getAllContents(#[routine])
-			contents.filter[it instanceof MetaclassReference].forEach [
-				val ref = it as MetaclassReference
-				ref.reference(ref.metaclass)
-			]
+//			val contents = EcoreUtil.getAllContents(#[routine])
+//			contents.filter[it instanceof MetaclassReference].forEach [
+//				val ref = it as MetaclassReference
+//				ref.reference(ref.metaclass)
+//			]
 		}
 	}
 
