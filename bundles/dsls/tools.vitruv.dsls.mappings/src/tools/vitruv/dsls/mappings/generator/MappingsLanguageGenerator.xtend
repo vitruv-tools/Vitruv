@@ -19,14 +19,13 @@ import tools.vitruv.dsls.reactions.api.generator.IReactionsGenerator
 import tools.vitruv.dsls.reactions.builder.FluentReactionsLanguageBuilder
 import tools.vitruv.dsls.mappings.generator.utils.MappingParameterScopeFinder
 
-//import tools.vitruv.dsls.reactions.builder.FluentReactionsLanguageBuilder
 class MappingsLanguageGenerator implements IGenerator2 {
 	@Inject FluentReactionsLanguageBuilder create
 	@Inject Provider<IReactionsGenerator> reactionsGeneratorProvider
 	@Inject Provider<XtextResourceSet> resourceSetProvider
 	@Inject IContainer.Manager containerManager;
 	@Inject ResourceDescriptionsProvider resourceDescriptionsProivder
-	
+
 	IReactionIntegrationGenerator reactionIntegrationGenerator
 
 	override afterGenerate(Resource input, IFileSystemAccess2 fsa, IGeneratorContext context) {
@@ -53,36 +52,26 @@ class MappingsLanguageGenerator implements IGenerator2 {
 				val r2lContext = generateReactions(mappingsPackage, mappingsFile, segment, reactionsGenerator, false);
 				reactionIntegrationGenerator.init(l2rContext, r2lContext)
 				checkIntegrations(segment)
-			//	var routines = r2lContext.file.reactionsFile.reactionsSegments.get(0).routines
-//				val matchBeforeIntegr = routines.get(0).matcher.matcherStatements.get(0)
-//				val matchBeforeFluent = routines.get(2).matcher.matcherStatements.get(0)								
 				reactionsGenerator.attachReactionsFile(l2rContext)
 				reactionsGenerator.attachReactionsFile(r2lContext)
-			 //   val routines = r2lContext.file.reactionsFile.reactionsSegments.get(0).routines
-			//	val matchAfterIntegr = routines.get(0).matcher.matcherStatements.get(0)
-			//	val matchAfterFluent = routines.get(2).matcher.matcherStatements.get(0)				
-			//	print('')
 			}
 		}
 		reactionIntegrationGenerator.generate(fsa, reactionsGenerator)
 		reactionsGenerator.generate(fsa)
 		reactionsGenerator.writeReactions(fsa)
 	}
-	
-	private def attachReactionsFile(IReactionsGenerator generator, ReactionGeneratorContext context){
+
+	private def attachReactionsFile(IReactionsGenerator generator, MappingGeneratorContext context) {
 		val file = context.file
-		generator.addReactionsFile(file)			
+		generator.addReactionsFile(file)
 	}
 
 	private def generateReactions(String mappingsPackage, MappingsFile mappingsFile, MappingsSegment segment,
 		IReactionsGenerator reactionsGenerator, boolean l2r) {
 		val basePackageForSegment = mappingsPackage + "." + segment.name
-		val reactionsFileGenerator = new MappingsReactionsFileGenerator(basePackageForSegment, segment, l2r,
-			reactionsGenerator, create, mappingsFile);
-		var reactionsContext = reactionsFileGenerator.createAndInitializeReactionsFile()
-		val generator = new MappingReactionsGenerator(basePackageForSegment, segment, l2r, reactionsGenerator, create)
-		generator.generateReactionsAndRoutines(reactionsContext)
-		reactionsContext
+		val reactionsFileGenerator = new MappingsReactionsFileGenerator(basePackageForSegment, segment, l2r, create,
+			mappingsFile)
+		reactionsFileGenerator.generate
 	}
 
 	private def checkIntegrations(MappingsSegment segment) {

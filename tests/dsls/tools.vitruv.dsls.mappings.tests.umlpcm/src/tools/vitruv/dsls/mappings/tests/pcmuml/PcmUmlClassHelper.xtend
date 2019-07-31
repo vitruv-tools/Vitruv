@@ -44,6 +44,12 @@ class PcmUmlClassHelper {
 		if(correspondence === null) return null
 		return getModifiableInstance(getCorr(source, typeFilter, tag))
 	}
+	
+	def public printCorrModel(){
+		correspondenceModel.allCorrespondences.forEach[
+			println(it)
+		]
+	}
 
 
 	 def public static createMappingParameter(EClass eclass, String name) {

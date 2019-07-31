@@ -1,12 +1,12 @@
 package tools.vitruv.dsls.mappings.generator.reactions
 
 import org.eclipse.emf.ecore.EReference
-import tools.vitruv.dsls.mappings.generator.ReactionGeneratorContext
 import tools.vitruv.dsls.mappings.mappingsLanguage.MappingParameter
 import tools.vitruv.dsls.mirbase.mirBase.MetaclassFeatureReference
 import tools.vitruv.dsls.mirbase.mirBase.MetaclassReference
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.ActionStatementBuilder
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.UndecidedMatcherStatementBuilder
+import tools.vitruv.dsls.mappings.generator.MappingGeneratorContext
 
 class ElementReplacedReactionGenerator extends AbstractContainingReactionTypeGenerator {
 
@@ -23,7 +23,7 @@ class ElementReplacedReactionGenerator extends AbstractContainingReactionTypeGen
 		this.targetElement = targetElement
 	}
 
-	override generateTrigger(ReactionGeneratorContext context) {
+	override generateTrigger(MappingGeneratorContext context) {
 		if (targetElement !== null) {
 			this.usesNewValue = true
 			this.reactionName = '''«targetElement.parameterName»ReplacedAt«reference.parameterName»'''

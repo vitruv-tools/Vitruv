@@ -49,8 +49,9 @@ Import-Package: org.hamcrest.core,
  org.junit.runners;version="4.5.0",
  org.junit.runners.model;version="4.5.0"
 Bundle-ActivationPolicy: lazy
-Export-Package: mir.reactions.umlXpcmTest_L2RSegment,
- mir.reactions.umlXpcmTest_R2LSegment,
- mir.routines.umlXpcmTest_L2RSegment,
- mir.routines.umlXpcmTest_R2LSegment,
+Export-Package: 
+ mir.reactions.umlXpcmTest_L2R,
+ mir.reactions.umlXpcmTest_R2L,
+ mir.routines.umlXpcmTest_L2R,
+ mir.routines.umlXpcmTest_R2L,
  tools.vitruv.dsls.mappings.tests;x-internal=true

@@ -3,10 +3,10 @@ package tools.vitruv.dsls.mappings.generator.routines
 import java.util.HashMap
 import java.util.List
 import java.util.Map
-import tools.vitruv.dsls.mappings.generator.ReactionGeneratorContext
 import tools.vitruv.dsls.mappings.generator.conditions.AbstractBidirectionalCondition
 import tools.vitruv.dsls.mappings.generator.conditions.AbstractSingleSidedCondition
 import tools.vitruv.dsls.mappings.mappingsLanguage.MappingParameter
+import tools.vitruv.dsls.mappings.generator.MappingGeneratorContext
 
 class MappingRoutineStorage {
 
@@ -14,7 +14,7 @@ class MappingRoutineStorage {
 	private List<MappingParameter> fromParameters
 	private List<MappingParameter> toParameters
 	private String mappingName
-	private ReactionGeneratorContext context
+	private MappingGeneratorContext context
 	private List<AbstractSingleSidedCondition> singleSidedConditions
 	private List<AbstractBidirectionalCondition> bidirectionalConditions
 	private List<AbstractSingleSidedCondition> correspondingSingleSidedConditions
@@ -24,7 +24,7 @@ class MappingRoutineStorage {
 		this.toParameters = toParameters
 	}
 
-	public def init(String mappingName, ReactionGeneratorContext context,
+	public def init(String mappingName, MappingGeneratorContext context,
 		List<AbstractSingleSidedCondition> singleSidedConditions,
 		List<AbstractSingleSidedCondition> correspondingSingleSidedConditions,
 		List<AbstractBidirectionalCondition> bidirectionalConditions) {

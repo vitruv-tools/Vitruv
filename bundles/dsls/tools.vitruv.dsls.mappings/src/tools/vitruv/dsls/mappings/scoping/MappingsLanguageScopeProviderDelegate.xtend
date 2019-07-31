@@ -35,7 +35,6 @@ class MappingsLanguageScopeProviderDelegate extends ReactionsLanguageScopeProvid
 		// * if no input is provided yet, the container is the context as the element is not known yet
 		// * if some input is already provided, the element is the context
 		val contextContainer = context.eContainer();
-		println('''get scope for «context» reference «reference.name»''')
 		if (reference.equals(METACLASS_FEATURE_REFERENCE__FEATURE))
 			return createEStructuralFeatureScope(context as MetaclassFeatureReference)
 		else if (reference.equals(Literals.FEATURE_CONDITION_PARAMETER__PARAMETER) ||
@@ -82,7 +81,6 @@ class MappingsLanguageScopeProviderDelegate extends ReactionsLanguageScopeProvid
 				return createQualifiedEClassScopeWithoutAbstract(contextContainer.value.metamodel);
 			}
 		}
-		println('''ask reaction scoper''')
 		super.getScope(context, reference)
 	}
 

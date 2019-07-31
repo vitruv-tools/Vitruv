@@ -1,14 +1,14 @@
 package tools.vitruv.dsls.mappings.generator.utils
 
-import tools.vitruv.dsls.mappings.generator.ReactionGeneratorContext
 import tools.vitruv.dsls.mappings.mappingsLanguage.MappingParameter
 import tools.vitruv.dsls.mirbase.mirBase.NamedMetaclassReference
+import tools.vitruv.dsls.mappings.generator.MappingGeneratorContext
 
 class ParameterCorrespondenceTagging {
 
-	private static ReactionGeneratorContext context
+	private static MappingGeneratorContext context
 
-	public static def setContext(ReactionGeneratorContext context) {
+	public static def setContext(MappingGeneratorContext context) {
 		ParameterCorrespondenceTagging.context = context
 	}
 
