@@ -49,6 +49,15 @@ class MappingsLanguageScopeProviderDelegate extends ReactionsLanguageScopeProvid
 				// right side			
 				return createMappingParameterMetaclassesScope(mapping, false, true);
 			}
+		} else if (reference.equals(Literals.EXISTING_MAPPING_CORRESPONDENCE__CORRESPONDENCE)) {
+			// mapping parameters of opposite side
+			val mapping = contextContainer as Mapping
+			if (mapping.leftParameters.contains(context)) {
+				// is left side, so right parameters
+				return createMappingParameterMetaclassesScope(mapping, false, true);
+			} else {
+				return createMappingParameterMetaclassesScope(mapping, true, false);
+			}
 		} else if (reference.equals(Literals.FEATURE_CONDITION_PARAMETER__FEATURE)) {
 			val featureConditionParameter = context as FeatureConditionParameter
 			return createEStructuralFeatureScope(featureConditionParameter.parameter.value)

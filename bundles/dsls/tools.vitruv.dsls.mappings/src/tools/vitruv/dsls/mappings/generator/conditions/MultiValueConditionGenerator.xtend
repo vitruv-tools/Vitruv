@@ -35,10 +35,6 @@ abstract class MultiValueConditionGenerator extends AbstractSingleSidedCondition
 		condition.negated !== null
 	}
 
-	override feasibleForGenerator(AbstractReactionTriggerGenerator generator) {
-		rightSide.metaclass == generator.metaclass
-	}
-
 	override protected constructReactionTriggers(List<AbstractReactionTriggerGenerator> triggers) {
 			if (rightSide.feature instanceof EAttribute) {
 		 		triggers.add(new AttributeReplacedReactionGenerator(rightSide))

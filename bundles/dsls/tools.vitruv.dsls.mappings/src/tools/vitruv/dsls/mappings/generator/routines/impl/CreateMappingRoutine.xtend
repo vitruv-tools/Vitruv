@@ -1,12 +1,15 @@
 package tools.vitruv.dsls.mappings.generator.routines.impl
 
 import org.eclipse.xtext.xbase.XbaseFactory
+import tools.vitruv.dsls.mappings.generator.routines.AbstractMappingRoutineGenerator
+import tools.vitruv.dsls.mappings.mappingsLanguage.StandardMappingParameter
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.ActionStatementBuilder
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.InputBuilder
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.MatcherOrActionBuilder
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.UndecidedMatcherStatementBuilder
+import tools.vitruv.dsls.mappings.mappingsLanguage.ExistingMappingCorrespondence
 
-class CreateMappingRoutine extends tools.vitruv.dsls.mappings.generator.routines.AbstractMappingRoutineGenerator {
+class CreateMappingRoutine extends AbstractMappingRoutineGenerator {
 
 	new() {
 		super('CreateMapping')
@@ -32,6 +35,17 @@ class CreateMappingRoutine extends tools.vitruv.dsls.mappings.generator.routines
 			builder.requireAbsenceOf(correspondingParameter.value.metaclass).correspondingTo(
 				taggingParameter.parameterName).taggedWith(taggingParameter, correspondingParameter)
 		]
+		// retrieve all existing mapping parameters
+		reactionParameters.filter[it instanceof ExistingMappingCorrespondence].forEach [
+			val reactionParameter = it as ExistingMappingCorrespondence
+			val correspondingParameter = reactionParameter.correspondence
+			val tag = reactionParameter.tag
+			val retrieval = builder.vall(correspondingParameter.parameterName).retrieve(
+				correspondingParameter.value.metaclass).correspondingTo(reactionParameter.parameterName)
+			if (tag !== null) {
+				retrieval.taggedWith(tag)
+			}
+		]
 	}
 
 	private def generateAction(ActionStatementBuilder builder) {
@@ -46,7 +60,8 @@ class CreateMappingRoutine extends tools.vitruv.dsls.mappings.generator.routines
 	}
 
 	private def createCorrespondingElements(ActionStatementBuilder builder) {
-		correspondingParameters.forEach [ correspondingParameter |
+		//only create actual parameters
+		correspondingParameters.filter[it instanceof StandardMappingParameter].forEach [ correspondingParameter |
 			val newElement = correspondingParameter.parameterName
 			builder.vall(newElement).create(correspondingParameter.value.metaclass)
 		]

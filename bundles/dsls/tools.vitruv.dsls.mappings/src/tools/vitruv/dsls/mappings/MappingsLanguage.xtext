@@ -50,7 +50,20 @@ Mapping:
 	'}';
 
 MappingParameter:
-	value=ClassicallyNamedModelElement;
+	StandardMappingParameter | ExistingMappingCorrespondence
+;
+
+StandardMappingParameter:
+	value=ClassicallyNamedModelElement
+;
+
+ExistingMappingCorrespondence:
+	'mapped' 
+	value=ClassicallyNamedModelElement	
+	'with'
+	correspondence = [MappingParameter]
+	 ('tagged' tag=STRING)?
+;
 
 ObserveAttributes:
 	'observe' 'attributes' '{' (attributes+=MetaclassEAttributeReference)+ '}';
@@ -85,7 +98,7 @@ SingleSidedCondition: // returns Condition:
 
 /* BEGIN ENFORCEABLE CONDITIONS */
 EnforceableCondition: //  returns SingleSidedCondition:
-	condition=(FeatureCondition |
+	condition=(FeatureCondition  |
 	ResourceCondition);
 
 FeatureCondition: //  returns EnforceableCondition:
