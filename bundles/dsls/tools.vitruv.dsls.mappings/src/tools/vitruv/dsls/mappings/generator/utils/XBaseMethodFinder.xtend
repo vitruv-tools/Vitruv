@@ -12,7 +12,7 @@ import java.util.List
 class XBaseMethodFinder {
 
 	private final static String PACKAGE_OPTIONAL = 'java.util.Optional'
-	private final static String PACKAGE_LIST = 'java.util.List'	
+	private final static String PACKAGE_LIST = 'java.util.List'
 	private final static String PACKAGE_OBJECT = 'org.eclipse.xtext.xbase.lib.ObjectExtensions'
 	private final static String PACKAGE_BOOLEAN = 'org.eclipse.xtext.xbase.lib.BooleanExtensions'
 	private final static String PACKAGE_ITERATOR = 'org.eclipse.xtext.xbase.lib.IteratorExtensions'
@@ -63,14 +63,26 @@ class XBaseMethodFinder {
 
 	public static def findMetaclassMethodGetter(RoutineTypeProvider typeProvider, EClass metaclass,
 		EStructuralFeature feature) throws MethodNotFoundException {
-		val name = '''get«feature.name.toFirstUpper»«IF feature.many»s«ENDIF»'''
-		typeProvider.findMetaclassMethod(metaclass, name)
+		val name = '''get«feature.name.toFirstUpper»'''
+		typeProvider.findMetaclassMethodCandidate(metaclass, name, feature.many)
 	}
 
 	public static def findMetaclassMethodSetter(RoutineTypeProvider typeProvider, EClass metaclass,
 		EStructuralFeature feature) throws MethodNotFoundException {
-		val name = '''set«feature.name.toFirstUpper»«IF feature.many»s«ENDIF»'''
-		typeProvider.findMetaclassMethod(metaclass, name)
+		val name = '''set«feature.name.toFirstUpper»'''
+		typeProvider.findMetaclassMethodCandidate(metaclass, name, feature.many)
+	}
+
+	private static def findMetaclassMethodCandidate(RoutineTypeProvider typeProvider, EClass metaclass, String method,
+		boolean many) {
+		if (many) {
+			try {
+				return typeProvider.findMetaclassMethod(metaclass, method + "s")
+			} catch (MethodNotFoundException e) {
+				//some many-features dont have the "s", so just continue trying to retrieve 
+			}
+		}
+		typeProvider.findMetaclassMethod(metaclass, method)
 	}
 
 	public static def findMetaclassMethodGetter(RoutineTypeProvider typeProvider,

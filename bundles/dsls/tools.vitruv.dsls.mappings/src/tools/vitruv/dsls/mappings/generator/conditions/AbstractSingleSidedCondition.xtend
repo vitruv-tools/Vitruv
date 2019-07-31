@@ -20,8 +20,6 @@ abstract class AbstractSingleSidedCondition<T extends EObject> {
 		this.condition = condition
 	}
 
-	abstract def boolean feasibleForGenerator(AbstractReactionTriggerGenerator generator)
-
 	abstract protected def void constructReactionTriggers(List<AbstractReactionTriggerGenerator> triggers)
 
 	def List<AbstractReactionTriggerGenerator> constructReactionTriggers() {

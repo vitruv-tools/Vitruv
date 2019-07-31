@@ -12,6 +12,7 @@ import static extension tools.vitruv.dsls.mappings.generator.conditions.FeatureC
 import static extension tools.vitruv.dsls.mappings.generator.utils.XBaseMethodFinder.*
 import org.eclipse.xtext.xbase.XExpression
 import org.eclipse.emf.ecore.EReference
+import tools.vitruv.dsls.mappings.mappingsLanguage.ExistingMappingCorrespondence
 
 class EqualsValueConditionGenerator extends MultiValueConditionGenerator {
 
@@ -38,7 +39,7 @@ class EqualsValueConditionGenerator extends MultiValueConditionGenerator {
 	override hasCorrespondenceInitialization() {
 		val feature = featureCondition.feature.feature
 		if (feature instanceof EReference) {
-			//references have to be set with In-Relations not Equals
+			// references have to be set with In-Relations not Equals
 			return false
 		}
 		!negated && feature.changeable

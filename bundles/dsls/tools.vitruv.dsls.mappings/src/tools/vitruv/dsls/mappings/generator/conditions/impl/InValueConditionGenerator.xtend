@@ -5,18 +5,18 @@ import org.eclipse.emf.ecore.EReference
 import org.eclipse.xtext.xbase.XExpression
 import org.eclipse.xtext.xbase.XbaseFactory
 import tools.vitruv.dsls.mappings.generator.conditions.MultiValueConditionGenerator
+import tools.vitruv.dsls.mappings.generator.reactions.AbstractReactionTriggerGenerator
 import tools.vitruv.dsls.mappings.generator.reactions.DeletedReactionGenerator
 import tools.vitruv.dsls.mappings.generator.reactions.ElementReplacedReactionGenerator
 import tools.vitruv.dsls.mappings.generator.reactions.InsertedReactionGenerator
+import tools.vitruv.dsls.mappings.generator.reactions.RemovedReactionGenerator
 import tools.vitruv.dsls.mappings.mappingsLanguage.MappingParameter
 import tools.vitruv.dsls.mappings.mappingsLanguage.MultiValueCondition
 import tools.vitruv.dsls.mappings.mappingsLanguage.MultiValueConditionOperator
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.RoutineTypeProvider
-import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.UndecidedMatcherStatementBuilder
 
 import static extension tools.vitruv.dsls.mappings.generator.conditions.FeatureConditionGeneratorUtils.*
 import static extension tools.vitruv.dsls.mappings.generator.utils.XBaseMethodFinder.*
-import tools.vitruv.dsls.mappings.generator.reactions.AbstractReactionTriggerGenerator
 
 class InValueConditionGenerator extends MultiValueConditionGenerator {
 
@@ -34,14 +34,6 @@ class InValueConditionGenerator extends MultiValueConditionGenerator {
 
 	public def getInFeature() {
 		featureCondition.feature.feature
-	}
-
-	override feasibleForGenerator(AbstractReactionTriggerGenerator generator) {
-		if (!generator.usesNewValue) {
-			// In-Statements only work with reactions that produce two values
-			return false
-		}
-		super.feasibleForGenerator(generator)
 	}
 
 	override feasibleForParameter(MappingParameter parameter) {
@@ -62,7 +54,7 @@ class InValueConditionGenerator extends MultiValueConditionGenerator {
 				if (condition.negated === null) {
 					// only create reaction triggers for not negated in conditions
 					triggers.add(new InsertedReactionGenerator(leftReference, rightSide))
-				// triggers.add(new RemovedReactionGenerator(leftSide, rightSide))
+				 triggers.add(new RemovedReactionGenerator(leftReference, rightSide))
 				}
 				triggers.add(new DeletedReactionGenerator(leftReference))
 			} else {
@@ -78,7 +70,7 @@ class InValueConditionGenerator extends MultiValueConditionGenerator {
 	}
 
 	override hasCorrespondenceInitialization() {
-		!negated && featureCondition.isLeftSideMappingParameter
+		featureCondition.isLeftSideMappingParameter && !negated
 	}
 
 	override generateCorrespondenceInitialization(RoutineTypeProvider typeProvider) {
@@ -88,7 +80,7 @@ class InValueConditionGenerator extends MultiValueConditionGenerator {
 			return XbaseFactory.eINSTANCE.createXMemberFeatureCall => [
 				explicitOperationCall = true
 				feature = typeProvider.collectionAdd
-				memberCallTarget= typeProvider.parameterFeatureCallGetter(featureCondition)
+				memberCallTarget = typeProvider.parameterFeatureCallGetter(featureCondition)
 				memberCallArguments += typeProvider.parameter(childParameter)
 			]
 		} else {

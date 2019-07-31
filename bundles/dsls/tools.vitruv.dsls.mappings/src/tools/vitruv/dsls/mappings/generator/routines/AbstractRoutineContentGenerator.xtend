@@ -83,5 +83,4 @@ class AbstractRoutineContentGenerator extends AbstractMappingEntityGenerator {
 	protected def getFeatureConditions(List<AbstractSingleSidedCondition> conditions) {
 		conditions.filter[it instanceof FeatureConditionGenerator].map[it as FeatureConditionGenerator]
 	}
-
 }
