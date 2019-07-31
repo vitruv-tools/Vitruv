@@ -8,19 +8,35 @@ mapping RepositoryXPackage {
    map (pcm::Repository repository)
    
    and (uml::Package rootPkg)
-      
-      
-   such that {
-   		routine testRoutine(pcm::Repository pcmRepo) {
-			match {
-				val umlRepositoryPkg = retrieve optional uml::Package corresponding to pcmRepo 
-			}
-			action{
-				call {
-				if(!umlRepositoryPkg.present) return
-				}
-			}
-		}
-   }
-
+  
+//   such that {
+//   		routine testRoutine(pcm::Repository pcmRepo) {
+//			match {
+//				val umlRepositoryPkg = retrieve optional uml::Package corresponding to pcmRepo 
+//			}
+//			action{
+//				call {
+//				if(!umlRepositoryPkg.present) return
+//				}
+//			}
+//		}
+//   }
+   
+   
+//   left reaction RepositoryCreated {
+//	after element pcm::Repository inserted as root
+//	call {}
+//	//call testRoutine2(newValue)
+//	}
+//
+//	left routine testRoutine2(pcm::Repository pcmRepo) {
+////	match {
+////		val umlRepositoryPkg = retrieve optional uml::Package corresponding to pcmRepo 
+////	}
+//	action{
+//		call {
+//		//	if(!umlRepositoryPkg.present) return
+//		}
+//	}
+//	}
  }

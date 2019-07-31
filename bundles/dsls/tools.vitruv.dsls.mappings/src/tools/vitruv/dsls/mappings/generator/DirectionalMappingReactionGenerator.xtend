@@ -32,7 +32,7 @@ class DirectionalMappingReactionGenerator {
 		this.mapping = mapping
 	}
 
-	def generate(ReactionGeneratorContext context, List<SingleSidedCondition> fromConditions,
+	def generate(MappingGeneratorContext context, List<SingleSidedCondition> fromConditions,
 		List<SingleSidedCondition> toConditions, List<BidirectionalizableCondition> mappingConditions,
 		List<RoutineIntegration> mappingRoutines, ObserveAttributes mappingAttributes) {
 		ParameterCorrespondenceTagging.context = context
@@ -57,7 +57,7 @@ class DirectionalMappingReactionGenerator {
 	}
 
 	private def List<AbstractBidirectionalCondition> generateBidirectionalMappingConditions(
-		ReactionGeneratorContext context, List<BidirectionalizableCondition> mappingConditions,
+		MappingGeneratorContext context, List<BidirectionalizableCondition> mappingConditions,
 		List<RoutineIntegration> mappingRoutines, List<MappingParameter> parameters) {
 		val conditions = new ArrayList<AbstractBidirectionalCondition>()
 		/*  in the future: construct from actual bidirectional conditions
@@ -90,7 +90,6 @@ class DirectionalMappingReactionGenerator {
 					generators.add(generator)
 				}
 			]
-
 		}
 	}
 

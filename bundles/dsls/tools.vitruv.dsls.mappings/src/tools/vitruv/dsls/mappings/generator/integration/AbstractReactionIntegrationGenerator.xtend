@@ -3,7 +3,6 @@ package tools.vitruv.dsls.mappings.generator.integration
 import java.util.List
 import java.util.function.Consumer
 import org.eclipse.emf.ecore.util.EcoreUtil
-import tools.vitruv.dsls.mappings.generator.ReactionGeneratorContext
 import tools.vitruv.dsls.mappings.mappingsLanguage.Mapping
 import tools.vitruv.dsls.mappings.mappingsLanguage.MappingParameter
 import tools.vitruv.dsls.mappings.mappingsLanguage.ReactionIntegration
@@ -11,15 +10,16 @@ import tools.vitruv.dsls.mappings.mappingsLanguage.ReactionOrientation
 import tools.vitruv.dsls.mappings.mappingsLanguage.RoutineIntegration
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.InputBuilder
 import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsLanguageFactory
+import tools.vitruv.dsls.mappings.generator.MappingGeneratorContext
 
 abstract class AbstractReactionIntegrationGenerator implements IReactionIntegrationGenerator {
 
 	protected IReactionIntegrateable l2rIntegration
 	protected IReactionIntegrateable r2lIntegration
-	protected ReactionGeneratorContext l2rContext
-	protected ReactionGeneratorContext r2lContext
+	protected MappingGeneratorContext l2rContext
+	protected MappingGeneratorContext r2lContext
 
-	override init(ReactionGeneratorContext l2rContext, ReactionGeneratorContext r2lContext) {
+	override init(MappingGeneratorContext l2rContext, MappingGeneratorContext r2lContext) {
 		this.l2rContext = l2rContext
 		this.r2lContext = r2lContext
 		init()

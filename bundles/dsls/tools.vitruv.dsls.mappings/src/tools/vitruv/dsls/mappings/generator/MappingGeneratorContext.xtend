@@ -1,19 +1,16 @@
 package tools.vitruv.dsls.mappings.generator
 
-import java.util.ArrayList
-import java.util.List
 import org.eclipse.xtend.lib.annotations.Accessors
 import tools.vitruv.dsls.mappings.generator.integration.IReactionIntegrateable
 import tools.vitruv.dsls.mappings.mappingsLanguage.MappingsFile
 import tools.vitruv.dsls.mappings.mappingsLanguage.MappingsSegment
-import tools.vitruv.dsls.mappings.mappingsLanguage.RoutineIntegration
 import tools.vitruv.dsls.reactions.builder.FluentReactionsFileBuilder
 import tools.vitruv.dsls.reactions.builder.FluentReactionsLanguageBuilder
 import tools.vitruv.dsls.reactions.builder.FluentReactionsSegmentBuilder
 import tools.vitruv.dsls.reactions.reactionsLanguage.Reaction
 import tools.vitruv.dsls.reactions.reactionsLanguage.Routine
 
-class ReactionGeneratorContext implements IReactionIntegrateable {
+class MappingGeneratorContext implements IReactionIntegrateable {
 
 	@Accessors(PUBLIC_GETTER, PUBLIC_SETTER)
 	var FluentReactionsFileBuilder file

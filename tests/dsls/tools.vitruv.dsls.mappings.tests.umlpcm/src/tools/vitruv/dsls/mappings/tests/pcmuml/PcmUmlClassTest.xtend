@@ -1,7 +1,7 @@
 package tools.vitruv.dsls.mappings.tests.pcmuml
 
-import mir.reactions.umlXpcmTest_L2RSegment.UmlXpcmTest_L2RSegmentChangePropagationSpecification
-import mir.reactions.umlXpcmTest_R2LSegment.UmlXpcmTest_R2LSegmentChangePropagationSpecification
+import mir.reactions.umlXpcmTest_L2R.UmlXpcmTest_L2RChangePropagationSpecification
+import mir.reactions.umlXpcmTest_R2L.UmlXpcmTest_R2LChangePropagationSpecification
 import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.resource.ResourceSet
@@ -17,8 +17,8 @@ abstract class PcmUmlClassTest extends VitruviusApplicationTest {
 
 	override protected createChangePropagationSpecifications() {
 		return #[
-			new UmlXpcmTest_L2RSegmentChangePropagationSpecification,
-			new UmlXpcmTest_R2LSegmentChangePropagationSpecification
+			new UmlXpcmTest_L2RChangePropagationSpecification,
+			new UmlXpcmTest_R2LChangePropagationSpecification
 		];
 	}
 
@@ -29,13 +29,7 @@ abstract class PcmUmlClassTest extends VitruviusApplicationTest {
 		return testResourceSet.getResource(uri, true)
 	}
 
-	private def patchDomains() {
-		new PcmDomainProvider().domain.enableTransitiveChangePropagation
-		new UmlDomainProvider().domain.enableTransitiveChangePropagation
-	}
-
 	override protected getVitruvDomains() {
-		patchDomains();
 		return #[new PcmDomainProvider().domain, new UmlDomainProvider().domain];
 	}
 

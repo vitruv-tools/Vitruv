@@ -1,7 +1,6 @@
 package tools.vitruv.dsls.mappings.generator.routines
 
 import java.util.List
-import tools.vitruv.dsls.mappings.generator.ReactionGeneratorContext
 import tools.vitruv.dsls.mappings.generator.conditions.AbstractBidirectionalCondition
 import tools.vitruv.dsls.mappings.generator.conditions.AbstractSingleSidedCondition
 import tools.vitruv.dsls.mappings.generator.reactions.AbstractReactionTriggerGenerator
@@ -17,6 +16,7 @@ import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.ActionStatementBuilder
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.RoutineCallParameter
 import tools.vitruv.dsls.reactions.codegen.ReactionsLanguageConstants
+import tools.vitruv.dsls.mappings.generator.MappingGeneratorContext
 
 class MappingRoutinesGenerator {
 
@@ -27,7 +27,7 @@ class MappingRoutinesGenerator {
 		routineStorage = new MappingRoutineStorage(fromParameters, toParameters)
 	}
 
-	public def generateRoutines(String mappingName, ReactionGeneratorContext context,
+	public def generateRoutines(String mappingName, MappingGeneratorContext context,
 		List<AbstractSingleSidedCondition> singleSidedConditions,
 		List<AbstractSingleSidedCondition> correspondingSingleSidedConditions,
 		List<AbstractBidirectionalCondition> bidirectionalConditions) {

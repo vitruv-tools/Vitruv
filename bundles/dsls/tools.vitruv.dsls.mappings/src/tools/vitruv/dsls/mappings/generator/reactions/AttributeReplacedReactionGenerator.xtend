@@ -1,13 +1,13 @@
 package tools.vitruv.dsls.mappings.generator.reactions
 
 import org.eclipse.emf.ecore.EAttribute
-import tools.vitruv.dsls.mappings.generator.ReactionGeneratorContext
 import tools.vitruv.dsls.mappings.mappingsLanguage.MappingParameter
 import tools.vitruv.dsls.mirbase.mirBase.MetaclassEAttributeReference
 import tools.vitruv.dsls.mirbase.mirBase.MetaclassFeatureReference
 import tools.vitruv.dsls.mirbase.mirBase.MirBaseFactory
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.ActionStatementBuilder
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.UndecidedMatcherStatementBuilder
+import tools.vitruv.dsls.mappings.generator.MappingGeneratorContext
 
 class AttributeReplacedReactionGenerator extends AbstractReactionTriggerGenerator {
 
@@ -31,7 +31,7 @@ class AttributeReplacedReactionGenerator extends AbstractReactionTriggerGenerato
 		this.attribute = attribute
 	}
 
-	override generateTrigger(ReactionGeneratorContext context) {
+	override generateTrigger(MappingGeneratorContext context) {
 		this.reactionName = '''«attribute.getAttributeName.toFirstUpper»ReplacedAt«metaclass.parameterName»'''
 		val trigger = context.create.reaction(reactionName()).afterAttributeReplacedAt(metaclass, extractAttribute)
 		/* 	trigger.with[typeProvider | 

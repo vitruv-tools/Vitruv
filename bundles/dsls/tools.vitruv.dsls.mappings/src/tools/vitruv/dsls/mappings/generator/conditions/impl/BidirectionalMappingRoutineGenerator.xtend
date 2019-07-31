@@ -2,7 +2,6 @@ package tools.vitruv.dsls.mappings.generator.conditions.impl
 
 import java.util.List
 import java.util.function.Consumer
-import tools.vitruv.dsls.mappings.generator.ReactionGeneratorContext
 import tools.vitruv.dsls.mappings.generator.conditions.AbstractBidirectionalCondition
 import tools.vitruv.dsls.mappings.generator.integration.AbstractReactionIntegrationGenerator
 import tools.vitruv.dsls.mappings.mappingsLanguage.MappingParameter
@@ -11,6 +10,7 @@ import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.ActionStatementBuilder
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.InputBuilder
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.RoutineCallParameter
+import tools.vitruv.dsls.mappings.generator.MappingGeneratorContext
 
 /**
  * 
@@ -64,7 +64,7 @@ class BidirectionalMappingRoutineGenerator implements AbstractBidirectionalCondi
 		]
 	}
 
-	public def integrateRoutine(ReactionGeneratorContext context) {
+	public def integrateRoutine(MappingGeneratorContext context) {
 		var generatedRoutine = AbstractReactionIntegrationGenerator.generateRoutine(routine)
 		targetRoutineBuilder = context.create.from(generatedRoutine)
 		context.getSegmentBuilder += targetRoutineBuilder
