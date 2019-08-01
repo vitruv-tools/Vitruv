@@ -94,48 +94,84 @@ class MappingParameterRetrievalGenerator extends AbstractRoutineContentGenerator
 	private def generateParentContainsChild(RoutineTypeProvider provider, MappingParameter child,
 		MappingParameter parent, EReference feature) {
 		retrievedParameters += parent
-		val variableName = '''«parent.parameterName»_candidate'''.toString
 		if (feature.containment) {
 			val featureMethod = provider.findMetaclassMethod(parent.value.metaclass, 'eContainer')
-			XbaseFactory.eINSTANCE.createXBlockExpression => [
-				// val parent_candidate =  child.eContainer
-				expressions +=
-					provider.variableDeclaration(variableName, XbaseFactory.eINSTANCE.createXMemberFeatureCall => [
-						feature = featureMethod
-						memberCallTarget = child.referenceLocalVariable
-					])
-				expressions += provider.generateCorrectTypeCheck(parent, variableName, null)
-			]
+			provider.generateSimpleFeatureRetrieval(child, parent, featureMethod)
 		} else {
 			// check via cross-references to find a possible parent element
 			val featureMethod = provider.findMetaclassMethod(parent.value.metaclass, 'eCrossReferences')
 			val parentFeature = provider.findMetaclassMethodGetter(parent.value.metaclass, feature)
-			val loopParameter = TypesFactory.eINSTANCE.createJvmFormalParameter => [
-				name = variableName
-			]
-			localVariables.put(variableName, loopParameter)
-			XbaseFactory.eINSTANCE.createXForLoopExpression => [
-				declaredParam = loopParameter
-				forExpression = XbaseFactory.eINSTANCE.createXMemberFeatureCall => [
-					feature = featureMethod
-					memberCallTarget = child.referenceLocalVariable
+			provider.generateMultipleFeatureRetrieval(child, parent, featureMethod, [
+				// additional check on retrieved variable: check if parent has the child in the correct feature
+				val featureCall = XbaseFactory.eINSTANCE.createXMemberFeatureCall => [
+					feature = parentFeature
+					memberCallTarget = parent.referenceLocalVariable
 				]
-				eachExpression = provider.generateCorrectTypeCheck(parent, variableName, [
-					// addditional check on retrieved variable: check if parent has the chield in the correct feature
+				if (feature.many) {
+					// check with    parent.feature.contains(child)
+					XbaseFactory.eINSTANCE.createXMemberFeatureCall => [
+						memberCallTarget = featureCall
+						feature = provider.listContains
+						memberCallArguments += child.referenceLocalVariable
+					]
+				} else {
+					// check with    child == parent.feature
 					XbaseFactory.eINSTANCE.createXBinaryOperation => [
 						feature = provider.tripleEquals
 						leftOperand = child.referenceLocalVariable
-						rightOperand = XbaseFactory.eINSTANCE.createXMemberFeatureCall => [
-							feature = parentFeature
-							memberCallTarget = parent.referenceLocalVariable
-						]
+						rightOperand = featureCall
 					]
-				])
-			]
-//			throw new UnsupportedOperationException(
-//				'''Retrieving parent of child not implemented yet for non-containment features!
-//				(child: «child.nodeName» in parent: «parent.nodeName» feature: «feature.name» )''')
+				}
+			])
 		}
+	}
+
+	private def generateChildInParent(RoutineTypeProvider provider, MappingParameter child, MappingParameter parent,
+		EReference feature) {
+		retrievedParameters += child
+		val featureMethod = provider.findMetaclassMethodGetter(parent.value.metaclass, feature)
+		if (feature.many) {
+			// filter possible elements and check all of them
+			// for(val parameter: parameter.feature)
+			// {
+			// if( do checks for parameter)
+			// {	=> continue here }
+			// }
+			provider.generateMultipleFeatureRetrieval(parent, child, featureMethod, null)
+		} else {
+			// just retrieve the value and check for correct type and not null
+			provider.generateSimpleFeatureRetrieval(parent, child, featureMethod)
+		}
+	}
+
+	private def generateMultipleFeatureRetrieval(RoutineTypeProvider provider, MappingParameter featureParameter,
+		MappingParameter targetParameter, JvmIdentifiableElement featureMethod, Function0<XExpression> extraCondition) {
+		val variableName = '''«targetParameter.parameterName»_candidate'''.toString
+		val loopParameter = TypesFactory.eINSTANCE.createJvmFormalParameter => [
+			name = variableName
+		]
+		localVariables.put(variableName, loopParameter)
+		XbaseFactory.eINSTANCE.createXForLoopExpression => [
+			declaredParam = loopParameter
+			forExpression = XbaseFactory.eINSTANCE.createXMemberFeatureCall => [
+				feature = featureMethod
+				memberCallTarget = featureParameter.referenceLocalVariable
+			]
+			eachExpression = provider.generateCorrectTypeCheck(targetParameter, variableName, extraCondition)
+		]
+	}
+
+	private def generateSimpleFeatureRetrieval(RoutineTypeProvider provider, MappingParameter featureParameter,
+		MappingParameter targetParameter, JvmIdentifiableElement featureMethod) {
+		val variableName = '''«targetParameter.parameterName»_candidate'''.toString
+		XbaseFactory.eINSTANCE.createXBlockExpression => [
+			expressions +=
+				provider.variableDeclaration(variableName, XbaseFactory.eINSTANCE.createXMemberFeatureCall => [
+					feature = featureMethod
+					memberCallTarget = featureParameter.referenceLocalVariable
+				])
+			expressions += provider.generateCorrectTypeCheck(targetParameter, variableName, null)
+		]
 	}
 
 	private def generateCorrectTypeCheck(RoutineTypeProvider provider, MappingParameter parameter, String variableName,
@@ -169,57 +205,6 @@ class MappingParameterRetrievalGenerator extends AbstractRoutineContentGenerator
 		]
 	}
 
-	private def generateChildInParent(RoutineTypeProvider provider, MappingParameter child, MappingParameter parent,
-		EReference feature) {
-		retrievedParameters += child
-		val featureMethod = provider.findMetaclassMethodGetter(parent.value.metaclass, feature)
-		val variableName = '''«child.parameterName»_candidate'''.toString
-		if (feature.many) {
-			// filter possible elements and check all of them
-			// for(val parameter: parameter.feature)
-			// {
-			// if( do checks for parameter)
-			// {	=> continue here }
-			// }
-			val loopParameter = TypesFactory.eINSTANCE.createJvmFormalParameter => [
-				name = variableName
-			]
-			localVariables.put(variableName, loopParameter)
-			XbaseFactory.eINSTANCE.createXForLoopExpression => [
-				declaredParam = loopParameter
-				forExpression = XbaseFactory.eINSTANCE.createXMemberFeatureCall => [
-					feature = featureMethod
-					memberCallTarget = parent.referenceLocalVariable
-				]
-				eachExpression = provider.generateCorrectTypeCheck(child, variableName, null)
-			]
-		} else {
-			// just retrieve the value and check for correct type and not null
-			XbaseFactory.eINSTANCE.createXBlockExpression => [
-				expressions +=
-					provider.variableDeclaration(variableName, XbaseFactory.eINSTANCE.createXMemberFeatureCall => [
-						feature = featureMethod
-						memberCallTarget = parent.referenceLocalVariable
-					])
-				expressions += provider.generateCorrectTypeCheck(child, variableName, null)
-			]
-//			provider.generateSimpleRetrievalCheck(child, parent, featureMethod)
-		}
-	}
-
-//	private def generateSimpleRetrievalCheck(RoutineTypeProvider provider, MappingParameter newVariable,
-//		MappingParameter featureVariable, JvmIdentifiableElement featureMethod) {
-//		XbaseFactory.eINSTANCE.createXBlockExpression => [
-//			// 1) var newVariable = featureVariable.featureMethod 
-//			expressions +=
-//				provider.variableDeclaration(newVariable, XbaseFactory.eINSTANCE.createXMemberFeatureCall => [
-//					feature = featureMethod
-//					memberCallTarget = featureVariable.referenceLocalVariable
-//				])
-//			// 2) do the checks with the new variable
-//			expressions += provider.generateRetrievedParameterCheck(newVariable)
-//		]
-//	}
 	private def generateRetrievedParameterCheck(RoutineTypeProvider provider, MappingParameter parameter) {
 		XbaseFactory.eINSTANCE.createXIfExpression => [
 			it.^if = provider.generateParameterCheck(parameter)

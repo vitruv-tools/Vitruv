@@ -29,6 +29,10 @@ class XBaseMethodFinder {
 	public static def listFilter(RoutineTypeProvider typeProvider) {
 		typeProvider.findXbaseMethod(PACKAGE_ITERATOR, 'filter')
 	}
+	
+	public static def listContains(RoutineTypeProvider typeProvider) {
+		typeProvider.findXbaseMethod(PACKAGE_ITERATOR, 'contains')
+	}
 
 	// should find first add
 	public static def collectionAdd(RoutineTypeProvider typeProvider) {
