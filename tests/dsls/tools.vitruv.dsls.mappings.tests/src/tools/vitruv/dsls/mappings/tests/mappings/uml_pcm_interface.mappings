@@ -5,6 +5,7 @@ mappings: umlXpcmInterface for UML and PCM
  
 mapping OperationInterface {
 
+
 	map(pcm::OperationInterface operationInterface
 		mapped pcm::Repository repository with repositoryPackage
 	)

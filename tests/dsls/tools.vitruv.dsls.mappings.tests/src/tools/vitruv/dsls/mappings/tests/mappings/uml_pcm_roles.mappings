@@ -4,6 +4,7 @@ import "http://palladiosimulator.org/PalladioComponentModel/5.2" as pcm
 mappings: umlXpcmRoles for UML and PCM
  
 mapping RequiredRole {
+
 	map(pcm::OperationRequiredRole role
 		//todo resolve
 		//pcm::InterfaceProvidingRequiringEntity requiringEntity
