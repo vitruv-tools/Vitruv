@@ -49,7 +49,7 @@ class ReactionsLanguageScopeProviderDelegate extends MirBaseScopeProviderDelegat
 			if (context instanceof ModelElementChange) {
 				return createQualifiedEClassScopeWithEObject(context.elementType?.metamodel);
 			} else if (contextContainer instanceof ModelElementChange) {
-				return createQualifiedEClassScopeWithoutAbstract(contextContainer.elementType?.metamodel);
+				return createQualifiedEClassScope(contextContainer.elementType?.metamodel);
 			} else if (context instanceof CreateModelElement) {
 				return createQualifiedEClassScopeWithoutAbstract(context.metamodel);
 			} else if (contextContainer instanceof CreateModelElement) {
@@ -159,7 +159,7 @@ class ReactionsLanguageScopeProviderDelegate extends MirBaseScopeProviderDelegat
 					createEObjectDescription(InputTypesPackage.Literals.DOUBLE, false)
 				];
 			} else {
-				collectObjectDescriptions(metamodelImport.package, true, true, metamodelImport.useQualifiedNames)		
+				collectObjectDescriptions(metamodelImport.package, true, metamodelImport.useQualifiedNames,null)		
 			}
 
 		var resultScope = new SimpleScope(IScope.NULLSCOPE, classifierDescriptions)

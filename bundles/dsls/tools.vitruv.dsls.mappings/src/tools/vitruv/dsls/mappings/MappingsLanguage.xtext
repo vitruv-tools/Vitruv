@@ -50,11 +50,15 @@ Mapping:
 	'}';
 
 MappingParameter:
-	StandardMappingParameter | ExistingMappingCorrespondence
+	StandardMappingParameter | AbstractMappingParameter | ExistingMappingCorrespondence
 ;
 
 StandardMappingParameter:
 	value=ClassicallyNamedModelElement
+;
+
+AbstractMappingParameter:
+	'abstract' 	value=ClassicallyNamedModelElement	'as' instanceType = UnnamedMetaclassReference
 ;
 
 ExistingMappingCorrespondence:

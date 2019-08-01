@@ -1,13 +1,15 @@
 package tools.vitruv.dsls.mappings.generator.routines.impl
 
+import org.eclipse.emf.ecore.EClass
 import org.eclipse.xtext.xbase.XbaseFactory
 import tools.vitruv.dsls.mappings.generator.routines.AbstractMappingRoutineGenerator
+import tools.vitruv.dsls.mappings.mappingsLanguage.AbstractMappingParameter
+import tools.vitruv.dsls.mappings.mappingsLanguage.ExistingMappingCorrespondence
 import tools.vitruv.dsls.mappings.mappingsLanguage.StandardMappingParameter
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.ActionStatementBuilder
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.InputBuilder
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.MatcherOrActionBuilder
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.UndecidedMatcherStatementBuilder
-import tools.vitruv.dsls.mappings.mappingsLanguage.ExistingMappingCorrespondence
 
 class CreateMappingRoutine extends AbstractMappingRoutineGenerator {
 
@@ -60,10 +62,15 @@ class CreateMappingRoutine extends AbstractMappingRoutineGenerator {
 	}
 
 	private def createCorrespondingElements(ActionStatementBuilder builder) {
-		//only create actual parameters
-		correspondingParameters.filter[it instanceof StandardMappingParameter].forEach [ correspondingParameter |
+		// only create actual parameters
+		correspondingParameters.filter[!(it instanceof ExistingMappingCorrespondence)].forEach [ correspondingParameter |
 			val newElement = correspondingParameter.parameterName
-			builder.vall(newElement).create(correspondingParameter.value.metaclass)
+			var EClass createMetaclass
+			if (correspondingParameter instanceof StandardMappingParameter)
+				createMetaclass = correspondingParameter.value.metaclass
+			if (correspondingParameter instanceof AbstractMappingParameter)
+				createMetaclass = correspondingParameter.instanceType.metaclass
+			builder.vall(newElement).create(createMetaclass)
 		]
 	}
 

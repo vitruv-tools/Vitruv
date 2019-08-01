@@ -4,15 +4,16 @@ import "http://palladiosimulator.org/PalladioComponentModel/5.2" as pcm
 mappings: umlXpcmComponent for UML and PCM
  
 mapping RepositoryComponent {
-				
-   map (pcm::BasicComponent component
-   		mapped pcm::Repository repository with repositoryPackage
+			
+   map (
+ 	  	abstract pcm::RepositoryComponent component as pcm::BasicComponent
+   		mapped pcm::Repository repository with repositoryPackage tagged "umlXpcmRepository_map_UML_and_PCM_correspondence_Package:repositoryPkg_with_Repository:repository"
    )
    with{ 	
    	 	component in repository[components__Repository]
    }
    and (uml::Package componentPackage
-   		mapped uml::Package repositoryPackage with repository
+   		mapped uml::Package repositoryPackage with repository tagged "umlXpcmRepository_map_UML_and_PCM_correspondence_Package:repositoryPkg_with_Repository:repository"
    		uml::Class implementation 
    		uml::Operation constructor
    )
@@ -26,7 +27,7 @@ mapping RepositoryComponent {
    	 	uml::Operation[name]
    	 	uml::Class[name]
    	 	uml::Package[name]
-		pcm::BasicComponent[entityName]   	 	
+		pcm::RepositoryComponent[entityName]   	 	
    	 }
    	 routine updateComponentName(uml::Package componentPackage, uml::Package repositoryPackage, uml::Class implementation, uml::Operation constructor){
    	 	action{
@@ -35,21 +36,21 @@ mapping RepositoryComponent {
    	 	}
    	 }
    	 
-   	 routine updateImplementationName(pcm::BasicComponent component, pcm::Repository repository){
+   	 routine updateImplementationName(pcm::RepositoryComponent component, pcm::Repository repository){
    	 	action{
    	 		execute{   	 			
    	 		}
    	 	}
    	 }
    	 
-   	 routine updatePackageName(pcm::BasicComponent component, pcm::Repository repository){
+   	 routine updatePackageName(pcm::RepositoryComponent component, pcm::Repository repository){
    	 	action{
    	 		execute{   	 			
    	 		}
    	 	}
    	 }
    	 
-   	 routine updateConstructoeName(pcm::BasicComponent component, pcm::Repository repository){
+   	 routine updateConstructoeName(pcm::RepositoryComponent component, pcm::Repository repository){
    	 	action{
    	 		execute{   	 			
    	 		}
