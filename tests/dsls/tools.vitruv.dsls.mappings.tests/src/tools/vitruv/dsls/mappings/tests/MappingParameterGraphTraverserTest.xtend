@@ -41,7 +41,7 @@ class MappingParameterGraphTraverserTest {
 				exception.message)
 		}
 	}
-	
+
 	@Test
 	def void minimalGraph() {
 		createParams('nodeA')
@@ -61,7 +61,7 @@ class MappingParameterGraphTraverserTest {
 		createInConditions('nodeA'.in('nodeB', 'cFA'), 'nodeB'.in('nodeC', 'cFB'), 'nodeC'.in('nodeA', 'cFC'))
 		try {
 			initTraverser
-			fail() 
+			fail()
 		} catch (IllegalStateException exception) {
 			assertEquals('The MappingParameters in-relations contains cycles!', exception.message)
 		}
@@ -149,11 +149,11 @@ class MappingParameterGraphTraverserTest {
 		createInConditions('nodeB'.in('nodeA', 'cFA'), 'nodeC'.in('nodeA', 'cFB'), 'nodeD'.in('nodeC', 'cFC'))
 		initTraverser
 		// start with C, next node could be A or D, both would be right, the implementation goes to D
-		traverser.findStepToNextNode(#['nodeC']).assertPathFrom('nodeC', stepDown('nodeD', 'cFC'))
+		findStepToNextNode('nodeC').assertPathFrom('nodeC', stepDown('nodeD', 'cFC'))
 		// now the only correct way is to go to A next
-		traverser.findStepToNextNode(#['nodeC', 'nodeD']).assertPathFrom('nodeC', stepUp('nodeA', 'cFB'))
+		findStepToNextNode('nodeC', 'nodeD').assertPathFrom('nodeC', stepUp('nodeA', 'cFB'))
 		// the last remaining step is to go to B
-		traverser.findStepToNextNode(#['nodeC', 'nodeD', 'nodeA']).assertPathFrom('nodeA', stepDown('nodeB', 'cFA'))
+		findStepToNextNode('nodeC', 'nodeD', 'nodeA').assertPathFrom('nodeA', stepDown('nodeB', 'cFA'))
 	}
 
 	private def stepDown(String to, String feature) {
@@ -197,8 +197,14 @@ class MappingParameterGraphTraverserTest {
 		traverser.findPath(startPoints, to)
 	}
 
+	private def findStepToNextNode(String... startPoints) {
+		traverser.findStepToNextNode(startPoints)
+	}
+
 	private def initTraverser() {
-		traverser = new MappingParameterGraphTraverser(inConditions, parameter)
+		traverser = new MappingParameterGraphTraverser(inConditions, parameter, [
+			it.value.name
+		])
 	}
 
 	private def in(String child, String parent, String feature) {

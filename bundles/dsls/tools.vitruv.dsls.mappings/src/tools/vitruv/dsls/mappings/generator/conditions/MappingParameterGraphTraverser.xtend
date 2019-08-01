@@ -4,16 +4,20 @@ import java.util.ArrayList
 import java.util.HashMap
 import java.util.List
 import java.util.Map
+import java.util.function.Function
 import org.eclipse.emf.ecore.EReference
-import org.eclipse.emf.ecore.EStructuralFeature
 import org.eclipse.xtend.lib.annotations.Accessors
 import tools.vitruv.dsls.mappings.generator.conditions.impl.InValueConditionGenerator
+import tools.vitruv.dsls.mappings.mappingsLanguage.MappingParameter
 
 class MappingParameterGraphTraverser {
 
 	private Map<String, Node> nodes = new HashMap
+	private Function<MappingParameter, String> nameMapping
 
-	new(List<FeatureConditionGenerator> conditions, List<String> parameters) {
+	new(List<FeatureConditionGenerator> conditions, List<String> parameters,
+		Function<MappingParameter, String> nameMapping) {
+		this.nameMapping = nameMapping
 		constructGraph(conditions, parameters)
 	}
 
@@ -38,8 +42,8 @@ class MappingParameterGraphTraverser {
 		val childParameter = condition.childParameter
 		val inFeature = condition.inFeature as EReference
 		val parentParameter = condition.parentParameter
-		val childNode = nodes.get(childParameter.value.name)
-		val parentNode = nodes.get(parentParameter.value.name)
+		val childNode = nodes.get(nameMapping.apply(childParameter))
+		val parentNode = nodes.get(nameMapping.apply(parentParameter))
 		parentNode.addChild(childNode, inFeature)
 		childNode.addParent(parentNode)
 	}

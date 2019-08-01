@@ -79,7 +79,7 @@ class XBaseMethodFinder {
 			try {
 				return typeProvider.findMetaclassMethod(metaclass, method + "s")
 			} catch (MethodNotFoundException e) {
-				//some many-features dont have the "s", so just continue trying to retrieve 
+				// some many-features dont have the "s", so just continue trying to retrieve 
 			}
 		}
 		typeProvider.findMetaclassMethod(metaclass, method)
@@ -106,12 +106,17 @@ class XBaseMethodFinder {
 		for (superTypeRef : type.superTypes) {
 			val superType = superTypeRef.type
 			if (superType instanceof JvmDeclaredType) {
-				method = findMethod(superType, originalType, member)
-				if (method !== null) {
-					return method
+				try {
+					method = findMethod(superType, originalType, member)
+					if (method !== null) {
+						return method
+					}
+				} catch (MethodNotFoundException e) {
+					//did not find it in this super type either
 				}
 			}
 		}
+		//not found in members nor supertypes
 		throw new MethodNotFoundException('''Could not find method «member» in type «originalType»''')
 	}
 

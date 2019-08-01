@@ -62,7 +62,7 @@ class AbstractRoutineContentGenerator extends AbstractMappingEntityGenerator {
 	}
 
 	protected def retrieveLocalVariable(MappingParameter parameter) {
-		parameter.value.name.retrieveLocalVariable
+		parameter.parameterName.retrieveLocalVariable
 	}
 
 	protected def referenceLocalVariable(String parameter) {
@@ -73,7 +73,7 @@ class AbstractRoutineContentGenerator extends AbstractMappingEntityGenerator {
 	}
 
 	protected def referenceLocalVariable(MappingParameter parameter) {
-		parameter.value.name.referenceLocalVariable
+		parameter.parameterName.referenceLocalVariable
 	}
 
 	protected def getFeatureConditions() {
