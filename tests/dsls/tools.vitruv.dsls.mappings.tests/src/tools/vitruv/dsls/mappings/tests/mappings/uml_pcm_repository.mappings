@@ -6,7 +6,6 @@ mappings: umlXpcmRepository for UML and PCM
 mapping Repository {
 
    map (pcm::Repository repository)
-   
    and (uml::Package rootPkg 
    	uml::Package repositoryPkg 
    	uml::Package contractsPkg 
@@ -21,7 +20,6 @@ mapping Repository {
    	"contracts" equals contractsPkg[name]
    	"datatypes" equals datatypesPkg[name]
    }
-   
    
     such that {
 		observe attributes {

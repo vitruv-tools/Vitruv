@@ -26,6 +26,7 @@ import tools.vitruv.dsls.reactions.scoping.ReactionsLanguageScopeProviderDelegat
 
 import static tools.vitruv.dsls.mirbase.mirBase.MirBasePackage.Literals.*
 import tools.vitruv.dsls.mappings.mappingsLanguage.MappingParameter
+import tools.vitruv.dsls.mappings.mappingsLanguage.AbstractMappingParameter
 
 class MappingsLanguageScopeProviderDelegate extends ReactionsLanguageScopeProviderDelegate {
 
@@ -86,6 +87,17 @@ class MappingsLanguageScopeProviderDelegate extends ReactionsLanguageScopeProvid
 			// both sides 
 				val mapping = contextContainer.eContainer as Mapping;
 				return createMappingMetaclassesScope(mapping, true, true);
+			} else if (contextContainer instanceof AbstractMappingParameter) {
+				// check if its the super or instance type
+				if (context == contextContainer.value) {
+					//super type
+					return createQualifiedEClassScopeOnlyAbstract(contextContainer.value.metamodel);
+				} else {
+					//instance type
+					val metamodel = contextContainer.instanceType.metamodel
+					val abstractType = contextContainer.value.metaclass
+					return createQualifiedEClassScopeOfSuperTypeChildren(metamodel, abstractType)
+				}
 			} else if (contextContainer instanceof MappingParameter) {
 				return createQualifiedEClassScopeWithoutAbstract(contextContainer.value.metamodel);
 			}

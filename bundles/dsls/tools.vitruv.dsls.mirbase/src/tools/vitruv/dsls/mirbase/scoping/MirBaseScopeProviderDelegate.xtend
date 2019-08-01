@@ -28,9 +28,9 @@ import tools.vitruv.dsls.mirbase.mirBase.MetaclassEReferenceReference
 class MirBaseScopeProviderDelegate extends XImportSectionNamespaceScopeProvider {
 	def <T> IScope createScope(IScope parentScope, Iterator<? extends T> elements,
 		Function<T, IEObjectDescription> descriptionCreation) {
-		new SimpleScope(parentScope, elements.map [descriptionCreation.apply(it)].filterNull.toList);
+		new SimpleScope(parentScope, elements.map[descriptionCreation.apply(it)].filterNull.toList);
 	}
-	
+
 	override getScope(EObject context, EReference reference) {
 		if (reference.equals(METACLASS_FEATURE_REFERENCE__FEATURE))
 			return createEStructuralFeatureScope((context as MetaclassFeatureReference)?.metaclass)
@@ -45,16 +45,16 @@ class MirBaseScopeProviderDelegate extends XImportSectionNamespaceScopeProvider 
 		}
 		super.getScope(context, reference)
 	}
-	
+
 	def createImportsScope(Resource resource) {
-		createScope(IScope.NULLSCOPE, resource.metamodelImports.iterator, [EObjectDescription.create(it.name, it)])		
+		createScope(IScope.NULLSCOPE, resource.metamodelImports.iterator, [EObjectDescription.create(it.name, it)])
 	}
-	
+
 	def hasQualifiedName(EObject eObject) {
 		val qn = qualifiedNameProvider.getFullyQualifiedName(eObject);
 		return ((qn !== null) && (!qn.empty));
 	}
-	
+
 	def createEStructuralFeatureScope(Iterator<? extends EStructuralFeature> featuresIterator) {
 		if (featuresIterator !== null) {
 			createScope(IScope.NULLSCOPE, featuresIterator, [
@@ -64,15 +64,15 @@ class MirBaseScopeProviderDelegate extends XImportSectionNamespaceScopeProvider 
 			return IScope.NULLSCOPE
 		}
 	}
-	
+
 	def createEStructuralFeatureScope(EClass eClass) {
 		return createEStructuralFeatureScope(eClass?.EAllStructuralFeatures.iterator);
 	}
-	
+
 	def createEAttributeScope(EClass eClass) {
 		return createEStructuralFeatureScope(eClass?.EAllAttributes.iterator);
 	}
-	
+
 	def createEReferenceScope(EClass eClass) {
 		return createEStructuralFeatureScope(eClass?.EAllReferences.iterator);
 	}
@@ -95,11 +95,13 @@ class MirBaseScopeProviderDelegate extends XImportSectionNamespaceScopeProvider 
 	 */
 	def getMetamodelImports(Resource res) {
 		var contents = res.getAllContentsOfEClass(MirBasePackage.eINSTANCE.getMetamodelImport, true).toList
-		val validImports = contents.filter(MetamodelImport).filter[package !== null].map[it.name = it.name ?: it.package.name; it]
+		val validImports = contents.filter(MetamodelImport).filter[package !== null].map [
+			it.name = it.name ?: it.package.name;
+			it
+		]
 
 		return validImports
 	}
-
 
 	/**
 	 * Create an {@link IScope} that represents all {@link EClass}es
@@ -108,76 +110,90 @@ class MirBaseScopeProviderDelegate extends XImportSectionNamespaceScopeProvider 
 	 * 
 	 * @see MIRScopeProviderDelegate#createQualifiedEClassifierScope(Resource)
 	 */
-	private def createQualifiedEClassScope(Resource res, boolean includeAbstract, boolean includeEObject) {
-		val classifierDescriptions = res.metamodelImports.map[
-			import | collectObjectDescriptions(import.package, true, includeAbstract, import.useQualifiedNames)
-		].flatten +
-			if (includeEObject) {
-				#[createEObjectDescription(EcorePackage.Literals.EOBJECT, false)];	
-			} else {
-				#[];
-			}
+	private def createQualifiedEClassScope(Resource res, boolean includeEObject, Function<EClass, Boolean> filter) {
+		val classifierDescriptions = res.metamodelImports.map [ import |
+			collectObjectDescriptions(import.package, true, import.useQualifiedNames, filter)
+		].flatten + if (includeEObject) {
+			#[createEObjectDescription(EcorePackage.Literals.EOBJECT, false)];
+		} else {
+			#[];
+		}
 
 		var resultScope = new SimpleScope(IScope.NULLSCOPE, classifierDescriptions)
 		return resultScope
 	}
-	
-		/**
+
+	/**
 	 * Create an {@link IScope} that represents all {@link EClass}es
 	 * that are referencable inside the {@link Resource} via {@link Import}s
 	 * by a fully qualified name.
 	 * 
 	 * @see MIRScopeProviderDelegate#createQualifiedEClassifierScope(Resource)
 	 */
-	private def createQualifiedEClassScope(MetamodelImport metamodelImport, boolean includeAbstract, boolean includeEObject) {
-		val classifierDescriptions = 
-			if (metamodelImport === null || metamodelImport.package === null) {
+	private def createQualifiedEClassScope(MetamodelImport metamodelImport, boolean includeEObject,
+		Function<EClass, Boolean> filter) {
+		val classifierDescriptions = if (metamodelImport === null || metamodelImport.package === null) {
 				if (includeEObject) {
 					#[createEObjectDescription(EcorePackage.Literals.EOBJECT, false)];
 				} else {
 					#[];
 				}
-			} else { 
-				collectObjectDescriptions(metamodelImport.package, 
-					true, includeAbstract, metamodelImport.useQualifiedNames)
+			} else {
+				collectObjectDescriptions(metamodelImport.package, true, metamodelImport.useQualifiedNames, filter)
 			}
 
 		var resultScope = new SimpleScope(IScope.NULLSCOPE, classifierDescriptions)
 		return resultScope
 	}
-	
+
 	def createQualifiedEClassScopeWithoutAbstract(MetamodelImport metamodelImport) {
-		return createQualifiedEClassScope(metamodelImport, true, false);
+		return createQualifiedEClassScope(metamodelImport, true, [
+			!abstract
+		]);
 	}
-	
+
+	def createQualifiedEClassScopeOnlyAbstract(MetamodelImport metamodelImport) {
+		return createQualifiedEClassScope(metamodelImport, true, [
+			abstract
+		]);
+	}
+
+	def createQualifiedEClassScopeOfSuperTypeChildren(MetamodelImport metamodelImport, EClass superType) {
+		return createQualifiedEClassScope(metamodelImport, true, [
+			!it.abstract && (it.EAllSuperTypes.contains(superType) || it.EAllGenericSuperTypes.contains(superType))
+		]);
+	}
+
 	def createQualifiedEClassScope(Resource res) {
-		return createQualifiedEClassScope(res, false, false);
+		return createQualifiedEClassScope(res, false, null);
 	}
-	
+
 	def createQualifiedEClassScope(MetamodelImport metamodelImport) {
-		return createQualifiedEClassScope(metamodelImport, false, false);
+		return createQualifiedEClassScope(metamodelImport, false, null);
 	}
-	
+
 	def createQualifiedEClassScopeWithEObject(MetamodelImport metamodelImport) {
-		return createQualifiedEClassScope(metamodelImport, true, true);
+		return createQualifiedEClassScope(metamodelImport, true, null);
 	}
-	
-	protected def Iterable<IEObjectDescription> collectObjectDescriptions(EPackage pckg, 
-		boolean includeSubpackages, boolean includeAbstract, boolean useQualifiedNames) {
-		var classes = collectEClasses(pckg, includeSubpackages);
-		val result = classes.filter[includeAbstract || !abstract].map[it.createEObjectDescription(useQualifiedNames)];
-		return result;
+
+	protected def Iterable<IEObjectDescription> collectObjectDescriptions(EPackage pckg, boolean includeSubpackages,
+		boolean useQualifiedNames, Function<EClass, Boolean> filter) {
+		var classes = collectEClasses(pckg, includeSubpackages)
+		if (filter !== null) {
+			classes = classes.filter(filter)
+		}
+		classes.map[it.createEObjectDescription(useQualifiedNames)]
 	}
-	
+
 	private def Iterable<EClass> collectEClasses(EPackage pckg, boolean includeSubpackages) {
 		var recursiveResult = <EClass>newArrayList();
 		if (includeSubpackages) {
-			recursiveResult += pckg.ESubpackages.map[it | collectEClasses(it, includeSubpackages)].flatten
+			recursiveResult += pckg.ESubpackages.map[it|collectEClasses(it, includeSubpackages)].flatten
 		}
 		val result = pckg.EClassifiers.filter(EClass);
 		return recursiveResult + result;
 	}
-	
+
 	/**
 	 * Creates and returns a {@link EObjectDescription} with simple name
 	 * or in case of a qualified name with the given package prefix.
