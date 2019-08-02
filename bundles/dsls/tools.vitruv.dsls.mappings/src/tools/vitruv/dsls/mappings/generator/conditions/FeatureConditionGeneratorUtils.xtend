@@ -41,7 +41,7 @@ class FeatureConditionGeneratorUtils {
 	}
 
 	def static parameter(RoutineTypeProvider typeProvider, MappingParameter parameter) {
-		typeProvider.variable('_'+parameter.value.name)
+		typeProvider.variable(parameter.value.name+'_')
 	}
 
 	private def static initMemberFeatureCall(RoutineTypeProvider typeProvider, FeatureCondition featureCondition) {

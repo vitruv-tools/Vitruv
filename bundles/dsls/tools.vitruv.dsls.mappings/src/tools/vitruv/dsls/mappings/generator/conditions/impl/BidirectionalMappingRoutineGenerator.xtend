@@ -60,7 +60,7 @@ class BidirectionalMappingRoutineGenerator implements AbstractBidirectionalCondi
 
 	private def constructParameters() {
 		parameters.map [
-			new RoutineCallParameter('_'+it.value.name)
+			new RoutineCallParameter(it.value.name+'_')
 		]
 	}
 

@@ -70,10 +70,7 @@ class MappingParameterRetrievalGenerator extends AbstractRoutineContentGenerator
 		retrievedParameters = new ArrayList
 		affectedEObjectParameter = parameter
 		retrievedParameters += affectedEObjectParameter // affectedEObject is already retrieved
-		XbaseFactory.eINSTANCE.createXIfExpression => [
-			it.^if = provider.generateParameterCheck(parameter)
-			it.then = provider.generateInCondition()
-		]
+		provider.generateRetrievedParameterCheck(parameter, provider.generateInCondition)
 	}
 
 	private def XExpression generateInCondition(RoutineTypeProvider provider) {
@@ -110,6 +107,7 @@ class MappingParameterRetrievalGenerator extends AbstractRoutineContentGenerator
 				if (feature.many) {
 					// check with    parent.feature.contains(child)
 					XbaseFactory.eINSTANCE.createXMemberFeatureCall => [
+						explicitOperationCall = true
 						memberCallTarget = featureCall
 						feature = provider.listContains
 						memberCallArguments += child.referenceLocalVariable
@@ -191,25 +189,35 @@ class MappingParameterRetrievalGenerator extends AbstractRoutineContentGenerator
 							type = provider.findTypeReference(parameter)
 							target = variableName.referenceLocalVariable
 						])
+					val retrieveParameter = provider.generateRetrievedParameterCheck(parameter,
+						provider.generateEndOfInCondition())
 					if (extraCondition !== null) {
 						// perform the check before normal retrieved parameter check
 						expressions += XbaseFactory.eINSTANCE.createXIfExpression => [
 							^if = extraCondition.apply
-							then = provider.generateRetrievedParameterCheck(parameter)
+							then = retrieveParameter
 						]
 					} else {
-						expressions += provider.generateRetrievedParameterCheck(parameter)
+						expressions += retrieveParameter
 					}
 				]
 			]
 		]
 	}
 
-	private def generateRetrievedParameterCheck(RoutineTypeProvider provider, MappingParameter parameter) {
-		XbaseFactory.eINSTANCE.createXIfExpression => [
-			it.^if = provider.generateParameterCheck(parameter)
-			it.then = provider.generateEndOfInCondition()
-		]
+	private def generateRetrievedParameterCheck(RoutineTypeProvider provider, MappingParameter parameter,
+		XExpression thenBlock) {
+		val check = provider.generateParameterCheck(parameter)
+		if (check !== null) {
+			// check the conditions for this parameter
+			XbaseFactory.eINSTANCE.createXIfExpression => [
+				it.^if = check
+				it.then = thenBlock
+			]
+		} else {
+			// no conditions to check, just continue
+			thenBlock
+		}
 	}
 
 	private def generateEndOfInCondition(RoutineTypeProvider provider) {
@@ -238,10 +246,8 @@ class MappingParameterRetrievalGenerator extends AbstractRoutineContentGenerator
 			feasibleForParameter(parameter) && (it instanceof InValueConditionGenerator == false)
 		]
 		if (checks.empty) {
-			// no conditions for that element, so we just return true
-			XbaseFactory.eINSTANCE.createXBooleanLiteral => [
-				isTrue = true
-			]
+			// no conditions for that element
+			return null
 		} else {
 			provider.andChain(
 				checks.map [
