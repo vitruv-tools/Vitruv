@@ -39,7 +39,7 @@ abstract class AbstractReactionsExecutor extends AbstractEChangePropagationSpeci
 		ResourceAccess resourceAccess) {
 		LOGGER.trace("Call relevant reactions");
 		for (reaction : reactions) {
-			LOGGER.debug("Calling reaction: " + reaction.class.simpleName + " with change: " + change);
+			LOGGER.trace("Calling reaction: " + reaction.class.simpleName + " with change: " + change);
 			val executionState = new ReactionExecutionState(userInteractor, correspondenceModel, resourceAccess, this);
 			reaction.applyEvent(change, executionState)
 		}

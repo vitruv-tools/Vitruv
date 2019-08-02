@@ -1,0 +1,9 @@
+import "http://www.eclipse.org/uml2/5.0.0/UML" as uml 
+import "http://palladiosimulator.org/PalladioComponentModel/5.2" as pcm
+
+reactions: combinedPcmToUml
+in reaction to changes in PCM
+execute actions in UML
+
+import umlXpcmComponent_R2L using qualified names
+import umlXpcmRepository_R2L using qualified names

@@ -1,7 +1,7 @@
 package tools.vitruv.dsls.mappings.tests.pcmuml
 
-import mir.reactions.umlXpcmTest_L2R.UmlXpcmTest_L2RChangePropagationSpecification
-import mir.reactions.umlXpcmTest_R2L.UmlXpcmTest_R2LChangePropagationSpecification
+import mir.reactions.combinedPcmToUml.CombinedPcmToUmlChangePropagationSpecification
+import mir.reactions.combinedUmlToPcm.CombinedUmlToPcmChangePropagationSpecification
 import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.resource.ResourceSet
@@ -17,8 +17,8 @@ abstract class PcmUmlClassTest extends VitruviusApplicationTest {
 
 	override protected createChangePropagationSpecifications() {
 		return #[
-			new UmlXpcmTest_L2RChangePropagationSpecification,
-			new UmlXpcmTest_R2LChangePropagationSpecification
+			new CombinedPcmToUmlChangePropagationSpecification,
+			new CombinedUmlToPcmChangePropagationSpecification
 		];
 	}
 

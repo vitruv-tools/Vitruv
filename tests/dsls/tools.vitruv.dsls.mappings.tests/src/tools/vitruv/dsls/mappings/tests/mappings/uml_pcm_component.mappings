@@ -50,7 +50,7 @@ mapping RepositoryComponent {
    	 	}
    	 }
    	 
-   	 routine updateConstructoeName(pcm::RepositoryComponent component, pcm::Repository repository){
+   	 routine updateConstructorName(pcm::RepositoryComponent component, pcm::Repository repository){
    	 	action{
    	 		execute{   	 			
    	 		}

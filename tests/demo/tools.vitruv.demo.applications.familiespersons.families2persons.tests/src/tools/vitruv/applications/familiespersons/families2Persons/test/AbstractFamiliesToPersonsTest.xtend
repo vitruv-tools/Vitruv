@@ -9,7 +9,7 @@ import edu.kit.ipd.sdq.metamodels.families.FamiliesFactory
 import org.apache.log4j.Logger
 import org.apache.log4j.Level
 
-class AbstractFamiliesToPersonsTest extends VitruviusApplicationTest {
+abstract class AbstractFamiliesToPersonsTest extends VitruviusApplicationTest {
 	private static val MODEL_FILE_EXTENSION = "families";
 	private static val MODEL_NAME = "model";
 	

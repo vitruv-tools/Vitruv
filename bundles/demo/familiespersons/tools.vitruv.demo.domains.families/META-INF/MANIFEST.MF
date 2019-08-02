@@ -14,6 +14,7 @@ Require-Bundle: com.google.guava,
  tools.vitruv.framework.util,
  tools.vitruv.framework.tuid,
  tools.vitruv.extensions.emf
-Export-Package: tools.vitruv.domains.families
+Export-Package: tools.vitruv.domains.families,
+ tools.vitruv.domains.families.tuid;x-internal:=true
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-Vendor: vitruv.tools

@@ -1,0 +1,172 @@
+import java.util.List
+import org.eclipse.uml2.uml.Package
+import org.eclipse.uml2.uml.Class
+import org.palladiosimulator.pcm.repository.RepositoryComponent
+import org.palladiosimulator.pcm.repository.Repository
+import org.eclipse.xtext.xbase.lib.ObjectExtensions
+import org.eclipse.xtext.xbase.lib.BooleanExtensions
+import org.eclipse.uml2.uml.Operation
+import java.util.Optional
+
+import "http://palladiosimulator.org/PalladioComponentModel/Repository/5.2" as repository
+import "http://www.eclipse.org/uml2/5.0.0/UML" as uml
+import "http://www.eclipse.org/emf/2002/Ecore" as ecore
+
+reactions: umlXpcmComponent_R2L in reaction to changes in PCM
+execute actions in UML
+
+
+routine updateImplementationName(repository::RepositoryComponent component, repository::Repository repository) {
+	action {
+		execute {
+		}
+	}
+}
+
+routine updatePackageName(repository::RepositoryComponent component, repository::Repository repository) {
+	action {
+		execute {
+		}
+	}
+}
+
+routine updateConstructorName(repository::RepositoryComponent component, repository::Repository repository) {
+	action {
+		execute {
+		}
+	}
+}
+
+
+reaction OnRepositoryComponentRepositoryInsertedAsRoot {
+	after element repository::Repository created
+	call repositoryComponent_ElementCreatedCheck(affectedEObject)
+}
+
+reaction OnRepositoryComponentRepositoryDeleted {
+	after element repository::Repository deleted
+	call repositoryComponent_ElementDeletedCheck(affectedEObject)
+}
+
+reaction OnRepositoryComponentRepositoryComponentInsertedInRepository {
+	after element repository::RepositoryComponent inserted in repository::Repository[components__Repository]
+	call repositoryComponent_ElementCreatedCheck(affectedEObject)
+}
+
+reaction OnRepositoryComponentRepositoryComponentRemovedFromRepository {
+	after element repository::RepositoryComponent removed from repository::Repository[components__Repository]
+	call repositoryComponent_ElementDeletedCheck(affectedEObject)
+}
+
+reaction OnRepositoryComponentRepositoryComponentDeleted {
+	after element repository::RepositoryComponent deleted
+	call repositoryComponent_ElementDeletedCheck(affectedEObject)
+}
+
+reaction OnRepositoryComponentEntityNameReplacedAtRepositoryComponentBidirectional {
+	after attribute replaced at repository::RepositoryComponent[entityName]
+	call repositoryComponent_BidirectionalCheck(affectedEObject)
+}
+
+routine repositoryComponent_BidirectionalUpdate(repository::RepositoryComponent component_, repository::Repository repository_) {
+	action {
+		call updateImplementationName(component_, repository_)
+		call updatePackageName(component_, repository_)
+		call updateConstructorName(component_, repository_)
+	}
+}
+
+routine repositoryComponent_CreateMapping(repository::RepositoryComponent component_, repository::Repository repository_) {
+	match {
+		require absence of uml::Package corresponding to component_ tagged with "umlXpcmComponent_map_UML_and_PCM_correspondence_Package:componentPackage_with_RepositoryComponent:component"
+		require absence of uml::Package corresponding to component_ tagged with "umlXpcmComponent_map_UML_and_PCM_correspondence_Package:repositoryPackage_with_RepositoryComponent:component"
+		require absence of uml::Class corresponding to component_ tagged with "umlXpcmComponent_map_UML_and_PCM_correspondence_Class:implementation_with_RepositoryComponent:component"
+		require absence of uml::Operation corresponding to component_ tagged with "umlXpcmComponent_map_UML_and_PCM_correspondence_Operation:constructor_with_RepositoryComponent:component"
+		val repositoryPackage_ = retrieve uml::Package corresponding to repository_ tagged with "umlXpcmRepository_map_UML_and_PCM_correspondence_Package:repositoryPkg_with_Repository:repository"
+	}
+	action {
+		val componentPackage_ = create uml::Package
+		val implementation_ = create uml::Class
+		val constructor_ = create uml::Operation
+		add correspondence between componentPackage_ and component_ tagged with "umlXpcmComponent_map_UML_and_PCM_correspondence_Package:componentPackage_with_RepositoryComponent:component"
+		add correspondence between repositoryPackage_ and component_ tagged with "umlXpcmComponent_map_UML_and_PCM_correspondence_Package:repositoryPackage_with_RepositoryComponent:component"
+		add correspondence between implementation_ and component_ tagged with "umlXpcmComponent_map_UML_and_PCM_correspondence_Class:implementation_with_RepositoryComponent:component"
+		add correspondence between constructor_ and component_ tagged with "umlXpcmComponent_map_UML_and_PCM_correspondence_Operation:constructor_with_RepositoryComponent:component"
+		add correspondence between componentPackage_ and repository_ tagged with "umlXpcmComponent_map_UML_and_PCM_correspondence_Package:componentPackage_with_Repository:repository"
+		add correspondence between repositoryPackage_ and repository_ tagged with "umlXpcmComponent_map_UML_and_PCM_correspondence_Package:repositoryPackage_with_Repository:repository"
+		add correspondence between implementation_ and repository_ tagged with "umlXpcmComponent_map_UML_and_PCM_correspondence_Class:implementation_with_Repository:repository"
+		add correspondence between constructor_ and repository_ tagged with "umlXpcmComponent_map_UML_and_PCM_correspondence_Operation:constructor_with_Repository:repository"
+		execute {
+			repositoryPackage_.getPackagedElements().^add(componentPackage_)
+			componentPackage_.getPackagedElements().^add(implementation_)
+			implementation_.getOwnedOperations().^add(constructor_)
+		}
+		call repositoryComponent_BidirectionalUpdate(component_, repository_)
+	}
+}
+
+routine repositoryComponent_DeleteMapping(uml::Package componentPackage_, uml::Package repositoryPackage_ , uml::Class implementation_ , uml::Operation constructor_) {
+	action {
+		delete componentPackage_
+		delete implementation_
+		delete constructor_
+	}
+}
+
+routine repositoryComponent_BidirectionalCheck(ecore::EObject affectedEObject) {
+	action {
+		call {
+			if ( affectedEObject instanceof RepositoryComponent ) { var RepositoryComponent component_ = affectedEObject { var repository__candidate = component_ . eContainer { if ( repository__candidate !== null && repository__candidate instanceof Repository ) { var Repository repository_ = repository__candidate as Repository { repositoryComponent_BidirectionalUpdate ( component_ , repository_ ) return } } } } }
+			if ( affectedEObject instanceof Repository ) { var Repository repository_ = affectedEObject for ( component__candidate : repository_ . components__Repository ) { if ( component__candidate !== null && component__candidate instanceof RepositoryComponent ) { var RepositoryComponent component_ = component__candidate as RepositoryComponent { repositoryComponent_BidirectionalUpdate ( component_ , repository_ ) return } } } }
+		}
+	}
+}
+
+routine repositoryComponent_ElementCreatedCheck(ecore::EObject affectedEObject) {
+	action {
+		call {
+			if ( affectedEObject instanceof RepositoryComponent ) { var RepositoryComponent component_ = affectedEObject { var repository__candidate = component_ . eContainer { if ( repository__candidate !== null && repository__candidate instanceof Repository ) { var Repository repository_ = repository__candidate as Repository { repositoryComponent_CreateMapping ( component_ , repository_ ) return } } } } }
+			if ( affectedEObject instanceof Repository ) { var Repository repository_ = affectedEObject for ( component__candidate : repository_ . components__Repository ) { if ( component__candidate !== null && component__candidate instanceof RepositoryComponent ) { var RepositoryComponent component_ = component__candidate as RepositoryComponent { repositoryComponent_CreateMapping ( component_ , repository_ ) return } } } }
+		}
+	}
+}
+
+routine repositoryComponent_ElementDeletedCheck(ecore::EObject affectedEObject) {
+	match {
+		val componentPackage_correspondingTo_component = retrieve optional uml::Package corresponding to affectedEObject tagged with "umlXpcmComponent_map_UML_and_PCM_correspondence_Package:componentPackage_with_RepositoryComponent:component"
+		val repositoryPackage_correspondingTo_component = retrieve optional uml::Package corresponding to affectedEObject tagged with "umlXpcmComponent_map_UML_and_PCM_correspondence_Package:repositoryPackage_with_RepositoryComponent:component"
+		val implementation_correspondingTo_component = retrieve optional uml::Class corresponding to affectedEObject tagged with "umlXpcmComponent_map_UML_and_PCM_correspondence_Class:implementation_with_RepositoryComponent:component"
+		val constructor_correspondingTo_component = retrieve optional uml::Operation corresponding to affectedEObject tagged with "umlXpcmComponent_map_UML_and_PCM_correspondence_Operation:constructor_with_RepositoryComponent:component"
+		val componentPackage_correspondingTo_repository = retrieve optional uml::Package corresponding to affectedEObject tagged with "umlXpcmComponent_map_UML_and_PCM_correspondence_Package:componentPackage_with_Repository:repository"
+		val repositoryPackage_correspondingTo_repository = retrieve optional uml::Package corresponding to affectedEObject tagged with "umlXpcmComponent_map_UML_and_PCM_correspondence_Package:repositoryPackage_with_Repository:repository"
+		val implementation_correspondingTo_repository = retrieve optional uml::Class corresponding to affectedEObject tagged with "umlXpcmComponent_map_UML_and_PCM_correspondence_Class:implementation_with_Repository:repository"
+		val constructor_correspondingTo_repository = retrieve optional uml::Operation corresponding to affectedEObject tagged with "umlXpcmComponent_map_UML_and_PCM_correspondence_Operation:constructor_with_Repository:repository"
+	}
+	action {
+		call {
+			var Package componentPackage_
+			var Package repositoryPackage_
+			var Class implementation_
+			var Operation constructor_
+			if ( componentPackage_correspondingTo_component . isPresent ( ) ) componentPackage_ = componentPackage_correspondingTo_component . get ( )
+			if ( repositoryPackage_correspondingTo_component . isPresent ( ) ) repositoryPackage_ = repositoryPackage_correspondingTo_component . get ( )
+			if ( implementation_correspondingTo_component . isPresent ( ) ) implementation_ = implementation_correspondingTo_component . get ( )
+			if ( constructor_correspondingTo_component . isPresent ( ) ) constructor_ = constructor_correspondingTo_component . get ( )
+			if ( componentPackage_correspondingTo_repository . isPresent ( ) ) componentPackage_ = componentPackage_correspondingTo_repository . get ( )
+			if ( repositoryPackage_correspondingTo_repository . isPresent ( ) ) repositoryPackage_ = repositoryPackage_correspondingTo_repository . get ( )
+			if ( implementation_correspondingTo_repository . isPresent ( ) ) implementation_ = implementation_correspondingTo_repository . get ( )
+			if ( constructor_correspondingTo_repository . isPresent ( ) ) constructor_ = constructor_correspondingTo_repository . get ( )
+			if ( componentPackage_ !== null && repositoryPackage_ !== null && implementation_ !== null && constructor_ !== null ) repositoryComponent_DeleteMapping ( componentPackage_ , repositoryPackage_ , implementation_ , constructor_ )
+		}
+	}
+}
+
+routine repositoryComponent_ElementUpdatedCheck(ecore::EObject affectedEObject) {
+	action {
+		call {
+			if ( affectedEObject instanceof RepositoryComponent ) { var RepositoryComponent component_ = affectedEObject { var repository__candidate = component_ . eContainer { if ( repository__candidate !== null && repository__candidate instanceof Repository ) { var Repository repository_ = repository__candidate as Repository { repositoryComponent_CreateMapping ( component_ , repository_ ) return } } } } }
+			if ( affectedEObject instanceof Repository ) { var Repository repository_ = affectedEObject for ( component__candidate : repository_ . components__Repository ) { if ( component__candidate !== null && component__candidate instanceof RepositoryComponent ) { var RepositoryComponent component_ = component__candidate as RepositoryComponent { repositoryComponent_CreateMapping ( component_ , repository_ ) return } } } }
+			repositoryComponent_ElementDeletedCheck(affectedEObject)
+		}
+	}
+}

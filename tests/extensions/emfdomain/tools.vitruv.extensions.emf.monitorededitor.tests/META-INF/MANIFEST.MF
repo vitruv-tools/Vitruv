@@ -27,7 +27,14 @@ Require-Bundle: org.eclipse.ui,
  tools.vitruv.testutils
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
-Export-Package: tools.vitruv.domains.emf.monitorededitor.test.emfmodels.advancedfeatures,
+Export-Package: tools.vitruv.domains.emf.monitorededitor;x-internal:=true,
+ tools.vitruv.domains.emf.monitorededitor.mocking;x-internal:=true,
+ tools.vitruv.domains.emf.monitorededitor.monitor;x-internal:=true,
+ tools.vitruv.domains.emf.monitorededitor.test.emfmodels.advancedfeatures,
+ tools.vitruv.domains.emf.monitorededitor.test.emfmodels.advancedfeatures.impl;x-internal:=true,
+ tools.vitruv.domains.emf.monitorededitor.test.emfmodels.advancedfeatures.util;x-internal:=true,
+ tools.vitruv.domains.emf.monitorededitor.test.mocking;x-internal:=true,
  tools.vitruv.domains.emf.monitorededitor.test.testmodels,
- tools.vitruv.domains.emf.monitorededitor.test.utils
+ tools.vitruv.domains.emf.monitorededitor.test.utils,
+ tools.vitruv.domains.emf.monitorededitor.tools;x-internal:=true
 Bundle-Vendor: vitruv.tools

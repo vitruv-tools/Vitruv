@@ -53,9 +53,4 @@ class MappingRoutinesGenerator {
 		}
 	}
 
-	private def generateCall(ActionStatementBuilder builder, FluentRoutineBuilder target) {
-		builder.call(target, new RoutineCallParameter(ReactionsLanguageConstants.CHANGE_AFFECTED_ELEMENT_ATTRIBUTE))
-		null
-	}
-
 }

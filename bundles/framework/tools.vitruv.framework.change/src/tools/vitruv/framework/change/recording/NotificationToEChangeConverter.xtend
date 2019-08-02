@@ -38,6 +38,10 @@ final class NotificationToEChangeConverter {
 			return #[]
 		}
 
+		if (notification.oldValue == notification.newValue) {
+			return #[]
+		}
+
 		switch (notification.getEventType()) {
 			case Notification.SET: {
 				if (notification.isAttributeNotification()) {
