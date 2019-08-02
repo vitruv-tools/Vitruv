@@ -31,7 +31,7 @@ class XBaseMethodFinder {
 	}
 	
 	public static def listContains(RoutineTypeProvider typeProvider) {
-		typeProvider.findXbaseMethod(PACKAGE_ITERATOR, 'contains')
+		typeProvider.findXbaseMethod(PACKAGE_LIST, 'contains')
 	}
 
 	// should find first add

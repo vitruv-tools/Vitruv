@@ -6,46 +6,44 @@ mappings: umlXpcmRoles for UML and PCM
 mapping RequiredRole {
 
 	map(pcm::OperationRequiredRole role
-		//todo resolve
-		//pcm::InterfaceProvidingRequiringEntity requiringEntity
+		pcm::OperationInterface operationInterface
+		abstract pcm::InterfaceProvidingRequiringEntity requiringEntity as pcm::BasicComponent
 	)
-	//with{
-		//role in requiringEntity[requiredRoles_InterfaceRequiringEntity]
-		//todo after element pcm::OperationInterface replaced at pcm::OperationRequiredRole[requiredInterface__OperationRequiredRole]		
-	//}
+	with{
+		role in requiringEntity[requiredRoles_InterfaceRequiringEntity]
+		operationInterface in role[requiredInterface__OperationRequiredRole]
+	}
 	and(uml::Property property
+		uml::Parameter parameter
 		uml::Class class
 		uml::Interface interface
+		uml::Operation operation
 	)
 	with{
 		property in class[ownedAttribute]
 		interface in property[type]		
+		interface in parameter[type]
+		parameter in operation[ownedParameter]
 	}
 	such that{
 		observe attributes{
 			pcm::OperationRequiredRole[entityName]
 			uml::Property[name]
+			uml::Parameter[name]
 		}
 	}
-	
-	//todo pcm::OperationRequiredRole <> uml::Parameter
-	//is it a seperate mapping or part of this?
-	//	after element uml::Parameter inserted in uml::Operation[ownedParameter]
-	//	after element uml::Parameter removed from uml::Operation[ownedParameter]
-	//	after element uml::Parameter deleted
-	//	after attribute replaced at uml::Parameter[name]
-	//	after element uml::Interface replaced at uml::Parameter[type]
+
 }
 
 mapping ProvidedRole {
 	map(pcm::OperationProvidedRole role
-		//todo resolve
-		//pcm::InterfaceProvidingRequiringEntity requiringEntity
+		pcm::OperationInterface operationInterface
+		abstract pcm::InterfaceProvidingRequiringEntity requiringEntity as pcm::BasicComponent
 	)
-	//with{
-		//role in requiringEntity[providedRoles_InterfaceProvidingEntity]
-		//todo after element pcm::OperationInterface replaced at pcm::OperationProvidedRole[providedInterface__OperationProvidedRole]
-	//}
+	with{
+		role in requiringEntity[providedRoles_InterfaceProvidingEntity]
+		operationInterface in role[providedInterface__OperationProvidedRole]
+	}
 	and(uml::InterfaceRealization interfaceRealization
 		uml::Class class
 		uml::Interface interface

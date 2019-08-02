@@ -49,7 +49,7 @@ abstract class AbstractMappingEntityGenerator {
 	«p2.value.name»_correspondingTo_«p1.value.name»'''
 
 	def protected String getParameterName(MappingParameter parameter) '''
-	_«parameter.value.name»'''
+	«parameter.value.name»_'''
 
 	def protected getAttributeName(MetaclassEAttributeReference parameter) {
 		parameter.feature.name

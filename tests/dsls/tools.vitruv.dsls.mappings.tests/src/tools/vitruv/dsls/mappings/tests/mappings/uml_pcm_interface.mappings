@@ -5,23 +5,17 @@ mappings: umlXpcmInterface for UML and PCM
  
 mapping OperationInterface {
 
-
 	map(pcm::OperationInterface operationInterface
-		mapped pcm::Repository repository with repositoryPackage
+		mapped pcm::Repository repository with repositoryPackage tagged "umlXpcmRepository_map_UML_and_PCM_correspondence_Package:repositoryPkg_with_Repository:repository"
 	)
 	with{
 		operationInterface in repository[interfaces__Repository]
-//		operationInterface in operationInterface[parentInterfaces__Interface]
 	}
-	and(//uml::Generalization generalization
-		mapped uml::Package repositoryPackage with repository
-		uml::Interface interface
+	and(uml::Interface interface
+		mapped uml::Package repositoryPackage with repository tagged "umlXpcmRepository_map_UML_and_PCM_correspondence_Package:repositoryPkg_with_Repository:repository"	
 	)
 	with{
-		interface in repositoryPackage[packagedElement]
-		//generalization in interface[generalization]
-		
-		//todo 	element replaced at	uml::Generalization[general]		
+		interface in repositoryPackage[packagedElement]		
 	}
 	such that{
 		observe attributes{
@@ -29,4 +23,21 @@ mapping OperationInterface {
 			uml::Interface[name]
 		}
 	}	
+}
+//not sure if this can be combined into the mapping above, or if this is independent
+mapping OperationInterfaceParent{
+	
+	map(mapped pcm::OperationInterface operationInterface with interface tagged "umlXpcmInterface_map_UML_and_PCM_correspondence_Interface:interface_with_OperationInterface:operationInterface"
+		pcm::OperationInterface parentInterface
+	)
+	with{
+		parentInterface in operationInterface[parentInterfaces__Interface]
+	}
+	and(mapped uml::Interface interface with operationInterface tagged "umlXpcmInterface_map_UML_and_PCM_correspondence_Interface:interface_with_OperationInterface:operationInterface"
+		uml::Generalization generalization
+	)
+	with{
+		generalization in interface[generalization]
+		//todo 	element replaced at	uml::Generalization[general]  (is this really needed?)
+	}
 }
