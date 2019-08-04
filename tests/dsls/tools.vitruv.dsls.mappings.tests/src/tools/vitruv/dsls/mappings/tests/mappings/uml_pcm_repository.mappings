@@ -6,17 +6,14 @@ mappings: umlXpcmRepository for UML and PCM
 mapping Repository {
 
    map (pcm::Repository repository)
-   and (uml::Package rootPkg 
-   	uml::Package repositoryPkg 
+   and (uml::Package repositoryPkg 
    	uml::Package contractsPkg 
    	uml::Package datatypesPkg
    )
    with {
-  	null  equals rootPkg[nestedPackage]
-  repositoryPkg in rootPkg[packagedElement]
-   	contractsPkg in rootPkg[packagedElement]
-   	datatypesPkg in rootPkg[packagedElement]
-   	"repositories" equals repositoryPkg[name]
+  	//null  equals repositoryPkg[nestedPackage]
+   	contractsPkg in repositoryPkg[packagedElement]
+   	datatypesPkg in repositoryPkg[packagedElement]
    	"contracts" equals contractsPkg[name]
    	"datatypes" equals datatypesPkg[name]
    }
@@ -42,7 +39,7 @@ mapping Repository {
 				//}
 			}
 		}
-		routine updateRepoName(uml::Package rootPkg, uml::Package repositoryPkg, uml::Package contractsPkg, uml::Package datatypesPkg) {
+		routine updateRepoName(uml::Package repositoryPkg, uml::Package contractsPkg, uml::Package datatypesPkg) {
 			//match{
 			//	val repository = retrieve optional pcm::Repository corresponding to affectedEObject tagged with "umlXpcm_map_UML_and_PCM_correspondence_Repository:repository_with_Package:repositoryPkg"
 			//} 	

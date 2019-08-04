@@ -3,22 +3,6 @@ import "http://palladiosimulator.org/PalladioComponentModel/5.2" as pcm
     	
 mappings: umlXpcmTest for UML and PCM
  
- mapping SystemXPackage {
-	map(pcm::System system)
-	and(uml::Package pkg)
-//	with{
-	//	pkg in pkg[packagedElement]
-//	}
-	such that {
-		//observe attributes {
-		//	pcm::System[entityName]
-		//	uml::Package[name]
-		//}
-	}
-	//todo: add reaction for IPREClassRemoved, IPREClassNameChanged, IPREConstructorOperationNameChanged
-}
-
-
 mapping RepositoryXPackage {
 
    map (pcm::Repository repository)
