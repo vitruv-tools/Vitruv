@@ -6,12 +6,12 @@ mappings: umlXpcmDatatypes for UML and PCM
 mapping CompositeDataype {
 	map(pcm::CompositeDataType type)
 	and(uml::Class class
-		uml::Parameter parameter
-		uml::Property property
+//		uml::Parameter parameter
+//		uml::Property property
 	)
 }
 
-mapping CollectionDatatype{
-	map(pcm::CollectionDataType type)
-	and(uml::Properties properties)
-}
+//mapping CollectionDatatype{
+//	map(pcm::CollectionDataType type)
+//	and(uml::Properties properties)
+//}
