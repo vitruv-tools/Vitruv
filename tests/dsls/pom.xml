@@ -19,7 +19,6 @@
 		<module>tools.vitruv.dsls.reactions.tests</module>
 		<!--<module>tools.vitruv.dsls.reactions.ui.tests</module>-->
 		<module>tools.vitruv.dsls.mappings.tests</module>
-		<module>tools.vitruv.dsls.mappings.tests.umlpcm</module>		
 		<!--<module>tools.vitruv.dsls.mappings.ui.tests</module>-->
 		<module>tools.vitruv.dsls.mappings.tests.addressesXrecipients</module>
 		<module>tools.vitruv.dsls.commonalities.tests</module>

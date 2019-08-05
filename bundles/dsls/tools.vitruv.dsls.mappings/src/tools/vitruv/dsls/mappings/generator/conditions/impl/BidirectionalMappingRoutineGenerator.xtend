@@ -1,16 +1,14 @@
 package tools.vitruv.dsls.mappings.generator.conditions.impl
 
 import java.util.List
-import java.util.function.Consumer
+import tools.vitruv.dsls.mappings.generator.MappingGeneratorContext
 import tools.vitruv.dsls.mappings.generator.conditions.AbstractBidirectionalCondition
 import tools.vitruv.dsls.mappings.generator.integration.AbstractReactionIntegrationGenerator
 import tools.vitruv.dsls.mappings.mappingsLanguage.MappingParameter
 import tools.vitruv.dsls.mappings.mappingsLanguage.RoutineIntegration
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.ActionStatementBuilder
-import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.InputBuilder
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.RoutineCallParameter
-import tools.vitruv.dsls.mappings.generator.MappingGeneratorContext
 
 /**
  * 

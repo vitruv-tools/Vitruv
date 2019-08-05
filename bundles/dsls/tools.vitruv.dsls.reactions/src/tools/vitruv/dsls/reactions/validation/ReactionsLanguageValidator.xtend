@@ -66,20 +66,23 @@ class ReactionsLanguageValidator extends AbstractReactionsLanguageValidator {
 
 		// check for duplicate reactions segment names globally:
 		val resource = reactionsSegment.eResource;
-		val visibleReactionsSegmentDescs = reactionsImportScopeHelper.getVisibleReactionsSegmentDescriptions(reactionsSegment);
-		val duplicateNameSegmentDesc = visibleReactionsSegmentDescs.findFirst[it.name.toString.formattedReactionsSegmentName.equals(segmentFormattedName)];
+		val visibleReactionsSegmentDescs = reactionsImportScopeHelper.
+			getVisibleReactionsSegmentDescriptions(reactionsSegment);
+		val duplicateNameSegmentDesc = visibleReactionsSegmentDescs.findFirst [
+			it.name.toString.formattedReactionsSegmentName.equals(segmentFormattedName)
+		];
 		if (duplicateNameSegmentDesc !== null) {
 			// path relative to current file:
 			val pathToOtherSegment = duplicateNameSegmentDesc.EObjectURI.trimFragment.deresolve(resource.URI);
 			warning(
-				"Duplicate reactions segment name '" + segmentFormattedName + "': Already defined in " + pathToOtherSegment,
+				"Duplicate reactions segment name '" + segmentFormattedName + "': Already defined in " +
+					pathToOtherSegment,
 				reactionsSegment,
 				ReactionsLanguagePackage.Literals.REACTIONS_SEGMENT__NAME
 			);
 		}
 
 		// validate reactions imports:
-
 		// check for different metamodel pairs in imports:
 		checkNoDifferentMetamodelPairImports(reactionsSegment);
 
@@ -109,14 +112,16 @@ class ReactionsLanguageValidator extends AbstractReactionsLanguageValidator {
 	}
 
 	private def void checkNoDifferentMetamodelPairImports(ReactionsSegment reactionsSegment) {
-		// imported reactions segments need to use the same metamodel pair:
+		// imported reactions segments need to use the same metamodel pair: (when reactions will be imported, and not just routines)
 		val metamodelPairName = reactionsSegment.formattedMetamodelPair;
-		for (reactionsImport : reactionsSegment.reactionsImports) {
+		for (reactionsImport : reactionsSegment.reactionsImports.filter[it.routinesOnly == false]) {
 			val importedSegment = reactionsImport.importedReactionsSegment;
 			val importedMetamodelPairName = importedSegment.formattedMetamodelPair;
 			if (!metamodelPairName.equals(importedMetamodelPairName)) {
-				val errorMessage = "Cannot import reactions segment using a different metamodel pair: " + importedMetamodelPairName;
-				error(errorMessage, reactionsImport, ReactionsLanguagePackage.Literals.REACTIONS_IMPORT__IMPORTED_REACTIONS_SEGMENT);
+				val errorMessage = "Cannot import reactions segment using a different metamodel pair: " +
+					importedMetamodelPairName;
+				error(errorMessage, reactionsImport,
+					ReactionsLanguagePackage.Literals.REACTIONS_IMPORT__IMPORTED_REACTIONS_SEGMENT);
 			}
 		}
 	}
@@ -130,8 +135,10 @@ class ReactionsLanguageValidator extends AbstractReactionsLanguageValidator {
 			val duplicateImport = alreadyCheckedImports.putIfAbsent(importedSegmentFormattedName, reactionsImport);
 			if (duplicateImport !== null) {
 				val errorMessage = "Duplicate reactions import: " + importedSegmentFormattedName;
-				error(errorMessage, reactionsImport, ReactionsLanguagePackage.Literals.REACTIONS_IMPORT__IMPORTED_REACTIONS_SEGMENT);
-				error(errorMessage, duplicateImport, ReactionsLanguagePackage.Literals.REACTIONS_IMPORT__IMPORTED_REACTIONS_SEGMENT);
+				error(errorMessage, reactionsImport,
+					ReactionsLanguagePackage.Literals.REACTIONS_IMPORT__IMPORTED_REACTIONS_SEGMENT);
+				error(errorMessage, duplicateImport,
+					ReactionsLanguagePackage.Literals.REACTIONS_IMPORT__IMPORTED_REACTIONS_SEGMENT);
 			}
 		}
 	}
@@ -144,7 +151,8 @@ class ReactionsLanguageValidator extends AbstractReactionsLanguageValidator {
 			val importImportedSegments = importedSegment.routinesImportHierarchy.values;
 			if (importImportedSegments.findFirst[it.formattedName.equals(segmentFormattedName)] !== null) {
 				val errorMessage = "Cyclic reactions import! Cannot transitively import self: " + segmentFormattedName;
-				error(errorMessage, reactionsImport, ReactionsLanguagePackage.Literals.REACTIONS_IMPORT__IMPORTED_REACTIONS_SEGMENT);
+				error(errorMessage, reactionsImport,
+					ReactionsLanguagePackage.Literals.REACTIONS_IMPORT__IMPORTED_REACTIONS_SEGMENT);
 			}
 		}
 	}
@@ -157,12 +165,16 @@ class ReactionsLanguageValidator extends AbstractReactionsLanguageValidator {
 			val importIncludedReactionsSegments = importedSegment.reactionsImportHierarchy.values;
 			for (includedReactionsSegment : importIncludedReactionsSegments) {
 				val includedReactionsSegmentFormattedName = includedReactionsSegment.formattedName;
-				val duplicateReactionsImport = alreadyCheckedIncludedReactions.putIfAbsent(includedReactionsSegmentFormattedName, reactionsImport);
+				val duplicateReactionsImport = alreadyCheckedIncludedReactions.putIfAbsent(
+					includedReactionsSegmentFormattedName, reactionsImport);
 				if (duplicateReactionsImport !== null) {
-					val errorMessage = "Cannot (possibly transitively) import reactions of the same reactions segment ('" 
-							+ includedReactionsSegmentFormattedName + "') more than once. Consider importing only the routines for one of them.";
-					error(errorMessage, reactionsImport, ReactionsLanguagePackage.Literals.REACTIONS_IMPORT__IMPORTED_REACTIONS_SEGMENT);
-					error(errorMessage, duplicateReactionsImport, ReactionsLanguagePackage.Literals.REACTIONS_IMPORT__IMPORTED_REACTIONS_SEGMENT);
+					val errorMessage = "Cannot (possibly transitively) import reactions of the same reactions segment ('" +
+						includedReactionsSegmentFormattedName +
+						"') more than once. Consider importing only the routines for one of them.";
+					error(errorMessage, reactionsImport,
+						ReactionsLanguagePackage.Literals.REACTIONS_IMPORT__IMPORTED_REACTIONS_SEGMENT);
+					error(errorMessage, duplicateReactionsImport,
+						ReactionsLanguagePackage.Literals.REACTIONS_IMPORT__IMPORTED_REACTIONS_SEGMENT);
 				}
 			}
 		}
@@ -171,16 +183,17 @@ class ReactionsLanguageValidator extends AbstractReactionsLanguageValidator {
 	private def void checkNoDuplicateReactionNamesInIncludedReactions(ReactionsSegment reactionsSegment) {
 		// formatted reaction name -> reaction
 		val localReactions = reactionsSegment.regularReactions.toMap[formattedName];
-		val importedReactions = reactionsSegment.reactionsImportHierarchy.filter [
-			importPath, segment | importPath.length > 1
+		val importedReactions = reactionsSegment.reactionsImportHierarchy.filter [ importPath, segment |
+			importPath.length > 1
 		].values.map[regularReactions].flatten;
 		for (importedReaction : importedReactions) {
 			val importedReactionName = importedReaction.formattedName;
 			// warning if a reaction is declared locally with a name already existing in imported segments:
 			val duplicateReaction = localReactions.get(importedReactionName);
 			if (duplicateReaction !== null) {
-				val errorMessage = "A reaction with this name ('" + importedReactionName + "') already exists in segment '" 
-						+ importedReaction.reactionsSegment.formattedName + "'. Consider using a different name.";
+				val errorMessage = "A reaction with this name ('" + importedReactionName +
+					"') already exists in segment '" + importedReaction.reactionsSegment.formattedName +
+					"'. Consider using a different name.";
 				warning(errorMessage, duplicateReaction, ReactionsLanguagePackage.Literals.REACTION__NAME);
 			}
 		}
@@ -200,17 +213,23 @@ class ReactionsLanguageValidator extends AbstractReactionsLanguageValidator {
 				// check for name clashes with local routines:
 				val duplicateRoutine = localRoutines.get(includedRoutineName);
 				if (duplicateRoutine !== null) {
-					val errorMessage = "Name-clash between imported and local routine ('" + includedRoutineName + "'). Consider importing using qualified names.";
-					error(errorMessage, reactionsImport, ReactionsLanguagePackage.Literals.REACTIONS_IMPORT__IMPORTED_REACTIONS_SEGMENT);
+					val errorMessage = "Name-clash between imported and local routine ('" + includedRoutineName +
+						"'). Consider importing using qualified names.";
+					error(errorMessage, reactionsImport,
+						ReactionsLanguagePackage.Literals.REACTIONS_IMPORT__IMPORTED_REACTIONS_SEGMENT);
 					error(errorMessage, duplicateRoutine, ReactionsLanguagePackage.Literals.ROUTINE__NAME);
 				}
 
 				// check for name clashes with included routines from other imports:
-				val duplicateReactionsImport = alreadyCheckedIncludedRoutines.putIfAbsent(includedRoutineName, reactionsImport);
+				val duplicateReactionsImport = alreadyCheckedIncludedRoutines.putIfAbsent(includedRoutineName,
+					reactionsImport);
 				if (duplicateReactionsImport !== null) {
-					val errorMessage = "Name-clash between imported routines ('" + includedRoutineName + "'). Consider importing one of them using qualified names.";
-					error(errorMessage, reactionsImport, ReactionsLanguagePackage.Literals.REACTIONS_IMPORT__IMPORTED_REACTIONS_SEGMENT);
-					error(errorMessage, duplicateReactionsImport, ReactionsLanguagePackage.Literals.REACTIONS_IMPORT__IMPORTED_REACTIONS_SEGMENT);
+					val errorMessage = "Name-clash between imported routines ('" + includedRoutineName +
+						"'). Consider importing one of them using qualified names.";
+					error(errorMessage, reactionsImport,
+						ReactionsLanguagePackage.Literals.REACTIONS_IMPORT__IMPORTED_REACTIONS_SEGMENT);
+					error(errorMessage, duplicateReactionsImport,
+						ReactionsLanguagePackage.Literals.REACTIONS_IMPORT__IMPORTED_REACTIONS_SEGMENT);
 				}
 			}
 		}
@@ -225,9 +244,11 @@ class ReactionsLanguageValidator extends AbstractReactionsLanguageValidator {
 				// imported segment's routines facade is included:
 				val includedRoutinesFacadeName = importedSegment.formattedName;
 				// check for name clashes with included routines facades from other imports:
-				val duplicateReactionsImport = alreadyCheckedIncludedRoutinesFacades.putIfAbsent(includedRoutinesFacadeName, reactionsImport);
+				val duplicateReactionsImport = alreadyCheckedIncludedRoutinesFacades.putIfAbsent(
+					includedRoutinesFacadeName, reactionsImport);
 				if (duplicateReactionsImport !== null) {
-					errorIncludedRoutinesFacadesNameClash(reactionsImport, duplicateReactionsImport, includedRoutinesFacadeName);
+					errorIncludedRoutinesFacadesNameClash(reactionsImport, duplicateReactionsImport,
+						includedRoutinesFacadeName);
 				}
 			} else {
 				// check for transitively included routines facades:
@@ -235,20 +256,25 @@ class ReactionsLanguageValidator extends AbstractReactionsLanguageValidator {
 				for (includedRoutinesFacadeSegment : importIncludedRoutinesFacadeSegments) {
 					val includedRoutinesFacadeName = includedRoutinesFacadeSegment.formattedName;
 					// check for name clashes with included routines facades from other imports:
-					val duplicateReactionsImport = alreadyCheckedIncludedRoutinesFacades.putIfAbsent(includedRoutinesFacadeName, reactionsImport);
+					val duplicateReactionsImport = alreadyCheckedIncludedRoutinesFacades.putIfAbsent(
+						includedRoutinesFacadeName, reactionsImport);
 					if (duplicateReactionsImport !== null) {
-						errorIncludedRoutinesFacadesNameClash(reactionsImport, duplicateReactionsImport, includedRoutinesFacadeName);
+						errorIncludedRoutinesFacadesNameClash(reactionsImport, duplicateReactionsImport,
+							includedRoutinesFacadeName);
 					}
 				}
 			}
 		}
 	}
 
-	private def void errorIncludedRoutinesFacadesNameClash(ReactionsImport checkedImport, ReactionsImport conflictingImport, String conflictingSegmentName) {
-		val errorMessage = "Name-clash between routines imported (possibly transitively) with qualified names ('" + conflictingSegmentName
-			+ "'). Consider importing one of them without qualified names.";
-		error(errorMessage, checkedImport, ReactionsLanguagePackage.Literals.REACTIONS_IMPORT__IMPORTED_REACTIONS_SEGMENT);
-		error(errorMessage, conflictingImport, ReactionsLanguagePackage.Literals.REACTIONS_IMPORT__IMPORTED_REACTIONS_SEGMENT);
+	private def void errorIncludedRoutinesFacadesNameClash(ReactionsImport checkedImport,
+		ReactionsImport conflictingImport, String conflictingSegmentName) {
+		val errorMessage = "Name-clash between routines imported (possibly transitively) with qualified names ('" +
+			conflictingSegmentName + "'). Consider importing one of them without qualified names.";
+		error(errorMessage, checkedImport,
+			ReactionsLanguagePackage.Literals.REACTIONS_IMPORT__IMPORTED_REACTIONS_SEGMENT);
+		error(errorMessage, conflictingImport,
+			ReactionsLanguagePackage.Literals.REACTIONS_IMPORT__IMPORTED_REACTIONS_SEGMENT);
 	}
 
 	private def void checkNoDuplicateReactionNames(ReactionsSegment reactionsSegment) {
@@ -287,8 +313,8 @@ class ReactionsLanguageValidator extends AbstractReactionsLanguageValidator {
 				ReactionsLanguagePackage.Literals.RETRIEVE_MODEL_ELEMENT__NAME);
 		}
 	}
-	
-		@Check
+
+	@Check
 	def checkCreateElementName(CreateModelElement element) {
 		if (!element.name.nullOrEmpty && element.name.startsWith("_")) {
 			error("Element names must not start with an underscore.",
@@ -303,7 +329,6 @@ class ReactionsLanguageValidator extends AbstractReactionsLanguageValidator {
 //				ReactionsLanguagePackage.Literals.EFFECT__CODE_BLOCK);
 //		}
 //	}
-	
 //	@Check
 //	def checkEffectInput(RoutineInput effectInput) {
 //		if (!effectInput.javaInputElements.empty) {
@@ -311,16 +336,13 @@ class ReactionsLanguageValidator extends AbstractReactionsLanguageValidator {
 //				ReactionsLanguagePackage.Literals.ROUTINE_INPUT__JAVA_INPUT_ELEMENTS);
 //		}
 //	}
-	
 	@Check
 	def checkRoutine(Routine routine) {
 		if (routine.name.startsWith("_")) {
-			error("Routine names must not start with an underscore.",
-				ReactionsLanguagePackage.Literals.ROUTINE__NAME);
+			error("Routine names must not start with an underscore.", ReactionsLanguagePackage.Literals.ROUTINE__NAME);
 		}
 		if (!Character.isLowerCase(routine.name.charAt(0))) {
-			warning("Routine names should start lower case",
-				ReactionsLanguagePackage.Literals.ROUTINE__NAME);
+			warning("Routine names should start lower case", ReactionsLanguagePackage.Literals.ROUTINE__NAME);
 		}
 
 		// validate routine overrides:
@@ -334,21 +356,26 @@ class ReactionsLanguageValidator extends AbstractReactionsLanguageValidator {
 				val overriddenReactionsSegment = routine.reactionsSegment.getReactionsSegment(overrideImportPath);
 				if (overriddenReactionsSegment === null) {
 					// invalid override import path:
-					val errorMessage = "Can not find overridden reactions segment for this import path: " + overrideImportPath.pathString;
+					val errorMessage = "Can not find overridden reactions segment for this import path: " +
+						overrideImportPath.pathString;
 					error(errorMessage, routine, ReactionsLanguagePackage.Literals.ROUTINE__OVERRIDE_IMPORT_PATH);
 				} else {
 					// check for matching name:
 					val routineName = routine.formattedName;
-					val overriddenRoutine = overriddenReactionsSegment.regularRoutines.findFirst[it.formattedName.equals(routineName)];
+					val overriddenRoutine = overriddenReactionsSegment.regularRoutines.findFirst [
+						it.formattedName.equals(routineName)
+					];
 					if (overriddenRoutine === null) {
-						val errorMessage = "Routine name does not match any routine in the overridden reactions segment: " + routineName;
+						val errorMessage = "Routine name does not match any routine in the overridden reactions segment: " +
+							routineName;
 						error(errorMessage, routine, ReactionsLanguagePackage.Literals.ROUTINE__NAME);
 					} else {
 						// check for matching parameters / signature:
 						val inputSignature = routine.inputSignature;
 						val overriddenInputSignature = overriddenRoutine.inputSignature;
 						if (!inputSignature.equals(overriddenInputSignature)) {
-							val errorMessage = "Input parameters need to match those of the overridden routine: " + overriddenInputSignature;
+							val errorMessage = "Input parameters need to match those of the overridden routine: " +
+								overriddenInputSignature;
 							error(errorMessage, routine, ReactionsLanguagePackage.Literals.ROUTINE__INPUT);
 						}
 					}
@@ -356,7 +383,7 @@ class ReactionsLanguageValidator extends AbstractReactionsLanguageValidator {
 			}
 		}
 	}
-	
+
 	private def String getInputSignature(Routine routine) {
 		val signature = new StringBuilder();
 		signature.append('(');
@@ -370,25 +397,27 @@ class ReactionsLanguageValidator extends AbstractReactionsLanguageValidator {
 		signature.append(')');
 		return signature.toString;
 	}
-	
+
 	@Check
 	def checkReaction(Reaction reaction) {
 		if (!Character.isUpperCase(reaction.name.charAt(0))) {
-			warning("Reaction names should start upper case",
-				ReactionsLanguagePackage.Literals.REACTION__NAME);
+			warning("Reaction names should start upper case", ReactionsLanguagePackage.Literals.REACTION__NAME);
 		}
 
 		// reaction overrides must have matching name:
 		if (reaction.isOverride) {
 			val reactionName = reaction.formattedName;
-			val overriddenReaction = reaction.overriddenReactionsSegment.regularReactions.findFirst[it.formattedName.equals(reactionName)];
+			val overriddenReaction = reaction.overriddenReactionsSegment.regularReactions.findFirst [
+				it.formattedName.equals(reactionName)
+			];
 			if (overriddenReaction === null) {
-				val errorMessage = "Reaction name does not match any reaction in the overridden reactions segment: " + reactionName;
+				val errorMessage = "Reaction name does not match any reaction in the overridden reactions segment: " +
+					reactionName;
 				error(errorMessage, reaction, ReactionsLanguagePackage.Literals.REACTION__NAME);
 			}
 		}
 	}
-	
+
 	@Check
 	def checkMetaclassFeature(ModelElementChange elementChange) {
 		val elementType = elementChange?.elementType?.metaclass;
@@ -407,9 +436,12 @@ class ReactionsLanguageValidator extends AbstractReactionsLanguageValidator {
 		if (atomicChangeType instanceof ElementReferenceChangeType) {
 			val featureType = atomicChangeType.feature?.feature?.EType as EClass;
 			if (elementType !== null && featureType !== null) {
-				if (!elementType.equals(featureType) && !elementType.EAllSuperTypes.contains(featureType) && !featureType.EAllSuperTypes.contains(elementType)) {
-					warning("Element of specified type cannot be contained in the specified features",
-						elementChange, ReactionsLanguagePackage.Literals.MODEL_ELEMENT_CHANGE__ELEMENT_TYPE
+				if (!elementType.equals(featureType) && !elementType.EAllSuperTypes.contains(featureType) &&
+					!featureType.EAllSuperTypes.contains(elementType)) {
+					warning(
+						"Element of specified type cannot be contained in the specified features",
+						elementChange,
+						ReactionsLanguagePackage.Literals.MODEL_ELEMENT_CHANGE__ELEMENT_TYPE
 					)
 				}
 			}
