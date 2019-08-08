@@ -55,9 +55,13 @@ abstract class AbstractMappingEntityGenerator {
 		parameter.feature.name
 	}
 
-	def protected getParameterName(MetaclassReference parameter) {
+	def protected getMetaclassName(MetaclassReference parameter) {
 		parameter.metaclass.getParameterName
 	}
+	
+	def protected getMetaclassFeatureName(MetaclassFeatureReference parameter)'''
+	«parameter.metaclass.getParameterName»:«parameter.feature.name»'''
+	
 
 	def protected getParameterName(EClass clazz) {
 		clazz.name

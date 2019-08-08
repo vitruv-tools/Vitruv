@@ -26,17 +26,17 @@ class ElementReplacedReactionGenerator extends AbstractContainingReactionTypeGen
 	override generateTrigger(MappingGeneratorContext context) {
 		if (targetElement !== null) {
 			this.usesNewValue = true
-			this.reactionName = '''«targetElement.parameterName»ReplacedAt«reference.parameterName»'''
+			this.reactionName = '''«targetElement.metaclassName»ReplacedAt«reference.metaclassName»'''
 			return context.create.reaction(reactionName()).afterElement(targetElement.metaclass).replacedAt(
 				reference.feature as EReference)
 		} else {
-			this.reactionName = '''ElementReplacedAt«reference.parameterName»'''
+			this.reactionName = '''ElementReplacedAt«reference.metaclassName»'''
 			return context.create.reaction(reactionName()).afterElement.replacedAt(reference.feature as EReference)
 		}
 	}
 
 	override toString() '''
-	«IF targetElement!==null»«targetElement.parameterName»«ELSE»element«ENDIF» replaced at «targetElement.parameterName»'''
+	«IF targetElement!==null»«targetElement.metaclassName»«ELSE»element«ENDIF» replaced at «reference.metaclassFeatureName»'''
 
 	override equals(Object obj) {
 		if (obj instanceof ElementReplacedReactionGenerator) {

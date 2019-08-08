@@ -1,5 +1,6 @@
 package tools.vitruv.dsls.mappings.generator.routines.impl
 
+import java.util.ArrayList
 import org.eclipse.emf.ecore.EClass
 import org.eclipse.xtext.xbase.XbaseFactory
 import tools.vitruv.dsls.mappings.generator.routines.AbstractMappingRoutineGenerator
@@ -38,12 +39,14 @@ class CreateMappingRoutine extends AbstractMappingRoutineGenerator {
 				taggingParameter.parameterName).taggedWith(taggingParameter, correspondingParameter)
 		]
 		// retrieve all existing mapping parameters
-		reactionParameters.filter[it instanceof ExistingMappingCorrespondence].forEach [
+		correspondingParameters.filter [
+			it instanceof ExistingMappingCorrespondence
+		].forEach [
 			val reactionParameter = it as ExistingMappingCorrespondence
 			val correspondingParameter = reactionParameter.correspondence
 			val tag = reactionParameter.tag
-			val retrieval = builder.vall(correspondingParameter.parameterName).retrieve(
-				correspondingParameter.value.metaclass).correspondingTo(reactionParameter.parameterName)
+			val retrieval = builder.vall(reactionParameter.parameterName).retrieve(
+				reactionParameter.value.metaclass).correspondingTo(correspondingParameter.parameterName)
 			if (tag !== null) {
 				retrieval.taggedWith(tag)
 			}

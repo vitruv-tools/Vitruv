@@ -39,7 +39,7 @@ class MappingRoutinesGenerator {
 		new BidirectionalCheckRoutineGenerator().generateRoutine // calls BidirectionalUpdateRoutineGenerator
 		new CreatedCheckRoutineGenerator().generateRoutine // calls CreateMappingRoutine
 		new DeletedCheckRoutineGenerator().generateRoutine // calls DeleteMappingRoutine
-		new UpdatedCheckRoutineGenerator().generateRoutine // calls CreateMappingRoutine or DeletedCheckRoutineGenerator
+		new UpdatedCheckRoutineGenerator().generateRoutine // calls CreateMappingRoutine or DeletedCheckRoutineGenerator 
 	}
 
 	public def generateRoutineCall(AbstractReactionTriggerGenerator generator) {
