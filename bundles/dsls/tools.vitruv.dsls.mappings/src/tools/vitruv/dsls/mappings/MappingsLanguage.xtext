@@ -37,7 +37,7 @@ Mapping:
 	'}')?
 	('such' 'that' '{'
 	(bidirectionalizableConditions+=BidirectionalizableCondition)*
-	(observeAttributes=ObserveAttributes)?
+	(observeChanges=ObserveChanges)?
 	(bidirectionalizableRoutines+=RoutineIntegration)*
 	'}')?
 	('forward' 'execute' '{'
@@ -69,8 +69,8 @@ ExistingMappingCorrespondence:
 	 ('tagged' tag=STRING)?
 ;
 
-ObserveAttributes:
-	'observe' 'attributes' '{' (attributes+=MetaclassEAttributeReference)+ '}';
+ObserveChanges:
+	'observe' 'changes' '{' (features+=MetaclassFeatureReference)+ '}';
 
 ReactionIntegration:
 	(documentation=ML_COMMENT)?

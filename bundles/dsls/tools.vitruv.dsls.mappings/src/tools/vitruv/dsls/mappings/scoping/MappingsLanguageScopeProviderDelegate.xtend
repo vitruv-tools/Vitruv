@@ -7,17 +7,19 @@ import org.eclipse.emf.ecore.EReference
 import org.eclipse.emf.ecore.EStructuralFeature
 import org.eclipse.xtext.resource.EObjectDescription
 import org.eclipse.xtext.scoping.IScope
+import tools.vitruv.dsls.mappings.mappingsLanguage.AbstractMappingParameter
 import tools.vitruv.dsls.mappings.mappingsLanguage.BidirectionalizableCondition
 import tools.vitruv.dsls.mappings.mappingsLanguage.BidirectionalizableExpression
 import tools.vitruv.dsls.mappings.mappingsLanguage.EnforceableCondition
 import tools.vitruv.dsls.mappings.mappingsLanguage.FeatureCondition
 import tools.vitruv.dsls.mappings.mappingsLanguage.FeatureConditionParameter
 import tools.vitruv.dsls.mappings.mappingsLanguage.Mapping
+import tools.vitruv.dsls.mappings.mappingsLanguage.MappingParameter
 import tools.vitruv.dsls.mappings.mappingsLanguage.MappingsLanguagePackage.Literals
 import tools.vitruv.dsls.mappings.mappingsLanguage.MultiValueCondition
 import tools.vitruv.dsls.mappings.mappingsLanguage.MultiValueConditionOperator
 import tools.vitruv.dsls.mappings.mappingsLanguage.NumCompareCondition
-import tools.vitruv.dsls.mappings.mappingsLanguage.ObserveAttributes
+import tools.vitruv.dsls.mappings.mappingsLanguage.ObserveChanges
 import tools.vitruv.dsls.mappings.mappingsLanguage.SingleSidedCondition
 import tools.vitruv.dsls.mirbase.mirBase.MetaclassFeatureReference
 import tools.vitruv.dsls.mirbase.mirBase.MetaclassReference
@@ -25,8 +27,7 @@ import tools.vitruv.dsls.mirbase.mirBase.NamedMetaclassReference
 import tools.vitruv.dsls.reactions.scoping.ReactionsLanguageScopeProviderDelegate
 
 import static tools.vitruv.dsls.mirbase.mirBase.MirBasePackage.Literals.*
-import tools.vitruv.dsls.mappings.mappingsLanguage.MappingParameter
-import tools.vitruv.dsls.mappings.mappingsLanguage.AbstractMappingParameter
+import tools.vitruv.dsls.mappings.mappingsLanguage.ExistingMappingCorrespondence
 
 class MappingsLanguageScopeProviderDelegate extends ReactionsLanguageScopeProviderDelegate {
 
@@ -36,9 +37,13 @@ class MappingsLanguageScopeProviderDelegate extends ReactionsLanguageScopeProvid
 		// * if no input is provided yet, the container is the context as the element is not known yet
 		// * if some input is already provided, the element is the context
 		val contextContainer = context.eContainer();
-		if (reference.equals(METACLASS_FEATURE_REFERENCE__FEATURE))
-			return createEStructuralFeatureScope(context as MetaclassFeatureReference)
-		else if (reference.equals(Literals.FEATURE_CONDITION_PARAMETER__PARAMETER) ||
+		if (reference.equals(METACLASS_FEATURE_REFERENCE__FEATURE)){
+			if(contextContainer instanceof ObserveChanges){
+				return createEStructuralFeatureScope(context as MetaclassFeatureReference, false, true)
+			}
+			//cope reaction structural features
+			return super.createEStructuralFeatureScope(context as MetaclassFeatureReference)
+		}else if (reference.equals(Literals.FEATURE_CONDITION_PARAMETER__PARAMETER) ||
 			reference.equals(Literals.MAPPING_PARAMETER_REFERENCE__PARAMETER)) {
 			val enforcableCondition = contextContainer.eContainer as EnforceableCondition;
 			val singleSidedCondition = enforcableCondition.eContainer as SingleSidedCondition;
@@ -61,7 +66,7 @@ class MappingsLanguageScopeProviderDelegate extends ReactionsLanguageScopeProvid
 			}
 		} else if (reference.equals(Literals.FEATURE_CONDITION_PARAMETER__FEATURE)) {
 			val featureConditionParameter = context as FeatureConditionParameter
-			return createEStructuralFeatureScope(featureConditionParameter.parameter.value)
+			return createEStructuralFeatureScope(featureConditionParameter.parameter.value, false, false)
 		} else if (reference.equals(METACLASS_REFERENCE__METACLASS)) {
 			if (contextContainer instanceof FeatureCondition) {
 				val enforcableCondition = contextContainer.eContainer as EnforceableCondition;
@@ -83,22 +88,24 @@ class MappingsLanguageScopeProviderDelegate extends ReactionsLanguageScopeProvid
 				val mapping = bidirectionalizableCondition.eContainer as Mapping;
 				// both sides
 				return createMappingNamedMetaclassesScope(mapping, true, true);
-			} else if (contextContainer instanceof ObserveAttributes) { // for observe attributes
+			} else if (contextContainer instanceof ObserveChanges) { // for observe changes
 			// both sides 
 				val mapping = contextContainer.eContainer as Mapping;
 				return createMappingMetaclassesScope(mapping, true, true);
 			} else if (contextContainer instanceof AbstractMappingParameter) {
 				// check if its the super or instance type
 				if (context == contextContainer.value) {
-					//super type
+					// super type
 					return createQualifiedEClassScopeOnlyAbstract(contextContainer.value.metamodel);
 				} else {
-					//instance type
+					// instance type
 					val metamodel = contextContainer.instanceType.metamodel
 					val abstractType = contextContainer.value.metaclass
 					return createQualifiedEClassScopeOfSuperTypeChildren(metamodel, abstractType)
 				}
-			} else if (contextContainer instanceof MappingParameter) {
+			} else if (contextContainer instanceof ExistingMappingCorrespondence) {
+				return createQualifiedEClassScope(contextContainer.value.metamodel);
+			}else if (contextContainer instanceof MappingParameter) {
 				return createQualifiedEClassScopeWithoutAbstract(contextContainer.value.metamodel);
 			}
 		}
@@ -173,22 +180,21 @@ class MappingsLanguageScopeProviderDelegate extends ReactionsLanguageScopeProvid
 		return ScopeManyFeature.MANY;
 	}
 
-	def createEStructuralFeatureScope(MetaclassReference featureReference) {
+	def createEStructuralFeatureScope(MetaclassReference featureReference, boolean noReferences, boolean noMany) {
 		if (featureReference?.metaclass !== null) {
-			val container = featureReference.eContainer;
-			var multiplicityFilterFunction = [EStructuralFeature feat|true];
-			/*	if (container instanceof FeatureCondition) {
-			 * 		val scopeManyType = getManyScopeType(container);
-			 * 		if (scopeManyType != ScopeManyFeature.BOTH) {
-			 * 			multiplicityFilterFunction = [ EStructuralFeature feat |
-			 * 				if (scopeManyType == ScopeManyFeature.MANY) {
-			 * 					return feat.many
-			 * 				} else {
-			 * 					return !feat.many
-			 * 				}
-			 * 			];
-			 * 		}
-			 } */
+			var multiplicityFilterFunction = [ EStructuralFeature feat |
+				if (noReferences) {
+					if (feat instanceof EReference) {
+						return false
+					}
+				}
+				if (noMany) {
+					if (feat.many) {
+						return false
+					}
+				}
+				true
+			];
 			createScope(IScope.NULLSCOPE,
 				featureReference.metaclass.EAllStructuralFeatures.filter(multiplicityFilterFunction).iterator, [
 					EObjectDescription.create(it.name, it)

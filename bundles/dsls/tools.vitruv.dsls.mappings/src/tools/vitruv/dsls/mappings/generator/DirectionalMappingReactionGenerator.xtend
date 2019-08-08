@@ -6,6 +6,7 @@ import org.eclipse.emf.ecore.EClass
 import tools.vitruv.dsls.mappings.generator.conditions.AbstractBidirectionalCondition
 import tools.vitruv.dsls.mappings.generator.conditions.ReactionTypeFactory
 import tools.vitruv.dsls.mappings.generator.conditions.SingleSidedConditionFactory
+import tools.vitruv.dsls.mappings.generator.conditions.impl.BidirectionalMappingRoutineGenerator
 import tools.vitruv.dsls.mappings.generator.reactions.AbstractReactionTriggerGenerator
 import tools.vitruv.dsls.mappings.generator.reactions.AttributeReplacedReactionGenerator
 import tools.vitruv.dsls.mappings.generator.routines.MappingRoutinesGenerator
@@ -13,12 +14,14 @@ import tools.vitruv.dsls.mappings.generator.utils.ParameterCorrespondenceTagging
 import tools.vitruv.dsls.mappings.mappingsLanguage.BidirectionalizableCondition
 import tools.vitruv.dsls.mappings.mappingsLanguage.Mapping
 import tools.vitruv.dsls.mappings.mappingsLanguage.MappingParameter
-import tools.vitruv.dsls.mappings.mappingsLanguage.ObserveAttributes
+import tools.vitruv.dsls.mappings.mappingsLanguage.ObserveChanges
 import tools.vitruv.dsls.mappings.mappingsLanguage.RoutineIntegration
 import tools.vitruv.dsls.mappings.mappingsLanguage.SingleSidedCondition
 
 import static tools.vitruv.dsls.mappings.generator.utils.ParameterCorrespondenceTagging.*
-import tools.vitruv.dsls.mappings.generator.conditions.impl.BidirectionalMappingRoutineGenerator
+import org.eclipse.emf.ecore.EAttribute
+import org.eclipse.emf.ecore.EReference
+import tools.vitruv.dsls.mappings.generator.reactions.ElementReplacedReactionGenerator
 
 class DirectionalMappingReactionGenerator {
 
@@ -34,7 +37,7 @@ class DirectionalMappingReactionGenerator {
 
 	def generate(MappingGeneratorContext context, List<SingleSidedCondition> fromConditions,
 		List<SingleSidedCondition> toConditions, List<BidirectionalizableCondition> mappingConditions,
-		List<RoutineIntegration> mappingRoutines, ObserveAttributes mappingAttributes) {
+		List<RoutineIntegration> mappingRoutines, ObserveChanges observeChanges) {
 		ParameterCorrespondenceTagging.context = context
 		val mappingName = mapping.name
 		val reactionFactory = new ReactionTypeFactory(mappingName, fromConditions)
@@ -43,7 +46,7 @@ class DirectionalMappingReactionGenerator {
 		val singlesidedConditionGenerators = SingleSidedConditionFactory.construct(fromConditions)
 		val correspondingSinglesidedConditionGenerators = SingleSidedConditionFactory.construct(toConditions)
 		val reactionGenerators = reactionFactory.constructGenerators(fromParameters, toParameters)
-		reactionGenerators.appendBidirectionalMappingAttributeReactions(mappingAttributes)
+		reactionGenerators.appendBidirectionalMappingAttributeReactions(observeChanges)
 		val routinesGenerator = new MappingRoutinesGenerator(fromParameters, toParameters)
 		routinesGenerator.generateRoutines(mappingName, context, singlesidedConditionGenerators,
 			correspondingSinglesidedConditionGenerators, bidirectionalCondtionGenerators)
@@ -79,12 +82,18 @@ class DirectionalMappingReactionGenerator {
 	}
 
 	private def appendBidirectionalMappingAttributeReactions(List<AbstractReactionTriggerGenerator> generators,
-		ObserveAttributes mappingAttributes) {
-		if (mappingAttributes !== null) {
-			mappingAttributes.attributes.forEach [
+		ObserveChanges observeChanges) {
+		if (observeChanges !== null) {
+			observeChanges.features.forEach [
 				// check if its a relevant metaclass for this direction
 				if (metaclass.metaclassApplicable) {
-					val generator = new AttributeReplacedReactionGenerator(it)
+					var AbstractReactionTriggerGenerator generator 
+					if(feature instanceof EAttribute){
+						generator = new AttributeReplacedReactionGenerator(it)
+					}
+					else if(feature instanceof EReference){
+						generator = new ElementReplacedReactionGenerator(it)
+					}
 					generator.derivedFromBidirectionalCondition = true
 					generator.init(mapping.name, fromParameters, toParameters)
 					generators.add(generator)

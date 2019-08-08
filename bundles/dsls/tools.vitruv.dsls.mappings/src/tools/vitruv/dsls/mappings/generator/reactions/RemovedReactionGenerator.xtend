@@ -24,7 +24,7 @@ class RemovedReactionGenerator extends AbstractContainingReactionTypeGenerator {
 	override generateTrigger(MappingGeneratorContext context) {
 		if (removeTarget !== null) {
 			this.usesNewValue = true
-			this.reactionName = '''«metaclass.parameterName»RemovedFrom«removeTarget.parameterName»'''
+			this.reactionName = '''«metaclass.parameterName»RemovedFrom«removeTarget.metaclassName»'''
 			return context.create.reaction(reactionName()).afterElement(metaclass).removedFrom(
 				removeTarget.feature as EReference)
 		} else {
@@ -34,7 +34,7 @@ class RemovedReactionGenerator extends AbstractContainingReactionTypeGenerator {
 	}
 
 	override toString() '''
-	«metaclass.parameterName» removed «IF removeTarget!==null»from «removeTarget.parameterName»«ELSE»as root«ENDIF»'''
+	«metaclass.parameterName» removed «IF removeTarget!==null»from «removeTarget.metaclassFeatureName»«ELSE»as root«ENDIF»'''
 
 	override equals(Object obj) {
 		if (obj instanceof RemovedReactionGenerator) {

@@ -75,8 +75,8 @@ class MappingParameterExtractor {
 		mapping.bidirectionalizableRoutines
 	}
 
-	def getObserveAttributes() {
-		mapping.observeAttributes
+	def getObserveChanges() {
+		mapping.observeChanges
 	}
 
 }

@@ -24,7 +24,7 @@ class InsertedReactionGenerator extends AbstractContainingReactionTypeGenerator 
 	override generateTrigger(MappingGeneratorContext context) {
 		if (insertTarget !== null) {
 			this.usesNewValue = true
-			this.reactionName = '''«metaclass.parameterName»InsertedIn«insertTarget.parameterName»'''
+			this.reactionName = '''«metaclass.parameterName»InsertedIn«insertTarget.metaclassName»'''
 			return context.create.reaction(reactionName()).afterElement(metaclass).insertedIn(
 				insertTarget.feature as EReference)
 		} else {
@@ -34,7 +34,7 @@ class InsertedReactionGenerator extends AbstractContainingReactionTypeGenerator 
 	}
 
 	override toString() '''
-	«metaclass.parameterName» inserted «IF insertTarget!==null»in «insertTarget.parameterName»«ELSE»as root«ENDIF»'''
+	«metaclass.parameterName» inserted «IF insertTarget!==null»in «insertTarget.metaclassName»«ELSE»as root«ENDIF»'''
 
 	override equals(Object obj) {
 		if (obj instanceof InsertedReactionGenerator) {
