@@ -16,4 +16,6 @@ Require-Bundle: com.google.guava,
  edu.kit.ipd.sdq.commons.util.java
 Export-Package: tools.vitruv.extensions.dslsruntime.mappings,
  tools.vitruv.extensions.dslsruntime.mappings.impl;x-internal:=true,
- tools.vitruv.extensions.dslsruntime.mappings.interfaces
+ tools.vitruv.extensions.dslsruntime.mappings.interfaces,
+ tools.vitruv.extensions.dslsruntime.mappings.updates
+

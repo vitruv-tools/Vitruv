@@ -9,6 +9,7 @@ import tools.vitruv.dsls.mappings.mappingsLanguage.RoutineIntegration
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.ActionStatementBuilder
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.RoutineCallParameter
+import org.eclipse.xtend.lib.annotations.Accessors
 
 /**
  * 
@@ -18,7 +19,9 @@ import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.RoutineCallParam
  */
 class BidirectionalMappingRoutineGenerator implements AbstractBidirectionalCondition {
 
+	@Accessors(PUBLIC_GETTER)
 	private RoutineIntegration routine
+	@Accessors(PUBLIC_GETTER)
 	private FluentRoutineBuilder targetRoutineBuilder
 	private List<MappingParameter> parameters
 

@@ -5,6 +5,7 @@ import org.eclipse.xtend.lib.annotations.Accessors
 import tools.vitruv.dsls.mappings.generator.AbstractMappingEntityGenerator
 import tools.vitruv.dsls.reactions.builder.FluentReactionBuilder.PreconditionOrRoutineCallBuilder
 import tools.vitruv.dsls.mappings.generator.MappingGeneratorContext
+import tools.vitruv.dsls.mappings.mappingsLanguage.ObserveChange
 
 abstract class AbstractReactionTriggerGenerator extends AbstractMappingEntityGenerator {
 
@@ -18,6 +19,8 @@ abstract class AbstractReactionTriggerGenerator extends AbstractMappingEntityGen
 	private ReactionTriggerType triggerType
 	@Accessors(PUBLIC_GETTER, PUBLIC_SETTER)
 	private boolean derivedFromBidirectionalCondition
+	@Accessors(PUBLIC_GETTER, PUBLIC_SETTER)
+	private ObserveChange sourceObserveChange
 
 	protected String reactionName
 

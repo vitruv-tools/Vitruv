@@ -35,7 +35,7 @@ abstract class AbstractMappingRoutineGenerator extends AbstractRoutineContentGen
 	new(String name) {
 		this.name = name
 	}
-	
+
 	override toString() {
 		name
 	}
@@ -62,30 +62,43 @@ abstract class AbstractMappingRoutineGenerator extends AbstractRoutineContentGen
 		builder.call(routine.routine, routine.callParameters)
 	}
 
-	private def createCall(RoutineTypeProvider provider, AbstractMappingRoutineGenerator routine) {
+	private def createCall(RoutineTypeProvider provider, FluentRoutineBuilder routine) {
 		XbaseFactory.eINSTANCE.createXFeatureCall => [
 			explicitOperationCall = true
 			implicitReceiver = this.routine.getJvmOperationRoutineFacade(currentCallingContext)
-			feature = routine.routine.jvmOperation
+			feature = routine.jvmOperation
 		]
 	}
 
 	// call with any expressions
-	def call(RoutineTypeProvider provider, AbstractMappingRoutineGenerator routine, List<XExpression> arguments) {
+	def call(RoutineTypeProvider provider, FluentRoutineBuilder routine, List<XExpression> arguments) {
 		val call = provider.createCall(routine)
 		call.featureCallArguments += arguments
 		call
 	}
 
+	def call(RoutineTypeProvider provider, AbstractMappingRoutineGenerator routine, List<XExpression> arguments) {
+		provider.call(routine.routine, arguments)
+	}
+
 	// call with the routines parameters
-	def call(RoutineTypeProvider provider, AbstractMappingRoutineGenerator routine) {
+	def call(RoutineTypeProvider provider, FluentRoutineBuilder routine) {
 		provider.call(routine, reactionParameters.map[provider.variable(it.parameterName)])
 	}
 
+	def call(RoutineTypeProvider provider, AbstractMappingRoutineGenerator routine) {
+		provider.call(routine.routine)
+	}
+
 	// call with variables from the execution scope
-	def callViaVariables(RoutineTypeProvider provider, AbstractMappingRoutineGenerator routine,
+	def callViaVariables(RoutineTypeProvider provider, FluentRoutineBuilder routine,
 		List<MappingParameter> parameters) {
 		provider.call(routine, parameters.map[referenceLocalVariable])
+	}
+
+	def callViaVariables(RoutineTypeProvider provider, AbstractMappingRoutineGenerator routine,
+		List<MappingParameter> parameters) {
+		provider.callViaVariables(routine.routine, parameters)
 	}
 
 	def generate(FluentReactionsLanguageBuilder create) {
