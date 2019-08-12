@@ -53,9 +53,7 @@ class DirectionalMappingReactionGenerator {
 		reactionGenerators.forEach [ reactionGenerator |
 			println('''=> generate reaction: «reactionGenerator.toString»''')
 			val reactionTemplate = reactionGenerator.generateTrigger(context)
-			context.getSegmentBuilder += reactionTemplate.call(
-				routinesGenerator.generateRoutineCall(reactionGenerator)
-			)
+			context.getSegmentBuilder += routinesGenerator.generateRoutineCall(reactionTemplate, reactionGenerator)
 		]
 	}
 
@@ -84,17 +82,17 @@ class DirectionalMappingReactionGenerator {
 	private def appendBidirectionalMappingAttributeReactions(List<AbstractReactionTriggerGenerator> generators,
 		ObserveChanges observeChanges) {
 		if (observeChanges !== null) {
-			observeChanges.features.forEach [
+			observeChanges.changes.forEach [
 				// check if its a relevant metaclass for this direction
-				if (metaclass.metaclassApplicable) {
-					var AbstractReactionTriggerGenerator generator 
-					if(feature instanceof EAttribute){
-						generator = new AttributeReplacedReactionGenerator(it)
-					}
-					else if(feature instanceof EReference){
-						generator = new ElementReplacedReactionGenerator(it)
+				if (feature.metaclass.metaclassApplicable) {
+					var AbstractReactionTriggerGenerator generator
+					if (feature.feature instanceof EAttribute) {
+						generator = new AttributeReplacedReactionGenerator(feature)
+					} else if (feature.feature instanceof EReference) {
+						generator = new ElementReplacedReactionGenerator(feature)
 					}
 					generator.derivedFromBidirectionalCondition = true
+					generator.sourceObserveChange = it
 					generator.init(mapping.name, fromParameters, toParameters)
 					generators.add(generator)
 				}

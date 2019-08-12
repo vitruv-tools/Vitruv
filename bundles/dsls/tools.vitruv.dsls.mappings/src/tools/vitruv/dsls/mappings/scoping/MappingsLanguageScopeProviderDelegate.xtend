@@ -28,6 +28,7 @@ import tools.vitruv.dsls.reactions.scoping.ReactionsLanguageScopeProviderDelegat
 
 import static tools.vitruv.dsls.mirbase.mirBase.MirBasePackage.Literals.*
 import tools.vitruv.dsls.mappings.mappingsLanguage.ExistingMappingCorrespondence
+import tools.vitruv.dsls.mappings.mappingsLanguage.ObserveChange
 
 class MappingsLanguageScopeProviderDelegate extends ReactionsLanguageScopeProviderDelegate {
 
@@ -37,13 +38,13 @@ class MappingsLanguageScopeProviderDelegate extends ReactionsLanguageScopeProvid
 		// * if no input is provided yet, the container is the context as the element is not known yet
 		// * if some input is already provided, the element is the context
 		val contextContainer = context.eContainer();
-		if (reference.equals(METACLASS_FEATURE_REFERENCE__FEATURE)){
-			if(contextContainer instanceof ObserveChanges){
+		if (reference.equals(METACLASS_FEATURE_REFERENCE__FEATURE)) {
+			if (contextContainer instanceof ObserveChange) {
 				return createEStructuralFeatureScope(context as MetaclassFeatureReference, false, true)
 			}
-			//cope reaction structural features
+			// scope reaction structural features
 			return super.createEStructuralFeatureScope(context as MetaclassFeatureReference)
-		}else if (reference.equals(Literals.FEATURE_CONDITION_PARAMETER__PARAMETER) ||
+		} else if (reference.equals(Literals.FEATURE_CONDITION_PARAMETER__PARAMETER) ||
 			reference.equals(Literals.MAPPING_PARAMETER_REFERENCE__PARAMETER)) {
 			val enforcableCondition = contextContainer.eContainer as EnforceableCondition;
 			val singleSidedCondition = enforcableCondition.eContainer as SingleSidedCondition;
@@ -67,7 +68,12 @@ class MappingsLanguageScopeProviderDelegate extends ReactionsLanguageScopeProvid
 		} else if (reference.equals(Literals.FEATURE_CONDITION_PARAMETER__FEATURE)) {
 			val featureConditionParameter = context as FeatureConditionParameter
 			return createEStructuralFeatureScope(featureConditionParameter.parameter.value, false, false)
-		} else if (reference.equals(METACLASS_REFERENCE__METACLASS)) {
+		}else if(reference.equals(Literals.OBSERVE_CHANGE__ROUTINE)){
+			val observeChanges = contextContainer as ObserveChanges
+			val mapping = observeChanges.eContainer as Mapping
+			return createBidirectionalRoutineScope(mapping)
+		}		
+		 else if (reference.equals(METACLASS_REFERENCE__METACLASS)) {
 			if (contextContainer instanceof FeatureCondition) {
 				val enforcableCondition = contextContainer.eContainer as EnforceableCondition;
 				val singleSidedCondition = enforcableCondition.eContainer as SingleSidedCondition;
@@ -88,10 +94,8 @@ class MappingsLanguageScopeProviderDelegate extends ReactionsLanguageScopeProvid
 				val mapping = bidirectionalizableCondition.eContainer as Mapping;
 				// both sides
 				return createMappingNamedMetaclassesScope(mapping, true, true);
-			} else if (contextContainer instanceof ObserveChanges) { // for observe changes
-			// both sides 
-				val mapping = contextContainer.eContainer as Mapping;
-				return createMappingMetaclassesScope(mapping, true, true);
+			} else if (contextContainer instanceof ObserveChange) { // for observe changes
+				super.createQualifiedEClassScope((context as MetaclassFeatureReference).metamodel)
 			} else if (contextContainer instanceof AbstractMappingParameter) {
 				// check if its the super or instance type
 				if (context == contextContainer.value) {
@@ -105,11 +109,17 @@ class MappingsLanguageScopeProviderDelegate extends ReactionsLanguageScopeProvid
 				}
 			} else if (contextContainer instanceof ExistingMappingCorrespondence) {
 				return createQualifiedEClassScope(contextContainer.value.metamodel);
-			}else if (contextContainer instanceof MappingParameter) {
+			} else if (contextContainer instanceof MappingParameter) {
 				return createQualifiedEClassScopeWithoutAbstract(contextContainer.value.metamodel);
 			}
 		}
 		super.getScope(context, reference)
+	}
+	
+	def createBidirectionalRoutineScope(Mapping mapping){
+		return createScope(IScope.NULLSCOPE, mapping.bidirectionalizableRoutines.iterator, [
+			EObjectDescription.create(it.name, it)
+		]);
 	}
 
 	def createMappingParameterMetaclassesScope(Mapping mapping, boolean leftSide, boolean rightSide) {

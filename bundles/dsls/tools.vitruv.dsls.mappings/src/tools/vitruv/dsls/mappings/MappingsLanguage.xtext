@@ -70,7 +70,13 @@ ExistingMappingCorrespondence:
 ;
 
 ObserveChanges:
-	'observe' 'changes' '{' (features+=MetaclassFeatureReference)+ '}';
+	'observe' 'changes' '{' (changes+=ObserveChange)+ '}';
+
+ObserveChange:
+	feature=MetaclassFeatureReference
+	'call'
+	routine =[RoutineIntegration]
+;
 
 ReactionIntegration:
 	(documentation=ML_COMMENT)?

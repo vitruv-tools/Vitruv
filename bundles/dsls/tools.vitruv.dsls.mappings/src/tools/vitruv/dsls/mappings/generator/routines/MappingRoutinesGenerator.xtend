@@ -17,6 +17,8 @@ import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.ActionStatementB
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.RoutineCallParameter
 import tools.vitruv.dsls.reactions.codegen.ReactionsLanguageConstants
 import tools.vitruv.dsls.mappings.generator.MappingGeneratorContext
+import tools.vitruv.dsls.reactions.builder.FluentReactionBuilder.PreconditionOrRoutineCallBuilder
+import org.eclipse.xtext.xbase.XbaseFactory
 
 class MappingRoutinesGenerator {
 
@@ -31,31 +33,49 @@ class MappingRoutinesGenerator {
 		List<AbstractSingleSidedCondition> singleSidedConditions,
 		List<AbstractSingleSidedCondition> correspondingSingleSidedConditions,
 		List<AbstractBidirectionalCondition> bidirectionalConditions) {
-		routineStorage.init(mappingName, context, singleSidedConditions,correspondingSingleSidedConditions, bidirectionalConditions)
-		//order is important here, because of routine calls (they have to be generated before they can be called)
+		routineStorage.init(mappingName, context, singleSidedConditions, correspondingSingleSidedConditions,
+			bidirectionalConditions)
+		// order is important here, because of routine calls (they have to be generated before they can be called)
 		new BidirectionalUpdateRoutineGenerator().generateRoutine
 		new CreateMappingRoutine().generateRoutine // calls BidirectionalUpdateRoutineGenerator
-		new DeleteMappingRoutine().generateRoutine		
+		new DeleteMappingRoutine().generateRoutine
 		new BidirectionalCheckRoutineGenerator().generateRoutine // calls BidirectionalUpdateRoutineGenerator
 		new CreatedCheckRoutineGenerator().generateRoutine // calls CreateMappingRoutine
 		new DeletedCheckRoutineGenerator().generateRoutine // calls DeleteMappingRoutine
 		new UpdatedCheckRoutineGenerator().generateRoutine // calls CreateMappingRoutine or DeletedCheckRoutineGenerator 
 	}
 
-	public def generateRoutineCall(AbstractReactionTriggerGenerator generator) {
+	public def generateRoutineCall(PreconditionOrRoutineCallBuilder reactionBuilder,
+		AbstractReactionTriggerGenerator generator) {
 		if (generator.derivedFromBidirectionalCondition) {
-			return BidirectionalCheckRoutineGenerator.routineBuilder
+			val observeChange = generator.sourceObserveChange
+			val routineName = observeChange.routine.name
+			return reactionBuilder.callBidirectionalRoutine(routineName)
 		}
 		switch (generator.triggerType) {
-			case CREATE: return CreatedCheckRoutineGenerator.routineBuilder
-			case UPDATE: return UpdatedCheckRoutineGenerator.routineBuilder
-			case DELETE: return DeletedCheckRoutineGenerator.routineBuilder
+			case CREATE: return reactionBuilder.callRoutine(CreatedCheckRoutineGenerator)
+			case UPDATE: return reactionBuilder.callRoutine(UpdatedCheckRoutineGenerator)
+			case DELETE: return reactionBuilder.callRoutine(DeletedCheckRoutineGenerator)
 		}
 	}
 
-	private def generateCall(ActionStatementBuilder builder, FluentRoutineBuilder target) {
-		builder.call(target, new RoutineCallParameter(ReactionsLanguageConstants.CHANGE_AFFECTED_ELEMENT_ATTRIBUTE))
-		null
+	private def callBidirectionalRoutine(PreconditionOrRoutineCallBuilder reactionBuilder, String routineName) {
+		reactionBuilder.call [
+			alwaysRequireAffectedEObject
+			action[
+				val affectedEObject = new RoutineCallParameter(
+					ReactionsLanguageConstants.CHANGE_AFFECTED_ELEMENT_ATTRIBUTE)
+				val routineNameParameter = new RoutineCallParameter(XbaseFactory.eINSTANCE.createXStringLiteral => [
+					value = routineName
+				])
+				call(BidirectionalCheckRoutineGenerator.routineBuilder, affectedEObject, routineNameParameter)
+			]
+		]
+	}
+
+	private def callRoutine(PreconditionOrRoutineCallBuilder reactionBuilder,
+		Class<? extends AbstractMappingRoutineGenerator> routine) {
+		reactionBuilder.call(routine.routineBuilder)
 	}
 
 }
