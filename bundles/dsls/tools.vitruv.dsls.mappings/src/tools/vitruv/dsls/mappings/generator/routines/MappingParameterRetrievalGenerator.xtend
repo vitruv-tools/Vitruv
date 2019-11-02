@@ -70,7 +70,16 @@ class MappingParameterRetrievalGenerator extends AbstractRoutineContentGenerator
 		retrievedParameters = new ArrayList
 		affectedEObjectParameter = parameter
 		retrievedParameters += affectedEObjectParameter // affectedEObject is already retrieved
-		provider.generateRetrievedParameterCheck(parameter, provider.generateInCondition)
+		var XExpression expression
+		if(parameters.size == 1){
+			//no additional retrieval needed, just check conditions for this parameter
+			expression = finishedRetrievingParameters.apply
+		}
+		else{
+			//retrieve remaining parameters
+			expression = provider.generateInCondition
+		}
+		provider.generateRetrievedParameterCheck(parameter, expression)
 	}
 
 	private def XExpression generateInCondition(RoutineTypeProvider provider) {
