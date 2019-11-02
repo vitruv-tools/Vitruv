@@ -50,6 +50,18 @@ class MappingParameterGraphTraverserTest {
 	}
 
 	@Test
+	def void invalidEdge() {
+		createParams('nodeA')
+		createInConditions('nodeA'.in('nodeA', 'cFA'))
+		try {
+			initTraverser
+			fail()
+		} catch (IllegalStateException exception) {
+			assertEquals('Invalid relation for parameter nodeA', exception.message)
+		}
+	}
+
+	@Test
 	def void cyclicDetection() {
 		/**
 		 *       nodeB
@@ -61,9 +73,10 @@ class MappingParameterGraphTraverserTest {
 		createInConditions('nodeA'.in('nodeB', 'cFA'), 'nodeB'.in('nodeC', 'cFB'), 'nodeC'.in('nodeA', 'cFC'))
 		try {
 			initTraverser
-			fail()
 		} catch (IllegalStateException exception) {
-			assertEquals('The MappingParameters in-relations contains cycles!', exception.message)
+			fail()
+			//cycles are allowed by the concept
+//			assertEquals('The MappingParameters in-relations contains cycles!', exception.message)
 		}
 	}
 

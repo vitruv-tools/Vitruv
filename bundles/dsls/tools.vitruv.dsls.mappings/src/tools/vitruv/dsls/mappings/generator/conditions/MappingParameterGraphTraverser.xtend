@@ -44,13 +44,17 @@ class MappingParameterGraphTraverser {
 		val parentParameter = condition.parentParameter
 		val childNode = nodes.get(nameMapping.apply(childParameter))
 		val parentNode = nodes.get(nameMapping.apply(parentParameter))
+		if(childNode == parentNode){
+			//not allowed
+			throw new IllegalStateException('Invalid relation for parameter '+childNode.parameter)
+		}
 		parentNode.addChild(childNode, inFeature)
 		childNode.addParent(parentNode)
 	}
 
 	private def validateGraph() {
-		// check for cycles
-		nodes.values.forEach[cycleCheck(new ArrayList)]
+		// check for cycles not needed
+		//nodes.values.forEach[cycleCheck(new ArrayList)]
 		// check for unconnected nodes
 		val shouldReachNodesCount = nodes.size - 1
 		if (nodes.values.map[reachableNodesCount(new ArrayList)].min < shouldReachNodesCount) {
@@ -72,6 +76,9 @@ class MappingParameterGraphTraverser {
 
 	public def findStepToNextNode(List<String> startPoints) {
 		val remainingNodes = nodes.keySet.filter[!startPoints.contains(it)]
+		if(remainingNodes.empty){
+			throw new IllegalStateException('Can not find step to next node, because all nodes are visited already!')
+		}
 		val path = remainingNodes.map[target|findPath(startPoints, target)].minBy[steps.size]
 		if (path.steps.size > 1) {
 			// this should never happen
