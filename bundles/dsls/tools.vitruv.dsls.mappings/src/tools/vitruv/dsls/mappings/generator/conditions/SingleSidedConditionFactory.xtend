@@ -2,6 +2,7 @@ package tools.vitruv.dsls.mappings.generator.conditions
 
 import java.util.ArrayList
 import java.util.List
+import org.apache.log4j.Logger
 import tools.vitruv.dsls.mappings.generator.conditions.impl.EqualsValueConditionGenerator
 import tools.vitruv.dsls.mappings.generator.conditions.impl.InValueConditionGenerator
 import tools.vitruv.dsls.mappings.mappingsLanguage.CheckAndEnforceCondition
@@ -17,13 +18,15 @@ import tools.vitruv.dsls.mappings.mappingsLanguage.ResourceCondition
 import tools.vitruv.dsls.mappings.mappingsLanguage.SingleSidedCondition
 
 class SingleSidedConditionFactory {
-
+	
+	private static val Logger logger = Logger.getLogger(SingleSidedConditionFactory)
+	
 	static def construct(List<SingleSidedCondition> conditions) {
 		val generators = new ArrayList
 		conditions.forEach [ condition |
 			val generator = SingleSidedConditionFactory.construct(condition)
 			if (generator === null) {
-				System.err.println('''No single sided condition generator found for condition «condition»''')
+				logger.error('''No single sided condition generator found for condition «condition»''')
 			} else {
 				generators += generator
 			}

@@ -1,19 +1,17 @@
 package tools.vitruv.dsls.mappings.generator.reactions
 
 import org.eclipse.emf.ecore.EReference
-import tools.vitruv.dsls.mappings.mappingsLanguage.MappingParameter
+import tools.vitruv.dsls.mappings.generator.MappingGeneratorContext
+import tools.vitruv.dsls.mappings.generator.MappingScenarioType
 import tools.vitruv.dsls.mirbase.mirBase.MetaclassFeatureReference
 import tools.vitruv.dsls.mirbase.mirBase.MetaclassReference
-import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.ActionStatementBuilder
-import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.UndecidedMatcherStatementBuilder
-import tools.vitruv.dsls.mappings.generator.MappingGeneratorContext
 
-class RemovedReactionGenerator extends AbstractContainingReactionTypeGenerator {
+class RemovedReactionTriggerGenerator extends AbstractContainingReactionTriggerGenerator {
 
 	private MetaclassFeatureReference removeTarget = null
 
 	new(MetaclassReference element) {
-		super(element.metaclass, ReactionTriggerType.DELETE)
+		super(element.metaclass, MappingScenarioType.DELETE)
 	}
 
 	new(MetaclassReference element, MetaclassFeatureReference insertedIn) {
@@ -37,7 +35,7 @@ class RemovedReactionGenerator extends AbstractContainingReactionTypeGenerator {
 	«metaclass.parameterName» removed «IF removeTarget!==null»from «removeTarget.metaclassFeatureName»«ELSE»as root«ENDIF»'''
 
 	override equals(Object obj) {
-		if (obj instanceof RemovedReactionGenerator) {
+		if (obj instanceof RemovedReactionTriggerGenerator) {
 			if (metaclass == obj.metaclass) {
 				if (removeTarget === null) {
 					return obj.removeTarget === null

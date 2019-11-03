@@ -1,20 +1,18 @@
 package tools.vitruv.dsls.mappings.generator.reactions
 
 import org.eclipse.emf.ecore.EReference
-import tools.vitruv.dsls.mappings.mappingsLanguage.MappingParameter
+import tools.vitruv.dsls.mappings.generator.MappingGeneratorContext
+import tools.vitruv.dsls.mappings.generator.MappingScenarioType
 import tools.vitruv.dsls.mirbase.mirBase.MetaclassFeatureReference
 import tools.vitruv.dsls.mirbase.mirBase.MetaclassReference
-import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.ActionStatementBuilder
-import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.UndecidedMatcherStatementBuilder
-import tools.vitruv.dsls.mappings.generator.MappingGeneratorContext
 
-class ElementReplacedReactionGenerator extends AbstractContainingReactionTypeGenerator {
+class ElementReplacedReactionTriggerGenerator extends AbstractContainingReactionTriggerGenerator {
 
 	private MetaclassFeatureReference reference
 	private MetaclassReference targetElement
 
 	new(MetaclassFeatureReference reference) {
-		super(reference.metaclass, ReactionTriggerType.UPDATE)
+		super(reference.metaclass, MappingScenarioType.CREATE_OR_DELETE)
 		this.reference = reference
 	}
 
@@ -39,7 +37,7 @@ class ElementReplacedReactionGenerator extends AbstractContainingReactionTypeGen
 	«IF targetElement!==null»«targetElement.metaclassName»«ELSE»element«ENDIF» replaced at «reference.metaclassFeatureName»'''
 
 	override equals(Object obj) {
-		if (obj instanceof ElementReplacedReactionGenerator) {
+		if (obj instanceof ElementReplacedReactionTriggerGenerator) {
 			if (metaclass == obj.metaclass) {
 				if (reference.feature == obj.reference.feature) {
 					if (targetElement === null) {

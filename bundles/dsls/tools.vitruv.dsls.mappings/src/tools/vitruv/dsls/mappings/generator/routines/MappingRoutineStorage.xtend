@@ -3,12 +3,15 @@ package tools.vitruv.dsls.mappings.generator.routines
 import java.util.HashMap
 import java.util.List
 import java.util.Map
+import org.apache.log4j.Logger
+import tools.vitruv.dsls.mappings.generator.MappingGeneratorContext
 import tools.vitruv.dsls.mappings.generator.conditions.AbstractBidirectionalCondition
 import tools.vitruv.dsls.mappings.generator.conditions.AbstractSingleSidedCondition
 import tools.vitruv.dsls.mappings.mappingsLanguage.MappingParameter
-import tools.vitruv.dsls.mappings.generator.MappingGeneratorContext
 
 class MappingRoutineStorage {
+
+	private static val Logger logger = Logger.getLogger(MappingRoutineStorage)
 
 	private Map<Class<? extends AbstractMappingRoutineGenerator>, AbstractMappingRoutineGenerator> routineGenerators = new HashMap
 	private List<MappingParameter> fromParameters
@@ -36,7 +39,7 @@ class MappingRoutineStorage {
 	}
 
 	public def generateRoutine(AbstractMappingRoutineGenerator generator) {
-		println('''=> generate routine: «generator.toString»''')
+		logger.info('''=> generate routine: «generator.toString»''')
 		generator.init(mappingName, fromParameters, toParameters)
 		generator.prepareGenerator(singleSidedConditions, correspondingSingleSidedConditions, bidirectionalConditions,
 			this)

@@ -8,7 +8,7 @@ import org.eclipse.xtext.xbase.XbaseFactory
 import static extension tools.vitruv.dsls.mappings.generator.utils.XBaseMethodFinder.*
 import static extension tools.vitruv.dsls.mappings.generator.utils.XBaseMethodUtils.*
 
-class BidirectionalCheckRoutineGenerator extends AbstractRetrievalCheckRoutineGenerator {
+class UpdateCheckRoutineGenerator extends AbstractRetrievalCheckRoutineGenerator {
 
 	private static val ROUTINE_NAME_PARAMETER = 'routineName'
 

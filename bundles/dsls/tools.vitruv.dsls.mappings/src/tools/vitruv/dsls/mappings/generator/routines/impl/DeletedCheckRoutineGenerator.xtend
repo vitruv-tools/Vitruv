@@ -87,7 +87,7 @@ class DeletedCheckRoutineGenerator extends tools.vitruv.dsls.mappings.generator.
 			^if = provider.andChain(correspondingParameters.map [ correspondingParameter |
 				provider.notNull(correspondingParameter.referenceLocalVariable)
 			])
-			then = provider.callViaVariables(DeleteMappingRoutine.routine, correspondingParameters)
+			then = provider.callViaVariables(DeleteMappingRoutineGenerator.routine, correspondingParameters)
 		]
 	}
 }

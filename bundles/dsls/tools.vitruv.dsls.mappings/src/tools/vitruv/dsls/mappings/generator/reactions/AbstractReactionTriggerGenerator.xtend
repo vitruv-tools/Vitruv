@@ -3,9 +3,10 @@ package tools.vitruv.dsls.mappings.generator.reactions
 import org.eclipse.emf.ecore.EClass
 import org.eclipse.xtend.lib.annotations.Accessors
 import tools.vitruv.dsls.mappings.generator.AbstractMappingEntityGenerator
-import tools.vitruv.dsls.reactions.builder.FluentReactionBuilder.PreconditionOrRoutineCallBuilder
 import tools.vitruv.dsls.mappings.generator.MappingGeneratorContext
+import tools.vitruv.dsls.mappings.generator.MappingScenarioType
 import tools.vitruv.dsls.mappings.mappingsLanguage.ObserveChange
+import tools.vitruv.dsls.reactions.builder.FluentReactionBuilder.PreconditionOrRoutineCallBuilder
 
 abstract class AbstractReactionTriggerGenerator extends AbstractMappingEntityGenerator {
 
@@ -16,21 +17,24 @@ abstract class AbstractReactionTriggerGenerator extends AbstractMappingEntityGen
 	@Accessors(PUBLIC_GETTER)
 	protected boolean usesNewValue = false
 	@Accessors(PUBLIC_GETTER)
-	private ReactionTriggerType triggerType
-	@Accessors(PUBLIC_GETTER, PUBLIC_SETTER)
-	private boolean derivedFromBidirectionalCondition
+	private MappingScenarioType scenarioType
 	@Accessors(PUBLIC_GETTER, PUBLIC_SETTER)
 	private ObserveChange sourceObserveChange
 
 	protected String reactionName
 
-	new(EClass metaclass, ReactionTriggerType triggerType) {
+	new(EClass metaclass, MappingScenarioType scenarioType) {
 		this.metaclass = metaclass
-		this.triggerType = triggerType
+		this.scenarioType = scenarioType
 	}
-
+	
+	//should only be called for triggers derived from bidirectional conditions
+	def public overwriteScenarioType(MappingScenarioType scenarioType){
+		this.scenarioType = scenarioType
+	}
+	
 	def public String reactionName() '''
-	On«mappingName.toFirstUpper»«reactionName»«IF derivedFromBidirectionalCondition»Bidirectional«ENDIF»'''
+	On«mappingName.toFirstUpper»«reactionName»«IF scenarioType==MappingScenarioType.UPDATE»Bidirectional«ENDIF»'''
 
 	def boolean isSubordinateToTrigger(AbstractReactionTriggerGenerator generator) {
 		if (generator.metaclass == metaclass && conflictingTriggerCheck !== null) {

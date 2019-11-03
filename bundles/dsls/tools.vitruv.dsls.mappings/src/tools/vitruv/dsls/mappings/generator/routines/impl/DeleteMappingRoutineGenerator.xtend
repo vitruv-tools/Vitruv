@@ -6,7 +6,7 @@ import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.ActionStatementB
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.InputBuilder
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.MatcherOrActionBuilder
 
-class DeleteMappingRoutine extends AbstractMappingRoutineGenerator {
+class DeleteMappingRoutineGenerator extends AbstractMappingRoutineGenerator {
 
 	new() {
 		super('DeleteMapping')
@@ -23,12 +23,13 @@ class DeleteMappingRoutine extends AbstractMappingRoutineGenerator {
 	}
 
 	private def generateAction(ActionStatementBuilder builder) {
-		// 1) remove all correspondences (is it really needed? we dont know all the reaction objects)
+		// 1) remove all correspondences 
 		// builder.removeCorrespondences
 		// 2) delete all corresponding elements
 		builder.deleteCorrespondingElements
 	}
 
+	//TODO: find a way to delete all correspondences of a mapping without knowing all the reaction objects (could have been deleted)
 	private def removeCorrespondences(ActionStatementBuilder builder) {
 		iterateParameters([ reactionParameter, correspondingParameter |
 			val element = correspondingParameter.parameterName
