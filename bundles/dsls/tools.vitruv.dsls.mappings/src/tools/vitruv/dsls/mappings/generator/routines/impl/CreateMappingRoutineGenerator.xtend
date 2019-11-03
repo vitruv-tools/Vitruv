@@ -1,11 +1,8 @@
 package tools.vitruv.dsls.mappings.generator.routines.impl
 
-import org.eclipse.emf.ecore.EClass
 import org.eclipse.xtext.xbase.XbaseFactory
 import tools.vitruv.dsls.mappings.generator.routines.AbstractMappingRoutineGenerator
-import tools.vitruv.dsls.mappings.mappingsLanguage.AbstractMappingParameter
 import tools.vitruv.dsls.mappings.mappingsLanguage.ExistingMappingCorrespondence
-import tools.vitruv.dsls.mappings.mappingsLanguage.StandardMappingParameter
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.ActionStatementBuilder
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.InputBuilder
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.MatcherOrActionBuilder
@@ -38,14 +35,12 @@ class CreateMappingRoutineGenerator extends AbstractMappingRoutineGenerator {
 				taggingParameter.parameterName).taggedWith(taggingParameter, correspondingParameter)
 		]
 		// retrieve all existing mapping parameters
-		correspondingParameters.filter [
-			it instanceof ExistingMappingCorrespondence
-		].forEach [
+		correspondingParameters.filterExistingMappingParameters.forEach [
 			val reactionParameter = it as ExistingMappingCorrespondence
 			val correspondingParameter = reactionParameter.correspondence
 			val tag = reactionParameter.tag
-			val retrieval = builder.vall(reactionParameter.parameterName).retrieve(
-				reactionParameter.value.metaclass).correspondingTo(correspondingParameter.parameterName)
+			val retrieval = builder.vall(reactionParameter.parameterName).retrieve(reactionParameter.value.metaclass).
+				correspondingTo(correspondingParameter.parameterName)
 			if (tag !== null) {
 				retrieval.taggedWith(tag)
 			}
@@ -65,13 +60,9 @@ class CreateMappingRoutineGenerator extends AbstractMappingRoutineGenerator {
 
 	private def createCorrespondingElements(ActionStatementBuilder builder) {
 		// only create actual parameters
-		correspondingParameters.filter[!(it instanceof ExistingMappingCorrespondence)].forEach [ correspondingParameter |
+		correspondingParameters.filterNonExistingMappingParameters.forEach [ correspondingParameter |
 			val newElement = correspondingParameter.parameterName
-			var EClass createMetaclass
-			if (correspondingParameter instanceof StandardMappingParameter)
-				createMetaclass = correspondingParameter.value.metaclass
-			if (correspondingParameter instanceof AbstractMappingParameter)
-				createMetaclass = correspondingParameter.instanceType.metaclass
+			var createMetaclass = getMappingParameterInstantiationMetaclass(correspondingParameter)
 			builder.vall(newElement).create(createMetaclass)
 		]
 	}

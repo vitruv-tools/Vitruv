@@ -38,7 +38,7 @@ class FeatureConditionGeneratorUtils {
 	}
 
 	def static parameter(RoutineTypeProvider typeProvider, MappingParameter parameter) {
-		typeProvider.variable(parameter.value.name+'_')
+		typeProvider.variable(parameter.value.name + '_')
 	}
 
 	private def static initMemberFeatureCall(RoutineTypeProvider typeProvider, FeatureCondition featureCondition) {
@@ -66,21 +66,30 @@ class FeatureConditionGeneratorUtils {
 
 	def static generateLeftFeatureConditionValue(RoutineTypeProvider typeProvider, FeatureCondition featureCondition) {
 		val leftSide = featureCondition.left
-		if (leftSide instanceof NullValue) {
-			return XbaseFactory.eINSTANCE.createXNullLiteral
-		} else if (leftSide instanceof StringValue) {
-			return EcoreUtil.copy(leftSide.value)
-		} else if (leftSide instanceof NumberValue) {
-			return EcoreUtil.copy(leftSide.value)
-		} else if (leftSide instanceof BoolValue) {
-			return EcoreUtil.copy(leftSide.value)
-		} else if (leftSide instanceof MappingParameterReference) {
-			// val package = leftSide.metaclass.class.package.name
-			val className = leftSide.parameter.value.metaclass.class.name
-			return XbaseFactory.eINSTANCE.createXTypeLiteral => [
-				type = typeProvider.findTypeByName(className)
-			]
-		}
+		leftSide.initValue(typeProvider)
 	}
 
+	def private static dispatch initValue(NullValue value, RoutineTypeProvider typeProvider) {
+		XbaseFactory.eINSTANCE.createXNullLiteral
+	}
+
+	def private static dispatch initValue(StringValue value, RoutineTypeProvider typeProvider) {
+		EcoreUtil.copy(value.value)
+	}
+
+	def private static dispatch initValue(NumberValue value, RoutineTypeProvider typeProvider) {
+		EcoreUtil.copy(value.value)
+	}
+
+	def private static dispatch initValue(BoolValue value, RoutineTypeProvider typeProvider) {
+		EcoreUtil.copy(value.value)
+	}
+
+	def private static dispatch initValue(MappingParameterReference value, RoutineTypeProvider typeProvider) {
+		// val package = leftSide.metaclass.class.package.name
+		val className = value.parameter.value.metaclass.class.name
+		return XbaseFactory.eINSTANCE.createXTypeLiteral => [
+			type = typeProvider.findTypeByName(className)
+		]
+	}
 }

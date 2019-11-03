@@ -50,7 +50,7 @@ class MappingParameterGraphTraverser {
 	}
 
 	private def validateGraph() {
-		// check for cycles not needed
+		// check for cycles not needed (cycles are allowed)
 		//nodes.values.forEach[cycleCheck(new ArrayList)]
 		// check for unconnected nodes
 		val shouldReachNodesCount = nodes.size - 1

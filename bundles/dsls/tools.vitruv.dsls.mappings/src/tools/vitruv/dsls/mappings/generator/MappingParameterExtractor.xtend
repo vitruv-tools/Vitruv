@@ -42,7 +42,7 @@ class MappingParameterExtractor {
 
 	/** 
 	 * This only works when the imports of the domain metamodels have the same name as the domain reference.
-	 * Todo: In the future it should be checked if the metaclass from the parameter is from the target domain,
+	 * TODO: In the future it should be checked if the metaclass from the parameter is from the target domain,
 	 * instead of checking the import name
 	 * */
 	def isParameterFromTargetDomain(MappingParameter parameter) {
