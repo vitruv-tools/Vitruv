@@ -40,13 +40,12 @@ abstract class AbstractMappingRoutineGenerator extends AbstractRoutineContentGen
 		name
 	}
 
-	protected def initCallingContext(ActionStatement statement) {
-		if (statement instanceof ExecuteActionStatement) {
-			currentCallingContext = statement.code
-		}
-		if (statement instanceof RoutineCallStatement) {
-			currentCallingContext = statement.code
-		}
+	protected dispatch def initCallingContext(ExecuteActionStatement statement) {
+		currentCallingContext = statement.code
+	}
+
+	protected dispatch def initCallingContext(RoutineCallStatement statement) {
+		currentCallingContext = statement.code
 	}
 
 	def void prepareGenerator(List<AbstractSingleSidedCondition> singleSidedConditions,

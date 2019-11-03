@@ -18,6 +18,7 @@ import tools.vitruv.dsls.reactions.codegen.ReactionsLanguageConstants
 
 import static extension tools.vitruv.dsls.mappings.generator.utils.XBaseMethodFinder.*
 import static extension tools.vitruv.dsls.mappings.generator.utils.XBaseMethodUtils.*
+import tools.vitruv.dsls.mappings.generator.conditions.MappingParameterGraphTraverser.TraverseStepUp
 
 class MappingParameterRetrievalGenerator extends AbstractRoutineContentGenerator {
 	private MappingParameterGraphTraverser treeTraverser
@@ -88,13 +89,17 @@ class MappingParameterRetrievalGenerator extends AbstractRoutineContentGenerator
 		val step = path.steps.get(0)
 		val toParameter = parameters.findFirst[it.parameterName == step.parameter]
 		val feature = step.feature
-		if (step instanceof TraverseStepDown) {
-			// nextParameter is in fromParameters feature (when containing / being referenced from its feature)
-			return provider.generateChildInParent(toParameter, fromParameter, feature)
-		} else {
-			// nextParameter is fromParameters parent (when containing / referencing it with its feature)
-			return provider.generateParentContainsChild(fromParameter, toParameter, feature)
-		}
+		step.doNextTraverseStep(provider, fromParameter , toParameter, feature)
+	}
+	
+	private def dispatch doNextTraverseStep(TraverseStepDown step, RoutineTypeProvider provider, MappingParameter from, MappingParameter to, EReference feature){
+		// nextParameter is in fromParameters feature (when containing / being referenced from its feature)
+		provider.generateChildInParent(to, from, feature)		
+	}
+	
+	private def dispatch doNextTraverseStep(TraverseStepUp step, RoutineTypeProvider provider, MappingParameter from, MappingParameter to, EReference feature){
+		// nextParameter is fromParameters parent (when containing / referencing it with its feature)
+		provider.generateParentContainsChild(from, to, feature)	
 	}
 
 	private def generateParentContainsChild(RoutineTypeProvider provider, MappingParameter child,

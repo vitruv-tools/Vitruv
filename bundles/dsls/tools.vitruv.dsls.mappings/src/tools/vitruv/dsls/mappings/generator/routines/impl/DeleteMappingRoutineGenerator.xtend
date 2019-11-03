@@ -40,7 +40,7 @@ class DeleteMappingRoutineGenerator extends AbstractMappingRoutineGenerator {
 
 	private def deleteCorrespondingElements(ActionStatementBuilder builder) {
 		//only delete actual mapping parameters
-		correspondingParameters.filter[!(it instanceof ExistingMappingCorrespondence)].forEach [ correspondingParameter |
+		correspondingParameters.filterNonExistingMappingParameters.forEach [ correspondingParameter |
 			val element = correspondingParameter.parameterName
 			builder.delete(element)
 		]

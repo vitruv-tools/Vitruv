@@ -1,11 +1,15 @@
 package tools.vitruv.dsls.mappings.generator
 
 import java.util.List
+import java.util.stream.Stream
 import org.eclipse.emf.ecore.EClass
 import org.eclipse.xtend.lib.annotations.Accessors
 import tools.vitruv.dsls.mappings.generator.reactions.CorrespondingParameterConsumer
 import tools.vitruv.dsls.mappings.generator.utils.ParameterCorrespondenceTagging
+import tools.vitruv.dsls.mappings.mappingsLanguage.AbstractMappingParameter
+import tools.vitruv.dsls.mappings.mappingsLanguage.ExistingMappingCorrespondence
 import tools.vitruv.dsls.mappings.mappingsLanguage.MappingParameter
+import tools.vitruv.dsls.mappings.mappingsLanguage.StandardMappingParameter
 import tools.vitruv.dsls.mirbase.mirBase.MetaclassEAttributeReference
 import tools.vitruv.dsls.mirbase.mirBase.MetaclassFeatureReference
 import tools.vitruv.dsls.mirbase.mirBase.MetaclassReference
@@ -26,8 +30,8 @@ abstract class AbstractMappingEntityGenerator {
 		this.reactionParameters = reactionParameters
 		this.correspondingParameters = correspondingParameters
 	}
-	
-	def void initWith(AbstractMappingEntityGenerator entity){
+
+	def void initWith(AbstractMappingEntityGenerator entity) {
 		init(entity.mappingName, entity.reactionParameters, entity.correspondingParameters)
 	}
 
@@ -37,6 +41,22 @@ abstract class AbstractMappingEntityGenerator {
 				consumer.accept(reactionParameter, correspondingParameter)
 			]
 		]
+	}
+
+	def dispatch protected getMappingParameterInstantiationMetaclass(StandardMappingParameter parameter) {
+		parameter.value.metaclass
+	}
+
+	def dispatch protected getMappingParameterInstantiationMetaclass(AbstractMappingParameter parameter) {
+		parameter.instanceType.metaclass
+	}
+
+	def protected filterExistingMappingParameters(List<MappingParameter> parameters) {
+		return parameters.filter[it instanceof ExistingMappingCorrespondence]
+	}
+
+	def protected filterNonExistingMappingParameters(List<MappingParameter> parameters) {
+		return parameters.filter[!(it instanceof ExistingMappingCorrespondence)]
 	}
 
 	def protected taggedWith(TaggedWithBuilder builder, MappingParameter reactionParameter,
@@ -58,10 +78,9 @@ abstract class AbstractMappingEntityGenerator {
 	def protected getMetaclassName(MetaclassReference parameter) {
 		parameter.metaclass.getParameterName
 	}
-	
-	def protected getMetaclassFeatureName(MetaclassFeatureReference parameter)'''
+
+	def protected getMetaclassFeatureName(MetaclassFeatureReference parameter) '''
 	«parameter.metaclass.getParameterName»:«parameter.feature.name»'''
-	
 
 	def protected getParameterName(EClass clazz) {
 		clazz.name

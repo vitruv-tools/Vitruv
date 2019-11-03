@@ -17,10 +17,13 @@ import tools.vitruv.dsls.mappings.mappingsLanguage.NumCompareCondition
 import tools.vitruv.dsls.mappings.mappingsLanguage.ResourceCondition
 import tools.vitruv.dsls.mappings.mappingsLanguage.SingleSidedCondition
 
+/**
+ *  TODO: implement missing single-sided conditions and call fitting constructors in this factory
+ */
 class SingleSidedConditionFactory {
-	
+
 	private static val Logger logger = Logger.getLogger(SingleSidedConditionFactory)
-	
+
 	static def construct(List<SingleSidedCondition> conditions) {
 		val generators = new ArrayList
 		conditions.forEach [ condition |
@@ -34,19 +37,20 @@ class SingleSidedConditionFactory {
 		generators
 	}
 
+
 	static def AbstractSingleSidedCondition construct(SingleSidedCondition singleSidedCondition) {
 		val condition = singleSidedCondition.condition
-		if (condition instanceof EnforceableCondition) {
-			return construct(singleSidedCondition, condition)
-		} else if (condition instanceof CheckAndEnforceCondition) {
+		switch (condition) {
+			EnforceableCondition: return construct(singleSidedCondition, condition)
+			CheckAndEnforceCondition: return null //TODO
 		}
 	}
 
 	private static def construct(SingleSidedCondition singleSidedCondition, EnforceableCondition enforceableCondition) {
 		val condition = enforceableCondition.condition
-		if (condition instanceof FeatureCondition) {
-			return construct(singleSidedCondition, condition)
-		} else if (condition instanceof ResourceCondition) {
+		switch (condition) {
+			FeatureCondition: return construct(singleSidedCondition, condition)
+			ResourceCondition: return null //TODO
 		}
 	}
 
@@ -54,15 +58,15 @@ class SingleSidedConditionFactory {
 		val condition = featureCondition.condition
 		switch (condition) {
 			IndexCondition:
-				return null
+				return null //TODO
 			NumCompareCondition:
-				return null
+				return null //TODO
 			MultiValueCondition:
 				return singleSidedCondition.construct(condition)
 			ElementCondition:
-				return null
+				return null //TODO
 			NotEmptyCondition:
-				return null
+				return null //TODO
 		}
 	}
 

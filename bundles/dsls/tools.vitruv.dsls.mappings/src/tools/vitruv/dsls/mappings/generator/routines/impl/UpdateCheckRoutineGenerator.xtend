@@ -24,6 +24,7 @@ class UpdateCheckRoutineGenerator extends AbstractRetrievalCheckRoutineGenerator
 	override onSuccessfullyRetrievingParameters(RoutineTypeProvider provider) {
 		[
 			XbaseFactory.eINSTANCE.createXBlockExpression => [
+				//call all workaround bidirectional condition routines
 				bidirectionConditions.forEach [ condition |
 					if (condition instanceof BidirectionalMappingRoutineGenerator) {
 						expressions += provider.createBidirectionalRoutineCall(condition)

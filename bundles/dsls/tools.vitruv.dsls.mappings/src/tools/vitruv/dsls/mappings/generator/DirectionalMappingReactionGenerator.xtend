@@ -23,6 +23,8 @@ import static tools.vitruv.dsls.mappings.generator.utils.ParameterCorrespondence
 import tools.vitruv.dsls.mappings.generator.reactions.AttributeReplacedReactionTriggerGenerator
 import tools.vitruv.dsls.mappings.generator.reactions.ElementReplacedReactionTriggerGenerator
 import tools.vitruv.dsls.mappings.generator.conditions.ReactionTriggerGeneratorFactory
+import tools.vitruv.dsls.mirbase.mirBase.MetaclassFeatureReference
+import tools.vitruv.dsls.mappings.mappingsLanguage.ObserveChange
 
 class DirectionalMappingReactionGenerator {
 
@@ -40,30 +42,32 @@ class DirectionalMappingReactionGenerator {
 
 	def generate(MappingGeneratorContext context, List<SingleSidedCondition> fromConditions,
 		List<SingleSidedCondition> toConditions, List<BidirectionalizableCondition> mappingConditions,
-		List<RoutineIntegration> mappingRoutines, ObserveChanges observeChanges) {			
+		List<RoutineIntegration> mappingRoutines, ObserveChanges observeChanges) {
 		ParameterCorrespondenceTagging.context = context
 		val mappingName = mapping.name
-		//init reaction trigger generator factory
+		// init reaction trigger generator factory
 		val reactionTriggerGeneratorsFactory = new ReactionTriggerGeneratorFactory(mappingName, fromConditions)
-		//init bidirectional condition generators
+		// init bidirectional condition generators
 		val bidirectionalCondtionGenerators = generateBidirectionalMappingConditions(context, mappingConditions,
 			mappingRoutines, fromParameters)
-		//init single-sided condition generators (for both sides)
+		// init single-sided condition generators (for both sides)
 		val singlesidedConditionGenerators = SingleSidedConditionFactory.construct(fromConditions)
 		val correspondingSinglesidedConditionGenerators = SingleSidedConditionFactory.construct(toConditions)
-		//init reaction routines generator
+		// init reaction routines generator
 		val routinesGenerator = new MappingRoutinesGenerator(fromParameters, toParameters)
-		//create the reaction routines
+		// create the reaction routines
 		routinesGenerator.generateRoutines(mappingName, context, singlesidedConditionGenerators,
 			correspondingSinglesidedConditionGenerators, bidirectionalCondtionGenerators)
-		//create the reaction trigger generators
-		val reactionTriggerGenerators = reactionTriggerGeneratorsFactory.constructGenerators(fromParameters, toParameters)
+		// create the reaction trigger generators
+		val reactionTriggerGenerators = reactionTriggerGeneratorsFactory.constructGenerators(fromParameters,
+			toParameters)
 		reactionTriggerGenerators.appendBidirectionalMappingAttributeReactions(observeChanges)
-		//create reaction triggers from the generators and connect them with the created routines
+		// create reaction triggers from the generators and connect them with the created routines
 		reactionTriggerGenerators.forEach [ reactionTriggerGenerator |
 			logger.info('''=> generate reaction trigger: «reactionTriggerGenerator.toString»''')
 			val reactionTemplate = reactionTriggerGenerator.generateTrigger(context)
-			context.getSegmentBuilder += routinesGenerator.generateRoutineCall(reactionTemplate, reactionTriggerGenerator)
+			context.getSegmentBuilder +=
+				routinesGenerator.generateRoutineCall(reactionTemplate, reactionTriggerGenerator)
 		]
 	}
 
@@ -95,21 +99,28 @@ class DirectionalMappingReactionGenerator {
 			observeChanges.changes.forEach [
 				// check if its a relevant metaclass for this direction
 				if (feature.metaclass.metaclassApplicable) {
-					var AbstractReactionTriggerGenerator generator
-					//find a fitting trigger generator
-					if (feature.feature instanceof EAttribute) {
-						generator = new AttributeReplacedReactionTriggerGenerator(feature)
-					} else if (feature.feature instanceof EReference) {
-						generator = new ElementReplacedReactionTriggerGenerator(feature)
-					}
-					//overwrite the default mapping scenario type of the created triggers
-					generator.overwriteScenarioType(MappingScenarioType.UPDATE)
-					generator.sourceObserveChange = it
+					val generator = createObserveChangeTrigger
 					generator.init(mapping.name, fromParameters, toParameters)
 					generators.add(generator)
 				}
 			]
 		}
+	}
+
+	private def createObserveChangeTrigger(ObserveChange observeChange) {
+		val featureReference = observeChange.feature
+		val feature = featureReference.feature
+		var AbstractReactionTriggerGenerator generator
+		// attribute replaced trigger for attributes or element replaced for references
+		if (feature instanceof EAttribute) {
+			generator = new AttributeReplacedReactionTriggerGenerator(featureReference)
+		} else if (feature instanceof EReference) {
+			generator = new ElementReplacedReactionTriggerGenerator(featureReference)
+		}
+		// overwrite the default mapping scenario type of the created triggers
+		generator.overwriteScenarioType(MappingScenarioType.UPDATE)
+		generator.sourceObserveChange = observeChange
+		generator
 	}
 
 	private def isMetaclassApplicable(EClass metaclass) {

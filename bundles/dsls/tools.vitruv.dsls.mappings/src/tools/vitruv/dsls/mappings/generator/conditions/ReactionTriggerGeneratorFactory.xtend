@@ -11,6 +11,7 @@ import tools.vitruv.dsls.mirbase.mirBase.NamedMetaclassReference
 import tools.vitruv.dsls.mappings.generator.reactions.DeletedReactionTriggerGenerator
 import tools.vitruv.dsls.mappings.generator.reactions.InsertedReactionTriggerGenerator
 import tools.vitruv.dsls.mappings.generator.reactions.RemovedReactionTriggerGenerator
+import tools.vitruv.dsls.mappings.generator.reactions.ConflictingTriggerCheck
 
 class ReactionTriggerGeneratorFactory {
 
@@ -64,30 +65,40 @@ class ReactionTriggerGeneratorFactory {
 			val defaultDeleteGenerator = new DeletedReactionTriggerGenerator(it)
 			defaultDeleteGenerator.initGenerator
 			// make it subordinate to other inserted generators so it will be replaced 
-			defaultInsertGenerator.conflictingTriggerCheck = [ generator |
-				if (generator instanceof InsertedReactionTriggerGenerator) {
-					return true
-				}
-				if (generator instanceof ElementReplacedReactionTriggerGenerator) {
-					return true
-				}
-				false
-			]
+			defaultInsertGenerator.conflictingTriggerCheck = conflictingInsertionGeneratorsCheck
 			// make it subordinate to other delete generators so it will be replaced
-			defaultDeleteGenerator.conflictingTriggerCheck = [ generator |
-				if (generator instanceof RemovedReactionTriggerGenerator) {
-					return true
-				}
-				if (generator instanceof DeletedReactionTriggerGenerator) {
-					return true
-				}
-				if (generator instanceof ElementReplacedReactionTriggerGenerator) {
-					return true
-				}
-				false
-			]
+			defaultDeleteGenerator.conflictingTriggerCheck = conflictingDeletionGeneratorsCheck
 			generators.add(defaultInsertGenerator)
 			generators.add(defaultDeleteGenerator)
+		]
+	}
+
+	// conflict with inserte or replace triggers
+	private def ConflictingTriggerCheck conflictingInsertionGeneratorsCheck() {
+		[ generator |
+			if (generator instanceof InsertedReactionTriggerGenerator) {
+				return true
+			}
+			if (generator instanceof ElementReplacedReactionTriggerGenerator) {
+				return true
+			}
+			false
+		]
+	}
+
+	// conflict with remove, delete or replace triggers
+	private def ConflictingTriggerCheck conflictingDeletionGeneratorsCheck() {
+		[ generator |
+			if (generator instanceof RemovedReactionTriggerGenerator) {
+				return true
+			}
+			if (generator instanceof DeletedReactionTriggerGenerator) {
+				return true
+			}
+			if (generator instanceof ElementReplacedReactionTriggerGenerator) {
+				return true
+			}
+			false
 		]
 	}
 
