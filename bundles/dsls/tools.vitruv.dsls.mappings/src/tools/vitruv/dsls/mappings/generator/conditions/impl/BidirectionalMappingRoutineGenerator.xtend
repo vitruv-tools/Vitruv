@@ -13,8 +13,8 @@ import org.eclipse.xtend.lib.annotations.Accessors
 
 /**
  * 
- * a "fake" bidirectional condition generator
- * instead of generating routine logic this calls a user defined routine (in the mappings file) which emulates the bidirectional logic 
+ * a workaround bidirectional condition generator
+ * instead of generating routine logic, this calls a user defined routine (in the mappings file) which emulates the bidirectional logic 
  * 
  */
 class BidirectionalMappingRoutineGenerator implements AbstractBidirectionalCondition {
@@ -71,11 +71,4 @@ class BidirectionalMappingRoutineGenerator implements AbstractBidirectionalCondi
 		context.getSegmentBuilder += targetRoutineBuilder
 	}
 
-//	private def generateRoutineInput() {
-//		[ InputBuilder builder |
-//			routine.input.modelInputElements.forEach [
-//				builder.model(it.metaclass, it.name)
-//			]
-//		] as Consumer<InputBuilder>
-//	}
 }

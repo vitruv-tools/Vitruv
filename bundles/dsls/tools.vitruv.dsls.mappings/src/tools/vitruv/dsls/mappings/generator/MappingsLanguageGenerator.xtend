@@ -12,12 +12,10 @@ import org.eclipse.xtext.resource.XtextResourceSet
 import org.eclipse.xtext.resource.impl.ResourceDescriptionsProvider
 import tools.vitruv.dsls.mappings.generator.integration.EmbeddedReactionIntegrationGenerator
 import tools.vitruv.dsls.mappings.generator.integration.IReactionIntegrationGenerator
-import tools.vitruv.dsls.mappings.generator.utils.XExpressionParser
 import tools.vitruv.dsls.mappings.mappingsLanguage.MappingsFile
 import tools.vitruv.dsls.mappings.mappingsLanguage.MappingsSegment
 import tools.vitruv.dsls.reactions.api.generator.IReactionsGenerator
 import tools.vitruv.dsls.reactions.builder.FluentReactionsLanguageBuilder
-import tools.vitruv.dsls.mappings.generator.utils.MappingParameterScopeFinder
 
 class MappingsLanguageGenerator implements IGenerator2 {
 	@Inject FluentReactionsLanguageBuilder create
@@ -41,7 +39,6 @@ class MappingsLanguageGenerator implements IGenerator2 {
 		val reactionsGenerator = reactionsGeneratorProvider.get
 		val resourceSet = resourceSetProvider.get
 		resourceSet.addLoadOption(XtextResource.OPTION_RESOLVE_ALL, Boolean.TRUE)
-		MappingParameterScopeFinder.init(containerManager, resourceDescriptionsProivder)
 		val mappingsFiles = input?.contents?.filter(MappingsFile)
 		for (mappingsFile : mappingsFiles) {
 			reactionsGenerator.useResourceSet(mappingsFile.eResource.resourceSet)
@@ -68,8 +65,7 @@ class MappingsLanguageGenerator implements IGenerator2 {
 
 	private def generateReactions(String mappingsPackage, MappingsFile mappingsFile, MappingsSegment segment,
 		IReactionsGenerator reactionsGenerator, boolean l2r) {
-		val basePackageForSegment = mappingsPackage + "." + segment.name
-		val reactionsFileGenerator = new MappingsReactionsFileGenerator(basePackageForSegment, segment, l2r, create,
+		val reactionsFileGenerator = new MappingsReactionsFileGenerator(segment, l2r, create,
 			mappingsFile)
 		reactionsFileGenerator.generate
 	}

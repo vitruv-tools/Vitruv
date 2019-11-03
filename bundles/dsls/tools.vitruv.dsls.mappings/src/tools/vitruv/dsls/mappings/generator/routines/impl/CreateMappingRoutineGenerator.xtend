@@ -1,6 +1,5 @@
 package tools.vitruv.dsls.mappings.generator.routines.impl
 
-import java.util.ArrayList
 import org.eclipse.emf.ecore.EClass
 import org.eclipse.xtext.xbase.XbaseFactory
 import tools.vitruv.dsls.mappings.generator.routines.AbstractMappingRoutineGenerator
@@ -12,7 +11,7 @@ import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.InputBuilder
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.MatcherOrActionBuilder
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.UndecidedMatcherStatementBuilder
 
-class CreateMappingRoutine extends AbstractMappingRoutineGenerator {
+class CreateMappingRoutineGenerator extends AbstractMappingRoutineGenerator {
 
 	new() {
 		super('CreateMapping')
@@ -98,7 +97,7 @@ class CreateMappingRoutine extends AbstractMappingRoutineGenerator {
 
 	private def initWithBidirectionalConditions(ActionStatementBuilder builder) {
 		// just call the bidirectional update routine
-		builder.call(BidirectionalUpdateRoutineGenerator.routine)
+		builder.call(UpdateMappingRoutineGenerator.routine)
 	}
 
 }

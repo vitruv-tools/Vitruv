@@ -1,15 +1,13 @@
 package tools.vitruv.dsls.mappings.generator.reactions
 
-import tools.vitruv.dsls.mappings.mappingsLanguage.MappingParameter
-import tools.vitruv.dsls.mirbase.mirBase.MetaclassReference
-import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.ActionStatementBuilder
-import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.UndecidedMatcherStatementBuilder
 import tools.vitruv.dsls.mappings.generator.MappingGeneratorContext
+import tools.vitruv.dsls.mappings.generator.MappingScenarioType
+import tools.vitruv.dsls.mirbase.mirBase.MetaclassReference
 
-class DeletedReactionGenerator extends AbstractReactionTriggerGenerator {
+class DeletedReactionTriggerGenerator extends AbstractReactionTriggerGenerator {
 
 	new(MetaclassReference element) {
-		super(element.metaclass, ReactionTriggerType.DELETE)
+		super(element.metaclass, MappingScenarioType.DELETE)
 	}
 
 	override generateTrigger(MappingGeneratorContext context) {
@@ -21,7 +19,7 @@ class DeletedReactionGenerator extends AbstractReactionTriggerGenerator {
 	«metaclass.parameterName» deleted'''
 
 	override equals(Object obj) {
-		if (obj instanceof DeletedReactionGenerator) {
+		if (obj instanceof DeletedReactionTriggerGenerator) {
 			return metaclass == obj.metaclass
 		}
 		false

@@ -6,10 +6,6 @@ import org.eclipse.xtext.xbase.XExpression
 import org.eclipse.xtext.xbase.XbaseFactory
 import tools.vitruv.dsls.mappings.generator.conditions.MultiValueConditionGenerator
 import tools.vitruv.dsls.mappings.generator.reactions.AbstractReactionTriggerGenerator
-import tools.vitruv.dsls.mappings.generator.reactions.DeletedReactionGenerator
-import tools.vitruv.dsls.mappings.generator.reactions.ElementReplacedReactionGenerator
-import tools.vitruv.dsls.mappings.generator.reactions.InsertedReactionGenerator
-import tools.vitruv.dsls.mappings.generator.reactions.RemovedReactionGenerator
 import tools.vitruv.dsls.mappings.mappingsLanguage.MappingParameter
 import tools.vitruv.dsls.mappings.mappingsLanguage.MultiValueCondition
 import tools.vitruv.dsls.mappings.mappingsLanguage.MultiValueConditionOperator
@@ -17,6 +13,10 @@ import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.RoutineTypeProvi
 
 import static extension tools.vitruv.dsls.mappings.generator.conditions.FeatureConditionGeneratorUtils.*
 import static extension tools.vitruv.dsls.mappings.generator.utils.XBaseMethodFinder.*
+import tools.vitruv.dsls.mappings.generator.reactions.ElementReplacedReactionTriggerGenerator
+import tools.vitruv.dsls.mappings.generator.reactions.DeletedReactionTriggerGenerator
+import tools.vitruv.dsls.mappings.generator.reactions.InsertedReactionTriggerGenerator
+import tools.vitruv.dsls.mappings.generator.reactions.RemovedReactionTriggerGenerator
 
 class InValueConditionGenerator extends MultiValueConditionGenerator {
 
@@ -53,12 +53,12 @@ class InValueConditionGenerator extends MultiValueConditionGenerator {
 			if (rightSide.feature.many) {
 				if (condition.negated === null) {
 					// only create reaction triggers for not negated in conditions
-					triggers.add(new InsertedReactionGenerator(leftReference, rightSide))
-				 triggers.add(new RemovedReactionGenerator(leftReference, rightSide))
+					triggers.add(new InsertedReactionTriggerGenerator(leftReference, rightSide))
+				 triggers.add(new RemovedReactionTriggerGenerator(leftReference, rightSide))
 				}
-				triggers.add(new DeletedReactionGenerator(leftReference))
+				triggers.add(new DeletedReactionTriggerGenerator(leftReference))
 			} else {
-				triggers.add(new ElementReplacedReactionGenerator(rightSide, leftReference));
+				triggers.add(new ElementReplacedReactionTriggerGenerator(rightSide, leftReference));
 			}
 		}
 		super.constructReactionTriggers(triggers)

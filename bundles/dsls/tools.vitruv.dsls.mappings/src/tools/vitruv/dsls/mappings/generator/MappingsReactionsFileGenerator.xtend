@@ -18,17 +18,14 @@ class MappingsReactionsFileGenerator {
 	@Accessors(PROTECTED_GETTER)
 	val FluentReactionsLanguageBuilder create
 	val MappingsFile mappingsFile;
-	// not used atm
-	var String basePackage
 	var MappingGeneratorContext context
 	var boolean left2right
 	var MappingsSegment segment
 
-	new(String basePackage, MappingsSegment segment, boolean left2right, FluentReactionsLanguageBuilder create,
+	new(MappingsSegment segment, boolean left2right, FluentReactionsLanguageBuilder create,
 		MappingsFile file) {
 		this.segment = segment
 		this.left2right = left2right
-		this.basePackage = basePackage
 		this.create = create
 		this.mappingsFile = file
 	}
@@ -59,7 +56,6 @@ class MappingsReactionsFileGenerator {
 			val mappingRoutines = extractor.bidirectionalizableRoutines
 			val mappingAttributes = extractor.observeChanges
 			val reactionsBuilder = new DirectionalMappingReactionGenerator(from, to, it)
-			println('''generate mapping «it.name» «IF (context.left2right)»left to right«ELSE»right to left«ENDIF»:''')
 			reactionsBuilder.generate(context, fromConditions, toConditions, mappingsConditions, mappingRoutines,
 				mappingAttributes)
 		]

@@ -1,9 +1,10 @@
 package tools.vitruv.dsls.mappings.generator.routines.impl
 
+import tools.vitruv.dsls.mappings.generator.routines.AbstractRetrievalCheckRoutineGenerator
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.RoutineTypeProvider
 import tools.vitruv.dsls.reactions.codegen.ReactionsLanguageConstants
 
-class UpdatedCheckRoutineGenerator extends tools.vitruv.dsls.mappings.generator.routines.AbstractRetrievalCheckRoutineGenerator {
+class CreateOrDeleteCheckRoutineGenerator extends AbstractRetrievalCheckRoutineGenerator {
 
 	private DeletedCheckRoutineGenerator deletedCheckRoutineGenerator
 
@@ -14,7 +15,7 @@ class UpdatedCheckRoutineGenerator extends tools.vitruv.dsls.mappings.generator.
 
 	override onSuccessfullyRetrievingParameters(RoutineTypeProvider provider) {
 		[
-			provider.callViaVariables(CreateMappingRoutine.routine, reactionParameters)
+			provider.callViaVariables(CreateMappingRoutineGenerator.routine, reactionParameters)
 		]
 	}
 

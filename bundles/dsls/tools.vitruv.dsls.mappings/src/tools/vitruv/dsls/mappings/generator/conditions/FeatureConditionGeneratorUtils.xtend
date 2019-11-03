@@ -1,10 +1,7 @@
 package tools.vitruv.dsls.mappings.generator.conditions
 
-import java.util.List
-import javax.inject.Provider
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.util.EcoreUtil
-import org.eclipse.xtext.common.types.JvmIdentifiableElement
 import org.eclipse.xtext.xbase.XExpression
 import org.eclipse.xtext.xbase.XbaseFactory
 import tools.vitruv.dsls.mappings.mappingsLanguage.BoolValue

@@ -11,7 +11,7 @@ class CreatedCheckRoutineGenerator extends tools.vitruv.dsls.mappings.generator.
 
 	override onSuccessfullyRetrievingParameters(RoutineTypeProvider provider) {
 		[
-			provider.callViaVariables(CreateMappingRoutine.routine, reactionParameters)
+			provider.callViaVariables(CreateMappingRoutineGenerator.routine, reactionParameters)
 		]
 	}
 

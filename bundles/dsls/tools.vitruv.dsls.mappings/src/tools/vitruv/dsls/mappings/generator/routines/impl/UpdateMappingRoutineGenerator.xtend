@@ -4,7 +4,7 @@ import tools.vitruv.dsls.mappings.generator.routines.AbstractMappingRoutineGener
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.InputBuilder
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.MatcherOrActionBuilder
 
-class BidirectionalUpdateRoutineGenerator extends AbstractMappingRoutineGenerator {
+class UpdateMappingRoutineGenerator extends AbstractMappingRoutineGenerator {
 
 	new() {
 		super('BidirectionalUpdate')

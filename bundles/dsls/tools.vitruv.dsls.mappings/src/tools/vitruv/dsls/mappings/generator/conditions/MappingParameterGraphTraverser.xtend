@@ -28,9 +28,6 @@ class MappingParameterGraphTraverser {
 		conditions.filter[it instanceof InValueConditionGenerator].forEach [
 			createInRelation(it as InValueConditionGenerator)
 		]
-//		nodes.values.forEach [
-//			println('''Node «it.parameter»  «IF !parents.empty»Parents: «FOR parent: it.parents »«parent.parameter» «ENDFOR»«ENDIF» «IF !it.children.empty» Children: «FOR child: it.children» «child.node.parameter» «ENDFOR»«ENDIF»''')
-//		]
 		validateGraph
 	}
 

@@ -2,13 +2,14 @@ package tools.vitruv.dsls.mappings.generator
 
 import java.util.ArrayList
 import java.util.List
+import org.apache.log4j.Logger
+import org.eclipse.emf.ecore.EAttribute
 import org.eclipse.emf.ecore.EClass
+import org.eclipse.emf.ecore.EReference
 import tools.vitruv.dsls.mappings.generator.conditions.AbstractBidirectionalCondition
-import tools.vitruv.dsls.mappings.generator.conditions.ReactionTypeFactory
 import tools.vitruv.dsls.mappings.generator.conditions.SingleSidedConditionFactory
 import tools.vitruv.dsls.mappings.generator.conditions.impl.BidirectionalMappingRoutineGenerator
 import tools.vitruv.dsls.mappings.generator.reactions.AbstractReactionTriggerGenerator
-import tools.vitruv.dsls.mappings.generator.reactions.AttributeReplacedReactionGenerator
 import tools.vitruv.dsls.mappings.generator.routines.MappingRoutinesGenerator
 import tools.vitruv.dsls.mappings.generator.utils.ParameterCorrespondenceTagging
 import tools.vitruv.dsls.mappings.mappingsLanguage.BidirectionalizableCondition
@@ -19,11 +20,13 @@ import tools.vitruv.dsls.mappings.mappingsLanguage.RoutineIntegration
 import tools.vitruv.dsls.mappings.mappingsLanguage.SingleSidedCondition
 
 import static tools.vitruv.dsls.mappings.generator.utils.ParameterCorrespondenceTagging.*
-import org.eclipse.emf.ecore.EAttribute
-import org.eclipse.emf.ecore.EReference
-import tools.vitruv.dsls.mappings.generator.reactions.ElementReplacedReactionGenerator
+import tools.vitruv.dsls.mappings.generator.reactions.AttributeReplacedReactionTriggerGenerator
+import tools.vitruv.dsls.mappings.generator.reactions.ElementReplacedReactionTriggerGenerator
+import tools.vitruv.dsls.mappings.generator.conditions.ReactionTriggerGeneratorFactory
 
 class DirectionalMappingReactionGenerator {
+
+	private static val Logger logger = Logger.getLogger(DirectionalMappingReactionGenerator)
 
 	private List<MappingParameter> fromParameters
 	private List<MappingParameter> toParameters
@@ -37,23 +40,30 @@ class DirectionalMappingReactionGenerator {
 
 	def generate(MappingGeneratorContext context, List<SingleSidedCondition> fromConditions,
 		List<SingleSidedCondition> toConditions, List<BidirectionalizableCondition> mappingConditions,
-		List<RoutineIntegration> mappingRoutines, ObserveChanges observeChanges) {
+		List<RoutineIntegration> mappingRoutines, ObserveChanges observeChanges) {			
 		ParameterCorrespondenceTagging.context = context
 		val mappingName = mapping.name
-		val reactionFactory = new ReactionTypeFactory(mappingName, fromConditions)
+		//init reaction trigger generator factory
+		val reactionTriggerGeneratorsFactory = new ReactionTriggerGeneratorFactory(mappingName, fromConditions)
+		//init bidirectional condition generators
 		val bidirectionalCondtionGenerators = generateBidirectionalMappingConditions(context, mappingConditions,
 			mappingRoutines, fromParameters)
+		//init single-sided condition generators (for both sides)
 		val singlesidedConditionGenerators = SingleSidedConditionFactory.construct(fromConditions)
 		val correspondingSinglesidedConditionGenerators = SingleSidedConditionFactory.construct(toConditions)
-		val reactionGenerators = reactionFactory.constructGenerators(fromParameters, toParameters)
-		reactionGenerators.appendBidirectionalMappingAttributeReactions(observeChanges)
+		//init reaction routines generator
 		val routinesGenerator = new MappingRoutinesGenerator(fromParameters, toParameters)
+		//create the reaction routines
 		routinesGenerator.generateRoutines(mappingName, context, singlesidedConditionGenerators,
 			correspondingSinglesidedConditionGenerators, bidirectionalCondtionGenerators)
-		reactionGenerators.forEach [ reactionGenerator |
-			println('''=> generate reaction: «reactionGenerator.toString»''')
-			val reactionTemplate = reactionGenerator.generateTrigger(context)
-			context.getSegmentBuilder += routinesGenerator.generateRoutineCall(reactionTemplate, reactionGenerator)
+		//create the reaction trigger generators
+		val reactionTriggerGenerators = reactionTriggerGeneratorsFactory.constructGenerators(fromParameters, toParameters)
+		reactionTriggerGenerators.appendBidirectionalMappingAttributeReactions(observeChanges)
+		//create reaction triggers from the generators and connect them with the created routines
+		reactionTriggerGenerators.forEach [ reactionTriggerGenerator |
+			logger.info('''=> generate reaction trigger: «reactionTriggerGenerator.toString»''')
+			val reactionTemplate = reactionTriggerGenerator.generateTrigger(context)
+			context.getSegmentBuilder += routinesGenerator.generateRoutineCall(reactionTemplate, reactionTriggerGenerator)
 		]
 	}
 
@@ -86,12 +96,14 @@ class DirectionalMappingReactionGenerator {
 				// check if its a relevant metaclass for this direction
 				if (feature.metaclass.metaclassApplicable) {
 					var AbstractReactionTriggerGenerator generator
+					//find a fitting trigger generator
 					if (feature.feature instanceof EAttribute) {
-						generator = new AttributeReplacedReactionGenerator(feature)
+						generator = new AttributeReplacedReactionTriggerGenerator(feature)
 					} else if (feature.feature instanceof EReference) {
-						generator = new ElementReplacedReactionGenerator(feature)
+						generator = new ElementReplacedReactionTriggerGenerator(feature)
 					}
-					generator.derivedFromBidirectionalCondition = true
+					//overwrite the default mapping scenario type of the created triggers
+					generator.overwriteScenarioType(MappingScenarioType.UPDATE)
 					generator.sourceObserveChange = it
 					generator.init(mapping.name, fromParameters, toParameters)
 					generators.add(generator)
