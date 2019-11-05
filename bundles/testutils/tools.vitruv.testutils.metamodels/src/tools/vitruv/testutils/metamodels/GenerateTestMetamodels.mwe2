@@ -16,7 +16,7 @@ Workflow {
 	}
 
 	bean = StandaloneSetup {
-		platformUri = ".."
+		platformUri = "."
 	}
 
 	component = EcoreGenerator {
