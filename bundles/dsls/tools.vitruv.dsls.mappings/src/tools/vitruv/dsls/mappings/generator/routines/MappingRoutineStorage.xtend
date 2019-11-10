@@ -26,7 +26,10 @@ class MappingRoutineStorage {
 		this.fromParameters = fromParameters
 		this.toParameters = toParameters
 	}
-
+	
+	/**
+	 * Initializes the fields 
+	 */
 	public def init(String mappingName, MappingGeneratorContext context,
 		List<AbstractSingleSidedCondition> singleSidedConditions,
 		List<AbstractSingleSidedCondition> correspondingSingleSidedConditions,
@@ -37,7 +40,10 @@ class MappingRoutineStorage {
 		this.correspondingSingleSidedConditions = correspondingSingleSidedConditions
 		this.bidirectionalConditions = bidirectionalConditions
 	}
-
+	
+	/**
+	 * Generates a routine from a routine generator
+	 */
 	public def generateRoutine(AbstractMappingRoutineGenerator generator) {
 		logger.info('''=> generate routine: «generator.toString»''')
 		generator.init(mappingName, fromParameters, toParameters)
@@ -47,11 +53,17 @@ class MappingRoutineStorage {
 		context.segmentBuilder += routine
 		routineGenerators.put(generator.class, generator)
 	}
-
+	
+	/**
+	 * Returns a routine generator by the class
+	 */
 	public def getRoutine(Class<? extends AbstractMappingRoutineGenerator> key) {
 		routineGenerators.get(key)
 	}
 
+	/**
+	 * Returns a FluentRoutineBuilder used within a routine generator by the class
+	 */
 	public def getRoutineBuilder(Class<? extends AbstractMappingRoutineGenerator> key) {
 		routineGenerators.get(key).routine
 	}

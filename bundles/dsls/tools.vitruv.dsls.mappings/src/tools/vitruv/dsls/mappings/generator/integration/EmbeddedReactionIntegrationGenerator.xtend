@@ -5,7 +5,6 @@ import tools.vitruv.dsls.reactions.api.generator.IReactionsGenerator
 
 class EmbeddedReactionIntegrationGenerator extends AbstractReactionIntegrationGenerator {
 
-	private ReactionIntegrationCache cache = new ReactionIntegrationCache;
 
 	override init() {
 		this.l2rIntegration = l2rContext;

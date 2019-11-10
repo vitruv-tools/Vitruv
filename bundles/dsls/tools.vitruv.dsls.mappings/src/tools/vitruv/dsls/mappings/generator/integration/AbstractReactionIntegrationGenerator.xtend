@@ -1,16 +1,12 @@
 package tools.vitruv.dsls.mappings.generator.integration
 
-import java.util.List
-import java.util.function.Consumer
 import org.eclipse.emf.ecore.util.EcoreUtil
+import tools.vitruv.dsls.mappings.generator.MappingGeneratorContext
 import tools.vitruv.dsls.mappings.mappingsLanguage.Mapping
-import tools.vitruv.dsls.mappings.mappingsLanguage.MappingParameter
 import tools.vitruv.dsls.mappings.mappingsLanguage.ReactionIntegration
 import tools.vitruv.dsls.mappings.mappingsLanguage.ReactionOrientation
 import tools.vitruv.dsls.mappings.mappingsLanguage.RoutineIntegration
-import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.InputBuilder
 import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsLanguageFactory
-import tools.vitruv.dsls.mappings.generator.MappingGeneratorContext
 
 abstract class AbstractReactionIntegrationGenerator implements IReactionIntegrationGenerator {
 
@@ -26,7 +22,10 @@ abstract class AbstractReactionIntegrationGenerator implements IReactionIntegrat
 	}
 
 	protected abstract def void init()
-
+	
+	/**
+	 * Inspects the mapping specification for integrated reaction elements
+	 */
 	override check(Mapping mapping) {
 		// integrate reactions to the specific side
 		mapping.reactions.forEach [
@@ -47,7 +46,10 @@ abstract class AbstractReactionIntegrationGenerator implements IReactionIntegrat
 			}
 		]
 	}
-
+	
+	/**
+	 * Creates a reaction from an integrated reaction specification
+	 */
 	public static def generateReaction(ReactionIntegration reactionIntegration) {
 		val reaction = ReactionsLanguageFactory.eINSTANCE.createReaction
 		reaction.callRoutine = EcoreUtil.copy(reactionIntegration.callRoutine)
@@ -57,6 +59,9 @@ abstract class AbstractReactionIntegrationGenerator implements IReactionIntegrat
 		reaction
 	}
 
+	/**
+	 * Creates a routine from an integrated routine specification
+	 */
 	public static def generateRoutine(RoutineIntegration routineIntegration) {
 		val routine = ReactionsLanguageFactory.eINSTANCE.createRoutine
 		routine.name = routineIntegration.name

@@ -47,7 +47,10 @@ abstract class AbstractMappingRoutineGenerator extends AbstractRoutineContentGen
 	protected dispatch def initCallingContext(RoutineCallStatement statement) {
 		currentCallingContext = statement.code
 	}
-
+	
+	/**
+	 * Setups the routine generator
+	 */
 	def void prepareGenerator(List<AbstractSingleSidedCondition> singleSidedConditions,
 		List<AbstractSingleSidedCondition> correspondingSingleSidedConditions,
 		List<AbstractBidirectionalCondition> bidirectionConditions, MappingRoutineStorage routineStorage) {
@@ -56,8 +59,9 @@ abstract class AbstractMappingRoutineGenerator extends AbstractRoutineContentGen
 		this.routineStorage = routineStorage
 		this.correspondingFeatureConditions = correspondingSingleSidedConditions.featureConditions.toList
 	}
+	
 
-	def call(ActionStatementBuilder builder, AbstractMappingRoutineGenerator routine) {
+	protected def call(ActionStatementBuilder builder, AbstractMappingRoutineGenerator routine) {
 		builder.call(routine.routine, routine.callParameters)
 	}
 
@@ -70,37 +74,37 @@ abstract class AbstractMappingRoutineGenerator extends AbstractRoutineContentGen
 	}
 
 	// call with any expressions
-	def call(RoutineTypeProvider provider, FluentRoutineBuilder routine, List<XExpression> arguments) {
+	protected def call(RoutineTypeProvider provider, FluentRoutineBuilder routine, List<XExpression> arguments) {
 		val call = provider.createCall(routine)
 		call.featureCallArguments += arguments
 		call
 	}
 
-	def call(RoutineTypeProvider provider, AbstractMappingRoutineGenerator routine, List<XExpression> arguments) {
+	protected def call(RoutineTypeProvider provider, AbstractMappingRoutineGenerator routine, List<XExpression> arguments) {
 		provider.call(routine.routine, arguments)
 	}
 
 	// call with the routines parameters
-	def call(RoutineTypeProvider provider, FluentRoutineBuilder routine) {
+	protected def call(RoutineTypeProvider provider, FluentRoutineBuilder routine) {
 		provider.call(routine, reactionParameters.map[provider.variable(it.parameterName)])
 	}
 
-	def call(RoutineTypeProvider provider, AbstractMappingRoutineGenerator routine) {
+	protected def call(RoutineTypeProvider provider, AbstractMappingRoutineGenerator routine) {
 		provider.call(routine.routine)
 	}
 
 	// call with variables from the execution scope
-	def callViaVariables(RoutineTypeProvider provider, FluentRoutineBuilder routine,
+	protected def callViaVariables(RoutineTypeProvider provider, FluentRoutineBuilder routine,
 		List<MappingParameter> parameters) {
 		provider.call(routine, parameters.map[referenceLocalVariable])
 	}
 
-	def callViaVariables(RoutineTypeProvider provider, AbstractMappingRoutineGenerator routine,
+	protected def callViaVariables(RoutineTypeProvider provider, AbstractMappingRoutineGenerator routine,
 		List<MappingParameter> parameters) {
 		provider.callViaVariables(routine.routine, parameters)
 	}
 
-	def generate(FluentReactionsLanguageBuilder create) {
+	protected def generate(FluentReactionsLanguageBuilder create) {
 		routine = create.routine('''«mappingName»_«name»'''.toString.toFirstLower).input([ builder |
 			generateInput(builder)
 		]).generate

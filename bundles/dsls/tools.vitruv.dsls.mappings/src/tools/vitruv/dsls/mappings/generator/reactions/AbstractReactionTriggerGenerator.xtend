@@ -33,9 +33,15 @@ abstract class AbstractReactionTriggerGenerator extends AbstractMappingEntityGen
 		this.scenarioType = scenarioType
 	}
 	
+	/**
+	 * Returns the name of the reaction to generate
+	 */
 	def public String reactionName() '''
 	On«mappingName.toFirstUpper»«reactionName»«IF scenarioType==MappingScenarioType.UPDATE»Bidirectional«ENDIF»'''
-
+	
+	/**
+	 * Checks if this trigger generator is subordinate to another generator
+	 */
 	def boolean isSubordinateToTrigger(AbstractReactionTriggerGenerator generator) {
 		if (generator.metaclass == metaclass && conflictingTriggerCheck !== null) {
 			return conflictingTriggerCheck.isSubordinateTrigger(generator)

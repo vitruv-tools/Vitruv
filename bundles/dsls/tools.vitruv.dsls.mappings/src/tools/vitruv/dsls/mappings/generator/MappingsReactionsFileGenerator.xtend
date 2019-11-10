@@ -30,6 +30,10 @@ class MappingsReactionsFileGenerator {
 		this.mappingsFile = file
 	}
 
+	/**
+	 * Generates reaction files from a mapping specification in a single direction.
+	 * Creates the generator context and iterates over all mappings contained in the specification.
+	 */
 	def generate() {
 		createAndInitializeFile
 		generateReactionsAndRoutines

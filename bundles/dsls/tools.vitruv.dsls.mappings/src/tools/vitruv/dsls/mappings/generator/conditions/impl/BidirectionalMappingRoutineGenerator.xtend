@@ -29,7 +29,10 @@ class BidirectionalMappingRoutineGenerator implements AbstractBidirectionalCondi
 		this.parameters = parameters
 		this.routine = routineIntegration
 	}
-
+	
+	/**
+	 * Checks if the routine can be used to implement a bidirectional expression in this mapping
+	 */
 	def isValidRoutine() {
 		// routine input must be exactly the mapping parameters 
 		val input = routine.input.modelInputElements

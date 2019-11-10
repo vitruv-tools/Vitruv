@@ -26,7 +26,10 @@ class MappingRoutinesGenerator {
 	new(List<MappingParameter> fromParameters, List<MappingParameter> toParameters) {
 		routineStorage = new MappingRoutineStorage(fromParameters, toParameters)
 	}
-
+	
+	/**
+	 * Generates the routines for a mapping specification
+	 */
 	public def generateRoutines(String mappingName, MappingGeneratorContext context,
 		List<AbstractSingleSidedCondition> singleSidedConditions,
 		List<AbstractSingleSidedCondition> correspondingSingleSidedConditions,
@@ -43,6 +46,9 @@ class MappingRoutinesGenerator {
 		new CreateOrDeleteCheckRoutineGenerator().generateRoutine // calls CreateMappingRoutine or DeletedCheckRoutineGenerator 
 	}
 
+	/**
+	 * Connects a reaction trigger with a generated routine by creating a routine-call
+	 */
 	public def generateRoutineCall(PreconditionOrRoutineCallBuilder reactionBuilder,
 		AbstractReactionTriggerGenerator generator) {
 		switch (generator.getScenarioType) {

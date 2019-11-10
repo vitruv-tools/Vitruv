@@ -2,7 +2,6 @@ package tools.vitruv.dsls.mappings.generator.routines
 
 import java.util.ArrayList
 import java.util.List
-import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EReference
 import org.eclipse.xtext.common.types.JvmIdentifiableElement
 import org.eclipse.xtext.common.types.TypesFactory
@@ -11,6 +10,7 @@ import org.eclipse.xtext.xbase.XbaseFactory
 import org.eclipse.xtext.xbase.lib.Functions.Function0
 import tools.vitruv.dsls.mappings.generator.conditions.MappingParameterGraphTraverser
 import tools.vitruv.dsls.mappings.generator.conditions.MappingParameterGraphTraverser.TraverseStepDown
+import tools.vitruv.dsls.mappings.generator.conditions.MappingParameterGraphTraverser.TraverseStepUp
 import tools.vitruv.dsls.mappings.generator.conditions.impl.InValueConditionGenerator
 import tools.vitruv.dsls.mappings.mappingsLanguage.MappingParameter
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.RoutineTypeProvider
@@ -18,7 +18,6 @@ import tools.vitruv.dsls.reactions.codegen.ReactionsLanguageConstants
 
 import static extension tools.vitruv.dsls.mappings.generator.utils.XBaseMethodFinder.*
 import static extension tools.vitruv.dsls.mappings.generator.utils.XBaseMethodUtils.*
-import tools.vitruv.dsls.mappings.generator.conditions.MappingParameterGraphTraverser.TraverseStepUp
 
 class MappingParameterRetrievalGenerator extends AbstractRoutineContentGenerator {
 	private MappingParameterGraphTraverser treeTraverser
@@ -31,7 +30,7 @@ class MappingParameterRetrievalGenerator extends AbstractRoutineContentGenerator
 		this.treeTraverser = new MappingParameterGraphTraverser(featureConditions.toList, parameters.
 			map[parameterName], [it.parameterName])
 	}
-
+	
 	public def generate(RoutineTypeProvider provider, Function0<XExpression> finishedRetrievingParameters,
 		Function0<XExpression> failedToRetrieveParameters) {
 		this.finishedRetrievingParameters = finishedRetrievingParameters

@@ -15,6 +15,9 @@ class MappingParameterExtractor {
 		this.targetDomain = targetDomain
 	}
 
+	/**
+	 * Extracts the parameters, conditions and further information from a mapping specification 
+	 */
 	def extract(Mapping mapping) {
 		this.mapping = mapping
 		// check the parameters for their model references

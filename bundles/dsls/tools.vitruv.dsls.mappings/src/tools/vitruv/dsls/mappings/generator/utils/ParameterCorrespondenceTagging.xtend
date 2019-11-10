@@ -7,11 +7,17 @@ import tools.vitruv.dsls.mappings.generator.MappingGeneratorContext
 class ParameterCorrespondenceTagging {
 
 	private static MappingGeneratorContext context
-
+	
+	/**
+	 * Sets the current generator context
+	 */
 	public static def setContext(MappingGeneratorContext context) {
 		ParameterCorrespondenceTagging.context = context
 	}
 
+	/**
+	 * Returns the correspondence tag between two mapping parameters
+	 */
 	public static def String getCorrespondenceTag(MappingParameter reactionParameter,
 		MappingParameter correspondingParameter) {
 		if (!context.left2right) {

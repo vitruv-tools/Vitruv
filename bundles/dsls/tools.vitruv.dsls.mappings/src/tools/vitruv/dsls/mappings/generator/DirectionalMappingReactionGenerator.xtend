@@ -40,6 +40,9 @@ class DirectionalMappingReactionGenerator {
 		this.mapping = mapping
 	}
 
+	/**
+	 * Generates reaction files from a single mapping for one direction
+	 */
 	def generate(MappingGeneratorContext context, List<SingleSidedCondition> fromConditions,
 		List<SingleSidedCondition> toConditions, List<BidirectionalizableCondition> mappingConditions,
 		List<RoutineIntegration> mappingRoutines, ObserveChanges observeChanges) {

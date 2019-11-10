@@ -23,15 +23,24 @@ class InValueConditionGenerator extends MultiValueConditionGenerator {
 	new(MultiValueCondition condition) {
 		super(condition, MultiValueConditionOperator.IN)
 	}
-
+	
+	/**
+	 * Returns the child parameter of this  in-value condition
+	 */
 	public def getChildParameter() {
 		featureCondition.leftMappingParameter
 	}
 
+	/**
+	 * Returns the parent parameter of this  in-value condition
+	 */
 	public def getParentParameter() {
 		featureCondition.feature.parameter
 	}
 
+	/**
+	 * Returns the feature of this  in-value condition
+	 */
 	public def getInFeature() {
 		featureCondition.feature.feature
 	}

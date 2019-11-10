@@ -27,6 +27,9 @@ class ReactionTriggerGeneratorFactory {
 		this.conditions = conditions;
 	}
 
+	/**
+	 * Creates ReactionTriggerGenerators from a mapping specification
+	 */
 	def List<AbstractReactionTriggerGenerator> constructGenerators(List<MappingParameter> fromParameters,
 		List<MappingParameter> toParameters) {
 		this.fromParameters = fromParameters

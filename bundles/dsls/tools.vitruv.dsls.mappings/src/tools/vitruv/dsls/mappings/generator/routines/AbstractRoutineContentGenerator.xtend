@@ -15,7 +15,7 @@ import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.RoutineTypeProvi
 
 import static extension tools.vitruv.dsls.mappings.generator.utils.XBaseMethodUtils.*
 
-class AbstractRoutineContentGenerator extends AbstractMappingEntityGenerator {
+abstract class AbstractRoutineContentGenerator extends AbstractMappingEntityGenerator {
 
 	protected List<AbstractSingleSidedCondition> singleSidedConditions
 	protected List<AbstractBidirectionalCondition> bidirectionConditions

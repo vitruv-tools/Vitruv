@@ -61,16 +61,27 @@ class MappingParameterGraphTraverser {
 		}
 	}
 
+	/**
+	 * Returns a path between two nodes in the graph
+	 */
 	public def findPath(String from, String to) {
 		val fromNode = nodes.get(from)
 		val toNode = nodes.get(to)
 		fromNode.findPath(toNode, new NodePath(fromNode))
 	}
 
+	/**
+	 * Finds the shortest path between a list of start nodes to a target node.
+	 * The returned path starts from one of the start nodes and ends at the target node.
+	 */
 	public def findPath(List<String> startPoints, String to) {
 		startPoints.map[it.findPath(to)].minBy[it.steps.size]
 	}
 
+	/**
+	 * Returns a path with one step from a list of start nodes. The target node is of the remaining
+	 * nodes in the graph without the starting nodes. 
+	 */
 	public def findStepToNextNode(List<String> startPoints) {
 		val remainingNodes = nodes.keySet.filter[!startPoints.contains(it)]
 		if(remainingNodes.empty){
@@ -84,6 +95,9 @@ class MappingParameterGraphTraverser {
 		path
 	}
 
+	/**
+	 * Returns a node by its key
+	 */
 	public def getNode(String parameter) {
 		return nodes.get(parameter)
 	}
@@ -98,7 +112,10 @@ class MappingParameterGraphTraverser {
 		new(String parameter) {
 			this.parameter = parameter
 		}
-
+		
+		/**
+		 * Adds a parent node
+		 */
 		public def addParent(Node parent) {
 			if (!parents.contains(parent)) {
 				parents += parent
@@ -118,15 +135,24 @@ class MappingParameterGraphTraverser {
 					'A MappingParameter can only be contained by one containment-reference!')
 			}
 		}
-
+		
+		/**
+		 * Returns a child node by its parameter
+		 */
 		public def getChild(String childParameter) {
 			children.findFirst[node.parameter == childParameter]
 		}
-
+		
+		/**
+		 * Adds a child node
+		 */
 		public def addChild(Node child, EReference inFeature) {
 			this.children += new ChildNode(child, inFeature)
 		}
-
+		
+		/**
+		 * Checks for cycles in the graph. If a cycle is found, an exception will be thrown
+		 */
 		public def void cycleCheck(List<Node> visitedNodes) throws IllegalStateException{
 			if (parents.empty) {
 				// top level node
@@ -142,7 +168,11 @@ class MappingParameterGraphTraverser {
 				cycleCheck(visitedNodes)
 			]
 		}
-
+		
+		/**
+		 * Returns the count of other nodes in the graph that can be reached from this node,
+		 * provided a list of already reached nodes.
+		 */
 		public def int reachableNodesCount(List<Node> discoveredNodes) {
 			if (!discoveredNodes.contains(this)) {
 				discoveredNodes += this
@@ -163,7 +193,10 @@ class MappingParameterGraphTraverser {
 				reachableNodesCount(copiedDiscover)
 			].reduce[p1, p2|new Integer(p1.intValue + p2.intValue)]
 		}
-
+		
+		/**
+		 * Finds a path from this node to a target node
+		 */
 		public def NodePath findPath(Node node, NodePath path) {
 			if (this == node) {
 				// found node
@@ -220,7 +253,10 @@ class MappingParameterGraphTraverser {
 		new(Node startNode) {
 			this.startNode = startNode
 		}
-
+	
+		/**
+		 * Returns the start node name
+		 */
 		public def getStartNode() {
 			startNode.parameter
 		}
@@ -245,7 +281,10 @@ class MappingParameterGraphTraverser {
 			this.to = to
 			this.feature = feature
 		}
-
+		
+		/**
+		 * Returns the feature name of the edge traversed in this step
+		 */
 		public def getParameter() {
 			return to.parameter
 		}
