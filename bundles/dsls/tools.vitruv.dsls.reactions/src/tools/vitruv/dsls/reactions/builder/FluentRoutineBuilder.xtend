@@ -43,8 +43,8 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 	@Accessors(PACKAGE_GETTER)
 	protected var requireAffectedValue = false
 
-	protected var EClassifier valueType
-	protected var EClass affectedObjectType
+	var EClassifier valueType
+	var EClass affectedObjectType
 
 	package new(String routineName, FluentBuilderContext context) {
 		super(context)
@@ -716,7 +716,7 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 	}
 
 	override toString() {
-		'''routine builder for “«routine.name»”'''
+		'''routine builder for «routine.name»'''
 	}
 
 	def public getJvmOperation() {
@@ -738,10 +738,6 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 
 	override protected getCreatedElementType() {
 		"routine"
-	}
-
-	def getLastActionStatement() {
-		routine.action.actionStatements.last
 	}
 
 }

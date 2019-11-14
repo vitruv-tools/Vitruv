@@ -8,8 +8,6 @@ import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsSegment
 import tools.vitruv.framework.domains.VitruvDomain
 
 import static com.google.common.base.Preconditions.*
-import tools.vitruv.dsls.reactions.reactionsLanguage.Routine
-import tools.vitruv.dsls.reactions.reactionsLanguage.Reaction
 
 @Accessors(PACKAGE_GETTER)
 class FluentReactionsSegmentBuilder extends FluentReactionElementBuilder {
