@@ -23,3 +23,4 @@ Require-Bundle: org.junit,
  org.eclipse.uml2.uml
 Bundle-ActivationPolicy: lazy
 Bundle-Vendor: vitruv.tools
+Export-Package: tools.vitruv.framework.tests.domains;x-internal:=true
