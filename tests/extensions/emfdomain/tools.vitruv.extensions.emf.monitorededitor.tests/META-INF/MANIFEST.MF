@@ -25,7 +25,7 @@ Require-Bundle: org.eclipse.ui,
  tools.vitruv.framework.tuid,
  tools.vitruv.framework.vsum,
  tools.vitruv.testutils
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-ActivationPolicy: lazy
 Export-Package: tools.vitruv.domains.emf.monitorededitor;x-internal:=true,
  tools.vitruv.domains.emf.monitorededitor.mocking;x-internal:=true,

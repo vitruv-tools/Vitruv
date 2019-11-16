@@ -20,7 +20,7 @@ Require-Bundle: org.eclipse.ui,
  tools.vitruv.framework.util,
  tools.vitruv.framework.change,
  tools.vitruv.framework.vsum
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-ActivationPolicy: lazy
 Export-Package: tools.vitruv.domains.emf.monitorededitor,
  tools.vitruv.domains.emf.monitorededitor.monitor,

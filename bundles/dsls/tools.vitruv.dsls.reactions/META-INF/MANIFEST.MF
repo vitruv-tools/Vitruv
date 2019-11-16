@@ -32,7 +32,7 @@ Require-Bundle: org.eclipse.xtext,
  edu.kit.ipd.sdq.activextendannotations;bundle-version="1.0.0",
  tools.vitruv.dsls.common;bundle-version="0.2.0"
 Bundle-ActivationPolicy: lazy
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-RequiredExecutionEnvironment: JavaSE-11
 Export-Package: tools.vitruv.dsls.reactions,
  tools.vitruv.dsls.reactions.api.generator,
  tools.vitruv.dsls.reactions.builder,

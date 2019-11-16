@@ -24,7 +24,7 @@ Require-Bundle: tools.vitruv.dsls.mirbase,
  tools.vitruv.dsls.common,
  tools.vitruv.framework.metamodel
 Import-Package: org.apache.log4j
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-RequiredExecutionEnvironment: JavaSE-11
 Export-Package: tools.vitruv.dsls.mirbase.ui.internal,
  tools.vitruv.dsls.mirbase.ui.quickfix,
  tools.vitruv.dsls.mirbase.ui.contentassist,

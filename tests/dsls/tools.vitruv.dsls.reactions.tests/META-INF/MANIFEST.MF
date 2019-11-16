@@ -74,7 +74,7 @@ Require-Bundle: org.junit,
   tools.vitruv.extensions.emf;bundle-version="0.2.0",
   tools.vitruv.extensions.dslsruntime.mappings,
   tools.vitruv.extensions.dslsruntime.reactions;visibility:=reexport
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-RequiredExecutionEnvironment: JavaSE-11
 Import-Package: org.hamcrest.core,
   org.junit;version="4.5.0",
   org.junit.runner;version="4.5.0",
