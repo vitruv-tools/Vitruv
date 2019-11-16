@@ -13,8 +13,6 @@ public class ResourceSetUtil {
             resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(extension,
                     globalExtensionToFactoryMap.get(extension));
         }
-        if (resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().isEmpty()) {
-        	resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("*", new XMIResourceFactoryImpl());
-        }
+        resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("*", new XMIResourceFactoryImpl());
 	}
 }
