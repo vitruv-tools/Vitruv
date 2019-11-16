@@ -308,14 +308,16 @@ public class ChangeTree extends ChangeComponent {
 		DefaultTreeModel model = (DefaultTreeModel)treeUI.getModel();
 		DefaultMutableTreeNode root=(DefaultMutableTreeNode) model.getRoot();
 		if(root!=null) {
-			@SuppressWarnings("unchecked")
-			Enumeration<DefaultMutableTreeNode> nodes = root.depthFirstEnumeration();
+			Enumeration<TreeNode> nodes = root.depthFirstEnumeration();
 			while(nodes.hasMoreElements()) {
-				DefaultMutableTreeNode node = nodes.nextElement();
-				if(node.getUserObject() instanceof ChangeNode) {
-					//Only EChange nodes are affected and change their size
-					((ChangeNode)node.getUserObject()).setSimpleEChangeText(simpleEChangeText);
-					model.nodeChanged(node);
+				TreeNode node = nodes.nextElement();
+				if(node instanceof DefaultMutableTreeNode) {
+					DefaultMutableTreeNode mutableNode = (DefaultMutableTreeNode)node;
+					if(mutableNode.getUserObject() instanceof ChangeNode) {
+						//Only EChange nodes are affected and change their size
+						((ChangeNode)mutableNode.getUserObject()).setSimpleEChangeText(simpleEChangeText);
+						model.nodeChanged(node);
+					}
 				}
 			}
 		}
@@ -330,14 +332,16 @@ public class ChangeTree extends ChangeComponent {
 		DefaultTreeModel model = (DefaultTreeModel)treeUI.getModel();
 		DefaultMutableTreeNode root=(DefaultMutableTreeNode) model.getRoot();
 		if(root!=null) {
-			@SuppressWarnings("unchecked")
-			Enumeration<DefaultMutableTreeNode> nodes = root.depthFirstEnumeration();
+			Enumeration<TreeNode> nodes = root.depthFirstEnumeration();
 			while(nodes.hasMoreElements()) {
-				DefaultMutableTreeNode node = nodes.nextElement();
-				if(node.getUserObject() instanceof ChangeNode) {
-					//Only EChange nodes are affected and change their size
-					((ChangeNode)node.getUserObject()).setShowID(showID);
-					model.nodeChanged(node);
+				TreeNode node = nodes.nextElement();
+				if(node instanceof DefaultMutableTreeNode) {
+					DefaultMutableTreeNode mutableNode = (DefaultMutableTreeNode)node;
+					if (mutableNode.getUserObject() instanceof ChangeNode) {
+						//Only EChange nodes are affected and change their size
+						((ChangeNode)mutableNode.getUserObject()).setShowID(showID);
+						model.nodeChanged(node);
+					}
 				}
 			}
 		}
@@ -481,8 +485,7 @@ public class ChangeTree extends ChangeComponent {
 			});				
 			treeUI.expandPath(path);			
 		}else {		
-			@SuppressWarnings("unchecked")
-			Enumeration<TreeNode> rootChildren = rootNode.children();
+			Enumeration<? extends TreeNode> rootChildren = rootNode.children();
 			while(rootChildren.hasMoreElements()) {
 				TreeNode propChangeNode=rootChildren.nextElement();
 				if(expandBehavior==ExpandBehavior.EXPAND_VCHANGES) {
@@ -493,8 +496,7 @@ public class ChangeTree extends ChangeComponent {
 					});				
 					treeUI.expandPath(path);
 				}else {					
-					@SuppressWarnings("unchecked")
-					Enumeration<TreeNode> propChangeChildren = propChangeNode.children();
+					Enumeration<? extends TreeNode> propChangeChildren = propChangeNode.children();
 					while(propChangeChildren.hasMoreElements()) {
 						TreeNode vChangeNode=propChangeChildren.nextElement();
 						TreePath path=new TreePath(new TreeNode[] {
