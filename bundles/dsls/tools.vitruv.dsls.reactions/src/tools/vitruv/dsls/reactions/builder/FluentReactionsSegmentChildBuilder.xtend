@@ -20,7 +20,7 @@ abstract package class FluentReactionsSegmentChildBuilder extends FluentReaction
 		super(context)
 	}
 
-	def protected transferReactionsSegmentTo(FluentReactionsSegmentChildBuilder infector,
+	def protected void transferReactionsSegmentTo(FluentReactionsSegmentChildBuilder infector,
 		FluentReactionsSegmentChildBuilder infected) {
 		infector.beforeAttached[infect(infected)]
 		infected.beforeAttached[checkReactionsSegmentIsCompatibleTo(infector)]
