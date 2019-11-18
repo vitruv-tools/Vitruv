@@ -3,12 +3,6 @@ package tools.vitruv.dsls.mappings.generator.conditions
 import java.util.ArrayList
 import java.util.List
 import org.eclipse.emf.ecore.EObject
-import org.eclipse.xtext.xbase.XbaseFactory
-import tools.vitruv.dsls.mappings.mappingsLanguage.FeatureCondition
-import tools.vitruv.dsls.mappings.mappingsLanguage.NullValue
-import tools.vitruv.dsls.mappings.mappingsLanguage.StringValue
-import tools.vitruv.dsls.mirbase.mirBase.MetaclassReference
-import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.RoutineTypeProvider
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.UndecidedMatcherStatementBuilder
 import tools.vitruv.dsls.mappings.generator.reactions.AbstractReactionTriggerGenerator
 

@@ -1,7 +1,6 @@
 package tools.vitruv.dsls.mappings.generator.utils
 
 import java.io.ByteArrayInputStream
-import java.io.InputStream
 
 import org.eclipse.xtext.resource.XtextResourceSet
 import org.eclipse.xtext.xbase.XExpression

@@ -1,7 +1,6 @@
 package tools.vitruv.dsls.mappings.generator
 
 import java.util.List
-import java.util.stream.Stream
 import org.eclipse.emf.ecore.EClass
 import org.eclipse.xtend.lib.annotations.Accessors
 import tools.vitruv.dsls.mappings.generator.reactions.CorrespondingParameterConsumer

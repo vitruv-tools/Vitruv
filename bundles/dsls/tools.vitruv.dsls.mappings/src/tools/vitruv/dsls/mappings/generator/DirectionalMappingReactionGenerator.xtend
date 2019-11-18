@@ -23,7 +23,6 @@ import static tools.vitruv.dsls.mappings.generator.utils.ParameterCorrespondence
 import tools.vitruv.dsls.mappings.generator.reactions.AttributeReplacedReactionTriggerGenerator
 import tools.vitruv.dsls.mappings.generator.reactions.ElementReplacedReactionTriggerGenerator
 import tools.vitruv.dsls.mappings.generator.conditions.ReactionTriggerGeneratorFactory
-import tools.vitruv.dsls.mirbase.mirBase.MetaclassFeatureReference
 import tools.vitruv.dsls.mappings.mappingsLanguage.ObserveChange
 
 class DirectionalMappingReactionGenerator {

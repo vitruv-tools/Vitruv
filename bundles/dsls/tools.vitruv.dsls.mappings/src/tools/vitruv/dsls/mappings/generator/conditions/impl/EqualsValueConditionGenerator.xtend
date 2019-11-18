@@ -6,13 +6,11 @@ import tools.vitruv.dsls.mappings.mappingsLanguage.MappingParameter
 import tools.vitruv.dsls.mappings.mappingsLanguage.MultiValueCondition
 import tools.vitruv.dsls.mappings.mappingsLanguage.MultiValueConditionOperator
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.RoutineTypeProvider
-import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.UndecidedMatcherStatementBuilder
 
 import static extension tools.vitruv.dsls.mappings.generator.conditions.FeatureConditionGeneratorUtils.*
 import static extension tools.vitruv.dsls.mappings.generator.utils.XBaseMethodFinder.*
 import org.eclipse.xtext.xbase.XExpression
 import org.eclipse.emf.ecore.EReference
-import tools.vitruv.dsls.mappings.mappingsLanguage.ExistingMappingCorrespondence
 
 class EqualsValueConditionGenerator extends MultiValueConditionGenerator {
 

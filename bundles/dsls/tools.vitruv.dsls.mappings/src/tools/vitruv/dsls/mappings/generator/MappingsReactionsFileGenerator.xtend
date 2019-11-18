@@ -3,16 +3,7 @@ package tools.vitruv.dsls.mappings.generator
 import tools.vitruv.dsls.mappings.mappingsLanguage.MappingsSegment
 import tools.vitruv.dsls.reactions.builder.FluentReactionsLanguageBuilder
 import org.eclipse.xtend.lib.annotations.Accessors
-import com.google.common.base.Supplier
-import tools.vitruv.dsls.reactions.api.generator.IReactionsGenerator
 import tools.vitruv.dsls.mappings.mappingsLanguage.MappingsFile
-import org.eclipse.xtext.generator.IFileSystemAccess2
-import com.google.inject.Inject
-import com.google.inject.Provider
-import tools.vitruv.dsls.reactions.generator.ExternalReactionsGenerator
-import tools.vitruv.dsls.mappings.mappingsLanguage.Mapping
-import org.eclipse.xtext.resource.XtextResource
-import org.eclipse.xtext.resource.XtextResourceSet
 
 class MappingsReactionsFileGenerator {
 	@Accessors(PROTECTED_GETTER)

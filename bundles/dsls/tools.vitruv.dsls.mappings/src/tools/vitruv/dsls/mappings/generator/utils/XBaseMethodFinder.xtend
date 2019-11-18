@@ -6,8 +6,6 @@ import org.eclipse.xtext.common.types.JvmDeclaredType
 import org.eclipse.xtext.common.types.JvmMember
 import tools.vitruv.dsls.mirbase.mirBase.MetaclassFeatureReference
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.RoutineTypeProvider
-import org.eclipse.emf.common.util.EList
-import java.util.List
 
 class XBaseMethodFinder {
 

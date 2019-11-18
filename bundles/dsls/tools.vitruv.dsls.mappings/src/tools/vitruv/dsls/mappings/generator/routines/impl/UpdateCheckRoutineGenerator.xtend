@@ -6,7 +6,6 @@ import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.InputBuilder
 import tools.vitruv.dsls.mappings.generator.conditions.impl.BidirectionalMappingRoutineGenerator
 import org.eclipse.xtext.xbase.XbaseFactory
 import static extension tools.vitruv.dsls.mappings.generator.utils.XBaseMethodFinder.*
-import static extension tools.vitruv.dsls.mappings.generator.utils.XBaseMethodUtils.*
 
 class UpdateCheckRoutineGenerator extends AbstractRetrievalCheckRoutineGenerator {
 

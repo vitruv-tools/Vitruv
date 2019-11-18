@@ -2,7 +2,6 @@ package tools.vitruv.dsls.mappings.generator.routines
 
 import java.util.ArrayList
 import java.util.List
-import java.util.function.Consumer
 import org.eclipse.emf.ecore.EcoreFactory
 import org.eclipse.xtend.lib.annotations.Accessors
 import org.eclipse.xtext.xbase.XExpression
@@ -18,7 +17,6 @@ import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.MatcherOrActionB
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.RoutineCallParameter
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.RoutineTypeProvider
 import tools.vitruv.dsls.reactions.codegen.ReactionsLanguageConstants
-import tools.vitruv.dsls.reactions.reactionsLanguage.ActionStatement
 import tools.vitruv.dsls.reactions.reactionsLanguage.ExecuteActionStatement
 import tools.vitruv.dsls.reactions.reactionsLanguage.RoutineCallStatement
 

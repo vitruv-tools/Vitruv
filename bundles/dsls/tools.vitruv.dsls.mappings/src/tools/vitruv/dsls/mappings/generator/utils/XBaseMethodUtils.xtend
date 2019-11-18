@@ -1,13 +1,10 @@
 package tools.vitruv.dsls.mappings.generator.utils
 
 import org.eclipse.xtext.common.types.JvmDeclaredType
-import org.eclipse.xtext.common.types.TypesFactory
 import org.eclipse.xtext.xbase.XExpression
 import org.eclipse.xtext.xbase.XbaseFactory
-import org.eclipse.xtext.xbase.jvmmodel.JvmTypeReferenceBuilder
 import tools.vitruv.dsls.mappings.mappingsLanguage.MappingParameter
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.RoutineTypeProvider
-import java.util.Optional
 import static extension tools.vitruv.dsls.mappings.generator.utils.XBaseMethodFinder.*
 import org.eclipse.xtext.common.types.JvmIdentifiableElement
 

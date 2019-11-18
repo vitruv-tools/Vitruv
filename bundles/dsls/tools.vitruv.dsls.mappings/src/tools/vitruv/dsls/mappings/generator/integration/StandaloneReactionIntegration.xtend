@@ -1,7 +1,6 @@
 package tools.vitruv.dsls.mappings.generator.integration
 
 import org.eclipse.xtend.lib.annotations.Accessors
-import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsFile
 import tools.vitruv.dsls.mappings.mappingsLanguage.MappingsSegment
 import tools.vitruv.dsls.reactions.reactionsLanguage.Reaction
 import tools.vitruv.dsls.reactions.reactionsLanguage.Routine

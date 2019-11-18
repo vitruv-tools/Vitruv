@@ -1,7 +1,6 @@
 package tools.vitruv.dsls.mappings.generator.routines.impl
 
 import tools.vitruv.dsls.mappings.generator.routines.AbstractMappingRoutineGenerator
-import tools.vitruv.dsls.mappings.mappingsLanguage.ExistingMappingCorrespondence
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.ActionStatementBuilder
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.InputBuilder
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.MatcherOrActionBuilder

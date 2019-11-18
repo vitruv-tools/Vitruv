@@ -6,10 +6,8 @@ import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.xtext.generator.IFileSystemAccess2
 import org.eclipse.xtext.generator.IGenerator2
 import org.eclipse.xtext.generator.IGeneratorContext
-import org.eclipse.xtext.resource.IContainer
 import org.eclipse.xtext.resource.XtextResource
 import org.eclipse.xtext.resource.XtextResourceSet
-import org.eclipse.xtext.resource.impl.ResourceDescriptionsProvider
 import tools.vitruv.dsls.mappings.generator.integration.EmbeddedReactionIntegrationGenerator
 import tools.vitruv.dsls.mappings.generator.integration.IReactionIntegrationGenerator
 import tools.vitruv.dsls.mappings.mappingsLanguage.MappingsFile
@@ -21,8 +19,6 @@ class MappingsLanguageGenerator implements IGenerator2 {
 	@Inject FluentReactionsLanguageBuilder create
 	@Inject Provider<IReactionsGenerator> reactionsGeneratorProvider
 	@Inject Provider<XtextResourceSet> resourceSetProvider
-	@Inject IContainer.Manager containerManager;
-	@Inject ResourceDescriptionsProvider resourceDescriptionsProivder
 
 	IReactionIntegrationGenerator reactionIntegrationGenerator
 

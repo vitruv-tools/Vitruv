@@ -8,7 +8,6 @@ import org.eclipse.xtext.RuleCall
 import org.eclipse.xtext.ui.editor.contentassist.ContentAssistContext
 import org.eclipse.xtext.ui.editor.contentassist.ICompletionProposalAcceptor
 import org.eclipse.xtext.Assignment
-import org.eclipse.emf.ecore.util.EcoreUtil
 import tools.vitruv.dsls.mappings.mappingsLanguage.Mapping
 
 /**
