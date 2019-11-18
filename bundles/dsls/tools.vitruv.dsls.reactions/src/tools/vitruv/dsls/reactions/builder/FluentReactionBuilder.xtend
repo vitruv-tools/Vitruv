@@ -25,10 +25,15 @@ import static tools.vitruv.dsls.reactions.codegen.ReactionsLanguageConstants.*
 
 class FluentReactionBuilder extends FluentReactionsSegmentChildBuilder {
 
-	protected var Reaction reaction
+	var Reaction reaction
 	var anonymousRoutineCounter = 0
 	var EClassifier valueType
 	var EClass affectedElementType
+
+	package new (Reaction reaction, FluentBuilderContext context) {
+		super(context)
+		this.reaction = reaction;
+	}
 
 	package new(String reactionName, FluentBuilderContext context) {
 		super(context)

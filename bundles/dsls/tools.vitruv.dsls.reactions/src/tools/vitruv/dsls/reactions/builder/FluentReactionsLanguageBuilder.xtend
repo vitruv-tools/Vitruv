@@ -81,8 +81,7 @@ class FluentReactionsLanguageBuilder {
 
 	static class ExistingReactionBuilder extends FluentReactionBuilder {
 		new(Reaction reaction, FluentBuilderContext context) {
-			super(null, context)
-			this.reaction = reaction
+			super(reaction, context)
 			this.readyToBeAttached = true
 		}
 	}
