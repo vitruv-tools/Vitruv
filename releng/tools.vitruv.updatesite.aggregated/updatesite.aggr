@@ -6,7 +6,7 @@
     </contributions>
     <contributions label="externals">
       <repositories location="http://download.eclipse.org/eclipse/updates/4.13" mirrorArtifacts="false">
-        <features name="org.eclipse.emf.ecore.feature.group" versionRange="2.19.0"/>
+        <features name="org.eclipse.emf.ecore.feature.group" versionRange="2.18.0"/>
         <features name="org.eclipse.emf.common.feature.group" versionRange="2.16.0"/>
       </repositories>
       <repositories location="http://vitruv-tools.github.io/updatesite/release/license" mirrorArtifacts="false">
