@@ -12,6 +12,7 @@ import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 
 import tools.vitruv.framework.applications.VitruvApplication;
+import tools.vitruv.framework.applications.VitruvApplicationsRegistry;
 import tools.vitruv.framework.domains.VitruvDomain;
 
 import java.util.ArrayList;
@@ -79,7 +80,7 @@ public class ApplicationSelectionPage extends WizardPage {
 			selectedDomains.add(domain);	
 		}
 		
-		Iterable<VitruvApplication> applications = VitruvApplication.getAllApplicationsFromExtensionPoint();
+		Iterable<VitruvApplication> applications = VitruvApplicationsRegistry.getInstance().getApplications();
 		// Display only those who are in selectedDomains
 		for (VitruvApplication application : applications) {
 			boolean containsAll = true;
