@@ -6,9 +6,6 @@ tmp/
 *.bak
 *.swp
 *.class
-*.project
-*.prefs
-*.classpath
 
 # Xtext
 src-gen/
