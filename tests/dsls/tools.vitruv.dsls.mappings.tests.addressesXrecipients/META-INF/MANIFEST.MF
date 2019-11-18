@@ -34,4 +34,4 @@ Require-Bundle: org.apache.log4j,
   tools.vitruv.testutils,
   org.junit,
   tools.vitruv.extensions.dslsruntime.reactions;visibility:=reexport
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-RequiredExecutionEnvironment: JavaSE-11

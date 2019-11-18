@@ -12,7 +12,7 @@ Require-Bundle: tools.vitruv.dsls.mappings,
  org.antlr.runtime;bundle-version="[3.2.0,3.2.1)",
  tools.vitruv.dsls.mirbase,
  tools.vitruv.dsls.reactions
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-RequiredExecutionEnvironment: JavaSE-11
 Export-Package: tools.vitruv.dsls.mappings.ide;x-internal:=true,
  tools.vitruv.dsls.mappings.ide.contentassist.antlr,
  tools.vitruv.dsls.mappings.ide.contentassist.antlr.internal

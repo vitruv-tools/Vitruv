@@ -118,7 +118,7 @@ class TestReactionsCompiler {
 				classes.add(loader.loadClass(changePropagationSpecFQN) as Class<? extends ChangePropagationSpecification>)
 			}
 
-			changePropagationSpecsSupplier = [classes.map[newInstance]]
+			changePropagationSpecsSupplier = [classes.map[declaredConstructor.newInstance]]
 		}
 		changePropagationSpecsSupplier.get()
 	}

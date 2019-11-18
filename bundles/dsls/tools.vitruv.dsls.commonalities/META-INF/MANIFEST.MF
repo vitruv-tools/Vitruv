@@ -27,7 +27,7 @@ Require-Bundle: org.eclipse.xtext,
  tools.vitruv.dsls.common;bundle-version="0.2.0",
  tools.vitruv.extensions.emf;bundle-version="0.2.0",
  tools.vitruv.extensions.dslsruntime.commonalities;bundle-version="0.2.0"
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-RequiredExecutionEnvironment: JavaSE-11
 Export-Package: tools.vitruv.dsls.commonalities,
  tools.vitruv.dsls.commonalities.generator,
  tools.vitruv.dsls.commonalities.jvmmodel,

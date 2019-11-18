@@ -67,7 +67,7 @@ class ExecutionTestCompiler {
 		
 		checkState(loadedChangePropagationClasses.size > 0, 'Failed to load change propagations!')
 
-		return loadedChangePropagationClasses.mapFixed[newInstance].groupBy[new Pair(it.sourceDomain, it.targetDomain)].entrySet.mapFixed [
+		return loadedChangePropagationClasses.mapFixed[declaredConstructor.newInstance].groupBy[new Pair(it.sourceDomain, it.targetDomain)].entrySet.mapFixed [
 			val sourceDomain = it.key.key;
 			val targetDomain = it.key.value;
 			new CombinedChangePropagationSpecification(sourceDomain, targetDomain, it.value) as ChangePropagationSpecification

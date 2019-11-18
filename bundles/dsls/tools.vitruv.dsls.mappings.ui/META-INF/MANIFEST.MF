@@ -25,7 +25,7 @@ Require-Bundle: tools.vitruv.dsls.mappings,
  tools.vitruv.dsls.mirbase.ui,
  tools.vitruv.dsls.reactions.ui
 Import-Package: org.apache.log4j
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-RequiredExecutionEnvironment: JavaSE-11
 Export-Package: tools.vitruv.dsls.mappings.ui.contentassist,
  tools.vitruv.dsls.mappings.ui.internal,
  tools.vitruv.dsls.mappings.ui.quickfix,
