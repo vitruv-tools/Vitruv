@@ -20,12 +20,12 @@
    </license>
 
    <requires>
-      <import feature="org.eclipse.xtext.xbase.lib" version="2.18.0"/>
+      <import feature="org.eclipse.xtext.xbase.lib" version="2.19.0"/>
       <import feature="edu.kit.ipd.sdq.activextendannotations.feature" version="1.2.0"/>
       <import feature="tools.vitruv.framework.feature" version="0.3.0"/>
-      <import feature="org.eclipse.xtext.xbase" version="2.18.0"/>
-      <import feature="org.eclipse.xtext.xbase.lib" version="2.18.0"/>
-      <import feature="org.eclipse.emf.mwe2.launcher" version="2.10.0"/>
+      <import feature="org.eclipse.xtext.xbase" version="2.19.0"/>
+      <import feature="org.eclipse.xtext.xbase.lib" version="2.19.0"/>
+      <import feature="org.eclipse.emf.mwe2.launcher" version="2.11.0"/>
    </requires>
 
    <plugin
