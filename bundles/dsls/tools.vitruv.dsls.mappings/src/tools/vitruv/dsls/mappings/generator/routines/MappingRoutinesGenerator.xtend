@@ -31,8 +31,8 @@ class MappingRoutinesGenerator {
 	 * Generates the routines for a mapping specification
 	 */
 	public def generateRoutines(String mappingName, MappingGeneratorContext context,
-		List<AbstractSingleSidedCondition> singleSidedConditions,
-		List<AbstractSingleSidedCondition> correspondingSingleSidedConditions,
+		List<AbstractSingleSidedCondition<?>> singleSidedConditions,
+		List<AbstractSingleSidedCondition<?>> correspondingSingleSidedConditions,
 		List<AbstractBidirectionalCondition> bidirectionalConditions) {
 		routineStorage.init(mappingName, context, singleSidedConditions, correspondingSingleSidedConditions,
 			bidirectionalConditions)

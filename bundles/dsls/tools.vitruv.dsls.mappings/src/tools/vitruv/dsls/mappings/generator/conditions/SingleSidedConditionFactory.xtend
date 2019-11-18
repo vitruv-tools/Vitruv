@@ -24,8 +24,8 @@ class SingleSidedConditionFactory {
 
 	private static val Logger logger = Logger.getLogger(SingleSidedConditionFactory)
 
-	static def construct(List<SingleSidedCondition> conditions) {
-		val generators = new ArrayList
+	static def List<AbstractSingleSidedCondition<?>> construct(List<SingleSidedCondition> conditions) {
+		val generators = new ArrayList<AbstractSingleSidedCondition<?>>
 		conditions.forEach [ condition |
 			val generator = SingleSidedConditionFactory.construct(condition)
 			if (generator === null) {
@@ -38,7 +38,7 @@ class SingleSidedConditionFactory {
 	}
 
 
-	static def AbstractSingleSidedCondition construct(SingleSidedCondition singleSidedCondition) {
+	static def AbstractSingleSidedCondition<?> construct(SingleSidedCondition singleSidedCondition) {
 		val condition = singleSidedCondition.condition
 		switch (condition) {
 			EnforceableCondition: return construct(singleSidedCondition, condition)

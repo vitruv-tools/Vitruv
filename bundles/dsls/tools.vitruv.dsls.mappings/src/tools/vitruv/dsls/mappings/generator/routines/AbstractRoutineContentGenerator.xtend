@@ -17,7 +17,7 @@ import static extension tools.vitruv.dsls.mappings.generator.utils.XBaseMethodUt
 
 abstract class AbstractRoutineContentGenerator extends AbstractMappingEntityGenerator {
 
-	protected List<AbstractSingleSidedCondition> singleSidedConditions
+	protected List<AbstractSingleSidedCondition<?>> singleSidedConditions
 	protected List<AbstractBidirectionalCondition> bidirectionConditions
 	protected List<FeatureConditionGenerator> correspondingFeatureConditions
 	protected Map<String, JvmIdentifiableElement> localVariables = new HashMap
@@ -80,7 +80,7 @@ abstract class AbstractRoutineContentGenerator extends AbstractMappingEntityGene
 		singleSidedConditions.featureConditions
 	}
 
-	protected def getFeatureConditions(List<AbstractSingleSidedCondition> conditions) {
+	protected def getFeatureConditions(List<AbstractSingleSidedCondition<?>> conditions) {
 		conditions.filter[it instanceof FeatureConditionGenerator].map[it as FeatureConditionGenerator]
 	}
 }

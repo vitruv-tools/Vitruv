@@ -18,9 +18,9 @@ class MappingRoutineStorage {
 	private List<MappingParameter> toParameters
 	private String mappingName
 	private MappingGeneratorContext context
-	private List<AbstractSingleSidedCondition> singleSidedConditions
+	private List<AbstractSingleSidedCondition<?>> singleSidedConditions
 	private List<AbstractBidirectionalCondition> bidirectionalConditions
-	private List<AbstractSingleSidedCondition> correspondingSingleSidedConditions
+	private List<AbstractSingleSidedCondition<?>> correspondingSingleSidedConditions
 
 	new(List<MappingParameter> fromParameters, List<MappingParameter> toParameters) {
 		this.fromParameters = fromParameters
@@ -31,8 +31,8 @@ class MappingRoutineStorage {
 	 * Initializes the fields 
 	 */
 	public def init(String mappingName, MappingGeneratorContext context,
-		List<AbstractSingleSidedCondition> singleSidedConditions,
-		List<AbstractSingleSidedCondition> correspondingSingleSidedConditions,
+		List<AbstractSingleSidedCondition<?>> singleSidedConditions,
+		List<AbstractSingleSidedCondition<?>> correspondingSingleSidedConditions,
 		List<AbstractBidirectionalCondition> bidirectionalConditions) {
 		this.mappingName = mappingName
 		this.context = context

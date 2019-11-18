@@ -49,8 +49,8 @@ abstract class AbstractMappingRoutineGenerator extends AbstractRoutineContentGen
 	/**
 	 * Setups the routine generator
 	 */
-	def void prepareGenerator(List<AbstractSingleSidedCondition> singleSidedConditions,
-		List<AbstractSingleSidedCondition> correspondingSingleSidedConditions,
+	def void prepareGenerator(List<AbstractSingleSidedCondition<?>> singleSidedConditions,
+		List<AbstractSingleSidedCondition<?>> correspondingSingleSidedConditions,
 		List<AbstractBidirectionalCondition> bidirectionConditions, MappingRoutineStorage routineStorage) {
 		this.singleSidedConditions = singleSidedConditions
 		this.bidirectionConditions = bidirectionConditions
