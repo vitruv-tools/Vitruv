@@ -4,7 +4,7 @@ Bundle-Name: Vitruv Framework Change Metamodel Tests
 Bundle-SymbolicName: tools.vitruv.framework.change.tests
 Automatic-Module-Name: tools.vitruv.framework.change.processing
 Bundle-Version: 0.3.0.qualifier
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-RequiredExecutionEnvironment: JavaSE-11
 Require-Bundle: org.junit,
  com.google.guava,
  org.eclipse.xtext.xbase.lib,

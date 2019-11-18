@@ -4,7 +4,7 @@ Bundle-Name: Vitruv Framework Utilities
 Bundle-SymbolicName: tools.vitruv.framework.util
 Automatic-Module-Name: tools.vitruv.framework.util
 Bundle-Version: 0.3.0.qualifier
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-RequiredExecutionEnvironment: JavaSE-11
 Export-Package: tools.vitruv.framework.util,
  tools.vitruv.framework.util.bridges,
  tools.vitruv.framework.util.command,
