@@ -19,9 +19,11 @@ import tools.vitruv.dsls.mirbase.mirBase.MirBaseFactory
 
 import static org.junit.Assert.assertEquals
 import static org.junit.Assert.fail
+import org.apache.log4j.Logger
 
 class MappingParameterGraphTraverserTest {
-
+	private static Logger LOGGER = Logger.getLogger(MappingParameterGraphTraverserTest)
+	
 	private List<String> parameter
 	private List<FeatureConditionGenerator> inConditions
 	private MappingParameterGraphTraverser traverser
@@ -184,8 +186,8 @@ class MappingParameterGraphTraverserTest {
 	}
 
 	private def assertPath(NodePath path, TraverseStep... steps) {
-		println('''Expected Path: «steps.printPath»''')
-		println('''Actual Path: «path.steps.printPath»''')
+		LOGGER.debug('''Expected Path: «steps.printPath»''')
+		LOGGER.debug('''Actual Path: «path.steps.printPath»''')
 		assertEquals('Path length is wrong!', steps.length, path.steps.length)
 		for (var i = 0; i < steps.length; i++) {
 			val expectedStep = steps.get(i)
