@@ -191,7 +191,7 @@ class MappingParameterGraphTraverser {
 				val copiedDiscover = new ArrayList
 				discoveredNodes.forEach[copiedDiscover += it]
 				reachableNodesCount(copiedDiscover)
-			].reduce[p1, p2|new Integer(p1.intValue + p2.intValue)]
+			].reduce[p1, p2| Integer.valueOf(p1.intValue + p2.intValue)]
 		}
 		
 		/**
