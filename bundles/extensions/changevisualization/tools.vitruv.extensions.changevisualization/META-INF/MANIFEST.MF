@@ -25,3 +25,4 @@ Import-Package: org.eclipse.core.resources,
  tools.vitruv.framework.change.echange,
  tools.vitruv.framework.domains,
  tools.vitruv.framework.vsum
+Bundle-Vendor: vitruv.tools
