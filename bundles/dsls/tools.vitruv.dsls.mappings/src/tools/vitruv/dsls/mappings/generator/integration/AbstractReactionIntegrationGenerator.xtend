@@ -1,6 +1,7 @@
 package tools.vitruv.dsls.mappings.generator.integration
 
 import org.eclipse.emf.ecore.util.EcoreUtil
+import org.eclipse.xtend.lib.annotations.Accessors
 import tools.vitruv.dsls.mappings.generator.MappingGeneratorContext
 import tools.vitruv.dsls.mappings.mappingsLanguage.Mapping
 import tools.vitruv.dsls.mappings.mappingsLanguage.ReactionIntegration
@@ -10,10 +11,12 @@ import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsLanguageFactory
 
 abstract class AbstractReactionIntegrationGenerator implements IReactionIntegrationGenerator {
 
-	protected IReactionIntegrateable l2rIntegration
-	protected IReactionIntegrateable r2lIntegration
-	protected MappingGeneratorContext l2rContext
-	protected MappingGeneratorContext r2lContext
+	var IReactionIntegrateable l2rIntegration
+	var IReactionIntegrateable r2lIntegration
+	@Accessors(PROTECTED_GETTER)
+	var MappingGeneratorContext l2rContext
+	@Accessors(PROTECTED_GETTER)
+	var MappingGeneratorContext r2lContext
 
 	override init(MappingGeneratorContext l2rContext, MappingGeneratorContext r2lContext) {
 		this.l2rContext = l2rContext
@@ -22,6 +25,11 @@ abstract class AbstractReactionIntegrationGenerator implements IReactionIntegrat
 	}
 
 	protected abstract def void init()
+	
+	protected def void initIntegration(IReactionIntegrateable l2rIntegration, IReactionIntegrateable r2lIntegration){
+		this.l2rIntegration = l2rIntegration
+		this.r2lIntegration = r2lIntegration
+	}
 	
 	/**
 	 * Inspects the mapping specification for integrated reaction elements

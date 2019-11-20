@@ -9,10 +9,10 @@ import org.eclipse.emf.ecore.resource.Resource
 
 class XExpressionParser {
 
-	private final static String XBASE_LANGAUGE_EXTENSION='___xbase';
-	private static XtextResourceSet resourceSet
-	private final static URI DUMMY_RESOURCE_URI = URI.createURI("dummy:/example."+XBASE_LANGAUGE_EXTENSION)
-	private static Resource dummyResource
+	val static String XBASE_LANGAUGE_EXTENSION='___xbase';
+	var static XtextResourceSet resourceSet
+	val static URI DUMMY_RESOURCE_URI = URI.createURI("dummy:/example."+XBASE_LANGAUGE_EXTENSION)
+	var static Resource dummyResource
 	
 	def public static initParser(XtextResourceSet resourceSet) {
 		XExpressionParser.resourceSet = resourceSet

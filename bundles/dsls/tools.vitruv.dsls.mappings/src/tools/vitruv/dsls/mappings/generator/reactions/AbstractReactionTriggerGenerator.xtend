@@ -11,17 +11,17 @@ import tools.vitruv.dsls.reactions.builder.FluentReactionBuilder.PreconditionOrR
 abstract class AbstractReactionTriggerGenerator extends AbstractMappingEntityGenerator {
 
 	@Accessors(PUBLIC_GETTER)
-	protected EClass metaclass
+	var EClass metaclass
 	@Accessors(#[PUBLIC_GETTER, PUBLIC_SETTER])
-	private ConflictingTriggerCheck conflictingTriggerCheck
+	var ConflictingTriggerCheck conflictingTriggerCheck
+	@Accessors(PUBLIC_GETTER, PROTECTED_SETTER)
+	var boolean usesNewValue = false
 	@Accessors(PUBLIC_GETTER)
-	protected boolean usesNewValue = false
-	@Accessors(PUBLIC_GETTER)
-	private MappingScenarioType scenarioType
+	var MappingScenarioType scenarioType
 	@Accessors(PUBLIC_GETTER, PUBLIC_SETTER)
-	private ObserveChange sourceObserveChange
-
-	protected String reactionName
+	var ObserveChange sourceObserveChange
+	@Accessors(PROTECTED_SETTER)	
+	var String reactionName
 
 	new(EClass metaclass, MappingScenarioType scenarioType) {
 		this.metaclass = metaclass

@@ -5,10 +5,12 @@ import java.util.List
 import org.eclipse.emf.ecore.EObject
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.UndecidedMatcherStatementBuilder
 import tools.vitruv.dsls.mappings.generator.reactions.AbstractReactionTriggerGenerator
+import org.eclipse.xtend.lib.annotations.Accessors
 
 abstract class AbstractSingleSidedCondition<T extends EObject> {
-
-	protected T condition
+	
+	@Accessors(PROTECTED_GETTER)
+	var T condition
 
 	new(T condition) {
 		this.condition = condition

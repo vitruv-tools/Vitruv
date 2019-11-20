@@ -27,11 +27,11 @@ import tools.vitruv.dsls.mappings.mappingsLanguage.ObserveChange
 
 class DirectionalMappingReactionGenerator {
 
-	private static val Logger logger = Logger.getLogger(DirectionalMappingReactionGenerator)
+	static val Logger logger = Logger.getLogger(DirectionalMappingReactionGenerator)
 
-	private List<MappingParameter> fromParameters
-	private List<MappingParameter> toParameters
-	private Mapping mapping
+	var List<MappingParameter> fromParameters
+	var List<MappingParameter> toParameters
+	var Mapping mapping
 
 	new(List<MappingParameter> fromParameters, List<MappingParameter> toParameters, Mapping mapping) {
 		this.fromParameters = fromParameters

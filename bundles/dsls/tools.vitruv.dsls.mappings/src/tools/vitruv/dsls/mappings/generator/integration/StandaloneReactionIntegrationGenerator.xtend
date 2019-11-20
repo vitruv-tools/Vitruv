@@ -12,13 +12,14 @@ import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsLanguageFactory
  */
 class StandaloneReactionIntegrationGenerator extends AbstractReactionIntegrationGenerator {
 
-	private List<StandaloneReactionIntegration> integrations = new ArrayList<StandaloneReactionIntegration>
+	val List<StandaloneReactionIntegration> integrations = new ArrayList<StandaloneReactionIntegration>
 
 	override init() {
-		l2rIntegration = new StandaloneReactionIntegration(l2rContext.segment, true);
-		integrations.add(l2rIntegration as StandaloneReactionIntegration);
-		r2lIntegration = new StandaloneReactionIntegration(r2lContext.segment, false);
-		integrations.add(r2lIntegration as StandaloneReactionIntegration);
+		val l2rIntegration = new StandaloneReactionIntegration(l2rContext.segment, true)
+		integrations.add(l2rIntegration as StandaloneReactionIntegration)
+		val r2lIntegration = new StandaloneReactionIntegration(r2lContext.segment, false)
+		integrations.add(r2lIntegration as StandaloneReactionIntegration)
+		initIntegration(l2rIntegration, r2lIntegration)
 	}
 
 	override generate(IFileSystemAccess2 fsa, IReactionsGenerator reactionsGenerator) {

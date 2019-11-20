@@ -22,13 +22,14 @@ import tools.vitruv.dsls.reactions.reactionsLanguage.RoutineCallStatement
 
 abstract class AbstractMappingRoutineGenerator extends AbstractRoutineContentGenerator {
 
-	private String name
+	var String name
 	@Accessors(PUBLIC_GETTER)
-	private FluentRoutineBuilder routine
-	protected List<RoutineCallParameter> callParameters = new ArrayList
+	var FluentRoutineBuilder routine
+	@Accessors(PROTECTED_GETTER)
+	val List<RoutineCallParameter> callParameters = new ArrayList
 	@Extension
-	protected MappingRoutineStorage routineStorage
-	private XExpression currentCallingContext
+	var protected MappingRoutineStorage routineStorage
+	var XExpression currentCallingContext
 
 	new(String name) {
 		this.name = name

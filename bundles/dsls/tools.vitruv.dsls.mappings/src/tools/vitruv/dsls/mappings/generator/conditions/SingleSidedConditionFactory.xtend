@@ -22,7 +22,7 @@ import tools.vitruv.dsls.mappings.mappingsLanguage.SingleSidedCondition
  */
 class SingleSidedConditionFactory {
 
-	private static val Logger logger = Logger.getLogger(SingleSidedConditionFactory)
+	static val Logger logger = Logger.getLogger(SingleSidedConditionFactory)
 
 	static def List<AbstractSingleSidedCondition<?>> construct(List<SingleSidedCondition> conditions) {
 		val generators = new ArrayList<AbstractSingleSidedCondition<?>>

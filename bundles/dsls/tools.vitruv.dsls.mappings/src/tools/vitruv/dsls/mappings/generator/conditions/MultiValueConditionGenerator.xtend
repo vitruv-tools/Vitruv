@@ -3,7 +3,9 @@ package tools.vitruv.dsls.mappings.generator.conditions
 import java.util.List
 import org.eclipse.emf.ecore.EAttribute
 import org.eclipse.emf.ecore.EObject
+import org.eclipse.xtend.lib.annotations.Accessors
 import tools.vitruv.dsls.mappings.generator.reactions.AbstractReactionTriggerGenerator
+import tools.vitruv.dsls.mappings.generator.reactions.AttributeReplacedReactionTriggerGenerator
 import tools.vitruv.dsls.mappings.mappingsLanguage.FeatureCondition
 import tools.vitruv.dsls.mappings.mappingsLanguage.MultiValueCondition
 import tools.vitruv.dsls.mappings.mappingsLanguage.MultiValueConditionOperator
@@ -11,14 +13,16 @@ import tools.vitruv.dsls.mirbase.mirBase.MetaclassFeatureReference
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.UndecidedMatcherStatementBuilder
 
 import static extension tools.vitruv.dsls.mappings.generator.conditions.FeatureConditionGeneratorUtils.*
-import tools.vitruv.dsls.mappings.generator.reactions.AttributeReplacedReactionTriggerGenerator
 
 abstract class MultiValueConditionGenerator extends AbstractSingleSidedCondition<MultiValueCondition> implements FeatureConditionGenerator {
 
-	protected MultiValueConditionOperator operator
-	protected EObject leftSide
-	protected MetaclassFeatureReference rightSide
-	protected FeatureCondition featureCondition
+	var MultiValueConditionOperator operator
+	@Accessors(PROTECTED_GETTER)
+	var EObject leftSide
+	@Accessors(PROTECTED_GETTER)
+	var MetaclassFeatureReference rightSide
+	@Accessors(PROTECTED_GETTER)
+	var FeatureCondition featureCondition
 
 	new(MultiValueCondition condition, MultiValueConditionOperator operatorType) {
 		super(condition)

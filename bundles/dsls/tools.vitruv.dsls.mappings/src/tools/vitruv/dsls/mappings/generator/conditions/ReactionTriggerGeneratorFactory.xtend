@@ -15,12 +15,12 @@ import tools.vitruv.dsls.mappings.generator.reactions.ConflictingTriggerCheck
 
 class ReactionTriggerGeneratorFactory {
 
-	private static val Logger logger = Logger.getLogger(ReactionTriggerGeneratorFactory)
-	private List<SingleSidedCondition> conditions
-	private List<AbstractReactionTriggerGenerator> generators = new ArrayList<AbstractReactionTriggerGenerator>()
-	private List<MappingParameter> fromParameters
-	private List<MappingParameter> toParameters
-	private String mappingName
+	static val Logger logger = Logger.getLogger(ReactionTriggerGeneratorFactory)
+	var List<SingleSidedCondition> conditions
+	var List<AbstractReactionTriggerGenerator> generators = new ArrayList<AbstractReactionTriggerGenerator>()
+	var List<MappingParameter> fromParameters
+	var List<MappingParameter> toParameters
+	var String mappingName
 
 	new(String mappingName, List<SingleSidedCondition> conditions) {
 		this.mappingName = mappingName

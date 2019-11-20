@@ -17,11 +17,11 @@ import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.TaggedWithBuilde
 abstract class AbstractMappingEntityGenerator {
 
 	@Accessors(PUBLIC_GETTER)
-	protected List<MappingParameter> reactionParameters
+	var List<MappingParameter> reactionParameters
 	@Accessors(PUBLIC_GETTER)
-	protected List<MappingParameter> correspondingParameters
+	var List<MappingParameter> correspondingParameters
 	@Accessors(PUBLIC_GETTER)
-	protected String mappingName
+	var String mappingName
 
 	def void init(String mappingName, List<MappingParameter> reactionParameters,
 		List<MappingParameter> correspondingParameters) {

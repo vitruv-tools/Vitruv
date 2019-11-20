@@ -9,7 +9,7 @@ import static extension tools.vitruv.dsls.mappings.generator.utils.XBaseMethodFi
 
 class UpdateCheckRoutineGenerator extends AbstractRetrievalCheckRoutineGenerator {
 
-	private static val ROUTINE_NAME_PARAMETER = 'routineName'
+	static val ROUTINE_NAME_PARAMETER = 'routineName'
 
 	new() {
 		super('BidirectionalCheck')

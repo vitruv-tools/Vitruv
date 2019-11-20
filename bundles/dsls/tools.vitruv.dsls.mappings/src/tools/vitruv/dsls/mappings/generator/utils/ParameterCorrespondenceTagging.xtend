@@ -6,7 +6,7 @@ import tools.vitruv.dsls.mappings.generator.MappingGeneratorContext
 
 class ParameterCorrespondenceTagging {
 
-	private static MappingGeneratorContext context
+	static MappingGeneratorContext context
 	
 	/**
 	 * Sets the current generator context

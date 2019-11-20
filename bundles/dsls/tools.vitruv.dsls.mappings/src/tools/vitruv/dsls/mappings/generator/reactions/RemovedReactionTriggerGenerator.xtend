@@ -8,7 +8,7 @@ import tools.vitruv.dsls.mirbase.mirBase.MetaclassReference
 
 class RemovedReactionTriggerGenerator extends AbstractContainingReactionTriggerGenerator {
 
-	private MetaclassFeatureReference removeTarget = null
+	var MetaclassFeatureReference removeTarget = null
 
 	new(MetaclassReference element) {
 		super(element.metaclass, MappingScenarioType.DELETE)

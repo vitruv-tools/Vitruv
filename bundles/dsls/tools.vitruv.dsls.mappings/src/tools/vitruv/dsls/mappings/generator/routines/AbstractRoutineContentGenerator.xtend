@@ -3,6 +3,7 @@ package tools.vitruv.dsls.mappings.generator.routines
 import java.util.HashMap
 import java.util.List
 import java.util.Map
+import org.eclipse.xtend.lib.annotations.Accessors
 import org.eclipse.xtext.common.types.JvmIdentifiableElement
 import org.eclipse.xtext.xbase.XExpression
 import org.eclipse.xtext.xbase.XbaseFactory
@@ -17,10 +18,14 @@ import static extension tools.vitruv.dsls.mappings.generator.utils.XBaseMethodUt
 
 abstract class AbstractRoutineContentGenerator extends AbstractMappingEntityGenerator {
 
-	protected List<AbstractSingleSidedCondition<?>> singleSidedConditions
-	protected List<AbstractBidirectionalCondition> bidirectionConditions
-	protected List<FeatureConditionGenerator> correspondingFeatureConditions
-	protected Map<String, JvmIdentifiableElement> localVariables = new HashMap
+	@Accessors(PROTECTED_GETTER, PROTECTED_SETTER)
+	var List<AbstractSingleSidedCondition<?>> singleSidedConditions
+	@Accessors(PROTECTED_GETTER, PROTECTED_SETTER)
+	var List<AbstractBidirectionalCondition> bidirectionConditions
+	@Accessors(PROTECTED_GETTER, PROTECTED_SETTER)
+	var List<FeatureConditionGenerator> correspondingFeatureConditions
+	@Accessors(PROTECTED_GETTER)
+	var Map<String, JvmIdentifiableElement> localVariables = new HashMap
 
 	def void prepareGenerator(AbstractRoutineContentGenerator parentGenerator) {
 		this.initWith(parentGenerator)

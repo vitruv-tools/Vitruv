@@ -8,7 +8,7 @@ import tools.vitruv.dsls.mirbase.mirBase.MetaclassReference
 
 class InsertedReactionTriggerGenerator extends AbstractContainingReactionTriggerGenerator {
 
-	private MetaclassFeatureReference insertTarget = null
+	var MetaclassFeatureReference insertTarget = null
 
 	new(MetaclassReference element) {
 		super(element.metaclass, MappingScenarioType.CREATE)

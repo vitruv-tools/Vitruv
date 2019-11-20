@@ -7,8 +7,7 @@ class EmbeddedReactionIntegrationGenerator extends AbstractReactionIntegrationGe
 
 
 	override init() {
-		this.l2rIntegration = l2rContext;
-		this.r2lIntegration = r2lContext
+		initIntegration(l2rContext, r2lContext)
 	}
 	
 	override generate(IFileSystemAccess2 fsa, IReactionsGenerator reactionsGenerator) {

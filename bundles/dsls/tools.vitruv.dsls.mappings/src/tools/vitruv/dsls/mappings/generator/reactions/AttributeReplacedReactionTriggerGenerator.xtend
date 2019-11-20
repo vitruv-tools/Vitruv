@@ -9,7 +9,7 @@ import tools.vitruv.dsls.mirbase.mirBase.MirBaseFactory
 
 class AttributeReplacedReactionTriggerGenerator extends AbstractReactionTriggerGenerator {
 
-	private MetaclassEAttributeReference attribute
+	var MetaclassEAttributeReference attribute
 
 	new(MetaclassFeatureReference reference) {
 		super(reference.metaclass, MappingScenarioType.CREATE_OR_DELETE)

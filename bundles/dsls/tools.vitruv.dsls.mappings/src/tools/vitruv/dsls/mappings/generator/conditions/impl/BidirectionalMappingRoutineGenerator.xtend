@@ -20,10 +20,10 @@ import org.eclipse.xtend.lib.annotations.Accessors
 class BidirectionalMappingRoutineGenerator implements AbstractBidirectionalCondition {
 
 	@Accessors(PUBLIC_GETTER)
-	private RoutineIntegration routine
+	var RoutineIntegration routine
 	@Accessors(PUBLIC_GETTER)
-	private FluentRoutineBuilder targetRoutineBuilder
-	private List<MappingParameter> parameters
+	var FluentRoutineBuilder targetRoutineBuilder
+	var List<MappingParameter> parameters
 
 	new(List<MappingParameter> parameters, RoutineIntegration routineIntegration) {
 		this.parameters = parameters

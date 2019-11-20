@@ -6,11 +6,8 @@ import tools.vitruv.dsls.reactions.codegen.ReactionsLanguageConstants
 
 class CreateOrDeleteCheckRoutineGenerator extends AbstractRetrievalCheckRoutineGenerator {
 
-	private DeletedCheckRoutineGenerator deletedCheckRoutineGenerator
-
 	new() {
 		super('ElementUpdatedCheck')
-		deletedCheckRoutineGenerator = new DeletedCheckRoutineGenerator
 	}
 
 	override onSuccessfullyRetrievingParameters(RoutineTypeProvider provider) {

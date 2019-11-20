@@ -7,9 +7,9 @@ import tools.vitruv.dsls.mirbase.mirBase.DomainReference
 
 class MappingParameterExtractor {
 
-	private DomainReference targetDomain
-	private Mapping mapping
-	private boolean leftSide
+	var DomainReference targetDomain
+	var Mapping mapping
+	var boolean leftSide
 
 	new(DomainReference targetDomain) {
 		this.targetDomain = targetDomain

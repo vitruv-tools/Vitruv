@@ -12,8 +12,8 @@ import tools.vitruv.dsls.mappings.mappingsLanguage.MappingParameter
 
 class MappingParameterGraphTraverser {
 
-	private Map<String, Node> nodes = new HashMap
-	private Function<MappingParameter, String> nameMapping
+	val Map<String, Node> nodes = new HashMap
+	var Function<MappingParameter, String> nameMapping
 
 	new(List<FeatureConditionGenerator> conditions, List<String> parameters,
 		Function<MappingParameter, String> nameMapping) {

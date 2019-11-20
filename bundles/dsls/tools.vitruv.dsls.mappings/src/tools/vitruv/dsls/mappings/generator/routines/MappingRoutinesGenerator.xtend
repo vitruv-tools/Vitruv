@@ -21,7 +21,7 @@ import tools.vitruv.dsls.mappings.generator.routines.impl.CreateMappingRoutineGe
 class MappingRoutinesGenerator {
 
 	@Extension
-	private MappingRoutineStorage routineStorage
+	var MappingRoutineStorage routineStorage
 
 	new(List<MappingParameter> fromParameters, List<MappingParameter> toParameters) {
 		routineStorage = new MappingRoutineStorage(fromParameters, toParameters)

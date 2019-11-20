@@ -22,21 +22,10 @@ class DeleteMappingRoutineGenerator extends AbstractMappingRoutineGenerator {
 	}
 
 	private def generateAction(ActionStatementBuilder builder) {
-		// 1) remove all correspondences 
-		// builder.removeCorrespondences
-		// 2) delete all corresponding elements
+		// delete all corresponding elements (also removes correspondences)
 		builder.deleteCorrespondingElements
 	}
-
-	//TODO: find a way to delete all correspondences of a mapping without knowing all the reaction objects (could have been deleted)
-	private def removeCorrespondences(ActionStatementBuilder builder) {
-		iterateParameters([ reactionParameter, correspondingParameter |
-			val element = correspondingParameter.parameterName
-			builder.removeCorrespondenceBetween(element).and(reactionParameter.parameterName).taggedWith(
-				reactionParameter, correspondingParameter)
-		])
-	}
-
+	
 	private def deleteCorrespondingElements(ActionStatementBuilder builder) {
 		//only delete actual mapping parameters
 		correspondingParameters.filterNonExistingMappingParameters.forEach [ correspondingParameter |

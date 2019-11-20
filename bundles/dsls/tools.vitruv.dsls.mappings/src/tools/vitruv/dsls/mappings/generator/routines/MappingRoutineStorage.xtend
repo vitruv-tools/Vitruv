@@ -11,16 +11,16 @@ import tools.vitruv.dsls.mappings.mappingsLanguage.MappingParameter
 
 class MappingRoutineStorage {
 
-	private static val Logger logger = Logger.getLogger(MappingRoutineStorage)
+	static val Logger logger = Logger.getLogger(MappingRoutineStorage)
 
-	private Map<Class<? extends AbstractMappingRoutineGenerator>, AbstractMappingRoutineGenerator> routineGenerators = new HashMap
-	private List<MappingParameter> fromParameters
-	private List<MappingParameter> toParameters
-	private String mappingName
-	private MappingGeneratorContext context
-	private List<AbstractSingleSidedCondition<?>> singleSidedConditions
-	private List<AbstractBidirectionalCondition> bidirectionalConditions
-	private List<AbstractSingleSidedCondition<?>> correspondingSingleSidedConditions
+	val Map<Class<? extends AbstractMappingRoutineGenerator>, AbstractMappingRoutineGenerator> routineGenerators = new HashMap
+	var List<MappingParameter> fromParameters
+	var List<MappingParameter> toParameters
+	var String mappingName
+	var MappingGeneratorContext context
+	var List<AbstractSingleSidedCondition<?>> singleSidedConditions
+	var List<AbstractBidirectionalCondition> bidirectionalConditions
+	var List<AbstractSingleSidedCondition<?>> correspondingSingleSidedConditions
 
 	new(List<MappingParameter> fromParameters, List<MappingParameter> toParameters) {
 		this.fromParameters = fromParameters

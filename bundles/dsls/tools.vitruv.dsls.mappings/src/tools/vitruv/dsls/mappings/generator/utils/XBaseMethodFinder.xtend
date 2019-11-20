@@ -9,11 +9,11 @@ import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.RoutineTypeProvi
 
 class XBaseMethodFinder {
 
-	private final static String PACKAGE_OPTIONAL = 'java.util.Optional'
-	private final static String PACKAGE_LIST = 'java.util.List'
-	private final static String PACKAGE_OBJECT = 'org.eclipse.xtext.xbase.lib.ObjectExtensions'
-	private final static String PACKAGE_BOOLEAN = 'org.eclipse.xtext.xbase.lib.BooleanExtensions'
-	private final static String PACKAGE_ITERATOR = 'org.eclipse.xtext.xbase.lib.IteratorExtensions'
+	val static String PACKAGE_OPTIONAL = 'java.util.Optional'
+	val static String PACKAGE_LIST = 'java.util.List'
+	val static String PACKAGE_OBJECT = 'org.eclipse.xtext.xbase.lib.ObjectExtensions'
+	val static String PACKAGE_BOOLEAN = 'org.eclipse.xtext.xbase.lib.BooleanExtensions'
+	val static String PACKAGE_ITERATOR = 'org.eclipse.xtext.xbase.lib.IteratorExtensions'
 
 	public static def optionalIsPresent(RoutineTypeProvider typeProvider) {
 		typeProvider.findXbaseMethod(PACKAGE_OPTIONAL, 'isPresent')

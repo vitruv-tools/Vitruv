@@ -10,7 +10,7 @@ import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsLanguageFactory
 class StandaloneReactionIntegration implements IReactionIntegrateable{
 	
 	@Accessors(PUBLIC_GETTER)
-	private ReactionsSegment reactionsSegment
+	var ReactionsSegment reactionsSegment
 
     new(MappingsSegment segment, boolean l2r){
     	reactionsSegment = ReactionsLanguageFactory.eINSTANCE.createReactionsSegment

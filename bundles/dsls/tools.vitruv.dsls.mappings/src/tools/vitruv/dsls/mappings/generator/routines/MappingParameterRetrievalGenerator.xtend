@@ -20,10 +20,10 @@ import static extension tools.vitruv.dsls.mappings.generator.utils.XBaseMethodFi
 import static extension tools.vitruv.dsls.mappings.generator.utils.XBaseMethodUtils.*
 
 class MappingParameterRetrievalGenerator extends AbstractRoutineContentGenerator {
-	private MappingParameterGraphTraverser treeTraverser
-	private MappingParameter affectedEObjectParameter
-	private List<MappingParameter> retrievedParameters
-	private Function0<XExpression> finishedRetrievingParameters
+	var MappingParameterGraphTraverser treeTraverser
+	var MappingParameter affectedEObjectParameter
+	var List<MappingParameter> retrievedParameters
+	var Function0<XExpression> finishedRetrievingParameters
 
 	new(AbstractMappingRoutineGenerator parent) {
 		this.prepareGenerator(parent)
