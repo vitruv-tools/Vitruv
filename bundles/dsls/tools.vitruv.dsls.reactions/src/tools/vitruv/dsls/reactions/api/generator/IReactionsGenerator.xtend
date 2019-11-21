@@ -8,6 +8,7 @@ import tools.vitruv.dsls.reactions.builder.FluentReactionsFileBuilder
 import tools.vitruv.dsls.reactions.generator.ExternalReactionsGenerator
 import org.eclipse.emf.ecore.resource.ResourceSet
 import java.io.IOException
+import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsFile
 
 /**
  * Generates all code that is necessary to run reactions. Reactions to generate
@@ -81,6 +82,22 @@ interface IReactionsGenerator {
 	def void addReactionsFile(FluentReactionsFileBuilder reactionBuilder)
 
 	/**
+	 * Adds the reactions of the provided {@link ReactionsFile} to this generator
+	 * in a synthetic resource with the given file name.
+	 *
+	 * <p>A resource set must be provided (through {@link #useResourceSet})
+	 * before calling this method.
+	 *
+	 * @param sourceFileName
+	 * 		The name of the synthetically generated file from which reactions shall be
+	 * 		created (without file extension)
+	 * @param reactionsFile
+	 * 		The {@link ReactionsFile} from which the reactions shall be added for
+	 * 		generation.
+	 */
+	def void addReactionsFile(String sourceFileName, ReactionsFile reactionsFile)
+
+	/**
 	 * Adds reaction files that were parsed by Xtext.
 	 * 
 	 * @param resourceSet
@@ -126,8 +143,8 @@ interface IReactionsGenerator {
 	 * 		be written to the root of the default output configuration.
 	 */
 	def void writeReactions(IFileSystemAccess2 fsa) throws IOException
-	
-		/**
+
+	/**
 	 * Writes all reactions added to this generator to the given 
 	 * file system provider, as reactions files.
 	 * 

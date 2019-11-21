@@ -16,6 +16,8 @@ import org.eclipse.xtext.common.types.JvmDeclaredType
 import org.eclipse.xtext.common.types.JvmIdentifiableElement
 import org.eclipse.xtext.common.types.JvmMember
 import org.eclipse.xtext.common.types.JvmOperation
+import org.eclipse.xtext.xbase.XExpression
+import org.eclipse.xtext.xbase.XbaseFactory
 import org.eclipse.xtext.xtype.XtypeFactory
 import tools.vitruv.dsls.mirbase.mirBase.MetaclassEAttributeReference
 import tools.vitruv.dsls.mirbase.mirBase.MetaclassEReferenceReference
@@ -25,6 +27,7 @@ import tools.vitruv.dsls.mirbase.mirBase.NamedJavaElement
 import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsFile
 
 import static com.google.common.base.Preconditions.*
+import static tools.vitruv.dsls.reactions.codegen.ReactionsLanguageConstants.*
 
 /**
  * Parent class of all fluent builders. The builders work in three phases:
@@ -123,6 +126,14 @@ abstract package class FluentReactionElementBuilder {
 		element
 	}
 
+	def protected delegateTypeProvider() {
+		context.typeProviderFactory.findOrCreateTypeProvider(attachedReactionsFile.eResource.resourceSet)
+	}
+
+	def protected referenceBuilderFactory() {
+		context.referenceBuilderFactory.create(attachedReactionsFile.eResource.resourceSet)
+	}
+
 	def protected <T extends JvmDeclaredType> imported(T type) {
 		XImportSection.importDeclarations.findFirst[importedType == type] ?: createTypeImport(type)
 		return type
@@ -143,12 +154,12 @@ abstract package class FluentReactionElementBuilder {
 			extension = true
 		]
 		return declaredType
-	} 
+	}
 
 	def protected staticExtensionImported(JvmOperation operation) {
 		staticImport(operation, true)
 	}
-	
+
 	def protected staticExtensionWildcardImported(JvmOperation operation) {
 		operation.declaringType.staticExtensionAllImported
 		return operation
@@ -157,7 +168,7 @@ abstract package class FluentReactionElementBuilder {
 	def protected staticImported(JvmOperation operation) {
 		staticImport(operation, false)
 	}
-	
+
 	def private staticImport(JvmOperation operation, boolean asExtension) {
 		val existingStarImport = XImportSection.importDeclarations.findFirst [
 			isWildcard && importedType == operation.declaringType
@@ -182,7 +193,7 @@ abstract package class FluentReactionElementBuilder {
 			XImportSection.importDeclarations += it
 		]
 	}
-	
+
 	def private createTypeWildcardImport(JvmDeclaredType type) {
 		val newDeclaration = XtypeFactory.eINSTANCE.createXImportDeclaration => [
 			importedType = type
@@ -198,7 +209,7 @@ abstract package class FluentReactionElementBuilder {
 		XImportSection.importDeclarations += newDeclaration
 		return newDeclaration
 	}
-	
+
 	def private createTypeImport(JvmDeclaredType type) {
 		XtypeFactory.eINSTANCE.createXImportDeclaration => [
 			importedType = type
@@ -219,10 +230,20 @@ abstract package class FluentReactionElementBuilder {
 		attachedReactionsFile.metamodelImports.findFirst[package == ePackage] ?: createMetamodelImport(ePackage)
 	}
 
+	def protected metamodelImport(EPackage ePackage, String pname) {
+		checkState(attachedReactionsFile !== null && !jvmTypesAvailable,
+			"Metamodel imports can only be created in the attachment preparation phase!")
+		createMetamodelImport(ePackage, ePackage.name)
+	}
+
 	def private createMetamodelImport(EPackage ePackage) {
+		createMetamodelImport(ePackage, ePackage.name)
+	}
+
+	def private createMetamodelImport(EPackage ePackage, String pname) {
 		val newImport = MirBaseFactory.eINSTANCE.createMetamodelImport => [
 			package = ePackage
-			name = ePackage.name
+			name = pname
 		]
 		attachedReactionsFile.metamodelImports += newImport
 		return newImport
@@ -236,7 +257,8 @@ abstract package class FluentReactionElementBuilder {
 		]
 	}
 
-	def protected <T extends MetaclassEReferenceReference> reference(T referenceReference, EClass eClass, EReference reference) {
+	def protected <T extends MetaclassEReferenceReference> reference(T referenceReference, EClass eClass,
+		EReference reference) {
 		(referenceReference => [
 			feature = reference
 			metaclass = eClass
@@ -245,7 +267,8 @@ abstract package class FluentReactionElementBuilder {
 		]
 	}
 
-	def protected <T extends MetaclassEAttributeReference> reference(T attributeReference, EClass eClass, EAttribute attribute) {
+	def protected <T extends MetaclassEAttributeReference> reference(T attributeReference, EClass eClass,
+		EAttribute attribute) {
 		(attributeReference => [
 			feature = attribute
 			metaclass = eClass
@@ -257,6 +280,31 @@ abstract package class FluentReactionElementBuilder {
 	def protected <T extends NamedJavaElement> reference(T javaElementReference, Class<?> clazz) {
 		javaElementReference.beforeAttached [
 			type = context.typeReferences.getTypeForName(clazz, targetResource)
+		]
+	}
+
+	def protected List<XExpression> requiredArgumentsFrom(FluentRoutineBuilder routineBuilder,
+		JvmOperation routineCallMethod) {
+		val parameterList = new ArrayList<XExpression>(3)
+		if (routineBuilder.requireAffectedEObject) {
+			parameterList += routineCallMethod.argument(CHANGE_AFFECTED_ELEMENT_ATTRIBUTE)
+		}
+		if (routineBuilder.requireNewValue) {
+			parameterList += routineCallMethod.argument(CHANGE_NEW_VALUE_ATTRIBUTE)
+		}
+		if (routineBuilder.requireOldValue) {
+			parameterList += routineCallMethod.argument(CHANGE_OLD_VALUE_ATTRIBUTE)
+		}
+		return parameterList
+	}
+
+	def protected argument(JvmOperation routineCallMethod, String parameterName) {
+		val parameter = routineCallMethod.parameters.findFirst[name == parameterName]
+		if (parameter === null) {
+			throw new IllegalStateException('''The routine call method “«routineCallMethod»” does not provide a value called “«parameterName»”!''')
+		}
+		XbaseFactory.eINSTANCE.createXFeatureCall => [
+			feature = parameter
 		]
 	}
 

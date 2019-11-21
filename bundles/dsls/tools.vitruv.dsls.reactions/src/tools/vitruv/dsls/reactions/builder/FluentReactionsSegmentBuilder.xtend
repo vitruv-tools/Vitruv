@@ -131,7 +131,7 @@ class FluentReactionsSegmentBuilder extends FluentReactionElementBuilder {
 		childBuilders += routineBuilder
 		this
 	}
-	
+		
 	override toString() {
 		'''reaction segment builder for “«segment.name»”'''
 	}

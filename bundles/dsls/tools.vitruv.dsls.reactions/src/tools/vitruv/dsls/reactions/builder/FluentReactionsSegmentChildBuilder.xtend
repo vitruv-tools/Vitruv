@@ -8,8 +8,9 @@ import org.eclipse.xtext.common.types.access.IJvmTypeProvider
 import org.eclipse.xtext.xbase.XBlockExpression
 import org.eclipse.xtext.xbase.XExpression
 import org.eclipse.xtext.xbase.XbaseFactory
+import org.eclipse.xtext.xbase.jvmmodel.JvmTypeReferenceBuilder
 
-import static tools.vitruv.dsls.reactions.codegen.helper.ReactionsLanguageConstants.*
+import static tools.vitruv.dsls.reactions.codegen.ReactionsLanguageConstants.*
 
 abstract package class FluentReactionsSegmentChildBuilder extends FluentReactionElementBuilder {
 	@Accessors(PACKAGE_SETTER)
@@ -19,7 +20,7 @@ abstract package class FluentReactionsSegmentChildBuilder extends FluentReaction
 		super(context)
 	}
 
-	def protected transferReactionsSegmentTo(FluentReactionsSegmentChildBuilder infector,
+	def protected void transferReactionsSegmentTo(FluentReactionsSegmentChildBuilder infector,
 		FluentReactionsSegmentChildBuilder infected) {
 		infector.beforeAttached[infect(infected)]
 		infected.beforeAttached[checkReactionsSegmentIsCompatibleTo(infector)]
@@ -46,15 +47,19 @@ abstract package class FluentReactionsSegmentChildBuilder extends FluentReaction
 
 	protected static abstract class AbstractTypeProvider<BuilderType extends FluentReactionsSegmentChildBuilder> implements IJvmTypeProvider {
 		protected val IJvmTypeProvider delegate
+		@Accessors(PUBLIC_GETTER)
+		protected val JvmTypeReferenceBuilder jvmTypeReferenceBuilder
 		protected val extension BuilderType builder
 		protected val XExpression scopeExpression
 
-		protected new(IJvmTypeProvider delegate, BuilderType builder, XExpression scopeExpression) {
+		protected new(IJvmTypeProvider delegate, JvmTypeReferenceBuilder jvmTypeReferenceBuilder, BuilderType builder, XExpression scopeExpression) {
 			this.delegate = delegate
 			this.builder = builder
-			this.scopeExpression = scopeExpression
+			this.jvmTypeReferenceBuilder = jvmTypeReferenceBuilder
+			this.scopeExpression = scopeExpression			
 		}
-
+		
+	
 		override findTypeByName(String name) {
 			delegate.findTypeByName(name).possiblyImported
 		}
@@ -90,7 +95,7 @@ abstract package class FluentReactionsSegmentChildBuilder extends FluentReaction
 		def affectedEObject() {
 			variable(CHANGE_AFFECTED_ELEMENT_ATTRIBUTE)
 		}
-
+		
 		def oldValue() {
 			variable(CHANGE_OLD_VALUE_ATTRIBUTE)
 		}
@@ -103,8 +108,12 @@ abstract package class FluentReactionsSegmentChildBuilder extends FluentReaction
 		 * Retrieves a feature call to vala previously declared variable or custom
 		 * routine parameter if it’s present
 		 */
+		def variableRaw(String variableName) {
+			scopeExpression.correspondingMethodParameter(variableName)
+		}
+		
 		def variable(String variableName) {
-			scopeExpression.correspondingMethodParameter(variableName).featureCall
+			variableRaw(variableName).featureCall
 		}
 
 		def protected featureCall(JvmIdentifiableElement element) {

@@ -22,7 +22,8 @@ Require-Bundle: tools.vitruv.dsls.mappings,
  org.eclipse.xtext.builder,
  org.eclipse.jdt.debug.ui,
  tools.vitruv.dsls.mirbase,
- tools.vitruv.dsls.mirbase.ui
+ tools.vitruv.dsls.mirbase.ui,
+ tools.vitruv.dsls.reactions.ui
 Import-Package: org.apache.log4j
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Export-Package: tools.vitruv.dsls.mappings.ui.contentassist,

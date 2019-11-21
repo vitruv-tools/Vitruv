@@ -14,7 +14,11 @@ Export-Package: mir.reactions.adXre_L2R,
  tools.vitruv.dsls.mappings.tests.addressesXrecipients;x-internal:=true,
  tools.vitruv.dsls.mappings.tests.addressesXrecipients.mappings.aXr_all_or_nothing;x-internal:=true,
  tools.vitruv.dsls.mappings.tests.addressesXrecipients.mappings.aXr_all_or_nothing.conditions;x-internal:=true,
- tools.vitruv.dsls.mappings.tests.addressesXrecipients.mappings.aXr_all_or_nothing.halves;x-internal:=true
+ tools.vitruv.dsls.mappings.tests.addressesXrecipients.mappings.aXr_all_or_nothing.halves;x-internal:=true,
+ mir.reactions.test_L2RSegment;x-internal:=true,
+ mir.reactions.test_R2LSegment;x-internal:=true,
+ mir.routines.test_L2RSegment;x-internal:=true,
+ mir.routines.test_R2LSegment;x-internal:=true
 Require-Bundle: org.apache.log4j,
   com.google.guava,
   org.eclipse.emf.ecore,

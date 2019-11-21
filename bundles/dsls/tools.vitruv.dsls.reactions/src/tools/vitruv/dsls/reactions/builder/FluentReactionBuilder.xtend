@@ -1,16 +1,18 @@
 package tools.vitruv.dsls.reactions.builder
 
-import java.util.ArrayList
 import java.util.function.Consumer
 import java.util.function.Function
 import org.eclipse.emf.ecore.EAttribute
 import org.eclipse.emf.ecore.EClass
 import org.eclipse.emf.ecore.EClassifier
 import org.eclipse.emf.ecore.EReference
+import org.eclipse.emf.ecore.EcorePackage
 import org.eclipse.xtext.common.types.JvmOperation
 import org.eclipse.xtext.common.types.access.IJvmTypeProvider
+import org.eclipse.xtext.xbase.XBlockExpression
 import org.eclipse.xtext.xbase.XExpression
 import org.eclipse.xtext.xbase.XbaseFactory
+import org.eclipse.xtext.xbase.jvmmodel.JvmTypeReferenceBuilder
 import tools.vitruv.dsls.mirbase.mirBase.MirBaseFactory
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.RoutineStartBuilder
 import tools.vitruv.dsls.reactions.reactionsLanguage.ElementChangeType
@@ -19,9 +21,7 @@ import tools.vitruv.dsls.reactions.reactionsLanguage.Reaction
 import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsLanguageFactory
 
 import static com.google.common.base.Preconditions.*
-import static tools.vitruv.dsls.reactions.codegen.helper.ReactionsLanguageConstants.*
-import org.eclipse.emf.ecore.EcorePackage
-import org.eclipse.xtext.xbase.XBlockExpression
+import static tools.vitruv.dsls.reactions.codegen.ReactionsLanguageConstants.*
 
 class FluentReactionBuilder extends FluentReactionsSegmentChildBuilder {
 
@@ -29,6 +29,11 @@ class FluentReactionBuilder extends FluentReactionsSegmentChildBuilder {
 	var anonymousRoutineCounter = 0
 	var EClassifier valueType
 	var EClass affectedElementType
+
+	package new (Reaction reaction, FluentBuilderContext context) {
+		super(context)
+		this.reaction = reaction;
+	}
 
 	package new(String reactionName, FluentBuilderContext context) {
 		super(context)
@@ -87,7 +92,7 @@ class FluentReactionBuilder extends FluentReactionsSegmentChildBuilder {
 		def afterAttributeInsertIn(EAttribute attribute) {
 			afterAttributeInsertIn(attribute.EContainingClass, attribute)
 		}
-		
+
 		def afterAttributeInsertIn(EClass eClass, EAttribute attribute) {
 			valueType = attribute.EType
 			affectedElementType = eClass
@@ -100,7 +105,7 @@ class FluentReactionBuilder extends FluentReactionsSegmentChildBuilder {
 		def afterAttributeReplacedAt(EAttribute attribute) {
 			afterAttributeReplacedAt(attribute.EContainingClass, attribute)
 		}
-		
+
 		def afterAttributeReplacedAt(EClass eClass, EAttribute attribute) {
 			valueType = attribute.EType
 			affectedElementType = eClass
@@ -153,7 +158,7 @@ class FluentReactionBuilder extends FluentReactionsSegmentChildBuilder {
 		def insertedIn(EReference reference) {
 			insertedIn(reference.EContainingClass, reference)
 		}
-		
+
 		def insertedIn(EClass eClass, EReference reference) {
 			valueType = element ?: reference.EReferenceType
 			affectedElementType = eClass
@@ -165,7 +170,7 @@ class FluentReactionBuilder extends FluentReactionsSegmentChildBuilder {
 		def removedFrom(EReference reference) {
 			removedFrom(reference.EContainingClass, reference)
 		}
-		
+
 		def removedFrom(EClass eClass, EReference reference) {
 			valueType = element ?: reference.EReferenceType
 			affectedElementType = eClass
@@ -174,10 +179,15 @@ class FluentReactionBuilder extends FluentReactionsSegmentChildBuilder {
 			])
 		}
 
+		def removedAsRoot() {
+			valueType = element ?: EcorePackage.eINSTANCE.EObject
+			continueWithChangeType(ReactionsLanguageFactory.eINSTANCE.createElementRemovalAsRootChangeType)
+		}
+
 		def replacedAt(EReference reference) {
 			replacedAt(reference.EContainingClass, reference)
 		}
-		
+
 		def replacedAt(EClass eClass, EReference reference) {
 			valueType = element ?: reference.EReferenceType
 			affectedElementType = eClass
@@ -203,18 +213,18 @@ class FluentReactionBuilder extends FluentReactionsSegmentChildBuilder {
 			checkNotNull(routineBuilders)
 			checkArgument(routineBuilders.length > 0, "Must provide at least one routineBuilder!")
 			for (routineBuilder : routineBuilders) {
-				checkState(routineBuilder.readyToBeAttached,
-					'''The «routineBuilder» is not sufficiently initialised to be set on the «builder»''')
-				checkState(!routineBuilder.requireNewValue || valueType !==	null, 
-					'''The «routineBuilder» requires a new value, but the «builder» doesn’t create one!''')
-				checkState(!routineBuilder.requireOldValue || valueType !==	null,
-					'''The «routineBuilder» requires an old value, but the «builder» doesn’t create one!''')
-				checkState(!routineBuilder.requireAffectedEObject || affectedElementType !== null,
-					'''The «routineBuilder» requires an affectedElement, but the «builder» doesn’t create one!''')
+				checkState(routineBuilder.
+					readyToBeAttached, '''The «routineBuilder» is not sufficiently initialised to be set on the «builder»''')
+				checkState(!routineBuilder.requireNewValue || valueType !==
+					null, '''The «routineBuilder» requires a new value, but the «builder» doesn’t create one!''')
+				checkState(!routineBuilder.requireOldValue || valueType !==
+					null, '''The «routineBuilder» requires an old value, but the «builder» doesn’t create one!''')
+				checkState(!routineBuilder.requireAffectedEObject || affectedElementType !==
+					null, '''The «routineBuilder» requires an affectedElement, but the «builder» doesn’t create one!''')
 				builder.transferReactionsSegmentTo(routineBuilder)
-				
+
 				addRoutineCall(routineBuilder)
-				
+
 				if (affectedElementType !== null && routineBuilder.requireAffectedEObject) {
 					routineBuilder.affectedElementType = affectedElementType
 				}
@@ -222,11 +232,11 @@ class FluentReactionBuilder extends FluentReactionsSegmentChildBuilder {
 					routineBuilder.valueType = valueType
 				}
 			}
-			
+
 			readyToBeAttached = true
 			return builder
 		}
-		
+
 		def private addRoutineCall(FluentRoutineBuilder routineBuilder) {
 			if (reaction.callRoutine === null) {
 				reaction.callRoutine = ReactionsLanguageFactory.eINSTANCE.createReactionRoutineCall => [
@@ -244,7 +254,7 @@ class FluentReactionBuilder extends FluentReactionsSegmentChildBuilder {
 				}
 			}
 		}
-		
+
 		def call(String routineName, Consumer<RoutineStartBuilder> routineInitializer) {
 			val routineBuilder = new FluentRoutineBuilder(routineName, context)
 			routineInitializer.accept(routineBuilder.start())
@@ -287,33 +297,10 @@ class FluentReactionBuilder extends FluentReactionsSegmentChildBuilder {
 	}
 
 	static class ReactionTypeProvider extends AbstractTypeProvider<FluentReactionBuilder> {
-		protected new(IJvmTypeProvider delegate, FluentReactionBuilder builder, XExpression scopeExpression) {
-			super(delegate, builder, scopeExpression)
+		protected new(IJvmTypeProvider delegate, JvmTypeReferenceBuilder jvmTypeReferenceBuilder,
+			FluentReactionBuilder builder, XExpression scopeExpression) {
+			super(delegate, jvmTypeReferenceBuilder, builder, scopeExpression)
 		}
-	}
-
-	def private requiredArgumentsFrom(FluentRoutineBuilder routineBuilder, JvmOperation routineCallMethod) {
-		val parameterList = new ArrayList<XExpression>(3)
-		if (routineBuilder.requireAffectedEObject) {
-			parameterList += routineCallMethod.argument(CHANGE_AFFECTED_ELEMENT_ATTRIBUTE)
-		}
-		if (routineBuilder.requireNewValue) {
-			parameterList += routineCallMethod.argument(CHANGE_NEW_VALUE_ATTRIBUTE)
-		}
-		if (routineBuilder.requireOldValue) {
-			parameterList += routineCallMethod.argument(CHANGE_OLD_VALUE_ATTRIBUTE)
-		}
-		return parameterList
-	}
-
-	def private argument(JvmOperation routineCallMethod, String parameterName) {
-		val parameter = routineCallMethod.parameters.findFirst[name == parameterName]
-		if (parameter === null) {
-			throw new IllegalStateException('''The reaction “«reaction.name»” does not provide a value called “«parameterName»”!''')
-		}
-		XbaseFactory.eINSTANCE.createXFeatureCall => [
-			feature = parameter
-		]
 	}
 
 	def private getRoutineCallMethod() {
@@ -329,9 +316,7 @@ class FluentReactionBuilder extends FluentReactionsSegmentChildBuilder {
 	}
 
 	def private getTypeProvider(XExpression scopeExpression) {
-		val delegateTypeProvider = context.typeProviderFactory.findOrCreateTypeProvider(
-			attachedReactionsFile.eResource.resourceSet)
-		new ReactionTypeProvider(delegateTypeProvider, this, scopeExpression)
+		new ReactionTypeProvider(delegateTypeProvider, referenceBuilderFactory, this, scopeExpression)
 	}
 
 	override toString() {
@@ -345,7 +330,7 @@ class FluentReactionBuilder extends FluentReactionsSegmentChildBuilder {
 	override protected getCreatedElementType() {
 		"reaction"
 	}
-	
+
 	def call(FluentRoutineBuilder... routineBuilders) {
 		new RoutineCallBuilder(this).call(routineBuilders)
 	}
