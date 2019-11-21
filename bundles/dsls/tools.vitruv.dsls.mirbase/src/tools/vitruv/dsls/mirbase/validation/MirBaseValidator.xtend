@@ -3,7 +3,6 @@
  */
 package tools.vitruv.dsls.mirbase.validation
 
-import tools.vitruv.dsls.mirbase.mirBase.MetamodelImport
 import tools.vitruv.dsls.mirbase.mirBase.MirBaseFile
 import tools.vitruv.dsls.mirbase.mirBase.MirBasePackage
 import tools.vitruv.framework.util.bridges.EclipseBridge
@@ -20,22 +19,9 @@ import tools.vitruv.framework.domains.VitruvDomainProviderRegistry
  * See https://www.eclipse.org/Xtext/documentation/303_runtime_concepts.html#validation
  */
 class MirBaseValidator extends AbstractMirBaseValidator {
-	public static val METAMODEL_IMPORT_DEPENDENCY_MISSING = "metamodelImportDependencyMissing"
 	public static val DOMAIN_IMPORT_DEPENDENCY_MISSING = "domainImportDependencyMissing"
 	public static val VITRUVIUS_DEPENDENCY_MISSING = "vitruviusDependencyMissing"
-	
-	@Check
-	def checkMetamodelImportDependencyMissing(MetamodelImport metamodelImport) {
-		val contributorName = EclipseBridge.getNameOfContributorOfExtension(
-					"org.eclipse.emf.ecore.generated_package",
-					"uri", metamodelImport.package.nsURI)
-					
-		val project = getProject(metamodelImport.eResource)
-		if (!hasDependency(project, contributorName)) {
-			warning('''Dependency to plug-in '«contributorName»' missing.''', metamodelImport, MirBasePackage.Literals.METAMODEL_IMPORT__PACKAGE, METAMODEL_IMPORT_DEPENDENCY_MISSING)
-		}
-	}
-	
+
 	@Check
 	def checkDomainDependency(DomainReference domainReference) {
 		if (!isValidDomainReference(domainReference)) {
@@ -59,9 +45,6 @@ class MirBaseValidator extends AbstractMirBaseValidator {
 			warning('''The resource should be contained in a plug-in project.''', mirBaseFile, null)
 		}
 	}
-	
-	// TODO DW: move to appropriate plugin
-
 	
 	@Check
 	def checkVitruviusDependencies(MirBaseFile mirBaseFile) {
