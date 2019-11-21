@@ -47,9 +47,11 @@ class VitruvApplicationsRegistry {
 	 */
 	private def static Iterable<VitruvApplication> getAllApplicationsFromExtensionPoint() {
 		val List<VitruvApplication> applications = newArrayList();
-		Platform.getExtensionRegistry().getConfigurationElementsFor(EXTENSION_POINT_ID).map [
-			it.createExecutableExtension("class")
-		].filter(VitruvApplication).forEach[applications.add(it)];
+		if (Platform.running) {
+			Platform.getExtensionRegistry().getConfigurationElementsFor(EXTENSION_POINT_ID).map [
+				it.createExecutableExtension("class")
+			].filter(VitruvApplication).forEach[applications.add(it)];
+		}
 		return applications;
 	}
 }
