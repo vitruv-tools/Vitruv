@@ -4,6 +4,8 @@ import java.util.List
 import tools.vitruv.dsls.mappings.mappingsLanguage.Mapping
 import tools.vitruv.dsls.mappings.mappingsLanguage.MappingParameter
 import tools.vitruv.dsls.mirbase.mirBase.DomainReference
+import org.eclipse.emf.ecore.EPackage
+import tools.vitruv.framework.domains.VitruvDomainProviderRegistry
 
 class MappingParameterExtractor {
 
@@ -39,19 +41,22 @@ class MappingParameterExtractor {
 	 * checks if there are no parameters, for which the parameter doesnt fit to the target side.
 	 * therefore its true only if all parameters are from the target domain
 	 */
-	def isTargetDomainSide(List<MappingParameter> parameters) {
+	private def isTargetDomainSide(List<MappingParameter> parameters) {
 		!parameters.exists[!it.parameterFromTargetDomain]
 	}
 
-	/** 
-	 * This only works when the imports of the domain metamodels have the same name as the domain reference.
-	 * TODO: In the future it should be checked if the metaclass from the parameter is from the target domain,
-	 * instead of checking the import name
-	 * */
-	def isParameterFromTargetDomain(MappingParameter parameter) {
-		val parameterDomainName = parameter.value.metamodel.name.toLowerCase
-		val targetDomainName = targetDomain.domain.toLowerCase
-		parameterDomainName == targetDomainName
+	private def isParameterFromTargetDomain(MappingParameter parameter) {
+		val parameterPackage = parameter.value.metamodel.package
+		val targetDomainRootPackage = VitruvDomainProviderRegistry.getDomainProvider(targetDomain.domain)?.domain.metamodelRootPackage
+		return parameterPackage.isPackageOrSubpackage(targetDomainRootPackage)
+	}
+	
+	private static def boolean isPackageOrSubpackage(EPackage consideredPackage, EPackage packageToSearchIn) {
+		if (consideredPackage == packageToSearchIn) {
+			return true;
+		} else {
+			return packageToSearchIn.ESubpackages.exists[isPackageOrSubpackage(consideredPackage, it)];
+		}
 	}
 
 	def getFromParameters() {
