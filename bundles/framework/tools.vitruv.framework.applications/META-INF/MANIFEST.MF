@@ -1,6 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Vitruv Framework Applications Specification
+Bundle-Vendor: vitruv.tools
 Bundle-SymbolicName: tools.vitruv.framework.applications;singleton:=true
 Automatic-Module-Name: tools.vitruv.framework.applications
 Bundle-Version: 0.3.0.qualifier
