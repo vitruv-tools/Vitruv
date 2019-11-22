@@ -10,62 +10,11 @@
 	</parent>
 	<artifactId>tools.vitruv.testutils.metamodels</artifactId>
 	<packaging>eclipse-plugin</packaging>
+	<name>Vitruv Test Utilities Metamodels</name>
+	
+	<properties>
+		<pathToMetamodelGenerationWorkflow>src/tools/vitruv/testutils/metamodels/GenerateTestMetamodels.mwe2</pathToMetamodelGenerationWorkflow>
+		<metamodelGenerationTargetFolder>src-gen/</metamodelGenerationTargetFolder>
+	</properties>
 
-	<build>
-		<sourceDirectory>src-gen</sourceDirectory>
-
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-clean-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>gen-clean</id>
-						<configuration>
-							<filesets combine.children="append">
-								<fileset>
-									<directory>src-gen/</directory>
-									<includes>
-										<include>**/*</include>
-									</includes>
-								</fileset>
-							</filesets>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>exec-maven-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>generate-ecore</id>
-						<phase>generate-sources</phase>
-						<configuration>
-							<arguments>
-								<argument>/${project.basedir}/src/tools/vitruv/testutils/metamodels/GenerateTestMetamodels.mwe2</argument>
-								<argument>-p</argument>
-								<argument>rootPath=/${project.basedir}/..</argument>
-							</arguments>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>compile-metamodel-code</id>
-						<phase>compile</phase>
-						<goals>
-							<goal>compile</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-		</plugins>
-	</build>
 </project>
