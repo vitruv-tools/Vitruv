@@ -13,7 +13,7 @@
 	<name>Vitruv Framework Interactions Metamodel</name>
 	
 	<properties>
-		<pathToMetamodelGenerationWorkflow>src/tools/vitruv/framework/change/interaction/GenerateInteractionmetamodel.mwe2</pathToMetamodelGenerationWorkflow>
+		<pathToMetamodelGenerationWorkflow>src/tools/vitruv/framework/change/interaction/GenerateInteractionMetamodel.mwe2</pathToMetamodelGenerationWorkflow>
 		<metamodelGenerationTargetFolder>src-gen/</metamodelGenerationTargetFolder>
 	</properties>
 
