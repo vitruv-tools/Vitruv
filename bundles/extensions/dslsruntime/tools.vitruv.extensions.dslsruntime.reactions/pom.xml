@@ -8,12 +8,12 @@
 		<version>0.3.0-SNAPSHOT</version>
 		<relativePath>../</relativePath>
 	</parent>
-	<artifactId>tools.vitruv.extensions.dslsruntime.commonalities</artifactId>
+	<artifactId>tools.vitruv.extensions.dslsruntime.reactions</artifactId>
 	<packaging>eclipse-plugin</packaging>
-	<name>Vitruv Extension Commonalities Language Runtime</name>
-
+	<name>Vitruv Extension Reactions Language Runtime</name>
+	
 	<properties>
-		<pathToMetamodelGenerationWorkflow>src/tools/vitruv/extensions/dslruntime/commonalities/GenerateRuntimeMetamodels.mwe2</pathToMetamodelGenerationWorkflow>
+		<pathToMetamodelGenerationWorkflow>src/tools/vitruv/extensions/dslsruntime/reactions/GenerateCorrespondenceMetamodel.mwe2</pathToMetamodelGenerationWorkflow>
 		<metamodelGenerationTargetFolder>src-gen/</metamodelGenerationTargetFolder>
 	</properties>
 
