@@ -105,7 +105,7 @@
 										</includes>
 									</fileset>
 									<fileset>
-										<directory>${basedir}/../${project.artifactId}.tests/src-gen/</directory>
+										<directory>${basedir}/../../../tests/dsls/${project.artifactId}.tests/src-gen/</directory>
 										<includes>
 											<include>**/*</include>
 										</includes>
@@ -123,7 +123,7 @@
 										</includes>
 									</fileset>
 									<fileset>
-										<directory>${basedir}/../${project.artifactId}.ui.tests/src-gen/</directory>
+										<directory>${basedir}/../../../tests/dsls/${project.artifactId}.ui.tests/src-gen/</directory>
 										<includes>
 											<include>**/*</include>
 										</includes>
