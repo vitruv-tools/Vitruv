@@ -147,7 +147,7 @@ class MirBaseScopeProviderDelegate extends XImportSectionNamespaceScopeProvider 
 	}
 
 	def createQualifiedEClassScopeWithoutAbstract(MetamodelImport metamodelImport) {
-		return createQualifiedEClassScope(metamodelImport, true, [
+		return createQualifiedEClassScope(metamodelImport, false, [
 			!abstract
 		]);
 	}
