@@ -1,4 +1,4 @@
-package mir.routines.test_L2RSegment;
+package mir.routines.test_R2L;
 
 import tools.vitruv.extensions.dslsruntime.reactions.AbstractRepairRoutinesFacade;
 import tools.vitruv.extensions.dslsruntime.reactions.AbstractRoutinesFacadesProvider;
@@ -9,8 +9,8 @@ import tools.vitruv.extensions.dslsruntime.reactions.structure.ReactionsImportPa
 public class RoutinesFacadesProvider extends AbstractRoutinesFacadesProvider {
   public AbstractRepairRoutinesFacade createRoutinesFacade(final ReactionsImportPath reactionsImportPath, final RoutinesFacadeExecutionState sharedExecutionState) {
     switch(reactionsImportPath.getPathString()) {
-    	case "test_L2RSegment": {
-    		return new mir.routines.test_L2RSegment.RoutinesFacade(this, reactionsImportPath, sharedExecutionState);
+    	case "test_R2L": {
+    		return new mir.routines.test_R2L.RoutinesFacade(this, reactionsImportPath, sharedExecutionState);
     	}
     	default: {
     		throw new IllegalArgumentException("Unexpected import path: " + reactionsImportPath.getPathString());

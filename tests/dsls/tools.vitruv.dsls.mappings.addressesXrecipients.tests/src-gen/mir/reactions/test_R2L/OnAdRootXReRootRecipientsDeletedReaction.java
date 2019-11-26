@@ -1,7 +1,6 @@
-package mir.reactions.test_R2LSegment;
+package mir.reactions.test_R2L;
 
 import edu.kit.ipd.sdq.metamodels.recipients.Recipients;
-import mir.routines.test_R2LSegment.RoutinesFacade;
 import org.eclipse.xtext.xbase.lib.Extension;
 import tools.vitruv.extensions.dslsruntime.reactions.AbstractReactionRealization;
 import tools.vitruv.extensions.dslsruntime.reactions.AbstractRepairRoutineRealization;
@@ -16,7 +15,7 @@ public class OnAdRootXReRootRecipientsDeletedReaction extends AbstractReactionRe
   
   private int currentlyMatchedChange;
   
-  public OnAdRootXReRootRecipientsDeletedReaction(final RoutinesFacade routinesFacade) {
+  public OnAdRootXReRootRecipientsDeletedReaction(final mir.routines.test_R2L.RoutinesFacade routinesFacade) {
     super(routinesFacade);
   }
   
@@ -28,7 +27,7 @@ public class OnAdRootXReRootRecipientsDeletedReaction extends AbstractReactionRe
     				
     getLogger().trace("Passed complete precondition check of Reaction " + this.getClass().getName());
     				
-    mir.reactions.test_R2LSegment.OnAdRootXReRootRecipientsDeletedReaction.ActionUserExecution userExecution = new mir.reactions.test_R2LSegment.OnAdRootXReRootRecipientsDeletedReaction.ActionUserExecution(this.executionState, this);
+    mir.reactions.test_R2L.OnAdRootXReRootRecipientsDeletedReaction.ActionUserExecution userExecution = new mir.reactions.test_R2L.OnAdRootXReRootRecipientsDeletedReaction.ActionUserExecution(this.executionState, this);
     userExecution.callRoutine1(deleteChange, affectedEObject, this.getRoutinesFacade());
     
     resetChanges();
@@ -70,8 +69,8 @@ public class OnAdRootXReRootRecipientsDeletedReaction extends AbstractReactionRe
       super(reactionExecutionState);
     }
     
-    public void callRoutine1(final DeleteEObject deleteChange, final Recipients affectedEObject, @Extension final RoutinesFacade _routinesFacade) {
-      _routinesFacade.onAdRootXReRootRecipientsDeletedRepair(affectedEObject);
+    public void callRoutine1(final DeleteEObject deleteChange, final Recipients affectedEObject, @Extension final mir.routines.test_R2L.RoutinesFacade _routinesFacade) {
+      _routinesFacade.adRootXReRoot_ElementDeletedCheck(affectedEObject);
     }
   }
 }

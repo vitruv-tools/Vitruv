@@ -1,7 +1,6 @@
-package mir.reactions.test_L2RSegment;
+package mir.reactions.test_R2L;
 
-import edu.kit.ipd.sdq.metamodels.addresses.Addresses;
-import mir.routines.test_L2RSegment.RoutinesFacade;
+import edu.kit.ipd.sdq.metamodels.recipients.Recipients;
 import org.eclipse.xtext.xbase.lib.Extension;
 import tools.vitruv.extensions.dslsruntime.reactions.AbstractReactionRealization;
 import tools.vitruv.extensions.dslsruntime.reactions.AbstractRepairRoutineRealization;
@@ -11,12 +10,12 @@ import tools.vitruv.framework.change.echange.EChange;
 import tools.vitruv.framework.change.echange.eobject.CreateEObject;
 
 @SuppressWarnings("all")
-public class OnAdRootXReRootAddressesInsertedAsRootReaction extends AbstractReactionRealization {
-  private CreateEObject<Addresses> createChange;
+public class OnAdRootXReRootRecipientsInsertedAsRootReaction extends AbstractReactionRealization {
+  private CreateEObject<Recipients> createChange;
   
   private int currentlyMatchedChange;
   
-  public OnAdRootXReRootAddressesInsertedAsRootReaction(final RoutinesFacade routinesFacade) {
+  public OnAdRootXReRootRecipientsInsertedAsRootReaction(final mir.routines.test_R2L.RoutinesFacade routinesFacade) {
     super(routinesFacade);
   }
   
@@ -24,11 +23,11 @@ public class OnAdRootXReRootAddressesInsertedAsRootReaction extends AbstractReac
     if (!checkPrecondition(change)) {
     	return;
     }
-    edu.kit.ipd.sdq.metamodels.addresses.Addresses affectedEObject = createChange.getAffectedEObject();
+    edu.kit.ipd.sdq.metamodels.recipients.Recipients affectedEObject = createChange.getAffectedEObject();
     				
     getLogger().trace("Passed complete precondition check of Reaction " + this.getClass().getName());
     				
-    mir.reactions.test_L2RSegment.OnAdRootXReRootAddressesInsertedAsRootReaction.ActionUserExecution userExecution = new mir.reactions.test_L2RSegment.OnAdRootXReRootAddressesInsertedAsRootReaction.ActionUserExecution(this.executionState, this);
+    mir.reactions.test_R2L.OnAdRootXReRootRecipientsInsertedAsRootReaction.ActionUserExecution userExecution = new mir.reactions.test_R2L.OnAdRootXReRootRecipientsInsertedAsRootReaction.ActionUserExecution(this.executionState, this);
     userExecution.callRoutine1(createChange, affectedEObject, this.getRoutinesFacade());
     
     resetChanges();
@@ -41,11 +40,11 @@ public class OnAdRootXReRootAddressesInsertedAsRootReaction extends AbstractReac
   
   private boolean matchCreateChange(final EChange change) {
     if (change instanceof CreateEObject<?>) {
-    	CreateEObject<edu.kit.ipd.sdq.metamodels.addresses.Addresses> _localTypedChange = (CreateEObject<edu.kit.ipd.sdq.metamodels.addresses.Addresses>) change;
-    	if (!(_localTypedChange.getAffectedEObject() instanceof edu.kit.ipd.sdq.metamodels.addresses.Addresses)) {
+    	CreateEObject<edu.kit.ipd.sdq.metamodels.recipients.Recipients> _localTypedChange = (CreateEObject<edu.kit.ipd.sdq.metamodels.recipients.Recipients>) change;
+    	if (!(_localTypedChange.getAffectedEObject() instanceof edu.kit.ipd.sdq.metamodels.recipients.Recipients)) {
     		return false;
     	}
-    	this.createChange = (CreateEObject<edu.kit.ipd.sdq.metamodels.addresses.Addresses>) change;
+    	this.createChange = (CreateEObject<edu.kit.ipd.sdq.metamodels.recipients.Recipients>) change;
     	return true;
     }
     
@@ -70,8 +69,8 @@ public class OnAdRootXReRootAddressesInsertedAsRootReaction extends AbstractReac
       super(reactionExecutionState);
     }
     
-    public void callRoutine1(final CreateEObject createChange, final Addresses affectedEObject, @Extension final RoutinesFacade _routinesFacade) {
-      _routinesFacade.onAdRootXReRootAddressesInsertedAsRootRepair(affectedEObject);
+    public void callRoutine1(final CreateEObject createChange, final Recipients affectedEObject, @Extension final mir.routines.test_R2L.RoutinesFacade _routinesFacade) {
+      _routinesFacade.adRootXReRoot_ElementCreatedCheck(affectedEObject);
     }
   }
 }

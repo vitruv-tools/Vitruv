@@ -1,4 +1,4 @@
-package mir.reactions.test_R2LSegment;
+package mir.reactions.test_R2L;
 
 import tools.vitruv.extensions.dslsruntime.reactions.AbstractReactionsExecutor;
 import tools.vitruv.extensions.dslsruntime.reactions.RoutinesFacadesProvider;
@@ -12,11 +12,11 @@ class ReactionsExecutor extends AbstractReactionsExecutor {
   }
   
   protected RoutinesFacadesProvider createRoutinesFacadesProvider() {
-    return new mir.routines.test_R2LSegment.RoutinesFacadesProvider();
+    return new mir.routines.test_R2L.RoutinesFacadesProvider();
   }
   
   protected void setup() {
-    this.addReaction(new mir.reactions.test_R2LSegment.OnAdRootXReRootRecipientsInsertedAsRootReaction(this.getRoutinesFacadesProvider().getRoutinesFacade(ReactionsImportPath.fromPathString("test_R2LSegment"))));
-    this.addReaction(new mir.reactions.test_R2LSegment.OnAdRootXReRootRecipientsDeletedReaction(this.getRoutinesFacadesProvider().getRoutinesFacade(ReactionsImportPath.fromPathString("test_R2LSegment"))));
+    this.addReaction(new mir.reactions.test_R2L.OnAdRootXReRootRecipientsInsertedAsRootReaction(this.getRoutinesFacadesProvider().getRoutinesFacade(ReactionsImportPath.fromPathString("test_R2L"))));
+    this.addReaction(new mir.reactions.test_R2L.OnAdRootXReRootRecipientsDeletedReaction(this.getRoutinesFacadesProvider().getRoutinesFacade(ReactionsImportPath.fromPathString("test_R2L"))));
   }
 }
