@@ -49,7 +49,7 @@ class ReactionsLanguageScopeProviderDelegate extends MirBaseScopeProviderDelegat
 			if (context instanceof ModelElementChange) {
 				return createQualifiedEClassScopeWithEObject(context.elementType?.metamodel);
 			} else if (contextContainer instanceof ModelElementChange) {
-				return createQualifiedEClassScope(contextContainer.elementType?.metamodel);
+				return createQualifiedEClassScopeWithEObject(contextContainer.elementType?.metamodel);
 			} else if (context instanceof CreateModelElement) {
 				return createQualifiedEClassScopeWithoutAbstract(context.metamodel);
 			} else if (contextContainer instanceof CreateModelElement) {
