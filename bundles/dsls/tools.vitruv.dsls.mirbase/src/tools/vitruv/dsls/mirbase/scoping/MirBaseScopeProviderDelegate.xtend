@@ -146,18 +146,40 @@ class MirBaseScopeProviderDelegate extends XImportSectionNamespaceScopeProvider 
 		return resultScope
 	}
 
+	/**
+	 * Creates an {@link IScope} that represents all non-abstract {@link EClass}es
+	 * that are provided by the metamodel of the given {@link MetamodelImport}
+	 * by a fully qualified name.
+	 *
+	 * @param metamodelImport - the metamodel to provide the non-abstract classes of
+	 */
 	def createQualifiedEClassScopeWithoutAbstract(MetamodelImport metamodelImport) {
 		return createQualifiedEClassScope(metamodelImport, false, [
 			!abstract
 		]);
 	}
 
+	/**
+	 * Creates an {@link IScope} that represents all abstract {@link EClass}es
+	 * that are provided by the metamodel of the given {@link MetamodelImport}
+	 * by a fully qualified name.
+	 *
+	 * @param metamodelImport - the metamodel to provide the abstract classes of
+	 */
 	def createQualifiedEClassScopeOnlyAbstract(MetamodelImport metamodelImport) {
 		return createQualifiedEClassScope(metamodelImport, true, [
 			abstract
 		]);
 	}
 
+	/**
+	 * Creates an {@link IScope} that represents all {@link EClass}es
+	 * that are provided by the metamodel of the given {@link MetamodelImport} and that
+	 * are either the given type or one of its subtypes by a fully qualified name.
+	 *
+	 * @param metamodelImport - the metamodel to provide the abstract classes of
+	 * @param superType - the type to provide the subtypes of
+	 */
 	def createQualifiedEClassScopeOfSuperTypeChildren(MetamodelImport metamodelImport, EClass superType) {
 		return createQualifiedEClassScope(metamodelImport, true, [
 			!it.abstract && (it.EAllSuperTypes.contains(superType) || it.EAllGenericSuperTypes.contains(superType))
@@ -168,10 +190,25 @@ class MirBaseScopeProviderDelegate extends XImportSectionNamespaceScopeProvider 
 		return createQualifiedEClassScope(res, false, null);
 	}
 
+	/**
+	 * Creates an {@link IScope} that represents all {@link EClass}es
+	 * that are provided by the metamodel of the given {@link MetamodelImport}
+	 * by a fully qualified name.
+	 *
+	 * @param metamodelImport - the metamodel to provide all classes of
+	 */
 	def createQualifiedEClassScope(MetamodelImport metamodelImport) {
 		return createQualifiedEClassScope(metamodelImport, false, null);
 	}
 
+	/**
+	 * Creates an {@link IScope} that represents all {@link EClass}es
+	 * that are provided by the metamodel of the given {@link MetamodelImport}
+	 * by a fully qualified name, and {@link EObject} if the given import does not
+	 * reference a proper metamodel.
+	 *
+	 * @param metamodelImport - the metamodel to provide the classes of
+	 */
 	def createQualifiedEClassScopeWithEObject(MetamodelImport metamodelImport) {
 		return createQualifiedEClassScope(metamodelImport, true, null);
 	}
