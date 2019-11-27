@@ -96,9 +96,11 @@ class VitruvDomainProviderRegistry {
 	 */
 	def private static Iterable<VitruvDomainProvider<?>> getAllDomainProvidersFromExtensionPoint() {
 		val List<VitruvDomainProvider<?>> domainProvider = new LinkedList<VitruvDomainProvider<?>>();
-		Platform.getExtensionRegistry().getConfigurationElementsFor(EXTENSION_POINT_ID).map [
-			it.createExecutableExtension("class")
-		].forEach[if (it instanceof VitruvDomainProvider<?>) domainProvider.add(it)];
+		if (Platform.running) {
+			Platform.getExtensionRegistry().getConfigurationElementsFor(EXTENSION_POINT_ID).map [
+				it.createExecutableExtension("class")
+			].forEach[if (it instanceof VitruvDomainProvider<?>) domainProvider.add(it)];
+		}
 		return domainProvider
 	}
 }
