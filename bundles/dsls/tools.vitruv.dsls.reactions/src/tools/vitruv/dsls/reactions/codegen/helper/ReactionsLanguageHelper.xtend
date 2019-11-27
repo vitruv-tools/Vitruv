@@ -51,7 +51,11 @@ final class ReactionsLanguageHelper {
 	}
 
 	public static def VitruvDomainProvider<?> getProviderForDomain(VitruvDomain domain) {
-		return VitruvDomainProviderRegistry.getDomainProvider(domain.name);
+		return if (VitruvDomainProviderRegistry.hasDomainProvider(domain.name)) {
+			VitruvDomainProviderRegistry.getDomainProvider(domain.name);
+		} else {
+			null;
+		}
 	}
 
 	public static def VitruvDomain getDomainForReference(DomainReference domainReference) {
@@ -59,7 +63,9 @@ final class ReactionsLanguageHelper {
 	}
 
 	public static def VitruvDomainProvider<?> getDomainProviderForReference(DomainReference domainReference) {
-		val referencedDomainProvider = VitruvDomainProviderRegistry.getDomainProvider(domainReference.domain)
+		val referencedDomainProvider = if (VitruvDomainProviderRegistry.hasDomainProvider(domainReference.domain)) {
+			VitruvDomainProviderRegistry.getDomainProvider(domainReference.domain)
+		}
 		if (referencedDomainProvider === null) {
 			throw new IllegalStateException("Given domain reference references no existing domain");
 		}

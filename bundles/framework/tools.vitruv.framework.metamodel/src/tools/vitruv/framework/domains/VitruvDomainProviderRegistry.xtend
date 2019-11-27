@@ -66,6 +66,15 @@ class VitruvDomainProviderRegistry {
 	}
 
 	/**
+	 * Returns whether a domain with the given name is registered or not
+	 * 
+	 * @param domainName - the name of the domain to look for
+	 */
+	def static boolean hasDomainProvider(String domainName) {
+		return runtimeRegisteredProviders.containsKey(domainName) || getExtensionPointProviders(domainName).size > 0;
+	}
+
+	/**
 	 * Retrieves the provider for the domain with the given name.
 	 * 
 	 * @param domainName - the name of the domain to retrieve
