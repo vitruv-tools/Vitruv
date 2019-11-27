@@ -26,14 +26,15 @@ class MirBaseQuickfixProvider extends XbaseQuickfixProvider {
 	def addDomainDependencyToManifest(Issue issue, IssueResolutionAcceptor acceptor) {
 		acceptor.accept(issue, 'Add dependency.', 'Add the dependency.', null) [ element, context |
 			val domainReference = element as DomainReference
-			
-			val domainProvider = VitruvDomainProviderRegistry.getDomainProvider(domainReference.domain);
-			val contributorName = EclipseBridge.getNameOfContributorOfExtension(
-					VitruvDomainProviderRegistry.EXTENSION_POINT_ID,
-					"class", domainProvider.class.name);
-			val project = getProject(domainReference.eResource)
-			if (!hasDependency(project, contributorName)) {
-				addDependency(project, contributorName)
+			if (VitruvDomainProviderRegistry.hasDomainProvider(domainReference.domain)) {
+				val domainProvider = VitruvDomainProviderRegistry.getDomainProvider(domainReference.domain);
+				val contributorName = EclipseBridge.getNameOfContributorOfExtension(
+						VitruvDomainProviderRegistry.EXTENSION_POINT_ID,
+						"class", domainProvider.class.name);
+				val project = getProject(domainReference.eResource)
+				if (!hasDependency(project, contributorName)) {
+					addDependency(project, contributorName)
+				}
 			}
 		]
 	}
