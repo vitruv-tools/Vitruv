@@ -12,6 +12,7 @@ import static tools.vitruv.dsls.mirbase.validation.EclipsePluginHelper.*
 import tools.vitruv.dsls.common.VitruviusDslsCommonConstants
 import tools.vitruv.dsls.mirbase.mirBase.DomainReference
 import tools.vitruv.framework.domains.VitruvDomainProviderRegistry
+import org.eclipse.core.runtime.Platform
 
 /**
  * This class contains custom validation rules. 
@@ -24,6 +25,10 @@ class MirBaseValidator extends AbstractMirBaseValidator {
 
 	@Check
 	def checkDomainDependency(DomainReference domainReference) {
+		if (!Platform.isRunning()) {
+			return;
+		}
+		
 		if (!isValidDomainReference(domainReference)) {
 			return;
 		}
@@ -39,6 +44,9 @@ class MirBaseValidator extends AbstractMirBaseValidator {
 	
 	@Check
 	def checkMirBaseFile(MirBaseFile mirBaseFile) {
+		if (!Platform.isRunning()) {
+			return;
+		}
 		val project = getProject(mirBaseFile?.eResource)
 		
 		if (!isPluginProject(project)) {
@@ -48,6 +56,10 @@ class MirBaseValidator extends AbstractMirBaseValidator {
 	
 	@Check
 	def checkVitruviusDependencies(MirBaseFile mirBaseFile) {
+		if (!Platform.isRunning()) {
+			return;
+		}
+		
 		val project = getProject(mirBaseFile.eResource)
 		
 		for (String dependency : VitruviusDslsCommonConstants.VITRUVIUS_DEPENDENCIES) {
