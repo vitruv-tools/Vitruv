@@ -50,16 +50,16 @@ class ReactionsLanguageOutlineTreeProvider extends DefaultOutlineTreeProvider {
 			ReactionsLanguagePackage.Literals.REACTIONS_SEGMENT__REACTIONS_IMPORTS, imageDispatcher.invoke(reactionsSegment),
 			"reactionsImports", false);
 		for (reactionsImport : reactionsSegment.reactionsImports) {
-			createChildren(reactionsImportsNode, reactionsImport);
+			createChildren(reactionsImportsNode, reactionsSegment);
 		}
 		val reactionsNode = createEStructuralFeatureNode(segmentNode, reactionsSegment, 
 			ReactionsLanguagePackage.Literals.REACTIONS_SEGMENT__REACTIONS, imageDispatcher.invoke(reactionsSegment), "reactions", false)
 		for (reaction : reactionsSegment.reactions) {
-			createChildren(reactionsNode, reaction);	
+			createChildren(reactionsNode, reactionsSegment);	
 		}
 		val routinesNode = createEStructuralFeatureNode(segmentNode, reactionsSegment, ReactionsLanguagePackage.Literals.REACTIONS_SEGMENT__ROUTINES, imageDispatcher.invoke(reactionsSegment), "routines", false)
 		for (routine : reactionsSegment.routines) {
-			createChildren(routinesNode, routine);	
+			createChildren(routinesNode, reactionsSegment);	
 		}
 	}
 	
