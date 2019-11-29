@@ -9,6 +9,7 @@ import org.eclipse.xtext.scoping.IScopeProvider
 import com.google.inject.name.Names
 import org.eclipse.xtext.scoping.impl.AbstractDeclarativeScopeProvider
 import tools.vitruv.dsls.mirbase.scoping.MirBaseScopeProviderDelegate
+import tools.vitruv.framework.domains.VitruvDomainProviderRegistry
 
 /**
  * Use this class to register components to be used at runtime / without the Equinox extension registry.
@@ -23,6 +24,12 @@ class MirBaseRuntimeModule extends AbstractMirBaseRuntimeModule {
 		binder.bind(IScopeProvider)
 		      .annotatedWith(Names.named(AbstractDeclarativeScopeProvider.NAMED_DELEGATE))
 		      .to(MirBaseScopeProviderDelegate)
+	}
+	
+	override configure(Binder binder) {
+		super.configure(binder)
+		// Once retrieve all domain providers so that the language is able to resolve all domains
+		VitruvDomainProviderRegistry.allDomainProviders;
 	}
 	
 }
