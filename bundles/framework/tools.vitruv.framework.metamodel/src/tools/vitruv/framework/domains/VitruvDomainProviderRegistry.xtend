@@ -5,6 +5,7 @@ import org.eclipse.core.runtime.Platform
 import java.util.List
 import java.util.LinkedList
 import static com.google.common.base.Preconditions.*
+import org.reflections.Reflections
 
 /**
  * Registry of all {@linkplain VitruvDomainProvider DomainProviders} known to
@@ -81,7 +82,7 @@ class VitruvDomainProviderRegistry {
 	 */
 	def static VitruvDomainProvider<?> getDomainProvider(String domainName) {
 		checkNotNull(domainName)
-
+			
 		if (runtimeRegisteredProviders.containsKey(domainName)) {
 			return runtimeRegisteredProviders.get(domainName)
 		}
@@ -105,10 +106,23 @@ class VitruvDomainProviderRegistry {
 	 */
 	def private static Iterable<VitruvDomainProvider<?>> getAllDomainProvidersFromExtensionPoint() {
 		val List<VitruvDomainProvider<?>> domainProvider = new LinkedList<VitruvDomainProvider<?>>();
+		// If we are in an Eclipse environment, read the VitruvDomainProvider from the extension point.
+		// If we are not in an Eclipse environment, read the VitruvDomainProvider from the classpath.
+		// We cannot use the classpath in Eclipse, because a classloader can only resolve within a bundle,
+		// so we would need to know the name of the bundle to get the classloader from. In a non-Eclipse
+		// environment, the bundles are mapped into one classpath.
 		if (Platform.running) {
 			Platform.getExtensionRegistry().getConfigurationElementsFor(EXTENSION_POINT_ID).map [
 				it.createExecutableExtension("class")
 			].forEach[if (it instanceof VitruvDomainProvider<?>) domainProvider.add(it)];
+		} else {
+			val domainProviderClasses = new Reflections("tools.vitruv").getSubTypesOf(VitruvDomainProvider);
+			for (domainProviderClass : domainProviderClasses) {
+				domainProvider.add(domainProviderClass.constructor.newInstance)
+			}
+			// Get the domain for each provider when we are not an Eclipse environment to register the
+			// packages of the domains appropriately, so they can be resolved
+			domainProvider.forEach[domain]
 		}
 		return domainProvider
 	}

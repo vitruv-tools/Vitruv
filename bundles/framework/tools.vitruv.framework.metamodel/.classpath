@@ -1,16 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-11">
-		<attributes>
-			<attribute name="module" value="true"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="xtend-gen">
 		<attributes>
 			<attribute name="ignore_optional_problems" value="true"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-11">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
+	<classpathentry kind="lib" path="jars/annotations-2.0.1.jar"/>
+	<classpathentry kind="lib" path="jars/guava-15.0.jar"/>
+	<classpathentry kind="lib" path="jars/javassist-3.19.0-GA.jar"/>
+	<classpathentry kind="lib" path="jars/reflections-0.9.10.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
