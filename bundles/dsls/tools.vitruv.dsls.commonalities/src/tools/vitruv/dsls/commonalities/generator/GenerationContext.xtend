@@ -42,6 +42,7 @@ package class GenerationContext {
 	var CommonalityFile commonalityFile
 	@Accessors(PACKAGE_SETTER, PACKAGE_GETTER)
 	var IFileSystemAccess2 fsa
+	// TODO cache for complete ResourceSet (but: how to known when to cleanup)? Or don't cache at all?
 	var Map<CommonalityFile, EClass> intermediateModelClassCache = new HashMap
 	var Map<String, EPackage> intermediateModelPackageCache = new HashMap
 	var Map<String, JvmGenericType> domainTypes = new HashMap
@@ -155,10 +156,9 @@ package class GenerationContext {
 	}
 	
 	def package dispatch EStructuralFeature getEFeatureToReference(CommonalityAttribute attribute) {
-		commonalityFile.generatedIntermediateModelClass.getEStructuralFeature(attribute.name)
+		attribute.containingCommonalityFile.generatedIntermediateModelClass.getEStructuralFeature(attribute.name)
 	}
 
-	// TODO reconsider when referencing of other commonalities is supported
 	def package dispatch EStructuralFeature getEFeatureToReference(EFeatureAdapter adapter) {
 		adapter.wrapped
 	}
