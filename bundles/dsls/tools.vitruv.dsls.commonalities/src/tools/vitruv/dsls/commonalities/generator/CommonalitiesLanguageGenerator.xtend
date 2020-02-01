@@ -24,6 +24,7 @@ class CommonalitiesLanguageGenerator implements IGenerator2 {
 		val generationContext = generationContextProvider.get() => [
 			it.commonalityFile = commonalityFile
 			it.fsa = fsa
+			it.updateResourceSetContext()
 		]
 		val resourceSubGenerators = newSubGenerators()
 		resourceSubGenerators.forEach [

@@ -23,9 +23,10 @@ package class IntermediateModelCodeGenerator extends SubGenerator {
 	static val GENERATED_CODE_COMPLIANCE_LEVEL = GenJDKLevel.JDK80_LITERAL
 	static val GENERATED_CODE_FOLDER = "."
 	static val INTERMEDIATEMODELBASE_GENMODEL_URI = EcorePlugin.getEPackageNsURIToGenModelLocationMap(true).get(IntermediateModelBasePackage.eINSTANCE.nsURI)
-	@Lazy val GenModel intermediateModelBaseGenModel = commonalityFile.eResource.resourceSet.getResource(INTERMEDIATEMODELBASE_GENMODEL_URI, true).contents.head as GenModel
+	@Lazy val GenModel intermediateModelBaseGenModel = resourceSet.getResource(INTERMEDIATEMODELBASE_GENMODEL_URI, true).contents.head as GenModel
 
 	override generate() {
+		if (!isNewResourceSet) return
 		val generatedCodeDirectory = fsa.getURI(GENERATED_CODE_FOLDER)
 		for (generatedConcept : generatedConcepts) {
 			val generatedPackage = generatedConcept.generatedIntermediateModelPackage

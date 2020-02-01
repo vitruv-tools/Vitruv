@@ -3,6 +3,7 @@ package tools.vitruv.dsls.commonalities.generator
 import com.google.inject.Inject
 import com.google.inject.Provider
 import java.util.function.Supplier
+import org.apache.log4j.Logger
 import org.eclipse.emf.ecore.EClass
 import org.eclipse.xtext.common.types.JvmOperation
 import org.eclipse.xtext.xbase.XFeatureCall
@@ -25,6 +26,8 @@ import static extension tools.vitruv.dsls.commonalities.language.extensions.Comm
 
 package class ReactionsGenerator extends SubGenerator {
 
+	private static val Logger logger = Logger.getLogger(ReactionsGenerator)
+
 	val Supplier<IReactionsGenerator> reactionsGeneratorProvider
 	val Supplier<CommonalityAttributeChangeReactionsBuilder> commonalityAttributeChangeReactionsBuilder
 	val Supplier<ParticipationAttributeChangeReactionsBuilder> participationAttributeChangeReactionsBuilder
@@ -46,7 +49,7 @@ package class ReactionsGenerator extends SubGenerator {
 	) {
 		this.reactionsGeneratorProvider = [
 			reactionsGeneratorProvider.get() => [
-				useResourceSet(commonalityFile.eResource.resourceSet)
+				useResourceSet(resourceSet)
 			]
 		]
 		this.commonalityAttributeChangeReactionsBuilder = [
@@ -65,8 +68,9 @@ package class ReactionsGenerator extends SubGenerator {
 			commonalityReferenceChangeReactionsBuilderProvider.get.withGenerationContext(reactionsGenerationContext)
 		]
 	}
-	
+
 	override generate() {
+		logger.debug('''Generating reactions for commonality «commonalityFile.concept.name»::«commonality.name»''')
 		if (commonality.participations.length + commonality.allMembers.length == 0) {
 			// nothing to generate
 			return;
@@ -91,8 +95,12 @@ package class ReactionsGenerator extends SubGenerator {
 
 		}
 
-		VitruvDomainProviderRegistry.registerDomainProvider(commonalityFile.concept.name,
-			commonalityFile.concept.vitruvDomain.provider)
+		for (String conceptName : generatedConcepts) {
+			logger.debug('''Temporarily registering concept domain: «conceptName»''')
+			VitruvDomainProviderRegistry.registerDomainProvider(conceptName,
+				conceptName.vitruvDomain.provider)
+		}
+
 		try {
 			generator.addReactionsFile(reactionFile)
 			generator.generate(fsa)
@@ -101,7 +109,10 @@ package class ReactionsGenerator extends SubGenerator {
 				generator.writeReactions(fsa)
 			}
 		} finally {
-			VitruvDomainProviderRegistry.unregisterDomainProvider(commonalityFile.concept.name)
+			for (String conceptName : generatedConcepts) {
+				logger.debug('''Unregistering concept domain again: «conceptName»''')
+				VitruvDomainProviderRegistry.unregisterDomainProvider(conceptName)
+			}
 		}
 	}
 

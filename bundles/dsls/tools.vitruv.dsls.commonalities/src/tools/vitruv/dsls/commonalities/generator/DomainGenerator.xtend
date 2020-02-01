@@ -31,13 +31,15 @@ package class DomainGenerator extends SubGenerator {
 	@Inject Provider<XtextResource> resourceProvider
 
 	override beforeGenerate() {
-		commonalityFile.eResource.resourceSet.resources += generatedConcepts.flatMap [
+		if (!isNewResourceSet) return;
+		resourceSet.resources += generatedConcepts.flatMap [
 			#[newResource(conceptDomainClass.qualifiedName), newResource(conceptDomainProvider.qualifiedName)]
 		]
 	}
 
 	override generate() {
-		val typeReferenceBuilder = typeReferenceFactory.create(commonalityFile.eResource.resourceSet)
+		if (!isNewResourceSet) return
+		val typeReferenceBuilder = typeReferenceFactory.create(resourceSet)
 		generatedConcepts.flatMap [
 			val domainType = createDomain(typeReferenceBuilder)
 			val domainProviderType = createDomainProvider(typeReferenceBuilder, domainType)
@@ -107,7 +109,6 @@ package class DomainGenerator extends SubGenerator {
 	}
 
 	def private generateType(JvmDeclaredType type) {
-		val resourceSet = commonalityFile.eResource.resourceSet
 		val typeResource = resourceSet.getResource(type.qualifiedName.domainTypeUri, false)
 		typeResource.contents += type
 		delegate.doGenerate(typeResource, fsa)

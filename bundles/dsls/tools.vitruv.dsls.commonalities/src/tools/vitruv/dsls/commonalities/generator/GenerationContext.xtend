@@ -31,6 +31,13 @@ import static extension tools.vitruv.dsls.commonalities.generator.GeneratorConst
 import static extension tools.vitruv.dsls.commonalities.language.extensions.CommonalitiesLanguageModelExtensions.*
 
 package class GenerationContext {
+
+	// TODO verify that this caching heuristic actually produces the desired results
+	// see https://github.com/eclipse/xtext-core/issues/413
+	static var int lastSeenResourceSetHash
+	static var Iterable<String> generatedConcepts = Collections.emptyList
+
+	var isNewResourceSet = false
 	@Accessors(PACKAGE_SETTER, PACKAGE_GETTER)
 	var CommonalityFile commonalityFile
 	@Accessors(PACKAGE_SETTER, PACKAGE_GETTER)
@@ -40,9 +47,27 @@ package class GenerationContext {
 	var Map<String, JvmGenericType> domainTypes = new HashMap
 	var Map<String, JvmGenericType> domainProviderTypes = new HashMap
 
-	@Accessors(PACKAGE_SETTER, PACKAGE_GETTER)
-	var Iterable<String> generatedConcepts = Collections.emptyList
-	
+	def package updateResourceSetContext() {
+		val resourceSetHashCode = resourceSet.hashCode
+		isNewResourceSet = (resourceSetHashCode != lastSeenResourceSetHash);
+		if (isNewResourceSet) {
+			lastSeenResourceSetHash = resourceSetHashCode
+			generatedConcepts = Collections.emptyList
+		}
+	}
+
+	def package setGeneratedConcepts(Iterable<String> newGeneratedConcepts) {
+		generatedConcepts = newGeneratedConcepts
+	}
+
+	def package getGeneratedConcepts() {
+		generatedConcepts
+	}
+
+	def package isNewResourceSet() {
+		isNewResourceSet
+	}
+
 	def package getGeneratedIntermediateModelClass(CommonalityFile commonalityFile) {
 		intermediateModelClassCache.computeIfAbsent(commonalityFile, [
 			commonalityFile.concept.generatedIntermediateModelPackage.EClassifiers.findFirst [
@@ -50,7 +75,7 @@ package class GenerationContext {
 			] as EClass
 		])
 	}
-	
+
 	def package getGeneratedIntermediateModelClass(Commonality commonality) {
 		commonality.containingCommonalityFile.generatedIntermediateModelClass
 	}
@@ -96,7 +121,7 @@ package class GenerationContext {
 	}
 
 	def private findDomainGeneratedType(String name) {
-		val domainTypeResource = commonalityFile.eResource.resourceSet.getResource(name.domainTypeUri, false)
+		val domainTypeResource = resourceSet.getResource(name.domainTypeUri, false)
 		val result = domainTypeResource.contents.head
 		if (result instanceof JvmGenericType) {
 			return result
@@ -114,7 +139,7 @@ package class GenerationContext {
 		])
 	}
 
-	def private ResourceSet getResourceSet() {
+	def package ResourceSet getResourceSet() {
 		commonalityFile.eResource.resourceSet
 	}
 
@@ -153,14 +178,18 @@ package class GenerationContext {
 	def private dispatch findVitruvDomain(Concept concept) {
 		concept.vitruvDomain
 	}
-	
+
 	def package dispatch EStructuralFeature getEFeatureToReference(CommonalityReference reference) {
 		commonalityFile.generatedIntermediateModelClass.getEStructuralFeature(reference.name)
 	}
-	
+
 	def package getVitruvDomain(Concept concept) {
-		val ePackage = concept.name.generatedIntermediateModelPackage
-		checkState(ePackage !== null, '''No ePackage was registered for the concept “«concept.name»”!''')
-		new ConceptDomain(concept.name, ePackage)
+		concept.name.vitruvDomain
+	}
+
+	def package getVitruvDomain(String conceptName) {
+		val ePackage = conceptName.generatedIntermediateModelPackage
+		checkState(ePackage !== null, '''No ePackage was registered for the concept “«conceptName»”!''')
+		new ConceptDomain(conceptName, ePackage)
 	}
 }

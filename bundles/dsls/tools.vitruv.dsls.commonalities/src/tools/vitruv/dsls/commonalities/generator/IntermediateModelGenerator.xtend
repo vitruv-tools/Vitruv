@@ -32,15 +32,11 @@ package class IntermediateModelGenerator extends SubGenerator {
 
 	static val NS_URI_PREFIX = URI.createURI('http://vitruv.tools/commonalities')
 
-	// TODO verify that this caching heuristic actually produces the desired results
-	// see https://github.com/eclipse/xtext-core/issues/413
-	static var int lastSeenResourceSetHash
 	var List<Resource> outputResources = Collections.emptyList
 
 	override beforeGenerate() {
-		val resourceSet = commonalityFile.eResource.resourceSet
-
-		if (resourceSet.hashCode != lastSeenResourceSetHash) {
+		if (isNewResourceSet) {
+			val resourceSet = resourceSet
 			val conceptToCommonalityFile = resourceSet.resources
 				.map [optionalContainedCommonalityFile]
 				.filterNull
@@ -57,10 +53,8 @@ package class IntermediateModelGenerator extends SubGenerator {
 				reportGeneratedConcept(concept, packageGenerator.generatedEPackage)
 				return packageGenerator
 			].forEach [link]
-			
-			generatedConcepts = new HashSet(conceptToCommonalityFile.keySet)
 
-			lastSeenResourceSetHash = resourceSet.hashCode
+			generatedConcepts = new HashSet(conceptToCommonalityFile.keySet)
 		}
 	}
 
