@@ -81,7 +81,7 @@ class ParameterGenerator {
 	}
 	
 	public def Iterable<JvmFormalParameter> generateMethodInputParameters(EObject contextObject, Iterable<AccessibleElement> elements) {
-		elements.map[toParameter(contextObject, it.name, it.generateTypeRef(_typeReferenceBuilder))]
+		elements.map[toParameter(contextObject, it.name, it.generateTypeRef(_typeReferenceBuilder, _typesBuilder))]
 	}
 	
 	private def getMappedInstanceClassCanonicalName(EClass eClass) {

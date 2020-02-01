@@ -19,6 +19,7 @@ import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
 import tools.vitruv.dsls.reactions.codegen.changetyperepresentation.ChangeSequenceRepresentation
 import tools.vitruv.dsls.common.helper.ClassNameGenerator
 import static extension tools.vitruv.dsls.reactions.codegen.helper.ReactionsLanguageHelper.*
+import org.eclipse.xtext.xbase.jvmmodel.JvmTypesBuilder
 
 class ReactionClassGenerator extends ClassGenerator {
 	private static val String CHANCE_COUNTER_VARIABLE = "currentlyMatchedChange";
@@ -57,7 +58,7 @@ class ReactionClassGenerator extends ClassGenerator {
 		generatedClass => [
 			documentation = getCommentWithoutMarkers(reaction.documentation)
 			superTypes += typeRef(AbstractReactionRealization)
-			members += changeSequenceRepresentation.fields.map[reaction.toField(name, it.generateTypeRef(_typeReferenceBuilder))]
+			members += changeSequenceRepresentation.fields.map[reaction.toField(name, it.generateTypeRef(_typeReferenceBuilder, _typesBuilder))]
 			members += reaction.toField(CHANCE_COUNTER_VARIABLE, typeRef(Integer.TYPE))
 			members += reaction.generateConstructor();
 			members += generatedMethods

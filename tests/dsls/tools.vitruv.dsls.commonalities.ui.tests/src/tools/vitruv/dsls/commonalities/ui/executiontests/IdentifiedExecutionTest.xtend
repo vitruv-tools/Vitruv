@@ -11,7 +11,6 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import pcm_mockup.Pcm_mockupFactory
 import pcm_mockup.Repository
-import tools.vitruv.dsls.commonalities.ui.tests.CommonalitiesLanguageUiInjectorProvider
 import uml_mockup.Uml_mockupFactory
 
 import static org.hamcrest.MatcherAssert.assertThat
@@ -20,7 +19,7 @@ import org.eclipse.emf.ecore.util.EcoreUtil
 import uml_mockup.UPackage
 
 @RunWith(XtextRunner)
-@InjectWith(CommonalitiesLanguageUiInjectorProvider)
+@InjectWith(CombinedUiInjectorProvider)
 class IdentifiedExecutionTest extends CommonalitiesExecutionTest {
 
 	@Inject ExecutionTestCompiler compiler

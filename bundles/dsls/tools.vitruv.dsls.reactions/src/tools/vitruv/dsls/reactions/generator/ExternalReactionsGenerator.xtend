@@ -16,6 +16,8 @@ class ExternalReactionsGenerator implements IReactionsGenerator {
 	@Delegate val InternalReactionsGenerator internalGenerator
 	
 	public new() {
+		// TODO This does not work inside ui (eclipse) context, because the runtime module is missing the ui (eclipse) specific overrides.
+		// Since we don't know here whether we are in ui context or not, move the responsibility for setting up the correct injector into clients?
 		if (internalGeneratorProvider === null) {
 			// the reactions runtime module was not initialised yet
 			Guice.createInjector(new ReactionsLanguageRuntimeModule())

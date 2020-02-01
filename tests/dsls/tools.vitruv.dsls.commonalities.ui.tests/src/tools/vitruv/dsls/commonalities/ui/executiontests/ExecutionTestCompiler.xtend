@@ -95,11 +95,8 @@ class ExecutionTestCompiler {
 		testProject.build(PDE.MANIFEST_BUILDER_ID)
 		testProject.build(PDE.SCHEMA_BUILDER_ID)
 
-		// This first Xtext build will always fail. I have no idea how to
-		// fix that. 
 		testProject.build(XtextProjectHelper.BUILDER_ID)
-		testProject.build(XtextProjectHelper.BUILDER_ID)
-		
+
 		testProject.refresh()
 		testProject.build(JavaCore.BUILDER_ID)
 
@@ -166,7 +163,7 @@ class ExecutionTestCompiler {
 			Bundle-Name: Commonalities Language Test Project
 			Bundle-Vendor: Vitruv-Tools
 			Bundle-Version: 1.0.0.qualifier
-			Bundle-SymbolicName: commonalities-test; singleton:=true
+			Bundle-SymbolicName: «project.name»; singleton:=true
 			Bundle-ActivationPolicy: lazy
 			Require-Bundle: tools.vitruv.extensions.dslsruntime.commonalities,
 			  tools.vitruv.testutils.domains,
