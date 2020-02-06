@@ -131,7 +131,7 @@ package class ReactionsGenerator extends SubGenerator {
 		(
 			participation.classes.flatMap [#[
 				reactionForParticipationClassCreate,
-				reactionForParticipationClassDelete,  
+				reactionForParticipationClassDelete,
 				reactionForParticipationRootInsert
 			]]
 			+ participation.reactionsForParticipationAttributeChange
@@ -140,7 +140,7 @@ package class ReactionsGenerator extends SubGenerator {
 	}
 
 	def private reactionForCommonalityDelete(Participation participation) {
-		create.reaction('''«commonality.name»Delete''')
+		create.reaction('''«commonality.concept.name»_«commonality.name»Delete''')
 			.afterElement(commonalityFile.changeClass).deleted
 			.call [
 				match [
@@ -159,7 +159,7 @@ package class ReactionsGenerator extends SubGenerator {
 	}
 
 	def private reactionForParticipationClassDelete(ParticipationClass participationClass) {
-		create.reaction('''«participationClass.name»Delete''')
+		create.reaction('''«participationClass.participation.name»_«participationClass.name»Delete''')
 			.afterElement(participationClass.changeClass).deleted
 			.call [
 				match [
@@ -172,10 +172,8 @@ package class ReactionsGenerator extends SubGenerator {
 			]
 	}
 
-
-
 	def private reactionForCommonalityCreate(Participation participation) {
-		create.reaction('''«commonality.name»Create''')
+		create.reaction('''«commonality.concept.name»_«commonality.name»Create''')
 			.afterElement(commonalityFile.changeClass).created
 			.call [
 				match [
@@ -205,7 +203,7 @@ package class ReactionsGenerator extends SubGenerator {
 	}
 
 	def private reactionForParticipationClassCreate(ParticipationClass participationClass) {
-		create.reaction('''«participationClass.name»Create''')
+		create.reaction('''«participationClass.participation.name»_«participationClass.name»Create''')
 			.afterElement(participationClass.changeClass).created
 			.call [
 				action [
@@ -219,14 +217,14 @@ package class ReactionsGenerator extends SubGenerator {
 	}
 
 	def private reactionForParticipationRootInsert(ParticipationClass participationClass) {
-		create.reaction('''«participationClass.name»RootInsert''')
+		create.reaction('''«participationClass.participation.name»_«participationClass.name»RootInsert''')
 			.afterElement(participationClass.changeClass).insertedAsRoot
 			.call(#[
 				participationClass.intermediateResourceBridgeRoutine,
 				participationClass.participation.insertRoutine
 			].filterNull)
 	}
-	
+
 	def private reactionForCommonalityInsert(Participation participation) {
 		val relations = newHashMap(participation.classes.map [optionalParticipationRelation]
 			.filterNull
@@ -236,7 +234,7 @@ package class ReactionsGenerator extends SubGenerator {
 		
 		if (relations.size > 0) {
 		// TODO participation domains
-			create.reaction('''«commonality.name»Insert''')
+			create.reaction('''«commonality.concept.name»_«commonality.name»Insert''')
 				.afterElement(commonalityFile.changeClass).insertedIn(IntermediateModelBasePackage.eINSTANCE.root_Intermediates)
 				.call [
 					match [
@@ -274,7 +272,7 @@ package class ReactionsGenerator extends SubGenerator {
 	def private reactionsForParticipationAttributeChange(Participation participation) {
 		participationAttributeChangeReactionsBuilder.get.forParticipation(participation).reactions
 	}
-	
+
 	def private reactionsForParticipationReferenceChange(Participation participation) {
 		participationReferenceChangeReactionsBuilder.get.forParticipation(participation).reactions
 	}
@@ -297,7 +295,7 @@ package class ReactionsGenerator extends SubGenerator {
 			explicitOperationCall = true
 		]
 	}
-	
+
 	def private callOperationOnRelation(extension RoutineTypeProvider typeProvider,
 		ParticipationRelation relation, JvmOperation operation) {
 		XbaseFactory.eINSTANCE.createXMemberFeatureCall => [

@@ -30,14 +30,14 @@ package class ReactionsGeneratorConventions {
 	}
 	
 	def static private String mappingAttributeReactionName(ParticipationAttribute attribute) {
-		'''«attribute.participationClass.name.toFirstUpper»«attribute.attribute.name.toFirstUpper»'''
+		'''«attribute.participationClass.participation.name»_«attribute.participationClass.name.toFirstUpper»«attribute.attribute.name.toFirstUpper»'''
 	}
 	
 	def static package String getCommonalityAttributeReactionName(CommonalityAttribute attribute) {
-		'''«attribute.containingCommonalityFile.commonality.name.toFirstUpper»«attribute.name.toFirstUpper»'''
+		'''«attribute.containingCommonalityFile.concept.name»_«attribute.containingCommonalityFile.commonality.name.toFirstUpper»«attribute.name.toFirstUpper»'''
 	}
 	
 	def static package String getCommonalityAttributeReactionName(CommonalityReference reference) {
-		'''«reference.containingCommonalityFile.commonality.name.toFirstUpper»«reference.name.toFirstUpper»'''
+		'''«reference.containingCommonalityFile.concept.name»_«reference.containingCommonalityFile.commonality.name.toFirstUpper»«reference.name.toFirstUpper»'''
 	}
 }
