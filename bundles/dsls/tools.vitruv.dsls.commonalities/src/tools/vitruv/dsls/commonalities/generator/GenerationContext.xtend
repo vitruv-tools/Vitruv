@@ -109,6 +109,12 @@ package class GenerationContext {
 		concept.name.generatedIntermediateModelPackage
 	}
 
+	def package getGeneratedIntermediateModelPackage(String conceptName) {
+		intermediateModelPackageCache.computeIfAbsent(conceptName, [
+			resourceSet.getResource(conceptName.intermediateModelOutputUri, false).contents.head as EPackage
+		])
+	}
+
 	def package getConceptDomainType(CommonalityFile commonalityFile) {
 		domainTypes.computeIfAbsent(commonalityFile.concept.name, [ conceptName |
 			findDomainGeneratedType(conceptName.conceptDomainClass.qualifiedName)
@@ -134,12 +140,6 @@ package class GenerationContext {
 		commonalityFile.commonality
 	}
 
-	def package getGeneratedIntermediateModelPackage(String conceptName) {
-		intermediateModelPackageCache.computeIfAbsent(conceptName, [
-			resourceSet.getResource(conceptName.intermediateModelOutputUri, false).contents.head as EPackage
-		])
-	}
-
 	def package ResourceSet getResourceSet() {
 		commonalityFile.eResource.resourceSet
 	}
@@ -154,7 +154,7 @@ package class GenerationContext {
 	def package getIntermediateModelOutputUri(String conceptName) {
 		fsa.getURI(conceptName + MODEL_OUTPUT_FILE_EXTENSION)
 	}
-	
+
 	def package dispatch EStructuralFeature getEFeatureToReference(CommonalityAttribute attribute) {
 		attribute.containingCommonalityFile.generatedIntermediateModelClass.getEStructuralFeature(attribute.name)
 	}
@@ -166,7 +166,7 @@ package class GenerationContext {
 	def package dispatch EStructuralFeature getEFeatureToReference(ParticipationAttribute participationAttribute) {
 		participationAttribute.attribute.EFeatureToReference
 	}
-	
+
 	def package getVitruvDomain(Domain domain) {
 		domain.findVitruvDomain
 	}
