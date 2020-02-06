@@ -95,10 +95,9 @@ package class ReactionsGenerator extends SubGenerator {
 
 		}
 
+		logger.debug('''Temporarily registering concept domains: «generatedConcepts»''')
 		for (String conceptName : generatedConcepts) {
-			logger.debug('''Temporarily registering concept domain: «conceptName»''')
-			VitruvDomainProviderRegistry.registerDomainProvider(conceptName,
-				conceptName.vitruvDomain.provider)
+			VitruvDomainProviderRegistry.registerDomainProvider(conceptName, conceptName.vitruvDomain.provider)
 		}
 
 		try {
@@ -109,8 +108,8 @@ package class ReactionsGenerator extends SubGenerator {
 				generator.writeReactions(fsa)
 			}
 		} finally {
+			logger.debug('''Unregistering concept domains again: «generatedConcepts»''')
 			for (String conceptName : generatedConcepts) {
-				logger.debug('''Unregistering concept domain again: «conceptName»''')
 				VitruvDomainProviderRegistry.unregisterDomainProvider(conceptName)
 			}
 		}
