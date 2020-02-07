@@ -15,29 +15,29 @@ class ParticipationExtension {
 	def static dispatch Iterable<ParticipationClass> getClasses(SimpleParticipation participation) {
 		Collections.singleton(participation.participationClass)
 	}
-	
+
 	def static dispatch Iterable<ParticipationClass> getClasses(TupleParticipation participation) {
-		participation.parts.flatMap [containedClasses]
+		participation.parts.flatMap[containedClasses]
 	}
-	
+
 	def private static dispatch Iterable<ParticipationClass> getContainedClasses(SimpleTupleParticipationPart participationPart) {
 		Collections.singleton(participationPart.participationClass)
 	}
-	
+
 	def private static dispatch Iterable<ParticipationClass> getContainedClasses(ParticipationRelation participationPart) {
 		participationPart.leftClasses + participationPart.rightClasses
 	}
-	
+
 	def static dispatch getDomainName(SimpleParticipation participation) {
 		participation?.participationClass?.superMetaclass?.domain?.name
 	}
-	
+
 	def static dispatch getDomainName(TupleParticipation participation) {
 		participation.domainName
 	}
-	
+
 	def static getDomain(Participation participation) {
-		participation.classes.head?.superMetaclass?.domain		
+		participation.classes.head?.superMetaclass?.domain
 	}
 
 	def static isCommonalityParticipation(Participation participation) {
