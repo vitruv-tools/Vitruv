@@ -2,6 +2,7 @@ package tools.vitruv.dsls.commonalities.language.extensions
 
 import edu.kit.ipd.sdq.activextendannotations.Utility
 import java.util.Collections
+import tools.vitruv.dsls.commonalities.language.Concept
 import tools.vitruv.dsls.commonalities.language.Participation
 import tools.vitruv.dsls.commonalities.language.ParticipationClass
 import tools.vitruv.dsls.commonalities.language.ParticipationRelation
@@ -37,5 +38,9 @@ class ParticipationExtension {
 	
 	def static getDomain(Participation participation) {
 		participation.classes.head?.superMetaclass?.domain		
+	}
+
+	def static isCommonalityParticipation(Participation participation) {
+		(participation.domain instanceof Concept)
 	}
 }

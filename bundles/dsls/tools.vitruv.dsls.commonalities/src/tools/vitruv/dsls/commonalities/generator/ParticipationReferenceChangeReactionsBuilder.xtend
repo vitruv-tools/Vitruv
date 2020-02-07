@@ -54,7 +54,7 @@ class ParticipationReferenceChangeReactionsBuilder
 				]
 			] => [
 				if (mapping.participationEReference.isContainment) {
-					call(targetParticipation.insertRoutine)
+					call(getInsertRoutine(targetParticipation, commonality))
 				}
 			]
 	}
@@ -74,7 +74,7 @@ class ParticipationReferenceChangeReactionsBuilder
 				]
 			] => [
 				if (mapping.participationEReference.isContainment) {
-					call(targetParticipation.insertRoutine)
+					call(getInsertRoutine(targetParticipation, commonality))
 				}
 			]
 	}

@@ -7,14 +7,15 @@ import org.eclipse.emf.ecore.EcorePackage
 import org.eclipse.xtend.lib.annotations.Accessors
 import org.eclipse.xtext.xbase.XFeatureCall
 import org.eclipse.xtext.xbase.XbaseFactory
+import tools.vitruv.dsls.commonalities.language.Commonality
 import tools.vitruv.dsls.commonalities.language.Participation
 import tools.vitruv.dsls.commonalities.language.ParticipationClass
+import tools.vitruv.dsls.commonalities.language.elements.NamedElement
 import tools.vitruv.dsls.commonalities.language.elements.ResourceMetaclass
 import tools.vitruv.dsls.reactions.builder.FluentReactionsLanguageBuilder
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.RoutineTypeProvider
 import tools.vitruv.extensions.dslruntime.commonalities.IntermediateModelManagement
-import tools.vitruv.extensions.dslruntime.commonalities.intermediatemodelbase.IntermediateModelBasePackage
 import tools.vitruv.extensions.dslruntime.commonalities.resources.IntermediateResourceBridge
 import tools.vitruv.extensions.dslruntime.commonalities.resources.ResourcesPackage
 
@@ -29,27 +30,35 @@ package class ReactionsGenerationContext {
 	var extension GenerationContext generationContext
 	@Accessors(PACKAGE_GETTER)
 	@Inject FluentReactionsLanguageBuilder create
-	val Intermediate = IntermediateModelBasePackage.eINSTANCE.intermediate
 
 	val Map<Participation, FluentRoutineBuilder> intermediateResourcePrepareRoutineCache = new HashMap
-	val Map<Participation, FluentRoutineBuilder> participationClassInsertRoutineCache = new HashMap
+	// Since a commonality may have other commonalities as participations, commonality insert routines can potentially
+	// be found for all pairs of a commonality and its participations.
+	val Map<Pair<NamedElement, NamedElement>, FluentRoutineBuilder> commonalityInsertRoutineCache = new HashMap
 
 	def package wrappingContext(GenerationContext generationContext) {
 		this.generationContext = generationContext
 		return this
-	}	
-	
-	def package getInsertRoutine(Participation participation) {
-		participationClassInsertRoutineCache.computeIfAbsent(participation, [ 
-			create.routine('''intermediateInsert''')
+	}
+
+	def private getInsertRoutine(NamedElement fromParticipationOrCommonality, Commonality toCommonality) {
+		commonalityInsertRoutineCache.computeIfAbsent(Pair.of(fromParticipationOrCommonality, toCommonality), [ 
+			create.routine('''intermediateInsert_«toCommonality.name»''')
 				.input [model(EcorePackage.eINSTANCE.EObject, newValue)]
 				.match [
-					vall('intermediate').retrieveAsserted(Intermediate).correspondingTo.newValue
+					vall('intermediate').retrieveAsserted(toCommonality.changeClass).correspondingTo.newValue
 				].action [
-					execute [insertIntermediate(variable('intermediate'))]
+					execute [insertIntermediate(variable('intermediate'), toCommonality)]
 				]
 		])
+	}
 
+	def package getInsertRoutine(Participation fromParticipation, Commonality toCommonality) {
+		getInsertRoutine(fromParticipation as NamedElement, toCommonality)
+	}
+
+	def package getInsertRoutine(Commonality fromCommonality, Commonality toCommonality) {
+		getInsertRoutine(fromCommonality as NamedElement, toCommonality)
 	}
 
 	def package getIntermediateResourceBridgeRoutine(ParticipationClass participationClass) {
@@ -106,7 +115,7 @@ package class ReactionsGenerationContext {
 		XFeatureCall intermediate) {
 		val resourceVariableDeclaration = XbaseFactory.eINSTANCE.createXVariableDeclaration => [
 			name = 'intermediateModelResource'
-			right = createMetadataResource(typeProvider)
+			right = createMetadataResource(typeProvider, commonality)
 		]
 		XbaseFactory.eINSTANCE.createXBlockExpression => [
 			expressions += expressions(
@@ -124,10 +133,10 @@ package class ReactionsGenerationContext {
 		]
 	}
 
-	def private insertIntermediate(extension RoutineTypeProvider typeProvider, XFeatureCall intermediate) {
+	def private insertIntermediate(extension RoutineTypeProvider typeProvider, XFeatureCall intermediate, Commonality commonality) {
 		val resourceVariableDeclaration = XbaseFactory.eINSTANCE.createXVariableDeclaration => [
 			name = 'intermediateModelResource'
-			right = createMetadataResource(typeProvider)
+			right = createMetadataResource(typeProvider, commonality)
 		]
 		XbaseFactory.eINSTANCE.createXBlockExpression => [
 			expressions += expressions(
@@ -145,7 +154,7 @@ package class ReactionsGenerationContext {
 		]
 	}
 
-	def private createMetadataResource(extension RoutineTypeProvider typeProvider) {
+	def private createMetadataResource(extension RoutineTypeProvider typeProvider, Commonality commonality) {
 		XbaseFactory.eINSTANCE.createXFeatureCall => [
 			implicitReceiver = routineUserExecution
 			feature = routineUserExecutionType.findMethod('getMetadataResource')
@@ -158,7 +167,7 @@ package class ReactionsGenerationContext {
 					value = 'commonalities'
 				],
 				XbaseFactory.eINSTANCE.createXStringLiteral => [
-					value = commonalityFile.concept.name
+					value = commonality.concept.name
 				],
 				XbaseFactory.eINSTANCE.createXStringLiteral => [
 					value = commonality.name + '.intermediate'

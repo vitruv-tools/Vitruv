@@ -23,6 +23,9 @@ class CommonalitiesLanguageGlobalScopeProvider extends TypesAwareDefaultGlobalSc
 
 	override getScope(Resource resource, EReference reference, Predicate<IEObjectDescription> filter) {
 		new ComposedScope(
+			// Note: Delegating to the default global scope provider first ensures that we get actual Concept and
+			// Commonality instances for commonality participation domains and participation classes, rather than
+			// EClassAdapters as they would get created by the VitruvDomainMetaclassesScope.
 			super.getScope(resource, reference, filter),
 			getVitruvDomainsScope(resource, reference),
 			getSelfScope(resource, reference)

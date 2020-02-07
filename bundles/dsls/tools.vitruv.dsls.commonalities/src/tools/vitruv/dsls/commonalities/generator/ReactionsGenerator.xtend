@@ -12,6 +12,7 @@ import tools.vitruv.dsls.commonalities.language.Participation
 import tools.vitruv.dsls.commonalities.language.ParticipationClass
 import tools.vitruv.dsls.commonalities.language.ParticipationRelation
 import tools.vitruv.dsls.reactions.api.generator.IReactionsGenerator
+import tools.vitruv.dsls.reactions.builder.FluentReactionBuilder
 import tools.vitruv.dsls.reactions.builder.FluentReactionBuilder.ReactionTypeProvider
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.RoutineTypeProvider
 import tools.vitruv.extensions.dslruntime.commonalities.IntermediateModelManagement
@@ -129,6 +130,7 @@ package class ReactionsGenerator extends SubGenerator {
 
 	def private participationChangeReactions(Participation participation) {
 		(
+			// TODO filter Resource class? no events should get triggered for it anyways
 			participation.classes.flatMap [#[
 				reactionForParticipationClassCreate,
 				reactionForParticipationClassDelete,
@@ -221,22 +223,26 @@ package class ReactionsGenerator extends SubGenerator {
 			.afterElement(participationClass.changeClass).insertedAsRoot
 			.call(#[
 				participationClass.intermediateResourceBridgeRoutine,
-				participationClass.participation.insertRoutine
+				getInsertRoutine(participationClass.participation, commonality)
 			].filterNull)
 	}
 
 	def private reactionForCommonalityInsert(Participation participation) {
+		// Check for participation relations that trigger on inserts:
 		val relations = newHashMap(participation.classes.map [optionalParticipationRelation]
 			.filterNull
 			.toSet
 			.map [it -> operator.findOptionalImplementedMethod('afterInserted')]
 			.filter[value !== null])
-		
-		if (relations.size > 0) {
-		// TODO participation domains
-			create.reaction('''«commonality.concept.name»_«commonality.name»Insert''')
+
+		if (relations.size > 0 || participation.isCommonalityParticipation) {
+			// TODO participation domains
+			val reactionStart = create.reaction('''«commonality.concept.name»_«commonality.name»Insert''')
 				.afterElement(commonalityFile.changeClass).insertedIn(IntermediateModelBasePackage.eINSTANCE.root_Intermediates)
-				.call [
+
+			var FluentReactionBuilder reaction = null;
+			if (relations.size > 0) {
+				reaction = reactionStart.call [
 					match [
 						for (partClass : relations.keySet.flatMap [participationClasses]) {
 							vall(partClass.correspondingVariableName).retrieveAsserted(partClass.changeClass)
@@ -254,7 +260,20 @@ package class ReactionsGenerator extends SubGenerator {
 						}
 					]
 				]
-		}	
+			}
+
+			// Each participating commonality is implicitly contained inside the root of its intermediate model.
+			// This containment relation is realized when the current commonality instance is inserted into its root.
+			// TODO In case relations between commonalities are a thing: Only apply implicit root containment for those
+			// commonalities without relation? Or make the root relation explicit (similar to 'in Resource')?
+			if (participation.isCommonalityParticipation) {
+				for (participationClass : participation.classes) {
+					val participatingCommonality = participationClass.participatingCommonality // assert: not null
+					reaction = reactionStart.call(getInsertRoutine(participation, participatingCommonality))
+				}
+			}
+			reaction
+		}
 	}
 
 	def private reactionsForCommonalityAttributeChange(Participation participation) {

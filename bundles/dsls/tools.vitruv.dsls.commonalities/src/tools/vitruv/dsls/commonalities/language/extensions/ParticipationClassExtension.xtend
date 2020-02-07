@@ -2,6 +2,7 @@ package tools.vitruv.dsls.commonalities.language.extensions
 
 import edu.kit.ipd.sdq.activextendannotations.Utility
 import org.eclipse.emf.ecore.EObject
+import tools.vitruv.dsls.commonalities.language.Commonality
 import tools.vitruv.dsls.commonalities.language.Participation
 import tools.vitruv.dsls.commonalities.language.ParticipationClass
 import tools.vitruv.dsls.commonalities.language.ParticipationRelation
@@ -37,5 +38,13 @@ import tools.vitruv.dsls.commonalities.language.ParticipationRelation
 	
 	def private static dispatch Participation findParticipation(Void nill) {
 		throw new IllegalStateException("Found a participation class outside of a participation!")
+	}
+	
+	def static getParticipatingCommonality(ParticipationClass participationClass) {
+		val metaclass = participationClass.superMetaclass
+		switch metaclass {
+			Commonality: metaclass // automatically casted to Commonality
+			default: null
+		}
 	}
 }
