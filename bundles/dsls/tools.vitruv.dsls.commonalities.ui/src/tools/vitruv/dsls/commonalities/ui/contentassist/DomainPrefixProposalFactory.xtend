@@ -7,7 +7,7 @@ import org.eclipse.xtext.ui.editor.contentassist.PrefixMatcher
 import static tools.vitruv.dsls.commonalities.names.CommonalitiesLanguageQualifiedNameConverter.DOMAIN_METACLASS_SEPARATOR
 
 class DomainPrefixProposalFactory extends CommonalitiesLanguageProposalFactory {
-	
+
 	@Inject PrefixMatcher.IgnoreCase ignoreCase
 
 	override apply(IEObjectDescription description) {

@@ -16,17 +16,16 @@ abstract class IntermediateVitruvDomain extends AbstractTuidAwareVitruvDomain {
 		String... fileExtensions) {
 		super(name, metamodelRootPackage, tuidCalculator, fileExtensions)
 	}
-	
+
 	override shouldTransitivelyPropagateChanges() {
 		true
 	}
-	
+
 	override isUserVisible() {
 		false
 	}
-	
+
 	override supportsUuids() {
 		false
 	}
-	
 }

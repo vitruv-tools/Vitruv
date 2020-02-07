@@ -7,6 +7,7 @@ import tools.vitruv.dsls.commonalities.language.CommonalityFile
 
 @Utility
 class GeneratorConstants {
+
 	static val GENERATED_PACKAGE_PREFIX = "tools.vitruv.commonalities"
 	public static val MODEL_OUTPUT_FILE_EXTENSION = ".ecore"
 	static val DOMAIN_TYPES_BASE_URI = URI.createURI('synthetic:/domainTypes')

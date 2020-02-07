@@ -5,9 +5,9 @@ import java.util.regex.Pattern
 import org.eclipse.emf.ecore.EPackage
 
 final class EPackageURINameResolver {
-	
+
 	private new() {}
-	
+
 	/**
 	 * Predicate deciding whether a part of a model URI looks like a version number
 	 */
@@ -17,7 +17,7 @@ final class EPackageURINameResolver {
 	 * Constructs a suitable, friendly name out of a metamodel URI. Chooses the last
 	 * part of the URI most of the time. However, some URIs contain a version number at
 	 * the end, which will be skipped in favor of the next part from behind.
-	 */	
+	 */
 	def static getPackageName(String ePackageURI) {
 		val uriParts = ePackageURI.split('/')
 		// starting from the end, skip over all parts that look like version numbers
@@ -26,8 +26,8 @@ final class EPackageURINameResolver {
 		}
 		if (i >= 0) uriParts.get(i) else ePackageURI
 	}
-	
+
 	def static getPackageName(EPackage ePackage) {
 		ePackage?.eResource.URI.toString.packageName
-	}	
+	}
 }

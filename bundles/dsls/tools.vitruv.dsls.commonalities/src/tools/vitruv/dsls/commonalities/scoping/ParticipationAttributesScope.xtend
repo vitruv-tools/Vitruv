@@ -16,31 +16,31 @@ class ParticipationAttributesScope implements IScope {
 
 	def forParticipationClass(ParticipationClass participationClass) {
 		this.participationClass = checkNotNull(participationClass)
-		this			
+		this
 	}
-	
+
 	def private checkParticipationClassSet() {
 		checkState(participationClass !== null, "No participation class to get attributes from was set!")
 	}
-	
+
 	def private allAttributes() {
 		checkParticipationClassSet()
-		
+
 		participationClass.superMetaclass?.attributes ?: #[]
 	}
-	
+
 	override getAllElements() {
 		allAttributes.map(descriptionProvider)
 	}
 
 	override getElements(QualifiedName qName) {
 		if (qName.segmentCount > 1) return #[]
-		allAttributes.filter [name == qName.firstSegment].map(descriptionProvider)
+		allAttributes.filter[name == qName.firstSegment].map(descriptionProvider)
 	}
 
 	override getElements(EObject object) {
 		checkParticipationClassSet()
-		
+
 		throw new UnsupportedOperationException("I don’t know what to do here!")
 	}
 
@@ -51,5 +51,4 @@ class ParticipationAttributesScope implements IScope {
 	override getSingleElement(EObject object) {
 		getElements(object).head
 	}
-
 }

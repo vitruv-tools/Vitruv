@@ -15,6 +15,7 @@ import static extension tools.vitruv.dsls.commonalities.language.extensions.Comm
 
 class ParticipationReferenceChangeReactionsBuilder 
 	extends ReactionsSubGenerator<ParticipationReferenceChangeReactionsBuilder> {
+
 	Participation targetParticipation
 
 	def package forParticipation(Participation targetParticipation) {
@@ -30,7 +31,7 @@ class ParticipationReferenceChangeReactionsBuilder
 			isRead && participation == targetParticipation
 		].flatMap[reactionsForReferenceMappingRightChange]
 	}
-	
+
 	def reactionsForReferenceMappingRightChange(CommonalityReferenceMapping mapping) {
 		if (mapping.reference.isMultiValued) {
 			#[multiReferenceAddReaction(mapping), multiReferenceRemoveReaction(mapping)]
@@ -38,7 +39,7 @@ class ParticipationReferenceChangeReactionsBuilder
 			#[singleReferenceSetReaction(mapping)]
 		}
 	}
-	
+
 	def private singleReferenceSetReaction(CommonalityReferenceMapping mapping) {
 		create.reaction('''«mapping.participationAttributeReactionName»Change''')
 			.afterElement.replacedAt(mapping.participationReferenceChangeClass, mapping.participationEReference)
@@ -94,30 +95,30 @@ class ParticipationReferenceChangeReactionsBuilder
 				]
 			]
 	}
-	
+
 	def private retrieveReferencedIntermediateOf(
 		extension UndecidedMatcherStatementBuilder statementBuilder,
 		CommonalityReferenceMapping mapping
 	) {
 		vall('referencedIntermediate').retrieveAsserted(mapping.referenceTypeChangeClass)
 	}
-	
+
 	def private getReferencedIntermediate(extension RoutineTypeProvider builder) {
 		variable('referencedIntermediate')
 	}
-	
+
 	def private getParticipationReferenceChangeClass(CommonalityReferenceMapping mapping) {
 		mapping.reference.participationClass.changeClass
 	}
-	
+
 	def private getReferenceTypeChangeClass(CommonalityReferenceMapping mapping) {
 		mapping.declaringReference.referenceType.changeClass
 	}
-	
+
 	def private retrieveIntermediate(extension UndecidedMatcherStatementBuilder builder) {
 		vall('intermediate').retrieveAsserted(commonalityFile.changeClass).correspondingTo.affectedEObject
 	}
-	
+
 	def private getParticipationEReference(CommonalityReferenceMapping mapping) {
 		mapping.reference.EFeatureToReference as EReference
 	}

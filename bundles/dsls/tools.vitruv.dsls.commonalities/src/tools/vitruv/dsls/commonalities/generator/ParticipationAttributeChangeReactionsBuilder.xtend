@@ -18,6 +18,7 @@ import static extension tools.vitruv.dsls.commonalities.language.extensions.Comm
 
 package class ParticipationAttributeChangeReactionsBuilder 
 	extends ReactionsSubGenerator<ParticipationAttributeChangeReactionsBuilder> {
+
 	Participation targetParticipation
 
 	def package forParticipation(Participation targetParticipation) {
@@ -144,15 +145,15 @@ package class ParticipationAttributeChangeReactionsBuilder
 				]
 			]
 	}
-	
+
 	def private getParticipationAttributeChangeClass(CommonalityAttributeMapping mapping) {
 		mapping.attribute.participationClass.changeClass
 	}
-	
+
 	def private getParticipationEReference(CommonalityAttributeMapping mapping) {
 		mapping.attribute.EFeatureToReference as EReference
 	}
-	
+
 	def private getParticipationEAttribute(CommonalityAttributeMapping mapping) {
 		mapping.attribute.EFeatureToReference as EAttribute
 	}

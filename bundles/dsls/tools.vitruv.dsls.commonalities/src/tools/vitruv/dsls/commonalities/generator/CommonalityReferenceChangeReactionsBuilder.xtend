@@ -18,7 +18,7 @@ import static extension tools.vitruv.dsls.commonalities.language.extensions.Comm
 
 class CommonalityReferenceChangeReactionsBuilder
 	extends ReactionsSubGenerator<CommonalityReferenceChangeReactionsBuilder> {
-		
+
 	CommonalityReference reference
 	Participation targetParticipation
 	List<CommonalityReferenceMapping> relevantMappings
@@ -32,7 +32,7 @@ class CommonalityReferenceChangeReactionsBuilder
 		this.targetParticipation = targetParticipation
 		this
 	}
-	
+
 	def package Iterable<FluentReactionBuilder> getReactions() {
 		checkState(reference !== null, "No reference to create reactions for was set!")
 		checkState(targetParticipation !== null, "No participation to create reactions for was set!")
@@ -50,6 +50,7 @@ class CommonalityReferenceChangeReactionsBuilder
 			Collections.singleton(singleReferenceSetReaction)
 		}
 	}
+
 	def private singleReferenceSetReaction() {
 		create.reaction('''«reference.commonalityAttributeReactionName»Change''')
 			.afterElement.replacedAt(reference.EFeatureToReference as EReference)
@@ -130,7 +131,7 @@ class CommonalityReferenceChangeReactionsBuilder
 				]
 			]
 	}
-	
+
 	def private retrieveCorrespondingAffectedObjectOf(
 		extension UndecidedMatcherStatementBuilder matcherBuilder,
 		CommonalityReferenceMapping mapping
@@ -140,7 +141,7 @@ class CommonalityReferenceChangeReactionsBuilder
 			.correspondingTo.affectedEObject
 			.taggedWith(participationClass.correspondenceTag)
 	}
-	
+
 	def private getCorrespondingParticipationClassVariable(CommonalityReferenceMapping mapping) {
 		mapping.reference.participationClass.correspondingVariableName
 	}
@@ -148,7 +149,7 @@ class CommonalityReferenceChangeReactionsBuilder
 	def private getReferencedParticipationClassVariable(CommonalityReferenceMapping mapping) {
 		mapping.matchingReferencedParticipations.head.changedVariableName
 	}
-	
+
 	def private retrieveReferencedValueOf(
 		extension UndecidedMatcherStatementBuilder matcherBuilder,
 		CommonalityReferenceMapping mapping
@@ -156,7 +157,7 @@ class CommonalityReferenceChangeReactionsBuilder
 		val referencedParticipationClass = mapping.matchingReferencedParticipations.head
 		vall(referencedParticipationClass.changedVariableName).retrieveAsserted(referencedParticipationClass.changeClass)
 	}
-	
+
 	def private static String getChangedVariableName(ParticipationClass participationClass) {
 		'''changed_«participationClass.name»'''
 	}

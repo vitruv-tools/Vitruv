@@ -34,8 +34,8 @@ class CommonalitiesLanguageOutlineTreeProvider extends DefaultOutlineTreeProvide
 	def protected void _createChildren(IOutlineNode parent, Commonality commonality) {
 		createEStructuralFeatureNode(parent, commonality, COMMONALITY__PARTICIPATIONS,
 			labelProvider.getImage(PARTICIPATION), commonality.participations.size + ' Participations', false)
-		commonality.attributes.forEach [createNode(parent, it)]
-		commonality.references.forEach [createNode(parent, it)]
+		commonality.attributes.forEach[createNode(parent, it)]
+		commonality.references.forEach[createNode(parent, it)]
 	}
 
 	def protected boolean _isLeaf(Participation participation) {

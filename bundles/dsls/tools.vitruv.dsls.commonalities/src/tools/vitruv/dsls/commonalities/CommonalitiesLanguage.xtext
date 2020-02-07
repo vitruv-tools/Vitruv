@@ -36,6 +36,7 @@ Commonality:
 /******************
  * Participations *
  ******************/
+
 PackageLike:
 	Participation
 ;
@@ -112,10 +113,11 @@ ParticipationNoCondition returns ParticipationCondition:
 /**************
  * Attributes *
  **************/
+
 Attribute:
 	CommonalityAttribute | ParticipationAttribute
 ;
- 
+
 CommonalityAttribute:
 	'has' name=ID '{'
 		mappings+=CommonalityAttributeMapping*
@@ -136,22 +138,23 @@ ParticipationAttribute:
 /**************
  * References *
  **************/
- CommonalityReference:
- 	'has' name=ID 'referencing' referenceType=[Commonality|QualifiedCommonality] '{'
- 		mappings+=CommonalityReferenceMapping*
- 	'}'
- ;
- 
- CommonalityReferenceMapping:
- 	('=' {ReferenceEqualitySpecification} | '->' {ReferenceSetSpecification} | '<-' {ReferenceReadSpecification})
- 	reference=ParticipationAttribute
- 	('via' referenceTargets+=[ParticipationClass|QualifiedParticipationClass] (',' referenceTargets+=[ParticipationClass|QualifiedParticipationClass])*)?
- ;
- 
+
+CommonalityReference:
+	'has' name=ID 'referencing' referenceType=[Commonality|QualifiedCommonality] '{'
+		mappings+=CommonalityReferenceMapping*
+	'}'
+;
+
+CommonalityReferenceMapping:
+	('=' {ReferenceEqualitySpecification} | '->' {ReferenceSetSpecification} | '<-' {ReferenceReadSpecification})
+	reference=ParticipationAttribute
+	('via' referenceTargets+=[ParticipationClass|QualifiedParticipationClass] (',' referenceTargets+=[ParticipationClass|QualifiedParticipationClass])*)?
+;
 
 /******************
  * Datatype Rules *
  ******************/
+
 fragment QualifiedClasslike:
 	ID ':' ID;
 	
@@ -178,11 +181,12 @@ UnqualifiedMetaclass:
 UnqualifiedParticipationMember:
 	ID
 ;
-	
-	
+
+
 /******************
  * Terminal Rules *
  ******************/
+
 terminal QUOTED_NAME:
 	("'" NAME "'") | ('"' NAME '"') | ("“" NAME "”") | ("»" NAME "«") | ("«" NAME "»") | ("„" NAME "“")
 ;
@@ -190,4 +194,3 @@ terminal QUOTED_NAME:
 terminal fragment NAME:
 	('a'..'z' | 'A'..'Z') ('a'..'z' | 'A'..'Z' | '0'..'9' | '-' | '_')*
 ;
-	

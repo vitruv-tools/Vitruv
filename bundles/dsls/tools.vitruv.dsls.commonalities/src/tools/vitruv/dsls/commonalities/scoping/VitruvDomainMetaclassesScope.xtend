@@ -16,13 +16,12 @@ class VitruvDomainMetaclassesScope implements IScope {
 	@Inject IEObjectDescriptionProvider descriptionProvider
 
 	override getAllElements() {
-		vitruviusDomainProvider.allDomains.flatMap [metaclasses].map(descriptionProvider)
+		vitruviusDomainProvider.allDomains.flatMap[metaclasses].map(descriptionProvider)
 	}
 
 	override getElements(QualifiedName qName) {
-		var Iterable<Metaclass> elements = vitruviusDomainProvider.getDomainByName(qName.getSegment(0))
-			?.metaclasses ?: #[]
-			
+		var Iterable<Metaclass> elements = vitruviusDomainProvider.getDomainByName(qName.getSegment(0))?.metaclasses ?: #[]
+
 		if (qName.segmentCount > 1) {
 			elements = elements.filter[name == qName.getSegment(1)]
 		}
@@ -40,10 +39,9 @@ class VitruvDomainMetaclassesScope implements IScope {
 	override getSingleElement(EObject object) {
 		getElements(object).head
 	}
-	
+
 	override toString() {
 		'''«VitruvDomainMetaclassesScope.simpleName» for domains «
 		»[«FOR domain : vitruviusDomainProvider.allDomains SEPARATOR ', '»«domain»«ENDFOR»]'''
 	}
-	
 }

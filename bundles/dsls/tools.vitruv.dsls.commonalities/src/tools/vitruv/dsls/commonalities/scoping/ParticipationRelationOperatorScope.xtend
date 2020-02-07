@@ -64,16 +64,15 @@ class ParticipationRelationOperatorScope implements IScope {
 
 	def private getRelationName(JvmDeclaredType type) {
 		type.annotations
-			 .filter [annotation.qualifiedName == RELATION_NAME_ANNOTATION].head
-			 ?.explicitValues
-			 ?.filter [operation.simpleName == 'value']
-			 ?.filter(JvmStringAnnotationValue)?.head
-			 ?.values?.head
+			.filter[annotation.qualifiedName == RELATION_NAME_ANNOTATION].head
+			?.explicitValues
+			?.filter[operation.simpleName == 'value']
+			?.filter(JvmStringAnnotationValue)?.head
+			?.values?.head
 	}
-	
+
 	override toString() {
 		'''«ParticipationRelationOperatorScope.simpleName»«
 		»[«FOR name : relations.keySet SEPARATOR ', '»«name.lastSegment»«ENDFOR»]'''
 	}
-
 }

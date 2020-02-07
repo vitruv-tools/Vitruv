@@ -31,10 +31,8 @@ class CommonalitiesLanguageScopeProvider extends AbstractCommonalitiesLanguageSc
 		switch reference {
 			case PARTICIPATION_ATTRIBUTE__PARTICIPATION_CLASS:
 				participationClassesScope.get.forCommonality(context.containingCommonalityFile.commonality)
-				
 			case PARTICIPATION_ATTRIBUTE__ATTRIBUTE:
 				participationAttributesScope.get.forParticipationClass((context as ParticipationAttribute).participationClass)
-				
 			case PARTICIPATION_CLASS__SUPER_METACLASS: {
 				val participation = switch context {
 					ParticipationClass: context.participation
@@ -50,7 +48,6 @@ class CommonalitiesLanguageScopeProvider extends AbstractCommonalitiesLanguageSc
 						globalScope
 				}
 			}
-				
 			default:
 				globalScopeProvider.getScope(context.eResource, reference, null)
 		}

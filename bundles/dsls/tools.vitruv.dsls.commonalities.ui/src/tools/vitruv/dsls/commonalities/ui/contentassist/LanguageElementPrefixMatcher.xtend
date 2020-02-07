@@ -5,6 +5,7 @@ import org.eclipse.xtext.naming.QualifiedName
 import org.eclipse.xtext.ui.editor.contentassist.PrefixMatcher
 
 package abstract class LanguageElementPrefixMatcher extends PrefixMatcher {
+
 	@Inject PrefixMatcher.IgnoreCase ignoreCase
 
 	def protected static segment(QualifiedName name, int index) {

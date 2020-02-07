@@ -10,6 +10,7 @@ import org.eclipse.xtext.xbase.XbaseFactory
 
 @Utility
 package class XbaseHelper {
+
 	def static package join(XExpression first, XExpression second) {
 		if (first === null) return second
 		if (second === null) return first
@@ -43,7 +44,7 @@ package class XbaseHelper {
 	def package static expressions(XExpression... expressions) {
 		Arrays.asList(expressions)
 	}
-	
+
 	def package static newFeatureCall(XFeatureCall featureCall) {
 		XbaseFactory.eINSTANCE.createXFeatureCall => [
 			feature = featureCall.feature

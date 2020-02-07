@@ -26,6 +26,7 @@ class QualifiedMetaclassProposalFactory extends CommonalitiesLanguageProposalFac
 
 @Singleton
 package class MetaclassPrefixMatcher extends LanguageElementPrefixMatcher {
+
 	@Inject extension IQualifiedNameConverter qualifiedNameConverter
 
 	override isCandidateMatchingPrefix(String name, String prefix) {
@@ -34,7 +35,7 @@ package class MetaclassPrefixMatcher extends LanguageElementPrefixMatcher {
 
 	def package isCandidateMatchingPrefix(QualifiedName name, QualifiedName prefix) {
 		if (prefix.segmentCount > 1) {
-			return prefix.matchesQualifiedNamePart(name, 0) &&	prefix.matchesStartIgnoringCase(name, 1)
+			return prefix.matchesQualifiedNamePart(name, 0) && prefix.matchesStartIgnoringCase(name, 1)
 		}
 		return prefix.getSegment(0).matchesAnySegmentStartIgnoringCase(name, 0, 1)
 	}

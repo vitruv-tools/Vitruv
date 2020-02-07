@@ -72,7 +72,7 @@ class ResourceMetaclassI extends ResourceMetaclassImpl implements Wrapper<EClass
 	def dispatch isSuperTypeOf(Classifier subType) {
 		subType == this
 	}
-	
+
 	def dispatch isSuperTypeOf(MostSpecificType mostSpecificType) {
 		true
 	}
@@ -80,13 +80,12 @@ class ResourceMetaclassI extends ResourceMetaclassImpl implements Wrapper<EClass
 	override getAllMembers() {
 		new UnmodifiableEList(adapter.allMembers)
 	}
-	
+
 	override toString() {
 		'''Resource Metaclass (‹«domain»›)'''
 	}
-	
+
 	override isAbstract() {
 		false
 	}
-
 }

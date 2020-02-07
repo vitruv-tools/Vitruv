@@ -29,6 +29,7 @@ class CommonalitiesLanguageValidator extends AbstractCommonalitiesLanguageValida
 //					INVALID_NAME)
 //		}
 //	}
+
 	@Check
 	def checkCommonalityReferenceMappingHasCorrectType(CommonalityReferenceMapping mapping) {
 		val referenceRightType = mapping.reference?.type

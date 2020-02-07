@@ -13,31 +13,28 @@ import tools.vitruv.dsls.commonalities.scoping.CommonalitiesLanguageGlobalScopeP
  * Use this class to register components to be used at runtime / without the Equinox extension registry.
  */
 class CommonalitiesLanguageRuntimeModule extends AbstractCommonalitiesLanguageRuntimeModule {
-	
+
 	override bindIQualifiedNameConverter() {
 		CommonalitiesLanguageQualifiedNameConverter
 	}
-	
+
 	override bindIQualifiedNameProvider() {
 		CommonalitiesLanguageQualifiedNameProvider
 	}
-	
+
 	def Class<? extends IEObjectDescriptionProvider> bindIEObjectDescriptionProvider() {
 		QualifiedNameProviderDescriptionProvider
 	}
-	
+
 	def Class<? extends IGenerator2> bindIGenerator2() {
 		CommonalitiesLanguageGenerator
 	}
-	
+
 	override bindIDefaultResourceDescriptionStrategy() {
 		CommonalityFileResourceDescriptionStrategy
 	}
-	
+
 	override bindIGlobalScopeProvider() {
 		CommonalitiesLanguageGlobalScopeProvider
 	}
-	
-}	
-	
-	
+}

@@ -26,6 +26,7 @@ import static extension tools.vitruv.dsls.commonalities.generator.XbaseHelper.*
 import static extension tools.vitruv.dsls.commonalities.language.extensions.CommonalitiesLanguageModelExtensions.*
 
 package class ReactionsGenerationContext {
+
 	@Accessors(PACKAGE_GETTER)
 	var extension GenerationContext generationContext
 	@Accessors(PACKAGE_GETTER)
@@ -133,7 +134,8 @@ package class ReactionsGenerationContext {
 		]
 	}
 
-	def private insertIntermediate(extension RoutineTypeProvider typeProvider, XFeatureCall intermediate, Commonality commonality) {
+	def private insertIntermediate(extension RoutineTypeProvider typeProvider, XFeatureCall intermediate,
+		Commonality commonality) {
 		val resourceVariableDeclaration = XbaseFactory.eINSTANCE.createXVariableDeclaration => [
 			name = 'intermediateModelResource'
 			right = createMetadataResource(typeProvider, commonality)

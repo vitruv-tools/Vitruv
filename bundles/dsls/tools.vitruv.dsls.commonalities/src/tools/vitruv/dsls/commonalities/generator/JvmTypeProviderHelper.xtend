@@ -15,6 +15,7 @@ import org.eclipse.xtext.common.types.access.IJvmTypeProvider
 
 @Utility
 class JvmTypeProviderHelper {
+
 	def package static findType(IJvmTypeProvider typeProvider, Class<?> clazz) {
 		val result = typeProvider.findTypeByName(clazz.canonicalName)
 		if (result !== null) {
@@ -49,8 +50,8 @@ class JvmTypeProviderHelper {
 
 	def package static findImplementedMethod(JvmDeclaredType declaredType, String methodName, int parameterCount,
 		Class<?>... parameterTypeRestrictions) {
-		declaredType.getImplementedMethodList(methodName, parameterCount, parameterTypeRestrictions).onlyResultFor(
-			"implemented method", methodName, parameterTypeRestrictions, parameterCount, declaredType)
+		declaredType.getImplementedMethodList(methodName, parameterCount, parameterTypeRestrictions)
+			.onlyResultFor("implemented method", methodName, parameterTypeRestrictions, parameterCount, declaredType)
 	}
 
 	def package static findOptionalImplementedMethod(JvmDeclaredType declaredType, String methodName,
@@ -60,8 +61,9 @@ class JvmTypeProviderHelper {
 
 	def package static findOptionalImplementedMethod(JvmDeclaredType declaredType, String methodName,
 		int parameterCount, Class<?>... parameterTypeRestrictions) {
-		declaredType.getImplementedMethodList(methodName, parameterCount, parameterTypeRestrictions).maxOneResultFor(
-			"implemented method", methodName, parameterTypeRestrictions, parameterCount, declaredType).head
+		declaredType.getImplementedMethodList(methodName, parameterCount, parameterTypeRestrictions)
+			.maxOneResultFor("implemented method", methodName, parameterTypeRestrictions, parameterCount, declaredType)
+			.head
 	}
 
 	def private static getImplementedMethodList(JvmDeclaredType declaredType, String methodName, int parameterCount,
@@ -88,8 +90,8 @@ class JvmTypeProviderHelper {
 
 	def private static <T extends JvmMember> onlyResultFor(Collection<T> result, String memberType, String memberName,
 		Class<?>[] parameterTypeRestrictions, int parameterCount, JvmDeclaredType type) {
-		result.maxOneResultFor(memberType, memberName, parameterTypeRestrictions, parameterCount, type).
-			atLeastOneResultFor(memberType, memberName, parameterTypeRestrictions, parameterCount, type)
+		result.maxOneResultFor(memberType, memberName, parameterTypeRestrictions, parameterCount, type)
+			.atLeastOneResultFor(memberType, memberName, parameterTypeRestrictions, parameterCount, type)
 	}
 
 	def private static <T extends JvmMember> atLeastOneResultFor(Collection<T> result, String memberType,
@@ -106,10 +108,10 @@ class JvmTypeProviderHelper {
 		if (result.size > 1) {
 			val description = description(memberType, memberName, parameterTypeRestrictions, parameterCount, type)
 			throw new NoSuchJvmElementException('''
-			Found more that one «description»:
-			«FOR resultElement : result»
-				«resultElement.identifier»
-			«ENDFOR»
+				Found more that one «description»:
+				«FOR resultElement : result»
+					«resultElement.identifier»
+				«ENDFOR»
 			''')
 		}
 		return result
@@ -153,7 +155,7 @@ class JvmTypeProviderHelper {
 		}
 		return true
 	}
-	
+
 	def package static findMethod(IJvmTypeProvider typeProvider, String typeQualifiedName, String methodName,
 		Class<?>... parameterTypeRestrictions) {
 		typeProvider.findMethod(typeQualifiedName, methodName, -1, parameterTypeRestrictions)
@@ -169,7 +171,7 @@ class JvmTypeProviderHelper {
 		Class<?>... parameterTypeRestrictions) {
 		typeProvider.findMethod(clazz, methodName, -1, parameterTypeRestrictions)
 	}
-	
+
 	def package static findMethod(IJvmTypeProvider typeProvider, Class<?> clazz, String methodName, int parameterCount,
 		Class<?>... parameterTypeRestrictions) {
 		typeProvider.findType(clazz).checkGenericType.findMethod(methodName, parameterCount, parameterTypeRestrictions)
@@ -217,6 +219,7 @@ class JvmTypeProviderHelper {
 	}
 
 	private static class ArgumentRestrictionChecker {
+
 		val Class<?>[] parameterTypeRestrictions
 		val int parameterCount
 
@@ -247,6 +250,7 @@ class JvmTypeProviderHelper {
 }
 
 public class NoSuchJvmElementException extends IllegalStateException {
+
 	new(String message) {
 		super(message)
 	}

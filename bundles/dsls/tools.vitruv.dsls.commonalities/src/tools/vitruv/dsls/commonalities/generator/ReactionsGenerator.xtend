@@ -76,7 +76,7 @@ package class ReactionsGenerator extends SubGenerator {
 			// nothing to generate
 			return;
 		}
-		
+
 		val generator = reactionsGeneratorProvider.get()
 		reactionsGenerationContext = reactionsGeneratorContextProvider.get.wrappingContext(generationContext)
 

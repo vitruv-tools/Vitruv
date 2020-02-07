@@ -11,8 +11,9 @@ import tools.vitruv.framework.tuid.AttributeTuidCalculatorAndResolver
 import static extension tools.vitruv.dsls.commonalities.generator.GeneratorConstants.*
 
 package class ConceptDomain extends AbstractTuidAwareVitruvDomain {
+
 	val Provider provider
-	
+
 	private new(String conceptName, EPackage mainPackage, Set<EPackage> furtherPackages) {
 		super(conceptName.conceptDomainName, mainPackage, furtherPackages,
 			new AttributeTuidCalculatorAndResolver('', #[])) // TODO
@@ -32,28 +33,27 @@ package class ConceptDomain extends AbstractTuidAwareVitruvDomain {
 	}
 
 	def getProvider() { this.provider }
-	
+
 	private static class Provider implements VitruvDomainProvider<ConceptDomain> {
+
 		val ConceptDomain domain
 		val String canonicalName
-		
-		private new (ConceptDomain domain, String canonicalName) {
+
+		private new(ConceptDomain domain, String canonicalName) {
 			this.domain = domain
 			this.canonicalName = canonicalName
 		}
-		
+
 		override getDomain() {
 			domain
 		}
-		
+
 		override getCanonicalNameForReference() {
 			canonicalName
 		}
-		
 	}
 
 	override supportsUuids() {
 		false
 	}
-	
 }

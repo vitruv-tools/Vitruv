@@ -9,13 +9,12 @@ package class ParticipationClassI extends ParticipationClassImpl {
 	override getName() {
 		alias ?: getSuperMetaclass?.name
 	}
-	
+
 	override basicGetPackageLikeContainer() {
 		participation
 	}
-	
+
 	override toString() {
 		'''«packageLikeContainer»:«name»'''
 	}
-	
 }

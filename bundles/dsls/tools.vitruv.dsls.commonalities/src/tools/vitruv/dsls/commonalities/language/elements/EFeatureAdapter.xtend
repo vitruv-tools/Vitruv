@@ -28,7 +28,7 @@ class EFeatureAdapter extends EFeatureAttributeImpl implements Wrapper<EStructur
 	def private checkEFeatureSet() {
 		checkState(wrappedEFeature !== null, "No EStructualFeature was set on this adapter!")
 	}
-	
+
 	def private checkMetaclassSet() {
 		checkState(containingMetaclass !== null, "No metaclass was set on this attribute!")
 	}
@@ -43,13 +43,13 @@ class EFeatureAdapter extends EFeatureAttributeImpl implements Wrapper<EStructur
 		if (classifierProvider !== null && containingMetaclass !== null) readAdaptedType()
 		return this
 	}
-	
+
 	override fromMetaclass(Metaclass metaclass) {
 		this.containingMetaclass = checkNotNull(metaclass)
 		if (wrappedEFeature !== null && classifierProvider !== null) readAdaptedType()
 		return this
 	}
-	
+
 	override basicGetClassLikeContainer() {
 		if (eIsProxy) return null
 		checkMetaclassSet()
@@ -77,9 +77,8 @@ class EFeatureAdapter extends EFeatureAttributeImpl implements Wrapper<EStructur
 		checkEFeatureSet()
 		wrappedEFeature.many
 	}
-	
+
 	override toString() {
 		'''{{«wrappedEFeature?.name»}}'''
 	}
-
 }

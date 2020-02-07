@@ -15,7 +15,9 @@ import org.eclipse.xtext.ui.editor.contentassist.ContentAssistContext
 import org.eclipse.xtext.ui.editor.contentassist.PrefixMatcher
 import org.eclipse.xtext.xbase.lib.Functions.Function1
 
-abstract class CommonalitiesLanguageProposalFactory implements Function<IEObjectDescription, ICompletionProposal>, Function1<IEObjectDescription, ICompletionProposal>, com.google.common.base.Function<IEObjectDescription, ICompletionProposal> {
+abstract class CommonalitiesLanguageProposalFactory implements Function<IEObjectDescription, ICompletionProposal>,
+	Function1<IEObjectDescription, ICompletionProposal>,
+	com.google.common.base.Function<IEObjectDescription, ICompletionProposal> {
 
 	@Inject IQualifiedNameConverter descriptionConverter
 	@Inject ILabelProvider labelProvider
@@ -41,7 +43,7 @@ abstract class CommonalitiesLanguageProposalFactory implements Function<IEObject
 	def protected completionProposal(String completion) {
 		new CompletionProposalBuilder(this).forCompletion(completion)
 	}
-	
+
 	/**
 	 * Needed because Xtend’s type inference cannot handle any case that’s not
 	 * completely obvious.
@@ -51,6 +53,7 @@ abstract class CommonalitiesLanguageProposalFactory implements Function<IEObject
 	}
 
 	protected static class CompletionProposalBuilder {
+
 		val extension CommonalitiesLanguageProposalFactory factory
 		String completion
 		StyledString text = new StyledString()
@@ -85,7 +88,7 @@ abstract class CommonalitiesLanguageProposalFactory implements Function<IEObject
 			]).toContext
 			this
 		}
-		
+
 		def protected appendInfoText(String text) {
 			this.text.append(text, StyledString.QUALIFIER_STYLER)
 			this
@@ -95,5 +98,4 @@ abstract class CommonalitiesLanguageProposalFactory implements Function<IEObject
 			factory.proposalProvider.createCompletionProposal(completion, text, image, context)
 		}
 	}
-
 }

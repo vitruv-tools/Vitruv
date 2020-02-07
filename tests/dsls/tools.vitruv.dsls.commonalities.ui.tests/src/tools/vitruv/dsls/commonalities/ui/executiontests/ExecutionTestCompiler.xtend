@@ -40,6 +40,7 @@ import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
 
 @Singleton
 class ExecutionTestCompiler {
+
 	static val TO_COMPILE = #['Identified.com', 'Sub.com']
 	static val String COMPLIANCE_LEVEL = "1.8";
 
@@ -64,18 +65,21 @@ class ExecutionTestCompiler {
 				classLoader.loadClass(it) as Class<? extends ChangePropagationSpecification>
 			].collect(Collectors.toList)
 		}
-		
+
 		checkState(loadedChangePropagationClasses.size > 0, 'Failed to load change propagations!')
 
-		return loadedChangePropagationClasses.mapFixed[declaredConstructor.newInstance].groupBy[new Pair(it.sourceDomain, it.targetDomain)].entrySet.mapFixed [
-			val sourceDomain = it.key.key;
-			val targetDomain = it.key.value;
-			new CombinedChangePropagationSpecification(sourceDomain, targetDomain, it.value) as ChangePropagationSpecification
-		]
+		return loadedChangePropagationClasses
+			.mapFixed[declaredConstructor.newInstance]
+			.groupBy[new Pair(it.sourceDomain, it.targetDomain)]
+			.entrySet
+			.mapFixed [
+				val sourceDomain = it.key.key;
+				val targetDomain = it.key.value;
+				new CombinedChangePropagationSpecification(sourceDomain, targetDomain, it.value) as ChangePropagationSpecification
+			]
 	}
 
 	def private compile() {
-
 		val testProject = prepareTestProject()
 		setGenerationSettings()
 
@@ -140,13 +144,13 @@ class ExecutionTestCompiler {
 
 		return new Project(eclipseProject, sourcesFolder, javaProjectBinFolder)
 	}
-	
+
 	def private setGenerationSettings() {
 		val eclipseApplication = System.getProperty('eclipse.application')
 		if (eclipseApplication === null) return;
 		if (eclipseApplication.contains('org.eclipse.pde.junit')) {
 			// always generate reactions when run from Eclipse, as they are helpful for debugging.
-			generationSettings.createReactionFiles = true			
+			generationSettings.createReactionFiles = true
 		} else if (eclipseApplication.contains('surefire')) {
 			// never create reactions when run from Maven because it is unnecessary and logs errors.
 			generationSettings.createReactionFiles = false
@@ -182,6 +186,7 @@ class ExecutionTestCompiler {
 
 	@FinalFieldsConstructor
 	private static class Project {
+
 		val IProject eclipseProject
 		val IFolder sourceFolder
 		val IFolder binFolder
@@ -192,7 +197,7 @@ class ExecutionTestCompiler {
 			], null)
 			eclipseProject.build(IncrementalProjectBuilder.FULL_BUILD, new NullProgressMonitor)
 		}
-		
+
 		def private refresh() {
 			eclipseProject.refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor)
 		}

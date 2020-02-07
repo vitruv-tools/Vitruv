@@ -16,6 +16,7 @@ import static extension tools.vitruv.dsls.commonalities.generator.XbaseHelper.*
 
 @Utility
 class EmfAccessExpressions {
+
 	def package static eSetFeature(extension RoutineTypeProvider typeProvider, XFeatureCall element,
 		String attributeName, XExpression newValue) {
 		XbaseFactory.eINSTANCE.createXMemberFeatureCall => [
@@ -136,7 +137,7 @@ class EmfAccessExpressions {
 			memberCallTarget = XbaseFactory.eINSTANCE.createXMemberFeatureCall => [
 				memberCallTarget = element.newFeatureCall
 				feature = typeProvider.findMethod(EObject, 'eClass')
-				concreteSyntaxFeatureName	
+				concreteSyntaxFeatureName
 			]
 			feature = typeProvider.findMethod(EClass, 'getEStructuralFeature', String)
 			explicitOperationCall = true

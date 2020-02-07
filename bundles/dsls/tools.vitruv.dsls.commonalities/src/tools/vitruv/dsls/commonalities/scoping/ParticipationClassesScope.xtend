@@ -24,42 +24,33 @@ class ParticipationClassesScope implements IScope {
 	def private checkCommonalitySet() {
 		checkState(commonality !== null, "No commonality to get participation classes from was set!")
 	}
-	
-	
+
 	override getAllElements() {
 		checkCommonalitySet()
-		
-		commonality.participations.flatMap [classes].map(descriptionProvider)
+		commonality.participations.flatMap[classes].map(descriptionProvider)
 	}
-	
+
 	override getElements(QualifiedName qName) {
 		checkCommonalitySet()
-		
 		if (qName.segmentCount !== 2) return #[]
-		
+
 		commonality.participations
-			.filter [
-				name == qName.getSegment(0)
-			]
-			.flatMap [
-				classes
-			]
-			.filter [name == qName.getSegment(1)]
+			.filter[name == qName.getSegment(0)]
+			.flatMap[classes]
+			.filter[name == qName.getSegment(1)]
 			.map(descriptionProvider)
 	}
-	
+
 	override getElements(EObject object) {
 		checkCommonalitySet()
-		
 		throw new UnsupportedOperationException("I don’t know what to do here!")
 	}
-	
+
 	override getSingleElement(QualifiedName name) {
 		getElements(name).head
 	}
-	
+
 	override getSingleElement(EObject object) {
 		getElements(object).head
 	}
-	
 }

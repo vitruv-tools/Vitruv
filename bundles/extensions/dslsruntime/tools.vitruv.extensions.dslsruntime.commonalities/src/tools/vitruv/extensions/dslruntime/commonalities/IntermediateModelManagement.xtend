@@ -47,7 +47,7 @@ class IntermediateModelManagement {
 		synchronized (targetResource) {
 			if (targetResource.contents.isEmpty) {
 				val rootClass = ePackage.EClassifiers.filter(EClass).findFirst [
-					ESuperTypes.containsAny [it == IntermediateModelBasePackage.eINSTANCE.root]
+					ESuperTypes.containsAny[it == IntermediateModelBasePackage.eINSTANCE.root]
 				]
 				val root = ePackage.EFactoryInstance.create(rootClass) as Root
 				root.eAdapters += IntermediateModelRootDisposer.INSTANCE
@@ -71,4 +71,3 @@ class IntermediateModelManagement {
 		return oldCounter
 	}
 }
-	

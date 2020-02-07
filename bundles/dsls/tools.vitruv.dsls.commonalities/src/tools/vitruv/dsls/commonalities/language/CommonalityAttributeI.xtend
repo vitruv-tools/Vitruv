@@ -44,9 +44,8 @@ class CommonalityAttributeI extends CommonalityAttributeImpl {
 		// we know that requiredType.isSuperTypeOf(providedType)
 		return if (providedType != WellKnownClassifiers.MOST_SPECIFIC_TYPE) providedType else requiredType
 	}
-	
+
 	override toString() {
 		'''«classLikeContainer».«name»'''
 	}
-	
 }

@@ -15,7 +15,7 @@ class CommonalitiesLanguageGenerator implements IGenerator2 {
 	@Inject Provider<IntermediateModelCodeGenerator> intermediateModelCodeGenerator
 	@Inject Provider<ReactionsGenerator> reactionsGenerator
 	@Inject Provider<DomainGenerator> domainGenerator
-	
+
 	@Inject Provider<GenerationContext> generationContextProvider
 	val resourcesSubGenerators = new HashMap<Resource, SubGenerator[]>
 
@@ -31,17 +31,17 @@ class CommonalitiesLanguageGenerator implements IGenerator2 {
 			it.generationContext = generationContext
 		]
 		resourcesSubGenerators.put(input, resourceSubGenerators)
-		resourceSubGenerators.forEach [beforeGenerate]
+		resourceSubGenerators.forEach[beforeGenerate]
 	}
 
 	override doGenerate(Resource input, IFileSystemAccess2 fsa, IGeneratorContext context) {
 		val resourceSubGenerators = resourcesSubGenerators.get(input)
-		resourceSubGenerators.forEach [generate]
+		resourceSubGenerators.forEach[generate]
 	}
 
 	override afterGenerate(Resource input, IFileSystemAccess2 fsa, IGeneratorContext context) {
 		val resourceSubGenerators = resourcesSubGenerators.get(input)
-		resourceSubGenerators.forEach [afterGenerate]
+		resourceSubGenerators.forEach[afterGenerate]
 		resourcesSubGenerators.remove(input)
 	}
 
@@ -62,5 +62,4 @@ class CommonalitiesLanguageGenerator implements IGenerator2 {
 		}
 		inputObject as CommonalityFile
 	}
-
 }

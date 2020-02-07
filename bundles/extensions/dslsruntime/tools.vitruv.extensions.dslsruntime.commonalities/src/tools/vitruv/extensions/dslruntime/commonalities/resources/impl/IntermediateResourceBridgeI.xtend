@@ -66,8 +66,8 @@ class IntermediateResourceBridgeI extends IntermediateResourceBridgeImpl {
 	}
 
 	def private canBePersisted() {
-		path !== null && name !== null && fileExtension !== null && content !== null && correspondenceModel !== null &&
-			resourceAccess !== null
+		path !== null && name !== null && fileExtension !== null && content !== null
+			&& correspondenceModel !== null && resourceAccess !== null
 	}
 
 	def private discard(URI oldUri) {
@@ -90,7 +90,8 @@ class IntermediateResourceBridgeI extends IntermediateResourceBridgeImpl {
 	}
 
 	def private getPersistanceUri(String path, String name, String fileExtension) {
-		baseURI.appendSegments(path.split('/').filter [length > 0]).appendSegment(name).appendFileExtension(fileExtension)
+		baseURI.appendSegments(path.split('/').filter[length > 0])
+			.appendSegment(name).appendFileExtension(fileExtension)
 	}
 
 	override remove() {
@@ -172,7 +173,8 @@ class IntermediateResourceBridgeI extends IntermediateResourceBridgeImpl {
 	def private Iterable<Intermediate> getTransitiveIntermediateCorrespondences(Set<Intermediate> foundIntermediates) {
 		// Next step in breadth-first search:
 		val transitiveIntermediates = foundIntermediates.flatMap [ intermediate |
-			ReactionsCorrespondenceHelper.getCorrespondingModelElements(intermediate, Intermediate, null, null, correspondenceModel)
+			ReactionsCorrespondenceHelper.getCorrespondingModelElements(intermediate, Intermediate, null, null,
+				correspondenceModel)
 		]
 		// Add to set: This removes duplicates and objects which we have already found before.
 		if (foundIntermediates.addAll(transitiveIntermediates)) {
@@ -210,12 +212,11 @@ class IntermediateResourceBridgeI extends IntermediateResourceBridgeImpl {
 		isPersisted = true
 		intermediateCorrespondence = eObject.intermediateCorrespondence
 	}
-	
+
 	def URI withoutTrailingSlash(URI uri) {
 		if (uri.lastSegment.length === 0) {
 			return uri.trimSegments(1)
 		}
 		return uri
 	}
-
 }

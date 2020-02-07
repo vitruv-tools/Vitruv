@@ -16,21 +16,22 @@ import static extension tools.vitruv.dsls.commonalities.generator.JvmTypeProvide
 @Utility
 package class ParticipationRelationUtil {
 
-	def package static createOperatorConstructorCall(ParticipationRelation relation,
+	def package static createOperatorConstructorCall(
+		ParticipationRelation relation,
 		extension RoutineTypeProvider typeProvider,
-		Function<ParticipationClass, XFeatureCall> participationClassReferenceProvider) {
-			XbaseFactory.eINSTANCE.createXConstructorCall => [
-				constructor = relation.operator.imported.findConstructor(EObject.arrayClass, EObject.arrayClass)
-				explicitConstructorCall = true
-				arguments += expressions(
-					XbaseFactory.eINSTANCE.createXListLiteral => [
-						elements += relation.leftClasses.map(participationClassReferenceProvider)
-					],
-					XbaseFactory.eINSTANCE.createXListLiteral => [
-						elements += relation.rightClasses.map(participationClassReferenceProvider)
-					]
-				)
-			]
-		}
+		Function<ParticipationClass, XFeatureCall> participationClassReferenceProvider
+	) {
+		XbaseFactory.eINSTANCE.createXConstructorCall => [
+			constructor = relation.operator.imported.findConstructor(EObject.arrayClass, EObject.arrayClass)
+			explicitConstructorCall = true
+			arguments += expressions(
+				XbaseFactory.eINSTANCE.createXListLiteral => [
+					elements += relation.leftClasses.map(participationClassReferenceProvider)
+				],
+				XbaseFactory.eINSTANCE.createXListLiteral => [
+					elements += relation.rightClasses.map(participationClassReferenceProvider)
+				]
+			)
+		]
 	}
-	
+}

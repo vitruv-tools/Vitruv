@@ -5,18 +5,18 @@ import allElementTypes.Root
 import allElementTypes2.AllElementTypes2Factory
 import allElementTypes2.Root2
 import com.google.inject.Inject
+import org.eclipse.emf.ecore.util.EcoreUtil
 import org.eclipse.xtext.testing.InjectWith
 import org.eclipse.xtext.testing.XtextRunner
 import org.junit.Test
 import org.junit.runner.RunWith
 import pcm_mockup.Pcm_mockupFactory
 import pcm_mockup.Repository
+import uml_mockup.UPackage
 import uml_mockup.Uml_mockupFactory
 
 import static org.hamcrest.MatcherAssert.assertThat
 import static tools.vitruv.testutils.matchers.ModelMatchers.*
-import org.eclipse.emf.ecore.util.EcoreUtil
-import uml_mockup.UPackage
 
 @RunWith(XtextRunner)
 @InjectWith(CombinedUiInjectorProvider)
@@ -65,7 +65,7 @@ class IdentifiedExecutionTest extends CommonalitiesExecutionTest {
 		assertThat(resourceAt('third.pcm_mockup'), contains(repository => [id = 'third']))
 		assertThat(resourceAt('third.uml_mockup'), contains(uPackage => [id = 'third']))
 	}
-	
+
 	@Test
 	def void rootDelete() {
 		createAndSynchronizeModel('first.allElementTypes2', root2 => [id2 = 'first'])
@@ -237,7 +237,7 @@ class IdentifiedExecutionTest extends CommonalitiesExecutionTest {
 			classes += uClass => [name = 'testname']
 		], ignoring('id')))
 	}
-	
+
 	@Test
 	def void multiReferenceInsert() {
 		createAndSynchronizeModel('testid.allElementTypes2', root2 => [
@@ -258,24 +258,24 @@ class IdentifiedExecutionTest extends CommonalitiesExecutionTest {
 			id = 'testid'
 			multiValuedContainmentEReference += #[
 				nonRoot => [id = 'first'],
-				nonRoot => [id = 'second']				
+				nonRoot => [id = 'second']
 			]
 		]))
 		assertThat(resourceAt('testid.pcm_mockup'), contains(repository => [
 			id = 'testid'
 			components += #[
 				component => [name = 'first'],
-				component => [name = 'second']	
+				component => [name = 'second']
 			]
 		], ignoring('id')))
 		assertThat(resourceAt('testid.uml_mockup'), contains(uPackage => [
 			id = 'testid'
 			classes += #[
 				uClass => [name = 'first'],
-				uClass => [name = 'second']				
+				uClass => [name = 'second']
 			]
 		], ignoring('id')))
-		
+
 		saveAndSynchronizeChanges(Repository.from('testid.pcm_mockup') => [
 			components += component => [name = 'third']
 		])
@@ -292,7 +292,7 @@ class IdentifiedExecutionTest extends CommonalitiesExecutionTest {
 			multiValuedContainmentEReference += #[
 				nonRoot => [id = 'first'],
 				nonRoot => [id = 'second'],
-				nonRoot => [id = 'third']					
+				nonRoot => [id = 'third']
 			]
 		]))
 		assertThat(resourceAt('testid.pcm_mockup'), contains(repository => [
@@ -300,7 +300,7 @@ class IdentifiedExecutionTest extends CommonalitiesExecutionTest {
 			components += #[
 				component => [name = 'first'],
 				component => [name = 'second'],
-				component => [name = 'third']	
+				component => [name = 'third']
 			]
 		], ignoring('id')))
 		assertThat(resourceAt('testid.uml_mockup'), contains(uPackage => [
@@ -308,7 +308,7 @@ class IdentifiedExecutionTest extends CommonalitiesExecutionTest {
 			classes += #[
 				uClass => [name = 'first'],
 				uClass => [name = 'second'],
-				uClass => [name = 'third']				
+				uClass => [name = 'third']
 			]
 		], ignoring('id')))
 	}

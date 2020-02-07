@@ -18,8 +18,9 @@ import static extension tools.vitruv.dsls.commonalities.generator.EmfAccessExpre
 import static extension tools.vitruv.dsls.commonalities.generator.ReactionsGeneratorConventions.*
 import static extension tools.vitruv.dsls.commonalities.language.extensions.CommonalitiesLanguageModelExtensions.*
 
-package class CommonalityAttributeChangeReactionsBuilder 
+package class CommonalityAttributeChangeReactionsBuilder
 	extends ReactionsSubGenerator<CommonalityAttributeChangeReactionsBuilder> {
+
 	CommonalityAttribute attribute
 	Participation targetParticipation
 	List<CommonalityAttributeMapping> relevantMappings

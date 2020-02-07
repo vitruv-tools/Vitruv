@@ -16,5 +16,4 @@ class CommonalitiesLanguageIdeSetup extends CommonalitiesLanguageStandaloneSetup
 	override createInjector() {
 		Guice.createInjector(Modules2.mixin(new CommonalitiesLanguageRuntimeModule, new CommonalitiesLanguageIdeModule))
 	}
-	
 }

@@ -12,6 +12,7 @@ import tools.vitruv.dsls.commonalities.language.TupleParticipation
 
 @Utility
 class ParticipationExtension {
+
 	def static dispatch Iterable<ParticipationClass> getClasses(SimpleParticipation participation) {
 		Collections.singleton(participation.participationClass)
 	}
@@ -20,11 +21,13 @@ class ParticipationExtension {
 		participation.parts.flatMap[containedClasses]
 	}
 
-	def private static dispatch Iterable<ParticipationClass> getContainedClasses(SimpleTupleParticipationPart participationPart) {
+	def private static dispatch Iterable<ParticipationClass> getContainedClasses(
+		SimpleTupleParticipationPart participationPart) {
 		Collections.singleton(participationPart.participationClass)
 	}
 
-	def private static dispatch Iterable<ParticipationClass> getContainedClasses(ParticipationRelation participationPart) {
+	def private static dispatch Iterable<ParticipationClass> getContainedClasses(
+		ParticipationRelation participationPart) {
 		participationPart.leftClasses + participationPart.rightClasses
 	}
 

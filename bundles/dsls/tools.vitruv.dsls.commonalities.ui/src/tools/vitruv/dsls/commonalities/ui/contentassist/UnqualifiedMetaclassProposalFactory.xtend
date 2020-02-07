@@ -7,9 +7,9 @@ import org.eclipse.xtext.ui.editor.contentassist.PrefixMatcher
 import static tools.vitruv.dsls.commonalities.names.CommonalitiesLanguageQualifiedNameConverter.*
 
 class UnqualifiedMetaclassProposalFactory extends CommonalitiesLanguageProposalFactory {
-	
+
 	@Inject PrefixMatcher.IgnoreCase ignoreCase
-	
+
 	override apply(IEObjectDescription description) {
 		completionProposal(description.name.getSegment(1))
 			.appendInfoText(description.name.firstSegment)
@@ -19,5 +19,4 @@ class UnqualifiedMetaclassProposalFactory extends CommonalitiesLanguageProposalF
 			.usePrefixMatcher(ignoreCase)
 			.propose()
 	}
-	
 }

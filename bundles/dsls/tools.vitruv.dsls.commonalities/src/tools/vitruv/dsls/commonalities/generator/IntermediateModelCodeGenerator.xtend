@@ -20,6 +20,7 @@ import tools.vitruv.extensions.dslruntime.commonalities.intermediatemodelbase.In
 import static extension tools.vitruv.dsls.commonalities.generator.GeneratorConstants.*
 
 package class IntermediateModelCodeGenerator extends SubGenerator {
+
 	static val GENERATED_CODE_COMPLIANCE_LEVEL = GenJDKLevel.JDK80_LITERAL
 	static val GENERATED_CODE_FOLDER = "."
 	static val INTERMEDIATEMODELBASE_GENMODEL_URI = EcorePlugin.getEPackageNsURIToGenModelLocationMap(true).get(IntermediateModelBasePackage.eINSTANCE.nsURI)

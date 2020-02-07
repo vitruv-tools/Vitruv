@@ -22,20 +22,20 @@ class EClassAdapter extends EClassMetaclassImpl implements Wrapper<EClass> {
 		this.wrappedEClass = checkNotNull(eClass)
 		return this
 	}
-	
+
 	override fromDomain(Domain domain) {
 		this.containingDomain = domain
 		return this
 	}
-	
+
 	def private checkEClassSet() {
 		checkState(wrappedEClass !== null, "No EClass was set on this adapter!")
 	}
-	
+
 	def private checkClassifierProviderSet() {
 		checkState(classifierProvider !== null, "No classifier provider was set on this element!")
 	}
-	
+
 	def private checkDomainSet() {
 		checkState(containingDomain !== null, "No domain was set on this metaclass!")
 	}
@@ -76,13 +76,13 @@ class EClassAdapter extends EClassMetaclassImpl implements Wrapper<EClass> {
 		checkDomainSet()
 		domain
 	}
-	
+
 	override basicGetDomain() {
 		if (eIsProxy) return null
 		checkDomainSet()
 		return containingDomain
 	}
-	
+
 	def dispatch isSuperTypeOf(Classifier subType) {
 		false
 	}
@@ -93,15 +93,15 @@ class EClassAdapter extends EClassMetaclassImpl implements Wrapper<EClass> {
 		if (wrappedEClass == EcorePackage.eINSTANCE.EObject) return true
 		return this.wrappedEClass.isSuperTypeOf(eClassAdapter.wrappedEClass)
 	}
-	
+
 	def dispatch isSuperTypeOf(MostSpecificType mostSpecificType) {
 		true
 	}
-	
+
 	override getAllMembers() {
 		new UnmodifiableEList(attributes)
 	}
-	
+
 	override toString() {
 		if (eIsProxy) {
 			'''unresolved «class.simpleName»: «eProxyURI»'''
@@ -115,5 +115,4 @@ class EClassAdapter extends EClassMetaclassImpl implements Wrapper<EClass> {
 		checkEClassSet()
 		wrappedEClass.isAbstract
 	}
-	
 }

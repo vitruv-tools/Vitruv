@@ -12,6 +12,7 @@ import static extension tools.vitruv.dsls.commonalities.language.extensions.Comm
 
 @Utility
 package class ReactionsGeneratorConventions {
+
 	def static package String correspondingVariableName(ParticipationClass participationClass) '''
 	corresponding_«participationClass.name»'''
 
@@ -20,23 +21,23 @@ package class ReactionsGeneratorConventions {
 		val commonality = commonalityFile.commonality
 		'''«commonalityFile.concept.name».«commonality.name»/«participationClass.participation.name».«participationClass.name»'''
 	}
-	
+
 	def static package String getParticipationAttributeReactionName(CommonalityAttributeMapping mapping) {
 		mappingAttributeReactionName(mapping.attribute)
 	}
-	
+
 	def static package String getParticipationAttributeReactionName(CommonalityReferenceMapping mapping) {
 		mappingAttributeReactionName(mapping.reference)
 	}
-	
+
 	def static private String mappingAttributeReactionName(ParticipationAttribute attribute) {
 		'''«attribute.participationClass.participation.name»_«attribute.participationClass.name.toFirstUpper»«attribute.attribute.name.toFirstUpper»'''
 	}
-	
+
 	def static package String getCommonalityAttributeReactionName(CommonalityAttribute attribute) {
 		'''«attribute.containingCommonalityFile.concept.name»_«attribute.containingCommonalityFile.commonality.name.toFirstUpper»«attribute.name.toFirstUpper»'''
 	}
-	
+
 	def static package String getCommonalityAttributeReactionName(CommonalityReference reference) {
 		'''«reference.containingCommonalityFile.concept.name»_«reference.containingCommonalityFile.commonality.name.toFirstUpper»«reference.name.toFirstUpper»'''
 	}

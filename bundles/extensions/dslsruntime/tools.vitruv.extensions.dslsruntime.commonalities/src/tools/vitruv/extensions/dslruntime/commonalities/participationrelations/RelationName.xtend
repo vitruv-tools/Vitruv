@@ -4,5 +4,6 @@ import java.lang.annotation.Target
 
 @Target(TYPE)
 annotation RelationName {
-	String value	
+
+	String value
 }
