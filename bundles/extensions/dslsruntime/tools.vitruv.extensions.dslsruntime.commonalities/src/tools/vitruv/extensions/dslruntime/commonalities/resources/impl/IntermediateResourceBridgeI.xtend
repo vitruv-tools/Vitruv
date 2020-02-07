@@ -153,7 +153,7 @@ class IntermediateResourceBridgeI extends IntermediateResourceBridgeImpl {
 
 	def private getPersistedNonIntermediateCorrespondence() {
 		val resourceHaving = transitiveIntermediateCorrespondences.flatMap [
-			ReactionsCorrespondenceHelper.getCorrespondingModelElements(intermediateCorrespondence, EObject, null, [
+			ReactionsCorrespondenceHelper.getCorrespondingModelElements(it, EObject, null, [
 				!(it instanceof Intermediate) && !(it instanceof Resource) && eResource !== null
 			], correspondenceModel)
 		].head
@@ -170,11 +170,17 @@ class IntermediateResourceBridgeI extends IntermediateResourceBridgeImpl {
 	}
 
 	def private Iterable<Intermediate> getTransitiveIntermediateCorrespondences(Set<Intermediate> foundIntermediates) {
-		foundIntermediates + foundIntermediates.flatMap [ intermediate |
-			ReactionsCorrespondenceHelper.getCorrespondingModelElements(intermediate, Intermediate, null, [
-				!foundIntermediates.contains(it)
-			], correspondenceModel)
-		].toSet.flatMap[transitiveIntermediateCorrespondences]
+		// Next step in breadth-first search:
+		val transitiveIntermediates = foundIntermediates.flatMap [ intermediate |
+			ReactionsCorrespondenceHelper.getCorrespondingModelElements(intermediate, Intermediate, null, null, correspondenceModel)
+		]
+		// Add to set: This removes duplicates and objects which we have already found before.
+		if (foundIntermediates.addAll(transitiveIntermediates)) {
+			// Repeat until there are no more new intermediates found:
+			return foundIntermediates.transitiveIntermediateCorrespondences
+		} else {
+			return foundIntermediates
+		}
 	}
 
 	def private getIntermediateCorrespondence(EObject object) {
