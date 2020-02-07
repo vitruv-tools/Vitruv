@@ -208,7 +208,11 @@ package class ReactionsGenerator extends SubGenerator {
 		create.reaction('''«participationClass.participation.name»_«participationClass.name»Create''')
 			.afterElement(participationClass.changeClass).created
 			.call [
-				action [
+				match [
+					requireAbsenceOf(commonality.changeClass).correspondingTo.affectedEObject
+						.taggedWith(participationClass.correspondenceTag)
+				]
+				.action [
 					vall('newIndermediate').create(commonalityFile.changeClass).andInitialize [
 						assignStagingId(variable('newIndermediate'))
 					]
