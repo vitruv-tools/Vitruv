@@ -14,6 +14,7 @@ import tools.vitruv.dsls.commonalities.language.ParticipationRelation
 import tools.vitruv.dsls.reactions.api.generator.IReactionsGenerator
 import tools.vitruv.dsls.reactions.builder.FluentReactionBuilder
 import tools.vitruv.dsls.reactions.builder.FluentReactionBuilder.ReactionTypeProvider
+import tools.vitruv.dsls.reactions.builder.FluentReactionBuilder.TriggerBuilder
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.RoutineTypeProvider
 import tools.vitruv.extensions.dslruntime.commonalities.IntermediateModelManagement
 import tools.vitruv.extensions.dslruntime.commonalities.intermediatemodelbase.IntermediateModelBasePackage
@@ -121,7 +122,7 @@ package class ReactionsGenerator extends SubGenerator {
 			#[
 				reactionForCommonalityCreate(participation),
 				reactionForCommonalityDelete(participation),
-				reactionForCommonalityInsert(participation)
+				reactionForCommonalityRootInsert(participation)
 			] 
 			+ participation.reactionsForCommonalityAttributeChange
 			+ participation.reactionsForCommonalityReferenceChange
@@ -223,18 +224,32 @@ package class ReactionsGenerator extends SubGenerator {
 			]
 	}
 
+	// Picks the correct 'inserted as root' trigger depending on whether the given change class belongs to a
+	// commonality or a regular participation class
+	def static private afterElementInsertedAsRoot(TriggerBuilder reactionTriggerBuilder, EClass changeClass) {
+		if (changeClass.ESuperTypes.contains(IntermediateModelBasePackage.eINSTANCE.intermediate)) {
+			// trigger for Commonality root insert:
+			reactionTriggerBuilder.afterElement(changeClass).insertedIn(IntermediateModelBasePackage.eINSTANCE.root_Intermediates)
+		} else {
+			// trigger for non-commonality participation class root insert:
+			reactionTriggerBuilder.afterElement(changeClass).insertedAsRoot
+		}
+	}
+
 	def private reactionForParticipationRootInsert(ParticipationClass participationClass) {
 		create.reaction('''«participationClass.participation.name»_«participationClass.name»RootInsert''')
-			.afterElement(participationClass.changeClass).insertedAsRoot
+			// note: may be a commonality participation
+			.afterElementInsertedAsRoot(participationClass.changeClass)
 			.call(#[
 				participationClass.intermediateResourceBridgeRoutine,
 				getInsertRoutine(participationClass.participation, commonality)
 			].filterNull)
 	}
 
-	def private reactionForCommonalityInsert(Participation participation) {
+	def private reactionForCommonalityRootInsert(Participation participation) {
 		// Check for participation relations that trigger on inserts:
-		val relations = newHashMap(participation.classes.map [optionalParticipationRelation]
+		val relations = newHashMap(participation.classes
+			.map[optionalParticipationRelation]
 			.filterNull
 			.toSet
 			.map [it -> operator.findOptionalImplementedMethod('afterInserted')]
@@ -242,8 +257,8 @@ package class ReactionsGenerator extends SubGenerator {
 
 		if (relations.size > 0 || participation.isCommonalityParticipation) {
 			// TODO participation domains
-			val reactionStart = create.reaction('''«commonality.concept.name»_«commonality.name»Insert''')
-				.afterElement(commonalityFile.changeClass).insertedIn(IntermediateModelBasePackage.eINSTANCE.root_Intermediates)
+			val reactionStart = create.reaction('''«commonality.concept.name»_«commonality.name»RootInsert''')
+				.afterElementInsertedAsRoot(commonalityFile.changeClass)
 
 			var FluentReactionBuilder reaction = null;
 			if (relations.size > 0) {
