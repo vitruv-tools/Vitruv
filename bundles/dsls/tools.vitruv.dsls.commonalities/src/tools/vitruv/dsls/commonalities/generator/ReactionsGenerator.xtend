@@ -130,8 +130,9 @@ package class ReactionsGenerator extends SubGenerator {
 
 	def private participationChangeReactions(Participation participation) {
 		(
-			// TODO filter Resource class? no events should get triggered for it anyways
-			participation.classes.flatMap [#[
+			participation.classes
+			.filter[!isForResource]
+			.flatMap[#[
 				reactionForParticipationClassCreate,
 				reactionForParticipationClassDelete,
 				reactionForParticipationRootInsert
