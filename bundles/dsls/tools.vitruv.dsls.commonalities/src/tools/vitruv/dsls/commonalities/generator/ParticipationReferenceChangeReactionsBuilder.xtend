@@ -13,7 +13,7 @@ import static extension tools.vitruv.dsls.commonalities.generator.EmfAccessExpre
 import static extension tools.vitruv.dsls.commonalities.generator.ReactionsGeneratorConventions.*
 import static extension tools.vitruv.dsls.commonalities.language.extensions.CommonalitiesLanguageModelExtensions.*
 
-class ParticipationReferenceChangeReactionsBuilder 
+class ParticipationReferenceChangeReactionsBuilder
 	extends ReactionsSubGenerator<ParticipationReferenceChangeReactionsBuilder> {
 
 	Participation targetParticipation
@@ -55,7 +55,7 @@ class ParticipationReferenceChangeReactionsBuilder
 				]
 			] => [
 				if (mapping.participationEReference.isContainment) {
-					call(getInsertRoutine(targetParticipation, commonality))
+					call(getInsertRoutine(targetParticipation, mapping.declaringReference.referenceType))
 				}
 			]
 	}
@@ -75,7 +75,7 @@ class ParticipationReferenceChangeReactionsBuilder
 				]
 			] => [
 				if (mapping.participationEReference.isContainment) {
-					call(getInsertRoutine(targetParticipation, commonality))
+					call(getInsertRoutine(targetParticipation, mapping.declaringReference.referenceType))
 				}
 			]
 	}
