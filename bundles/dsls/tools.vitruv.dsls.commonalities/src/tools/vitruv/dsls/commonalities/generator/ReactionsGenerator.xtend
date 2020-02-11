@@ -123,7 +123,7 @@ package class ReactionsGenerator extends SubGenerator {
 				reactionForCommonalityCreate(participation),
 				reactionForCommonalityDelete(participation),
 				reactionForCommonalityRootInsert(participation)
-			] 
+			]
 			+ participation.reactionsForCommonalityAttributeChange
 			+ participation.reactionsForCommonalityReferenceChange
 		).filterNull
@@ -191,11 +191,18 @@ package class ReactionsGenerator extends SubGenerator {
 						val corresponding = participationClass.correspondingVariableName
 						val specialInitBuilder = participationClassSpecialInitializationBuilder.get.forParticipationClass(participationClass)
 						vall(corresponding).create(participationClass.changeClass) => [
-							if (specialInitBuilder.hasSpecialInitialization) {
+							if (participation.isCommonalityParticipation || specialInitBuilder.hasSpecialInitialization) {
 								andInitialize [ typeProvider |
-									specialInitBuilder.getSpecialInitializer(typeProvider, [
-										typeProvider.variable(correspondingVariableName)
-									])
+									XbaseFactory.eINSTANCE.createXBlockExpression => [
+										expressions += #[
+											(participation.isCommonalityParticipation) ?
+												assignStagingId(typeProvider, typeProvider.variable(corresponding)) : null,
+											(specialInitBuilder.hasSpecialInitialization) ?
+												specialInitBuilder.getSpecialInitializer(typeProvider, [
+													typeProvider.variable(correspondingVariableName)
+												]) : null
+										].filterNull
+									]
 								]
 							}
 						]
