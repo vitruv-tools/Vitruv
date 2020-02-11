@@ -36,6 +36,7 @@ import tools.vitruv.framework.domains.VitruvDomain;
 import tools.vitruv.framework.domains.repository.VitruvDomainRepository;
 import tools.vitruv.framework.tuid.TuidManager;
 import tools.vitruv.framework.util.ResourceSetUtil;
+import tools.vitruv.framework.util.VitruviusConstants;
 import tools.vitruv.framework.util.bridges.EcoreResourceBridge;
 import tools.vitruv.framework.util.command.EMFCommandBridge;
 import tools.vitruv.framework.util.command.VitruviusRecordingCommand;
@@ -479,8 +480,8 @@ public class ResourceRepositoryImpl implements ModelRepository, CorrespondencePr
 
                 // ensure a file extension is present
                 if (i == storageKey.length - 1) {
-                    if (!encodedKeyPart.contains(".")) {
-                        safeStorageKey.append(".metadata");
+                    if (!encodedKeyPart.contains(VitruviusConstants.getFileExtSeparator())) {
+                        safeStorageKey.append(VitruviusConstants.getFileExtSeparator()).append("metadata");
                     }
                 } else {
                     safeStorageKey.append(File.separatorChar);
