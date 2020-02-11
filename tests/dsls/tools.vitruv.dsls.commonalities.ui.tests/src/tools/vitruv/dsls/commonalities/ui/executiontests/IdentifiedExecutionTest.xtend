@@ -90,7 +90,6 @@ class IdentifiedExecutionTest extends CommonalitiesExecutionTest {
 		assertThat(resourceAt('startid.pcm_mockup'), contains(repository => [id = '1st id']))
 		assertThat(resourceAt('startid.uml_mockup'), contains(uPackage => [id = '1st id']))
 
-		// TODO this test case fails from here on, but it really shouldn’t! UUID resolution fails, see #175
 		saveAndSynchronizeChanges(Root.from('startid.allElementTypes') => [id = '2nd id'])
 		assertThat(resourceAt('startid.allElementTypes2'), contains(root2 => [id2 = '2nd id']))
 		assertThat(resourceAt('startid.allElementTypes'), contains(root => [id = '2nd id']))
