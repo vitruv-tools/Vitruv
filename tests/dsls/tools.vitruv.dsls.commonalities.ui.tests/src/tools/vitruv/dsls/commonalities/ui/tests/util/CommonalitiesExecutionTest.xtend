@@ -1,4 +1,4 @@
-package tools.vitruv.dsls.commonalities.ui.executiontests
+package tools.vitruv.dsls.commonalities.ui.tests.util
 
 import tools.vitruv.testutils.VitruviusApplicationTest
 

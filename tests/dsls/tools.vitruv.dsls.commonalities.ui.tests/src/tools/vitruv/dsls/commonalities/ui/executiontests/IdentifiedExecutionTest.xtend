@@ -12,6 +12,8 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import pcm_mockup.Pcm_mockupFactory
 import pcm_mockup.Repository
+import tools.vitruv.dsls.commonalities.ui.tests.util.CombinedUiInjectorProvider
+import tools.vitruv.dsls.commonalities.ui.tests.util.CommonalitiesExecutionTest
 import uml_mockup.UPackage
 import uml_mockup.Uml_mockupFactory
 
@@ -22,7 +24,7 @@ import static tools.vitruv.testutils.matchers.ModelMatchers.*
 @InjectWith(CombinedUiInjectorProvider)
 class IdentifiedExecutionTest extends CommonalitiesExecutionTest {
 
-	@Inject ExecutionTestCompiler compiler
+	@Inject IdentifiedExecutionTestCompiler compiler
 
 	override protected cleanup() {
 	}

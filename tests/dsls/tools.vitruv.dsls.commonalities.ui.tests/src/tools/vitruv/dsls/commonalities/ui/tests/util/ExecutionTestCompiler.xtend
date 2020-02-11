@@ -1,7 +1,6 @@
-package tools.vitruv.dsls.commonalities.ui.executiontests
+package tools.vitruv.dsls.commonalities.ui.tests.util
 
 import com.google.inject.Inject
-import com.google.inject.Singleton
 import java.io.ByteArrayInputStream
 import java.io.File
 import java.net.URLClassLoader
@@ -11,6 +10,7 @@ import java.util.ArrayList
 import java.util.HashSet
 import java.util.Hashtable
 import java.util.stream.Collectors
+import org.apache.log4j.Logger
 import org.eclipse.core.resources.IFolder
 import org.eclipse.core.resources.IProject
 import org.eclipse.core.resources.IResource
@@ -38,12 +38,11 @@ import static com.google.common.base.Preconditions.*
 
 import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
 
-@Singleton
-class ExecutionTestCompiler {
+abstract class ExecutionTestCompiler {
 
-	static val TO_COMPILE = #['Identified.com', 'Sub.com']
+	static val Logger logger = Logger.getLogger(ExecutionTestCompiler)
+
 	static val String COMPLIANCE_LEVEL = "1.8";
-
 	static val TEST_PROJECT_GENERATED_SOURCES_FOLDER_NAME = 'src-gen'
 	static val TEST_PROJECT_SOURCES_FOLDER_NAME = 'src'
 	static val TEST_PROJECT_COMPILATION_FOLDER = 'bin'
@@ -52,12 +51,16 @@ class ExecutionTestCompiler {
 	var compiled = false
 	@Inject CommonalitiesGenerationSettings generationSettings
 
+	def protected abstract Iterable<String> getCommonalityFiles();
+
+	def protected abstract Iterable<String> getDomainDependencies();
+
 	def getChangePropagationDefinitions() {
 		if (!compiled) {
 			val compiledFolder = compile()
 			compiled = true
 
-			val classLoader = new URLClassLoader(#[compiledFolder.toUri.toURL], ExecutionTestCompiler.classLoader)
+			val classLoader = new URLClassLoader(#[compiledFolder.toUri.toURL], this.class.classLoader)
 			loadedChangePropagationClasses = Files.find(compiledFolder, Integer.MAX_VALUE, [ path, info |
 				val pathLast = path.last.toString
 				pathLast.contains('ChangePropagationSpecification') && pathLast.endsWith('.class')
@@ -83,11 +86,11 @@ class ExecutionTestCompiler {
 		val testProject = prepareTestProject()
 		setGenerationSettings()
 
-		// Disable automatic building 
+		// Disable automatic building
 		ResourcesPlugin.workspace.description = ResourcesPlugin.workspace.description => [autoBuilding = false]
 
 		// copy in the source files
-		for (commonalityInputFile : TO_COMPILE) {
+		for (commonalityInputFile : commonalityFiles) {
 			testProject.sourceFolder.getFile(Paths.get(commonalityInputFile).last.toString).create(
 				class.getResourceAsStream(commonalityInputFile), true, null)
 		}
@@ -99,9 +102,11 @@ class ExecutionTestCompiler {
 		testProject.build(PDE.MANIFEST_BUILDER_ID)
 		testProject.build(PDE.SCHEMA_BUILDER_ID)
 
+		logger.trace("Xtext Build")
 		testProject.build(XtextProjectHelper.BUILDER_ID)
-
 		testProject.refresh()
+
+		logger.trace("Java Build")
 		testProject.build(JavaCore.BUILDER_ID)
 
 		return testProject.binFolder.path
@@ -170,13 +175,14 @@ class ExecutionTestCompiler {
 			Bundle-SymbolicName: «project.name»; singleton:=true
 			Bundle-ActivationPolicy: lazy
 			Require-Bundle: tools.vitruv.extensions.dslsruntime.commonalities,
-			  tools.vitruv.testutils.domains,
-			  tools.vitruv.testutils.metamodels,
 			  tools.vitruv.framework.metamodel,
 			  tools.vitruv.extensions.emf,
 			  org.eclipse.xtext.xbase.lib,
-			  «FOR mirbasedependency : relevantMirbaseDependencies SEPARATOR ','»
-			  	«mirbasedependency»
+			  «FOR domainDependency : domainDependencies»
+			  	«domainDependency»,
+			  «ENDFOR»
+			  «FOR mirbaseDependency : relevantMirbaseDependencies SEPARATOR ','»
+			  	«mirbaseDependency»
 			  «ENDFOR»
 			Bundle-RequiredExecutionEnvironment: JavaSE-«COMPLIANCE_LEVEL»
 		'''
@@ -206,9 +212,9 @@ class ExecutionTestCompiler {
 	/**
 	 * Sets a target platform in the test platform. This is required to run the
 	 * tests with tycho.
-	 * 
+	 *
 	 * Taken from http://git.eclipse.org/c/gmf-tooling/org.eclipse.gmf-tooling.git/tree/tests/org.eclipse.gmf.tests/src/org/eclipse/gmf/tests/Utils.java#n146
-	 * 
+	 *
 	 * Necessary because of this bug: https://bugs.eclipse.org/bugs/show_bug.cgi?id=343156
 	 */
 	@SuppressWarnings("restriction")
