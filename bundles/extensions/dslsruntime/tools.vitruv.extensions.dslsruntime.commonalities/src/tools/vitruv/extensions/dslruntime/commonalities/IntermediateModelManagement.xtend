@@ -1,14 +1,9 @@
 package tools.vitruv.extensions.dslruntime.commonalities
 
-import edu.kit.ipd.sdq.activextendannotations.Lazy
-import java.nio.file.Files
-import java.nio.file.Path
 import java.util.concurrent.atomic.AtomicInteger
 import org.eclipse.emf.ecore.EClass
 import org.eclipse.emf.ecore.EPackage
 import org.eclipse.emf.ecore.resource.Resource
-import org.eclipse.emf.ecore.resource.ResourceSet
-import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import tools.vitruv.extensions.dslruntime.commonalities.intermediatemodelbase.Intermediate
 import tools.vitruv.extensions.dslruntime.commonalities.intermediatemodelbase.IntermediateModelBasePackage
 import tools.vitruv.extensions.dslruntime.commonalities.intermediatemodelbase.Root
@@ -19,10 +14,6 @@ class IntermediateModelManagement {
 
 	private new() {
 	}
-
-	// TODO get a directory in the VSUM
-	@Lazy static val Path intermediateModelsFolder = Files.createTempDirectory('intermediatemodel')
-	@Lazy static val ResourceSet intermediateModelsResourceSet = new ResourceSetImpl
 
 	static val stagingUuidCounter = new AtomicInteger
 
