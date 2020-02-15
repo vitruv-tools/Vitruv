@@ -1,4 +1,4 @@
-package tools.vitruv.dsls.commonalities.ui.tests.util
+package tools.vitruv.dsls.commonalities.testutils
 
 import tools.vitruv.framework.change.processing.ChangePropagationSpecification
 import tools.vitruv.framework.change.processing.impl.CompositeDecomposingChangePropagationSpecification

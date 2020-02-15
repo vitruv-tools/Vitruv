@@ -1,4 +1,4 @@
-package tools.vitruv.dsls.commonalities.ui.tests.util
+package tools.vitruv.dsls.commonalities.testutils
 
 import com.google.inject.Inject
 import java.io.ByteArrayInputStream

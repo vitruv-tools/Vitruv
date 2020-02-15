@@ -16,6 +16,7 @@ Require-Bundle: tools.vitruv.dsls.commonalities.ui,
  edu.kit.ipd.sdq.commons.util.java;bundle-version="1.1.0",
  tools.vitruv.extensions.dslsruntime.commonalities;bundle-version="0.2.0",
  tools.vitruv.dsls.commonalities,
+ tools.vitruv.dsls.commonalities.testutils,
  org.eclipse.jdt.core;bundle-version="3.13.0",
  tools.vitruv.testutils;bundle-version="0.2.0",
  tools.vitruv.testutils.domains;bundle-version="0.2.0",
@@ -33,8 +34,7 @@ Require-Bundle: tools.vitruv.dsls.commonalities.ui,
  tools.vitruv.testutils.metamodels;bundle-version="0.2.0",
  org.apache.log4j;bundle-version="1.2.15"
 Bundle-RequiredExecutionEnvironment: JavaSE-11
-Export-Package: tools.vitruv.dsls.commonalities.ui.tests.util,
- tools.vitruv.dsls.commonalities.ui.executiontests;x-internal:=true,
+Export-Package: tools.vitruv.dsls.commonalities.ui.executiontests;x-internal:=true,
  tools.vitruv.dsls.commonalities.ui.tests;x-internal=true
 Import-Package: org.hamcrest.core,
  org.junit;version="4.5.0",

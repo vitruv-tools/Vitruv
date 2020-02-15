@@ -12,8 +12,8 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import pcm_mockup.Pcm_mockupFactory
 import pcm_mockup.Repository
-import tools.vitruv.dsls.commonalities.ui.tests.util.CombinedUiInjectorProvider
-import tools.vitruv.dsls.commonalities.ui.tests.util.CommonalitiesExecutionTest
+import tools.vitruv.dsls.commonalities.testutils.CombinedUiInjectorProvider
+import tools.vitruv.dsls.commonalities.testutils.CommonalitiesExecutionTest
 import uml_mockup.UPackage
 import uml_mockup.Uml_mockupFactory
 

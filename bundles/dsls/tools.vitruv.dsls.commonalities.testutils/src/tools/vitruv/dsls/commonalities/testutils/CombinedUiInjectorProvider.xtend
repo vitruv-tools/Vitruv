@@ -1,7 +1,6 @@
-package tools.vitruv.dsls.commonalities.ui.tests.util
+package tools.vitruv.dsls.commonalities.testutils
 
 import com.google.inject.Injector
-import tools.vitruv.dsls.commonalities.ui.tests.CommonalitiesLanguageUiInjectorProvider
 import tools.vitruv.dsls.reactions.ui.internal.ReactionsActivator
 
 /**

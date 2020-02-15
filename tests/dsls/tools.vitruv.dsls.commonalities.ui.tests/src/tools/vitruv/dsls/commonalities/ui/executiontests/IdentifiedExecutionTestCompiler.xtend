@@ -1,7 +1,7 @@
 package tools.vitruv.dsls.commonalities.ui.executiontests
 
 import com.google.inject.Singleton
-import tools.vitruv.dsls.commonalities.ui.tests.util.ExecutionTestCompiler
+import tools.vitruv.dsls.commonalities.testutils.ExecutionTestCompiler
 
 @Singleton
 class IdentifiedExecutionTestCompiler extends ExecutionTestCompiler {
