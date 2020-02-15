@@ -149,6 +149,15 @@ package class ParticipationClassSpecialInitializationBuilder
 					value = XbaseFactory.eINSTANCE.createXStringLiteral => [
 						value = participationClass.superMetaclass.domain.vitruvDomain.fileExtensions.head
 					]
+				],
+				XbaseFactory.eINSTANCE.createXAssignment => [
+					assignable = XbaseFactory.eINSTANCE.createXFeatureCall => [
+						feature = resource.feature
+					]
+					feature = typeProvider.findMethod(IntermediateResourceBridge, 'setIntermediateNS')
+					value = XbaseFactory.eINSTANCE.createXStringLiteral => [
+						value = concept.vitruvDomain.nsUris.head
+					]
 				]
 			)
 		]

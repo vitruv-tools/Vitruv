@@ -140,15 +140,16 @@ package class GenerationContext {
 		commonalityFile.commonality
 	}
 
+	def package getConcept() {
+		commonalityFile.concept
+	}
+
 	def package ResourceSet getResourceSet() {
 		commonalityFile.eResource.resourceSet
 	}
 
 	def package reportGeneratedConcept(String conceptName, EPackage conceptModel) {
 		intermediateModelPackageCache.put(conceptName, conceptModel)
-	}
-
-	def package getConceptDomain(CommonalityFile commonalityFile) {
 	}
 
 	def package getIntermediateModelOutputUri(String conceptName) {

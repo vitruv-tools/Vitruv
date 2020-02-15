@@ -28,6 +28,8 @@
         transient="true"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="correspondenceModel" eType="#//CorrespondenceModel"
         transient="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="intermediateNS" ordered="false"
+        unique="false" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EDataType" name="ResourceAccess" instanceClassName="tools.vitruv.framework.util.command.ResourceAccess"/>
   <eClassifiers xsi:type="ecore:EDataType" name="CorrespondenceModel" instanceClassName="tools.vitruv.framework.correspondence.CorrespondenceModel"/>

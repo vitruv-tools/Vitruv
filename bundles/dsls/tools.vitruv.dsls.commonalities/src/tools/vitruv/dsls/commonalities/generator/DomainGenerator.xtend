@@ -3,7 +3,6 @@ package tools.vitruv.dsls.commonalities.generator
 import com.google.inject.Inject
 import com.google.inject.Provider
 import java.util.Arrays
-import java.util.Collections
 import org.eclipse.xtend2.lib.StringConcatenationClient
 import org.eclipse.xtext.common.types.JvmDeclaredType
 import org.eclipse.xtext.common.types.JvmGenericType
@@ -17,7 +16,6 @@ import org.eclipse.xtext.xbase.jvmmodel.JvmTypeReferenceBuilder
 import tools.vitruv.domains.emf.builder.VitruviusEmfBuilderApplicator
 import tools.vitruv.extensions.dslruntime.commonalities.IntermediateVitruvDomain
 import tools.vitruv.extensions.dslruntime.commonalities.intermediatemodelbase.IntermediateModelBasePackage
-import tools.vitruv.extensions.dslruntime.commonalities.resources.ResourcesPackage
 import tools.vitruv.framework.domains.VitruvDomainProvider
 import tools.vitruv.framework.domains.VitruviusProjectBuilderApplicator
 import tools.vitruv.framework.tuid.AttributeTuidCalculatorAndResolver
@@ -59,10 +57,9 @@ package class DomainGenerator extends SubGenerator {
 					body = '''
 					super("«conceptName.conceptDomainName»",
 						«'''«conceptName.intermediateModelClassesPrefix»Package'''».eINSTANCE,«
-						// TODO remove once resource creation is handled by domains
-						»
-						«Collections.typeRef».singleton(«ResourcesPackage.typeRef».eINSTANCE),«
-						// 'fullPath' for resource bridge resources
+						»«
+						// Tuid calculation: Uses the 'intermediateId' attribute
+						// This attribute delegates to 'fullPath' for intermediate resource bridges
 						// TODO remove once resource creation is handled by domains
 						»
 						new «AttributeTuidCalculatorAndResolver.typeRef»("", "«IntermediateModelBasePackage.eINSTANCE.intermediate_IntermediateId.name»"),

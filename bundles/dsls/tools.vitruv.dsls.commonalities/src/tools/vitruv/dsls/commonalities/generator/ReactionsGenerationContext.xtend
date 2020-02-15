@@ -102,6 +102,13 @@ package class ReactionsGenerationContext {
 						implicitReceiver = routineUserExecution
 					]
 				],
+				XbaseFactory.eINSTANCE.createXAssignment => [
+					assignable = resourceBridge.newFeatureCall
+					feature = typeProvider.findMethod(IntermediateResourceBridge, 'setIntermediateNS')
+					value = XbaseFactory.eINSTANCE.createXStringLiteral => [
+						value = concept.vitruvDomain.nsUris.head
+					]
+				],
 				XbaseFactory.eINSTANCE.createXMemberFeatureCall => [
 					memberCallTarget = resourceBridge.newFeatureCall
 					feature = typeProvider.findMethod(IntermediateResourceBridge, 'initialiseForModelElement')
