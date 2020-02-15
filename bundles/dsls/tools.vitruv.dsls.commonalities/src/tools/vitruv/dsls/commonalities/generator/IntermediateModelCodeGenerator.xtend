@@ -16,6 +16,7 @@ import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.EPackage
 import org.eclipse.emf.ecore.plugin.EcorePlugin
 import tools.vitruv.extensions.dslruntime.commonalities.intermediatemodelbase.IntermediateModelBasePackage
+import tools.vitruv.framework.util.VitruviusConstants
 
 import static extension tools.vitruv.dsls.commonalities.generator.GeneratorConstants.*
 
@@ -56,9 +57,7 @@ package class IntermediateModelCodeGenerator extends SubGenerator {
 		// The EMF generator only supports generating inside an Eclipse
 		// project. 
 		if (uriFromFsa.isPlatformResource) {
-			// does anybody know any meaningful constant to remove this
-			// hardcoded string?
-			return uriFromFsa.deresolve(URI.createURI("platform:/resource/"))
+			return uriFromFsa.deresolve(URI.createURI(VitruviusConstants.platformResourcePrefix))
 		}
 		throw new IllegalArgumentException('''Intermediate model code generation is only possible inside an Eclipse project.''')
 	}
