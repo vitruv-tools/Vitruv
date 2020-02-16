@@ -28,7 +28,7 @@ class IntermediateResourceBridgeI extends IntermediateResourceBridgeImpl {
 
 	def private nameChanged(String oldName) {
 		// TODO continuing here breaks stuff when changes are reapplied by Vitruv
-		// Remove the following line once changes are recorded directly and ther’s no need
+		// Remove the following line once changes are recorded directly and there’s no need
 		// for rolling them back anymore.
 		if (isPersisted) return;
 		this.fullPathChanged(path, oldName, fileExtension)
@@ -104,7 +104,7 @@ class IntermediateResourceBridgeI extends IntermediateResourceBridgeImpl {
 		// breaks TUID calculation. But the content reference must be a
 		// containment reference to be used with the in-operator. So we’re
 		// avoiding any notifications here so the framework will not realize we
-		// modified a containment referenceinternalContent
+		// modified a containment reference's internal content
 		if (content == newContent) return;
 		this.content = newContent
 		intermediateCorrespondence = newContent.intermediateCorrespondence

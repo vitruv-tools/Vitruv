@@ -24,8 +24,8 @@ class GeneratorConstants {
 	}
 
 	@Pure
-	def static getIntermediateModelRootClass(CommonalityFile commonalitiyFile) {
-		commonalitiyFile.concept.name.intermediateModelRootClass
+	def static getIntermediateModelRootClass(CommonalityFile commonalityFile) {
+		commonalityFile.concept.name.intermediateModelRootClass
 	}
 
 	@Pure
