@@ -134,8 +134,12 @@ abstract package class FluentReactionElementBuilder {
 		context.referenceBuilderFactory.create(attachedReactionsFile.eResource.resourceSet)
 	}
 
+	def private <T extends JvmDeclaredType> boolean equalImportTypes(T importedType, T type) {
+		return (importedType.qualifiedName == type.qualifiedName)
+	}
+
 	def protected <T extends JvmDeclaredType> imported(T type) {
-		XImportSection.importDeclarations.findFirst[importedType == type] ?: createTypeImport(type)
+		XImportSection.importDeclarations.findFirst[equalImportTypes(importedType, type)] ?: createTypeImport(type)
 		return type
 	}
 
@@ -149,7 +153,7 @@ abstract package class FluentReactionElementBuilder {
 
 	def protected staticExtensionAllImported(JvmDeclaredType declaredType) {
 		(XImportSection.importDeclarations.findFirst [
-			isWildcard && importedType == declaredType
+			isWildcard && equalImportTypes(importedType, declaredType)
 		] ?: createTypeWildcardImport(declaredType)) => [
 			extension = true
 		]
@@ -171,13 +175,13 @@ abstract package class FluentReactionElementBuilder {
 
 	def private staticImport(JvmOperation operation, boolean asExtension) {
 		val existingStarImport = XImportSection.importDeclarations.findFirst [
-			isWildcard && importedType == operation.declaringType
+			isWildcard && equalImportTypes(importedType, operation.declaringType)
 		]
 		if (existingStarImport !== null) {
 			existingStarImport.extension = existingStarImport.extension || asExtension
 		} else {
 			(XImportSection.importDeclarations.findFirst [
-				importedType == operation.declaringType && memberName == operation.simpleName && static == true
+				equalImportTypes(importedType, operation.declaringType) && memberName == operation.simpleName && static == true
 			] ?: createStaticOperationImport(operation)) => [
 				extension = extension || asExtension
 			]
@@ -197,14 +201,13 @@ abstract package class FluentReactionElementBuilder {
 	def private createTypeWildcardImport(JvmDeclaredType type) {
 		val newDeclaration = XtypeFactory.eINSTANCE.createXImportDeclaration => [
 			importedType = type
-			XImportSection.importDeclarations += it
 			static = true
 			wildcard = true
 		]
 		val oldImports = new ArrayList(XImportSection.importDeclarations)
 		XImportSection.importDeclarations.clear()
 		XImportSection.importDeclarations += oldImports.filter [
-			!static || importedType != type
+			!static || !equalImportTypes(importedType, type)
 		]
 		XImportSection.importDeclarations += newDeclaration
 		return newDeclaration
