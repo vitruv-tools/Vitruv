@@ -73,5 +73,11 @@ package class IntermediateModelCodeGenerator extends SubGenerator {
 		if (result.severity != Diagnostic.OK) {
 			throw new RuntimeException(result.message)
 		}
+
+		// load the generated resources into the ResourceSet, so that the
+		// reactions generator can resolve the jvm types:
+		generator.generatedOutputs.forEach [
+			resourceSet.getResource(URI.createPlatformResourceURI(it.path, false), true)
+		]
 	}
 }
