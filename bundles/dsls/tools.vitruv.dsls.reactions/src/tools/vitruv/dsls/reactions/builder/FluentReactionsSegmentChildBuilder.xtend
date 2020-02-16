@@ -143,6 +143,7 @@ abstract package class FluentReactionsSegmentChildBuilder extends FluentReaction
 	}
 
 	def protected static extractExpressions(XExpression expression) {
+		if (expression === null) return #[]
 		switch expression {
 			XBlockExpression: expression.expressions
 			default: #[expression]
