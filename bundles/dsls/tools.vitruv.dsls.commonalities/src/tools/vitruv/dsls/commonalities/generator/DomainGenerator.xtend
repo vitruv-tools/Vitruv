@@ -62,7 +62,7 @@ package class DomainGenerator extends SubGenerator {
 						// This attribute delegates to 'fullPath' for intermediate resource bridges
 						// TODO remove once resource creation is handled by domains
 						»
-						new «AttributeTuidCalculatorAndResolver.typeRef»("", "«IntermediateModelBasePackage.eINSTANCE.intermediate_IntermediateId.name»"),
+						new «AttributeTuidCalculatorAndResolver.typeRef»("«conceptName.intermediateModelPackage.nsURI»", "«IntermediateModelBasePackage.eINSTANCE.intermediate_IntermediateId.name»"),
 						"«conceptName.intermediateModelFileExtension»");'''
 				],
 				TypesFactory.eINSTANCE.createJvmOperation => [

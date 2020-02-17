@@ -5,9 +5,12 @@ import java.util.Map
 import javax.inject.Inject
 import org.eclipse.emf.ecore.EcorePackage
 import org.eclipse.xtend.lib.annotations.Accessors
+import org.eclipse.xtext.common.types.JvmDeclaredType
 import org.eclipse.xtext.xbase.XFeatureCall
+import org.eclipse.xtext.xbase.XMemberFeatureCall
 import org.eclipse.xtext.xbase.XbaseFactory
 import tools.vitruv.dsls.commonalities.language.Commonality
+import tools.vitruv.dsls.commonalities.language.Concept
 import tools.vitruv.dsls.commonalities.language.Participation
 import tools.vitruv.dsls.commonalities.language.ParticipationClass
 import tools.vitruv.dsls.commonalities.language.elements.NamedElement
@@ -18,8 +21,10 @@ import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.RoutineTypeProvi
 import tools.vitruv.extensions.dslruntime.commonalities.IntermediateModelManagement
 import tools.vitruv.extensions.dslruntime.commonalities.resources.IntermediateResourceBridge
 import tools.vitruv.extensions.dslruntime.commonalities.resources.ResourcesPackage
+import tools.vitruv.framework.util.VitruviusConstants
 
 import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
+import static extension tools.vitruv.dsls.commonalities.generator.GeneratorConstants.*
 import static extension tools.vitruv.dsls.commonalities.generator.JvmTypeProviderHelper.*
 import static extension tools.vitruv.dsls.commonalities.generator.ReactionsGeneratorConventions.*
 import static extension tools.vitruv.dsls.commonalities.generator.XbaseHelper.*
@@ -42,8 +47,12 @@ package class ReactionsGenerationContext {
 		return this
 	}
 
+	def private getMetadataModelKey(Concept concept) {
+		return #['commonalities', concept.name + VitruviusConstants.fileExtSeparator + concept.intermediateModelFileExtension]
+	}
+
 	def private getInsertRoutine(NamedElement fromParticipationOrCommonality, Commonality toCommonality) {
-		commonalityInsertRoutineCache.computeIfAbsent(Pair.of(fromParticipationOrCommonality, toCommonality), [ 
+		commonalityInsertRoutineCache.computeIfAbsent(Pair.of(fromParticipationOrCommonality, toCommonality), [
 			create.routine('''intermediateInsert_«toCommonality.name»''')
 				.input [model(EcorePackage.eINSTANCE.EObject, newValue)]
 				.match [
@@ -121,17 +130,19 @@ package class ReactionsGenerationContext {
 
 	def private insertResourceBridge(extension RoutineTypeProvider typeProvider, XFeatureCall resourceBridge,
 		XFeatureCall intermediate) {
-		val resourceVariableDeclaration = XbaseFactory.eINSTANCE.createXVariableDeclaration => [
+		val intermediateModelURIVariable = XbaseFactory.eINSTANCE.createXVariableDeclaration => [
+			name = 'intermediateModelURI'
+			right = callGetMetadataModelURI(typeProvider, commonality.concept)
+		]
+		val intermediateModelResourceVariable = XbaseFactory.eINSTANCE.createXVariableDeclaration => [
 			name = 'intermediateModelResource'
-			right = createMetadataResource(typeProvider, commonality)
+			right = callGetModelResource(typeProvider, intermediateModelURIVariable.featureCall)
 		]
 		XbaseFactory.eINSTANCE.createXBlockExpression => [
 			expressions += expressions(
-				resourceVariableDeclaration,
-				XbaseFactory.eINSTANCE.createXMemberFeatureCall => [
-					memberCallTarget = XbaseFactory.eINSTANCE.createXFeatureCall => [
-						feature = resourceVariableDeclaration
-					]
+				intermediateModelURIVariable,
+				intermediateModelResourceVariable,
+				intermediateModelResourceVariable.featureCall.memberFeatureCall => [
 					feature = typeProvider.findMethod(IntermediateModelManagement, 'addResourceBridge').
 						staticExtensionWildcardImported
 					memberCallArguments += #[resourceBridge, intermediate]
@@ -143,17 +154,19 @@ package class ReactionsGenerationContext {
 
 	def private insertIntermediate(extension RoutineTypeProvider typeProvider, XFeatureCall intermediate,
 		Commonality commonality) {
-		val resourceVariableDeclaration = XbaseFactory.eINSTANCE.createXVariableDeclaration => [
+		val intermediateModelURIVariable = XbaseFactory.eINSTANCE.createXVariableDeclaration => [
+			name = 'intermediateModelURI'
+			right = callGetMetadataModelURI(typeProvider, commonality.concept)
+		]
+		val intermediateModelResourceVariable = XbaseFactory.eINSTANCE.createXVariableDeclaration => [
 			name = 'intermediateModelResource'
-			right = createMetadataResource(typeProvider, commonality)
+			right = callGetModelResource(typeProvider, intermediateModelURIVariable.featureCall)
 		]
 		XbaseFactory.eINSTANCE.createXBlockExpression => [
 			expressions += expressions(
-				resourceVariableDeclaration,
-				XbaseFactory.eINSTANCE.createXMemberFeatureCall => [
-					memberCallTarget = XbaseFactory.eINSTANCE.createXFeatureCall => [
-						feature = resourceVariableDeclaration
-					]
+				intermediateModelURIVariable,
+				intermediateModelResourceVariable,
+				intermediateModelResourceVariable.featureCall.memberFeatureCall => [
 					feature = typeProvider.findMethod(IntermediateModelManagement, 'addIntermediate').
 						staticExtensionWildcardImported
 					memberCallArguments += intermediate
@@ -163,26 +176,19 @@ package class ReactionsGenerationContext {
 		]
 	}
 
-	def private createMetadataResource(extension RoutineTypeProvider typeProvider, Commonality commonality) {
-		XbaseFactory.eINSTANCE.createXFeatureCall => [
-			implicitReceiver = routineUserExecution
-			feature = routineUserExecutionType.findMethod('getMetadataResource')
-			// this string is intentionally hardcoded into the reactions
-			// and not computed by a runtime class, as this allows to
-			// change the way the identifier is computed without breaking
-			// existing intermediate models
-			featureCallArguments += expressions(
-				XbaseFactory.eINSTANCE.createXStringLiteral => [
-					value = 'commonalities'
-				],
-				XbaseFactory.eINSTANCE.createXStringLiteral => [
-					value = commonality.concept.name
-				],
-				XbaseFactory.eINSTANCE.createXStringLiteral => [
-					value = commonality.name + '.intermediate'
-				]
-			)
+	def private callGetMetadataModelURI(extension RoutineTypeProvider typeProvider, Concept concept) {
+		resourceAccess.memberFeatureCall => [
+			feature = resourceAccessType.findMethod('getMetadataModelURI')
 			explicitOperationCall = true
+			memberCallArguments += concept.metadataModelKey.map[stringLiteral]
+		]
+	}
+
+	def private callGetModelResource(extension RoutineTypeProvider typeProvider, XFeatureCall vuri) {
+		resourceAccess.memberFeatureCall => [
+			feature = resourceAccessType.findMethod('getModelResource')
+			explicitOperationCall = true
+			memberCallArguments += vuri
 		]
 	}
 

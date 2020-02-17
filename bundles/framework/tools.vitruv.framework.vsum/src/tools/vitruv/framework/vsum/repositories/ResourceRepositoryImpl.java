@@ -2,8 +2,6 @@ package tools.vitruv.framework.vsum.repositories;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -36,7 +34,6 @@ import tools.vitruv.framework.domains.VitruvDomain;
 import tools.vitruv.framework.domains.repository.VitruvDomainRepository;
 import tools.vitruv.framework.tuid.TuidManager;
 import tools.vitruv.framework.util.ResourceSetUtil;
-import tools.vitruv.framework.util.VitruviusConstants;
 import tools.vitruv.framework.util.bridges.EcoreResourceBridge;
 import tools.vitruv.framework.util.command.EMFCommandBridge;
 import tools.vitruv.framework.util.command.VitruviusRecordingCommand;
@@ -283,20 +280,6 @@ public class ResourceRepositoryImpl implements ModelRepository, CorrespondencePr
         return modelInstance;
     }
 
-    /**
-     * Create a model instance for which it’s not necessary to have a domain.
-     *
-     * @param modelURI
-     *            The uri to create the resource at.
-     */
-    private ModelInstance loadModelInstanceWithoutDomain(final VURI modelURI) {
-        URI emfURI = modelURI.getEMFUri();
-        Resource modelResource = URIUtil.loadResourceAtURI(emfURI, this.resourceSet, Collections.emptyMap());
-        ModelInstance modelInstance = new ModelInstance(modelURI, modelResource);
-        relinkUuids(modelInstance);
-        return modelInstance;
-    }
-
     private void initializeCorrespondenceModel() {
         executeAsCommand(() -> {
             VURI correspondencesVURI = this.fileSystemHelper.getCorrespondencesVURI();
@@ -445,63 +428,12 @@ public class ResourceRepositoryImpl implements ModelRepository, CorrespondencePr
     }
 
     @Override
-    public Resource getResourceForMetadataStorage(final String... storageKey) {
-        final StringBuilder safeStorageKey = new StringBuilder();
-        if (storageKey.length == 0) {
-            throw new IllegalArgumentException("The key must have at least one part!");
-        }
-
-        try {
-            for (int i = 0; i < storageKey.length; i++) {
-                final String keyPart = storageKey[i];
-                if (keyPart == null) {
-                    throw new IllegalArgumentException("A key part must not be null!");
-                }
-                // URL-encoding the string makes it save for being a file part,
-                // except for the cases '', '.' and '..'
-                // we thus use _ as a escape character
-                final String preparedKeyPart;
-                switch (keyPart) {
-                case ".":
-                    preparedKeyPart = "_.";
-                    break;
-                case "..":
-                    preparedKeyPart = "_._.";
-                    break;
-                case "":
-                    preparedKeyPart = "_";
-                    break;
-                default:
-                    preparedKeyPart = keyPart.replaceAll("_", "__");
-                    break;
-                }
-                String encodedKeyPart = URLEncoder.encode(preparedKeyPart, "UTF-8");
-                safeStorageKey.append(encodedKeyPart);
-
-                // ensure a file extension is present
-                if (i == storageKey.length - 1) {
-                    if (!encodedKeyPart.contains(VitruviusConstants.getFileExtSeparator())) {
-                        safeStorageKey.append(VitruviusConstants.getFileExtSeparator()).append("metadata");
-                    }
-                } else {
-                    safeStorageKey.append(File.separatorChar);
-                }
-            }
-        } catch (UnsupportedEncodingException e) {
-            throw new IllegalStateException("UTF-8 encoding is not present on this platform!");
-        }
-        final VURI storageVuri = this.fileSystemHelper.getConsistencyMetadataVURI(safeStorageKey.toString());
-        ModelInstance modelInstance = this.modelInstances.get(storageVuri);
-        if (modelInstance == null) {
-            executeAsCommand(() -> {
-                // case 2 or 3
-                ModelInstance internalModelInstance = loadModelInstanceWithoutDomain(storageVuri);
-                registerModelInstance(storageVuri, internalModelInstance);
-                return null;
-            });
-            modelInstance = this.modelInstances.get(storageVuri);
-        }
-        return modelInstance.getResource();
+    public VURI getMetadataModelURI(final String... metadataKey) {
+        return this.fileSystemHelper.getConsistencyMetadataModelVURI(metadataKey);
     }
 
+    @Override
+    public Resource getModelResource(final VURI vuri) {
+        return getModelInstanceOriginal(vuri).getResource();
+    }
 }

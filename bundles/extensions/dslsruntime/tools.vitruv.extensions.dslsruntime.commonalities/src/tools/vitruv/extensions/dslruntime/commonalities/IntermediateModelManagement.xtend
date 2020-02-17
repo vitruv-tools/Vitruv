@@ -21,7 +21,6 @@ class IntermediateModelManagement {
 		val root = getOrCreateRootIn(targetResource, nonRoot.eClass.EPackage)
 		nonRoot.intermediateId = String.valueOf(root.nextId)
 		root.intermediates += nonRoot
-		targetResource.modified = true
 	}
 
 	def static void addResourceBridge(
@@ -31,7 +30,6 @@ class IntermediateModelManagement {
 	) {
 		val root = getOrCreateRootIn(targetResource, intermediate.eClass.EPackage)
 		root.resourceBridges += intermediateResource
-		targetResource.modified = true
 	}
 
 	def static getOrCreateRootIn(Resource targetResource, EPackage ePackage) {
@@ -43,6 +41,7 @@ class IntermediateModelManagement {
 				val root = ePackage.EFactoryInstance.create(rootClass) as Root
 				root.eAdapters += IntermediateModelRootDisposer.INSTANCE
 				targetResource.contents += root
+				targetResource.modified = true
 				return root
 			}
 			return targetResource.contents.get(0) as Root

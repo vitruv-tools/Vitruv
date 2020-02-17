@@ -1,22 +1,23 @@
 package tools.vitruv.extensions.dslsruntime.reactions
 
-import org.eclipse.emf.ecore.EObject
 import java.io.IOException
-import tools.vitruv.extensions.dslsruntime.reactions.structure.CallHierarchyHaving
-import tools.vitruv.framework.userinteraction.UserInteractor
-import org.eclipse.emf.ecore.util.EcoreUtil
-import tools.vitruv.extensions.dslsruntime.reactions.helper.PersistenceHelper
-import tools.vitruv.framework.util.datatypes.VURI
-import java.util.function.Function
-import org.eclipse.xtend.lib.annotations.Delegate
-import tools.vitruv.extensions.dslsruntime.reactions.helper.ReactionsCorrespondenceHelper
-import tools.vitruv.framework.correspondence.CorrespondenceModel
-import tools.vitruv.extensions.dslsruntime.reactions.structure.Loggable
-import tools.vitruv.extensions.dslsruntime.reactions.effects.ReactionElementsHandlerImpl
-import tools.vitruv.framework.change.processing.ChangePropagationObservable
-import tools.vitruv.framework.util.command.ResourceAccess
-import tools.vitruv.framework.tuid.TuidManager
 import java.util.List
+import java.util.function.Function
+import org.eclipse.emf.ecore.EObject
+import org.eclipse.emf.ecore.resource.Resource
+import org.eclipse.emf.ecore.util.EcoreUtil
+import org.eclipse.xtend.lib.annotations.Delegate
+import tools.vitruv.extensions.dslsruntime.reactions.effects.ReactionElementsHandlerImpl
+import tools.vitruv.extensions.dslsruntime.reactions.helper.PersistenceHelper
+import tools.vitruv.extensions.dslsruntime.reactions.helper.ReactionsCorrespondenceHelper
+import tools.vitruv.extensions.dslsruntime.reactions.structure.CallHierarchyHaving
+import tools.vitruv.extensions.dslsruntime.reactions.structure.Loggable
+import tools.vitruv.framework.change.processing.ChangePropagationObservable
+import tools.vitruv.framework.correspondence.CorrespondenceModel
+import tools.vitruv.framework.tuid.TuidManager
+import tools.vitruv.framework.userinteraction.UserInteractor
+import tools.vitruv.framework.util.command.ResourceAccess
+import tools.vitruv.framework.util.datatypes.VURI
 
 abstract class AbstractRepairRoutineRealization extends CallHierarchyHaving implements RepairRoutine, ReactionElementsHandler {
 	private val AbstractRepairRoutinesFacade routinesFacade;
@@ -135,34 +136,27 @@ abstract class AbstractRepairRoutineRealization extends CallHierarchyHaving impl
 			}
 
 			val _resourceURI = PersistenceHelper.getURIFromSourceProjectFolder(alreadyPersistedObject, persistencePath);
-			logger.debug("Registered to persist root " + elementToPersist + " in: " + VURI.getInstance(_resourceURI));
-			
-			if (elementToPersist.eResource?.URI !== _resourceURI) {
-				// Update TUID after removal, as persistence will also change it and rely on an up-to-date value			
-				TuidManager.getInstance().registerObjectUnderModification(elementToPersist);
-				EcoreUtil.remove(elementToPersist);
-				TuidManager.getInstance().updateTuidsOfRegisteredObjects();
-				resourceAccess.persistAsRoot(elementToPersist, VURI.getInstance(_resourceURI));
-			}
+			val modelURI = VURI.getInstance(_resourceURI)
+			persistAsRoot(elementToPersist, modelURI)
 		}
 
-		/**
-		 * Gets a resource suitable to store metadata for consistency 
-		 * preservation.
-		 * 
-		 *  @param storageKey
-		 * 		The key uniquely identifying the portion of metadata that is to be 
-		 * 		stored in the returned resource. The different parts of the key
-		 * 		can be used to convey some sort of hierarchy in the metadata.
-		 * @return A resource suitable to store the metadata identified by the
-		 * 		 given {@code key}. Subsequent calls to this method with the same
-		 * 		 {@code key} will return resources for the same location.
-		 */
-		protected def getMetadataResource(String... storageKey) {
-			if (storageKey === null) {
-				throw new IllegalArgumentException("No storage key provided!")
+		protected def persistAsMetadataRoot(EObject rootObject, String... metadataKey) {
+			if (rootObject === null) {
+				throw new IllegalArgumentException("rootObject is null!");
 			}
-			resourceAccess.getResourceForMetadataStorage(storageKey)
+			val modelURI = resourceAccess.getMetadataModelURI(metadataKey)
+			persistAsRoot(rootObject, modelURI)
+		}
+
+		private def persistAsRoot(EObject rootObject, VURI vuri) {
+			logger.debug("Registered to persist root " + rootObject + " in: " + vuri)
+			if (rootObject.eResource?.URI !== vuri.EMFUri) {
+				// Update TUID after removal, as persistence will also change it and rely on an up-to-date value
+				TuidManager.getInstance().registerObjectUnderModification(rootObject)
+				EcoreUtil.remove(rootObject)
+				TuidManager.getInstance().updateTuidsOfRegisteredObjects()
+				resourceAccess.persistAsRoot(rootObject, vuri)
+			}
 		}
 	}
 }

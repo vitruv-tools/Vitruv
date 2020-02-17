@@ -8,6 +8,8 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.ObjectStreamClass;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
@@ -28,6 +30,62 @@ public class FileSystemHelper {
         createFolderInFolder(getVsumProjectFolder(), VsumConstants.VSUM_FOLDER_NAME);
     }
 
+    private String getMetadataFilePath(final String... metadataKey) {
+        final StringBuilder filePath = new StringBuilder();
+        if (metadataKey == null || metadataKey.length == 0) {
+            throw new IllegalArgumentException("The key must have at least one part!");
+        }
+
+        try {
+            for (int i = 0; i < metadataKey.length; i++) {
+                final String keyPart = metadataKey[i];
+                if (keyPart == null) {
+                    throw new IllegalArgumentException("A key part must not be null!");
+                }
+                // URL-encoding the string makes it save for being a file part,
+                // except for the cases '', '.' and '..'
+                // we thus use _ as an escape character
+                // This also ensures that the resulting path is always located
+                // within the metadata folder.
+                final String preparedKeyPart;
+                switch (keyPart) {
+                case ".":
+                    preparedKeyPart = "_.";
+                    break;
+                case "..":
+                    preparedKeyPart = "_._.";
+                    break;
+                case "":
+                    preparedKeyPart = "_";
+                    break;
+                default:
+                    preparedKeyPart = keyPart.replaceAll("_", "__");
+                    break;
+                }
+                String encodedKeyPart = URLEncoder.encode(preparedKeyPart, "UTF-8");
+                filePath.append(encodedKeyPart);
+
+                // ensure a file extension is present
+                if (i == metadataKey.length - 1) {
+                    if (!encodedKeyPart.contains(VitruviusConstants.getFileExtSeparator())) {
+                        throw new IllegalArgumentException("metadataKey is missing a file extension!");
+                    }
+                } else {
+                    filePath.append(File.separatorChar);
+                }
+            }
+        } catch (UnsupportedEncodingException e) {
+            throw new IllegalStateException("UTF-8 encoding is not present on this platform!");
+        }
+        return filePath.toString();
+    }
+
+    public VURI getConsistencyMetadataModelVURI(final String... metadataKey) {
+        String metadataFilePath = getMetadataFilePath(metadataKey);
+        File metadataFile = getConsistencyMetadataFile(metadataFilePath);
+        return VURI.getInstance(EMFBridge.getEmfFileUriForFile(metadataFile));
+    }
+
     public VURI getCorrespondencesVURI() {
         File correspondenceFile = getCorrespondenceFile();
         return VURI.getInstance(EMFBridge.getEmfFileUriForFile(correspondenceFile));
@@ -36,11 +94,6 @@ public class FileSystemHelper {
     public VURI getUuidProviderAndResolverVURI() {
         File uuidFile = getUuidProviderAndResolverFile();
         return VURI.getInstance(EMFBridge.getEmfFileUriForFile(uuidFile));
-    }
-
-    public VURI getConsistencyMetadataVURI(final String key) {
-        File metadataFile = getConsistencyMetadataFile(key);
-        return VURI.getInstance(EMFBridge.getEmfFileUriForFile(metadataFile));
     }
 
     public void saveCorrespondenceModelMMURIs() {
@@ -60,8 +113,8 @@ public class FileSystemHelper {
         return correspondenceFile;
     }
 
-    private File getConsistencyMetadataFile(final String key) {
-        return getFileInFolder(getConsistencyMetadataFolder(), key);
+    private File getConsistencyMetadataFile(final String metadataFilePath) {
+        return getFileInFolder(getConsistencyMetadataFolder(), metadataFilePath);
     }
 
     private static String getCorrespondenceFileName() {

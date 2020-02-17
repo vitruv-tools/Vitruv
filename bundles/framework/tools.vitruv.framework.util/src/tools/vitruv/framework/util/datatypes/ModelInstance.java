@@ -126,6 +126,11 @@ public class ModelInstance extends AbstractURIHaving {
     				this.lastUsedLoadOptions = loadOptions;
     			}
     			if (this.resource.isModified() || forceLoadByDoingUnloadBeforeLoad) {
+    				// TODO If the model resource already exists, this method
+    				// may also get called for already loaded resources
+    				// (see ResourceRepositoryImpl#getAndLoadModelInstanceOriginal).
+    				// If the resource has been marked as modified, any not yet
+    				// saved model objects are lost after the following unload call.
     				this.resource.unload();
     			}
    				this.resource.load(this.lastUsedLoadOptions);
