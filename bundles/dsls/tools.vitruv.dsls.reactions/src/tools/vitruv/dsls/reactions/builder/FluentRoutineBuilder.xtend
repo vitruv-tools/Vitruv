@@ -7,6 +7,7 @@ import org.eclipse.emf.ecore.EClassifier
 import org.eclipse.emf.ecore.EDataType
 import org.eclipse.xtend.lib.annotations.Accessors
 import org.eclipse.xtext.EcoreUtil2
+import org.eclipse.xtext.common.types.JvmDeclaredType
 import org.eclipse.xtext.common.types.JvmOperation
 import org.eclipse.xtext.common.types.access.IJvmTypeProvider
 import org.eclipse.xtext.xbase.XExpression
@@ -598,6 +599,18 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 		 */
 		def routineUserExecution() {
 			routineUserExecutionType.featureCall
+		}
+
+		def resourceAccessType() {
+			resourceAccessField.type.type as JvmDeclaredType
+		}
+
+		def resourceAccessField() {
+			routineUserExecutionType.findAttribute('resourceAccess')
+		}
+
+		def resourceAccess() {
+			resourceAccessField.featureCall
 		}
 	}
 

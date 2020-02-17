@@ -2,6 +2,7 @@ package tools.vitruv.dsls.reactions.builder
 
 import org.eclipse.xtend.lib.annotations.Accessors
 import org.eclipse.xtext.common.types.JvmDeclaredType
+import org.eclipse.xtext.common.types.JvmField
 import org.eclipse.xtext.common.types.JvmIdentifiableElement
 import org.eclipse.xtext.common.types.JvmOperation
 import org.eclipse.xtext.common.types.access.IJvmTypeProvider
@@ -121,6 +122,16 @@ abstract package class FluentReactionsSegmentChildBuilder extends FluentReaction
 			XbaseFactory.eINSTANCE.createXFeatureCall => [
 				feature = element
 			]
+		}
+
+		def protected static JvmField findAttribute(JvmDeclaredType declaredType, String attributeName) {
+			val result = (declaredType.members.filter[simpleName == attributeName].filter(JvmField) +
+				declaredType.superTypes.map[type].filter(JvmDeclaredType).map[findAttribute(attributeName)]
+			).head
+			if (result === null) {
+				throw new IllegalStateException('''Could not find the attribute “«attributeName»” in ‹«declaredType.qualifiedName»›!''')
+			}
+			return result
 		}
 	}
 
