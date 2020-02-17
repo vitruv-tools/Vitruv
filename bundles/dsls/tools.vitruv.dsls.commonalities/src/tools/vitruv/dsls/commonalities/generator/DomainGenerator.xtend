@@ -31,7 +31,7 @@ package class DomainGenerator extends SubGenerator {
 	override beforeGenerate() {
 		if (!isNewResourceSet) return;
 		resourceSet.resources += generatedConcepts.flatMap [
-			#[newResource(conceptDomainClass.qualifiedName), newResource(conceptDomainProvider.qualifiedName)]
+			#[newResource(conceptDomainClassName.qualifiedName), newResource(conceptDomainProviderClassName.qualifiedName)]
 		]
 	}
 
@@ -47,8 +47,8 @@ package class DomainGenerator extends SubGenerator {
 
 	def private createDomain(String conceptName, extension JvmTypeReferenceBuilder typeReferenceBuilder) {
 		TypesFactory.eINSTANCE.createJvmGenericType => [
-			simpleName = conceptName.conceptDomainClass.simpleName
-			packageName = conceptName.conceptDomainClass.packageName
+			simpleName = conceptName.conceptDomainClassName.simpleName
+			packageName = conceptName.conceptDomainClassName.packageName
 			superTypes += IntermediateVitruvDomain.typeRef
 			visibility = JvmVisibility.PUBLIC
 			members += Arrays.asList(
@@ -78,8 +78,8 @@ package class DomainGenerator extends SubGenerator {
 	def private createDomainProvider(String conceptName, extension JvmTypeReferenceBuilder typeReferenceBuilder,
 		JvmGenericType domainType) {
 		TypesFactory.eINSTANCE.createJvmGenericType => [
-			simpleName = conceptName.conceptDomainProvider.simpleName
-			packageName = conceptName.conceptDomainProvider.packageName
+			simpleName = conceptName.conceptDomainProviderClassName.simpleName
+			packageName = conceptName.conceptDomainProviderClassName.packageName
 			superTypes += VitruvDomainProvider.typeRef(domainType.typeRef)
 			visibility = JvmVisibility.PUBLIC
 			members += Arrays.asList(

@@ -17,7 +17,7 @@ package class ConceptDomain extends AbstractTuidAwareVitruvDomain {
 	private new(String conceptName, EPackage mainPackage, Set<EPackage> furtherPackages) {
 		super(conceptName.conceptDomainName, mainPackage, furtherPackages,
 			new AttributeTuidCalculatorAndResolver('', #[])) // TODO
-		provider = new Provider(this, conceptName.conceptDomainProvider.qualifiedName)
+		provider = new Provider(this, conceptName.conceptDomainProviderClassName.qualifiedName)
 	}
 
 	package new(String conceptName, Iterable<EPackage> packages) {

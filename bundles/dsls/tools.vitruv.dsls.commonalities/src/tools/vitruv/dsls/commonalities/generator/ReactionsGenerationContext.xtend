@@ -68,7 +68,7 @@ package class ReactionsGenerationContext {
 				create.routine('''rootInsertIntermediateResoureBridge''')
 					.input [model(EcorePackage.eINSTANCE.EObject, newValue)]
 					.match [
-						vall('contentIntermediate').retrieve(commonalityFile.changeClass).correspondingTo.newValue
+						vall('contentIntermediate').retrieve(commonality.changeClass).correspondingTo.newValue
 					]
 					.action [
 						vall('resourceBridge').create(ResourcesPackage.eINSTANCE.intermediateResourceBridge).andInitialize [

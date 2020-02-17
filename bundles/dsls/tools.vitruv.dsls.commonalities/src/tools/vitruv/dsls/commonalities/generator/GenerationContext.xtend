@@ -43,7 +43,7 @@ package class GenerationContext {
 	@Accessors(PACKAGE_SETTER, PACKAGE_GETTER)
 	var IFileSystemAccess2 fsa
 	// TODO cache for complete ResourceSet (but: how to known when to cleanup)? Or don't cache at all?
-	var Map<CommonalityFile, EClass> intermediateModelClassCache = new HashMap
+	var Map<Commonality, EClass> intermediateModelClassCache = new HashMap
 	var Map<String, EPackage> intermediateModelPackageCache = new HashMap
 	var Map<String, JvmGenericType> domainTypes = new HashMap
 	var Map<String, JvmGenericType> domainProviderTypes = new HashMap
@@ -69,20 +69,16 @@ package class GenerationContext {
 		isNewResourceSet
 	}
 
-	def package getGeneratedIntermediateModelClass(CommonalityFile commonalityFile) {
-		intermediateModelClassCache.computeIfAbsent(commonalityFile, [
-			commonalityFile.concept.generatedIntermediateModelPackage.EClassifiers.findFirst [
-				name == commonalityFile.intermediateModelClass.simpleName
+	def package getIntermediateModelClass(Commonality commonality) {
+		intermediateModelClassCache.computeIfAbsent(commonality, [
+			commonality.concept.intermediateModelPackage.EClassifiers.findFirst [
+				name == commonality.intermediateModelClassName.simpleName
 			] as EClass
 		])
 	}
 
-	def package getGeneratedIntermediateModelClass(Commonality commonality) {
-		commonality.containingCommonalityFile.generatedIntermediateModelClass
-	}
-
-	def package getChangeClass(CommonalityFile commonalityFile) {
-		commonalityFile.generatedIntermediateModelClass
+	def package getChangeClass(Commonality commonality) {
+		commonality.intermediateModelClass
 	}
 
 	def package getChangeClass(ParticipationClass participationClass) {
@@ -94,7 +90,7 @@ package class GenerationContext {
 	}
 
 	def private dispatch findChangeClass(Commonality commonality) {
-		commonality.containingCommonalityFile.changeClass
+		commonality.changeClass
 	}
 
 	def private dispatch findChangeClass(EClassAdapter eClassAdapter) {
@@ -105,11 +101,11 @@ package class GenerationContext {
 		ResourcesPackage.eINSTANCE.intermediateResourceBridge
 	}
 
-	def package getGeneratedIntermediateModelPackage(Concept concept) {
-		concept.name.generatedIntermediateModelPackage
+	def package getIntermediateModelPackage(Concept concept) {
+		concept.name.intermediateModelPackage
 	}
 
-	def package getGeneratedIntermediateModelPackage(String conceptName) {
+	def package getIntermediateModelPackage(String conceptName) {
 		intermediateModelPackageCache.computeIfAbsent(conceptName, [
 			resourceSet.getResource(conceptName.intermediateModelOutputUri, false).contents.head as EPackage
 		])
@@ -117,17 +113,17 @@ package class GenerationContext {
 
 	def package getConceptDomainType(CommonalityFile commonalityFile) {
 		domainTypes.computeIfAbsent(commonalityFile.concept.name, [ conceptName |
-			findDomainGeneratedType(conceptName.conceptDomainClass.qualifiedName)
+			findDomainJvmType(conceptName.conceptDomainClassName.qualifiedName)
 		])
 	}
 
 	def package getConceptDomainProviderType(CommonalityFile commonalityFile) {
 		domainProviderTypes.computeIfAbsent(commonalityFile.concept.name, [ conceptName |
-			findDomainGeneratedType(conceptName.conceptDomainProvider.qualifiedName)
+			findDomainJvmType(conceptName.conceptDomainProviderClassName.qualifiedName)
 		])
 	}
 
-	def private findDomainGeneratedType(String name) {
+	def private findDomainJvmType(String name) {
 		val domainTypeResource = resourceSet.getResource(name.domainTypeUri, false)
 		val result = domainTypeResource.contents.head
 		if (result instanceof JvmGenericType) {
@@ -157,7 +153,7 @@ package class GenerationContext {
 	}
 
 	def package dispatch EStructuralFeature getEFeatureToReference(CommonalityAttribute attribute) {
-		attribute.containingCommonalityFile.generatedIntermediateModelClass.getEStructuralFeature(attribute.name)
+		attribute.containingCommonality.intermediateModelClass.getEStructuralFeature(attribute.name)
 	}
 
 	def package dispatch EStructuralFeature getEFeatureToReference(EFeatureAdapter adapter) {
@@ -166,6 +162,10 @@ package class GenerationContext {
 
 	def package dispatch EStructuralFeature getEFeatureToReference(ParticipationAttribute participationAttribute) {
 		participationAttribute.attribute.EFeatureToReference
+	}
+
+	def package dispatch EStructuralFeature getEFeatureToReference(CommonalityReference reference) {
+		reference.containingCommonality.intermediateModelClass.getEStructuralFeature(reference.name)
 	}
 
 	def package getVitruvDomain(Domain domain) {
@@ -180,16 +180,12 @@ package class GenerationContext {
 		concept.vitruvDomain
 	}
 
-	def package dispatch EStructuralFeature getEFeatureToReference(CommonalityReference reference) {
-		commonalityFile.generatedIntermediateModelClass.getEStructuralFeature(reference.name)
-	}
-
 	def package getVitruvDomain(Concept concept) {
 		concept.name.vitruvDomain
 	}
 
 	def package getVitruvDomain(String conceptName) {
-		val ePackage = conceptName.generatedIntermediateModelPackage
+		val ePackage = conceptName.intermediateModelPackage
 		checkState(ePackage !== null, '''No ePackage was registered for the concept “«conceptName»”!''')
 		new ConceptDomain(conceptName, ePackage)
 	}

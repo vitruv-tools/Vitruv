@@ -3,6 +3,7 @@ package tools.vitruv.dsls.commonalities.language.extensions
 import edu.kit.ipd.sdq.activextendannotations.Utility
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.resource.Resource
+import tools.vitruv.dsls.commonalities.language.Commonality
 import tools.vitruv.dsls.commonalities.language.CommonalityFile
 
 @Utility
@@ -29,6 +30,17 @@ package class CommonalitiesLanguageElementExtension {
 			throw new RuntimeException('''«object» is not inside a «CommonalityFile.simpleName» definition''')
 		}
 		object.eContainer.containingCommonalityFile
+	}
+
+	def static dispatch Commonality getContainingCommonality(Commonality commonality) {
+		return commonality;
+	}
+
+	def static dispatch Commonality getContainingCommonality(EObject object) {
+		if (object.eContainer === null) {
+			throw new RuntimeException('''«object» is not inside a «Commonality.simpleName» definition''')
+		}
+		object.eContainer.containingCommonality
 	}
 
 	def static CommonalityFile getContainedCommonalityFile(Resource resource) {

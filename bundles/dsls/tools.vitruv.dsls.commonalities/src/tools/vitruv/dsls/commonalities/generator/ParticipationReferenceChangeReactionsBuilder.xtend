@@ -116,7 +116,7 @@ class ParticipationReferenceChangeReactionsBuilder
 	}
 
 	def private retrieveIntermediate(extension UndecidedMatcherStatementBuilder builder) {
-		vall('intermediate').retrieveAsserted(commonalityFile.changeClass).correspondingTo.affectedEObject
+		vall('intermediate').retrieveAsserted(commonality.changeClass).correspondingTo.affectedEObject
 	}
 
 	def private getParticipationEReference(CommonalityReferenceMapping mapping) {

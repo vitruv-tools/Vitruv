@@ -145,7 +145,7 @@ package class ReactionsGenerator extends SubGenerator {
 
 	def private reactionForCommonalityDelete(Participation participation) {
 		create.reaction('''«commonality.concept.name»_«commonality.name»Delete''')
-			.afterElement(commonalityFile.changeClass).deleted
+			.afterElement(commonality.changeClass).deleted
 			.call [
 				match [
 					for (participationClass : participation.classes) {
@@ -167,7 +167,7 @@ package class ReactionsGenerator extends SubGenerator {
 			.afterElement(participationClass.changeClass).deleted
 			.call [
 				match [
-					vall('corresponding_intermediate').retrieveAsserted(commonalityFile.changeClass)
+					vall('corresponding_intermediate').retrieveAsserted(commonality.changeClass)
 						.correspondingTo.affectedEObject
 				]
 				action [
@@ -178,7 +178,7 @@ package class ReactionsGenerator extends SubGenerator {
 
 	def private reactionForCommonalityCreate(Participation participation) {
 		create.reaction('''«commonality.concept.name»_«commonality.name»Create''')
-			.afterElement(commonalityFile.changeClass).created
+			.afterElement(commonality.changeClass).created
 			.call [
 				match [
 					for (participationClass : participation.classes) {
@@ -222,7 +222,7 @@ package class ReactionsGenerator extends SubGenerator {
 						.taggedWith(participationClass.correspondenceTag)
 				]
 				.action [
-					vall('newIndermediate').create(commonalityFile.changeClass).andInitialize [
+					vall('newIndermediate').create(commonality.changeClass).andInitialize [
 						assignStagingId(variable('newIndermediate'))
 					]
 					addCorrespondenceBetween('newIndermediate').and.affectedEObject
@@ -265,7 +265,7 @@ package class ReactionsGenerator extends SubGenerator {
 		if (relations.size > 0 || participation.isCommonalityParticipation) {
 			// TODO participation domains
 			val reactionStart = create.reaction('''«commonality.concept.name»_«commonality.name»RootInsert''')
-				.afterElementInsertedAsRoot(commonalityFile.changeClass)
+				.afterElementInsertedAsRoot(commonality.changeClass)
 
 			var FluentReactionBuilder reaction = null;
 			if (relations.size > 0) {

@@ -31,7 +31,7 @@ package class IntermediateModelCodeGenerator extends SubGenerator {
 		if (!isNewResourceSet) return
 		val generatedCodeDirectory = fsa.getURI(GENERATED_CODE_FOLDER)
 		for (generatedConcept : generatedConcepts) {
-			val generatedPackage = generatedConcept.generatedIntermediateModelPackage
+			val generatedPackage = generatedConcept.intermediateModelPackage
 			val generatedGenModel = generateGenModel(generatedPackage, generatedConcept, generatedCodeDirectory)
 			generateModelCode(generatedGenModel)
 		}
@@ -47,7 +47,7 @@ package class IntermediateModelCodeGenerator extends SubGenerator {
 			initialize(Collections.singleton(generatedPackage))
 			genPackages.head => [
 				prefix = conceptName.intermediateModelClassesPrefix
-				basePackage = conceptName.conceptPackagePathPart
+				basePackage = intermediateModelPackagePrefix
 				adapterFactory = false
 			]
 		]
