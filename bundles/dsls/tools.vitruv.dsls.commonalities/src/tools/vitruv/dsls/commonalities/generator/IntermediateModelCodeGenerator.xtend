@@ -15,6 +15,9 @@ import org.eclipse.emf.common.util.Diagnostic
 import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.EPackage
 import org.eclipse.emf.ecore.plugin.EcorePlugin
+import org.eclipse.emf.ecore.resource.ResourceSet
+import org.eclipse.jdt.core.IJavaProject
+import org.eclipse.xtext.resource.XtextResourceSet
 import tools.vitruv.extensions.dslruntime.commonalities.intermediatemodelbase.IntermediateModelBasePackage
 import tools.vitruv.framework.util.VitruviusConstants
 
@@ -74,10 +77,32 @@ package class IntermediateModelCodeGenerator extends SubGenerator {
 			throw new RuntimeException(result.message)
 		}
 
-		// load the generated resources into the ResourceSet, so that the
-		// reactions generator can resolve the jvm types:
-		generator.generatedOutputs.forEach [
-			resourceSet.getResource(URI.createPlatformResourceURI(it.path, false), true)
-		]
+		// TODO Workaround: When running in Eclipse, Xtext uses JDT to lookup
+		// JVM types. However, JDT keeps internal caches of its Java Model
+		// (such as the contents of source folders, packages, etc.), which
+		// don't seem to get updated in time, causing Xtext to not be able to
+		// find the JVM types for the generated intermediate model code when we
+		// generate the reactions code for our Commonalities.
+		// Manually closing and reopening the JavaProject flushes these
+		// internal caches, forcing JDT to freshly check for and parse
+		// generated packages and source files when Xtext's JdtTypeProvider
+		// requests a Java type lookup by name.
+		val javaProject = resourceSet.javaProject
+		if (javaProject !== null) {
+			javaProject.close
+			javaProject.open(null)
+		}
+	}
+
+	// See: org.eclipse.xtext.common.types.xtext.ui.XtextResourceSetBasedProjectProvider
+	def private IJavaProject getJavaProject(ResourceSet resourceSet) {
+		if (resourceSet instanceof XtextResourceSet) {
+			val xtextResourceSet = resourceSet as XtextResourceSet
+			val Object context = xtextResourceSet.getClasspathURIContext()
+			if (context instanceof IJavaProject) {
+				return context as IJavaProject
+			}
+		}
+		return null
 	}
 }
