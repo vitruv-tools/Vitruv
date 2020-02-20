@@ -32,10 +32,6 @@ abstract class IntermediateVitruvDomain extends AbstractTuidAwareVitruvDomain {
 		false
 	}
 
-	override supportsUuids() {
-		false
-	}
-
 	override boolean isInstanceOfDomainMetamodel(EObject eObject) {
 		// IntermediateResourceBridge is shared by the various intermediate
 		// domains. During the creation of a new IntermediateResourceBridge
