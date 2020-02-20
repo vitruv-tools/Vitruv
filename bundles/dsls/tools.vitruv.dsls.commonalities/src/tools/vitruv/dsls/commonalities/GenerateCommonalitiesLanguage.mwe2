@@ -70,7 +70,7 @@ Workflow {
 
 		language = StandardLanguage {
 			name = "tools.vitruv.dsls.commonalities.CommonalitiesLanguage"
-			fileExtensions = "com"
+			fileExtensions = "commonality"
 			referencedResource = languageElementsModel
 			// not used as of now:
 			//referencedResource = "platform:/resource/tools.vitruv.dsls.mirbase/model/generated/MirBase.genmodel"

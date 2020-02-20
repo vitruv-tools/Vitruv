@@ -6,7 +6,7 @@ import tools.vitruv.dsls.commonalities.testutils.ExecutionTestCompiler
 @Singleton
 class IdentifiedExecutionTestCompiler extends ExecutionTestCompiler {
 
-	static val COMMONALITY_FILES = #['Identified.com', 'Sub.com']
+	static val COMMONALITY_FILES = #['Identified.commonality', 'Sub.commonality']
 	static val DOMAIN_DEPENDENCIES = #[
 		'tools.vitruv.testutils.domains',
 		'tools.vitruv.testutils.metamodels'
