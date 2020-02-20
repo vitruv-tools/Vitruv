@@ -13,11 +13,9 @@ import org.eclipse.xtext.resource.XtextResource
 import org.eclipse.xtext.xbase.compiler.CompilationTemplateAdapter
 import org.eclipse.xtext.xbase.compiler.JvmModelGenerator
 import org.eclipse.xtext.xbase.jvmmodel.JvmTypeReferenceBuilder
-import tools.vitruv.domains.emf.builder.VitruviusEmfBuilderApplicator
 import tools.vitruv.extensions.dslruntime.commonalities.IntermediateVitruvDomain
 import tools.vitruv.extensions.dslruntime.commonalities.intermediatemodelbase.IntermediateModelBasePackage
 import tools.vitruv.framework.domains.VitruvDomainProvider
-import tools.vitruv.framework.domains.VitruviusProjectBuilderApplicator
 import tools.vitruv.framework.tuid.AttributeTuidCalculatorAndResolver
 
 import static extension tools.vitruv.dsls.commonalities.generator.GeneratorConstants.*
@@ -56,20 +54,15 @@ package class DomainGenerator extends SubGenerator {
 					visibility = JvmVisibility.PUBLIC
 					body = '''
 					super("«conceptName.conceptDomainName»",
-						«'''«conceptName.intermediateModelClassesPrefix»Package'''».eINSTANCE,«
+						«'''«conceptName.intermediateModelPackageClassName.simpleName»'''».eINSTANCE,«
 						»«
 						// Tuid calculation: Uses the 'intermediateId' attribute
 						// This attribute delegates to 'fullPath' for intermediate resource bridges
 						// TODO remove once resource creation is handled by domains
 						»
-						new «AttributeTuidCalculatorAndResolver.typeRef»("«conceptName.intermediateModelPackage.nsURI»", "«IntermediateModelBasePackage.eINSTANCE.intermediate_IntermediateId.name»"),
+						new «AttributeTuidCalculatorAndResolver.typeRef»("«conceptName.intermediateModelPackage.nsURI»", «
+							»"«IntermediateModelBasePackage.eINSTANCE.intermediate_IntermediateId.name»"),
 						"«conceptName.intermediateModelFileExtension»");'''
-				],
-				TypesFactory.eINSTANCE.createJvmOperation => [
-					visibility = JvmVisibility.PUBLIC
-					simpleName = 'getBuilderApplicator'
-					returnType = VitruviusProjectBuilderApplicator.typeRef
-					body = '''return new «VitruviusEmfBuilderApplicator.typeRef»();'''
 				]
 			)
 		]

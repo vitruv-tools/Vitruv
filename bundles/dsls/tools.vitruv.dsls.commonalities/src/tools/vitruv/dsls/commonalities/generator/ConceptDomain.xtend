@@ -1,38 +1,32 @@
 package tools.vitruv.dsls.commonalities.generator
 
-import java.util.Collections
-import java.util.Set
 import org.eclipse.emf.ecore.EPackage
-import tools.vitruv.framework.domains.AbstractTuidAwareVitruvDomain
+import tools.vitruv.extensions.dslruntime.commonalities.IntermediateVitruvDomain
+import tools.vitruv.extensions.dslruntime.commonalities.intermediatemodelbase.IntermediateModelBasePackage
+import tools.vitruv.framework.domains.VitruvDomain
 import tools.vitruv.framework.domains.VitruvDomainProvider
-import tools.vitruv.framework.domains.VitruviusProjectBuilderApplicator
 import tools.vitruv.framework.tuid.AttributeTuidCalculatorAndResolver
 
 import static extension tools.vitruv.dsls.commonalities.generator.GeneratorConstants.*
 
-package class ConceptDomain extends AbstractTuidAwareVitruvDomain {
+/**
+ * Dummy {@link VitruvDomain} used by the {@link ReactionsGenerator}.
+ */
+package class ConceptDomain extends IntermediateVitruvDomain {
 
 	val Provider provider
 
-	private new(String conceptName, EPackage mainPackage, Set<EPackage> furtherPackages) {
-		super(conceptName.conceptDomainName, mainPackage, furtherPackages,
-			new AttributeTuidCalculatorAndResolver('', #[])) // TODO
+	package new(String conceptName, EPackage conceptPackage) {
+		super(conceptName.conceptDomainName, conceptPackage,
+			new AttributeTuidCalculatorAndResolver(conceptPackage.nsURI,
+				IntermediateModelBasePackage.eINSTANCE.intermediate_IntermediateId.name),
+			conceptName.intermediateModelFileExtension)
 		provider = new Provider(this, conceptName.conceptDomainProviderClassName.qualifiedName)
 	}
 
-	package new(String conceptName, Iterable<EPackage> packages) {
-		this(conceptName, packages.head, packages.drop(1).toSet)
+	def getProvider() {
+		this.provider
 	}
-
-	package new(String conceptName, EPackage ePackage) {
-		this(conceptName, ePackage, Collections.emptySet)
-	}
-
-	override getBuilderApplicator() {
-		return new VitruviusProjectBuilderApplicator("what is this?")
-	}
-
-	def getProvider() { this.provider }
 
 	private static class Provider implements VitruvDomainProvider<ConceptDomain> {
 
@@ -51,9 +45,5 @@ package class ConceptDomain extends AbstractTuidAwareVitruvDomain {
 		override getCanonicalNameForReference() {
 			canonicalName
 		}
-	}
-
-	override supportsUuids() {
-		false
 	}
 }

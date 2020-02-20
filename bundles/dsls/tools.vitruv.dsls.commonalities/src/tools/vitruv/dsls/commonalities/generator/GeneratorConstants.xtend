@@ -120,7 +120,11 @@ class GeneratorConstants {
 
 	@Pure
 	def static getIntermediateModelPackageClassName(Concept concept) {
-		val conceptName = concept.name
+		concept.name.intermediateModelPackageClassName
+	}
+
+	@Pure
+	def static getIntermediateModelPackageClassName(String conceptName) {
 		new GenericClassNameGenerator(conceptName.intermediateModelPackageName,
 			conceptName.intermediateModelClassesPrefix + "Package")
 	}

@@ -111,14 +111,14 @@ package class GenerationContext {
 		])
 	}
 
-	def package getConceptDomainType(CommonalityFile commonalityFile) {
-		domainTypes.computeIfAbsent(commonalityFile.concept.name, [ conceptName |
+	def package getConceptDomainType(Concept concept) {
+		domainTypes.computeIfAbsent(concept.name, [ conceptName |
 			findDomainJvmType(conceptName.conceptDomainClassName.qualifiedName)
 		])
 	}
 
-	def package getConceptDomainProviderType(CommonalityFile commonalityFile) {
-		domainProviderTypes.computeIfAbsent(commonalityFile.concept.name, [ conceptName |
+	def package getConceptDomainProviderType(Concept concept) {
+		domainProviderTypes.computeIfAbsent(concept.name, [ conceptName |
 			findDomainJvmType(conceptName.conceptDomainProviderClassName.qualifiedName)
 		])
 	}
