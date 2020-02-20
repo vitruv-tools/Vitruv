@@ -1,20 +1,20 @@
 package tools.vitruv.testutils.matchers
 
+import edu.kit.ipd.sdq.activextendannotations.Utility
+import java.util.Collection
+import java.util.Collections
+import java.util.HashMap
+import java.util.List
+import java.util.Map
+import java.util.Stack
+import java.util.function.Consumer
 import org.eclipse.emf.ecore.EObject
-import org.hamcrest.Description
-import org.hamcrest.Matcher
+import org.eclipse.emf.ecore.EStructuralFeature
 import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.xtend.lib.annotations.FinalFieldsConstructor
-import java.util.Collection
-import java.util.Stack
+import org.hamcrest.Description
+import org.hamcrest.Matcher
 import org.hamcrest.TypeSafeMatcher
-import java.util.function.Consumer
-import java.util.Map
-import java.util.HashMap
-import edu.kit.ipd.sdq.activextendannotations.Utility
-import java.util.Collections
-import org.eclipse.emf.ecore.EStructuralFeature
-import org.eclipse.emf.ecore.EClass
 
 @Utility
 class ModelMatchers {
@@ -32,6 +32,15 @@ class ModelMatchers {
 	
 	def static ignoring(String featureName) {
 		return new IgnoreNamedFeature(featureName)
+	}
+	
+	def static ignoringAllExcept(String... featureNames) {
+		return new IgnoreAllExceptNamedFeatures(featureNames)
+	}
+	
+	// ignores features that are unset in the expected (!) object
+	def static ignoringUnsetFeatures() {
+		return new IgnoreUnsetFeatures()
 	}
 }
 
@@ -105,14 +114,14 @@ package class ModelTreeEqualityMatcher extends TypeSafeMatcher<EObject> {
 		return expectedObject.equalsDeeply(item, false)
 	}
 	
-	def private findFeatureChecker(EClass eClass, EStructuralFeature feature) {
+	def private findFeatureChecker(EObject expectedObject, EStructuralFeature feature) {
 		for (featureChecker : featureMatchers) {
-			if (featureChecker.isForFeature(eClass, feature)) {
+			if (featureChecker.isForFeature(expectedObject, feature)) {
 				return featureChecker
 			}
 		}
 		return new FeatureMatcher() {
-			override isForFeature(EClass checkedClass, EStructuralFeature feature) {
+			override isForFeature(EObject expectedObject, EStructuralFeature feature) {
 				true
 			}
 
@@ -140,7 +149,7 @@ package class ModelTreeEqualityMatcher extends TypeSafeMatcher<EObject> {
 		}
 		for (feature : expected.eClass.EAllStructuralFeatures) {
 			navigationStack.push('''.«feature.name»''')
-			val matcherMismatch = findFeatureChecker(expected.eClass, feature).getMismatch(expected.eGet(feature), item.eGet(feature))
+			val matcherMismatch = findFeatureChecker(expected, feature).getMismatch(expected.eGet(feature), item.eGet(feature))
 			if (matcherMismatch !== null) {
 				mismatch = matcherMismatch
 				return false;
@@ -262,8 +271,38 @@ class IgnoreNamedFeature implements FeatureMatcher {
 		this.featureName = featureName
 	}
 
-	override isForFeature(EClass checkedClass, EStructuralFeature feature) {
+	override isForFeature(EObject expectedObject, EStructuralFeature feature) {
 		feature.name == featureName
+	}
+
+	override getMismatch(Object expectedValue, Object itemValue) {
+		null
+	}
+}
+
+class IgnoreAllExceptNamedFeatures implements FeatureMatcher {
+	val List<String> featureNames
+
+	package new(String... featureNames) {
+		this.featureNames = featureNames
+	}
+
+	override isForFeature(EObject expectedObject, EStructuralFeature feature) {
+		!featureNames.contains(feature.name)
+	}
+
+	override getMismatch(Object expectedValue, Object itemValue) {
+		null
+	}
+}
+
+class IgnoreUnsetFeatures implements FeatureMatcher {
+
+	package new() {
+	}
+
+	override isForFeature(EObject expectedObject, EStructuralFeature feature) {
+		!expectedObject.eIsSet(feature)
 	}
 
 	override getMismatch(Object expectedValue, Object itemValue) {
