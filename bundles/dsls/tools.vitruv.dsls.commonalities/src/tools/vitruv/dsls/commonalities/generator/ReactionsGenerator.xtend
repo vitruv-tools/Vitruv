@@ -2,10 +2,13 @@ package tools.vitruv.dsls.commonalities.generator
 
 import com.google.inject.Inject
 import com.google.inject.Provider
+import java.util.List
+import java.util.function.Function
 import java.util.function.Supplier
 import org.apache.log4j.Logger
 import org.eclipse.emf.ecore.EClass
 import org.eclipse.xtext.common.types.JvmOperation
+import org.eclipse.xtext.xbase.XExpression
 import org.eclipse.xtext.xbase.XFeatureCall
 import org.eclipse.xtext.xbase.XbaseFactory
 import tools.vitruv.dsls.commonalities.language.Participation
@@ -189,19 +192,12 @@ package class ReactionsGenerator extends SubGenerator {
 				.action [
 					for (participationClass : participation.classes) {
 						val corresponding = participationClass.correspondingVariableName
-						val specialInitBuilder = participationClassSpecialInitializationBuilder.get.forParticipationClass(participationClass)
 						vall(corresponding).create(participationClass.changeClass) => [
-							if (participation.isCommonalityParticipation || specialInitBuilder.hasSpecialInitialization) {
+							val participationClassInitializers = participationClass.participationClassInitializers
+							if (!participationClassInitializers.empty) {
 								andInitialize [ typeProvider |
 									XbaseFactory.eINSTANCE.createXBlockExpression => [
-										expressions += #[
-											(participation.isCommonalityParticipation) ?
-												assignStagingId(typeProvider, typeProvider.variable(corresponding)) : null,
-											(specialInitBuilder.hasSpecialInitialization) ?
-												specialInitBuilder.getSpecialInitializer(typeProvider, [
-													typeProvider.variable(correspondingVariableName)
-												]) : null
-										].filterNull
+										expressions += participationClassInitializers.map[apply(typeProvider)]
 									]
 								]
 							}
@@ -211,6 +207,30 @@ package class ReactionsGenerator extends SubGenerator {
 					}
 				]
 			]
+	}
+
+	def private List<Function<RoutineTypeProvider, XExpression>> getParticipationClassInitializers(ParticipationClass participationClass) {
+		return #[
+			participationClass.commonalityParticipationClassInitializer,
+			participationClass.participationClassSpecialInitializer
+		].filterNull.toList
+	}
+
+	def private Function<RoutineTypeProvider, XExpression> getParticipationClassSpecialInitializer(ParticipationClass participationClass) {
+		val specialInitBuilder = participationClassSpecialInitializationBuilder.get.forParticipationClass(participationClass)
+		if (!specialInitBuilder.hasSpecialInitialization) return null
+		return [RoutineTypeProvider typeProvider |
+			specialInitBuilder.getSpecialInitializer(typeProvider, [
+				typeProvider.variable(correspondingVariableName)
+			])
+		]
+	}
+
+	def private Function<RoutineTypeProvider, XExpression> getCommonalityParticipationClassInitializer(ParticipationClass participationClass) {
+		if (!participationClass.participation.isCommonalityParticipation) return null
+		return [RoutineTypeProvider typeProvider |
+			assignStagingId(typeProvider, typeProvider.variable(participationClass.correspondingVariableName))
+		]
 	}
 
 	def private reactionForParticipationClassCreate(ParticipationClass participationClass) {
