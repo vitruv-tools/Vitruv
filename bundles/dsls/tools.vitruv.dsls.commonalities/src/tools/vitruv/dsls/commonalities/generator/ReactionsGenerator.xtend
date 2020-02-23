@@ -6,8 +6,10 @@ import java.util.List
 import java.util.function.Function
 import java.util.function.Supplier
 import org.apache.log4j.Logger
+import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.EClass
 import org.eclipse.xtext.common.types.JvmOperation
+import org.eclipse.xtext.resource.IGlobalServiceProvider
 import org.eclipse.xtext.xbase.XExpression
 import org.eclipse.xtext.xbase.XFeatureCall
 import org.eclipse.xtext.xbase.XbaseFactory
@@ -32,6 +34,8 @@ import static extension tools.vitruv.dsls.commonalities.language.extensions.Comm
 package class ReactionsGenerator extends SubGenerator {
 
 	private static val Logger logger = Logger.getLogger(ReactionsGenerator)
+
+	@Inject IGlobalServiceProvider globalServiceProvider
 
 	val Supplier<IReactionsGenerator> reactionsGeneratorProvider
 	val Supplier<CommonalityAttributeChangeReactionsBuilder> commonalityAttributeChangeReactionsBuilder
@@ -80,6 +84,9 @@ package class ReactionsGenerator extends SubGenerator {
 			// nothing to generate
 			return;
 		}
+
+		// This has the side-effect of initializing the Reactions language's injector if that hasn't happened yet:
+		globalServiceProvider.findService(URI.createFileURI("fake.reactions"), IReactionsGenerator)
 
 		val generator = reactionsGeneratorProvider.get()
 		reactionsGenerationContext = reactionsGeneratorContextProvider.get.wrappingContext(generationContext)
