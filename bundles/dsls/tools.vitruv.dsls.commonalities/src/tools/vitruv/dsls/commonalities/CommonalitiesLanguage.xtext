@@ -43,7 +43,7 @@ PackageLike:
 
 Participation:
 	'with' (SimpleParticipation | TupleParticipation)
-	('as' alias=QUOTED_NAME)?
+	('as' Aliasable)?
 	('whereat' condition=ParticipationConditionDeclaration | condition=ParticipationNoCondition)
 ;
 
@@ -81,7 +81,7 @@ BracedParticipationRelation returns ParticipationRelation:
 ;
 
 fragment Aliasable:
-	('called' alias=QUOTED_NAME)?
+	alias=STRING
 ;
 
 ClassLike:
@@ -93,11 +93,11 @@ ParticipationClass:
 ;
 
 QualifiedParticipationClassDeclaration returns ParticipationClass:
-	superMetaclass=[Metaclass|QualifiedMetaclass] Aliasable
+	superMetaclass=[Metaclass|QualifiedMetaclass] ('called' Aliasable)?
 ;
 
 UnqualifiedParticipationClassDeclaration returns ParticipationClass:
-	superMetaclass=[Metaclass|UnqualifiedMetaclass] Aliasable
+	superMetaclass=[Metaclass|UnqualifiedMetaclass] ('called' Aliasable)?
 ;
 
 ParticipationConditionDeclaration returns ParticipationCondition:
@@ -157,7 +157,7 @@ CommonalityReferenceMapping:
 
 fragment QualifiedClasslike:
 	ID ':' ID;
-	
+
 QualifiedMetaclass:
 	QualifiedClasslike
 ;
@@ -182,15 +182,7 @@ UnqualifiedParticipationMember:
 	ID
 ;
 
-
 /******************
  * Terminal Rules *
  ******************/
 
-terminal QUOTED_NAME:
-	("'" NAME "'") | ('"' NAME '"') | ("“" NAME "”") | ("»" NAME "«") | ("«" NAME "»") | ("„" NAME "“")
-;
-
-terminal fragment NAME:
-	('a'..'z' | 'A'..'Z') ('a'..'z' | 'A'..'Z' | '0'..'9' | '-' | '_')*
-;

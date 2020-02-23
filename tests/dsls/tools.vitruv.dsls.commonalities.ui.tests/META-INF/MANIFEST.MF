@@ -35,7 +35,8 @@ Require-Bundle: tools.vitruv.dsls.commonalities.ui,
  org.apache.log4j;bundle-version="1.2.15"
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Export-Package: tools.vitruv.dsls.commonalities.ui.executiontests;x-internal:=true,
- tools.vitruv.dsls.commonalities.ui.tests;x-internal=true
+ tools.vitruv.dsls.commonalities.ui.tests;x-internal=true,
+ tools.vitruv.dsls.commonalities.ui.tests.aliases;x-internal:=true
 Import-Package: org.hamcrest.core,
  org.junit;version="4.5.0",
  org.junit.runners.model;version="4.5.0",

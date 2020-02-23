@@ -3,7 +3,9 @@
  */
 package tools.vitruv.dsls.commonalities.validation
 
+import java.util.regex.Pattern
 import org.eclipse.xtext.validation.Check
+import tools.vitruv.dsls.commonalities.language.Aliasable
 import tools.vitruv.dsls.commonalities.language.CommonalityReferenceMapping
 import tools.vitruv.dsls.commonalities.language.ParticipationClass
 import tools.vitruv.dsls.commonalities.language.elements.Metaclass
@@ -19,16 +21,18 @@ import static extension tools.vitruv.dsls.commonalities.language.extensions.Comm
  */
 class CommonalitiesLanguageValidator extends AbstractCommonalitiesLanguageValidator {
 
-//	public static val INVALID_NAME = 'invalidName'
-//
-//	@Check
-//	def checkGreetingStartsWithCapital(Greeting greeting) {
-//		if (!Character.isUpperCase(greeting.name.charAt(0))) {
-//			warning('Name should start with a capital', 
-//					CommonalitiesLanguagePackage.Literals.GREETING__NAME,
-//					INVALID_NAME)
-//		}
-//	}
+	// Note: This is a subset of the valid IDs
+	static val ALIAS_REGEX = "^[a-zA-Z][a-zA-z0-9_]*$"
+	static val ALIAS_PATTERN = Pattern.compile(ALIAS_REGEX)
+
+	@Check
+	def checkAlias(Aliasable aliasable) {
+		val alias = aliasable.alias
+		if (alias === null) return; // has no alias -> ignore
+		if (!ALIAS_PATTERN.matcher(alias).matches) {
+			error('''Invalid alias («alias»). Valid format: «ALIAS_REGEX»)''', ALIASABLE__ALIAS)
+		}
+	}
 
 	@Check
 	def checkCommonalityReferenceMappingHasCorrectType(CommonalityReferenceMapping mapping) {
