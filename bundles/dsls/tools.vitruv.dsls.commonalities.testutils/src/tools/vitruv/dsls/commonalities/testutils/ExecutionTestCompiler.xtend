@@ -51,9 +51,11 @@ abstract class ExecutionTestCompiler {
 	var compiled = false
 	@Inject CommonalitiesGenerationSettings generationSettings
 
-	def protected abstract Iterable<String> getCommonalityFiles();
+	def protected abstract String getProjectName()
 
-	def protected abstract Iterable<String> getDomainDependencies();
+	def protected abstract Iterable<String> getCommonalityFiles()
+
+	def protected abstract Iterable<String> getDomainDependencies()
 
 	def getChangePropagationDefinitions() {
 		if (!compiled) {
@@ -120,7 +122,7 @@ abstract class ExecutionTestCompiler {
 	 */
 	def private prepareTestProject() {
 		setTargetPlatform()
-		val eclipseProject = ResourcesPlugin.workspace.root.getProject('commonalities-test') => [
+		val eclipseProject = ResourcesPlugin.workspace.root.getProject(this.projectName) => [
 			create(null as IProgressMonitor)
 			open(null)
 			setDescription(description => [
