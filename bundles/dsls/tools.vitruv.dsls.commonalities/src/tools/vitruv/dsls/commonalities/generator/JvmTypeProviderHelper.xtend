@@ -108,7 +108,7 @@ class JvmTypeProviderHelper {
 		if (result.size > 1) {
 			val description = description(memberType, memberName, parameterTypeRestrictions, parameterCount, type)
 			throw new NoSuchJvmElementException('''
-				Found more that one «description»:
+				Found more than one «description»:
 				«FOR resultElement : result»
 					«resultElement.identifier»
 				«ENDFOR»

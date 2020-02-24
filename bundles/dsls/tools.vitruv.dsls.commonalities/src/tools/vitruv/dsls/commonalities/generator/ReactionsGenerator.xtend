@@ -82,6 +82,7 @@ package class ReactionsGenerator extends SubGenerator {
 		logger.debug('''Generating reactions for commonality «commonalityFile.concept.name»::«commonality.name»''')
 		if (commonality.participations.length + commonality.allMembers.length == 0) {
 			// nothing to generate
+			logger.debug("  Ignoring empty commonality")
 			return;
 		}
 
@@ -226,7 +227,7 @@ package class ReactionsGenerator extends SubGenerator {
 	def private Function<RoutineTypeProvider, XExpression> getParticipationClassSpecialInitializer(ParticipationClass participationClass) {
 		val specialInitBuilder = participationClassSpecialInitializationBuilder.get.forParticipationClass(participationClass)
 		if (!specialInitBuilder.hasSpecialInitialization) return null
-		return [RoutineTypeProvider typeProvider |
+		return [ RoutineTypeProvider typeProvider |
 			specialInitBuilder.getSpecialInitializer(typeProvider, [
 				typeProvider.variable(correspondingVariableName)
 			])
@@ -286,7 +287,7 @@ package class ReactionsGenerator extends SubGenerator {
 			.map[optionalParticipationRelation]
 			.filterNull
 			.toSet
-			.map [it -> operator.findOptionalImplementedMethod('afterInserted')]
+			.map[it -> operator.findOptionalImplementedMethod('afterInserted')]
 			.filter[value !== null])
 
 		if (relations.size > 0 || participation.isCommonalityParticipation) {
@@ -298,7 +299,7 @@ package class ReactionsGenerator extends SubGenerator {
 			if (relations.size > 0) {
 				reaction = reactionStart.call [
 					match [
-						for (partClass : relations.keySet.flatMap [participationClasses]) {
+						for (partClass : relations.keySet.flatMap[participationClasses]) {
 							vall(partClass.correspondingVariableName).retrieveAsserted(partClass.changeClass)
 								.correspondingTo.newValue
 								.taggedWith(partClass.correspondenceTag)
