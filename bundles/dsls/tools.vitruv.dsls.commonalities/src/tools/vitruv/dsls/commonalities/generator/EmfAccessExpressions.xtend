@@ -131,7 +131,7 @@ class EmfAccessExpressions {
 		]
 	}
 
-	def private static getEFeature(extension RoutineTypeProvider typeProvider, XFeatureCall element,
+	def package static getEFeature(extension RoutineTypeProvider typeProvider, XFeatureCall element,
 		String featureName) {
 		XbaseFactory.eINSTANCE.createXMemberFeatureCall => [
 			memberCallTarget = XbaseFactory.eINSTANCE.createXMemberFeatureCall => [
@@ -147,7 +147,7 @@ class EmfAccessExpressions {
 		]
 	}
 
-	def private static getEFeature(extension RoutineTypeProvider typeProvider, XFeatureCall element,
+	def package static getEFeature(extension RoutineTypeProvider typeProvider, XFeatureCall element,
 		EStructuralFeature eFeature) {
 		XbaseFactory.eINSTANCE.createXMemberFeatureCall => [
 			memberCallTarget = element

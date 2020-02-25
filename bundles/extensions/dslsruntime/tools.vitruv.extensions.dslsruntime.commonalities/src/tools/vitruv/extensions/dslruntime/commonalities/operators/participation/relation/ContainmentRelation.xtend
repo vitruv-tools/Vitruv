@@ -1,12 +1,13 @@
-package tools.vitruv.extensions.dslruntime.commonalities.participationrelations
+package tools.vitruv.extensions.dslruntime.commonalities.operators.participation.relation
 
 import java.util.List
 import org.eclipse.emf.ecore.EClass
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EcorePackage
+import tools.vitruv.extensions.dslruntime.commonalities.operators.OperatorName
 
-@RelationName('in')
-class ContainmentRelation extends AbstractParticipationRelation {
+@OperatorName('in')
+class ContainmentRelation extends AbstractParticipationRelationOperator {
 
 	new(EObject[] leftObjects, EObject[] rightObjects) {
 		super(leftObjects, rightObjects)

@@ -1,10 +1,10 @@
-package tools.vitruv.extensions.dslruntime.commonalities.participationrelations
+package tools.vitruv.extensions.dslruntime.commonalities.operators.participation.relation
 
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.xtend.lib.annotations.FinalFieldsConstructor
 
 @FinalFieldsConstructor
-abstract class AbstractParticipationRelation implements ParticipationRelationOperator {
+abstract class AbstractParticipationRelationOperator implements ParticipationRelationOperator {
 
 	protected val EObject[] leftObjects
 	protected val EObject[] rightObjects

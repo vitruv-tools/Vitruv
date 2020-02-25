@@ -3,12 +3,15 @@ package tools.vitruv.dsls.commonalities.generator
 import edu.kit.ipd.sdq.activextendannotations.Utility
 import java.util.ArrayList
 import java.util.Arrays
+import org.eclipse.xtext.common.types.JvmDeclaredType
 import org.eclipse.xtext.common.types.JvmIdentifiableElement
 import org.eclipse.xtext.xbase.XBlockExpression
 import org.eclipse.xtext.xbase.XExpression
 import org.eclipse.xtext.xbase.XFeatureCall
 import org.eclipse.xtext.xbase.XMemberFeatureCall
 import org.eclipse.xtext.xbase.XbaseFactory
+
+import static extension tools.vitruv.dsls.commonalities.generator.JvmTypeProviderHelper.*
 
 @Utility
 package class XbaseHelper {
@@ -87,6 +90,13 @@ package class XbaseHelper {
 			feature = featureCall.feature
 			typeLiteral = featureCall.typeLiteral
 			explicitOperationCall = featureCall.explicitOperationCall
+		]
+	}
+
+	def package static noArgsConstructorCall(JvmDeclaredType type) {
+		XbaseFactory.eINSTANCE.createXConstructorCall => [
+			constructor = type.findNoArgsConstructor
+			explicitConstructorCall = true
 		]
 	}
 }

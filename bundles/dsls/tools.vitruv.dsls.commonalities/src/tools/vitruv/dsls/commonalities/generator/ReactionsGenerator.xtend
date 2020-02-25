@@ -3,18 +3,19 @@ package tools.vitruv.dsls.commonalities.generator
 import com.google.inject.Inject
 import com.google.inject.Provider
 import java.util.List
-import java.util.function.Function
 import java.util.function.Supplier
 import org.apache.log4j.Logger
 import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.EClass
+import org.eclipse.emf.ecore.EObject
+import org.eclipse.emf.ecore.EStructuralFeature
 import org.eclipse.xtext.common.types.JvmOperation
 import org.eclipse.xtext.resource.IGlobalServiceProvider
-import org.eclipse.xtext.xbase.XExpression
 import org.eclipse.xtext.xbase.XFeatureCall
 import org.eclipse.xtext.xbase.XbaseFactory
 import tools.vitruv.dsls.commonalities.language.Participation
 import tools.vitruv.dsls.commonalities.language.ParticipationClass
+import tools.vitruv.dsls.commonalities.language.ParticipationCondition
 import tools.vitruv.dsls.commonalities.language.ParticipationRelation
 import tools.vitruv.dsls.reactions.api.generator.IReactionsGenerator
 import tools.vitruv.dsls.reactions.builder.FluentReactionBuilder
@@ -25,7 +26,9 @@ import tools.vitruv.extensions.dslruntime.commonalities.IntermediateModelManagem
 import tools.vitruv.extensions.dslruntime.commonalities.intermediatemodelbase.IntermediateModelBasePackage
 import tools.vitruv.framework.domains.VitruvDomainProviderRegistry
 
+import static tools.vitruv.dsls.commonalities.generator.EmfAccessExpressions.*
 import static tools.vitruv.dsls.commonalities.generator.ParticipationRelationUtil.*
+import static tools.vitruv.dsls.commonalities.generator.XbaseHelper.*
 
 import static extension tools.vitruv.dsls.commonalities.generator.JvmTypeProviderHelper.*
 import static extension tools.vitruv.dsls.commonalities.generator.ReactionsGeneratorConventions.*
@@ -217,14 +220,21 @@ package class ReactionsGenerator extends SubGenerator {
 			]
 	}
 
-	def private List<Function<RoutineTypeProvider, XExpression>> getParticipationClassInitializers(ParticipationClass participationClass) {
-		return #[
+	def private getParticipationClassInitializers(ParticipationClass participationClass) {
+		return (#[
 			participationClass.commonalityParticipationClassInitializer,
 			participationClass.participationClassSpecialInitializer
-		].filterNull.toList
+		] + participationClass.participationClassConditionInitializers).filterNull.toList
 	}
 
-	def private Function<RoutineTypeProvider, XExpression> getParticipationClassSpecialInitializer(ParticipationClass participationClass) {
+	def private getCommonalityParticipationClassInitializer(ParticipationClass participationClass) {
+		if (!participationClass.participation.isCommonalityParticipation) return null
+		return [ RoutineTypeProvider typeProvider |
+			assignStagingId(typeProvider, typeProvider.variable(participationClass.correspondingVariableName))
+		]
+	}
+
+	def private getParticipationClassSpecialInitializer(ParticipationClass participationClass) {
 		val specialInitBuilder = participationClassSpecialInitializationBuilder.get.forParticipationClass(participationClass)
 		if (!specialInitBuilder.hasSpecialInitialization) return null
 		return [ RoutineTypeProvider typeProvider |
@@ -234,10 +244,39 @@ package class ReactionsGenerator extends SubGenerator {
 		]
 	}
 
-	def private Function<RoutineTypeProvider, XExpression> getCommonalityParticipationClassInitializer(ParticipationClass participationClass) {
-		if (!participationClass.participation.isCommonalityParticipation) return null
-		return [RoutineTypeProvider typeProvider |
-			assignStagingId(typeProvider, typeProvider.variable(participationClass.correspondingVariableName))
+	def private getParticipationClassConditionInitializers(ParticipationClass participationClass) {
+		return participationClass.participation.conditions
+			.filter[enforced]
+			.filter[attribute.participationClass == participationClass]
+			.map[participationConditionInitializer]
+	}
+
+	def private getParticipationConditionInitializer(ParticipationCondition participationCondition) {
+		return [ extension RoutineTypeProvider typeProvider |
+			val operator = participationCondition.operator.imported
+			val enforceMethod = operator.findOptionalImplementedMethod("enforce")
+			return XbaseFactory.eINSTANCE.createXMemberFeatureCall => [
+				memberCallTarget = participationCondition.newParticipationConditionOperator(typeProvider)
+				feature = enforceMethod
+				explicitOperationCall = true
+			]
+		]
+	}
+
+	def package static newParticipationConditionOperator(ParticipationCondition participationCondition, extension RoutineTypeProvider typeProvider) {
+		val attribute = participationCondition.attribute
+		val participationClass = attribute.participationClass
+		val participationClassInstance = typeProvider.variable(participationClass.correspondingVariableName)
+		XbaseFactory.eINSTANCE.createXConstructorCall => [
+			constructor = participationCondition.operator.findConstructor(EObject, EStructuralFeature, List)
+			explicitConstructorCall = true
+			arguments += expressions(
+				participationClassInstance,
+				getEFeature(typeProvider, participationClassInstance, attribute.name),
+				XbaseFactory.eINSTANCE.createXListLiteral => [
+					elements += participationCondition.parameters.map[expression]
+				]
+			)
 		]
 	}
 

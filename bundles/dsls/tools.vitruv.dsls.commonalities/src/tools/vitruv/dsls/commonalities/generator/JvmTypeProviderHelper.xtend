@@ -185,6 +185,10 @@ class JvmTypeProviderHelper {
 		findConstructor(type, -1, parameterTypeRestrictions)
 	}
 
+	def package static findNoArgsConstructor(JvmDeclaredType type) {
+		findConstructor(type, 0)
+	}
+
 	def package static findConstructor(JvmDeclaredType type, int parameterCount,
 		Class<?>... parameterTypeRestrictions) {
 		val extension argumentChecker = new ArgumentRestrictionChecker(parameterTypeRestrictions, parameterCount)

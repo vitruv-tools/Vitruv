@@ -20,6 +20,7 @@ class CommonalitiesLanguageGlobalScopeProvider extends TypesAwareDefaultGlobalSc
 
 	@Inject Provider<VitruvDomainMetaclassesScope> allMetaclassesScope
 	@Inject Provider<ParticipationRelationOperatorScope> participationRelationOperatorScope
+	@Inject Provider<ParticipationConditionOperatorScope> participationConditionOperatorScope
 	@Inject extension IEObjectDescriptionProvider descriptionProvider
 
 	override getScope(Resource resource, EReference reference, Predicate<IEObjectDescription> filter) {
@@ -28,25 +29,19 @@ class CommonalitiesLanguageGlobalScopeProvider extends TypesAwareDefaultGlobalSc
 			// Commonality instances for commonality participation domains and participation classes, rather than
 			// EClassAdapters as they would get created by the VitruvDomainMetaclassesScope.
 			super.getScope(resource, reference, filter),
-			getVitruvDomainsScope(resource, reference),
-			getSelfScope(resource, reference)
+			_getScope(resource, reference)
 		)
 	}
 
-	def private getVitruvDomainsScope(Resource resource, EReference reference) {
+	def private _getScope(Resource resource, EReference reference) {
 		switch (reference) {
 			case PARTICIPATION_CLASS__SUPER_METACLASS:
 				allMetaclassesScope.get()
 			case PARTICIPATION_RELATION__OPERATOR:
 				participationRelationOperatorScope.get.forResourceSet(resource.resourceSet)
-			default:
-				IScope.NULLSCOPE
-		}
-	}
-
-	def private getSelfScope(Resource resource, EReference reference) {
-		switch (reference) {
-			case COMMONALITY_REFERENCE__REFERENCE_TYPE:
+			case PARTICIPATION_CONDITION__OPERATOR:
+				participationConditionOperatorScope.get.forResourceSet(resource.resourceSet)
+			case COMMONALITY_REFERENCE__REFERENCE_TYPE: // self scope
 				new SimpleScope(IScope.NULLSCOPE, Collections.singleton(
 					resource.containedCommonalityFile.commonality.describe()
 				))

@@ -1,4 +1,4 @@
-package tools.vitruv.extensions.dslruntime.commonalities.participationrelations
+package tools.vitruv.extensions.dslruntime.commonalities.operators.participation.relation
 
 interface ParticipationRelationOperator {
 
