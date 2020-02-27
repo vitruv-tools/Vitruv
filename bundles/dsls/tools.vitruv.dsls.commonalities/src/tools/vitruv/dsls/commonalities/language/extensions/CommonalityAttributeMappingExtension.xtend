@@ -9,6 +9,7 @@ import tools.vitruv.dsls.commonalities.language.CommonalityAttributeMapping
 import tools.vitruv.dsls.commonalities.language.elements.Classifier
 import tools.vitruv.dsls.commonalities.language.elements.WellKnownClassifiers
 
+import static extension tools.vitruv.dsls.commonalities.language.extensions.CommonalitiesLanguageElementExtension.*
 import static extension tools.vitruv.dsls.commonalities.language.extensions.ParticipationClassExtension.*
 
 @Utility
@@ -47,12 +48,7 @@ package class CommonalityAttributeMappingExtension {
 	}
 
 	def static getDeclaringAttribute(CommonalityAttributeMapping mapping) {
-		val result = mapping.eContainer
-		if (result instanceof CommonalityAttribute) {
-			return result
-		}
-		throw new IllegalStateException('''Found the «CommonalityAttributeMapping.simpleName» ‹«mapping»› «
-		»not inside a «CommonalityAttribute.simpleName»!''')
+		return mapping.getDirectContainer(CommonalityAttribute)
 	}
 
 	def static dispatch isWrite(AttributeSetSpecification spec) {

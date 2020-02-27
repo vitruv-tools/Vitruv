@@ -7,15 +7,13 @@ import tools.vitruv.dsls.commonalities.language.EnforcedParticipationCondition
 import tools.vitruv.dsls.commonalities.language.Participation
 import tools.vitruv.dsls.commonalities.language.ParticipationCondition
 
+import static extension tools.vitruv.dsls.commonalities.language.extensions.CommonalitiesLanguageElementExtension.*
+
 @Utility
 package class ParticipationConditionExtension {
 
 	def static Participation getParticipation(ParticipationCondition participationCondition) {
-		val container = participationCondition.eContainer
-		if (container instanceof Participation) {
-			return container
-		}
-		throw new IllegalStateException("Found a ParticipationCondition that is not contained inside of any Participation!")
+		return participationCondition.getDirectContainer(Participation)
 	}
 
 	def static dispatch isEnforced(BidirectionalParticipationCondition condition) {

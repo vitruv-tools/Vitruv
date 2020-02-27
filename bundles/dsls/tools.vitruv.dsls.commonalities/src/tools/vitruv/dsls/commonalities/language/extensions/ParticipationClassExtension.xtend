@@ -1,23 +1,18 @@
 package tools.vitruv.dsls.commonalities.language.extensions
 
 import edu.kit.ipd.sdq.activextendannotations.Utility
-import org.eclipse.emf.ecore.EObject
 import tools.vitruv.dsls.commonalities.language.Commonality
 import tools.vitruv.dsls.commonalities.language.Participation
 import tools.vitruv.dsls.commonalities.language.ParticipationClass
 import tools.vitruv.dsls.commonalities.language.ParticipationRelation
 
+import static extension tools.vitruv.dsls.commonalities.language.extensions.CommonalitiesLanguageElementExtension.*
+
 @Utility
 package class ParticipationClassExtension {
 
 	def static ParticipationRelation getOptionalParticipationRelation(ParticipationClass participationClass) {
-		findOptionalParticipationRelation(participationClass.eContainer)
-	}
-
-	def private static dispatch findOptionalParticipationRelation(EObject catchAll) {}
-
-	def private static dispatch findOptionalParticipationRelation(ParticipationRelation relationDeclaration) {
-		relationDeclaration
+		return participationClass.getOptionalDirectContainer(ParticipationRelation)
 	}
 
 	def static getDomain(ParticipationClass participationClass) {
@@ -26,26 +21,14 @@ package class ParticipationClassExtension {
 
 	def static getParticipation(ParticipationClass participationClass) {
 		if (participationClass.eIsProxy) return null
-		return participationClass.findParticipation
+		return participationClass.getContainer(Participation)
 	}
 
-	def private static dispatch Participation findParticipation(Participation participation) {
-		participation
-	}
-
-	def private static dispatch Participation findParticipation(EObject object) {
-		object.eContainer.findParticipation
-	}
-
-	def private static dispatch Participation findParticipation(Void nill) {
-		throw new IllegalStateException("Found a participation class outside of a participation!")
-	}
-
-	def static getParticipatingCommonality(ParticipationClass participationClass) {
+	def static Commonality getParticipatingCommonality(ParticipationClass participationClass) {
 		val metaclass = participationClass.superMetaclass
-		switch metaclass {
-			Commonality: metaclass // automatically casted to Commonality
-			default: null
+		if (metaclass instanceof Commonality) {
+			return metaclass
 		}
+		return null
 	}
 }

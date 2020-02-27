@@ -8,6 +8,7 @@ import tools.vitruv.dsls.commonalities.language.ReferenceEqualitySpecification
 import tools.vitruv.dsls.commonalities.language.ReferenceReadSpecification
 import tools.vitruv.dsls.commonalities.language.ReferenceSetSpecification
 
+import static extension tools.vitruv.dsls.commonalities.language.extensions.CommonalitiesLanguageElementExtension.*
 import static extension tools.vitruv.dsls.commonalities.language.extensions.ParticipationClassExtension.*
 import static extension tools.vitruv.dsls.commonalities.language.extensions.ParticipationExtension.*
 
@@ -43,12 +44,7 @@ class CommonalityReferenceMappingExtension {
 	}
 
 	def static getDeclaringReference(CommonalityReferenceMapping mapping) {
-		val result = mapping.eContainer
-		if (result instanceof CommonalityReference) {
-			return result
-		}
-		throw new IllegalStateException('''Found the «CommonalityReferenceMapping.simpleName» ‹«mapping»› «
-		»not inside a «CommonalityReference.simpleName»!''')
+		return mapping.getDirectContainer(CommonalityReference)
 	}
 
 	def static getMatchingReferencedParticipations(CommonalityReferenceMapping mapping) {

@@ -9,38 +9,59 @@ import tools.vitruv.dsls.commonalities.language.CommonalityFile
 @Utility
 package class CommonalitiesLanguageElementExtension {
 
-	def static dispatch CommonalityFile getOptionalContainingCommonalityFile(CommonalityFile commonalityFile) {
-		commonalityFile
-	}
-
-	def static dispatch CommonalityFile getOptionalContainingCommonalityFile(EObject object) {
-		object.eContainer.optionalContainingCommonalityFile
-	}
-
-	def static dispatch CommonalityFile getOptionalContainingCommonalityFile(Void nill) {
-		null
-	}
-
-	def static dispatch CommonalityFile getContainingCommonalityFile(CommonalityFile commonalityFile) {
-		return commonalityFile;
-	}
-
-	def static dispatch CommonalityFile getContainingCommonalityFile(EObject object) {
-		if (object.eContainer === null) {
-			throw new RuntimeException('''«object» is not inside a «CommonalityFile.simpleName» definition''')
+	/**
+	 * @return the container of the given type
+	 * @throws RuntimeException if no container of the given type is found
+	 */
+	package def static <T extends EObject> T getContainer(EObject object, Class<T> containerType) {
+		val typedContainer = object.getOptionalContainer(containerType)
+		if (typedContainer !== null) {
+			return typedContainer
 		}
-		object.eContainer.containingCommonalityFile
+		throw new RuntimeException('''The given «object.class.simpleName» («object») is not contained inside any «containerType.simpleName»!''')
 	}
 
-	def static dispatch Commonality getContainingCommonality(Commonality commonality) {
-		return commonality;
-	}
-
-	def static dispatch Commonality getContainingCommonality(EObject object) {
-		if (object.eContainer === null) {
-			throw new RuntimeException('''«object» is not inside a «Commonality.simpleName» definition''')
+	/**
+	 * @return the container of the given type, or <code>null</code> if no such container is found
+	 */
+	package def static <T extends EObject> T getOptionalContainer(EObject object, Class<T> containerType) {
+		val typedContainer = object.getOptionalDirectContainer(containerType)
+		if (typedContainer !== null) {
+			return typedContainer
 		}
-		object.eContainer.containingCommonality
+		return object.eContainer?.getOptionalContainer(containerType)
+	}
+
+	package def static <T extends EObject> T getDirectContainer(EObject object, Class<T> containerType) {
+		val typedContainer = object.getOptionalDirectContainer(containerType)
+		if (typedContainer !== null) {
+			return typedContainer
+		}
+		throw new RuntimeException('''The given «object.class.simpleName» («object») is not directly contained inside a «containerType.simpleName»!''')
+	}
+
+	package def static <T extends EObject> T getOptionalDirectContainer(EObject object, Class<T> containerType) {
+		val container = object.eContainer
+		if (container === null) {
+			return null
+		}
+		if (containerType.isInstance(container)) {
+			return containerType.cast(container)
+		}
+		return null
+	}
+
+	def static CommonalityFile getOptionalContainingCommonalityFile(EObject object) {
+		return object.getOptionalContainer(CommonalityFile)
+	}
+
+	def static CommonalityFile getContainingCommonalityFile(EObject object) {
+		return object.getContainer(CommonalityFile)
+	}
+
+	def static Commonality getContainingCommonality(EObject object) {
+		return object.getContainer(Commonality)
+
 	}
 
 	def static CommonalityFile getContainedCommonalityFile(Resource resource) {
