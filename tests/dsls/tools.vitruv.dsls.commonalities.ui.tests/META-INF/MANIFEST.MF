@@ -32,7 +32,10 @@ Require-Bundle: tools.vitruv.dsls.commonalities.ui,
  tools.vitruv.dsls.mirbase.ui;bundle-version="0.2.0",
  tools.vitruv.dsls.reactions.ui;bundle-version="0.2.0",
  tools.vitruv.testutils.metamodels;bundle-version="0.2.0",
- org.apache.log4j;bundle-version="1.2.15"
+ org.apache.log4j;bundle-version="1.2.15",
+ org.eclipse.xtext.ui.testing,
+ org.eclipse.ui.workbench;resolution:=optional,
+ org.eclipse.xtext.xbase.junit
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Export-Package: tools.vitruv.dsls.commonalities.ui.executiontests;x-internal:=true,
  tools.vitruv.dsls.commonalities.ui.tests;x-internal=true,
