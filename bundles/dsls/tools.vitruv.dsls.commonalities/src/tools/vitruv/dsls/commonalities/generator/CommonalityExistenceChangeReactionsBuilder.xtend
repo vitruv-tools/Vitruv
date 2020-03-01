@@ -7,7 +7,9 @@ import java.util.function.Supplier
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EStructuralFeature
 import org.eclipse.xtext.common.types.JvmOperation
+import org.eclipse.xtext.xbase.XExpression
 import org.eclipse.xtext.xbase.XbaseFactory
+import org.eclipse.xtext.xbase.lib.Functions.Function1
 import tools.vitruv.dsls.commonalities.language.Commonality
 import tools.vitruv.dsls.commonalities.language.Participation
 import tools.vitruv.dsls.commonalities.language.ParticipationClass
@@ -28,14 +30,19 @@ import static extension tools.vitruv.dsls.commonalities.language.extensions.Comm
 
 class CommonalityExistenceChangeReactionsBuilder extends ReactionsSubGenerator<CommonalityExistenceChangeReactionsBuilder> {
 
-	val Supplier<ParticipationClassSpecialInitializationBuilder> participationClassSpecialInitializationBuilder
+	val Supplier<ResourceInitializationBuilder> resourceInitializationBuilder
+	val Supplier<ParticipationRelationInitializationBuilder> participationRelationInitializationBuilder
 
 	@Inject
 	new(
-		Provider<ParticipationClassSpecialInitializationBuilder> participationClassSpecialInitBuilderProvider
+		Provider<ResourceInitializationBuilder> resourceInitializationBuilderProvider,
+		Provider<ParticipationRelationInitializationBuilder> participationRelationInitializationBuilderProvider
 	) {
-		this.participationClassSpecialInitializationBuilder = [
-			participationClassSpecialInitBuilderProvider.get.withGenerationContext(reactionsGenerationContext)
+		this.resourceInitializationBuilder = [
+			resourceInitializationBuilderProvider.get.withGenerationContext(reactionsGenerationContext)
+		]
+		this.participationRelationInitializationBuilder = [
+			participationRelationInitializationBuilderProvider.get.withGenerationContext(reactionsGenerationContext)
 		]
 	}
 
@@ -73,27 +80,51 @@ class CommonalityExistenceChangeReactionsBuilder extends ReactionsSubGenerator<C
 					for (participationClass : participation.classes) {
 						val corresponding = participationClass.correspondingVariableName
 						vall(corresponding).create(participationClass.changeClass) => [
-							val participationClassInitializers = participationClass.participationClassInitializers
-							if (!participationClassInitializers.empty) {
+							val initializers = participationClass.participationClassInitializers
+							if (!initializers.empty) {
 								andInitialize [ typeProvider |
-									XbaseFactory.eINSTANCE.createXBlockExpression => [
-										expressions += participationClassInitializers.map[apply(typeProvider)]
-									]
+									initializers.toBlockExpression(typeProvider)
 								]
 							}
 						]
 						addCorrespondenceBetween.affectedEObject.and(corresponding)
 							.taggedWith(participationClass.correspondenceTag)
 					}
+
+					// Any initialization that needs to happen after all model objects were created:
+					for (participationClass : participation.classes) {
+						val postInitializers = participationClass.participationClassPostInitializers
+						if (!postInitializers.empty) {
+							update(participationClass.correspondingVariableName, [ typeProvider |
+								postInitializers.toBlockExpression(typeProvider)
+							])
+						}
+					}
 				]
 			]
 	}
 
+	def private toBlockExpression(Iterable<? extends Function1<RoutineTypeProvider, ? extends XExpression>> expressionBuilders,
+			RoutineTypeProvider typeProvider) {
+		return XbaseFactory.eINSTANCE.createXBlockExpression => [
+			expressions += expressionBuilders.map[apply(typeProvider)]
+		]
+	}
+
 	def private getParticipationClassInitializers(ParticipationClass participationClass) {
-		return (#[
-			participationClass.commonalityParticipationClassInitializer,
-			participationClass.participationClassSpecialInitializer
-		] + participationClass.participationClassConditionInitializers).filterNull.toList
+		return #[
+			participationClass.resourceInitializer,
+			participationClass.commonalityParticipationClassInitializer
+		].filterNull.toList
+	}
+
+	def private getResourceInitializer(ParticipationClass participationClass) {
+		extension val resourceInitBuilder = resourceInitializationBuilder.get.forParticipationClass(participationClass)
+		if (!resourceInitBuilder.hasInitializer) return null
+		return [ RoutineTypeProvider typeProvider |
+			val resource = typeProvider.variable(participationClass.correspondingVariableName)
+			return resource.getInitializer(typeProvider)
+		]
 	}
 
 	def private getCommonalityParticipationClassInitializer(ParticipationClass participationClass) {
@@ -103,11 +134,20 @@ class CommonalityExistenceChangeReactionsBuilder extends ReactionsSubGenerator<C
 		]
 	}
 
-	def private getParticipationClassSpecialInitializer(ParticipationClass participationClass) {
-		val specialInitBuilder = participationClassSpecialInitializationBuilder.get.forParticipationClass(participationClass)
-		if (!specialInitBuilder.hasSpecialInitialization) return null
+	def private getParticipationClassPostInitializers(ParticipationClass participationClass) {
+		// The initialization done by operators might want to reference other
+		// model objects, so we run their initializations after all model
+		// objects were created
+		return (#[
+			participationClass.participationRelationInitializer
+		] + participationClass.participationClassConditionInitializers).filterNull.toList
+	}
+
+	def private getParticipationRelationInitializer(ParticipationClass participationClass) {
+		val participationRelationInitBuilder = participationRelationInitializationBuilder.get.forParticipationClass(participationClass)
+		if (!participationRelationInitBuilder.hasInitializer) return null
 		return [ RoutineTypeProvider typeProvider |
-			specialInitBuilder.getSpecialInitializer(typeProvider, [
+			participationRelationInitBuilder.getInitializer(typeProvider, [
 				typeProvider.variable(correspondingVariableName)
 			])
 		]
