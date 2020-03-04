@@ -26,10 +26,6 @@ public abstract class VitruviusRecordingCommand extends RecordingCommand impleme
         this.runtimeException = null;
     }
 
-    public void setTransactionDomain(final TransactionalEditingDomain domain) {
-        JavaBridge.setFieldInClass(RecordingCommand.class, "domain", this, domain);
-    }
-
     @Override
     protected void preExecute() {
         this.runtimeException = null;

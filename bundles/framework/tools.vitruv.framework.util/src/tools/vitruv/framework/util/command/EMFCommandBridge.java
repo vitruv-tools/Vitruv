@@ -2,7 +2,6 @@ package tools.vitruv.framework.util.command;
 
 import java.util.concurrent.Callable;
 
-import org.eclipse.emf.common.command.Command;
 import org.eclipse.emf.transaction.TransactionalEditingDomain;
 
 public class EMFCommandBridge {
