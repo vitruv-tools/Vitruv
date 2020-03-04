@@ -12,7 +12,6 @@ import tools.vitruv.framework.change.description.VitruviusChange
 import tools.vitruv.framework.change.processing.ChangePropagationSpecification
 import tools.vitruv.framework.change.processing.ChangePropagationSpecificationProvider
 import tools.vitruv.framework.correspondence.CorrespondenceProviding
-import tools.vitruv.framework.util.command.EMFCommandBridge
 import tools.vitruv.framework.domains.repository.VitruvDomainRepository
 import tools.vitruv.framework.change.processing.ChangePropagationObserver
 import tools.vitruv.framework.change.description.PropagatedChange
@@ -244,12 +243,12 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 		// TODO HK: Clone the changes for each synchronization! Should even be cloned for
 		// each consistency repair routines that uses it,
 		// or: make them read only, i.e. give them a read-only interface!
-		val command = EMFCommandBridge.createVitruviusRecordingCommand [
+		val command = resourceRepository.createCommand() [
 			propagationSpecification.propagateChange(change, correspondenceModel, resourceRepository);
 			modelRepository.cleanupRootElements();
 			null
 		]
-		resourceRepository.executeRecordingCommandOnTransactionalDomain(command);
+		command.executeAndRethrowException();
 
 		// Store modification information
 		val changedEObjects = command.getAffectedObjects().filter(EObject)

@@ -16,7 +16,6 @@ import tools.vitruv.framework.domains.repository.VitruvDomainRepository
 import tools.vitruv.framework.domains.repository.VitruvDomainRepositoryImpl
 import tools.vitruv.framework.userinteraction.InternalUserInteractor
 import tools.vitruv.framework.userinteraction.UserInteractor
-import tools.vitruv.framework.util.command.EMFCommandBridge
 import tools.vitruv.framework.util.datatypes.VURI
 import tools.vitruv.framework.vsum.helper.ChangeDomainExtractor
 import tools.vitruv.framework.vsum.modelsynchronization.ChangePropagationListener
@@ -90,7 +89,7 @@ class VirtualModelImpl implements InternalVirtualModel {
 	}
 
 	override executeCommand(Callable<Void> command) {
-		this.resourceRepository.createRecordingCommandAndExecuteCommandOnTransactionalDomain(command)
+		this.resourceRepository.executeAsCommand(command);
 	}
 
 	override addChangePropagationListener(ChangePropagationListener changePropagationListener) {
@@ -132,12 +131,11 @@ class VirtualModelImpl implements InternalVirtualModel {
 	}
 
 	override reverseChanges(List<PropagatedChange> changes) {
-		val command = EMFCommandBridge.createVitruviusRecordingCommand([|
+		resourceRepository.executeAsCommand([|
 			changes.reverseView.forEach[it.applyBackward(uuidGeneratorAndResolver)]
 			return null
 		])
-		resourceRepository.executeRecordingCommandOnTransactionalDomain(command)
-
+		
 		// TODO HK Instead of this make the changes set the modified flag of the resource when applied
 		val changedEObjects = changes.map[originalChange.affectedEObjects + consequentialChanges.affectedEObjects].flatten
 		changedEObjects.map[eResource].filterNull.forEach[modified = true]
