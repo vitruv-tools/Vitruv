@@ -26,8 +26,6 @@ import tools.vitruv.framework.tuid.TuidResolver
 import tools.vitruv.framework.tuid.TuidUpdateListener
 import tools.vitruv.framework.util.VitruviusConstants
 import tools.vitruv.framework.util.bridges.EcoreResourceBridge
-import tools.vitruv.framework.util.command.EMFCommandBridge
-import tools.vitruv.framework.util.command.VitruviusRecordingCommandExecutor
 import tools.vitruv.framework.util.datatypes.ClaimableHashMap
 import tools.vitruv.framework.util.datatypes.ClaimableMap
 import tools.vitruv.framework.util.datatypes.ModelInstance
@@ -41,11 +39,12 @@ import tools.vitruv.framework.correspondence.InternalCorrespondenceModel
 import tools.vitruv.framework.correspondence.CorrespondenceModelView
 import tools.vitruv.framework.correspondence.CorrespondenceModelViewFactory
 import java.util.function.Predicate
+import tools.vitruv.framework.util.command.CommandCreatorAndExecutor
 
 // TODO move all methods that don't need direct instance variable access to some kind of util class
 class InternalCorrespondenceModelImpl extends ModelInstance implements InternalCorrespondenceModel, TuidUpdateListener {
 	static final Logger logger = Logger::getLogger(typeof(InternalCorrespondenceModelImpl).getSimpleName())
-	final VitruviusRecordingCommandExecutor modelCommandExecutor
+	final CommandCreatorAndExecutor modelCommandExecutor
 	final VitruvDomainRepository domainRepository;
 	final Correspondences correspondences
 	final ClaimableMap<Tuid, Set<List<Tuid>>> tuid2tuidListsMap
@@ -55,7 +54,7 @@ class InternalCorrespondenceModelImpl extends ModelInstance implements InternalC
 	final TuidResolver tuidResolver;
 	final UuidResolver uuidResolver;
 
-	new(TuidResolver tuidResolver, UuidResolver uuidResolver, VitruviusRecordingCommandExecutor modelCommandExecutor,
+	new(TuidResolver tuidResolver, UuidResolver uuidResolver, CommandCreatorAndExecutor modelCommandExecutor,
 		VitruvDomainRepository domainRepository, VURI correspondencesVURI, Resource correspondencesResource) {
 		super(correspondencesVURI, correspondencesResource)
 		this.modelCommandExecutor = modelCommandExecutor
@@ -73,13 +72,13 @@ class InternalCorrespondenceModelImpl extends ModelInstance implements InternalC
 	}
 
 	private def void addCorrespondence(Correspondence correspondence) {
-		this.modelCommandExecutor.executeRecordingCommand(EMFCommandBridge.createVitruviusRecordingCommand(
+		this.modelCommandExecutor.executeAsCommand(
 				[|
 			addCorrespondenceToModel(correspondence)
 			registerCorrespondence(correspondence)
 			setChangedAfterLastSaveFlag()
 			return null
-		]));
+		]);
 	}
 
 	def private void registerCorrespondence(Correspondence correspondence) {
@@ -380,7 +379,7 @@ class InternalCorrespondenceModelImpl extends ModelInstance implements InternalC
 	override void performPostAction(Tuid tuid) {
 		// The correspondence model is an EMF-based model, so modifications have to be
 		// performed within a transaction.
-		this.modelCommandExecutor.executeRecordingCommand(EMFCommandBridge.createVitruviusRecordingCommand([|
+		this.modelCommandExecutor.executeAsCommand([|
 			if (tuidUpdateData === null) {
 				throw new IllegalStateException("Update was not started before performing post action");
 			}
@@ -399,7 +398,7 @@ class InternalCorrespondenceModelImpl extends ModelInstance implements InternalC
 			tuidUpdateData = null;
 			setChangedAfterLastSaveFlag();
 			return null;
-		]));
+		]);
 	}
 
 	private def List<Tuid> calculateTuidsFromEObjects(List<EObject> eObjects) {

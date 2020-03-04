@@ -148,7 +148,7 @@ public class ResourceRepositoryImpl implements ModelRepository, CorrespondencePr
     private ModelInstance getModelInstanceOriginal(final VURI modelURI) {
         ModelInstance modelInstance = this.modelInstances.get(modelURI);
         if (modelInstance == null) {
-            createRecordingCommandAndExecuteCommandOnTransactionalDomain(() -> {
+            executeAsCommand(() -> {
                 // case 2 or 3
                 ModelInstance internalModelInstance = getOrCreateUnregisteredModelInstance(modelURI);
                 registerModelInstance(modelURI, internalModelInstance);
@@ -178,7 +178,7 @@ public class ResourceRepositoryImpl implements ModelRepository, CorrespondencePr
     }
 
     private void saveModelInstance(final ModelInstance modelInstance) {
-        createRecordingCommandAndExecuteCommandOnTransactionalDomain(new Callable<Void>() {
+        executeAsCommand(new Callable<Void>() {
             @Override
             public Void call() throws Exception {
                 VitruvDomain metamodel = getMetamodelByURI(modelInstance.getURI());
@@ -202,7 +202,7 @@ public class ResourceRepositoryImpl implements ModelRepository, CorrespondencePr
     @Override
     public void persistAsRoot(final EObject rootEObject, final VURI vuri) {
         final ModelInstance modelInstance = getModelInstanceOriginal(vuri);
-        createRecordingCommandAndExecuteCommandOnTransactionalDomain(new Callable<Void>() {
+        executeAsCommand(new Callable<Void>() {
             @Override
             public Void call() throws Exception {
                 TuidManager.getInstance().registerObjectUnderModification(rootEObject);
@@ -253,7 +253,7 @@ public class ResourceRepositoryImpl implements ModelRepository, CorrespondencePr
     }
 
     private void saveAllChangedCorrespondenceModels() {
-        createRecordingCommandAndExecuteCommandOnTransactionalDomain(new Callable<Void>() {
+        executeAsCommand(new Callable<Void>() {
             @Override
             public Void call() throws Exception {
                 logger.debug(
@@ -297,7 +297,7 @@ public class ResourceRepositoryImpl implements ModelRepository, CorrespondencePr
     }
 
     private void initializeCorrespondenceModel() {
-        createRecordingCommandAndExecuteCommandOnTransactionalDomain(() -> {
+        executeAsCommand(() -> {
             VURI correspondencesVURI = this.fileSystemHelper.getCorrespondencesVURI();
             Resource correspondencesResource = null;
             if (URIUtil.existsResourceAtUri(correspondencesVURI.getEMFUri())) {
@@ -320,7 +320,7 @@ public class ResourceRepositoryImpl implements ModelRepository, CorrespondencePr
     }
 
     private void initializeUuidProviderAndResolver() {
-        createRecordingCommandAndExecuteCommandOnTransactionalDomain(() -> {
+        executeAsCommand(() -> {
             VURI uuidProviderVURI = this.fileSystemHelper.getUuidProviderAndResolverVURI();
             Resource uuidProviderResource = null;
             if (URIUtil.existsResourceAtUri(uuidProviderVURI.getEMFUri())) {
@@ -381,12 +381,12 @@ public class ResourceRepositoryImpl implements ModelRepository, CorrespondencePr
     public Iterable<TransactionalChange> endRecording() {
         logger.debug("End recording virtual model");
         this.isRecording = false;
-        executeRecordingCommand(EMFCommandBridge.createVitruviusRecordingCommand(() -> {
+        executeAsCommand(() -> {
             for (AtomicEmfChangeRecorder recorder : this.domainToRecorder.values()) {
                 recorder.endRecording();
             }
             return null;
-        }));
+        });
         Iterable<TransactionalChange> result = this.domainToRecorder.values().stream().map((recorder) -> {
             CompositeTransactionalChange compChange = VitruviusChangeFactory.getInstance()
                     .createCompositeTransactionalChange();
@@ -406,7 +406,7 @@ public class ResourceRepositoryImpl implements ModelRepository, CorrespondencePr
     private void deleteModel(final VURI vuri) {
         final ModelInstance modelInstance = getModelInstanceOriginal(vuri);
         final Resource resource = modelInstance.getResource();
-        createRecordingCommandAndExecuteCommandOnTransactionalDomain(new Callable<Void>() {
+        executeAsCommand(new Callable<Void>() {
             @Override
             public Void call() throws Exception {
                 try {
@@ -422,29 +422,25 @@ public class ResourceRepositoryImpl implements ModelRepository, CorrespondencePr
     }
 
     @Override
-    public void createRecordingCommandAndExecuteCommandOnTransactionalDomain(final Callable<Void> callable) {
-        EMFCommandBridge.createAndExecuteVitruviusRecordingCommand(callable, getTransactionalEditingDomain());
+    public void executeAsCommand(final Callable<Void> command) {
+        VitruviusRecordingCommand recordingCommand = createCommand(command);
+        recordingCommand.executeAndRethrowException();
     }
 
     @Override
-    public void executeRecordingCommandOnTransactionalDomain(final VitruviusRecordingCommand command) {
-        EMFCommandBridge.executeVitruviusRecordingCommand(getTransactionalEditingDomain(), command);
+    public VitruviusRecordingCommand createCommand(final Callable<Void> command) {
+        return EMFCommandBridge.createVitruviusRecordingCommand(command, getTransactionalEditingDomain());
     }
 
     @Override
     public void executeOnUuidResolver(final Consumer<UuidResolver> function) {
-        createRecordingCommandAndExecuteCommandOnTransactionalDomain(new Callable<Void>() {
+        executeAsCommand(new Callable<Void>() {
             @Override
             public Void call() {
                 function.accept(ResourceRepositoryImpl.this.uuidGeneratorAndResolver);
                 return null;
             }
         });
-    }
-
-    @Override
-    public void executeRecordingCommand(final VitruviusRecordingCommand command) {
-        executeRecordingCommandOnTransactionalDomain(command);
     }
 
     @Override
@@ -496,7 +492,7 @@ public class ResourceRepositoryImpl implements ModelRepository, CorrespondencePr
         final VURI storageVuri = this.fileSystemHelper.getConsistencyMetadataVURI(safeStorageKey.toString());
         ModelInstance modelInstance = this.modelInstances.get(storageVuri);
         if (modelInstance == null) {
-            createRecordingCommandAndExecuteCommandOnTransactionalDomain(() -> {
+            executeAsCommand(() -> {
                 // case 2 or 3
                 ModelInstance internalModelInstance = loadModelInstanceWithoutDomain(storageVuri);
                 registerModelInstance(storageVuri, internalModelInstance);

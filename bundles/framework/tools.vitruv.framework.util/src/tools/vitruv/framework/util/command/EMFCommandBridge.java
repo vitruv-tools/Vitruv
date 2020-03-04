@@ -10,8 +10,8 @@ public class EMFCommandBridge {
     private EMFCommandBridge() {
     }
    
-    public static VitruviusRecordingCommand createVitruviusRecordingCommand(final Callable<Void> callable) {
-        VitruviusRecordingCommand recordingCommand = new VitruviusRecordingCommand() {
+    public static VitruviusRecordingCommand createVitruviusRecordingCommand(final Callable<Void> callable, TransactionalEditingDomain domain) {
+        VitruviusRecordingCommand recordingCommand = new VitruviusRecordingCommand(domain) {
             @Override
             protected void doExecute() {
                 try {
@@ -24,22 +24,19 @@ public class EMFCommandBridge {
         return recordingCommand;
     }
     
-    public static void executeVitruviusRecordingCommand(final TransactionalEditingDomain domain,
-            final VitruviusRecordingCommand command) {
-        command.setTransactionDomain(domain);
-        executeCommand(domain, command);
+    public static void executeVitruviusRecordingCommand(final VitruviusRecordingCommand command) {
+        executeCommand(command);
         command.rethrowRuntimeExceptionIfExisting();
     }
     
-    private static void executeCommand(TransactionalEditingDomain domain,
-            final Command command) {
-        domain.getCommandStack().execute(command);
+    private static void executeCommand(final VitruviusRecordingCommand command) {
+    	command.executeAndRethrowException();
     }
 
     public static void createAndExecuteVitruviusRecordingCommand(final Callable<Void> callable,
     		final TransactionalEditingDomain domain) {
-        final VitruviusRecordingCommand command = createVitruviusRecordingCommand(callable);
-        executeVitruviusRecordingCommand(domain, command);
+        final VitruviusRecordingCommand command = createVitruviusRecordingCommand(callable, domain);
+        executeVitruviusRecordingCommand(command);
     }
 
 }

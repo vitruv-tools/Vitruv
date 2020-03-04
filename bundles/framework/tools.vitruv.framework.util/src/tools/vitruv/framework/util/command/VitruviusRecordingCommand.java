@@ -18,9 +18,11 @@ public abstract class VitruviusRecordingCommand extends RecordingCommand impleme
     protected static final Logger logger = Logger.getLogger(VitruviusRecordingCommand.class.getSimpleName());
 
     private RuntimeException runtimeException;
-
-    public VitruviusRecordingCommand() {
-        super(null);
+    private TransactionalEditingDomain domain;
+    
+    public VitruviusRecordingCommand(TransactionalEditingDomain domain) {
+        super(domain);
+        this.domain = domain;
         this.runtimeException = null;
     }
 
@@ -70,4 +72,10 @@ public abstract class VitruviusRecordingCommand extends RecordingCommand impleme
 
         return affectedEObjects;
     }
+
+    public void executeAndRethrowException() {
+    	domain.getCommandStack().execute(this);
+    	rethrowRuntimeExceptionIfExisting();
+    }
+    
 }
