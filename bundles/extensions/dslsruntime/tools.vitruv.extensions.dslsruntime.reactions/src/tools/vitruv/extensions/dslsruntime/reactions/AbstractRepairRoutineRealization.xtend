@@ -12,11 +12,9 @@ import tools.vitruv.extensions.dslsruntime.reactions.helper.PersistenceHelper
 import tools.vitruv.extensions.dslsruntime.reactions.helper.ReactionsCorrespondenceHelper
 import tools.vitruv.extensions.dslsruntime.reactions.structure.CallHierarchyHaving
 import tools.vitruv.extensions.dslsruntime.reactions.structure.Loggable
-import tools.vitruv.framework.change.processing.ChangePropagationObservable
 import tools.vitruv.framework.correspondence.CorrespondenceModel
 import tools.vitruv.framework.tuid.TuidManager
 import tools.vitruv.framework.userinteraction.UserInteractor
-import tools.vitruv.framework.util.command.ResourceAccess
 import tools.vitruv.framework.util.datatypes.VURI
 
 abstract class AbstractRepairRoutineRealization extends CallHierarchyHaving implements RepairRoutine, ReactionElementsHandler {
@@ -104,16 +102,10 @@ abstract class AbstractRepairRoutineRealization extends CallHierarchyHaving impl
 	protected abstract def boolean executeRoutine() throws IOException;
 
 	public static class UserExecution extends Loggable {
-		protected final UserInteractor userInteractor;
-		protected final ResourceAccess resourceAccess;
-		protected final CorrespondenceModel correspondenceModel;
-		protected final ChangePropagationObservable changePropagationObservable;
+		protected final extension ReactionExecutionState executionState
 
 		new(ReactionExecutionState executionState) {
-			this.userInteractor = executionState.userInteractor;
-			this.resourceAccess = executionState.resourceAccess;
-			this.correspondenceModel = executionState.correspondenceModel;
-			this.changePropagationObservable = executionState.changePropagationObservable;
+			this.executionState = executionState
 		}
 
 		/**

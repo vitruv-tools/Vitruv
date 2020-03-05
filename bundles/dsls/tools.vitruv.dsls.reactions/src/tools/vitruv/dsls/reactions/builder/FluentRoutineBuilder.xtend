@@ -26,6 +26,8 @@ import tools.vitruv.dsls.reactions.reactionsLanguage.Routine
 import tools.vitruv.dsls.reactions.reactionsLanguage.RoutineCallStatement
 import tools.vitruv.dsls.reactions.reactionsLanguage.RoutineOverrideImportPath
 import tools.vitruv.dsls.reactions.reactionsLanguage.Taggable
+import tools.vitruv.framework.correspondence.CorrespondenceModel
+import tools.vitruv.framework.util.command.ResourceAccess
 
 import static com.google.common.base.Preconditions.*
 import static tools.vitruv.dsls.reactions.codegen.ReactionsLanguageConstants.*
@@ -601,16 +603,46 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 			routineUserExecutionType.featureCall
 		}
 
-		def resourceAccessType() {
-			resourceAccessField.type.type as JvmDeclaredType
+		def executionStateField() {
+			routineUserExecutionType.findAttribute('executionState')
 		}
 
-		def resourceAccessField() {
-			routineUserExecutionType.findAttribute('resourceAccess')
+		def executionStateType() {
+			executionStateField.type.type as JvmDeclaredType
+		}
+
+		def executionState() {
+			executionStateField.featureCall
+		}
+
+		def resourceAccessMethod() {
+			executionStateType.findMethod('getResourceAccess')
+		}
+
+		def resourceAccessType() {
+			findTypeByName(ResourceAccess.name) as JvmDeclaredType
 		}
 
 		def resourceAccess() {
-			resourceAccessField.featureCall
+			return XbaseFactory.eINSTANCE.createXFeatureCall => [
+				feature = resourceAccessMethod
+				implicitReceiver = executionState
+			]
+		}
+
+		def correspondenceModelMethod() {
+			executionStateType.findMethod('getCorrespondenceModel')
+		}
+
+		def correspondenceModelType() {
+			findTypeByName(CorrespondenceModel.canonicalName) as JvmDeclaredType
+		}
+
+		def correspondenceModel() {
+			return XbaseFactory.eINSTANCE.createXFeatureCall => [
+				feature = correspondenceModelMethod
+				implicitReceiver = executionState
+			]
 		}
 	}
 

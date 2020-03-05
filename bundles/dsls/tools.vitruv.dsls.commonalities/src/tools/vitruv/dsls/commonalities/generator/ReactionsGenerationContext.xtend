@@ -96,18 +96,12 @@ package class ReactionsGenerationContext {
 				XbaseFactory.eINSTANCE.createXAssignment => [
 					assignable = resourceBridge.newFeatureCall
 					feature = typeProvider.findMethod(IntermediateResourceBridge, 'setCorrespondenceModel')
-					value = XbaseFactory.eINSTANCE.createXFeatureCall => [
-						feature = routineUserExecutionType.findAttribute('correspondenceModel')
-						implicitReceiver = routineUserExecution
-					]
+					value = correspondenceModel
 				],
 				XbaseFactory.eINSTANCE.createXAssignment => [
 					assignable = resourceBridge.newFeatureCall
 					feature = typeProvider.findMethod(IntermediateResourceBridge, 'setResourceAccess')
-					value = XbaseFactory.eINSTANCE.createXFeatureCall => [
-						feature = routineUserExecutionType.findAttribute('resourceAccess')
-						implicitReceiver = routineUserExecution
-					]
+					value = resourceAccess
 				],
 				XbaseFactory.eINSTANCE.createXAssignment => [
 					assignable = resourceBridge.newFeatureCall

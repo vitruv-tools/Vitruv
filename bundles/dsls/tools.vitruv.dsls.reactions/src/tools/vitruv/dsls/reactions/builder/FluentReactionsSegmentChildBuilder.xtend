@@ -57,10 +57,9 @@ abstract package class FluentReactionsSegmentChildBuilder extends FluentReaction
 			this.delegate = delegate
 			this.builder = builder
 			this.jvmTypeReferenceBuilder = jvmTypeReferenceBuilder
-			this.scopeExpression = scopeExpression			
+			this.scopeExpression = scopeExpression
 		}
-		
-	
+
 		override findTypeByName(String name) {
 			delegate.findTypeByName(name).possiblyImported
 		}
@@ -130,6 +129,14 @@ abstract package class FluentReactionsSegmentChildBuilder extends FluentReaction
 			).head
 			if (result === null) {
 				throw new IllegalStateException('''Could not find the attribute “«attributeName»” in ‹«declaredType.qualifiedName»›!''')
+			}
+			return result
+		}
+
+		def protected static JvmOperation findMethod(JvmDeclaredType declaredType, String methodName) {
+			val result = declaredType.members.filter(JvmOperation).filter[simpleName == methodName].head
+			if (result === null) {
+				throw new IllegalStateException('''Could not find the method “«methodName»” in ‹«declaredType.qualifiedName»›!''')
 			}
 			return result
 		}

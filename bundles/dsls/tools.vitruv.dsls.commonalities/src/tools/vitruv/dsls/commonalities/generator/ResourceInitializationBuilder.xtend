@@ -36,7 +36,6 @@ package class ResourceInitializationBuilder extends ReactionsSubGenerator<Resour
 	}
 
 	def private registerResource(XFeatureCall resource, extension RoutineTypeProvider typeProvider) {
-		val userExecution = routineUserExecutionType
 		XbaseFactory.eINSTANCE.createXBlockExpression => [
 			expressions += expressions(
 				XbaseFactory.eINSTANCE.createXAssignment => [
@@ -44,24 +43,14 @@ package class ResourceInitializationBuilder extends ReactionsSubGenerator<Resour
 						feature = resource.feature
 					]
 					feature = typeProvider.findMethod(IntermediateResourceBridge, 'setResourceAccess')
-					value = XbaseFactory.eINSTANCE.createXFeatureCall => [
-						feature = userExecution.findAttribute('resourceAccess')
-						implicitReceiver = XbaseFactory.eINSTANCE.createXFeatureCall => [
-							feature = userExecution
-						]
-					]
+					value = resourceAccess
 				],
 				XbaseFactory.eINSTANCE.createXAssignment => [
 					assignable = XbaseFactory.eINSTANCE.createXFeatureCall => [
 						feature = resource.feature
 					]
 					feature = typeProvider.findMethod(IntermediateResourceBridge, 'setCorrespondenceModel')
-					value = XbaseFactory.eINSTANCE.createXFeatureCall => [
-						feature = userExecution.findAttribute('correspondenceModel')
-						implicitReceiver = XbaseFactory.eINSTANCE.createXFeatureCall => [
-							feature = userExecution
-						]
-					]
+					value = correspondenceModel
 				],
 				XbaseFactory.eINSTANCE.createXAssignment => [
 					assignable = XbaseFactory.eINSTANCE.createXFeatureCall => [
