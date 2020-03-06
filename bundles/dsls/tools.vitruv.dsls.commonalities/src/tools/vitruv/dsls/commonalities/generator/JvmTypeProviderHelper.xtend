@@ -17,11 +17,11 @@ import org.eclipse.xtext.common.types.access.IJvmTypeProvider
 class JvmTypeProviderHelper {
 
 	def package static findType(IJvmTypeProvider typeProvider, Class<?> clazz) {
-		val result = typeProvider.findTypeByName(clazz.canonicalName)
+		val result = typeProvider.findTypeByName(clazz.name)
 		if (result !== null) {
 			return result
 		}
-		throw new NoSuchJvmElementException('''Could not find type “«clazz.canonicalName»”!''')
+		throw new NoSuchJvmElementException('''Could not find type “«clazz.name»”!''')
 	}
 
 	def private static checkGenericType(JvmType type) {
@@ -240,12 +240,29 @@ class JvmTypeProviderHelper {
 					return false
 				}
 				val parameterType = parameterIter.next.parameterType.type
-				if (parameterType.qualifiedName != restriction.canonicalName &&
+				if (parameterType.qualifiedName != restriction.qualifiedName &&
 					!(parameterType instanceof JvmTypeParameter && restriction == TypeVariable)) {
 					return false
 				}
 			}
 			return true
+		}
+
+		/**
+		 * Gets a name for the given class to use for the comparison with
+		 * {@link JvmIdentifiableElement#getQualifiedName qualified names} of
+		 * JVM types.
+		 * <p>
+		 * Unlike {@link Class#getCanonicalName} this uses <code>$</code> as
+		 * delimiter for inner classes. And unlike {@link Class#getName} this
+		 * appends <code>[]</code> to the component type name of array types.
+		 */
+		def private String getQualifiedName(Class<?> clazz) {
+			if (clazz.isArray) {
+				return clazz.componentType.qualifiedName + "[]"
+			} else {
+				return clazz.name
+			}
 		}
 	}
 

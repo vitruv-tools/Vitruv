@@ -48,7 +48,8 @@ class ContainmentRelation extends AbstractParticipationRelationOperator {
 			isContainment && EType instanceof EClass && (EType as EClass).isAssignableFrom(left.eClass)
 		]
 		if (containmentFeature === null) {
-			throw new IllegalStateException('''Could not find any containment feature in ‹«right.class.canonicalName»› to insert ‹«left.class.canonicalName»› into.''')
+			throw new IllegalStateException('''Could not find any containment feature in ‹«container.name
+				»› that may contain ‹«contained.name»›.''')
 		}
 		return containmentFeature
 	}
