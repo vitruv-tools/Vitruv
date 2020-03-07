@@ -108,6 +108,11 @@ class FluentReactionsSegmentBuilder extends FluentReactionElementBuilder {
 		this
 	}
 
+	def operator_add(FluentRoutineBuilder[] routineBuilders) {
+		routineBuilders.forEach [this += it]
+		this
+	}
+
 	def dispatch add(FluentReactionBuilder reactionBuilder) {
 		this += reactionBuilder
 	}
