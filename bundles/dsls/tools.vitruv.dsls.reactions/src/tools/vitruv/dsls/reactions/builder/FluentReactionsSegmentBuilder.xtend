@@ -29,7 +29,7 @@ class FluentReactionsSegmentBuilder extends FluentReactionElementBuilder {
 		checkState(segment.routines.size + segment.reactions.size + segment.reactionsImports.size > 0,
 			'''Neither routines, nor reactions, nor imports were added to the reaction segment «segment.name»!''')
 	}
-	
+
 	static class ReactionsSegmentSourceBuilder {
 		val extension FluentReactionsSegmentBuilder builder
 
@@ -70,11 +70,11 @@ class FluentReactionsSegmentBuilder extends FluentReactionElementBuilder {
 			domain = domainName
 		]
 	}
-	
+
 	def importSegment(FluentReactionsSegmentBuilder reactionsSegmentBuilder) {
 		return new ReactionsSegmentImportBuilder(this, reactionsSegmentBuilder);
 	}
-	
+
 	static class ReactionsSegmentImportBuilder {
 		val extension FluentReactionsSegmentBuilder builder
 		val ReactionsImport reactionsImport;
@@ -102,20 +102,20 @@ class FluentReactionsSegmentBuilder extends FluentReactionElementBuilder {
 			builder
 		}
 	}
-	
+
 	def operator_add(FluentReactionBuilder[] reactionBuilders) {
 		reactionBuilders.forEach [this += it]
 		this
 	}
-	
+
 	def dispatch add(FluentReactionBuilder reactionBuilder) {
 		this += reactionBuilder
 	}
-	
+
 	def dispatch add(FluentRoutineBuilder routineBuilder) {
 		this += routineBuilder
 	}
-	
+
 	def operator_add(FluentReactionBuilder reactionBuilder) {
 		checkNotYetAttached()
 		segment.reactions += reactionBuilder.reaction
@@ -131,9 +131,8 @@ class FluentReactionsSegmentBuilder extends FluentReactionElementBuilder {
 		childBuilders += routineBuilder
 		this
 	}
-		
+
 	override toString() {
 		'''reaction segment builder for “«segment.name»”'''
 	}
-	
 }

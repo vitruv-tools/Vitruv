@@ -79,7 +79,7 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 	}
 
 	def private addInputElementIfNotExists(EClassifier type, String parameterName) {
-		if(routine.input.modelInputElements.findFirst[name == parameterName] !== null) return;
+		if (routine.input.modelInputElements.findFirst[name == parameterName] !== null) return;
 		addInputElement(type, parameterName)
 	}
 
@@ -298,7 +298,6 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 		private def void reference(EClass modelElement) {
 			statement.reference(modelElement)
 		}
-
 	}
 
 	static class RetrieveModelElementMatcherStatementCorrespondenceBuilder {
@@ -522,17 +521,17 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 				requireNewValue, '''The «routineBuilder» requires a new value, and can thus only be called from reactions, not routines!''')
 			checkState(!routineBuilder.requireOldValue || valueType !==
 				null, '''The «routineBuilder» requires an old value, and can thus only be called from reactions, not routines!''')
-			var hasFittingAffectedEOjbectParameter = false
+			var hasFittingAffectedEObjectParameter = false
 			if (parameters.size > 0) {
 				val param = parameters.get(0)
 				if (param.parameterArgumentType) {
-					// todo: check if matching type
-					hasFittingAffectedEOjbectParameter = true
+					// TODO: check if matching type
+					hasFittingAffectedEObjectParameter = true
 				}
 			}
 			checkState(!routineBuilder.requireAffectedEObject || (
 				routineBuilder.requireAffectedEObject &&
-				hasFittingAffectedEOjbectParameter), '''The «routineBuilder» requires an requireAffectedEObject, and can thus only be called from reactions, not routines!''')
+				hasFittingAffectedEObjectParameter), '''The «routineBuilder» requires an requireAffectedEObject, and can thus only be called from reactions, not routines!''')
 			builder.transferReactionsSegmentTo(routineBuilder)
 			addRoutineCall(routineBuilder, parameters)
 		}
@@ -560,7 +559,6 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 				]
 			]
 		}
-
 	}
 
 	static class RoutineCallParameter {
@@ -577,7 +575,6 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 		def isParameterArgumentType() {
 			argument instanceof String
 		}
-
 	}
 
 	static class RoutineTypeProvider extends AbstractTypeProvider<FluentRoutineBuilder> {
@@ -783,5 +780,4 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 	override protected getCreatedElementType() {
 		"routine"
 	}
-
 }

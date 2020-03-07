@@ -344,5 +344,4 @@ abstract package class FluentReactionElementBuilder {
 			delegate = Collections.emptyList
 		}
 	}
-
 }

@@ -59,7 +59,6 @@ class FluentReactionsFileBuilder extends FluentReactionElementBuilder {
 	override toString() {
 		'''reactions file builder for “«fileName»”'''
 	}
-
 }
 
 class MetamodelImportBuilder extends FluentReactionElementBuilder {
