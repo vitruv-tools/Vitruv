@@ -317,6 +317,11 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 			statement.correspondenceSource = correspondingElement(element)
 			new TaggedWithBuilder(builder, statement)
 		}
+
+		def correspondingTo(Function<RoutineTypeProvider, XExpression> expressionBuilder) {
+			statement.correspondenceSource = correspondingElement(expressionBuilder)
+			new TaggedWithBuilder(builder, statement)
+		}
 	}
 
 	static class RetrieveModelElementMatcherStatementCorrespondenceElementBuilder {
@@ -468,6 +473,14 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 			new CorrespondenceTargetBuilder(builder, statement)
 		}
 
+		def addCorrespondenceBetween(Function<RoutineTypeProvider, XExpression> expressionBuilder) {
+			val statement = ReactionsLanguageFactory.eINSTANCE.createCreateCorrespondence => [
+				firstElement = existingElement(expressionBuilder)
+			]
+			routine.action.actionStatements += statement
+			new CorrespondenceTargetBuilder(builder, statement)
+		}
+
 		def void update(String existingElement, Function<RoutineTypeProvider, XExpression> expressionBuilder) {
 			routine.action.actionStatements += ReactionsLanguageFactory.eINSTANCE.createUpdateModelElement => [
 				element = existingElement(existingElement)
@@ -490,6 +503,14 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 		def removeCorrespondenceBetween(String existingElement) {
 			val statement = ReactionsLanguageFactory.eINSTANCE.createRemoveCorrespondence => [
 				firstElement = existingElement(existingElement)
+			]
+			routine.action.actionStatements += statement
+			new CorrespondenceTargetBuilder(builder, statement)
+		}
+
+		def removeCorrespondenceBetween(Function<RoutineTypeProvider, XExpression> expressionBuilder) {
+			val statement = ReactionsLanguageFactory.eINSTANCE.createRemoveCorrespondence => [
+				firstElement = existingElement(expressionBuilder)
 			]
 			routine.action.actionStatements += statement
 			new CorrespondenceTargetBuilder(builder, statement)
@@ -729,6 +750,11 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 			new TaggedWithBuilder(builder, statement)
 		}
 
+		def and(Function<RoutineTypeProvider, XExpression> expressionBuilder) {
+			statement.secondElement = existingElement(expressionBuilder)
+			new TaggedWithBuilder(builder, statement)
+		}
+
 		def private dispatch setSecondElement(CreateCorrespondence correspondenceStatement,
 			ExistingElementReference existingElement) {
 			correspondenceStatement.secondElement = existingElement
@@ -748,10 +774,26 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 		]
 	}
 
+	def private existingElement(Function<RoutineTypeProvider, XExpression> expressionBuilder) {
+		ReactionsLanguageFactory.eINSTANCE.createExistingElementReference => [
+			code = XbaseFactory.eINSTANCE.createXBlockExpression.whenJvmTypes [
+				expressions += extractExpressions(expressionBuilder.apply(typeProvider))
+			]
+		]
+	}
+
 	def private correspondingElement(String name) {
 		ReactionsLanguageFactory.eINSTANCE.createCorrespondingObjectCodeBlock => [
 			code = XbaseFactory.eINSTANCE.createXFeatureCall.whenJvmTypes [
 				feature = correspondingMethodParameter(name)
+			]
+		]
+	}
+
+	def private correspondingElement(Function<RoutineTypeProvider, XExpression> expressionBuilder) {
+		ReactionsLanguageFactory.eINSTANCE.createCorrespondingObjectCodeBlock => [
+			code = XbaseFactory.eINSTANCE.createXBlockExpression.whenJvmTypes [
+				expressions += extractExpressions(expressionBuilder.apply(typeProvider))
 			]
 		]
 	}
