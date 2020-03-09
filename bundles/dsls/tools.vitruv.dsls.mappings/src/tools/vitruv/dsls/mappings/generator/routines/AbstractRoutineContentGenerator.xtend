@@ -12,7 +12,7 @@ import tools.vitruv.dsls.mappings.generator.conditions.AbstractBidirectionalCond
 import tools.vitruv.dsls.mappings.generator.conditions.AbstractSingleSidedCondition
 import tools.vitruv.dsls.mappings.generator.conditions.FeatureConditionGenerator
 import tools.vitruv.dsls.mappings.mappingsLanguage.MappingParameter
-import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.RoutineTypeProvider
+import tools.vitruv.dsls.reactions.builder.TypeProvider
 
 import static extension tools.vitruv.dsls.mappings.generator.utils.XBaseMethodUtils.*
 
@@ -35,7 +35,7 @@ abstract class AbstractRoutineContentGenerator extends AbstractMappingEntityGene
 		this.localVariables = parentGenerator.localVariables
 	}
 
-	protected def variableDeclaration(RoutineTypeProvider provider, String name, XExpression rightSide) {
+	protected def variableDeclaration(TypeProvider provider, String name, XExpression rightSide) {
 		val declaration = XbaseFactory.eINSTANCE.createXVariableDeclaration => [
 			it.name = name
 			writeable = true
@@ -45,7 +45,7 @@ abstract class AbstractRoutineContentGenerator extends AbstractMappingEntityGene
 		declaration
 	}
 
-	protected def variableDeclaration(RoutineTypeProvider provider, MappingParameter parameter) {
+	protected def variableDeclaration(TypeProvider provider, MappingParameter parameter) {
 		val name = parameter.parameterName
 		val declaration = XbaseFactory.eINSTANCE.createXVariableDeclaration => [
 			it.name = name
@@ -56,7 +56,7 @@ abstract class AbstractRoutineContentGenerator extends AbstractMappingEntityGene
 		declaration
 	}
 
-	protected def variableDeclaration(RoutineTypeProvider provider, MappingParameter parameter, XExpression rightSide) {
+	protected def variableDeclaration(TypeProvider provider, MappingParameter parameter, XExpression rightSide) {
 		val declaration = provider.variableDeclaration(parameter)
 		declaration.right = rightSide
 		declaration

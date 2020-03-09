@@ -7,7 +7,7 @@ import org.eclipse.xtext.xbase.XFeatureCall
 import org.eclipse.xtext.xbase.XbaseFactory
 import tools.vitruv.dsls.commonalities.language.ParticipationClass
 import tools.vitruv.dsls.commonalities.language.ParticipationRelation
-import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.RoutineTypeProvider
+import tools.vitruv.dsls.reactions.builder.TypeProvider
 
 import static tools.vitruv.dsls.commonalities.generator.XbaseHelper.*
 
@@ -18,7 +18,7 @@ package class ParticipationRelationUtil {
 
 	def package static createOperatorConstructorCall(
 		ParticipationRelation relation,
-		extension RoutineTypeProvider typeProvider,
+		extension TypeProvider typeProvider,
 		Function<ParticipationClass, XFeatureCall> participationClassReferenceProvider
 	) {
 		XbaseFactory.eINSTANCE.createXConstructorCall => [

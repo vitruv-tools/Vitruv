@@ -9,7 +9,7 @@ import tools.vitruv.dsls.commonalities.language.ParticipationClass
 import tools.vitruv.dsls.commonalities.language.ParticipationRelation
 import tools.vitruv.dsls.commonalities.language.TupleParticipation
 import tools.vitruv.dsls.commonalities.language.TupleParticipationPart
-import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.RoutineTypeProvider
+import tools.vitruv.dsls.reactions.builder.TypeProvider
 
 import static tools.vitruv.dsls.commonalities.generator.ParticipationRelationUtil.*
 
@@ -23,7 +23,7 @@ package class ParticipationRelationInitializationBuilder
 	static val AFTER_CREATED_RELATION_OPERATOR_HOOK = 'afterCreated'
 
 	ParticipationClass participationClass
-	extension var RoutineTypeProvider typeProvider
+	extension var TypeProvider typeProvider
 	Function<ParticipationClass, XFeatureCall> participationClassReferenceProvider
 
 	def forParticipationClass(ParticipationClass participationClass) {
@@ -58,7 +58,7 @@ package class ParticipationRelationInitializationBuilder
 			&& relation.operator.findOptionalImplementedMethod(AFTER_CREATED_RELATION_OPERATOR_HOOK) !== null
 	}
 
-	def getInitializer(RoutineTypeProvider typeProvider,
+	def getInitializer(TypeProvider typeProvider,
 		Function<ParticipationClass, XFeatureCall> participationReference) {
 		this.typeProvider = typeProvider
 		this.participationClassReferenceProvider = participationReference

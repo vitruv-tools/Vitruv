@@ -1,24 +1,24 @@
 package tools.vitruv.dsls.reactions.generator
 
-import org.junit.Test
-import com.google.inject.Provider
 import com.google.inject.Inject
-import tools.vitruv.testutils.domains.AllElementTypesDomainProvider
-import org.junit.runner.RunWith
-import tools.vitruv.dsls.reactions.tests.ReactionsLanguageInjectorProvider
-import org.eclipse.xtext.testing.InjectWith
-import org.eclipse.xtext.testing.XtextRunner
-import org.eclipse.xtext.generator.InMemoryFileSystemAccess
-import tools.vitruv.dsls.reactions.api.generator.IReactionsGenerator
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.CoreMatchers.*;
-import org.eclipse.xtext.resource.XtextResourceSet
-import tools.vitruv.dsls.reactions.builder.FluentReactionsLanguageBuilder
-import org.eclipse.xtext.xbase.XbaseFactory
-
+import com.google.inject.Provider
 import org.eclipse.xtext.common.types.JvmGenericType
 import org.eclipse.xtext.common.types.JvmOperation
-import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.RoutineTypeProvider
+import org.eclipse.xtext.generator.InMemoryFileSystemAccess
+import org.eclipse.xtext.resource.XtextResourceSet
+import org.eclipse.xtext.testing.InjectWith
+import org.eclipse.xtext.testing.XtextRunner
+import org.eclipse.xtext.xbase.XbaseFactory
+import org.junit.Test
+import org.junit.runner.RunWith
+import tools.vitruv.dsls.reactions.api.generator.IReactionsGenerator
+import tools.vitruv.dsls.reactions.builder.FluentReactionsLanguageBuilder
+import tools.vitruv.dsls.reactions.builder.TypeProvider
+import tools.vitruv.dsls.reactions.tests.ReactionsLanguageInjectorProvider
+import tools.vitruv.testutils.domains.AllElementTypesDomainProvider
+
+import static org.hamcrest.CoreMatchers.*
+import static org.hamcrest.MatcherAssert.assertThat
 
 @RunWith(XtextRunner)
 @InjectWith(ReactionsLanguageInjectorProvider)
@@ -50,7 +50,7 @@ class ReactionsGeneratorTest {
 		return fileBuilder;
 	}
 
-	private def createPrintlnStatement(RoutineTypeProvider typeProvider) {
+	private def createPrintlnStatement(TypeProvider typeProvider) {
 		XbaseFactory.eINSTANCE.createXFeatureCall => [
 			val type = typeProvider.findTypeByName(InputOutput.name) as JvmGenericType
 			feature = type.members.filter(JvmOperation).filter[it.simpleName == 'println'].head

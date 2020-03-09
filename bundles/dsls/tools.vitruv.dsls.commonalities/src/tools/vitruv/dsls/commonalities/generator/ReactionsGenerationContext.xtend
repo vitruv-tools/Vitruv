@@ -15,7 +15,7 @@ import tools.vitruv.dsls.commonalities.language.elements.NamedElement
 import tools.vitruv.dsls.commonalities.language.elements.ResourceMetaclass
 import tools.vitruv.dsls.reactions.builder.FluentReactionsLanguageBuilder
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder
-import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.RoutineTypeProvider
+import tools.vitruv.dsls.reactions.builder.TypeProvider
 import tools.vitruv.extensions.dslruntime.commonalities.IntermediateModelManagement
 import tools.vitruv.extensions.dslruntime.commonalities.resources.IntermediateResourceBridge
 import tools.vitruv.extensions.dslruntime.commonalities.resources.ResourcesPackage
@@ -89,7 +89,7 @@ package class ReactionsGenerationContext {
 		])
 	}
 
-	def private initIntermediateResourceBridge(extension RoutineTypeProvider typeProvider, XFeatureCall resourceBridge,
+	def private initIntermediateResourceBridge(extension TypeProvider typeProvider, XFeatureCall resourceBridge,
 		XFeatureCall modelElement) {
 		XbaseFactory.eINSTANCE.createXBlockExpression => [
 			expressions += expressions(
@@ -120,7 +120,7 @@ package class ReactionsGenerationContext {
 		]
 	}
 
-	def private insertResourceBridge(extension RoutineTypeProvider typeProvider, XFeatureCall resourceBridge,
+	def private insertResourceBridge(extension TypeProvider typeProvider, XFeatureCall resourceBridge,
 		XFeatureCall intermediate) {
 		val intermediateModelURIVariable = XbaseFactory.eINSTANCE.createXVariableDeclaration => [
 			name = 'intermediateModelURI'
@@ -144,7 +144,7 @@ package class ReactionsGenerationContext {
 		]
 	}
 
-	def private insertIntermediate(extension RoutineTypeProvider typeProvider, XFeatureCall intermediate,
+	def private insertIntermediate(extension TypeProvider typeProvider, XFeatureCall intermediate,
 		Commonality commonality) {
 		val intermediateModelURIVariable = XbaseFactory.eINSTANCE.createXVariableDeclaration => [
 			name = 'intermediateModelURI'
@@ -168,7 +168,7 @@ package class ReactionsGenerationContext {
 		]
 	}
 
-	def private callGetMetadataModelURI(extension RoutineTypeProvider typeProvider, Concept concept) {
+	def private callGetMetadataModelURI(extension TypeProvider typeProvider, Concept concept) {
 		resourceAccess.memberFeatureCall => [
 			feature = resourceAccessType.findMethod('getMetadataModelURI')
 			explicitOperationCall = true
@@ -176,7 +176,7 @@ package class ReactionsGenerationContext {
 		]
 	}
 
-	def private callGetModelResource(extension RoutineTypeProvider typeProvider, XFeatureCall vuri) {
+	def private callGetModelResource(extension TypeProvider typeProvider, XFeatureCall vuri) {
 		resourceAccess.memberFeatureCall => [
 			feature = resourceAccessType.findMethod('getModelResource')
 			explicitOperationCall = true

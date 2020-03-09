@@ -16,8 +16,6 @@ import org.eclipse.xtext.common.types.JvmDeclaredType
 import org.eclipse.xtext.common.types.JvmIdentifiableElement
 import org.eclipse.xtext.common.types.JvmMember
 import org.eclipse.xtext.common.types.JvmOperation
-import org.eclipse.xtext.xbase.XExpression
-import org.eclipse.xtext.xbase.XbaseFactory
 import org.eclipse.xtext.xtype.XtypeFactory
 import tools.vitruv.dsls.mirbase.mirBase.MetaclassEAttributeReference
 import tools.vitruv.dsls.mirbase.mirBase.MetaclassEReferenceReference
@@ -27,7 +25,6 @@ import tools.vitruv.dsls.mirbase.mirBase.NamedJavaElement
 import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsFile
 
 import static com.google.common.base.Preconditions.*
-import static tools.vitruv.dsls.reactions.codegen.ReactionsLanguageConstants.*
 
 /**
  * Parent class of all fluent builders. The builders work in three phases:
@@ -283,31 +280,6 @@ abstract package class FluentReactionElementBuilder {
 	def protected <T extends NamedJavaElement> reference(T javaElementReference, Class<?> clazz) {
 		javaElementReference.beforeAttached [
 			type = context.typeReferences.getTypeForName(clazz, targetResource)
-		]
-	}
-
-	def protected List<XExpression> requiredArgumentsFrom(FluentRoutineBuilder routineBuilder,
-		JvmOperation routineCallMethod) {
-		val parameterList = new ArrayList<XExpression>(3)
-		if (routineBuilder.requireAffectedEObject) {
-			parameterList += routineCallMethod.argument(CHANGE_AFFECTED_ELEMENT_ATTRIBUTE)
-		}
-		if (routineBuilder.requireNewValue) {
-			parameterList += routineCallMethod.argument(CHANGE_NEW_VALUE_ATTRIBUTE)
-		}
-		if (routineBuilder.requireOldValue) {
-			parameterList += routineCallMethod.argument(CHANGE_OLD_VALUE_ATTRIBUTE)
-		}
-		return parameterList
-	}
-
-	def protected argument(JvmOperation routineCallMethod, String parameterName) {
-		val parameter = routineCallMethod.parameters.findFirst[name == parameterName]
-		if (parameter === null) {
-			throw new IllegalStateException('''The routine call method “«routineCallMethod»” does not provide a value called “«parameterName»”!''')
-		}
-		XbaseFactory.eINSTANCE.createXFeatureCall => [
-			feature = parameter
 		]
 	}
 

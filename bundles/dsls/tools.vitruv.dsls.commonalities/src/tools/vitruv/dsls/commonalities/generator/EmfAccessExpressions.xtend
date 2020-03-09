@@ -9,7 +9,7 @@ import org.eclipse.xtext.common.types.TypesFactory
 import org.eclipse.xtext.xbase.XExpression
 import org.eclipse.xtext.xbase.XFeatureCall
 import org.eclipse.xtext.xbase.XbaseFactory
-import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.RoutineTypeProvider
+import tools.vitruv.dsls.reactions.builder.TypeProvider
 
 import static extension tools.vitruv.dsls.commonalities.generator.JvmTypeProviderHelper.*
 import static extension tools.vitruv.dsls.commonalities.generator.XbaseHelper.*
@@ -17,7 +17,7 @@ import static extension tools.vitruv.dsls.commonalities.generator.XbaseHelper.*
 @Utility
 class EmfAccessExpressions {
 
-	def package static eSetFeature(extension RoutineTypeProvider typeProvider, XFeatureCall element,
+	def package static eSetFeature(extension TypeProvider typeProvider, XFeatureCall element,
 		String attributeName, XExpression newValue) {
 		XbaseFactory.eINSTANCE.createXMemberFeatureCall => [
 			memberCallTarget = element.newFeatureCall
@@ -28,7 +28,7 @@ class EmfAccessExpressions {
 		]
 	}
 
-	def package static eAddToFeatureList(extension RoutineTypeProvider typeProvider, XFeatureCall element,
+	def package static eAddToFeatureList(extension TypeProvider typeProvider, XFeatureCall element,
 		String attributeName, XExpression newValue) {
 		val featureListVariable = getFeatureList(typeProvider, element, attributeName)
 		XbaseFactory.eINSTANCE.createXBlockExpression => [
@@ -45,7 +45,7 @@ class EmfAccessExpressions {
 		]
 	}
 
-	def package static eRemoveFromFeatureList(extension RoutineTypeProvider typeProvider, XFeatureCall element,
+	def package static eRemoveFromFeatureList(extension TypeProvider typeProvider, XFeatureCall element,
 		String attributeName, XExpression newValue) {
 		val featureListVariable = getFeatureList(typeProvider, element, attributeName)
 		XbaseFactory.eINSTANCE.createXBlockExpression => [
@@ -62,10 +62,10 @@ class EmfAccessExpressions {
 		]
 	}
 
-	def package static setFeature(extension RoutineTypeProvider typeProvider, XFeatureCall element,
+	def package static setFeature(extension TypeProvider typeProvider, XFeatureCall element,
 		EStructuralFeature eFeature, XExpression newValue) {
 		try {
-			// trying to guess the accessors …
+			// trying to guess the accessors:
 			val containingInstanceClassName = eFeature.EContainingClass.instanceClassName
 			if (containingInstanceClassName !== null) {
 				return XbaseFactory.eINSTANCE.createXAssignment => [
@@ -80,25 +80,25 @@ class EmfAccessExpressions {
 		return eSetFeature(typeProvider, element, eFeature.name, newValue)
 	}
 
-	def package static addToFeatureList(extension RoutineTypeProvider typeProvider, XFeatureCall element,
+	def package static addToFeatureList(extension TypeProvider typeProvider, XFeatureCall element,
 		EStructuralFeature eFeature, XExpression newValue) {
 		try {
-			// trying to guess the accesors …
+			// trying to guess the accessors:
 			XbaseFactory.eINSTANCE.createXBinaryOperation => [
 				leftOperand = getEFeature(typeProvider, element, eFeature)
 				feature = typeProvider.findMethod(CollectionExtensions, 'operator_add', Collection, typeVariable)
 				rightOperand = newValue
 			]
 		} catch (NoSuchJvmElementException e) {
-			// if that files, use EMF’s reflection
+			// if that fails, use EMF’s reflection
 			return eAddToFeatureList(typeProvider, element, eFeature.name, newValue)
 		}
 	}
 
-	def package static removeFromFeatureList(extension RoutineTypeProvider typeProvider, XFeatureCall element,
+	def package static removeFromFeatureList(extension TypeProvider typeProvider, XFeatureCall element,
 		EStructuralFeature eFeature, XExpression newValue) {
 		try {
-			// trying to guess the accesors …
+			// trying to guess the accessors:
 			XbaseFactory.eINSTANCE.createXBinaryOperation => [
 				leftOperand = getEFeature(typeProvider, element, eFeature)
 				feature = typeProvider.findMethod(CollectionExtensions, 'operator_remove', Collection, typeVariable)
@@ -110,7 +110,7 @@ class EmfAccessExpressions {
 		}
 	}
 
-	def private static getFeatureList(extension RoutineTypeProvider typeProvider, XFeatureCall element,
+	def private static getFeatureList(extension TypeProvider typeProvider, XFeatureCall element,
 		String featureListName) {
 		XbaseFactory.eINSTANCE.createXVariableDeclaration => [
 			name = featureListName
@@ -131,7 +131,7 @@ class EmfAccessExpressions {
 		]
 	}
 
-	def package static getEFeature(extension RoutineTypeProvider typeProvider, XFeatureCall element,
+	def package static getEFeature(extension TypeProvider typeProvider, XFeatureCall element,
 		String featureName) {
 		XbaseFactory.eINSTANCE.createXMemberFeatureCall => [
 			memberCallTarget = XbaseFactory.eINSTANCE.createXMemberFeatureCall => [
@@ -147,7 +147,7 @@ class EmfAccessExpressions {
 		]
 	}
 
-	def package static getEFeature(extension RoutineTypeProvider typeProvider, XFeatureCall element,
+	def package static getEFeature(extension TypeProvider typeProvider, XFeatureCall element,
 		EStructuralFeature eFeature) {
 		XbaseFactory.eINSTANCE.createXMemberFeatureCall => [
 			memberCallTarget = element

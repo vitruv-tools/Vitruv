@@ -5,7 +5,7 @@ import org.eclipse.xtext.xbase.XFeatureCall
 import org.eclipse.xtext.xbase.XbaseFactory
 import tools.vitruv.dsls.commonalities.language.ParticipationClass
 import tools.vitruv.dsls.commonalities.language.elements.ResourceMetaclass
-import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.RoutineTypeProvider
+import tools.vitruv.dsls.reactions.builder.TypeProvider
 import tools.vitruv.extensions.dslruntime.commonalities.resources.IntermediateResourceBridge
 
 import static tools.vitruv.dsls.commonalities.generator.XbaseHelper.*
@@ -25,7 +25,7 @@ package class ResourceInitializationBuilder extends ReactionsSubGenerator<Resour
 		return participationClass.isForResourceMetaclass
 	}
 
-	def XExpression getInitializer(XFeatureCall resource, RoutineTypeProvider typeProvider) {
+	def XExpression getInitializer(XFeatureCall resource, TypeProvider typeProvider) {
 		if (!hasInitializer) return null
 		return registerResource(resource, typeProvider)
 	}
@@ -35,7 +35,7 @@ package class ResourceInitializationBuilder extends ReactionsSubGenerator<Resour
 		return (participationClass.superMetaclass instanceof ResourceMetaclass)
 	}
 
-	def private registerResource(XFeatureCall resource, extension RoutineTypeProvider typeProvider) {
+	def private registerResource(XFeatureCall resource, extension TypeProvider typeProvider) {
 		XbaseFactory.eINSTANCE.createXBlockExpression => [
 			expressions += expressions(
 				XbaseFactory.eINSTANCE.createXAssignment => [

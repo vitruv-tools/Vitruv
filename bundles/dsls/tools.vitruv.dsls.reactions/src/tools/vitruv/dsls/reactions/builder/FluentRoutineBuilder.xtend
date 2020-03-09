@@ -7,12 +7,9 @@ import org.eclipse.emf.ecore.EClassifier
 import org.eclipse.emf.ecore.EDataType
 import org.eclipse.xtend.lib.annotations.Accessors
 import org.eclipse.xtext.EcoreUtil2
-import org.eclipse.xtext.common.types.JvmDeclaredType
 import org.eclipse.xtext.common.types.JvmOperation
-import org.eclipse.xtext.common.types.access.IJvmTypeProvider
 import org.eclipse.xtext.xbase.XExpression
 import org.eclipse.xtext.xbase.XbaseFactory
-import org.eclipse.xtext.xbase.jvmmodel.JvmTypeReferenceBuilder
 import tools.vitruv.dsls.mirbase.mirBase.MirBaseFactory
 import tools.vitruv.dsls.reactions.reactionsLanguage.CreateCorrespondence
 import tools.vitruv.dsls.reactions.reactionsLanguage.CreateModelElement
@@ -26,8 +23,6 @@ import tools.vitruv.dsls.reactions.reactionsLanguage.Routine
 import tools.vitruv.dsls.reactions.reactionsLanguage.RoutineCallStatement
 import tools.vitruv.dsls.reactions.reactionsLanguage.RoutineOverrideImportPath
 import tools.vitruv.dsls.reactions.reactionsLanguage.Taggable
-import tools.vitruv.framework.correspondence.CorrespondenceModel
-import tools.vitruv.framework.util.command.ResourceAccess
 
 import static com.google.common.base.Preconditions.*
 import static tools.vitruv.dsls.reactions.codegen.ReactionsLanguageConstants.*
@@ -59,10 +54,10 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 	override protected attachmentPreparation() {
 		super.attachmentPreparation()
 		checkState(routine.action !== null, "No action was set on this routine!")
-		checkState((!requireOldValue && !requireNewValue && !requireAffectedValue) ||
-			valueType !== null, '''Although required, there was no value type set on the «this»''')
-		checkState(!requireAffectedEObject ||
-			affectedObjectType !== null, '''Although required, there was no affected object type set on the «this»''')
+		checkState((!requireOldValue && !requireNewValue && !requireAffectedValue) || valueType !== null,
+			'''Although required, there was no value type set on the «this»''')
+		checkState(!requireAffectedEObject || affectedObjectType !== null,
+			'''Although required, there was no affected object type set on the «this»''')
 		if (requireAffectedEObject) {
 			addInputElementIfNotExists(affectedObjectType, CHANGE_AFFECTED_ELEMENT_ATTRIBUTE)
 		}
@@ -104,16 +99,20 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 			valueType = type
 		}
 		if (!valueType.isAssignableFrom(type)) {
-			throw new IllegalStateException('''The «this» already has the value type “«valueType.name»” set, which is not a super type of “«type.name»”. The value type can thus not be set to “«type.name»”!''')
+			throw new IllegalStateException('''The «this» already has the value type “«valueType.name»«
+				»” set, which is not a super type of “«type.name»”. The value type can thus not be set to “«
+				»«type.name»”!''')
 		}
 	}
 
-	def package setAffectedElementType(EClass type) {
+	def package setAffectedObjectType(EClass type) {
 		if (affectedObjectType === null) {
 			affectedObjectType = type
 		}
 		if (!affectedObjectType.isAssignableFrom(type)) {
-			throw new IllegalStateException('''The «this» already has the affected element type “«affectedObjectType.name»” set, which is not a super type of “«type.name»”. The affected element type can thus not be set to “«type.name»”!''')
+			throw new IllegalStateException('''The «this» already has the affected object type “«
+				»«affectedObjectType.name»” set, which is not a super type of “«type.name»«
+				»”. The affected element type can thus not be set to “«type.name»”!''')
 		}
 	}
 
@@ -318,7 +317,7 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 			new TaggedWithBuilder(builder, statement)
 		}
 
-		def correspondingTo(Function<RoutineTypeProvider, XExpression> expressionBuilder) {
+		def correspondingTo(Function<TypeProvider, XExpression> expressionBuilder) {
 			statement.correspondenceSource = correspondingElement(expressionBuilder)
 			new TaggedWithBuilder(builder, statement)
 		}
@@ -374,7 +373,7 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 			return new RetrieveModelElementMatcherStatementCorrespondenceBuilder(builder, statement)
 		}
 
-		def check(Function<RoutineTypeProvider, XExpression> expressionBuilder) {
+		def check(Function<TypeProvider, XExpression> expressionBuilder) {
 			val statement = ReactionsLanguageFactory.eINSTANCE.createMatcherCheckStatement => [
 				code = XbaseFactory.eINSTANCE.createXBlockExpression.whenJvmTypes [
 					expressions += extractExpressions(expressionBuilder.apply(typeProvider))
@@ -384,7 +383,7 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 			return statement
 		}
 
-		def checkAsserted(Function<RoutineTypeProvider, XExpression> expressionBuilder) {
+		def checkAsserted(Function<TypeProvider, XExpression> expressionBuilder) {
 			val statement = check(expressionBuilder);
 			statement.asserted = true;
 		}
@@ -407,7 +406,7 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 			]
 		}
 
-		def void taggedWith(Function<RoutineTypeProvider, XExpression> tagExpressionBuilder) {
+		def void taggedWith(Function<TypeProvider, XExpression> tagExpressionBuilder) {
 			taggable.tag = ReactionsLanguageFactory.eINSTANCE.createTagCodeBlock => [
 				code = XbaseFactory.eINSTANCE.createXBlockExpression.whenJvmTypes [
 					expressions += extractExpressions(tagExpressionBuilder.apply(typeProvider))
@@ -473,7 +472,7 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 			new CorrespondenceTargetBuilder(builder, statement)
 		}
 
-		def addCorrespondenceBetween(Function<RoutineTypeProvider, XExpression> expressionBuilder) {
+		def addCorrespondenceBetween(Function<TypeProvider, XExpression> expressionBuilder) {
 			val statement = ReactionsLanguageFactory.eINSTANCE.createCreateCorrespondence => [
 				firstElement = existingElement(expressionBuilder)
 			]
@@ -481,7 +480,7 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 			new CorrespondenceTargetBuilder(builder, statement)
 		}
 
-		def void update(String existingElement, Function<RoutineTypeProvider, XExpression> expressionBuilder) {
+		def void update(String existingElement, Function<TypeProvider, XExpression> expressionBuilder) {
 			routine.action.actionStatements += ReactionsLanguageFactory.eINSTANCE.createUpdateModelElement => [
 				element = existingElement(existingElement)
 				updateBlock = ReactionsLanguageFactory.eINSTANCE.createExecutionCodeBlock => [
@@ -508,7 +507,7 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 			new CorrespondenceTargetBuilder(builder, statement)
 		}
 
-		def removeCorrespondenceBetween(Function<RoutineTypeProvider, XExpression> expressionBuilder) {
+		def removeCorrespondenceBetween(Function<TypeProvider, XExpression> expressionBuilder) {
 			val statement = ReactionsLanguageFactory.eINSTANCE.createRemoveCorrespondence => [
 				firstElement = existingElement(expressionBuilder)
 			]
@@ -516,7 +515,7 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 			new CorrespondenceTargetBuilder(builder, statement)
 		}
 
-		def execute(Function<RoutineTypeProvider, XExpression> expressionBuilder) {
+		def execute(Function<TypeProvider, XExpression> expressionBuilder) {
 			routine.action.actionStatements += ReactionsLanguageFactory.eINSTANCE.createExecuteActionStatement => [
 				code = XbaseFactory.eINSTANCE.createXBlockExpression.whenJvmTypes [
 					expressions += extractExpressions(expressionBuilder.apply(typeProvider))
@@ -525,7 +524,7 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 			routine.action.actionStatements.last as ExecuteActionStatement
 		}
 
-		def call(Function<RoutineTypeProvider, XExpression> expressionBuilder) {
+		def call(Function<TypeProvider, XExpression> expressionBuilder) {
 			routine.action.actionStatements += ReactionsLanguageFactory.eINSTANCE.createRoutineCallStatement => [
 				code = XbaseFactory.eINSTANCE.createXBlockExpression.whenJvmTypes [
 					expressions += extractExpressions(expressionBuilder.apply(typeProvider))
@@ -536,12 +535,12 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 
 		def void call(FluentRoutineBuilder routineBuilder, RoutineCallParameter... parameters) {
 			checkNotNull(routineBuilder)
-			checkState(routineBuilder.
-				readyToBeAttached, '''The «routineBuilder» is not sufficiently initialised to be set on the «builder»''')
-			checkState(!routineBuilder.
-				requireNewValue, '''The «routineBuilder» requires a new value, and can thus only be called from reactions, not routines!''')
-			checkState(!routineBuilder.requireOldValue || valueType !==
-				null, '''The «routineBuilder» requires an old value, and can thus only be called from reactions, not routines!''')
+			checkState(routineBuilder.readyToBeAttached,
+				'''The «routineBuilder» is not sufficiently initialised to be set on the «builder»''')
+			checkState(!routineBuilder.requireNewValue,
+				'''The «routineBuilder» requires a new value, and can thus only be called from reactions, not routines!''')
+			checkState(!routineBuilder.requireOldValue || valueType !== null,
+				'''The «routineBuilder» requires an old value, and can thus only be called from reactions, not routines!''')
 			var hasFittingAffectedEObjectParameter = false
 			if (parameters.size > 0) {
 				val param = parameters.get(0)
@@ -550,9 +549,11 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 					hasFittingAffectedEObjectParameter = true
 				}
 			}
-			checkState(!routineBuilder.requireAffectedEObject || (
-				routineBuilder.requireAffectedEObject &&
-				hasFittingAffectedEObjectParameter), '''The «routineBuilder» requires an requireAffectedEObject, and can thus only be called from reactions, not routines!''')
+			checkState(!routineBuilder.requireAffectedEObject
+				|| (routineBuilder.requireAffectedEObject && hasFittingAffectedEObjectParameter),
+				'''The «routineBuilder» requires an affectedEObject, and can thus only be called from reactions, not«
+					» routines!''')
+
 			builder.transferReactionsSegmentTo(routineBuilder)
 			addRoutineCall(routineBuilder, parameters)
 		}
@@ -571,13 +572,7 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 				feature = routineBuilder.jvmOperation
 				implicitReceiver = jvmOperationRoutineFacade
 				val typeProvider = typeProvider
-				featureCallArguments += parameters.map [
-					if (it.parameterArgumentType) {
-						typeProvider.variable(it.argument as String)
-					} else {
-						it.argument as XExpression
-					}
-				]
+				featureCallArguments += parameters.map[getExpression(typeProvider)]
 			]
 		}
 	}
@@ -593,79 +588,24 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 			this.argument = expression
 		}
 
+		new(Function<TypeProvider, XExpression> expressionBuilder) {
+			this.argument = expressionBuilder
+		}
+
 		def isParameterArgumentType() {
 			argument instanceof String
 		}
-	}
 
-	static class RoutineTypeProvider extends AbstractTypeProvider<FluentRoutineBuilder> {
-		extension val FluentRoutineBuilder builderAsExtension
-
-		private new(IJvmTypeProvider delegate, JvmTypeReferenceBuilder referenceDelegate, FluentRoutineBuilder builder,
-			XExpression scopeExpression) {
-			super(delegate, referenceDelegate, builder, scopeExpression)
-			builderAsExtension = builder
+		def XExpression getExpression(TypeProvider typeProvider) {
+			if (parameterArgumentType) {
+				return typeProvider.variable(argument as String)
+			} else if (argument instanceof XExpression) {
+				return argument as XExpression
+			} else {
+				val expressionBuilder = argument as Function<TypeProvider, XExpression>
+				return expressionBuilder.apply(typeProvider)
+			}
 		}
-
-		/**
-		 * Retrieves the routine’s user execution class.
-		 */
-		def routineUserExecutionType() {
-			scopeExpression.correspondingMethod.declaringType
-		}
-
-		/**
-		 * Retrieves a feature call to the routine’s user execution class.
-		 */
-		def routineUserExecution() {
-			routineUserExecutionType.featureCall
-		}
-
-		def executionStateField() {
-			routineUserExecutionType.findAttribute('executionState')
-		}
-
-		def executionStateType() {
-			executionStateField.type.type as JvmDeclaredType
-		}
-
-		def executionState() {
-			executionStateField.featureCall
-		}
-
-		def resourceAccessMethod() {
-			executionStateType.findMethod('getResourceAccess')
-		}
-
-		def resourceAccessType() {
-			findTypeByName(ResourceAccess.name) as JvmDeclaredType
-		}
-
-		def resourceAccess() {
-			return XbaseFactory.eINSTANCE.createXFeatureCall => [
-				feature = resourceAccessMethod
-				implicitReceiver = executionState
-			]
-		}
-
-		def correspondenceModelMethod() {
-			executionStateType.findMethod('getCorrespondenceModel')
-		}
-
-		def correspondenceModelType() {
-			findTypeByName(CorrespondenceModel.canonicalName) as JvmDeclaredType
-		}
-
-		def correspondenceModel() {
-			return XbaseFactory.eINSTANCE.createXFeatureCall => [
-				feature = correspondenceModelMethod
-				implicitReceiver = executionState
-			]
-		}
-	}
-
-	def private getTypeProvider(XExpression scopeExpression) {
-		new RoutineTypeProvider(delegateTypeProvider, referenceBuilderFactory, this, scopeExpression)
 	}
 
 	static class CreateStatementBuilder {
@@ -692,7 +632,7 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 			this.statement = statement
 		}
 
-		def andInitialize(Function<RoutineTypeProvider, XExpression> expressionBuilder) {
+		def andInitialize(Function<TypeProvider, XExpression> expressionBuilder) {
 			statement.initializationBlock = ReactionsLanguageFactory.eINSTANCE.createExecutionCodeBlock => [
 				code = XbaseFactory.eINSTANCE.createXBlockExpression.whenJvmTypes [
 					expressions += extractExpressions(expressionBuilder.apply(typeProvider))
@@ -750,7 +690,7 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 			new TaggedWithBuilder(builder, statement)
 		}
 
-		def and(Function<RoutineTypeProvider, XExpression> expressionBuilder) {
+		def and(Function<TypeProvider, XExpression> expressionBuilder) {
 			statement.secondElement = existingElement(expressionBuilder)
 			new TaggedWithBuilder(builder, statement)
 		}
@@ -774,7 +714,7 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 		]
 	}
 
-	def private existingElement(Function<RoutineTypeProvider, XExpression> expressionBuilder) {
+	def private existingElement(Function<TypeProvider, XExpression> expressionBuilder) {
 		ReactionsLanguageFactory.eINSTANCE.createExistingElementReference => [
 			code = XbaseFactory.eINSTANCE.createXBlockExpression.whenJvmTypes [
 				expressions += extractExpressions(expressionBuilder.apply(typeProvider))
@@ -790,7 +730,7 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 		]
 	}
 
-	def private correspondingElement(Function<RoutineTypeProvider, XExpression> expressionBuilder) {
+	def private correspondingElement(Function<TypeProvider, XExpression> expressionBuilder) {
 		ReactionsLanguageFactory.eINSTANCE.createCorrespondingObjectCodeBlock => [
 			code = XbaseFactory.eINSTANCE.createXBlockExpression.whenJvmTypes [
 				expressions += extractExpressions(expressionBuilder.apply(typeProvider))
@@ -803,16 +743,12 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 	}
 
 	def public getJvmOperation() {
-		context.jvmModelAssociator.getLogicalContainer(null)
 		val jvmMethod = context.jvmModelAssociator.getPrimaryJvmElement(routine)
 		if (jvmMethod instanceof JvmOperation) {
 			return jvmMethod
 		}
-		throw new IllegalStateException('''Could not find the routine facade method corresponding to the routine “«routine.name»”''')
-	}
-
-	def public getJvmOperationRoutineFacade(XExpression codeBlock) {
-		getCorrespondingMethod(codeBlock).argument(REACTION_USER_EXECUTION_ROUTINE_CALL_FACADE_PARAMETER_NAME)
+		throw new IllegalStateException('''Could not find the routine facade method corresponding to the routine “«
+			»«routine.name»”''')
 	}
 
 	override protected getCreatedElementName() {

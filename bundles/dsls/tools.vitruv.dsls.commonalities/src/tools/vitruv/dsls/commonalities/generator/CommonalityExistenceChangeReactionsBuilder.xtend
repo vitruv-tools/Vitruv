@@ -16,7 +16,7 @@ import tools.vitruv.dsls.commonalities.language.ParticipationClass
 import tools.vitruv.dsls.commonalities.language.ParticipationCondition
 import tools.vitruv.dsls.commonalities.language.ParticipationRelation
 import tools.vitruv.dsls.reactions.builder.FluentReactionBuilder
-import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.RoutineTypeProvider
+import tools.vitruv.dsls.reactions.builder.TypeProvider
 
 import static com.google.common.base.Preconditions.*
 import static tools.vitruv.dsls.commonalities.generator.EmfAccessExpressions.*
@@ -104,8 +104,8 @@ class CommonalityExistenceChangeReactionsBuilder extends ReactionsSubGenerator<C
 			]
 	}
 
-	def private toBlockExpression(Iterable<? extends Function1<RoutineTypeProvider, ? extends XExpression>> expressionBuilders,
-			RoutineTypeProvider typeProvider) {
+	def private toBlockExpression(Iterable<? extends Function1<TypeProvider, ? extends XExpression>> expressionBuilders,
+			TypeProvider typeProvider) {
 		return XbaseFactory.eINSTANCE.createXBlockExpression => [
 			expressions += expressionBuilders.map[apply(typeProvider)]
 		]
@@ -121,7 +121,7 @@ class CommonalityExistenceChangeReactionsBuilder extends ReactionsSubGenerator<C
 	def private getResourceInitializer(ParticipationClass participationClass) {
 		extension val resourceInitBuilder = resourceInitializationBuilder.get.forParticipationClass(participationClass)
 		if (!resourceInitBuilder.hasInitializer) return null
-		return [ RoutineTypeProvider typeProvider |
+		return [ TypeProvider typeProvider |
 			val resource = typeProvider.variable(participationClass.correspondingVariableName)
 			return resource.getInitializer(typeProvider)
 		]
@@ -129,7 +129,7 @@ class CommonalityExistenceChangeReactionsBuilder extends ReactionsSubGenerator<C
 
 	def private getCommonalityParticipationClassInitializer(ParticipationClass participationClass) {
 		if (!participationClass.participation.isCommonalityParticipation) return null
-		return [ RoutineTypeProvider typeProvider |
+		return [ TypeProvider typeProvider |
 			assignStagingId(typeProvider, typeProvider.variable(participationClass.correspondingVariableName))
 		]
 	}
@@ -146,7 +146,7 @@ class CommonalityExistenceChangeReactionsBuilder extends ReactionsSubGenerator<C
 	def private getParticipationRelationInitializer(ParticipationClass participationClass) {
 		val participationRelationInitBuilder = participationRelationInitializationBuilder.get.forParticipationClass(participationClass)
 		if (!participationRelationInitBuilder.hasInitializer) return null
-		return [ RoutineTypeProvider typeProvider |
+		return [ TypeProvider typeProvider |
 			participationRelationInitBuilder.getInitializer(typeProvider, [
 				typeProvider.variable(correspondingVariableName)
 			])
@@ -161,7 +161,7 @@ class CommonalityExistenceChangeReactionsBuilder extends ReactionsSubGenerator<C
 	}
 
 	def private getParticipationConditionInitializer(ParticipationCondition participationCondition) {
-		return [ extension RoutineTypeProvider typeProvider |
+		return [ extension TypeProvider typeProvider |
 			val operator = participationCondition.operator.imported
 			val enforceMethod = operator.findOptionalImplementedMethod("enforce")
 			return XbaseFactory.eINSTANCE.createXMemberFeatureCall => [
@@ -172,7 +172,7 @@ class CommonalityExistenceChangeReactionsBuilder extends ReactionsSubGenerator<C
 		]
 	}
 
-	def package newParticipationConditionOperator(ParticipationCondition participationCondition, extension RoutineTypeProvider typeProvider) {
+	def package newParticipationConditionOperator(ParticipationCondition participationCondition, extension TypeProvider typeProvider) {
 		val attribute = participationCondition.attribute
 		val participationClass = attribute.participationClass
 		val participationClassInstance = typeProvider.variable(participationClass.correspondingVariableName)

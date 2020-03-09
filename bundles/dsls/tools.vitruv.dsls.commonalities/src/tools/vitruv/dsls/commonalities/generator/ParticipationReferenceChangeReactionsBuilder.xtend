@@ -4,8 +4,8 @@ import org.eclipse.emf.ecore.EReference
 import tools.vitruv.dsls.commonalities.language.CommonalityReferenceMapping
 import tools.vitruv.dsls.commonalities.language.Participation
 import tools.vitruv.dsls.reactions.builder.FluentReactionBuilder
-import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.RoutineTypeProvider
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.UndecidedMatcherStatementBuilder
+import tools.vitruv.dsls.reactions.builder.TypeProvider
 
 import static com.google.common.base.Preconditions.*
 
@@ -103,7 +103,7 @@ class ParticipationReferenceChangeReactionsBuilder
 		vall('referencedIntermediate').retrieveAsserted(mapping.referenceTypeChangeClass)
 	}
 
-	def private getReferencedIntermediate(extension RoutineTypeProvider builder) {
+	def private getReferencedIntermediate(extension TypeProvider builder) {
 		variable('referencedIntermediate')
 	}
 

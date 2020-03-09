@@ -4,9 +4,8 @@ import edu.kit.ipd.sdq.activextendannotations.Utility
 import org.eclipse.emf.ecore.EClass
 import org.eclipse.xtext.xbase.XFeatureCall
 import org.eclipse.xtext.xbase.XbaseFactory
-import tools.vitruv.dsls.reactions.builder.FluentReactionBuilder.ReactionTypeProvider
 import tools.vitruv.dsls.reactions.builder.FluentReactionBuilder.TriggerBuilder
-import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.RoutineTypeProvider
+import tools.vitruv.dsls.reactions.builder.TypeProvider
 import tools.vitruv.extensions.dslruntime.commonalities.IntermediateModelManagement
 import tools.vitruv.extensions.dslruntime.commonalities.intermediatemodelbase.IntermediateModelBasePackage
 
@@ -28,7 +27,7 @@ package class ReactionsHelper {
 		}
 	}
 
-	def static assignStagingId(extension RoutineTypeProvider typeProvider, XFeatureCall element) {
+	def static assignStagingId(extension TypeProvider typeProvider, XFeatureCall element) {
 		XbaseFactory.eINSTANCE.createXMemberFeatureCall => [
 			memberCallTarget = element
 			feature = typeProvider.findMethod(IntermediateModelManagement, 'claimStagingId').staticExtensionWildcardImported
@@ -37,7 +36,7 @@ package class ReactionsHelper {
 	}
 
 	// TODO unused
-	def static hasResource(extension ReactionTypeProvider typeProvider, XFeatureCall element) {
+	def static hasResource(extension TypeProvider typeProvider, XFeatureCall element) {
 		XbaseFactory.eINSTANCE.createXBinaryOperation => [
 			leftOperand = XbaseFactory.eINSTANCE.createXMemberFeatureCall => [
 				memberCallTarget = element
