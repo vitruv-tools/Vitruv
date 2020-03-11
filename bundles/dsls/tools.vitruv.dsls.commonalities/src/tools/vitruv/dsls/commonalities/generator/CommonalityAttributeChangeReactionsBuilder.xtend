@@ -60,7 +60,7 @@ package class CommonalityAttributeChangeReactionsBuilder
 
 	def private singleAttributeSetReaction() {
 		create.reaction('''«attribute.commonalityAttributeReactionName»Change''')
-			.afterAttributeReplacedAt(attribute.EFeatureToReference as EAttribute)
+			.afterAttributeReplacedAt(attribute.correspondingEFeature as EAttribute)
 			.call [
 				input [newValue]
 				.match [
@@ -70,7 +70,7 @@ package class CommonalityAttributeChangeReactionsBuilder
 					for (mapping : relevantMappings) {
 						val corresponding = mapping.correspondingVariableName
 						update(corresponding) [
-							setFeature(variable(corresponding), mapping.attribute.EFeatureToReference, newValue)
+							setFeatureValue(variable(corresponding), mapping.participationEFeature, newValue)
 						]
 					}
 				]
@@ -79,7 +79,7 @@ package class CommonalityAttributeChangeReactionsBuilder
 
 	def private multiAttributeAddReaction() {
 		create.reaction('''«attribute.commonalityAttributeReactionName»Insert''')
-			.afterAttributeInsertIn(attribute.EFeatureToReference as EAttribute)
+			.afterAttributeInsertIn(attribute.correspondingEFeature as EAttribute)
 			.call [
 				input [newValue]
 				.match [
@@ -89,7 +89,7 @@ package class CommonalityAttributeChangeReactionsBuilder
 					for (mapping : relevantMappings) {
 						val corresponding = mapping.correspondingVariableName
 						update(corresponding) [
-							addToFeatureList(variable(corresponding), mapping.attribute.EFeatureToReference, newValue)
+							addToListFeatureValue(variable(corresponding), mapping.participationEFeature, newValue)
 						]
 					}
 				]
@@ -98,7 +98,7 @@ package class CommonalityAttributeChangeReactionsBuilder
 
 	def private multiAttributeRemoveReaction() {
 		create.reaction('''«attribute.commonalityAttributeReactionName»Remove''')
-			.afterAttributeRemoveFrom(attribute.EFeatureToReference as EAttribute)
+			.afterAttributeRemoveFrom(attribute.correspondingEFeature as EAttribute)
 			.call [
 				input [oldValue]
 				.match [
@@ -108,7 +108,7 @@ package class CommonalityAttributeChangeReactionsBuilder
 					for (mapping : relevantMappings) {
 						val corresponding = mapping.correspondingVariableName
 						update(corresponding) [
-							removeFromFeatureList(variable(corresponding), mapping.attribute.EFeatureToReference, oldValue)
+							removeFromListFeatureValue(variable(corresponding), mapping.participationEFeature, oldValue)
 						]
 					}
 				]
@@ -117,7 +117,7 @@ package class CommonalityAttributeChangeReactionsBuilder
 
 	def private singleReferenceSetReaction() {
 		create.reaction('''«attribute.commonalityAttributeReactionName»Change''')
-			.afterElement.replacedAt(attribute.EFeatureToReference as EReference)
+			.afterElement.replacedAt(attribute.correspondingEFeature as EReference)
 			.call [
 				input [newValue]
 				.match [
@@ -127,7 +127,7 @@ package class CommonalityAttributeChangeReactionsBuilder
 					for (mapping : relevantMappings) {
 						val corresponding = mapping.correspondingVariableName
 						update(corresponding) [
-							setFeature(variable(corresponding), mapping.attribute.EFeatureToReference, newValue)
+							setFeatureValue(variable(corresponding), mapping.participationEFeature, newValue)
 						]
 					}
 				]
@@ -136,7 +136,7 @@ package class CommonalityAttributeChangeReactionsBuilder
 
 	def private multiReferenceAddReaction() {
 		create.reaction('''«attribute.commonalityAttributeReactionName»ElementInsert''')
-			.afterElement.insertedIn(attribute.EFeatureToReference as EReference)
+			.afterElement.insertedIn(attribute.correspondingEFeature as EReference)
 			.call [
 				input [newValue]
 				.match [
@@ -146,7 +146,7 @@ package class CommonalityAttributeChangeReactionsBuilder
 					for (mapping : relevantMappings) {
 						val corresponding = mapping.correspondingVariableName
 						update(corresponding) [
-							addToFeatureList(variable(corresponding), mapping.attribute.EFeatureToReference, newValue)
+							addToListFeatureValue(variable(corresponding), mapping.participationEFeature, newValue)
 						]
 					}
 				]
@@ -155,7 +155,7 @@ package class CommonalityAttributeChangeReactionsBuilder
 
 	def private multiReferenceRemoveReaction() {
 		create.reaction('''«attribute.commonalityAttributeReactionName»ElementRemove''')
-			.afterElement.removedFrom(attribute.EFeatureToReference as EReference)
+			.afterElement.removedFrom(attribute.correspondingEFeature as EReference)
 			.call [
 				input [oldValue]
 				.match [
@@ -165,7 +165,7 @@ package class CommonalityAttributeChangeReactionsBuilder
 					for (mapping : relevantMappings) {
 						val corresponding = mapping.correspondingVariableName
 						update(corresponding) [
-							removeFromFeatureList(variable(corresponding), mapping.attribute.EFeatureToReference, oldValue)
+							removeFromListFeatureValue(variable(corresponding), mapping.participationEFeature, oldValue)
 						]
 					}
 				]

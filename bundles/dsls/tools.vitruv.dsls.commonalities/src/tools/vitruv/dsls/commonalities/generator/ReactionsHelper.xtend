@@ -6,6 +6,7 @@ import org.eclipse.xtext.xbase.XFeatureCall
 import org.eclipse.xtext.xbase.XbaseFactory
 import tools.vitruv.dsls.reactions.builder.FluentReactionBuilder.TriggerBuilder
 import tools.vitruv.dsls.reactions.builder.TypeProvider
+import tools.vitruv.dsls.reactions.codegen.helper.ReactionsLanguageHelper
 import tools.vitruv.extensions.dslruntime.commonalities.IntermediateModelManagement
 import tools.vitruv.extensions.dslruntime.commonalities.intermediatemodelbase.IntermediateModelBasePackage
 
@@ -13,6 +14,14 @@ import static extension tools.vitruv.dsls.commonalities.generator.JvmTypeProvide
 
 @Utility
 package class ReactionsHelper {
+
+	// This takes ReferenceClassNameAdapters into account. This is necessary
+	// for the retrieval of instance class names for EClasses of the generated
+	// intermediate models, because the generated EPackage code hasn't been
+	// compiled and initialized yet.
+	def static String getJavaClassName(EClassifier classifier) {
+		return ReactionsLanguageHelper.getJavaClassName(classifier)
+	}
 
 	// Picks the correct 'inserted as root' trigger depending on whether the given change class belongs to a
 	// commonality or a regular participation class

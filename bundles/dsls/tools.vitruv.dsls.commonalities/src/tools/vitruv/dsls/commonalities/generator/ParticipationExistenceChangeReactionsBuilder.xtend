@@ -44,10 +44,10 @@ class ParticipationExistenceChangeReactionsBuilder extends ReactionsSubGenerator
 						.taggedWith(participationClass.correspondenceTag)
 				]
 				.action [
-					vall('newIndermediate').create(commonality.changeClass).andInitialize [
-						assignStagingId(variable('newIndermediate'))
+					vall(INTERMEDIATE).create(commonality.changeClass).andInitialize [
+						assignStagingId(variable(INTERMEDIATE))
 					]
-					addCorrespondenceBetween('newIndermediate').and.affectedEObject
+					addCorrespondenceBetween(INTERMEDIATE).and.affectedEObject
 						.taggedWith(participationClass.correspondenceTag)
 				]
 			]
@@ -58,11 +58,10 @@ class ParticipationExistenceChangeReactionsBuilder extends ReactionsSubGenerator
 			.afterElement(participationClass.changeClass).deleted
 			.call [
 				match [
-					vall('corresponding_intermediate').retrieveAsserted(commonality.changeClass)
-						.correspondingTo.affectedEObject
+					vall(INTERMEDIATE).retrieveAsserted(commonality.changeClass).correspondingTo.affectedEObject
 				]
 				action [
-					delete('corresponding_intermediate')
+					delete(INTERMEDIATE)
 				]
 			]
 	}

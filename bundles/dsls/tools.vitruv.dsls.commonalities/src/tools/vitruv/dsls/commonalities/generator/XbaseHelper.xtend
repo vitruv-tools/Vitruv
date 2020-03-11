@@ -3,11 +3,11 @@ package tools.vitruv.dsls.commonalities.generator
 import edu.kit.ipd.sdq.activextendannotations.Utility
 import java.util.ArrayList
 import java.util.Arrays
+import org.eclipse.emf.ecore.util.EcoreUtil
 import org.eclipse.xtext.common.types.JvmDeclaredType
 import org.eclipse.xtext.common.types.JvmIdentifiableElement
 import org.eclipse.xtext.xbase.XBlockExpression
 import org.eclipse.xtext.xbase.XExpression
-import org.eclipse.xtext.xbase.XFeatureCall
 import org.eclipse.xtext.xbase.XMemberFeatureCall
 import org.eclipse.xtext.xbase.XbaseFactory
 
@@ -85,12 +85,8 @@ package class XbaseHelper {
 		]
 	}
 
-	def package static newFeatureCall(XFeatureCall featureCall) {
-		XbaseFactory.eINSTANCE.createXFeatureCall => [
-			feature = featureCall.feature
-			typeLiteral = featureCall.typeLiteral
-			explicitOperationCall = featureCall.explicitOperationCall
-		]
+	def package static <T extends XExpression> T copy(T expression) {
+		return EcoreUtil.copy(expression)
 	}
 
 	def package static noArgsConstructorCall(JvmDeclaredType type) {

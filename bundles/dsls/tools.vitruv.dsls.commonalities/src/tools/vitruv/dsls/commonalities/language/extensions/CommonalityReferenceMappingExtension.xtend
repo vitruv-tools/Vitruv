@@ -47,6 +47,10 @@ class CommonalityReferenceMappingExtension {
 		return mapping.getDirectContainer(CommonalityReference)
 	}
 
+	def static getReferencedCommonality(CommonalityReferenceMapping mapping) {
+		return mapping.declaringReference.referenceType
+	}
+
 	def static getMatchingReferencedParticipations(CommonalityReferenceMapping mapping) {
 		val referenceRightType = mapping.reference?.type
 		val referenceLeftType = mapping.declaringReference.referenceType

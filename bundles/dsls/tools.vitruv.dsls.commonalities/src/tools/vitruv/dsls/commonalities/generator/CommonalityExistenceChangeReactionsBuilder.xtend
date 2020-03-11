@@ -195,14 +195,15 @@ class CommonalityExistenceChangeReactionsBuilder extends ReactionsSubGenerator<C
 			.call [
 				match [
 					for (participationClass : participation.classes) {
-						vall('''corresponding_«participationClass.name»''').retrieveAsserted(participationClass.changeClass)
+						vall(participationClass.correspondingVariableName)
+							.retrieveAsserted(participationClass.changeClass)
 							.correspondingTo.affectedEObject
 							.taggedWith(participationClass.correspondenceTag)
 					}
 				]
 				action [
 					for (participationClass : participation.classes) {
-						delete('''corresponding_«participationClass.name»''')
+						delete(participationClass.correspondingVariableName)
 					}
 				]
 			]

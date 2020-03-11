@@ -1,6 +1,5 @@
 package tools.vitruv.dsls.commonalities.generator
 
-import org.eclipse.emf.ecore.EReference
 import tools.vitruv.dsls.commonalities.language.CommonalityReferenceMapping
 import tools.vitruv.dsls.commonalities.language.Participation
 import tools.vitruv.dsls.reactions.builder.FluentReactionBuilder
@@ -42,84 +41,70 @@ class ParticipationReferenceChangeReactionsBuilder
 
 	def private singleReferenceSetReaction(CommonalityReferenceMapping mapping) {
 		create.reaction('''«mapping.participationAttributeReactionName»Change''')
-			.afterElement.replacedAt(mapping.participationReferenceChangeClass, mapping.participationEReference)
+			.afterElement.replacedAt(mapping.participationChangeClass, mapping.participationEReference)
 			.call [
 				match [
 					retrieveIntermediate()
 					retrieveReferencedIntermediateOf(mapping).correspondingTo.newValue
 				]
 				.action [
-					update('intermediate') [
-						eSetFeature(variable('intermediate'), mapping.declaringReference.name, referencedIntermediate)
+					update(INTERMEDIATE) [
+						setFeatureValue(variable(INTERMEDIATE), mapping.commonalityEFeature, referencedIntermediate)
 					]
 				]
 			] => [
 				if (mapping.participationEReference.isContainment) {
-					call(getInsertRoutine(targetParticipation, mapping.declaringReference.referenceType))
+					call(getInsertRoutine(targetParticipation, mapping.referencedCommonality))
 				}
 			]
 	}
 
 	def private multiReferenceAddReaction(CommonalityReferenceMapping mapping) {
 		create.reaction('''«mapping.participationAttributeReactionName»Insert''')
-			.afterElement.insertedIn(mapping.participationReferenceChangeClass, mapping.participationEReference)
+			.afterElement.insertedIn(mapping.participationChangeClass, mapping.participationEReference)
 			.call [
 				match [
 					retrieveIntermediate()
 					retrieveReferencedIntermediateOf(mapping).correspondingTo.newValue
 				]
 				.action [
-					update('intermediate') [
-						eAddToFeatureList(variable('intermediate'), mapping.declaringReference.name, referencedIntermediate)
+					update(INTERMEDIATE) [
+						addToListFeatureValue(variable(INTERMEDIATE), mapping.commonalityEFeature, referencedIntermediate)
 					]
 				]
 			] => [
 				if (mapping.participationEReference.isContainment) {
-					call(getInsertRoutine(targetParticipation, mapping.declaringReference.referenceType))
+					call(getInsertRoutine(targetParticipation, mapping.referencedCommonality))
 				}
 			]
 	}
 
 	def private multiReferenceRemoveReaction(CommonalityReferenceMapping mapping) {
 		create.reaction('''«mapping.participationAttributeReactionName»Remove''').
-			afterElement.removedFrom(mapping.participationReferenceChangeClass, mapping.participationEReference)
+			afterElement.removedFrom(mapping.participationChangeClass, mapping.participationEReference)
 			.call [
 				match [
 					retrieveIntermediate()
 					retrieveReferencedIntermediateOf(mapping).correspondingTo.oldValue
 				]
 				.action [
-					update('intermediate') [
-						eRemoveFromFeatureList(variable('intermediate'), mapping.declaringReference.name, referencedIntermediate)
+					update(INTERMEDIATE) [
+						removeFromListFeatureValue(variable(INTERMEDIATE), mapping.commonalityEFeature, referencedIntermediate)
 					]
 				]
 			]
 	}
 
-	def private retrieveReferencedIntermediateOf(
-		extension UndecidedMatcherStatementBuilder statementBuilder,
-		CommonalityReferenceMapping mapping
-	) {
-		vall('referencedIntermediate').retrieveAsserted(mapping.referenceTypeChangeClass)
+	def private retrieveReferencedIntermediateOf(extension UndecidedMatcherStatementBuilder statementBuilder,
+		CommonalityReferenceMapping mapping) {
+		vall(REFERENCED_INTERMEDIATE).retrieveAsserted(mapping.referencedCommonality.changeClass)
 	}
 
 	def private getReferencedIntermediate(extension TypeProvider builder) {
-		variable('referencedIntermediate')
-	}
-
-	def private getParticipationReferenceChangeClass(CommonalityReferenceMapping mapping) {
-		mapping.reference.participationClass.changeClass
-	}
-
-	def private getReferenceTypeChangeClass(CommonalityReferenceMapping mapping) {
-		mapping.declaringReference.referenceType.changeClass
+		variable(REFERENCED_INTERMEDIATE)
 	}
 
 	def private retrieveIntermediate(extension UndecidedMatcherStatementBuilder builder) {
-		vall('intermediate').retrieveAsserted(commonality.changeClass).correspondingTo.affectedEObject
-	}
-
-	def private getParticipationEReference(CommonalityReferenceMapping mapping) {
-		mapping.reference.EFeatureToReference as EReference
+		vall(INTERMEDIATE).retrieveAsserted(commonality.changeClass).correspondingTo.affectedEObject
 	}
 }

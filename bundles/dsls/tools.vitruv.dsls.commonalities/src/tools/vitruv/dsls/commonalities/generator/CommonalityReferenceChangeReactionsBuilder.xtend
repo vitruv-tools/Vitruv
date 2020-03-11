@@ -53,7 +53,7 @@ class CommonalityReferenceChangeReactionsBuilder
 
 	def private singleReferenceSetReaction() {
 		create.reaction('''«reference.commonalityAttributeReactionName»Change''')
-			.afterElement.replacedAt(reference.EFeatureToReference as EReference)
+			.afterElement.replacedAt(reference.correspondingEFeature as EReference)
 			.call [
 				input [newValue]
 				.match [
@@ -67,9 +67,9 @@ class CommonalityReferenceChangeReactionsBuilder
 						val correspondingElement = mapping.correspondingParticipationClassVariable
 						val correspondingValue = mapping.referencedParticipationClassVariable
 						update(correspondingElement) [
-							setFeature(
+							setFeatureValue(
 								variable(correspondingElement),
-								mapping.reference.EFeatureToReference,
+								mapping.participationEFeature,
 								variable(correspondingValue)
 							)
 						]
@@ -80,7 +80,7 @@ class CommonalityReferenceChangeReactionsBuilder
 
 	def private multiReferenceAddReaction() {
 		create.reaction('''«reference.commonalityAttributeReactionName»Insert''')
-			.afterElement.insertedIn(reference.EFeatureToReference as EReference)
+			.afterElement.insertedIn(reference.correspondingEFeature as EReference)
 			.call [
 				input [newValue]
 				.match [
@@ -94,9 +94,9 @@ class CommonalityReferenceChangeReactionsBuilder
 						val correspondingElement = mapping.correspondingParticipationClassVariable
 						val correspondingValue = mapping.referencedParticipationClassVariable
 						update(correspondingElement) [
-							addToFeatureList(
+							addToListFeatureValue(
 								variable(correspondingElement),
-								mapping.reference.EFeatureToReference,
+								mapping.participationEFeature,
 								variable(correspondingValue)
 							)
 						]
@@ -107,7 +107,7 @@ class CommonalityReferenceChangeReactionsBuilder
 
 	def private multiReferenceRemoveReaction() {
 		create.reaction('''«reference.commonalityAttributeReactionName»Remove''')
-			.afterElement.removedFrom(reference.EFeatureToReference as EReference)
+			.afterElement.removedFrom(reference.correspondingEFeature as EReference)
 			.call [
 				input [oldValue]
 				.match [
@@ -121,9 +121,9 @@ class CommonalityReferenceChangeReactionsBuilder
 						val correspondingElement = mapping.correspondingParticipationClassVariable
 						val correspondingValue = mapping.referencedParticipationClassVariable
 						update(correspondingElement) [
-							removeFromFeatureList(
+							removeFromListFeatureValue(
 								variable(correspondingElement),
-								mapping.reference.EFeatureToReference,
+								mapping.participationEFeature,
 								variable(correspondingValue)
 							)
 						]
@@ -145,7 +145,7 @@ class CommonalityReferenceChangeReactionsBuilder
 	def private getCorrespondingParticipationClassVariable(CommonalityReferenceMapping mapping) {
 		mapping.reference.participationClass.correspondingVariableName
 	}
-	
+
 	def private getReferencedParticipationClassVariable(CommonalityReferenceMapping mapping) {
 		mapping.matchingReferencedParticipations.head.changedVariableName
 	}

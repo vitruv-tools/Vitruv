@@ -3,8 +3,10 @@ package tools.vitruv.dsls.commonalities.generator
 import java.util.Collections
 import java.util.HashMap
 import java.util.Map
+import org.eclipse.emf.ecore.EAttribute
 import org.eclipse.emf.ecore.EClass
 import org.eclipse.emf.ecore.EPackage
+import org.eclipse.emf.ecore.EReference
 import org.eclipse.emf.ecore.EStructuralFeature
 import org.eclipse.emf.ecore.resource.ResourceSet
 import org.eclipse.xtend.lib.annotations.Accessors
@@ -12,8 +14,10 @@ import org.eclipse.xtext.common.types.JvmGenericType
 import org.eclipse.xtext.generator.IFileSystemAccess2
 import tools.vitruv.dsls.commonalities.language.Commonality
 import tools.vitruv.dsls.commonalities.language.CommonalityAttribute
+import tools.vitruv.dsls.commonalities.language.CommonalityAttributeMapping
 import tools.vitruv.dsls.commonalities.language.CommonalityFile
 import tools.vitruv.dsls.commonalities.language.CommonalityReference
+import tools.vitruv.dsls.commonalities.language.CommonalityReferenceMapping
 import tools.vitruv.dsls.commonalities.language.Concept
 import tools.vitruv.dsls.commonalities.language.ParticipationAttribute
 import tools.vitruv.dsls.commonalities.language.ParticipationClass
@@ -152,19 +156,19 @@ package class GenerationContext {
 		fsa.getURI(conceptName + MODEL_OUTPUT_FILE_EXTENSION)
 	}
 
-	def package dispatch EStructuralFeature getEFeatureToReference(CommonalityAttribute attribute) {
+	def package dispatch EStructuralFeature getCorrespondingEFeature(CommonalityAttribute attribute) {
 		attribute.containingCommonality.intermediateModelClass.getEStructuralFeature(attribute.name)
 	}
 
-	def package dispatch EStructuralFeature getEFeatureToReference(EFeatureAdapter adapter) {
+	def package dispatch EStructuralFeature getCorrespondingEFeature(EFeatureAdapter adapter) {
 		adapter.wrapped
 	}
 
-	def package dispatch EStructuralFeature getEFeatureToReference(ParticipationAttribute participationAttribute) {
-		participationAttribute.attribute.EFeatureToReference
+	def package dispatch EStructuralFeature getCorrespondingEFeature(ParticipationAttribute participationAttribute) {
+		participationAttribute.attribute.correspondingEFeature
 	}
 
-	def package dispatch EStructuralFeature getEFeatureToReference(CommonalityReference reference) {
+	def package dispatch EStructuralFeature getCorrespondingEFeature(CommonalityReference reference) {
 		reference.containingCommonality.intermediateModelClass.getEStructuralFeature(reference.name)
 	}
 
@@ -188,5 +192,41 @@ package class GenerationContext {
 		val ePackage = conceptName.intermediateModelPackage
 		checkState(ePackage !== null, '''No ePackage was registered for the concept “«conceptName»”!''')
 		new ConceptDomain(conceptName, ePackage)
+	}
+
+	def package getParticipationChangeClass(CommonalityAttributeMapping mapping) {
+		mapping.attribute.participationClass.changeClass
+	}
+
+	def package getCommonalityEFeature(CommonalityAttributeMapping mapping) {
+		mapping.declaringAttribute.correspondingEFeature
+	}
+
+	def package getParticipationEFeature(CommonalityAttributeMapping mapping) {
+		mapping.attribute.correspondingEFeature
+	}
+
+	def package getParticipationEReference(CommonalityAttributeMapping mapping) {
+		mapping.participationEFeature as EReference
+	}
+
+	def package getParticipationEAttribute(CommonalityAttributeMapping mapping) {
+		mapping.participationEFeature as EAttribute
+	}
+
+	def package getParticipationChangeClass(CommonalityReferenceMapping mapping) {
+		mapping.reference.participationClass.changeClass
+	}
+
+	def package getCommonalityEFeature(CommonalityReferenceMapping mapping) {
+		mapping.declaringReference.correspondingEFeature
+	}
+
+	def package getParticipationEFeature(CommonalityReferenceMapping mapping) {
+		mapping.reference.correspondingEFeature
+	}
+
+	def package getParticipationEReference(CommonalityReferenceMapping mapping) {
+		mapping.participationEFeature as EReference
 	}
 }

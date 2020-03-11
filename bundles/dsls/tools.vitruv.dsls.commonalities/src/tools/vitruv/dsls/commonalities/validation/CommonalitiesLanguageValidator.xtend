@@ -43,7 +43,7 @@ class CommonalitiesLanguageValidator extends AbstractCommonalitiesLanguageValida
 		} else {
 			val matchingParticipations = mapping.matchingReferencedParticipations.toList
 			if (matchingParticipations.size === 0) {
-				error('''«mapping.declaringReference.referenceType» has no participation with a subtype of «
+				error('''«mapping.referencedCommonality» has no participation with a subtype of «
 				»«referenceRightType».''', COMMONALITY_REFERENCE_MAPPING__REFERENCE)
 			} else if (matchingParticipations.size > 1) {
 				error('''Ambiguous reference mapping: «mapping.declaringReference.referenceType» has more than one «

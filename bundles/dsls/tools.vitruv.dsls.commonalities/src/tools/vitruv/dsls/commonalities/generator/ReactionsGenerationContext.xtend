@@ -54,9 +54,9 @@ package class ReactionsGenerationContext {
 			create.routine('''intermediateInsert_«toCommonality.name»''')
 				.input [model(EcorePackage.eINSTANCE.EObject, newValue)]
 				.match [
-					vall('intermediate').retrieveAsserted(toCommonality.changeClass).correspondingTo.newValue
+					vall(INTERMEDIATE).retrieveAsserted(toCommonality.changeClass).correspondingTo.newValue
 				].action [
-					execute [insertIntermediate(variable('intermediate'), toCommonality)]
+					execute [insertIntermediate(variable(INTERMEDIATE), toCommonality)]
 				]
 		])
 	}
@@ -75,14 +75,14 @@ package class ReactionsGenerationContext {
 				create.routine('''rootInsertIntermediateResoureBridge''')
 					.input [model(EcorePackage.eINSTANCE.EObject, newValue)]
 					.match [
-						vall('contentIntermediate').retrieve(commonality.changeClass).correspondingTo.newValue
+						vall(INTERMEDIATE).retrieve(commonality.changeClass).correspondingTo.newValue
 					]
 					.action [
-						vall('resourceBridge').create(ResourcesPackage.eINSTANCE.intermediateResourceBridge).andInitialize [
-							initIntermediateResourceBridge(variable('resourceBridge'), newValue)
+						vall(RESOURCE_BRIDGE).create(ResourcesPackage.eINSTANCE.intermediateResourceBridge).andInitialize [
+							initIntermediateResourceBridge(variable(RESOURCE_BRIDGE), newValue)
 						]
-						execute [insertResourceBridge(variable('resourceBridge'), variable('contentIntermediate'))]
-						addCorrespondenceBetween('resourceBridge').and('contentIntermediate')
+						execute [insertResourceBridge(variable(RESOURCE_BRIDGE), variable(INTERMEDIATE))]
+						addCorrespondenceBetween(RESOURCE_BRIDGE).and(INTERMEDIATE)
 							.taggedWith(participation.resourceParticipation.correspondenceTag)
 				]
 			}
@@ -94,24 +94,24 @@ package class ReactionsGenerationContext {
 		XbaseFactory.eINSTANCE.createXBlockExpression => [
 			expressions += expressions(
 				XbaseFactory.eINSTANCE.createXAssignment => [
-					assignable = resourceBridge.newFeatureCall
+					assignable = resourceBridge.copy
 					feature = typeProvider.findMethod(IntermediateResourceBridge, 'setCorrespondenceModel')
 					value = correspondenceModel
 				],
 				XbaseFactory.eINSTANCE.createXAssignment => [
-					assignable = resourceBridge.newFeatureCall
+					assignable = resourceBridge.copy
 					feature = typeProvider.findMethod(IntermediateResourceBridge, 'setResourceAccess')
 					value = resourceAccess
 				],
 				XbaseFactory.eINSTANCE.createXAssignment => [
-					assignable = resourceBridge.newFeatureCall
+					assignable = resourceBridge.copy
 					feature = typeProvider.findMethod(IntermediateResourceBridge, 'setIntermediateNS')
 					value = XbaseFactory.eINSTANCE.createXStringLiteral => [
 						value = concept.vitruvDomain.nsUris.head
 					]
 				],
 				XbaseFactory.eINSTANCE.createXMemberFeatureCall => [
-					memberCallTarget = resourceBridge.newFeatureCall
+					memberCallTarget = resourceBridge.copy
 					feature = typeProvider.findMethod(IntermediateResourceBridge, 'initialiseForModelElement')
 					explicitOperationCall = true
 					memberCallArguments += modelElement

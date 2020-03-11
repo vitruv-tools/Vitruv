@@ -13,6 +13,11 @@ import static extension tools.vitruv.dsls.commonalities.language.extensions.Comm
 @Utility
 package class ReactionsGeneratorConventions {
 
+	public static val INTERMEDIATE = 'intermediate'
+	public static val REFERENCED_INTERMEDIATE = 'referencedIntermediate'
+	public static val PARTICIPATION_OBJECT = 'participationObject'
+	public static val RESOURCE_BRIDGE = 'resourceBridge'
+
 	def static package String correspondingVariableName(ParticipationClass participationClass) {
 		'''corresponding_«participationClass.name»'''
 	}
