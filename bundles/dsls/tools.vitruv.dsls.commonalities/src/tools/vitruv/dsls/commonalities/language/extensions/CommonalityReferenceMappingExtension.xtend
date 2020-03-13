@@ -15,27 +15,27 @@ import static extension tools.vitruv.dsls.commonalities.language.extensions.Part
 @Utility
 class CommonalityReferenceMappingExtension {
 
-	def static dispatch isRead(ReferenceReadSpecification referenceMappingSpecification) {
+	def static dispatch isRead(ReferenceReadSpecification mapping) {
 		true
 	}
 
-	def static dispatch isRead(ReferenceEqualitySpecification referenceMappingSpecification) {
+	def static dispatch isRead(ReferenceEqualitySpecification mapping) {
 		true
 	}
 
-	def static dispatch isRead(ReferenceSetSpecification referenceMappingSpecification) {
+	def static dispatch isRead(ReferenceSetSpecification mapping) {
 		false
 	}
 
-	def static dispatch isWrite(ReferenceReadSpecification referenceMappingSpecification) {
+	def static dispatch isWrite(ReferenceReadSpecification mapping) {
 		false
 	}
 
-	def static dispatch isWrite(ReferenceEqualitySpecification referenceMappingSpecification) {
+	def static dispatch isWrite(ReferenceEqualitySpecification mapping) {
 		true
 	}
 
-	def static dispatch isWrite(ReferenceSetSpecification referenceMappingSpecification) {
+	def static dispatch isWrite(ReferenceSetSpecification mapping) {
 		true
 	}
 

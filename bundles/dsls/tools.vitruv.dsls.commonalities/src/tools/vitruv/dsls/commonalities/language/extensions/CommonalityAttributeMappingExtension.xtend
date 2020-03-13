@@ -16,62 +16,62 @@ import static extension tools.vitruv.dsls.commonalities.language.extensions.Part
 package class CommonalityAttributeMappingExtension {
 
 	@Pure
-	def static dispatch Classifier getProvidedType(AttributeReadSpecification mappingSpec) {
-		mappingSpec.attribute.type
+	def static dispatch Classifier getProvidedType(AttributeReadSpecification mapping) {
+		mapping.attribute.type
 	}
 
 	@Pure
-	def static dispatch Classifier getRequiredType(AttributeReadSpecification mappingSpec) {
+	def static dispatch Classifier getRequiredType(AttributeReadSpecification mapping) {
 		WellKnownClassifiers.JAVA_OBJECT
 	}
 
-	def static dispatch Classifier getProvidedType(AttributeSetSpecification mappingSpec) {
+	def static dispatch Classifier getProvidedType(AttributeSetSpecification mapping) {
 		WellKnownClassifiers.MOST_SPECIFIC_TYPE
 	}
 
-	def static dispatch Classifier getRequiredType(AttributeSetSpecification mappingSpec) {
-		mappingSpec.attribute.type
+	def static dispatch Classifier getRequiredType(AttributeSetSpecification mapping) {
+		mapping.attribute.type
 	}
 
 	@Pure
-	def static dispatch Classifier getProvidedType(AttributeEqualitySpecification mappingSpec) {
-		mappingSpec.attribute.type
+	def static dispatch Classifier getProvidedType(AttributeEqualitySpecification mapping) {
+		mapping.attribute.type
 	}
 
 	@Pure
-	def static dispatch Classifier getRequiredType(AttributeEqualitySpecification mappingSpec) {
-		mappingSpec.attribute.type
+	def static dispatch Classifier getRequiredType(AttributeEqualitySpecification mapping) {
+		mapping.attribute.type
 	}
 
-	def static getParticipation(CommonalityAttributeMapping mappingSpec) {
-		mappingSpec.attribute.participationClass.participation
+	def static getParticipation(CommonalityAttributeMapping mapping) {
+		mapping.attribute.participationClass.participation
 	}
 
 	def static getDeclaringAttribute(CommonalityAttributeMapping mapping) {
 		return mapping.getDirectContainer(CommonalityAttribute)
 	}
 
-	def static dispatch isWrite(AttributeSetSpecification spec) {
+	def static dispatch isWrite(AttributeSetSpecification mapping) {
 		true
 	}
 
-	def static dispatch isWrite(AttributeReadSpecification spec) {
+	def static dispatch isWrite(AttributeReadSpecification mapping) {
 		false
 	}
 
-	def static dispatch isWrite(AttributeEqualitySpecification spec) {
+	def static dispatch isWrite(AttributeEqualitySpecification mapping) {
 		true
 	}
 
-	def static dispatch isRead(AttributeSetSpecification spec) {
+	def static dispatch isRead(AttributeSetSpecification mapping) {
 		false
 	}
 
-	def static dispatch isRead(AttributeReadSpecification spec) {
+	def static dispatch isRead(AttributeReadSpecification mapping) {
 		true
 	}
 
-	def static dispatch isRead(AttributeEqualitySpecification spec) {
+	def static dispatch isRead(AttributeEqualitySpecification mapping) {
 		true
 	}
 }
