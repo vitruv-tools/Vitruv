@@ -28,10 +28,10 @@ import static extension tools.vitruv.dsls.commonalities.generator.ReactionsGener
 import static extension tools.vitruv.dsls.commonalities.generator.XbaseHelper.*
 import static extension tools.vitruv.dsls.commonalities.language.extensions.CommonalitiesLanguageModelExtensions.*
 
+@GenerationScoped
 package class ReactionsGenerationContext {
 
-	@Accessors(PACKAGE_GETTER)
-	var extension GenerationContext generationContext
+	@Inject extension GenerationContext generationContext
 	@Accessors(PACKAGE_GETTER)
 	@Inject FluentReactionsLanguageBuilder create
 
@@ -39,11 +39,6 @@ package class ReactionsGenerationContext {
 	// Since a commonality may have other commonalities as participations, commonality insert routines can potentially
 	// be found for all pairs of a commonality and its participations.
 	val Map<Pair<NamedElement, NamedElement>, FluentRoutineBuilder> commonalityInsertRoutineCache = new HashMap
-
-	def package wrappingContext(GenerationContext generationContext) {
-		this.generationContext = generationContext
-		return this
-	}
 
 	def private getMetadataModelKey(Concept concept) {
 		return #['commonalities', concept.name + VitruviusConstants.fileExtSeparator + concept.intermediateModelFileExtension]

@@ -1,8 +1,11 @@
 package tools.vitruv.dsls.commonalities
 
+import com.google.inject.Binder
 import org.eclipse.xtext.generator.IGenerator2
 import tools.vitruv.dsls.commonalities.export.CommonalityFileResourceDescriptionStrategy
 import tools.vitruv.dsls.commonalities.generator.CommonalitiesLanguageGenerator
+import tools.vitruv.dsls.commonalities.generator.GenerationScope
+import tools.vitruv.dsls.commonalities.generator.GenerationScoped
 import tools.vitruv.dsls.commonalities.names.CommonalitiesLanguageQualifiedNameConverter
 import tools.vitruv.dsls.commonalities.names.CommonalitiesLanguageQualifiedNameProvider
 import tools.vitruv.dsls.commonalities.names.IEObjectDescriptionProvider
@@ -36,5 +39,10 @@ class CommonalitiesLanguageRuntimeModule extends AbstractCommonalitiesLanguageRu
 
 	override bindIGlobalScopeProvider() {
 		CommonalitiesLanguageGlobalScopeProvider
+	}
+
+	override configure(Binder binder) {
+		super.configure(binder)
+		binder.bindScope(GenerationScoped, GenerationScope.GuiceScope.INSTANCE)
 	}
 }

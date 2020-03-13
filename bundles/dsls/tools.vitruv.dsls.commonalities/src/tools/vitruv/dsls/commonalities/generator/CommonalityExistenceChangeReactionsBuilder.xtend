@@ -1,9 +1,7 @@
 package tools.vitruv.dsls.commonalities.generator
 
 import com.google.inject.Inject
-import com.google.inject.Provider
 import java.util.List
-import java.util.function.Supplier
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EStructuralFeature
 import org.eclipse.xtext.common.types.JvmOperation
@@ -28,37 +26,34 @@ import static extension tools.vitruv.dsls.commonalities.generator.ReactionsGener
 import static extension tools.vitruv.dsls.commonalities.generator.ReactionsHelper.*
 import static extension tools.vitruv.dsls.commonalities.language.extensions.CommonalitiesLanguageModelExtensions.*
 
-class CommonalityExistenceChangeReactionsBuilder extends ReactionsSubGenerator<CommonalityExistenceChangeReactionsBuilder> {
+package class CommonalityExistenceChangeReactionsBuilder extends ReactionsSubGenerator {
 
-	val Supplier<ResourceInitializationBuilder> resourceInitializationBuilder
-	val Supplier<ParticipationRelationInitializationBuilder> participationRelationInitializationBuilder
-
-	@Inject
-	new(
-		Provider<ResourceInitializationBuilder> resourceInitializationBuilderProvider,
-		Provider<ParticipationRelationInitializationBuilder> participationRelationInitializationBuilderProvider
-	) {
-		this.resourceInitializationBuilder = [
-			resourceInitializationBuilderProvider.get.withGenerationContext(reactionsGenerationContext)
-		]
-		this.participationRelationInitializationBuilder = [
-			participationRelationInitializationBuilderProvider.get.withGenerationContext(reactionsGenerationContext)
-		]
+	static class Factory extends InjectingFactoryBase {
+		def createFor(Participation targetParticipation) {
+			return new CommonalityExistenceChangeReactionsBuilder(targetParticipation).injectMembers
+		}
 	}
 
-	Participation participation
-	Commonality commonality
+	@Inject ResourceInitializationBuilder.Factory resourceInitializationBuilder
+	@Inject ParticipationRelationInitializationBuilder.Factory participationRelationInitializationBuilder
 
-	def package forParticipation(Participation participation) {
-		this.participation = participation
-		this.commonality = participation.containingCommonality
-		return this
+	val Commonality commonality
+	val Participation targetParticipation
+
+	private new(Participation targetParticipation) {
+		checkNotNull(targetParticipation, "targetParticipation is null")
+		this.commonality = targetParticipation.containingCommonality
+		this.targetParticipation = targetParticipation
+	}
+
+	// Dummy constructor for Guice
+	package new() {
+		this.commonality = null
+		this.targetParticipation = null
+		throw new IllegalStateException("Use the Factory to create instances of this class!")
 	}
 
 	def package Iterable<FluentReactionBuilder> getReactions() {
-		checkState(participation !== null, "No participation to create reactions for was set!")
-		checkState(generationContext !== null, "No generation context was set!")
-
 		return #[
 			reactionForCommonalityCreate,
 			reactionForCommonalityDelete,
@@ -71,13 +66,13 @@ class CommonalityExistenceChangeReactionsBuilder extends ReactionsSubGenerator<C
 			.afterElement(commonality.changeClass).created
 			.call [
 				match [
-					for (participationClass : participation.classes) {
+					for (participationClass : targetParticipation.classes) {
 						requireAbsenceOf(participationClass.changeClass).correspondingTo.affectedEObject
 							.taggedWith(participationClass.correspondenceTag)
 					}
 				]
 				.action [
-					for (participationClass : participation.classes) {
+					for (participationClass : targetParticipation.classes) {
 						val corresponding = participationClass.correspondingVariableName
 						vall(corresponding).create(participationClass.changeClass) => [
 							val initializers = participationClass.participationClassInitializers
@@ -92,7 +87,7 @@ class CommonalityExistenceChangeReactionsBuilder extends ReactionsSubGenerator<C
 					}
 
 					// Any initialization that needs to happen after all model objects were created:
-					for (participationClass : participation.classes) {
+					for (participationClass : targetParticipation.classes) {
 						val postInitializers = participationClass.participationClassPostInitializers
 						if (!postInitializers.empty) {
 							update(participationClass.correspondingVariableName, [ typeProvider |
@@ -119,8 +114,8 @@ class CommonalityExistenceChangeReactionsBuilder extends ReactionsSubGenerator<C
 	}
 
 	def private getResourceInitializer(ParticipationClass participationClass) {
-		extension val resourceInitBuilder = resourceInitializationBuilder.get.forParticipationClass(participationClass)
-		if (!resourceInitBuilder.hasInitializer) return null
+		extension val resourceInitializationBuilder = resourceInitializationBuilder.createFor(participationClass)
+		if (!resourceInitializationBuilder.hasInitializer) return null
 		return [ TypeProvider typeProvider |
 			val resource = typeProvider.variable(participationClass.correspondingVariableName)
 			return resource.getInitializer(typeProvider)
@@ -144,10 +139,10 @@ class CommonalityExistenceChangeReactionsBuilder extends ReactionsSubGenerator<C
 	}
 
 	def private getParticipationRelationInitializer(ParticipationClass participationClass) {
-		val participationRelationInitBuilder = participationRelationInitializationBuilder.get.forParticipationClass(participationClass)
-		if (!participationRelationInitBuilder.hasInitializer) return null
+		val participationRelationInitializationBuilder = participationRelationInitializationBuilder.createFor(participationClass)
+		if (!participationRelationInitializationBuilder.hasInitializer) return null
 		return [ TypeProvider typeProvider |
-			participationRelationInitBuilder.getInitializer(typeProvider, [
+			participationRelationInitializationBuilder.getInitializer(typeProvider, [
 				typeProvider.variable(correspondingVariableName)
 			])
 		]
@@ -194,7 +189,7 @@ class CommonalityExistenceChangeReactionsBuilder extends ReactionsSubGenerator<C
 			.afterElement(commonality.changeClass).deleted
 			.call [
 				match [
-					for (participationClass : participation.classes) {
+					for (participationClass : targetParticipation.classes) {
 						vall(participationClass.correspondingVariableName)
 							.retrieveAsserted(participationClass.changeClass)
 							.correspondingTo.affectedEObject
@@ -202,7 +197,7 @@ class CommonalityExistenceChangeReactionsBuilder extends ReactionsSubGenerator<C
 					}
 				]
 				action [
-					for (participationClass : participation.classes) {
+					for (participationClass : targetParticipation.classes) {
 						delete(participationClass.correspondingVariableName)
 					}
 				]
@@ -211,14 +206,14 @@ class CommonalityExistenceChangeReactionsBuilder extends ReactionsSubGenerator<C
 
 	def private reactionForCommonalityRootInsert() {
 		// Check for participation relations that trigger on inserts:
-		val relations = newHashMap(participation.classes
+		val relations = newHashMap(targetParticipation.classes
 			.map[optionalParticipationRelation]
 			.filterNull
 			.toSet
 			.map[it -> operator.findOptionalImplementedMethod('afterInserted')]
 			.filter[value !== null])
 
-		if (relations.size > 0 || participation.isCommonalityParticipation) {
+		if (relations.size > 0 || targetParticipation.isCommonalityParticipation) {
 			// TODO participation domains
 			val reactionStart = create.reaction('''«commonality.concept.name»_«commonality.name»RootInsert''')
 				.afterElementInsertedAsRoot(commonality.changeClass)
@@ -249,10 +244,10 @@ class CommonalityExistenceChangeReactionsBuilder extends ReactionsSubGenerator<C
 			// This containment relation is realized when the current commonality instance is inserted into its root.
 			// TODO In case relations between commonalities are a thing: Only apply implicit root containment for those
 			// commonalities without relation? Or make the root relation explicit (similar to 'in Resource')?
-			if (participation.isCommonalityParticipation) {
-				for (participationClass : participation.classes) {
+			if (targetParticipation.isCommonalityParticipation) {
+				for (participationClass : targetParticipation.classes) {
 					val participatingCommonality = participationClass.participatingCommonality // assert: not null
-					reaction = reactionStart.call(getInsertRoutine(participation, participatingCommonality))
+					reaction = reactionStart.call(getInsertRoutine(targetParticipation, participatingCommonality))
 				}
 			}
 			reaction

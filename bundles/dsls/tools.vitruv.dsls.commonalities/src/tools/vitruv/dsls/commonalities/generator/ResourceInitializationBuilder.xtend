@@ -8,17 +8,30 @@ import tools.vitruv.dsls.commonalities.language.elements.ResourceMetaclass
 import tools.vitruv.dsls.reactions.builder.TypeProvider
 import tools.vitruv.extensions.dslruntime.commonalities.resources.IntermediateResourceBridge
 
+import static com.google.common.base.Preconditions.*
 import static tools.vitruv.dsls.commonalities.generator.XbaseHelper.*
 
 import static extension tools.vitruv.dsls.commonalities.generator.JvmTypeProviderHelper.*
 
-package class ResourceInitializationBuilder extends ReactionsSubGenerator<ResourceInitializationBuilder> {
+package class ResourceInitializationBuilder extends ReactionsSubGenerator {
 
-	ParticipationClass participationClass
+	static class Factory extends InjectingFactoryBase {
+		def createFor(ParticipationClass participationClass) {
+			return new ResourceInitializationBuilder(participationClass).injectMembers
+		}
+	}
 
-	def forParticipationClass(ParticipationClass participationClass) {
+	val ParticipationClass participationClass
+
+	private new(ParticipationClass participationClass) {
+		checkNotNull(participationClass, "participationClass is null")
 		this.participationClass = participationClass
-		return this
+	}
+
+	// Dummy constructor for Guice
+	package new() {
+		this.participationClass = null
+		throw new IllegalStateException("Use the Factory to create instances of this class!")
 	}
 
 	def hasInitializer() {

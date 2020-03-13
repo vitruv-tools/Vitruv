@@ -16,21 +16,30 @@ import static extension tools.vitruv.dsls.commonalities.generator.EmfAccessExpre
 import static extension tools.vitruv.dsls.commonalities.generator.ReactionsGeneratorConventions.*
 import static extension tools.vitruv.dsls.commonalities.language.extensions.CommonalitiesLanguageModelExtensions.*
 
-class CommonalityReferenceChangeReactionsBuilder
-	extends ReactionsSubGenerator<CommonalityReferenceChangeReactionsBuilder> {
+package class CommonalityReferenceChangeReactionsBuilder extends ReactionsSubGenerator {
 
-	CommonalityReference reference
-	Participation targetParticipation
-	List<CommonalityReferenceMapping> relevantMappings
-
-	def package forReference(CommonalityReference reference) {
-		this.reference = reference
-		this
+	static class Factory extends InjectingFactoryBase {
+		def createFor(CommonalityReference reference, Participation targetParticipation) {
+			return new CommonalityReferenceChangeReactionsBuilder(reference, targetParticipation).injectMembers
+		}
 	}
 
-	def package regardingParticipation(Participation targetParticipation) {
+	val CommonalityReference reference
+	val Participation targetParticipation
+	List<CommonalityReferenceMapping> relevantMappings
+
+	private new(CommonalityReference reference, Participation targetParticipation) {
+		checkNotNull(reference, "reference is null")
+		checkNotNull(targetParticipation, "targetParticipation is null")
+		this.reference = reference
 		this.targetParticipation = targetParticipation
-		this
+	}
+
+	// Dummy constructor for Guice
+	package new() {
+		this.reference = null
+		this.targetParticipation = null
+		throw new IllegalStateException("Use the Factory to create instances of this class!")
 	}
 
 	def package Iterable<FluentReactionBuilder> getReactions() {

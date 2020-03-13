@@ -11,20 +11,33 @@ import static extension tools.vitruv.dsls.commonalities.generator.ReactionsGener
 import static extension tools.vitruv.dsls.commonalities.generator.ReactionsHelper.*
 import static extension tools.vitruv.dsls.commonalities.language.extensions.CommonalitiesLanguageModelExtensions.*
 
-class ParticipationExistenceChangeReactionsBuilder extends ReactionsSubGenerator<ParticipationExistenceChangeReactionsBuilder> {
+package class ParticipationExistenceChangeReactionsBuilder extends ReactionsSubGenerator {
 
-	Participation participation
-	Commonality commonality
+	static class Factory extends InjectingFactoryBase {
+		def createFor(Participation participation) {
+			return new ParticipationExistenceChangeReactionsBuilder(participation).injectMembers
+		}
+	}
 
-	def package forParticipation(Participation participation) {
+	// note: may be a commonality participation
+	val Participation participation
+	val Commonality commonality
+
+	private new(Participation participation) {
+		checkNotNull(participation, "participation is null")
 		this.participation = participation
 		this.commonality = participation.containingCommonality
-		return this
+	}
+	// Dummy constructor for Guice
+	package new() {
+		this.participation = null
+		this.commonality = null
+		throw new IllegalStateException("Use the Factory to create instances of this class!")
+	}
+
 	}
 
 	def package Iterable<FluentReactionBuilder> getReactions() {
-		checkState(participation !== null, "No participation to create reactions for was set!")
-		checkState(generationContext !== null, "No generation context was set!")
 
 		return participation.classes
 			.filter[!isForResource]

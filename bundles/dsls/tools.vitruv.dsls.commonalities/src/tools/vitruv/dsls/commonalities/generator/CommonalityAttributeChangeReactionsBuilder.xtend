@@ -18,32 +18,36 @@ import static extension tools.vitruv.dsls.commonalities.generator.EmfAccessExpre
 import static extension tools.vitruv.dsls.commonalities.generator.ReactionsGeneratorConventions.*
 import static extension tools.vitruv.dsls.commonalities.language.extensions.CommonalitiesLanguageModelExtensions.*
 
-package class CommonalityAttributeChangeReactionsBuilder
-	extends ReactionsSubGenerator<CommonalityAttributeChangeReactionsBuilder> {
+package class CommonalityAttributeChangeReactionsBuilder extends ReactionsSubGenerator {
 
-	CommonalityAttribute attribute
-	Participation targetParticipation
-	List<CommonalityAttributeMapping> relevantMappings
-
-	def package forAttribute(CommonalityAttribute attribute) {
-		this.attribute = attribute
-		this
+	static class Factory extends InjectingFactoryBase {
+		def createFor(CommonalityAttribute attribute, Participation targetParticipation) {
+			return new CommonalityAttributeChangeReactionsBuilder(attribute, targetParticipation).injectMembers
+		}
 	}
 
-	def package regardingParticipation(Participation targetParticipation) {
+	val CommonalityAttribute attribute
+	val Participation targetParticipation
+	List<CommonalityAttributeMapping> relevantMappings
+
+	private new(CommonalityAttribute attribute, Participation targetParticipation) {
+		checkNotNull(attribute, "attribute is null")
+		checkNotNull(targetParticipation, "targetParticipation is null")
+		this.attribute = attribute
 		this.targetParticipation = targetParticipation
-		this
+	}
+
+	// Dummy constructor for Guice
+	package new() {
+		this.attribute = null
+		this.targetParticipation = null
+		throw new IllegalStateException("Use the Factory to create instances of this class!")
 	}
 
 	def package Iterable<FluentReactionBuilder> getReactions() {
-		checkState(attribute !== null, "No attribute to create reactions for was set!")
-		checkState(targetParticipation !== null, "No participation to create reactions for was set!")
-		checkState(generationContext !== null, "No generation context was set!")
-
 		relevantMappings = attribute.mappings.filter [
 			isWrite && participation == targetParticipation
 		].toList
-
 		if (relevantMappings.size === 0) return Collections.emptyList
 
 		switch attribute.type {

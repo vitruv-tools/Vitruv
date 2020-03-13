@@ -2,7 +2,6 @@ package tools.vitruv.dsls.commonalities.generator
 
 import com.google.inject.Inject
 import com.google.inject.Provider
-import java.util.function.Supplier
 import org.apache.log4j.Logger
 import org.eclipse.emf.common.util.URI
 import org.eclipse.xtext.resource.IGlobalServiceProvider
@@ -17,52 +16,18 @@ package class ReactionsGenerator extends SubGenerator {
 	private static val Logger logger = Logger.getLogger(ReactionsGenerator)
 
 	@Inject IGlobalServiceProvider globalServiceProvider
+	@Inject Provider<IReactionsGenerator> reactionsGeneratorProvider
 
-	val Supplier<IReactionsGenerator> reactionsGeneratorProvider
-	val Supplier<ParticipationExistenceChangeReactionsBuilder> participationExistenceChangeReactionsBuilder
-	val Supplier<CommonalityExistenceChangeReactionsBuilder> commonalityExistenceChangeReactionsBuilder
-	val Supplier<CommonalityAttributeChangeReactionsBuilder> commonalityAttributeChangeReactionsBuilder
-	val Supplier<ParticipationAttributeChangeReactionsBuilder> participationAttributeChangeReactionsBuilder
-	val Supplier<ParticipationReferenceChangeReactionsBuilder> participationReferenceChangeReactionsBuilder
-	val Supplier<CommonalityReferenceChangeReactionsBuilder> commonalityReferenceChangeReactionsBuilder
-	@Inject Provider<ReactionsGenerationContext> reactionsGeneratorContextProvider
 	@Inject CommonalitiesGenerationSettings generationSettings
-	extension ReactionsGenerationContext reactionsGenerationContext
+	@Inject extension ReactionsGenerationContext reactionsGenerationContext
 
-	@Inject
-	new(
-		Provider<IReactionsGenerator> reactionsGeneratorProvider,
-		Provider<ParticipationExistenceChangeReactionsBuilder> participationExistenceChangeReactionsBuilderProvider,
-		Provider<CommonalityExistenceChangeReactionsBuilder> commonalityExistenceChangeReactionsBuilderProvider,
-		Provider<CommonalityAttributeChangeReactionsBuilder> commonalityAttributeChangeReactionsBuilderProvider,
-		Provider<ParticipationAttributeChangeReactionsBuilder> participationAttributeChangeReactionsBuilderProvider,
-		Provider<ParticipationReferenceChangeReactionsBuilder> participationReferenceChangeReactionsBuilderProvider,
-		Provider<CommonalityReferenceChangeReactionsBuilder> commonalityReferenceChangeReactionsBuilderProvider
-	) {
-		this.reactionsGeneratorProvider = [
-			reactionsGeneratorProvider.get() => [
-				useResourceSet(resourceSet)
-			]
-		]
-		this.participationExistenceChangeReactionsBuilder = [
-			participationExistenceChangeReactionsBuilderProvider.get.withGenerationContext(reactionsGenerationContext)
-		]
-		this.commonalityExistenceChangeReactionsBuilder = [
-			commonalityExistenceChangeReactionsBuilderProvider.get.withGenerationContext(reactionsGenerationContext)
-		]
-		this.commonalityAttributeChangeReactionsBuilder = [
-			commonalityAttributeChangeReactionsBuilderProvider.get.withGenerationContext(reactionsGenerationContext)
-		]
-		this.participationAttributeChangeReactionsBuilder = [
-			participationAttributeChangeReactionsBuilderProvider.get.withGenerationContext(reactionsGenerationContext)
-		]
-		this.participationReferenceChangeReactionsBuilder = [
-			participationReferenceChangeReactionsBuilderProvider.get.withGenerationContext(reactionsGenerationContext)
-		]
-		this.commonalityReferenceChangeReactionsBuilder = [
-			commonalityReferenceChangeReactionsBuilderProvider.get.withGenerationContext(reactionsGenerationContext)
-		]
-	}
+	@Inject CommonalityExistenceChangeReactionsBuilder.Factory commonalityExistenceChangeReactionsBuilder
+	@Inject CommonalityAttributeChangeReactionsBuilder.Factory commonalityAttributeChangeReactionsBuilder
+	@Inject CommonalityReferenceChangeReactionsBuilder.Factory commonalityReferenceChangeReactionsBuilder
+
+	@Inject ParticipationExistenceChangeReactionsBuilder.Factory participationExistenceChangeReactionsBuilder
+	@Inject ParticipationAttributeChangeReactionsBuilder.Factory participationAttributeChangeReactionsBuilder
+	@Inject ParticipationReferenceChangeReactionsBuilder.Factory participationReferenceChangeReactionsBuilder
 
 	override generate() {
 		logger.debug('''Generating reactions for commonality «commonalityFile.concept.name»::«commonality.name»''')
@@ -75,8 +40,9 @@ package class ReactionsGenerator extends SubGenerator {
 		// This has the side-effect of initializing the Reactions language's injector if that hasn't happened yet:
 		globalServiceProvider.findService(URI.createFileURI("fake.reactions"), IReactionsGenerator)
 
-		val generator = reactionsGeneratorProvider.get()
-		reactionsGenerationContext = reactionsGeneratorContextProvider.get.wrappingContext(generationContext)
+		val reactionsGenerator = reactionsGeneratorProvider.get() => [
+			useResourceSet(resourceSet)
+		]
 
 		val reactionFile = create.reactionsFile(commonality.name)
 		for (participation : commonalityFile.commonality.participations) {
@@ -100,11 +66,11 @@ package class ReactionsGenerator extends SubGenerator {
 		}
 
 		try {
-			generator.addReactionsFile(reactionFile)
-			generator.generate(fsa)
+			reactionsGenerator.addReactionsFile(reactionFile)
+			reactionsGenerator.generate(fsa)
 
 			if (generationSettings.createReactionFiles) {
-				generator.writeReactions(fsa)
+				reactionsGenerator.writeReactions(fsa)
 			}
 		} finally {
 			logger.debug('''Unregistering concept domains again: «generatedConcepts»''')
@@ -130,31 +96,31 @@ package class ReactionsGenerator extends SubGenerator {
 		).filterNull
 	}
 
-	def private reactionsForCommonalityExistenceChange(Participation participation) {
-		commonalityExistenceChangeReactionsBuilder.get.forParticipation(participation).reactions
+	def private reactionsForCommonalityExistenceChange(Participation targetParticipation) {
+		commonalityExistenceChangeReactionsBuilder.createFor(targetParticipation).reactions
 	}
 
-	def private reactionsForCommonalityAttributeChange(Participation participation) {
+	def private reactionsForCommonalityAttributeChange(Participation targetParticipation) {
 		commonality.attributes.flatMap [ attribute |
-			commonalityAttributeChangeReactionsBuilder.get.forAttribute(attribute).regardingParticipation(participation).reactions
+			commonalityAttributeChangeReactionsBuilder.createFor(attribute, targetParticipation).reactions
 		]
 	}
 
-	def private reactionsForCommonalityReferenceChange(Participation participation) {
+	def private reactionsForCommonalityReferenceChange(Participation targetParticipation) {
 		commonality.references.flatMap [ reference |
-			commonalityReferenceChangeReactionsBuilder.get.forReference(reference).regardingParticipation(participation).reactions
+			commonalityReferenceChangeReactionsBuilder.createFor(reference, targetParticipation).reactions
 		]
 	}
 
 	def private reactionsForParticipationExistenceChange(Participation participation) {
-		participationExistenceChangeReactionsBuilder.get.forParticipation(participation).reactions
+		participationExistenceChangeReactionsBuilder.createFor(participation).reactions
 	}
 
 	def private reactionsForParticipationAttributeChange(Participation participation) {
-		participationAttributeChangeReactionsBuilder.get.forParticipation(participation).reactions
+		participationAttributeChangeReactionsBuilder.createFor(participation).reactions
 	}
 
 	def private reactionsForParticipationReferenceChange(Participation participation) {
-		participationReferenceChangeReactionsBuilder.get.forParticipation(participation).reactions
+		participationReferenceChangeReactionsBuilder.createFor(participation).reactions
 	}
 }

@@ -34,31 +34,57 @@ import static com.google.common.base.Preconditions.*
 import static extension tools.vitruv.dsls.commonalities.generator.GeneratorConstants.*
 import static extension tools.vitruv.dsls.commonalities.language.extensions.CommonalitiesLanguageModelExtensions.*
 
+@GenerationScoped
 package class GenerationContext {
+
+	static class Factory extends InjectingFactoryBase {
+		def create(IFileSystemAccess2 fsa, CommonalityFile commonalityFile) {
+			return new GenerationContext(fsa, commonalityFile).injectMembers
+		}
+	}
 
 	// TODO verify that this caching heuristic actually produces the desired results
 	// see https://github.com/eclipse/xtext-core/issues/413
 	static var int lastSeenResourceSetHash
 	static var Iterable<String> generatedConcepts = Collections.emptyList
 
-	var isNewResourceSet = false
-	@Accessors(PACKAGE_SETTER, PACKAGE_GETTER)
-	var CommonalityFile commonalityFile
-	@Accessors(PACKAGE_SETTER, PACKAGE_GETTER)
-	var IFileSystemAccess2 fsa
-	// TODO cache for complete ResourceSet (but: how to known when to cleanup)? Or don't cache at all?
-	var Map<Commonality, EClass> intermediateModelClassCache = new HashMap
-	var Map<String, EPackage> intermediateModelPackageCache = new HashMap
-	var Map<String, JvmGenericType> domainTypes = new HashMap
-	var Map<String, JvmGenericType> domainProviderTypes = new HashMap
+	@Accessors(PACKAGE_GETTER)
+	val IFileSystemAccess2 fsa
+	@Accessors(PACKAGE_GETTER)
+	val CommonalityFile commonalityFile
+	@Accessors(PACKAGE_GETTER)
+	val boolean isNewResourceSet
 
-	def package updateResourceSetContext() {
+	// TODO cache for complete ResourceSet (but: how to known when to cleanup)? Or don't cache at all?
+	val Map<Commonality, EClass> intermediateModelClassCache = new HashMap
+	val Map<String, EPackage> intermediateModelPackageCache = new HashMap
+	val Map<String, JvmGenericType> domainTypes = new HashMap
+	val Map<String, JvmGenericType> domainProviderTypes = new HashMap
+
+	private new(IFileSystemAccess2 fsa, CommonalityFile commonalityFile) {
+		checkNotNull(fsa, "fsa is null")
+		checkNotNull(commonalityFile, "commonalityFile is null")
+		this.fsa = fsa
+		this.commonalityFile = commonalityFile
+		this.isNewResourceSet = updateResourceSetContext()
+	}
+
+	// Dummy constructor for Guice
+	package new() {
+		this.fsa = null
+		this.commonalityFile = null
+		this.isNewResourceSet = false
+		throw new IllegalStateException("Use the Factory to create instances of this class!")
+	}
+
+	def private boolean updateResourceSetContext() {
 		val resourceSetHashCode = resourceSet.hashCode
-		isNewResourceSet = (resourceSetHashCode != lastSeenResourceSetHash);
+		val isNewResourceSet = (resourceSetHashCode != lastSeenResourceSetHash);
 		if (isNewResourceSet) {
 			lastSeenResourceSetHash = resourceSetHashCode
 			generatedConcepts = Collections.emptyList
 		}
+		return isNewResourceSet
 	}
 
 	def package setGeneratedConcepts(Iterable<String> newGeneratedConcepts) {
@@ -67,10 +93,6 @@ package class GenerationContext {
 
 	def package getGeneratedConcepts() {
 		generatedConcepts
-	}
-
-	def package isNewResourceSet() {
-		isNewResourceSet
 	}
 
 	def package getIntermediateModelClass(Commonality commonality) {

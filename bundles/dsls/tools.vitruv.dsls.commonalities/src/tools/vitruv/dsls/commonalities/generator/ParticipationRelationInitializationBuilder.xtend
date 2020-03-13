@@ -11,25 +11,37 @@ import tools.vitruv.dsls.commonalities.language.TupleParticipation
 import tools.vitruv.dsls.commonalities.language.TupleParticipationPart
 import tools.vitruv.dsls.reactions.builder.TypeProvider
 
+import static com.google.common.base.Preconditions.*
 import static tools.vitruv.dsls.commonalities.generator.ParticipationRelationUtil.*
 
 import static extension tools.vitruv.dsls.commonalities.generator.JvmTypeProviderHelper.*
 import static extension tools.vitruv.dsls.commonalities.generator.XbaseHelper.*
 import static extension tools.vitruv.dsls.commonalities.language.extensions.CommonalitiesLanguageModelExtensions.*
 
-package class ParticipationRelationInitializationBuilder
-	extends ReactionsSubGenerator<ParticipationRelationInitializationBuilder> {
+package class ParticipationRelationInitializationBuilder extends ReactionsSubGenerator {
+
+	static class Factory extends InjectingFactoryBase {
+		def createFor(ParticipationClass participationClass) {
+			return new ParticipationRelationInitializationBuilder(participationClass).injectMembers
+		}
+	}
+
+	private new(ParticipationClass participationClass) {
+		checkNotNull(participationClass, "participationClass is null")
+		this.participationClass = participationClass
+	}
+
+	// Dummy constructor for Guice
+	package new() {
+		this.participationClass = null
+		throw new IllegalStateException("Use the Factory to create instances of this class!")
+	}
 
 	static val AFTER_CREATED_RELATION_OPERATOR_HOOK = 'afterCreated'
 
-	ParticipationClass participationClass
+	val ParticipationClass participationClass
 	extension var TypeProvider typeProvider
 	Function<ParticipationClass, XFeatureCall> participationClassReferenceProvider
-
-	def forParticipationClass(ParticipationClass participationClass) {
-		this.participationClass = participationClass
-		return this
-	}
 
 	def hasInitializer() {
 		return participationClass.participation.hasRelationInitialization

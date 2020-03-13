@@ -11,42 +11,56 @@ import tools.vitruv.dsls.commonalities.language.CommonalityFile
 
 class CommonalitiesLanguageGenerator implements IGenerator2 {
 
+	@Inject GenerationContext.Factory generationContextFactory
+
 	@Inject Provider<IntermediateModelGenerator> intermediateModelGenerator
 	@Inject Provider<IntermediateModelCodeGenerator> intermediateModelCodeGenerator
 	@Inject Provider<ReactionsGenerator> reactionsGenerator
 	@Inject Provider<DomainGenerator> domainGenerator
 
-	@Inject Provider<GenerationContext> generationContextProvider
-	val resourcesSubGenerators = new HashMap<Resource, SubGenerator[]>
+	val generationScopes = new HashMap<Resource, GenerationScope>()
+
+	def private getSubGenerators() {
+		#[
+			intermediateModelGenerator.get,
+			intermediateModelCodeGenerator.get,
+			domainGenerator.get,
+			reactionsGenerator.get
+		]
+	}
 
 	override beforeGenerate(Resource input, IFileSystemAccess2 fsa, IGeneratorContext context) {
+		val generationScope = new GenerationScope()
 		val commonalityFile = input.containedCommonalityFile
-		val generationContext = generationContextProvider.get() => [
-			it.commonalityFile = commonalityFile
-			it.fsa = fsa
-			it.updateResourceSetContext()
+		generationScope.seed(GenerationContext, generationContextFactory.create(fsa, commonalityFile))
+		generationScopes.put(input, generationScope)
+
+		input.runInGenerationScope [
+			subGenerators.forEach[beforeGenerate]
 		]
-		val resourceSubGenerators = newSubGenerators()
-		resourceSubGenerators.forEach [
-			it.generationContext = generationContext
-		]
-		resourcesSubGenerators.put(input, resourceSubGenerators)
-		resourceSubGenerators.forEach[beforeGenerate]
 	}
 
 	override doGenerate(Resource input, IFileSystemAccess2 fsa, IGeneratorContext context) {
-		val resourceSubGenerators = resourcesSubGenerators.get(input)
-		resourceSubGenerators.forEach[generate]
+		input.runInGenerationScope [
+			subGenerators.forEach[generate]
+		]
 	}
 
 	override afterGenerate(Resource input, IFileSystemAccess2 fsa, IGeneratorContext context) {
-		val resourceSubGenerators = resourcesSubGenerators.get(input)
-		resourceSubGenerators.forEach[afterGenerate]
-		resourcesSubGenerators.remove(input)
+		input.runInGenerationScope [
+			subGenerators.forEach[afterGenerate]
+		]
+		generationScopes.remove(input)
 	}
 
-	def private newSubGenerators() {
-		#[intermediateModelGenerator.get, intermediateModelCodeGenerator.get, domainGenerator.get, reactionsGenerator.get]
+	def private runInGenerationScope(Resource input, Runnable runnable) {
+		val generationScope = generationScopes.get(input)
+		try {
+			generationScope.enter()
+			runnable.run()
+		} finally {
+			generationScope.leave()
+		}
 	}
 
 	def static private containedCommonalityFile(Resource input) {
@@ -54,11 +68,13 @@ class CommonalitiesLanguageGenerator implements IGenerator2 {
 			throw new GeneratorException('Input resource is empty.')
 		}
 		if (input.contents.length > 1) {
-			throw new GeneratorException('''The input resource may only contain one element (found «input.contents.length»)''')
+			throw new GeneratorException('''The input resource may only contain one element (found «
+				input.contents.length»)''')
 		}
 		val inputObject = input.contents.get(0)
 		if (!(inputObject instanceof CommonalityFile)) {
-			throw new GeneratorException('''The input resource does not contain a Commonality file (but a «inputObject.class.simpleName»''')
+			throw new GeneratorException('''The input resource does not contain a Commonality file (but a «
+				inputObject.class.simpleName»''')
 		}
 		inputObject as CommonalityFile
 	}

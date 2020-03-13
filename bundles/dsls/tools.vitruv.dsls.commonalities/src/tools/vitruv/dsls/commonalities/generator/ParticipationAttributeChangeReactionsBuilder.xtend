@@ -15,22 +15,30 @@ import static extension tools.vitruv.dsls.commonalities.generator.EmfAccessExpre
 import static extension tools.vitruv.dsls.commonalities.generator.ReactionsGeneratorConventions.*
 import static extension tools.vitruv.dsls.commonalities.language.extensions.CommonalitiesLanguageModelExtensions.*
 
-package class ParticipationAttributeChangeReactionsBuilder 
-	extends ReactionsSubGenerator<ParticipationAttributeChangeReactionsBuilder> {
+package class ParticipationAttributeChangeReactionsBuilder extends ReactionsSubGenerator {
 
-	Participation targetParticipation
+	static class Factory extends InjectingFactoryBase {
+		def createFor(Participation participation) {
+			return new ParticipationAttributeChangeReactionsBuilder(participation).injectMembers
+		}
+	}
 
-	def package forParticipation(Participation targetParticipation) {
-		this.targetParticipation = targetParticipation
-		this
+	val Participation participation
+
+	private new(Participation participation) {
+		checkNotNull(participation, "participation is null")
+		this.participation = participation
+	}
+
+	// Dummy constructor for Guice
+	package new() {
+		this.participation = null
+		throw new IllegalStateException("Use the Factory to create instances of this class!")
 	}
 
 	def package Iterable<FluentReactionBuilder> getReactions() {
-		checkState(targetParticipation !== null, "No participation to create reactions for was set!")
-		checkState(generationContext !== null, "No generation context was set!")
-
 		return commonality.attributes.flatMap[mappings].filter [
-			isRead && attribute.participationClass.participation == targetParticipation
+			isRead && it.participation == participation
 		].flatMap[reactionsForAttributeMappingRightChange]
 	}
 
