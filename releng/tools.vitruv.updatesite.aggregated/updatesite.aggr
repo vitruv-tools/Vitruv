@@ -21,10 +21,11 @@
         <features name="edu.kit.ipd.sdq.activextendannotations.feature.feature.group" versionRange="[1.2.0,2.0.0)"/>
       </repositories>
       <repositories location="https://kit-sdq.github.io/updatesite/release/metamodels/demo" mirrorArtifacts="false">
-        <features name="edu.kit.ipd.sdq.metamodels.addresses.feature.feature.group" versionRange="[1.1.0,2.0.0)"/>
-        <features name="edu.kit.ipd.sdq.metamodels.recipients.feature.feature.group" versionRange="[1.1.0,2.0.0)"/>
-        <features name="edu.kit.ipd.sdq.metamodels.families.feature.feature.group" versionRange="[1.1.0,2.0.0]"/>
-        <features name="edu.kit.ipd.sdq.metamodels.persons.feature.feature.group" versionRange="[1.1.0,2.0.0]"/>
+        <features name="edu.kit.ipd.sdq.metamodels.addresses.feature.feature.group" versionRange="[1.3.0,2.0.0)"/>
+        <features name="edu.kit.ipd.sdq.metamodels.recipients.feature.feature.group" versionRange="[1.3.0,2.0.0)"/>
+        <features name="edu.kit.ipd.sdq.metamodels.families.feature.feature.group" versionRange="[1.3.0,2.0.0]"/>
+        <features name="edu.kit.ipd.sdq.metamodels.persons.feature.feature.group" versionRange="[1.3.0,2.0.0]"/>
+        <features name="edu.kit.ipd.sdq.metamodels.insurance.feature.feature.group" versionRange="[1.3.0,2.0.0]"/>
       </repositories>
       <repositories location="http://download.eclipse.org/releases/2019-09/" mirrorArtifacts="false">
         <features name="org.eclipse.emf.ecore.edit.feature.group" versionRange="2.14.0"/>
