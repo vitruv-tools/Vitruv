@@ -75,10 +75,10 @@ Require-Bundle: org.junit,
   tools.vitruv.extensions.dslsruntime.reactions;visibility:=reexport
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Import-Package: org.hamcrest.core,
-  org.junit;version="4.5.0",
-  org.junit.runner;version="4.5.0",
-  org.junit.runner.manipulation;version="4.5.0",
-  org.junit.runner.notification;version="4.5.0",
-  org.junit.runners;version="4.5.0",
-  org.junit.runners.model;version="4.5.0"
+  org.junit;version="4.13.0",
+  org.junit.runner;version="4.13.0",
+  org.junit.runner.manipulation;version="4.13.0",
+  org.junit.runner.notification;version="4.13.0",
+  org.junit.runners;version="4.13.0",
+  org.junit.runners.model;version="4.13.0"
 Bundle-ActivationPolicy: lazy
