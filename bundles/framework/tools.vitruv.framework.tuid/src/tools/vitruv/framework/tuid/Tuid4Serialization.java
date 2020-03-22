@@ -3,8 +3,6 @@ package tools.vitruv.framework.tuid;
 import java.io.ObjectStreamException;
 import java.io.Serializable;
 
-import tools.vitruv.framework.tuid.Tuid;
-
 /**
  * Class that is only used to serialize and deserialize Tuids.
  * @author kramerm

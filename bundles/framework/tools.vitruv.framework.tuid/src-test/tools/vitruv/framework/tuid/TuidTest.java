@@ -9,7 +9,6 @@ import java.util.List;
 
 import org.junit.Test;
 
-import tools.vitruv.framework.tuid.Tuid;
 import tools.vitruv.framework.util.VitruviusConstants;
 
 public class TuidTest {

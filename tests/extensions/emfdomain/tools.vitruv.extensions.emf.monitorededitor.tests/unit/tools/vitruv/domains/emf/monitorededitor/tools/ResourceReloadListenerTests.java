@@ -20,7 +20,6 @@ import tools.vitruv.domains.emf.monitorededitor.test.testmodels.Files;
 import tools.vitruv.domains.emf.monitorededitor.test.testmodels.Models;
 import tools.vitruv.domains.emf.monitorededitor.test.utils.EnsureExecuted;
 import tools.vitruv.domains.emf.monitorededitor.test.utils.EnsureNotExecuted;
-import tools.vitruv.domains.emf.monitorededitor.tools.ResourceReloadListener;
 
 public class ResourceReloadListenerTests {
     @Test
@@ -46,7 +45,8 @@ public class ResourceReloadListenerTests {
         ecoreRes.unload();
 
         assert !ensureExecuted.isIndicatingFail() : "Listener was not executed on unload.";
-        assert !ensureNotExecuted.isIndicatingFail() : "Listener was erroneously executed for a load operation which did not happen.";
+        assert !ensureNotExecuted
+                .isIndicatingFail() : "Listener was erroneously executed for a load operation which did not happen.";
     }
 
     @Test
@@ -73,7 +73,8 @@ public class ResourceReloadListenerTests {
         ecoreRes.load(null);
 
         assert !ensureExecuted.isIndicatingFail() : "Listener was not executed after loading.";
-        assert !ensureNotExecuted.isIndicatingFail() : "Listener was erroneously executed for an unload operation which did not happen.";
+        assert !ensureNotExecuted
+                .isIndicatingFail() : "Listener was erroneously executed for an unload operation which did not happen.";
     }
 
     @Test
