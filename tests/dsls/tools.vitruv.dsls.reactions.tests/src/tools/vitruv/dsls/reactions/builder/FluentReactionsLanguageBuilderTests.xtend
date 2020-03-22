@@ -5,6 +5,7 @@ import static org.hamcrest.MatcherAssert.assertThat
 import org.junit.Ignore
 import org.eclipse.xtext.xbase.XbaseFactory
 import org.eclipse.xtext.common.types.JvmDeclaredType
+import static org.junit.Assert.assertThrows
 
 class FluentReactionsLanguageBuilderTests extends FluentReactionsBuilderTest {
 	@Test
@@ -323,21 +324,19 @@ class FluentReactionsLanguageBuilderTests extends FluentReactionsBuilderTest {
 
 	@Test
 	def void noEmptyReactionsFile() {
-		thrown.expectMessage("No reactions segments")
-		thrown.expect(IllegalStateException)
-
-		val builder = create.reactionsFile('empty')
-		matcher.build(builder)
+		assertThrows("No reactions segments", IllegalStateException, [
+			val builder = create.reactionsFile('empty')
+			matcher.build(builder)
+		])
 	}
 
 	@Test
 	def void noEmptyReactionsSegment() {
-		thrown.expectMessage("Neither routines, nor reactions, nor imports")
-		thrown.expect(IllegalStateException)
-
-		val builder = create.reactionsFile('Test') +=
-			create.reactionsSegment('empty').inReactionToChangesIn(AllElementTypes).executeActionsIn(AllElementTypes)
-		matcher.build(builder)
+		assertThrows("Neither routines, nor reactions, nor imports", IllegalStateException, [
+			val builder = create.reactionsFile('Test') +=
+				create.reactionsSegment('empty').inReactionToChangesIn(AllElementTypes).executeActionsIn(AllElementTypes)
+			matcher.build(builder)
+		])
 	}
 
 	@Test
