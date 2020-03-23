@@ -10,6 +10,8 @@ import tools.vitruv.dsls.commonalities.language.SimpleParticipation
 import tools.vitruv.dsls.commonalities.language.SimpleTupleParticipationPart
 import tools.vitruv.dsls.commonalities.language.TupleParticipation
 
+import static extension tools.vitruv.dsls.commonalities.language.extensions.ParticipationClassExtension.*
+
 @Utility
 class ParticipationExtension {
 
@@ -45,5 +47,13 @@ class ParticipationExtension {
 
 	def static isCommonalityParticipation(Participation participation) {
 		(participation.domain instanceof Concept)
+	}
+
+	def static hasResourceClass(Participation participation) {
+		return !participation.classes.filter[isForResource].empty
+	}
+
+	def static getResourceClass(Participation participation) {
+		return participation.classes.findFirst[isForResource]
 	}
 }

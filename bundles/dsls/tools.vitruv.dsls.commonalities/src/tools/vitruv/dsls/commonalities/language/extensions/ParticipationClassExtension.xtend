@@ -5,6 +5,7 @@ import tools.vitruv.dsls.commonalities.language.Commonality
 import tools.vitruv.dsls.commonalities.language.Participation
 import tools.vitruv.dsls.commonalities.language.ParticipationClass
 import tools.vitruv.dsls.commonalities.language.ParticipationRelation
+import tools.vitruv.dsls.commonalities.language.elements.ResourceMetaclass
 
 import static extension tools.vitruv.dsls.commonalities.language.extensions.CommonalitiesLanguageElementExtension.*
 
@@ -30,5 +31,9 @@ package class ParticipationClassExtension {
 			return metaclass
 		}
 		return null
+	}
+
+	def static isForResource(ParticipationClass participationClass) {
+		return (participationClass.superMetaclass instanceof ResourceMetaclass)
 	}
 }

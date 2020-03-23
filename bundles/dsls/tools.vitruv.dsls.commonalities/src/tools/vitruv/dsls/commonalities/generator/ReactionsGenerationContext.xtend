@@ -12,7 +12,6 @@ import tools.vitruv.dsls.commonalities.language.Concept
 import tools.vitruv.dsls.commonalities.language.Participation
 import tools.vitruv.dsls.commonalities.language.ParticipationClass
 import tools.vitruv.dsls.commonalities.language.elements.NamedElement
-import tools.vitruv.dsls.commonalities.language.elements.ResourceMetaclass
 import tools.vitruv.dsls.reactions.builder.FluentReactionsLanguageBuilder
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder
 import tools.vitruv.dsls.reactions.builder.TypeProvider
@@ -66,7 +65,7 @@ package class ReactionsGenerationContext {
 
 	def package getIntermediateResourceBridgeRoutine(ParticipationClass participationClass) {
 		intermediateResourcePrepareRoutineCache.computeIfAbsent(participationClass.participation, [ participation |
-			if (participation.hasResourceParticipation) {
+			if (participation.hasResourceClass) {
 				create.routine('''rootInsertIntermediateResoureBridge''')
 					.input [model(EcorePackage.eINSTANCE.EObject, newValue)]
 					.match [
@@ -78,7 +77,7 @@ package class ReactionsGenerationContext {
 						]
 						execute [insertResourceBridge(variable(RESOURCE_BRIDGE), variable(INTERMEDIATE))]
 						addCorrespondenceBetween(RESOURCE_BRIDGE).and(INTERMEDIATE)
-							.taggedWith(participation.resourceParticipation.correspondenceTag)
+							.taggedWith(participation.resourceClass.correspondenceTag)
 				]
 			}
 		])
@@ -177,17 +176,5 @@ package class ReactionsGenerationContext {
 			explicitOperationCall = true
 			memberCallArguments += vuri
 		]
-	}
-
-	def package hasResourceParticipation(Participation participation) {
-		participation.classes.containsAny[isForResource]
-	}
-
-	def package getResourceParticipation(Participation participation) {
-		participation.classes.findFirst[isForResource]
-	}
-
-	def package isForResource(ParticipationClass participationClass) {
-		participationClass.superMetaclass instanceof ResourceMetaclass
 	}
 }
