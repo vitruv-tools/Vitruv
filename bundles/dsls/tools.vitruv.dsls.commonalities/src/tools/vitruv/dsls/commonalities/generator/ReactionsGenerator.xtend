@@ -7,6 +7,7 @@ import org.eclipse.emf.common.util.URI
 import org.eclipse.xtext.resource.IGlobalServiceProvider
 import tools.vitruv.dsls.commonalities.language.Participation
 import tools.vitruv.dsls.reactions.api.generator.IReactionsGenerator
+import tools.vitruv.dsls.reactions.builder.FluentReactionsSegmentBuilder
 import tools.vitruv.framework.domains.VitruvDomainProviderRegistry
 
 import static extension tools.vitruv.dsls.commonalities.language.extensions.CommonalitiesLanguageModelExtensions.*
@@ -46,18 +47,19 @@ package class ReactionsGenerator extends SubGenerator {
 
 		val reactionFile = create.reactionsFile(commonality.name)
 		for (participation : commonalityFile.commonality.participations) {
-			reactionFile +=
-				create.reactionsSegment('''«commonality.name»To«participation.name»''').
-					inReactionToChangesIn(commonalityFile.concept.vitruvDomain)
-					.executeActionsIn(participation.domain.vitruvDomain) +=
-						commonalityChangeReactions(participation)
+			val participationToCommonalitySegment = create
+				.reactionsSegment('''«commonality.name»From«participation.name»''')
+				.inReactionToChangesIn(participation.domain.vitruvDomain)
+				.executeActionsIn(commonalityFile.concept.name)
+			participation.generateParticipationChangeReactions(participationToCommonalitySegment)
+			reactionFile += participationToCommonalitySegment
 
-			reactionFile +=
-				create.reactionsSegment('''«commonality.name»From«participation.name»''')
-					.inReactionToChangesIn(participation.domain.vitruvDomain)
-					.executeActionsIn(commonalityFile.concept.name) +=
-						participationChangeReactions(participation)
-
+			val commonalityToParticipationSegment = create
+				.reactionsSegment('''«commonality.name»To«participation.name»''')
+				.inReactionToChangesIn(commonalityFile.concept.vitruvDomain)
+				.executeActionsIn(participation.domain.vitruvDomain)
+			participation.generateCommonalityChangeReactions(commonalityToParticipationSegment)
+			reactionFile += commonalityToParticipationSegment
 		}
 
 		logger.debug('''Temporarily registering concept domains: «generatedConcepts»''')
@@ -80,47 +82,53 @@ package class ReactionsGenerator extends SubGenerator {
 		}
 	}
 
-	def private commonalityChangeReactions(Participation participation) {
-		(
-			participation.reactionsForCommonalityExistenceChange
-			+ participation.reactionsForCommonalityAttributeChange
-			+ participation.reactionsForCommonalityReferenceChange
-		).filterNull
+	def private void generateCommonalityChangeReactions(Participation participation,
+		FluentReactionsSegmentBuilder segment) {
+		participation.generateReactionsForCommonalityExistenceChange(segment)
+		participation.generateReactionsForCommonalityAttributeChange(segment)
+		participation.generateReactionsForCommonalityReferenceChange(segment)
 	}
 
-	def private participationChangeReactions(Participation participation) {
-		(
-			participation.reactionsForParticipationExistenceChange
-			+ participation.reactionsForParticipationAttributeChange
-			+ participation.reactionsForParticipationReferenceChange
-		).filterNull
+	def private void generateParticipationChangeReactions(Participation participation,
+		FluentReactionsSegmentBuilder segment) {
+		participation.generateReactionsForParticipationExistenceChange(segment)
+		participation.generateReactionsForParticipationAttributeChange(segment)
+		participation.generateReactionsForParticipationReferenceChange(segment)
 	}
 
-	def private reactionsForCommonalityExistenceChange(Participation targetParticipation) {
-		commonalityExistenceChangeReactionsBuilder.createFor(targetParticipation).reactions
+	def private void generateReactionsForCommonalityExistenceChange(Participation targetParticipation,
+		FluentReactionsSegmentBuilder segment) {
+		commonalityExistenceChangeReactionsBuilder.createFor(targetParticipation).generateReactions(segment)
 	}
 
-	def private reactionsForCommonalityAttributeChange(Participation targetParticipation) {
-		commonality.attributes.flatMap [ attribute |
-			commonalityAttributeChangeReactionsBuilder.createFor(attribute, targetParticipation).reactions
+	def private void generateReactionsForCommonalityAttributeChange(Participation targetParticipation,
+		FluentReactionsSegmentBuilder segment) {
+		commonality.attributes.forEach [ attribute |
+			commonalityAttributeChangeReactionsBuilder.createFor(attribute, targetParticipation)
+				.generateReactions(segment)
 		]
 	}
 
-	def private reactionsForCommonalityReferenceChange(Participation targetParticipation) {
-		commonality.references.flatMap [ reference |
-			commonalityReferenceChangeReactionsBuilder.createFor(reference, targetParticipation).reactions
+	def private void generateReactionsForCommonalityReferenceChange(Participation targetParticipation,
+		FluentReactionsSegmentBuilder segment) {
+		commonality.references.forEach [ reference |
+			commonalityReferenceChangeReactionsBuilder.createFor(reference, targetParticipation)
+				.generateReactions(segment)
 		]
 	}
 
-	def private reactionsForParticipationExistenceChange(Participation participation) {
-		participationExistenceChangeReactionsBuilder.createFor(participation).reactions
+	def private void generateReactionsForParticipationExistenceChange(Participation participation,
+		FluentReactionsSegmentBuilder segment) {
+		participationExistenceChangeReactionsBuilder.createFor(participation).generateReactions(segment)
 	}
 
-	def private reactionsForParticipationAttributeChange(Participation participation) {
-		participationAttributeChangeReactionsBuilder.createFor(participation).reactions
+	def private void generateReactionsForParticipationAttributeChange(Participation participation,
+		FluentReactionsSegmentBuilder segment) {
+		participationAttributeChangeReactionsBuilder.createFor(participation).generateReactions(segment)
 	}
 
-	def private reactionsForParticipationReferenceChange(Participation participation) {
-		participationReferenceChangeReactionsBuilder.createFor(participation).reactions
+	def private void generateReactionsForParticipationReferenceChange(Participation participation,
+		FluentReactionsSegmentBuilder segment) {
+		participationReferenceChangeReactionsBuilder.createFor(participation).generateReactions(segment)
 	}
 }

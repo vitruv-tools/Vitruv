@@ -1,6 +1,5 @@
 package tools.vitruv.dsls.commonalities.generator
 
-import java.util.Collections
 import java.util.List
 import org.eclipse.emf.ecore.EAttribute
 import org.eclipse.emf.ecore.EReference
@@ -9,7 +8,7 @@ import tools.vitruv.dsls.commonalities.language.CommonalityAttributeMapping
 import tools.vitruv.dsls.commonalities.language.Participation
 import tools.vitruv.dsls.commonalities.language.elements.EClassAdapter
 import tools.vitruv.dsls.commonalities.language.elements.EDataTypeAdapter
-import tools.vitruv.dsls.reactions.builder.FluentReactionBuilder
+import tools.vitruv.dsls.reactions.builder.FluentReactionsSegmentBuilder
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.UndecidedMatcherStatementBuilder
 
 import static com.google.common.base.Preconditions.*
@@ -44,21 +43,21 @@ package class CommonalityAttributeChangeReactionsBuilder extends ReactionsSubGen
 		throw new IllegalStateException("Use the Factory to create instances of this class!")
 	}
 
-	def package Iterable<FluentReactionBuilder> getReactions() {
+	def package void generateReactions(FluentReactionsSegmentBuilder segment) {
 		relevantMappings = attribute.mappings.filter [
 			isWrite && participation == targetParticipation
 		].toList
-		if (relevantMappings.size === 0) return Collections.emptyList
+		if (relevantMappings.size === 0) return;
 
 		switch attribute.type {
 			EDataTypeAdapter case !attribute.isMultiValued:
-				Collections.singleton(singleAttributeSetReaction)
+				segment += singleAttributeSetReaction
 			EDataTypeAdapter case attribute.isMultiValued:
-				#[multiAttributeAddReaction, multiAttributeRemoveReaction]
+				segment += #[multiAttributeAddReaction, multiAttributeRemoveReaction]
 			EClassAdapter case !attribute.isMultiValued:
-				Collections.singleton(singleReferenceSetReaction)
+				segment += singleReferenceSetReaction
 			EClassAdapter case attribute.isMultiValued:
-				#[multiReferenceAddReaction, multiReferenceRemoveReaction]
+				segment += #[multiReferenceAddReaction, multiReferenceRemoveReaction]
 		}
 	}
 

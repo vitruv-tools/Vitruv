@@ -5,7 +5,7 @@ import tools.vitruv.dsls.commonalities.language.CommonalityAttributeMapping
 import tools.vitruv.dsls.commonalities.language.Participation
 import tools.vitruv.dsls.commonalities.language.elements.EClassAdapter
 import tools.vitruv.dsls.commonalities.language.elements.EDataTypeAdapter
-import tools.vitruv.dsls.reactions.builder.FluentReactionBuilder
+import tools.vitruv.dsls.reactions.builder.FluentReactionsSegmentBuilder
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.RoutineStartBuilder
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.UndecidedMatcherStatementBuilder
 
@@ -36,8 +36,8 @@ package class ParticipationAttributeChangeReactionsBuilder extends ReactionsSubG
 		throw new IllegalStateException("Use the Factory to create instances of this class!")
 	}
 
-	def package Iterable<FluentReactionBuilder> getReactions() {
-		return commonality.attributes.flatMap[mappings].filter [
+	def package void generateReactions(FluentReactionsSegmentBuilder segment) {
+		segment += commonality.attributes.flatMap[mappings].filter [
 			isRead && it.participation == participation
 		].flatMap[reactionsForAttributeMappingRightChange]
 	}

@@ -1,13 +1,12 @@
 package tools.vitruv.dsls.commonalities.generator
 
-import java.util.Collections
 import java.util.List
 import org.eclipse.emf.ecore.EReference
 import tools.vitruv.dsls.commonalities.language.CommonalityReference
 import tools.vitruv.dsls.commonalities.language.CommonalityReferenceMapping
 import tools.vitruv.dsls.commonalities.language.Participation
 import tools.vitruv.dsls.commonalities.language.ParticipationClass
-import tools.vitruv.dsls.reactions.builder.FluentReactionBuilder
+import tools.vitruv.dsls.reactions.builder.FluentReactionsSegmentBuilder
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.UndecidedMatcherStatementBuilder
 
 import static com.google.common.base.Preconditions.*
@@ -42,21 +41,16 @@ package class CommonalityReferenceChangeReactionsBuilder extends ReactionsSubGen
 		throw new IllegalStateException("Use the Factory to create instances of this class!")
 	}
 
-	def package Iterable<FluentReactionBuilder> getReactions() {
-		checkState(reference !== null, "No reference to create reactions for was set!")
-		checkState(targetParticipation !== null, "No participation to create reactions for was set!")
-		checkState(generationContext !== null, "No generation context was set!")
-
+	def package void generateReactions(FluentReactionsSegmentBuilder segment) {
 		relevantMappings = reference.mappings.filter [
 			isWrite && participation == targetParticipation
 		].toList
-
-		if (relevantMappings.size === 0) return Collections.emptyList
+		if (relevantMappings.size === 0) return;
 
 		if (reference.isMultiValued) {
-			#[multiReferenceAddReaction, multiReferenceRemoveReaction]
+			segment += #[multiReferenceAddReaction, multiReferenceRemoveReaction]
 		} else {
-			Collections.singleton(singleReferenceSetReaction)
+			segment += singleReferenceSetReaction
 		}
 	}
 

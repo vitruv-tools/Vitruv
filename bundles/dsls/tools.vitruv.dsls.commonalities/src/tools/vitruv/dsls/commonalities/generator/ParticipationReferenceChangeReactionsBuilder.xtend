@@ -1,8 +1,10 @@
 package tools.vitruv.dsls.commonalities.generator
 
+import tools.vitruv.dsls.commonalities.language.Commonality
 import tools.vitruv.dsls.commonalities.language.CommonalityReferenceMapping
 import tools.vitruv.dsls.commonalities.language.Participation
 import tools.vitruv.dsls.reactions.builder.FluentReactionBuilder
+import tools.vitruv.dsls.reactions.builder.FluentReactionsSegmentBuilder
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.UndecidedMatcherStatementBuilder
 import tools.vitruv.dsls.reactions.builder.TypeProvider
 
@@ -21,20 +23,23 @@ package class ParticipationReferenceChangeReactionsBuilder extends ReactionsSubG
 	}
 
 	val Participation participation
+	val Commonality commonality
 
 	private new(Participation participation) {
 		checkNotNull(participation, "participation is null")
 		this.participation = participation
+		this.commonality = participation.containingCommonality
 	}
 
 	// Dummy constructor for Guice
 	package new() {
 		this.participation = null
+		this.commonality = null
 		throw new IllegalStateException("Use the Factory to create instances of this class!")
 	}
 
-	def package Iterable<FluentReactionBuilder> getReactions() {
-		return commonality.references.flatMap[mappings].filter [
+	def package void generateReactions(FluentReactionsSegmentBuilder segment) {
+		segment += commonality.references.flatMap[mappings].filter [
 			isRead && it.participation == participation
 		].flatMap[reactionsForReferenceMappingRightChange]
 	}

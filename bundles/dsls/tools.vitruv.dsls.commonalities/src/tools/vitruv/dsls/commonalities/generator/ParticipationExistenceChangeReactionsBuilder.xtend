@@ -3,7 +3,7 @@ package tools.vitruv.dsls.commonalities.generator
 import tools.vitruv.dsls.commonalities.language.Commonality
 import tools.vitruv.dsls.commonalities.language.Participation
 import tools.vitruv.dsls.commonalities.language.ParticipationClass
-import tools.vitruv.dsls.reactions.builder.FluentReactionBuilder
+import tools.vitruv.dsls.reactions.builder.FluentReactionsSegmentBuilder
 
 import static com.google.common.base.Preconditions.*
 
@@ -37,15 +37,15 @@ package class ParticipationExistenceChangeReactionsBuilder extends ReactionsSubG
 
 	}
 
-	def package Iterable<FluentReactionBuilder> getReactions() {
+	def package void generateReactions(FluentReactionsSegmentBuilder segment) {
 
-		return participation.classes
+		participation.classes
 			.filter[!isForResource]
-			.flatMap[#[
-				reactionForParticipationClassCreate,
-				reactionForParticipationClassDelete,
-				reactionForParticipationRootInsert
-			]]
+			.forEach [
+				segment += reactionForParticipationClassCreate
+				segment += reactionForParticipationClassDelete
+				segment += reactionForParticipationRootInsert
+			]
 	}
 
 	def private reactionForParticipationClassCreate(ParticipationClass participationClass) {
