@@ -6,8 +6,8 @@ import org.eclipse.emf.ecore.EClass
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EStructuralFeature
 import org.eclipse.xtext.common.types.TypesFactory
+import org.eclipse.xtext.xbase.XAbstractFeatureCall
 import org.eclipse.xtext.xbase.XExpression
-import org.eclipse.xtext.xbase.XFeatureCall
 import org.eclipse.xtext.xbase.XbaseFactory
 import tools.vitruv.dsls.reactions.builder.TypeProvider
 
@@ -20,7 +20,7 @@ import static extension tools.vitruv.dsls.commonalities.generator.XbaseHelper.*
 @Utility
 package class EmfAccessExpressions {
 
-	def private static eGetFeatureValue(extension TypeProvider typeProvider, XFeatureCall element,
+	def private static eGetFeatureValue(extension TypeProvider typeProvider, XAbstractFeatureCall element,
 		String featureName) {
 		XbaseFactory.eINSTANCE.createXMemberFeatureCall => [
 			memberCallTarget = element
@@ -30,7 +30,7 @@ package class EmfAccessExpressions {
 		]
 	}
 
-	def private static eSetFeatureValue(extension TypeProvider typeProvider, XFeatureCall element,
+	def private static eSetFeatureValue(extension TypeProvider typeProvider, XAbstractFeatureCall element,
 		String featureName, XExpression newValue) {
 		XbaseFactory.eINSTANCE.createXMemberFeatureCall => [
 			memberCallTarget = element
@@ -41,7 +41,7 @@ package class EmfAccessExpressions {
 		]
 	}
 
-	def private static eGetListFeatureValue(extension TypeProvider typeProvider, XFeatureCall element,
+	def private static eGetListFeatureValue(extension TypeProvider typeProvider, XAbstractFeatureCall element,
 		String featureName) {
 		XbaseFactory.eINSTANCE.createXCastedExpression => [
 			type = TypesFactory.eINSTANCE.createJvmParameterizedTypeReference => [
@@ -54,19 +54,19 @@ package class EmfAccessExpressions {
 		]
 	}
 
-	def private static eAddToListFeatureValue(extension TypeProvider typeProvider, XFeatureCall element,
+	def private static eAddToListFeatureValue(extension TypeProvider typeProvider, XAbstractFeatureCall element,
 		String featureName, XExpression newValue) {
 		val getList = eGetListFeatureValue(typeProvider, element, featureName)
 		addToCollection(typeProvider, getList, newValue)
 	}
 
-	def private static eRemoveFromListFeatureValue(extension TypeProvider typeProvider, XFeatureCall element,
+	def private static eRemoveFromListFeatureValue(extension TypeProvider typeProvider, XAbstractFeatureCall element,
 		String featureName, XExpression newValue) {
 		val getList = eGetListFeatureValue(typeProvider, element, featureName)
 		removeFromCollection(typeProvider, getList, newValue)
 	}
 
-	def private static eSetListFeatureValue(extension TypeProvider typeProvider, XFeatureCall element,
+	def private static eSetListFeatureValue(extension TypeProvider typeProvider, XAbstractFeatureCall element,
 		String featureName, XExpression newValues) {
 		val getList = eGetListFeatureValue(typeProvider, element, featureName)
 		XbaseFactory.eINSTANCE.createXBlockExpression => [
@@ -77,7 +77,7 @@ package class EmfAccessExpressions {
 		]
 	}
 
-	def package static getFeatureValue(extension TypeProvider typeProvider, XFeatureCall element,
+	def package static getFeatureValue(extension TypeProvider typeProvider, XAbstractFeatureCall element,
 		EStructuralFeature eFeature) {
 		try {
 			// try to guess the accessor:
@@ -88,7 +88,7 @@ package class EmfAccessExpressions {
 		}
 	}
 
-	def package static setFeatureValue(extension TypeProvider typeProvider, XFeatureCall element,
+	def package static setFeatureValue(extension TypeProvider typeProvider, XAbstractFeatureCall element,
 		EStructuralFeature eFeature, XExpression newValue) {
 		try {
 			// try to guess the accessor:
@@ -107,7 +107,7 @@ package class EmfAccessExpressions {
 		}
 	}
 
-	def package static getListFeatureValue(extension TypeProvider typeProvider, XFeatureCall element,
+	def package static getListFeatureValue(extension TypeProvider typeProvider, XAbstractFeatureCall element,
 		EStructuralFeature eFeature) {
 		try {
 			// try to guess the accessor:
@@ -118,7 +118,7 @@ package class EmfAccessExpressions {
 		}
 	}
 
-	def package static addToListFeatureValue(extension TypeProvider typeProvider, XFeatureCall element,
+	def package static addToListFeatureValue(extension TypeProvider typeProvider, XAbstractFeatureCall element,
 		EStructuralFeature eFeature, XExpression newValue) {
 		try {
 			// try to guess the accessor:
@@ -130,7 +130,7 @@ package class EmfAccessExpressions {
 		}
 	}
 
-	def package static removeFromListFeatureValue(extension TypeProvider typeProvider, XFeatureCall element,
+	def package static removeFromListFeatureValue(extension TypeProvider typeProvider, XAbstractFeatureCall element,
 		EStructuralFeature eFeature, XExpression newValue) {
 		try {
 			// try to guess the accessor:
@@ -142,7 +142,7 @@ package class EmfAccessExpressions {
 		}
 	}
 
-	def package static setListFeatureValue(extension TypeProvider typeProvider, XFeatureCall element,
+	def package static setListFeatureValue(extension TypeProvider typeProvider, XAbstractFeatureCall element,
 		EStructuralFeature eFeature, XExpression newValues) {
 		try {
 			// try to guess the accessor:
@@ -160,7 +160,7 @@ package class EmfAccessExpressions {
 	}
 
 	// throws NoSuchJvmElementException on failure
-	def private static getEFeatureValue(extension TypeProvider typeProvider, XFeatureCall element,
+	def private static getEFeatureValue(extension TypeProvider typeProvider, XAbstractFeatureCall element,
 		EStructuralFeature eFeature) {
 		val containingInstanceClassName = eFeature.EContainingClass.javaClassName
 		if (containingInstanceClassName === null) {
@@ -174,7 +174,7 @@ package class EmfAccessExpressions {
 		]
 	}
 
-	def package static getEFeature(extension TypeProvider typeProvider, XFeatureCall element,
+	def package static getEFeature(extension TypeProvider typeProvider, XAbstractFeatureCall element,
 		String featureName) {
 		// TODO try to guess feature literal or package accessor?
 		XbaseFactory.eINSTANCE.createXMemberFeatureCall => [
