@@ -94,7 +94,7 @@ package class EmfAccessExpressions {
 			// try to guess the accessor:
 			val containingInstanceClassName = eFeature.EContainingClass.javaClassName
 			if (containingInstanceClassName === null) {
-				throw new NoSuchJvmElementException('''Containing instance class name is null!''')
+				throw new RuntimeException('''Containing instance class name is null!''')
 			}
 			return XbaseFactory.eINSTANCE.createXAssignment => [
 				assignable = element
@@ -164,9 +164,7 @@ package class EmfAccessExpressions {
 		EStructuralFeature eFeature) {
 		val containingInstanceClassName = eFeature.EContainingClass.javaClassName
 		if (containingInstanceClassName === null) {
-			// TODO During reactions generation, this fails for generated
-			// commonality EClasses retrieved from the generated ecore model
-			throw new NoSuchJvmElementException('''Containing instance class name is null!''')
+			throw new RuntimeException('''Containing instance class name is null!''')
 		}
 		XbaseFactory.eINSTANCE.createXMemberFeatureCall => [
 			memberCallTarget = element
