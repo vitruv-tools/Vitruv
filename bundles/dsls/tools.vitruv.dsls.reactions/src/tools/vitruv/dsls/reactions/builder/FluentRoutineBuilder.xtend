@@ -139,21 +139,13 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 		}
 
 		def match(Consumer<UndecidedMatcherStatementBuilder> matchers) {
-			match(matchers, false)
-		}
-
-		def match(Consumer<UndecidedMatcherStatementBuilder> matchers, boolean skipWhenNoMatchersAdded) {
 			val matcher = ReactionsLanguageFactory.eINSTANCE.createMatcher
 			routine.matcher = matcher
 			val statementsBuilder = new UndecidedMatcherStatementBuilder(builder)
 			matchers.accept(statementsBuilder)
 			if (routine.matcher.matcherStatements.size == 0) {
-				if (skipWhenNoMatchersAdded) {
-					// remove matcher
-					routine.matcher = null
-				} else {
-					throw new IllegalStateException('''No matcher statements were created in the «builder»!''')
-				}
+				// remove matcher again:
+				routine.matcher = null
 			}
 			new ActionBuilder(builder)
 		}
