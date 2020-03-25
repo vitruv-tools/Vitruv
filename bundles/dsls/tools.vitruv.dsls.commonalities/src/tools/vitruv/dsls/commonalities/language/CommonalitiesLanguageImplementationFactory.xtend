@@ -31,4 +31,8 @@ class CommonalitiesLanguageImplementationFactory extends LanguageFactoryImpl {
 	override createConcept() {
 		new ConceptI
 	}
+
+	override createCommonalityReference() {
+		new CommonalityReferenceI
+	}
 }

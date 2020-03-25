@@ -165,6 +165,10 @@ UnqualifiedParticipationAttribute returns ParticipationAttribute:
  * References *
  **************/
 
+Reference:
+	CommonalityReference
+;
+
 CommonalityReference:
 	'has' name=ID 'referencing' referenceType=[Commonality|QualifiedCommonality] '{'
 		mappings+=CommonalityReferenceMapping*

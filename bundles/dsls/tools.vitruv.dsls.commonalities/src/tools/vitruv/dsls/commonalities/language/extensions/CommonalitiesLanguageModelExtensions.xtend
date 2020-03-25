@@ -13,7 +13,6 @@ import edu.kit.ipd.sdq.activextendannotations.Utility
 	ParticipationAttributeExtension,
 	ParticipationConditionExtension,
 	CommonalityReferenceMappingExtension,
-	CommonalityReferenceExtension
 ])
 @Utility
 class CommonalitiesLanguageModelExtensions {
