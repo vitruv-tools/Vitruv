@@ -36,7 +36,7 @@ package class CommonalityExistenceChangeReactionsBuilder extends ReactionsSubGen
 		}
 	}
 
-	@Inject ResourceInitializationBuilder.Factory resourceInitializationBuilder
+	@Inject extension ResourceBridgeHelper resourceBridgeHelper
 	@Inject ParticipationRelationInitializationBuilder.Factory participationRelationInitializationBuilder
 
 	val Commonality commonality
@@ -110,22 +110,21 @@ package class CommonalityExistenceChangeReactionsBuilder extends ReactionsSubGen
 		return #[
 			participationClass.resourceInitializer,
 			participationClass.commonalityParticipationClassInitializer
-		].filterNull.toList
+		].filterNull
 	}
 
 	def private getResourceInitializer(ParticipationClass participationClass) {
-		extension val resourceInitializationBuilder = resourceInitializationBuilder.createFor(participationClass)
-		if (!resourceInitializationBuilder.hasInitializer) return null
-		return [ TypeProvider typeProvider |
-			val resource = typeProvider.variable(participationClass.correspondingVariableName)
-			return resource.getInitializer(typeProvider)
+		if (!participationClass.isForResource) return null
+		return [ extension TypeProvider typeProvider |
+			val resourceBridge = variable(participationClass.correspondingVariableName)
+			participationClass.initNewResourceBridge(resourceBridge, typeProvider)
 		]
 	}
 
 	def private getCommonalityParticipationClassInitializer(ParticipationClass participationClass) {
 		if (!participationClass.participation.isCommonalityParticipation) return null
-		return [ TypeProvider typeProvider |
-			assignStagingId(typeProvider, typeProvider.variable(participationClass.correspondingVariableName))
+		return [ extension TypeProvider typeProvider |
+			assignStagingId(typeProvider, variable(participationClass.correspondingVariableName))
 		]
 	}
 

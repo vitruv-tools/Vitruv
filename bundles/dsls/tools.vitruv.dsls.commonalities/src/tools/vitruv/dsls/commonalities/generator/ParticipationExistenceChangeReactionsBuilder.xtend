@@ -19,6 +19,8 @@ package class ParticipationExistenceChangeReactionsBuilder extends ReactionsSubG
 		}
 	}
 
+	@Inject extension ResourceBridgeHelper resourceBridgeHelper
+
 	// note: may be a commonality participation
 	val Participation participation
 	val Commonality commonality
@@ -84,7 +86,7 @@ package class ParticipationExistenceChangeReactionsBuilder extends ReactionsSubG
 			// note: may be a commonality participation
 			.afterElementInsertedAsRoot(participationClass.changeClass)
 			.call(#[
-				participationClass.intermediateResourceBridgeRoutine,
+				participation.insertResourceBridgeRoutine,
 				getInsertRoutine(participationClass.participation, commonality)
 			].filterNull)
 	}
