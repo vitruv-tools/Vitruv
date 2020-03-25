@@ -77,7 +77,7 @@ abstract package class FluentReactionElementBuilder {
 	}
 
 	def package void triggerBeforeAttached(ReactionsFile reactionsFile, Resource targetResource) {
-		checkState(attachedReactionsFile === null, "This builder was already attached to a reactions file!")
+		checkState(attachedReactionsFile === null, '''The «this» was already attached to a reactions file!''')
 		childBuilders.patientForEach[triggerBeforeAttached(reactionsFile, targetResource)]
 		this.attachedReactionsFile = reactionsFile
 		this.targetResource = targetResource
