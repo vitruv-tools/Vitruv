@@ -31,11 +31,14 @@ Require-Bundle: org.apache.log4j,
  tools.vitruv.extensions.dslsruntime.commonalities;bundle-version="0.2.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Export-Package: tools.vitruv.dsls.commonalities,
+ tools.vitruv.dsls.commonalities.export;x-internal:=true,
  tools.vitruv.dsls.commonalities.generator,
  tools.vitruv.dsls.commonalities.jvmmodel,
  tools.vitruv.dsls.commonalities.language,
  tools.vitruv.dsls.commonalities.language.elements,
+ tools.vitruv.dsls.commonalities.language.elements.impl;x-internal:=true,
  tools.vitruv.dsls.commonalities.language.extensions,
+ tools.vitruv.dsls.commonalities.language.impl,
  tools.vitruv.dsls.commonalities.language.util,
  tools.vitruv.dsls.commonalities.names,
  tools.vitruv.dsls.commonalities.parser.antlr,
@@ -43,8 +46,5 @@ Export-Package: tools.vitruv.dsls.commonalities,
  tools.vitruv.dsls.commonalities.scoping,
  tools.vitruv.dsls.commonalities.serializer,
  tools.vitruv.dsls.commonalities.services,
- tools.vitruv.dsls.commonalities.validation,
- tools.vitruv.dsls.commonalities.language.impl,
- tools.vitruv.dsls.commonalities.export;x-internal:=true,
- tools.vitruv.dsls.commonalities.language.elements.impl;x-internal:=true
+ tools.vitruv.dsls.commonalities.validation
 Import-Package: org.apache.log4j
