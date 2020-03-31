@@ -44,15 +44,4 @@ package class ReactionsHelper {
 		]
 	}
 
-	// TODO unused
-	def static hasResource(extension TypeProvider typeProvider, XFeatureCall element) {
-		XbaseFactory.eINSTANCE.createXBinaryOperation => [
-			leftOperand = XbaseFactory.eINSTANCE.createXMemberFeatureCall => [
-				memberCallTarget = element
-				feature = typeProvider.findMethod(EClass, 'eResource')
-			]
-			feature = typeProvider.findMethod(ObjectExtensions, 'operator_tripleNotEquals')
-			rightOperand = XbaseFactory.eINSTANCE.createXNullLiteral
-		]
-	}
 }
