@@ -143,6 +143,7 @@ package class IntermediateModelGenerator extends SubGenerator {
 			(EcoreFactory.eINSTANCE.createEReference => [
 				name = reference.name
 				upperBound = if (reference.isMultiValued) UNBOUNDED_MULTIPLICITY else 1
+				containment = true
 			]).whenLinking [
 				EType = reference.referenceType.intermediateModelClass
 			]

@@ -2,9 +2,7 @@ package tools.vitruv.extensions.dslruntime.commonalities.operators.participation
 
 interface ParticipationRelationOperator {
 
-	def void afterCreated() {}
-
-	def void afterInserted() {}
+	def void enforce()
 
 	def boolean check()
 }

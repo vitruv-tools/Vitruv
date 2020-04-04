@@ -240,8 +240,12 @@ package class GenerationContext {
 		mapping.reference.participationClass.changeClass
 	}
 
-	def package getCommonalityEFeature(CommonalityReferenceMapping mapping) {
-		mapping.declaringReference.correspondingEFeature
+	def package getCommonalityEReference(CommonalityReference reference) {
+		reference.correspondingEFeature as EReference
+	}
+
+	def package getCommonalityEReference(CommonalityReferenceMapping mapping) {
+		mapping.declaringReference.commonalityEReference
 	}
 
 	def package getParticipationEFeature(CommonalityReferenceMapping mapping) {

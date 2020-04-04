@@ -1,4 +1,4 @@
-package tools.vitruv.dsls.commonalities.ui.tests.aliases
+package tools.vitruv.dsls.commonalities.ui.tests.conditions
 
 import com.google.inject.Inject
 import org.eclipse.xtext.testing.InjectWith
@@ -10,12 +10,14 @@ import tools.vitruv.dsls.commonalities.ui.executiontests.IdentifiedExecutionTest
 /**
  * Inherits the Identified execution tests, but uses the modified commonalities
  * files located in this package.
+ * <p>
+ * TODO: Expand these tests to make use of more complex conditions and containment hierarchies.
  */
 @RunWith(XtextRunner)
 @InjectWith(CombinedUiInjectorProvider)
-class AliasesTest extends IdentifiedExecutionTest {
+class ConditionsTest extends IdentifiedExecutionTest {
 
-	@Inject AliasesTestCompiler compiler
+	@Inject ConditionsTestCompiler compiler
 
 	override protected createChangePropagationSpecifications() {
 		compiler.changePropagationDefinitions

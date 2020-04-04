@@ -2,23 +2,30 @@ package tools.vitruv.extensions.dslruntime.commonalities.operators.participation
 
 import java.util.List
 import java.util.Objects
-import org.eclipse.emf.ecore.EObject
-import org.eclipse.emf.ecore.EStructuralFeature
 import tools.vitruv.extensions.dslruntime.commonalities.operators.OperatorName
 
 @OperatorName('=')
 class EqualsOperator extends AbstractSingleArgumentOperator {
 
-	new(EObject object, EStructuralFeature feature, List<Object> parameters) {
-		super(object, feature, parameters)
+	new(Object leftOperand, List<Object> rightOperands) {
+		super(leftOperand, rightOperands)
 	}
 
 	override check() {
-		val value = object.eGet(feature)
-		return Objects.equals(value, parameters.head)
+		val value = leftOperandObject.eGet(leftOperandFeature)
+		return Objects.equals(value, rightOperandValue)
 	}
 
 	override enforce() {
-		object.eSet(feature, parameters.head)
+		leftOperandObject.eSet(leftOperandFeature, rightOperandValue)
+	}
+
+	private def Object getRightOperandValue() {
+		if (rightOperand instanceof AttributeOperand) {
+			val rightAttributeOperand = rightOperand as AttributeOperand
+			return rightAttributeOperand.object.eGet(rightAttributeOperand.feature)
+		} else {
+			return rightOperand
+		}
 	}
 }

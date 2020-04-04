@@ -18,7 +18,8 @@ package class CommonalitiesLanguageElementExtension {
 		if (typedContainer !== null) {
 			return typedContainer
 		}
-		throw new RuntimeException('''The given «object.class.simpleName» («object») is not contained inside any «containerType.simpleName»!''')
+		throw new RuntimeException('''The given «object.class.simpleName» («object») is not contained inside any «
+			containerType.simpleName»!''')
 	}
 
 	/**
@@ -37,7 +38,8 @@ package class CommonalitiesLanguageElementExtension {
 		if (typedContainer !== null) {
 			return typedContainer
 		}
-		throw new RuntimeException('''The given «object.class.simpleName» («object») is not directly contained inside a «containerType.simpleName»!''')
+		throw new RuntimeException('''The given «object.class.simpleName» («object
+			») is not directly contained inside a «containerType.simpleName»!''')
 	}
 
 	package def static <T extends EObject> T getOptionalDirectContainer(EObject object, Class<T> containerType) {
@@ -69,8 +71,8 @@ package class CommonalitiesLanguageElementExtension {
 		if (result !== null) {
 			return result
 		}
-		throw new IllegalStateException('''The resource ‹«resource»› is expected to contain only a commonality file, but it«
-			IF (result === null)» is empty.«ELSE» contains «resource.contents».«ENDIF»''')
+		throw new IllegalStateException('''The resource ‹«resource»› is expected to contain only a commonality file, «
+			»but it«IF (result === null)» is empty.«ELSE» contains «resource.contents».«ENDIF»''')
 	}
 
 	def static CommonalityFile getOptionalContainedCommonalityFile(Resource resource) {

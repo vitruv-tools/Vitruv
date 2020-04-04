@@ -2,8 +2,6 @@ package tools.vitruv.dsls.commonalities.generator
 
 import java.util.function.Function
 import org.eclipse.xtext.xbase.XExpression
-import org.eclipse.xtext.xbase.XFeatureCall
-import org.eclipse.xtext.xbase.XbaseFactory
 import tools.vitruv.dsls.commonalities.language.Participation
 import tools.vitruv.dsls.commonalities.language.ParticipationClass
 import tools.vitruv.dsls.commonalities.language.ParticipationRelation
@@ -12,9 +10,9 @@ import tools.vitruv.dsls.commonalities.language.TupleParticipationPart
 import tools.vitruv.dsls.reactions.builder.TypeProvider
 
 import static com.google.common.base.Preconditions.*
-import static tools.vitruv.dsls.commonalities.generator.ParticipationRelationUtil.*
 
 import static extension tools.vitruv.dsls.commonalities.generator.JvmTypeProviderHelper.*
+import static extension tools.vitruv.dsls.commonalities.generator.ParticipationRelationUtil.*
 import static extension tools.vitruv.dsls.commonalities.generator.XbaseHelper.*
 import static extension tools.vitruv.dsls.commonalities.language.extensions.CommonalitiesLanguageModelExtensions.*
 
@@ -37,11 +35,11 @@ package class ParticipationRelationInitializationBuilder extends ReactionsSubGen
 		throw new IllegalStateException("Use the Factory to create instances of this class!")
 	}
 
-	static val AFTER_CREATED_RELATION_OPERATOR_HOOK = 'afterCreated'
+	static val RELATION_ENFORCE_METHOD = 'enforce'
 
 	val ParticipationClass participationClass
 	extension var TypeProvider typeProvider
-	Function<ParticipationClass, XFeatureCall> participationClassReferenceProvider
+	Function<ParticipationClass, XExpression> participationClassToObject
 
 	def hasInitializer() {
 		return participationClass.participation.hasRelationInitialization
@@ -65,15 +63,16 @@ package class ParticipationRelationInitializationBuilder extends ReactionsSubGen
 	}
 
 	def private dispatch hasRelationInitialization(ParticipationRelation relation) {
+		if (relation.isContainment) return false // containments are handled separately
 		return relation.leftClasses.size > 0 && relation.rightClasses.size > 0
 			&& relation.rightClasses.indexOf(participationClass) == relation.rightClasses.size - 1
-			&& relation.operator.findOptionalImplementedMethod(AFTER_CREATED_RELATION_OPERATOR_HOOK) !== null
+			&& relation.operator.findOptionalImplementedMethod(RELATION_ENFORCE_METHOD) !== null
 	}
 
 	def getInitializer(TypeProvider typeProvider,
-		Function<ParticipationClass, XFeatureCall> participationReference) {
+		Function<ParticipationClass, XExpression> participationClassToObject) {
 		this.typeProvider = typeProvider
-		this.participationClassReferenceProvider = participationReference
+		this.participationClassToObject = participationClassToObject
 		return participationClass.participation.initializer
 	}
 
@@ -91,7 +90,7 @@ package class ParticipationRelationInitializationBuilder extends ReactionsSubGen
 
 	def private dispatch XExpression getInitializer(ParticipationRelation relation) {
 		if (relation.rightClasses.indexOf(participationClass) == relation.rightClasses.size - 1) {
-			return relation.afterCreatedCode
+			return relation.enforceRelationCode
 		}
 		return null
 	}
@@ -100,14 +99,10 @@ package class ParticipationRelationInitializationBuilder extends ReactionsSubGen
 		return null
 	}
 
-	def private getAfterCreatedCode(ParticipationRelation participationRelation) {
-		val afterCreatedMethod = participationRelation.operator.findOptionalImplementedMethod(AFTER_CREATED_RELATION_OPERATOR_HOOK)
-		if (afterCreatedMethod !== null) {
-			return XbaseFactory.eINSTANCE.createXMemberFeatureCall => [
-				memberCallTarget = createOperatorConstructorCall(participationRelation, typeProvider, participationClassReferenceProvider)
-				feature = afterCreatedMethod
-				explicitOperationCall = true
-			]
+	def private getEnforceRelationCode(ParticipationRelation participationRelation) {
+		val enforceMethod = participationRelation.operator.findOptionalImplementedMethod(RELATION_ENFORCE_METHOD)
+		if (enforceMethod !== null) {
+			return participationRelation.callRelationOperation(enforceMethod, typeProvider, participationClassToObject)
 		}
 		return null
 	}

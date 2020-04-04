@@ -11,6 +11,8 @@ import tools.vitruv.dsls.commonalities.language.SimpleTupleParticipationPart
 import tools.vitruv.dsls.commonalities.language.TupleParticipation
 
 import static extension tools.vitruv.dsls.commonalities.language.extensions.ParticipationClassExtension.*
+import static extension tools.vitruv.dsls.commonalities.language.extensions.ParticipationConditionExtension.*
+import static extension tools.vitruv.dsls.commonalities.language.extensions.ParticipationRelationExtension.*
 
 @Utility
 class ParticipationExtension {
@@ -49,8 +51,49 @@ class ParticipationExtension {
 		(participation.domain instanceof Concept)
 	}
 
+	def static dispatch Iterable<ParticipationRelation> getAllRelations(SimpleParticipation participation) {
+		return #[]
+	}
+
+	def static dispatch Iterable<ParticipationRelation> getAllRelations(TupleParticipation participation) {
+		return participation.parts.flatMap[relations]
+	}
+
+	def private static dispatch Iterable<ParticipationRelation> getRelations(
+		SimpleTupleParticipationPart participationPart) {
+		return #[]
+	}
+
+	def private static dispatch Iterable<ParticipationRelation> getRelations(ParticipationRelation participationPart) {
+		return #[participationPart]
+	}
+
+	def static getAllContainmentRelations(Participation participation) {
+		return participation.allRelations.filter[isContainment]
+	}
+
+	def static getAllNonContainmentRelations(Participation participation) {
+		return participation.allRelations.filter[!isContainment]
+	}
+
+	def static getAllContainmentConditions(Participation participation) {
+		return participation.conditions.filter[isContainment]
+	}
+
+	def static getAllNonContainmentConditions(Participation participation) {
+		return participation.conditions.filter[!isContainment]
+	}
+
+	// If the participation has a Resource class, that class needs to be the
+	// only root container class. Otherwise, the participation may have
+	// multiple non-Resource root container classes.
+	// TODO support multiple Resource roots?
+	def static getRootContainerClasses(Participation participation) {
+		return participation.classes.map[it.rootContainerClass].toSet
+	}
+
 	def static hasResourceClass(Participation participation) {
-		return !participation.classes.filter[isForResource].empty
+		return (participation.resourceClass !== null)
 	}
 
 	def static getResourceClass(Participation participation) {

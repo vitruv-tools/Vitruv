@@ -2,14 +2,18 @@ package tools.vitruv.dsls.commonalities.generator
 
 import edu.kit.ipd.sdq.activextendannotations.Utility
 import java.util.Collection
+import org.eclipse.emf.ecore.EAttribute
 import org.eclipse.emf.ecore.EClass
 import org.eclipse.emf.ecore.EObject
+import org.eclipse.emf.ecore.EPackage
+import org.eclipse.emf.ecore.EReference
 import org.eclipse.emf.ecore.EStructuralFeature
 import org.eclipse.xtext.common.types.TypesFactory
 import org.eclipse.xtext.xbase.XAbstractFeatureCall
 import org.eclipse.xtext.xbase.XExpression
 import org.eclipse.xtext.xbase.XbaseFactory
 import tools.vitruv.dsls.reactions.builder.TypeProvider
+import tools.vitruv.extensions.dslruntime.commonalities.EmfAccess
 
 import static tools.vitruv.dsls.commonalities.generator.XbaseCollectionHelper.*
 
@@ -186,6 +190,69 @@ package class EmfAccessExpressions {
 			memberCallArguments += XbaseFactory.eINSTANCE.createXStringLiteral => [
 				value = featureName
 			]
+		]
+	}
+
+	def static getEPackage(extension TypeProvider typeProvider, EPackage ePackage) {
+		val emfAccessType = typeProvider.findDeclaredType(EmfAccess)
+		return emfAccessType.memberFeatureCall => [
+			staticWithDeclaringType = true
+			feature = emfAccessType.findMethod("getEPackage", String)
+			memberCallArguments += stringLiteral(ePackage.nsURI)
+		]
+	}
+
+	def static getEClass(extension TypeProvider typeProvider, EClass eClass) {
+		val emfAccessType = typeProvider.findDeclaredType(EmfAccess)
+		return emfAccessType.memberFeatureCall => [
+			staticWithDeclaringType = true
+			feature = emfAccessType.findMethod("getEClass", String, String)
+			memberCallArguments += expressions(
+				stringLiteral(eClass.EPackage.nsURI),
+				stringLiteral(eClass.name)
+			)
+		]
+	}
+
+	def static getEFeature(extension TypeProvider typeProvider, EStructuralFeature eFeature) {
+		val containingEClass = eFeature.EContainingClass
+		val emfAccessType = typeProvider.findDeclaredType(EmfAccess)
+		return emfAccessType.memberFeatureCall => [
+			staticWithDeclaringType = true
+			feature = emfAccessType.findMethod("getEFeature", String, String, String)
+			memberCallArguments += expressions(
+				stringLiteral(containingEClass.EPackage.nsURI),
+				stringLiteral(containingEClass.name),
+				stringLiteral(eFeature.name)
+			)
+		]
+	}
+
+	def static getEReference(extension TypeProvider typeProvider, EReference eReference) {
+		val containingEClass = eReference.EContainingClass
+		val emfAccessType = typeProvider.findDeclaredType(EmfAccess)
+		return emfAccessType.memberFeatureCall => [
+			staticWithDeclaringType = true
+			feature = emfAccessType.findMethod("getEReference", String, String, String)
+			memberCallArguments += expressions(
+				stringLiteral(containingEClass.EPackage.nsURI),
+				stringLiteral(containingEClass.name),
+				stringLiteral(eReference.name)
+			)
+		]
+	}
+
+	def static getEAttribute(extension TypeProvider typeProvider, EAttribute eAttribute) {
+		val containingEClass = eAttribute.EContainingClass
+		val emfAccessType = typeProvider.findDeclaredType(EmfAccess)
+		return emfAccessType.memberFeatureCall => [
+			staticWithDeclaringType = true
+			feature = emfAccessType.findMethod("getEAttribute", String, String, String)
+			memberCallArguments += expressions(
+				stringLiteral(containingEClass.EPackage.nsURI),
+				stringLiteral(containingEClass.name),
+				stringLiteral(eAttribute.name)
+			)
 		]
 	}
 }

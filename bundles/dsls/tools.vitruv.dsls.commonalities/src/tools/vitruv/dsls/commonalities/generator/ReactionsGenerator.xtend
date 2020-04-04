@@ -22,13 +22,12 @@ package class ReactionsGenerator extends SubGenerator {
 	@Inject CommonalitiesGenerationSettings generationSettings
 	@Inject extension ReactionsGenerationContext reactionsGenerationContext
 
-	@Inject CommonalityExistenceChangeReactionsBuilder.Factory commonalityExistenceChangeReactionsBuilder
+	@Inject CommonalityInsertReactionsBuilder.Factory commonalityInsertReactionsBuilder
 	@Inject CommonalityAttributeChangeReactionsBuilder.Factory commonalityAttributeChangeReactionsBuilder
-	@Inject CommonalityReferenceChangeReactionsBuilder.Factory commonalityReferenceChangeReactionsBuilder
 
-	@Inject ParticipationExistenceChangeReactionsBuilder.Factory participationExistenceChangeReactionsBuilder
+	@Inject MatchParticipationReactionsBuilder.Factory matchParticipationReactionsBuilder
+	@Inject MatchParticipationReferencesReactionsBuilder.Factory matchParticipationReferencesReactionsBuilder
 	@Inject ParticipationAttributeChangeReactionsBuilder.Factory participationAttributeChangeReactionsBuilder
-	@Inject ParticipationReferenceChangeReactionsBuilder.Factory participationReferenceChangeReactionsBuilder
 
 	override generate() {
 		logger.debug('''Generating reactions for commonality «commonalityFile.concept.name»::«commonality.name»''')
@@ -84,21 +83,20 @@ package class ReactionsGenerator extends SubGenerator {
 
 	def private void generateCommonalityChangeReactions(Participation participation,
 		FluentReactionsSegmentBuilder segment) {
-		participation.generateReactionsForCommonalityExistenceChange(segment)
+		participation.generateCommonalityInsertReactions(segment)
 		participation.generateReactionsForCommonalityAttributeChange(segment)
-		participation.generateReactionsForCommonalityReferenceChange(segment)
 	}
 
 	def private void generateParticipationChangeReactions(Participation participation,
 		FluentReactionsSegmentBuilder segment) {
-		participation.generateReactionsForParticipationExistenceChange(segment)
+		participation.generateMatchParticipationReactions(segment)
+		participation.generateMatchParticipationReferencesReactions(segment)
 		participation.generateReactionsForParticipationAttributeChange(segment)
-		participation.generateReactionsForParticipationReferenceChange(segment)
 	}
 
-	def private void generateReactionsForCommonalityExistenceChange(Participation targetParticipation,
+	def private void generateCommonalityInsertReactions(Participation targetParticipation,
 		FluentReactionsSegmentBuilder segment) {
-		commonalityExistenceChangeReactionsBuilder.createFor(targetParticipation).generateReactions(segment)
+		commonalityInsertReactionsBuilder.createFor(targetParticipation).generateReactions(segment)
 	}
 
 	def private void generateReactionsForCommonalityAttributeChange(Participation targetParticipation,
@@ -109,26 +107,18 @@ package class ReactionsGenerator extends SubGenerator {
 		]
 	}
 
-	def private void generateReactionsForCommonalityReferenceChange(Participation targetParticipation,
+	def private void generateMatchParticipationReactions(Participation participation,
 		FluentReactionsSegmentBuilder segment) {
-		commonality.references.forEach [ reference |
-			commonalityReferenceChangeReactionsBuilder.createFor(reference, targetParticipation)
-				.generateReactions(segment)
-		]
+		matchParticipationReactionsBuilder.createFor(participation).generateReactions(segment)
 	}
 
-	def private void generateReactionsForParticipationExistenceChange(Participation participation,
+	def private void generateMatchParticipationReferencesReactions(Participation participation,
 		FluentReactionsSegmentBuilder segment) {
-		participationExistenceChangeReactionsBuilder.createFor(participation).generateReactions(segment)
+		matchParticipationReferencesReactionsBuilder.createFor(participation).generateReactions(segment)
 	}
 
 	def private void generateReactionsForParticipationAttributeChange(Participation participation,
 		FluentReactionsSegmentBuilder segment) {
 		participationAttributeChangeReactionsBuilder.createFor(participation).generateReactions(segment)
-	}
-
-	def private void generateReactionsForParticipationReferenceChange(Participation participation,
-		FluentReactionsSegmentBuilder segment) {
-		participationReferenceChangeReactionsBuilder.createFor(participation).generateReactions(segment)
 	}
 }

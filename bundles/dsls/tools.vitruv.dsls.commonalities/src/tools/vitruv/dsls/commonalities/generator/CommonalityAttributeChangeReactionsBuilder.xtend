@@ -1,8 +1,12 @@
 package tools.vitruv.dsls.commonalities.generator
 
+import com.google.inject.Inject
 import java.util.List
+import java.util.function.Function
 import org.eclipse.emf.ecore.EAttribute
 import org.eclipse.emf.ecore.EReference
+import org.eclipse.xtext.xbase.XAbstractFeatureCall
+import org.eclipse.xtext.xbase.XExpression
 import tools.vitruv.dsls.commonalities.language.CommonalityAttribute
 import tools.vitruv.dsls.commonalities.language.CommonalityAttributeMapping
 import tools.vitruv.dsls.commonalities.language.Participation
@@ -10,11 +14,13 @@ import tools.vitruv.dsls.commonalities.language.elements.EClassAdapter
 import tools.vitruv.dsls.commonalities.language.elements.EDataTypeAdapter
 import tools.vitruv.dsls.reactions.builder.FluentReactionsSegmentBuilder
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.UndecidedMatcherStatementBuilder
+import tools.vitruv.dsls.reactions.builder.TypeProvider
 
 import static com.google.common.base.Preconditions.*
 
 import static extension tools.vitruv.dsls.commonalities.generator.EmfAccessExpressions.*
 import static extension tools.vitruv.dsls.commonalities.generator.ReactionsGeneratorConventions.*
+import static extension tools.vitruv.dsls.commonalities.generator.XbaseHelper.*
 import static extension tools.vitruv.dsls.commonalities.language.extensions.CommonalitiesLanguageModelExtensions.*
 
 package class CommonalityAttributeChangeReactionsBuilder extends ReactionsSubGenerator {
@@ -24,6 +30,8 @@ package class CommonalityAttributeChangeReactionsBuilder extends ReactionsSubGen
 			return new CommonalityAttributeChangeReactionsBuilder(attribute, targetParticipation).injectMembers
 		}
 	}
+
+	@Inject extension ParticipationContextHelper participationContextHelper
 
 	val CommonalityAttribute attribute
 	val Participation targetParticipation
@@ -61,6 +69,19 @@ package class CommonalityAttributeChangeReactionsBuilder extends ReactionsSubGen
 		}
 	}
 
+	def private applyAttributeChange(extension TypeProvider typeProvider, CommonalityAttributeMapping mapping,
+		Function<XAbstractFeatureCall, XExpression> expressionBuilder) {
+		val participationClass = mapping.attribute.participationClass
+		val corresponding = participationClass.correspondingVariableName
+		val objectVar = variable(corresponding)
+		if (participationClass.isRootClass) {
+			// object is optional:
+			ifOptionalPresent(typeProvider, objectVar, expressionBuilder.apply(optionalGet(typeProvider, objectVar.copy)))
+		} else {
+			expressionBuilder.apply(objectVar)
+		}
+	}
+
 	def private singleAttributeSetReaction() {
 		create.reaction('''«attribute.commonalityAttributeReactionName»Change''')
 			.afterAttributeReplacedAt(attribute.correspondingEFeature as EAttribute)
@@ -73,7 +94,9 @@ package class CommonalityAttributeChangeReactionsBuilder extends ReactionsSubGen
 					for (mapping : relevantMappings) {
 						val corresponding = mapping.correspondingVariableName
 						update(corresponding) [
-							setFeatureValue(variable(corresponding), mapping.participationEFeature, newValue)
+							applyAttributeChange(mapping) [ objectVar |
+								setFeatureValue(objectVar, mapping.participationEFeature, newValue)
+							]
 						]
 					}
 				]
@@ -92,7 +115,9 @@ package class CommonalityAttributeChangeReactionsBuilder extends ReactionsSubGen
 					for (mapping : relevantMappings) {
 						val corresponding = mapping.correspondingVariableName
 						update(corresponding) [
-							addToListFeatureValue(variable(corresponding), mapping.participationEFeature, newValue)
+							applyAttributeChange(mapping) [ objectVar |
+								addToListFeatureValue(objectVar, mapping.participationEFeature, newValue)
+							]
 						]
 					}
 				]
@@ -111,7 +136,9 @@ package class CommonalityAttributeChangeReactionsBuilder extends ReactionsSubGen
 					for (mapping : relevantMappings) {
 						val corresponding = mapping.correspondingVariableName
 						update(corresponding) [
-							removeFromListFeatureValue(variable(corresponding), mapping.participationEFeature, oldValue)
+							applyAttributeChange(mapping) [ objectVar |
+								removeFromListFeatureValue(objectVar, mapping.participationEFeature, oldValue)
+							]
 						]
 					}
 				]
@@ -130,7 +157,9 @@ package class CommonalityAttributeChangeReactionsBuilder extends ReactionsSubGen
 					for (mapping : relevantMappings) {
 						val corresponding = mapping.correspondingVariableName
 						update(corresponding) [
-							setFeatureValue(variable(corresponding), mapping.participationEFeature, newValue)
+							applyAttributeChange(mapping) [ objectVar |
+								setFeatureValue(objectVar, mapping.participationEFeature, newValue)
+							]
 						]
 					}
 				]
@@ -149,7 +178,9 @@ package class CommonalityAttributeChangeReactionsBuilder extends ReactionsSubGen
 					for (mapping : relevantMappings) {
 						val corresponding = mapping.correspondingVariableName
 						update(corresponding) [
-							addToListFeatureValue(variable(corresponding), mapping.participationEFeature, newValue)
+							applyAttributeChange(mapping) [ objectVar |
+								addToListFeatureValue(objectVar, mapping.participationEFeature, newValue)
+							]
 						]
 					}
 				]
@@ -168,7 +199,9 @@ package class CommonalityAttributeChangeReactionsBuilder extends ReactionsSubGen
 					for (mapping : relevantMappings) {
 						val corresponding = mapping.correspondingVariableName
 						update(corresponding) [
-							removeFromListFeatureValue(variable(corresponding), mapping.participationEFeature, oldValue)
+							applyAttributeChange(mapping) [ objectVar |
+								removeFromListFeatureValue(objectVar, mapping.participationEFeature, oldValue)
+							]
 						]
 					}
 				]
@@ -178,9 +211,17 @@ package class CommonalityAttributeChangeReactionsBuilder extends ReactionsSubGen
 	def private retrieveRelevantCorrespondences(extension UndecidedMatcherStatementBuilder matcherBuilder) {
 		for (mapping : relevantMappings) {
 			val participationClass = mapping.attribute.participationClass
-			vall(participationClass.correspondingVariableName).retrieveAsserted(participationClass.changeClass)
-				.correspondingTo.affectedEObject
-				.taggedWith(participationClass.correspondenceTag)
+			if (participationClass.isRootClass) {
+				// Note: Depending on the context in which the participation
+				// exists, the participation's root object(s) may not exist.
+				vall(participationClass.correspondingVariableName).retrieveOptional(participationClass.changeClass)
+					.correspondingTo.affectedEObject
+					.taggedWith(participationClass.correspondenceTag)
+			} else {
+				vall(participationClass.correspondingVariableName).retrieveAsserted(participationClass.changeClass)
+					.correspondingTo.affectedEObject
+					.taggedWith(participationClass.correspondenceTag)
+			}
 		}
 	}
 

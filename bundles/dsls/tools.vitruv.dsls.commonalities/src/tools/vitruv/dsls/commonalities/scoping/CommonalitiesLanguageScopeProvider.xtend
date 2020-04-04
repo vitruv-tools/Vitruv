@@ -7,9 +7,12 @@ import org.eclipse.emf.ecore.EReference
 import org.eclipse.xtext.naming.QualifiedName
 import org.eclipse.xtext.scoping.IGlobalScopeProvider
 import org.eclipse.xtext.scoping.IScope
+import tools.vitruv.dsls.commonalities.language.Commonality
 import tools.vitruv.dsls.commonalities.language.Participation
 import tools.vitruv.dsls.commonalities.language.ParticipationAttribute
 import tools.vitruv.dsls.commonalities.language.ParticipationClass
+import tools.vitruv.dsls.commonalities.language.ParticipationClassOperand
+import tools.vitruv.dsls.commonalities.language.ParticipationConditionLeftOperand
 import tools.vitruv.dsls.commonalities.language.TupleParticipation
 
 import static tools.vitruv.dsls.commonalities.language.LanguagePackage.Literals.*
@@ -33,9 +36,28 @@ class CommonalitiesLanguageScopeProvider extends AbstractCommonalitiesLanguageSc
 	// * If some input is already provided, the element is the context
 	override getScope(EObject context, EReference reference) {
 		switch reference {
+			case PARTICIPATION_CONDITION_LEFT_OPERAND__PARTICIPATION_CLASS: {
+				if (context instanceof ParticipationConditionLeftOperand) {
+					val participationClassScope = context.containingCommonality.participationClassScope
+					val participation = context.participation
+					return participation.getUnqualifiedParticipationClassScope(participationClassScope)
+				}
+			}
+			case PARTICIPATION_CLASS_OPERAND__PARTICIPATION_CLASS: {
+				if (context instanceof ParticipationClassOperand) {
+					val participationClassScope = context.containingCommonality.participationClassScope
+					val participation = context.participation
+					return participation.getUnqualifiedParticipationClassScope(participationClassScope)
+				}
+			}
+			case PARTICIPATION_CONDITION_LEFT_OPERAND__ATTRIBUTE: {
+				if (context instanceof ParticipationConditionLeftOperand) {
+					return participationAttributesScope.get.forParticipationClass(context.participationClass)
+				}
+			}
 			case PARTICIPATION_ATTRIBUTE__PARTICIPATION_CLASS: {
 				if (context instanceof ParticipationAttribute) {
-					val participationClassScope = participationClassesScope.get.forCommonality(context.containingCommonalityFile.commonality)
+					val participationClassScope = context.containingCommonality.participationClassScope
 					val participationCondition = context.optionalContainingParticipationCondition
 					if (participationCondition !== null) {
 						val participation = participationCondition.participation
@@ -71,8 +93,12 @@ class CommonalitiesLanguageScopeProvider extends AbstractCommonalitiesLanguageSc
 		return globalScopeProvider.getScope(context.eResource, reference, null)
 	}
 
-	def private getUnqualifiedParticipationClassScope(Participation participation, IScope delegateScope) {
-		return new QualifiedNameTransformingScope(delegateScope, [
+	def private getParticipationClassScope(Commonality commonality) {
+		return participationClassesScope.get.forCommonality(commonality)
+	}
+
+	def private getUnqualifiedParticipationClassScope(Participation participation, IScope participationClassScope) {
+		return new QualifiedNameTransformingScope(participationClassScope, [
 			QualifiedName.create(#[participation.domainName] + segments)
 		])
 	}

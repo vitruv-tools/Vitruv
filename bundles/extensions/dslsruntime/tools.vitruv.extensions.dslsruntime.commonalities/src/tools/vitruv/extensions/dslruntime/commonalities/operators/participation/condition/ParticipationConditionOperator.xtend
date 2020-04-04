@@ -2,7 +2,7 @@ package tools.vitruv.extensions.dslruntime.commonalities.operators.participation
 
 interface ParticipationConditionOperator {
 
-	def boolean check()
-
 	def void enforce()
+
+	def boolean check()
 }

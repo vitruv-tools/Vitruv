@@ -1,6 +1,6 @@
 /*
-	Copied from Identified execution tests, but uses aliases.
-*/
+ *Copied from Identified execution tests, but uses aliases.
+ */
 concept aliases
 
 commonality Identified {

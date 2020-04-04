@@ -24,6 +24,14 @@ class JvmTypeProviderHelper {
 		throw new NoSuchJvmElementException('''Could not find type “«clazz.name»”!''')
 	}
 
+	def package static findDeclaredType(IJvmTypeProvider typeProvider, Class<?> clazz) {
+		val result = typeProvider.findType(clazz)
+		if (result instanceof JvmDeclaredType) {
+			return result
+		}
+		throw new NoSuchJvmElementException('''Could not find declared type “«clazz.name»”!''')
+	}
+
 	def private static checkGenericType(JvmType type) {
 		if (type instanceof JvmGenericType) {
 			return type

@@ -9,7 +9,8 @@ import static extension tools.vitruv.dsls.commonalities.language.extensions.Comm
 @Utility
 package class ParticipationAttributeExtension {
 
-	def static ParticipationCondition getOptionalContainingParticipationCondition(ParticipationAttribute participationAttribute) {
+	def static ParticipationCondition getOptionalContainingParticipationCondition(
+		ParticipationAttribute participationAttribute) {
 		return participationAttribute.getOptionalDirectContainer(ParticipationCondition)
 	}
 }

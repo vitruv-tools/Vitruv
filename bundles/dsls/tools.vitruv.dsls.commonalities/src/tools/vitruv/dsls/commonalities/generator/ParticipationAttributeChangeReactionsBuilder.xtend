@@ -146,6 +146,6 @@ package class ParticipationAttributeChangeReactionsBuilder extends ReactionsSubG
 	}
 
 	def private retrieveIntermediate(extension UndecidedMatcherStatementBuilder builder) {
-		vall(INTERMEDIATE).retrieveAsserted(commonality.changeClass).correspondingTo.affectedEObject
+		vall(INTERMEDIATE).retrieve(commonality.changeClass).correspondingTo.affectedEObject
 	}
 }

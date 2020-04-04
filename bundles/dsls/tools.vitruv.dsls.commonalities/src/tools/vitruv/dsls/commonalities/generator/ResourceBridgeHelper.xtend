@@ -1,17 +1,16 @@
 package tools.vitruv.dsls.commonalities.generator
 
-import java.util.HashMap
-import java.util.Map
 import org.eclipse.emf.ecore.EcorePackage
 import org.eclipse.xtext.xbase.XFeatureCall
 import org.eclipse.xtext.xbase.XbaseFactory
-import tools.vitruv.dsls.commonalities.language.Participation
 import tools.vitruv.dsls.commonalities.language.ParticipationClass
-import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder
 import tools.vitruv.dsls.reactions.builder.TypeProvider
 import tools.vitruv.extensions.dslruntime.commonalities.IntermediateModelManagement
 import tools.vitruv.extensions.dslruntime.commonalities.resources.IntermediateResourceBridge
 import tools.vitruv.extensions.dslruntime.commonalities.resources.ResourcesPackage
+
+import static com.google.common.base.Preconditions.*
+import static tools.vitruv.dsls.commonalities.generator.ReactionsHelper.*
 
 import static extension tools.vitruv.dsls.commonalities.generator.JvmTypeProviderHelper.*
 import static extension tools.vitruv.dsls.commonalities.generator.ReactionsGeneratorConventions.*
@@ -20,36 +19,32 @@ import static extension tools.vitruv.dsls.commonalities.language.extensions.Comm
 
 class ResourceBridgeHelper extends ReactionsGenerationHelper {
 
-	val Map<Participation, FluentRoutineBuilder> insertResourceBridgeRoutineCache = new HashMap
-
 	package new() {
 	}
 
-	def package getInsertResourceBridgeRoutine(Participation participation) {
-		insertResourceBridgeRoutineCache.computeIfAbsent(participation) [
-			val resourceClass = participation.resourceClass
-			if (resourceClass !== null) {
-				create.routine('''insertResoureBridge''')
-					.input [model(EcorePackage.eINSTANCE.EObject, newValue)]
-					.match [
-						vall(INTERMEDIATE).retrieve(participation.containingCommonality.changeClass).correspondingTo.newValue
-					]
-					.action [
-						vall(RESOURCE_BRIDGE).create(ResourcesPackage.eINSTANCE.intermediateResourceBridge).andInitialize [
-							initExistingResourceBridge(resourceClass, variable(RESOURCE_BRIDGE), newValue)
-						]
-						execute [insertResourceBridge(variable(RESOURCE_BRIDGE), variable(INTERMEDIATE))]
-						addCorrespondenceBetween(RESOURCE_BRIDGE).and(INTERMEDIATE)
-							.taggedWith(resourceClass.correspondenceTag)
+	def package generateInsertResourceBridgeRoutine(ParticipationClass resourceClass) {
+		checkNotNull(resourceClass, "resourceClass is null")
+		checkArgument(resourceClass.isForResource, "The given resourceClass does to refer to the Resource metaclass")
+		return create.routine('''insertResoureBridge''')
+			.input [model(EcorePackage.eINSTANCE.EObject, PARTICIPATION_OBJECT)]
+			.match [
+				vall(INTERMEDIATE).retrieve(resourceClass.containingCommonality.changeClass)
+					.correspondingTo(PARTICIPATION_OBJECT)
+			]
+			.action [
+				vall(RESOURCE_BRIDGE).create(ResourcesPackage.eINSTANCE.intermediateResourceBridge).andInitialize [
+					initExistingResourceBridge(resourceClass, variable(RESOURCE_BRIDGE), variable(PARTICIPATION_OBJECT))
 				]
-			}
+				execute [insertResourceBridge(resourceClass, variable(RESOURCE_BRIDGE), variable(INTERMEDIATE))]
+				addCorrespondenceBetween(RESOURCE_BRIDGE).and(INTERMEDIATE)
+					.taggedWith(resourceClass.correspondenceTag)
 		]
 	}
 
 	// Initialization of a new ResourceBridge for an existing resource
 	def private initExistingResourceBridge(extension TypeProvider typeProvider, ParticipationClass resourceClass,
 		XFeatureCall resourceBridge, XFeatureCall modelElement) {
-		return resourceBridge.setupResourceBridge(resourceClass, typeProvider) => [
+		return resourceClass.setupResourceBridge(resourceBridge, typeProvider) => [
 			expressions += XbaseFactory.eINSTANCE.createXMemberFeatureCall => [
 				memberCallTarget = resourceBridge.copy
 				feature = typeProvider.findMethod(IntermediateResourceBridge, 'initialiseForModelElement')
@@ -61,7 +56,7 @@ class ResourceBridgeHelper extends ReactionsGenerationHelper {
 
 	// Initialization of a new ResourceBridge for a new resource
 	def package initNewResourceBridge(ParticipationClass resourceClass, XFeatureCall resourceBridge, TypeProvider typeProvider) {
-		return resourceBridge.setupResourceBridge(resourceClass, typeProvider) => [
+		return resourceClass.setupResourceBridge(resourceBridge, typeProvider) => [
 			expressions += XbaseFactory.eINSTANCE.createXAssignment => [
 				assignable = resourceBridge.copy
 				feature = typeProvider.findMethod(IntermediateResourceBridge, 'setFileExtension')
@@ -76,7 +71,7 @@ class ResourceBridgeHelper extends ReactionsGenerationHelper {
 	 * The ResourceBridge setup that is common for both newly created resources
 	 * and already existing resources.
 	 */
-	def private setupResourceBridge(XFeatureCall resourceBridge, ParticipationClass resourceClass,
+	def private setupResourceBridge(ParticipationClass resourceClass, XFeatureCall resourceBridge,
 		extension TypeProvider typeProvider) {
 		return XbaseFactory.eINSTANCE.createXBlockExpression => [
 			expressions += expressions(
@@ -101,11 +96,11 @@ class ResourceBridgeHelper extends ReactionsGenerationHelper {
 		]
 	}
 
-	def private insertResourceBridge(extension TypeProvider typeProvider, XFeatureCall resourceBridge,
-		XFeatureCall intermediate) {
+	def private insertResourceBridge(extension TypeProvider typeProvider, ParticipationClass resourceClass,
+		XFeatureCall resourceBridge, XFeatureCall intermediate) {
 		val intermediateModelURIVariable = XbaseFactory.eINSTANCE.createXVariableDeclaration => [
 			name = 'intermediateModelURI'
-			right = callGetMetadataModelURI(typeProvider, commonality.concept)
+			right = callGetMetadataModelURI(typeProvider, resourceClass.containingCommonality.concept)
 		]
 		val intermediateModelResourceVariable = XbaseFactory.eINSTANCE.createXVariableDeclaration => [
 			name = 'intermediateModelResource'
@@ -116,8 +111,8 @@ class ResourceBridgeHelper extends ReactionsGenerationHelper {
 				intermediateModelURIVariable,
 				intermediateModelResourceVariable,
 				intermediateModelResourceVariable.featureCall.memberFeatureCall => [
-					feature = typeProvider.findMethod(IntermediateModelManagement, 'addResourceBridge').
-						staticExtensionWildcardImported
+					feature = typeProvider.findMethod(IntermediateModelManagement, 'addResourceBridge')
+						.staticExtensionWildcardImported
 					memberCallArguments += #[resourceBridge, intermediate]
 					explicitOperationCall = true
 				]

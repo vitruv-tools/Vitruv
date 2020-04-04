@@ -23,8 +23,8 @@ abstract class AbstractExternalOperatorScope implements IScope {
 	ResourceSet resourceSet
 	Map<QualifiedName, JvmDeclaredType> operators
 
-	// TODO: Find a platform independent way to load relations without hardcoding them (e.g. all in a specific package)
-	// Or: Add import statements to the language? Maybe specify/group operator imports in one or more separate files?
+	// TODO: Find a platform independent way to load relations without hardcoding them (e.g. all in a specific package,
+	// or specify the packages via import statements)
 	abstract def Iterable<String> getWellKnownOperators()
 
 	def forResourceSet(ResourceSet resourceSet) {
@@ -35,7 +35,13 @@ abstract class AbstractExternalOperatorScope implements IScope {
 
 	def private findOperators() {
 		val extension typeProvider = typeProviderFactory.findOrCreateTypeProvider(resourceSet)
-		val operators = wellKnownOperators.map[findTypeByName].filter(JvmDeclaredType).toMap[operatorName.toQualifiedName]
+		val operators = wellKnownOperators.map[findTypeByName].filter(JvmDeclaredType).toMap [
+			val operatorName = operatorName
+			if (operatorName.isNullOrEmpty) {
+				throw new IllegalStateException('''Could not find operator name for «it»''')
+			}
+			operatorName.toQualifiedName
+		]
 		return operators
 	}
 

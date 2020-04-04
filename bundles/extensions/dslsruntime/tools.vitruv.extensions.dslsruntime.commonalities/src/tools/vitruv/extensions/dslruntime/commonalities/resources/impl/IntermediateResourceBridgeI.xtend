@@ -127,6 +127,11 @@ class IntermediateResourceBridgeI extends IntermediateResourceBridgeImpl {
 		return super.eIsSet(featureID)
 	}
 
+	// only available if content has been set
+	override getEmfResource() {
+		return content?.eResource
+	}
+
 	override getIntermediateId() {
 		fullPath
 	}
@@ -201,8 +206,9 @@ class IntermediateResourceBridgeI extends IntermediateResourceBridgeImpl {
 	}
 
 	override initialiseForModelElement(EObject eObject) {
-		checkArgument(eObject.eResource !== null, "The provided object must be in a resource!")
-		val objectResourceUri = eObject.eResource.URI
+		val resource = eObject.eResource
+		checkArgument(resource !== null, "The provided object must be in a resource!")
+		val objectResourceUri = resource.URI
 		val projectUri = PersistenceHelper.getURIFromSourceProjectFolder(eObject, 'fake.ext')
 		baseURI = SAME_FOLDER.resolve(projectUri).withoutTrailingSlash
 		path = SAME_FOLDER.resolve(objectResourceUri).deresolve(baseURI).toString

@@ -45,7 +45,10 @@ Participation:
 	'with' (SimpleParticipation | TupleParticipation)
 	('as' Aliasable)?
 	('whereat' '{'
-		conditions+=ParticipationCondition*
+		(
+			conditions+=ParticipationCondition
+			(',' conditions+=ParticipationCondition)*
+		)?
 	'}')?
 ;
 
@@ -104,18 +107,34 @@ UnqualifiedParticipationClassDeclaration returns ParticipationClass:
 
 ParticipationCondition:
 	({BidirectionalParticipationCondition} | '->' {EnforcedParticipationCondition} | '<-' {CheckedParticipationCondition})
-	attribute=UnqualifiedParticipationAttribute operator=[jvmTypes::JvmDeclaredType|OpName]
+	leftOperand=ParticipationConditionLeftOperand operator=[jvmTypes::JvmDeclaredType|OpName]
 	(
-		(parameters+=ParticipationConditionParameter)
-		| ('(' (parameters+=ParticipationConditionParameter (',' parameters+=ParticipationConditionParameter)*)? ')')
+		(rightOperands+=ParticipationConditionRightOperand)
+		| ('(' (rightOperands+=ParticipationConditionRightOperand (',' rightOperands+=ParticipationConditionRightOperand)*)? ')')
 	)?
 ;
 
-ParticipationConditionParameter:
-	expression = (XBooleanLiteral |
-			XNumberLiteral |
-			XNullLiteral |
-			XStringLiteral)
+ParticipationConditionLeftOperand:
+	participationClass=[ParticipationClass|UnqualifiedParticipationClass] ('.' attribute=[Attribute|UnqualifiedParticipationMember])?
+;
+
+ParticipationConditionRightOperand:
+	ParticipationClassOperand | ParticipationAttributeOperand | LiteralOperand
+;
+
+ParticipationClassOperand:
+	participationClass=[ParticipationClass|UnqualifiedParticipationClass]
+;
+
+ParticipationAttributeOperand:
+	participationAttribute=UnqualifiedParticipationAttribute
+;
+
+LiteralOperand:
+	expression=(XBooleanLiteral |
+		XNumberLiteral |
+		XNullLiteral |
+		XStringLiteral)
 ;
 
 // To correctly parse character combinations, we need to copy all tokens that
@@ -160,7 +179,6 @@ UnqualifiedParticipationAttribute returns ParticipationAttribute:
 ;
 
 
-
 /**************
  * References *
  **************/
@@ -178,6 +196,7 @@ CommonalityReference:
 CommonalityReferenceMapping:
 	('=' {ReferenceEqualitySpecification} | '->' {ReferenceSetSpecification} | '<-' {ReferenceReadSpecification})
 	reference=QualifiedParticipationAttribute
+	// TODO not used right now
 	('via' referenceTargets+=[ParticipationClass|QualifiedParticipationClass] (',' referenceTargets+=[ParticipationClass|QualifiedParticipationClass])*)?
 ;
 

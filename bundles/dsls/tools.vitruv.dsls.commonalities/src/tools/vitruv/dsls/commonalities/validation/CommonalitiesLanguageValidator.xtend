@@ -7,6 +7,7 @@ import java.util.regex.Pattern
 import org.eclipse.xtext.validation.Check
 import tools.vitruv.dsls.commonalities.language.Aliasable
 import tools.vitruv.dsls.commonalities.language.CommonalityReferenceMapping
+import tools.vitruv.dsls.commonalities.language.Participation
 import tools.vitruv.dsls.commonalities.language.ParticipationClass
 import tools.vitruv.dsls.commonalities.language.elements.Metaclass
 
@@ -15,7 +16,7 @@ import static tools.vitruv.dsls.commonalities.language.LanguagePackage.Literals.
 import static extension tools.vitruv.dsls.commonalities.language.extensions.CommonalitiesLanguageModelExtensions.*
 
 /**
- * This class contains custom validation rules. 
+ * This class contains custom validation rules.
  * 
  * See https://www.eclipse.org/Xtext/documentation/303_runtime_concepts.html#validation
  */
@@ -58,5 +59,33 @@ class CommonalitiesLanguageValidator extends AbstractCommonalitiesLanguageValida
 		if (participationClass.superMetaclass?.isAbstract) {
 			error('''Abstract classes cannot be used as participations.''', PARTICIPATION_CLASS__SUPER_METACLASS)
 		}
+	}
+
+	// TODO support multiple resource root containers?
+	/**
+	 * Participations can only contain a single Resource class.
+	 * <p>
+	 * If the participation has a Resource class, it is required to be the only
+	 * root container class.
+	 * <p>
+	 * Note: If the participation does not specify any Resource root container,
+	 * it either relies on external commonality reference mappings to specify a
+	 * root container for it, or it is a commonality participation whose
+	 * classes are implicitly contained inside the intermediate model's root.
+	 * In these cases, the participation is allowed to have multiple root
+	 * classes.
+	 */
+	@Check
+	def checkParticipationHasSingleResourceRoot(Participation participation) {
+		val resourceClasses = participation.resourceClasses.toSet
+		if (resourceClasses.size > 1) {
+			error('''Participations can only contain a single Resource class.''', participation, null)
+		} else if (resourceClasses.size == 1 && resourceClasses != participation.rootContainerClasses) {
+			error('''The Resource class has to be the (only) root class.''', participation, null)
+		}
+	}
+
+	def private static getResourceClasses(Participation participation) {
+		return participation.classes.filter[isForResource]
 	}
 }

@@ -13,10 +13,10 @@ class ContainmentRelation extends AbstractParticipationRelationOperator {
 		super(leftObjects, rightObjects)
 	}
 
-	override afterInserted() {
+	override enforce() {
 		for (right : rightObjects) {
 			for (left : leftObjects) {
-				val containmentFeature = getContainmentFeature(left, right)
+				val containmentFeature = right.eClass.getContainmentFeature(left.eClass)
 				if (containmentFeature.upperBound != 1) {
 					(right.eGet(containmentFeature) as List<EObject>) += left
 				} else {
@@ -29,7 +29,7 @@ class ContainmentRelation extends AbstractParticipationRelationOperator {
 	override check() {
 		for (right : rightObjects) {
 			for (left : leftObjects) {
-				val containmentFeature = getContainmentFeature(left, right)
+				val containmentFeature = right.eClass.getContainmentFeature(left.eClass)
 				if (containmentFeature.upperBound != 1) {
 					if (!(right.eGet(containmentFeature) as List<EObject>).contains(left)) {
 						return false
@@ -43,9 +43,9 @@ class ContainmentRelation extends AbstractParticipationRelationOperator {
 		}
 	}
 
-	def private getContainmentFeature(EObject left, EObject right) {
-		val containmentFeature = right.eClass.EAllReferences.findFirst [
-			isContainment && EType instanceof EClass && (EType as EClass).isAssignableFrom(left.eClass)
+	def static getContainmentFeature(EClass container, EClass contained) {
+		val containmentFeature = container.EAllReferences.findFirst [
+			isContainment && EType instanceof EClass && (EType as EClass).isAssignableFrom(contained)
 		]
 		if (containmentFeature === null) {
 			throw new IllegalStateException('''Could not find any containment feature in ‹«container.name
@@ -55,6 +55,6 @@ class ContainmentRelation extends AbstractParticipationRelationOperator {
 	}
 
 	def private static isAssignableFrom(EClass superType, EClass candidate) {
-		superType == EcorePackage.Literals.EOBJECT || superType.isSuperTypeOf(candidate)
+		return (superType == EcorePackage.Literals.EOBJECT) || superType.isSuperTypeOf(candidate)
 	}
 }

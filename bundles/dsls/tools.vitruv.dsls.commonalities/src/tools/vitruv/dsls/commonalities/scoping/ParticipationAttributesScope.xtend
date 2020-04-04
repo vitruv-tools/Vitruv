@@ -25,7 +25,6 @@ class ParticipationAttributesScope implements IScope {
 
 	def private allAttributes() {
 		checkParticipationClassSet()
-
 		participationClass.superMetaclass?.attributes ?: #[]
 	}
 

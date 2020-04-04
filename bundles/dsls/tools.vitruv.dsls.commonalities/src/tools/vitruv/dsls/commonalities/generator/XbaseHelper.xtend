@@ -3,9 +3,12 @@ package tools.vitruv.dsls.commonalities.generator
 import edu.kit.ipd.sdq.activextendannotations.Utility
 import java.util.ArrayList
 import java.util.Arrays
+import java.util.Optional
 import org.eclipse.emf.ecore.util.EcoreUtil
 import org.eclipse.xtext.common.types.JvmDeclaredType
 import org.eclipse.xtext.common.types.JvmIdentifiableElement
+import org.eclipse.xtext.common.types.access.IJvmTypeProvider
+import org.eclipse.xtext.xbase.XAbstractFeatureCall
 import org.eclipse.xtext.xbase.XBlockExpression
 import org.eclipse.xtext.xbase.XExpression
 import org.eclipse.xtext.xbase.XMemberFeatureCall
@@ -62,6 +65,10 @@ package class XbaseHelper {
 		]
 	}
 
+	def package static memberFeatureCall(JvmIdentifiableElement targetElement) {
+		targetElement.featureCall.memberFeatureCall
+	}
+
 	def package static memberFeatureCall(XExpression target, JvmIdentifiableElement featureElement) {
 		target.memberFeatureCall => [
 			feature = featureElement
@@ -93,6 +100,78 @@ package class XbaseHelper {
 		XbaseFactory.eINSTANCE.createXConstructorCall => [
 			constructor = type.findNoArgsConstructor
 			explicitConstructorCall = true
+		]
+	}
+
+	def package static nullLiteral() {
+		XbaseFactory.eINSTANCE.createXNullLiteral
+	}
+
+	def static negated(XExpression operand, IJvmTypeProvider typeProvider) {
+		return XbaseFactory.eINSTANCE.createXUnaryOperation => [
+			feature = typeProvider.findMethod(BooleanExtensions, 'operator_not')
+			it.operand = operand
+		]
+	}
+
+	def static or(XExpression leftOperand, XExpression rightOperand, IJvmTypeProvider typeProvider) {
+		return XbaseFactory.eINSTANCE.createXBinaryOperation => [
+			it.leftOperand = leftOperand
+			feature = typeProvider.findMethod(BooleanExtensions, 'operator_or')
+			it.rightOperand = rightOperand
+		]
+	}
+
+	def static and(XExpression leftOperand, XExpression rightOperand, IJvmTypeProvider typeProvider) {
+		return XbaseFactory.eINSTANCE.createXBinaryOperation => [
+			it.leftOperand = leftOperand
+			feature = typeProvider.findMethod(BooleanExtensions, 'operator_and')
+			it.rightOperand = rightOperand
+		]
+	}
+
+	def static equals(XExpression leftOperand, XExpression rightOperand, IJvmTypeProvider typeProvider) {
+		return XbaseFactory.eINSTANCE.createXBinaryOperation => [
+			it.leftOperand = leftOperand
+			feature = typeProvider.findMethod(ObjectExtensions, 'operator_equals')
+			it.rightOperand = rightOperand
+		]
+	}
+
+	def static notEquals(XExpression leftOperand, XExpression rightOperand, IJvmTypeProvider typeProvider) {
+		return XbaseFactory.eINSTANCE.createXBinaryOperation => [
+			it.leftOperand = leftOperand
+			feature = typeProvider.findMethod(ObjectExtensions, 'operator_notEquals')
+			it.rightOperand = rightOperand
+		]
+	}
+
+	def static equalsNull(XExpression leftOperand, IJvmTypeProvider typeProvider) {
+		return leftOperand.equals(nullLiteral, typeProvider)
+	}
+
+	def static notEqualsNull(XExpression leftOperand, IJvmTypeProvider typeProvider) {
+		return leftOperand.notEquals(nullLiteral, typeProvider)
+	}
+
+	def static optionalIsPresent(IJvmTypeProvider typeProvider, XAbstractFeatureCall optional) {
+		return optional.memberFeatureCall => [
+			it.implicitReceiver = null
+			it.explicitOperationCall = true
+			feature = typeProvider.findDeclaredType(Optional).findMethod("isPresent")
+		]
+	}
+
+	def static optionalGet(IJvmTypeProvider typeProvider, XAbstractFeatureCall optional) {
+		return optional.memberFeatureCall => [
+			feature = typeProvider.findDeclaredType(Optional).findMethod("get")
+		]
+	}
+
+	def static ifOptionalPresent(IJvmTypeProvider typeProvider, XAbstractFeatureCall optional, XExpression then) {
+		return XbaseFactory.eINSTANCE.createXIfExpression => [
+			it.^if = optionalIsPresent(typeProvider, optional)
+			it.then = then
 		]
 	}
 }
