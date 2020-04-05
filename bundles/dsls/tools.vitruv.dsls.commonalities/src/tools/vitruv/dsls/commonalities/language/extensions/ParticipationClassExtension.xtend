@@ -43,7 +43,7 @@ package class ParticipationClassExtension {
 	 * <p>
 	 * Returns null if no container class is found.
 	 */
-	def static getContainerClass(ParticipationClass contained) {
+	def static ParticipationClass getContainerClass(ParticipationClass contained) {
 		var container = contained.participation.allContainmentRelations
 			.findFirst[leftClasses.contains(contained)]
 			?.rightClasses?.head
