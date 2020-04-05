@@ -1,9 +1,9 @@
 package tools.vitruv.extensions.dslruntime.commonalities
 
-import java.util.concurrent.atomic.AtomicInteger
 import org.eclipse.emf.ecore.EClass
 import org.eclipse.emf.ecore.EPackage
 import org.eclipse.emf.ecore.resource.Resource
+import org.eclipse.emf.ecore.util.EcoreUtil
 import tools.vitruv.extensions.dslruntime.commonalities.intermediatemodelbase.Intermediate
 import tools.vitruv.extensions.dslruntime.commonalities.intermediatemodelbase.IntermediateModelBasePackage
 import tools.vitruv.extensions.dslruntime.commonalities.intermediatemodelbase.Root
@@ -15,12 +15,13 @@ class IntermediateModelManagement {
 	private new() {
 	}
 
-	static val stagingUuidCounter = new AtomicInteger
+	def static claimIntermediateId(Intermediate intermediate) {
+		intermediate.setIntermediateId(EcoreUtil.generateUUID());
+	}
 
-	def static void addIntermediate(Resource targetResource, Intermediate nonRoot) {
-		val root = getOrCreateRootIn(targetResource, nonRoot.eClass.EPackage)
-		nonRoot.intermediateId = String.valueOf(root.nextId)
-		root.intermediates += nonRoot
+	def static void addIntermediate(Resource targetResource, Intermediate intermediate) {
+		val root = getOrCreateRootIn(targetResource, intermediate.eClass.EPackage)
+		root.intermediates += intermediate
 	}
 
 	def static void addResourceBridge(
@@ -46,18 +47,5 @@ class IntermediateModelManagement {
 			}
 			return targetResource.contents.get(0) as Root
 		}
-	}
-
-	def static claimStagingId(Intermediate nonRoot) {
-		nonRoot.intermediateId = String.valueOf(stagingUuidCounter.getAndIncrement())
-	}
-
-	def private static getNextId(Root root) {
-		var int oldCounter
-		synchronized (root) {
-			oldCounter = root.intermediateIdCounter
-			root.intermediateIdCounter = oldCounter + 1
-		}
-		return oldCounter
 	}
 }

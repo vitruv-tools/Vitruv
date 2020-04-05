@@ -63,7 +63,7 @@ package class ParticipationObjectInitializationHelper extends ReactionsGeneratio
 		ParticipationClass participationClass) {
 		if (!participationClass.participation.isCommonalityParticipation) return null
 		return [ extension TypeProvider typeProvider |
-			assignStagingId(typeProvider, variable(participationClass.correspondingVariableName))
+			claimIntermediateId(typeProvider, variable(participationClass.correspondingVariableName))
 		]
 	}
 

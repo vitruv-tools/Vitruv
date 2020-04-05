@@ -58,10 +58,11 @@ package class ReactionsHelper {
 		}
 	}
 
-	def static assignStagingId(extension TypeProvider typeProvider, XFeatureCall element) {
+	def static claimIntermediateId(extension TypeProvider typeProvider, XFeatureCall element) {
 		XbaseFactory.eINSTANCE.createXMemberFeatureCall => [
 			memberCallTarget = element
-			feature = typeProvider.findMethod(IntermediateModelManagement, 'claimStagingId').staticExtensionWildcardImported
+			feature = typeProvider.findMethod(IntermediateModelManagement, 'claimIntermediateId')
+				.staticExtensionWildcardImported
 			explicitOperationCall = true
 		]
 	}

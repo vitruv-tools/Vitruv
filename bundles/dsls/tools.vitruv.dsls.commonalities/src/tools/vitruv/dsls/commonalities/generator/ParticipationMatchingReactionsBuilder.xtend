@@ -19,6 +19,7 @@ import tools.vitruv.dsls.commonalities.generator.ReactionsHelper.RoutineCallCont
 import tools.vitruv.dsls.commonalities.language.CommonalityReference
 import tools.vitruv.dsls.commonalities.language.CommonalityReferenceMapping
 import tools.vitruv.dsls.commonalities.language.Participation
+import tools.vitruv.dsls.commonalities.language.ParticipationClass
 import tools.vitruv.dsls.reactions.builder.FluentReactionBuilder.PreconditionOrRoutineCallBuilder
 import tools.vitruv.dsls.reactions.builder.FluentReactionsSegmentBuilder
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder
@@ -36,7 +37,6 @@ import static extension tools.vitruv.dsls.commonalities.generator.ReactionsGener
 import static extension tools.vitruv.dsls.commonalities.generator.ReactionsHelper.*
 import static extension tools.vitruv.dsls.commonalities.generator.XbaseHelper.*
 import static extension tools.vitruv.dsls.commonalities.language.extensions.CommonalitiesLanguageModelExtensions.*
-import tools.vitruv.dsls.commonalities.language.ParticipationClass
 
 /**
  * Generates the reactions and routines that match participations in given
@@ -431,10 +431,7 @@ package class ParticipationMatchingReactionsBuilder extends ReactionsGenerationH
 				]
 				.action [ extension it |
 					vall(INTERMEDIATE).create(commonality.changeClass).andInitialize [
-						// TODO In case the Intermediate gets inserted into a reference of another Intermediate, we
-						// never update this staging id to a model-unique intermediateId currently. Do we need to do
-						// this?
-						assignStagingId(variable(INTERMEDIATE))
+						claimIntermediateId(variable(INTERMEDIATE))
 					]
 
 					// Add correspondences with participation objects:
