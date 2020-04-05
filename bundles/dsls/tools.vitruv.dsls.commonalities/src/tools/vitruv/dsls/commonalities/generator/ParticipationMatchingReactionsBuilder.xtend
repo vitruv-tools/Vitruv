@@ -25,6 +25,7 @@ import tools.vitruv.dsls.reactions.builder.FluentReactionsSegmentBuilder
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.RoutineCallParameter
 import tools.vitruv.dsls.reactions.builder.TypeProvider
+import tools.vitruv.extensions.dslruntime.commonalities.BooleanResult
 import tools.vitruv.extensions.dslruntime.commonalities.ParticipationMatcher
 import tools.vitruv.extensions.dslruntime.commonalities.ParticipationMatcher.ContainmentTree
 import tools.vitruv.extensions.dslruntime.commonalities.ParticipationMatcher.ParticipationObjects
@@ -246,7 +247,8 @@ package class ParticipationMatchingReactionsBuilder extends ReactionsGenerationH
 				reference.name»«participationContext.reactionNameSuffix»''')
 				.afterElement(contained.changeClass).insertedIn(container.changeClass, reference)
 		}
-		return reaction.call(participationContext.matchParticipationRoutine, new RoutineCallParameter[newValue])
+		return reaction.call(participationContext.matchParticipationRoutine, new RoutineCallParameter[newValue],
+			new RoutineCallParameter[findDeclaredType(BooleanResult).noArgsConstructorCall])
 	}
 
 	/**
@@ -307,6 +309,7 @@ package class ParticipationMatchingReactionsBuilder extends ReactionsGenerationH
 			create.routine('''matchParticipation_«participation.name»«reactionNameSuffix»''')
 				.input [
 					model(EcorePackage.eINSTANCE.EObject, START_OBJECT)
+					plain(BooleanResult, FOUND_MATCH_RESULT)
 				].action [
 					execute [ extension typeProvider |
 						participationContext.matchParticipation(routineCallContext, typeProvider)
@@ -398,6 +401,13 @@ package class ParticipationMatchingReactionsBuilder extends ReactionsGenerationH
 						it.^if = participationContext.checkNonStructuralConditions(participationObjectsVar.featureCall,
 							typeProvider)
 						it.then = XbaseFactory.eINSTANCE.createXBlockExpression => [
+							// Set result flag:
+							it.expressions += variable(FOUND_MATCH_RESULT).memberFeatureCall => [
+								feature = typeProvider.findDeclaredType(BooleanResult).findMethod('setValue')
+								memberCallArguments += booleanLiteral(true)
+								explicitOperationCall = true
+							]
+
 							// Create intermediate:
 							it.expressions += routineCallContext.createRoutineCall(typeProvider,
 								participationContext.createIntermediateRoutine, participationObjectsVar.featureCall)
@@ -559,6 +569,7 @@ package class ParticipationMatchingReactionsBuilder extends ReactionsGenerationH
 			participationContext.get.generateRoutines
 
 			val mappingParticipationClass = mapping.reference.participationClass
+			val extension routineCallContext = new RoutineCallContext
 			Optional.of(create.routine('''matchCommonalityReferenceMapping_«mapping.reactionName»''')
 				.input [
 					model(commonality.changeClass, INTERMEDIATE)
@@ -569,13 +580,41 @@ package class ParticipationMatchingReactionsBuilder extends ReactionsGenerationH
 						.taggedWith(mappingParticipationClass.correspondenceTag)
 				]
 				.action [
-					// repeatedly invoke the matching procedure until no more matches are found:
-					// TODO repeatedly call: this could be achieved by passing the routine a 'foundResult' result object that gets marked as 'true' if the matcher has matched something
 					// TODO: Avoid generating the same matching twice. This routine already exists inside P -> C segment.
 					// Import the segment and call the matching routine there.
-					call(participationContext.get.matchParticipationRoutine,
-						new RoutineCallParameter(PARTICIPATION_CONTEXT_ROOT))
-				])
+					execute [ extension typeProvider |
+						XbaseFactory.eINSTANCE.createXBlockExpression => [
+							// Result variable (initially 'false'):
+							val resultVar = XbaseFactory.eINSTANCE.createXVariableDeclaration => [
+								type = jvmTypeReferenceBuilder.typeRef(BooleanResult)
+								name = FOUND_MATCH_RESULT
+								right = typeProvider.findDeclaredType(BooleanResult).imported.noArgsConstructorCall()
+							]
+							expressions += resultVar
+
+							// Repeatedly invoke the matching procedure until no more matches are found:
+							expressions += XbaseFactory.eINSTANCE.createXDoWhileExpression => [
+								predicate = resultVar.featureCall.memberFeatureCall => [
+									feature = typeProvider.findDeclaredType(BooleanResult).findMethod("getValue")
+									explicitOperationCall = true
+								]
+								body = XbaseFactory.eINSTANCE.createXBlockExpression => [
+									// Reset the result variable:
+									expressions += resultVar.featureCall.memberFeatureCall => [
+										feature = typeProvider.findDeclaredType(BooleanResult).findMethod("setValue")
+										memberCallArguments += booleanLiteral(false)
+										explicitOperationCall = true
+									]
+
+									// Invoke the matching:
+									expressions += routineCallContext.createRoutineCall(typeProvider,
+										participationContext.get.matchParticipationRoutine,
+										variable(PARTICIPATION_CONTEXT_ROOT), resultVar.featureCall)
+								]
+							]
+						]
+					].setCallerContext
+				].setCaller)
 		]
 	}
 }

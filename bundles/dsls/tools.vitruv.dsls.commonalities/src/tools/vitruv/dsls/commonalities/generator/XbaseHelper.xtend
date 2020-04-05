@@ -59,6 +59,12 @@ package class XbaseHelper {
 		]
 	}
 
+	def package static booleanLiteral(boolean value) {
+		XbaseFactory.eINSTANCE.createXBooleanLiteral => [
+			it.isTrue = value
+		]
+	}
+
 	def package static memberFeatureCall(XExpression target) {
 		XbaseFactory.eINSTANCE.createXMemberFeatureCall => [
 			memberCallTarget = target
