@@ -156,9 +156,8 @@ package class XbaseHelper {
 
 	def static optionalIsPresent(IJvmTypeProvider typeProvider, XAbstractFeatureCall optional) {
 		return optional.memberFeatureCall => [
-			it.implicitReceiver = null
-			it.explicitOperationCall = true
 			feature = typeProvider.findDeclaredType(Optional).findMethod("isPresent")
+			explicitOperationCall = true
 		]
 	}
 
