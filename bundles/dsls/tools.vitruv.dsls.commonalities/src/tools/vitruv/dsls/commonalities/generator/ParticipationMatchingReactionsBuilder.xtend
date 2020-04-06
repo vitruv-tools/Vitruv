@@ -13,13 +13,13 @@ import org.eclipse.xtext.common.types.TypesFactory
 import org.eclipse.xtext.xbase.XExpression
 import org.eclipse.xtext.xbase.XFeatureCall
 import org.eclipse.xtext.xbase.XbaseFactory
-import tools.vitruv.dsls.commonalities.generator.ContainmentHelper.Containment
 import tools.vitruv.dsls.commonalities.generator.ParticipationContextHelper.ParticipationContext
 import tools.vitruv.dsls.commonalities.generator.ReactionsHelper.RoutineCallContext
 import tools.vitruv.dsls.commonalities.language.CommonalityReference
 import tools.vitruv.dsls.commonalities.language.CommonalityReferenceMapping
 import tools.vitruv.dsls.commonalities.language.Participation
 import tools.vitruv.dsls.commonalities.language.ParticipationClass
+import tools.vitruv.dsls.commonalities.language.extensions.Containment
 import tools.vitruv.dsls.reactions.builder.FluentReactionBuilder.PreconditionOrRoutineCallBuilder
 import tools.vitruv.dsls.reactions.builder.FluentReactionsSegmentBuilder
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder
@@ -164,6 +164,7 @@ package class ParticipationMatchingReactionsBuilder extends ReactionsGenerationH
 		}
 	}
 
+	@Inject extension ContainmentHelper containmentHelper
 	@Inject extension ResourceBridgeHelper resourceBridgeHelper
 	@Inject extension ParticipationObjectsHelper participationObjectsHelper
 	@Inject extension ParticipationContextHelper participationContextHelper
@@ -245,7 +246,7 @@ package class ParticipationMatchingReactionsBuilder extends ReactionsGenerationH
 		} else {
 			reaction = create.reaction('''«participation.name»_«contained.name»_insertedAt_«container.name»_«
 				reference.name»«participationContext.reactionNameSuffix»''')
-				.afterElement(contained.changeClass).insertedIn(container.changeClass, reference)
+				.afterElement(contained.changeClass).insertedIn(container.changeClass, containment.EReference)
 		}
 		return reaction.call(participationContext.matchParticipationRoutine, new RoutineCallParameter[newValue],
 			new RoutineCallParameter[findDeclaredType(BooleanResult).noArgsConstructorCall])
@@ -268,7 +269,7 @@ package class ParticipationMatchingReactionsBuilder extends ReactionsGenerationH
 		} else {
 			reaction = create.reaction('''«participation.name»_«contained.name»_removedFrom_«
 				container.name»_«reference.name»«participationContext.reactionNameSuffix»''')
-				.afterElement(contained.changeClass).removedFrom(container.changeClass, reference)
+				.afterElement(contained.changeClass).removedFrom(container.changeClass, containment.EReference)
 		}
 		return reaction.call [
 			match [
@@ -365,7 +366,7 @@ package class ParticipationMatchingReactionsBuilder extends ReactionsGenerationH
 					memberCallArguments += expressions(
 						stringLiteral(contained.name),
 						stringLiteral(container.name),
-						getEReference(typeProvider, reference)
+						getEReference(typeProvider, containment.EReference)
 					)
 				]
 			]

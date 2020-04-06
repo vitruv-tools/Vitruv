@@ -12,7 +12,6 @@ import tools.vitruv.dsls.commonalities.language.Participation
 import tools.vitruv.dsls.commonalities.language.ParticipationAttribute
 import tools.vitruv.dsls.commonalities.language.ParticipationClass
 import tools.vitruv.dsls.commonalities.language.ParticipationClassOperand
-import tools.vitruv.dsls.commonalities.language.ParticipationConditionLeftOperand
 import tools.vitruv.dsls.commonalities.language.TupleParticipation
 
 import static tools.vitruv.dsls.commonalities.language.LanguagePackage.Literals.*
@@ -36,23 +35,11 @@ class CommonalitiesLanguageScopeProvider extends AbstractCommonalitiesLanguageSc
 	// * If some input is already provided, the element is the context
 	override getScope(EObject context, EReference reference) {
 		switch reference {
-			case PARTICIPATION_CONDITION_LEFT_OPERAND__PARTICIPATION_CLASS: {
-				if (context instanceof ParticipationConditionLeftOperand) {
-					val participationClassScope = context.containingCommonality.participationClassScope
-					val participation = context.participation
-					return participation.getUnqualifiedParticipationClassScope(participationClassScope)
-				}
-			}
 			case PARTICIPATION_CLASS_OPERAND__PARTICIPATION_CLASS: {
 				if (context instanceof ParticipationClassOperand) {
 					val participationClassScope = context.containingCommonality.participationClassScope
 					val participation = context.participation
 					return participation.getUnqualifiedParticipationClassScope(participationClassScope)
-				}
-			}
-			case PARTICIPATION_CONDITION_LEFT_OPERAND__ATTRIBUTE: {
-				if (context instanceof ParticipationConditionLeftOperand) {
-					return participationAttributesScope.get.forParticipationClass(context.participationClass)
 				}
 			}
 			case PARTICIPATION_ATTRIBUTE__PARTICIPATION_CLASS: {

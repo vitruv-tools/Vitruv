@@ -12,17 +12,16 @@ import tools.vitruv.dsls.commonalities.language.ParticipationAttributeOperand
 import tools.vitruv.dsls.commonalities.language.ParticipationClass
 import tools.vitruv.dsls.commonalities.language.ParticipationClassOperand
 import tools.vitruv.dsls.commonalities.language.ParticipationCondition
-import tools.vitruv.dsls.commonalities.language.ParticipationConditionLeftOperand
-import tools.vitruv.dsls.commonalities.language.ParticipationConditionRightOperand
+import tools.vitruv.dsls.commonalities.language.ParticipationConditionOperand
 import tools.vitruv.dsls.reactions.builder.TypeProvider
 import tools.vitruv.extensions.dslruntime.commonalities.operators.participation.condition.AttributeOperand
 
 import static tools.vitruv.dsls.commonalities.generator.EmfAccessExpressions.*
 import static tools.vitruv.dsls.commonalities.generator.ReactionsHelper.*
-import static tools.vitruv.dsls.commonalities.generator.XbaseHelper.*
 
 import static extension tools.vitruv.dsls.commonalities.generator.JvmTypeProviderHelper.*
 import static extension tools.vitruv.dsls.commonalities.generator.ReactionsGeneratorConventions.*
+import static extension tools.vitruv.dsls.commonalities.generator.XbaseHelper.*
 import static extension tools.vitruv.dsls.commonalities.language.extensions.CommonalitiesLanguageModelExtensions.*
 
 package class ParticipationObjectInitializationHelper extends ReactionsGenerationHelper {
@@ -121,55 +120,44 @@ package class ParticipationObjectInitializationHelper extends ReactionsGeneratio
 			constructor = participationCondition.operator.findConstructor(Object, List)
 			explicitConstructorCall = true
 			arguments += expressions(
-				leftOperand.getParticipationConditionLeftOperandExpression(typeProvider),
+				leftOperand.getOperandExpression(typeProvider),
 				XbaseFactory.eINSTANCE.createXListLiteral => [
 					elements += participationCondition.rightOperands.map [
-						getParticipationConditionOperandExpression(typeProvider)
+						getOperandExpression(typeProvider)
 					]
 				]
 			)
 		]
 	}
 
-	def private getParticipationConditionLeftOperandExpression(ParticipationConditionLeftOperand leftOperand,
-		extension TypeProvider typeProvider) {
-		val participationClass = leftOperand.participationClass
-		val participationClassInstance = typeProvider.variable(participationClass.correspondingVariableName)
-		val attribute = leftOperand.attribute // can be null
-		if (attribute === null) {
-			return participationClassInstance
-		} else {
-			return XbaseFactory.eINSTANCE.createXConstructorCall => [
-				val operandType = typeProvider.findDeclaredType(AttributeOperand)
-				constructor = operandType.findConstructor(EObject, EStructuralFeature)
-				explicitConstructorCall = true
-				arguments += expressions(
-					participationClassInstance,
-					getEFeature(typeProvider, participationClassInstance, attribute.name)
-				)
-			]
-		}
-	}
-
-	def private dispatch getParticipationConditionOperandExpression(LiteralOperand operand,
+	def private dispatch getOperandExpression(LiteralOperand operand,
 		extension TypeProvider typeProvider) {
 		return operand.expression
 	}
 
-	def private dispatch getParticipationConditionOperandExpression(ParticipationClassOperand operand,
+	def private dispatch getOperandExpression(ParticipationClassOperand operand,
 		extension TypeProvider typeProvider) {
 		return variable(operand.participationClass.correspondingVariableName)
 	}
 
-	def private dispatch getParticipationConditionOperandExpression(ParticipationAttributeOperand operand,
+	def private dispatch getOperandExpression(ParticipationAttributeOperand operand,
 		extension TypeProvider typeProvider) {
 		val attribute = operand.participationAttribute
 		val participationClass = attribute.participationClass
-		return getEFeature(typeProvider, variable(participationClass.correspondingVariableName), attribute.name)
+		val participationClassInstance = variable(participationClass.correspondingVariableName)
+		return XbaseFactory.eINSTANCE.createXConstructorCall => [
+			val operandType = typeProvider.findDeclaredType(AttributeOperand)
+			constructor = operandType.findConstructor(EObject, EStructuralFeature)
+			explicitConstructorCall = true
+			arguments += expressions(
+				participationClassInstance,
+				getEFeature(typeProvider, participationClassInstance.copy, attribute.name)
+			)
+		]
 	}
 
-	def private dispatch getParticipationConditionOperandExpression(ParticipationConditionRightOperand operand,
+	def private dispatch getOperandExpression(ParticipationConditionOperand operand,
 		extension TypeProvider typeProvider) {
-		throw new IllegalStateException("Unhandled ParticipationConditionRightOperand type: " + operand.class.name)
+		throw new IllegalStateException("Unhandled ParticipationConditionOperand type: " + operand.class.name)
 	}
 }

@@ -16,11 +16,11 @@ class ContainmentRelation extends AbstractParticipationRelationOperator {
 	override enforce() {
 		for (right : rightObjects) {
 			for (left : leftObjects) {
-				val containmentFeature = right.eClass.getContainmentFeature(left.eClass)
-				if (containmentFeature.upperBound != 1) {
-					(right.eGet(containmentFeature) as List<EObject>) += left
+				val containmentReference = right.eClass.getContainmentReference(left.eClass)
+				if (containmentReference.upperBound != 1) {
+					(right.eGet(containmentReference) as List<EObject>) += left
 				} else {
-					right.eSet(containmentFeature, left)
+					right.eSet(containmentReference, left)
 				}
 			}
 		}
@@ -29,13 +29,13 @@ class ContainmentRelation extends AbstractParticipationRelationOperator {
 	override check() {
 		for (right : rightObjects) {
 			for (left : leftObjects) {
-				val containmentFeature = right.eClass.getContainmentFeature(left.eClass)
-				if (containmentFeature.upperBound != 1) {
-					if (!(right.eGet(containmentFeature) as List<EObject>).contains(left)) {
+				val containmentReference = right.eClass.getContainmentReference(left.eClass)
+				if (containmentReference.upperBound != 1) {
+					if (!(right.eGet(containmentReference) as List<EObject>).contains(left)) {
 						return false
 					}
 				} else {
-					if (right.eGet(containmentFeature) != left) {
+					if (right.eGet(containmentReference) != left) {
 						return false
 					}
 				}
@@ -43,7 +43,7 @@ class ContainmentRelation extends AbstractParticipationRelationOperator {
 		}
 	}
 
-	def static getContainmentFeature(EClass container, EClass contained) {
+	def static getContainmentReference(EClass container, EClass contained) {
 		val containmentFeature = container.EAllReferences.findFirst [
 			isContainment && EType instanceof EClass && (EType as EClass).isAssignableFrom(contained)
 		]

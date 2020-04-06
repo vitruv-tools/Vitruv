@@ -114,11 +114,15 @@ ParticipationCondition:
 	)?
 ;
 
-ParticipationConditionLeftOperand:
-	participationClass=[ParticipationClass|UnqualifiedParticipationClass] ('.' attribute=[Attribute|UnqualifiedParticipationMember])?
+ParticipationConditionLeftOperand returns ParticipationConditionOperand:
+	ParticipationClassOperand | ParticipationAttributeOperand
 ;
 
-ParticipationConditionRightOperand:
+ParticipationConditionRightOperand returns ParticipationConditionOperand:
+	ParticipationClassOperand | ParticipationAttributeOperand | LiteralOperand
+;
+
+ParticipationConditionOperand:
 	ParticipationClassOperand | ParticipationAttributeOperand | LiteralOperand
 ;
 

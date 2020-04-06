@@ -1,6 +1,5 @@
 package tools.vitruv.dsls.commonalities.generator
 
-import com.google.inject.Inject
 import java.util.Collections
 import java.util.HashMap
 import java.util.LinkedHashSet
@@ -11,16 +10,14 @@ import org.eclipse.xtend.lib.annotations.Accessors
 import org.eclipse.xtend.lib.annotations.EqualsHashCode
 import org.eclipse.xtend.lib.annotations.FinalFieldsConstructor
 import org.eclipse.xtend.lib.annotations.ToString
-import tools.vitruv.dsls.commonalities.generator.ContainmentHelper.Containment
 import tools.vitruv.dsls.commonalities.language.CommonalityReferenceMapping
 import tools.vitruv.dsls.commonalities.language.Participation
 import tools.vitruv.dsls.commonalities.language.ParticipationClass
+import tools.vitruv.dsls.commonalities.language.extensions.Containment
 
 import static extension tools.vitruv.dsls.commonalities.language.extensions.CommonalitiesLanguageModelExtensions.*
 
 package class ParticipationContextHelper extends ReactionsGenerationHelper {
-
-	@Inject extension ContainmentHelper containmentHelper
 
 	// Cached for the current generation context:
 	val Map<Participation, ParticipationRoot> participationRoots = new HashMap
@@ -358,9 +355,8 @@ package class ParticipationContextHelper extends ReactionsGenerationHelper {
 		if (participation === null) return Collections.emptyList
 
 		val container = mapping.reference.participationClass
-		val reference = mapping.participationEReference
 		return participation.getNonRootBoundaryClasses.map [ contained |
-			new Containment(contained, container, reference)
+			new Containment(contained, container, mapping.reference)
 		]
 	}
 

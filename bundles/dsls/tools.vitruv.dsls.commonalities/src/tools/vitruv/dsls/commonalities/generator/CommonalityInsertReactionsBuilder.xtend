@@ -28,6 +28,7 @@ package class CommonalityInsertReactionsBuilder extends ReactionsSubGenerator {
 		}
 	}
 
+	@Inject extension ContainmentHelper containmentHelper
 	@Inject extension ParticipationContextHelper participationContextHelper
 	@Inject extension ParticipationObjectInitializationHelper participationObjectInitializationHelper
 	@Inject ParticipationMatchingReactionsBuilder.Provider participationMatchingReactionsBuilderProvider
@@ -151,10 +152,11 @@ package class CommonalityInsertReactionsBuilder extends ReactionsSubGenerator {
 						participationContext.allContainments.forEach [ extension containment |
 							val containerVar = variable(participationContext.getVariableName(container))
 							val containedVar = variable(participationContext.getVariableName(contained))
-							if (reference.many) {
-								expressions += typeProvider.addToListFeatureValue(containerVar, reference, containedVar)
+							val containmentReference = containment.EReference
+							if (containmentReference.many) {
+								expressions += typeProvider.addToListFeatureValue(containerVar, containmentReference, containedVar)
 							} else {
-								expressions += typeProvider.setFeatureValue(containerVar, reference, containedVar)
+								expressions += typeProvider.setFeatureValue(containerVar, containmentReference, containedVar)
 							}
 						]
 					]

@@ -84,6 +84,11 @@ class ParticipationExtension {
 		return participation.conditions.filter[!isContainment]
 	}
 
+	def static getContainments(Participation participation) {
+		return participation.allContainmentRelations.flatMap[getContainments]
+			+ participation.allContainmentConditions.map[getContainment].filterNull
+	}
+
 	// If the participation has a Resource class, that class needs to be the
 	// only root container class. Otherwise, the participation may have
 	// multiple non-Resource root container classes.
