@@ -174,7 +174,7 @@ package class CommonalityInsertReactionsBuilder extends ReactionsSubGenerator {
 
 				// Any initialization that needs to happen after all model objects were created:
 				participationContext.managedClasses.forEach [ participationClass |
-					val postInitializers = participationClass.participationClassPostInitializers
+					val postInitializers = participationClass.postInitializers
 					if (!postInitializers.empty) {
 						update(participationClass.correspondingVariableName, [ typeProvider |
 							postInitializers.toBlockExpression(typeProvider)
