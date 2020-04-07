@@ -30,7 +30,7 @@ package class EmfAccessExpressions {
 			memberCallTarget = element
 			feature = typeProvider.findMethod(EObject, 'eGet', 1, EStructuralFeature)
 			explicitOperationCall = true
-			memberCallArguments += getEFeature(typeProvider, element, featureName)
+			memberCallArguments += getEFeature(typeProvider, element.copy, featureName)
 		]
 	}
 
@@ -40,7 +40,7 @@ package class EmfAccessExpressions {
 			memberCallTarget = element
 			feature = typeProvider.findMethod(EObject, 'eSet')
 			explicitOperationCall = true
-			memberCallArguments += getEFeature(typeProvider, element, featureName)
+			memberCallArguments += getEFeature(typeProvider, element.copy, featureName)
 			memberCallArguments += newValue
 		]
 	}
