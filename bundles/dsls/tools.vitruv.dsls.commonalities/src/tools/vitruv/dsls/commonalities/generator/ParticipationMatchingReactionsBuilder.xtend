@@ -245,7 +245,7 @@ package class ParticipationMatchingReactionsBuilder extends ReactionsGenerationH
 				.afterElementInsertedAsRoot(contained.changeClass)
 		} else {
 			reaction = create.reaction('''«participation.name»_«contained.name»_insertedAt_«container.name»_«
-				reference.name»«participationContext.reactionNameSuffix»''')
+				containment.EReference.name»«participationContext.reactionNameSuffix»''')
 				.afterElement(contained.changeClass).insertedIn(container.changeClass, containment.EReference)
 		}
 		return reaction.call(participationContext.matchParticipationRoutine, new RoutineCallParameter[newValue],
@@ -268,7 +268,7 @@ package class ParticipationMatchingReactionsBuilder extends ReactionsGenerationH
 				.afterElementRemovedAsRoot(contained.changeClass)
 		} else {
 			reaction = create.reaction('''«participation.name»_«contained.name»_removedFrom_«
-				container.name»_«reference.name»«participationContext.reactionNameSuffix»''')
+				container.name»_«containment.EReference.name»«participationContext.reactionNameSuffix»''')
 				.afterElement(contained.changeClass).removedFrom(container.changeClass, containment.EReference)
 		}
 		return reaction.call [
