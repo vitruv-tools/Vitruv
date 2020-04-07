@@ -11,6 +11,6 @@ package class ParticipationAttributeExtension {
 
 	def static ParticipationCondition getOptionalContainingParticipationCondition(
 		ParticipationAttribute participationAttribute) {
-		return participationAttribute.getOptionalDirectContainer(ParticipationCondition)
+		return participationAttribute.getOptionalContainer(ParticipationCondition)
 	}
 }
