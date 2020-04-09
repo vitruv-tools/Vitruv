@@ -114,10 +114,10 @@ package class ParticipationContextHelper extends ReactionsGenerationHelper {
 	 * may actually comprise multiple participation classes. For example, when
 	 * marking a participation class as <code>root</code> (TODO not actually
 	 * supported yet) or as <code>singleton</code> (via the keyword
-	 * <code>single</code>) (TODO not actually supported yet), then this
-	 * participation class resembles the <code>head</code> of a chain of root
-	 * participation classes, in which each class in that chain is related with
-	 * another root class via a containment relationship.
+	 * <code>single</code>), then this participation class resembles the
+	 * <code>head</code> of a chain of root participation classes, in which
+	 * each class in that chain is related with another root class via a
+	 * containment relationship.
 	 * <p>
 	 * For example, in a participation of the form <code>{'A', 'B', 'single C',
 	 * 'Resource'}</code> with containment relations <code>{'A in C', 'B in C',
@@ -237,6 +237,7 @@ package class ParticipationContextHelper extends ReactionsGenerationHelper {
 	def getParticipationRoot(Participation participation) {
 		return participationRoots.computeIfAbsent(participation) [
 			val participationRoot = new ParticipationRoot
+
 			if (!participation.hasResourceClass) {
 				return participationRoot // empty root
 			}
@@ -270,9 +271,8 @@ package class ParticipationContextHelper extends ReactionsGenerationHelper {
 
 	def private static boolean hasRootMarker(ParticipationClass participationClass) {
 		// TODO The language does not support a 'root marker' yet
-		// TODO We also interpret 'single' as root marker, but that isn't
-		// supported yet either.
-		return false
+		// The singleton marker 'single' indicates the head of the root as well:
+		return participationClass.isSingleton
 	}
 
 	/**

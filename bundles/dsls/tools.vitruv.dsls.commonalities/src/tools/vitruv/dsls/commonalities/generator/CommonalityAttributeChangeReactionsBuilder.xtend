@@ -7,6 +7,7 @@ import org.eclipse.emf.ecore.EAttribute
 import org.eclipse.emf.ecore.EReference
 import org.eclipse.xtext.xbase.XAbstractFeatureCall
 import org.eclipse.xtext.xbase.XExpression
+import org.eclipse.xtext.xbase.XbaseFactory
 import tools.vitruv.dsls.commonalities.language.CommonalityAttribute
 import tools.vitruv.dsls.commonalities.language.CommonalityAttributeMapping
 import tools.vitruv.dsls.commonalities.language.Participation
@@ -76,9 +77,12 @@ package class CommonalityAttributeChangeReactionsBuilder extends ReactionsSubGen
 		val objectVar = variable(corresponding)
 		if (participationClass.isRootClass) {
 			// object is optional:
-			ifOptionalPresent(typeProvider, objectVar, expressionBuilder.apply(optionalGet(typeProvider, objectVar.copy)))
+			return XbaseFactory.eINSTANCE.createXIfExpression => [
+				^if = optionalIsPresent(typeProvider, objectVar)
+				then = expressionBuilder.apply(optionalGet(typeProvider, objectVar.copy))
+			]
 		} else {
-			expressionBuilder.apply(objectVar)
+			return expressionBuilder.apply(objectVar)
 		}
 	}
 

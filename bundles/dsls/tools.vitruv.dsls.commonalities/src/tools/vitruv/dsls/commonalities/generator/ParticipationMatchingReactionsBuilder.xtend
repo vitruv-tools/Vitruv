@@ -23,6 +23,7 @@ import tools.vitruv.dsls.commonalities.language.extensions.Containment
 import tools.vitruv.dsls.reactions.builder.FluentReactionBuilder.PreconditionOrRoutineCallBuilder
 import tools.vitruv.dsls.reactions.builder.FluentReactionsSegmentBuilder
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder
+import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.ActionStatementBuilder
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.RoutineCallParameter
 import tools.vitruv.dsls.reactions.builder.TypeProvider
 import tools.vitruv.extensions.dslruntime.commonalities.BooleanResult
@@ -424,9 +425,8 @@ package class ParticipationMatchingReactionsBuilder extends ReactionsGenerationH
 
 	def private XExpression checkNonStructuralConditions(ParticipationContext participationContext,
 		XFeatureCall participationObjects, extension TypeProvider typeProvider) {
-		// TODO implement this
-		// participation.allNonContainmentRelations.map[]
-		// participation.allNonContainmentConditions.filter[checked].map[]
+		// TODO Implement this: This needs to check the (checked) non-containment participation relations and
+		// conditions
 		return XbaseFactory.eINSTANCE.createXBooleanLiteral => [
 			isTrue = true
 		]
@@ -451,6 +451,7 @@ package class ParticipationMatchingReactionsBuilder extends ReactionsGenerationH
 						// specifically (in the case of a Resource root container), or already corresponds to and is
 						// managed by another Intermediate (in the context of an external reference mapping).
 						.filter[!participationContext.isRootContainerClass(it)]
+						.filter[!isInSingletonRoot]
 						.forEach [ participationClass |
 							addCorrespondenceBetween(INTERMEDIATE).and [ extension typeProvider |
 								// TODO Ideally don't use a block expression here (results in more compact reactions code)
@@ -461,22 +462,18 @@ package class ParticipationMatchingReactionsBuilder extends ReactionsGenerationH
 							].taggedWith(participationClass.getCorrespondenceTag(commonality))
 						]
 
-					// If we have a Resource as root container, setup and insert the corresponding ResourceBridge:
-					// TODO The participation matcher already returns a new ResourceBridge object. Use that instead?
-					// (still requires some setup though)
 					if (!participationContext.forReferenceMapping) {
-						val resourceClass = participation.resourceClass
-						// assert: resourceClass !== null
-						// assert: resourceClass === participationContext.rootContainerClass
-						// We use any of the contained objects for the setup:
-						val classInResource = resourceClass.containedClasses.head
-						// assert: classInResource !== null
-						// Note: We do not need to add a participation context specific suffix to the
-						// insertResourceBridge routine, because this routine is only required for a participation's
-						// own context and we expect that we match at most one of these per reactions segment.
-						call(resourceClass.insertResourceBridgeRoutine, new RoutineCallParameter [ extension typeProvider |
-							classInResource.getParticipationObject(variable(PARTICIPATION_OBJECTS), typeProvider)
-						])
+						if (participation.hasSingletonClass) {
+							// Setup the singleton if it hasn't been setup yet:
+							val singletonClass = participation.singletonClass
+							call(singletonClass.setupSingletonRoutine, new RoutineCallParameter [ extension typeProvider |
+								singletonClass.getParticipationObject(variable(PARTICIPATION_OBJECTS), typeProvider)
+							], new RoutineCallParameter(PARTICIPATION_OBJECTS))
+						} else {
+							// If we have a Resource as root container, setup and insert the corresponding
+							// ResourceBridge:
+							insertResourceBridge(participation)
+						}
 					}
 
 					// For commonality references: Insert the new intermediate into the referencing intermediate
@@ -503,6 +500,49 @@ package class ParticipationMatchingReactionsBuilder extends ReactionsGenerationH
 						new RoutineCallParameter(PARTICIPATION_OBJECTS))
 				]
 		]
+	}
+
+	def private getSetupSingletonRoutine(ParticipationClass singletonClass) {
+		val participation = singletonClass.participation
+		val singletonEClass = singletonClass.changeClass
+		return create.routine('''setupSingleton_«participation.name»_«singletonClass.name»''')
+			.input [
+				model(singletonEClass, SINGLETON)
+				plain(ParticipationObjects, PARTICIPATION_OBJECTS)
+			]
+			.match [
+				requireAbsenceOf(singletonEClass).correspondingTo [
+					getEClass(singletonEClass)
+				]
+			].action [
+				// Add singleton correspondence:
+				addCorrespondenceBetween(SINGLETON).and [
+					getEClass(singletonEClass)
+				]
+
+				// Setup and insert a ResourceBridge for the resource root:
+				// TODO This sets a commonality and participation specific
+				// correspondence, which is not required here.
+				insertResourceBridge(participation)
+			]
+	}
+
+	def private insertResourceBridge(extension ActionStatementBuilder it, Participation participation) {
+		// TODO The participation matcher already returns a new ResourceBridge
+		// object. Use that instead? (still requires some setup though)
+		val resourceClass = participation.resourceClass
+		// assert: resourceClass !== null
+		// assert: resourceClass === participationContext.rootContainerClass
+		// We use any of the contained objects for the setup:
+		val classInResource = resourceClass.containedClasses.head
+		// assert: classInResource !== null
+		// Note: We do not need to add a participation context specific suffix
+		// to the insertResourceBridge routine, because this routine is only
+		// required for a participation's own context and we expect that we
+		// match at most one of these per reactions segment.
+		call(resourceClass.insertResourceBridgeRoutine, new RoutineCallParameter [ extension typeProvider |
+			classInResource.getParticipationObject(variable(PARTICIPATION_OBJECTS), typeProvider)
+		])
 	}
 
 	def private getInsertResourceBridgeRoutine(ParticipationClass resourceClass) {

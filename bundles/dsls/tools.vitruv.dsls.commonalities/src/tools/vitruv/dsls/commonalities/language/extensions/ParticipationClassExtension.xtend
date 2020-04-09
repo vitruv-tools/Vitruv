@@ -125,4 +125,8 @@ package class ParticipationClassExtension {
 	def static isForResource(ParticipationClass participationClass) {
 		return (participationClass.superMetaclass instanceof ResourceMetaclass)
 	}
+
+	def static isInSingletonRoot(ParticipationClass participationClass) {
+		return participationClass.participation.singletonRootClasses.exists[it == participationClass]
+	}
 }

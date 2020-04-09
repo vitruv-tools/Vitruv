@@ -172,11 +172,4 @@ package class XbaseHelper {
 			feature = typeProvider.findDeclaredType(Optional).findMethod("get")
 		]
 	}
-
-	def static ifOptionalPresent(IJvmTypeProvider typeProvider, XAbstractFeatureCall optional, XExpression then) {
-		return XbaseFactory.eINSTANCE.createXIfExpression => [
-			it.^if = optionalIsPresent(typeProvider, optional)
-			it.then = then
-		]
-	}
 }

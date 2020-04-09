@@ -24,6 +24,7 @@ package class ReactionsGeneratorConventions {
 	public static val PARTICIPATION_OBJECTS = 'participationObjects'
 	public static val PARTICIPATION_OBJECT = 'participationObject'
 	public static val RESOURCE_BRIDGE = 'resourceBridge'
+	public static val SINGLETON = 'singleton'
 
 	def static package String correspondingVariableName(ParticipationClass participationClass) {
 		'''corresponding_«participationClass.name»'''

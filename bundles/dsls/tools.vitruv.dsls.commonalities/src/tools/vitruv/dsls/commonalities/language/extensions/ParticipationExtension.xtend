@@ -101,7 +101,27 @@ class ParticipationExtension {
 		return (participation.resourceClass !== null)
 	}
 
+	// There can only be at most one resource class per participation (currently).
 	def static getResourceClass(Participation participation) {
 		return participation.classes.findFirst[isForResource]
+	}
+
+	def static hasSingletonClass(Participation participation) {
+		return (participation.singletonClass !== null)
+	}
+
+	// There can only be at most one singleton class per participation (currently).
+	def static getSingletonClass(Participation participation) {
+		return participation.classes.findFirst[isSingleton]
+	}
+
+	/**
+	 * A class marked as singleton and its containers also act as root of the
+	 * participation. This returns these classes.
+	 */
+	def static getSingletonRootClasses(Participation participation) {
+		val singletonClass = participation.singletonClass
+		if (singletonClass === null) return Collections.emptyList
+		return Collections.singleton(singletonClass) + singletonClass.transitiveContainerClasses
 	}
 }

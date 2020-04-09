@@ -98,11 +98,11 @@ ParticipationClass:
 ;
 
 QualifiedParticipationClassDeclaration returns ParticipationClass:
-	superMetaclass=[Metaclass|QualifiedMetaclass] ('called' Aliasable)?
+	(singleton?='single')? superMetaclass=[Metaclass|QualifiedMetaclass] ('called' Aliasable)?
 ;
 
 UnqualifiedParticipationClassDeclaration returns ParticipationClass:
-	superMetaclass=[Metaclass|UnqualifiedMetaclass] ('called' Aliasable)?
+	(singleton?='single')? superMetaclass=[Metaclass|UnqualifiedMetaclass] ('called' Aliasable)?
 ;
 
 ParticipationCondition:

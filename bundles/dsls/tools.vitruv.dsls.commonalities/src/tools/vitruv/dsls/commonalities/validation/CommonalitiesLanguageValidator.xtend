@@ -88,4 +88,31 @@ class CommonalitiesLanguageValidator extends AbstractCommonalitiesLanguageValida
 	def private static getResourceClasses(Participation participation) {
 		return participation.classes.filter[isForResource]
 	}
+
+	@Check
+	def checkSingleton(Participation participation) {
+		val numberOfSingletons = participation.singletonClasses.size
+		if (numberOfSingletons == 0) return;
+
+		if (numberOfSingletons > 1) {
+			error('''Participations can only contain a single singleton class.''', participation, null)
+		} else {
+			if (!participation.hasResourceClass) {
+				error('''Participations with a singleton class marked need to specify a Resource root.''', participation, null)
+			}
+
+			// Note: The singleton class also indicates the head of the participation's root. We therefore prohibit
+			// specifying that any of the other classes be contained in one of the singleton's containers.
+			val singletonClass = participation.singletonClass
+			val singletonContainers = singletonClass.transitiveContainerClasses
+			if (singletonContainers.exists[containedClasses.size > 1]) {
+				error('''The containers of the singleton class need to form a containment chain (contain each at most«
+					»one object).''', participation, null)
+			}
+		}
+	}
+
+	def private static getSingletonClasses(Participation participation) {
+		return participation.classes.filter[isSingleton]
+	}
 }
