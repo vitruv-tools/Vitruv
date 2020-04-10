@@ -67,7 +67,7 @@ class ParticipationMatcher {
 			val EReference reference
 
 			def String toSimpleString() {
-				return '''«contained.toSimpleString» -> «container.toSimpleString»[«reference.name»]'''
+				return '''«container.toSimpleString»[«reference.name»] -> «contained.toSimpleString»'''
 			}
 		}
 
