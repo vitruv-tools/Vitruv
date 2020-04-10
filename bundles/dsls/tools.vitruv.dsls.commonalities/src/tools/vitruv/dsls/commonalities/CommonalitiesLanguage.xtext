@@ -156,7 +156,7 @@ OpName:
  **************/
 
 Attribute:
-	CommonalityAttribute | ParticipationAttribute
+	CommonalityAttribute | ParticipationAttribute | CommonalityReference
 ;
 
 CommonalityAttribute:
@@ -186,10 +186,6 @@ UnqualifiedParticipationAttribute returns ParticipationAttribute:
 /**************
  * References *
  **************/
-
-Reference:
-	CommonalityReference
-;
 
 CommonalityReference:
 	'has' name=ID 'referencing' referenceType=[Commonality|QualifiedCommonality] '{'

@@ -39,9 +39,6 @@
     <genClasses image="false" ecoreClass="LanguageElements.ecore#//Attribute">
       <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute LanguageElements.ecore#//Attribute/multiValued"/>
     </genClasses>
-    <genClasses image="false" ecoreClass="LanguageElements.ecore#//Reference">
-      <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute LanguageElements.ecore#//Reference/multiValued"/>
-    </genClasses>
     <genClasses ecoreClass="LanguageElements.ecore#//EClassMetaclass">
       <genFeatures property="None" children="true" createChild="false" ecoreFeature="ecore:EReference LanguageElements.ecore#//EClassMetaclass/attributes"/>
       <genOperations ecoreOperation="LanguageElements.ecore#//EClassMetaclass/forEClass">
