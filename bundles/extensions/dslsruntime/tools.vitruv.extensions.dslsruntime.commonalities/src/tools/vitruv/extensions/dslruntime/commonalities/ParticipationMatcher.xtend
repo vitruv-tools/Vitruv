@@ -18,6 +18,7 @@ import tools.vitruv.extensions.dslruntime.commonalities.resources.IntermediateRe
 import tools.vitruv.extensions.dslruntime.commonalities.resources.ResourcesFactory
 import tools.vitruv.extensions.dslsruntime.reactions.helper.ReactionsCorrespondenceHelper
 import tools.vitruv.framework.correspondence.CorrespondenceModel
+import tools.vitruv.extensions.dslruntime.commonalities.intermediatemodelbase.IntermediateModelBasePackage
 
 /**
  * Matches participation classes to their objects according to the containment
@@ -196,7 +197,8 @@ class ParticipationMatcher {
 	 * containment tree.
 	 * <p>
 	 * Participations can exist in either their own specified context, in which
-	 * case the containment hierarchy is rooted in a Resource, or they can be
+	 * case the containment hierarchy is either rooted in a Resource or, for
+	 * commonality participations, an intermediate model root, or they can be
 	 * referenced in an external commonality reference mapping, in which case
 	 * the containment hierarchy is rooted in an externally specified object
 	 * that already corresponds to some Intermediate. The type of this
@@ -251,14 +253,20 @@ class ParticipationMatcher {
 	 * This searches the given object itself and its containers for the first
 	 * object that either already corresponds to some Intermediate (as it is
 	 * the case when we match participations in the context of commonality
-	 * reference mappings) or is not contained in any other container (as it is
-	 * the case when we match participations in their own context, rooted
-	 * inside a Resource). In the latter case, if the object is contained
-	 * inside a Resource, this returns a new IntermediateResourceBridge as
-	 * representation of that Resource root.
+	 * reference mappings), or is an intermediate model root (as it is the case
+	 * when matching commonality participations rooted in their intermediate
+	 * model), or is not contained in any other container (as it is the case
+	 * when we match non-commonality participations rooted inside a Resource).
+	 * In the latter case, if the object is contained inside a Resource, this
+	 * returns a new IntermediateResourceBridge as representation of that
+	 * Resource root.
 	 */
 	def private static EObject getRoot(EObject object, CorrespondenceModel correspondenceModel) {
 		// assert: object !== null && correspondenceModel !== null
+		if (object.isIntermediateRoot) {
+			return object
+		}
+
 		if (!ReactionsCorrespondenceHelper.getCorrespondingObjectsOfType(correspondenceModel, object, null,
 			Intermediate).empty) {
 			return object
@@ -277,6 +285,10 @@ class ParticipationMatcher {
 
 		// continue searching the container:
 		return container.getRoot(correspondenceModel)
+	}
+
+	def private static isIntermediateRoot(EObject object) {
+		return object.eClass.ESuperTypes.contains(IntermediateModelBasePackage.eINSTANCE.root)
 	}
 
 	/**

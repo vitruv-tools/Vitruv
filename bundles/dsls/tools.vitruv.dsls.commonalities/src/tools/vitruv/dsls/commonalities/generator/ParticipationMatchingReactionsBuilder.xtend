@@ -30,6 +30,7 @@ import tools.vitruv.extensions.dslruntime.commonalities.BooleanResult
 import tools.vitruv.extensions.dslruntime.commonalities.ParticipationMatcher
 import tools.vitruv.extensions.dslruntime.commonalities.ParticipationMatcher.ContainmentTree
 import tools.vitruv.extensions.dslruntime.commonalities.ParticipationMatcher.ParticipationObjects
+import tools.vitruv.extensions.dslruntime.commonalities.intermediatemodelbase.IntermediateModelBasePackage
 
 import static com.google.common.base.Preconditions.*
 
@@ -322,6 +323,8 @@ package class ParticipationMatchingReactionsBuilder extends ReactionsGenerationH
 
 	def private matchParticipation(ParticipationContext participationContext, RoutineCallContext routineCallContext,
 		extension TypeProvider typeProvider) {
+		val participation = participationContext.participation
+		val isRootCommonalityParticipation = (!participationContext.forReferenceMapping && participation.isCommonalityParticipation)
 		return XbaseFactory.eINSTANCE.createXBlockExpression => [
 			// Create new ContainmentTree:
 			val containmentTreeType = typeProvider.findDeclaredType(ContainmentTree).imported
@@ -351,6 +354,16 @@ package class ParticipationMatchingReactionsBuilder extends ReactionsGenerationH
 	
 			// Setup nodes:
 			val addNodeMethod = containmentTreeType.findMethod("addNode", String, EClass)
+			if (isRootCommonalityParticipation) {
+				// Add the node for the implicit intermediate root:
+				val intermediateRootEClass = participation.participationConcept.intermediateModelRootClass
+				expressions += containmentTreeVar.featureCall.memberFeatureCall(addNodeMethod) => [
+					memberCallArguments += expressions(
+						stringLiteral(INTERMEDIATE_ROOT),
+						getEClass(typeProvider, intermediateRootEClass)
+					)
+				]
+			}
 			expressions += participationContext.participationClasses.map [ participationClass |
 				containmentTreeVar.featureCall.memberFeatureCall(addNodeMethod) => [
 					memberCallArguments += expressions(
@@ -362,6 +375,20 @@ package class ParticipationMatchingReactionsBuilder extends ReactionsGenerationH
 	
 			// Setup containment edges:
 			val addEdgeMethod = containmentTreeType.findMethod("addEdge", String, String, EReference)
+			if (isRootCommonalityParticipation) {
+				// Add edges for the implicit containments of the intermediate root:
+				val containerName = INTERMEDIATE_ROOT
+				val containmentEReference = IntermediateModelBasePackage.Literals.ROOT__INTERMEDIATES
+				expressions += participation.nonRootBoundaryClasses.map [ contained |
+					containmentTreeVar.featureCall.memberFeatureCall(addEdgeMethod) => [
+						memberCallArguments += expressions(
+							stringLiteral(contained.name),
+							stringLiteral(containerName),
+							getEReference(typeProvider, containmentEReference)
+						)
+					]
+				]
+			}
 			expressions += participationContext.allContainments.map [ extension containment |
 				containmentTreeVar.featureCall.memberFeatureCall(addEdgeMethod) => [
 					memberCallArguments += expressions(
@@ -469,7 +496,7 @@ package class ParticipationMatchingReactionsBuilder extends ReactionsGenerationH
 							call(singletonClass.setupSingletonRoutine, new RoutineCallParameter [ extension typeProvider |
 								singletonClass.getParticipationObject(variable(PARTICIPATION_OBJECTS), typeProvider)
 							], new RoutineCallParameter(PARTICIPATION_OBJECTS))
-						} else {
+						} else if (participation.hasResourceClass) {
 							// If we have a Resource as root container, setup and insert the corresponding
 							// ResourceBridge:
 							insertResourceBridge(participation)

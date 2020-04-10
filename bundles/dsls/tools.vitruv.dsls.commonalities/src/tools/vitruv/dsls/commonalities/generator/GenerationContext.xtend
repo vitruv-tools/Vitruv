@@ -56,6 +56,7 @@ package class GenerationContext {
 	val boolean isNewResourceSet
 
 	// TODO cache for complete ResourceSet (but: how to known when to cleanup)? Or don't cache at all?
+	val Map<String, EClass> intermediateModelRootClassCache = new HashMap
 	val Map<Commonality, EClass> intermediateModelClassCache = new HashMap
 	val Map<String, EPackage> intermediateModelPackageCache = new HashMap
 	val Map<String, JvmGenericType> domainTypes = new HashMap
@@ -93,6 +94,18 @@ package class GenerationContext {
 
 	def package getGeneratedConcepts() {
 		generatedConcepts
+	}
+
+	def package getIntermediateModelRootClass(Concept concept) {
+		return concept.name.intermediateModelRootClass
+	}
+
+	def package getIntermediateModelRootClass(String conceptName) {
+		intermediateModelRootClassCache.computeIfAbsent(conceptName, [
+			conceptName.intermediateModelPackage.EClassifiers.findFirst [
+				name == conceptName.intermediateModelRootClassName.simpleName
+			] as EClass
+		])
 	}
 
 	def package getIntermediateModelClass(Commonality commonality) {

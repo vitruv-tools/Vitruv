@@ -34,26 +34,29 @@ package class ParticipationContextHelper extends ReactionsGenerationHelper {
 	 * <p>
 	 * If a commonality is referenced by other commonalities, its
 	 * participations need to be matched in differently rooted containment
-	 * hierarchies: The participation may specify a containment hierarchy that
-	 * roots inside a <code>Resource</code>, and/or it may be referenced by
-	 * external commonality reference mappings, which each specify different
-	 * containment contexts for the participation's root objects. This class
+	 * hierarchies: A participation may specify an own containment hierarchy
+	 * that roots inside a <code>Resource</code>, and/or it may be referenced
+	 * by external commonality reference mappings, which each specify different
+	 * root containers for the participation's non-root objects. This class
 	 * represents the participation adapted to one of those various contexts.
+	 * <p>
+	 * For a commonality participation in its own context the root is empty,
+	 * since the participation objects are implicitly contained inside their
+	 * intermediate model's root.
 	 */
 	@FinalFieldsConstructor
 	@EqualsHashCode
 	@ToString
 	public static class ParticipationContext {
 
+		val extension ParticipationContextHelper participationContextHelper
 		@Accessors(PUBLIC_GETTER)
 		val Participation participation
 		@Accessors(PUBLIC_GETTER)
 		val ParticipationRoot root // not null
-		@Accessors(PUBLIC_GETTER)
-		val Set<Containment> nonRootContainments = new LinkedHashSet
 	
 		def getAllContainments() {
-			return root.containments + nonRootContainments
+			return root.containments + participation.nonRootContainments
 		}
 
 		def isForReferenceMapping() {
@@ -74,10 +77,7 @@ package class ParticipationContextHelper extends ReactionsGenerationHelper {
 		 * participation.
 		 */
 		def getParticipationClasses() {
-			// Note: Contains no duplicates, since there is exactly one
-			// containment relationship for every participation class
-			return Collections.singleton(rootContainerClass)
-				+ allContainments.map[contained]
+			return root.classes + participation.nonRootClasses
 		}
 
 		def getRootContainerClass() {
@@ -93,10 +93,9 @@ package class ParticipationContextHelper extends ReactionsGenerationHelper {
 		}
 	}
 
-	def private calculateNonRootContainments(ParticipationContext participationContext) {
-		val participation = participationContext.participation
+	def private getNonRootContainments(Participation participation) {
 		val participationRoot = participation.participationRoot
-		participationContext.nonRootContainments += participation.containments.filter [
+		return participation.containments.filter [
 			!participationRoot.isRootClass(container) && !participationRoot.isRootClass(contained)
 		]
 	}
@@ -135,6 +134,10 @@ package class ParticipationContextHelper extends ReactionsGenerationHelper {
 	 * not specifying any participation class of type <code>Resource</code>).
 	 * In that case the participation can only exist in contexts in which its
 	 * commonality is externally referenced by other commonalities.
+	 * <p>
+	 * Root objects of commonality participations are implicitly contained in
+	 * the root of their intermediate model. Their {@link ParticipationRoot} is
+	 * therefore empty.
 	 */
 	@EqualsHashCode
 	@ToString
@@ -152,7 +155,7 @@ package class ParticipationContextHelper extends ReactionsGenerationHelper {
 		 * participation classes may originate from an external
 		 * participation.
 		 * <p>
-		 * These are ordered according to their chain of containment
+		 * They are ordered according to their chain of containment
 		 * relationships, with the head class as first element.
 		 */
 		@Accessors(PUBLIC_GETTER)
@@ -169,6 +172,9 @@ package class ParticipationContextHelper extends ReactionsGenerationHelper {
 		 * <p>
 		 * For instance, this is the case if the participation does not specify
 		 * a Resource class.
+		 * <p>
+		 * Commonality participations have an empty root as well, since their
+		 * root container is not explicitly specified.
 		 */
 		def isEmpty() {
 			return classes.empty
@@ -190,14 +196,6 @@ package class ParticipationContextHelper extends ReactionsGenerationHelper {
 		}
 
 		/**
-		 * Gets all non-root participation classes that are located at the
-		 * boundary between non-root classes and the root's head class.
-		 */
-		def getNonRootBoundaryClasses() {
-			return boundaryContainments.map[contained]
-		}
-	
-		/**
 		 * Gets all containment relations between the root's head class and
 		 * non-root classes.
 		 */
@@ -213,7 +211,10 @@ package class ParticipationContextHelper extends ReactionsGenerationHelper {
 	def getParticipationContext(Participation participation) {
 		return participationContexts.computeIfAbsent(participation) [
 			val participationRoot = participation.participationRoot
-			if (participationRoot.empty) {
+			// Note: Commonality participations have an implicit root
+			// container. Even though their 'participation root' is empty, they
+			// implicitly specify an own participation context.
+			if (participationRoot.empty && !participation.isCommonalityParticipation) {
 				return Optional.empty
 			}
 
@@ -222,10 +223,8 @@ package class ParticipationContextHelper extends ReactionsGenerationHelper {
 				// TODO enforce that this is never the case via validation?
 				return Optional.empty
 			}
-		
-			return Optional.of(new ParticipationContext(participation, participationRoot) => [
-				calculateNonRootContainments()
-			])
+
+			return Optional.of(new ParticipationContext(this, participation, participationRoot))
 		]
 	}
 
@@ -292,7 +291,7 @@ package class ParticipationContextHelper extends ReactionsGenerationHelper {
 
 			// Ensure that the referenced participation has non-root classes:
 			// TODO move into validation?
-			val nonRootBoundaryClasses = referenceParticipationRoot.nonRootBoundaryClasses
+			val nonRootBoundaryClasses = referencedParticipation.nonRootBoundaryClasses
 			if (nonRootBoundaryClasses.empty) {
 				return Optional.empty
 			}
@@ -303,9 +302,7 @@ package class ParticipationContextHelper extends ReactionsGenerationHelper {
 				return Optional.empty
 			}
 		
-			return Optional.of(new ParticipationContext(referencedParticipation, referenceParticipationRoot) => [
-				calculateNonRootContainments()
-			])
+			return Optional.of(new ParticipationContext(this, referencedParticipation, referenceParticipationRoot))
 		]
 	}
 
@@ -367,23 +364,18 @@ package class ParticipationContextHelper extends ReactionsGenerationHelper {
 	 * If the given participation does not specify an own root, this returns
 	 * the participation's root container classes.
 	 */
-	def private getNonRootBoundaryClasses(Participation participation) {
+	def getNonRootBoundaryClasses(Participation participation) {
 		val participationRoot = participation.participationRoot
 		if (participationRoot.empty) {
 			return participation.rootContainerClasses
 		} else {
-			return participationRoot.nonRootBoundaryClasses
+			return participationRoot.boundaryContainments.map[contained]
 		}
 	}
 
 	def getNonRootClasses(Participation participation) {
 		val participationRoot = participation.participationRoot // can be empty
-		if (participationRoot.empty) {
-			return participation.classes
-		} else {
-			val rootClasses = participationRoot.classes
-			return participation.classes.filter[!rootClasses.contains(it)]
-		}
+		return participation.classes.filter[!participationRoot.isRootClass(it)]
 	}
 
 	def isRootClass(ParticipationClass participationClass) {

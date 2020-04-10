@@ -48,7 +48,12 @@ class ParticipationExtension {
 	}
 
 	def static isCommonalityParticipation(Participation participation) {
-		(participation.domain instanceof Concept)
+		return (participation.participationConcept !== null)
+	}
+
+	def static Concept getParticipationConcept(Participation participation) {
+		val domain = participation.domain
+		return (domain instanceof Concept) ? domain : null
 	}
 
 	def static dispatch Iterable<ParticipationRelation> getAllRelations(SimpleParticipation participation) {

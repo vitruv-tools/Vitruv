@@ -19,6 +19,7 @@ package class ReactionsGeneratorConventions {
 	public static val REFERENCED_INTERMEDIATE = 'referencedIntermediate'
 	public static val REFERENCING_INTERMEDIATE = 'referencingIntermediate'
 	public static val PARTICIPATION_CONTEXT_ROOT = 'participationContextRoot'
+	public static val INTERMEDIATE_ROOT = 'intermediateRoot'
 	public static val START_OBJECT = 'startObject'
 	public static val FOUND_MATCH_RESULT = 'foundMatchResult'
 	public static val PARTICIPATION_OBJECTS = 'participationObjects'
