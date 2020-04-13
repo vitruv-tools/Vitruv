@@ -4,7 +4,7 @@ import com.google.inject.Inject
 import com.google.inject.Provider
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EReference
-import org.eclipse.xtext.naming.QualifiedName
+import org.eclipse.xtext.naming.IQualifiedNameProvider
 import org.eclipse.xtext.scoping.IGlobalScopeProvider
 import org.eclipse.xtext.scoping.IScope
 import tools.vitruv.dsls.commonalities.language.Commonality
@@ -29,6 +29,7 @@ class CommonalitiesLanguageScopeProvider extends AbstractCommonalitiesLanguageSc
 	@Inject Provider<ParticipationClassesScope> participationClassesScope
 	@Inject Provider<ParticipationAttributesScope> participationAttributesScope
 	@Inject IGlobalScopeProvider globalScopeProvider
+	@Inject extension IQualifiedNameProvider qualifiedNameProvider
 
 	// Context differs during content assist:
 	// * If no input is provided yet, the container is the context as the element is not known yet
@@ -56,7 +57,9 @@ class CommonalitiesLanguageScopeProvider extends AbstractCommonalitiesLanguageSc
 			}
 			case PARTICIPATION_ATTRIBUTE__ATTRIBUTE: {
 				if (context instanceof ParticipationAttribute) {
-					return participationAttributesScope.get.forParticipationClass(context.participationClass)
+					val participationClass = context.participationClass
+					val participationAttributeScope = participationAttributesScope.get.forParticipationClass(participationClass)
+					return participationClass.getUnqualifiedParticipationAttributeScope(participationAttributeScope)
 				}
 			}
 			case PARTICIPATION_CLASS__SUPER_METACLASS: {
@@ -86,7 +89,18 @@ class CommonalitiesLanguageScopeProvider extends AbstractCommonalitiesLanguageSc
 
 	def private getUnqualifiedParticipationClassScope(Participation participation, IScope participationClassScope) {
 		return new QualifiedNameTransformingScope(participationClassScope, [
-			QualifiedName.create(#[participation.domainName] + segments)
+			participation.fullyQualifiedName.append(it)
+		])
+	}
+
+	def private getUnqualifiedParticipationAttributeScope(ParticipationClass participationClass,
+		IScope participationAttributeScope) {
+		if (participationClass.eIsProxy) {
+			throw new IllegalStateException("ParticipationClass is a proxy. This might indicate an issue with the"
+				+ " participation class scoping.")
+		}
+		return new QualifiedNameTransformingScope(participationAttributeScope, [
+			participationClass.fullyQualifiedName.append(it)
 		])
 	}
 }

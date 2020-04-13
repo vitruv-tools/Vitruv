@@ -4,19 +4,27 @@ import com.google.inject.Singleton
 import java.util.ArrayList
 import java.util.List
 import org.eclipse.emf.ecore.EObject
-import org.eclipse.xtext.naming.IQualifiedNameProvider
+import org.eclipse.xtext.common.types.JvmIdentifiableElement
 import org.eclipse.xtext.naming.QualifiedName
+import org.eclipse.xtext.xbase.scoping.XbaseQualifiedNameProvider
 import tools.vitruv.dsls.commonalities.language.elements.ClassLike
 import tools.vitruv.dsls.commonalities.language.elements.MemberLike
 import tools.vitruv.dsls.commonalities.language.elements.PackageLike
 
+import static tools.vitruv.dsls.commonalities.names.QualifiedNameHelper.*
+
 @Singleton
-class CommonalitiesLanguageQualifiedNameProvider extends IQualifiedNameProvider.AbstractImpl {
+class CommonalitiesLanguageQualifiedNameProvider extends XbaseQualifiedNameProvider {
 
 	override getFullyQualifiedName(EObject object) {
+		if (object instanceof JvmIdentifiableElement) {
+			return super.getFullyQualifiedName(object)
+		}
 		val segments = getFullyQualifiedNameSegments(object)
-		if (segments === null) return null
-		QualifiedName.create(segments)
+		if (segments !== null) {
+			return QualifiedName.create(segments)
+		}
+		return null
 	}
 
 	def private dispatch List<String> getFullyQualifiedNameSegments(MemberLike member) {
@@ -45,10 +53,11 @@ class CommonalitiesLanguageQualifiedNameProvider extends IQualifiedNameProvider.
 		return existing
 	}
 
-	def private segmentList(String element) {
-		if (element === null) return null
-		val result = new ArrayList<String>(3)
-		result.add(element)
+	def private segmentList(String packageLikeName) {
+		if (packageLikeName === null) return null
+		val result = new ArrayList<String>(4)
+		result.add(packageLikeName)
+		result.add(DOMAIN_METACLASS_SEPARATOR_SEGMENT)
 		return result
 	}
 }

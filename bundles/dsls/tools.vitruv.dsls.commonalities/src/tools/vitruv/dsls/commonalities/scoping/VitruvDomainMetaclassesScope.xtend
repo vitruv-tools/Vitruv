@@ -6,9 +6,10 @@ import org.eclipse.emf.ecore.EObject
 import org.eclipse.xtext.EcoreUtil2
 import org.eclipse.xtext.naming.QualifiedName
 import org.eclipse.xtext.scoping.IScope
-import tools.vitruv.dsls.commonalities.language.elements.Metaclass
 import tools.vitruv.dsls.commonalities.language.elements.VitruviusDomainProvider
 import tools.vitruv.dsls.commonalities.names.IEObjectDescriptionProvider
+
+import static extension tools.vitruv.dsls.commonalities.names.QualifiedNameHelper.*
 
 @Singleton
 class VitruvDomainMetaclassesScope implements IScope {
@@ -21,12 +22,14 @@ class VitruvDomainMetaclassesScope implements IScope {
 	}
 
 	override getElements(QualifiedName qName) {
-		var Iterable<Metaclass> elements = vitruviusDomainProvider.getDomainByName(qName.getSegment(0))?.metaclasses ?: #[]
+		val domainName = qName.domainName
+		if (domainName === null) return #[]
+		val className = qName.className
+		if (className === null) return #[]
 
-		if (qName.segmentCount > 1) {
-			elements = elements.filter[name == qName.getSegment(1)]
-		}
-		elements.map(descriptionProvider)
+		return (vitruviusDomainProvider.getDomainByName(domainName)?.metaclasses ?: #[])
+			.filter[name == className]
+			.map(descriptionProvider)
 	}
 
 	override getElements(EObject object) {

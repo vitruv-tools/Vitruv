@@ -10,7 +10,7 @@ import org.eclipse.xtext.xbase.lib.Functions.Function1
 
 interface IEObjectDescriptionProvider extends Function<EObject, IEObjectDescription>, Function1<EObject, IEObjectDescription> {
 
-	def IEObjectDescription describe(EObject object);
+	def IEObjectDescription describe(EObject object)
 
 	override apply(EObject object) {
 		describe(object)
@@ -22,6 +22,6 @@ class QualifiedNameProviderDescriptionProvider implements IEObjectDescriptionPro
 	@Inject IQualifiedNameProvider qualifiedNameProvider
 
 	override describe(EObject object) {
-		EObjectDescription.create(qualifiedNameProvider.getFullyQualifiedName(object), object);
+		EObjectDescription.create(qualifiedNameProvider.getFullyQualifiedName(object), object)
 	}
 }

@@ -10,6 +10,8 @@ import tools.vitruv.dsls.commonalities.names.IEObjectDescriptionProvider
 
 import static com.google.common.base.Preconditions.*
 
+import static extension tools.vitruv.dsls.commonalities.names.QualifiedNameHelper.*
+
 class ParticipationAttributesScope implements IScope {
 
 	@Inject IEObjectDescriptionProvider descriptionProvider
@@ -34,8 +36,9 @@ class ParticipationAttributesScope implements IScope {
 	}
 
 	override getElements(QualifiedName qName) {
-		if (qName.segmentCount > 1) return #[]
-		allAttributes.filter[name == qName.firstSegment].map(descriptionProvider)
+		val memberName = qName.memberName
+		if (memberName === null) return #[]
+		return allAttributes.filter[name == memberName].map(descriptionProvider)
 	}
 
 	override getElements(EObject object) {

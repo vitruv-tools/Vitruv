@@ -11,6 +11,7 @@ import tools.vitruv.dsls.commonalities.names.IEObjectDescriptionProvider
 import static com.google.common.base.Preconditions.*
 
 import static extension tools.vitruv.dsls.commonalities.language.extensions.CommonalitiesLanguageModelExtensions.*
+import static extension tools.vitruv.dsls.commonalities.names.QualifiedNameHelper.*
 
 class ParticipationClassesScope implements IScope {
 
@@ -33,12 +34,15 @@ class ParticipationClassesScope implements IScope {
 
 	override getElements(QualifiedName qName) {
 		checkCommonalitySet()
-		if (qName.segmentCount !== 2) return #[]
+		val domainName = qName.domainName
+		if (domainName === null) return #[]
+		val className = qName.className
+		if (className === null) return #[]
 
-		commonality.participations
-			.filter[name == qName.getSegment(0)]
+		return commonality.participations
+			.filter[name == domainName]
 			.flatMap[classes]
-			.filter[name == qName.getSegment(1)]
+			.filter[name == className]
 			.map(descriptionProvider)
 	}
 
