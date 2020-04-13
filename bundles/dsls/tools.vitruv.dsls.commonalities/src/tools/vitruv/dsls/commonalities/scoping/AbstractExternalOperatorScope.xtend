@@ -4,6 +4,7 @@ import com.google.inject.Inject
 import java.util.Map
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.resource.ResourceSet
+import org.eclipse.xtext.EcoreUtil2
 import org.eclipse.xtext.common.types.JvmDeclaredType
 import org.eclipse.xtext.common.types.JvmStringAnnotationValue
 import org.eclipse.xtext.common.types.access.IJvmTypeProvider
@@ -18,7 +19,7 @@ abstract class AbstractExternalOperatorScope implements IScope {
 	static val OPERATOR_NAME_ANNOTATION = OperatorName.name
 
 	@Inject IJvmTypeProvider.Factory typeProviderFactory
-	@Inject extension IQualifiedNameConverter qualifiedNameConverter;
+	@Inject extension IQualifiedNameConverter qualifiedNameConverter
 
 	ResourceSet resourceSet
 	Map<QualifiedName, JvmDeclaredType> operators
@@ -54,7 +55,8 @@ abstract class AbstractExternalOperatorScope implements IScope {
 	}
 
 	override getElements(EObject object) {
-		throw new UnsupportedOperationException("I don't know what to do here!")
+		val objectURI = EcoreUtil2.getURI(object)
+		return allElements.filter[it.EObjectOrProxy === object || it.EObjectURI == objectURI]
 	}
 
 	override getSingleElement(QualifiedName name) {

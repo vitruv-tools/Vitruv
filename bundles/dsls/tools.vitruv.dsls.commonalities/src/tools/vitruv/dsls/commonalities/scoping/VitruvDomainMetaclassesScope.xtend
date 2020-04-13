@@ -3,6 +3,7 @@ package tools.vitruv.dsls.commonalities.scoping
 import com.google.inject.Inject
 import com.google.inject.Singleton
 import org.eclipse.emf.ecore.EObject
+import org.eclipse.xtext.EcoreUtil2
 import org.eclipse.xtext.naming.QualifiedName
 import org.eclipse.xtext.scoping.IScope
 import tools.vitruv.dsls.commonalities.language.elements.Metaclass
@@ -29,7 +30,8 @@ class VitruvDomainMetaclassesScope implements IScope {
 	}
 
 	override getElements(EObject object) {
-		throw new UnsupportedOperationException("I don’t know what to do here!")
+		val objectURI = EcoreUtil2.getURI(object)
+		return allElements.filter[it.EObjectOrProxy === object || it.EObjectURI == objectURI]
 	}
 
 	override getSingleElement(QualifiedName name) {
@@ -41,7 +43,6 @@ class VitruvDomainMetaclassesScope implements IScope {
 	}
 
 	override toString() {
-		'''«VitruvDomainMetaclassesScope.simpleName» for domains «
-		»[«FOR domain : vitruviusDomainProvider.allDomains SEPARATOR ', '»«domain»«ENDFOR»]'''
+		'''«VitruvDomainMetaclassesScope.simpleName» for domains «vitruviusDomainProvider.allDomains.toList»'''
 	}
 }

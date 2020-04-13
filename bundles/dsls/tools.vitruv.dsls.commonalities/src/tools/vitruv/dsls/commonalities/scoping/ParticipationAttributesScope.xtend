@@ -2,6 +2,7 @@ package tools.vitruv.dsls.commonalities.scoping
 
 import com.google.inject.Inject
 import org.eclipse.emf.ecore.EObject
+import org.eclipse.xtext.EcoreUtil2
 import org.eclipse.xtext.naming.QualifiedName
 import org.eclipse.xtext.scoping.IScope
 import tools.vitruv.dsls.commonalities.language.ParticipationClass
@@ -39,8 +40,8 @@ class ParticipationAttributesScope implements IScope {
 
 	override getElements(EObject object) {
 		checkParticipationClassSet()
-
-		throw new UnsupportedOperationException("I don’t know what to do here!")
+		val objectURI = EcoreUtil2.getURI(object)
+		return allElements.filter[it.EObjectOrProxy === object || it.EObjectURI == objectURI]
 	}
 
 	override getSingleElement(QualifiedName name) {
