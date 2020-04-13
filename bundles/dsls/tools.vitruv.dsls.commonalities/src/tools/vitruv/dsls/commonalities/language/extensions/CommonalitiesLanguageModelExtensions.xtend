@@ -5,9 +5,11 @@ import edu.kit.ipd.sdq.activextendannotations.Utility
 
 @StaticDelegate(#[
 	CommonalityExtension,
+	CommonalityFileExtension,
 	CommonalitiesLanguageElementExtension,
 	CommonalityAttributeMappingExtension,
 	CommonalityReferenceMappingExtension,
+	OperatorImportExtension,
 	ParticipationExtension,
 	ParticipationPartExtension,
 	ParticipationClassExtension,

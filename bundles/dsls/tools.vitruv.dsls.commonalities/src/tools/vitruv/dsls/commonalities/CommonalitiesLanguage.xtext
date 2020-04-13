@@ -8,8 +8,13 @@ import "http://vitruv.tools/dsls/commonalities/elements"
 import "http://www.eclipse.org/xtext/common/JavaVMTypes" as jvmTypes
 
 CommonalityFile:
+	(operatorImports+=OperatorImport)*
 	concept=Concept
 	commonality=Commonality
+;
+
+OperatorImport:
+	'import' (importedType=[jvmTypes::JvmDeclaredType|QualifiedName] | importedNamespace=QualifiedNameWithWildcard)
 ;
 
 Domain:

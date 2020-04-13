@@ -18,29 +18,32 @@ import static extension tools.vitruv.dsls.commonalities.language.extensions.Comm
 
 class CommonalitiesLanguageGlobalScopeProvider extends TypesAwareDefaultGlobalScopeProvider {
 
+	@Inject ParticipationRelationOperatorScopeProvider relationOperatorScopeProvider
+	@Inject ParticipationConditionOperatorScopeProvider conditionOperatorScopeProvider
 	@Inject Provider<VitruvDomainMetaclassesScope> allMetaclassesScope
-	@Inject Provider<ParticipationRelationOperatorScope> participationRelationOperatorScope
-	@Inject Provider<ParticipationConditionOperatorScope> participationConditionOperatorScope
 	@Inject extension IEObjectDescriptionProvider descriptionProvider
 
 	override getScope(Resource resource, EReference reference, Predicate<IEObjectDescription> filter) {
-		new ComposedScope(
-			// Note: Delegating to the default global scope provider first ensures that we get actual Concept and
-			// Commonality instances for commonality participation domains and participation classes, rather than
-			// EClassAdapters as they would get created by the VitruvDomainMetaclassesScope.
-			super.getScope(resource, reference, filter),
-			_getScope(resource, reference)
-		)
+		switch (reference) {
+			case PARTICIPATION_RELATION__OPERATOR:
+				relationOperatorScopeProvider.getScope(resource, reference, filter)
+			case PARTICIPATION_CONDITION__OPERATOR:
+				conditionOperatorScopeProvider.getScope(resource, reference, filter)
+			default:
+				new ComposedScope(
+					// Note: Delegating to the default global scope provider first ensures that we get actual Concept and
+					// Commonality instances for commonality participation domains and participation classes, rather than
+					// EClassAdapters as they would get created by the VitruvDomainMetaclassesScope.
+					super.getScope(resource, reference, filter),
+					_getScope(resource, reference)
+				)
+		}
 	}
 
 	def private _getScope(Resource resource, EReference reference) {
 		switch (reference) {
 			case PARTICIPATION_CLASS__SUPER_METACLASS:
 				allMetaclassesScope.get()
-			case PARTICIPATION_RELATION__OPERATOR:
-				participationRelationOperatorScope.get.forResourceSet(resource.resourceSet)
-			case PARTICIPATION_CONDITION__OPERATOR:
-				participationConditionOperatorScope.get.forResourceSet(resource.resourceSet)
 			case COMMONALITY_REFERENCE__REFERENCE_TYPE: // self scope
 				new SimpleScope(IScope.NULLSCOPE, Collections.singleton(
 					resource.containedCommonalityFile.commonality.describe()
