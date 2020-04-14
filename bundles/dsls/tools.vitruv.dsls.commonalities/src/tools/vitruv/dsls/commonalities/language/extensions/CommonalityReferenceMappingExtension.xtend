@@ -1,9 +1,9 @@
 package tools.vitruv.dsls.commonalities.language.extensions
 
 import edu.kit.ipd.sdq.activextendannotations.Utility
-import java.util.Collections
 import tools.vitruv.dsls.commonalities.language.CommonalityReference
 import tools.vitruv.dsls.commonalities.language.CommonalityReferenceMapping
+import tools.vitruv.dsls.commonalities.language.ParticipationClass
 import tools.vitruv.dsls.commonalities.language.ReferenceEqualitySpecification
 import tools.vitruv.dsls.commonalities.language.ReferenceReadSpecification
 import tools.vitruv.dsls.commonalities.language.ReferenceSetSpecification
@@ -51,12 +51,18 @@ class CommonalityReferenceMappingExtension {
 		return mapping.declaringReference.referenceType
 	}
 
-	def static getMatchingReferencedParticipations(CommonalityReferenceMapping mapping) {
-		val referenceRightType = mapping.reference?.type
-		val referenceLeftType = mapping.declaringReference.referenceType
-		if (referenceRightType === null || referenceLeftType === null) return Collections.emptyList
-		referenceLeftType.participations.flatMap[classes].filter [
-			referenceRightType.isSuperTypeOf(superMetaclass)
+	def static getReferencedParticipation(CommonalityReferenceMapping mapping) {
+		val participationDomainName = mapping.participation.domainName
+		val referencedCommonality = mapping.referencedCommonality
+		// Note: We verify via validation that there is exactly one matching participation.
+		return referencedCommonality.participations.findFirst [
+			it.domainName == participationDomainName
+			// TODO Support for multiple participations with the same domain inside the referenced commonality.
 		]
+	}
+
+	def static isAssignmentCompatible(CommonalityReferenceMapping mapping, ParticipationClass referencedClass) {
+		val referenceType = mapping.reference.type
+		return referenceType.isSuperTypeOf(referencedClass.superMetaclass)
 	}
 }

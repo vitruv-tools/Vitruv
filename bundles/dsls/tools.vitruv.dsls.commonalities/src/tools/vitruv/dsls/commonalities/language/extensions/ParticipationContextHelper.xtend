@@ -16,7 +16,7 @@ class ParticipationContextHelper {
 	static val Map<Participation, ParticipationRoot> participationRoots = new WeakHashMap
 	static val Map<Participation, Optional<ParticipationContext>> participationContexts = new WeakHashMap
 	static val Map<CommonalityReferenceMapping, ParticipationRoot> referenceParticipationRoots = new WeakHashMap
-	static val Map<CommonalityReferenceMapping, Optional<ParticipationContext>> referenceParticipationContexts = new WeakHashMap
+	static val Map<CommonalityReferenceMapping, ParticipationContext> referenceParticipationContexts = new WeakHashMap
 
 	/**
 	 * Optional: Empty if the participation specifies no containment context.
@@ -30,13 +30,7 @@ class ParticipationContextHelper {
 			if (participationRoot.empty && !participation.isCommonalityParticipation) {
 				return Optional.empty
 			}
-
-			if (participation.nonRootClasses.empty) {
-				// Participation has no non-root classes
-				// TODO enforce that this is never the case via validation?
-				return Optional.empty
-			}
-
+			// assert: !participation.nonRootClasses.empty (ensured via validation)
 			return Optional.of(new ParticipationContext(participation, participationRoot))
 		]
 	}
@@ -93,42 +87,13 @@ class ParticipationContextHelper {
 		return referenceParticipationContexts.computeIfAbsent(mapping) [
 			val referencedParticipation = mapping.referencedParticipation
 			// assert: referencedParticipation != null
-
+			// assert: !referencedParticipation.nonRootBoundaryClasses.empty
+			// assert: The referenced participation classes are assignment
+			// compatible. (ensured via validation)
 			val referenceParticipationRoot = mapping.referenceParticipationRoot
-			if (referenceParticipationRoot.empty) {
-				return Optional.empty
-			}
-
-			// Ensure that the referenced participation has non-root classes:
-			// TODO move into validation?
-			val nonRootBoundaryClasses = referencedParticipation.nonRootBoundaryClasses
-			if (nonRootBoundaryClasses.empty) {
-				return Optional.empty
-			}
-
-			// Check that all referenced participation classes are assignment compatible:
-			// TODO move into validation?
-			if (!nonRootBoundaryClasses.filter[!mapping.isAssignmentCompatible(it)].empty) {
-				return Optional.empty
-			}
-
-			return Optional.of(new ParticipationContext(referencedParticipation, referenceParticipationRoot))
+			// assert: !referenceParticipationRoot.empty
+			return new ParticipationContext(referencedParticipation, referenceParticipationRoot)
 		]
-	}
-
-	def static getReferencedParticipation(CommonalityReferenceMapping mapping) {
-		val participationDomainName = mapping.participation.domainName
-		val referencedCommonality = mapping.referencedCommonality
-		// Note: We validate that there is exactly one matching participation.
-		return referencedCommonality.participations.findFirst [
-			it.domainName == participationDomainName
-			// TODO Support for multiple participations with the same domain inside the referenced commonality.
-		]
-	}
-
-	def private static isAssignmentCompatible(CommonalityReferenceMapping mapping, ParticipationClass referencedClass) {
-		val referenceType = mapping.reference.type
-		return referenceType.isSuperTypeOf(referencedClass.superMetaclass)
 	}
 
 	def private static getReferenceParticipationRoot(CommonalityReferenceMapping mapping) {
@@ -171,6 +136,10 @@ class ParticipationContextHelper {
 	 * <p>
 	 * If the given participation does not specify an own root, this returns
 	 * the participation's root container classes.
+	 * <p>
+	 * Since participations are not empty, have at least one root container
+	 * class and at least one non-root class, the result is expected to not be
+	 * empty.
 	 */
 	def static getNonRootBoundaryClasses(Participation participation) {
 		val participationRoot = participation.participationRoot

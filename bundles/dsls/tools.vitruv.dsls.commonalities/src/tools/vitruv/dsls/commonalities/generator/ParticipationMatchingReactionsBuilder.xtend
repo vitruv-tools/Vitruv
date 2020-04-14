@@ -628,14 +628,9 @@ package class ParticipationMatchingReactionsBuilder extends ReactionsGenerationH
 		val commonality = participation.containingCommonality
 		return matchCommonalityReferenceMappingRoutines.computeIfAbsent(mapping) [
 			val participationContext = mapping.referenceParticipationContext
-			if (!participationContext.present) {
-				// There is no valid participation context for this mapping:
-				// TODO Ensure that this is not the case via validation?
-				return Optional.empty
-			}
 
 			// Generate the required routines:
-			participationContext.get.generateRoutines
+			participationContext.generateRoutines
 
 			val mappingParticipationClass = mapping.reference.participationClass
 			val extension routineCallContext = new RoutineCallContext
@@ -677,7 +672,7 @@ package class ParticipationMatchingReactionsBuilder extends ReactionsGenerationH
 
 									// Invoke the matching:
 									expressions += routineCallContext.createRoutineCall(typeProvider,
-										participationContext.get.matchParticipationRoutine,
+										participationContext.matchParticipationRoutine,
 										variable(PARTICIPATION_CONTEXT_ROOT), resultVar.featureCall)
 								]
 							]

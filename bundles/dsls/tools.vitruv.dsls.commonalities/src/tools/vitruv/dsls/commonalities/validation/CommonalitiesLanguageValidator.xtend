@@ -14,6 +14,7 @@ import tools.vitruv.dsls.commonalities.language.elements.Metaclass
 import static tools.vitruv.dsls.commonalities.language.LanguagePackage.Literals.*
 
 import static extension tools.vitruv.dsls.commonalities.language.extensions.CommonalitiesLanguageModelExtensions.*
+import static extension tools.vitruv.dsls.commonalities.language.extensions.ParticipationContextHelper.*
 
 /**
  * This class contains custom validation rules.
@@ -36,22 +37,52 @@ class CommonalitiesLanguageValidator extends AbstractCommonalitiesLanguageValida
 	}
 
 	@Check
-	def checkCommonalityReferenceMappingHasCorrectType(CommonalityReferenceMapping mapping) {
+	def checkParticipationClasses(Participation participation) {
+		if (participation.classes.empty) {
+			error('Participation is empty.', participation, null)
+		} else if (participation.nonRootClasses.empty) {
+			error('Participation has no non-root classes.', participation, null)
+		}
+		// TODO check for containment cycles
+	}
+
+	@Check
+	def checkReferencedParticipation(CommonalityReferenceMapping mapping) {
 		val referenceRightType = mapping.reference?.type
 		if (referenceRightType === null) return;
 		if (!(referenceRightType instanceof Metaclass)) {
-			error('Reference Mappings can only use EReferences', COMMONALITY_REFERENCE_MAPPING__REFERENCE)
-		} else {
-			val matchingParticipations = mapping.matchingReferencedParticipations.toList
-			if (matchingParticipations.size === 0) {
-				error('''«mapping.referencedCommonality» has no participation with a subtype of «
-				»«referenceRightType».''', COMMONALITY_REFERENCE_MAPPING__REFERENCE)
-			} else if (matchingParticipations.size > 1) {
-				error('''Ambiguous reference mapping: «mapping.declaringReference.referenceType» has more than one «
-					»participations with a subtype of «referenceRightType».''',
-					COMMONALITY_REFERENCE_MAPPING__REFERENCE)
-			}
+			error('Reference mappings can only use EReferences.', COMMONALITY_REFERENCE_MAPPING__REFERENCE)
+			return;
 		}
+
+		val referencedParticipations = mapping.referencedParticipations.toList
+		if (referencedParticipations.size === 0) {
+			error('''«mapping.referencedCommonality» has no participation of domain «
+				mapping.participation.domainName».''', mapping, null)
+			return;
+		} else if (referencedParticipations.size > 1) {
+			error('''Ambiguous reference mapping: «mapping.referencedCommonality» has more than one participation of «
+				»domain «mapping.participation.domainName».''', mapping, null)
+			return;
+		}
+
+		val referencedParticipation = referencedParticipations.head
+		val nonRootBoundaryClasses = referencedParticipation.nonRootBoundaryClasses
+		// assert: !nonRootBoundaryClasses.empty
+		if (!nonRootBoundaryClasses.filter[!mapping.isAssignmentCompatible(it)].empty) {
+			error('''The referenced classes of participation «referencedParticipation» in «
+				mapping.referencedCommonality» are not assignment compatible with reference type «
+				referenceRightType».''', COMMONALITY_REFERENCE_MAPPING__REFERENCE)
+			return;
+		}
+	}
+
+	def private static getReferencedParticipations(CommonalityReferenceMapping mapping) {
+		val participationDomainName = mapping.participation.domainName
+		val referencedCommonality = mapping.referencedCommonality
+		return referencedCommonality.participations.filter [
+			it.domainName == participationDomainName
+		]
 	}
 
 	@Check

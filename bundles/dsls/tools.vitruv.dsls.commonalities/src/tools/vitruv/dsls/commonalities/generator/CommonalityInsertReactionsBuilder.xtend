@@ -69,7 +69,7 @@ package class CommonalityInsertReactionsBuilder extends ReactionsSubGenerator {
 		// the corresponding referenced participations according to the commonality reference's mappings:
 		commonality.references.flatMap[mappings].filter [
 			isWrite && it.participation == targetParticipation
-		].map[referenceParticipationContext].filter[present].map[get].forEach [
+		].map[referenceParticipationContext].forEach [
 			segment += reactionForCommonalityInsert(segment)
 			segment += reactionForCommonalityRemove
 		]
