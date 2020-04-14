@@ -368,7 +368,6 @@ package class CommonalityInsertReactionsBuilder extends ReactionsSubGenerator {
 		]
 		val matchingRoutines = relevantReferenceMappings
 			.map[matchCommonalityReferenceMappingRoutine]
-			.filter[present].map[get]
 			.toList
 		if (matchingRoutines.empty) {
 			return Optional.empty

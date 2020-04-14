@@ -3,7 +3,6 @@ package tools.vitruv.dsls.commonalities.generator
 import com.google.inject.Inject
 import java.util.HashMap
 import java.util.Map
-import java.util.Optional
 import org.apache.log4j.Level
 import org.apache.log4j.Logger
 import org.eclipse.emf.ecore.EClass
@@ -182,7 +181,7 @@ package class ParticipationMatchingReactionsBuilder extends ReactionsGenerationH
 	val Map<ParticipationClass, FluentRoutineBuilder> insertResourceBridgeRoutines = new HashMap
 	val Map<CommonalityReference, FluentRoutineBuilder> insertReferencedIntermediateRoutines = new HashMap
 	val Map<Participation, FluentRoutineBuilder> applyParticipationAttributesRoutines = new HashMap
-	val Map<CommonalityReferenceMapping, Optional<FluentRoutineBuilder>> matchCommonalityReferenceMappingRoutines = new HashMap
+	val Map<CommonalityReferenceMapping, FluentRoutineBuilder> matchCommonalityReferenceMappingRoutines = new HashMap
 
 	private new(FluentReactionsSegmentBuilder segment) {
 		checkNotNull(segment, "segment is null")
@@ -634,7 +633,7 @@ package class ParticipationMatchingReactionsBuilder extends ReactionsGenerationH
 
 			val mappingParticipationClass = mapping.reference.participationClass
 			val extension routineCallContext = new RoutineCallContext
-			Optional.of(create.routine('''matchCommonalityReferenceMapping_«mapping.reactionName»''')
+			return create.routine('''matchCommonalityReferenceMapping_«mapping.reactionName»''')
 				.input [
 					model(commonality.changeClass, INTERMEDIATE)
 				]
@@ -678,7 +677,7 @@ package class ParticipationMatchingReactionsBuilder extends ReactionsGenerationH
 							]
 						]
 					].setCallerContext
-				].setCaller)
+				].setCaller
 		]
 	}
 }
