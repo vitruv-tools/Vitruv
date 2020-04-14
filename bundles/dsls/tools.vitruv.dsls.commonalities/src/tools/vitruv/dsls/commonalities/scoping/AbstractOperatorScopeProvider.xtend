@@ -2,7 +2,10 @@ package tools.vitruv.dsls.commonalities.scoping
 
 import com.google.common.base.Predicate
 import com.google.inject.Inject
+import java.util.HashMap
+import java.util.HashSet
 import java.util.Map
+import java.util.Set
 import org.apache.log4j.Logger
 import org.eclipse.emf.ecore.EReference
 import org.eclipse.emf.ecore.resource.Resource
@@ -90,10 +93,17 @@ abstract class AbstractOperatorScopeProvider implements IGlobalScopeProvider {
 		val extension typeProvider = typeProviderFactory.findOrCreateTypeProvider(resourceSet)
 		val typeScope = typeScopeProvider.createTypeScope(typeProvider, null)
 		val allTypes = typeScope.allElements
-		return newHashMap(allTypes
+		val Map<QualifiedName, JvmDeclaredType> operators = new HashMap()
+		val Set<QualifiedName> foundTypes = new HashSet()
+		allTypes
 			// TODO This heuristic name filter fixes an issue that would otherwise causes the Eclipse runtime
 			// application to freeze.
 			.filter[qualifiedName.lastSegment.endsWith('Operator')]
+			.filter [
+				// We sometimes find the same type multiple times. This filter
+				// ensures that we only handle it once.
+				foundTypes.add(qualifiedName)
+			]
 			.map[EcoreUtil2.resolve(it.EObjectOrProxy, resourceSet)]
 			.filter(JvmDeclaredType)
 			.filter[isOperatorType]
@@ -104,7 +114,13 @@ abstract class AbstractOperatorScopeProvider implements IGlobalScopeProvider {
 				} else {
 					operatorName.toQualifiedName -> it
 				}
-			].filterNull)
+			].filterNull
+			.forEach [
+				// Note: Operators with duplicate names silently replace each other:
+				// TODO Add validation to avoid importing operators with name clashes
+				operators.put(key, value)
+			]
+		return operators
 	}
 
 	protected abstract def Class<?> getOperatorBaseType()
