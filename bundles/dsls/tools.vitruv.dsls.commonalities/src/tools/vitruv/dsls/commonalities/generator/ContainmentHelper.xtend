@@ -5,7 +5,7 @@ import java.util.Map
 import org.eclipse.emf.ecore.EClass
 import org.eclipse.emf.ecore.EReference
 import tools.vitruv.dsls.commonalities.language.extensions.Containment
-import tools.vitruv.extensions.dslruntime.commonalities.operators.participation.relation.ContainmentRelation
+import tools.vitruv.extensions.dslruntime.commonalities.operators.participation.relation.ContainmentOperator
 
 package class ContainmentHelper extends GenerationHelper {
 
@@ -29,6 +29,6 @@ package class ContainmentHelper extends GenerationHelper {
 
 	// guesses the containment reference
 	def static getContainmentReference(EClass container, EClass contained) {
-		return ContainmentRelation.getContainmentReference(container, container)
+		return ContainmentOperator.getContainmentReference(container, container)
 	}
 }

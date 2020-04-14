@@ -7,7 +7,7 @@ import org.eclipse.emf.ecore.EcorePackage
 import tools.vitruv.extensions.dslruntime.commonalities.operators.OperatorName
 
 @OperatorName('in')
-class ContainmentRelation extends AbstractParticipationRelationOperator {
+class ContainmentOperator extends AbstractParticipationRelationOperator {
 
 	new(EObject[] leftObjects, EObject[] rightObjects) {
 		super(leftObjects, rightObjects)

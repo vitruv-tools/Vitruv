@@ -6,7 +6,7 @@ import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EReference
 import tools.vitruv.extensions.dslruntime.commonalities.operators.OperatorName
 
-import static extension tools.vitruv.extensions.dslruntime.commonalities.operators.participation.relation.ContainmentRelation.*
+import static extension tools.vitruv.extensions.dslruntime.commonalities.operators.participation.relation.ContainmentOperator.*
 
 @OperatorName('in')
 class ContainmentOperator extends AbstractSingleArgumentOperator implements ParticipationClassConditionOperator {

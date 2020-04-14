@@ -89,7 +89,11 @@ abstract class AbstractOperatorScopeProvider implements IGlobalScopeProvider {
 		// See also DefaultGlobalScopeProvider
 		val extension typeProvider = typeProviderFactory.findOrCreateTypeProvider(resourceSet)
 		val typeScope = typeScopeProvider.createTypeScope(typeProvider, null)
-		return newHashMap(typeScope.allElements
+		val allTypes = typeScope.allElements
+		return newHashMap(allTypes
+			// TODO This heuristic name filter fixes an issue that would otherwise causes the Eclipse runtime
+			// application to freeze.
+			.filter[qualifiedName.lastSegment.endsWith('Operator')]
 			.map[EcoreUtil2.resolve(it.EObjectOrProxy, resourceSet)]
 			.filter(JvmDeclaredType)
 			.filter[isOperatorType]
