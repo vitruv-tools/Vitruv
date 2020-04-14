@@ -57,8 +57,8 @@ package class ParticipationClassExtension {
 	}
 
 	/**
-	 * Starting at the given class, this finds the root participation class
-	 * that (transitively) contains all the other participation classes.
+	 * Gets the root participation class that (transitively) contains the given
+	 * participation class.
 	 * <p>
 	 * This returns the given participation class itself if it has no
 	 * container.
