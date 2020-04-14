@@ -10,6 +10,7 @@ import tools.vitruv.dsls.reactions.builder.FluentReactionsSegmentBuilder
 import static com.google.common.base.Preconditions.*
 
 import static extension tools.vitruv.dsls.commonalities.language.extensions.CommonalitiesLanguageModelExtensions.*
+import static extension tools.vitruv.dsls.commonalities.language.extensions.ParticipationContextHelper.*
 
 /**
  * Generates the matching reaction and routines for a participation, in its own
@@ -25,7 +26,6 @@ package class MatchParticipationReactionsBuilder extends ReactionsSubGenerator {
 		}
 	}
 
-	@Inject extension ParticipationContextHelper participationContextHelper
 	@Inject ParticipationMatchingReactionsBuilder.Provider participationMatchingReactionsBuilderProvider
 
 	// Note: May be a commonality participation.

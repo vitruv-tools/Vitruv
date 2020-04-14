@@ -13,13 +13,14 @@ import org.eclipse.xtext.common.types.TypesFactory
 import org.eclipse.xtext.xbase.XExpression
 import org.eclipse.xtext.xbase.XFeatureCall
 import org.eclipse.xtext.xbase.XbaseFactory
-import tools.vitruv.dsls.commonalities.generator.ParticipationContextHelper.ParticipationContext
 import tools.vitruv.dsls.commonalities.generator.ReactionsHelper.RoutineCallContext
 import tools.vitruv.dsls.commonalities.language.CommonalityReference
 import tools.vitruv.dsls.commonalities.language.CommonalityReferenceMapping
 import tools.vitruv.dsls.commonalities.language.Participation
 import tools.vitruv.dsls.commonalities.language.ParticipationClass
 import tools.vitruv.dsls.commonalities.language.extensions.Containment
+import tools.vitruv.dsls.commonalities.language.extensions.ParticipationContext
+import tools.vitruv.dsls.commonalities.language.extensions.ParticipationContextHelper
 import tools.vitruv.dsls.reactions.builder.FluentReactionBuilder.PreconditionOrRoutineCallBuilder
 import tools.vitruv.dsls.reactions.builder.FluentReactionsSegmentBuilder
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder
@@ -40,6 +41,7 @@ import static extension tools.vitruv.dsls.commonalities.generator.ReactionsGener
 import static extension tools.vitruv.dsls.commonalities.generator.ReactionsHelper.*
 import static extension tools.vitruv.dsls.commonalities.generator.XbaseHelper.*
 import static extension tools.vitruv.dsls.commonalities.language.extensions.CommonalitiesLanguageModelExtensions.*
+import static extension tools.vitruv.dsls.commonalities.language.extensions.ParticipationContextHelper.*
 
 /**
  * Generates the reactions and routines that match participations in given
@@ -169,7 +171,6 @@ package class ParticipationMatchingReactionsBuilder extends ReactionsGenerationH
 	@Inject extension ContainmentHelper containmentHelper
 	@Inject extension ResourceBridgeHelper resourceBridgeHelper
 	@Inject extension ParticipationObjectsHelper participationObjectsHelper
-	@Inject extension ParticipationContextHelper participationContextHelper
 
 	@Inject InsertIntermediateRoutineBuilder.Provider insertIntermediateRoutineBuilderProvider
 	@Inject ApplyParticipationAttributesRoutineBuilder.Factory applyParticipationAttributesRoutineBuilderFactory

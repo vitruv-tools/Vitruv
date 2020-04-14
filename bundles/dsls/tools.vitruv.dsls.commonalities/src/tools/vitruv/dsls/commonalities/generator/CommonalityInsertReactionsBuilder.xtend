@@ -7,11 +7,11 @@ import java.util.function.Consumer
 import java.util.function.Function
 import org.eclipse.xtext.util.Wrapper
 import org.eclipse.xtext.xbase.XbaseFactory
-import tools.vitruv.dsls.commonalities.generator.ParticipationContextHelper.ParticipationContext
 import tools.vitruv.dsls.commonalities.language.Commonality
 import tools.vitruv.dsls.commonalities.language.Participation
 import tools.vitruv.dsls.commonalities.language.ParticipationClass
 import tools.vitruv.dsls.commonalities.language.extensions.Containment
+import tools.vitruv.dsls.commonalities.language.extensions.ParticipationContext
 import tools.vitruv.dsls.reactions.builder.FluentReactionBuilder
 import tools.vitruv.dsls.reactions.builder.FluentReactionBuilder.PreconditionOrRoutineCallBuilder
 import tools.vitruv.dsls.reactions.builder.FluentReactionsSegmentBuilder
@@ -25,6 +25,7 @@ import static extension tools.vitruv.dsls.commonalities.generator.EmfAccessExpre
 import static extension tools.vitruv.dsls.commonalities.generator.ReactionsGeneratorConventions.*
 import static extension tools.vitruv.dsls.commonalities.generator.ReactionsHelper.*
 import static extension tools.vitruv.dsls.commonalities.language.extensions.CommonalitiesLanguageModelExtensions.*
+import static extension tools.vitruv.dsls.commonalities.language.extensions.ParticipationContextHelper.*
 
 package class CommonalityInsertReactionsBuilder extends ReactionsSubGenerator {
 
@@ -35,7 +36,6 @@ package class CommonalityInsertReactionsBuilder extends ReactionsSubGenerator {
 	}
 
 	@Inject extension ContainmentHelper containmentHelper
-	@Inject extension ParticipationContextHelper participationContextHelper
 	@Inject extension ParticipationObjectInitializationHelper participationObjectInitializationHelper
 	@Inject ParticipationMatchingReactionsBuilder.Provider participationMatchingReactionsBuilderProvider
 	@Inject InsertIntermediateRoutineBuilder.Provider insertIntermediateRoutineBuilderProvider

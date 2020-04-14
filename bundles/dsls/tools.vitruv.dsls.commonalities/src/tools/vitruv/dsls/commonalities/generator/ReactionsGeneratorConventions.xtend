@@ -1,7 +1,6 @@
 package tools.vitruv.dsls.commonalities.generator
 
 import edu.kit.ipd.sdq.activextendannotations.Utility
-import tools.vitruv.dsls.commonalities.generator.ParticipationContextHelper.ParticipationContext
 import tools.vitruv.dsls.commonalities.language.Commonality
 import tools.vitruv.dsls.commonalities.language.CommonalityAttribute
 import tools.vitruv.dsls.commonalities.language.CommonalityAttributeMapping
@@ -9,6 +8,7 @@ import tools.vitruv.dsls.commonalities.language.CommonalityReference
 import tools.vitruv.dsls.commonalities.language.CommonalityReferenceMapping
 import tools.vitruv.dsls.commonalities.language.ParticipationAttribute
 import tools.vitruv.dsls.commonalities.language.ParticipationClass
+import tools.vitruv.dsls.commonalities.language.extensions.ParticipationContext
 
 import static extension tools.vitruv.dsls.commonalities.language.extensions.CommonalitiesLanguageModelExtensions.*
 

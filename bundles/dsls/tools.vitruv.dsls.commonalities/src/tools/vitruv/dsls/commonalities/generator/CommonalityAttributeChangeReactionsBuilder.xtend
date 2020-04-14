@@ -1,6 +1,5 @@
 package tools.vitruv.dsls.commonalities.generator
 
-import com.google.inject.Inject
 import java.util.List
 import java.util.function.Function
 import org.eclipse.emf.ecore.EAttribute
@@ -23,6 +22,7 @@ import static extension tools.vitruv.dsls.commonalities.generator.EmfAccessExpre
 import static extension tools.vitruv.dsls.commonalities.generator.ReactionsGeneratorConventions.*
 import static extension tools.vitruv.dsls.commonalities.generator.XbaseHelper.*
 import static extension tools.vitruv.dsls.commonalities.language.extensions.CommonalitiesLanguageModelExtensions.*
+import static extension tools.vitruv.dsls.commonalities.language.extensions.ParticipationContextHelper.*
 
 package class CommonalityAttributeChangeReactionsBuilder extends ReactionsSubGenerator {
 
@@ -31,8 +31,6 @@ package class CommonalityAttributeChangeReactionsBuilder extends ReactionsSubGen
 			return new CommonalityAttributeChangeReactionsBuilder(attribute, targetParticipation).injectMembers
 		}
 	}
-
-	@Inject extension ParticipationContextHelper participationContextHelper
 
 	val CommonalityAttribute attribute
 	val Participation targetParticipation
