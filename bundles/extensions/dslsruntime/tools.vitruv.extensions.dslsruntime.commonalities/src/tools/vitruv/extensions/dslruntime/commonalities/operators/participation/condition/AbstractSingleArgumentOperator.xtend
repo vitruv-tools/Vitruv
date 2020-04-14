@@ -5,7 +5,7 @@ import java.util.List
 
 abstract class AbstractSingleArgumentOperator extends AbstractParticipationConditionOperator {
 
-	new(Object leftOperand, List<Object> rightOperands) {
+	new(Object leftOperand, List<?> rightOperands) {
 		super(leftOperand, rightOperands)
 		Preconditions.checkArgument(!rightOperands.empty, "Missing right operand!")
 		Preconditions.checkArgument(rightOperands.size == 1, "Too many right operands!")

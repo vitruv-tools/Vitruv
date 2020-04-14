@@ -7,7 +7,7 @@ import tools.vitruv.extensions.dslruntime.commonalities.operators.OperatorName
 @OperatorName('=')
 class EqualsOperator extends AbstractSingleArgumentOperator {
 
-	new(Object leftOperand, List<Object> rightOperands) {
+	new(Object leftOperand, List<?> rightOperands) {
 		super(leftOperand, rightOperands)
 	}
 

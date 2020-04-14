@@ -9,10 +9,10 @@ abstract class AbstractParticipationConditionOperator implements ParticipationCo
 
 	val protected EObject leftOperandObject
 	val protected EStructuralFeature leftOperandFeature // null for ParticipationClassConditionOperators
-	val protected List<Object> rightOperands // can be empty, may contain AttributeOperands
+	val protected List<?> rightOperands // can be empty, may contain AttributeOperands
 
 	// leftOperand: either a participation class instance or an AttributeOperand
-	new(Object leftOperand, List<Object> rightOperands) {
+	new(Object leftOperand, List<?> rightOperands) {
 		Preconditions.checkNotNull(leftOperand, "Left operand is null")
 		Preconditions.checkNotNull(rightOperands, "Right operands is null")
 		if (this instanceof ParticipationClassConditionOperator) {
