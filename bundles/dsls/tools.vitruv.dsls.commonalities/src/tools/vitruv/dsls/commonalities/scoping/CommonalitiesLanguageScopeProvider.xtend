@@ -17,6 +17,7 @@ import tools.vitruv.dsls.commonalities.language.TupleParticipation
 import static tools.vitruv.dsls.commonalities.language.LanguagePackage.Literals.*
 
 import static extension tools.vitruv.dsls.commonalities.language.extensions.CommonalitiesLanguageModelExtensions.*
+import static extension tools.vitruv.dsls.commonalities.names.QualifiedNameHelper.*
 
 /**
  * This class contains custom scoping description.
@@ -72,7 +73,7 @@ class CommonalitiesLanguageScopeProvider extends AbstractCommonalitiesLanguageSc
 					val globalScope = globalScopeProvider.getScope(context.eResource, reference, null)
 					switch participation {
 						TupleParticipation: {
-							return participation.getUnqualifiedParticipationClassScope(globalScope)
+							return participation.getUnqualifiedMetaclassScope(globalScope)
 						}
 						default:
 							return globalScope
@@ -90,6 +91,13 @@ class CommonalitiesLanguageScopeProvider extends AbstractCommonalitiesLanguageSc
 	def private getUnqualifiedParticipationClassScope(Participation participation, IScope participationClassScope) {
 		val parentQualifiedName = participation.fullyQualifiedName
 		return new QualifiedNameTransformingScope(participationClassScope, [
+			parentQualifiedName.append(it)
+		])
+	}
+
+	def private getUnqualifiedMetaclassScope(TupleParticipation participation, IScope metaclassScope) {
+		val parentQualifiedName = participation.domainName.qualifiedName
+		return new QualifiedNameTransformingScope(metaclassScope, [
 			parentQualifiedName.append(it)
 		])
 	}

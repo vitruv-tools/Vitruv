@@ -10,6 +10,10 @@ class QualifiedNameHelper {
 	public static val METACLASS_ATTRIBUTE_SEPARATOR = "."
 	public static val DOMAIN_METACLASS_SEPARATOR_SEGMENT = ":"
 
+	static def getQualifiedName(String domainName) {
+		return QualifiedName.create(domainName, DOMAIN_METACLASS_SEPARATOR_SEGMENT)
+	}
+
 	static def hasDomainName(QualifiedName name) {
 		return (name.segmentCount > 1 && name.getSegment(1) == DOMAIN_METACLASS_SEPARATOR_SEGMENT)
 	}
