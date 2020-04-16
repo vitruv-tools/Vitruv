@@ -47,24 +47,30 @@ class EClassAdapter extends EClassMetaclassImpl implements Wrapper<EClass> {
 	}
 
 	override getAttributes() {
+		// For commonality participations we sometimes get participation
+		// classes with unresolvable proxies for their superMetaclass (eg. when
+		// starting an Eclipse runtime application and having an editor for a
+		// commonality with commonality participation open). We currently
+		// return an empty list of attributes in this case, which seems to not
+		// cause issues so far.
+		// TODO Figure out why these proxies cannot be resolved to their
+		// concrete Commonality instances.
+		if (eIsProxy) {
+			return super.getAttributes()
+		}
 		if (attributes === null) {
 			checkEClassSet()
 			checkClassifierProviderSet()
 			super.getAttributes() += loadAttributes()
 			classifierProvider = null
 		}
-		/* 		val attributes = super.getAttributes()
-		 * 		if (!attributesInitialized && !eIsProxy) {
-		 * 			attributes.addAll(loadAttributes())
-		 * 			attributesInitialized = true
-		 }*/
-		attributes
+		return attributes
 	}
 
 	def private loadAttributes() {
 		wrappedEClass.EAllStructuralFeatures.map [ eFeature |
-			LanguageElementsFactory.eINSTANCE.createEFeatureAttribute.withClassifierProvider(classifierProvider).
-				forEFeature(eFeature).fromMetaclass(this)
+			LanguageElementsFactory.eINSTANCE.createEFeatureAttribute.withClassifierProvider(classifierProvider)
+				.forEFeature(eFeature).fromMetaclass(this)
 		]
 	}
 
