@@ -61,7 +61,7 @@ abstract class AbstractOperatorScopeProvider implements IGlobalScopeProvider {
 		val importedTypes = (defaultOperatorTypeImports + commonalityFile.operatorTypeImports.map [
 			importedType.getQualifiedName('.')
 		]).map[toQualifiedName].toList
-		val importedNamespaces = (defaultOperatorNamespaceImports + commonalityFile.operatorTypeImports.map [
+		val importedNamespaces = (defaultOperatorNamespaceImports + commonalityFile.operatorNamespaceImports.map [
 			importedNamespace
 		]).map[toQualifiedName.skipLast(1)].toList // skips the '.*' segment at the end of each namespace import
 
