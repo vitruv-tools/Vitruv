@@ -5,8 +5,6 @@ import java.util.HashMap
 import java.util.Map
 import org.apache.log4j.Level
 import org.apache.log4j.Logger
-import org.eclipse.emf.ecore.EClass
-import org.eclipse.emf.ecore.EReference
 import org.eclipse.emf.ecore.EcorePackage
 import org.eclipse.xtext.common.types.TypesFactory
 import org.eclipse.xtext.xbase.XExpression
@@ -327,15 +325,8 @@ package class ParticipationMatchingReactionsBuilder extends ReactionsGenerationH
 		val isRootCommonalityParticipation = (!participationContext.forReferenceMapping && participation.isCommonalityParticipation)
 		return XbaseFactory.eINSTANCE.createXBlockExpression => [
 			// Create new ContainmentTree:
-			val containmentTreeType = typeProvider.findDeclaredType(ContainmentTree).imported
-			val containmentTreeVar = XbaseFactory.eINSTANCE.createXVariableDeclaration => [
-				name = "containmentTree"
-				writeable = false
-				type = jvmTypeReferenceBuilder.typeRef(containmentTreeType)
-				right = XbaseFactory.eINSTANCE.createXConstructorCall => [
-					it.constructor = containmentTreeType.findNoArgsConstructor
-				]
-			]
+			val containmentTreeBuilder = new ContainmentTreeExpressionBuilder(typeProvider)
+			val containmentTreeVar = containmentTreeBuilder.newContainmentTree("containmentTree")
 			expressions += containmentTreeVar
 	
 			// TODO Find relevant EPackages up front and then reuse them for EClass lookup?
@@ -344,59 +335,31 @@ package class ParticipationMatchingReactionsBuilder extends ReactionsGenerationH
 			// Specify the root Intermediate type in case we try to match the
 			// participation in the context of a commonality reference mapping:
 			if (participationContext.forReferenceMapping) {
-				val setRootIntermediateTypeMethod = containmentTreeType.findMethod("setRootIntermediateType", EClass)
-				expressions += containmentTreeVar.featureCall.memberFeatureCall(setRootIntermediateTypeMethod) => [
-					explicitOperationCall = true
-					val rootIntermediateType = participationContext.referencingCommonality.changeClass
-					memberCallArguments += getEClass(typeProvider, rootIntermediateType)
-				]
+				val rootIntermediateType = participationContext.referencingCommonality.changeClass
+				expressions += containmentTreeBuilder.setRootIntermediateType(rootIntermediateType)
 			}
 	
 			// Setup nodes:
-			val addNodeMethod = containmentTreeType.findMethod("addNode", String, EClass)
 			if (isRootCommonalityParticipation) {
 				// Add the node for the implicit intermediate root:
 				val intermediateRootEClass = participation.participationConcept.intermediateModelRootClass
-				expressions += containmentTreeVar.featureCall.memberFeatureCall(addNodeMethod) => [
-					memberCallArguments += expressions(
-						stringLiteral(INTERMEDIATE_ROOT),
-						getEClass(typeProvider, intermediateRootEClass)
-					)
-				]
+				expressions += containmentTreeBuilder.addNode(INTERMEDIATE_ROOT, intermediateRootEClass)
 			}
 			expressions += participationContext.participationClasses.map [ participationClass |
-				containmentTreeVar.featureCall.memberFeatureCall(addNodeMethod) => [
-					memberCallArguments += expressions(
-						stringLiteral(participationClass.name),
-						getEClass(typeProvider, participationClass.changeClass)
-					)
-				]
+				containmentTreeBuilder.addNode(participationClass.name, participationClass.changeClass)
 			]
 	
 			// Setup containment edges:
-			val addEdgeMethod = containmentTreeType.findMethod("addEdge", String, String, EReference)
 			if (isRootCommonalityParticipation) {
 				// Add edges for the implicit containments of the intermediate root:
 				val containerName = INTERMEDIATE_ROOT
 				val containmentEReference = IntermediateModelBasePackage.Literals.ROOT__INTERMEDIATES
 				expressions += participation.nonRootBoundaryClasses.map [ contained |
-					containmentTreeVar.featureCall.memberFeatureCall(addEdgeMethod) => [
-						memberCallArguments += expressions(
-							stringLiteral(contained.name),
-							stringLiteral(containerName),
-							getEReference(typeProvider, containmentEReference)
-						)
-					]
+					containmentTreeBuilder.addEdge(contained.name, containerName, containmentEReference)
 				]
 			}
 			expressions += participationContext.allContainments.map [ extension containment |
-				containmentTreeVar.featureCall.memberFeatureCall(addEdgeMethod) => [
-					memberCallArguments += expressions(
-						stringLiteral(contained.name),
-						stringLiteral(container.name),
-						getEReference(typeProvider, containment.EReference)
-					)
-				]
+				containmentTreeBuilder.addEdge(contained.name, container.name, containment.EReference)
 			]
 	
 			// Match participation objects:
