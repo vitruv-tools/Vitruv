@@ -4,10 +4,11 @@ import java.util.Collections
 import java.util.function.Function
 import org.eclipse.xtext.xbase.XExpression
 import tools.vitruv.dsls.commonalities.language.Participation
-import tools.vitruv.dsls.commonalities.language.ParticipationClass
 import tools.vitruv.dsls.commonalities.language.ParticipationRelation
 import tools.vitruv.dsls.commonalities.language.TupleParticipation
 import tools.vitruv.dsls.commonalities.language.TupleParticipationPart
+import tools.vitruv.dsls.commonalities.language.extensions.ParticipationContext
+import tools.vitruv.dsls.commonalities.language.extensions.ParticipationContext.ContextClass
 import tools.vitruv.dsls.reactions.builder.TypeProvider
 
 import static extension tools.vitruv.dsls.commonalities.generator.JvmTypeProviderHelper.*
@@ -21,34 +22,51 @@ package class ParticipationRelationInitializationHelper extends ReactionsGenerat
 	package new() {
 	}
 
-	def getParticipationRelationsInitializers(ParticipationClass participationClass) {
-		return participationClass.participation.getParticipationRelationsInitializers(participationClass)
+	def getParticipationRelationsInitializers(ParticipationContext participationContext, ContextClass contextClass) {
+		val participation = participationContext.participation
+		return participation.getParticipationRelationsInitializers(participationContext, contextClass)
 	}
 
 	def private dispatch getParticipationRelationsInitializers(Participation participation,
-		ParticipationClass participationClass) {
+		ParticipationContext participationContext, ContextClass contextClass) {
 		return Collections.emptyList
 	}
 
 	def private dispatch getParticipationRelationsInitializers(TupleParticipation participation,
-		ParticipationClass participationClass) {
-		return participation.parts.map[getParticipationRelationInitializer(participationClass)].filterNull
+		ParticipationContext participationContext, ContextClass contextClass) {
+		return participation.parts.map [
+			getParticipationRelationInitializer(participationContext, contextClass)
+		].filterNull
 	}
 
 	def private dispatch Function<TypeProvider, XExpression> getParticipationRelationInitializer(
-		ParticipationRelation relation, ParticipationClass participationClass) {
+		ParticipationRelation relation, ParticipationContext participationContext, ContextClass contextClass) {
 		if (relation.isContainment) return null // containments are handled separately
 		if (relation.leftClasses.empty || relation.rightClasses.empty) return null
-		if (relation.rightClasses.indexOf(participationClass) == relation.rightClasses.size - 1) {
-			return [ extension TypeProvider it |
-				enforceRelation(relation)
-			]
+
+		val participationClass = contextClass.participationClass
+		if (relation.rightClasses.indexOf(participationClass) != (relation.rightClasses.size - 1)) {
+			return null
 		}
-		return null
+
+		// Exclude relations whose operands refer to participation classes that
+		// are not involved in the current participation context:
+		val relationClasses = relation.leftClasses + relation.rightClasses
+		if (relationClasses.exists [ relationClass |
+			!participationContext.classes.exists [
+				it.participationClass == relationClass
+			]
+		]) {
+			return null
+		}
+
+		return [ extension TypeProvider it |
+			enforceRelation(relation)
+		]
 	}
 
 	def private dispatch Function<TypeProvider, XExpression> getParticipationRelationInitializer(
-		TupleParticipationPart part, ParticipationClass participationClass) {
+		TupleParticipationPart part, ParticipationContext participationContext, ContextClass contextClass) {
 		return null
 	}
 

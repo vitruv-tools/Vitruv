@@ -176,7 +176,7 @@ package class CommonalityInsertReactionsBuilder extends ReactionsSubGenerator {
 						addCorrespondence(commonality, contextClass.participationClass)
 					]
 				]
-				createParticipationObjects(segment, participation, classes, containments, isRootContext,
+				createParticipationObjects(segment, participationContext, classes, containments, isRootContext,
 					variableNameFunction, correspondenceSetup)
 			]
 	}
@@ -210,15 +210,15 @@ package class CommonalityInsertReactionsBuilder extends ReactionsSubGenerator {
 						getEClass(singletonEClass)
 					]
 				]
-				createParticipationObjects(segment, participation, classes, containments, isRootContext,
+				createParticipationObjects(segment, participationContext, classes, containments, isRootContext,
 					variableNameFunction, correspondenceSetup)
 			]
 	}
 
 	def private createParticipationObjects(extension ActionStatementBuilder it, FluentReactionsSegmentBuilder segment,
-		Participation participation, Iterable<ContextClass> classes, Iterable<ContextContainment> containments,
-		boolean rootContext, Function<ContextClass, String> variableNameFunction,
-		Consumer<ActionStatementBuilder> correspondenceSetup) {
+		ParticipationContext participationContext, Iterable<ContextClass> classes,
+		Iterable<ContextContainment> containments, boolean rootContext,
+		Function<ContextClass, String> variableNameFunction, Consumer<ActionStatementBuilder> correspondenceSetup) {
 		// Create and initialize the participation objects:
 		classes.forEach [ contextClass |
 			createParticipationObject(contextClass.participationClass)
@@ -234,12 +234,13 @@ package class CommonalityInsertReactionsBuilder extends ReactionsSubGenerator {
 
 		// Each participating commonality instance is implicitly contained
 		// inside the root of its intermediate model:
+		val participation = participationContext.participation
 		if (rootContext && participation.isCommonalityParticipation) {
 			insertCommonalityParticipationClasses(participation, segment)
 		}
 
 		// Any initialization that needs to happen after all objects were created:
-		executePostInitializers(classes.map[participationClass])
+		executePostInitializers(participationContext, classes)
 	}
 
 	def private insertCommonalityParticipationClasses(extension ActionStatementBuilder it,
@@ -289,10 +290,11 @@ package class CommonalityInsertReactionsBuilder extends ReactionsSubGenerator {
 	}
 
 	def executePostInitializers(extension ActionStatementBuilder actionBuilder,
-		Iterable<ParticipationClass> participationClasses) {
-		participationClasses.forEach [ participationClass |
-			val postInitializers = participationClass.postInitializers
+		ParticipationContext participationContext, Iterable<ContextClass> contextClasses) {
+		contextClasses.forEach [ contextClass |
+			val postInitializers = participationContext.getPostInitializers(contextClass)
 			if (!postInitializers.empty) {
+				val participationClass = contextClass.participationClass
 				update(participationClass.correspondingVariableName, [ typeProvider |
 					postInitializers.toBlockExpression(typeProvider)
 				])

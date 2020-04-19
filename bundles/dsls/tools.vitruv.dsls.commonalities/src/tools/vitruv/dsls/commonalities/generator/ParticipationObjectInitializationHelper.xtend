@@ -5,6 +5,8 @@ import java.util.function.Function
 import org.eclipse.xtext.xbase.XExpression
 import org.eclipse.xtext.xbase.XbaseFactory
 import tools.vitruv.dsls.commonalities.language.ParticipationClass
+import tools.vitruv.dsls.commonalities.language.extensions.ParticipationContext
+import tools.vitruv.dsls.commonalities.language.extensions.ParticipationContext.ContextClass
 import tools.vitruv.dsls.reactions.builder.TypeProvider
 
 import static tools.vitruv.dsls.commonalities.generator.ReactionsHelper.*
@@ -62,8 +64,8 @@ package class ParticipationObjectInitializationHelper extends ReactionsGeneratio
 	 * For example, this includes initializations done by operators since they
 	 * may want to reference other participation objects.
 	 */
-	def getPostInitializers(ParticipationClass participationClass) {
-		return (participationClass.participationRelationsInitializers
-			+ participationClass.participationConditionsInitializers).toList
+	def getPostInitializers(ParticipationContext participationContext, ContextClass contextClass) {
+		return (participationContext.getParticipationRelationsInitializers(contextClass)
+			+ participationContext.getParticipationConditionsInitializers(contextClass)).toList
 	}
 }

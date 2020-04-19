@@ -8,10 +8,11 @@ import org.eclipse.xtext.xbase.XExpression
 import org.eclipse.xtext.xbase.XbaseFactory
 import tools.vitruv.dsls.commonalities.language.LiteralOperand
 import tools.vitruv.dsls.commonalities.language.ParticipationAttributeOperand
-import tools.vitruv.dsls.commonalities.language.ParticipationClass
 import tools.vitruv.dsls.commonalities.language.ParticipationClassOperand
 import tools.vitruv.dsls.commonalities.language.ParticipationCondition
 import tools.vitruv.dsls.commonalities.language.ParticipationConditionOperand
+import tools.vitruv.dsls.commonalities.language.extensions.ParticipationContext
+import tools.vitruv.dsls.commonalities.language.extensions.ParticipationContext.ContextClass
 import tools.vitruv.dsls.reactions.builder.TypeProvider
 import tools.vitruv.extensions.dslruntime.commonalities.operators.participation.condition.AttributeOperand
 
@@ -29,11 +30,22 @@ package class ParticipationConditionInitializationHelper extends ReactionsGenera
 	package new() {
 	}
 
-	def getParticipationConditionsInitializers(ParticipationClass participationClass) {
-		return participationClass.participation.conditions
+	def getParticipationConditionsInitializers(ParticipationContext participationContext, ContextClass contextClass) {
+		val participation = participationContext.participation
+		val participationClass = contextClass.participationClass
+		return participation.conditions
 			.filter[enforced]
 			.filter[leftOperand.participationClass == participationClass]
-			.map[participationConditionInitializer]
+			.filter [
+				// Exclude conditions whose operands refer to participation
+				// classes that are not involved in the current participation
+				// context:
+				rightOperands.map[it.participationClass].filterNull.forall [ operandParticipationClass |
+					participationContext.classes.exists [
+						it.participationClass == operandParticipationClass
+					]
+				]
+			].map[participationConditionInitializer]
 	}
 
 	def private Function<TypeProvider, XExpression> getParticipationConditionInitializer(
