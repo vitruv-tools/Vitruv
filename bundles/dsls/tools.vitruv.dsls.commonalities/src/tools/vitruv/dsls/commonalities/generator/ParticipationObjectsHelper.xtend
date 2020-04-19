@@ -6,6 +6,7 @@ import org.eclipse.xtext.xbase.XVariableDeclaration
 import org.eclipse.xtext.xbase.XbaseFactory
 import tools.vitruv.dsls.commonalities.language.Participation
 import tools.vitruv.dsls.commonalities.language.ParticipationClass
+import tools.vitruv.dsls.commonalities.language.extensions.ParticipationContext.ContextClass
 import tools.vitruv.dsls.reactions.builder.TypeProvider
 import tools.vitruv.extensions.dslruntime.commonalities.ParticipationMatcher.ParticipationObjects
 
@@ -24,11 +25,21 @@ class ParticipationObjectsHelper extends ReactionsGenerationHelper {
 	package new() {
 	}
 
+	def getParticipationObject(ContextClass contextClass, XFeatureCall participationObjects,
+		TypeProvider typeProvider) {
+		return contextClass.name.getParticipationObject(participationObjects, typeProvider)
+	}
+
 	def getParticipationObject(ParticipationClass participationClass, XFeatureCall participationObjects,
+		TypeProvider typeProvider) {
+		return participationClass.name.getParticipationObject(participationObjects, typeProvider)
+	}
+
+	private def getParticipationObject(String objectName, XFeatureCall participationObjects,
 		TypeProvider typeProvider) {
 		participationObjects.memberFeatureCall => [
 			feature = typeProvider.findDeclaredType(ParticipationObjects).findMethod("getObject", String)
-			memberCallArguments += stringLiteral(participationClass.name)
+			memberCallArguments += stringLiteral(objectName)
 			explicitOperationCall = true
 		]
 	}

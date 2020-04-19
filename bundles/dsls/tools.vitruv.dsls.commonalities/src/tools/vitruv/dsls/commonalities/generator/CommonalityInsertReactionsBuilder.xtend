@@ -10,8 +10,9 @@ import org.eclipse.xtext.xbase.XbaseFactory
 import tools.vitruv.dsls.commonalities.language.Commonality
 import tools.vitruv.dsls.commonalities.language.Participation
 import tools.vitruv.dsls.commonalities.language.ParticipationClass
-import tools.vitruv.dsls.commonalities.language.extensions.Containment
 import tools.vitruv.dsls.commonalities.language.extensions.ParticipationContext
+import tools.vitruv.dsls.commonalities.language.extensions.ParticipationContext.ContextClass
+import tools.vitruv.dsls.commonalities.language.extensions.ParticipationContext.ContextContainment
 import tools.vitruv.dsls.reactions.builder.FluentReactionBuilder
 import tools.vitruv.dsls.reactions.builder.FluentReactionBuilder.PreconditionOrRoutineCallBuilder
 import tools.vitruv.dsls.reactions.builder.FluentReactionsSegmentBuilder
@@ -78,35 +79,12 @@ package class CommonalityInsertReactionsBuilder extends ReactionsSubGenerator {
 		reactionForCommonalityCreateSetup(segment).ifPresent [segment += it]
 	}
 
-	/**
-	 * Gets all participation classes of the given participation context that
-	 * are managed by the corresponding Intermediate.
-	 * <p>
-	 * For reference participation contexts this does not include the context's
-	 * root container (since that is managed by another Intermediate), but for
-	 * non-reference participation contexts it does include the root Resource
-	 * container class.
-	 * <p>
-	 * This does not include singleton classes or any of their containers.
-	 */
-	def private getManagedClasses(ParticipationContext participationContext) {
-		if (participationContext.forReferenceMapping) {
-			// Note: Cannot contain singleton classes because singletons
-			// require a Resource root container.
-			return participationContext.participationClasses.filter [
-				!participationContext.isRootContainerClass(it)
-			]
-		} else {
-			return participationContext.participationClasses.filter[!isInSingletonRoot]
-		}
-	}
-
 	def private getVariableName(extension ParticipationContext participationContext,
-		ParticipationClass participationClass) {
-		if (forReferenceMapping && isRootContainerClass(participationClass)) {
+		ContextClass contextClass) {
+		if (forReferenceMapping && isRootContainerClass(contextClass)) {
 			return PARTICIPATION_CONTEXT_ROOT
 		} else {
-			return participationClass.correspondingVariableName
+			return contextClass.participationClass.correspondingVariableName
 		}
 	}
 
@@ -128,10 +106,9 @@ package class CommonalityInsertReactionsBuilder extends ReactionsSubGenerator {
 				.afterElementInsertedAsRoot(commonality.changeClass)
 		}
 
-		// If the participation declares a singleton, ensure that it exists:
-		val singletonClass = participation.singletonClass
-		if (singletonClass !== null) {
-			reaction.call(singletonClass.createSingletonRoutine(segment))
+		// If the participation context is for a singleton root, ensure that the singleton root exists:
+		if (participationContext.isForSingletonRoot) {
+			reaction.call(participationContext.createSingletonRoutine(segment))
 		}
 
 		// Instantiate the corresponding participation (if it doesn't exist yet):
@@ -159,11 +136,11 @@ package class CommonalityInsertReactionsBuilder extends ReactionsSubGenerator {
 				}
 			]
 			.match [
-				// Singletons and their containers are expected to already exist:
-				val singletonClass = participation.singletonClass
-				if (singletonClass !== null) {
-					// We don't retrieve any of the singleton's containers, because only the singleton object itself
-					// can contain other, non-root participation objects.
+				if (participationContext.isForSingletonRoot) {
+					// Singletons and their containers are expected to already exist.
+					// Note: We don't retrieve any of the singleton's containers, because only the singleton object
+					// itself can contain other, non-root participation objects.
+					val singletonClass = participation.singletonClass
 					val singletonEClass = singletonClass.changeClass
 					vall(singletonClass.correspondingVariableName).retrieveAsserted(singletonEClass)
 						.correspondingTo[getEClass(singletonEClass)]
@@ -172,14 +149,15 @@ package class CommonalityInsertReactionsBuilder extends ReactionsSubGenerator {
 					// could be implemented by using different correspondence tags.
 				}
 
-				managedClasses.forEach [ participationClass|
+				managedClasses.forEach [ contextClass |
+					val participationClass = contextClass.participationClass
 					requireAbsenceOf(participationClass.changeClass).correspondingTo(INTERMEDIATE)
 						.taggedWith(participationClass.getCorrespondenceTag(commonality))
 				]
 
 				if (participationContext.forReferenceMapping) {
 					val referencingCommonality = participationContext.referencingCommonality
-					val rootContainerClass = participationContext.rootContainerClass
+					val rootContainerClass = participationContext.rootContainerClass.participationClass
 					vall(PARTICIPATION_CONTEXT_ROOT).retrieveAsserted(rootContainerClass.changeClass)
 						.correspondingTo(REFERENCING_INTERMEDIATE)
 						.taggedWith(rootContainerClass.getCorrespondenceTag(referencingCommonality))
@@ -187,59 +165,63 @@ package class CommonalityInsertReactionsBuilder extends ReactionsSubGenerator {
 			].action [
 				// Create and initialize the (non-singleton) participation objects:
 				val classes = managedClasses
-				val containments = participationContext.allContainments.filter[!contained.isInSingletonRoot]
-				val isRootContext = !participationContext.forReferenceMapping
-				val Function<ParticipationClass, String> variableNameFunction = [
+				val containments = participationContext.managedContainments
+				val isRootContext = participationContext.isRootContext
+				val Function<ContextClass, String> variableNameFunction = [
 					participationContext.getVariableName(it)
 				]
 				val Consumer<ActionStatementBuilder> correspondenceSetup = [
 					// Setup correspondences:
-					managedClasses.forEach [ participationClass |
-						addCorrespondence(commonality, participationClass)
+					managedClasses.forEach [ contextClass |
+						addCorrespondence(commonality, contextClass.participationClass)
 					]
 				]
-				createParticipationObjects(segment, classes, containments, isRootContext, variableNameFunction,
-					correspondenceSetup)
+				createParticipationObjects(segment, participation, classes, containments, isRootContext,
+					variableNameFunction, correspondenceSetup)
 			]
 	}
 
-	def private createSingletonRoutine(ParticipationClass singletonMarkerClass,
+	def private createSingletonRoutine(ParticipationContext participationContext,
 		FluentReactionsSegmentBuilder segment) {
-		val participation = singletonMarkerClass.participation
-		val singletonMarkerEClass = singletonMarkerClass.changeClass
-		return create.routine('''createSingleton_«participation.name»_«singletonMarkerClass.name»''')
+		// assert: participationContext.isForSingletonRoot
+		val participation = participationContext.participation
+		val singletonClass = participation.singletonClass
+		val singletonEClass = singletonClass.changeClass
+		return create.routine('''createSingleton_«participation.name»_«singletonClass.name»''')
 			.match [
-				requireAbsenceOf(singletonMarkerEClass).correspondingTo [
-					getEClass(singletonMarkerEClass)
+				requireAbsenceOf(singletonEClass).correspondingTo [
+					getEClass(singletonEClass)
 				]
 			].action [
 				// Instantiates the singleton object and all of its containers:
-				val classes = participation.singletonRootClasses
-				val containments = participation.containments.filter[contained.isInSingletonRoot]
+				val classes = participationContext.rootClasses // singleton root classes
+				val containments = participationContext.rootContainments
 				val isRootContext = true
-				val Function<ParticipationClass, String> variableNameFunction = [correspondingVariableName]
+				val Function<ContextClass, String> variableNameFunction = [
+					participationClass.correspondingVariableName
+				]
 				val Consumer<ActionStatementBuilder> correspondenceSetup = [
 					// Add singleton correspondence:
 					// Note: We don't add correspondences for the containers of the singleton object, since we do not
 					// require those currently. Also note that these container objects may not necessarily be
 					// singletons themselves (i.e. there can be multiple resources even though the singleton object is
 					// contained in one).
-					addCorrespondenceBetween(singletonMarkerClass.correspondingVariableName).and [
-						getEClass(singletonMarkerEClass)
+					addCorrespondenceBetween(singletonClass.correspondingVariableName).and [
+						getEClass(singletonEClass)
 					]
 				]
-				createParticipationObjects(segment, classes, containments, isRootContext, variableNameFunction,
-					correspondenceSetup)
+				createParticipationObjects(segment, participation, classes, containments, isRootContext,
+					variableNameFunction, correspondenceSetup)
 			]
 	}
 
 	def private createParticipationObjects(extension ActionStatementBuilder it, FluentReactionsSegmentBuilder segment,
-		Iterable<ParticipationClass> classes, Iterable<Containment> containments, boolean rootContext,
-		Function<ParticipationClass, String> variableNameFunction,
+		Participation participation, Iterable<ContextClass> classes, Iterable<ContextContainment> containments,
+		boolean rootContext, Function<ContextClass, String> variableNameFunction,
 		Consumer<ActionStatementBuilder> correspondenceSetup) {
 		// Create and initialize the participation objects:
-		classes.forEach [ participationClass |
-			createParticipationObject(participationClass)
+		classes.forEach [ contextClass |
+			createParticipationObject(contextClass.participationClass)
 		]
 
 		// Setup correspondences:
@@ -252,17 +234,12 @@ package class CommonalityInsertReactionsBuilder extends ReactionsSubGenerator {
 
 		// Each participating commonality instance is implicitly contained
 		// inside the root of its intermediate model:
-		if (rootContext) {
-			// Note: If we are in a root context, all participation classes are
-			// expected to come from the same participation.
-			val participation = classes.head.participation
-			if (participation.isCommonalityParticipation) {
-				insertCommonalityParticipationClasses(participation, segment)
-			}
+		if (rootContext && participation.isCommonalityParticipation) {
+			insertCommonalityParticipationClasses(participation, segment)
 		}
 
 		// Any initialization that needs to happen after all objects were created:
-		executePostInitializers(classes)
+		executePostInitializers(classes.map[participationClass])
 	}
 
 	def private insertCommonalityParticipationClasses(extension ActionStatementBuilder it,
@@ -295,10 +272,10 @@ package class CommonalityInsertReactionsBuilder extends ReactionsSubGenerator {
 			.taggedWith(participationClass.getCorrespondenceTag(commonality))
 	}
 
-	def setupContainments(extension TypeProvider typeProvider, Iterable<Containment> containments,
-		Function<ParticipationClass, String> variableNameFunction) {
+	def setupContainments(extension TypeProvider typeProvider, Iterable<ContextContainment> containments,
+		Function<ContextClass, String> variableNameFunction) {
 		return XbaseFactory.eINSTANCE.createXBlockExpression => [
-			containments.forEach [ extension containment |
+			containments.forEach [ extension contextContainment |
 				val containerVar = variable(variableNameFunction.apply(container))
 				val containedVar = variable(variableNameFunction.apply(contained))
 				val containmentReference = containment.EReference
@@ -341,14 +318,16 @@ package class CommonalityInsertReactionsBuilder extends ReactionsSubGenerator {
 		}
 		return reaction.call [
 			match [
-				participationContext.managedClasses.forEach [ participationClass |
+				participationContext.managedClasses.forEach [ contextClass |
+					val participationClass = contextClass.participationClass
 					vall(participationClass.correspondingVariableName)
 						.retrieveAsserted(participationClass.changeClass)
 						.correspondingTo.oldValue
 						.taggedWith(participationClass.getCorrespondenceTag(commonality))
 				]
 			].action [
-				participationContext.managedClasses.forEach [ participationClass |
+				participationContext.managedClasses.forEach [ contextClass |
+					val participationClass = contextClass.participationClass
 					delete(participationClass.correspondingVariableName)
 				]
 			]

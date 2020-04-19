@@ -3,7 +3,6 @@ package tools.vitruv.dsls.commonalities.language.extensions
 import java.util.LinkedHashSet
 import java.util.Set
 import org.eclipse.xtend.lib.annotations.Accessors
-import org.eclipse.xtend.lib.annotations.EqualsHashCode
 import org.eclipse.xtend.lib.annotations.ToString
 import tools.vitruv.dsls.commonalities.language.CommonalityReferenceMapping
 import tools.vitruv.dsls.commonalities.language.ParticipationClass
@@ -45,7 +44,6 @@ import tools.vitruv.dsls.commonalities.language.ParticipationClass
  * root of their intermediate model. Their {@link ParticipationRoot} is
  * therefore empty.
  */
-@EqualsHashCode
 @ToString
 class ParticipationRoot {
 	/**
@@ -64,11 +62,16 @@ class ParticipationRoot {
 	@Accessors(PUBLIC_GETTER)
 	val Set<ParticipationClass> classes = new LinkedHashSet
 	/**
-	 * Containment relationships within the root itself, as well as between the
-	 * root's head class and non-root participation classes.
+	 * Containment relationships within the root itself.
 	 */
 	@Accessors(PUBLIC_GETTER)
-	val Set<Containment> containments = new LinkedHashSet
+	val Set<Containment> rootContainments = new LinkedHashSet
+	/**
+	 * Containment relationships between the root's head class and non-root
+	 * participation classes.
+	 */
+	@Accessors(PUBLIC_GETTER)
+	val Set<Containment> boundaryContainments = new LinkedHashSet
 
 	/**
 	 * Whether the root is empty.
@@ -96,14 +99,5 @@ class ParticipationRoot {
 	 */
 	def getHead() {
 		return classes.head
-	}
-
-	/**
-	 * Gets all containment relations between the root's head class and
-	 * non-root classes.
-	 */
-	def getBoundaryContainments() {
-		val rootHead = head
-		return containments.filter[container == rootHead]
 	}
 }

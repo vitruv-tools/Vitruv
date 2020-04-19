@@ -9,6 +9,7 @@ import tools.vitruv.dsls.commonalities.language.CommonalityReferenceMapping
 import tools.vitruv.dsls.commonalities.language.ParticipationAttribute
 import tools.vitruv.dsls.commonalities.language.ParticipationClass
 import tools.vitruv.dsls.commonalities.language.extensions.ParticipationContext
+import tools.vitruv.dsls.commonalities.language.extensions.ParticipationContext.ContextClass
 
 import static extension tools.vitruv.dsls.commonalities.language.extensions.CommonalitiesLanguageModelExtensions.*
 
@@ -26,6 +27,17 @@ package class ReactionsGeneratorConventions {
 	public static val PARTICIPATION_OBJECT = 'participationObject'
 	public static val RESOURCE_BRIDGE = 'resourceBridge'
 	public static val SINGLETON = 'singleton'
+
+	private static val EXTERNAL_CLASS_PREFIX = 'external_'
+
+	def static package String getName(ContextClass contextClass) {
+		val participationClass = contextClass.participationClass
+		if (contextClass.isExternal) {
+			return EXTERNAL_CLASS_PREFIX + participationClass.name
+		} else {
+			return participationClass.name
+		}
+	}
 
 	def static package String correspondingVariableName(ParticipationClass participationClass) {
 		'''corresponding_«participationClass.name»'''

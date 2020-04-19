@@ -15,8 +15,8 @@ import tools.vitruv.dsls.commonalities.language.CommonalityReference
 import tools.vitruv.dsls.commonalities.language.CommonalityReferenceMapping
 import tools.vitruv.dsls.commonalities.language.Participation
 import tools.vitruv.dsls.commonalities.language.ParticipationClass
-import tools.vitruv.dsls.commonalities.language.extensions.Containment
 import tools.vitruv.dsls.commonalities.language.extensions.ParticipationContext
+import tools.vitruv.dsls.commonalities.language.extensions.ParticipationContext.ContextContainment
 import tools.vitruv.dsls.commonalities.language.extensions.ParticipationContextHelper
 import tools.vitruv.dsls.reactions.builder.FluentReactionBuilder.PreconditionOrRoutineCallBuilder
 import tools.vitruv.dsls.reactions.builder.FluentReactionsSegmentBuilder
@@ -205,7 +205,7 @@ package class ParticipationMatchingReactionsBuilder extends ReactionsGenerationH
 		}
 
 		participationContext.generateRoutines
-		participationContext.allContainments.forEach [ containment |
+		participationContext.containments.forEach [ containment |
 			// Note: For different participation contexts involving the same
 			// participation, we generate multiple reactions with the same
 			// trigger. The difference between them is which matching routine
@@ -236,17 +236,21 @@ package class ParticipationMatchingReactionsBuilder extends ReactionsGenerationH
 	 * participation in the given context.
 	 */
 	def private reactionForParticipationClassInsert(ParticipationContext participationContext,
-		extension Containment containment) {
+		extension ContextContainment contextContainment) {
 		val participation = participationContext.participation
+		val containerClass = container.participationClass
+		val containedClass = contained.participationClass
 		var PreconditionOrRoutineCallBuilder reaction
-		if (container.isForResource) {
-			reaction = create.reaction('''«participation.name»_«contained.name»_insertedAtRoot«
+		if (containerClass.isForResource) {
+			reaction = create.reaction('''«participation.name»_«containedClass.name»_insertedAtRoot«
 				participationContext.reactionNameSuffix»''')
-				.afterElementInsertedAsRoot(contained.changeClass)
+				.afterElementInsertedAsRoot(containedClass.changeClass)
 		} else {
-			reaction = create.reaction('''«participation.name»_«contained.name»_insertedAt_«container.name»_«
-				containment.EReference.name»«participationContext.reactionNameSuffix»''')
-				.afterElement(contained.changeClass).insertedIn(container.changeClass, containment.EReference)
+			val containment = contextContainment.containment
+			val containmentEReference = containment.EReference
+			reaction = create.reaction('''«participation.name»_«containedClass.name»_insertedAt_«containerClass.name»_«
+				containmentEReference.name»«participationContext.reactionNameSuffix»''')
+				.afterElement(containedClass.changeClass).insertedIn(containerClass.changeClass, containmentEReference)
 		}
 		return reaction.call(participationContext.matchParticipationRoutine, new RoutineCallParameter[newValue],
 			new RoutineCallParameter[findDeclaredType(BooleanResult).noArgsConstructorCall])
@@ -258,18 +262,22 @@ package class ParticipationMatchingReactionsBuilder extends ReactionsGenerationH
 	 * instance (if there is one).
 	 */
 	def private reactionForParticipationClassRemove(ParticipationContext participationContext,
-		extension Containment containment) {
+		extension ContextContainment contextContainment) {
 		val participation = participationContext.participation
 		val commonality = participation.containingCommonality
+		val containerClass = container.participationClass
+		val containedClass = contained.participationClass
 		var PreconditionOrRoutineCallBuilder reaction
-		if (container.isForResource) {
-			reaction = create.reaction('''«participation.name»_«contained.name»_removedFromRoot«
+		if (containerClass.isForResource) {
+			reaction = create.reaction('''«participation.name»_«containedClass.name»_removedFromRoot«
 				participationContext.reactionNameSuffix»''')
-				.afterElementRemovedAsRoot(contained.changeClass)
+				.afterElementRemovedAsRoot(containedClass.changeClass)
 		} else {
-			reaction = create.reaction('''«participation.name»_«contained.name»_removedFrom_«
-				container.name»_«containment.EReference.name»«participationContext.reactionNameSuffix»''')
-				.afterElement(contained.changeClass).removedFrom(container.changeClass, containment.EReference)
+			val containment = contextContainment.containment
+			val containmentEReference = containment.EReference
+			reaction = create.reaction('''«participation.name»_«containedClass.name»_removedFrom_«
+				containerClass.name»_«containmentEReference.name»«participationContext.reactionNameSuffix»''')
+				.afterElement(containedClass.changeClass).removedFrom(containerClass.changeClass, containmentEReference)
 		}
 		return reaction.call [
 			match [
@@ -345,8 +353,9 @@ package class ParticipationMatchingReactionsBuilder extends ReactionsGenerationH
 				val intermediateRootEClass = participation.participationConcept.intermediateModelRootClass
 				expressions += containmentTreeBuilder.addNode(INTERMEDIATE_ROOT, intermediateRootEClass)
 			}
-			expressions += participationContext.participationClasses.map [ participationClass |
-				containmentTreeBuilder.addNode(participationClass.name, participationClass.changeClass)
+			expressions += participationContext.classes.map [ contextClass |
+				val participationClass = contextClass.participationClass
+				containmentTreeBuilder.addNode(contextClass.name, participationClass.changeClass)
 			]
 	
 			// Setup containment edges:
@@ -358,7 +367,7 @@ package class ParticipationMatchingReactionsBuilder extends ReactionsGenerationH
 					containmentTreeBuilder.addEdge(contained.name, containerName, containmentEReference)
 				]
 			}
-			expressions += participationContext.allContainments.map [ extension containment |
+			expressions += participationContext.containments.map [ extension contextContainment |
 				containmentTreeBuilder.addEdge(contained.name, container.name, containment.EReference)
 			]
 	
@@ -436,23 +445,21 @@ package class ParticipationMatchingReactionsBuilder extends ReactionsGenerationH
 					]
 
 					// Add correspondences with participation objects:
-					participationContext.participationClasses
-						// Exclude the participation context's root container class, which is either handled
-						// specifically (in the case of a Resource root container), or already corresponds to and is
-						// managed by another Intermediate (in the context of an external reference mapping).
-						.filter[!participationContext.isRootContainerClass(it)]
-						.filter[!isInSingletonRoot]
-						.forEach [ participationClass |
+					participationContext.managedClasses
+						// Any resource root container class is handled specifically:
+						.filter[!participationClass.isForResource]
+						.forEach [ contextClass |
+							val participationClass = contextClass.participationClass
 							addCorrespondenceBetween(INTERMEDIATE).and [ extension typeProvider |
 								// TODO Ideally don't use a block expression here (results in more compact reactions code)
 								// But: This is not yet supported by the fluent reactions builder.
 								// Possible alternative: Call a routine which adds the correspondence between the
 								// passed objects
-								participationClass.getParticipationObject(variable(PARTICIPATION_OBJECTS), typeProvider)
+								contextClass.getParticipationObject(variable(PARTICIPATION_OBJECTS), typeProvider)
 							].taggedWith(participationClass.getCorrespondenceTag(commonality))
 						]
 
-					if (!participationContext.forReferenceMapping) {
+					if (participationContext.isRootContext) {
 						if (participation.hasSingletonClass) {
 							// Setup the singleton if it hasn't been setup yet:
 							val singletonClass = participation.singletonClass
@@ -460,6 +467,8 @@ package class ParticipationMatchingReactionsBuilder extends ReactionsGenerationH
 								singletonClass.getParticipationObject(variable(PARTICIPATION_OBJECTS), typeProvider)
 							], new RoutineCallParameter(PARTICIPATION_OBJECTS))
 						} else if (participation.hasResourceClass) {
+							// Note: We cannot implicitly assume here that the participation has a resource class,
+							// because this is not the case for commonality participations.
 							// If we have a Resource as root container, setup and insert the corresponding
 							// ResourceBridge:
 							insertResourceBridge(participation)
@@ -470,10 +479,10 @@ package class ParticipationMatchingReactionsBuilder extends ReactionsGenerationH
 					if (participationContext.forReferenceMapping) {
 						val mapping = participationContext.referenceMapping
 						val reference = mapping.declaringReference
-						val mappingParticipationClass = mapping.reference.participationClass
+						val mappingRootClass = participationContext.rootContainerClass
 						call(reference.insertReferencedIntermediateRoutine, new RoutineCallParameter(INTERMEDIATE),
 							new RoutineCallParameter [ extension typeProvider |
-								mappingParticipationClass.getParticipationObject(variable(PARTICIPATION_OBJECTS), typeProvider)
+								mappingRootClass.getParticipationObject(variable(PARTICIPATION_OBJECTS), typeProvider)
 							]
 						)
 					} else {

@@ -67,8 +67,12 @@ class ParticipationContextHelper {
 			val rootStart = current
 			participationRoot.classes += rootStart
 			participationRoot.classes += rootStart.transitiveContainerClasses
-			participationRoot.containments += participation.containments.filter [
-				participationRoot.classes.contains(it.contained) || participationRoot.classes.contains(it.container)
+			val containments = participation.containments.toList
+			participationRoot.rootContainments += containments.filter [
+				participationRoot.isRootClass(it.contained) && participationRoot.isRootClass(it.container)
+			]
+			participationRoot.boundaryContainments += containments.filter [
+				!participationRoot.isRootClass(it.contained) && participationRoot.isRootClass(it.container)
 			]
 			return participationRoot
 		]
@@ -107,7 +111,7 @@ class ParticipationContextHelper {
 			// participation classes currently assumes that its counterpart is the
 			// commonality in which it has been defined.
 			referenceParticipationRoot.classes += mapping.reference.participationClass
-			referenceParticipationRoot.containments += mapping.getReferenceContainments
+			referenceParticipationRoot.boundaryContainments += mapping.getReferenceContainments
 			return referenceParticipationRoot
 		]
 	}
