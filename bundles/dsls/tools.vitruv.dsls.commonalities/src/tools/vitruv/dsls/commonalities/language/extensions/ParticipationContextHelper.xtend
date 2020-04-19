@@ -13,6 +13,8 @@ import static extension tools.vitruv.dsls.commonalities.language.extensions.Comm
 @Utility
 class ParticipationContextHelper {
 
+	// TODO This is also used during validation. If the participations and mappings can still change, this cache may
+	// become outdated. Add adapters to the key objects that invalidate the cache on changes to the object?
 	static val Map<Participation, ParticipationRoot> participationRoots = new WeakHashMap
 	static val Map<Participation, Optional<ParticipationContext>> participationContexts = new WeakHashMap
 	static val Map<CommonalityReferenceMapping, ParticipationRoot> referenceParticipationRoots = new WeakHashMap

@@ -6,6 +6,7 @@ import java.util.HashMap
 import java.util.HashSet
 import java.util.Map
 import java.util.Set
+import java.util.WeakHashMap
 import org.apache.log4j.Logger
 import org.eclipse.emf.ecore.EReference
 import org.eclipse.emf.ecore.resource.Resource
@@ -34,7 +35,10 @@ abstract class AbstractOperatorScopeProvider implements IGlobalScopeProvider {
 	@Inject IJvmTypeProvider.Factory typeProviderFactory
 	@Inject extension IQualifiedNameConverter qualifiedNameConverter
 
-	Map<QualifiedName, JvmDeclaredType> operators = null
+	// Weak caching by ResourceSet: This ensures that the cache does not persist across Xtext builds.
+	// TODO As long as the editor is open for some commonality file, content assist will use the same ResourceSet
+	// instance.
+	Map<ResourceSet, Map<QualifiedName, JvmDeclaredType>> operators = new WeakHashMap()
 
 	protected abstract def String getOperatorTypeName()
 
@@ -79,17 +83,15 @@ abstract class AbstractOperatorScopeProvider implements IGlobalScopeProvider {
 	}
 
 	def private getAllOperatorsScope(ResourceSet resourceSet) {
-		if (operators === null) {
-			operators = findOperators(resourceSet)
-			logger.debug('''Found «operatorTypeName» operators: «operators.keySet.map[toString].toList»''')
-		}
-		return new SimpleScope(operators.entrySet.map[EObjectDescription.create(key, value)].toList)
+		val operatorsMap = operators.computeIfAbsent(resourceSet) [
+			val operatorsMap = findOperators(resourceSet)
+			logger.debug('''Found «operatorTypeName» operators: «operatorsMap.keySet.map[toString].toList»''')
+			operatorsMap
+		]
+		return new SimpleScope(operatorsMap.entrySet.map[EObjectDescription.create(key, value)].toList)
 	}
 
 	private def findOperators(ResourceSet resourceSet) {
-		// TODO This assumes that we only use this scope provider for a single ResourceSet. Remove the caching?
-		// TODO Use OnChangeEvictingCache.CacheAdapter to cache the results for a specific resource?
-		// See also DefaultGlobalScopeProvider
 		val extension typeProvider = typeProviderFactory.findOrCreateTypeProvider(resourceSet)
 		val typeScope = typeScopeProvider.createTypeScope(typeProvider, null)
 		val allTypes = typeScope.allElements
@@ -97,7 +99,7 @@ abstract class AbstractOperatorScopeProvider implements IGlobalScopeProvider {
 		val Set<QualifiedName> foundTypes = new HashSet()
 		allTypes
 			// TODO This heuristic name filter fixes an issue that would otherwise causes the Eclipse runtime
-			// application to freeze.
+			// application to freeze (probably due to a recursion caused by resolving the JVM types).
 			.filter[qualifiedName.lastSegment.endsWith('Operator')]
 			.filter [
 				// We sometimes find the same type multiple times. This filter
