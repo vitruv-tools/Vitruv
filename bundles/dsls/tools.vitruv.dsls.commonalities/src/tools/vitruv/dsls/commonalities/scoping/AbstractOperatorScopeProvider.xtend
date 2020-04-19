@@ -63,8 +63,9 @@ abstract class AbstractOperatorScopeProvider implements IGlobalScopeProvider {
 		}
 
 		val importedTypes = (defaultOperatorTypeImports + commonalityFile.operatorTypeImports.map [
+			// TODO: This sometimes returns a JvmAnnotationType with null QN.
 			importedType.getQualifiedName('.')
-		]).map[toQualifiedName].toList
+		]).filterNull.map[toQualifiedName].toList
 		val importedNamespaces = (defaultOperatorNamespaceImports + commonalityFile.operatorNamespaceImports.map [
 			importedNamespace
 		]).map[toQualifiedName.skipLast(1)].toList // skips the '.*' segment at the end of each namespace import
