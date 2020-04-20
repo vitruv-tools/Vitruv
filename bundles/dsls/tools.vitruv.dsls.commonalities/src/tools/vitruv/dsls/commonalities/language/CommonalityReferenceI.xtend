@@ -5,7 +5,7 @@ import tools.vitruv.dsls.commonalities.language.impl.CommonalityReferenceImpl
 import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
 import static extension tools.vitruv.dsls.commonalities.language.extensions.CommonalitiesLanguageModelExtensions.*
 
-class CommonalityReferenceI extends CommonalityReferenceImpl {
+package class CommonalityReferenceI extends CommonalityReferenceImpl {
 
 	override basicGetClassLikeContainer() {
 		containingCommonalityFile.commonality

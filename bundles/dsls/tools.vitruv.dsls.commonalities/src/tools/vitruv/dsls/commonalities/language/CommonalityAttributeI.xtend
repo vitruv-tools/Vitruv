@@ -6,7 +6,7 @@ import tools.vitruv.dsls.commonalities.language.impl.CommonalityAttributeImpl
 import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
 import static extension tools.vitruv.dsls.commonalities.language.extensions.CommonalitiesLanguageModelExtensions.*
 
-class CommonalityAttributeI extends CommonalityAttributeImpl {
+package class CommonalityAttributeI extends CommonalityAttributeImpl {
 
 	override basicGetClassLikeContainer() {
 		containingCommonalityFile.commonality
