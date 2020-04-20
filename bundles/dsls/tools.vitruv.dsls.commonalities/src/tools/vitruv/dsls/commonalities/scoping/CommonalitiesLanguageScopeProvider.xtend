@@ -90,16 +90,12 @@ class CommonalitiesLanguageScopeProvider extends AbstractCommonalitiesLanguageSc
 
 	def private getUnqualifiedParticipationClassScope(Participation participation, IScope participationClassScope) {
 		val parentQualifiedName = participation.fullyQualifiedName
-		return new QualifiedNameTransformingScope(participationClassScope, [
-			parentQualifiedName.append(it)
-		])
+		return new PrefixedScope(participationClassScope, parentQualifiedName)
 	}
 
 	def private getUnqualifiedMetaclassScope(TupleParticipation participation, IScope metaclassScope) {
 		val parentQualifiedName = participation.domainName.qualifiedName
-		return new QualifiedNameTransformingScope(metaclassScope, [
-			parentQualifiedName.append(it)
-		])
+		return new PrefixedScope(metaclassScope, parentQualifiedName)
 	}
 
 	def private getUnqualifiedParticipationAttributeScope(ParticipationClass participationClass,
@@ -107,10 +103,9 @@ class CommonalitiesLanguageScopeProvider extends AbstractCommonalitiesLanguageSc
 		if (participationClass.eIsProxy) {
 			throw new IllegalStateException("ParticipationClass is a proxy. This might indicate an issue with the"
 				+ " participation class scoping.")
+			// Note: This can also be reached as result of an invalid/incomplete commonality file.
 		}
 		val parentQualifiedName = participationClass.fullyQualifiedName
-		return new QualifiedNameTransformingScope(participationAttributeScope, [
-			parentQualifiedName.append(it)
-		])
+		return new PrefixedScope(participationAttributeScope, parentQualifiedName)
 	}
 }
