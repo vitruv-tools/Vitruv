@@ -39,28 +39,25 @@ class CommonalitiesLanguageScopeProvider extends AbstractCommonalitiesLanguageSc
 		switch reference {
 			case PARTICIPATION_CLASS_OPERAND__PARTICIPATION_CLASS: {
 				if (context instanceof ParticipationClassOperand) {
-					val participationClassScope = context.containingCommonality.participationClassScope
 					val participation = context.participation
-					return participation.getUnqualifiedParticipationClassScope(participationClassScope)
+					return participation.unqualifiedParticipationClassScope
 				}
 			}
 			case PARTICIPATION_ATTRIBUTE__PARTICIPATION_CLASS: {
 				if (context instanceof ParticipationAttribute) {
-					val participationClassScope = context.containingCommonality.participationClassScope
 					val participationCondition = context.optionalContainingParticipationCondition
 					if (participationCondition !== null) {
 						val participation = participationCondition.participation
-						return participation.getUnqualifiedParticipationClassScope(participationClassScope)
-					} else {
-						return participationClassScope
+						return participation.unqualifiedParticipationClassScope
 					}
+					val commonality = context.containingCommonality
+					return commonality.participationClassScope
 				}
 			}
 			case PARTICIPATION_ATTRIBUTE__ATTRIBUTE: {
 				if (context instanceof ParticipationAttribute) {
 					val participationClass = context.participationClass
-					val participationAttributeScope = participationAttributesScope.get.forParticipationClass(participationClass)
-					return participationClass.getUnqualifiedParticipationAttributeScope(participationAttributeScope)
+					return participationClass.unqualifiedParticipationAttributeScope
 				}
 			}
 			case PARTICIPATION_CLASS__SUPER_METACLASS: {
@@ -88,7 +85,9 @@ class CommonalitiesLanguageScopeProvider extends AbstractCommonalitiesLanguageSc
 		return participationClassesScope.get.forCommonality(commonality)
 	}
 
-	def private getUnqualifiedParticipationClassScope(Participation participation, IScope participationClassScope) {
+	def private getUnqualifiedParticipationClassScope(Participation participation) {
+		val commonality = participation.containingCommonality
+		val participationClassScope = commonality.participationClassScope
 		val parentQualifiedName = participation.fullyQualifiedName
 		return new PrefixedScope(participationClassScope, parentQualifiedName)
 	}
@@ -98,13 +97,13 @@ class CommonalitiesLanguageScopeProvider extends AbstractCommonalitiesLanguageSc
 		return new PrefixedScope(metaclassScope, parentQualifiedName)
 	}
 
-	def private getUnqualifiedParticipationAttributeScope(ParticipationClass participationClass,
-		IScope participationAttributeScope) {
+	def private getUnqualifiedParticipationAttributeScope(ParticipationClass participationClass) {
 		if (participationClass.eIsProxy) {
 			throw new IllegalStateException("ParticipationClass is a proxy. This might indicate an issue with the"
 				+ " participation class scoping.")
 			// Note: This can also be reached as result of an invalid/incomplete commonality file.
 		}
+		val participationAttributeScope = participationAttributesScope.get.forParticipationClass(participationClass)
 		val parentQualifiedName = participationClass.fullyQualifiedName
 		return new PrefixedScope(participationAttributeScope, parentQualifiedName)
 	}
