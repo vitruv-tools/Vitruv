@@ -19,7 +19,8 @@ package class ParticipationRelationUtil {
 		ParticipationRelation relation,
 		extension TypeProvider typeProvider) {
 		XbaseFactory.eINSTANCE.createXConstructorCall => [
-			constructor = relation.operator.imported.findConstructor(EObject.arrayClass, EObject.arrayClass)
+			val operatorType = relation.operator.jvmType.imported
+			constructor = operatorType.findConstructor(EObject.arrayClass, EObject.arrayClass)
 			explicitConstructorCall = true
 			arguments += expressions(
 				XbaseFactory.eINSTANCE.createXListLiteral => [

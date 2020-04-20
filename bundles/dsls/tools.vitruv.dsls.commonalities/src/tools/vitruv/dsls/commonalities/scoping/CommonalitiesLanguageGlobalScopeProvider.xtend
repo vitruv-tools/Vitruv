@@ -25,9 +25,9 @@ class CommonalitiesLanguageGlobalScopeProvider extends TypesAwareDefaultGlobalSc
 
 	override getScope(Resource resource, EReference reference, Predicate<IEObjectDescription> filter) {
 		switch (reference) {
-			case PARTICIPATION_RELATION__OPERATOR:
+			case PARTICIPATION_RELATION_OPERATOR__JVM_TYPE:
 				relationOperatorScopeProvider.getScope(resource, reference, filter)
-			case PARTICIPATION_CONDITION__OPERATOR:
+			case PARTICIPATION_CONDITION_OPERATOR__JVM_TYPE:
 				conditionOperatorScopeProvider.getScope(resource, reference, filter)
 			default:
 				new ComposedScope(

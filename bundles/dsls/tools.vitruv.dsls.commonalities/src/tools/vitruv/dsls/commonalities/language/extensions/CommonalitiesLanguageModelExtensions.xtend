@@ -14,8 +14,10 @@ import edu.kit.ipd.sdq.activextendannotations.Utility
 	ParticipationPartExtension,
 	ParticipationClassExtension,
 	ParticipationRelationExtension,
+	ParticipationRelationOperatorExtension,
 	ParticipationAttributeExtension,
 	ParticipationConditionExtension,
+	ParticipationConditionOperatorExtension,
 	ParticipationConditionOperandExtension
 ])
 @Utility

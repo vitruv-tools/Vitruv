@@ -4,12 +4,11 @@ import com.google.common.base.Preconditions
 import java.util.List
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EReference
-import tools.vitruv.extensions.dslruntime.commonalities.operators.OperatorName
 
 import static extension tools.vitruv.extensions.dslruntime.commonalities.operators.participation.relation.ContainmentOperator.*
 
-@OperatorName('in')
-class ContainmentOperator extends AbstractSingleArgumentOperator implements ParticipationClassConditionOperator {
+@ParticipationConditionOperator(name = 'in')
+class ContainmentOperator extends AbstractSingleArgumentOperator implements IParticipationClassConditionOperator {
 
 	new(Object leftOperand, List<Object> rightOperands) {
 		super(leftOperand, rightOperands)

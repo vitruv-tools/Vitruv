@@ -5,7 +5,7 @@ import java.util.List
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EStructuralFeature
 
-abstract class AbstractParticipationConditionOperator implements ParticipationConditionOperator {
+abstract class AbstractParticipationConditionOperator implements IParticipationConditionOperator {
 
 	val protected EObject leftOperandObject
 	val protected EStructuralFeature leftOperandFeature // null for ParticipationClassConditionOperators
@@ -15,7 +15,7 @@ abstract class AbstractParticipationConditionOperator implements ParticipationCo
 	new(Object leftOperand, List<?> rightOperands) {
 		Preconditions.checkNotNull(leftOperand, "Left operand is null")
 		Preconditions.checkNotNull(rightOperands, "Right operands is null")
-		if (this instanceof ParticipationClassConditionOperator) {
+		if (this instanceof IParticipationClassConditionOperator) {
 			Preconditions.checkArgument(leftOperand instanceof EObject, "This operator expects a model object as left operand")
 			this.leftOperandObject = leftOperand as EObject
 			this.leftOperandFeature = null

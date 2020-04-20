@@ -13,7 +13,6 @@ import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.emf.ecore.resource.ResourceSet
 import org.eclipse.xtext.EcoreUtil2
 import org.eclipse.xtext.common.types.JvmDeclaredType
-import org.eclipse.xtext.common.types.JvmStringAnnotationValue
 import org.eclipse.xtext.common.types.access.IJvmTypeProvider
 import org.eclipse.xtext.common.types.xtext.AbstractTypeScopeProvider
 import org.eclipse.xtext.naming.IQualifiedNameConverter
@@ -23,7 +22,6 @@ import org.eclipse.xtext.resource.IEObjectDescription
 import org.eclipse.xtext.scoping.IGlobalScopeProvider
 import org.eclipse.xtext.scoping.impl.FilteringScope
 import org.eclipse.xtext.scoping.impl.SimpleScope
-import tools.vitruv.extensions.dslruntime.commonalities.operators.OperatorName
 
 import static extension tools.vitruv.dsls.commonalities.language.extensions.CommonalitiesLanguageModelExtensions.*
 
@@ -135,13 +133,5 @@ abstract class AbstractOperatorScopeProvider implements IGlobalScopeProvider {
 		] || type.superTypes.map[it.type].filter(JvmDeclaredType).exists[isOperatorType]
 	}
 
-	protected def getOperatorName(JvmDeclaredType operatorType) {
-		val operatorNameAnnotationName = OperatorName.name
-		operatorType.annotations
-			.filter[annotation.qualifiedName == operatorNameAnnotationName].head
-			?.explicitValues
-			?.filter[operation.simpleName == 'value']
-			?.filter(JvmStringAnnotationValue)?.head
-			?.values?.head
-	}
+	protected abstract def String getOperatorName(JvmDeclaredType operatorType)
 }

@@ -79,15 +79,19 @@ ParticipationRelation:
 ;
 
 SimpleParticipationRelation returns ParticipationRelation:
-	leftClasses+=UnqualifiedParticipationClassDeclaration operator=[jvmTypes::JvmDeclaredType]
+	leftClasses+=UnqualifiedParticipationClassDeclaration operator=ParticipationRelationOperator
 	rightClasses+=UnqualifiedParticipationClassDeclaration
 ;
 
 BracedParticipationRelation returns ParticipationRelation:
 	'(' leftClasses+=UnqualifiedParticipationClassDeclaration (',' leftClasses+=UnqualifiedParticipationClassDeclaration)*
-	operator=[jvmTypes::JvmDeclaredType]
+	operator=ParticipationRelationOperator
 	rightClasses+=UnqualifiedParticipationClassDeclaration (',' rightClasses+=UnqualifiedParticipationClassDeclaration)*
 	')'
+;
+
+ParticipationRelationOperator:
+	jvmType=[jvmTypes::JvmDeclaredType|OpName]
 ;
 
 fragment Aliasable:
@@ -112,11 +116,15 @@ UnqualifiedParticipationClassDeclaration returns ParticipationClass:
 
 ParticipationCondition:
 	({BidirectionalParticipationCondition} | '->' {EnforcedParticipationCondition} | '<-' {CheckedParticipationCondition})
-	leftOperand=ParticipationConditionLeftOperand operator=[jvmTypes::JvmDeclaredType|OpName]
+	leftOperand=ParticipationConditionLeftOperand operator=ParticipationConditionOperator
 	(
 		(rightOperands+=ParticipationConditionRightOperand)
 		| ('(' (rightOperands+=ParticipationConditionRightOperand (',' rightOperands+=ParticipationConditionRightOperand)*)? ')')
 	)?
+;
+
+ParticipationConditionOperator:
+	jvmType=[jvmTypes::JvmDeclaredType|OpName]
 ;
 
 ParticipationConditionLeftOperand returns ParticipationConditionOperand:

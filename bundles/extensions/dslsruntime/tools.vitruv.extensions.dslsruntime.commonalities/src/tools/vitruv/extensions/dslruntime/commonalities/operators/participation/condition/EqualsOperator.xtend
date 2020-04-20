@@ -2,9 +2,8 @@ package tools.vitruv.extensions.dslruntime.commonalities.operators.participation
 
 import java.util.List
 import java.util.Objects
-import tools.vitruv.extensions.dslruntime.commonalities.operators.OperatorName
 
-@OperatorName('=')
+@ParticipationConditionOperator(name = '=')
 class EqualsOperator extends AbstractSingleArgumentOperator {
 
 	new(Object leftOperand, List<?> rightOperands) {

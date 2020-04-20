@@ -71,7 +71,8 @@ package class ParticipationRelationInitializationHelper extends ReactionsGenerat
 	}
 
 	def private XExpression enforceRelation(TypeProvider typeProvider, ParticipationRelation participationRelation) {
-		val enforceMethod = participationRelation.operator.findMethod(RELATION_ENFORCE_METHOD)
+		val operatorType = participationRelation.operator.jvmType
+		val enforceMethod = operatorType.findMethod(RELATION_ENFORCE_METHOD)
 		return participationRelation.callRelationOperation(enforceMethod, typeProvider)
 	}
 }

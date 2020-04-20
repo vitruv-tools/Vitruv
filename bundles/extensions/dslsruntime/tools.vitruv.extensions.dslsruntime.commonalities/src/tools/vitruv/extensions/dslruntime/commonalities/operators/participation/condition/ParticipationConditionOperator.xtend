@@ -1,8 +1,11 @@
 package tools.vitruv.extensions.dslruntime.commonalities.operators.participation.condition
 
-interface ParticipationConditionOperator {
+import java.lang.annotation.Target
+import java.lang.annotation.Retention
 
-	def void enforce()
+@Target(TYPE)
+@Retention(RUNTIME)
+annotation ParticipationConditionOperator {
 
-	def boolean check()
+	String name
 }

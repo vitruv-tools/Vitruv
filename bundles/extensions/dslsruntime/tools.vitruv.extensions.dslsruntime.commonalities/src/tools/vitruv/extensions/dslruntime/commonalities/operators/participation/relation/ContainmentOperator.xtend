@@ -4,9 +4,8 @@ import java.util.List
 import org.eclipse.emf.ecore.EClass
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EcorePackage
-import tools.vitruv.extensions.dslruntime.commonalities.operators.OperatorName
 
-@OperatorName('in')
+@ParticipationRelationOperator(name = 'in')
 class ContainmentOperator extends AbstractParticipationRelationOperator {
 
 	new(EObject[] leftObjects, EObject[] rightObjects) {

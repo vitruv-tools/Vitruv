@@ -51,8 +51,8 @@ package class ParticipationConditionInitializationHelper extends ReactionsGenera
 	def private Function<TypeProvider, XExpression> getParticipationConditionInitializer(
 		ParticipationCondition participationCondition) {
 		return [ extension TypeProvider typeProvider |
-			val operator = participationCondition.operator.imported
-			val enforceMethod = operator.findMethod(CONDITION_ENFORCE_METHOD)
+			val operatorType = participationCondition.operator.jvmType.imported
+			val enforceMethod = operatorType.findMethod(CONDITION_ENFORCE_METHOD)
 			return XbaseFactory.eINSTANCE.createXMemberFeatureCall => [
 				memberCallTarget = participationCondition.newParticipationConditionOperator(typeProvider)
 				feature = enforceMethod
@@ -65,7 +65,8 @@ package class ParticipationConditionInitializationHelper extends ReactionsGenera
 		extension TypeProvider typeProvider) {
 		val leftOperand = participationCondition.leftOperand
 		XbaseFactory.eINSTANCE.createXConstructorCall => [
-			constructor = participationCondition.operator.findConstructor(Object, List)
+			val operatorType = participationCondition.operator.jvmType
+			constructor = operatorType.findConstructor(Object, List)
 			explicitConstructorCall = true
 			arguments += expressions(
 				leftOperand.getOperandExpression(typeProvider),

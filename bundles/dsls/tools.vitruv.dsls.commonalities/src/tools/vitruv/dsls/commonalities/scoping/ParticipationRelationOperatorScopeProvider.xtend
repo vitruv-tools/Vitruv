@@ -2,7 +2,10 @@ package tools.vitruv.dsls.commonalities.scoping
 
 import com.google.inject.Singleton
 import java.util.List
-import tools.vitruv.extensions.dslruntime.commonalities.operators.participation.relation.ParticipationRelationOperator
+import org.eclipse.xtext.common.types.JvmDeclaredType
+import tools.vitruv.extensions.dslruntime.commonalities.operators.participation.relation.IParticipationRelationOperator
+
+import static extension tools.vitruv.dsls.commonalities.language.extensions.CommonalitiesLanguageModelExtensions.*
 
 @Singleton
 class ParticipationRelationOperatorScopeProvider extends AbstractOperatorScopeProvider {
@@ -20,6 +23,10 @@ class ParticipationRelationOperatorScopeProvider extends AbstractOperatorScopePr
 	}
 
 	override protected getOperatorBaseType() {
-		return ParticipationRelationOperator
+		return IParticipationRelationOperator
+	}
+
+	override protected getOperatorName(JvmDeclaredType operatorType) {
+		return operatorType.participationRelationOperatorName
 	}
 }
