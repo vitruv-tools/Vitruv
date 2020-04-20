@@ -5,7 +5,7 @@ import tools.vitruv.dsls.commonalities.language.ParticipationRelation
 import tools.vitruv.dsls.commonalities.language.SimpleTupleParticipationPart
 
 @Utility
-class ParticipationPartExtension {
+package class ParticipationPartExtension {
 
 	def static dispatch getParticipationClasses(SimpleTupleParticipationPart part) {
 		#[part.participationClass]

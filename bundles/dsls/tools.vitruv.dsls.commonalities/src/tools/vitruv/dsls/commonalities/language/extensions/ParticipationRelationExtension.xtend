@@ -7,7 +7,7 @@ import tools.vitruv.dsls.commonalities.language.ParticipationRelation
 import static extension tools.vitruv.dsls.commonalities.language.extensions.ParticipationRelationOperatorExtension.*
 
 @Utility
-class ParticipationRelationExtension {
+package class ParticipationRelationExtension {
 
 	def static isContainment(ParticipationRelation relation) {
 		return relation.operator.isContainment

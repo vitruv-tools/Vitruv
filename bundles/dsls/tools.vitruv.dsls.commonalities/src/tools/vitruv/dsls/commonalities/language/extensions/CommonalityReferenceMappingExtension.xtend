@@ -13,7 +13,7 @@ import static extension tools.vitruv.dsls.commonalities.language.extensions.Part
 import static extension tools.vitruv.dsls.commonalities.language.extensions.ParticipationExtension.*
 
 @Utility
-class CommonalityReferenceMappingExtension {
+package class CommonalityReferenceMappingExtension {
 
 	def static dispatch isRead(ReferenceReadSpecification mapping) {
 		true

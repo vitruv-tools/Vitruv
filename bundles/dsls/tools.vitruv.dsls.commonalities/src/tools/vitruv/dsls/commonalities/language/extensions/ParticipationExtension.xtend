@@ -15,7 +15,7 @@ import static extension tools.vitruv.dsls.commonalities.language.extensions.Part
 import static extension tools.vitruv.dsls.commonalities.language.extensions.ParticipationRelationExtension.*
 
 @Utility
-class ParticipationExtension {
+package class ParticipationExtension {
 
 	def static dispatch Iterable<ParticipationClass> getClasses(SimpleParticipation participation) {
 		Collections.singleton(participation.participationClass)
