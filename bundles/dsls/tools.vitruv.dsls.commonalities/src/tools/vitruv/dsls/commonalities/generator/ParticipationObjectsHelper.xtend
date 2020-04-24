@@ -48,7 +48,7 @@ class ParticipationObjectsHelper extends ReactionsGenerationHelper {
 		XFeatureCall participationObjects, extension TypeProvider typeProvider) {
 		return participation.classes.toInvertedMap [ participationClass |
 			XbaseFactory.eINSTANCE.createXVariableDeclaration => [
-				type = jvmTypeReferenceBuilder.typeRef(findTypeByName(participationClass.changeClass.javaClassName))
+				type = jvmTypeReferenceBuilder.typeRef(participationClass.changeClass.javaClassName)
 				name = participationClass.correspondingVariableName
 				right = participationClass.getParticipationObject(participationObjects.copy, typeProvider)
 			]
