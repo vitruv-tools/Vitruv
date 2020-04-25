@@ -590,9 +590,6 @@ package class ParticipationMatchingReactionsBuilder extends ReactionsGenerationH
 	 * order to invoke the matching.
 	 * <p>
 	 * Called on commonality insert.
-	 * <p>
-	 * Optional: Empty if there is no valid ParticipationContext for the given
-	 * mapping.
 	 */
 	def package getMatchCommonalityReferenceMappingRoutine(CommonalityReferenceMapping mapping) {
 		val participation = mapping.participation
