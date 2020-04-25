@@ -398,23 +398,23 @@ package class ParticipationMatchingReactionsBuilder extends ReactionsGenerationH
 				forExpression = candidateMatchesVar.featureCall
 				eachExpression = XbaseFactory.eINSTANCE.createXBlockExpression => [
 					// Check non-structural participation conditions:
-					it.expressions += XbaseFactory.eINSTANCE.createXIfExpression => [
-						it.^if = participationContext.checkNonStructuralConditions(participationObjectsVar.featureCall,
+					expressions += XbaseFactory.eINSTANCE.createXIfExpression => [
+						^if = participationContext.checkNonStructuralConditions(participationObjectsVar.featureCall,
 							typeProvider)
-						it.then = XbaseFactory.eINSTANCE.createXBlockExpression => [
+						then = XbaseFactory.eINSTANCE.createXBlockExpression => [
 							// Set result flag:
-							it.expressions += variable(FOUND_MATCH_RESULT).memberFeatureCall => [
+							expressions += variable(FOUND_MATCH_RESULT).memberFeatureCall => [
 								feature = typeProvider.findDeclaredType(BooleanResult).findMethod('setValue')
 								memberCallArguments += booleanLiteral(true)
 								explicitOperationCall = true
 							]
 
 							// Create intermediate:
-							it.expressions += routineCallContext.createRoutineCall(typeProvider,
+							expressions += routineCallContext.createRoutineCall(typeProvider,
 								participationContext.createIntermediateRoutine, participationObjectsVar.featureCall)
 
 							// Abort checking other candidate matches:
-							it.expressions += XbaseFactory.eINSTANCE.createXReturnExpression
+							expressions += XbaseFactory.eINSTANCE.createXReturnExpression
 						]
 					]
 				]
