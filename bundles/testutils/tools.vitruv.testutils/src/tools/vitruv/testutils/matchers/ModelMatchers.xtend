@@ -147,7 +147,7 @@ package class ModelTreeEqualityMatcher extends TypeSafeMatcher<EObject> {
 			]
 			return false
 		}
-		for (feature : expected.eClass.EAllStructuralFeatures) {
+		for (feature : expected.eClass.EAllStructuralFeatures.filter[!derived]) {
 			navigationStack.push('''.«feature.name»''')
 			val matcherMismatch = findFeatureChecker(expected, feature).getMismatch(expected.eGet(feature), item.eGet(feature))
 			if (matcherMismatch !== null) {
