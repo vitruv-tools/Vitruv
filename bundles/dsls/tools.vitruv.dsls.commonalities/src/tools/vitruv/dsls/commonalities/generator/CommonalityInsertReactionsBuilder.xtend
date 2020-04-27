@@ -108,7 +108,7 @@ package class CommonalityInsertReactionsBuilder extends ReactionsSubGenerator {
 
 		// If the participation context is for a singleton root, ensure that the singleton root exists:
 		if (participationContext.isForSingletonRoot) {
-			reaction.call(participationContext.createSingletonRoutine(segment))
+			reaction.call(participationContext.createSingletonRoutine(segment), new RoutineCallParameter[newValue])
 		}
 
 		// Instantiate the corresponding participation (if it doesn't exist yet):
@@ -171,7 +171,6 @@ package class CommonalityInsertReactionsBuilder extends ReactionsSubGenerator {
 					participationContext.getVariableName(it)
 				]
 				val Consumer<ActionStatementBuilder> correspondenceSetup = [
-					// Setup correspondences:
 					managedClasses.forEach [ contextClass |
 						addCorrespondence(commonality, contextClass.participationClass)
 					]
@@ -185,10 +184,13 @@ package class CommonalityInsertReactionsBuilder extends ReactionsSubGenerator {
 		FluentReactionsSegmentBuilder segment) {
 		// assert: participationContext.isForSingletonRoot
 		val participation = participationContext.participation
+		val commonality = participation.containingCommonality
 		val singletonClass = participation.singletonClass
 		val singletonEClass = singletonClass.changeClass
 		return create.routine('''createSingleton_«participation.name»_«singletonClass.name»''')
-			.match [
+			.input [
+				model(commonality.changeClass, INTERMEDIATE)
+			].match [
 				requireAbsenceOf(singletonEClass).correspondingTo [
 					getEClass(singletonEClass)
 				]
@@ -201,6 +203,13 @@ package class CommonalityInsertReactionsBuilder extends ReactionsSubGenerator {
 					participationClass.correspondingVariableName
 				]
 				val Consumer<ActionStatementBuilder> correspondenceSetup = [
+					// The ResourceBridge requires a correspondence with an Intermediate for some of its tasks. For
+					// this purpose we add a correspondence with the first intermediate for which the singleton gets
+					// created for:
+					val rootClass = participationContext.rootContainerClass
+					// assert: rootClass.participationClass.isForResource
+					addCorrespondence(commonality, rootClass.participationClass)
+
 					// Add singleton correspondence:
 					// Note: We don't add correspondences for the containers of the singleton object, since we do not
 					// require those currently. Also note that these container objects may not necessarily be

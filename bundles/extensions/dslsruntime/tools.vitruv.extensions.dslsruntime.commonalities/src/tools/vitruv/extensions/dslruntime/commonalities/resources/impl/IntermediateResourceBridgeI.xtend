@@ -20,7 +20,14 @@ class IntermediateResourceBridgeI extends IntermediateResourceBridgeImpl {
 
 	static val SAME_FOLDER = URI.createURI('.')
 
-	Intermediate intermediateCorrespondence
+	Intermediate _intermediateCorrespondence
+
+	def private getIntermediateCorrespondence() {
+		if (_intermediateCorrespondence === null) {
+			_intermediateCorrespondence = findIntermediateCorrespondence(this)
+		}
+		return _intermediateCorrespondence
+	}
 
 	def private fileExtensionChanged(String oldFileExtension) {
 		this.fullPathChanged(path, name, oldFileExtension)
@@ -107,7 +114,6 @@ class IntermediateResourceBridgeI extends IntermediateResourceBridgeImpl {
 		// modified a containment reference's internal content
 		if (content == newContent) return;
 		this.content = newContent
-		intermediateCorrespondence = newContent.intermediateCorrespondence
 		if (baseURI === null && correspondenceModel !== null) { // TODO
 			val uri = PersistenceHelper.getURIFromSourceProjectFolder(persistedNonIntermediateCorrespondence,
 				'fake.ext')
@@ -181,16 +187,16 @@ class IntermediateResourceBridgeI extends IntermediateResourceBridgeImpl {
 			ReactionsCorrespondenceHelper.getCorrespondingModelElements(intermediate, Intermediate, null, null,
 				correspondenceModel)
 		]
-		// Add to set: This removes duplicates and objects which we have already found before.
+		// Add to result Set: This removes duplicates and objects which we have already found before.
 		if (foundIntermediates.addAll(transitiveIntermediates)) {
-			// Repeat until there are no more new intermediates found:
+			// Repeat until no more new intermediates are found:
 			return foundIntermediates.transitiveIntermediateCorrespondences
 		} else {
 			return foundIntermediates
 		}
 	}
 
-	def private getIntermediateCorrespondence(EObject object) {
+	def private findIntermediateCorrespondence(EObject object) {
 		if (correspondenceModel === null) return null; // TODO
 		val result = ReactionsCorrespondenceHelper.getCorrespondingModelElements(object, Intermediate, null, null,
 			correspondenceModel).head
@@ -216,7 +222,6 @@ class IntermediateResourceBridgeI extends IntermediateResourceBridgeImpl {
 		name = objectResourceUri.lastSegment.toString.withoutFileExtension
 		content = eObject
 		isPersisted = true
-		intermediateCorrespondence = eObject.intermediateCorrespondence
 	}
 
 	def URI withoutTrailingSlash(URI uri) {

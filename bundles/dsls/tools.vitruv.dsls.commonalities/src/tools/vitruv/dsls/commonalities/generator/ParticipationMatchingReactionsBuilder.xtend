@@ -520,8 +520,10 @@ package class ParticipationMatchingReactionsBuilder extends ReactionsGenerationH
 				]
 
 				// Setup and insert a ResourceBridge for the resource root:
-				// TODO This sets a commonality and participation specific
-				// correspondence, which is not required here.
+				// Note: This sets a commonality and participation specific
+				// correspondence for the first participation the singleton
+				// gets matched for. This ResourceBridge uses this for some of
+				// its tasks.
 				insertResourceBridge(participation)
 			]
 	}

@@ -23,6 +23,13 @@ import static extension tools.vitruv.dsls.commonalities.language.extensions.Part
  */
 class CommonalitiesLanguageValidator extends AbstractCommonalitiesLanguageValidator {
 
+	// TODO Check that singleton classes are not accessed inside mappings.
+	// Mappings keep specific intermediate and participation instances
+	// consistent. But the singleton objects are shared by those participation
+	// instances: Modifying them in reaction to changes to individual
+	// intermediate instances bears the risk for issues, such as those
+	// modifications overwriting each other.
+
 	// Note: This is a subset of the valid IDs
 	static val ALIAS_REGEX = "^[a-zA-Z][a-zA-z0-9_]*$"
 	static val ALIAS_PATTERN = Pattern.compile(ALIAS_REGEX)
