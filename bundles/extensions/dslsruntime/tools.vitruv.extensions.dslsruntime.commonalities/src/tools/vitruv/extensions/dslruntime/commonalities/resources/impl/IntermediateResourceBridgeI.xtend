@@ -186,8 +186,9 @@ class IntermediateResourceBridgeI extends IntermediateResourceBridgeImpl {
 		val transitiveIntermediates = foundIntermediates.flatMap [ intermediate |
 			ReactionsCorrespondenceHelper.getCorrespondingModelElements(intermediate, Intermediate, null, null,
 				correspondenceModel)
-		]
-		// Add to result Set: This removes duplicates and objects which we have already found before.
+		].toSet // Collecting to Set removes duplicates and avoids a ConcurrentModificationException.
+
+		// Add to result Set: This removes objects which we have already found before.
 		if (foundIntermediates.addAll(transitiveIntermediates)) {
 			// Repeat until no more new intermediates are found:
 			return foundIntermediates.transitiveIntermediateCorrespondences
