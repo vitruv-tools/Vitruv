@@ -4,7 +4,7 @@ import com.google.inject.Inject
 import org.eclipse.xtext.resource.IEObjectDescription
 import org.eclipse.xtext.ui.editor.contentassist.PrefixMatcher
 
-import static tools.vitruv.dsls.commonalities.names.CommonalitiesLanguageQualifiedNameConverter.DOMAIN_METACLASS_SEPARATOR
+import static tools.vitruv.dsls.commonalities.names.QualifiedNameHelper.*
 
 class DomainPrefixProposalFactory extends CommonalitiesLanguageProposalFactory {
 

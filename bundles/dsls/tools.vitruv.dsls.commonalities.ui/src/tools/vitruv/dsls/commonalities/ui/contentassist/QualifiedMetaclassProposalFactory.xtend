@@ -6,7 +6,7 @@ import org.eclipse.xtext.naming.IQualifiedNameConverter
 import org.eclipse.xtext.naming.QualifiedName
 import org.eclipse.xtext.resource.IEObjectDescription
 
-import static tools.vitruv.dsls.commonalities.names.CommonalitiesLanguageQualifiedNameConverter.*
+import static tools.vitruv.dsls.commonalities.names.QualifiedNameHelper.*
 
 class QualifiedMetaclassProposalFactory extends CommonalitiesLanguageProposalFactory {
 
