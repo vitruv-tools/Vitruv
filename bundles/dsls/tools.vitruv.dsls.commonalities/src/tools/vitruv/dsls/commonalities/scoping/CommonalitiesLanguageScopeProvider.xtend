@@ -99,9 +99,9 @@ class CommonalitiesLanguageScopeProvider extends AbstractCommonalitiesLanguageSc
 
 	def private getUnqualifiedParticipationAttributeScope(ParticipationClass participationClass) {
 		if (participationClass.eIsProxy) {
-			throw new IllegalStateException("ParticipationClass is a proxy. This might indicate an issue with the"
-				+ " participation class scoping.")
-			// Note: This can also be reached as result of an invalid/incomplete commonality file.
+			// This may indicate an issue with the participation class scoping, but may also be the result of an
+			// invalid/incomplete commonality file.
+			return IScope.NULLSCOPE
 		}
 		val participationAttributeScope = participationAttributesScope.get.forParticipationClass(participationClass)
 		val parentQualifiedName = participationClass.fullyQualifiedName
