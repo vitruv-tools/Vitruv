@@ -3,7 +3,7 @@ package tools.vitruv.dsls.commonalities.generator;
 import com.google.inject.Inject
 
 @GenerationScoped
-abstract package class SubGenerator {
+package abstract class SubGenerator {
 
 	@Inject protected extension GenerationContext generationContext
 

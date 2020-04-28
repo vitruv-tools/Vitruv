@@ -20,7 +20,7 @@ import static extension tools.vitruv.dsls.commonalities.language.extensions.Comm
  * Helper methods related to interfacing with the {@link ParticipationObjects}
  * during runtime.
  */
-class ParticipationObjectsHelper extends ReactionsGenerationHelper {
+package class ParticipationObjectsHelper extends ReactionsGenerationHelper {
 
 	package new() {
 	}

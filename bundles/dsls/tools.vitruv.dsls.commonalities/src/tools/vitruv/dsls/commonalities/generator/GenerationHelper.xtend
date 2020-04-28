@@ -7,7 +7,7 @@ import com.google.inject.Inject
  * context.
  */
 @GenerationScoped
-abstract class GenerationHelper {
+package abstract class GenerationHelper {
 
 	@Inject protected extension GenerationContext generationContext
 }

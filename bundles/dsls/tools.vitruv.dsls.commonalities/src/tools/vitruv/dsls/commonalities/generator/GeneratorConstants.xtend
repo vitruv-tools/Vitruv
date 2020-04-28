@@ -9,7 +9,7 @@ import tools.vitruv.dsls.commonalities.language.Concept
 import static extension tools.vitruv.dsls.commonalities.language.extensions.CommonalitiesLanguageModelExtensions.*
 
 @Utility
-class GeneratorConstants {
+package class GeneratorConstants {
 
 	static val GENERATED_PACKAGE_PREFIX = "tools.vitruv.commonalities"
 	public static val MODEL_OUTPUT_FILE_EXTENSION = ".ecore"

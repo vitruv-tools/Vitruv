@@ -18,7 +18,7 @@ import static extension tools.vitruv.dsls.commonalities.generator.JvmTypeProvide
 import static extension tools.vitruv.dsls.commonalities.generator.XbaseHelper.*
 import static extension tools.vitruv.dsls.commonalities.language.extensions.CommonalitiesLanguageModelExtensions.*
 
-class InsertIntermediateRoutineBuilder extends ReactionsGenerationHelper {
+package class InsertIntermediateRoutineBuilder extends ReactionsGenerationHelper {
 
 	@GenerationScoped
 	static class Provider extends InjectingFactoryBase {
