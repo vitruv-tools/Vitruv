@@ -110,7 +110,7 @@ package class ParticipationAttributeChangeReactionsBuilder extends ReactionsSubG
 		CommonalityAttributeMapping mapping) {
 		input [newValue]
 		.match [
-			retrieveIntermediate()
+			retrieveIntermediate(mapping)
 		]
 		.action [
 			update(INTERMEDIATE) [
@@ -123,7 +123,7 @@ package class ParticipationAttributeChangeReactionsBuilder extends ReactionsSubG
 		CommonalityAttributeMapping mapping) {
 		input [newValue]
 		.match [
-			retrieveIntermediate()
+			retrieveIntermediate(mapping)
 		]
 		.action [
 			update(INTERMEDIATE) [
@@ -136,7 +136,7 @@ package class ParticipationAttributeChangeReactionsBuilder extends ReactionsSubG
 		CommonalityAttributeMapping mapping) {
 		input [oldValue]
 		.match [
-			retrieveIntermediate()
+			retrieveIntermediate(mapping)
 		]
 		.action [
 			update(INTERMEDIATE) [
@@ -145,7 +145,12 @@ package class ParticipationAttributeChangeReactionsBuilder extends ReactionsSubG
 		]
 	}
 
-	def private retrieveIntermediate(extension UndecidedMatcherStatementBuilder builder) {
-		vall(INTERMEDIATE).retrieve(commonality.changeClass).correspondingTo.affectedEObject
+	def private retrieveIntermediate(extension UndecidedMatcherStatementBuilder builder,
+		CommonalityAttributeMapping mapping) {
+		val commonality = mapping.containingCommonality
+		val participationClass = mapping.attribute.participationClass
+		vall(INTERMEDIATE).retrieve(commonality.changeClass)
+			.correspondingTo.affectedEObject
+			.taggedWith(participationClass.correspondenceTag)
 	}
 }
