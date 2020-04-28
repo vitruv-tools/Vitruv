@@ -9,7 +9,7 @@ import java.util.HashMap
 /**
  * Scopes a single generator execution for one input resource.
  * <p>
- * There can only be a single generation scope active per thread any any given
+ * There can only be a single generation scope active per thread at any given
  * time.
  */
 final class GenerationScope {
@@ -30,7 +30,17 @@ final class GenerationScope {
 			return [
 				val currentScope = currentScope
 				Preconditions.checkState(currentScope !== null, '''Not within a GenerationScope!''')
-				currentScope.values.computeIfAbsent(key, [unscopedProvider.get]) as T
+				// Note: Not using computeIfAbsent here, because that would result in a ConcurrentModificationException
+				// if the value being created has itself dependencies which first need to be added to the scope.
+				var value = currentScope.values.get(key)
+				if (value === null) {
+					value = unscopedProvider.get
+					if (currentScope.values.containsKey(key)) {
+						throw new IllegalStateException("Detected cyclic Guice dependency for " + value.class.name)
+					}
+					currentScope.values.put(key, value)
+				}
+				return value as T
 			]
 		}
 	}
