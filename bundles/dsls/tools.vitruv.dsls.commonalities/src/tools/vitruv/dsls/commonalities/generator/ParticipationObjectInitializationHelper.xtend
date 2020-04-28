@@ -14,6 +14,7 @@ import static tools.vitruv.dsls.commonalities.generator.ReactionsHelper.*
 import static extension tools.vitruv.dsls.commonalities.generator.ReactionsGeneratorConventions.*
 import static extension tools.vitruv.dsls.commonalities.language.extensions.CommonalitiesLanguageModelExtensions.*
 
+@GenerationScoped
 package class ParticipationObjectInitializationHelper extends ReactionsGenerationHelper {
 
 	@Inject extension ResourceBridgeHelper resourceBridgeHelper

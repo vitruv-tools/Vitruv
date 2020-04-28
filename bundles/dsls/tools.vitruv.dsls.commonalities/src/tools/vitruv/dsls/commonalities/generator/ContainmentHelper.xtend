@@ -7,6 +7,7 @@ import org.eclipse.emf.ecore.EReference
 import tools.vitruv.dsls.commonalities.language.extensions.Containment
 import tools.vitruv.extensions.dslruntime.commonalities.operators.participation.relation.ContainmentOperator
 
+@GenerationScoped
 package class ContainmentHelper extends GenerationHelper {
 
 	package new() {
