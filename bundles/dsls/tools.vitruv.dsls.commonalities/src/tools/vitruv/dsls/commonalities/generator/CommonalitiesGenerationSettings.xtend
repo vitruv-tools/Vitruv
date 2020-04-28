@@ -5,7 +5,7 @@ import org.eclipse.xtend.lib.annotations.Accessors
 
 @Singleton
 @Accessors
-package class CommonalitiesGenerationSettings {
+class CommonalitiesGenerationSettings {
 
 	public static val CREATE_REACTIONS_FILES_DEFAULT = false
 
