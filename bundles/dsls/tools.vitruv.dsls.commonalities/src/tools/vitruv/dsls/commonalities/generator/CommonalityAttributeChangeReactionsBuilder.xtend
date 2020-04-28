@@ -76,8 +76,8 @@ package class CommonalityAttributeChangeReactionsBuilder extends ReactionsSubGen
 		if (participationClass.isRootClass) {
 			// object is optional:
 			return XbaseFactory.eINSTANCE.createXIfExpression => [
-				^if = optionalIsPresent(typeProvider, objectVar)
-				then = expressionBuilder.apply(optionalGet(typeProvider, objectVar.copy))
+				^if = objectVar.optionalIsPresent(typeProvider)
+				then = expressionBuilder.apply(objectVar.copy.optionalGet(typeProvider))
 			]
 		} else {
 			return expressionBuilder.apply(objectVar)

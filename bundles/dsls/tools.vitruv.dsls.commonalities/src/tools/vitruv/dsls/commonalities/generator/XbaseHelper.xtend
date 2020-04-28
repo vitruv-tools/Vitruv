@@ -160,14 +160,14 @@ package class XbaseHelper {
 		return leftOperand.notEquals(nullLiteral, typeProvider)
 	}
 
-	def static optionalIsPresent(IJvmTypeProvider typeProvider, XAbstractFeatureCall optional) {
+	def static optionalIsPresent(XAbstractFeatureCall optional, IJvmTypeProvider typeProvider) {
 		return optional.memberFeatureCall => [
 			feature = typeProvider.findDeclaredType(Optional).findMethod("isPresent")
 			explicitOperationCall = true
 		]
 	}
 
-	def static optionalGet(IJvmTypeProvider typeProvider, XAbstractFeatureCall optional) {
+	def static optionalGet(XAbstractFeatureCall optional, IJvmTypeProvider typeProvider) {
 		return optional.memberFeatureCall => [
 			feature = typeProvider.findDeclaredType(Optional).findMethod("get")
 		]
