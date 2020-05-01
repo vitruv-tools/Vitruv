@@ -150,17 +150,8 @@ package class ParticipationMatchingReactionsBuilder extends ReactionsGenerationH
 	private static val Logger logger = Logger.getLogger(ReactionsGenerator) => [level = Level.TRACE]
 
 	@GenerationScoped
-	static class Provider extends InjectingFactoryBase {
-
-		val Map<FluentReactionsSegmentBuilder, ParticipationMatchingReactionsBuilder> bySegment = new HashMap
-
-		def getFor(FluentReactionsSegmentBuilder segment) {
-			return bySegment.computeIfAbsent(segment) [
-				createFor(segment)
-			]
-		}
-
-		def private createFor(FluentReactionsSegmentBuilder segment) {
+	static class Provider extends ReactionsSegmentScopedProvider<ParticipationMatchingReactionsBuilder> {
+		override createFor(FluentReactionsSegmentBuilder segment) {
 			return new ParticipationMatchingReactionsBuilder(segment).injectMembers
 		}
 	}

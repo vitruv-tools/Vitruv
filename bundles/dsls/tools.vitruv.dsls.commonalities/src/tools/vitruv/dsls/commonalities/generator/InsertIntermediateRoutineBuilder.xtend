@@ -21,17 +21,8 @@ import static extension tools.vitruv.dsls.commonalities.language.extensions.Comm
 package class InsertIntermediateRoutineBuilder extends ReactionsGenerationHelper {
 
 	@GenerationScoped
-	static class Provider extends InjectingFactoryBase {
-
-		val Map<FluentReactionsSegmentBuilder, InsertIntermediateRoutineBuilder> bySegment = new HashMap
-
-		def getFor(FluentReactionsSegmentBuilder segment) {
-			return bySegment.computeIfAbsent(segment) [
-				createFor(segment)
-			]
-		}
-
-		def private createFor(FluentReactionsSegmentBuilder segment) {
+	static class Provider extends ReactionsSegmentScopedProvider<InsertIntermediateRoutineBuilder> {
+		override createFor(FluentReactionsSegmentBuilder segment) {
 			return new InsertIntermediateRoutineBuilder(segment).injectMembers
 		}
 	}
