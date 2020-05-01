@@ -91,7 +91,7 @@ BracedParticipationRelation returns ParticipationRelation:
 ;
 
 ParticipationRelationOperator:
-	jvmType=[jvmTypes::JvmDeclaredType|OpName]
+	jvmType=[jvmTypes::JvmDeclaredType|OperatorName]
 ;
 
 fragment Aliasable:
@@ -124,7 +124,7 @@ ParticipationCondition:
 ;
 
 ParticipationConditionOperator:
-	jvmType=[jvmTypes::JvmDeclaredType|OpName]
+	jvmType=[jvmTypes::JvmDeclaredType|OperatorName]
 ;
 
 ParticipationConditionLeftOperand returns ParticipationConditionOperand:
@@ -152,16 +152,6 @@ LiteralOperand:
 		XNumberLiteral |
 		XNullLiteral |
 		XStringLiteral)
-;
-
-// To correctly parse character combinations, we need to copy all tokens that
-// already occurred in the parent grammars (i.e. Xbase)
-// '->' and '<-': Ambiguous since the next participation condition may start with this as well
-OpName:
-	ID |
-	( '+=' | '-=' | '*=' | '/=' | '%=' | '>=' | '<=' | '||' | '&&' | '==' | '!=' | '===' | '!=='
-	| '=>' | '<>' | '?:' | '**' | '--' | '++' | '::'
-	| '=' | '!' | '%' | '&' | '*' | '+' | '-' | '/' | '<' | '>' | '^' | '~' | '_' | ':' | '?')+
 ;
 
 /**************
@@ -246,6 +236,16 @@ UnqualifiedMetaclass:
 
 UnqualifiedParticipationMember:
 	ID
+;
+
+// To correctly parse character combinations, we need to copy all tokens that
+// already occurred in the parent grammars (i.e. Xbase)
+// '->' and '<-': Ambiguous since the next participation condition may start with this as well
+OperatorName:
+	ID |
+	( '+=' | '-=' | '*=' | '/=' | '%=' | '>=' | '<=' | '||' | '&&' | '==' | '!=' | '===' | '!=='
+	| '=>' | '<>' | '?:' | '**' | '--' | '++' | '::'
+	| '=' | '!' | '%' | '&' | '*' | '+' | '-' | '/' | '<' | '>' | '^' | '~' | '_' | ':' | '?')+
 ;
 
 /******************
