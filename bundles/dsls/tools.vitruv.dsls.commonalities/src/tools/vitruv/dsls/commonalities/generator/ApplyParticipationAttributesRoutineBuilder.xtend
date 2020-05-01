@@ -49,12 +49,12 @@ package class ApplyParticipationAttributesRoutineBuilder extends ReactionsSubGen
 		return getApplyAttributesRoutine();
 	}
 
-	def private getRelevantMappings(Participation participation) {
+	def private getRelevantMappings() {
 		return commonality.attributes.flatMap[mappings].filter[isRead && it.participation == participation]
 	}
 
 	def private getApplyAttributesRoutine() {
-		return create.routine('''applyParticipationAttributes_«participation.containingCommonality.name»_«participation.name»''')
+		return create.routine('''applyParticipationAttributes_«commonality.name»_«participation.name»''')
 			.input [
 				model(commonality.changeClass, INTERMEDIATE)
 				plain(ParticipationObjects, PARTICIPATION_OBJECTS)
@@ -64,12 +64,12 @@ package class ApplyParticipationAttributesRoutineBuilder extends ReactionsSubGen
 					val participationObjectVars = participation.getParticipationObjectVars(variable(PARTICIPATION_OBJECTS), typeProvider)
 					XbaseFactory.eINSTANCE.createXBlockExpression => [
 						expressions += participationObjectVars.values
-						for (CommonalityAttributeMapping mapping : participation.relevantMappings) {
+						for (CommonalityAttributeMapping mapping : relevantMappings) {
 							val intermediate = variable(INTERMEDIATE)
 							val participationClass = mapping.attribute.participationClass
 							val participationObjectVar = participationObjectVars.get(participationClass).featureCall
-							// Since the participation can exist in different contexts with different root objects,
-							// the participation object may be null for root participation classes:
+							// Since the participation may exist in different contexts with different root objects,
+							// the participation object may not be available for root participation classes:
 							if (participationClass.isRootClass) {
 								expressions += XbaseFactory.eINSTANCE.createXIfExpression => [
 									it.^if = participationObjectVar.copy.notEqualsNull(typeProvider)
