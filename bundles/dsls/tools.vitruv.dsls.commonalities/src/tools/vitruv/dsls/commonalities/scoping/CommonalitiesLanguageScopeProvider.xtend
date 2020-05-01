@@ -8,6 +8,7 @@ import org.eclipse.xtext.naming.IQualifiedNameProvider
 import org.eclipse.xtext.scoping.IGlobalScopeProvider
 import org.eclipse.xtext.scoping.IScope
 import tools.vitruv.dsls.commonalities.language.Commonality
+import tools.vitruv.dsls.commonalities.language.OperatorReferenceMapping
 import tools.vitruv.dsls.commonalities.language.Participation
 import tools.vitruv.dsls.commonalities.language.ParticipationAttribute
 import tools.vitruv.dsls.commonalities.language.ParticipationClass
@@ -43,6 +44,12 @@ class CommonalitiesLanguageScopeProvider extends AbstractCommonalitiesLanguageSc
 					return participation.unqualifiedParticipationClassScope
 				}
 			}
+			case OPERATOR_REFERENCE_MAPPING__PARTICIPATION_CLASS: {
+				if (context instanceof OperatorReferenceMapping) {
+					val commonality = context.containingCommonality
+					return commonality.participationClassScope
+				}
+			}
 			case PARTICIPATION_ATTRIBUTE__PARTICIPATION_CLASS: {
 				if (context instanceof ParticipationAttribute) {
 					val participationCondition = context.optionalContainingParticipationCondition
@@ -50,6 +57,23 @@ class CommonalitiesLanguageScopeProvider extends AbstractCommonalitiesLanguageSc
 						val participation = participationCondition.participation
 						return participation.unqualifiedParticipationClassScope
 					}
+
+					val referenceMapping = context.optionalContainingOperatorReferenceMapping
+					if (referenceMapping !== null) {
+						val referencedAttributeOperand = context.optionalContainingReferencedParticipationAttributeOperand
+						if (referencedAttributeOperand !== null) {
+							val participation = referenceMapping.referencedParticipation
+							return participation.unqualifiedParticipationClassScope
+						}
+
+						val attributeOperand = context.optionalContainingParticipationAttributeOperand
+						if (attributeOperand !== null) {
+							val participation = referenceMapping.participation
+							return participation.unqualifiedParticipationClassScope
+						}
+						// else: qualified participation class for the mapping's reference
+					}
+
 					val commonality = context.containingCommonality
 					return commonality.participationClassScope
 				}

@@ -35,4 +35,12 @@ class CommonalitiesLanguageImplementationFactory extends LanguageFactoryImpl {
 	override createCommonalityReference() {
 		new CommonalityReferenceI
 	}
+
+	override createSimpleReferenceMapping() {
+		new SimpleReferenceMappingI
+	}
+
+	override createOperatorReferenceMapping() {
+		new OperatorReferenceMappingI
+	}
 }

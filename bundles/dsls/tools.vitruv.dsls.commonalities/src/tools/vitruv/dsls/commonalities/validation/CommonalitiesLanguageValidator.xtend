@@ -7,8 +7,11 @@ import java.util.regex.Pattern
 import org.eclipse.xtext.validation.Check
 import tools.vitruv.dsls.commonalities.language.Aliasable
 import tools.vitruv.dsls.commonalities.language.CommonalityReferenceMapping
+import tools.vitruv.dsls.commonalities.language.OperatorReferenceMapping
 import tools.vitruv.dsls.commonalities.language.Participation
 import tools.vitruv.dsls.commonalities.language.ParticipationClass
+import tools.vitruv.dsls.commonalities.language.ReferencedParticipationAttributeOperand
+import tools.vitruv.dsls.commonalities.language.SimpleReferenceMapping
 import tools.vitruv.dsls.commonalities.language.elements.Metaclass
 
 import static tools.vitruv.dsls.commonalities.language.LanguagePackage.Literals.*
@@ -54,33 +57,52 @@ class CommonalitiesLanguageValidator extends AbstractCommonalitiesLanguageValida
 	}
 
 	@Check
-	def checkReferencedParticipation(CommonalityReferenceMapping mapping) {
-		val referenceRightType = mapping.reference?.type
-		if (referenceRightType === null) return;
-		if (!(referenceRightType instanceof Metaclass)) {
-			error('Reference mappings can only use EReferences.', COMMONALITY_REFERENCE_MAPPING__REFERENCE)
+	def checkReferenceMapping(CommonalityReferenceMapping mapping) {
+		val participation = mapping.participation
+		// The participation may be null if the mapping is still incomplete. We
+		// skip the validation in this case.
+		if (participation === null) {
 			return;
 		}
 
 		val referencedParticipations = mapping.referencedParticipations.toList
 		if (referencedParticipations.size === 0) {
 			error('''«mapping.referencedCommonality» has no participation of domain «
-				mapping.participation.domainName».''', mapping, null)
+				participation.domainName».''', mapping, null)
 			return;
 		} else if (referencedParticipations.size > 1) {
 			error('''Ambiguous reference mapping: «mapping.referencedCommonality» has more than one participation of «
-				»domain «mapping.participation.domainName».''', mapping, null)
+				»domain «participation.domainName».''', mapping, null)
 			return;
 		}
 
-		val referencedParticipation = referencedParticipations.head
+		if (mapping instanceof SimpleReferenceMapping) {
+			if (!checkSimpleReferenceMapping(mapping)) {
+				return;
+			}
+		} else if (mapping instanceof OperatorReferenceMapping) {
+			if (!checkOperatorReferenceMapping(mapping)) {
+				return;
+			}
+		}
+	}
+
+	// returns false in case of error
+	def private boolean checkSimpleReferenceMapping(SimpleReferenceMapping mapping) {
+		val referenceRightType = mapping.reference.type
+		if (!(referenceRightType instanceof Metaclass)) {
+			error('Reference mappings can only use EReferences.', SIMPLE_REFERENCE_MAPPING__REFERENCE)
+			return false
+		}
+
+		val referencedParticipation = mapping.referencedParticipation
 		val nonRootBoundaryClasses = referencedParticipation.nonRootBoundaryClasses
 		// assert: !nonRootBoundaryClasses.empty
 		if (!nonRootBoundaryClasses.filter[!mapping.isAssignmentCompatible(it)].empty) {
-			error('''The referenced classes of participation «referencedParticipation» in «
+			error('''The referenced classes of participation '«referencedParticipation»' in «
 				mapping.referencedCommonality» are not assignment compatible with reference type «
-				referenceRightType».''', COMMONALITY_REFERENCE_MAPPING__REFERENCE)
-			return;
+				referenceRightType».''', SIMPLE_REFERENCE_MAPPING__REFERENCE)
+			return false
 		}
 	}
 
@@ -90,6 +112,20 @@ class CommonalitiesLanguageValidator extends AbstractCommonalitiesLanguageValida
 		return referencedCommonality.participations.filter [
 			it.domainName == participationDomainName
 		]
+	}
+
+	// returns false in case of error
+	def private boolean checkOperatorReferenceMapping(OperatorReferenceMapping mapping) {
+		if (mapping.operands.filter(ReferencedParticipationAttributeOperand).empty) {
+			error('No referenced participation attribute specified.', OPERATOR_REFERENCE_MAPPING__OPERANDS)
+			return false
+		}
+
+		val referencedParticipation = mapping.referencedParticipation
+		if (referencedParticipation.participationContext.isEmpty) {
+			error('The referenced participation specifies no root context.', mapping, null)
+			return false
+		}
 	}
 
 	@Check

@@ -197,10 +197,40 @@ CommonalityReference:
 ;
 
 CommonalityReferenceMapping:
-	('=' {ReferenceEqualitySpecification} | '->' {ReferenceSetSpecification} | '<-' {ReferenceReadSpecification})
+	SimpleReferenceMapping | OperatorReferenceMapping
+;
+
+SimpleReferenceMapping:
+	(readAndWrite?='=' | write?='->'| read?='<-')
 	reference=QualifiedParticipationAttribute
 	// TODO not used right now
 	('via' referenceTargets+=[ParticipationClass|QualifiedParticipationClass] (',' referenceTargets+=[ParticipationClass|QualifiedParticipationClass])*)?
+;
+
+OperatorReferenceMapping:
+	(readAndWrite?='=' | write?='->'| read?='<-')
+	participationClass=[ParticipationClass|QualifiedParticipationClass] '.' operator=ReferenceMappingOperator
+	'(' (operands+=ReferenceMappingOperand (',' operands+=ReferenceMappingOperand)*)? ')'
+;
+
+ReferenceMappingOperator:
+	jvmType=[jvmTypes::JvmDeclaredType|OperatorName]
+;
+
+ReferenceMappingOperand:
+	ReferencedParticipationAttributeOperand | ParticipationAttributeOperand | LiteralOperand
+;
+
+ReferencedParticipationAttributeOperand:
+	'ref' participationAttribute=UnqualifiedParticipationAttribute
+;
+
+/************
+ * Operands *
+ ************/
+
+Operand:
+	ParticipationConditionOperand | ReferenceMappingOperand
 ;
 
 /******************

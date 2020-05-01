@@ -20,11 +20,14 @@ class CommonalitiesLanguageGlobalScopeProvider extends TypesAwareDefaultGlobalSc
 
 	@Inject ParticipationRelationOperatorScopeProvider relationOperatorScopeProvider
 	@Inject ParticipationConditionOperatorScopeProvider conditionOperatorScopeProvider
+	@Inject ReferenceMappingOperatorScopeProvider referenceMappingOperatorScopeProvider
 	@Inject Provider<VitruvDomainMetaclassesScope> allMetaclassesScope
 	@Inject extension IEObjectDescriptionProvider descriptionProvider
 
 	override getScope(Resource resource, EReference reference, Predicate<IEObjectDescription> filter) {
 		switch (reference) {
+			case REFERENCE_MAPPING_OPERATOR__JVM_TYPE:
+				referenceMappingOperatorScopeProvider.getScope(resource, reference, filter)
 			case PARTICIPATION_RELATION_OPERATOR__JVM_TYPE:
 				relationOperatorScopeProvider.getScope(resource, reference, filter)
 			case PARTICIPATION_CONDITION_OPERATOR__JVM_TYPE:

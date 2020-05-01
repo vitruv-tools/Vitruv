@@ -9,7 +9,7 @@ import tools.vitruv.dsls.commonalities.language.ParticipationRelation
 import tools.vitruv.dsls.commonalities.language.elements.ResourceMetaclass
 
 import static extension tools.vitruv.dsls.commonalities.language.extensions.CommonalitiesLanguageElementExtension.*
-import static extension tools.vitruv.dsls.commonalities.language.extensions.ParticipationConditionOperandExtension.*
+import static extension tools.vitruv.dsls.commonalities.language.extensions.OperandExtension.*
 import static extension tools.vitruv.dsls.commonalities.language.extensions.ParticipationExtension.*
 
 @Utility

@@ -8,7 +8,7 @@ import tools.vitruv.dsls.commonalities.language.Participation
 import tools.vitruv.dsls.commonalities.language.ParticipationCondition
 
 import static extension tools.vitruv.dsls.commonalities.language.extensions.CommonalitiesLanguageElementExtension.*
-import static extension tools.vitruv.dsls.commonalities.language.extensions.ParticipationConditionOperandExtension.*
+import static extension tools.vitruv.dsls.commonalities.language.extensions.OperandExtension.*
 import static extension tools.vitruv.dsls.commonalities.language.extensions.ParticipationConditionOperatorExtension.*
 
 @Utility
@@ -46,7 +46,7 @@ package class ParticipationConditionExtension {
 		return condition.operator.isContainment
 	}
 
-	def static getContainment(ParticipationCondition condition) {
+	def static Containment getContainment(ParticipationCondition condition) {
 		if (!condition.isContainment) {
 			return null
 		}
@@ -55,6 +55,6 @@ package class ParticipationConditionExtension {
 			return null
 		}
 		val contained = condition.leftOperand.participationClass
-		new Containment(contained, container, condition.leftOperand.participationAttribute)
+		return new ReferenceContainment(contained, container, condition.leftOperand.participationAttribute)
 	}
 }

@@ -10,6 +10,8 @@ import edu.kit.ipd.sdq.activextendannotations.Utility
 	CommonalityAttributeMappingExtension,
 	CommonalityReferenceMappingExtension,
 	OperatorImportExtension,
+	OperandExtension,
+	OperatorReferenceMappingExtension,
 	ParticipationExtension,
 	ParticipationPartExtension,
 	ParticipationClassExtension,
@@ -18,7 +20,8 @@ import edu.kit.ipd.sdq.activextendannotations.Utility
 	ParticipationAttributeExtension,
 	ParticipationConditionExtension,
 	ParticipationConditionOperatorExtension,
-	ParticipationConditionOperandExtension
+	ParticipationConditionOperandExtension,
+	ReferenceMappingOperatorExtension
 ])
 @Utility
 class CommonalitiesLanguageModelExtensions {

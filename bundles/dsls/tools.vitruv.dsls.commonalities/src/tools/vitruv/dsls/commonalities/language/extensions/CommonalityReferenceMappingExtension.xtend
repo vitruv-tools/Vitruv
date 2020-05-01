@@ -3,44 +3,49 @@ package tools.vitruv.dsls.commonalities.language.extensions
 import edu.kit.ipd.sdq.activextendannotations.Utility
 import tools.vitruv.dsls.commonalities.language.CommonalityReference
 import tools.vitruv.dsls.commonalities.language.CommonalityReferenceMapping
+import tools.vitruv.dsls.commonalities.language.OperatorReferenceMapping
+import tools.vitruv.dsls.commonalities.language.Participation
 import tools.vitruv.dsls.commonalities.language.ParticipationClass
-import tools.vitruv.dsls.commonalities.language.ReferenceEqualitySpecification
-import tools.vitruv.dsls.commonalities.language.ReferenceReadSpecification
-import tools.vitruv.dsls.commonalities.language.ReferenceSetSpecification
+import tools.vitruv.dsls.commonalities.language.SimpleReferenceMapping
 
 import static extension tools.vitruv.dsls.commonalities.language.extensions.CommonalitiesLanguageElementExtension.*
 import static extension tools.vitruv.dsls.commonalities.language.extensions.ParticipationClassExtension.*
 import static extension tools.vitruv.dsls.commonalities.language.extensions.ParticipationExtension.*
+import static extension tools.vitruv.dsls.commonalities.language.extensions.ReferenceMappingOperatorExtension.*
 
 @Utility
 package class CommonalityReferenceMappingExtension {
 
-	def static dispatch isRead(ReferenceReadSpecification mapping) {
-		true
+	def static isSimpleMapping(CommonalityReferenceMapping mapping) {
+		return (mapping instanceof SimpleReferenceMapping)
 	}
 
-	def static dispatch isRead(ReferenceEqualitySpecification mapping) {
-		true
+	def static isOperatorMapping(CommonalityReferenceMapping mapping) {
+		return (mapping instanceof OperatorReferenceMapping)
 	}
 
-	def static dispatch isRead(ReferenceSetSpecification mapping) {
-		false
+	def static dispatch boolean isMultiValued(SimpleReferenceMapping mapping) {
+		return mapping.reference.isMultiValued
 	}
 
-	def static dispatch isWrite(ReferenceReadSpecification mapping) {
-		false
+	def static dispatch boolean isMultiValued(OperatorReferenceMapping mapping) {
+		return mapping.operator.isMultiValued
 	}
 
-	def static dispatch isWrite(ReferenceEqualitySpecification mapping) {
-		true
+	def static dispatch ParticipationClass getParticipationClass(SimpleReferenceMapping mapping) {
+		return mapping.reference.participationClass
 	}
 
-	def static dispatch isWrite(ReferenceSetSpecification mapping) {
-		true
+	def static dispatch ParticipationClass getParticipationClass(OperatorReferenceMapping mapping) {
+		return mapping.participationClass
 	}
 
-	def static getParticipation(CommonalityReferenceMapping mapping) {
-		mapping.reference.participationClass.participation
+	def static dispatch Participation getParticipation(SimpleReferenceMapping mapping) {
+		return mapping.reference.participationClass.participation
+	}
+
+	def static dispatch Participation getParticipation(OperatorReferenceMapping mapping) {
+		return mapping.participationClass.participation
 	}
 
 	def static getDeclaringReference(CommonalityReferenceMapping mapping) {
@@ -61,8 +66,15 @@ package class CommonalityReferenceMappingExtension {
 		]
 	}
 
-	def static isAssignmentCompatible(CommonalityReferenceMapping mapping, ParticipationClass referencedClass) {
+	def static dispatch boolean isAssignmentCompatible(SimpleReferenceMapping mapping,
+		ParticipationClass referencedClass) {
 		val referenceType = mapping.reference.type
 		return referenceType.isSuperTypeOf(referencedClass.superMetaclass)
+	}
+
+	def static dispatch boolean isAssignmentCompatible(OperatorReferenceMapping mapping,
+		ParticipationClass referencedClass) {
+		// depends on the operator, for which we have no compile-time checking currently
+		return true
 	}
 }

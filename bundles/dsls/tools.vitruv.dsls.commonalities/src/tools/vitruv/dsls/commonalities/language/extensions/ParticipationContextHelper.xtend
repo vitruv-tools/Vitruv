@@ -1,12 +1,15 @@
 package tools.vitruv.dsls.commonalities.language.extensions
 
 import edu.kit.ipd.sdq.activextendannotations.Utility
+import java.util.Collections
 import java.util.Map
 import java.util.Optional
 import java.util.WeakHashMap
 import tools.vitruv.dsls.commonalities.language.CommonalityReferenceMapping
+import tools.vitruv.dsls.commonalities.language.OperatorReferenceMapping
 import tools.vitruv.dsls.commonalities.language.Participation
 import tools.vitruv.dsls.commonalities.language.ParticipationClass
+import tools.vitruv.dsls.commonalities.language.SimpleReferenceMapping
 
 import static extension tools.vitruv.dsls.commonalities.language.extensions.CommonalitiesLanguageModelExtensions.*
 
@@ -21,7 +24,7 @@ class ParticipationContextHelper {
 	static val Map<CommonalityReferenceMapping, ParticipationContext> referenceParticipationContexts = new WeakHashMap
 
 	/**
-	 * Optional: Empty if the participation specifies no containment context.
+	 * Optional: Empty if the participation specifies no root containment context.
 	 */
 	def static getParticipationContext(Participation participation) {
 		return participationContexts.computeIfAbsent(participation) [
@@ -104,18 +107,45 @@ class ParticipationContextHelper {
 
 	def private static getReferenceParticipationRoot(CommonalityReferenceMapping mapping) {
 		return referenceParticipationRoots.computeIfAbsent(mapping) [
+			if (mapping instanceof OperatorReferenceMapping) {
+				if (mapping.operator.isAttributeReference) {
+					return mapping.attributeReferenceParticipationRoot
+				}
+			}
+
 			val referenceParticipationRoot = new ParticipationRoot
 			referenceParticipationRoot.referenceMapping = mapping
+
 			// TODO Support for reference mappings that specify roots with more
 			// than one class? In case this is supported as some point, we also
 			// need to deal with the correspondences for objects of these classes.
 			// For example, the correspondence tag that gets created for
 			// participation classes currently assumes that its counterpart is the
 			// commonality in which it has been defined.
-			referenceParticipationRoot.classes += mapping.reference.participationClass
+			referenceParticipationRoot.classes += mapping.participationClass
 			referenceParticipationRoot.boundaryContainments += mapping.getReferenceContainments
 			return referenceParticipationRoot
 		]
+	}
+
+	def private static getAttributeReferenceParticipationRoot(OperatorReferenceMapping mapping) {
+		// assert: mapping.operator.isAttributeReference
+		val referenceParticipationRoot = new ParticipationRoot
+		referenceParticipationRoot.referenceMapping = mapping
+
+		// Copy the referenced participation's own root:
+		val referencedParticipation = mapping.referencedParticipation
+		// assert: !referencedParticipation.participationContext.empty (the referenced participation specifies a root
+		// context)
+		val participationRoot = referencedParticipation.participationRoot
+		referenceParticipationRoot.classes += participationRoot.classes
+		referenceParticipationRoot.rootContainments += participationRoot.rootContainments
+		referenceParticipationRoot.boundaryContainments += participationRoot.boundaryContainments
+
+		// Add attribute reference root and containments:
+		referenceParticipationRoot.attributeReferenceRoot = mapping.participationClass
+		referenceParticipationRoot.attributeReferenceContainments += mapping.operatorContainments
+		return referenceParticipationRoot
 	}
 
 	/**
@@ -127,12 +157,25 @@ class ParticipationContextHelper {
 	 * classes. These are the classes for which implicit containment
 	 * relationships with the root specified by the reference mapping exist.
 	 */
-	def private static getReferenceContainments(CommonalityReferenceMapping mapping) {
+	def private static dispatch getReferenceContainments(SimpleReferenceMapping mapping) {
 		val participation = mapping.referencedParticipation
 		// assert: participation != null
-		val container = mapping.reference.participationClass
-		return participation.getNonRootBoundaryClasses.map [ contained |
-			new Containment(contained, container, mapping.reference)
+		val container = mapping.participationClass
+		return participation.nonRootBoundaryClasses.map [ contained |
+			new ReferenceContainment(contained, container, mapping.reference)
+		]
+	}
+
+	def private static dispatch getReferenceContainments(OperatorReferenceMapping mapping) {
+		return mapping.operatorContainments
+	}
+
+	def private static getOperatorContainments(OperatorReferenceMapping mapping) {
+		val operator = mapping.operator
+		val operands = Collections.unmodifiableList(mapping.operands)
+		val container = mapping.participationClass
+		return mapping.referencedParticipationClasses.map [ contained |
+			new OperatorContainment(contained, container, operator, operands)
 		]
 	}
 

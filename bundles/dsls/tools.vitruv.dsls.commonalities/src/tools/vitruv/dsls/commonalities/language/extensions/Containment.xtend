@@ -1,16 +1,18 @@
 package tools.vitruv.dsls.commonalities.language.extensions
 
-import org.eclipse.xtend.lib.annotations.Data
-import tools.vitruv.dsls.commonalities.language.ParticipationAttribute
+import org.eclipse.xtend.lib.annotations.Accessors
+import org.eclipse.xtend.lib.annotations.EqualsHashCode
+import org.eclipse.xtend.lib.annotations.FinalFieldsConstructor
+import org.eclipse.xtend.lib.annotations.ToString
 import tools.vitruv.dsls.commonalities.language.ParticipationClass
 
-@Data
-class Containment {
+@EqualsHashCode
+@ToString
+@FinalFieldsConstructor
+abstract class Containment {
 
+	@Accessors(PUBLIC_GETTER)
 	val ParticipationClass contained
+	@Accessors(PUBLIC_GETTER)
 	val ParticipationClass container
-	/**
-	 * Can be <code>null</code>.
-	 */
-	val ParticipationAttribute reference
 }

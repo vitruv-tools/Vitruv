@@ -35,6 +35,15 @@ import tools.vitruv.dsls.commonalities.language.ParticipationClass
  * roots for the referenced participations. These roots substitute the
  * referenced participation's own root during the matching process.
  * <p>
+ * An exception to this are commonality reference mappings with an 'attribute
+ * reference' operator. These attribute reference operators are used when a
+ * containment relationship is expressed implicitly by the attributes of the
+ * related objects (eg. in Java the relationship between a package and its sub
+ * packages is expressed implicitly by the namespaces and name attributes). The
+ * root for such a commonality reference mapping would be similar to the
+ * participation's own root, except that it additionally specifies an
+ * 'attribute reference root' and 'attribute reference containments'.
+ * <p>
  * It is also possible for a participation to not specify any root (i.e. by not
  * specifying any participation class of type <code>Resource</code>). In that
  * case the participation can only exist in contexts in which its commonality
@@ -72,6 +81,11 @@ class ParticipationRoot {
 	 */
 	@Accessors(PUBLIC_GETTER)
 	val Set<Containment> boundaryContainments = new LinkedHashSet
+
+	@Accessors(PACKAGE_SETTER, PUBLIC_GETTER)
+	var ParticipationClass attributeReferenceRoot = null
+	@Accessors(PUBLIC_GETTER)
+	val Set<OperatorContainment> attributeReferenceContainments = new LinkedHashSet
 
 	/**
 	 * Whether the root is empty.

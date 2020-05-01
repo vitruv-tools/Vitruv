@@ -70,10 +70,10 @@ class ParticipationContext {
 	}
 
 	@Data
-	static class ContextContainment {
+	static class ContextContainment<T extends Containment> {
 		val ContextClass contained
 		val ContextClass container
-		val Containment containment
+		val T containment
 	}
 
 	@Accessors(PUBLIC_GETTER)
@@ -82,13 +82,16 @@ class ParticipationContext {
 	val ParticipationRoot root // not null
 	@Lazy val List<ContextClass> rootClasses = calculateRootClasses()
 	@Lazy val List<ContextClass> nonRootClasses = calculateNonRootClasses()
-	@Lazy val List<ContextContainment> rootContainments = calculateRootContainments()
-	@Lazy val List<ContextContainment> boundaryContainments = calculateBoundaryContainments()
-	@Lazy val List<ContextContainment> nonRootContainments = calculateNonRootContainments()
+	@Lazy val List<ContextContainment<?>> rootContainments = calculateRootContainments()
+	@Lazy val List<ContextContainment<?>> boundaryContainments = calculateBoundaryContainments()
+	@Lazy val List<ContextContainment<?>> nonRootContainments = calculateNonRootContainments()
+
+	@Lazy val ContextClass attributeReferenceRoot = calculateAttributeReferenceRoot()
+	@Lazy val List<ContextContainment<OperatorContainment>> attributeReferenceContainments = calculateAttributeReferenceContainments()
 
 	private def calculateRootClasses() {
 		return Collections.unmodifiableList(root.classes.map [
-			val role = (isForReferenceMapping) ? ParticipationClassRole.EXTERNAL_ROOT : ParticipationClassRole.ROOT
+			val role = (!rootContext) ? ParticipationClassRole.EXTERNAL_ROOT : ParticipationClassRole.ROOT
 			new ContextClass(it, role)
 		].toList)
 	}
@@ -109,24 +112,38 @@ class ParticipationContext {
 
 	private def calculateRootContainments() {
 		return Collections.unmodifiableList(root.rootContainments.map [
-			new ContextContainment(contained.rootClass, container.rootClass, it)
+			new ContextContainment(contained.rootClass, container.rootClass, it) as ContextContainment<?>
 		].toList)
 	}
 
 	private def calculateBoundaryContainments() {
 		return Collections.unmodifiableList(root.boundaryContainments.map [
-			new ContextContainment(contained.nonRootClass, container.rootClass, it)
+			new ContextContainment(contained.nonRootClass, container.rootClass, it) as ContextContainment<?>
 		].toList)
 	}
 
 	private def calculateNonRootContainments() {
 		return Collections.unmodifiableList(participation.nonRootContainments.map [
-			new ContextContainment(contained.nonRootClass, container.nonRootClass, it)
+			new ContextContainment(contained.nonRootClass, container.nonRootClass, it) as ContextContainment<?>
+		].toList)
+	}
+
+	private def calculateAttributeReferenceRoot() {
+		if (root.attributeReferenceRoot === null) return null
+		else {
+			return new ContextClass(root.attributeReferenceRoot, ParticipationClassRole.EXTERNAL_ROOT)
+		}
+	}
+
+	private def calculateAttributeReferenceContainments() {
+		return Collections.unmodifiableList(root.attributeReferenceContainments.map [
+			// assert: attributeReferenceRoot !== null
+			new ContextContainment(contained.nonRootClass, attributeReferenceRoot, it)
 		].toList)
 	}
 
 	def isRootContext() {
-		return !isForReferenceMapping
+		return (!isForReferenceMapping || isForAttributeReferenceMapping)
 	}
 
 	def isForSingletonRoot() {
@@ -135,6 +152,10 @@ class ParticipationContext {
 
 	def isForReferenceMapping() {
 		return (referenceMapping !== null)
+	}
+
+	def isForAttributeReferenceMapping() {
+		return (isForReferenceMapping && attributeReferenceRoot !== null)
 	}
 
 	def getReferenceMapping() {
@@ -151,28 +172,27 @@ class ParticipationContext {
 	 * the referenced commonality is the referencing commonality itself (eg. a
 	 * Package commonality containing other packages as subpackages), the same
 	 * participation class may act as both root and non-root class.
+	 * <p>
+	 * This does not include the attribute reference root class.
 	 */
 	def getClasses() {
 		return rootClasses + nonRootClasses
 	}
 
 	/**
-	 * Gets all participation classes that are managed by the corresponding
-	 * Intermediate.
+	 * Gets all classes that are managed by the corresponding Intermediate.
 	 * <p>
-	 * In the context of a reference mapping this does not include the
-	 * context's root container (since that is managed by another
-	 * Intermediate). For non-reference participation contexts it does include
-	 * the root Resource container class. If the participation has a singleton
-	 * root, the singleton class and its containers are not included.
+	 * In the context of a reference mapping this does not include the external
+	 * reference root class (since that is managed by another Intermediate).
+	 * For root participation contexts it does include the root Resource
+	 * container class. If the participation has a singleton root, the
+	 * singleton root classes are not included.
 	 */
 	def getManagedClasses() {
-		if (forReferenceMapping) {
-			return classes.filter[!isRootContainerClass]
-		} else if (isForSingletonRoot) {
+		if (isForSingletonRoot) {
 			return nonRootClasses
 		} else {
-			return classes
+			return classes.filter[!external]
 		}
 	}
 
@@ -181,11 +201,29 @@ class ParticipationContext {
 	}
 
 	def isRootContainerClass(ContextClass contextClass) {
-		return (contextClass == rootContainerClass)
+		return (contextClass !== null && contextClass === rootContainerClass)
 	}
 
+	def getReferenceRootClass() {
+		if (forAttributeReferenceMapping) {
+			return attributeReferenceRoot
+		} else if (forReferenceMapping) {
+			return rootContainerClass
+		} else {
+			return null
+		}
+	}
+
+	def isReferenceRootClass(ContextClass contextClass) {
+		return (contextClass !== null && contextClass === referenceRootClass)
+	}
+
+	/**
+	 * Gets all containments: Root, boundary, non-root and attribute reference
+	 * containments.
+	 */
 	def getContainments() {
-		return rootContainments + boundaryContainments + nonRootContainments
+		return rootContainments + boundaryContainments + nonRootContainments + attributeReferenceContainments
 	}
 
 	/**
@@ -198,7 +236,7 @@ class ParticipationContext {
 	def getManagedContainments() {
 		if (isForSingletonRoot) {
 			// Omit the root containments, since those are handled by the singleton root:
-			return boundaryContainments + nonRootContainments
+			return boundaryContainments + nonRootContainments + attributeReferenceContainments
 		} else {
 			return containments
 		}

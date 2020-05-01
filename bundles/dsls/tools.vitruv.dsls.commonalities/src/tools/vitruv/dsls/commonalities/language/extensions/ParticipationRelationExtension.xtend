@@ -13,7 +13,7 @@ package class ParticipationRelationExtension {
 		return relation.operator.isContainment
 	}
 
-	def static getContainments(ParticipationRelation relation) {
+	def static Iterable<Containment> getContainments(ParticipationRelation relation) {
 		if (!relation.isContainment) {
 			return Collections.emptyList()
 		}
@@ -22,7 +22,7 @@ package class ParticipationRelationExtension {
 			return Collections.emptyList()
 		}
 		return relation.leftClasses.map [ contained |
-			new Containment(contained, container, null)
+			new ReferenceContainment(contained, container, null)
 		]
 	}
 }

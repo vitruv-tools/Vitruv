@@ -4,7 +4,7 @@ import java.util.HashMap
 import java.util.Map
 import org.eclipse.emf.ecore.EClass
 import org.eclipse.emf.ecore.EReference
-import tools.vitruv.dsls.commonalities.language.extensions.Containment
+import tools.vitruv.dsls.commonalities.language.extensions.ReferenceContainment
 import tools.vitruv.extensions.dslruntime.commonalities.operators.participation.relation.ContainmentOperator
 
 @GenerationScoped
@@ -13,9 +13,9 @@ package class ContainmentHelper extends GenerationHelper {
 	package new() {
 	}
 
-	val Map<Containment, EReference> containmentReferences = new HashMap
+	val Map<ReferenceContainment, EReference> containmentReferences = new HashMap
 
-	def getEReference(Containment containment) {
+	def getEReference(ReferenceContainment containment) {
 		return containmentReferences.computeIfAbsent(containment) [
 			val containerEClass = container.changeClass
 			val containedEClass = contained.changeClass

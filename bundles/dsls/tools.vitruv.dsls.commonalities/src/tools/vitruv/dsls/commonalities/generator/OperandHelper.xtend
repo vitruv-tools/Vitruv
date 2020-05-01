@@ -7,6 +7,8 @@ import tools.vitruv.dsls.commonalities.language.LiteralOperand
 import tools.vitruv.dsls.commonalities.language.ParticipationAttributeOperand
 import tools.vitruv.dsls.commonalities.language.ParticipationClassOperand
 import tools.vitruv.dsls.commonalities.language.ParticipationConditionOperand
+import tools.vitruv.dsls.commonalities.language.ReferenceMappingOperand
+import tools.vitruv.dsls.commonalities.language.ReferencedParticipationAttributeOperand
 import tools.vitruv.dsls.reactions.builder.TypeProvider
 import tools.vitruv.extensions.dslruntime.commonalities.operators.participation.condition.AttributeOperand
 
@@ -45,7 +47,15 @@ package class OperandHelper extends ReactionsGenerationHelper {
 		]
 	}
 
+	def dispatch getOperandExpression(ReferencedParticipationAttributeOperand operand, extension TypeProvider typeProvider) {
+		return null
+	}
+
 	def dispatch getOperandExpression(ParticipationConditionOperand operand, extension TypeProvider typeProvider) {
 		throw new IllegalStateException("Unhandled ParticipationConditionOperand type: " + operand.class.name)
+	}
+
+	def dispatch getOperandExpression(ReferenceMappingOperand operand, extension TypeProvider typeProvider) {
+		throw new IllegalStateException("Unhandled ReferenceMappingOperand type: " + operand.class.name)
 	}
 }

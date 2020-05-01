@@ -7,6 +7,7 @@ import java.util.Optional
 import org.eclipse.emf.ecore.util.EcoreUtil
 import org.eclipse.xtext.common.types.JvmDeclaredType
 import org.eclipse.xtext.common.types.JvmIdentifiableElement
+import org.eclipse.xtext.common.types.JvmTypeReference
 import org.eclipse.xtext.common.types.access.IJvmTypeProvider
 import org.eclipse.xtext.xbase.XAbstractFeatureCall
 import org.eclipse.xtext.xbase.XBlockExpression
@@ -158,6 +159,13 @@ package class XbaseHelper {
 
 	def static notEqualsNull(XExpression leftOperand, IJvmTypeProvider typeProvider) {
 		return leftOperand.notEquals(nullLiteral, typeProvider)
+	}
+
+	def static isInstanceOf(XExpression leftOperand, JvmTypeReference type) {
+		return XbaseFactory.eINSTANCE.createXInstanceOfExpression => [
+			expression = leftOperand
+			it.type = type
+		]
 	}
 
 	def static optionalIsPresent(XAbstractFeatureCall optional, IJvmTypeProvider typeProvider) {

@@ -12,7 +12,7 @@ package class CommonalityReferenceI extends CommonalityReferenceImpl {
 	}
 
 	override isMultiValued() {
-		getMappings().containsAny[reference.isMultiValued]
+		getMappings().containsAny[it.isMultiValued]
 	}
 
 	override getType() {

@@ -255,4 +255,12 @@ package class EmfAccessExpressions {
 			)
 		]
 	}
+
+	def static getEContainer(extension TypeProvider typeProvider, XAbstractFeatureCall element) {
+		XbaseFactory.eINSTANCE.createXMemberFeatureCall => [
+			memberCallTarget = element
+			explicitOperationCall = true
+			feature = typeProvider.findMethod(EObject, 'eContainer', 0)
+		]
+	}
 }
