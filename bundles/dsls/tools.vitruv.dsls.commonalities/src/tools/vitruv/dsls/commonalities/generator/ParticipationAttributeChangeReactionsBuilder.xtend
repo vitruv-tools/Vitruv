@@ -1,10 +1,9 @@
 package tools.vitruv.dsls.commonalities.generator
 
-import java.util.Collections
+import com.google.inject.Inject
+import tools.vitruv.dsls.commonalities.language.Commonality
 import tools.vitruv.dsls.commonalities.language.CommonalityAttributeMapping
 import tools.vitruv.dsls.commonalities.language.Participation
-import tools.vitruv.dsls.commonalities.language.elements.EClassAdapter
-import tools.vitruv.dsls.commonalities.language.elements.EDataTypeAdapter
 import tools.vitruv.dsls.reactions.builder.FluentReactionsSegmentBuilder
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.RoutineStartBuilder
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.UndecidedMatcherStatementBuilder
@@ -23,87 +22,50 @@ package class ParticipationAttributeChangeReactionsBuilder extends ReactionsSubG
 		}
 	}
 
+	@Inject extension AttributeChangeReactionsHelper attributeChangeReactionsHelper
+
 	val Participation participation
+	val Commonality commonality
 
 	private new(Participation participation) {
 		checkNotNull(participation, "participation is null")
 		this.participation = participation
+		this.commonality = participation.containingCommonality
 	}
 
 	// Dummy constructor for Guice
 	package new() {
 		this.participation = null
+		this.commonality = null
 		throw new IllegalStateException("Use the Factory to create instances of this class!")
 	}
 
-	def package void generateReactions(FluentReactionsSegmentBuilder segment) {
-		segment += commonality.attributes.flatMap[mappings].filter [
+	def private getRelevantMappings() {
+		return commonality.attributes.flatMap[mappings].filter [
 			isRead && it.participation == participation
-		].flatMap[reactionsForAttributeMappingRightChange]
+		]
+	}
+
+	def package void generateReactions(FluentReactionsSegmentBuilder segment) {
+		segment += relevantMappings.flatMap[reactionsForAttributeMappingRightChange]
 	}
 
 	def private reactionsForAttributeMappingRightChange(CommonalityAttributeMapping mapping) {
-		switch (mapping.attribute.type) {
-			EDataTypeAdapter case !mapping.attribute.isMultiValued:
-				Collections.singleton(singleAttributeSetReaction(mapping))
-
-			EDataTypeAdapter case mapping.attribute.isMultiValued:
-				#[multiAttributeAddReaction(mapping), multiAttributeRemoveReaction(mapping)]
-
-			EClassAdapter case !mapping.attribute.isMultiValued:
-				Collections.singleton(singleReferenceSetReaction(mapping))
-
-			EClassAdapter case mapping.attribute.isMultiValued:
-				#[multiReferenceAddReaction(mapping), multiReferenceRemoveReaction(mapping)]
-		}
-	}
-
-	def private singleAttributeSetReaction(CommonalityAttributeMapping mapping) {
-		create.reaction('''«mapping.participationAttributeReactionName»Change''')
-			.afterAttributeReplacedAt(mapping.participationChangeClass, mapping.participationEAttribute)
-			.call [
-				buildSingleFeatureSetRoutine(mapping)
+		return mapping.attribute.getAttributeChangeReactions [ changeType , it |
+			call [
+				switch (changeType) {
+					case VALUE_REPLACED: {
+						buildSingleFeatureSetRoutine(mapping)
+					}
+					case VALUE_INSERTED: {
+						buildMultiFeatureAddRoutine(mapping)
+					}
+					case VALUE_REMOVED: {
+						buildMultiFeatureRemoveRoutine(mapping)
+					}
+				}
 			]
-	}
-
-	def private multiAttributeAddReaction(CommonalityAttributeMapping mapping) {
-		create.reaction('''«mapping.participationAttributeReactionName»Insert''')
-			.afterAttributeInsertIn(mapping.participationChangeClass, mapping.participationEAttribute)
-			.call [
-				buildMultiFeatureAddRoutine(mapping)
-			]
-	}
-
-	def private multiAttributeRemoveReaction(CommonalityAttributeMapping mapping) {
-		create.reaction('''«mapping.participationAttributeReactionName»Remove''')
-			.afterAttributeRemoveFrom(mapping.participationChangeClass, mapping.participationEAttribute)
-			.call [
-				buildMultiFeatureRemoveRoutine(mapping)
-			]
-	}
-
-	def private singleReferenceSetReaction(CommonalityAttributeMapping mapping) {
-		create.reaction('''«mapping.participationAttributeReactionName»Change''')
-			.afterElement.replacedAt(mapping.participationChangeClass, mapping.participationEReference)
-			.call [
-				buildSingleFeatureSetRoutine(mapping)
-			]
-	}
-
-	def private multiReferenceAddReaction(CommonalityAttributeMapping mapping) {
-		create.reaction('''«mapping.participation.name»«mapping.attribute.name.toFirstUpper»Insert''')
-			.afterElement.insertedIn(mapping.participationChangeClass, mapping.participationEReference)
-			.call [
-				buildMultiFeatureAddRoutine(mapping)
-			]
-	}
-
-	def private multiReferenceRemoveReaction(CommonalityAttributeMapping mapping) {
-		create.reaction('''«mapping.participationAttributeReactionName»Remove''').
-			afterElement.removedFrom(mapping.participationChangeClass, mapping.participationEReference)
-			.call [
-				buildMultiFeatureRemoveRoutine(mapping)
-			]
+		]
 	}
 
 	def private buildSingleFeatureSetRoutine(extension RoutineStartBuilder routineBuilder,
@@ -147,7 +109,7 @@ package class ParticipationAttributeChangeReactionsBuilder extends ReactionsSubG
 
 	def private retrieveIntermediate(extension UndecidedMatcherStatementBuilder builder,
 		CommonalityAttributeMapping mapping) {
-		val commonality = mapping.containingCommonality
+		// assert: mapping.participation == participation && mapping.containingCommonality == commonality
 		val participationClass = mapping.attribute.participationClass
 		vall(INTERMEDIATE).retrieve(commonality.changeClass)
 			.correspondingTo.affectedEObject

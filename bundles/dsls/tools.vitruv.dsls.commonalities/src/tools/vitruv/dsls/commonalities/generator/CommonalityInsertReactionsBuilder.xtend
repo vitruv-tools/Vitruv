@@ -99,7 +99,7 @@ package class CommonalityInsertReactionsBuilder extends ReactionsSubGenerator {
 			val referencingCommonality = reference.containingCommonality
 			reaction = create.reaction('''«commonality.concept.name»_«commonality.name»_insertedAt_«
 				referencingCommonality.name»_«reference.name»«participationContext.reactionNameSuffix»''')
-				.afterElement(commonality.changeClass).insertedIn(reference.commonalityEReference)
+				.afterElement(commonality.changeClass).insertedIn(reference.correspondingEReference)
 		} else {
 			reaction = create.reaction('''«commonality.concept.name»_«commonality.name»_insertedAtRoot«
 				participationContext.reactionNameSuffix»''')
@@ -321,7 +321,7 @@ package class CommonalityInsertReactionsBuilder extends ReactionsSubGenerator {
 			val referencingCommonality = reference.containingCommonality
 			reaction = create.reaction('''«commonality.concept.name»_«commonality.name»_removedFrom«
 				referencingCommonality.name»_«reference.name»«participationContext.reactionNameSuffix»''')
-				.afterElement(commonality.changeClass).removedFrom(reference.commonalityEReference)
+				.afterElement(commonality.changeClass).removedFrom(reference.correspondingEReference)
 		} else {
 			reaction = create.reaction('''«commonality.concept.name»_«commonality.name»_removedFromRoot«
 				participationContext.reactionNameSuffix»''')

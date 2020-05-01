@@ -558,7 +558,7 @@ package class ParticipationMatchingReactionsBuilder extends ReactionsGenerationH
 		val referencedCommonality = reference.referenceType
 		val referencingCommonality = reference.containingCommonality
 		return insertReferencedIntermediateRoutines.computeIfAbsent(reference) [
-			create.routine('''insertReferencedIntermediate_«reference.commonalityAttributeReactionName»''')
+			create.routine('''insertReferencedIntermediate_«reference.reactionName»''')
 				.input [
 					model(referencedCommonality.changeClass, REFERENCED_INTERMEDIATE)
 					model(EcorePackage.eINSTANCE.EObject, PARTICIPATION_CONTEXT_ROOT)
@@ -568,9 +568,11 @@ package class ParticipationMatchingReactionsBuilder extends ReactionsGenerationH
 				].action [
 					update(INTERMEDIATE) [
 						if (reference.isMultiValued) {
-							addToListFeatureValue(variable(INTERMEDIATE), reference.commonalityEReference, variable(REFERENCED_INTERMEDIATE))
+							addToListFeatureValue(variable(INTERMEDIATE), reference.correspondingEReference,
+								variable(REFERENCED_INTERMEDIATE))
 						} else {
-							setFeatureValue(variable(INTERMEDIATE), reference.commonalityEReference, variable(REFERENCED_INTERMEDIATE))
+							setFeatureValue(variable(INTERMEDIATE), reference.correspondingEReference,
+								variable(REFERENCED_INTERMEDIATE))
 						}
 					]
 				]

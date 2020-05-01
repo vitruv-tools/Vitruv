@@ -17,14 +17,14 @@ import tools.vitruv.dsls.commonalities.language.CommonalityAttribute
 import tools.vitruv.dsls.commonalities.language.CommonalityAttributeMapping
 import tools.vitruv.dsls.commonalities.language.CommonalityFile
 import tools.vitruv.dsls.commonalities.language.CommonalityReference
-import tools.vitruv.dsls.commonalities.language.CommonalityReferenceMapping
 import tools.vitruv.dsls.commonalities.language.Concept
 import tools.vitruv.dsls.commonalities.language.ParticipationAttribute
 import tools.vitruv.dsls.commonalities.language.ParticipationClass
+import tools.vitruv.dsls.commonalities.language.elements.Attribute
+import tools.vitruv.dsls.commonalities.language.elements.ClassLike
 import tools.vitruv.dsls.commonalities.language.elements.Domain
 import tools.vitruv.dsls.commonalities.language.elements.EClassAdapter
 import tools.vitruv.dsls.commonalities.language.elements.EFeatureAdapter
-import tools.vitruv.dsls.commonalities.language.elements.Metaclass
 import tools.vitruv.dsls.commonalities.language.elements.ResourceMetaclass
 import tools.vitruv.dsls.commonalities.language.elements.VitruvDomainAdapter
 import tools.vitruv.extensions.dslruntime.commonalities.resources.ResourcesPackage
@@ -116,28 +116,24 @@ package class GenerationContext {
 		])
 	}
 
-	def package getChangeClass(Commonality commonality) {
+	def package dispatch EClass getChangeClass(Commonality commonality) {
 		commonality.intermediateModelClass
 	}
 
-	def package getChangeClass(ParticipationClass participationClass) {
-		participationClass.superMetaclass.findChangeClass
+	def package dispatch EClass getChangeClass(ParticipationClass participationClass) {
+		participationClass.superMetaclass.changeClass
 	}
 
-	def package getChangeClass(Metaclass metaclass) {
-		metaclass.findChangeClass
-	}
-
-	def private dispatch findChangeClass(Commonality commonality) {
-		commonality.changeClass
-	}
-
-	def private dispatch findChangeClass(EClassAdapter eClassAdapter) {
+	def package dispatch EClass getChangeClass(EClassAdapter eClassAdapter) {
 		eClassAdapter.wrapped
 	}
 
-	def private dispatch findChangeClass(ResourceMetaclass resourceMetaclass) {
+	def package dispatch EClass getChangeClass(ResourceMetaclass resourceMetaclass) {
 		ResourcesPackage.eINSTANCE.intermediateResourceBridge
+	}
+
+	def package dispatch EClass getChangeClass(ClassLike classLike) {
+		throw new IllegalStateException("Unhandled ClassLike: " + classLike.class.name)
 	}
 
 	def package getIntermediateModelPackage(Concept concept) {
@@ -207,6 +203,18 @@ package class GenerationContext {
 		reference.containingCommonality.intermediateModelClass.getEStructuralFeature(reference.name)
 	}
 
+	def package dispatch EStructuralFeature getCorrespondingEFeature(Attribute attribute) {
+		throw new IllegalStateException("Unhandled Attribute type: " + attribute.class.name)
+	}
+
+	def package EAttribute getCorrespondingEAttribute(Attribute attribute) {
+		attribute.correspondingEFeature as EAttribute
+	}
+
+	def package EReference getCorrespondingEReference(Attribute attribute) {
+		attribute.correspondingEFeature as EReference
+	}
+
 	def package getVitruvDomain(Domain domain) {
 		domain.findVitruvDomain
 	}
@@ -229,43 +237,11 @@ package class GenerationContext {
 		new ConceptDomain(conceptName, ePackage)
 	}
 
-	def package getParticipationChangeClass(CommonalityAttributeMapping mapping) {
-		mapping.attribute.participationClass.changeClass
-	}
-
 	def package getCommonalityEFeature(CommonalityAttributeMapping mapping) {
 		mapping.declaringAttribute.correspondingEFeature
 	}
 
 	def package getParticipationEFeature(CommonalityAttributeMapping mapping) {
 		mapping.attribute.correspondingEFeature
-	}
-
-	def package getParticipationEReference(CommonalityAttributeMapping mapping) {
-		mapping.participationEFeature as EReference
-	}
-
-	def package getParticipationEAttribute(CommonalityAttributeMapping mapping) {
-		mapping.participationEFeature as EAttribute
-	}
-
-	def package getParticipationChangeClass(CommonalityReferenceMapping mapping) {
-		mapping.reference.participationClass.changeClass
-	}
-
-	def package getCommonalityEReference(CommonalityReference reference) {
-		reference.correspondingEFeature as EReference
-	}
-
-	def package getCommonalityEReference(CommonalityReferenceMapping mapping) {
-		mapping.declaringReference.commonalityEReference
-	}
-
-	def package getParticipationEFeature(CommonalityReferenceMapping mapping) {
-		mapping.reference.correspondingEFeature
-	}
-
-	def package getParticipationEReference(CommonalityReferenceMapping mapping) {
-		mapping.participationEFeature as EReference
 	}
 }

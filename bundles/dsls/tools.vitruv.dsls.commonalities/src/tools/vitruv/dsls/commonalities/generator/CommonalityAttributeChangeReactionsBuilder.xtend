@@ -1,18 +1,17 @@
 package tools.vitruv.dsls.commonalities.generator
 
+import com.google.inject.Inject
+import edu.kit.ipd.sdq.activextendannotations.Lazy
 import java.util.List
 import java.util.function.Function
-import org.eclipse.emf.ecore.EAttribute
-import org.eclipse.emf.ecore.EReference
 import org.eclipse.xtext.xbase.XAbstractFeatureCall
 import org.eclipse.xtext.xbase.XExpression
 import org.eclipse.xtext.xbase.XbaseFactory
 import tools.vitruv.dsls.commonalities.language.CommonalityAttribute
 import tools.vitruv.dsls.commonalities.language.CommonalityAttributeMapping
 import tools.vitruv.dsls.commonalities.language.Participation
-import tools.vitruv.dsls.commonalities.language.elements.EClassAdapter
-import tools.vitruv.dsls.commonalities.language.elements.EDataTypeAdapter
 import tools.vitruv.dsls.reactions.builder.FluentReactionsSegmentBuilder
+import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.RoutineStartBuilder
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.UndecidedMatcherStatementBuilder
 import tools.vitruv.dsls.reactions.builder.TypeProvider
 
@@ -32,9 +31,12 @@ package class CommonalityAttributeChangeReactionsBuilder extends ReactionsSubGen
 		}
 	}
 
+	@Inject extension AttributeChangeReactionsHelper attributeChangeReactionsHelper
+	@Inject extension ParticipationObjectsRetrievalHelper participationObjectsRetrievalHelper
+
 	val CommonalityAttribute attribute
 	val Participation targetParticipation
-	List<CommonalityAttributeMapping> relevantMappings
+	@Lazy val List<CommonalityAttributeMapping> relevantMappings = calculateRelevantMappings()
 
 	private new(CommonalityAttribute attribute, Participation targetParticipation) {
 		checkNotNull(attribute, "attribute is null")
@@ -50,22 +52,33 @@ package class CommonalityAttributeChangeReactionsBuilder extends ReactionsSubGen
 		throw new IllegalStateException("Use the Factory to create instances of this class!")
 	}
 
-	def package void generateReactions(FluentReactionsSegmentBuilder segment) {
-		relevantMappings = attribute.mappings.filter [
-			isWrite && participation == targetParticipation
+	def private calculateRelevantMappings() {
+		return attribute.mappings.filter [
+			isWrite && it.participation == targetParticipation
 		].toList
-		if (relevantMappings.size === 0) return;
+	}
 
-		switch attribute.type {
-			EDataTypeAdapter case !attribute.isMultiValued:
-				segment += singleAttributeSetReaction
-			EDataTypeAdapter case attribute.isMultiValued:
-				segment += #[multiAttributeAddReaction, multiAttributeRemoveReaction]
-			EClassAdapter case !attribute.isMultiValued:
-				segment += singleReferenceSetReaction
-			EClassAdapter case attribute.isMultiValued:
-				segment += #[multiReferenceAddReaction, multiReferenceRemoveReaction]
-		}
+	def package void generateReactions(FluentReactionsSegmentBuilder segment) {
+		if (relevantMappings.size === 0) return;
+		segment += reactionsForCommonalityAttributeChange
+	}
+
+	def private reactionsForCommonalityAttributeChange() {
+		return attribute.getAttributeChangeReactions [ changeType , it |
+			call [
+				switch (changeType) {
+					case VALUE_REPLACED: {
+						buildSingleFeatureSetRoutine
+					}
+					case VALUE_INSERTED: {
+						buildMultiFeatureAddRoutine
+					}
+					case VALUE_REMOVED: {
+						buildMultiFeatureRemoveRoutine
+					}
+				}
+			]
+		]
 	}
 
 	def private applyAttributeChange(extension TypeProvider typeProvider, CommonalityAttributeMapping mapping,
@@ -84,150 +97,76 @@ package class CommonalityAttributeChangeReactionsBuilder extends ReactionsSubGen
 		}
 	}
 
-	def private singleAttributeSetReaction() {
-		create.reaction('''«attribute.commonalityAttributeReactionName»Change''')
-			.afterAttributeReplacedAt(attribute.correspondingEFeature as EAttribute)
-			.call [
-				input [newValue]
-				.match [
-					retrieveRelevantCorrespondences()
+	def private buildSingleFeatureSetRoutine(extension RoutineStartBuilder routineBuilder) {
+		input [
+			affectedEObject
+			newValue
+		]
+		.match [
+			retrieveRelevantCorrespondences()
+		]
+		.action [
+			for (mapping : relevantMappings) {
+				val corresponding = mapping.correspondingVariableName
+				update(corresponding) [
+					applyAttributeChange(mapping) [ objectVar |
+						setFeatureValue(objectVar, mapping.participationEFeature, newValue)
+					]
 				]
-				.action [
-					for (mapping : relevantMappings) {
-						val corresponding = mapping.correspondingVariableName
-						update(corresponding) [
-							applyAttributeChange(mapping) [ objectVar |
-								setFeatureValue(objectVar, mapping.participationEFeature, newValue)
-							]
-						]
-					}
-				]
+			}
 		]
 	}
 
-	def private multiAttributeAddReaction() {
-		create.reaction('''«attribute.commonalityAttributeReactionName»Insert''')
-			.afterAttributeInsertIn(attribute.correspondingEFeature as EAttribute)
-			.call [
-				input [newValue]
-				.match [
-					retrieveRelevantCorrespondences()
+	def private buildMultiFeatureAddRoutine(extension RoutineStartBuilder routineBuilder) {
+		input [
+			affectedEObject
+			newValue
+		]
+		.match [
+			retrieveRelevantCorrespondences()
+		]
+		.action [
+			for (mapping : relevantMappings) {
+				val corresponding = mapping.correspondingVariableName
+				update(corresponding) [
+					applyAttributeChange(mapping) [ objectVar |
+						addToListFeatureValue(objectVar, mapping.participationEFeature, newValue)
+					]
 				]
-				.action [
-					for (mapping : relevantMappings) {
-						val corresponding = mapping.correspondingVariableName
-						update(corresponding) [
-							applyAttributeChange(mapping) [ objectVar |
-								addToListFeatureValue(objectVar, mapping.participationEFeature, newValue)
-							]
-						]
-					}
-				]
-			]
+			}
+		]
 	}
 
-	def private multiAttributeRemoveReaction() {
-		create.reaction('''«attribute.commonalityAttributeReactionName»Remove''')
-			.afterAttributeRemoveFrom(attribute.correspondingEFeature as EAttribute)
-			.call [
-				input [oldValue]
-				.match [
-					retrieveRelevantCorrespondences()
+	def private buildMultiFeatureRemoveRoutine(extension RoutineStartBuilder routineBuilder) {
+		input [
+			affectedEObject
+			oldValue
+		]
+		.match [
+			retrieveRelevantCorrespondences()
+		]
+		.action [
+			for (mapping : relevantMappings) {
+				val corresponding = mapping.correspondingVariableName
+				update(corresponding) [
+					applyAttributeChange(mapping) [ objectVar |
+						removeFromListFeatureValue(objectVar, mapping.participationEFeature, oldValue)
+					]
 				]
-				.action [
-					for (mapping : relevantMappings) {
-						val corresponding = mapping.correspondingVariableName
-						update(corresponding) [
-							applyAttributeChange(mapping) [ objectVar |
-								removeFromListFeatureValue(objectVar, mapping.participationEFeature, oldValue)
-							]
-						]
-					}
-				]
-			]
-	}
-
-	def private singleReferenceSetReaction() {
-		create.reaction('''«attribute.commonalityAttributeReactionName»Change''')
-			.afterElement.replacedAt(attribute.correspondingEFeature as EReference)
-			.call [
-				input [newValue]
-				.match [
-					retrieveRelevantCorrespondences()
-				]
-				.action [
-					for (mapping : relevantMappings) {
-						val corresponding = mapping.correspondingVariableName
-						update(corresponding) [
-							applyAttributeChange(mapping) [ objectVar |
-								setFeatureValue(objectVar, mapping.participationEFeature, newValue)
-							]
-						]
-					}
-				]
-			]
-	}
-
-	def private multiReferenceAddReaction() {
-		create.reaction('''«attribute.commonalityAttributeReactionName»ElementInsert''')
-			.afterElement.insertedIn(attribute.correspondingEFeature as EReference)
-			.call [
-				input [newValue]
-				.match [
-					retrieveRelevantCorrespondences()
-				]
-				.action [
-					for (mapping : relevantMappings) {
-						val corresponding = mapping.correspondingVariableName
-						update(corresponding) [
-							applyAttributeChange(mapping) [ objectVar |
-								addToListFeatureValue(objectVar, mapping.participationEFeature, newValue)
-							]
-						]
-					}
-				]
-			]
-	}
-
-	def private multiReferenceRemoveReaction() {
-		create.reaction('''«attribute.commonalityAttributeReactionName»ElementRemove''')
-			.afterElement.removedFrom(attribute.correspondingEFeature as EReference)
-			.call [
-				input [oldValue]
-				.match [
-					retrieveRelevantCorrespondences()
-				]
-				.action [
-					for (mapping : relevantMappings) {
-						val corresponding = mapping.correspondingVariableName
-						update(corresponding) [
-							applyAttributeChange(mapping) [ objectVar |
-								removeFromListFeatureValue(objectVar, mapping.participationEFeature, oldValue)
-							]
-						]
-					}
-				]
-			]
+			}
+		]
 	}
 
 	def private retrieveRelevantCorrespondences(extension UndecidedMatcherStatementBuilder matcherBuilder) {
 		for (mapping : relevantMappings) {
 			val participationClass = mapping.attribute.participationClass
-			if (participationClass.isRootClass) {
-				// Note: Depending on the context in which the participation
-				// exists, the participation's root object(s) may not exist.
-				vall(participationClass.correspondingVariableName).retrieveOptional(participationClass.changeClass)
-					.correspondingTo.affectedEObject
-					.taggedWith(participationClass.correspondenceTag)
-			} else {
-				vall(participationClass.correspondingVariableName).retrieveAsserted(participationClass.changeClass)
-					.correspondingTo.affectedEObject
-					.taggedWith(participationClass.correspondenceTag)
-			}
+			matcherBuilder.retrieveParticipationObject(participationClass) [
+				affectedEObject // correspondence source
+			]
 		}
 	}
 
-	def private correspondingVariableName(CommonalityAttributeMapping mappingSpecification) {
-		mappingSpecification.attribute.participationClass.correspondingVariableName
+	def private getCorrespondingVariableName(CommonalityAttributeMapping mapping) {
+		return mapping.attribute.participationClass.correspondingVariableName
 	}
 }

@@ -2,12 +2,9 @@ package tools.vitruv.dsls.commonalities.generator
 
 import edu.kit.ipd.sdq.activextendannotations.Utility
 import tools.vitruv.dsls.commonalities.language.Commonality
-import tools.vitruv.dsls.commonalities.language.CommonalityAttribute
-import tools.vitruv.dsls.commonalities.language.CommonalityAttributeMapping
-import tools.vitruv.dsls.commonalities.language.CommonalityReference
 import tools.vitruv.dsls.commonalities.language.CommonalityReferenceMapping
-import tools.vitruv.dsls.commonalities.language.ParticipationAttribute
 import tools.vitruv.dsls.commonalities.language.ParticipationClass
+import tools.vitruv.dsls.commonalities.language.elements.Attribute
 import tools.vitruv.dsls.commonalities.language.extensions.ParticipationContext
 import tools.vitruv.dsls.commonalities.language.extensions.ParticipationContext.ContextClass
 
@@ -55,24 +52,10 @@ package class ReactionsGeneratorConventions {
 		'''«commonality.concept.name».«commonality.name»/«participationClass.participation.name».«participationClass.name»'''
 	}
 
-	def static package String getParticipationAttributeReactionName(CommonalityAttributeMapping mapping) {
-		mappingAttributeReactionName(mapping.attribute)
-	}
-
-	def static package String getParticipationAttributeReactionName(CommonalityReferenceMapping mapping) {
-		mappingAttributeReactionName(mapping.reference)
-	}
-
-	def static private String mappingAttributeReactionName(ParticipationAttribute attribute) {
-		'''«attribute.participationClass.participation.name»_«attribute.participationClass.name.toFirstUpper»«attribute.attribute.name.toFirstUpper»'''
-	}
-
-	def static package String getCommonalityAttributeReactionName(CommonalityAttribute attribute) {
-		'''«attribute.containingCommonalityFile.concept.name»_«attribute.containingCommonalityFile.commonality.name.toFirstUpper»«attribute.name.toFirstUpper»'''
-	}
-
-	def static package String getCommonalityAttributeReactionName(CommonalityReference reference) {
-		'''«reference.containingCommonalityFile.concept.name»_«reference.containingCommonalityFile.commonality.name.toFirstUpper»«reference.name.toFirstUpper»'''
+	def static package String getReactionName(Attribute attribute) {
+		val classLike = attribute.classLikeContainer
+		val packageLike = classLike.packageLikeContainer
+		'''«packageLike.name»_«classLike.name.toFirstUpper»«attribute.name.toFirstUpper»'''
 	}
 
 	def static package String getReactionName(CommonalityReferenceMapping mapping) {
