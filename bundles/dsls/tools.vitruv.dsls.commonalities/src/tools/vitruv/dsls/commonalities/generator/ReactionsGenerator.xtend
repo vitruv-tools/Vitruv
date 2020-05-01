@@ -30,7 +30,7 @@ package class ReactionsGenerator extends SubGenerator {
 	@Inject ParticipationAttributeChangeReactionsBuilder.Factory participationAttributeChangeReactionsBuilder
 
 	override generate() {
-		logger.debug('''Generating reactions for commonality «commonalityFile.concept.name»::«commonality.name»''')
+		logger.debug('''Generating reactions for commonality «commonality»''')
 		if (commonality.participations.length + commonality.allMembers.length == 0) {
 			// nothing to generate
 			logger.debug("  Ignoring empty commonality")

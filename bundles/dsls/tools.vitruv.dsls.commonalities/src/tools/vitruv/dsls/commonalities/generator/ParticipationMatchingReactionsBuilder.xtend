@@ -186,13 +186,15 @@ package class ParticipationMatchingReactionsBuilder extends ReactionsGenerationH
 	def package void generateReactions(ParticipationContext participationContext) {
 		if (participationContext.forReferenceMapping) {
 			val mapping = participationContext.referenceMapping
+			val reference = mapping.declaringReference
 			val commonality = participationContext.referencingCommonality
-			logger.debug('''Commonality «commonality»: Generating matching reactions for reference «
-				mapping.declaringReference.name» and mapping of participation «mapping.participation.name»''')
+			logger.debug('''Commonality «commonality»: Generating matching reactions for reference «reference.name
+				» and mapping of participation «mapping.participation»''')
 		} else {
 			val participation = participationContext.participation
 			val commonality = participation.containingCommonality
-			logger.debug('''Commonality «commonality»: Generating matching reactions for participation «participation.name»''')
+			logger.debug('''Commonality «commonality»: Generating matching reactions for participation «
+				participation.name»''')
 		}
 
 		participationContext.generateRoutines
