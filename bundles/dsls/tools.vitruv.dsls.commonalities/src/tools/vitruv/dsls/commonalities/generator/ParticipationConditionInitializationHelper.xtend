@@ -1,32 +1,26 @@
 package tools.vitruv.dsls.commonalities.generator
 
+import com.google.inject.Inject
 import java.util.List
 import java.util.function.Function
-import org.eclipse.emf.ecore.EObject
-import org.eclipse.emf.ecore.EStructuralFeature
 import org.eclipse.xtext.xbase.XExpression
 import org.eclipse.xtext.xbase.XbaseFactory
-import tools.vitruv.dsls.commonalities.language.LiteralOperand
-import tools.vitruv.dsls.commonalities.language.ParticipationAttributeOperand
-import tools.vitruv.dsls.commonalities.language.ParticipationClassOperand
 import tools.vitruv.dsls.commonalities.language.ParticipationCondition
-import tools.vitruv.dsls.commonalities.language.ParticipationConditionOperand
 import tools.vitruv.dsls.commonalities.language.extensions.ParticipationContext
 import tools.vitruv.dsls.commonalities.language.extensions.ParticipationContext.ContextClass
 import tools.vitruv.dsls.reactions.builder.TypeProvider
-import tools.vitruv.extensions.dslruntime.commonalities.operators.participation.condition.AttributeOperand
 
-import static tools.vitruv.dsls.commonalities.generator.EmfAccessExpressions.*
+import static tools.vitruv.dsls.commonalities.generator.XbaseHelper.*
 
 import static extension tools.vitruv.dsls.commonalities.generator.JvmTypeProviderHelper.*
-import static extension tools.vitruv.dsls.commonalities.generator.ReactionsGeneratorConventions.*
-import static extension tools.vitruv.dsls.commonalities.generator.XbaseHelper.*
 import static extension tools.vitruv.dsls.commonalities.language.extensions.CommonalitiesLanguageModelExtensions.*
 
 @GenerationScoped
 package class ParticipationConditionInitializationHelper extends ReactionsGenerationHelper {
 
 	static val CONDITION_ENFORCE_METHOD = 'enforce'
+
+	@Inject extension OperandHelper operandHelper
 
 	package new() {
 	}
@@ -78,36 +72,5 @@ package class ParticipationConditionInitializationHelper extends ReactionsGenera
 				]
 			)
 		]
-	}
-
-	def private dispatch getOperandExpression(LiteralOperand operand,
-		extension TypeProvider typeProvider) {
-		return operand.expression
-	}
-
-	def private dispatch getOperandExpression(ParticipationClassOperand operand,
-		extension TypeProvider typeProvider) {
-		return variable(operand.participationClass.correspondingVariableName)
-	}
-
-	def private dispatch getOperandExpression(ParticipationAttributeOperand operand,
-		extension TypeProvider typeProvider) {
-		val attribute = operand.participationAttribute
-		val participationClass = attribute.participationClass
-		val participationClassInstance = variable(participationClass.correspondingVariableName)
-		return XbaseFactory.eINSTANCE.createXConstructorCall => [
-			val operandType = typeProvider.findDeclaredType(AttributeOperand)
-			constructor = operandType.findConstructor(EObject, EStructuralFeature)
-			explicitConstructorCall = true
-			arguments += expressions(
-				participationClassInstance,
-				getEFeature(typeProvider, participationClassInstance.copy, attribute.name)
-			)
-		]
-	}
-
-	def private dispatch getOperandExpression(ParticipationConditionOperand operand,
-		extension TypeProvider typeProvider) {
-		throw new IllegalStateException("Unhandled ParticipationConditionOperand type: " + operand.class.name)
 	}
 }
