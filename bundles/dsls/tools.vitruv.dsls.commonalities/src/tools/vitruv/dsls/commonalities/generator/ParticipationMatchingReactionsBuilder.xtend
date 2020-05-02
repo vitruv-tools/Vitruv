@@ -405,8 +405,6 @@ package class ParticipationMatchingReactionsBuilder extends ReactionsGenerationH
 	private def getCheckAttributeReferenceChildsRemovedRoutine(ParticipationContext participationContext) {
 		return checkAttributeReferenceChildsRemovedRoutines.computeIfAbsent(participationContext) [
 			// assert: participationContext.isForAttributeReferenceMapping
-			val attributeReferenceRoot = participationContext.attributeReferenceRoot
-			val attributeReferenceRootClass = attributeReferenceRoot.participationClass
 			val commonalityReference = participationContext.referenceMapping.declaringReference
 			val referencingCommonality = commonalityReference.containingCommonality
 			val referencedCommonality = commonalityReference.referenceType
@@ -414,10 +412,11 @@ package class ParticipationMatchingReactionsBuilder extends ReactionsGenerationH
 			val extension routineCallContext = new RoutineCallContext
 			create.routine('''checkAttributeReferenceChildsRemoved«participationContext.reactionNameSuffix»''')
 				.input [
-					model(attributeReferenceRootClass.changeClass, REFERENCE_ROOT)
+					// Some object of the referencing participation (not necessarily the attribute reference root):
+					model(EcorePackage.Literals.EOBJECT, PARTICIPATION_OBJECT)
 				].match [
 					vall(REFERENCING_INTERMEDIATE).retrieve(referencingCommonality.changeClass)
-						.correspondingTo(REFERENCE_ROOT)
+						.correspondingTo(PARTICIPATION_OBJECT)
 				].action [
 					execute [extension typeProvider |
 						val extension jvmTypeReferenceBuilder = jvmTypeReferenceBuilder
