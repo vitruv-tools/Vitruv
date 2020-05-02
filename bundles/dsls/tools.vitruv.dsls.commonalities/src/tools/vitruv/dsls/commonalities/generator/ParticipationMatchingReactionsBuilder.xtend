@@ -552,8 +552,9 @@ package class ParticipationMatchingReactionsBuilder extends ReactionsGenerationH
 								// If, according to the attribute reference operator, the referenced object is no
 								// longer contained by the referencing object:
 								expressions += XbaseFactory.eINSTANCE.createXIfExpression => [
-									^if = operator.callIsContained(operands, variable(REFERENCE_ROOT),
-										variable(containedClass.correspondingVariableName), typeProvider)
+									^if = negated(operator.callIsContained(operands, variable(REFERENCE_ROOT),
+										variable(containedClass.correspondingVariableName), typeProvider),
+										typeProvider)
 									then = XbaseFactory.eINSTANCE.createXBlockExpression => [
 										// Then remove the corresponding intermediate:
 										expressions += routineCallContext.createRoutineCall(typeProvider,
