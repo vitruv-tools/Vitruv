@@ -6,6 +6,7 @@ import java.util.Collections
 import java.util.HashMap
 import java.util.HashSet
 import java.util.Map
+import java.util.Objects
 import java.util.Set
 import org.apache.log4j.Level
 import org.apache.log4j.Logger
@@ -336,8 +337,10 @@ class ParticipationMatcher {
 		}
 		logger.trace('''ContainmentTree: «containmentTree»''')
 		logger.trace('''Start object: «start»''')
+		logger.trace('''followAttributeReferences: «followAttributeReferences»''')
 		val rootNode = containmentTree.getRoot
-		val candidateRootObjects = start.getCandidateRoots(containmentTree, correspondenceModel, followAttributeReferences)
+		val candidateRootObjects = start.getCandidateRoots(containmentTree, correspondenceModel,
+			followAttributeReferences)
 		logger.trace('''Candidate root objects: «candidateRootObjects»''')
 		return candidateRootObjects.filter[ rootObject |
 			// If we have an attribute reference root node, the root
@@ -359,6 +362,8 @@ class ParticipationMatcher {
 			// matched objects.
 			return containmentTree.matchChilds(rootMatch, rootNode, rootObject, correspondenceModel)
 		].map [ match|
+			logger.trace('''Candidate match: «match»''')
+
 			if (containmentTree.attributeReferenceRootNode !== null) {
 				// Match the attribute reference root node and add its object to the result:
 				if (!matchAttributeReferenceRoot(containmentTree, match, correspondenceModel)) {
@@ -371,7 +376,10 @@ class ParticipationMatcher {
 			if (containmentTree.attributeReferenceRootNode !== null) {
 				// Check that all attribute reference edges are fulfilled:
 				return containmentTree.attributeReferenceEdges.forall [ attributeReferenceEdge |
-					isAttributeReferenceEdgeFulfilled(match, attributeReferenceEdge)
+					val attributeEdgeFulfilled = isAttributeReferenceEdgeFulfilled(match, attributeReferenceEdge)
+					logger.trace('''Attribute reference edge «attributeReferenceEdge.toSimpleString» fulfilled: «
+						attributeEdgeFulfilled»''')
+					return attributeEdgeFulfilled
 				]
 			} else {
 				return true
@@ -392,11 +400,13 @@ class ParticipationMatcher {
 		// assert: match.getObject(attributeReferenceRootNode.name) === null (not yet matched)
 		val operator = attributeReferenceEdge.operator
 		val containerObject = operator.getContainer(containedObject)
-		if (containerObject !== null
-			&& attributeReferenceRootNode.matchesObject(containerObject, correspondenceModel, containmentTree.rootIntermediateType)) {
+		if (containerObject !== null && attributeReferenceRootNode.matchesObject(containerObject, correspondenceModel,
+			containmentTree.rootIntermediateType)) {
 			match.setObject(attributeReferenceRootNode.name, containerObject)
+			logger.trace('''Matched attribute reference root: «containerObject»''')
 			return true
 		}
+		logger.trace('''Could not match attribute reference root: «Objects.toString(containerObject)»''')
 		return false
 	}
 
@@ -440,8 +450,10 @@ class ParticipationMatcher {
 			Intermediate).empty) {
 			val attributeReferenceRootNode = containmentTree.attributeReferenceRootNode
 			if (attributeReferenceRootNode !== null) {
-				if (followAttributeReferences
-					&& attributeReferenceRootNode.matchesObject(object, correspondenceModel, containmentTree.rootIntermediateType)) {
+				if (followAttributeReferences && attributeReferenceRootNode.matchesObject(object, correspondenceModel,
+					containmentTree.rootIntermediateType)) {
+					logger.trace('''Found attribute reference root: «object»''')
+					logger.trace('''Following attribute references in order to find candidate root objects ...''')
 					// Note on map and flatten: This has the same effect as flatMap, but we cannot use flatMap here,
 					// because flatMap expects Iterable<R> as result, but we produce Iterable<? extends R>.
 					return containmentTree.attributeReferenceEdges
@@ -562,9 +574,11 @@ class ParticipationMatcher {
 				correspondenceModel, object, null, Intermediate).head
 			if (correspondingIntermediateType != correspondingIntermediate?.eClass) {
 				if (correspondingIntermediateType === null) {
-					logger.trace('''Node «node.toSimpleString»: Object already corresponds to an Intermediate «object»''')
+					logger.trace('''Node «node.toSimpleString»: Object already corresponds to an Intermediate «
+						object»''')
 				} else {
-					logger.trace('''Node «node.toSimpleString»: Object has no matching Intermediate correspondence «object»''')
+					logger.trace('''Node «node.toSimpleString»: Object has no matching Intermediate correspondence «
+						object»''')
 				}
 				return false
 			}
