@@ -6,7 +6,7 @@ import java.util.HashMap
 import java.util.Map
 import org.apache.log4j.Level
 import org.apache.log4j.Logger
-import org.eclipse.emf.ecore.EObject
+import org.eclipse.emf.ecore.EReference
 import org.eclipse.emf.ecore.EcorePackage
 import org.eclipse.xtext.common.types.TypesFactory
 import org.eclipse.xtext.xbase.XExpression
@@ -486,25 +486,45 @@ package class ParticipationMatchingReactionsBuilder extends ReactionsGenerationH
 					execute [extension typeProvider |
 						val extension jvmTypeReferenceBuilder = jvmTypeReferenceBuilder
 						XbaseFactory.eINSTANCE.createXBlockExpression => [
-							// Get the referencing container intermediate:
-							val referencingIntermediateVar = XbaseFactory.eINSTANCE.createXVariableDeclaration => [
-								name = REFERENCING_INTERMEDIATE
-								type = typeRef(EObject)
-								writeable = false
-								right = getEContainer(typeProvider, variable(REFERENCED_INTERMEDIATE))
-							]
-							expressions += referencingIntermediateVar
+							// Goal: Get the referencing intermediate, if there is one.
+							// The container commonality might have multiple commonality references which are able to
+							// contain the referenced intermediate. We therefore need to check if the containment
+							// reference which holds the referenced intermediate corresponds to the expected
+							// commonality reference.
 
-							// If the container is not null and of the expected type:
+							// Get the intermediate's containment reference:
+							val containmentReferenceVar = XbaseFactory.eINSTANCE.createXVariableDeclaration => [
+								name = REFERENCE
+								type = typeRef(typeof(EReference))
+								writeable = false
+								right = getEContainmentFeature(typeProvider, variable(REFERENCED_INTERMEDIATE))
+							]
+							expressions += containmentReferenceVar
+
+							// If the containment reference matches the expected commonality reference:
 							expressions += XbaseFactory.eINSTANCE.createXIfExpression => [
-								^if = referencingIntermediateVar.featureCall
-									.isInstanceOf(typeRef(referencingCommonality.changeClass.javaClassName))
-								// Then check if the attribute reference still holds:
-								// Note: The referencing intermediate variable is implicitly casted to the expected
-								// intermediate type.
-								then = routineCallContext.createRoutineCall(typeProvider,
-									participationContext.checkAttributeReferenceRemovedRoutine,
-									referencingIntermediateVar.featureCall, variable(REFERENCED_INTERMEDIATE))
+								val commonalityEReference = commonalityReference.correspondingEReference
+								^if = containmentReferenceVar.featureCall
+									.equals(typeProvider.getEReference(commonalityEReference), typeProvider)
+								then = XbaseFactory.eINSTANCE.createXBlockExpression => [
+									// Then: Get the referencing container intermediate
+									val referencingIntermediateTypeName = referencingCommonality.changeClass.javaClassName
+									val referencingIntermediateVar = XbaseFactory.eINSTANCE.createXVariableDeclaration => [
+										name = REFERENCING_INTERMEDIATE
+										type = typeRef(referencingIntermediateTypeName)
+										writeable = false
+										right = XbaseFactory.eINSTANCE.createXCastedExpression => [
+											target = getEContainer(typeProvider, variable(REFERENCED_INTERMEDIATE))
+											type = typeRef(referencingIntermediateTypeName)
+										]
+									]
+									expressions += referencingIntermediateVar
+
+									// And check if the attribute reference still holds:
+									expressions += routineCallContext.createRoutineCall(typeProvider,
+										participationContext.checkAttributeReferenceRemovedRoutine,
+										referencingIntermediateVar.featureCall, variable(REFERENCED_INTERMEDIATE))
+								]
 							]
 						]
 					].setCallerContext
