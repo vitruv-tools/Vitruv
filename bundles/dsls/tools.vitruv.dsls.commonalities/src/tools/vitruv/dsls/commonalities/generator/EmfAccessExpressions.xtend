@@ -58,13 +58,13 @@ package class EmfAccessExpressions {
 		]
 	}
 
-	def private static eAddToListFeatureValue(extension TypeProvider typeProvider, XAbstractFeatureCall element,
+	def private static eAddListFeatureValue(extension TypeProvider typeProvider, XAbstractFeatureCall element,
 		String featureName, XExpression newValue) {
 		val getList = eGetListFeatureValue(typeProvider, element, featureName)
 		addToCollection(typeProvider, getList, newValue)
 	}
 
-	def private static eRemoveFromListFeatureValue(extension TypeProvider typeProvider, XAbstractFeatureCall element,
+	def private static eRemoveListFeatureValue(extension TypeProvider typeProvider, XAbstractFeatureCall element,
 		String featureName, XExpression newValue) {
 		val getList = eGetListFeatureValue(typeProvider, element, featureName)
 		removeFromCollection(typeProvider, getList, newValue)
@@ -122,7 +122,7 @@ package class EmfAccessExpressions {
 		}
 	}
 
-	def package static addToListFeatureValue(extension TypeProvider typeProvider, XAbstractFeatureCall element,
+	def package static addListFeatureValue(extension TypeProvider typeProvider, XAbstractFeatureCall element,
 		EStructuralFeature eFeature, XExpression newValue) {
 		try {
 			// try to guess the accessor:
@@ -130,11 +130,11 @@ package class EmfAccessExpressions {
 			return addToCollection(typeProvider, getList, newValue)
 		} catch (NoSuchJvmElementException e) {
 			// if that fails, use EMF's reflection:
-			return eAddToListFeatureValue(typeProvider, element, eFeature.name, newValue)
+			return eAddListFeatureValue(typeProvider, element, eFeature.name, newValue)
 		}
 	}
 
-	def package static removeFromListFeatureValue(extension TypeProvider typeProvider, XAbstractFeatureCall element,
+	def package static removeListFeatureValue(extension TypeProvider typeProvider, XAbstractFeatureCall element,
 		EStructuralFeature eFeature, XExpression newValue) {
 		try {
 			// try to guess the accessor:
@@ -142,7 +142,7 @@ package class EmfAccessExpressions {
 			return removeFromCollection(typeProvider, getList, newValue)
 		} catch (NoSuchJvmElementException e) {
 			// if that fails, use EMF's reflection:
-			return eRemoveFromListFeatureValue(typeProvider, element, eFeature.name, newValue)
+			return eRemoveListFeatureValue(typeProvider, element, eFeature.name, newValue)
 		}
 	}
 

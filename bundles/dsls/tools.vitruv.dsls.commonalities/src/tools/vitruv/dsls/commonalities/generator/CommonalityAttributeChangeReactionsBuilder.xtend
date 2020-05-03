@@ -130,7 +130,7 @@ package class CommonalityAttributeChangeReactionsBuilder extends ReactionsSubGen
 				val corresponding = mapping.correspondingVariableName
 				update(corresponding) [
 					applyAttributeChange(mapping) [ objectVar |
-						addToListFeatureValue(objectVar, mapping.participationEFeature, newValue)
+						addListFeatureValue(objectVar, mapping.participationEFeature, newValue)
 					]
 				]
 			}
@@ -150,7 +150,7 @@ package class CommonalityAttributeChangeReactionsBuilder extends ReactionsSubGen
 				val corresponding = mapping.correspondingVariableName
 				update(corresponding) [
 					applyAttributeChange(mapping) [ objectVar |
-						removeFromListFeatureValue(objectVar, mapping.participationEFeature, oldValue)
+						removeListFeatureValue(objectVar, mapping.participationEFeature, oldValue)
 					]
 				]
 			}

@@ -89,7 +89,7 @@ package class ParticipationAttributeChangeReactionsBuilder extends ReactionsSubG
 		]
 		.action [
 			update(INTERMEDIATE) [
-				addToListFeatureValue(variable(INTERMEDIATE), mapping.commonalityEFeature, newValue)
+				addListFeatureValue(variable(INTERMEDIATE), mapping.commonalityEFeature, newValue)
 			]
 		]
 	}
@@ -102,7 +102,7 @@ package class ParticipationAttributeChangeReactionsBuilder extends ReactionsSubG
 		]
 		.action [
 			update(INTERMEDIATE) [
-				removeFromListFeatureValue(variable(INTERMEDIATE), mapping.commonalityEFeature, oldValue)
+				removeListFeatureValue(variable(INTERMEDIATE), mapping.commonalityEFeature, oldValue)
 			]
 		]
 	}
