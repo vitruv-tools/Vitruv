@@ -9,7 +9,6 @@ import org.eclipse.emf.ecore.EPackage
 import org.eclipse.emf.ecore.EReference
 import org.eclipse.emf.ecore.EStructuralFeature
 import org.eclipse.xtext.common.types.TypesFactory
-import org.eclipse.xtext.xbase.XAbstractFeatureCall
 import org.eclipse.xtext.xbase.XExpression
 import org.eclipse.xtext.xbase.XbaseFactory
 import tools.vitruv.dsls.reactions.builder.TypeProvider
@@ -24,28 +23,27 @@ import static extension tools.vitruv.dsls.commonalities.generator.XbaseHelper.*
 @Utility
 package class EmfAccessExpressions {
 
-	def private static eGetFeatureValue(extension TypeProvider typeProvider, XAbstractFeatureCall element,
-		String featureName) {
+	def private static eGetFeatureValue(extension TypeProvider typeProvider, XExpression object, String featureName) {
 		XbaseFactory.eINSTANCE.createXMemberFeatureCall => [
-			memberCallTarget = element
+			memberCallTarget = object
 			feature = typeProvider.findMethod(EObject, 'eGet', 1, EStructuralFeature)
 			explicitOperationCall = true
-			memberCallArguments += getEFeature(typeProvider, element.copy, featureName)
+			memberCallArguments += getEFeature(typeProvider, object.copy, featureName)
 		]
 	}
 
-	def private static eSetFeatureValue(extension TypeProvider typeProvider, XAbstractFeatureCall element,
-		String featureName, XExpression newValue) {
+	def private static eSetFeatureValue(extension TypeProvider typeProvider,  XExpression object, String featureName,
+		XExpression newValue) {
 		XbaseFactory.eINSTANCE.createXMemberFeatureCall => [
-			memberCallTarget = element
+			memberCallTarget = object
 			feature = typeProvider.findMethod(EObject, 'eSet')
 			explicitOperationCall = true
-			memberCallArguments += getEFeature(typeProvider, element.copy, featureName)
+			memberCallArguments += getEFeature(typeProvider, object.copy, featureName)
 			memberCallArguments += newValue
 		]
 	}
 
-	def private static eGetListFeatureValue(extension TypeProvider typeProvider, XAbstractFeatureCall element,
+	def private static eGetListFeatureValue(extension TypeProvider typeProvider, XExpression object,
 		String featureName) {
 		XbaseFactory.eINSTANCE.createXCastedExpression => [
 			type = TypesFactory.eINSTANCE.createJvmParameterizedTypeReference => [
@@ -54,25 +52,25 @@ package class EmfAccessExpressions {
 					type = typeProvider.findType(Object)
 				]
 			]
-			target = eGetFeatureValue(typeProvider, element, featureName)
+			target = eGetFeatureValue(typeProvider, object, featureName)
 		]
 	}
 
-	def private static eAddListFeatureValue(extension TypeProvider typeProvider, XAbstractFeatureCall element,
+	def private static eAddListFeatureValue(extension TypeProvider typeProvider, XExpression object,
 		String featureName, XExpression newValue) {
-		val getList = eGetListFeatureValue(typeProvider, element, featureName)
+		val getList = eGetListFeatureValue(typeProvider, object, featureName)
 		addToCollection(typeProvider, getList, newValue)
 	}
 
-	def private static eRemoveListFeatureValue(extension TypeProvider typeProvider, XAbstractFeatureCall element,
+	def private static eRemoveListFeatureValue(extension TypeProvider typeProvider, XExpression object,
 		String featureName, XExpression newValue) {
-		val getList = eGetListFeatureValue(typeProvider, element, featureName)
+		val getList = eGetListFeatureValue(typeProvider, object, featureName)
 		removeFromCollection(typeProvider, getList, newValue)
 	}
 
-	def private static eSetListFeatureValue(extension TypeProvider typeProvider, XAbstractFeatureCall element,
+	def private static eSetListFeatureValue(extension TypeProvider typeProvider, XExpression object,
 		String featureName, XExpression newValues) {
-		val getList = eGetListFeatureValue(typeProvider, element, featureName)
+		val getList = eGetListFeatureValue(typeProvider, object, featureName)
 		XbaseFactory.eINSTANCE.createXBlockExpression => [
 			expressions += expressions(
 				clearCollection(typeProvider, getList),
@@ -81,18 +79,18 @@ package class EmfAccessExpressions {
 		]
 	}
 
-	def package static getFeatureValue(extension TypeProvider typeProvider, XAbstractFeatureCall element,
+	def package static getFeatureValue(extension TypeProvider typeProvider, XExpression object,
 		EStructuralFeature eFeature) {
 		try {
 			// try to guess the accessor:
-			return getEFeatureValue(typeProvider, element, eFeature)
+			return getEFeatureValue(typeProvider, object, eFeature)
 		} catch (NoSuchJvmElementException e) {
 			// if that fails, use EMF's reflection:
-			return eGetFeatureValue(typeProvider, element, eFeature.name)
+			return eGetFeatureValue(typeProvider, object, eFeature.name)
 		}
 	}
 
-	def package static setFeatureValue(extension TypeProvider typeProvider, XAbstractFeatureCall element,
+	def package static setFeatureValue(extension TypeProvider typeProvider, XExpression object,
 		EStructuralFeature eFeature, XExpression newValue) {
 		try {
 			// try to guess the accessor:
@@ -101,56 +99,56 @@ package class EmfAccessExpressions {
 				throw new RuntimeException('''Containing instance class name is null!''')
 			}
 			return XbaseFactory.eINSTANCE.createXAssignment => [
-				assignable = element
+				assignable = object
 				feature = typeProvider.findMethod(containingInstanceClassName, 'set' + eFeature.name.toFirstUpper)
 				value = newValue
 			]
 		} catch (NoSuchJvmElementException e) {
 			// if that fails, use EMF's reflection:
-			return eSetFeatureValue(typeProvider, element, eFeature.name, newValue)
+			return eSetFeatureValue(typeProvider, object, eFeature.name, newValue)
 		}
 	}
 
-	def package static getListFeatureValue(extension TypeProvider typeProvider, XAbstractFeatureCall element,
+	def package static getListFeatureValue(extension TypeProvider typeProvider, XExpression object,
 		EStructuralFeature eFeature) {
 		try {
 			// try to guess the accessor:
-			return getEFeatureValue(typeProvider, element, eFeature)
+			return getEFeatureValue(typeProvider, object, eFeature)
 		} catch (NoSuchJvmElementException e) {
 			// if that fails, use EMF's reflection:
-			return eGetListFeatureValue(typeProvider, element, eFeature.name)
+			return eGetListFeatureValue(typeProvider, object, eFeature.name)
 		}
 	}
 
-	def package static addListFeatureValue(extension TypeProvider typeProvider, XAbstractFeatureCall element,
+	def package static addListFeatureValue(extension TypeProvider typeProvider, XExpression object,
 		EStructuralFeature eFeature, XExpression newValue) {
 		try {
 			// try to guess the accessor:
-			val getList = getEFeatureValue(typeProvider, element, eFeature)
+			val getList = getEFeatureValue(typeProvider, object, eFeature)
 			return addToCollection(typeProvider, getList, newValue)
 		} catch (NoSuchJvmElementException e) {
 			// if that fails, use EMF's reflection:
-			return eAddListFeatureValue(typeProvider, element, eFeature.name, newValue)
+			return eAddListFeatureValue(typeProvider, object, eFeature.name, newValue)
 		}
 	}
 
-	def package static removeListFeatureValue(extension TypeProvider typeProvider, XAbstractFeatureCall element,
+	def package static removeListFeatureValue(extension TypeProvider typeProvider, XExpression object,
 		EStructuralFeature eFeature, XExpression newValue) {
 		try {
 			// try to guess the accessor:
-			val getList = getEFeatureValue(typeProvider, element, eFeature)
+			val getList = getEFeatureValue(typeProvider, object, eFeature)
 			return removeFromCollection(typeProvider, getList, newValue)
 		} catch (NoSuchJvmElementException e) {
 			// if that fails, use EMF's reflection:
-			return eRemoveListFeatureValue(typeProvider, element, eFeature.name, newValue)
+			return eRemoveListFeatureValue(typeProvider, object, eFeature.name, newValue)
 		}
 	}
 
-	def package static setListFeatureValue(extension TypeProvider typeProvider, XAbstractFeatureCall element,
+	def package static setListFeatureValue(extension TypeProvider typeProvider, XExpression object,
 		EStructuralFeature eFeature, XExpression newValues) {
 		try {
 			// try to guess the accessor:
-			val getList = getEFeatureValue(typeProvider, element, eFeature)
+			val getList = getEFeatureValue(typeProvider, object, eFeature)
 			XbaseFactory.eINSTANCE.createXBlockExpression => [
 				expressions += expressions(
 					clearCollection(typeProvider, getList),
@@ -159,29 +157,28 @@ package class EmfAccessExpressions {
 			]
 		} catch (NoSuchJvmElementException e) {
 			// if that fails, use EMF's reflection:
-			return eSetListFeatureValue(typeProvider, element, eFeature.name, newValues)
+			return eSetListFeatureValue(typeProvider, object, eFeature.name, newValues)
 		}
 	}
 
 	// throws NoSuchJvmElementException on failure
-	def private static getEFeatureValue(extension TypeProvider typeProvider, XAbstractFeatureCall element,
+	def private static getEFeatureValue(extension TypeProvider typeProvider, XExpression object,
 		EStructuralFeature eFeature) {
 		val containingInstanceClassName = eFeature.EContainingClass.javaClassName
 		if (containingInstanceClassName === null) {
 			throw new RuntimeException('''Containing instance class name is null!''')
 		}
 		XbaseFactory.eINSTANCE.createXMemberFeatureCall => [
-			memberCallTarget = element
+			memberCallTarget = object
 			feature = typeProvider.findMethod(containingInstanceClassName, 'get' + eFeature.name.toFirstUpper, 0)
 		]
 	}
 
-	def package static getEFeature(extension TypeProvider typeProvider, XAbstractFeatureCall element,
-		String featureName) {
+	def package static getEFeature(extension TypeProvider typeProvider, XExpression object, String featureName) {
 		// TODO try to guess feature literal or package accessor?
 		XbaseFactory.eINSTANCE.createXMemberFeatureCall => [
 			memberCallTarget = XbaseFactory.eINSTANCE.createXMemberFeatureCall => [
-				memberCallTarget = element
+				memberCallTarget = object
 				feature = typeProvider.findMethod(EObject, 'eClass')
 				concreteSyntaxFeatureName
 			]
@@ -256,9 +253,9 @@ package class EmfAccessExpressions {
 		]
 	}
 
-	def static getEContainer(extension TypeProvider typeProvider, XAbstractFeatureCall element) {
+	def static getEContainer(extension TypeProvider typeProvider, XExpression object) {
 		XbaseFactory.eINSTANCE.createXMemberFeatureCall => [
-			memberCallTarget = element
+			memberCallTarget = object
 			explicitOperationCall = true
 			feature = typeProvider.findMethod(EObject, 'eContainer', 0)
 		]
