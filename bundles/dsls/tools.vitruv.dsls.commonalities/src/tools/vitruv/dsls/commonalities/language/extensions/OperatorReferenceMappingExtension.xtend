@@ -14,6 +14,6 @@ package class OperatorReferenceMappingExtension {
 	}
 
 	def static getReferencedParticipationClasses(OperatorReferenceMapping mapping) {
-		return mapping.referencedParticipationAttributes.map[participationClass]
+		return mapping.referencedParticipationAttributes.map[participationClass].toSet
 	}
 }
