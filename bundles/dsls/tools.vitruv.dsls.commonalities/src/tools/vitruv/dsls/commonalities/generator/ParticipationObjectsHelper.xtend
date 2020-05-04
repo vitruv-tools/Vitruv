@@ -8,7 +8,7 @@ import tools.vitruv.dsls.commonalities.language.Participation
 import tools.vitruv.dsls.commonalities.language.ParticipationClass
 import tools.vitruv.dsls.commonalities.language.extensions.ParticipationContext.ContextClass
 import tools.vitruv.dsls.reactions.builder.TypeProvider
-import tools.vitruv.extensions.dslruntime.commonalities.ParticipationMatcher.ParticipationObjects
+import tools.vitruv.extensions.dslruntime.commonalities.matching.ParticipationObjects
 
 import static extension tools.vitruv.dsls.commonalities.generator.JvmTypeProviderHelper.*
 import static extension tools.vitruv.dsls.commonalities.generator.ReactionsGeneratorConventions.*

@@ -8,7 +8,7 @@ import org.eclipse.xtext.xbase.XExpression
 import org.eclipse.xtext.xbase.XVariableDeclaration
 import org.eclipse.xtext.xbase.XbaseFactory
 import tools.vitruv.dsls.reactions.builder.TypeProvider
-import tools.vitruv.extensions.dslruntime.commonalities.ParticipationMatcher.ContainmentTree
+import tools.vitruv.extensions.dslruntime.commonalities.matching.ContainmentTree
 import tools.vitruv.extensions.dslruntime.commonalities.operators.mapping.reference.IReferenceMappingOperator
 
 import static com.google.common.base.Preconditions.*
@@ -73,23 +73,23 @@ package class ContainmentTreeExpressionBuilder {
 		]
 	}
 
-	def XExpression addReferenceEdge(String containedNode, String containerNode, EReference containmentEReference) {
+	def XExpression addReferenceEdge(String containerNode, String containedNode, EReference containmentEReference) {
 		checkHasContainmentTree()
 		return containmentTreeVar.featureCall.memberFeatureCall(addReferenceEdgeMethod) => [
 			memberCallArguments += expressions(
-				stringLiteral(containedNode),
 				stringLiteral(containerNode),
+				stringLiteral(containedNode),
 				getEReference(typeProvider, containmentEReference)
 			)
 		]
 	}
 
-	def XExpression addOperatorEdge(String containedNode, String containerNode, XExpression operator) {
+	def XExpression addOperatorEdge(String containerNode, String containedNode, XExpression operator) {
 		checkHasContainmentTree()
 		return containmentTreeVar.featureCall.memberFeatureCall(addOperatorEdgeMethod) => [
 			memberCallArguments += expressions(
-				stringLiteral(containedNode),
 				stringLiteral(containerNode),
+				stringLiteral(containedNode),
 				operator
 			)
 		]

@@ -33,10 +33,10 @@ import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.ActionStatementB
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.RoutineCallParameter
 import tools.vitruv.dsls.reactions.builder.TypeProvider
 import tools.vitruv.extensions.dslruntime.commonalities.BooleanResult
-import tools.vitruv.extensions.dslruntime.commonalities.ParticipationMatcher
-import tools.vitruv.extensions.dslruntime.commonalities.ParticipationMatcher.ContainmentTree
-import tools.vitruv.extensions.dslruntime.commonalities.ParticipationMatcher.ParticipationObjects
 import tools.vitruv.extensions.dslruntime.commonalities.intermediatemodelbase.IntermediateModelBasePackage
+import tools.vitruv.extensions.dslruntime.commonalities.matching.ContainmentTree
+import tools.vitruv.extensions.dslruntime.commonalities.matching.ParticipationMatcher
+import tools.vitruv.extensions.dslruntime.commonalities.matching.ParticipationObjects
 
 import static com.google.common.base.Preconditions.*
 
@@ -669,13 +669,13 @@ package class ParticipationMatchingReactionsBuilder extends ReactionsGenerationH
 				val containerName = INTERMEDIATE_ROOT
 				val containmentEReference = IntermediateModelBasePackage.Literals.ROOT__INTERMEDIATES
 				expressions += participation.nonRootBoundaryClasses.map [ contained |
-					containmentTreeBuilder.addReferenceEdge(contained.name, containerName, containmentEReference)
+					containmentTreeBuilder.addReferenceEdge(containerName, contained.name, containmentEReference)
 				]
 			}
 			expressions += participationContext.containments.map [ extension contextContainment |
 				val containment = containment
 				if (containment instanceof ReferenceContainment) {
-					containmentTreeBuilder.addReferenceEdge(contained.name, container.name, containment.EReference)
+					containmentTreeBuilder.addReferenceEdge(container.name, contained.name, containment.EReference)
 				} else if (containment instanceof OperatorContainment) {
 					val operator = containment.operator
 					val operands = containment.operands
@@ -683,7 +683,7 @@ package class ParticipationMatchingReactionsBuilder extends ReactionsGenerationH
 					if (operator.isAttributeReference) {
 						containmentTreeBuilder.addAttributeReferenceEdge(contained.name, operatorInstance)
 					} else {
-						containmentTreeBuilder.addOperatorEdge(contained.name, container.name, operatorInstance)
+						containmentTreeBuilder.addOperatorEdge(container.name, contained.name, operatorInstance)
 					}
 				} else {
 					throw new IllegalStateException("Unexpected containment type: " + containment.class.name)

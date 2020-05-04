@@ -9,7 +9,7 @@ import tools.vitruv.dsls.commonalities.language.Commonality
 import tools.vitruv.dsls.commonalities.language.CommonalityAttributeMapping
 import tools.vitruv.dsls.commonalities.language.Participation
 import tools.vitruv.dsls.reactions.builder.TypeProvider
-import tools.vitruv.extensions.dslruntime.commonalities.ParticipationMatcher.ParticipationObjects
+import tools.vitruv.extensions.dslruntime.commonalities.matching.ParticipationObjects
 
 import static com.google.common.base.Preconditions.*
 import static tools.vitruv.dsls.commonalities.generator.EmfAccessExpressions.*

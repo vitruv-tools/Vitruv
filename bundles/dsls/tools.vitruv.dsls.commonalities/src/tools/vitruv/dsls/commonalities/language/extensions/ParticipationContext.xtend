@@ -71,8 +71,8 @@ class ParticipationContext {
 
 	@Data
 	static class ContextContainment<T extends Containment> {
-		val ContextClass contained
 		val ContextClass container
+		val ContextClass contained
 		val T containment
 	}
 
@@ -112,19 +112,19 @@ class ParticipationContext {
 
 	private def calculateRootContainments() {
 		return Collections.unmodifiableList(root.rootContainments.map [
-			new ContextContainment(contained.rootClass, container.rootClass, it) as ContextContainment<?>
+			new ContextContainment(container.rootClass, contained.rootClass, it) as ContextContainment<?>
 		].toList)
 	}
 
 	private def calculateBoundaryContainments() {
 		return Collections.unmodifiableList(root.boundaryContainments.map [
-			new ContextContainment(contained.nonRootClass, container.rootClass, it) as ContextContainment<?>
+			new ContextContainment(container.rootClass, contained.nonRootClass, it) as ContextContainment<?>
 		].toList)
 	}
 
 	private def calculateNonRootContainments() {
 		return Collections.unmodifiableList(participation.nonRootContainments.map [
-			new ContextContainment(contained.nonRootClass, container.nonRootClass, it) as ContextContainment<?>
+			new ContextContainment(container.nonRootClass, contained.nonRootClass, it) as ContextContainment<?>
 		].toList)
 	}
 
@@ -138,7 +138,7 @@ class ParticipationContext {
 	private def calculateAttributeReferenceContainments() {
 		return Collections.unmodifiableList(root.attributeReferenceContainments.map [
 			// assert: attributeReferenceRoot !== null
-			new ContextContainment(contained.nonRootClass, attributeReferenceRoot, it)
+			new ContextContainment(attributeReferenceRoot, contained.nonRootClass, it)
 		].toList)
 	}
 

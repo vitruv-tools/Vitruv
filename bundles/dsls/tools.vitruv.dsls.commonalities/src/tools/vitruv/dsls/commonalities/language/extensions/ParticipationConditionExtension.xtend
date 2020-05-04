@@ -55,6 +55,6 @@ package class ParticipationConditionExtension {
 			return null
 		}
 		val contained = condition.leftOperand.participationClass
-		return new ReferenceContainment(contained, container, condition.leftOperand.participationAttribute)
+		return new ReferenceContainment(container, contained, condition.leftOperand.participationAttribute)
 	}
 }

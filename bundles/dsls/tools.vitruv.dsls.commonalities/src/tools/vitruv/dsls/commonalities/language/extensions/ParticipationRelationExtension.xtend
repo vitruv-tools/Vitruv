@@ -22,7 +22,7 @@ package class ParticipationRelationExtension {
 			return Collections.emptyList()
 		}
 		return relation.leftClasses.map [ contained |
-			new ReferenceContainment(contained, container, null)
+			new ReferenceContainment(container, contained, null)
 		]
 	}
 }

@@ -1,285 +1,28 @@
-package tools.vitruv.extensions.dslruntime.commonalities
+package tools.vitruv.extensions.dslruntime.commonalities.matching
 
 import com.google.common.base.Preconditions
 import edu.kit.ipd.sdq.activextendannotations.Utility
 import java.util.Collections
-import java.util.HashMap
-import java.util.HashSet
-import java.util.Map
 import java.util.Objects
-import java.util.Set
 import org.apache.log4j.Level
 import org.apache.log4j.Logger
 import org.eclipse.emf.ecore.EClass
 import org.eclipse.emf.ecore.EObject
-import org.eclipse.emf.ecore.EReference
-import org.eclipse.xtend.lib.annotations.Data
-import org.eclipse.xtend.lib.annotations.ToString
 import tools.vitruv.extensions.dslruntime.commonalities.intermediatemodelbase.Intermediate
 import tools.vitruv.extensions.dslruntime.commonalities.intermediatemodelbase.IntermediateModelBasePackage
-import tools.vitruv.extensions.dslruntime.commonalities.operators.mapping.reference.IReferenceMappingOperator
 import tools.vitruv.extensions.dslruntime.commonalities.resources.IntermediateResourceBridge
 import tools.vitruv.extensions.dslruntime.commonalities.resources.ResourcesFactory
 import tools.vitruv.extensions.dslsruntime.reactions.helper.ReactionsCorrespondenceHelper
 import tools.vitruv.framework.correspondence.CorrespondenceModel
 
-import static extension tools.vitruv.extensions.dslruntime.commonalities.operators.mapping.reference.ReferenceMappingOperatorHelper.*
-
 /**
- * Matches participation classes to their objects according to the containment
- * hierarchy specified at compile time.
+ * Matches participation classes to their objects according to the specified
+ * containment hierarchy.
  */
 @Utility
 class ParticipationMatcher {
 
 	val static Logger logger = Logger.getLogger(ParticipationMatcher) => [level = Level.TRACE]
-
-	/**
-	 * Represents the containment hierarchy of participation classes.
-	 * <p>
-	 * Participation classes are represented as nodes with according name and
-	 * type. Containment relations are represented as directed edges between
-	 * nodes. Each edge provides either the EReference that realizes the
-	 * containment relationship, or an operator that can be queried for the
-	 * contained objects.
-	 * <p>
-	 * Assumptions:
-	 * <ul>
-	 * <li>Each object is contained by at most one other object.
-	 * <li>No cyclic containments.
-	 * <li>No self containment (no loops).
-	 * <li>There is at most one root container class (i.e. Resource) per
-	 * participation. TODO support multiple root containers?
-	 * </ul>
-	 * <p>
-	 * A containment relation can also be defined implicitly according to the
-	 * attributes of the involved objects (eg. in Java sub packages exist
-	 * independently from each other and their 'containment' relationship is
-	 * expressed implicitly by their namespaces and name attributes). We
-	 * support the containment tree to define one additional (external) root
-	 * node that is connected by such attribute references to nodes of the main
-	 * containment tree.
-	 */
-	@ToString
-	static class ContainmentTree {
-
-		@Data
-		static class Node {
-
-			val String name
-			val EClass type
-
-			def String toSimpleString() {
-				return name
-			}
-		}
-
-		interface Edge {
-
-			def Node getContained()
-			def Node getContainer()
-			def String toSimpleString()
-		}
-
-		@Data
-		static class ReferenceEdge implements Edge {
-
-			val Node contained
-			val Node container
-			val EReference reference
-
-			override toSimpleString() {
-				return '''«container.toSimpleString»[«reference.name»] -> «contained.toSimpleString»'''
-			}
-		}
-
-		@Data
-		static class OperatorEdge implements Edge {
-
-			val Node contained
-			val Node container
-			val IReferenceMappingOperator operator
-
-			override toSimpleString() {
-				return '''«container.toSimpleString»[operator: «operator.class.simpleName
-					»] -> «contained.toSimpleString»'''
-			}
-		}
-
-		val Map<String, Node> nodes = new HashMap
-		val Set<Edge> edges = new HashSet
-		// The specific Intermediate type that the root node has to already
-		// correspond to (can be null). If an attribute reference root node is
-		// specified, this applies to that node instead.
-		var EClass rootIntermediateType = null
-		var Node attributeReferenceRootNode = null
-		var Set<OperatorEdge> attributeReferenceEdges = new HashSet
-		var Node root = null // lazily calculated
-
-		new() {
-		}
-
-		private def commonPreValidateNode(String name, EClass type) {
-			Preconditions.checkArgument(!name.nullOrEmpty, "name is null or empty")
-			Preconditions.checkNotNull(type, "type is null")
-			Preconditions.checkArgument(!nodes.containsKey(name) && name != attributeReferenceRootNode?.name,
-				"There already exists a node with this name: " + name)
-		}
-
-		def addNode(String name, EClass type) {
-			commonPreValidateNode(name, type)
-			val newNode = new Node(name, type)
-			nodes.put(name, newNode)
-			root = null // reset lazy calculated root
-			return newNode
-		}
-
-		private def validateNodeExists(String nodeName) {
-			Preconditions.checkArgument(nodes.containsKey(nodeName), "There is no node with this name: " + nodeName)
-		}
-
-		private def commonPreValidateEdge(String containedName, String containerName) {
-			validateNodeExists(containedName)
-			validateNodeExists(containerName)
-			Preconditions.checkArgument(containedName != containerName, "Container cannot contain itself (no loops)")
-		}
-
-		private def addEdge(Edge newEdge) {
-			Preconditions.checkArgument(!edges.contains(newEdge), "The edge already exists")
-			edges.add(newEdge)
-			root = null // reset lazy calculated root
-		}
-
-		def addReferenceEdge(String containedName, String containerName, EReference reference) {
-			commonPreValidateEdge(containedName, containerName)
-			val contained = nodes.get(containedName)
-			val container = nodes.get(containerName)
-			// assert: contained !== null && container !== null
-			Preconditions.checkNotNull(reference, "Containment reference is null")
-			Preconditions.checkArgument(reference.isContainment, "The given reference is not a containment")
-			Preconditions.checkArgument(container.type.EAllReferences.contains(reference),
-				"Containment reference belongs to a different container class")
-
-			val newEdge = new ReferenceEdge(contained, container, reference)
-			addEdge(newEdge)
-			return newEdge
-		}
-
-		def addOperatorEdge(String containedName, String containerName, IReferenceMappingOperator operator) {
-			commonPreValidateEdge(containedName, containerName)
-			val contained = nodes.get(containedName)
-			val container = nodes.get(containerName)
-			// assert: contained !== null && container !== null
-			Preconditions.checkNotNull(operator, "Operator is null")
-			Preconditions.checkArgument(!operator.isAttributeReference,
-				"Operator edge cannot use an attribute reference operator!")
-
-			val newEdge = new OperatorEdge(contained, container, operator)
-			addEdge(newEdge)
-			return newEdge
-		}
-
-		def setRootIntermediateType(EClass type) {
-			Preconditions.checkState(rootIntermediateType === null, "The root intermediate type has already been set!")
-			this.rootIntermediateType = type
-		}
-
-		def setAttributeReferenceRootNode(String name, EClass type) {
-			Preconditions.checkState(attributeReferenceRootNode === null,
-				"The attribute reference root node has already been set!")
-			commonPreValidateNode(name, type)
-
-			attributeReferenceRootNode = new Node(name, type)
-			return attributeReferenceRootNode
-		}
-
-		def addAttributeReferenceEdge(String containedName, IReferenceMappingOperator operator) {
-			Preconditions.checkState(attributeReferenceRootNode !== null,
-				"The attribute reference root node has not yet been set!")
-			validateNodeExists(containedName)
-			Preconditions.checkArgument(containedName != attributeReferenceRootNode.name,
-				"The attribute reference root node cannot contain itself (no loops)")
-			Preconditions.checkArgument(operator.isAttributeReference,
-				"Attribute reference edge needs to use an attribute reference operator!")
-
-			val contained = nodes.get(containedName)
-			val container = attributeReferenceRootNode
-			val newEdge = new OperatorEdge(contained, container, operator)
-			Preconditions.checkArgument(!attributeReferenceEdges.contains(newEdge), "The edge already exists")
-			attributeReferenceEdges.add(newEdge)
-			return newEdge
-		}
-
-		// returns null if there are no nodes
-		def getRoot() {
-			if (root === null) {
-				// start at random node:
-				var current = nodes.values.head // null if there are no nodes
-				var container = current?.container
-				while (container !== null) {
-					current = container
-					container = current.container
-				}
-				root = current
-			}
-			return root
-		}
-
-		// returns null if the given node is null, does not belong to this tree, or has no container
-		def Node getContainer(Node node) {
-			if (node == attributeReferenceRootNode) return null
-			return edges.findFirst[contained == node]?.container
-		}
-
-		def getNode(String name) {
-			if (name == attributeReferenceRootNode?.name) return attributeReferenceRootNode
-			return nodes.get(name)
-		}
-
-		def Iterable<? extends Edge> getContainments(Node node) {
-			if (node == attributeReferenceRootNode) return attributeReferenceEdges
-			return edges.filter[container == node]
-		}
-	}
-
-	/**
-	 * Mapping between containment tree nodes and their objects.
-	 */
-	static class ParticipationObjects {
-
-		val Map<String, EObject> objects = new HashMap
-
-		new() {
-		}
-
-		private new(ParticipationObjects other) {
-			this.merge(other)
-		}
-
-		def private setObject(String nodeName, EObject object) {
-			objects.put(nodeName, object)
-		}
-
-		def <T> T getObject(String nodeName) {
-			return objects.get(nodeName) as T
-		}
-
-		def copy() {
-			return new ParticipationObjects(this)
-		}
-
-		/**
-		 * Adds the entries of the given mapping to this mapping.
-		 */
-		def merge(ParticipationObjects other) {
-			this.objects.putAll(other.objects)
-			return this
-		}
-
-		override toString() {
-			return '''«this.class.simpleName»: «objects»'''
-		}
-	}
 
 	/**
 	 * Matches participation classes to their objects according to the given
@@ -353,7 +96,7 @@ class ParticipationMatcher {
 			rootNode.matchesObject(rootObject, correspondenceModel, rootIntermediateType)
 		].flatMap [ rootObject |
 			var rootMatch = new ParticipationObjects
-			rootMatch.setObject(rootNode.name, rootObject)
+			rootMatch.addObject(rootNode.name, rootObject)
 			// TODO Ensure that the returned Iterable is as lazy as possible, so
 			// that matching can be aborted once a valid match has been found.
 			// However, also ensure that partial matching results are getting
@@ -402,7 +145,7 @@ class ParticipationMatcher {
 		val containerObject = operator.getContainer(containedObject)
 		if (containerObject !== null && attributeReferenceRootNode.matchesObject(containerObject, correspondenceModel,
 			containmentTree.rootIntermediateType)) {
-			match.setObject(attributeReferenceRootNode.name, containerObject)
+			match.addObject(attributeReferenceRootNode.name, containerObject)
 			logger.trace('''Matched attribute reference root: «containerObject»''')
 			return true
 		}
@@ -519,7 +262,7 @@ class ParticipationMatcher {
 				logger.trace('''Edge «containment.toSimpleString»: Found matching object «childObject»''')
 				val childNode = containment.contained
 				val childMatch = parentMatch.copy
-				childMatch.setObject(childNode.name, childObject)
+				childMatch.addObject(childNode.name, childObject)
 				return containmentTree.matchChilds(childMatch, childNode, childObject, correspondenceModel)
 			].toList as Iterable<ParticipationObjects>
 		].reduce [ prevMatches, nextMatches | // TODO reduce is not lazy!

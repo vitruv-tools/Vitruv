@@ -89,9 +89,6 @@ class ParticipationContextHelper {
 		return participationClass.isSingleton
 	}
 
-	/**
-	 * Optional: Empty if no valid participation context is found.
-	 */
 	def static getReferenceParticipationContext(CommonalityReferenceMapping mapping) {
 		return referenceParticipationContexts.computeIfAbsent(mapping) [
 			val referencedParticipation = mapping.referencedParticipation
@@ -162,7 +159,7 @@ class ParticipationContextHelper {
 		// assert: participation != null
 		val container = mapping.participationClass
 		return participation.nonRootBoundaryClasses.map [ contained |
-			new ReferenceContainment(contained, container, mapping.reference)
+			new ReferenceContainment(container, contained, mapping.reference)
 		]
 	}
 
@@ -175,7 +172,7 @@ class ParticipationContextHelper {
 		val operands = Collections.unmodifiableList(mapping.operands)
 		val container = mapping.participationClass
 		return mapping.referencedParticipationClasses.map [ contained |
-			new OperatorContainment(contained, container, operator, operands)
+			new OperatorContainment(container, contained, operator, operands)
 		]
 	}
 

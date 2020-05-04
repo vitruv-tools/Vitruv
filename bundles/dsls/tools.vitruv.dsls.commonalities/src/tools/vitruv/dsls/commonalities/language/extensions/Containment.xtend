@@ -12,7 +12,7 @@ import tools.vitruv.dsls.commonalities.language.ParticipationClass
 abstract class Containment {
 
 	@Accessors(PUBLIC_GETTER)
-	val ParticipationClass contained
-	@Accessors(PUBLIC_GETTER)
 	val ParticipationClass container
+	@Accessors(PUBLIC_GETTER)
+	val ParticipationClass contained
 }
