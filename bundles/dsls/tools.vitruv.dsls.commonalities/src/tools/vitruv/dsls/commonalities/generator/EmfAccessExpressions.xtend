@@ -161,6 +161,15 @@ package class EmfAccessExpressions {
 		}
 	}
 
+	def package static insertFeatureValue(extension TypeProvider typeProvider, XExpression object,
+		EStructuralFeature eFeature, XExpression newValue) {
+		if (eFeature.many) {
+			addListFeatureValue(typeProvider, object, eFeature, newValue)
+		} else {
+			setFeatureValue(typeProvider, object, eFeature, newValue)
+		}
+	}
+
 	// throws NoSuchJvmElementException on failure
 	def private static getEFeatureValue(extension TypeProvider typeProvider, XExpression object,
 		EStructuralFeature eFeature) {

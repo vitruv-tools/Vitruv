@@ -887,13 +887,8 @@ package class ParticipationMatchingReactionsBuilder extends ReactionsGenerationH
 						.correspondingTo(REFERENCE_ROOT)
 				].action [
 					update(REFERENCING_INTERMEDIATE) [
-						if (reference.isMultiValued) {
-							addListFeatureValue(variable(REFERENCING_INTERMEDIATE), reference.correspondingEReference,
-								variable(REFERENCED_INTERMEDIATE))
-						} else {
-							setFeatureValue(variable(REFERENCING_INTERMEDIATE), reference.correspondingEReference,
-								variable(REFERENCED_INTERMEDIATE))
-						}
+						insertFeatureValue(variable(REFERENCING_INTERMEDIATE), reference.correspondingEReference,
+							variable(REFERENCED_INTERMEDIATE))
 					]
 				]
 		]
