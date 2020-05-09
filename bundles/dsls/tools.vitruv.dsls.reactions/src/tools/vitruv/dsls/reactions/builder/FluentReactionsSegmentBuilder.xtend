@@ -123,17 +123,25 @@ class FluentReactionsSegmentBuilder extends FluentReactionElementBuilder {
 
 	def operator_add(FluentReactionBuilder reactionBuilder) {
 		checkNotYetAttached()
-		segment.reactions += reactionBuilder.reaction
-		reactionBuilder.segmentBuilder = this
-		childBuilders += reactionBuilder
+		if (reactionBuilder.segmentBuilder !== this) {
+			checkArgument(reactionBuilder.segmentBuilder === null, '''The «reactionBuilder
+				» has already been added to the «reactionBuilder.segmentBuilder»''')
+			segment.reactions += reactionBuilder.reaction
+			reactionBuilder.segmentBuilder = this
+			childBuilders += reactionBuilder
+		}
 		this
 	}
 
 	def operator_add(FluentRoutineBuilder routineBuilder) {
 		checkNotYetAttached()
-		segment.routines += routineBuilder.routine
-		routineBuilder.segmentBuilder = this
-		childBuilders += routineBuilder
+		if (routineBuilder.segmentBuilder !== this) {
+			checkArgument(routineBuilder.segmentBuilder === null, '''The «routineBuilder
+				» has already been added to the «routineBuilder.segmentBuilder»''')
+			segment.routines += routineBuilder.routine
+			routineBuilder.segmentBuilder = this
+			childBuilders += routineBuilder
+		}
 		this
 	}
 

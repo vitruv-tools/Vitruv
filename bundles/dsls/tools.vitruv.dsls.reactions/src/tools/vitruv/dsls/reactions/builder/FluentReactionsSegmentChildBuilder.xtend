@@ -11,7 +11,7 @@ import static tools.vitruv.dsls.reactions.codegen.ReactionsLanguageConstants.*
 
 abstract package class FluentReactionsSegmentChildBuilder extends FluentReactionElementBuilder {
 
-	@Accessors(PACKAGE_SETTER)
+	@Accessors(PACKAGE_SETTER, PACKAGE_GETTER)
 	var FluentReactionsSegmentBuilder segmentBuilder
 
 	protected new(FluentBuilderContext context) {
