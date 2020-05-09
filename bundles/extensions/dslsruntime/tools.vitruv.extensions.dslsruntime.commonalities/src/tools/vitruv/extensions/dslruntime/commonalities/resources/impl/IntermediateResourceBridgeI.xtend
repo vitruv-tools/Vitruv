@@ -115,8 +115,7 @@ class IntermediateResourceBridgeI extends IntermediateResourceBridgeImpl {
 		if (content == newContent) return;
 		this.content = newContent
 		if (baseURI === null && correspondenceModel !== null) { // TODO
-			val uri = PersistenceHelper.getURIFromSourceProjectFolder(persistedNonIntermediateCorrespondence,
-				'fake.ext')
+			val uri = PersistenceHelper.getURIFromSourceProjectFolder(findPersistedNonIntermediateObject, 'fake.ext')
 			baseURI = SAME_FOLDER.resolve(uri).withoutTrailingSlash
 		}
 		contentChanged()
@@ -163,30 +162,51 @@ class IntermediateResourceBridgeI extends IntermediateResourceBridgeImpl {
 		this.fileExtensionChanged(oldFileExtension)
 	}
 
-	def private getPersistedNonIntermediateCorrespondence() {
-		val resourceHaving = transitiveIntermediateCorrespondences.flatMap [
+	def private findPersistedNonIntermediateObject() {
+		// The search for persisted non-intermediate objects takes into account transitive intermediate correspondences
+		// of the corresponding intermediate, and its container. Taking the container into account is required if the
+		// participation for which the corresponding intermediate originally got created has been deleted and then
+		// recreated due to the intermediate being moved to a different container right after creation. This can for
+		// example happen due to an attribute reference being matched during intermediate creation.
+		// TODO This could be avoided if the original participation objects would not get deleted and recreated again.
+		val intermediates = intermediateCorrespondence.transitiveIntermediateCorrespondences
+		intermediates += intermediateCorrespondenceContainer
+
+		val resourceHaving = intermediates.flatMap [
 			ReactionsCorrespondenceHelper.getCorrespondingModelElements(it, EObject, null, [
 				!(it instanceof Intermediate) && !(it instanceof Resource) && eResource !== null
 			], correspondenceModel)
 		].head
 		if (resourceHaving === null) {
-			throw new IllegalStateException('''Could not find any transitive correspondence of ‹«content»› that already has a resource!''')
+			throw new IllegalStateException('''Could not find any transitive correspondence or container of ‹«content
+				»› that already has a resource!''')
 		}
 		return resourceHaving
 	}
 
-	def private getTransitiveIntermediateCorrespondences() {
+	def private getIntermediateCorrespondenceContainer() {
+		val container = intermediateCorrespondence.eContainer
+		if (container instanceof Intermediate) {
+			return container
+		} else {
+			return null
+		}
+	}
+
+	def private Set<Intermediate> getTransitiveIntermediateCorrespondences(Intermediate startIntermediate) {
 		val existingIntermediate = new HashSet<Intermediate>
-		existingIntermediate.add(intermediateCorrespondence)
+		existingIntermediate.add(startIntermediate)
 		return existingIntermediate.transitiveIntermediateCorrespondences
 	}
 
-	def private Iterable<Intermediate> getTransitiveIntermediateCorrespondences(Set<Intermediate> foundIntermediates) {
+	def private Set<Intermediate> getTransitiveIntermediateCorrespondences(Set<Intermediate> foundIntermediates) {
 		// Next step in breadth-first search:
+		// Collecting to Set removes duplicates and avoids a ConcurrentModificationException when adding the results to
+		// the result Set.
 		val transitiveIntermediates = foundIntermediates.flatMap [ intermediate |
 			ReactionsCorrespondenceHelper.getCorrespondingModelElements(intermediate, Intermediate, null, null,
 				correspondenceModel)
-		].toSet // Collecting to Set removes duplicates and avoids a ConcurrentModificationException.
+		].toSet
 
 		// Add to result Set: This removes objects which we have already found before.
 		if (foundIntermediates.addAll(transitiveIntermediates)) {

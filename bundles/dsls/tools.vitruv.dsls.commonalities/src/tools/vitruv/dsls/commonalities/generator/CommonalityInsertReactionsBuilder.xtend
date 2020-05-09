@@ -1,11 +1,12 @@
 package tools.vitruv.dsls.commonalities.generator
 
 import com.google.inject.Inject
+import java.util.HashMap
 import java.util.List
+import java.util.Map
 import java.util.Optional
 import java.util.function.Consumer
 import java.util.function.Function
-import org.eclipse.xtext.util.Wrapper
 import org.eclipse.xtext.xbase.XbaseFactory
 import tools.vitruv.dsls.commonalities.language.Commonality
 import tools.vitruv.dsls.commonalities.language.Participation
@@ -15,9 +16,10 @@ import tools.vitruv.dsls.commonalities.language.extensions.ParticipationContext
 import tools.vitruv.dsls.commonalities.language.extensions.ParticipationContext.ContextClass
 import tools.vitruv.dsls.commonalities.language.extensions.ParticipationContext.ContextContainment
 import tools.vitruv.dsls.commonalities.language.extensions.ReferenceContainment
-import tools.vitruv.dsls.reactions.builder.FluentReactionBuilder
 import tools.vitruv.dsls.reactions.builder.FluentReactionBuilder.PreconditionOrRoutineCallBuilder
+import tools.vitruv.dsls.reactions.builder.FluentReactionBuilder.RoutineCallBuilder
 import tools.vitruv.dsls.reactions.builder.FluentReactionsSegmentBuilder
+import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.ActionStatementBuilder
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.RoutineCallParameter
 import tools.vitruv.dsls.reactions.builder.TypeProvider
@@ -41,12 +43,16 @@ package class CommonalityInsertReactionsBuilder extends ReactionsSubGenerator {
 	@Inject extension ContainmentHelper containmentHelper
 	@Inject extension ParticipationObjectInitializationHelper participationObjectInitializationHelper
 	@Inject extension ReferenceMappingOperatorHelper referenceMappingOperatorHelper
+	@Inject extension IntermediateContainmentReactionsHelper intermediateContainmentReactionsHelper
 	@Inject ParticipationMatchingReactionsBuilder.Provider participationMatchingReactionsBuilderProvider
 	@Inject InsertIntermediateRoutineBuilder.Provider insertIntermediateRoutineBuilderProvider
 	@Inject ApplyCommonalityAttributesRoutineBuilder.Provider applyCommonalityAttributesRoutineBuilderProvider
 
 	val Commonality commonality
 	val Participation targetParticipation
+
+	// Assumption: We use this reactions builder only for a single reactions segment.
+	val Map<Participation, Optional<FluentRoutineBuilder>> matchSubParticipationsRoutines = new HashMap
 
 	private new(Participation targetParticipation) {
 		checkNotNull(targetParticipation, "targetParticipation is null")
@@ -77,10 +83,8 @@ package class CommonalityInsertReactionsBuilder extends ReactionsSubGenerator {
 		].map[referenceParticipationContext].forEach [
 			segment += reactionForCommonalityInsert(segment)
 			segment += reactionForCommonalityRemove
+			reactionForCommonalityCreate(segment).ifPresent [segment += it]
 		]
-
-		// Matching of existing sub-participations:
-		reactionForCommonalityCreateSetup(segment).ifPresent [segment += it]
 	}
 
 	def private getVariableName(extension ParticipationContext participationContext,
@@ -97,17 +101,30 @@ package class CommonalityInsertReactionsBuilder extends ReactionsSubGenerator {
 		val participation = participationContext.participation
 		val commonality = participation.containingCommonality
 
-		var PreconditionOrRoutineCallBuilder reaction
+		// Note: The intermediate might have been moved again in the meantime (due to attribute reference matching
+		// during intermediate creation), so we check the reaction's trigger condition again before execution.
+		var RoutineCallBuilder reaction
 		if (participationContext.forReferenceMapping) {
 			val reference = participationContext.referenceMapping.declaringReference
-			val referencingCommonality = reference.containingCommonality
-			reaction = create.reaction('''«commonality.concept.name»_«commonality.name»_insertedAt_«
-				referencingCommonality.name»_«reference.name»«participationContext.reactionNameSuffix»''')
+			reaction = create.reaction('''«commonality.reactionName»_insertedAt_«reference.shortReactionName»«
+				participationContext.reactionNameSuffix»''')
 				.afterElement(commonality.changeClass).insertedIn(reference.correspondingEReference)
+				.with [
+					isIntermediateContainerMatching(newValue, affectedEObject, reference)
+				]
 		} else {
-			reaction = create.reaction('''«commonality.concept.name»_«commonality.name»_insertedAtRoot«
+			reaction = create.reaction('''«commonality.reactionName»_insertedAtRoot«
 				participationContext.reactionNameSuffix»''')
 				.afterElementInsertedAsRoot(commonality.changeClass)
+				.with [
+					isIntermediateContainedAtRoot(newValue)
+				]
+		}
+
+		// Match existing sub-participations if the participation already exists:
+		val matchSubParticipationsRoutine = participation.getMatchSubParticipationsRoutine(segment)
+		if (matchSubParticipationsRoutine.present) {
+			reaction.call(matchSubParticipationsRoutine.get, new RoutineCallParameter[newValue])
 		}
 
 		// If the participation context is for a singleton root, ensure that the singleton root exists:
@@ -307,7 +324,7 @@ package class CommonalityInsertReactionsBuilder extends ReactionsSubGenerator {
 				if (containment instanceof ReferenceContainment) {
 					val containmentReference = containment.EReference
 					if (containmentReference.many) {
-						expressions += typeProvider.addToListFeatureValue(containerVar, containmentReference, containedVar)
+						expressions += typeProvider.addListFeatureValue(containerVar, containmentReference, containedVar)
 					} else {
 						expressions += typeProvider.setFeatureValue(containerVar, containmentReference, containedVar)
 					}
@@ -351,10 +368,13 @@ package class CommonalityInsertReactionsBuilder extends ReactionsSubGenerator {
 		}
 		return reaction.call [
 			match [
+				// If the intermediate has been moved during creation (due to attribute reference matching), the
+				// corresponding participations might not have been created yet. We therefore do not assert the
+				// existence of the participation objects.
 				participationContext.managedClasses.forEach [ contextClass |
 					val participationClass = contextClass.participationClass
 					vall(participationClass.correspondingVariableName)
-						.retrieveAsserted(participationClass.changeClass)
+						.retrieve(participationClass.changeClass)
 						.correspondingTo.oldValue
 						.taggedWith(participationClass.getCorrespondenceTag(commonality))
 				]
@@ -368,30 +388,54 @@ package class CommonalityInsertReactionsBuilder extends ReactionsSubGenerator {
 	}
 
 	/**
-	 * Reaction that matches existing sub-participations if the corresponding
-	 * parent participation already exists.
+	 * Matches sub-participations for an existing parent participation.
 	 * <p>
+	 * Optional: Empty if there are no sub-participations to match.
+	 */
+	// TODO: It would be sufficient to generate this routine once for every participation and then import it when
+	// called for external reference mappings.
+	def private getMatchSubParticipationsRoutine(Participation participation, FluentReactionsSegmentBuilder segment) {
+		return matchSubParticipationsRoutines.computeIfAbsent(participation) [
+			val extension matchingReactionsBuilder = participationMatchingReactionsBuilderProvider.getFor(segment)
+			val commonality = participation.containingCommonality
+			val relevantReferenceMappings = commonality.references.flatMap[mappings].filter [
+				isRead && it.participation == participation
+			]
+			val matchingRoutines = relevantReferenceMappings
+				.map[matchSubParticipationsRoutine]
+				.toList
+			if (matchingRoutines.empty) {
+				return Optional.empty
+			}
+
+			return Optional.of(create.routine('''matchSubParticipations_«participation»''')
+				.input[
+					model(commonality.changeClass, INTERMEDIATE)
+				]
+				.action [
+					matchingRoutines.forEach [ matchingRoutine |
+						call(matchingRoutine, new RoutineCallParameter(INTERMEDIATE))
+					]
+				])
+		]
+	}
+
+	/**
 	 * Optional: Empty if there is no reaction to be created.
 	 */
-	def private reactionForCommonalityCreateSetup(FluentReactionsSegmentBuilder segment) {
-		val extension matchingReactionsBuilder = participationMatchingReactionsBuilderProvider.getFor(segment)
-		val relevantReferenceMappings = commonality.references.flatMap[mappings].filter [
-			isRead && it.participation == targetParticipation
-		]
-		val matchingRoutines = relevantReferenceMappings
-			.map[matchReferenceMappingRoutine]
-			.toList
-		if (matchingRoutines.empty) {
+	def private reactionForCommonalityCreate(ParticipationContext participationContext,
+		FluentReactionsSegmentBuilder segment) {
+		if (!participationContext.isForAttributeReferenceMapping) {
 			return Optional.empty
 		}
 
-		val Wrapper<FluentReactionBuilder> reaction = new Wrapper
-		create.reaction('''«commonality.concept.name»_«commonality.name»Create_Setup''')
-			.afterElement(commonality.changeClass).created => [
-				matchingRoutines.forEach [ matchingRoutine |
-					reaction.set(call(matchingRoutine, new RoutineCallParameter[affectedEObject]))
-				]
-			]
-		return Optional.of(reaction.get)
+		val extension matchingReactionsBuilder = participationMatchingReactionsBuilderProvider.getFor(segment)
+		val referencedCommonality = participationContext.referencedCommonality
+		return Optional.of(create.reaction('''«referencedCommonality.reactionName»Create«
+			participationContext.reactionNameSuffix»''')
+			.afterElement(referencedCommonality.changeClass).created
+			.call(participationContext.matchAttributeReferenceContainerForIntermediateRoutine,
+				new RoutineCallParameter[affectedEObject])
+		)
 	}
 }

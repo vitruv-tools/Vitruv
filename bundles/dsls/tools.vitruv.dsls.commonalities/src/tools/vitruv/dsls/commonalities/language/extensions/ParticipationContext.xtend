@@ -166,6 +166,10 @@ class ParticipationContext {
 		return referenceMapping?.containingCommonality
 	}
 
+	def getReferencedCommonality() {
+		return referenceMapping?.referencedCommonality
+	}
+
 	/**
 	 * Note: In the context of an external reference mapping, this may include
 	 * participation classes that originate from an external participation. If

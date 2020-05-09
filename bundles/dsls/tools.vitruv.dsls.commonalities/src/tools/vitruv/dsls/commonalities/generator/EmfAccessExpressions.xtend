@@ -269,4 +269,12 @@ package class EmfAccessExpressions {
 			feature = typeProvider.findMethod(EObject, 'eContainer', 0)
 		]
 	}
+
+	def static getEContainmentFeature(extension TypeProvider typeProvider, XExpression object) {
+		XbaseFactory.eINSTANCE.createXMemberFeatureCall => [
+			memberCallTarget = object
+			explicitOperationCall = true
+			feature = typeProvider.findMethod(EObject, 'eContainmentFeature', 0)
+		]
+	}
 }

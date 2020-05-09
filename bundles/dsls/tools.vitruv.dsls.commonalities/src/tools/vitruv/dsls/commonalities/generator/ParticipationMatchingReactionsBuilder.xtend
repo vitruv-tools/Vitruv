@@ -3,10 +3,11 @@ package tools.vitruv.dsls.commonalities.generator
 import com.google.inject.Inject
 import java.util.Collections
 import java.util.HashMap
+import java.util.HashSet
 import java.util.Map
+import java.util.Set
 import org.apache.log4j.Level
 import org.apache.log4j.Logger
-import org.eclipse.emf.ecore.EReference
 import org.eclipse.emf.ecore.EcorePackage
 import org.eclipse.xtext.common.types.TypesFactory
 import org.eclipse.xtext.xbase.XExpression
@@ -15,6 +16,7 @@ import org.eclipse.xtext.xbase.XbaseFactory
 import tools.vitruv.dsls.commonalities.generator.ReactionsHelper.RoutineCallContext
 import tools.vitruv.dsls.commonalities.language.CommonalityReference
 import tools.vitruv.dsls.commonalities.language.CommonalityReferenceMapping
+import tools.vitruv.dsls.commonalities.language.OperatorReferenceMapping
 import tools.vitruv.dsls.commonalities.language.Participation
 import tools.vitruv.dsls.commonalities.language.ParticipationAttributeOperand
 import tools.vitruv.dsls.commonalities.language.ParticipationClass
@@ -169,25 +171,31 @@ package class ParticipationMatchingReactionsBuilder extends ReactionsGenerationH
 	@Inject extension ParticipationObjectsHelper participationObjectsHelper
 	@Inject extension ReferenceMappingOperatorHelper referenceMappingOperatorHelper
 	@Inject extension AttributeChangeReactionsHelper attributeChangeReactionsHelper
+	@Inject extension IntermediateContainmentReactionsHelper intermediateContainmentReactionsHelper
 	@Inject InsertIntermediateRoutineBuilder.Provider insertIntermediateRoutineBuilderProvider
 	@Inject ApplyParticipationAttributesRoutineBuilder.Factory applyParticipationAttributesRoutineBuilderFactory
 
 	val FluentReactionsSegmentBuilder segment
 	var alreadyPerformedCommonSetup = false
+	val Set<ParticipationContext> alreadyGeneratedRoutines = new HashSet
 
 	var FluentRoutineBuilder _deleteObjectRoutine = null
 
-	val Map<ParticipationContext, FluentRoutineBuilder> checkAttributeReferenceChildsRemovedRoutines = new HashMap
-	val Map<ParticipationContext, FluentRoutineBuilder> checkAttributeReferenceParentRemovedRoutines = new HashMap
-	val Map<ParticipationContext, FluentRoutineBuilder> checkAttributeReferenceRemovedRoutines = new HashMap
+	val Map<ParticipationContext, FluentRoutineBuilder> checkAttributeReferenceRoutines = new HashMap
+	val Map<ParticipationContext, FluentRoutineBuilder> checkAttributeReferenceElementsRemovedRoutines = new HashMap
+	val Map<ParticipationContext, FluentRoutineBuilder> checkAttributeReferenceElementRemovedRoutines = new HashMap
+	val Map<ParticipationContext, FluentRoutineBuilder> matchAttributeReferenceElementsRoutines = new HashMap
+	val Map<ParticipationContext, FluentRoutineBuilder> matchAttributeReferenceContainerRoutines = new HashMap
 
 	val Map<ParticipationContext, FluentRoutineBuilder> matchParticipationRoutines = new HashMap
 	val Map<ParticipationContext, FluentRoutineBuilder> createIntermediateRoutines = new HashMap
-	val Map<ParticipationClass, FluentRoutineBuilder> insertResourceBridgeRoutines = new HashMap
+	val Map<ParticipationClass, FluentRoutineBuilder> setupAndInsertResourceBridgeRoutines = new HashMap
 	val Map<CommonalityReference, FluentRoutineBuilder> insertReferencedIntermediateRoutines = new HashMap
 	val Map<Participation, FluentRoutineBuilder> applyParticipationAttributesRoutines = new HashMap
 	val Map<ParticipationContext, FluentRoutineBuilder> matchManyParticipationsRoutines = new HashMap
-	val Map<CommonalityReferenceMapping, FluentRoutineBuilder> matchReferenceMappingRoutines = new HashMap
+
+	val Map<CommonalityReferenceMapping, FluentRoutineBuilder> matchSubParticipationsRoutines = new HashMap
+	val Map<ParticipationContext, FluentRoutineBuilder> matchAttributeReferenceContainerForIntermediateRoutines = new HashMap
 
 	private new(FluentReactionsSegmentBuilder segment) {
 		checkNotNull(segment, "segment is null")
@@ -215,26 +223,33 @@ package class ParticipationMatchingReactionsBuilder extends ReactionsGenerationH
 		}
 
 		performCommonSetup()
+		participationContext.generateRoutines()
 
-		participationContext.generateRoutines
-		participationContext.containments.forEach [ extension contextContainment |
-			// Note: For different participation contexts involving the same
-			// participation, we generate multiple reactions with the same
-			// trigger. The difference between them is which matching routine
-			// they invoke.
-			val containment = containment
-			if (containment instanceof ReferenceContainment) {
-				segment += participationContext.reactionForParticipationClassInsert(containment)
-				segment += participationContext.reactionForParticipationClassRemove(containment)
-			} else if (containment instanceof OperatorContainment) {
-				if (containment.operator.isAttributeReference) {
-					segment += participationContext.reactionsForAttributeReferenceChange(containment)
-				} else {
-					throw new UnsupportedOperationException('''Operator reference mappings for non-attribute «
-						»references are not supported yet''')
+		if (participationContext.isForAttributeReferenceMapping) {
+			participationContext.attributeReferenceContainments.forEach [ extension contextContainment |
+				val containment = containment
+				// assert: containment.operator.isAttributeReference
+				segment += participationContext.reactionsForAttributeReferenceChange(containment)
+			]
+		} else {
+			// Note: For different participation contexts involving the same participation, we generate multiple
+			// reactions with the same trigger. The difference between them is which matching routine they invoke.
+			participationContext.containments.forEach [ extension contextContainment |
+				val containment = containment
+				if (containment instanceof ReferenceContainment) {
+					segment += participationContext.reactionForParticipationClassInsert(containment)
+					segment += participationContext.reactionForParticipationClassRemove(containment)
+				} else if (containment instanceof OperatorContainment) {
+					if (containment.operator.isAttributeReference) {
+						throw new IllegalStateException('''Not expecting attribute reference containments for «
+							»non-attribute-reference participation context''')
+					} else {
+						throw new UnsupportedOperationException('''Operator reference mappings for non-attribute «
+							»references are not supported yet''')
+					}
 				}
-			}
-		]
+			]
+		}
 
 		// Note: We do not need to react to the deletion of participation
 		// objects, because we also receive events for the removal from their
@@ -262,15 +277,28 @@ package class ParticipationMatchingReactionsBuilder extends ReactionsGenerationH
 	}
 
 	def private generateRoutines(ParticipationContext participationContext) {
+		if (!alreadyGeneratedRoutines.add(participationContext)) {
+			return;
+		}
+		val participation = participationContext.participation
+		val commonality = participation.containingCommonality
+
 		segment += participationContext.matchParticipationRoutine
 		segment += participationContext.createIntermediateRoutine
+
+		if (participationContext.isRootContext) {
+			segment += insertIntermediateRoutineBuilderProvider.getFor(segment).getRoutine(commonality)
+		}
+
 		if (participationContext.forReferenceMapping) {
 			segment += participationContext.referenceMapping.declaringReference.insertReferencedIntermediateRoutine
 			segment += participationContext.matchManyParticipationsRoutine
 			if (participationContext.isForAttributeReferenceMapping) {
-				segment += participationContext.checkAttributeReferenceChildsRemovedRoutine
-				segment += participationContext.checkAttributeReferenceParentRemovedRoutine
-				segment += participationContext.checkAttributeReferenceRemovedRoutine
+				segment += participationContext.checkAttributeReferenceRoutine
+				segment += participationContext.checkAttributeReferenceElementsRemovedRoutine
+				segment += participationContext.checkAttributeReferenceElementRemovedRoutine
+				segment += participationContext.matchAttributeReferenceElementsRoutine
+				segment += participationContext.matchAttributeReferenceContainerRoutine
 			}
 		}
 	}
@@ -374,11 +402,11 @@ package class ParticipationMatchingReactionsBuilder extends ReactionsGenerationH
 		val reactionNameSuffix = participationContext.reactionNameSuffix
 		return attribute.getAttributeChangeReactions(reactionNameSuffix) [ changeType , it |
 			// Check if any of the previous attribute references got removed:
-			call(participationContext.checkAttributeReferenceChildsRemovedRoutine,
+			call(participationContext.checkAttributeReferenceElementsRemovedRoutine,
 				new RoutineCallParameter[affectedEObject])
 
-			// Invoke the participation matching because there might be new references now:
-			call(participationContext.matchManyParticipationsRoutine, new RoutineCallParameter[affectedEObject])
+			// Check if there are new attribute references:
+			call(participationContext.matchAttributeReferenceElementsRoutine, new RoutineCallParameter[affectedEObject])
 		]
 	}
 
@@ -386,14 +414,15 @@ package class ParticipationMatchingReactionsBuilder extends ReactionsGenerationH
 	def private dispatch reactionsForAttributeReferenceChange(ParticipationContext participationContext,
 		OperatorContainment containment, ReferencedParticipationAttributeOperand operand) {
 		val attribute = operand.participationAttribute
-		val reactionNameSuffix = participationContext.reactionNameSuffix + "_referenced"
+		val reactionNameSuffix = participationContext.reactionNameSuffix + "_element"
 		return attribute.getAttributeChangeReactions(reactionNameSuffix) [ changeType , it |
-			// Check if any previous attribute reference containments got removed:
-			call(participationContext.checkAttributeReferenceParentRemovedRoutine,
+			// Check if any previous attribute reference is no longer fulfilled:
+			call(participationContext.checkAttributeReferenceElementRemovedRoutine,
 				new RoutineCallParameter[affectedEObject])
 
-			// Invoke the participation matching because the container might have changed:
-			callMatchingRoutine(participationContext, new RoutineCallParameter[affectedEObject], false)
+			// Check if there is a new attribute reference container:
+			call(participationContext.matchAttributeReferenceContainerRoutine,
+				new RoutineCallParameter[affectedEObject])
 		]
 	}
 
@@ -402,15 +431,18 @@ package class ParticipationMatchingReactionsBuilder extends ReactionsGenerationH
 		return Collections.emptyList // for any other type of operand (eg. literal operands)
 	}
 
-	private def getCheckAttributeReferenceChildsRemovedRoutine(ParticipationContext participationContext) {
-		return checkAttributeReferenceChildsRemovedRoutines.computeIfAbsent(participationContext) [
+	/**
+	 * Checks if any attribute references for the given container participation object are no longer fulfilled.
+	 */
+	private def getCheckAttributeReferenceElementsRemovedRoutine(ParticipationContext participationContext) {
+		return checkAttributeReferenceElementsRemovedRoutines.computeIfAbsent(participationContext) [
 			// assert: participationContext.isForAttributeReferenceMapping
 			val commonalityReference = participationContext.referenceMapping.declaringReference
-			val referencingCommonality = commonalityReference.containingCommonality
-			val referencedCommonality = commonalityReference.referenceType
+			val referencingCommonality = participationContext.referencingCommonality
+			val referencedCommonality = participationContext.referencedCommonality
 
 			val extension routineCallContext = new RoutineCallContext
-			create.routine('''checkAttributeReferenceChildsRemoved«participationContext.reactionNameSuffix»''')
+			create.routine('''checkAttributeReferenceElementsRemoved«participationContext.reactionNameSuffix»''')
 				.input [
 					// Some object of the referencing participation (not necessarily the attribute reference root):
 					model(EcorePackage.Literals.EOBJECT, PARTICIPATION_OBJECT)
@@ -442,7 +474,7 @@ package class ParticipationMatchingReactionsBuilder extends ReactionsGenerationH
 									forExpression = referencedIntermediatesVar.featureCall
 									eachExpression = XbaseFactory.eINSTANCE.createXBlockExpression => [
 										expressions += routineCallContext.createRoutineCall(typeProvider,
-											participationContext.checkAttributeReferenceRemovedRoutine,
+											participationContext.checkAttributeReferenceRoutine,
 											variable(REFERENCING_INTERMEDIATE), referencedIntermediateVar.featureCall)
 									]
 								]
@@ -459,7 +491,7 @@ package class ParticipationMatchingReactionsBuilder extends ReactionsGenerationH
 
 								// Check if the attribute reference still holds:
 								expressions += routineCallContext.createRoutineCall(typeProvider,
-									participationContext.checkAttributeReferenceRemovedRoutine,
+									participationContext.checkAttributeReferenceRoutine,
 									variable(REFERENCING_INTERMEDIATE), referencedIntermediateVar.featureCall)
 							}
 						]
@@ -468,15 +500,17 @@ package class ParticipationMatchingReactionsBuilder extends ReactionsGenerationH
 		]
 	}
 
-	private def getCheckAttributeReferenceParentRemovedRoutine(ParticipationContext participationContext) {
-		return checkAttributeReferenceParentRemovedRoutines.computeIfAbsent(participationContext) [
+	/**
+	 * Checks if any attribute reference for the given contained participation object is no longer fulfilled.
+	 */
+	private def getCheckAttributeReferenceElementRemovedRoutine(ParticipationContext participationContext) {
+		return checkAttributeReferenceElementRemovedRoutines.computeIfAbsent(participationContext) [
 			// assert: participationContext.isForAttributeReferenceMapping
 			val commonalityReference = participationContext.referenceMapping.declaringReference
-			val referencingCommonality = commonalityReference.containingCommonality
-			val referencedCommonality = commonalityReference.referenceType
+			val referencedCommonality = participationContext.referencedCommonality
 
 			val extension routineCallContext = new RoutineCallContext
-			create.routine('''checkAttributeReferenceParentRemoved«participationContext.reactionNameSuffix»''')
+			create.routine('''checkAttributeReferenceElementRemoved«participationContext.reactionNameSuffix»''')
 				.input [
 					model(EcorePackage.Literals.EOBJECT, PARTICIPATION_OBJECT)
 				].match [
@@ -484,46 +518,79 @@ package class ParticipationMatchingReactionsBuilder extends ReactionsGenerationH
 						.correspondingTo(PARTICIPATION_OBJECT)
 				].action [
 					execute [extension typeProvider |
+						XbaseFactory.eINSTANCE.createXBlockExpression => [
+							// Get the container intermediate, if there is one for the specific commonality reference:
+							val referencingIntermediateVar = XbaseFactory.eINSTANCE.createXVariableDeclaration => [
+								name = REFERENCING_INTERMEDIATE
+								writeable = false
+								right = getIntermediateContainer(typeProvider, variable(REFERENCED_INTERMEDIATE),
+									commonalityReference)
+							]
+							expressions += referencingIntermediateVar
+
+							// If the container intermediate is not null:
+							expressions += XbaseFactory.eINSTANCE.createXIfExpression => [
+								^if = referencingIntermediateVar.featureCall.notEqualsNull(typeProvider)
+								// Then check if the attribute reference still holds:
+								then = routineCallContext.createRoutineCall(typeProvider,
+									participationContext.checkAttributeReferenceRoutine,
+									referencingIntermediateVar.featureCall, variable(REFERENCED_INTERMEDIATE))
+							]
+						]
+					].setCallerContext
+				].setCaller
+		]
+	}
+
+	// Checks for new attribute references for a given container participation object:
+	private def getMatchAttributeReferenceElementsRoutine(ParticipationContext participationContext) {
+		return matchAttributeReferenceElementsRoutines.computeIfAbsent(participationContext) [
+			// assert: participationContext.isForAttributeReferenceMapping
+			val mapping = participationContext.referenceMapping as OperatorReferenceMapping
+			val referencingCommonality = participationContext.referencingCommonality
+			val referencedCommonality = participationContext.referencedCommonality
+			val attributeReferenceRoot = participationContext.attributeReferenceRoot
+			val attributeReferenceRootClass = attributeReferenceRoot.participationClass
+
+			val extension routineCallContext = new RoutineCallContext
+			create.routine('''matchAttributeReferenceElements«participationContext.reactionNameSuffix»''')
+				.input [
+					// Some object of the referencing participation (not necessarily the attribute reference root):
+					model(EcorePackage.Literals.EOBJECT, PARTICIPATION_OBJECT)
+				].match [
+					vall(REFERENCING_INTERMEDIATE).retrieve(referencingCommonality.changeClass)
+						.correspondingTo(PARTICIPATION_OBJECT)
+					vall(REFERENCE_ROOT).retrieveAsserted(attributeReferenceRootClass.changeClass)
+						.correspondingTo(REFERENCING_INTERMEDIATE)
+						.taggedWith(attributeReferenceRootClass.correspondenceTag)
+				].action [
+					execute [extension typeProvider |
 						val extension jvmTypeReferenceBuilder = jvmTypeReferenceBuilder
 						XbaseFactory.eINSTANCE.createXBlockExpression => [
-							// Goal: Get the referencing intermediate, if there is one.
-							// The container commonality might have multiple commonality references which are able to
-							// contain the referenced intermediate. We therefore need to check if the containment
-							// reference which holds the referenced intermediate corresponds to the expected
-							// commonality reference.
-
-							// Get the intermediate's containment reference:
-							val containmentReferenceVar = XbaseFactory.eINSTANCE.createXVariableDeclaration => [
-								name = REFERENCE
-								type = typeRef(typeof(EReference))
+							// Query the operator for all potentially contained intermediates:
+							val operator = mapping.operator
+							val operands = mapping.operands
+							val referencedIntermediatesVar = XbaseFactory.eINSTANCE.createXVariableDeclaration => [
+								name = REFERENCED_INTERMEDIATES
+								type = typeRef(Iterable, typeRef(referencedCommonality.changeClass.javaClassName))
 								writeable = false
-								right = getEContainmentFeature(typeProvider, variable(REFERENCED_INTERMEDIATE))
+								right = operator.callGetPotentiallyContainedIntermediates(operands,
+									variable(REFERENCE_ROOT), referencedCommonality.changeClass, typeProvider)
 							]
-							expressions += containmentReferenceVar
+							expressions += referencedIntermediatesVar
 
-							// If the containment reference matches the expected commonality reference:
-							expressions += XbaseFactory.eINSTANCE.createXIfExpression => [
-								val commonalityEReference = commonalityReference.correspondingEReference
-								^if = containmentReferenceVar.featureCall
-									.equals(typeProvider.getEReference(commonalityEReference), typeProvider)
-								then = XbaseFactory.eINSTANCE.createXBlockExpression => [
-									// Then: Get the referencing container intermediate
-									val referencingIntermediateTypeName = referencingCommonality.changeClass.javaClassName
-									val referencingIntermediateVar = XbaseFactory.eINSTANCE.createXVariableDeclaration => [
-										name = REFERENCING_INTERMEDIATE
-										type = typeRef(referencingIntermediateTypeName)
-										writeable = false
-										right = XbaseFactory.eINSTANCE.createXCastedExpression => [
-											target = getEContainer(typeProvider, variable(REFERENCED_INTERMEDIATE))
-											type = typeRef(referencingIntermediateTypeName)
-										]
-									]
-									expressions += referencingIntermediateVar
-
-									// And check if the attribute reference still holds:
+							// For each potentially referenced intermediate, check if the attribute reference is fulfilled:
+							val referencedIntermediateVar = TypesFactory.eINSTANCE.createJvmFormalParameter => [
+								parameterType = typeRef(referencedCommonality.changeClass.javaClassName)
+								name = REFERENCED_INTERMEDIATE
+							]
+							expressions += XbaseFactory.eINSTANCE.createXForLoopExpression => [
+								declaredParam = referencedIntermediateVar
+								forExpression = referencedIntermediatesVar.featureCall
+								eachExpression = XbaseFactory.eINSTANCE.createXBlockExpression => [
 									expressions += routineCallContext.createRoutineCall(typeProvider,
-										participationContext.checkAttributeReferenceRemovedRoutine,
-										referencingIntermediateVar.featureCall, variable(REFERENCED_INTERMEDIATE))
+										participationContext.checkAttributeReferenceRoutine,
+										variable(REFERENCING_INTERMEDIATE), referencedIntermediateVar.featureCall)
 								]
 							]
 						]
@@ -532,17 +599,77 @@ package class ParticipationMatchingReactionsBuilder extends ReactionsGenerationH
 		]
 	}
 
-	private def getCheckAttributeReferenceRemovedRoutine(ParticipationContext participationContext) {
-		return checkAttributeReferenceRemovedRoutines.computeIfAbsent(participationContext) [
+	// Checks for a new attribute reference container for a given potentially contained participation object:
+	private def getMatchAttributeReferenceContainerRoutine(ParticipationContext participationContext) {
+		return matchAttributeReferenceContainerRoutines.computeIfAbsent(participationContext) [
 			// assert: participationContext.isForAttributeReferenceMapping
-			val attributeReferenceRoot = participationContext.attributeReferenceRoot
-			val attributeReferenceRootClass = attributeReferenceRoot.participationClass
-			val commonalityReference = participationContext.referenceMapping.declaringReference
-			val referencingCommonality = commonalityReference.containingCommonality
-			val referencedCommonality = commonalityReference.referenceType
+			val mapping = participationContext.referenceMapping as OperatorReferenceMapping
+			val referencingCommonality = participationContext.referencingCommonality
+			val referencedCommonality = participationContext.referencedCommonality
 
 			val extension routineCallContext = new RoutineCallContext
-			create.routine('''checkAttributeReferenceRemoved«participationContext.reactionNameSuffix»''')
+			create.routine('''matchAttributeReferenceContainer«participationContext.reactionNameSuffix»''')
+				.input [
+					// Some object of the potentially referenced participation:
+					model(EcorePackage.Literals.EOBJECT, PARTICIPATION_OBJECT)
+				].match [
+					vall(REFERENCED_INTERMEDIATE).retrieve(referencedCommonality.changeClass)
+						.correspondingTo(PARTICIPATION_OBJECT)
+				].action [
+					execute [extension typeProvider |
+						val extension jvmTypeReferenceBuilder = jvmTypeReferenceBuilder
+						XbaseFactory.eINSTANCE.createXBlockExpression => [
+							// Query the operator for the potential container intermediate:
+							val operator = mapping.operator
+							val operands = mapping.operands
+							val referencingIntermediateVar = XbaseFactory.eINSTANCE.createXVariableDeclaration => [
+								name = REFERENCING_INTERMEDIATE
+								type = typeRef(referencingCommonality.changeClass.javaClassName)
+								writeable = false
+								right = operator.callGetPotentialContainerIntermediate(operands,
+									variable(PARTICIPATION_OBJECT), referencingCommonality.changeClass, typeProvider)
+							]
+							expressions += referencingIntermediateVar
+
+							// If the candidate container intermediate is not null:
+							expressions += XbaseFactory.eINSTANCE.createXIfExpression => [
+								^if = referencingIntermediateVar.featureCall.notEqualsNull(typeProvider)
+								// Then check if the attribute reference is fulfilled:
+								then = routineCallContext.createRoutineCall(typeProvider,
+									participationContext.checkAttributeReferenceRoutine,
+									referencingIntermediateVar.featureCall, variable(REFERENCED_INTERMEDIATE))
+							]
+						]
+					].setCallerContext
+				].setCaller
+		]
+	}
+
+	/**
+	 * Checks if the participation corresponding to the given 'referenced
+	 * intermediate' is, according to the attribute reference operator,
+	 * contained by the participation corresponding to the given 'referencing
+	 * intermediate'.
+	 * <p>
+	 * If the attribute reference is fulfilled, but the referenced intermediate
+	 * is not actually referenced yet, we insert it into the respective
+	 * reference of the referencing intermediate.
+	 * <p>
+	 * If the attribute reference is not fulfilled, but the referenced
+	 * intermediate is currently referenced by the referencing intermediate, we
+	 * move it into the intermediate model root.
+	 */
+	private def getCheckAttributeReferenceRoutine(ParticipationContext participationContext) {
+		return checkAttributeReferenceRoutines.computeIfAbsent(participationContext) [
+			// assert: participationContext.isForAttributeReferenceMapping
+			val commonalityReference = participationContext.referenceMapping.declaringReference
+			val referencingCommonality = participationContext.referencingCommonality
+			val referencedCommonality = participationContext.referencedCommonality
+			val attributeReferenceRoot = participationContext.attributeReferenceRoot
+			val attributeReferenceRootClass = attributeReferenceRoot.participationClass
+
+			val extension routineCallContext = new RoutineCallContext
+			create.routine('''checkAttributeReference«participationContext.reactionNameSuffix»''')
 				.input [
 					model(referencingCommonality.changeClass, REFERENCING_INTERMEDIATE)
 					model(referencedCommonality.changeClass, REFERENCED_INTERMEDIATE)
@@ -563,28 +690,67 @@ package class ParticipationMatchingReactionsBuilder extends ReactionsGenerationH
 				].action [
 					execute [extension typeProvider |
 						XbaseFactory.eINSTANCE.createXBlockExpression => [
-							// For each attribute reference containment:
+							// Check each attribute reference containment:
 							participationContext.attributeReferenceContainments.forEach [ extension contextContainment |
-								val operator = containment.operator
-								val operands = containment.operands
-								val containedClass = contained.participationClass
-								// If, according to the attribute reference operator, the referenced object is no
-								// longer contained by the referencing object:
-								expressions += XbaseFactory.eINSTANCE.createXIfExpression => [
-									^if = negated(operator.callIsContained(operands, variable(REFERENCE_ROOT),
-										variable(containedClass.correspondingVariableName), typeProvider),
-										typeProvider)
-									then = XbaseFactory.eINSTANCE.createXBlockExpression => [
-										// Then remove the corresponding intermediate:
-										expressions += routineCallContext.createRoutineCall(typeProvider,
-											deleteObjectRoutine, variable(REFERENCED_INTERMEDIATE))
-										expressions += XbaseFactory.eINSTANCE.createXReturnExpression
-									]
-								]
+								join(checkAttributeReferenceContainment(participationContext, containment,
+									routineCallContext, typeProvider))
+							]
+
+							// If we did not return yet, it means that all attribute reference containments are
+							// fulfilled.
+							// If the referenced intermediate is not yet contained by the referencing intermediate:
+							expressions += XbaseFactory.eINSTANCE.createXIfExpression => [
+								^if = negated(isIntermediateContainerMatching(typeProvider,
+									variable(REFERENCED_INTERMEDIATE), variable(REFERENCING_INTERMEDIATE),
+									commonalityReference), typeProvider)
+								// Then insert it into the referencing intermediate:
+								val commonalityEReference = commonalityReference.correspondingEReference
+								then = insertFeatureValue(typeProvider, variable(REFERENCING_INTERMEDIATE),
+									commonalityEReference, variable(REFERENCED_INTERMEDIATE))
 							]
 						]
 					].setCallerContext
 				].setCaller
+		]
+	}
+
+	/**
+	 * Checks if the given attribute reference containment is fulfilled.
+	 * <p>
+	 * If it is not, but the referenced intermediate is currently contained by the referencing intermediate, we move it
+	 * into the root of its intermediate model.
+	 */
+	private def checkAttributeReferenceContainment(ParticipationContext participationContext,
+		OperatorContainment containment, extension RoutineCallContext routineCallContext,
+		extension TypeProvider typeProvider) {
+		val commonalityReference = participationContext.referenceMapping.declaringReference
+		val referencedCommonality = participationContext.referencedCommonality
+
+		val operator = containment.operator
+		val operands = containment.operands
+		val containedClass = containment.contained
+
+		return XbaseFactory.eINSTANCE.createXBlockExpression => [
+			// If, according to the attribute reference operator, the reference root object no longer contains the
+			// referenced object:
+			expressions += XbaseFactory.eINSTANCE.createXIfExpression => [
+				^if = negated(operator.callIsContained(operands, variable(REFERENCE_ROOT),
+					variable(containedClass.correspondingVariableName), typeProvider), typeProvider)
+				then = XbaseFactory.eINSTANCE.createXBlockExpression => [
+					// But if the referencing intermediate still contains the referenced intermediate:
+					expressions += XbaseFactory.eINSTANCE.createXIfExpression => [
+						^if = isIntermediateContainerMatching(typeProvider, variable(REFERENCED_INTERMEDIATE),
+							variable(REFERENCING_INTERMEDIATE), commonalityReference)
+						// Then move the referenced intermediate to the intermediate model root:
+						val insertIntermediateRoutine = insertIntermediateRoutineBuilderProvider.getFor(segment)
+							.getRoutine(referencedCommonality)
+						then = routineCallContext.createRoutineCall(typeProvider, insertIntermediateRoutine,
+							variable(REFERENCED_INTERMEDIATE))
+					]
+					// In either case: Return from the routine.
+					expressions += XbaseFactory.eINSTANCE.createXReturnExpression
+				]
+			]
 		]
 	}
 
@@ -745,7 +911,9 @@ package class ParticipationMatchingReactionsBuilder extends ReactionsGenerationH
 	def private XExpression checkNonStructuralConditions(ParticipationContext participationContext,
 		XFeatureCall participationObjects, extension TypeProvider typeProvider) {
 		// TODO Implement this: This needs to check the (checked) non-containment participation relations and
-		// conditions
+		// conditions.
+		// TODO If the participation context is for an attribute reference, we need to filter any conditions for
+		// attributes which are also affected by the attribute reference.
 		return XbaseFactory.eINSTANCE.createXBooleanLiteral => [
 			isTrue = true
 		]
@@ -791,7 +959,7 @@ package class ParticipationMatchingReactionsBuilder extends ReactionsGenerationH
 							// because this is not the case for commonality participations.
 							// If we have a Resource as root container, setup and insert the corresponding
 							// ResourceBridge:
-							insertResourceBridge(participation)
+							setupAndInsertResourceBridge(participation)
 						}
 					}
 
@@ -823,10 +991,12 @@ package class ParticipationMatchingReactionsBuilder extends ReactionsGenerationH
 
 	def private getSetupSingletonRoutine(ParticipationClass singletonClass) {
 		val participation = singletonClass.participation
+		val commonality = participation.containingCommonality
 		val singletonEClass = singletonClass.changeClass
 		return create.routine('''setupSingleton_«participation.name»_«singletonClass.name»''')
 			.input [
 				model(singletonEClass, SINGLETON)
+				model(commonality.changeClass, INTERMEDIATE)
 				plain(ParticipationObjects, PARTICIPATION_OBJECTS)
 			]
 			.match [
@@ -842,35 +1012,27 @@ package class ParticipationMatchingReactionsBuilder extends ReactionsGenerationH
 				// Setup and insert a ResourceBridge for the resource root:
 				// Note: This sets a commonality and participation specific
 				// correspondence for the first participation the singleton
-				// gets matched for. This ResourceBridge uses this for some of
+				// gets matched for. The ResourceBridge uses this for some of
 				// its tasks.
-				insertResourceBridge(participation)
+				setupAndInsertResourceBridge(participation)
 			]
 	}
 
-	def private insertResourceBridge(extension ActionStatementBuilder it, Participation participation) {
-		// TODO The participation matcher already returns a new ResourceBridge
-		// object. Use that instead? (still requires some setup though)
+	/**
+	 * Performs remaining setup and inserts the ResourceBridge returned by the
+	 * ParticipationMatcher into the intermediate model.
+	 */
+	def private setupAndInsertResourceBridge(extension ActionStatementBuilder it, Participation participation) {
 		val resourceClass = participation.resourceClass
 		// assert: resourceClass !== null
-		// assert: resourceClass === participationContext.rootContainerClass
-		// We use any of the contained objects for the setup:
-		val classInResource = resourceClass.containedClasses.head
-		// assert: classInResource !== null
-		// Note: We do not need to add a participation context specific suffix
-		// to the insertResourceBridge routine, because this routine is only
-		// required for a participation's own context and we expect that we
-		// match at most one of these per reactions segment.
-		call(resourceClass.insertResourceBridgeRoutine, new RoutineCallParameter [ extension typeProvider |
-			classInResource.getParticipationObject(variable(PARTICIPATION_OBJECTS), typeProvider)
-		])
+		call(resourceClass.setupAndInsertResourceBridgeRoutine, new RoutineCallParameter [ extension typeProvider |
+			resourceClass.getParticipationObject(variable(PARTICIPATION_OBJECTS), typeProvider)
+		], new RoutineCallParameter(INTERMEDIATE))
 	}
 
-	def private getInsertResourceBridgeRoutine(ParticipationClass resourceClass) {
-		// assert: There is only a single resource class per participation
-		// assert: Inside a single reactions segment we handle at most one participation with a resource class
-		insertResourceBridgeRoutines.computeIfAbsent(resourceClass) [
-			resourceClass.generateInsertResourceBridgeRoutine
+	def private getSetupAndInsertResourceBridgeRoutine(ParticipationClass resourceClass) {
+		setupAndInsertResourceBridgeRoutines.computeIfAbsent(resourceClass) [
+			resourceClass.generateSetupAndInsertResourceBridgeRoutine
 		]
 	}
 
@@ -956,24 +1118,24 @@ package class ParticipationMatchingReactionsBuilder extends ReactionsGenerationH
 	}
 
 	/**
-	 * Generates the routines that are required to match the given commonality
-	 * reference mapping and returns the routine that needs to be called in
-	 * order to invoke the matching.
+	 * Generates the routines for matching sub-participations for the given
+	 * commonality reference mapping.
 	 * <p>
-	 * Called on commonality insert.
+	 * Returns the routine that needs to be called on commonality insert in
+	 * order to invoke the matching.
 	 */
-	def package getMatchReferenceMappingRoutine(CommonalityReferenceMapping mapping) {
-		return matchReferenceMappingRoutines.computeIfAbsent(mapping) [
+	def package getMatchSubParticipationsRoutine(CommonalityReferenceMapping mapping) {
+		return matchSubParticipationsRoutines.computeIfAbsent(mapping) [
 			val participation = mapping.participation
 			val commonality = participation.containingCommonality
 			val participationContext = mapping.referenceParticipationContext
 
 			// Generate the required routines:
 			performCommonSetup()
-			participationContext.generateRoutines
+			participationContext.generateRoutines()
 
 			val mappingParticipationClass = mapping.participationClass
-			return create.routine('''matchReferenceMapping_«mapping.reactionName»''')
+			return create.routine('''matchSubParticipations_«mapping.reactionName»''')
 				.input [
 					model(commonality.changeClass, INTERMEDIATE)
 				]
@@ -983,10 +1145,45 @@ package class ParticipationMatchingReactionsBuilder extends ReactionsGenerationH
 						.taggedWith(mappingParticipationClass.correspondenceTag)
 				]
 				.action [
-					// TODO: Avoid generating the same matching twice. This routine already exists inside P -> C segment.
-					// Import the segment and call the matching routine there.
-					call(participationContext.matchManyParticipationsRoutine,
-						new RoutineCallParameter[variable(REFERENCE_ROOT)])
+					// TODO: Avoid generating the same matching routines twice. These routines already exists inside
+					// P -> C segment. Import the segment and call the matching routine there.
+					if (participationContext.isForAttributeReferenceMapping) {
+						call(participationContext.matchAttributeReferenceElementsRoutine,
+							new RoutineCallParameter[variable(REFERENCE_ROOT)])
+					} else {
+						call(participationContext.matchManyParticipationsRoutine,
+							new RoutineCallParameter[variable(REFERENCE_ROOT)])
+					}
+				]
+		]
+	}
+
+	def package getMatchAttributeReferenceContainerForIntermediateRoutine(ParticipationContext participationContext) {
+		return matchAttributeReferenceContainerForIntermediateRoutines.computeIfAbsent(participationContext) [
+			// assert: participationContext.isForAttributeReferenceMapping
+			val referencedCommonality = participationContext.referencedCommonality
+
+			// Generate the required routines:
+			performCommonSetup()
+			participationContext.generateRoutines()
+
+			return create.routine('''matchAttributeReferenceContainerForIntermediate«
+				participationContext.reactionNameSuffix»''')
+				.input [
+					model(referencedCommonality.changeClass, REFERENCED_INTERMEDIATE)
+				]
+				.match [
+					// We treat this like an attribute change for one of referenced participation objects:
+					val attributeReferenceContainment = participationContext.attributeReferenceContainments.head
+					// assert: attributeReferenceContainment !== null
+					val referencedClass = attributeReferenceContainment.contained.participationClass
+					vall(PARTICIPATION_OBJECT).retrieve(referencedClass.changeClass)
+						.correspondingTo(REFERENCED_INTERMEDIATE)
+						.taggedWith(referencedClass.correspondenceTag)
+				]
+				.action [
+					call(participationContext.matchAttributeReferenceContainerRoutine,
+						new RoutineCallParameter[variable(PARTICIPATION_OBJECT)])
 				]
 		]
 	}

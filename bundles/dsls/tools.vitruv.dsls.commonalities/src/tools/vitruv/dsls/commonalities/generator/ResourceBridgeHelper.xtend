@@ -1,6 +1,5 @@
 package tools.vitruv.dsls.commonalities.generator
 
-import org.eclipse.emf.ecore.EcorePackage
 import org.eclipse.xtext.xbase.XFeatureCall
 import org.eclipse.xtext.xbase.XbaseFactory
 import tools.vitruv.dsls.commonalities.language.ParticipationClass
@@ -23,18 +22,17 @@ package class ResourceBridgeHelper extends ReactionsGenerationHelper {
 	package new() {
 	}
 
-	def package generateInsertResourceBridgeRoutine(ParticipationClass resourceClass) {
+	def package generateSetupAndInsertResourceBridgeRoutine(ParticipationClass resourceClass) {
 		checkNotNull(resourceClass, "resourceClass is null")
 		checkArgument(resourceClass.isForResource, "The given resourceClass does to refer to the Resource metaclass")
-		return create.routine('''insertResoureBridge''')
-			.input [model(EcorePackage.eINSTANCE.EObject, PARTICIPATION_OBJECT)]
-			.match [
-				vall(INTERMEDIATE).retrieve(resourceClass.containingCommonality.changeClass)
-					.correspondingTo(PARTICIPATION_OBJECT)
+		return create.routine('''setupAndInsertResourceBridge''')
+			.input [
+				model(ResourcesPackage.eINSTANCE.intermediateResourceBridge, RESOURCE_BRIDGE)
+				model(resourceClass.containingCommonality.changeClass, INTERMEDIATE)
 			]
 			.action [
-				vall(RESOURCE_BRIDGE).create(ResourcesPackage.eINSTANCE.intermediateResourceBridge).andInitialize [
-					initExistingResourceBridge(resourceClass, variable(RESOURCE_BRIDGE), variable(PARTICIPATION_OBJECT))
+				update(RESOURCE_BRIDGE) [
+					initExistingResourceBridge(resourceClass, variable(RESOURCE_BRIDGE))
 				]
 				execute [insertResourceBridge(resourceClass, variable(RESOURCE_BRIDGE), variable(INTERMEDIATE))]
 				addCorrespondenceBetween(RESOURCE_BRIDGE).and(INTERMEDIATE)
@@ -42,17 +40,10 @@ package class ResourceBridgeHelper extends ReactionsGenerationHelper {
 		]
 	}
 
-	// Initialization of a new ResourceBridge for an existing resource
+	// Initialization of an already partially initialized ResourceBridge for an existing resource
 	def private initExistingResourceBridge(extension TypeProvider typeProvider, ParticipationClass resourceClass,
-		XFeatureCall resourceBridge, XFeatureCall modelElement) {
-		return resourceClass.setupResourceBridge(resourceBridge, typeProvider) => [
-			expressions += XbaseFactory.eINSTANCE.createXMemberFeatureCall => [
-				memberCallTarget = resourceBridge.copy
-				feature = typeProvider.findMethod(IntermediateResourceBridge, 'initialiseForModelElement')
-				explicitOperationCall = true
-				memberCallArguments += modelElement
-			]
-		]
+		XFeatureCall resourceBridge) {
+		return resourceClass.setupResourceBridge(resourceBridge, typeProvider)
 	}
 
 	// Initialization of a new ResourceBridge for a new resource

@@ -2,6 +2,7 @@ package tools.vitruv.dsls.commonalities.generator
 
 import com.google.inject.Inject
 import java.util.List
+import org.eclipse.emf.ecore.EClass
 import org.eclipse.xtext.common.types.JvmOperation
 import org.eclipse.xtext.xbase.XExpression
 import org.eclipse.xtext.xbase.XbaseFactory
@@ -9,12 +10,13 @@ import tools.vitruv.dsls.commonalities.language.LiteralOperand
 import tools.vitruv.dsls.commonalities.language.ReferenceMappingOperand
 import tools.vitruv.dsls.commonalities.language.ReferenceMappingOperator
 import tools.vitruv.dsls.reactions.builder.TypeProvider
+import tools.vitruv.extensions.dslruntime.commonalities.operators.mapping.reference.AttributeReferenceHelper
 import tools.vitruv.extensions.dslruntime.commonalities.operators.mapping.reference.IReferenceMappingOperator
 import tools.vitruv.extensions.dslsruntime.reactions.ReactionExecutionState
 
-import static tools.vitruv.dsls.commonalities.generator.XbaseHelper.*
-
 import static extension tools.vitruv.dsls.commonalities.generator.JvmTypeProviderHelper.*
+import static extension tools.vitruv.dsls.commonalities.generator.ReactionsHelper.*
+import static extension tools.vitruv.dsls.commonalities.generator.XbaseHelper.*
 
 @GenerationScoped
 package class ReferenceMappingOperatorHelper extends ReactionsGenerationHelper {
@@ -80,6 +82,46 @@ package class ReferenceMappingOperatorHelper extends ReactionsGenerationHelper {
 		return operator.callOperatorMethod(method, operands, typeProvider) => [
 			memberCallArguments += containerObject
 			memberCallArguments += objectToInsert
+		]
+	}
+
+	def callGetPotentiallyContainedIntermediates(ReferenceMappingOperator operator,
+		Iterable<ReferenceMappingOperand> operands, XExpression containerObject, EClass intermediateType,
+		extension TypeProvider typeProvider) {
+		val attributeReferenceHelperType = typeProvider.findDeclaredType(AttributeReferenceHelper).imported
+		val method = attributeReferenceHelperType.findMethod("getPotentiallyContainedIntermediates")
+		val intermediateJvmType = typeProvider.findTypeByName(intermediateType.javaClassName)
+		return attributeReferenceHelperType.memberFeatureCall(method) => [
+			staticWithDeclaringType = true
+			typeArguments += jvmTypeReferenceBuilder.typeRef(intermediateJvmType)
+			memberCallArguments += expressions(
+				operator.callConstructor(operands, typeProvider),
+				containerObject,
+				correspondenceModel,
+				XbaseFactory.eINSTANCE.createXTypeLiteral => [
+					type = intermediateJvmType
+				]
+			)
+		]
+	}
+
+	def callGetPotentialContainerIntermediate(ReferenceMappingOperator operator,
+		Iterable<ReferenceMappingOperand> operands, XExpression containedObject, EClass intermediateType,
+		extension TypeProvider typeProvider) {
+		val attributeReferenceHelperType = typeProvider.findDeclaredType(AttributeReferenceHelper).imported
+		val method = attributeReferenceHelperType.findMethod("getPotentialContainerIntermediate")
+		val intermediateJvmType = typeProvider.findTypeByName(intermediateType.javaClassName)
+		return attributeReferenceHelperType.memberFeatureCall(method) => [
+			staticWithDeclaringType = true
+			typeArguments += jvmTypeReferenceBuilder.typeRef(intermediateJvmType)
+			memberCallArguments += expressions(
+				operator.callConstructor(operands, typeProvider),
+				containedObject,
+				correspondenceModel,
+				XbaseFactory.eINSTANCE.createXTypeLiteral => [
+					type = intermediateJvmType
+				]
+			)
 		]
 	}
 }

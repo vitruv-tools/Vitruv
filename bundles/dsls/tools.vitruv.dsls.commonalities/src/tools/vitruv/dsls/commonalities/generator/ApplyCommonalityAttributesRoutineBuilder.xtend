@@ -57,7 +57,7 @@ package class ApplyCommonalityAttributesRoutineBuilder extends ReactionsSubGener
 				]
 				.match [
 					participation.classes.forEach [ participationClass |
-						retrieveParticipationObject(participationClass) [
+						retrieveAssertedParticipationObject(participationClass) [
 							variable(INTERMEDIATE) // correspondence source
 						]
 					]

@@ -54,10 +54,19 @@ package class ReactionsGeneratorConventions {
 		'''«commonality.concept.name».«commonality.name»/«participationClass.participation.name».«participationClass.name»'''
 	}
 
+	def static package String getReactionName(Commonality commonality) {
+		return '''«commonality.concept.name»_«commonality.name»'''
+	}
+
 	def static package String getReactionName(Attribute attribute) {
 		val classLike = attribute.classLikeContainer
 		val packageLike = classLike.packageLikeContainer
-		'''«packageLike.name»_«classLike.name.toFirstUpper»«attribute.name.toFirstUpper»'''
+		'''«packageLike.name»_«attribute.shortReactionName»'''
+	}
+
+	def static package String getShortReactionName(Attribute attribute) {
+		val classLike = attribute.classLikeContainer
+		'''«classLike.name.toFirstUpper»«attribute.name.toFirstUpper»'''
 	}
 
 	def static package String getReactionName(CommonalityReferenceMapping mapping) {

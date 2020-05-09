@@ -160,6 +160,10 @@ package class CommonalityAttributeChangeReactionsBuilder extends ReactionsSubGen
 	def private retrieveRelevantCorrespondences(extension UndecidedMatcherStatementBuilder matcherBuilder) {
 		for (mapping : relevantMappings) {
 			val participationClass = mapping.attribute.participationClass
+			// Note: If the intermediate has been moved during creation (eg. due to an attribute reference match), we
+			// might receive attribute change events for the intermediate even though the creation of the target
+			// participation is still pending. We ignore the attribute change event in this case. Instead, the
+			// attributes of the intermediate get applied to the target participation during its later creation.
 			matcherBuilder.retrieveParticipationObject(participationClass) [
 				affectedEObject // correspondence source
 			]
