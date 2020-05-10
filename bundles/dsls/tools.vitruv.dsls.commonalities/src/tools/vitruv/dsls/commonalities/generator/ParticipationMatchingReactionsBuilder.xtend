@@ -179,10 +179,7 @@ package class ParticipationMatchingReactionsBuilder extends ReactionsGenerationH
 	@Inject extension ApplyParticipationAttributesRoutineBuilder.Provider applyParticipationAttributesRoutineBuilderProvider
 
 	val FluentReactionsSegmentBuilder segment
-	var alreadyPerformedCommonSetup = false
 	val Set<ParticipationContext> alreadyGeneratedRoutines = new HashSet
-
-	var FluentRoutineBuilder _deleteObjectRoutine = null
 
 	val Map<ParticipationContext, FluentRoutineBuilder> checkAttributeReferenceRoutines = new HashMap
 	val Map<ParticipationContext, FluentRoutineBuilder> checkAttributeReferenceElementsRemovedRoutines = new HashMap
@@ -223,7 +220,6 @@ package class ParticipationMatchingReactionsBuilder extends ReactionsGenerationH
 				participation.name»''')
 		}
 
-		performCommonSetup()
 		participationContext.generateRoutines()
 
 		if (participationContext.isForAttributeReferenceMapping) {
@@ -261,22 +257,6 @@ package class ParticipationMatchingReactionsBuilder extends ReactionsGenerationH
 		// condition is no longer fulfilled (conditions that get only enforced are ignored)
 	}
 
-	/**
-	 * This is run once for the reactions segment when generating the reactions
-	 * and routines for the first participation context that gets matched (even
-	 * if the segment contains the matching reactions and routines for several
-	 * participation contexts).
-	 */
-	def private performCommonSetup() {
-		if (alreadyPerformedCommonSetup) return;
-		alreadyPerformedCommonSetup = true
-		generateCommonRoutines()
-	}
-
-	def private generateCommonRoutines() {
-		segment += deleteObjectRoutine
-	}
-
 	def private generateRoutines(ParticipationContext participationContext) {
 		if (!alreadyGeneratedRoutines.add(participationContext)) {
 			return;
@@ -302,25 +282,6 @@ package class ParticipationMatchingReactionsBuilder extends ReactionsGenerationH
 				segment += participationContext.matchAttributeReferenceContainerRoutine
 			}
 		}
-	}
-
-	/**
-	 * It is currently not possible to invoke reaction actions (such as the
-	 * delete action) from within execute blocks. This is for example required
-	 * when conditionally deleting an object. As workaround, this routine can
-	 * be called which then simply invokes the delete action for the passed
-	 * object.
-	 */
-	def private getDeleteObjectRoutine() {
-		if (_deleteObjectRoutine === null) {
-			_deleteObjectRoutine = create.routine('''deleteObject''')
-				.input [
-					model(EcorePackage.Literals.EOBJECT, "object")
-				].action [
-					delete("object")
-				]
-		}
-		return _deleteObjectRoutine
 	}
 
 	/**
@@ -1120,7 +1081,6 @@ package class ParticipationMatchingReactionsBuilder extends ReactionsGenerationH
 			val participationContext = mapping.referenceParticipationContext
 
 			// Generate the required routines:
-			performCommonSetup()
 			participationContext.generateRoutines()
 
 			val mappingParticipationClass = mapping.participationClass
@@ -1153,7 +1113,6 @@ package class ParticipationMatchingReactionsBuilder extends ReactionsGenerationH
 			val referencedCommonality = participationContext.referencedCommonality
 
 			// Generate the required routines:
-			performCommonSetup()
 			participationContext.generateRoutines()
 
 			return create.routine('''matchAttributeReferenceContainerForIntermediate«
