@@ -29,6 +29,7 @@ package class ParticipationConditionInitializationHelper extends ReactionsGenera
 		val participation = participationContext.participation
 		val participationClass = contextClass.participationClass
 		return participation.conditions
+			.filter[!isContainment] // containments are handled separately
 			.filter[enforced]
 			.filter[leftOperand.participationClass == participationClass]
 			.filter [
