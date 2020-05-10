@@ -5,7 +5,6 @@ import edu.kit.ipd.sdq.activextendannotations.Utility
 import edu.kit.ipd.sdq.commons.util.java.lang.StringUtil
 import java.util.Collections
 import java.util.Objects
-import org.apache.log4j.Level
 import org.apache.log4j.Logger
 import org.eclipse.emf.ecore.EClass
 import org.eclipse.emf.ecore.EObject
@@ -23,7 +22,7 @@ import tools.vitruv.framework.correspondence.CorrespondenceModel
 @Utility
 class ParticipationMatcher {
 
-	val static Logger logger = Logger.getLogger(ParticipationMatcher) => [level = Level.TRACE]
+	val static Logger logger = Logger.getLogger(ParticipationMatcher)
 
 	/**
 	 * Matches participation classes to their objects according to the given
