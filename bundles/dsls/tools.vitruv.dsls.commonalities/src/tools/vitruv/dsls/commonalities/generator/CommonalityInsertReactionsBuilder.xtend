@@ -44,6 +44,7 @@ package class CommonalityInsertReactionsBuilder extends ReactionsSubGenerator {
 	@Inject extension ParticipationObjectInitializationHelper participationObjectInitializationHelper
 	@Inject extension ReferenceMappingOperatorHelper referenceMappingOperatorHelper
 	@Inject extension IntermediateContainmentReactionsHelper intermediateContainmentReactionsHelper
+	@Inject extension InsertResourceBridgeRoutineBuilder.Provider insertResourceBridgeRoutineBuilderProvider
 	@Inject ParticipationMatchingReactionsBuilder.Provider participationMatchingReactionsBuilderProvider
 	@Inject InsertIntermediateRoutineBuilder.Provider insertIntermediateRoutineBuilderProvider
 	@Inject ApplyCommonalityAttributesRoutineBuilder.Provider applyCommonalityAttributesRoutineBuilderProvider
@@ -231,10 +232,10 @@ package class CommonalityInsertReactionsBuilder extends ReactionsSubGenerator {
 					addCorrespondence(commonality, rootClass.participationClass)
 
 					// Add singleton correspondence:
-					// Note: We don't add correspondences for the containers of the singleton object, since we do not
-					// require those currently. Also note that these container objects may not necessarily be
-					// singletons themselves (i.e. there can be multiple resources even though the singleton object is
-					// contained in one).
+					// Note: We don't add correspondences for the containers of the singleton object (except for the
+					// ResourceBridge), since we do not require those currently. Also note that these container objects
+					// may not necessarily be singletons themselves (eg. there can be multiple resources other than the
+					// one the singleton object is contained in).
 					addCorrespondenceBetween(singletonClass.correspondingVariableName).and [
 						getEClass(singletonEClass)
 					]
@@ -272,9 +273,12 @@ package class CommonalityInsertReactionsBuilder extends ReactionsSubGenerator {
 			call(participation.getApplyAttributesRoutine, new RoutineCallParameter(INTERMEDIATE))
 		}
 
-		// Establish containment relationships:
-		execute [
-			setupContainments(containments, variableNameFunction)
+		// Any ResourceBridge is implicitly contained inside the intermediate model:
+		classes.filter[participationClass.isForResource].forEach [
+			val resourceClass = participationClass
+			call(segment.getInsertResourceBridgeRoutine(resourceClass),
+				new RoutineCallParameter(resourceClass.correspondingVariableName),
+				new RoutineCallParameter(INTERMEDIATE))
 		]
 
 		// Each participating commonality instance is implicitly contained
@@ -282,6 +286,11 @@ package class CommonalityInsertReactionsBuilder extends ReactionsSubGenerator {
 		if (participationContext.rootContext && participation.isCommonalityParticipation) {
 			insertCommonalityParticipationClasses(participation, segment)
 		}
+
+		// Establish containment relationships:
+		execute [
+			setupContainments(containments, variableNameFunction)
+		]
 	}
 
 	def private insertCommonalityParticipationClasses(extension ActionStatementBuilder it,

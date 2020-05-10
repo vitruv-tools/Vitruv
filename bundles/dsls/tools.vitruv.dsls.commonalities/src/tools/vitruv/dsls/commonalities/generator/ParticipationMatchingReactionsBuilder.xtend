@@ -167,11 +167,12 @@ package class ParticipationMatchingReactionsBuilder extends ReactionsGenerationH
 	}
 
 	@Inject extension ContainmentHelper containmentHelper
-	@Inject extension ResourceBridgeHelper resourceBridgeHelper
 	@Inject extension ParticipationObjectsHelper participationObjectsHelper
 	@Inject extension ReferenceMappingOperatorHelper referenceMappingOperatorHelper
 	@Inject extension AttributeChangeReactionsHelper attributeChangeReactionsHelper
 	@Inject extension IntermediateContainmentReactionsHelper intermediateContainmentReactionsHelper
+	@Inject extension SetupResourceBridgeRoutineBuilder.Provider setupResourceBridgeRoutineBuilderProvider
+	@Inject extension InsertResourceBridgeRoutineBuilder.Provider insertResourceBridgeRoutineBuilderProvider
 	@Inject InsertIntermediateRoutineBuilder.Provider insertIntermediateRoutineBuilderProvider
 	@Inject ApplyParticipationAttributesRoutineBuilder.Factory applyParticipationAttributesRoutineBuilderFactory
 
@@ -189,7 +190,6 @@ package class ParticipationMatchingReactionsBuilder extends ReactionsGenerationH
 
 	val Map<ParticipationContext, FluentRoutineBuilder> matchParticipationRoutines = new HashMap
 	val Map<ParticipationContext, FluentRoutineBuilder> createIntermediateRoutines = new HashMap
-	val Map<ParticipationClass, FluentRoutineBuilder> setupAndInsertResourceBridgeRoutines = new HashMap
 	val Map<CommonalityReference, FluentRoutineBuilder> insertReferencedIntermediateRoutines = new HashMap
 	val Map<Participation, FluentRoutineBuilder> applyParticipationAttributesRoutines = new HashMap
 	val Map<ParticipationContext, FluentRoutineBuilder> matchManyParticipationsRoutines = new HashMap
@@ -932,21 +932,6 @@ package class ParticipationMatchingReactionsBuilder extends ReactionsGenerationH
 						claimIntermediateId(variable(INTERMEDIATE))
 					]
 
-					// Add correspondences with participation objects:
-					participationContext.managedClasses
-						// Any resource root container class is handled specifically:
-						.filter[!participationClass.isForResource]
-						.forEach [ contextClass |
-							val participationClass = contextClass.participationClass
-							addCorrespondenceBetween(INTERMEDIATE).and [ extension typeProvider |
-								// TODO Ideally don't use a block expression here (results in more compact reactions code)
-								// But: This is not yet supported by the fluent reactions builder.
-								// Possible alternative: Call a routine which adds the correspondence between the
-								// passed objects
-								contextClass.getParticipationObject(variable(PARTICIPATION_OBJECTS), typeProvider)
-							].taggedWith(participationClass.getCorrespondenceTag(commonality))
-						]
-
 					if (participationContext.isRootContext) {
 						if (participation.hasSingletonClass) {
 							// Setup the singleton if it hasn't been setup yet:
@@ -962,6 +947,18 @@ package class ParticipationMatchingReactionsBuilder extends ReactionsGenerationH
 							setupAndInsertResourceBridge(participation)
 						}
 					}
+
+					// Add correspondences with participation objects:
+					participationContext.managedClasses.forEach [ contextClass |
+						val participationClass = contextClass.participationClass
+						addCorrespondenceBetween(INTERMEDIATE).and [ extension typeProvider |
+							// TODO Ideally don't use a block expression here (results in more compact reactions code)
+							// But: This is not yet supported by the fluent reactions builder.
+							// Possible alternative: Call a routine which adds the correspondence between the
+							// passed objects
+							contextClass.getParticipationObject(variable(PARTICIPATION_OBJECTS), typeProvider)
+						].taggedWith(participationClass.getCorrespondenceTag(commonality))
+					]
 
 					// For commonality references: Insert the new intermediate into the referencing intermediate
 					if (participationContext.forReferenceMapping) {
@@ -1009,31 +1006,33 @@ package class ParticipationMatchingReactionsBuilder extends ReactionsGenerationH
 					getEClass(singletonEClass)
 				]
 
-				// Setup and insert a ResourceBridge for the resource root:
-				// Note: This sets a commonality and participation specific
-				// correspondence for the first participation the singleton
-				// gets matched for. The ResourceBridge uses this for some of
-				// its tasks.
+				// Setup and then insert the ResourceBridge into the intermediate model:
 				setupAndInsertResourceBridge(participation)
+
+				// Add a correspondence for the ResourceBridge:
+				// This correspondence is commonality and participation specific and is only set for the first
+				// participation the singleton gets matched for. The ResourceBridge uses this for some of its tasks.
+				addCorrespondenceBetween [ extension typeProvider |
+					val resourceClass = participation.resourceClass
+					resourceClass.getParticipationObject(variable(PARTICIPATION_OBJECTS), typeProvider)
+				].and(INTERMEDIATE)
 			]
 	}
 
 	/**
-	 * Performs remaining setup and inserts the ResourceBridge returned by the
-	 * ParticipationMatcher into the intermediate model.
+	 * Performs remaining setup and then inserts the ResourceBridge returned by
+	 * the ParticipationMatcher into the intermediate model.
 	 */
 	def private setupAndInsertResourceBridge(extension ActionStatementBuilder it, Participation participation) {
 		val resourceClass = participation.resourceClass
 		// assert: resourceClass !== null
-		call(resourceClass.setupAndInsertResourceBridgeRoutine, new RoutineCallParameter [ extension typeProvider |
+		call(segment.getSetupResourceBridgeRoutine(resourceClass), new RoutineCallParameter [ extension typeProvider |
+			resourceClass.getParticipationObject(variable(PARTICIPATION_OBJECTS), typeProvider)
+		])
+
+		call(segment.getInsertResourceBridgeRoutine(resourceClass), new RoutineCallParameter [ extension typeProvider |
 			resourceClass.getParticipationObject(variable(PARTICIPATION_OBJECTS), typeProvider)
 		], new RoutineCallParameter(INTERMEDIATE))
-	}
-
-	def private getSetupAndInsertResourceBridgeRoutine(ParticipationClass resourceClass) {
-		setupAndInsertResourceBridgeRoutines.computeIfAbsent(resourceClass) [
-			resourceClass.generateSetupAndInsertResourceBridgeRoutine
-		]
 	}
 
 	def private getInsertReferencedIntermediateRoutine(CommonalityReference reference) {

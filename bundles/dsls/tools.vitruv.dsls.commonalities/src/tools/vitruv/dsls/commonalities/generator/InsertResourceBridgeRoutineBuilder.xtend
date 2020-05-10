@@ -4,11 +4,14 @@ import java.util.HashMap
 import java.util.Map
 import org.eclipse.xtext.xbase.XFeatureCall
 import org.eclipse.xtext.xbase.XbaseFactory
-import tools.vitruv.dsls.commonalities.language.Commonality
+import tools.vitruv.dsls.commonalities.language.Concept
+import tools.vitruv.dsls.commonalities.language.ParticipationClass
 import tools.vitruv.dsls.reactions.builder.FluentReactionsSegmentBuilder
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder
 import tools.vitruv.dsls.reactions.builder.TypeProvider
 import tools.vitruv.extensions.dslruntime.commonalities.IntermediateModelManagement
+import tools.vitruv.extensions.dslruntime.commonalities.intermediatemodelbase.IntermediateModelBasePackage
+import tools.vitruv.extensions.dslruntime.commonalities.resources.ResourcesPackage
 
 import static com.google.common.base.Preconditions.*
 import static tools.vitruv.dsls.commonalities.generator.ReactionsGeneratorConventions.*
@@ -18,16 +21,21 @@ import static extension tools.vitruv.dsls.commonalities.generator.JvmTypeProvide
 import static extension tools.vitruv.dsls.commonalities.generator.XbaseHelper.*
 import static extension tools.vitruv.dsls.commonalities.language.extensions.CommonalitiesLanguageModelExtensions.*
 
-package class InsertIntermediateRoutineBuilder extends ReactionsGenerationHelper {
+package class InsertResourceBridgeRoutineBuilder extends ReactionsGenerationHelper {
 
 	@GenerationScoped
-	static class Provider extends ReactionsSegmentScopedProvider<InsertIntermediateRoutineBuilder> {
+	static class Provider extends ReactionsSegmentScopedProvider<InsertResourceBridgeRoutineBuilder> {
 		protected override createFor(FluentReactionsSegmentBuilder segment) {
-			return new InsertIntermediateRoutineBuilder(segment).injectMembers
+			return new InsertResourceBridgeRoutineBuilder(segment).injectMembers
+		}
+
+		def getInsertResourceBridgeRoutine(FluentReactionsSegmentBuilder segment, ParticipationClass resourceClass) {
+			return getFor(segment).getInsertResourceBridgeRoutine(resourceClass)
 		}
 	}
 
-	val Map<Commonality, FluentRoutineBuilder> insertIntermediateRoutines = new HashMap
+	// One routine per intermediate model (concept) is sufficient:
+	val Map<String, FluentRoutineBuilder> insertResourceBridgeRoutinesByConceptName = new HashMap
 
 	private new(FluentReactionsSegmentBuilder segment) {
 		checkNotNull(segment, "segment is null")
@@ -41,21 +49,29 @@ package class InsertIntermediateRoutineBuilder extends ReactionsGenerationHelper
 		throw new IllegalStateException("Use the Provider to get instances of this class!")
 	}
 
-	def package getRoutine(Commonality commonality) {
-		insertIntermediateRoutines.computeIfAbsent(commonality) [
-			create.routine('''insertIntermediate_«commonality.name»''')
-				.input [model(commonality.changeClass, INTERMEDIATE)]
+	def package getInsertResourceBridgeRoutine(ParticipationClass resourceClass) {
+		checkNotNull(resourceClass, "resourceClass is null")
+		checkArgument(resourceClass.isForResource, "The given resourceClass does to refer to the Resource metaclass")
+		val concept = resourceClass.containingCommonality.concept
+		return insertResourceBridgeRoutinesByConceptName.computeIfAbsent(concept.name) [
+			create.routine('''insertResourceBridge_«concept.name»''')
+				.input [
+					model(ResourcesPackage.eINSTANCE.intermediateResourceBridge, RESOURCE_BRIDGE)
+					model(IntermediateModelBasePackage.eINSTANCE.intermediate, INTERMEDIATE)
+				]
 				.action [
-					execute [insertIntermediate(variable(INTERMEDIATE), commonality)]
+					execute [
+						insertResourceBridge(concept, variable(RESOURCE_BRIDGE), variable(INTERMEDIATE))
+					]
 				]
 		]
 	}
 
-	def private insertIntermediate(extension TypeProvider typeProvider, XFeatureCall intermediate,
-		Commonality commonality) {
+	def private insertResourceBridge(extension TypeProvider typeProvider, Concept concept, XFeatureCall resourceBridge,
+		XFeatureCall intermediate) {
 		val intermediateModelURIVariable = XbaseFactory.eINSTANCE.createXVariableDeclaration => [
 			name = 'intermediateModelURI'
-			right = callGetMetadataModelURI(typeProvider, commonality.concept)
+			right = callGetMetadataModelURI(typeProvider, concept)
 		]
 		val intermediateModelResourceVariable = XbaseFactory.eINSTANCE.createXVariableDeclaration => [
 			name = 'intermediateModelResource'
@@ -66,9 +82,9 @@ package class InsertIntermediateRoutineBuilder extends ReactionsGenerationHelper
 				intermediateModelURIVariable,
 				intermediateModelResourceVariable,
 				intermediateModelResourceVariable.featureCall.memberFeatureCall => [
-					feature = typeProvider.findMethod(IntermediateModelManagement, 'addIntermediate')
+					feature = typeProvider.findMethod(IntermediateModelManagement, 'addResourceBridge')
 						.staticExtensionWildcardImported
-					memberCallArguments += intermediate
+					memberCallArguments += #[resourceBridge, intermediate]
 					explicitOperationCall = true
 				]
 			)
