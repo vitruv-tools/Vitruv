@@ -25,8 +25,13 @@ package class ApplyCommonalityAttributesRoutineBuilder extends ReactionsSubGener
 
 	@GenerationScoped
 	static class Provider extends ReactionsSegmentScopedProvider<ApplyCommonalityAttributesRoutineBuilder> {
+
 		protected override createFor(FluentReactionsSegmentBuilder segment) {
 			return new ApplyCommonalityAttributesRoutineBuilder(segment).injectMembers
+		}
+
+		def getApplyAttributesRoutine(FluentReactionsSegmentBuilder segment, Participation participation) {
+			return getFor(segment).getApplyAttributesRoutine(participation)
 		}
 	}
 
@@ -36,6 +41,9 @@ package class ApplyCommonalityAttributesRoutineBuilder extends ReactionsSubGener
 
 	private new(FluentReactionsSegmentBuilder segment) {
 		checkNotNull(segment, "segment is null")
+		// Note: The reactions segment is unused here. But having the provider
+		// require it ensures that we only create one instance of this class
+		// per reactions segment.
 	}
 
 	// Dummy constructor for Guice
@@ -43,15 +51,10 @@ package class ApplyCommonalityAttributesRoutineBuilder extends ReactionsSubGener
 		throw new IllegalStateException("Use the Factory to create instances of this class!")
 	}
 
-	def private getRelevantMappings(Participation participation) {
-		val commonality = participation.containingCommonality
-		return commonality.attributes.flatMap[mappings].filter[isWrite && it.participation == participation]
-	}
-
 	def getApplyAttributesRoutine(Participation participation) {
 		return routines.computeIfAbsent(participation) [
 			val commonality = participation.containingCommonality
-			create.routine('''applyCommonalityAttributes_«commonality.name»_«participation.name»''')
+			create.routine('''applyCommonalityAttributes_«participation.reactionName»''')
 				.input [
 					model(commonality.changeClass, INTERMEDIATE)
 				]
@@ -72,6 +75,11 @@ package class ApplyCommonalityAttributesRoutineBuilder extends ReactionsSubGener
 					]
 				]
 		]
+	}
+
+	def private getRelevantMappings(Participation participation) {
+		val commonality = participation.containingCommonality
+		return commonality.attributes.flatMap[mappings].filter[isWrite && it.participation == participation]
 	}
 
 	def private XExpression applyMapping(CommonalityAttributeMapping mapping, extension TypeProvider typeProvider) {

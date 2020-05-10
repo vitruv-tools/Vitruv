@@ -5,6 +5,7 @@ import java.util.Map
 import org.eclipse.xtext.xbase.XFeatureCall
 import org.eclipse.xtext.xbase.XbaseFactory
 import tools.vitruv.dsls.commonalities.language.Commonality
+import tools.vitruv.dsls.commonalities.language.Concept
 import tools.vitruv.dsls.reactions.builder.FluentReactionsSegmentBuilder
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder
 import tools.vitruv.dsls.reactions.builder.TypeProvider
@@ -22,12 +23,18 @@ package class InsertIntermediateRoutineBuilder extends ReactionsGenerationHelper
 
 	@GenerationScoped
 	static class Provider extends ReactionsSegmentScopedProvider<InsertIntermediateRoutineBuilder> {
+
 		protected override createFor(FluentReactionsSegmentBuilder segment) {
 			return new InsertIntermediateRoutineBuilder(segment).injectMembers
 		}
+
+		def getInsertIntermediateRoutine(FluentReactionsSegmentBuilder segment, Commonality commonality) {
+			return getFor(segment).getInsertIntermediateRoutine(commonality)
+		}
 	}
 
-	val Map<Commonality, FluentRoutineBuilder> insertIntermediateRoutines = new HashMap
+	// One routine per intermediate model (concept) is sufficient (keyed by concept name):
+	val Map<String, FluentRoutineBuilder> insertIntermediateRoutines = new HashMap
 
 	private new(FluentReactionsSegmentBuilder segment) {
 		checkNotNull(segment, "segment is null")
@@ -41,21 +48,21 @@ package class InsertIntermediateRoutineBuilder extends ReactionsGenerationHelper
 		throw new IllegalStateException("Use the Provider to get instances of this class!")
 	}
 
-	def package getRoutine(Commonality commonality) {
-		insertIntermediateRoutines.computeIfAbsent(commonality) [
-			create.routine('''insertIntermediate_«commonality.name»''')
+	def getInsertIntermediateRoutine(Commonality commonality) {
+		val concept = commonality.concept
+		return insertIntermediateRoutines.computeIfAbsent(concept.name) [
+			create.routine('''insertIntermediate_«concept.name»''')
 				.input [model(commonality.changeClass, INTERMEDIATE)]
 				.action [
-					execute [insertIntermediate(variable(INTERMEDIATE), commonality)]
+					execute [insertIntermediate(concept, variable(INTERMEDIATE))]
 				]
 		]
 	}
 
-	def private insertIntermediate(extension TypeProvider typeProvider, XFeatureCall intermediate,
-		Commonality commonality) {
+	def private insertIntermediate(extension TypeProvider typeProvider, Concept concept, XFeatureCall intermediate) {
 		val intermediateModelURIVariable = XbaseFactory.eINSTANCE.createXVariableDeclaration => [
 			name = 'intermediateModelURI'
-			right = callGetMetadataModelURI(typeProvider, commonality.concept)
+			right = callGetMetadataModelURI(typeProvider, concept)
 		]
 		val intermediateModelResourceVariable = XbaseFactory.eINSTANCE.createXVariableDeclaration => [
 			name = 'intermediateModelResource'

@@ -46,8 +46,8 @@ package class CommonalityInsertReactionsBuilder extends ReactionsSubGenerator {
 	@Inject extension IntermediateContainmentReactionsHelper intermediateContainmentReactionsHelper
 	@Inject extension InsertResourceBridgeRoutineBuilder.Provider insertResourceBridgeRoutineBuilderProvider
 	@Inject ParticipationMatchingReactionsBuilder.Provider participationMatchingReactionsBuilderProvider
-	@Inject InsertIntermediateRoutineBuilder.Provider insertIntermediateRoutineBuilderProvider
-	@Inject ApplyCommonalityAttributesRoutineBuilder.Provider applyCommonalityAttributesRoutineBuilderProvider
+	@Inject extension InsertIntermediateRoutineBuilder.Provider insertIntermediateRoutineBuilderProvider
+	@Inject extension ApplyCommonalityAttributesRoutineBuilder.Provider applyCommonalityAttributesRoutineBuilderProvider
 
 	val Commonality commonality
 	val Participation targetParticipation
@@ -269,8 +269,7 @@ package class CommonalityInsertReactionsBuilder extends ReactionsSubGenerator {
 		// This is required so that attribute reference operators are able to
 		// access the attributes when establishing the containments.
 		if (applyAttributes) {
-			val extension applyCommonalityAttributesRoutineBuilder = applyCommonalityAttributesRoutineBuilderProvider.getFor(segment)
-			call(participation.getApplyAttributesRoutine, new RoutineCallParameter(INTERMEDIATE))
+			call(segment.getApplyAttributesRoutine(participation), new RoutineCallParameter(INTERMEDIATE))
 		}
 
 		// Any ResourceBridge is implicitly contained inside the intermediate model:
@@ -298,7 +297,7 @@ package class CommonalityInsertReactionsBuilder extends ReactionsSubGenerator {
 		// assert participation.isCommonalityParticipation
 		for (participationClass : participation.rootContainerClasses) {
 			val participatingCommonality = participationClass.participatingCommonality // assert: not null
-			call(insertIntermediateRoutineBuilderProvider.getFor(segment).getRoutine(participatingCommonality),
+			call(segment.getInsertIntermediateRoutine(participatingCommonality),
 				new RoutineCallParameter(participationClass.correspondingVariableName))
 		}
 	}

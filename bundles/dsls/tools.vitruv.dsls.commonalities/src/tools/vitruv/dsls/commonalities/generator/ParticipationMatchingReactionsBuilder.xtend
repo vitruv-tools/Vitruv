@@ -173,8 +173,10 @@ package class ParticipationMatchingReactionsBuilder extends ReactionsGenerationH
 	@Inject extension IntermediateContainmentReactionsHelper intermediateContainmentReactionsHelper
 	@Inject extension SetupResourceBridgeRoutineBuilder.Provider setupResourceBridgeRoutineBuilderProvider
 	@Inject extension InsertResourceBridgeRoutineBuilder.Provider insertResourceBridgeRoutineBuilderProvider
-	@Inject InsertIntermediateRoutineBuilder.Provider insertIntermediateRoutineBuilderProvider
-	@Inject ApplyParticipationAttributesRoutineBuilder.Factory applyParticipationAttributesRoutineBuilderFactory
+	@Inject extension InsertIntermediateRoutineBuilder.Provider insertIntermediateRoutineBuilderProvider
+	// TODO It would be possible to generate this routine only once per participation and then import it when called
+	// for external reference mapping participation contexts.
+	@Inject extension ApplyParticipationAttributesRoutineBuilder.Provider applyParticipationAttributesRoutineBuilderProvider
 
 	val FluentReactionsSegmentBuilder segment
 	var alreadyPerformedCommonSetup = false
@@ -191,7 +193,6 @@ package class ParticipationMatchingReactionsBuilder extends ReactionsGenerationH
 	val Map<ParticipationContext, FluentRoutineBuilder> matchParticipationRoutines = new HashMap
 	val Map<ParticipationContext, FluentRoutineBuilder> createIntermediateRoutines = new HashMap
 	val Map<CommonalityReference, FluentRoutineBuilder> insertReferencedIntermediateRoutines = new HashMap
-	val Map<Participation, FluentRoutineBuilder> applyParticipationAttributesRoutines = new HashMap
 	val Map<ParticipationContext, FluentRoutineBuilder> matchManyParticipationsRoutines = new HashMap
 
 	val Map<CommonalityReferenceMapping, FluentRoutineBuilder> matchSubParticipationsRoutines = new HashMap
@@ -287,7 +288,7 @@ package class ParticipationMatchingReactionsBuilder extends ReactionsGenerationH
 		segment += participationContext.createIntermediateRoutine
 
 		if (participationContext.isRootContext) {
-			segment += insertIntermediateRoutineBuilderProvider.getFor(segment).getRoutine(commonality)
+			segment += segment.getInsertIntermediateRoutine(commonality)
 		}
 
 		if (participationContext.forReferenceMapping) {
@@ -742,9 +743,8 @@ package class ParticipationMatchingReactionsBuilder extends ReactionsGenerationH
 						^if = isIntermediateContainerMatching(typeProvider, variable(REFERENCED_INTERMEDIATE),
 							variable(REFERENCING_INTERMEDIATE), commonalityReference)
 						// Then move the referenced intermediate to the intermediate model root:
-						val insertIntermediateRoutine = insertIntermediateRoutineBuilderProvider.getFor(segment)
-							.getRoutine(referencedCommonality)
-						then = routineCallContext.createRoutineCall(typeProvider, insertIntermediateRoutine,
+						then = routineCallContext.createRoutineCall(typeProvider,
+							segment.getInsertIntermediateRoutine(referencedCommonality),
 							variable(REFERENCED_INTERMEDIATE))
 					]
 					// In either case: Return from the routine.
@@ -972,16 +972,15 @@ package class ParticipationMatchingReactionsBuilder extends ReactionsGenerationH
 						)
 					} else {
 						// Insert new intermediate into the intermediate model root:
-						call(insertIntermediateRoutineBuilderProvider.getFor(segment).getRoutine(commonality),
-							new RoutineCallParameter(INTERMEDIATE))
+						call(segment.getInsertIntermediateRoutine(commonality), new RoutineCallParameter(INTERMEDIATE))
 					}
 
 					// Apply all attribute mappings:
 					// TODO trigger this on commonality creation instead, similar to sub-participation matching?
 					// This would have the benefit that external participation matching would not need to generate and
 					// invoke this routine, since it is handled by the referenced participation itself already.
-					call(participation.applyParticipationAttributesRoutine, new RoutineCallParameter(INTERMEDIATE),
-						new RoutineCallParameter(PARTICIPATION_OBJECTS))
+					call(segment.getApplyParticipationAttributesRoutine(participation),
+						new RoutineCallParameter(INTERMEDIATE), new RoutineCallParameter(PARTICIPATION_OBJECTS))
 				]
 		]
 	}
@@ -1052,15 +1051,6 @@ package class ParticipationMatchingReactionsBuilder extends ReactionsGenerationH
 							variable(REFERENCED_INTERMEDIATE))
 					]
 				]
-		]
-	}
-
-	// TODO Generate this routine only once for every participation and then
-	// for commonality reference mapping participation contexts import and call
-	// it from external reaction segments?
-	def private getApplyParticipationAttributesRoutine(Participation participation) {
-		return applyParticipationAttributesRoutines.computeIfAbsent(participation) [
-			applyParticipationAttributesRoutineBuilderFactory.createFor(participation).routine
 		]
 	}
 

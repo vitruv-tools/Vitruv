@@ -1,87 +1,96 @@
 package tools.vitruv.dsls.commonalities.generator
 
 import com.google.inject.Inject
+import java.util.HashMap
+import java.util.Map
 import org.eclipse.xtext.xbase.XAbstractFeatureCall
 import org.eclipse.xtext.xbase.XExpression
 import org.eclipse.xtext.xbase.XFeatureCall
 import org.eclipse.xtext.xbase.XbaseFactory
-import tools.vitruv.dsls.commonalities.language.Commonality
 import tools.vitruv.dsls.commonalities.language.CommonalityAttributeMapping
 import tools.vitruv.dsls.commonalities.language.Participation
+import tools.vitruv.dsls.reactions.builder.FluentReactionsSegmentBuilder
+import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder
 import tools.vitruv.dsls.reactions.builder.TypeProvider
 import tools.vitruv.extensions.dslruntime.commonalities.matching.ParticipationObjects
 
 import static com.google.common.base.Preconditions.*
 import static tools.vitruv.dsls.commonalities.generator.EmfAccessExpressions.*
-import static tools.vitruv.dsls.commonalities.generator.ReactionsGeneratorConventions.*
 
+import static extension tools.vitruv.dsls.commonalities.generator.ReactionsGeneratorConventions.*
 import static extension tools.vitruv.dsls.commonalities.generator.XbaseHelper.*
 import static extension tools.vitruv.dsls.commonalities.language.extensions.CommonalitiesLanguageModelExtensions.*
 import static extension tools.vitruv.dsls.commonalities.language.extensions.ParticipationContextHelper.*
 
 package class ApplyParticipationAttributesRoutineBuilder extends ReactionsSubGenerator {
 
-	static class Factory extends InjectingFactoryBase {
-		def createFor(Participation participation) {
-			return new ApplyParticipationAttributesRoutineBuilder(participation).injectMembers
+	@GenerationScoped
+	static class Provider extends ReactionsSegmentScopedProvider<ApplyParticipationAttributesRoutineBuilder> {
+
+		protected override createFor(FluentReactionsSegmentBuilder segment) {
+			return new ApplyParticipationAttributesRoutineBuilder(segment).injectMembers
+		}
+
+		def getApplyParticipationAttributesRoutine(FluentReactionsSegmentBuilder segment, Participation participation) {
+			return this.getFor(segment).getApplyAttributesRoutine(participation)
 		}
 	}
 
 	@Inject extension ParticipationObjectsHelper participationObjectsHelper
 
-	val Participation participation
-	val Commonality commonality
+	val Map<Participation, FluentRoutineBuilder> applyParticipationAttributesRoutines = new HashMap
 
-	private new(Participation participation) {
-		checkNotNull(participation, "participation is null")
-		this.participation = participation
-		this.commonality = participation.containingCommonality
+	private new(FluentReactionsSegmentBuilder segment) {
+		checkNotNull(segment, "segment is null")
+		// Note: The reactions segment is unused here. But having the provider
+		// require it ensures that we only create one instance of this class
+		// per reactions segment.
 	}
 
 	// Dummy constructor for Guice
 	package new() {
-		this.participation = null
-		this.commonality = null
-		throw new IllegalStateException("Use the Factory to create instances of this class!")
+		throw new IllegalStateException("Use the Provider to get instances of this class!")
 	}
 
-	def getRoutine() {
-		return getApplyAttributesRoutine();
-	}
-
-	def private getRelevantMappings() {
-		return commonality.attributes.flatMap[mappings].filter[isRead && it.participation == participation]
-	}
-
-	def private getApplyAttributesRoutine() {
-		return create.routine('''applyParticipationAttributes_«commonality.name»_«participation.name»''')
-			.input [
-				model(commonality.changeClass, INTERMEDIATE)
-				plain(ParticipationObjects, PARTICIPATION_OBJECTS)
-			]
-			.action [
-				update(INTERMEDIATE) [ extension typeProvider |
-					val participationObjectVars = participation.getParticipationObjectVars(variable(PARTICIPATION_OBJECTS), typeProvider)
-					XbaseFactory.eINSTANCE.createXBlockExpression => [
-						expressions += participationObjectVars.values
-						for (CommonalityAttributeMapping mapping : relevantMappings) {
-							val intermediate = variable(INTERMEDIATE)
-							val participationClass = mapping.attribute.participationClass
-							val participationObjectVar = participationObjectVars.get(participationClass).featureCall
-							// Since the participation may exist in different contexts with different root objects,
-							// the participation object may not be available for root participation classes:
-							if (participationClass.isRootClass) {
-								expressions += XbaseFactory.eINSTANCE.createXIfExpression => [
-									it.^if = participationObjectVar.copy.notEqualsNull(typeProvider)
-									it.then = mapping.applyAttribute(typeProvider, intermediate, participationObjectVar)
-								]
-							} else {
-								expressions += mapping.applyAttribute(typeProvider, intermediate, participationObjectVar)
-							}
-						}
+	def getApplyAttributesRoutine(Participation participation) {
+		checkNotNull(participation, "participation is null")
+		return applyParticipationAttributesRoutines.computeIfAbsent(participation) [
+			val commonality = participation.containingCommonality
+			create.routine('''applyParticipationAttributes_«participation.reactionName»''')
+				.input [
+					model(commonality.changeClass, INTERMEDIATE)
+					plain(ParticipationObjects, PARTICIPATION_OBJECTS)
+				]
+				.action [
+					update(INTERMEDIATE) [ extension typeProvider |
+						XbaseFactory.eINSTANCE.createXBlockExpression => [
+							val participationObjectVars = participation.getParticipationObjectVars(
+								variable(PARTICIPATION_OBJECTS), typeProvider)
+							expressions += participationObjectVars.values
+							participation.relevantMappings.forEach [ mapping |
+								val intermediate = variable(INTERMEDIATE)
+								val participationClass = mapping.attribute.participationClass
+								val participationObjectVar = participationObjectVars.get(participationClass).featureCall
+								// Since the participation may exist in different contexts with different root objects,
+								// the participation object may not be available for root participation classes:
+								if (participationClass.isRootClass) {
+									expressions += XbaseFactory.eINSTANCE.createXIfExpression => [
+										it.^if = participationObjectVar.copy.notEqualsNull(typeProvider)
+										it.then = mapping.applyAttribute(typeProvider, intermediate, participationObjectVar)
+									]
+								} else {
+									expressions += mapping.applyAttribute(typeProvider, intermediate, participationObjectVar)
+								}
+							]
+						]
 					]
 				]
-			]
+		]
+	}
+
+	def private getRelevantMappings(Participation participation) {
+		val commonality = participation.containingCommonality
+		return commonality.attributes.flatMap[mappings].filter[isRead && it.participation == participation]
 	}
 
 	def private XExpression applyAttribute(CommonalityAttributeMapping mapping, TypeProvider typeProvider,

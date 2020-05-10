@@ -25,6 +25,7 @@ package class InsertResourceBridgeRoutineBuilder extends ReactionsGenerationHelp
 
 	@GenerationScoped
 	static class Provider extends ReactionsSegmentScopedProvider<InsertResourceBridgeRoutineBuilder> {
+
 		protected override createFor(FluentReactionsSegmentBuilder segment) {
 			return new InsertResourceBridgeRoutineBuilder(segment).injectMembers
 		}
@@ -34,8 +35,8 @@ package class InsertResourceBridgeRoutineBuilder extends ReactionsGenerationHelp
 		}
 	}
 
-	// One routine per intermediate model (concept) is sufficient:
-	val Map<String, FluentRoutineBuilder> insertResourceBridgeRoutinesByConceptName = new HashMap
+	// One routine per intermediate model (concept) is sufficient (keyed by concept name):
+	val Map<String, FluentRoutineBuilder> insertResourceBridgeRoutines = new HashMap
 
 	private new(FluentReactionsSegmentBuilder segment) {
 		checkNotNull(segment, "segment is null")
@@ -53,7 +54,7 @@ package class InsertResourceBridgeRoutineBuilder extends ReactionsGenerationHelp
 		checkNotNull(resourceClass, "resourceClass is null")
 		checkArgument(resourceClass.isForResource, "The given resourceClass does to refer to the Resource metaclass")
 		val concept = resourceClass.containingCommonality.concept
-		return insertResourceBridgeRoutinesByConceptName.computeIfAbsent(concept.name) [
+		return insertResourceBridgeRoutines.computeIfAbsent(concept.name) [
 			create.routine('''insertResourceBridge_«concept.name»''')
 				.input [
 					model(ResourcesPackage.eINSTANCE.intermediateResourceBridge, RESOURCE_BRIDGE)

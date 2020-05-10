@@ -3,6 +3,7 @@ package tools.vitruv.dsls.commonalities.generator
 import edu.kit.ipd.sdq.activextendannotations.Utility
 import tools.vitruv.dsls.commonalities.language.Commonality
 import tools.vitruv.dsls.commonalities.language.CommonalityReferenceMapping
+import tools.vitruv.dsls.commonalities.language.Participation
 import tools.vitruv.dsls.commonalities.language.ParticipationClass
 import tools.vitruv.dsls.commonalities.language.elements.Attribute
 import tools.vitruv.dsls.commonalities.language.extensions.ParticipationContext
@@ -67,6 +68,11 @@ package class ReactionsGeneratorConventions {
 	def static package String getShortReactionName(Attribute attribute) {
 		val classLike = attribute.classLikeContainer
 		'''«classLike.name.toFirstUpper»«attribute.name.toFirstUpper»'''
+	}
+
+	def static package String getReactionName(Participation participation) {
+		val commonality = participation.containingCommonality
+		'''«commonality.name»_«participation.name»'''
 	}
 
 	def static package String getReactionName(CommonalityReferenceMapping mapping) {
