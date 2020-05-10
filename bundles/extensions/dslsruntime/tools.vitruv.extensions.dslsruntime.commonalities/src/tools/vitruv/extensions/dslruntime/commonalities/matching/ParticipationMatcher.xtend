@@ -15,6 +15,8 @@ import tools.vitruv.extensions.dslruntime.commonalities.resources.ResourcesFacto
 import tools.vitruv.extensions.dslsruntime.reactions.helper.ReactionsCorrespondenceHelper
 import tools.vitruv.framework.correspondence.CorrespondenceModel
 
+import static tools.vitruv.framework.util.XtendAssertHelper.*
+
 /**
  * Matches participation classes to their objects according to the specified
  * containment hierarchy.
@@ -142,13 +144,13 @@ class ParticipationMatcher {
 	def private static boolean matchAttributeReferenceRoot(ContainmentTree containmentTree, ParticipationObjects match,
 		CorrespondenceModel correspondenceModel) {
 		val attributeReferenceRootNode = containmentTree.attributeReferenceRootNode
-		// assert: attributeReferenceRootNode !== null
+		assertTrue(attributeReferenceRootNode !== null)
 		// We use a random attribute reference edge to find the attribute reference root object:
 		val attributeReferenceEdge = containmentTree.attributeReferenceEdges.head
-		// assert: attributeReferenceEdge !== null
+		assertTrue(attributeReferenceEdge !== null)
 		val containedObject = match.getObject(attributeReferenceEdge.contained.name)
-		// assert: containedEObject !== null
-		// assert: match.getObject(attributeReferenceRootNode.name) === null (not yet matched)
+		assertTrue(containedObject !== null)
+		assertTrue(match.getObject(attributeReferenceRootNode.name) === null) // not yet matched
 		val operator = attributeReferenceEdge.operator
 		val containerObject = operator.getContainer(containedObject)
 		if (containerObject !== null && attributeReferenceRootNode.matchesObject(containerObject, correspondenceModel,
@@ -164,9 +166,9 @@ class ParticipationMatcher {
 	def private static boolean isAttributeReferenceEdgeFulfilled(ParticipationObjects match,
 		ContainmentTree.OperatorEdge attributeReferenceEdge) {
 		val containerObject = match.getObject(attributeReferenceEdge.container.name)
-		// assert: containerObject !== null (we expect that attribute reference root has already been matched)
+		assertTrue(containerObject !== null) // We expect that attribute reference root has already been matched
 		val containedObject = match.getObject(attributeReferenceEdge.contained.name)
-		// assert: containedObject !== null
+		assertTrue(containedObject !== null)
 		return attributeReferenceEdge.operator.isContained(containerObject, containedObject)
 	}
 
@@ -192,7 +194,7 @@ class ParticipationMatcher {
 	 */
 	def private static Iterable<? extends EObject> getCandidateRoots(EObject object, ContainmentTree containmentTree,
 		CorrespondenceModel correspondenceModel, boolean followAttributeReferences) {
-		// assert: object !== null && containmentTree !== null && correspondenceModel !== null
+		assertTrue(object !== null && containmentTree !== null && correspondenceModel !== null)
 		if (object.isIntermediateRoot) {
 			return Collections.singleton(object)
 		}

@@ -13,6 +13,8 @@ import org.eclipse.xtend.lib.annotations.Data
 import org.eclipse.xtend.lib.annotations.ToString
 import tools.vitruv.extensions.dslruntime.commonalities.operators.mapping.reference.IReferenceMappingOperator
 
+import static tools.vitruv.framework.util.XtendAssertHelper.*
+
 import static extension tools.vitruv.extensions.dslruntime.commonalities.operators.mapping.reference.ReferenceMappingOperatorHelper.*
 
 /**
@@ -139,7 +141,7 @@ class ContainmentTree {
 		commonPreValidateEdge(containerName, containedName)
 		val container = nodesByName.get(containerName)
 		val contained = nodesByName.get(containedName)
-		// assert: container !== null && contained !== null
+		assertTrue(container !== null && contained !== null)
 		Preconditions.checkNotNull(reference, "Containment reference is null")
 		Preconditions.checkArgument(reference.isContainment, "The given reference is not a containment")
 		Preconditions.checkArgument(container.type.EAllReferences.contains(reference),
@@ -154,7 +156,7 @@ class ContainmentTree {
 		commonPreValidateEdge(containerName, containedName)
 		val container = nodesByName.get(containerName)
 		val contained = nodesByName.get(containedName)
-		// assert: container !== null && contained !== null
+		assertTrue(container !== null && contained !== null)
 		Preconditions.checkNotNull(operator, "Operator is null")
 		Preconditions.checkArgument(!operator.isAttributeReference,
 			"Operator edge cannot use an attribute reference operator!")

@@ -21,6 +21,7 @@ import tools.vitruv.dsls.reactions.builder.TypeProvider
 
 import static com.google.common.base.Preconditions.*
 import static tools.vitruv.dsls.commonalities.generator.EmfAccessExpressions.*
+import static tools.vitruv.framework.util.XtendAssertHelper.*
 
 import static extension tools.vitruv.dsls.commonalities.generator.ReactionsGeneratorConventions.*
 import static extension tools.vitruv.dsls.commonalities.generator.ReactionsHelper.*
@@ -93,14 +94,14 @@ package class AttributeReferenceMatchingReactionsBuilder extends ReactionsGenera
 
 		participationContext.attributeReferenceContainments.forEach [ extension contextContainment |
 			val containment = containment
-			// assert: containment.operator.isAttributeReference
+			assertTrue(containment.operator.isAttributeReference)
 			segment += participationContext.reactionsForAttributeReferenceChange(containment)
 		]
 	}
 
 	def private generateRoutines(ParticipationContext participationContext) {
-		// assert: participationContext.isForAttributeReferenceMapping
-		// assert: participationContext.isRootContext
+		assertTrue(participationContext.isForAttributeReferenceMapping)
+		assertTrue(participationContext.isRootContext)
 		segment += participationContext.checkAttributeReferenceRoutine
 		segment += participationContext.checkAttributeReferenceElementsRemovedRoutine
 		segment += participationContext.checkAttributeReferenceElementRemovedRoutine
@@ -110,7 +111,7 @@ package class AttributeReferenceMatchingReactionsBuilder extends ReactionsGenera
 
 	def private reactionsForAttributeReferenceChange(ParticipationContext participationContext,
 		OperatorContainment containment) {
-		// assert: participationContext.isForAttributeReferenceMapping
+		assertTrue(participationContext.isForAttributeReferenceMapping)
 		return containment.operands.flatMap [
 			participationContext.reactionsForAttributeReferenceChange(containment, it)
 		]
@@ -158,7 +159,7 @@ package class AttributeReferenceMatchingReactionsBuilder extends ReactionsGenera
 	 */
 	private def getCheckAttributeReferenceElementsRemovedRoutine(ParticipationContext participationContext) {
 		return checkAttributeReferenceElementsRemovedRoutines.computeIfAbsent(participationContext) [
-			// assert: participationContext.isForAttributeReferenceMapping
+			assertTrue(participationContext.isForAttributeReferenceMapping)
 			val commonalityReference = participationContext.referenceMapping.declaringReference
 			val referencingCommonality = participationContext.referencingCommonality
 			val referencedCommonality = participationContext.referencedCommonality
@@ -227,7 +228,7 @@ package class AttributeReferenceMatchingReactionsBuilder extends ReactionsGenera
 	 */
 	private def getCheckAttributeReferenceElementRemovedRoutine(ParticipationContext participationContext) {
 		return checkAttributeReferenceElementRemovedRoutines.computeIfAbsent(participationContext) [
-			// assert: participationContext.isForAttributeReferenceMapping
+			assertTrue(participationContext.isForAttributeReferenceMapping)
 			val commonalityReference = participationContext.referenceMapping.declaringReference
 			val referencedCommonality = participationContext.referencedCommonality
 
@@ -267,7 +268,7 @@ package class AttributeReferenceMatchingReactionsBuilder extends ReactionsGenera
 	// Checks for new attribute references for a given container participation object:
 	private def getMatchAttributeReferenceElementsRoutine(ParticipationContext participationContext) {
 		return matchAttributeReferenceElementsRoutines.computeIfAbsent(participationContext) [
-			// assert: participationContext.isForAttributeReferenceMapping
+			assertTrue(participationContext.isForAttributeReferenceMapping)
 			val mapping = participationContext.referenceMapping as OperatorReferenceMapping
 			val referencingCommonality = participationContext.referencingCommonality
 			val referencedCommonality = participationContext.referencedCommonality
@@ -325,7 +326,7 @@ package class AttributeReferenceMatchingReactionsBuilder extends ReactionsGenera
 	// Checks for a new attribute reference container for a given potentially contained participation object:
 	private def getMatchAttributeReferenceContainerRoutine(ParticipationContext participationContext) {
 		return matchAttributeReferenceContainerRoutines.computeIfAbsent(participationContext) [
-			// assert: participationContext.isForAttributeReferenceMapping
+			assertTrue(participationContext.isForAttributeReferenceMapping)
 			val mapping = participationContext.referenceMapping as OperatorReferenceMapping
 			val referencingCommonality = participationContext.referencingCommonality
 			val referencedCommonality = participationContext.referencedCommonality
@@ -384,7 +385,7 @@ package class AttributeReferenceMatchingReactionsBuilder extends ReactionsGenera
 	 */
 	private def getCheckAttributeReferenceRoutine(ParticipationContext participationContext) {
 		return checkAttributeReferenceRoutines.computeIfAbsent(participationContext) [
-			// assert: participationContext.isForAttributeReferenceMapping
+			assertTrue(participationContext.isForAttributeReferenceMapping)
 			val commonalityReference = participationContext.referenceMapping.declaringReference
 			val referencingCommonality = participationContext.referencingCommonality
 			val referencedCommonality = participationContext.referencedCommonality
@@ -401,9 +402,9 @@ package class AttributeReferenceMatchingReactionsBuilder extends ReactionsGenera
 						.correspondingTo(REFERENCING_INTERMEDIATE)
 						.taggedWith(attributeReferenceRootClass.correspondenceTag)
 
-					// assert: !participationContext.attributeReferenceContainments.empty
+					assertTrue(!participationContext.attributeReferenceContainments.empty)
 					participationContext.attributeReferenceContainments.forEach [ extension contextContainment |
-						// assert: !contained.isExternal (no conflicts between variable names expected)
+						assertTrue(!contained.isExternal) // no conflicts between variable names expected
 						val containedClass = contained.participationClass
 						vall(containedClass.correspondingVariableName)
 							.retrieveAsserted(containedClass.changeClass)

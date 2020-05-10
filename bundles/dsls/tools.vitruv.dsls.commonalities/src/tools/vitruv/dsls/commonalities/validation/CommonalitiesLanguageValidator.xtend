@@ -15,6 +15,7 @@ import tools.vitruv.dsls.commonalities.language.SimpleReferenceMapping
 import tools.vitruv.dsls.commonalities.language.elements.Metaclass
 
 import static tools.vitruv.dsls.commonalities.language.LanguagePackage.Literals.*
+import static tools.vitruv.framework.util.XtendAssertHelper.*
 
 import static extension tools.vitruv.dsls.commonalities.language.extensions.CommonalitiesLanguageModelExtensions.*
 import static extension tools.vitruv.dsls.commonalities.language.extensions.ParticipationContextHelper.*
@@ -97,7 +98,7 @@ class CommonalitiesLanguageValidator extends AbstractCommonalitiesLanguageValida
 
 		val referencedParticipation = mapping.referencedParticipation
 		val nonRootBoundaryClasses = referencedParticipation.nonRootBoundaryClasses
-		// assert: !nonRootBoundaryClasses.empty
+		assertTrue(!nonRootBoundaryClasses.empty)
 		if (!nonRootBoundaryClasses.filter[!mapping.isAssignmentCompatible(it)].empty) {
 			error('''The referenced classes of participation '«referencedParticipation»' in «
 				mapping.referencedCommonality» are not assignment compatible with reference type «

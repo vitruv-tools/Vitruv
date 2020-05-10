@@ -9,6 +9,7 @@ import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.RoutineStartBuil
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.UndecidedMatcherStatementBuilder
 
 import static com.google.common.base.Preconditions.*
+import static tools.vitruv.framework.util.XtendAssertHelper.*
 
 import static extension tools.vitruv.dsls.commonalities.generator.EmfAccessExpressions.*
 import static extension tools.vitruv.dsls.commonalities.generator.ReactionsGeneratorConventions.*
@@ -109,7 +110,7 @@ package class ParticipationAttributeChangeReactionsBuilder extends ReactionsSubG
 
 	def private retrieveIntermediate(extension UndecidedMatcherStatementBuilder builder,
 		CommonalityAttributeMapping mapping) {
-		// assert: mapping.participation == participation && mapping.containingCommonality == commonality
+		assertTrue(mapping.participation === participation && mapping.containingCommonality === commonality)
 		val participationClass = mapping.attribute.participationClass
 		vall(INTERMEDIATE).retrieve(commonality.changeClass)
 			.correspondingTo.affectedEObject

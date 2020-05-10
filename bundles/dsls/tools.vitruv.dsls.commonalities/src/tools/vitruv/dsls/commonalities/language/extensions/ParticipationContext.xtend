@@ -10,6 +10,8 @@ import org.eclipse.xtend.lib.annotations.ToString
 import tools.vitruv.dsls.commonalities.language.Participation
 import tools.vitruv.dsls.commonalities.language.ParticipationClass
 
+import static tools.vitruv.framework.util.XtendAssertHelper.*
+
 import static extension tools.vitruv.dsls.commonalities.language.extensions.CommonalitiesLanguageModelExtensions.*
 import static extension tools.vitruv.dsls.commonalities.language.extensions.ParticipationContextHelper.*
 
@@ -137,7 +139,7 @@ class ParticipationContext {
 
 	private def calculateAttributeReferenceContainments() {
 		return Collections.unmodifiableList(root.attributeReferenceContainments.map [
-			// assert: attributeReferenceRoot !== null
+			assertTrue(attributeReferenceRoot !== null)
 			new ContextContainment(attributeReferenceRoot, contained.nonRootClass, it)
 		].toList)
 	}

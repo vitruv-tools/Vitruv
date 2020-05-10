@@ -25,6 +25,7 @@ import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.RoutineCallParam
 import tools.vitruv.dsls.reactions.builder.TypeProvider
 
 import static com.google.common.base.Preconditions.*
+import static tools.vitruv.framework.util.XtendAssertHelper.*
 
 import static extension tools.vitruv.dsls.commonalities.generator.EmfAccessExpressions.*
 import static extension tools.vitruv.dsls.commonalities.generator.ReactionsGeneratorConventions.*
@@ -204,7 +205,7 @@ package class CommonalityInsertReactionsBuilder extends ReactionsSubGenerator {
 
 	def private createSingletonRoutine(ParticipationContext participationContext,
 		FluentReactionsSegmentBuilder segment) {
-		// assert: participationContext.isForSingletonRoot
+		assertTrue(participationContext.isForSingletonRoot)
 		val participation = participationContext.participation
 		val commonality = participation.containingCommonality
 		val singletonClass = participation.singletonClass
@@ -228,7 +229,7 @@ package class CommonalityInsertReactionsBuilder extends ReactionsSubGenerator {
 					// this purpose we add a correspondence with the first intermediate for which the singleton gets
 					// created for:
 					val rootClass = participationContext.rootContainerClass
-					// assert: rootClass.participationClass.isForResource
+					assertTrue(rootClass.participationClass.isForResource)
 					addCorrespondence(commonality, rootClass.participationClass)
 
 					// Add singleton correspondence:
@@ -294,9 +295,10 @@ package class CommonalityInsertReactionsBuilder extends ReactionsSubGenerator {
 
 	def private insertCommonalityParticipationClasses(extension ActionStatementBuilder it,
 		Participation participation, FluentReactionsSegmentBuilder segment) {
-		// assert participation.isCommonalityParticipation
+		assertTrue(participation.isCommonalityParticipation)
 		for (participationClass : participation.rootContainerClasses) {
-			val participatingCommonality = participationClass.participatingCommonality // assert: not null
+			val participatingCommonality = participationClass.participatingCommonality
+			assertTrue(participatingCommonality !== null)
 			call(segment.getInsertIntermediateRoutine(participatingCommonality),
 				new RoutineCallParameter(participationClass.correspondingVariableName))
 		}

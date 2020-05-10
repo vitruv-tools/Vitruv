@@ -11,6 +11,8 @@ import tools.vitruv.dsls.commonalities.language.Participation
 import tools.vitruv.dsls.commonalities.language.ParticipationClass
 import tools.vitruv.dsls.commonalities.language.SimpleReferenceMapping
 
+import static tools.vitruv.framework.util.XtendAssertHelper.*
+
 import static extension tools.vitruv.dsls.commonalities.language.extensions.CommonalitiesLanguageModelExtensions.*
 
 @Utility
@@ -35,7 +37,7 @@ class ParticipationContextHelper {
 			if (participationRoot.empty && !participation.isCommonalityParticipation) {
 				return Optional.empty
 			}
-			// assert: !participation.nonRootClasses.empty (ensured via validation)
+			assertTrue(!participation.nonRootClasses.empty) // Ensured via validation
 			return Optional.of(new ParticipationContext(participation, participationRoot))
 		]
 	}
@@ -57,7 +59,7 @@ class ParticipationContextHelper {
 			val leaf = participation.classes.head.leafClasses.head
 			// From there we walk along the chain of containers until a class is
 			// either marked as 'root' or we are at the Resource root class
-			// assert: participation with a Resource contain only a single root
+			// assert: Participations with a Resource contain only a single root
 			// container (enforced via validation)
 			// TODO support multiple resource roots
 			var current = leaf
@@ -66,7 +68,7 @@ class ParticipationContextHelper {
 				current = container
 				container = current.containerClass
 			}
-			// assert: current.hasRootMarker || current.forResource
+			assertTrue(current.hasRootMarker || current.forResource)
 			// The current class (and all of its transitive container classes) are
 			// part of the root:
 			val rootStart = current
@@ -92,12 +94,11 @@ class ParticipationContextHelper {
 	def static getReferenceParticipationContext(CommonalityReferenceMapping mapping) {
 		return referenceParticipationContexts.computeIfAbsent(mapping) [
 			val referencedParticipation = mapping.referencedParticipation
-			// assert: referencedParticipation != null
-			// assert: !referencedParticipation.nonRootBoundaryClasses.empty
-			// assert: The referenced participation classes are assignment
-			// compatible. (ensured via validation)
+			assertTrue(referencedParticipation !== null)
+			assertTrue(!referencedParticipation.nonRootBoundaryClasses.empty)
+			// assert: The referenced participation classes are assignment compatible. (ensured via validation)
 			val referenceParticipationRoot = mapping.referenceParticipationRoot
-			// assert: !referenceParticipationRoot.empty
+			assertTrue(!referenceParticipationRoot.empty)
 			return new ParticipationContext(referencedParticipation, referenceParticipationRoot)
 		]
 	}
@@ -126,14 +127,14 @@ class ParticipationContextHelper {
 	}
 
 	def private static getAttributeReferenceParticipationRoot(OperatorReferenceMapping mapping) {
-		// assert: mapping.operator.isAttributeReference
+		assertTrue(mapping.operator.isAttributeReference)
 		val referenceParticipationRoot = new ParticipationRoot
 		referenceParticipationRoot.referenceMapping = mapping
 
 		// Copy the referenced participation's own root:
 		val referencedParticipation = mapping.referencedParticipation
-		// assert: !referencedParticipation.participationContext.empty (the referenced participation specifies a root
-		// context)
+		// Assert: The referenced participation specifies a root context
+		assertTrue(!referencedParticipation.participationContext.empty)
 		val participationRoot = referencedParticipation.participationRoot
 		referenceParticipationRoot.classes += participationRoot.classes
 		referenceParticipationRoot.rootContainments += participationRoot.rootContainments
@@ -156,7 +157,7 @@ class ParticipationContextHelper {
 	 */
 	def private static dispatch getReferenceContainments(SimpleReferenceMapping mapping) {
 		val participation = mapping.referencedParticipation
-		// assert: participation != null
+		assertTrue(participation !== null)
 		val container = mapping.participationClass
 		return participation.nonRootBoundaryClasses.map [ contained |
 			new ReferenceContainment(container, contained, mapping.reference)

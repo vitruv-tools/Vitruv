@@ -34,6 +34,7 @@ import tools.vitruv.extensions.dslruntime.commonalities.matching.ParticipationMa
 import tools.vitruv.extensions.dslruntime.commonalities.matching.ParticipationObjects
 
 import static com.google.common.base.Preconditions.*
+import static tools.vitruv.framework.util.XtendAssertHelper.*
 
 import static extension tools.vitruv.dsls.commonalities.generator.EmfAccessExpressions.*
 import static extension tools.vitruv.dsls.commonalities.generator.JvmTypeProviderHelper.*
@@ -598,7 +599,7 @@ package class ParticipationMatchingReactionsBuilder extends ReactionsGenerationH
 	 */
 	def private setupAndInsertResourceBridge(extension ActionStatementBuilder it, Participation participation) {
 		val resourceClass = participation.resourceClass
-		// assert: resourceClass !== null
+		assertTrue(resourceClass !== null)
 		call(segment.getSetupResourceBridgeRoutine(resourceClass), new RoutineCallParameter [ extension typeProvider |
 			resourceClass.getParticipationObject(variable(PARTICIPATION_OBJECTS), typeProvider)
 		])
@@ -722,7 +723,7 @@ package class ParticipationMatchingReactionsBuilder extends ReactionsGenerationH
 
 	def package getMatchAttributeReferenceContainerForIntermediateRoutine(ParticipationContext participationContext) {
 		return matchAttributeReferenceContainerForIntermediateRoutines.computeIfAbsent(participationContext) [
-			// assert: participationContext.isForAttributeReferenceMapping
+			assertTrue(participationContext.isForAttributeReferenceMapping)
 			val referencedCommonality = participationContext.referencedCommonality
 
 			// Generate the required routines:
@@ -736,7 +737,7 @@ package class ParticipationMatchingReactionsBuilder extends ReactionsGenerationH
 				.match [
 					// We treat this like an attribute change for one of referenced participation objects:
 					val attributeReferenceContainment = participationContext.attributeReferenceContainments.head
-					// assert: attributeReferenceContainment !== null
+					assertTrue(attributeReferenceContainment !== null)
 					val referencedClass = attributeReferenceContainment.contained.participationClass
 					vall(PARTICIPATION_OBJECT).retrieve(referencedClass.changeClass)
 						.correspondingTo(REFERENCED_INTERMEDIATE)
