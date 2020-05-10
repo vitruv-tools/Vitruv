@@ -22,7 +22,7 @@ package class InsertIntermediateRoutineBuilder extends ReactionsGenerationHelper
 
 	@GenerationScoped
 	static class Provider extends ReactionsSegmentScopedProvider<InsertIntermediateRoutineBuilder> {
-		override createFor(FluentReactionsSegmentBuilder segment) {
+		protected override createFor(FluentReactionsSegmentBuilder segment) {
 			return new InsertIntermediateRoutineBuilder(segment).injectMembers
 		}
 	}

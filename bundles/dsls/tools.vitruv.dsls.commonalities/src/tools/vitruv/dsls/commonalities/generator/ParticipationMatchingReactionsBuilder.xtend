@@ -161,7 +161,7 @@ package class ParticipationMatchingReactionsBuilder extends ReactionsGenerationH
 
 	@GenerationScoped
 	static class Provider extends ReactionsSegmentScopedProvider<ParticipationMatchingReactionsBuilder> {
-		override createFor(FluentReactionsSegmentBuilder segment) {
+		protected override createFor(FluentReactionsSegmentBuilder segment) {
 			return new ParticipationMatchingReactionsBuilder(segment).injectMembers
 		}
 	}

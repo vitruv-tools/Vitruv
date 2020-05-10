@@ -25,7 +25,7 @@ package class ApplyCommonalityAttributesRoutineBuilder extends ReactionsSubGener
 
 	@GenerationScoped
 	static class Provider extends ReactionsSegmentScopedProvider<ApplyCommonalityAttributesRoutineBuilder> {
-		override createFor(FluentReactionsSegmentBuilder segment) {
+		protected override createFor(FluentReactionsSegmentBuilder segment) {
 			return new ApplyCommonalityAttributesRoutineBuilder(segment).injectMembers
 		}
 	}
