@@ -9,6 +9,7 @@ import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.xtext.common.types.xtext.TypesAwareDefaultGlobalScopeProvider
 import org.eclipse.xtext.resource.IEObjectDescription
 import org.eclipse.xtext.scoping.IScope
+import org.eclipse.xtext.scoping.impl.FilteringScope
 import org.eclipse.xtext.scoping.impl.SimpleScope
 import tools.vitruv.dsls.commonalities.names.IEObjectDescriptionProvider
 
@@ -38,7 +39,7 @@ class CommonalitiesLanguageGlobalScopeProvider extends TypesAwareDefaultGlobalSc
 					// Commonality instances for commonality participation domains and participation classes, rather than
 					// EClassAdapters as they would get created by the VitruvDomainMetaclassesScope.
 					super.getScope(resource, reference, filter),
-					_getScope(resource, reference)
+					new FilteringScope(_getScope(resource, reference), filter)
 				)
 		}
 	}
