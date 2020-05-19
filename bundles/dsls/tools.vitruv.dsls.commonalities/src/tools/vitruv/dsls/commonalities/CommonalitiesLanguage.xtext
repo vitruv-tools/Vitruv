@@ -128,30 +128,15 @@ ParticipationConditionOperator:
 ;
 
 ParticipationConditionLeftOperand returns ParticipationConditionOperand:
-	ParticipationClassOperand | ParticipationAttributeOperand
+	UnqualifiedParticipationClassOperand | UnqualifiedParticipationAttributeOperand
 ;
 
 ParticipationConditionRightOperand returns ParticipationConditionOperand:
-	ParticipationClassOperand | ParticipationAttributeOperand | LiteralOperand
+	UnqualifiedParticipationClassOperand | UnqualifiedParticipationAttributeOperand | LiteralOperand
 ;
 
 ParticipationConditionOperand:
-	ParticipationClassOperand | ParticipationAttributeOperand | LiteralOperand
-;
-
-ParticipationClassOperand:
-	participationClass=[ParticipationClass|UnqualifiedParticipationClass]
-;
-
-ParticipationAttributeOperand:
-	participationAttribute=UnqualifiedParticipationAttribute
-;
-
-LiteralOperand:
-	expression=(XBooleanLiteral |
-		XNumberLiteral |
-		XNullLiteral |
-		XStringLiteral)
+	UnqualifiedParticipationClassOperand | UnqualifiedParticipationAttributeOperand | LiteralOperand
 ;
 
 /**************
@@ -218,7 +203,7 @@ ReferenceMappingOperator:
 ;
 
 ReferenceMappingOperand:
-	ReferencedParticipationAttributeOperand | ParticipationAttributeOperand | LiteralOperand
+	ReferencedParticipationAttributeOperand | UnqualifiedParticipationAttributeOperand | LiteralOperand
 ;
 
 ReferencedParticipationAttributeOperand:
@@ -231,6 +216,22 @@ ReferencedParticipationAttributeOperand:
 
 Operand:
 	ParticipationConditionOperand | ReferenceMappingOperand
+
+LiteralOperand:
+	expression=(XBooleanLiteral |
+		XNumberLiteral |
+		XNullLiteral |
+		XStringLiteral)
+	// TODO List literal
+;
+
+UnqualifiedParticipationClassOperand returns ParticipationClassOperand:
+	participationClass=[ParticipationClass|UnqualifiedParticipationClass]
+;
+
+UnqualifiedParticipationAttributeOperand returns ParticipationAttributeOperand:
+	participationAttribute=UnqualifiedParticipationAttribute
+;
 ;
 
 /******************
@@ -242,6 +243,10 @@ fragment QualifiedClasslike:
 
 QualifiedMetaclass:
 	QualifiedClasslike
+;
+
+UnqualifiedMetaclass:
+	ID
 ;
 
 QualifiedCommonality:
@@ -256,15 +261,11 @@ UnqualifiedParticipationClass:
 	UnqualifiedMetaclass
 ;
 
-DomainReference:
-	ID
-;
-
-UnqualifiedMetaclass:
-	ID
-;
-
 UnqualifiedParticipationMember:
+	ID
+;
+
+DomainReference:
 	ID
 ;
 
