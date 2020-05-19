@@ -1,6 +1,7 @@
 package tools.vitruv.dsls.commonalities.scoping
 
 import com.google.common.base.Predicate
+import com.google.common.base.Predicates
 import com.google.inject.Inject
 import com.google.inject.Provider
 import java.util.Collections
@@ -39,7 +40,7 @@ class CommonalitiesLanguageGlobalScopeProvider extends TypesAwareDefaultGlobalSc
 					// Commonality instances for commonality participation domains and participation classes, rather than
 					// EClassAdapters as they would get created by the VitruvDomainMetaclassesScope.
 					super.getScope(resource, reference, filter),
-					new FilteringScope(_getScope(resource, reference), filter)
+					new FilteringScope(_getScope(resource, reference), filter ?: Predicates.alwaysTrue)
 				)
 		}
 	}
