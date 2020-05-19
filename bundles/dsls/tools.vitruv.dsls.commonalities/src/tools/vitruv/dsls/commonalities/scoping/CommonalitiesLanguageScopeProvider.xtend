@@ -117,7 +117,7 @@ class CommonalitiesLanguageScopeProvider extends AbstractCommonalitiesLanguageSc
 	}
 
 	def private getUnqualifiedMetaclassScope(TupleParticipation participation, IScope metaclassScope) {
-		val parentQualifiedName = participation.domainName.qualifiedName
+		val parentQualifiedName = participation.domainName.qualifiedDomainName
 		return new PrefixedScope(metaclassScope, parentQualifiedName)
 	}
 
