@@ -189,7 +189,6 @@ package class EmfAccessExpressions {
 			memberCallTarget = XbaseFactory.eINSTANCE.createXMemberFeatureCall => [
 				memberCallTarget = object
 				feature = typeProvider.findMethod(EObject, 'eClass')
-				concreteSyntaxFeatureName
 			]
 			feature = typeProvider.findMethod(EClass, 'getEStructuralFeature', String)
 			explicitOperationCall = true
