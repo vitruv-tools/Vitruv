@@ -1,4 +1,4 @@
-package tools.vitruv.extensions.dslruntime.commonalities.operators.participation.condition
+package tools.vitruv.extensions.dslruntime.commonalities.operators
 
 import com.google.common.base.Preconditions
 import org.eclipse.emf.ecore.EObject

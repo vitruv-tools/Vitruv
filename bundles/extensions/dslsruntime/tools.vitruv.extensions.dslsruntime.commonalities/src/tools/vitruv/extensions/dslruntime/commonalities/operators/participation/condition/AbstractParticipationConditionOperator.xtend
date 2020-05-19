@@ -4,6 +4,7 @@ import com.google.common.base.Preconditions
 import java.util.List
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EStructuralFeature
+import tools.vitruv.extensions.dslruntime.commonalities.operators.AttributeOperand
 
 abstract class AbstractParticipationConditionOperator implements IParticipationConditionOperator {
 
