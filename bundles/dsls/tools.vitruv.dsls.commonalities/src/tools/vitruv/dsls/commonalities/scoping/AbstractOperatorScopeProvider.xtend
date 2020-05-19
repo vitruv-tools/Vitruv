@@ -1,6 +1,7 @@
 package tools.vitruv.dsls.commonalities.scoping
 
 import com.google.common.base.Predicate
+import com.google.common.base.Predicates
 import com.google.inject.Inject
 import java.util.HashMap
 import java.util.HashSet
@@ -68,8 +69,7 @@ abstract class AbstractOperatorScopeProvider implements IGlobalScopeProvider {
 			importedNamespace
 		]).map[toQualifiedName.skipLast(1)].toList // skips the '.*' segment at the end of each namespace import
 
-		val resourceSet = resource.resourceSet
-		return new FilteringScope(resourceSet.allOperatorsScope) [
+		val Predicate<IEObjectDescription> importFilter = [
 			val qualifiedName = (it.EObjectOrProxy as JvmDeclaredType).getQualifiedName('.').toQualifiedName
 			if (importedTypes.exists[qualifiedName.equals(it)]) {
 				return true
@@ -79,6 +79,10 @@ abstract class AbstractOperatorScopeProvider implements IGlobalScopeProvider {
 			}
 			return false
 		]
+		val combinedFilter = Predicates.and(importFilter, filter ?: Predicates.alwaysTrue)
+
+		val resourceSet = resource.resourceSet
+		return new FilteringScope(resourceSet.allOperatorsScope, combinedFilter)
 	}
 
 	def private getAllOperatorsScope(ResourceSet resourceSet) {
