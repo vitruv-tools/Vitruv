@@ -510,9 +510,10 @@ package class ParticipationMatchingReactionsBuilder extends ReactionsGenerationH
 						if (participation.hasSingletonClass) {
 							// Setup the singleton if it hasn't been setup yet:
 							val singletonClass = participation.singletonClass
-							call(singletonClass.setupSingletonRoutine, new RoutineCallParameter [ extension typeProvider |
-								singletonClass.getParticipationObject(variable(PARTICIPATION_OBJECTS), typeProvider)
-							], new RoutineCallParameter(PARTICIPATION_OBJECTS))
+							call(singletonClass.setupSingletonRoutine, new RoutineCallParameter(INTERMEDIATE),
+								new RoutineCallParameter [ extension typeProvider |
+									singletonClass.getParticipationObject(variable(PARTICIPATION_OBJECTS), typeProvider)
+								], new RoutineCallParameter(PARTICIPATION_OBJECTS))
 						} else if (participation.hasResourceClass) {
 							// Note: We cannot implicitly assume here that the participation has a resource class,
 							// because this is not the case for commonality participations.
@@ -566,8 +567,8 @@ package class ParticipationMatchingReactionsBuilder extends ReactionsGenerationH
 		val singletonEClass = singletonClass.changeClass
 		return create.routine('''setupSingleton_«participation.name»_«singletonClass.name»''')
 			.input [
-				model(singletonEClass, SINGLETON)
 				model(commonality.changeClass, INTERMEDIATE)
+				model(singletonEClass, SINGLETON)
 				plain(ParticipationObjects, PARTICIPATION_OBJECTS)
 			]
 			.match [
