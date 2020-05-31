@@ -69,7 +69,7 @@ class IntermediateResourceBridgeI extends IntermediateResourceBridgeImpl {
 
 	def private static fullPath(String path, String name, String fileExtension) {
 		if (path === null || name === null || fileExtension === null) return null
-		path + '/' + name + '.' + fileExtension
+		return path + (path.endsWith('/') ? '' : '/') + name + '.' + fileExtension
 	}
 
 	def private canBePersisted() {
