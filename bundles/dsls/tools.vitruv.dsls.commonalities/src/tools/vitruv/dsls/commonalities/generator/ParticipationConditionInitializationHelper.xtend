@@ -5,6 +5,7 @@ import java.util.List
 import java.util.function.Function
 import org.eclipse.xtext.xbase.XExpression
 import org.eclipse.xtext.xbase.XbaseFactory
+import tools.vitruv.dsls.commonalities.language.ParticipationClass
 import tools.vitruv.dsls.commonalities.language.ParticipationCondition
 import tools.vitruv.dsls.commonalities.language.extensions.ParticipationContext
 import tools.vitruv.dsls.commonalities.language.extensions.ParticipationContext.ContextClass
@@ -13,10 +14,45 @@ import tools.vitruv.dsls.reactions.builder.TypeProvider
 import static tools.vitruv.dsls.commonalities.generator.XbaseHelper.*
 
 import static extension tools.vitruv.dsls.commonalities.generator.JvmTypeProviderHelper.*
+import static extension tools.vitruv.dsls.commonalities.generator.ReactionsGeneratorConventions.*
 import static extension tools.vitruv.dsls.commonalities.language.extensions.CommonalitiesLanguageModelExtensions.*
 
 @GenerationScoped
 package class ParticipationConditionInitializationHelper extends ReactionsGenerationHelper {
+
+	private static class ParticipationConditionOperatorContext implements OperatorContext {
+
+		val extension TypeProvider typeProvider
+
+		new(TypeProvider typeProvider) {
+			this.typeProvider = typeProvider
+		}
+
+		override getTypeProvider() {
+			return typeProvider
+		}
+
+		private def unsupportedOperationException() {
+			return new UnsupportedOperationException("Unsupported in participation condition context!")
+		}
+
+		override passParticipationAttributeValues() {
+			// We pass AttributeOperands because participation conditions have write access:
+			return false
+		}
+
+		override passCommonalityAttributeValues() {
+			throw unsupportedOperationException()
+		}
+
+		override getIntermediate() {
+			throw unsupportedOperationException()
+		}
+
+		override getParticipationObject(ParticipationClass participationClass) {
+			return variable(participationClass.correspondingVariableName)
+		}
+	}
 
 	static val CONDITION_ENFORCE_METHOD = 'enforce'
 
@@ -59,16 +95,17 @@ package class ParticipationConditionInitializationHelper extends ReactionsGenera
 
 	def private newParticipationConditionOperator(ParticipationCondition participationCondition,
 		extension TypeProvider typeProvider) {
+		val operatorContext = new ParticipationConditionOperatorContext(typeProvider)
 		val leftOperand = participationCondition.leftOperand
 		XbaseFactory.eINSTANCE.createXConstructorCall => [
 			val operatorType = participationCondition.operator.jvmType
 			constructor = operatorType.findConstructor(Object, List)
 			explicitConstructorCall = true
 			arguments += expressions(
-				leftOperand.getOperandExpression(typeProvider),
+				leftOperand.getOperandExpression(operatorContext),
 				XbaseFactory.eINSTANCE.createXListLiteral => [
 					elements += participationCondition.rightOperands.map [
-						getOperandExpression(typeProvider)
+						getOperandExpression(operatorContext)
 					]
 				]
 			)

@@ -22,12 +22,15 @@ class CommonalitiesLanguageGlobalScopeProvider extends TypesAwareDefaultGlobalSc
 
 	@Inject ParticipationRelationOperatorScopeProvider relationOperatorScopeProvider
 	@Inject ParticipationConditionOperatorScopeProvider conditionOperatorScopeProvider
+	@Inject AttributeMappingOperatorScopeProvider attributeMappingOperatorScopeProvider
 	@Inject ReferenceMappingOperatorScopeProvider referenceMappingOperatorScopeProvider
 	@Inject Provider<VitruvDomainMetaclassesScope> allMetaclassesScope
 	@Inject extension IEObjectDescriptionProvider descriptionProvider
 
 	override getScope(Resource resource, EReference reference, Predicate<IEObjectDescription> filter) {
 		switch (reference) {
+			case ATTRIBUTE_MAPPING_OPERATOR__JVM_TYPE:
+				attributeMappingOperatorScopeProvider.getScope(resource, reference, filter)
 			case REFERENCE_MAPPING_OPERATOR__JVM_TYPE:
 				referenceMappingOperatorScopeProvider.getScope(resource, reference, filter)
 			case PARTICIPATION_RELATION_OPERATOR__JVM_TYPE:
@@ -50,11 +53,17 @@ class CommonalitiesLanguageGlobalScopeProvider extends TypesAwareDefaultGlobalSc
 			case PARTICIPATION_CLASS__SUPER_METACLASS:
 				allMetaclassesScope.get()
 			case COMMONALITY_REFERENCE__REFERENCE_TYPE: // self scope
-				new SimpleScope(IScope.NULLSCOPE, Collections.singleton(
-					resource.containedCommonalityFile.commonality.describe()
-				))
+				resource.localCommonalityScope
+			case COMMONALITY_ATTRIBUTE_REFERENCE__COMMONALITY: // self scope
+				resource.localCommonalityScope
 			default:
 				IScope.NULLSCOPE
 		}
+	}
+
+	def private getLocalCommonalityScope(Resource resource) {
+		return new SimpleScope(IScope.NULLSCOPE, Collections.singleton(
+			resource.containedCommonalityFile.commonality.describe()
+		))
 	}
 }

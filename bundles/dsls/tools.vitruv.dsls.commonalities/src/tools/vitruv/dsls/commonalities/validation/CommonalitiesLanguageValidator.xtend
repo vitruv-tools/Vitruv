@@ -6,9 +6,12 @@ package tools.vitruv.dsls.commonalities.validation
 import java.util.regex.Pattern
 import org.eclipse.xtext.validation.Check
 import tools.vitruv.dsls.commonalities.language.Aliasable
+import tools.vitruv.dsls.commonalities.language.CommonalityAttributeOperand
 import tools.vitruv.dsls.commonalities.language.CommonalityReferenceMapping
+import tools.vitruv.dsls.commonalities.language.OperatorAttributeMapping
 import tools.vitruv.dsls.commonalities.language.OperatorReferenceMapping
 import tools.vitruv.dsls.commonalities.language.Participation
+import tools.vitruv.dsls.commonalities.language.ParticipationAttributeOperand
 import tools.vitruv.dsls.commonalities.language.ParticipationClass
 import tools.vitruv.dsls.commonalities.language.ReferencedParticipationAttributeOperand
 import tools.vitruv.dsls.commonalities.language.SimpleReferenceMapping
@@ -55,6 +58,55 @@ class CommonalitiesLanguageValidator extends AbstractCommonalitiesLanguageValida
 			error('Participation has no non-root classes.', participation, null)
 		}
 		// TODO check for containment cycles
+	}
+
+	@Check
+	def checkOperatorAttributeMapping(OperatorAttributeMapping mapping) {
+		val commonalityAttributeType = mapping.commonalityAttributeType
+		if (commonalityAttributeType === null) {
+			val typeDescription = mapping.operator.commonalityAttributeTypeDescription
+			error('''Could not find the operator's declared commonality attribute type `«
+				typeDescription.qualifiedTypeName»`.''', OPERATOR_ATTRIBUTE_MAPPING__OPERATOR)
+		}
+
+		val participationAttributeType = mapping.participationAttributeType
+		if (participationAttributeType === null) {
+			val typeDescription = mapping.operator.participationAttributeTypeDescription
+			error('''Could not find the operator's declared participation attribute type `«
+				typeDescription.qualifiedTypeName»`.''', OPERATOR_ATTRIBUTE_MAPPING__OPERATOR)
+		}
+
+		val participationAttributeOperandsCount = mapping.participationAttributeOperands.size
+		if (participationAttributeOperandsCount > 1) {
+			error('There can only be at most one participation attribute operand.',
+				OPERATOR_ATTRIBUTE_MAPPING__OPERANDS)
+		} else if (participationAttributeOperandsCount == 0 && mapping.participationClassOperands.size == 0) {
+			error('Attribute mapping operators need to declare at least one participation attribute or participation«
+				» class operand.', OPERATOR_ATTRIBUTE_MAPPING__OPERANDS)
+		}
+
+		if (mapping.involvedParticipations.size > 1) {
+			error('The mapping can only refer to participation attributes and classes of a single participation.',
+				OPERATOR_ATTRIBUTE_MAPPING__OPERANDS)
+		}
+
+		val commonalityAttribute = mapping.declaringAttribute
+		if (mapping.commonalityAttributeOperands.exists[it.attributeReference.attribute == commonalityAttribute]) {
+			error('''The commonality attribute «commonalityAttribute.name» cannot be used as operand. It gets «
+				»implicitly passed to the operator.''', OPERATOR_ATTRIBUTE_MAPPING__OPERANDS)
+		}
+	}
+
+	def private static getParticipationAttributeOperands(OperatorAttributeMapping mapping) {
+		return mapping.operands.filter(ParticipationAttributeOperand)
+	}
+
+	def private static getInvolvedParticipations(OperatorAttributeMapping mapping) {
+		return mapping.operands.map[participation].filterNull.toSet
+	}
+
+	def private static getCommonalityAttributeOperands(OperatorAttributeMapping mapping) {
+		return mapping.operands.filter(CommonalityAttributeOperand)
 	}
 
 	@Check

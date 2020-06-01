@@ -29,12 +29,15 @@ class EDataTypeAdapter extends EDataTypeClassifierImpl implements Wrapper<EDataT
 	def dispatch isSuperTypeOf(EDataTypeAdapter dataTypeAdapter) {
 		checkEDataTypeSet()
 		if (dataTypeAdapter === this) return true
-		if (dataTypeAdapter === WellKnownClassifiers.MOST_SPECIFIC_TYPE) return false
 		this.wrappedDataType.instanceClass.isAssignableFrom(dataTypeAdapter.wrappedDataType.instanceClass)
 	}
 
 	def dispatch isSuperTypeOf(MostSpecificType mostSpecificType) {
 		true
+	}
+
+	def dispatch isSuperTypeOf(LeastSpecificType leastSpecificType) {
+		false
 	}
 
 	override getName() {

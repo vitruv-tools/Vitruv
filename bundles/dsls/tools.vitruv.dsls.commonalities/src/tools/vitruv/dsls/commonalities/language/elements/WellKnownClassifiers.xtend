@@ -9,4 +9,5 @@ class WellKnownClassifiers {
 	public static val JAVA_OBJECT = LanguageElementsFactory.eINSTANCE.createEDataTypeClassifier
 		.forEDataType(EcorePackage.eINSTANCE.EJavaObject)
 	public static val Classifier MOST_SPECIFIC_TYPE = LanguageElementsFactory.eINSTANCE.createMostSpecificType
+	public static val Classifier LEAST_SPECIFIC_TYPE = LanguageElementsFactory.eINSTANCE.createLeastSpecificType
 }

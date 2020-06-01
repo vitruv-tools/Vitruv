@@ -28,6 +28,14 @@ class CommonalitiesLanguageImplementationFactory extends LanguageFactoryImpl {
 		new CommonalityAttributeI
 	}
 
+	override createSimpleAttributeMapping() {
+		new SimpleAttributeMappingI
+	}
+
+	override createOperatorAttributeMapping() {
+		new OperatorAttributeMappingI
+	}
+
 	override createConcept() {
 		new ConceptI
 	}

@@ -1,5 +1,6 @@
 package tools.vitruv.dsls.commonalities.language.elements
 
+import java.util.Set
 import org.eclipse.emf.ecore.EClass
 import org.eclipse.emf.ecore.EPackage
 import tools.vitruv.dsls.commonalities.language.elements.impl.VitruviusDomainImpl
@@ -30,10 +31,6 @@ class VitruvDomainAdapter extends VitruviusDomainImpl implements Wrapper<VitruvD
 		checkState(classifierProvider !== null, "No classifier provider was set on this element!")
 	}
 
-	def private static Iterable<EPackage> getRecursiveSubPackages(EPackage ePackage) {
-		#[ePackage] + ePackage.ESubpackages.flatMap[recursiveSubPackages]
-	}
-
 	override getMetaclasses() {
 		if (metaclasses === null) {
 			checkDomainSet()
@@ -44,12 +41,21 @@ class VitruvDomainAdapter extends VitruviusDomainImpl implements Wrapper<VitruvD
 		metaclasses
 	}
 
+	private def Set<EPackage> getRootPackages() {
+		return (#[wrappedVitruvDomain.metamodelRootPackage] + wrappedVitruvDomain.furtherRootPackages).toSet
+	}
+
+	def Set<EPackage> getAllPackages() {
+		val rootPackages = rootPackages
+		return (rootPackages + rootPackages.flatMap[recursiveSubPackages]).toSet
+	}
+
+	private def static Iterable<EPackage> getRecursiveSubPackages(EPackage ePackage) {
+		return ePackage.ESubpackages + ePackage.ESubpackages.flatMap[recursiveSubPackages]
+	}
+
 	def private loadMetaclasses() {
-		(
-			#[wrappedVitruvDomain.metamodelRootPackage]
-			+ wrappedVitruvDomain.furtherRootPackages
-		)
-			.flatMap[recursiveSubPackages]
+		allPackages
 			.flatMap[EClassifiers]
 			.filter(EClass)
 			.map[toMetaclass(this)]

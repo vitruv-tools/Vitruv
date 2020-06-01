@@ -3,25 +3,22 @@ package tools.vitruv.dsls.commonalities.generator
 import com.google.inject.Inject
 import edu.kit.ipd.sdq.activextendannotations.Lazy
 import java.util.List
-import java.util.function.Function
-import org.eclipse.xtext.xbase.XAbstractFeatureCall
-import org.eclipse.xtext.xbase.XExpression
-import org.eclipse.xtext.xbase.XbaseFactory
+import java.util.Set
+import tools.vitruv.dsls.commonalities.generator.AttributeMappingOperatorHelper.AttributeMappingOperatorContext
 import tools.vitruv.dsls.commonalities.language.CommonalityAttribute
 import tools.vitruv.dsls.commonalities.language.CommonalityAttributeMapping
 import tools.vitruv.dsls.commonalities.language.Participation
+import tools.vitruv.dsls.commonalities.language.ParticipationClass
 import tools.vitruv.dsls.reactions.builder.FluentReactionsSegmentBuilder
+import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.ActionStatementBuilder
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.RoutineStartBuilder
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.UndecidedMatcherStatementBuilder
-import tools.vitruv.dsls.reactions.builder.TypeProvider
 
 import static com.google.common.base.Preconditions.*
+import static tools.vitruv.framework.util.XtendAssertHelper.*
 
-import static extension tools.vitruv.dsls.commonalities.generator.EmfAccessExpressions.*
 import static extension tools.vitruv.dsls.commonalities.generator.ReactionsGeneratorConventions.*
-import static extension tools.vitruv.dsls.commonalities.generator.XbaseHelper.*
 import static extension tools.vitruv.dsls.commonalities.language.extensions.CommonalitiesLanguageModelExtensions.*
-import static extension tools.vitruv.dsls.commonalities.language.extensions.ParticipationContextHelper.*
 
 package class CommonalityAttributeChangeReactionsBuilder extends ReactionsSubGenerator {
 
@@ -31,12 +28,15 @@ package class CommonalityAttributeChangeReactionsBuilder extends ReactionsSubGen
 		}
 	}
 
+	@Inject extension AttributeMappingHelper attributeMappingHelper
 	@Inject extension AttributeChangeReactionsHelper attributeChangeReactionsHelper
 	@Inject extension ParticipationObjectsRetrievalHelper participationObjectsRetrievalHelper
 
 	val CommonalityAttribute attribute
 	val Participation targetParticipation
+
 	@Lazy val List<CommonalityAttributeMapping> relevantMappings = calculateRelevantMappings()
+	@Lazy val Set<ParticipationClass> relevantParticipationClasses = calculateRelevantParticipationClasses()
 
 	private new(CommonalityAttribute attribute, Participation targetParticipation) {
 		checkNotNull(attribute, "attribute is null")
@@ -53,9 +53,11 @@ package class CommonalityAttributeChangeReactionsBuilder extends ReactionsSubGen
 	}
 
 	def private calculateRelevantMappings() {
-		return attribute.mappings.filter [
-			isWrite && it.participation == targetParticipation
-		].toList
+		return attribute.getRelevantWriteMappings(targetParticipation).toList
+	}
+
+	def private calculateRelevantParticipationClasses() {
+		return relevantMappings.flatMap[involvedParticipationClasses].toSet
 	}
 
 	def package void generateReactions(FluentReactionsSegmentBuilder segment) {
@@ -65,112 +67,49 @@ package class CommonalityAttributeChangeReactionsBuilder extends ReactionsSubGen
 
 	def private reactionsForCommonalityAttributeChange() {
 		return attribute.getAttributeChangeReactions [ changeType , it |
-			call [
-				switch (changeType) {
-					case VALUE_REPLACED: {
-						buildSingleFeatureSetRoutine
-					}
-					case VALUE_INSERTED: {
-						buildMultiFeatureAddRoutine
-					}
-					case VALUE_REMOVED: {
-						buildMultiFeatureRemoveRoutine
-					}
-				}
-			]
+			call[buildAttributeChangedRoutine]
 		]
 	}
 
-	def private applyAttributeChange(extension TypeProvider typeProvider, CommonalityAttributeMapping mapping,
-		Function<XAbstractFeatureCall, XExpression> expressionBuilder) {
-		val participationClass = mapping.attribute.participationClass
-		val corresponding = participationClass.correspondingVariableName
-		val objectVar = variable(corresponding)
-		if (participationClass.isRootClass) {
-			// object is optional:
-			return XbaseFactory.eINSTANCE.createXIfExpression => [
-				^if = objectVar.optionalIsPresent(typeProvider)
-				then = expressionBuilder.apply(objectVar.copy.optionalGet(typeProvider))
-			]
-		} else {
-			return expressionBuilder.apply(objectVar)
-		}
-	}
-
-	def private buildSingleFeatureSetRoutine(extension RoutineStartBuilder routineBuilder) {
+	def private buildAttributeChangedRoutine(extension RoutineStartBuilder routineBuilder) {
 		input [
 			affectedEObject
-			newValue
 		]
 		.match [
-			retrieveRelevantCorrespondences()
+			retrieveRelevantParticipationObjects()
 		]
 		.action [
-			for (mapping : relevantMappings) {
-				val corresponding = mapping.correspondingVariableName
-				update(corresponding) [
-					applyAttributeChange(mapping) [ objectVar |
-						setFeatureValue(objectVar, mapping.participationEFeature, newValue)
-					]
-				]
-			}
+			applyMappings()
 		]
 	}
 
-	def private buildMultiFeatureAddRoutine(extension RoutineStartBuilder routineBuilder) {
-		input [
-			affectedEObject
-			newValue
-		]
-		.match [
-			retrieveRelevantCorrespondences()
-		]
-		.action [
-			for (mapping : relevantMappings) {
-				val corresponding = mapping.correspondingVariableName
-				update(corresponding) [
-					applyAttributeChange(mapping) [ objectVar |
-						addListFeatureValue(objectVar, mapping.participationEFeature, newValue)
-					]
-				]
-			}
-		]
-	}
-
-	def private buildMultiFeatureRemoveRoutine(extension RoutineStartBuilder routineBuilder) {
-		input [
-			affectedEObject
-			oldValue
-		]
-		.match [
-			retrieveRelevantCorrespondences()
-		]
-		.action [
-			for (mapping : relevantMappings) {
-				val corresponding = mapping.correspondingVariableName
-				update(corresponding) [
-					applyAttributeChange(mapping) [ objectVar |
-						removeListFeatureValue(objectVar, mapping.participationEFeature, oldValue)
-					]
-				]
-			}
-		]
-	}
-
-	def private retrieveRelevantCorrespondences(extension UndecidedMatcherStatementBuilder matcherBuilder) {
-		for (mapping : relevantMappings) {
-			val participationClass = mapping.attribute.participationClass
+	def private retrieveRelevantParticipationObjects(extension UndecidedMatcherStatementBuilder matcherBuilder) {
+		relevantParticipationClasses.forEach [ participationClass |
 			// Note: If the intermediate has been moved during creation (eg. due to an attribute reference match), we
 			// might receive attribute change events for the intermediate even though the creation of the target
-			// participation is still pending. We ignore the attribute change event in this case. Instead, the
-			// attributes of the intermediate get applied to the target participation during its later creation.
-			matcherBuilder.retrieveParticipationObject(participationClass) [
+			// participation is still pending. We ignore the attribute change event in this case (therefore unasserted
+			// retrieval of participation objects). Instead, the attributes of the intermediate get applied to the
+			// target participation during its later creation.
+			matcherBuilder.retrieveUnassertedParticipationObject(participationClass) [
 				affectedEObject // correspondence source
+			]
+		]
+	}
+
+	def private void applyMappings(extension ActionStatementBuilder actionBuilder) {
+		for (mapping : relevantMappings) {
+			val corresponding = mapping.correspondingVariableName
+			update(corresponding) [ extension typeProvider |
+				val participationClassToObject = typeProvider.participationClassToOptionalObject
+				val operatorContext = new AttributeMappingOperatorContext(typeProvider, [affectedEObject],
+					participationClassToObject)
+				mapping.applyWriteMapping(operatorContext)
 			]
 		}
 	}
 
 	def private getCorrespondingVariableName(CommonalityAttributeMapping mapping) {
-		return mapping.attribute.participationClass.correspondingVariableName
+		assertTrue(mapping.participationAttribute !== null) // Otherwise the mapping would not be 'relevant'.
+		return mapping.participationAttribute.participationClass.correspondingVariableName
 	}
 }

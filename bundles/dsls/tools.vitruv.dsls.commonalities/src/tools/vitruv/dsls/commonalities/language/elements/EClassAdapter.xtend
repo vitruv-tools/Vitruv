@@ -95,13 +95,16 @@ class EClassAdapter extends EClassMetaclassImpl implements Wrapper<EClass> {
 
 	def dispatch isSuperTypeOf(EClassAdapter eClassAdapter) {
 		if (this === eClassAdapter) return true
-		if (eClassAdapter == WellKnownClassifiers.MOST_SPECIFIC_TYPE) return true
-		if (wrappedEClass == EcorePackage.eINSTANCE.EObject) return true
+		if (wrappedEClass === EcorePackage.eINSTANCE.EObject) return true
 		return this.wrappedEClass.isSuperTypeOf(eClassAdapter.wrappedEClass)
 	}
 
 	def dispatch isSuperTypeOf(MostSpecificType mostSpecificType) {
 		true
+	}
+
+	def dispatch isSuperTypeOf(LeastSpecificType leastSpecificType) {
+		false
 	}
 
 	override getAllMembers() {

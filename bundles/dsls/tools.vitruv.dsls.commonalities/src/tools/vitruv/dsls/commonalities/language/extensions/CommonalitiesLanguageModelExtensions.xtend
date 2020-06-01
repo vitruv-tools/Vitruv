@@ -4,6 +4,8 @@ import edu.kit.ipd.sdq.activextendannotations.StaticDelegate
 import edu.kit.ipd.sdq.activextendannotations.Utility
 
 @StaticDelegate(#[
+	AttributeMappingOperatorExtension,
+	AttributeMappingOperandExtension,
 	CommonalityExtension,
 	CommonalityFileExtension,
 	CommonalitiesLanguageElementExtension,
@@ -11,6 +13,7 @@ import edu.kit.ipd.sdq.activextendannotations.Utility
 	CommonalityReferenceMappingExtension,
 	OperatorImportExtension,
 	OperandExtension,
+	OperatorAttributeMappingExtension,
 	OperatorReferenceMappingExtension,
 	ParticipationExtension,
 	ParticipationPartExtension,

@@ -15,7 +15,7 @@ package class ParticipationObjectsRetrievalHelper extends ReactionsGenerationHel
 	package new() {
 	}
 
-	def retrieveParticipationObject(extension UndecidedMatcherStatementBuilder matcherBuilder,
+	def retrieveUnassertedParticipationObject(extension UndecidedMatcherStatementBuilder matcherBuilder,
 		ParticipationClass participationClass, Function<TypeProvider, XExpression> correspondenceSource) {
 		matcherBuilder.retrieveParticipationObject(participationClass, false, correspondenceSource)
 	}
@@ -29,8 +29,7 @@ package class ParticipationObjectsRetrievalHelper extends ReactionsGenerationHel
 		ParticipationClass participationClass, boolean asserted,
 		Function<TypeProvider, XExpression> correspondenceSource) {
 		if (participationClass.isRootClass) {
-			// Note: Depending on the context in which the participation
-			// exists, the participation's root object(s) may not exist.
+			// Note: Depending on the participation's context, the participation's root object(s) may not exist.
 			vall(participationClass.correspondingVariableName).retrieveOptional(participationClass.changeClass)
 				.correspondingTo(correspondenceSource)
 				.taggedWith(participationClass.correspondenceTag)

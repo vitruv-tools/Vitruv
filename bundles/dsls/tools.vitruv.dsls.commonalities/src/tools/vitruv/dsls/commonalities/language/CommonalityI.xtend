@@ -2,6 +2,7 @@ package tools.vitruv.dsls.commonalities.language
 
 import org.eclipse.emf.common.util.DelegatingEList.UnmodifiableEList
 import tools.vitruv.dsls.commonalities.language.elements.Classifier
+import tools.vitruv.dsls.commonalities.language.elements.LeastSpecificType
 import tools.vitruv.dsls.commonalities.language.elements.MostSpecificType
 import tools.vitruv.dsls.commonalities.language.impl.CommonalityImpl
 
@@ -23,6 +24,10 @@ package class CommonalityI extends CommonalityImpl {
 
 	def dispatch isSuperTypeOf(MostSpecificType mostSpecificType) {
 		true
+	}
+
+	def dispatch isSuperTypeOf(LeastSpecificType leastSpecificType) {
+		false
 	}
 
 	override basicGetDomain() {

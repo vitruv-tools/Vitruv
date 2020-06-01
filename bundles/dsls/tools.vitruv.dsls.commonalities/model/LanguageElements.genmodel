@@ -86,5 +86,6 @@
       </genOperations>
     </genClasses>
     <genClasses ecoreClass="LanguageElements.ecore#//MostSpecificType"/>
+    <genClasses ecoreClass="LanguageElements.ecore#//LeastSpecificType"/>
   </genPackages>
 </genmodel:GenModel>

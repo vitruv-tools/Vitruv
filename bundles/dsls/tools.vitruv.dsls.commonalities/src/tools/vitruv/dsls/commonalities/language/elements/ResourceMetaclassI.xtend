@@ -77,6 +77,10 @@ class ResourceMetaclassI extends ResourceMetaclassImpl implements Wrapper<EClass
 		true
 	}
 
+	def dispatch isSuperTypeOf(LeastSpecificType leastSpecificType) {
+		false
+	}
+
 	override getAllMembers() {
 		new UnmodifiableEList(adapter.allMembers)
 	}

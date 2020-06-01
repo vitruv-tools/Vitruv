@@ -3,24 +3,18 @@ package tools.vitruv.dsls.commonalities.generator
 import com.google.inject.Inject
 import java.util.HashMap
 import java.util.Map
-import org.eclipse.xtext.xbase.XAbstractFeatureCall
-import org.eclipse.xtext.xbase.XExpression
-import org.eclipse.xtext.xbase.XFeatureCall
 import org.eclipse.xtext.xbase.XbaseFactory
-import tools.vitruv.dsls.commonalities.language.CommonalityAttributeMapping
+import tools.vitruv.dsls.commonalities.generator.AttributeMappingOperatorHelper.AttributeMappingOperatorContext
 import tools.vitruv.dsls.commonalities.language.Participation
 import tools.vitruv.dsls.reactions.builder.FluentReactionsSegmentBuilder
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder
-import tools.vitruv.dsls.reactions.builder.TypeProvider
 import tools.vitruv.extensions.dslruntime.commonalities.matching.ParticipationObjects
 
 import static com.google.common.base.Preconditions.*
-import static tools.vitruv.dsls.commonalities.generator.EmfAccessExpressions.*
 
 import static extension tools.vitruv.dsls.commonalities.generator.ReactionsGeneratorConventions.*
 import static extension tools.vitruv.dsls.commonalities.generator.XbaseHelper.*
 import static extension tools.vitruv.dsls.commonalities.language.extensions.CommonalitiesLanguageModelExtensions.*
-import static extension tools.vitruv.dsls.commonalities.language.extensions.ParticipationContextHelper.*
 
 package class ApplyParticipationAttributesRoutineBuilder extends ReactionsSubGenerator {
 
@@ -36,6 +30,7 @@ package class ApplyParticipationAttributesRoutineBuilder extends ReactionsSubGen
 		}
 	}
 
+	@Inject extension AttributeMappingHelper attributeMappingHelper
 	@Inject extension ParticipationObjectsHelper participationObjectsHelper
 
 	val Map<Participation, FluentRoutineBuilder> applyParticipationAttributesRoutines = new HashMap
@@ -67,40 +62,15 @@ package class ApplyParticipationAttributesRoutineBuilder extends ReactionsSubGen
 							val participationObjectVars = participation.getParticipationObjectVars(
 								variable(PARTICIPATION_OBJECTS), typeProvider)
 							expressions += participationObjectVars.values
-							participation.relevantMappings.forEach [ mapping |
-								val intermediate = variable(INTERMEDIATE)
-								val participationClass = mapping.attribute.participationClass
-								val participationObjectVar = participationObjectVars.get(participationClass).featureCall
-								// Since the participation may exist in different contexts with different root objects,
-								// the participation object may not be available for root participation classes:
-								if (participationClass.isRootClass) {
-									expressions += XbaseFactory.eINSTANCE.createXIfExpression => [
-										it.^if = participationObjectVar.copy.notEqualsNull(typeProvider)
-										it.then = mapping.applyAttribute(typeProvider, intermediate, participationObjectVar)
-									]
-								} else {
-									expressions += mapping.applyAttribute(typeProvider, intermediate, participationObjectVar)
-								}
+							val participationClassToObject = participationObjectVars.participationClassToNullableObject
+							val operatorContext = new AttributeMappingOperatorContext(typeProvider,
+								[variable(INTERMEDIATE)], participationClassToObject)
+							participation.relevantReadMappings.forEach [ mapping |
+								join(mapping.applyReadMapping(operatorContext))
 							]
 						]
 					]
 				]
 		]
-	}
-
-	def private getRelevantMappings(Participation participation) {
-		val commonality = participation.containingCommonality
-		return commonality.attributes.flatMap[mappings].filter[isRead && it.participation == participation]
-	}
-
-	def private XExpression applyAttribute(CommonalityAttributeMapping mapping, TypeProvider typeProvider,
-		XFeatureCall intermediate, XAbstractFeatureCall participationObject) {
-		if (mapping.attribute.isMultiValued) {
-			return setListFeatureValue(typeProvider, intermediate, mapping.commonalityEFeature,
-				getListFeatureValue(typeProvider, participationObject, mapping.participationEFeature))
-		} else {
-			return setFeatureValue(typeProvider, intermediate, mapping.commonalityEFeature,
-				getFeatureValue(typeProvider, participationObject, mapping.participationEFeature))
-		}
 	}
 }

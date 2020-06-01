@@ -7,6 +7,7 @@ import org.eclipse.xtext.common.types.JvmOperation
 import org.eclipse.xtext.xbase.XExpression
 import org.eclipse.xtext.xbase.XbaseFactory
 import tools.vitruv.dsls.commonalities.language.LiteralOperand
+import tools.vitruv.dsls.commonalities.language.ParticipationClass
 import tools.vitruv.dsls.commonalities.language.ReferenceMappingOperand
 import tools.vitruv.dsls.commonalities.language.ReferenceMappingOperator
 import tools.vitruv.dsls.reactions.builder.TypeProvider
@@ -21,6 +22,39 @@ import static extension tools.vitruv.dsls.commonalities.generator.XbaseHelper.*
 @GenerationScoped
 package class ReferenceMappingOperatorHelper extends ReactionsGenerationHelper {
 
+	private static class ReferenceMappingOperatorContext implements OperatorContext {
+
+		val extension TypeProvider typeProvider
+
+		new(TypeProvider typeProvider) {
+			this.typeProvider = typeProvider
+		}
+
+		override getTypeProvider() {
+			return typeProvider
+		}
+
+		private def unsupportedOperationException() {
+			return new UnsupportedOperationException("Unsupported in reference mapping context!")
+		}
+
+		override passParticipationAttributeValues() {
+			throw unsupportedOperationException()
+		}
+
+		override passCommonalityAttributeValues() {
+			throw unsupportedOperationException()
+		}
+
+		override getIntermediate() {
+			throw unsupportedOperationException()
+		}
+
+		override getParticipationObject(ParticipationClass participationClass) {
+			throw unsupportedOperationException()
+		}
+	}
+
 	@Inject extension OperandHelper operandHelper
 
 	package new() {
@@ -28,6 +62,7 @@ package class ReferenceMappingOperatorHelper extends ReactionsGenerationHelper {
 
 	def callConstructor(ReferenceMappingOperator operator, Iterable<ReferenceMappingOperand> operands,
 		extension TypeProvider typeProvider) {
+		val operatorContext = new ReferenceMappingOperatorContext(typeProvider)
 		return XbaseFactory.eINSTANCE.createXConstructorCall => [
 			val operatorType = operator.jvmType.imported
 			constructor = operatorType.findConstructor(ReactionExecutionState, List)
@@ -35,8 +70,8 @@ package class ReferenceMappingOperatorHelper extends ReactionsGenerationHelper {
 			arguments += expressions(
 				executionState,
 				XbaseFactory.eINSTANCE.createXListLiteral => [
-					// Note: We only pass values for the literal operands to the operator.
-					elements += operands.filter(LiteralOperand).map[getOperandExpression(typeProvider)].filterNull
+					// We only pass the literal operands to the operator:
+					elements += operands.filter(LiteralOperand).getOperandExpressions(operatorContext)
 				]
 			)
 		]

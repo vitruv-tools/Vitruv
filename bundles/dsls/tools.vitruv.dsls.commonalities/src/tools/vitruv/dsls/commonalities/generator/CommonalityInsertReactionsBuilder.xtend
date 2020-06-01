@@ -41,6 +41,7 @@ package class CommonalityInsertReactionsBuilder extends ReactionsSubGenerator {
 		}
 	}
 
+	@Inject extension ResourceBridgeHelper resourceBridgeHelper
 	@Inject extension ContainmentHelper containmentHelper
 	@Inject extension ParticipationObjectInitializationHelper participationObjectInitializationHelper
 	@Inject extension ReferenceMappingOperatorHelper referenceMappingOperatorHelper
@@ -291,6 +292,19 @@ package class CommonalityInsertReactionsBuilder extends ReactionsSubGenerator {
 		execute [
 			setupContainments(containments, variableNameFunction)
 		]
+
+		// Enable persistence again for resource bridges:
+		val resourceClasses = classes.map[participationClass].filter[isForResource].toList
+		if (!resourceClasses.empty) {
+			execute [ extension typeProvider |
+				XbaseFactory.eINSTANCE.createXBlockExpression => [
+					resourceClasses.forEach [ resourceClass |
+						val resourceBridge = variable(resourceClass.correspondingVariableName)
+						expressions += setIsPersistenceEnabled(typeProvider, resourceBridge, true)
+					]
+				]
+			]
+		}
 	}
 
 	def private insertCommonalityParticipationClasses(extension ActionStatementBuilder it,

@@ -1,17 +1,22 @@
 package tools.vitruv.dsls.commonalities.generator
 
 import com.google.inject.Inject
+import edu.kit.ipd.sdq.activextendannotations.Lazy
+import java.util.List
+import java.util.Set
+import tools.vitruv.dsls.commonalities.generator.AttributeMappingOperatorHelper.AttributeMappingOperatorContext
 import tools.vitruv.dsls.commonalities.language.Commonality
 import tools.vitruv.dsls.commonalities.language.CommonalityAttributeMapping
 import tools.vitruv.dsls.commonalities.language.Participation
+import tools.vitruv.dsls.commonalities.language.ParticipationClass
 import tools.vitruv.dsls.reactions.builder.FluentReactionsSegmentBuilder
+import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.ActionStatementBuilder
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.RoutineStartBuilder
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.UndecidedMatcherStatementBuilder
 
 import static com.google.common.base.Preconditions.*
 import static tools.vitruv.framework.util.XtendAssertHelper.*
 
-import static extension tools.vitruv.dsls.commonalities.generator.EmfAccessExpressions.*
 import static extension tools.vitruv.dsls.commonalities.generator.ReactionsGeneratorConventions.*
 import static extension tools.vitruv.dsls.commonalities.language.extensions.CommonalitiesLanguageModelExtensions.*
 
@@ -23,10 +28,15 @@ package class ParticipationAttributeChangeReactionsBuilder extends ReactionsSubG
 		}
 	}
 
+	@Inject extension AttributeMappingHelper attributeMappingHelper
 	@Inject extension AttributeChangeReactionsHelper attributeChangeReactionsHelper
+	@Inject extension ParticipationObjectsRetrievalHelper participationObjectsRetrievalHelper
 
 	val Participation participation
 	val Commonality commonality
+
+	@Lazy val List<CommonalityAttributeMapping> relevantMappings = calculateRelevantMappings()
+	@Lazy val Set<ParticipationClass> relevantParticipationClasses = calculateRelevantParticipationClasses()
 
 	private new(Participation participation) {
 		checkNotNull(participation, "participation is null")
@@ -41,10 +51,12 @@ package class ParticipationAttributeChangeReactionsBuilder extends ReactionsSubG
 		throw new IllegalStateException("Use the Factory to create instances of this class!")
 	}
 
-	def private getRelevantMappings() {
-		return commonality.attributes.flatMap[mappings].filter [
-			isRead && it.participation == participation
-		]
+	def private calculateRelevantMappings() {
+		return participation.relevantReadMappings.toList
+	}
+
+	def private calculateRelevantParticipationClasses() {
+		return relevantMappings.flatMap[involvedParticipationClasses].toSet
 	}
 
 	def package void generateReactions(FluentReactionsSegmentBuilder segment) {
@@ -52,68 +64,54 @@ package class ParticipationAttributeChangeReactionsBuilder extends ReactionsSubG
 	}
 
 	def private reactionsForAttributeMappingRightChange(CommonalityAttributeMapping mapping) {
-		return mapping.attribute.getAttributeChangeReactions [ changeType , it |
-			call [
-				switch (changeType) {
-					case VALUE_REPLACED: {
-						buildSingleFeatureSetRoutine(mapping)
-					}
-					case VALUE_INSERTED: {
-						buildMultiFeatureAddRoutine(mapping)
-					}
-					case VALUE_REMOVED: {
-						buildMultiFeatureRemoveRoutine(mapping)
-					}
-				}
-			]
+		val participationAttribute = mapping.participationAttribute // Can be null
+		if (participationAttribute === null) {
+			return #[]
+		}
+		return participationAttribute.getAttributeChangeReactions [ changeType , it |
+			call[buildAttributeChangedRoutine(mapping)]
 		]
 	}
 
-	def private buildSingleFeatureSetRoutine(extension RoutineStartBuilder routineBuilder,
+	def private buildAttributeChangedRoutine(extension RoutineStartBuilder routineBuilder,
 		CommonalityAttributeMapping mapping) {
-		input [newValue]
+		input [
+			affectedEObject
+		]
 		.match [
 			retrieveIntermediate(mapping)
+			retrieveRelevantParticipationObjects()
 		]
 		.action [
-			update(INTERMEDIATE) [
-				setFeatureValue(variable(INTERMEDIATE), mapping.commonalityEFeature, newValue)
-			]
-		]
-	}
-
-	def private buildMultiFeatureAddRoutine(extension RoutineStartBuilder routineBuilder,
-		CommonalityAttributeMapping mapping) {
-		input [newValue]
-		.match [
-			retrieveIntermediate(mapping)
-		]
-		.action [
-			update(INTERMEDIATE) [
-				addListFeatureValue(variable(INTERMEDIATE), mapping.commonalityEFeature, newValue)
-			]
-		]
-	}
-
-	def private buildMultiFeatureRemoveRoutine(extension RoutineStartBuilder routineBuilder,
-		CommonalityAttributeMapping mapping) {
-		input [oldValue]
-		.match [
-			retrieveIntermediate(mapping)
-		]
-		.action [
-			update(INTERMEDIATE) [
-				removeListFeatureValue(variable(INTERMEDIATE), mapping.commonalityEFeature, oldValue)
-			]
+			applyMapping(mapping)
 		]
 	}
 
 	def private retrieveIntermediate(extension UndecidedMatcherStatementBuilder builder,
 		CommonalityAttributeMapping mapping) {
-		assertTrue(mapping.participation === participation && mapping.containingCommonality === commonality)
-		val participationClass = mapping.attribute.participationClass
+		// Otherwise we would not generate an attribute change reaction:
+		assertTrue(mapping.participationAttribute !== null)
+		val participationClass = mapping.participationAttribute.participationClass
 		vall(INTERMEDIATE).retrieve(commonality.changeClass)
 			.correspondingTo.affectedEObject
 			.taggedWith(participationClass.correspondenceTag)
+	}
+
+	def private retrieveRelevantParticipationObjects(extension UndecidedMatcherStatementBuilder matcherBuilder) {
+		relevantParticipationClasses.forEach [ participationClass |
+			matcherBuilder.retrieveAssertedParticipationObject(participationClass) [
+				variable(INTERMEDIATE) // correspondence source
+			]
+		]
+	}
+
+	def private void applyMapping(extension ActionStatementBuilder actionBuilder,
+		CommonalityAttributeMapping mapping) {
+		update(INTERMEDIATE) [ extension typeProvider |
+			val participationClassToObject = typeProvider.participationClassToOptionalObject
+			val operatorContext = new AttributeMappingOperatorContext(typeProvider, [variable(INTERMEDIATE)],
+					participationClassToObject)
+			mapping.applyReadMapping(operatorContext)
+		]
 	}
 }

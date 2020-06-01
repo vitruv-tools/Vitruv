@@ -2,7 +2,7 @@ package tools.vitruv.dsls.commonalities.language.elements
 
 import com.google.inject.Singleton
 import edu.kit.ipd.sdq.activextendannotations.Lazy
-import java.util.HashMap
+import java.util.Map
 import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import tools.vitruv.framework.domains.VitruvDomainProviderRegistry
@@ -20,14 +20,13 @@ class VitruviusDomainProvider {
 
 	// there is currently no way to change the domains while developing, so
 	// it’s okay to cache them.
-	@Lazy(PRIVATE) HashMap<String, VitruviusDomain> allVitruviusDomainsByName = loadDomains()
+	@Lazy(PRIVATE) Map<String, VitruviusDomain> allVitruviusDomainsByName = loadDomains()
 
 	def private loadDomains() {
-		val classifierProvider = new ClassifierProvider
 		return newHashMap(
 		VitruvDomainProviderRegistry.allDomainProviders.map[domain].map [ domain |
-			val vitruvDomain = LanguageElementsFactory.eINSTANCE.createVitruviusDomain.
-				withClassifierProvider(classifierProvider).forVitruvDomain(domain)
+			val vitruvDomain = LanguageElementsFactory.eINSTANCE.createVitruviusDomain
+				.withClassifierProvider(ClassifierProvider.INSTANCE).forVitruvDomain(domain)
 			container.contents += vitruvDomain
 			return domain.name -> vitruvDomain
 		])

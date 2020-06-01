@@ -40,11 +40,7 @@ package class CommonalityReferenceMappingExtension {
 		return mapping.participationClass
 	}
 
-	def static dispatch Participation getParticipation(SimpleReferenceMapping mapping) {
-		return mapping.reference.participationClass.participation
-	}
-
-	def static dispatch Participation getParticipation(OperatorReferenceMapping mapping) {
+	def static Participation getParticipation(CommonalityReferenceMapping mapping) {
 		return mapping.participationClass.participation
 	}
 

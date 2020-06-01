@@ -4,6 +4,14 @@ import tools.vitruv.dsls.commonalities.language.elements.impl.LanguageElementsFa
 
 class LanguageElementsAdapterFactory extends LanguageElementsFactoryImpl {
 
+	override createMostSpecificType() {
+		new MostSpecificTypeI
+	}
+
+	override createLeastSpecificType() {
+		new LeastSpecificTypeI
+	}
+
 	override createVitruviusDomain() {
 		new VitruvDomainAdapter
 	}

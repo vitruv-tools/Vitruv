@@ -241,7 +241,8 @@ package class GenerationContext {
 		mapping.declaringAttribute.correspondingEFeature
 	}
 
+	// Null if the mapping does not specify any participation attribute
 	def package getParticipationEFeature(CommonalityAttributeMapping mapping) {
-		mapping.attribute.correspondingEFeature
+		mapping.participationAttribute?.correspondingEFeature
 	}
 }

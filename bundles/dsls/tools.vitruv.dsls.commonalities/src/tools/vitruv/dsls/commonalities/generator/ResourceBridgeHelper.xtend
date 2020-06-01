@@ -23,7 +23,8 @@ package class ResourceBridgeHelper extends ReactionsGenerationHelper {
 	}
 
 	// Initialization of a new ResourceBridge for a new resource
-	def package initNewResourceBridge(ParticipationClass resourceClass, XFeatureCall resourceBridge, TypeProvider typeProvider) {
+	def package initNewResourceBridge(ParticipationClass resourceClass, XFeatureCall resourceBridge,
+		TypeProvider typeProvider) {
 		return resourceClass.setupResourceBridge(resourceBridge, typeProvider) => [
 			expressions += XbaseFactory.eINSTANCE.createXAssignment => [
 				assignable = resourceBridge.copy
@@ -32,6 +33,21 @@ package class ResourceBridgeHelper extends ReactionsGenerationHelper {
 					value = resourceClass.superMetaclass.domain.vitruvDomain.fileExtensions.head
 				]
 			]
+			// We initially disable the automatic persistence for new resource bridges and enable it again at the end
+			// of the participation creation, after all resource bridge attributes have reached their final state. This
+			// avoids that each individual change to the resource bridge's attributes (such as the path, name, etc.)
+			// triggers a root removal and root insertion change event due to the contained root object being moved to
+			// a new resource.
+			expressions += setIsPersistenceEnabled(typeProvider, resourceBridge.copy, false)
+		]
+	}
+
+	def package setIsPersistenceEnabled(TypeProvider typeProvider, XFeatureCall resourceBridge,
+		boolean newIsPersistenceEnabled) {
+		return XbaseFactory.eINSTANCE.createXAssignment => [
+			assignable = resourceBridge
+			feature = typeProvider.findMethod(IntermediateResourceBridge, 'setIsPersistenceEnabled')
+			value = booleanLiteral(newIsPersistenceEnabled)
 		]
 	}
 

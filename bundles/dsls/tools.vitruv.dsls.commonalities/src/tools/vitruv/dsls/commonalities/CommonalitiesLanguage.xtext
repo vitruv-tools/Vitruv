@@ -154,8 +154,25 @@ CommonalityAttribute:
 ;
 
 CommonalityAttributeMapping:
-	('=' {AttributeEqualitySpecification} | '->' {AttributeSetSpecification} | '<-' {AttributeReadSpecification})
+	SimpleAttributeMapping | OperatorAttributeMapping
+;
+
+SimpleAttributeMapping:
+	(readAndWrite?='=' | write?='->'| read?='<-')
 	attribute=QualifiedParticipationAttribute
+;
+
+OperatorAttributeMapping:
+	(readAndWrite?='=' | write?='->'| read?='<-')
+	operator=AttributeMappingOperator '(' (operands+=AttributeMappingOperand (',' operands+=AttributeMappingOperand)*)? ')'
+;
+
+AttributeMappingOperator:
+	jvmType=[jvmTypes::JvmDeclaredType|OperatorName]
+;
+
+AttributeMappingOperand:
+	LocalUnqualifiedCommonalityAttributeOperand | QualifiedParticipationAttributeOperand | QualifiedParticipationClassOperand | LiteralOperand
 ;
 
 ParticipationAttribute:
@@ -170,6 +187,14 @@ UnqualifiedParticipationAttribute returns ParticipationAttribute:
 	participationClass=[ParticipationClass|UnqualifiedParticipationClass] '.' attribute=[Attribute|UnqualifiedParticipationMember]
 ;
 
+CommonalityAttributeReference:
+	LocalUnqualifiedCommonalityAttributeReference
+;
+
+// Local: Can only refer to the (single) local commonality.
+LocalUnqualifiedCommonalityAttributeReference returns CommonalityAttributeReference:
+	commonality=[Commonality|UnqualifiedCommonality] '.' attribute=[CommonalityAttribute|UnqualifiedCommonalityMember]
+;
 
 /**************
  * References *
@@ -215,7 +240,8 @@ ReferencedParticipationAttributeOperand:
  ************/
 
 Operand:
-	ParticipationConditionOperand | ReferenceMappingOperand
+	ParticipationConditionOperand | AttributeMappingOperand | ReferenceMappingOperand
+;
 
 LiteralOperand:
 	expression=(XBooleanLiteral |
@@ -225,13 +251,24 @@ LiteralOperand:
 	// TODO List literal
 ;
 
+QualifiedParticipationClassOperand returns ParticipationClassOperand:
+	participationClass=[ParticipationClass|QualifiedParticipationClass]
+;
+
 UnqualifiedParticipationClassOperand returns ParticipationClassOperand:
 	participationClass=[ParticipationClass|UnqualifiedParticipationClass]
+;
+
+QualifiedParticipationAttributeOperand returns ParticipationAttributeOperand:
+	participationAttribute=QualifiedParticipationAttribute
 ;
 
 UnqualifiedParticipationAttributeOperand returns ParticipationAttributeOperand:
 	participationAttribute=UnqualifiedParticipationAttribute
 ;
+
+LocalUnqualifiedCommonalityAttributeOperand returns CommonalityAttributeOperand:
+	attributeReference=LocalUnqualifiedCommonalityAttributeReference
 ;
 
 /******************
@@ -253,6 +290,14 @@ QualifiedCommonality:
 	QualifiedClasslike
 ;
 
+UnqualifiedCommonality:
+	UnqualifiedMetaclass
+;
+
+UnqualifiedCommonalityMember:
+	UnqualifiedAttribute
+;
+
 QualifiedParticipationClass:
 	QualifiedClasslike
 ;
@@ -262,6 +307,10 @@ UnqualifiedParticipationClass:
 ;
 
 UnqualifiedParticipationMember:
+	UnqualifiedAttribute
+;
+
+UnqualifiedAttribute:
 	ID
 ;
 

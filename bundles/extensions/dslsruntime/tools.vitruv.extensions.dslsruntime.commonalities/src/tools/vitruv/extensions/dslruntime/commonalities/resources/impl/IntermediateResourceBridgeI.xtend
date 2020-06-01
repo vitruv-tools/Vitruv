@@ -74,7 +74,7 @@ class IntermediateResourceBridgeI extends IntermediateResourceBridgeImpl {
 
 	def private canBePersisted() {
 		path !== null && name !== null && fileExtension !== null && content !== null
-			&& correspondenceModel !== null && resourceAccess !== null
+			&& correspondenceModel !== null && resourceAccess !== null && isPersistenceEnabled
 	}
 
 	def private discard(URI oldUri) {
@@ -160,6 +160,14 @@ class IntermediateResourceBridgeI extends IntermediateResourceBridgeImpl {
 		val oldFileExtension = fileExtension
 		super.setFileExtension(newFileExtension)
 		this.fileExtensionChanged(oldFileExtension)
+	}
+
+	override setIsPersistenceEnabled(boolean newIsPersistenceEnabled) {
+		super.setIsPersistenceEnabled(newIsPersistenceEnabled)
+		// Trigger persistence:
+		if (newIsPersistenceEnabled && this.canBePersisted) {
+			this.persist()
+		}
 	}
 
 	def private findPersistedNonIntermediateObject() {

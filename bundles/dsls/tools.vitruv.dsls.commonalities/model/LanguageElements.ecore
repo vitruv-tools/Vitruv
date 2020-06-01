@@ -104,4 +104,5 @@
   <eClassifiers xsi:type="ecore:EDataType" name="FrameworkVitruvDomain" instanceClassName="tools.vitruv.framework.domains.VitruvDomain"/>
   <eClassifiers xsi:type="ecore:EDataType" name="ClassifierProvider" instanceClassName="tools.vitruv.dsls.commonalities.language.elements.ClassifierProvider"/>
   <eClassifiers xsi:type="ecore:EClass" name="MostSpecificType" eSuperTypes="#//Classifier"/>
+  <eClassifiers xsi:type="ecore:EClass" name="LeastSpecificType" eSuperTypes="#//Classifier"/>
 </ecore:EPackage>

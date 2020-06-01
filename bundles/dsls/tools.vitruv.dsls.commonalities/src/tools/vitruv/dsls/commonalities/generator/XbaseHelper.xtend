@@ -9,7 +9,6 @@ import org.eclipse.xtext.common.types.JvmDeclaredType
 import org.eclipse.xtext.common.types.JvmIdentifiableElement
 import org.eclipse.xtext.common.types.JvmTypeReference
 import org.eclipse.xtext.common.types.access.IJvmTypeProvider
-import org.eclipse.xtext.xbase.XAbstractFeatureCall
 import org.eclipse.xtext.xbase.XBlockExpression
 import org.eclipse.xtext.xbase.XExpression
 import org.eclipse.xtext.xbase.XMemberFeatureCall
@@ -153,12 +152,28 @@ package class XbaseHelper {
 		]
 	}
 
+	def static identityEquals(XExpression leftOperand, XExpression rightOperand, IJvmTypeProvider typeProvider) {
+		return XbaseFactory.eINSTANCE.createXBinaryOperation => [
+			it.leftOperand = leftOperand
+			feature = typeProvider.findMethod(ObjectExtensions, 'operator_tripleEquals')
+			it.rightOperand = rightOperand
+		]
+	}
+
+	def static notIdentityEquals(XExpression leftOperand, XExpression rightOperand, IJvmTypeProvider typeProvider) {
+		return XbaseFactory.eINSTANCE.createXBinaryOperation => [
+			it.leftOperand = leftOperand
+			feature = typeProvider.findMethod(ObjectExtensions, 'operator_tripleNotEquals')
+			it.rightOperand = rightOperand
+		]
+	}
+
 	def static equalsNull(XExpression leftOperand, IJvmTypeProvider typeProvider) {
-		return leftOperand.equals(nullLiteral, typeProvider)
+		return leftOperand.identityEquals(nullLiteral, typeProvider)
 	}
 
 	def static notEqualsNull(XExpression leftOperand, IJvmTypeProvider typeProvider) {
-		return leftOperand.notEquals(nullLiteral, typeProvider)
+		return leftOperand.notIdentityEquals(nullLiteral, typeProvider)
 	}
 
 	def static isInstanceOf(XExpression leftOperand, JvmTypeReference type) {
@@ -168,14 +183,22 @@ package class XbaseHelper {
 		]
 	}
 
-	def static optionalIsPresent(XAbstractFeatureCall optional, IJvmTypeProvider typeProvider) {
+	def static optionalIsPresent(XExpression optional, IJvmTypeProvider typeProvider) {
 		return optional.memberFeatureCall => [
 			feature = typeProvider.findDeclaredType(Optional).findMethod("isPresent")
 			explicitOperationCall = true
 		]
 	}
 
-	def static optionalGet(XAbstractFeatureCall optional, IJvmTypeProvider typeProvider) {
+	def static optionalGetOrNull(XExpression optional, IJvmTypeProvider typeProvider) {
+		return optional.memberFeatureCall => [
+			feature = typeProvider.findDeclaredType(Optional).findMethod("orElse")
+			memberCallArguments += nullLiteral
+			explicitOperationCall = true
+		]
+	}
+
+	def static optionalGet(XExpression optional, IJvmTypeProvider typeProvider) {
 		return optional.memberFeatureCall => [
 			feature = typeProvider.findDeclaredType(Optional).findMethod("get")
 		]

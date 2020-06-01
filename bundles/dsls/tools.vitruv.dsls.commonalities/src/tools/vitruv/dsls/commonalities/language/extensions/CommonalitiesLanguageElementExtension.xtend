@@ -63,7 +63,6 @@ package class CommonalitiesLanguageElementExtension {
 
 	def static Commonality getContainingCommonality(EObject object) {
 		return object.getContainer(Commonality)
-
 	}
 
 	def static CommonalityFile getContainedCommonalityFile(Resource resource) {
