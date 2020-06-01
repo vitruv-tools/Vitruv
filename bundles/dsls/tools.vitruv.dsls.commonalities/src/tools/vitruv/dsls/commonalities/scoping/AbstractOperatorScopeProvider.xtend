@@ -132,9 +132,13 @@ abstract class AbstractOperatorScopeProvider implements IGlobalScopeProvider {
 
 	protected def boolean isOperatorType(JvmDeclaredType type) {
 		val operatorBaseTypeName = operatorBaseType.name
-		return type.superTypes.exists [
-			it.qualifiedName == operatorBaseTypeName
-		] || type.superTypes.map[it.type].filter(JvmDeclaredType).exists[isOperatorType]
+		return type.allSuperTypes.exists[it.qualifiedName == operatorBaseTypeName]
+	}
+
+	private def Set<JvmDeclaredType> getAllSuperTypes(JvmDeclaredType type) {
+		val declaredSuperTypes = type.superTypes.map[it.type].filter(JvmDeclaredType)
+		// toSet: Filters duplicates in case the same type occurs multiple times inside the inheritance hierarchy.
+		return (declaredSuperTypes + declaredSuperTypes.flatMap[allSuperTypes]).toSet
 	}
 
 	protected abstract def String getOperatorName(JvmDeclaredType operatorType)
