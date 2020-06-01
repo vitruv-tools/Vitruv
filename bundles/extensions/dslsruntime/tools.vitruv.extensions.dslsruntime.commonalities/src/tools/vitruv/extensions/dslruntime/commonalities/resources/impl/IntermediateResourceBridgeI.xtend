@@ -4,7 +4,6 @@ import java.util.HashSet
 import java.util.Set
 import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.EObject
-import tools.vitruv.extensions.dslruntime.commonalities.IntermediateModelManagement
 import tools.vitruv.extensions.dslruntime.commonalities.intermediatemodelbase.Intermediate
 import tools.vitruv.extensions.dslruntime.commonalities.resources.Resource
 import tools.vitruv.extensions.dslruntime.commonalities.resources.ResourcesPackage
@@ -87,8 +86,8 @@ class IntermediateResourceBridgeI extends IntermediateResourceBridgeImpl {
 		resourceAccess.persistAsRoot(content, VURI.getInstance(persistanceUri))
 		this.isPersisted = true
 		if (eContainer === null) {
-			IntermediateModelManagement.addResourceBridge(intermediateCorrespondence.eResource, this,
-				intermediateCorrespondence)
+			throw new RuntimeException('''IntermediateResourceBridge has not been added to the intermediate model yet: «
+				this»''')
 		}
 	}
 
