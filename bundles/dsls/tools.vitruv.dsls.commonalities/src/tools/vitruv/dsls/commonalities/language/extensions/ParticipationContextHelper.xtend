@@ -1,7 +1,6 @@
 package tools.vitruv.dsls.commonalities.language.extensions
 
 import edu.kit.ipd.sdq.activextendannotations.Utility
-import java.util.Collections
 import java.util.Map
 import java.util.Optional
 import java.util.WeakHashMap
@@ -169,11 +168,9 @@ class ParticipationContextHelper {
 	}
 
 	def private static getOperatorContainments(OperatorReferenceMapping mapping) {
-		val operator = mapping.operator
-		val operands = Collections.unmodifiableList(mapping.operands)
 		val container = mapping.participationClass
 		return mapping.referencedParticipationClasses.map [ contained |
-			new OperatorContainment(container, contained, operator, operands)
+			new OperatorContainment(container, contained, mapping)
 		]
 	}
 

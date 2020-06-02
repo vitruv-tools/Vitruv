@@ -24,6 +24,7 @@ import edu.kit.ipd.sdq.activextendannotations.Utility
 	ParticipationConditionExtension,
 	ParticipationConditionOperatorExtension,
 	ParticipationConditionOperandExtension,
+	ReferenceMappingOperandExtension,
 	ReferenceMappingOperatorExtension
 ])
 @Utility

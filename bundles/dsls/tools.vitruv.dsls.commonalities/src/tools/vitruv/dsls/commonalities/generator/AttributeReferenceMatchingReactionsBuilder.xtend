@@ -8,6 +8,7 @@ import org.eclipse.emf.ecore.EcorePackage
 import org.eclipse.xtext.common.types.TypesFactory
 import org.eclipse.xtext.xbase.XbaseFactory
 import tools.vitruv.dsls.commonalities.generator.ReactionsHelper.RoutineCallContext
+import tools.vitruv.dsls.commonalities.generator.ReferenceMappingOperatorHelper.ReferenceMappingOperatorContext
 import tools.vitruv.dsls.commonalities.language.OperatorReferenceMapping
 import tools.vitruv.dsls.commonalities.language.ParticipationAttributeOperand
 import tools.vitruv.dsls.commonalities.language.ReferenceMappingOperand
@@ -94,7 +95,7 @@ package class AttributeReferenceMatchingReactionsBuilder extends ReactionsGenera
 
 		participationContext.attributeReferenceContainments.forEach [ extension contextContainment |
 			val containment = containment
-			assertTrue(containment.operator.isAttributeReference)
+			assertTrue(containment.mapping.operator.isAttributeReference)
 			segment += participationContext.reactionsForAttributeReferenceChange(containment)
 		]
 	}
@@ -112,7 +113,7 @@ package class AttributeReferenceMatchingReactionsBuilder extends ReactionsGenera
 	def private reactionsForAttributeReferenceChange(ParticipationContext participationContext,
 		OperatorContainment containment) {
 		assertTrue(participationContext.isForAttributeReferenceMapping)
-		return containment.operands.flatMap [
+		return containment.mapping.operands.flatMap [
 			participationContext.reactionsForAttributeReferenceChange(containment, it)
 		]
 	}
@@ -269,7 +270,7 @@ package class AttributeReferenceMatchingReactionsBuilder extends ReactionsGenera
 	private def getMatchAttributeReferenceElementsRoutine(ParticipationContext participationContext) {
 		return matchAttributeReferenceElementsRoutines.computeIfAbsent(participationContext) [
 			assertTrue(participationContext.isForAttributeReferenceMapping)
-			val mapping = participationContext.referenceMapping as OperatorReferenceMapping
+			val operatorMapping = participationContext.referenceMapping as OperatorReferenceMapping
 			val referencingCommonality = participationContext.referencingCommonality
 			val referencedCommonality = participationContext.referencedCommonality
 			val attributeReferenceRoot = participationContext.attributeReferenceRoot
@@ -291,14 +292,13 @@ package class AttributeReferenceMatchingReactionsBuilder extends ReactionsGenera
 						val extension jvmTypeReferenceBuilder = jvmTypeReferenceBuilder
 						XbaseFactory.eINSTANCE.createXBlockExpression => [
 							// Query the operator for all potentially contained intermediates:
-							val operator = mapping.operator
-							val operands = mapping.operands
+							val operatorContext = new ReferenceMappingOperatorContext(typeProvider)
 							val referencedIntermediatesVar = XbaseFactory.eINSTANCE.createXVariableDeclaration => [
 								name = REFERENCED_INTERMEDIATES
 								type = typeRef(Iterable, typeRef(referencedCommonality.changeClass.javaClassName))
 								writeable = false
-								right = operator.callGetPotentiallyContainedIntermediates(operands,
-									variable(REFERENCE_ROOT), referencedCommonality.changeClass, typeProvider)
+								right = operatorMapping.callGetPotentiallyContainedIntermediates(
+									variable(REFERENCE_ROOT), referencedCommonality.changeClass, operatorContext)
 							]
 							expressions += referencedIntermediatesVar
 
@@ -327,7 +327,7 @@ package class AttributeReferenceMatchingReactionsBuilder extends ReactionsGenera
 	private def getMatchAttributeReferenceContainerRoutine(ParticipationContext participationContext) {
 		return matchAttributeReferenceContainerRoutines.computeIfAbsent(participationContext) [
 			assertTrue(participationContext.isForAttributeReferenceMapping)
-			val mapping = participationContext.referenceMapping as OperatorReferenceMapping
+			val operatorMapping = participationContext.referenceMapping as OperatorReferenceMapping
 			val referencingCommonality = participationContext.referencingCommonality
 			val referencedCommonality = participationContext.referencedCommonality
 
@@ -344,14 +344,14 @@ package class AttributeReferenceMatchingReactionsBuilder extends ReactionsGenera
 						val extension jvmTypeReferenceBuilder = jvmTypeReferenceBuilder
 						XbaseFactory.eINSTANCE.createXBlockExpression => [
 							// Query the operator for the potential container intermediate:
-							val operator = mapping.operator
-							val operands = mapping.operands
+							val operatorContext = new ReferenceMappingOperatorContext(typeProvider)
 							val referencingIntermediateVar = XbaseFactory.eINSTANCE.createXVariableDeclaration => [
 								name = REFERENCING_INTERMEDIATE
 								type = typeRef(referencingCommonality.changeClass.javaClassName)
 								writeable = false
-								right = operator.callGetPotentialContainerIntermediate(operands,
-									variable(PARTICIPATION_OBJECT), referencingCommonality.changeClass, typeProvider)
+								right = operatorMapping.callGetPotentialContainerIntermediate(
+									variable(PARTICIPATION_OBJECT), referencingCommonality.changeClass,
+									operatorContext)
 							]
 							expressions += referencingIntermediateVar
 
@@ -450,16 +450,16 @@ package class AttributeReferenceMatchingReactionsBuilder extends ReactionsGenera
 		val commonalityReference = participationContext.referenceMapping.declaringReference
 		val referencedCommonality = participationContext.referencedCommonality
 
-		val operator = containment.operator
-		val operands = containment.operands
+		val operatorMapping = containment.mapping
+		val operatorContext = new ReferenceMappingOperatorContext(typeProvider)
 		val containedClass = containment.contained
 
 		return XbaseFactory.eINSTANCE.createXBlockExpression => [
 			// If, according to the attribute reference operator, the reference root object no longer contains the
 			// referenced object:
 			expressions += XbaseFactory.eINSTANCE.createXIfExpression => [
-				^if = negated(operator.callIsContained(operands, variable(REFERENCE_ROOT),
-					variable(containedClass.correspondingVariableName), typeProvider), typeProvider)
+				^if = negated(operatorMapping.callIsContained(variable(REFERENCE_ROOT),
+					variable(containedClass.correspondingVariableName), operatorContext), typeProvider)
 				then = XbaseFactory.eINSTANCE.createXBlockExpression => [
 					// But if the referencing intermediate still contains the referenced intermediate:
 					expressions += XbaseFactory.eINSTANCE.createXIfExpression => [

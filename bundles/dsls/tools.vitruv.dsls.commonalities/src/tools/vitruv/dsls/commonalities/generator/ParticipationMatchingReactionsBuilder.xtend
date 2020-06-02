@@ -11,6 +11,7 @@ import org.eclipse.xtext.xbase.XExpression
 import org.eclipse.xtext.xbase.XFeatureCall
 import org.eclipse.xtext.xbase.XbaseFactory
 import tools.vitruv.dsls.commonalities.generator.ReactionsHelper.RoutineCallContext
+import tools.vitruv.dsls.commonalities.generator.ReferenceMappingOperatorHelper.ReferenceMappingOperatorContext
 import tools.vitruv.dsls.commonalities.language.CommonalityReference
 import tools.vitruv.dsls.commonalities.language.CommonalityReferenceMapping
 import tools.vitruv.dsls.commonalities.language.Participation
@@ -219,7 +220,8 @@ package class ParticipationMatchingReactionsBuilder extends ReactionsGenerationH
 					segment += participationContext.reactionForParticipationClassInsert(containment)
 					segment += participationContext.reactionForParticipationClassRemove(containment)
 				} else if (containment instanceof OperatorContainment) {
-					if (containment.operator.isAttributeReference) {
+					val operatorMapping = containment.mapping
+					if (operatorMapping.operator.isAttributeReference) {
 						throw new IllegalStateException('''Not expecting attribute reference containments for «
 							»non-attribute-reference participation context''')
 					} else {
@@ -417,10 +419,10 @@ package class ParticipationMatchingReactionsBuilder extends ReactionsGenerationH
 				if (containment instanceof ReferenceContainment) {
 					containmentTreeBuilder.addReferenceEdge(container.name, contained.name, containment.EReference)
 				} else if (containment instanceof OperatorContainment) {
-					val operator = containment.operator
-					val operands = containment.operands
-					val operatorInstance = operator.callConstructor(operands, typeProvider)
-					if (operator.isAttributeReference) {
+					val operatorMapping = containment.mapping
+					val operatorContext = new ReferenceMappingOperatorContext(typeProvider)
+					val operatorInstance = operatorMapping.constructOperator(operatorContext)
+					if (operatorMapping.operator.isAttributeReference) {
 						containmentTreeBuilder.addAttributeReferenceEdge(contained.name, operatorInstance)
 					} else {
 						containmentTreeBuilder.addOperatorEdge(container.name, contained.name, operatorInstance)

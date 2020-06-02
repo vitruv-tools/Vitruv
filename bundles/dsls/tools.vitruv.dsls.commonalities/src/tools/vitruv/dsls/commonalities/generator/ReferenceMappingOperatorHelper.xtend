@@ -1,32 +1,32 @@
 package tools.vitruv.dsls.commonalities.generator
 
 import com.google.inject.Inject
-import java.util.List
 import org.eclipse.emf.ecore.EClass
 import org.eclipse.xtext.common.types.JvmOperation
 import org.eclipse.xtext.xbase.XExpression
 import org.eclipse.xtext.xbase.XbaseFactory
-import tools.vitruv.dsls.commonalities.language.LiteralOperand
+import tools.vitruv.dsls.commonalities.language.OperatorReferenceMapping
 import tools.vitruv.dsls.commonalities.language.ParticipationClass
-import tools.vitruv.dsls.commonalities.language.ReferenceMappingOperand
-import tools.vitruv.dsls.commonalities.language.ReferenceMappingOperator
 import tools.vitruv.dsls.reactions.builder.TypeProvider
 import tools.vitruv.extensions.dslruntime.commonalities.operators.mapping.reference.AttributeReferenceHelper
 import tools.vitruv.extensions.dslruntime.commonalities.operators.mapping.reference.IReferenceMappingOperator
-import tools.vitruv.extensions.dslsruntime.reactions.ReactionExecutionState
+
+import static com.google.common.base.Preconditions.*
 
 import static extension tools.vitruv.dsls.commonalities.generator.JvmTypeProviderHelper.*
 import static extension tools.vitruv.dsls.commonalities.generator.ReactionsHelper.*
 import static extension tools.vitruv.dsls.commonalities.generator.XbaseHelper.*
+import static extension tools.vitruv.dsls.commonalities.language.extensions.CommonalitiesLanguageModelExtensions.*
 
 @GenerationScoped
 package class ReferenceMappingOperatorHelper extends ReactionsGenerationHelper {
 
-	private static class ReferenceMappingOperatorContext implements OperatorContext {
+	public static class ReferenceMappingOperatorContext implements OperatorContext {
 
 		val extension TypeProvider typeProvider
 
 		new(TypeProvider typeProvider) {
+			checkNotNull(typeProvider, "typeProvider is null")
 			this.typeProvider = typeProvider
 		}
 
@@ -60,69 +60,70 @@ package class ReferenceMappingOperatorHelper extends ReactionsGenerationHelper {
 	package new() {
 	}
 
-	def callConstructor(ReferenceMappingOperator operator, Iterable<ReferenceMappingOperand> operands,
-		extension TypeProvider typeProvider) {
-		val operatorContext = new ReferenceMappingOperatorContext(typeProvider)
+	def constructOperator(OperatorReferenceMapping mapping, ReferenceMappingOperatorContext operatorContext) {
+		val extension typeProvider = operatorContext.typeProvider
 		return XbaseFactory.eINSTANCE.createXConstructorCall => [
-			val operatorType = operator.jvmType.imported
-			constructor = operatorType.findConstructor(ReactionExecutionState, List)
+			val operatorType = mapping.operator.jvmType.imported
+			// Assert: There is only one constructor and it matches the passed operands.
+			// TODO Ensure this via validation.
+			constructor = operatorType.findConstructor()
 			explicitConstructorCall = true
-			arguments += expressions(
-				executionState,
-				XbaseFactory.eINSTANCE.createXListLiteral => [
-					// We only pass the literal operands to the operator:
-					elements += operands.filter(LiteralOperand).getOperandExpressions(operatorContext)
-				]
-			)
+			arguments += executionState
+			// Does not include the attribute operands:
+			arguments += mapping.passedOperands.getOperandExpressions(operatorContext)
 		]
 	}
 
-	private def callOperatorMethod(ReferenceMappingOperator operator, JvmOperation method,
-		Iterable<ReferenceMappingOperand> operands, extension TypeProvider typeProvider) {
+	private def callOperatorMethod(OperatorReferenceMapping mapping, JvmOperation method,
+		ReferenceMappingOperatorContext operatorContext) {
 		return XbaseFactory.eINSTANCE.createXMemberFeatureCall => [
-			memberCallTarget = operator.callConstructor(operands, typeProvider)
+			memberCallTarget = mapping.constructOperator(operatorContext)
 			feature = method
 			explicitOperationCall = true
 		]
 	}
 
-	def callGetContainedObjects(ReferenceMappingOperator operator, Iterable<ReferenceMappingOperand> operands,
-		XExpression containerObject, extension TypeProvider typeProvider) {
+	def callGetContainedObjects(OperatorReferenceMapping mapping, XExpression containerObject,
+		ReferenceMappingOperatorContext operatorContext) {
+		val extension typeProvider = operatorContext.typeProvider
 		val method = typeProvider.findMethod(IReferenceMappingOperator, "getContainedObjects")
-		return operator.callOperatorMethod(method, operands, typeProvider) => [
+		return mapping.callOperatorMethod(method, operatorContext) => [
 			memberCallArguments += containerObject
 		]
 	}
 
-	def callGetContainer(ReferenceMappingOperator operator, Iterable<ReferenceMappingOperand> operands,
-		XExpression containedObject, extension TypeProvider typeProvider) {
+	def callGetContainer(OperatorReferenceMapping mapping, XExpression containedObject,
+		ReferenceMappingOperatorContext operatorContext) {
+		val extension typeProvider = operatorContext.typeProvider
 		val method = typeProvider.findMethod(IReferenceMappingOperator, "getContainer")
-		return operator.callOperatorMethod(method, operands, typeProvider) => [
+		return mapping.callOperatorMethod(method, operatorContext) => [
 			memberCallArguments += containedObject
 		]
 	}
 
-	def callIsContained(ReferenceMappingOperator operator, Iterable<ReferenceMappingOperand> operands,
-		XExpression containerObject, XExpression containedObject, extension TypeProvider typeProvider) {
+	def callIsContained(OperatorReferenceMapping mapping, XExpression containerObject, XExpression containedObject,
+		ReferenceMappingOperatorContext operatorContext) {
+		val extension typeProvider = operatorContext.typeProvider
 		val method = typeProvider.findMethod(IReferenceMappingOperator, "isContained")
-		return operator.callOperatorMethod(method, operands, typeProvider) => [
+		return mapping.callOperatorMethod(method, operatorContext) => [
 			memberCallArguments += containerObject
 			memberCallArguments += containedObject
 		]
 	}
 
-	def callInsert(ReferenceMappingOperator operator, Iterable<ReferenceMappingOperand> operands,
-		XExpression containerObject, XExpression objectToInsert, extension TypeProvider typeProvider) {
+	def callInsert(OperatorReferenceMapping mapping, XExpression containerObject, XExpression objectToInsert,
+		ReferenceMappingOperatorContext operatorContext) {
+		val extension typeProvider = operatorContext.typeProvider
 		val method = typeProvider.findMethod(IReferenceMappingOperator, "insert")
-		return operator.callOperatorMethod(method, operands, typeProvider) => [
+		return mapping.callOperatorMethod(method, operatorContext) => [
 			memberCallArguments += containerObject
 			memberCallArguments += objectToInsert
 		]
 	}
 
-	def callGetPotentiallyContainedIntermediates(ReferenceMappingOperator operator,
-		Iterable<ReferenceMappingOperand> operands, XExpression containerObject, EClass intermediateType,
-		extension TypeProvider typeProvider) {
+	def callGetPotentiallyContainedIntermediates(OperatorReferenceMapping mapping, XExpression containerObject,
+		EClass intermediateType, ReferenceMappingOperatorContext operatorContext) {
+		val extension typeProvider = operatorContext.typeProvider
 		val attributeReferenceHelperType = typeProvider.findDeclaredType(AttributeReferenceHelper).imported
 		val method = attributeReferenceHelperType.findMethod("getPotentiallyContainedIntermediates")
 		val intermediateJvmType = typeProvider.findTypeByName(intermediateType.javaClassName)
@@ -130,7 +131,7 @@ package class ReferenceMappingOperatorHelper extends ReactionsGenerationHelper {
 			staticWithDeclaringType = true
 			typeArguments += jvmTypeReferenceBuilder.typeRef(intermediateJvmType)
 			memberCallArguments += expressions(
-				operator.callConstructor(operands, typeProvider),
+				mapping.constructOperator(operatorContext),
 				containerObject,
 				correspondenceModel,
 				XbaseFactory.eINSTANCE.createXTypeLiteral => [
@@ -140,9 +141,9 @@ package class ReferenceMappingOperatorHelper extends ReactionsGenerationHelper {
 		]
 	}
 
-	def callGetPotentialContainerIntermediate(ReferenceMappingOperator operator,
-		Iterable<ReferenceMappingOperand> operands, XExpression containedObject, EClass intermediateType,
-		extension TypeProvider typeProvider) {
+	def callGetPotentialContainerIntermediate(OperatorReferenceMapping mapping, XExpression containedObject,
+		EClass intermediateType, ReferenceMappingOperatorContext operatorContext) {
+		val extension typeProvider = operatorContext.typeProvider
 		val attributeReferenceHelperType = typeProvider.findDeclaredType(AttributeReferenceHelper).imported
 		val method = attributeReferenceHelperType.findMethod("getPotentialContainerIntermediate")
 		val intermediateJvmType = typeProvider.findTypeByName(intermediateType.javaClassName)
@@ -150,7 +151,7 @@ package class ReferenceMappingOperatorHelper extends ReactionsGenerationHelper {
 			staticWithDeclaringType = true
 			typeArguments += jvmTypeReferenceBuilder.typeRef(intermediateJvmType)
 			memberCallArguments += expressions(
-				operator.callConstructor(operands, typeProvider),
+				mapping.constructOperator(operatorContext),
 				containedObject,
 				correspondenceModel,
 				XbaseFactory.eINSTANCE.createXTypeLiteral => [

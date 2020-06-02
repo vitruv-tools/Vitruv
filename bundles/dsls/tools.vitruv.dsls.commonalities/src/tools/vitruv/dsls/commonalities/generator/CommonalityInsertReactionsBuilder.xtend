@@ -8,6 +8,7 @@ import java.util.Optional
 import java.util.function.Consumer
 import java.util.function.Function
 import org.eclipse.xtext.xbase.XbaseFactory
+import tools.vitruv.dsls.commonalities.generator.ReferenceMappingOperatorHelper.ReferenceMappingOperatorContext
 import tools.vitruv.dsls.commonalities.language.Commonality
 import tools.vitruv.dsls.commonalities.language.Participation
 import tools.vitruv.dsls.commonalities.language.ParticipationClass
@@ -353,9 +354,9 @@ package class CommonalityInsertReactionsBuilder extends ReactionsSubGenerator {
 						expressions += typeProvider.setFeatureValue(containerVar, containmentReference, containedVar)
 					}
 				} else if (containment instanceof OperatorContainment) {
-					val operator = containment.operator
-					val operands = containment.operands
-					expressions += operator.callInsert(operands, containerVar, containedVar, typeProvider)
+					val operatorMapping = containment.mapping
+					val operatorContext = new ReferenceMappingOperatorContext(typeProvider)
+					expressions += operatorMapping.callInsert(containerVar, containedVar, operatorContext)
 				}
 			]
 		]
