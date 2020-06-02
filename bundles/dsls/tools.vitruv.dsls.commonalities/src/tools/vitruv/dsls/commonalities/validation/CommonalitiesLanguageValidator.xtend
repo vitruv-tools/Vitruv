@@ -3,9 +3,12 @@
  */
 package tools.vitruv.dsls.commonalities.validation
 
+import java.util.HashSet
 import java.util.regex.Pattern
 import org.eclipse.xtext.validation.Check
 import tools.vitruv.dsls.commonalities.language.Aliasable
+import tools.vitruv.dsls.commonalities.language.CommonalityAttribute
+import tools.vitruv.dsls.commonalities.language.CommonalityAttributeMapping
 import tools.vitruv.dsls.commonalities.language.CommonalityAttributeOperand
 import tools.vitruv.dsls.commonalities.language.CommonalityReferenceMapping
 import tools.vitruv.dsls.commonalities.language.OperatorAttributeMapping
@@ -61,6 +64,22 @@ class CommonalitiesLanguageValidator extends AbstractCommonalitiesLanguageValida
 	}
 
 	@Check
+	def checkCommonalityAttributeMappings(CommonalityAttribute attribute) {
+		// For every participation attribute there is at most one reading
+		// attribute mapping within the same commonality attribute:
+		val readParticipationAttributes = new HashSet
+		for (CommonalityAttributeMapping mapping : attribute.mappings.filter[isRead]) {
+			val participationAttribute = mapping.participationAttribute
+			if (participationAttribute !== null) {
+				if (!readParticipationAttributes.add(participationAttribute)) {
+					error('''There are multiple mappings which read the participation attribute '«
+						participationAttribute»'.''', COMMONALITY_ATTRIBUTE__MAPPINGS)
+				}
+			}
+		}
+	}
+
+	@Check
 	def checkOperatorAttributeMapping(OperatorAttributeMapping mapping) {
 		val commonalityAttributeType = mapping.commonalityAttributeType
 		if (commonalityAttributeType === null) {
@@ -72,8 +91,8 @@ class CommonalitiesLanguageValidator extends AbstractCommonalitiesLanguageValida
 		val participationAttributeType = mapping.participationAttributeType
 		if (participationAttributeType === null) {
 			val typeDescription = mapping.operator.participationAttributeTypeDescription
-			error('''Could not find the operator's declared participation attribute type `«
-				typeDescription.qualifiedTypeName»`.''', OPERATOR_ATTRIBUTE_MAPPING__OPERATOR)
+			error('''Could not find the operator's declared participation attribute type '«
+				typeDescription.qualifiedTypeName»'.''', OPERATOR_ATTRIBUTE_MAPPING__OPERATOR)
 		}
 
 		val participationAttributeOperandsCount = mapping.participationAttributeOperands.size
@@ -81,8 +100,8 @@ class CommonalitiesLanguageValidator extends AbstractCommonalitiesLanguageValida
 			error('There can only be at most one participation attribute operand.',
 				OPERATOR_ATTRIBUTE_MAPPING__OPERANDS)
 		} else if (participationAttributeOperandsCount == 0 && mapping.participationClassOperands.size == 0) {
-			error('Attribute mapping operators need to declare at least one participation attribute or participation«
-				» class operand.', OPERATOR_ATTRIBUTE_MAPPING__OPERANDS)
+			error('''Attribute mapping operators need to declare at least one participation attribute or participation «
+				»class operand.''', OPERATOR_ATTRIBUTE_MAPPING__OPERANDS)
 		}
 
 		if (mapping.involvedParticipations.size > 1) {
@@ -233,7 +252,7 @@ class CommonalitiesLanguageValidator extends AbstractCommonalitiesLanguageValida
 			val singletonClass = participation.singletonClass
 			val singletonContainers = singletonClass.transitiveContainerClasses
 			if (singletonContainers.exists[containedClasses.size > 1]) {
-				error('''The containers of the singleton class need to form a containment chain (contain each at most«
+				error('''The containers of the singleton class need to form a containment chain (contain each at most «
 					»one object).''', participation, null)
 			}
 		}

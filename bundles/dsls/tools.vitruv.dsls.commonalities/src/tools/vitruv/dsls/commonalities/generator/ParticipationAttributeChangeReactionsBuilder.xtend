@@ -68,7 +68,14 @@ package class ParticipationAttributeChangeReactionsBuilder extends ReactionsSubG
 		if (participationAttribute === null) {
 			return #[]
 		}
-		return participationAttribute.getAttributeChangeReactions [ changeType , it |
+		// Assert: For every participation attribute there is at most one reading attribute mapping within the same
+		// commonality attribute (ensured via validation).
+		// However, there may be multiple reading attribute mappings for the same participation attribute across
+		// different commonality attributes. A commonality attribute specific suffix avoids naming conflicts between
+		// the generated attribute change reactions.
+		val commonalityAttribute = mapping.declaringAttribute
+		val reactionNameSuffix = commonalityAttribute.reactionNameSuffix
+		return participationAttribute.getAttributeChangeReactions(reactionNameSuffix) [ changeType , it |
 			call[buildAttributeChangedRoutine(mapping)]
 		]
 	}

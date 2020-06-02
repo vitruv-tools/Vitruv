@@ -2,6 +2,7 @@ package tools.vitruv.dsls.commonalities.generator
 
 import edu.kit.ipd.sdq.activextendannotations.Utility
 import tools.vitruv.dsls.commonalities.language.Commonality
+import tools.vitruv.dsls.commonalities.language.CommonalityAttribute
 import tools.vitruv.dsls.commonalities.language.CommonalityReferenceMapping
 import tools.vitruv.dsls.commonalities.language.Participation
 import tools.vitruv.dsls.commonalities.language.ParticipationClass
@@ -83,5 +84,9 @@ package class ReactionsGeneratorConventions {
 		val referenceMapping = participationContext.referenceMapping
 		if (referenceMapping === null) return ""
 		else return '''_forReferenceMapping_«referenceMapping.reactionName»'''
+	}
+
+	def static package String getReactionNameSuffix(CommonalityAttribute commonalityAttribute) {
+		return '''_forCommonalityAttribute_«commonalityAttribute.name»'''
 	}
 }
