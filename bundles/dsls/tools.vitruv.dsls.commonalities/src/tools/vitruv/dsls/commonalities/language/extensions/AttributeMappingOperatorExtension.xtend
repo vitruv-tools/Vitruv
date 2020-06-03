@@ -12,23 +12,23 @@ package class AttributeMappingOperatorExtension {
 	static val ANNOTATION = tools.vitruv.extensions.dslruntime.commonalities.operators.mapping.attribute.AttributeMappingOperator
 	static val ANNOTATION_NAME = ANNOTATION.name
 
-	def private static getAttributeMappingOperatorAnnotation(JvmDeclaredType operatorType) {
+	private static def getAttributeMappingOperatorAnnotation(JvmDeclaredType operatorType) {
 		return operatorType.annotations
 			.filter[annotation.qualifiedName == ANNOTATION_NAME]
 			.head
 	}
 
-	def static getAttributeMappingOperatorName(JvmDeclaredType operatorType) {
+	static def getAttributeMappingOperatorName(JvmDeclaredType operatorType) {
 		val annotation = operatorType.attributeMappingOperatorAnnotation
 		if (annotation === null) return null
 		return annotation.getStringAnnotationValue('name')
 	}
 
-	def static getName(AttributeMappingOperator operator) {
+	static def getName(AttributeMappingOperator operator) {
 		return operator.jvmType.attributeMappingOperatorName
 	}
 
-	private def static AttributeTypeDescription getAttributeTypeDescription(AttributeMappingOperator operator,
+	private static def AttributeTypeDescription getAttributeTypeDescription(AttributeMappingOperator operator,
 		String valueName) {
 		val annotation = operator.jvmType.attributeMappingOperatorAnnotation
 		if (annotation === null) return null
@@ -38,11 +38,11 @@ package class AttributeMappingOperatorExtension {
 		return new AttributeTypeDescription(multiValued, typeRef.qualifiedName)
 	}
 
-	def static AttributeTypeDescription getCommonalityAttributeTypeDescription(AttributeMappingOperator operator) {
+	static def AttributeTypeDescription getCommonalityAttributeTypeDescription(AttributeMappingOperator operator) {
 		return operator.getAttributeTypeDescription('commonalityAttributeType')
 	}
 
-	def static AttributeTypeDescription getParticipationAttributeTypeDescription(AttributeMappingOperator operator) {
+	static def AttributeTypeDescription getParticipationAttributeTypeDescription(AttributeMappingOperator operator) {
 		return operator.getAttributeTypeDescription('participationAttributeType')
 	}
 }

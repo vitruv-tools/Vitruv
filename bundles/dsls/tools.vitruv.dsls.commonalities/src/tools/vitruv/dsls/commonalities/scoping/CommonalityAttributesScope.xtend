@@ -22,11 +22,11 @@ class CommonalityAttributesScope implements IScope {
 		this
 	}
 
-	def private checkCommonalitySet() {
+	private def checkCommonalitySet() {
 		checkState(commonality !== null, "No commonality to get attributes from was set!")
 	}
 
-	def private allAttributes() {
+	private def allAttributes() {
 		checkCommonalitySet()
 		commonality.attributes
 	}

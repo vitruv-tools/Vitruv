@@ -27,33 +27,33 @@ class CommonalitiesLanguageQualifiedNameProvider extends XbaseQualifiedNameProvi
 		return null
 	}
 
-	def private dispatch List<String> getFullyQualifiedNameSegments(MemberLike member) {
+	private def dispatch List<String> getFullyQualifiedNameSegments(MemberLike member) {
 		segmentList(getFullyQualifiedNameSegments(member.classLikeContainer), member.name)
 	}
 
-	def private dispatch List<String> getFullyQualifiedNameSegments(ClassLike classl) {
+	private def dispatch List<String> getFullyQualifiedNameSegments(ClassLike classl) {
 		segmentList(getFullyQualifiedNameSegments(classl.packageLikeContainer), classl.name)
 	}
 
-	def private dispatch List<String> getFullyQualifiedNameSegments(PackageLike packagel) {
+	private def dispatch List<String> getFullyQualifiedNameSegments(PackageLike packagel) {
 		segmentList(packagel.name)
 	}
 
-	def private dispatch List<String> getFullyQualifiedNameSegments(EObject object) {
+	private def dispatch List<String> getFullyQualifiedNameSegments(EObject object) {
 		return null
 	}
 
-	def private dispatch List<String> getFullyQualifiedNameSegments(Void nill) {
+	private def dispatch List<String> getFullyQualifiedNameSegments(Void nill) {
 		return null
 	}
 
-	def private segmentList(List<String> existing, String element) {
+	private def segmentList(List<String> existing, String element) {
 		if (element === null) return null
 		existing.add(element)
 		return existing
 	}
 
-	def private segmentList(String packageLikeName) {
+	private def segmentList(String packageLikeName) {
 		if (packageLikeName === null) return null
 		val result = new ArrayList<String>(4)
 		result.add(packageLikeName)

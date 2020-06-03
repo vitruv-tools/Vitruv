@@ -23,40 +23,40 @@ import static extension tools.vitruv.dsls.commonalities.language.extensions.Part
 @Utility
 package class CommonalityAttributeMappingExtension {
 
-	def static isSimpleMapping(CommonalityAttributeMapping mapping) {
+	static def isSimpleMapping(CommonalityAttributeMapping mapping) {
 		return (mapping instanceof SimpleAttributeMapping)
 	}
 
-	def static isOperatorMapping(CommonalityAttributeMapping mapping) {
+	static def isOperatorMapping(CommonalityAttributeMapping mapping) {
 		return (mapping instanceof OperatorAttributeMapping)
 	}
 
-	def static dispatch ParticipationAttribute getParticipationAttribute(SimpleAttributeMapping mapping) {
+	static def dispatch ParticipationAttribute getParticipationAttribute(SimpleAttributeMapping mapping) {
 		return mapping.attribute
 	}
 
 	// Can be null
-	def static dispatch ParticipationAttribute getParticipationAttribute(OperatorAttributeMapping mapping) {
+	static def dispatch ParticipationAttribute getParticipationAttribute(OperatorAttributeMapping mapping) {
 		return mapping.participationAttributeOperand?.participationAttribute
 	}
 
-	def static dispatch getInvolvedParticipationClasses(SimpleAttributeMapping mapping) {
+	static def dispatch getInvolvedParticipationClasses(SimpleAttributeMapping mapping) {
 		return Collections.singleton(mapping.attribute.participationClass)
 	}
 
 	// Note: This also includes the participation class for the (optional) participation attribute operand.
-	def static dispatch getInvolvedParticipationClasses(OperatorAttributeMapping mapping) {
+	static def dispatch getInvolvedParticipationClasses(OperatorAttributeMapping mapping) {
 		// Assert: Not empty since there is always either an ParticipationAttributeOperand or at least one
 		// ParticipationClassOperand (ensured via validation).
 		// toSet: Filters duplicates in case the same participation class is involved in multiple operands.
 		return mapping.operands.map[it.participationClass].filterNull.toSet
 	}
 
-	def static dispatch Participation getParticipation(SimpleAttributeMapping mapping) {
+	static def dispatch Participation getParticipation(SimpleAttributeMapping mapping) {
 		return mapping.attribute.participationClass.participation
 	}
 
-	def static dispatch Participation getParticipation(OperatorAttributeMapping mapping) {
+	static def dispatch Participation getParticipation(OperatorAttributeMapping mapping) {
 		val participationAttribute = mapping.participationAttribute // can be null
 		if (participationAttribute !== null) {
 			return participationAttribute.participationClass.participation
@@ -67,7 +67,7 @@ package class CommonalityAttributeMappingExtension {
 		}
 	}
 
-	def static getDeclaringAttribute(CommonalityAttributeMapping mapping) {
+	static def getDeclaringAttribute(CommonalityAttributeMapping mapping) {
 		return mapping.getDirectContainer(CommonalityAttribute)
 	}
 
@@ -75,11 +75,11 @@ package class CommonalityAttributeMappingExtension {
 	 * Returns <code>true<code> if the commonality side of the mapping is
 	 * multi-valued.
 	 */
-	def static dispatch boolean isMultiValuedRead(SimpleAttributeMapping mapping) {
+	static def dispatch boolean isMultiValuedRead(SimpleAttributeMapping mapping) {
 		return mapping.attribute.isMultiValued
 	}
 
-	def static dispatch boolean isMultiValuedRead(OperatorAttributeMapping mapping) {
+	static def dispatch boolean isMultiValuedRead(OperatorAttributeMapping mapping) {
 		return mapping.operator.commonalityAttributeTypeDescription.isMultiValued
 	}
 
@@ -87,29 +87,29 @@ package class CommonalityAttributeMappingExtension {
 	 * Returns <code>true<code> if the participation side of the mapping is
 	 * multi-valued.
 	 */
-	def static dispatch boolean isMultiValuedWrite(SimpleAttributeMapping mapping) {
+	static def dispatch boolean isMultiValuedWrite(SimpleAttributeMapping mapping) {
 		return mapping.attribute.isMultiValued
 	}
 
-	def static dispatch boolean isMultiValuedWrite(OperatorAttributeMapping mapping) {
+	static def dispatch boolean isMultiValuedWrite(OperatorAttributeMapping mapping) {
 		return mapping.operator.participationAttributeTypeDescription.isMultiValued
 	}
 
-	def static dispatch Classifier getCommonalityAttributeType(SimpleAttributeMapping mapping) {
+	static def dispatch Classifier getCommonalityAttributeType(SimpleAttributeMapping mapping) {
 		return mapping.attribute.type
 	}
 
-	def static dispatch Classifier getCommonalityAttributeType(OperatorAttributeMapping mapping) {
+	static def dispatch Classifier getCommonalityAttributeType(OperatorAttributeMapping mapping) {
 		val domain = mapping.participation.domain
 		val attributeTypeDescription = mapping.operator.commonalityAttributeTypeDescription
 		return ClassifierProvider.INSTANCE.findClassifier(domain, attributeTypeDescription.type)
 	}
 
-	def static dispatch Classifier getParticipationAttributeType(SimpleAttributeMapping mapping) {
+	static def dispatch Classifier getParticipationAttributeType(SimpleAttributeMapping mapping) {
 		return mapping.attribute.type
 	}
 
-	def static dispatch Classifier getParticipationAttributeType(OperatorAttributeMapping mapping) {
+	static def dispatch Classifier getParticipationAttributeType(OperatorAttributeMapping mapping) {
 		val domain = mapping.participation.domain
 		val attributeTypeDescription = mapping.operator.participationAttributeTypeDescription
 		return ClassifierProvider.INSTANCE.findClassifier(domain, attributeTypeDescription.type)
@@ -117,7 +117,7 @@ package class CommonalityAttributeMappingExtension {
 
 	// Gets the output type when applied in read direction, or null if the
 	// mapping is not applicable in read direction:
-	def static Classifier getProvidedType(CommonalityAttributeMapping mapping) {
+	static def Classifier getProvidedType(CommonalityAttributeMapping mapping) {
 		if (mapping.isRead) {
 			return mapping.commonalityAttributeType
 		} else {
@@ -127,7 +127,7 @@ package class CommonalityAttributeMappingExtension {
 
 	// Gets the required input type when applied in write direction, or null if
 	// the mapping is not applicable in write direction
-	def static Classifier getRequiredType(CommonalityAttributeMapping mapping) {
+	static def Classifier getRequiredType(CommonalityAttributeMapping mapping) {
 		if (mapping.isWrite) {
 			return mapping.commonalityAttributeType
 		} else {

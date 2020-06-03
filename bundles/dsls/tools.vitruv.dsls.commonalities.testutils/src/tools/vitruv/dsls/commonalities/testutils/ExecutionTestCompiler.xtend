@@ -42,7 +42,7 @@ abstract class ExecutionTestCompiler {
 
 	static val Logger logger = Logger.getLogger(ExecutionTestCompiler)
 
-	static val String COMPLIANCE_LEVEL = "1.8";
+	static val String COMPLIANCE_LEVEL = '1.8';
 	static val TEST_PROJECT_GENERATED_SOURCES_FOLDER_NAME = 'src-gen'
 	static val TEST_PROJECT_SOURCES_FOLDER_NAME = 'src'
 	static val TEST_PROJECT_COMPILATION_FOLDER = 'bin'
@@ -51,11 +51,11 @@ abstract class ExecutionTestCompiler {
 	var compiled = false
 	@Inject CommonalitiesGenerationSettings generationSettings
 
-	def protected abstract String getProjectName()
+	protected abstract def String getProjectName()
 
-	def protected abstract Iterable<String> getCommonalityFiles()
+	protected abstract def Iterable<String> getCommonalityFiles()
 
-	def protected abstract Iterable<String> getDomainDependencies()
+	protected abstract def Iterable<String> getDomainDependencies()
 
 	def getChangePropagationDefinitions() {
 		if (!compiled) {
@@ -71,7 +71,7 @@ abstract class ExecutionTestCompiler {
 			].collect(Collectors.toList)
 		}
 
-		checkState(loadedChangePropagationClasses.size > 0, 'Failed to load change propagations!')
+		checkState(loadedChangePropagationClasses.size > 0, "Failed to load change propagations!")
 
 		return loadedChangePropagationClasses
 			.mapFixed[declaredConstructor.newInstance]
@@ -84,7 +84,7 @@ abstract class ExecutionTestCompiler {
 			]
 	}
 
-	def private compile() {
+	private def compile() {
 		val testProject = prepareTestProject()
 		setGenerationSettings()
 
@@ -120,7 +120,7 @@ abstract class ExecutionTestCompiler {
 	 * work, but make it possible to look around and debug in the generated
 	 * project.
 	 */
-	def private prepareTestProject() {
+	private def prepareTestProject() {
 		setTargetPlatform()
 		val eclipseProject = ResourcesPlugin.workspace.root.getProject(this.projectName) => [
 			create(null as IProgressMonitor)
@@ -152,7 +152,7 @@ abstract class ExecutionTestCompiler {
 		return new Project(eclipseProject, sourcesFolder, javaProjectBinFolder)
 	}
 
-	def private setGenerationSettings() {
+	private def setGenerationSettings() {
 		val eclipseApplication = System.getProperty('eclipse.application')
 		if (eclipseApplication === null) return;
 		if (eclipseApplication.contains('org.eclipse.pde.junit')) {
@@ -164,7 +164,7 @@ abstract class ExecutionTestCompiler {
 		}
 	}
 
-	def private createManifestMf(IProject project) {
+	private def createManifestMf(IProject project) {
 		val relevantMirbaseDependencies = VitruviusDslsCommonConstants.VITRUVIUS_DEPENDENCIES.filter [
 			!contains('mapping')
 		]
@@ -199,14 +199,14 @@ abstract class ExecutionTestCompiler {
 		val IFolder sourceFolder
 		val IFolder binFolder
 
-		def private build(String configName) {
+		private def build(String configName) {
 			eclipseProject.setDescription(eclipseProject.description => [
 				buildSpec = #[newCommand => [builderName = configName]]
 			], null)
 			eclipseProject.build(IncrementalProjectBuilder.FULL_BUILD, new NullProgressMonitor)
 		}
 
-		def private refresh() {
+		private def refresh() {
 			eclipseProject.refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor)
 		}
 	}
@@ -219,11 +219,11 @@ abstract class ExecutionTestCompiler {
 	 *
 	 * Necessary because of this bug: https://bugs.eclipse.org/bugs/show_bug.cgi?id=343156
 	 */
-	@SuppressWarnings("restriction")
-	def static void setTargetPlatform() {
+	@SuppressWarnings('restriction')
+	static def void setTargetPlatform() {
 		val tpService = TargetPlatformService.getDefault()
 
-		val bundles = Platform.getBundle("org.eclipse.core.runtime").getBundleContext().getBundles()
+		val bundles = Platform.getBundle('org.eclipse.core.runtime').getBundleContext().getBundles()
 		val bundleContainers = new ArrayList<ITargetLocation>()
 		val dirs = new HashSet<File>()
 		for (bundle : bundles) {
@@ -251,13 +251,13 @@ abstract class ExecutionTestCompiler {
 		job.join()
 	}
 
-	def private createFolder(IProject project, String name) {
+	private def createFolder(IProject project, String name) {
 		project.getFolder(name) => [
 			create(true, false, null)
 		]
 	}
 
-	def private static getPath(IResource eclipseResource) {
+	private static def getPath(IResource eclipseResource) {
 		eclipseResource.rawLocation.toFile.toPath
 	}
 }

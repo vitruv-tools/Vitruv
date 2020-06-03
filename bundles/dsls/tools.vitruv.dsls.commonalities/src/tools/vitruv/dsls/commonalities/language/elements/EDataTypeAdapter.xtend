@@ -14,7 +14,7 @@ class EDataTypeAdapter extends EDataTypeClassifierImpl implements Wrapper<EDataT
 		return this
 	}
 
-	def private checkEDataTypeSet() {
+	private def checkEDataTypeSet() {
 		checkState(wrappedDataType !== null, "No EDataType was set on this adapter!")
 	}
 

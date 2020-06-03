@@ -23,7 +23,7 @@ class ParticipationClassesScope implements IScope {
 		this
 	}
 
-	def private checkCommonalitySet() {
+	private def checkCommonalitySet() {
 		checkState(commonality !== null, "No commonality to get participation classes from was set!")
 	}
 

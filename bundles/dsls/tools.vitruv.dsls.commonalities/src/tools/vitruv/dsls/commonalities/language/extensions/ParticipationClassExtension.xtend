@@ -15,20 +15,20 @@ import static extension tools.vitruv.dsls.commonalities.language.extensions.Part
 @Utility
 package class ParticipationClassExtension {
 
-	def static ParticipationRelation getOptionalParticipationRelation(ParticipationClass participationClass) {
+	static def ParticipationRelation getOptionalParticipationRelation(ParticipationClass participationClass) {
 		return participationClass.getOptionalDirectContainer(ParticipationRelation)
 	}
 
-	def static getDomain(ParticipationClass participationClass) {
+	static def getDomain(ParticipationClass participationClass) {
 		participationClass.superMetaclass?.domain
 	}
 
-	def static getParticipation(ParticipationClass participationClass) {
+	static def getParticipation(ParticipationClass participationClass) {
 		if (participationClass.eIsProxy) return null
 		return participationClass.getContainer(Participation)
 	}
 
-	def static Commonality getParticipatingCommonality(ParticipationClass participationClass) {
+	static def Commonality getParticipatingCommonality(ParticipationClass participationClass) {
 		val metaclass = participationClass.superMetaclass
 		if (metaclass instanceof Commonality) {
 			return metaclass
@@ -43,7 +43,7 @@ package class ParticipationClassExtension {
 	 * <p>
 	 * Returns null if no container class is found.
 	 */
-	def static ParticipationClass getContainerClass(ParticipationClass contained) {
+	static def ParticipationClass getContainerClass(ParticipationClass contained) {
 		var container = contained.participation.allContainmentRelations
 			.findFirst[leftClasses.contains(contained)]
 			?.rightClasses?.head
@@ -63,7 +63,7 @@ package class ParticipationClassExtension {
 	 * This returns the given participation class itself if it has no
 	 * container.
 	 */
-	def static getRootContainerClass(ParticipationClass participationClass) {
+	static def getRootContainerClass(ParticipationClass participationClass) {
 		var current = participationClass
 		var container = current.containerClass
 		while (container !== null) {
@@ -78,7 +78,7 @@ package class ParticipationClassExtension {
 	 * <p>
 	 * Empty if the given participation class has no container.
 	 */
-	def static Iterable<ParticipationClass> getTransitiveContainerClasses(ParticipationClass participationClass) {
+	static def Iterable<ParticipationClass> getTransitiveContainerClasses(ParticipationClass participationClass) {
 		val directContainer = participationClass.containerClass
 		if (directContainer === null) return Collections.emptyList()
 		val directContainerCollection = Collections.singleton(directContainer)
@@ -89,7 +89,7 @@ package class ParticipationClassExtension {
 	/**
 	 * Returns empty if there are no contained classes.
 	 */
-	def static getContainedClasses(ParticipationClass container) {
+	static def getContainedClasses(ParticipationClass container) {
 		return container.participation.allContainmentRelations
 			.filter[rightClasses.contains(container)]
 			.flatMap[leftClasses]
@@ -106,7 +106,7 @@ package class ParticipationClassExtension {
 	 * This returns the given participation class itself if it contains no
 	 * other participation classes.
 	 */
-	def static Iterable<ParticipationClass> getLeafClasses(ParticipationClass participationClass) {
+	static def Iterable<ParticipationClass> getLeafClasses(ParticipationClass participationClass) {
 		val containedClasses = participationClass.containedClasses
 		if (containedClasses.empty) return Collections.singleton(participationClass)
 		else return containedClasses.flatMap[leafClasses]
@@ -117,16 +117,16 @@ package class ParticipationClassExtension {
 	 * <p>
 	 * Empty if the given participation class contains no other classes.
 	 */
-	def static Iterable<ParticipationClass> getTransitiveContainedClasses(ParticipationClass participationClass) {
+	static def Iterable<ParticipationClass> getTransitiveContainedClasses(ParticipationClass participationClass) {
 		val directContained = participationClass.containedClasses
 		return directContained + directContained.flatMap[transitiveContainedClasses]
 	}
 
-	def static isForResource(ParticipationClass participationClass) {
+	static def isForResource(ParticipationClass participationClass) {
 		return (participationClass.superMetaclass instanceof ResourceMetaclass)
 	}
 
-	def static isInSingletonRoot(ParticipationClass participationClass) {
+	static def isInSingletonRoot(ParticipationClass participationClass) {
 		return participationClass.participation.singletonRootClasses.exists[it == participationClass]
 	}
 }

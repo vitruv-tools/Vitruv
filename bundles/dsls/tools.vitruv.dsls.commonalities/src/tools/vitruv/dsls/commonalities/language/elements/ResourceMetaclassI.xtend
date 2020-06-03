@@ -27,16 +27,16 @@ class ResourceMetaclassI extends ResourceMetaclassImpl implements Wrapper<EClass
 		return this
 	}
 
-	def private readAdapter() {
+	private def readAdapter() {
 		adapter = classifierProvider.toMetaclass(ResourcesPackage.eINSTANCE.resource, containingDomain)
 		classifierProvider = null
 	}
 
-	def private checkDomainSet() {
+	private def checkDomainSet() {
 		checkState(containingDomain !== null, "No domain was set on this metaclass!")
 	}
 
-	def private checkAdapterCreated() {
+	private def checkAdapterCreated() {
 		if (adapter === null) {
 			checkDomainSet()
 			checkState(classifierProvider !== null, "No classifierProvider was set on this adapter!")

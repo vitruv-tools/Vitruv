@@ -314,35 +314,35 @@ class IdentifiedExecutionTest extends CommonalitiesExecutionTest {
 		], ignoring('id')))
 	}
 
-	def private static root2() {
+	private static def root2() {
 		AllElementTypes2Factory.eINSTANCE.createRoot2
 	}
 
-	def private static root() {
+	private static def root() {
 		AllElementTypesFactory.eINSTANCE.createRoot
 	}
 
-	def private static repository() {
+	private static def repository() {
 		Pcm_mockupFactory.eINSTANCE.createRepository
 	}
 
-	def private static uPackage() {
+	private static def uPackage() {
 		Uml_mockupFactory.eINSTANCE.createUPackage
 	}
 
-	def private static nonRoot2() {
+	private static def nonRoot2() {
 		AllElementTypes2Factory.eINSTANCE.createNonRoot2
 	}
 
-	def private static nonRoot() {
+	private static def nonRoot() {
 		AllElementTypesFactory.eINSTANCE.createNonRoot
 	}
 
-	def private static component() {
+	private static def component() {
 		Pcm_mockupFactory.eINSTANCE.createComponent
 	}
 
-	def private static uClass() {
+	private static def uClass() {
 		Uml_mockupFactory.eINSTANCE.createUClass
 	}
 }

@@ -33,7 +33,7 @@ package class MetaclassPrefixMatcher extends LanguageElementPrefixMatcher {
 		isCandidateMatchingPrefix(name.toQualifiedName, prefix.toQualifiedName)
 	}
 
-	def package isCandidateMatchingPrefix(QualifiedName name, QualifiedName prefix) {
+	package def isCandidateMatchingPrefix(QualifiedName name, QualifiedName prefix) {
 		if (prefix.segmentCount > 1) {
 			return prefix.matchesQualifiedNamePart(name, 0) && prefix.matchesStartIgnoringCase(name, 1)
 		}

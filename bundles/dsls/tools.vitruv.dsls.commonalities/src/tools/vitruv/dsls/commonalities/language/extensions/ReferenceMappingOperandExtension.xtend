@@ -9,12 +9,12 @@ import static extension tools.vitruv.dsls.commonalities.language.extensions.Comm
 @Utility
 package class ReferenceMappingOperandExtension {
 
-	def static boolean isInReferenceMappingContext(ReferenceMappingOperand operand) {
+	static def boolean isInReferenceMappingContext(ReferenceMappingOperand operand) {
 		return (operand.referenceMapping !== null)
 	}
 
 	// Returns null if not in reference mapping context:
-	def static OperatorReferenceMapping getReferenceMapping(ReferenceMappingOperand operand) {
+	static def OperatorReferenceMapping getReferenceMapping(ReferenceMappingOperand operand) {
 		return operand.getOptionalDirectContainer(OperatorReferenceMapping)
 	}
 }

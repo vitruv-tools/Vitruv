@@ -48,7 +48,7 @@ class CommonalitiesLanguageGlobalScopeProvider extends TypesAwareDefaultGlobalSc
 		}
 	}
 
-	def private _getScope(Resource resource, EReference reference) {
+	private def _getScope(Resource resource, EReference reference) {
 		switch (reference) {
 			case PARTICIPATION_CLASS__SUPER_METACLASS:
 				allMetaclassesScope.get()
@@ -61,7 +61,7 @@ class CommonalitiesLanguageGlobalScopeProvider extends TypesAwareDefaultGlobalSc
 		}
 	}
 
-	def private getLocalCommonalityScope(Resource resource) {
+	private def getLocalCommonalityScope(Resource resource) {
 		return new SimpleScope(IScope.NULLSCOPE, Collections.singleton(
 			resource.containedCommonalityFile.commonality.describe()
 		))

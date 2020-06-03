@@ -42,7 +42,7 @@ class ContainmentOperator extends AbstractParticipationRelationOperator {
 		}
 	}
 
-	def static getContainmentReference(EClass container, EClass contained) {
+	static def getContainmentReference(EClass container, EClass contained) {
 		val containmentFeature = container.EAllReferences.findFirst [
 			isContainment && EType instanceof EClass && (EType as EClass).isAssignableFrom(contained)
 		]
@@ -53,7 +53,7 @@ class ContainmentOperator extends AbstractParticipationRelationOperator {
 		return containmentFeature
 	}
 
-	def private static isAssignableFrom(EClass superType, EClass candidate) {
+	private static def isAssignableFrom(EClass superType, EClass candidate) {
 		return (superType == EcorePackage.Literals.EOBJECT) || superType.isSuperTypeOf(candidate)
 	}
 }

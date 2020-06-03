@@ -15,16 +15,16 @@ class IntermediateModelManagement {
 	private new() {
 	}
 
-	def static claimIntermediateId(Intermediate intermediate) {
+	static def claimIntermediateId(Intermediate intermediate) {
 		intermediate.setIntermediateId(EcoreUtil.generateUUID());
 	}
 
-	def static void addIntermediate(Resource targetResource, Intermediate intermediate) {
+	static def void addIntermediate(Resource targetResource, Intermediate intermediate) {
 		val root = getOrCreateRootIn(targetResource, intermediate.eClass.EPackage)
 		root.intermediates += intermediate
 	}
 
-	def static void addResourceBridge(
+	static def void addResourceBridge(
 		Resource targetResource,
 		tools.vitruv.extensions.dslruntime.commonalities.resources.Resource intermediateResource,
 		Intermediate intermediate
@@ -33,7 +33,7 @@ class IntermediateModelManagement {
 		root.resourceBridges += intermediateResource
 	}
 
-	def static getOrCreateRootIn(Resource targetResource, EPackage ePackage) {
+	static def getOrCreateRootIn(Resource targetResource, EPackage ePackage) {
 		synchronized (targetResource) {
 			if (targetResource.contents.isEmpty) {
 				val rootClass = ePackage.EClassifiers.filter(EClass).findFirst [

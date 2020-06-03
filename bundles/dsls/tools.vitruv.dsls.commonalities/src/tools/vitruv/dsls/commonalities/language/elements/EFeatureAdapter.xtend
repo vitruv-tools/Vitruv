@@ -18,22 +18,22 @@ class EFeatureAdapter extends EFeatureAttributeImpl implements Wrapper<EStructur
 		return this
 	}
 
-	def private checkAdaptedTypeRead() {
+	private def checkAdaptedTypeRead() {
 		if (adaptedType === null) {
 			checkState(adaptedType !== null, "No classifier provider was set on this element!")
 			checkState(containingMetaclass !== null, "No containing metaclass was set on this attribute!")
 		}
 	}
 
-	def private checkEFeatureSet() {
+	private def checkEFeatureSet() {
 		checkState(wrappedEFeature !== null, "No EStructualFeature was set on this adapter!")
 	}
 
-	def private checkMetaclassSet() {
+	private def checkMetaclassSet() {
 		checkState(containingMetaclass !== null, "No metaclass was set on this attribute!")
 	}
 
-	def private readAdaptedType() {
+	private def readAdaptedType() {
 		adaptedType = classifierProvider.toClassifier(wrappedEFeature.EType, containingMetaclass.domain)
 		classifierProvider = null
 	}

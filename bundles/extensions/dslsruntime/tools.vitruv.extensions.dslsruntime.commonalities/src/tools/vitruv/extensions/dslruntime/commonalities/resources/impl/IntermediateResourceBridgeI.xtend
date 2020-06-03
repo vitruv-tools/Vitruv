@@ -21,18 +21,18 @@ class IntermediateResourceBridgeI extends IntermediateResourceBridgeImpl {
 
 	Intermediate _intermediateCorrespondence
 
-	def private getIntermediateCorrespondence() {
+	private def getIntermediateCorrespondence() {
 		if (_intermediateCorrespondence === null) {
 			_intermediateCorrespondence = findIntermediateCorrespondence(this)
 		}
 		return _intermediateCorrespondence
 	}
 
-	def private fileExtensionChanged(String oldFileExtension) {
+	private def fileExtensionChanged(String oldFileExtension) {
 		this.fullPathChanged(path, name, oldFileExtension)
 	}
 
-	def private nameChanged(String oldName) {
+	private def nameChanged(String oldName) {
 		// TODO continuing here breaks stuff when changes are reapplied by Vitruv
 		// Remove the following line once changes are recorded directly and there’s no need
 		// for rolling them back anymore.
@@ -40,11 +40,11 @@ class IntermediateResourceBridgeI extends IntermediateResourceBridgeImpl {
 		this.fullPathChanged(path, oldName, fileExtension)
 	}
 
-	def private pathChanged(String oldPath) {
+	private def pathChanged(String oldPath) {
 		this.fullPathChanged(oldPath, name, fileExtension)
 	}
 
-	def private fullPathChanged(String oldPath, String oldName, String oldFileExtension) {
+	private def fullPathChanged(String oldPath, String oldName, String oldFileExtension) {
 		if (this.isPersisted) {
 			discard(getPersistanceUri(oldPath, oldName, oldFileExtension))
 		}
@@ -53,7 +53,7 @@ class IntermediateResourceBridgeI extends IntermediateResourceBridgeImpl {
 		}
 	}
 
-	def private contentChanged() {
+	private def contentChanged() {
 		if (this.isPersisted) {
 			discard(persistanceUri)
 		}
@@ -66,22 +66,22 @@ class IntermediateResourceBridgeI extends IntermediateResourceBridgeImpl {
 		fullPath(path, name, fileExtension)
 	}
 
-	def private static fullPath(String path, String name, String fileExtension) {
+	private static def fullPath(String path, String name, String fileExtension) {
 		if (path === null || name === null || fileExtension === null) return null
 		return path + (path.endsWith('/') ? '' : '/') + name + '.' + fileExtension
 	}
 
-	def private canBePersisted() {
+	private def canBePersisted() {
 		path !== null && name !== null && fileExtension !== null && content !== null
 			&& correspondenceModel !== null && resourceAccess !== null && isPersistenceEnabled
 	}
 
-	def private discard(URI oldUri) {
+	private def discard(URI oldUri) {
 		// TODO handling if content == null
 		isPersisted = false
 	}
 
-	def private persist() {
+	private def persist() {
 		TuidManager.instance.updateTuidsOfRegisteredObjects()
 		resourceAccess.persistAsRoot(content, VURI.getInstance(persistanceUri))
 		this.isPersisted = true
@@ -91,11 +91,11 @@ class IntermediateResourceBridgeI extends IntermediateResourceBridgeImpl {
 		}
 	}
 
-	def private getPersistanceUri() {
+	private def getPersistanceUri() {
 		getPersistanceUri(path, name, fileExtension)
 	}
 
-	def private getPersistanceUri(String path, String name, String fileExtension) {
+	private def getPersistanceUri(String path, String name, String fileExtension) {
 		baseURI.appendSegments(path.split('/').filter[length > 0])
 			.appendSegment(name).appendFileExtension(fileExtension)
 	}
@@ -169,7 +169,7 @@ class IntermediateResourceBridgeI extends IntermediateResourceBridgeImpl {
 		}
 	}
 
-	def private findPersistedNonIntermediateObject() {
+	private def findPersistedNonIntermediateObject() {
 		// The search for persisted non-intermediate objects takes into account transitive intermediate correspondences
 		// of the corresponding intermediate, and its container. Taking the container into account is required if the
 		// participation for which the corresponding intermediate originally got created has been deleted and then
@@ -191,7 +191,7 @@ class IntermediateResourceBridgeI extends IntermediateResourceBridgeImpl {
 		return resourceHaving
 	}
 
-	def private getIntermediateCorrespondenceContainer() {
+	private def getIntermediateCorrespondenceContainer() {
 		val container = intermediateCorrespondence.eContainer
 		if (container instanceof Intermediate) {
 			return container
@@ -200,13 +200,13 @@ class IntermediateResourceBridgeI extends IntermediateResourceBridgeImpl {
 		}
 	}
 
-	def private Set<Intermediate> getTransitiveIntermediateCorrespondences(Intermediate startIntermediate) {
+	private def Set<Intermediate> getTransitiveIntermediateCorrespondences(Intermediate startIntermediate) {
 		val existingIntermediate = new HashSet<Intermediate>
 		existingIntermediate.add(startIntermediate)
 		return existingIntermediate.transitiveIntermediateCorrespondences
 	}
 
-	def private Set<Intermediate> getTransitiveIntermediateCorrespondences(Set<Intermediate> foundIntermediates) {
+	private def Set<Intermediate> getTransitiveIntermediateCorrespondences(Set<Intermediate> foundIntermediates) {
 		// Next step in breadth-first search:
 		// Collecting to Set removes duplicates and avoids a ConcurrentModificationException when adding the results to
 		// the result Set.
@@ -224,7 +224,7 @@ class IntermediateResourceBridgeI extends IntermediateResourceBridgeImpl {
 		}
 	}
 
-	def private findIntermediateCorrespondence(EObject object) {
+	private def findIntermediateCorrespondence(EObject object) {
 		if (correspondenceModel === null) return null; // TODO
 		val result = ReactionsCorrespondenceHelper.getCorrespondingModelElements(object, Intermediate, null, null,
 			correspondenceModel).head
@@ -234,7 +234,7 @@ class IntermediateResourceBridgeI extends IntermediateResourceBridgeImpl {
 		return result
 	}
 
-	def private static withoutFileExtension(String s) {
+	private static def withoutFileExtension(String s) {
 		val dotIndex = s.lastIndexOf('.')
 		return if (dotIndex != -1) s.substring(0, dotIndex) else s
 	}

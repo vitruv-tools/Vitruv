@@ -6,11 +6,11 @@ import tools.vitruv.dsls.commonalities.language.OperatorImport
 @Utility
 package class OperatorImportExtension {
 
-	def static isTypeImport(OperatorImport operatorImport) {
+	static def isTypeImport(OperatorImport operatorImport) {
 		return (operatorImport.importedType !== null)
 	}
 
-	def static isNamespaceImport(OperatorImport operatorImport) {
+	static def isNamespaceImport(OperatorImport operatorImport) {
 		return (operatorImport.importedNamespace !== null)
 	}
 }

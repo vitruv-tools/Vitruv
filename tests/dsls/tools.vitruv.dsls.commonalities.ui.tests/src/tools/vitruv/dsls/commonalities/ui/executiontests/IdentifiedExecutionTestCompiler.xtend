@@ -6,7 +6,7 @@ import tools.vitruv.dsls.commonalities.testutils.ExecutionTestCompiler
 @Singleton
 class IdentifiedExecutionTestCompiler extends ExecutionTestCompiler {
 
-	static val TEST_PROJECT_NAME = "commonalities-test-identified"
+	static val TEST_PROJECT_NAME = 'commonalities-test-identified'
 	static val COMMONALITY_FILES = #['Identified.commonality', 'Sub.commonality']
 	static val DOMAIN_DEPENDENCIES = #[
 		'tools.vitruv.testutils.domains',

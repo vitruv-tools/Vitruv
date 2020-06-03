@@ -24,7 +24,7 @@ import static tools.vitruv.dsls.commonalities.language.LanguagePackage.Literals.
 import static tools.vitruv.framework.util.XtendAssertHelper.*
 
 import static extension tools.vitruv.dsls.commonalities.language.extensions.CommonalitiesLanguageModelExtensions.*
-import static extension tools.vitruv.dsls.commonalities.language.extensions.ParticipationContextHelper.*
+import static extension tools.vitruv.dsls.commonalities.participation.ParticipationContextHelper.*
 
 /**
  * This class contains custom validation rules.
@@ -56,9 +56,9 @@ class CommonalitiesLanguageValidator extends AbstractCommonalitiesLanguageValida
 	@Check
 	def checkParticipationClasses(Participation participation) {
 		if (participation.classes.empty) {
-			error('Participation is empty.', participation, null)
+			error("Participation is empty.", participation, null)
 		} else if (participation.nonRootClasses.empty) {
-			error('Participation has no non-root classes.', participation, null)
+			error("Participation has no non-root classes.", participation, null)
 		}
 		// TODO check for containment cycles
 	}
@@ -97,7 +97,7 @@ class CommonalitiesLanguageValidator extends AbstractCommonalitiesLanguageValida
 
 		val participationAttributeOperandsCount = mapping.participationAttributeOperands.size
 		if (participationAttributeOperandsCount > 1) {
-			error('There can only be at most one participation attribute operand.',
+			error("There can only be at most one participation attribute operand.",
 				OPERATOR_ATTRIBUTE_MAPPING__OPERANDS)
 		} else if (participationAttributeOperandsCount == 0 && mapping.participationClassOperands.size == 0) {
 			error('''Attribute mapping operators need to declare at least one participation attribute or participation «
@@ -105,7 +105,7 @@ class CommonalitiesLanguageValidator extends AbstractCommonalitiesLanguageValida
 		}
 
 		if (mapping.involvedParticipations.size > 1) {
-			error('The mapping can only refer to participation attributes and classes of a single participation.',
+			error("The mapping can only refer to participation attributes and classes of a single participation.",
 				OPERATOR_ATTRIBUTE_MAPPING__OPERANDS)
 		}
 
@@ -116,15 +116,15 @@ class CommonalitiesLanguageValidator extends AbstractCommonalitiesLanguageValida
 		}
 	}
 
-	def private static getParticipationAttributeOperands(OperatorAttributeMapping mapping) {
+	private static def getParticipationAttributeOperands(OperatorAttributeMapping mapping) {
 		return mapping.operands.filter(ParticipationAttributeOperand)
 	}
 
-	def private static getInvolvedParticipations(OperatorAttributeMapping mapping) {
+	private static def getInvolvedParticipations(OperatorAttributeMapping mapping) {
 		return mapping.operands.map[participation].filterNull.toSet
 	}
 
-	def private static getCommonalityAttributeOperands(OperatorAttributeMapping mapping) {
+	private static def getCommonalityAttributeOperands(OperatorAttributeMapping mapping) {
 		return mapping.operands.filter(CommonalityAttributeOperand)
 	}
 
@@ -160,10 +160,10 @@ class CommonalitiesLanguageValidator extends AbstractCommonalitiesLanguageValida
 	}
 
 	// returns false in case of error
-	def private boolean checkSimpleReferenceMapping(SimpleReferenceMapping mapping) {
+	private def boolean checkSimpleReferenceMapping(SimpleReferenceMapping mapping) {
 		val referenceRightType = mapping.reference.type
 		if (!(referenceRightType instanceof Metaclass)) {
-			error('Reference mappings can only use EReferences.', SIMPLE_REFERENCE_MAPPING__REFERENCE)
+			error("Reference mappings can only use EReferences.", SIMPLE_REFERENCE_MAPPING__REFERENCE)
 			return false
 		}
 
@@ -178,7 +178,7 @@ class CommonalitiesLanguageValidator extends AbstractCommonalitiesLanguageValida
 		}
 	}
 
-	def private static getReferencedParticipations(CommonalityReferenceMapping mapping) {
+	private static def getReferencedParticipations(CommonalityReferenceMapping mapping) {
 		val participationDomainName = mapping.participation.domainName
 		val referencedCommonality = mapping.referencedCommonality
 		return referencedCommonality.participations.filter [
@@ -187,15 +187,15 @@ class CommonalitiesLanguageValidator extends AbstractCommonalitiesLanguageValida
 	}
 
 	// returns false in case of error
-	def private boolean checkOperatorReferenceMapping(OperatorReferenceMapping mapping) {
+	private def boolean checkOperatorReferenceMapping(OperatorReferenceMapping mapping) {
 		if (mapping.operands.filter(ReferencedParticipationAttributeOperand).empty) {
-			error('No referenced participation attribute specified.', OPERATOR_REFERENCE_MAPPING__OPERANDS)
+			error("No referenced participation attribute specified.", OPERATOR_REFERENCE_MAPPING__OPERANDS)
 			return false
 		}
 
 		val referencedParticipation = mapping.referencedParticipation
 		if (referencedParticipation.participationContext.isEmpty) {
-			error('The referenced participation specifies no root context.', mapping, null)
+			error("The referenced participation specifies no root context.", mapping, null)
 			return false
 		}
 	}
@@ -231,7 +231,7 @@ class CommonalitiesLanguageValidator extends AbstractCommonalitiesLanguageValida
 		}
 	}
 
-	def private static getResourceClasses(Participation participation) {
+	private static def getResourceClasses(Participation participation) {
 		return participation.classes.filter[isForResource]
 	}
 
@@ -258,7 +258,7 @@ class CommonalitiesLanguageValidator extends AbstractCommonalitiesLanguageValida
 		}
 	}
 
-	def private static getSingletonClasses(Participation participation) {
+	private static def getSingletonClasses(Participation participation) {
 		return participation.classes.filter[isSingleton]
 	}
 }

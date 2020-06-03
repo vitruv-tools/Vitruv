@@ -68,7 +68,7 @@ class CommonalitiesLanguageLabelProvider extends XbaseLabelProvider {
 		getImage(wrapper.wrapped)
 	}
 
-	def private appendInfo(StyledString sstring, String text) {
+	private def appendInfo(StyledString sstring, String text) {
 		sstring.append(text, StyledString.QUALIFIER_STYLER)
 	}
 }

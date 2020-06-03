@@ -35,15 +35,15 @@ class NameTransformingScope implements IScope {
 		delegate.getSingleElement(object).transformResult
 	}
 
-	def private QualifiedName transformQuery(QualifiedName name) {
+	private def QualifiedName transformQuery(QualifiedName name) {
 		queryTransformer.apply(name)
 	}
 
-	def private QualifiedName transformResult(QualifiedName name) {
+	private def QualifiedName transformResult(QualifiedName name) {
 		resultTransformer.apply(name)
 	}
 
-	def private IEObjectDescription transformResult(IEObjectDescription description) {
+	private def IEObjectDescription transformResult(IEObjectDescription description) {
 		if (description === null) return null
 		val transformedName = transformResult(description.name)
 		return new AliasedEObjectDescription(transformedName, description)

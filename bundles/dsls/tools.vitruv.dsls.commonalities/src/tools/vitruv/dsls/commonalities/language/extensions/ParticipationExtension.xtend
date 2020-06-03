@@ -17,79 +17,79 @@ import static extension tools.vitruv.dsls.commonalities.language.extensions.Part
 @Utility
 package class ParticipationExtension {
 
-	def static dispatch Iterable<ParticipationClass> getClasses(SimpleParticipation participation) {
+	static def dispatch Iterable<ParticipationClass> getClasses(SimpleParticipation participation) {
 		Collections.singleton(participation.participationClass)
 	}
 
-	def static dispatch Iterable<ParticipationClass> getClasses(TupleParticipation participation) {
+	static def dispatch Iterable<ParticipationClass> getClasses(TupleParticipation participation) {
 		participation.parts.flatMap[containedClasses]
 	}
 
-	def private static dispatch Iterable<ParticipationClass> getContainedClasses(
+	private static def dispatch Iterable<ParticipationClass> getContainedClasses(
 		SimpleTupleParticipationPart participationPart) {
 		Collections.singleton(participationPart.participationClass)
 	}
 
-	def private static dispatch Iterable<ParticipationClass> getContainedClasses(
+	private static def dispatch Iterable<ParticipationClass> getContainedClasses(
 		ParticipationRelation participationPart) {
 		participationPart.leftClasses + participationPart.rightClasses
 	}
 
-	def static dispatch getDomainName(SimpleParticipation participation) {
+	static def dispatch getDomainName(SimpleParticipation participation) {
 		participation?.participationClass?.superMetaclass?.domain?.name
 	}
 
-	def static dispatch getDomainName(TupleParticipation participation) {
+	static def dispatch getDomainName(TupleParticipation participation) {
 		participation.domainName
 	}
 
-	def static getDomain(Participation participation) {
+	static def getDomain(Participation participation) {
 		participation.classes.head?.superMetaclass?.domain
 	}
 
-	def static isCommonalityParticipation(Participation participation) {
+	static def isCommonalityParticipation(Participation participation) {
 		return (participation.participationConcept !== null)
 	}
 
-	def static Concept getParticipationConcept(Participation participation) {
+	static def Concept getParticipationConcept(Participation participation) {
 		val domain = participation.domain
 		return (domain instanceof Concept) ? domain : null
 	}
 
-	def static dispatch Iterable<ParticipationRelation> getAllRelations(SimpleParticipation participation) {
+	static def dispatch Iterable<ParticipationRelation> getAllRelations(SimpleParticipation participation) {
 		return #[]
 	}
 
-	def static dispatch Iterable<ParticipationRelation> getAllRelations(TupleParticipation participation) {
+	static def dispatch Iterable<ParticipationRelation> getAllRelations(TupleParticipation participation) {
 		return participation.parts.flatMap[relations]
 	}
 
-	def private static dispatch Iterable<ParticipationRelation> getRelations(
+	private static def dispatch Iterable<ParticipationRelation> getRelations(
 		SimpleTupleParticipationPart participationPart) {
 		return #[]
 	}
 
-	def private static dispatch Iterable<ParticipationRelation> getRelations(ParticipationRelation participationPart) {
+	private static def dispatch Iterable<ParticipationRelation> getRelations(ParticipationRelation participationPart) {
 		return #[participationPart]
 	}
 
-	def static getAllContainmentRelations(Participation participation) {
+	static def getAllContainmentRelations(Participation participation) {
 		return participation.allRelations.filter[isContainment]
 	}
 
-	def static getAllNonContainmentRelations(Participation participation) {
+	static def getAllNonContainmentRelations(Participation participation) {
 		return participation.allRelations.filter[!isContainment]
 	}
 
-	def static getAllContainmentConditions(Participation participation) {
+	static def getAllContainmentConditions(Participation participation) {
 		return participation.conditions.filter[isContainment]
 	}
 
-	def static getAllNonContainmentConditions(Participation participation) {
+	static def getAllNonContainmentConditions(Participation participation) {
 		return participation.conditions.filter[!isContainment]
 	}
 
-	def static getContainments(Participation participation) {
+	static def getContainments(Participation participation) {
 		return participation.allContainmentRelations.flatMap[getContainments]
 			+ participation.allContainmentConditions.map[getContainment].filterNull
 	}
@@ -98,25 +98,25 @@ package class ParticipationExtension {
 	// only root container class. Otherwise, the participation may have
 	// multiple non-Resource root container classes.
 	// TODO support multiple Resource roots?
-	def static getRootContainerClasses(Participation participation) {
+	static def getRootContainerClasses(Participation participation) {
 		return participation.classes.map[it.rootContainerClass].toSet
 	}
 
-	def static hasResourceClass(Participation participation) {
+	static def hasResourceClass(Participation participation) {
 		return (participation.resourceClass !== null)
 	}
 
 	// There can only be at most one resource class per participation (currently).
-	def static getResourceClass(Participation participation) {
+	static def getResourceClass(Participation participation) {
 		return participation.classes.findFirst[isForResource]
 	}
 
-	def static hasSingletonClass(Participation participation) {
+	static def hasSingletonClass(Participation participation) {
 		return (participation.singletonClass !== null)
 	}
 
 	// There can only be at most one singleton class per participation (currently).
-	def static getSingletonClass(Participation participation) {
+	static def getSingletonClass(Participation participation) {
 		return participation.classes.findFirst[isSingleton]
 	}
 
@@ -124,7 +124,7 @@ package class ParticipationExtension {
 	 * A class marked as singleton and its containers also act as root of the
 	 * participation. This returns these classes.
 	 */
-	def static getSingletonRootClasses(Participation participation) {
+	static def getSingletonRootClasses(Participation participation) {
 		val singletonClass = participation.singletonClass
 		if (singletonClass === null) return Collections.emptyList
 		return Collections.singleton(singletonClass) + singletonClass.transitiveContainerClasses

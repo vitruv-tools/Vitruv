@@ -53,7 +53,7 @@ class CommonalitiesLanguageScopeProvider extends AbstractCommonalitiesLanguageSc
 						val commonality = context.containingCommonality
 						return commonality.participationClassScope
 					} else {
-						throw new IllegalStateException('''Unexpected ParticipationClassOperand context''')
+						throw new IllegalStateException("Unexpected ParticipationClassOperand context")
 					}
 				}
 			}
@@ -134,23 +134,23 @@ class CommonalitiesLanguageScopeProvider extends AbstractCommonalitiesLanguageSc
 		return globalScopeProvider.getScope(context.eResource, reference, null)
 	}
 
-	def private getParticipationClassScope(Commonality commonality) {
+	private def getParticipationClassScope(Commonality commonality) {
 		return participationClassesScope.get.forCommonality(commonality)
 	}
 
-	def private getUnqualifiedParticipationClassScope(Participation participation) {
+	private def getUnqualifiedParticipationClassScope(Participation participation) {
 		val commonality = participation.containingCommonality
 		val participationClassScope = commonality.participationClassScope
 		val parentQualifiedName = participation.fullyQualifiedName
 		return new PrefixedScope(participationClassScope, parentQualifiedName)
 	}
 
-	def private getUnqualifiedMetaclassScope(TupleParticipation participation, IScope metaclassScope) {
+	private def getUnqualifiedMetaclassScope(TupleParticipation participation, IScope metaclassScope) {
 		val parentQualifiedName = participation.domainName.qualifiedDomainName
 		return new PrefixedScope(metaclassScope, parentQualifiedName)
 	}
 
-	def private getUnqualifiedParticipationAttributeScope(ParticipationClass participationClass) {
+	private def getUnqualifiedParticipationAttributeScope(ParticipationClass participationClass) {
 		if (participationClass.eIsProxy) {
 			// This may indicate an issue with the participation class scoping, but may also be the result of an
 			// invalid/incomplete commonality file.
@@ -161,18 +161,18 @@ class CommonalitiesLanguageScopeProvider extends AbstractCommonalitiesLanguageSc
 		return new PrefixedScope(participationAttributeScope, parentQualifiedName)
 	}
 
-	def private getSingleCommonalityScope(Commonality commonality) {
+	private def getSingleCommonalityScope(Commonality commonality) {
 		return new SimpleScope(IScope.NULLSCOPE, Collections.singleton(
 			commonality.describe()
 		))
 	}
 
-	def private getUnqualifiedCommonalityScope(String conceptName, IScope qualifiedCommonalityScope) {
+	private def getUnqualifiedCommonalityScope(String conceptName, IScope qualifiedCommonalityScope) {
 		val parentQualifiedName = conceptName.qualifiedDomainName
 		return new PrefixedScope(qualifiedCommonalityScope, parentQualifiedName)
 	}
 
-	def private getUnqualifiedCommonalityAttributeScope(Commonality commonality) {
+	private def getUnqualifiedCommonalityAttributeScope(Commonality commonality) {
 		if (commonality.eIsProxy) {
 			// The commonality could not be resolved:
 			return IScope.NULLSCOPE

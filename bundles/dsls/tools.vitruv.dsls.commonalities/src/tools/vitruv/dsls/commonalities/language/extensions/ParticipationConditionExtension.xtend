@@ -6,6 +6,8 @@ import tools.vitruv.dsls.commonalities.language.CheckedParticipationCondition
 import tools.vitruv.dsls.commonalities.language.EnforcedParticipationCondition
 import tools.vitruv.dsls.commonalities.language.Participation
 import tools.vitruv.dsls.commonalities.language.ParticipationCondition
+import tools.vitruv.dsls.commonalities.participation.Containment
+import tools.vitruv.dsls.commonalities.participation.ReferenceContainment
 
 import static extension tools.vitruv.dsls.commonalities.language.extensions.CommonalitiesLanguageElementExtension.*
 import static extension tools.vitruv.dsls.commonalities.language.extensions.OperandExtension.*
@@ -14,39 +16,39 @@ import static extension tools.vitruv.dsls.commonalities.language.extensions.Part
 @Utility
 package class ParticipationConditionExtension {
 
-	def static Participation getParticipation(ParticipationCondition participationCondition) {
+	static def Participation getParticipation(ParticipationCondition participationCondition) {
 		return participationCondition.getDirectContainer(Participation)
 	}
 
-	def static dispatch isEnforced(BidirectionalParticipationCondition condition) {
+	static def dispatch isEnforced(BidirectionalParticipationCondition condition) {
 		true
 	}
 
-	def static dispatch isEnforced(EnforcedParticipationCondition condition) {
+	static def dispatch isEnforced(EnforcedParticipationCondition condition) {
 		true
 	}
 
-	def static dispatch isEnforced(CheckedParticipationCondition condition) {
+	static def dispatch isEnforced(CheckedParticipationCondition condition) {
 		false
 	}
 
-	def static dispatch isChecked(BidirectionalParticipationCondition condition) {
+	static def dispatch isChecked(BidirectionalParticipationCondition condition) {
 		false
 	}
 
-	def static dispatch isChecked(EnforcedParticipationCondition condition) {
+	static def dispatch isChecked(EnforcedParticipationCondition condition) {
 		false
 	}
 
-	def static dispatch isChecked(CheckedParticipationCondition condition) {
+	static def dispatch isChecked(CheckedParticipationCondition condition) {
 		true
 	}
 
-	def static isContainment(ParticipationCondition condition) {
+	static def isContainment(ParticipationCondition condition) {
 		return condition.operator.isContainment
 	}
 
-	def static Containment getContainment(ParticipationCondition condition) {
+	static def Containment getContainment(ParticipationCondition condition) {
 		if (!condition.isContainment) {
 			return null
 		}

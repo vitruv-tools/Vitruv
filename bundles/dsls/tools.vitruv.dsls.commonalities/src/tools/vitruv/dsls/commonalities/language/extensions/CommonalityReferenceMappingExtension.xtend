@@ -16,43 +16,43 @@ import static extension tools.vitruv.dsls.commonalities.language.extensions.Refe
 @Utility
 package class CommonalityReferenceMappingExtension {
 
-	def static isSimpleMapping(CommonalityReferenceMapping mapping) {
+	static def isSimpleMapping(CommonalityReferenceMapping mapping) {
 		return (mapping instanceof SimpleReferenceMapping)
 	}
 
-	def static isOperatorMapping(CommonalityReferenceMapping mapping) {
+	static def isOperatorMapping(CommonalityReferenceMapping mapping) {
 		return (mapping instanceof OperatorReferenceMapping)
 	}
 
-	def static dispatch boolean isMultiValued(SimpleReferenceMapping mapping) {
+	static def dispatch boolean isMultiValued(SimpleReferenceMapping mapping) {
 		return mapping.reference.isMultiValued
 	}
 
-	def static dispatch boolean isMultiValued(OperatorReferenceMapping mapping) {
+	static def dispatch boolean isMultiValued(OperatorReferenceMapping mapping) {
 		return mapping.operator.isMultiValued
 	}
 
-	def static dispatch ParticipationClass getParticipationClass(SimpleReferenceMapping mapping) {
+	static def dispatch ParticipationClass getParticipationClass(SimpleReferenceMapping mapping) {
 		return mapping.reference.participationClass
 	}
 
-	def static dispatch ParticipationClass getParticipationClass(OperatorReferenceMapping mapping) {
+	static def dispatch ParticipationClass getParticipationClass(OperatorReferenceMapping mapping) {
 		return mapping.participationClass
 	}
 
-	def static Participation getParticipation(CommonalityReferenceMapping mapping) {
+	static def Participation getParticipation(CommonalityReferenceMapping mapping) {
 		return mapping.participationClass.participation
 	}
 
-	def static getDeclaringReference(CommonalityReferenceMapping mapping) {
+	static def getDeclaringReference(CommonalityReferenceMapping mapping) {
 		return mapping.getDirectContainer(CommonalityReference)
 	}
 
-	def static getReferencedCommonality(CommonalityReferenceMapping mapping) {
+	static def getReferencedCommonality(CommonalityReferenceMapping mapping) {
 		return mapping.declaringReference.referenceType
 	}
 
-	def static getReferencedParticipation(CommonalityReferenceMapping mapping) {
+	static def getReferencedParticipation(CommonalityReferenceMapping mapping) {
 		val participationDomainName = mapping.participation.domainName
 		val referencedCommonality = mapping.referencedCommonality
 		// Note: We verify via validation that there is exactly one matching participation.
@@ -62,13 +62,13 @@ package class CommonalityReferenceMappingExtension {
 		]
 	}
 
-	def static dispatch boolean isAssignmentCompatible(SimpleReferenceMapping mapping,
+	static def dispatch boolean isAssignmentCompatible(SimpleReferenceMapping mapping,
 		ParticipationClass referencedClass) {
 		val referenceType = mapping.reference.type
 		return referenceType.isSuperTypeOf(referencedClass.superMetaclass)
 	}
 
-	def static dispatch boolean isAssignmentCompatible(OperatorReferenceMapping mapping,
+	static def dispatch boolean isAssignmentCompatible(OperatorReferenceMapping mapping,
 		ParticipationClass referencedClass) {
 		// depends on the operator, for which we have no compile-time checking currently
 		return true

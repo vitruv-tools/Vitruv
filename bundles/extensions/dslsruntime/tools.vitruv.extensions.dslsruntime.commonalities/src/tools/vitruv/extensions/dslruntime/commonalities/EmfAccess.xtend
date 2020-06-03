@@ -12,41 +12,41 @@ import org.eclipse.emf.ecore.EReference
 @Utility
 class EmfAccess {
 
-	def static getEPackage(String nsURI) {
+	static def getEPackage(String nsURI) {
 		return EPackage.Registry.INSTANCE.getEPackage(nsURI)
 	}
 
-	def static getEClass(String nsURI, String className) {
+	static def getEClass(String nsURI, String className) {
 		val ePackage = getEPackage(nsURI)
 		return ePackage.getEClass(className)
 	}
 
-	def static getEClass(EPackage ePackage, String className) {
+	static def getEClass(EPackage ePackage, String className) {
 		return ePackage.getEClassifier(className) as EClass
 	}
 
-	def static getEFeature(String nsURI, String className, String featureName) {
+	static def getEFeature(String nsURI, String className, String featureName) {
 		val eClass = getEClass(nsURI, className)
 		return eClass.getEFeature(featureName)
 	}
 
-	def static getEFeature(EClass eClass, String featureName) {
+	static def getEFeature(EClass eClass, String featureName) {
 		return eClass.getEStructuralFeature(featureName)
 	}
 
-	def static getEReference(String nsURI, String className, String featureName) {
+	static def getEReference(String nsURI, String className, String featureName) {
 		return getEFeature(nsURI, className, featureName) as EReference
 	}
 
-	def static getEReference(EClass eClass, String featureName) {
+	static def getEReference(EClass eClass, String featureName) {
 		return getEFeature(eClass, featureName) as EReference
 	}
 
-	def static getEAttribute(String nsURI, String className, String featureName) {
+	static def getEAttribute(String nsURI, String className, String featureName) {
 		return getEFeature(nsURI, className, featureName) as EAttribute
 	}
 
-	def static getEAttribute(EClass eClass, String featureName) {
+	static def getEAttribute(EClass eClass, String featureName) {
 		return getEFeature(eClass, featureName) as EAttribute
 	}
 }

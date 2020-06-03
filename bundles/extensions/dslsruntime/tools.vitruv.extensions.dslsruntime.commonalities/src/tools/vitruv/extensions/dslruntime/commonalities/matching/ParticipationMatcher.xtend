@@ -74,7 +74,7 @@ class ParticipationMatcher {
 	 * @return candidate mappings between participation class names and their
 	 * 		objects
 	 */
-	def static Iterable<ParticipationObjects> matchObjects(extension ContainmentTree containmentTree, EObject start,
+	static def Iterable<ParticipationObjects> matchObjects(extension ContainmentTree containmentTree, EObject start,
 		boolean followAttributeReferences, CorrespondenceModel correspondenceModel) {
 		if (containmentTree.attributeReferenceRootNode !== null) {
 			Preconditions.checkArgument(!containmentTree.attributeReferenceEdges.empty,
@@ -128,7 +128,7 @@ class ParticipationMatcher {
 		]
 	}
 
-	def private static boolean matchesRootNode(ContainmentTree containmentTree, EObject candidateRootObject,
+	private static def boolean matchesRootNode(ContainmentTree containmentTree, EObject candidateRootObject,
 		CorrespondenceModel correspondenceModel) {
 		val rootNode = containmentTree.root
 		// The root intermediate type restriction only applies to the root node if no attribute reference root node is
@@ -141,7 +141,7 @@ class ParticipationMatcher {
 	}
 
 	// Returns true if the attribute reference root got matched:
-	def private static boolean matchAttributeReferenceRoot(ContainmentTree containmentTree, ParticipationObjects match,
+	private static def boolean matchAttributeReferenceRoot(ContainmentTree containmentTree, ParticipationObjects match,
 		CorrespondenceModel correspondenceModel) {
 		val attributeReferenceRootNode = containmentTree.attributeReferenceRootNode
 		assertTrue(attributeReferenceRootNode !== null)
@@ -163,7 +163,7 @@ class ParticipationMatcher {
 		return false
 	}
 
-	def private static boolean isAttributeReferenceEdgeFulfilled(ParticipationObjects match,
+	private static def boolean isAttributeReferenceEdgeFulfilled(ParticipationObjects match,
 		ContainmentTree.OperatorEdge attributeReferenceEdge) {
 		val containerObject = match.getObject(attributeReferenceEdge.container.name)
 		assertTrue(containerObject !== null) // We expect that attribute reference root has already been matched
@@ -192,7 +192,7 @@ class ParticipationMatcher {
 	 * query the operators of its attribute reference edges for its contained
 	 * objects and continue the search for candidate root objects from there.
 	 */
-	def private static Iterable<? extends EObject> getCandidateRoots(EObject object, ContainmentTree containmentTree,
+	private static def Iterable<? extends EObject> getCandidateRoots(EObject object, ContainmentTree containmentTree,
 		CorrespondenceModel correspondenceModel, boolean followAttributeReferences) {
 		assertTrue(object !== null && containmentTree !== null && correspondenceModel !== null)
 		if (object.isIntermediateRoot) {
@@ -244,7 +244,7 @@ class ParticipationMatcher {
 		return container.getCandidateRoots(containmentTree, correspondenceModel, followAttributeReferences)
 	}
 
-	def private static isIntermediateRoot(EObject object) {
+	private static def isIntermediateRoot(EObject object) {
 		return object.eClass.ESuperTypes.contains(IntermediateModelBasePackage.eINSTANCE.root)
 	}
 
@@ -261,7 +261,7 @@ class ParticipationMatcher {
 	 * The result is a set of candidate matches for the current parent match
 	 * and node.
 	 */
-	def private static Iterable<ParticipationObjects> matchChilds(extension ContainmentTree containmentTree,
+	private static def Iterable<ParticipationObjects> matchChilds(extension ContainmentTree containmentTree,
 		ParticipationObjects parentMatch, ContainmentTree.Node currentNode, EObject currentObject,
 		CorrespondenceModel correspondenceModel, int depth) {
 		val nextContainments = currentNode.containments.toList
@@ -288,7 +288,7 @@ class ParticipationMatcher {
 		]
 	}
 
-	def private static Iterable<ParticipationObjects> matchContainmentEdge(extension ContainmentTree containmentTree,
+	private static def Iterable<ParticipationObjects> matchContainmentEdge(extension ContainmentTree containmentTree,
 		ParticipationObjects parentMatch, ContainmentTree.Node currentNode, EObject currentObject,
 		ContainmentTree.Edge containment, CorrespondenceModel correspondenceModel, int depth) {
 		logger.trace('''«indent(depth)»Matching edge «containment.toSimpleString» ...''')
@@ -314,7 +314,7 @@ class ParticipationMatcher {
 			]
 	}
 
-	def private static Iterable<? extends EObject> getMatchingObjects(EObject container,
+	private static def Iterable<? extends EObject> getMatchingObjects(EObject container,
 		ContainmentTree.Edge containmentEdge, CorrespondenceModel correspondenceModel, int depth) {
 		var Iterable<? extends EObject> candidateObjects = Collections.emptySet
 		if (container.isResourceBridge) {
@@ -343,7 +343,7 @@ class ParticipationMatcher {
 	 *   Intermediate of that type has to exist.
 	 * - Otherwise: The object does not correspond to any Intermediate instance yet.
 	 */
-	def private static matchesObject(ContainmentTree.Node node, EObject object,
+	private static def matchesObject(ContainmentTree.Node node, EObject object,
 		CorrespondenceModel correspondenceModel, EClass correspondingIntermediateType, int depth) {
 		if (!node.type.isInstance(object)) { // also checks for null object
 			logger.trace('''«indent(depth)»Node «node.toSimpleString»: Object is of wrong type «object»''')
@@ -370,11 +370,11 @@ class ParticipationMatcher {
 		return true
 	}
 
-	def private static boolean isResourceBridge(EObject object) {
+	private static def boolean isResourceBridge(EObject object) {
 		return (object instanceof IntermediateResourceBridge)
 	}
 
-	def private static indent(int depth) {
+	private static def indent(int depth) {
 		return StringUtil.repeat('  ', depth)
 	}
 }

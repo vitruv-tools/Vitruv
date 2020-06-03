@@ -22,11 +22,11 @@ class ParticipationAttributesScope implements IScope {
 		this
 	}
 
-	def private checkParticipationClassSet() {
+	private def checkParticipationClassSet() {
 		checkState(participationClass !== null, "No participation class to get attributes from was set!")
 	}
 
-	def private allAttributes() {
+	private def allAttributes() {
 		checkParticipationClassSet()
 		participationClass.superMetaclass?.attributes ?: #[]
 	}

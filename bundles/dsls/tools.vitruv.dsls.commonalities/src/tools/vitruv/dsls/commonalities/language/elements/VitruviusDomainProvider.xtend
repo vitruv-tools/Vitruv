@@ -22,7 +22,7 @@ class VitruviusDomainProvider {
 	// it’s okay to cache them.
 	@Lazy(PRIVATE) Map<String, VitruviusDomain> allVitruviusDomainsByName = loadDomains()
 
-	def private loadDomains() {
+	private def loadDomains() {
 		return newHashMap(
 		VitruvDomainProviderRegistry.allDomainProviders.map[domain].map [ domain |
 			val vitruvDomain = LanguageElementsFactory.eINSTANCE.createVitruviusDomain
@@ -32,7 +32,7 @@ class VitruviusDomainProvider {
 		])
 	}
 
-	def private containerResource() {
+	private def containerResource() {
 		val resourceSet = new ResourceSetImpl
 		resourceSet.createResource(CONTAINER_RESOURCE_URI)
 	}

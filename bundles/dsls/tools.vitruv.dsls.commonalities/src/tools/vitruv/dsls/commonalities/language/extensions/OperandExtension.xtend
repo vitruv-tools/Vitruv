@@ -14,35 +14,35 @@ import static extension tools.vitruv.dsls.commonalities.language.extensions.Part
 @Utility
 package class OperandExtension {
 
-	def static Participation getParticipation(Operand operand) {
+	static def Participation getParticipation(Operand operand) {
 		return operand.participationClass?.participation // can be null
 	}
 
-	def static dispatch ParticipationClass getParticipationClass(ParticipationClassOperand operand) {
+	static def dispatch ParticipationClass getParticipationClass(ParticipationClassOperand operand) {
 		return operand.participationClass
 	}
 
-	def static dispatch ParticipationClass getParticipationClass(ParticipationAttributeOperand operand) {
+	static def dispatch ParticipationClass getParticipationClass(ParticipationAttributeOperand operand) {
 		return operand.participationAttribute.participationClass
 	}
 
-	def static dispatch ParticipationClass getParticipationClass(ReferencedParticipationAttributeOperand operand) {
+	static def dispatch ParticipationClass getParticipationClass(ReferencedParticipationAttributeOperand operand) {
 		return operand.participationAttribute.participationClass
 	}
 
-	def static dispatch ParticipationClass getParticipationClass(Operand operand) {
+	static def dispatch ParticipationClass getParticipationClass(Operand operand) {
 		return null // catch any other
 	}
 
-	def static dispatch ParticipationAttribute getParticipationAttribute(ParticipationAttributeOperand operand) {
+	static def dispatch ParticipationAttribute getParticipationAttribute(ParticipationAttributeOperand operand) {
 		return operand.participationAttribute
 	}
 
-	def static dispatch ParticipationAttribute getParticipationAttribute(ReferencedParticipationAttributeOperand operand) {
+	static def dispatch ParticipationAttribute getParticipationAttribute(ReferencedParticipationAttributeOperand operand) {
 		return operand.participationAttribute
 	}
 
-	def static dispatch ParticipationAttribute getParticipationAttribute(Operand operand) {
+	static def dispatch ParticipationAttribute getParticipationAttribute(Operand operand) {
 		return null // catch any other
 	}
 }

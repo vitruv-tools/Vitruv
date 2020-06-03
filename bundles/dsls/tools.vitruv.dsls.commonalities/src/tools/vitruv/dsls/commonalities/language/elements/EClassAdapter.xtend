@@ -28,15 +28,15 @@ class EClassAdapter extends EClassMetaclassImpl implements Wrapper<EClass> {
 		return this
 	}
 
-	def private checkEClassSet() {
+	private def checkEClassSet() {
 		checkState(wrappedEClass !== null, "No EClass was set on this adapter!")
 	}
 
-	def private checkClassifierProviderSet() {
+	private def checkClassifierProviderSet() {
 		checkState(classifierProvider !== null, "No classifier provider was set on this element!")
 	}
 
-	def private checkDomainSet() {
+	private def checkDomainSet() {
 		checkState(containingDomain !== null, "No domain was set on this metaclass!")
 	}
 
@@ -67,7 +67,7 @@ class EClassAdapter extends EClassMetaclassImpl implements Wrapper<EClass> {
 		return attributes
 	}
 
-	def private loadAttributes() {
+	private def loadAttributes() {
 		wrappedEClass.EAllStructuralFeatures.map [ eFeature |
 			LanguageElementsFactory.eINSTANCE.createEFeatureAttribute.withClassifierProvider(classifierProvider)
 				.forEFeature(eFeature).fromMetaclass(this)

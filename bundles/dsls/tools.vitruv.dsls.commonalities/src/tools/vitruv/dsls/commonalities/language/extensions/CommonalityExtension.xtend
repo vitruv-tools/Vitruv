@@ -8,7 +8,7 @@ import static extension tools.vitruv.dsls.commonalities.language.extensions.Comm
 @Utility
 package class CommonalityExtension {
 
-	def static getConcept(Commonality commonality) {
+	static def getConcept(Commonality commonality) {
 		commonality.containingCommonalityFile.concept
 	}
 }

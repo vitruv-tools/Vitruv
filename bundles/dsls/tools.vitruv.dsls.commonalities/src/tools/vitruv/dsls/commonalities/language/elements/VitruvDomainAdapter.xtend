@@ -23,11 +23,11 @@ class VitruvDomainAdapter extends VitruviusDomainImpl implements Wrapper<VitruvD
 		return this
 	}
 
-	def private checkDomainSet() {
+	private def checkDomainSet() {
 		checkState(wrappedVitruvDomain !== null, "No VitruvDomain was set on this adapter!")
 	}
 
-	def private checkClassifierProviderSet() {
+	private def checkClassifierProviderSet() {
 		checkState(classifierProvider !== null, "No classifier provider was set on this element!")
 	}
 
@@ -50,11 +50,11 @@ class VitruvDomainAdapter extends VitruviusDomainImpl implements Wrapper<VitruvD
 		return (rootPackages + rootPackages.flatMap[recursiveSubPackages]).toSet
 	}
 
-	private def static Iterable<EPackage> getRecursiveSubPackages(EPackage ePackage) {
+	private static def Iterable<EPackage> getRecursiveSubPackages(EPackage ePackage) {
 		return ePackage.ESubpackages + ePackage.ESubpackages.flatMap[recursiveSubPackages]
 	}
 
-	def private loadMetaclasses() {
+	private def loadMetaclasses() {
 		allPackages
 			.flatMap[EClassifiers]
 			.filter(EClass)

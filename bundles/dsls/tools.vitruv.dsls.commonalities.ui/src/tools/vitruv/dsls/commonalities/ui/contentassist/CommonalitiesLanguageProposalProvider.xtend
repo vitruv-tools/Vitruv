@@ -27,7 +27,7 @@ class CommonalitiesLanguageProposalProvider extends AbstractCommonalitiesLanguag
 		}
 	}
 
-	def private <T extends CommonalitiesLanguageProposalFactory> init(Provider<T> factory,
+	private def <T extends CommonalitiesLanguageProposalFactory> init(Provider<T> factory,
 		ContentAssistContext contentAssistContext) {
 		factory.get() => [
 			context = contentAssistContext

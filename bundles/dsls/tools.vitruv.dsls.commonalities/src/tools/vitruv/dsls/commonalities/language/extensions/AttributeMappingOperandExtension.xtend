@@ -9,12 +9,12 @@ import static extension tools.vitruv.dsls.commonalities.language.extensions.Comm
 @Utility
 package class AttributeMappingOperandExtension {
 
-	def static boolean isInAttributeMappingContext(AttributeMappingOperand operand) {
+	static def boolean isInAttributeMappingContext(AttributeMappingOperand operand) {
 		return (operand.attributeMapping !== null)
 	}
 
 	// Returns null if not in attribute mapping context:
-	def static OperatorAttributeMapping getAttributeMapping(AttributeMappingOperand operand) {
+	static def OperatorAttributeMapping getAttributeMapping(AttributeMappingOperand operand) {
 		return operand.getOptionalDirectContainer(OperatorAttributeMapping)
 	}
 }

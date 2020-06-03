@@ -49,7 +49,7 @@ class ClassifierProvider {
 	}
 
 	// Searches the Ecore package and the domain specific packages for a matching EClassifier:
-	private def static EClassifier findEClassifier(Domain containingDomain, Class<?> instanceClass) {
+	private static def EClassifier findEClassifier(Domain containingDomain, Class<?> instanceClass) {
 		if (instanceClass === null) return null
 		var Iterable<EPackage> domainPackages = #[]
 		if (containingDomain instanceof VitruvDomainAdapter) {
@@ -59,7 +59,7 @@ class ClassifierProvider {
 		return relevantPackages.map[findEClassifier(instanceClass)].filterNull.head
 	}
 
-	private def static EClassifier findEClassifier(EPackage ePackage, Class<?> instanceClass) {
+	private static def EClassifier findEClassifier(EPackage ePackage, Class<?> instanceClass) {
 		if (instanceClass === null) return null
 		return ePackage.EClassifiers.filter[it.instanceClass == instanceClass].head
 	}

@@ -10,7 +10,7 @@ import tools.vitruv.dsls.commonalities.ui.executiontests.IdentifiedExecutionTest
 @Singleton
 class AliasesTestCompiler extends IdentifiedExecutionTestCompiler {
 
-	static val TEST_PROJECT_NAME = "commonalities-test-aliases"
+	static val TEST_PROJECT_NAME = 'commonalities-test-aliases'
 
 	override protected getProjectName() {
 		return TEST_PROJECT_NAME

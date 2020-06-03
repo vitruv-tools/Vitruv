@@ -6,7 +6,7 @@ import org.hamcrest.TypeSafeDiagnosingMatcher
 
 class EResourceMatchers {
 
-	def static hasNoErrors() {
+	static def hasNoErrors() {
 		return new TypeSafeDiagnosingMatcher<Resource>() {
 
 			override protected matchesSafely(Resource resource, Description mismatchDescription) {

@@ -7,24 +7,29 @@ import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.xtext.generator.IFileSystemAccess2
 import org.eclipse.xtext.generator.IGenerator2
 import org.eclipse.xtext.generator.IGeneratorContext
+import tools.vitruv.dsls.commonalities.generator.domain.ConceptDomainGenerator
+import tools.vitruv.dsls.commonalities.generator.intermediatemodel.IntermediateMetamodelCodeGenerator
+import tools.vitruv.dsls.commonalities.generator.intermediatemodel.IntermediateMetamodelGenerator
+import tools.vitruv.dsls.commonalities.generator.reactions.ReactionsGenerator
+import tools.vitruv.dsls.commonalities.generator.util.guice.GenerationScope
 import tools.vitruv.dsls.commonalities.language.CommonalityFile
 
 class CommonalitiesLanguageGenerator implements IGenerator2 {
 
 	@Inject GenerationContext.Factory generationContextFactory
 
-	@Inject Provider<IntermediateModelGenerator> intermediateModelGenerator
-	@Inject Provider<IntermediateModelCodeGenerator> intermediateModelCodeGenerator
+	@Inject Provider<IntermediateMetamodelGenerator> intermediateMetamodelGenerator
+	@Inject Provider<IntermediateMetamodelCodeGenerator> intermediateMetamodelCodeGenerator
 	@Inject Provider<ReactionsGenerator> reactionsGenerator
-	@Inject Provider<DomainGenerator> domainGenerator
+	@Inject Provider<ConceptDomainGenerator> conceptDomainGenerator
 
 	val generationScopes = new HashMap<Resource, GenerationScope>()
 
-	def private getSubGenerators() {
+	private def getSubGenerators() {
 		#[
-			intermediateModelGenerator.get,
-			intermediateModelCodeGenerator.get,
-			domainGenerator.get,
+			intermediateMetamodelGenerator.get,
+			intermediateMetamodelCodeGenerator.get,
+			conceptDomainGenerator.get,
 			reactionsGenerator.get
 		]
 	}
@@ -53,7 +58,7 @@ class CommonalitiesLanguageGenerator implements IGenerator2 {
 		generationScopes.remove(input)
 	}
 
-	def private runInGenerationScope(Resource input, Runnable runnable) {
+	private def runInGenerationScope(Resource input, Runnable runnable) {
 		val generationScope = generationScopes.get(input)
 		try {
 			generationScope.enter()
@@ -63,9 +68,9 @@ class CommonalitiesLanguageGenerator implements IGenerator2 {
 		}
 	}
 
-	def static private containedCommonalityFile(Resource input) {
+	private static def containedCommonalityFile(Resource input) {
 		if (input.contents.length == 0) {
-			throw new GeneratorException('Input resource is empty.')
+			throw new GeneratorException("Input resource is empty.")
 		}
 		if (input.contents.length > 1) {
 			throw new GeneratorException('''The input resource may only contain one element (found «

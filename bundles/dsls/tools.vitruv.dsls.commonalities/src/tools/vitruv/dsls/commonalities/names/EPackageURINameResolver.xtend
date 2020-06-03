@@ -18,7 +18,7 @@ final class EPackageURINameResolver {
 	 * part of the URI most of the time. However, some URIs contain a version number at
 	 * the end, which will be skipped in favor of the next part from behind.
 	 */
-	def static getPackageName(String ePackageURI) {
+	static def getPackageName(String ePackageURI) {
 		val uriParts = ePackageURI.split('/')
 		// starting from the end, skip over all parts that look like version numbers
 		var i = uriParts.length - 1;
@@ -27,7 +27,7 @@ final class EPackageURINameResolver {
 		if (i >= 0) uriParts.get(i) else ePackageURI
 	}
 
-	def static getPackageName(EPackage ePackage) {
+	static def getPackageName(EPackage ePackage) {
 		ePackage?.eResource.URI.toString.packageName
 	}
 }

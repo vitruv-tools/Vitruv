@@ -1,13 +1,14 @@
 package tools.vitruv.dsls.commonalities.generator;
 
 import com.google.inject.Inject
+import tools.vitruv.dsls.commonalities.generator.util.guice.GenerationScoped
 
 @GenerationScoped
-package abstract class SubGenerator {
+abstract class SubGenerator {
 
 	@Inject protected extension GenerationContext generationContext
 
-	def abstract void generate()
+	abstract def void generate()
 
 	def void beforeGenerate() {}
 

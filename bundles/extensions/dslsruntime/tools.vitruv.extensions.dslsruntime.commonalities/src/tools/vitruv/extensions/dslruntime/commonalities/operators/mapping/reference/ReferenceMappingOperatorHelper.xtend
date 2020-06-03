@@ -5,7 +5,7 @@ import edu.kit.ipd.sdq.activextendannotations.Utility
 @Utility
 class ReferenceMappingOperatorHelper {
 
-	private def static ReferenceMappingOperator getAnnotation(IReferenceMappingOperator operator) {
+	private static def ReferenceMappingOperator getAnnotation(IReferenceMappingOperator operator) {
 		val annotation = operator.class.getAnnotation(ReferenceMappingOperator)
 		if (annotation === null) {
 			throw new IllegalStateException('''Missing operator annotation for reference mapping operator: «
@@ -14,15 +14,15 @@ class ReferenceMappingOperatorHelper {
 		return annotation
 	}
 
-	def static getName(IReferenceMappingOperator operator) {
+	static def getName(IReferenceMappingOperator operator) {
 		return operator.annotation.name
 	}
 
-	def static isMultiValued(IReferenceMappingOperator operator) {
+	static def isMultiValued(IReferenceMappingOperator operator) {
 		return operator.annotation.isMultiValued
 	}
 
-	def static isAttributeReference(IReferenceMappingOperator operator) {
+	static def isAttributeReference(IReferenceMappingOperator operator) {
 		return operator.annotation.isAttributeReference
 	}
 }

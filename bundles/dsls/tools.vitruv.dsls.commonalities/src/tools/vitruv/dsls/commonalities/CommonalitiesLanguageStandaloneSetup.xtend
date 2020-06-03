@@ -17,7 +17,7 @@ class CommonalitiesLanguageStandaloneSetup extends CommonalitiesLanguageStandalo
 		return super.createInjectorAndDoEMFRegistration()
 	}
 
-	def static void doSetup() {
+	static def void doSetup() {
 		new CommonalitiesLanguageStandaloneSetup().createInjectorAndDoEMFRegistration()
 	}
 }

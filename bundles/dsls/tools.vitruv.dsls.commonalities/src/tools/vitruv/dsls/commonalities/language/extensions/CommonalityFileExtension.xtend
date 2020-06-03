@@ -8,11 +8,11 @@ import static extension tools.vitruv.dsls.commonalities.language.extensions.Oper
 @Utility
 package class CommonalityFileExtension {
 
-	def static getOperatorTypeImports(CommonalityFile commonalityFile) {
+	static def getOperatorTypeImports(CommonalityFile commonalityFile) {
 		return commonalityFile.operatorImports.filter[isTypeImport]
 	}
 
-	def static getOperatorNamespaceImports(CommonalityFile commonalityFile) {
+	static def getOperatorNamespaceImports(CommonalityFile commonalityFile) {
 		return commonalityFile.operatorImports.filter[isNamespaceImport]
 	}
 }

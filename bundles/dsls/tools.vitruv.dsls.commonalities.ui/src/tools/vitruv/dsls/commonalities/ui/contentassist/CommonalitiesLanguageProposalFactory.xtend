@@ -32,15 +32,15 @@ abstract class CommonalitiesLanguageProposalFactory implements Function<IEObject
 		this.contentAssistContext = context
 	}
 
-	def protected getContext() {
+	protected def getContext() {
 		return contentAssistContext
 	}
 
-	def protected completionProposal(QualifiedName completion) {
+	protected def completionProposal(QualifiedName completion) {
 		completionProposal(descriptionConverter.toString(completion));
 	}
 
-	def protected completionProposal(String completion) {
+	protected def completionProposal(String completion) {
 		new CompletionProposalBuilder(this).forCompletion(completion)
 	}
 
@@ -63,38 +63,38 @@ abstract class CommonalitiesLanguageProposalFactory implements Function<IEObject
 			this.factory = factory
 		}
 
-		def protected forCompletion(String completion) {
+		protected def forCompletion(String completion) {
 			this.completion = completion
 			this
 		}
 
-		def protected withImage(Image image) {
+		protected def withImage(Image image) {
 			this.image = image
 			this
 		}
 
-		def protected withImageOf(EObject object) {
+		protected def withImageOf(EObject object) {
 			withImage(factory.labelProvider.getImage(object))
 		}
 
-		def protected appendText(String text) {
+		protected def appendText(String text) {
 			this.text.append(text)
 			this
 		}
 
-		def protected usePrefixMatcher(PrefixMatcher prefixMatcher) {
+		protected def usePrefixMatcher(PrefixMatcher prefixMatcher) {
 			context = (context.copy => [
 				matcher = prefixMatcher
 			]).toContext
 			this
 		}
 
-		def protected appendInfoText(String text) {
+		protected def appendInfoText(String text) {
 			this.text.append(text, StyledString.QUALIFIER_STYLER)
 			this
 		}
 
-		def protected propose() {
+		protected def propose() {
 			factory.proposalProvider.createCompletionProposal(completion, text, image, context)
 		}
 	}

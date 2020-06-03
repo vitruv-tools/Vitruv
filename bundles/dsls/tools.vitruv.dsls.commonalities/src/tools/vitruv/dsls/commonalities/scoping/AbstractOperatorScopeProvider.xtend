@@ -85,7 +85,7 @@ abstract class AbstractOperatorScopeProvider implements IGlobalScopeProvider {
 		return new FilteringScope(resourceSet.allOperatorsScope, combinedFilter)
 	}
 
-	def private getAllOperatorsScope(ResourceSet resourceSet) {
+	private def getAllOperatorsScope(ResourceSet resourceSet) {
 		val operatorsMap = operators.computeIfAbsent(resourceSet) [
 			val operatorsMap = findOperators(resourceSet)
 			logger.debug('''Found «operatorTypeName» operators: «operatorsMap.keySet.map[toString].toList»''')

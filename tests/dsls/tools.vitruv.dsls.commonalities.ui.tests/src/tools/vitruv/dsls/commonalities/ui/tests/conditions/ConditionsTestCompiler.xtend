@@ -10,7 +10,7 @@ import tools.vitruv.dsls.commonalities.ui.executiontests.IdentifiedExecutionTest
 @Singleton
 class ConditionsTestCompiler extends IdentifiedExecutionTestCompiler {
 
-	static val TEST_PROJECT_NAME = "commonalities-test-conditions"
+	static val TEST_PROJECT_NAME = 'commonalities-test-conditions'
 
 	override protected getProjectName() {
 		return TEST_PROJECT_NAME

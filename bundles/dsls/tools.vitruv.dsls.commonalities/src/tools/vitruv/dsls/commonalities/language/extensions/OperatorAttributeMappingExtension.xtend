@@ -9,12 +9,12 @@ import tools.vitruv.dsls.commonalities.language.ParticipationClass
 package class OperatorAttributeMappingExtension {
 
 	// Can return null
-	def static getParticipationAttributeOperand(OperatorAttributeMapping mapping) {
+	static def getParticipationAttributeOperand(OperatorAttributeMapping mapping) {
 		// Assert: There is at most one ParticipationAttributeOperand (ensured via validation)
 		return mapping.operands.filter(ParticipationAttributeOperand).head
 	}
 
-	def static getParticipationClassOperands(OperatorAttributeMapping mapping) {
+	static def getParticipationClassOperands(OperatorAttributeMapping mapping) {
 		return mapping.operands.filter(ParticipationClass)
 	}
 
@@ -24,7 +24,7 @@ package class OperatorAttributeMappingExtension {
 	 * <p>
 	 * I.e. this omits the participation attribute operand (if it is present).
 	 */
-	def static getCommonOperands(OperatorAttributeMapping mapping) {
+	static def getCommonOperands(OperatorAttributeMapping mapping) {
 		// Assert: Does not include any commonality attribute operand for the commonality attribute the mapping is
 		// declared for. This is ensured via validation.
 		return mapping.operands.filter [ operand |

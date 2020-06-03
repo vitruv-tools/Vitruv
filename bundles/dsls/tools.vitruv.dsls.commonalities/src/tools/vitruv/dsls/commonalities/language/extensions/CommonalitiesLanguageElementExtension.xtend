@@ -13,7 +13,7 @@ package class CommonalitiesLanguageElementExtension {
 	 * @return the container of the given type
 	 * @throws RuntimeException if no container of the given type is found
 	 */
-	package def static <T extends EObject> T getContainer(EObject object, Class<T> containerType) {
+	package static def <T extends EObject> T getContainer(EObject object, Class<T> containerType) {
 		val typedContainer = object.getOptionalContainer(containerType)
 		if (typedContainer !== null) {
 			return typedContainer
@@ -25,7 +25,7 @@ package class CommonalitiesLanguageElementExtension {
 	/**
 	 * @return the container of the given type, or <code>null</code> if no such container is found
 	 */
-	package def static <T extends EObject> T getOptionalContainer(EObject object, Class<T> containerType) {
+	package static def <T extends EObject> T getOptionalContainer(EObject object, Class<T> containerType) {
 		val typedContainer = object.getOptionalDirectContainer(containerType)
 		if (typedContainer !== null) {
 			return typedContainer
@@ -33,7 +33,7 @@ package class CommonalitiesLanguageElementExtension {
 		return object.eContainer?.getOptionalContainer(containerType)
 	}
 
-	package def static <T extends EObject> T getDirectContainer(EObject object, Class<T> containerType) {
+	package static def <T extends EObject> T getDirectContainer(EObject object, Class<T> containerType) {
 		val typedContainer = object.getOptionalDirectContainer(containerType)
 		if (typedContainer !== null) {
 			return typedContainer
@@ -42,7 +42,7 @@ package class CommonalitiesLanguageElementExtension {
 			») is not directly contained inside a «containerType.simpleName»!''')
 	}
 
-	package def static <T extends EObject> T getOptionalDirectContainer(EObject object, Class<T> containerType) {
+	package static def <T extends EObject> T getOptionalDirectContainer(EObject object, Class<T> containerType) {
 		val container = object.eContainer
 		if (container === null) {
 			return null
@@ -53,19 +53,19 @@ package class CommonalitiesLanguageElementExtension {
 		return null
 	}
 
-	def static CommonalityFile getOptionalContainingCommonalityFile(EObject object) {
+	static def CommonalityFile getOptionalContainingCommonalityFile(EObject object) {
 		return object.getOptionalContainer(CommonalityFile)
 	}
 
-	def static CommonalityFile getContainingCommonalityFile(EObject object) {
+	static def CommonalityFile getContainingCommonalityFile(EObject object) {
 		return object.getContainer(CommonalityFile)
 	}
 
-	def static Commonality getContainingCommonality(EObject object) {
+	static def Commonality getContainingCommonality(EObject object) {
 		return object.getContainer(Commonality)
 	}
 
-	def static CommonalityFile getContainedCommonalityFile(Resource resource) {
+	static def CommonalityFile getContainedCommonalityFile(Resource resource) {
 		val result = resource.optionalContainedCommonalityFile
 		if (result !== null) {
 			return result
@@ -74,7 +74,7 @@ package class CommonalitiesLanguageElementExtension {
 			»but it«IF (result === null)» is empty.«ELSE» contains «resource.contents».«ENDIF»''')
 	}
 
-	def static CommonalityFile getOptionalContainedCommonalityFile(Resource resource) {
+	static def CommonalityFile getOptionalContainedCommonalityFile(Resource resource) {
 		val result = resource.contents.head
 		if (result instanceof CommonalityFile) {
 			return result

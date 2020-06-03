@@ -12,21 +12,21 @@ import static extension tools.vitruv.dsls.commonalities.language.extensions.Comm
 @Utility
 package class ParticipationAttributeExtension {
 
-	def static getOptionalContainingParticipationAttributeOperand(ParticipationAttribute participationAttribute) {
+	static def getOptionalContainingParticipationAttributeOperand(ParticipationAttribute participationAttribute) {
 		return participationAttribute.getOptionalContainer(ParticipationAttributeOperand)
 	}
 
-	def static getOptionalContainingReferencedParticipationAttributeOperand(
+	static def getOptionalContainingReferencedParticipationAttributeOperand(
 		ParticipationAttribute participationAttribute) {
 		return participationAttribute.getOptionalContainer(ReferencedParticipationAttributeOperand)
 	}
 
-	def static OperatorReferenceMapping getOptionalContainingOperatorReferenceMapping(
+	static def OperatorReferenceMapping getOptionalContainingOperatorReferenceMapping(
 		ParticipationAttribute participationAttribute) {
 		return participationAttribute.getOptionalContainer(OperatorReferenceMapping)
 	}
 
-	def static ParticipationCondition getOptionalContainingParticipationCondition(
+	static def ParticipationCondition getOptionalContainingParticipationCondition(
 		ParticipationAttribute participationAttribute) {
 		return participationAttribute.getOptionalContainer(ParticipationCondition)
 	}

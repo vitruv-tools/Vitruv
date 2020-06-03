@@ -10,17 +10,17 @@ import static extension tools.vitruv.dsls.commonalities.language.extensions.Comm
 @Utility
 package class ParticipationConditionOperandExtension {
 
-	def static boolean isInParticipationConditionContext(ParticipationConditionOperand operand) {
+	static def boolean isInParticipationConditionContext(ParticipationConditionOperand operand) {
 		return (operand.participationCondition !== null)
 	}
 
 	// Returns null if not in participation condition context:
-	def static ParticipationCondition getParticipationCondition(ParticipationConditionOperand operand) {
+	static def ParticipationCondition getParticipationCondition(ParticipationConditionOperand operand) {
 		return operand.getOptionalDirectContainer(ParticipationCondition)
 	}
 
 	// Returns null if not in participation condition context:
-	def static Participation getParticipation(ParticipationConditionOperand operand) {
+	static def Participation getParticipation(ParticipationConditionOperand operand) {
 		return operand.getOptionalContainer(Participation)
 	}
 }
