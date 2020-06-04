@@ -27,5 +27,6 @@ Require-Bundle: org.apache.log4j,
  tools.vitruv.dsls.mirbase.ui;bundle-version="0.2.0",
  tools.vitruv.dsls.reactions.ui;bundle-version="0.2.0",
  tools.vitruv.testutils;bundle-version="0.2.0"
-Export-Package: tools.vitruv.dsls.commonalities.testutils
+Export-Package: tools.vitruv.dsls.commonalities.testutils,
+ tools.vitruv.dsls.commonalities.testutils.operators
 Bundle-Vendor: vitruv.tools
