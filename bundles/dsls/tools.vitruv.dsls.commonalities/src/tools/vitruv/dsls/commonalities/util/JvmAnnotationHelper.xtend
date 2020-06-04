@@ -12,21 +12,21 @@ import org.eclipse.xtext.common.types.JvmTypeReference
 class JvmAnnotationHelper {
 
 	static def String getStringAnnotationValue(JvmAnnotationReference annotation, String valueName) {
-		return annotation.explicitValues
+		return annotation.values
 			.filter[it.valueName == valueName]
 			.filter(JvmStringAnnotationValue).head
 			?.values?.head
 	}
 
 	static def boolean getBooleanAnnotationValue(JvmAnnotationReference annotation, String valueName) {
-		return annotation.explicitValues
+		return annotation.values
 			.filter[it.valueName == valueName]
 			.filter(JvmBooleanAnnotationValue).head
 			?.values?.head
 	}
 
 	static def JvmTypeReference getTypeAnnotationValue(JvmAnnotationReference annotation, String valueName) {
-		return annotation.explicitValues
+		return annotation.values
 			.filter[it.valueName == valueName]
 			.filter(JvmTypeAnnotationValue).head
 			?.values?.head
@@ -34,7 +34,7 @@ class JvmAnnotationHelper {
 
 	static def JvmAnnotationReference getAnnotationAnnotationValue(JvmAnnotationReference annotation,
 		String valueName) {
-		return annotation.explicitValues
+		return annotation.values
 			.filter[it.valueName == valueName]
 			.filter(JvmAnnotationAnnotationValue).head
 			?.values?.head
