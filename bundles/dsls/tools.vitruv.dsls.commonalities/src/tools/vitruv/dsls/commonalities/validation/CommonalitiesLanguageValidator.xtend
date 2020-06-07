@@ -7,9 +7,11 @@ import java.util.HashSet
 import java.util.regex.Pattern
 import org.eclipse.xtext.validation.Check
 import tools.vitruv.dsls.commonalities.language.Aliasable
+import tools.vitruv.dsls.commonalities.language.Commonality
 import tools.vitruv.dsls.commonalities.language.CommonalityAttribute
 import tools.vitruv.dsls.commonalities.language.CommonalityAttributeMapping
 import tools.vitruv.dsls.commonalities.language.CommonalityAttributeOperand
+import tools.vitruv.dsls.commonalities.language.CommonalityReference
 import tools.vitruv.dsls.commonalities.language.CommonalityReferenceMapping
 import tools.vitruv.dsls.commonalities.language.OperatorAttributeMapping
 import tools.vitruv.dsls.commonalities.language.OperatorReferenceMapping
@@ -61,6 +63,24 @@ class CommonalitiesLanguageValidator extends AbstractCommonalitiesLanguageValida
 			error("Participation has no non-root classes.", participation, null)
 		}
 		// TODO check for containment cycles
+	}
+
+	@Check
+	def checkCommonalityFeatureNames(Commonality commonality) {
+		// Check for name clashes among commonality attributes and references:
+		val attributeNames = new HashSet
+		for (CommonalityAttribute attribute : commonality.attributes) {
+			if (!attributeNames.add(attribute.name)) {
+				error('''There is already another attribute or reference with name '«attribute.name»'.''', attribute,
+					COMMONALITY_ATTRIBUTE__NAME)
+			}
+		}
+		for (CommonalityReference reference : commonality.references) {
+			if (!attributeNames.add(reference.name)) {
+				error('''There is already another attribute or reference with name '«reference.name»'.''', reference,
+					COMMONALITY_REFERENCE__NAME)
+			}
+		}
 	}
 
 	@Check
