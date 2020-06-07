@@ -16,7 +16,6 @@ import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder
 import static com.google.common.base.Preconditions.*
 
 import static extension tools.vitruv.dsls.commonalities.generator.reactions.ReactionsGeneratorConventions.*
-import static extension tools.vitruv.dsls.commonalities.generator.reactions.util.XbaseHelper.*
 import static extension tools.vitruv.dsls.commonalities.language.extensions.CommonalitiesLanguageModelExtensions.*
 
 class ApplyCommonalityAttributesRoutineBuilder extends ReactionsGenerationHelper {
@@ -71,7 +70,7 @@ class ApplyCommonalityAttributesRoutineBuilder extends ReactionsGenerationHelper
 							val operatorContext = new AttributeMappingOperatorContext(typeProvider,
 								[variable(INTERMEDIATE)], participationClassToObject)
 							participation.relevantWriteMappings.forEach [ mapping |
-								join(mapping.applyWriteMapping(operatorContext))
+								expressions += mapping.applyWriteMapping(operatorContext)
 							]
 						]
 					]

@@ -17,7 +17,6 @@ import tools.vitruv.extensions.dslruntime.commonalities.matching.ParticipationOb
 import static com.google.common.base.Preconditions.*
 
 import static extension tools.vitruv.dsls.commonalities.generator.reactions.ReactionsGeneratorConventions.*
-import static extension tools.vitruv.dsls.commonalities.generator.reactions.util.XbaseHelper.*
 import static extension tools.vitruv.dsls.commonalities.language.extensions.CommonalitiesLanguageModelExtensions.*
 
 class ApplyParticipationAttributesRoutineBuilder extends ReactionsGenerationHelper {
@@ -70,7 +69,7 @@ class ApplyParticipationAttributesRoutineBuilder extends ReactionsGenerationHelp
 							val operatorContext = new AttributeMappingOperatorContext(typeProvider,
 								[variable(INTERMEDIATE)], participationClassToObject)
 							participation.relevantReadMappings.forEach [ mapping |
-								join(mapping.applyReadMapping(operatorContext))
+								expressions += mapping.applyReadMapping(operatorContext)
 							]
 						]
 					]

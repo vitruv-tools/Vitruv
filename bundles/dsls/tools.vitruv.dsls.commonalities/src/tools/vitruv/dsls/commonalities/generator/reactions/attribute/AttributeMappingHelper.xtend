@@ -5,6 +5,7 @@ import java.util.Map
 import java.util.function.Function
 import org.eclipse.xtext.xbase.XExpression
 import org.eclipse.xtext.xbase.XVariableDeclaration
+import org.eclipse.xtext.xbase.XbaseFactory
 import tools.vitruv.dsls.commonalities.generator.reactions.attribute.AttributeMappingOperatorHelper.AttributeMappingOperatorContext
 import tools.vitruv.dsls.commonalities.generator.reactions.helper.ReactionsGenerationHelper
 import tools.vitruv.dsls.commonalities.generator.reactions.participation.ParticipationObjectsHelper
@@ -101,18 +102,25 @@ class AttributeMappingHelper extends ReactionsGenerationHelper {
 
 	private def dispatch XExpression readAttribute(OperatorAttributeMapping mapping,
 		AttributeMappingOperatorContext operatorContext) {
-		// Get the participation attribute value:
-		val participationAttribute = mapping.participationAttribute // can be null
-		val participationAttributeValue = participationAttribute.getParticipationAttributeValue(operatorContext)
+		return XbaseFactory.eINSTANCE.createXBlockExpression => [
+			// Get the participation attribute value:
+			val participationAttribute = mapping.participationAttribute // can be null
+			val participationAttributeValue = participationAttribute.getParticipationAttributeValue(operatorContext)
 
-		// Invoke the operator:
-		val operatorResultValue = mapping.applyTowardsCommonality(participationAttributeValue, operatorContext)
+			// Invoke the operator:
+			val newValueVar = XbaseFactory.eINSTANCE.createXVariableDeclaration => [
+				name = 'newFeatureValue'
+				right = mapping.applyTowardsCommonality(participationAttributeValue, operatorContext)
+			]
+			expressions += newValueVar
 
-		// Apply the attribute value:
-		// Assert: The operator's result value is assignment compatible with the commonality attribute.
-		val typeProvider = operatorContext.typeProvider
-		val intermediate = operatorContext.intermediate
-		return replaceFeatureValue(typeProvider, intermediate, mapping.commonalityEFeature, operatorResultValue)
+			// Apply the attribute value:
+			// Assert: The operator's result value is assignment compatible with the commonality attribute.
+			val typeProvider = operatorContext.typeProvider
+			val intermediate = operatorContext.intermediate
+			expressions += replaceFeatureValue(typeProvider, intermediate, mapping.commonalityEFeature,
+				newValueVar.featureCall)
+		]
 	}
 
 	private def XExpression getParticipationAttributeValue(ParticipationAttribute participationAttribute,
@@ -163,8 +171,8 @@ class AttributeMappingHelper extends ReactionsGenerationHelper {
 		val participationClassToObject = [operatorContext.getParticipationObject(it)]
 		val typeProvider = operatorContext.typeProvider
 		return ifParticipationObjectsAvailable(typeProvider, #[participationClass], participationClassToObject) [
-				mapping.writeAttribute(operatorContext)
-			]
+			mapping.writeAttribute(operatorContext)
+		]
 	}
 
 	def dispatch XExpression applyWriteMapping(OperatorAttributeMapping mapping,
@@ -178,8 +186,8 @@ class AttributeMappingHelper extends ReactionsGenerationHelper {
 		val participationClassToObject = [operatorContext.getParticipationObject(it)]
 		val typeProvider = operatorContext.typeProvider
 		return ifParticipationObjectsAvailable(typeProvider, participationClasses, participationClassToObject) [
-				mapping.writeAttribute(operatorContext)
-			]
+			mapping.writeAttribute(operatorContext)
+		]
 	}
 
 	private def dispatch XExpression writeAttribute(SimpleAttributeMapping mapping,
@@ -197,16 +205,22 @@ class AttributeMappingHelper extends ReactionsGenerationHelper {
 	private def dispatch XExpression writeAttribute(OperatorAttributeMapping mapping,
 		AttributeMappingOperatorContext operatorContext) {
 		val extension typeProvider = operatorContext.typeProvider
-		// Get the commonality attribute value:
-		val intermediate = operatorContext.intermediate
-		val commonalityAttributeValue = mapping.getCommonalityAttributeValue(typeProvider, intermediate)
+		return XbaseFactory.eINSTANCE.createXBlockExpression => [
+			// Get the commonality attribute value:
+			val intermediate = operatorContext.intermediate
+			val commonalityAttributeValue = mapping.getCommonalityAttributeValue(typeProvider, intermediate)
 
-		// Invoke the operator:
-		val operatorResultValue = mapping.applyTowardsParticipation(commonalityAttributeValue, operatorContext)
+			// Invoke the operator:
+			val newValueVar = XbaseFactory.eINSTANCE.createXVariableDeclaration => [
+				name = 'newFeatureValue'
+				right = mapping.applyTowardsParticipation(commonalityAttributeValue, operatorContext)
+			]
+			expressions += newValueVar
 
-		// Apply the attribute value:
-		// Assert: The operator's result value is assignment compatible with the participation attribute.
-		return mapping.setParticipationAttributeValue(operatorContext, operatorResultValue)
+			// Apply the attribute value:
+			// Assert: The operator's result value is assignment compatible with the participation attribute.
+			expressions += mapping.setParticipationAttributeValue(operatorContext, newValueVar.featureCall)
+		]
 	}
 
 	private def getCommonalityAttributeValue(CommonalityAttributeMapping mapping,
