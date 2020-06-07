@@ -2,6 +2,7 @@ package tools.vitruv.dsls.commonalities.generator.intermediatemodel
 
 import edu.kit.ipd.sdq.activextendannotations.Lazy
 import java.util.Collections
+import org.apache.log4j.Logger
 import org.eclipse.emf.codegen.ecore.generator.Generator
 import org.eclipse.emf.codegen.ecore.generator.GeneratorAdapterFactory
 import org.eclipse.emf.codegen.ecore.genmodel.GenJDKLevel
@@ -19,13 +20,16 @@ import org.eclipse.emf.ecore.resource.ResourceSet
 import org.eclipse.jdt.core.IJavaProject
 import org.eclipse.xtext.resource.XtextResourceSet
 import tools.vitruv.dsls.commonalities.generator.SubGenerator
+import tools.vitruv.dsls.commonalities.generator.util.guice.GenerationScoped
 import tools.vitruv.extensions.dslruntime.commonalities.intermediatemodelbase.IntermediateModelBasePackage
 import tools.vitruv.framework.util.VitruviusConstants
 
 import static extension tools.vitruv.dsls.commonalities.generator.intermediatemodel.IntermediateModelConstants.*
 
+@GenerationScoped
 class IntermediateMetamodelCodeGenerator extends SubGenerator {
 
+	static val Logger logger = Logger.getLogger(IntermediateMetamodelCodeGenerator)
 	static val GENERATED_CODE_COMPLIANCE_LEVEL = GenJDKLevel.JDK80_LITERAL
 	static val GENERATED_CODE_FOLDER = "."
 	static val INTERMEDIATEMODELBASE_GENMODEL_URI = EcorePlugin.getEPackageNsURIToGenModelLocationMap(true)
@@ -37,6 +41,7 @@ class IntermediateMetamodelCodeGenerator extends SubGenerator {
 		if (!isNewResourceSet) return
 		val generatedCodeDirectory = fsa.getURI(GENERATED_CODE_FOLDER)
 		for (generatedConcept : generatedConcepts) {
+			logger.debug('''Generating code for the intermediate metamodel of concept '«generatedConcept»'.''')
 			val generatedPackage = generatedConcept.intermediateMetamodelPackage
 			val generatedGenModel = generateGenModel(generatedPackage, generatedConcept, generatedCodeDirectory)
 			generateModelCode(generatedGenModel)

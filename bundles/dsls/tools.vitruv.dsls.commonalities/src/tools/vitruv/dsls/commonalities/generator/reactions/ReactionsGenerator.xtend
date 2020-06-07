@@ -12,6 +12,7 @@ import tools.vitruv.dsls.commonalities.generator.reactions.attribute.Participati
 import tools.vitruv.dsls.commonalities.generator.reactions.intermediatemodel.CommonalityInsertReactionsBuilder
 import tools.vitruv.dsls.commonalities.generator.reactions.matching.MatchParticipationReactionsBuilder
 import tools.vitruv.dsls.commonalities.generator.reactions.matching.MatchParticipationReferencesReactionsBuilder
+import tools.vitruv.dsls.commonalities.generator.util.guice.GenerationScoped
 import tools.vitruv.dsls.commonalities.language.Participation
 import tools.vitruv.dsls.reactions.api.generator.IReactionsGenerator
 import tools.vitruv.dsls.reactions.builder.FluentReactionsSegmentBuilder
@@ -19,6 +20,7 @@ import tools.vitruv.framework.domains.VitruvDomainProviderRegistry
 
 import static extension tools.vitruv.dsls.commonalities.language.extensions.CommonalitiesLanguageModelExtensions.*
 
+@GenerationScoped
 class ReactionsGenerator extends SubGenerator {
 
 	private static val Logger logger = Logger.getLogger(ReactionsGenerator)

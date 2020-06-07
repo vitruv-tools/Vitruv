@@ -5,6 +5,7 @@ import java.util.Collections
 import java.util.HashSet
 import java.util.List
 import java.util.function.Consumer
+import org.apache.log4j.Logger
 import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.EDataType
 import org.eclipse.emf.ecore.EObject
@@ -17,6 +18,7 @@ import org.eclipse.emf.ecore.xmi.impl.XMLResourceFactoryImpl
 import tools.vitruv.dsls.common.helper.ClassNameGenerator
 import tools.vitruv.dsls.commonalities.generator.GenerationContext
 import tools.vitruv.dsls.commonalities.generator.SubGenerator
+import tools.vitruv.dsls.commonalities.generator.util.guice.GenerationScoped
 import tools.vitruv.dsls.commonalities.language.Commonality
 import tools.vitruv.dsls.commonalities.language.CommonalityAttribute
 import tools.vitruv.dsls.commonalities.language.CommonalityFile
@@ -31,8 +33,10 @@ import static org.eclipse.emf.ecore.ETypedElement.UNBOUNDED_MULTIPLICITY
 import static extension tools.vitruv.dsls.commonalities.generator.intermediatemodel.IntermediateModelConstants.*
 import static extension tools.vitruv.dsls.commonalities.language.extensions.CommonalitiesLanguageModelExtensions.*
 
+@GenerationScoped
 class IntermediateMetamodelGenerator extends SubGenerator {
 
+	static val Logger logger = Logger.getLogger(IntermediateMetamodelGenerator)
 	static val NS_URI_PREFIX = URI.createURI('http://vitruv.tools/commonalities')
 
 	var List<Resource> outputResources = Collections.emptyList
@@ -51,6 +55,8 @@ class IntermediateMetamodelGenerator extends SubGenerator {
 			conceptToCommonalityFiles.entrySet.map [
 				val concept = key
 				val commonalityFiles = value
+				logger.debug('''Generating intermediate metamodel for concept '«concept»' and commonalities «
+					commonalityFiles.map[commonality.name].toList»''')
 
 				val packageGenerator = generateCommonalityEPackage(concept, commonalityFiles, resourceSet)
 				reportGeneratedIntermediateMetamodel(concept, packageGenerator.generatedEPackage)
@@ -62,7 +68,10 @@ class IntermediateMetamodelGenerator extends SubGenerator {
 	}
 
 	override generate() {
-		outputResources.forEach[save(Collections.emptyMap)]
+		outputResources.forEach [ resource |
+			logger.debug('''Saving generated intermediate metamodel at: «resource.URI»''')
+			resource.save(Collections.emptyMap)
+		]
 	}
 
 	private def generateCommonalityEPackage(String conceptName, Iterable<CommonalityFile> commonalityFiles,
