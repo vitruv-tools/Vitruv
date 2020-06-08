@@ -5,28 +5,23 @@ import org.eclipse.emf.ecore.EObject
 import tools.vitruv.extensions.dslruntime.commonalities.intermediatemodelbase.Intermediate
 import tools.vitruv.framework.correspondence.CorrespondenceModel
 
-import static extension tools.vitruv.extensions.dslsruntime.reactions.helper.ReactionsCorrespondenceHelper.*
+import static extension tools.vitruv.extensions.dslruntime.commonalities.helper.IntermediateModelHelper.*
 
 @Utility
 class AttributeReferenceHelper {
 
-	static def <T extends Intermediate> getPotentiallyContainedIntermediates(IReferenceMappingOperator operator,
-		EObject containerObject, CorrespondenceModel correspondenceModel, Class<T> intermediateType) {
+	static def <I extends Intermediate> Iterable<I> getPotentiallyContainedIntermediates(
+		IReferenceMappingOperator operator, EObject containerObject, CorrespondenceModel correspondenceModel,
+		Class<I> intermediateType) {
 		val containedObjects = operator.getContainedObjects(containerObject)
 		return containedObjects.map[correspondenceModel.getCorrespondingIntermediate(it, intermediateType)]
 			.filterNull.toSet
 	}
 
-	static def <T extends Intermediate> getPotentialContainerIntermediate(IReferenceMappingOperator operator,
-		EObject containedObject, CorrespondenceModel correspondenceModel, Class<T> intermediateType) {
+	static def <I extends Intermediate> I getPotentialContainerIntermediate(IReferenceMappingOperator operator,
+		EObject containedObject, CorrespondenceModel correspondenceModel, Class<I> intermediateType) {
 		val containerObject = operator.getContainer(containedObject)
 		if (containerObject === null) return null
 		return correspondenceModel.getCorrespondingIntermediate(containerObject, intermediateType)
-	}
-
-	private static def <T extends Intermediate> getCorrespondingIntermediate(CorrespondenceModel correspondenceModel,
-		EObject object, Class<T> intermediateType) {
-		// Assumption: Each object has at most one Intermediate correspondence.
-		return correspondenceModel.getCorrespondingObjectsOfType(object, null, intermediateType).head
 	}
 }
