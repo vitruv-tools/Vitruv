@@ -12,6 +12,7 @@ import tools.vitruv.extensions.dslruntime.commonalities.resources.IntermediateRe
 import tools.vitruv.extensions.dslruntime.commonalities.resources.ResourcesFactory
 import tools.vitruv.extensions.dslsruntime.reactions.helper.ReactionsCorrespondenceHelper
 import tools.vitruv.framework.correspondence.CorrespondenceModel
+import tools.vitruv.framework.util.command.ResourceAccess
 
 import static com.google.common.base.Preconditions.*
 import static tools.vitruv.framework.util.XtendAssertHelper.*
@@ -28,6 +29,7 @@ class ParticipationMatcher {
 	val EObject startObject
 	val boolean followAttributeReferences
 	val CorrespondenceModel correspondenceModel
+	val ResourceAccess resourceAccess
 
 	/**
 	 * Creates a new {@link ParticipationMatcher}.
@@ -48,14 +50,16 @@ class ParticipationMatcher {
 	 * 		the correspondence model
 	 */
 	new(ContainmentTree containmentTree, EObject startObject, boolean followAttributeReferences,
-		CorrespondenceModel correspondenceModel) {
+		CorrespondenceModel correspondenceModel, ResourceAccess resourceAccess) {
 		checkNotNull(containmentTree, "containmentTree is null")
 		checkNotNull(startObject, "startObject is null")
 		checkNotNull(correspondenceModel, "correspondenceModel is null")
+		checkNotNull(resourceAccess, "resourceAccess is null")
 		this.containmentTree = containmentTree
 		this.startObject = startObject
 		this.followAttributeReferences = followAttributeReferences
 		this.correspondenceModel = correspondenceModel
+		this.resourceAccess = resourceAccess
 	}
 
 	/**
@@ -244,6 +248,7 @@ class ParticipationMatcher {
 			// Resource root:
 			if (object.eResource !== null) {
 				val resourceBridge = ResourcesFactory.eINSTANCE.createIntermediateResourceBridge
+				setupResourceBridge(resourceBridge)
 				resourceBridge.initialiseForModelElement(object)
 				return Collections.singleton(resourceBridge)
 			} else {
@@ -258,6 +263,12 @@ class ParticipationMatcher {
 
 	private static def isIntermediateRoot(EObject object) {
 		return object.eClass.ESuperTypes.contains(IntermediateModelBasePackage.eINSTANCE.root)
+	}
+
+	private def setupResourceBridge(IntermediateResourceBridge resourceBridge) {
+		resourceBridge.correspondenceModel = correspondenceModel
+		resourceBridge.resourceAccess = resourceAccess
+		// intermediateNS gets setup later
 	}
 
 	/**

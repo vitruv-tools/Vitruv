@@ -13,6 +13,7 @@ import tools.vitruv.framework.tuid.TuidManager
 import tools.vitruv.framework.util.datatypes.VURI
 
 import static com.google.common.base.Preconditions.*
+import static tools.vitruv.framework.util.XtendAssertHelper.*
 
 // TODO remove once resources are handled by domains
 class IntermediateResourceBridgeI extends IntermediateResourceBridgeImpl {
@@ -46,7 +47,7 @@ class IntermediateResourceBridgeI extends IntermediateResourceBridgeImpl {
 
 	private def fullPathChanged(String oldPath, String oldName, String oldFileExtension) {
 		if (this.isPersisted) {
-			discard(getPersistanceUri(oldPath, oldName, oldFileExtension))
+			discard(getResourceUri(oldPath, oldName, oldFileExtension))
 		}
 		if (this.canBePersisted) {
 			persist()
@@ -55,7 +56,7 @@ class IntermediateResourceBridgeI extends IntermediateResourceBridgeImpl {
 
 	private def contentChanged() {
 		if (this.isPersisted) {
-			discard(persistanceUri)
+			discard(resourceUri)
 		}
 		if (this.canBePersisted) {
 			persist()
@@ -66,12 +67,24 @@ class IntermediateResourceBridgeI extends IntermediateResourceBridgeImpl {
 		fullPath(path, name, fileExtension)
 	}
 
-	private static def fullPath(String path, String name, String fileExtension) {
+	private static def String fullPath(String path, String name, String fileExtension) {
 		if (path === null || name === null || fileExtension === null) return null
-		return path + (path.endsWith('/') ? '' : '/') + name + '.' + fileExtension
+		val fullPath = new StringBuilder
+		if (!path.empty) {
+			fullPath.append(path)
+			if (!path.endsWith('/')) {
+				fullPath.append('/')
+			}
+		}
+		fullPath.append(name)
+		fullPath.append('.')
+		fullPath.append(fileExtension)
+		return fullPath.toString
 	}
 
 	private def canBePersisted() {
+		// If the content has been set, we assume that the baseURI has been set as well already:
+		assertTrue(content === null || baseURI !== null)
 		path !== null && name !== null && fileExtension !== null && content !== null
 			&& correspondenceModel !== null && resourceAccess !== null && isPersistenceEnabled
 	}
@@ -83,7 +96,7 @@ class IntermediateResourceBridgeI extends IntermediateResourceBridgeImpl {
 
 	private def persist() {
 		TuidManager.instance.updateTuidsOfRegisteredObjects()
-		resourceAccess.persistAsRoot(content, VURI.getInstance(persistanceUri))
+		resourceAccess.persistAsRoot(content, VURI.getInstance(resourceUri))
 		this.isPersisted = true
 		if (eContainer === null) {
 			throw new RuntimeException('''IntermediateResourceBridge has not been added to the intermediate model yet: «
@@ -91,17 +104,19 @@ class IntermediateResourceBridgeI extends IntermediateResourceBridgeImpl {
 		}
 	}
 
-	private def getPersistanceUri() {
-		getPersistanceUri(path, name, fileExtension)
+	private def getResourceUri() {
+		getResourceUri(path, name, fileExtension)
 	}
 
-	private def getPersistanceUri(String path, String name, String fileExtension) {
-		baseURI.appendSegments(path.split('/').filter[length > 0])
-			.appendSegment(name).appendFileExtension(fileExtension)
+	private def getResourceUri(String path, String name, String fileExtension) {
+		assertTrue(baseURI !== null && path !== null && name !== null && fileExtension !== null)
+		val relativePathUri = URI.createURI(fullPath)
+		val resourceUri = relativePathUri.resolve(baseURI)
+		return resourceUri
 	}
 
 	override remove() {
-		discard(persistanceUri)
+		discard(resourceUri)
 	}
 
 	override setContent(EObject newContent) {
@@ -113,9 +128,13 @@ class IntermediateResourceBridgeI extends IntermediateResourceBridgeImpl {
 		// modified a containment reference's internal content
 		if (content == newContent) return;
 		this.content = newContent
-		if (baseURI === null && correspondenceModel !== null) { // TODO
-			val uri = PersistenceHelper.getURIFromSourceProjectFolder(findPersistedNonIntermediateObject, 'fake.ext')
-			baseURI = SAME_FOLDER.resolve(uri).withoutTrailingSlash
+
+		if (baseURI === null) {
+			if (correspondenceModel === null) {
+				throw new IllegalStateException('''IntermediateResourceBridge has not yet been setup (correspondence «
+					»model is null)!''')
+			}
+			baseURI = findPersistedNonIntermediateObject.calculateBaseUri()
 		}
 		contentChanged()
 	}
@@ -131,9 +150,13 @@ class IntermediateResourceBridgeI extends IntermediateResourceBridgeImpl {
 		return super.eIsSet(featureID)
 	}
 
-	// only available if content has been set
 	override getEmfResource() {
-		return content?.eResource
+		if (resourceAccess === null || baseURI === null || path === null || name === null || fileExtension === null) {
+			return null
+		}
+		val resourceUri = resourceUri
+		val resource = resourceAccess.getModelResource(VURI.getInstance(resourceUri))
+		return resource
 	}
 
 	override getIntermediateId() {
@@ -243,8 +266,7 @@ class IntermediateResourceBridgeI extends IntermediateResourceBridgeImpl {
 		val resource = eObject.eResource
 		checkArgument(resource !== null, "The provided object must be in a resource!")
 		val objectResourceUri = resource.URI
-		val projectUri = PersistenceHelper.getURIFromSourceProjectFolder(eObject, 'fake.ext')
-		baseURI = SAME_FOLDER.resolve(projectUri).withoutTrailingSlash
+		baseURI = eObject.calculateBaseUri()
 		path = SAME_FOLDER.resolve(objectResourceUri).deresolve(baseURI).toString
 		fileExtension = objectResourceUri.fileExtension
 		name = objectResourceUri.lastSegment.toString.withoutFileExtension
@@ -252,10 +274,12 @@ class IntermediateResourceBridgeI extends IntermediateResourceBridgeImpl {
 		isPersisted = true
 	}
 
-	def URI withoutTrailingSlash(URI uri) {
-		if (uri.lastSegment.length === 0) {
-			return uri.trimSegments(1)
-		}
-		return uri
+	private def calculateBaseUri(EObject persistedObject) {
+		assertTrue(persistedObject !== null)
+		assertTrue(persistedObject.eResource !== null)
+		// Get the project folder from the already persisted object:
+		// Since the relative path cannot be empty, we append a dummy file and then trim it again afterwards.
+		val projectFileUri = PersistenceHelper.getURIFromSourceProjectFolder(persistedObject, 'fake.ext')
+		return SAME_FOLDER.resolve(projectFileUri)
 	}
 }

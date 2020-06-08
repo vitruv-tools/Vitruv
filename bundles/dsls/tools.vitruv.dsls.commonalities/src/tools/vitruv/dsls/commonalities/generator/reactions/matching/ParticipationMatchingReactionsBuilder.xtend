@@ -454,7 +454,8 @@ class ParticipationMatchingReactionsBuilder extends ReactionsGenerationHelper {
 						containmentTreeVar.featureCall,
 						variable(START_OBJECT),
 						variable(FOLLOW_ATTRIBUTE_REFERENCES),
-						correspondenceModel
+						correspondenceModel,
+						resourceAccess
 					)
 				]
 			]
