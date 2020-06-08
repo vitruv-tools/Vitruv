@@ -1,7 +1,5 @@
 package tools.vitruv.extensions.dslruntime.commonalities.matching
 
-import com.google.common.base.Preconditions
-import edu.kit.ipd.sdq.activextendannotations.Utility
 import edu.kit.ipd.sdq.commons.util.java.lang.StringUtil
 import java.util.Collections
 import java.util.Objects
@@ -15,20 +13,53 @@ import tools.vitruv.extensions.dslruntime.commonalities.resources.ResourcesFacto
 import tools.vitruv.extensions.dslsruntime.reactions.helper.ReactionsCorrespondenceHelper
 import tools.vitruv.framework.correspondence.CorrespondenceModel
 
+import static com.google.common.base.Preconditions.*
 import static tools.vitruv.framework.util.XtendAssertHelper.*
 
 /**
  * Matches participation classes to their objects according to the specified
  * containment hierarchy.
  */
-@Utility
 class ParticipationMatcher {
 
 	val static Logger logger = Logger.getLogger(ParticipationMatcher)
 
+	val ContainmentTree containmentTree
+	val EObject startObject
+	val boolean followAttributeReferences
+	val CorrespondenceModel correspondenceModel
+
 	/**
-	 * Matches participation classes to their objects according to the given
-	 * containment tree.
+	 * Creates a new {@link ParticipationMatcher}.
+	 * 
+	 * @param containmentTree
+	 * 		the containment tree
+	 * @param start
+	 * 		an existing object inside the containment hierarchy that is used to
+	 * 		find the containment hierarchy's root object
+	 * @param followAttributeReferences
+	 * 		If <code>true</code> and the containment tree specifies attribute
+	 * 		references, attribute references outgoing from an object that
+	 * 		matches the attribute reference root are followed in order to find
+	 * 		candidate root objects for the matching to start at. For this to
+	 * 		work as expected, the given start object should either already be
+	 * 		the attribute reference root, or be contained by it.
+	 * @param correspondenceModel
+	 * 		the correspondence model
+	 */
+	new(ContainmentTree containmentTree, EObject startObject, boolean followAttributeReferences,
+		CorrespondenceModel correspondenceModel) {
+		checkNotNull(containmentTree, "containmentTree is null")
+		checkNotNull(startObject, "startObject is null")
+		checkNotNull(correspondenceModel, "correspondenceModel is null")
+		this.containmentTree = containmentTree
+		this.startObject = startObject
+		this.followAttributeReferences = followAttributeReferences
+		this.correspondenceModel = correspondenceModel
+	}
+
+	/**
+	 * Matches participation classes to their objects.
 	 * <p>
 	 * Participations can exist in either their own specified context, in which
 	 * case the containment hierarchy is either rooted in a Resource or, for
@@ -57,39 +88,23 @@ class ParticipationMatcher {
 	 * expected containment structure. The matching may therefore return
 	 * multiple candidate results.
 	 * 
-	 * @param containmentTree
-	 * 		the containment tree
-	 * @param start
-	 * 		an existing object inside the containment hierarchy that is used to
-	 * 		find the containment hierarchy's root object
-	 * @param followAttributeReferences
-	 * 		If <code>true</code> and the containment tree specifies attribute
-	 * 		references, attribute references outgoing from an object that
-	 * 		matches the attribute reference root are followed in order to find
-	 * 		candidate root objects for the matching to start at. For this to
-	 * 		work as expected, the given start object should either already be
-	 * 		the attribute reference root, or be contained by it.
-	 * @param correspondenceModel
-	 * 		the correspondence model
 	 * @return candidate mappings between participation class names and their
 	 * 		objects
 	 */
-	static def Iterable<ParticipationObjects> matchObjects(extension ContainmentTree containmentTree, EObject start,
-		boolean followAttributeReferences, CorrespondenceModel correspondenceModel) {
+	def Iterable<ParticipationObjects> matchObjects() {
 		if (containmentTree.attributeReferenceRootNode !== null) {
-			Preconditions.checkArgument(!containmentTree.attributeReferenceEdges.empty,
+			checkArgument(!containmentTree.attributeReferenceEdges.empty,
 				"Containment tree specifies an attribute reference root node but no attribute reference edges!")
 		}
 		logger.trace('''ContainmentTree: «containmentTree»''')
-		logger.trace('''Start object: «start»''')
+		logger.trace('''Start object: «startObject»''')
 		logger.trace('''followAttributeReferences: «followAttributeReferences»''')
 		val rootNode = containmentTree.getRoot
-		val candidateRootObjects = start.getCandidateRoots(containmentTree, correspondenceModel,
-			followAttributeReferences)
+		val candidateRootObjects = startObject.getCandidateRoots(followAttributeReferences)
 		logger.trace('''Candidate root objects: «candidateRootObjects»''')
 
 		val candidateMatches = candidateRootObjects.filter [ candidateRootObject |
-			containmentTree.matchesRootNode(candidateRootObject, correspondenceModel)
+			candidateRootObject.matchesRootNode()
 		].flatMap [ rootObject |
 			var rootMatch = new ParticipationObjects
 			rootMatch.addObject(rootNode.name, rootObject)
@@ -97,7 +112,7 @@ class ParticipationMatcher {
 			// valid match has been found. However, also ensure that partial matching results are getting cached once
 			// they have been calculated in order to not perform the same matching again when calculating all possible
 			// combinations of matched objects.
-			return containmentTree.matchChilds(rootMatch, rootNode, rootObject, correspondenceModel, 1)
+			return matchChilds(rootMatch, rootNode, rootObject, 1)
 		]
 		if (candidateMatches.empty) {
 			logger.trace('''No candidate matches found.''')
@@ -107,7 +122,7 @@ class ParticipationMatcher {
 			logger.trace('''Candidate match: «match»''')
 			if (containmentTree.attributeReferenceRootNode !== null) {
 				// Match the attribute reference root node and add its object to the result:
-				if (!matchAttributeReferenceRoot(containmentTree, match, correspondenceModel)) {
+				if (!match.matchAttributeReferenceRoot()) {
 					return null
 				}
 			}
@@ -128,8 +143,7 @@ class ParticipationMatcher {
 		]
 	}
 
-	private static def boolean matchesRootNode(ContainmentTree containmentTree, EObject candidateRootObject,
-		CorrespondenceModel correspondenceModel) {
+	private def boolean matchesRootNode(EObject candidateRootObject) {
 		val rootNode = containmentTree.root
 		// The root intermediate type restriction only applies to the root node if no attribute reference root node is
 		// specified.
@@ -137,12 +151,11 @@ class ParticipationMatcher {
 		if (containmentTree.attributeReferenceRootNode === null) {
 			rootIntermediateType = containmentTree.rootIntermediateType
 		}
-		return rootNode.matchesObject(candidateRootObject, correspondenceModel, rootIntermediateType, 0)
+		return rootNode.matchesObject(candidateRootObject, rootIntermediateType, 0)
 	}
 
 	// Returns true if the attribute reference root got matched:
-	private static def boolean matchAttributeReferenceRoot(ContainmentTree containmentTree, ParticipationObjects match,
-		CorrespondenceModel correspondenceModel) {
+	private def boolean matchAttributeReferenceRoot(ParticipationObjects match) {
 		val attributeReferenceRootNode = containmentTree.attributeReferenceRootNode
 		assertTrue(attributeReferenceRootNode !== null)
 		// We use a random attribute reference edge to find the attribute reference root object:
@@ -153,7 +166,7 @@ class ParticipationMatcher {
 		assertTrue(match.getObject(attributeReferenceRootNode.name) === null) // not yet matched
 		val operator = attributeReferenceEdge.operator
 		val containerObject = operator.getContainer(containedObject)
-		if (containerObject !== null && attributeReferenceRootNode.matchesObject(containerObject, correspondenceModel,
+		if (containerObject !== null && attributeReferenceRootNode.matchesObject(containerObject,
 			containmentTree.rootIntermediateType, 0)) {
 			match.addObject(attributeReferenceRootNode.name, containerObject)
 			logger.trace('''Matched attribute reference root: «containerObject»''')
@@ -163,7 +176,7 @@ class ParticipationMatcher {
 		return false
 	}
 
-	private static def boolean isAttributeReferenceEdgeFulfilled(ParticipationObjects match,
+	private def boolean isAttributeReferenceEdgeFulfilled(ParticipationObjects match,
 		ContainmentTree.OperatorEdge attributeReferenceEdge) {
 		val containerObject = match.getObject(attributeReferenceEdge.container.name)
 		assertTrue(containerObject !== null) // We expect that attribute reference root has already been matched
@@ -192,9 +205,8 @@ class ParticipationMatcher {
 	 * query the operators of its attribute reference edges for its contained
 	 * objects and continue the search for candidate root objects from there.
 	 */
-	private static def Iterable<? extends EObject> getCandidateRoots(EObject object, ContainmentTree containmentTree,
-		CorrespondenceModel correspondenceModel, boolean followAttributeReferences) {
-		assertTrue(object !== null && containmentTree !== null && correspondenceModel !== null)
+	private def Iterable<? extends EObject> getCandidateRoots(EObject object, boolean followAttributeReferences) {
+		assertTrue(object !== null)
 		if (object.isIntermediateRoot) {
 			return Collections.singleton(object)
 		}
@@ -203,7 +215,7 @@ class ParticipationMatcher {
 			Intermediate).empty) {
 			val attributeReferenceRootNode = containmentTree.attributeReferenceRootNode
 			if (attributeReferenceRootNode !== null) {
-				if (followAttributeReferences && attributeReferenceRootNode.matchesObject(object, correspondenceModel,
+				if (followAttributeReferences && attributeReferenceRootNode.matchesObject(object,
 					containmentTree.rootIntermediateType, 0)) {
 					logger.trace('''Found attribute reference root: «object»''')
 					logger.trace('''Following attribute references in order to find candidate root objects ...''')
@@ -216,7 +228,7 @@ class ParticipationMatcher {
 						.map [ containedObject |
 							// We only follow a single layer of attribute references. If we encounter another object
 							// that matches the attribute reference node, we abort the search.
-							containedObject.getCandidateRoots(containmentTree, correspondenceModel, false)
+							containedObject.getCandidateRoots(false)
 						].flatten.toSet
 				} else {
 					return Collections.emptySet
@@ -241,7 +253,7 @@ class ParticipationMatcher {
 		}
 
 		// continue searching the container:
-		return container.getCandidateRoots(containmentTree, correspondenceModel, followAttributeReferences)
+		return container.getCandidateRoots(followAttributeReferences)
 	}
 
 	private static def isIntermediateRoot(EObject object) {
@@ -261,10 +273,9 @@ class ParticipationMatcher {
 	 * The result is a set of candidate matches for the current parent match
 	 * and node.
 	 */
-	private static def Iterable<ParticipationObjects> matchChilds(extension ContainmentTree containmentTree,
-		ParticipationObjects parentMatch, ContainmentTree.Node currentNode, EObject currentObject,
-		CorrespondenceModel correspondenceModel, int depth) {
-		val nextContainments = currentNode.containments.toList
+	private def Iterable<ParticipationObjects> matchChilds(ParticipationObjects parentMatch,
+		ContainmentTree.Node currentNode, EObject currentObject, int depth) {
+		val nextContainments = containmentTree.getContainments(currentNode).toList
 		if (nextContainments.empty) {
 			// We reached a leaf inside the containment tree, so there are no more child nodes to match:
 			return Collections.singleton(parentMatch)
@@ -274,8 +285,8 @@ class ParticipationMatcher {
 			// TODO This is not lazy currently (see toList) to avoid doing the same matching multiple times for
 			// subsequent iterations. Ideally this should be lazy, but cache already computed results for later
 			// iterations.
-			containmentTree.matchContainmentEdge(parentMatch, currentNode, currentObject, containment,
-				correspondenceModel, depth).toList as Iterable<ParticipationObjects>
+			matchContainmentEdge(parentMatch, currentNode, currentObject, containment, depth).toList
+				as Iterable<ParticipationObjects>
 		].reduce [ prevMatches, nextMatches | // TODO reduce is not lazy!
 			// Cartesian product, skipping any incompatible combinations of matches:
 			prevMatches.flatMap [ prevMatch |
@@ -288,11 +299,10 @@ class ParticipationMatcher {
 		]
 	}
 
-	private static def Iterable<ParticipationObjects> matchContainmentEdge(extension ContainmentTree containmentTree,
-		ParticipationObjects parentMatch, ContainmentTree.Node currentNode, EObject currentObject,
-		ContainmentTree.Edge containment, CorrespondenceModel correspondenceModel, int depth) {
+	private def Iterable<ParticipationObjects> matchContainmentEdge(ParticipationObjects parentMatch,
+		ContainmentTree.Node currentNode, EObject currentObject, ContainmentTree.Edge containment, int depth) {
 		logger.trace('''«indent(depth)»Matching edge «containment.toSimpleString» ...''')
-		currentObject.getMatchingObjects(containment, correspondenceModel, depth)
+		currentObject.getMatchingObjects(containment, depth)
 			.filter [ childObject |
 				// Skip already matched objects:
 				val alreadyMatched = parentMatch.objects.contains(childObject)
@@ -310,12 +320,12 @@ class ParticipationMatcher {
 				val childMatch = parentMatch.copy
 				childMatch.addObject(childNode.name, childObject)
 				//  Try to complete the match:
-				return containmentTree.matchChilds(childMatch, childNode, childObject, correspondenceModel, depth + 1)
+				return matchChilds(childMatch, childNode, childObject, depth + 1)
 			]
 	}
 
-	private static def Iterable<? extends EObject> getMatchingObjects(EObject container,
-		ContainmentTree.Edge containmentEdge, CorrespondenceModel correspondenceModel, int depth) {
+	private def Iterable<? extends EObject> getMatchingObjects(EObject container, ContainmentTree.Edge containmentEdge,
+		int depth) {
 		var Iterable<? extends EObject> candidateObjects = Collections.emptySet
 		if (container.isResourceBridge) {
 			candidateObjects = (container as IntermediateResourceBridge).emfResource?.contents
@@ -333,7 +343,7 @@ class ParticipationMatcher {
 			candidateObjects = containmentEdge.operator.getContainedObjects(container)
 		}
 		val containedNode = containmentEdge.contained
-		return candidateObjects.filter[containedNode.matchesObject(it, correspondenceModel, null, depth)]
+		return candidateObjects.filter[containedNode.matchesObject(it, null, depth)]
 	}
 
 	/**
@@ -343,8 +353,8 @@ class ParticipationMatcher {
 	 *   Intermediate of that type has to exist.
 	 * - Otherwise: The object does not correspond to any Intermediate instance yet.
 	 */
-	private static def matchesObject(ContainmentTree.Node node, EObject object,
-		CorrespondenceModel correspondenceModel, EClass correspondingIntermediateType, int depth) {
+	private def matchesObject(ContainmentTree.Node node, EObject object, EClass correspondingIntermediateType,
+		int depth) {
 		if (!node.type.isInstance(object)) { // also checks for null object
 			logger.trace('''«indent(depth)»Node «node.toSimpleString»: Object is of wrong type «object»''')
 			return false

@@ -443,21 +443,29 @@ class ParticipationMatchingReactionsBuilder extends ReactionsGenerationHelper {
 				}
 			]
 
-			// Match participation objects:
+			// Create participation matcher:
 			val participationMatcherType = typeProvider.findDeclaredType(ParticipationMatcher).imported
-			val matchObjectsMethod = participationMatcherType.findMethod('matchObjects')
-			val candidateMatchesVar = XbaseFactory.eINSTANCE.createXVariableDeclaration => [
-				name = 'candidateMatches'
-				type = jvmTypeReferenceBuilder.typeRef(Iterable, jvmTypeReferenceBuilder.typeRef(ParticipationObjects))
-				right = participationMatcherType.memberFeatureCall(matchObjectsMethod) => [
-					staticWithDeclaringType = true
-					memberCallArguments += expressions(
+			val participationMatcherVar = XbaseFactory.eINSTANCE.createXVariableDeclaration => [
+				name = 'participationMatcher'
+				right = XbaseFactory.eINSTANCE.createXConstructorCall => [
+					constructor = participationMatcherType.findConstructor()
+					explicitConstructorCall = true
+					arguments += expressions(
 						containmentTreeVar.featureCall,
 						variable(START_OBJECT),
 						variable(FOLLOW_ATTRIBUTE_REFERENCES),
 						correspondenceModel
 					)
 				]
+			]
+			expressions += participationMatcherVar
+
+			// Match participation objects:
+			val matchObjectsMethod = participationMatcherType.findMethod('matchObjects')
+			val candidateMatchesVar = XbaseFactory.eINSTANCE.createXVariableDeclaration => [
+				name = 'candidateMatches'
+				type = jvmTypeReferenceBuilder.typeRef(Iterable, jvmTypeReferenceBuilder.typeRef(ParticipationObjects))
+				right = participationMatcherVar.featureCall.memberFeatureCall(matchObjectsMethod)
 			]
 			expressions += candidateMatchesVar
 
