@@ -57,6 +57,11 @@ class ReactionsGeneratorConventions {
 			participationClass.name»'''
 	}
 
+	static def String getResourceCorrespondenceTag(ParticipationClass resourceClass,
+		ParticipationClass containedClass) {
+		return '''resource'''
+	}
+
 	static def String getReactionName(Commonality commonality) {
 		return '''«commonality.concept.name»_«commonality.name»'''
 	}

@@ -3,7 +3,10 @@ package tools.vitruv.extensions.dslruntime.commonalities.helper
 import edu.kit.ipd.sdq.activextendannotations.Utility
 import org.eclipse.emf.ecore.EObject
 import tools.vitruv.extensions.dslruntime.commonalities.intermediatemodelbase.Intermediate
+import tools.vitruv.extensions.dslruntime.commonalities.resources.IntermediateResourceBridge
 import tools.vitruv.framework.correspondence.CorrespondenceModel
+
+import static com.google.common.base.Preconditions.*
 
 import static extension tools.vitruv.extensions.dslsruntime.reactions.helper.ReactionsCorrespondenceHelper.*
 
@@ -19,5 +22,12 @@ class IntermediateModelHelper {
 		EObject object, Class<I> intermediateType) {
 		// Assumption: Each object has at most one Intermediate correspondence.
 		return correspondenceModel.getCorrespondingObjectsOfType(object, null, intermediateType).head
+	}
+
+	static def IntermediateResourceBridge getCorrespondingResourceBridge(CorrespondenceModel correspondenceModel,
+		EObject object) {
+		checkArgument(!(object instanceof Intermediate), "object cannot be of type Intermediate")
+		// Assumption: Each object has at most one Resource correspondence.
+		return correspondenceModel.getCorrespondingObjectsOfType(object, null, IntermediateResourceBridge).head
 	}
 }

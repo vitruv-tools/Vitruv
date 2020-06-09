@@ -105,6 +105,7 @@ class CommonalityInsertReactionsBuilder extends ReactionsSubGenerator {
 		if (isReferenceRootClass(contextClass)) {
 			return REFERENCE_ROOT
 		} else {
+			assertTrue(!contextClass.isExternal)
 			return contextClass.participationClass.correspondingVariableName
 		}
 	}
@@ -204,8 +205,9 @@ class CommonalityInsertReactionsBuilder extends ReactionsSubGenerator {
 					participationContext.getVariableName(it)
 				]
 				val Consumer<ActionStatementBuilder> correspondenceSetup = [
+					// Correspondences between participation objects and intermediate:
 					managedClasses.forEach [ contextClass |
-						addCorrespondence(commonality, contextClass.participationClass)
+						addIntermediateCorrespondence(commonality, contextClass.participationClass)
 					]
 				]
 				val applyAttributes = true
@@ -241,7 +243,7 @@ class CommonalityInsertReactionsBuilder extends ReactionsSubGenerator {
 					// created for:
 					val rootClass = participationContext.rootContainerClass
 					assertTrue(rootClass.participationClass.isForResource)
-					addCorrespondence(commonality, rootClass.participationClass)
+					addIntermediateCorrespondence(commonality, rootClass.participationClass)
 
 					// Add singleton correspondence:
 					// Note: We don't add correspondences for the containers of the singleton object (except for the
@@ -273,6 +275,8 @@ class CommonalityInsertReactionsBuilder extends ReactionsSubGenerator {
 
 		// Setup correspondences:
 		correspondenceSetup.accept(it)
+		// We always also setup correspondences for resource bridges and their contained objects:
+		setupResourceBridgeCorrespondences(containments)
 
 		// Any initialization that needs to happen after all objects were created:
 		executePostInitializers(participationContext, classes)
@@ -341,11 +345,29 @@ class CommonalityInsertReactionsBuilder extends ReactionsSubGenerator {
 		]
 	}
 
-	private def addCorrespondence(extension ActionStatementBuilder actionBuilder, Commonality commonality,
+	private def addIntermediateCorrespondence(extension ActionStatementBuilder actionBuilder, Commonality commonality,
 		ParticipationClass participationClass) {
 		val corresponding = participationClass.correspondingVariableName
 		addCorrespondenceBetween(INTERMEDIATE).and(corresponding)
 			.taggedWith(participationClass.getCorrespondenceTag(commonality))
+	}
+
+	private def setupResourceBridgeCorrespondences(extension ActionStatementBuilder actionBuilder,
+		Iterable<ContextContainment<?>> containments) {
+		containments.filter[container.participationClass.isForResource].forEach [
+			assertTrue(!container.isExternal && !contained.isExternal)
+			val resourceClass = container.participationClass
+			val containedClass = contained.participationClass
+			actionBuilder.addResourceBridgeCorrespondence(resourceClass, containedClass)
+		]
+	}
+
+	private def addResourceBridgeCorrespondence(extension ActionStatementBuilder actionBuilder,
+		ParticipationClass resourceClass, ParticipationClass containedClass) {
+		val resourceBridge = resourceClass.correspondingVariableName
+		val containedObject = containedClass.correspondingVariableName
+		addCorrespondenceBetween(resourceBridge).and(containedObject)
+			.taggedWith(resourceClass.getResourceCorrespondenceTag(containedClass))
 	}
 
 	private def setupContainments(extension TypeProvider typeProvider, Iterable<ContextContainment<?>> containments,

@@ -627,6 +627,15 @@ class ParticipationMatchingReactionsBuilder extends ReactionsGenerationHelper {
 			resourceClass.getParticipationObject(variable(PARTICIPATION_OBJECTS), typeProvider)
 		])
 
+		// Add correspondences between the resource bridge and its contained objects:
+		participation.resourceContainments.map[contained].forEach [ containedClass |
+			addCorrespondenceBetween [ extension typeProvider |
+				resourceClass.getParticipationObject(variable(PARTICIPATION_OBJECTS), typeProvider)
+			].and [ extension typeProvider |
+				containedClass.getParticipationObject(variable(PARTICIPATION_OBJECTS), typeProvider)
+			].taggedWith(resourceClass.getResourceCorrespondenceTag(containedClass))
+		]
+
 		call(segment.getInsertResourceBridgeRoutine(resourceClass), new RoutineCallParameter [ extension typeProvider |
 			resourceClass.getParticipationObject(variable(PARTICIPATION_OBJECTS), typeProvider)
 		], new RoutineCallParameter(INTERMEDIATE))

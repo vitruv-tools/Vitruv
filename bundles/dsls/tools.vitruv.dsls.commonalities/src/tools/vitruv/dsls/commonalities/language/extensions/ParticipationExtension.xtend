@@ -111,6 +111,10 @@ package class ParticipationExtension {
 		return participation.classes.findFirst[isForResource]
 	}
 
+	static def getResourceContainments(Participation participation) {
+		return participation.containments.filter[container.isForResource]
+	}
+
 	static def hasSingletonClass(Participation participation) {
 		return (participation.singletonClass !== null)
 	}
