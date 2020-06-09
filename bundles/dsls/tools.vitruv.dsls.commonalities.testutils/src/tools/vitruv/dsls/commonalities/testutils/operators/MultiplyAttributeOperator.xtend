@@ -14,8 +14,8 @@ import static tools.vitruv.framework.util.XtendAssertHelper.*
  */
 @AttributeMappingOperator(
 	name = 'multiply',
-	commonalityAttributeType = @AttributeType(multiValued = false, type = typeof(int)),
-	participationAttributeType = @AttributeType(multiValued = false, type = typeof(int))
+	commonalityAttributeType = @AttributeType(multiValued = false, type = int),
+	participationAttributeType = @AttributeType(multiValued = false, type = int)
 )
 class MultiplyAttributeOperator extends AbstractAttributeMappingOperator<Integer, Integer> {
 

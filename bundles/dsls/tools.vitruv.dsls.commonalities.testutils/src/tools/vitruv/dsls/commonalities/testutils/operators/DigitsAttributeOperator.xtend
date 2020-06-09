@@ -15,8 +15,8 @@ import tools.vitruv.extensions.dslsruntime.reactions.ReactionExecutionState
  */
 @AttributeMappingOperator(
 	name = 'digits',
-	commonalityAttributeType = @AttributeType(multiValued = true, type = typeof(Integer)),
-	participationAttributeType = @AttributeType(multiValued = false, type = typeof(Integer))
+	commonalityAttributeType = @AttributeType(multiValued = true, type = Integer),
+	participationAttributeType = @AttributeType(multiValued = false, type = Integer)
 )
 class DigitsAttributeOperator extends AbstractAttributeMappingOperator<List<Integer>, Integer> {
 

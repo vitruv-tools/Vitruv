@@ -10,10 +10,7 @@ class ClassUtil {
 	static val Map<String, Class<?>> primitiveClassesByName = initPrimitiveClassesByName()
 
 	private static def Map<String, Class<?>> initPrimitiveClassesByName() {
-		val primitiveClasses = #[
-			typeof(boolean), typeof(byte), typeof(char), typeof(double),
-			typeof(float), typeof(int), typeof(long), typeof(short)
-		]
+		val primitiveClasses = #[boolean, byte, char, double, float, int, long, short]
 		val primitiveClassesByName = new HashMap<String, Class<?>>
 		for (Class<?> primitiveClass : primitiveClasses) {
 			primitiveClassesByName.put(primitiveClass.name, primitiveClass)
