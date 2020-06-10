@@ -78,6 +78,8 @@ class IntermediateMetamodelGenerator extends SubGenerator {
 		ResourceSet resourceSet) {
 		val outputUri = conceptName.intermediateMetamodelUri
 		val outputResource = resourceSet.getResource(outputUri, false) ?: resourceSet.createResource(outputUri)
+		// Delete any previously existing intermediate metamodel:
+		outputResource.contents.clear
 
 		val packageGenerator = new EPackageGenerator(conceptName, commonalityFiles, generationContext)
 		val generatedPackage = packageGenerator.generateEPackage()
