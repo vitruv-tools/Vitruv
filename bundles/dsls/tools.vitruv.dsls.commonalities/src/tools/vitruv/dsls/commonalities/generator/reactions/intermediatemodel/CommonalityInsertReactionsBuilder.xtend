@@ -327,7 +327,7 @@ class CommonalityInsertReactionsBuilder extends ReactionsSubGenerator {
 		for (participationClass : participation.rootContainerClasses) {
 			val participatingCommonality = participationClass.participatingCommonality
 			assertTrue(participatingCommonality !== null)
-			call(segment.getInsertIntermediateRoutine(participatingCommonality),
+			call(segment.getInsertIntermediateRoutine(participatingCommonality.concept),
 				new RoutineCallParameter(participationClass.correspondingVariableName))
 		}
 	}

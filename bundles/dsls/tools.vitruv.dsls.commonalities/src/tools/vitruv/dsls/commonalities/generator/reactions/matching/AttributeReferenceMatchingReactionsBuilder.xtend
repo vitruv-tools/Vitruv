@@ -474,7 +474,7 @@ class AttributeReferenceMatchingReactionsBuilder extends ReactionsGenerationHelp
 							variable(REFERENCING_INTERMEDIATE), commonalityReference)
 						// Then move the referenced intermediate to the intermediate model root:
 						then = routineCallContext.createRoutineCall(typeProvider,
-							segment.getInsertIntermediateRoutine(referencedCommonality),
+							segment.getInsertIntermediateRoutine(referencedCommonality.concept),
 							variable(REFERENCED_INTERMEDIATE))
 					]
 					// In either case: Return from the routine.

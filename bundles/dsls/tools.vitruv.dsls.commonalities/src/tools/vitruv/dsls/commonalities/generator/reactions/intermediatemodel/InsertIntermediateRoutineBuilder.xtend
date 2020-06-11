@@ -7,12 +7,12 @@ import org.eclipse.xtext.xbase.XbaseFactory
 import tools.vitruv.dsls.commonalities.generator.reactions.helper.ReactionsGenerationHelper
 import tools.vitruv.dsls.commonalities.generator.reactions.util.ReactionsSegmentScopedProvider
 import tools.vitruv.dsls.commonalities.generator.util.guice.GenerationScoped
-import tools.vitruv.dsls.commonalities.language.Commonality
 import tools.vitruv.dsls.commonalities.language.Concept
 import tools.vitruv.dsls.reactions.builder.FluentReactionsSegmentBuilder
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder
 import tools.vitruv.dsls.reactions.builder.TypeProvider
 import tools.vitruv.extensions.dslruntime.commonalities.IntermediateModelManagement
+import tools.vitruv.extensions.dslruntime.commonalities.intermediatemodelbase.IntermediateModelBasePackage
 
 import static com.google.common.base.Preconditions.*
 import static tools.vitruv.dsls.commonalities.generator.reactions.ReactionsGeneratorConventions.*
@@ -21,7 +21,6 @@ import static tools.vitruv.dsls.commonalities.generator.reactions.util.Reactions
 
 import static extension tools.vitruv.dsls.commonalities.generator.reactions.util.JvmTypeProviderHelper.*
 import static extension tools.vitruv.dsls.commonalities.generator.reactions.util.XbaseHelper.*
-import static extension tools.vitruv.dsls.commonalities.language.extensions.CommonalitiesLanguageModelExtensions.*
 
 class InsertIntermediateRoutineBuilder extends ReactionsGenerationHelper {
 
@@ -32,8 +31,8 @@ class InsertIntermediateRoutineBuilder extends ReactionsGenerationHelper {
 			return new InsertIntermediateRoutineBuilder(segment).injectMembers
 		}
 
-		def getInsertIntermediateRoutine(FluentReactionsSegmentBuilder segment, Commonality commonality) {
-			return getFor(segment).getInsertIntermediateRoutine(commonality)
+		def getInsertIntermediateRoutine(FluentReactionsSegmentBuilder segment, Concept concept) {
+			return getFor(segment).getInsertIntermediateRoutine(concept)
 		}
 	}
 
@@ -52,11 +51,10 @@ class InsertIntermediateRoutineBuilder extends ReactionsGenerationHelper {
 		throw new IllegalStateException("Use the Provider to get instances of this class!")
 	}
 
-	def getInsertIntermediateRoutine(Commonality commonality) {
-		val concept = commonality.concept
+	def getInsertIntermediateRoutine(Concept concept) {
 		return insertIntermediateRoutines.computeIfAbsent(concept.name) [
 			create.routine('''insertIntermediate_«concept.name»''')
-				.input [model(commonality.changeClass, INTERMEDIATE)]
+				.input [model(IntermediateModelBasePackage.Literals.INTERMEDIATE, INTERMEDIATE)]
 				.action [
 					execute [insertIntermediate(concept, variable(INTERMEDIATE))]
 				]

@@ -260,7 +260,7 @@ class ParticipationMatchingReactionsBuilder extends ReactionsGenerationHelper {
 		segment += participationContext.createIntermediateRoutine
 
 		if (participationContext.isRootContext) {
-			segment += segment.getInsertIntermediateRoutine(commonality)
+			segment += segment.getInsertIntermediateRoutine(commonality.concept)
 		}
 
 		if (participationContext.forReferenceMapping) {
@@ -570,7 +570,8 @@ class ParticipationMatchingReactionsBuilder extends ReactionsGenerationHelper {
 						)
 					} else {
 						// Insert new intermediate into the intermediate model root:
-						call(segment.getInsertIntermediateRoutine(commonality), new RoutineCallParameter(INTERMEDIATE))
+						call(segment.getInsertIntermediateRoutine(commonality.concept),
+							new RoutineCallParameter(INTERMEDIATE))
 					}
 
 					// Apply all attribute mappings:
