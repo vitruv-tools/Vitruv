@@ -108,7 +108,7 @@ class EClassAdapter extends EClassMetaclassImpl implements Wrapper<EClass> {
 	}
 
 	override getAllMembers() {
-		new UnmodifiableEList(attributes)
+		new UnmodifiableEList(getAttributes())
 	}
 
 	override toString() {

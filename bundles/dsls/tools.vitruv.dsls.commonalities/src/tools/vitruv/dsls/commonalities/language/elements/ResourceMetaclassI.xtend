@@ -53,11 +53,8 @@ class ResourceMetaclassI extends ResourceMetaclassImpl implements Wrapper<EClass
 	}
 
 	override getAttributes() {
-		if (attributes === null) {
-			checkAdapterCreated()
-			super.getAttributes() += adapter.attributes
-		}
-		attributes
+		checkAdapterCreated()
+		return new UnmodifiableEList(adapter.attributes)
 	}
 
 	override basicGetDomain() {
@@ -82,6 +79,7 @@ class ResourceMetaclassI extends ResourceMetaclassImpl implements Wrapper<EClass
 	}
 
 	override getAllMembers() {
+		checkAdapterCreated()
 		new UnmodifiableEList(adapter.allMembers)
 	}
 

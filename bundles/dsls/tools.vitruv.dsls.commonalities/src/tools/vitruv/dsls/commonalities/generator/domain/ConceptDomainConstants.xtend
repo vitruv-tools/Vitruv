@@ -10,7 +10,7 @@ import static extension tools.vitruv.dsls.commonalities.generator.intermediatemo
 @Utility
 class ConceptDomainConstants {
 
-	static val DOMAIN_TYPES_BASE_URI = URI.createURI('synthetic:/domainTypes')
+	static val DOMAIN_TYPES_BASE_URI = URI.createURI('synthetic:/commonalities/domainTypes')
 
 	@Pure
 	static def getConceptDomainName(Concept concept) {
