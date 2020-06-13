@@ -52,11 +52,12 @@ package class ParticipationConditionExtension {
 		if (!condition.isContainment) {
 			return null
 		}
-		val container = condition.rightOperands.head?.participationClass
+		val containerOperand = condition.rightOperands.head
+		val container = containerOperand?.participationClass
 		if (container === null) {
 			return null
 		}
 		val contained = condition.leftOperand.participationClass
-		return new ReferenceContainment(container, contained, condition.leftOperand.participationAttribute)
+		return new ReferenceContainment(container, contained, containerOperand.participationAttribute)
 	}
 }
