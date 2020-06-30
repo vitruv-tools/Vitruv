@@ -3,18 +3,12 @@ package tools.vitruv.dsls.commonalities.ui.tests.attributeoperators
 import allElementTypes.AllElementTypesFactory
 import allElementTypes2.AllElementTypes2Factory
 import com.google.inject.Inject
-import org.eclipse.xtext.testing.InjectWith
-import org.eclipse.xtext.testing.XtextRunner
 import org.junit.Test
-import org.junit.runner.RunWith
-import tools.vitruv.dsls.commonalities.testutils.CombinedUiInjectorProvider
 import tools.vitruv.dsls.commonalities.testutils.CommonalitiesExecutionTest
 
 import static org.hamcrest.MatcherAssert.assertThat
 import static tools.vitruv.testutils.matchers.ModelMatchers.*
 
-@RunWith(XtextRunner)
-@InjectWith(CombinedUiInjectorProvider)
 class AttributeMappingOperatorTest extends CommonalitiesExecutionTest {
 
 	@Inject AttributeMappingOperatorTestCompiler compiler

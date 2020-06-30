@@ -6,13 +6,9 @@ import allElementTypes2.AllElementTypes2Factory
 import allElementTypes2.Root2
 import com.google.inject.Inject
 import org.eclipse.emf.ecore.util.EcoreUtil
-import org.eclipse.xtext.testing.InjectWith
-import org.eclipse.xtext.testing.XtextRunner
 import org.junit.Test
-import org.junit.runner.RunWith
 import pcm_mockup.Pcm_mockupFactory
 import pcm_mockup.Repository
-import tools.vitruv.dsls.commonalities.testutils.CombinedUiInjectorProvider
 import tools.vitruv.dsls.commonalities.testutils.CommonalitiesExecutionTest
 import uml_mockup.UPackage
 import uml_mockup.Uml_mockupFactory
@@ -20,8 +16,6 @@ import uml_mockup.Uml_mockupFactory
 import static org.hamcrest.MatcherAssert.assertThat
 import static tools.vitruv.testutils.matchers.ModelMatchers.*
 
-@RunWith(XtextRunner)
-@InjectWith(CombinedUiInjectorProvider)
 class IdentifiedExecutionTest extends CommonalitiesExecutionTest {
 
 	@Inject IdentifiedExecutionTestCompiler compiler
