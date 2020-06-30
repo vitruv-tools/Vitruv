@@ -8,6 +8,7 @@ import java.util.List
 import java.util.Map
 import java.util.Stack
 import java.util.function.Consumer
+import org.eclipse.emf.ecore.EClassifier
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EStructuralFeature
 import org.eclipse.emf.ecore.resource.Resource
@@ -41,6 +42,14 @@ class ModelMatchers {
 	// ignores features that are unset in the expected (!) object
 	def static ignoringUnsetFeatures() {
 		return new IgnoreUnsetFeatures()
+	}
+
+	def static ignoringFeaturesOfType(EClassifier featureType) {
+		return new IgnoreTypedFeatures(featureType)
+	}
+
+	def static ignoringAllExceptFeaturesOfType(EClassifier... featureTypes) {
+		return new IgnoreAllExceptTypedFeatures(featureTypes)
 	}
 }
 
@@ -303,6 +312,38 @@ class IgnoreUnsetFeatures implements FeatureMatcher {
 
 	override isForFeature(EObject expectedObject, EStructuralFeature feature) {
 		!expectedObject.eIsSet(feature)
+	}
+
+	override getMismatch(Object expectedValue, Object itemValue) {
+		null
+	}
+}
+
+class IgnoreTypedFeatures implements FeatureMatcher {
+	val EClassifier featureType
+
+	package new(EClassifier featureType) {
+		this.featureType = featureType
+	}
+
+	override isForFeature(EObject expectedObject, EStructuralFeature feature) {
+		feature.EType == featureType
+	}
+
+	override getMismatch(Object expectedValue, Object itemValue) {
+		null
+	}
+}
+
+class IgnoreAllExceptTypedFeatures implements FeatureMatcher {
+	val List<EClassifier> featureTypes
+
+	package new(EClassifier... featureTypes) {
+		this.featureTypes = featureTypes
+	}
+
+	override isForFeature(EObject expectedObject, EStructuralFeature feature) {
+		!featureTypes.contains(feature.EType)
 	}
 
 	override getMismatch(Object expectedValue, Object itemValue) {
