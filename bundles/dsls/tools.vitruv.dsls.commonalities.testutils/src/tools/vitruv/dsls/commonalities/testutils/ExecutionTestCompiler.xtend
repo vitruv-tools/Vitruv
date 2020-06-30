@@ -92,9 +92,13 @@ abstract class ExecutionTestCompiler {
 		ResourcesPlugin.workspace.description = ResourcesPlugin.workspace.description => [autoBuilding = false]
 
 		// copy in the source files
-		for (commonalityInputFile : commonalityFiles) {
-			testProject.sourceFolder.getFile(Paths.get(commonalityInputFile).last.toString).create(
-				class.getResourceAsStream(commonalityInputFile), true, null)
+		for (commonalityFile : commonalityFiles) {
+			val commonalityFileInputStream = class.getResourceAsStream(commonalityFile)
+			if (commonalityFileInputStream === null) {
+				throw new RuntimeException("Could not find commonality file at: " + commonalityFile)
+			}
+			testProject.sourceFolder.getFile(Paths.get(commonalityFile).last.toString).create(
+				commonalityFileInputStream, true, null)
 		}
 
 		testProject.refresh()
