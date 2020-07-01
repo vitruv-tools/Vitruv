@@ -23,54 +23,52 @@ import static extension tools.vitruv.dsls.commonalities.generator.reactions.util
 @Utility
 class EmfAccessExpressions {
 
-	private static def eGetFeatureValue(extension TypeProvider typeProvider, XExpression object, String featureName) {
+	private static def eGetFeatureValue(extension TypeProvider typeProvider, XExpression object, EStructuralFeature eFeature) {
 		XbaseFactory.eINSTANCE.createXMemberFeatureCall => [
 			memberCallTarget = object
 			feature = typeProvider.findMethod(EObject, 'eGet', 1, EStructuralFeature)
 			explicitOperationCall = true
-			memberCallArguments += getEFeature(typeProvider, object.copy, featureName)
+			memberCallArguments += getEFeature(typeProvider, object.copy, eFeature)
 		]
 	}
 
-	private static def eSetFeatureValue(extension TypeProvider typeProvider,  XExpression object, String featureName,
+	private static def eSetFeatureValue(extension TypeProvider typeProvider,  XExpression object, EStructuralFeature eFeature,
 		XExpression newValue) {
 		XbaseFactory.eINSTANCE.createXMemberFeatureCall => [
 			memberCallTarget = object
 			feature = typeProvider.findMethod(EObject, 'eSet')
 			explicitOperationCall = true
-			memberCallArguments += getEFeature(typeProvider, object.copy, featureName)
+			memberCallArguments += getEFeature(typeProvider, object.copy, eFeature)
 			memberCallArguments += newValue
 		]
 	}
 
 	private static def eGetListFeatureValue(extension TypeProvider typeProvider, XExpression object,
-		String featureName) {
+		EStructuralFeature eFeature) {
 		XbaseFactory.eINSTANCE.createXCastedExpression => [
 			type = TypesFactory.eINSTANCE.createJvmParameterizedTypeReference => [
 				type = typeProvider.findType(Collection)
-				arguments += TypesFactory.eINSTANCE.createJvmParameterizedTypeReference => [
-					type = typeProvider.findType(Object)
-				]
+				arguments += typeProvider.jvmTypeReferenceBuilder.typeRef(eFeature.EType.javaClassName)
 			]
-			target = eGetFeatureValue(typeProvider, object, featureName)
+			target = eGetFeatureValue(typeProvider, object, eFeature)
 		]
 	}
 
 	private static def eAddListFeatureValue(extension TypeProvider typeProvider, XExpression object,
-		String featureName, XExpression newValue) {
-		val getList = eGetListFeatureValue(typeProvider, object, featureName)
+		EStructuralFeature eFeature, XExpression newValue) {
+		val getList = eGetListFeatureValue(typeProvider, object, eFeature)
 		addToCollection(typeProvider, getList, newValue)
 	}
 
 	private static def eRemoveListFeatureValue(extension TypeProvider typeProvider, XExpression object,
-		String featureName, XExpression newValue) {
-		val getList = eGetListFeatureValue(typeProvider, object, featureName)
+		EStructuralFeature eFeature, XExpression newValue) {
+		val getList = eGetListFeatureValue(typeProvider, object, eFeature)
 		removeFromCollection(typeProvider, getList, newValue)
 	}
 
 	private static def eSetListFeatureValue(extension TypeProvider typeProvider, XExpression object,
-		String featureName, XExpression newValues) {
-		val getList = eGetListFeatureValue(typeProvider, object, featureName)
+		EStructuralFeature eFeature, XExpression newValues) {
+		val getList = eGetListFeatureValue(typeProvider, object, eFeature)
 		// See setListFeatureValue regarding why this check is required:
 		return XbaseFactory.eINSTANCE.createXIfExpression => [
 			^if = getList.notEquals(newValues, typeProvider)
@@ -90,7 +88,10 @@ class EmfAccessExpressions {
 			return getEFeatureValue(typeProvider, object, eFeature)
 		} catch (NoSuchJvmElementException e) {
 			// if that fails, use EMF's reflection:
-			return eGetFeatureValue(typeProvider, object, eFeature.name)
+			return XbaseFactory.eINSTANCE.createXCastedExpression => [
+				type = typeProvider.jvmTypeReferenceBuilder.typeRef(eFeature.EType.javaClassName)
+				target = eGetFeatureValue(typeProvider, object, eFeature)
+			]
 		}
 	}
 
@@ -109,7 +110,7 @@ class EmfAccessExpressions {
 			]
 		} catch (NoSuchJvmElementException e) {
 			// if that fails, use EMF's reflection:
-			return eSetFeatureValue(typeProvider, object, eFeature.name, newValue)
+			return eSetFeatureValue(typeProvider, object, eFeature, newValue)
 		}
 	}
 
@@ -120,7 +121,7 @@ class EmfAccessExpressions {
 			return getEFeatureValue(typeProvider, object, eFeature)
 		} catch (NoSuchJvmElementException e) {
 			// if that fails, use EMF's reflection:
-			return eGetListFeatureValue(typeProvider, object, eFeature.name)
+			return eGetListFeatureValue(typeProvider, object, eFeature)
 		}
 	}
 
@@ -132,7 +133,7 @@ class EmfAccessExpressions {
 			return addToCollection(typeProvider, getList, newValue)
 		} catch (NoSuchJvmElementException e) {
 			// if that fails, use EMF's reflection:
-			return eAddListFeatureValue(typeProvider, object, eFeature.name, newValue)
+			return eAddListFeatureValue(typeProvider, object, eFeature, newValue)
 		}
 	}
 
@@ -144,7 +145,7 @@ class EmfAccessExpressions {
 			return removeFromCollection(typeProvider, getList, newValue)
 		} catch (NoSuchJvmElementException e) {
 			// if that fails, use EMF's reflection:
-			return eRemoveListFeatureValue(typeProvider, object, eFeature.name, newValue)
+			return eRemoveListFeatureValue(typeProvider, object, eFeature, newValue)
 		}
 	}
 
@@ -169,20 +170,35 @@ class EmfAccessExpressions {
 			]
 		} catch (NoSuchJvmElementException e) {
 			// if that fails, use EMF's reflection:
-			return eSetListFeatureValue(typeProvider, object, eFeature.name, newValues)
+			return eSetListFeatureValue(typeProvider, object, eFeature, newValues)
 		}
 	}
 
-	// throws NoSuchJvmElementException on failure
+	// Tries to guess the accessor method name.
+	// Throws NoSuchJvmElementException on failure.
 	private static def getEFeatureValue(extension TypeProvider typeProvider, XExpression object,
 		EStructuralFeature eFeature) {
 		val containingInstanceClassName = eFeature.EContainingClass.javaClassName
 		if (containingInstanceClassName === null) {
 			throw new RuntimeException('''Containing instance class name is null!''')
 		}
-		XbaseFactory.eINSTANCE.createXMemberFeatureCall => [
+		val instanceClassName = eFeature.EType.instanceClassName
+		val isBooleanType = (instanceClassName == boolean.name || instanceClassName == Boolean.name)
+		var String accessorPrefix
+		if (isBooleanType) {
+			if (eFeature.name.startsWith('is')) {
+				// Example: UML2::Class#isFinalSpecialization(boolean)
+				accessorPrefix = ''
+			} else {
+				accessorPrefix = 'is'
+			}
+		} else {
+			accessorPrefix = 'get'
+		}
+		val accessorName = accessorPrefix + (accessorPrefix.empty ? eFeature.name : eFeature.name.toFirstUpper)
+		return XbaseFactory.eINSTANCE.createXMemberFeatureCall => [
 			memberCallTarget = object
-			feature = typeProvider.findMethod(containingInstanceClassName, 'get' + eFeature.name.toFirstUpper, 0)
+			feature = typeProvider.findMethod(containingInstanceClassName, accessorName, 0)
 		]
 	}
 
@@ -221,7 +237,7 @@ class EmfAccessExpressions {
 	 * Reflective retrieval of EMF meta objects:
 	 */
 
-	static def getEFeature(extension TypeProvider typeProvider, XExpression object, String featureName) {
+	static def getEFeature(extension TypeProvider typeProvider, XExpression object, EStructuralFeature eFeature) {
 		// TODO try to guess feature literal or package accessor?
 		XbaseFactory.eINSTANCE.createXMemberFeatureCall => [
 			memberCallTarget = XbaseFactory.eINSTANCE.createXMemberFeatureCall => [
@@ -231,7 +247,7 @@ class EmfAccessExpressions {
 			feature = typeProvider.findMethod(EClass, 'getEStructuralFeature', String)
 			explicitOperationCall = true
 			memberCallArguments += XbaseFactory.eINSTANCE.createXStringLiteral => [
-				value = featureName
+				value = eFeature.name
 			]
 		]
 	}

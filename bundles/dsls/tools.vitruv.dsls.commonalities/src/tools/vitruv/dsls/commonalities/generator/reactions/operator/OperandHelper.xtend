@@ -80,7 +80,7 @@ class OperandHelper extends ReactionsGenerationHelper {
 			explicitConstructorCall = true
 			arguments += expressions(
 				object,
-				getEFeature(typeProvider, object.copy, attribute.name)
+				getEFeature(typeProvider, object.copy, attribute.correspondingEFeature)
 			)
 		]
 	}
