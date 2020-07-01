@@ -59,25 +59,25 @@ class ClassifierProvider {
 	}
 
 	// Returns null if no corresponding EClassifier is found
-	def Classifier findClassifier(Domain containingDomain, Class<?> instanceClass) {
-		if (instanceClass === null) return null
-		val eClassifier = containingDomain.findEClassifier(instanceClass)
+	def Classifier findClassifier(Domain containingDomain, String qualifiedInstanceClassName) {
+		if (qualifiedInstanceClassName.nullOrEmpty) return null
+		val eClassifier = containingDomain.findEClassifier(qualifiedInstanceClassName)
 		return eClassifier.toClassifier(containingDomain)
 	}
 
 	// Searches the Ecore package and the domain specific packages for a matching EClassifier:
-	private static def EClassifier findEClassifier(Domain containingDomain, Class<?> instanceClass) {
-		if (instanceClass === null) return null
+	private static def EClassifier findEClassifier(Domain containingDomain, String qualifiedInstanceClassName) {
+		if (qualifiedInstanceClassName.nullOrEmpty) return null
 		var Iterable<EPackage> domainPackages = #[]
 		if (containingDomain instanceof VitruvDomainAdapter) {
 			domainPackages = containingDomain.allPackages
 		}
 		val relevantPackages = #[EcorePackage.eINSTANCE] + domainPackages
-		return relevantPackages.map[findEClassifier(instanceClass)].filterNull.head
+		return relevantPackages.map[findEClassifier(qualifiedInstanceClassName)].filterNull.head
 	}
 
-	private static def EClassifier findEClassifier(EPackage ePackage, Class<?> instanceClass) {
-		if (instanceClass === null) return null
-		return ePackage.EClassifiers.filter[it.instanceClass == instanceClass].head
+	private static def EClassifier findEClassifier(EPackage ePackage, String qualifiedInstanceClassName) {
+		if (qualifiedInstanceClassName.nullOrEmpty) return null
+		return ePackage.EClassifiers.filter[it.instanceClassName == qualifiedInstanceClassName].head
 	}
 }

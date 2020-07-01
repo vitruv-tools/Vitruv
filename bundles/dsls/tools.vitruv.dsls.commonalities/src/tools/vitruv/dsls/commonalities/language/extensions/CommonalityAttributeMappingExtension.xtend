@@ -102,7 +102,7 @@ package class CommonalityAttributeMappingExtension {
 	static def dispatch Classifier getCommonalityAttributeType(OperatorAttributeMapping mapping) {
 		val domain = mapping.participation.domain
 		val attributeTypeDescription = mapping.operator.commonalityAttributeTypeDescription
-		return ClassifierProvider.INSTANCE.findClassifier(domain, attributeTypeDescription.type)
+		return ClassifierProvider.INSTANCE.findClassifier(domain, attributeTypeDescription.qualifiedTypeName)
 	}
 
 	static def dispatch Classifier getParticipationAttributeType(SimpleAttributeMapping mapping) {
@@ -112,7 +112,7 @@ package class CommonalityAttributeMappingExtension {
 	static def dispatch Classifier getParticipationAttributeType(OperatorAttributeMapping mapping) {
 		val domain = mapping.participation.domain
 		val attributeTypeDescription = mapping.operator.participationAttributeTypeDescription
-		return ClassifierProvider.INSTANCE.findClassifier(domain, attributeTypeDescription.type)
+		return ClassifierProvider.INSTANCE.findClassifier(domain, attributeTypeDescription.qualifiedTypeName)
 	}
 
 	// Gets the output type when applied in read direction, or null if the
