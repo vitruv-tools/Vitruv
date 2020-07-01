@@ -30,7 +30,7 @@ Metaclass:
 ;
 
 Commonality:
-	'commonality' name=ID '{'
+	(referenced?='referenced')? 'commonality' name=ID '{'
 		participations+=Participation*
 		(attributes+=CommonalityAttribute|references+=CommonalityReference)*
 	'}'

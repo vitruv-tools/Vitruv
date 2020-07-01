@@ -49,6 +49,10 @@ class MatchParticipationReactionsBuilder extends ReactionsSubGenerator {
 	}
 
 	def void generateReactions(FluentReactionsSegmentBuilder segment) {
+		// If the commonality is marked as 'referenced', we ignore any potentially existing own participation contexts:
+		if (commonality.referenced) {
+			return;
+		}
 		val participationContext = participation.participationContext
 		if (!participationContext.isPresent) {
 			logger.debug('''Commonality «commonality»: Found no own participation context for participation «
