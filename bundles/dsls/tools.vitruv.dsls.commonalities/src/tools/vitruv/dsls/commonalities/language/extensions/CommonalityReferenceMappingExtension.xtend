@@ -63,7 +63,8 @@ package class CommonalityReferenceMappingExtension {
 		if (participation === null) {
 			// This is usually a hint for a scoping related issue:
 			throw new RuntimeException('''Could not find referenced participation '«participationDomainName
-				»' in commonality «referencedCommonality». ''')
+				»' in commonality '«referencedCommonality»' for mapping of reference '«
+				mapping.declaringReference»'. ''')
 		}
 		return participation
 	}

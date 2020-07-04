@@ -209,13 +209,13 @@ class ParticipationMatchingReactionsBuilder extends ReactionsGenerationHelper {
 			val mapping = participationContext.referenceMapping
 			val reference = mapping.declaringReference
 			val commonality = participationContext.referencingCommonality
-			logger.debug('''Commonality «commonality»: Generating matching reactions for reference «reference.name
-				» and mapping of participation «mapping.participation»''')
+			logger.debug('''Commonality «commonality»: Generating matching reactions for participation '«
+				mapping.participation»' and reference '«reference.name»'.''')
 		} else {
 			val participation = participationContext.participation
 			val commonality = participation.containingCommonality
-			logger.debug('''Commonality «commonality»: Generating matching reactions for participation «
-				participation.name»''')
+			logger.debug('''Commonality «commonality»: Generating matching reactions for participation '«
+				participation»'.''')
 		}
 
 		participationContext.generateRoutines()

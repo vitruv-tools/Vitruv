@@ -37,7 +37,7 @@ class CommonalitiesLanguageGlobalScopeProvider extends TypesAwareDefaultGlobalSc
 				relationOperatorScopeProvider.getScope(resource, reference, filter)
 			case PARTICIPATION_CONDITION_OPERATOR__JVM_TYPE:
 				conditionOperatorScopeProvider.getScope(resource, reference, filter)
-			default:
+			default: {
 				new ComposedScope(
 					// Note: Delegating to the default global scope provider first ensures that we get actual Concept and
 					// Commonality instances for commonality participation domains and participation classes, rather than
@@ -45,6 +45,7 @@ class CommonalitiesLanguageGlobalScopeProvider extends TypesAwareDefaultGlobalSc
 					super.getScope(resource, reference, filter),
 					new FilteringScope(_getScope(resource, reference), filter ?: Predicates.alwaysTrue)
 				)
+			}
 		}
 	}
 
