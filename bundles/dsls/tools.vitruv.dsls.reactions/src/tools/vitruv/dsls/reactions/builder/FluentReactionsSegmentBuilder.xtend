@@ -126,6 +126,8 @@ class FluentReactionsSegmentBuilder extends FluentReactionElementBuilder {
 		if (reactionBuilder.segmentBuilder !== this) {
 			checkArgument(reactionBuilder.segmentBuilder === null, '''The «reactionBuilder
 				» has already been added to the «reactionBuilder.segmentBuilder»''')
+			checkArgument(!segment.reactions.exists[it.name == reactionBuilder.reaction.name],
+				'''The «this» already contains a reaction with name '«reactionBuilder.reaction.name»'!''')
 			segment.reactions += reactionBuilder.reaction
 			reactionBuilder.segmentBuilder = this
 			childBuilders += reactionBuilder
@@ -138,6 +140,8 @@ class FluentReactionsSegmentBuilder extends FluentReactionElementBuilder {
 		if (routineBuilder.segmentBuilder !== this) {
 			checkArgument(routineBuilder.segmentBuilder === null, '''The «routineBuilder
 				» has already been added to the «routineBuilder.segmentBuilder»''')
+			checkArgument(!segment.routines.exists[it.name == routineBuilder.routine.name],
+				'''The «this» already contains a routine with name '«routineBuilder.routine.name»'!''')
 			segment.routines += routineBuilder.routine
 			routineBuilder.segmentBuilder = this
 			childBuilders += routineBuilder
