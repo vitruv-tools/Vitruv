@@ -65,6 +65,7 @@ class CommonalityInsertReactionsBuilder extends ReactionsSubGenerator {
 	val Participation targetParticipation
 
 	// Assumption: We use this reactions builder only for a single reactions segment.
+	// Note: The participations used as keys may be both local and external participations.
 	val Map<Participation, Optional<FluentRoutineBuilder>> matchSubParticipationsRoutines = new HashMap
 
 	private new(Participation targetParticipation) {
@@ -136,7 +137,7 @@ class CommonalityInsertReactionsBuilder extends ReactionsSubGenerator {
 		}
 
 		// Match existing sub-participations if the participation already exists:
-		val matchSubParticipationsRoutine = participation.getMatchSubParticipationsRoutine(segment)
+		val matchSubParticipationsRoutine = participationContext.getMatchSubParticipationsRoutine(segment)
 		if (matchSubParticipationsRoutine.present) {
 			reaction.call(matchSubParticipationsRoutine.get, new RoutineCallParameter[newValue])
 		}
@@ -450,7 +451,9 @@ class CommonalityInsertReactionsBuilder extends ReactionsSubGenerator {
 	 */
 	// TODO: It would be sufficient to generate this routine once for every participation and then import it when
 	// called for external reference mappings.
-	private def getMatchSubParticipationsRoutine(Participation participation, FluentReactionsSegmentBuilder segment) {
+	private def getMatchSubParticipationsRoutine(ParticipationContext participationContext,
+		FluentReactionsSegmentBuilder segment) {
+		val participation = participationContext.participation
 		return matchSubParticipationsRoutines.computeIfAbsent(participation) [
 			val extension matchingReactionsBuilder = participationMatchingReactionsBuilderProvider.getFor(segment)
 			val commonality = participation.containingCommonality
@@ -464,7 +467,10 @@ class CommonalityInsertReactionsBuilder extends ReactionsSubGenerator {
 				return Optional.empty
 			}
 
-			return Optional.of(create.routine('''matchSubParticipations_«participation»''')
+			// We use the ParticipationContext to generate unique routine names, since otherwise local participation
+			// names may clash with external participation names.
+			return Optional.of(create.routine('''matchSubParticipations_«participation»«
+				participationContext.reactionNameSuffix»''')
 				.input[
 					model(commonality.changeClass, INTERMEDIATE)
 				]
