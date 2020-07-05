@@ -2,6 +2,7 @@ package tools.vitruv.dsls.commonalities.generator.reactions.util
 
 import edu.kit.ipd.sdq.activextendannotations.Utility
 import java.util.Collection
+import java.util.List
 import org.eclipse.emf.ecore.EAttribute
 import org.eclipse.emf.ecore.EClass
 import org.eclipse.emf.ecore.EObject
@@ -88,6 +89,7 @@ class EmfAccessExpressions {
 			return getEFeatureValue(typeProvider, object, eFeature)
 		} catch (NoSuchJvmElementException e) {
 			// if that fails, use EMF's reflection:
+			// TODO This cast may not properly work for some types of features (eg. boolean typed features)
 			return XbaseFactory.eINSTANCE.createXCastedExpression => [
 				type = typeProvider.jvmTypeReferenceBuilder.typeRef(eFeature.EType.javaClassName)
 				target = eGetFeatureValue(typeProvider, object, eFeature)
@@ -184,21 +186,29 @@ class EmfAccessExpressions {
 		}
 		val instanceClassName = eFeature.EType.instanceClassName
 		val isBooleanType = (instanceClassName == boolean.name || instanceClassName == Boolean.name)
-		var String accessorPrefix
+		var List<String> candidateAccessorPrefixes
 		if (isBooleanType) {
-			if (eFeature.name.startsWith('is')) {
-				// Example: UML2::Class#isFinalSpecialization(boolean)
-				accessorPrefix = ''
-			} else {
-				accessorPrefix = 'is'
-			}
+			// Empty prefix example: UML2::Class#isFinalSpecialization(boolean)
+			candidateAccessorPrefixes = #['is', '']
 		} else {
-			accessorPrefix = 'get'
+			candidateAccessorPrefixes = #['get']
 		}
-		val accessorName = accessorPrefix + (accessorPrefix.empty ? eFeature.name : eFeature.name.toFirstUpper)
+
+		val accessorMethod = candidateAccessorPrefixes.map [ accessorPrefix |
+			val accessorName = accessorPrefix + (accessorPrefix.empty ? eFeature.name : eFeature.name.toFirstUpper)
+			try {
+				return typeProvider.findMethod(containingInstanceClassName, accessorName, 0)
+			} catch (NoSuchJvmElementException e) {
+				return null
+			}
+		].filterNull.head
+		if (accessorMethod === null) {
+			throw new NoSuchJvmElementException('''Could not guess accessor for feature '«eFeature.name»'.''')
+		}
+
 		return XbaseFactory.eINSTANCE.createXMemberFeatureCall => [
 			memberCallTarget = object
-			feature = typeProvider.findMethod(containingInstanceClassName, accessorName, 0)
+			feature = accessorMethod
 		]
 	}
 
