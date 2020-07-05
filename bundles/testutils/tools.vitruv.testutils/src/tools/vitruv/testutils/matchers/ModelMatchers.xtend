@@ -11,11 +11,14 @@ import java.util.function.Consumer
 import org.eclipse.emf.ecore.EClassifier
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EStructuralFeature
+import org.eclipse.emf.ecore.InternalEObject
 import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.xtend.lib.annotations.FinalFieldsConstructor
 import org.hamcrest.Description
 import org.hamcrest.Matcher
 import org.hamcrest.TypeSafeMatcher
+
+import static tools.vitruv.framework.util.XtendAssertHelper.*
 
 @Utility
 class ModelMatchers {
@@ -116,7 +119,11 @@ package class ModelTreeEqualityMatcher extends TypeSafeMatcher<EObject> {
 	package val EObject expectedObject
 	var Stack<String> navigationStack = new Stack
 	var Consumer<Description> mismatch
-	var Map<Object, Object> checkCache = new HashMap
+	// Bidirectional mapping between objects which have been compared and considered equal.
+	// Note that each object can be considered equal to at most one other object. This ensures that two objects are
+	// considered structurally equal only if the graphs formed by all their referenced objects have the same topology.
+	// This is similar to EMF's implementation of EcoreUtil.equals(EObject, EObject).
+	var Map<Object, Object> objectMapping = new HashMap
 	val FeatureMatcher[] featureMatchers
 
 	override protected matchesSafely(EObject item) {
@@ -145,10 +152,90 @@ package class ModelTreeEqualityMatcher extends TypeSafeMatcher<EObject> {
 		}
 	}
 
+	private def mapObjects(EObject expected, EObject item) {
+		objectMapping.put(expected, item)
+		objectMapping.put(item, expected)
+	}
+
+	private def unmapObjects(EObject expected, EObject item) {
+		objectMapping.remove(expected)
+		objectMapping.remove(item)
+	}
+
+	// The comparison is done similarly to EMF's implementation of EcoreUtil.equals(EObject, EObject).
+	// The difference is that we issue additional diagnostic messages if the object comparison fails at any point.
 	def private dispatch boolean equalsDeeply(EObject expected, EObject item, boolean ordered) {
-		if (checkCache.get(item) == expected) {
-			return true;
+		// Null comparisons:
+		if (expected === null) {
+			if (item === null) {
+				return true
+			} else {
+				equalityMismatch(expected, item)
+				return false
+			}
 		}
+		assertTrue(expected !== null)
+		if (item === null) {
+			equalityMismatch(expected, item)
+			return false
+		}
+
+		// Check if the expected object has already been compared:
+		val mappedItem = objectMapping.get(expected)
+		if (mappedItem === item) {
+			return true
+		} else if (mappedItem !== null) {
+			// The object has already been mapped to some other object.
+			mismatch = [
+				appendText("did not match the topologically expected object. Expected ").appendValue(mappedItem)
+					.appendText(" (mapped and equal to ").appendValue(expected).appendText(") but found ")
+					.appendValue(item).appendText(".")
+			]
+			return false
+		}
+
+		// Check if the given item object has already been compared:
+		val mappedExpected = objectMapping.get(item)
+		if (mappedExpected === expected) {
+			return true
+		} else if (mappedExpected !== null) {
+			// The object has already been mapped to some other object.
+			mismatch = [
+				appendText("has already been compared and mapped to some other object in the expected model tree. Expected ")
+					.appendValue(expected).appendText(" but the object ").appendValue(item)
+					.appendText(" has already been mapped to ").appendValue(mappedExpected).appendText(".")
+			]
+			return false
+		}
+
+		// Check if objects are the same instance:
+		if (expected === item) {
+			mapObjects(expected, item)
+			return true
+		}
+
+		// Compare proxies:
+		if (expected.eIsProxy()) {
+			// item has to be a proxy as well and their URIs need to match:
+			if ((expected as InternalEObject).eProxyURI().equals((item as InternalEObject).eProxyURI())) {
+				mapObjects(expected, item)
+				return true
+			} else {
+				mismatch = [
+					appendText("did not match the expected proxy. Expected ").appendValue(expected)
+						.appendText(" but found ").appendValue(item).appendText(".")
+				]
+				return false
+			}
+		} else if (item.eIsProxy) {
+			mismatch = [
+				appendText("is an unexpected proxy. Expected ").appendValue(expected).appendText(" but found ")
+					.appendValue(item).appendText(".")
+			]
+			return false
+		}
+
+		// Compare classes:
 		if (expected.eClass !== item.eClass) {
 			mismatch = [
 				appendText("had the wrong EClass. Expected ").appendValue(expected.eClass.name).appendText(
@@ -156,16 +243,22 @@ package class ModelTreeEqualityMatcher extends TypeSafeMatcher<EObject> {
 			]
 			return false
 		}
+
+		// Consider the objects to be equal for now. This helps with situations in which the below feature comparisons
+		// recursively try to compare the same objects again.
+		mapObjects(expected, item)
+
+		// Compare feature values:
 		for (feature : expected.eClass.EAllStructuralFeatures.filter[!derived]) {
 			navigationStack.push('''.«feature.name»''')
 			val matcherMismatch = findFeatureChecker(expected, feature).getMismatch(expected.eGet(feature), item.eGet(feature))
 			if (matcherMismatch !== null) {
 				mismatch = matcherMismatch
+				unmapObjects(expected, item)
 				return false;
 			}
 			navigationStack.pop()
 		}
-		checkCache.put(item, expected);
 		return true;
 	}
 
