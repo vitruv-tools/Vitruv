@@ -12,6 +12,7 @@ import org.eclipse.emf.ecore.EStructuralFeature
 import org.eclipse.xtext.common.types.TypesFactory
 import org.eclipse.xtext.xbase.XExpression
 import org.eclipse.xtext.xbase.XbaseFactory
+import tools.vitruv.dsls.commonalities.util.EMFJavaTypesUtil
 import tools.vitruv.dsls.reactions.builder.TypeProvider
 import tools.vitruv.extensions.dslruntime.commonalities.EmfAccess
 
@@ -89,9 +90,11 @@ class EmfAccessExpressions {
 			return getEFeatureValue(typeProvider, object, eFeature)
 		} catch (NoSuchJvmElementException e) {
 			// if that fails, use EMF's reflection:
-			// TODO This cast may not properly work for some types of features (eg. boolean typed features)
 			return XbaseFactory.eINSTANCE.createXCastedExpression => [
-				type = typeProvider.jvmTypeReferenceBuilder.typeRef(eFeature.EType.javaClassName)
+				// For primitive types this cast does not get properly translated to Java code. We therefore cast to
+				// their corresponding primitive wrapper types instead.
+				val eType = EMFJavaTypesUtil.wrapJavaPrimitiveTypes(eFeature.EType)
+				type = typeProvider.jvmTypeReferenceBuilder.typeRef(eType.javaClassName)
 				target = eGetFeatureValue(typeProvider, object, eFeature)
 			]
 		}
