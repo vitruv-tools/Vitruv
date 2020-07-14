@@ -83,7 +83,8 @@ class ReactionsGeneratorConventions {
 	}
 
 	static def String getReactionName(CommonalityReferenceMapping mapping) {
-		return '''«mapping.declaringReference.name»_«mapping.participation.name»'''
+		return '''«mapping.containingCommonality.name»_«mapping.declaringReference.name»_«
+			mapping.participation.name»'''
 	}
 
 	static def String getReactionNameSuffix(ParticipationContext participationContext) {
