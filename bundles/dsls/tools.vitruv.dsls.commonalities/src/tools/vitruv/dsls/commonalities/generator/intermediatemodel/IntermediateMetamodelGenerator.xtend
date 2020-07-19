@@ -5,6 +5,7 @@ import java.util.Collections
 import java.util.HashSet
 import java.util.List
 import java.util.function.Consumer
+import org.apache.log4j.Level
 import org.apache.log4j.Logger
 import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.EDataType
@@ -36,7 +37,7 @@ import static extension tools.vitruv.dsls.commonalities.language.extensions.Comm
 @GenerationScoped
 class IntermediateMetamodelGenerator extends SubGenerator {
 
-	static val Logger logger = Logger.getLogger(IntermediateMetamodelGenerator)
+	static val Logger logger = Logger.getLogger(IntermediateMetamodelGenerator) => [level = Level.DEBUG]
 	static val NS_URI_PREFIX = URI.createURI('http://vitruv.tools/commonalities')
 
 	var List<Resource> outputResources = Collections.emptyList

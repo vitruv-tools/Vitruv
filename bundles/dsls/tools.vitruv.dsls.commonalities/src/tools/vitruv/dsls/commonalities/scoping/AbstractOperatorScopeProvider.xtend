@@ -8,6 +8,7 @@ import java.util.HashSet
 import java.util.Map
 import java.util.Set
 import java.util.WeakHashMap
+import org.apache.log4j.Level
 import org.apache.log4j.Logger
 import org.eclipse.emf.ecore.EReference
 import org.eclipse.emf.ecore.resource.Resource
@@ -28,7 +29,7 @@ import static extension tools.vitruv.dsls.commonalities.language.extensions.Comm
 
 abstract class AbstractOperatorScopeProvider implements IGlobalScopeProvider {
 
-	static val Logger logger = Logger.getLogger(AbstractOperatorScopeProvider)
+	static val Logger logger = Logger.getLogger(AbstractOperatorScopeProvider) => [level = Level.DEBUG]
 
 	@Inject AbstractTypeScopeProvider typeScopeProvider
 	@Inject IJvmTypeProvider.Factory typeProviderFactory

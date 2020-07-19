@@ -2,6 +2,7 @@ package tools.vitruv.dsls.commonalities.generator.reactions
 
 import com.google.inject.Inject
 import com.google.inject.Provider
+import org.apache.log4j.Level
 import org.apache.log4j.Logger
 import org.eclipse.emf.common.util.URI
 import org.eclipse.xtext.resource.IGlobalServiceProvider
@@ -23,7 +24,7 @@ import static extension tools.vitruv.dsls.commonalities.language.extensions.Comm
 @GenerationScoped
 class ReactionsGenerator extends SubGenerator {
 
-	private static val Logger logger = Logger.getLogger(ReactionsGenerator)
+	private static val Logger logger = Logger.getLogger(ReactionsGenerator) => [level = Level.DEBUG]
 
 	@Inject IGlobalServiceProvider globalServiceProvider
 	@Inject Provider<IReactionsGenerator> reactionsGeneratorProvider

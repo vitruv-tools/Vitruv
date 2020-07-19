@@ -163,7 +163,7 @@ import static extension tools.vitruv.dsls.commonalities.participation.Participat
  */
 class ParticipationMatchingReactionsBuilder extends ReactionsGenerationHelper {
 
-	private static val Logger logger = Logger.getLogger(ParticipationMatchingReactionsBuilder) => [level = Level.TRACE]
+	private static val Logger logger = Logger.getLogger(ParticipationMatchingReactionsBuilder) => [level = Level.DEBUG]
 
 	@GenerationScoped
 	static class Provider extends ReactionsSegmentScopedProvider<ParticipationMatchingReactionsBuilder> {
