@@ -60,6 +60,6 @@ class MatchParticipationReactionsBuilder extends ReactionsSubGenerator {
 		}
 
 		val extension matchingReactionsBuilder = participationMatchingReactionsBuilderProvider.getFor(segment)
-		participationContext.get.generateReactions
+		participationContext.get.generateMatchingReactions
 	}
 }

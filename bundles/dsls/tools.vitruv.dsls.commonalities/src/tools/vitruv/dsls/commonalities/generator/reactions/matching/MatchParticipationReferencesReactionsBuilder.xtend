@@ -46,7 +46,7 @@ class MatchParticipationReferencesReactionsBuilder extends ReactionsSubGenerator
 	def void generateReactions(FluentReactionsSegmentBuilder segment) {
 		val extension matchingReactionsBuilder = participationMatchingReactionsBuilderProvider.getFor(segment)
 		relevantReferenceMappings.map[referenceParticipationContext].forEach [
-			generateReactions
+			generateMatchingReactions
 		]
 	}
 

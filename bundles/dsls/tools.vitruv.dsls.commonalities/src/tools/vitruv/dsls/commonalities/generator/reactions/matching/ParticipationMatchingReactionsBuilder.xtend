@@ -204,52 +204,29 @@ class ParticipationMatchingReactionsBuilder extends ReactionsGenerationHelper {
 		throw new IllegalStateException("Use the Provider to get instances of this class!")
 	}
 
-	package def void generateReactions(ParticipationContext participationContext) {
+	/**
+	 * Generates the reactions and routines for matching participations in the
+	 * given context.
+	 */
+	package def void generateMatchingReactions(ParticipationContext participationContext) {
+		logger.debug(participationContext.logMessage)
+
+		participationContext.generateRoutines()
+		participationContext.generateReactions()
+	}
+
+	private def String getLogMessage(ParticipationContext participationContext) {
 		if (participationContext.forReferenceMapping) {
 			val mapping = participationContext.referenceMapping
 			val reference = mapping.declaringReference
 			val commonality = participationContext.referencingCommonality
-			logger.debug('''Commonality «commonality»: Generating matching reactions for participation '«
-				mapping.participation»' and reference '«reference.name»'.''')
+			return '''Commonality «commonality»: Generating matching reactions for participation '«
+				mapping.participation»' and reference '«reference.name»'.'''
 		} else {
 			val participation = participationContext.participation
 			val commonality = participation.containingCommonality
-			logger.debug('''Commonality «commonality»: Generating matching reactions for participation '«
-				participation»'.''')
+			return '''Commonality «commonality»: Generating matching reactions for participation '«participation»'.'''
 		}
-
-		participationContext.generateRoutines()
-
-		if (participationContext.isForAttributeReferenceMapping) {
-			segment.generateAttributeReferenceMatchingReactions(participationContext)
-		} else {
-			// Note: For different participation contexts involving the same participation, we generate multiple
-			// reactions with the same trigger. The difference between them is which matching routine they invoke.
-			participationContext.containments.forEach [ extension contextContainment |
-				val containment = containment
-				if (containment instanceof ReferenceContainment) {
-					segment += participationContext.reactionForParticipationClassInsert(containment)
-					segment += participationContext.reactionForParticipationClassRemove(containment)
-				} else if (containment instanceof OperatorContainment) {
-					val operatorMapping = containment.mapping
-					if (operatorMapping.operator.isAttributeReference) {
-						throw new IllegalStateException('''Not expecting attribute reference containments for «
-							»non-attribute-reference participation context''')
-					} else {
-						throw new UnsupportedOperationException('''Operator reference mappings for non-attribute «
-							»references are not supported yet''')
-					}
-				}
-			]
-		}
-
-		// Note: We do not need to react to the deletion of participation
-		// objects, because we also receive events for the removal from their
-		// previous container.
-
-		// TODO reactions to react to attribute changes that might fulfill the non-structural conditions
-		// TODO also need to react to them in order to delete the participation again once a checked
-		// condition is no longer fulfilled (conditions that get only enforced are ignored)
 	}
 
 	private def generateRoutines(ParticipationContext participationContext) {
@@ -267,6 +244,44 @@ class ParticipationMatchingReactionsBuilder extends ReactionsGenerationHelper {
 			segment += participationContext.referenceMapping.declaringReference.insertReferencedIntermediateRoutine
 			segment += participationContext.matchManyParticipationsRoutine
 		}
+	}
+
+	private def generateReactions(ParticipationContext participationContext) {
+		if (participationContext.isForAttributeReferenceMapping) {
+			segment.generateAttributeReferenceMatchingReactions(participationContext)
+		} else {
+			participationContext.generateContainmentReferenceMatchingReactions()
+		}
+	}
+
+	private def generateContainmentReferenceMatchingReactions(ParticipationContext participationContext) {
+		assertTrue(!participationContext.isForAttributeReferenceMapping)
+		// Note: For different participation contexts involving the same participation, we generate multiple
+		// reactions with the same trigger. The difference between them is which matching routine they invoke.
+		participationContext.containments.forEach [ extension contextContainment |
+			val containment = containment
+			if (containment instanceof ReferenceContainment) {
+				segment += participationContext.reactionForParticipationClassInsert(containment)
+				segment += participationContext.reactionForParticipationClassRemove(containment)
+			} else if (containment instanceof OperatorContainment) {
+				val operatorMapping = containment.mapping
+				if (operatorMapping.operator.isAttributeReference) {
+					throw new IllegalStateException('''Not expecting attribute reference containments for «
+						»non-attribute-reference participation context''')
+				} else {
+					throw new UnsupportedOperationException('''Operator reference mappings for non-attribute «
+						»references are not supported yet''')
+				}
+			}
+		]
+
+		// Note: We do not need to react to the deletion of participation
+		// objects, because we also receive events for the removal from their
+		// previous container.
+
+		// TODO reactions to react to attribute changes that might fulfill the non-structural conditions
+		// TODO also need to react to them in order to delete the participation again once a checked
+		// condition is no longer fulfilled (conditions that get only enforced are ignored)
 	}
 
 	/**
