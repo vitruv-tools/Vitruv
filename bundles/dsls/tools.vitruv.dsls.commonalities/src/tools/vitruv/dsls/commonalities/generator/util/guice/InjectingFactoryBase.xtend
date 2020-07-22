@@ -3,7 +3,11 @@ package tools.vitruv.dsls.commonalities.generator.util.guice
 import com.google.inject.Inject
 import com.google.inject.Injector
 
-class InjectingFactoryBase {
+/**
+ * Base class for factories or providers which need to invoke the Guice
+ * injection for objects created by them.
+ */
+abstract class InjectingFactoryBase {
 
 	@Inject Injector injector
 
