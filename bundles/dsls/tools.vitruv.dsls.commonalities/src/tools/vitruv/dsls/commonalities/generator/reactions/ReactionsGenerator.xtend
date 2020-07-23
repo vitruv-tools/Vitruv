@@ -68,6 +68,10 @@ class ReactionsGenerator extends SubGenerator {
 			return;
 		}
 
+		// Prepare the Reactions language:
+		// This has the side-effect of initializing the Reactions language's injector if that hasn't happened yet:
+		globalServiceProvider.findService(URI.createFileURI('fake.reactions'), IReactionsGenerator)
+
 		// Generate reactions:
 		val reactionsFiles = generateReactions()
 
@@ -85,10 +89,6 @@ class ReactionsGenerator extends SubGenerator {
 	}
 
 	private def generateReactionsCode(FluentReactionsFileBuilder... reactionsFiles) {
-		// Prepare the Reactions language:
-		// This has the side-effect of initializing the Reactions language's injector if that hasn't happened yet:
-		globalServiceProvider.findService(URI.createFileURI('fake.reactions'), IReactionsGenerator)
-
 		// Get and setup the code generator of the Reactions language:
 		val reactionsGenerator = reactionsGeneratorProvider.get() => [
 			useResourceSet(resourceSet)
