@@ -110,6 +110,10 @@ public abstract class VitruviusUnmonitoredApplicationTest extends VitruviusTest 
 	 *         registered for resource with the given file extension
 	 */
 	protected Resource createModelResource(String modelPathWithinProject) {
+		return createModelResource(modelPathWithinProject, resourceSet);
+	}
+
+	protected Resource createModelResource(String modelPathWithinProject, ResourceSet resourceSet) {
 		return resourceSet.createResource(getModelVuri(modelPathWithinProject).getEMFUri());
 	}
 

@@ -175,7 +175,7 @@ public abstract class VitruviusApplicationTest extends VitruviusUnmonitoredAppli
 			return getModelResource(modelPathInProject, resourceSet);
 		} catch (RuntimeException e) {
 			if (e.getCause() instanceof FileNotFoundException) {
-				return createModelResource(modelPathInProject);
+				return createModelResource(modelPathInProject, resourceSet);
 			}
 			throw e;
 		}
