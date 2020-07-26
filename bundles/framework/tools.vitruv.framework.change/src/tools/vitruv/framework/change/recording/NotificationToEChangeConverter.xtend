@@ -247,13 +247,15 @@ final class NotificationToEChangeConverter {
 	}
 
 	private def handleResourceChange(NotificationInfo notification) {
+		if (notification.getFeatureID(Resource) !== Resource.RESOURCE__CONTENTS) {
+			return #[]
+		}
+
 		val changes = <EChange>newArrayList();
 		val resource = notification.notifier as Resource
 		switch (notification.getEventType()) {
 			case Notification.ADD: {
-				if (notification.newValue instanceof EObject) {
-					changes += handleInsertRootChange(resource, notification.newModelElementValue, notification.position)
-				}
+				changes += handleInsertRootChange(resource, notification.newModelElementValue, notification.position)
 			}
 			case Notification.ADD_MANY: {
 				var List<EObject> list = (notification.getNewValue() as List<EObject>)
