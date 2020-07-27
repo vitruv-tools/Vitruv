@@ -3,7 +3,9 @@ package tools.vitruv.dsls.commonalities.generator.reactions.matching
 import org.eclipse.emf.ecore.EClass
 import org.eclipse.emf.ecore.EReference
 import org.eclipse.xtext.common.types.JvmDeclaredType
+import org.eclipse.xtext.common.types.JvmIdentifiableElement
 import org.eclipse.xtext.common.types.JvmOperation
+import org.eclipse.xtext.xbase.XBlockExpression
 import org.eclipse.xtext.xbase.XExpression
 import org.eclipse.xtext.xbase.XVariableDeclaration
 import org.eclipse.xtext.xbase.XbaseFactory
@@ -17,7 +19,10 @@ import static tools.vitruv.dsls.commonalities.generator.reactions.util.EmfAccess
 import static extension tools.vitruv.dsls.commonalities.generator.reactions.util.JvmTypeProviderHelper.*
 import static extension tools.vitruv.dsls.commonalities.generator.reactions.util.XbaseHelper.*
 
-package class ContainmentTreeExpressionBuilder {
+/**
+ * Builds the expressions to create and setup a ContainmentTree at runtime.
+ */
+package class ContainmentTreeBuilder {
 
 	val extension TypeProvider typeProvider
 	val JvmDeclaredType containmentTreeType
@@ -26,6 +31,7 @@ package class ContainmentTreeExpressionBuilder {
 	val JvmOperation addOperatorEdgeMethod
 	val JvmOperation addAttributeReferenceEdgeMethod
 
+	val XBlockExpression result = XbaseFactory.eINSTANCE.createXBlockExpression
 	var XVariableDeclaration containmentTreeVar
 
 	new(TypeProvider typeProvider) {
@@ -33,12 +39,38 @@ package class ContainmentTreeExpressionBuilder {
 		this.containmentTreeType = typeProvider.findDeclaredType(ContainmentTree).imported
 		this.addNodeMethod = containmentTreeType.findMethod('addNode', String, EClass)
 		this.addReferenceEdgeMethod = containmentTreeType.findMethod('addReferenceEdge', String, String, EReference)
-		this.addOperatorEdgeMethod = containmentTreeType.findMethod('addOperatorEdge', String, String, IReferenceMappingOperator)
-		this.addAttributeReferenceEdgeMethod = containmentTreeType.findMethod('addAttributeReferenceEdge', String, IReferenceMappingOperator)
+		this.addOperatorEdgeMethod = containmentTreeType.findMethod('addOperatorEdge', String, String,
+			IReferenceMappingOperator)
+		this.addAttributeReferenceEdgeMethod = containmentTreeType.findMethod('addAttributeReferenceEdge', String,
+			IReferenceMappingOperator)
 	}
 
-	def XVariableDeclaration newContainmentTree(String variableName) {
-		checkState(containmentTreeVar === null, "ContainmentTreeExpressionBuilder can only be used once!")
+	private def checkHasContainmentTree() {
+		checkState(containmentTreeVar !== null, "The ContainmentTree has not yet been created!")
+	}
+
+	/**
+	 * Gets the variable declaration for the created ContainmentTree.
+	 */
+	def XVariableDeclaration getContainmentTreeVar() {
+		checkHasContainmentTree()
+		return containmentTreeVar
+	}
+
+	/**
+	 * Gets the block of built expressions which create and set up the
+	 * ContainmentTree.
+	 */
+	def getResultExpressions() {
+		checkHasContainmentTree()
+		return result
+	}
+
+	/**
+	 * Begins the building of the ContainmentTree.
+	 */
+	def void newContainmentTree(String variableName) {
+		checkState(containmentTreeVar === null, "ContainmentTreeBuilder can only be used once!")
 		containmentTreeVar = XbaseFactory.eINSTANCE.createXVariableDeclaration => [
 			name = variableName
 			writeable = false
@@ -47,25 +79,25 @@ package class ContainmentTreeExpressionBuilder {
 				it.constructor = containmentTreeType.findNoArgsConstructor
 			]
 		]
-		return containmentTreeVar
+		result.expressions += containmentTreeVar
 	}
 
-	private def checkHasContainmentTree() {
-		checkState(containmentTreeVar !== null, "The ContainmentTree has not yet been created!")
+	private def containmentTreeMemberCall(JvmIdentifiableElement featureElement) {
+		return containmentTreeVar.featureCall.memberFeatureCall(featureElement)
 	}
 
-	def XExpression setRootIntermediateType(EClass rootIntermediateType) {
+	def void setRootIntermediateType(EClass rootIntermediateType) {
 		checkHasContainmentTree()
 		val setRootIntermediateTypeMethod = containmentTreeType.findMethod('setRootIntermediateType', EClass)
-		return containmentTreeVar.featureCall.memberFeatureCall(setRootIntermediateTypeMethod) => [
+		result.expressions += containmentTreeMemberCall(setRootIntermediateTypeMethod) => [
 			explicitOperationCall = true
 			memberCallArguments += getEClass(typeProvider, rootIntermediateType)
 		]
 	}
 
-	def XExpression addNode(String nodeName, EClass nodeType) {
+	def void addNode(String nodeName, EClass nodeType) {
 		checkHasContainmentTree()
-		return containmentTreeVar.featureCall.memberFeatureCall(addNodeMethod) => [
+		result.expressions += containmentTreeMemberCall(addNodeMethod) => [
 			memberCallArguments += expressions(
 				stringLiteral(nodeName),
 				getEClass(typeProvider, nodeType)
@@ -73,9 +105,9 @@ package class ContainmentTreeExpressionBuilder {
 		]
 	}
 
-	def XExpression addReferenceEdge(String containerNode, String containedNode, EReference containmentEReference) {
+	def void addReferenceEdge(String containerNode, String containedNode, EReference containmentEReference) {
 		checkHasContainmentTree()
-		return containmentTreeVar.featureCall.memberFeatureCall(addReferenceEdgeMethod) => [
+		result.expressions += containmentTreeMemberCall(addReferenceEdgeMethod) => [
 			memberCallArguments += expressions(
 				stringLiteral(containerNode),
 				stringLiteral(containedNode),
@@ -84,9 +116,9 @@ package class ContainmentTreeExpressionBuilder {
 		]
 	}
 
-	def XExpression addOperatorEdge(String containerNode, String containedNode, XExpression operator) {
+	def void addOperatorEdge(String containerNode, String containedNode, XExpression operator) {
 		checkHasContainmentTree()
-		return containmentTreeVar.featureCall.memberFeatureCall(addOperatorEdgeMethod) => [
+		result.expressions += containmentTreeMemberCall(addOperatorEdgeMethod) => [
 			memberCallArguments += expressions(
 				stringLiteral(containerNode),
 				stringLiteral(containedNode),
@@ -95,10 +127,11 @@ package class ContainmentTreeExpressionBuilder {
 		]
 	}
 
-	def XExpression setAttributeReferenceRootNode(String nodeName, EClass nodeType) {
+	def void setAttributeReferenceRootNode(String nodeName, EClass nodeType) {
 		checkHasContainmentTree()
-		val setAttributeReferenceRootNodeMethod = containmentTreeType.findMethod('setAttributeReferenceRootNode', String, EClass)
-		return containmentTreeVar.featureCall.memberFeatureCall(setAttributeReferenceRootNodeMethod) => [
+		val setAttributeReferenceRootNodeMethod = containmentTreeType.findMethod('setAttributeReferenceRootNode',
+			String, EClass)
+		result.expressions += containmentTreeMemberCall(setAttributeReferenceRootNodeMethod) => [
 			explicitOperationCall = true
 			memberCallArguments += expressions(
 				stringLiteral(nodeName),
@@ -107,9 +140,9 @@ package class ContainmentTreeExpressionBuilder {
 		]
 	}
 
-	def XExpression addAttributeReferenceEdge(String containedNode, XExpression operator) {
+	def void addAttributeReferenceEdge(String containedNode, XExpression operator) {
 		checkHasContainmentTree()
-		return containmentTreeVar.featureCall.memberFeatureCall(addAttributeReferenceEdgeMethod) => [
+		result.expressions += containmentTreeMemberCall(addAttributeReferenceEdgeMethod) => [
 			memberCallArguments += expressions(
 				stringLiteral(containedNode),
 				operator
