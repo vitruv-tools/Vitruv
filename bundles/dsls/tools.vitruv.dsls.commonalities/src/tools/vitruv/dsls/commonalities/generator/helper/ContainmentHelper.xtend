@@ -8,7 +8,6 @@ import tools.vitruv.dsls.commonalities.generator.util.guice.GenerationScoped
 import tools.vitruv.dsls.commonalities.participation.ReferenceContainment
 import tools.vitruv.extensions.dslruntime.commonalities.operators.participation.relation.ContainmentOperator
 
-@GenerationScoped
 class ContainmentHelper extends GenerationHelper {
 
 	package new() {

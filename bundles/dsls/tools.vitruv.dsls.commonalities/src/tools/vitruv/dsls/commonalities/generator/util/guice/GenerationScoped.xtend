@@ -3,6 +3,7 @@ package tools.vitruv.dsls.commonalities.generator.util.guice
 import com.google.inject.ScopeAnnotation
 import java.lang.annotation.Retention
 import java.lang.annotation.Target
+import java.lang.annotation.Inherited
 
 /**
  * Types annotated with this scope annotation will be instantiated once per
@@ -11,5 +12,6 @@ import java.lang.annotation.Target
 @ScopeAnnotation
 @Target(TYPE, METHOD)
 @Retention(RUNTIME)
+@Inherited
 annotation GenerationScoped {
 }

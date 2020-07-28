@@ -14,7 +14,6 @@ import tools.vitruv.dsls.commonalities.generator.reactions.intermediatemodel.Ins
 import tools.vitruv.dsls.commonalities.generator.reactions.intermediatemodel.InsertReferencedIntermediateRoutineBuilder
 import tools.vitruv.dsls.commonalities.generator.reactions.util.ReactionsHelper.RoutineCallContext
 import tools.vitruv.dsls.commonalities.generator.reactions.util.ReactionsSegmentScopedProvider
-import tools.vitruv.dsls.commonalities.generator.util.guice.GenerationScoped
 import tools.vitruv.dsls.commonalities.language.CommonalityReferenceMapping
 import tools.vitruv.dsls.commonalities.participation.OperatorContainment
 import tools.vitruv.dsls.commonalities.participation.ParticipationContext
@@ -148,7 +147,6 @@ class ParticipationMatchingReactionsBuilder extends ReactionsGenerationHelper {
 
 	private static val Logger logger = Logger.getLogger(ParticipationMatchingReactionsBuilder) => [level = Level.DEBUG]
 
-	@GenerationScoped
 	static class Provider extends ReactionsSegmentScopedProvider<ParticipationMatchingReactionsBuilder> {
 		protected override createFor(FluentReactionsSegmentBuilder segment) {
 			return new ParticipationMatchingReactionsBuilder(segment).injectMembers

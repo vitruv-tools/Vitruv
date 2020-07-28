@@ -5,7 +5,6 @@ import org.eclipse.emf.ecore.EStructuralFeature
 import org.eclipse.xtext.xbase.XExpression
 import org.eclipse.xtext.xbase.XbaseFactory
 import tools.vitruv.dsls.commonalities.generator.reactions.helper.ReactionsGenerationHelper
-import tools.vitruv.dsls.commonalities.generator.util.guice.GenerationScoped
 import tools.vitruv.dsls.commonalities.language.CommonalityAttributeOperand
 import tools.vitruv.dsls.commonalities.language.LiteralOperand
 import tools.vitruv.dsls.commonalities.language.Operand
@@ -21,7 +20,6 @@ import static tools.vitruv.dsls.commonalities.generator.reactions.util.EmfAccess
 import static extension tools.vitruv.dsls.commonalities.generator.reactions.util.JvmTypeProviderHelper.*
 import static extension tools.vitruv.dsls.commonalities.generator.reactions.util.XbaseHelper.*
 
-@GenerationScoped
 class OperandHelper extends ReactionsGenerationHelper {
 
 	package new() {

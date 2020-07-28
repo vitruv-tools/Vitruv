@@ -4,7 +4,6 @@ import java.util.Collections
 import java.util.function.Function
 import org.eclipse.xtext.xbase.XExpression
 import tools.vitruv.dsls.commonalities.generator.reactions.helper.ReactionsGenerationHelper
-import tools.vitruv.dsls.commonalities.generator.util.guice.GenerationScoped
 import tools.vitruv.dsls.commonalities.language.Participation
 import tools.vitruv.dsls.commonalities.language.ParticipationRelation
 import tools.vitruv.dsls.commonalities.language.TupleParticipation
@@ -17,7 +16,6 @@ import static extension tools.vitruv.dsls.commonalities.generator.reactions.rela
 import static extension tools.vitruv.dsls.commonalities.generator.reactions.util.JvmTypeProviderHelper.*
 import static extension tools.vitruv.dsls.commonalities.language.extensions.CommonalitiesLanguageModelExtensions.*
 
-@GenerationScoped
 class ParticipationRelationInitializationHelper extends ReactionsGenerationHelper {
 
 	static val RELATION_ENFORCE_METHOD = 'enforce'

@@ -9,7 +9,6 @@ import org.eclipse.xtext.xbase.XbaseFactory
 import tools.vitruv.dsls.commonalities.generator.reactions.attribute.AttributeMappingOperatorHelper.AttributeMappingOperatorContext
 import tools.vitruv.dsls.commonalities.generator.reactions.helper.ReactionsGenerationHelper
 import tools.vitruv.dsls.commonalities.generator.reactions.participation.ParticipationObjectsHelper
-import tools.vitruv.dsls.commonalities.generator.util.guice.GenerationScoped
 import tools.vitruv.dsls.commonalities.language.CommonalityAttribute
 import tools.vitruv.dsls.commonalities.language.CommonalityAttributeMapping
 import tools.vitruv.dsls.commonalities.language.OperatorAttributeMapping
@@ -32,7 +31,6 @@ import static extension tools.vitruv.dsls.commonalities.participation.Participat
 // sufficient to only convert individual values whenever they are added or removed. Operators would need to be able to
 // indicate whether they support mapping individual values (eg. by implementing an optional interface which provides
 // additional methods for the conversion of individual values).
-@GenerationScoped
 class AttributeMappingHelper extends ReactionsGenerationHelper {
 
 	@Inject extension AttributeMappingOperatorHelper attributeMappingOperatorHelper

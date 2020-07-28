@@ -8,7 +8,6 @@ import org.eclipse.xtext.xbase.XbaseFactory
 import tools.vitruv.dsls.commonalities.generator.reactions.helper.ReactionsGenerationHelper
 import tools.vitruv.dsls.commonalities.generator.reactions.operator.OperandHelper
 import tools.vitruv.dsls.commonalities.generator.reactions.operator.OperatorContext
-import tools.vitruv.dsls.commonalities.generator.util.guice.GenerationScoped
 import tools.vitruv.dsls.commonalities.language.OperatorReferenceMapping
 import tools.vitruv.dsls.commonalities.language.ParticipationClass
 import tools.vitruv.dsls.reactions.builder.TypeProvider
@@ -22,7 +21,6 @@ import static extension tools.vitruv.dsls.commonalities.generator.reactions.util
 import static extension tools.vitruv.dsls.commonalities.generator.reactions.util.XbaseHelper.*
 import static extension tools.vitruv.dsls.commonalities.language.extensions.CommonalitiesLanguageModelExtensions.*
 
-@GenerationScoped
 class ReferenceMappingOperatorHelper extends ReactionsGenerationHelper {
 
 	public static class ReferenceMappingOperatorContext implements OperatorContext {

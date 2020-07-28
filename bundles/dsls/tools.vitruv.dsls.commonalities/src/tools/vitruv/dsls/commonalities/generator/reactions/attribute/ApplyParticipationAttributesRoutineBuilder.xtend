@@ -8,7 +8,6 @@ import tools.vitruv.dsls.commonalities.generator.reactions.attribute.AttributeMa
 import tools.vitruv.dsls.commonalities.generator.reactions.helper.ReactionsGenerationHelper
 import tools.vitruv.dsls.commonalities.generator.reactions.participation.ParticipationObjectsHelper
 import tools.vitruv.dsls.commonalities.generator.reactions.util.ReactionsSegmentScopedProvider
-import tools.vitruv.dsls.commonalities.generator.util.guice.GenerationScoped
 import tools.vitruv.dsls.commonalities.language.Participation
 import tools.vitruv.dsls.reactions.builder.FluentReactionsSegmentBuilder
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder
@@ -21,7 +20,6 @@ import static extension tools.vitruv.dsls.commonalities.language.extensions.Comm
 
 class ApplyParticipationAttributesRoutineBuilder extends ReactionsGenerationHelper {
 
-	@GenerationScoped
 	static class Provider extends ReactionsSegmentScopedProvider<ApplyParticipationAttributesRoutineBuilder> {
 
 		protected override createFor(FluentReactionsSegmentBuilder segment) {

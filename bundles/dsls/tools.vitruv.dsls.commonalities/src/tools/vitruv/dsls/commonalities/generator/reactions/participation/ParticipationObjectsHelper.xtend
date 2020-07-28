@@ -9,7 +9,6 @@ import org.eclipse.xtext.xbase.XIfExpression
 import org.eclipse.xtext.xbase.XVariableDeclaration
 import org.eclipse.xtext.xbase.XbaseFactory
 import tools.vitruv.dsls.commonalities.generator.reactions.helper.ReactionsGenerationHelper
-import tools.vitruv.dsls.commonalities.generator.util.guice.GenerationScoped
 import tools.vitruv.dsls.commonalities.language.Participation
 import tools.vitruv.dsls.commonalities.language.ParticipationClass
 import tools.vitruv.dsls.commonalities.participation.ParticipationContext.ContextClass
@@ -29,7 +28,6 @@ import static extension tools.vitruv.dsls.commonalities.participation.Participat
  * Helper methods related to interfacing with the {@link ParticipationObjects}
  * during runtime.
  */
-@GenerationScoped
 class ParticipationObjectsHelper extends ReactionsGenerationHelper {
 
 	package new() {

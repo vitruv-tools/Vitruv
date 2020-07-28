@@ -21,13 +21,11 @@ import org.eclipse.emf.ecore.resource.ResourceSet
 import org.eclipse.jdt.core.IJavaProject
 import org.eclipse.xtext.resource.XtextResourceSet
 import tools.vitruv.dsls.commonalities.generator.SubGenerator
-import tools.vitruv.dsls.commonalities.generator.util.guice.GenerationScoped
 import tools.vitruv.extensions.dslruntime.commonalities.intermediatemodelbase.IntermediateModelBasePackage
 import tools.vitruv.framework.util.VitruviusConstants
 
 import static extension tools.vitruv.dsls.commonalities.generator.intermediatemodel.IntermediateModelConstants.*
 
-@GenerationScoped
 class IntermediateMetamodelCodeGenerator extends SubGenerator {
 
 	static val Logger logger = Logger.getLogger(IntermediateMetamodelCodeGenerator) => [level = Level.DEBUG]

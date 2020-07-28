@@ -8,7 +8,6 @@ import org.eclipse.xtext.xbase.XbaseFactory
 import tools.vitruv.dsls.commonalities.generator.reactions.helper.ReactionsGenerationHelper
 import tools.vitruv.dsls.commonalities.generator.reactions.operator.OperandHelper
 import tools.vitruv.dsls.commonalities.generator.reactions.operator.OperatorContext
-import tools.vitruv.dsls.commonalities.generator.util.guice.GenerationScoped
 import tools.vitruv.dsls.commonalities.language.ParticipationClass
 import tools.vitruv.dsls.commonalities.language.ParticipationCondition
 import tools.vitruv.dsls.commonalities.participation.ParticipationContext
@@ -21,7 +20,6 @@ import static extension tools.vitruv.dsls.commonalities.generator.reactions.Reac
 import static extension tools.vitruv.dsls.commonalities.generator.reactions.util.JvmTypeProviderHelper.*
 import static extension tools.vitruv.dsls.commonalities.language.extensions.CommonalitiesLanguageModelExtensions.*
 
-@GenerationScoped
 class ParticipationConditionInitializationHelper extends ReactionsGenerationHelper {
 
 	private static class ParticipationConditionOperatorContext implements OperatorContext {

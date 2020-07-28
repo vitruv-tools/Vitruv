@@ -7,10 +7,8 @@ import tools.vitruv.dsls.commonalities.generator.util.guice.GenerationScoped
 /**
  * Base for helper classes that need to be aware of the current generation
  * context.
- * <p>
- * If the implementation is meant to be injected, consider annotating it with
- * {@link GenerationScoped}.
  */
+@GenerationScoped
 abstract class GenerationHelper {
 
 	@Inject protected extension GenerationContext generationContext

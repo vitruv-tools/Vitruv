@@ -8,7 +8,6 @@ import tools.vitruv.dsls.commonalities.generator.reactions.condition.Participati
 import tools.vitruv.dsls.commonalities.generator.reactions.helper.ReactionsGenerationHelper
 import tools.vitruv.dsls.commonalities.generator.reactions.relation.ParticipationRelationInitializationHelper
 import tools.vitruv.dsls.commonalities.generator.reactions.resource.ResourceBridgeHelper
-import tools.vitruv.dsls.commonalities.generator.util.guice.GenerationScoped
 import tools.vitruv.dsls.commonalities.language.ParticipationClass
 import tools.vitruv.dsls.commonalities.participation.ParticipationContext
 import tools.vitruv.dsls.commonalities.participation.ParticipationContext.ContextClass
@@ -19,7 +18,6 @@ import static tools.vitruv.dsls.commonalities.generator.reactions.intermediatemo
 import static extension tools.vitruv.dsls.commonalities.generator.reactions.ReactionsGeneratorConventions.*
 import static extension tools.vitruv.dsls.commonalities.language.extensions.CommonalitiesLanguageModelExtensions.*
 
-@GenerationScoped
 class ParticipationObjectInitializationHelper extends ReactionsGenerationHelper {
 
 	@Inject extension ResourceBridgeHelper resourceBridgeHelper

@@ -9,7 +9,6 @@ import tools.vitruv.dsls.commonalities.generator.reactions.participation.Partici
 import tools.vitruv.dsls.commonalities.generator.reactions.resource.InsertResourceBridgeRoutineBuilder
 import tools.vitruv.dsls.commonalities.generator.reactions.resource.SetupResourceBridgeRoutineBuilder
 import tools.vitruv.dsls.commonalities.generator.reactions.util.ReactionsSegmentScopedProvider
-import tools.vitruv.dsls.commonalities.generator.util.guice.GenerationScoped
 import tools.vitruv.dsls.commonalities.language.Participation
 import tools.vitruv.dsls.commonalities.language.ParticipationClass
 import tools.vitruv.dsls.commonalities.participation.ParticipationContext
@@ -29,7 +28,6 @@ import static extension tools.vitruv.dsls.commonalities.language.extensions.Comm
 
 class CreateIntermediateRoutineBuilder extends ReactionsGenerationHelper {
 
-	@GenerationScoped
 	static class Provider extends ReactionsSegmentScopedProvider<CreateIntermediateRoutineBuilder> {
 
 		protected override createFor(FluentReactionsSegmentBuilder segment) {

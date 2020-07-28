@@ -9,9 +9,8 @@ import tools.vitruv.dsls.reactions.builder.FluentReactionsSegmentBuilder
 /**
  * Base class for providers which create one object per reactions segment
  * builder and then keep returning that same object in subsequent requests.
- * <p>
- * Consider annotating implementations with {@link GenerationScoped}.
  */
+@GenerationScoped
 abstract class ReactionsSegmentScopedProvider<T> extends InjectingFactoryBase {
 
 	val Map<FluentReactionsSegmentBuilder, T> bySegment = new HashMap

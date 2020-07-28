@@ -3,7 +3,6 @@ package tools.vitruv.dsls.commonalities.generator.reactions.intermediatemodel
 import org.eclipse.xtext.xbase.XExpression
 import org.eclipse.xtext.xbase.XbaseFactory
 import tools.vitruv.dsls.commonalities.generator.reactions.helper.ReactionsGenerationHelper
-import tools.vitruv.dsls.commonalities.generator.util.guice.GenerationScoped
 import tools.vitruv.dsls.commonalities.language.CommonalityReference
 import tools.vitruv.dsls.reactions.builder.TypeProvider
 import tools.vitruv.extensions.dslruntime.commonalities.intermediatemodelbase.Root
@@ -13,7 +12,6 @@ import static extension tools.vitruv.dsls.commonalities.generator.reactions.util
 import static extension tools.vitruv.dsls.commonalities.generator.reactions.util.XbaseHelper.*
 import static extension tools.vitruv.dsls.commonalities.language.extensions.CommonalitiesLanguageModelExtensions.*
 
-@GenerationScoped
 class IntermediateContainmentReactionsHelper extends ReactionsGenerationHelper {
 
 	package new() {

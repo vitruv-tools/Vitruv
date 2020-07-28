@@ -9,7 +9,6 @@ import org.eclipse.xtext.xbase.XbaseFactory
 import tools.vitruv.dsls.commonalities.generator.reactions.helper.ReactionsGenerationHelper
 import tools.vitruv.dsls.commonalities.generator.reactions.operator.OperandHelper
 import tools.vitruv.dsls.commonalities.generator.reactions.operator.OperatorContext
-import tools.vitruv.dsls.commonalities.generator.util.guice.GenerationScoped
 import tools.vitruv.dsls.commonalities.language.OperatorAttributeMapping
 import tools.vitruv.dsls.commonalities.language.ParticipationClass
 import tools.vitruv.dsls.reactions.builder.TypeProvider
@@ -20,7 +19,6 @@ import static com.google.common.base.Preconditions.*
 import static extension tools.vitruv.dsls.commonalities.generator.reactions.util.JvmTypeProviderHelper.*
 import static extension tools.vitruv.dsls.commonalities.language.extensions.CommonalitiesLanguageModelExtensions.*
 
-@GenerationScoped
 class AttributeMappingOperatorHelper extends ReactionsGenerationHelper {
 
 	public static class AttributeMappingOperatorContext implements OperatorContext {

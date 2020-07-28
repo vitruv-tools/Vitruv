@@ -15,7 +15,6 @@ import tools.vitruv.dsls.commonalities.generator.reactions.reference.ReferenceMa
 import tools.vitruv.dsls.commonalities.generator.reactions.reference.ReferenceMappingOperatorHelper.ReferenceMappingOperatorContext
 import tools.vitruv.dsls.commonalities.generator.reactions.util.ReactionsHelper.RoutineCallContext
 import tools.vitruv.dsls.commonalities.generator.reactions.util.ReactionsSegmentScopedProvider
-import tools.vitruv.dsls.commonalities.generator.util.guice.GenerationScoped
 import tools.vitruv.dsls.commonalities.language.OperatorReferenceMapping
 import tools.vitruv.dsls.commonalities.language.ParticipationAttributeOperand
 import tools.vitruv.dsls.commonalities.language.ReferenceMappingOperand
@@ -42,7 +41,6 @@ import static extension tools.vitruv.dsls.commonalities.language.extensions.Comm
  */
 class AttributeReferenceMatchingReactionsBuilder extends ReactionsGenerationHelper {
 
-	@GenerationScoped
 	static class Provider extends ReactionsSegmentScopedProvider<AttributeReferenceMatchingReactionsBuilder> {
 
 		protected override createFor(FluentReactionsSegmentBuilder segment) {

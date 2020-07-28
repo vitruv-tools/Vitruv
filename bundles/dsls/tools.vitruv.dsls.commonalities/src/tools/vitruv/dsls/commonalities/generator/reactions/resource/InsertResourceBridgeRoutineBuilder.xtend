@@ -6,7 +6,6 @@ import org.eclipse.xtext.xbase.XFeatureCall
 import org.eclipse.xtext.xbase.XbaseFactory
 import tools.vitruv.dsls.commonalities.generator.reactions.helper.ReactionsGenerationHelper
 import tools.vitruv.dsls.commonalities.generator.reactions.util.ReactionsSegmentScopedProvider
-import tools.vitruv.dsls.commonalities.generator.util.guice.GenerationScoped
 import tools.vitruv.dsls.commonalities.language.Concept
 import tools.vitruv.dsls.commonalities.language.ParticipationClass
 import tools.vitruv.dsls.reactions.builder.FluentReactionsSegmentBuilder
@@ -27,7 +26,6 @@ import static extension tools.vitruv.dsls.commonalities.language.extensions.Comm
 
 class InsertResourceBridgeRoutineBuilder extends ReactionsGenerationHelper {
 
-	@GenerationScoped
 	static class Provider extends ReactionsSegmentScopedProvider<InsertResourceBridgeRoutineBuilder> {
 
 		protected override createFor(FluentReactionsSegmentBuilder segment) {

@@ -3,7 +3,6 @@ package tools.vitruv.dsls.commonalities.generator.reactions.participation
 import java.util.function.Function
 import org.eclipse.xtext.xbase.XExpression
 import tools.vitruv.dsls.commonalities.generator.reactions.helper.ReactionsGenerationHelper
-import tools.vitruv.dsls.commonalities.generator.util.guice.GenerationScoped
 import tools.vitruv.dsls.commonalities.language.ParticipationClass
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.UndecidedMatcherStatementBuilder
 import tools.vitruv.dsls.reactions.builder.TypeProvider
@@ -11,7 +10,6 @@ import tools.vitruv.dsls.reactions.builder.TypeProvider
 import static extension tools.vitruv.dsls.commonalities.generator.reactions.ReactionsGeneratorConventions.*
 import static extension tools.vitruv.dsls.commonalities.participation.ParticipationContextHelper.*
 
-@GenerationScoped
 class ParticipationObjectsRetrievalHelper extends ReactionsGenerationHelper {
 
 	package new() {

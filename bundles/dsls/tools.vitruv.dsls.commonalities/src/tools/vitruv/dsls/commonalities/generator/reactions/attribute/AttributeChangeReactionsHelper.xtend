@@ -3,7 +3,6 @@ package tools.vitruv.dsls.commonalities.generator.reactions.attribute
 import java.util.Collections
 import java.util.function.BiFunction
 import tools.vitruv.dsls.commonalities.generator.reactions.helper.ReactionsGenerationHelper
-import tools.vitruv.dsls.commonalities.generator.util.guice.GenerationScoped
 import tools.vitruv.dsls.commonalities.language.elements.Attribute
 import tools.vitruv.dsls.commonalities.language.elements.EClassAdapter
 import tools.vitruv.dsls.commonalities.language.elements.EDataTypeAdapter
@@ -12,7 +11,6 @@ import tools.vitruv.dsls.reactions.builder.FluentReactionBuilder.RoutineCallBuil
 
 import static extension tools.vitruv.dsls.commonalities.generator.reactions.ReactionsGeneratorConventions.*
 
-@GenerationScoped
 class AttributeChangeReactionsHelper extends ReactionsGenerationHelper {
 
 	package new() {

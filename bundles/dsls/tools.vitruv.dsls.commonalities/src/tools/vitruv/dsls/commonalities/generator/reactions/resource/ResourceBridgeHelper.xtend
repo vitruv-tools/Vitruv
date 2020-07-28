@@ -3,7 +3,6 @@ package tools.vitruv.dsls.commonalities.generator.reactions.resource
 import org.eclipse.xtext.xbase.XFeatureCall
 import org.eclipse.xtext.xbase.XbaseFactory
 import tools.vitruv.dsls.commonalities.generator.reactions.helper.ReactionsGenerationHelper
-import tools.vitruv.dsls.commonalities.generator.util.guice.GenerationScoped
 import tools.vitruv.dsls.commonalities.language.ParticipationClass
 import tools.vitruv.dsls.reactions.builder.TypeProvider
 import tools.vitruv.extensions.dslruntime.commonalities.resources.IntermediateResourceBridge
@@ -12,7 +11,6 @@ import static extension tools.vitruv.dsls.commonalities.generator.reactions.util
 import static extension tools.vitruv.dsls.commonalities.generator.reactions.util.XbaseHelper.*
 import static extension tools.vitruv.dsls.commonalities.language.extensions.CommonalitiesLanguageModelExtensions.*
 
-@GenerationScoped
 class ResourceBridgeHelper extends ReactionsGenerationHelper {
 
 	package new() {

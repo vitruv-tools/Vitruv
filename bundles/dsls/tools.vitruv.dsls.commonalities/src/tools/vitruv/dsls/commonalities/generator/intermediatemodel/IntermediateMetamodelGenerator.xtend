@@ -19,7 +19,6 @@ import org.eclipse.emf.ecore.xmi.impl.XMLResourceFactoryImpl
 import tools.vitruv.dsls.common.helper.ClassNameGenerator
 import tools.vitruv.dsls.commonalities.generator.GenerationContext
 import tools.vitruv.dsls.commonalities.generator.SubGenerator
-import tools.vitruv.dsls.commonalities.generator.util.guice.GenerationScoped
 import tools.vitruv.dsls.commonalities.language.Commonality
 import tools.vitruv.dsls.commonalities.language.CommonalityAttribute
 import tools.vitruv.dsls.commonalities.language.CommonalityFile
@@ -34,7 +33,6 @@ import static org.eclipse.emf.ecore.ETypedElement.UNBOUNDED_MULTIPLICITY
 import static extension tools.vitruv.dsls.commonalities.generator.intermediatemodel.IntermediateModelConstants.*
 import static extension tools.vitruv.dsls.commonalities.language.extensions.CommonalitiesLanguageModelExtensions.*
 
-@GenerationScoped
 class IntermediateMetamodelGenerator extends SubGenerator {
 
 	static val Logger logger = Logger.getLogger(IntermediateMetamodelGenerator) => [level = Level.DEBUG]

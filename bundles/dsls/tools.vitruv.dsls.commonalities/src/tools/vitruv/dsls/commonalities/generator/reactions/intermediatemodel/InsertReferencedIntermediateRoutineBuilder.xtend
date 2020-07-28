@@ -5,7 +5,6 @@ import java.util.Map
 import org.eclipse.emf.ecore.EcorePackage
 import tools.vitruv.dsls.commonalities.generator.reactions.helper.ReactionsGenerationHelper
 import tools.vitruv.dsls.commonalities.generator.reactions.util.ReactionsSegmentScopedProvider
-import tools.vitruv.dsls.commonalities.generator.util.guice.GenerationScoped
 import tools.vitruv.dsls.commonalities.language.CommonalityReference
 import tools.vitruv.dsls.reactions.builder.FluentReactionsSegmentBuilder
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder
@@ -18,7 +17,6 @@ import static extension tools.vitruv.dsls.commonalities.language.extensions.Comm
 
 class InsertReferencedIntermediateRoutineBuilder extends ReactionsGenerationHelper {
 
-	@GenerationScoped
 	static class Provider extends ReactionsSegmentScopedProvider<InsertReferencedIntermediateRoutineBuilder> {
 
 		protected override createFor(FluentReactionsSegmentBuilder segment) {
