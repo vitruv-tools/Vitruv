@@ -166,7 +166,6 @@ class ParticipationMatchingReactionsBuilder extends ReactionsGenerationHelper {
 
 	val Map<ParticipationContext, FluentRoutineBuilder> matchManyParticipationsRoutines = new HashMap
 	val Map<CommonalityReferenceMapping, FluentRoutineBuilder> matchSubParticipationsRoutines = new HashMap
-	val Map<ParticipationContext, FluentRoutineBuilder> matchAttributeReferenceContainerForIntermediateRoutines = new HashMap
 
 	private new(FluentReactionsSegmentBuilder segment) {
 		checkNotNull(segment, "segment is null")
@@ -413,35 +412,6 @@ class ParticipationMatchingReactionsBuilder extends ReactionsGenerationHelper {
 						call(participationContext.matchManyParticipationsRoutine,
 							new RoutineCallParameter[variable(REFERENCE_ROOT)])
 					}
-				]
-		]
-	}
-
-	def getMatchAttributeReferenceContainerForIntermediateRoutine(ParticipationContext participationContext) {
-		return matchAttributeReferenceContainerForIntermediateRoutines.computeIfAbsent(participationContext) [
-			assertTrue(participationContext.isForAttributeReferenceMapping)
-			val referencedCommonality = participationContext.referencedCommonality
-
-			// Generate the required routines:
-			participationContext.generateRoutines()
-
-			return create.routine('''matchAttributeReferenceContainerForIntermediate«
-				participationContext.reactionNameSuffix»''')
-				.input [
-					model(referencedCommonality.changeClass, REFERENCED_INTERMEDIATE)
-				]
-				.match [
-					// We treat this like an attribute change for one of referenced participation objects:
-					val attributeReferenceContainment = participationContext.attributeReferenceContainments.head
-					assertTrue(attributeReferenceContainment !== null)
-					val referencedClass = attributeReferenceContainment.contained.participationClass
-					vall(PARTICIPATION_OBJECT).retrieve(referencedClass.changeClass)
-						.correspondingTo(REFERENCED_INTERMEDIATE)
-						.taggedWith(referencedClass.correspondenceTag)
-				]
-				.action [
-					call(segment.getMatchAttributeReferenceContainerRoutine(participationContext),
-						new RoutineCallParameter[variable(PARTICIPATION_OBJECT)])
 				]
 		]
 	}

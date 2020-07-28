@@ -11,6 +11,7 @@ import org.eclipse.xtext.xbase.XbaseFactory
 import tools.vitruv.dsls.commonalities.generator.helper.ContainmentHelper
 import tools.vitruv.dsls.commonalities.generator.reactions.ReactionsSubGenerator
 import tools.vitruv.dsls.commonalities.generator.reactions.attribute.ApplyCommonalityAttributesRoutineBuilder
+import tools.vitruv.dsls.commonalities.generator.reactions.matching.AttributeReferenceMatchingReactionsBuilder
 import tools.vitruv.dsls.commonalities.generator.reactions.matching.ParticipationMatchingReactionsBuilder
 import tools.vitruv.dsls.commonalities.generator.reactions.participation.ParticipationObjectInitializationHelper
 import tools.vitruv.dsls.commonalities.generator.reactions.reference.ReferenceMappingOperatorHelper
@@ -60,6 +61,7 @@ class CommonalityInsertReactionsBuilder extends ReactionsSubGenerator {
 	@Inject ParticipationMatchingReactionsBuilder.Provider participationMatchingReactionsBuilderProvider
 	@Inject extension InsertIntermediateRoutineBuilder.Provider insertIntermediateRoutineBuilderProvider
 	@Inject extension ApplyCommonalityAttributesRoutineBuilder.Provider applyCommonalityAttributesRoutineBuilderProvider
+	@Inject extension AttributeReferenceMatchingReactionsBuilder.Provider attributeReferenceMatchingReactionsBuilderProvider
 
 	val Commonality commonality
 	val Participation targetParticipation
@@ -491,12 +493,11 @@ class CommonalityInsertReactionsBuilder extends ReactionsSubGenerator {
 			return Optional.empty
 		}
 
-		val extension matchingReactionsBuilder = participationMatchingReactionsBuilderProvider.getFor(segment)
 		val referencedCommonality = participationContext.referencedCommonality
 		return Optional.of(create.reaction('''«referencedCommonality.reactionName»Create«
 			participationContext.reactionNameSuffix»''')
 			.afterElement(referencedCommonality.changeClass).created
-			.call(participationContext.matchAttributeReferenceContainerForIntermediateRoutine,
+			.call(segment.getMatchAttributeReferenceContainerForIntermediateRoutine(participationContext),
 				new RoutineCallParameter[affectedEObject])
 		)
 	}
