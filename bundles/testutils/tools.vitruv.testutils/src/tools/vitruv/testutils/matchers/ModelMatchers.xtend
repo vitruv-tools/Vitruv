@@ -1,12 +1,13 @@
 package tools.vitruv.testutils.matchers
 
 import edu.kit.ipd.sdq.activextendannotations.Utility
+import java.util.ArrayDeque
 import java.util.Collection
 import java.util.Collections
+import java.util.Deque
 import java.util.HashMap
 import java.util.List
 import java.util.Map
-import java.util.Stack
 import java.util.function.Consumer
 import org.eclipse.emf.ecore.EClassifier
 import org.eclipse.emf.ecore.EObject
@@ -16,6 +17,7 @@ import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.xtend.lib.annotations.FinalFieldsConstructor
 import org.hamcrest.Description
 import org.hamcrest.Matcher
+import org.hamcrest.StringDescription
 import org.hamcrest.TypeSafeMatcher
 
 import static tools.vitruv.framework.util.XtendAssertHelper.*
@@ -117,7 +119,7 @@ package class ResourceInexistenceMatcher extends TypeSafeMatcher<Resource> {
 package class ModelTreeEqualityMatcher extends TypeSafeMatcher<EObject> {
 
 	package val EObject expectedObject
-	var Stack<String> navigationStack = new Stack
+	var Deque<String> navigationStack = new ArrayDeque()
 	var Consumer<Description> mismatch
 	// Bidirectional mapping between objects which have been compared and considered equal.
 	// Note that each object can be considered equal to at most one other object. This ensures that two objects are
@@ -285,17 +287,30 @@ package class ModelTreeEqualityMatcher extends TypeSafeMatcher<EObject> {
 			while (expectedIter.hasNext()) {
 				navigationStack.push('''[«count»]''')
 				val expectedElement = expectedIter.next
+				// Capture the current navigation stack:
+				val originalNavigationStack = new ArrayDeque(navigationStack)
 				if (!expectedElement.equalsDeeply(itemIter.next, false)) {
 					if (!ordered) {
-						// if not ordered, retry with all elements not matched yet.
+						// Capture the original mismatch:
+						val originalMismatchDescription = new StringDescription
+						describeMismatch(originalMismatchDescription, navigationStack, mismatch)
+
+						// If not ordered, retry with all elements not matched yet.
 						if (!itemOrdered.containsDeepEqual(expectedElement, usedItemIndeces)) {
 							val notFoundCount = count
+							// Restore the original navigation stack:
+							this.navigationStack = originalNavigationStack
 							navigationStack.pop()
 							mismatch = [
-								appendText('''did not contain an element equal to the «notFoundCount». element.''').
-									appendValue(expectedElement)
+								appendText('''did not contain an element equal to the «notFoundCount». element (''')
+									.appendValue(expectedElement)
+									.appendText('''). Original mismatch: ''')
+									.appendText(originalMismatchDescription.toString)
 							]
 							return false
+						} else {
+							// Restore the original navigation stack and continue:
+							navigationStack = originalNavigationStack
 						}
 					} else {
 						return false
@@ -357,12 +372,17 @@ package class ModelTreeEqualityMatcher extends TypeSafeMatcher<EObject> {
 	}
 
 	override protected describeMismatchSafely(EObject item, Description mismatchDescription) {
+		describeMismatch(mismatchDescription, navigationStack, mismatch)
+	}
+
+	private def void describeMismatch(Description description, Deque<String> navigationStack,
+		Consumer<Description> mismatch) {
 		if (navigationStack.isEmpty) {
-			mismatchDescription.appendText("The EObject ")
+			description.appendText("The EObject ")
 		} else {
-			mismatchDescription.appendText('''The element at object«navigationStack.join» ''')
+			description.appendText('''The element at object«navigationStack.descendingIterator.join» ''')
 		}
-		mismatch.accept(mismatchDescription)
+		mismatch.accept(description)
 	}
 }
 
