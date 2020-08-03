@@ -168,19 +168,22 @@ class CommonalitiesLanguageValidator extends AbstractCommonalitiesLanguageValida
 			return;
 		}
 
-		if (mapping instanceof SimpleReferenceMapping) {
-			if (!checkSimpleReferenceMapping(mapping)) {
-				return;
-			}
-		} else if (mapping instanceof OperatorReferenceMapping) {
-			if (!checkOperatorReferenceMapping(mapping)) {
-				return;
-			}
+		// Sub type specific checks:
+		if (!checkConcreteReferenceMapping(mapping)) {
+			return;
 		}
 	}
 
-	// returns false in case of error
-	private def boolean checkSimpleReferenceMapping(SimpleReferenceMapping mapping) {
+	private static def getReferencedParticipations(CommonalityReferenceMapping mapping) {
+		val participationDomainName = mapping.participation.domainName
+		val referencedCommonality = mapping.referencedCommonality
+		return referencedCommonality.participations.filter [
+			it.domainName == participationDomainName
+		]
+	}
+
+	// Returns false in case of error.
+	private def dispatch boolean checkConcreteReferenceMapping(SimpleReferenceMapping mapping) {
 		val referenceRightType = mapping.reference.type
 		if (!(referenceRightType instanceof Metaclass)) {
 			error("Reference mappings can only use EReferences.", SIMPLE_REFERENCE_MAPPING__REFERENCE)
@@ -198,25 +201,19 @@ class CommonalitiesLanguageValidator extends AbstractCommonalitiesLanguageValida
 		}
 	}
 
-	private static def getReferencedParticipations(CommonalityReferenceMapping mapping) {
-		val participationDomainName = mapping.participation.domainName
-		val referencedCommonality = mapping.referencedCommonality
-		return referencedCommonality.participations.filter [
-			it.domainName == participationDomainName
-		]
-	}
-
-	// returns false in case of error
-	private def boolean checkOperatorReferenceMapping(OperatorReferenceMapping mapping) {
-		if (mapping.operands.filter(ReferencedParticipationAttributeOperand).empty) {
-			error("No referenced participation attribute specified.", OPERATOR_REFERENCE_MAPPING__OPERANDS)
-			return false
-		}
-
-		val referencedParticipation = mapping.referencedParticipation
-		if (referencedParticipation.participationContext.isEmpty) {
-			error("The referenced participation specifies no root context.", mapping, null)
-			return false
+	// Returns false in case of error.
+	private def dispatch boolean checkConcreteReferenceMapping(OperatorReferenceMapping mapping) {
+		if (mapping.operator.isAttributeReference) {
+			// Checks specific to attribute reference mappings:
+			if (mapping.operands.filter(ReferencedParticipationAttributeOperand).empty) {
+				error("No referenced participation attribute specified.", OPERATOR_REFERENCE_MAPPING__OPERANDS)
+				return false
+			}
+			val referencedParticipation = mapping.referencedParticipation
+			if (referencedParticipation.participationContext.isEmpty) {
+				error("The referenced participation specifies no root context.", mapping, null)
+				return false
+			}
 		}
 	}
 
