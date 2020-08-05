@@ -1,7 +1,6 @@
 package tools.vitruv.dsls.commonalities.generator.reactions.util
 
 import edu.kit.ipd.sdq.activextendannotations.Utility
-import java.util.Collection
 import java.util.List
 import org.eclipse.emf.ecore.EAttribute
 import org.eclipse.emf.ecore.EClass
@@ -49,7 +48,7 @@ class EmfAccessExpressions {
 		EStructuralFeature eFeature) {
 		XbaseFactory.eINSTANCE.createXCastedExpression => [
 			type = TypesFactory.eINSTANCE.createJvmParameterizedTypeReference => [
-				type = typeProvider.findType(Collection)
+				type = typeProvider.findType(List)
 				arguments += typeProvider.jvmTypeReferenceBuilder.typeRef(eFeature.EType.javaClassName)
 			]
 			target = eGetFeatureValue(typeProvider, object, eFeature)
