@@ -196,8 +196,18 @@ class EmfAccessExpressions {
 			candidateAccessorPrefixes = #['get']
 		}
 
-		val accessorMethod = candidateAccessorPrefixes.map [ accessorPrefix |
-			val accessorName = accessorPrefix + (accessorPrefix.empty ? eFeature.name : eFeature.name.toFirstUpper)
+		// Plural form, eg. UML2::BehavioralFeature#getOwnedParameters
+		val candidateAccessorSuffixes = #['', 's']
+
+		val candidateAccessors = candidateAccessorPrefixes.flatMap [ accessorPrefix |
+			val prefixedAccessorName = accessorPrefix + (accessorPrefix.empty ? eFeature.name : eFeature.name.toFirstUpper)
+			return candidateAccessorSuffixes.map [ accessorSuffix |
+				val accessorName = prefixedAccessorName + accessorSuffix
+				return accessorName
+			]
+		]
+
+		val accessorMethod = candidateAccessors.map [ accessorName |
 			try {
 				return typeProvider.findMethod(containingInstanceClassName, accessorName, 0)
 			} catch (NoSuchJvmElementException e) {
