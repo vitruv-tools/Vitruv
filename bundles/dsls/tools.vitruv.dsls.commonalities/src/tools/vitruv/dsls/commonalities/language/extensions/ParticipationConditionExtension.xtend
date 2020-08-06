@@ -33,7 +33,7 @@ package class ParticipationConditionExtension {
 	}
 
 	static def dispatch isChecked(BidirectionalParticipationCondition condition) {
-		false
+		true
 	}
 
 	static def dispatch isChecked(EnforcedParticipationCondition condition) {
