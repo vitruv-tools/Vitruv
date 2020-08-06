@@ -19,23 +19,29 @@ class ParticipationConditionInitializationHelper extends ReactionsGenerationHelp
 	package new() {
 	}
 
-	def getParticipationConditionsInitializers(ParticipationContext participationContext, ContextClass contextClass) {
+	private def getEnforcedParticipationConditions(ParticipationContext participationContext,
+		ContextClass involvedContextClass) {
 		val participation = participationContext.participation
-		val participationClass = contextClass.participationClass
+		val involvedParticipationClass = involvedContextClass.participationClass
 		return participation.conditions
-			.filter[!isContainment] // containments are handled separately
+			.filter[!isContainment] // Containments are handled separately
 			.filter[enforced]
-			.filter[leftOperand.participationClass == participationClass]
+			.filter[leftOperand.participationClass == involvedParticipationClass]
 			.filter [
-				// Exclude conditions whose operands refer to participation
-				// classes that are not involved in the current participation
-				// context:
+				// Exclude conditions whose operands refer to participation classes that are not involved in the
+				// current participation context:
 				rightOperands.map[it.participationClass].filterNull.forall [ operandParticipationClass |
 					participationContext.classes.exists [
 						it.participationClass == operandParticipationClass
 					]
 				]
-			].map[participationConditionInitializer]
+			]
+	}
+
+	def getParticipationConditionsInitializers(ParticipationContext participationContext, ContextClass contextClass) {
+		return participationContext.getEnforcedParticipationConditions(contextClass).map [
+			participationConditionInitializer
+		]
 	}
 
 	private def Function<TypeProvider, XExpression> getParticipationConditionInitializer(
