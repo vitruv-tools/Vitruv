@@ -31,7 +31,7 @@ class ParticipationObjects {
 	}
 
 	// Convenience type parameter: The returned object gets automatically cast to the type expected by the caller.
-	def <T> T getObject(String name) {
+	def <T extends EObject> T getObject(String name) {
 		return objectsByName.get(name) as T
 	}
 
