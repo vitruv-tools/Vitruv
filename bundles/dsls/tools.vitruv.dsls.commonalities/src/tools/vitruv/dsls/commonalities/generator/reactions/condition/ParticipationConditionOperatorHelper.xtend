@@ -3,6 +3,7 @@ package tools.vitruv.dsls.commonalities.generator.reactions.condition
 import com.google.inject.Inject
 import java.util.List
 import org.eclipse.xtext.common.types.JvmOperation
+import org.eclipse.xtext.xbase.XExpression
 import org.eclipse.xtext.xbase.XbaseFactory
 import tools.vitruv.dsls.commonalities.generator.reactions.helper.ReactionsGenerationHelper
 import tools.vitruv.dsls.commonalities.generator.reactions.operator.OperandHelper
@@ -88,14 +89,14 @@ class ParticipationConditionOperatorHelper extends ReactionsGenerationHelper {
 		]
 	}
 
-	def enforce(ParticipationCondition participationCondition,
+	def XExpression enforce(ParticipationCondition participationCondition,
 		ParticipationConditionOperatorContext operatorContext) {
 		val extension typeProvider = operatorContext.typeProvider
 		val method = typeProvider.findMethod(IParticipationConditionOperator, ENFORCE_METHOD)
 		return participationCondition.callOperatorMethod(method, operatorContext)
 	}
 
-	def check(ParticipationCondition participationCondition,
+	def XExpression check(ParticipationCondition participationCondition,
 		ParticipationConditionOperatorContext operatorContext) {
 		val extension typeProvider = operatorContext.typeProvider
 		val method = typeProvider.findMethod(IParticipationConditionOperator, CHECK_METHOD)

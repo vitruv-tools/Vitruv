@@ -159,6 +159,7 @@ class ParticipationMatchingReactionsBuilder extends ReactionsGenerationHelper {
 	@Inject extension InsertIntermediateRoutineBuilder.Provider insertIntermediateRoutineBuilderProvider
 	@Inject extension InsertReferencedIntermediateRoutineBuilder.Provider insertReferencedIntermediateRoutineBuilderProvider
 	@Inject extension AttributeReferenceMatchingReactionsBuilder.Provider attributeReferenceMatchingReactionsBuilderProvider
+	@Inject extension ParticipationConditionMatchingReactionsBuilder.Provider participationConditionMatchingReactionsBuilderProvider
 
 	val FluentReactionsSegmentBuilder segment
 
@@ -219,11 +220,15 @@ class ParticipationMatchingReactionsBuilder extends ReactionsGenerationHelper {
 	}
 
 	private def generateReactions(ParticipationContext participationContext) {
+		// Reactions which match the participation according to its context:
 		if (participationContext.isForAttributeReferenceMapping) {
 			segment.generateAttributeReferenceMatchingReactions(participationContext)
 		} else {
 			participationContext.generateContainmentReferenceMatchingReactions()
 		}
+
+		// Reactions for attribute changes which might affect the checked participation conditions:
+		segment.generateParticipationConditionReactions(participationContext)
 	}
 
 	private def generateContainmentReferenceMatchingReactions(ParticipationContext participationContext) {
@@ -250,10 +255,6 @@ class ParticipationMatchingReactionsBuilder extends ReactionsGenerationHelper {
 		// Note: We do not need to react to the deletion of participation
 		// objects, because we also receive events for the removal from their
 		// previous container.
-
-		// TODO reactions to react to attribute changes that might fulfill the non-structural conditions
-		// TODO also need to react to them in order to delete the participation again once a checked
-		// condition is no longer fulfilled (conditions that get only enforced are ignored)
 	}
 
 	/**

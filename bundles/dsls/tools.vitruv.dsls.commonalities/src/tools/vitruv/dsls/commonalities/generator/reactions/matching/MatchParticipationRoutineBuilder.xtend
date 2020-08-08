@@ -9,6 +9,7 @@ import org.eclipse.xtext.xbase.XExpression
 import org.eclipse.xtext.xbase.XFeatureCall
 import org.eclipse.xtext.xbase.XbaseFactory
 import tools.vitruv.dsls.commonalities.generator.helper.ContainmentHelper
+import tools.vitruv.dsls.commonalities.generator.reactions.condition.CheckedParticipationConditionsHelper
 import tools.vitruv.dsls.commonalities.generator.reactions.helper.ReactionsGenerationHelper
 import tools.vitruv.dsls.commonalities.generator.reactions.intermediatemodel.CreateIntermediateRoutineBuilder
 import tools.vitruv.dsls.commonalities.generator.reactions.reference.ReferenceMappingOperatorHelper
@@ -53,6 +54,7 @@ package class MatchParticipationRoutineBuilder extends ReactionsGenerationHelper
 	@Inject extension ContainmentHelper containmentHelper
 	@Inject extension ReferenceMappingOperatorHelper referenceMappingOperatorHelper
 	@Inject extension CreateIntermediateRoutineBuilder.Provider createIntermediateRoutineBuilderProvider
+	@Inject extension CheckedParticipationConditionsHelper checkedParticipationConditionsHelper
 
 	val FluentReactionsSegmentBuilder segment
 	val Map<ParticipationContext, FluentRoutineBuilder> matchParticipationRoutines = new HashMap
@@ -78,8 +80,8 @@ package class MatchParticipationRoutineBuilder extends ReactionsGenerationHelper
 	 * establish the participation.
 	 * <p>
 	 * Note: We don't check if there already is a corresponding Intermediate
-	 * for the give start object. If the participation context is for a
-	 * commonality reference mapping, the start object is the containment
+	 * for the given start object. If the participation context is for a
+	 * commonality reference mapping, the start object may be the containment
 	 * tree's root object specified by that mapping, which already corresponds
 	 * to an Intermediate (possibly even the same type of Intermediate that the
 	 * participation will correspond to in case we find a match). Otherwise, if
@@ -184,8 +186,6 @@ package class MatchParticipationRoutineBuilder extends ReactionsGenerationHelper
 		return (participationContext.isRootContext && participationContext.participation.isCommonalityParticipation)
 	}
 
-	// TODO Matching of participation contexts for attribute references is no longer required (at least for now) and
-	// could therefore be removed.
 	private def ContainmentTreeBuilder setupContainmentTree(ParticipationContext participationContext,
 		extension TypeProvider typeProvider) {
 		val participation = participationContext.participation
@@ -253,12 +253,7 @@ package class MatchParticipationRoutineBuilder extends ReactionsGenerationHelper
 
 	private def XExpression checkNonStructuralConditions(ParticipationContext participationContext,
 		XFeatureCall participationObjects, extension TypeProvider typeProvider) {
-		// TODO Implement this: This needs to check the (checked) non-containment participation relations and
-		// conditions.
-		// TODO If the participation context is for an attribute reference, we need to filter any conditions for
-		// attributes which are also affected by the attribute reference.
-		return XbaseFactory.eINSTANCE.createXBooleanLiteral => [
-			isTrue = true
-		]
+		// Check if the relevant checked participation conditions are fulfilled:
+		return participationContext.checkParticipationConditions(typeProvider, participationObjects)
 	}
 }
