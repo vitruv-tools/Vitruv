@@ -3,7 +3,7 @@ package tools.vitruv.extensions.dslruntime.commonalities.operators.participation
 import com.google.common.base.Preconditions
 import java.util.List
 
-abstract class AbstractSingleArgumentOperator extends AbstractParticipationConditionOperator {
+abstract class AbstractSingleArgumentConditionOperator extends AbstractParticipationConditionOperator {
 
 	new(Object leftOperand, List<?> rightOperands) {
 		super(leftOperand, rightOperands)

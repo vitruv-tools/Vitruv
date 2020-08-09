@@ -6,7 +6,7 @@ import org.apache.log4j.Logger
 import tools.vitruv.extensions.dslruntime.commonalities.operators.AttributeOperand
 
 @ParticipationConditionOperator(name = '=')
-class EqualsOperator extends AbstractSingleArgumentOperator {
+class EqualsOperator extends AbstractSingleArgumentConditionOperator {
 
 	static val Logger logger = Logger.getLogger(EqualsOperator)
 

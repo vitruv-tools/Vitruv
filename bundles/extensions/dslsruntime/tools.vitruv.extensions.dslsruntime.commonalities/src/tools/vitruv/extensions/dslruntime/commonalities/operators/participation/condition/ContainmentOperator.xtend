@@ -9,7 +9,7 @@ import tools.vitruv.extensions.dslruntime.commonalities.operators.AttributeOpera
 import static extension tools.vitruv.extensions.dslruntime.commonalities.operators.participation.relation.ContainmentOperator.*
 
 @ParticipationConditionOperator(name = 'in')
-class ContainmentOperator extends AbstractSingleArgumentOperator implements IParticipationClassConditionOperator {
+class ContainmentOperator extends AbstractSingleArgumentConditionOperator implements IParticipationClassConditionOperator {
 
 	new(Object leftOperand, List<Object> rightOperands) {
 		super(leftOperand, rightOperands)
