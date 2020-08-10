@@ -32,6 +32,7 @@ Require-Bundle: org.apache.log4j,
  tools.vitruv.extensions.dslsruntime.reactions;bundle-version="0.2.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Export-Package: tools.vitruv.dsls.commonalities,
+ tools.vitruv.dsls.commonalities.conversion,
  tools.vitruv.dsls.commonalities.export;x-internal:=true,
  tools.vitruv.dsls.commonalities.generator,
  tools.vitruv.dsls.commonalities.generator.domain,

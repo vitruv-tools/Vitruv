@@ -22,7 +22,7 @@ Domain:
 ;
 
 Concept:
-	'concept' name=ID
+	'concept' name=ValidID
 ;
 
 Metaclass:
@@ -30,7 +30,7 @@ Metaclass:
 ;
 
 Commonality:
-	(referenced?='referenced')? 'commonality' name=ID '{'
+	(referenced?='referenced')? 'commonality' name=ValidID '{'
 		participations+=Participation*
 		(attributes+=CommonalityAttribute|references+=CommonalityReference)*
 	'}'
@@ -62,7 +62,7 @@ SimpleParticipation:
 ;
 
 TupleParticipation:
-	domainName=DomainReference ':' '(' parts+=TupleParticipationPart (','
+	domainName=DomainName ':' '(' parts+=TupleParticipationPart (','
 	parts+=TupleParticipationPart)* ')'
 ;
 
@@ -107,11 +107,11 @@ ParticipationClass:
 ;
 
 QualifiedParticipationClassDeclaration returns ParticipationClass:
-	(singleton?='single')? superMetaclass=[Metaclass|QualifiedMetaclass] ('called' Aliasable)?
+	(singleton?='single')? superMetaclass=[Metaclass|QualifiedClass] ('called' Aliasable)?
 ;
 
 UnqualifiedParticipationClassDeclaration returns ParticipationClass:
-	(singleton?='single')? superMetaclass=[Metaclass|UnqualifiedMetaclass] ('called' Aliasable)?
+	(singleton?='single')? superMetaclass=[Metaclass|UnqualifiedClass] ('called' Aliasable)?
 ;
 
 ParticipationCondition:
@@ -148,7 +148,7 @@ Attribute:
 ;
 
 CommonalityAttribute:
-	'has' name=ID '{'
+	'has' name=ValidID '{'
 		mappings+=CommonalityAttributeMapping*
 	'}'
 ;
@@ -180,11 +180,11 @@ ParticipationAttribute:
 ;
 
 QualifiedParticipationAttribute returns ParticipationAttribute:
-	participationClass=[ParticipationClass|QualifiedParticipationClass] '.' attribute=[Attribute|UnqualifiedParticipationMember]
+	participationClass=[ParticipationClass|QualifiedClass] '.' attribute=[Attribute|UnqualifiedAttribute]
 ;
 
 UnqualifiedParticipationAttribute returns ParticipationAttribute:
-	participationClass=[ParticipationClass|UnqualifiedParticipationClass] '.' attribute=[Attribute|UnqualifiedParticipationMember]
+	participationClass=[ParticipationClass|UnqualifiedClass] '.' attribute=[Attribute|UnqualifiedAttribute]
 ;
 
 CommonalityAttributeReference:
@@ -193,7 +193,7 @@ CommonalityAttributeReference:
 
 // Local: Can only refer to the (single) local commonality.
 LocalUnqualifiedCommonalityAttributeReference returns CommonalityAttributeReference:
-	commonality=[Commonality|UnqualifiedCommonality] '.' attribute=[CommonalityAttribute|UnqualifiedCommonalityMember]
+	commonality=[Commonality|UnqualifiedClass] '.' attribute=[CommonalityAttribute|UnqualifiedAttribute]
 ;
 
 /**************
@@ -201,7 +201,7 @@ LocalUnqualifiedCommonalityAttributeReference returns CommonalityAttributeRefere
  **************/
 
 CommonalityReference:
-	'has' name=ID 'referencing' referenceType=[Commonality|QualifiedCommonality] '{'
+	'has' name=ValidID 'referencing' referenceType=[Commonality|QualifiedClass] '{'
 		mappings+=CommonalityReferenceMapping*
 	'}'
 ;
@@ -214,12 +214,12 @@ SimpleReferenceMapping:
 	(readAndWrite?='=' | write?='->'| read?='<-')
 	reference=QualifiedParticipationAttribute
 	// TODO not used right now
-	('via' referenceTargets+=[ParticipationClass|QualifiedParticipationClass] (',' referenceTargets+=[ParticipationClass|QualifiedParticipationClass])*)?
+	('via' referenceTargets+=[ParticipationClass|QualifiedClass] (',' referenceTargets+=[ParticipationClass|QualifiedClass])*)?
 ;
 
 OperatorReferenceMapping:
 	(readAndWrite?='=' | write?='->'| read?='<-')
-	participationClass=[ParticipationClass|QualifiedParticipationClass] '.' operator=ReferenceMappingOperator
+	participationClass=[ParticipationClass|QualifiedClass] '.' operator=ReferenceMappingOperator
 	'(' (operands+=ReferenceMappingOperand (',' operands+=ReferenceMappingOperand)*)? ')'
 ;
 
@@ -252,11 +252,11 @@ LiteralOperand:
 ;
 
 QualifiedParticipationClassOperand returns ParticipationClassOperand:
-	participationClass=[ParticipationClass|QualifiedParticipationClass]
+	participationClass=[ParticipationClass|QualifiedClass]
 ;
 
 UnqualifiedParticipationClassOperand returns ParticipationClassOperand:
-	participationClass=[ParticipationClass|UnqualifiedParticipationClass]
+	participationClass=[ParticipationClass|UnqualifiedClass]
 ;
 
 QualifiedParticipationAttributeOperand returns ParticipationAttributeOperand:
@@ -275,51 +275,24 @@ LocalUnqualifiedCommonalityAttributeOperand returns CommonalityAttributeOperand:
  * Datatype Rules *
  ******************/
 
-fragment QualifiedClasslike:
-	ID ':' ID;
-
-QualifiedMetaclass:
-	QualifiedClasslike
+DomainName:
+	ValidID
 ;
 
-UnqualifiedMetaclass:
-	ID
+UnqualifiedClass:
+	ValidID
 ;
 
-QualifiedCommonality:
-	QualifiedClasslike
-;
-
-UnqualifiedCommonality:
-	UnqualifiedMetaclass
-;
-
-UnqualifiedCommonalityMember:
-	UnqualifiedAttribute
-;
-
-QualifiedParticipationClass:
-	QualifiedClasslike
-;
-
-UnqualifiedParticipationClass:
-	UnqualifiedMetaclass
-;
-
-UnqualifiedParticipationMember:
-	UnqualifiedAttribute
+QualifiedClass:
+	DomainName ':' UnqualifiedClass
 ;
 
 UnqualifiedAttribute:
-	ID
-;
-
-DomainReference:
-	ID
+	ValidID
 ;
 
 // To correctly parse character combinations, we need to copy all tokens that
-// already occurred in the parent grammars (i.e. Xbase)
+// already occurred in the parent grammars (i.e. Xbase).
 // '->' and '<-': Ambiguous since the next participation condition may start with this as well
 OperatorName:
 	ID |
