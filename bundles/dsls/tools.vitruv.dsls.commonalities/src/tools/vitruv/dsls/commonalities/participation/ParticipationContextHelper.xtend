@@ -4,7 +4,7 @@ import edu.kit.ipd.sdq.activextendannotations.Utility
 import java.util.Map
 import java.util.Optional
 import java.util.WeakHashMap
-import tools.vitruv.dsls.commonalities.language.CommonalityReferenceMapping
+import tools.vitruv.dsls.commonalities.language.CommonalityReference
 import tools.vitruv.dsls.commonalities.language.OperatorReferenceMapping
 import tools.vitruv.dsls.commonalities.language.Participation
 import tools.vitruv.dsls.commonalities.language.ParticipationClass
@@ -21,8 +21,9 @@ class ParticipationContextHelper {
 	// become outdated. Add adapters to the key objects that invalidate the cache on changes to the object?
 	static val Map<Participation, ParticipationRoot> participationRoots = new WeakHashMap
 	static val Map<Participation, Optional<ParticipationContext>> participationContexts = new WeakHashMap
-	static val Map<CommonalityReferenceMapping, ParticipationRoot> referenceParticipationRoots = new WeakHashMap
-	static val Map<CommonalityReferenceMapping, ParticipationContext> referenceParticipationContexts = new WeakHashMap
+	// (CommonalityReference, domain name) -> ParticipationRoot/Context
+	static val Map<Pair<CommonalityReference, String>, ParticipationRoot> referenceParticipationRoots = new WeakHashMap
+	static val Map<Pair<CommonalityReference, String>, ParticipationContext> referenceParticipationContexts = new WeakHashMap
 
 	/**
 	 * Optional: Empty if the participation specifies no root containment context.
@@ -50,7 +51,7 @@ class ParticipationContextHelper {
 		return participationRoots.computeIfAbsent(participation) [
 			val participationRoot = new ParticipationRoot
 			if (!participation.hasResourceClass) {
-				return participationRoot // empty root
+				return participationRoot // Empty root
 			}
 
 			// We start at a random class and then walk towards one of the leaf
@@ -90,45 +91,58 @@ class ParticipationContextHelper {
 		return participationClass.isSingleton
 	}
 
-	static def getReferenceParticipationContext(CommonalityReferenceMapping mapping) {
-		return referenceParticipationContexts.computeIfAbsent(mapping) [
-			val referencedParticipation = mapping.referencedParticipation
-			assertTrue(referencedParticipation !== null)
-			assertTrue(!referencedParticipation.nonRootBoundaryClasses.empty)
-			// assert: The referenced participation classes are assignment compatible. (ensured via validation)
-			val referenceParticipationRoot = mapping.referenceParticipationRoot
+	static def getReferenceParticipationContexts(CommonalityReference reference) {
+		return reference.mappings
+			.map[it.participation.domainName].toSet
+			.map[reference.getReferenceParticipationContext(it)]
+	}
+
+	static def getReferenceParticipationContext(CommonalityReference reference, String domainName) {
+		val referenceDomainPair = Pair.of(reference, domainName)
+		return referenceParticipationContexts.computeIfAbsent(referenceDomainPair) [
+			// Throws an exception if there are no mappings for the specified domain:
+			val referenceParticipationRoot = reference.getReferenceParticipationRoot(domainName)
+			assertTrue(referenceParticipationRoot !== null)
 			assertTrue(!referenceParticipationRoot.empty)
+
+			val referenceMappings = referenceParticipationRoot.referenceMappings
+			assertTrue(!referenceMappings.empty)
+			val referencedParticipation = referenceMappings.head.referencedParticipation
+			// assert: The referenced participation classes are assignment compatible. (ensured via validation)
 			return new ParticipationContext(referencedParticipation, referenceParticipationRoot)
 		]
 	}
 
-	private static def getReferenceParticipationRoot(CommonalityReferenceMapping mapping) {
-		return referenceParticipationRoots.computeIfAbsent(mapping) [
-			if (mapping instanceof OperatorReferenceMapping) {
-				if (mapping.operator.isAttributeReference) {
-					return mapping.attributeReferenceParticipationRoot
+	private static def getReferenceParticipationRoot(CommonalityReference reference, String domainName) {
+		val referenceDomainPair = Pair.of(reference, domainName)
+		return referenceParticipationRoots.computeIfAbsent(referenceDomainPair) [
+			val mappings = reference.getMappings(domainName)
+			if (mappings.empty) {
+				throw new IllegalArgumentException('''Reference '«reference.name»' has no mappings for domain '«domainName»'.''')
+			}
+			if (mappings.size == 1) {
+				val mapping = mappings.head
+				if (mapping instanceof OperatorReferenceMapping) {
+					if (mapping.operator.isAttributeReference) {
+						return mapping.attributeReferenceParticipationRoot
+					}
 				}
 			}
 
 			val referenceParticipationRoot = new ParticipationRoot
-			referenceParticipationRoot.referenceMapping = mapping
+			referenceParticipationRoot.referenceMappings += mappings
 
-			// TODO Support for reference mappings that specify roots with more
-			// than one class? In case this is supported as some point, we also
-			// need to deal with the correspondences for objects of these classes.
-			// For example, the correspondence tag that gets created for
-			// participation classes currently assumes that its counterpart is the
-			// commonality in which it has been defined.
-			referenceParticipationRoot.classes += mapping.participationClass
-			referenceParticipationRoot.boundaryContainments += mapping.getReferenceContainments
+			referenceParticipationRoot.classes += mappings.map[participationClass]
+			referenceParticipationRoot.boundaryContainments += mappings.map[referenceContainments].flatten
 			return referenceParticipationRoot
 		]
 	}
 
+	// TODO Support the combination of multiple attribute reference mappings.
 	private static def getAttributeReferenceParticipationRoot(OperatorReferenceMapping mapping) {
 		assertTrue(mapping.operator.isAttributeReference)
 		val referenceParticipationRoot = new ParticipationRoot
-		referenceParticipationRoot.referenceMapping = mapping
+		referenceParticipationRoot.referenceMappings += mapping
 
 		// Copy the referenced participation's own root:
 		val referencedParticipation = mapping.referencedParticipation
@@ -158,6 +172,7 @@ class ParticipationContextHelper {
 		val participation = mapping.referencedParticipation
 		assertTrue(participation !== null)
 		val container = mapping.participationClass
+		// TODO Take reference targets ('via' keyword) into account
 		return participation.nonRootBoundaryClasses.map [ contained |
 			new ReferenceContainment(container, contained, mapping.reference)
 		]

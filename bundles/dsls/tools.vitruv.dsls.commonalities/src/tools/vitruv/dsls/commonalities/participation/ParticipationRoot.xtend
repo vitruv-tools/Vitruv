@@ -32,8 +32,12 @@ import tools.vitruv.dsls.commonalities.language.ParticipationClass
  * <p>
  * When commonalities are referenced by other commonalities (in the form of
  * commonality references), the mappings for these references specify different
- * roots for the referenced participations. These roots substitute the
- * referenced participation's own root during the matching process.
+ * roots for the referenced participations. All reference mappings for a
+ * specific domain are taken into account when determining the root for the
+ * referenced participation. The root may therefore comprise multiple classes
+ * which act as containers for classes of the referenced participation. These
+ * roots for the various domains substitute the referenced participations' own
+ * roots during the matching process.
  * <p>
  * An exception to this are commonality reference mappings with an 'attribute
  * reference' operator. These attribute reference operators are used when a
@@ -56,17 +60,14 @@ import tools.vitruv.dsls.commonalities.language.ParticipationClass
 @ToString
 class ParticipationRoot {
 	/**
-	 * The external commonality reference mapping that specifies this root, or
-	 * <code>null</code> if this root is specified by the participation itself.
+	 * The external commonality reference mappings which specify this root, or
+	 * empty if this root is specified by the participation itself.
 	 */
-	@Accessors(PUBLIC_GETTER, PUBLIC_SETTER)
-	var CommonalityReferenceMapping referenceMapping
+	@Accessors(PUBLIC_GETTER)
+	val Set<CommonalityReferenceMapping> referenceMappings = new LinkedHashSet
 	/**
 	 * Note: In the context of an external reference mapping, these
 	 * participation classes may originate from an external participation.
-	 * <p>
-	 * They are ordered according to their chain of containment relationships,
-	 * with the head class as first element.
 	 */
 	@Accessors(PUBLIC_GETTER)
 	val Set<ParticipationClass> classes = new LinkedHashSet
@@ -82,6 +83,8 @@ class ParticipationRoot {
 	@Accessors(PUBLIC_GETTER)
 	val Set<Containment> boundaryContainments = new LinkedHashSet
 
+	// TODO Support for multiple attribute reference mappings for the same
+	// domain? There can be multiple attribute reference roots then.
 	@Accessors(PACKAGE_SETTER, PUBLIC_GETTER)
 	var ParticipationClass attributeReferenceRoot = null
 	@Accessors(PUBLIC_GETTER)
@@ -102,16 +105,5 @@ class ParticipationRoot {
 
 	def isRootClass(ParticipationClass participationClass) {
 		return classes.contains(participationClass)
-	}
-
-	/**
-	 * Gets the root participation class that is located at the boundary
-	 * between root and non-root participation classes.
-	 * <p>
-	 * All containment relationships between root and non-root classes use this
-	 * class as their container.
-	 */
-	def getHead() {
-		return classes.head
 	}
 }

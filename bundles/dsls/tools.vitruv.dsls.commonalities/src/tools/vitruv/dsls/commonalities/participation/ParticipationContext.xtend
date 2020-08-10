@@ -27,6 +27,10 @@ import static extension tools.vitruv.dsls.commonalities.participation.Participat
  * participation's non-root objects. This class represents the participation
  * adapted to one of those various contexts.
  * <p>
+ * When a participation is referenced via commonality reference mappings, a
+ * single participation context is derived from the combination of all
+ * reference mappings involving the same participation domain.
+ * <p>
  * For a commonality participation in its own context the root is empty, since
  * the participation objects are implicitly contained inside their intermediate
  * model's root.
@@ -153,23 +157,27 @@ class ParticipationContext {
 	}
 
 	def isForReferenceMapping() {
-		return (referenceMapping !== null)
+		return (!referenceMappings.empty)
 	}
 
 	def isForAttributeReferenceMapping() {
 		return (isForReferenceMapping && attributeReferenceRoot !== null)
 	}
 
-	def getReferenceMapping() {
-		return root.referenceMapping
+	def getReferenceMappings() {
+		return root.referenceMappings
+	}
+
+	def getDeclaringReference() {
+		return referenceMappings.head?.declaringReference
 	}
 
 	def getReferencingCommonality() {
-		return referenceMapping?.containingCommonality
+		return referenceMappings.head?.containingCommonality
 	}
 
 	def getReferencedCommonality() {
-		return referenceMapping?.referencedCommonality
+		return referenceMappings.head?.referencedCommonality
 	}
 
 	/**
@@ -189,7 +197,9 @@ class ParticipationContext {
 	 * Gets all classes that are managed by the corresponding Intermediate.
 	 * <p>
 	 * In the context of a reference mapping this does not include the external
-	 * reference root class (since that is managed by another Intermediate).
+	 * reference root classes (since those are managed by another
+	 * Intermediate).
+	 * <p>
 	 * For root participation contexts it does include the root Resource
 	 * container class. If the participation has a singleton root, the
 	 * singleton root classes are not included.
@@ -202,26 +212,30 @@ class ParticipationContext {
 		}
 	}
 
-	def getRootContainerClass() {
-		return rootClasses.last
-	}
-
-	def isRootContainerClass(ContextClass contextClass) {
-		return (contextClass !== null && contextClass === rootContainerClass)
-	}
-
-	def getReferenceRootClass() {
+	/**
+	 * Gets the list of external reference root classes.
+	 * <p>
+	 * These act as containers for objects of the referenced participation.
+	 * <p>
+	 * For attribute reference contexts this returns a list containing the
+	 * attribute reference root class. For regular reference mapping contexts
+	 * this returns the root classes. Otherwise this return an empty list.
+	 */
+	def getReferenceRootClasses() {
 		if (forAttributeReferenceMapping) {
-			return attributeReferenceRoot
+			return #[attributeReferenceRoot]
 		} else if (forReferenceMapping) {
-			return rootContainerClass
+			return rootClasses
 		} else {
-			return null
+			return #[]
 		}
 	}
 
-	def isReferenceRootClass(ContextClass contextClass) {
-		return (contextClass !== null && contextClass === referenceRootClass)
+	/**
+	 * Gets the Resource root class, or <code>null</code> if there is none.
+	 */
+	def getResourceClass() {
+		return rootClasses.filter[participationClass.isForResource].head
 	}
 
 	/**

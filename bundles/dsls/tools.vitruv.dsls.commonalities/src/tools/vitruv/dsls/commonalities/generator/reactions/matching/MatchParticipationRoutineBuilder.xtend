@@ -24,7 +24,7 @@ import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder
 import tools.vitruv.dsls.reactions.builder.TypeProvider
 import tools.vitruv.extensions.dslruntime.commonalities.BooleanResult
 import tools.vitruv.extensions.dslruntime.commonalities.intermediatemodelbase.IntermediateModelBasePackage
-import tools.vitruv.extensions.dslruntime.commonalities.matching.ContainmentTree
+import tools.vitruv.extensions.dslruntime.commonalities.matching.ContainmentContext
 import tools.vitruv.extensions.dslruntime.commonalities.matching.ParticipationMatcher
 import tools.vitruv.extensions.dslruntime.commonalities.matching.ParticipationObjects
 
@@ -71,7 +71,7 @@ package class MatchParticipationRoutineBuilder extends ReactionsGenerationHelper
 	}
 
 	/**
-	 * Sets up the {@link ContainmentTree} for the given
+	 * Sets up the {@link ContainmentContext} for the given
 	 * {@link ParticipationContext}, invokes the {@link ParticipationMatcher}
 	 * and instantiates the corresponding Commonality if a match is found.
 	 * <p>
@@ -81,14 +81,14 @@ package class MatchParticipationRoutineBuilder extends ReactionsGenerationHelper
 	 * <p>
 	 * Note: We don't check if there already is a corresponding Intermediate
 	 * for the given start object. If the participation context is for a
-	 * commonality reference mapping, the start object may be the containment
-	 * tree's root object specified by that mapping, which already corresponds
-	 * to an Intermediate (possibly even the same type of Intermediate that the
+	 * commonality reference, the start object may be a containment context
+	 * root object specified by the mappings, which already corresponds to an
+	 * Intermediate (possibly even the same type of Intermediate that the
 	 * participation will correspond to in case we find a match). Otherwise, if
-	 * the participation context is not for a commonality reference mapping,
-	 * the {@link ParticipationMatcher} will already verify that the
-	 * participation objects (including the passed start object) do not already
-	 * correspond to an Intermediate.
+	 * the participation context is not for a commonality reference, the
+	 * {@link ParticipationMatcher} will already verify that the participation
+	 * objects (including the passed start object) do not already correspond to
+	 * an Intermediate.
 	 */
 	def getMatchParticipationRoutine(ParticipationContext participationContext) {
 		return matchParticipationRoutines.computeIfAbsent(participationContext) [
@@ -108,7 +108,7 @@ package class MatchParticipationRoutineBuilder extends ReactionsGenerationHelper
 	}
 
 	/**
-	 * Returns a block expressions which sets up a ContainmentTree for the
+	 * Returns a block expressions which sets up a ContainmentContext for the
 	 * participation context, invokes the ParticipationMatcher and then creates
 	 * a new intermediate for the first found candidate match which also
 	 * fulfills the non-structural participation conditions.
@@ -116,10 +116,10 @@ package class MatchParticipationRoutineBuilder extends ReactionsGenerationHelper
 	private def matchParticipation(ParticipationContext participationContext, RoutineCallContext routineCallContext,
 		extension TypeProvider typeProvider) {
 		return XbaseFactory.eINSTANCE.createXBlockExpression => [
-			// Create new ContainmentTree:
-			val containmentTreeBuilder = setupContainmentTree(participationContext, typeProvider)
-			val containmentTreeVar = containmentTreeBuilder.containmentTreeVar
-			join(containmentTreeBuilder.resultExpressions)
+			// Create new ContainmentContext:
+			val containmentContextBuilder = setupContainmentContext(participationContext, typeProvider)
+			val containmentContextVar = containmentContextBuilder.containmentContextVar
+			join(containmentContextBuilder.resultExpressions)
 
 			// Create participation matcher:
 			val participationMatcherType = typeProvider.findDeclaredType(ParticipationMatcher).imported
@@ -129,7 +129,7 @@ package class MatchParticipationRoutineBuilder extends ReactionsGenerationHelper
 					constructor = participationMatcherType.findConstructor()
 					explicitConstructorCall = true
 					arguments += expressions(
-						containmentTreeVar.featureCall,
+						containmentContextVar.featureCall,
 						variable(START_OBJECT),
 						variable(FOLLOW_ATTRIBUTE_REFERENCES),
 						correspondenceModel,
@@ -186,13 +186,13 @@ package class MatchParticipationRoutineBuilder extends ReactionsGenerationHelper
 		return (participationContext.isRootContext && participationContext.participation.isCommonalityParticipation)
 	}
 
-	private def ContainmentTreeBuilder setupContainmentTree(ParticipationContext participationContext,
+	private def ContainmentContextBuilder setupContainmentContext(ParticipationContext participationContext,
 		extension TypeProvider typeProvider) {
 		val participation = participationContext.participation
 		val isRootCommonalityParticipation = participationContext.isRootCommonalityParticipation
 
-		val containmentTreeBuilder = new ContainmentTreeBuilder(typeProvider)
-		containmentTreeBuilder.newContainmentTree('containmentTree')
+		val containmentContextBuilder = new ContainmentContextBuilder(typeProvider)
+		containmentContextBuilder.newContainmentContext('containmentContext')
 
 		// TODO Find relevant EPackages up front and then reuse them for EClass lookup?
 		// Same applies to EClasses that are reused by later calls.
@@ -201,25 +201,26 @@ package class MatchParticipationRoutineBuilder extends ReactionsGenerationHelper
 		// participation in the context of a commonality reference mapping:
 		if (participationContext.forReferenceMapping) {
 			val rootIntermediateType = participationContext.referencingCommonality.changeClass
-			containmentTreeBuilder.setRootIntermediateType(rootIntermediateType)
+			containmentContextBuilder.setRootIntermediateType(rootIntermediateType)
 		}
 
 		// Setup nodes:
 		if (isRootCommonalityParticipation) {
 			// Add the node for the implicit intermediate root:
 			val intermediateRootEClass = participation.participationConcept.intermediateMetamodelRootClass
-			containmentTreeBuilder.addNode(INTERMEDIATE_ROOT, intermediateRootEClass)
+			containmentContextBuilder.addNode(INTERMEDIATE_ROOT, intermediateRootEClass, null)
 		}
 		participationContext.classes.forEach [ contextClass |
 			val participationClass = contextClass.participationClass
-			containmentTreeBuilder.addNode(contextClass.name, participationClass.changeClass)
+			containmentContextBuilder.addNode(contextClass.name, participationClass.changeClass,
+				participationClass.correspondenceTag)
 		]
 		if (participationContext.isForAttributeReferenceMapping) {
 			// Add the node for the attribute reference root:
 			val attributeReferenceRoot = participationContext.attributeReferenceRoot
 			val attributeReferenceRootClass = attributeReferenceRoot.participationClass
-			containmentTreeBuilder.setAttributeReferenceRootNode(attributeReferenceRoot.name,
-				attributeReferenceRootClass.changeClass)
+			containmentContextBuilder.setAttributeReferenceRootNode(attributeReferenceRoot.name,
+				attributeReferenceRootClass.changeClass, attributeReferenceRootClass.correspondenceTag)
 		}
 
 		// Setup containment edges:
@@ -228,27 +229,27 @@ package class MatchParticipationRoutineBuilder extends ReactionsGenerationHelper
 			val containerName = INTERMEDIATE_ROOT
 			val containmentEReference = IntermediateModelBasePackage.Literals.ROOT__INTERMEDIATES
 			participation.nonRootBoundaryClasses.forEach [ contained |
-				containmentTreeBuilder.addReferenceEdge(containerName, contained.name, containmentEReference)
+				containmentContextBuilder.addReferenceEdge(containerName, contained.name, containmentEReference)
 			]
 		}
 		participationContext.containments.forEach [ extension contextContainment |
 			val containment = containment
 			if (containment instanceof ReferenceContainment) {
-				containmentTreeBuilder.addReferenceEdge(container.name, contained.name, containment.EReference)
+				containmentContextBuilder.addReferenceEdge(container.name, contained.name, containment.EReference)
 			} else if (containment instanceof OperatorContainment) {
 				val operatorMapping = containment.mapping
 				val operatorContext = new ReferenceMappingOperatorContext(typeProvider)
 				val operatorInstance = operatorMapping.constructOperator(operatorContext)
 				if (operatorMapping.operator.isAttributeReference) {
-					containmentTreeBuilder.addAttributeReferenceEdge(contained.name, operatorInstance)
+					containmentContextBuilder.addAttributeReferenceEdge(contained.name, operatorInstance)
 				} else {
-					containmentTreeBuilder.addOperatorEdge(container.name, contained.name, operatorInstance)
+					containmentContextBuilder.addOperatorEdge(container.name, contained.name, operatorInstance)
 				}
 			} else {
 				throw new IllegalStateException("Unexpected containment type: " + containment.class.name)
 			}
 		]
-		return containmentTreeBuilder
+		return containmentContextBuilder
 	}
 
 	private def XExpression checkNonStructuralConditions(ParticipationContext participationContext,

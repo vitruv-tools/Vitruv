@@ -6,7 +6,6 @@ import java.util.List
 import java.util.Map
 import java.util.Optional
 import java.util.function.Consumer
-import java.util.function.Function
 import org.eclipse.xtext.xbase.XbaseFactory
 import tools.vitruv.dsls.commonalities.generator.helper.ContainmentHelper
 import tools.vitruv.dsls.commonalities.generator.reactions.ReactionsSubGenerator
@@ -94,23 +93,15 @@ class CommonalityInsertReactionsBuilder extends ReactionsSubGenerator {
 
 		// For every commonality reference, if an instance of the referenced commonality is inserted, we instantiate
 		// the corresponding referenced participations according to the commonality reference's mappings:
-		commonality.references.flatMap[mappings].filter [
-			isWrite && it.participation == targetParticipation
-		].map[referenceParticipationContext].forEach [
+		// TODO We do not take the 'write' flag of reference mappings into account currently. The semantics and use
+		// cases for this flag are not clear currently. Remove it?
+		commonality.references.flatMap[referenceParticipationContexts].filter [
+			it.participation.domainName == targetParticipation.domainName
+		].forEach [
 			segment += reactionForCommonalityInsert(segment)
 			segment += reactionForCommonalityRemove
 			reactionForCommonalityCreate(segment).ifPresent [segment += it]
 		]
-	}
-
-	private def getVariableName(extension ParticipationContext participationContext,
-		ContextClass contextClass) {
-		if (isReferenceRootClass(contextClass)) {
-			return REFERENCE_ROOT
-		} else {
-			assertTrue(!contextClass.isExternal)
-			return contextClass.participationClass.correspondingVariableName
-		}
 	}
 
 	private def reactionForCommonalityInsert(ParticipationContext participationContext,
@@ -122,7 +113,7 @@ class CommonalityInsertReactionsBuilder extends ReactionsSubGenerator {
 		// during intermediate creation), so we check the reaction's trigger condition again before execution.
 		var RoutineCallBuilder reaction
 		if (participationContext.forReferenceMapping) {
-			val reference = participationContext.referenceMapping.declaringReference
+			val reference = participationContext.declaringReference
 			reaction = create.reaction('''«commonality.reactionName»_insertedAt_«reference.shortReactionName»«
 				participationContext.reactionNameSuffix»''')
 				.afterElement(commonality.changeClass).insertedIn(reference.correspondingEReference)
@@ -195,18 +186,20 @@ class CommonalityInsertReactionsBuilder extends ReactionsSubGenerator {
 
 				if (participationContext.forReferenceMapping) {
 					val referencingCommonality = participationContext.referencingCommonality
-					val referenceRootClass = participationContext.referenceRootClass.participationClass
-					vall(REFERENCE_ROOT).retrieveAsserted(referenceRootClass.changeClass)
-						.correspondingTo(REFERENCING_INTERMEDIATE)
-						.taggedWith(referenceRootClass.getCorrespondenceTag(referencingCommonality))
+					// Get all external root classes:
+					participationContext.referenceRootClasses.forEach [ contextClass |
+						assertTrue(contextClass.isExternal)
+						val externalParticipationClass = contextClass.participationClass
+						vall(contextClass.correspondingVariableName)
+							.retrieveAsserted(externalParticipationClass.changeClass)
+							.correspondingTo(REFERENCING_INTERMEDIATE)
+							.taggedWith(externalParticipationClass.getCorrespondenceTag(referencingCommonality))
+					]
 				}
 			].action [
 				// Create and initialize the (non-singleton) participation objects:
 				val classes = managedClasses
 				val containments = participationContext.managedContainments
-				val Function<ContextClass, String> variableNameFunction = [
-					participationContext.getVariableName(it)
-				]
 				val Consumer<ActionStatementBuilder> correspondenceSetup = [
 					// Correspondences between participation objects and intermediate:
 					managedClasses.forEach [ contextClass |
@@ -215,7 +208,7 @@ class CommonalityInsertReactionsBuilder extends ReactionsSubGenerator {
 				]
 				val applyAttributes = true
 				createParticipationObjects(segment, participationContext, classes, containments, applyAttributes,
-					variableNameFunction, correspondenceSetup)
+					correspondenceSetup)
 			]
 	}
 
@@ -235,18 +228,15 @@ class CommonalityInsertReactionsBuilder extends ReactionsSubGenerator {
 				]
 			].action [
 				// Instantiates the singleton object and all of its containers:
-				val classes = participationContext.rootClasses // singleton root classes
+				val classes = participationContext.rootClasses // Singleton root classes
 				val containments = participationContext.rootContainments
-				val Function<ContextClass, String> variableNameFunction = [
-					participationClass.correspondingVariableName
-				]
 				val Consumer<ActionStatementBuilder> correspondenceSetup = [
 					// The ResourceBridge requires a correspondence with an Intermediate for some of its tasks. For
 					// this purpose we add a correspondence with the first intermediate for which the singleton gets
 					// created for:
-					val rootClass = participationContext.rootContainerClass
-					assertTrue(rootClass.participationClass.isForResource)
-					addIntermediateCorrespondence(commonality, rootClass.participationClass)
+					val resourceClass = participationContext.resourceClass
+					assertTrue(resourceClass !== null)
+					addIntermediateCorrespondence(commonality, resourceClass.participationClass)
 
 					// Add singleton correspondence:
 					// Note: We don't add correspondences for the containers of the singleton object (except for the
@@ -261,14 +251,14 @@ class CommonalityInsertReactionsBuilder extends ReactionsSubGenerator {
 				// should not be used inside mappings:
 				val applyAttributes = false
 				createParticipationObjects(segment, participationContext, classes, containments, applyAttributes,
-					variableNameFunction, correspondenceSetup)
+					correspondenceSetup)
 			]
 	}
 
 	private def createParticipationObjects(extension ActionStatementBuilder it, FluentReactionsSegmentBuilder segment,
 		ParticipationContext participationContext, Iterable<ContextClass> classes,
 		Iterable<ContextContainment<?>> containments, boolean applyAttributes,
-		Function<ContextClass, String> variableNameFunction, Consumer<ActionStatementBuilder> correspondenceSetup) {
+		Consumer<ActionStatementBuilder> correspondenceSetup) {
 		val participation = participationContext.participation
 
 		// Create and initialize the participation objects:
@@ -307,7 +297,7 @@ class CommonalityInsertReactionsBuilder extends ReactionsSubGenerator {
 
 		// Establish containment relationships:
 		execute [
-			setupContainments(containments, variableNameFunction)
+			setupContainments(containments)
 		]
 
 		// Enable persistence again for resource bridges:
@@ -373,12 +363,11 @@ class CommonalityInsertReactionsBuilder extends ReactionsSubGenerator {
 			.taggedWith(resourceClass.getResourceCorrespondenceTag(containedClass))
 	}
 
-	private def setupContainments(extension TypeProvider typeProvider, Iterable<ContextContainment<?>> containments,
-		Function<ContextClass, String> variableNameFunction) {
+	private def setupContainments(extension TypeProvider typeProvider, Iterable<ContextContainment<?>> containments) {
 		return XbaseFactory.eINSTANCE.createXBlockExpression => [
 			containments.forEach [ extension contextContainment |
-				val containerVar = variable(variableNameFunction.apply(container))
-				val containedVar = variable(variableNameFunction.apply(contained))
+				val containerVar = variable(container.correspondingVariableName)
+				val containedVar = variable(contained.correspondingVariableName)
 				val containment = containment
 				if (containment instanceof ReferenceContainment) {
 					val containmentReference = containment.EReference
@@ -415,7 +404,7 @@ class CommonalityInsertReactionsBuilder extends ReactionsSubGenerator {
 
 		var PreconditionOrRoutineCallBuilder reaction
 		if (participationContext.forReferenceMapping) {
-			val reference = participationContext.referenceMapping.declaringReference
+			val reference = participationContext.declaringReference
 			val referencingCommonality = reference.containingCommonality
 			reaction = create.reaction('''«commonality.concept.name»_«commonality.name»_removedFrom«
 				referencingCommonality.name»_«reference.name»«participationContext.reactionNameSuffix»''')
@@ -459,12 +448,11 @@ class CommonalityInsertReactionsBuilder extends ReactionsSubGenerator {
 		return matchSubParticipationsRoutines.computeIfAbsent(participation) [
 			val extension matchingReactionsBuilder = participationMatchingReactionsBuilderProvider.getFor(segment)
 			val commonality = participation.containingCommonality
-			val relevantReferenceMappings = commonality.references.flatMap[mappings].filter [
-				isRead && it.participation == participation
-			]
-			val matchingRoutines = relevantReferenceMappings
-				.map[matchSubParticipationsRoutine]
-				.toList
+			// TODO We do not take the 'read' flag of reference mappings into account currently. The semantics and use
+			// cases for this flag are not clear currently. Remove it?
+			val matchingRoutines = commonality.references.flatMap[referenceParticipationContexts].filter [
+				it.participation.domainName == participation.domainName
+			].map[matchSubParticipationsRoutine].toList
 			if (matchingRoutines.empty) {
 				return Optional.empty
 			}

@@ -14,7 +14,6 @@ import tools.vitruv.dsls.commonalities.generator.reactions.intermediatemodel.Ins
 import tools.vitruv.dsls.commonalities.generator.reactions.intermediatemodel.InsertReferencedIntermediateRoutineBuilder
 import tools.vitruv.dsls.commonalities.generator.reactions.util.ReactionsHelper.RoutineCallContext
 import tools.vitruv.dsls.commonalities.generator.reactions.util.ReactionsSegmentScopedProvider
-import tools.vitruv.dsls.commonalities.language.CommonalityReferenceMapping
 import tools.vitruv.dsls.commonalities.participation.OperatorContainment
 import tools.vitruv.dsls.commonalities.participation.ParticipationContext
 import tools.vitruv.dsls.commonalities.participation.ParticipationContextHelper
@@ -36,7 +35,6 @@ import static extension tools.vitruv.dsls.commonalities.generator.reactions.util
 import static extension tools.vitruv.dsls.commonalities.generator.reactions.util.ReactionsHelper.*
 import static extension tools.vitruv.dsls.commonalities.generator.reactions.util.XbaseHelper.*
 import static extension tools.vitruv.dsls.commonalities.language.extensions.CommonalitiesLanguageModelExtensions.*
-import static extension tools.vitruv.dsls.commonalities.participation.ParticipationContextHelper.*
 
 /**
  * Generates the reactions and routines that match participations in given
@@ -73,11 +71,12 @@ import static extension tools.vitruv.dsls.commonalities.participation.Participat
  * structural and non-structural conditions specified by the participation are
  * fulfilled.
  * <p>
- * The structural conditions are derived from the participation's
- * <code>'in'</code> relations. These form a tree of containment relationships
- * between the participation's objects. The non-structural conditions are all
- * other conditions. Those may for example represent requirements on the
- * attributes of the involved objects.
+ * The structural conditions are derived from the participation's containment
+ * relations and conditions (<code>'in'</code>) and commonality reference
+ * mappings. These form one or multiple trees of containment relationships
+ * between the participation's objects and the context's root objects. The
+ * non-structural conditions are all other conditions. Those may for example
+ * represent requirements on the attributes of the involved objects.
  * <p>
  * Since every object inside a model is at some point either contained within
  * another object (its container) or a resource, the matching of a
@@ -93,8 +92,8 @@ import static extension tools.vitruv.dsls.commonalities.participation.Participat
  * may involve an object of the participation that we try to match: Check if we
  * find a set of objects that matches the participations structural conditions.
  * See {@link ParticipationMatcher} for the details about the actual matching
- * procedure. The result of this are candidate trees of model objects according
- * to the participation context's containment hierarchy.
+ * procedure. The result of this are candidate matches of model objects
+ * according to the participation's containment context.
  * <p>
  * TODO: Currently we only supports participations with a single Resource root
  * class. A workaround for participations with multiple Resource roots could be
@@ -164,7 +163,7 @@ class ParticipationMatchingReactionsBuilder extends ReactionsGenerationHelper {
 	val FluentReactionsSegmentBuilder segment
 
 	val Map<ParticipationContext, FluentRoutineBuilder> matchManyParticipationsRoutines = new HashMap
-	val Map<CommonalityReferenceMapping, FluentRoutineBuilder> matchSubParticipationsRoutines = new HashMap
+	val Map<ParticipationContext, FluentRoutineBuilder> matchSubParticipationsRoutines = new HashMap
 
 	private new(FluentReactionsSegmentBuilder segment) {
 		checkNotNull(segment, "segment is null")
@@ -189,11 +188,11 @@ class ParticipationMatchingReactionsBuilder extends ReactionsGenerationHelper {
 
 	private def String getLogMessage(ParticipationContext participationContext) {
 		if (participationContext.forReferenceMapping) {
-			val mapping = participationContext.referenceMapping
-			val reference = mapping.declaringReference
+			val participation = participationContext.participation
+			val reference = participationContext.declaringReference
 			val commonality = participationContext.referencingCommonality
-			return '''Commonality «commonality»: Generating matching reactions for participation '«
-				mapping.participation»' and reference '«reference.name»'.'''
+			return '''Commonality «commonality»: Generating matching reactions for participation '«participation
+				»' and reference '«reference.name»'.'''
 		} else {
 			val participation = participationContext.participation
 			val commonality = participation.containingCommonality
@@ -213,7 +212,7 @@ class ParticipationMatchingReactionsBuilder extends ReactionsGenerationHelper {
 		}
 
 		if (participationContext.forReferenceMapping) {
-			val reference = participationContext.referenceMapping.declaringReference
+			val reference = participationContext.declaringReference
 			segment += segment.getInsertReferencedIntermediateRoutine(reference)
 			segment += participationContext.matchManyParticipationsRoutine
 		}
@@ -382,24 +381,24 @@ class ParticipationMatchingReactionsBuilder extends ReactionsGenerationHelper {
 	 * Returns the routine that needs to be called on commonality insert in
 	 * order to invoke the matching.
 	 */
-	def getMatchSubParticipationsRoutine(CommonalityReferenceMapping mapping) {
-		return matchSubParticipationsRoutines.computeIfAbsent(mapping) [
-			val participation = mapping.participation
-			val commonality = participation.containingCommonality
-			val participationContext = mapping.referenceParticipationContext
+	def getMatchSubParticipationsRoutine(ParticipationContext participationContext) {
+		return matchSubParticipationsRoutines.computeIfAbsent(participationContext) [
+			assertTrue(participationContext.isForReferenceMapping)
+			val referencingCommonality = participationContext.referencingCommonality
 
 			// Generate the required routines:
 			participationContext.generateRoutines()
 
-			val mappingParticipationClass = mapping.participationClass
-			return create.routine('''matchSubParticipations_«mapping.reactionName»''')
+			return create.routine('''matchSubParticipations_«participationContext.reactionNameSuffix»''')
 				.input [
-					model(commonality.changeClass, INTERMEDIATE)
+					model(referencingCommonality.changeClass, INTERMEDIATE)
 				]
 				.match [
-					vall(REFERENCE_ROOT).retrieve(mappingParticipationClass.changeClass)
+					// Passing one of the reference root classes suffices for the matching procedure:
+					val referenceRootClass = participationContext.referenceRootClasses.head.participationClass
+					vall(REFERENCE_ROOT).retrieve(referenceRootClass.changeClass)
 						.correspondingTo(INTERMEDIATE)
-						.taggedWith(mappingParticipationClass.correspondenceTag)
+						.taggedWith(referenceRootClass.correspondenceTag)
 				]
 				.action [
 					// TODO: Avoid generating the same matching routines twice. These routines already exists inside

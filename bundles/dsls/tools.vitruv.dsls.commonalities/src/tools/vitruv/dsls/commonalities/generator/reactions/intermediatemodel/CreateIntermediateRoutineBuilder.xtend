@@ -107,9 +107,9 @@ class CreateIntermediateRoutineBuilder extends ReactionsGenerationHelper {
 
 					// For commonality references: Insert the new intermediate into the referencing intermediate
 					if (participationContext.forReferenceMapping) {
-						val mapping = participationContext.referenceMapping
-						val reference = mapping.declaringReference
-						val referenceRootClass = participationContext.referenceRootClass
+						val reference = participationContext.declaringReference
+						// We pass one of the reference root objects to find the corresponding referencing intermediate:
+						val referenceRootClass = participationContext.referenceRootClasses.head
 						call(segment.getInsertReferencedIntermediateRoutine(reference),
 							new RoutineCallParameter(INTERMEDIATE),
 							new RoutineCallParameter [ extension typeProvider |

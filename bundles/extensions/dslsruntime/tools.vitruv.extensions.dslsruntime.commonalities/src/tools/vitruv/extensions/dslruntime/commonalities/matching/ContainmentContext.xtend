@@ -2,8 +2,9 @@ package tools.vitruv.extensions.dslruntime.commonalities.matching
 
 import com.google.common.base.Preconditions
 import java.util.Collections
-import java.util.HashMap
 import java.util.HashSet
+import java.util.LinkedHashMap
+import java.util.LinkedHashSet
 import java.util.Map
 import java.util.Set
 import org.eclipse.emf.ecore.EClass
@@ -18,7 +19,7 @@ import static tools.vitruv.framework.util.XtendAssertHelper.*
 import static extension tools.vitruv.extensions.dslruntime.commonalities.operators.mapping.reference.ReferenceMappingOperatorHelper.*
 
 /**
- * Represents a participation's containment hierarchy.
+ * Represents a participation's containment context.
  * <p>
  * Participation objects are represented as nodes with names and types
  * according to their participation classes. Containment relations are
@@ -26,31 +27,41 @@ import static extension tools.vitruv.extensions.dslruntime.commonalities.operato
  * EReference that realizes the containment relationship, or an operator that
  * can be queried for the contained objects.
  * <p>
- * Assumptions:
- * <ul>
- * <li>Each object is contained by at most one other object.
- * <li>No cyclic containments.
- * <li>No self containment (no loops).
- * <li>There is at most one root container (i.e. Resource) per participation.
- * TODO Support multiple root containers?
- * </ul>
+ * The containment context of a participation can be thought of as a forest
+ * (i.e. a collection of disjoint containment trees). In most cases the
+ * containment context will only consist of a single containment tree. However,
+ * in the context of commonality references it is possible to define multiple
+ * reference mappings for the same participation. If these mappings specify
+ * different reference containers, the containment context will contain
+ * multiple root nodes.
  * <p>
  * A containment relation can also be defined implicitly according to the
  * attributes of the involved objects (eg. in Java sub-packages exist
  * independently from each other and their 'containment' relationship is
  * expressed implicitly by their namespaces and name attributes). We support
- * the containment tree to define one additional (external) root node which is
- * connected by such attribute references to nodes of the main containment
- * tree.
+ * the containment context to define one additional (external) root node which
+ * is connected by such attribute references to nodes of the participation's
+ * main containment tree.
+ * <p>
+ * Assumptions:
+ * <ul>
+ * <li>Each object is contained by at most one other object (with the exception
+ * of objects 'contained' via attribute references).
+ * <li>No cyclic containments.
+ * <li>No self containment (no loops).
+ * <li>There is at most one root container (i.e. Resource) per participation.
+ * TODO Support multiple root containers?
+ * </ul>
  */
 @ToString
-class ContainmentTree {
+class ContainmentContext {
 
 	@Data
 	static class Node {
 
 		val String name
 		val EClass type
+		val String correspondenceTag
 
 		def String toSimpleString() {
 			return name
@@ -89,11 +100,11 @@ class ContainmentTree {
 		}
 	}
 
-	val Map<String, Node> nodesByName = new HashMap
-	val Set<Edge> edges = new HashSet
-	var Node root = null // lazily calculated
+	val Map<String, Node> nodesByName = new LinkedHashMap
+	val Set<Edge> edges = new LinkedHashSet
+	val Set<Node> roots = new LinkedHashSet // lazily calculated
 
-	// The specific Intermediate type that the root node has to already
+	// The specific Intermediate type that the root nodes have to already
 	// correspond to (can be null). This applies to the attribute reference
 	// root node instead, if one is specified.
 	@Accessors(PUBLIC_GETTER, PUBLIC_SETTER)
@@ -113,11 +124,11 @@ class ContainmentTree {
 			"There already exists a node with this name: " + name)
 	}
 
-	def addNode(String name, EClass type) {
+	def addNode(String name, EClass type, String correspondenceTag) {
 		commonPreValidateNode(name, type)
-		val newNode = new Node(name, type)
+		val newNode = new Node(name, type, correspondenceTag)
 		nodesByName.put(name, newNode)
-		root = null // reset lazy calculated root
+		roots.clear() // Reset lazy calculated roots
 		return newNode
 	}
 
@@ -134,7 +145,7 @@ class ContainmentTree {
 	private def addEdge(Edge newEdge) {
 		Preconditions.checkArgument(!edges.contains(newEdge), "The edge already exists")
 		edges.add(newEdge)
-		root = null // reset lazy calculated root
+		roots.clear() // Reset lazy calculated roots
 	}
 
 	def addReferenceEdge(String containerName, String containedName, EReference reference) {
@@ -171,12 +182,12 @@ class ContainmentTree {
 		this.rootIntermediateType = type
 	}
 
-	def setAttributeReferenceRootNode(String name, EClass type) {
+	def setAttributeReferenceRootNode(String name, EClass type, String correspondenceTag) {
 		Preconditions.checkState(attributeReferenceRootNode === null,
 			"The attribute reference root node has already been set!")
 		commonPreValidateNode(name, type)
 
-		attributeReferenceRootNode = new Node(name, type)
+		attributeReferenceRootNode = new Node(name, type, correspondenceTag)
 		return attributeReferenceRootNode
 	}
 
@@ -197,22 +208,43 @@ class ContainmentTree {
 		return newEdge
 	}
 
-	// returns null if there are no nodes
-	def getRoot() {
-		if (root === null) {
-			// start at random node:
-			var current = nodesByName.values.head // null if there are no nodes
-			var container = current?.container
-			while (container !== null) {
-				current = container
-				container = current.container
-			}
-			root = current
+	/**
+	 * Gets the root nodes.
+	 * 
+	 * @return the root nodes, or empty if there are no nodes at all
+	 */
+	def getRoots() {
+		if (roots.empty) {
+			// Note: roots is a Set (removes duplicates).
+			roots += nodesByName.values.map[findRoot]
 		}
-		return root
+		return roots
 	}
 
-	// returns null if the given node is null, does not belong to this tree, or has no container
+	/**
+	 * Finds the root node starting at the given node.
+	 * 
+	 * @param start
+	 * 		the start node, not <code>null</code>
+	 * @return the root node, not <code>null</code>
+	 */
+	private def Node findRoot(Node start) {
+		var current = start
+		var container = current.container
+		while (container !== null) {
+			current = container
+			container = current.container
+		}
+		return current
+	}
+
+	/**
+	 * Gets the container node of the given node.
+	 * 
+	 * @return The container node, or <code>null</code> if the given node is
+	 * 		<code>null</code>, does not belong to this containment context, or
+	 * 		has no container.
+	 */
 	def Node getContainer(Node node) {
 		if (node == attributeReferenceRootNode) return null
 		return edges.findFirst[contained == node]?.container
@@ -223,11 +255,17 @@ class ContainmentTree {
 		return nodesByName.get(name)
 	}
 
+	/**
+	 * Gets the containment edges of the given node.
+	 */
 	def Iterable<? extends Edge> getContainments(Node node) {
 		if (node == attributeReferenceRootNode) return attributeReferenceEdges
 		return edges.filter[container == node]
 	}
 
+	/**
+	 * Gets a view on the attribute reference edges.
+	 */
 	def getAttributeReferenceEdges() {
 		return attributeReferenceEdgesView
 	}

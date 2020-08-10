@@ -176,7 +176,7 @@ class AttributeReferenceMatchingReactionsBuilder extends ReactionsGenerationHelp
 	private def getCheckAttributeReferenceElementsRemovedRoutine(ParticipationContext participationContext) {
 		return checkAttributeReferenceElementsRemovedRoutines.computeIfAbsent(participationContext) [
 			assertTrue(participationContext.isForAttributeReferenceMapping)
-			val commonalityReference = participationContext.referenceMapping.declaringReference
+			val commonalityReference = participationContext.declaringReference
 			val referencingCommonality = participationContext.referencingCommonality
 			val referencedCommonality = participationContext.referencedCommonality
 
@@ -245,7 +245,7 @@ class AttributeReferenceMatchingReactionsBuilder extends ReactionsGenerationHelp
 	private def getCheckAttributeReferenceElementRemovedRoutine(ParticipationContext participationContext) {
 		return checkAttributeReferenceElementRemovedRoutines.computeIfAbsent(participationContext) [
 			assertTrue(participationContext.isForAttributeReferenceMapping)
-			val commonalityReference = participationContext.referenceMapping.declaringReference
+			val commonalityReference = participationContext.declaringReference
 			val referencedCommonality = participationContext.referencedCommonality
 
 			val extension routineCallContext = new RoutineCallContext
@@ -285,7 +285,8 @@ class AttributeReferenceMatchingReactionsBuilder extends ReactionsGenerationHelp
 	private def getMatchAttributeReferenceElementsRoutine(ParticipationContext participationContext) {
 		return matchAttributeReferenceElementsRoutines.computeIfAbsent(participationContext) [
 			assertTrue(participationContext.isForAttributeReferenceMapping)
-			val operatorMapping = participationContext.referenceMapping as OperatorReferenceMapping
+			// TODO We only support a single attribute reference mapping currently.
+			val operatorMapping = participationContext.referenceMappings.head as OperatorReferenceMapping
 			val referencingCommonality = participationContext.referencingCommonality
 			val referencedCommonality = participationContext.referencedCommonality
 			val attributeReferenceRoot = participationContext.attributeReferenceRoot
@@ -342,7 +343,8 @@ class AttributeReferenceMatchingReactionsBuilder extends ReactionsGenerationHelp
 	private def getMatchAttributeReferenceContainerRoutine(ParticipationContext participationContext) {
 		return matchAttributeReferenceContainerRoutines.computeIfAbsent(participationContext) [
 			assertTrue(participationContext.isForAttributeReferenceMapping)
-			val operatorMapping = participationContext.referenceMapping as OperatorReferenceMapping
+			// TODO We only support a single attribute reference mapping currently.
+			val operatorMapping = participationContext.referenceMappings.head as OperatorReferenceMapping
 			val referencingCommonality = participationContext.referencingCommonality
 			val referencedCommonality = participationContext.referencedCommonality
 
@@ -401,7 +403,7 @@ class AttributeReferenceMatchingReactionsBuilder extends ReactionsGenerationHelp
 	private def getCheckAttributeReferenceRoutine(ParticipationContext participationContext) {
 		return checkAttributeReferenceRoutines.computeIfAbsent(participationContext) [
 			assertTrue(participationContext.isForAttributeReferenceMapping)
-			val commonalityReference = participationContext.referenceMapping.declaringReference
+			val commonalityReference = participationContext.declaringReference
 			val referencingCommonality = participationContext.referencingCommonality
 			val referencedCommonality = participationContext.referencedCommonality
 			val attributeReferenceRoot = participationContext.attributeReferenceRoot
@@ -462,7 +464,7 @@ class AttributeReferenceMatchingReactionsBuilder extends ReactionsGenerationHelp
 	private def checkAttributeReferenceContainment(ParticipationContext participationContext,
 		OperatorContainment containment, extension RoutineCallContext routineCallContext,
 		extension TypeProvider typeProvider) {
-		val commonalityReference = participationContext.referenceMapping.declaringReference
+		val commonalityReference = participationContext.declaringReference
 		val referencedCommonality = participationContext.referencedCommonality
 
 		val operatorMapping = containment.mapping

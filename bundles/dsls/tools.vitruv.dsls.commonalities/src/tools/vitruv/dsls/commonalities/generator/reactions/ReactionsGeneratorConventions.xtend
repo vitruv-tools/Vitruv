@@ -3,7 +3,6 @@ package tools.vitruv.dsls.commonalities.generator.reactions
 import edu.kit.ipd.sdq.activextendannotations.Utility
 import tools.vitruv.dsls.commonalities.language.Commonality
 import tools.vitruv.dsls.commonalities.language.CommonalityAttribute
-import tools.vitruv.dsls.commonalities.language.CommonalityReferenceMapping
 import tools.vitruv.dsls.commonalities.language.Participation
 import tools.vitruv.dsls.commonalities.language.ParticipationClass
 import tools.vitruv.dsls.commonalities.language.elements.Attribute
@@ -37,6 +36,15 @@ class ReactionsGeneratorConventions {
 			return EXTERNAL_CLASS_PREFIX + participationClass.name
 		} else {
 			return participationClass.name
+		}
+	}
+
+	static def String correspondingVariableName(ContextClass contextClass) {
+		val participationClass = contextClass.participationClass
+		if (contextClass.isExternal) {
+			return contextClass.name
+		} else {
+			return participationClass.correspondingVariableName
 		}
 	}
 
@@ -82,15 +90,12 @@ class ReactionsGeneratorConventions {
 		'''«commonality.name»_«participation.name»'''
 	}
 
-	static def String getReactionName(CommonalityReferenceMapping mapping) {
-		return '''«mapping.containingCommonality.name»_«mapping.declaringReference.name»_«
-			mapping.participation.name»'''
-	}
-
 	static def String getReactionNameSuffix(ParticipationContext participationContext) {
-		val referenceMapping = participationContext.referenceMapping
-		if (referenceMapping === null) return ""
-		else return '''_forReferenceMapping_«referenceMapping.reactionName»'''
+		if (!participationContext.isForReferenceMapping) return ""
+		val participation = participationContext.participation
+		val reference = participationContext.declaringReference
+		val referencingCommonality = participationContext.referencingCommonality
+		return '''_forReferenceMapping_«referencingCommonality.name»_«reference.name»_«participation.name»'''
 	}
 
 	static def String getReactionNameSuffix(CommonalityAttribute commonalityAttribute) {

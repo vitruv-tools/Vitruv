@@ -54,9 +54,13 @@ class XbaseHelper {
 	}
 
 	static def stringLiteral(String string) {
-		XbaseFactory.eINSTANCE.createXStringLiteral => [
-			value = string
-		]
+		if (string === null) {
+			return nullLiteral
+		} else {
+			XbaseFactory.eINSTANCE.createXStringLiteral => [
+				value = string
+			]
+		}
 	}
 
 	static def booleanLiteral(boolean value) {

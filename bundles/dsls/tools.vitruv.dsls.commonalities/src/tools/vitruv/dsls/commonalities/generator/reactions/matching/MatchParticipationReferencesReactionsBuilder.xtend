@@ -45,14 +45,12 @@ class MatchParticipationReferencesReactionsBuilder extends ReactionsSubGenerator
 
 	def void generateReactions(FluentReactionsSegmentBuilder segment) {
 		val extension matchingReactionsBuilder = participationMatchingReactionsBuilderProvider.getFor(segment)
-		relevantReferenceMappings.map[referenceParticipationContext].forEach [
+		// TODO We do not take the 'read' flag of reference mappings into account currently. The semantics and use
+		// cases for this flag are not clear currently. Remove it?
+		commonality.references.flatMap[referenceParticipationContexts].filter [
+			it.participation.domainName == participation.domainName
+		].forEach [
 			generateMatchingReactions
-		]
-	}
-
-	private def getRelevantReferenceMappings() {
-		return commonality.references.flatMap[mappings].filter [
-			isRead && it.participation == participation
 		]
 	}
 }

@@ -10,6 +10,7 @@ import edu.kit.ipd.sdq.activextendannotations.Utility
 	CommonalityFileExtension,
 	CommonalitiesLanguageElementExtension,
 	CommonalityAttributeMappingExtension,
+	CommonalityReferenceExtension,
 	CommonalityReferenceMappingExtension,
 	OperatorImportExtension,
 	OperandExtension,
