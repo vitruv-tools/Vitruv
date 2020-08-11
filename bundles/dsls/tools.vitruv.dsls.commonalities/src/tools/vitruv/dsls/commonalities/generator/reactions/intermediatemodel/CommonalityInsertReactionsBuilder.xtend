@@ -179,13 +179,13 @@ class CommonalityInsertReactionsBuilder extends ReactionsSubGenerator {
 				}
 
 				managedClasses.forEach [ contextClass |
+					assertTrue(!contextClass.isExternal)
 					val participationClass = contextClass.participationClass
 					requireAbsenceOf(participationClass.changeClass).correspondingTo(INTERMEDIATE)
-						.taggedWith(participationClass.getCorrespondenceTag(commonality))
+						.taggedWith(participationClass.correspondenceTag)
 				]
 
 				if (participationContext.forReferenceMapping) {
-					val referencingCommonality = participationContext.referencingCommonality
 					// Get all external root classes:
 					participationContext.referenceRootClasses.forEach [ contextClass |
 						assertTrue(contextClass.isExternal)
@@ -193,7 +193,7 @@ class CommonalityInsertReactionsBuilder extends ReactionsSubGenerator {
 						vall(contextClass.correspondingVariableName)
 							.retrieveAsserted(externalParticipationClass.changeClass)
 							.correspondingTo(REFERENCING_INTERMEDIATE)
-							.taggedWith(externalParticipationClass.getCorrespondenceTag(referencingCommonality))
+							.taggedWith(externalParticipationClass.correspondenceTag)
 					]
 				}
 			].action [
@@ -203,7 +203,8 @@ class CommonalityInsertReactionsBuilder extends ReactionsSubGenerator {
 				val Consumer<ActionStatementBuilder> correspondenceSetup = [
 					// Correspondences between participation objects and intermediate:
 					managedClasses.forEach [ contextClass |
-						addIntermediateCorrespondence(commonality, contextClass.participationClass)
+						assertTrue(!contextClass.isExternal)
+						addIntermediateCorrespondence(contextClass.participationClass)
 					]
 				]
 				val applyAttributes = true
@@ -236,7 +237,8 @@ class CommonalityInsertReactionsBuilder extends ReactionsSubGenerator {
 					// created for:
 					val resourceClass = participationContext.resourceClass
 					assertTrue(resourceClass !== null)
-					addIntermediateCorrespondence(commonality, resourceClass.participationClass)
+					assertTrue(!resourceClass.isExternal)
+					addIntermediateCorrespondence(resourceClass.participationClass)
 
 					// Add singleton correspondence:
 					// Note: We don't add correspondences for the containers of the singleton object (except for the
@@ -338,11 +340,10 @@ class CommonalityInsertReactionsBuilder extends ReactionsSubGenerator {
 		]
 	}
 
-	private def addIntermediateCorrespondence(extension ActionStatementBuilder actionBuilder, Commonality commonality,
+	private def addIntermediateCorrespondence(extension ActionStatementBuilder actionBuilder,
 		ParticipationClass participationClass) {
-		val corresponding = participationClass.correspondingVariableName
-		addCorrespondenceBetween(INTERMEDIATE).and(corresponding)
-			.taggedWith(participationClass.getCorrespondenceTag(commonality))
+		addCorrespondenceBetween(INTERMEDIATE).and(participationClass.correspondingVariableName)
+			.taggedWith(participationClass.correspondenceTag)
 	}
 
 	private def setupResourceBridgeCorrespondences(extension ActionStatementBuilder actionBuilder,
@@ -420,11 +421,12 @@ class CommonalityInsertReactionsBuilder extends ReactionsSubGenerator {
 				// corresponding participations might not have been created yet. We therefore do not assert the
 				// existence of the participation objects.
 				participationContext.managedClasses.forEach [ contextClass |
+					assertTrue(!contextClass.isExternal)
 					val participationClass = contextClass.participationClass
 					vall(participationClass.correspondingVariableName)
 						.retrieve(participationClass.changeClass)
 						.correspondingTo.oldValue
-						.taggedWith(participationClass.getCorrespondenceTag(commonality))
+						.taggedWith(participationClass.correspondenceTag)
 				]
 			].action [
 				participationContext.managedClasses.forEach [ contextClass |

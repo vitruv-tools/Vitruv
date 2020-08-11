@@ -53,15 +53,8 @@ class ReactionsGeneratorConventions {
 	}
 
 	static def String getCorrespondenceTag(ParticipationClass participationClass) {
-		return participationClass.getCorrespondenceTag(participationClass.containingCommonality)
-	}
-
-	// Note: In the context of commonality reference mappings we may create
-	// correspondences between the referenced commonality instance and root
-	// participation objects, which were declared inside the (possibly
-	// different) referencing commonality.
-	static def String getCorrespondenceTag(ParticipationClass participationClass, Commonality commonality) {
-		'''«commonality.concept.name».«commonality.name»/«participationClass.participation.name».«
+		val commonality = participationClass.containingCommonality
+		return '''«commonality.concept.name».«commonality.name»/«participationClass.participation.name».«
 			participationClass.name»'''
 	}
 

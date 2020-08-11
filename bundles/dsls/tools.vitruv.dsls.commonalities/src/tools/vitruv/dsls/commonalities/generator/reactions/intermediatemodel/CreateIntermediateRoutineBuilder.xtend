@@ -95,6 +95,7 @@ class CreateIntermediateRoutineBuilder extends ReactionsGenerationHelper {
 
 					// Add correspondences with participation objects:
 					participationContext.managedClasses.forEach [ contextClass |
+						assertTrue(!contextClass.isExternal)
 						val participationClass = contextClass.participationClass
 						addCorrespondenceBetween(INTERMEDIATE).and [ extension typeProvider |
 							// TODO Ideally don't use a block expression here (results in more compact reactions code)
@@ -102,7 +103,7 @@ class CreateIntermediateRoutineBuilder extends ReactionsGenerationHelper {
 							// Possible alternative: Call a routine which adds the correspondence between the
 							// passed objects
 							contextClass.getParticipationObject(variable(PARTICIPATION_OBJECTS), typeProvider)
-						].taggedWith(participationClass.getCorrespondenceTag(commonality))
+						].taggedWith(participationClass.correspondenceTag)
 					]
 
 					// For commonality references: Insert the new intermediate into the referencing intermediate
