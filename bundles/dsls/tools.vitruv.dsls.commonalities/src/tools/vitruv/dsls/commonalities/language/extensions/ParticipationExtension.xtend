@@ -13,6 +13,7 @@ import tools.vitruv.dsls.commonalities.language.TupleParticipation
 import static extension tools.vitruv.dsls.commonalities.language.extensions.ParticipationClassExtension.*
 import static extension tools.vitruv.dsls.commonalities.language.extensions.ParticipationConditionExtension.*
 import static extension tools.vitruv.dsls.commonalities.language.extensions.ParticipationRelationExtension.*
+import tools.vitruv.dsls.commonalities.language.ParticipationCondition
 
 @Utility
 package class ParticipationExtension {
@@ -73,19 +74,19 @@ package class ParticipationExtension {
 		return #[participationPart]
 	}
 
-	static def getAllContainmentRelations(Participation participation) {
+	static def Iterable<ParticipationRelation> getAllContainmentRelations(Participation participation) {
 		return participation.allRelations.filter[isContainment]
 	}
 
-	static def getAllNonContainmentRelations(Participation participation) {
+	static def Iterable<ParticipationRelation> getAllNonContainmentRelations(Participation participation) {
 		return participation.allRelations.filter[!isContainment]
 	}
 
-	static def getAllContainmentConditions(Participation participation) {
+	static def Iterable<ParticipationCondition> getAllContainmentConditions(Participation participation) {
 		return participation.conditions.filter[isContainment]
 	}
 
-	static def getAllNonContainmentConditions(Participation participation) {
+	static def Iterable<ParticipationCondition> getAllNonContainmentConditions(Participation participation) {
 		return participation.conditions.filter[!isContainment]
 	}
 

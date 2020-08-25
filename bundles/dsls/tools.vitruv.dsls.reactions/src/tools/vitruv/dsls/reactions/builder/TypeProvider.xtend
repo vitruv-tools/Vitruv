@@ -13,6 +13,8 @@ import tools.vitruv.framework.correspondence.CorrespondenceModel
 import tools.vitruv.framework.util.command.ResourceAccess
 
 import static tools.vitruv.dsls.reactions.codegen.ReactionsLanguageConstants.*
+import org.eclipse.xtext.xbase.XFeatureCall
+import org.eclipse.xtext.common.types.JvmFormalParameter
 
 class TypeProvider implements IJvmTypeProvider {
 
@@ -62,19 +64,19 @@ class TypeProvider implements IJvmTypeProvider {
 		builder.staticExtensionAllImported(type)
 	}
 
-	def affectedEObject() {
+	def XFeatureCall affectedEObject() {
 		variable(CHANGE_AFFECTED_ELEMENT_ATTRIBUTE)
 	}
 
-	def oldValue() {
+	def XFeatureCall oldValue() {
 		variable(CHANGE_OLD_VALUE_ATTRIBUTE)
 	}
 
-	def newValue() {
+	def XFeatureCall newValue() {
 		variable(CHANGE_NEW_VALUE_ATTRIBUTE)
 	}
 
-	def variableRaw(String variableName) {
+	def JvmFormalParameter variableRaw(String variableName) {
 		scopeExpression.correspondingMethodParameter(variableName)
 	}
 
@@ -82,7 +84,7 @@ class TypeProvider implements IJvmTypeProvider {
 	 * Retrieves a feature call to a previously declared variable or
 	 * routine/reaction parameter if it is present.
 	 */
-	def variable(String variableName) {
+	def XFeatureCall variable(String variableName) {
 		variableRaw(variableName).featureCall
 	}
 
