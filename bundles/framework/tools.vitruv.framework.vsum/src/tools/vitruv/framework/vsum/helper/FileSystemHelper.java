@@ -80,6 +80,16 @@ public class FileSystemHelper {
         return filePath.toString();
     }
 
+    /**
+     * Gets the {@link VURI} of a model that stores metadata.
+     *
+     * @param metadataKey
+     *            The key uniquely identifying the metadata model. The different parts of the key
+     *            can be used to convey some sort of hierarchy in the metadata. The key may contain
+     *            arbitrary characters. The last key part contains the metadata model's file name
+     *            and extension.
+     * @return the VURI of the specified metadata model
+     */
     public VURI getConsistencyMetadataModelVURI(final String... metadataKey) {
         String metadataFilePath = getMetadataFilePath(metadataKey);
         File metadataFile = getConsistencyMetadataFile(metadataFilePath);

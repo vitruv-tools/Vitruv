@@ -15,6 +15,7 @@ import tools.vitruv.extensions.dslsruntime.reactions.structure.Loggable
 import tools.vitruv.framework.correspondence.CorrespondenceModel
 import tools.vitruv.framework.tuid.TuidManager
 import tools.vitruv.framework.userinteraction.UserInteractor
+import tools.vitruv.framework.util.command.ResourceAccess
 import tools.vitruv.framework.util.datatypes.VURI
 
 abstract class AbstractRepairRoutineRealization extends CallHierarchyHaving implements RepairRoutine, ReactionElementsHandler {
@@ -132,6 +133,14 @@ abstract class AbstractRepairRoutineRealization extends CallHierarchyHaving impl
 			persistAsRoot(elementToPersist, modelURI)
 		}
 
+		/**
+		 * Persists the given object as root of the metadata model specified by
+		 * the given metadata key.
+		 * 
+		 * @param rootObject The root object, not <code>null</code>.
+		 * @param metadataKey The key uniquely identifying the metadata model.
+		 * 		See {@link ResourceAccess#getMetadataModelURI}.
+		 */
 		protected def persistAsMetadataRoot(EObject rootObject, String... metadataKey) {
 			if (rootObject === null) {
 				throw new IllegalArgumentException("rootObject is null!");
