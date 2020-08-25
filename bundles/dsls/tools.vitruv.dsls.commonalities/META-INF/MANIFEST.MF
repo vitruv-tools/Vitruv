@@ -67,4 +67,3 @@ Export-Package: tools.vitruv.dsls.commonalities,
  tools.vitruv.dsls.commonalities.services,
  tools.vitruv.dsls.commonalities.util,
  tools.vitruv.dsls.commonalities.validation
-Import-Package: org.apache.log4j
