@@ -5,6 +5,7 @@ import java.util.Collections
 import tools.vitruv.dsls.commonalities.language.Concept
 import tools.vitruv.dsls.commonalities.language.Participation
 import tools.vitruv.dsls.commonalities.language.ParticipationClass
+import tools.vitruv.dsls.commonalities.language.ParticipationCondition
 import tools.vitruv.dsls.commonalities.language.ParticipationRelation
 import tools.vitruv.dsls.commonalities.language.SimpleParticipation
 import tools.vitruv.dsls.commonalities.language.SimpleTupleParticipationPart
@@ -13,7 +14,6 @@ import tools.vitruv.dsls.commonalities.language.TupleParticipation
 import static extension tools.vitruv.dsls.commonalities.language.extensions.ParticipationClassExtension.*
 import static extension tools.vitruv.dsls.commonalities.language.extensions.ParticipationConditionExtension.*
 import static extension tools.vitruv.dsls.commonalities.language.extensions.ParticipationRelationExtension.*
-import tools.vitruv.dsls.commonalities.language.ParticipationCondition
 
 @Utility
 package class ParticipationExtension {

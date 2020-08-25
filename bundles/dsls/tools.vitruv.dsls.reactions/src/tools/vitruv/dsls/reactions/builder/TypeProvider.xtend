@@ -3,18 +3,18 @@ package tools.vitruv.dsls.reactions.builder
 import org.eclipse.xtend.lib.annotations.Accessors
 import org.eclipse.xtext.common.types.JvmDeclaredType
 import org.eclipse.xtext.common.types.JvmField
+import org.eclipse.xtext.common.types.JvmFormalParameter
 import org.eclipse.xtext.common.types.JvmIdentifiableElement
 import org.eclipse.xtext.common.types.JvmOperation
 import org.eclipse.xtext.common.types.access.IJvmTypeProvider
 import org.eclipse.xtext.xbase.XExpression
+import org.eclipse.xtext.xbase.XFeatureCall
 import org.eclipse.xtext.xbase.XbaseFactory
 import org.eclipse.xtext.xbase.jvmmodel.JvmTypeReferenceBuilder
 import tools.vitruv.framework.correspondence.CorrespondenceModel
 import tools.vitruv.framework.util.command.ResourceAccess
 
 import static tools.vitruv.dsls.reactions.codegen.ReactionsLanguageConstants.*
-import org.eclipse.xtext.xbase.XFeatureCall
-import org.eclipse.xtext.common.types.JvmFormalParameter
 
 class TypeProvider implements IJvmTypeProvider {
 
