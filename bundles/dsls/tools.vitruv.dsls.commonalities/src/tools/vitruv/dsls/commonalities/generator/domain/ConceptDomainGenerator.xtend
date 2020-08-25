@@ -3,7 +3,6 @@ package tools.vitruv.dsls.commonalities.generator.domain
 import com.google.inject.Inject
 import com.google.inject.Provider
 import java.util.Arrays
-import org.apache.log4j.Level
 import org.apache.log4j.Logger
 import org.eclipse.xtend2.lib.StringConcatenationClient
 import org.eclipse.xtext.common.types.JvmDeclaredType
@@ -26,7 +25,7 @@ import static extension tools.vitruv.dsls.commonalities.generator.intermediatemo
 
 class ConceptDomainGenerator extends SubGenerator {
 
-	static val Logger logger = Logger.getLogger(ConceptDomainGenerator) => [level = Level.DEBUG]
+	static val Logger logger = Logger.getLogger(ConceptDomainGenerator)
 
 	@Inject JvmModelGenerator delegate
 	@Inject JvmTypeReferenceBuilder.Factory typeReferenceFactory
