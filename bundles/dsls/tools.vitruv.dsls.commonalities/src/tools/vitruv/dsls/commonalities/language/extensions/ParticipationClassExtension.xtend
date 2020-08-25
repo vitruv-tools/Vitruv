@@ -36,12 +36,12 @@ package class ParticipationClassExtension {
 		return null
 	}
 
-	// assumption: contained in max one container
+	// Assertion: Every participation class has at most one container class.
 	/**
 	 * Returns the participation class that contains the given participation
 	 * class according to the specified containment relationships.
 	 * <p>
-	 * Returns null if no container class is found.
+	 * Returns <code>null</code> if no container class is found.
 	 */
 	static def ParticipationClass getContainerClass(ParticipationClass contained) {
 		var container = contained.participation.allContainmentRelations
@@ -60,8 +60,8 @@ package class ParticipationClassExtension {
 	 * Gets the root participation class that (transitively) contains the given
 	 * participation class.
 	 * <p>
-	 * This returns the given participation class itself if it has no
-	 * container.
+	 * Returns the given participation class itself if it has no container
+	 * class.
 	 */
 	static def getRootContainerClass(ParticipationClass participationClass) {
 		var current = participationClass
@@ -74,9 +74,11 @@ package class ParticipationClassExtension {
 	}
 
 	/**
-	 * Includes the direct and transitive containers.
+	 * Gets all participation classes along the chain of container classes of the given participation class.
 	 * <p>
-	 * Empty if the given participation class has no container.
+	 * This includes the direct and transitive container classes.
+	 * <p>
+	 * Empty if the given participation class has no container class.
 	 */
 	static def Iterable<ParticipationClass> getTransitiveContainerClasses(ParticipationClass participationClass) {
 		val directContainer = participationClass.containerClass
@@ -85,9 +87,11 @@ package class ParticipationClassExtension {
 		return directContainerCollection + directContainerCollection.flatMap[transitiveContainerClasses]
 	}
 
-	// assumption: every participation class in contained in max one container
+	// Assertion: Every participation class has at most one container class.
 	/**
-	 * Returns empty if there are no contained classes.
+	 * Gets the participation classes that are (directly) contained by the given participation class.
+	 * <p>
+	 * Empty if there are no contained classes.
 	 */
 	static def getContainedClasses(ParticipationClass container) {
 		return container.participation.allContainmentRelations
@@ -113,7 +117,7 @@ package class ParticipationClassExtension {
 	}
 
 	/**
-	 * Includes the directly and transitively contained classes.
+	 * Gets all participation classes that are directly and transitively contained by the given participation class.
 	 * <p>
 	 * Empty if the given participation class contains no other classes.
 	 */

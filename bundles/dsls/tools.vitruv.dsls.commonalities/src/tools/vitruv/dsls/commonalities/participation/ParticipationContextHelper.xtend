@@ -191,7 +191,8 @@ class ParticipationContextHelper {
 
 	/**
 	 * Gets all non-root participation classes that are located at the boundary
-	 * between non-root classes and the root's head class.
+	 * between non-root classes and the (containment context specific) root
+	 * classes.
 	 * <p>
 	 * If the given participation does not specify an own root, this returns
 	 * the participation's root container classes.
