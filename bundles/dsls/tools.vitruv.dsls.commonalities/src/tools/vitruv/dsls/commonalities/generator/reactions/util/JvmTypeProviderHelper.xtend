@@ -268,7 +268,7 @@ class JvmTypeProviderHelper {
 		 */
 		private def String getQualifiedName(Class<?> clazz) {
 			if (clazz.isArray) {
-				return clazz.componentType.qualifiedName + "[]"
+				return clazz.getComponentType().qualifiedName + "[]"
 			} else {
 				return clazz.name
 			}
