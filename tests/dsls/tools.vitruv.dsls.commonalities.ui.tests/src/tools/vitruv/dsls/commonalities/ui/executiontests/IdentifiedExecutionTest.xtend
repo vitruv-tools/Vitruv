@@ -5,25 +5,20 @@ import allElementTypes.Root
 import allElementTypes2.AllElementTypes2Factory
 import allElementTypes2.Root2
 import com.google.inject.Inject
-import org.eclipse.xtext.testing.InjectWith
-import org.eclipse.xtext.testing.XtextRunner
+import org.eclipse.emf.ecore.util.EcoreUtil
 import org.junit.Test
-import org.junit.runner.RunWith
 import pcm_mockup.Pcm_mockupFactory
 import pcm_mockup.Repository
-import tools.vitruv.dsls.commonalities.ui.tests.CommonalitiesLanguageUiInjectorProvider
+import tools.vitruv.dsls.commonalities.testutils.CommonalitiesExecutionTest
+import uml_mockup.UPackage
 import uml_mockup.Uml_mockupFactory
 
 import static org.hamcrest.MatcherAssert.assertThat
 import static tools.vitruv.testutils.matchers.ModelMatchers.*
-import org.eclipse.emf.ecore.util.EcoreUtil
-import uml_mockup.UPackage
 
-@RunWith(XtextRunner)
-@InjectWith(CommonalitiesLanguageUiInjectorProvider)
 class IdentifiedExecutionTest extends CommonalitiesExecutionTest {
 
-	@Inject ExecutionTestCompiler compiler
+	@Inject IdentifiedExecutionTestCompiler compiler
 
 	override protected cleanup() {
 	}
@@ -66,7 +61,7 @@ class IdentifiedExecutionTest extends CommonalitiesExecutionTest {
 		assertThat(resourceAt('third.pcm_mockup'), contains(repository => [id = 'third']))
 		assertThat(resourceAt('third.uml_mockup'), contains(uPackage => [id = 'third']))
 	}
-	
+
 	@Test
 	def void rootDelete() {
 		createAndSynchronizeModel('first.allElementTypes2', root2 => [id2 = 'first'])
@@ -89,7 +84,6 @@ class IdentifiedExecutionTest extends CommonalitiesExecutionTest {
 		assertThat(resourceAt('startid.pcm_mockup'), contains(repository => [id = '1st id']))
 		assertThat(resourceAt('startid.uml_mockup'), contains(uPackage => [id = '1st id']))
 
-		// TODO this test case fails from here on, but it really shouldn’t! UUID resolution fails, see #175
 		saveAndSynchronizeChanges(Root.from('startid.allElementTypes') => [id = '2nd id'])
 		assertThat(resourceAt('startid.allElementTypes2'), contains(root2 => [id2 = '2nd id']))
 		assertThat(resourceAt('startid.allElementTypes'), contains(root => [id = '2nd id']))
@@ -238,7 +232,7 @@ class IdentifiedExecutionTest extends CommonalitiesExecutionTest {
 			classes += uClass => [name = 'testname']
 		], ignoring('id')))
 	}
-	
+
 	@Test
 	def void multiReferenceInsert() {
 		createAndSynchronizeModel('testid.allElementTypes2', root2 => [
@@ -259,24 +253,24 @@ class IdentifiedExecutionTest extends CommonalitiesExecutionTest {
 			id = 'testid'
 			multiValuedContainmentEReference += #[
 				nonRoot => [id = 'first'],
-				nonRoot => [id = 'second']				
+				nonRoot => [id = 'second']
 			]
 		]))
 		assertThat(resourceAt('testid.pcm_mockup'), contains(repository => [
 			id = 'testid'
 			components += #[
 				component => [name = 'first'],
-				component => [name = 'second']	
+				component => [name = 'second']
 			]
 		], ignoring('id')))
 		assertThat(resourceAt('testid.uml_mockup'), contains(uPackage => [
 			id = 'testid'
 			classes += #[
 				uClass => [name = 'first'],
-				uClass => [name = 'second']				
+				uClass => [name = 'second']
 			]
 		], ignoring('id')))
-		
+
 		saveAndSynchronizeChanges(Repository.from('testid.pcm_mockup') => [
 			components += component => [name = 'third']
 		])
@@ -293,7 +287,7 @@ class IdentifiedExecutionTest extends CommonalitiesExecutionTest {
 			multiValuedContainmentEReference += #[
 				nonRoot => [id = 'first'],
 				nonRoot => [id = 'second'],
-				nonRoot => [id = 'third']					
+				nonRoot => [id = 'third']
 			]
 		]))
 		assertThat(resourceAt('testid.pcm_mockup'), contains(repository => [
@@ -301,7 +295,7 @@ class IdentifiedExecutionTest extends CommonalitiesExecutionTest {
 			components += #[
 				component => [name = 'first'],
 				component => [name = 'second'],
-				component => [name = 'third']	
+				component => [name = 'third']
 			]
 		], ignoring('id')))
 		assertThat(resourceAt('testid.uml_mockup'), contains(uPackage => [
@@ -309,40 +303,40 @@ class IdentifiedExecutionTest extends CommonalitiesExecutionTest {
 			classes += #[
 				uClass => [name = 'first'],
 				uClass => [name = 'second'],
-				uClass => [name = 'third']				
+				uClass => [name = 'third']
 			]
 		], ignoring('id')))
 	}
 
-	def private static root2() {
+	private static def root2() {
 		AllElementTypes2Factory.eINSTANCE.createRoot2
 	}
 
-	def private static root() {
+	private static def root() {
 		AllElementTypesFactory.eINSTANCE.createRoot
 	}
 
-	def private static repository() {
+	private static def repository() {
 		Pcm_mockupFactory.eINSTANCE.createRepository
 	}
 
-	def private static uPackage() {
+	private static def uPackage() {
 		Uml_mockupFactory.eINSTANCE.createUPackage
 	}
 
-	def private static nonRoot2() {
+	private static def nonRoot2() {
 		AllElementTypes2Factory.eINSTANCE.createNonRoot2
 	}
 
-	def private static nonRoot() {
+	private static def nonRoot() {
 		AllElementTypesFactory.eINSTANCE.createNonRoot
 	}
 
-	def private static component() {
+	private static def component() {
 		Pcm_mockupFactory.eINSTANCE.createComponent
 	}
 
-	def private static uClass() {
+	private static def uClass() {
 		Uml_mockupFactory.eINSTANCE.createUClass
 	}
 }

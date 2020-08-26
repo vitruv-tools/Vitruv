@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="tools.vitruv.dsls.testutils.feature"
+      label="%featureName"
+      version="0.3.0.qualifier"
+      provider-name="%providerName"
+      license-feature="tools.vitruv.license.feature"
+      license-feature-version="1.0.0">
+
+   <description>
+      %description
+   </description>
+
+   <copyright url="%copyrightURL">
+      %copyright
+   </copyright>
+
+   <license url="%licenseURL">
+      %license
+   </license>
+
+   <requires>
+      <import plugin="org.apache.log4j"/>
+      <import plugin="org.junit"/>
+      <import plugin="com.google.guava"/>
+      <import plugin="org.eclipse.core.runtime"/>
+      <import plugin="org.eclipse.pde.core" version="3.11.100" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.xtext.xbase.lib"/>
+      <import plugin="org.eclipse.xtend.lib"/>
+      <import plugin="org.eclipse.xtend.lib.macro"/>
+      <import plugin="org.eclipse.xtext.testing"/>
+      <import plugin="org.eclipse.xtext.xbase.testing"/>
+      <import plugin="org.eclipse.xtext.ui" version="2.12.0" match="greaterOrEqual"/>
+      <import plugin="edu.kit.ipd.sdq.commons.util.java" version="1.1.0" match="greaterOrEqual"/>
+      <import plugin="tools.vitruv.framework.change.processing" version="0.2.0" match="greaterOrEqual"/>
+      <import plugin="tools.vitruv.framework.metamodel" version="0.2.0" match="greaterOrEqual"/>
+      <import plugin="tools.vitruv.extensions.dslsruntime.commonalities" version="0.2.0" match="greaterOrEqual"/>
+      <import plugin="tools.vitruv.extensions.dslsruntime.reactions" version="0.2.0" match="greaterOrEqual"/>
+      <import plugin="tools.vitruv.dsls.common" version="0.2.0" match="greaterOrEqual"/>
+      <import plugin="tools.vitruv.dsls.commonalities"/>
+      <import plugin="tools.vitruv.dsls.commonalities.ui"/>
+      <import plugin="tools.vitruv.dsls.mirbase.ui" version="0.2.0" match="greaterOrEqual"/>
+      <import plugin="tools.vitruv.dsls.reactions.ui" version="0.2.0" match="greaterOrEqual"/>
+      <import plugin="tools.vitruv.testutils" version="0.2.0" match="greaterOrEqual"/>
+   </requires>
+
+   <plugin
+         id="tools.vitruv.dsls.commonalities.testutils"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+</feature>

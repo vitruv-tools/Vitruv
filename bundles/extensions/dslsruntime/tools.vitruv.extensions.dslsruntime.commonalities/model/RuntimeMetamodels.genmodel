@@ -9,10 +9,10 @@
   <genPackages prefix="IntermediateModelBase" basePackage="tools.vitruv.extensions.dslruntime.commonalities"
       disposableProviderFactory="true" adapterFactory="false" ecorePackage="IntermediateModelBase.ecore#/">
     <genClasses ecoreClass="IntermediateModelBase.ecore#//Root">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute IntermediateModelBase.ecore#//Root/intermediateIdCounter"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference IntermediateModelBase.ecore#//Root/intermediates"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference IntermediateModelBase.ecore#//Root/resourceBridges"/>
-      <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute IntermediateModelBase.ecore#//Root/intermediateId"/>
+      <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute IntermediateModelBase.ecore#//Root/intermediateId"
+          get="return &quot;root&quot;;"/>
     </genClasses>
     <genClasses image="false" ecoreClass="IntermediateModelBase.ecore#//Intermediate">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute IntermediateModelBase.ecore#//Intermediate/intermediateId"/>
@@ -23,6 +23,7 @@
     <genDataTypes ecoreDataType="Resources.ecore#//ResourceAccess"/>
     <genDataTypes ecoreDataType="Resources.ecore#//CorrespondenceModel"/>
     <genDataTypes ecoreDataType="Resources.ecore#//URI"/>
+    <genDataTypes ecoreDataType="Resources.ecore#//EmfResource"/>
     <genClasses ecoreClass="Resources.ecore#//Resource">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Resources.ecore#//Resource/name"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Resources.ecore#//Resource/fileExtension"/>
@@ -34,13 +35,11 @@
       <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute Resources.ecore#//IntermediateResourceBridge/baseURI"/>
       <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute Resources.ecore#//IntermediateResourceBridge/isPersisted"/>
       <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute Resources.ecore#//IntermediateResourceBridge/intermediateId"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Resources.ecore#//IntermediateResourceBridge/resourceAccess"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Resources.ecore#//IntermediateResourceBridge/correspondenceModel"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Resources.ecore#//IntermediateResourceBridge/intermediateNS"/>
+      <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute Resources.ecore#//IntermediateResourceBridge/emfResource"/>
       <genOperations ecoreOperation="Resources.ecore#//IntermediateResourceBridge/remove"/>
-      <genOperations ecoreOperation="Resources.ecore#//IntermediateResourceBridge/setResourceAccess">
-        <genParameters ecoreParameter="Resources.ecore#//IntermediateResourceBridge/setResourceAccess/resourceAccess"/>
-      </genOperations>
-      <genOperations ecoreOperation="Resources.ecore#//IntermediateResourceBridge/setCorrespondenceModel">
-        <genParameters ecoreParameter="Resources.ecore#//IntermediateResourceBridge/setCorrespondenceModel/correspondenceModel"/>
-      </genOperations>
       <genOperations ecoreOperation="Resources.ecore#//IntermediateResourceBridge/initialiseForModelElement">
         <genParameters ecoreParameter="Resources.ecore#//IntermediateResourceBridge/initialiseForModelElement/eObject"/>
       </genOperations>

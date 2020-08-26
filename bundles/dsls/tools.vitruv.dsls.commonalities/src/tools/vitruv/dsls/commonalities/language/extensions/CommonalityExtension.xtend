@@ -5,9 +5,10 @@ import tools.vitruv.dsls.commonalities.language.Commonality
 
 import static extension tools.vitruv.dsls.commonalities.language.extensions.CommonalitiesLanguageElementExtension.getContainingCommonalityFile
 
-@Utility package class CommonalityExtension {
-	
-	def static getConcept(Commonality commonality) {
+@Utility
+package class CommonalityExtension {
+
+	static def getConcept(Commonality commonality) {
 		commonality.containingCommonalityFile.concept
 	}
 }

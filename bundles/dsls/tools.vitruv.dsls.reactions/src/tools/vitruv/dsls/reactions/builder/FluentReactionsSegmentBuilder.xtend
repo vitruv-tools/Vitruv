@@ -29,7 +29,7 @@ class FluentReactionsSegmentBuilder extends FluentReactionElementBuilder {
 		checkState(segment.routines.size + segment.reactions.size + segment.reactionsImports.size > 0,
 			'''Neither routines, nor reactions, nor imports were added to the reaction segment «segment.name»!''')
 	}
-	
+
 	static class ReactionsSegmentSourceBuilder {
 		val extension FluentReactionsSegmentBuilder builder
 
@@ -70,11 +70,11 @@ class FluentReactionsSegmentBuilder extends FluentReactionElementBuilder {
 			domain = domainName
 		]
 	}
-	
+
 	def importSegment(FluentReactionsSegmentBuilder reactionsSegmentBuilder) {
 		return new ReactionsSegmentImportBuilder(this, reactionsSegmentBuilder);
 	}
-	
+
 	static class ReactionsSegmentImportBuilder {
 		val extension FluentReactionsSegmentBuilder builder
 		val ReactionsImport reactionsImport;
@@ -102,38 +102,54 @@ class FluentReactionsSegmentBuilder extends FluentReactionElementBuilder {
 			builder
 		}
 	}
-	
+
 	def operator_add(FluentReactionBuilder[] reactionBuilders) {
 		reactionBuilders.forEach [this += it]
 		this
 	}
-	
+
+	def operator_add(FluentRoutineBuilder[] routineBuilders) {
+		routineBuilders.forEach [this += it]
+		this
+	}
+
 	def dispatch add(FluentReactionBuilder reactionBuilder) {
 		this += reactionBuilder
 	}
-	
+
 	def dispatch add(FluentRoutineBuilder routineBuilder) {
 		this += routineBuilder
 	}
-	
+
 	def operator_add(FluentReactionBuilder reactionBuilder) {
 		checkNotYetAttached()
-		segment.reactions += reactionBuilder.reaction
-		reactionBuilder.segmentBuilder = this
-		childBuilders += reactionBuilder
+		if (reactionBuilder.segmentBuilder !== this) {
+			checkArgument(reactionBuilder.segmentBuilder === null, '''The «reactionBuilder
+				» has already been added to the «reactionBuilder.segmentBuilder»''')
+			checkArgument(!segment.reactions.exists[it.name == reactionBuilder.reaction.name],
+				'''The «this» already contains a reaction with name '«reactionBuilder.reaction.name»'!''')
+			segment.reactions += reactionBuilder.reaction
+			reactionBuilder.segmentBuilder = this
+			childBuilders += reactionBuilder
+		}
 		this
 	}
 
 	def operator_add(FluentRoutineBuilder routineBuilder) {
 		checkNotYetAttached()
-		segment.routines += routineBuilder.routine
-		routineBuilder.segmentBuilder = this
-		childBuilders += routineBuilder
+		if (routineBuilder.segmentBuilder !== this) {
+			checkArgument(routineBuilder.segmentBuilder === null, '''The «routineBuilder
+				» has already been added to the «routineBuilder.segmentBuilder»''')
+			checkArgument(!segment.routines.exists[it.name == routineBuilder.routine.name],
+				'''The «this» already contains a routine with name '«routineBuilder.routine.name»'!''')
+			segment.routines += routineBuilder.routine
+			routineBuilder.segmentBuilder = this
+			childBuilders += routineBuilder
+		}
 		this
 	}
-		
+
 	override toString() {
 		'''reaction segment builder for “«segment.name»”'''
 	}
-	
 }

@@ -4,47 +4,43 @@ import com.google.inject.Singleton
 import org.eclipse.xtext.naming.IQualifiedNameConverter
 import org.eclipse.xtext.naming.QualifiedName
 
-@Singleton
-class CommonalitiesLanguageQualifiedNameConverter implements IQualifiedNameConverter {
+import static extension tools.vitruv.dsls.commonalities.names.QualifiedNameHelper.*
 
-	public static val DOMAIN_METACLASS_SEPARATOR = ":";
-	public static val METACLASS_ATTRIBUTE_SEPARATOR = ".";
+@Singleton
+class CommonalitiesLanguageQualifiedNameConverter extends IQualifiedNameConverter.DefaultImpl {
+
 	static val NOT_FOUND = -1
 
 	/*
-	 * 'a:b.c' -> #['a', 'b', 'c']
-	 * 'a:b' -> #['a', 'b']
-	 * 'b.c' -> #['', 'b', 'c']
+	 * In order to retain backwards compatibility with java-like qualified
+	 * names and still be able to identify the domain portion of qualified
+	 * names, we insert a separator segment into qualified names that include a
+	 * domain name.
+	 * 
+	 * 'a:b.c' -> #['a', ':', 'b', 'c']
+	 * 'a:b' -> #['a', ':', 'b']
+	 * 'b.c' -> #['b', 'c']
 	 * 'a' -> #['a']
+	 * If 'a' is a domain name, then the qualified name is #['a', ':']
+	 * 'a.b.c.d' -> #['a', 'b', 'c', 'd'] (java-like)
 	 */
 	override toQualifiedName(String qualifiedNameAsText) {
-		var String[] parts
-		var classPartToSplit = qualifiedNameAsText
-		var domainPart = ''
-
-		val classSplitIndex = qualifiedNameAsText.indexOf(DOMAIN_METACLASS_SEPARATOR)
-		if (classSplitIndex !== NOT_FOUND) {
-			domainPart = qualifiedNameAsText.substring(0, classSplitIndex)
-			classPartToSplit = qualifiedNameAsText.substring(classSplitIndex + 1)
+		val domainSeparatorIndex = qualifiedNameAsText.indexOf(DOMAIN_METACLASS_SEPARATOR)
+		if (domainSeparatorIndex === NOT_FOUND) {
+			return super.toQualifiedName(qualifiedNameAsText)
 		}
-
-		val attributeSplitIndex = classPartToSplit.indexOf(METACLASS_ATTRIBUTE_SEPARATOR)
-		if (attributeSplitIndex !== NOT_FOUND) {
-			var classPart = classPartToSplit.substring(0, attributeSplitIndex)
-			val attributePart = classPartToSplit.substring(attributeSplitIndex + 1)
-			parts = #[domainPart, classPart, attributePart]
-		} else if (classSplitIndex !== NOT_FOUND) {
-			parts = #[domainPart, classPartToSplit]
-		} else {
-			parts = #[qualifiedNameAsText]
-		}
-		QualifiedName.create(parts)
+		val domainName = qualifiedNameAsText.substring(0, domainSeparatorIndex)
+		val classAndAttributePart = qualifiedNameAsText.substring(domainSeparatorIndex + 1)
+		return QualifiedName.create(domainName, DOMAIN_METACLASS_SEPARATOR_SEGMENT)
+			.append(super.toQualifiedName(classAndAttributePart))
 	}
 
 	override toString(QualifiedName name) {
-		var result = name.firstSegment
-		if (name.segmentCount > 1) result += DOMAIN_METACLASS_SEPARATOR + name.getSegment(1)
-		if (name.segmentCount > 2) result += METACLASS_ATTRIBUTE_SEPARATOR + name.getSegment(2)
-		result
+		val domainName = name.domainName
+		if (domainName !== null) {
+			return domainName + DOMAIN_METACLASS_SEPARATOR + super.toString(name.skipFirst(2))
+		} else {
+			return super.toString(name)
+		}
 	}
 }

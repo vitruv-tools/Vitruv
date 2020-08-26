@@ -14,9 +14,8 @@ class MetapackagePrefixMatcher extends PrefixMatcher {
 	override isCandidateMatchingPrefix(String name, String prefix) {
 		defaultMatcher.isCandidateMatchingPrefix(this.name, prefix)
 	}
-	
+
 	def setEPackage(EPackage ePackage) {
 		name = ePackage.packageName
 	}
-
 }

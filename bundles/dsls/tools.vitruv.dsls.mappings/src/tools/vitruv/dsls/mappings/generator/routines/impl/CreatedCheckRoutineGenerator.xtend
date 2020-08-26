@@ -1,21 +1,22 @@
 package tools.vitruv.dsls.mappings.generator.routines.impl
 
-import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.RoutineTypeProvider
+import tools.vitruv.dsls.mappings.generator.routines.AbstractRetrievalCheckRoutineGenerator
+import tools.vitruv.dsls.reactions.builder.TypeProvider
 
-class CreatedCheckRoutineGenerator extends tools.vitruv.dsls.mappings.generator.routines.AbstractRetrievalCheckRoutineGenerator {
+class CreatedCheckRoutineGenerator extends AbstractRetrievalCheckRoutineGenerator {
 
 	new() {
 		super('ElementCreatedCheck')
 	}
 
 
-	override onSuccessfullyRetrievingParameters(RoutineTypeProvider provider) {
+	override onSuccessfullyRetrievingParameters(TypeProvider provider) {
 		[
 			provider.callViaVariables(CreateMappingRoutineGenerator.routine, reactionParameters)
 		]
 	}
 
-	override onFailedToRetrieveParameters(RoutineTypeProvider provider) {
+	override onFailedToRetrieveParameters(TypeProvider provider) {
 		// nothing to do
 		null
 	}

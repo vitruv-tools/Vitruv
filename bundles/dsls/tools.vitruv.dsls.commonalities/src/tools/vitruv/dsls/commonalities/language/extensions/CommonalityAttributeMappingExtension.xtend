@@ -1,81 +1,137 @@
 package tools.vitruv.dsls.commonalities.language.extensions
 
 import edu.kit.ipd.sdq.activextendannotations.Utility
-import tools.vitruv.dsls.commonalities.language.AttributeEqualitySpecification
-import tools.vitruv.dsls.commonalities.language.AttributeReadSpecification
-import tools.vitruv.dsls.commonalities.language.AttributeSetSpecification
+import java.util.Collections
 import tools.vitruv.dsls.commonalities.language.CommonalityAttribute
 import tools.vitruv.dsls.commonalities.language.CommonalityAttributeMapping
+import tools.vitruv.dsls.commonalities.language.OperatorAttributeMapping
+import tools.vitruv.dsls.commonalities.language.Participation
+import tools.vitruv.dsls.commonalities.language.ParticipationAttribute
+import tools.vitruv.dsls.commonalities.language.SimpleAttributeMapping
 import tools.vitruv.dsls.commonalities.language.elements.Classifier
-import tools.vitruv.dsls.commonalities.language.elements.WellKnownClassifiers
+import tools.vitruv.dsls.commonalities.language.elements.ClassifierProvider
 
+import static tools.vitruv.framework.util.XtendAssertHelper.*
+
+import static extension tools.vitruv.dsls.commonalities.language.extensions.AttributeMappingOperatorExtension.*
+import static extension tools.vitruv.dsls.commonalities.language.extensions.CommonalitiesLanguageElementExtension.*
+import static extension tools.vitruv.dsls.commonalities.language.extensions.OperandExtension.*
+import static extension tools.vitruv.dsls.commonalities.language.extensions.OperatorAttributeMappingExtension.*
 import static extension tools.vitruv.dsls.commonalities.language.extensions.ParticipationClassExtension.*
+import static extension tools.vitruv.dsls.commonalities.language.extensions.ParticipationExtension.*
 
 @Utility
 package class CommonalityAttributeMappingExtension {
 
-	@Pure
-	def static dispatch Classifier getProvidedType(AttributeReadSpecification mappingSpec) {
-		mappingSpec.attribute.type
+	static def isSimpleMapping(CommonalityAttributeMapping mapping) {
+		return (mapping instanceof SimpleAttributeMapping)
 	}
 
-	@Pure
-	def static dispatch Classifier getRequiredType(AttributeReadSpecification mappingSpec) {
-		WellKnownClassifiers.JAVA_OBJECT
+	static def isOperatorMapping(CommonalityAttributeMapping mapping) {
+		return (mapping instanceof OperatorAttributeMapping)
 	}
 
-	def static dispatch Classifier getProvidedType(AttributeSetSpecification mappingSpec) {
-		WellKnownClassifiers.MOST_SPECIFIC_TYPE
+	static def dispatch ParticipationAttribute getParticipationAttribute(SimpleAttributeMapping mapping) {
+		return mapping.attribute
 	}
 
-	def static dispatch Classifier getRequiredType(AttributeSetSpecification mappingSpec) {
-		mappingSpec.attribute.type
+	// Can be null
+	static def dispatch ParticipationAttribute getParticipationAttribute(OperatorAttributeMapping mapping) {
+		return mapping.participationAttributeOperand?.participationAttribute
 	}
 
-	@Pure
-	def static dispatch Classifier getProvidedType(AttributeEqualitySpecification mappingSpec) {
-		mappingSpec.attribute.type
+	static def dispatch getInvolvedParticipationClasses(SimpleAttributeMapping mapping) {
+		return Collections.singleton(mapping.attribute.participationClass)
 	}
 
-	@Pure
-	def static dispatch Classifier getRequiredType(AttributeEqualitySpecification mappingSpec) {
-		mappingSpec.attribute.type
+	// Note: This also includes the participation class for the (optional) participation attribute operand.
+	static def dispatch getInvolvedParticipationClasses(OperatorAttributeMapping mapping) {
+		// Assert: Not empty since there is always either an ParticipationAttributeOperand or at least one
+		// ParticipationClassOperand (ensured via validation).
+		// toSet: Filters duplicates in case the same participation class is involved in multiple operands.
+		return mapping.operands.map[it.participationClass].filterNull.toSet
 	}
 
-	def static getParticipation(CommonalityAttributeMapping mappingSpec) {
-		mappingSpec.attribute.participationClass.participation
+	static def dispatch Participation getParticipation(SimpleAttributeMapping mapping) {
+		return mapping.attribute.participationClass.participation
 	}
 
-	def static getDeclaringAttribute(CommonalityAttributeMapping mapping) {
-		val result = mapping.eContainer
-		if (result instanceof CommonalityAttribute) {
-			return result
+	static def dispatch Participation getParticipation(OperatorAttributeMapping mapping) {
+		val participationAttribute = mapping.participationAttribute // can be null
+		if (participationAttribute !== null) {
+			return participationAttribute.participationClass.participation
+		} else {
+			// Assert: There is at least one participation class operand (ensured via validation).
+			assertTrue(!mapping.participationClassOperands.empty)
+			return mapping.participationClassOperands.head.participation
 		}
-		throw new IllegalStateException('''Found the «CommonalityAttributeMapping.simpleName» ‹«mapping»› «
-		»not inside a «CommonalityAttribute.simpleName»!''')
 	}
 
-	def static dispatch isWrite(AttributeSetSpecification spec) {
-		true
+	static def getDeclaringAttribute(CommonalityAttributeMapping mapping) {
+		return mapping.getDirectContainer(CommonalityAttribute)
 	}
 
-	def static dispatch isWrite(AttributeReadSpecification spec) {
-		false
+	/**
+	 * Returns <code>true<code> if the commonality side of the mapping is
+	 * multi-valued.
+	 */
+	static def dispatch boolean isMultiValuedRead(SimpleAttributeMapping mapping) {
+		return mapping.attribute.isMultiValued
 	}
 
-	def static dispatch isWrite(AttributeEqualitySpecification spec) {
-		true
+	static def dispatch boolean isMultiValuedRead(OperatorAttributeMapping mapping) {
+		return mapping.operator.commonalityAttributeTypeDescription.isMultiValued
 	}
 
-	def static dispatch isRead(AttributeSetSpecification spec) {
-		false
+	/**
+	 * Returns <code>true<code> if the participation side of the mapping is
+	 * multi-valued.
+	 */
+	static def dispatch boolean isMultiValuedWrite(SimpleAttributeMapping mapping) {
+		return mapping.attribute.isMultiValued
 	}
 
-	def static dispatch isRead(AttributeReadSpecification spec) {
-		true
+	static def dispatch boolean isMultiValuedWrite(OperatorAttributeMapping mapping) {
+		return mapping.operator.participationAttributeTypeDescription.isMultiValued
 	}
 
-	def static dispatch isRead(AttributeEqualitySpecification spec) {
-		true
+	static def dispatch Classifier getCommonalityAttributeType(SimpleAttributeMapping mapping) {
+		return mapping.attribute.type
+	}
+
+	static def dispatch Classifier getCommonalityAttributeType(OperatorAttributeMapping mapping) {
+		val domain = mapping.participation.domain
+		val attributeTypeDescription = mapping.operator.commonalityAttributeTypeDescription
+		return ClassifierProvider.INSTANCE.findClassifier(domain, attributeTypeDescription.qualifiedTypeName)
+	}
+
+	static def dispatch Classifier getParticipationAttributeType(SimpleAttributeMapping mapping) {
+		return mapping.attribute.type
+	}
+
+	static def dispatch Classifier getParticipationAttributeType(OperatorAttributeMapping mapping) {
+		val domain = mapping.participation.domain
+		val attributeTypeDescription = mapping.operator.participationAttributeTypeDescription
+		return ClassifierProvider.INSTANCE.findClassifier(domain, attributeTypeDescription.qualifiedTypeName)
+	}
+
+	// Gets the output type when applied in read direction, or null if the
+	// mapping is not applicable in read direction:
+	static def Classifier getProvidedType(CommonalityAttributeMapping mapping) {
+		if (mapping.isRead) {
+			return mapping.commonalityAttributeType
+		} else {
+			return null
+		}
+	}
+
+	// Gets the required input type when applied in write direction, or null if
+	// the mapping is not applicable in write direction
+	static def Classifier getRequiredType(CommonalityAttributeMapping mapping) {
+		if (mapping.isWrite) {
+			return mapping.commonalityAttributeType
+		} else {
+			return null
+		}
 	}
 }

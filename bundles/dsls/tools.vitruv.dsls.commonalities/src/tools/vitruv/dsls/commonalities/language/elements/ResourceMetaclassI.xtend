@@ -27,16 +27,16 @@ class ResourceMetaclassI extends ResourceMetaclassImpl implements Wrapper<EClass
 		return this
 	}
 
-	def private readAdapter() {
+	private def readAdapter() {
 		adapter = classifierProvider.toMetaclass(ResourcesPackage.eINSTANCE.resource, containingDomain)
 		classifierProvider = null
 	}
 
-	def private checkDomainSet() {
+	private def checkDomainSet() {
 		checkState(containingDomain !== null, "No domain was set on this metaclass!")
 	}
 
-	def private checkAdapterCreated() {
+	private def checkAdapterCreated() {
 		if (adapter === null) {
 			checkDomainSet()
 			checkState(classifierProvider !== null, "No classifierProvider was set on this adapter!")
@@ -53,11 +53,8 @@ class ResourceMetaclassI extends ResourceMetaclassImpl implements Wrapper<EClass
 	}
 
 	override getAttributes() {
-		if (attributes === null) {
-			checkAdapterCreated()
-			super.getAttributes() += adapter.attributes
-		}
-		attributes
+		checkAdapterCreated()
+		return new UnmodifiableEList(adapter.attributes)
 	}
 
 	override basicGetDomain() {
@@ -72,21 +69,25 @@ class ResourceMetaclassI extends ResourceMetaclassImpl implements Wrapper<EClass
 	def dispatch isSuperTypeOf(Classifier subType) {
 		subType == this
 	}
-	
+
 	def dispatch isSuperTypeOf(MostSpecificType mostSpecificType) {
 		true
 	}
 
-	override getAllMembers() {
-		new UnmodifiableEList(adapter.allMembers)
-	}
-	
-	override toString() {
-		'''Resource Metaclass (‹«domain»›)'''
-	}
-	
-	override isAbstract() {
+	def dispatch isSuperTypeOf(LeastSpecificType leastSpecificType) {
 		false
 	}
 
+	override getAllMembers() {
+		checkAdapterCreated()
+		new UnmodifiableEList(adapter.allMembers)
+	}
+
+	override toString() {
+		'''Resource Metaclass (‹«domain»›)'''
+	}
+
+	override isAbstract() {
+		false
+	}
 }

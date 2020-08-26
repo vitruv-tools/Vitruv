@@ -19,7 +19,7 @@ import tools.vitruv.framework.util.bridges.EcoreBridge;
  * @see DefaultTuidCalculatorAndResolver
  * @author Dominik Werle
  */
-public class AttributeTuidCalculatorAndResolver extends HierarchicalTuidCalculatorAndResolver<EObject> {
+public class AttributeTuidCalculatorAndResolver extends HierarchicalTuidCalculatorAndResolver {
 	private final List<String> attributeNames;
 
 	public AttributeTuidCalculatorAndResolver(final String tuidPrefix, final String... attributeNames) {
@@ -30,11 +30,6 @@ public class AttributeTuidCalculatorAndResolver extends HierarchicalTuidCalculat
 	public AttributeTuidCalculatorAndResolver(final String tuidPrefix, final List<String> attributeNames) {
 		super(tuidPrefix);
 		this.attributeNames = new ArrayList<String>(attributeNames);
-	}
-
-	@Override
-	protected Class<EObject> getRootObjectClass() {
-		return EObject.class;
 	}
 
 	@Override

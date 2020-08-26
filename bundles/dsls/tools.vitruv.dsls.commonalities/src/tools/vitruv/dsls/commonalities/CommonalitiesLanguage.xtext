@@ -8,8 +8,13 @@ import "http://vitruv.tools/dsls/commonalities/elements"
 import "http://www.eclipse.org/xtext/common/JavaVMTypes" as jvmTypes
 
 CommonalityFile:
+	(operatorImports+=OperatorImport)*
 	concept=Concept
 	commonality=Commonality
+;
+
+OperatorImport:
+	'import' (importedType=[jvmTypes::JvmDeclaredType|QualifiedName] | importedNamespace=QualifiedNameWithWildcard)
 ;
 
 Domain:
@@ -17,15 +22,15 @@ Domain:
 ;
 
 Concept:
-	'concept' name=ID
+	'concept' name=ValidID
 ;
 
-Metaclass: 
+Metaclass:
 	Commonality
 ;
 
 Commonality:
-	'commonality' name=ID '{'
+	(referenced?='referenced')? 'commonality' name=ValidID '{'
 		participations+=Participation*
 		(attributes+=CommonalityAttribute|references+=CommonalityReference)*
 	'}'
@@ -36,14 +41,20 @@ Commonality:
 /******************
  * Participations *
  ******************/
+
 PackageLike:
 	Participation
 ;
 
 Participation:
 	'with' (SimpleParticipation | TupleParticipation)
-	('as' alias=QUOTED_NAME)?
-	('whereat' condition=ParticipationConditionDeclaration | condition=ParticipationNoCondition)
+	('as' Aliasable)?
+	('whereat' '{'
+		(
+			conditions+=ParticipationCondition
+			(',' conditions+=ParticipationCondition)*
+		)?
+	'}')?
 ;
 
 SimpleParticipation:
@@ -51,7 +62,7 @@ SimpleParticipation:
 ;
 
 TupleParticipation:
-	domainName=DomainReference ':' '(' parts+=TupleParticipationPart (','
+	domainName=DomainName ':' '(' parts+=TupleParticipationPart (','
 	parts+=TupleParticipationPart)* ')'
 ;
 
@@ -68,19 +79,23 @@ ParticipationRelation:
 ;
 
 SimpleParticipationRelation returns ParticipationRelation:
-	leftClasses+=UnqualifiedParticipationClassDeclaration operator=[jvmTypes::JvmDeclaredType]
+	leftClasses+=UnqualifiedParticipationClassDeclaration operator=ParticipationRelationOperator
 	rightClasses+=UnqualifiedParticipationClassDeclaration
 ;
 
 BracedParticipationRelation returns ParticipationRelation:
 	'(' leftClasses+=UnqualifiedParticipationClassDeclaration (',' leftClasses+=UnqualifiedParticipationClassDeclaration)*
-	operator=[jvmTypes::JvmDeclaredType]
+	operator=ParticipationRelationOperator
 	rightClasses+=UnqualifiedParticipationClassDeclaration (',' rightClasses+=UnqualifiedParticipationClassDeclaration)*
 	')'
 ;
 
+ParticipationRelationOperator:
+	jvmType=[jvmTypes::JvmDeclaredType|OperatorName]
+;
+
 fragment Aliasable:
-	('called' alias=QUOTED_NAME)?
+	alias=STRING
 ;
 
 ClassLike:
@@ -92,102 +107,201 @@ ParticipationClass:
 ;
 
 QualifiedParticipationClassDeclaration returns ParticipationClass:
-	superMetaclass=[Metaclass|QualifiedMetaclass] Aliasable
+	(singleton?='single')? superMetaclass=[Metaclass|QualifiedClass] ('called' Aliasable)?
 ;
 
 UnqualifiedParticipationClassDeclaration returns ParticipationClass:
-	superMetaclass=[Metaclass|UnqualifiedMetaclass] Aliasable
+	(singleton?='single')? superMetaclass=[Metaclass|UnqualifiedClass] ('called' Aliasable)?
 ;
 
-ParticipationConditionDeclaration returns ParticipationCondition:
-	{SpecialParticipationCondition}
+ParticipationCondition:
+	({BidirectionalParticipationCondition} | '->' {EnforcedParticipationCondition} | '<-' {CheckedParticipationCondition})
+	leftOperand=ParticipationConditionLeftOperand operator=ParticipationConditionOperator
+	(
+		(rightOperands+=ParticipationConditionRightOperand)
+		| ('(' (rightOperands+=ParticipationConditionRightOperand (',' rightOperands+=ParticipationConditionRightOperand)*)? ')')
+	)?
 ;
 
-ParticipationNoCondition returns ParticipationCondition:
-	{ParticipationNoCondition}
+ParticipationConditionOperator:
+	jvmType=[jvmTypes::JvmDeclaredType|OperatorName]
 ;
 
+ParticipationConditionLeftOperand returns ParticipationConditionOperand:
+	UnqualifiedParticipationClassOperand | UnqualifiedParticipationAttributeOperand
+;
 
+ParticipationConditionRightOperand returns ParticipationConditionOperand:
+	UnqualifiedParticipationClassOperand | UnqualifiedParticipationAttributeOperand | LiteralOperand
+;
+
+ParticipationConditionOperand:
+	UnqualifiedParticipationClassOperand | UnqualifiedParticipationAttributeOperand | LiteralOperand
+;
 
 /**************
  * Attributes *
  **************/
+
 Attribute:
-	CommonalityAttribute | ParticipationAttribute
+	CommonalityAttribute | ParticipationAttribute | CommonalityReference
 ;
- 
+
 CommonalityAttribute:
-	'has' name=ID '{'
+	'has' name=ValidID '{'
 		mappings+=CommonalityAttributeMapping*
 	'}'
 ;
 
 CommonalityAttributeMapping:
-	('=' {AttributeEqualitySpecification} | '->' {AttributeSetSpecification} | '<-' {AttributeReadSpecification})
-	attribute=ParticipationAttribute
+	SimpleAttributeMapping | OperatorAttributeMapping
+;
+
+SimpleAttributeMapping:
+	(readAndWrite?='=' | write?='->'| read?='<-')
+	attribute=QualifiedParticipationAttribute
+;
+
+OperatorAttributeMapping:
+	(readAndWrite?='=' | write?='->'| read?='<-')
+	operator=AttributeMappingOperator '(' (operands+=AttributeMappingOperand (',' operands+=AttributeMappingOperand)*)? ')'
+;
+
+AttributeMappingOperator:
+	jvmType=[jvmTypes::JvmDeclaredType|OperatorName]
+;
+
+AttributeMappingOperand:
+	LocalUnqualifiedCommonalityAttributeOperand | QualifiedParticipationAttributeOperand | QualifiedParticipationClassOperand | LiteralOperand
 ;
 
 ParticipationAttribute:
-	participationClass=[ParticipationClass|QualifiedParticipationClass] '.' attribute=[Attribute|UnqualifiedParticipationMember]
+	QualifiedParticipationAttribute | UnqualifiedParticipationAttribute
 ;
 
+QualifiedParticipationAttribute returns ParticipationAttribute:
+	participationClass=[ParticipationClass|QualifiedClass] '.' attribute=[Attribute|UnqualifiedAttribute]
+;
 
+UnqualifiedParticipationAttribute returns ParticipationAttribute:
+	participationClass=[ParticipationClass|UnqualifiedClass] '.' attribute=[Attribute|UnqualifiedAttribute]
+;
+
+CommonalityAttributeReference:
+	LocalUnqualifiedCommonalityAttributeReference
+;
+
+// Local: Can only refer to the (single) local commonality.
+LocalUnqualifiedCommonalityAttributeReference returns CommonalityAttributeReference:
+	commonality=[Commonality|UnqualifiedClass] '.' attribute=[CommonalityAttribute|UnqualifiedAttribute]
+;
 
 /**************
  * References *
  **************/
- CommonalityReference:
- 	'has' name=ID 'referencing' referenceType=[Commonality|QualifiedCommonality] '{'
- 		mappings+=CommonalityReferenceMapping*
- 	'}'
- ;
- 
- CommonalityReferenceMapping:
- 	('=' {ReferenceEqualitySpecification} | '->' {ReferenceSetSpecification} | '<-' {ReferenceReadSpecification})
- 	reference=ParticipationAttribute
- 	('via' referenceTargets+=[ParticipationClass|QualifiedParticipationClass] (',' referenceTargets+=[ParticipationClass|QualifiedParticipationClass])*)?
- ;
- 
+
+CommonalityReference:
+	'has' name=ValidID 'referencing' referenceType=[Commonality|QualifiedClass] '{'
+		mappings+=CommonalityReferenceMapping*
+	'}'
+;
+
+CommonalityReferenceMapping:
+	SimpleReferenceMapping | OperatorReferenceMapping
+;
+
+SimpleReferenceMapping:
+	(readAndWrite?='=' | write?='->'| read?='<-')
+	reference=QualifiedParticipationAttribute
+	// TODO not used right now
+	('via' referenceTargets+=[ParticipationClass|QualifiedClass] (',' referenceTargets+=[ParticipationClass|QualifiedClass])*)?
+;
+
+OperatorReferenceMapping:
+	(readAndWrite?='=' | write?='->'| read?='<-')
+	participationClass=[ParticipationClass|QualifiedClass] '.' operator=ReferenceMappingOperator
+	'(' (operands+=ReferenceMappingOperand (',' operands+=ReferenceMappingOperand)*)? ')'
+;
+
+ReferenceMappingOperator:
+	jvmType=[jvmTypes::JvmDeclaredType|OperatorName]
+;
+
+ReferenceMappingOperand:
+	ReferencedParticipationAttributeOperand | UnqualifiedParticipationAttributeOperand | LiteralOperand
+;
+
+ReferencedParticipationAttributeOperand:
+	'ref' participationAttribute=UnqualifiedParticipationAttribute
+;
+
+/************
+ * Operands *
+ ************/
+
+Operand:
+	ParticipationConditionOperand | AttributeMappingOperand | ReferenceMappingOperand
+;
+
+LiteralOperand:
+	expression=(XBooleanLiteral |
+		XNumberLiteral |
+		XNullLiteral |
+		XStringLiteral)
+	// TODO List literal
+;
+
+QualifiedParticipationClassOperand returns ParticipationClassOperand:
+	participationClass=[ParticipationClass|QualifiedClass]
+;
+
+UnqualifiedParticipationClassOperand returns ParticipationClassOperand:
+	participationClass=[ParticipationClass|UnqualifiedClass]
+;
+
+QualifiedParticipationAttributeOperand returns ParticipationAttributeOperand:
+	participationAttribute=QualifiedParticipationAttribute
+;
+
+UnqualifiedParticipationAttributeOperand returns ParticipationAttributeOperand:
+	participationAttribute=UnqualifiedParticipationAttribute
+;
+
+LocalUnqualifiedCommonalityAttributeOperand returns CommonalityAttributeOperand:
+	attributeReference=LocalUnqualifiedCommonalityAttributeReference
+;
 
 /******************
  * Datatype Rules *
  ******************/
-fragment QualifiedClasslike:
-	ID ':' ID;
-	
-QualifiedMetaclass:
-	QualifiedClasslike
+
+DomainName:
+	ValidID
 ;
 
-QualifiedCommonality:
-	QualifiedClasslike
+UnqualifiedClass:
+	ValidID
 ;
 
-QualifiedParticipationClass:
-	QualifiedClasslike
+QualifiedClass:
+	DomainName ':' UnqualifiedClass
 ;
 
-DomainReference:
-	ID
+UnqualifiedAttribute:
+	ValidID
 ;
 
-UnqualifiedMetaclass:
-	ID
+// To correctly parse character combinations, we need to copy all tokens that
+// already occurred in the parent grammars (i.e. Xbase).
+// '->' and '<-': Ambiguous since the next participation condition may start with this as well
+OperatorName:
+	ID |
+	( '+=' | '-=' | '*=' | '/=' | '%=' | '>=' | '<=' | '||' | '&&' | '==' | '!=' | '===' | '!=='
+	| '=>' | '<>' | '?:' | '**' | '--' | '++' | '::'
+	| '=' | '!' | '%' | '&' | '*' | '+' | '-' | '/' | '<' | '>' | '^' | '~' | '_' | ':' | '?')+
 ;
 
-UnqualifiedParticipationMember:
-	ID
-;
-	
-	
 /******************
  * Terminal Rules *
  ******************/
-terminal QUOTED_NAME:
-	("'" NAME "'") | ('"' NAME '"') | ("“" NAME "”") | ("»" NAME "«") | ("«" NAME "»") | ("„" NAME "“")
-;
 
-terminal fragment NAME:
-	('a'..'z' | 'A'..'Z') ('a'..'z' | 'A'..'Z' | '0'..'9' | '-' | '_')*
-;
-	

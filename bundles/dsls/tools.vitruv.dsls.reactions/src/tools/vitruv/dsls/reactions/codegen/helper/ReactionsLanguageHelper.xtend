@@ -67,7 +67,7 @@ final class ReactionsLanguageHelper {
 			VitruvDomainProviderRegistry.getDomainProvider(domainReference.domain)
 		}
 		if (referencedDomainProvider === null) {
-			throw new IllegalStateException("Given domain reference references no existing domain");
+			throw new IllegalStateException("Given domain reference references no existing domain: " + domainReference.domain);
 		}
 		return referencedDomainProvider;
 	}

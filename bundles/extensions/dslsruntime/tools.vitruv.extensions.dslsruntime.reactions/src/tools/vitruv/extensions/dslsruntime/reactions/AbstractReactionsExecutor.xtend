@@ -37,7 +37,7 @@ abstract class AbstractReactionsExecutor extends AbstractEChangePropagationSpeci
 
 	public override propagateChange(EChange change, CorrespondenceModel correspondenceModel,
 		ResourceAccess resourceAccess) {
-		LOGGER.trace("Call relevant reactions");
+		LOGGER.trace("Call relevant reactions from " + sourceDomain.name + " to " + targetDomain.name);
 		for (reaction : reactions) {
 			LOGGER.trace("Calling reaction: " + reaction.class.simpleName + " with change: " + change);
 			val executionState = new ReactionExecutionState(userInteractor, correspondenceModel, resourceAccess, this);

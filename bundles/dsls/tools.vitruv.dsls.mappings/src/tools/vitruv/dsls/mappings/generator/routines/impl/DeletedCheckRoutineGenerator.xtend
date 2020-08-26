@@ -1,16 +1,17 @@
 package tools.vitruv.dsls.mappings.generator.routines.impl
 
 import org.eclipse.xtext.xbase.XbaseFactory
+import tools.vitruv.dsls.mappings.generator.routines.AbstractMappingRoutineGenerator
 import tools.vitruv.dsls.mappings.mappingsLanguage.MappingParameter
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.ActionStatementBuilder
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.InputBuilder
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.MatcherOrActionBuilder
-import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.RoutineTypeProvider
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.UndecidedMatcherStatementBuilder
+import tools.vitruv.dsls.reactions.builder.TypeProvider
 
 import static extension tools.vitruv.dsls.mappings.generator.utils.XBaseMethodUtils.*
 
-class DeletedCheckRoutineGenerator extends tools.vitruv.dsls.mappings.generator.routines.AbstractMappingRoutineGenerator {
+class DeletedCheckRoutineGenerator extends AbstractMappingRoutineGenerator {
 
 	new() {
 		super('ElementDeletedCheck')
@@ -50,7 +51,7 @@ class DeletedCheckRoutineGenerator extends tools.vitruv.dsls.mappings.generator.
 		].initCallingContext
 	}
 
-	private def generateCheckForDeletion(RoutineTypeProvider provider) {
+	private def generateCheckForDeletion(TypeProvider provider) {
 		XbaseFactory.eINSTANCE.createXBlockExpression => [
 			expressions += provider.initParametersToRetrieve
 			iterateParameters([ reactionParameter, correspondingParameter |
@@ -60,7 +61,7 @@ class DeletedCheckRoutineGenerator extends tools.vitruv.dsls.mappings.generator.
 		]
 	}
 
-	private def initParametersToRetrieve(RoutineTypeProvider provider) {
+	private def initParametersToRetrieve(TypeProvider provider) {
 		correspondingParameters.map [ parameter |
 			provider.variableDeclaration(parameter)
 		]
@@ -69,7 +70,7 @@ class DeletedCheckRoutineGenerator extends tools.vitruv.dsls.mappings.generator.
 	/**
 	 * check if any of the retrieved exists, and if it does, remember the value in the baseParam
 	 */
-	private def checkRetrievedParameter(RoutineTypeProvider provider, MappingParameter reactionParameter,
+	private def checkRetrievedParameter(TypeProvider provider, MappingParameter reactionParameter,
 		MappingParameter correspondingParameter) {
 		val name = getParameterName(reactionParameter, correspondingParameter)
 		val target = correspondingParameter
@@ -82,7 +83,7 @@ class DeletedCheckRoutineGenerator extends tools.vitruv.dsls.mappings.generator.
 		]
 	}
 
-	private def checkAllParametersExist(RoutineTypeProvider provider) {
+	private def checkAllParametersExist(TypeProvider provider) {
 		XbaseFactory.eINSTANCE.createXIfExpression => [
 			^if = provider.andChain(correspondingParameters.map [ correspondingParameter |
 				provider.notNull(correspondingParameter.referenceLocalVariable)

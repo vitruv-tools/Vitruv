@@ -1,5 +1,6 @@
 package tools.vitruv.dsls.commonalities.language.elements
 
+import java.util.Set
 import org.eclipse.emf.ecore.EClass
 import org.eclipse.emf.ecore.EPackage
 import tools.vitruv.dsls.commonalities.language.elements.impl.VitruviusDomainImpl
@@ -8,32 +9,28 @@ import tools.vitruv.framework.domains.VitruvDomain
 import static com.google.common.base.Preconditions.*
 
 class VitruvDomainAdapter extends VitruviusDomainImpl implements Wrapper<VitruvDomain> {
+
 	VitruvDomain wrappedVitruvDomain
 	var extension ClassifierProvider classifierProvider
-	
+
 	override forVitruvDomain(VitruvDomain vitruvDomain) {
 		this.wrappedVitruvDomain = checkNotNull(vitruvDomain)
 		return this
 	}
-	
+
 	override withClassifierProvider(ClassifierProvider classifierProvider) {
 		this.classifierProvider = checkNotNull(classifierProvider)
 		return this
 	}
 
-	def private checkDomainSet() {
+	private def checkDomainSet() {
 		checkState(wrappedVitruvDomain !== null, "No VitruvDomain was set on this adapter!")
 	}
-	
-	def private checkClassifierProviderSet() {
+
+	private def checkClassifierProviderSet() {
 		checkState(classifierProvider !== null, "No classifier provider was set on this element!")
 	}
 
-	def private static Iterable<EPackage> getRecursiveSubPackages(EPackage ePackage) {
-		#[ePackage] + ePackage.ESubpackages.flatMap [recursiveSubPackages]
-	}
-	
-	
 	override getMetaclasses() {
 		if (metaclasses === null) {
 			checkDomainSet()
@@ -44,15 +41,24 @@ class VitruvDomainAdapter extends VitruviusDomainImpl implements Wrapper<VitruvD
 		metaclasses
 	}
 
-	def private loadMetaclasses() {
-		(
-			#[wrappedVitruvDomain.metamodelRootPackage]
-			+ wrappedVitruvDomain.furtherRootPackages
-		)
-			.flatMap [recursiveSubPackages]
-			.flatMap [EClassifiers]
+	private def Set<EPackage> getRootPackages() {
+		return (#[wrappedVitruvDomain.metamodelRootPackage] + wrappedVitruvDomain.furtherRootPackages).toSet
+	}
+
+	def Set<EPackage> getAllPackages() {
+		val rootPackages = rootPackages
+		return (rootPackages + rootPackages.flatMap[recursiveSubPackages]).toSet
+	}
+
+	private static def Iterable<EPackage> getRecursiveSubPackages(EPackage ePackage) {
+		return ePackage.ESubpackages + ePackage.ESubpackages.flatMap[recursiveSubPackages]
+	}
+
+	private def loadMetaclasses() {
+		allPackages
+			.flatMap[EClassifiers]
 			.filter(EClass)
-			.map [toMetaclass(this)]
+			.map[toMetaclass(this)]
 			+ #[LanguageElementsFactory.eINSTANCE.createResourceMetaclass
 				.withClassifierProvider(classifierProvider).fromDomain(this)]
 	}
@@ -62,13 +68,12 @@ class VitruvDomainAdapter extends VitruviusDomainImpl implements Wrapper<VitruvD
 		checkDomainSet()
 		wrappedVitruvDomain.name
 	}
-	
+
 	override getWrapped() {
 		wrappedVitruvDomain
 	}
-	
+
 	override toString() {
 		'''{{«wrappedVitruvDomain?.name»}}'''
 	}
-	
 }

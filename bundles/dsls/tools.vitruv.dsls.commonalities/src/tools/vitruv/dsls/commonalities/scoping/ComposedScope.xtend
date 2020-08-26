@@ -6,49 +6,46 @@ import org.eclipse.xtext.naming.QualifiedName
 import org.eclipse.xtext.scoping.IScope
 
 class ComposedScope implements IScope {
-	
+
 	List<IScope> delegates
-	
+
 	new(IScope... delegates) {
 		this.delegates = delegates
 	}
-	
+
 	def operator_plus(IScope delegate) {
 		delegates += delegate
 	}
-	
+
 	def operator_plus(IScope... delegate) {
 		delegates += delegate
 	}
-	
+
 	override getAllElements() {
-		delegates.flatMap [allElements]
+		delegates.flatMap[allElements]
 	}
-	
+
 	override getElements(QualifiedName name) {
-		delegates.flatMap [getElements(name)]
+		delegates.flatMap[getElements(name)]
 	}
-	
+
 	override getElements(EObject object) {
-		delegates.flatMap [getElements(object)]
+		delegates.flatMap[getElements(object)]
 	}
-	
+
 	override getSingleElement(QualifiedName name) {
-		delegates.map[getSingleElement(name)].findFirst [it !== null]
+		delegates.map[getSingleElement(name)].findFirst[it !== null]
 	}
-	
+
 	override getSingleElement(EObject object) {
-		delegates.map[getSingleElement(object)].findFirst [it !== null]
+		delegates.map[getSingleElement(object)].findFirst[it !== null]
 	}
-	
-	override toString() {
-		'''
+
+	override toString() '''
 		[
 			«FOR delegate : delegates»
-			-> «delegate»
+				-> «delegate»
 			«ENDFOR»
 		]
-		'''
-	}
-	
+	'''
 }

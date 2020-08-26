@@ -3,8 +3,6 @@
     xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="intermediatemodelbase" nsURI="http://vitruv.tools/dsls/commonalities/runtime/intermediatemodelbase"
     nsPrefix="base">
   <eClassifiers xsi:type="ecore:EClass" name="Root">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="intermediateIdCounter"
-        lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="intermediates" ordered="false"
         upperBound="-1" eType="#//Intermediate" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="resourceBridges" ordered="false"

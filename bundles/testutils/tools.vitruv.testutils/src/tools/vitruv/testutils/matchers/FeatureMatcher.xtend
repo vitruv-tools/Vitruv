@@ -1,12 +1,12 @@
 package tools.vitruv.testutils.matchers
 
-import org.eclipse.emf.ecore.EClass
+import java.util.function.Consumer
+import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EStructuralFeature
 import org.hamcrest.Description
-import java.util.function.Consumer
 
 interface FeatureMatcher {
-	def boolean isForFeature(EClass checkedClass, EStructuralFeature feature)
+	def boolean isForFeature(EObject expectedObject, EStructuralFeature feature)
 
 	def Consumer<Description> getMismatch(Object expectedValue, Object itemValue)
 }

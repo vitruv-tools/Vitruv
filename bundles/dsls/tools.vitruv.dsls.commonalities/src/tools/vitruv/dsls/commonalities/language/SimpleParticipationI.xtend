@@ -9,9 +9,8 @@ package class SimpleParticipationI extends SimpleParticipationImpl {
 	override getName() {
 		alias ?: participationClass?.domain?.name
 	}
-	
+
 	override toString() {
 		'''«name»'''
 	}
-	
 }
