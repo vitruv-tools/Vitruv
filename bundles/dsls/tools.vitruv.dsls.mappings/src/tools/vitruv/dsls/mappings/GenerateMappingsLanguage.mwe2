@@ -76,7 +76,7 @@ Workflow {
 		language = StandardLanguage {			
 			name = qualifiedLanguageName
 			fileExtensions = fileExtension
-			junitSupport = junit.Junit4Fragment2 {
+			junitSupport = junit.JUnitFragment {
 				generateStub = false
 			}
 			referencedResource = "platform:/resource/tools.vitruv.dsls.mirbase/model/generated/MirBase.genmodel"
