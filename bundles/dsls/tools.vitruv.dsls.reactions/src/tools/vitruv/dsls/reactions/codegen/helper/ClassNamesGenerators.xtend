@@ -17,13 +17,13 @@ import tools.vitruv.dsls.common.helper.ClassNameGenerator
 	static val String ROUTINES_FACADE_CLASS_NAME = "RoutinesFacade"
 	static val String ROUTINES_FACADES_PROVIDER_CLASS_NAME = "RoutinesFacadesProvider"
 	
-	public static def String getBasicMirPackageQualifiedName() '''
+	static def String getBasicMirPackageQualifiedName() '''
 		«BASIC_PACKAGE»'''
 	
-	public static def String getBasicReactionsPackageQualifiedName() '''
+	static def String getBasicReactionsPackageQualifiedName() '''
 		«basicMirPackageQualifiedName».«REACTIONS_PACKAGE»'''
 	
-	public static def String getBasicRoutinesPackageQualifiedName() '''
+	static def String getBasicRoutinesPackageQualifiedName() '''
 		«basicMirPackageQualifiedName».«ROUTINES_PACKAGE»'''	
 	
 	private static def String getReactionsPackageQualifiedName(ReactionsSegment reactionSegment) '''
@@ -38,87 +38,87 @@ import tools.vitruv.dsls.common.helper.ClassNameGenerator
 	private static def String getReactionsSegmentPackageName(String reactionSegmentName) '''
 		«reactionSegmentName.toFirstLower»'''
 	
-	public static def ClassNameGenerator getChangePropagationSpecificationClassNameGenerator(ReactionsSegment reactionSegment) {
+	static def ClassNameGenerator getChangePropagationSpecificationClassNameGenerator(ReactionsSegment reactionSegment) {
 		return new ChangePropagationSpecificationClassNameGenerator(reactionSegment);
 	}
 	
-	public static def ClassNameGenerator getExecutorClassNameGenerator(ReactionsSegment reactionSegment) {
+	static def ClassNameGenerator getExecutorClassNameGenerator(ReactionsSegment reactionSegment) {
 		return new ExecutorClassNameGenerator(reactionSegment);
 	}
 	
-	public static def ClassNameGenerator getRoutinesFacadesProviderClassNameGenerator(ReactionsSegment reactionSegment) {
+	static def ClassNameGenerator getRoutinesFacadesProviderClassNameGenerator(ReactionsSegment reactionSegment) {
 		return new RoutinesFacadesProviderClassNameGenerator(reactionSegment);
 	}
 	
-	public static def ClassNameGenerator getRoutinesFacadeClassNameGenerator(ReactionsSegment reactionSegment) {
+	static def ClassNameGenerator getRoutinesFacadeClassNameGenerator(ReactionsSegment reactionSegment) {
 		return new RoutinesFacadeClassNameGenerator(reactionSegment);
 	}
 	
 	// import path relative to reactions segment:
-	public static def ClassNameGenerator getOverriddenRoutinesFacadeClassNameGenerator(ReactionsSegment reactionsSegment, ReactionsImportPath relativeImportPath) {
+	static def ClassNameGenerator getOverriddenRoutinesFacadeClassNameGenerator(ReactionsSegment reactionsSegment, ReactionsImportPath relativeImportPath) {
 		return new OverriddenRoutinesFacadeClassNameGenerator(reactionsSegment, relativeImportPath);
 	}
 	
-	public static def ClassNameGenerator getReactionClassNameGenerator(Reaction reaction) {
+	static def ClassNameGenerator getReactionClassNameGenerator(Reaction reaction) {
 		return new ReactionClassNameGenerator(reaction);
 	}
 	
-	public static def ClassNameGenerator getRoutineClassNameGenerator(Routine routine) {
+	static def ClassNameGenerator getRoutineClassNameGenerator(Routine routine) {
 		return new RoutineClassNameGenerator(routine);
 	}
 	
 	private static class ChangePropagationSpecificationClassNameGenerator implements ClassNameGenerator {
-		private val ReactionsSegment reactionsSegment;
+		val ReactionsSegment reactionsSegment;
 		
-		public new(ReactionsSegment reactionsSegment) {
+		new(ReactionsSegment reactionsSegment) {
 			this.reactionsSegment = reactionsSegment;
 		}
 		
-		public override getSimpleName() '''
+		override getSimpleName() '''
 			«reactionsSegment.name.toFirstUpper»ChangePropagationSpecification'''
 		
-		public override getPackageName() '''
+		override getPackageName() '''
 			«reactionsSegment.reactionsPackageQualifiedName»'''
 	}
 	
 	private static class ExecutorClassNameGenerator implements ClassNameGenerator {
-		private val ReactionsSegment reactionsSegment;
+		val ReactionsSegment reactionsSegment;
 		
-		public new(ReactionsSegment reactionsSegment) {
+		new(ReactionsSegment reactionsSegment) {
 			this.reactionsSegment = reactionsSegment;
 		}
 		
-		public override getSimpleName() '''
+		override getSimpleName() '''
 			«REACTIONS_EXECUTOR_CLASS_NAME»'''
 	
-		public override getPackageName() '''
+		override getPackageName() '''
 			«reactionsSegment.reactionsPackageQualifiedName»'''
 	}
 	
 	private static class RoutinesFacadesProviderClassNameGenerator implements ClassNameGenerator {
-		private val ReactionsSegment reactionSegment;
+		val ReactionsSegment reactionSegment;
 		
-		public new(ReactionsSegment reactionSegment) {
+		new(ReactionsSegment reactionSegment) {
 			this.reactionSegment = reactionSegment;
 		}
 		
-		public override String getSimpleName() '''
+		override String getSimpleName() '''
 			«ROUTINES_FACADES_PROVIDER_CLASS_NAME»'''
 		
-		public override String getPackageName() '''
+		override String getPackageName() '''
 			«basicRoutinesPackageQualifiedName».«reactionSegment.packageName»'''
 	}
 	
 	private static class ReactionClassNameGenerator implements ClassNameGenerator {
-		private val Reaction reaction;
-		public new(Reaction reaction) {
+		val Reaction reaction;
+		new(Reaction reaction) {
 			this.reaction = reaction;
 		}
 		
-		public override String getSimpleName() '''
+		override String getSimpleName() '''
 			«reaction.name.toFirstUpper»Reaction'''
 		
-		public override String getPackageName() {
+		override String getPackageName() {
 			var packageName = reaction.reactionsSegment.reactionsPackageQualifiedName;
 			if (reaction.isOverride) {
 				// not resolving cross-references here to get the overridden reactions segment name,
@@ -130,15 +130,15 @@ import tools.vitruv.dsls.common.helper.ClassNameGenerator
 	}
 	
 	private static class RoutineClassNameGenerator implements ClassNameGenerator {
-		private val Routine routine;
-		public new(Routine routine) {
+		val Routine routine;
+		new(Routine routine) {
 			this.routine = routine;
 		}
 		
-		public override String getSimpleName() '''
+		override String getSimpleName() '''
 			«routine.name.toFirstUpper»Routine'''
 		
-		public override String getPackageName() {
+		override String getPackageName() {
 			var packageName = routine.reactionsSegment.routinesPackageQualifiedName;
 			if (routine.isOverride) {
 				// not resolving cross-references here to get the override import path,
@@ -150,31 +150,31 @@ import tools.vitruv.dsls.common.helper.ClassNameGenerator
 	}
 	
 	private static class RoutinesFacadeClassNameGenerator implements ClassNameGenerator {
-		private val ReactionsSegment reactionsSegment;
-		public new(ReactionsSegment reactionsSegment) {
+		val ReactionsSegment reactionsSegment;
+		new(ReactionsSegment reactionsSegment) {
 			this.reactionsSegment = reactionsSegment;
 		}
 		
-		public override String getSimpleName() '''
+		override String getSimpleName() '''
 			«ROUTINES_FACADE_CLASS_NAME»'''
 		
-		public override String getPackageName() '''
+		override String getPackageName() '''
 			«reactionsSegment.routinesPackageQualifiedName»'''
 	}
 	
 	private static class OverriddenRoutinesFacadeClassNameGenerator implements ClassNameGenerator {
-		private val ReactionsSegment reactionsSegment;
-		private val ReactionsImportPath relativeImportPath;
+		val ReactionsSegment reactionsSegment;
+		val ReactionsImportPath relativeImportPath;
 		
-		public new(ReactionsSegment reactionsSegment, ReactionsImportPath relativeImportPath) {
+		new(ReactionsSegment reactionsSegment, ReactionsImportPath relativeImportPath) {
 			this.reactionsSegment = reactionsSegment;
 			this.relativeImportPath = relativeImportPath;
 		}
 		
-		public override String getSimpleName() '''
+		override String getSimpleName() '''
 			«ROUTINES_FACADE_CLASS_NAME»'''
 		
-		public override String getPackageName() '''
+		override String getPackageName() '''
 			«reactionsSegment.routinesPackageQualifiedName».«relativeImportPath.segments.join(".", [it.reactionsSegmentPackageName])»'''
 	}
 }

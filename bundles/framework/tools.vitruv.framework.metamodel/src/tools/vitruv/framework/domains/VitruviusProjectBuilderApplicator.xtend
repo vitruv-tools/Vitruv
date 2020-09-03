@@ -15,13 +15,13 @@ class VitruviusProjectBuilderApplicator {
 	public static final String ARGUMENT_VMODEL_NAME = "virtualModelName";
 	public static final String ARGUMENT_FILE_EXTENSIONS = "fileExtensions";
 	
-	private val String builderId;
+	val String builderId;
 	
-	public new(String builderId) {
+	new(String builderId) {
 		this.builderId = builderId;
 	}
 	
-	public def void addToProject(IProject project, File vmodelFolder, List<String> fileExtensions) {
+	def void addToProject(IProject project, File vmodelFolder, List<String> fileExtensions) {
         if (project !== null) {
             try {
             	val IProjectDescription description = project.getDescription();
@@ -69,7 +69,7 @@ class VitruviusProjectBuilderApplicator {
     }
 	
 	
-	public def void removeBuilderFromProject(IProject project) {
+	def void removeBuilderFromProject(IProject project) {
         if (project !== null) {
             try {
                 val IProjectDescription description = project.getDescription();
@@ -92,7 +92,7 @@ class VitruviusProjectBuilderApplicator {
         }
     }
     
-	public def boolean hasBuilder(IProject project) {
+	def boolean hasBuilder(IProject project) {
         try {
             for (buildSpec : project.getDescription().getBuildSpec()) {
                 if (this.builderId.equals(buildSpec.getBuilderName())) {
@@ -105,7 +105,7 @@ class VitruviusProjectBuilderApplicator {
         return false;
     }
     
-    public def String getBuilderId() {
+    def String getBuilderId() {
     	return builderId;
     }
 }

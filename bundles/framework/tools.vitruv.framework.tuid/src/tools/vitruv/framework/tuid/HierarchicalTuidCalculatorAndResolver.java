@@ -6,7 +6,6 @@ import java.util.LinkedList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 
-import tools.vitruv.framework.tuid.TuidCalculatorAndResolverBase;
 import tools.vitruv.framework.util.VitruviusConstants;
 
 /**

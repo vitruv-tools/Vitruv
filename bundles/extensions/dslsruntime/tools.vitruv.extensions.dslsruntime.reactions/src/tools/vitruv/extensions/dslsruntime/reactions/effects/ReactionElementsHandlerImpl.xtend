@@ -9,11 +9,11 @@ import org.apache.log4j.Logger
 import tools.vitruv.extensions.dslsruntime.reactions.ReactionElementsHandler
 
 class ReactionElementsHandlerImpl implements ReactionElementsHandler {
-	private static val logger = Logger.getLogger(ReactionElementsHandlerImpl);
+	static val logger = Logger.getLogger(ReactionElementsHandlerImpl);
 	
-	private final CorrespondenceModel correspondenceModel;
+	final CorrespondenceModel correspondenceModel;
 	
-	public new(CorrespondenceModel correspondenceModel) {
+	new(CorrespondenceModel correspondenceModel) {
 		this.correspondenceModel = correspondenceModel;
 	}
 	

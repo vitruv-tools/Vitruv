@@ -58,7 +58,7 @@ abstract class AbstractReactionIntegrationGenerator implements IReactionIntegrat
 	/**
 	 * Creates a reaction from an integrated reaction specification
 	 */
-	public static def generateReaction(ReactionIntegration reactionIntegration) {
+	static def generateReaction(ReactionIntegration reactionIntegration) {
 		val reaction = ReactionsLanguageFactory.eINSTANCE.createReaction
 		reaction.callRoutine = EcoreUtil.copy(reactionIntegration.callRoutine)
 		reaction.documentation = reactionIntegration.documentation
@@ -70,7 +70,7 @@ abstract class AbstractReactionIntegrationGenerator implements IReactionIntegrat
 	/**
 	 * Creates a routine from an integrated routine specification
 	 */
-	public static def generateRoutine(RoutineIntegration routineIntegration) {
+	static def generateRoutine(RoutineIntegration routineIntegration) {
 		val routine = ReactionsLanguageFactory.eINSTANCE.createRoutine
 		routine.name = routineIntegration.name
 		routine.input = EcoreUtil.copy(routineIntegration.input)

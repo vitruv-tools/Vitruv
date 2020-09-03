@@ -9,7 +9,7 @@ import java.util.List
 import java.util.ArrayList
 
 class CompositeTransactionalChangeImpl extends AbstractCompositeChangeImpl<TransactionalChange> implements CompositeTransactionalChange {
-	private List<UserInteractionBase> userInteractions = new ArrayList<UserInteractionBase>;
+	List<UserInteractionBase> userInteractions = new ArrayList<UserInteractionBase>;
 	
 	override removeChange(TransactionalChange change) {
 		if (change !== null && this.changes.contains(change)) {

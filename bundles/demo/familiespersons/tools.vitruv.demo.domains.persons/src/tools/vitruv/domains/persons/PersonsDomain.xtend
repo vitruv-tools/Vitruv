@@ -7,8 +7,8 @@ import tools.vitruv.domains.persons.tuid.PersonsTuidCalculatorAndResolver
 import tools.vitruv.domains.emf.builder.VitruviusEmfBuilderApplicator
 
 class PersonsDomain extends  AbstractTuidAwareVitruvDomain {
-	private static final String METAMODEL_NAME = "Persons";
-	private static final String FILE_EXTENSION = "persons";
+	static final String METAMODEL_NAME = "Persons";
+	static final String FILE_EXTENSION = "persons";
 	public static val NAMESPACE_URIS = PersonsPackage.eINSTANCE.nsURIsRecursive;
 
 	package new() {

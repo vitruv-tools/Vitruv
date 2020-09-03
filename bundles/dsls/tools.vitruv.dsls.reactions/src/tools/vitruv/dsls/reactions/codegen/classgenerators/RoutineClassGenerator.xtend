@@ -55,7 +55,7 @@ class RoutineClassGenerator extends ClassGenerator {
 	var JvmGenericType generatedClass
 	var JvmGenericType userExecutionClass
 
-	public new(Routine routine, TypesBuilderExtensionProvider typesBuilderExtensionProvider) {
+	new(Routine routine, TypesBuilderExtensionProvider typesBuilderExtensionProvider) {
 		super(typesBuilderExtensionProvider)
 		if (!routine.isComplete) {
 			throw new IllegalArgumentException("incomplete");

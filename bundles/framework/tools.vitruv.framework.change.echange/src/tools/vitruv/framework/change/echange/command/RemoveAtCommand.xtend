@@ -11,11 +11,11 @@ import org.eclipse.emf.edit.domain.EditingDomain
  * Command which is used to remove a entry of a EList at a specific index.
  * Only single objects are supported.
  */
-public class RemoveAtCommand extends RemoveCommand {
+class RemoveAtCommand extends RemoveCommand {
 	/**
 	 * Index at which the value is removed in the list.
 	 */
-	var private int index;
+	var int index;
 
 	/**
 	 * Constructor for a RemoveAtCommand, which removes an entry of an EList feature at a specific index.
@@ -46,15 +46,15 @@ public class RemoveAtCommand extends RemoveCommand {
 	 * Returns the index at which the value will be removed.
 	 * @return The index
 	 */
-	def public int getIndex() {
+	def int getIndex() {
 		return this.index;
 	}
 
-	override public void doExecute() {
+	override void doExecute() {
 		ownerList.remove(index);
 	}
 
-	override public boolean prepare() {
+	override boolean prepare() {
 		var result = super.prepare() && 0 <= index && index < ownerList.size() && (collection.size() == 1);
 		if (!result) {
 			return false;
@@ -67,7 +67,7 @@ public class RemoveAtCommand extends RemoveCommand {
 		throw new UnsupportedOperationException();
 	}
 
-	override public void doRedo() {
+	override void doRedo() {
 		throw new UnsupportedOperationException();
 	}
 }

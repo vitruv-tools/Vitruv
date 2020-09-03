@@ -18,7 +18,7 @@ import org.eclipse.xtext.Assignment
 class MirBaseProposalProvider extends AbstractMirBaseProposalProvider {
 	
 	@Inject
-	private MirBaseGrammarAccess grammarAccess;
+	MirBaseGrammarAccess grammarAccess;
 	
 	override completeMetamodelImport_UseQualifiedNames(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
 		val realKeyword = "using qualified names";

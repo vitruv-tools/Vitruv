@@ -14,11 +14,11 @@ import java.util.List
  * @author Heiko Klare
  */
 abstract class MultipleChoiceSelectionInteraction<I extends MultipleChoiceSelectionInteractionBase> extends BaseInteraction<I> {
-	private static val DEFAULT_TITLE = "Please Select";
-	private static val DEFAULT_MESSAGE = "";
+	static val DEFAULT_TITLE = "Please Select";
+	static val DEFAULT_MESSAGE = "";
 
 	@Accessors(PROTECTED_GETTER)
-	private final List<String> choices
+	final List<String> choices
 
 	protected new(InteractionResultProvider interactionResultProvider, WindowModality windowModality) {
 		super(interactionResultProvider, windowModality, DEFAULT_TITLE, DEFAULT_MESSAGE)
@@ -26,7 +26,7 @@ abstract class MultipleChoiceSelectionInteraction<I extends MultipleChoiceSelect
 		this.choices = new ArrayList<String>();
 	}
 
-	public def void addChoice(String choice) {
+	def void addChoice(String choice) {
 		this.choices += choice;
 	}
 }

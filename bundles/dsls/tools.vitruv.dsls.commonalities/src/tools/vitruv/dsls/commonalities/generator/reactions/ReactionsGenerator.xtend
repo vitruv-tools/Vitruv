@@ -27,7 +27,7 @@ import static extension tools.vitruv.dsls.commonalities.language.extensions.Comm
  */
 class ReactionsGenerator extends SubGenerator {
 
-	private static val Logger logger = Logger.getLogger(ReactionsGenerator)
+	static val Logger logger = Logger.getLogger(ReactionsGenerator)
 
 	@Inject IGlobalServiceProvider globalServiceProvider
 	@Inject Provider<IReactionsGenerator> reactionsGeneratorProvider

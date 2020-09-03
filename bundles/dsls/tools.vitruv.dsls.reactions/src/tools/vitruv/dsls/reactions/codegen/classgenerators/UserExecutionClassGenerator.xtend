@@ -22,8 +22,8 @@ import static tools.vitruv.dsls.reactions.codegen.ReactionsLanguageConstants.*
 import tools.vitruv.dsls.reactions.reactionsLanguage.RetrieveOrRequireAbscenceOfModelElement
 
 class UserExecutionClassGenerator extends ClassGenerator {
-	private val EObject objectMappedToClass;
-	private val String qualifiedClassName;
+	val EObject objectMappedToClass;
+	val String qualifiedClassName;
 	var counterGetTagMethods = 1
 	var counterGetElementMethods = 1
 	var counterGetRetrieveTagMethods = 1
@@ -31,7 +31,7 @@ class UserExecutionClassGenerator extends ClassGenerator {
 	var counterExecuteActionMethods = 1
 	var counterCheckMatcherPreconditionMethods = 1
 	var counterGetCorrespondenceSource = 1
-	private var JvmGenericType generatedClass
+	var JvmGenericType generatedClass
 	
 	new(TypesBuilderExtensionProvider typesBuilderExtensionProvider, EObject objectMappedToClass,
 		String qualifiedClassName) {
@@ -40,7 +40,7 @@ class UserExecutionClassGenerator extends ClassGenerator {
 		this.qualifiedClassName = qualifiedClassName;
 	}
 
-	public def String getQualifiedClassName() {
+	def String getQualifiedClassName() {
 		return qualifiedClassName;
 	}
 

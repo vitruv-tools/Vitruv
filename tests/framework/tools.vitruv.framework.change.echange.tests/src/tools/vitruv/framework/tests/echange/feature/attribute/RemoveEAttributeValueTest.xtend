@@ -15,9 +15,9 @@ import static extension tools.vitruv.framework.change.echange.resolve.EChangeRes
  * Test class for the concrete {@link RemoveEAttributeValue} EChange,
  * which removes a value in a multivalued attribute.
  */
-public class RemoveEAttributeValueTest extends InsertRemoveEAttributeTest {	
+class RemoveEAttributeValueTest extends InsertRemoveEAttributeTest {	
 	@Before
-	override public void beforeTest() {
+	override void beforeTest() {
 		super.beforeTest
 		prepareStateBefore
 	}
@@ -27,7 +27,7 @@ public class RemoveEAttributeValueTest extends InsertRemoveEAttributeTest {
 	 * returns the same class. 
 	 */
 	@Test
-	def public void resolveToCorrectType() {
+	def void resolveToCorrectType() {
 		// Create change
 		val unresolvedChange = createUnresolvedChange(NEW_VALUE, 0)
 		
@@ -41,7 +41,7 @@ public class RemoveEAttributeValueTest extends InsertRemoveEAttributeTest {
 	 * by removing two values from an multivalued attribute.
 	 */
 	@Test
-	def public void applyForwardTest() {
+	def void applyForwardTest() {
 		// Create change and resolve
 		val resolvedChange = createUnresolvedChange(NEW_VALUE, 0).resolveBefore(uuidGeneratorAndResolver)
 			as RemoveEAttributeValue<Root, String>
@@ -68,7 +68,7 @@ public class RemoveEAttributeValueTest extends InsertRemoveEAttributeTest {
 	 * by inserting two removed values from an multivalued attribute.
 	 */
 	@Test
-	def public void applyBackwardTest() {
+	def void applyBackwardTest() {
 		// Create change and resolve and apply
 		val resolvedChange = createUnresolvedChange(NEW_VALUE, 0).resolveBefore(uuidGeneratorAndResolver)
 			as RemoveEAttributeValue<Root, String>
@@ -99,7 +99,7 @@ public class RemoveEAttributeValueTest extends InsertRemoveEAttributeTest {
 	 * Tests a {@link RemoveEAttributeValue} EChange with invalid index.
 	 */
 	@Test
-	def public void invalidIndexTest() {
+	def void invalidIndexTest() {
 		var index = 5 // > 2
 		
 		// Create change and resolve
@@ -116,7 +116,7 @@ public class RemoveEAttributeValueTest extends InsertRemoveEAttributeTest {
 	 * Tests an affected object which has no such attribute.
 	 */
 	@Test
-	def public void invalidAttributeTest() {
+	def void invalidAttributeTest() {
 		val affectedNonRootEObject = AllElementTypesFactory.eINSTANCE.createNonRoot()
 	 	resource.contents.add(affectedNonRootEObject)
 		
@@ -138,7 +138,7 @@ public class RemoveEAttributeValueTest extends InsertRemoveEAttributeTest {
 	 * Tests a {@link RemoveEAttributeValue} EChange with the wrong value type.
 	 */
 	@Test
-	def public void invalidValueTest() {
+	def void invalidValueTest() {
 		val newInvalidValue = "New String Value" // values are Strings, attribute value type is Integer
 		
 		// Create change and resolve

@@ -21,10 +21,10 @@ import org.eclipse.emf.ecore.EcorePackage
  * Uses <code>EPackage.Registry</code> to deresolve URIs.
  */
 class ReactionsLinkingService extends DefaultLinkingService {
-	private static final Logger log = Logger.getLogger(typeof(ReactionsLinkingService));
+	static final Logger log = Logger.getLogger(typeof(ReactionsLinkingService));
 	
 	@Inject
-	private IValueConverterService valueConverterService;
+	IValueConverterService valueConverterService;
 	
 	override getLinkedObjects(EObject context, EReference ref, INode node) throws IllegalNodeException {
 		if (ref.getEType.equals(EcorePackage.Literals.EPACKAGE))

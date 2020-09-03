@@ -18,12 +18,12 @@ import static extension tools.vitruv.framework.change.echange.resolve.EChangeRes
  * Test class for the concrete {@link ReplaceSingleValuedEReference} EChange,
  * which replaces the value of a reference with a new one.
  */
-public class ReplaceSingleValuedEReferenceTest extends ReferenceEChangeTest {	
+class ReplaceSingleValuedEReferenceTest extends ReferenceEChangeTest {	
 	protected var NonRoot oldValue = null	
 	protected var EReference affectedFeature = null
 
 	@Before
-	override public void beforeTest() {
+	override void beforeTest() {
 		super.beforeTest()
 		oldValue = AllElementTypesFactory.eINSTANCE.createNonRoot()	
 	}
@@ -35,7 +35,7 @@ public class ReplaceSingleValuedEReferenceTest extends ReferenceEChangeTest {
 	 * the resource.
 	 */
 	@Test
-	def public void resolveBeforeSingleValuedNonContainmentTest() {
+	def void resolveBeforeSingleValuedNonContainmentTest() {
 		// Set state before
 		isNonContainmentTest
 		
@@ -54,7 +54,7 @@ public class ReplaceSingleValuedEReferenceTest extends ReferenceEChangeTest {
 	 * The reference is a containment reference, so the new object is in the staging area
 	 */
 	@Test
-	def public void resolveBeforeSingleValuedContainmentTest2() {
+	def void resolveBeforeSingleValuedContainmentTest2() {
 		// Set state before
 		isContainmentTest
 		
@@ -73,7 +73,7 @@ public class ReplaceSingleValuedEReferenceTest extends ReferenceEChangeTest {
 	 * The reference is a non containment reference, so the old value is in the resource.
 	 */
 	@Test
-	def public void resolveAfterSingleValuedNonContainmentTest() {
+	def void resolveAfterSingleValuedNonContainmentTest() {
 		// Set state before
 		isNonContainmentTest
 		
@@ -95,7 +95,7 @@ public class ReplaceSingleValuedEReferenceTest extends ReferenceEChangeTest {
 	 * The reference is a containment reference, so the old value is in the staging area.
 	 */
 	 @Test
-	 def public void resolveAfterSingleValuedContainmentTest() {
+	 def void resolveAfterSingleValuedContainmentTest() {
 		// Set state before
 		isContainmentTest
 		
@@ -116,7 +116,7 @@ public class ReplaceSingleValuedEReferenceTest extends ReferenceEChangeTest {
 	 * returns the same class.
 	 */
 	@Test
-	def public void resolveToCorrectType() {
+	def void resolveToCorrectType() {
 		// Set state before
 		isNonContainmentTest
 		
@@ -133,7 +133,7 @@ public class ReplaceSingleValuedEReferenceTest extends ReferenceEChangeTest {
 	 * by replacing a single value non containment reference in the root element.
 	 */
 	@Test
-	def public void applyForwardSingleValuedNonContainmentTest() {
+	def void applyForwardSingleValuedNonContainmentTest() {
 		// Set state before
 		isNonContainmentTest
 				
@@ -156,7 +156,7 @@ public class ReplaceSingleValuedEReferenceTest extends ReferenceEChangeTest {
 	 * by replacing a single value containment reference in the root element.
 	 */
 	@Test
-	def public void applyForwardSingleValuedContainmentTest() {
+	def void applyForwardSingleValuedContainmentTest() {
 		// Set state before
 		isContainmentTest
 		
@@ -180,7 +180,7 @@ public class ReplaceSingleValuedEReferenceTest extends ReferenceEChangeTest {
 	 * The new value is null.
 	 */
 	@Test
-	def public void applyForwardSingleValuedContainmentNewValueNullTest() {
+	def void applyForwardSingleValuedContainmentNewValueNullTest() {
 		// Set state before
 		newValue = null
 		isContainmentTest
@@ -206,7 +206,7 @@ public class ReplaceSingleValuedEReferenceTest extends ReferenceEChangeTest {
 	 * The old value is null.
 	 */
 	@Test
-	def public void applyForwardSingleValuedContainmentOldValueNullTest() {
+	def void applyForwardSingleValuedContainmentOldValueNullTest() {
 		// Set state before
 		oldValue = null
 		isContainmentTest
@@ -231,7 +231,7 @@ public class ReplaceSingleValuedEReferenceTest extends ReferenceEChangeTest {
 	 * by replacing a single value non containment reference with its old value.
 	 */
 	@Test
-	def public void applyBackwardSingleValuedNonContainmentTest() {
+	def void applyBackwardSingleValuedNonContainmentTest() {
 		// Set state before
 		isNonContainmentTest
 		
@@ -255,7 +255,7 @@ public class ReplaceSingleValuedEReferenceTest extends ReferenceEChangeTest {
 	 * by replacing a single value containment reference with its old value.
 	 */
 	@Test
-	def public void applyBackwardSingleValuedContainmentTest() {
+	def void applyBackwardSingleValuedContainmentTest() {
 		// Set state before
 		isContainmentTest
 		
@@ -280,7 +280,7 @@ public class ReplaceSingleValuedEReferenceTest extends ReferenceEChangeTest {
 	 * The new value was null.
 	 */
 	@Test
-	def public void applyBackwardSingleValuedContainmentNewValueNullTest() {
+	def void applyBackwardSingleValuedContainmentNewValueNullTest() {
 		// Set state before
 		newValue = null
 		isContainmentTest
@@ -306,7 +306,7 @@ public class ReplaceSingleValuedEReferenceTest extends ReferenceEChangeTest {
 	 * The old value was null.
 	 */
 	@Test
-	def public void replaceSingleValuedEReferenceApplyBackwardOldValueNullTest() {
+	def void replaceSingleValuedEReferenceApplyBackwardOldValueNullTest() {
 		// Set state before
 		oldValue = null
 		isContainmentTest

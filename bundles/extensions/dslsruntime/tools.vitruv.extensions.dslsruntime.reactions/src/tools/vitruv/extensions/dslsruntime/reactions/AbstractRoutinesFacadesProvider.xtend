@@ -14,11 +14,11 @@ import static com.google.common.base.Preconditions.*
  */
 abstract class AbstractRoutinesFacadesProvider implements RoutinesFacadesProvider {
 
-	private val RoutinesFacadeExecutionState sharedRoutinesFacadeExecutionState = new RoutinesFacadeExecutionState();
+	val RoutinesFacadeExecutionState sharedRoutinesFacadeExecutionState = new RoutinesFacadeExecutionState();
 	// the routines facades that were created so far:
-	private val Map<ReactionsImportPath, AbstractRepairRoutinesFacade> routinesFacades = new HashMap<ReactionsImportPath, AbstractRepairRoutinesFacade>();
+	val Map<ReactionsImportPath, AbstractRepairRoutinesFacade> routinesFacades = new HashMap<ReactionsImportPath, AbstractRepairRoutinesFacade>();
 
-	public new() {
+	new() {
 	}
 
 	// creates the specified routines facade:

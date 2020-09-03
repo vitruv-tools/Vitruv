@@ -15,13 +15,13 @@ import java.io.File
 import tools.vitruv.framework.domains.VitruviusProjectBuilderApplicator
 
 abstract class VitruviusProjectBuilder extends IncrementalProjectBuilder {
-	private static final Logger logger = Logger.getLogger(VitruviusProjectBuilder.getSimpleName())
+	static final Logger logger = Logger.getLogger(VitruviusProjectBuilder.getSimpleName())
 	
-	private Set<String> monitoredFileTypes
-	private VirtualModel virtualModel;
-	private boolean initialized
+	Set<String> monitoredFileTypes
+	VirtualModel virtualModel;
+	boolean initialized
 	
-	public new() {
+	new() {
 		this.initialized = false;
 		this.monitoredFileTypes = new HashSet<String>();
 	}

@@ -22,7 +22,7 @@ import tools.vitruv.framework.userinteraction.types.InteractionFactory
  * @author Dominik Klooz
  * @author Heiko Klare
  */
-public class TextInputInteractionBuilderImpl extends BaseInteractionBuilder<String, TextInputInteraction, OptionalSteps> implements TextInputInteractionBuilder, OptionalSteps {
+class TextInputInteractionBuilderImpl extends BaseInteractionBuilder<String, TextInputInteraction, OptionalSteps> implements TextInputInteractionBuilder, OptionalSteps {
 	new(InteractionFactory interactionFactory, Iterable<UserInteractionListener> userInteractionListener) {
 		super(interactionFactory, userInteractionListener)
 	}

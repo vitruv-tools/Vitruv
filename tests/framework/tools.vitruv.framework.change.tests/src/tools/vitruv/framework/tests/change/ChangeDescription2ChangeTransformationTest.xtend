@@ -27,11 +27,11 @@ import tools.vitruv.framework.change.echange.resolve.EChangeUnresolver
 abstract class ChangeDescription2ChangeTransformationTest {
 	var protected AtomicEmfChangeRecorder changeRecorder
 	var protected Root rootElement
-	var private List<EChange> changes
+	var List<EChange> changes
 	
 	var rs = new ResourceSetImpl
 	var UuidGeneratorAndResolver uuidGeneratorAndResolver;
-	val private List<File> filesToDelete = new ArrayList<File>();
+	val List<File> filesToDelete = new ArrayList<File>();
 
 	public static val SINGLE_VALUED_CONTAINMENT_E_REFERENCE_NAME = "singleValuedContainmentEReference"
 	public static val SINGLE_VALUED_NON_CONTAINMENT_E_REFERENCE_NAME = "singleValuedNonContainmentEReference"
@@ -98,13 +98,13 @@ abstract class ChangeDescription2ChangeTransformationTest {
 		return this.changes
 	}
 
-	public def List<EChange> endRecording() {
+	def List<EChange> endRecording() {
 		changeRecorder.endRecording()
 		val changeDescriptions = changeRecorder.changes
 		return changeDescriptions.map[EChanges].flatten.toList;
 	}
 
-	public def startRecording() {
+	def startRecording() {
 		if (changeRecorder.isRecording) {
 			changeRecorder.stopRecording;
 		}
@@ -113,11 +113,11 @@ abstract class ChangeDescription2ChangeTransformationTest {
 		this.changeRecorder.beginRecording()
 	}
 
-	public def getRootElement() {
+	def getRootElement() {
 		return this.rootElement
 	}
 
-	public static def assertChangeCount(Iterable<?> changes, int expectedCount) {
+	static def assertChangeCount(Iterable<?> changes, int expectedCount) {
 		Assert.assertEquals(
 			"There were " + changes.size + " changes, although " + expectedCount + " were expected",
 			expectedCount,
@@ -125,7 +125,7 @@ abstract class ChangeDescription2ChangeTransformationTest {
 		);
 	}
 
-	public static def EChange claimChange(List<EChange> changes, int index) {
+	static def EChange claimChange(List<EChange> changes, int index) {
 		return changes.claimElementAt(index)
 	}
 

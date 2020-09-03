@@ -279,7 +279,7 @@ class JvmTypeProviderHelper {
 	}
 }
 
-public class NoSuchJvmElementException extends IllegalStateException {
+class NoSuchJvmElementException extends IllegalStateException {
 
 	new(String message) {
 		super(message)

@@ -6,8 +6,8 @@ import org.eclipse.emf.ecore.EStructuralFeature
 
 class AttributeOperand {
 
-	private val EObject object
-	private val EStructuralFeature feature
+	val EObject object
+	val EStructuralFeature feature
 
 	new(EObject object, EStructuralFeature feature) {
 		Preconditions.checkNotNull(object, "Object is null!")
@@ -16,11 +16,11 @@ class AttributeOperand {
 		this.feature = feature
 	}
 
-	public def getObject() {
+	def getObject() {
 		return object
 	}
 
-	public def getFeature() {
+	def getFeature() {
 		return feature
 	}
 }

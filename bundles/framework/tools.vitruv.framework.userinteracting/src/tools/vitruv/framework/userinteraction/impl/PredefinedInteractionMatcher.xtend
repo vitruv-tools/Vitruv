@@ -18,13 +18,13 @@ import java.util.Collections
  * @author Heiko Klare
  */
 class PredefinedInteractionMatcher {
-	private List<UserInteractionBase> userInteractions = newArrayList()
+	List<UserInteractionBase> userInteractions = newArrayList()
 
 	new() {
 		this.userInteractions = new ArrayList<UserInteractionBase>();
 	}
 
-	public def void addInteraction(UserInteractionBase interaction) {
+	def void addInteraction(UserInteractionBase interaction) {
 		userInteractions += interaction;
 	}
 

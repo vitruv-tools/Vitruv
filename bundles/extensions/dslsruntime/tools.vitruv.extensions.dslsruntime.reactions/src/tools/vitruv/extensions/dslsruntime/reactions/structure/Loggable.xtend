@@ -3,9 +3,9 @@ package tools.vitruv.extensions.dslsruntime.reactions.structure
 import org.apache.log4j.Logger
 
 class Loggable {
-	private val Logger LOGGER;
+	val Logger LOGGER;
 	
-	public new() {
+	new() {
 		LOGGER = Logger.getLogger(this.class);
 	}
 	

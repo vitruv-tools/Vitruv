@@ -26,11 +26,11 @@ import tools.vitruv.framework.userinteraction.types.BaseInteraction
  * @author Dominik Klooz
  * @author Heiko Klare
  */
-@Accessors public abstract class BaseInteractionBuilder<V, I extends BaseInteraction<?>, T extends InteractionBuilder<V, T>> implements InteractionBuilder<V, T> {
+@Accessors abstract class BaseInteractionBuilder<V, I extends BaseInteraction<?>, T extends InteractionBuilder<V, T>> implements InteractionBuilder<V, T> {
 	@Accessors(PROTECTED_GETTER)
-	private final InteractionFactory interactionFactory
+	final InteractionFactory interactionFactory
 	@Accessors(PROTECTED_GETTER)
-	private I interactionToBuild;
+	I interactionToBuild;
 	@Accessors(NONE)
 	Iterable<UserInteractionListener> userInteractionListener;
 

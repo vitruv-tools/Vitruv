@@ -22,12 +22,12 @@ import static org.junit.Assert.fail
 import org.apache.log4j.Logger
 
 class MappingParameterGraphTraverserTest {
-	private static Logger LOGGER = Logger.getLogger(MappingParameterGraphTraverserTest)
+	static Logger LOGGER = Logger.getLogger(MappingParameterGraphTraverserTest)
 	
-	private List<String> parameter
-	private List<FeatureConditionGenerator> inConditions
-	private MappingParameterGraphTraverser traverser
-	private Map<String, EStructuralFeature> testFeatures = // extension is the only not containment reference
+	List<String> parameter
+	List<FeatureConditionGenerator> inConditions
+	MappingParameterGraphTraverser traverser
+	Map<String, EStructuralFeature> testFeatures = // extension is the only not containment reference
 	#{'cFA' -> testFeature('ownedOperation'), 'cFB' -> testFeature('nestedClassifier'), 'cFC' ->
 		testFeature('ownedReception'), 'ncF' -> testFeature('extension')}
 

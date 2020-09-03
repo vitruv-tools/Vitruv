@@ -9,8 +9,8 @@ import tools.vitruv.framework.change.echange.eobject.EObjectSubtractedEChange
 import org.eclipse.emf.ecore.EObject
 
 package class ChangedResourcesTracker {
-	private final Set<Resource> sourceModelResources;
-	private final Set<Resource> involvedModelResources;
+	final Set<Resource> sourceModelResources;
+	final Set<Resource> involvedModelResources;
 	
 	new() {
 		this.sourceModelResources = newHashSet();
@@ -18,7 +18,7 @@ package class ChangedResourcesTracker {
 	}
 
 
-	public def void addSourceResourceOfChange(TransactionalChange change) {
+	def void addSourceResourceOfChange(TransactionalChange change) {
 		val atomicChanges = change.getEChanges
 		val involvedObjects = atomicChanges.map[
 			if (it instanceof FeatureEChange<?,?>) it.affectedEObject 
@@ -27,14 +27,14 @@ package class ChangedResourcesTracker {
 		sourceModelResources += involvedObjects.map[eResource].filterNull.toList;
 	}
 	
-	public def void addInvolvedModelResource(Resource resource) {
+	def void addInvolvedModelResource(Resource resource) {
 		if (resource === null) {
 			return;
 		}
 		this.involvedModelResources += resource;
 	}
 	
-	public def void markNonSourceResourceAsChanged() {
+	def void markNonSourceResourceAsChanged() {
 		// Some models are not marked as modified although they were actually modified by the consistency preservation
 		// Therefore, we have to mark them as modified manually
 		

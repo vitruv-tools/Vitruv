@@ -26,7 +26,7 @@ import tools.vitruv.framework.uuid.UuidGeneratorAndResolverImpl
  * Test class for {@link FeatureEChange} which is used by every {@link EChange} which modifies {@link EStructuralFeature}s 
  * (single- or multi-valued attributes or references) of a {@link EObject}.
  */
- public class FeatureEChangeTest extends EChangeTest {
+ class FeatureEChangeTest extends EChangeTest {
  	protected var Root affectedEObject = null
  	protected var EAttribute affectedFeature = null
  	
@@ -37,7 +37,7 @@ import tools.vitruv.framework.uuid.UuidGeneratorAndResolverImpl
  	protected var UuidResolver uuidResolver2;
  	
  	@Before
- 	override public void beforeTest() {
+ 	override void beforeTest() {
  		super.beforeTest()
  		affectedEObject = rootObject
  		affectedFeature = AllElementTypesPackage.Literals.IDENTIFIED__ID
@@ -51,7 +51,7 @@ import tools.vitruv.framework.uuid.UuidGeneratorAndResolverImpl
  	}
  	
  	@After
- 	override public void afterTest() {
+ 	override void afterTest() {
  		super.afterTest()
  	}
 	 
@@ -61,7 +61,7 @@ import tools.vitruv.framework.uuid.UuidGeneratorAndResolverImpl
  	 * after unresolving the object. 
  	 */
  	@Test
- 	def public void resolveBeforeTest() {
+ 	def void resolveBeforeTest() {
 		// Create change 		
  		val unresolvedChange = createUnresolvedChange()
  		unresolvedChange.assertIsNotResolved(affectedEObject, affectedFeature)
@@ -76,7 +76,7 @@ import tools.vitruv.framework.uuid.UuidGeneratorAndResolverImpl
 	 * Tests a failed resolve.
 	 */
 	@Test
-	def public void resolveEFeatureChangeFails() {
+	def void resolveEFeatureChangeFails() {
 		// Change first resource by insert second root element
 		affectedEObject = prepareSecondRoot
 		
@@ -97,7 +97,7 @@ import tools.vitruv.framework.uuid.UuidGeneratorAndResolverImpl
 	 * Tests whether resolving an already resolved EFeatureChange throws an exception.
 	 */
 	@Test(expected=IllegalArgumentException)
-	def public void resolveResolvedEFeatureChange() {
+	def void resolveResolvedEFeatureChange() {
 		// Create change and resolve	
  		val resolvedChange = createUnresolvedChange().resolveBefore(uuidGeneratorAndResolver)
  			as FeatureEChange<Root, EAttribute>
@@ -112,7 +112,7 @@ import tools.vitruv.framework.uuid.UuidGeneratorAndResolverImpl
  	 * Test whether resolving the EFeatureChange fails by giving a null EObject
  	 */
  	@Test(expected=IllegalStateException)
- 	def public void resolveEFeatureAffectedObjectNull() {
+ 	def void resolveEFeatureAffectedObjectNull() {
  		affectedEObject = null
  		
 		// Create change	
@@ -130,7 +130,7 @@ import tools.vitruv.framework.uuid.UuidGeneratorAndResolverImpl
  	 * Tests whether resolving the EFeatureChange fails by giving a null EFeature
  	 */
  	 @Test
- 	 def public void resolveEFeatureAffectedFeatureNull() {
+ 	 def void resolveEFeatureAffectedFeatureNull() {
  	 	affectedFeature = null
  	 	
 		// Create change	
@@ -147,7 +147,7 @@ import tools.vitruv.framework.uuid.UuidGeneratorAndResolverImpl
  	  * Tests whether resolving the EFeatureChange fails by giving a null uuidGeneratorAndResolver
  	  */
  	  @Test
- 	  def public void resolveEFeatureuuidGeneratorAndResolverNull() {
+ 	  def void resolveEFeatureuuidGeneratorAndResolverNull() {
 		// Create change	
  		val unresolvedChange = createUnresolvedChange()	
  		unresolvedChange.assertIsNotResolved(affectedEObject, affectedFeature)	

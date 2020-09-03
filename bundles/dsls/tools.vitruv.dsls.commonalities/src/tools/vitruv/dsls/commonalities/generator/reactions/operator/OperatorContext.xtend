@@ -5,7 +5,7 @@ import tools.vitruv.dsls.commonalities.language.ParticipationClass
 import tools.vitruv.dsls.reactions.builder.TypeProvider
 import tools.vitruv.extensions.dslruntime.commonalities.operators.AttributeOperand
 
-public interface OperatorContext {
+interface OperatorContext {
 
 	/**
 	 * Gets the {@link TypeProvider}.

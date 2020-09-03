@@ -26,7 +26,7 @@ class EChangeUtil {
 	 * @param object The EObject.
 	 * @return The editing domain of the object.
 	 */
-	public static def EditingDomain getEditingDomain(EObject object) {
+	static def EditingDomain getEditingDomain(EObject object) {
 		val ed = AdapterFactoryEditingDomain.getEditingDomainFor(object)
 		if (ed === null) {
 			return new AdapterFactoryEditingDomain(new ComposedAdapterFactory(), new BasicCommandStack());
@@ -34,7 +34,7 @@ class EChangeUtil {
 		return ed
 	}
 	
-	public static def boolean alreadyContainsObject(EObject affectedEObject, EReference feature, EObject value) {
+	static def boolean alreadyContainsObject(EObject affectedEObject, EReference feature, EObject value) {
 		if (!affectedEObject.eClass.EAllStructuralFeatures.contains(feature)) {
 			throw new IllegalStateException("Given object " + affectedEObject + " does not contain reference " + feature);
 		}
@@ -62,7 +62,7 @@ class EChangeUtil {
 	 * @return 	The ID attribute value of the given {@link EObject} or <code>null</code> 
 	 * 			if it has no ID attribute or if it is marked as <code>derived</code>.
 	 */
-	public static def String getID(EObject eObject) {
+	static def String getID(EObject eObject) {
 		val idAttribute = eObject.eClass.EIDAttribute
 		if (idAttribute !== null && !idAttribute.derived) {
 			return EcoreUtil.getID(eObject);
@@ -71,35 +71,35 @@ class EChangeUtil {
 	}
 	
 	
-	public static def dispatch isContainmentRemoval(EChange change) {
+	static def dispatch isContainmentRemoval(EChange change) {
 		return false;
 	}
 	
-	public static def dispatch isContainmentRemoval(ReplaceSingleValuedEReference<?,?> change) {
+	static def dispatch isContainmentRemoval(ReplaceSingleValuedEReference<?,?> change) {
 		return change.affectedFeature.containment && change.oldValueID !== null && change.oldValueID !== change.newValueID;
 	}
 	
-	public static def dispatch isContainmentRemoval(RemoveEReference<?,?> change) {
+	static def dispatch isContainmentRemoval(RemoveEReference<?,?> change) {
 		return change.affectedFeature.containment;
 	}
 	
-	public static def dispatch isContainmentRemoval(RemoveRootEObject<?> change) {
+	static def dispatch isContainmentRemoval(RemoveRootEObject<?> change) {
 		return true;
 	}
 	
-	public static def dispatch isContainmentInsertion(EChange change) {
+	static def dispatch isContainmentInsertion(EChange change) {
 		return false;
 	}
 	
-	public static def dispatch isContainmentInsertion(AdditiveReferenceEChange<?,?> change) {
+	static def dispatch isContainmentInsertion(AdditiveReferenceEChange<?,?> change) {
 		return change.affectedFeature.containment && change.newValueID !== null;
 	}
 	
-	public static def dispatch isContainmentInsertion(RemoveRootEObject<?> change) {
+	static def dispatch isContainmentInsertion(RemoveRootEObject<?> change) {
 		return true;
 	}
 	
-	public static def dispatch isContainmentInsertion(InsertRootEObject<?> change) {
+	static def dispatch isContainmentInsertion(InsertRootEObject<?> change) {
 		return true;
 	}
 }

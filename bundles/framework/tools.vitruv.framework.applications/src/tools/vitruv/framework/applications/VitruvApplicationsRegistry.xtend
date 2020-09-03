@@ -26,14 +26,14 @@ class VitruvApplicationsRegistry {
 	 * 
 	 * @param application - the {@link VitruvApplication} to add, must not be null
 	 */
-	public def addApplication(VitruvApplication application) {
+	def addApplication(VitruvApplication application) {
 		if (application === null) {
 			throw new IllegalArgumentException("Application must not be null")
 		}
 		applications += application;
 	}
 	
-	public def getApplications() {
+	def getApplications() {
 		if (!initialized) {
 			applications += allApplicationsFromExtensionPoint
 			initialized = true

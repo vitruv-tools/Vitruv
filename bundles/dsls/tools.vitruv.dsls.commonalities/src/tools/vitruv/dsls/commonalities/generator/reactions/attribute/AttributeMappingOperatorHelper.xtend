@@ -21,7 +21,7 @@ import static extension tools.vitruv.dsls.commonalities.language.extensions.Comm
 
 class AttributeMappingOperatorHelper extends ReactionsGenerationHelper {
 
-	public static class AttributeMappingOperatorContext implements OperatorContext {
+	static class AttributeMappingOperatorContext implements OperatorContext {
 
 		val extension TypeProvider typeProvider
 		val Supplier<XExpression> intermediate

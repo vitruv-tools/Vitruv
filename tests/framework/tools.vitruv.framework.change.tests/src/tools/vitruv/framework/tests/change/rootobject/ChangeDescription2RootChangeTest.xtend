@@ -12,13 +12,13 @@ import tools.vitruv.framework.change.echange.EChange
 class ChangeDescription2RootChangeTest extends ChangeDescription2ChangeTransformationTest{
 	var protected Root rootElement2;
 	
-	def override prepareRootElement(){
+	override prepareRootElement(){
 		super.prepareRootElement
 		rootElement2 = createRootInResource(2);
 	}
 	
 	@After
-	def override afterTest() {
+	override afterTest() {
 		super.afterTest();
 	}
 		

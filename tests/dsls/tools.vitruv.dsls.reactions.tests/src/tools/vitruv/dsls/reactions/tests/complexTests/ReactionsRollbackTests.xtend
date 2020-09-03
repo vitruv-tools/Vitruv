@@ -10,8 +10,8 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl
 
 class ReactionsRollbackTests extends AbstractAllElementTypesReactionsTests {
-	private static val TEST_SOURCE_MODEL_NAME = "EachTestModelSource";
-	private static val TEST_TARGET_MODEL_NAME = "EachTestModelTarget";
+	static val TEST_SOURCE_MODEL_NAME = "EachTestModelSource";
+	static val TEST_TARGET_MODEL_NAME = "EachTestModelTarget";
 	
 	private def String getProjectModelPath(String modelName) {
 		"model/" + modelName + "." + MODEL_FILE_EXTENSION;
@@ -26,7 +26,7 @@ class ReactionsRollbackTests extends AbstractAllElementTypesReactionsTests {
 	}
 
 	@Test
-	public def void testReverse() {
+	def void testReverse() {
 		val root = AllElementTypesFactory.eINSTANCE.createRoot();
 		root.setId(TEST_SOURCE_MODEL_NAME);
 		createAndSynchronizeModel(TEST_SOURCE_MODEL_NAME.projectModelPath, root);

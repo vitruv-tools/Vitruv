@@ -21,19 +21,19 @@ class ChangeAssertHelper {
 	private new() {
 	}
 
-	public static def <T> T assertObjectInstanceOf(Object object, Class<T> type) {
+	static def <T> T assertObjectInstanceOf(Object object, Class<T> type) {
 		Assert.assertTrue("The object " + object.class.simpleName + " should be type of " + type.simpleName,
 			type.isInstance(object))
 		return type.cast(object)
 	}
 
-	public static def <T extends AdditiveEChange<?>, SubtractiveEChange> assertOldAndNewValue(T eChange,
+	static def <T extends AdditiveEChange<?>, SubtractiveEChange> assertOldAndNewValue(T eChange,
 		Object oldValue, Object newValue) {
 		eChange.assertOldValue(oldValue)
 		eChange.assertNewValue(newValue)
 	}
 
-	public static def assertOldValue(EChange eChange, Object oldValue) {
+	static def assertOldValue(EChange eChange, Object oldValue) {
 		if (oldValue instanceof EObject) {
 			assertEqualsOrCopy("old value must be the same or a copy than the given old value", oldValue,
 				(eChange as SubtractiveEChange<?>).oldValue as EObject)				
@@ -43,7 +43,7 @@ class ChangeAssertHelper {
 		}
 	}
 
-	public static def assertNewValue(AdditiveEChange<?> eChange, Object newValue) {
+	static def assertNewValue(AdditiveEChange<?> eChange, Object newValue) {
 		val newValueInChange = eChange.newValue
 		var condition = newValue === null && newValueInChange === null;
 		if (newValue instanceof EObject && newValueInChange instanceof EObject) {
@@ -58,7 +58,7 @@ class ChangeAssertHelper {
 				"'!", condition)
 	}
 
-	public static def void assertAffectedEObject(EChange eChange, EObject expectedAffectedEObject) {
+	static def void assertAffectedEObject(EChange eChange, EObject expectedAffectedEObject) {
 		if (eChange instanceof FeatureEChange<?, ?>) {
 			assertEqualsOrCopy("The actual affected EObject is a different one than the expected affected EObject or its copy",
 				expectedAffectedEObject, eChange.affectedEObject)
@@ -70,17 +70,17 @@ class ChangeAssertHelper {
 		}
 	}
 
-	public static def assertAffectedEFeature(EChange eChange, EStructuralFeature expectedEFeature) {
+	static def assertAffectedEFeature(EChange eChange, EStructuralFeature expectedEFeature) {
 		Assert.assertEquals(
 			"The actual affected EStructuralFeature is a different one than the expected EStructuralFeature",
 			expectedEFeature, (eChange as FeatureEChange<?, ?>).affectedFeature)
 	}
 
-	public static def getFeatureByName(EObject eObject, String name) {
+	static def getFeatureByName(EObject eObject, String name) {
 		eObject.eClass.getEStructuralFeature(name)
 	}
 
-	def public static void assertPermuteAttributeListTest(List<?> changes, EObject rootElement,
+	def static void assertPermuteAttributeListTest(List<?> changes, EObject rootElement,
 		List<Integer> expectedIndicesForElementsAtOldIndices, EStructuralFeature affectedFeature) {
 	}
 
@@ -103,7 +103,7 @@ class ChangeAssertHelper {
 		Assert.assertEquals("The value is not at the correct index", expectedIndex, change.index)
 	}
 
-	def public static assertEqualsOrCopy(String message, EObject object1, EObject object2) {
+	def static assertEqualsOrCopy(String message, EObject object1, EObject object2) {
 		Assert.assertTrue(message, EcoreUtil.equals(object1, object2))
 	}
 	

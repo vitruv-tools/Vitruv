@@ -9,7 +9,7 @@ import java.util.List
  * private methods and to provide a clean EChange interface, the apply 
  * method for applying forward and backward is placed in this utility class.
  */
-public class ApplyEChangeSwitch {
+class ApplyEChangeSwitch {
 	private new() {}
 	
 	/**
@@ -21,7 +21,7 @@ public class ApplyEChangeSwitch {
 	 * @throws IllegalStateException	The change is already resolved.
 	 * @throws RunTimeException			The change could not be applied.
 	 */
-	def public static boolean applyEChange(EChange change, boolean applyForward) {
+	def static boolean applyEChange(EChange change, boolean applyForward) {
 		if (!change.isResolved) {
 			throw new IllegalStateException("The EChange is not resolved.")
 		}

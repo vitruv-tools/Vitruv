@@ -19,7 +19,7 @@ import static extension tools.vitruv.dsls.commonalities.participation.Participat
  */
 class MatchParticipationReactionsBuilder extends ReactionsSubGenerator {
 
-	private static val Logger logger = Logger.getLogger(MatchParticipationReactionsBuilder)
+	static val Logger logger = Logger.getLogger(MatchParticipationReactionsBuilder)
 
 	static class Factory extends InjectingFactoryBase {
 		def createFor(Participation participation) {

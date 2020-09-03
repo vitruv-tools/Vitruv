@@ -24,7 +24,7 @@ class RemoveAtCommandTest extends CommandTest {
 	protected var EList<Integer> list = null
 	
 	@Before
-	def public void beforeTest() {
+	def void beforeTest() {
 		owner = AllElementTypesFactory.eINSTANCE.createRoot
 		feature = AllElementTypesPackage.Literals.ROOT__MULTI_VALUED_EATTRIBUTE
 		editingDomain = EChangeUtil.getEditingDomain(owner)
@@ -38,7 +38,7 @@ class RemoveAtCommandTest extends CommandTest {
 	 * Tests both creation methods and constructors of the class.
 	 */
 	@Test
-	def public void createCommandTest() {
+	def void createCommandTest() {
 		// Test both create methods
 		var command = new RemoveAtCommand(editingDomain, list, 2, 3)
 		command.assertIsRemoveAtCommand(list, 2, 3)
@@ -52,7 +52,7 @@ class RemoveAtCommandTest extends CommandTest {
 	 * whether the command can be executed or not.
 	 */
 	@Test
-	def public void prepareTest() {
+	def void prepareTest() {
 		// Valid commands
 		createRemoveAtCommand(list, 0, 0).assertIsPreparable
 		createRemoveAtCommand(list, 4, 4).assertIsPreparable
@@ -75,7 +75,7 @@ class RemoveAtCommandTest extends CommandTest {
 	 * Tests the execution of the command.
 	 */
 	@Test
-	def public void executeTest() {
+	def void executeTest() {
 		createRemoveAtCommand(list, 8, 8).assertRemovedCorrectValueFrom(list)
 		createRemoveAtCommand(list, 0, 0).assertRemovedCorrectValueFrom(list)
 		createRemoveAtCommand(list, 1, 0).assertRemovedCorrectValueFrom(list)

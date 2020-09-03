@@ -19,8 +19,8 @@ import tools.vitruv.framework.userinteraction.InteractionResultProvider
  * @author Heiko Klare
  */
 class DialogInteractionResultProviderImpl implements InteractionResultProvider {
-	private final Shell parentShell;
-	private final Display display;
+	final Shell parentShell;
+	final Display display;
 
 	new() {
 		this.display = if (PlatformUI.isWorkbenchRunning()) PlatformUI.getWorkbench().getDisplay() else PlatformUI.

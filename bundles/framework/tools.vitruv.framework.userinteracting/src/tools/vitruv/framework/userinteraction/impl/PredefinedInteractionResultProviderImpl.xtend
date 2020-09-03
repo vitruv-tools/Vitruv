@@ -14,8 +14,8 @@ import tools.vitruv.framework.userinteraction.PredefinedInteractionResultProvide
  * request is found.
  * @author Heiko Klare
  */
-public class PredefinedInteractionResultProviderImpl extends PredefinedInteractionResultProvider {
-	private final PredefinedInteractionMatcher predefinedInteractionMatcher;
+class PredefinedInteractionResultProviderImpl extends PredefinedInteractionResultProvider {
+	final PredefinedInteractionMatcher predefinedInteractionMatcher;
 
 	/**
 	 * Instantiates a new provider.
@@ -29,7 +29,7 @@ public class PredefinedInteractionResultProviderImpl extends PredefinedInteracti
 		this.predefinedInteractionMatcher = new PredefinedInteractionMatcher();
 	}
 
-	public override void addUserInteractions(UserInteractionBase... interactions) {
+	override void addUserInteractions(UserInteractionBase... interactions) {
 		interactions.forEach[predefinedInteractionMatcher.addInteraction(it)]
 	}
 

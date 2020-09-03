@@ -20,7 +20,6 @@ import tools.vitruv.domains.emf.monitorededitor.test.testmodels.Files;
 import tools.vitruv.domains.emf.monitorededitor.test.testmodels.Models;
 import tools.vitruv.domains.emf.monitorededitor.test.utils.EnsureExecuted;
 import tools.vitruv.domains.emf.monitorededitor.test.utils.EnsureNotExecuted;
-import tools.vitruv.domains.emf.monitorededitor.tools.ResourceReloadListener;
 
 public class ResourceReloadListenerTests {
     @Test

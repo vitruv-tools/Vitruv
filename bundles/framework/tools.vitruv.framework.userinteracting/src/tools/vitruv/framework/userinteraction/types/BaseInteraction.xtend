@@ -14,13 +14,13 @@ import tools.vitruv.framework.userinteraction.InteractionResultProvider
  */
 abstract class BaseInteraction<T extends UserInteractionBase> {
 	@Accessors(PROTECTED_GETTER)
-	private final InteractionResultProvider interactionResultProvider;
-	private String title
-	private String message
-	private String positiveButtonText = "Yes"
-	private String negativeButtonText = "No"
-	private String cancelButtonText = "Cancel"
-	private WindowModality windowModality
+	final InteractionResultProvider interactionResultProvider;
+	String title
+	String message
+	String positiveButtonText = "Yes"
+	String negativeButtonText = "No"
+	String cancelButtonText = "Cancel"
+	WindowModality windowModality
 
 	protected new(InteractionResultProvider interactionResultProvider, WindowModality windowModality, String title,
 		String message) {

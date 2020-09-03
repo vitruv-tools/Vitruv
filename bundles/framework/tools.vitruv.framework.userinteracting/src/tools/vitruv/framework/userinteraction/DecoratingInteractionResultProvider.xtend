@@ -8,7 +8,7 @@ import org.eclipse.xtend.lib.annotations.Accessors
  */
 abstract class DecoratingInteractionResultProvider implements InteractionResultProvider {
 	@Accessors(PUBLIC_GETTER)
-	private final InteractionResultProvider decoratedInteractionResultProvider;
+	final InteractionResultProvider decoratedInteractionResultProvider;
 
 	new(InteractionResultProvider decoratedInteractionResultProvider) {
 		this.decoratedInteractionResultProvider = decoratedInteractionResultProvider;

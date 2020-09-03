@@ -35,7 +35,7 @@ class RoutineFacadeClassGenerator extends ClassGenerator {
 		this.routinesFacadeNameGenerator = reactionsSegment.routinesFacadeClassNameGenerator;
 	}
 
-	public override generateEmptyClass() {
+	override generateEmptyClass() {
 		generatedClass = reactionsSegment.toClass(routinesFacadeNameGenerator.qualifiedName) [
 			visibility = JvmVisibility.PUBLIC;
 		]

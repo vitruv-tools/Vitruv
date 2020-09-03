@@ -6,26 +6,26 @@ import org.eclipse.xtext.xbase.jvmmodel.JvmTypeReferenceBuilder
 
 class AccessibleElement {
 	@Accessors(PUBLIC_GETTER)
-	private val String name;
-	private val String fullyQualifiedTypeName;
-	private val List<String> typeParameters;
+	val String name;
+	val String fullyQualifiedTypeName;
+	val List<String> typeParameters;
 	
-	public new(String name, String fullyQualifiedTypeName) {
+	new(String name, String fullyQualifiedTypeName) {
 		this.name = name;
 		this.fullyQualifiedTypeName = fullyQualifiedTypeName;
 		this.typeParameters = newArrayList
 	}
 	
-	public new(String name, String fullyQualifiedTypeName, String... typeParameters) {
+	new(String name, String fullyQualifiedTypeName, String... typeParameters) {
 		this(name, fullyQualifiedTypeName);
 		this.typeParameters += typeParameters;
 	}
 	
-	public new(String name, Class<?> type) {
+	new(String name, Class<?> type) {
 		this(name, type.name)
 	}
 	
-	public def generateTypeRef(@Extension JvmTypeReferenceBuilder typeReferenceBuilder) {
+	def generateTypeRef(@Extension JvmTypeReferenceBuilder typeReferenceBuilder) {
 		typeRef(fullyQualifiedTypeName, typeParameters.map[typeRef])
 	}
 	

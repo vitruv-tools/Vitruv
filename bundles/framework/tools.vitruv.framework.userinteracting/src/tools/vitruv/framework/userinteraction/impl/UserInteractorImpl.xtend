@@ -27,10 +27,10 @@ import tools.vitruv.framework.userinteraction.DecoratingInteractionResultProvide
  * @author Heiko Klare
  */
 class UserInteractorImpl implements InternalUserInteractor {
-	private WindowModality defaultWindowModality = WindowModality.MODELESS;
-	private final List<UserInteractionListener> userInteractionListener;
-	private InteractionResultProvider interactionResultProvider;
-	private InteractionFactory interactionFactory;
+	WindowModality defaultWindowModality = WindowModality.MODELESS;
+	final List<UserInteractionListener> userInteractionListener;
+	InteractionResultProvider interactionResultProvider;
+	InteractionFactory interactionFactory;
 
 	new(InteractionResultProvider interactionResultProvider) {
 		if (interactionResultProvider === null) {
@@ -46,23 +46,23 @@ class UserInteractorImpl implements InternalUserInteractor {
 		this.defaultWindowModality = defaultWindowModality;
 	}
 
-	public override NotificationInteractionBuilder getNotificationDialogBuilder() {
+	override NotificationInteractionBuilder getNotificationDialogBuilder() {
 		return new NotificationInteractionBuilderImpl(interactionFactory, userInteractionListener);
 	}
 
-	public override ConfirmationInteractionBuilder getConfirmationDialogBuilder() {
+	override ConfirmationInteractionBuilder getConfirmationDialogBuilder() {
 		return new ConfirmationInteractionBuilderImpl(interactionFactory, userInteractionListener);
 	}
 
-	public override TextInputInteractionBuilder getTextInputDialogBuilder() {
+	override TextInputInteractionBuilder getTextInputDialogBuilder() {
 		return new TextInputInteractionBuilderImpl(interactionFactory, userInteractionListener);
 	}
 
-	public override MultipleChoiceSingleSelectionInteractionBuilder getSingleSelectionDialogBuilder() {
+	override MultipleChoiceSingleSelectionInteractionBuilder getSingleSelectionDialogBuilder() {
 		return new MultipleChoiceSingleSelectionInteractionBuilderImpl(interactionFactory, userInteractionListener);
 	}
 
-	public override MultipleChoiceMultiSelectionInteractionBuilder getMultiSelectionDialogBuilder() {
+	override MultipleChoiceMultiSelectionInteractionBuilder getMultiSelectionDialogBuilder() {
 		return new MultipleChoiceMultiSelectionInteractionBuilderImpl(interactionFactory, userInteractionListener);
 	}
 

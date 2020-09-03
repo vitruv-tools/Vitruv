@@ -22,12 +22,12 @@ import tools.vitruv.framework.change.echange.eobject.DeleteEObject
  * which removes a non root element reference from a containment reference 
  * list and deletes it.
  */
-public class RemoveAndDeleteNonRootTest extends ReferenceEChangeTest {
+class RemoveAndDeleteNonRootTest extends ReferenceEChangeTest {
 	protected var EReference affectedFeature = null
 	protected var EList<NonRoot> referenceContent = null
 
 	@Before
-	override public void beforeTest() {
+	override void beforeTest() {
 		super.beforeTest()
 		affectedFeature = AllElementTypesPackage.Literals.ROOT__MULTI_VALUED_CONTAINMENT_EREFERENCE
 		referenceContent = affectedEObject.eGet(affectedFeature) as EList<NonRoot>
@@ -39,7 +39,7 @@ public class RemoveAndDeleteNonRootTest extends ReferenceEChangeTest {
 	 * before the change, so the non root element is in a containment reference.
 	 */
 	@Test
-	def public void resolveBeforeTest() {
+	def void resolveBeforeTest() {
 		// Create change
 		val unresolvedChange = createUnresolvedChange(affectedEObject, newValue, 0)
 		unresolvedChange.assertIsNotResolved
@@ -57,7 +57,7 @@ public class RemoveAndDeleteNonRootTest extends ReferenceEChangeTest {
 	 * after the change, so the non root element was deleted.
 	 */
 	@Test
-	def public void resolveAfterTest() {		
+	def void resolveAfterTest() {		
 		// Create change
 		val unresolvedChange = createUnresolvedChange(affectedEObject, newValue, 0)
 		unresolvedChange.assertIsNotResolved
@@ -78,7 +78,7 @@ public class RemoveAndDeleteNonRootTest extends ReferenceEChangeTest {
 	 * returns the same class.
 	 */
 	@Test
-	def public void resolveToCorrectType() {
+	def void resolveToCorrectType() {
 		// Create change
 		val unresolvedChange = createUnresolvedChange(affectedEObject, newValue, 0)
 		
@@ -92,7 +92,7 @@ public class RemoveAndDeleteNonRootTest extends ReferenceEChangeTest {
 	 * Removes and deletes a non root element from a containment reference.
 	 */
 	@Test
-	def public void applyForwardTest() {
+	def void applyForwardTest() {
 		// Create and resolve change 1
 		val resolvedChange = createUnresolvedChange(affectedEObject, newValue, 0).resolveBefore(uuidGeneratorAndResolver)
 		
@@ -118,7 +118,7 @@ public class RemoveAndDeleteNonRootTest extends ReferenceEChangeTest {
 	 * Creates and reinserts the removed object.
 	 */
 	@Test
-	def public void applyBackwardTest() {
+	def void applyBackwardTest() {
 		// Create and resolve and apply change 1
 		val resolvedChange = createUnresolvedChange(affectedEObject, newValue, 0).resolveBefore(uuidGeneratorAndResolver)
 		resolvedChange.assertApplyForward

@@ -10,7 +10,7 @@ import tools.vitruv.framework.tests.echange.EChangeTest
 /**
  * Abstract class which is extended by the Root EChange test classes.
  */
-public abstract class RootEChangeTest extends EChangeTest {
+abstract class RootEChangeTest extends EChangeTest {
 	protected var Root newRootObject = null;
 	protected var Root newRootObject2 = null;
 	protected var EList<EObject> resourceContent = null;

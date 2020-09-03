@@ -22,7 +22,7 @@ import org.eclipse.emf.ecore.EStructuralFeature
  * @author Heiko Klare
  */
 final class NotificationToEChangeConverter {
-	private EChangeIdManager eChangeIdManager;
+	EChangeIdManager eChangeIdManager;
 
 	new(EChangeIdManager eChangeeChangeIdManager) {
 		this.eChangeIdManager = eChangeeChangeIdManager;
@@ -98,7 +98,7 @@ final class NotificationToEChangeConverter {
 		return #[]
 	}
 		
-	public def createDeleteChange(EObjectSubtractedEChange<?> change) {
+	def createDeleteChange(EObjectSubtractedEChange<?> change) {
 		val deleteChange = TypeInferringAtomicEChangeFactory.instance.createDeleteEObjectChange(change.oldValue);
 		eChangeIdManager.setOrGenerateIds(deleteChange);
 		deleteChange.consequentialRemoveChanges += recursiveRemoval(change.oldValue);

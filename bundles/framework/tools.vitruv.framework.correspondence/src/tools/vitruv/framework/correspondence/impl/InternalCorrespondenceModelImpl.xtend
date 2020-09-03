@@ -342,7 +342,7 @@ class InternalCorrespondenceModelImpl extends ModelInstance implements InternalC
 		return correspondences.correspondences
 	}
 
-	private Iterable<Pair<List<Tuid>, Set<Correspondence>>> tuidUpdateData;
+	Iterable<Pair<List<Tuid>, Set<Correspondence>>> tuidUpdateData;
 
 	/**
 	 * Removes the current entries in the

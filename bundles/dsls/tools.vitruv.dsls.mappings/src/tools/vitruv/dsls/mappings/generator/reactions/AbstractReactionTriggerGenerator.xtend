@@ -29,14 +29,14 @@ abstract class AbstractReactionTriggerGenerator extends AbstractMappingEntityGen
 	}
 	
 	//should only be called for triggers derived from bidirectional conditions
-	def public overwriteScenarioType(MappingScenarioType scenarioType){
+	def overwriteScenarioType(MappingScenarioType scenarioType){
 		this.scenarioType = scenarioType
 	}
 	
 	/**
 	 * Returns the name of the reaction to generate
 	 */
-	def public String reactionName() '''
+	def String reactionName() '''
 	On«mappingName.toFirstUpper»«reactionName»«IF scenarioType==MappingScenarioType.UPDATE»Bidirectional«ENDIF»'''
 	
 	/**

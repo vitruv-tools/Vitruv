@@ -31,7 +31,7 @@ class MappingParameterRetrievalGenerator extends AbstractRoutineContentGenerator
 			map[parameterName], [it.parameterName])
 	}
 	
-	public def generate(TypeProvider provider, Function0<XExpression> finishedRetrievingParameters,
+	def generate(TypeProvider provider, Function0<XExpression> finishedRetrievingParameters,
 		Function0<XExpression> failedToRetrieveParameters) {
 		this.finishedRetrievingParameters = finishedRetrievingParameters
 		XbaseFactory.eINSTANCE.createXBlockExpression => [
@@ -270,7 +270,7 @@ class MappingParameterRetrievalGenerator extends AbstractRoutineContentGenerator
 		}
 	}
 
-	public def skipParameterCheck() {
+	def skipParameterCheck() {
 		parameters.size == 1 && conditions.empty
 	}
 

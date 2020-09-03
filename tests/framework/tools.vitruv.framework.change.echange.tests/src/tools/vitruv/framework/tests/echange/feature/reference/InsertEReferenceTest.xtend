@@ -17,12 +17,12 @@ import static extension tools.vitruv.framework.change.echange.resolve.EChangeRes
  * Test class for the concrete {@link InsertEReferenceValue} EChange,
  * which inserts a reference in a multivalued attribute.
  */
-public class InsertEReferenceTest extends ReferenceEChangeTest {
+class InsertEReferenceTest extends ReferenceEChangeTest {
 	protected var EReference affectedFeature = null
 	protected var EList<NonRoot> referenceContent = null
 	
 	@Before
-	override public void beforeTest() {
+	override void beforeTest() {
 		super.beforeTest()
 		resourceContent = resource.contents
 	}
@@ -34,7 +34,7 @@ public class InsertEReferenceTest extends ReferenceEChangeTest {
 	 * is in the resource already.
 	 */
 	@Test
-	def public void resolveBeforeNonContainmentTest() {
+	def void resolveBeforeNonContainmentTest() {
 		// Set state before
 		isNonContainmentTest
 		
@@ -55,7 +55,7 @@ public class InsertEReferenceTest extends ReferenceEChangeTest {
 	 * is in the staging area.
 	 */
 	@Test
-	def public void resolveBeforeContainmentTest() {
+	def void resolveBeforeContainmentTest() {
 		// Set state before
 		isContainmentTest
 		
@@ -75,7 +75,7 @@ public class InsertEReferenceTest extends ReferenceEChangeTest {
 	 * reference is already a root element.
 	 */
 	@Test
-	def public void resolveAfterNonContainmentTest() {
+	def void resolveAfterNonContainmentTest() {
 		// Set state before
 		isNonContainmentTest
 		
@@ -98,7 +98,7 @@ public class InsertEReferenceTest extends ReferenceEChangeTest {
 	 * reference is in the resource after the change.
 	 */
 	@Test
-	def public void resolveAfterContainmentTest() {
+	def void resolveAfterContainmentTest() {
 		// Set state before
 		isContainmentTest
 		
@@ -119,7 +119,7 @@ public class InsertEReferenceTest extends ReferenceEChangeTest {
 	 * returns the same class.
 	 */
 	@Test
-	def public void resolveToCorrectType() {
+	def void resolveToCorrectType() {
 		// Set state before
 		isNonContainmentTest
 		
@@ -138,7 +138,7 @@ public class InsertEReferenceTest extends ReferenceEChangeTest {
 	  * new value is already in the resource.
 	  */
 	@Test
-	def public void applyForwardNonContainmentTest() {
+	def void applyForwardNonContainmentTest() {
 		// Set state before
 		isNonContainmentTest
 		
@@ -167,7 +167,7 @@ public class InsertEReferenceTest extends ReferenceEChangeTest {
 	 * new value is from the staging area.
 	 */
 	@Test
-	def public void applyForwardContainmentTest() {
+	def void applyForwardContainmentTest() {
 		// Set state before
 		isContainmentTest
 		
@@ -197,7 +197,7 @@ public class InsertEReferenceTest extends ReferenceEChangeTest {
 	 * removed values are already in the resource.
 	 */
 	@Test
-	def public void applyBackwardNonContainmentTest() {
+	def void applyBackwardNonContainmentTest() {
 		// Set state before
 		isNonContainmentTest
 		
@@ -232,7 +232,7 @@ public class InsertEReferenceTest extends ReferenceEChangeTest {
 	 * removed values will be placed in the staging area after removing them.
 	 */
 	@Test
-	def public void applyBackwardContainmentTest() {
+	def void applyBackwardContainmentTest() {
 		// Set state before
 		isContainmentTest
 
@@ -264,7 +264,7 @@ public class InsertEReferenceTest extends ReferenceEChangeTest {
 	 * Tests the {@link InsertEReference} EChange with invalid index.
 	 */
 	@Test
-	def public void invalidIndexTest() {
+	def void invalidIndexTest() {
 		// Set state before
 		isNonContainmentTest
 		var index = 5 // Valid index in empty list is only 0
@@ -284,7 +284,7 @@ public class InsertEReferenceTest extends ReferenceEChangeTest {
 	 * Tests an affected object which has no such reference.
 	 */
 	@Test
-	def public void invalidAttributeTest() {
+	def void invalidAttributeTest() {
 		// Set state before
 		isNonContainmentTest
 		val invalidAffectedEObject = newValue2 // NonRoot element

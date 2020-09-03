@@ -28,7 +28,7 @@ class CreateAndReplaceAndDeleteNonRootTest extends ReferenceEChangeTest {
 	protected var EReference affectedFeature = null
 	
 	@Before
-	override public void beforeTest() {
+	override void beforeTest() {
 		super.beforeTest()
 		oldValue = AllElementTypesFactory.eINSTANCE.createNonRoot()
 		affectedFeature = AllElementTypesPackage.Literals.ROOT__SINGLE_VALUED_CONTAINMENT_EREFERENCE
@@ -41,7 +41,7 @@ class CreateAndReplaceAndDeleteNonRootTest extends ReferenceEChangeTest {
 	 * the old value is in the containment reference.
 	 */
 	@Test
-	def public void resolveBeforeTest() {
+	def void resolveBeforeTest() {
 		// Create change
 		val unresolvedChange = createUnresolvedChange(newValue)
 		unresolvedChange.assertIsNotResolved()
@@ -60,7 +60,7 @@ class CreateAndReplaceAndDeleteNonRootTest extends ReferenceEChangeTest {
 	 * the new value is in the containment reference.
 	 */
 	@Test
-	def public void resolveAfterTest() {
+	def void resolveAfterTest() {
 		// Create change
 		val unresolvedChange = createUnresolvedChange(newValue)
 		unresolvedChange.assertIsNotResolved
@@ -81,7 +81,7 @@ class CreateAndReplaceAndDeleteNonRootTest extends ReferenceEChangeTest {
 	 * returns the same class.
 	 */
 	@Test
-	def public void resolveToCorrectType() {
+	def void resolveToCorrectType() {
 		// Create change
 		val unresolvedChange = createUnresolvedChange(newValue)
 		
@@ -95,7 +95,7 @@ class CreateAndReplaceAndDeleteNonRootTest extends ReferenceEChangeTest {
 	 * by creating a new non root and replacing an existing one.
 	 */
 	@Test
-	def public void applyForwardTest() {		
+	def void applyForwardTest() {		
 		// Create and resolve 1
 		val resolvedChange = createUnresolvedChange(newValue).resolveBefore(uuidGeneratorAndResolver)
 			
@@ -120,7 +120,7 @@ class CreateAndReplaceAndDeleteNonRootTest extends ReferenceEChangeTest {
 	 * by replacing a single value containment reference with its old value.
 	 */
 	@Test
-	def public void applyBackwardTest() {
+	def void applyBackwardTest() {
 		// Create change 
 		val resolvedChange = createUnresolvedChange(newValue).resolveBefore(uuidGeneratorAndResolver)
 			

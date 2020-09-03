@@ -3,9 +3,9 @@ package tools.vitruv.demo.domains.addresses
 import tools.vitruv.framework.domains.VitruvDomainProvider
 
 class AddressesDomainProvider implements VitruvDomainProvider<AddressesDomain> {
-	private static var AddressesDomain instance;
+	static var AddressesDomain instance;
 	
-	override public AddressesDomain getDomain() {
+	override AddressesDomain getDomain() {
 		if (instance === null) {
 			instance = new AddressesDomain();
 		}

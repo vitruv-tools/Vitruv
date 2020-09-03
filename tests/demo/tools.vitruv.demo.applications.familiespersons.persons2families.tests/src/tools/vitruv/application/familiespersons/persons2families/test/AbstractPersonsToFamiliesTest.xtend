@@ -8,8 +8,8 @@ import edu.kit.ipd.sdq.metamodels.persons.PersonsFactory
 import tools.vitruv.applications.familiespersons.persons2families.PersonsToFamiliesChangePropagationSpecification
 
 abstract class AbstractPersonsToFamiliesTest extends VitruviusApplicationTest {
-	private static val MODEL_FILE_EXTENSION = "persons";
-	private static val MODEL_NAME = "model";
+	static val MODEL_FILE_EXTENSION = "persons";
+	static val MODEL_NAME = "model";
 	
 	private def String getProjectModelPath(String modelName) {
 		"model/" + modelName + "." + MODEL_FILE_EXTENSION;

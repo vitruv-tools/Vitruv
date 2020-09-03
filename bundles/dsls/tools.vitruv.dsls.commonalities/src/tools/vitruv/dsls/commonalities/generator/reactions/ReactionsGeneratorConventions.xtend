@@ -28,7 +28,7 @@ class ReactionsGeneratorConventions {
 	public static val RESOURCE_BRIDGE = 'resourceBridge'
 	public static val SINGLETON = 'singleton'
 
-	private static val EXTERNAL_CLASS_PREFIX = 'external_'
+	static val EXTERNAL_CLASS_PREFIX = 'external_'
 
 	static def String getName(ContextClass contextClass) {
 		val participationClass = contextClass.participationClass

@@ -49,35 +49,35 @@ class ChangeDescription2RemoveEReferenceTest extends ChangeDescription2EReferenc
 	}
 	
 	@Test
-	def public void testRemoveNonContainmentEReferenceFromList() {
+	def void testRemoveNonContainmentEReferenceFromList() {
 		val isContainment = false
 		val isExplicitUnset = false
 		testRemoveEReference(isContainment, isExplicitUnset)
 	}
 	
 	@Test
-	def public void testRemoveNonContainmentEReferenceFromListWithExplicitUnset() {
+	def void testRemoveNonContainmentEReferenceFromListWithExplicitUnset() {
 		val isContainment = false
 		val isExplicitUnset = true
 		testRemoveEReference(isContainment, isExplicitUnset)
 	}
 	
 	@Test
-	def public void testRemoveContainmentEReferenceFromList() {
+	def void testRemoveContainmentEReferenceFromList() {
 		val isContainment = true
 		val isExplicitUnset = false
 		testRemoveEReference(isContainment, isExplicitUnset)
 	}
 
 	@Test
-	def public void testRemoveContainmentEReferenceFromListWithExplicitUnset() {
+	def void testRemoveContainmentEReferenceFromListWithExplicitUnset() {
 		val isContainment = true
 		val isExplicitUnset = true
 		testRemoveEReference(isContainment, isExplicitUnset)
 	}
 
 	@Test
-	def public void testClearEReferences() {
+	def void testClearEReferences() {
 		val index0Element = createAndAddNonRootToRootMultiReference(0)
 		val index1Element = createAndAddNonRootToRootMultiReference(1)
 		// test
