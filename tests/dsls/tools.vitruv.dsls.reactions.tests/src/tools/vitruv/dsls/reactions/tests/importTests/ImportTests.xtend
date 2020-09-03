@@ -8,7 +8,7 @@ import tools.vitruv.dsls.reactions.tests.importTests.ImportTestsExecutionMonitor
 
 class ImportTests extends AbstractReactionImportsTests {
 
-	private static val TEST_SOURCE_MODEL_NAME = "ImportTestsModelSource";
+	static val TEST_SOURCE_MODEL_NAME = "ImportTestsModelSource";
 
 	private def Root getRootElement() {
 		return TEST_SOURCE_MODEL_NAME.projectModelPath.firstRootElement as Root;
@@ -105,21 +105,21 @@ class ImportTests extends AbstractReactionImportsTests {
 	// execute imported and transitive imported reactions:
 
 	@Test
-	public def void testRootReaction() {
+	def void testRootReaction() {
 		resetExecutionMonitor();
 		triggerReaction();
 		assertIsSet(ExecutionType.RootReaction);
 	}
 
 	@Test
-	public def void testImportedReaction() {
+	def void testImportedReaction() {
 		resetExecutionMonitor();
 		triggerReaction();
 		assertIsSet(ExecutionType.DirectSNReaction);
 	}
 
 	@Test
-	public def void testTransitiveImportedReaction() {
+	def void testTransitiveImportedReaction() {
 		resetExecutionMonitor();
 		triggerReaction();
 		assertIsSet(ExecutionType.TransitiveSNReaction);
@@ -128,7 +128,7 @@ class ImportTests extends AbstractReactionImportsTests {
 	// multiple imports: combination of imported reactions
 
 	@Test
-	public def void testMultipleImportedReactions() {
+	def void testMultipleImportedReactions() {
 		resetExecutionMonitor();
 		triggerReaction();
 		val monitor = new ImportTestsExecutionMonitor();
@@ -139,7 +139,7 @@ class ImportTests extends AbstractReactionImportsTests {
 	// call imported routines from within reaction:
 
 	@Test
-	public def void testReactionCallsRootRoutine() {
+	def void testReactionCallsRootRoutine() {
 		resetExecutionMonitor();
 		triggerReaction(TAG_CALL_ROUTINE_FROM_REACTION, TAG_ROOT_ROUTINE);
 		val monitor = new ImportTestsExecutionMonitor();
@@ -149,7 +149,7 @@ class ImportTests extends AbstractReactionImportsTests {
 	}
 
 	@Test
-	public def void testReactionCallsImportedRoutine_SN() {
+	def void testReactionCallsImportedRoutine_SN() {
 		resetExecutionMonitor();
 		triggerReaction(TAG_CALL_ROUTINE_FROM_REACTION, TAG_DIRECT_ROUTINE_SN);
 		val monitor = new ImportTestsExecutionMonitor();
@@ -159,7 +159,7 @@ class ImportTests extends AbstractReactionImportsTests {
 	}
 
 	@Test
-	public def void testReactionCallsImportedRoutine_QN() {
+	def void testReactionCallsImportedRoutine_QN() {
 		resetExecutionMonitor();
 		triggerReaction(TAG_CALL_ROUTINE_FROM_REACTION, TAG_DIRECT_ROUTINE_QN);
 		val monitor = new ImportTestsExecutionMonitor();
@@ -171,7 +171,7 @@ class ImportTests extends AbstractReactionImportsTests {
 	// call transitive imported routines from within reaction:
 
 	@Test
-	public def void testReactionCallsTransitiveImportedRoutine_SN_SN() {
+	def void testReactionCallsTransitiveImportedRoutine_SN_SN() {
 		resetExecutionMonitor();
 		triggerReaction(TAG_CALL_ROUTINE_FROM_REACTION, TAG_TRANSITIVE_ROUTINE_SN_SN);
 		val monitor = new ImportTestsExecutionMonitor();
@@ -181,7 +181,7 @@ class ImportTests extends AbstractReactionImportsTests {
 	}
 
 	@Test
-	public def void testReactionCallsTransitiveImportedRoutine_SN_QN() {
+	def void testReactionCallsTransitiveImportedRoutine_SN_QN() {
 		resetExecutionMonitor();
 		triggerReaction(TAG_CALL_ROUTINE_FROM_REACTION, TAG_TRANSITIVE_ROUTINE_SN_QN);
 		val monitor = new ImportTestsExecutionMonitor();
@@ -191,7 +191,7 @@ class ImportTests extends AbstractReactionImportsTests {
 	}
 
 	@Test
-	public def void testReactionCallsTransitiveImportedRoutine_QN_SN() {
+	def void testReactionCallsTransitiveImportedRoutine_QN_SN() {
 		resetExecutionMonitor();
 		triggerReaction(TAG_CALL_ROUTINE_FROM_REACTION, TAG_TRANSITIVE_ROUTINE_QN_SN);
 		val monitor = new ImportTestsExecutionMonitor();
@@ -201,7 +201,7 @@ class ImportTests extends AbstractReactionImportsTests {
 	}
 
 	@Test
-	public def void testReactionCallsTransitiveImportedRoutine_QN_QN() {
+	def void testReactionCallsTransitiveImportedRoutine_QN_QN() {
 		resetExecutionMonitor();
 		triggerReaction(TAG_CALL_ROUTINE_FROM_REACTION, TAG_TRANSITIVE_ROUTINE_QN_QN);
 		val monitor = new ImportTestsExecutionMonitor();
@@ -213,7 +213,7 @@ class ImportTests extends AbstractReactionImportsTests {
 	// call imported routines from within routine:
 
 	@Test
-	public def void testRoutineCallsRootRoutine() {
+	def void testRoutineCallsRootRoutine() {
 		resetExecutionMonitor();
 		triggerReaction(TAG_CALL_ROUTINE_FROM_ROUTINE, TAG_ROOT_ROUTINE);
 		val monitor = new ImportTestsExecutionMonitor();
@@ -223,7 +223,7 @@ class ImportTests extends AbstractReactionImportsTests {
 	}
 
 	@Test
-	public def void testRoutineCallsImportedRoutine_SN() {
+	def void testRoutineCallsImportedRoutine_SN() {
 		resetExecutionMonitor();
 		triggerReaction(TAG_CALL_ROUTINE_FROM_ROUTINE, TAG_DIRECT_ROUTINE_SN);
 		val monitor = new ImportTestsExecutionMonitor();
@@ -233,7 +233,7 @@ class ImportTests extends AbstractReactionImportsTests {
 	}
 
 	@Test
-	public def void testRoutineCallsImportedRoutine_QN() {
+	def void testRoutineCallsImportedRoutine_QN() {
 		resetExecutionMonitor();
 		triggerReaction(TAG_CALL_ROUTINE_FROM_ROUTINE, TAG_DIRECT_ROUTINE_QN);
 		val monitor = new ImportTestsExecutionMonitor();
@@ -245,7 +245,7 @@ class ImportTests extends AbstractReactionImportsTests {
 	// call transitive imported routines from within routine:
 
 	@Test
-	public def void testRoutineCallsTransitiveImportedRoutine_SN_SN() {
+	def void testRoutineCallsTransitiveImportedRoutine_SN_SN() {
 		resetExecutionMonitor();
 		triggerReaction(TAG_CALL_ROUTINE_FROM_ROUTINE, TAG_TRANSITIVE_ROUTINE_SN_SN);
 		val monitor = new ImportTestsExecutionMonitor();
@@ -255,7 +255,7 @@ class ImportTests extends AbstractReactionImportsTests {
 	}
 
 	@Test
-	public def void testRoutineCallsTransitiveImportedRoutine_SN_QN() {
+	def void testRoutineCallsTransitiveImportedRoutine_SN_QN() {
 		resetExecutionMonitor();
 		triggerReaction(TAG_CALL_ROUTINE_FROM_ROUTINE, TAG_TRANSITIVE_ROUTINE_SN_QN);
 		val monitor = new ImportTestsExecutionMonitor();
@@ -265,7 +265,7 @@ class ImportTests extends AbstractReactionImportsTests {
 	}
 
 	@Test
-	public def void testRoutineCallsTransitiveImportedRoutine_QN_SN() {
+	def void testRoutineCallsTransitiveImportedRoutine_QN_SN() {
 		resetExecutionMonitor();
 		triggerReaction(TAG_CALL_ROUTINE_FROM_ROUTINE, TAG_TRANSITIVE_ROUTINE_QN_SN);
 		val monitor = new ImportTestsExecutionMonitor();
@@ -275,7 +275,7 @@ class ImportTests extends AbstractReactionImportsTests {
 	}
 
 	@Test
-	public def void testRoutineCallsTransitiveImportedRoutine_QN_QN() {
+	def void testRoutineCallsTransitiveImportedRoutine_QN_QN() {
 		resetExecutionMonitor();
 		triggerReaction(TAG_CALL_ROUTINE_FROM_ROUTINE, TAG_TRANSITIVE_ROUTINE_QN_QN);
 		val monitor = new ImportTestsExecutionMonitor();
@@ -287,7 +287,7 @@ class ImportTests extends AbstractReactionImportsTests {
 	// multiple imports: combination of imported routines
 
 	@Test
-	public def void testMultipleImportedRoutines() {
+	def void testMultipleImportedRoutines() {
 		resetExecutionMonitor();
 		triggerReaction(TAG_CALL_ROUTINE_FROM_REACTION,
 			TAG_ROOT_ROUTINE, TAG_DIRECT_ROUTINE_SN, TAG_DIRECT2_ROUTINE_SN, TAG_TRANSITIVE_ROUTINE_SN_SN);
@@ -303,7 +303,7 @@ class ImportTests extends AbstractReactionImportsTests {
 	// import only routines:
 
 	@Test
-	public def void testRoutinesOnlyReactions() {
+	def void testRoutinesOnlyReactions() {
 		resetExecutionMonitor();
 		triggerReaction(TAG_TEST_ROUTINES_ONLY_REACTIONS);
 		val monitor = new ImportTestsExecutionMonitor();
@@ -320,7 +320,7 @@ class ImportTests extends AbstractReactionImportsTests {
 	}
 
 	@Test
-	public def void testRoutinesOnlyRoutines() {
+	def void testRoutinesOnlyRoutines() {
 		resetExecutionMonitor();
 		triggerReaction(TAG_TEST_ROUTINES_ONLY_ROUTINES);
 		val monitor = new ImportTestsExecutionMonitor();
@@ -339,7 +339,7 @@ class ImportTests extends AbstractReactionImportsTests {
 	// check (transitive) imported segments still working:
 
 	@Test
-	public def void testImportedSegmentsWorking() {
+	def void testImportedSegmentsWorking() {
 		resetExecutionMonitor();
 		triggerReaction(TAG_TEST_IMPORTED_SEGMENTS_WORKING);
 		val monitor = new ImportTestsExecutionMonitor();
@@ -358,7 +358,7 @@ class ImportTests extends AbstractReactionImportsTests {
 	// reaction overrides:
 
 	@Test
-	public def void testOverrideReaction() {
+	def void testOverrideReaction() {
 		resetExecutionMonitor();
 		triggerReaction(TAG_TEST_REACTION_OVERRIDE);
 		val monitor = new ImportTestsExecutionMonitor();
@@ -371,7 +371,7 @@ class ImportTests extends AbstractReactionImportsTests {
 	}
 
 	@Test
-	public def void testOverrideTransitiveReaction() {
+	def void testOverrideTransitiveReaction() {
 		resetExecutionMonitor();
 		triggerReaction(TAG_TEST_TRANSITIVE_REACTION_OVERRIDE);
 		val monitor = new ImportTestsExecutionMonitor();
@@ -394,7 +394,7 @@ class ImportTests extends AbstractReactionImportsTests {
 	// override of imported routine:
 
 	@Test
-	public def void testCallOverriddenRoutineFromRoot() {
+	def void testCallOverriddenRoutineFromRoot() {
 		resetExecutionMonitor();
 		triggerReaction(ImportTests.TAG_CALL_OVERRIDDEN_ROUTINE, TAG_FROM_ROOT);
 		val monitor = new ImportTestsExecutionMonitor();
@@ -406,7 +406,7 @@ class ImportTests extends AbstractReactionImportsTests {
 	}
 
 	@Test
-	public def void testCallOverriddenRoutineFromOverriddenSegment() {
+	def void testCallOverriddenRoutineFromOverriddenSegment() {
 		resetExecutionMonitor();
 		triggerReaction(ImportTests.TAG_CALL_OVERRIDDEN_ROUTINE, TAG_FROM_OVERRIDDEN_SEGMENT);
 		val monitor = new ImportTestsExecutionMonitor();
@@ -420,7 +420,7 @@ class ImportTests extends AbstractReactionImportsTests {
 	// override of transitive imported routine:
 
 	@Test
-	public def void testCallOverriddenTransitiveRoutineFromRoot() {
+	def void testCallOverriddenTransitiveRoutineFromRoot() {
 		resetExecutionMonitor();
 		triggerReaction(ImportTests.TAG_CALL_OVERRIDDEN_TRANSITIVE_ROUTINE, TAG_FROM_ROOT);
 		val monitor = new ImportTestsExecutionMonitor();
@@ -432,7 +432,7 @@ class ImportTests extends AbstractReactionImportsTests {
 	}
 
 	@Test
-	public def void testCallOverriddenTransitiveRoutineFromOverriddenSegment() {
+	def void testCallOverriddenTransitiveRoutineFromOverriddenSegment() {
 		resetExecutionMonitor();
 		triggerReaction(ImportTests.TAG_CALL_OVERRIDDEN_TRANSITIVE_ROUTINE, TAG_FROM_OVERRIDDEN_SEGMENT);
 		val monitor = new ImportTestsExecutionMonitor();
@@ -444,7 +444,7 @@ class ImportTests extends AbstractReactionImportsTests {
 	}
 
 	@Test
-	public def void testCallOverriddenTransitiveRoutineFromSegmentInBetween() {
+	def void testCallOverriddenTransitiveRoutineFromSegmentInBetween() {
 		resetExecutionMonitor();
 		triggerReaction(ImportTests.TAG_CALL_OVERRIDDEN_TRANSITIVE_ROUTINE, TAG_FROM_SEGMENT_IN_BETWEEN);
 		val monitor = new ImportTestsExecutionMonitor();
@@ -458,7 +458,7 @@ class ImportTests extends AbstractReactionImportsTests {
 	// override of transitive imported routine, with independent override hierarchy:
 
 	@Test
-	public def void testCallOverriddenTransitiveRoutineWithSeparateOverrideHierarchyFromRoot() {
+	def void testCallOverriddenTransitiveRoutineWithSeparateOverrideHierarchyFromRoot() {
 		resetExecutionMonitor();
 		triggerReaction(ImportTests.TAG_CALL_OVERRIDDEN_TRANSITIVE_ROUTINE_WITH_SEPARATE_OVERRIDE_HIERARCHY, TAG_FROM_ROOT);
 		val monitor = new ImportTestsExecutionMonitor();
@@ -470,7 +470,7 @@ class ImportTests extends AbstractReactionImportsTests {
 	}
 
 	@Test
-	public def void testCallOverriddenTransitiveRoutineWithSeparateOverrideHierarchyFromOverriddenSegment() {
+	def void testCallOverriddenTransitiveRoutineWithSeparateOverrideHierarchyFromOverriddenSegment() {
 		resetExecutionMonitor();
 		triggerReaction(ImportTests.TAG_CALL_OVERRIDDEN_TRANSITIVE_ROUTINE_WITH_SEPARATE_OVERRIDE_HIERARCHY, TAG_FROM_OVERRIDDEN_SEGMENT);
 		val monitor = new ImportTestsExecutionMonitor();
@@ -482,7 +482,7 @@ class ImportTests extends AbstractReactionImportsTests {
 	}
 
 	@Test
-	public def void testCallOverriddenTransitiveRoutineWithSeparateOverrideHierarchyFromSegmentInBetween() {
+	def void testCallOverriddenTransitiveRoutineWithSeparateOverrideHierarchyFromSegmentInBetween() {
 		resetExecutionMonitor();
 		triggerReaction(ImportTests.TAG_CALL_OVERRIDDEN_TRANSITIVE_ROUTINE_WITH_SEPARATE_OVERRIDE_HIERARCHY, TAG_FROM_SEGMENT_IN_BETWEEN);
 		val monitor = new ImportTestsExecutionMonitor();
@@ -496,7 +496,7 @@ class ImportTests extends AbstractReactionImportsTests {
 	// override of transitive imported routine, that has also already been overridden by imported segment:
 
 	@Test
-	public def void testCallAlreadyOverriddenTransitiveRoutineFromRoot() {
+	def void testCallAlreadyOverriddenTransitiveRoutineFromRoot() {
 		resetExecutionMonitor();
 		triggerReaction(ImportTests.TAG_CALL_ALREADY_OVERRIDDEN_TRANSITIVE_ROUTINE, TAG_FROM_ROOT);
 		val monitor = new ImportTestsExecutionMonitor();
@@ -509,7 +509,7 @@ class ImportTests extends AbstractReactionImportsTests {
 	}
 
 	@Test
-	public def void testCallAlreadyOverriddenTransitiveRoutineFromOverriddenSegment() {
+	def void testCallAlreadyOverriddenTransitiveRoutineFromOverriddenSegment() {
 		resetExecutionMonitor();
 		triggerReaction(ImportTests.TAG_CALL_ALREADY_OVERRIDDEN_TRANSITIVE_ROUTINE, TAG_FROM_OVERRIDDEN_SEGMENT);
 		val monitor = new ImportTestsExecutionMonitor();
@@ -522,7 +522,7 @@ class ImportTests extends AbstractReactionImportsTests {
 	}
 
 	@Test
-	public def void testCallAlreadyOverriddenTransitiveRoutineFromSegmentInBetween() {
+	def void testCallAlreadyOverriddenTransitiveRoutineFromSegmentInBetween() {
 		resetExecutionMonitor();
 		triggerReaction(ImportTests.TAG_CALL_ALREADY_OVERRIDDEN_TRANSITIVE_ROUTINE, TAG_FROM_SEGMENT_IN_BETWEEN);
 		val monitor = new ImportTestsExecutionMonitor();
@@ -537,7 +537,7 @@ class ImportTests extends AbstractReactionImportsTests {
 	// imported segment overriding transitive imported routine:
 
 	@Test
-	public def void testCallTransitiveRoutineOverriddenByImportedSegmentFromRoot() {
+	def void testCallTransitiveRoutineOverriddenByImportedSegmentFromRoot() {
 		resetExecutionMonitor();
 		triggerReaction(ImportTests.TAG_CALL_TRANSITIVE_ROUTINE_OVERRIDDEN_BY_IMPORTED_SEGMENT, TAG_FROM_ROOT);
 		val monitor = new ImportTestsExecutionMonitor();
@@ -549,7 +549,7 @@ class ImportTests extends AbstractReactionImportsTests {
 	}
 
 	@Test
-	public def void testCallTransitiveRoutineOverriddenByImportedSegmentFromOverriddenSegment() {
+	def void testCallTransitiveRoutineOverriddenByImportedSegmentFromOverriddenSegment() {
 		resetExecutionMonitor();
 		triggerReaction(ImportTests.TAG_CALL_TRANSITIVE_ROUTINE_OVERRIDDEN_BY_IMPORTED_SEGMENT, TAG_FROM_OVERRIDDEN_SEGMENT);
 		val monitor = new ImportTestsExecutionMonitor();
@@ -561,7 +561,7 @@ class ImportTests extends AbstractReactionImportsTests {
 	}
 
 	@Test
-	public def void testCallTransitiveRoutineOverriddenByImportedSegmentFromSegmentInBetween() {
+	def void testCallTransitiveRoutineOverriddenByImportedSegmentFromSegmentInBetween() {
 		resetExecutionMonitor();
 		triggerReaction(ImportTests.TAG_CALL_TRANSITIVE_ROUTINE_OVERRIDDEN_BY_IMPORTED_SEGMENT, TAG_FROM_SEGMENT_IN_BETWEEN);
 		val monitor = new ImportTestsExecutionMonitor();
@@ -575,7 +575,7 @@ class ImportTests extends AbstractReactionImportsTests {
 	// multiple imports and overrides of the same routines at different import paths:
 
 	@Test
-	public def void testMultipleImportsOfSameRoutines() {
+	def void testMultipleImportsOfSameRoutines() {
 		// import path 1:
 		resetExecutionMonitor();
 		triggerReaction(TAG_TEST_MULTIPLE_IMPORTS_OF_SAME_ROUTINES_IMPORT_PATH_1);

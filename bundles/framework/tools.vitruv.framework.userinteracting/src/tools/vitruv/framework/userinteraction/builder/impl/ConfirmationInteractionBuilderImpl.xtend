@@ -17,7 +17,7 @@ import tools.vitruv.framework.userinteraction.builder.ConfirmationInteractionBui
  * @author Dominik Klooz
  * @author Heiko Klare
  */
-public class ConfirmationInteractionBuilderImpl extends BaseInteractionBuilder<Boolean, ConfirmationInteraction, OptionalSteps> implements ConfirmationInteractionBuilder, OptionalSteps {
+class ConfirmationInteractionBuilderImpl extends BaseInteractionBuilder<Boolean, ConfirmationInteraction, OptionalSteps> implements ConfirmationInteractionBuilder, OptionalSteps {
 	new(InteractionFactory interactionFactory, Iterable<UserInteractionListener> userInteractionListener) {
 		super(interactionFactory, userInteractionListener)
 	}

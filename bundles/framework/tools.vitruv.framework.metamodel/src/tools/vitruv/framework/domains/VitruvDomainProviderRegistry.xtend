@@ -16,7 +16,7 @@ import org.apache.log4j.Logger
  */
 class VitruvDomainProviderRegistry {
 
-	private static val LOGGER = Logger.getLogger(VitruvDomainProviderRegistry)
+	static val LOGGER = Logger.getLogger(VitruvDomainProviderRegistry)
 
 	private new() {
 	}

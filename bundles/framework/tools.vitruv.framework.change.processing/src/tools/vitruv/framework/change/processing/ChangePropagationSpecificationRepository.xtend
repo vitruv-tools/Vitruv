@@ -7,13 +7,13 @@ import java.util.ArrayList
 import tools.vitruv.framework.domains.VitruvDomain
 
 class ChangePropagationSpecificationRepository implements ChangePropagationSpecificationProvider {
-	private Map<VitruvDomain, List<ChangePropagationSpecification>> metamodelToPropagationSpecifications;
+	Map<VitruvDomain, List<ChangePropagationSpecification>> metamodelToPropagationSpecifications;
 
-	public new() {
+	new() {
 		metamodelToPropagationSpecifications = new HashMap<VitruvDomain, List<ChangePropagationSpecification>>();
 	}
 	
-	public override List<ChangePropagationSpecification> getChangePropagationSpecifications(VitruvDomain sourceDomain) {
+	override List<ChangePropagationSpecification> getChangePropagationSpecifications(VitruvDomain sourceDomain) {
 		val result = new ArrayList<ChangePropagationSpecification>();
 		if (metamodelToPropagationSpecifications.containsKey(sourceDomain)) {
 			result.addAll(metamodelToPropagationSpecifications.get(sourceDomain));
@@ -21,7 +21,7 @@ class ChangePropagationSpecificationRepository implements ChangePropagationSpeci
 		return result;
 	}
 	
-	public def void putChangePropagationSpecification(ChangePropagationSpecification changePropagationSpecification) {
+	def void putChangePropagationSpecification(ChangePropagationSpecification changePropagationSpecification) {
 		val changedDomain = changePropagationSpecification.sourceDomain;
 		if (!this.metamodelToPropagationSpecifications.containsKey(changedDomain)) {
 			this.metamodelToPropagationSpecifications.put(changedDomain, new ArrayList<ChangePropagationSpecification>());

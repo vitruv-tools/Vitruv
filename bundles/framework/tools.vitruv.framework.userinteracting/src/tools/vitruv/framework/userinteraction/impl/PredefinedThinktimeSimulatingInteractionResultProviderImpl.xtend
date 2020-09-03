@@ -13,12 +13,12 @@ import tools.vitruv.framework.userinteraction.InteractionResultProvider
  * 
  * @author Heiko Klare
  */
-public class PredefinedThinktimeSimulatingInteractionResultProviderImpl extends PredefinedInteractionResultProviderImpl {
-	private static final Logger logger = Logger.getLogger(PredefinedThinktimeSimulatingInteractionResultProviderImpl);
-	private final Random random;
-	private final int minWaittime;
-	private final int maxWaittime;
-	private final int waitTimeRange;
+class PredefinedThinktimeSimulatingInteractionResultProviderImpl extends PredefinedInteractionResultProviderImpl {
+	static final Logger logger = Logger.getLogger(PredefinedThinktimeSimulatingInteractionResultProviderImpl);
+	final Random random;
+	final int minWaittime;
+	final int maxWaittime;
+	final int waitTimeRange;
 
 	/**
 	 * {@inheritDoc}

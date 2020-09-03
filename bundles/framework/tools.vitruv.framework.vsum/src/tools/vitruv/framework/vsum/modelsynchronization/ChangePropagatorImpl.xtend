@@ -41,7 +41,7 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 	final ModelRepositoryImpl modelRepository;
 	final List<EObject> objectsCreatedDuringPropagation;
 	final InternalUserInteractor userInteractor;
-	private final Collection<UserInteractionBase> userInteractions = new LinkedList();
+	final Collection<UserInteractionBase> userInteractions = new LinkedList();
 
 	new(ModelRepository resourceRepository, ChangePropagationSpecificationProvider changePropagationProvider,
 		VitruvDomainRepository metamodelRepository, CorrespondenceProviding correspondenceProviding,

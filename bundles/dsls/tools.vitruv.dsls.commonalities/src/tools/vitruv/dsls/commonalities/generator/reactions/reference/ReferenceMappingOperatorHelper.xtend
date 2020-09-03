@@ -23,7 +23,7 @@ import static extension tools.vitruv.dsls.commonalities.language.extensions.Comm
 
 class ReferenceMappingOperatorHelper extends ReactionsGenerationHelper {
 
-	public static class ReferenceMappingOperatorContext implements OperatorContext {
+	static class ReferenceMappingOperatorContext implements OperatorContext {
 
 		val extension TypeProvider typeProvider
 

@@ -30,7 +30,7 @@ class MappingRoutinesGenerator {
 	/**
 	 * Generates the routines for a mapping specification
 	 */
-	public def generateRoutines(String mappingName, MappingGeneratorContext context,
+	def generateRoutines(String mappingName, MappingGeneratorContext context,
 		List<AbstractSingleSidedCondition<?>> singleSidedConditions,
 		List<AbstractSingleSidedCondition<?>> correspondingSingleSidedConditions,
 		List<AbstractBidirectionalCondition> bidirectionalConditions) {
@@ -49,7 +49,7 @@ class MappingRoutinesGenerator {
 	/**
 	 * Connects a reaction trigger with a generated routine by creating a routine-call
 	 */
-	public def generateRoutineCall(PreconditionOrRoutineCallBuilder reactionBuilder,
+	def generateRoutineCall(PreconditionOrRoutineCallBuilder reactionBuilder,
 		AbstractReactionTriggerGenerator generator) {
 		switch (generator.getScenarioType) {
 			case CREATE:

@@ -64,7 +64,7 @@ class MappingParameterGraphTraverser {
 	/**
 	 * Returns a path between two nodes in the graph
 	 */
-	public def findPath(String from, String to) {
+	def findPath(String from, String to) {
 		val fromNode = nodes.get(from)
 		val toNode = nodes.get(to)
 		fromNode.findPath(toNode, new NodePath(fromNode))
@@ -74,7 +74,7 @@ class MappingParameterGraphTraverser {
 	 * Finds the shortest path between a list of start nodes to a target node.
 	 * The returned path starts from one of the start nodes and ends at the target node.
 	 */
-	public def findPath(List<String> startPoints, String to) {
+	def findPath(List<String> startPoints, String to) {
 		startPoints.map[it.findPath(to)].minBy[it.steps.size]
 	}
 
@@ -82,7 +82,7 @@ class MappingParameterGraphTraverser {
 	 * Returns a path with one step from a list of start nodes. The target node is of the remaining
 	 * nodes in the graph without the starting nodes. 
 	 */
-	public def findStepToNextNode(List<String> startPoints) {
+	def findStepToNextNode(List<String> startPoints) {
 		val remainingNodes = nodes.keySet.filter[!startPoints.contains(it)]
 		if(remainingNodes.empty){
 			throw new IllegalStateException('Can not find step to next node, because all nodes are visited already!')
@@ -98,16 +98,16 @@ class MappingParameterGraphTraverser {
 	/**
 	 * Returns a node by its key
 	 */
-	public def getNode(String parameter) {
+	def getNode(String parameter) {
 		return nodes.get(parameter)
 	}
 
-	public static class Node {
-		private List<Node> parents = new ArrayList
+	static class Node {
+		List<Node> parents = new ArrayList
 		@Accessors(PUBLIC_GETTER)
-		private List<ChildNode> children = new ArrayList
+		List<ChildNode> children = new ArrayList
 		@Accessors(PUBLIC_GETTER)
-		private String parameter
+		String parameter
 
 		new(String parameter) {
 			this.parameter = parameter
@@ -116,7 +116,7 @@ class MappingParameterGraphTraverser {
 		/**
 		 * Adds a parent node
 		 */
-		public def addParent(Node parent) {
+		def addParent(Node parent) {
 			if (!parents.contains(parent)) {
 				parents += parent
 				containmentCheck
@@ -139,21 +139,21 @@ class MappingParameterGraphTraverser {
 		/**
 		 * Returns a child node by its parameter
 		 */
-		public def getChild(String childParameter) {
+		def getChild(String childParameter) {
 			children.findFirst[node.parameter == childParameter]
 		}
 		
 		/**
 		 * Adds a child node
 		 */
-		public def addChild(Node child, EReference inFeature) {
+		def addChild(Node child, EReference inFeature) {
 			this.children += new ChildNode(child, inFeature)
 		}
 		
 		/**
 		 * Checks for cycles in the graph. If a cycle is found, an exception will be thrown
 		 */
-		public def void cycleCheck(List<Node> visitedNodes) throws IllegalStateException{
+		def void cycleCheck(List<Node> visitedNodes) throws IllegalStateException{
 			if (parents.empty) {
 				// top level node
 				return
@@ -173,7 +173,7 @@ class MappingParameterGraphTraverser {
 		 * Returns the count of other nodes in the graph that can be reached from this node,
 		 * provided a list of already reached nodes.
 		 */
-		public def int reachableNodesCount(List<Node> discoveredNodes) {
+		def int reachableNodesCount(List<Node> discoveredNodes) {
 			if (!discoveredNodes.contains(this)) {
 				discoveredNodes += this
 			}
@@ -197,7 +197,7 @@ class MappingParameterGraphTraverser {
 		/**
 		 * Finds a path from this node to a target node
 		 */
-		public def NodePath findPath(Node node, NodePath path) {
+		def NodePath findPath(Node node, NodePath path) {
 			if (this == node) {
 				// found node
 				return path
@@ -233,11 +233,11 @@ class MappingParameterGraphTraverser {
 
 	}
 
-	public static class ChildNode {
+	static class ChildNode {
 		@Accessors(PUBLIC_GETTER)
-		private Node node
+		Node node
 		@Accessors(PUBLIC_GETTER)
-		private EReference inFeature
+		EReference inFeature
 
 		new(Node node, EReference inFeature) {
 			this.node = node
@@ -245,10 +245,10 @@ class MappingParameterGraphTraverser {
 		}
 	}
 
-	public static class NodePath {
-		private Node startNode
+	static class NodePath {
+		Node startNode
 		@Accessors(PUBLIC_GETTER)
-		private List<TraverseStep> steps = new ArrayList
+		List<TraverseStep> steps = new ArrayList
 
 		new(Node startNode) {
 			this.startNode = startNode
@@ -257,7 +257,7 @@ class MappingParameterGraphTraverser {
 		/**
 		 * Returns the start node name
 		 */
-		public def getStartNode() {
+		def getStartNode() {
 			startNode.parameter
 		}
 
@@ -272,7 +272,7 @@ class MappingParameterGraphTraverser {
 		}
 	}
 
-	public abstract static class TraverseStep {
+	abstract static class TraverseStep {
 		@Accessors(PUBLIC_GETTER)
 		protected EReference feature
 		protected Node to
@@ -285,12 +285,12 @@ class MappingParameterGraphTraverser {
 		/**
 		 * Returns the feature name of the edge traversed in this step
 		 */
-		public def getParameter() {
+		def getParameter() {
 			return to.parameter
 		}
 	}
 
-	public static class TraverseStepDown extends TraverseStep {
+	static class TraverseStepDown extends TraverseStep {
 
 		new(ChildNode to) {
 			super(to.node, to.inFeature)
@@ -302,7 +302,7 @@ class MappingParameterGraphTraverser {
 		}
 	}
 
-	public static class TraverseStepUp extends TraverseStep {
+	static class TraverseStepUp extends TraverseStep {
 		new(Node to, EReference feature) {
 			super(to, feature)
 		}

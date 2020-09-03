@@ -570,7 +570,7 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 	}
 
 	static class RoutineCallParameter {
-		private Object argument;
+		Object argument;
 
 		new(String parameter) {
 			this.argument = parameter
@@ -734,7 +734,7 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 		'''routine builder for «routine.name»'''
 	}
 
-	def public getJvmOperation() {
+	def getJvmOperation() {
 		val jvmMethod = context.jvmModelAssociator.getPrimaryJvmElement(routine)
 		if (jvmMethod instanceof JvmOperation) {
 			return jvmMethod

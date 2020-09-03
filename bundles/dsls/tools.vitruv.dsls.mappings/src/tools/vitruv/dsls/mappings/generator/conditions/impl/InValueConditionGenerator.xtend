@@ -27,21 +27,21 @@ class InValueConditionGenerator extends MultiValueConditionGenerator {
 	/**
 	 * Returns the child parameter of this  in-value condition
 	 */
-	public def getChildParameter() {
+	def getChildParameter() {
 		featureCondition.leftMappingParameter
 	}
 
 	/**
 	 * Returns the parent parameter of this  in-value condition
 	 */
-	public def getParentParameter() {
+	def getParentParameter() {
 		featureCondition.feature.parameter
 	}
 
 	/**
 	 * Returns the feature of this  in-value condition
 	 */
-	public def getInFeature() {
+	def getInFeature() {
 		featureCondition.feature.feature
 	}
 

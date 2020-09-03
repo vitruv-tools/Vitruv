@@ -11,7 +11,7 @@ import org.eclipse.emf.ecore.change.impl.ChangeDescriptionImpl
 import tools.vitruv.framework.uuid.UuidGeneratorAndResolver
 
 class ModelRepositoryImpl {
-	private val logger = Logger.getLogger(ModelRepositoryImpl);
+	val logger = Logger.getLogger(ModelRepositoryImpl);
 	val Set<EObject> rootElements;
 	val Map<EObject, AtomicEmfChangeRecorder> rootToRecorder;
 	var boolean isRecording = false;
@@ -23,7 +23,7 @@ class ModelRepositoryImpl {
 		rootToRecorder = new HashMap<EObject, AtomicEmfChangeRecorder>();
 	}
 	
-	public def void addRootElement(EObject rootElement) {
+	def void addRootElement(EObject rootElement) {
 		if (rootElements.contains(rootElement)) {
 			return;
 		}
@@ -37,7 +37,7 @@ class ModelRepositoryImpl {
 		}
 	}
 	
-	public def void cleanupRootElements() {
+	def void cleanupRootElements() {
 		val elementsToRemove = newArrayList() 
 		for (rootElement : rootElements) {
 			if (rootElement.eContainer !== null && !(rootElement.eContainer instanceof ChangeDescriptionImpl)) {
@@ -51,7 +51,7 @@ class ModelRepositoryImpl {
 		];
 	}
 	
-	public def void cleanupRootElementsWithoutResource() {
+	def void cleanupRootElementsWithoutResource() {
 		val elementsToRemove = newArrayList() 
 		for (rootElement : rootElements) {
 			if (rootElement.eResource === null) {
@@ -65,14 +65,14 @@ class ModelRepositoryImpl {
 		];
 	}
 	
-	public def void startRecording() {
+	def void startRecording() {
 		for (root : rootElements) {
 			startRecordingForElement(root)
 		}
 		isRecording = true;
 	}
 	
-	public def endRecording() {
+	def endRecording() {
 		val result = newArrayList();
 		for (root : rootToRecorder.keySet) {
 			rootToRecorder.get(root).endRecording();

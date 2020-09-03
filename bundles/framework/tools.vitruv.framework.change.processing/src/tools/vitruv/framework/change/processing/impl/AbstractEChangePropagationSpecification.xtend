@@ -8,7 +8,7 @@ import tools.vitruv.framework.domains.VitruvDomain
 import tools.vitruv.framework.util.command.ResourceAccess
 
 abstract class AbstractEChangePropagationSpecification extends AbstractChangePropagationSpecification {
-	private final static val LOGGER = Logger.getLogger(AbstractEChangePropagationSpecification);
+	static val LOGGER = Logger.getLogger(AbstractEChangePropagationSpecification);
 
 	new(VitruvDomain sourceDomain, VitruvDomain targetDomain) {
 		super(sourceDomain, targetDomain);

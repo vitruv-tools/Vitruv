@@ -15,7 +15,7 @@ import tools.vitruv.framework.userinteraction.types.MultipleChoiceSingleSelectio
  * @author Dominik Klooz
  * @author Heiko Klare
  */
-public class MultipleChoiceSingleSelectionInteractionBuilderImpl extends MultipleChoiceSelectionInteractionBuilderBaseImpl<Integer, MultipleChoiceSingleSelectionInteraction> implements MultipleChoiceSingleSelectionInteractionBuilder {
+class MultipleChoiceSingleSelectionInteractionBuilderImpl extends MultipleChoiceSelectionInteractionBuilderBaseImpl<Integer, MultipleChoiceSingleSelectionInteraction> implements MultipleChoiceSingleSelectionInteractionBuilder {
 
 	new(InteractionFactory interactionFactory, Iterable<UserInteractionListener> userInteractionListener) {
 		super(interactionFactory, userInteractionListener)

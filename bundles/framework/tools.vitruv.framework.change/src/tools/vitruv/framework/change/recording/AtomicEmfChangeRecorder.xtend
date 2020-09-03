@@ -182,7 +182,7 @@ class AtomicEmfChangeRecorder {
 		return createdObjects;
 	}
 
-	public def List<TransactionalChange> getChanges() {
+	def List<TransactionalChange> getChanges() {
 		return changes;
 	}
 

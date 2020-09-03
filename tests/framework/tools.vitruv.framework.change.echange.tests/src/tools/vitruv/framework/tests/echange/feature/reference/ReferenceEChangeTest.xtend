@@ -11,7 +11,7 @@ import tools.vitruv.framework.tests.echange.EChangeTest
 /**
  * Abstract class which is used by all test classes for references.
  */
-public abstract class ReferenceEChangeTest extends EChangeTest {
+abstract class ReferenceEChangeTest extends EChangeTest {
 	protected var Root affectedEObject = null
 	protected var NonRoot newValue = null
 	protected var NonRoot newValue2 = null
@@ -21,7 +21,7 @@ public abstract class ReferenceEChangeTest extends EChangeTest {
 	 * Sets the default object and new value for tests.
 	 */
 	@Before
-	override public void beforeTest() {
+	override void beforeTest() {
 		super.beforeTest()
 		affectedEObject = rootObject
 		newValue = AllElementTypesFactory.eINSTANCE.createNonRoot()

@@ -4,19 +4,19 @@ import java.util.Map
 import java.io.File
 
 final class VirtualModelManager {
-	private Map<File, InternalVirtualModel> folderToVirtualModelMap;
+	Map<File, InternalVirtualModel> folderToVirtualModelMap;
 	
-	private static val instance = new VirtualModelManager();
+	static val instance = new VirtualModelManager();
 	
 	private new() {
 		this.folderToVirtualModelMap = newHashMap();
 	}
 	
-	public static def getInstance() {
+	static def getInstance() {
 		return instance;
 	}
 	
-	public def getVirtualModel(File folder) {
+	def getVirtualModel(File folder) {
 		if (folderToVirtualModelMap.containsKey(folder)) {
 			return folderToVirtualModelMap.get(folder);
 		} else {
@@ -31,7 +31,7 @@ final class VirtualModelManager {
 		}
 	}
 	
-	public def putVirtualModel(InternalVirtualModel model) {
+	def putVirtualModel(InternalVirtualModel model) {
 		folderToVirtualModelMap.put(model.folder, model);
 	}
 }

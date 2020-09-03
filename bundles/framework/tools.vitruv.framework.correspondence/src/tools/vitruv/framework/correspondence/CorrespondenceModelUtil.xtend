@@ -23,7 +23,7 @@ class CorrespondenceModelUtil {
 	 *         no correspondences.
 	 */
 	// FIXME ML is this method correct? Is there some cool Xtend feature which makes this method shorter? 
-	def public static Set<EObject> getCorrespondingEObjects(CorrespondenceModelView<?> ci, EObject eObject) {
+	def static Set<EObject> getCorrespondingEObjects(CorrespondenceModelView<?> ci, EObject eObject) {
 		val correspondingEObjects = ci.getCorrespondingEObjects(eObject.toList)
 		val eObjects = Sets.newHashSet
 		correspondingEObjects.forEach(list|eObjects.addAll(list))
@@ -39,7 +39,7 @@ class CorrespondenceModelUtil {
 	 * @param b
 	 * @return
 	 */
-	def public static Correspondence claimUniqueCorrespondence(CorrespondenceModelView<Correspondence> ci,
+	def static Correspondence claimUniqueCorrespondence(CorrespondenceModelView<Correspondence> ci,
 		EObject eObject) {
 		return ci.getCorrespondences(eObject.toList).claimOne
 	}
@@ -52,12 +52,12 @@ class CorrespondenceModelUtil {
 	 *            the object for which correspondences are to be returned
 	 * @return the correspondences for the specified object
 	 */
-	def public static Set<Correspondence> claimCorrespondences(CorrespondenceModelView<?> ci,
+	def static Set<Correspondence> claimCorrespondences(CorrespondenceModelView<?> ci,
 		EObject eObject) {
 		return ci.getCorrespondences(eObject.toList).claimNotEmpty as Set<Correspondence>
 	}
 
-	def public static Correspondence createAndAddCorrespondence(CorrespondenceModel ci, EObject a, EObject b) {
+	def static Correspondence createAndAddCorrespondence(CorrespondenceModel ci, EObject a, EObject b) {
 		return ci.createAndAddCorrespondence(a.toList, b.toList, null)
 	}
 
@@ -73,7 +73,7 @@ class CorrespondenceModelUtil {
 	 * @return the corresponding object of the specified type for the specified object if there is
 	 *         exactly one corresponding object of this type
 	 */
-	def public static <T, U extends Correspondence> Set<T> getCorrespondingEObjectsByType(CorrespondenceModelView<U> ci,
+	def static <T, U extends Correspondence> Set<T> getCorrespondingEObjectsByType(CorrespondenceModelView<U> ci,
 		EObject eObject, Class<T> type) {
 		// return getCorrespondingEObjects(ci, eObject).filter[eObj | type.isInstance(eObj)].toSet
 		val Set<T> retSet = Sets.newHashSet

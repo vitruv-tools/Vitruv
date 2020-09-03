@@ -35,7 +35,7 @@ import tools.vitruv.framework.change.echange.feature.UnsetFeature
  * Can be used by any transformation that creates change models.
  */
 class TypeInferringAtomicEChangeFactory {
-	private static TypeInferringAtomicEChangeFactory instance
+	static TypeInferringAtomicEChangeFactory instance
 
 	protected new() {
 	}
@@ -44,7 +44,7 @@ class TypeInferringAtomicEChangeFactory {
 	 * Get the singleton instance of the factory.
 	 * @return The singleton instance.
 	 */
-	def public static TypeInferringAtomicEChangeFactory getInstance() {
+	def static TypeInferringAtomicEChangeFactory getInstance() {
 		if (instance === null) {
 			instance = new TypeInferringAtomicEChangeFactory()
 		}

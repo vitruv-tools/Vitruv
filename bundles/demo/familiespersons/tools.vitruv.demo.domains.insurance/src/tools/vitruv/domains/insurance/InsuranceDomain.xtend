@@ -7,8 +7,8 @@ import edu.kit.ipd.sdq.metamodels.insurance.InsurancePackage
 import tools.vitruv.domains.insurance.tuid.InsuranceTuidCalculatorAndResolver
 
 class InsuranceDomain extends AbstractTuidAwareVitruvDomain {
-	private static final String METAMODEL_NAME = "Insurance";
-	private static val FILE_EXTENSION = "insurance"
+	static final String METAMODEL_NAME = "Insurance";
+	static val FILE_EXTENSION = "insurance"
 	public static val NAMESPACE_URIS = InsurancePackage.eINSTANCE.nsURIsRecursive;
 
 	package new() {

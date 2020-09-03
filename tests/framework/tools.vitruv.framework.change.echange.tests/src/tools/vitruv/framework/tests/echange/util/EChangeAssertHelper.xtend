@@ -14,7 +14,7 @@ class EChangeAssertHelper {
  	/**
  	 * Tests whether a unresolved change and a resolved change are the same class.
  	 */
- 	def public static void assertDifferentChangeSameClass(EChange unresolvedChange, EChange resolvedChange)	 {
+ 	def static void assertDifferentChangeSameClass(EChange unresolvedChange, EChange resolvedChange)	 {
  		Assert.assertFalse(unresolvedChange.isResolved)
  		Assert.assertTrue(resolvedChange.isResolved)
  		Assert.assertNotSame(unresolvedChange, resolvedChange)
@@ -24,7 +24,7 @@ class EChangeAssertHelper {
  	/**
  	 * Tests whether a unresolved changes and a resolved changes are the same classes.
  	 */
- 	def public static void assertDifferentChangeSameClass(List<? extends EChange> unresolvedChange, List<? extends EChange> resolvedChange)	 {
+ 	def static void assertDifferentChangeSameClass(List<? extends EChange> unresolvedChange, List<? extends EChange> resolvedChange)	 {
  		Assert.assertEquals(unresolvedChange.size, resolvedChange.size)
  		for (var i = 0; i < unresolvedChange.size; i++) {
  			assertDifferentChangeSameClass(unresolvedChange.get(i), resolvedChange.get(i))
@@ -34,7 +34,7 @@ class EChangeAssertHelper {
  	/**
  	 * Tests whether two objects are the same object or copies of each other.
  	 */
- 	def public static void assertEqualsOrCopy(Object object1, Object object2) {
+ 	def static void assertEqualsOrCopy(Object object1, Object object2) {
  		if (object1 === null && object2 === null) {
  			return;
  		}
@@ -46,7 +46,7 @@ class EChangeAssertHelper {
 	/**
 	 * Tests whether a change is resolved and applies it forward.
 	 */
-	def public static void assertApplyForward(EChange change) {
+	def static void assertApplyForward(EChange change) {
 		Assert.assertNotNull(change)
 		Assert.assertTrue(change.isResolved)
 		Assert.assertTrue(change.applyForward)
@@ -55,14 +55,14 @@ class EChangeAssertHelper {
 	/**
 	 * Tests whether a change sequence is resolved and applies it forward.
 	 */
-	def public static void assertApplyForward(List<EChange> change) {
+	def static void assertApplyForward(List<EChange> change) {
 		change.forEach[assertApplyForward]
 	}
 	
 	/**
 	 * Tests whether a change is resolved and applies it backward.
 	 */
-	def public static void assertApplyBackward(EChange change) {
+	def static void assertApplyBackward(EChange change) {
 		Assert.assertNotNull(change)
 		Assert.assertTrue(change.isResolved)
 		Assert.assertTrue(change.applyBackward)
@@ -71,14 +71,14 @@ class EChangeAssertHelper {
 	/**
 	 * Tests whether a change sequence is resolved and applies it backward.
 	 */
-	def public static void assertApplyBackward(List<EChange> change) {
+	def static void assertApplyBackward(List<EChange> change) {
 		change.reverseView.forEach[assertApplyBackward]
 	}
 	
 	/**
 	 * Tests whether an non applicable change could be applied forward.
 	 */	
-	def public static void assertCannotBeAppliedForward(EChange change) {
+	def static void assertCannotBeAppliedForward(EChange change) {
 		var boolean exceptionThrown = false
 		try {
 			change.applyForward
@@ -93,7 +93,7 @@ class EChangeAssertHelper {
 	/**
 	 * Tests whether an non applicable change could be applied backward.
 	 */
-	def public static void assertCannotBeAppliedBackward(EChange change) {
+	def static void assertCannotBeAppliedBackward(EChange change) {
 		var boolean exceptionThrown = false
 		try {
 			change.applyForward

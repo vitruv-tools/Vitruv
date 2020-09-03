@@ -36,7 +36,7 @@ class SetMultimapElementsRegistry implements IElementsRegistry {
 		}
 	}
 	
-	override def <C extends EObject> void removeElement(Class<C> clazz, C element) {
+	override <C extends EObject> void removeElement(Class<C> clazz, C element) {
 		val wasMapped = elementsMap.remove(clazz, element)
 		if (!wasMapped) {
 			throw new IllegalStateException('''Cannot deregister the element '«element»' for the mapping '«mappingName»'

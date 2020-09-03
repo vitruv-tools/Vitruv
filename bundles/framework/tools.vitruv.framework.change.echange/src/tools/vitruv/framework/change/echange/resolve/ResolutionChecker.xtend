@@ -11,39 +11,39 @@ import tools.vitruv.framework.change.echange.root.InsertRootEObject
 import tools.vitruv.framework.change.echange.root.RemoveRootEObject
 
 class ResolutionChecker {
-	public static def dispatch isResolved(EChange echange) {
+	static def dispatch isResolved(EChange echange) {
 		return true;
 	}
 	
-	public static def dispatch isResolved(EObjectExistenceEChange<?> existenceChange) {
+	static def dispatch isResolved(EObjectExistenceEChange<?> existenceChange) {
 		return (existenceChange.getAffectedEObject() !== null &&
 			!existenceChange.getAffectedEObject().eIsProxy());// && 
 			//existenceChange.getStagingArea() !== null);
 	}
 	
-	public static def dispatch isResolved(FeatureEChange<?,?> featureChange) {
+	static def dispatch isResolved(FeatureEChange<?,?> featureChange) {
 		return featureChange.isFeatureChangeResolved;
 	}
 	
-	public static def isFeatureChangeResolved(FeatureEChange<?,?> featureChange) {
+	static def isFeatureChangeResolved(FeatureEChange<?,?> featureChange) {
 		return (featureChange.getAffectedEObject() !== null &&
 			!featureChange.getAffectedEObject().eIsProxy() && 
 			featureChange.getAffectedFeature() !== null);
 	}
 	
-	public static def dispatch isResolved(InsertEReference<?,?> insertEReferenceChange) {
+	static def dispatch isResolved(InsertEReference<?,?> insertEReferenceChange) {
 		return (insertEReferenceChange.newValue === null
 			|| ! insertEReferenceChange.newValue.eIsProxy)
 			&& insertEReferenceChange.featureChangeResolved;	
 	}
 	
-	public static def dispatch isResolved(RemoveEReference<?,?> removeEReferenceChange) {
+	static def dispatch isResolved(RemoveEReference<?,?> removeEReferenceChange) {
 		return (removeEReferenceChange.oldValue === null
 			|| ! removeEReferenceChange.oldValue.eIsProxy)
 			&& removeEReferenceChange.featureChangeResolved;	
 	}
 	
-	public static def dispatch isResolved(ReplaceSingleValuedEReference<?,?> replaceSingleValuedEReferenceChange) {
+	static def dispatch isResolved(ReplaceSingleValuedEReference<?,?> replaceSingleValuedEReferenceChange) {
 		return (replaceSingleValuedEReferenceChange.oldValue === null
 			|| ! replaceSingleValuedEReferenceChange.oldValue.eIsProxy)
 			&& (replaceSingleValuedEReferenceChange.newValue === null
@@ -51,21 +51,21 @@ class ResolutionChecker {
 			&& replaceSingleValuedEReferenceChange.featureChangeResolved;	
 	}
 	
-	public static def dispatch isResolved(RootEChange rootChange) {
+	static def dispatch isResolved(RootEChange rootChange) {
 		return rootChange.isRootChangeResolved;
 	}
 	
-	public static def isRootChangeResolved(RootEChange rootChange) {
+	static def isRootChangeResolved(RootEChange rootChange) {
 		return rootChange.resource !== null;
 	}
 	
-	public static def dispatch isResolved(InsertRootEObject<?> insertRootChange) {
+	static def dispatch isResolved(InsertRootEObject<?> insertRootChange) {
 		return insertRootChange.newValue !== null &&
 			!insertRootChange.newValue.eIsProxy && 
 			insertRootChange.isRootChangeResolved;
 	}
 	
-	public static def dispatch isResolved(RemoveRootEObject<?> removeRootChange) {
+	static def dispatch isResolved(RemoveRootEObject<?> removeRootChange) {
 		return removeRootChange.oldValue !== null &&
 			!removeRootChange.oldValue.eIsProxy && 
 			removeRootChange.isRootChangeResolved;

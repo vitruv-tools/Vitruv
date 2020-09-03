@@ -21,14 +21,14 @@ import tools.vitruv.dsls.reactions.codegen.typesbuilder.TypesBuilderExtensionPro
  * and {@link ClassGenerator#generateBody(JvmGenericType) generateBody} for those steps.
  */
 abstract class ClassGenerator extends TypesBuilderExtensionProvider implements IJvmOperationRegistry {
-	private Map<String, JvmOperation> methodMap;
+	Map<String, JvmOperation> methodMap;
 
 	protected def generateAccessibleElementsParameters(EObject sourceObject,
 		Iterable<AccessibleElement> accessibleElements) {
 			sourceObject.generateMethodInputParameters(accessibleElements)
 	}
 
-	public new(TypesBuilderExtensionProvider typesBuilderExtensionProvider) {
+	new(TypesBuilderExtensionProvider typesBuilderExtensionProvider) {
 		typesBuilderExtensionProvider.copyBuildersTo(this);
 		this.methodMap = new HashMap<String, JvmOperation>();
 	}

@@ -11,7 +11,7 @@ import static extension tools.vitruv.dsls.reactions.codegen.helper.ClassNamesGen
 import static extension tools.vitruv.dsls.reactions.codegen.helper.ReactionsLanguageHelper.*
 
 class ChangePropagationSpecificationClassGenerator extends ClassGenerator {
-	private final ReactionsSegment reactionsSegment;
+	final ReactionsSegment reactionsSegment;
 	var JvmGenericType generatedClass;
 	
 	new(ReactionsSegment reactionsSegment, TypesBuilderExtensionProvider typesBuilderExtensionProvider) {

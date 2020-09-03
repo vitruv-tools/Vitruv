@@ -12,10 +12,10 @@ import tools.vitruv.framework.userinteraction.InteractionResultProvider
  * @author Dominik Klooz
  * @author Heiko Klare
  */
-public class NotificationInteraction extends BaseInteraction<NotificationUserInteraction> {
-	private static val DEFAULT_TITLE = "NOTIFICATION";
-	private static val DEFAULT_MESSAGE = "";
-	private NotificationType notificationType;
+class NotificationInteraction extends BaseInteraction<NotificationUserInteraction> {
+	static val DEFAULT_TITLE = "NOTIFICATION";
+	static val DEFAULT_MESSAGE = "";
+	NotificationType notificationType;
 
 	protected new(InteractionResultProvider interactionResultProvider, WindowModality windowModality) {
 		super(interactionResultProvider, windowModality, DEFAULT_TITLE, DEFAULT_MESSAGE)

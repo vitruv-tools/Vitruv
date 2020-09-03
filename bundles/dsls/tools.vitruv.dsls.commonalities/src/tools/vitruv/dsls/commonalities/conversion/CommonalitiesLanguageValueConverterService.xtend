@@ -14,22 +14,22 @@ class CommonalitiesLanguageValueConverterService extends XbaseValueConverterServ
 	@Inject QualifiedClassValueConverter qualifiedClassValueConverter
 
 	@ValueConverter(rule = "DomainName")
-	public def IValueConverter<String> getDomainNameConverter() {
+	def IValueConverter<String> getDomainNameConverter() {
 		return validIDConverter
 	}
 
 	@ValueConverter(rule = "UnqualifiedClass")
-	public def IValueConverter<String> getUnqualifiedClassConverter() {
+	def IValueConverter<String> getUnqualifiedClassConverter() {
 		return validIDConverter
 	}
 
 	@ValueConverter(rule = "QualifiedClass")
-	public def IValueConverter<String> getQualifiedClassConverter() {
+	def IValueConverter<String> getQualifiedClassConverter() {
 		return qualifiedClassValueConverter
 	}
 
 	@ValueConverter(rule = "UnqualifiedAttribute")
-	public def IValueConverter<String> getUnqualifiedAttributeConverter() {
+	def IValueConverter<String> getUnqualifiedAttributeConverter() {
 		return validIDConverter
 	}
 }

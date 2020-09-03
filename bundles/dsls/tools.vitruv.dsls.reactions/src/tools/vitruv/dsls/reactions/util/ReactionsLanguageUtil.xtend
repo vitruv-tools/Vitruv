@@ -25,7 +25,7 @@ final class ReactionsLanguageUtil {
 	 * @param reactionsSegment the reactions segment
 	 * @return the formatted representation of the metamodel pair
 	 */
-	public static def String getFormattedMetamodelPair(ReactionsSegment reactionsSegment) {
+	static def String getFormattedMetamodelPair(ReactionsSegment reactionsSegment) {
 		val sourceDomainName = reactionsSegment.fromDomain?.domain;
 		val targetDomainName = reactionsSegment.toDomain?.domain;
 		return "(" + sourceDomainName + ", " + targetDomainName + ")";
@@ -41,7 +41,7 @@ final class ReactionsLanguageUtil {
 	 * @param reactionsSegment the reactions segment
 	 * @return the formatted reactions segment name
 	 */
-	public static def String getFormattedName(ReactionsSegment reactionsSegment) {
+	static def String getFormattedName(ReactionsSegment reactionsSegment) {
 		return reactionsSegment.name.formattedReactionsSegmentName;
 	}
 
@@ -53,7 +53,7 @@ final class ReactionsLanguageUtil {
 	 * @param reactionsSegmentName the reactions segment name
 	 * @return the formatted reactions segment name
 	 */
-	public static def String getFormattedReactionsSegmentName(String reactionsSegmentName) {
+	static def String getFormattedReactionsSegmentName(String reactionsSegmentName) {
 		return reactionsSegmentName.toFirstLower;
 	}
 
@@ -67,7 +67,7 @@ final class ReactionsLanguageUtil {
 	 * @param reaction the reaction
 	 * @return the formatted reaction name
 	 */
-	public static def String getFormattedName(Reaction reaction) {
+	static def String getFormattedName(Reaction reaction) {
 		return reaction.name.toFirstUpper;
 	}
 
@@ -84,7 +84,7 @@ final class ReactionsLanguageUtil {
 	 * @param reaction the reaction
 	 * @return the qualified name
 	 */
-	public static def String getQualifiedName(Reaction reaction) {
+	static def String getQualifiedName(Reaction reaction) {
 		var String reactionsSegmentName;
 		if (reaction.isOverride) {
 			reactionsSegmentName = reaction.overriddenReactionsSegment?.name;
@@ -104,7 +104,7 @@ final class ReactionsLanguageUtil {
 	 * @param reaction the reaction
 	 * @return the formatted full name
 	 */
-	public static def String getDisplayName(Reaction reaction) {
+	static def String getDisplayName(Reaction reaction) {
 		if (reaction.isOverride) {
 			return reaction.qualifiedName;
 		} else {
@@ -122,7 +122,7 @@ final class ReactionsLanguageUtil {
 	 * @param routine the routine
 	 * @return the formatted routine name
 	 */
-	public static def String getFormattedName(Routine routine) {
+	static def String getFormattedName(Routine routine) {
 		return routine.name.toFirstLower;
 	}
 
@@ -139,7 +139,7 @@ final class ReactionsLanguageUtil {
 	 * @param routine the routine
 	 * @return the qualified name
 	 */
-	public static def String getQualifiedName(Routine routine) {
+	static def String getQualifiedName(Routine routine) {
 		var String reactionsSegmentName;
 		if (routine.isOverride) {
 			reactionsSegmentName = routine.overrideImportPath.reactionsSegment?.name;
@@ -160,7 +160,7 @@ final class ReactionsLanguageUtil {
 	 * 
 	 * @see #getFullyQualifiedName(Routine, ReactionsImportPath)
 	 */
-	public static def String getFullyQualifiedName(Routine routine) {
+	static def String getFullyQualifiedName(Routine routine) {
 		return routine.getFullyQualifiedName(null);
 	}
 
@@ -183,7 +183,7 @@ final class ReactionsLanguageUtil {
 	 * @param importPath the import path leading to the reactions segment containing the routine, or <code>null</code> or empty
 	 * @return the fully qualified name
 	 */
-	public static def String getFullyQualifiedName(Routine routine, ReactionsImportPath importPath) {
+	static def String getFullyQualifiedName(Routine routine, ReactionsImportPath importPath) {
 		val reactionsSegmentName = routine.reactionsSegment.name;
 		val importPathSpecified = (importPath !== null && !importPath.isEmpty);
 		var String fullyQualifiedName = "";
@@ -215,7 +215,7 @@ final class ReactionsLanguageUtil {
 	 * @param routine the routine
 	 * @return the formatted full name
 	 */
-	public static def String getDisplayName(Routine routine) {
+	static def String getDisplayName(Routine routine) {
 		if (routine.isOverride) {
 			return routine.fullyQualifiedName;
 		} else {
@@ -233,7 +233,7 @@ final class ReactionsLanguageUtil {
 	 * @param reaction the reaction
 	 * @return <code>true</code> if the given reaction is a regular reaction
 	 */
-	public static def isRegular(Reaction reaction) {
+	static def isRegular(Reaction reaction) {
 		return !reaction.isOverride;
 	}
 
@@ -243,7 +243,7 @@ final class ReactionsLanguageUtil {
 	 * @param reaction the reaction
 	 * @return <code>true</code> if the given reaction overrides another reaction
 	 */
-	public static def isOverride(Reaction reaction) {
+	static def isOverride(Reaction reaction) {
 		// check if overridden reactions segment is set, without resolving the cross-reference:
 		return reaction.eIsSet(ReactionsLanguagePackage.Literals.REACTION__OVERRIDDEN_REACTIONS_SEGMENT);
 	}
@@ -255,7 +255,7 @@ final class ReactionsLanguageUtil {
 	 * @return the regular reactions
 	 * @see #isRegular(Reaction)
 	 */
-	public static def getRegularReactions(ReactionsSegment reactionsSegment) {
+	static def getRegularReactions(ReactionsSegment reactionsSegment) {
 		return reactionsSegment.reactions.filter[isRegular];
 	}
 
@@ -266,7 +266,7 @@ final class ReactionsLanguageUtil {
 	 * @return the reactions overriding other reactions
 	 * @see #isOverride(Reaction)
 	 */
-	public static def getOverrideReactions(ReactionsSegment reactionsSegment) {
+	static def getOverrideReactions(ReactionsSegment reactionsSegment) {
 		return reactionsSegment.reactions.filter[isOverride];
 	}
 
@@ -280,7 +280,7 @@ final class ReactionsLanguageUtil {
 	 * @param routine the routine
 	 * @return <code>true</code> if the given routine is a regular routine
 	 */
-	public static def isRegular(Routine routine) {
+	static def isRegular(Routine routine) {
 		return !routine.isOverride;
 	}
 
@@ -290,7 +290,7 @@ final class ReactionsLanguageUtil {
 	 * @param routine the routine
 	 * @return <code>true</code> if the given routine overrides another routine
 	 */
-	public static def isOverride(Routine routine) {
+	static def isOverride(Routine routine) {
 		return (routine.overrideImportPath !== null);
 	}
 
@@ -301,7 +301,7 @@ final class ReactionsLanguageUtil {
 	 * @return the regular routines
 	 * @see #isRegular(Routine)
 	 */
-	public static def getRegularRoutines(ReactionsSegment reactionsSegment) {
+	static def getRegularRoutines(ReactionsSegment reactionsSegment) {
 		return reactionsSegment.routines.filter[isRegular];
 	}
 
@@ -312,7 +312,7 @@ final class ReactionsLanguageUtil {
 	 * @return the routines overriding other routines
 	 * @see #isOverride(Routine)
 	 */
-	public static def getOverrideRoutines(ReactionsSegment reactionsSegment) {
+	static def getOverrideRoutines(ReactionsSegment reactionsSegment) {
 		return reactionsSegment.routines.filter[isOverride];
 	}
 
@@ -325,7 +325,7 @@ final class ReactionsLanguageUtil {
 	 * @param routineOverrideImportPath the routine override import path, can be <code>null</code>
 	 * @return the corresponding reactions import path, or <code>null</code> if the given routine override import path was <code>null</code>
 	 */
-	public static def ReactionsImportPath toReactionsImportPath(RoutineOverrideImportPath routineOverrideImportPath) {
+	static def ReactionsImportPath toReactionsImportPath(RoutineOverrideImportPath routineOverrideImportPath) {
 		if (routineOverrideImportPath === null) return null;
 		val fullPathSegments = routineOverrideImportPath.fullPath.map [
 			val segment = it.reactionsSegment;
@@ -347,7 +347,7 @@ final class ReactionsLanguageUtil {
 	 * @param routineOverrideImportPath the routine override import path, can be <code>null</code>
 	 * @return the segments of the full routine override import path, or <code>null</code> if the given routine override import path was <code>null</code>
 	 */
-	public static def List<RoutineOverrideImportPath> getFullPath(RoutineOverrideImportPath routineOverrideImportPath) {
+	static def List<RoutineOverrideImportPath> getFullPath(RoutineOverrideImportPath routineOverrideImportPath) {
 		if (routineOverrideImportPath === null) return null;
 		val pathSegments = new ArrayList<RoutineOverrideImportPath>();
 		var currentPath = routineOverrideImportPath;

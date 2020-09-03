@@ -14,9 +14,9 @@ import static extension tools.vitruv.framework.change.echange.resolve.EChangeRes
 import tools.vitruv.framework.change.description.VitruviusChange
 
 class ConcreteApplicableChangeImpl extends ConcreteChangeImpl {
-	private var VURI vuri;
+	var VURI vuri;
 
-	public new(EChange eChange) {
+	new(EChange eChange) {
 		super(eChange);
 		tryToSetUri;
 	}

@@ -14,12 +14,12 @@ import tools.vitruv.framework.util.command.ResourceAccess
 import org.eclipse.xtend.lib.annotations.Accessors
 
 abstract class CompositeChangePropagationSpecification extends AbstractChangePropagationSpecification implements ChangePropagationObserver {
-	private static val logger = Logger.getLogger(CompositeChangePropagationSpecification);
+	static val logger = Logger.getLogger(CompositeChangePropagationSpecification);
 
 	@Accessors(PROTECTED_GETTER)
-	private val List<ChangePropagationSpecification> changePreprocessors;
+	val List<ChangePropagationSpecification> changePreprocessors;
 	@Accessors(PROTECTED_GETTER)
-	private val List<ChangePropagationSpecification> changeMainprocessors;
+	val List<ChangePropagationSpecification> changeMainprocessors;
 
 	new(VitruvDomain sourceDomain, VitruvDomain targetDomain) {
 		super(sourceDomain, targetDomain);

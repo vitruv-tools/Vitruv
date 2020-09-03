@@ -4,9 +4,9 @@ import org.eclipse.emf.ecore.EObject
 import tools.vitruv.framework.userinteraction.UserInteractor
 
 class CorrespondenceFailDoNothing extends AbstractCorrespondenceFailHandler {
-	private final boolean abortEffect;
+	final boolean abortEffect;
 	
-	public new(boolean abortEffect) {
+	new(boolean abortEffect) {
 		this.abortEffect = abortEffect;
 	}
 	

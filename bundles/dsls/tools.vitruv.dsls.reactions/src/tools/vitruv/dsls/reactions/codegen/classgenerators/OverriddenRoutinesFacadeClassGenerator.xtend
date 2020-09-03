@@ -32,7 +32,7 @@ class OverriddenRoutinesFacadeClassGenerator extends RoutineFacadeClassGenerator
 		this.routinesFacadeNameGenerator = reactionsSegment.getOverriddenRoutinesFacadeClassNameGenerator(relativeImportPath);
 	}
 
-	public override generateEmptyClass() {
+	override generateEmptyClass() {
 		generatedClass = reactionsSegment.toClass(routinesFacadeNameGenerator.qualifiedName) [
 			visibility = JvmVisibility.PUBLIC;
 		]
@@ -69,6 +69,6 @@ class OverriddenRoutinesFacadeClassGenerator extends RoutineFacadeClassGenerator
 	protected override StringConcatenationClient getExtendedConstructorBody() '''
 	'''
 
-	protected override def StringConcatenationClient generateGetOwnRoutinesFacade() '''
+	protected override StringConcatenationClient generateGetOwnRoutinesFacade() '''
 		this._getRoutinesFacadesProvider().getRoutinesFacade(this._getReactionsImportPath().subPathTo("«reactionsSegment.name»"))'''
 }

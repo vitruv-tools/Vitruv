@@ -17,10 +17,10 @@ import com.google.inject.Singleton
 @Singleton
 class JvmTypesBuilderWithoutAssociations extends JvmTypesBuilder {
 	@Inject
-	private TypesFactory typesFactory;
+	TypesFactory typesFactory;
 
 	@Inject
-	private IJvmModelAssociator associator;
+	IJvmModelAssociator associator;
 
 	/**
 	 * Creates a public method with the given name and the given return type and associates it with the given
@@ -38,7 +38,7 @@ class JvmTypesBuilderWithoutAssociations extends JvmTypesBuilder {
 	 * @return a result representing a Java method with the given name, <code>null</code> if sourceElement or name are <code>null</code>.
 	 */
 	/* @Nullable */
-	public def JvmOperation generateUnassociatedMethod( /* @Nullable */ String name, /* @Nullable */ JvmTypeReference returnType, /* @Nullable */ Procedure1<? super JvmOperation> initializer) {
+	def JvmOperation generateUnassociatedMethod( /* @Nullable */ String name, /* @Nullable */ JvmTypeReference returnType, /* @Nullable */ Procedure1<? super JvmOperation> initializer) {
 		if (name === null)
 			return null;
 		val result = typesFactory.createJvmOperation();
@@ -58,7 +58,7 @@ class JvmTypesBuilderWithoutAssociations extends JvmTypesBuilder {
 	 * @return a {@link JvmField} representing a Java field with the given simple name and type.
 	 */
 	/* @Nullable */
-	public def JvmField generateUnassociatedField( /* @Nullable */ String name, /* @Nullable */ JvmTypeReference typeRef) {
+	def JvmField generateUnassociatedField( /* @Nullable */ String name, /* @Nullable */ JvmTypeReference typeRef) {
 		return generateUnassociatedField(name, typeRef, null);
 	}
 
@@ -66,7 +66,7 @@ class JvmTypesBuilderWithoutAssociations extends JvmTypesBuilder {
 	 * Same as {@link #toField(EObject, String, JvmTypeReference)} but with an initializer passed as the last argument.
 	 */
 	/* @Nullable */
-	public def JvmField generateUnassociatedField( /* @Nullable */ String name, /* @Nullable */ JvmTypeReference typeRef, /* @Nullable */ Procedure1<? super JvmField> initializer) {
+	def JvmField generateUnassociatedField( /* @Nullable */ String name, /* @Nullable */ JvmTypeReference typeRef, /* @Nullable */ Procedure1<? super JvmField> initializer) {
 		if (name === null)
 			return null;
 		val result = typesFactory.createJvmField();
@@ -86,7 +86,7 @@ class JvmTypesBuilderWithoutAssociations extends JvmTypesBuilder {
 	 * @return the target for convenience.
 	 */
 	/* @Nullable */
-	public override <T extends EObject> T associate( /* @Nullable */ EObject sourceElement, /* @Nullable */ T target) {
+	override <T extends EObject> T associate( /* @Nullable */ EObject sourceElement, /* @Nullable */ T target) {
 		if (sourceElement !== null && target !== null && sourceElement.eResource !== null &&
 			isValidSource(sourceElement))
 			associator.associate(sourceElement, target);
@@ -111,14 +111,14 @@ class JvmTypesBuilderWithoutAssociations extends JvmTypesBuilder {
 		return target;
 	}
 
-	public def JvmFormalParameter createParameter(String name, JvmTypeReference typeRef) {
+	def JvmFormalParameter createParameter(String name, JvmTypeReference typeRef) {
 		val result = typesFactory.createJvmFormalParameter();
 		result.setName(name);
 		result.setParameterType(cloneWithProxies(typeRef));
 		return result;
 	}
 
-	public def JvmGenericType generateUnassociatedClass( /* @Nullable */ String name, /* @Nullable */ Procedure1<? super JvmGenericType> initializer) {
+	def JvmGenericType generateUnassociatedClass( /* @Nullable */ String name, /* @Nullable */ Procedure1<? super JvmGenericType> initializer) {
 		val result = createJvmGenericType(name);
 		if (result === null)
 			return null;

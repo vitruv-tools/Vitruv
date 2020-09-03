@@ -22,9 +22,6 @@ import tools.vitruv.domains.emf.monitorededitor.test.mocking.EclipseMock;
 import tools.vitruv.domains.emf.monitorededitor.test.mocking.EclipseWorkbenchMock;
 import tools.vitruv.domains.emf.monitorededitor.test.utils.BasicTestCase;
 import tools.vitruv.domains.emf.monitorededitor.test.utils.EnsureExecutedOnObj;
-import tools.vitruv.domains.emf.monitorededitor.tools.EclipseAdapterProvider;
-import tools.vitruv.domains.emf.monitorededitor.tools.EditorManagementListenerMgr;
-import tools.vitruv.domains.emf.monitorededitor.tools.IEditorManagementListener;
 
 public class EditorManagementListenerMgrTests extends BasicTestCase {
     private EclipseMock eclipseMock;

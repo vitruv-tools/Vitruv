@@ -21,9 +21,9 @@ import org.eclipse.emf.ecore.util.EcoreUtil
 import tools.vitruv.framework.change.description.VitruviusChange
 
 abstract class AbstractConcreteChange implements ConcreteChange {
-	private static val logger = Logger.getLogger(AbstractConcreteChange);
-	private var EChange eChange;
-	private List<UserInteractionBase> userInteractions;
+	static val logger = Logger.getLogger(AbstractConcreteChange);
+	var EChange eChange;
+	List<UserInteractionBase> userInteractions;
 
 	new(EChange eChange) {
 		this.eChange = eChange;

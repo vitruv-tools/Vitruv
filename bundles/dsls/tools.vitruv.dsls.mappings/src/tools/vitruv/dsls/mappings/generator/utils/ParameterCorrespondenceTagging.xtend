@@ -11,14 +11,14 @@ class ParameterCorrespondenceTagging {
 	/**
 	 * Sets the current generator context
 	 */
-	public static def setContext(MappingGeneratorContext context) {
+	static def setContext(MappingGeneratorContext context) {
 		ParameterCorrespondenceTagging.context = context
 	}
 
 	/**
 	 * Returns the correspondence tag between two mapping parameters
 	 */
-	public static def String getCorrespondenceTag(MappingParameter reactionParameter,
+	static def String getCorrespondenceTag(MappingParameter reactionParameter,
 		MappingParameter correspondingParameter) {
 		if (!context.left2right) {
 			return createCorrespondenceTag(correspondingParameter.value, reactionParameter.value)

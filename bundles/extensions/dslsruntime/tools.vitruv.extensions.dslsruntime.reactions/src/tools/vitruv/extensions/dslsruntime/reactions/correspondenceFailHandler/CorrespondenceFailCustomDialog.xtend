@@ -5,10 +5,10 @@ import tools.vitruv.framework.userinteraction.UserInteractor
 import tools.vitruv.framework.userinteraction.UserInteractionOptions.WindowModality
 
 class CorrespondenceFailCustomDialog extends AbstractCorrespondenceFailHandler {
-	private final boolean abortEffect;
-	private final String message;
+	final boolean abortEffect;
+	final String message;
 	
-	public new(boolean abortEffect, String message) {
+	new(boolean abortEffect, String message) {
 		this.abortEffect = abortEffect;
 		this.message = message;
 	}

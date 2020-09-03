@@ -15,9 +15,9 @@ import tools.vitruv.framework.vsum.VirtualModelImpl
 import tools.vitruv.framework.userinteraction.UserInteractionFactory
 
 class VitruvInstanceCreator {
-	private final Map<IProject, ? extends Set<VitruvDomain>> projectToDomains;
-	private final Iterable<VitruvApplication> applications;
-	private final String name;
+	final Map<IProject, ? extends Set<VitruvDomain>> projectToDomains;
+	final Iterable<VitruvApplication> applications;
+	final String name;
 	
 	new(String name, Map<IProject, Set<VitruvDomain>> projectToDomains, Iterable<VitruvApplication> applications) {
 		this.projectToDomains = projectToDomains;
@@ -25,7 +25,7 @@ class VitruvInstanceCreator {
 		this.name = name;
 	}
 	
-	public def void createVsumProject() {
+	def void createVsumProject() {
 		TuidManager.instance.reinitialize();
         val virtualModel = createVirtualModel(name);
         for (project : projectToDomains.keySet) {

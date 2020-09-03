@@ -25,7 +25,7 @@ import tools.vitruv.dsls.reactions.reactionsLanguage.ActionStatement
 class ReactionsLanguageProposalProvider extends AbstractReactionsLanguageProposalProvider {
 
 	@Inject
-	private ReactionsLanguageGrammarAccess grammarAccess;
+	ReactionsLanguageGrammarAccess grammarAccess;
 
 	override completeKeyword(Keyword keyword, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
 		var matchedKeyword = false;

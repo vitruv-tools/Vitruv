@@ -8,11 +8,11 @@ import org.eclipse.xtend.lib.annotations.Accessors
 import tools.vitruv.framework.userinteraction.UserInteractor
 
 abstract class AbstractReactionRealization extends CallHierarchyHaving implements IReactionRealization {
-	private val AbstractRepairRoutinesFacade routinesFacade;
+	val AbstractRepairRoutinesFacade routinesFacade;
 	protected UserInteractor userInteractor;
 	protected ReactionExecutionState executionState;
 	
-	public new(AbstractRepairRoutinesFacade routinesFacade) {
+	new(AbstractRepairRoutinesFacade routinesFacade) {
 		this.routinesFacade = routinesFacade;
 	}
 	

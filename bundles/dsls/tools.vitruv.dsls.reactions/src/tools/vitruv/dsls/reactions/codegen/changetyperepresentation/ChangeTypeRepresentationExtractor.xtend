@@ -30,19 +30,19 @@ import static extension tools.vitruv.dsls.reactions.codegen.helper.ReactionsLang
 import org.eclipse.emf.ecore.EcorePackage
 
 final class ChangeTypeRepresentationExtractor {
-	private static val CREATE_CHANGE_NAME = "createChange";
-	private static val DELET_CHANGE_NAME = "deleteChange";
-	private static val INSERT_CHANGE_NAME = "insertChange";
-	private static val REMOVE_CHANGE_NAME = "removeChange";
-	private static val REPLACE_CHANGE_NAME = "replaceChange";
-	private static val GENERAL_CHANGE_NAME = "change";
+	static val CREATE_CHANGE_NAME = "createChange";
+	static val DELET_CHANGE_NAME = "deleteChange";
+	static val INSERT_CHANGE_NAME = "insertChange";
+	static val REMOVE_CHANGE_NAME = "removeChange";
+	static val REPLACE_CHANGE_NAME = "replaceChange";
+	static val GENERAL_CHANGE_NAME = "change";
 	
-	public static def dispatch ChangeSequenceRepresentation extractChangeSequenceRepresentation(Trigger trigger) {
+	static def dispatch ChangeSequenceRepresentation extractChangeSequenceRepresentation(Trigger trigger) {
 		val atomicChange = new AtomicChangeTypeRepresentation(GENERAL_CHANGE_NAME, EChange, null, null, false, false, null, false);
 		return new ChangeSequenceRepresentation(#[atomicChange]);
 	}
 	
-	public static def dispatch ChangeSequenceRepresentation extractChangeSequenceRepresentation(ModelAttributeChange modelAttributeChange) {
+	static def dispatch ChangeSequenceRepresentation extractChangeSequenceRepresentation(ModelAttributeChange modelAttributeChange) {
 		var hasOldValue = false;
 		var hasNewValue = false;
 		var hasIndex = false;
@@ -75,7 +75,7 @@ final class ChangeTypeRepresentationExtractor {
 		return new ChangeSequenceRepresentation(#[atomicChange]);
 	}
 			
-	public static def dispatch ChangeSequenceRepresentation extractChangeSequenceRepresentation(ModelElementChange modelElementChange) {
+	static def dispatch ChangeSequenceRepresentation extractChangeSequenceRepresentation(ModelElementChange modelElementChange) {
 		var atomicChanges = newArrayList;
 		if (modelElementChange?.changeType === null) {
 			atomicChanges += new AtomicChangeTypeRepresentation(GENERAL_CHANGE_NAME, EChange, null, null, false, false, null, false);

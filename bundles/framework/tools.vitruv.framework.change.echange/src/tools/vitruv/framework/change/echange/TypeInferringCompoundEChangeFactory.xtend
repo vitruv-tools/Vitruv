@@ -7,7 +7,7 @@ import org.eclipse.emf.ecore.resource.Resource
 
 class TypeInferringCompoundEChangeFactory {
 	protected TypeInferringAtomicEChangeFactory atomicFactory
-	private static TypeInferringCompoundEChangeFactory instance
+	static TypeInferringCompoundEChangeFactory instance
 
 	protected new(TypeInferringAtomicEChangeFactory atomicFactory) {
 		this.atomicFactory = atomicFactory
@@ -17,7 +17,7 @@ class TypeInferringCompoundEChangeFactory {
 	 * Get the singleton instance of the factory.
 	 * @return The singleton instance.
 	 */
-	def public static TypeInferringCompoundEChangeFactory getInstance() {
+	def static TypeInferringCompoundEChangeFactory getInstance() {
 		if (instance === null) {
 			instance = new TypeInferringCompoundEChangeFactory(TypeInferringAtomicEChangeFactory.instance)
 		}

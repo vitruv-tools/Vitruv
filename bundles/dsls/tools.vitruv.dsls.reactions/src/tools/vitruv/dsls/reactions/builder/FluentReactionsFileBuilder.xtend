@@ -62,7 +62,7 @@ class FluentReactionsFileBuilder extends FluentReactionElementBuilder {
 }
 
 class MetamodelImportBuilder extends FluentReactionElementBuilder {
-	private MetamodelImport mmImport
+	MetamodelImport mmImport
 
 	new(MetamodelImport mmImport, FluentBuilderContext context) {
 		super(context)

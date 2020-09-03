@@ -27,21 +27,21 @@ import org.apache.log4j.Logger
 import org.eclipse.emf.common.util.URI
 
 class VirtualModelImpl implements InternalVirtualModel {
-	private static val Logger LOGGER = Logger.getLogger(VirtualModelImpl.name)
-	private val ResourceRepositoryImpl resourceRepository
-	private val ModelRepositoryImpl modelRepository
-	private val VitruvDomainRepository metamodelRepository
-	private val ChangePropagator changePropagator
-	private val ChangePropagationSpecificationProvider changePropagationSpecificationProvider
-	private val File folder
-	private val extension ChangeDomainExtractor changeDomainExtractor
+	static val Logger LOGGER = Logger.getLogger(VirtualModelImpl.name)
+	val ResourceRepositoryImpl resourceRepository
+	val ModelRepositoryImpl modelRepository
+	val VitruvDomainRepository metamodelRepository
+	val ChangePropagator changePropagator
+	val ChangePropagationSpecificationProvider changePropagationSpecificationProvider
+	val File folder
+	val extension ChangeDomainExtractor changeDomainExtractor
 
 	/**
 	 * A list of {@link PropagatedChangeListener}s that are informed of all changes made
 	 */
-	private val List<PropagatedChangeListener> propagatedChangeListeners
+	val List<PropagatedChangeListener> propagatedChangeListeners
 
-	public new(File folder, InternalUserInteractor userInteractor, VirtualModelConfiguration modelConfiguration) {
+	new(File folder, InternalUserInteractor userInteractor, VirtualModelConfiguration modelConfiguration) {
 		this.folder = folder
 		this.metamodelRepository = new VitruvDomainRepositoryImpl()
 		for (metamodel : modelConfiguration.metamodels) {

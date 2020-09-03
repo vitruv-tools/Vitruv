@@ -18,5 +18,5 @@ abstract class PredefinedInteractionResultProvider extends DecoratingInteraction
 	 * 
 	 * @param interactions - the interaction results to use
 	 */
-	public abstract def void addUserInteractions(UserInteractionBase... interactions);
+	abstract def void addUserInteractions(UserInteractionBase... interactions);
 }

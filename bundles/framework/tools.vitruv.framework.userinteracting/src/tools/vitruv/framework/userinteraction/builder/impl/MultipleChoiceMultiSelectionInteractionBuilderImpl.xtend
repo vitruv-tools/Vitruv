@@ -12,7 +12,7 @@ import tools.vitruv.framework.userinteraction.builder.MultipleChoiceMultiSelecti
  * @author Dominik Klooz
  * @author Heiko Klare
  */
-public class MultipleChoiceMultiSelectionInteractionBuilderImpl extends MultipleChoiceSelectionInteractionBuilderBaseImpl<Collection<Integer>, MultipleChoiceMultipleSelectionInteraction> implements MultipleChoiceMultiSelectionInteractionBuilder {
+class MultipleChoiceMultiSelectionInteractionBuilderImpl extends MultipleChoiceSelectionInteractionBuilderBaseImpl<Collection<Integer>, MultipleChoiceMultipleSelectionInteraction> implements MultipleChoiceMultiSelectionInteractionBuilder {
 
 	new(InteractionFactory interactionFactory, Iterable<UserInteractionListener> userInteractionListener) {
 		super(interactionFactory, userInteractionListener)

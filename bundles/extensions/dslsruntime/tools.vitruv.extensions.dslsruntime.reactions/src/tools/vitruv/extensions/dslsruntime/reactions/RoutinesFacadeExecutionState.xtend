@@ -9,10 +9,10 @@ import tools.vitruv.extensions.dslsruntime.reactions.structure.CallHierarchyHavi
  */
 class RoutinesFacadeExecutionState {
 
-	private var ReactionExecutionState reactionExecutionState = null;
-	private var CallHierarchyHaving caller = null;
+	var ReactionExecutionState reactionExecutionState = null;
+	var CallHierarchyHaving caller = null;
 
-	public new() {
+	new() {
 	}
 
 	private new(ReactionExecutionState reactionExecutionState, CallHierarchyHaving caller) {
@@ -20,30 +20,30 @@ class RoutinesFacadeExecutionState {
 		this.caller = caller;
 	}
 
-	public def ReactionExecutionState getReactionExecutionState() {
+	def ReactionExecutionState getReactionExecutionState() {
 		return reactionExecutionState;
 	}
 
-	public def CallHierarchyHaving getCaller() {
+	def CallHierarchyHaving getCaller() {
 		return caller;
 	}
 
-	public def void setExecutionState(ReactionExecutionState reactionExecutionState, CallHierarchyHaving caller) {
+	def void setExecutionState(ReactionExecutionState reactionExecutionState, CallHierarchyHaving caller) {
 		this.reactionExecutionState = reactionExecutionState;
 		this.caller = caller;
 	}
 
-	public def void reset() {
+	def void reset() {
 		this.setExecutionState(null, null);
 	}
 
 	// creates a snapshot of the current execution state:
-	public def RoutinesFacadeExecutionState capture() {
+	def RoutinesFacadeExecutionState capture() {
 		return new RoutinesFacadeExecutionState(reactionExecutionState, caller);
 	}
 
 	// restores a previously captured execution state:
-	public def void restore(RoutinesFacadeExecutionState executionState) {
+	def void restore(RoutinesFacadeExecutionState executionState) {
 		this.setExecutionState(executionState.reactionExecutionState, executionState.caller);
 	}
 }

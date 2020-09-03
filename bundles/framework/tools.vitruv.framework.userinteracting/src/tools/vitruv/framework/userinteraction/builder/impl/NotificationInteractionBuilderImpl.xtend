@@ -17,7 +17,7 @@ import tools.vitruv.framework.userinteraction.UserInteractionListener
  * @author Dominik Klooz
  * @author Heiko Klare
  */
-public class NotificationInteractionBuilderImpl extends BaseInteractionBuilder<Void, NotificationInteraction, OptionalSteps> implements NotificationInteractionBuilder, OptionalSteps {
+class NotificationInteractionBuilderImpl extends BaseInteractionBuilder<Void, NotificationInteraction, OptionalSteps> implements NotificationInteractionBuilder, OptionalSteps {
 
 	new(InteractionFactory interactionFactory, Iterable<UserInteractionListener> userInteractionListener) {
 		super(interactionFactory, userInteractionListener)
@@ -30,7 +30,7 @@ public class NotificationInteractionBuilderImpl extends BaseInteractionBuilder<V
 		return this
 	}
 
-	override def startInteraction() {
+	override startInteraction() {
 		val result = interactionToBuild.startInteraction();
 		notifyUserInputReceived(result);
 		return null // notifications do not have any form of user input

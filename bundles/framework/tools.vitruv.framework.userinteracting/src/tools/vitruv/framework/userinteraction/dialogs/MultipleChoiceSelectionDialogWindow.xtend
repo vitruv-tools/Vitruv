@@ -21,12 +21,12 @@ import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
  * @author Heiko Klare
  */
 class MultipleChoiceSelectionDialogWindow extends BaseDialogWindow {
-	private final boolean multiple;
-	private final Iterable<String> choices;
-	private List<Button> choiceButtons
-	private final String positiveButtonText;
-	private final String cancelButtonText;
-	private Iterable<Integer> selectedChoices;
+	final boolean multiple;
+	final Iterable<String> choices;
+	List<Button> choiceButtons
+	final String positiveButtonText;
+	final String cancelButtonText;
+	Iterable<Integer> selectedChoices;
 
 	new(Shell parent, WindowModality windowModality, String title, String message, String positiveButtonText,
 		String cancelButtonText, boolean multiple, Iterable<String> choices) {
@@ -93,7 +93,7 @@ class MultipleChoiceSelectionDialogWindow extends BaseDialogWindow {
 		close()
 	}
 
-	public def Iterable<Integer> getSelectedChoices() {
+	def Iterable<Integer> getSelectedChoices() {
 		return selectedChoices
 	}
 }

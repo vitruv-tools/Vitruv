@@ -12,8 +12,8 @@ import tools.vitruv.framework.userinteraction.InteractionResultProvider
  * @author Heiko Klare
  */
 class ConfirmationInteraction extends BaseInteraction<ConfirmationUserInteraction> {
-	private static val DEFAULT_TITLE = "Please Confirm";
-	private static val DEFAULT_MESSAGE = "";
+	static val DEFAULT_TITLE = "Please Confirm";
+	static val DEFAULT_MESSAGE = "";
 
 	protected new(InteractionResultProvider interactionResultProvider, WindowModality windowModality) {
 		super(interactionResultProvider, windowModality, DEFAULT_TITLE, DEFAULT_MESSAGE)

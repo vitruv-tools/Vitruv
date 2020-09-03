@@ -10,7 +10,7 @@ import tools.vitruv.framework.change.echange.feature.attribute.RemoveEAttributeV
  * Helper class to compare different instances of the same change.
  */
 class EChangeAssertEquals {
-	def public dispatch static void assertEquals(EChange change, EChange change2) {
+	def dispatch static void assertEquals(EChange change, EChange change2) {
 		// Is needed so xtend creates the assertEquals(EChange, EChange) method.
 		Assert.assertTrue(false)
 	}
@@ -18,7 +18,7 @@ class EChangeAssertEquals {
 	/**
 	 * Compares two {@link ReplaceSingleValuedEAttribute} EChanges.
 	 */
-	def public dispatch static void assertEquals(ReplaceSingleValuedEAttribute<?, ?> change, EChange change2) {
+	def dispatch static void assertEquals(ReplaceSingleValuedEAttribute<?, ?> change, EChange change2) {
 		var replaceChange = change2.assertIsInstanceOf(ReplaceSingleValuedEAttribute)
 		Assert.assertSame(change.affectedEObject, replaceChange.affectedEObject)
 		Assert.assertSame(change.affectedFeature, replaceChange.affectedFeature)
@@ -29,7 +29,7 @@ class EChangeAssertEquals {
 	/**
 	 * Compares two {@link InsertEAttributeValue} EChanges.
 	 */	
-	def public dispatch static void assertEquals(InsertEAttributeValue<?, ?> change, EChange change2) {
+	def dispatch static void assertEquals(InsertEAttributeValue<?, ?> change, EChange change2) {
 		var insertChange = change2.assertIsInstanceOf(InsertEAttributeValue)
 		Assert.assertSame(change.affectedEObject, insertChange.affectedEObject)
 		Assert.assertSame(change.affectedFeature, insertChange.affectedFeature)
@@ -39,7 +39,7 @@ class EChangeAssertEquals {
 	/**
 	 * Compares two {@link RemoveEAttributeValue} EChanges.
 	 */	
-	def public dispatch static void assertEquals(RemoveEAttributeValue<?, ?> change, EChange change2) {
+	def dispatch static void assertEquals(RemoveEAttributeValue<?, ?> change, EChange change2) {
 		var removeChange = change2.assertIsInstanceOf(RemoveEAttributeValue)
 		Assert.assertSame(change.affectedEObject, removeChange.affectedEObject)
 		Assert.assertSame(change.affectedFeature, removeChange.affectedFeature)	

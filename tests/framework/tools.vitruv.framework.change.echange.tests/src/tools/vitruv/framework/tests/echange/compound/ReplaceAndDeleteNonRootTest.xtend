@@ -27,7 +27,7 @@ class ReplaceAndDeleteNonRootTest extends EChangeTest {
 	protected var NonRoot oldNonRootObject = null
 	
 	@Before
-	override public void beforeTest() {
+	override void beforeTest() {
 		super.beforeTest
 		affectedEObject = rootObject
 		affectedFeature = AllElementTypesPackage.Literals.ROOT__SINGLE_VALUED_CONTAINMENT_EREFERENCE
@@ -41,7 +41,7 @@ class ReplaceAndDeleteNonRootTest extends EChangeTest {
 	 * containment reference.
 	 */
 	@Test
-	def public void resolveBeforeTest() {
+	def void resolveBeforeTest() {
 		// Create change
 		val unresolvedChange = createUnresolvedChange(oldNonRootObject)
 		unresolvedChange.assertIsNotResolved
@@ -63,7 +63,7 @@ class ReplaceAndDeleteNonRootTest extends EChangeTest {
 	 * containment reference is null.
 	 */
 	@Test
-	def public void resolveAfterTest() {
+	def void resolveAfterTest() {
 		// Create change
 		val unresolvedChange = createUnresolvedChange(oldNonRootObject)
 		unresolvedChange.assertIsNotResolved	
@@ -84,7 +84,7 @@ class ReplaceAndDeleteNonRootTest extends EChangeTest {
 	 * returns the same class.
 	 */
 	@Test
-	def public void resolveToCorrectType() {
+	def void resolveToCorrectType() {
 		// Create change
 		val unresolvedChange = createUnresolvedChange(oldNonRootObject)
 		
@@ -98,7 +98,7 @@ class ReplaceAndDeleteNonRootTest extends EChangeTest {
 	 * Removes a non root object from a single valued containment reference and deletes it.
 	 */
 	@Test
-	def public void applyForwardTest() {
+	def void applyForwardTest() {
 		// Create and resolve and apply
 		val resolvedChange = createUnresolvedChange(oldNonRootObject).resolveBefore(uuidGeneratorAndResolver)
 		resolvedChange.assertApplyForward
@@ -113,7 +113,7 @@ class ReplaceAndDeleteNonRootTest extends EChangeTest {
 	 * reference.
 	 */
 	@Test
-	def public void applyBackwardTest() {
+	def void applyBackwardTest() {
 		// Create and resolve
 		val resolvedChange = createUnresolvedChange(oldNonRootObject).resolveBefore(uuidGeneratorAndResolver)
 			

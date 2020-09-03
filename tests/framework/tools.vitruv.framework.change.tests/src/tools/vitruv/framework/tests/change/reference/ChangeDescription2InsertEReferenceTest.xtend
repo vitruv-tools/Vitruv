@@ -13,12 +13,12 @@ import tools.vitruv.framework.change.echange.EChange
 class ChangeDescription2InsertEReferenceTest extends ChangeDescription2EReferenceTest {
 
 	@Test
-	def public void testInsertEReferenceNonContainment() {
+	def void testInsertEReferenceNonContainment() {
 		testInsertInEReference(0)
 	}
 
 	@Test
-	def public void testMultipleInsertEReferenceNonContainment() {
+	def void testMultipleInsertEReferenceNonContainment() {
 		testInsertInEReference(0)
 		testInsertInEReference(1)
 		testInsertInEReference(2)
@@ -26,12 +26,12 @@ class ChangeDescription2InsertEReferenceTest extends ChangeDescription2EReferenc
 	}
 
 	@Test
-	def public void testInsertEReferenceContainment() {
+	def void testInsertEReferenceContainment() {
 		testInsertInContainmentEReference(0)
 	}
 
 	@Test
-	def public void testMultipleInsertEReferenceContainment() {
+	def void testMultipleInsertEReferenceContainment() {
 		testInsertInContainmentEReference(0)
 		testInsertInContainmentEReference(1)
 		testInsertInContainmentEReference(2)

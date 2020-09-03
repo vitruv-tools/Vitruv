@@ -19,21 +19,21 @@ final class ReactionsCorrespondenceHelper {
 		return correspondenceModel.getEditableView(ReactionsCorrespondenceModelViewFactory.instance);
 	}
 
-	public static def removeCorrespondencesBetweenElements(CorrespondenceModel correspondenceModel,
+	static def removeCorrespondencesBetweenElements(CorrespondenceModel correspondenceModel,
 		EObject source, EObject target, String tag) {
 		logger.trace("Removing correspondence between " + source + " and " + target + " with tag: " + tag);
 		val correspondenceModelView = correspondenceModel.reactionsView;
 		correspondenceModelView.removeCorrespondencesBetween(#[source], #[target], tag);
 	}
 
-	public static def removeCorrespondencesOfObject(CorrespondenceModel correspondenceModel,
+	static def removeCorrespondencesOfObject(CorrespondenceModel correspondenceModel,
 		EObject source) {
 		logger.trace("Removing correspondences of object " + source);
 		val correspondenceModelView = correspondenceModel.reactionsView;
 		correspondenceModelView.removeCorrespondencesFor(#[source], null);
 	}
 
-	public static def ReactionsCorrespondence addCorrespondence(
+	static def ReactionsCorrespondence addCorrespondence(
 		CorrespondenceModel correspondenceModel, EObject source, EObject target, String tag) {
 		logger.trace("Adding correspondence between " + source + " and " + target + " with tag: " + tag);
 		val correspondence = correspondenceModel.reactionsView.
@@ -42,13 +42,13 @@ final class ReactionsCorrespondenceHelper {
 		return correspondence;
 	}
 
-	public static def <T> Iterable<T> getCorrespondingObjectsOfType(
+	static def <T> Iterable<T> getCorrespondingObjectsOfType(
 		CorrespondenceModel correspondenceModel, EObject source, String expectedTag,
 		Class<T> type) {
 			return correspondenceModel.reactionsView.getCorrespondingEObjects(#[source], expectedTag).flatten.filter(type);
 	}
 
-	public static def <T> List<T> getCorrespondingModelElements(EObject sourceElement, Class<T> affectedElementClass,
+	static def <T> List<T> getCorrespondingModelElements(EObject sourceElement, Class<T> affectedElementClass,
 		String expectedTag, Function1<T, Boolean> preconditionMethod, CorrespondenceModel correspondenceModel) {
 		if (sourceElement === null) {
 			return #[];

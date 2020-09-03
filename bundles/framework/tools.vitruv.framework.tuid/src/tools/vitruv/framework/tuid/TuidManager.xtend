@@ -8,43 +8,43 @@ import org.apache.log4j.Logger
 import java.util.Set
 
 final class TuidManager {
-	private static val logger = Logger.getLogger(TuidManager);
-	private static val instance = new TuidManager();
-	private val Set<TuidCalculator> tuidCalculator;
-	private val Set<TuidUpdateListener> tuidUpdateListener;
-	private val Map<EObject, Tuid> tuidUpdateCache = new HashMap<EObject, Tuid>();
+	static val logger = Logger.getLogger(TuidManager);
+	static val instance = new TuidManager();
+	val Set<TuidCalculator> tuidCalculator;
+	val Set<TuidUpdateListener> tuidUpdateListener;
+	val Map<EObject, Tuid> tuidUpdateCache = new HashMap<EObject, Tuid>();
 	
 	private new() {
 		this.tuidCalculator = newHashSet();
 		this.tuidUpdateListener = newHashSet();
 	}
 	
-	public static def TuidManager getInstance() {
+	static def TuidManager getInstance() {
 		// This class is a singleton for now. We will probably change that decision later 
 		return instance;
 	}
 	
-	public def void addTuidUpdateListener(TuidUpdateListener updateListener) {
+	def void addTuidUpdateListener(TuidUpdateListener updateListener) {
 		if (updateListener !== null) {
 			tuidUpdateListener += updateListener;
 		}
 	}
 	
-	public def removeTuidUpdateListener(TuidUpdateListener updateListener) {
+	def removeTuidUpdateListener(TuidUpdateListener updateListener) {
 		tuidUpdateListener.remove(updateListener);
 	}
 	
-	public def void addTuidCalculator(TuidCalculator calculator) {
+	def void addTuidCalculator(TuidCalculator calculator) {
 		if (calculator !== null) {
 			tuidCalculator += calculator;
 		}
 	}
 	
-	public def removeTuidCalculator(TuidCalculator calculator) {
+	def removeTuidCalculator(TuidCalculator calculator) {
 		tuidCalculator.remove(calculator);
 	}
 	
-	public def reinitialize() {
+	def reinitialize() {
 		flushRegisteredObjectsUnderModification();
 		Tuid.reinitialize();
 	}
@@ -75,17 +75,17 @@ final class TuidManager {
 		}
 	}
 	
-	def public registerObjectUnderModification(EObject objectUnderModification) {
+	def registerObjectUnderModification(EObject objectUnderModification) {
 		if (objectUnderModification.hasTuidCalculator && !tuidUpdateCache.containsKey(objectUnderModification)) {
 			tuidUpdateCache.put(objectUnderModification, objectUnderModification.calculateTuid);
 		}
 	}
 	
-	def public flushRegisteredObjectsUnderModification() {
+	def flushRegisteredObjectsUnderModification() {
 		tuidUpdateCache.clear();
 	}
 	
-	public def updateTuidsOfRegisteredObjects() {
+	def updateTuidsOfRegisteredObjects() {
 		for (object : tuidUpdateCache.keySet) {
 			val oldTuid = tuidUpdateCache.get(object);
 			if (hasTuidCalculator(object)) {
@@ -98,7 +98,7 @@ final class TuidManager {
 		}
 	}
 	
-	def public updateTuid(EObject oldObject, EObject newObject) {
+	def updateTuid(EObject oldObject, EObject newObject) {
 		if (oldObject.hasTuidCalculator && newObject.hasTuidCalculator) {
 			val oldTuid = oldObject.calculateTuid;
 			val newTuid = newObject.calculateTuid;
@@ -106,7 +106,7 @@ final class TuidManager {
 		}
 	}
 	
-	def public updateTuid(Tuid oldTuid, EObject newObject) {
+	def updateTuid(Tuid oldTuid, EObject newObject) {
 		if (newObject.hasTuidCalculator) {
 			oldTuid.updateTuid(newObject.calculateTuid);
 		}

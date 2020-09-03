@@ -10,7 +10,7 @@ import org.eclipse.emf.common.util.EList
 /**
  * Abstract class which is used by insert and remove attribute test classes.
  */
-public abstract class InsertRemoveEAttributeTest extends EChangeTest {
+abstract class InsertRemoveEAttributeTest extends EChangeTest {
 	protected var Root affectedEObject = null
 	protected var EAttribute affectedFeature = null
 	protected var EList<Integer> attributeContent = null
@@ -20,7 +20,7 @@ public abstract class InsertRemoveEAttributeTest extends EChangeTest {
 	protected static val Integer NEW_VALUE_3 = 333
 	
 	@Before
-	override public void beforeTest() {
+	override void beforeTest() {
 		super.beforeTest()
 		affectedEObject = rootObject
 		affectedFeature = AllElementTypesPackage.Literals.ROOT__MULTI_VALUED_EATTRIBUTE

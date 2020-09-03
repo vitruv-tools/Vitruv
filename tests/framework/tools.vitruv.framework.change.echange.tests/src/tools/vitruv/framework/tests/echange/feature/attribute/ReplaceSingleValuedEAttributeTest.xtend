@@ -18,7 +18,7 @@ import static extension tools.vitruv.framework.change.echange.resolve.EChangeRes
  * Test class for the concrete {@link ReplaceSingleValuedEAttribute} EChange, 
  * which replaces the value of an attribute with a new one.
  */
-public class ReplaceSingleValuedEAttributeTest extends EChangeTest {
+class ReplaceSingleValuedEAttributeTest extends EChangeTest {
 	protected var Root affectedEObject = null
  	protected var EAttribute affectedFeature = null
  	protected var String oldValue = null
@@ -28,7 +28,7 @@ public class ReplaceSingleValuedEAttributeTest extends EChangeTest {
   	protected static val DEFAULT_SINGLE_VALUED_EATTRIBUTE_VALUE = 123
   	
  	@Before
- 	override public void beforeTest() {
+ 	override void beforeTest() {
  		super.beforeTest()
  		affectedEObject = rootObject
  		affectedFeature = AllElementTypesPackage.Literals.IDENTIFIED__ID
@@ -42,7 +42,7 @@ public class ReplaceSingleValuedEAttributeTest extends EChangeTest {
 	 * the same class.
 	 */
 	@Test
-	def public void resolveToCorrectType() {
+	def void resolveToCorrectType() {
 		// Create change
 		val unresolvedChange = createUnresolvedChange()
 		
@@ -56,7 +56,7 @@ public class ReplaceSingleValuedEAttributeTest extends EChangeTest {
 	 * by replacing a single value in a root element with a new value.
 	 */
 	 @Test
-	 def public void applyForwardTest() {
+	 def void applyForwardTest() {
 		// Create change
 		val resolvedChange = createUnresolvedChange().resolveBefore(uuidGeneratorAndResolver)
 			as ReplaceSingleValuedEAttribute<Root, String>
@@ -73,7 +73,7 @@ public class ReplaceSingleValuedEAttributeTest extends EChangeTest {
 	  * by replacing a single value in a root element with the old value.
 	  */
 	 @Test
-	 def public void applyBackwardTest() {
+	 def void applyBackwardTest() {
 		// Create change
 		val resolvedChange = createUnresolvedChange().resolveBefore(uuidGeneratorAndResolver)
 			as ReplaceSingleValuedEAttribute<Root, String>
@@ -92,7 +92,7 @@ public class ReplaceSingleValuedEAttributeTest extends EChangeTest {
 	  * Tests an affected object which has no such attribute.
 	  */
 	 @Test
-	 def public void invalidAttributeTest() {
+	 def void invalidAttributeTest() {
 	 	// NonRoot element has no int attribute.
 	 	val affectedNonRootEObject = AllElementTypesFactory.eINSTANCE.createNonRoot()
 	 	resource.contents.add(affectedNonRootEObject)
@@ -116,7 +116,7 @@ public class ReplaceSingleValuedEAttributeTest extends EChangeTest {
 	  * Tests a {@link ReplaceSingleValuedEAttribue} EChange with the wrong value type.
 	  */
 	 @Test
-	 def public void invalidValueTest() {
+	 def void invalidValueTest() {
 	 	val oldIntValue = DEFAULT_SINGLE_VALUED_EATTRIBUTE_VALUE // values are Integer, attribute value type is String
 	 	val newIntValue = 500
 	 	

@@ -12,7 +12,7 @@ class EMFJavaTypesUtil {
 	 * the classifier of the corresponding wrapper type instead. Otherwise we
 	 * return the given classifier without changes.
 	 */
-	public static def EClassifier wrapJavaPrimitiveTypes(EClassifier eClassifier) {
+	static def EClassifier wrapJavaPrimitiveTypes(EClassifier eClassifier) {
 		if (eClassifier === null) return null
 		// We check the instance class rather than the EClassifier itself,
 		// since it is theoretically possible to create new EDataTypes which

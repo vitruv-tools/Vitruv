@@ -25,13 +25,13 @@ class MappingsLanguageRuntimeModule extends AbstractMappingsLanguageRuntimeModul
 		MappingsLanguageGenerator
 	}
 	
-	public override void configureIScopeProviderDelegate(Binder binder) {
+	override void configureIScopeProviderDelegate(Binder binder) {
 		binder.bind(IScopeProvider)
 		      .annotatedWith(Names.named(AbstractDeclarativeScopeProvider.NAMED_DELEGATE))
 		      .to(MappingsLanguageScopeProviderDelegate);
 	}
 	
-	public override Class<? extends IQualifiedNameConverter> bindIQualifiedNameConverter() {
+	override Class<? extends IQualifiedNameConverter> bindIQualifiedNameConverter() {
 		return MirBaseQualifiedNameConverter;
 	}
 	
@@ -39,7 +39,7 @@ class MappingsLanguageRuntimeModule extends AbstractMappingsLanguageRuntimeModul
 		return ReactionsLanguageGlobalScopeProvider;
 	}
 	
-	public override Class<? extends ILinkingService> bindILinkingService() {
+	override Class<? extends ILinkingService> bindILinkingService() {
 		return ReactionsLinkingService;
 	}
 }

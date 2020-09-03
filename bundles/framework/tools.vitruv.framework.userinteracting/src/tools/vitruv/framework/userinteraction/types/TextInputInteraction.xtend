@@ -13,11 +13,11 @@ import tools.vitruv.framework.userinteraction.UserInteractionOptions.InputValida
  * @author Dominik Klooz
  * @author Heiko Klare
  */
-public class TextInputInteraction extends BaseInteraction<FreeTextUserInteraction> {
-	private static val DEFAULT_TITLE = "Input Text";
-	private static val DEFAULT_MESSAGE = "";
-	private InputValidator inputValidator
-	private InputFieldType inputFieldType
+class TextInputInteraction extends BaseInteraction<FreeTextUserInteraction> {
+	static val DEFAULT_TITLE = "Input Text";
+	static val DEFAULT_MESSAGE = "";
+	InputValidator inputValidator
+	InputFieldType inputFieldType
 
 	public static final InputValidator NUMBERS_ONLY_INPUT_VALIDATOR = new InputValidator() {
 		override getInvalidInputMessage(String input) { "Only numbers are allowed as input" }

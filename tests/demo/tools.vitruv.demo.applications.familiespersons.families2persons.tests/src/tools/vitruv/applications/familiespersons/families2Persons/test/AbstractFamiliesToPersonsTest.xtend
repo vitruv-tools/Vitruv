@@ -10,8 +10,8 @@ import org.apache.log4j.Logger
 import org.apache.log4j.Level
 
 abstract class AbstractFamiliesToPersonsTest extends VitruviusApplicationTest {
-	private static val MODEL_FILE_EXTENSION = "families";
-	private static val MODEL_NAME = "model";
+	static val MODEL_FILE_EXTENSION = "families";
+	static val MODEL_NAME = "model";
 	
 	private def String getProjectModelPath(String modelName) {
 		"model/" + modelName + "." + MODEL_FILE_EXTENSION;

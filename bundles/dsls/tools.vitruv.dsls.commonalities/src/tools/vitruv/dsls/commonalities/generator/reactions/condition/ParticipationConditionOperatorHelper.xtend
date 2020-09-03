@@ -20,7 +20,7 @@ import static extension tools.vitruv.dsls.commonalities.generator.reactions.util
 
 class ParticipationConditionOperatorHelper extends ReactionsGenerationHelper {
 
-	public static class ParticipationConditionOperatorContext implements OperatorContext {
+	static class ParticipationConditionOperatorContext implements OperatorContext {
 
 		val extension TypeProvider typeProvider
 

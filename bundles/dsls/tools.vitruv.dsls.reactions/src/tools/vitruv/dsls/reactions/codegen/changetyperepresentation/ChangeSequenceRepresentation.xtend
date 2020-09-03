@@ -7,31 +7,31 @@ import org.eclipse.xtend.lib.annotations.Accessors
 import tools.vitruv.framework.change.echange.feature.FeatureEChange
 import tools.vitruv.framework.change.echange.root.RootEChange
 
-public class ChangeSequenceRepresentation {
+class ChangeSequenceRepresentation {
 	@Accessors(PUBLIC_GETTER)
-	private List<AtomicChangeTypeRepresentation> atomicChanges;
+	List<AtomicChangeTypeRepresentation> atomicChanges;
 
 	protected new(Iterable<AtomicChangeTypeRepresentation> atomicChanges) {
 		this.atomicChanges = newArrayList;
 		this.atomicChanges += atomicChanges;
 	}
 
-	public def AtomicChangeTypeRepresentation getChange(int number) {
+	def AtomicChangeTypeRepresentation getChange(int number) {
 		if (number >= atomicChanges.size) {
 			throw new IllegalArgumentException();
 		}
 		return atomicChanges.get(number);
 	}
 	
-	public def int getNumberOfChanges() {
+	def int getNumberOfChanges() {
 		return atomicChanges.size;
 	}
 	
-	public def List<AccessibleElement> getFields() {
+	def List<AccessibleElement> getFields() {
 		return atomicChanges.map[accessibleElement];
 	}
 	
-	public def StringConcatenationClient getResetFieldsCode() {
+	def StringConcatenationClient getResetFieldsCode() {
 		'''
 			«FOR atomicChange : atomicChanges»
 				«atomicChange.resetFieldCode»
@@ -48,11 +48,11 @@ public class ChangeSequenceRepresentation {
 		return atomicChanges.last;
 	}
 	
-	public def Iterable<AccessibleElement> generatePropertiesParameterList() {
+	def Iterable<AccessibleElement> generatePropertiesParameterList() {
 		relevantAtomicChange.generatePropertiesParameterList();
 	}
 	
-	public def StringConcatenationClient generatePropertiesAssignmentCode() {
+	def StringConcatenationClient generatePropertiesAssignmentCode() {
 		relevantAtomicChange.generatePropertiesAssignmentCode();
 		
 	}

@@ -13,7 +13,7 @@ import static extension tools.vitruv.dsls.reactions.codegen.helper.ReactionsLang
 import static extension tools.vitruv.dsls.reactions.codegen.helper.ReactionsImportsHelper.*;
 
 class ExecutorClassGenerator extends ClassGenerator {
-	private final ReactionsSegment reactionsSegment;
+	final ReactionsSegment reactionsSegment;
 	var JvmGenericType generatedClass;
 	
 	new(ReactionsSegment reactionsSegment, TypesBuilderExtensionProvider typesBuilderExtensionProvider) {

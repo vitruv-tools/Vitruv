@@ -26,11 +26,11 @@ import org.eclipse.xtend.lib.annotations.Data
  * an appropriate delete change.
  */
 class NotificationRecorder implements Adapter {
-	private Set<Notifier> rootObjects;
-	private boolean isRecording = false
+	Set<Notifier> rootObjects;
+	boolean isRecording = false
 	List<EChange> changes;
 	List<CompositeTransactionalChange> resultChanges;
-	private val EChangeIdManager idManager
+	val EChangeIdManager idManager
 	
 	new (EChangeIdManager idManager) {
 		this.idManager = idManager;	

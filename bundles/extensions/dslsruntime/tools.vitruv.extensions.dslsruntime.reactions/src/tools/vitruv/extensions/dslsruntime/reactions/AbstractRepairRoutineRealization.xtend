@@ -19,13 +19,13 @@ import tools.vitruv.framework.util.command.ResourceAccess
 import tools.vitruv.framework.util.datatypes.VURI
 
 abstract class AbstractRepairRoutineRealization extends CallHierarchyHaving implements RepairRoutine, ReactionElementsHandler {
-	private val AbstractRepairRoutinesFacade routinesFacade;
-	private extension val ReactionExecutionState executionState;
+	val AbstractRepairRoutinesFacade routinesFacade;
+	extension val ReactionExecutionState executionState;
 
 	@Delegate
-	private val ReactionElementsHandler _reactionElementsHandler;
+	val ReactionElementsHandler _reactionElementsHandler;
 
-	public new(AbstractRepairRoutinesFacade routinesFacade, ReactionExecutionState executionState, CallHierarchyHaving calledBy) {
+	new(AbstractRepairRoutinesFacade routinesFacade, ReactionExecutionState executionState, CallHierarchyHaving calledBy) {
 		super(calledBy);
 		this.routinesFacade = routinesFacade;
 		this.executionState = executionState;
@@ -85,7 +85,7 @@ abstract class AbstractRepairRoutineRealization extends CallHierarchyHaving impl
 		return retrievedElement;
 	}
 
-	public override boolean applyRoutine() {
+	override boolean applyRoutine() {
 		// capture the current routines facade execution state:
 		val facadeExecutionState = routinesFacade._getExecutionState().capture();
 		// set the reaction execution state and caller to use for all following routine calls:
@@ -102,7 +102,7 @@ abstract class AbstractRepairRoutineRealization extends CallHierarchyHaving impl
 
 	protected abstract def boolean executeRoutine() throws IOException;
 
-	public static class UserExecution extends Loggable {
+	static class UserExecution extends Loggable {
 		protected final extension ReactionExecutionState executionState
 
 		new(ReactionExecutionState executionState) {

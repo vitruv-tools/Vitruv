@@ -46,7 +46,7 @@ class EChangeIdManager {
 		}
 	}
 
-	public def boolean isCreateChange(EObjectAddedEChange<?> addedEChange) {
+	def boolean isCreateChange(EObjectAddedEChange<?> addedEChange) {
 		// We do not check the containment of the reference, because an element may be inserted into a non-containment
 		// reference before inserting it into a containment reference so that the create change has to be added
 		// for the inserting into the non-containment reference

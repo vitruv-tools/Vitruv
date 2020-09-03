@@ -7,26 +7,26 @@ import static org.junit.Assert.*
 import edu.kit.ipd.sdq.metamodels.persons.Person
 
 class FamiliesPersonsTest extends AbstractFamiliesToPersonsTest {
-	private static val FAMILY_NAME = "Mustermann";
-	private static val FIRST_NAME_FATHER = "Max";
-	private static val FIRST_NAME_SON = "Sohn";
-	private static val FIRST_NAME_DAUGHTER = "Tochter";
-	private static val FIRST_NAME_MOTHER = "Erika"
-	private static val PERSONS_PATH = "model/persons.persons";
+	static val FAMILY_NAME = "Mustermann";
+	static val FIRST_NAME_FATHER = "Max";
+	static val FIRST_NAME_SON = "Sohn";
+	static val FIRST_NAME_DAUGHTER = "Tochter";
+	static val FIRST_NAME_MOTHER = "Erika"
+	static val PERSONS_PATH = "model/persons.persons";
 
 	@Test
-	public def void testCreateFamilyRegister() {
+	def void testCreateFamilyRegister() {
 		val familyRegister = FamiliesFactory.eINSTANCE.createFamilyRegister
 		saveAndSynchronizeChanges(familyRegister);
 		assertModelExists(PERSONS_PATH);
 	}
 
 	@Test
-	public def void testDeleteFamilyRegister() {
+	def void testDeleteFamilyRegister() {
 	}
 
 	@Test
-	public def void testCreateFamilyFather() {
+	def void testCreateFamilyFather() {
 		val family = FamiliesFactory.eINSTANCE.createFamily();
 		family.lastName = FAMILY_NAME;
 		rootElement.families.add(family);
@@ -40,7 +40,7 @@ class FamiliesPersonsTest extends AbstractFamiliesToPersonsTest {
 	}
 
 	@Test
-	public def void testCreateFamilySon() {
+	def void testCreateFamilySon() {
 		val family = FamiliesFactory.eINSTANCE.createFamily();
 		family.lastName = FAMILY_NAME;
 		rootElement.families.add(family);
@@ -54,7 +54,7 @@ class FamiliesPersonsTest extends AbstractFamiliesToPersonsTest {
 	}
 
 	@Test
-	public def void testCreateFamilyMother() {
+	def void testCreateFamilyMother() {
 		val family = FamiliesFactory.eINSTANCE.createFamily();
 		family.lastName = FAMILY_NAME;
 		rootElement.families.add(family);
@@ -68,7 +68,7 @@ class FamiliesPersonsTest extends AbstractFamiliesToPersonsTest {
 	}
 
 	@Test
-	public def void testCreateFamilyDaughter() {
+	def void testCreateFamilyDaughter() {
 		val family = FamiliesFactory.eINSTANCE.createFamily();
 		family.lastName = FAMILY_NAME;
 		rootElement.families.add(family);
@@ -82,7 +82,7 @@ class FamiliesPersonsTest extends AbstractFamiliesToPersonsTest {
 	}
 
 	@Test
-	public def void testDeleteMember() {
+	def void testDeleteMember() {
 		val family = FamiliesFactory.eINSTANCE.createFamily();
 		family.lastName = FAMILY_NAME;
 		rootElement.families.add(family);
@@ -99,7 +99,7 @@ class FamiliesPersonsTest extends AbstractFamiliesToPersonsTest {
 	}
 
 	@Test
-	public def void testChangeFirstName() {
+	def void testChangeFirstName() {
 		val family = FamiliesFactory.eINSTANCE.createFamily();
 		family.lastName = FAMILY_NAME;
 		rootElement.families.add(family);
@@ -117,6 +117,6 @@ class FamiliesPersonsTest extends AbstractFamiliesToPersonsTest {
 	}
 
 	@Test
-	public def void testChangeLastName() {
+	def void testChangeLastName() {
 	}
 }

@@ -30,7 +30,7 @@ class ExplicitUnsetEAttributeTest extends EChangeTest {
 	
 	
 	@Before
-	override public void beforeTest() {
+	override void beforeTest() {
 		super.beforeTest()
 		affectedEObject = rootObject	
 	}
@@ -40,7 +40,7 @@ class ExplicitUnsetEAttributeTest extends EChangeTest {
 	 * valued attribute and the model is in state before the change.
 	 */
 	@Test
-	def public void resolveBeforeSingleValuedAttributeTest() {
+	def void resolveBeforeSingleValuedAttributeTest() {
 		// Set state before
 		isSingleValuedAttributeTest
 		
@@ -53,7 +53,7 @@ class ExplicitUnsetEAttributeTest extends EChangeTest {
 	 * valued attribute and the model is in state after the change.
 	 */
 	@Test
-	def public void resolveAfterSingleValuedAttributeTest() {
+	def void resolveAfterSingleValuedAttributeTest() {
 		// Set state before
 		isSingleValuedAttributeTest	
 		
@@ -66,7 +66,7 @@ class ExplicitUnsetEAttributeTest extends EChangeTest {
 	 * valued attribute and the model is in state before the change.
 	 */
 	@Test
-	def public void resolveBeforeUnsetMultiValuedAttributeTest() {
+	def void resolveBeforeUnsetMultiValuedAttributeTest() {
 		// Set state before
 		isMultiValuedAttributeTest
 		
@@ -79,7 +79,7 @@ class ExplicitUnsetEAttributeTest extends EChangeTest {
 	 * valued attribute and the model is in state after the change.
 	 */
 	@Test
-	def public void resolveAfterUnsetMultiValuedAttributeTest() {
+	def void resolveAfterUnsetMultiValuedAttributeTest() {
 		// Set state before
 		isMultiValuedAttributeTest	
 		
@@ -92,7 +92,7 @@ class ExplicitUnsetEAttributeTest extends EChangeTest {
 	 * returns the same class.
 	 */
 	@Test
-	def public void resolveToCorrectType() {
+	def void resolveToCorrectType() {
 		// Set state before
 		isSingleValuedAttributeTest
 		
@@ -109,7 +109,7 @@ class ExplicitUnsetEAttributeTest extends EChangeTest {
 	 * Unsets a single valued unsettable attribute.
 	 */
 	@Test
-	def public void applyForwardUnsetSingleValuedAttributeTest() {
+	def void applyForwardUnsetSingleValuedAttributeTest() {
 		// Set state before
 		isSingleValuedAttributeTest
 
@@ -122,7 +122,7 @@ class ExplicitUnsetEAttributeTest extends EChangeTest {
 	 * Unsets a multi valued unsettable attribute.
 	 */
 	@Test
-	def public void applyForwardUnsetMulitValuedAttributeTest() {
+	def void applyForwardUnsetMulitValuedAttributeTest() {
 		// Set state before
 		isMultiValuedAttributeTest
 
@@ -135,7 +135,7 @@ class ExplicitUnsetEAttributeTest extends EChangeTest {
 	 * Unsets a single valued unsettable attribute.
 	 */
 	@Test
-	def public void applyBackwardUnsetSingleValuedAttributeTest() {
+	def void applyBackwardUnsetSingleValuedAttributeTest() {
 		// Set state before
 		isSingleValuedAttributeTest
 		
@@ -148,7 +148,7 @@ class ExplicitUnsetEAttributeTest extends EChangeTest {
 	 * Unsets a multi valued unsettable attribute.
 	 */
 	@Test
-	def public void applyBackwardUnsetMulitValuedAttributeTest() {
+	def void applyBackwardUnsetMulitValuedAttributeTest() {
 		// Set state before
 		isMultiValuedAttributeTest
 		

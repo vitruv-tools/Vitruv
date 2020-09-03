@@ -7,11 +7,11 @@ import tools.vitruv.framework.change.processing.ChangePropagationSpecification
 import tools.vitruv.framework.domains.VitruvDomain
 
 class VirtualModelConfiguration {
-	private static val logger = Logger.getLogger(VirtualModelConfiguration);
-	private val List<VitruvDomain> metamodels;
-	private val List<ChangePropagationSpecification> changePropagationSpecifications;
+	static val logger = Logger.getLogger(VirtualModelConfiguration);
+	val List<VitruvDomain> metamodels;
+	val List<ChangePropagationSpecification> changePropagationSpecifications;
 	
-	public new() {
+	new() {
 		this.metamodels = new ArrayList();
 		this.changePropagationSpecifications = new ArrayList();
 	}
@@ -34,7 +34,7 @@ class VirtualModelConfiguration {
 		return true;
 	}
 	
-	public def void addMetamodel(VitruvDomain metamodel) {
+	def void addMetamodel(VitruvDomain metamodel) {
 		if (!checkForMetamodelConflict(metamodel)) {
 			throw new IllegalArgumentException("Given metamodel defines nsURI or file extension that another metamodel already defines");
 		}
@@ -54,18 +54,18 @@ class VirtualModelConfiguration {
 		return true;
 	}
 	
-	public def void addChangePropagationSpecification(ChangePropagationSpecification changePropagationSpecification) {
+	def void addChangePropagationSpecification(ChangePropagationSpecification changePropagationSpecification) {
 		if (!checkForTransformerConflict(changePropagationSpecification)) {
 			throw new IllegalArgumentException("Given propagation specification is defined for metamodel pair which another specification already defines");
 		}
 		changePropagationSpecifications += changePropagationSpecification;	
 	}
 	
-	public def Iterable<VitruvDomain> getMetamodels() {
+	def Iterable<VitruvDomain> getMetamodels() {
 		return metamodels;
 	}
 	
-	public def Iterable<ChangePropagationSpecification> getChangePropagationSpecifications() {
+	def Iterable<ChangePropagationSpecification> getChangePropagationSpecifications() {
 		return changePropagationSpecifications;
 	}
 }

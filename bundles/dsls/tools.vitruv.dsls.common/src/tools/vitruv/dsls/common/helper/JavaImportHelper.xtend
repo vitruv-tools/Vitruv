@@ -6,11 +6,11 @@ import org.eclipse.emf.ecore.EClassifier
 
 class JavaImportHelper {
 	public static final char FQN_SEPARATOR = '.';
-	private static val NO_IMPORT_NEEDED = Collections.singleton('java.lang')
-	private val Map<String, String> imports = newHashMap
-	private val Map<String, String> staticImports = newHashMap
+	static val NO_IMPORT_NEEDED = Collections.singleton('java.lang')
+	val Map<String, String> imports = newHashMap
+	val Map<String, String> staticImports = newHashMap
 
-	public def generateImportCode() '''
+	def generateImportCode() '''
 		«FOR i : imports.values»
 			import «i»;
 		«ENDFOR»
@@ -19,7 +19,7 @@ class JavaImportHelper {
 		«ENDFOR»
 	'''
 
-	public def staticRef(Class<?> javaClass, String methodName) {
+	def staticRef(Class<?> javaClass, String methodName) {
 		if (!staticImports.containsKey(methodName)) {
 			staticImports.put(methodName, javaClass.name)
 			return methodName;
@@ -28,19 +28,19 @@ class JavaImportHelper {
 		return javaClass.name + FQN_SEPARATOR + methodName;
 	}
 	
-	public def typeRef(ClassNameGenerator nameGenerator) {
+	def typeRef(ClassNameGenerator nameGenerator) {
 		typeRef(nameGenerator.qualifiedName)
 	}
 
-	public def typeRef(Class<?> javaClass) {
+	def typeRef(Class<?> javaClass) {
 		typeRef(javaClass.name)
 	}
 
-	public def typeRef(EClassifier eClassifier) {
+	def typeRef(EClassifier eClassifier) {
 		typeRef(eClassifier.instanceTypeName)
 	}
 
-	public def typeRef(CharSequence fullyQualifiedJVMName) {
+	def typeRef(CharSequence fullyQualifiedJVMName) {
 		val fullyQualifiedJVMNameString = fullyQualifiedJVMName.toString
 		if (fullyQualifiedJVMNameString.isSimpleName)
 			return fullyQualifiedJVMNameString

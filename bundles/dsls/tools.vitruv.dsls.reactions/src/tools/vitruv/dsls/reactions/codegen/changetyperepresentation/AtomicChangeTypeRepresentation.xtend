@@ -7,8 +7,8 @@ import static tools.vitruv.dsls.reactions.codegen.ReactionsLanguageConstants.*
 import tools.vitruv.framework.change.echange.feature.single.ReplaceSingleValuedFeatureEChange
 import org.eclipse.xtend.lib.annotations.Accessors
 
-public class AtomicChangeTypeRepresentation extends ChangeTypeRepresentation {
-	private static final String TEMPORARY_TYPED_CHANGE_NAME = "_localTypedChange";
+class AtomicChangeTypeRepresentation extends ChangeTypeRepresentation {
+	static final String TEMPORARY_TYPED_CHANGE_NAME = "_localTypedChange";
 	
 	protected final Class<?> changeType;
 	protected final String affectedElementClassCanonicalName
@@ -32,7 +32,7 @@ public class AtomicChangeTypeRepresentation extends ChangeTypeRepresentation {
 		this.hasIndex = hasIndex
 	}
 
-	public override Class<?> getChangeType() {
+	override Class<?> getChangeType() {
 		return changeType;
 	}
 
@@ -44,35 +44,35 @@ public class AtomicChangeTypeRepresentation extends ChangeTypeRepresentation {
 		affectedValueClassCanonicalName
 	}
 
-	public def EStructuralFeature getAffectedFeature() {
+	def EStructuralFeature getAffectedFeature() {
 		return affectedFeature;
 	}
 
-	public def boolean hasAffectedElement() {
+	def boolean hasAffectedElement() {
 		return affectedElementClass !== null;
 	}
 	
-	public def boolean hasAffectedFeature() {
+	def boolean hasAffectedFeature() {
 		return affectedFeature !== null;
 	}
 	
-	public def boolean hasOldValue() {
+	def boolean hasOldValue() {
 		return hasOldValue;
 	}
 
-	public def boolean hasNewValue() {
+	def boolean hasNewValue() {
 		return hasNewValue;
 	}
 	
-	public def boolean hasIndex() {
+	def boolean hasIndex() {
 		return hasIndex;
 	}
 
-	public override getGenericTypeParameters() {
+	override getGenericTypeParameters() {
 		#[affectedElementClassCanonicalName, affectedValueClassCanonicalName].filterNull
 	}
 
-	public override StringConcatenationClient getUntypedChangeTypeRepresentation() {
+	override StringConcatenationClient getUntypedChangeTypeRepresentation() {
 		return '''«changeType»'''
 	}
 
@@ -124,7 +124,7 @@ public class AtomicChangeTypeRepresentation extends ChangeTypeRepresentation {
 		«ENDIF»
 	'''
 
-	public def Iterable<AccessibleElement> generatePropertiesParameterList() {
+	def Iterable<AccessibleElement> generatePropertiesParameterList() {
 		val result = <AccessibleElement>newArrayList();
 		result.add(new AccessibleElement(name, changeType));
 		if (affectedElementClass !== null) {
@@ -145,7 +145,7 @@ public class AtomicChangeTypeRepresentation extends ChangeTypeRepresentation {
 		return result;
 	}
 
-	public def StringConcatenationClient generatePropertiesAssignmentCode() {
+	def StringConcatenationClient generatePropertiesAssignmentCode() {
 		'''
 			«IF affectedElementClass !== null»
 				«affectedElementClass» «CHANGE_AFFECTED_ELEMENT_ATTRIBUTE» = «name».get«CHANGE_AFFECTED_ELEMENT_ATTRIBUTE.toFirstUpper»();

@@ -7,8 +7,8 @@ import tools.vitruv.domains.emf.builder.VitruviusEmfBuilderApplicator
 import tools.vitruv.framework.domains.AbstractTuidAwareVitruvDomain
 
 class FamiliesDomain extends AbstractTuidAwareVitruvDomain {
-	private static final String METAMODEL_NAME = "Families";
-	private static val FILE_EXTENSION = "families"
+	static final String METAMODEL_NAME = "Families";
+	static val FILE_EXTENSION = "families"
 	public static val NAMESPACE_URIS = FamiliesPackage.eINSTANCE.nsURIsRecursive;
 
 	package new() {

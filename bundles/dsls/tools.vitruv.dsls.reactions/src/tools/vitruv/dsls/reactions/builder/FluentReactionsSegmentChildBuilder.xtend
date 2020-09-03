@@ -83,7 +83,7 @@ abstract package class FluentReactionsSegmentChildBuilder extends FluentReaction
 		new TypeProvider(delegateTypeProvider, referenceBuilderFactory, this, scopeExpression)
 	}
 
-	def public getJvmOperationRoutineFacade(XExpression codeBlock) {
+	def getJvmOperationRoutineFacade(XExpression codeBlock) {
 		codeBlock.correspondingMethodParameter(REACTION_USER_EXECUTION_ROUTINE_CALL_FACADE_PARAMETER_NAME).featureCall
 	}
 }

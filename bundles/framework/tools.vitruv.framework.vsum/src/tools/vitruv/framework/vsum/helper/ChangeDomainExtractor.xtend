@@ -7,7 +7,7 @@ import org.eclipse.emf.ecore.EObject
 import tools.vitruv.framework.domains.repository.VitruvDomainRepository
 
 class ChangeDomainExtractor {
-	private VitruvDomainRepository domainRepository;
+	VitruvDomainRepository domainRepository;
 	
 	new(VitruvDomainRepository domainRepository) {
 		this.domainRepository = domainRepository;
@@ -19,7 +19,7 @@ class ChangeDomainExtractor {
 	 * @param changes The propagation result
 	 * @return The target domain, null if none could be determined
 	 */
-	def public getTargetDomain(List<PropagatedChange> changes) {
+	def getTargetDomain(List<PropagatedChange> changes) {
 		if (changes === null) return null;
 
 		return getDomain(changes.map[consequentialChanges]);
@@ -31,7 +31,7 @@ class ChangeDomainExtractor {
 	 * @param changes The propagation result
 	 * @return The source domain, null if none could be determined
 	 */
-	def public getSourceDomain(List<PropagatedChange> changes) {
+	def getSourceDomain(List<PropagatedChange> changes) {
 		if (changes === null) return null;
 
 		return getDomain(changes.map[originalChange]);

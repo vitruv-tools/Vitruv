@@ -68,7 +68,7 @@ class BidirectionalMappingRoutineGenerator implements AbstractBidirectionalCondi
 		]
 	}
 
-	public def integrateRoutine(MappingGeneratorContext context) {
+	def integrateRoutine(MappingGeneratorContext context) {
 		var generatedRoutine = AbstractReactionIntegrationGenerator.generateRoutine(routine)
 		targetRoutineBuilder = context.create.from(generatedRoutine)
 		context.getSegmentBuilder += targetRoutineBuilder

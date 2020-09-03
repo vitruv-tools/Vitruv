@@ -5,8 +5,8 @@ import tools.vitruv.framework.uuid.UuidResolver
 
 @Data
 class PropagatedChange {
-	private val VitruviusChange originalChange;
-	private val VitruviusChange consequentialChanges;
+	val VitruviusChange originalChange;
+	val VitruviusChange consequentialChanges;
 	
 	override toString() '''
 	Original change:
