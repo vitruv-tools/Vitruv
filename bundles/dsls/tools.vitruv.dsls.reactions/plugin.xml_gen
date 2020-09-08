@@ -2,7 +2,7 @@
 <?eclipse version="3.0"?>
 <plugin>
 	<extension point="org.eclipse.emf.ecore.generated_package">
-		<package 
+		<package
 			uri = "http://vitruv.tools/dsls/reactions/ReactionsLanguage"
 			class = "tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsLanguagePackage"
 			genModel = "model/generated/ReactionsLanguage.genmodel" />

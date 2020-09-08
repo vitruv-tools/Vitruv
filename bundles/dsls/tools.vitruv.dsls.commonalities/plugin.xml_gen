@@ -2,7 +2,7 @@
 <?eclipse version="3.0"?>
 <plugin>
 	<extension point="org.eclipse.emf.ecore.generated_package">
-		<package 
+		<package
 			uri = "http://vitruv.tools/dsls/commonalities/language"
 			class = "tools.vitruv.dsls.commonalities.language.LanguagePackage"
 			genModel = "model-gen/CommonalitiesLanguage.genmodel" />
