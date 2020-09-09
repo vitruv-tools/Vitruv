@@ -16,9 +16,9 @@ class StandaloneReactionIntegrationGenerator extends AbstractReactionIntegration
 
 	override init() {
 		val l2rIntegration = new StandaloneReactionIntegration(l2rContext.segment, true)
-		integrations.add(l2rIntegration as StandaloneReactionIntegration)
+		integrations.add(l2rIntegration)
 		val r2lIntegration = new StandaloneReactionIntegration(r2lContext.segment, false)
-		integrations.add(r2lIntegration as StandaloneReactionIntegration)
+		integrations.add(r2lIntegration)
 		initIntegration(l2rIntegration, r2lIntegration)
 	}
 

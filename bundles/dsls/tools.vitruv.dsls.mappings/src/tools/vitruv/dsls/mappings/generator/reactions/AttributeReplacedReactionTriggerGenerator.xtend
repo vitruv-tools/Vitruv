@@ -38,7 +38,7 @@ class AttributeReplacedReactionTriggerGenerator extends AbstractReactionTriggerG
 	«attribute.attributeName» replaced at «metaclass.parameterName»'''
 
 	private def extractAttribute() {
-		attribute.feature as EAttribute
+		attribute.feature
 	}
 
 	override equals(Object obj) {

@@ -11,7 +11,7 @@ import tools.vitruv.framework.change.description.impl.EmptyChangeImpl
 class ChangeCloner {
 	def dispatch VitruviusChange clone(CompositeContainerChangeImpl containerChange) {
 		val clone = new CompositeContainerChangeImpl();
-		containerChange.changes.forEach[clone.addChange(it.clone as VitruviusChange)];
+		containerChange.changes.forEach[clone.addChange(it.clone)];
 		return clone;
 	}
 	
