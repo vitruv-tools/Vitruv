@@ -6,13 +6,13 @@ import edu.kit.ipd.sdq.activextendannotations.Utility
 	public static val OVERRIDDEN_REACTIONS_SEGMENT_SEPARATOR = "::";
 	
 	public static val RETRIEVAL_PRECONDITION_METHOD_TARGET = "potentialTarget"
-	private static val ROUTINES_FACADE_NAME = "routinesFacade";
+	static val ROUTINES_FACADE_NAME = "routinesFacade";
 	public static val ROUTINES_FACADE_PARAMETER_NAME = ROUTINES_FACADE_NAME;
 	public static val ROUTINES_FACADE_FIELD_NAME = ROUTINES_FACADE_NAME;
-	private static val USER_INTERACTING_NAME = "userInteractor";
+	static val USER_INTERACTING_NAME = "userInteractor";
 	public static val USER_INTERACTING_PARAMETER_NAME = USER_INTERACTING_NAME;
 	public static val USER_INTERACTING_FIELD_NAME = USER_INTERACTING_NAME;
-	private static val REACTION_EXECUTION_STATE_NAME = "reactionExecutionState";
+	static val REACTION_EXECUTION_STATE_NAME = "reactionExecutionState";
 	public static val REACTION_EXECUTION_STATE_PARAMETER_NAME = REACTION_EXECUTION_STATE_NAME;
 	public static val REACTION_EXECUTION_STATE_FIELD_NAME = REACTION_EXECUTION_STATE_NAME;
 	public static val CHANGE_PARAMETER_NAME = "change";

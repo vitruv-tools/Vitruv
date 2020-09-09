@@ -45,13 +45,13 @@ class CompoundEChangeAssertHelper {
 			.assertDeleteEObject(expectedOldValue);
 	}
 
-	def public static Iterable<? extends EChange> assertCreateAndInsertRootEObject(Iterable<? extends EChange> changes, EObject expectedNewValue, String uri, Resource resource) {
+	def static Iterable<? extends EChange> assertCreateAndInsertRootEObject(Iterable<? extends EChange> changes, EObject expectedNewValue, String uri, Resource resource) {
 		changes.assertSizeGreaterEquals(2);
 		return changes.assertCreateEObject(expectedNewValue)
 			.assertInsertRootEObject(expectedNewValue, uri, resource)
 	}
 
-	def public static Iterable<? extends EChange> assertRemoveAndDeleteRootEObject(Iterable<? extends EChange> changes, EObject expectedOldValue, String uri, Resource resource) {
+	def static Iterable<? extends EChange> assertRemoveAndDeleteRootEObject(Iterable<? extends EChange> changes, EObject expectedOldValue, String uri, Resource resource) {
 		changes.assertSizeGreaterEquals(2);
 		return changes.assertRemoveRootEObject(expectedOldValue, uri, resource)
 			.assertDeleteEObject(expectedOldValue);

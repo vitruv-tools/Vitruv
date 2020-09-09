@@ -15,9 +15,9 @@ import static extension tools.vitruv.framework.change.echange.resolve.EChangeRes
  * Test class for the concrete {@link InsertEAttributeValue} EChange,
  * which inserts a value in a multi valued attribute.
  */
-public class InsertEAttributeValueTest extends InsertRemoveEAttributeTest {
+class InsertEAttributeValueTest extends InsertRemoveEAttributeTest {
 	@Before
-	override public void beforeTest() {
+	override void beforeTest() {
 		super.beforeTest
 		assertIsStateBefore
 	}
@@ -25,7 +25,7 @@ public class InsertEAttributeValueTest extends InsertRemoveEAttributeTest {
 	 * Tests whether resolving the {@link InsertEAttributeValue} EChange returns the same class.
 	 */
 	@Test
-	def public void resolveToCorrectType() {
+	def void resolveToCorrectType() {
 		// Create change
 		val unresolvedChange = createUnresolvedChange(NEW_VALUE, 0)
 				
@@ -39,7 +39,7 @@ public class InsertEAttributeValueTest extends InsertRemoveEAttributeTest {
 	 * inserting new values in a multivalued attribute.
 	 */
 	@Test
-	def public void applyForwardTest() {
+	def void applyForwardTest() {
 		// Create change and resolve
 		val resolvedChange = createUnresolvedChange(NEW_VALUE, 0).resolveBefore(uuidGeneratorAndResolver)
 			as InsertEAttributeValue<Root, Integer>
@@ -65,7 +65,7 @@ public class InsertEAttributeValueTest extends InsertRemoveEAttributeTest {
 	 * Applies two {@link InsertEAttributeValue} EChanges backward.
 	 */
 	@Test
-	def public void applyBackwardTest() {
+	def void applyBackwardTest() {
 		// Create change and resolve and apply forward
 		val resolvedChange = createUnresolvedChange(NEW_VALUE, 0).resolveBefore(uuidGeneratorAndResolver)
 			as InsertEAttributeValue<Root, Integer>
@@ -96,7 +96,7 @@ public class InsertEAttributeValueTest extends InsertRemoveEAttributeTest {
 	 * Tests the {@link InsertEAttributeValue} EChange with invalid index.
 	 */
 	@Test(expected=RuntimeException)
-	def public void invalidIndexTest() {
+	def void invalidIndexTest() {
 	 	var index = 5 // Valid index in empty list is only 0
 	 	Assert.assertTrue(attributeContent.empty) 
 	 	
@@ -114,7 +114,7 @@ public class InsertEAttributeValueTest extends InsertRemoveEAttributeTest {
 	 * Tests an {@link InsertEAttributeValue} with an affected object which has no such attribute.
 	 */
 	@Test
-	def public void invalidAttributeTest() {
+	def void invalidAttributeTest() {
 	 	// NonRoot has no multivalued int attribute
 	 	val affectedNonRootEObject = AllElementTypesFactory.eINSTANCE.createNonRoot()
 	 	resource.contents.add(affectedNonRootEObject)
@@ -135,7 +135,7 @@ public class InsertEAttributeValueTest extends InsertRemoveEAttributeTest {
 	 * Tests an {@link InsertEAttributeValue} EChange with the wrong value type.
 	 */
 	@Test
-	def public void invalidValueTest() {
+	def void invalidValueTest() {
 	 	val newInvalidValue = "New String Value" // values are String, attribute value type is Integer
 	 	
 	 	// Resolving the change will be tested in EFeatureChange

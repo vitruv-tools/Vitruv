@@ -51,7 +51,7 @@ interface VitruvDomain extends URIHaving, Comparable<URIHaving> {
 	 * identification. This especially depends on whether EMF changes are 
 	 * recorded and applied or if only a subset of changes is recorded and
 	 * the resource is reloaded instead, which does not provide UUIDs
-	 * for alle elements.
+	 * for all elements.
 	 */
 	def boolean supportsUuids()
 

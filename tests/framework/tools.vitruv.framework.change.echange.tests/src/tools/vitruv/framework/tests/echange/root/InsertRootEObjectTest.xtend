@@ -20,7 +20,7 @@ class InsertRootEObjectTest extends RootEChangeTest {
 	 * when the model is in state before the change and the change will be applied forward.
 	 */
 	@Test
-	def public void resolveBefore() {
+	def void resolveBefore() {
 		// Create change
 		val unresolvedChange = createUnresolvedChange(newRootObject, 1)
 		unresolvedChange.assertIsNotResolved(newRootObject)		
@@ -39,7 +39,7 @@ class InsertRootEObjectTest extends RootEChangeTest {
 	 * and the change will be applied backward.
 	 */
 	@Test
-	def public void resolveAfterTest() {	
+	def void resolveAfterTest() {	
 		// Create change
 		val unresolvedChange = createUnresolvedChange(newRootObject, 1)
 		unresolvedChange.assertIsNotResolved(newRootObject)		
@@ -59,7 +59,7 @@ class InsertRootEObjectTest extends RootEChangeTest {
 	 * returns the same class.
 	 */
 	@Test
-	def public void resolveToCorrectType() {
+	def void resolveToCorrectType() {
 		// Create change
 		val unresolvedChange = createUnresolvedChange(newRootObject, 1)
 			
@@ -73,7 +73,7 @@ class InsertRootEObjectTest extends RootEChangeTest {
 	 * by inserting a new root elements into a resource.
 	 */
 	@Test
-	def public void applyForwardTest() {	
+	def void applyForwardTest() {	
 		assertIsStateBefore
 		
 		// Create change and resolve 1
@@ -104,7 +104,7 @@ class InsertRootEObjectTest extends RootEChangeTest {
 	 * by removing two inserted root objects from a resource.
 	 */
 	@Test
-	def public void applyBackwardTest() {
+	def void applyBackwardTest() {
 		// Set state before
 		assertIsStateBefore
 		
@@ -138,7 +138,7 @@ class InsertRootEObjectTest extends RootEChangeTest {
 	 * Tests applying the {@link InsertRootEObject} EChange with invalid index.
 	 */
 	@Test
-	def public void invalidIndexTest() {
+	def void invalidIndexTest() {
 		// Set state before
 		var index = 5
 		Assert.assertTrue(resourceContent.size < index)

@@ -8,7 +8,7 @@ import tools.vitruv.framework.tests.echange.EChangeTest
 /**
  * Abstract class which is used by the EObject EChange test classes.
  */
-public abstract class EObjectTest extends EChangeTest {
+abstract class EObjectTest extends EChangeTest {
 	protected var Root createdObject = null;
 	protected var Root createdObject2 = null;
 		

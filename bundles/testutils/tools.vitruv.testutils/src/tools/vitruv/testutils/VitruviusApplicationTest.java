@@ -168,14 +168,18 @@ public abstract class VitruviusApplicationTest extends VitruviusUnmonitoredAppli
 		this.changeRecorder.removeFromRecording(resource);
 		return changes;
 	}
-	
+
 	protected Resource resourceAt(String modelPathInProject) {
+		ResourceSet resourceSet = new ResourceSetImpl();
+		return resourceAt(resourceSet, modelPathInProject);
+	}
+
+	protected Resource resourceAt(ResourceSet resourceSet, String modelPathInProject) {
 		try {
-			final ResourceSet resourceSet = new ResourceSetImpl();
 			return getModelResource(modelPathInProject, resourceSet);
 		} catch (RuntimeException e) {
 			if (e.getCause() instanceof FileNotFoundException) {
-				return createModelResource(modelPathInProject);
+				return createModelResource(modelPathInProject, resourceSet);
 			}
 			throw e;
 		}

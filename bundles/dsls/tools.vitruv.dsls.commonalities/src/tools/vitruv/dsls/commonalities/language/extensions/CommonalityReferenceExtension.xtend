@@ -3,11 +3,13 @@ package tools.vitruv.dsls.commonalities.language.extensions
 import edu.kit.ipd.sdq.activextendannotations.Utility
 import tools.vitruv.dsls.commonalities.language.CommonalityReference
 
-import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
+import static extension tools.vitruv.dsls.commonalities.language.extensions.CommonalityReferenceMappingExtension.*
+import static extension tools.vitruv.dsls.commonalities.language.extensions.ParticipationExtension.*
 
-@Utility class CommonalityReferenceExtension {
+@Utility
+package class CommonalityReferenceExtension {
 
-	def static isMultiValued(CommonalityReference reference) {
-		reference.mappings.containsAny [it.reference.isMultiValued]
-	}	
+	static def getMappings(CommonalityReference reference, String domainName) {
+		return reference.mappings.filter[it.participation.domainName == domainName].toList
+	}
 }

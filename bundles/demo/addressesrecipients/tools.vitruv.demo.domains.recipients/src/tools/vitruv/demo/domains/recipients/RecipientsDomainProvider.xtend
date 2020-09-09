@@ -3,9 +3,9 @@ package tools.vitruv.demo.domains.recipients
 import tools.vitruv.framework.domains.VitruvDomainProvider
 
 class RecipientsDomainProvider implements VitruvDomainProvider<RecipientsDomain> {
-	private static var RecipientsDomain instance;
+	static var RecipientsDomain instance;
 	
-	override public RecipientsDomain getDomain() {
+	override RecipientsDomain getDomain() {
 		if (instance === null) {
 			instance = new RecipientsDomain();
 		}

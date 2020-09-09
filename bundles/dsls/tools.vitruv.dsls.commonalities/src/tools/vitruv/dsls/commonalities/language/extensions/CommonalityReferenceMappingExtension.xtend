@@ -1,61 +1,83 @@
 package tools.vitruv.dsls.commonalities.language.extensions
 
 import edu.kit.ipd.sdq.activextendannotations.Utility
-import java.util.Collections
 import tools.vitruv.dsls.commonalities.language.CommonalityReference
 import tools.vitruv.dsls.commonalities.language.CommonalityReferenceMapping
-import tools.vitruv.dsls.commonalities.language.ReferenceEqualitySpecification
-import tools.vitruv.dsls.commonalities.language.ReferenceReadSpecification
-import tools.vitruv.dsls.commonalities.language.ReferenceSetSpecification
+import tools.vitruv.dsls.commonalities.language.OperatorReferenceMapping
+import tools.vitruv.dsls.commonalities.language.Participation
+import tools.vitruv.dsls.commonalities.language.ParticipationClass
+import tools.vitruv.dsls.commonalities.language.SimpleReferenceMapping
 
+import static extension tools.vitruv.dsls.commonalities.language.extensions.CommonalitiesLanguageElementExtension.*
 import static extension tools.vitruv.dsls.commonalities.language.extensions.ParticipationClassExtension.*
 import static extension tools.vitruv.dsls.commonalities.language.extensions.ParticipationExtension.*
+import static extension tools.vitruv.dsls.commonalities.language.extensions.ReferenceMappingOperatorExtension.*
 
-@Utility class CommonalityReferenceMappingExtension {
-	def static dispatch isRead(ReferenceReadSpecification referenceMappingSpecification) {
-		true
+@Utility
+package class CommonalityReferenceMappingExtension {
+
+	static def isSimpleMapping(CommonalityReferenceMapping mapping) {
+		return (mapping instanceof SimpleReferenceMapping)
 	}
-	
-	def static dispatch isRead(ReferenceEqualitySpecification referenceMappingSpecification) {
-		true
+
+	static def isOperatorMapping(CommonalityReferenceMapping mapping) {
+		return (mapping instanceof OperatorReferenceMapping)
 	}
-	
-	def static dispatch isRead(ReferenceSetSpecification referenceMappingSpecification) {
-		false
+
+	static def dispatch boolean isMultiValued(SimpleReferenceMapping mapping) {
+		return mapping.reference.isMultiValued
 	}
-	
-	def static dispatch isWrite(ReferenceReadSpecification referenceMappingSpecification) {
-		false
+
+	static def dispatch boolean isMultiValued(OperatorReferenceMapping mapping) {
+		return mapping.operator.isMultiValued
 	}
-	
-	def static dispatch isWrite(ReferenceEqualitySpecification referenceMappingSpecification) {
-		true
+
+	static def dispatch ParticipationClass getParticipationClass(SimpleReferenceMapping mapping) {
+		return mapping.reference.participationClass
 	}
-	
-	def static dispatch isWrite(ReferenceSetSpecification referenceMappingSpecification) {
-		true
+
+	static def dispatch ParticipationClass getParticipationClass(OperatorReferenceMapping mapping) {
+		return mapping.participationClass
 	}
-	
-	def static getParticipation(CommonalityReferenceMapping mapping) {
-		mapping.reference.participationClass.participation
+
+	static def Participation getParticipation(CommonalityReferenceMapping mapping) {
+		return mapping.participationClass.participation
 	}
-	
-	def static getDeclaringReference(CommonalityReferenceMapping mapping) {
-		val result = mapping.eContainer
-		if (result instanceof CommonalityReference) {
-			return result
-		}
-		throw new IllegalStateException('''Found the «CommonalityReferenceMapping.simpleName» ‹«mapping»› «
-		»not inside a «CommonalityReference.simpleName»!''')
+
+	static def getDeclaringReference(CommonalityReferenceMapping mapping) {
+		return mapping.getDirectContainer(CommonalityReference)
 	}
-	
-	def static getMatchingReferencedParticipations(CommonalityReferenceMapping mapping) {
-		val referenceRightType = mapping.reference?.type
-		val referenceLeftType = mapping.declaringReference.referenceType
-		if (referenceRightType === null || referenceLeftType === null) return Collections.emptyList
-		referenceLeftType.participations.flatMap [classes].filter [
-			referenceRightType.isSuperTypeOf(superMetaclass)
+
+	static def getReferencedCommonality(CommonalityReferenceMapping mapping) {
+		return mapping.declaringReference.referenceType
+	}
+
+	static def getReferencedParticipation(CommonalityReferenceMapping mapping) {
+		val participationDomainName = mapping.participation.domainName
+		val referencedCommonality = mapping.referencedCommonality
+		// Note: We verify via validation that there is exactly one matching participation.
+		val participation = referencedCommonality.participations.findFirst [
+			it.domainName == participationDomainName
+			// TODO Support for multiple participations with the same domain inside the referenced commonality.
 		]
+		if (participation === null) {
+			// This is usually a hint for a scoping related issue:
+			throw new RuntimeException('''Could not find referenced participation '«participationDomainName
+				»' in commonality '«referencedCommonality»' for mapping of reference '«
+				mapping.declaringReference»'. ''')
+		}
+		return participation
 	}
-	
+
+	static def dispatch boolean isAssignmentCompatible(SimpleReferenceMapping mapping,
+		ParticipationClass referencedClass) {
+		val referenceType = mapping.reference.type
+		return referenceType.isSuperTypeOf(referencedClass.superMetaclass)
+	}
+
+	static def dispatch boolean isAssignmentCompatible(OperatorReferenceMapping mapping,
+		ParticipationClass referencedClass) {
+		// depends on the operator, for which we have no compile-time checking currently
+		return true
+	}
 }

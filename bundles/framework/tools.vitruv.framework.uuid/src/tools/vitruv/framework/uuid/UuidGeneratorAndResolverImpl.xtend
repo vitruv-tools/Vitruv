@@ -216,7 +216,7 @@ class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 		return uuid;
 	}
 
-	public override String generateUuidWithoutCreate(EObject eObject) {
+	override String generateUuidWithoutCreate(EObject eObject) {
 		val uuid = generateUuid(eObject);
 		// Register UUID globally for third party elements that are statically accessible and are never created.
 		// Since this is called in the moment when an element gets created, the object can only be globally resolved
@@ -279,9 +279,28 @@ class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 		return resourceSet;
 	}
 
+	private def EObject resolveObject(URI uri) {
+		// TODO Some domains modify the objects of freshly loaded resources (eg. JaMoPP sets the name of loaded
+		// CompilationUnits). If we are not in a write transaction currently, this model change results in an exception
+		// ("Cannot modify resource set without a write transaction"). Retrying the resolution will be able to find the
+		// object in the now already loaded resource. This is not really safe, since the resource loading aborted
+		// exceptionally earlier. However, in our case with JaMoPP this is not an issue currently.
+		var EObject resolvedObject
+		try {
+			resolvedObject = resourceSet.getEObject(uri, true)
+		} catch (Exception e) {
+			// Retry:
+			try {
+				resolvedObject = resourceSet.getEObject(uri, true)
+			} catch (Exception e2) {
+			}
+		}
+		return resolvedObject // null if the resolution failed
+	}
+
 	override registerUuidForGlobalUri(String uuid, URI uri) {
 		try {
-			val localObject = resourceSet.getEObject(uri, true)
+			val localObject = resolveObject(uri)
 			if (localObject !== null) {
 				registerEObject(uuid, localObject);
 				// Recursively do that
@@ -336,7 +355,7 @@ class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 				childResolver.registerEObject(getUuid(element), element);
 			} else {
 				if (uri.isPathmap || uri.fileExtension.equals("java")) {
-					val resolvedObject = resourceSet.getEObject(EcoreUtil.getURI(element), true);
+					val resolvedObject = resolveObject(EcoreUtil.getURI(element));
 					if (resolvedObject !== null) {
 						childResolver.registerEObject(generateUuid(resolvedObject), element);
 						// LayoutInformation in Java elements may not be equal in different UuidResolvers (VirtualModel and view), so ignore it	

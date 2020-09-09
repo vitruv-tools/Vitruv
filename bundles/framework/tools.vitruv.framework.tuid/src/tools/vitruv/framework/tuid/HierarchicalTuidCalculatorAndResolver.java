@@ -3,11 +3,9 @@ package tools.vitruv.framework.tuid;
 import java.util.Arrays;
 import java.util.LinkedList;
 
-import org.apache.log4j.Logger;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 
-import tools.vitruv.framework.tuid.TuidCalculatorAndResolverBase;
 import tools.vitruv.framework.util.VitruviusConstants;
 
 /**
@@ -16,37 +14,22 @@ import tools.vitruv.framework.util.VitruviusConstants;
  * only have to provide the strings for the individual segments. The string does not have to be
  * unique but has to become unique in combination with the segments from higher hierarchical levels.
  *
- * @param <T>
- *            The type of the meta-models's root object.
- *
  * @author Stephan Seifermann
  *
  */
-public abstract class HierarchicalTuidCalculatorAndResolver<T extends EObject> extends TuidCalculatorAndResolverBase {
+public abstract class HierarchicalTuidCalculatorAndResolver extends TuidCalculatorAndResolverBase {
 
-    private static final Logger LOGGER = Logger.getLogger(HierarchicalTuidCalculatorAndResolver.class);
     public static final String SUBDIVIDER = "-_-";
 
     public HierarchicalTuidCalculatorAndResolver(final String tuidPrefix) {
         super(tuidPrefix);
     }
 
-    /**
-     * @return Class of the root object.
-     */
-    protected abstract Class<T> getRootObjectClass();
-
     // ============================================================================
     // Tuid resolution
     // ============================================================================
     @Override
     protected EObject getIdentifiedEObjectWithinRootEObjectInternal(final EObject root, final String[] ids) {
-        if (!getRootObjectClass().isAssignableFrom(root.getClass())) {
-            LOGGER.error(
-                    "Tuid resolving is only possible with root object of type " + getRootObjectClass().getSimpleName());
-            return null;
-        }
-
         return findById(root, ids);
     }
 

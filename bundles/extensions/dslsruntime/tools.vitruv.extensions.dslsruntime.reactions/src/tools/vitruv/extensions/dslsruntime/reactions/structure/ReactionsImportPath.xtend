@@ -19,7 +19,7 @@ class ReactionsImportPath {
 	 * The separator used between path segments in the String representation of {@link ReactionsImportPath ReactionsImportPaths}.
 	 */
 	public static final String PATH_STRING_SEPARATOR = ".";
-	private static final Pattern PATH_STRING_SEPARATOR_PATTERN = Pattern.compile(Pattern.quote(PATH_STRING_SEPARATOR));
+	static final Pattern PATH_STRING_SEPARATOR_PATTERN = Pattern.compile(Pattern.quote(PATH_STRING_SEPARATOR));
 
 	/**
 	 * Creates a {@link ReactionsImportPath} from the given path String.
@@ -27,7 +27,7 @@ class ReactionsImportPath {
 	 * @param pathString the pathString
 	 * @return the reactions import path
 	 */
-	public static def ReactionsImportPath fromPathString(String pathString) {
+	static def ReactionsImportPath fromPathString(String pathString) {
 		if (pathString.isNullOrEmpty) return EMPTY_PATH;
 		val pathSegments = PATH_STRING_SEPARATOR_PATTERN.split(pathString, -1);
 		return create(pathSegments);
@@ -35,25 +35,25 @@ class ReactionsImportPath {
 
 	// construction:
 
-	public static def ReactionsImportPath create(Iterable<String> pathSegments) {
+	static def ReactionsImportPath create(Iterable<String> pathSegments) {
 		if (pathSegments.isNullOrEmpty) return EMPTY_PATH;
 		return new ReactionsImportPath(pathSegments);
 	}
 
-	public static def ReactionsImportPath create(String... pathSegments) {
+	static def ReactionsImportPath create(String... pathSegments) {
 		return create(pathSegments as Iterable<String>);
 	}
 
-	public static def ReactionsImportPath create(Iterable<String> parentPath, String... pathSegments) {
+	static def ReactionsImportPath create(Iterable<String> parentPath, String... pathSegments) {
 		return create(parentPath, pathSegments as Iterable<String>);
 	}
 
-	public static def ReactionsImportPath create(Iterable<String> parentPath, Iterable<String> pathSegments) {
+	static def ReactionsImportPath create(Iterable<String> parentPath, Iterable<String> pathSegments) {
 		return create((parentPath ?: #[]) + (pathSegments ?: #[]));
 	}
 
 	// the names of the reactions segments along the path:
-	private val List<String> segments; // immutable, can be empty, does not contain null
+	val List<String> segments; // immutable, can be empty, does not contain null
 
 	private new(Iterable<String> pathSegments) {
 		checkNotNull(pathSegments, "pathSegments is null");
@@ -65,7 +65,7 @@ class ReactionsImportPath {
 	 * 
 	 * @return an unmodifiable view on the segments of this import path, can be empty
 	 */
-	public def List<String> getSegments() {
+	def List<String> getSegments() {
 		return segments;
 	}
 
@@ -74,7 +74,7 @@ class ReactionsImportPath {
 	 * 
 	 * @return the number of segments this import path consists of
 	 */
-	public def int getLength() {
+	def int getLength() {
 		return segments.size();
 	}
 
@@ -83,7 +83,7 @@ class ReactionsImportPath {
 	 * 
 	 * @return <code>true</code> if this import path is empty
 	 */
-	public def boolean isEmpty() {
+	def boolean isEmpty() {
 		return (this.length == 0);
 	}
 
@@ -93,7 +93,7 @@ class ReactionsImportPath {
 	 * @param index the index
 	 * @return the path segment at the specified index
 	 */
-	public def String getSegment(int index) {
+	def String getSegment(int index) {
 		return segments.get(index);
 	}
 
@@ -102,7 +102,7 @@ class ReactionsImportPath {
 	 * 
 	 * @return the last path segment
 	 */
-	public def String getLastSegment() {
+	def String getLastSegment() {
 		return segments.get(segments.size() - 1);
 	}
 
@@ -111,7 +111,7 @@ class ReactionsImportPath {
 	 * 
 	 * @return the first path segment
 	 */
-	public def String getFirstSegment() {
+	def String getFirstSegment() {
 		return segments.get(0);
 	}
 
@@ -121,7 +121,7 @@ class ReactionsImportPath {
 	 * @param pathSegments the path segments to append, can be <code>null</code>
 	 * @return the resulting reactions import path
 	 */
-	public def ReactionsImportPath append(String... pathSegments) {
+	def ReactionsImportPath append(String... pathSegments) {
 		return this.append(pathSegments as Iterable<String>);
 	}
 
@@ -131,7 +131,7 @@ class ReactionsImportPath {
 	 * @param pathSegments the path segments to append, can be <code>null</code>
 	 * @return the resulting reactions import path
 	 */
-	public def ReactionsImportPath append(Iterable<String> pathSegments) {
+	def ReactionsImportPath append(Iterable<String> pathSegments) {
 		return ReactionsImportPath.create(this.segments, pathSegments);
 	}
 
@@ -141,7 +141,7 @@ class ReactionsImportPath {
 	 * @param path the path to append, can be <code>null</code>
 	 * @return the resulting reactions import path
 	 */
-	public def ReactionsImportPath append(ReactionsImportPath path) {
+	def ReactionsImportPath append(ReactionsImportPath path) {
 		return ReactionsImportPath.create(this.segments, path?.segments);
 	}
 
@@ -151,7 +151,7 @@ class ReactionsImportPath {
 	 * @param pathSegments the path segments to prepend, can be <code>null</code>
 	 * @return the resulting reactions import path
 	 */
-	public def ReactionsImportPath prepend(String... pathSegments) {
+	def ReactionsImportPath prepend(String... pathSegments) {
 		return this.prepend(pathSegments as Iterable<String>);
 	}
 
@@ -161,7 +161,7 @@ class ReactionsImportPath {
 	 * @param pathSegments the path segments to prepend, can be <code>null</code>
 	 * @return the resulting reactions import path
 	 */
-	public def ReactionsImportPath prepend(Iterable<String> pathSegments) {
+	def ReactionsImportPath prepend(Iterable<String> pathSegments) {
 		return ReactionsImportPath.create(pathSegments, this.segments);
 	}
 
@@ -171,7 +171,7 @@ class ReactionsImportPath {
 	 * @param path the path to prepend, can be <code>null</code>
 	 * @return the resulting reactions import path
 	 */
-	public def ReactionsImportPath prepend(ReactionsImportPath path) {
+	def ReactionsImportPath prepend(ReactionsImportPath path) {
 		return ReactionsImportPath.create(path?.segments, this.segments);
 	}
 
@@ -180,7 +180,7 @@ class ReactionsImportPath {
 	 * 
 	 * @return the resulting reactions import path, can be empty
 	 */
-	public def ReactionsImportPath getParent() {
+	def ReactionsImportPath getParent() {
 		val parentPath = segments.take(length - 1);
 		return ReactionsImportPath.create(parentPath);
 	}
@@ -190,7 +190,7 @@ class ReactionsImportPath {
 	 * 
 	 * @return the resulting reactions import path, can be empty
 	 */
-	public def ReactionsImportPath relativeToRoot() {
+	def ReactionsImportPath relativeToRoot() {
 		val tailPath = segments.tail;
 		return ReactionsImportPath.create(tailPath);
 	}
@@ -200,7 +200,7 @@ class ReactionsImportPath {
 	 * 
 	 * @return the resulting reactions import path, or an empty path if the specified segment is not contained or the last segment of this path
 	 */
-	public def ReactionsImportPath relativeTo(String pathSegment) {
+	def ReactionsImportPath relativeTo(String pathSegment) {
 		val index = segments.indexOf(pathSegment);
 		if (index == -1 || index == (length - 1)) {
 			// segment is not contained or the last segment of the path:
@@ -215,7 +215,7 @@ class ReactionsImportPath {
 	 * 
 	 * @return the resulting reactions import path, or an empty path if the specified segment is not contained in this path
 	 */
-	public def ReactionsImportPath subPathTo(String pathSegment) {
+	def ReactionsImportPath subPathTo(String pathSegment) {
 		val index = segments.indexOf(pathSegment);
 		if (index == -1) {
 			// segment is not contained in this path:
@@ -230,19 +230,19 @@ class ReactionsImportPath {
 	 * 
 	 * @return the String representation of this import path
 	 */
-	public def String getPathString() {
+	def String getPathString() {
 		return segments.join(PATH_STRING_SEPARATOR);
 	}
 
-	public override String toString() {
+	override String toString() {
 		return "ReactionsImportPath=" + this.pathString;
 	}
 
-	public override int hashCode() {
+	override int hashCode() {
 		return segments.hashCode();
 	}
 
-	public override boolean equals(Object obj) {
+	override boolean equals(Object obj) {
 		if (this === obj) return true;
 		if (obj === null) return false;
 		if (!(obj instanceof ReactionsImportPath)) return false;

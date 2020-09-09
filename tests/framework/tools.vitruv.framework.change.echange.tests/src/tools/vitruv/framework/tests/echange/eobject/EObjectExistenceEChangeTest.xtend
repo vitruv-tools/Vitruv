@@ -19,7 +19,7 @@ class EObjectExistenceEChangeTest extends EObjectTest {
 	 * a new object which was not created yet. So the staging area will be filled.
 	 */
 	@Test
-	def public void resovlveBeforeTest() {	
+	def void resovlveBeforeTest() {	
 		// State before
 		assertIsStateBefore
 		
@@ -40,7 +40,7 @@ class EObjectExistenceEChangeTest extends EObjectTest {
 	 * new object which was already created and was put in the staging area.
 	 */
 	@Test
-	def public void resolveAfterTest() {
+	def void resolveAfterTest() {
 		// State before
 		assertIsStateBefore
 		
@@ -65,7 +65,7 @@ class EObjectExistenceEChangeTest extends EObjectTest {
 	 * affected EObject.
 	 */
 	@Test(expected=IllegalArgumentException)
-	def public void resolveInvalidAffectedEObjectTest() {
+	def void resolveInvalidAffectedEObjectTest() {
 		createdObject = null
 		
 		// Create change

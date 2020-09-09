@@ -9,9 +9,9 @@ import tools.vitruv.framework.userinteraction.InteractionResultProvider
  * 
  * @author Heiko Klare
  */
-public class InteractionFactoryImpl implements InteractionFactory {
-	private final InteractionResultProvider interactionResultProvider;
-	private final WindowModality windowModality;
+class InteractionFactoryImpl implements InteractionFactory {
+	final InteractionResultProvider interactionResultProvider;
+	final WindowModality windowModality;
 
 	new(InteractionResultProvider interactionResultProvider, WindowModality windowModality) {
 		this.windowModality = windowModality;

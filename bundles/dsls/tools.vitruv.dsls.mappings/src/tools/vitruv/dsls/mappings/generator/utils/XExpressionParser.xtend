@@ -14,7 +14,7 @@ class XExpressionParser {
 	val static URI DUMMY_RESOURCE_URI = URI.createURI("dummy:/example."+XBASE_LANGAUGE_EXTENSION)
 	var static Resource dummyResource
 	
-	def public static initParser(XtextResourceSet resourceSet) {
+	def static initParser(XtextResourceSet resourceSet) {
 		XExpressionParser.resourceSet = resourceSet
 		dummyResource = resourceSet.createResource(DUMMY_RESOURCE_URI)
 	}

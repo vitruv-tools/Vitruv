@@ -28,7 +28,7 @@ import static extension tools.vitruv.framework.change.echange.resolve.EChangeRes
  * Prepares two temporary model instances of the allelementtypes metamodel which 
  * can be modified by the EChange tests. The model is stored in one temporary file.
  */
- public abstract class EChangeTest {
+ abstract class EChangeTest {
 
  	protected var Root rootObject = null
  	protected var Resource resource = null

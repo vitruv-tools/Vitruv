@@ -22,31 +22,31 @@ import static tools.vitruv.dsls.commonalities.language.LanguagePackage.Literals.
  */
 class CommonalitiesLanguageOutlineTreeProvider extends DefaultOutlineTreeProvider {
 
-	def protected void _createChildren(DocumentRootNode root, CommonalityFile commonalityFile) {
+	protected def void _createChildren(DocumentRootNode root, CommonalityFile commonalityFile) {
 		createNode(root, commonalityFile.concept)
 		createNode(root, commonalityFile.commonality)
 	}
 
-	def protected boolean _isLeaf(Concept concept) {
+	protected def boolean _isLeaf(Concept concept) {
 		true
 	}
 
-	def protected void _createChildren(IOutlineNode parent, Commonality commonality) {
+	protected def void _createChildren(IOutlineNode parent, Commonality commonality) {
 		createEStructuralFeatureNode(parent, commonality, COMMONALITY__PARTICIPATIONS,
 			labelProvider.getImage(PARTICIPATION), commonality.participations.size + ' Participations', false)
-		commonality.attributes.forEach [createNode(parent, it)]
-		commonality.references.forEach [createNode(parent, it)]
+		commonality.attributes.forEach[createNode(parent, it)]
+		commonality.references.forEach[createNode(parent, it)]
 	}
 
-	def protected boolean _isLeaf(Participation participation) {
+	protected def boolean _isLeaf(Participation participation) {
 		true
 	}
 
-	def protected boolean _isLeaf(CommonalityAttribute attribute) {
+	protected def boolean _isLeaf(CommonalityAttribute attribute) {
 		true
 	}
 
-	def protected boolean _isLeaf(CommonalityReference reference) {
+	protected def boolean _isLeaf(CommonalityReference reference) {
 		true
 	}
 }

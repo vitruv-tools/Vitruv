@@ -1,16 +1,17 @@
 package tools.vitruv.dsls.mappings.generator.utils
 
 import org.eclipse.xtext.common.types.JvmDeclaredType
+import org.eclipse.xtext.common.types.JvmIdentifiableElement
 import org.eclipse.xtext.xbase.XExpression
 import org.eclipse.xtext.xbase.XbaseFactory
 import tools.vitruv.dsls.mappings.mappingsLanguage.MappingParameter
-import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.RoutineTypeProvider
+import tools.vitruv.dsls.reactions.builder.TypeProvider
+
 import static extension tools.vitruv.dsls.mappings.generator.utils.XBaseMethodFinder.*
-import org.eclipse.xtext.common.types.JvmIdentifiableElement
 
 class XBaseMethodUtils {
 
-	public static def binaryOperationChain(RoutineTypeProvider provider,JvmIdentifiableElement operation, XExpression... expressions) {
+	static def binaryOperationChain(TypeProvider provider,JvmIdentifiableElement operation, XExpression... expressions) {
 		if (expressions.empty) {
 			return XbaseFactory.eINSTANCE.createXBooleanLiteral => [
 				isTrue = true
@@ -27,24 +28,24 @@ class XBaseMethodUtils {
 		return leftExpression
 	}
 	
-	public static def andChain(RoutineTypeProvider provider, XExpression... expressions) {
+	static def andChain(TypeProvider provider, XExpression... expressions) {
 		provider.binaryOperationChain(provider.and, expressions)
 	}
 	
-	public static def orChain(RoutineTypeProvider provider, XExpression... expressions) {
+	static def orChain(TypeProvider provider, XExpression... expressions) {
 		provider.binaryOperationChain(provider.or, expressions)
 	}
 
-	public static def findTypeReference(RoutineTypeProvider provider, MappingParameter parameter) {
+	static def findTypeReference(TypeProvider provider, MappingParameter parameter) {
 		provider.jvmTypeReferenceBuilder.typeRef(provider.findType(parameter))
 	}
 
-	public static def findType(RoutineTypeProvider provider, MappingParameter parameter) {
+	static def findType(TypeProvider provider, MappingParameter parameter) {
 		val package = parameter.value.metaclass.instanceTypeName
 		provider.findTypeByName(package) as JvmDeclaredType
 	}
 
-	public static def optionalNotEmpty(RoutineTypeProvider provider, XExpression variable) {
+	static def optionalNotEmpty(TypeProvider provider, XExpression variable) {
 		XbaseFactory.eINSTANCE.createXMemberFeatureCall => [
 			explicitOperationCall = true
 			memberCallTarget = variable
@@ -52,7 +53,7 @@ class XBaseMethodUtils {
 		]
 	}
 
-	public static def optionalGet(RoutineTypeProvider provider, XExpression variable) {
+	static def optionalGet(TypeProvider provider, XExpression variable) {
 		XbaseFactory.eINSTANCE.createXMemberFeatureCall => [
 			explicitOperationCall = true
 			memberCallTarget = variable
@@ -60,11 +61,11 @@ class XBaseMethodUtils {
 		]
 	}
 
-	public static def notNull(RoutineTypeProvider provider, String variable) {
+	static def notNull(TypeProvider provider, String variable) {
 		provider.notNull(provider.variable(variable))
 	}
 
-	public static def notNull(RoutineTypeProvider provider, XExpression variable) {
+	static def notNull(TypeProvider provider, XExpression variable) {
 		XbaseFactory.eINSTANCE.createXBinaryOperation => [
 			leftOperand = variable
 			feature = XBaseMethodFinder.tripleNotEquals(provider)

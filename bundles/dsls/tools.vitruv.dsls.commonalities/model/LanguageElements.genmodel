@@ -8,9 +8,7 @@
   <genPackages prefix="LanguageElements" basePackage="tools.vitruv.dsls.commonalities.language"
       disposableProviderFactory="true" adapterFactory="false" ecorePackage="LanguageElements.ecore#/">
     <genDataTypes ecoreDataType="LanguageElements.ecore#//FrameworkVitruvDomain"/>
-    <genClasses ecoreClass="LanguageElements.ecore#//NamedElement">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute LanguageElements.ecore#//NamedElement/name"/>
-    </genClasses>
+    <genDataTypes ecoreDataType="LanguageElements.ecore#//ClassifierProvider"/>
     <genClasses image="false" ecoreClass="LanguageElements.ecore#//PackageLike"/>
     <genClasses image="false" ecoreClass="LanguageElements.ecore#//ClassLike">
       <genFeatures property="Readonly" notify="false" createChild="false" ecoreFeature="ecore:EReference LanguageElements.ecore#//ClassLike/packageLikeContainer"/>
@@ -18,61 +16,76 @@
     <genClasses ecoreClass="LanguageElements.ecore#//MemberLike">
       <genFeatures property="Readonly" notify="false" createChild="false" ecoreFeature="ecore:EReference LanguageElements.ecore#//MemberLike/classLikeContainer"/>
     </genClasses>
-    <genClasses ecoreClass="LanguageElements.ecore#//Domain">
-      <genFeatures property="Readonly" notify="false" createChild="false" ecoreFeature="ecore:EReference LanguageElements.ecore#//Domain/metaclasses"/>
-      <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute LanguageElements.ecore#//Domain/vitruvDomain"/>
+    <genClasses ecoreClass="LanguageElements.ecore#//NamedElement">
+      <genOperations ecoreOperation="LanguageElements.ecore#//NamedElement/getName"/>
+    </genClasses>
+    <genClasses ecoreClass="LanguageElements.ecore#//Domain"/>
+    <genClasses image="false" ecoreClass="LanguageElements.ecore#//Classifier">
+      <genOperations ecoreOperation="LanguageElements.ecore#//Classifier/isSuperTypeOf">
+        <genParameters ecoreParameter="LanguageElements.ecore#//Classifier/isSuperTypeOf/subType"/>
+      </genOperations>
     </genClasses>
     <genClasses image="false" ecoreClass="LanguageElements.ecore#//Metaclass">
       <genFeatures property="Readonly" notify="false" createChild="false" ecoreFeature="ecore:EReference LanguageElements.ecore#//Metaclass/domain"/>
-      <genFeatures property="Readonly" notify="false" createChild="false" ecoreFeature="ecore:EReference LanguageElements.ecore#//Metaclass/changeClass"/>
-      <genFeatures property="Readonly" notify="false" createChild="false" ecoreFeature="ecore:EReference LanguageElements.ecore#//Metaclass/attributes"/>
-      <genFeatures property="Readonly" notify="false" createChild="false" ecoreFeature="ecore:EReference LanguageElements.ecore#//Metaclass/references"/>
-    </genClasses>
-    <genClasses ecoreClass="LanguageElements.ecore#//VitruvDomain">
-      <genOperations ecoreOperation="LanguageElements.ecore#//VitruvDomain/wrapVitruvDomain">
-        <genParameters ecoreParameter="LanguageElements.ecore#//VitruvDomain/wrapVitruvDomain/vitruvDomain"/>
+      <genFeatures property="Readonly" notify="false" createChild="false" ecoreFeature="ecore:EReference LanguageElements.ecore#//Metaclass/allMembers"/>
+      <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute LanguageElements.ecore#//Metaclass/abstract"/>
+      <genOperations ecoreOperation="LanguageElements.ecore#//Metaclass/getAttributes">
+        <genTypeParameters ecoreTypeParameter="LanguageElements.ecore#//Metaclass/getAttributes/A"/>
       </genOperations>
+    </genClasses>
+    <genClasses image="false" ecoreClass="LanguageElements.ecore#//MetaclassMember">
+      <genOperations ecoreOperation="LanguageElements.ecore#//MetaclassMember/getType"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="LanguageElements.ecore#//Attribute">
+      <genFeatures property="Readonly" createChild="false" ecoreFeature="ecore:EAttribute LanguageElements.ecore#//Attribute/multiValued"/>
     </genClasses>
     <genClasses ecoreClass="LanguageElements.ecore#//EClassMetaclass">
-      <genOperations ecoreOperation="LanguageElements.ecore#//EClassMetaclass/wrapEClass">
-        <genParameters ecoreParameter="LanguageElements.ecore#//EClassMetaclass/wrapEClass/eClass"/>
+      <genFeatures property="None" children="true" createChild="false" ecoreFeature="ecore:EReference LanguageElements.ecore#//EClassMetaclass/attributes"/>
+      <genOperations ecoreOperation="LanguageElements.ecore#//EClassMetaclass/forEClass">
+        <genParameters ecoreParameter="LanguageElements.ecore#//EClassMetaclass/forEClass/eClass"/>
+      </genOperations>
+      <genOperations ecoreOperation="LanguageElements.ecore#//EClassMetaclass/withClassifierProvider">
+        <genParameters ecoreParameter="LanguageElements.ecore#//EClassMetaclass/withClassifierProvider/classifierProvider"/>
+      </genOperations>
+      <genOperations ecoreOperation="LanguageElements.ecore#//EClassMetaclass/fromDomain">
+        <genParameters ecoreParameter="LanguageElements.ecore#//EClassMetaclass/fromDomain/domain"/>
       </genOperations>
     </genClasses>
-    <genClasses ecoreClass="LanguageElements.ecore#//ResourceMetaclass"/>
-    <genClasses image="false" ecoreClass="LanguageElements.ecore#//Attribute"/>
-    <genClasses image="false" ecoreClass="LanguageElements.ecore#//Reference"/>
-    <genClasses image="false" ecoreClass="LanguageElements.ecore#//Aliasable">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute LanguageElements.ecore#//Aliasable/alias"/>
-    </genClasses>
-    <genClasses ecoreClass="LanguageElements.ecore#//Participation">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference LanguageElements.ecore#//Participation/classes"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference LanguageElements.ecore#//Participation/domain"/>
-    </genClasses>
-    <genClasses ecoreClass="LanguageElements.ecore#//ParticipationClass">
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference LanguageElements.ecore#//ParticipationClass/superMetaclass"/>
-      <genFeatures property="None" children="true" createChild="false" ecoreFeature="ecore:EReference LanguageElements.ecore#//ParticipationClass/attributes"/>
-      <genFeatures property="None" children="true" createChild="false" ecoreFeature="ecore:EReference LanguageElements.ecore#//ParticipationClass/references"/>
-      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference LanguageElements.ecore#//ParticipationClass/participation"/>
-    </genClasses>
-    <genClasses image="false" ecoreClass="LanguageElements.ecore#//ParticipationMember">
-      <genOperations ecoreOperation="LanguageElements.ecore#//ParticipationMember/getParticipationClass"/>
-      <genOperations ecoreOperation="LanguageElements.ecore#//ParticipationMember/getType"/>
-    </genClasses>
-    <genClasses ecoreClass="LanguageElements.ecore#//ParticipationAttribute">
-      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference LanguageElements.ecore#//ParticipationAttribute/participationClass"/>
-      <genFeatures property="Readonly" notify="false" createChild="false" ecoreFeature="ecore:EReference LanguageElements.ecore#//ParticipationAttribute/type"/>
-      <genFeatures property="Readonly" notify="false" createChild="false" ecoreFeature="ecore:EReference LanguageElements.ecore#//ParticipationAttribute/changeAttribute"/>
-      <genOperations ecoreOperation="LanguageElements.ecore#//ParticipationAttribute/wrapAttribute">
-        <genParameters ecoreParameter="LanguageElements.ecore#//ParticipationAttribute/wrapAttribute/attribute"/>
+    <genClasses ecoreClass="LanguageElements.ecore#//EDataTypeClassifier">
+      <genOperations ecoreOperation="LanguageElements.ecore#//EDataTypeClassifier/forEDataType">
+        <genParameters ecoreParameter="LanguageElements.ecore#//EDataTypeClassifier/forEDataType/eDataType"/>
       </genOperations>
     </genClasses>
-    <genClasses ecoreClass="LanguageElements.ecore#//ParticipationReference">
-      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference LanguageElements.ecore#//ParticipationReference/participationClass"/>
-      <genFeatures property="Readonly" notify="false" createChild="false" ecoreFeature="ecore:EReference LanguageElements.ecore#//ParticipationReference/type"/>
-      <genOperations ecoreOperation="LanguageElements.ecore#//ParticipationReference/wrapReference">
-        <genParameters ecoreParameter="LanguageElements.ecore#//ParticipationReference/wrapReference/reference"/>
+    <genClasses ecoreClass="LanguageElements.ecore#//VitruviusDomain">
+      <genFeatures property="None" children="true" createChild="false" ecoreFeature="ecore:EReference LanguageElements.ecore#//VitruviusDomain/metaclasses"/>
+      <genOperations ecoreOperation="LanguageElements.ecore#//VitruviusDomain/forVitruvDomain">
+        <genParameters ecoreParameter="LanguageElements.ecore#//VitruviusDomain/forVitruvDomain/vitruvDomain"/>
+      </genOperations>
+      <genOperations ecoreOperation="LanguageElements.ecore#//VitruviusDomain/withClassifierProvider">
+        <genParameters ecoreParameter="LanguageElements.ecore#//VitruviusDomain/withClassifierProvider/classifierProvider"/>
       </genOperations>
     </genClasses>
-    <genClasses ecoreClass="LanguageElements.ecore#//EAttributeAttribute"/>
+    <genClasses ecoreClass="LanguageElements.ecore#//ResourceMetaclass">
+      <genFeatures property="None" children="true" createChild="false" ecoreFeature="ecore:EReference LanguageElements.ecore#//ResourceMetaclass/attributes"/>
+      <genOperations ecoreOperation="LanguageElements.ecore#//ResourceMetaclass/withClassifierProvider">
+        <genParameters ecoreParameter="LanguageElements.ecore#//ResourceMetaclass/withClassifierProvider/classifierProvider"/>
+      </genOperations>
+      <genOperations ecoreOperation="LanguageElements.ecore#//ResourceMetaclass/fromDomain">
+        <genParameters ecoreParameter="LanguageElements.ecore#//ResourceMetaclass/fromDomain/domain"/>
+      </genOperations>
+    </genClasses>
+    <genClasses ecoreClass="LanguageElements.ecore#//EFeatureAttribute">
+      <genOperations ecoreOperation="LanguageElements.ecore#//EFeatureAttribute/forEFeature">
+        <genParameters ecoreParameter="LanguageElements.ecore#//EFeatureAttribute/forEFeature/eFeature"/>
+      </genOperations>
+      <genOperations ecoreOperation="LanguageElements.ecore#//EFeatureAttribute/withClassifierProvider">
+        <genParameters ecoreParameter="LanguageElements.ecore#//EFeatureAttribute/withClassifierProvider/classifierProvider"/>
+      </genOperations>
+      <genOperations ecoreOperation="LanguageElements.ecore#//EFeatureAttribute/fromMetaclass">
+        <genParameters ecoreParameter="LanguageElements.ecore#//EFeatureAttribute/fromMetaclass/metaclass"/>
+      </genOperations>
+    </genClasses>
+    <genClasses ecoreClass="LanguageElements.ecore#//MostSpecificType"/>
+    <genClasses ecoreClass="LanguageElements.ecore#//LeastSpecificType"/>
   </genPackages>
 </genmodel:GenModel>

@@ -6,6 +6,8 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="singleValuedEAttribute2"
         eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EIntegerObject"
         defaultValueLiteral="0"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="singleValuedPrimitiveTypeEAttribute2"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="singleValuedNonContainmentEReference2"
         eType="#//NonRoot2"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="singleValuedContainmentEReference2"

@@ -23,8 +23,8 @@ class FluentReactionsFileBuilder extends FluentReactionElementBuilder {
 
 	override protected attachmentPreparation() {
 		super.attachmentPreparation()
-		checkState(reactionsFile.reactionsSegments.size >
-			0, '''No reactions segments were added to this reactions file («fileName»)!''')
+		checkState(reactionsFile.reactionsSegments.size > 0,
+			'''No reactions segments were added to this reactions file («fileName»)!''')
 	}
 
 	def package start() {
@@ -40,8 +40,8 @@ class FluentReactionsFileBuilder extends FluentReactionElementBuilder {
 		// this call has the (desired!) side effect to create the jvm types!
 		val newContents = resource.getContents()
 		// very rough check
-		checkState(newContents.size >
-			resourceContentLength + 1, '''Jvm type creation for failed for the reactions file «fileName»!''')
+		checkState(newContents.size > resourceContentLength + 1,
+			'''Jvm type creation for failed for the reactions file «fileName»!''')
 		triggerAfterJvmTypeCreation()
 	}
 
@@ -59,11 +59,10 @@ class FluentReactionsFileBuilder extends FluentReactionElementBuilder {
 	override toString() {
 		'''reactions file builder for “«fileName»”'''
 	}
-
 }
 
 class MetamodelImportBuilder extends FluentReactionElementBuilder {
-	private MetamodelImport mmImport
+	MetamodelImport mmImport
 
 	new(MetamodelImport mmImport, FluentBuilderContext context) {
 		super(context)

@@ -23,13 +23,13 @@ import org.eclipse.jface.fieldassist.FieldDecorationRegistry
  * @author Heiko Klare
  */
 class TextInputDialogWindow extends BaseDialogWindow {
-	private Text inputField
-	private ControlDecoration inputDecorator
-	private InputFieldType inputFieldType
-	private final InputValidator inputValidator;
-	private final String positiveButtonText;
-	private final String cancelButtonText;
-	private String input = "";
+	Text inputField
+	ControlDecoration inputDecorator
+	InputFieldType inputFieldType
+	final InputValidator inputValidator;
+	final String positiveButtonText;
+	final String cancelButtonText;
+	String input = "";
 	
 	new(Shell parent, WindowModality windowModality, String title, String message, String positiveButtonText,
 		String cancelButtonText, InputValidator inputValidator) {
@@ -111,7 +111,7 @@ class TextInputDialogWindow extends BaseDialogWindow {
 		close()
 	}
 
-	public def String getInputText() {
+	def String getInputText() {
 		return input
 	}
 }

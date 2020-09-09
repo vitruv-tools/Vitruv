@@ -40,7 +40,7 @@ class ReactionsImportsHelper {
 	 * @return the name of the overridden reactions segment, or <code>null</code> if the given reaction doesn't override any
 	 *         other reaction
 	 */
-	public static def String getParsedOverriddenReactionsSegmentName(Reaction reaction) {
+	static def String getParsedOverriddenReactionsSegmentName(Reaction reaction) {
 		val parsed = reaction.getFeatureNodeText(ReactionsLanguagePackage.Literals.REACTION__OVERRIDDEN_REACTIONS_SEGMENT);
 		if (!parsed.nullOrEmpty) return parsed;
 		return reaction.overriddenReactionsSegment?.name;
@@ -58,7 +58,7 @@ class ReactionsImportsHelper {
 	 * @return the reactions import path consisting of the found segment names, or <code>null</code> if the given routine does
 	 *         not override any other routine
 	 */
-	public static def ReactionsImportPath getParsedOverrideImportPath(Routine routine) {
+	static def ReactionsImportPath getParsedOverrideImportPath(Routine routine) {
 		return routine.overrideImportPath.parsedOverrideImportPath;
 	}
 
@@ -74,7 +74,7 @@ class ReactionsImportsHelper {
 	 * @return the reactions import path consisting of the found segment names, or <code>null</code> if the given routine
 	 *         override path was <code>null</code>
 	 */
-	public static def ReactionsImportPath getParsedOverrideImportPath(RoutineOverrideImportPath routineOverrideImportPath) {
+	static def ReactionsImportPath getParsedOverrideImportPath(RoutineOverrideImportPath routineOverrideImportPath) {
 		if (routineOverrideImportPath === null) return null;
 		// getting the parsed text of each individual segment (instead of the whole import path) to skip hidden tokens in between:
 		val parsedSegments = routineOverrideImportPath.fullPath.map [
@@ -100,7 +100,7 @@ class ReactionsImportsHelper {
 	 * @return the parsed overridden routines import paths
 	 * @see #getParsedOverrideImportPath(Routine)
 	 */
-	public static def Set<ReactionsImportPath> getParsedOverriddenRoutinesImportPaths(ReactionsSegment reactionsSegment) {
+	static def Set<ReactionsImportPath> getParsedOverriddenRoutinesImportPaths(ReactionsSegment reactionsSegment) {
 		return reactionsSegment.overrideRoutines.filter[it.isComplete].map[it.parsedOverrideImportPath].toSet;
 	}
 
@@ -111,7 +111,7 @@ class ReactionsImportsHelper {
 	 * @return <code>true</code> if all imports are resolvable
 	 * @see #isResolvable(ReactionsImport)
 	 */
-	public static def boolean isAllImportsResolvable(ReactionsSegment reactionsSegment) {
+	static def boolean isAllImportsResolvable(ReactionsSegment reactionsSegment) {
 		// getting the imported reactions segment from the reactions import triggers a resolve,
 		// which will only still be a proxy afterwards if it wasn't resolvable
 		return (reactionsSegment.reactionsImports.findFirst[!it.isResolvable] === null);
@@ -131,7 +131,7 @@ class ReactionsImportsHelper {
 	 * @param reactionsImport the reactions import
 	 * @return <code>true</code> if the given import is resolvable
 	 */
-	public static def boolean isResolvable(ReactionsImport reactionsImport) {
+	static def boolean isResolvable(ReactionsImport reactionsImport) {
 		// getting the imported reactions segment from the reactions import triggers a resolve,
 		// which will only still be a proxy afterwards if it wasn't resolvable
 		return (reactionsImport !== null && reactionsImport.importedReactionsSegment !== null && !reactionsImport.importedReactionsSegment.eIsProxy);
@@ -143,7 +143,7 @@ class ReactionsImportsHelper {
 	 * @param <D>
 	 *            the type of the data being passed along
 	 */
-	public static interface ImportHierarchyVisitor<D> {
+	static interface ImportHierarchyVisitor<D> {
 		/**
 		 * Gets called for each reactions segment along the walked import hierarchy.
 		 * 
@@ -185,7 +185,7 @@ class ReactionsImportsHelper {
 	 * @param returnValueFunction the return value function, not <code>null</code>
 	 * @return the return value calculated by the return value function
 	 */
-	public static def <R, D> R walkImportHierarchy(ReactionsSegment rootReactionsSegment, Supplier<D> dataInitializer,
+	static def <R, D> R walkImportHierarchy(ReactionsSegment rootReactionsSegment, Supplier<D> dataInitializer,
 		ImportHierarchyVisitor<D> earlyVisitor, ImportHierarchyVisitor<D> lateVisitor, Predicate<ReactionsImport> importFilter,
 		Function<D, R> returnValueFunction) {
 		checkNotNull(rootReactionsSegment, "rootReactionsSegment is null");
@@ -232,7 +232,7 @@ class ReactionsImportsHelper {
 	 * @param rootReactionsSegment the root reactions segment, not <code>null</code>
 	 * @return all reactions segments in the import hierarchy by their absolute import paths
 	 */
-	public static def Map<ReactionsImportPath, ReactionsSegment> getRoutinesImportHierarchy(ReactionsSegment rootReactionsSegment) {
+	static def Map<ReactionsImportPath, ReactionsSegment> getRoutinesImportHierarchy(ReactionsSegment rootReactionsSegment) {
 		return walkImportHierarchy(rootReactionsSegment,
 			// data initializer:
 			[
@@ -270,7 +270,7 @@ class ReactionsImportsHelper {
 	 * @param rootReactionsSegment the root reactions segment, not <code>null</code>
 	 * @return all reactions segments in the import hierarchy, that contribute reactions, by their absolute import paths
 	 */
-	public static def Map<ReactionsImportPath, ReactionsSegment> getReactionsImportHierarchy(ReactionsSegment rootReactionsSegment) {
+	static def Map<ReactionsImportPath, ReactionsSegment> getReactionsImportHierarchy(ReactionsSegment rootReactionsSegment) {
 		return walkImportHierarchy(rootReactionsSegment,
 			// data initializer:
 			[
@@ -308,7 +308,7 @@ class ReactionsImportsHelper {
 	 * @param rootReactionsSegment the root reactions segment, not <code>null</code>
 	 * @return all included reactions with their absolute import paths
 	 */
-	public static def Map<Reaction, ReactionsImportPath> getIncludedReactions(ReactionsSegment rootReactionsSegment) {
+	static def Map<Reaction, ReactionsImportPath> getIncludedReactions(ReactionsSegment rootReactionsSegment) {
 		return walkImportHierarchy(rootReactionsSegment,
 			// data initializer:
 			[
@@ -364,7 +364,7 @@ class ReactionsImportsHelper {
 	 * @param resolveOverrides whether to replace routines with their overriding routine
 	 * @return all included routines with their absolute import paths
 	 */
-	public static def Map<Routine, ReactionsImportPath> getIncludedRoutines(ReactionsSegment rootReactionsSegment,
+	static def Map<Routine, ReactionsImportPath> getIncludedRoutines(ReactionsSegment rootReactionsSegment,
 		boolean includeRootRoutines, boolean resolveOverrides) {
 		return walkImportHierarchy(rootReactionsSegment,
 			// data initializer:
@@ -437,7 +437,7 @@ class ReactionsImportsHelper {
 	 * @param rootReactionsSegment the root reactions segment, not <code>null</code>
 	 * @return all reactions segments whose routines facades are included, with their absolute import paths
 	 */
-	public static def Map<ReactionsSegment, ReactionsImportPath> getIncludedRoutinesFacades(ReactionsSegment rootReactionsSegment) {
+	static def Map<ReactionsSegment, ReactionsImportPath> getIncludedRoutinesFacades(ReactionsSegment rootReactionsSegment) {
 		return walkImportHierarchy(rootReactionsSegment,
 			// data initializer:
 			[
@@ -484,7 +484,7 @@ class ReactionsImportsHelper {
 	 * @param <T>
 	 *            the type of the return value
 	 */
-	public static interface ImportPathVisitor<T> {
+	static interface ImportPathVisitor<T> {
 		/**
 		 * Gets called for each reactions segment along the walked import path and can abort the walking by returning a
 		 * <code>non-null</code> return value.
@@ -522,7 +522,7 @@ class ReactionsImportsHelper {
 	 *         visitor providing a <code>non-null</code> return value, or if the path does not exist in the import hierarchy of
 	 *         the root reactions segment
 	 */
-	public static def <T> T walkImportPath(ReactionsSegment rootReactionsSegment, ReactionsImportPath relativeImportPath, ImportPathVisitor<T> visitor) {
+	static def <T> T walkImportPath(ReactionsSegment rootReactionsSegment, ReactionsImportPath relativeImportPath, ImportPathVisitor<T> visitor) {
 		checkNotNull(rootReactionsSegment, "rootReactionsSegment is null");
 		checkNotNull(relativeImportPath, "relativeImportPath is null");
 		checkNotNull(visitor, "visitor is null");
@@ -573,7 +573,7 @@ class ReactionsImportsHelper {
 	 * @return the reactions segment at the end of the specified import path, or <code>null</code> if no reactions segment is
 	 *         found for the specified path
 	 */
-	public static def ReactionsSegment getReactionsSegment(ReactionsSegment rootReactionsSegment, ReactionsImportPath relativeImportPath) {
+	static def ReactionsSegment getReactionsSegment(ReactionsSegment rootReactionsSegment, ReactionsImportPath relativeImportPath) {
 		return walkImportPath(rootReactionsSegment, relativeImportPath,
 			[ sourceImport, currentImportPath, currentReactionsSegment, remainingPath |
 				if (remainingPath.isEmpty) {
@@ -604,7 +604,7 @@ class ReactionsImportsHelper {
 	 * @return the first reactions segment that overrides routines of the specified reactions segment, or the overridden
 	 *         reactions segment itself, together with its absolute reactions import path (starting with the root segment)
 	 */
-	public static def Pair<ReactionsImportPath, ReactionsSegment> getRoutinesOverrideRoot(ReactionsSegment rootReactionsSegment,
+	static def Pair<ReactionsImportPath, ReactionsSegment> getRoutinesOverrideRoot(ReactionsSegment rootReactionsSegment,
 		ReactionsImportPath overriddenRoutineImportPath, boolean checkRootReactionsSegment) {
 		return walkImportPath(rootReactionsSegment, overriddenRoutineImportPath,
 			[ sourceImport, currentImportPath, currentReactionsSegment, remainingPath |

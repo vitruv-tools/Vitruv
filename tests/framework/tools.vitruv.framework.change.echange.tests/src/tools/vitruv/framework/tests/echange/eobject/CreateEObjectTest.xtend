@@ -14,7 +14,7 @@ import static extension tools.vitruv.framework.change.echange.resolve.EChangeRes
  */
 class CreateEObjectTest extends EObjectTest {
 	@Before
-	override public void beforeTest() {
+	override void beforeTest() {
 		super.beforeTest
 		prepareStateBefore
 	}
@@ -24,7 +24,7 @@ class CreateEObjectTest extends EObjectTest {
 	 * the same class.
 	 */
 	@Test
-	def public void resolveToCorrectType() {
+	def void resolveToCorrectType() {
 		// Create change
 		val unresolvedChange = createUnresolvedChange(createdObject)
 			
@@ -38,7 +38,7 @@ class CreateEObjectTest extends EObjectTest {
 	 * new EObject and putting it in the staging area.
 	 */
 	@Test
-	def public void applyForwardTest() {
+	def void applyForwardTest() {
 		// Create change and resolve
 		val resolvedChange = createUnresolvedChange(createdObject).resolveBefore(uuidGeneratorAndResolver)
 			as CreateEObject<Root>
@@ -68,7 +68,7 @@ class CreateEObjectTest extends EObjectTest {
 	 * by removing a newly created object from the staging area.
 	 */
 	@Test
-	def public void applyBackwardTest() {
+	def void applyBackwardTest() {
 		// Set state after
 		prepareStateAfter(createdObject)
 

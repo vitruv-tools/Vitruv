@@ -16,7 +16,7 @@ import tools.vitruv.framework.userinteraction.types.InteractionFactory
  * @author Dominik Klooz
  * @author Heiko Klare
  */
-public abstract class MultipleChoiceSelectionInteractionBuilderBaseImpl<T, I extends MultipleChoiceSelectionInteraction<?>> extends BaseInteractionBuilder<T, I, OptionalSteps<T>> implements MultipleChoiceSelectionInteractionBuilder<T>, ChoicesStep<T>, OptionalSteps<T> {
+abstract class MultipleChoiceSelectionInteractionBuilderBaseImpl<T, I extends MultipleChoiceSelectionInteraction<?>> extends BaseInteractionBuilder<T, I, OptionalSteps<T>> implements MultipleChoiceSelectionInteractionBuilder<T>, ChoicesStep<T>, OptionalSteps<T> {
 	new(InteractionFactory interactionFactory, Iterable<UserInteractionListener> userInteractionListener) {
 		super(interactionFactory, userInteractionListener)
 	}

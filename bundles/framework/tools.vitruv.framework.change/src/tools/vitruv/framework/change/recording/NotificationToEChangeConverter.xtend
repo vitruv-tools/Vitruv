@@ -22,7 +22,7 @@ import org.eclipse.emf.ecore.EStructuralFeature
  * @author Heiko Klare
  */
 final class NotificationToEChangeConverter {
-	private EChangeIdManager eChangeIdManager;
+	EChangeIdManager eChangeIdManager;
 
 	new(EChangeIdManager eChangeeChangeIdManager) {
 		this.eChangeIdManager = eChangeeChangeIdManager;
@@ -98,7 +98,7 @@ final class NotificationToEChangeConverter {
 		return #[]
 	}
 		
-	public def createDeleteChange(EObjectSubtractedEChange<?> change) {
+	def createDeleteChange(EObjectSubtractedEChange<?> change) {
 		val deleteChange = TypeInferringAtomicEChangeFactory.instance.createDeleteEObjectChange(change.oldValue);
 		eChangeIdManager.setOrGenerateIds(deleteChange);
 		deleteChange.consequentialRemoveChanges += recursiveRemoval(change.oldValue);
@@ -247,13 +247,15 @@ final class NotificationToEChangeConverter {
 	}
 
 	private def handleResourceChange(NotificationInfo notification) {
+		if (notification.getFeatureID(Resource) !== Resource.RESOURCE__CONTENTS) {
+			return #[]
+		}
+
 		val changes = <EChange>newArrayList();
 		val resource = notification.notifier as Resource
 		switch (notification.getEventType()) {
 			case Notification.ADD: {
-				if (notification.newValue instanceof EObject) {
-					changes += handleInsertRootChange(resource, notification.newModelElementValue, notification.position)
-				}
+				changes += handleInsertRootChange(resource, notification.newModelElementValue, notification.position)
 			}
 			case Notification.ADD_MANY: {
 				var List<EObject> list = (notification.getNewValue() as List<EObject>)

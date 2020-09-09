@@ -13,7 +13,7 @@ import tools.vitruv.dsls.mappings.generator.conditions.MappingParameterGraphTrav
 import tools.vitruv.dsls.mappings.generator.conditions.MappingParameterGraphTraverser.TraverseStepUp
 import tools.vitruv.dsls.mappings.generator.conditions.impl.InValueConditionGenerator
 import tools.vitruv.dsls.mappings.mappingsLanguage.MappingParameter
-import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.RoutineTypeProvider
+import tools.vitruv.dsls.reactions.builder.TypeProvider
 import tools.vitruv.dsls.reactions.codegen.ReactionsLanguageConstants
 
 import static extension tools.vitruv.dsls.mappings.generator.utils.XBaseMethodFinder.*
@@ -31,7 +31,7 @@ class MappingParameterRetrievalGenerator extends AbstractRoutineContentGenerator
 			map[parameterName], [it.parameterName])
 	}
 	
-	public def generate(RoutineTypeProvider provider, Function0<XExpression> finishedRetrievingParameters,
+	def generate(TypeProvider provider, Function0<XExpression> finishedRetrievingParameters,
 		Function0<XExpression> failedToRetrieveParameters) {
 		this.finishedRetrievingParameters = finishedRetrievingParameters
 		XbaseFactory.eINSTANCE.createXBlockExpression => [
@@ -44,7 +44,7 @@ class MappingParameterRetrievalGenerator extends AbstractRoutineContentGenerator
 		]
 	}
 
-	private def generateAffectedEObjectCheck(RoutineTypeProvider provider, MappingParameter parameter) {
+	private def generateAffectedEObjectCheck(TypeProvider provider, MappingParameter parameter) {
 		// we have to check if the affectedeobject is the correct type and cast it to a new local variable
 		XbaseFactory.eINSTANCE.createXIfExpression => [
 			it.^if = XbaseFactory.eINSTANCE.createXInstanceOfExpression => [
@@ -66,7 +66,7 @@ class MappingParameterRetrievalGenerator extends AbstractRoutineContentGenerator
 		]
 	}
 
-	private def generateConditions(RoutineTypeProvider provider, MappingParameter parameter) {
+	private def generateConditions(TypeProvider provider, MappingParameter parameter) {
 		retrievedParameters = new ArrayList
 		affectedEObjectParameter = parameter
 		retrievedParameters += affectedEObjectParameter // affectedEObject is already retrieved
@@ -82,7 +82,7 @@ class MappingParameterRetrievalGenerator extends AbstractRoutineContentGenerator
 		provider.generateRetrievedParameterCheck(parameter, expression)
 	}
 
-	private def XExpression generateInCondition(RoutineTypeProvider provider) {
+	private def XExpression generateInCondition(TypeProvider provider) {
 		val path = findStepToNextParamter
 		val fromParameter = parameters.findFirst[it.parameterName == path.startNode]
 		val step = path.steps.get(0)
@@ -91,17 +91,17 @@ class MappingParameterRetrievalGenerator extends AbstractRoutineContentGenerator
 		step.doNextTraverseStep(provider, fromParameter , toParameter, feature)
 	}
 	
-	private def dispatch doNextTraverseStep(TraverseStepDown step, RoutineTypeProvider provider, MappingParameter from, MappingParameter to, EReference feature){
+	private def dispatch doNextTraverseStep(TraverseStepDown step, TypeProvider provider, MappingParameter from, MappingParameter to, EReference feature){
 		// nextParameter is in fromParameters feature (when containing / being referenced from its feature)
 		provider.generateChildInParent(to, from, feature)		
 	}
 	
-	private def dispatch doNextTraverseStep(TraverseStepUp step, RoutineTypeProvider provider, MappingParameter from, MappingParameter to, EReference feature){
+	private def dispatch doNextTraverseStep(TraverseStepUp step, TypeProvider provider, MappingParameter from, MappingParameter to, EReference feature){
 		// nextParameter is fromParameters parent (when containing / referencing it with its feature)
 		provider.generateParentContainsChild(from, to, feature)	
 	}
 
-	private def generateParentContainsChild(RoutineTypeProvider provider, MappingParameter child,
+	private def generateParentContainsChild(TypeProvider provider, MappingParameter child,
 		MappingParameter parent, EReference feature) {
 		retrievedParameters += parent
 		if (feature.containment) {
@@ -137,7 +137,7 @@ class MappingParameterRetrievalGenerator extends AbstractRoutineContentGenerator
 		}
 	}
 
-	private def generateChildInParent(RoutineTypeProvider provider, MappingParameter child, MappingParameter parent,
+	private def generateChildInParent(TypeProvider provider, MappingParameter child, MappingParameter parent,
 		EReference feature) {
 		retrievedParameters += child
 		val featureMethod = provider.findMetaclassMethodGetter(parent.value.metaclass, feature)
@@ -155,7 +155,7 @@ class MappingParameterRetrievalGenerator extends AbstractRoutineContentGenerator
 		}
 	}
 
-	private def generateMultipleFeatureRetrieval(RoutineTypeProvider provider, MappingParameter featureParameter,
+	private def generateMultipleFeatureRetrieval(TypeProvider provider, MappingParameter featureParameter,
 		MappingParameter targetParameter, JvmIdentifiableElement featureMethod, Function0<XExpression> extraCondition) {
 		val variableName = '''«targetParameter.parameterName»_candidate'''.toString
 		val loopParameter = TypesFactory.eINSTANCE.createJvmFormalParameter => [
@@ -172,7 +172,7 @@ class MappingParameterRetrievalGenerator extends AbstractRoutineContentGenerator
 		]
 	}
 
-	private def generateSimpleFeatureRetrieval(RoutineTypeProvider provider, MappingParameter featureParameter,
+	private def generateSimpleFeatureRetrieval(TypeProvider provider, MappingParameter featureParameter,
 		MappingParameter targetParameter, JvmIdentifiableElement featureMethod) {
 		val variableName = '''«targetParameter.parameterName»_candidate'''.toString
 		XbaseFactory.eINSTANCE.createXBlockExpression => [
@@ -185,7 +185,7 @@ class MappingParameterRetrievalGenerator extends AbstractRoutineContentGenerator
 		]
 	}
 
-	private def generateCorrectTypeCheck(RoutineTypeProvider provider, MappingParameter parameter, String variableName,
+	private def generateCorrectTypeCheck(TypeProvider provider, MappingParameter parameter, String variableName,
 		Function0<XExpression> extraCondition) {
 		XbaseFactory.eINSTANCE.createXBlockExpression => [
 			// check if not null and instance of correct type
@@ -218,7 +218,7 @@ class MappingParameterRetrievalGenerator extends AbstractRoutineContentGenerator
 		]
 	}
 
-	private def generateRetrievedParameterCheck(RoutineTypeProvider provider, MappingParameter parameter,
+	private def generateRetrievedParameterCheck(TypeProvider provider, MappingParameter parameter,
 		XExpression thenBlock) {
 		val check = provider.generateParameterCheck(parameter)
 		if (check !== null) {
@@ -233,7 +233,7 @@ class MappingParameterRetrievalGenerator extends AbstractRoutineContentGenerator
 		}
 	}
 
-	private def generateEndOfInCondition(RoutineTypeProvider provider) {
+	private def generateEndOfInCondition(TypeProvider provider) {
 		if (retrievedParameters.size == parameters.size) {
 			// done
 			XbaseFactory.eINSTANCE.createXBlockExpression => [
@@ -253,7 +253,7 @@ class MappingParameterRetrievalGenerator extends AbstractRoutineContentGenerator
 		treeTraverser.findStepToNextNode(startParameter)
 	}
 
-	private def generateParameterCheck(RoutineTypeProvider provider, MappingParameter parameter) {
+	private def generateParameterCheck(TypeProvider provider, MappingParameter parameter) {
 		// find all conditions to this parameter (we have to filter out InValueConditions)
 		val checks = conditions.filter [
 			feasibleForParameter(parameter) && (it instanceof InValueConditionGenerator == false)
@@ -270,7 +270,7 @@ class MappingParameterRetrievalGenerator extends AbstractRoutineContentGenerator
 		}
 	}
 
-	public def skipParameterCheck() {
+	def skipParameterCheck() {
 		parameters.size == 1 && conditions.empty
 	}
 

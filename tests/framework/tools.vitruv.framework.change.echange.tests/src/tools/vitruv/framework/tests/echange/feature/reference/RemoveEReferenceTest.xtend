@@ -18,12 +18,12 @@ import static extension tools.vitruv.framework.change.echange.resolve.EChangeRes
  * Test class for the concrete {@link RemoveEReference} EChange, 
  * which removes a reference from a multivalued attribute.
  */
-public class RemoveEReferenceTest extends ReferenceEChangeTest {
+class RemoveEReferenceTest extends ReferenceEChangeTest {
 	protected var EReference affectedFeature = null
 	protected var EList<NonRoot> referenceContent = null
 	
 	@Before
-	override public void beforeTest() {
+	override void beforeTest() {
 		super.beforeTest()
 		resourceContent = resource.contents
 	}
@@ -35,7 +35,7 @@ public class RemoveEReferenceTest extends ReferenceEChangeTest {
 	 * so the object needs to be in the resource.
 	 */
 	@Test
-	def public void resolveBeforeNonContainmentTest() {
+	def void resolveBeforeNonContainmentTest() {
 		// Set state before
 		isNonContainmentTest
 			
@@ -56,7 +56,7 @@ public class RemoveEReferenceTest extends ReferenceEChangeTest {
 	 * so the object is not in the resource.
 	 */
 	@Test
-	def public void resolveBeforeContainmentTest() {
+	def void resolveBeforeContainmentTest() {
 		// Set state before
 		isContainmentTest
 		
@@ -77,7 +77,7 @@ public class RemoveEReferenceTest extends ReferenceEChangeTest {
 	 * so the object is a root object in the resource.
 	 */
 	@Test
-	def public void resolveAfterNonContainmentTest() {
+	def void resolveAfterNonContainmentTest() {
 		// Set state before
 		isNonContainmentTest
 		
@@ -101,7 +101,7 @@ public class RemoveEReferenceTest extends ReferenceEChangeTest {
 	 * so the object is in the staging area.
 	 */
 	@Test
-	def public void resolveAfterContainmentTestTest() {
+	def void resolveAfterContainmentTestTest() {
 		// Set state before
 		isContainmentTest
 		
@@ -120,7 +120,7 @@ public class RemoveEReferenceTest extends ReferenceEChangeTest {
 	 * returns the same class.
 	 */
 	@Test
-	def public void resolveToCorrectType() {
+	def void resolveToCorrectType() {
 		// Set state before
 		isNonContainmentTest
 		
@@ -139,7 +139,7 @@ public class RemoveEReferenceTest extends ReferenceEChangeTest {
 	 * to be a root object in the resource.
 	 */
 	@Test
-	def public void applyForwardNonContainmentTest() {
+	def void applyForwardNonContainmentTest() {
 		// Set state before
 		isNonContainmentTest
 		
@@ -169,7 +169,7 @@ public class RemoveEReferenceTest extends ReferenceEChangeTest {
 	 * will be in the staging area after removing them.
 	 */
 	@Test
-	def public void applyForwardContainmentTest() {
+	def void applyForwardContainmentTest() {
 		// Set state before
 		isContainmentTest
 		
@@ -197,7 +197,7 @@ public class RemoveEReferenceTest extends ReferenceEChangeTest {
 	 * a non containment reference so the values has to be in the resource.
 	 */
 	@Test
-	def public void applyBackwardNonContainmentTest() {
+	def void applyBackwardNonContainmentTest() {
 		// Set state before
 		isNonContainmentTest
 
@@ -230,7 +230,7 @@ public class RemoveEReferenceTest extends ReferenceEChangeTest {
 	 * before they are reinserted.
 	 */
 	@Test
-	def public void applyBackwardContainmentTest() {
+	def void applyBackwardContainmentTest() {
 		// Set state before
 		isContainmentTest
 		
@@ -262,7 +262,7 @@ public class RemoveEReferenceTest extends ReferenceEChangeTest {
 	 * Tests a {@link RemoveEReference} EChange with invalid index.
 	 */
 	@Test
-	def public void invalidIndexTest() {
+	def void invalidIndexTest() {
 		// Set state before
 		isNonContainmentTest
 		var index = 5 // Valid index is 0 or 1
@@ -284,7 +284,7 @@ public class RemoveEReferenceTest extends ReferenceEChangeTest {
 	 * such reference.
 	 */
 	@Test
-	def public void invalidAttributeTest() {
+	def void invalidAttributeTest() {
 		// Set state before
 		isNonContainmentTest
 		val invalidAffectedEObject = newValue2 // NonRoot element

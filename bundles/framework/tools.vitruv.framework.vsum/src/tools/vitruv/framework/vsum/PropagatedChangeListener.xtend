@@ -11,7 +11,7 @@ import tools.vitruv.framework.domains.VitruvDomain;
  *
  * @author Andreas Loeffler
  */
-public interface PropagatedChangeListener {
+interface PropagatedChangeListener {
 
     /**
      * Whenever changes are made, they must are posted to this method.

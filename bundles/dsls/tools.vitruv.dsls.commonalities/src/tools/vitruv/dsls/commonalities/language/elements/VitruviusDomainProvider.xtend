@@ -2,7 +2,7 @@ package tools.vitruv.dsls.commonalities.language.elements
 
 import com.google.inject.Singleton
 import edu.kit.ipd.sdq.activextendannotations.Lazy
-import java.util.HashMap
+import java.util.Map
 import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import tools.vitruv.framework.domains.VitruvDomainProviderRegistry
@@ -11,31 +11,33 @@ import tools.vitruv.framework.domains.VitruvDomainProviderRegistry
 class VitruviusDomainProvider {
 
 	/*
-	 * To be referenced from an Xtext language, EObjects must be contained in
-	 * a resource. So we create a fake resource to put the domains in. This 
-	 * resource is never serialised and has no other purpose.
+	 * In order to be referenced from a Xtext language, EObjects must be
+	 * contained in a resource. So we create a fake resource to put our domain
+	 * adapters in. This resource is never serialized and has no other purpose.
 	 */
-	val static CONTAINER_RESOURCE_URI = URI.createURI('http://vitruv.tools/framework/domains/vitruvdomains')
-	val container = containerResource
+	val static CONTAINER_RESOURCE_URI = URI.createURI('synthetic:/commonalities/vitruvDomainAdapters')
+	val container = createContainerResource
 
 	// there is currently no way to change the domains while developing, so
 	// it’s okay to cache them.
-	@Lazy(PRIVATE) HashMap<String, VitruviusDomain> allVitruviusDomainsByName = loadDomains()
+	@Lazy(PRIVATE) Map<String, VitruviusDomain> allVitruviusDomainsByName = loadDomains()
 
-	def private loadDomains() {
-		val classifierProvider = new ClassifierProvider
+	package new() {
+	}
+
+	private def loadDomains() {
 		return newHashMap(
 		VitruvDomainProviderRegistry.allDomainProviders.map[domain].map [ domain |
-			val vitruvDomain = LanguageElementsFactory.eINSTANCE.createVitruviusDomain.
-				withClassifierProvider(classifierProvider).forVitruvDomain(domain)
+			val vitruvDomain = LanguageElementsFactory.eINSTANCE.createVitruviusDomain
+				.withClassifierProvider(ClassifierProvider.INSTANCE).forVitruvDomain(domain)
 			container.contents += vitruvDomain
 			return domain.name -> vitruvDomain
 		])
 	}
 
-	def private containerResource() {
+	private def createContainerResource() {
 		val resourceSet = new ResourceSetImpl
-		resourceSet.createResource(CONTAINER_RESOURCE_URI)
+		return resourceSet.createResource(CONTAINER_RESOURCE_URI)
 	}
 
 	def getDomainByName(String name) {

@@ -18,14 +18,15 @@ import static tools.vitruv.dsls.commonalities.tests.matchers.EResourceMatchers.*
 @RunWith(XtextRunner)
 @InjectWith(CommonalitiesLanguageInjectorProvider)
 class CommonalitiesLanguageParsingTest {
+
 	@Inject
 	ParseHelper<CommonalityFile> parseHelper
-	
+
 	@Test
 	def void todo() {}
-	
+
 	def void parseTest(CharSequence... inputs) {
-		inputs.forEach [input | 
+		inputs.forEach [ input |
 			val result = parseHelper.parse(input)
 			val errorMessage = '''Could not parse:
 			
@@ -35,13 +36,11 @@ class CommonalitiesLanguageParsingTest {
 			assertThat(errorMessage, result.eResource, hasNoErrors)
 		]
 	}
-	
+
 	def CharSequence[] variation(CharSequence input, CharSequence find, CharSequence replace) {
 		#[
 			input,
 			input.toString.replace(find, replace)
 		]
 	}
-	
-	
 }

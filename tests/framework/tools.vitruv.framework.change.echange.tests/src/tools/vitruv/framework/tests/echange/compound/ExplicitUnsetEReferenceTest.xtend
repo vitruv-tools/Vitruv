@@ -36,7 +36,7 @@ class ExplicitUnsetEReferenceTest extends EChangeTest {
 	protected var NonRoot oldValue3 = null	
 		
 	@Before
-	override public void beforeTest() {
+	override void beforeTest() {
 		super.beforeTest()
 		affectedEObject = rootObject
 		oldValue = AllElementTypesFactory.eINSTANCE.createNonRoot
@@ -49,7 +49,7 @@ class ExplicitUnsetEReferenceTest extends EChangeTest {
 	 * valued non containment reference and the model is in state before the change.
 	 */	
 	@Test
-	def public void resolveBeforeSingleValuedNonContainmentReferenceTest() {
+	def void resolveBeforeSingleValuedNonContainmentReferenceTest() {
 		// Set state before
 		isSingleValuedNonContainmentTest
 		
@@ -62,7 +62,7 @@ class ExplicitUnsetEReferenceTest extends EChangeTest {
 	 * valued containment reference and the model is in state before the change.
 	 */		
 	@Test
-	def public void resolveBeforeSingleValuedContainmentReferenceTest() {
+	def void resolveBeforeSingleValuedContainmentReferenceTest() {
 		// Set state before
 		isSingleValuedContainmentTest
 		
@@ -75,7 +75,7 @@ class ExplicitUnsetEReferenceTest extends EChangeTest {
 	 * valued non containment reference and the model is in state before the change.
 	 */		
 	@Test
-	def public void resolveBeforeMultiValuedNonContainmentReferenceTest() {
+	def void resolveBeforeMultiValuedNonContainmentReferenceTest() {
 		// Set state before
 		isMultiValuedNonContainmentTest
 		
@@ -88,7 +88,7 @@ class ExplicitUnsetEReferenceTest extends EChangeTest {
 	 * valued containment reference and the model is in state before the change.
 	 */		
 	@Test
-	def public void resolveBeforeMultiValuedContainmentReferenceTest() {
+	def void resolveBeforeMultiValuedContainmentReferenceTest() {
 		// Set state before
 		isMultiValuedContainmentTest
 		
@@ -101,7 +101,7 @@ class ExplicitUnsetEReferenceTest extends EChangeTest {
 	 * valued non containment reference and the model is in state after the change.
 	 */	
 	@Test
-	def public void resolveAfterSingleValuedNonContainmentReferenceTest() {
+	def void resolveAfterSingleValuedNonContainmentReferenceTest() {
 		// Set state before
 		isSingleValuedNonContainmentTest
 		
@@ -114,7 +114,7 @@ class ExplicitUnsetEReferenceTest extends EChangeTest {
 	 * valued containment reference and the model is in state after the change.
 	 */	
 	@Test
-	def public void resolveAfterSingleValuedContainmentReferenceTest() {
+	def void resolveAfterSingleValuedContainmentReferenceTest() {
 		// Set state before
 		isSingleValuedContainmentTest
 		
@@ -127,7 +127,7 @@ class ExplicitUnsetEReferenceTest extends EChangeTest {
 	 * valued non containment reference and the model is in state after the change.
 	 */	
 	@Test
-	def public void resolveAfterMultiValuedNonContainmentReferenceTest() {
+	def void resolveAfterMultiValuedNonContainmentReferenceTest() {
 		// Set state before
 		isMultiValuedNonContainmentTest
 		
@@ -140,7 +140,7 @@ class ExplicitUnsetEReferenceTest extends EChangeTest {
 	 * valued containment reference and the model is in state after the change.
 	 */	
 	@Test
-	def public void resolveAfterMultiValuedContainmentReferenceTest() {
+	def void resolveAfterMultiValuedContainmentReferenceTest() {
 		// Set state before
 		isMultiValuedContainmentTest
 		
@@ -152,7 +152,7 @@ class ExplicitUnsetEReferenceTest extends EChangeTest {
 	 * Tests whether the {@link ExplicitUnsetEReference} EChange resolves to the correct type.
 	 */
 	@Test
-	def public void resolveToCorrectType() {
+	def void resolveToCorrectType() {
 		// Set state before
 		isSingleValuedNonContainmentTest
 		
@@ -169,7 +169,7 @@ class ExplicitUnsetEReferenceTest extends EChangeTest {
 	 * Unsets a single valued non containment reference.
 	 */	
 	@Test
-	def public void applyForwardSingleValuedNonContainmentReferenceTest() {
+	def void applyForwardSingleValuedNonContainmentReferenceTest() {
 		// Set state before
 		isSingleValuedNonContainmentTest
 				
@@ -182,7 +182,7 @@ class ExplicitUnsetEReferenceTest extends EChangeTest {
 	 * Unsets a single valued non containment reference.
 	 */	
 	@Test
-	def public void applyForwardSingleValuedContainmentReferenceTest() {
+	def void applyForwardSingleValuedContainmentReferenceTest() {
 		// Set state before
 		isSingleValuedContainmentTest
 		
@@ -195,7 +195,7 @@ class ExplicitUnsetEReferenceTest extends EChangeTest {
 	 * Unsets a multi valued non containment reference.
 	 */	
 	@Test
-	def public void applyForwardMultiValuedNonContainmentReferenceTest() {
+	def void applyForwardMultiValuedNonContainmentReferenceTest() {
 		// Set state before
 		isMultiValuedContainmentTest
 
@@ -208,7 +208,7 @@ class ExplicitUnsetEReferenceTest extends EChangeTest {
 	 * Unsets a multi valued containment reference.
 	 */	
 	@Test
-	def public void applyForwardMultiValuedNContainmentReferenceTest() {
+	def void applyForwardMultiValuedNContainmentReferenceTest() {
 		// Set state before
 		isMultiValuedContainmentTest	
 		
@@ -221,7 +221,7 @@ class ExplicitUnsetEReferenceTest extends EChangeTest {
 	 * Unsets a single valued non containment reference.
 	 */	
 	@Test
-	def public void applyBackwardSingleValuedNonContainmentReferenceTest() {
+	def void applyBackwardSingleValuedNonContainmentReferenceTest() {
 		// Set state before
 		isSingleValuedNonContainmentTest
 				
@@ -234,7 +234,7 @@ class ExplicitUnsetEReferenceTest extends EChangeTest {
 	 * Unsets a single valued non containment reference.
 	 */	
 	@Test
-	def public void applyBackwardSingleValuedContainmentReferenceTest() {
+	def void applyBackwardSingleValuedContainmentReferenceTest() {
 		// Set state before
 		isSingleValuedContainmentTest
 		
@@ -247,7 +247,7 @@ class ExplicitUnsetEReferenceTest extends EChangeTest {
 	 * Unsets a multi valued non containment reference.
 	 */	
 	@Test
-	def public void applyBackwardMultiValuedNonContainmentReferenceTest() {
+	def void applyBackwardMultiValuedNonContainmentReferenceTest() {
 		// Set state before
 		isMultiValuedNonContainmentTest
 
@@ -260,7 +260,7 @@ class ExplicitUnsetEReferenceTest extends EChangeTest {
 	 * Unsets a multi valued containment reference.
 	 */	
 	@Test
-	def public void applyBackwardMultiValuedNContainmentReferenceTest() {
+	def void applyBackwardMultiValuedNContainmentReferenceTest() {
 		// Set state before
 		isMultiValuedContainmentTest	
 		

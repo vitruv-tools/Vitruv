@@ -9,7 +9,7 @@ Bundle-ActivationPolicy: lazy
 Export-Package: tools.vitruv.dsls.commonalities.ide;x-internal:=true,
  tools.vitruv.dsls.commonalities.ide.contentassist.antlr,
  tools.vitruv.dsls.commonalities.ide.contentassist.antlr.internal
-Require-Bundle: org.antlr.runtime,
+Require-Bundle: org.antlr.runtime;bundle-version="[3.2.0,3.2.1)",
  com.google.inject,
  org.eclipse.xtext.ide,
  org.eclipse.xtext.xbase.ide,

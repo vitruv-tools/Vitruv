@@ -19,10 +19,10 @@ import tools.vitruv.framework.change.description.PropagatedChange
 import tools.vitruv.framework.change.description.VitruviusChange
 
 class BidirectionalExecutionTests extends AbstractAllElementTypesReactionsTests {
-	private static val TEST_SOURCE_MODEL_NAME = "EachTestModelSource";
-	private static val TEST_TARGET_MODEL_NAME = "EachTestModelTarget";
+	static val TEST_SOURCE_MODEL_NAME = "EachTestModelSource";
+	static val TEST_TARGET_MODEL_NAME = "EachTestModelTarget";
 	
-	private String[] nonContainmentNonRootIds = #["NonRootHelper0", "NonRootHelper1", "NonRootHelper2"];
+	String[] nonContainmentNonRootIds = #["NonRootHelper0", "NonRootHelper1", "NonRootHelper2"];
 
 	private def Root getRootElement() {
 		return TEST_SOURCE_MODEL_NAME.projectModelPath.firstRootElement as Root;
@@ -66,7 +66,7 @@ class BidirectionalExecutionTests extends AbstractAllElementTypesReactionsTests 
 	}
 	
 	@Test
-	public def void testBasicBidirectionalApplication() {
+	def void testBasicBidirectionalApplication() {
 		val targetRoot = TEST_TARGET_MODEL_NAME.projectModelPath.firstRootElement as Root;
 		startRecordingChanges(targetRoot);
 		val newNonRoot = AllElementTypesFactory.eINSTANCE.createNonRoot;
@@ -92,7 +92,7 @@ class BidirectionalExecutionTests extends AbstractAllElementTypesReactionsTests 
 	 *  has a changed URI (due to removal from container).
 	 */
 	@Test
-	public def void testApplyRemoveInOtherModel() {
+	def void testApplyRemoveInOtherModel() {
 		val targetRoot = TEST_TARGET_MODEL_NAME.projectModelPath.firstRootElement as Root;
 		startRecordingChanges(targetRoot);
 		targetRoot.nonRootObjectContainerHelper.nonRootObjectsContainment.remove(0);
@@ -116,7 +116,7 @@ class BidirectionalExecutionTests extends AbstractAllElementTypesReactionsTests 
 	 *  has a changed URI (due to removal from container).
 	 */
 	@Test
-	public def void testApplyRemoveRootInOtherModel() {
+	def void testApplyRemoveRootInOtherModel() {
 		val targetRoot = TEST_TARGET_MODEL_NAME.projectModelPath.firstRootElement as Root;
 		startRecordingChanges(targetRoot);
 		val propagatedChanges = deleteAndSynchronizeModel(TEST_TARGET_MODEL_NAME.projectModelPath);

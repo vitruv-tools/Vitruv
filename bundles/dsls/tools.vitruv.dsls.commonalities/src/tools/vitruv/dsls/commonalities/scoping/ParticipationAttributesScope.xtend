@@ -2,12 +2,16 @@ package tools.vitruv.dsls.commonalities.scoping
 
 import com.google.inject.Inject
 import org.eclipse.emf.ecore.EObject
+import org.eclipse.xtext.EcoreUtil2
 import org.eclipse.xtext.naming.QualifiedName
 import org.eclipse.xtext.scoping.IScope
 import tools.vitruv.dsls.commonalities.language.ParticipationClass
+import tools.vitruv.dsls.commonalities.language.elements.Attribute
 import tools.vitruv.dsls.commonalities.names.IEObjectDescriptionProvider
 
 import static com.google.common.base.Preconditions.*
+
+import static extension tools.vitruv.dsls.commonalities.names.QualifiedNameHelper.*
 
 class ParticipationAttributesScope implements IScope {
 
@@ -16,32 +20,37 @@ class ParticipationAttributesScope implements IScope {
 
 	def forParticipationClass(ParticipationClass participationClass) {
 		this.participationClass = checkNotNull(participationClass)
-		this			
+		this
 	}
-	
-	def private checkParticipationClassSet() {
+
+	private def checkParticipationClassSet() {
 		checkState(participationClass !== null, "No participation class to get attributes from was set!")
 	}
-	
-	def private allAttributes() {
+
+	private def allAttributes() {
 		checkParticipationClassSet()
-		
-		participationClass.superMetaclass?.attributes ?: #[]
+		val metaclass = participationClass.superMetaclass
+		if (metaclass === null) return #[]
+		// We iterate over all members here instead of just the attributes returned by #getAttributes, because for
+		// commonality participations #getAttributes only includes the commonality's CommonalityAttributes but not its
+		// CommonalityReferences (which are referenceable attributes as well).
+		return metaclass.allMembers.filter(Attribute)
 	}
-	
+
 	override getAllElements() {
 		allAttributes.map(descriptionProvider)
 	}
 
 	override getElements(QualifiedName qName) {
-		if (qName.segmentCount > 1) return #[]
-		allAttributes.filter [name == qName.firstSegment].map(descriptionProvider)
+		val memberName = qName.memberName
+		if (memberName === null) return #[]
+		return allAttributes.filter[name == memberName].map(descriptionProvider)
 	}
 
 	override getElements(EObject object) {
 		checkParticipationClassSet()
-		
-		throw new UnsupportedOperationException("I don’t know what to do here!")
+		val objectURI = EcoreUtil2.getURI(object)
+		return allElements.filter[it.EObjectOrProxy === object || it.EObjectURI == objectURI]
 	}
 
 	override getSingleElement(QualifiedName name) {
@@ -51,5 +60,4 @@ class ParticipationAttributesScope implements IScope {
 	override getSingleElement(EObject object) {
 		getElements(object).head
 	}
-
 }

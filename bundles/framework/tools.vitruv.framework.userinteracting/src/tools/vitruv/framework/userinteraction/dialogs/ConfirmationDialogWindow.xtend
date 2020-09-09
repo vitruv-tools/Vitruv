@@ -16,10 +16,10 @@ import org.eclipse.swt.widgets.Shell
  * @author Heiko Klare
  */
 class ConfirmationDialogWindow extends BaseDialogWindow {
-	private boolean confirmed = false
-	private final String positiveButtonText;
-	private final String negativeButtonText;
-	private final String cancelButtonText;
+	boolean confirmed = false
+	final String positiveButtonText;
+	final String negativeButtonText;
+	final String cancelButtonText;
 
 	new(Shell parent, WindowModality windowModality, String title, String message, String positiveButtonText,
 		String negativeButtonText, String cancelButtonText) {

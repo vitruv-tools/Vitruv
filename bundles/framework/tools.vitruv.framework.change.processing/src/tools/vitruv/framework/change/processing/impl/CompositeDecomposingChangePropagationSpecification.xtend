@@ -15,7 +15,7 @@ import org.apache.log4j.Logger
  * 
  */
 class CompositeDecomposingChangePropagationSpecification extends CompositeChangePropagationSpecification {
-	private static val logger = Logger.getLogger(CompositeDecomposingChangePropagationSpecification);
+	static val logger = Logger.getLogger(CompositeDecomposingChangePropagationSpecification);
 
 	new(VitruvDomain sourceDomain, VitruvDomain targetDomain) {
 		super(sourceDomain, targetDomain)

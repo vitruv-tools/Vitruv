@@ -14,7 +14,7 @@ class ChangeDescriptionComplexSequencesTest extends ChangeDescription2ChangeTran
 	 * Changes that overwrite each other between two change propagation triggers are not recognized by EMF.
 	 */
 	@Test
-	def public void testOverwritingSequence() {
+	def void testOverwritingSequence() {
 		// prepare
 		startRecording
 		
@@ -38,7 +38,7 @@ class ChangeDescriptionComplexSequencesTest extends ChangeDescription2ChangeTran
 	
 	
 	@Test
-	def public void testInsertTreeInContainment() {
+	def void testInsertTreeInContainment() {
 		// prepare
 		this.rootElement.nonRootObjectContainerHelper = null;
 		startRecording
@@ -59,7 +59,7 @@ class ChangeDescriptionComplexSequencesTest extends ChangeDescription2ChangeTran
 	}
 	
 	@Test
-	def public void testInsertComplexTreeInContainment() {
+	def void testInsertComplexTreeInContainment() {
 		// prepare
 		this.rootElement.recursiveRoot = null;
 		

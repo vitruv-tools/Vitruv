@@ -5,13 +5,14 @@ import org.eclipse.xtext.naming.QualifiedName
 import org.eclipse.xtext.ui.editor.contentassist.PrefixMatcher
 
 package abstract class LanguageElementPrefixMatcher extends PrefixMatcher {
+
 	@Inject PrefixMatcher.IgnoreCase ignoreCase
 
-	def protected static segment(QualifiedName name, int index) {
+	protected static def segment(QualifiedName name, int index) {
 		if (name.segmentCount > index) name.getSegment(index) else ""
 	}
 
-	def protected matchesAnySegmentStartIgnoringCase(String prefix, QualifiedName qualifiedName,
+	protected def matchesAnySegmentStartIgnoringCase(String prefix, QualifiedName qualifiedName,
 		int... segmentIndices) {
 		for (index : segmentIndices) {
 			if (ignoreCase.isCandidateMatchingPrefix(qualifiedName.segment(index), prefix)) {
@@ -21,7 +22,7 @@ package abstract class LanguageElementPrefixMatcher extends PrefixMatcher {
 		return false
 	}
 
-	def protected matchesQualifiedNamePart(QualifiedName prefix, QualifiedName qualifiedNamePart,
+	protected def matchesQualifiedNamePart(QualifiedName prefix, QualifiedName qualifiedNamePart,
 		int... segmentIndices) {
 		for (index : segmentIndices) {
 			val perfixPart = prefix.getSegment(index)
@@ -33,7 +34,7 @@ package abstract class LanguageElementPrefixMatcher extends PrefixMatcher {
 		return true
 	}
 
-	def protected matchesStartIgnoringCase(QualifiedName prefix, QualifiedName name, int index) {
+	protected def matchesStartIgnoringCase(QualifiedName prefix, QualifiedName name, int index) {
 		ignoreCase.isCandidateMatchingPrefix(name.getSegment(index), prefix.getSegment(index))
 	}
 }

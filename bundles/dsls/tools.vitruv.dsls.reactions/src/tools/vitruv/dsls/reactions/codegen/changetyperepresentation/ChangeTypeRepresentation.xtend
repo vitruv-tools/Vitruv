@@ -8,7 +8,7 @@ import org.eclipse.xtend2.lib.StringConcatenationClient
  * changes. The information for the changes are extracted by the {@link ChangeTypeRepresentationExtractor} from 
  * a {@link Trigger} of the reactions language.
  */
-public abstract class ChangeTypeRepresentation {
+abstract class ChangeTypeRepresentation {
 	
 	protected static def mapToNonPrimitiveType(String potentiallyPrimitiveTypeCName) {
 		return primitveToWrapperTypesMap.getOrDefault(potentiallyPrimitiveTypeCName, potentiallyPrimitiveTypeCName)
@@ -26,19 +26,19 @@ public abstract class ChangeTypeRepresentation {
 		void -> Void
 	].map [key.canonicalName -> value.canonicalName])
 
-	public def Class<?> getChangeType();
+	def Class<?> getChangeType();
 
-	public def Iterable<String> getGenericTypeParameters()
+	def Iterable<String> getGenericTypeParameters()
 
-	public def StringConcatenationClient getUntypedChangeTypeRepresentation() {
+	def StringConcatenationClient getUntypedChangeTypeRepresentation() {
 		return '''«changeType»'''
 	}
 
-	public def StringConcatenationClient getTypedChangeTypeRepresentation() {
+	def StringConcatenationClient getTypedChangeTypeRepresentation() {
 		return '''«changeType»«FOR param : genericTypeParameters BEFORE "<" SEPARATOR ", " AFTER ">"»«param»«ENDFOR»'''
 	}
 	
-	public def StringConcatenationClient getChangeTypeRepresentationWithWildcards() {
+	def StringConcatenationClient getChangeTypeRepresentationWithWildcards() {
 		return '''«changeType»«FOR param : genericTypeParameters BEFORE "<" SEPARATOR ", " AFTER ">"»?«ENDFOR»'''
 	}
 

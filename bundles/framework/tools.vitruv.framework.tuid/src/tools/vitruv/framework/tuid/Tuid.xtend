@@ -53,7 +53,7 @@ final class Tuid implements Serializable {
 		SEGMENTS = generateForwardHashedBackwardLinkedTree();
 	}
 
-	public def updateTuid(EObject newObject) {
+	def updateTuid(EObject newObject) {
 		TuidManager.instance.updateTuid(this, newObject);
 	}
 

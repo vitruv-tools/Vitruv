@@ -28,26 +28,26 @@ class ParameterGenerator {
 		_typesBuilder = typesBuilder;
 	}
 	
-	public def JvmFormalParameter generateModelElementParameter(EObject parameterContext, MetaclassReference metaclassReference, String elementName) {
+	def JvmFormalParameter generateModelElementParameter(EObject parameterContext, MetaclassReference metaclassReference, String elementName) {
 		if (metaclassReference?.metaclass !== null) {
 			return parameterContext.generateParameter(elementName, typeRef(metaclassReference.javaClassName))
 		}	
 		return null;
 	}
 	
-	public def JvmFormalParameter generateRoutinesFacadeParameter(EObject parameterContext, ReactionsSegment reactionsSegment) {
+	def JvmFormalParameter generateRoutinesFacadeParameter(EObject parameterContext, ReactionsSegment reactionsSegment) {
 		return generateParameter(parameterContext, ROUTINES_FACADE_PARAMETER_NAME, typeRef(reactionsSegment.routinesFacadeClassNameGenerator.qualifiedName));
 	}
 	
-	public def JvmFormalParameter generateReactionExecutionStateParameter(EObject parameterContext) {
+	def JvmFormalParameter generateReactionExecutionStateParameter(EObject parameterContext) {
 		return generateParameter(parameterContext, REACTION_EXECUTION_STATE_PARAMETER_NAME, ReactionExecutionState);
 	}
 	
-	public def JvmFormalParameter generateUserInteractorParameter(EObject parameterContext) {
+	def JvmFormalParameter generateUserInteractorParameter(EObject parameterContext) {
 		return generateParameter(parameterContext, USER_INTERACTING_PARAMETER_NAME, UserInteractor);
 	}
 	
-	public def generateParameter(EObject context, String parameterName, JvmTypeReference parameterType) {
+	def generateParameter(EObject context, String parameterName, JvmTypeReference parameterType) {
 		if (parameterType === null) {
 			return null;
 		}
@@ -55,11 +55,11 @@ class ParameterGenerator {
 	}
 
 		
-	public def generateParameterFromClasses(EObject context, String parameterName, Class<?> parameterClass, Iterable<String> typeParameterClasses) {
+	def generateParameterFromClasses(EObject context, String parameterName, Class<?> parameterClass, Iterable<String> typeParameterClasses) {
 		return generateParameter(context, parameterName, parameterClass, typeParameterClasses);
 	}
 	
-	public def generateParameter(EObject context, String parameterName, Class<?> parameterClass, String... typeParameterClassNames) {
+	def generateParameter(EObject context, String parameterName, Class<?> parameterClass, String... typeParameterClassNames) {
 		if (parameterClass === null) {
 			return null;
 		}
@@ -71,16 +71,16 @@ class ParameterGenerator {
 		return context.toParameter(parameterName, changeType);
 	}
 	
-	public def Iterable<AccessibleElement> getInputElements(EObject contextObject, Iterable<NamedMetaclassReference> metaclassReferences, Iterable<NamedJavaElement> javaElements) {
+	def Iterable<AccessibleElement> getInputElements(EObject contextObject, Iterable<NamedMetaclassReference> metaclassReferences, Iterable<NamedJavaElement> javaElements) {
 		return metaclassReferences.map[new AccessibleElement(it.name, it.metaclass.mappedInstanceClassCanonicalName)]
 			+ javaElements.map[new AccessibleElement(it.name, it.type.qualifiedName)];
 	}
 	
-	public def Iterable<JvmFormalParameter> generateMethodInputParameters(EObject contextObject, Iterable<NamedMetaclassReference> metaclassReferences, Iterable<NamedJavaElement> javaElements) {
+	def Iterable<JvmFormalParameter> generateMethodInputParameters(EObject contextObject, Iterable<NamedMetaclassReference> metaclassReferences, Iterable<NamedJavaElement> javaElements) {
 		return contextObject.generateMethodInputParameters(contextObject.getInputElements(metaclassReferences, javaElements));
 	}
 	
-	public def Iterable<JvmFormalParameter> generateMethodInputParameters(EObject contextObject, Iterable<AccessibleElement> elements) {
+	def Iterable<JvmFormalParameter> generateMethodInputParameters(EObject contextObject, Iterable<AccessibleElement> elements) {
 		elements.map[toParameter(contextObject, it.name, it.generateTypeRef(_typeReferenceBuilder))]
 	}
 	
@@ -99,7 +99,7 @@ class ParameterGenerator {
 		}
 	}
 	
-	public def JvmFormalParameter generateUntypedChangeParameter(EObject parameterContext) {
+	def JvmFormalParameter generateUntypedChangeParameter(EObject parameterContext) {
 		return parameterContext.generateParameter(CHANGE_PARAMETER_NAME, EChange);
 	}
 	

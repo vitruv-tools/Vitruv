@@ -5,9 +5,9 @@ import tools.vitruv.framework.userinteraction.UserInteractor
 import tools.vitruv.framework.userinteraction.UserInteractionOptions.WindowModality
 
 class CorrespondenceFailDefaultDialog extends AbstractCorrespondenceFailHandler {
-	private final boolean abortEffect;
+	final boolean abortEffect;
 	
-	public new(boolean abortEffect) {
+	new(boolean abortEffect) {
 		this.abortEffect = abortEffect;
 	}
 	

@@ -21,14 +21,14 @@ import tools.vitruv.dsls.common.helper.ClassNameGenerator
 import static extension tools.vitruv.dsls.reactions.codegen.helper.ReactionsLanguageHelper.*
 
 class ReactionClassGenerator extends ClassGenerator {
-	private static val String CHANCE_COUNTER_VARIABLE = "currentlyMatchedChange";
+	static val String CHANCE_COUNTER_VARIABLE = "currentlyMatchedChange";
 	protected final Reaction reaction
 	protected final ChangeSequenceRepresentation changeSequenceRepresentation
 	protected final boolean hasPreconditionBlock
-	private final ClassNameGenerator reactionClassNameGenerator
-	private final UserExecutionClassGenerator userExecutionClassGenerator
-	private final ClassNameGenerator routinesFacadeClassNameGenerator
-	private var JvmGenericType generatedClass
+	final ClassNameGenerator reactionClassNameGenerator
+	final UserExecutionClassGenerator userExecutionClassGenerator
+	final ClassNameGenerator routinesFacadeClassNameGenerator
+	var JvmGenericType generatedClass
 	
 	new(Reaction reaction, TypesBuilderExtensionProvider typesBuilderExtensionProvider) {
 		super(typesBuilderExtensionProvider);
@@ -44,7 +44,7 @@ class ReactionClassGenerator extends ClassGenerator {
 			reactionClassNameGenerator.qualifiedName + "." + EFFECT_USER_EXECUTION_SIMPLE_NAME);
 	}
 		
-	public override JvmGenericType generateEmptyClass() {
+	override JvmGenericType generateEmptyClass() {
 		userExecutionClassGenerator.generateEmptyClass()
 		generatedClass = reaction.toClass(reactionClassNameGenerator.qualifiedName) [
 			visibility = JvmVisibility.PUBLIC
@@ -145,7 +145,7 @@ class ReactionClassGenerator extends ClassGenerator {
 		];
 	}
 	
-	public def Iterable<String> generateArgumentsForAccesibleElements(Iterable<AccessibleElement> elements) {
+	def Iterable<String> generateArgumentsForAccesibleElements(Iterable<AccessibleElement> elements) {
 		elements.map[name];
 	}
 	

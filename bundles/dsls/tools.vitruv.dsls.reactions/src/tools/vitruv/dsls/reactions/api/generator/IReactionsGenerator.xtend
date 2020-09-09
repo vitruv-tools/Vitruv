@@ -77,7 +77,7 @@ interface IReactionsGenerator {
 	 * before calling this method.
 	 * 
 	 * @param reactionBuilder
-	 * 		The builder describing the reaction file to generate code for.		
+	 * 		The builder describing the reaction file to generate code for.
 	 */
 	def void addReactionsFile(FluentReactionsFileBuilder reactionBuilder)
 

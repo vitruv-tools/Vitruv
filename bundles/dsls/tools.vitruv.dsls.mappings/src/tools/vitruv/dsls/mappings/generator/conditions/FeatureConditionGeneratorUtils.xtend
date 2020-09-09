@@ -12,7 +12,7 @@ import tools.vitruv.dsls.mappings.mappingsLanguage.NullValue
 import tools.vitruv.dsls.mappings.mappingsLanguage.NumberValue
 import tools.vitruv.dsls.mappings.mappingsLanguage.StringValue
 import tools.vitruv.dsls.mirbase.mirBase.MirBaseFactory
-import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.RoutineTypeProvider
+import tools.vitruv.dsls.reactions.builder.TypeProvider
 
 import static extension tools.vitruv.dsls.mappings.generator.utils.XBaseMethodFinder.*
 
@@ -37,18 +37,18 @@ class FeatureConditionGeneratorUtils {
 		(condition.left as MappingParameterReference).parameter
 	}
 
-	def static parameter(RoutineTypeProvider typeProvider, MappingParameter parameter) {
+	def static parameter(TypeProvider typeProvider, MappingParameter parameter) {
 		typeProvider.variable(parameter.value.name + '_')
 	}
 
-	private def static initMemberFeatureCall(RoutineTypeProvider typeProvider, FeatureCondition featureCondition) {
+	private def static initMemberFeatureCall(TypeProvider typeProvider, FeatureCondition featureCondition) {
 		XbaseFactory.eINSTANCE.createXMemberFeatureCall => [
 			explicitOperationCall = true
 			memberCallTarget = typeProvider.parameter(featureCondition.feature.parameter)
 		]
 	}
 
-	def static parameterFeatureCallSetter(RoutineTypeProvider typeProvider, FeatureCondition featureCondition,
+	def static parameterFeatureCallSetter(TypeProvider typeProvider, FeatureCondition featureCondition,
 		XExpression argument) {
 		val call = typeProvider.initMemberFeatureCall(featureCondition)
 		call.feature = typeProvider.findMetaclassMethodSetter(featureCondition.feature.parameter.value.metaclass,
@@ -57,35 +57,35 @@ class FeatureConditionGeneratorUtils {
 		call
 	}
 
-	def static parameterFeatureCallGetter(RoutineTypeProvider typeProvider, FeatureCondition featureCondition) {
+	def static parameterFeatureCallGetter(TypeProvider typeProvider, FeatureCondition featureCondition) {
 		val call = typeProvider.initMemberFeatureCall(featureCondition)
 		call.feature = typeProvider.findMetaclassMethodGetter(featureCondition.feature.parameter.value.metaclass,
 			featureCondition.feature.feature)
 		call
 	}
 
-	def static generateLeftFeatureConditionValue(RoutineTypeProvider typeProvider, FeatureCondition featureCondition) {
+	def static generateLeftFeatureConditionValue(TypeProvider typeProvider, FeatureCondition featureCondition) {
 		val leftSide = featureCondition.left
 		leftSide.initValue(typeProvider)
 	}
 
-	def private static dispatch initValue(NullValue value, RoutineTypeProvider typeProvider) {
+	def private static dispatch initValue(NullValue value, TypeProvider typeProvider) {
 		XbaseFactory.eINSTANCE.createXNullLiteral
 	}
 
-	def private static dispatch initValue(StringValue value, RoutineTypeProvider typeProvider) {
+	def private static dispatch initValue(StringValue value, TypeProvider typeProvider) {
 		EcoreUtil.copy(value.value)
 	}
 
-	def private static dispatch initValue(NumberValue value, RoutineTypeProvider typeProvider) {
+	def private static dispatch initValue(NumberValue value, TypeProvider typeProvider) {
 		EcoreUtil.copy(value.value)
 	}
 
-	def private static dispatch initValue(BoolValue value, RoutineTypeProvider typeProvider) {
+	def private static dispatch initValue(BoolValue value, TypeProvider typeProvider) {
 		EcoreUtil.copy(value.value)
 	}
 
-	def private static dispatch initValue(MappingParameterReference value, RoutineTypeProvider typeProvider) {
+	def private static dispatch initValue(MappingParameterReference value, TypeProvider typeProvider) {
 		// val package = leftSide.metaclass.class.package.name
 		val className = value.parameter.value.metaclass.class.name
 		return XbaseFactory.eINSTANCE.createXTypeLiteral => [

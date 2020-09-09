@@ -20,7 +20,7 @@ class RemoveRootEObjectTest extends RootEChangeTest {
 	 * to remove them in the tests.
 	 */
 	@Before
-	override public void beforeTest()  {
+	override void beforeTest()  {
 		super.beforeTest()
 		prepareStateBefore
 	}	
@@ -31,7 +31,7 @@ class RemoveRootEObjectTest extends RootEChangeTest {
 	 * in state before the change is applied forward.
 	 */
 	@Test
-	def public void resolveBeforeTest() {			
+	def void resolveBeforeTest() {			
 		// Create change
 		val unresolvedChange = createUnresolvedChange(newRootObject, 1)
 		unresolvedChange.assertIsNotResolved(newRootObject)	
@@ -50,7 +50,7 @@ class RemoveRootEObjectTest extends RootEChangeTest {
 	 * in state after the change was applied.
 	 */
 	 @Test
-	 def public void resolveAfterTest() {
+	 def void resolveAfterTest() {
 		// Create change
 		val unresolvedChange = createUnresolvedChange(newRootObject, 1)
 		unresolvedChange.assertIsNotResolved(newRootObject)	
@@ -66,7 +66,7 @@ class RemoveRootEObjectTest extends RootEChangeTest {
 	 * returns the same class.
 	 */
 	@Test
-	def public void resolveToCorrectType() {		
+	def void resolveToCorrectType() {		
 		// Create change
 		val unresolvedChange = createUnresolvedChange(newRootObject, 0)
 		unresolvedChange.assertIsNotResolved(newRootObject)	
@@ -82,7 +82,7 @@ class RemoveRootEObjectTest extends RootEChangeTest {
 	 * by removing two root elements from a resource.
 	 */
 	@Test
-	def public void applyForwardTest() {
+	def void applyForwardTest() {
 		// Create and resolve change 1
 		val resolvedChange = createUnresolvedChange(newRootObject, 1).resolveBefore(uuidGeneratorAndResolver)
 			as RemoveRootEObject<Root>
@@ -111,7 +111,7 @@ class RemoveRootEObjectTest extends RootEChangeTest {
 	 * by inserts two removed root objects in a resource.
 	 */
 	@Test
-	def public void applyBackwardTest() {
+	def void applyBackwardTest() {
 		// Create and resolve and apply forward 1
 		val resolvedChange = createUnresolvedChange(newRootObject, 0).resolveBefore(uuidGeneratorAndResolver)
 			as RemoveRootEObject<Root>
@@ -142,7 +142,7 @@ class RemoveRootEObjectTest extends RootEChangeTest {
 	 * Tests a {@link RemoveRootEObject} EChange with invalid index.
 	 */
 	@Test
-	def public void invalidIndexTest() {
+	def void invalidIndexTest() {
 		var index = 5
 		
 		// Create and resolve change

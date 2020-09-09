@@ -7,10 +7,10 @@ import org.eclipse.emf.common.util.URI
 import edu.kit.ipd.sdq.commons.util.org.eclipse.emf.common.util.URIUtil
 import tools.vitruv.framework.util.VitruviusConstants
 
-public final class PersistenceHelper {
+final class PersistenceHelper {
 	private new() {}
 	
-	public static def EObject getModelRoot(EObject modelObject) {
+	static def EObject getModelRoot(EObject modelObject) {
 		var result = modelObject;
 		while (result.eContainer() !== null) {
 			result = result.eContainer();
@@ -61,7 +61,7 @@ public final class PersistenceHelper {
 		return baseURI.appendSegments(newModelFileSegments);
 	}
 
-	public static def URI getURIFromSourceResourceFolder(EObject source, String relativePath) {
+	static def URI getURIFromSourceResourceFolder(EObject source, String relativePath) {
 		val baseURI = getURIOfElementResourceFolder(source);
 		return baseURI.appendPathToURI(relativePath);
 	}
@@ -77,7 +77,7 @@ public final class PersistenceHelper {
 	 * 
 	 * @returns the {@link URI} of the folder within the project of the given element
 	 */
-	public static def URI getURIFromSourceProjectFolder(EObject source, String relativePath) {
+	static def URI getURIFromSourceProjectFolder(EObject source, String relativePath) {
 		val baseURI = getURIOfElementProject(source);
 		return baseURI.appendPathToURI(relativePath);
 	}

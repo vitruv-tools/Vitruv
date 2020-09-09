@@ -10,10 +10,10 @@ import org.eclipse.emf.ecore.util.EcoreUtil
 import tools.vitruv.framework.vsum.ModelRepository
 
 class TuidResolverImpl implements tools.vitruv.framework.tuid.TuidResolver{
-	private val VitruvDomainRepository domainRepository;
-	private val ModelRepository modelRepository;
+	val VitruvDomainRepository domainRepository;
+	val ModelRepository modelRepository;
 
-	public new(VitruvDomainRepository domainRepository, ModelRepository modelRepository) {
+	new(VitruvDomainRepository domainRepository, ModelRepository modelRepository) {
 		this.domainRepository = domainRepository;
 		this.modelRepository = modelRepository;
 	}

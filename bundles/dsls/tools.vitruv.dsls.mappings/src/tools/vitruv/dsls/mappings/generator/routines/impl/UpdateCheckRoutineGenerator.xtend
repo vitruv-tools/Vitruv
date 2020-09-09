@@ -1,10 +1,11 @@
 package tools.vitruv.dsls.mappings.generator.routines.impl
 
-import tools.vitruv.dsls.mappings.generator.routines.AbstractRetrievalCheckRoutineGenerator
-import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.RoutineTypeProvider
-import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.InputBuilder
-import tools.vitruv.dsls.mappings.generator.conditions.impl.BidirectionalMappingRoutineGenerator
 import org.eclipse.xtext.xbase.XbaseFactory
+import tools.vitruv.dsls.mappings.generator.conditions.impl.BidirectionalMappingRoutineGenerator
+import tools.vitruv.dsls.mappings.generator.routines.AbstractRetrievalCheckRoutineGenerator
+import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.InputBuilder
+import tools.vitruv.dsls.reactions.builder.TypeProvider
+
 import static extension tools.vitruv.dsls.mappings.generator.utils.XBaseMethodFinder.*
 
 class UpdateCheckRoutineGenerator extends AbstractRetrievalCheckRoutineGenerator {
@@ -20,7 +21,7 @@ class UpdateCheckRoutineGenerator extends AbstractRetrievalCheckRoutineGenerator
 		builder.plain(String, ROUTINE_NAME_PARAMETER)
 	}
 
-	override onSuccessfullyRetrievingParameters(RoutineTypeProvider provider) {
+	override onSuccessfullyRetrievingParameters(TypeProvider provider) {
 		[
 			XbaseFactory.eINSTANCE.createXBlockExpression => [
 				//call all workaround bidirectional condition routines
@@ -33,7 +34,7 @@ class UpdateCheckRoutineGenerator extends AbstractRetrievalCheckRoutineGenerator
 		]
 	}
 
-	private def createBidirectionalRoutineCall(RoutineTypeProvider provider,
+	private def createBidirectionalRoutineCall(TypeProvider provider,
 		BidirectionalMappingRoutineGenerator condition) {
 		val routineName = condition.routine.name
 		val routine = condition.targetRoutineBuilder
@@ -49,7 +50,7 @@ class UpdateCheckRoutineGenerator extends AbstractRetrievalCheckRoutineGenerator
 		]
 	}
 
-	override onFailedToRetrieveParameters(RoutineTypeProvider provider) {
+	override onFailedToRetrieveParameters(TypeProvider provider) {
 		// nothing to do
 		null
 	}

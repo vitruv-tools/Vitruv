@@ -25,7 +25,7 @@ class RemoveAndDeleteRootTest extends EChangeTest {
 	protected var EList<EObject> resourceContent = null
 	
 	@Before
-	override public void beforeTest() {
+	override void beforeTest() {
 		super.beforeTest()
 		newRootObject = AllElementTypesFactory.eINSTANCE.createRoot()
 		newRootObject2 = AllElementTypesFactory.eINSTANCE.createRoot()
@@ -40,7 +40,7 @@ class RemoveAndDeleteRootTest extends EChangeTest {
 	 * object is in the resource.
 	 */
 	@Test
-	def public void resolveBeforeTest() {		
+	def void resolveBeforeTest() {		
 		// Create change
 		val unresolvedChange = createUnresolvedChange(newRootObject, 1)
 		unresolvedChange.assertIsNotResolved
@@ -59,7 +59,7 @@ class RemoveAndDeleteRootTest extends EChangeTest {
 	 * are empty, and the root element was deleted.
 	 */
 	@Test
-	def public void resolveAftertTest() {
+	def void resolveAftertTest() {
 		// Create change
 		val unresolvedChange = createUnresolvedChange(newRootObject, 1)
 		unresolvedChange.assertIsNotResolved		
@@ -79,7 +79,7 @@ class RemoveAndDeleteRootTest extends EChangeTest {
 	 * returns the same class.
 	 */
 	@Test
-	def public void resolveToCorrectType() {
+	def void resolveToCorrectType() {
 		// Create change
 		val unresolvedChange = createUnresolvedChange(newRootObject, 0)
 		
@@ -93,7 +93,7 @@ class RemoveAndDeleteRootTest extends EChangeTest {
 	 * and deleting a root object.
 	 */
 	@Test
-	def public void applyForwardTest() {
+	def void applyForwardTest() {
 		// Create and resolve change 1
 		val resolvedChange = createUnresolvedChange(newRootObject, 1).resolveBefore(uuidGeneratorAndResolver)
 			
@@ -119,7 +119,7 @@ class RemoveAndDeleteRootTest extends EChangeTest {
 	 * It creates and inserts a root object.
 	 */
 	@Test
-	def public void applyBackwardTest() {
+	def void applyBackwardTest() {
 		// Create and resolve and apply change 1
 		val resolvedChange = createUnresolvedChange(newRootObject, 0).resolveBefore(uuidGeneratorAndResolver)
 		resolvedChange.assertApplyForward

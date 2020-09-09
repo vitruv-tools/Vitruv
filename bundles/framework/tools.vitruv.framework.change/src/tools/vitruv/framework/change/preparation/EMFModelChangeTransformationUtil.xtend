@@ -21,7 +21,7 @@ import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.EObje
  * A utility class providing extension methods for transforming change descriptions to change models.
  * 
  */
-public class EMFModelChangeTransformationUtil {
+class EMFModelChangeTransformationUtil {
 	def static List<EChange> createAdditiveCreateChangesForValue(EObject eObject, EReference reference) {
 		return createAdditiveEChangeForReferencedObject(eObject, reference, true)
 	}

@@ -25,12 +25,12 @@ final class ReactionsLanguageHelper {
 	private new() {
 	}
 
-	public static def dispatch String getXBlockExpressionText(XExpression expression) '''
+	static def dispatch String getXBlockExpressionText(XExpression expression) '''
 	{
 		«NodeModelUtils.getNode(expression).text»
 	}'''
 
-	public static def dispatch String getXBlockExpressionText(XBlockExpression expression) {
+	static def dispatch String getXBlockExpressionText(XBlockExpression expression) {
 		NodeModelUtils.getNode(expression).text;
 	}
 
@@ -38,19 +38,19 @@ final class ReactionsLanguageHelper {
 		element.eAdapters.findFirst [isAdapterForType(ReferenceClassNameAdapter)] as ReferenceClassNameAdapter
 	}
 
-	public static def getJavaClassName(EClassifier eClassifier) {
+	static def getJavaClassName(EClassifier eClassifier) {
 		eClassifier.optionalReferenceAdapter?.qualifiedNameForReference ?: eClassifier.instanceClassName
 	}
 	
-	public static def getRuntimeClassName(EObject element) {
+	static def getRuntimeClassName(EObject element) {
 		element.optionalReferenceAdapter?.qualifiedNameForReference ?: element.class.canonicalName
 	}
 
-	public static def getJavaClassName(MetaclassReference metaclassReference) {
+	static def getJavaClassName(MetaclassReference metaclassReference) {
 		metaclassReference.metaclass.javaClassName;
 	}
 
-	public static def VitruvDomainProvider<?> getProviderForDomain(VitruvDomain domain) {
+	static def VitruvDomainProvider<?> getProviderForDomain(VitruvDomain domain) {
 		return if (VitruvDomainProviderRegistry.hasDomainProvider(domain.name)) {
 			VitruvDomainProviderRegistry.getDomainProvider(domain.name);
 		} else {
@@ -58,16 +58,16 @@ final class ReactionsLanguageHelper {
 		}
 	}
 
-	public static def VitruvDomain getDomainForReference(DomainReference domainReference) {
+	static def VitruvDomain getDomainForReference(DomainReference domainReference) {
 		return getDomainProviderForReference(domainReference).domain;
 	}
 
-	public static def VitruvDomainProvider<?> getDomainProviderForReference(DomainReference domainReference) {
+	static def VitruvDomainProvider<?> getDomainProviderForReference(DomainReference domainReference) {
 		val referencedDomainProvider = if (VitruvDomainProviderRegistry.hasDomainProvider(domainReference.domain)) {
 			VitruvDomainProviderRegistry.getDomainProvider(domainReference.domain)
 		}
 		if (referencedDomainProvider === null) {
-			throw new IllegalStateException("Given domain reference references no existing domain");
+			throw new IllegalStateException("Given domain reference references no existing domain: " + domainReference.domain);
 		}
 		return referencedDomainProvider;
 	}

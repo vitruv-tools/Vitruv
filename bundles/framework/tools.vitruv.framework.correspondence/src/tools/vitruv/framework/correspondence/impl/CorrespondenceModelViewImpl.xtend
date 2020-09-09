@@ -13,19 +13,19 @@ import java.util.function.Predicate
 
 class CorrespondenceModelViewImpl<T extends Correspondence> implements CorrespondenceModelView<T> {
 	@Accessors(PROTECTED_GETTER)
-	private final InternalCorrespondenceModel correspondenceModelDelegate;
+	final InternalCorrespondenceModel correspondenceModelDelegate;
 	@Accessors(PROTECTED_GETTER)
-	private final Class<T> correspondenceType;
-	private final Supplier<T> correspondenceCreator
+	final Class<T> correspondenceType;
+	final Supplier<T> correspondenceCreator
 	
 	@Accessors(PROTECTED_GETTER)
-	private final Predicate<T> defaultCorrespondenceFilter;
+	final Predicate<T> defaultCorrespondenceFilter;
 	 
-	public new(Class<T> correspondenceType, InternalCorrespondenceModel correspondenceModel) {
+	new(Class<T> correspondenceType, InternalCorrespondenceModel correspondenceModel) {
 		this(correspondenceType, correspondenceModel, null)
 	}
 
-	public new(Class<T> correspondenceType, InternalCorrespondenceModel correspondenceModel,
+	new(Class<T> correspondenceType, InternalCorrespondenceModel correspondenceModel,
 		Supplier<T> correspondenceCreator) {
 		this.correspondenceType = correspondenceType;
 		this.defaultCorrespondenceFilter =  [true];

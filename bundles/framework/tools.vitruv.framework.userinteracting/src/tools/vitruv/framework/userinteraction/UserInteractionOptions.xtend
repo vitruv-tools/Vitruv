@@ -5,7 +5,7 @@ package tools.vitruv.framework.userinteraction
  * 
  * @author Heiko Klare
  */
-public final class UserInteractionOptions {
+final class UserInteractionOptions {
 
 	private new() {
 	}

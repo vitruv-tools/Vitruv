@@ -8,10 +8,10 @@ import java.util.List
 import org.eclipse.emf.ecore.EObject
 
 abstract class AbstractChangePropagationSpecification implements ChangePropagationSpecification {
-	private val List<ChangePropagationObserver> propagationObserver;
-	private var UserInteractor userInteractor;
-	private var VitruvDomain sourceDomain;
-	private var VitruvDomain targetDomain;
+	val List<ChangePropagationObserver> propagationObserver;
+	var UserInteractor userInteractor;
+	var VitruvDomain sourceDomain;
+	var VitruvDomain targetDomain;
 	
 	new(VitruvDomain sourceDomain, VitruvDomain targetDomain) {
 		setVitruvDomains(sourceDomain, targetDomain);

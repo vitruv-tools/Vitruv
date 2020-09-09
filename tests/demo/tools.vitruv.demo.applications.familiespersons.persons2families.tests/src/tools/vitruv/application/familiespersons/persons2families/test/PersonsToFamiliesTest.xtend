@@ -7,13 +7,13 @@ import static org.junit.Assert.*
 
 
 class PersonsToFamiliesTest extends AbstractPersonsToFamiliesTest{
-	private static val MALE_PERSON_NAME = "Max Mustermann";
-	private static val SECOND_MALE_PERSON_NAME = "Bernd Mustermann";
-	private static val FEMALE_PERSON_NAME = "Erika Mustermann";
-	private static val FAMILIES_PATH = "model/families.families";
+	static val MALE_PERSON_NAME = "Max Mustermann";
+	static val SECOND_MALE_PERSON_NAME = "Bernd Mustermann";
+	static val FEMALE_PERSON_NAME = "Erika Mustermann";
+	static val FAMILIES_PATH = "model/families.families";
 
 	@Test
-	public def void testCreateMalePerson() {
+	def void testCreateMalePerson() {
 		val malePerson = PersonsFactory.eINSTANCE.createMale();
 		malePerson.fullName = MALE_PERSON_NAME;
 		rootElement.persons.add(malePerson);
@@ -22,19 +22,19 @@ class PersonsToFamiliesTest extends AbstractPersonsToFamiliesTest{
 	}
 	
 	@Test
-	public def void testCreatePersonRegister(){
+	def void testCreatePersonRegister(){
 		val personRegister = PersonsFactory.eINSTANCE.createPersonRegister
 		saveAndSynchronizeChanges(personRegister);
 		assertModelExists(FAMILIES_PATH);
 	}
 	
 	@Test
-	public def void testDeletePersonRegister(){
+	def void testDeletePersonRegister(){
 		
 	}
 	
 	@Test
-	public def void testCreateMale(){
+	def void testCreateMale(){
 		val person = PersonsFactory.eINSTANCE.createMale
 		person.fullName = MALE_PERSON_NAME
 		rootElement.persons.add(person)
@@ -43,7 +43,7 @@ class PersonsToFamiliesTest extends AbstractPersonsToFamiliesTest{
 	}
 	
 	@Test
-	public def void testCreateFemale(){
+	def void testCreateFemale(){
 		val person = PersonsFactory.eINSTANCE.createFemale
 		person.fullName = FEMALE_PERSON_NAME
 		rootElement.persons.add(person)
@@ -52,7 +52,7 @@ class PersonsToFamiliesTest extends AbstractPersonsToFamiliesTest{
 	}
 	
 	@Test
-	public def void testChangeFirstName(){
+	def void testChangeFirstName(){
 		val person = PersonsFactory.eINSTANCE.createMale
 		person.fullName = MALE_PERSON_NAME
 		rootElement.persons.add(person)

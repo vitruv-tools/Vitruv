@@ -11,10 +11,10 @@ import tools.vitruv.framework.util.command.ResourceAccess
 import java.util.List
 
 abstract class AbstractReactionsExecutor extends AbstractEChangePropagationSpecification {
-	private final static val LOGGER = Logger.getLogger(AbstractReactionsExecutor);
+	static val LOGGER = Logger.getLogger(AbstractReactionsExecutor);
 
-	private val RoutinesFacadesProvider routinesFacadesProvider;
-	private List<IReactionRealization> reactions;
+	val RoutinesFacadesProvider routinesFacadesProvider;
+	List<IReactionRealization> reactions;
 
 	new(VitruvDomain sourceDomain, VitruvDomain targetDomain) {
 		super(sourceDomain, targetDomain);
@@ -31,13 +31,13 @@ abstract class AbstractReactionsExecutor extends AbstractEChangePropagationSpeci
 		this.reactions += reaction;
 	}
 
-	public override doesHandleChange(EChange change, CorrespondenceModel correspondenceModel) {
+	override doesHandleChange(EChange change, CorrespondenceModel correspondenceModel) {
 		return true
 	}
 
-	public override propagateChange(EChange change, CorrespondenceModel correspondenceModel,
+	override propagateChange(EChange change, CorrespondenceModel correspondenceModel,
 		ResourceAccess resourceAccess) {
-		LOGGER.trace("Call relevant reactions");
+		LOGGER.trace("Call relevant reactions from " + sourceDomain.name + " to " + targetDomain.name);
 		for (reaction : reactions) {
 			LOGGER.trace("Calling reaction: " + reaction.class.simpleName + " with change: " + change);
 			val executionState = new ReactionExecutionState(userInteractor, correspondenceModel, resourceAccess, this);

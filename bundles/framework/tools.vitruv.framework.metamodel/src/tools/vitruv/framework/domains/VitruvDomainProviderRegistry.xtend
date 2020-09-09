@@ -6,6 +6,7 @@ import java.util.List
 import java.util.LinkedList
 import static com.google.common.base.Preconditions.*
 import org.reflections.Reflections
+import org.apache.log4j.Logger
 
 /**
  * Registry of all {@linkplain VitruvDomainProvider DomainProviders} known to
@@ -14,6 +15,8 @@ import org.reflections.Reflections
  * registered at runtime.
  */
 class VitruvDomainProviderRegistry {
+
+	static val LOGGER = Logger.getLogger(VitruvDomainProviderRegistry)
 
 	private new() {
 	}
@@ -118,7 +121,12 @@ class VitruvDomainProviderRegistry {
 		} else {
 			val domainProviderClasses = new Reflections("tools.vitruv").getSubTypesOf(VitruvDomainProvider);
 			for (domainProviderClass : domainProviderClasses) {
-				domainProvider.add(domainProviderClass.constructor.newInstance)
+				// Ensure that domain provider has a default constructor
+				if (domainProviderClass.constructors.exists[it.parameterCount == 0]) {
+					domainProvider.add(domainProviderClass.constructor?.newInstance)
+				} else {
+					LOGGER.warn("Domain provider '" + domainProviderClass.name + "' has no default constructor and not added to domain provider registry.")
+				}
 			}
 			// Get the domain for each provider when we are not an Eclipse environment to register the
 			// packages of the domains appropriately, so they can be resolved

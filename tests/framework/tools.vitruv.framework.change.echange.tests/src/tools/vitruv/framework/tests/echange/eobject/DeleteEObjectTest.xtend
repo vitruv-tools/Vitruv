@@ -14,7 +14,7 @@ import static extension tools.vitruv.framework.change.echange.resolve.EChangeRes
  */
 class DeleteEObjectTest extends EObjectTest {	
 	@Before
-	override public void beforeTest() {
+	override void beforeTest() {
 		super.beforeTest()
 		prepareStateBefore(createdObject)
 	}
@@ -24,7 +24,7 @@ class DeleteEObjectTest extends EObjectTest {
 	 * the same class.
 	 */
 	@Test
-	def public void resolveToCorrectType() {
+	def void resolveToCorrectType() {
 		// Create change
 		val unresolvedChange = createUnresolvedChange(createdObject)
 			
@@ -38,7 +38,7 @@ class DeleteEObjectTest extends EObjectTest {
 	 * created EObject from the staging area.
 	 */
 	@Test
-	def public void applyForwardTest() {
+	def void applyForwardTest() {
 		// Create change and resolve
 		val resolvedChange = createUnresolvedChange(createdObject).resolveBefore(uuidGeneratorAndResolver)
 			as DeleteEObject<Root>
@@ -68,7 +68,7 @@ class DeleteEObjectTest extends EObjectTest {
 	 * Adds a deleted object to the staging area again.
 	 */
 	@Test
-	def public void applyBackwardTest() {
+	def void applyBackwardTest() {
 		// Set state after
 		prepareStateAfter
 		

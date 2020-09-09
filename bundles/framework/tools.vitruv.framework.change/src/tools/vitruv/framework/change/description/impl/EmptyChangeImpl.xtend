@@ -7,7 +7,7 @@ import tools.vitruv.framework.change.interaction.UserInteractionBase
 import tools.vitruv.framework.change.description.VitruviusChange
 
 class EmptyChangeImpl implements TransactionalChange {
-	private val VURI vuri;
+	val VURI vuri;
 
 	new(VURI vuri) {
 		this.vuri = vuri;

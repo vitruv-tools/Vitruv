@@ -16,8 +16,6 @@ import org.eclipse.xtext.common.types.JvmDeclaredType
 import org.eclipse.xtext.common.types.JvmIdentifiableElement
 import org.eclipse.xtext.common.types.JvmMember
 import org.eclipse.xtext.common.types.JvmOperation
-import org.eclipse.xtext.xbase.XExpression
-import org.eclipse.xtext.xbase.XbaseFactory
 import org.eclipse.xtext.xtype.XtypeFactory
 import tools.vitruv.dsls.mirbase.mirBase.MetaclassEAttributeReference
 import tools.vitruv.dsls.mirbase.mirBase.MetaclassEReferenceReference
@@ -27,7 +25,6 @@ import tools.vitruv.dsls.mirbase.mirBase.NamedJavaElement
 import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsFile
 
 import static com.google.common.base.Preconditions.*
-import static tools.vitruv.dsls.reactions.codegen.ReactionsLanguageConstants.*
 
 /**
  * Parent class of all fluent builders. The builders work in three phases:
@@ -80,7 +77,7 @@ abstract package class FluentReactionElementBuilder {
 	}
 
 	def package void triggerBeforeAttached(ReactionsFile reactionsFile, Resource targetResource) {
-		checkState(attachedReactionsFile === null, "This builder was already attached to a reactions file!")
+		checkState(attachedReactionsFile === null, '''The «this» was already attached to a reactions file!''')
 		childBuilders.patientForEach[triggerBeforeAttached(reactionsFile, targetResource)]
 		this.attachedReactionsFile = reactionsFile
 		this.targetResource = targetResource
@@ -134,8 +131,12 @@ abstract package class FluentReactionElementBuilder {
 		context.referenceBuilderFactory.create(attachedReactionsFile.eResource.resourceSet)
 	}
 
+	def private <T extends JvmDeclaredType> boolean equalImportTypes(T importedType, T type) {
+		return (importedType.qualifiedName == type.qualifiedName)
+	}
+
 	def protected <T extends JvmDeclaredType> imported(T type) {
-		XImportSection.importDeclarations.findFirst[importedType == type] ?: createTypeImport(type)
+		XImportSection.importDeclarations.findFirst[equalImportTypes(importedType, type)] ?: createTypeImport(type)
 		return type
 	}
 
@@ -149,7 +150,7 @@ abstract package class FluentReactionElementBuilder {
 
 	def protected staticExtensionAllImported(JvmDeclaredType declaredType) {
 		(XImportSection.importDeclarations.findFirst [
-			isWildcard && importedType == declaredType
+			isWildcard && equalImportTypes(importedType, declaredType)
 		] ?: createTypeWildcardImport(declaredType)) => [
 			extension = true
 		]
@@ -171,13 +172,13 @@ abstract package class FluentReactionElementBuilder {
 
 	def private staticImport(JvmOperation operation, boolean asExtension) {
 		val existingStarImport = XImportSection.importDeclarations.findFirst [
-			isWildcard && importedType == operation.declaringType
+			isWildcard && equalImportTypes(importedType, operation.declaringType)
 		]
 		if (existingStarImport !== null) {
 			existingStarImport.extension = existingStarImport.extension || asExtension
 		} else {
 			(XImportSection.importDeclarations.findFirst [
-				importedType == operation.declaringType && memberName == operation.simpleName && static == true
+				equalImportTypes(importedType, operation.declaringType) && memberName == operation.simpleName && static == true
 			] ?: createStaticOperationImport(operation)) => [
 				extension = extension || asExtension
 			]
@@ -197,14 +198,13 @@ abstract package class FluentReactionElementBuilder {
 	def private createTypeWildcardImport(JvmDeclaredType type) {
 		val newDeclaration = XtypeFactory.eINSTANCE.createXImportDeclaration => [
 			importedType = type
-			XImportSection.importDeclarations += it
 			static = true
 			wildcard = true
 		]
 		val oldImports = new ArrayList(XImportSection.importDeclarations)
 		XImportSection.importDeclarations.clear()
 		XImportSection.importDeclarations += oldImports.filter [
-			!static || importedType != type
+			!static || !equalImportTypes(importedType, type)
 		]
 		XImportSection.importDeclarations += newDeclaration
 		return newDeclaration
@@ -283,31 +283,6 @@ abstract package class FluentReactionElementBuilder {
 		]
 	}
 
-	def protected List<XExpression> requiredArgumentsFrom(FluentRoutineBuilder routineBuilder,
-		JvmOperation routineCallMethod) {
-		val parameterList = new ArrayList<XExpression>(3)
-		if (routineBuilder.requireAffectedEObject) {
-			parameterList += routineCallMethod.argument(CHANGE_AFFECTED_ELEMENT_ATTRIBUTE)
-		}
-		if (routineBuilder.requireNewValue) {
-			parameterList += routineCallMethod.argument(CHANGE_NEW_VALUE_ATTRIBUTE)
-		}
-		if (routineBuilder.requireOldValue) {
-			parameterList += routineCallMethod.argument(CHANGE_OLD_VALUE_ATTRIBUTE)
-		}
-		return parameterList
-	}
-
-	def protected argument(JvmOperation routineCallMethod, String parameterName) {
-		val parameter = routineCallMethod.parameters.findFirst[name == parameterName]
-		if (parameter === null) {
-			throw new IllegalStateException('''The routine call method “«routineCallMethod»” does not provide a value called “«parameterName»”!''')
-		}
-		XbaseFactory.eINSTANCE.createXFeatureCall => [
-			feature = parameter
-		]
-	}
-
 	/**
 	 * List offering iteration while the list is being modified.
 	 */
@@ -341,5 +316,4 @@ abstract package class FluentReactionElementBuilder {
 			delegate = Collections.emptyList
 		}
 	}
-
 }

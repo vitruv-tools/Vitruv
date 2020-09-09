@@ -4,19 +4,18 @@ import org.eclipse.emf.mwe2.ecore.EcoreGenerator
 import org.eclipse.emf.mwe.utils.StandaloneSetup
 import org.eclipse.emf.mwe.utils.DirectoryCleaner
 
-
 var rootPath = ".."
 var baseName = "tools.vitruv.dsls.commonalities"
 var basePath = "${rootPath}/${baseName}"
 
 Workflow {
-    bean = StandaloneSetup {
-        platformUri = rootPath
-    }
-	
-    component = DirectoryCleaner {
-    	directory = "${basePath}/src-gen"
-    }
+	bean = StandaloneSetup {
+		platformUri = rootPath
+	}
+
+	component = DirectoryCleaner {
+		directory = "${basePath}/src-gen"
+	}
 
 	component = EcoreGenerator {
 		srcPath = 'platform:/resource/tools.vitruv.dsls.commonalities/src'

@@ -6,17 +6,17 @@ import org.eclipse.xtext.xbase.XExpression
 import org.eclipse.xtext.xbase.XbaseFactory
 import tools.vitruv.dsls.mappings.generator.conditions.MultiValueConditionGenerator
 import tools.vitruv.dsls.mappings.generator.reactions.AbstractReactionTriggerGenerator
+import tools.vitruv.dsls.mappings.generator.reactions.DeletedReactionTriggerGenerator
+import tools.vitruv.dsls.mappings.generator.reactions.ElementReplacedReactionTriggerGenerator
+import tools.vitruv.dsls.mappings.generator.reactions.InsertedReactionTriggerGenerator
+import tools.vitruv.dsls.mappings.generator.reactions.RemovedReactionTriggerGenerator
 import tools.vitruv.dsls.mappings.mappingsLanguage.MappingParameter
 import tools.vitruv.dsls.mappings.mappingsLanguage.MultiValueCondition
 import tools.vitruv.dsls.mappings.mappingsLanguage.MultiValueConditionOperator
-import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.RoutineTypeProvider
+import tools.vitruv.dsls.reactions.builder.TypeProvider
 
 import static extension tools.vitruv.dsls.mappings.generator.conditions.FeatureConditionGeneratorUtils.*
 import static extension tools.vitruv.dsls.mappings.generator.utils.XBaseMethodFinder.*
-import tools.vitruv.dsls.mappings.generator.reactions.ElementReplacedReactionTriggerGenerator
-import tools.vitruv.dsls.mappings.generator.reactions.DeletedReactionTriggerGenerator
-import tools.vitruv.dsls.mappings.generator.reactions.InsertedReactionTriggerGenerator
-import tools.vitruv.dsls.mappings.generator.reactions.RemovedReactionTriggerGenerator
 
 class InValueConditionGenerator extends MultiValueConditionGenerator {
 
@@ -27,21 +27,21 @@ class InValueConditionGenerator extends MultiValueConditionGenerator {
 	/**
 	 * Returns the child parameter of this  in-value condition
 	 */
-	public def getChildParameter() {
+	def getChildParameter() {
 		featureCondition.leftMappingParameter
 	}
 
 	/**
 	 * Returns the parent parameter of this  in-value condition
 	 */
-	public def getParentParameter() {
+	def getParentParameter() {
 		featureCondition.feature.parameter
 	}
 
 	/**
 	 * Returns the feature of this  in-value condition
 	 */
-	public def getInFeature() {
+	def getInFeature() {
 		featureCondition.feature.feature
 	}
 
@@ -73,7 +73,7 @@ class InValueConditionGenerator extends MultiValueConditionGenerator {
 		super.constructReactionTriggers(triggers)
 	}
 
-	override generateFeatureCondition(RoutineTypeProvider provider, XExpression variable) {
+	override generateFeatureCondition(TypeProvider provider, XExpression variable) {
 		// in relations have no condition logic
 		null
 	}
@@ -82,7 +82,7 @@ class InValueConditionGenerator extends MultiValueConditionGenerator {
 		featureCondition.isLeftSideMappingParameter && !negated
 	}
 
-	override generateCorrespondenceInitialization(RoutineTypeProvider typeProvider) {
+	override generateCorrespondenceInitialization(TypeProvider typeProvider) {
 		val feature = featureCondition.feature.feature as EReference
 		if (feature.many) {
 			// add to collection feature

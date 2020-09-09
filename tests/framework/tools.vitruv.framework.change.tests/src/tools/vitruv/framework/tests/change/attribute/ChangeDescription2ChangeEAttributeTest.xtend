@@ -5,7 +5,7 @@ import static extension tools.vitruv.framework.tests.change.util.AtomicEChangeAs
 import static allElementTypes.AllElementTypesPackage.Literals.*;
 
 abstract class ChangeDescription2ChangeEAttributeTest extends ChangeDescription2ChangeTransformationTest {
-	def public void testInsertEAttributeValue(int expectedIndex, int expectedValue, int position) {
+	def void testInsertEAttributeValue(int expectedIndex, int expectedValue, int position) {
 		// test
 		var int index = expectedIndex
 		startRecording
