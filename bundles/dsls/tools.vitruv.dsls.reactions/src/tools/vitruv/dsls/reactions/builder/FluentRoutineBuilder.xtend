@@ -592,7 +592,7 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 			if (parameterArgumentType) {
 				return typeProvider.variable(argument as String)
 			} else if (argument instanceof XExpression) {
-				return argument as XExpression
+				return argument
 			} else {
 				val expressionBuilder = argument as Function<TypeProvider, XExpression>
 				return expressionBuilder.apply(typeProvider)
