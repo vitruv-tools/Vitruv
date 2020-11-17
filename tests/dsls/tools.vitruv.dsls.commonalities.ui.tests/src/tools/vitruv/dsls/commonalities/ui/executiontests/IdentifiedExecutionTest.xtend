@@ -15,19 +15,24 @@ import uml_mockup.Uml_mockupFactory
 
 import static org.hamcrest.MatcherAssert.assertThat
 import static tools.vitruv.testutils.matchers.ModelMatchers.*
+import tools.vitruv.dsls.commonalities.testutils.CommonalitiesCompiler
+import tools.vitruv.dsls.commonalities.testutils.ExecutionTestCompiler
 
 class IdentifiedExecutionTest extends CommonalitiesExecutionTest {
-
-	@Inject IdentifiedExecutionTestCompiler compiler
-
-	override protected cleanup() {
+	@Inject
+	new(ExecutionTestCompiler.Factory factory) {
+		super(factory.createCompiler [
+			projectName = 'commonalities-test-identified'
+			commonalities = #['Identified.commonality', 'Sub.commonality']
+			domainDependencies = #[
+				'tools.vitruv.testutils.domains',
+				'tools.vitruv.testutils.metamodels'
+			]
+		])
 	}
 
-	override protected setup() {
-	}
-
-	override protected createChangePropagationSpecifications() {
-		compiler.changePropagationDefinitions
+	protected new(CommonalitiesCompiler compiler) {
+		super(compiler)
 	}
 
 	@Test
@@ -71,7 +76,7 @@ class IdentifiedExecutionTest extends CommonalitiesExecutionTest {
 		EcoreUtil.delete(Root.from('second.allElementTypes'))
 		resourceAt('second.allElementTypes').delete(null);
 		assertThat(resourceAt('second.allElementTypes'), doesNotExist)
-		// TODO Extend assertions
+	// TODO Extend assertions
 	}
 
 	@Test

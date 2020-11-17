@@ -9,7 +9,6 @@ import java.nio.file.Paths
 import java.util.ArrayList
 import java.util.HashSet
 import java.util.Hashtable
-import java.util.stream.Collectors
 import org.apache.log4j.Logger
 import org.eclipse.core.resources.IFolder
 import org.eclipse.core.resources.IProject
@@ -35,11 +34,15 @@ import tools.vitruv.dsls.commonalities.generator.CommonalitiesGenerationSettings
 import tools.vitruv.framework.change.processing.ChangePropagationSpecification
 
 import static com.google.common.base.Preconditions.*
+import static java.util.stream.Collectors.toList
 
 import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
+import com.google.inject.Singleton
+import org.eclipse.xtend.lib.annotations.Accessors
+import java.util.function.Consumer
 
-abstract class ExecutionTestCompiler {
-
+@FinalFieldsConstructor
+final class ExecutionTestCompiler implements CommonalitiesCompiler {
 	static val Logger logger = Logger.getLogger(ExecutionTestCompiler)
 
 	static val String COMPLIANCE_LEVEL = '1.8';
@@ -49,39 +52,34 @@ abstract class ExecutionTestCompiler {
 
 	var Iterable<Class<? extends ChangePropagationSpecification>> loadedChangePropagationClasses
 	var compiled = false
-	@Inject CommonalitiesGenerationSettings generationSettings
+	val CommonalitiesGenerationSettings generationSettings
+	val String projectName
+	val Iterable<String> commonalityFilePaths
+	val Iterable<String> domainDependencies
 
-	protected abstract def String getProjectName()
-
-	protected abstract def Iterable<String> getCommonalityFiles()
-
-	protected abstract def Iterable<String> getDomainDependencies()
-
-	def getChangePropagationDefinitions() {
+	override getChangePropagationSpecifications() {
 		if (!compiled) {
 			val compiledFolder = compile()
 			compiled = true
 
 			val classLoader = new URLClassLoader(#[compiledFolder.toUri.toURL], this.class.classLoader)
 			loadedChangePropagationClasses = Files.find(compiledFolder, Integer.MAX_VALUE, [ path, info |
-				val pathLast = path.last.toString
-				pathLast.contains('ChangePropagationSpecification') && pathLast.endsWith('.class')
+				val fileName = path.fileName.toString
+				fileName.contains('ChangePropagationSpecification') && fileName.endsWith('.class')
 			]).map[compiledFolder.relativize(it)].map[toString.replace('.class', '').replace(File.separator, '.')].map [
 				classLoader.loadClass(it) as Class<? extends ChangePropagationSpecification>
-			].collect(Collectors.toList)
+			].collect(toList)
 		}
 
 		checkState(loadedChangePropagationClasses.size > 0, "Failed to load change propagations!")
 
-		return loadedChangePropagationClasses
-			.mapFixed[declaredConstructor.newInstance]
-			.groupBy[new Pair(it.sourceDomain, it.targetDomain)]
-			.entrySet
-			.mapFixed [
-				val sourceDomain = it.key.key;
-				val targetDomain = it.key.value;
-				new CombinedChangePropagationSpecification(sourceDomain, targetDomain, it.value) as ChangePropagationSpecification
-			]
+		return loadedChangePropagationClasses.mapFixed[declaredConstructor.newInstance].groupBy [
+			new Pair(it.sourceDomain, it.targetDomain)
+		].entrySet.mapFixed [
+			val sourceDomain = it.key.key;
+			val targetDomain = it.key.value;
+			new CombinedChangePropagationSpecification(sourceDomain, targetDomain, it.value)
+		]
 	}
 
 	private def compile() {
@@ -92,12 +90,12 @@ abstract class ExecutionTestCompiler {
 		ResourcesPlugin.workspace.description = ResourcesPlugin.workspace.description => [autoBuilding = false]
 
 		// copy in the source files
-		for (commonalityFile : commonalityFiles) {
+		for (commonalityFile : commonalityFilePaths) {
 			val commonalityFileInputStream = class.getResourceAsStream(commonalityFile)
 			if (commonalityFileInputStream === null) {
 				throw new RuntimeException("Could not find commonality file at: " + commonalityFile)
 			}
-			testProject.sourceFolder.getFile(Paths.get(commonalityFile).last.toString).create(
+			testProject.sourceFolder.getFile(Paths.get(commonalityFile).fileName.toString).create(
 				commonalityFileInputStream, true, null)
 		}
 
@@ -218,9 +216,9 @@ abstract class ExecutionTestCompiler {
 	/**
 	 * Sets a target platform in the test platform. This is required to run the
 	 * tests with tycho.
-	 *
+	 * 
 	 * Taken from http://git.eclipse.org/c/gmf-tooling/org.eclipse.gmf-tooling.git/tree/tests/org.eclipse.gmf.tests/src/org/eclipse/gmf/tests/Utils.java#n146
-	 *
+	 * 
 	 * Necessary because of this bug: https://bugs.eclipse.org/bugs/show_bug.cgi?id=343156
 	 */
 	@SuppressWarnings('restriction')
@@ -264,4 +262,27 @@ abstract class ExecutionTestCompiler {
 	private static def getPath(IResource eclipseResource) {
 		eclipseResource.rawLocation.toFile.toPath
 	}
+
+	@Accessors
+	static class ExecutionTestCompilerParameters {
+		var String projectName = null
+		var Iterable<String> commonalities = null
+		var Iterable<String> domainDependencies = null
+	}
+	
+	@Singleton
+	static class Factory {
+		@Inject CommonalitiesGenerationSettings generationSettings
+		
+		def createCompiler(Consumer<ExecutionTestCompiler.ExecutionTestCompilerParameters> parametersCreator) {
+			val parameters = new ExecutionTestCompilerParameters
+			parametersCreator.accept(parameters)
+			return new ExecutionTestCompiler(
+				generationSettings,
+				parameters.projectName,
+				parameters.commonalities,
+				parameters.domainDependencies
+			)
+		}
+	} 
 }

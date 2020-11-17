@@ -17,14 +17,6 @@ class ReactionsRollbackTests extends AbstractAllElementTypesReactionsTests {
 		"model/" + modelName + "." + MODEL_FILE_EXTENSION;
 	}
 
-	protected override setup() {
-		// Do nothing
-	}
-
-	override protected cleanup() {
-		// Do nothing
-	}
-
 	@Test
 	def void testReverse() {
 		val root = AllElementTypesFactory.eINSTANCE.createRoot();

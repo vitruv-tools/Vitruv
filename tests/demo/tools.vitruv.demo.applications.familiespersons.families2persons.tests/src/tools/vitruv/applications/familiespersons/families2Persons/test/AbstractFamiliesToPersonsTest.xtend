@@ -34,9 +34,4 @@ abstract class AbstractFamiliesToPersonsTest extends VitruviusApplicationTest {
 		val rootObject = FamiliesFactory.eINSTANCE.createFamilyRegister;
 		createAndSynchronizeModel(MODEL_NAME.projectModelPath, rootObject);
 	}
-	
-	override protected cleanup() {
-		// Do nothing
-	}
-	
 }

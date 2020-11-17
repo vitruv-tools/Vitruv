@@ -8,19 +8,22 @@ import tools.vitruv.dsls.commonalities.testutils.CommonalitiesExecutionTest
 
 import static org.hamcrest.MatcherAssert.assertThat
 import static tools.vitruv.testutils.matchers.ModelMatchers.*
+import tools.vitruv.dsls.commonalities.testutils.ExecutionTestCompiler
 
 class AttributeMappingOperatorTest extends CommonalitiesExecutionTest {
-
-	@Inject AttributeMappingOperatorTestCompiler compiler
-
-	override protected cleanup() {
-	}
-
-	override protected setup() {
-	}
-
-	override protected createChangePropagationSpecifications() {
-		compiler.changePropagationDefinitions
+	@Inject
+	new(ExecutionTestCompiler.Factory factory) {
+		super(
+			factory.createCompiler [
+				projectName = 'commonalities-test-attribute-mapping-operator'
+				commonalities = #['Identified.commonality']
+				domainDependencies = #[
+					'tools.vitruv.testutils.domains',
+					'tools.vitruv.testutils.metamodels',
+					'tools.vitruv.dsls.commonalities.testutils'
+				]
+			]
+		)
 	}
 
 	// Value is multiplied by 1000

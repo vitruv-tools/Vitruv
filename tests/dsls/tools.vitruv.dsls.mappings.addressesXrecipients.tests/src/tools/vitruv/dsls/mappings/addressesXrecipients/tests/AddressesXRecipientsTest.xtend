@@ -19,14 +19,6 @@ import tools.vitruv.testutils.VitruviusApplicationTest
 import static org.junit.Assert.*
 
 abstract class AddressesXRecipientsTest extends VitruviusApplicationTest {
-	override protected cleanup() {
-		// empty
-	}
-	
-	override protected setup() {
-		// empty
-	}
-	
 	override protected getVitruvDomains() {
 		return #[new AddressesDomainProvider().domain, new RecipientsDomainProvider().domain]
 	}

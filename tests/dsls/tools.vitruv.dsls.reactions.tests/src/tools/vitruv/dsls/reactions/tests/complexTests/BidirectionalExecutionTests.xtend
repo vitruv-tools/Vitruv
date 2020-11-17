@@ -45,10 +45,6 @@ class BidirectionalExecutionTests extends AbstractAllElementTypesReactionsTests 
 		assertModelsEqual();
 	}
 
-	override protected cleanup() {
-		// Do nothing
-	}
-
 	private def prepareTestModel() {
 		val container = AllElementTypesFactory.eINSTANCE.createNonRootObjectContainerHelper();
 		container.setId("NonRootObjectContainer");

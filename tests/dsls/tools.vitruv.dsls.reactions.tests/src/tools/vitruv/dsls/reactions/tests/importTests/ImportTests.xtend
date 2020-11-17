@@ -24,10 +24,6 @@ class ImportTests extends AbstractReactionImportsTests {
 		createAndSynchronizeModel(TEST_SOURCE_MODEL_NAME.projectModelPath, root)
 	}
 
-	override protected cleanup() {
-		// do nothing
-	}
-
 	private def void setElementId(Identified element, String newId) {
 		element.setId(newId);
 		saveAndSynchronizeChanges(element);
