@@ -2,28 +2,24 @@ package tools.vitruv.dsls.commonalities.ui.tests.attributeoperators
 
 import allElementTypes.AllElementTypesFactory
 import allElementTypes2.AllElementTypes2Factory
-import com.google.inject.Inject
-import org.junit.Test
 import tools.vitruv.dsls.commonalities.testutils.CommonalitiesExecutionTest
 
 import static org.hamcrest.MatcherAssert.assertThat
 import static tools.vitruv.testutils.matchers.ModelMatchers.*
 import tools.vitruv.dsls.commonalities.testutils.ExecutionTestCompiler
+import org.junit.jupiter.api.Test
 
 class AttributeMappingOperatorTest extends CommonalitiesExecutionTest {
-	@Inject
-	new(ExecutionTestCompiler.Factory factory) {
-		super(
-			factory.createCompiler [
-				projectName = 'commonalities-test-attribute-mapping-operator'
-				commonalities = #['Identified.commonality']
-				domainDependencies = #[
-					'tools.vitruv.testutils.domains',
-					'tools.vitruv.testutils.metamodels',
-					'tools.vitruv.dsls.commonalities.testutils'
-				]
+	override createCompiler(ExecutionTestCompiler.Factory factory) {
+		factory.createCompiler [
+			projectName = 'commonalities-test-attribute-mapping-operator'
+			commonalities = #['Identified.commonality']
+			domainDependencies = #[
+				'tools.vitruv.testutils.domains',
+				'tools.vitruv.testutils.metamodels',
+				'tools.vitruv.dsls.commonalities.testutils'
 			]
-		)
+		]
 	}
 
 	// Value is multiplied by 1000

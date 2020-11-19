@@ -55,6 +55,7 @@ final class ExecutionTestCompiler implements CommonalitiesCompiler {
 	val CommonalitiesGenerationSettings generationSettings
 	val String projectName
 	val Iterable<String> commonalityFilePaths
+	val Class<?> commonalitiesOwningClass
 	val Iterable<String> domainDependencies
 
 	override getChangePropagationSpecifications() {
@@ -62,7 +63,7 @@ final class ExecutionTestCompiler implements CommonalitiesCompiler {
 			val compiledFolder = compile()
 			compiled = true
 
-			val classLoader = new URLClassLoader(#[compiledFolder.toUri.toURL], this.class.classLoader)
+			val classLoader = new URLClassLoader(#[compiledFolder.toUri.toURL], commonalitiesOwningClass.classLoader)
 			loadedChangePropagationClasses = Files.find(compiledFolder, Integer.MAX_VALUE, [ path, info |
 				val fileName = path.fileName.toString
 				fileName.contains('ChangePropagationSpecification') && fileName.endsWith('.class')
@@ -91,7 +92,7 @@ final class ExecutionTestCompiler implements CommonalitiesCompiler {
 
 		// copy in the source files
 		for (commonalityFile : commonalityFilePaths) {
-			val commonalityFileInputStream = class.getResourceAsStream(commonalityFile)
+			val commonalityFileInputStream = commonalitiesOwningClass.getResourceAsStream(commonalityFile)
 			if (commonalityFileInputStream === null) {
 				throw new RuntimeException("Could not find commonality file at: " + commonalityFile)
 			}
@@ -196,7 +197,6 @@ final class ExecutionTestCompiler implements CommonalitiesCompiler {
 
 	@FinalFieldsConstructor
 	private static class Project {
-
 		val IProject eclipseProject
 		val IFolder sourceFolder
 		val IFolder binFolder
@@ -224,10 +224,10 @@ final class ExecutionTestCompiler implements CommonalitiesCompiler {
 	@SuppressWarnings('restriction')
 	static def void setTargetPlatform() {
 		val tpService = TargetPlatformService.getDefault()
-
 		val bundles = Platform.getBundle('org.eclipse.core.runtime').getBundleContext().getBundles()
 		val bundleContainers = new ArrayList<ITargetLocation>()
 		val dirs = new HashSet<File>()
+
 		for (bundle : bundles) {
 			val bundleImpl = bundle as EquinoxBundle
 			val generation = bundleImpl.getModule().getCurrentRevision().getRevisionInfo() as Generation
@@ -269,20 +269,24 @@ final class ExecutionTestCompiler implements CommonalitiesCompiler {
 		var Iterable<String> commonalities = null
 		var Iterable<String> domainDependencies = null
 	}
-	
+
 	@Singleton
 	static class Factory {
 		@Inject CommonalitiesGenerationSettings generationSettings
-		
+		@Accessors
+		var Object commonalitiesOwner
+
 		def createCompiler(Consumer<ExecutionTestCompiler.ExecutionTestCompilerParameters> parametersCreator) {
+			checkState(commonalitiesOwner !== null, 'No commonalities owner has been set yet!')
 			val parameters = new ExecutionTestCompilerParameters
 			parametersCreator.accept(parameters)
 			return new ExecutionTestCompiler(
 				generationSettings,
 				parameters.projectName,
 				parameters.commonalities,
+				commonalitiesOwner.class,
 				parameters.domainDependencies
 			)
 		}
-	} 
+	}
 }
