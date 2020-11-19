@@ -1,44 +1,34 @@
 package tools.vitruv.dsls.reactions.tests.complexTests
 
-import allElementTypes.AllElementTypesFactory
 import allElementTypes.Root
 import tools.vitruv.dsls.reactions.tests.AbstractAllElementTypesReactionsTests
-import org.junit.Test
 
-import static org.junit.Assert.assertEquals
-import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
-import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl
+import static tools.vitruv.testutils.domains.AllElementTypesCreators.*
+import static org.hamcrest.MatcherAssert.assertThat
+import static tools.vitruv.testutils.matchers.ModelMatchers.containsModelOf
+import static org.hamcrest.CoreMatchers.nullValue
+import static org.hamcrest.CoreMatchers.is
+import org.junit.jupiter.api.Test
 
 class ReactionsRollbackTests extends AbstractAllElementTypesReactionsTests {
-	static val TEST_SOURCE_MODEL_NAME = "EachTestModelSource";
-	static val TEST_TARGET_MODEL_NAME = "EachTestModelTarget";
-	
-	private def String getProjectModelPath(String modelName) {
-		"model/" + modelName + "." + MODEL_FILE_EXTENSION;
-	}
+	static val SOURCE_MODEL = getProjectModelPath("EachTestModelSource");
+	static val TARGET_MODEL = getProjectModelPath("EachTestModelTarget");
 
 	@Test
 	def void testReverse() {
-		val root = AllElementTypesFactory.eINSTANCE.createRoot();
-		root.setId(TEST_SOURCE_MODEL_NAME);
-		createAndSynchronizeModel(TEST_SOURCE_MODEL_NAME.projectModelPath, root);
-		assertPersistedModelsEqual(TEST_SOURCE_MODEL_NAME.projectModelPath,
-			TEST_SOURCE_MODEL_NAME.projectModelPath);
-		val nonRoot = AllElementTypesFactory.eINSTANCE.createNonRoot();
-		nonRoot.id = "testId";
-		root.singleValuedContainmentEReference = nonRoot;
-		val result = saveAndSynchronizeChanges(root);
-		this.virtualModel.reverseChanges(result);
-//		assertPersistedModelsEqual(FURTHER_SOURCE_TEST_MODEL_NAME.projectModelPath,
-//			FURTHER_TARGET_TEST_MODEL_NAME.projectModelPath);
-		val testResourceSet = new ResourceSetImpl();
-		testResourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("*", new XMIResourceFactoryImpl());
-		val sourceModel = testResourceSet.getResource(TEST_SOURCE_MODEL_NAME.projectModelPath.modelVuri.EMFUri,
-			true);
-		assertEquals(null, (sourceModel.contents.get(0) as Root).singleValuedContainmentEReference);
-		val targetModel = testResourceSet.getResource(TEST_TARGET_MODEL_NAME.projectModelPath.modelVuri.EMFUri,
-			true);
-		assertEquals(null, (targetModel.contents.get(0) as Root).singleValuedContainmentEReference);
+		createAndSynchronizeModel(SOURCE_MODEL, newRoot => [
+			id = 'EachTestModelSource'
+		]);
+		assertThat(resourceAt(SOURCE_MODEL), containsModelOf(resourceAt(TARGET_MODEL)))
+
+		val result = saveAndSynchronizeChanges(Root.from(SOURCE_MODEL).record [
+			singleValuedContainmentEReference = newNonRoot => [
+				id = 'testId'
+			]
+		])
+		virtualModel.reverseChanges(result);
+		
+		assertThat(Root.from(SOURCE_MODEL).singleValuedContainmentEReference, is(nullValue))
+		assertThat(Root.from(TARGET_MODEL).singleValuedContainmentEReference, is(nullValue))
 	}
-	
 }
