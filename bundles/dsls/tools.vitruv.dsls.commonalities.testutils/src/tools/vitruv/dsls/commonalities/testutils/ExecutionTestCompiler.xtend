@@ -40,12 +40,17 @@ import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
 import com.google.inject.Singleton
 import org.eclipse.xtend.lib.annotations.Accessors
 import java.util.function.Consumer
+import tools.vitruv.testutils.TestLauncher
+
+import static tools.vitruv.testutils.TestLauncher.Type.*
+import org.eclipse.core.internal.resources.ProjectDescription
 
 @FinalFieldsConstructor
 final class ExecutionTestCompiler implements CommonalitiesCompiler {
 	static val Logger logger = Logger.getLogger(ExecutionTestCompiler)
 
 	static val String COMPLIANCE_LEVEL = '1.8';
+	static val COMPILATION_PROJECTS_FOLDER = "commonalities compilation"
 	static val TEST_PROJECT_GENERATED_SOURCES_FOLDER_NAME = 'src-gen'
 	static val TEST_PROJECT_SOURCES_FOLDER_NAME = 'src'
 	static val TEST_PROJECT_COMPILATION_FOLDER = 'bin'
@@ -126,11 +131,14 @@ final class ExecutionTestCompiler implements CommonalitiesCompiler {
 	private def prepareTestProject() {
 		setTargetPlatform()
 		val eclipseProject = ResourcesPlugin.workspace.root.getProject(this.projectName) => [
-			create(null as IProgressMonitor)
-			open(null)
-			setDescription(description => [
+			create(new ProjectDescription() => [
+				name = '''«commonalitiesOwningClass.simpleName» Commonalities'''
+				// TODO what about surefire?
+				location = ResourcesPlugin.workspace.root.location.append(COMPILATION_PROJECTS_FOLDER).append(
+					commonalitiesOwningClass.simpleName)
 				natureIds = #[JavaCore.NATURE_ID, XtextProjectHelper.NATURE_ID, PDE.PLUGIN_NATURE]
 			], null)
+			open(null)
 			createManifestMf()
 		]
 		val sourcesFolder = eclipseProject.createFolder(TEST_PROJECT_SOURCES_FOLDER_NAME)
@@ -156,14 +164,15 @@ final class ExecutionTestCompiler implements CommonalitiesCompiler {
 	}
 
 	private def setGenerationSettings() {
-		val eclipseApplication = System.getProperty('eclipse.application')
-		if (eclipseApplication === null) return;
-		if (eclipseApplication.contains('org.eclipse.pde.junit')) {
-			// always generate reactions when run from Eclipse, as they are helpful for debugging.
-			generationSettings.createReactionFiles = true
-		} else if (eclipseApplication.contains('surefire')) {
-			// never create reactions when run from Maven because it is unnecessary and logs errors.
-			generationSettings.createReactionFiles = false
+		switch (TestLauncher.current) {
+			case ECLIPSE:
+				// always generate reactions when run from Eclipse, as they are helpful for debugging.
+				generationSettings.createReactionFiles = true
+			case SUREFIRE:
+				// never create reactions when run from Maven because it is unnecessary and logs errors.
+				generationSettings.createReactionFiles = false
+			case UNKNOWN: {
+			} // use default 
 		}
 	}
 

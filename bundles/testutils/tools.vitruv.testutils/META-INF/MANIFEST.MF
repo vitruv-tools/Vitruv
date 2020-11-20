@@ -28,7 +28,8 @@ Require-Bundle: tools.vitruv.framework.vsum;visibility:=reexport,
  edu.kit.ipd.sdq.activextendannotations;bundle-version="1.0.0",
  tools.vitruv.framework.change.interaction,
  org.hamcrest.core,
- org.junit.jupiter.api
+ org.junit.jupiter.api,
+ org.junit.platform.commons
 Export-Package: tools.vitruv.testutils,
  tools.vitruv.testutils.matchers,
  tools.vitruv.testutils.util,

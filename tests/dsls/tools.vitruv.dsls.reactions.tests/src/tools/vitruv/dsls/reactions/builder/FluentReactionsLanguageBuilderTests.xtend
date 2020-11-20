@@ -6,7 +6,6 @@ import org.eclipse.xtext.common.types.JvmDeclaredType
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.Disabled
 import static org.junit.jupiter.api.Assertions.assertThrows
-import static org.hamcrest.CoreMatchers.is
 import static org.hamcrest.CoreMatchers.containsString
 
 class FluentReactionsLanguageBuilderTests extends FluentReactionsBuilderTest {

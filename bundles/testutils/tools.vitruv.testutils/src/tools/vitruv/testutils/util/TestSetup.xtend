@@ -2,32 +2,21 @@ package tools.vitruv.testutils.util
 
 import edu.kit.ipd.sdq.activextendannotations.Utility
 import java.nio.file.Path
-import java.util.Date
 import org.apache.log4j.ConsoleAppender
 import org.apache.log4j.PatternLayout
 import org.eclipse.emf.ecore.EPackage
-import tools.vitruv.framework.change.processing.ChangePropagationSpecification
 import tools.vitruv.framework.domains.AbstractVitruvDomain
 import tools.vitruv.framework.domains.VitruvDomain
+import tools.vitruv.framework.domains.VitruvDomainProvider
 import tools.vitruv.framework.domains.VitruviusProjectBuilderApplicator
 import tools.vitruv.framework.tuid.TuidCalculatorAndResolverBase
 import tools.vitruv.framework.tuid.TuidManager
-import tools.vitruv.framework.userinteraction.InternalUserInteractor
-import tools.vitruv.framework.uuid.UuidGeneratorAndResolverImpl
-import tools.vitruv.framework.vsum.InternalVirtualModel
-import tools.vitruv.framework.vsum.VirtualModel
-import tools.vitruv.framework.vsum.VirtualModelConfiguration
-import tools.vitruv.framework.vsum.VirtualModelImpl
 
-import static java.nio.file.Files.createDirectories
-import static java.nio.file.Files.createDirectory
-import static java.nio.file.Files.createFile
-import static java.nio.file.Files.createTempDirectory
-import static java.nio.file.Files.exists
+import static com.google.common.base.Preconditions.checkState
 import static org.apache.log4j.Level.*
 import static org.apache.log4j.Logger.getLogger
 import static org.apache.log4j.Logger.getRootLogger
-import static tools.vitruv.framework.util.VitruviusConstants.getTestProjectMarkerFileName
+import tools.vitruv.framework.uuid.UuidGeneratorAndResolverImpl
 
 /** 
  * Utility class for setting up Vitruvius test cases
@@ -36,69 +25,25 @@ import static tools.vitruv.framework.util.VitruviusConstants.getTestProjectMarke
  */
 @Utility
 class TestSetup {
-	static final String VM_ARGUMENT_LOG_OUTPUT_LEVEL = "logOutputLevel"
-	static final String VM_ARGUMENT_LOG_OUTPUT_ID_INFO = "logOutputIdInfo"
-	static final String VM_ARGUMENT_TEST_WORKSPACE_PATH = "testWorkspacePath"
-	public static final String SOURCE_FOLDER = "src"
+	static val VM_ARGUMENT_LOG_OUTPUT_LEVEL = "logOutputLevel"
+	static val VM_ARGUMENT_LOG_OUTPUT_ID_INFO = "logOutputIdInfo"
+	static val MODEL_CONVENTION_DIRECTORY = "model"
 
-	def private static Path addTimestampToProjectNameAndMakeUnique(Path projectName) {
-		var timestamp = new Date().toString().replace(" ", "_").replace(":", "_")
-		var timestamped = projectName.resolveSibling('''«projectName.fileName»_«timestamp»''')
-		var uniqueProject = timestamped
-		for (var counter = 0, uniqueProject = timestamped; exists(uniqueProject); counter++) {
-			uniqueProject = uniqueProject.resolveSibling('''«timestamped.fileName»--«counter»''')
-		}
-		uniqueProject
-	}
-
-	/** 
-	 * Creates a VSUM with the given name in the provided workspace with the provided {@link AbstractVitruvDomain}s and{@link ChangePropagationSpecification}s.
-	 * @param virtualModelName- name of the VSUM folder in the temp files directory
-	 * @param addTimestampAndMakeNameUnique- specifies if a timestamp shall be added to the name and if
-	 * the name shall be made unique so that is does not conflict
-	 * with an existing project
-	 * @param metamodels- {@link AbstractVitruvDomain}s to add to the VSUM
-	 * @param changePropagationSpecifications- {@link ChangePropagationSpecification}s to add to the VSUM
-	 * @return the created {@link VirtualModel}
+	/**
+	 * Creates a model path for a model with the provided {@code modelName}. The model will be placed following a 
+	 * convention using the file extension provided by the domain provided by the {@code domainProvider}.
 	 */
-	def static InternalVirtualModel createVirtualModel(Path workspace, String virtualModelName,
-		boolean addTimestampAndMakeNameUnique, Iterable<VitruvDomain> metamodels,
-		Iterable<ChangePropagationSpecification> changePropagationSpecifications,
-		InternalUserInteractor userInteractor) {
-		var projectFolder = if (addTimestampAndMakeNameUnique)
-				workspace.resolve(virtualModelName).addTimestampToProjectNameAndMakeUnique()
-			else
-				workspace.resolve(virtualModelName)
-		var VirtualModelConfiguration vmodelConfig = new VirtualModelConfiguration()
-		for (VitruvDomain metamodel : metamodels) {
-			vmodelConfig.addMetamodel(metamodel)
-		}
-		for (ChangePropagationSpecification changePropagationSpecification : changePropagationSpecifications) {
-			vmodelConfig.addChangePropagationSpecification(changePropagationSpecification)
-		}
-		new VirtualModelImpl(projectFolder.toFile(), userInteractor, vmodelConfig)
+	static def Path getProjectModelPath(String modelName, VitruvDomainProvider<?> domainProvider) {
+		Path.of(MODEL_CONVENTION_DIRECTORY, '''«modelName».«domainProvider.fileExtension»''')
 	}
 
-	def static Path createTestWorkspace() {
-		var String testWorkspacePath = System::getProperty(VM_ARGUMENT_TEST_WORKSPACE_PATH)
-		if (testWorkspacePath === null) {
-			createTempDirectory("vitruv-test-workspace") => [
-				toFile().deleteOnExit()
-			]
-		} else {
-			createDirectories(Path.of(testWorkspacePath))
-		}
-	}
-
-	def static Path createProjectFolder(Path workspace, String projectName,
-		boolean addTimestampAndMakeNameUniqueAndAddIdentifierFile) {
-		var projectFolder = workspace.resolve(projectName)
-		if (addTimestampAndMakeNameUniqueAndAddIdentifierFile) {
-			projectFolder = projectFolder.addTimestampToProjectNameAndMakeUnique()
-		}
-		createDirectory(projectFolder)
-		createFile(projectFolder.resolve(testProjectMarkerFileName))
-		return projectFolder
+	/**
+	 * @return the file extension for the domain provided by the {@code domainProvider}. 
+	 */
+	static def String getFileExtension(VitruvDomainProvider<?> domainProvider) {
+		val domainFileExtensions = domainProvider.domain.fileExtensions
+		checkState(domainFileExtensions.size > 0, "The domain %s defines no file extensions!")
+		return domainFileExtensions.get(0)
 	}
 
 	/** 

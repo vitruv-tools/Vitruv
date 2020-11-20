@@ -8,7 +8,7 @@ abstract class AbstractReactionImportsTests extends AbstractAllElementTypesReact
 	@Inject ImportTestReactionsCompiler reactionCompiler
 
 	override protected createChangePropagationSpecifications() {
-		newArrayList(reactionCompiler.getNewChangePropagationSpecifications())
+		reactionCompiler.newChangePropagationSpecifications
 	}
 
 	protected override getVitruvDomains() {

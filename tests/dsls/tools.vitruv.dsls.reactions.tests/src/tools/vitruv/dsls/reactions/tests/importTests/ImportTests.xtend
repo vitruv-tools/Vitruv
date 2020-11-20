@@ -11,9 +11,11 @@ import static org.hamcrest.MatcherAssert.assertThat
 import static tools.vitruv.dsls.reactions.tests.ExecutionMonitor.observedExecutions
 import static tools.vitruv.dsls.reactions.tests.importTests.ImportTestsExecutionMonitor.ExecutionType.*
 import static tools.vitruv.testutils.domains.AllElementTypesCreators.newRoot
+import tools.vitruv.testutils.domains.AllElementTypesDomainProvider
+import tools.vitruv.testutils.util.TestSetup
 
 class ImportTests extends AbstractReactionImportsTests {
-	static val SOURCE_MODEL = getProjectModelPath("ImportTestsModelSource")
+	static val SOURCE_MODEL = TestSetup.getProjectModelPath("ImportTestsModelSource", new AllElementTypesDomainProvider)
 	String testName
 
 	private static def ImportTestsExecutionMonitor getExecutionMonitor() {

@@ -40,7 +40,7 @@ class TestReactionsCompiler {
 	val Iterable<String> changePropagationSegments
 
 	var compiled = false
-	var Supplier<Iterable<? extends ChangePropagationSpecification>> changePropagationSpecsSupplier
+	var Supplier<Iterable<ChangePropagationSpecification>> changePropagationSpecsSupplier
 
 	new(Iterable<String> inputReactionFiles, Iterable<String> changePropagationSegments) {
 		this.inputReactionFiles = inputReactionFiles
@@ -102,7 +102,7 @@ class TestReactionsCompiler {
 		}
 	}
 
-	def getNewChangePropagationSpecifications() {
+	def Iterable<ChangePropagationSpecification> getNewChangePropagationSpecifications() {
 		if (!compiled) {
 			compiled = true
 			val compiledReactionsFolder = compileReactions()

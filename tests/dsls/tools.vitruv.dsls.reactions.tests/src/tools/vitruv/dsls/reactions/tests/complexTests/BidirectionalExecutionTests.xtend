@@ -18,12 +18,14 @@ import static tools.vitruv.testutils.matchers.ModelMatchers.containsModelOf
 import tools.vitruv.framework.change.echange.feature.reference.RemoveEReference
 import tools.vitruv.framework.change.echange.eobject.DeleteEObject
 import tools.vitruv.framework.change.echange.root.RemoveRootEObject
+import tools.vitruv.testutils.domains.AllElementTypesDomainProvider
+import tools.vitruv.testutils.util.TestSetup
 
 class BidirectionalExecutionTests extends AbstractAllElementTypesReactionsTests {
-	static val SOURCE_MODEL = getProjectModelPath("EachTestModelSource");
-	static val TARGET_MODEL = getProjectModelPath("EachTestModelTarget");
+	static val SOURCE_MODEL = TestSetup.getProjectModelPath("BidirectionalSource", new AllElementTypesDomainProvider)
+	static val TARGET_MODEL = TestSetup.getProjectModelPath("BidirectionalTarget", new AllElementTypesDomainProvider)
 
-	String[] nonContainmentNonRootIds = #["NonRootHelper0", "NonRootHelper1", "NonRootHelper2"];
+	String[] nonContainmentNonRootIds = #["NonRootHelper0", "NonRootHelper1", "NonRootHelper2"]
 
 	@BeforeEach
 	def setup() {
@@ -44,7 +46,7 @@ class BidirectionalExecutionTests extends AbstractAllElementTypesReactionsTests 
 
 	private def VitruviusChange getSourceModelChanges(PropagatedChange propagatedChange) {
 		return (propagatedChange.consequentialChanges as CompositeContainerChange).changes.findFirst [
-			URI.toString.endsWith(SOURCE_MODEL)
+			URI.toString.endsWith(SOURCE_MODEL.toString)
 		]
 	}
 
@@ -62,7 +64,7 @@ class BidirectionalExecutionTests extends AbstractAllElementTypesReactionsTests 
 		assertThat(consequentialSourceModelChange.EChanges.get(1), is(instanceOf(ReplaceSingleValuedEReference)))
 		assertThat(resourceAt(SOURCE_MODEL), containsModelOf(resourceAt(TARGET_MODEL)))
 		assertThat(Root.from(SOURCE_MODEL).singleValuedContainmentEReference.id, is('bidirectionalId'))
-		assertThat(Root.from(TARGET_MODEL).singleValuedContainmentEReference.id, is('bidirectionalId'));
+		assertThat(Root.from(TARGET_MODEL).singleValuedContainmentEReference.id, is('bidirectionalId'))
 	}
 
 	/** Regression test for #175:

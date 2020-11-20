@@ -1,7 +1,7 @@
 package tools.vitruv.dsls.commonalities.ui.tests.aliases
 
 import tools.vitruv.dsls.commonalities.testutils.ExecutionTestCompiler
-import tools.vitruv.dsls.commonalities.ui.executiontests.IdentifiedExecutionTest
+import tools.vitruv.dsls.commonalities.ui.tests.identified.IdentifiedExecutionTest
 
 /**
  * Inherits the Identified execution tests, but uses the modified commonalities

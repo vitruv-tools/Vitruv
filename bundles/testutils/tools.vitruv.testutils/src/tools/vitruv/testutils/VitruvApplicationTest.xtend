@@ -1,43 +1,44 @@
 package tools.vitruv.testutils
 
+import java.io.FileNotFoundException
 import java.nio.file.Path
+import java.util.List
+import java.util.function.Consumer
+import org.eclipse.emf.ecore.EObject
+import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.emf.ecore.resource.ResourceSet
-import org.junit.jupiter.api.BeforeAll
+import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
+import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.TestInfo
+import org.junit.jupiter.api.^extension.ExtendWith
+import tools.vitruv.framework.change.description.CompositeContainerChange
+import tools.vitruv.framework.change.description.PropagatedChange
+import tools.vitruv.framework.change.description.VitruviusChangeFactory
 import tools.vitruv.framework.change.processing.ChangePropagationSpecification
+import tools.vitruv.framework.change.recording.AtomicEmfChangeRecorder
 import tools.vitruv.framework.correspondence.CorrespondenceModel
 import tools.vitruv.framework.domains.VitruvDomain
 import tools.vitruv.framework.tuid.TuidManager
 import tools.vitruv.framework.userinteraction.UserInteractionFactory
+import tools.vitruv.framework.util.ResourceSetUtil
+import tools.vitruv.framework.util.bridges.EMFBridge
+import tools.vitruv.framework.util.bridges.EcoreResourceBridge
 import tools.vitruv.framework.util.datatypes.VURI
 import tools.vitruv.framework.uuid.UuidGeneratorAndResolver
 import tools.vitruv.framework.uuid.UuidGeneratorAndResolverImpl
 import tools.vitruv.framework.vsum.InternalVirtualModel
-import tools.vitruv.testutils.util.TestSetup
 
-import static edu.kit.ipd.sdq.commons.util.java.lang.StringUtil.isEmpty
-
-import static extension tools.vitruv.testutils.util.TestSetup.*
 import static com.google.common.base.Preconditions.checkArgument
-import tools.vitruv.framework.util.bridges.EMFBridge
-import org.eclipse.emf.ecore.EObject
-import org.eclipse.emf.ecore.resource.Resource
-import java.io.FileNotFoundException
-import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
-import tools.vitruv.framework.util.ResourceSetUtil
-import tools.vitruv.framework.change.recording.AtomicEmfChangeRecorder
-import org.junit.jupiter.api.AfterEach
-import java.util.List
-import tools.vitruv.framework.change.description.PropagatedChange
-import tools.vitruv.framework.util.bridges.EcoreResourceBridge
-import java.util.function.Consumer
-import tools.vitruv.framework.change.description.CompositeContainerChange
-import tools.vitruv.framework.change.description.VitruviusChangeFactory
 import static com.google.common.base.Preconditions.checkState
 
+import tools.vitruv.framework.vsum.VirtualModelConfiguration
+import tools.vitruv.framework.vsum.VirtualModelImpl
+import org.junit.jupiter.api.BeforeAll
+import tools.vitruv.testutils.util.TestSetup
+
+@ExtendWith(TestWorkspaceManager)
 abstract class VitruvApplicationTest {
-	static Path workspace
 	Path testProjectFolder
 	ResourceSet resourceSet
 	UuidGeneratorAndResolver uuidGeneratorAndResolver
@@ -48,39 +49,44 @@ abstract class VitruvApplicationTest {
 	def protected abstract Iterable<ChangePropagationSpecification> createChangePropagationSpecifications()
 
 	def protected abstract Iterable<VitruvDomain> getVitruvDomains()
-
+	
 	@BeforeAll
-	def final static package void prepareTestWorkspace() {
+	def final static package void setupLogging() {
 		TestSetup.initializeLogger()
-		workspace = TestSetup.createTestWorkspace()
 	}
 
 	@BeforeEach
-	def final package void initTestProject(TestInfo testInfo) {
+	def final package void setTestProjectFolder(@TestProject Path testProjectPath) {
+		this.testProjectFolder = testProjectPath
+	}
+
+	@BeforeEach
+	def final package void prepareVirtualModel(TestInfo testInfo, @TestProject(variant="vsum") Path vsumPath) {
 		TuidManager.instance.reinitialize()
-		testProjectFolder = workspace.createProjectFolder(testInfo.getDisplayName(), true)
-	}
-
-	@BeforeEach
-	def final package void prepareVirtualModel(TestInfo testInfo) {
 		var interactionProvider = UserInteractionFactory.instance.createPredefinedInteractionResultProvider(null)
 		testUserInteractor = new TestUserInteraction(interactionProvider)
 		var userInteractor = UserInteractionFactory.instance.createUserInteractor(interactionProvider)
 		// The virtual model has to be created first because otherwise some domain
 		// overwrites may not be applied correctly before instantiating the ResourceSet
-		virtualModel = workspace.createVirtualModel(testInfo.getDisplayName() + "_vsum_", true, vitruvDomains,
-			createChangePropagationSpecifications(), userInteractor)
+		virtualModel = new VirtualModelImpl(vsumPath.toFile(), userInteractor, new VirtualModelConfiguration() => [
+			vitruvDomains.forEach[domain|addMetamodel(domain)]
+			createChangePropagationSpecifications().forEach[spec|addChangePropagationSpecification(spec)]
+		])
+		resourceSet = new ResourceSetImpl()
+		ResourceSetUtil.addExistingFactoriesToResourceSet(resourceSet)
+		uuidGeneratorAndResolver = new UuidGeneratorAndResolverImpl(virtualModel.uuidGeneratorAndResolver, resourceSet,
+			true)
 		renewResourceCache()
 	}
 
 	@BeforeEach
 	def final package void setupChangeRecorder() {
-		this.changeRecorder = new AtomicEmfChangeRecorder(getLocalUuidGeneratorAndResolver())
+		changeRecorder = new AtomicEmfChangeRecorder(uuidGeneratorAndResolver)
 	}
 
 	@AfterEach
 	def final package void stopChangeRecording() {
-		if (changeRecorder.isRecording()) {
+		if (changeRecorder !== null && changeRecorder.isRecording()) {
 			changeRecorder.endRecording()
 		}
 	}
@@ -89,13 +95,16 @@ abstract class VitruvApplicationTest {
 	 * Gets the resource at the provided {@code modelPathInProject}. If the resource
 	 * does not exist yet, it will be created virtually, without being persisted. You can use
 	 * {@link ModelMatchers.exist} to test whether the resource actually exists on the file system.
+	 * 
+	 * @param modelPathWithinProject A project-relative path to a model, as it can be obtained by 
+	 * {@link TestSetup.getProjectModelPath}.
 	 */
-	def protected Resource resourceAt(String modelPathInProject) {
+	def protected Resource resourceAt(Path modelPathWithinProject) {
 		try {
-			getModelResource(modelPathInProject)
+			getModelResource(modelPathWithinProject)
 		} catch (RuntimeException e) {
 			if (e.cause instanceof FileNotFoundException) {
-				createModelResource(modelPathInProject)
+				createModelResource(modelPathWithinProject)
 			} else
 				throw e
 		}
@@ -104,9 +113,12 @@ abstract class VitruvApplicationTest {
 	/** 
 	 * Loads the model resource for the provided {@code modelPathInProject}, casts its root element to the provided 
 	 * {@code clazz} and returns the casted object.
+	 * 
+	 * @param modelPathWithinProject A project-relative path to a model, as it can be obtained by 
+	 * {@link TestSetup.getProjectModelPath}.
 	 */
-	def protected <T> T from(Class<T> clazz, String modelPathInProject) {
-		return from(clazz, getModelResource(modelPathInProject))
+	def protected <T> T from(Class<T> clazz, Path modelPathWithinProject) {
+		return from(clazz, getModelResource(modelPathWithinProject))
 	}
 
 	/** 
@@ -161,21 +173,24 @@ abstract class VitruvApplicationTest {
 	/** 
 	 * Creates a model with the given root element at the given path within the test project.
 	 * Propagates the changes for inserting the root element.
-	 * @param modelPathInProject path within project to persist the model at
-	 * @param rootElement        root element to persist
+	 * 
+	 * @param modelPathWithinProject A project-relative path to a model, as it can be obtained by 
+	 * {@link TestSetup.getProjectModelPath}.
 	 */
-	def protected void createAndSynchronizeModel(String modelPathInProject, EObject rootElement) {
+	def protected void createAndSynchronizeModel(Path modelPathWithinProject, EObject rootElement) {
 		checkArgument(rootElement !== null, "The rootElement must not be null!")
-		var Resource resource = createModelResource(modelPathInProject)
-		resource.record[contents += rootElement]
+		createModelResource(modelPathWithinProject).record[contents += rootElement]
 		saveAndSynchronizeChanges(rootElement)
 	}
 
 	/** 
 	 * Deletes the model at the provided {@code modelPathInProject}. Propagates changes for removing the root elements.
+	 * 
+	 * @param modelPathWithinProject A project-relative path to a model, as it can be obtained by 
+	 * {@link TestSetup.getProjectModelPath}.
 	 */
-	def protected List<PropagatedChange> deleteAndSynchronizeModel(String modelPathInProject) {
-		getModelResource(modelPathInProject).record[delete(emptyMap())]
+	def protected List<PropagatedChange> deleteAndSynchronizeModel(Path modelPathWithinProject) {
+		getModelResource(modelPathWithinProject).record[delete(emptyMap())]
 		return propagateChanges()
 	}
 
@@ -191,25 +206,21 @@ abstract class VitruvApplicationTest {
 		return testUserInteractor
 	}
 
-	def protected UuidGeneratorAndResolver getLocalUuidGeneratorAndResolver() {
-		return uuidGeneratorAndResolver
-	}
-
-	def private Path getPlatformModelPath(String modelPathWithinProject) {
-		checkArgument(!isEmpty(modelPathWithinProject), "The modelPathWithinProject must not be empty!")
+	def private Path getPlatformModelPath(Path modelPathWithinProject) {
+		checkArgument(modelPathWithinProject !== null, "The modelPathWithinProject must not be null!")
+		checkArgument(!modelPathWithinProject.isEmpty, "The modelPathWithinProject must not be empty!")
 		return testProjectFolder.resolve(modelPathWithinProject)
 	}
 
-	def private VURI getModelVuri(String modelPathWithinProject) {
-		checkArgument(!isEmpty(modelPathWithinProject), "The modelPathWithinProject must not be empty!")
+	def private VURI getModelVuri(Path modelPathWithinProject) {
 		return VURI.getInstance(EMFBridge.getEmfFileUriForFile(getPlatformModelPath(modelPathWithinProject).toFile()))
 	}
 
-	def private Resource createModelResource(String modelPathWithinProject) {
+	def private Resource createModelResource(Path modelPathWithinProject) {
 		resourceSet.createResource(getModelVuri(modelPathWithinProject).EMFUri)
 	}
 
-	def private Resource getModelResource(String modelPathWithinProject) {
+	def private Resource getModelResource(Path modelPathWithinProject) {
 		resourceSet.getResource(getModelVuri(modelPathWithinProject).EMFUri, true)
 	}
 
@@ -250,9 +261,6 @@ abstract class VitruvApplicationTest {
 	}
 
 	def private void renewResourceCache() {
-		resourceSet = new ResourceSetImpl()
-		ResourceSetUtil.addExistingFactoriesToResourceSet(resourceSet)
-		uuidGeneratorAndResolver = new UuidGeneratorAndResolverImpl(virtualModel.uuidGeneratorAndResolver, resourceSet,
-			true)
+		resourceSet.resources.clear()
 	}
 }

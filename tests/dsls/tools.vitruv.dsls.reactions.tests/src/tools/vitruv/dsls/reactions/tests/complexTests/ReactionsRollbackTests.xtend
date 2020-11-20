@@ -9,15 +9,17 @@ import static tools.vitruv.testutils.matchers.ModelMatchers.containsModelOf
 import static org.hamcrest.CoreMatchers.nullValue
 import static org.hamcrest.CoreMatchers.is
 import org.junit.jupiter.api.Test
+import tools.vitruv.testutils.domains.AllElementTypesDomainProvider
+import tools.vitruv.testutils.util.TestSetup
 
 class ReactionsRollbackTests extends AbstractAllElementTypesReactionsTests {
-	static val SOURCE_MODEL = getProjectModelPath("EachTestModelSource");
-	static val TARGET_MODEL = getProjectModelPath("EachTestModelTarget");
+	static val SOURCE_MODEL = TestSetup.getProjectModelPath("RollbackSource", new AllElementTypesDomainProvider)
+	static val TARGET_MODEL = TestSetup.getProjectModelPath("RollbackTarget", new AllElementTypesDomainProvider)
 
 	@Test
 	def void testReverse() {
 		createAndSynchronizeModel(SOURCE_MODEL, newRoot => [
-			id = 'EachTestModelSource'
+			id = 'Rollback'
 		]);
 		assertThat(resourceAt(SOURCE_MODEL), containsModelOf(resourceAt(TARGET_MODEL)))
 

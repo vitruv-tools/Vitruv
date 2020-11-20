@@ -1,7 +1,8 @@
 package tools.vitruv.extensions.constructionsimulation.util;
 
-import java.io.File;
-import java.util.Collections;
+import static java.util.Collections.emptyList;
+
+import java.nio.file.Path;
 
 import org.eclipse.core.resources.ResourcesPlugin;
 
@@ -12,12 +13,12 @@ import tools.vitruv.testutils.util.TestSetup;
 
 public class IntegrationUtil {
 
-    private IntegrationUtil() {
-    }
+	private IntegrationUtil() {
+	}
 
-    public static InternalVirtualModel createVsum(final Iterable<VitruvDomain> metamodels) {
-    	File projectFolder = ResourcesPlugin.getWorkspace().getRoot().getLocation().append("/vitruvius.meta").toFile();
-    	return TestSetup.createVirtualModel(projectFolder, true, metamodels, Collections.emptyList(), UserInteractionFactory.instance.createDialogUserInteractor());
-    }
+	public static InternalVirtualModel createVsum(Path workspace, final Iterable<VitruvDomain> metamodels) {
+		var projectPath = ResourcesPlugin.getWorkspace().getRoot().getLocation().append("/vitruvius.meta").toFile().toPath();
+		return TestSetup.createVirtualModel(workspace, projectPath, metamodels, emptyList(), UserInteractionFactory.instance.createDialogUserInteractor());
+	}
 
 }

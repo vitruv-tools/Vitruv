@@ -10,16 +10,10 @@ import tools.vitruv.testutils.VitruvApplicationTest
 @ExtendWith(InjectionExtension)
 @InjectWith(ReactionsLanguageInjectorProvider)
 abstract class AbstractAllElementTypesReactionsTests extends VitruvApplicationTest {
-	protected static val MODEL_FILE_EXTENSION = new AllElementTypesDomainProvider().domain.fileExtensions.get(0)
-
-	protected static def String getProjectModelPath(String modelName) {
-		"model/" + modelName + "." + MODEL_FILE_EXTENSION;
-	}
-
 	@Inject AllElementTypesRedundancyReactionsCompiler reactionCompiler
 
 	override protected createChangePropagationSpecifications() {
-		newArrayList(reactionCompiler.getNewChangePropagationSpecifications())
+		reactionCompiler.getNewChangePropagationSpecifications()
 	}
 
 	protected override getVitruvDomains() {

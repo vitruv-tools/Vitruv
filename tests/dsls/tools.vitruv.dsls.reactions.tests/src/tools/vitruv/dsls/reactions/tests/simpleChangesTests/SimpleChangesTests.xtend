@@ -17,12 +17,14 @@ import static org.hamcrest.CoreMatchers.is
 import static tools.vitruv.testutils.matchers.ModelMatchers.exists
 import static tools.vitruv.testutils.matchers.ModelMatchers.doesNotExist
 import org.junit.jupiter.api.Disabled
+import tools.vitruv.testutils.domains.AllElementTypesDomainProvider
+import tools.vitruv.testutils.util.TestSetup
 
 class SimpleChangesTests extends AbstractAllElementTypesReactionsTests {
-	static val SOURCE_MODEL = getProjectModelPath("EachTestModelSource")
-	static val TARGET_MODEL = getProjectModelPath("EachTestModelTarget")
-	static val FURTHER_SOURCE_MODEL = getProjectModelPath("Further_Source_Test_Model")
-	static val FURTHER_TARGET_MODEL = getProjectModelPath("Further_Target_Test_Model")
+	static val SOURCE_MODEL = TestSetup.getProjectModelPath("SimpleChangeSource", new AllElementTypesDomainProvider)
+	static val TARGET_MODEL = TestSetup.getProjectModelPath("SimpleChangeTarget", new AllElementTypesDomainProvider)
+	static val FURTHER_SOURCE_MODEL = TestSetup.getProjectModelPath("FurtherSource", new AllElementTypesDomainProvider)
+	static val FURTHER_TARGET_MODEL = TestSetup.getProjectModelPath("FurtherTarget", new AllElementTypesDomainProvider)
 
 	String[] nonContainmentNonRootIds = #["NonRootHelper0", "NonRootHelper1", "NonRootHelper2"]
 
