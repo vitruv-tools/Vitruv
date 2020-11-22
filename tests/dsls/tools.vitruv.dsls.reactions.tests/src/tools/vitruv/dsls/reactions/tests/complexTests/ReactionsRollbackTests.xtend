@@ -9,12 +9,11 @@ import static tools.vitruv.testutils.matchers.ModelMatchers.containsModelOf
 import static org.hamcrest.CoreMatchers.nullValue
 import static org.hamcrest.CoreMatchers.is
 import org.junit.jupiter.api.Test
-import tools.vitruv.testutils.domains.AllElementTypesDomainProvider
-import tools.vitruv.testutils.util.TestSetup
+import static extension tools.vitruv.testutils.domains.AllElementTypesCreators.allElementTypes
 
 class ReactionsRollbackTests extends AbstractAllElementTypesReactionsTests {
-	static val SOURCE_MODEL = TestSetup.getProjectModelPath("RollbackSource", new AllElementTypesDomainProvider)
-	static val TARGET_MODEL = TestSetup.getProjectModelPath("RollbackTarget", new AllElementTypesDomainProvider)
+	static val SOURCE_MODEL = 'RollbackSource'.allElementTypes
+	static val TARGET_MODEL = 'RollbackTarget'.allElementTypes
 
 	@Test
 	def void testReverse() {
@@ -29,7 +28,7 @@ class ReactionsRollbackTests extends AbstractAllElementTypesReactionsTests {
 			]
 		])
 		virtualModel.reverseChanges(result);
-		
+
 		assertThat(Root.from(SOURCE_MODEL).singleValuedContainmentEReference, is(nullValue))
 		assertThat(Root.from(TARGET_MODEL).singleValuedContainmentEReference, is(nullValue))
 	}

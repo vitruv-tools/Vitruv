@@ -39,8 +39,7 @@ Require-Bundle: tools.vitruv.dsls.commonalities.ui,
  edu.kit.ipd.sdq.activextendannotations,
  org.eclipse.xtext.xbase.junit
 Bundle-RequiredExecutionEnvironment: JavaSE-11
-Export-Package: tools.vitruv.dsls.commonalities.ui.tests;x-internal=true,
- tools.vitruv.dsls.commonalities.ui.tests.aliases;x-internal:=true,
+Export-Package: tools.vitruv.dsls.commonalities.ui.tests.aliases;x-internal:=true,
  tools.vitruv.dsls.commonalities.ui.tests.attributeoperators;x-internal:=true,
  tools.vitruv.dsls.commonalities.ui.tests.conditions;x-internal:=true,
  tools.vitruv.dsls.commonalities.ui.tests.identified;x-internal:=true

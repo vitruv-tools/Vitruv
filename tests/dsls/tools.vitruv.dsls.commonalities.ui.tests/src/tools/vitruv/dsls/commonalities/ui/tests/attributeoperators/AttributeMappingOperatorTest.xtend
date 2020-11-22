@@ -9,8 +9,8 @@ import static org.hamcrest.MatcherAssert.assertThat
 import static tools.vitruv.testutils.matchers.ModelMatchers.*
 import tools.vitruv.dsls.commonalities.testutils.ExecutionTestCompiler
 import org.junit.jupiter.api.Test
-import static extension tools.vitruv.dsls.commonalities.ui.tests.ModelPathCreators.*
-
+import static extension tools.vitruv.testutils.domains.AllElementTypesCreators.allElementTypes
+import static extension tools.vitruv.testutils.domains.AllElementTypes2Creators.allElementTypes2
 
 class AttributeMappingOperatorTest extends CommonalitiesExecutionTest {
 	override createCompiler(ExecutionTestCompiler.Factory factory) {

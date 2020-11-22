@@ -9,6 +9,7 @@ import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.emf.ecore.resource.ResourceSet
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import org.junit.jupiter.api.AfterEach
+import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.TestInfo
 import org.junit.jupiter.api.^extension.ExtendWith
@@ -17,7 +18,6 @@ import tools.vitruv.framework.change.description.PropagatedChange
 import tools.vitruv.framework.change.description.VitruviusChangeFactory
 import tools.vitruv.framework.change.processing.ChangePropagationSpecification
 import tools.vitruv.framework.change.recording.AtomicEmfChangeRecorder
-import tools.vitruv.framework.correspondence.CorrespondenceModel
 import tools.vitruv.framework.domains.VitruvDomain
 import tools.vitruv.framework.tuid.TuidManager
 import tools.vitruv.framework.userinteraction.UserInteractionFactory
@@ -28,17 +28,16 @@ import tools.vitruv.framework.util.datatypes.VURI
 import tools.vitruv.framework.uuid.UuidGeneratorAndResolver
 import tools.vitruv.framework.uuid.UuidGeneratorAndResolverImpl
 import tools.vitruv.framework.vsum.InternalVirtualModel
+import tools.vitruv.framework.vsum.VirtualModelConfiguration
+import tools.vitruv.framework.vsum.VirtualModelImpl
+import tools.vitruv.testutils.util.TestSetup
 
 import static com.google.common.base.Preconditions.checkArgument
 import static com.google.common.base.Preconditions.checkState
-
-import tools.vitruv.framework.vsum.VirtualModelConfiguration
-import tools.vitruv.framework.vsum.VirtualModelImpl
-import org.junit.jupiter.api.BeforeAll
-import tools.vitruv.testutils.util.TestSetup
+import tools.vitruv.testutils.matchers.CorrespondenceModelContainer
 
 @ExtendWith(TestWorkspaceManager)
-abstract class VitruvApplicationTest {
+abstract class VitruvApplicationTest implements CorrespondenceModelContainer {
 	Path testProjectFolder
 	ResourceSet resourceSet
 	UuidGeneratorAndResolver uuidGeneratorAndResolver
@@ -49,7 +48,7 @@ abstract class VitruvApplicationTest {
 	def protected abstract Iterable<ChangePropagationSpecification> createChangePropagationSpecifications()
 
 	def protected abstract Iterable<VitruvDomain> getVitruvDomains()
-	
+
 	@BeforeAll
 	def final static package void setupLogging() {
 		TestSetup.initializeLogger()
@@ -96,8 +95,7 @@ abstract class VitruvApplicationTest {
 	 * does not exist yet, it will be created virtually, without being persisted. You can use
 	 * {@link ModelMatchers.exist} to test whether the resource actually exists on the file system.
 	 * 
-	 * @param modelPathWithinProject A project-relative path to a model, as it can be obtained by 
-	 * {@link TestSetup.getProjectModelPath}.
+	 * @param modelPathWithinProject A project-relative path to a model.
 	 */
 	def protected Resource resourceAt(Path modelPathWithinProject) {
 		try {
@@ -114,8 +112,7 @@ abstract class VitruvApplicationTest {
 	 * Loads the model resource for the provided {@code modelPathInProject}, casts its root element to the provided 
 	 * {@code clazz} and returns the casted object.
 	 * 
-	 * @param modelPathWithinProject A project-relative path to a model, as it can be obtained by 
-	 * {@link TestSetup.getProjectModelPath}.
+	 * @param modelPathWithinProject A project-relative path to a model.
 	 */
 	def protected <T> T from(Class<T> clazz, Path modelPathWithinProject) {
 		return from(clazz, getModelResource(modelPathWithinProject))
@@ -155,6 +152,7 @@ abstract class VitruvApplicationTest {
 
 	/** 
 	 * Saves the model containing the given {@link EObject} and propagates changes that were recorded for it.
+	 * 
 	 * @return a list with the {@link PropagatedChange}s, containing the original and consequential changes.
 	 */
 	def protected List<PropagatedChange> saveAndSynchronizeChanges(EObject object) {
@@ -163,6 +161,7 @@ abstract class VitruvApplicationTest {
 
 	/** 
 	 * Saves the provided {@link Resource} and propagates changes that were recorded for it.
+	 * 
 	 * @return a list with the {@link PropagatedChange}s, containing the original * and consequential changes.
 	 */
 	def protected List<PropagatedChange> saveAndSynchronizeChanges(Resource resource) {
@@ -171,11 +170,21 @@ abstract class VitruvApplicationTest {
 	}
 
 	/** 
+	 * Saves the resource at the given {@code modelPathWithinProject} and propagates changes that were recorded for 
+	 * the resource.
+	 * 
+	 * @param modelPathWithinProject A project-relative path to a model.
+	 * @return a list with the {@link PropagatedChange}s, containing the original and consequential changes.
+	 */
+	def protected List<PropagatedChange> saveAndSynchronizeChanges(Path modelPathWithinProject) {
+		return saveAndSynchronizeChanges(getModelResource(modelPathWithinProject))
+	}
+
+	/** 
 	 * Creates a model with the given root element at the given path within the test project.
 	 * Propagates the changes for inserting the root element.
 	 * 
-	 * @param modelPathWithinProject A project-relative path to a model, as it can be obtained by 
-	 * {@link TestSetup.getProjectModelPath}.
+	 * @param modelPathWithinProject A project-relative path to a model.
 	 */
 	def protected void createAndSynchronizeModel(Path modelPathWithinProject, EObject rootElement) {
 		checkArgument(rootElement !== null, "The rootElement must not be null!")
@@ -186,25 +195,18 @@ abstract class VitruvApplicationTest {
 	/** 
 	 * Deletes the model at the provided {@code modelPathInProject}. Propagates changes for removing the root elements.
 	 * 
-	 * @param modelPathWithinProject A project-relative path to a model, as it can be obtained by 
-	 * {@link TestSetup.getProjectModelPath}.
+	 * @param modelPathWithinProject A project-relative path to a model.
 	 */
 	def protected List<PropagatedChange> deleteAndSynchronizeModel(Path modelPathWithinProject) {
 		getModelResource(modelPathWithinProject).record[delete(emptyMap())]
 		return propagateChanges()
 	}
 
-	def protected CorrespondenceModel getCorrespondenceModel() {
-		return virtualModel.correspondenceModel
-	}
+	override getCorrespondenceModel() { virtualModel.correspondenceModel }
 
-	def protected InternalVirtualModel getVirtualModel() {
-		return virtualModel
-	}
+	def protected InternalVirtualModel getVirtualModel() { virtualModel }
 
-	def protected TestUserInteraction getUserInteractor() {
-		return testUserInteractor
-	}
+	def protected TestUserInteraction getUserInteractor() { testUserInteractor }
 
 	def private Path getPlatformModelPath(Path modelPathWithinProject) {
 		checkArgument(modelPathWithinProject !== null, "The modelPathWithinProject must not be null!")
@@ -253,7 +255,11 @@ abstract class VitruvApplicationTest {
 	}
 
 	def private void stopRecordingChanges(EObject object) {
-		stopRecordingChanges(checkedResourceOf(object))
+		checkArgument(object !== null, "The object must not be null!")
+		// the object might just have been deleted, so we don’t require it to be in a resource
+		if (object.eResource !== null) {
+			stopRecordingChanges(object.eResource)
+		}
 	}
 
 	def private void stopRecordingChanges(Resource resource) {

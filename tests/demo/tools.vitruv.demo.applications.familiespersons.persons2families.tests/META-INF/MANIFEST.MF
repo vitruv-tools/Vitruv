@@ -11,7 +11,8 @@ Require-Bundle: com.google.guava,
  org.eclipse.xtend.lib,
  org.eclipse.xtend.lib.macro,
  tools.vitruv.testutils;bundle-version="0.2.0",
- org.junit;bundle-version="4.8.1",
- tools.vitruv.framework.change.processing
+ tools.vitruv.framework.change.processing,
+ org.junit.jupiter.api,
+ org.hamcrest.core
 Bundle-Vendor: vitruv.tools
 Export-Package: tools.vitruv.application.familiespersons.persons2families.test;x-internal:=true

@@ -10,6 +10,7 @@ Require-Bundle: tools.vitruv.framework.metamodel,
  tools.vitruv.extensions.emf,
  edu.kit.ipd.sdq.activextendannotations,
  org.eclipse.xtext.xbase.lib,
- org.eclipse.xtend.lib
+ org.eclipse.xtend.lib,
+ tools.vitruv.testutils
 Export-Package: tools.vitruv.testutils.domains
 Bundle-Vendor: vitruv.tools

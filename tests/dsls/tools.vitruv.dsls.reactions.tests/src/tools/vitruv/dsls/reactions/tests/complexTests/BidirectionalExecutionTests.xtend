@@ -18,12 +18,11 @@ import static tools.vitruv.testutils.matchers.ModelMatchers.containsModelOf
 import tools.vitruv.framework.change.echange.feature.reference.RemoveEReference
 import tools.vitruv.framework.change.echange.eobject.DeleteEObject
 import tools.vitruv.framework.change.echange.root.RemoveRootEObject
-import tools.vitruv.testutils.domains.AllElementTypesDomainProvider
-import tools.vitruv.testutils.util.TestSetup
+import static extension tools.vitruv.testutils.domains.AllElementTypesCreators.allElementTypes
 
 class BidirectionalExecutionTests extends AbstractAllElementTypesReactionsTests {
-	static val SOURCE_MODEL = TestSetup.getProjectModelPath("BidirectionalSource", new AllElementTypesDomainProvider)
-	static val TARGET_MODEL = TestSetup.getProjectModelPath("BidirectionalTarget", new AllElementTypesDomainProvider)
+	static val SOURCE_MODEL = 'BidirectionalSource'.allElementTypes
+	static val TARGET_MODEL = 'BidirectionalTarget'.allElementTypes
 
 	String[] nonContainmentNonRootIds = #["NonRootHelper0", "NonRootHelper1", "NonRootHelper2"]
 
@@ -41,7 +40,7 @@ class BidirectionalExecutionTests extends AbstractAllElementTypesReactionsTests 
 			]
 		])
 
-		assertThat(resourceAt(SOURCE_MODEL), containsModelOf(resourceAt(TARGET_MODEL)))
+		assertThat(resourceAt(TARGET_MODEL), containsModelOf(resourceAt(SOURCE_MODEL)))
 	}
 
 	private def VitruviusChange getSourceModelChanges(PropagatedChange propagatedChange) {

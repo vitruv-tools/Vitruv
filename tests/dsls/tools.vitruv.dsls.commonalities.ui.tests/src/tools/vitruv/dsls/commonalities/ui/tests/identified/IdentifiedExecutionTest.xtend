@@ -19,7 +19,10 @@ import static tools.vitruv.testutils.domains.AllElementTypes2Creators.newNonRoot
 import static tools.vitruv.testutils.domains.AllElementTypesCreators.newNonRoot
 import static tools.vitruv.testutils.domains.PcmMockupCreators.newComponent
 import static tools.vitruv.testutils.domains.UmlMockupCreators.newUMLClass
-import static extension tools.vitruv.dsls.commonalities.ui.tests.ModelPathCreators.*
+import static extension tools.vitruv.testutils.domains.AllElementTypes2Creators.allElementTypes2
+import static extension tools.vitruv.testutils.domains.AllElementTypesCreators.allElementTypes
+import static extension tools.vitruv.testutils.domains.PcmMockupCreators.pcm_mockup
+import static extension tools.vitruv.testutils.domains.UmlMockupCreators.uml_mockup
 
 class IdentifiedExecutionTest extends CommonalitiesExecutionTest {
 	override createCompiler(ExecutionTestCompiler.Factory factory) {
@@ -229,11 +232,11 @@ class IdentifiedExecutionTest extends CommonalitiesExecutionTest {
 		assertThat(resourceAt('testid'.pcm_mockup), contains(newRepository => [
 			id = 'testid'
 			components += newComponent => [name = 'testname']
-		], ignoring('id')))
+		], ignoringFeatures('id')))
 		assertThat(resourceAt('testid'.uml_mockup), contains(newUMLPackage => [
 			id = 'testid'
 			classes += newUMLClass => [name = 'testname']
-		], ignoring('id')))
+		], ignoringFeatures('id')))
 	}
 
 	@Test
@@ -265,14 +268,14 @@ class IdentifiedExecutionTest extends CommonalitiesExecutionTest {
 				newComponent => [name = 'first'],
 				newComponent => [name = 'second']
 			]
-		], ignoring('id')))
+		], ignoringFeatures('id')))
 		assertThat(resourceAt('testid'.uml_mockup), contains(newUMLPackage => [
 			id = 'testid'
 			classes += #[
 				newUMLClass => [name = 'first'],
 				newUMLClass => [name = 'second']
 			]
-		], ignoring('id')))
+		], ignoringFeatures('id')))
 
 		saveAndSynchronizeChanges(Repository.from('testid'.pcm_mockup).record [
 			components += newComponent => [name = 'third']
@@ -300,7 +303,7 @@ class IdentifiedExecutionTest extends CommonalitiesExecutionTest {
 				newComponent => [name = 'second'],
 				newComponent => [name = 'third']
 			]
-		], ignoring('id')))
+		], ignoringFeatures('id')))
 		assertThat(resourceAt('testid'.uml_mockup), contains(newUMLPackage => [
 			id = 'testid'
 			classes += #[
@@ -308,6 +311,6 @@ class IdentifiedExecutionTest extends CommonalitiesExecutionTest {
 				newUMLClass => [name = 'second'],
 				newUMLClass => [name = 'third']
 			]
-		], ignoring('id')))
+		], ignoringFeatures('id')))
 	}
 }
