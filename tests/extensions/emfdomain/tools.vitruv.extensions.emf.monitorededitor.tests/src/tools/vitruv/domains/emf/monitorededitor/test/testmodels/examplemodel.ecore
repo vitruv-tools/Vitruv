@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="examplemodel">
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="examplemodel" nsURI="http://example.com/examplemodel" nsPrefix="examplemodel">
   <eClassifiers xsi:type="ecore:EClass" name="ExampleClass2">
     <eOperations name="wobble">
       <eParameters name="wobbleSeverity" eType="#//ExampleClass1"/>
@@ -8,7 +8,7 @@
     <eOperations name="toggle"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="namedAttribute" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="namedReference" eType="#//ExampleClass1"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBigInteger"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="bigIntAttribute" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBigInteger"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ExampleClass1">
     <eOperations name="wiggle"/>
@@ -23,7 +23,8 @@
     <eLiterals name="Literal2" value="1" literal="Literal2"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="DerivedClass" eSuperTypes="#//ExampleClass1">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="attribute" upperBound="10"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="attribute" upperBound="10"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ExampleClass3">
     <eAnnotations source="http://example.com/ref1"/>
