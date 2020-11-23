@@ -1,14 +1,13 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
+Bundle-Vendor: %providerName
+Bundle-Localization: plugin
 Bundle-SymbolicName: tools.vitruv.extensions.emf.monitorededitor.tests;singleton:=true
 Automatic-Module-Name: tools.vitruv.extensions.emf.monitorededitor.tests
 Bundle-Version: 0.3.0.qualifier
-Bundle-Activator: tools.vitruv.domains.emf.monitorededitor.Activator
-Bundle-ClassPath: .,
-  lib/cglib-nodep-3.1.jar,
-  lib/easymock-3.1.jar,
-  lib/objenesis-1.2.jar
+Bundle-RequiredExecutionEnvironment: JavaSE-11
+Bundle-ActivationPolicy: lazy
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.emf.ecore.xmi,
@@ -27,9 +26,9 @@ Require-Bundle: org.eclipse.ui,
  tools.vitruv.framework.change.processing,
  tools.vitruv.framework.tuid,
  tools.vitruv.framework.vsum,
- tools.vitruv.testutils
-Bundle-RequiredExecutionEnvironment: JavaSE-11
-Bundle-ActivationPolicy: lazy
+ tools.vitruv.testutils,
+ org.junit.jupiter.api,
+ org.hamcrest.core
 Export-Package: tools.vitruv.domains.emf.monitorededitor;x-internal:=true,
  tools.vitruv.domains.emf.monitorededitor.mocking;x-internal:=true,
  tools.vitruv.domains.emf.monitorededitor.monitor;x-internal:=true,
@@ -37,8 +36,10 @@ Export-Package: tools.vitruv.domains.emf.monitorededitor;x-internal:=true,
  tools.vitruv.domains.emf.monitorededitor.test.emfmodels.advancedfeatures.impl;x-internal:=true,
  tools.vitruv.domains.emf.monitorededitor.test.emfmodels.advancedfeatures.util;x-internal:=true,
  tools.vitruv.domains.emf.monitorededitor.test.mocking;x-internal:=true,
- tools.vitruv.domains.emf.monitorededitor.test.testmodels,
- tools.vitruv.domains.emf.monitorededitor.test.utils,
+ tools.vitruv.domains.emf.monitorededitor.test.testmodels;x-internal:=true,
+ tools.vitruv.domains.emf.monitorededitor.test.utils;x-internal:=true,
  tools.vitruv.domains.emf.monitorededitor.tools;x-internal:=true
-Bundle-Vendor: %providerName
-Bundle-Localization: plugin
+Bundle-ClassPath: .,
+ lib/cglib-nodep-3.1.jar,
+ lib/easymock-3.1.jar,
+ lib/objenesis-1.2.jar
