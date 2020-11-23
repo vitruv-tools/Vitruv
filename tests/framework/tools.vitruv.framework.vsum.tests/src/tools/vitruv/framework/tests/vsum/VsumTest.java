@@ -25,14 +25,14 @@ import tools.vitruv.framework.vsum.VirtualModelConfiguration;
 import tools.vitruv.framework.vsum.VirtualModelImpl;
 import tools.vitruv.testutils.TestLogging;
 import tools.vitruv.testutils.TestProject;
-import tools.vitruv.testutils.TestWorkspaceManager;
+import tools.vitruv.testutils.TestProjectManager;
 import tools.vitruv.testutils.domains.ConcreteTuidAwareVitruvDomain;
 import uml_mockup.UClass;
 import uml_mockup.UPackage;
 import uml_mockup.Uml_mockupFactory;
 import uml_mockup.Uml_mockupPackage;
 
-@ExtendWith({ TestWorkspaceManager.class, TestLogging.class })
+@ExtendWith({ TestProjectManager.class, TestLogging.class })
 public abstract class VsumTest {
     protected static final String PROJECT_FOLDER_NAME = "MockupProject";
     protected static final String VSUM_NAME = "VsumProject";

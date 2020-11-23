@@ -35,7 +35,7 @@ import static com.google.common.base.Preconditions.checkState
 import tools.vitruv.testutils.matchers.CorrespondenceModelContainer
 import tools.vitruv.testutils.TestLogging
 
-@ExtendWith(TestWorkspaceManager, TestLogging)
+@ExtendWith(TestProjectManager, TestLogging)
 abstract class VitruvApplicationTest implements CorrespondenceModelContainer {
 	Path testProjectFolder
 	ResourceSet resourceSet

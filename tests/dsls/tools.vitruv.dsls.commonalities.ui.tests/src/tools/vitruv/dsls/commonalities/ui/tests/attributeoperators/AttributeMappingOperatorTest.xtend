@@ -15,7 +15,6 @@ import static extension tools.vitruv.testutils.domains.DomainModelCreators.allEl
 class AttributeMappingOperatorTest extends CommonalitiesExecutionTest {
 	override createCompiler(ExecutionTestCompiler.Factory factory) {
 		factory.createCompiler [
-			projectName = 'commonalities-test-attribute-mapping-operator'
 			commonalities = #['Identified.commonality']
 			domainDependencies = #[
 				'tools.vitruv.testutils.domains',

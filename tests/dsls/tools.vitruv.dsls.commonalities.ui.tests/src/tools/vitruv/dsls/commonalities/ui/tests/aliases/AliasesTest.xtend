@@ -10,7 +10,6 @@ import tools.vitruv.dsls.commonalities.ui.tests.identified.IdentifiedExecutionTe
 class AliasesTest extends IdentifiedExecutionTest {
 	override createCompiler(ExecutionTestCompiler.Factory factory) {
 		factory.createCompiler [
-			projectName = 'commonalities-test-aliases'
 			commonalities = #['Identified.commonality', 'Sub.commonality']
 			domainDependencies = #[
 				'tools.vitruv.testutils.domains',

@@ -24,7 +24,6 @@ import static tools.vitruv.testutils.metamodels.UmlMockupCreators.newUmlClass
 class IdentifiedExecutionTest extends CommonalitiesExecutionTest {
 	override createCompiler(ExecutionTestCompiler.Factory factory) {
 		factory.createCompiler [
-			projectName = 'commonalities-test-identified'
 			commonalities = #['Identified.commonality', 'Sub.commonality']
 			domainDependencies = #[
 				'tools.vitruv.testutils.domains',

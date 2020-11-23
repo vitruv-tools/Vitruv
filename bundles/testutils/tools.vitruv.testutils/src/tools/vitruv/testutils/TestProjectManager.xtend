@@ -1,7 +1,6 @@
 package tools.vitruv.testutils
 
 import java.io.IOException
-import java.lang.reflect.Parameter
 import java.nio.file.DirectoryNotEmptyException
 import java.nio.file.FileAlreadyExistsException
 import java.nio.file.Path
@@ -23,16 +22,18 @@ import static org.apache.log4j.Level.INFO
 import static tools.vitruv.framework.util.VitruviusConstants.getTestProjectMarkerFileName
 import java.util.regex.Pattern
 import org.eclipse.core.resources.ResourcesPlugin
+import static com.google.common.base.Preconditions.checkNotNull
 
 /**
- * Extension managing a test workspace for Eclipse tests. Test classes using this extension can have a workspace
- * injected by annotating a parameter with {@link TestWorkspace}.
+ * Extension managing the test projects for Eclipse tests. Test classes using this extension can have test project 
+ * folders injected by using the @{@link TestProject} annotation. Test projects will be cleaned if their corresponding
+ * test succeed, but retained if their corresponding test failed.
  */
-class TestWorkspaceManager implements ParameterResolver {
+class TestProjectManager implements ParameterResolver {
 	static val VM_ARGUMENT_TEST_WORKSPACE_PATH = "testWorkspacePath"
-	static val log = Logger.getLogger(TestWorkspaceManager) => [level = INFO]
-	static val namespace = ExtensionContext.Namespace.create(TestWorkspaceManager)
-	static val projectNamespace = ExtensionContext.Namespace.create(TestWorkspaceManager, "projects")
+	static val log = Logger.getLogger(TestProjectManager) => [level = INFO]
+	static val namespace = ExtensionContext.Namespace.create(TestProjectManager)
+	static val projectNamespace = ExtensionContext.Namespace.create(TestProjectManager, "projects")
 	static val invalidFileCharacters = Pattern.compile("[/\\\\<>:\"|?*\u0000]")
 	/**
 	 * Eclipse uses multiple JUnit Jupiter runs. The only option to preserve the workspace across the runs is
@@ -41,22 +42,21 @@ class TestWorkspaceManager implements ParameterResolver {
 	static Path workspaceCache
 
 	def private Path setupWorkspace() {
-		if (TestWorkspaceManager.workspaceCache !== null)
-			return TestWorkspaceManager.workspaceCache
+		if (TestProjectManager.workspaceCache !== null)
+			return TestProjectManager.workspaceCache
 		var testWorkspacePath = System.getProperty(VM_ARGUMENT_TEST_WORKSPACE_PATH)
 		workspaceCache = if (testWorkspacePath === null) {
-			// TODO what about surefire?
-			val base = ResourcesPlugin.workspace.root.location.toFile.toPath
-			createUniqueDirectory(base.resolve('''Vitruv-test-projects'''))
+			val testWorkspace = ResourcesPlugin.workspace.root.location.toFile.toPath
+			createUniqueDirectory(testWorkspace.resolve('Vitruv'))
 		} else {
 			createDirectories(Path.of(testWorkspacePath))
 		}
-		log.info('''Running in the test workspace at «TestWorkspaceManager.workspaceCache»''')
+		log.info('''Running in the test workspace at «TestProjectManager.workspaceCache»''')
 		workspaceCache
 	}
 
 	def private Path getWorkspace(ExtensionContext context) {
-		context.root.getStore(namespace).getOrComputeIfAbsent('''workspace''', [
+		context.root.getStore(namespace).getOrComputeIfAbsent('workspace', [
 			new WorkspaceGuard(setupWorkspace())
 		], WorkspaceGuard).workspace
 	}
@@ -75,43 +75,31 @@ class TestWorkspaceManager implements ParameterResolver {
 	}
 
 	def private Path getProjectRelativePath(String variant, ExtensionContext context) {
-		Path.of(
-			context.testClass.map[simpleName.removeInvalidCharacters()].orElse(""),
-			context.displayName.removeInvalidCharacters() +
-				if (variant != "") '''[«variant.removeInvalidCharacters()»]''' else ""
-		)
-
+		val testDir = if (context.testMethod.isPresent) {
+				Path.of(
+					context.testClass.map[simpleName.removeInvalidCharacters()].orElse(""),
+					context.displayName.removeInvalidCharacters()
+				)
+			} else {
+				Path.of(context.displayName.removeInvalidCharacters())
+			}
+		return if (variant != "") testDir.resolve('''[«variant.removeInvalidCharacters()»]''') else testDir
 	}
 
 	override resolveParameter(ParameterContext parameterContext, ExtensionContext extensionContext) {
-		val projectAnnotation = parameterContext.parameter.getAnnotation(TestProject)
-		if (projectAnnotation !== null) {
-			getProject(projectAnnotation.variant, extensionContext)
-		} else {
-			getWorkspace(extensionContext)
-		}
+		val projectAnnotation = checkNotNull(parameterContext.parameter.getAnnotation(TestProject))
+		getProject(projectAnnotation.variant, extensionContext)
 	}
 
 	override supportsParameter(ParameterContext parameterContext,
 		ExtensionContext extensionContext) throws ParameterResolutionException {
-		val isWorkspace = parameterContext.parameter.getAnnotation(TestWorkspace) !== null
-		val isProject = parameterContext.parameter.getAnnotation(TestProject) !== null
-		if (isWorkspace && isProject) {
-			throw new ParameterResolutionException('''A parameter must not be annotated with @«TestWorkspace.simpleName» and «TestProject.simpleName» at the same time!''')
+		if (parameterContext.parameter.getAnnotation(TestProject) !== null) {
+			if (parameterContext.parameter.type != Path) {
+				throw new ParameterResolutionException('''The parameter «parameterContext.parameter.name» is annotated with @«TestProject.simpleName», but its type is not «Path.simpleName»!''')
+			}
+			return true
 		}
-		if (isWorkspace) {
-			parameterContext.parameter.checkIsPath(TestWorkspace)
-		}
-		if (isProject) {
-			parameterContext.parameter.checkIsPath(TestProject)
-		}
-		return isWorkspace || isProject
-	}
-
-	def private checkIsPath(Parameter parameter, Class<?> annotationClass) {
-		if (parameter.type != Path) {
-			throw new ParameterResolutionException('''The parameter «parameter.name» is annotated with @«TestWorkspace», but its type is not «Path.simpleName»!''')
-		}
+		return false
 	}
 
 	def private static Path createUniqueDirectory(Path projectPath) {
@@ -144,7 +132,7 @@ class TestWorkspaceManager implements ParameterResolver {
 					super.postVisitDirectory(dir, error) => [
 						if (deleteWorkspace || dir != workspace) {
 							try {
-								delete(workspace)
+								delete(dir)
 							} catch (DirectoryNotEmptyException e) {
 								// still some files left
 							}

@@ -41,23 +41,24 @@ import static java.util.stream.Collectors.toList
 import static tools.vitruv.testutils.TestLauncher.currentTestLauncher
 
 import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
+import java.nio.file.Path
+import org.eclipse.core.runtime.IPath
 
 @FinalFieldsConstructor
 final class ExecutionTestCompiler implements CommonalitiesCompiler {
 	static val Logger logger = Logger.getLogger(ExecutionTestCompiler)
 
 	static val String COMPLIANCE_LEVEL = '1.8';
-	static val COMPILATION_PROJECTS_FOLDER = "commonalities compilation"
 	static val TEST_PROJECT_GENERATED_SOURCES_FOLDER_NAME = 'src-gen'
 	static val TEST_PROJECT_SOURCES_FOLDER_NAME = 'src'
 	static val TEST_PROJECT_COMPILATION_FOLDER = 'bin'
 
 	var Iterable<Class<? extends ChangePropagationSpecification>> loadedChangePropagationClasses
 	var compiled = false
-	val CommonalitiesGenerationSettings generationSettings
-	val String projectName
-	val Iterable<String> commonalityFilePaths
 	val Class<?> commonalitiesOwningClass
+	val Path compilationProjectDir
+	val CommonalitiesGenerationSettings generationSettings
+	val Iterable<String> commonalityFilePaths
 	val Iterable<String> domainDependencies
 
 	override getChangePropagationSpecifications() {
@@ -127,11 +128,12 @@ final class ExecutionTestCompiler implements CommonalitiesCompiler {
 	 */
 	private def prepareTestProject() {
 		setTargetPlatform()
-		val eclipseProject = ResourcesPlugin.workspace.root.getProject(this.projectName) => [
-			create(new ProjectDescription() => [
-				name = '''«commonalitiesOwningClass.simpleName» Commonalities'''
-				location = ResourcesPlugin.workspace.root.location.append(COMPILATION_PROJECTS_FOLDER).append(
-					commonalitiesOwningClass.simpleName)
+
+		val projectName = '''«commonalitiesOwningClass.simpleName»-Commonalities'''
+		val eclipseProject = ResourcesPlugin.workspace.root.getProject(projectName) => [
+			create(new ProjectDescription => [
+				name = projectName
+				location = new org.eclipse.core.runtime.Path(compilationProjectDir.toString)
 				natureIds = #[JavaCore.NATURE_ID, XtextProjectHelper.NATURE_ID, PDE.PLUGIN_NATURE]
 			], null)
 			open(null)
@@ -270,26 +272,27 @@ final class ExecutionTestCompiler implements CommonalitiesCompiler {
 
 	@Accessors
 	static class ExecutionTestCompilerParameters {
-		var String projectName = null
+		var Object commonalitiesOwner
+		var Path compilationProjectDir
 		var Iterable<String> commonalities = null
 		var Iterable<String> domainDependencies = null
 	}
 
-	@Singleton
 	static class Factory {
 		@Inject CommonalitiesGenerationSettings generationSettings
-		@Accessors
-		var Object commonalitiesOwner
+		var parameters = new ExecutionTestCompilerParameters
 
-		def createCompiler(Consumer<ExecutionTestCompiler.ExecutionTestCompilerParameters> parametersCreator) {
-			checkState(commonalitiesOwner !== null, 'No commonalities owner has been set yet!')
-			val parameters = new ExecutionTestCompilerParameters
-			parametersCreator.accept(parameters)
+		def setParameters(Consumer<ExecutionTestCompiler.ExecutionTestCompilerParameters> configurer) {
+			configurer.accept(parameters)
+		}
+
+		def createCompiler(Consumer<ExecutionTestCompiler.ExecutionTestCompilerParameters> configurer) {
+			setParameters(configurer)
 			return new ExecutionTestCompiler(
+				parameters.commonalitiesOwner.class,
+				parameters.compilationProjectDir,
 				generationSettings,
-				parameters.projectName,
 				parameters.commonalities,
-				commonalitiesOwner.class,
 				parameters.domainDependencies
 			)
 		}

@@ -17,7 +17,6 @@ import uml_mockup.UPackage
 import tools.vitruv.framework.domains.StateBasedChangeResolutionStrategy
 import tools.vitruv.framework.domains.DefaultStateBasedChangeResolutionStrategy
 import org.junit.jupiter.api.^extension.ExtendWith
-import tools.vitruv.testutils.TestWorkspaceManager
 import tools.vitruv.testutils.TestLogging
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.AfterEach
@@ -31,8 +30,9 @@ import static tools.vitruv.testutils.metamodels.PcmMockupCreators.newPcmComponen
 import static tools.vitruv.testutils.metamodels.UmlMockupCreators.newUmlInterface
 import static tools.vitruv.testutils.metamodels.UmlMockupCreators.newUmlClass
 import static tools.vitruv.testutils.metamodels.UmlMockupCreators.newUmlPackage
+import tools.vitruv.testutils.TestProjectManager
 
-@ExtendWith(TestWorkspaceManager, TestLogging)
+@ExtendWith(TestProjectManager, TestLogging)
 abstract class StateChangePropagationTest {
 	protected static final String PCM_FILE_EXT = "pcm_mockup"
 	protected static final String UML_FILE_EXT = "uml_mockup"
