@@ -4,7 +4,6 @@ import allElementTypes.Root
 import org.eclipse.emf.common.util.ECollections
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import tools.vitruv.dsls.reactions.tests.AbstractAllElementTypesReactionsTests
 import static tools.vitruv.dsls.reactions.tests.simpleChangesTests.SimpleChangesTestsExecutionMonitor.ChangeType.*
 
 import static org.hamcrest.MatcherAssert.assertThat
@@ -18,14 +17,23 @@ import static tools.vitruv.testutils.matchers.ModelMatchers.exists
 import static tools.vitruv.testutils.matchers.ModelMatchers.doesNotExist
 import org.junit.jupiter.api.Disabled
 import static extension tools.vitruv.testutils.domains.DomainModelCreators.allElementTypes
+import tools.vitruv.dsls.reactions.tests.ReactionsExecutionTest
+import tools.vitruv.dsls.reactions.tests.TestReactionsCompiler
 
-class SimpleChangesTests extends AbstractAllElementTypesReactionsTests {
+class SimpleChangesTests extends ReactionsExecutionTest {
 	static val SOURCE_MODEL = 'SimpleChangeSource'.allElementTypes
 	static val TARGET_MODEL = "SimpleChangeTarget".allElementTypes
 	static val FURTHER_SOURCE_MODEL = 'FurtherSource'.allElementTypes
 	static val FURTHER_TARGET_MODEL = 'FurtherTarget'.allElementTypes
 
 	String[] nonContainmentNonRootIds = #["NonRootHelper0", "NonRootHelper1", "NonRootHelper2"]
+
+	override protected createCompiler(TestReactionsCompiler.Factory factory) {
+		factory.createCompiler [
+			reactions = #["/tools/vitruv/dsls/reactions/tests/AllElementTypesRedundancy.reactions"]
+			changePropagationSegments = #["simpleChangesTests"]
+		]
+	}
 
 	@BeforeEach
 	def createRoot() {

@@ -1,7 +1,6 @@
 package tools.vitruv.dsls.reactions.tests.complexTests
 
 import allElementTypes.Root
-import tools.vitruv.dsls.reactions.tests.AbstractAllElementTypesReactionsTests
 
 import static tools.vitruv.testutils.metamodels.AllElementTypesCreators.*
 import static org.hamcrest.MatcherAssert.assertThat
@@ -10,10 +9,19 @@ import static org.hamcrest.CoreMatchers.nullValue
 import static org.hamcrest.CoreMatchers.is
 import org.junit.jupiter.api.Test
 import static extension tools.vitruv.testutils.domains.DomainModelCreators.allElementTypes
+import tools.vitruv.dsls.reactions.tests.ReactionsExecutionTest
+import tools.vitruv.dsls.reactions.tests.TestReactionsCompiler
 
-class ReactionsRollbackTests extends AbstractAllElementTypesReactionsTests {
+class ReactionsRollbackTests extends ReactionsExecutionTest {
 	static val SOURCE_MODEL = 'RollbackSource'.allElementTypes
 	static val TARGET_MODEL = 'RollbackTarget'.allElementTypes
+
+	override protected createCompiler(TestReactionsCompiler.Factory factory) {
+		factory.createCompiler [
+			reactions = #["/tools/vitruv/dsls/reactions/tests/AllElementTypesRedundancy.reactions"]
+			changePropagationSegments = #["simpleChangesTests"]
+		]
+	}
 
 	@Test
 	def void testReverse() {

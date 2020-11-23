@@ -12,10 +12,23 @@ import static tools.vitruv.dsls.reactions.tests.ExecutionMonitor.observedExecuti
 import static tools.vitruv.dsls.reactions.tests.importTests.ImportTestsExecutionMonitor.ExecutionType.*
 import static tools.vitruv.testutils.metamodels.AllElementTypesCreators.newRoot
 import static extension tools.vitruv.testutils.domains.DomainModelCreators.allElementTypes
+import tools.vitruv.dsls.reactions.tests.ReactionsExecutionTest
+import tools.vitruv.dsls.reactions.tests.TestReactionsCompiler
 
-class ImportTests extends AbstractReactionImportsTests {
+class ImportTests extends ReactionsExecutionTest {
 	static val SOURCE_MODEL = 'ImportTestsModelSource'.allElementTypes
 	String testName
+
+	override protected createCompiler(TestReactionsCompiler.Factory factory) {
+		factory.createCompiler [
+			// ordered: segments with imports after their imported segments
+			reactions = #["CommonRoutines.reactions", "TransitiveRoutinesQN.reactions",
+				"TransitiveRoutinesSN.reactions", "Transitive2SN.reactions", "Transitive3SN.reactions",
+				"TransitiveSN.reactions", "DirectRoutinesQN.reactions", "Direct2SN.reactions", "DirectSN.reactions",
+				"Root.reactions"]
+			changePropagationSegments = #["importTestsRoot"]
+		]
+	}
 
 	private static def ImportTestsExecutionMonitor getExecutionMonitor() {
 		ImportTestsExecutionMonitor.instance

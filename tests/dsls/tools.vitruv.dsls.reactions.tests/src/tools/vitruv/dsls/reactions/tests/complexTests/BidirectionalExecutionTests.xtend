@@ -3,7 +3,6 @@ package tools.vitruv.dsls.reactions.tests.complexTests
 import allElementTypes.Root
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import tools.vitruv.dsls.reactions.tests.AbstractAllElementTypesReactionsTests
 import tools.vitruv.framework.change.description.CompositeContainerChange
 import tools.vitruv.framework.change.description.PropagatedChange
 import tools.vitruv.framework.change.description.VitruviusChange
@@ -19,12 +18,21 @@ import tools.vitruv.framework.change.echange.feature.reference.RemoveEReference
 import tools.vitruv.framework.change.echange.eobject.DeleteEObject
 import tools.vitruv.framework.change.echange.root.RemoveRootEObject
 import static extension tools.vitruv.testutils.domains.DomainModelCreators.allElementTypes
+import tools.vitruv.dsls.reactions.tests.ReactionsExecutionTest
+import tools.vitruv.dsls.reactions.tests.TestReactionsCompiler
 
-class BidirectionalExecutionTests extends AbstractAllElementTypesReactionsTests {
+class BidirectionalExecutionTests extends ReactionsExecutionTest {
 	static val SOURCE_MODEL = 'BidirectionalSource'.allElementTypes
 	static val TARGET_MODEL = 'BidirectionalTarget'.allElementTypes
 
 	String[] nonContainmentNonRootIds = #["NonRootHelper0", "NonRootHelper1", "NonRootHelper2"]
+
+	override protected createCompiler(TestReactionsCompiler.Factory factory) {
+		factory.createCompiler [
+			reactions = #["/tools/vitruv/dsls/reactions/tests/AllElementTypesRedundancy.reactions"]
+			changePropagationSegments = #["simpleChangesTests"]
+		]
+	}
 
 	@BeforeEach
 	def setup() {
@@ -33,9 +41,7 @@ class BidirectionalExecutionTests extends AbstractAllElementTypesReactionsTests 
 			nonRootObjectContainerHelper = newNonRootObjectContainerHelper => [
 				id = 'NonRootObjectContainer'
 				nonRootObjectsContainment += nonContainmentNonRootIds.map [ nonRootId |
-					newNonRoot => [
-						id = nonRootId
-					]
+					newNonRoot => [id = nonRootId]
 				]
 			]
 		])
