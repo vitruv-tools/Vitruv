@@ -2,9 +2,9 @@
 <classpath>
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="src" output="target/test-classes" path="unit">
+	<classpathentry kind="src" path="src-gen">
 		<attributes>
-			<attribute name="test" value="true"/>
+			<attribute name="ignore_optional_problems" value="true"/>
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="lib/cglib-nodep-3.1.jar"/>
