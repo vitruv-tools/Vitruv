@@ -9,11 +9,11 @@
 		<relativePath>../</relativePath>
 	</parent>
 	<artifactId>tools.vitruv.extensions.emf.monitorededitor.tests</artifactId>
-	<packaging>eclipse-plugin</packaging>
-	<name>Vitruv Test Utilities Metamodels</name>
+	<packaging>eclipse-test-plugin</packaging>
+	<name>Vitruv Domain EMF Monitored Editor Tests</name>
 	
 	<properties>
-		<pathToMetamodelGenerationWorkflow>src/tools/vitruv/domains/emf/monitoreditor/GenerateAdvancedFeaturesMetamodel.mwe2</pathToMetamodelGenerationWorkflow>
+		<pathToMetamodelGenerationWorkflow>src/tools/vitruv/extensions/domains/emf/monitorededitor/tests/GenerateAdvancedFeaturesMetamodel.mwe2</pathToMetamodelGenerationWorkflow>
 		<metamodelGenerationTargetFolder>src-gen/</metamodelGenerationTargetFolder>
 	</properties>
 </project>
