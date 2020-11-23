@@ -1,26 +1,29 @@
 package tools.vitruv.dsls.mappings.addressesXrecipients.tests
 
+import edu.kit.ipd.sdq.metamodels.addresses.Addresses
+import edu.kit.ipd.sdq.metamodels.recipients.City
 import edu.kit.ipd.sdq.metamodels.recipients.Location
 import edu.kit.ipd.sdq.metamodels.recipients.Recipient
+import edu.kit.ipd.sdq.metamodels.recipients.Recipients
 import mir.reactions.adXre_L2R.AdXre_L2RChangePropagationSpecification
 import org.junit.jupiter.api.Test
+import tools.vitruv.testutils.VitruvApplicationTest
 
 import static org.hamcrest.MatcherAssert.assertThat
+import static tools.vitruv.dsls.mappings.addressesXrecipients.tests.AddressesCreators.*
+import static tools.vitruv.dsls.mappings.addressesXrecipients.tests.AddressesXRecipientsTestConstants.*
+import static tools.vitruv.dsls.mappings.addressesXrecipients.tests.RecipientsCreators.*
 import static tools.vitruv.testutils.matchers.ModelMatchers.contains
 import static tools.vitruv.testutils.matchers.ModelMatchers.doesNotExist
-import edu.kit.ipd.sdq.metamodels.addresses.Addresses
+import static tools.vitruv.testutils.matchers.ModelMatchers.equalsDeeply
+import static tools.vitruv.testutils.matchers.ModelMatchers.ignoringFeatures
+
 import static extension org.eclipse.emf.ecore.util.EcoreUtil.remove
 import static extension tools.vitruv.testutils.matchers.CorrespondenceMatchers.*
-import static tools.vitruv.testutils.matchers.ModelMatchers.equalsDeeply
-import edu.kit.ipd.sdq.metamodels.recipients.Recipients
-import static tools.vitruv.testutils.matchers.ModelMatchers.ignoringFeatures
-import edu.kit.ipd.sdq.metamodels.recipients.City
-import static tools.vitruv.dsls.mappings.addressesXrecipients.tests.AddressesCreators.*
-import static tools.vitruv.dsls.mappings.addressesXrecipients.tests.RecipientsCreators.*
 
-class AddressesXRecipientsL2RTest extends AddressesXRecipientsTest {
-	override protected createChangePropagationSpecifications() {
-		return #[new AdXre_L2RChangePropagationSpecification()]
+class AddressesXRecipientsL2RTest extends VitruvApplicationTest {
+	override protected getChangePropagationSpecifications() {
+		#[new AdXre_L2RChangePropagationSpecification]
 	}
 
 	@Test

@@ -45,7 +45,7 @@ import java.nio.file.Path
 import org.eclipse.core.runtime.IPath
 
 @FinalFieldsConstructor
-final class ExecutionTestCompiler implements CommonalitiesCompiler {
+final class ExecutionTestCompiler {
 	static val Logger logger = Logger.getLogger(ExecutionTestCompiler)
 
 	static val String COMPLIANCE_LEVEL = '1.8';
@@ -61,7 +61,7 @@ final class ExecutionTestCompiler implements CommonalitiesCompiler {
 	val Iterable<String> commonalityFilePaths
 	val Iterable<String> domainDependencies
 
-	override getChangePropagationSpecifications() {
+	def getChangePropagationSpecifications() {
 		if (!compiled) {
 			val compiledFolder = compile()
 			compiled = true
@@ -271,7 +271,7 @@ final class ExecutionTestCompiler implements CommonalitiesCompiler {
 	}
 
 	@Accessors
-	static class ExecutionTestCompilerParameters {
+	static class Parameters {
 		var Object commonalitiesOwner
 		var Path compilationProjectDir
 		var Iterable<String> commonalities = null
@@ -280,13 +280,13 @@ final class ExecutionTestCompiler implements CommonalitiesCompiler {
 
 	static class Factory {
 		@Inject CommonalitiesGenerationSettings generationSettings
-		var parameters = new ExecutionTestCompilerParameters
+		var parameters = new Parameters
 
-		def setParameters(Consumer<ExecutionTestCompiler.ExecutionTestCompilerParameters> configurer) {
+		def setParameters(Consumer<ExecutionTestCompiler.Parameters> configurer) {
 			configurer.accept(parameters)
 		}
 
-		def createCompiler(Consumer<ExecutionTestCompiler.ExecutionTestCompilerParameters> configurer) {
+		def createCompiler(Consumer<ExecutionTestCompiler.Parameters> configurer) {
 			setParameters(configurer)
 			return new ExecutionTestCompiler(
 				parameters.commonalitiesOwner.class,

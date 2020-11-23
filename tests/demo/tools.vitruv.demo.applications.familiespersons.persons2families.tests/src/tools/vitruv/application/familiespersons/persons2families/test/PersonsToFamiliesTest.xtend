@@ -23,12 +23,8 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 	static val FAMILIES_MODEL = DomainUtil.getModelFileName('model/families', new FamiliesDomainProvider)
 	static val PERSONS_MODEL = DomainUtil.getModelFileName('model/model', new PersonsDomainProvider)
 
-	override protected createChangePropagationSpecifications() {
+	override protected getChangePropagationSpecifications() {
 		return #[new PersonsToFamiliesChangePropagationSpecification()]
-	}
-
-	override protected getVitruvDomains() {
-		return #[new PersonsDomainProvider().domain, new FamiliesDomainProvider().domain]
 	}
 
 	@BeforeEach

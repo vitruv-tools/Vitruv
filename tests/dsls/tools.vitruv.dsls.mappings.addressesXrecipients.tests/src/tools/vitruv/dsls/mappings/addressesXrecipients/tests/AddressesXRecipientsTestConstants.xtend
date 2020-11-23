@@ -1,16 +1,12 @@
 package tools.vitruv.dsls.mappings.addressesXrecipients.tests
 
-import tools.vitruv.demo.domains.addresses.AddressesDomainProvider
-import tools.vitruv.demo.domains.recipients.RecipientsDomainProvider
-import tools.vitruv.testutils.VitruvApplicationTest
+import edu.kit.ipd.sdq.activextendannotations.Utility
+
 import static extension tools.vitruv.dsls.mappings.addressesXrecipients.tests.AddressesCreators.addresses
 import static extension tools.vitruv.dsls.mappings.addressesXrecipients.tests.RecipientsCreators.recipients
 
-abstract class AddressesXRecipientsTest extends VitruvApplicationTest {
-	override protected getVitruvDomains() {
-		#[new AddressesDomainProvider().domain, new RecipientsDomainProvider().domain]
-	}
-
+@Utility
+class AddressesXRecipientsTestConstants {
 	protected static val ADDRESSES_MODEL = 'root'.addresses
 	protected static val RECIPIENTS_MODEL = 'root'.recipients
 	protected static val TEST_NUMBER = 42

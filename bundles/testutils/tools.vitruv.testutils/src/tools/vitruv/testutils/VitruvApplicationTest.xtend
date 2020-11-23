@@ -17,7 +17,6 @@ import tools.vitruv.framework.change.description.PropagatedChange
 import tools.vitruv.framework.change.description.VitruviusChangeFactory
 import tools.vitruv.framework.change.processing.ChangePropagationSpecification
 import tools.vitruv.framework.change.recording.AtomicEmfChangeRecorder
-import tools.vitruv.framework.domains.VitruvDomain
 import tools.vitruv.framework.tuid.TuidManager
 import tools.vitruv.framework.userinteraction.UserInteractionFactory
 import tools.vitruv.framework.util.ResourceSetUtil
@@ -44,9 +43,7 @@ abstract class VitruvApplicationTest implements CorrespondenceModelContainer {
 	InternalVirtualModel virtualModel
 	AtomicEmfChangeRecorder changeRecorder
 
-	def protected abstract Iterable<ChangePropagationSpecification> createChangePropagationSpecifications()
-
-	def protected abstract Iterable<VitruvDomain> getVitruvDomains()
+	def protected abstract Iterable<? extends ChangePropagationSpecification> getChangePropagationSpecifications()
 
 	@BeforeEach
 	def final package void setTestProjectFolder(@TestProject Path testProjectPath) {
@@ -56,14 +53,16 @@ abstract class VitruvApplicationTest implements CorrespondenceModelContainer {
 	@BeforeEach
 	def final package void prepareVirtualModel(TestInfo testInfo, @TestProject(variant="vsum") Path vsumPath) {
 		TuidManager.instance.reinitialize()
+		val changePropagationSpecifications = this.changePropagationSpecifications
+		val domains = changePropagationSpecifications.flatMap[#[sourceDomain, targetDomain]].toSet
 		var interactionProvider = UserInteractionFactory.instance.createPredefinedInteractionResultProvider(null)
 		testUserInteractor = new TestUserInteraction(interactionProvider)
 		var userInteractor = UserInteractionFactory.instance.createUserInteractor(interactionProvider)
 		// The virtual model has to be created first because otherwise some domain
 		// overwrites may not be applied correctly before instantiating the ResourceSet
 		virtualModel = new VirtualModelImpl(vsumPath.toFile(), userInteractor, new VirtualModelConfiguration() => [
-			vitruvDomains.forEach[domain|addMetamodel(domain)]
-			createChangePropagationSpecifications().forEach[spec|addChangePropagationSpecification(spec)]
+			domains.forEach[domain|addMetamodel(domain)]
+			changePropagationSpecifications.forEach[spec|addChangePropagationSpecification(spec)]
 		])
 		resourceSet = new ResourceSetImpl()
 		ResourceSetUtil.addExistingFactoriesToResourceSet(resourceSet)

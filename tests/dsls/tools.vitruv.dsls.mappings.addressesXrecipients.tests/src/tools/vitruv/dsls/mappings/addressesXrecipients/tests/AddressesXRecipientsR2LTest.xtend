@@ -1,24 +1,27 @@
 package tools.vitruv.dsls.mappings.addressesXrecipients.tests
 
 import edu.kit.ipd.sdq.metamodels.addresses.Addresses
-import mir.reactions.adXre_R2L.AdXre_R2LChangePropagationSpecification
-
-import static tools.vitruv.testutils.matchers.ModelMatchers.contains
-import static tools.vitruv.testutils.matchers.ModelMatchers.ignoringFeatures
-import static org.hamcrest.MatcherAssert.assertThat
-import static extension tools.vitruv.testutils.matchers.CorrespondenceMatchers.hasOneCorrespondence
-import static tools.vitruv.testutils.matchers.ModelMatchers.equalsDeeply
 import edu.kit.ipd.sdq.metamodels.recipients.Recipients
-import static extension org.eclipse.emf.ecore.util.EcoreUtil.remove
-import static tools.vitruv.testutils.matchers.ModelMatchers.doesNotExist
+import mir.reactions.adXre_R2L.AdXre_R2LChangePropagationSpecification
 import org.junit.jupiter.api.Test
-import static extension tools.vitruv.testutils.matchers.CorrespondenceMatchers.hasNoCorrespondences
-import static extension tools.vitruv.dsls.mappings.addressesXrecipients.tests.AddressesCreators.*
-import static extension tools.vitruv.dsls.mappings.addressesXrecipients.tests.RecipientsCreators.*
+import tools.vitruv.testutils.VitruvApplicationTest
 
-class AddressesXRecipientsR2LTest extends AddressesXRecipientsTest {
-	override protected createChangePropagationSpecifications() {
-		return #[new AdXre_R2LChangePropagationSpecification()]
+import static org.hamcrest.MatcherAssert.assertThat
+import static tools.vitruv.dsls.mappings.addressesXrecipients.tests.AddressesCreators.*
+import static tools.vitruv.dsls.mappings.addressesXrecipients.tests.AddressesXRecipientsTestConstants.*
+import static tools.vitruv.dsls.mappings.addressesXrecipients.tests.RecipientsCreators.*
+import static tools.vitruv.testutils.matchers.ModelMatchers.contains
+import static tools.vitruv.testutils.matchers.ModelMatchers.doesNotExist
+import static tools.vitruv.testutils.matchers.ModelMatchers.equalsDeeply
+import static tools.vitruv.testutils.matchers.ModelMatchers.ignoringFeatures
+
+import static extension org.eclipse.emf.ecore.util.EcoreUtil.remove
+import static extension tools.vitruv.testutils.matchers.CorrespondenceMatchers.hasNoCorrespondences
+import static extension tools.vitruv.testutils.matchers.CorrespondenceMatchers.hasOneCorrespondence
+
+class AddressesXRecipientsR2LTest extends VitruvApplicationTest {
+	override protected getChangePropagationSpecifications() {
+		#[new AdXre_R2LChangePropagationSpecification()]
 	}
 
 	@Test
@@ -132,7 +135,7 @@ class AddressesXRecipientsR2LTest extends AddressesXRecipientsTest {
 		])
 		assertThat(recipient, hasOneCorrespondence(equalsDeeply(newAddress => [
 			street = TEST_STREET
-			number = TEST_NUMBER 
+			number = TEST_NUMBER
 			zipCode = TEST_ZIP_CODE + TEST_ZIP_CODE
 		], ignoringFeatures('parent'))))
 

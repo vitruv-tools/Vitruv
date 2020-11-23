@@ -14,10 +14,10 @@ import tools.vitruv.testutils.VitruvApplicationTest
 @InjectWith(CombinedUiInjectorProvider)
 @TestInstance(PER_CLASS)
 abstract class CommonalitiesExecutionTest extends VitruvApplicationTest {
-	var CommonalitiesCompiler compiler
+	var ExecutionTestCompiler compiler
 	var Path compilationProjectDir
 
-	protected abstract def CommonalitiesCompiler createCompiler(ExecutionTestCompiler.Factory factory)
+	protected abstract def ExecutionTestCompiler createCompiler(ExecutionTestCompiler.Factory factory)
 
 	@BeforeAll
 	def void acquireCompilationTargetDir(@TestProject(variant="commonalities compilation") Path compilationDir) {
@@ -35,11 +35,7 @@ abstract class CommonalitiesExecutionTest extends VitruvApplicationTest {
 		}
 	}
 
-	override protected createChangePropagationSpecifications() {
+	override protected getChangePropagationSpecifications() {
 		compiler.changePropagationSpecifications
-	}
-
-	override protected getVitruvDomains() {
-		createChangePropagationSpecifications.flatMap[#[sourceDomain, targetDomain]].toSet
 	}
 }

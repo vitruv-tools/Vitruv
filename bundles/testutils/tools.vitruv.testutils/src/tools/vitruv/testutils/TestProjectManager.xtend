@@ -23,16 +23,19 @@ import static tools.vitruv.framework.util.VitruviusConstants.getTestProjectMarke
 import java.util.regex.Pattern
 import org.eclipse.core.resources.ResourcesPlugin
 import static com.google.common.base.Preconditions.checkNotNull
+import java.util.ArrayList
+import org.junit.jupiter.api.^extension.AfterEachCallback
 
 /**
  * Extension managing the test projects for Eclipse tests. Test classes using this extension can have test project 
  * folders injected by using the @{@link TestProject} annotation. Test projects will be cleaned if their corresponding
  * test succeed, but retained if their corresponding test failed.
  */
-class TestProjectManager implements ParameterResolver {
+class TestProjectManager implements ParameterResolver, AfterEachCallback {
 	static val VM_ARGUMENT_TEST_WORKSPACE_PATH = "testWorkspacePath"
 	static val log = Logger.getLogger(TestProjectManager) => [level = INFO]
 	static val namespace = ExtensionContext.Namespace.create(TestProjectManager)
+	static val observedFailure = "observedFailure"
 	static val projectNamespace = ExtensionContext.Namespace.create(TestProjectManager, "projects")
 	static val invalidFileCharacters = Pattern.compile("[/\\\\<>:\"|?*\u0000]")
 	/**
@@ -40,6 +43,28 @@ class TestProjectManager implements ParameterResolver {
 	 * to make is static.
 	 */
 	static Path workspaceCache
+
+	override afterEach(ExtensionContext context) throws Exception {
+		if (context.executionException.isPresent) {
+			context.observedFailure = true
+		}
+	}
+
+	def private static getObservedFailure(ExtensionContext context) {
+		context.getStore(namespace).getOrDefault(observedFailure, Boolean, false)
+	}
+
+	def private static setObservedFailure(ExtensionContext context, boolean value) {
+		context.chain.forEach[getStore(namespace).put(observedFailure, true)]
+	}
+
+	def private static chain(ExtensionContext context) {
+		var result = new ArrayList<ExtensionContext>()
+		for (var current = context; current !== null; current = current.parent.orElse(null)) {
+			result += current
+		}
+		return result
+	}
 
 	def private Path setupWorkspace() {
 		if (TestProjectManager.workspaceCache !== null)
@@ -150,7 +175,7 @@ class TestProjectManager implements ParameterResolver {
 
 		override close() throws Throwable {
 			// clear if the test succeeded, retain if the test failed
-			if (context.executionException.isEmpty) {
+			if (!context.observedFailure) {
 				walk(projectDir).sorted(reverseOrder).forEach[delete(it)]
 			}
 		}
