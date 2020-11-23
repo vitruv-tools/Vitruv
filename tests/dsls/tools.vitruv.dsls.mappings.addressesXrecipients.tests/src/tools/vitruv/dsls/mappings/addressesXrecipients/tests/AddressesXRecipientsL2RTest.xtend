@@ -7,8 +7,6 @@ import org.junit.jupiter.api.Test
 
 import static org.hamcrest.MatcherAssert.assertThat
 import static tools.vitruv.testutils.matchers.ModelMatchers.contains
-import static tools.vitruv.dsls.mappings.addressesXrecipients.tests.AddressesCreator.*
-import static tools.vitruv.dsls.mappings.addressesXrecipients.tests.RecipientsCreator.*
 import static tools.vitruv.testutils.matchers.ModelMatchers.doesNotExist
 import edu.kit.ipd.sdq.metamodels.addresses.Addresses
 import static extension org.eclipse.emf.ecore.util.EcoreUtil.remove
@@ -17,6 +15,8 @@ import static tools.vitruv.testutils.matchers.ModelMatchers.equalsDeeply
 import edu.kit.ipd.sdq.metamodels.recipients.Recipients
 import static tools.vitruv.testutils.matchers.ModelMatchers.ignoringFeatures
 import edu.kit.ipd.sdq.metamodels.recipients.City
+import static tools.vitruv.dsls.mappings.addressesXrecipients.tests.AddressesCreators.*
+import static tools.vitruv.dsls.mappings.addressesXrecipients.tests.RecipientsCreators.*
 
 class AddressesXRecipientsL2RTest extends AddressesXRecipientsTest {
 	override protected createChangePropagationSpecifications() {

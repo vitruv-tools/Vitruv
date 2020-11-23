@@ -23,8 +23,6 @@ import org.hamcrest.TypeSafeMatcher
 import static com.google.common.base.Preconditions.checkArgument
 import static java.util.Collections.emptyMap
 import static tools.vitruv.framework.util.XtendAssertHelper.*
-import org.eclipse.emf.ecore.EClass
-import java.util.Objects
 
 import static extension tools.vitruv.testutils.matchers.ModelPrinter.appendEObjectValue
 import static extension tools.vitruv.testutils.matchers.ModelPrinter.appendPrettyValue
@@ -482,76 +480,5 @@ package class IgnoreAllExceptTypedFeatures implements FeatureMatcher {
 
 	override getMismatch(Object expectedValue, Object itemValue) {
 		null
-	}
-}
-
-@FinalFieldsConstructor
-class ModelPrinter {
-	val Description target
-	val printed = new HashMap<EObject, String>()
-	val classCount = new HashMap<EClass, Integer>()
-
-	def dispatch void print(Object object) {
-		target.appendText(Objects.toString(object))
-	}
-
-	def dispatch void print(EObject object) {
-		var objectId = printed.get(object)
-		if (objectId !== null) {
-			target.appendText(objectId)
-		} else {
-			objectId = assignId(object)
-			printed.put(object, objectId)
-			target.appendText(objectId).appendText('(')
-			object.eClass.EAllStructuralFeatures.filter[!derived].commaSeparated [ feature |
-				target.appendText(feature.name).appendText('=')
-				if (!object.eIsSet(feature)) {
-					target.appendText('<unset>')
-				} else if (feature.isMany) {
-					target.appendText(if (feature.ordered) '[' else '{')
-					(object.eGet(feature) as Iterable<Object>).commaSeparated[print()]
-					target.appendText(if (feature.ordered) ']' else '}')
-				} else {
-					print(object.eGet(feature))
-				}
-			]
-			target.appendText(')')
-		}
-	}
-
-	private def assignId(EObject object) {
-		val index = classCount.compute(object.eClass) [ key, oldValue |
-			if (oldValue === null) 1 else oldValue + 1
-		]
-		object.eClass.name + if (index == 1) "" else "#" + index
-	}
-
-	private def <T> commaSeparated(Iterable<T> elements, Consumer<T> printer) {
-		elements.forEach [ element, index |
-			if (index !== 0) target.appendText(', ')
-			printer.accept(element)
-		]
-	}
-
-	def static package appendEObjectValue(Description description, EObject object) {
-		description.appendText('<')
-		new ModelPrinter(description).print(object)
-		description.appendText('>')
-	}
-
-	def static package dispatch appendPrettyValue(Description description, EClass eClass) {
-		description.appendText('''<«eClass.name»>''')
-	}
-
-	def static package dispatch appendPrettyValue(Description description, EObject object) {
-		description.appendEObjectValue(object)
-	}
-
-	def static package dispatch appendPrettyValue(Description description, Object object) {
-		description.appendValue(object)
-	}
-
-	def static package dispatch appendPrettyValue(Description description, Void nul) {
-		description.appendText('''<null>''')
 	}
 }

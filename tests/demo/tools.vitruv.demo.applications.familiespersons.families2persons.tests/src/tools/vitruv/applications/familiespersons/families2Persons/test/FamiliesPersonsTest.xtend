@@ -10,22 +10,23 @@ import tools.vitruv.applications.familiespersons.families2persons.FamiliesToPers
 import tools.vitruv.domains.families.FamiliesDomainProvider
 import tools.vitruv.domains.persons.PersonsDomainProvider
 import tools.vitruv.framework.correspondence.CorrespondenceModelUtil
-import tools.vitruv.testutils.VitruviusApplicationTest
 
 import static org.apache.log4j.Level.DEBUG
 import static org.apache.log4j.Logger.getRootLogger
 import static org.hamcrest.CoreMatchers.is
 import static org.hamcrest.MatcherAssert.assertThat
 import static tools.vitruv.testutils.matchers.ModelMatchers.exists
+import tools.vitruv.testutils.VitruvApplicationTest
+import tools.vitruv.testutils.domains.DomainUtil
 
-class FamiliesPersonsTest extends VitruviusApplicationTest {
+class FamiliesPersonsTest extends VitruvApplicationTest {
 	static val FAMILY_NAME = "Mustermann"
 	static val FIRST_NAME_FATHER = "Max"
 	static val FIRST_NAME_SON = "Sohn"
 	static val FIRST_NAME_DAUGHTER = "Tochter"
 	static val FIRST_NAME_MOTHER = "Erika"
-	static val PERSONS_MODEL = "model/persons.persons"
-	static val FAMILIES_MODEL = "model/model.families"
+	static val PERSONS_MODEL = DomainUtil.getModelFileName('model/persons', new PersonsDomainProvider)
+	static val FAMILIES_MODEL = DomainUtil.getModelFileName('model/model', new FamiliesDomainProvider)
 
 	override protected createChangePropagationSpecifications() {
 		return #[new FamiliesToPersonsChangePropagationSpecification()]

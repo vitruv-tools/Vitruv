@@ -10,7 +10,7 @@ class TestLauncher {
 	}
 
 	@Lazy
-	static val current = [
+	static val TestLauncher.Type current = [
 		val eclipseApplication = System.getProperty('eclipse.application')
 		return if (eclipseApplication === null)
 			TestLauncher.Type.UNKNOWN
@@ -22,4 +22,5 @@ class TestLauncher {
 			TestLauncher.Type.UNKNOWN
 	].apply(null)
 
+	def static currentTestLauncher() { current }
 }

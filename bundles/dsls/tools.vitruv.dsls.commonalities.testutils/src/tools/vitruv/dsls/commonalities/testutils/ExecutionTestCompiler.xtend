@@ -1,6 +1,7 @@
 package tools.vitruv.dsls.commonalities.testutils
 
 import com.google.inject.Inject
+import com.google.inject.Singleton
 import java.io.ByteArrayInputStream
 import java.io.File
 import java.net.URLClassLoader
@@ -9,13 +10,14 @@ import java.nio.file.Paths
 import java.util.ArrayList
 import java.util.HashSet
 import java.util.Hashtable
+import java.util.function.Consumer
 import org.apache.log4j.Logger
+import org.eclipse.core.internal.resources.ProjectDescription
 import org.eclipse.core.resources.IFolder
 import org.eclipse.core.resources.IProject
 import org.eclipse.core.resources.IResource
 import org.eclipse.core.resources.IncrementalProjectBuilder
 import org.eclipse.core.resources.ResourcesPlugin
-import org.eclipse.core.runtime.IProgressMonitor
 import org.eclipse.core.runtime.NullProgressMonitor
 import org.eclipse.core.runtime.Platform
 import org.eclipse.jdt.core.JavaCore
@@ -26,6 +28,7 @@ import org.eclipse.pde.core.target.LoadTargetDefinitionJob
 import org.eclipse.pde.internal.core.PDECore
 import org.eclipse.pde.internal.core.natures.PDE
 import org.eclipse.pde.internal.core.target.TargetPlatformService
+import org.eclipse.xtend.lib.annotations.Accessors
 import org.eclipse.xtend.lib.annotations.FinalFieldsConstructor
 import org.eclipse.xtext.ui.XtextProjectHelper
 import org.eclipse.xtext.ui.util.JREContainerProvider
@@ -35,15 +38,9 @@ import tools.vitruv.framework.change.processing.ChangePropagationSpecification
 
 import static com.google.common.base.Preconditions.*
 import static java.util.stream.Collectors.toList
+import static tools.vitruv.testutils.TestLauncher.currentTestLauncher
 
 import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
-import com.google.inject.Singleton
-import org.eclipse.xtend.lib.annotations.Accessors
-import java.util.function.Consumer
-import tools.vitruv.testutils.TestLauncher
-
-import static tools.vitruv.testutils.TestLauncher.Type.*
-import org.eclipse.core.internal.resources.ProjectDescription
 
 @FinalFieldsConstructor
 final class ExecutionTestCompiler implements CommonalitiesCompiler {
@@ -133,7 +130,6 @@ final class ExecutionTestCompiler implements CommonalitiesCompiler {
 		val eclipseProject = ResourcesPlugin.workspace.root.getProject(this.projectName) => [
 			create(new ProjectDescription() => [
 				name = '''«commonalitiesOwningClass.simpleName» Commonalities'''
-				// TODO what about surefire?
 				location = ResourcesPlugin.workspace.root.location.append(COMPILATION_PROJECTS_FOLDER).append(
 					commonalitiesOwningClass.simpleName)
 				natureIds = #[JavaCore.NATURE_ID, XtextProjectHelper.NATURE_ID, PDE.PLUGIN_NATURE]
@@ -164,7 +160,7 @@ final class ExecutionTestCompiler implements CommonalitiesCompiler {
 	}
 
 	private def setGenerationSettings() {
-		switch (TestLauncher.current) {
+		switch (currentTestLauncher) {
 			case ECLIPSE:
 				// always generate reactions when run from Eclipse, as they are helpful for debugging.
 				generationSettings.createReactionFiles = true

@@ -11,14 +11,14 @@ import tools.vitruv.framework.change.echange.eobject.CreateEObject
 import tools.vitruv.framework.change.echange.feature.reference.ReplaceSingleValuedEReference
 
 import static org.hamcrest.CoreMatchers.*
-import static tools.vitruv.testutils.domains.AllElementTypesCreators.*
+import static tools.vitruv.testutils.metamodels.AllElementTypesCreators.*
 import static tools.vitruv.testutils.matchers.ModelMatchers.*
 import static org.hamcrest.MatcherAssert.assertThat
 import static tools.vitruv.testutils.matchers.ModelMatchers.containsModelOf
 import tools.vitruv.framework.change.echange.feature.reference.RemoveEReference
 import tools.vitruv.framework.change.echange.eobject.DeleteEObject
 import tools.vitruv.framework.change.echange.root.RemoveRootEObject
-import static extension tools.vitruv.testutils.domains.AllElementTypesCreators.allElementTypes
+import static extension tools.vitruv.testutils.domains.DomainModelCreators.allElementTypes
 
 class BidirectionalExecutionTests extends AbstractAllElementTypesReactionsTests {
 	static val SOURCE_MODEL = 'BidirectionalSource'.allElementTypes

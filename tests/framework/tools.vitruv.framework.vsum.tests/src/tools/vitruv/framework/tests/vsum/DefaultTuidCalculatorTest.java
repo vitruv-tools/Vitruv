@@ -1,15 +1,15 @@
 package tools.vitruv.framework.tests.vsum;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.uml2.uml.Class;
 import org.eclipse.uml2.uml.Package;
 import org.eclipse.uml2.uml.Property;
 import org.eclipse.uml2.uml.UMLFactory;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import pcm_mockup.Component;
 import pcm_mockup.Repository;
@@ -47,7 +47,7 @@ public class DefaultTuidCalculatorTest extends VsumTest {
         String umlPrefix = umlProperty.eClass().getEPackage().getNsPrefix();
         EObject resolvedEObject = testTuidCalculator(umlPrefix, umlProperty.getClass_().getPackage(), umlProperty,
                 expectedTuid, "name");
-        assertEquals("UAttribute could not be correctly resolved", resolvedEObject, umlProperty);
+        assertEquals(resolvedEObject, umlProperty, "UAttribute could not be correctly resolved");
     }
 
     private Property createUmlModelWithProperty() {
@@ -64,13 +64,13 @@ public class DefaultTuidCalculatorTest extends VsumTest {
         TuidCalculatorAndResolver defaultTuidCalculatorAndResolver = new AttributeTuidCalculatorAndResolver(tuidPrefix,
                 attributeNames);
         boolean hasTuid = defaultTuidCalculatorAndResolver.calculateTuidFromEObject(eObject) != null;
-        assertTrue("Tuid Calculator is not able to calculate Tuid for EObject " + eObject, hasTuid);
+        assertTrue(hasTuid, "Tuid Calculator is not able to calculate Tuid for EObject " + eObject);
         String calculatedTuid = defaultTuidCalculatorAndResolver.calculateTuidFromEObject(eObject);
         // Calculated Tuid contains more than just the UUID itself. It also contains the resource
         // and the class name that was used to create the Tuid. Hence, we just compare with contains
         // instead of equals
         assertNotNull("Calculated Tuid is null", calculatedTuid);
-        assertTrue("Calculated Tuid does not contain expected Tuid", calculatedTuid.contains(expectedTuid));
+        assertTrue(calculatedTuid.contains(expectedTuid), "Calculated Tuid does not contain expected Tuid");
         Tuid tuid = Tuid.getInstance(calculatedTuid);
         String tuidString = tuid.toString();
         assertNotNull("Tuid string is null", tuidString);

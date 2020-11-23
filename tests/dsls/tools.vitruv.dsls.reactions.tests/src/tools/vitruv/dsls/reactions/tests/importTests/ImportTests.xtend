@@ -10,8 +10,8 @@ import static org.hamcrest.CoreMatchers.hasItem
 import static org.hamcrest.MatcherAssert.assertThat
 import static tools.vitruv.dsls.reactions.tests.ExecutionMonitor.observedExecutions
 import static tools.vitruv.dsls.reactions.tests.importTests.ImportTestsExecutionMonitor.ExecutionType.*
-import static tools.vitruv.testutils.domains.AllElementTypesCreators.newRoot
-import static extension tools.vitruv.testutils.domains.AllElementTypesCreators.allElementTypes
+import static tools.vitruv.testutils.metamodels.AllElementTypesCreators.newRoot
+import static extension tools.vitruv.testutils.domains.DomainModelCreators.allElementTypes
 
 class ImportTests extends AbstractReactionImportsTests {
 	static val SOURCE_MODEL = 'ImportTestsModelSource'.allElementTypes

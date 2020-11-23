@@ -3,8 +3,8 @@ package tools.vitruv.dsls.mappings.addressesXrecipients.tests
 import tools.vitruv.demo.domains.addresses.AddressesDomainProvider
 import tools.vitruv.demo.domains.recipients.RecipientsDomainProvider
 import tools.vitruv.testutils.VitruvApplicationTest
-import static extension tools.vitruv.dsls.mappings.addressesXrecipients.tests.AddressesCreator.addresses
-import static extension tools.vitruv.dsls.mappings.addressesXrecipients.tests.RecipientsCreator.recipients
+import static extension tools.vitruv.dsls.mappings.addressesXrecipients.tests.AddressesCreators.addresses
+import static extension tools.vitruv.dsls.mappings.addressesXrecipients.tests.RecipientsCreators.recipients
 
 abstract class AddressesXRecipientsTest extends VitruvApplicationTest {
 	override protected getVitruvDomains() {

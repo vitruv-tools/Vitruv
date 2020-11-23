@@ -11,11 +11,13 @@
 
 package tools.vitruv.domains.emf.monitorededitor.monitor;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import java.net.URISyntaxException;
 
 import org.eclipse.ui.IEditorPart;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import tools.vitruv.domains.emf.monitorededitor.EditorNotMonitorableException;
 import tools.vitruv.domains.emf.monitorededitor.IEditorPartAdapterFactory;
@@ -29,7 +31,7 @@ public class DefaultEditorPartAdapterFactoryImplTests extends BasicTestCase {
     private IEditorPartAdapterFactory factory;
     private EclipseMock eclipseMock;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         this.factory = new DefaultEditorPartAdapterFactoryImpl(Files.ECORE_FILE_EXTENSION);
         this.eclipseMock = new EclipseMock();
@@ -48,17 +50,17 @@ public class DefaultEditorPartAdapterFactoryImplTests extends BasicTestCase {
         assert factory.createAdapter(gmfEditor) != null;
     }
 
-    @Test(expected = EditorNotMonitorableException.class)
+    @Test
     public void refusesToCreateAdapterForNonEMFEditor() {
         IEditorPart otherEditor = eclipseMock.openNewNonEMFEditorPart();
-        factory.createAdapter(otherEditor);
+        assertThrows(EditorNotMonitorableException.class, () -> factory.createAdapter(otherEditor));
     }
 
-    @Test(expected = EditorNotMonitorableException.class)
+    @Test
     public void refusesToCreateAdapterForEditorWithUnexpectedResourceURISuffix() {
         factory = new DefaultEditorPartAdapterFactoryImpl("foo");
         IEditorPart emfEditor = eclipseMock.openNewEMFTreeEditorPart(Files.EXAMPLEMODEL_ECORE);
-        factory.createAdapter(emfEditor);
+        assertThrows(EditorNotMonitorableException.class, () -> factory.createAdapter(emfEditor));
     }
 
     @Test

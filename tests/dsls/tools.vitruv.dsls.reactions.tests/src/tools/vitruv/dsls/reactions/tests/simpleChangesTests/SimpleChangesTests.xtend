@@ -9,15 +9,15 @@ import static tools.vitruv.dsls.reactions.tests.simpleChangesTests.SimpleChanges
 
 import static org.hamcrest.MatcherAssert.assertThat
 import static tools.vitruv.dsls.reactions.tests.ExecutionMonitor.observedExecutions
-import static tools.vitruv.testutils.domains.AllElementTypesCreators.newNonRoot
-import static tools.vitruv.testutils.domains.AllElementTypesCreators.newNonRootObjectContainerHelper
-import static tools.vitruv.testutils.domains.AllElementTypesCreators.newRoot
+import static tools.vitruv.testutils.metamodels.AllElementTypesCreators.newNonRoot
+import static tools.vitruv.testutils.metamodels.AllElementTypesCreators.newNonRootObjectContainerHelper
+import static tools.vitruv.testutils.metamodels.AllElementTypesCreators.newRoot
 import static tools.vitruv.testutils.matchers.ModelMatchers.containsModelOf
 import static org.hamcrest.CoreMatchers.is
 import static tools.vitruv.testutils.matchers.ModelMatchers.exists
 import static tools.vitruv.testutils.matchers.ModelMatchers.doesNotExist
 import org.junit.jupiter.api.Disabled
-import static extension tools.vitruv.testutils.domains.AllElementTypesCreators.allElementTypes
+import static extension tools.vitruv.testutils.domains.DomainModelCreators.allElementTypes
 
 class SimpleChangesTests extends AbstractAllElementTypesReactionsTests {
 	static val SOURCE_MODEL = 'SimpleChangeSource'.allElementTypes

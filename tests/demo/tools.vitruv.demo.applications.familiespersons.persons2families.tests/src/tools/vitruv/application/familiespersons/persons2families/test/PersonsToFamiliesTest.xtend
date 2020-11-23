@@ -8,19 +8,20 @@ import org.junit.jupiter.api.Test
 import tools.vitruv.applications.familiespersons.persons2families.PersonsToFamiliesChangePropagationSpecification
 import tools.vitruv.domains.families.FamiliesDomainProvider
 import tools.vitruv.domains.persons.PersonsDomainProvider
-import tools.vitruv.testutils.VitruviusApplicationTest
 
 import static org.hamcrest.CoreMatchers.is
 import static org.hamcrest.MatcherAssert.assertThat
 import static tools.vitruv.testutils.matchers.ModelMatchers.exists
 import org.junit.jupiter.api.Disabled
+import tools.vitruv.testutils.VitruvApplicationTest
+import tools.vitruv.testutils.domains.DomainUtil
 
-class PersonsToFamiliesTest extends VitruviusApplicationTest {
+class PersonsToFamiliesTest extends VitruvApplicationTest {
 	static val MALE_PERSON_NAME = "Max Mustermann"
 	static val SECOND_MALE_PERSON_NAME = "Bernd Mustermann"
 	static val FEMALE_PERSON_NAME = "Erika Mustermann"
-	static val FAMILIES_MODEL = "model/families.families"
-	static val PERSONS_MODEL = "model/model.persons"
+	static val FAMILIES_MODEL = DomainUtil.getModelFileName('model/families', new FamiliesDomainProvider)
+	static val PERSONS_MODEL = DomainUtil.getModelFileName('model/model', new PersonsDomainProvider)
 
 	override protected createChangePropagationSpecifications() {
 		return #[new PersonsToFamiliesChangePropagationSpecification()]
@@ -33,7 +34,7 @@ class PersonsToFamiliesTest extends VitruviusApplicationTest {
 	@BeforeEach
 	def createRoot() {
 		createAndSynchronizeModel(PERSONS_MODEL, PersonsFactory.eINSTANCE.createPersonRegister)
-		
+
 		assertThat(resourceAt(FAMILIES_MODEL), exists)
 	}
 
@@ -86,7 +87,7 @@ class PersonsToFamiliesTest extends VitruviusApplicationTest {
 		saveAndSynchronizeChanges(PersonRegister.from(PERSONS_MODEL).record [
 			persons += person
 		])
-		saveAndSynchronizeChanges(person.record [fullName = SECOND_MALE_PERSON_NAME])
+		saveAndSynchronizeChanges(person.record[fullName = SECOND_MALE_PERSON_NAME])
 		val Iterable<Member> members = correspondenceModel.getCorrespondingEObjects(#[person]).filter(Member)
 
 		assertThat(members.length, is(1))

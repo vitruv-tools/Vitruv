@@ -11,18 +11,15 @@ import tools.vitruv.dsls.commonalities.testutils.ExecutionTestCompiler
 import org.junit.jupiter.api.Test
 import allElementTypes.Root
 import allElementTypes2.Root2
-import static tools.vitruv.testutils.domains.AllElementTypesCreators.newRoot
-import static tools.vitruv.testutils.domains.AllElementTypes2Creators.newRoot2
-import static tools.vitruv.testutils.domains.PcmMockupCreators.newRepository
-import static tools.vitruv.testutils.domains.UmlMockupCreators.newUMLPackage
-import static tools.vitruv.testutils.domains.AllElementTypes2Creators.newNonRoot2
-import static tools.vitruv.testutils.domains.AllElementTypesCreators.newNonRoot
-import static tools.vitruv.testutils.domains.PcmMockupCreators.newComponent
-import static tools.vitruv.testutils.domains.UmlMockupCreators.newUMLClass
-import static extension tools.vitruv.testutils.domains.AllElementTypes2Creators.allElementTypes2
-import static extension tools.vitruv.testutils.domains.AllElementTypesCreators.allElementTypes
-import static extension tools.vitruv.testutils.domains.PcmMockupCreators.pcm_mockup
-import static extension tools.vitruv.testutils.domains.UmlMockupCreators.uml_mockup
+import static tools.vitruv.testutils.metamodels.AllElementTypesCreators.newRoot
+import static tools.vitruv.testutils.metamodels.AllElementTypes2Creators.newRoot2
+import static tools.vitruv.testutils.metamodels.AllElementTypes2Creators.newNonRoot2
+import static tools.vitruv.testutils.metamodels.AllElementTypesCreators.newNonRoot
+import static extension tools.vitruv.testutils.domains.DomainModelCreators.*
+import static tools.vitruv.testutils.metamodels.PcmMockupCreators.newPcmRepository
+import static tools.vitruv.testutils.metamodels.PcmMockupCreators.newPcmComponent
+import static tools.vitruv.testutils.metamodels.UmlMockupCreators.newUmlPackage
+import static tools.vitruv.testutils.metamodels.UmlMockupCreators.newUmlClass
 
 class IdentifiedExecutionTest extends CommonalitiesExecutionTest {
 	override createCompiler(ExecutionTestCompiler.Factory factory) {
@@ -42,8 +39,8 @@ class IdentifiedExecutionTest extends CommonalitiesExecutionTest {
 
 		assertThat(resourceAt('testid'.allElementTypes2), contains(newRoot2 => [id2 = 'testid']))
 		assertThat(resourceAt('testid'.allElementTypes), contains(newRoot => [id = 'testid']))
-		assertThat(resourceAt('testid'.pcm_mockup), contains(newRepository => [id = 'testid']))
-		assertThat(resourceAt('testid'.uml_mockup), contains(newUMLPackage => [id = 'testid']))
+		assertThat(resourceAt('testid'.pcm_mockup), contains(newPcmRepository => [id = 'testid']))
+		assertThat(resourceAt('testid'.uml_mockup), contains(newUmlPackage => [id = 'testid']))
 	}
 
 	@Test
@@ -54,18 +51,18 @@ class IdentifiedExecutionTest extends CommonalitiesExecutionTest {
 
 		assertThat(resourceAt('first'.allElementTypes2), contains(newRoot2 => [id2 = 'first']))
 		assertThat(resourceAt('first'.allElementTypes), contains(newRoot => [id = 'first']))
-		assertThat(resourceAt('first'.pcm_mockup), contains(newRepository => [id = 'first']))
-		assertThat(resourceAt('first'.uml_mockup), contains(newUMLPackage => [id = 'first']))
+		assertThat(resourceAt('first'.pcm_mockup), contains(newPcmRepository => [id = 'first']))
+		assertThat(resourceAt('first'.uml_mockup), contains(newUmlPackage => [id = 'first']))
 
 		assertThat(resourceAt('second'.allElementTypes2), contains(newRoot2 => [id2 = 'second']))
 		assertThat(resourceAt('second'.allElementTypes), contains(newRoot => [id = 'second']))
-		assertThat(resourceAt('second'.pcm_mockup), contains(newRepository => [id = 'second']))
-		assertThat(resourceAt('second'.uml_mockup), contains(newUMLPackage => [id = 'second']))
+		assertThat(resourceAt('second'.pcm_mockup), contains(newPcmRepository => [id = 'second']))
+		assertThat(resourceAt('second'.uml_mockup), contains(newUmlPackage => [id = 'second']))
 
 		assertThat(resourceAt('third'.allElementTypes2), contains(newRoot2 => [id2 = 'third']))
 		assertThat(resourceAt('third'.allElementTypes), contains(newRoot => [id = 'third']))
-		assertThat(resourceAt('third'.pcm_mockup), contains(newRepository => [id = 'third']))
-		assertThat(resourceAt('third'.uml_mockup), contains(newUMLPackage => [id = 'third']))
+		assertThat(resourceAt('third'.pcm_mockup), contains(newPcmRepository => [id = 'third']))
+		assertThat(resourceAt('third'.uml_mockup), contains(newUmlPackage => [id = 'third']))
 	}
 
 	@Test
@@ -87,26 +84,26 @@ class IdentifiedExecutionTest extends CommonalitiesExecutionTest {
 		saveAndSynchronizeChanges(Root2.from('startid'.allElementTypes2).record[id2 = '1st id'])
 		assertThat(resourceAt('startid'.allElementTypes2), contains(newRoot2 => [id2 = '1st id']))
 		assertThat(resourceAt('startid'.allElementTypes), contains(newRoot => [id = '1st id']))
-		assertThat(resourceAt('startid'.pcm_mockup), contains(newRepository => [id = '1st id']))
-		assertThat(resourceAt('startid'.uml_mockup), contains(newUMLPackage => [id = '1st id']))
+		assertThat(resourceAt('startid'.pcm_mockup), contains(newPcmRepository => [id = '1st id']))
+		assertThat(resourceAt('startid'.uml_mockup), contains(newUmlPackage => [id = '1st id']))
 
 		saveAndSynchronizeChanges(Root.from('startid'.allElementTypes).record[id = '2nd id'])
 		assertThat(resourceAt('startid'.allElementTypes2), contains(newRoot2 => [id2 = '2nd id']))
 		assertThat(resourceAt('startid'.allElementTypes), contains(newRoot => [id = '2nd id']))
-		assertThat(resourceAt('startid'.pcm_mockup), contains(newRepository => [id = '2nd id']))
-		assertThat(resourceAt('startid'.uml_mockup), contains(newUMLPackage => [id = '2nd id']))
+		assertThat(resourceAt('startid'.pcm_mockup), contains(newPcmRepository => [id = '2nd id']))
+		assertThat(resourceAt('startid'.uml_mockup), contains(newUmlPackage => [id = '2nd id']))
 
 		saveAndSynchronizeChanges(Repository.from('startid'.pcm_mockup).record[id = '3th id'])
 		assertThat(resourceAt('startid'.allElementTypes2), contains(newRoot2 => [id2 = '3th id']))
 		assertThat(resourceAt('startid'.allElementTypes), contains(newRoot => [id = '3th id']))
-		assertThat(resourceAt('startid'.pcm_mockup), contains(newRepository => [id = '3th id']))
-		assertThat(resourceAt('startid'.uml_mockup), contains(newUMLPackage => [id = '3th id']))
+		assertThat(resourceAt('startid'.pcm_mockup), contains(newPcmRepository => [id = '3th id']))
+		assertThat(resourceAt('startid'.uml_mockup), contains(newUmlPackage => [id = '3th id']))
 
 		saveAndSynchronizeChanges(UPackage.from('startid'.uml_mockup).record[id = '4th id'])
 		assertThat(resourceAt('startid'.allElementTypes2), contains(newRoot2 => [id2 = '4th id']))
 		assertThat(resourceAt('startid'.allElementTypes), contains(newRoot => [id = '4th id']))
-		assertThat(resourceAt('startid'.pcm_mockup), contains(newRepository => [id = '4th id']))
-		assertThat(resourceAt('startid'.uml_mockup), contains(newUMLPackage => [id = '4th id']))
+		assertThat(resourceAt('startid'.pcm_mockup), contains(newPcmRepository => [id = '4th id']))
+		assertThat(resourceAt('startid'.uml_mockup), contains(newUmlPackage => [id = '4th id']))
 	}
 
 	@Test
@@ -229,13 +226,13 @@ class IdentifiedExecutionTest extends CommonalitiesExecutionTest {
 			id = 'testid'
 			multiValuedContainmentEReference += newNonRoot => [id = 'testname']
 		]))
-		assertThat(resourceAt('testid'.pcm_mockup), contains(newRepository => [
+		assertThat(resourceAt('testid'.pcm_mockup), contains(newPcmRepository => [
 			id = 'testid'
-			components += newComponent => [name = 'testname']
+			components += newPcmComponent => [name = 'testname']
 		], ignoringFeatures('id')))
-		assertThat(resourceAt('testid'.uml_mockup), contains(newUMLPackage => [
+		assertThat(resourceAt('testid'.uml_mockup), contains(newUmlPackage => [
 			id = 'testid'
-			classes += newUMLClass => [name = 'testname']
+			classes += newUmlClass => [name = 'testname']
 		], ignoringFeatures('id')))
 	}
 
@@ -262,23 +259,23 @@ class IdentifiedExecutionTest extends CommonalitiesExecutionTest {
 				newNonRoot => [id = 'second']
 			]
 		]))
-		assertThat(resourceAt('testid'.pcm_mockup), contains(newRepository => [
+		assertThat(resourceAt('testid'.pcm_mockup), contains(newPcmRepository => [
 			id = 'testid'
 			components += #[
-				newComponent => [name = 'first'],
-				newComponent => [name = 'second']
+				newPcmComponent => [name = 'first'],
+				newPcmComponent => [name = 'second']
 			]
 		], ignoringFeatures('id')))
-		assertThat(resourceAt('testid'.uml_mockup), contains(newUMLPackage => [
+		assertThat(resourceAt('testid'.uml_mockup), contains(newUmlPackage => [
 			id = 'testid'
 			classes += #[
-				newUMLClass => [name = 'first'],
-				newUMLClass => [name = 'second']
+				newUmlClass => [name = 'first'],
+				newUmlClass => [name = 'second']
 			]
 		], ignoringFeatures('id')))
 
 		saveAndSynchronizeChanges(Repository.from('testid'.pcm_mockup).record [
-			components += newComponent => [name = 'third']
+			components += newPcmComponent => [name = 'third']
 		])
 		assertThat(resourceAt('testid'.allElementTypes2), contains(newRoot2 => [
 			id2 = 'testid'
@@ -296,20 +293,20 @@ class IdentifiedExecutionTest extends CommonalitiesExecutionTest {
 				newNonRoot => [id = 'third']
 			]
 		]))
-		assertThat(resourceAt('testid'.pcm_mockup), contains(newRepository => [
+		assertThat(resourceAt('testid'.pcm_mockup), contains(newPcmRepository => [
 			id = 'testid'
 			components += #[
-				newComponent => [name = 'first'],
-				newComponent => [name = 'second'],
-				newComponent => [name = 'third']
+				newPcmComponent => [name = 'first'],
+				newPcmComponent => [name = 'second'],
+				newPcmComponent => [name = 'third']
 			]
 		], ignoringFeatures('id')))
-		assertThat(resourceAt('testid'.uml_mockup), contains(newUMLPackage => [
+		assertThat(resourceAt('testid'.uml_mockup), contains(newUmlPackage => [
 			id = 'testid'
 			classes += #[
-				newUMLClass => [name = 'first'],
-				newUMLClass => [name = 'second'],
-				newUMLClass => [name = 'third']
+				newUmlClass => [name = 'first'],
+				newUmlClass => [name = 'second'],
+				newUmlClass => [name = 'third']
 			]
 		], ignoringFeatures('id')))
 	}

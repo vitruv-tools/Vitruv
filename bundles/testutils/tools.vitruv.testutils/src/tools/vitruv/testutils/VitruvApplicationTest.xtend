@@ -9,7 +9,6 @@ import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.emf.ecore.resource.ResourceSet
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import org.junit.jupiter.api.AfterEach
-import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.TestInfo
 import org.junit.jupiter.api.^extension.ExtendWith
@@ -30,13 +29,13 @@ import tools.vitruv.framework.uuid.UuidGeneratorAndResolverImpl
 import tools.vitruv.framework.vsum.InternalVirtualModel
 import tools.vitruv.framework.vsum.VirtualModelConfiguration
 import tools.vitruv.framework.vsum.VirtualModelImpl
-import tools.vitruv.testutils.util.TestSetup
 
 import static com.google.common.base.Preconditions.checkArgument
 import static com.google.common.base.Preconditions.checkState
 import tools.vitruv.testutils.matchers.CorrespondenceModelContainer
+import tools.vitruv.testutils.TestLogging
 
-@ExtendWith(TestWorkspaceManager)
+@ExtendWith(TestWorkspaceManager, TestLogging)
 abstract class VitruvApplicationTest implements CorrespondenceModelContainer {
 	Path testProjectFolder
 	ResourceSet resourceSet
@@ -48,11 +47,6 @@ abstract class VitruvApplicationTest implements CorrespondenceModelContainer {
 	def protected abstract Iterable<ChangePropagationSpecification> createChangePropagationSpecifications()
 
 	def protected abstract Iterable<VitruvDomain> getVitruvDomains()
-
-	@BeforeAll
-	def final static package void setupLogging() {
-		TestSetup.initializeLogger()
-	}
 
 	@BeforeEach
 	def final package void setTestProjectFolder(@TestProject Path testProjectPath) {
@@ -122,7 +116,7 @@ abstract class VitruvApplicationTest implements CorrespondenceModelContainer {
 	 * Casts the root element of the provided {@code resource} to the provided {@code clazz} and returns the casted object.
 	 */
 	def protected <T> T from(Class<T> clazz, Resource resource) {
-		checkState(!resource.contents.isEmpty(), "The resource %s is empty!", resource)
+		checkState(!resource.contents.isEmpty(), '''The resource at «resource.URI» is empty!''')
 		return clazz.cast(resource.contents.get(0))
 	}
 

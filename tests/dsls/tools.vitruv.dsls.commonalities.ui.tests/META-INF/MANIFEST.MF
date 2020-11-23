@@ -42,4 +42,5 @@ Bundle-RequiredExecutionEnvironment: JavaSE-11
 Export-Package: tools.vitruv.dsls.commonalities.ui.tests.aliases;x-internal:=true,
  tools.vitruv.dsls.commonalities.ui.tests.attributeoperators;x-internal:=true,
  tools.vitruv.dsls.commonalities.ui.tests.conditions;x-internal:=true,
- tools.vitruv.dsls.commonalities.ui.tests.identified;x-internal:=true
+ tools.vitruv.dsls.commonalities.ui.tests.identified;x-internal:=true,
+ tools.vitruv.dsls.commonalities.ui.tests;x-internal=true

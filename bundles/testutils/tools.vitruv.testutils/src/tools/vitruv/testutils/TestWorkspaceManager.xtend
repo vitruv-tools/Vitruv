@@ -30,7 +30,6 @@ import org.eclipse.core.resources.ResourcesPlugin
  */
 class TestWorkspaceManager implements ParameterResolver {
 	static val VM_ARGUMENT_TEST_WORKSPACE_PATH = "testWorkspacePath"
-	static val tmp = Path.of(System.getProperty("java.io.tmpdir"))
 	static val log = Logger.getLogger(TestWorkspaceManager) => [level = INFO]
 	static val namespace = ExtensionContext.Namespace.create(TestWorkspaceManager)
 	static val projectNamespace = ExtensionContext.Namespace.create(TestWorkspaceManager, "projects")

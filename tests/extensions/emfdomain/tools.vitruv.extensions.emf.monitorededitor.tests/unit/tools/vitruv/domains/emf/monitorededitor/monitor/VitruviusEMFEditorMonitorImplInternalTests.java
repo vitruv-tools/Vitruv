@@ -14,8 +14,8 @@ package tools.vitruv.domains.emf.monitorededitor.monitor;
 import java.util.Set;
 
 import org.eclipse.ui.IEditorPart;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import tools.vitruv.domains.emf.monitorededitor.IEditorPartAdapterFactory;
 import tools.vitruv.domains.emf.monitorededitor.test.mocking.EclipseMock;
@@ -31,7 +31,7 @@ public class VitruviusEMFEditorMonitorImplInternalTests extends BasicTestCase {
     private IEclipseAdapter eclipseUtils;
     private IEditorPartAdapterFactory factory;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         this.eclipseMockCtrl = new EclipseMock();
         this.eclipseUtils = eclipseMockCtrl.getEclipseUtils();

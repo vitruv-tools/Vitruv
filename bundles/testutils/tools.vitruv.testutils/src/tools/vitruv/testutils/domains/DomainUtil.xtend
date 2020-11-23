@@ -1,4 +1,4 @@
-package tools.vitruv.testutils.util
+package tools.vitruv.testutils.domains
 
 import edu.kit.ipd.sdq.activextendannotations.Utility
 import tools.vitruv.framework.domains.VitruvDomainProvider

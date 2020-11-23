@@ -6,7 +6,6 @@ import org.eclipse.emf.ecore.EObject
 import org.eclipse.xtend.lib.annotations.FinalFieldsConstructor
 import org.hamcrest.Description
 import org.hamcrest.Matcher
-import org.hamcrest.TypeSafeDiagnosingMatcher
 
 import static org.hamcrest.CoreMatchers.hasItem
 import tools.vitruv.framework.correspondence.CorrespondenceModelView
@@ -14,6 +13,7 @@ import tools.vitruv.framework.correspondence.Correspondence
 import java.util.function.BiFunction
 import org.hamcrest.SelfDescribing
 import org.hamcrest.TypeSafeMatcher
+import static extension tools.vitruv.testutils.matchers.ModelPrinter.appendPrettyValueSet
 
 @Utility
 class CorrespondenceMatchers {
@@ -155,16 +155,17 @@ package class TagOption implements CorrespondenceOption {
 }
 
 @FinalFieldsConstructor
-package class NoCorrespondenceMatcher extends TypeSafeDiagnosingMatcher<EObject> {
+package class NoCorrespondenceMatcher extends TypeSafeMatcher<EObject> {
 	val CorrespondenceSource correspondenceSource
+	var List<? extends EObject> correspondences
 
-	override protected matchesSafely(EObject item, Description mismatchDescription) {
-		val correspondences = correspondenceSource.getCorrespespondingObjects(item)
-		if (!correspondences.isEmpty) {
-			mismatchDescription.appendText("found correspondences: ").appendValueList('[', ', ', ']', correspondences)
-			return false
-		}
-		return true
+	override matchesSafely(EObject item) {
+		correspondences = correspondenceSource.getCorrespespondingObjects(item).toList
+		return correspondences.isEmpty
+	}
+
+	override describeMismatchSafely(EObject item, Description mismatchDescription) {
+		mismatchDescription.appendText("found correspondences: ").appendPrettyValueSet(correspondences)
 	}
 
 	override describeTo(Description description) {
@@ -188,8 +189,8 @@ package class HasExactlyOneCorrespondenceMatcher extends TypeSafeMatcher<EObject
 		if (correspondences.isEmpty) {
 			mismatchDescription.appendText("found no such correspondences")
 		} else if (correspondences.size > 1) {
-			mismatchDescription.appendText("found more than one such correspondence: ").appendValueList('[', ', ', ']',
-				correspondences)
+			mismatchDescription.appendText("found more than one such correspondence: ").
+				appendPrettyValueSet(correspondences)
 		} else {
 			correspondenceMatcher.describeMismatch(correspondences.get(0), mismatchDescription)
 		}

@@ -3,8 +3,6 @@ package tools.vitruv.dsls.mappings.addressesXrecipients.tests
 import edu.kit.ipd.sdq.metamodels.addresses.Addresses
 import mir.reactions.adXre_R2L.AdXre_R2LChangePropagationSpecification
 
-import static extension tools.vitruv.dsls.mappings.addressesXrecipients.tests.RecipientsCreator.*
-import static extension tools.vitruv.dsls.mappings.addressesXrecipients.tests.AddressesCreator.*
 import static tools.vitruv.testutils.matchers.ModelMatchers.contains
 import static tools.vitruv.testutils.matchers.ModelMatchers.ignoringFeatures
 import static org.hamcrest.MatcherAssert.assertThat
@@ -15,6 +13,8 @@ import static extension org.eclipse.emf.ecore.util.EcoreUtil.remove
 import static tools.vitruv.testutils.matchers.ModelMatchers.doesNotExist
 import org.junit.jupiter.api.Test
 import static extension tools.vitruv.testutils.matchers.CorrespondenceMatchers.hasNoCorrespondences
+import static extension tools.vitruv.dsls.mappings.addressesXrecipients.tests.AddressesCreators.*
+import static extension tools.vitruv.dsls.mappings.addressesXrecipients.tests.RecipientsCreators.*
 
 class AddressesXRecipientsR2LTest extends AddressesXRecipientsTest {
 	override protected createChangePropagationSpecifications() {

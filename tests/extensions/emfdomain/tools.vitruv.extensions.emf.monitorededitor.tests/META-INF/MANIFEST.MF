@@ -9,7 +9,6 @@ Bundle-ClassPath: ., lib/cglib-nodep-3.1.jar, lib/easymock-3.1.jar, lib/objenesi
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.emf.ecore.xmi,
- org.junit,
  org.apache.log4j;bundle-version="1.2.15",
  org.eclipse.emf.ecore.change,
  org.eclipse.emf.ecore,
@@ -24,7 +23,9 @@ Require-Bundle: org.eclipse.ui,
  tools.vitruv.framework.change.processing,
  tools.vitruv.framework.tuid,
  tools.vitruv.framework.vsum,
- tools.vitruv.testutils
+ tools.vitruv.testutils,
+ org.junit.jupiter.api,
+ org.hamcrest.core.source
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-ActivationPolicy: lazy
 Export-Package: tools.vitruv.domains.emf.monitorededitor;x-internal:=true,

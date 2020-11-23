@@ -23,8 +23,8 @@ abstract class AbstractTuidAwareVitruvDomain extends AbstractVitruvDomain implem
 		super(name, metamodelRootPackage, fileExtensions)
 		this.tuidCalculatorAndResolver = tuidCalculator;
 	}
-
 	override String calculateTuidFromEObject(EObject eObject, EObject virtualRootObject, String prefix) {
+
 		return this.tuidCalculatorAndResolver.calculateTuidFromEObject(eObject, virtualRootObject, prefix)
 	}
 
