@@ -2,7 +2,6 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Vitruv Domain EMF Monitored Editor Tests
 Bundle-Vendor: vitruv.tools
-Bundle-Localization: plugin
 Bundle-SymbolicName: tools.vitruv.extensions.emf.monitorededitor.tests;singleton:=true
 Automatic-Module-Name: tools.vitruv.extensions.emf.monitorededitor.tests
 Bundle-Version: 0.3.0.qualifier
@@ -32,9 +31,6 @@ Require-Bundle: org.eclipse.ui,
 Export-Package: tools.vitruv.domains.emf.monitorededitor;x-internal:=true,
  tools.vitruv.domains.emf.monitorededitor.mocking;x-internal:=true,
  tools.vitruv.domains.emf.monitorededitor.monitor;x-internal:=true,
- tools.vitruv.domains.emf.monitorededitor.test.emfmodels.advancedfeatures,
- tools.vitruv.domains.emf.monitorededitor.test.emfmodels.advancedfeatures.impl;x-internal:=true,
- tools.vitruv.domains.emf.monitorededitor.test.emfmodels.advancedfeatures.util;x-internal:=true,
  tools.vitruv.domains.emf.monitorededitor.test.mocking;x-internal:=true,
  tools.vitruv.domains.emf.monitorededitor.test.testmodels;x-internal:=true,
  tools.vitruv.domains.emf.monitorededitor.test.utils;x-internal:=true,
