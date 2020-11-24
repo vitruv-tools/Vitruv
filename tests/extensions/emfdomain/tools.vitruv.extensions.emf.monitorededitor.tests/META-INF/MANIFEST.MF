@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: %pluginName
-Bundle-Vendor: %providerName
+Bundle-Name: Vitruv Domain EMF Monitored Editor Tests
+Bundle-Vendor: vitruv.tools
 Bundle-Localization: plugin
 Bundle-SymbolicName: tools.vitruv.extensions.emf.monitorededitor.tests;singleton:=true
 Automatic-Module-Name: tools.vitruv.extensions.emf.monitorededitor.tests
