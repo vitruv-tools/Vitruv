@@ -33,7 +33,7 @@ class IdentifiedExecutionTest extends CommonalitiesExecutionTest {
 
 	@Test
 	def void rootInsert() {
-		resourceAt('testid'.allElementTypes2).recordAndPropagate [
+		resourceAt('testid'.allElementTypes2).propagate [
 			contents += newRoot2 => [id2 = 'testid']
 		]
 
@@ -46,7 +46,7 @@ class IdentifiedExecutionTest extends CommonalitiesExecutionTest {
 	@Test
 	def void multiRootInsert() {
 		#['first', 'second', 'third'].forEach [ name |
-			resourceAt(name.allElementTypes2).recordAndPropagate [
+			resourceAt(name.allElementTypes2).propagate [
 				contents += newRoot2 => [id2 = name]
 			]
 		]
@@ -70,12 +70,12 @@ class IdentifiedExecutionTest extends CommonalitiesExecutionTest {
 	@Test
 	def void rootDelete() {
 		#['first', 'second', 'third'].forEach [ name |
-			resourceAt(name.allElementTypes2).recordAndPropagate [
+			resourceAt(name.allElementTypes2).propagate [
 				contents += newRoot2 => [id2 = name]
 			]
 		]
 
-		resourceAt('second'.allElementTypes).recordAndPropagate [
+		resourceAt('second'.allElementTypes).propagate [
 			contents.clear()
 		]
 		assertThat(resourceAt('second'.allElementTypes), doesNotExist)
@@ -84,27 +84,27 @@ class IdentifiedExecutionTest extends CommonalitiesExecutionTest {
 
 	@Test
 	def void setIdAttribute() {
-		resourceAt('startid'.allElementTypes2).recordAndPropagate[contents += newRoot2 => [id2 = 'startid']]
+		resourceAt('startid'.allElementTypes2).propagate[contents += newRoot2 => [id2 = 'startid']]
 
-		Root2.from('startid'.allElementTypes2).recordAndPropagate[id2 = '1st id']
+		Root2.from('startid'.allElementTypes2).propagate[id2 = '1st id']
 		assertThat(resourceAt('startid'.allElementTypes2), contains(newRoot2 => [id2 = '1st id']))
 		assertThat(resourceAt('startid'.allElementTypes), contains(newRoot => [id = '1st id']))
 		assertThat(resourceAt('startid'.pcm_mockup), contains(newPcmRepository => [id = '1st id']))
 		assertThat(resourceAt('startid'.uml_mockup), contains(newUmlPackage => [id = '1st id']))
 
-		Root.from('startid'.allElementTypes).recordAndPropagate[id = '2nd id']
+		Root.from('startid'.allElementTypes).propagate[id = '2nd id']
 		assertThat(resourceAt('startid'.allElementTypes2), contains(newRoot2 => [id2 = '2nd id']))
 		assertThat(resourceAt('startid'.allElementTypes), contains(newRoot => [id = '2nd id']))
 		assertThat(resourceAt('startid'.pcm_mockup), contains(newPcmRepository => [id = '2nd id']))
 		assertThat(resourceAt('startid'.uml_mockup), contains(newUmlPackage => [id = '2nd id']))
 
-		Repository.from('startid'.pcm_mockup).recordAndPropagate[id = '3th id']
+		Repository.from('startid'.pcm_mockup).propagate[id = '3th id']
 		assertThat(resourceAt('startid'.allElementTypes2), contains(newRoot2 => [id2 = '3th id']))
 		assertThat(resourceAt('startid'.allElementTypes), contains(newRoot => [id = '3th id']))
 		assertThat(resourceAt('startid'.pcm_mockup), contains(newPcmRepository => [id = '3th id']))
 		assertThat(resourceAt('startid'.uml_mockup), contains(newUmlPackage => [id = '3th id']))
 
-		UPackage.from('startid'.uml_mockup).recordAndPropagate[id = '4th id']
+		UPackage.from('startid'.uml_mockup).propagate[id = '4th id']
 		assertThat(resourceAt('startid'.allElementTypes2), contains(newRoot2 => [id2 = '4th id']))
 		assertThat(resourceAt('startid'.allElementTypes), contains(newRoot => [id = '4th id']))
 		assertThat(resourceAt('startid'.pcm_mockup), contains(newPcmRepository => [id = '4th id']))
@@ -113,7 +113,7 @@ class IdentifiedExecutionTest extends CommonalitiesExecutionTest {
 
 	@Test
 	def void setSimpleAttribute() {
-		resourceAt('test'.allElementTypes2).recordAndPropagate [
+		resourceAt('test'.allElementTypes2).propagate [
 			contents += newRoot2 => [
 				singleValuedEAttribute2 = 0
 				id2 = 'test'
@@ -121,7 +121,7 @@ class IdentifiedExecutionTest extends CommonalitiesExecutionTest {
 
 		]
 
-		Root2.from('test'.allElementTypes2).recordAndPropagate[singleValuedEAttribute2 = 1]
+		Root2.from('test'.allElementTypes2).propagate[singleValuedEAttribute2 = 1]
 		assertThat(resourceAt('test'.allElementTypes2), contains(newRoot2 => [
 			singleValuedEAttribute2 = 1
 			id2 = 'test'
@@ -131,7 +131,7 @@ class IdentifiedExecutionTest extends CommonalitiesExecutionTest {
 			id = 'test'
 		]))
 
-		Root.from('test'.allElementTypes).recordAndPropagate[singleValuedEAttribute = 2]
+		Root.from('test'.allElementTypes).propagate[singleValuedEAttribute = 2]
 		assertThat(resourceAt('test'.allElementTypes2), contains(newRoot2 => [
 			singleValuedEAttribute2 = 2
 			id2 = 'test'
@@ -141,7 +141,7 @@ class IdentifiedExecutionTest extends CommonalitiesExecutionTest {
 			id = 'test'
 		]))
 
-		Root2.from('test'.allElementTypes2).recordAndPropagate[singleValuedEAttribute2 = 3]
+		Root2.from('test'.allElementTypes2).propagate[singleValuedEAttribute2 = 3]
 		assertThat(resourceAt('test'.allElementTypes2), contains(newRoot2 => [
 			singleValuedEAttribute2 = 3
 			id2 = 'test'
@@ -151,7 +151,7 @@ class IdentifiedExecutionTest extends CommonalitiesExecutionTest {
 			id = 'test'
 		]))
 
-		Root.from('test'.allElementTypes).recordAndPropagate[singleValuedEAttribute = 4]
+		Root.from('test'.allElementTypes).propagate[singleValuedEAttribute = 4]
 		assertThat(resourceAt('test'.allElementTypes2), contains(newRoot2 => [
 			singleValuedEAttribute2 = 4
 			id2 = 'test'
@@ -164,7 +164,7 @@ class IdentifiedExecutionTest extends CommonalitiesExecutionTest {
 
 	@Test
 	def void setMultiValue() {
-		resourceAt('test'.allElementTypes2).recordAndPropagate [
+		resourceAt('test'.allElementTypes2).propagate [
 			contents += newRoot2 => [
 				multiValuedEAttribute2 += #[1, 2, 3]
 				id2 = 'test'
@@ -179,7 +179,7 @@ class IdentifiedExecutionTest extends CommonalitiesExecutionTest {
 			id = 'test'
 		]))
 
-		Root2.from('test'.allElementTypes2).recordAndPropagate[multiValuedEAttribute2 += 4]
+		Root2.from('test'.allElementTypes2).propagate[multiValuedEAttribute2 += 4]
 		assertThat(resourceAt('test'.allElementTypes2), contains(newRoot2 => [
 			multiValuedEAttribute2 += #[1, 2, 3, 4]
 			id2 = 'test'
@@ -189,7 +189,7 @@ class IdentifiedExecutionTest extends CommonalitiesExecutionTest {
 			id = 'test'
 		]))
 
-		Root.from('test'.allElementTypes).recordAndPropagate[multiValuedEAttribute += 5]
+		Root.from('test'.allElementTypes).propagate[multiValuedEAttribute += 5]
 		assertThat(resourceAt('test'.allElementTypes2), contains(newRoot2 => [
 			multiValuedEAttribute2 += #[1, 2, 3, 4, 5]
 			id2 = 'test'
@@ -223,7 +223,7 @@ class IdentifiedExecutionTest extends CommonalitiesExecutionTest {
 
 	@Test
 	def void rootWithReferenceInsert() {
-		resourceAt('testid'.allElementTypes2).recordAndPropagate [
+		resourceAt('testid'.allElementTypes2).propagate [
 			contents += newRoot2 => [
 				id2 = 'testid'
 				multiValuedContainmentEReference2 += newNonRoot2 => [id2 = 'testname']
@@ -250,7 +250,7 @@ class IdentifiedExecutionTest extends CommonalitiesExecutionTest {
 
 	@Test
 	def void multiReferenceInsert() {
-		resourceAt('testid'.allElementTypes2).recordAndPropagate [
+		resourceAt('testid'.allElementTypes2).propagate [
 			contents += newRoot2 => [
 				id2 = 'testid'
 				multiValuedContainmentEReference2 += #[
@@ -288,7 +288,7 @@ class IdentifiedExecutionTest extends CommonalitiesExecutionTest {
 			]
 		], ignoringFeatures('id')))
 
-		Repository.from('testid'.pcm_mockup).recordAndPropagate [
+		Repository.from('testid'.pcm_mockup).propagate [
 			components += newPcmComponent => [name = 'third']
 		]
 		assertThat(resourceAt('testid'.allElementTypes2), contains(newRoot2 => [

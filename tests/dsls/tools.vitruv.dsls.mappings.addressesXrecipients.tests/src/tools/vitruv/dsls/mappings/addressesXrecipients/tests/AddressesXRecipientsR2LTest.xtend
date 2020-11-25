@@ -26,7 +26,7 @@ class AddressesXRecipientsR2LTest extends VitruvApplicationTest {
 
 	@Test
 	def void createRoot() {
-		resourceAt(RECIPIENTS_MODEL).recordAndPropagate[contents += newRecipients]
+		resourceAt(RECIPIENTS_MODEL).propagate[contents += newRecipients]
 		assertThat(resourceAt(ADDRESSES_MODEL), contains(newAddresses, ignoringFeatures('id')))
 		assertThat(Recipients.from(RECIPIENTS_MODEL),
 			hasOneCorrespondence(equalsDeeply(Addresses.from(ADDRESSES_MODEL))))
@@ -35,7 +35,7 @@ class AddressesXRecipientsR2LTest extends VitruvApplicationTest {
 	@Test
 	def void createAndDeleteRoot() {
 		createRoot()
-		Recipients.from(RECIPIENTS_MODEL).recordAndPropagate[remove()]
+		Recipients.from(RECIPIENTS_MODEL).propagate[remove()]
 		assertThat(resourceAt(RECIPIENTS_MODEL), doesNotExist)
 		assertThat(resourceAt(ADDRESSES_MODEL), doesNotExist)
 	}
@@ -45,29 +45,29 @@ class AddressesXRecipientsR2LTest extends VitruvApplicationTest {
 		createRoot()
 
 		val recipient = newRecipient => [business = true]
-		Recipients.from(RECIPIENTS_MODEL).recordAndPropagate[recipients += recipient]
+		Recipients.from(RECIPIENTS_MODEL).propagate[recipients += recipient]
 		assertThat(recipient, hasNoCorrespondences)
 
 		// "initial recipient model" (see Table 7.5 in dx.doi.org/10.5445/IR/1000069284)
 		val location = newLocation
-		recipient.recordAndPropagate[locatedAt = location]
+		recipient.propagate[locatedAt = location]
 		assertThat(recipient, hasNoCorrespondences)
 		assertThat(location, hasNoCorrespondences)
-		location.recordAndPropagate[number = TEST_NUMBER]
+		location.propagate[number = TEST_NUMBER]
 		assertThat(recipient, hasNoCorrespondences)
 		assertThat(location, hasNoCorrespondences)
-		location.recordAndPropagate[street = TEST_STREET]
+		location.propagate[street = TEST_STREET]
 		assertThat(recipient, hasNoCorrespondences)
 		assertThat(location, hasNoCorrespondences)
 
 		// "recipient model after 2nd change" (Table 7.5)
 		val city = newCity
-		recipient.recordAndPropagate[locatedIn = city]
+		recipient.propagate[locatedIn = city]
 		assertThat(recipient, hasNoCorrespondences)
 		assertThat(city, hasNoCorrespondences)
 
 		// "recipient model after 3rd change" (Table 7.5)
-		city.recordAndPropagate[zipCode = TEST_ZIP_CODE]
+		city.propagate[zipCode = TEST_ZIP_CODE]
 		val expectedAddress = newAddress => [
 			street = TEST_STREET
 			number = TEST_NUMBER
@@ -82,7 +82,7 @@ class AddressesXRecipientsR2LTest extends VitruvApplicationTest {
 	@Test
 	def void createAndDeleteChild() {
 		createChild()
-		Recipients.from(RECIPIENTS_MODEL).recordAndPropagate [
+		Recipients.from(RECIPIENTS_MODEL).propagate [
 			recipients.get(0).remove()
 		]
 		assertThat(resourceAt(ADDRESSES_MODEL), contains(newAddresses))
@@ -91,7 +91,7 @@ class AddressesXRecipientsR2LTest extends VitruvApplicationTest {
 	@Test
 	def void createAndDeleteGrandChild1() {
 		createChild()
-		Recipients.from(RECIPIENTS_MODEL).recordAndPropagate [
+		Recipients.from(RECIPIENTS_MODEL).propagate [
 			recipients.get(0).locatedAt.remove()
 		]
 		assertThat(resourceAt(ADDRESSES_MODEL), contains(newAddresses))
@@ -100,7 +100,7 @@ class AddressesXRecipientsR2LTest extends VitruvApplicationTest {
 	@Test
 	def void createAndDeleteGrandChild2() {
 		createChild()
-		Recipients.from(RECIPIENTS_MODEL).recordAndPropagate [
+		Recipients.from(RECIPIENTS_MODEL).propagate [
 			recipients.get(0).locatedIn.remove()
 		]
 		assertThat(resourceAt(ADDRESSES_MODEL), contains(newAddresses))
@@ -110,7 +110,7 @@ class AddressesXRecipientsR2LTest extends VitruvApplicationTest {
 	def void createAndModifyChildNumber() {
 		createChild()
 		val recipient = Recipients.from(RECIPIENTS_MODEL).recipients.get(0)
-		recipient.recordAndPropagate [
+		recipient.propagate [
 			locatedAt.number = TEST_NUMBER * 2
 		]
 		assertThat(recipient, hasOneCorrespondence(equalsDeeply(newAddress => [
@@ -119,7 +119,7 @@ class AddressesXRecipientsR2LTest extends VitruvApplicationTest {
 			zipCode = TEST_ZIP_CODE
 		], ignoringFeatures('parent'))))
 
-		recipient.recordAndPropagate [
+		recipient.propagate [
 			locatedAt.number = -TEST_NUMBER
 		]
 		assertThat(resourceAt(ADDRESSES_MODEL), contains(newAddresses))
@@ -129,7 +129,7 @@ class AddressesXRecipientsR2LTest extends VitruvApplicationTest {
 	def void createAndModifyChildZipCode() {
 		createChild()
 		val recipient = Recipients.from(RECIPIENTS_MODEL).recipients.get(0)
-		recipient.recordAndPropagate [
+		recipient.propagate [
 			locatedIn.zipCode = TEST_ZIP_CODE + TEST_ZIP_CODE
 		]
 		assertThat(recipient, hasOneCorrespondence(equalsDeeply(newAddress => [
@@ -138,7 +138,7 @@ class AddressesXRecipientsR2LTest extends VitruvApplicationTest {
 			zipCode = TEST_ZIP_CODE + TEST_ZIP_CODE
 		], ignoringFeatures('parent'))))
 
-		recipient.recordAndPropagate [
+		recipient.propagate [
 			locatedAt.number = -TEST_NUMBER
 		]
 		assertThat(resourceAt(ADDRESSES_MODEL), contains(newAddresses))

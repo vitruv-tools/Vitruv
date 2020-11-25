@@ -146,24 +146,26 @@ abstract class VitruvApplicationTest implements CorrespondenceModelContainer {
 
 	/**
 	 * {@linkplain #record Records} the changes to {@code object} created by the provided {@code consumer}, 
-	 * {@code object}’s resource and propagates all changes.
+	 * {@code object}’s resource and propagates all recorded changes (including changes that have been recorded 
+	 * before calling this method).
 	 * 
 	 * @return the changes resulting from propagating the recorded changes.
 	 * @see #saveAndPropagateChanges
 	 */
-	def protected <T extends EObject> List<PropagatedChange> recordAndPropagate(T object, Consumer<T> consumer) {
+	def protected <T extends EObject> List<PropagatedChange> propagate(T object, Consumer<T> consumer) {
 		object.record(consumer)
 		saveAndPropagateChanges()
 	}
 
 	/**
 	 * {@linkplain #record Records} the changes to {@code resource} created by the provided {@code consumer}, saves
-	 * the resource and propagates all changes.
+	 * the resource and propagates all recorded changes (including changes that have been recorded before calling this
+	 * method).
 	 * 
 	 * @return the changes resulting from propagating the recorded changes.
 	 * @see #saveAndPropagateChanges
 	 */
-	def protected <T extends Resource> List<PropagatedChange> recordAndPropagate(T resource, Consumer<T> consumer) {
+	def protected <T extends Resource> List<PropagatedChange> propagate(T resource, Consumer<T> consumer) {
 		resource.record(consumer)
 		saveAndPropagateChanges()
 	}

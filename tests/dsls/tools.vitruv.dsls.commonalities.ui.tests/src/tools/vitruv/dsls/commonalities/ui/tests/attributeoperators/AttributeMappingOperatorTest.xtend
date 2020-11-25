@@ -26,7 +26,7 @@ class AttributeMappingOperatorTest extends CommonalitiesExecutionTest {
 	// Value is multiplied by 1000
 	@Test
 	def void singleToSingleValuedAttribute() {
-		resourceAt('testid'.allElementTypes).recordAndPropagate [
+		resourceAt('testid'.allElementTypes).propagate [
 			contents += newRoot => [
 				id = 'testid'
 				singleValuedPrimitiveTypeEAttribute = 123
@@ -46,7 +46,7 @@ class AttributeMappingOperatorTest extends CommonalitiesExecutionTest {
 	// Value is divided by 1000 and rounded towards zero
 	@Test
 	def void singleToSingleValuedAttributeReverse() {
-		resourceAt('testid'.allElementTypes2).recordAndPropagate [
+		resourceAt('testid'.allElementTypes2).propagate [
 			contents += newRoot2 => [
 				id2 = 'testid'
 				singleValuedPrimitiveTypeEAttribute2 = 123500
@@ -65,7 +65,7 @@ class AttributeMappingOperatorTest extends CommonalitiesExecutionTest {
 
 	@Test
 	def void singleToMultiValuedAttribute() {
-		resourceAt('testid'.allElementTypes).recordAndPropagate [
+		resourceAt('testid'.allElementTypes).propagate [
 			contents += newRoot => [
 				id = 'testid'
 				singleValuedEAttribute = 324
@@ -84,7 +84,7 @@ class AttributeMappingOperatorTest extends CommonalitiesExecutionTest {
 
 	@Test
 	def void multiToSingleValuedAttribute() {
-		resourceAt('testid'.allElementTypes2).recordAndPropagate [
+		resourceAt('testid'.allElementTypes2).propagate [
 			contents += newRoot2 => [
 				id2 = 'testid'
 				multiValuedEAttribute2 += #[3, 2, 4]

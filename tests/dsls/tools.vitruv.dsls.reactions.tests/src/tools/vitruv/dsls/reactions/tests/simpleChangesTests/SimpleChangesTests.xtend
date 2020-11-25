@@ -38,7 +38,7 @@ class SimpleChangesTests extends ReactionsExecutionTest {
 
 	@BeforeEach
 	def createRoot() {
-		resourceAt(SOURCE_MODEL).recordAndPropagate [
+		resourceAt(SOURCE_MODEL).propagate [
 			contents += newRoot => [
 				id = 'EachTestModelSource'
 				nonRootObjectContainerHelper = newNonRootObjectContainerHelper => [
@@ -68,7 +68,7 @@ class SimpleChangesTests extends ReactionsExecutionTest {
 	@Test
 	@Disabled("Unset does not produce any change event at the moment") // TODO HK (Change MM)
 	def void testUnsetSingleValuedEAttribute() {
-		Root.from(SOURCE_MODEL).recordAndPropagate [
+		Root.from(SOURCE_MODEL).propagate [
 			singleValuedEAttribute = null
 		]
 
@@ -79,11 +79,11 @@ class SimpleChangesTests extends ReactionsExecutionTest {
 	@Test
 	@Disabled
 	def void testUnsetSingleValuedNonContainmentEReference() {
-		Root.from(SOURCE_MODEL).recordAndPropagate [
+		Root.from(SOURCE_MODEL).propagate [
 			singleValuedNonContainmentEReference = nonRootWithId(nonContainmentNonRootIds.get(1))
 		]
 		executionMonitor.reset()
-		Root.from(SOURCE_MODEL).recordAndPropagate [
+		Root.from(SOURCE_MODEL).propagate [
 			singleValuedNonContainmentEReference = null
 		]
 
@@ -93,7 +93,7 @@ class SimpleChangesTests extends ReactionsExecutionTest {
 
 	@Test
 	def void testUpdateSingleValuedEAttribute() {
-		Root.from(SOURCE_MODEL).recordAndPropagate [
+		Root.from(SOURCE_MODEL).propagate [
 			singleValuedEAttribute = -1
 		]
 
@@ -103,7 +103,7 @@ class SimpleChangesTests extends ReactionsExecutionTest {
 
 	@Test
 	def void testUpdateSingleValuedPrimitiveTypeEAttribute() {
-		Root.from(SOURCE_MODEL).recordAndPropagate [
+		Root.from(SOURCE_MODEL).propagate [
 			singleValuedPrimitiveTypeEAttribute = -1
 		]
 
@@ -113,7 +113,7 @@ class SimpleChangesTests extends ReactionsExecutionTest {
 
 	@Test
 	def void testCreateSingleValuedContainmentEReference() {
-		Root.from(SOURCE_MODEL).recordAndPropagate [
+		Root.from(SOURCE_MODEL).propagate [
 			singleValuedContainmentEReference = newNonRoot => [id = "singleValuedContainmentNonRootTest"]
 		]
 
@@ -124,11 +124,11 @@ class SimpleChangesTests extends ReactionsExecutionTest {
 	@Test
 	def void testDeleteSingleValuedContainmentEReference() {
 		val oldElement = newNonRoot => [id = "singleValuedContainmentNonRoot"]
-		Root.from(SOURCE_MODEL).recordAndPropagate [
+		Root.from(SOURCE_MODEL).propagate [
 			singleValuedContainmentEReference = oldElement
 		]
 		executionMonitor.reset()
-		Root.from(SOURCE_MODEL).recordAndPropagate [
+		Root.from(SOURCE_MODEL).propagate [
 			singleValuedContainmentEReference = null
 		]
 
@@ -139,11 +139,11 @@ class SimpleChangesTests extends ReactionsExecutionTest {
 
 	@Test
 	def void testReplaceSingleValuedContainmentEReference() {
-		Root.from(SOURCE_MODEL).recordAndPropagate [
+		Root.from(SOURCE_MODEL).propagate [
 			singleValuedContainmentEReference = newNonRoot => [id = "singleValuedContainmentNonRootBefore"]
 		]
 		executionMonitor.reset()
-		Root.from(SOURCE_MODEL).recordAndPropagate [
+		Root.from(SOURCE_MODEL).propagate [
 			singleValuedContainmentEReference = newNonRoot => [id = "singleValuedContainmentNonRootAfter"]
 		]
 
@@ -155,7 +155,7 @@ class SimpleChangesTests extends ReactionsExecutionTest {
 	@Test
 	def void testSetSingleValuedNonContainmentEReference() {
 		val testId = nonContainmentNonRootIds.get(1)
-		Root.from(SOURCE_MODEL).recordAndPropagate [
+		Root.from(SOURCE_MODEL).propagate [
 			singleValuedNonContainmentEReference = nonRootWithId(testId)
 		]
 
@@ -166,12 +166,12 @@ class SimpleChangesTests extends ReactionsExecutionTest {
 
 	@Test
 	def void testReplaceSingleValuedNonContainmentEReference() {
-		Root.from(SOURCE_MODEL).recordAndPropagate [
+		Root.from(SOURCE_MODEL).propagate [
 			singleValuedNonContainmentEReference = nonRootWithId(nonContainmentNonRootIds.get(0))
 		]
 		executionMonitor.reset()
 		val testId = nonContainmentNonRootIds.get(1)
-		Root.from(SOURCE_MODEL).recordAndPropagate [
+		Root.from(SOURCE_MODEL).propagate [
 			singleValuedNonContainmentEReference = nonRootWithId(testId)
 		]
 
@@ -182,7 +182,7 @@ class SimpleChangesTests extends ReactionsExecutionTest {
 
 	@Test
 	def void testAddMultiValuedEAttribute() {
-		Root.from(SOURCE_MODEL).recordAndPropagate [
+		Root.from(SOURCE_MODEL).propagate [
 			multiValuedEAttribute += 1
 		]
 
@@ -192,11 +192,11 @@ class SimpleChangesTests extends ReactionsExecutionTest {
 
 	@Test
 	def void testDeleteMultiValuedEAttribute() {
-		Root.from(SOURCE_MODEL).recordAndPropagate [
+		Root.from(SOURCE_MODEL).propagate [
 			multiValuedEAttribute += #[1, 2]
 		]
 		executionMonitor.reset()
-		Root.from(SOURCE_MODEL).recordAndPropagate [
+		Root.from(SOURCE_MODEL).propagate [
 			multiValuedEAttribute -= 1
 		]
 
@@ -207,11 +207,11 @@ class SimpleChangesTests extends ReactionsExecutionTest {
 
 	@Test
 	def void testReplaceMultiValuedEAttribute() {
-		Root.from(SOURCE_MODEL).recordAndPropagate [
+		Root.from(SOURCE_MODEL).propagate [
 			multiValuedEAttribute += #[1, 2]
 		]
 		executionMonitor.reset()
-		Root.from(SOURCE_MODEL).recordAndPropagate [
+		Root.from(SOURCE_MODEL).propagate [
 			multiValuedEAttribute.set(1, 3)
 		]
 
@@ -223,7 +223,7 @@ class SimpleChangesTests extends ReactionsExecutionTest {
 
 	@Test
 	def void testAddMultiValuedContainmentEReference() {
-		Root.from(SOURCE_MODEL).recordAndPropagate [
+		Root.from(SOURCE_MODEL).propagate [
 			multiValuedContainmentEReference += newNonRoot => [id = "multiValuedContainmentNonRootTest"]
 		]
 
@@ -233,11 +233,11 @@ class SimpleChangesTests extends ReactionsExecutionTest {
 
 	@Test
 	def void testDeleteMultiValuedContainmentEReference() {
-		Root.from(SOURCE_MODEL).recordAndPropagate [
+		Root.from(SOURCE_MODEL).propagate [
 			multiValuedContainmentEReference += newNonRoot => [id = "multiValuedContainmentNonRootTest"]
 		]
 		executionMonitor.reset()
-		Root.from(SOURCE_MODEL).recordAndPropagate [
+		Root.from(SOURCE_MODEL).propagate [
 			multiValuedContainmentEReference.removeIf[it.id == "multiValuedContainmentNonRootTest"]
 		]
 
@@ -247,11 +247,11 @@ class SimpleChangesTests extends ReactionsExecutionTest {
 
 	@Test
 	def void testReplaceMultiValuedContainmentEReference() {
-		Root.from(SOURCE_MODEL).recordAndPropagate [
+		Root.from(SOURCE_MODEL).propagate [
 			multiValuedContainmentEReference += newNonRoot => [id = "multiValuedContainmentNonRootBefore"]
 		]
 		executionMonitor.reset()
-		Root.from(SOURCE_MODEL).recordAndPropagate [
+		Root.from(SOURCE_MODEL).propagate [
 			multiValuedContainmentEReference.set(0, newNonRoot => [id = "multiValuedContainmentNonRootAfter"])
 		]
 
@@ -264,7 +264,7 @@ class SimpleChangesTests extends ReactionsExecutionTest {
 
 	@Test
 	def void testInsertMultiValuedNonContainmentEReference() {
-		Root.from(SOURCE_MODEL).recordAndPropagate [
+		Root.from(SOURCE_MODEL).propagate [
 			multiValuedNonContainmentEReference += nonRootWithId(nonContainmentNonRootIds.get(0))
 		]
 
@@ -274,11 +274,11 @@ class SimpleChangesTests extends ReactionsExecutionTest {
 
 	@Test
 	def void testRemoveMultiValuedNonContainmentEReference() {
-		Root.from(SOURCE_MODEL).recordAndPropagate [
+		Root.from(SOURCE_MODEL).propagate [
 			multiValuedNonContainmentEReference += nonRootWithId(nonContainmentNonRootIds.get(1))
 		]
 		executionMonitor.reset()
-		Root.from(SOURCE_MODEL).recordAndPropagate [
+		Root.from(SOURCE_MODEL).propagate [
 			multiValuedNonContainmentEReference -= nonRootWithId(nonContainmentNonRootIds.get(1))
 		]
 
@@ -288,12 +288,12 @@ class SimpleChangesTests extends ReactionsExecutionTest {
 
 	@Test
 	def void testReplaceMultiValuedNonContainmentEReference() {
-		Root.from(SOURCE_MODEL).recordAndPropagate [
+		Root.from(SOURCE_MODEL).propagate [
 			multiValuedNonContainmentEReference += nonRootWithId(nonContainmentNonRootIds.get(0))
 			multiValuedNonContainmentEReference += nonRootWithId(nonContainmentNonRootIds.get(1))
 		]
 		executionMonitor.reset()
-		Root.from(SOURCE_MODEL).recordAndPropagate [
+		Root.from(SOURCE_MODEL).propagate [
 			multiValuedNonContainmentEReference.set(1, nonRootWithId(nonContainmentNonRootIds.get(2)))
 		]
 
@@ -310,11 +310,11 @@ class SimpleChangesTests extends ReactionsExecutionTest {
 	@Test
 	@Disabled("Permute operations are not supported by now? No EChange produced") // TODO HK (Change MM) 
 	def void testPermuteMultiValuedNonContainmentEReference() {
-		Root.from(SOURCE_MODEL).recordAndPropagate [
+		Root.from(SOURCE_MODEL).propagate [
 			multiValuedNonContainmentEReference += nonContainmentNonRootIds.map[id|nonRootWithId(id)]
 		]
 		executionMonitor.reset()
-		Root.from(SOURCE_MODEL).recordAndPropagate [
+		Root.from(SOURCE_MODEL).propagate [
 			ECollections.sort(multiValuedNonContainmentEReference, [a, b|- a.id.compareTo(b.id)])
 		]
 
@@ -327,7 +327,7 @@ class SimpleChangesTests extends ReactionsExecutionTest {
 		assertThat(resourceAt(SOURCE_MODEL), exists())
 		assertThat(resourceAt(TARGET_MODEL), exists())
 
-		resourceAt(SOURCE_MODEL).recordAndPropagate[delete(emptyMap)]
+		resourceAt(SOURCE_MODEL).propagate[delete(emptyMap)]
 
 		assertThat(resourceAt(SOURCE_MODEL), doesNotExist())
 		assertThat(resourceAt(TARGET_MODEL), doesNotExist())
@@ -335,7 +335,7 @@ class SimpleChangesTests extends ReactionsExecutionTest {
 
 	@Test
 	def void testCreateFurtherModel() {
-		resourceAt(FURTHER_SOURCE_MODEL).recordAndPropagate [
+		resourceAt(FURTHER_SOURCE_MODEL).propagate [
 			contents += newRoot => [
 				id = "Further_Source_Test_Model"
 			]
@@ -346,7 +346,7 @@ class SimpleChangesTests extends ReactionsExecutionTest {
 
 	@Test
 	def void testDeleteFurtherModel() {
-		resourceAt(FURTHER_SOURCE_MODEL).recordAndPropagate [
+		resourceAt(FURTHER_SOURCE_MODEL).propagate [
 			contents += newRoot => [
 				id = "Further_Source_Test_Model"
 			]
@@ -355,7 +355,7 @@ class SimpleChangesTests extends ReactionsExecutionTest {
 		assertThat(resourceAt(FURTHER_TARGET_MODEL), exists())
 		assertThat(resourceAt(FURTHER_SOURCE_MODEL), containsModelOf(resourceAt(FURTHER_TARGET_MODEL)))
 
-		resourceAt(FURTHER_SOURCE_MODEL).recordAndPropagate[delete(emptyMap)]
+		resourceAt(FURTHER_SOURCE_MODEL).propagate[delete(emptyMap)]
 
 		assertThat(resourceAt(FURTHER_SOURCE_MODEL), doesNotExist())
 		assertThat(resourceAt(FURTHER_TARGET_MODEL), doesNotExist())

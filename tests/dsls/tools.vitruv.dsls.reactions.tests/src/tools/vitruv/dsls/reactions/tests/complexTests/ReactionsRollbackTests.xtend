@@ -25,12 +25,12 @@ class ReactionsRollbackTests extends ReactionsExecutionTest {
 
 	@Test
 	def void testReverse() {
-		resourceAt(SOURCE_MODEL).recordAndPropagate [
+		resourceAt(SOURCE_MODEL).propagate [
 			contents += newRoot => [id = 'Rollback']
 		]
 		assertThat(resourceAt(SOURCE_MODEL), containsModelOf(resourceAt(TARGET_MODEL)))
 
-		val result = Root.from(SOURCE_MODEL).recordAndPropagate [
+		val result = Root.from(SOURCE_MODEL).propagate [
 			singleValuedContainmentEReference = newNonRoot => [
 				id = 'testId'
 			]

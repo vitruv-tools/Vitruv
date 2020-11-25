@@ -31,7 +31,7 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 
 	@BeforeEach
 	def createRoot() {
-		resourceAt(FAMILIES_MODEL).recordAndPropagate[contents += FamiliesFactory.eINSTANCE.createFamilyRegister]
+		resourceAt(FAMILIES_MODEL).propagate[contents += FamiliesFactory.eINSTANCE.createFamilyRegister]
 		assertThat(resourceAt(PERSONS_MODEL), exists)
 	}
 
@@ -48,7 +48,7 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 
 	@Test
 	def void testCreateFamilyFather() {
-		FamilyRegister.from(FAMILIES_MODEL).recordAndPropagate [
+		FamilyRegister.from(FAMILIES_MODEL).propagate [
 			val family = ourFamily()
 			families += family => [
 				father = FamiliesFactory.eINSTANCE.createMember => [
@@ -63,7 +63,7 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 
 	@Test
 	def void testCreateFamilySon() {
-		FamilyRegister.from(FAMILIES_MODEL).recordAndPropagate [
+		FamilyRegister.from(FAMILIES_MODEL).propagate [
 			val family = ourFamily()
 			families += family => [
 				sons += FamiliesFactory.eINSTANCE.createMember => [
@@ -78,7 +78,7 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 
 	@Test
 	def void testCreateFamilyMother() {
-		FamilyRegister.from(FAMILIES_MODEL).recordAndPropagate [
+		FamilyRegister.from(FAMILIES_MODEL).propagate [
 			val family = ourFamily()
 			families += family => [
 				mother = FamiliesFactory.eINSTANCE.createMember => [
@@ -93,7 +93,7 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 
 	@Test
 	def void testCreateFamilyDaughter() {
-		FamilyRegister.from(FAMILIES_MODEL).recordAndPropagate [
+		FamilyRegister.from(FAMILIES_MODEL).propagate [
 			val family = ourFamily()
 			families += family => [
 				daughters += FamiliesFactory.eINSTANCE.createMember => [
@@ -108,7 +108,7 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 
 	@Test
 	def void testDeleteMember() {
-		FamilyRegister.from(FAMILIES_MODEL).recordAndPropagate [
+		FamilyRegister.from(FAMILIES_MODEL).propagate [
 			val family = ourFamily()
 			families += family => [
 				daughters += FamiliesFactory.eINSTANCE.createMember => [
@@ -117,7 +117,7 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 				]
 			]
 		]
-		FamilyRegister.from(FAMILIES_MODEL).recordAndPropagate [
+		FamilyRegister.from(FAMILIES_MODEL).propagate [
 			families.get(0).daughters.remove(0)
 		]
 
@@ -127,7 +127,7 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 	@Test
 	def void testChangeFirstName() {
 		val daughter = FamiliesFactory.eINSTANCE.createMember
-		FamilyRegister.from(FAMILIES_MODEL).recordAndPropagate [
+		FamilyRegister.from(FAMILIES_MODEL).propagate [
 			val family = ourFamily()
 			families += family => [
 				daughters += daughter => [
@@ -137,7 +137,7 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 			]
 		]
 
-		daughter.recordAndPropagate[firstName = FIRST_NAME_MOTHER]
+		daughter.propagate[firstName = FIRST_NAME_MOTHER]
 		val corrObjs = CorrespondenceModelUtil.getCorrespondingEObjects(correspondenceModel, daughter).filter(Person)
 		assertThat(corrObjs.length, is(1))
 		val corrMember = corrObjs.get(0)
