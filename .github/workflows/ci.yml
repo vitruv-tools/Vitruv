@@ -2,7 +2,7 @@ name: CI
 
 on:
   push:
-    branches: [master, github-actions]
+    branches: [master]
   create:
     tags:
   pull_request:
@@ -37,11 +37,11 @@ jobs:
         env: 
           MAVEN_OPTS: -Djansi.force=true
       - name: Publish Nightly Update Site
-        if: github.ref == 'refs/heads/github-actions'
+        if: github.ref == 'refs/heads/master'
         uses: peaceiris/actions-gh-pages@v3
         with:
           deploy_key: ${{ secrets.UPDATE_SITE_DEPLOY_KEY }}
-          external_repository: jGleitz/test-update-site
+          external_repository: vitruv-tools/updatesite
           destination_dir: nightly/framework
           publish_dir: releng/tools.vitruv.updatesite.aggregated/target/final
       - name: Determine Release Version
@@ -55,7 +55,7 @@ jobs:
         uses: peaceiris/actions-gh-pages@v3
         with:
           personal_token: ${{ secrets.UPDATE_SITE_ACCESS_TOKEN }}
-          external_repository: jGleitz/test-update-site
+          external_repository: vitruv-tools/updatesite
           destination_dir: release/framework/${{ steps.releaseVersion.outputs.tag }}
           publish_dir: releng/tools.vitruv.updatesite.aggregated/target/final
           
