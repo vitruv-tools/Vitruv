@@ -114,10 +114,6 @@ class SimpleChangesTests extends ReactionsExecutionTest {
 	@Test
 	def void testCreateSingleValuedContainmentEReference() {
 		Root.from(SOURCE_MODEL).recordAndPropagate [
-			singleValuedContainmentEReference = null
-		]
-		executionMonitor.reset()
-		Root.from(SOURCE_MODEL).recordAndPropagate [
 			singleValuedContainmentEReference = newNonRoot => [id = "singleValuedContainmentNonRootTest"]
 		]
 
