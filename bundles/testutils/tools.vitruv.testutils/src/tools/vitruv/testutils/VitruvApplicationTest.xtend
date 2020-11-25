@@ -12,7 +12,6 @@ import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.TestInfo
 import org.junit.jupiter.api.^extension.ExtendWith
-import tools.vitruv.framework.change.description.CompositeContainerChange
 import tools.vitruv.framework.change.description.PropagatedChange
 import tools.vitruv.framework.change.description.VitruviusChangeFactory
 import tools.vitruv.framework.change.processing.ChangePropagationSpecification
@@ -21,7 +20,6 @@ import tools.vitruv.framework.tuid.TuidManager
 import tools.vitruv.framework.userinteraction.UserInteractionFactory
 import tools.vitruv.framework.util.ResourceSetUtil
 import tools.vitruv.framework.util.bridges.EMFBridge
-import tools.vitruv.framework.util.bridges.EcoreResourceBridge
 import tools.vitruv.framework.util.datatypes.VURI
 import tools.vitruv.framework.uuid.UuidGeneratorAndResolver
 import tools.vitruv.framework.uuid.UuidGeneratorAndResolverImpl
@@ -33,6 +31,8 @@ import static com.google.common.base.Preconditions.checkArgument
 import static com.google.common.base.Preconditions.checkState
 import tools.vitruv.testutils.matchers.CorrespondenceModelContainer
 import tools.vitruv.testutils.TestLogging
+import static org.hamcrest.MatcherAssert.assertThat
+import static tools.vitruv.testutils.matchers.ChangeMatchers.isValid
 
 @ExtendWith(TestProjectManager, TestLogging)
 abstract class VitruvApplicationTest implements CorrespondenceModelContainer {
@@ -144,56 +144,46 @@ abstract class VitruvApplicationTest implements CorrespondenceModelContainer {
 		]
 	}
 
-	/** 
-	 * Saves the model containing the given {@link EObject} and propagates changes that were recorded for it.
+	/**
+	 * {@linkplain #record Records} the changes to {@code object} created by the provided {@code consumer}, 
+	 * {@code object}’s resource and propagates all changes.
 	 * 
-	 * @return a list with the {@link PropagatedChange}s, containing the original and consequential changes.
+	 * @return the changes resulting from propagating the recorded changes.
+	 * @see #saveAndPropagateChanges
 	 */
-	def protected List<PropagatedChange> saveAndSynchronizeChanges(EObject object) {
-		return saveAndSynchronizeChanges(checkedResourceOf(object))
+	def protected <T extends EObject> List<PropagatedChange> recordAndPropagate(T object, Consumer<T> consumer) {
+		val resource = checkedResourceOf(object)
+		object.record(consumer)
+		resource.save(emptyMap)
+		propagateChanges()
 	}
 
-	/** 
-	 * Saves the provided {@link Resource} and propagates changes that were recorded for it.
+	/**
+	 * {@linkplain #record Records} the changes to {@code resource} created by the provided {@code consumer}, saves
+	 * the resource and propagates all changes.
 	 * 
-	 * @return a list with the {@link PropagatedChange}s, containing the original and consequential changes.
+	 * @return the changes resulting from propagating the recorded changes.
+	 * @see #saveAndPropagateChanges
 	 */
-	def protected List<PropagatedChange> saveAndSynchronizeChanges(Resource resource) {
-		EcoreResourceBridge.saveResource(resource)
-		return propagateChanges()
+	def protected <T extends Resource> List<PropagatedChange> recordAndPropagate(T resource, Consumer<T> consumer) {
+		resource.record(consumer)
+		resource.save(emptyMap)
+		propagateChanges()
 	}
 
-	/** 
-	 * Saves the resource at the given {@code modelPathWithinProject} and propagates changes that were recorded for 
-	 * the resource.
+	/**
+	 * Propagates all recorded changes.
 	 * 
-	 * @param modelPathWithinProject A project-relative path to a model.
-	 * @return a list with the {@link PropagatedChange}s, containing the original and consequential changes.
+	 * @return the changes resulting from propagating the recorded changes. 
 	 */
-	def protected List<PropagatedChange> saveAndSynchronizeChanges(Path modelPathWithinProject) {
-		return saveAndSynchronizeChanges(getModelResource(modelPathWithinProject))
-	}
-
-	/** 
-	 * Creates a model with the given root element at the given path within the test project.
-	 * Propagates the changes for inserting the root element.
-	 * 
-	 * @param modelPathWithinProject A project-relative path to a model.
-	 */
-	def protected void createAndSynchronizeModel(Path modelPathWithinProject, EObject rootElement) {
-		checkArgument(rootElement !== null, "The rootElement must not be null!")
-		createModelResource(modelPathWithinProject).record[contents += rootElement]
-		saveAndSynchronizeChanges(rootElement)
-	}
-
-	/** 
-	 * Deletes the model at the provided {@code modelPathInProject}. Propagates changes for removing the root elements.
-	 * 
-	 * @param modelPathWithinProject A project-relative path to a model.
-	 */
-	def protected List<PropagatedChange> deleteAndSynchronizeModel(Path modelPathWithinProject) {
-		getModelResource(modelPathWithinProject).record[delete(emptyMap())]
-		return propagateChanges()
+	def protected List<PropagatedChange> propagateChanges() {
+		changeRecorder.endRecording()
+		var compositeChange = VitruviusChangeFactory.instance.createCompositeChange(changeRecorder.changes)
+		assertThat("The recorded change set is not valid!", compositeChange, isValid)
+		var propagationResult = virtualModel.propagateChange(compositeChange)
+		renewResourceCache()
+		changeRecorder.beginRecording()
+		return propagationResult
 	}
 
 	override getCorrespondenceModel() { virtualModel.correspondenceModel }
@@ -225,16 +215,6 @@ abstract class VitruvApplicationTest implements CorrespondenceModelContainer {
 		var resource = object.eResource()
 		checkArgument(resource !== null, "The object must be contained in a resource!")
 		return resource
-	}
-
-	def private List<PropagatedChange> propagateChanges() {
-		changeRecorder.endRecording()
-		val changes = changeRecorder.changes
-		var CompositeContainerChange compositeChange = VitruviusChangeFactory.instance.createCompositeChange(changes)
-		var propagationResult = virtualModel.propagateChange(compositeChange)
-		renewResourceCache()
-		changeRecorder.beginRecording()
-		return propagationResult
 	}
 
 	def private void startRecordingChanges(EObject object) {

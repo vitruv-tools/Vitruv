@@ -36,15 +36,17 @@ class BidirectionalExecutionTests extends ReactionsExecutionTest {
 
 	@BeforeEach
 	def setup() {
-		createAndSynchronizeModel(SOURCE_MODEL, newRoot => [
-			id = 'EachTestModelSource'
-			nonRootObjectContainerHelper = newNonRootObjectContainerHelper => [
-				id = 'NonRootObjectContainer'
-				nonRootObjectsContainment += nonContainmentNonRootIds.map [ nonRootId |
-					newNonRoot => [id = nonRootId]
+		resourceAt(SOURCE_MODEL).recordAndPropagate [
+			contents += newRoot => [
+				id = 'EachTestModelSource'
+				nonRootObjectContainerHelper = newNonRootObjectContainerHelper => [
+					id = 'NonRootObjectContainer'
+					nonRootObjectsContainment += nonContainmentNonRootIds.map [ nonRootId |
+						newNonRoot => [id = nonRootId]
+					]
 				]
 			]
-		])
+		]
 
 		assertThat(resourceAt(TARGET_MODEL), containsModelOf(resourceAt(SOURCE_MODEL)))
 	}
@@ -57,11 +59,11 @@ class BidirectionalExecutionTests extends ReactionsExecutionTest {
 
 	@Test
 	def void testBasicBidirectionalApplication() {
-		val propagatedChanges = saveAndSynchronizeChanges(Root.from(TARGET_MODEL).record [
+		val propagatedChanges = Root.from(TARGET_MODEL).recordAndPropagate [
 			singleValuedContainmentEReference = newNonRoot => [
 				id = 'bidirectionalId'
 			]
-		])
+		]
 
 		assertThat(propagatedChanges.size, is(1))
 		val consequentialSourceModelChange = propagatedChanges.get(0).sourceModelChanges
@@ -79,9 +81,9 @@ class BidirectionalExecutionTests extends ReactionsExecutionTest {
 	 */
 	@Test
 	def void testApplyRemoveInOtherModel() {
-		val propagatedChanges = saveAndSynchronizeChanges(Root.from(TARGET_MODEL).record [
+		val propagatedChanges = Root.from(TARGET_MODEL).recordAndPropagate [
 			nonRootObjectContainerHelper.nonRootObjectsContainment.remove(0)
-		])
+		]
 
 		assertThat(propagatedChanges.size, is(1))
 		val consequentialSourceModelChange = propagatedChanges.get(0).sourceModelChanges
@@ -99,7 +101,7 @@ class BidirectionalExecutionTests extends ReactionsExecutionTest {
 	 */
 	@Test
 	def void testApplyRemoveRootInOtherModel() {
-		val propagatedChanges = deleteAndSynchronizeModel(TARGET_MODEL)
+		val propagatedChanges = resourceAt(TARGET_MODEL).recordAndPropagate [delete(emptyMap)]
 
 		assertThat(propagatedChanges.size, is(1))
 		val consequentialSourceModelChange = propagatedChanges.get(0).sourceModelChanges

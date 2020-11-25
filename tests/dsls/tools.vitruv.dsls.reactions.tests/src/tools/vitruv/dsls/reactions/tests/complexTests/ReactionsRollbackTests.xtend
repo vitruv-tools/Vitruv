@@ -25,17 +25,17 @@ class ReactionsRollbackTests extends ReactionsExecutionTest {
 
 	@Test
 	def void testReverse() {
-		createAndSynchronizeModel(SOURCE_MODEL, newRoot => [
-			id = 'Rollback'
-		]);
+		resourceAt(SOURCE_MODEL).recordAndPropagate [
+			contents += newRoot => [id = 'Rollback']
+		]
 		assertThat(resourceAt(SOURCE_MODEL), containsModelOf(resourceAt(TARGET_MODEL)))
 
-		val result = saveAndSynchronizeChanges(Root.from(SOURCE_MODEL).record [
+		val result = Root.from(SOURCE_MODEL).recordAndPropagate [
 			singleValuedContainmentEReference = newNonRoot => [
 				id = 'testId'
 			]
-		])
-		virtualModel.reverseChanges(result);
+		]
+		virtualModel.reverseChanges(result)
 
 		assertThat(Root.from(SOURCE_MODEL).singleValuedContainmentEReference, is(nullValue))
 		assertThat(Root.from(TARGET_MODEL).singleValuedContainmentEReference, is(nullValue))
