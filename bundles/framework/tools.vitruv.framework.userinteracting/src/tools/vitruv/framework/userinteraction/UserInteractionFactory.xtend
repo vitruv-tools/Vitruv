@@ -34,13 +34,6 @@ class UserInteractionFactory {
 	}
 
 	/**
-	 * Creates a dummy {@link InternalUserInteractor}, which does nothing and would throw an exception if an interaction is requested.
-	 */
-	def InternalUserInteractor createDummyUserInteractor() {
-		return new UserInteractorImpl(createPredefinedInteractionResultProvider(null));
-	}
-
-	/**
 	 * Creates a {@link InteralResultProvider} based on UI dialogs.
 	 */
 	def InteractionResultProvider createDialogInteractionResultProvider() {
