@@ -155,7 +155,7 @@ abstract class VitruvApplicationTest implements CorrespondenceModelContainer {
 	/** 
 	 * Saves the provided {@link Resource} and propagates changes that were recorded for it.
 	 * 
-	 * @return a list with the {@link PropagatedChange}s, containing the original * and consequential changes.
+	 * @return a list with the {@link PropagatedChange}s, containing the original and consequential changes.
 	 */
 	def protected List<PropagatedChange> saveAndSynchronizeChanges(Resource resource) {
 		EcoreResourceBridge.saveResource(resource)

@@ -25,6 +25,7 @@ import org.eclipse.core.resources.ResourcesPlugin
 import static com.google.common.base.Preconditions.checkNotNull
 import java.util.ArrayList
 import org.junit.jupiter.api.^extension.AfterEachCallback
+import static com.google.common.base.Preconditions.checkArgument
 
 /**
  * Extension managing the test projects for Eclipse tests. Test classes using this extension can have test project 
@@ -32,16 +33,17 @@ import org.junit.jupiter.api.^extension.AfterEachCallback
  * test succeed, but retained if their corresponding test failed.
  */
 class TestProjectManager implements ParameterResolver, AfterEachCallback {
-	static val VM_ARGUMENT_TEST_WORKSPACE_PATH = "testWorkspacePath"
+	// set this system property to “always”, “on_failure” or “never” to retain the test projects 
+	// always, on failure, or never. The default is “on_failure”.
+	static val RETAIN_TEST_PROJECTS_SYSTEM_PROPERTY = "vitruv.retainTestProjects"
 	static val log = Logger.getLogger(TestProjectManager) => [level = INFO]
 	static val namespace = ExtensionContext.Namespace.create(TestProjectManager)
 	static val observedFailure = "observedFailure"
 	static val projectNamespace = ExtensionContext.Namespace.create(TestProjectManager, "projects")
 	static val invalidFileCharacters = Pattern.compile("[/\\\\<>:\"|?*\u0000]")
-	/**
-	 * Eclipse uses multiple JUnit Jupiter runs. The only option to preserve the workspace across the runs is
-	 * to make is static.
-	 */
+
+	// When running tests of a whole project, Eclipse sometimes uses multiple JUnit Jupiter runs to run all tests.
+	// The only option to preserve the workspace across these runs is to make it static.
 	static Path workspaceCache
 
 	override afterEach(ExtensionContext context) throws Exception {
@@ -55,10 +57,10 @@ class TestProjectManager implements ParameterResolver, AfterEachCallback {
 	}
 
 	def private static setObservedFailure(ExtensionContext context, boolean value) {
-		context.chain.forEach[getStore(namespace).put(observedFailure, true)]
+		context.parentChain.forEach[getStore(namespace).put(observedFailure, true)]
 	}
 
-	def private static chain(ExtensionContext context) {
+	def private static getParentChain(ExtensionContext context) {
 		var result = new ArrayList<ExtensionContext>()
 		for (var current = context; current !== null; current = current.parent.orElse(null)) {
 			result += current
@@ -67,15 +69,10 @@ class TestProjectManager implements ParameterResolver, AfterEachCallback {
 	}
 
 	def private Path setupWorkspace() {
-		if (TestProjectManager.workspaceCache !== null)
-			return TestProjectManager.workspaceCache
-		var testWorkspacePath = System.getProperty(VM_ARGUMENT_TEST_WORKSPACE_PATH)
-		workspaceCache = if (testWorkspacePath === null) {
-			val testWorkspace = ResourcesPlugin.workspace.root.location.toFile.toPath
-			createUniqueDirectory(testWorkspace.resolve('Vitruv'))
-		} else {
-			createDirectories(Path.of(testWorkspacePath))
-		}
+		if (workspaceCache !== null) return workspaceCache
+
+		val testWorkspace = ResourcesPlugin.workspace.root.location.toFile.toPath
+		workspaceCache = createUniqueDirectory(testWorkspace.resolve('Vitruv'))
 		log.info('''Running in the test workspace at «TestProjectManager.workspaceCache»''')
 		workspaceCache
 	}
@@ -137,7 +134,7 @@ class TestProjectManager implements ParameterResolver, AfterEachCallback {
 			} catch (FileAlreadyExistsException alreadyExists) {
 				uniqueProject = projectPath.resolveSibling('''«projectPath.fileName» «counter»''')
 			}
-			checkState(counter < 1000, "Failed to create a unique version of %s with 1000 tries")
+			checkState(counter < 1000, "Failed to create a unique version of %s with 1000 tries", projectPath)
 		}
 		return uniqueProject
 	}
@@ -146,21 +143,32 @@ class TestProjectManager implements ParameterResolver, AfterEachCallback {
 		invalidFileCharacters.matcher(fileName).replaceAll("-")
 	}
 
+	private static enum RetainMode {
+		ALWAYS,
+		ON_FAILURE,
+		NEVER
+	}
+
+	def private static getRetainMode() {
+		val propertyValue = System.getProperty(RETAIN_TEST_PROJECTS_SYSTEM_PROPERTY)?.toLowerCase
+		if (propertyValue === null) return RetainMode.ON_FAILURE
+		val mode = RetainMode.values.findFirst[name.toLowerCase == propertyValue]
+		checkArgument(mode !== null, '''Unknown test project retain mode '«propertyValue»!''')
+		return mode
+	}
+
 	@FinalFieldsConstructor
 	private static class WorkspaceGuard implements ExtensionContext.Store.CloseableResource {
 		val Path workspace
 
 		override close() throws Throwable {
-			val deleteWorkspace = workspace.toString != System.getProperty(VM_ARGUMENT_TEST_WORKSPACE_PATH)
 			walkFileTree(workspace, new SimpleFileVisitor<Path>() {
 				override postVisitDirectory(Path dir, IOException error) {
 					super.postVisitDirectory(dir, error) => [
-						if (deleteWorkspace || dir != workspace) {
-							try {
-								delete(dir)
-							} catch (DirectoryNotEmptyException e) {
-								// still some files left
-							}
+						try {
+							delete(dir)
+						} catch (DirectoryNotEmptyException e) {
+							// still some files left
 						}
 					]
 				}
@@ -174,9 +182,12 @@ class TestProjectManager implements ParameterResolver, AfterEachCallback {
 		val ExtensionContext context
 
 		override close() throws Throwable {
-			// clear if the test succeeded, retain if the test failed
-			if (!context.observedFailure) {
-				walk(projectDir).sorted(reverseOrder).forEach[delete(it)]
+			switch retain: retainMode {
+				case NEVER,
+				case retain == ON_FAILURE && !context.observedFailure:
+					walk(projectDir).sorted(reverseOrder).forEach[delete(it)]
+				default: { // retain
+				}
 			}
 		}
 	}
