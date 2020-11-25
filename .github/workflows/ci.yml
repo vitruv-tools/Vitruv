@@ -17,7 +17,7 @@ jobs:
         uses: actions/cache@v2
         with:
           path: ~/.m2
-          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml', '**/MANIFEST.MF') }}
           restore-keys: ${{ runner.os }}-m2
       - name: Set up JDK
         uses: actions/setup-java@v1
@@ -26,7 +26,16 @@ jobs:
       - name: Build and Verify
         uses: GabrielBB/xvfb-action@v1
         with:
-          run: ./mvnw -B clean verify -Dstyle.color=always -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
+          run: >
+            ./mvnw -B clean verify 
+            -Dstyle.color=always
+            -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
+            -Dorg.slf4j.simpleLogger.log.org.eclipse.tycho.core.resolver.DefaultTychoResolver=warn
+            -Dorg.slf4j.simpleLogger.log.org.eclipse.tycho.osgi.configuration.MavenContextConfigurator=warn
+            -Dorg.slf4j.simpleLogger.log.org.eclipse.sisu.equinox.launching.internal.DefaultEquinoxLauncher=warn
+            -Dorg.slf4j.simpleLogger.log.org.eclipse.xtext.maven.XtextGenerateMojo=warn
+        env: 
+          MAVEN_OPTS: -Djansi.force=true
       - name: Publish Nightly Update Site
         if: github.ref == 'refs/heads/github-actions'
         uses: peaceiris/actions-gh-pages@v3
@@ -41,7 +50,7 @@ jobs:
         uses: olegtarasov/get-tag@v2
         with:
            tagRegex: releases/(.*)
-      - name: Publish Release Update Site ${{ steps.releaseVersion.outputs.tag }}
+      - name: Publish Release Update Site
         if: startsWith(github.ref, 'refs/tags/releases/')
         uses: peaceiris/actions-gh-pages@v3
         with:
