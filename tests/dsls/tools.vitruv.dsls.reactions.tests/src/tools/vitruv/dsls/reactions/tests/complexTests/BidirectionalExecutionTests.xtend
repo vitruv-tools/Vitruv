@@ -36,7 +36,7 @@ class BidirectionalExecutionTests extends ReactionsExecutionTest {
 
 	@BeforeEach
 	def setup() {
-		resourceAt(SOURCE_MODEL).recordAndPropagate [
+		resourceAt(SOURCE_MODEL).propagate [
 			contents += newRoot => [
 				id = 'EachTestModelSource'
 				nonRootObjectContainerHelper = newNonRootObjectContainerHelper => [
@@ -59,7 +59,7 @@ class BidirectionalExecutionTests extends ReactionsExecutionTest {
 
 	@Test
 	def void testBasicBidirectionalApplication() {
-		val propagatedChanges = Root.from(TARGET_MODEL).recordAndPropagate [
+		val propagatedChanges = Root.from(TARGET_MODEL).propagate [
 			singleValuedContainmentEReference = newNonRoot => [
 				id = 'bidirectionalId'
 			]
@@ -81,7 +81,7 @@ class BidirectionalExecutionTests extends ReactionsExecutionTest {
 	 */
 	@Test
 	def void testApplyRemoveInOtherModel() {
-		val propagatedChanges = Root.from(TARGET_MODEL).recordAndPropagate [
+		val propagatedChanges = Root.from(TARGET_MODEL).propagate [
 			nonRootObjectContainerHelper.nonRootObjectsContainment.remove(0)
 		]
 
@@ -101,7 +101,7 @@ class BidirectionalExecutionTests extends ReactionsExecutionTest {
 	 */
 	@Test
 	def void testApplyRemoveRootInOtherModel() {
-		val propagatedChanges = resourceAt(TARGET_MODEL).recordAndPropagate [delete(emptyMap)]
+		val propagatedChanges = resourceAt(TARGET_MODEL).propagate [delete(emptyMap)]
 
 		assertThat(propagatedChanges.size, is(1))
 		val consequentialSourceModelChange = propagatedChanges.get(0).sourceModelChanges

@@ -36,7 +36,7 @@ class ImportTests extends ReactionsExecutionTest {
 
 	@BeforeEach
 	def void createRoot() {
-		resourceAt(SOURCE_MODEL).recordAndPropagate [
+		resourceAt(SOURCE_MODEL).propagate [
 			contents += newRoot => [id = 'ImportTestsModelSource']
 		]
 	}
@@ -52,7 +52,7 @@ class ImportTests extends ReactionsExecutionTest {
 	}
 
 	private def triggerSetRootIdReaction(String... dataTags) {
-		Root.from(SOURCE_MODEL).recordAndPropagate [
+		Root.from(SOURCE_MODEL).propagate [
 			id = ImportTestsUtils.toTestDataString(testName, dataTags)
 		]
 	}
