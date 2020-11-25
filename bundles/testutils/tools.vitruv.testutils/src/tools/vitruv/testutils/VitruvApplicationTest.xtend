@@ -152,10 +152,8 @@ abstract class VitruvApplicationTest implements CorrespondenceModelContainer {
 	 * @see #saveAndPropagateChanges
 	 */
 	def protected <T extends EObject> List<PropagatedChange> recordAndPropagate(T object, Consumer<T> consumer) {
-		val resource = checkedResourceOf(object)
 		object.record(consumer)
-		resource.save(emptyMap)
-		propagateChanges()
+		saveAndPropagateChanges()
 	}
 
 	/**
@@ -167,19 +165,20 @@ abstract class VitruvApplicationTest implements CorrespondenceModelContainer {
 	 */
 	def protected <T extends Resource> List<PropagatedChange> recordAndPropagate(T resource, Consumer<T> consumer) {
 		resource.record(consumer)
-		resource.save(emptyMap)
-		propagateChanges()
+		saveAndPropagateChanges()
 	}
 
 	/**
-	 * Propagates all recorded changes.
+	 * Saves the resource that was modified by the recorded changes and propagates all recorded changes.
 	 * 
 	 * @return the changes resulting from propagating the recorded changes. 
 	 */
-	def protected List<PropagatedChange> propagateChanges() {
+	def protected List<PropagatedChange> saveAndPropagateChanges() {
 		changeRecorder.endRecording()
 		var compositeChange = VitruviusChangeFactory.instance.createCompositeChange(changeRecorder.changes)
 		assertThat("The recorded change set is not valid!", compositeChange, isValid)
+		// a valid container change contains only changes for one resource
+		compositeChange.affectedEObjects.map[eResource].findFirst[it !== null]?.save(emptyMap)
 		var propagationResult = virtualModel.propagateChange(compositeChange)
 		renewResourceCache()
 		changeRecorder.beginRecording()
