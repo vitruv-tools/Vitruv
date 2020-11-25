@@ -23,6 +23,7 @@ xtend-gen/
 # Maven
 target/
 .polyglot.build.properties
+.mvn/wrapper/maven-wrapper.jar
 
 # Custom
 EvaluationData
