@@ -40,7 +40,7 @@ jobs:
         if: github.ref == 'refs/heads/github-actions'
         uses: peaceiris/actions-gh-pages@v3
         with:
-          personal_token: ${{ secrets.UPDATE_SITE_ACCESS_TOKEN }}
+          deploy_key: ${{ secrets.UPDATE_SITE_DEPLOY_KEY }}
           external_repository: jGleitz/test-update-site
           destination_dir: nightly/framework
           publish_dir: releng/tools.vitruv.updatesite.aggregated/target/final
