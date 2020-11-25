@@ -74,6 +74,7 @@ abstract class VitruvApplicationTest implements CorrespondenceModelContainer {
 	@BeforeEach
 	def final package void setupChangeRecorder() {
 		changeRecorder = new AtomicEmfChangeRecorder(uuidGeneratorAndResolver)
+		changeRecorder.beginRecording()
 	}
 
 	@AfterEach
@@ -241,10 +242,8 @@ abstract class VitruvApplicationTest implements CorrespondenceModelContainer {
 	}
 
 	def private void startRecordingChanges(Resource resource) {
+		checkState(changeRecorder.recording, "The change recorder is currently not recording!")
 		changeRecorder.addToRecording(resource)
-		if (!changeRecorder.isRecording()) {
-			changeRecorder.beginRecording()
-		}
 	}
 
 	def private void stopRecordingChanges(EObject object) {
