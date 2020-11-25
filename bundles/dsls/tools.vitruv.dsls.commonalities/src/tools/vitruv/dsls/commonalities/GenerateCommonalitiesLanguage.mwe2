@@ -71,6 +71,9 @@ Workflow {
 			name = "tools.vitruv.dsls.commonalities.CommonalitiesLanguage"
 			fileExtensions = "commonality"
 			referencedResource = languageElementsModel
+			junitSupport = {
+				junitVersion = "5"
+			}
 			// not used as of now:
 			//referencedResource = "platform:/resource/tools.vitruv.dsls.mirbase/model/generated/MirBase.genmodel"
 		}

@@ -1,9 +1,9 @@
 package tools.vitruv.framework.tests.vsum;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
@@ -20,14 +20,13 @@ import tools.vitruv.framework.util.datatypes.VURI;
 
 public class PersistentTestUtil {
     private PersistentTestUtil() {
-
     }
 
-    public static Set<VURI> createDummyVURIs(final File projectFolder, final int nrOfVURIs) {
+    public static Set<VURI> createDummyVURIs(final Path projectFolder, final int nrOfVURIs) {
         Set<VURI> vuris = new HashSet<VURI>();
         for (int i = 0; i < nrOfVURIs; ++i) {
             vuris.add(VURI.getInstance(EMFBridge.getEmfFileUriForFile(
-                    new File(projectFolder, "/dummyInstances/testInstance_" + i + "." + VsumTest.PCM_FILE_EXT))));
+                    projectFolder.resolve("dummyInstances/testInstance_" + i + "." + VsumTest.PCM_FILE_EXT).toFile())));
         }
         return vuris;
     }
@@ -42,7 +41,7 @@ public class PersistentTestUtil {
     }
 
     public static void assertEqualsSets(final Set<VURI> vuris, final Set<VURI> loadedVURIs) {
-        assertEquals("Loaded VURIs must have the same size as saved VURIs", loadedVURIs.size(), vuris.size());
+        assertEquals(loadedVURIs.size(), vuris.size(), "Loaded VURIs must have the same size as saved VURIs");
         Iterator<VURI> loadedVURIsIterator = loadedVURIs.iterator();
         while (loadedVURIsIterator.hasNext()) {
             URI loadedURI = loadedVURIsIterator.next().getEMFUri();

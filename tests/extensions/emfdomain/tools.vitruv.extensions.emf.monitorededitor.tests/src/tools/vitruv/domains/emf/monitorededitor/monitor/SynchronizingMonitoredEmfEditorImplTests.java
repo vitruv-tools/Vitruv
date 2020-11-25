@@ -21,9 +21,9 @@ import org.eclipse.emf.ecore.EcoreFactory;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.edit.domain.EditingDomain;
 import org.eclipse.ui.IEditorPart;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import tools.vitruv.domains.emf.monitorededitor.IEditorPartAdapterFactory;
 import tools.vitruv.domains.emf.monitorededitor.IEditorPartAdapterFactory.IEditorPartAdapter;
@@ -52,7 +52,7 @@ public class SynchronizingMonitoredEmfEditorImplTests extends BasicTestCase {
 
     private static final EObject DUMMY_EOBJECT = EcoreFactory.eINSTANCE.createEClass();
 
-    @Before
+    @BeforeEach
     public void setUp() {
         this.eclipseCtrl = new EclipseMock();
         this.mockedEclipseUtils = eclipseCtrl.getEclipseUtils();
@@ -62,7 +62,7 @@ public class SynchronizingMonitoredEmfEditorImplTests extends BasicTestCase {
         editorPartAdapter = adapterFactory.createAdapter(editorPart);
     }
 
-    @After
+    @AfterEach
     public void tearDown() {
         assert !eclipseCtrl.hasListeners() : "Listeners were not fully removed from Eclipse";
     }

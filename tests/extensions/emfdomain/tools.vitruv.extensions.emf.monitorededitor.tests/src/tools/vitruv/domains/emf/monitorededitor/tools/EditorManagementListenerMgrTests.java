@@ -15,8 +15,8 @@ import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWindow;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import tools.vitruv.domains.emf.monitorededitor.test.mocking.EclipseMock;
 import tools.vitruv.domains.emf.monitorededitor.test.mocking.EclipseWorkbenchMock;
@@ -29,7 +29,7 @@ public class EditorManagementListenerMgrTests extends BasicTestCase {
     private EditorManagementListenerMgr editorMgr;
     private IWorkbench workbench;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         eclipseMock = new EclipseMock();
         workbenchMock = eclipseMock.getWorkbenchMockCtrl();

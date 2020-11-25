@@ -1,11 +1,10 @@
 package tools.vitruv.dsls.reactions.tests.importTests
 
 import java.util.List
+import edu.kit.ipd.sdq.activextendannotations.Utility
 
+@Utility
 class ImportTestsUtils {
-	private new() {
-	}
-
 	public static val TEST_NAME_PREFIX = "test:";
 	public static val DATA_TAG_PREFIX = "data:";
 	public static val DATA_TAG_SEPARATOR = ";";

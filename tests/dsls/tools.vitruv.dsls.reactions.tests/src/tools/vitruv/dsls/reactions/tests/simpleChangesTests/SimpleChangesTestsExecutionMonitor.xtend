@@ -1,28 +1,17 @@
 package tools.vitruv.dsls.reactions.tests.simpleChangesTests
 
-import java.util.BitSet
-import static org.junit.Assert.assertTrue;
+import tools.vitruv.dsls.reactions.tests.ExecutionMonitor
+import tools.vitruv.dsls.reactions.tests.simpleChangesTests.SimpleChangesTestsExecutionMonitor.ChangeType
+import java.util.EnumSet
 
-final class SimpleChangesTestsExecutionMonitor {
-	static var SimpleChangesTestsExecutionMonitor INSTANCE;
-	
-	static def getInstance() {
-		if (INSTANCE === null) {
-			INSTANCE = new SimpleChangesTestsExecutionMonitor();
-		}
-		return INSTANCE;
+final class SimpleChangesTestsExecutionMonitor implements ExecutionMonitor<ChangeType> {
+	public static val instance = new SimpleChangesTestsExecutionMonitor()
+
+	val values = EnumSet.noneOf(ChangeType)
+
+	private new() {
 	}
-	
-	static def void reinitialize() {
-		INSTANCE = new SimpleChangesTestsExecutionMonitor();
-	}
-	
-	BitSet values;
-	
-	new() {
-		this.values = new BitSet(ChangeType.Size.ordinal + 1);
-	}
-	
+
 	enum ChangeType {
 		CreateEObject,
 		DeleteEObject,
@@ -44,15 +33,15 @@ final class SimpleChangesTestsExecutionMonitor {
 		UnsetNonContainmentEReference,
 		Size
 	}
-	
-	def void set(ChangeType type) {
-		this.values.set(type.ordinal);
+
+	def set(ChangeType type) {
+		values += type
 	}
-	
-	def boolean isSet(ChangeType type) {
-		return this.values.get(type.ordinal);
+
+	def reset() {
+		values.clear()
 	}
-	
+
 	override boolean equals(Object object) {
 		if (object instanceof SimpleChangesTestsExecutionMonitor) {
 			val monitor = object;
@@ -60,15 +49,8 @@ final class SimpleChangesTestsExecutionMonitor {
 		}
 		return false;
 	}
-	
-	def assertEqualWithStatic() {
-		for (var i = 0; i < ChangeType.Size.ordinal; i++) {
-			if (values.get(i)) {
-				assertTrue(ChangeType.values.get(i) + " was expected to occur but did not", INSTANCE.values.get(i));
-			}
-			if (!values.get(i)) {
-				assertTrue(ChangeType.values.get(i) + " was not expected to occur but did", !INSTANCE.values.get(i));
-			}
-		}
+
+	override getObservedExecutions() {
+		values
 	}
 }

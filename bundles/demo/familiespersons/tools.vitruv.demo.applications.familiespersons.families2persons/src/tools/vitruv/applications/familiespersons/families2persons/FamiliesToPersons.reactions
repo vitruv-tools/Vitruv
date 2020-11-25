@@ -157,7 +157,8 @@ routine changeFullNameFromFirst(families::Member member){
 	}
 	action {
 		update person {
-			person.fullName = member.firstName + " " + member.familyFather.lastName 
+			val family = member.familyFather ?: member.familyMother ?: member.familyDaughter ?: member.familySon
+			person.fullName = member.firstName + " " + family.lastName 
 			}
 	}
 }

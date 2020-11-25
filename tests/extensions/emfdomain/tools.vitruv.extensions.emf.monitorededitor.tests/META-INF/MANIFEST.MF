@@ -10,7 +10,6 @@ Bundle-ActivationPolicy: lazy
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.emf.ecore.xmi,
- org.junit,
  org.apache.log4j;bundle-version="1.2.15",
  org.eclipse.emf.ecore.change,
  org.eclipse.emf.ecore,

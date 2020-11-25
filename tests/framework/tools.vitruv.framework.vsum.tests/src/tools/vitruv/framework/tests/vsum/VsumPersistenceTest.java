@@ -3,25 +3,19 @@ package tools.vitruv.framework.tests.vsum;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import pcm_mockup.Pcm_mockupFactory;
 import tools.vitruv.framework.util.datatypes.VURI;
 import tools.vitruv.framework.vsum.InternalVirtualModel;
 
 public class VsumPersistenceTest extends VsumTest {
-
-    @Before
-    public void setUp() throws Exception {
-    }
-
     @Test
     public void testSaveAndLoadModels() throws Exception {
         // 1. create empty VSUM + store dummy model instances
         InternalVirtualModel vsum = createDefaultVirtualModel();
         int nrOfVURIs = 2;
-        Set<VURI> vuris = PersistentTestUtil.createDummyVURIs(getCurrentTestProjectFolder(), nrOfVURIs);
+        Set<VURI> vuris = PersistentTestUtil.createDummyVURIs(getCurrentProjectFolder(), nrOfVURIs);
         // PersistentTestUtil.createResources(vuris);
         for (VURI vuri : vuris) {
             vsum.persistRootElement(vuri, Pcm_mockupFactory.eINSTANCE.createRepository());

@@ -3,10 +3,12 @@ package tools.vitruv.framework.tests.domains
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
-import org.junit.Test
 import tools.vitruv.framework.uuid.UuidGeneratorAndResolverImpl
 
-import static org.junit.Assert.*
+import org.junit.jupiter.api.Test
+
+import static org.junit.jupiter.api.Assertions.assertTrue
+import static org.junit.jupiter.api.Assertions.assertThrows
 
 class EdgeCaseStateChangeTest extends StateChangePropagationTest {
 
@@ -35,7 +37,7 @@ class EdgeCaseStateChangeTest extends StateChangePropagationTest {
 		val resolver = new UuidGeneratorAndResolverImpl(resourceSet, false)
 		val EObject nullEObject = null
 		val change = strategyToTest.getChangeSequences(nullEObject, nullEObject, resolver)
-		assertTrue("Composite change contains children!", change.EChanges.empty)
+		assertTrue(change.EChanges.empty, "Composite change contains children!")
 	}
 
 	/**
@@ -47,14 +49,16 @@ class EdgeCaseStateChangeTest extends StateChangePropagationTest {
 		val resolver = new UuidGeneratorAndResolverImpl(resourceSet, false)
 		val Resource nullResource = null
 		val change = strategyToTest.getChangeSequences(nullResource, nullResource, resolver)
-		assertTrue("Composite change contains children!", change.EChanges.empty)
+		assertTrue(change.EChanges.empty, "Composite change contains children!")
 	}
 
 	/**
 	 * Tests invalid input: null instead of UuidGeneratorAndResolver.
 	 */
-	@Test(expected=IllegalArgumentException)
+	@Test
 	def void testNullResolver() {
-		strategyToTest.getChangeSequences(umlCheckpoint, umlCheckpoint, null)
+		assertThrows(IllegalArgumentException) [
+			strategyToTest.getChangeSequences(umlCheckpoint, umlCheckpoint, null)
+		]
 	}
 }

@@ -26,8 +26,8 @@ import org.eclipse.core.commands.IExecutionListener;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IPartListener2;
 import org.eclipse.ui.IWorkbenchPartReference;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import tools.vitruv.domains.emf.monitorededitor.test.mocking.EclipseMock;
 import tools.vitruv.domains.emf.monitorededitor.test.mocking.EclipseMock.SaveEventKind;
@@ -57,7 +57,7 @@ public class EclipseMockTests {
         }
     };
 
-    @Before
+    @BeforeEach
     public void setUp() {
         eclipseMockCtrl = new EclipseMock();
         eclipse = eclipseMockCtrl.getEclipseUtils();

@@ -1,122 +1,117 @@
 package tools.vitruv.dsls.mappings.addressesXrecipients.tests
 
-import edu.kit.ipd.sdq.metamodels.addresses.Address
-import edu.kit.ipd.sdq.metamodels.addresses.AddressesFactory
+import edu.kit.ipd.sdq.metamodels.addresses.Addresses
 import edu.kit.ipd.sdq.metamodels.recipients.City
 import edu.kit.ipd.sdq.metamodels.recipients.Location
 import edu.kit.ipd.sdq.metamodels.recipients.Recipient
 import edu.kit.ipd.sdq.metamodels.recipients.Recipients
 import mir.reactions.adXre_L2R.AdXre_L2RChangePropagationSpecification
-import org.junit.Test
+import org.junit.jupiter.api.Test
+import tools.vitruv.testutils.VitruvApplicationTest
 
-import static org.junit.Assert.*
+import static org.hamcrest.MatcherAssert.assertThat
+import static tools.vitruv.dsls.mappings.addressesXrecipients.tests.AddressesCreators.*
+import static tools.vitruv.dsls.mappings.addressesXrecipients.tests.AddressesXRecipientsTestConstants.*
+import static tools.vitruv.dsls.mappings.addressesXrecipients.tests.RecipientsCreators.*
+import static tools.vitruv.testutils.matchers.ModelMatchers.contains
+import static tools.vitruv.testutils.matchers.ModelMatchers.doesNotExist
+import static tools.vitruv.testutils.matchers.ModelMatchers.equalsDeeply
+import static tools.vitruv.testutils.matchers.ModelMatchers.ignoringFeatures
 
-class AddressesXRecipientsL2RTest extends AddressesXRecipientsTest {
-	
-	override protected createChangePropagationSpecifications() {
-		return #[new AdXre_L2RChangePropagationSpecification()]
+import static extension org.eclipse.emf.ecore.util.EcoreUtil.remove
+import static extension tools.vitruv.testutils.matchers.CorrespondenceMatchers.*
+
+class AddressesXRecipientsL2RTest extends VitruvApplicationTest {
+	override protected getChangePropagationSpecifications() {
+		#[new AdXre_L2RChangePropagationSpecification]
 	}
-	
+
 	@Test
 	def void createRoot() {
-		createAndSyncRoot()
+		createAndSynchronizeModel(ADDRESSES_MODEL, newAddresses)
+		assertThat(resourceAt(RECIPIENTS_MODEL), contains(newRecipients, ignoringFeatures('id')))
+		assertThat(Addresses.from(ADDRESSES_MODEL),
+			hasOneCorrespondence(equalsDeeply(Recipients.from(RECIPIENTS_MODEL))))
 	}
-	
-	private def createAndSyncRoot() {
-		val root = AddressesFactory.eINSTANCE.createAddresses()
-		val path = getAddressesModelPath(rootModelName)
-		val correspondingRoot = syncAndAssertRoot(root, path, Recipients)
-		return new Pair(root, correspondingRoot)
-	}
-	
+
 	@Test
 	def void createAndDeleteRoot() {
-		val roots = createAndSyncRoot()
-		deleteAndAssertCorrespondingDeletion(roots.key, roots.value)
+		createRoot()
+		Addresses.from(ADDRESSES_MODEL).record[remove()]
+		saveAndSynchronizeChanges(ADDRESSES_MODEL)
+		assertThat(resourceAt(ADDRESSES_MODEL), doesNotExist)
+		assertThat(resourceAt(RECIPIENTS_MODEL), doesNotExist)
 	}
-		
+
 	@Test
 	def void createChild() {
-		createAndSyncChild()
-	}
-	
-	private def Pair<Address,Recipient> createAndSyncChild() {
-		val roots = createAndSyncRoot()
-		val parent = roots.key
-		val correspondingParent = roots.value
-		val child = AddressesFactory.eINSTANCE.createAddress()
-		parent.addresses.add(child)
+		createRoot()
+		val address = newAddress
+		saveAndSynchronizeChanges(Addresses.from(ADDRESSES_MODEL).record [
+			addresses += address
+		])
+		assertThat(address, hasNoCorrespondences)
+
 		// "initial address model" (see Table 7.4 in dx.doi.org/10.5445/IR/1000069284)
-		
-		saveAndAssertNoAddressCorrespondences(child)
-		child.number = number
-		saveAndAssertNoAddressCorrespondences(child)	
-		child.street = street
+		saveAndSynchronizeChanges(address.record[number = TEST_NUMBER])
+		assertThat(address, hasNoCorrespondences)
+
 		// "address model after 1st change" (Table 7.4)
-		
-		saveAndAssertNoAddressCorrespondences(child)
-		child.zipCode = zipCode
+		saveAndSynchronizeChanges(address.record[street = TEST_STREET])
+		assertThat(address, hasNoCorrespondences)
+
 		// "address model after 2nd change" (Table 7.4)
-		
-		saveAndSynchronizeChanges(child)
-		assertChild(child, parent, correspondingParent)
+		saveAndSynchronizeChanges(address.record[zipCode = TEST_ZIP_CODE])
+		val expectedRecipient = newRecipient => [
+			business = true
+			locatedIn = newCity => [
+				zipCode = TEST_ZIP_CODE
+			]
+			locatedAt = newLocation => [
+				number = TEST_NUMBER
+				street = TEST_STREET
+			]
+		]
+		assertThat(address,
+			hasOneCorrespondence(ofType(Recipient), equalsDeeply(expectedRecipient, ignoringFeatures('id', 'parent'))))
+		assertThat(resourceAt(RECIPIENTS_MODEL), contains(newRecipients => [
+			recipients += expectedRecipient
+		], ignoringFeatures('id', 'parent')))
 	}
-	
-	private def saveAndAssertNoAddressCorrespondences(Address address) {
-		saveAndSynchronizeChanges(address)
-		assertNoAddressCorrespondences(address)
-	}
-	
-	private def assertNoAddressCorrespondences(Address address) {
-		val correspondingRecipients = getCorrespondingChild(address, Recipient)
-		assertTrue(correspondingRecipients.empty)
-		val correspondingLocations = getCorrespondingChild(address, Location)
-		assertTrue(correspondingLocations.empty)
-		val correspondingCities = getCorrespondingChild(address, City)
-		assertTrue(correspondingCities.empty)
-	}
-	
+
 	@Test
 	def void createAndDeleteChild() {
-		val pair = createAndSyncChild()
-		val address = pair.key
-		val recipient = pair.value
-		val location = recipient.locatedAt
-		val city = recipient.locatedIn
-		deleteAndAssertCorrespondingDeletion(address, recipient, location, city)
+		createChild()
+		saveAndSynchronizeChanges(Addresses.from(ADDRESSES_MODEL).record [
+			addresses.get(0).remove()
+		])
+		assertThat(resourceAt(RECIPIENTS_MODEL), contains(newRecipients, ignoringFeatures('id')))
 	}
-	
-	@Test 
+
+	@Test
 	def void createAndModifyChildNumber() {
-		val pair = createAndSyncChild()
-		val address = pair.key
-		val newNumber = number + number
-		address.number = newNumber
-		saveAndSynchronizeChanges(address)
-		val recipient = pair.value
-		val location = recipient.locatedAt
-		assertChild(address, address.parent, recipient.parent)
-		assertEquals(location.number, newNumber)
-		
-		address.number = -number
-		val city = recipient.locatedIn
-		syncAndAssertCorrespondingDeletion(address, recipient, location, city)
+		createChild()
+		val address = Addresses.from(ADDRESSES_MODEL).addresses.get(0)
+		saveAndSynchronizeChanges(address.record[number = TEST_NUMBER * 2])
+		assertThat(address, hasOneCorrespondence(ofType(Location), equalsDeeply(newLocation => [
+			number = TEST_NUMBER * 2
+			street = TEST_STREET
+		], ignoringFeatures('id', 'parent'))))
+
+		saveAndSynchronizeChanges(address.record[number = -TEST_NUMBER])
+		assertThat(resourceAt(RECIPIENTS_MODEL), contains(newRecipients, ignoringFeatures('id')))
 	}
-	
-	@Test 
+
+	@Test
 	def void createAndModifyChildZipCode() {
-		val pair = createAndSyncChild()
-		val address = pair.key
-		val newZipCode = zipCode + zipCode
-		address.zipCode = newZipCode
-		saveAndSynchronizeChanges(address)
-		val recipient = pair.value
-		val city = recipient.locatedIn
-		assertChild(address, address.parent, recipient.parent)
-		assertEquals(city.zipCode, newZipCode)
-		
-		address.zipCode = null
-		val location = recipient.locatedAt
-		syncAndAssertCorrespondingDeletion(address, recipient, location, city)
+		createChild()
+		val address = Addresses.from(ADDRESSES_MODEL).addresses.get(0)
+		saveAndSynchronizeChanges(address.record[zipCode = TEST_ZIP_CODE + TEST_ZIP_CODE])
+		assertThat(address, hasOneCorrespondence(ofType(City), equalsDeeply(newCity => [
+			zipCode = TEST_ZIP_CODE + TEST_ZIP_CODE
+		], ignoringFeatures('id', 'parent'))))
+
+		saveAndSynchronizeChanges(address.record[zipCode = null])
+		assertThat(resourceAt(RECIPIENTS_MODEL), contains(newRecipients, ignoringFeatures('id')))
 	}
 }

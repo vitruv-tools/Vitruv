@@ -1,7 +1,9 @@
 package tools.vitruv.framework.tests.vsum;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
 import java.util.Collections;
@@ -15,8 +17,8 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 import pcm_mockup.Component;
 import pcm_mockup.PInterface;
@@ -32,7 +34,7 @@ public class SimpleVsumTest extends VsumTest {
         createDefaultVirtualModel();
     }
 
-    @Ignore
+    @Disabled
     @Test
     public void testVsumAddGetChangeAndSaveModel() {
         // create VSUM
@@ -56,7 +58,7 @@ public class SimpleVsumTest extends VsumTest {
         vsum.save();// (vuri);
 
         // this is fine, the component is contained in the resource
-        assertTrue("Resource of component is null", null != component.eResource());
+        assertTrue(null != component.eResource(), "Resource of component is null");
         // causes a unload and a load of the model
         // TODO This is buillshit... Why should we reload a model in the VSUM?
         // vsum.reloadModelInstance(vuri);
@@ -69,13 +71,13 @@ public class SimpleVsumTest extends VsumTest {
         Component resolvedComponent = (Component) EcoreUtil.resolve(component, mi.getResource());
         isProxy = resolvedComponent.eIsProxy();
         resource = resolvedComponent.eResource();
-        assertTrue("Resource of component is null", null != resource);
-        assertTrue("Component is a proxy", !isProxy);
+        assertNotNull(resource, "Resource of component is null");
+        assertFalse(isProxy, "Component is a proxy");
 
-        assertTrue("Resource of model instance is null", null != mi.getResource());
+        assertNotNull(mi.getResource(), "Resource of model instance is null");
     }
 
-    @Ignore // Only because Travis-CI cannot handle this
+    @Disabled // Only because Travis-CI cannot handle this
     @Test
     public void testVUMResourceIsChangedExternally() throws IOException {
         // same as above
@@ -100,15 +102,15 @@ public class SimpleVsumTest extends VsumTest {
 
         // the interface should not be in the model instance (before the reload)
         PInterface foundMockInterface = findInterfaceInModelInstance(mi);
-        assertTrue("interface should not be in the model instance with uri: " + vuri.getEMFUri() + " and resource: "
-                + mi.getResource(), null == foundMockInterface);
+        assertNull(foundMockInterface, "interface should not be in the model instance with uri: " + vuri.getEMFUri()
+                + " and resource: " + mi.getResource());
 
         // the interface should be in the model now.
         mi = vsum.getModelInstance(vuri);
         foundMockInterface = findInterfaceInModelInstance(mi);
 
-        assertTrue("no interface found in the model instance with uri: " + vuri.getEMFUri() + " and resource: "
-                + mi.getResource(), null != foundMockInterface);
+        assertNotNull(foundMockInterface, "no interface found in the model instance with uri: " + vuri.getEMFUri()
+                + " and resource: " + mi.getResource());
     }
 
     @Test
@@ -119,16 +121,16 @@ public class SimpleVsumTest extends VsumTest {
 
         ModelInstance interfaceMi = vsum.getModelInstance(mi.getURI());
         PInterface foundInterface = findInterfaceInModelInstance(interfaceMi);
-        assertTrue("The interface in " + foundInterface + " in the model instance: " + mi + " has no resource",
-                null != foundInterface.eResource());
+        assertNotNull(foundInterface.eResource(),
+                "The interface in " + foundInterface + " in the model instance: " + mi + " has no resource");
 
         ModelInstance compMi = vsum.getModelInstance(mi.getURI());
         Component foundComponent = findComponentInModelInstance(compMi);
 
-        assertTrue("The component " + foundComponent + " in the model instance: " + mi + " has no resource",
-                null != foundComponent.eResource());
-        assertTrue("The interface " + foundInterface + " in the model instance: " + mi + " has no resource",
-                null != foundInterface.eResource());
+        assertNotNull(foundComponent.eResource(),
+                "The component " + foundComponent + " in the model instance: " + mi + " has no resource");
+        assertNotNull(foundInterface.eResource(),
+                "The interface " + foundInterface + " in the model instance: " + mi + " has no resource");
 
     }
 

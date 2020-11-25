@@ -19,8 +19,8 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EcoreFactory;
 import org.eclipse.ui.IEditorPart;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import tools.vitruv.domains.emf.monitorededitor.IEditorPartAdapterFactory;
 import tools.vitruv.domains.emf.monitorededitor.IEditorPartAdapterFactory.IEditorPartAdapter;
@@ -46,7 +46,7 @@ public class VitruviusEMFEditorMonitorImplTests extends BasicTestCase {
     private IEclipseAdapter eclipseUtils;
     private IEditorPartAdapterFactory factory;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         this.eclipseMockCtrl = new EclipseMock();
         this.eclipseUtils = eclipseMockCtrl.getEclipseUtils();

@@ -14,7 +14,7 @@ package tools.vitruv.domains.emf.monitorededitor.tools;
 import java.io.IOException;
 
 import org.eclipse.emf.ecore.resource.Resource;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import tools.vitruv.domains.emf.monitorededitor.test.testmodels.Files;
 import tools.vitruv.domains.emf.monitorededitor.test.testmodels.Models;
@@ -45,7 +45,8 @@ public class ResourceReloadListenerTests {
         ecoreRes.unload();
 
         assert !ensureExecuted.isIndicatingFail() : "Listener was not executed on unload.";
-        assert !ensureNotExecuted.isIndicatingFail() : "Listener was erroneously executed for a load operation which did not happen.";
+        assert !ensureNotExecuted
+                .isIndicatingFail() : "Listener was erroneously executed for a load operation which did not happen.";
     }
 
     @Test
@@ -72,7 +73,8 @@ public class ResourceReloadListenerTests {
         ecoreRes.load(null);
 
         assert !ensureExecuted.isIndicatingFail() : "Listener was not executed after loading.";
-        assert !ensureNotExecuted.isIndicatingFail() : "Listener was erroneously executed for an unload operation which did not happen.";
+        assert !ensureNotExecuted
+                .isIndicatingFail() : "Listener was erroneously executed for an unload operation which did not happen.";
     }
 
     @Test

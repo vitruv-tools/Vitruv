@@ -1,41 +1,42 @@
 package tools.vitruv.dsls.commonalities.ui.tests.attributeoperators
 
 import allElementTypes.AllElementTypesFactory
+
 import allElementTypes2.AllElementTypes2Factory
-import com.google.inject.Inject
-import org.junit.Test
 import tools.vitruv.dsls.commonalities.testutils.CommonalitiesExecutionTest
 
 import static org.hamcrest.MatcherAssert.assertThat
 import static tools.vitruv.testutils.matchers.ModelMatchers.*
+import tools.vitruv.dsls.commonalities.testutils.ExecutionTestCompiler
+import org.junit.jupiter.api.Test
+import static extension tools.vitruv.testutils.domains.DomainModelCreators.allElementTypes
+import static extension tools.vitruv.testutils.domains.DomainModelCreators.allElementTypes2
 
 class AttributeMappingOperatorTest extends CommonalitiesExecutionTest {
-
-	@Inject AttributeMappingOperatorTestCompiler compiler
-
-	override protected cleanup() {
-	}
-
-	override protected setup() {
-	}
-
-	override protected createChangePropagationSpecifications() {
-		compiler.changePropagationDefinitions
+	override createCompiler(ExecutionTestCompiler.Factory factory) {
+		factory.createCompiler [
+			commonalities = #['Identified.commonality']
+			domainDependencies = #[
+				'tools.vitruv.testutils.domains',
+				'tools.vitruv.testutils.metamodels',
+				'tools.vitruv.dsls.commonalities.testutils'
+			]
+		]
 	}
 
 	// Value is multiplied by 1000
 	@Test
 	def void singleToSingleValuedAttribute() {
-		createAndSynchronizeModel('testid.allElementTypes', root => [
+		createAndSynchronizeModel('testid'.allElementTypes, root => [
 			id = 'testid'
 			singleValuedPrimitiveTypeEAttribute = 123
 		])
 
-		assertThat(resourceAt('testid.allElementTypes'), contains(root => [
+		assertThat(resourceAt('testid'.allElementTypes), contains(root => [
 			id = 'testid'
 			singleValuedPrimitiveTypeEAttribute = 123
 		], ignoringUnsetFeatures))
-		assertThat(resourceAt('testid.allElementTypes2'), contains(root2 => [
+		assertThat(resourceAt('testid'.allElementTypes2), contains(root2 => [
 			id2 = 'testid'
 			singleValuedPrimitiveTypeEAttribute2 = 123000
 		], ignoringUnsetFeatures))
@@ -44,16 +45,16 @@ class AttributeMappingOperatorTest extends CommonalitiesExecutionTest {
 	// Value is divided by 1000 and rounded towards zero
 	@Test
 	def void singleToSingleValuedAttributeReverse() {
-		createAndSynchronizeModel('testid.allElementTypes2', root2 => [
+		createAndSynchronizeModel('testid'.allElementTypes2, root2 => [
 			id2 = 'testid'
 			singleValuedPrimitiveTypeEAttribute2 = 123500
 		])
 
-		assertThat(resourceAt('testid.allElementTypes2'), contains(root2 => [
+		assertThat(resourceAt('testid'.allElementTypes2), contains(root2 => [
 			id2 = 'testid'
 			singleValuedPrimitiveTypeEAttribute2 = 123500
 		], ignoringUnsetFeatures))
-		assertThat(resourceAt('testid.allElementTypes'), contains(root => [
+		assertThat(resourceAt('testid'.allElementTypes), contains(root => [
 			id = 'testid'
 			singleValuedPrimitiveTypeEAttribute = 123
 		], ignoringUnsetFeatures))
@@ -61,16 +62,16 @@ class AttributeMappingOperatorTest extends CommonalitiesExecutionTest {
 
 	@Test
 	def void singleToMultiValuedAttribute() {
-		createAndSynchronizeModel('testid.allElementTypes', root => [
+		createAndSynchronizeModel('testid'.allElementTypes, root => [
 			id = 'testid'
 			singleValuedEAttribute = 324
 		])
 
-		assertThat(resourceAt('testid.allElementTypes'), contains(root => [
+		assertThat(resourceAt('testid'.allElementTypes), contains(root => [
 			id = 'testid'
 			singleValuedEAttribute = 324
 		], ignoringUnsetFeatures))
-		assertThat(resourceAt('testid.allElementTypes2'), contains(root2 => [
+		assertThat(resourceAt('testid'.allElementTypes2), contains(root2 => [
 			id2 = 'testid'
 			multiValuedEAttribute2 += #[3, 2, 4]
 		], ignoringUnsetFeatures))
@@ -78,16 +79,16 @@ class AttributeMappingOperatorTest extends CommonalitiesExecutionTest {
 
 	@Test
 	def void multiToSingleValuedAttribute() {
-		createAndSynchronizeModel('testid.allElementTypes2', root2 => [
+		createAndSynchronizeModel('testid'.allElementTypes2, root2 => [
 			id2 = 'testid'
 			multiValuedEAttribute2 += #[3, 2, 4]
 		])
 
-		assertThat(resourceAt('testid.allElementTypes2'), contains(root2 => [
+		assertThat(resourceAt('testid'.allElementTypes2), contains(root2 => [
 			id2 = 'testid'
 			multiValuedEAttribute2 += #[3, 2, 4]
 		], ignoringUnsetFeatures))
-		assertThat(resourceAt('testid.allElementTypes'), contains(root => [
+		assertThat(resourceAt('testid'.allElementTypes), contains(root => [
 			id = 'testid'
 			singleValuedEAttribute = 324
 		], ignoringUnsetFeatures))

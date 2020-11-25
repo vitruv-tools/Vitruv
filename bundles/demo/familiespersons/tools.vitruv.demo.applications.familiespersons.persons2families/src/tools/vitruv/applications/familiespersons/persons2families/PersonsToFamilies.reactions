@@ -20,6 +20,7 @@ reaction CreatedPersonRegister{
 routine createFamilyRegister(persons::PersonRegister personRegister){
 	action{
 		val familyRegister = create families::FamilyRegister and initialize{
+			persistProjectRelative(personRegister, familyRegister, "model/families.families")
 		}
 		add correspondence between familyRegister and personRegister
 	}
@@ -58,24 +59,25 @@ routine createMaleMemberOfFamily(persons::Male person){
 		
 		call{
 		// Let user select the family
-		var EList<Family> collectionFamilies = familiesRegister.families 
-		val List<String> familiesNames = new ArrayList<String>(collectionFamilies.size)
-		for (Family f: collectionFamilies) {
-//			if(f.lastName.equals(person.fullName.split(" ").get(1))){
-				familiesNames += f.lastName 
-//			}
+		var EList<Family> existingFamilies = familiesRegister.families
+		val selectedFamily = if (existingFamilies.size == 0) {
+			throw new IllegalStateException("no families exist yet!")
+		} else if (existingFamilies.size == 1) {
+			existingFamilies.get(0)
+		} else {
+			val familiesNames = existingFamilies.map [lastName]
+			val String selectMsg = "Please select the family to which the person belongs."
+			val int selected = userInteractor.singleSelectionDialogBuilder.message(selectMsg)
+	            .choices(familiesNames).windowModality(WindowModality.MODAL).startInteraction()
+			existingFamilies.get(selected)
 		}
-		val String selectMsg = "Please select the family to which the person belongs."
-		val int selected = userInteractor.singleSelectionDialogBuilder.message(selectMsg).choices(familiesNames)
-		    .windowModality(WindowModality.MODAL).startInteraction()
-		val Family selectedFamily = collectionFamilies.get(selected)
 	
 		selectedFamily.lastName = person.fullName.split(" ").get(1)
 		
 		
 		// Let user choose whether the person is a father or a son.
 		var List<String> collectionRoles = new ArrayList
-		collectionRoles += #["Father", "Son"]
+		collectionRoles += #["Father", "Son"] 
 		val String selectMsgRoles = "Please select whether the person is a father or a son."
 		val int selectedRole = userInteractor.singleSelectionDialogBuilder.message(selectMsgRoles)
 		    .choices(collectionRoles).windowModality(WindowModality.MODAL).startInteraction()
@@ -114,20 +116,19 @@ routine createFemaleMemberOfFamily(persons::Female person){
 	
 		call{
 		// Let user select the family
-		var EList<Family> collectionFamilies = familyRegister.families
-		val List<String> familiesNames = new ArrayList<String>(collectionFamilies.size)
-		for (Family f: collectionFamilies) {
-//			if(f.lastName.equals(person.fullName.split(" ").get(1))){
-				familiesNames += f.lastName
-//			}
+		var EList<Family> existingFamilies = familyRegister.families
+		val selectedFamily = if (existingFamilies.size == 0) {
+			throw new IllegalStateException("no families exist yet!")
+		} else if (existingFamilies.size == 1) {
+			existingFamilies.get(0)
+		} else {
+			val familiesNames = existingFamilies.map [lastName]
+			val String selectMsg = "Please select the family to which the person belongs."
+			val int selected = userInteractor.singleSelectionDialogBuilder.message(selectMsg)
+	            .choices(familiesNames).windowModality(WindowModality.MODAL).startInteraction()
+			existingFamilies.get(selected)
 		}
-		val String selectMsg = "Please select the family to which the person belongs."
-		val int selected = userInteractor.singleSelectionDialogBuilder.message(selectMsg)
-            .choices(familiesNames).windowModality(WindowModality.MODAL).startInteraction()
-		val Family selectedFamily = collectionFamilies.get(selected)
-	
 		selectedFamily.lastName = person.fullName.split(" ").get(1)
-		
 		
 		// Let user choose whether the person is a mother or a daughter.
 		var List<String> collectionRoles = new ArrayList

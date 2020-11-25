@@ -7,6 +7,10 @@ Bundle-Version: 0.3.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Require-Bundle: tools.vitruv.framework.metamodel,
  tools.vitruv.testutils.metamodels,
- tools.vitruv.extensions.emf
+ tools.vitruv.extensions.emf,
+ edu.kit.ipd.sdq.activextendannotations,
+ org.eclipse.xtext.xbase.lib,
+ org.eclipse.xtend.lib,
+ tools.vitruv.testutils
 Export-Package: tools.vitruv.testutils.domains
 Bundle-Vendor: vitruv.tools
