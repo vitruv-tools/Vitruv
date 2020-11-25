@@ -3,7 +3,6 @@ package tools.vitruv.applications.familiespersons.families2Persons.test
 import edu.kit.ipd.sdq.metamodels.families.FamiliesFactory
 import edu.kit.ipd.sdq.metamodels.families.FamilyRegister
 import edu.kit.ipd.sdq.metamodels.persons.Person
-import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import tools.vitruv.applications.familiespersons.families2persons.FamiliesToPersonsChangePropagationSpecification
@@ -11,8 +10,6 @@ import tools.vitruv.domains.families.FamiliesDomainProvider
 import tools.vitruv.domains.persons.PersonsDomainProvider
 import tools.vitruv.framework.correspondence.CorrespondenceModelUtil
 
-import static org.apache.log4j.Level.DEBUG
-import static org.apache.log4j.Logger.getRootLogger
 import static org.hamcrest.CoreMatchers.is
 import static org.hamcrest.MatcherAssert.assertThat
 import static tools.vitruv.testutils.matchers.ModelMatchers.exists
@@ -30,11 +27,6 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 
 	override protected getChangePropagationSpecifications() {
 		return #[new FamiliesToPersonsChangePropagationSpecification()]
-	}
-
-	@BeforeAll
-	def static setupLogLevel() {
-		rootLogger.level = DEBUG
 	}
 
 	@BeforeEach
