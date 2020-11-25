@@ -12,7 +12,8 @@ class DomainUtil {
 	 */
 	static def String getFileExtension(VitruvDomainProvider<?> domainProvider) {
 		val domainFileExtensions = domainProvider.domain.fileExtensions
-		checkState(domainFileExtensions.size > 0, "The domain %s defines no file extensions!")
+		checkState(domainFileExtensions.size >
+			0, '''The domain «domainProvider.domain.name» defines no file extensions!''')
 		return domainFileExtensions.get(0)
 	}
 

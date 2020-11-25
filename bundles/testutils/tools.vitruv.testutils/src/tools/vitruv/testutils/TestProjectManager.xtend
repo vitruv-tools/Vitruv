@@ -134,7 +134,7 @@ class TestProjectManager implements ParameterResolver, AfterEachCallback {
 			} catch (FileAlreadyExistsException alreadyExists) {
 				uniqueProject = projectPath.resolveSibling('''«projectPath.fileName» «counter»''')
 			}
-			checkState(counter < 1000, "Failed to create a unique version of %s with 1000 tries", projectPath)
+			checkState(counter < 1000, '''Failed to create a unique version of «projectPath» with 1000 tries!''')
 		}
 		return uniqueProject
 	}
