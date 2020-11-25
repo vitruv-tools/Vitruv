@@ -35,10 +35,10 @@ class ImportTests extends ReactionsExecutionTest {
 	}
 
 	@BeforeEach
-	def createRoot() {
-		createAndSynchronizeModel(SOURCE_MODEL, newRoot => [
-			id = 'ImportTestsModelSource'
-		])
+	def void createRoot() {
+		resourceAt(SOURCE_MODEL).recordAndPropagate [
+			contents += newRoot => [id = 'ImportTestsModelSource']
+		]
 	}
 
 	@BeforeEach
@@ -52,9 +52,9 @@ class ImportTests extends ReactionsExecutionTest {
 	}
 
 	private def triggerSetRootIdReaction(String... dataTags) {
-		saveAndSynchronizeChanges(Root.from(SOURCE_MODEL).record [
+		Root.from(SOURCE_MODEL).recordAndPropagate [
 			id = ImportTestsUtils.toTestDataString(testName, dataTags)
-		])
+		]
 	}
 
 	// all reactions included by the root segment:
