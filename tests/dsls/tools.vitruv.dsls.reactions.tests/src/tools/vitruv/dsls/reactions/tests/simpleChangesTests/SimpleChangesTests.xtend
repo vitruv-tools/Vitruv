@@ -8,9 +8,7 @@ import static tools.vitruv.dsls.reactions.tests.simpleChangesTests.SimpleChanges
 
 import static org.hamcrest.MatcherAssert.assertThat
 import static tools.vitruv.dsls.reactions.tests.ExecutionMonitor.observedExecutions
-import static tools.vitruv.testutils.metamodels.AllElementTypesCreators.newNonRoot
-import static tools.vitruv.testutils.metamodels.AllElementTypesCreators.newNonRootObjectContainerHelper
-import static tools.vitruv.testutils.metamodels.AllElementTypesCreators.newRoot
+import static tools.vitruv.testutils.metamodels.AllElementTypesCreators.aet
 import static tools.vitruv.testutils.matchers.ModelMatchers.containsModelOf
 import static org.hamcrest.CoreMatchers.is
 import static tools.vitruv.testutils.matchers.ModelMatchers.exists
@@ -39,12 +37,12 @@ class SimpleChangesTests extends ReactionsExecutionTest {
 	@BeforeEach
 	def createRoot() {
 		resourceAt(SOURCE_MODEL).propagate [
-			contents += newRoot => [
+			contents += aet.Root => [
 				id = 'EachTestModelSource'
-				nonRootObjectContainerHelper = newNonRootObjectContainerHelper => [
+				nonRootObjectContainerHelper = nonRootObjectContainerHelper => [
 					id = 'NonRootObjectContainer'
 					nonRootObjectsContainment += nonContainmentNonRootIds.map [ nonRootId |
-						newNonRoot => [id = nonRootId]
+						aet.NonRoot => [id = nonRootId]
 					]
 				]
 			]
@@ -114,7 +112,7 @@ class SimpleChangesTests extends ReactionsExecutionTest {
 	@Test
 	def void testCreateSingleValuedContainmentEReference() {
 		Root.from(SOURCE_MODEL).propagate [
-			singleValuedContainmentEReference = newNonRoot => [id = "singleValuedContainmentNonRootTest"]
+			singleValuedContainmentEReference = aet.NonRoot => [id = "singleValuedContainmentNonRootTest"]
 		]
 
 		assertThat(executionMonitor, observedExecutions(CreateEObject, CreateNonRootEObjectSingle))
@@ -123,7 +121,7 @@ class SimpleChangesTests extends ReactionsExecutionTest {
 
 	@Test
 	def void testDeleteSingleValuedContainmentEReference() {
-		val oldElement = newNonRoot => [id = "singleValuedContainmentNonRoot"]
+		val oldElement = aet.NonRoot => [id = "singleValuedContainmentNonRoot"]
 		Root.from(SOURCE_MODEL).propagate [
 			singleValuedContainmentEReference = oldElement
 		]
@@ -140,11 +138,11 @@ class SimpleChangesTests extends ReactionsExecutionTest {
 	@Test
 	def void testReplaceSingleValuedContainmentEReference() {
 		Root.from(SOURCE_MODEL).propagate [
-			singleValuedContainmentEReference = newNonRoot => [id = "singleValuedContainmentNonRootBefore"]
+			singleValuedContainmentEReference = aet.NonRoot => [id = "singleValuedContainmentNonRootBefore"]
 		]
 		executionMonitor.reset()
 		Root.from(SOURCE_MODEL).propagate [
-			singleValuedContainmentEReference = newNonRoot => [id = "singleValuedContainmentNonRootAfter"]
+			singleValuedContainmentEReference = aet.NonRoot => [id = "singleValuedContainmentNonRootAfter"]
 		]
 
 		assertThat(executionMonitor,
@@ -224,7 +222,7 @@ class SimpleChangesTests extends ReactionsExecutionTest {
 	@Test
 	def void testAddMultiValuedContainmentEReference() {
 		Root.from(SOURCE_MODEL).propagate [
-			multiValuedContainmentEReference += newNonRoot => [id = "multiValuedContainmentNonRootTest"]
+			multiValuedContainmentEReference += aet.NonRoot => [id = "multiValuedContainmentNonRootTest"]
 		]
 
 		assertThat(executionMonitor, observedExecutions(CreateNonRootEObjectInList, CreateEObject))
@@ -234,7 +232,7 @@ class SimpleChangesTests extends ReactionsExecutionTest {
 	@Test
 	def void testDeleteMultiValuedContainmentEReference() {
 		Root.from(SOURCE_MODEL).propagate [
-			multiValuedContainmentEReference += newNonRoot => [id = "multiValuedContainmentNonRootTest"]
+			multiValuedContainmentEReference += aet.NonRoot => [id = "multiValuedContainmentNonRootTest"]
 		]
 		executionMonitor.reset()
 		Root.from(SOURCE_MODEL).propagate [
@@ -248,11 +246,11 @@ class SimpleChangesTests extends ReactionsExecutionTest {
 	@Test
 	def void testReplaceMultiValuedContainmentEReference() {
 		Root.from(SOURCE_MODEL).propagate [
-			multiValuedContainmentEReference += newNonRoot => [id = "multiValuedContainmentNonRootBefore"]
+			multiValuedContainmentEReference += aet.NonRoot => [id = "multiValuedContainmentNonRootBefore"]
 		]
 		executionMonitor.reset()
 		Root.from(SOURCE_MODEL).propagate [
-			multiValuedContainmentEReference.set(0, newNonRoot => [id = "multiValuedContainmentNonRootAfter"])
+			multiValuedContainmentEReference.set(0, aet.NonRoot => [id = "multiValuedContainmentNonRootAfter"])
 		]
 
 		assertThat(executionMonitor,
@@ -336,7 +334,7 @@ class SimpleChangesTests extends ReactionsExecutionTest {
 	@Test
 	def void testCreateFurtherModel() {
 		resourceAt(FURTHER_SOURCE_MODEL).propagate [
-			contents += newRoot => [
+			contents += aet.Root => [
 				id = "Further_Source_Test_Model"
 			]
 		]
@@ -347,7 +345,7 @@ class SimpleChangesTests extends ReactionsExecutionTest {
 	@Test
 	def void testDeleteFurtherModel() {
 		resourceAt(FURTHER_SOURCE_MODEL).propagate [
-			contents += newRoot => [
+			contents += aet.Root => [
 				id = "Further_Source_Test_Model"
 			]
 		]

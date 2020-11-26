@@ -27,17 +27,17 @@ class AttributeMappingOperatorTest extends CommonalitiesExecutionTest {
 	@Test
 	def void singleToSingleValuedAttribute() {
 		resourceAt('testid'.allElementTypes).propagate [
-			contents += newRoot => [
+			contents += aet.Root => [
 				id = 'testid'
 				singleValuedPrimitiveTypeEAttribute = 123
 			]
 		]
 
-		assertThat(resourceAt('testid'.allElementTypes), contains(newRoot => [
+		assertThat(resourceAt('testid'.allElementTypes), contains(aet.Root => [
 			id = 'testid'
 			singleValuedPrimitiveTypeEAttribute = 123
 		], ignoringUnsetFeatures))
-		assertThat(resourceAt('testid'.allElementTypes2), contains(newRoot2 => [
+		assertThat(resourceAt('testid'.allElementTypes2), contains(aet2.Root2 => [
 			id2 = 'testid'
 			singleValuedPrimitiveTypeEAttribute2 = 123000
 		], ignoringUnsetFeatures))
@@ -47,17 +47,17 @@ class AttributeMappingOperatorTest extends CommonalitiesExecutionTest {
 	@Test
 	def void singleToSingleValuedAttributeReverse() {
 		resourceAt('testid'.allElementTypes2).propagate [
-			contents += newRoot2 => [
+			contents += aet2.Root2 => [
 				id2 = 'testid'
 				singleValuedPrimitiveTypeEAttribute2 = 123500
 			]
 		]
 
-		assertThat(resourceAt('testid'.allElementTypes2), contains(newRoot2 => [
+		assertThat(resourceAt('testid'.allElementTypes2), contains(aet2.Root2 => [
 			id2 = 'testid'
 			singleValuedPrimitiveTypeEAttribute2 = 123500
 		], ignoringUnsetFeatures))
-		assertThat(resourceAt('testid'.allElementTypes), contains(newRoot => [
+		assertThat(resourceAt('testid'.allElementTypes), contains(aet.Root => [
 			id = 'testid'
 			singleValuedPrimitiveTypeEAttribute = 123
 		], ignoringUnsetFeatures))
@@ -66,17 +66,17 @@ class AttributeMappingOperatorTest extends CommonalitiesExecutionTest {
 	@Test
 	def void singleToMultiValuedAttribute() {
 		resourceAt('testid'.allElementTypes).propagate [
-			contents += newRoot => [
+			contents += aet.Root => [
 				id = 'testid'
 				singleValuedEAttribute = 324
 			]
 		]
 
-		assertThat(resourceAt('testid'.allElementTypes), contains(newRoot => [
+		assertThat(resourceAt('testid'.allElementTypes), contains(aet.Root => [
 			id = 'testid'
 			singleValuedEAttribute = 324
 		], ignoringUnsetFeatures))
-		assertThat(resourceAt('testid'.allElementTypes2), contains(newRoot2 => [
+		assertThat(resourceAt('testid'.allElementTypes2), contains(aet2.Root2 => [
 			id2 = 'testid'
 			multiValuedEAttribute2 += #[3, 2, 4]
 		], ignoringUnsetFeatures))
@@ -85,17 +85,17 @@ class AttributeMappingOperatorTest extends CommonalitiesExecutionTest {
 	@Test
 	def void multiToSingleValuedAttribute() {
 		resourceAt('testid'.allElementTypes2).propagate [
-			contents += newRoot2 => [
+			contents += aet2.Root2 => [
 				id2 = 'testid'
 				multiValuedEAttribute2 += #[3, 2, 4]
 			]
 		]
 
-		assertThat(resourceAt('testid'.allElementTypes2), contains(newRoot2 => [
+		assertThat(resourceAt('testid'.allElementTypes2), contains(aet2.Root2 => [
 			id2 = 'testid'
 			multiValuedEAttribute2 += #[3, 2, 4]
 		], ignoringUnsetFeatures))
-		assertThat(resourceAt('testid'.allElementTypes), contains(newRoot => [
+		assertThat(resourceAt('testid'.allElementTypes), contains(aet.Root => [
 			id = 'testid'
 			singleValuedEAttribute = 324
 		], ignoringUnsetFeatures))

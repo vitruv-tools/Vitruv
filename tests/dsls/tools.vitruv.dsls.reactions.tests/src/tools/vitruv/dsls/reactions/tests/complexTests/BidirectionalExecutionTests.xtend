@@ -10,7 +10,7 @@ import tools.vitruv.framework.change.echange.eobject.CreateEObject
 import tools.vitruv.framework.change.echange.feature.reference.ReplaceSingleValuedEReference
 
 import static org.hamcrest.CoreMatchers.*
-import static tools.vitruv.testutils.metamodels.AllElementTypesCreators.*
+import static tools.vitruv.testutils.metamodels.AllElementTypesCreators.aet
 import static tools.vitruv.testutils.matchers.ModelMatchers.*
 import static org.hamcrest.MatcherAssert.assertThat
 import static tools.vitruv.testutils.matchers.ModelMatchers.containsModelOf
@@ -37,12 +37,12 @@ class BidirectionalExecutionTests extends ReactionsExecutionTest {
 	@BeforeEach
 	def setup() {
 		resourceAt(SOURCE_MODEL).propagate [
-			contents += newRoot => [
+			contents += aet.Root => [
 				id = 'EachTestModelSource'
-				nonRootObjectContainerHelper = newNonRootObjectContainerHelper => [
+				nonRootObjectContainerHelper = nonRootObjectContainerHelper => [
 					id = 'NonRootObjectContainer'
 					nonRootObjectsContainment += nonContainmentNonRootIds.map [ nonRootId |
-						newNonRoot => [id = nonRootId]
+						aet.NonRoot => [id = nonRootId]
 					]
 				]
 			]
@@ -60,7 +60,7 @@ class BidirectionalExecutionTests extends ReactionsExecutionTest {
 	@Test
 	def void testBasicBidirectionalApplication() {
 		val propagatedChanges = Root.from(TARGET_MODEL).propagate [
-			singleValuedContainmentEReference = newNonRoot => [
+			singleValuedContainmentEReference = aet.NonRoot => [
 				id = 'bidirectionalId'
 			]
 		]

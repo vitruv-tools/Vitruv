@@ -24,12 +24,8 @@ import tools.vitruv.testutils.TestProject
 import java.nio.file.Path
 
 import static org.junit.jupiter.api.Assertions.*
-import static tools.vitruv.testutils.metamodels.PcmMockupCreators.newPcmRepository
-import static tools.vitruv.testutils.metamodels.PcmMockupCreators.newPcmInterface
-import static tools.vitruv.testutils.metamodels.PcmMockupCreators.newPcmComponent
-import static tools.vitruv.testutils.metamodels.UmlMockupCreators.newUmlInterface
-import static tools.vitruv.testutils.metamodels.UmlMockupCreators.newUmlClass
-import static tools.vitruv.testutils.metamodels.UmlMockupCreators.newUmlPackage
+import static tools.vitruv.testutils.metamodels.PcmMockupCreators.pcm
+import static tools.vitruv.testutils.metamodels.UmlMockupCreators.uml
 import tools.vitruv.testutils.TestProjectManager
 
 @ExtendWith(TestProjectManager, TestLogging)
@@ -113,10 +109,10 @@ abstract class StateChangePropagationTest {
 
 	private def createPcmMockupModel() {
 		pcmModel = resourceSet.createResource(getModelVURI("My.pcm_mockup")) => [
-			contents += (pcmRoot = newPcmRepository => [
+			contents += (pcmRoot = pcm.Repository => [
 				name = "RootRepository"
-				interfaces += newPcmInterface
-				components += newPcmComponent
+				interfaces += pcm.Interface
+				components += pcm.Component
 			])
 		]
 		EcoreResourceBridge.saveResource(pcmModel)
@@ -124,10 +120,10 @@ abstract class StateChangePropagationTest {
 
 	private def createUmlMockupModel() {
 		umlModel = resourceSet.createResource(getModelVURI("My.uml_mockup")) => [
-			contents += (umlRoot = newUmlPackage => [
+			contents += (umlRoot = uml.Package => [
 				name = "RootPackage"
-				interfaces += newUmlInterface
-				classes += newUmlClass
+				interfaces += uml.Interface
+				classes += uml.Class
 			])
 		]
 		EcoreResourceBridge.saveResource(umlModel)

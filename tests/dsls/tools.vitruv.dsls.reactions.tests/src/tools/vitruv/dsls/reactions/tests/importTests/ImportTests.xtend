@@ -10,7 +10,7 @@ import static org.hamcrest.CoreMatchers.hasItem
 import static org.hamcrest.MatcherAssert.assertThat
 import static tools.vitruv.dsls.reactions.tests.ExecutionMonitor.observedExecutions
 import static tools.vitruv.dsls.reactions.tests.importTests.ImportTestsExecutionMonitor.ExecutionType.*
-import static tools.vitruv.testutils.metamodels.AllElementTypesCreators.newRoot
+import static tools.vitruv.testutils.metamodels.AllElementTypesCreators.aet
 import static extension tools.vitruv.testutils.domains.DomainModelCreators.allElementTypes
 import tools.vitruv.dsls.reactions.tests.ReactionsExecutionTest
 import tools.vitruv.dsls.reactions.tests.TestReactionsCompiler
@@ -37,7 +37,7 @@ class ImportTests extends ReactionsExecutionTest {
 	@BeforeEach
 	def void createRoot() {
 		resourceAt(SOURCE_MODEL).propagate [
-			contents += newRoot => [id = 'ImportTestsModelSource']
+			contents += aet.Root => [id = 'ImportTestsModelSource']
 		]
 	}
 
