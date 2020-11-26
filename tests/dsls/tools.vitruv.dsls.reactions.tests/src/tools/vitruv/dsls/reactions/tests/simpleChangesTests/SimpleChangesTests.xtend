@@ -39,7 +39,7 @@ class SimpleChangesTests extends ReactionsExecutionTest {
 		resourceAt(SOURCE_MODEL).propagate [
 			contents += aet.Root => [
 				id = 'EachTestModelSource'
-				nonRootObjectContainerHelper = nonRootObjectContainerHelper => [
+				nonRootObjectContainerHelper = aet.NonRootObjectContainerHelper => [
 					id = 'NonRootObjectContainer'
 					nonRootObjectsContainment += nonContainmentNonRootIds.map [ nonRootId |
 						aet.NonRoot => [id = nonRootId]
