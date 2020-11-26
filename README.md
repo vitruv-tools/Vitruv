@@ -1,5 +1,5 @@
 # Vitruv
-[![Travis CI](https://travis-ci.org/vitruv-tools/Vitruv.svg?branch=master)](https://travis-ci.org/vitruv-tools/Vitruv)
+[![GitHub Action CI](https://github.com/vitruv-tools/Vitruv/workflows/CI/badge.svg)](https://github.com/vitruv-tools/Vitruv/actions?query=workflow%3ACI)
 [![Issues](https://img.shields.io/github/issues/vitruv-tools/Vitruv.svg)](https://github.com/vitruv-tools/Vitruv/issues)
 [![License](https://img.shields.io/github/license/vitruv-tools/Vitruv.svg)](https://raw.githubusercontent.com/vitruv-tools/Vitruv/master/LICENSE)
 
