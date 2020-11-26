@@ -1,10 +1,7 @@
 package tools.vitruv.framework.tests.domains
 
 import org.junit.jupiter.api.Test
-import static tools.vitruv.testutils.metamodels.UmlMockupCreators.newUmlAttribute
-import static tools.vitruv.testutils.metamodels.UmlMockupCreators.newUmlMethod
-import static tools.vitruv.testutils.metamodels.UmlMockupCreators.newUmlClass
-import static tools.vitruv.testutils.metamodels.UmlMockupCreators.newUmlInterface
+import static tools.vitruv.testutils.metamodels.UmlMockupCreators.uml
 
 class UmlStateChangeTest extends StateChangePropagationTest {
 	@Test
@@ -17,7 +14,7 @@ class UmlStateChangeTest extends StateChangePropagationTest {
 	@Test
 	def void testNewAttributes() {
 		umlRoot.classes.get(0) => [
-			attributes += newUmlAttribute => [attributeName = "NewlyAddedAttribute"]
+			attributes += uml.Attribute => [attributeName = "NewlyAddedAttribute"]
 		]
 		compareChanges(umlModel, umlCheckpoint)
 	}
@@ -25,21 +22,21 @@ class UmlStateChangeTest extends StateChangePropagationTest {
 	@Test
 	def void testNewMethod() {
 		umlRoot.interfaces.get(0) => [
-			methods += newUmlMethod => [name = "NewlyAddedMethod"]
+			methods += uml.Method => [name = "NewlyAddedMethod"]
 		]
 		compareChanges(umlModel, umlCheckpoint)
 	}
 
 	@Test
 	def void testNewClass() {
-		umlRoot.classes += newUmlClass => [name = "NewlyAddedClass"]
+		umlRoot.classes += uml.Class => [name = "NewlyAddedClass"]
 		compareChanges(umlModel, umlCheckpoint)
 	}
 
 	@Test
 	def void testReplaceClass() {
 		umlRoot.classes.remove(0)
-		umlRoot.classes += newUmlClass => [name = "NewlyAddedClass"]
+		umlRoot.classes += uml.Class => [name = "NewlyAddedClass"]
 		compareChanges(umlModel, umlCheckpoint)
 	}
 
@@ -51,7 +48,7 @@ class UmlStateChangeTest extends StateChangePropagationTest {
 
 	@Test
 	def void testNewInterface() {
-		umlRoot.interfaces += newUmlInterface => [name = "NewlyAddedInterface"]
+		umlRoot.interfaces += uml.Interface => [name = "NewlyAddedInterface"]
 		compareChanges(umlModel, umlCheckpoint)
 	}
 }

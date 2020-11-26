@@ -2,7 +2,7 @@ package tools.vitruv.dsls.reactions.tests.complexTests
 
 import allElementTypes.Root
 
-import static tools.vitruv.testutils.metamodels.AllElementTypesCreators.*
+import static tools.vitruv.testutils.metamodels.AllElementTypesCreators.aet
 import static org.hamcrest.MatcherAssert.assertThat
 import static tools.vitruv.testutils.matchers.ModelMatchers.containsModelOf
 import static org.hamcrest.CoreMatchers.nullValue
@@ -26,12 +26,12 @@ class ReactionsRollbackTests extends ReactionsExecutionTest {
 	@Test
 	def void testReverse() {
 		resourceAt(SOURCE_MODEL).propagate [
-			contents += newRoot => [id = 'Rollback']
+			contents += aet.Root => [id = 'Rollback']
 		]
 		assertThat(resourceAt(SOURCE_MODEL), containsModelOf(resourceAt(TARGET_MODEL)))
 
 		val result = Root.from(SOURCE_MODEL).propagate [
-			singleValuedContainmentEReference = newNonRoot => [
+			singleValuedContainmentEReference = aet.NonRoot => [
 				id = 'testId'
 			]
 		]

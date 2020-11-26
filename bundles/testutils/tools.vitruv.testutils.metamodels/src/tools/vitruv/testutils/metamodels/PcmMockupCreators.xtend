@@ -1,23 +1,12 @@
 package tools.vitruv.testutils.metamodels
 
-import edu.kit.ipd.sdq.activextendannotations.Utility
 import pcm_mockup.Pcm_mockupFactory
+import tools.vitruv.testutils.activeannotations.ModelCreators
 
-@Utility
-class PcmMockupCreators {
-	static def newPcmRepository() {
-		Pcm_mockupFactory.eINSTANCE.createRepository
-	}
+@ModelCreators(factory=Pcm_mockupFactory, stripPrefix = "P")
+final class PcmMockupCreators {
+	public static val pcm = new PcmMockupCreators()
 
-	static def newPcmInterface() {
-		Pcm_mockupFactory.eINSTANCE.createPInterface
-	}
-
-	static def newPcmComponent() {
-		Pcm_mockupFactory.eINSTANCE.createComponent
-	}
-
-	static def newPcmMethod() {
-		Pcm_mockupFactory.eINSTANCE.createPMethod
+	private new() {
 	}
 }

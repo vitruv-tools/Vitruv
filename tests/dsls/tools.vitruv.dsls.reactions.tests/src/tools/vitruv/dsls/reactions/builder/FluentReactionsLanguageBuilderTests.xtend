@@ -15,8 +15,8 @@ class FluentReactionsLanguageBuilderTests extends FluentReactionsBuilderTest {
 			create.reactionsSegment('simpleChangesRootTests').inReactionToChangesIn(AllElementTypes).
 				executeActionsIn(AllElementTypes) += create.reaction('CreateRootTest').afterElement(Root).created.call [
 				action [
-					vall('newRoot').create(Root)
-					addCorrespondenceBetween('newRoot').and.affectedEObject
+					vall('root').create(Root)
+					addCorrespondenceBetween('root').and.affectedEObject
 				]
 			]
 
@@ -34,8 +34,8 @@ class FluentReactionsLanguageBuilderTests extends FluentReactionsBuilderTest {
 			
 			routine createRootTestRepair(allElementTypes::Root affectedEObject) {
 				action {
-					val newRoot = create allElementTypes::Root
-					add correspondence between newRoot and affectedEObject
+					val root = create allElementTypes::Root
+					add correspondence between root and affectedEObject
 				}
 			}
 		'''
@@ -88,8 +88,8 @@ class FluentReactionsLanguageBuilderTests extends FluentReactionsBuilderTest {
 			executeActionsIn(AllElementTypes)
 		baseSegment += create.reaction('CreateRootTest').afterElement(Root).created.call [
 			action [
-				vall('newRoot').create(Root)
-				addCorrespondenceBetween('newRoot').and.affectedEObject
+				vall('root').create(Root)
+				addCorrespondenceBetween('root').and.affectedEObject
 			]
 		]
 
@@ -125,8 +125,8 @@ class FluentReactionsLanguageBuilderTests extends FluentReactionsBuilderTest {
 			
 			routine createRootTestRepair(allElementTypes::Root affectedEObject) {
 				action {
-					val newRoot = create allElementTypes::Root
-					add correspondence between newRoot and affectedEObject
+					val root = create allElementTypes::Root
+					add correspondence between root and affectedEObject
 				}
 			}
 			
@@ -171,8 +171,8 @@ class FluentReactionsLanguageBuilderTests extends FluentReactionsBuilderTest {
 			executeActionsIn(AllElementTypes)
 		baseSegment += create.reaction('CreateRootTest').afterElement(Root).created.call [
 			action [
-				vall('newRoot').create(Root)
-				addCorrespondenceBetween('newRoot').and.affectedEObject
+				vall('root').create(Root)
+				addCorrespondenceBetween('root').and.affectedEObject
 			]
 		]
 
@@ -181,8 +181,8 @@ class FluentReactionsLanguageBuilderTests extends FluentReactionsBuilderTest {
 		extendedSegment +=
 			create.reaction('CreateRootTest').overrideSegment(baseSegment).afterElement(Root).created.call [
 				action [
-					vall('newRootInOverride').create(Root)
-					addCorrespondenceBetween('newRootInOverride').and.affectedEObject
+					vall('rootInOverride').create(Root)
+					addCorrespondenceBetween('rootInOverride').and.affectedEObject
 				]
 			]
 
@@ -203,8 +203,8 @@ class FluentReactionsLanguageBuilderTests extends FluentReactionsBuilderTest {
 			
 			routine createRootTestRepair(allElementTypes::Root affectedEObject) {
 				action {
-					val newRoot = create allElementTypes::Root
-					add correspondence between newRoot and affectedEObject
+					val root = create allElementTypes::Root
+					add correspondence between root and affectedEObject
 				}
 			}
 			
@@ -223,8 +223,8 @@ class FluentReactionsLanguageBuilderTests extends FluentReactionsBuilderTest {
 			
 			routine createRootTestRepair(allElementTypes::Root affectedEObject) {
 				action {
-					val newRootInOverride = create allElementTypes::Root
-					add correspondence between newRootInOverride and affectedEObject
+					val rootInOverride = create allElementTypes::Root
+					add correspondence between rootInOverride and affectedEObject
 				}
 			}
 		'''
@@ -240,8 +240,8 @@ class FluentReactionsLanguageBuilderTests extends FluentReactionsBuilderTest {
 			executeActionsIn(AllElementTypes)
 		baseSegment += create.reaction('CreateRootTest').afterElement(Root).created.call [
 			action [
-				vall('newRoot').create(Root)
-				addCorrespondenceBetween('newRoot').and.affectedEObject
+				vall('root').create(Root)
+				addCorrespondenceBetween('root').and.affectedEObject
 			]
 		]
 
@@ -251,8 +251,8 @@ class FluentReactionsLanguageBuilderTests extends FluentReactionsBuilderTest {
 		.overrideAlongImportPath(baseSegment).input [
 			model(Root, 'affectedEObject')
 		].action [
-			vall('newRoot2').create(Root)
-			addCorrespondenceBetween('newRoot2').and.affectedEObject
+			vall('aet2.Root2').create(Root)
+			addCorrespondenceBetween('aet2.Root2').and.affectedEObject
 		]
 
 		val extendedSegment2 = create.reactionsSegment('extendedSegment2').inReactionToChangesIn(AllElementTypes).
@@ -261,8 +261,8 @@ class FluentReactionsLanguageBuilderTests extends FluentReactionsBuilderTest {
 		.overrideAlongImportPath(extendedSegment, baseSegment).input [
 			model(Root, 'affectedEObject')
 		].action [
-			vall('newRoot3').create(Root)
-			addCorrespondenceBetween('newRoot3').and.affectedEObject
+			vall('root3').create(Root)
+			addCorrespondenceBetween('root3').and.affectedEObject
 		]
 
 		builder += baseSegment
@@ -283,8 +283,8 @@ class FluentReactionsLanguageBuilderTests extends FluentReactionsBuilderTest {
 			
 			routine createRootTestRepair(allElementTypes::Root affectedEObject) {
 				action {
-					val newRoot = create allElementTypes::Root
-					add correspondence between newRoot and affectedEObject
+					val root = create allElementTypes::Root
+					add correspondence between root and affectedEObject
 				}
 			}
 			
@@ -298,8 +298,8 @@ class FluentReactionsLanguageBuilderTests extends FluentReactionsBuilderTest {
 			
 			routine baseSegment::createRootTestRepair(allElementTypes::Root affectedEObject) {
 				action {
-					val newRoot2 = create allElementTypes::Root
-					add correspondence between newRoot2 and affectedEObject
+					val aet2.Root2 = create allElementTypes::Root
+					add correspondence between aet2.Root2 and affectedEObject
 				}
 			}
 			
@@ -313,8 +313,8 @@ class FluentReactionsLanguageBuilderTests extends FluentReactionsBuilderTest {
 			
 			routine extendedSegment.baseSegment::createRootTestRepair(allElementTypes::Root affectedEObject) {
 				action {
-					val newRoot3 = create allElementTypes::Root
-					add correspondence between newRoot3 and affectedEObject
+					val root3 = create allElementTypes::Root
+					add correspondence between root3 and affectedEObject
 				}
 			}
 		'''
@@ -375,8 +375,8 @@ class FluentReactionsLanguageBuilderTests extends FluentReactionsBuilderTest {
 		val commonRoutine = create.routine('commonRootCreate').input [
 			model(EObject, 'affectedEObject')
 		].action [
-			vall('newRoot').create(Root)
-			addCorrespondenceBetween('newRoot').and.affectedEObject
+			vall('root').create(Root)
+			addCorrespondenceBetween('root').and.affectedEObject
 		]
 
 		val reactionsFile = create.reactionsFile('createRootTest')
@@ -408,8 +408,8 @@ class FluentReactionsLanguageBuilderTests extends FluentReactionsBuilderTest {
 			
 			routine commonRootCreate(ecore::EObject affectedEObject) {
 				action {
-					val newRoot = create allElementTypes::Root
-					add correspondence between newRoot and affectedEObject
+					val root = create allElementTypes::Root
+					add correspondence between root and affectedEObject
 				}
 			}
 		'''
@@ -422,8 +422,8 @@ class FluentReactionsLanguageBuilderTests extends FluentReactionsBuilderTest {
 		val commonRoutine = create.routine('commonRootCreate').input [
 			model(EObject, 'affectedEObject')
 		].action [
-			vall('newRoot').create(Root)
-			addCorrespondenceBetween('newRoot').and.affectedEObject
+			vall('root').create(Root)
+			addCorrespondenceBetween('root').and.affectedEObject
 		]
 
 		val reactionsFile = create.reactionsFile('createRootTest')
@@ -458,8 +458,8 @@ class FluentReactionsLanguageBuilderTests extends FluentReactionsBuilderTest {
 			
 			routine commonRootCreate(ecore::EObject affectedEObject) {
 				action {
-					val newRoot = create allElementTypes::Root
-					add correspondence between newRoot and affectedEObject
+					val root = create allElementTypes::Root
+					add correspondence between root and affectedEObject
 				}
 			}
 		'''
@@ -481,7 +481,7 @@ class FluentReactionsLanguageBuilderTests extends FluentReactionsBuilderTest {
 				]
 			]
 		].action [
-			vall('newRoot').create(Root)
+			vall('root').create(Root)
 		]
 
 		val reactionsFile = create.reactionsFile('routineWithMatchTest') +=
@@ -504,7 +504,7 @@ class FluentReactionsLanguageBuilderTests extends FluentReactionsBuilderTest {
 					}
 				}
 				action {
-					val newRoot = create allElementTypes::Root
+					val root = create allElementTypes::Root
 				}
 			}
 		'''
@@ -525,8 +525,8 @@ class FluentReactionsLanguageBuilderTests extends FluentReactionsBuilderTest {
 				]
 			]
 		].action [
-			vall('newRoot').create(Root)
-			addCorrespondenceBetween("newRoot").and.affectedEObject
+			vall('root').create(Root)
+			addCorrespondenceBetween("root").and.affectedEObject
 		]
 
 		val reaction = create.reaction('CreateRoot').afterElement(Root).created.call(routineWithMatch)
@@ -558,8 +558,8 @@ class FluentReactionsLanguageBuilderTests extends FluentReactionsBuilderTest {
 					}
 				}
 				action {
-					val newRoot = create allElementTypes::Root
-					add correspondence between newRoot and affectedEObject
+					val root = create allElementTypes::Root
+					add correspondence between root and affectedEObject
 				}
 			}
 		'''
@@ -572,8 +572,8 @@ class FluentReactionsLanguageBuilderTests extends FluentReactionsBuilderTest {
 		val commonRoutine = create.routine('commonRootCreate').input [
 			model(EObject, 'affectedEObject')
 		].action [
-			vall('newRoot').create(Root)
-			addCorrespondenceBetween('newRoot').and.affectedEObject
+			vall('root').create(Root)
+			addCorrespondenceBetween('root').and.affectedEObject
 		]
 
 		val reactionsFile = create.reactionsFile('createRootTest')
@@ -605,8 +605,8 @@ class FluentReactionsLanguageBuilderTests extends FluentReactionsBuilderTest {
 			
 			routine commonRootCreate(ecore::EObject affectedEObject) {
 				action {
-					val newRoot = create allElementTypes::Root
-					add correspondence between newRoot and affectedEObject
+					val root = create allElementTypes::Root
+					add correspondence between root and affectedEObject
 				}
 			}
 			
@@ -630,8 +630,8 @@ class FluentReactionsLanguageBuilderTests extends FluentReactionsBuilderTest {
 		val commonRoutine = create.routine('commonRootCreate').input [
 			model(EObject, 'affectedEObject')
 		].action [
-			vall('newRoot').create(Root)
-			addCorrespondenceBetween('newRoot').and.affectedEObject
+			vall('root').create(Root)
+			addCorrespondenceBetween('root').and.affectedEObject
 		]
 
 		val reactionsFile = create.reactionsFile('createRootTest')
@@ -676,8 +676,8 @@ class FluentReactionsLanguageBuilderTests extends FluentReactionsBuilderTest {
 					
 			routine commonRootCreate(ecore::EObject affectedEObject) {
 				action {
-					val newRoot = create allElementTypes::Root
-					add correspondence between newRoot and affectedEObject
+					val root = create allElementTypes::Root
+					add correspondence between root and affectedEObject
 				}
 			}
 		'''

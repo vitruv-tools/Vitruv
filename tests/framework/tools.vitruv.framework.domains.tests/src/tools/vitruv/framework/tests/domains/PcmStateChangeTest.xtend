@@ -2,14 +2,12 @@ package tools.vitruv.framework.tests.domains
 
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.Disabled
-import static tools.vitruv.testutils.metamodels.PcmMockupCreators.newPcmComponent
-import static tools.vitruv.testutils.metamodels.PcmMockupCreators.newPcmInterface
-import static tools.vitruv.testutils.metamodels.PcmMockupCreators.newPcmMethod
+import static tools.vitruv.testutils.metamodels.PcmMockupCreators.pcm
 
 class PcmStateChangeTest extends StateChangePropagationTest {
 	@Test
 	def void testAddComponent() {
-		pcmRoot.components += newPcmComponent => [name = "NewlyAddedComponent"]
+		pcmRoot.components += pcm.Component => [name = "NewlyAddedComponent"]
 		compareChanges(pcmModel, pcmCheckpoint)
 	}
 
@@ -27,21 +25,21 @@ class PcmStateChangeTest extends StateChangePropagationTest {
 
 	@Test
 	def void testAddProvidedInterface() {
-		val newInterface = newPcmInterface => [name = "NewlyAddedInterface"]
-		pcmRoot.interfaces += newInterface
-		newInterface.methods += newPcmMethod => [name = "newMethod"]
+		val newInterface = pcm.Interface => [name = "NewlyAddedInterface"]
+		pcmRoot.interfaces += pcm.Interface
+		newInterface.methods += pcm.Method => [name = "newMethod"]
 		pcmRoot.components.get(0).providedInterface = newInterface
 		compareChanges(pcmModel, pcmCheckpoint)
 	}
 
 	@Test
 	def void testInterfaceWithMultipleMethods() {
-		val newInterface = newPcmInterface => [
+		val newInterface = pcm.Interface => [
 			name = "NewlyAddedInterface"
 		]
 		pcmRoot.interfaces += newInterface
 		newInterface.methods += (0 .. 5).map [ index |
-			newPcmMethod => [name = '''newMethod«index»''']
+			pcm.Method => [name = '''newMethod«index»''']
 		]
 		pcmRoot.components.get(0).providedInterface = newInterface
 		compareChanges(pcmModel, pcmCheckpoint)
@@ -50,8 +48,8 @@ class PcmStateChangeTest extends StateChangePropagationTest {
 	@Disabled("Example for a test case that will NOT pass since the state-based diff looses some information")
 	@Test
 	def void testAddDifferentProvidedInterface() {
-		val firstInterface = newPcmInterface => [name = "NewlyAddedInterface"]
-		val secondInterface = newPcmInterface => [name = "NewlyAddedInterface2"]
+		val firstInterface = pcm.Interface => [name = "NewlyAddedInterface"]
+		val secondInterface = pcm.Interface => [name = "NewlyAddedInterface2"]
 		pcmRoot.interfaces += #[firstInterface, secondInterface]
 		pcmRoot.components.get(0).providedInterface = firstInterface
 		pcmRoot.components.get(0).providedInterface = secondInterface
@@ -61,9 +59,9 @@ class PcmStateChangeTest extends StateChangePropagationTest {
 	@Test
 	def void testAddMultipleInterfaces() {
 		pcmRoot.interfaces += (1 .. 3).map [ index |
-			newPcmInterface => [name = '''NewlyAddedInterface«index»''']
+			pcm.Interface => [name = '''NewlyAddedInterface«index»''']
 		]
-		pcmRoot.interfaces.forEach[methods += newPcmMethod => [name = "newMethod"]]
+		pcmRoot.interfaces.forEach[methods += pcm.Method => [name = "newMethod"]]
 		compareChanges(pcmModel, pcmCheckpoint)
 	}
 }

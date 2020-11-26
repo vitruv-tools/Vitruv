@@ -1,19 +1,12 @@
 package tools.vitruv.testutils.metamodels
 
-import edu.kit.ipd.sdq.activextendannotations.Utility
 import allElementTypes2.AllElementTypes2Factory
+import tools.vitruv.testutils.activeannotations.ModelCreators
 
-@Utility
-class AllElementTypes2Creators {
-	static def newRoot2() {
-		AllElementTypes2Factory.eINSTANCE.createRoot2
-	}
+@ModelCreators(factory=AllElementTypes2Factory)
+final class AllElementTypes2Creators {
+	public static val aet2 = new AllElementTypes2Creators()
 
-	static def newNonRoot2() {
-		AllElementTypes2Factory.eINSTANCE.createNonRoot2
-	}
-
-	static def newNonRootObjectContainerHelper2() {
-		AllElementTypes2Factory.eINSTANCE.createNonRootObjectContainerHelper2
+	private new() {
 	}
 }
