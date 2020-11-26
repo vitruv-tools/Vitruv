@@ -29,7 +29,7 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 
 	@BeforeEach
 	def createRoot() {
-		createAndSynchronizeModel(PERSONS_MODEL, PersonsFactory.eINSTANCE.createPersonRegister)
+		resourceAt(PERSONS_MODEL).propagate[contents += PersonsFactory.eINSTANCE.createPersonRegister]
 
 		assertThat(resourceAt(FAMILIES_MODEL), exists)
 	}
@@ -37,11 +37,11 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 	@Test
 	@Disabled("The personsToFamilies is broken")
 	def void testCreateMalePerson() {
-		saveAndSynchronizeChanges(PersonRegister.from(PERSONS_MODEL).record [
+		PersonRegister.from(PERSONS_MODEL).propagate [
 			persons += PersonsFactory.eINSTANCE.createMale => [
 				fullName = MALE_PERSON_NAME
 			]
-		])
+		]
 
 		assertThat(resourceAt(FAMILIES_MODEL), exists);
 	}
@@ -53,11 +53,11 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 	@Test
 	@Disabled("The personsToFamilies is broken")
 	def void testCreateMale() {
-		saveAndSynchronizeChanges(PersonRegister.from(PERSONS_MODEL).record [
+		PersonRegister.from(PERSONS_MODEL).propagate [
 			persons += PersonsFactory.eINSTANCE.createMale => [
 				fullName = MALE_PERSON_NAME
 			]
-		])
+		]
 
 		assertThat(resourceAt(FAMILIES_MODEL), exists);
 	}
@@ -65,11 +65,11 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 	@Test
 	@Disabled("The personsToFamilies is broken")
 	def void testCreateFemale() {
-		saveAndSynchronizeChanges(PersonRegister.from(PERSONS_MODEL).record [
+		PersonRegister.from(PERSONS_MODEL).propagate [
 			persons += PersonsFactory.eINSTANCE.createFemale => [
 				fullName = FEMALE_PERSON_NAME
 			]
-		])
+		]
 
 		assertThat(resourceAt(FAMILIES_MODEL), exists);
 	}
@@ -80,10 +80,8 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 		val person = PersonsFactory.eINSTANCE.createMale => [
 			fullName = MALE_PERSON_NAME
 		]
-		saveAndSynchronizeChanges(PersonRegister.from(PERSONS_MODEL).record [
-			persons += person
-		])
-		saveAndSynchronizeChanges(person.record[fullName = SECOND_MALE_PERSON_NAME])
+		PersonRegister.from(PERSONS_MODEL).propagate[persons += person]
+		person.propagate[fullName = SECOND_MALE_PERSON_NAME]
 		val Iterable<Member> members = correspondenceModel.getCorrespondingEObjects(#[person]).filter(Member)
 
 		assertThat(members.length, is(1))

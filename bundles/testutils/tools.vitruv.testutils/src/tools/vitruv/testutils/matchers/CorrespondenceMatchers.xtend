@@ -197,7 +197,7 @@ package class HasExactlyOneCorrespondenceMatcher extends TypeSafeMatcher<EObject
 	}
 
 	override describeTo(Description description) {
-		description.appendText("Exactly one corresponding object").appendDescriptionOf(correspondenceSource)
+		description.appendText("exactly one corresponding object").appendDescriptionOf(correspondenceSource)
 		if (correspondenceMatcher !== null) {
 			description.appendText(" that is: ").appendDescriptionOf(correspondenceMatcher)
 		}
@@ -232,7 +232,7 @@ package class HasAtLeastOneCorrespondenceMatcher extends TypeSafeMatcher<EObject
 	}
 
 	override describeTo(Description description) {
-		description.appendText("At least one corresponding object").appendDescriptionOf(correspondenceSource)
+		description.appendText("at least one corresponding object").appendDescriptionOf(correspondenceSource)
 		if (correspondenceMatcher !== null) {
 			description.appendText(" that is: ").appendDescriptionOf(correspondenceMatcher)
 		}

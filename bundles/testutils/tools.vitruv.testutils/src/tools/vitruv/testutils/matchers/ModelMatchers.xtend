@@ -93,9 +93,9 @@ package class ResourceExistingMatcher extends TypeSafeMatcher<URI> {
 	override describeTo(Description description) {
 		description.appendText(
 			if (shouldExist) {
-				"An URI pointing to an existing resource"
+				"an URI pointing to an existing resource"
 			} else {
-				"An URI not pointing to any resource"
+				"an URI not pointing to any resource"
 			}
 		)
 	}
@@ -405,7 +405,7 @@ package class ModelTreeEqualityMatcher extends TypeSafeMatcher<EObject> {
 	}
 
 	override describeTo(Description description) {
-		description.appendText('''A «expectedObject.eClass.name» deeply equal to ''').appendEObjectValue(expectedObject)
+		description.appendText('''a «expectedObject.eClass.name» deeply equal to ''').appendEObjectValue(expectedObject)
 	}
 
 	override protected describeMismatchSafely(EObject item, Description mismatchDescription) {

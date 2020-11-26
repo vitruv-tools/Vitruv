@@ -9,6 +9,10 @@ import tools.vitruv.framework.change.description.impl.ConcreteChangeImpl
 import tools.vitruv.framework.change.description.impl.EmptyChangeImpl
 
 class ChangeCloner {
+	def dispatch VitruviusChange clone(VitruviusChange change) {
+		throw new IllegalArgumentException('''«change» has unsupported change type''')
+	}
+	
 	def dispatch VitruviusChange clone(CompositeContainerChangeImpl containerChange) {
 		val clone = new CompositeContainerChangeImpl();
 		containerChange.changes.forEach[clone.addChange(it.clone)];

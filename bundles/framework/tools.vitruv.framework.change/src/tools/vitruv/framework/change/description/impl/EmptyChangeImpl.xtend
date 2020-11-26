@@ -6,7 +6,7 @@ import tools.vitruv.framework.uuid.UuidResolver
 import tools.vitruv.framework.change.interaction.UserInteractionBase
 import tools.vitruv.framework.change.description.VitruviusChange
 
-class EmptyChangeImpl implements TransactionalChange {
+class EmptyChangeImpl extends AbstractVitruviusChangeImpl implements TransactionalChange {
 	val VURI vuri;
 
 	new(VURI vuri) {
@@ -60,5 +60,5 @@ class EmptyChangeImpl implements TransactionalChange {
 	override changedEObjectEquals(VitruviusChange change) {
 		return change.affectedEObjects.empty
 	}
-
+	
 }
