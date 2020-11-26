@@ -6,6 +6,8 @@ on:
   create:
     tags:
   pull_request:
+  schedule: 
+    - cron: '42 3 * * *'
 
 jobs:
   build:
