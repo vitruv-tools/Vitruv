@@ -4,7 +4,6 @@ import java.io.FileNotFoundException
 import java.nio.file.Path
 import java.util.List
 import java.util.function.Consumer
-import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.emf.ecore.resource.ResourceSet
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
@@ -34,6 +33,7 @@ import tools.vitruv.testutils.TestLogging
 import static org.hamcrest.MatcherAssert.assertThat
 import static tools.vitruv.testutils.matchers.ChangeMatchers.isValid
 import tools.vitruv.framework.correspondence.CorrespondenceModel
+import org.eclipse.emf.common.notify.Notifier
 
 @ExtendWith(TestProjectManager, TestLogging)
 abstract class VitruvApplicationTest implements CorrespondenceModelContainer {
@@ -122,52 +122,29 @@ abstract class VitruvApplicationTest implements CorrespondenceModelContainer {
 	}
 
 	/**
-	 * Starts recording changes for the resource of the provided {@code object}, executes the provided {@code consumer}
-	 * on the {@code object} and stops recording changes for the resource afterwards.
+	 * Starts recording changes for the resource of the provided {@code notifier}, executes the provided 
+	 * {@code consumer} * on the {@code notifier} and stops recording changes for the {@code notifier} afterwards.
 	 */
-	def protected <T extends EObject> T record(T object, Consumer<T> consumer) {
-		object => [
-			startRecordingChanges()
-			consumer.accept(it)
-			stopRecordingChanges()
-		]
+	def protected <T extends Notifier> T record(T notifier, Consumer<T> consumer) {
+		checkState(changeRecorder.recording, "The change recorder is currently not recording!")
+		
+		changeRecorder.addToRecording(notifier)
+		consumer.accept(notifier)
+		changeRecorder.removeFromRecording(notifier)
+		
+		return notifier
 	}
 
 	/**
-	 * Starts recording changes for the provided {@code resource}, executes the provided {@code consumer} on the
-	 *  {@code resource} and stops recording changes for the resource afterwards.
-	 */
-	def protected <T extends Resource> T record(T resource, Consumer<T> consumer) {
-		resource => [
-			startRecordingChanges()
-			consumer.accept(it)
-			stopRecordingChanges()
-		]
-	}
-
-	/**
-	 * {@linkplain #record Records} the changes to {@code object} created by the provided {@code consumer}, 
-	 * {@code object}’s resource and propagates all recorded changes (including changes that have been recorded 
+	 * {@linkplain #record Records} the changes to {@code notifier} created by the provided {@code consumer}, 
+	 * saves the modified resource and propagates all recorded changes (including changes that have been recorded 
 	 * before calling this method).
 	 * 
 	 * @return the changes resulting from propagating the recorded changes.
 	 * @see #saveAndPropagateChanges
 	 */
-	def protected <T extends EObject> List<PropagatedChange> propagate(T object, Consumer<T> consumer) {
-		object.record(consumer)
-		saveAndPropagateChanges()
-	}
-
-	/**
-	 * {@linkplain #record Records} the changes to {@code resource} created by the provided {@code consumer}, saves
-	 * the resource and propagates all recorded changes (including changes that have been recorded before calling this
-	 * method).
-	 * 
-	 * @return the changes resulting from propagating the recorded changes.
-	 * @see #saveAndPropagateChanges
-	 */
-	def protected <T extends Resource> List<PropagatedChange> propagate(T resource, Consumer<T> consumer) {
-		resource.record(consumer)
+	def protected <T extends Notifier> List<PropagatedChange> propagate(T notifier, Consumer<T> consumer) {
+		notifier.record(consumer)
 		saveAndPropagateChanges()
 	}
 
@@ -209,34 +186,6 @@ abstract class VitruvApplicationTest implements CorrespondenceModelContainer {
 
 	def private Resource getModelResource(Path modelPathWithinProject) {
 		resourceSet.getResource(getModelVuri(modelPathWithinProject).EMFUri, true)
-	}
-
-	def private Resource checkedResourceOf(EObject object) {
-		checkArgument(object !== null, "The object must not be null!")
-		var resource = object.eResource()
-		checkArgument(resource !== null, "The object must be contained in a resource!")
-		return resource
-	}
-
-	def private void startRecordingChanges(EObject object) {
-		startRecordingChanges(checkedResourceOf(object))
-	}
-
-	def private void startRecordingChanges(Resource resource) {
-		checkState(changeRecorder.recording, "The change recorder is currently not recording!")
-		changeRecorder.addToRecording(resource)
-	}
-
-	def private void stopRecordingChanges(EObject object) {
-		checkArgument(object !== null, "The object must not be null!")
-		// the object might just have been deleted, so we don’t require it to be in a resource
-		if (object.eResource !== null) {
-			stopRecordingChanges(object.eResource)
-		}
-	}
-
-	def private void stopRecordingChanges(Resource resource) {
-		changeRecorder.removeFromRecording(resource)
 	}
 
 	def private void renewResourceCache() {
