@@ -33,6 +33,7 @@ import tools.vitruv.testutils.matchers.CorrespondenceModelContainer
 import tools.vitruv.testutils.TestLogging
 import static org.hamcrest.MatcherAssert.assertThat
 import static tools.vitruv.testutils.matchers.ChangeMatchers.isValid
+import tools.vitruv.framework.correspondence.CorrespondenceModel
 
 @ExtendWith(TestProjectManager, TestLogging)
 abstract class VitruvApplicationTest implements CorrespondenceModelContainer {
@@ -186,7 +187,7 @@ abstract class VitruvApplicationTest implements CorrespondenceModelContainer {
 		return propagationResult
 	}
 
-	override getCorrespondenceModel() { virtualModel.correspondenceModel }
+	override CorrespondenceModel getCorrespondenceModel() { virtualModel.correspondenceModel }
 
 	def protected InternalVirtualModel getVirtualModel() { virtualModel }
 
