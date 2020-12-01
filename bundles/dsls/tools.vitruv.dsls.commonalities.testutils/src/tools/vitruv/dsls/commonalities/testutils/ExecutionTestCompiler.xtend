@@ -1,18 +1,18 @@
 package tools.vitruv.dsls.commonalities.testutils
 
 import com.google.inject.Inject
-import com.google.inject.Singleton
+import edu.kit.ipd.sdq.commons.util.org.eclipse.core.resources.IProjectUtil
 import java.io.ByteArrayInputStream
 import java.io.File
 import java.net.URLClassLoader
 import java.nio.file.Files
+import java.nio.file.Path
 import java.nio.file.Paths
 import java.util.ArrayList
 import java.util.HashSet
 import java.util.Hashtable
 import java.util.function.Consumer
 import org.apache.log4j.Logger
-import org.eclipse.core.internal.resources.ProjectDescription
 import org.eclipse.core.resources.IFolder
 import org.eclipse.core.resources.IProject
 import org.eclipse.core.resources.IResource
@@ -38,11 +38,10 @@ import tools.vitruv.framework.change.processing.ChangePropagationSpecification
 
 import static com.google.common.base.Preconditions.*
 import static java.util.stream.Collectors.toList
+import static org.eclipse.core.resources.ResourcesPlugin.getWorkspace
 import static tools.vitruv.testutils.TestLauncher.currentTestLauncher
 
 import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
-import java.nio.file.Path
-import org.eclipse.core.runtime.IPath
 
 @FinalFieldsConstructor
 final class ExecutionTestCompiler {
@@ -91,7 +90,7 @@ final class ExecutionTestCompiler {
 		setGenerationSettings()
 
 		// Disable automatic building
-		ResourcesPlugin.workspace.description = ResourcesPlugin.workspace.description => [autoBuilding = false]
+		workspace.description = workspace.description => [autoBuilding = false]
 
 		// copy in the source files
 		for (commonalityFile : commonalityFilePaths) {
@@ -130,13 +129,11 @@ final class ExecutionTestCompiler {
 		setTargetPlatform()
 
 		val projectName = '''«commonalitiesOwningClass.simpleName»-Commonalities'''
-		val eclipseProject = ResourcesPlugin.workspace.root.getProject(projectName) => [
-			create(new ProjectDescription => [
-				name = projectName
-				location = new org.eclipse.core.runtime.Path(compilationProjectDir.toString)
+		val eclipseProject = IProjectUtil.createProjectAt(projectName, compilationProjectDir) => [
+			open(null)
+			setDescription(description => [
 				natureIds = #[JavaCore.NATURE_ID, XtextProjectHelper.NATURE_ID, PDE.PLUGIN_NATURE]
 			], null)
-			open(null)
 			createManifestMf()
 		]
 		val sourcesFolder = eclipseProject.createFolder(TEST_PROJECT_SOURCES_FOLDER_NAME)
