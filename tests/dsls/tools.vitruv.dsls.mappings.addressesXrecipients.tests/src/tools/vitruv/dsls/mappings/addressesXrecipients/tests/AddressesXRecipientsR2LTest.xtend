@@ -15,7 +15,6 @@ import static tools.vitruv.testutils.matchers.ModelMatchers.doesNotExist
 import static tools.vitruv.testutils.matchers.ModelMatchers.equalsDeeply
 import static tools.vitruv.testutils.matchers.ModelMatchers.ignoringFeatures
 
-import static extension org.eclipse.emf.ecore.util.EcoreUtil.remove
 import static extension tools.vitruv.testutils.matchers.CorrespondenceMatchers.hasNoCorrespondences
 import static extension tools.vitruv.testutils.matchers.CorrespondenceMatchers.hasOneCorrespondence
 
@@ -35,7 +34,7 @@ class AddressesXRecipientsR2LTest extends VitruvApplicationTest {
 	@Test
 	def void createAndDeleteRoot() {
 		createRoot()
-		Recipients.from(RECIPIENTS_MODEL).propagate[remove()]
+		resourceAt(RECIPIENTS_MODEL).propagate[contents.remove(0)]
 		assertThat(resourceAt(RECIPIENTS_MODEL), doesNotExist)
 		assertThat(resourceAt(ADDRESSES_MODEL), doesNotExist)
 	}
@@ -83,7 +82,7 @@ class AddressesXRecipientsR2LTest extends VitruvApplicationTest {
 	def void createAndDeleteChild() {
 		createChild()
 		Recipients.from(RECIPIENTS_MODEL).propagate [
-			recipients.get(0).remove()
+			recipients.remove(0)
 		]
 		assertThat(resourceAt(ADDRESSES_MODEL), contains(newAddresses))
 	}
@@ -92,7 +91,7 @@ class AddressesXRecipientsR2LTest extends VitruvApplicationTest {
 	def void createAndDeleteGrandChild1() {
 		createChild()
 		Recipients.from(RECIPIENTS_MODEL).propagate [
-			recipients.get(0).locatedAt.remove()
+			recipients.get(0).locatedAt = null
 		]
 		assertThat(resourceAt(ADDRESSES_MODEL), contains(newAddresses))
 	}
@@ -101,7 +100,7 @@ class AddressesXRecipientsR2LTest extends VitruvApplicationTest {
 	def void createAndDeleteGrandChild2() {
 		createChild()
 		Recipients.from(RECIPIENTS_MODEL).propagate [
-			recipients.get(0).locatedIn.remove()
+			recipients.get(0).locatedIn = null
 		]
 		assertThat(resourceAt(ADDRESSES_MODEL), contains(newAddresses))
 	}

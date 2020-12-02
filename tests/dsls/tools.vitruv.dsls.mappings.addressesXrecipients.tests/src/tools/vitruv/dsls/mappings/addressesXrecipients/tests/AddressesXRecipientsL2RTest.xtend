@@ -18,7 +18,6 @@ import static tools.vitruv.testutils.matchers.ModelMatchers.doesNotExist
 import static tools.vitruv.testutils.matchers.ModelMatchers.equalsDeeply
 import static tools.vitruv.testutils.matchers.ModelMatchers.ignoringFeatures
 
-import static extension org.eclipse.emf.ecore.util.EcoreUtil.remove
 import static extension tools.vitruv.testutils.matchers.CorrespondenceMatchers.*
 
 class AddressesXRecipientsL2RTest extends VitruvApplicationTest {
@@ -37,7 +36,7 @@ class AddressesXRecipientsL2RTest extends VitruvApplicationTest {
 	@Test
 	def void createAndDeleteRoot() {
 		createRoot()
-		Addresses.from(ADDRESSES_MODEL).propagate[remove()]
+		resourceAt(ADDRESSES_MODEL).propagate[contents.remove(0)]
 		assertThat(resourceAt(ADDRESSES_MODEL), doesNotExist)
 		assertThat(resourceAt(RECIPIENTS_MODEL), doesNotExist)
 	}
@@ -82,7 +81,7 @@ class AddressesXRecipientsL2RTest extends VitruvApplicationTest {
 	def void createAndDeleteChild() {
 		createChild()
 		Addresses.from(ADDRESSES_MODEL).propagate [
-			addresses.get(0).remove()
+			addresses.remove(0)
 		]
 		assertThat(resourceAt(RECIPIENTS_MODEL), contains(newRecipients, ignoringFeatures('id')))
 	}
