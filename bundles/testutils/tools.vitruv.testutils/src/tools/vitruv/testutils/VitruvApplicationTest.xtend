@@ -123,7 +123,7 @@ abstract class VitruvApplicationTest implements CorrespondenceModelContainer {
 
 	/**
 	 * Starts recording changes for the resource of the provided {@code notifier}, executes the provided 
-	 * {@code consumer} * on the {@code notifier} and stops recording changes for the {@code notifier} afterwards.
+	 * {@code consumer} on the {@code notifier} and stops recording changes for the {@code notifier} afterwards.
 	 */
 	def protected <T extends Notifier> T record(T notifier, Consumer<T> consumer) {
 		checkState(changeRecorder.recording, "The change recorder is currently not recording!")
