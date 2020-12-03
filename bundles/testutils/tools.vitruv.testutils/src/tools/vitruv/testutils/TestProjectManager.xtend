@@ -26,16 +26,21 @@ import static com.google.common.base.Preconditions.checkNotNull
 import java.util.ArrayList
 import org.junit.jupiter.api.^extension.AfterEachCallback
 import static com.google.common.base.Preconditions.checkArgument
+import java.nio.file.NoSuchFileException
+import java.util.stream.Stream
 
 /**
  * Extension managing the test projects for Eclipse tests. Test classes using this extension can have test project 
  * folders injected by using the @{@link TestProject} annotation. Test projects will be cleaned if their corresponding
- * test succeed, but retained if their corresponding test failed.
+ * test succeed, but retained if their corresponding test failed. To modify this behaviour, see 
+ * {@link #RETAIN_TEST_PROJECTS_SYSTEM_PROPERTY}.
  */
 class TestProjectManager implements ParameterResolver, AfterEachCallback {
-	// set this system property to “always”, “on_failure” or “never” to retain the test projects 
-	// always, on failure, or never. The default is “on_failure”.
-	static val RETAIN_TEST_PROJECTS_SYSTEM_PROPERTY = "vitruv.retainTestProjects"
+	/**
+	 * Set this system property to “{@code always}”, “{@code on_failure}” or “{@code never}” to retain 
+	 * the test projects always, only when the corresponding test failed, or never. The default is “{@code on_failure}”.
+	 */
+	public static val RETAIN_TEST_PROJECTS_SYSTEM_PROPERTY = "vitruv.retainTestProjects"
 	static val log = Logger.getLogger(TestProjectManager) => [level = INFO]
 	static val namespace = ExtensionContext.Namespace.create(TestProjectManager)
 	static val observedFailure = "observedFailure"
@@ -43,7 +48,7 @@ class TestProjectManager implements ParameterResolver, AfterEachCallback {
 	static val invalidFileCharacters = Pattern.compile("[/\\\\<>:\"|?*\u0000]")
 
 	// When running tests of a whole project, Eclipse sometimes uses multiple JUnit Jupiter runs to run all tests.
-	// The only option to preserve the workspace across these runs is to make it static.
+	// The only option to preserve the workspace across these runs is to make the reference static.
 	static Path workspaceCache
 
 	override afterEach(ExtensionContext context) throws Exception {
@@ -85,27 +90,28 @@ class TestProjectManager implements ParameterResolver, AfterEachCallback {
 
 	def private Path getProject(String variant, ExtensionContext context) {
 		val workspace = getWorkspace(context)
+		val projectPath = if (variant == '')
+				getProjectRelativeBasePath(context)
+			else
+				workspace.relativize(getProject('', context)).resolve('''[«variant.removeInvalidCharacters()»]''')
 
-		context.getStore(projectNamespace).getOrComputeIfAbsent(variant, [
-			val projectPath = getProjectRelativePath(variant, context)
+		context.getStore(projectNamespace).getOrComputeIfAbsent(projectPath, [
 			val projectDir = createUniqueDirectory(workspace.resolve(projectPath)) => [
 				createFile(resolve(testProjectMarkerFileName))
 			]
 			new ProjectGuard(projectDir, context)
 		], ProjectGuard).projectDir
-
 	}
 
-	def private Path getProjectRelativePath(String variant, ExtensionContext context) {
-		val testDir = if (context.testMethod.isPresent) {
-				Path.of(
-					context.testClass.map[simpleName.removeInvalidCharacters()].orElse(""),
-					context.displayName.removeInvalidCharacters()
-				)
-			} else {
-				Path.of(context.displayName.removeInvalidCharacters())
-			}
-		return if (variant != "") testDir.resolve('''[«variant.removeInvalidCharacters()»]''') else testDir
+	def private Path getProjectRelativeBasePath(ExtensionContext context) {
+		if (context.testMethod.isPresent) {
+			Path.of(
+				context.testClass.map[simpleName.removeInvalidCharacters()].orElse(""),
+				context.displayName.removeInvalidCharacters()
+			)
+		} else {
+			Path.of(context.displayName.removeInvalidCharacters())
+		}
 	}
 
 	override resolveParameter(ParameterContext parameterContext, ExtensionContext extensionContext) {
@@ -185,9 +191,17 @@ class TestProjectManager implements ParameterResolver, AfterEachCallback {
 			switch retain: retainMode {
 				case NEVER,
 				case retain == ON_FAILURE && !context.observedFailure:
-					walk(projectDir).sorted(reverseOrder).forEach[delete(it)]
+					walkIfExists(projectDir).sorted(reverseOrder).forEach[delete(it)]
 				default: { // retain
 				}
+			}
+		}
+
+		def private static walkIfExists(Path path) {
+			try {
+				walk(path)
+			} catch (NoSuchFileException noSuchFile) {
+				Stream.empty()
 			}
 		}
 	}
