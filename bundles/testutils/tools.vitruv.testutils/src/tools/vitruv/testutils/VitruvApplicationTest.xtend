@@ -19,7 +19,6 @@ import tools.vitruv.framework.tuid.TuidManager
 import tools.vitruv.framework.userinteraction.UserInteractionFactory
 import tools.vitruv.framework.util.ResourceSetUtil
 import tools.vitruv.framework.util.bridges.EMFBridge
-import tools.vitruv.framework.util.datatypes.VURI
 import tools.vitruv.framework.uuid.UuidGeneratorAndResolver
 import tools.vitruv.framework.uuid.UuidGeneratorAndResolverImpl
 import tools.vitruv.framework.vsum.InternalVirtualModel
@@ -34,6 +33,7 @@ import static org.hamcrest.MatcherAssert.assertThat
 import static tools.vitruv.testutils.matchers.ChangeMatchers.isValid
 import tools.vitruv.framework.correspondence.CorrespondenceModel
 import org.eclipse.emf.common.notify.Notifier
+import org.eclipse.emf.common.util.URI
 
 @ExtendWith(TestProjectManager, TestLogging)
 abstract class VitruvApplicationTest implements CorrespondenceModelContainer {
@@ -94,7 +94,7 @@ abstract class VitruvApplicationTest implements CorrespondenceModelContainer {
 	 */
 	def protected Resource resourceAt(Path modelPathWithinProject) {
 		try {
-			getModelResource(modelPathWithinProject)
+			loadModelResource(modelPathWithinProject)
 		} catch (RuntimeException e) {
 			if (e.cause instanceof FileNotFoundException) {
 				createModelResource(modelPathWithinProject)
@@ -110,7 +110,7 @@ abstract class VitruvApplicationTest implements CorrespondenceModelContainer {
 	 * @param modelPathWithinProject A project-relative path to a model.
 	 */
 	def protected <T> T from(Class<T> clazz, Path modelPathWithinProject) {
-		return from(clazz, getModelResource(modelPathWithinProject))
+		return from(clazz, loadModelResource(modelPathWithinProject))
 	}
 
 	/** 
@@ -127,11 +127,11 @@ abstract class VitruvApplicationTest implements CorrespondenceModelContainer {
 	 */
 	def protected <T extends Notifier> T record(T notifier, Consumer<T> consumer) {
 		checkState(changeRecorder.recording, "The change recorder is currently not recording!")
-		
+
 		changeRecorder.addToRecording(notifier)
 		consumer.accept(notifier)
 		changeRecorder.removeFromRecording(notifier)
-		
+
 		return notifier
 	}
 
@@ -170,22 +170,19 @@ abstract class VitruvApplicationTest implements CorrespondenceModelContainer {
 
 	def protected TestUserInteraction getUserInteractor() { testUserInteractor }
 
-	def private Path getPlatformModelPath(Path modelPathWithinProject) {
+	def private URI getPlatformModelUri(Path modelPathWithinProject) {
 		checkArgument(modelPathWithinProject !== null, "The modelPathWithinProject must not be null!")
 		checkArgument(!modelPathWithinProject.isEmpty, "The modelPathWithinProject must not be empty!")
-		return testProjectFolder.resolve(modelPathWithinProject)
-	}
-
-	def private VURI getModelVuri(Path modelPathWithinProject) {
-		return VURI.getInstance(EMFBridge.getEmfFileUriForFile(getPlatformModelPath(modelPathWithinProject).toFile()))
+		val targetFile = testProjectFolder.resolve(modelPathWithinProject).toFile()
+		return EMFBridge.getEmfFileUriForFile(targetFile)
 	}
 
 	def private Resource createModelResource(Path modelPathWithinProject) {
-		resourceSet.createResource(getModelVuri(modelPathWithinProject).EMFUri)
+		resourceSet.createResource(getPlatformModelUri(modelPathWithinProject))
 	}
 
-	def private Resource getModelResource(Path modelPathWithinProject) {
-		resourceSet.getResource(getModelVuri(modelPathWithinProject).EMFUri, true)
+	def private Resource loadModelResource(Path modelPathWithinProject) {
+		resourceSet.getResource(getPlatformModelUri(modelPathWithinProject), true)
 	}
 
 	def private void renewResourceCache() {
