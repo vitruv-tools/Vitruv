@@ -14,6 +14,7 @@ import java.util.function.BiFunction
 import org.hamcrest.SelfDescribing
 import org.hamcrest.TypeSafeMatcher
 import static extension tools.vitruv.testutils.matchers.ModelPrinter.appendPrettyValueSet
+import java.util.Set
 
 @Utility
 class CorrespondenceMatchers {
@@ -103,11 +104,11 @@ package class CorrespondenceSource implements SelfDescribing {
 	val List<CorrespondenceOption> options
 
 	def package getCorrespespondingObjects(EObject item) {
-		correspondenceModel.getCorrespondences(#[item]).filterWithOptions [
-			$0.filterCorrespondences($1)
+		correspondenceModel.getCorrespondences(#[item]).filterWithOptions [ option, correspondences |
+			option.filterCorrespondences(correspondences)
 		].map [
 			correspondenceModel.getCorrespondingEObjectsInCorrespondence(it, #[item])
-		].flatten.filterWithOptions[$0.filterResultObjects($1)]
+		].flatten.filterWithOptions[option, objects|option.filterResultObjects(objects)]
 	}
 
 	override describeTo(Description description) {
@@ -157,10 +158,10 @@ package class TagOption implements CorrespondenceOption {
 @FinalFieldsConstructor
 package class NoCorrespondenceMatcher extends TypeSafeMatcher<EObject> {
 	val CorrespondenceSource correspondenceSource
-	var List<? extends EObject> correspondences
+	var Set<? extends EObject> correspondences
 
 	override matchesSafely(EObject item) {
-		correspondences = correspondenceSource.getCorrespespondingObjects(item).toList
+		correspondences = correspondenceSource.getCorrespespondingObjects(item).toSet
 		return correspondences.isEmpty
 	}
 
@@ -177,10 +178,10 @@ package class NoCorrespondenceMatcher extends TypeSafeMatcher<EObject> {
 package class HasExactlyOneCorrespondenceMatcher extends TypeSafeMatcher<EObject> {
 	val CorrespondenceSource correspondenceSource
 	val Matcher<? super EObject> correspondenceMatcher
-	var List<? extends EObject> correspondences = null
+	var Set<? extends EObject> correspondences = null
 
 	override matchesSafely(EObject item) {
-		correspondences = correspondenceSource.getCorrespespondingObjects(item).toList
+		correspondences = correspondenceSource.getCorrespespondingObjects(item).toSet
 		correspondences.size == 1 &&
 			(correspondenceMatcher === null || correspondenceMatcher.matches(correspondences.get(0)))
 	}
@@ -209,10 +210,10 @@ package class HasAtLeastOneCorrespondenceMatcher extends TypeSafeMatcher<EObject
 	val CorrespondenceSource correspondenceSource
 	val Matcher<? super EObject> correspondenceMatcher
 	var Matcher<Iterable<? super EObject>> anyMatcher = null
-	var List<? extends Object> correspondences = null
+	var Set<? extends Object> correspondences = null
 
 	override matchesSafely(EObject item) {
-		correspondences = correspondenceSource.getCorrespespondingObjects(item).toList
+		correspondences = correspondenceSource.getCorrespespondingObjects(item).toSet
 		if (correspondences.isEmpty) {
 			return false
 		}

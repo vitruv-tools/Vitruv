@@ -34,9 +34,9 @@ class ModelPrinter {
 					target.appendText('<unset>')
 				} else if (feature.isMany) {
 					if (feature.isOrdered) {
-						printList(object.eGet(feature) as List<? extends EObject>)
+						printList(object.eGet(feature) as List<?>)
 					} else {
-						printSet(object.eGet(feature) as Set<? extends EObject>)
+						printSet(object.eGet(feature) as Set<?>)
 					}
 				} else {
 					print(object.eGet(feature))
@@ -45,12 +45,12 @@ class ModelPrinter {
 		}
 	}
 
-	def private void printList(List<? extends EObject> objects) {
+	def private void printList(List<?> objects) {
 		target.appendText('[').appendCommaSeparated(objects)[print()].appendText(']')
 	}
 
-	def private void printSet(Set<? extends EObject> objects) {
-		target.appendText('[').appendCommaSeparated(objects)[print()].appendText(']')
+	def private void printSet(Set<?> objects) {
+		target.appendText('{').appendCommaSeparated(objects)[print()].appendText('}')
 	}
 
 	def private assignId(EObject object) {
@@ -91,11 +91,11 @@ class ModelPrinter {
 		description.appendText('''<null>''')
 	}
 
-	def static appendPrettyValueList(Description description, List<? extends EObject> objects) {
+	def static appendPrettyValueList(Description description, List<?> objects) {
 		new ModelPrinter(description).printList(objects)
 	}
 
-	def static appendPrettyValueSet(Description description, List<? extends EObject> objects) {
-		new ModelPrinter(description).printList(objects)
+	def static appendPrettyValueSet(Description description, Set<?> objects) {
+		new ModelPrinter(description).printSet(objects)
 	}
 }
