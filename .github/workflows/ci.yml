@@ -39,7 +39,7 @@ jobs:
         env: 
           MAVEN_OPTS: -Djansi.force=true
       - name: Publish Nightly Update Site
-        if: github.ref == 'refs/heads/master'
+        if: github.ref == 'refs/heads/master' && github.repository_owner == 'vitruv-tools'
         uses: peaceiris/actions-gh-pages@v3
         with:
           deploy_key: ${{ secrets.UPDATE_SITE_DEPLOY_KEY }}
@@ -48,13 +48,13 @@ jobs:
           publish_dir: releng/tools.vitruv.updatesite.aggregated/target/final
           publish_branch: master
       - name: Determine Release Version
-        if: startsWith(github.ref, 'refs/tags/releases/')
+        if: startsWith(github.ref, 'refs/tags/releases/') && github.repository_owner == 'vitruv-tools'
         id: releaseVersion
         uses: little-core-labs/get-git-tag@v3.0.2
         with:
            tagRegex: "releases/(.*)"
       - name: Publish Release Update Site
-        if: startsWith(github.ref, 'refs/tags/releases/')
+        if: startsWith(github.ref, 'refs/tags/releases/') && github.repository_owner == 'vitruv-tools'
         uses: peaceiris/actions-gh-pages@v3
         with:
           deploy_key: ${{ secrets.UPDATE_SITE_DEPLOY_KEY }}
