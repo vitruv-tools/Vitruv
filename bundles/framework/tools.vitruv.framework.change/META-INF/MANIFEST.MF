@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Vitruv Framework Change Metamodel
 Bundle-SymbolicName: tools.vitruv.framework.change
 Automatic-Module-Name: tools.vitruv.framework.change
-Bundle-Version: 1.0.0.qualifier
+Bundle-Version: 1.0.0
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Require-Bundle: org.apache.log4j,
  com.google.guava,

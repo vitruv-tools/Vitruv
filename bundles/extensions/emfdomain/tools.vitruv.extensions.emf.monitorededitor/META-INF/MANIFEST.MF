@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Vitruv Domain EMF Monitored Editor
 Bundle-SymbolicName: tools.vitruv.extensions.emf.monitorededitor;singleton:=true
 Automatic-Module-Name: tools.vitruv.extensions.emf.monitorededitor
-Bundle-Version: 1.0.0.qualifier
+Bundle-Version: 1.0.0
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.emf.transaction,
