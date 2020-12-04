@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Vitruv Test Utilities
 Bundle-SymbolicName: tools.vitruv.testutils
 Automatic-Module-Name: tools.vitruv.testutils
-Bundle-Version: 0.3.0.qualifier
+Bundle-Version: 1.0.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Require-Bundle: tools.vitruv.framework.vsum;visibility:=reexport,
  org.eclipse.core.resources,

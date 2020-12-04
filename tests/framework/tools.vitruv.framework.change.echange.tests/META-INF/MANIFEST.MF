@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Vitruv Framework Atomic Change Tests
 Bundle-SymbolicName: tools.vitruv.framework.change.echange.tests
 Automatic-Module-Name: tools.vitruv.framework.change.echange.tests
-Bundle-Version: 0.3.0.qualifier
+Bundle-Version: 1.0.0.qualifier
 Bundle-Vendor: vitruv.tools
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Require-Bundle: org.junit,

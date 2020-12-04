@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Vitruv Demo Families -> Persons Tests
 Bundle-SymbolicName: tools.vitruv.demo.applications.familiespersons.families2Persons.test
 Automatic-Module-Name: tools.vitruv.demo.applications.familiespersons.families2Persons.test
-Bundle-Version: 0.3.0.qualifier
+Bundle-Version: 1.0.0.qualifier
 Fragment-Host: tools.vitruv.demo.applications.familiespersons.families2persons;x-internal:=true
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Require-Bundle: com.google.guava,
