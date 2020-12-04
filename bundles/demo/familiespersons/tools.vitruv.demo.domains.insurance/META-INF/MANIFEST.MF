@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Vitruv Demo Domain Insurance
 Bundle-SymbolicName: tools.vitruv.demo.domains.insurance;singleton:=true
 Automatic-Module-Name: tools.vitruv.demo.domains.insurance
-Bundle-Version: 1.0.0
+Bundle-Version: 1.1.0.qualifier
 Require-Bundle: com.google.guava,
  org.eclipse.xtext.xbase.lib,
  org.eclipse.xtend.lib,

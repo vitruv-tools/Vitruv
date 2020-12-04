@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Vitruv Demo Families -> Persons
 Bundle-SymbolicName: tools.vitruv.demo.applications.familiespersons.families2persons;singleton:=true
 Automatic-Module-Name: tools.vitruv.demo.applications.familiespersons.families2persons
-Bundle-Version: 1.0.0
+Bundle-Version: 1.1.0.qualifier
 Export-Package: mir.reactions.familiesToPersons;x-internal:=true,
  mir.routines.familiesToPersons;x-internal:=true,
  tools.vitruv.applications.familiespersons.families2persons

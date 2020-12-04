@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Vitruv Framework UI Virtual Singl Underlying Model
 Bundle-SymbolicName: tools.vitruv.framework.ui.vsum;singleton:=true
 Automatic-Module-Name: tools.vitruv.framework.ui.monitorededitor
-Bundle-Version: 1.0.0
+Bundle-Version: 1.1.0.qualifier
 Bundle-Activator: tools.vitruv.framework.ui.vsum.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
