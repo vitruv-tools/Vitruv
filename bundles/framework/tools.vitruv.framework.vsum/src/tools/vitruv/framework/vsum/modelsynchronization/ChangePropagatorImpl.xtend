@@ -243,15 +243,12 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 		// TODO HK: Clone the changes for each synchronization! Should even be cloned for
 		// each consistency repair routines that uses it,
 		// or: make them read only, i.e. give them a read-only interface!
-		val command = resourceRepository.createCommand() [
+		val changedEObjects = resourceRepository.executeAsCommand [
 			propagationSpecification.propagateChange(change, correspondenceModel, resourceRepository);
 			modelRepository.cleanupRootElements();
-			null
-		]
-		command.executeAndRethrowException();
+		].affectedObjects.filter(EObject)
 
 		// Store modification information
-		val changedEObjects = command.getAffectedObjects().filter(EObject)
 		changedEObjects.forEach[changedResourcesTracker.addInvolvedModelResource(it.eResource)];
 		changedResourcesTracker.addSourceResourceOfChange(change);
 	}

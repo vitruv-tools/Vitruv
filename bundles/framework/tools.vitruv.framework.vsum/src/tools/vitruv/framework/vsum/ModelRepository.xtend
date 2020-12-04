@@ -20,5 +20,5 @@ interface ModelRepository extends CommandCreatorAndExecutor, ResourceAccess {
     def void executeOnUuidResolver(Consumer<UuidResolver> function);
     
     def void startRecording();
-    def Iterable<TransactionalChange> endRecording();
+    def Iterable<? extends TransactionalChange> endRecording();
 }

@@ -8,12 +8,18 @@ import tools.vitruv.framework.vsum.modelsynchronization.ChangePropagationListene
 import tools.vitruv.framework.userinteraction.UserInteractor
 
 interface InternalVirtualModel extends VirtualModel {
-	def CorrespondenceModel getCorrespondenceModel();
-	def void save();
-	def void persistRootElement(VURI persistenceVuri, EObject rootElement);
-	def void executeCommand(Callable<Void> command);
-	def void addChangePropagationListener(ChangePropagationListener propagationListener);
-	def void setUserInteractor(UserInteractor userInteractor);
-	def void addPropagatedChangeListener(PropagatedChangeListener propagatedChangeListener);
-	def void removePropagatedChangeListener(PropagatedChangeListener propagatedChangeListener);
+	def CorrespondenceModel getCorrespondenceModel()
+	def void save()
+	def void persistRootElement(VURI persistenceVuri, EObject rootElement)
+	def void executeCommand(Callable<Void> command)
+	def void executeCommand(Runnable command) {
+		executeCommand [
+			command.run()
+			return null
+		]
+	}
+	def void addChangePropagationListener(ChangePropagationListener propagationListener)
+	def void setUserInteractor(UserInteractor userInteractor)
+	def void addPropagatedChangeListener(PropagatedChangeListener propagatedChangeListener)
+	def void removePropagatedChangeListener(PropagatedChangeListener propagatedChangeListener)
 }
