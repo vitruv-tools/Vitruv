@@ -9,6 +9,7 @@ import java.util.Objects
 import java.util.function.Consumer
 import java.util.List
 import java.util.Set
+import org.eclipse.emf.ecore.resource.Resource
 
 @FinalFieldsConstructor
 class ModelPrinter {
@@ -28,7 +29,7 @@ class ModelPrinter {
 			objectId = assignId(object)
 			printed.put(object, objectId)
 			val featuresToPrint = object.eClass.EAllStructuralFeatures.filter[!derived]
-			target.appendText(objectId).appendText('(').appendCommaSeparated(featuresToPrint) [ feature |
+			target.appendText(objectId).appendText('(').commaSeparated(featuresToPrint) [ feature |
 				target.appendText(feature.name).appendText('=')
 				if (!object.eIsSet(feature)) {
 					target.appendText('<unset>')
@@ -46,11 +47,11 @@ class ModelPrinter {
 	}
 
 	def private void printList(List<?> objects) {
-		target.appendText('[').appendCommaSeparated(objects)[print()].appendText(']')
+		target.appendText('[').commaSeparated(objects)[print()].appendText(']')
 	}
 
 	def private void printSet(Set<?> objects) {
-		target.appendText('{').appendCommaSeparated(objects)[print()].appendText('}')
+		target.appendText('{').commaSeparated(objects)[print()].appendText('}')
 	}
 
 	def private assignId(EObject object) {
@@ -60,7 +61,7 @@ class ModelPrinter {
 		object.eClass.name + if (index == 1) "" else "#" + index
 	}
 
-	def private static <T> appendCommaSeparated(Description description, Iterable<? extends T> elements,
+	def private static <T> commaSeparated(Description description, Iterable<? extends T> elements,
 		Consumer<T> printer) {
 		elements.forEach [ element, index |
 			if (index !== 0) description.appendText(', ')
@@ -75,12 +76,21 @@ class ModelPrinter {
 		description.appendText('>')
 	}
 
+	def static appendResourceValue(Description description, Resource resource) {
+		description.appendText('<Resource(uri=').appendText(resource.URI.toString).appendText(', content=[').
+			commaSeparated(resource.contents)[description.appendText('''«eClass.name»(…)''')].appendText('])>')
+	}
+
 	def static dispatch appendPrettyValue(Description description, EClass eClass) {
 		description.appendText('''<«eClass.name»>''')
 	}
 
 	def static dispatch appendPrettyValue(Description description, EObject object) {
 		description.appendEObjectValue(object)
+	}
+
+	def static dispatch appendPrettyValue(Description description, Resource resource) {
+		description.appendResourceValue(resource)
 	}
 
 	def static dispatch appendPrettyValue(Description description, Object object) {

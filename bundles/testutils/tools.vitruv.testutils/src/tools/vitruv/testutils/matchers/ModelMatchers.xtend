@@ -24,18 +24,18 @@ import static com.google.common.base.Preconditions.checkArgument
 import static java.util.Collections.emptyMap
 import static tools.vitruv.framework.util.XtendAssertHelper.*
 
-import static extension tools.vitruv.testutils.matchers.ModelPrinter.appendEObjectValue
-import static extension tools.vitruv.testutils.matchers.ModelPrinter.appendPrettyValue
+import static extension tools.vitruv.testutils.matchers.ModelPrinter.*
 import java.util.Set
 import java.util.HashSet
 
 @Utility
 class ModelMatchers {
-	def static Matcher<? super Resource> containsModelOf(Resource otherResource, FeatureMatcher... featureMatchers) {
-		checkArgument(otherResource.contents.size > 0, 'The resource to compare with must contain a model!')
-		checkArgument(otherResource.contents.size < 2, 'The resource to compare with must contain only one model!')
+	def static Matcher<? super Resource> containsModelOf(Resource expected, FeatureMatcher... featureMatchers) {
+		checkArgument(expected.contents.size > 0, 'The resource to compare with must contain a root element!')
+		checkArgument(expected.contents.size < 2,
+			'The resource to compare with must contain only one root element!')
 
-		contains(otherResource.contents.get(0))
+		contains(expected.contents.get(0))
 	}
 
 	def static Matcher<? super Resource> contains(EObject root, FeatureMatcher... featureMatchers) {
@@ -60,6 +60,10 @@ class ModelMatchers {
 
 	def static Matcher<? super Resource> doesNotExist() {
 		new ResourceExistenceMatcher(false)
+	}
+
+	def static Matcher<? super EObject> isContainedIn(Resource resource) {
+		new EObjectResourceMatcher(resource)
 	}
 
 	def static Matcher<? super EObject> equalsDeeply(EObject object, FeatureMatcher... featureMatchers) {
@@ -94,7 +98,7 @@ class ModelMatchers {
 package class ResourceExistingMatcher extends TypeSafeMatcher<URI> {
 	val boolean shouldExist
 
-	override protected matchesSafely(URI item) {
+	override matchesSafely(URI item) {
 		URIUtil.existsResourceAtUri(item) == shouldExist
 	}
 
@@ -108,7 +112,7 @@ package class ResourceExistingMatcher extends TypeSafeMatcher<URI> {
 		)
 	}
 
-	override protected describeMismatchSafely(URI item, Description mismatchDescription) {
+	override describeMismatchSafely(URI item, Description mismatchDescription) {
 		val qualifier = if (shouldExist) "no" else "a"
 		mismatchDescription.appendText('''there was «qualifier» resource at ''').appendValue(item)
 	}
@@ -119,14 +123,14 @@ package class ResourceContainmentMatcher extends TypeSafeMatcher<Resource> {
 	val Matcher<? super EObject> delegateMatcher
 	boolean exists
 
-	override protected describeMismatchSafely(Resource item, Description mismatchDescription) {
+	override describeMismatchSafely(Resource item, Description mismatchDescription) {
 		if (!exists) {
 			mismatchDescription.appendText("there is no resource at ").appendValue(item.URI)
 		} else if (item.contents.isEmpty) {
-			mismatchDescription.appendText("the resource was empty.")
+			mismatchDescription.appendResourceValue(item).appendText(" was empty.")
 		} else if (item.contents.size > 1) {
-			mismatchDescription.appendText("the resource contained ").appendValue(item.contents.size).appendText(
-				" instead of just one content element.")
+			mismatchDescription.appendResourceValue(item).appendText(" contained ").appendValue(item.contents.size).
+				appendText(" instead of just one content element.")
 		} else {
 			delegateMatcher.describeMismatch(item.contents.get(0), mismatchDescription)
 		}
@@ -136,7 +140,7 @@ package class ResourceContainmentMatcher extends TypeSafeMatcher<Resource> {
 		description.appendText("a resource containing ").appendDescriptionOf(delegateMatcher)
 	}
 
-	override protected matchesSafely(Resource item) {
+	override matchesSafely(Resource item) {
 		exists = item.resourceSet.URIConverter.exists(item.URI, emptyMap)
 		return exists && item.contents.size == 1 && delegateMatcher.matches(item.contents.get(0))
 	}
@@ -147,25 +151,46 @@ package class ResourceContainmentMatcher extends TypeSafeMatcher<Resource> {
 package class ResourceExistenceMatcher extends TypeSafeMatcher<Resource> {
 	val boolean shouldExist
 
-	override protected describeMismatchSafely(Resource item, Description mismatchDescription) {
-		val qualifier = if (shouldExist) 'no' else 'a'
-		mismatchDescription.appendText('''there was «qualifier» resource at ''').appendValue(item.URI)
-	}
-
 	override describeTo(Description description) {
 		val qualifier = if (shouldExist) '' else 'not'
 		description.appendText('''the resource «qualifier» to exist''');
 	}
 
-	override protected matchesSafely(Resource item) {
+	override matchesSafely(Resource item) {
 		item.resourceSet.URIConverter.exists(item.URI, emptyMap) == shouldExist
 	}
 
+	override describeMismatchSafely(Resource item, Description mismatchDescription) {
+		val qualifier = if (shouldExist) 'no' else 'a'
+		mismatchDescription.appendText('''there was «qualifier» resource at ''').appendValue(item.URI)
+	}
+}
+
+@FinalFieldsConstructor
+package class EObjectResourceMatcher extends TypeSafeMatcher<EObject> {
+	val Resource expectedResource
+
+	override matchesSafely(EObject item) {
+		item.eResource == expectedResource
+	}
+
+	override describeTo(Description description) {
+		description.appendText('''an EObject that is contained in ''').appendResourceValue(expectedResource)
+	}
+
+	override describeMismatchSafely(EObject item, Description mismatchDescription) {
+		mismatchDescription.appendEObjectValue(item)
+		val actualResource = item.eResource
+		if (actualResource === null) {
+			mismatchDescription.appendText('is not in any resource')
+		} else {
+			mismatchDescription.appendText('is in ').appendResourceValue(actualResource)
+		}
+	}
 }
 
 @FinalFieldsConstructor
 package class ModelTreeEqualityMatcher extends TypeSafeMatcher<EObject> {
-
 	package val EObject expectedObject
 	var Deque<String> navigationStack = new ArrayDeque()
 	var Consumer<Description> mismatch
@@ -176,7 +201,7 @@ package class ModelTreeEqualityMatcher extends TypeSafeMatcher<EObject> {
 	var Map<Object, Object> objectMapping = new HashMap
 	val FeatureMatcher[] featureMatchers
 
-	override protected matchesSafely(EObject item) {
+	override matchesSafely(EObject item) {
 		return expectedObject.equalsDeeply(item, false)
 	}
 
@@ -416,7 +441,7 @@ package class ModelTreeEqualityMatcher extends TypeSafeMatcher<EObject> {
 		description.appendText('''a «expectedObject.eClass.name» deeply equal to ''').appendEObjectValue(expectedObject)
 	}
 
-	override protected describeMismatchSafely(EObject item, Description mismatchDescription) {
+	override describeMismatchSafely(EObject item, Description mismatchDescription) {
 		if (navigationStack.isEmpty) {
 			mismatchDescription.appendText('''The «item.eClass.name» ''')
 		} else {
