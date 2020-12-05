@@ -5,7 +5,6 @@ import java.util.HashMap
 import org.eclipse.emf.ecore.EClass
 import org.hamcrest.Description
 import org.eclipse.xtend.lib.annotations.FinalFieldsConstructor
-import java.util.Objects
 import java.util.function.Consumer
 import java.util.List
 import java.util.Set
@@ -16,10 +15,6 @@ class ModelPrinter {
 	val Description target
 	val printed = new HashMap<EObject, String>()
 	val classCount = new HashMap<EClass, Integer>()
-
-	def private dispatch void print(Object object) {
-		target.appendText(Objects.toString(object))
-	}
 
 	def private dispatch void print(EObject object) {
 		var objectId = printed.get(object)
@@ -32,7 +27,7 @@ class ModelPrinter {
 			target.appendText(objectId).appendText('(').commaSeparated(featuresToPrint) [ feature |
 				target.appendText(feature.name).appendText('=')
 				if (!object.eIsSet(feature)) {
-					target.appendText('<unset>')
+					target.appendText('\u2205' /* empty set */ )
 				} else if (feature.isMany) {
 					if (feature.isOrdered) {
 						printList(object.eGet(feature) as List<?>)
@@ -44,6 +39,10 @@ class ModelPrinter {
 				}
 			].appendText(')')
 		}
+	}
+
+	def private dispatch void print(Object object) {
+		target.appendValue(object)
 	}
 
 	def private void printList(List<?> objects) {
