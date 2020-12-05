@@ -271,14 +271,11 @@ class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 	}
 
 	override registerUuidForGlobalUri(String uuid, URI uri) {
-		try {
-			val localObject = resolveObject(uri)
-			if (localObject !== null) {
-				registerEObject(uuid, localObject)
-				// Recursively do that
-				return parentUuidResolver.registerUuidForGlobalUri(uuid, uri)
-			}
-		} catch (Exception e) {
+		val localObject = resolveObject(uri)
+		if (localObject !== null) {
+			registerEObject(uuid, localObject)
+			// Recursively do that
+			return parentUuidResolver.registerUuidForGlobalUri(uuid, uri)
 		}
 		return false
 	}
