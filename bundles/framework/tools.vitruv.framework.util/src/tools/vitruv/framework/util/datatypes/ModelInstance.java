@@ -7,8 +7,8 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.transaction.TransactionalEditingDomain;
 
+import tools.vitruv.framework.util.ResourceSetUtil;
 import tools.vitruv.framework.util.bridges.EcoreResourceBridge;
 import tools.vitruv.framework.util.command.EMFCommandBridge;
 
@@ -106,15 +106,6 @@ public class ModelInstance extends AbstractURIHaving {
 		return this.resource.getContents();
 	}
 
-	// TODO HK This should be done differently: The VSUM provides the editing
-	// domain!
-	private synchronized TransactionalEditingDomain getTransactionalEditingDomain() {
-		if (null == TransactionalEditingDomain.Factory.INSTANCE.getEditingDomain(this.resource.getResourceSet())) {
-			TransactionalEditingDomain.Factory.INSTANCE.createEditingDomain(this.resource.getResourceSet());
-		}
-		return TransactionalEditingDomain.Factory.INSTANCE.getEditingDomain(this.resource.getResourceSet());
-	}
-
 	/**
 	 * Loads the resource into memory. The load can be forced by setting
 	 * forceLoadByDoingUnloadBeforeLoad to true, which means that the resource will
@@ -123,7 +114,9 @@ public class ModelInstance extends AbstractURIHaving {
 	 * Throws an {@link IllegalStateException} if the resource cannot be loaded.
 	 */
 	public void load(final Map<Object, Object> loadOptions, final boolean forceLoadByDoingUnloadBeforeLoad) {
-		EMFCommandBridge.executeVitruviusRecordingCommand(getTransactionalEditingDomain(), () -> {
+		// TODO HK This should be done differently: The VSUM provides the editing domain!
+		var domain = ResourceSetUtil.getRequiredTransactionalEditingDomain(resource.getResourceSet());
+		EMFCommandBridge.executeVitruviusRecordingCommand(domain, () -> {
 			try {
 				if (null != loadOptions) {
 					this.lastUsedLoadOptions = loadOptions;
