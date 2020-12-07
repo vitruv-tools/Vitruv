@@ -24,7 +24,7 @@ import static com.google.common.base.Preconditions.checkArgument
 import static java.util.Collections.emptyMap
 import static tools.vitruv.framework.util.XtendAssertHelper.*
 
-import static extension tools.vitruv.testutils.matchers.ModelPrinter.*
+import static extension tools.vitruv.testutils.printing.ModelPrinting.*
 import java.util.Set
 import java.util.HashSet
 
@@ -32,8 +32,7 @@ import java.util.HashSet
 class ModelMatchers {
 	def static Matcher<? super Resource> containsModelOf(Resource expected, FeatureMatcher... featureMatchers) {
 		checkArgument(expected.contents.size > 0, 'The resource to compare with must contain a root element!')
-		checkArgument(expected.contents.size < 2,
-			'The resource to compare with must contain only one root element!')
+		checkArgument(expected.contents.size < 2, 'The resource to compare with must contain only one root element!')
 
 		contains(expected.contents.get(0))
 	}
@@ -127,9 +126,9 @@ package class ResourceContainmentMatcher extends TypeSafeMatcher<Resource> {
 		if (!exists) {
 			mismatchDescription.appendText("there is no resource at ").appendValue(item.URI)
 		} else if (item.contents.isEmpty) {
-			mismatchDescription.appendResourceValue(item).appendText(" was empty.")
+			mismatchDescription.appendModelValue(item).appendText(" was empty.")
 		} else if (item.contents.size > 1) {
-			mismatchDescription.appendResourceValue(item).appendText(" contained ").appendValue(item.contents.size).
+			mismatchDescription.appendModelValue(item).appendText(" contained ").appendValue(item.contents.size).
 				appendText(" instead of just one content element.")
 		} else {
 			delegateMatcher.describeMismatch(item.contents.get(0), mismatchDescription)
@@ -171,20 +170,20 @@ package class EObjectResourceMatcher extends TypeSafeMatcher<EObject> {
 	val Resource expectedResource
 
 	override matchesSafely(EObject item) {
-		item.eResource == expectedResource
+		item.eResource.URI == expectedResource.URI
 	}
 
 	override describeTo(Description description) {
-		description.appendText('''an EObject that is contained in ''').appendResourceValue(expectedResource)
+		description.appendText('''an EObject that is contained in the resource at ''').appendValue(expectedResource.URI)
 	}
 
 	override describeMismatchSafely(EObject item, Description mismatchDescription) {
-		mismatchDescription.appendEObjectValue(item)
+		mismatchDescription.appendModelValue(item)
 		val actualResource = item.eResource
 		if (actualResource === null) {
-			mismatchDescription.appendText('is not in any resource')
+			mismatchDescription.appendText(' is not in any resource')
 		} else {
-			mismatchDescription.appendText('is in ').appendResourceValue(actualResource)
+			mismatchDescription.appendText(' is in ').appendModelValue(actualResource)
 		}
 	}
 }
@@ -262,9 +261,9 @@ package class ModelTreeEqualityMatcher extends TypeSafeMatcher<EObject> {
 		} else if (mappedItem !== null) {
 			// The object has already been mapped to some other object.
 			mismatch = [
-				appendText("did not match the topologically expected object. Expected ").appendPrettyValue(mappedItem).
-					appendText(" (mapped and equal to ").appendPrettyValue(expected).appendText(") but found ").
-					appendPrettyValue(item).appendText(".")
+				appendText("did not match the topologically expected object. Expected ").appendModelValue(mappedItem).
+					appendText(" (mapped and equal to ").appendModelValue(expected).appendText(") but found ").
+					appendModelValue(item).appendText(".")
 			]
 			return false
 		}
@@ -278,8 +277,8 @@ package class ModelTreeEqualityMatcher extends TypeSafeMatcher<EObject> {
 			mismatch = [
 				appendText(
 					"has already been compared and mapped to some other object in the expected model tree. Expected ").
-					appendPrettyValue(expected).appendText(" but the object ").appendPrettyValue(item).appendText(
-						" has already been mapped to ").appendPrettyValue(mappedExpected).appendText(".")
+					appendModelValue(expected).appendText(" but the object ").appendModelValue(item).appendText(
+						" has already been mapped to ").appendModelValue(mappedExpected).appendText(".")
 			]
 			return false
 		}
@@ -298,15 +297,15 @@ package class ModelTreeEqualityMatcher extends TypeSafeMatcher<EObject> {
 				return true
 			} else {
 				mismatch = [
-					appendText("did not match the expected proxy. Expected ").appendPrettyValue(expected).appendText(
-						" but found ").appendPrettyValue(item).appendText(".")
+					appendText("did not match the expected proxy. Expected ").appendModelValue(expected).appendText(
+						" but found ").appendModelValue(item).appendText(".")
 				]
 				return false
 			}
 		} else if (item.eIsProxy) {
 			mismatch = [
-				appendText("is an unexpected proxy. Expected ").appendPrettyValue(expected).appendText(" but found ").
-					appendPrettyValue(item).appendText(".")
+				appendText("is an unexpected proxy. Expected ").appendModelValue(expected).appendText(" but found ").
+					appendModelValue(item).appendText(".")
 			]
 			return false
 		}
@@ -314,8 +313,8 @@ package class ModelTreeEqualityMatcher extends TypeSafeMatcher<EObject> {
 		// Compare classes:
 		if (expected.eClass !== item.eClass) {
 			mismatch = [
-				appendText("had the wrong EClass. Expected ").appendPrettyValue(expected.eClass.name).appendText(
-					" but found ").appendPrettyValue(item.eClass.name).appendText(".")
+				appendText("had the wrong EClass. Expected ").appendModelValue(expected.eClass.name).appendText(
+					" but found ").appendModelValue(item.eClass.name).appendText(".")
 			]
 			return false
 		}
@@ -432,13 +431,13 @@ package class ModelTreeEqualityMatcher extends TypeSafeMatcher<EObject> {
 
 	def private equalityMismatch(Object expected, Object item) {
 		mismatch = [
-			appendText("had the wrong value. Expected ").appendPrettyValue(expected).appendText(" but found ").
-				appendPrettyValue(item)
+			appendText("had the wrong value. Expected ").appendModelValue(expected).appendText(" but found ").
+				appendModelValue(item)
 		]
 	}
 
 	override describeTo(Description description) {
-		description.appendText('''a «expectedObject.eClass.name» deeply equal to ''').appendEObjectValue(expectedObject)
+		description.appendText('''a «expectedObject.eClass.name» deeply equal to ''').appendModelValue(expectedObject)
 	}
 
 	override describeMismatchSafely(EObject item, Description mismatchDescription) {
