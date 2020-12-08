@@ -33,7 +33,7 @@
       <import plugin="org.eclipse.xtext.ui" version="2.12.0" match="greaterOrEqual"/>
       <import plugin="edu.kit.ipd.sdq.commons.util.java" version="1.1.0" match="greaterOrEqual"/>
       <import plugin="tools.vitruv.framework.change.processing" version="0.2.0" match="greaterOrEqual"/>
-      <import plugin="tools.vitruv.framework.metamodel" version="0.2.0" match="greaterOrEqual"/>
+      <import plugin="tools.vitruv.framework.domains" version="0.2.0" match="greaterOrEqual"/>
       <import plugin="tools.vitruv.extensions.dslsruntime.commonalities" version="0.2.0" match="greaterOrEqual"/>
       <import plugin="tools.vitruv.extensions.dslsruntime.reactions" version="0.2.0" match="greaterOrEqual"/>
       <import plugin="tools.vitruv.dsls.common" version="0.2.0" match="greaterOrEqual"/>

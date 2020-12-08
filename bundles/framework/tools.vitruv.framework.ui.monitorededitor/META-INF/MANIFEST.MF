@@ -17,7 +17,7 @@ Require-Bundle: org.apache.log4j,
  org.eclipse.core.expressions,
  org.eclipse.core.resources,
  tools.vitruv.framework.vsum,
- tools.vitruv.framework.metamodel
+ tools.vitruv.framework.domains
 Export-Package: tools.vitruv.framework.ui.monitorededitor,
  tools.vitruv.framework.ui.monitorededitor.registries
 Bundle-Vendor: vitruv.tools

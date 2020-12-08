@@ -22,7 +22,7 @@ class VitruvDomainProviderRegistry {
 	}
 
 	static val runtimeRegisteredProviders = new HashMap<String, VitruvDomainProvider<?>>
-	public static val EXTENSION_POINT_ID = "tools.vitruv.framework.metamodel.domain"
+	public static val EXTENSION_POINT_ID = "tools.vitruv.framework.domains.domain"
 
 	/**
 	 * Registers a domain provider that provides the domain {@code domainName}.

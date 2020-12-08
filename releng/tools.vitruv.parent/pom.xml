@@ -144,7 +144,7 @@
 							</dependency>
 							<dependency>
 								<groupId>tools.vitruv</groupId>
-								<artifactId>tools.vitruv.framework.metamodel</artifactId>
+								<artifactId>tools.vitruv.framework.domains</artifactId>
 								<version>0.3.0-SNAPSHOT</version>
 							</dependency>
 							<dependency>

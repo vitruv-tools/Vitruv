@@ -23,7 +23,7 @@ Require-Bundle: com.google.guava,
  tools.vitruv.framework.change.echange,
  tools.vitruv.framework.change.processing,
  tools.vitruv.framework.tuid,
- tools.vitruv.framework.metamodel
+ tools.vitruv.framework.domains
 Bundle-ActivationPolicy: lazy
 Export-Package: tools.vitruv.dsls.reactions.meta.correspondence.reactions,
  tools.vitruv.dsls.reactions.meta.correspondence.reactions.impl,

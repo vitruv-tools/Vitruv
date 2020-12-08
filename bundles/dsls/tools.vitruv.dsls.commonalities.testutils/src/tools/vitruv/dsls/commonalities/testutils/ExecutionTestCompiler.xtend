@@ -184,7 +184,7 @@ final class ExecutionTestCompiler {
 			Bundle-SymbolicName: «project.name»; singleton:=true
 			Bundle-ActivationPolicy: lazy
 			Require-Bundle: tools.vitruv.extensions.dslsruntime.commonalities,
-			  tools.vitruv.framework.metamodel,
+			  tools.vitruv.framework.domains,
 			  tools.vitruv.extensions.emf,
 			  org.eclipse.xtext.xbase.lib,
 			  «FOR domainDependency : domainDependencies»

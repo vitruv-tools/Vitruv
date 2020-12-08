@@ -22,7 +22,7 @@ Require-Bundle: tools.vitruv.dsls.mirbase,
  org.eclipse.jdt.debug.ui,
  tools.vitruv.framework.util,
  tools.vitruv.dsls.common,
- tools.vitruv.framework.metamodel
+ tools.vitruv.framework.domains
 Import-Package: org.apache.log4j
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Export-Package: tools.vitruv.dsls.mirbase.ui.internal,
