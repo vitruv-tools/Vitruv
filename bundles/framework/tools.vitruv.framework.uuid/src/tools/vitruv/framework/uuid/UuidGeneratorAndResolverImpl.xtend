@@ -252,22 +252,9 @@ class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 	}
 
 	private def EObject resolveObject(URI uri) {
-		// TODO running as command should probably never be necessary for non-Java domains.
-		// should probably be removed after domains can modify the UUID behaviour (see #326)
-		runAsCommandIfNecessary(null)[resourceSet.getEObject(uri, true)] ?:
-			resolveObjectPatchedForNonConformantDomains(uri)
-	}
-
-	private def EObject resolveObjectPatchedForNonConformantDomains(URI uri) {
-		if (uri.fileExtension == "java") {
-			// There are model elements that JaMoPP only creates when loading a resource, but not 
-			// when creating the objects from code. We patch this by loading the resource anew
-			// from disk when we cannot resolve an object.
-			val resourceUri = uri.trimFragment
-			resourceSet.resources.removeIf[it.URI == resourceUri]
-			runAsCommandIfNecessary(null)[resourceSet.getEObject(uri, true)]
-		} else
-			null
+		// TODO running as command should never be necessary for non-Java domains.
+		// Running in a command should probably be removed after domains can modify the UUID behaviour (see #326)
+		runAsCommandIfNecessary(null)[resourceSet.getEObject(uri, true)]
 	}
 
 	override registerUuidForGlobalUri(String uuid, URI uri) {
@@ -327,8 +314,11 @@ class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 					val resolvedObject = resolveObject(EcoreUtil.getURI(element))
 					if (resolvedObject !== null) {
 						childResolver.registerEObject(generateUuid(resolvedObject), element)
-					// LayoutInformation in Java elements may not be equal in different UuidResolvers (VirtualModel and view), so ignore it	
-					} else if (!element.eClass.name.contains("LayoutInformation")) {
+					// several objects in the Java domain are created ad-hoc while loading a resource. We won’t find
+					// UUIDs for them, however, until now, this has not caused problems. Hence, we tolerate missing
+					// UUIDs for the Java domain and hope for the best
+					// TODO externalize to the Java domain, see #326
+					} else if (uri.fileExtension != "java") {
 						throw new IllegalStateException('''Object could not be resolved in this UuidResolver's resource set: «element»''')
 					}
 				} else {
