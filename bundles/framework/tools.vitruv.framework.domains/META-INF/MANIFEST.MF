@@ -4,7 +4,7 @@ Bundle-Name: Vitruv Framework Domains
 Bundle-SymbolicName: tools.vitruv.framework.domains;singleton:=true
 Automatic-Module-Name: tools.vitruv.framework.domains
 Bundle-Version: 0.3.0.qualifier
-Bundle-ClassPath: ., jars/reflections-0.9.10.jar, jars/annotations-2.0.1.jar, jars/guava-15.0.jar, jars/javassist-3.19.0-GA.jar
+Bundle-ClassPath: ., jars/reflections-0.9.10.jar, jars/javassist-3.19.0-GA.jar
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Require-Bundle: org.apache.log4j,
  com.google.guava,
