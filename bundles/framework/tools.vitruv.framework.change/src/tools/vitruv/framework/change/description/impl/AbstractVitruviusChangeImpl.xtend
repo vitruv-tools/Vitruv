@@ -8,7 +8,7 @@ abstract class AbstractVitruviusChangeImpl implements VitruviusChange {
 		if (!validate()) {
 			throw new IllegalStateException('''«this» is invalid and does not affect a unique resource.''')
 		}
-		return affectedEObjects.map[eResource].findFirst[it !== null]
+		return affectedEObjects.map[eResource].filterNull.findFirst[it.URI == this.URI.EMFUri]
 	}
 	
 }
