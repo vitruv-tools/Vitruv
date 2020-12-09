@@ -1,6 +1,5 @@
 package tools.vitruv.testutils
 
-import java.io.FileNotFoundException
 import java.nio.file.Path
 import java.util.List
 import java.util.function.Consumer
