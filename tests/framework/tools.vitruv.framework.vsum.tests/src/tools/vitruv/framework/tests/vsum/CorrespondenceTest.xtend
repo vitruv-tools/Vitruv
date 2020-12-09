@@ -6,7 +6,6 @@ import org.apache.log4j.Logger
 import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.util.EcoreUtil
-import org.junit.Test
 import pcm_mockup.PInterface
 import pcm_mockup.Repository
 import tools.vitruv.framework.correspondence.Correspondence
@@ -18,22 +17,20 @@ import tools.vitruv.framework.vsum.InternalVirtualModel
 import uml_mockup.UInterface
 import uml_mockup.UPackage
 
-import static org.junit.Assert.assertEquals
-import static org.junit.Assert.assertFalse
-import static org.junit.Assert.assertNotNull
-import static org.junit.Assert.assertNull
-import static org.junit.Assert.assertTrue
+import static org.junit.jupiter.api.Assertions.*
 
 import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
 import static extension tools.vitruv.framework.correspondence.CorrespondenceModelUtil.*
 import static extension tools.vitruv.framework.util.bridges.CollectionBridge.toList
+import org.junit.jupiter.api.Test
 
 class CorrespondenceTest extends VsumTest {
 	static final Logger LOGGER = Logger.getLogger(CorrespondenceTest.getSimpleName())
 
-	@Test def void testAllInCommand() {
+	@Test
+	def void testAllInCommand() {
 		val InternalVirtualModel vsum = createVirtualModelAndModelInstances()
-		vsum.executeCommand([testAll(vsum) return null]);
+		vsum.executeCommand[testAll(vsum); null]
 	}
 
 	def private void testAll(InternalVirtualModel vsum) {
@@ -49,13 +46,14 @@ class CorrespondenceTest extends VsumTest {
 		testRecursiveRemove(repo, pkg, correspondenceModel, repo2pkg) // now the correspondence instance should be empty
 		// recreate the same correspondence as before
 		repo2pkg = createRepo2PkgCorrespondence(repo, pkg, correspondenceModel) // 1. EOC: repo _r5CW0PxiEeO_U4GJ6Zitkg <=> pkg _sJD6YPxjEeOD3p0i_uuRbQ
-		//testCreateRepo2PkgCorrespondenceAndUpdateTuid(repo, pkg, correspondenceModel, repo2pkg)
+		// testCreateRepo2PkgCorrespondenceAndUpdateTuid(repo, pkg, correspondenceModel, repo2pkg)
 		val removedCorrespondences = correspondenceModel.removeCorrespondencesBetween(#[repo], #[pkg], null) // now the correspondence instance should be empty
-		assertEquals(repo2pkg, removedCorrespondences.claimOne);
+		assertEquals(repo2pkg, removedCorrespondences.claimOne)
 		testCorrespondencePersistence(vsum, repo, pkg, correspondenceModel)
 	}
 
-	@Test def void testCorrespondenceUpdate() {
+	@Test
+	def void testCorrespondenceUpdate() {
 		val InternalVirtualModel vsum = createVirtualModelAndModelInstances()
 		vsum.executeCommand([ // create vsum and Repo and UPackage
 			var Repository repo = testLoadObject(vsum, getDefaultPcmInstanceURI(), Repository)
@@ -70,7 +68,8 @@ class CorrespondenceTest extends VsumTest {
 		])
 	}
 
-	@Test def void testMoveRootEObjectBetweenResource() {
+	@Test
+	def void testMoveRootEObjectBetweenResource() {
 		val InternalVirtualModel vsum = createVirtualModelAndModelInstances()
 		vsum.executeCommand([
 			var Repository repo = testLoadObject(vsum, getDefaultPcmInstanceURI(), Repository)
@@ -85,16 +84,16 @@ class CorrespondenceTest extends VsumTest {
 		])
 	}
 
-	def private void assertRepositoryCorrespondences(Repository repo,
-		CorrespondenceModel correspondenceModel) {
+	def private void assertRepositoryCorrespondences(Repository repo, CorrespondenceModel correspondenceModel) {
 		// get the correspondence of repo
-		correspondenceModel.getCorrespondences(repo.toList).claimOne;
+		correspondenceModel.getCorrespondences(repo.toList).claimOne
 		var correspondingObjects = correspondenceModel.getCorrespondingEObjects(repo.toList).flatten
-		assertEquals("Only one corresonding object is expected for the repository.", 1, correspondingObjects.size())
+		assertEquals(1, correspondingObjects.size(), "Only one corresonding object is expected for the repository.")
 		for (correspondingObject : correspondingObjects) {
-			assertNotNull("Corresponding object is null", correspondingObject)
-			val reverseCorrespondingObjects = correspondenceModel.getCorrespondingEObjects(correspondingObject.toList).flatten
-			assertNotNull("Reverse corresponding object is null", reverseCorrespondingObjects.claimOne)
+			assertNotNull(correspondingObject, "Corresponding object is null")
+			val reverseCorrespondingObjects = correspondenceModel.getCorrespondingEObjects(correspondingObject.toList).
+				flatten
+			assertNotNull(reverseCorrespondingObjects.claimOne, "Reverse corresponding object is null")
 			LOGGER.info('''A: «reverseCorrespondingObjects» corresponds to B: «correspondingObject»''')
 		}
 
@@ -112,37 +111,37 @@ class CorrespondenceTest extends VsumTest {
 	}
 
 	def private String getNewUMLInstanceURI() {
-		return '''«getCurrentProjectModelFolder()»/MyNewUML.uml_mockup'''
+		return '''«currentProjectModelFolder»/MyNewUML.uml_mockup'''
 	}
 
 	def private String getTmpUMLInstanceURI() {
-		return '''«getCurrentProjectFolderName()»/MyTmpUML.uml_mockup'''
+		return '''«currentProjectFolder.fileName»/MyTmpUML.uml_mockup'''
 	}
 
-	def private void removePkgFromFileAndUpdateCorrespondence(UPackage pkg,
-		CorrespondenceModel correspondenceModel) {
-		TuidManager.instance.registerObjectUnderModification(pkg);
+	def private void removePkgFromFileAndUpdateCorrespondence(UPackage pkg, CorrespondenceModel correspondenceModel) {
+		TuidManager.instance.registerObjectUnderModification(pkg)
 		EcoreUtil.remove(pkg)
-		TuidManager.instance.updateTuidsOfRegisteredObjects;
-		TuidManager.instance.flushRegisteredObjectsUnderModification;
+		TuidManager.instance.updateTuidsOfRegisteredObjects
+		TuidManager.instance.flushRegisteredObjectsUnderModification
 	}
 
 	def private void testCorrespondencePersistence(InternalVirtualModel vsum, Repository repo, UPackage pkg,
 		CorrespondenceModel corresp) {
 		// recreate the same correspondence as before
-		//var Correspondence repo2pkg = 
+		// var Correspondence repo2pkg = 
 		createRepo2PkgCorrespondence(repo, pkg, corresp)
 		// 1. EOC: repo _r5CW0PxiEeO_U4GJ6Zitkg <=> pkg _sJD6YPxjEeOD3p0i_uuRbQ
-		assertNotNull("Correspondence instance is null", corresp)
+		assertNotNull(corresp, "Correspondence instance is null")
 		// save instances in order to trigger saving for CorrespondenceModel(s)
-		//var VURI pcmVURI = VURI.getInstance(getDefaultPcmInstanceURI())
-		vsum.save()//(pcmVURI)
+		// var VURI pcmVURI = VURI.getInstance(getDefaultPcmInstanceURI())
+		vsum.save() // (pcmVURI)
 		// create a new vsum from disk and load correspondence instance from disk
-		var InternalVirtualModel vsum2 = createAlternativeVirtualModelAndModelInstances(alternativePcmInstanceURI, alterantiveUMLInstanceURI);
+		var InternalVirtualModel vsum2 = createAlternativeVirtualModelAndModelInstances(alternativePcmInstanceURI,
+			alterantiveUMLInstanceURI)
 		var Repository repo2 = testLoadObject(vsum2, alternativePcmInstanceURI, Repository)
 		var UPackage pkg2 = testLoadObject(vsum2, alterantiveUMLInstanceURI, UPackage)
 		var CorrespondenceModel corresp2 = testCorrespondenceModelCreation(vsum2)
-		corresp2.createAndAddCorrespondence(repo2, pkg2);
+		corresp2.createAndAddCorrespondence(repo2, pkg2)
 		assertTrue(corresp2.hasCorrespondences()) // obtain
 		var Correspondence repo2pkg2 = corresp2.claimUniqueCorrespondence(repo2.toList, pkg2.toList)
 		// test everything as if the correspondence would just have been created
@@ -239,9 +238,8 @@ class CorrespondenceTest extends VsumTest {
 		var Set<EObject> correspForPkgInterface = corresp.getCorrespondingEObjects(pkgInterface)
 		assertTrue(correspForPkgInterface.isEmpty())
 		var Set<PInterface> correspForRepoInterfaceType = corresp.getAllEObjectsOfTypeInCorrespondences(PInterface)
-		assertTrue(correspForRepoInterfaceType.isEmpty()) 
-		var Set<UInterface> correspForPkgInterfaceType = corresp.
-			getAllEObjectsOfTypeInCorrespondences(UInterface)
+		assertTrue(correspForRepoInterfaceType.isEmpty())
+		var Set<UInterface> correspForPkgInterfaceType = corresp.getAllEObjectsOfTypeInCorrespondences(UInterface)
 		assertTrue(correspForPkgInterfaceType.isEmpty())
 	}
 
@@ -250,7 +248,7 @@ class CorrespondenceTest extends VsumTest {
 		// 1. EOC: repo _r5CW0PxiEeO_U4GJ6Zitkg <=> pkg _sJD6YPxjEeOD3p0i_uuRbQ
 		// 2. CRC: repo.ifaces _r5CW0PxiEeO_U4GJ6Zitkg <=> pkg.ifaces _sJD6YPxjEeOD3p0i_uuRbQ
 		val removedCorrespondences = corresp.removeCorrespondencesBetween(#[repo], #[pkg], null) // now the correspondence instance should be empty
-		assertEquals(repo2pkg, removedCorrespondences.claimOne);
+		assertEquals(repo2pkg, removedCorrespondences.claimOne)
 		var Set<Correspondence> repoCorresp = corresp.getCorrespondences(repo.toList)
 		assertTrue(repoCorresp.isEmpty())
 		var Set<Correspondence> pkgCorresp = corresp.getCorrespondences(pkg.toList)
@@ -262,15 +260,15 @@ class CorrespondenceTest extends VsumTest {
 		var Set<Repository> correspForRepoType = corresp.getAllEObjectsOfTypeInCorrespondences(Repository)
 		assertTrue(correspForRepoType.isEmpty())
 		var Set<UPackage> correspForPkgType = corresp.getAllEObjectsOfTypeInCorrespondences(UPackage)
-		assertTrue(correspForPkgType.isEmpty()) // FeatureInstance repoIfaceFI = repoIfaceFIAndPkgIfaceFI.getFirst();
-		// FeatureInstance pkgIfaceFI = repoIfaceFIAndPkgIfaceFI.getSecond();
+		assertTrue(correspForPkgType.isEmpty()) // FeatureInstance repoIfaceFI = repoIfaceFIAndPkgIfaceFI.getFirst()
+		// FeatureInstance pkgIfaceFI = repoIfaceFIAndPkgIfaceFI.getSecond()
 		// Set<FeatureInstance> correspForRepoIfaceFI =
-		// corresp.getAllCorrespondingFeatureInstances(repoIfaceFI);
-		// assertTrue(correspForRepoIfaceFI.isEmpty());
+		// corresp.getAllCorrespondingFeatureInstances(repoIfaceFI)
+		// assertTrue(correspForRepoIfaceFI.isEmpty())
 		// Set<FeatureInstance> correspForPkgIfaceFI =
-		// corresp.getAllCorrespondingFeatureInstances(pkgIfaceFI);
-		// assertTrue(correspForPkgIfaceFI.isEmpty());
-		// assertFalse(corresp.hasCorrespondences());
+		// corresp.getAllCorrespondingFeatureInstances(pkgIfaceFI)
+		// assertTrue(correspForPkgIfaceFI.isEmpty())
+		// assertFalse(corresp.hasCorrespondences())
 	}
 
 //	def private void testCreateRepo2PkgCorrespondenceAndUpdateTuid(Repository repo, UPackage pkg,
@@ -288,5 +286,4 @@ class CorrespondenceTest extends VsumTest {
 //		var EObject correspForPkg = corresp.getCorrespondingEObjects(pkg).claimOne
 //		assertEquals(correspForPkg, newRepo) // TODO is this really enough update testing?
 //	}
-
 }

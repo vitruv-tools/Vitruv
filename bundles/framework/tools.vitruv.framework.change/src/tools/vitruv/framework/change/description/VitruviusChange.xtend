@@ -6,6 +6,7 @@ import tools.vitruv.framework.util.datatypes.URIHaving
 import org.eclipse.emf.ecore.EObject
 import tools.vitruv.framework.uuid.UuidResolver
 import tools.vitruv.framework.change.interaction.UserInteractionBase
+import org.eclipse.emf.ecore.resource.Resource
 
 /** 
  * Base interface for all kinds of changes in Vitruvius.
@@ -62,6 +63,13 @@ interface VitruviusChange extends URIHaving {
 	 */
 	def Iterable<String> getAffectedEObjectIds();
 
+	/**
+	 * Returns the unique {@link Resource} affected by this change, i.e., the resource containing the affected {@link EObject}s.
+	 * If no {@link EObject}s are affected or if the change is not resolved, <code>null</code> is returned.
+	 * @throws IllegalStateExecption if the change is not valid (see {@link #validate() validate()})
+	 */
+	def Resource getAffectedResource();
+	
 	/**
 	 * Returns all user interactions performed during application of this change and performing consistency preservation.
 	 */

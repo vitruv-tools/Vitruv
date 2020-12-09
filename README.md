@@ -1,5 +1,5 @@
 # Vitruv
-[![Travis CI](https://travis-ci.org/vitruv-tools/Vitruv.svg?branch=master)](https://travis-ci.org/vitruv-tools/Vitruv)
+[![GitHub Action CI](https://github.com/vitruv-tools/Vitruv/workflows/CI/badge.svg)](https://github.com/vitruv-tools/Vitruv/actions?query=workflow%3ACI)
 [![Issues](https://img.shields.io/github/issues/vitruv-tools/Vitruv.svg)](https://github.com/vitruv-tools/Vitruv/issues)
 [![License](https://img.shields.io/github/license/vitruv-tools/Vitruv.svg)](https://raw.githubusercontent.com/vitruv-tools/Vitruv/master/LICENSE)
 
@@ -32,8 +32,8 @@ The project is structured as follows:
 | ------- | ----------- |
 | Framework | The framework consists of the central elements for defining a virtual single underlying model (VSUM) and provides extension points for the different domains and applications to be used with the framework. |
 | Extensions | Extensions extend the framework with new functionality and can be used by different domains and applications. |
-| DSLs | The provided DSLs can be used to specify consistency-restoring transformations between two different domains. They generate code that is used to extend the framework for keeping instancens of a specific pair of models consistent. |
+| DSLs | The provided DSLs can be used to specify consistency-restoring transformations between two different domains. They generate code that is used to extend the framework for keeping instances of a specific pair of models consistent. |
 | Domains | A domain defines the necessary concepts for one metamodel. It defines the metamodel namespaces a domain consists of, defines utilities specific for this metamodel and defines the way in which editors for this metamodel are watched for changes.
 | Applications | An application is defined for a pair of domains. It essentially consists of the consistency-restoring transformations that keep model instances of these two domains consistent. It can also define further features for the domains, e.g. the integration of existing models.
-| Views | A view is defined for a single or a set of domains. It specifies a specifiy view on the models, e.g. a UML class diagram view on Java code. |
+| Views | A view is defined for a single or a set of domains. It specifies a specify view on the models, e.g. a UML class diagram view on Java code. |
 | Build | Build projects define features of the Vitruv project and information for their continuous integration. |

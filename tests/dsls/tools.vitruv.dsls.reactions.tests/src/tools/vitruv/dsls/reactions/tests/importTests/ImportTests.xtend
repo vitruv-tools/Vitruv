@@ -1,65 +1,69 @@
 package tools.vitruv.dsls.reactions.tests.importTests
 
-import allElementTypes.AllElementTypesFactory
-import allElementTypes.Identified
 import allElementTypes.Root
-import org.junit.Test
-import tools.vitruv.dsls.reactions.tests.importTests.ImportTestsExecutionMonitor.ExecutionType
+import java.util.EnumSet
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.TestInfo
 
-class ImportTests extends AbstractReactionImportsTests {
+import static org.hamcrest.CoreMatchers.hasItem
+import static org.hamcrest.MatcherAssert.assertThat
+import static tools.vitruv.dsls.reactions.tests.ExecutionMonitor.observedExecutions
+import static tools.vitruv.dsls.reactions.tests.importTests.ImportTestsExecutionMonitor.ExecutionType.*
+import static tools.vitruv.testutils.metamodels.AllElementTypesCreators.aet
+import static extension tools.vitruv.testutils.domains.DomainModelCreators.allElementTypes
+import tools.vitruv.dsls.reactions.tests.ReactionsExecutionTest
+import tools.vitruv.dsls.reactions.tests.TestReactionsCompiler
 
-	static val TEST_SOURCE_MODEL_NAME = "ImportTestsModelSource";
+class ImportTests extends ReactionsExecutionTest {
+	static val SOURCE_MODEL = 'ImportTestsModelSource'.allElementTypes
+	String testName
 
-	private def Root getRootElement() {
-		return TEST_SOURCE_MODEL_NAME.projectModelPath.firstRootElement as Root;
+	override protected createCompiler(TestReactionsCompiler.Factory factory) {
+		factory.createCompiler [
+			// ordered: segments with imports after their imported segments
+			reactions = #["CommonRoutines.reactions", "TransitiveRoutinesQN.reactions",
+				"TransitiveRoutinesSN.reactions", "Transitive2SN.reactions", "Transitive3SN.reactions",
+				"TransitiveSN.reactions", "DirectRoutinesQN.reactions", "Direct2SN.reactions", "DirectSN.reactions",
+				"Root.reactions"]
+			changePropagationSegments = #["importTestsRoot"]
+		]
 	}
 
-	private def String getProjectModelPath(String modelName) {
-		"model/" + modelName + "." + MODEL_FILE_EXTENSION;
+	private static def ImportTestsExecutionMonitor getExecutionMonitor() {
+		ImportTestsExecutionMonitor.instance
 	}
 
-	protected override setup() {
-		val root = AllElementTypesFactory.eINSTANCE.createRoot()
-		root.setId(TEST_SOURCE_MODEL_NAME)
-		createAndSynchronizeModel(TEST_SOURCE_MODEL_NAME.projectModelPath, root)
+	@BeforeEach
+	def void createRoot() {
+		resourceAt(SOURCE_MODEL).propagate [
+			contents += aet.Root => [id = 'ImportTestsModelSource']
+		]
 	}
 
-	override protected cleanup() {
-		// do nothing
+	@BeforeEach
+	def void captureTestName(TestInfo testInfo) {
+		testName = testInfo.displayName
 	}
 
-	private def void setElementId(Identified element, String newId) {
-		element.setId(newId);
-		saveAndSynchronizeChanges(element);
+	@BeforeEach
+	def resetExecutionMonitor() {
+		executionMonitor.reset()
 	}
 
-	private def triggerReaction(String... dataTags) {
-		setElementId(rootElement, ImportTestsUtils.toTestDataString(testName.methodName, dataTags));
-	}
-
-	// execution monitor:
-
-	private static def resetExecutionMonitor() {
-		ImportTestsExecutionMonitor.instance.reset();
-	}
-
-	private static def assertIsSet(ExecutionType executionType) {
-		ImportTestsExecutionMonitor.instance.assertIsSet(executionType);
-	}
-
-	private static def assertIsNotSet(ExecutionType executionType) {
-		ImportTestsExecutionMonitor.instance.assertIsNotSet(executionType);
+	private def triggerSetRootIdReaction(String... dataTags) {
+		Root.from(SOURCE_MODEL).propagate [
+			id = ImportTestsUtils.toTestDataString(testName, dataTags)
+		]
 	}
 
 	// all reactions included by the root segment:
-	private static def getRootReactions() {
-		return #[ExecutionType.RootReaction, ExecutionType.DirectSNReaction, ExecutionType.Direct2SNReaction,
-			ExecutionType.TransitiveSNReaction, ExecutionType.Transitive3SNReaction];
-	}
+	static val rootReactions = EnumSet.of(RootReaction, DirectSNReaction, Direct2SNReaction, TransitiveSNReaction,
+		Transitive3SNReaction)
 
 	/*
 	 * Import hierarchy:
-	 *
+	 * 
 	 * root -> directSN, direct2SN, directRoutinesQN r qn
 	 * directSN -> transitiveSN, transitiveRoutinesQN r qn
 	 * direct2SN -> transitive3SN
@@ -71,7 +75,6 @@ class ImportTests extends AbstractReactionImportsTests {
 	 * transitiveRoutinesQN
 	 * commonRoutines
 	 */
-
 	// data tags:
 	public static val TAG_CALL_ROUTINE_FROM_REACTION = "callRoutineFromReaction";
 	public static val TAG_CALL_ROUTINE_FROM_ROUTINE = "callRoutineFromRoutine";
@@ -103,498 +106,315 @@ class ImportTests extends AbstractReactionImportsTests {
 	public static val TAG_TEST_MULTIPLE_IMPORTS_OF_SAME_ROUTINES_IMPORT_PATH_2 = "testMultipleImportsOfSameRoutinesImportPath2";
 
 	// execute imported and transitive imported reactions:
-
 	@Test
 	def void testRootReaction() {
-		resetExecutionMonitor();
-		triggerReaction();
-		assertIsSet(ExecutionType.RootReaction);
+		triggerSetRootIdReaction()
+		assertThat(executionMonitor.getObservedExecutions, hasItem(RootReaction))
 	}
 
 	@Test
 	def void testImportedReaction() {
-		resetExecutionMonitor();
-		triggerReaction();
-		assertIsSet(ExecutionType.DirectSNReaction);
+		triggerSetRootIdReaction()
+		assertThat(executionMonitor.getObservedExecutions, hasItem(DirectSNReaction))
 	}
 
 	@Test
 	def void testTransitiveImportedReaction() {
-		resetExecutionMonitor();
-		triggerReaction();
-		assertIsSet(ExecutionType.TransitiveSNReaction);
+		triggerSetRootIdReaction()
+		assertThat(executionMonitor.getObservedExecutions, hasItem(TransitiveSNReaction))
 	}
 
 	// multiple imports: combination of imported reactions
-
 	@Test
 	def void testMultipleImportedReactions() {
-		resetExecutionMonitor();
-		triggerReaction();
-		val monitor = new ImportTestsExecutionMonitor();
-		monitor.setAll(rootReactions);
-		monitor.assertEqualWithStatic();
+		triggerSetRootIdReaction()
+		assertThat(executionMonitor, observedExecutions(rootReactions))
 	}
 
 	// call imported routines from within reaction:
-
 	@Test
 	def void testReactionCallsRootRoutine() {
-		resetExecutionMonitor();
-		triggerReaction(TAG_CALL_ROUTINE_FROM_REACTION, TAG_ROOT_ROUTINE);
-		val monitor = new ImportTestsExecutionMonitor();
-		monitor.setAll(rootReactions);
-		monitor.set(ExecutionType.RootRoutine);
-		monitor.assertEqualWithStatic();
+		triggerSetRootIdReaction(TAG_CALL_ROUTINE_FROM_REACTION, TAG_ROOT_ROUTINE)
+		assertThat(executionMonitor, observedExecutions(rootReactions + #[RootRoutine]))
 	}
 
 	@Test
 	def void testReactionCallsImportedRoutine_SN() {
-		resetExecutionMonitor();
-		triggerReaction(TAG_CALL_ROUTINE_FROM_REACTION, TAG_DIRECT_ROUTINE_SN);
-		val monitor = new ImportTestsExecutionMonitor();
-		monitor.setAll(rootReactions);
-		monitor.set(ExecutionType.DirectSNRoutine);
-		monitor.assertEqualWithStatic();
+		triggerSetRootIdReaction(TAG_CALL_ROUTINE_FROM_REACTION, TAG_DIRECT_ROUTINE_SN)
+		assertThat(executionMonitor, observedExecutions(rootReactions + #[DirectSNRoutine]))
 	}
 
 	@Test
 	def void testReactionCallsImportedRoutine_QN() {
-		resetExecutionMonitor();
-		triggerReaction(TAG_CALL_ROUTINE_FROM_REACTION, TAG_DIRECT_ROUTINE_QN);
-		val monitor = new ImportTestsExecutionMonitor();
-		monitor.setAll(rootReactions);
-		monitor.set(ExecutionType.DirectRoutinesQNRoutine);
-		monitor.assertEqualWithStatic();
+		triggerSetRootIdReaction(TAG_CALL_ROUTINE_FROM_REACTION, TAG_DIRECT_ROUTINE_QN)
+		assertThat(executionMonitor, observedExecutions(rootReactions + #[DirectRoutinesQNRoutine]))
 	}
 
 	// call transitive imported routines from within reaction:
-
 	@Test
 	def void testReactionCallsTransitiveImportedRoutine_SN_SN() {
-		resetExecutionMonitor();
-		triggerReaction(TAG_CALL_ROUTINE_FROM_REACTION, TAG_TRANSITIVE_ROUTINE_SN_SN);
-		val monitor = new ImportTestsExecutionMonitor();
-		monitor.setAll(rootReactions);
-		monitor.set(ExecutionType.TransitiveSNRoutine);
-		monitor.assertEqualWithStatic();
+		triggerSetRootIdReaction(TAG_CALL_ROUTINE_FROM_REACTION, TAG_TRANSITIVE_ROUTINE_SN_SN)
+		assertThat(executionMonitor, observedExecutions(rootReactions + #[TransitiveSNRoutine]))
 	}
 
 	@Test
 	def void testReactionCallsTransitiveImportedRoutine_SN_QN() {
-		resetExecutionMonitor();
-		triggerReaction(TAG_CALL_ROUTINE_FROM_REACTION, TAG_TRANSITIVE_ROUTINE_SN_QN);
-		val monitor = new ImportTestsExecutionMonitor();
-		monitor.setAll(rootReactions);
-		monitor.set(ExecutionType.TransitiveRoutinesQNRoutine);
-		monitor.assertEqualWithStatic();
+		triggerSetRootIdReaction(TAG_CALL_ROUTINE_FROM_REACTION, TAG_TRANSITIVE_ROUTINE_SN_QN)
+		assertThat(executionMonitor, observedExecutions(rootReactions + #[TransitiveRoutinesQNRoutine]))
 	}
 
 	@Test
 	def void testReactionCallsTransitiveImportedRoutine_QN_SN() {
-		resetExecutionMonitor();
-		triggerReaction(TAG_CALL_ROUTINE_FROM_REACTION, TAG_TRANSITIVE_ROUTINE_QN_SN);
-		val monitor = new ImportTestsExecutionMonitor();
-		monitor.setAll(rootReactions);
-		monitor.set(ExecutionType.TransitiveRoutinesSNRoutine);
-		monitor.assertEqualWithStatic();
+		triggerSetRootIdReaction(TAG_CALL_ROUTINE_FROM_REACTION, TAG_TRANSITIVE_ROUTINE_QN_SN)
+		assertThat(executionMonitor, observedExecutions(rootReactions + #[TransitiveRoutinesSNRoutine]))
 	}
 
 	@Test
 	def void testReactionCallsTransitiveImportedRoutine_QN_QN() {
-		resetExecutionMonitor();
-		triggerReaction(TAG_CALL_ROUTINE_FROM_REACTION, TAG_TRANSITIVE_ROUTINE_QN_QN);
-		val monitor = new ImportTestsExecutionMonitor();
-		monitor.setAll(rootReactions);
-		monitor.set(ExecutionType.TransitiveRoutinesQNRoutine);
-		monitor.assertEqualWithStatic();
+		triggerSetRootIdReaction(TAG_CALL_ROUTINE_FROM_REACTION, TAG_TRANSITIVE_ROUTINE_QN_QN)
+		assertThat(executionMonitor, observedExecutions(rootReactions + #[TransitiveRoutinesQNRoutine]))
 	}
 
 	// call imported routines from within routine:
-
 	@Test
 	def void testRoutineCallsRootRoutine() {
-		resetExecutionMonitor();
-		triggerReaction(TAG_CALL_ROUTINE_FROM_ROUTINE, TAG_ROOT_ROUTINE);
-		val monitor = new ImportTestsExecutionMonitor();
-		monitor.setAll(rootReactions);
-		monitor.set(ExecutionType.RootRoutine);
-		monitor.assertEqualWithStatic();
+		triggerSetRootIdReaction(TAG_CALL_ROUTINE_FROM_ROUTINE, TAG_ROOT_ROUTINE)
+		assertThat(executionMonitor, observedExecutions(rootReactions + #[RootRoutine]))
 	}
 
 	@Test
 	def void testRoutineCallsImportedRoutine_SN() {
-		resetExecutionMonitor();
-		triggerReaction(TAG_CALL_ROUTINE_FROM_ROUTINE, TAG_DIRECT_ROUTINE_SN);
-		val monitor = new ImportTestsExecutionMonitor();
-		monitor.setAll(rootReactions);
-		monitor.set(ExecutionType.DirectSNRoutine);
-		monitor.assertEqualWithStatic();
+		triggerSetRootIdReaction(TAG_CALL_ROUTINE_FROM_ROUTINE, TAG_DIRECT_ROUTINE_SN)
+		assertThat(executionMonitor, observedExecutions(rootReactions + #[DirectSNRoutine]))
 	}
 
 	@Test
 	def void testRoutineCallsImportedRoutine_QN() {
-		resetExecutionMonitor();
-		triggerReaction(TAG_CALL_ROUTINE_FROM_ROUTINE, TAG_DIRECT_ROUTINE_QN);
-		val monitor = new ImportTestsExecutionMonitor();
-		monitor.setAll(rootReactions);
-		monitor.set(ExecutionType.DirectRoutinesQNRoutine);
-		monitor.assertEqualWithStatic();
+		triggerSetRootIdReaction(TAG_CALL_ROUTINE_FROM_ROUTINE, TAG_DIRECT_ROUTINE_QN)
+		assertThat(executionMonitor, observedExecutions(rootReactions + #[DirectRoutinesQNRoutine]))
 	}
 
 	// call transitive imported routines from within routine:
-
 	@Test
 	def void testRoutineCallsTransitiveImportedRoutine_SN_SN() {
-		resetExecutionMonitor();
-		triggerReaction(TAG_CALL_ROUTINE_FROM_ROUTINE, TAG_TRANSITIVE_ROUTINE_SN_SN);
-		val monitor = new ImportTestsExecutionMonitor();
-		monitor.setAll(rootReactions);
-		monitor.set(ExecutionType.TransitiveSNRoutine);
-		monitor.assertEqualWithStatic();
+		triggerSetRootIdReaction(TAG_CALL_ROUTINE_FROM_ROUTINE, TAG_TRANSITIVE_ROUTINE_SN_SN)
+		assertThat(executionMonitor, observedExecutions(rootReactions + #[TransitiveSNRoutine]))
 	}
 
 	@Test
 	def void testRoutineCallsTransitiveImportedRoutine_SN_QN() {
-		resetExecutionMonitor();
-		triggerReaction(TAG_CALL_ROUTINE_FROM_ROUTINE, TAG_TRANSITIVE_ROUTINE_SN_QN);
-		val monitor = new ImportTestsExecutionMonitor();
-		monitor.setAll(rootReactions);
-		monitor.set(ExecutionType.TransitiveRoutinesQNRoutine);
-		monitor.assertEqualWithStatic();
+		triggerSetRootIdReaction(TAG_CALL_ROUTINE_FROM_ROUTINE, TAG_TRANSITIVE_ROUTINE_SN_QN)
+		assertThat(executionMonitor, observedExecutions(rootReactions + #[TransitiveRoutinesQNRoutine]))
 	}
 
 	@Test
 	def void testRoutineCallsTransitiveImportedRoutine_QN_SN() {
-		resetExecutionMonitor();
-		triggerReaction(TAG_CALL_ROUTINE_FROM_ROUTINE, TAG_TRANSITIVE_ROUTINE_QN_SN);
-		val monitor = new ImportTestsExecutionMonitor();
-		monitor.setAll(rootReactions);
-		monitor.set(ExecutionType.TransitiveRoutinesSNRoutine);
-		monitor.assertEqualWithStatic();
+		triggerSetRootIdReaction(TAG_CALL_ROUTINE_FROM_ROUTINE, TAG_TRANSITIVE_ROUTINE_QN_SN)
+		assertThat(executionMonitor, observedExecutions(rootReactions + #[TransitiveRoutinesSNRoutine]))
 	}
 
 	@Test
 	def void testRoutineCallsTransitiveImportedRoutine_QN_QN() {
-		resetExecutionMonitor();
-		triggerReaction(TAG_CALL_ROUTINE_FROM_ROUTINE, TAG_TRANSITIVE_ROUTINE_QN_QN);
-		val monitor = new ImportTestsExecutionMonitor();
-		monitor.setAll(rootReactions);
-		monitor.set(ExecutionType.TransitiveRoutinesQNRoutine);
-		monitor.assertEqualWithStatic();
+		triggerSetRootIdReaction(TAG_CALL_ROUTINE_FROM_ROUTINE, TAG_TRANSITIVE_ROUTINE_QN_QN)
+		assertThat(executionMonitor, observedExecutions(rootReactions + #[TransitiveRoutinesQNRoutine]))
 	}
 
 	// multiple imports: combination of imported routines
-
 	@Test
 	def void testMultipleImportedRoutines() {
-		resetExecutionMonitor();
-		triggerReaction(TAG_CALL_ROUTINE_FROM_REACTION,
-			TAG_ROOT_ROUTINE, TAG_DIRECT_ROUTINE_SN, TAG_DIRECT2_ROUTINE_SN, TAG_TRANSITIVE_ROUTINE_SN_SN);
-		val monitor = new ImportTestsExecutionMonitor();
-		monitor.setAll(rootReactions);
-		monitor.set(ExecutionType.RootRoutine);
-		monitor.set(ExecutionType.DirectSNRoutine);
-		monitor.set(ExecutionType.Direct2SNRoutine);
-		monitor.set(ExecutionType.TransitiveSNRoutine);
-		monitor.assertEqualWithStatic();
+		triggerSetRootIdReaction(TAG_CALL_ROUTINE_FROM_REACTION, TAG_ROOT_ROUTINE, TAG_DIRECT_ROUTINE_SN,
+			TAG_DIRECT2_ROUTINE_SN, TAG_TRANSITIVE_ROUTINE_SN_SN)
+		assertThat(executionMonitor, observedExecutions(rootReactions + #[
+			RootRoutine,
+			DirectSNRoutine,
+			Direct2SNRoutine,
+			TransitiveSNRoutine
+		]))
 	}
 
 	// import only routines:
-
 	@Test
 	def void testRoutinesOnlyReactions() {
-		resetExecutionMonitor();
-		triggerReaction(TAG_TEST_ROUTINES_ONLY_REACTIONS);
-		val monitor = new ImportTestsExecutionMonitor();
-		monitor.setAll(rootReactions);
-		monitor.assertEqualWithStatic();
-		// direct: routines-only
-		assertIsNotSet(ExecutionType.DirectRoutinesQNReaction);
-		// transitive: full > routines-only
-		assertIsNotSet(ExecutionType.TransitiveRoutinesQNReaction);
-		// transitive: routines-only QN > routines-only SN
-		assertIsNotSet(ExecutionType.TransitiveRoutinesSNReaction);
-		// transitive: routines-only > full
-		assertIsNotSet(ExecutionType.Transitive2SNReaction);
+		triggerSetRootIdReaction(TAG_TEST_ROUTINES_ONLY_REACTIONS)
+		assertThat(executionMonitor, observedExecutions(rootReactions))
 	}
 
 	@Test
 	def void testRoutinesOnlyRoutines() {
-		resetExecutionMonitor();
-		triggerReaction(TAG_TEST_ROUTINES_ONLY_ROUTINES);
-		val monitor = new ImportTestsExecutionMonitor();
-		monitor.setAll(rootReactions);
-		// direct: routines-only
-		monitor.set(ExecutionType.DirectRoutinesQNRoutine);
-		// transitive: full > routines-only
-		monitor.set(ExecutionType.TransitiveRoutinesQNRoutine);
-		// transitive: routines-only QN > routines-only SN
-		monitor.set(ExecutionType.TransitiveRoutinesSNRoutine);
-		// transitive: routines-only > full
-		monitor.set(ExecutionType.Transitive2SNRoutine);
-		monitor.assertEqualWithStatic();
+		triggerSetRootIdReaction(TAG_TEST_ROUTINES_ONLY_ROUTINES)
+		assertThat(executionMonitor, observedExecutions(rootReactions + #[
+			// direct: routines-only 
+			DirectRoutinesQNRoutine,
+			// transitive: full > routines-only
+			TransitiveRoutinesQNRoutine,
+			// transitive: routines-only QN > routines-only SN
+			TransitiveRoutinesSNRoutine,
+			// transitive: routines-only > full
+			Transitive2SNRoutine
+		]))
 	}
 
 	// check (transitive) imported segments still working:
-
 	@Test
 	def void testImportedSegmentsWorking() {
-		resetExecutionMonitor();
-		triggerReaction(TAG_TEST_IMPORTED_SEGMENTS_WORKING);
-		val monitor = new ImportTestsExecutionMonitor();
-		// own and imported reactions:
-		monitor.setAll(rootReactions);
-		// call inside imported segment:
-		monitor.set(ExecutionType.DirectSNInnerRoutine);
-		// call from imported to transitive imported segments:
-		monitor.set(ExecutionType.TransitiveSNRoutine);
-		monitor.set(ExecutionType.TransitiveRoutinesQNRoutine);
-		// call inside transitive imported segment:
-		monitor.set(ExecutionType.TransitiveSNInnerRoutine);
-		monitor.assertEqualWithStatic();
+		triggerSetRootIdReaction(TAG_TEST_IMPORTED_SEGMENTS_WORKING)
+		assertThat(executionMonitor, observedExecutions( // own and imported reactions:
+		rootReactions + #[
+			// call inside imported segment:
+			DirectSNInnerRoutine,
+			// call from imported to transitive imported segments:
+			TransitiveSNRoutine,
+			TransitiveRoutinesQNRoutine,
+			// call inside transitive imported segment:
+			TransitiveSNInnerRoutine
+		]))
 	}
 
 	// reaction overrides:
-
 	@Test
 	def void testOverrideReaction() {
-		resetExecutionMonitor();
-		triggerReaction(TAG_TEST_REACTION_OVERRIDE);
-		val monitor = new ImportTestsExecutionMonitor();
-		monitor.setAll(rootReactions);
-		// overriding imported reaction:
-		monitor.set(ExecutionType.RootDirectSNOverriddenReaction);
-		monitor.set(ExecutionType.RootRoutine);
-		monitor.assertEqualWithStatic();
-		assertIsNotSet(ExecutionType.DirectSNOverriddenReaction);
+		triggerSetRootIdReaction(TAG_TEST_REACTION_OVERRIDE)
+		assertThat(executionMonitor, observedExecutions(rootReactions + // overriding imported reaction:
+		#[RootDirectSNOverriddenReaction, RootRoutine]))
 	}
 
 	@Test
 	def void testOverrideTransitiveReaction() {
-		resetExecutionMonitor();
-		triggerReaction(TAG_TEST_TRANSITIVE_REACTION_OVERRIDE);
-		val monitor = new ImportTestsExecutionMonitor();
-		monitor.setAll(rootReactions);
-		// overriding transitive imported reaction:
-		monitor.set(ExecutionType.RootTransitiveSNOverriddenReaction);
-		monitor.set(ExecutionType.RootRoutine);
-		// overriding transitive imported reaction, that was also overridden from in-between segment:
-		monitor.set(ExecutionType.RootTransitiveSNOverriddenReaction2);
-		// in-between segment overriding transitive imported reaction:
-		monitor.set(ExecutionType.DirectSNTransitiveSNOverriddenReaction3);
-		monitor.set(ExecutionType.DirectSNRoutine);
-		monitor.assertEqualWithStatic();
-		assertIsNotSet(ExecutionType.TransitiveSNOverriddenReaction);
-		assertIsNotSet(ExecutionType.TransitiveSNOverriddenReaction2);
-		assertIsNotSet(ExecutionType.DirectSNTransitiveSNOverriddenReaction2);
-		assertIsNotSet(ExecutionType.TransitiveSNOverriddenReaction3);
+		triggerSetRootIdReaction(TAG_TEST_TRANSITIVE_REACTION_OVERRIDE)
+		assertThat(executionMonitor, observedExecutions(rootReactions + #[
+			// overriding transitive imported reaction:
+			RootTransitiveSNOverriddenReaction,
+			RootRoutine,
+			// overriding transitive imported reaction, that was also overridden from in-between segment:
+			RootTransitiveSNOverriddenReaction2,
+			// in-between segment overriding transitive imported reaction:
+			DirectSNTransitiveSNOverriddenReaction3,
+			DirectSNRoutine
+		]))
 	}
 
 	// override of imported routine:
-
 	@Test
 	def void testCallOverriddenRoutineFromRoot() {
-		resetExecutionMonitor();
-		triggerReaction(ImportTests.TAG_CALL_OVERRIDDEN_ROUTINE, TAG_FROM_ROOT);
-		val monitor = new ImportTestsExecutionMonitor();
-		monitor.setAll(rootReactions);
-		monitor.set(ExecutionType.RootDirectSNOverriddenRoutine);
-		monitor.set(ExecutionType.RootRoutine);
-		monitor.assertEqualWithStatic();
-		assertIsNotSet(ExecutionType.DirectSNOverriddenRoutine);
+		triggerSetRootIdReaction(TAG_CALL_OVERRIDDEN_ROUTINE, TAG_FROM_ROOT)
+		assertThat(executionMonitor, observedExecutions(rootReactions + #[RootDirectSNOverriddenRoutine, RootRoutine]))
 	}
 
 	@Test
 	def void testCallOverriddenRoutineFromOverriddenSegment() {
-		resetExecutionMonitor();
-		triggerReaction(ImportTests.TAG_CALL_OVERRIDDEN_ROUTINE, TAG_FROM_OVERRIDDEN_SEGMENT);
-		val monitor = new ImportTestsExecutionMonitor();
-		monitor.setAll(rootReactions);
-		monitor.set(ExecutionType.RootDirectSNOverriddenRoutine);
-		monitor.set(ExecutionType.RootRoutine);
-		monitor.assertEqualWithStatic();
-		assertIsNotSet(ExecutionType.DirectSNOverriddenRoutine);
+		triggerSetRootIdReaction(TAG_CALL_OVERRIDDEN_ROUTINE, TAG_FROM_OVERRIDDEN_SEGMENT)
+		assertThat(executionMonitor, observedExecutions(rootReactions + #[RootDirectSNOverriddenRoutine, RootRoutine]))
 	}
 
 	// override of transitive imported routine:
-
 	@Test
 	def void testCallOverriddenTransitiveRoutineFromRoot() {
-		resetExecutionMonitor();
-		triggerReaction(ImportTests.TAG_CALL_OVERRIDDEN_TRANSITIVE_ROUTINE, TAG_FROM_ROOT);
-		val monitor = new ImportTestsExecutionMonitor();
-		monitor.setAll(rootReactions);
-		monitor.set(ExecutionType.RootTransitiveSNOverriddenRoutine);
-		monitor.set(ExecutionType.RootRoutine);
-		monitor.assertEqualWithStatic();
-		assertIsNotSet(ExecutionType.TransitiveSNOverriddenRoutine);
+		triggerSetRootIdReaction(TAG_CALL_OVERRIDDEN_TRANSITIVE_ROUTINE, TAG_FROM_ROOT)
+		assertThat(executionMonitor,
+			observedExecutions(rootReactions + #[RootTransitiveSNOverriddenRoutine, RootRoutine]))
 	}
 
 	@Test
 	def void testCallOverriddenTransitiveRoutineFromOverriddenSegment() {
-		resetExecutionMonitor();
-		triggerReaction(ImportTests.TAG_CALL_OVERRIDDEN_TRANSITIVE_ROUTINE, TAG_FROM_OVERRIDDEN_SEGMENT);
-		val monitor = new ImportTestsExecutionMonitor();
-		monitor.setAll(rootReactions);
-		monitor.set(ExecutionType.RootTransitiveSNOverriddenRoutine);
-		monitor.set(ExecutionType.RootRoutine);
-		monitor.assertEqualWithStatic();
-		assertIsNotSet(ExecutionType.TransitiveSNOverriddenRoutine);
+		triggerSetRootIdReaction(TAG_CALL_OVERRIDDEN_TRANSITIVE_ROUTINE, TAG_FROM_OVERRIDDEN_SEGMENT)
+		assertThat(executionMonitor,
+			observedExecutions(rootReactions + #[RootTransitiveSNOverriddenRoutine, RootRoutine]))
 	}
 
 	@Test
 	def void testCallOverriddenTransitiveRoutineFromSegmentInBetween() {
-		resetExecutionMonitor();
-		triggerReaction(ImportTests.TAG_CALL_OVERRIDDEN_TRANSITIVE_ROUTINE, TAG_FROM_SEGMENT_IN_BETWEEN);
-		val monitor = new ImportTestsExecutionMonitor();
-		monitor.setAll(rootReactions);
-		monitor.set(ExecutionType.RootTransitiveSNOverriddenRoutine);
-		monitor.set(ExecutionType.RootRoutine);
-		monitor.assertEqualWithStatic();
-		assertIsNotSet(ExecutionType.TransitiveSNOverriddenRoutine);
+		triggerSetRootIdReaction(TAG_CALL_OVERRIDDEN_TRANSITIVE_ROUTINE, TAG_FROM_SEGMENT_IN_BETWEEN)
+		assertThat(executionMonitor,
+			observedExecutions(rootReactions + #[RootTransitiveSNOverriddenRoutine, RootRoutine]))
 	}
 
 	// override of transitive imported routine, with independent override hierarchy:
-
 	@Test
 	def void testCallOverriddenTransitiveRoutineWithSeparateOverrideHierarchyFromRoot() {
-		resetExecutionMonitor();
-		triggerReaction(ImportTests.TAG_CALL_OVERRIDDEN_TRANSITIVE_ROUTINE_WITH_SEPARATE_OVERRIDE_HIERARCHY, TAG_FROM_ROOT);
-		val monitor = new ImportTestsExecutionMonitor();
-		monitor.setAll(rootReactions);
-		monitor.set(ExecutionType.RootTransitive3SNOverriddenRoutine);
-		monitor.set(ExecutionType.RootRoutine);
-		monitor.assertEqualWithStatic();
-		assertIsNotSet(ExecutionType.Transitive3SNOverriddenRoutine);
+		triggerSetRootIdReaction(TAG_CALL_OVERRIDDEN_TRANSITIVE_ROUTINE_WITH_SEPARATE_OVERRIDE_HIERARCHY, TAG_FROM_ROOT)
+		assertThat(executionMonitor,
+			observedExecutions(rootReactions + #[RootTransitive3SNOverriddenRoutine, RootRoutine]))
 	}
 
 	@Test
 	def void testCallOverriddenTransitiveRoutineWithSeparateOverrideHierarchyFromOverriddenSegment() {
-		resetExecutionMonitor();
-		triggerReaction(ImportTests.TAG_CALL_OVERRIDDEN_TRANSITIVE_ROUTINE_WITH_SEPARATE_OVERRIDE_HIERARCHY, TAG_FROM_OVERRIDDEN_SEGMENT);
-		val monitor = new ImportTestsExecutionMonitor();
-		monitor.setAll(rootReactions);
-		monitor.set(ExecutionType.RootTransitive3SNOverriddenRoutine);
-		monitor.set(ExecutionType.RootRoutine);
-		monitor.assertEqualWithStatic();
-		assertIsNotSet(ExecutionType.Transitive3SNOverriddenRoutine);
+		triggerSetRootIdReaction(TAG_CALL_OVERRIDDEN_TRANSITIVE_ROUTINE_WITH_SEPARATE_OVERRIDE_HIERARCHY,
+			TAG_FROM_OVERRIDDEN_SEGMENT);
+		assertThat(executionMonitor,
+			observedExecutions(rootReactions + #[RootTransitive3SNOverriddenRoutine, RootRoutine]))
 	}
 
 	@Test
 	def void testCallOverriddenTransitiveRoutineWithSeparateOverrideHierarchyFromSegmentInBetween() {
-		resetExecutionMonitor();
-		triggerReaction(ImportTests.TAG_CALL_OVERRIDDEN_TRANSITIVE_ROUTINE_WITH_SEPARATE_OVERRIDE_HIERARCHY, TAG_FROM_SEGMENT_IN_BETWEEN);
-		val monitor = new ImportTestsExecutionMonitor();
-		monitor.setAll(rootReactions);
-		monitor.set(ExecutionType.RootTransitive3SNOverriddenRoutine);
-		monitor.set(ExecutionType.RootRoutine);
-		monitor.assertEqualWithStatic();
-		assertIsNotSet(ExecutionType.Transitive3SNOverriddenRoutine);
+		triggerSetRootIdReaction(TAG_CALL_OVERRIDDEN_TRANSITIVE_ROUTINE_WITH_SEPARATE_OVERRIDE_HIERARCHY,
+			TAG_FROM_SEGMENT_IN_BETWEEN)
+		assertThat(executionMonitor,
+			observedExecutions(rootReactions + #[RootTransitive3SNOverriddenRoutine, RootRoutine]))
 	}
 
 	// override of transitive imported routine, that has also already been overridden by imported segment:
-
 	@Test
 	def void testCallAlreadyOverriddenTransitiveRoutineFromRoot() {
-		resetExecutionMonitor();
-		triggerReaction(ImportTests.TAG_CALL_ALREADY_OVERRIDDEN_TRANSITIVE_ROUTINE, TAG_FROM_ROOT);
-		val monitor = new ImportTestsExecutionMonitor();
-		monitor.setAll(rootReactions);
-		monitor.set(ExecutionType.RootTransitiveSNOverriddenRoutine2);
-		monitor.set(ExecutionType.RootRoutine);
-		monitor.assertEqualWithStatic();
-		assertIsNotSet(ExecutionType.TransitiveSNOverriddenRoutine2);
-		assertIsNotSet(ExecutionType.DirectSNTransitiveSNOverriddenRoutine2);
+		triggerSetRootIdReaction(TAG_CALL_ALREADY_OVERRIDDEN_TRANSITIVE_ROUTINE, TAG_FROM_ROOT)
+		assertThat(executionMonitor,
+			observedExecutions(rootReactions + #[RootTransitiveSNOverriddenRoutine2, RootRoutine]))
 	}
 
 	@Test
 	def void testCallAlreadyOverriddenTransitiveRoutineFromOverriddenSegment() {
-		resetExecutionMonitor();
-		triggerReaction(ImportTests.TAG_CALL_ALREADY_OVERRIDDEN_TRANSITIVE_ROUTINE, TAG_FROM_OVERRIDDEN_SEGMENT);
-		val monitor = new ImportTestsExecutionMonitor();
-		monitor.setAll(rootReactions);
-		monitor.set(ExecutionType.RootTransitiveSNOverriddenRoutine2);
-		monitor.set(ExecutionType.RootRoutine);
-		monitor.assertEqualWithStatic();
-		assertIsNotSet(ExecutionType.TransitiveSNOverriddenRoutine2);
-		assertIsNotSet(ExecutionType.DirectSNTransitiveSNOverriddenRoutine2);
+		triggerSetRootIdReaction(TAG_CALL_ALREADY_OVERRIDDEN_TRANSITIVE_ROUTINE, TAG_FROM_OVERRIDDEN_SEGMENT)
+		assertThat(executionMonitor,
+			observedExecutions(rootReactions + #[RootTransitiveSNOverriddenRoutine2, RootRoutine]))
 	}
 
 	@Test
 	def void testCallAlreadyOverriddenTransitiveRoutineFromSegmentInBetween() {
-		resetExecutionMonitor();
-		triggerReaction(ImportTests.TAG_CALL_ALREADY_OVERRIDDEN_TRANSITIVE_ROUTINE, TAG_FROM_SEGMENT_IN_BETWEEN);
-		val monitor = new ImportTestsExecutionMonitor();
-		monitor.setAll(rootReactions);
-		monitor.set(ExecutionType.RootTransitiveSNOverriddenRoutine2);
-		monitor.set(ExecutionType.RootRoutine);
-		monitor.assertEqualWithStatic();
-		assertIsNotSet(ExecutionType.TransitiveSNOverriddenRoutine2);
-		assertIsNotSet(ExecutionType.DirectSNTransitiveSNOverriddenRoutine2);
+		triggerSetRootIdReaction(TAG_CALL_ALREADY_OVERRIDDEN_TRANSITIVE_ROUTINE, TAG_FROM_SEGMENT_IN_BETWEEN)
+		assertThat(executionMonitor,
+			observedExecutions(rootReactions + #[RootTransitiveSNOverriddenRoutine2, RootRoutine]))
 	}
 
 	// imported segment overriding transitive imported routine:
-
 	@Test
 	def void testCallTransitiveRoutineOverriddenByImportedSegmentFromRoot() {
-		resetExecutionMonitor();
-		triggerReaction(ImportTests.TAG_CALL_TRANSITIVE_ROUTINE_OVERRIDDEN_BY_IMPORTED_SEGMENT, TAG_FROM_ROOT);
-		val monitor = new ImportTestsExecutionMonitor();
-		monitor.setAll(rootReactions);
-		monitor.set(ExecutionType.DirectSNTransitiveSNOverriddenRoutine3);
-		monitor.set(ExecutionType.DirectSNRoutine);
-		monitor.assertEqualWithStatic();
-		assertIsNotSet(ExecutionType.TransitiveSNOverriddenRoutine3);
+		triggerSetRootIdReaction(TAG_CALL_TRANSITIVE_ROUTINE_OVERRIDDEN_BY_IMPORTED_SEGMENT, TAG_FROM_ROOT)
+		assertThat(executionMonitor,
+			observedExecutions(rootReactions + #[DirectSNTransitiveSNOverriddenRoutine3, DirectSNRoutine]))
 	}
 
 	@Test
 	def void testCallTransitiveRoutineOverriddenByImportedSegmentFromOverriddenSegment() {
-		resetExecutionMonitor();
-		triggerReaction(ImportTests.TAG_CALL_TRANSITIVE_ROUTINE_OVERRIDDEN_BY_IMPORTED_SEGMENT, TAG_FROM_OVERRIDDEN_SEGMENT);
-		val monitor = new ImportTestsExecutionMonitor();
-		monitor.setAll(rootReactions);
-		monitor.set(ExecutionType.DirectSNTransitiveSNOverriddenRoutine3);
-		monitor.set(ExecutionType.DirectSNRoutine);
-		monitor.assertEqualWithStatic();
-		assertIsNotSet(ExecutionType.TransitiveSNOverriddenRoutine3);
+		triggerSetRootIdReaction(TAG_CALL_TRANSITIVE_ROUTINE_OVERRIDDEN_BY_IMPORTED_SEGMENT,
+			TAG_FROM_OVERRIDDEN_SEGMENT)
+		assertThat(executionMonitor,
+			observedExecutions(rootReactions + #[DirectSNTransitiveSNOverriddenRoutine3, DirectSNRoutine]))
 	}
 
 	@Test
 	def void testCallTransitiveRoutineOverriddenByImportedSegmentFromSegmentInBetween() {
-		resetExecutionMonitor();
-		triggerReaction(ImportTests.TAG_CALL_TRANSITIVE_ROUTINE_OVERRIDDEN_BY_IMPORTED_SEGMENT, TAG_FROM_SEGMENT_IN_BETWEEN);
-		val monitor = new ImportTestsExecutionMonitor();
-		monitor.setAll(rootReactions);
-		monitor.set(ExecutionType.DirectSNTransitiveSNOverriddenRoutine3);
-		monitor.set(ExecutionType.DirectSNRoutine);
-		monitor.assertEqualWithStatic();
-		assertIsNotSet(ExecutionType.TransitiveSNOverriddenRoutine3);
+		triggerSetRootIdReaction(TAG_CALL_TRANSITIVE_ROUTINE_OVERRIDDEN_BY_IMPORTED_SEGMENT,
+			TAG_FROM_SEGMENT_IN_BETWEEN);
+		assertThat(executionMonitor,
+			observedExecutions(rootReactions + #[DirectSNTransitiveSNOverriddenRoutine3, DirectSNRoutine]))
 	}
 
 	// multiple imports and overrides of the same routines at different import paths:
-
 	@Test
 	def void testMultipleImportsOfSameRoutines() {
 		// import path 1:
-		resetExecutionMonitor();
-		triggerReaction(TAG_TEST_MULTIPLE_IMPORTS_OF_SAME_ROUTINES_IMPORT_PATH_1);
-		val monitor1 = new ImportTestsExecutionMonitor();
-		monitor1.setAll(rootReactions);
-		monitor1.set(ExecutionType.RootCommonRoutinesRoutine1);
-		monitor1.set(ExecutionType.RootCommonRoutinesRoutine2);
-		monitor1.set(ExecutionType.RootCommonRoutinesRoutine3);
-		monitor1.assertEqualWithStatic();
+		triggerSetRootIdReaction(TAG_TEST_MULTIPLE_IMPORTS_OF_SAME_ROUTINES_IMPORT_PATH_1)
+		assertThat(executionMonitor,
+			observedExecutions(rootReactions +
+				#[RootCommonRoutinesRoutine1, RootCommonRoutinesRoutine2, RootCommonRoutinesRoutine3]))
 
 		// import path 2:
-		resetExecutionMonitor();
-		triggerReaction(TAG_TEST_MULTIPLE_IMPORTS_OF_SAME_ROUTINES_IMPORT_PATH_2);
-		val monitor2 = new ImportTestsExecutionMonitor();
-		monitor2.setAll(rootReactions);
-		monitor2.set(ExecutionType.CommonRoutinesRoutine1);
-		monitor2.set(ExecutionType.CommonRoutinesRoutine2);
-		// multiple overrides of same routine along different import paths:
-		monitor2.set(ExecutionType.RootCommonRoutines2Routine3);
-		monitor2.assertEqualWithStatic();
+		executionMonitor.reset()
+		triggerSetRootIdReaction(TAG_TEST_MULTIPLE_IMPORTS_OF_SAME_ROUTINES_IMPORT_PATH_2)
+		assertThat(executionMonitor, observedExecutions(rootReactions + #[
+			CommonRoutinesRoutine1,
+			CommonRoutinesRoutine2,
+			// multiple overrides of same routine along different import paths:
+			RootCommonRoutines2Routine3
+		]))
 	}
 }

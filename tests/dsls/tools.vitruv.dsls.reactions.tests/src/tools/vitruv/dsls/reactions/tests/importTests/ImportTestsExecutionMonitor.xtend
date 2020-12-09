@@ -1,12 +1,11 @@
 package tools.vitruv.dsls.reactions.tests.importTests
 
 import java.util.EnumSet
-import java.util.List
+import org.eclipse.xtend.lib.annotations.Accessors
+import tools.vitruv.dsls.reactions.tests.ExecutionMonitor
+import tools.vitruv.dsls.reactions.tests.importTests.ImportTestsExecutionMonitor.ExecutionType
 
-import static org.junit.Assert.assertTrue
-
-final class ImportTestsExecutionMonitor {
-
+final class ImportTestsExecutionMonitor implements ExecutionMonitor<ExecutionType> {
 	enum ExecutionType {
 		RootReaction,
 		RootRoutine,
@@ -66,35 +65,28 @@ final class ImportTestsExecutionMonitor {
 		CommonRoutinesRoutine3
 	}
 
-	static val ImportTestsExecutionMonitor INSTANCE = new ImportTestsExecutionMonitor();
+	val values = EnumSet.noneOf(ExecutionType)
 
-	static def getInstance() {
-		return INSTANCE;
+	@Accessors
+	static val instance = new ImportTestsExecutionMonitor()
+
+	private new() {
 	}
 
-	val values = EnumSet.noneOf(ExecutionType);
-
-	new() {
+	override getObservedExecutions() {
+		values
 	}
 
 	def void set(ExecutionType type) {
-		values.add(type);
+		values += type
 	}
 
 	def void setAll(ExecutionType... types) {
-		if (types !== null) {
-			for (type : types) {
-				this.set(type);
-			}
-		}
-	}
-
-	def boolean isSet(ExecutionType type) {
-		return values.contains(type);
+		values += types
 	}
 
 	def void reset() {
-		values.clear();
+		values.clear()
 	}
 
 	override boolean equals(Object object) {
@@ -106,29 +98,5 @@ final class ImportTestsExecutionMonitor {
 
 	override String toString() {
 		return values.toString();
-	}
-
-	def assertIsSet(ExecutionType type) {
-		assertTrue(type + " was expected to occur, but did not", this.isSet(type));
-	}
-
-	def assertIsNotSet(ExecutionType type) {
-		assertTrue(type + " was not expected to occur but did", !this.isSet(type));
-	}
-
-	def assertIsSetOnly(ExecutionType... types) {
-		val typesList = (types as List<ExecutionType> ?: #[]);
-		assertTrue("Expected " + typesList + " to occur, but got " + values,
-			values.size == typesList.size && values.containsAll(typesList));
-	}
-
-	def assertEqualWithStatic() {
-		for (executionType : ExecutionType.values) {
-			if (this.isSet(executionType)) {
-				assertTrue(executionType + " was expected to occur but did not", instance.isSet(executionType));
-			} else {
-				assertTrue(executionType + " was not expected to occur but did", !instance.isSet(executionType));
-			}
-		}
 	}
 }

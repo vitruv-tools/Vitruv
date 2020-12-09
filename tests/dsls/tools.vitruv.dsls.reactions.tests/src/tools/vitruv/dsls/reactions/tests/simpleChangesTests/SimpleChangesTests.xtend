@@ -1,501 +1,361 @@
 package tools.vitruv.dsls.reactions.tests.simpleChangesTests
 
-import allElementTypes.AllElementTypesFactory
-import allElementTypes.Identified
-import allElementTypes.NonRoot
 import allElementTypes.Root
-import tools.vitruv.dsls.reactions.tests.AbstractAllElementTypesReactionsTests
-import tools.vitruv.dsls.reactions.tests.simpleChangesTests.SimpleChangesTestsExecutionMonitor.ChangeType
 import org.eclipse.emf.common.util.ECollections
-import org.junit.Test
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
+import static tools.vitruv.dsls.reactions.tests.simpleChangesTests.SimpleChangesTestsExecutionMonitor.ChangeType.*
 
-import static org.junit.Assert.assertEquals
-import static org.junit.Assert.assertNull
-import static org.junit.Assert.assertTrue
-import allElementTypes.AllElementTypesPackage
+import static org.hamcrest.MatcherAssert.assertThat
+import static tools.vitruv.dsls.reactions.tests.ExecutionMonitor.observedExecutions
+import static tools.vitruv.testutils.metamodels.AllElementTypesCreators.aet
+import static tools.vitruv.testutils.matchers.ModelMatchers.containsModelOf
+import static org.hamcrest.CoreMatchers.is
+import static tools.vitruv.testutils.matchers.ModelMatchers.exists
+import static tools.vitruv.testutils.matchers.ModelMatchers.doesNotExist
+import org.junit.jupiter.api.Disabled
+import static extension tools.vitruv.testutils.domains.DomainModelCreators.allElementTypes
+import tools.vitruv.dsls.reactions.tests.ReactionsExecutionTest
+import tools.vitruv.dsls.reactions.tests.TestReactionsCompiler
+import static extension tools.vitruv.testutils.matchers.CorrespondenceMatchers.hasNoCorrespondences
 
-class SimpleChangesTests extends AbstractAllElementTypesReactionsTests {
-	static val TEST_SOURCE_MODEL_NAME = "EachTestModelSource";
-	static val TEST_TARGET_MODEL_NAME = "EachTestModelTarget";
-	static val FURTHER_SOURCE_TEST_MODEL_NAME = "Further_Source_Test_Model";
-	static val FURTHER_TARGET_TEST_MODEL_NAME = "Further_Target_Test_Model"
-	
-	String[] nonContainmentNonRootIds = #["NonRootHelper0", "NonRootHelper1", "NonRootHelper2"];
+class SimpleChangesTests extends ReactionsExecutionTest {
+	static val SOURCE_MODEL = 'SimpleChangeSource'.allElementTypes
+	static val TARGET_MODEL = "SimpleChangeTarget".allElementTypes
+	static val FURTHER_SOURCE_MODEL = 'FurtherSource'.allElementTypes
+	static val FURTHER_TARGET_MODEL = 'FurtherTarget'.allElementTypes
 
-	private def Root getRootElement() {
-		return TEST_SOURCE_MODEL_NAME.projectModelPath.firstRootElement as Root;
+	String[] nonContainmentNonRootIds = #["NonRootHelper0", "NonRootHelper1", "NonRootHelper2"]
+
+	override protected createCompiler(TestReactionsCompiler.Factory factory) {
+		factory.createCompiler [
+			reactions = #["/tools/vitruv/dsls/reactions/tests/AllElementTypesRedundancy.reactions"]
+			changePropagationSegments = #["simpleChangesTests"]
+		]
 	}
 
-	private def String getProjectModelPath(String modelName) {
-		"model/" + modelName + "." + MODEL_FILE_EXTENSION;
+	@BeforeEach
+	def createRoot() {
+		resourceAt(SOURCE_MODEL).propagate [
+			contents += aet.Root => [
+				id = 'EachTestModelSource'
+				nonRootObjectContainerHelper = aet.NonRootObjectContainerHelper => [
+					id = 'NonRootObjectContainer'
+					nonRootObjectsContainment += nonContainmentNonRootIds.map [ nonRootId |
+						aet.NonRoot => [id = nonRootId]
+					]
+				]
+			]
+		]
+
+		assertThat(resourceAt(TARGET_MODEL), containsModelOf(resourceAt(SOURCE_MODEL)))
+
+		executionMonitor.reset()
 	}
 
-	private def assertModelsEqual() {
-		assertPersistedModelsEqual(TEST_SOURCE_MODEL_NAME.projectModelPath, TEST_TARGET_MODEL_NAME.projectModelPath);
+	private static def getExecutionMonitor() {
+		SimpleChangesTestsExecutionMonitor.instance
 	}
 
-	protected override setup() {
-		val root = AllElementTypesFactory.eINSTANCE.createRoot()
-		root.setId(TEST_SOURCE_MODEL_NAME)
-		createAndSynchronizeModel(TEST_SOURCE_MODEL_NAME.projectModelPath, root)
-		
-		prepareTestModel();
-		assertModelsEqual();
+	private def nonRootWithId(Root rootObject, String searchId) {
+		rootObject.nonRootObjectContainerHelper.nonRootObjectsContainment.findFirst [
+			it.id == searchId
+		]
 	}
 
-	override protected cleanup() {
-		// Do nothing
-	}
-
-	private def prepareTestModel() {
-		val container = AllElementTypesFactory.eINSTANCE.createNonRootObjectContainerHelper();
-		container.setId("NonRootObjectContainer");
-		rootElement.nonRootObjectContainerHelper = container;
-		for (nonRootId : nonContainmentNonRootIds) {
-			val nonRoot = AllElementTypesFactory.eINSTANCE.createNonRoot();
-			nonRoot.id = nonRootId;
-			container.nonRootObjectsContainment.add(nonRoot);
-		}
-		saveAndSynchronizeChanges(rootElement);
-	}
-
-	private def unsetSingleValuedEAttribute(Root rootObject) {
-		rootObject.eUnset(AllElementTypesPackage.Literals.ROOT__SINGLE_VALUED_EATTRIBUTE);
-		saveAndSynchronizeChanges(rootElement)
-	}
-
-	private def void unsetSingleValuedNonContainmentNonRootObject(Root rootObject) {
-		rootObject.singleValuedNonContainmentEReference = null;
-		saveAndSynchronizeChanges(rootObject);
-	}
-
-	private def addMultiValuedEAttribute(Root rootObject, Integer value) {
-		rootObject.multiValuedEAttribute.add(value);
-		saveAndSynchronizeChanges(rootObject);
-	}
-
-	private def void replaceMultiValuedEAttribute(Root rootObject, Integer oldValue, Integer newValue) {
-		val oldIndex = rootObject.multiValuedEAttribute.indexOf(oldValue);
-		if (oldIndex == -1) {
-			throw new IllegalStateException("There is no element with the specified old element value.");
-		}
-		rootObject.multiValuedEAttribute.set(oldIndex, newValue);
-		saveAndSynchronizeChanges(rootObject);
-	}
-
-	private def removeMultiValuedEAttribute(Root rootObject, Integer value) {
-		val oldIndex = rootObject.multiValuedEAttribute.indexOf(value);
-		if (oldIndex == -1) {
-			throw new IllegalStateException("There is no element with the specified old element value.");
-		}
-		rootObject.multiValuedEAttribute.remove(oldIndex);
-		saveAndSynchronizeChanges(rootObject);
-	}
-
-	private def NonRoot addMultiValuedContainmentNonRootObject(Root rootObject, String id) {
-		val nonRootObject = AllElementTypesFactory.eINSTANCE.createNonRoot();
-		nonRootObject.setId(id);
-		rootObject.multiValuedContainmentEReference.add(nonRootObject);
-		saveAndSynchronizeChanges(nonRootObject);
-		return nonRootObject;
-	}
-
-	private def void replaceMultiValuedContainmentNonRootObject(Root rootObject, String oldId, String newId) {
-		val oldElement = rootObject.multiValuedContainmentEReference.findFirst(nonRoot|nonRoot.id == oldId);
-		if (oldElement === null) {
-			throw new IllegalStateException("There is no element with the specified old element id.");
-		}
-		val oldIndex = rootObject.multiValuedContainmentEReference.indexOf(oldElement);
-		val newElement = AllElementTypesFactory.eINSTANCE.createNonRoot();
-		newElement.id = newId;
-		rootObject.multiValuedContainmentEReference.set(oldIndex, newElement);
-		saveAndSynchronizeChanges(rootObject);
-	}
-
-	private def removeMultiValuedContainmentNonRootObject(Root rootObject, String id) {
-		val objectToRemove = rootObject.multiValuedContainmentEReference.findFirst(nonRoot|nonRoot.id == id);
-		if (objectToRemove === null) {
-			throw new IllegalStateException("There is no element with the specified element id.");
-		}
-		rootObject.multiValuedContainmentEReference.remove(objectToRemove);
-		saveAndSynchronizeChanges(rootObject);
-	}
-
-	private def void insertMultiValuedNonContainmentNonRootObject(Root rootObject, String id) {
-		val nonRoot = rootObject.nonRootObjectContainerHelper.nonRootObjectsContainment.findFirst(
-			nonRoot |
-				nonRoot.id == id
-		);
-		if (nonRoot === null) {
-			throw new IllegalStateException("There is no element with the specified element id.");
-		}
-		rootObject.multiValuedNonContainmentEReference.add(nonRoot);
-		saveAndSynchronizeChanges(rootObject);
-	}
-
-	private def void replaceMultiValuedNonContainmentNonRootObject(Root rootObject, String oldId, String newId) {
-		val oldElement = rootObject.nonRootObjectContainerHelper.nonRootObjectsContainment.findFirst(
-			nonRoot |
-				nonRoot.id == oldId
-		);
-		val newElement = rootObject.nonRootObjectContainerHelper.nonRootObjectsContainment.findFirst(
-			nonRoot |
-				nonRoot.id == newId
-		);
-		if (oldElement === null) {
-			throw new IllegalStateException("There is no element with the specified old element id.");
-		}
-		if (newElement === null) {
-			throw new IllegalStateException("There is no element with the specified new element id.");
-		}
-		val oldIndex = rootObject.multiValuedNonContainmentEReference.indexOf(oldElement);
-		if (oldIndex == -1) {
-			throw new IllegalStateException("Old element was not in the reference list.");
-		}
-		rootObject.multiValuedNonContainmentEReference.set(oldIndex, newElement);
-		saveAndSynchronizeChanges(rootObject);
-	}
-
-	private def void removeMultiValuedNonContainmentNonRootObject(Root rootObject, String id) {
-		val objectToRemove = rootObject.nonRootObjectContainerHelper.nonRootObjectsContainment.findFirst(
-			nonRoot |
-				nonRoot.id == id
-		);
-		if (objectToRemove === null) {
-			throw new IllegalStateException("There is no element with the specified element id.");
-		}
-		if (!rootObject.multiValuedNonContainmentEReference.contains(objectToRemove)) {
-			throw new IllegalStateException("The specified element is not contained in the root.");
-		}
-		rootObject.multiValuedNonContainmentEReference.remove(objectToRemove);
-		saveAndSynchronizeChanges(rootObject);
-	}
-
-	private def void permuteMultiValuedNonContamentNonRootObjects(Root rootObject) {
-		ECollections.sort(rootObject.multiValuedNonContainmentEReference, [a, b|- a.id.compareTo(b.id)]);
-		saveAndSynchronizeChanges(rootObject);
-	}
-
-	private def NonRoot setSingleValuedNonContainmentNonRootObject(Root rootObject, String id) {
-		val nonRootObject = rootObject.nonRootObjectContainerHelper.nonRootObjectsContainment.findFirst(
-			nonRoot |
-				nonRoot.id == id
-		);
-		rootObject.singleValuedNonContainmentEReference = nonRootObject;
-		saveAndSynchronizeChanges(nonRootObject);
-		return nonRootObject;
-	}
-
-	private def NonRoot setSingleValuedContainmentNonRootObject(Root rootObject, String id) {
-		val nonRootObject = AllElementTypesFactory.eINSTANCE.createNonRoot();
-		rootObject.singleValuedContainmentEReference = nonRootObject;
-		setElementId(nonRootObject, id);
-		return nonRootObject;
-	}
-
-	private def void unsetSingleValuedContainmentNonRootObject(Root rootObject) {
-		rootObject.singleValuedContainmentEReference = null;
-		saveAndSynchronizeChanges(rootObject)
-	}
-
-	private def void setElementId(Identified element, String newId) {
-		element.setId(newId);
-		saveAndSynchronizeChanges(element);
-	}
-
-	private def void setSingleValuedEAttribute(Root root, Integer value) {
-		root.singleValuedEAttribute = value;
-		saveAndSynchronizeChanges(root);
-	}
-
-	private def void setSingleValuedPrimitiveTypeEAttribute(Root root, Integer value) {
-		root.singleValuedPrimitiveTypeEAttribute = value;
-		saveAndSynchronizeChanges(root);
-	}
-
-	// TODO HK (Change MM) Unset does not produce any change event at the moment
-	// @Test
+	@Test
+	@Disabled("Unset does not produce any change event at the moment") // TODO HK (Change MM)
 	def void testUnsetSingleValuedEAttribute() {
-		SimpleChangesTestsExecutionMonitor.reinitialize();
-		unsetSingleValuedEAttribute(rootElement);
-		val compareMonitor = new SimpleChangesTestsExecutionMonitor();
-		compareMonitor.set(ChangeType.UnsetEAttribute);
-		assertEquals(compareMonitor, SimpleChangesTestsExecutionMonitor.instance);
-		assertModelsEqual();
+		Root.from(SOURCE_MODEL).propagate [
+			singleValuedEAttribute = null
+		]
+
+		assertThat(executionMonitor, observedExecutions(UnsetEAttribute))
+		assertThat(resourceAt(TARGET_MODEL), containsModelOf(resourceAt(SOURCE_MODEL)))
 	}
 
-	// @Test
-	def void testUnsetSingleValuedNonContainmentEReference() throws Throwable {
-		setSingleValuedNonContainmentNonRootObject(rootElement, nonContainmentNonRootIds.get(1));
-		SimpleChangesTestsExecutionMonitor.reinitialize();
-		unsetSingleValuedNonContainmentNonRootObject(rootElement);
-		val compareMonitor = new SimpleChangesTestsExecutionMonitor();
-		compareMonitor.set(ChangeType.UnsetNonContainmentEReference);
-		compareMonitor.assertEqualWithStatic();
-		assertEquals(compareMonitor, SimpleChangesTestsExecutionMonitor.instance);
-		assertModelsEqual();
+	@Test
+	@Disabled
+	def void testUnsetSingleValuedNonContainmentEReference() {
+		Root.from(SOURCE_MODEL).propagate [
+			singleValuedNonContainmentEReference = nonRootWithId(nonContainmentNonRootIds.get(1))
+		]
+		executionMonitor.reset()
+		Root.from(SOURCE_MODEL).propagate [
+			singleValuedNonContainmentEReference = null
+		]
+
+		assertThat(executionMonitor, observedExecutions(UnsetNonContainmentEReference))
+		assertThat(resourceAt(TARGET_MODEL), containsModelOf(resourceAt(SOURCE_MODEL)))
 	}
 
 	@Test
 	def void testUpdateSingleValuedEAttribute() {
-		SimpleChangesTestsExecutionMonitor.reinitialize();
-		setSingleValuedEAttribute(rootElement, -1);
-		val compareMonitor = new SimpleChangesTestsExecutionMonitor();
-		compareMonitor.set(ChangeType.UpdateSingleValuedEAttribute);
-		compareMonitor.assertEqualWithStatic();
-		assertEquals(compareMonitor, SimpleChangesTestsExecutionMonitor.instance);
-		assertModelsEqual();
+		Root.from(SOURCE_MODEL).propagate [
+			singleValuedEAttribute = -1
+		]
+
+		assertThat(executionMonitor, observedExecutions(UpdateSingleValuedEAttribute))
+		assertThat(resourceAt(TARGET_MODEL), containsModelOf(resourceAt(SOURCE_MODEL)))
 	}
 
 	@Test
 	def void testUpdateSingleValuedPrimitiveTypeEAttribute() {
-		SimpleChangesTestsExecutionMonitor.reinitialize();
-		setSingleValuedPrimitiveTypeEAttribute(rootElement, -1);
-		val compareMonitor = new SimpleChangesTestsExecutionMonitor();
-		compareMonitor.set(ChangeType.UpdateSingleValuedPrimitveTypeEAttribute);
-		compareMonitor.assertEqualWithStatic();
-		assertEquals(compareMonitor, SimpleChangesTestsExecutionMonitor.instance);
-		assertModelsEqual();
+		Root.from(SOURCE_MODEL).propagate [
+			singleValuedPrimitiveTypeEAttribute = -1
+		]
+
+		assertThat(executionMonitor, observedExecutions(UpdateSingleValuedPrimitveTypeEAttribute))
+		assertThat(resourceAt(TARGET_MODEL), containsModelOf(resourceAt(SOURCE_MODEL)))
 	}
 
 	@Test
-	def void testCreateSingleValuedContainmentEReference() throws Throwable {
-		unsetSingleValuedContainmentNonRootObject(rootElement);
-		SimpleChangesTestsExecutionMonitor.reinitialize();
-		setSingleValuedContainmentNonRootObject(rootElement, "singleValuedContainmentNonRootTest");
-		val compareMonitor = new SimpleChangesTestsExecutionMonitor();
-		compareMonitor.set(ChangeType.CreateEObject);
-		compareMonitor.set(ChangeType.CreateNonRootEObjectSingle);
-		compareMonitor.assertEqualWithStatic();
-		assertEquals(compareMonitor, SimpleChangesTestsExecutionMonitor.instance);
-		assertModelsEqual();
+	def void testCreateSingleValuedContainmentEReference() {
+		Root.from(SOURCE_MODEL).propagate [
+			singleValuedContainmentEReference = aet.NonRoot => [id = "singleValuedContainmentNonRootTest"]
+		]
+
+		assertThat(executionMonitor, observedExecutions(CreateEObject, CreateNonRootEObjectSingle))
+		assertThat(resourceAt(TARGET_MODEL), containsModelOf(resourceAt(SOURCE_MODEL)))
 	}
 
 	@Test
-	def void testDeleteSingleValuedContainmentEReference() throws Throwable {
-		setSingleValuedContainmentNonRootObject(rootElement, "singleValuedContainmentNonRoot");
-		SimpleChangesTestsExecutionMonitor.reinitialize();
-		val oldElement = rootElement.singleValuedContainmentEReference;
-		unsetSingleValuedContainmentNonRootObject(rootElement);
-		val compareMonitor = new SimpleChangesTestsExecutionMonitor();
-		compareMonitor.set(ChangeType.DeleteEObject);
-		compareMonitor.set(ChangeType.DeleteNonRootEObjectSingle);
-		// compareMonitor.set(ChangeType.CreateNonRootEObjectSingle);
-		compareMonitor.assertEqualWithStatic();
-		assertEquals(compareMonitor, SimpleChangesTestsExecutionMonitor.instance);
-		assertModelsEqual();
-		assertTrue(correspondenceModel.getCorrespondingEObjects(#[oldElement]).empty)
+	def void testDeleteSingleValuedContainmentEReference() {
+		val oldElement = aet.NonRoot => [id = "singleValuedContainmentNonRoot"]
+		Root.from(SOURCE_MODEL).propagate [
+			singleValuedContainmentEReference = oldElement
+		]
+		executionMonitor.reset()
+		Root.from(SOURCE_MODEL).propagate [
+			singleValuedContainmentEReference = null
+		]
+
+		assertThat(executionMonitor, observedExecutions(DeleteEObject, DeleteNonRootEObjectSingle))
+		assertThat(resourceAt(TARGET_MODEL), containsModelOf(resourceAt(SOURCE_MODEL)))
+		assertThat(oldElement, hasNoCorrespondences)
 	}
 
 	@Test
-	def void testReplaceSingleValuedContainmentEReference() throws Throwable {
-		setSingleValuedContainmentNonRootObject(rootElement, "singleValuedContainmentNonRoot");
-		SimpleChangesTestsExecutionMonitor.reinitialize();
-		setSingleValuedContainmentNonRootObject(rootElement, "singleValuedContainmentNonRootTest");
-		val compareMonitor = new SimpleChangesTestsExecutionMonitor();
-		compareMonitor.set(ChangeType.DeleteNonRootEObjectSingle);
-		compareMonitor.set(ChangeType.DeleteEObject);
-		compareMonitor.set(ChangeType.CreateNonRootEObjectSingle);
-		compareMonitor.set(ChangeType.CreateEObject);
-		compareMonitor.assertEqualWithStatic();
-		assertEquals(compareMonitor, SimpleChangesTestsExecutionMonitor.instance);
-		assertModelsEqual();
+	def void testReplaceSingleValuedContainmentEReference() {
+		Root.from(SOURCE_MODEL).propagate [
+			singleValuedContainmentEReference = aet.NonRoot => [id = "singleValuedContainmentNonRootBefore"]
+		]
+		executionMonitor.reset()
+		Root.from(SOURCE_MODEL).propagate [
+			singleValuedContainmentEReference = aet.NonRoot => [id = "singleValuedContainmentNonRootAfter"]
+		]
+
+		assertThat(executionMonitor,
+			observedExecutions(DeleteNonRootEObjectSingle, DeleteEObject, CreateNonRootEObjectSingle, CreateEObject))
+		assertThat(resourceAt(TARGET_MODEL), containsModelOf(resourceAt(SOURCE_MODEL)))
 	}
 
 	@Test
-	def void testSetSingleValuedNonContainmentEReference() throws Throwable {
-		SimpleChangesTestsExecutionMonitor.reinitialize();
-		setSingleValuedNonContainmentNonRootObject(rootElement, nonContainmentNonRootIds.get(1));
-		val compareMonitor = new SimpleChangesTestsExecutionMonitor();
-		compareMonitor.set(ChangeType.UpdateSingleValuedNonContainmentEReference);
-		compareMonitor.assertEqualWithStatic();
-		assertEquals(compareMonitor, SimpleChangesTestsExecutionMonitor.instance);
-		assertEquals(nonContainmentNonRootIds.get(1), rootElement.singleValuedNonContainmentEReference.id);
-		assertModelsEqual();
+	def void testSetSingleValuedNonContainmentEReference() {
+		val testId = nonContainmentNonRootIds.get(1)
+		Root.from(SOURCE_MODEL).propagate [
+			singleValuedNonContainmentEReference = nonRootWithId(testId)
+		]
+
+		assertThat(executionMonitor, observedExecutions(UpdateSingleValuedNonContainmentEReference))
+		assertThat(Root.from(SOURCE_MODEL).singleValuedNonContainmentEReference.id, is(testId))
+		assertThat(resourceAt(TARGET_MODEL), containsModelOf(resourceAt(SOURCE_MODEL)))
 	}
 
 	@Test
-	def void testReplaceSingleValuedNonContainmentEReference() throws Throwable {
-		setSingleValuedNonContainmentNonRootObject(rootElement, nonContainmentNonRootIds.get(0));
-		SimpleChangesTestsExecutionMonitor.reinitialize();
-		setSingleValuedNonContainmentNonRootObject(rootElement, nonContainmentNonRootIds.get(1));
-		val compareMonitor = new SimpleChangesTestsExecutionMonitor();
-		compareMonitor.set(ChangeType.UpdateSingleValuedNonContainmentEReference);
-		compareMonitor.assertEqualWithStatic();
-		assertEquals(compareMonitor, SimpleChangesTestsExecutionMonitor.instance);
-		assertEquals(nonContainmentNonRootIds.get(1), rootElement.singleValuedNonContainmentEReference.id);
-		assertModelsEqual();
+	def void testReplaceSingleValuedNonContainmentEReference() {
+		Root.from(SOURCE_MODEL).propagate [
+			singleValuedNonContainmentEReference = nonRootWithId(nonContainmentNonRootIds.get(0))
+		]
+		executionMonitor.reset()
+		val testId = nonContainmentNonRootIds.get(1)
+		Root.from(SOURCE_MODEL).propagate [
+			singleValuedNonContainmentEReference = nonRootWithId(testId)
+		]
+
+		assertThat(executionMonitor, observedExecutions(UpdateSingleValuedNonContainmentEReference))
+		assertThat(Root.from(SOURCE_MODEL).singleValuedNonContainmentEReference.id, is(testId))
+		assertThat(resourceAt(TARGET_MODEL), containsModelOf(resourceAt(SOURCE_MODEL)))
 	}
 
 	@Test
-	def void testAddMultiValuedEAttribute() throws Throwable {
-		SimpleChangesTestsExecutionMonitor.reinitialize();
-		addMultiValuedEAttribute(rootElement, 1);
-		val compareMonitor = new SimpleChangesTestsExecutionMonitor();
-		compareMonitor.set(ChangeType.InsertEAttributeValue);
-		compareMonitor.assertEqualWithStatic();
-		assertEquals(compareMonitor, SimpleChangesTestsExecutionMonitor.instance);
-		assertModelsEqual();
+	def void testAddMultiValuedEAttribute() {
+		Root.from(SOURCE_MODEL).propagate [
+			multiValuedEAttribute += 1
+		]
+
+		assertThat(executionMonitor, observedExecutions(InsertEAttributeValue))
+		assertThat(resourceAt(TARGET_MODEL), containsModelOf(resourceAt(SOURCE_MODEL)))
 	}
 
 	@Test
-	def void testDeleteMultiValuedEAttribute() throws Throwable {
-		addMultiValuedEAttribute(rootElement, 1);
-		addMultiValuedEAttribute(rootElement, 2);
-		SimpleChangesTestsExecutionMonitor.reinitialize();
-		removeMultiValuedEAttribute(rootElement, 1);
-		val compareMonitor = new SimpleChangesTestsExecutionMonitor();
-		compareMonitor.set(ChangeType.RemoveEAttributeValue);
-		compareMonitor.assertEqualWithStatic();
-		assertEquals(compareMonitor, SimpleChangesTestsExecutionMonitor.instance);
-		assertEquals(2, rootElement.multiValuedEAttribute.get(0));
-		assertModelsEqual();
+	def void testDeleteMultiValuedEAttribute() {
+		Root.from(SOURCE_MODEL).propagate [
+			multiValuedEAttribute += #[1, 2]
+		]
+		executionMonitor.reset()
+		Root.from(SOURCE_MODEL).propagate [
+			multiValuedEAttribute -= 1
+		]
+
+		assertThat(executionMonitor, observedExecutions(RemoveEAttributeValue))
+		assertThat(Root.from(SOURCE_MODEL).multiValuedEAttribute.get(0), is(2))
+		assertThat(resourceAt(TARGET_MODEL), containsModelOf(resourceAt(SOURCE_MODEL)))
 	}
 
 	@Test
-	def void testReplaceMultiValuedEAttribute() throws Throwable {
-		addMultiValuedEAttribute(rootElement, 1);
-		addMultiValuedEAttribute(rootElement, 2);
-		SimpleChangesTestsExecutionMonitor.reinitialize();
-		replaceMultiValuedEAttribute(rootElement, 2, 3);
-		val compareMonitor = new SimpleChangesTestsExecutionMonitor();
+	def void testReplaceMultiValuedEAttribute() {
+		Root.from(SOURCE_MODEL).propagate [
+			multiValuedEAttribute += #[1, 2]
+		]
+		executionMonitor.reset()
+		Root.from(SOURCE_MODEL).propagate [
+			multiValuedEAttribute.set(1, 3)
+		]
+
 		// TODO HK (Change MM) This should not be, should be one event
-		compareMonitor.set(ChangeType.RemoveEAttributeValue);
-		compareMonitor.set(ChangeType.InsertEAttributeValue);
-		compareMonitor.assertEqualWithStatic();
-		assertEquals(compareMonitor, SimpleChangesTestsExecutionMonitor.instance);
-		assertEquals(3, rootElement.multiValuedEAttribute.get(1));
-		assertModelsEqual();
+		assertThat(executionMonitor, observedExecutions(RemoveEAttributeValue, InsertEAttributeValue))
+		assertThat(Root.from(SOURCE_MODEL).multiValuedEAttribute.get(1), is(3))
+		assertThat(resourceAt(TARGET_MODEL), containsModelOf(resourceAt(SOURCE_MODEL)))
 	}
 
 	@Test
-	def void testAddMultiValuedContainmentEReference() throws Throwable {
-		SimpleChangesTestsExecutionMonitor.reinitialize();
-		addMultiValuedContainmentNonRootObject(rootElement, "multiValuedContainmentNonRootTest");
-		val compareMonitor = new SimpleChangesTestsExecutionMonitor();
-		compareMonitor.set(ChangeType.CreateNonRootEObjectInList);
-		compareMonitor.set(ChangeType.CreateEObject);
-		compareMonitor.assertEqualWithStatic();
-		assertEquals(compareMonitor, SimpleChangesTestsExecutionMonitor.instance);
-		assertModelsEqual();
+	def void testAddMultiValuedContainmentEReference() {
+		Root.from(SOURCE_MODEL).propagate [
+			multiValuedContainmentEReference += aet.NonRoot => [id = "multiValuedContainmentNonRootTest"]
+		]
+
+		assertThat(executionMonitor, observedExecutions(CreateNonRootEObjectInList, CreateEObject))
+		assertThat(resourceAt(TARGET_MODEL), containsModelOf(resourceAt(SOURCE_MODEL)))
 	}
 
 	@Test
-	def void testDeleteMultiValuedContainmentEReference() throws Throwable {
-		addMultiValuedContainmentNonRootObject(rootElement, "multiValuedContainmentNonRootTest");
-		SimpleChangesTestsExecutionMonitor.reinitialize();
-		removeMultiValuedContainmentNonRootObject(rootElement, "multiValuedContainmentNonRootTest");
-		val compareMonitor = new SimpleChangesTestsExecutionMonitor();
-		compareMonitor.set(ChangeType.DeleteNonRootEObjectInList);
-		compareMonitor.set(ChangeType.DeleteEObject);
-		compareMonitor.assertEqualWithStatic();
-		assertEquals(compareMonitor, SimpleChangesTestsExecutionMonitor.instance);
-		assertModelsEqual();
+	def void testDeleteMultiValuedContainmentEReference() {
+		Root.from(SOURCE_MODEL).propagate [
+			multiValuedContainmentEReference += aet.NonRoot => [id = "multiValuedContainmentNonRootTest"]
+		]
+		executionMonitor.reset()
+		Root.from(SOURCE_MODEL).propagate [
+			multiValuedContainmentEReference.removeIf[it.id == "multiValuedContainmentNonRootTest"]
+		]
+
+		assertThat(executionMonitor, observedExecutions(DeleteNonRootEObjectInList, DeleteEObject))
+		assertThat(resourceAt(TARGET_MODEL), containsModelOf(resourceAt(SOURCE_MODEL)))
 	}
 
 	@Test
-	def void testReplaceMultiValuedContainmentEReference() throws Throwable {
-		addMultiValuedContainmentNonRootObject(rootElement, "multiValuedContainmentNonRootTest");
-		SimpleChangesTestsExecutionMonitor.reinitialize();
-		replaceMultiValuedContainmentNonRootObject(rootElement, "multiValuedContainmentNonRootTest",
-			"multiValuedContainmentNonRootTest2");
-		val compareMonitor = new SimpleChangesTestsExecutionMonitor();
-		compareMonitor.set(ChangeType.DeleteNonRootEObjectInList);
-		compareMonitor.set(ChangeType.DeleteEObject);
-		compareMonitor.set(ChangeType.CreateNonRootEObjectInList);
-		compareMonitor.set(ChangeType.CreateEObject);
-		compareMonitor.assertEqualWithStatic();
-		assertEquals(compareMonitor, SimpleChangesTestsExecutionMonitor.instance);
-		assertEquals("multiValuedContainmentNonRootTest2", rootElement.multiValuedContainmentEReference.last.id);
-		assertModelsEqual();
+	def void testReplaceMultiValuedContainmentEReference() {
+		Root.from(SOURCE_MODEL).propagate [
+			multiValuedContainmentEReference += aet.NonRoot => [id = "multiValuedContainmentNonRootBefore"]
+		]
+		executionMonitor.reset()
+		Root.from(SOURCE_MODEL).propagate [
+			multiValuedContainmentEReference.set(0, aet.NonRoot => [id = "multiValuedContainmentNonRootAfter"])
+		]
+
+		assertThat(executionMonitor,
+			observedExecutions(DeleteNonRootEObjectInList, DeleteEObject, CreateNonRootEObjectInList, CreateEObject))
+		assertThat(Root.from(SOURCE_MODEL).multiValuedContainmentEReference.last.id,
+			is("multiValuedContainmentNonRootAfter"))
+		assertThat(resourceAt(TARGET_MODEL), containsModelOf(resourceAt(SOURCE_MODEL)))
 	}
 
 	@Test
-	def void testInsertMultiValuedNonContainmentEReference() throws Throwable {
-		SimpleChangesTestsExecutionMonitor.reinitialize();
-		insertMultiValuedNonContainmentNonRootObject(rootElement, nonContainmentNonRootIds.get(0));
-		val compareMonitor = new SimpleChangesTestsExecutionMonitor();
-		compareMonitor.set(ChangeType.InsertNonContainmentEReference);
-		assertEquals(compareMonitor, SimpleChangesTestsExecutionMonitor.instance);
-		assertModelsEqual();
+	def void testInsertMultiValuedNonContainmentEReference() {
+		Root.from(SOURCE_MODEL).propagate [
+			multiValuedNonContainmentEReference += nonRootWithId(nonContainmentNonRootIds.get(0))
+		]
 
+		assertThat(executionMonitor, observedExecutions(InsertNonContainmentEReference))
+		assertThat(resourceAt(TARGET_MODEL), containsModelOf(resourceAt(SOURCE_MODEL)))
 	}
 
 	@Test
-	def void testRemoveMultiValuedNonContainmentEReference() throws Throwable {
-		insertMultiValuedNonContainmentNonRootObject(rootElement, nonContainmentNonRootIds.get(1));
-		SimpleChangesTestsExecutionMonitor.reinitialize();
-		removeMultiValuedNonContainmentNonRootObject(rootElement, nonContainmentNonRootIds.get(1));
-		val compareMonitor = new SimpleChangesTestsExecutionMonitor();
-		compareMonitor.set(ChangeType.RemoveNonContainmentEReference);
-		val mon = SimpleChangesTestsExecutionMonitor.instance;
-		compareMonitor.assertEqualWithStatic();
-		assertEquals(compareMonitor, mon);
-		assertModelsEqual();
+	def void testRemoveMultiValuedNonContainmentEReference() {
+		Root.from(SOURCE_MODEL).propagate [
+			multiValuedNonContainmentEReference += nonRootWithId(nonContainmentNonRootIds.get(1))
+		]
+		executionMonitor.reset()
+		Root.from(SOURCE_MODEL).propagate [
+			multiValuedNonContainmentEReference -= nonRootWithId(nonContainmentNonRootIds.get(1))
+		]
+
+		assertThat(executionMonitor, observedExecutions(RemoveNonContainmentEReference))
+		assertThat(resourceAt(TARGET_MODEL), containsModelOf(resourceAt(SOURCE_MODEL)))
 	}
 
 	@Test
-	def void testReplaceMultiValuedNonContainmentEReference() throws Throwable {
-		insertMultiValuedNonContainmentNonRootObject(rootElement, nonContainmentNonRootIds.get(0));
-		insertMultiValuedNonContainmentNonRootObject(rootElement, nonContainmentNonRootIds.get(1));
-		SimpleChangesTestsExecutionMonitor.reinitialize();
-		replaceMultiValuedNonContainmentNonRootObject(rootElement, nonContainmentNonRootIds.get(1),
-			nonContainmentNonRootIds.get(2))
-		val compareMonitor = new SimpleChangesTestsExecutionMonitor();
-		// TODO HK (Change MM) this should not be... should be one event!
-		// compareMonitor.set(ChangeType.ReplaceNonContainmentEReference);
-		compareMonitor.set(ChangeType.RemoveNonContainmentEReference);
-		compareMonitor.set(ChangeType.InsertNonContainmentEReference);
-		compareMonitor.assertEqualWithStatic();
-		assertTrue(rootElement.multiValuedNonContainmentEReference.size == 2);
-		assertTrue(rootElement.multiValuedNonContainmentEReference.get(0).id == nonContainmentNonRootIds.get(0));
-		assertTrue(rootElement.multiValuedNonContainmentEReference.get(1).id == nonContainmentNonRootIds.get(2));
-		assertEquals(compareMonitor, SimpleChangesTestsExecutionMonitor.instance);
-		assertModelsEqual();
-	}
+	def void testReplaceMultiValuedNonContainmentEReference() {
+		Root.from(SOURCE_MODEL).propagate [
+			multiValuedNonContainmentEReference += nonRootWithId(nonContainmentNonRootIds.get(0))
+			multiValuedNonContainmentEReference += nonRootWithId(nonContainmentNonRootIds.get(1))
+		]
+		executionMonitor.reset()
+		Root.from(SOURCE_MODEL).propagate [
+			multiValuedNonContainmentEReference.set(1, nonRootWithId(nonContainmentNonRootIds.get(2)))
+		]
 
-	// TODO HK (Change MM) Permute operations are not supported by now? No EChange produced
-	// @Test
-	def void testPermuteMultiValuedNonContainmentEReference() throws Throwable {
-		for (nonRootId : nonContainmentNonRootIds) {
-			insertMultiValuedNonContainmentNonRootObject(rootElement, nonRootId);
-		}
-		SimpleChangesTestsExecutionMonitor.reinitialize();
-		permuteMultiValuedNonContamentNonRootObjects(rootElement);
-		val compareMonitor = new SimpleChangesTestsExecutionMonitor();
-		compareMonitor.set(ChangeType.PermuteNonContainmentEReference);
-		assertEquals(compareMonitor, SimpleChangesTestsExecutionMonitor.instance);
-		assertModelsEqual();
+		// TODO HK (Change MM) this should not be... should be one event: ReplaceNonContainmentEReference!
+		assertThat(executionMonitor, observedExecutions(RemoveNonContainmentEReference, InsertNonContainmentEReference))
+		Root.from(SOURCE_MODEL) => [
+			assertThat(multiValuedNonContainmentEReference.size, is(2))
+			assertThat(multiValuedNonContainmentEReference.get(0).id, is(nonContainmentNonRootIds.get(0)))
+			assertThat(multiValuedNonContainmentEReference.get(1).id, is(nonContainmentNonRootIds.get(2)))
+		]
+		assertThat(resourceAt(TARGET_MODEL), containsModelOf(resourceAt(SOURCE_MODEL)))
 	}
 
 	@Test
-	def void testDeleteEachTestModel() throws Throwable {
-		assertModelExists(TEST_SOURCE_MODEL_NAME.projectModelPath);
-		deleteAndSynchronizeModel(TEST_SOURCE_MODEL_NAME.projectModelPath);
-		assertModelNotExists(TEST_SOURCE_MODEL_NAME.projectModelPath);
-		assertModelNotExists(TEST_TARGET_MODEL_NAME.projectModelPath);
+	@Disabled("Permute operations are not supported by now? No EChange produced") // TODO HK (Change MM) 
+	def void testPermuteMultiValuedNonContainmentEReference() {
+		Root.from(SOURCE_MODEL).propagate [
+			multiValuedNonContainmentEReference += nonContainmentNonRootIds.map[id|nonRootWithId(id)]
+		]
+		executionMonitor.reset()
+		Root.from(SOURCE_MODEL).propagate [
+			ECollections.sort(multiValuedNonContainmentEReference, [a, b|- a.id.compareTo(b.id)])
+		]
+
+		assertThat(executionMonitor, observedExecutions(PermuteNonContainmentEReference))
+		assertThat(resourceAt(TARGET_MODEL), containsModelOf(resourceAt(SOURCE_MODEL)))
 	}
 
 	@Test
-	def void testCreateFurtherModel() throws Throwable {
-		val root = AllElementTypesFactory.eINSTANCE.createRoot();
-		root.setId(FURTHER_SOURCE_TEST_MODEL_NAME);
-		createAndSynchronizeModel(FURTHER_SOURCE_TEST_MODEL_NAME.projectModelPath, root);
-		assertPersistedModelsEqual(FURTHER_SOURCE_TEST_MODEL_NAME.projectModelPath,
-			FURTHER_TARGET_TEST_MODEL_NAME.projectModelPath);
+	def void testDeleteEachTestModel() {
+		assertThat(resourceAt(SOURCE_MODEL), exists())
+		assertThat(resourceAt(TARGET_MODEL), exists())
+
+		resourceAt(SOURCE_MODEL).propagate[delete(emptyMap)]
+
+		assertThat(resourceAt(SOURCE_MODEL), doesNotExist())
+		assertThat(resourceAt(TARGET_MODEL), doesNotExist())
 	}
 
 	@Test
-	def void testDeleteFurtherModel() throws Throwable {
-		val root = AllElementTypesFactory.eINSTANCE.createRoot();
-		root.setId(FURTHER_SOURCE_TEST_MODEL_NAME);
-		createAndSynchronizeModel(FURTHER_SOURCE_TEST_MODEL_NAME.projectModelPath, root);
-		assertModelExists(FURTHER_TARGET_TEST_MODEL_NAME.projectModelPath);
-		assertPersistedModelsEqual(FURTHER_SOURCE_TEST_MODEL_NAME.projectModelPath,
-			FURTHER_TARGET_TEST_MODEL_NAME.projectModelPath);
-		deleteAndSynchronizeModel(FURTHER_SOURCE_TEST_MODEL_NAME.projectModelPath);
-		assertModelNotExists(FURTHER_SOURCE_TEST_MODEL_NAME.projectModelPath);
-		assertModelNotExists(FURTHER_TARGET_TEST_MODEL_NAME.projectModelPath);
+	def void testCreateFurtherModel() {
+		resourceAt(FURTHER_SOURCE_MODEL).propagate [
+			contents += aet.Root => [
+				id = "Further_Source_Test_Model"
+			]
+		]
+
+		assertThat(resourceAt(FURTHER_TARGET_MODEL), containsModelOf(resourceAt(FURTHER_SOURCE_MODEL)))
 	}
 
+	@Test
+	def void testDeleteFurtherModel() {
+		resourceAt(FURTHER_SOURCE_MODEL).propagate [
+			contents += aet.Root => [
+				id = "Further_Source_Test_Model"
+			]
+		]
+
+		assertThat(resourceAt(FURTHER_TARGET_MODEL), exists())
+		assertThat(resourceAt(FURTHER_SOURCE_MODEL), containsModelOf(resourceAt(FURTHER_TARGET_MODEL)))
+
+		resourceAt(FURTHER_SOURCE_MODEL).propagate[delete(emptyMap)]
+
+		assertThat(resourceAt(FURTHER_SOURCE_MODEL), doesNotExist())
+		assertThat(resourceAt(FURTHER_TARGET_MODEL), doesNotExist())
+	}
 }

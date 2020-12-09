@@ -1,51 +1,42 @@
 package tools.vitruv.framework.tests.domains
 
-import org.junit.Test
-import uml_mockup.Uml_mockupFactory
+import org.junit.jupiter.api.Test
+import static tools.vitruv.testutils.metamodels.UmlMockupCreators.uml
 
 class UmlStateChangeTest extends StateChangePropagationTest {
-
 	@Test
 	def void testRenameTypes() {
-		var uClass = umlRoot.classes.get(0)
-		uClass.name = "RenamedClass"
-		var uInterface = umlRoot.interfaces.get(0)
-		uInterface.name = "RenamedInterface"
+		umlRoot.classes.get(0) => [name = "RenamedClass"]
+		umlRoot.interfaces.get(0) => [name = "RenamedInterface"]
 		compareChanges(umlModel, umlCheckpoint)
 	}
 
 	@Test
 	def void testNewAttributes() {
-		var uClass = umlRoot.classes.get(0)
-		var uAttribute = Uml_mockupFactory.eINSTANCE.createUAttribute
-		uAttribute.attributeName = "NewlyAddedAttribute"
-		uClass.attributes.add(uAttribute)
+		umlRoot.classes.get(0) => [
+			attributes += uml.Attribute => [attributeName = "NewlyAddedAttribute"]
+		]
 		compareChanges(umlModel, umlCheckpoint)
 	}
 
 	@Test
 	def void testNewMethod() {
-		var uInterface = umlRoot.interfaces.get(0)
-		var uMethod = Uml_mockupFactory.eINSTANCE.createUMethod
-		uMethod.name = "NewlyAddedMethod"
-		uInterface.methods.add(uMethod)
+		umlRoot.interfaces.get(0) => [
+			methods += uml.Method => [name = "NewlyAddedMethod"]
+		]
 		compareChanges(umlModel, umlCheckpoint)
 	}
 
 	@Test
 	def void testNewClass() {
-		val uClass = Uml_mockupFactory.eINSTANCE.createUClass
-		uClass.name = "NewlyAddedClass"
-		umlRoot.classes.add(uClass)
+		umlRoot.classes += uml.Class => [name = "NewlyAddedClass"]
 		compareChanges(umlModel, umlCheckpoint)
 	}
 
 	@Test
 	def void testReplaceClass() {
 		umlRoot.classes.remove(0)
-		val uClass = Uml_mockupFactory.eINSTANCE.createUClass
-		uClass.name = "NewlyAddedClass"
-		umlRoot.classes.add(uClass)
+		umlRoot.classes += uml.Class => [name = "NewlyAddedClass"]
 		compareChanges(umlModel, umlCheckpoint)
 	}
 
@@ -57,9 +48,7 @@ class UmlStateChangeTest extends StateChangePropagationTest {
 
 	@Test
 	def void testNewInterface() {
-		val uInterface = Uml_mockupFactory.eINSTANCE.createUInterface
-		uInterface.name = "NewlyAddedInterface"
-		umlRoot.interfaces.add(uInterface)
+		umlRoot.interfaces += uml.Interface => [name = "NewlyAddedInterface"]
 		compareChanges(umlModel, umlCheckpoint)
 	}
 }

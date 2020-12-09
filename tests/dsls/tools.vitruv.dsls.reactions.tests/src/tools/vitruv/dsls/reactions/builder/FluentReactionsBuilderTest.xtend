@@ -5,13 +5,13 @@ import tools.vitruv.testutils.domains.AllElementTypes2DomainProvider
 import allElementTypes.AllElementTypesPackage
 import allElementTypes2.AllElementTypes2Package
 import org.eclipse.emf.ecore.EcorePackage
-import org.junit.runner.RunWith
 import org.eclipse.xtext.testing.InjectWith
-import org.eclipse.xtext.testing.XtextRunner
 import tools.vitruv.dsls.reactions.tests.ReactionsLanguageInjectorProvider
 import javax.inject.Inject
+import org.junit.jupiter.api.^extension.ExtendWith
+import org.eclipse.xtext.testing.extensions.InjectionExtension
 
-@RunWith(XtextRunner)
+@ExtendWith(InjectionExtension)
 @InjectWith(ReactionsLanguageInjectorProvider)
 abstract class FluentReactionsBuilderTest {
 	protected static val AllElementTypes = new AllElementTypesDomainProvider().domain

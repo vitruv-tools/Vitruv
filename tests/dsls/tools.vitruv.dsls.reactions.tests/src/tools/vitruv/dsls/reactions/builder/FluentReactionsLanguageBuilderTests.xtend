@@ -1,11 +1,12 @@
 package tools.vitruv.dsls.reactions.builder
 
-import org.junit.Test
 import static org.hamcrest.MatcherAssert.assertThat
-import org.junit.Ignore
 import org.eclipse.xtext.xbase.XbaseFactory
 import org.eclipse.xtext.common.types.JvmDeclaredType
-import static org.junit.Assert.assertThrows
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.Disabled
+import static org.junit.jupiter.api.Assertions.assertThrows
+import static org.hamcrest.CoreMatchers.containsString
 
 class FluentReactionsLanguageBuilderTests extends FluentReactionsBuilderTest {
 	@Test
@@ -41,7 +42,6 @@ class FluentReactionsLanguageBuilderTests extends FluentReactionsBuilderTest {
 
 		assertThat(builder, builds(reactionResult))
 	}
-
 
 	@Test
 	def void removeRoot() {
@@ -247,7 +247,7 @@ class FluentReactionsLanguageBuilderTests extends FluentReactionsBuilderTest {
 
 		val extendedSegment = create.reactionsSegment('extendedSegment').inReactionToChangesIn(AllElementTypes).
 			executeActionsIn(AllElementTypes).importSegment(baseSegment).usingQualifiedRoutineNames
-		extendedSegment += create.routine('createRootTestRepair')// TODO this is not working yet
+		extendedSegment += create.routine('createRootTestRepair') // TODO this is not working yet
 		.overrideAlongImportPath(baseSegment).input [
 			model(Root, 'affectedEObject')
 		].action [
@@ -257,7 +257,7 @@ class FluentReactionsLanguageBuilderTests extends FluentReactionsBuilderTest {
 
 		val extendedSegment2 = create.reactionsSegment('extendedSegment2').inReactionToChangesIn(AllElementTypes).
 			executeActionsIn(AllElementTypes).importSegment(extendedSegment).usingQualifiedRoutineNames
-		extendedSegment2 += create.routine('createRootTestRepair')// TODO this is not working yet
+		extendedSegment2 += create.routine('createRootTestRepair') // TODO this is not working yet
 		.overrideAlongImportPath(extendedSegment, baseSegment).input [
 			model(Root, 'affectedEObject')
 		].action [
@@ -324,19 +324,22 @@ class FluentReactionsLanguageBuilderTests extends FluentReactionsBuilderTest {
 
 	@Test
 	def void noEmptyReactionsFile() {
-		assertThrows("No reactions segments", IllegalStateException, [
+		val exception = assertThrows(IllegalStateException) [
 			val builder = create.reactionsFile('empty')
 			matcher.build(builder)
-		])
+		]
+		assertThat(exception.message, containsString("No reactions segments"))
 	}
 
 	@Test
 	def void noEmptyReactionsSegment() {
-		assertThrows("Neither routines, nor reactions, nor imports", IllegalStateException, [
+		val exception = assertThrows(IllegalStateException) [
 			val builder = create.reactionsFile('Test') +=
-				create.reactionsSegment('empty').inReactionToChangesIn(AllElementTypes).executeActionsIn(AllElementTypes)
+				create.reactionsSegment('empty').inReactionToChangesIn(AllElementTypes).
+					executeActionsIn(AllElementTypes)
 			matcher.build(builder)
-		])
+		]
+		assertThat(exception.message, containsString("Neither routines, nor reactions, nor imports"))
 	}
 
 	@Test
@@ -564,7 +567,7 @@ class FluentReactionsLanguageBuilderTests extends FluentReactionsBuilderTest {
 	}
 
 	@Test
-	@Ignore // not supported from text right now
+	@Disabled("not supported from text right now")
 	def void routineFromDifferentSegmentWithImplicitSegment() {
 		val commonRoutine = create.routine('commonRootCreate').input [
 			model(EObject, 'affectedEObject')
@@ -622,7 +625,7 @@ class FluentReactionsLanguageBuilderTests extends FluentReactionsBuilderTest {
 	}
 
 	@Test
-	@Ignore // not supported from text right now
+	@Disabled("not supported from text right now")
 	def void routineFromDifferentSegmentWithExplicitSegment() {
 		val commonRoutine = create.routine('commonRootCreate').input [
 			model(EObject, 'affectedEObject')

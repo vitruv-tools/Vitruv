@@ -1,14 +1,15 @@
 package tools.vitruv.testutils.matchers
 
 import edu.kit.ipd.sdq.activextendannotations.Utility
+import edu.kit.ipd.sdq.commons.util.org.eclipse.emf.common.util.URIUtil
 import java.util.ArrayDeque
 import java.util.Collection
-import java.util.Collections
 import java.util.Deque
 import java.util.HashMap
 import java.util.List
 import java.util.Map
 import java.util.function.Consumer
+import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.EClassifier
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EStructuralFeature
@@ -17,100 +18,139 @@ import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.xtend.lib.annotations.FinalFieldsConstructor
 import org.hamcrest.Description
 import org.hamcrest.Matcher
-import org.hamcrest.StringDescription
 import org.hamcrest.TypeSafeMatcher
 
+import static com.google.common.base.Preconditions.checkArgument
+import static java.util.Collections.emptyMap
 import static tools.vitruv.framework.util.XtendAssertHelper.*
+
+import static extension tools.vitruv.testutils.matchers.ModelPrinter.appendEObjectValue
+import static extension tools.vitruv.testutils.matchers.ModelPrinter.appendPrettyValue
+import java.util.Set
+import java.util.HashSet
 
 @Utility
 class ModelMatchers {
-	def static Matcher<Resource> contains(EObject root, FeatureMatcher... featureMatchers) {
-		new ResourceContainmentMatcher(root, featureMatchers)
-	}
-	
-	def static Matcher<Resource> doesNotExist() {
-		new ResourceInexistenceMatcher()
+	def static Matcher<? super Resource> containsModelOf(Resource otherResource, FeatureMatcher... featureMatchers) {
+		checkArgument(otherResource.contents.size > 0, 'The resource to compare with must contain a model!')
+		checkArgument(otherResource.contents.size < 2, 'The resource to compare with must contain only one model!')
+
+		contains(otherResource.contents.get(0))
 	}
 
-	def static Matcher<EObject> equalsDeeply(EObject object, FeatureMatcher... featureMatchers) {
+	def static Matcher<? super Resource> contains(EObject root, FeatureMatcher... featureMatchers) {
+		contains(equalsDeeply(root, featureMatchers))
+	}
+
+	def static Matcher<? super Resource> contains(Matcher<? super EObject> rootMatcher) {
+		new ResourceContainmentMatcher(rootMatcher)
+	}
+
+	def static Matcher<? super Resource> exists() {
+		new ResourceExistenceMatcher(true)
+	}
+
+	def static Matcher<? super Resource> doesNotExist() {
+		new ResourceExistenceMatcher(false)
+	}
+
+	def static Matcher<? super EObject> equalsDeeply(EObject object, FeatureMatcher... featureMatchers) {
 		new ModelTreeEqualityMatcher(object, featureMatchers)
 	}
-	
-	def static ignoring(String featureName) {
-		return new IgnoreNamedFeature(featureName)
+
+	def static FeatureMatcher ignoringFeatures(String... featureNames) {
+		return new IgnoreNamedFeatures(new HashSet(featureNames))
 	}
-	
-	def static ignoringAllExcept(String... featureNames) {
-		return new IgnoreAllExceptNamedFeatures(featureNames)
+
+	def static FeatureMatcher ignoringAllFeaturesExcept(String... featureNames) {
+		return new IgnoreAllExceptNamedFeatures(new HashSet(featureNames))
 	}
-	
-	// ignores features that are unset in the expected (!) object
-	def static ignoringUnsetFeatures() {
+
+	/**
+	 * ignores features that are unset in the expected (!) object
+	 */
+	def static FeatureMatcher ignoringUnsetFeatures() {
 		return new IgnoreUnsetFeatures()
 	}
 
-	def static ignoringFeaturesOfType(EClassifier featureType) {
+	def static FeatureMatcher ignoringFeaturesOfType(EClassifier featureType) {
 		return new IgnoreTypedFeatures(featureType)
 	}
 
-	def static ignoringAllExceptFeaturesOfType(EClassifier... featureTypes) {
+	def static FeatureMatcher ignoringAllExceptFeaturesOfType(EClassifier... featureTypes) {
 		return new IgnoreAllExceptTypedFeatures(featureTypes)
 	}
 }
 
-package class ResourceContainmentMatcher extends TypeSafeMatcher<Resource> {
-	val Matcher<EObject> delegateMatcher
-	val EObject expectedObject
-	int contentsSize
-	boolean exists
+@FinalFieldsConstructor
+package class ResourceExistingMatcher extends TypeSafeMatcher<URI> {
+	val boolean shouldExist
 
-	package new(EObject expectedObject, FeatureMatcher... featureMatchers) {
-		this.expectedObject = expectedObject
-		delegateMatcher = new ModelTreeEqualityMatcher(expectedObject, featureMatchers)
+	override protected matchesSafely(URI item) {
+		URIUtil.existsResourceAtUri(item) == shouldExist
 	}
+
+	override describeTo(Description description) {
+		description.appendText(
+			if (shouldExist) {
+				"an URI pointing to an existing resource"
+			} else {
+				"an URI not pointing to any resource"
+			}
+		)
+	}
+
+	override protected describeMismatchSafely(URI item, Description mismatchDescription) {
+		val qualifier = if (shouldExist) "no" else "a"
+		mismatchDescription.appendText('''there was «qualifier» resource at ''').appendValue(item)
+	}
+}
+
+@FinalFieldsConstructor
+package class ResourceContainmentMatcher extends TypeSafeMatcher<Resource> {
+	val Matcher<? super EObject> delegateMatcher
+	boolean exists
 
 	override protected describeMismatchSafely(Resource item, Description mismatchDescription) {
 		if (!exists) {
 			mismatchDescription.appendText("there is no resource at ").appendValue(item.URI)
-		} else if (contentsSize == 0) {
+		} else if (item.contents.isEmpty) {
 			mismatchDescription.appendText("the resource was empty.")
-		} else if (contentsSize > 1) {
-			mismatchDescription.appendText("the resource contained ").appendValue(contentsSize).appendText(
+		} else if (item.contents.size > 1) {
+			mismatchDescription.appendText("the resource contained ").appendValue(item.contents.size).appendText(
 				" instead of just one content element.")
 		} else {
-			delegateMatcher.describeMismatch(expectedObject, mismatchDescription)
+			delegateMatcher.describeMismatch(item.contents.get(0), mismatchDescription)
 		}
 	}
 
 	override describeTo(Description description) {
-		description.appendText("A resource containing the object tree rooted at ").appendValue(expectedObject);
+		description.appendText("a resource containing ").appendDescriptionOf(delegateMatcher)
 	}
 
 	override protected matchesSafely(Resource item) {
-		exists = item.resourceSet.URIConverter.exists(item.URI, Collections.emptyMap)
-		if (!exists) return false
-		contentsSize = item.contents.size
-		if (contentsSize != 1) return false
-		return delegateMatcher.matches(item.contents.get(0))
+		exists = item.resourceSet.URIConverter.exists(item.URI, emptyMap)
+		return exists && item.contents.size == 1 && delegateMatcher.matches(item.contents.get(0))
 	}
 
 }
 
-
-package class ResourceInexistenceMatcher extends TypeSafeMatcher<Resource> {
-	boolean exists
+@FinalFieldsConstructor
+package class ResourceExistenceMatcher extends TypeSafeMatcher<Resource> {
+	val boolean shouldExist
 
 	override protected describeMismatchSafely(Resource item, Description mismatchDescription) {
-		mismatchDescription.appendText("there was a resource at ").appendValue(item.URI)
+		val qualifier = if (shouldExist) 'no' else 'a'
+		mismatchDescription.appendText('''there was «qualifier» resource at ''').appendValue(item.URI)
 	}
 
 	override describeTo(Description description) {
-		description.appendText("the resource not to exist");
+		val qualifier = if (shouldExist) '' else 'not'
+		description.appendText('''the resource «qualifier» to exist''');
 	}
 
 	override protected matchesSafely(Resource item) {
-		exists = item.resourceSet.URIConverter.exists(item.URI, Collections.emptyMap)
-		return !exists
+		item.resourceSet.URIConverter.exists(item.URI, emptyMap) == shouldExist
 	}
 
 }
@@ -131,7 +171,7 @@ package class ModelTreeEqualityMatcher extends TypeSafeMatcher<EObject> {
 	override protected matchesSafely(EObject item) {
 		return expectedObject.equalsDeeply(item, false)
 	}
-	
+
 	def private findFeatureChecker(EObject expectedObject, EStructuralFeature feature) {
 		for (featureChecker : featureMatchers) {
 			if (featureChecker.isForFeature(expectedObject, feature)) {
@@ -150,7 +190,7 @@ package class ModelTreeEqualityMatcher extends TypeSafeMatcher<EObject> {
 					return mismatch
 				}
 			}
-			
+
 		}
 	}
 
@@ -189,9 +229,9 @@ package class ModelTreeEqualityMatcher extends TypeSafeMatcher<EObject> {
 		} else if (mappedItem !== null) {
 			// The object has already been mapped to some other object.
 			mismatch = [
-				appendText("did not match the topologically expected object. Expected ").appendValue(mappedItem)
-					.appendText(" (mapped and equal to ").appendValue(expected).appendText(") but found ")
-					.appendValue(item).appendText(".")
+				appendText("did not match the topologically expected object. Expected ").appendPrettyValue(mappedItem).
+					appendText(" (mapped and equal to ").appendPrettyValue(expected).appendText(") but found ").
+					appendPrettyValue(item).appendText(".")
 			]
 			return false
 		}
@@ -203,9 +243,10 @@ package class ModelTreeEqualityMatcher extends TypeSafeMatcher<EObject> {
 		} else if (mappedExpected !== null) {
 			// The object has already been mapped to some other object.
 			mismatch = [
-				appendText("has already been compared and mapped to some other object in the expected model tree. Expected ")
-					.appendValue(expected).appendText(" but the object ").appendValue(item)
-					.appendText(" has already been mapped to ").appendValue(mappedExpected).appendText(".")
+				appendText(
+					"has already been compared and mapped to some other object in the expected model tree. Expected ").
+					appendPrettyValue(expected).appendText(" but the object ").appendPrettyValue(item).appendText(
+						" has already been mapped to ").appendPrettyValue(mappedExpected).appendText(".")
 			]
 			return false
 		}
@@ -224,15 +265,15 @@ package class ModelTreeEqualityMatcher extends TypeSafeMatcher<EObject> {
 				return true
 			} else {
 				mismatch = [
-					appendText("did not match the expected proxy. Expected ").appendValue(expected)
-						.appendText(" but found ").appendValue(item).appendText(".")
+					appendText("did not match the expected proxy. Expected ").appendPrettyValue(expected).appendText(
+						" but found ").appendPrettyValue(item).appendText(".")
 				]
 				return false
 			}
 		} else if (item.eIsProxy) {
 			mismatch = [
-				appendText("is an unexpected proxy. Expected ").appendValue(expected).appendText(" but found ")
-					.appendValue(item).appendText(".")
+				appendText("is an unexpected proxy. Expected ").appendPrettyValue(expected).appendText(" but found ").
+					appendPrettyValue(item).appendText(".")
 			]
 			return false
 		}
@@ -240,8 +281,8 @@ package class ModelTreeEqualityMatcher extends TypeSafeMatcher<EObject> {
 		// Compare classes:
 		if (expected.eClass !== item.eClass) {
 			mismatch = [
-				appendText("had the wrong EClass. Expected ").appendValue(expected.eClass.name).appendText(
-					" but found ").appendValue(item.eClass.name).appendText(".")
+				appendText("had the wrong EClass. Expected ").appendPrettyValue(expected.eClass.name).appendText(
+					" but found ").appendPrettyValue(item.eClass.name).appendText(".")
 			]
 			return false
 		}
@@ -253,7 +294,8 @@ package class ModelTreeEqualityMatcher extends TypeSafeMatcher<EObject> {
 		// Compare feature values:
 		for (feature : expected.eClass.EAllStructuralFeatures.filter[!derived]) {
 			navigationStack.push('''.«feature.name»''')
-			val matcherMismatch = findFeatureChecker(expected, feature).getMismatch(expected.eGet(feature), item.eGet(feature))
+			val matcherMismatch = findFeatureChecker(expected, feature).getMismatch(expected.eGet(feature),
+				item.eGet(feature))
 			if (matcherMismatch !== null) {
 				mismatch = matcherMismatch
 				unmapObjects(expected, item)
@@ -287,14 +329,11 @@ package class ModelTreeEqualityMatcher extends TypeSafeMatcher<EObject> {
 			while (expectedIter.hasNext()) {
 				navigationStack.push('''[«count»]''')
 				val expectedElement = expectedIter.next
+				val actualElement = itemIter.next
 				// Capture the current navigation stack:
 				val originalNavigationStack = new ArrayDeque(navigationStack)
-				if (!expectedElement.equalsDeeply(itemIter.next, false)) {
+				if (!expectedElement.equalsDeeply(actualElement, false)) {
 					if (!ordered) {
-						// Capture the original mismatch:
-						val originalMismatchDescription = new StringDescription
-						describeMismatch(originalMismatchDescription, navigationStack, mismatch)
-
 						// If not ordered, retry with all elements not matched yet.
 						if (!itemOrdered.containsDeepEqual(expectedElement, usedItemIndeces)) {
 							val notFoundCount = count
@@ -302,10 +341,8 @@ package class ModelTreeEqualityMatcher extends TypeSafeMatcher<EObject> {
 							this.navigationStack = originalNavigationStack
 							navigationStack.pop()
 							mismatch = [
-								appendText('''did not contain an element equal to the «notFoundCount». element (''')
-									.appendValue(expectedElement)
-									.appendText('''). Original mismatch: ''')
-									.appendText(originalMismatchDescription.toString)
+								appendText('''did not contain an element equal to the «notFoundCount». expected element ''').
+									appendValue(expectedElement).appendText('.')
 							]
 							return false
 						} else {
@@ -362,39 +399,31 @@ package class ModelTreeEqualityMatcher extends TypeSafeMatcher<EObject> {
 
 	def private equalityMismatch(Object expected, Object item) {
 		mismatch = [
-			appendText("had the wrong value. Expected ").appendValue(expected).appendText(" but found ").
-				appendValue(item)
+			appendText("had the wrong value. Expected ").appendPrettyValue(expected).appendText(" but found ").
+				appendPrettyValue(item)
 		]
 	}
 
 	override describeTo(Description description) {
-		description.appendText("An EObject deeply equal to ").appendValue(expectedObject);
+		description.appendText('''a «expectedObject.eClass.name» deeply equal to ''').appendEObjectValue(expectedObject)
 	}
 
 	override protected describeMismatchSafely(EObject item, Description mismatchDescription) {
-		describeMismatch(mismatchDescription, navigationStack, mismatch)
-	}
-
-	private def void describeMismatch(Description description, Deque<String> navigationStack,
-		Consumer<Description> mismatch) {
 		if (navigationStack.isEmpty) {
-			description.appendText("The EObject ")
+			mismatchDescription.appendText('''The «item.eClass.name» ''')
 		} else {
-			description.appendText('''The element at object«navigationStack.descendingIterator.join» ''')
+			mismatchDescription.appendText('''The value at object«navigationStack.descendingIterator.join» ''')
 		}
-		mismatch.accept(description)
+		mismatch.accept(mismatchDescription)
 	}
 }
 
-class IgnoreNamedFeature implements FeatureMatcher {
-	val String featureName
-
-	package new(String featureName) {
-		this.featureName = featureName
-	}
+@FinalFieldsConstructor
+package class IgnoreNamedFeatures implements FeatureMatcher {
+	val Set<String> featureNames
 
 	override isForFeature(EObject expectedObject, EStructuralFeature feature) {
-		feature.name == featureName
+		featureNames.contains(feature.name)
 	}
 
 	override getMismatch(Object expectedValue, Object itemValue) {
@@ -402,12 +431,9 @@ class IgnoreNamedFeature implements FeatureMatcher {
 	}
 }
 
-class IgnoreAllExceptNamedFeatures implements FeatureMatcher {
-	val List<String> featureNames
-
-	package new(String... featureNames) {
-		this.featureNames = featureNames
-	}
+@FinalFieldsConstructor
+package class IgnoreAllExceptNamedFeatures implements FeatureMatcher {
+	val Set<String> featureNames
 
 	override isForFeature(EObject expectedObject, EStructuralFeature feature) {
 		!featureNames.contains(feature.name)
@@ -418,11 +444,7 @@ class IgnoreAllExceptNamedFeatures implements FeatureMatcher {
 	}
 }
 
-class IgnoreUnsetFeatures implements FeatureMatcher {
-
-	package new() {
-	}
-
+package class IgnoreUnsetFeatures implements FeatureMatcher {
 	override isForFeature(EObject expectedObject, EStructuralFeature feature) {
 		!expectedObject.eIsSet(feature)
 	}
@@ -432,12 +454,9 @@ class IgnoreUnsetFeatures implements FeatureMatcher {
 	}
 }
 
-class IgnoreTypedFeatures implements FeatureMatcher {
+@FinalFieldsConstructor
+package class IgnoreTypedFeatures implements FeatureMatcher {
 	val EClassifier featureType
-
-	package new(EClassifier featureType) {
-		this.featureType = featureType
-	}
 
 	override isForFeature(EObject expectedObject, EStructuralFeature feature) {
 		feature.EType == featureType
@@ -448,7 +467,7 @@ class IgnoreTypedFeatures implements FeatureMatcher {
 	}
 }
 
-class IgnoreAllExceptTypedFeatures implements FeatureMatcher {
+package class IgnoreAllExceptTypedFeatures implements FeatureMatcher {
 	val List<EClassifier> featureTypes
 
 	package new(EClassifier... featureTypes) {

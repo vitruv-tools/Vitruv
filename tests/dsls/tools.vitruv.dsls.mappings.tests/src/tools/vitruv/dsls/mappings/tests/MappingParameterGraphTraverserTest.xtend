@@ -5,7 +5,6 @@ import java.util.Map
 import org.eclipse.emf.ecore.EReference
 import org.eclipse.emf.ecore.EStructuralFeature
 import org.eclipse.uml2.uml.UMLFactory
-import org.junit.Test
 import tools.vitruv.dsls.mappings.generator.conditions.FeatureConditionGenerator
 import tools.vitruv.dsls.mappings.generator.conditions.MappingParameterGraphTraverser
 import tools.vitruv.dsls.mappings.generator.conditions.MappingParameterGraphTraverser.NodePath
@@ -17,13 +16,17 @@ import tools.vitruv.dsls.mappings.mappingsLanguage.MappingsLanguageFactory
 import tools.vitruv.dsls.mappings.mappingsLanguage.MultiValueConditionOperator
 import tools.vitruv.dsls.mirbase.mirBase.MirBaseFactory
 
-import static org.junit.Assert.assertEquals
-import static org.junit.Assert.fail
 import org.apache.log4j.Logger
+import org.junit.jupiter.api.Test
+import static org.junit.jupiter.api.Assertions.assertThrows
+import static org.hamcrest.MatcherAssert.assertThat
+import static org.hamcrest.CoreMatchers.is
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow
+import static org.hamcrest.CoreMatchers.instanceOf
 
 class MappingParameterGraphTraverserTest {
 	static Logger LOGGER = Logger.getLogger(MappingParameterGraphTraverserTest)
-	
+
 	List<String> parameter
 	List<FeatureConditionGenerator> inConditions
 	MappingParameterGraphTraverser traverser
@@ -35,32 +38,26 @@ class MappingParameterGraphTraverserTest {
 	def void unconnectedNodes() {
 		createParams('nodeA', 'nodeB')
 		createInConditions()
-		try {
-			initTraverser
-			fail()
-		} catch (IllegalStateException exception) {
-			assertEquals('A MappingParameter cannot be reached by the other nodes, graph is invalid!',
-				exception.message)
-		}
+
+		val exception = assertThrows(IllegalStateException)[initTraverser()]
+		assertThat(exception.message, is('A MappingParameter cannot be reached by the other nodes, graph is invalid!'))
 	}
 
 	@Test
 	def void minimalGraph() {
 		createParams('nodeA')
 		createInConditions()
-		initTraverser
+
+		assertDoesNotThrow [initTraverser()]
 	}
 
 	@Test
 	def void invalidEdge() {
 		createParams('nodeA')
 		createInConditions('nodeA'.in('nodeA', 'cFA'))
-		try {
-			initTraverser
-			fail()
-		} catch (IllegalStateException exception) {
-			assertEquals('Invalid relation for parameter nodeA', exception.message)
-		}
+
+		val exception = assertThrows(IllegalStateException)[initTraverser()]
+		assertThat(exception.message, is('Invalid relation for parameter nodeA'))
 	}
 
 	@Test
@@ -73,13 +70,9 @@ class MappingParameterGraphTraverserTest {
 		 */
 		createParams('nodeA', 'nodeB', 'nodeC')
 		createInConditions('nodeA'.in('nodeB', 'cFA'), 'nodeB'.in('nodeC', 'cFB'), 'nodeC'.in('nodeA', 'cFC'))
-		try {
-			initTraverser
-		} catch (IllegalStateException exception) {
-			fail()
-			//cycles are allowed by the concept
-//			assertEquals('The MappingParameters in-relations contains cycles!', exception.message)
-		}
+
+		// cycles are allowed by the concept
+		assertDoesNotThrow [initTraverser()]
 	}
 
 	@Test
@@ -91,7 +84,8 @@ class MappingParameterGraphTraverserTest {
 		 */
 		createParams('nodeA', 'nodeB', 'nodeC')
 		createInConditions('nodeA'.in('nodeB', 'cFA'), 'nodeA'.in('nodeC', 'ncF'))
-		initTraverser
+
+		assertDoesNotThrow [initTraverser]
 	}
 
 	@Test
@@ -103,12 +97,9 @@ class MappingParameterGraphTraverserTest {
 		 */
 		createParams('nodeA', 'nodeB', 'nodeC')
 		createInConditions('nodeA'.in('nodeB', 'cFA'), 'nodeA'.in('nodeC', 'cFB'))
-		try {
-			initTraverser
-			fail()
-		} catch (IllegalStateException exception) {
-			assertEquals('A MappingParameter can only be contained by one containment-reference!', exception.message)
-		}
+
+		val exception = assertThrows(IllegalStateException)[initTraverser()]
+		assertThat(exception.message, is('A MappingParameter can only be contained by one containment-reference!'))
 	}
 
 	@Test
@@ -122,7 +113,8 @@ class MappingParameterGraphTraverserTest {
 		 */
 		createParams('nodeA', 'nodeB', 'nodeC', 'nodeD')
 		createInConditions('nodeB'.in('nodeA', 'cFA'), 'nodeC'.in('nodeA', 'cFB'), 'nodeD'.in('nodeC', 'cFC'))
-		initTraverser
+		initTraverser()
+
 		findPath('nodeA' -> 'nodeB').assertPath(stepDown('nodeB', 'cFA'))
 		findPath('nodeB' -> 'nodeA').assertPath(stepUp('nodeA', 'cFA'))
 		findPath('nodeA' -> 'nodeD').assertPath(stepDown('nodeC', 'cFB'), stepDown('nodeD', 'cFC'))
@@ -143,7 +135,8 @@ class MappingParameterGraphTraverserTest {
 		createParams('nodeA', 'nodeB', 'nodeC', 'nodeD', 'nodeE', 'nodeF')
 		createInConditions('nodeB'.in('nodeA', 'cFA'), 'nodeC'.in('nodeA', 'ncF'), 'nodeD'.in('nodeC', 'cFB'),
 			'nodeE'.in('nodeC', 'cFC'), 'nodeF'.in('nodeE', 'ncF'))
-		initTraverser
+		initTraverser()
+
 		findPath(#['nodeD'], 'nodeF').assertPath(stepUp('nodeC', 'cFB'), stepDown('nodeE', 'cFC'),
 			stepDown('nodeF', 'ncF'))
 		findPath(#['nodeD', 'nodeB'], 'nodeF').assertPath(stepUp('nodeC', 'cFB'), stepDown('nodeE', 'cFC'),
@@ -180,15 +173,15 @@ class MappingParameterGraphTraverserTest {
 	}
 
 	private def assertStep(TraverseStep actualStep, TraverseStep expectedStep) {
-		assertEquals('Wrong traverse step node!', expectedStep.parameter, actualStep.parameter)
-		assertEquals('Wrong traverse step feature!', expectedStep.feature, actualStep.feature)
-		assertEquals('Wrong traverse step type!', expectedStep.class, actualStep.class)
+		assertThat('Wrong traverse step node!', actualStep.parameter, is(expectedStep.parameter))
+		assertThat('Wrong traverse step feature!', actualStep.feature, is(expectedStep.feature))
+		assertThat('Wrong traverse step type!', actualStep, is(instanceOf(expectedStep.class)))
 	}
 
 	private def assertPath(NodePath path, TraverseStep... steps) {
 		LOGGER.debug('''Expected Path: «steps.printPath»''')
 		LOGGER.debug('''Actual Path: «path.steps.printPath»''')
-		assertEquals('Path length is wrong!', steps.length, path.steps.length)
+		assertThat('Path length is wrong!', path.steps.length, is(steps.length))
 		for (var i = 0; i < steps.length; i++) {
 			val expectedStep = steps.get(i)
 			val actualStep = path.steps.get(i)
@@ -197,7 +190,7 @@ class MappingParameterGraphTraverserTest {
 	}
 
 	private def assertPathFrom(NodePath path, String from, TraverseStep... steps) {
-		assertEquals('Start-node of path is wrong!', from, path.startNode)
+		assertThat('Start-node of path is wrong!', path.startNode, is(from))
 		path.assertPath(steps)
 	}
 

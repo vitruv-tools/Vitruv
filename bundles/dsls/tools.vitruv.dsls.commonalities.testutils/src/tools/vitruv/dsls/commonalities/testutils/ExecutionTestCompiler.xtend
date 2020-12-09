@@ -1,22 +1,23 @@
 package tools.vitruv.dsls.commonalities.testutils
 
 import com.google.inject.Inject
+import edu.kit.ipd.sdq.commons.util.org.eclipse.core.resources.IProjectUtil
 import java.io.ByteArrayInputStream
 import java.io.File
 import java.net.URLClassLoader
 import java.nio.file.Files
+import java.nio.file.Path
 import java.nio.file.Paths
 import java.util.ArrayList
 import java.util.HashSet
 import java.util.Hashtable
-import java.util.stream.Collectors
+import java.util.function.Consumer
 import org.apache.log4j.Logger
 import org.eclipse.core.resources.IFolder
 import org.eclipse.core.resources.IProject
 import org.eclipse.core.resources.IResource
 import org.eclipse.core.resources.IncrementalProjectBuilder
 import org.eclipse.core.resources.ResourcesPlugin
-import org.eclipse.core.runtime.IProgressMonitor
 import org.eclipse.core.runtime.NullProgressMonitor
 import org.eclipse.core.runtime.Platform
 import org.eclipse.jdt.core.JavaCore
@@ -27,6 +28,7 @@ import org.eclipse.pde.core.target.LoadTargetDefinitionJob
 import org.eclipse.pde.internal.core.PDECore
 import org.eclipse.pde.internal.core.natures.PDE
 import org.eclipse.pde.internal.core.target.TargetPlatformService
+import org.eclipse.xtend.lib.annotations.Accessors
 import org.eclipse.xtend.lib.annotations.FinalFieldsConstructor
 import org.eclipse.xtext.ui.XtextProjectHelper
 import org.eclipse.xtext.ui.util.JREContainerProvider
@@ -35,11 +37,14 @@ import tools.vitruv.dsls.commonalities.generator.CommonalitiesGenerationSettings
 import tools.vitruv.framework.change.processing.ChangePropagationSpecification
 
 import static com.google.common.base.Preconditions.*
+import static java.util.stream.Collectors.toList
+import static org.eclipse.core.resources.ResourcesPlugin.getWorkspace
+import static tools.vitruv.testutils.TestLauncher.currentTestLauncher
 
 import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
 
-abstract class ExecutionTestCompiler {
-
+@FinalFieldsConstructor
+final class ExecutionTestCompiler {
 	static val Logger logger = Logger.getLogger(ExecutionTestCompiler)
 
 	static val String COMPLIANCE_LEVEL = '1.8';
@@ -49,39 +54,35 @@ abstract class ExecutionTestCompiler {
 
 	var Iterable<Class<? extends ChangePropagationSpecification>> loadedChangePropagationClasses
 	var compiled = false
-	@Inject CommonalitiesGenerationSettings generationSettings
+	val Class<?> commonalitiesOwningClass
+	val Path compilationProjectDir
+	val CommonalitiesGenerationSettings generationSettings
+	val Iterable<String> commonalityFilePaths
+	val Iterable<String> domainDependencies
 
-	protected abstract def String getProjectName()
-
-	protected abstract def Iterable<String> getCommonalityFiles()
-
-	protected abstract def Iterable<String> getDomainDependencies()
-
-	def getChangePropagationDefinitions() {
+	def getChangePropagationSpecifications() {
 		if (!compiled) {
 			val compiledFolder = compile()
 			compiled = true
 
-			val classLoader = new URLClassLoader(#[compiledFolder.toUri.toURL], this.class.classLoader)
+			val classLoader = new URLClassLoader(#[compiledFolder.toUri.toURL], commonalitiesOwningClass.classLoader)
 			loadedChangePropagationClasses = Files.find(compiledFolder, Integer.MAX_VALUE, [ path, info |
-				val pathLast = path.last.toString
-				pathLast.contains('ChangePropagationSpecification') && pathLast.endsWith('.class')
+				val fileName = path.fileName.toString
+				fileName.contains('ChangePropagationSpecification') && fileName.endsWith('.class')
 			]).map[compiledFolder.relativize(it)].map[toString.replace('.class', '').replace(File.separator, '.')].map [
 				classLoader.loadClass(it) as Class<? extends ChangePropagationSpecification>
-			].collect(Collectors.toList)
+			].collect(toList)
 		}
 
 		checkState(loadedChangePropagationClasses.size > 0, "Failed to load change propagations!")
 
-		return loadedChangePropagationClasses
-			.mapFixed[declaredConstructor.newInstance]
-			.groupBy[new Pair(it.sourceDomain, it.targetDomain)]
-			.entrySet
-			.mapFixed [
-				val sourceDomain = it.key.key;
-				val targetDomain = it.key.value;
-				new CombinedChangePropagationSpecification(sourceDomain, targetDomain, it.value) as ChangePropagationSpecification
-			]
+		return loadedChangePropagationClasses.mapFixed[declaredConstructor.newInstance].groupBy [
+			new Pair(it.sourceDomain, it.targetDomain)
+		].entrySet.mapFixed [
+			val sourceDomain = it.key.key;
+			val targetDomain = it.key.value;
+			new CombinedChangePropagationSpecification(sourceDomain, targetDomain, it.value)
+		]
 	}
 
 	private def compile() {
@@ -89,15 +90,15 @@ abstract class ExecutionTestCompiler {
 		setGenerationSettings()
 
 		// Disable automatic building
-		ResourcesPlugin.workspace.description = ResourcesPlugin.workspace.description => [autoBuilding = false]
+		workspace.description = workspace.description => [autoBuilding = false]
 
 		// copy in the source files
-		for (commonalityFile : commonalityFiles) {
-			val commonalityFileInputStream = class.getResourceAsStream(commonalityFile)
+		for (commonalityFile : commonalityFilePaths) {
+			val commonalityFileInputStream = commonalitiesOwningClass.getResourceAsStream(commonalityFile)
 			if (commonalityFileInputStream === null) {
 				throw new RuntimeException("Could not find commonality file at: " + commonalityFile)
 			}
-			testProject.sourceFolder.getFile(Paths.get(commonalityFile).last.toString).create(
+			testProject.sourceFolder.getFile(Paths.get(commonalityFile).fileName.toString).create(
 				commonalityFileInputStream, true, null)
 		}
 
@@ -126,8 +127,9 @@ abstract class ExecutionTestCompiler {
 	 */
 	private def prepareTestProject() {
 		setTargetPlatform()
-		val eclipseProject = ResourcesPlugin.workspace.root.getProject(this.projectName) => [
-			create(null as IProgressMonitor)
+
+		val projectName = '''«commonalitiesOwningClass.simpleName»-Commonalities'''
+		val eclipseProject = IProjectUtil.createProjectAt(projectName, compilationProjectDir) => [
 			open(null)
 			setDescription(description => [
 				natureIds = #[JavaCore.NATURE_ID, XtextProjectHelper.NATURE_ID, PDE.PLUGIN_NATURE]
@@ -157,14 +159,15 @@ abstract class ExecutionTestCompiler {
 	}
 
 	private def setGenerationSettings() {
-		val eclipseApplication = System.getProperty('eclipse.application')
-		if (eclipseApplication === null) return;
-		if (eclipseApplication.contains('org.eclipse.pde.junit')) {
-			// always generate reactions when run from Eclipse, as they are helpful for debugging.
-			generationSettings.createReactionFiles = true
-		} else if (eclipseApplication.contains('surefire')) {
-			// never create reactions when run from Maven because it is unnecessary and logs errors.
-			generationSettings.createReactionFiles = false
+		switch (currentTestLauncher) {
+			case ECLIPSE:
+				// always generate reactions when run from Eclipse, as they are helpful for debugging.
+				generationSettings.createReactionFiles = true
+			case SUREFIRE:
+				// never create reactions when run from Maven because it is unnecessary and logs errors.
+				generationSettings.createReactionFiles = false
+			case UNKNOWN: {
+			} // use default 
 		}
 	}
 
@@ -198,7 +201,6 @@ abstract class ExecutionTestCompiler {
 
 	@FinalFieldsConstructor
 	private static class Project {
-
 		val IProject eclipseProject
 		val IFolder sourceFolder
 		val IFolder binFolder
@@ -218,18 +220,18 @@ abstract class ExecutionTestCompiler {
 	/**
 	 * Sets a target platform in the test platform. This is required to run the
 	 * tests with tycho.
-	 *
+	 * 
 	 * Taken from http://git.eclipse.org/c/gmf-tooling/org.eclipse.gmf-tooling.git/tree/tests/org.eclipse.gmf.tests/src/org/eclipse/gmf/tests/Utils.java#n146
-	 *
+	 * 
 	 * Necessary because of this bug: https://bugs.eclipse.org/bugs/show_bug.cgi?id=343156
 	 */
 	@SuppressWarnings('restriction')
 	static def void setTargetPlatform() {
 		val tpService = TargetPlatformService.getDefault()
-
 		val bundles = Platform.getBundle('org.eclipse.core.runtime').getBundleContext().getBundles()
 		val bundleContainers = new ArrayList<ITargetLocation>()
 		val dirs = new HashSet<File>()
+
 		for (bundle : bundles) {
 			val bundleImpl = bundle as EquinoxBundle
 			val generation = bundleImpl.getModule().getCurrentRevision().getRevisionInfo() as Generation
@@ -263,5 +265,33 @@ abstract class ExecutionTestCompiler {
 
 	private static def getPath(IResource eclipseResource) {
 		eclipseResource.rawLocation.toFile.toPath
+	}
+
+	@Accessors
+	static class Parameters {
+		var Object commonalitiesOwner
+		var Path compilationProjectDir
+		var Iterable<String> commonalities = null
+		var Iterable<String> domainDependencies = null
+	}
+
+	static class Factory {
+		@Inject CommonalitiesGenerationSettings generationSettings
+		var parameters = new Parameters
+
+		def setParameters(Consumer<ExecutionTestCompiler.Parameters> configurer) {
+			configurer.accept(parameters)
+		}
+
+		def createCompiler(Consumer<ExecutionTestCompiler.Parameters> configurer) {
+			setParameters(configurer)
+			return new ExecutionTestCompiler(
+				parameters.commonalitiesOwner.class,
+				parameters.compilationProjectDir,
+				generationSettings,
+				parameters.commonalities,
+				parameters.domainDependencies
+			)
+		}
 	}
 }

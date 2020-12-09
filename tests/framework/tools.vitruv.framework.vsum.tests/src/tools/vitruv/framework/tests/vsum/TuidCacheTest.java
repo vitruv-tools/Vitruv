@@ -1,7 +1,7 @@
 package tools.vitruv.framework.tests.vsum;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 import java.io.File;
 import java.io.IOException;
@@ -15,9 +15,9 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
-import org.junit.After;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import edu.kit.ipd.sdq.commons.util.org.eclipse.emf.common.util.URIUtil;
 import pcm_mockup.Component;
@@ -27,27 +27,23 @@ import pcm_mockup.Repository;
 import tools.vitruv.framework.tuid.AttributeTuidCalculatorAndResolver;
 import tools.vitruv.framework.tuid.TuidCalculatorAndResolver;
 import tools.vitruv.framework.util.bridges.EcoreResourceBridge;
-import tools.vitruv.testutils.util.TestUtil;
+import tools.vitruv.testutils.TestLogging;
 
 /**
  * These tests can be executed as simple JUnit tests (no Plug-in tests)
  */
+@ExtendWith(TestLogging.class)
 public class TuidCacheTest {
     private static final Logger LOGGER = Logger.getLogger(TuidCacheTest.class.getSimpleName());
 
     List<File> filesToDelete = new ArrayList<File>();
 
-    @After
-    public void afterTest() {
+    @AfterEach
+    public void cleanupFiles() {
         for (File file : this.filesToDelete) {
             file.delete();
         }
         this.filesToDelete.clear();
-    }
-
-    @BeforeClass
-    public static void init() {
-        TestUtil.initializeLogger();
     }
 
     @Test

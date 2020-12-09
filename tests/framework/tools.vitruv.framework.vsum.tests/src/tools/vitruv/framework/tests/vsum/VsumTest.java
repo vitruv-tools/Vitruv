@@ -1,37 +1,39 @@
 package tools.vitruv.framework.tests.vsum;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.nio.file.Path;
 import java.util.concurrent.Callable;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import pcm_mockup.Component;
 import pcm_mockup.PInterface;
 import pcm_mockup.Pcm_mockupFactory;
 import pcm_mockup.Pcm_mockupPackage;
 import pcm_mockup.Repository;
-import tools.vitruv.framework.domains.AbstractTuidAwareVitruvDomain;
 import tools.vitruv.framework.domains.VitruvDomain;
-import tools.vitruv.framework.domains.VitruviusProjectBuilderApplicator;
 import tools.vitruv.framework.tuid.AttributeTuidCalculatorAndResolver;
 import tools.vitruv.framework.userinteraction.UserInteractionFactory;
 import tools.vitruv.framework.util.bridges.EMFBridge;
 import tools.vitruv.framework.util.datatypes.ModelInstance;
 import tools.vitruv.framework.util.datatypes.VURI;
 import tools.vitruv.framework.vsum.InternalVirtualModel;
-import tools.vitruv.testutils.VitruviusTest;
-import tools.vitruv.testutils.util.TestUtil;
+import tools.vitruv.framework.vsum.VirtualModelConfiguration;
+import tools.vitruv.framework.vsum.VirtualModelImpl;
+import tools.vitruv.testutils.TestLogging;
+import tools.vitruv.testutils.TestProject;
+import tools.vitruv.testutils.TestProjectManager;
+import tools.vitruv.testutils.domains.ConcreteTuidAwareVitruvDomain;
 import uml_mockup.UClass;
 import uml_mockup.UPackage;
 import uml_mockup.Uml_mockupFactory;
 import uml_mockup.Uml_mockupPackage;
 
-public abstract class VsumTest extends VitruviusTest {
+@ExtendWith({ TestProjectManager.class, TestLogging.class })
+public abstract class VsumTest {
     protected static final String PROJECT_FOLDER_NAME = "MockupProject";
     protected static final String VSUM_NAME = "VsumProject";
 
@@ -40,54 +42,43 @@ public abstract class VsumTest extends VitruviusTest {
     protected static final String PCM_FILE_EXT = "pcm_mockup";
     protected static final String UML_FILE_EXT = "uml_mockup";
 
-    public String getCurrentProjectFolderName() {
-        return getCurrentTestProjectFolder().getName();
+    private Path testProjectFolder = null;
+
+    @BeforeEach
+    void acquireTestProjectFolder(@TestProject final Path testProjectFolder) {
+        this.testProjectFolder = testProjectFolder;
     }
 
-    private static final VitruvDomain UmlDomain = new AbstractTuidAwareVitruvDomain("UML", Uml_mockupPackage.eINSTANCE,
-            new AttributeTuidCalculatorAndResolver(Uml_mockupPackage.eINSTANCE.getNsURI(), "id"), UML_FILE_EXT) {
-        @Override
-        public VitruviusProjectBuilderApplicator getBuilderApplicator() {
-            return null;
-        };
+    private static final VitruvDomain UmlDomain = new ConcreteTuidAwareVitruvDomain("UML", Uml_mockupPackage.eINSTANCE,
+            new AttributeTuidCalculatorAndResolver(Uml_mockupPackage.eINSTANCE.getNsURI(), "id"), UML_FILE_EXT);
 
-        @Override
-        public boolean supportsUuids() {
-            return false;
-        };
-    };
+    private static final VitruvDomain PcmDomain = new ConcreteTuidAwareVitruvDomain("PCM", Pcm_mockupPackage.eINSTANCE,
+            new AttributeTuidCalculatorAndResolver(Pcm_mockupPackage.eINSTANCE.getNsURI(), "id"), PCM_FILE_EXT);
 
-    private static final VitruvDomain PcmDomain = new AbstractTuidAwareVitruvDomain("PCM", Pcm_mockupPackage.eINSTANCE,
-            new AttributeTuidCalculatorAndResolver(Pcm_mockupPackage.eINSTANCE.getNsURI(), "id"), PCM_FILE_EXT) {
-        @Override
-        public VitruviusProjectBuilderApplicator getBuilderApplicator() {
-            return null;
-        };
+    protected Path getCurrentProjectFolder() {
+        return this.testProjectFolder;
+    }
 
-        @Override
-        public boolean supportsUuids() {
-            return false;
-        };
-    };
-
-    protected File getCurrentProjectModelFolder() {
-        return new File(getCurrentTestProjectFolder(), "model");
+    protected Path getCurrentProjectModelFolder() {
+        return this.testProjectFolder.resolve("model");
     }
 
     protected URI getDefaultPcmInstanceURI() {
-        return EMFBridge.getEmfFileUriForFile(new File(getCurrentProjectModelFolder(), "My.pcm_mockup"));
+        return EMFBridge.getEmfFileUriForFile(getCurrentProjectModelFolder().resolve("My.pcm_mockup").toFile());
     }
 
     protected URI getDefaultUMLInstanceURI() {
-        return EMFBridge.getEmfFileUriForFile(new File(getCurrentProjectModelFolder(), "My.uml_mockup"));
+        return EMFBridge.getEmfFileUriForFile(getCurrentProjectModelFolder().resolve("My.uml_mockup").toFile());
     }
 
     protected URI getAlternativePcmInstanceURI() {
-        return EMFBridge.getEmfFileUriForFile(new File(getCurrentProjectModelFolder(), "NewPCMInstance.pcm_mockup"));
+        return EMFBridge
+                .getEmfFileUriForFile(getCurrentProjectModelFolder().resolve("NewPCMInstance.pcm_mockup").toFile());
     }
 
     protected URI getAlterantiveUMLInstanceURI() {
-        return EMFBridge.getEmfFileUriForFile(new File(getCurrentProjectModelFolder(), "NewUMLInstance.uml_mockup"));
+        return EMFBridge
+                .getEmfFileUriForFile(getCurrentProjectModelFolder().resolve("NewUMLInstance.uml_mockup").toFile());
     }
 
     protected ModelInstance fillVsum(final InternalVirtualModel vsum) {
@@ -152,11 +143,12 @@ public abstract class VsumTest extends VitruviusTest {
     }
 
     protected InternalVirtualModel createVirtualModel(final String vsumName) {
-        List<VitruvDomain> vitruvDomains = new ArrayList<VitruvDomain>();
-        vitruvDomains.add(UmlDomain);
-        vitruvDomains.add(PcmDomain);
-        return TestUtil.createVirtualModel(vsumName, true, vitruvDomains, Collections.emptyList(),
-                UserInteractionFactory.instance.createDummyUserInteractor());
+        var interactionProvider = UserInteractionFactory.instance.createPredefinedInteractionResultProvider(null);
+        var userInteractor = UserInteractionFactory.instance.createUserInteractor(interactionProvider);
+        var configuration = new VirtualModelConfiguration();
+        configuration.addMetamodel(UmlDomain);
+        configuration.addMetamodel(PcmDomain);
+        return new VirtualModelImpl(this.testProjectFolder.resolve(vsumName).toFile(), userInteractor, configuration);
     }
 
     private void createMockupModelsWithDefaultUris(final InternalVirtualModel vsum) {
@@ -171,15 +163,12 @@ public abstract class VsumTest extends VitruviusTest {
     private void createPcmMockupModel(final VURI modelURI, final InternalVirtualModel vsum) {
         ModelInstance model = vsum.getModelInstance(modelURI);
         final EList<EObject> contents = model.getResource().getContents();
-        vsum.executeCommand(new Callable<Void>() {
-            @Override
-            public Void call() {
-                Repository repo = Pcm_mockupFactory.eINSTANCE.createRepository();
-                repo.getInterfaces().add(Pcm_mockupFactory.eINSTANCE.createPInterface());
-                repo.getComponents().add(Pcm_mockupFactory.eINSTANCE.createComponent());
-                contents.add(repo);
-                return null;
-            }
+        vsum.executeCommand(() -> {
+            Repository repo = Pcm_mockupFactory.eINSTANCE.createRepository();
+            repo.getInterfaces().add(Pcm_mockupFactory.eINSTANCE.createPInterface());
+            repo.getComponents().add(Pcm_mockupFactory.eINSTANCE.createComponent());
+            contents.add(repo);
+            return null;
         });
         vsum.save();// (modelURI);
     }
@@ -187,15 +176,12 @@ public abstract class VsumTest extends VitruviusTest {
     private void createUmlMockupModel(final VURI modelURI, final InternalVirtualModel vsum) {
         ModelInstance model = vsum.getModelInstance(modelURI);
         final EList<EObject> contents = model.getResource().getContents();
-        vsum.executeCommand(new Callable<Void>() {
-            @Override
-            public Void call() {
-                UPackage pckg = Uml_mockupFactory.eINSTANCE.createUPackage();
-                pckg.getInterfaces().add(Uml_mockupFactory.eINSTANCE.createUInterface());
-                pckg.getClasses().add(Uml_mockupFactory.eINSTANCE.createUClass());
-                contents.add(pckg);
-                return null;
-            }
+        vsum.executeCommand(() -> {
+            UPackage pckg = Uml_mockupFactory.eINSTANCE.createUPackage();
+            pckg.getInterfaces().add(Uml_mockupFactory.eINSTANCE.createUInterface());
+            pckg.getClasses().add(Uml_mockupFactory.eINSTANCE.createUClass());
+            contents.add(pckg);
+            return null;
         });
         vsum.save();// (modelURI);
     }

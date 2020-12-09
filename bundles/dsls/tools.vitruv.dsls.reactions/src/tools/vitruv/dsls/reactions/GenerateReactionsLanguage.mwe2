@@ -63,6 +63,7 @@ Workflow {
 			name = "tools.vitruv.dsls.reactions.ReactionsLanguage"
 			fileExtensions = "reactions"
 			junitSupport = junit.JUnitFragment {
+				junitVersion = "5"
 				generateStub = false
 			}
 			formatter = {

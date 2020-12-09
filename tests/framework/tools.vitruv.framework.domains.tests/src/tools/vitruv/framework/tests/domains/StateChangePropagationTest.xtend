@@ -1,14 +1,10 @@
 package tools.vitruv.framework.tests.domains
 
-import java.io.File
 import org.eclipse.emf.common.notify.Notifier
 import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.emf.ecore.resource.ResourceSet
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
-import org.junit.After
-import org.junit.Before
-import pcm_mockup.Pcm_mockupFactory
 import pcm_mockup.Repository
 import tools.vitruv.framework.change.description.VitruviusChange
 import tools.vitruv.framework.change.description.VitruviusChangeFactory
@@ -17,17 +13,26 @@ import tools.vitruv.framework.util.bridges.EMFBridge
 import tools.vitruv.framework.util.bridges.EcoreResourceBridge
 import tools.vitruv.framework.uuid.UuidGeneratorAndResolver
 import tools.vitruv.framework.uuid.UuidGeneratorAndResolverImpl
-import tools.vitruv.testutils.VitruviusTest
 import uml_mockup.UPackage
-import uml_mockup.Uml_mockupFactory
-
-import static org.junit.Assert.*
 import tools.vitruv.framework.domains.StateBasedChangeResolutionStrategy
 import tools.vitruv.framework.domains.DefaultStateBasedChangeResolutionStrategy
+import org.junit.jupiter.api.^extension.ExtendWith
+import tools.vitruv.testutils.TestLogging
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.AfterEach
+import tools.vitruv.testutils.TestProject
+import java.nio.file.Path
 
-abstract class StateChangePropagationTest extends VitruviusTest {
+import static org.junit.jupiter.api.Assertions.*
+import static tools.vitruv.testutils.metamodels.PcmMockupCreators.pcm
+import static tools.vitruv.testutils.metamodels.UmlMockupCreators.uml
+import tools.vitruv.testutils.TestProjectManager
+
+@ExtendWith(TestProjectManager, TestLogging)
+abstract class StateChangePropagationTest {
 	protected static final String PCM_FILE_EXT = "pcm_mockup"
 	protected static final String UML_FILE_EXT = "uml_mockup"
+	protected var Path testProjectFolder
 	protected var StateBasedChangeResolutionStrategy strategyToTest
 	protected var Resource umlCheckpoint
 	protected var Resource pcmCheckpoint
@@ -44,8 +49,9 @@ abstract class StateChangePropagationTest extends VitruviusTest {
 	/**
 	 * Creates the strategy, sets up the test model and prepares everything for detemining changes.
 	 */
-	@Before
-	def setup() {
+	@BeforeEach
+	def setup(@TestProject Path testProjectFolder) {
+		this.testProjectFolder = testProjectFolder
 		// Setup:
 		strategyToTest = new DefaultStateBasedChangeResolutionStrategy
 		resourceSet = new ResourceSetImpl
@@ -68,8 +74,8 @@ abstract class StateChangePropagationTest extends VitruviusTest {
 	/**
 	 * Stops recording in case the test does not call getRecordedChanges() or getChangeFromComparisonWithCheckpoint().
 	 */
-	@After
-	def cleanup() {
+	@AfterEach
+	def stopRecording() {
 		if (changeRecorder.isRecording) {
 			changeRecorder.stopRecording
 		}
@@ -85,7 +91,7 @@ abstract class StateChangePropagationTest extends VitruviusTest {
 		val stateBasedChange = strategyToTest.getChangeSequences(model, checkpoint, checkpointResolver)
 		assertNotNull(stateBasedChange)
 		val message = getTextualRepresentation(stateBasedChange, deltaBasedChange)
-		assertTrue(message, stateBasedChange.changedEObjectEquals(deltaBasedChange))
+		assertTrue(stateBasedChange.changedEObjectEquals(deltaBasedChange), message)
 	}
 
 	/**
@@ -102,22 +108,24 @@ abstract class StateChangePropagationTest extends VitruviusTest {
 	'''
 
 	private def createPcmMockupModel() {
-		pcmModel = resourceSet.createResource(getModelVURI("My.pcm_mockup"))
-		pcmRoot = Pcm_mockupFactory.eINSTANCE.createRepository
-		pcmRoot.name = "RootRepository"
-		pcmRoot.interfaces.add(Pcm_mockupFactory.eINSTANCE.createPInterface)
-		pcmRoot.components.add(Pcm_mockupFactory.eINSTANCE.createComponent)
-		pcmModel.contents.add(pcmRoot)
+		pcmModel = resourceSet.createResource(getModelVURI("My.pcm_mockup")) => [
+			contents += (pcmRoot = pcm.Repository => [
+				name = "RootRepository"
+				interfaces += pcm.Interface
+				components += pcm.Component
+			])
+		]
 		EcoreResourceBridge.saveResource(pcmModel)
 	}
 
 	private def createUmlMockupModel() {
-		umlModel = resourceSet.createResource(getModelVURI("My.uml_mockup"))
-		umlRoot = Uml_mockupFactory.eINSTANCE.createUPackage
-		umlRoot.name = "RootPackage"
-		umlRoot.interfaces.add(Uml_mockupFactory.eINSTANCE.createUInterface)
-		umlRoot.classes.add(Uml_mockupFactory.eINSTANCE.createUClass)
-		umlModel.contents.add(umlRoot)
+		umlModel = resourceSet.createResource(getModelVURI("My.uml_mockup")) => [
+			contents += (umlRoot = uml.Package => [
+				name = "RootPackage"
+				interfaces += uml.Interface
+				classes += uml.Class
+			])
+		]
 		EcoreResourceBridge.saveResource(umlModel)
 	}
 
@@ -127,14 +135,12 @@ abstract class StateChangePropagationTest extends VitruviusTest {
 			changeRecorder.beginRecording
 		}
 	}
-	
+
 	private def Resource createCheckpoint(Resource original) {
 		return checkpointResourceSet.getResource(original.URI, true)
 	}
 
 	private def URI getModelVURI(String fileName) {
-		val modelFolder = new File(getCurrentTestProjectFolder(), "model")
-		val file = new File(modelFolder, fileName)
-		return EMFBridge.getEmfFileUriForFile(file)
+		return EMFBridge.getEmfFileUriForFile(testProjectFolder.resolve("model").resolve(fileName).toFile())
 	}
 }

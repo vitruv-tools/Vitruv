@@ -7,10 +7,7 @@ import org.eclipse.xtext.common.types.JvmOperation
 import org.eclipse.xtext.generator.InMemoryFileSystemAccess
 import org.eclipse.xtext.resource.XtextResourceSet
 import org.eclipse.xtext.testing.InjectWith
-import org.eclipse.xtext.testing.XtextRunner
 import org.eclipse.xtext.xbase.XbaseFactory
-import org.junit.Test
-import org.junit.runner.RunWith
 import tools.vitruv.dsls.reactions.api.generator.IReactionsGenerator
 import tools.vitruv.dsls.reactions.builder.FluentReactionsLanguageBuilder
 import tools.vitruv.dsls.reactions.builder.TypeProvider
@@ -19,8 +16,11 @@ import tools.vitruv.testutils.domains.AllElementTypesDomainProvider
 
 import static org.hamcrest.CoreMatchers.*
 import static org.hamcrest.MatcherAssert.assertThat
+import org.junit.jupiter.api.^extension.ExtendWith
+import org.eclipse.xtext.testing.extensions.InjectionExtension
+import org.junit.jupiter.api.Test
 
-@RunWith(XtextRunner)
+@ExtendWith(InjectionExtension)
 @InjectWith(ReactionsLanguageInjectorProvider)
 class ReactionsGeneratorTest {
 
