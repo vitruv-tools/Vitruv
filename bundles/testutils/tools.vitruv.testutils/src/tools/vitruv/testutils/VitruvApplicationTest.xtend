@@ -92,7 +92,7 @@ abstract class VitruvApplicationTest implements CorrespondenceModelContainer {
 	 * @param modelPathWithinProject A project-relative path to a model.
 	 */
 	def protected Resource resourceAt(Path modelPathWithinProject) {
-		if(!resourceSet.getURIConverter().exists(getPlatformModelUri(modelPathWithinProject), newHashMap)) {
+		if(!existsModelResource(modelPathWithinProject)) {
 			createModelResource(modelPathWithinProject)
 		} else {
 			loadModelResource(modelPathWithinProject)
@@ -173,6 +173,10 @@ abstract class VitruvApplicationTest implements CorrespondenceModelContainer {
 		return EMFBridge.getEmfFileUriForFile(targetFile)
 	}
 
+	def private boolean existsModelResource(Path modelPathWithinProject) {
+		resourceSet.getURIConverter().exists(getPlatformModelUri(modelPathWithinProject), newHashMap)
+	}
+	
 	def private Resource createModelResource(Path modelPathWithinProject) {
 		resourceSet.createResource(getPlatformModelUri(modelPathWithinProject))
 	}
