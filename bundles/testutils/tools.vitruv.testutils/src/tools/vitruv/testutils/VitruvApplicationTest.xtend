@@ -93,13 +93,10 @@ abstract class VitruvApplicationTest implements CorrespondenceModelContainer {
 	 * @param modelPathWithinProject A project-relative path to a model.
 	 */
 	def protected Resource resourceAt(Path modelPathWithinProject) {
-		try {
+		if(!resourceSet.getURIConverter().exists(getPlatformModelUri(modelPathWithinProject), newHashMap)) {
+			createModelResource(modelPathWithinProject)
+		} else {
 			loadModelResource(modelPathWithinProject)
-		} catch (RuntimeException e) {
-			if (e.cause instanceof FileNotFoundException) {
-				createModelResource(modelPathWithinProject)
-			} else
-				throw e
 		}
 	}
 
