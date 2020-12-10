@@ -157,7 +157,7 @@ abstract class VitruvApplicationTest implements CorrespondenceModelContainer {
 		changeRecorder.endRecording()
 		var compositeChange = VitruviusChangeFactory.instance.createCompositeChange(changeRecorder.changes)
 		assertThat("The recorded change set is not valid!", compositeChange, isValid)
-		compositeChange.affectedResource?.save(emptyMap)
+		compositeChange.changedResource?.save(emptyMap)
 		var propagationResult = virtualModel.propagateChange(compositeChange)
 		renewResourceCache()
 		changeRecorder.beginRecording()
