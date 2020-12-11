@@ -12,7 +12,7 @@ import org.eclipse.emf.common.notify.Notifier
 import tools.vitruv.framework.correspondence.CorrespondenceModel
 
 /** 
- * DO NOT USE THIS CALL!
+ * DO NOT USE THIS TEST CLASS! Use {@link VitruvApplicationTest} instead.
  * This is a temporary fallback class for our existing application tests until we have adapted them to the new
  * framework defined by the {@link VitruvApplicationTest}.
  * It serves as a temporary proxy to be removed after their adaptation and should not be used to implement any 
