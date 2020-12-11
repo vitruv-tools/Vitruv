@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Addresses Recipients Application
 Bundle-SymbolicName: tools.vitruv.demo.applications.addressesrecipients;singleton:=true
 Automatic-Module-Name: tools.vitruv.demo.applications.addressesrecipients
-Bundle-Version: 0.3.0.qualifier
+Bundle-Version: 1.1.0.qualifier
 Bundle-Vendor: vitruv.tools
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Require-Bundle: com.google.guava,
