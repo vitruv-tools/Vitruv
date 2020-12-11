@@ -213,8 +213,18 @@ abstract class VitruvApplicationTest implements CorrespondenceModelContainer {
 	def private Resource getAndLoadModelResource(Path modelPathWithinProject) {
 		resourceSet.getResource(getPlatformModelUri(modelPathWithinProject), true)
 	}
-	
+
 	def private void renewResourceCache() {
 		resourceSet.resources.clear()
 	}
+
+	/**
+	 * Access to the change recorder for the legacy {@link LegacyVitruvApplicationTest}.
+	 * Has to be removed as soon as {@link LegacyVitruvApplicationTest} is removed.
+	 */
+	@Deprecated
+	def package getChangeRecorder() {
+		changeRecorder;
+	}
+
 }
