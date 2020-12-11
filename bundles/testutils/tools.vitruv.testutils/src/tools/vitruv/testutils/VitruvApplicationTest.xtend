@@ -196,7 +196,7 @@ abstract class VitruvApplicationTest implements CorrespondenceModelContainer {
 
 	def protected TestUserInteraction getUserInteractor() { testUserInteractor }
 
-	def private URI getPlatformModelUri(Path modelPathWithinProject) {
+	def protected final URI getPlatformModelUri(Path modelPathWithinProject) {
 		checkArgument(modelPathWithinProject !== null, "The modelPathWithinProject must not be null!")
 		checkArgument(!modelPathWithinProject.isEmpty, "The modelPathWithinProject must not be empty!")
 		return if (usePlatformURIs) {
