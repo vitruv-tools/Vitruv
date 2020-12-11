@@ -33,6 +33,7 @@ import static tools.vitruv.testutils.matchers.ChangeMatchers.isValid
 import tools.vitruv.framework.correspondence.CorrespondenceModel
 import org.eclipse.emf.common.notify.Notifier
 import org.eclipse.emf.common.util.URI
+import java.io.File
 
 @ExtendWith(TestProjectManager, TestLogging)
 abstract class VitruvApplicationTest implements CorrespondenceModelContainer {
@@ -43,7 +44,16 @@ abstract class VitruvApplicationTest implements CorrespondenceModelContainer {
 	InternalVirtualModel virtualModel
 	AtomicEmfChangeRecorder changeRecorder
 
+	/**
+	 * Determines the {@link ChangePropagationSpecification}s to be used in this test.
+	 */
 	def protected abstract Iterable<? extends ChangePropagationSpecification> getChangePropagationSpecifications()
+
+	/**
+	 * Determines whether the test uses platform URIs.
+	 * Defaults to <code>false</code>. Otherwise file URIs are used.
+	 */
+	def protected boolean usePlatformURIs() { false }
 
 	@BeforeEach
 	def final package void setTestProjectFolder(@TestProject Path testProjectPath) {
@@ -178,8 +188,15 @@ abstract class VitruvApplicationTest implements CorrespondenceModelContainer {
 	def private URI getPlatformModelUri(Path modelPathWithinProject) {
 		checkArgument(modelPathWithinProject !== null, "The modelPathWithinProject must not be null!")
 		checkArgument(!modelPathWithinProject.isEmpty, "The modelPathWithinProject must not be empty!")
-		val targetFile = testProjectFolder.resolve(modelPathWithinProject).toFile()
-		return EMFBridge.getEmfFileUriForFile(targetFile)
+		return if (usePlatformURIs) {
+			// Platform URIs need to use '/' as separator, whereas Path uses system-specific separator
+			val workspaceRelativePath = testProjectFolder.fileName + "/" +
+				modelPathWithinProject.toString.replace(File.separatorChar, '/')
+			EMFBridge.createURI(workspaceRelativePath)
+		} else {
+			val targetFile = testProjectFolder.resolve(modelPathWithinProject).toFile()
+			EMFBridge.getEmfFileUriForFile(targetFile)
+		}
 	}
 
 	def private Resource createModelResource(Path modelPathWithinProject) {
