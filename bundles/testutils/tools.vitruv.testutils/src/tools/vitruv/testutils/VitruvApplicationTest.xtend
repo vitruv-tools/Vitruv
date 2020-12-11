@@ -92,10 +92,19 @@ abstract class VitruvApplicationTest implements CorrespondenceModelContainer {
 	 * @param modelPathWithinProject A project-relative path to a model.
 	 */
 	def protected Resource resourceAt(Path modelPathWithinProject) {
-		if(!existsModelResource(modelPathWithinProject)) {
-			createModelResource(modelPathWithinProject)
-		} else {
-			loadModelResource(modelPathWithinProject)
+		synchronized (resourceSet) {
+			var Resource resource = null;
+			try {
+				resource = getAndLoadModelResource(modelPathWithinProject)
+			} catch (RuntimeException e) {
+				// EMF failed during demand creation, usually because loading from the file system failed.
+				// If it has created an empty resource, retrieve it, and otherwise create one.
+				resource = getModelResource(modelPathWithinProject)
+				if (resource === null) {
+					resource = createModelResource(modelPathWithinProject)
+				}
+			}
+			return resource
 		}
 	}
 
@@ -106,7 +115,7 @@ abstract class VitruvApplicationTest implements CorrespondenceModelContainer {
 	 * @param modelPathWithinProject A project-relative path to a model.
 	 */
 	def protected <T> T from(Class<T> clazz, Path modelPathWithinProject) {
-		return from(clazz, loadModelResource(modelPathWithinProject))
+		return from(clazz, getAndLoadModelResource(modelPathWithinProject))
 	}
 
 	/** 
@@ -173,18 +182,18 @@ abstract class VitruvApplicationTest implements CorrespondenceModelContainer {
 		return EMFBridge.getEmfFileUriForFile(targetFile)
 	}
 
-	def private boolean existsModelResource(Path modelPathWithinProject) {
-		resourceSet.getURIConverter().exists(getPlatformModelUri(modelPathWithinProject), newHashMap)
-	}
-	
 	def private Resource createModelResource(Path modelPathWithinProject) {
 		resourceSet.createResource(getPlatformModelUri(modelPathWithinProject))
 	}
 
-	def private Resource loadModelResource(Path modelPathWithinProject) {
+	def private Resource getModelResource(Path modelPathWithinProject) {
+		resourceSet.getResource(getPlatformModelUri(modelPathWithinProject), false)
+	}
+	
+	def private Resource getAndLoadModelResource(Path modelPathWithinProject) {
 		resourceSet.getResource(getPlatformModelUri(modelPathWithinProject), true)
 	}
-
+	
 	def private void renewResourceCache() {
 		resourceSet.resources.clear()
 	}
