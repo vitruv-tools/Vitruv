@@ -102,16 +102,27 @@ abstract class VitruvApplicationTest implements CorrespondenceModelContainer {
 	 * @param modelPathWithinProject A project-relative path to a model.
 	 */
 	def protected Resource resourceAt(Path modelPathWithinProject) {
+		resourceAt(getPlatformModelUri(modelPathWithinProject))
+	}
+
+	/**
+	 * Gets the resource at the provided {@link URI}. If the resource does not exist yet, it will be
+	 * created virtually, without being persisted. You can use {@link ModelMatchers.exist} to test
+	 * whether the resource actually exists on the file system.
+	 *
+	 * @param modelUri the {@link URI} of the model to load.
+	 */
+	def protected Resource resourceAt(URI modelUri) {
 		synchronized (resourceSet) {
 			var Resource resource = null;
 			try {
-				resource = getAndLoadModelResource(modelPathWithinProject)
+				resource = resourceSet.getResource(modelUri, true)
 			} catch (RuntimeException e) {
 				// EMF failed during demand creation, usually because loading from the file system failed.
 				// If it has created an empty resource, retrieve it, and otherwise create one.
-				resource = getModelResource(modelPathWithinProject)
+				resource = resourceSet.getResource(modelUri, false)
 				if (resource === null) {
-					resource = createModelResource(modelPathWithinProject)
+					resource = resourceSet.createResource(modelUri)
 				}
 			}
 			return resource
@@ -199,14 +210,6 @@ abstract class VitruvApplicationTest implements CorrespondenceModelContainer {
 		}
 	}
 
-	def private Resource createModelResource(Path modelPathWithinProject) {
-		resourceSet.createResource(getPlatformModelUri(modelPathWithinProject))
-	}
-
-	def private Resource getModelResource(Path modelPathWithinProject) {
-		resourceSet.getResource(getPlatformModelUri(modelPathWithinProject), false)
-	}
-	
 	def private Resource getAndLoadModelResource(Path modelPathWithinProject) {
 		resourceSet.getResource(getPlatformModelUri(modelPathWithinProject), true)
 	}
