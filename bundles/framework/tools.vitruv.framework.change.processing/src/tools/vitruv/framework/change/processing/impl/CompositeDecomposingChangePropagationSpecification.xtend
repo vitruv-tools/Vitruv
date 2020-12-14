@@ -29,7 +29,7 @@ class CompositeDecomposingChangePropagationSpecification extends CompositeChange
 	private def dispatch void propagateDecomposedChange(TransactionalChange change,
 		CorrespondenceModel correspondenceModel, ResourceAccess resourceAccess) {
 		for (changeProcessor : changeMainprocessors) {
-			logger.debug('''Calling change mainprocessor «changeProcessor» for change event «change»''');
+			logger.trace('''Calling change mainprocessor «changeProcessor» for change event «change»''');
 			changeProcessor.propagateChange(change, correspondenceModel, resourceAccess);
 		}
 	}

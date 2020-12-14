@@ -26,7 +26,7 @@ abstract class AbstractEChangePropagationSpecification extends AbstractChangePro
 	override propagateChange(TransactionalChange change, CorrespondenceModel correspondenceModel,
 		ResourceAccess resourceAccess) {
 		for (eChange : change.getEChanges) {
-			LOGGER.debug('''Transforming eChange  «eChange» of change «change»''');
+			LOGGER.trace('''Transforming eChange  «eChange» of change «change»''');
 			propagateChange(eChange, correspondenceModel, resourceAccess);
 		}
 	}

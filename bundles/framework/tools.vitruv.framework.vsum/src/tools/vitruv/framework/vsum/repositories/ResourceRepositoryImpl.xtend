@@ -70,8 +70,8 @@ class ResourceRepositoryImpl implements ModelRepository, CorrespondenceProviding
 
 	def private AtomicEmfChangeRecorder getOrCreateChangeRecorder(VURI vuri) {
 		var VitruvDomain domain = getMetamodelByURI(vuri)
-		this.domainToRecorder.putIfAbsent(domain, new AtomicEmfChangeRecorder(this.uuidGeneratorAndResolver))
-		return this.domainToRecorder.get(domain)
+		domainToRecorder.putIfAbsent(domain, new AtomicEmfChangeRecorder(this.uuidGeneratorAndResolver))
+		return domainToRecorder.get(domain)
 	}
 
 	/** 
@@ -84,10 +84,8 @@ class ResourceRepositoryImpl implements ModelRepository, CorrespondenceProviding
 	def private ModelInstance getAndLoadModelInstanceOriginal(VURI modelURI, boolean forceLoadByDoingUnloadBeforeLoad) {
 		val ModelInstance modelInstance = getModelInstanceOriginal(modelURI)
 		try {
-			if (modelURI.getEMFUri().toString().startsWith("pathmap") ||
-				URIUtil.existsResourceAtUri(modelURI.getEMFUri())) {
-				modelInstance.load(getMetamodelByURI(modelURI).getDefaultLoadOptions(),
-					forceLoadByDoingUnloadBeforeLoad)
+			if (modelURI.EMFUri.toString().startsWith("pathmap") || URIUtil.existsResourceAtUri(modelURI.EMFUri)) {
+				modelInstance.load(getMetamodelByURI(modelURI).defaultLoadOptions, forceLoadByDoingUnloadBeforeLoad)
 				relinkUuids(modelInstance)
 			}
 		} catch (RuntimeException re) {
@@ -140,7 +138,7 @@ class ResourceRepositoryImpl implements ModelRepository, CorrespondenceProviding
 		// be modified
 		if (modelUri.EMFUri.isFile() || modelUri.EMFUri.isPlatform()) {
 			var recorder = getOrCreateChangeRecorder(modelUri)
-			recorder.addToRecording(modelInstance.getResource())
+			recorder.addToRecording(modelInstance.resource)
 			if (isRecording && !recorder.isRecording()) {
 				recorder.beginRecording()
 			}
@@ -154,15 +152,16 @@ class ResourceRepositoryImpl implements ModelRepository, CorrespondenceProviding
 
 	def private void saveModelInstance(ModelInstance modelInstance) {
 		executeAsCommand [
-			var metamodel = getMetamodelByURI(modelInstance.getURI())
+			var metamodel = getMetamodelByURI(modelInstance.URI)
 			var resourceToSave = modelInstance.resource
-			val saveOptions = if (metamodel !== null) metamodel.getDefaultSaveOptions() else emptyMap()
+			val saveOptions = if (metamodel !== null) metamodel.defaultSaveOptions else emptyMap
 			try {
 				if (!resourceSet.requiredTransactionalEditingDomain.isReadOnly(resourceToSave)) {
 					// we allow resources without a domain for internal uses.
 					EcoreResourceBridge.saveResource(resourceToSave, saveOptions)
 				}
 			} catch (IOException e) {
+				logger.warn('''Model could not be saved: «modelInstance.URI»''')
 				throw new RuntimeException('''Could not save VURI «modelInstance.URI»: «e»''')
 			}
 			return null
@@ -198,9 +197,9 @@ class ResourceRepositoryImpl implements ModelRepository, CorrespondenceProviding
 	def private void saveAllChangedModels() {
 		deleteEmptyModels()
 		for (ModelInstance modelInstance : this.modelInstances.values()) {
-			var Resource resourceToSave = modelInstance.getResource()
+			var Resource resourceToSave = modelInstance.resource
 			if (resourceToSave.isModified()) {
-				logger.debug('''  Saving resource: «resourceToSave»'''.toString)
+				logger.trace('''Saving resource: «resourceToSave»''')
 				saveModelInstance(modelInstance)
 				modelInstance.getResource().setModified(false)
 			}
@@ -209,24 +208,23 @@ class ResourceRepositoryImpl implements ModelRepository, CorrespondenceProviding
 
 	def private void saveAllChangedCorrespondenceModels() {
 		executeAsCommand [
-			logger.debug( '''  Saving correspondence model: «correspondenceModel.getURI()»''')
+			logger.trace( '''Saving correspondence model: «correspondenceModel.URI»''')
 			correspondenceModel.saveModel()
 		]
 	}
 
 	def private ModelInstance getOrCreateUnregisteredModelInstance(VURI modelURI) {
-		var String fileExtension = modelURI.getFileExtension()
+		var String fileExtension = modelURI.fileExtension
 		var VitruvDomain metamodel = this.metamodelRepository.getDomain(fileExtension)
 		if (metamodel === null) {
-			throw new RuntimeException( '''Cannot create a new model instance at the uri '«»«modelURI»' because no metamodel is registered for the file extension '«»«fileExtension»'!''')
+			throw new RuntimeException( '''Cannot create a new model instance at the uri '«modelURI»' because no metamodel is registered for the file extension '«fileExtension»'!''')
 		}
 		return loadModelInstance(modelURI, metamodel)
 	}
 
 	def private ModelInstance loadModelInstance(VURI modelURI, VitruvDomain metamodel) {
-		var URI emfURI = modelURI.getEMFUri()
-		var Resource modelResource = URIUtil.loadResourceAtURI(emfURI, this.resourceSet,
-			metamodel.getDefaultLoadOptions())
+		var URI emfURI = modelURI.EMFUri
+		var Resource modelResource = URIUtil.loadResourceAtURI(emfURI, this.resourceSet, metamodel.defaultLoadOptions)
 		var ModelInstance modelInstance = new ModelInstance(modelURI, modelResource)
 		relinkUuids(modelInstance)
 		return modelInstance
@@ -237,8 +235,8 @@ class ResourceRepositoryImpl implements ModelRepository, CorrespondenceProviding
 			var correspondencesVURI = fileSystemHelper.correspondencesVURI
 			var Resource correspondencesResource = null
 			if (URIUtil.existsResourceAtUri(correspondencesVURI.EMFUri)) {
-				logger.debug('''Loading correspondence model from: «this.fileSystemHelper.getCorrespondencesVURI()»''')
-				correspondencesResource = resourceSet.getResource(correspondencesVURI.getEMFUri(), true)
+				logger.trace('''Loading correspondence model from: «fileSystemHelper.correspondencesVURI»''')
+				correspondencesResource = resourceSet.getResource(correspondencesVURI.EMFUri, true)
 			} else {
 				correspondencesResource = resourceSet.createResource(correspondencesVURI.EMFUri)
 				correspondencesResource.save(null)
@@ -246,7 +244,7 @@ class ResourceRepositoryImpl implements ModelRepository, CorrespondenceProviding
 			var recorder = getOrCreateChangeRecorder(correspondencesVURI)
 			recorder.addToRecording(correspondencesResource)
 			recorder.beginRecording()
-			correspondenceModel = CorrespondenceModelFactory.getInstance().createCorrespondenceModel(
+			correspondenceModel = CorrespondenceModelFactory.instance.createCorrespondenceModel(
 				new TuidResolverImpl(metamodelRepository, this), uuidGeneratorAndResolver, this, metamodelRepository,
 				correspondencesVURI, correspondencesResource)
 			recorder.endRecording()
@@ -259,11 +257,11 @@ class ResourceRepositoryImpl implements ModelRepository, CorrespondenceProviding
 			var uuidProviderVURI = fileSystemHelper.uuidProviderAndResolverVURI
 			var Resource uuidProviderResource = null
 			if (URIUtil.existsResourceAtUri(uuidProviderVURI.EMFUri)) {
-				logger.debug(
-						'''Loading uuid provider and resolver model from: «this.fileSystemHelper.getUuidProviderAndResolverVURI()»''')
-				uuidProviderResource = resourceSet.getResource(uuidProviderVURI.getEMFUri(), true)
+				logger.
+					trace('''Loading uuid provider and resolver model from: «fileSystemHelper.uuidProviderAndResolverVURI»''')
+				uuidProviderResource = resourceSet.getResource(uuidProviderVURI.EMFUri, true)
 			} else {
-				uuidProviderResource = resourceSet.createResource(uuidProviderVURI.getEMFUri())
+				uuidProviderResource = resourceSet.createResource(uuidProviderVURI.EMFUri)
 			}
 			// TODO HK We cannot enable strict mode here, because for textual views we will not get
 			// create changes in any case. We should therefore use one monitor per model and turn on
@@ -278,7 +276,7 @@ class ResourceRepositoryImpl implements ModelRepository, CorrespondenceProviding
 	 * @return the correspondence model
 	 */
 	override CorrespondenceModel getCorrespondenceModel() {
-		correspondenceModel.getGenericView()
+		correspondenceModel.genericView
 	}
 
 	def private void loadVURIsOfVSMUModelInstances() {

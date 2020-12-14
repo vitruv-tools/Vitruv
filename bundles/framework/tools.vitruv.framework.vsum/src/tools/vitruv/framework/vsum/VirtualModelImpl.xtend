@@ -97,10 +97,12 @@ class VirtualModelImpl implements InternalVirtualModel {
 	}
 
 	override propagateChange(VitruviusChange change) {
+		LOGGER.info('''Start change propagation''')
 		change.unresolveIfApplicable
 		// Save is done by the change propagator because it has to be performed before finishing sync
 		val result = changePropagator.propagateChange(change)
 		informPropagatedChangeListeners(result)
+		LOGGER.info('''Finished change propagation''')
 		return result
 	}
 
@@ -181,14 +183,7 @@ class VirtualModelImpl implements InternalVirtualModel {
 	 * @return The name of the virtual model
 	 */
 	def getName() {
-		val name = this.folder.name
-		// Special treatment in JUnit tests: they use a folder named name_vsum_...
-		val separator = "_vsum"
-		if (name.indexOf(separator) != -1) {
-			return name.substring(0, name.indexOf(separator))
-		} else {
-			return name
-		}
+		this.folder.name
 	}
 
 	/**

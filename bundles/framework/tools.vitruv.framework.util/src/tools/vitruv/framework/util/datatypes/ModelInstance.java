@@ -33,7 +33,7 @@ public class ModelInstance extends AbstractURIHaving {
 	public VURI getMetamodeURI() {
 		if (getResource() != null && getResource().getContents().size() == 0) {
 			throw new RuntimeException("Cannot get the metamodel URI for the model instance at the URI '" + getURI()
-			+ "' because it has no root element!");
+					+ "' because it has no root element!");
 		}
 		String rootEObjectNamespace;
 		try {
@@ -137,7 +137,7 @@ public class ModelInstance extends AbstractURIHaving {
 					this.resource.unload();
 				}
 				this.resource.load(this.lastUsedLoadOptions);
-				LOGGER.debug("Resource was loaded: " + resource.getURI());
+				LOGGER.trace("Resource was loaded: " + resource.getURI());
 			} catch (IOException e) {
 				// soften
 				throw new IllegalStateException("Problem loading resource: " + resource.getURI());
