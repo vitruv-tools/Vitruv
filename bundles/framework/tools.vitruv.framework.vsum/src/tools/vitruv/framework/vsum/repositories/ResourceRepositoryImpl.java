@@ -189,6 +189,7 @@ public class ResourceRepositoryImpl implements ModelRepository, CorrespondencePr
                         EcoreResourceBridge.saveResource(resourceToSave, saveOptions);
                     }
                 } catch (IOException e) {
+                    logger.warn("Model could not be saved: " + modelInstance.getURI());
                     throw new RuntimeException("Could not save VURI " + modelInstance.getURI() + ": " + e);
                 }
                 return null;
@@ -243,7 +244,7 @@ public class ResourceRepositoryImpl implements ModelRepository, CorrespondencePr
         for (ModelInstance modelInstance : this.modelInstances.values()) {
             Resource resourceToSave = modelInstance.getResource();
             if (resourceToSave.isModified()) {
-                logger.debug("  Saving resource: " + resourceToSave);
+                logger.trace("  Saving resource: " + resourceToSave);
                 saveModelInstance(modelInstance);
                 modelInstance.getResource().setModified(false);
             }
@@ -254,7 +255,7 @@ public class ResourceRepositoryImpl implements ModelRepository, CorrespondencePr
         executeAsCommand(new Callable<Void>() {
             @Override
             public Void call() throws Exception {
-                logger.debug(
+                logger.trace(
                         "  Saving correspondence model: " + ResourceRepositoryImpl.this.correspondenceModel.getURI());
                 ResourceRepositoryImpl.this.correspondenceModel.saveModel();
                 return null;
@@ -285,7 +286,7 @@ public class ResourceRepositoryImpl implements ModelRepository, CorrespondencePr
             VURI correspondencesVURI = this.fileSystemHelper.getCorrespondencesVURI();
             Resource correspondencesResource = null;
             if (URIUtil.existsResourceAtUri(correspondencesVURI.getEMFUri())) {
-                logger.debug("Loading correspondence model from: " + this.fileSystemHelper.getCorrespondencesVURI());
+                logger.trace("Loading correspondence model from: " + this.fileSystemHelper.getCorrespondencesVURI());
                 correspondencesResource = this.resourceSet.getResource(correspondencesVURI.getEMFUri(), true);
             } else {
                 correspondencesResource = this.resourceSet.createResource(correspondencesVURI.getEMFUri());
@@ -308,7 +309,7 @@ public class ResourceRepositoryImpl implements ModelRepository, CorrespondencePr
             VURI uuidProviderVURI = this.fileSystemHelper.getUuidProviderAndResolverVURI();
             Resource uuidProviderResource = null;
             if (URIUtil.existsResourceAtUri(uuidProviderVURI.getEMFUri())) {
-                logger.debug("Loading uuid provider and resolver model from: "
+                logger.trace("Loading uuid provider and resolver model from: "
                         + this.fileSystemHelper.getUuidProviderAndResolverVURI());
                 uuidProviderResource = this.resourceSet.getResource(uuidProviderVURI.getEMFUri(), true);
             } else {
@@ -398,7 +399,7 @@ public class ResourceRepositoryImpl implements ModelRepository, CorrespondencePr
                     resource.delete(null);
                     ResourceRepositoryImpl.this.modelInstances.remove(vuri);
                 } catch (final IOException e) {
-                    logger.info("Deletion of resource " + resource + " did not work. Reason: " + e);
+                    logger.error("Deletion of resource " + resource + " did not work. Reason: " + e);
                 }
                 return null;
             }
