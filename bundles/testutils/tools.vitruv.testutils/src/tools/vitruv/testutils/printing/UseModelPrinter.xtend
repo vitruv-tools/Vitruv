@@ -5,11 +5,12 @@ import java.lang.annotation.Retention
 import java.lang.annotation.Target
 import java.lang.annotation.Inherited
 import tools.vitruv.testutils.printing.DefaultModelPrinter
+import tools.vitruv.testutils.printing.PrintResult
 
 /**
  * Annotation that allows changing which {@linkplain ModelPrinter ModelPrinters} will be used by {@link ModelPrinting}.
- * When printing, the specified printers will be tried in order until one returns {@code true}. The last printer will
- * always by {@link DefaultModelPrinter}.
+ * When printing, the specified printers will be tried in order until one does not return 
+ * {@link PrintResult#NOT_RESPONSIBLE}. The last printer will always be {@link DefaultModelPrinter}.
  * <p>
  * All referenced printer classes must have a zero-arg constructor. This constructor will be used to instantiate
  * them.
