@@ -243,31 +243,6 @@ public class FileSystemHelper {
         return this.vsumProjectFolder;
     }
 
-    // private void deleteAndRecreateProject(final IProject vsumProject) {
-    // try {
-    // vsumProject.delete(true, new NullProgressMonitor());
-    // createProject(vsumProject);
-    // } catch (CoreException e) {
-    // // soften
-    // throw new RuntimeException(e);
-    // }
-    // }
-
-    // public void createProject(final IProject project) {
-    // try {
-    // project.create(null);
-    // project.open(null);
-    // // IProjectDescription description = project.getDescription();
-    // // description.setNatureIds(new String[] { VITRUVIUSNATURE.ID });
-    // // project.setDescription(description, null);
-    // createFolder(getCorrespondenceFolder(project));
-    // createFolder(getVsumFolder(project));
-    // } catch (CoreException e) {
-    // // soften
-    // throw new RuntimeException(e);
-    // }
-    // }
-
     private File getVsumFolder() {
         return getFolderInFolder(getVsumProjectFolder(), VsumConstants.VSUM_FOLDER_NAME);
     }
