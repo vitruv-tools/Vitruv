@@ -183,14 +183,7 @@ class VirtualModelImpl implements InternalVirtualModel {
 	 * @return The name of the virtual model
 	 */
 	def getName() {
-		val name = this.folder.name
-		// Special treatment in JUnit tests: they use a folder named name_vsum_...
-		val separator = "_vsum"
-		if (name.indexOf(separator) != -1) {
-			return name.substring(0, name.indexOf(separator))
-		} else {
-			return name
-		}
+		this.folder.name
 	}
 
 	/**
