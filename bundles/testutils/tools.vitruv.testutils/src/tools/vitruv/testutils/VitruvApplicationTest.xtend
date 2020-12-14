@@ -1,6 +1,5 @@
 package tools.vitruv.testutils
 
-import java.io.FileNotFoundException
 import java.nio.file.Path
 import java.util.List
 import java.util.function.Consumer
@@ -32,7 +31,10 @@ import static com.google.common.base.Preconditions.checkArgument
 import static com.google.common.base.Preconditions.checkState
 import static org.hamcrest.MatcherAssert.assertThat
 import static tools.vitruv.testutils.matchers.ChangeMatchers.isValid
-
+import tools.vitruv.framework.correspondence.CorrespondenceModel
+import org.eclipse.emf.common.notify.Notifier
+import org.eclipse.emf.common.util.URI
+import java.io.File
 import static extension tools.vitruv.framework.util.ResourceSetUtil.withGlobalFactories
 
 @ExtendWith(TestProjectManager, TestLogging)
@@ -44,7 +46,16 @@ abstract class VitruvApplicationTest implements CorrespondenceModelContainer {
 	InternalVirtualModel virtualModel
 	AtomicEmfChangeRecorder changeRecorder
 
+	/**
+	 * Determines the {@link ChangePropagationSpecification}s to be used in this test.
+	 */
 	def protected abstract Iterable<? extends ChangePropagationSpecification> getChangePropagationSpecifications()
+
+	/**
+	 * Determines whether the test uses platform URIs.
+	 * Defaults to <code>false</code>. Otherwise file URIs are used.
+	 */
+	def protected boolean usePlatformURIs() { false }
 
 	@BeforeEach
 	def final package void setTestProjectFolder(@TestProject Path testProjectPath) {
@@ -92,13 +103,30 @@ abstract class VitruvApplicationTest implements CorrespondenceModelContainer {
 	 * @param modelPathWithinProject A project-relative path to a model.
 	 */
 	def protected Resource resourceAt(Path modelPathWithinProject) {
-		try {
-			loadModelResource(modelPathWithinProject)
-		} catch (RuntimeException e) {
-			if (e.cause instanceof FileNotFoundException) {
-				createModelResource(modelPathWithinProject)
-			} else
-				throw e
+		resourceAt(getPlatformModelUri(modelPathWithinProject))
+	}
+
+	/**
+	 * Gets the resource at the provided {@link URI}. If the resource does not exist yet, it will be
+	 * created virtually, without being persisted. You can use {@link ModelMatchers.exist} to test
+	 * whether the resource actually exists on the file system.
+	 *
+	 * @param modelUri the {@link URI} of the model to load.
+	 */
+	def protected Resource resourceAt(URI modelUri) {
+		synchronized (resourceSet) {
+			var Resource resource = null;
+			try {
+				resource = resourceSet.getResource(modelUri, true)
+			} catch (RuntimeException e) {
+				// EMF failed during demand creation, usually because loading from the file system failed.
+				// If it has created an empty resource, retrieve it, and otherwise create one.
+				resource = resourceSet.getResource(modelUri, false)
+				if (resource === null) {
+					resource = resourceSet.createResource(modelUri)
+				}
+			}
+			return resource
 		}
 	}
 
@@ -109,7 +137,7 @@ abstract class VitruvApplicationTest implements CorrespondenceModelContainer {
 	 * @param modelPathWithinProject A project-relative path to a model.
 	 */
 	def protected <T> T from(Class<T> clazz, Path modelPathWithinProject) {
-		return from(clazz, loadModelResource(modelPathWithinProject))
+		return from(clazz, getAndLoadModelResource(modelPathWithinProject))
 	}
 
 	/** 
@@ -156,7 +184,7 @@ abstract class VitruvApplicationTest implements CorrespondenceModelContainer {
 		changeRecorder.endRecording()
 		var compositeChange = VitruviusChangeFactory.instance.createCompositeChange(changeRecorder.changes)
 		assertThat("The recorded change set is not valid!", compositeChange, isValid)
-		compositeChange.affectedResource?.save(emptyMap)
+		compositeChange.changedResource?.save(emptyMap)
 		var propagationResult = virtualModel.propagateChange(compositeChange)
 		renewResourceCache()
 		changeRecorder.beginRecording()
@@ -169,22 +197,35 @@ abstract class VitruvApplicationTest implements CorrespondenceModelContainer {
 
 	def protected TestUserInteraction getUserInteractor() { testUserInteractor }
 
-	def private URI getPlatformModelUri(Path modelPathWithinProject) {
+	def protected final URI getPlatformModelUri(Path modelPathWithinProject) {
 		checkArgument(modelPathWithinProject !== null, "The modelPathWithinProject must not be null!")
 		checkArgument(!modelPathWithinProject.isEmpty, "The modelPathWithinProject must not be empty!")
-		val targetFile = testProjectFolder.resolve(modelPathWithinProject).toFile()
-		return EMFBridge.getEmfFileUriForFile(targetFile)
+		return if (usePlatformURIs) {
+			// Platform URIs need to use '/' as separator, whereas Path uses system-specific separator
+			val workspaceRelativePath = testProjectFolder.fileName + "/" +
+				modelPathWithinProject.toString.replace(File.separatorChar, '/')
+			EMFBridge.createURI(workspaceRelativePath)
+		} else {
+			val targetFile = testProjectFolder.resolve(modelPathWithinProject).toFile()
+			EMFBridge.getEmfFileUriForFile(targetFile)
+		}
 	}
 
-	def private Resource createModelResource(Path modelPathWithinProject) {
-		resourceSet.createResource(getPlatformModelUri(modelPathWithinProject))
-	}
-
-	def private Resource loadModelResource(Path modelPathWithinProject) {
+	def private Resource getAndLoadModelResource(Path modelPathWithinProject) {
 		resourceSet.getResource(getPlatformModelUri(modelPathWithinProject), true)
 	}
 
 	def private void renewResourceCache() {
 		resourceSet.resources.clear()
 	}
+
+	/**
+	 * Access to the change recorder for the legacy {@link LegacyVitruvApplicationTest}.
+	 * Has to be removed as soon as {@link LegacyVitruvApplicationTest} is removed.
+	 */
+	@Deprecated
+	def package getChangeRecorder() {
+		changeRecorder;
+	}
+
 }

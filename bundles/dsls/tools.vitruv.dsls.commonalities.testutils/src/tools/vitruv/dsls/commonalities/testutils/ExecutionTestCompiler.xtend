@@ -179,7 +179,7 @@ final class ExecutionTestCompiler {
 			Bundle-ManifestVersion: 2
 			Bundle-Name: Commonalities Language Test Project
 			Bundle-Vendor: Vitruv-Tools
-			Bundle-Version: 1.0.0.qualifier
+			Bundle-Version: 1.1.0.qualifier
 			Bundle-SymbolicName: «project.name»; singleton:=true
 			Bundle-ActivationPolicy: lazy
 			Require-Bundle: tools.vitruv.extensions.dslsruntime.commonalities,
