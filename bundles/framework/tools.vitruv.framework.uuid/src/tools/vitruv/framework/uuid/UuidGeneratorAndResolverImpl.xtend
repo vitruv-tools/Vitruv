@@ -135,23 +135,29 @@ class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 		if (localResult !== null) {
 			return localResult
 		}
-		val uri = EcoreUtil.getURI(eObject)
-		if (uri !== null) {
-			val resolvedObject = resourceSet.getEObject(uri, false)
-			// The EClass check avoids that an objects of another type with the same URI is resolved
-			// This is, for example, the case if a modifier in a UML model is changed, as it is only a
-			// marker class that is replaced, having always the same URI on the same model element.
-			if (resolvedObject !== null && resolvedObject.eClass == eObject.eClass) {
-				val resolvedKey = repository.EObjectToUuid.get(resolvedObject)
-				if (resolvedKey !== null) {
-					return resolvedKey
-				}
-			} else {
-				// Finally look for a proxy in the repository (due to a deleted object) and match the URI
-				for (proxyObject : repository.EObjectToUuid.keySet.filter[eIsProxy]) {
-					if (EcoreUtil.getURI(proxyObject).equals(EcoreUtil.getURI(eObject))) {
-						return repository.EObjectToUuid.get(proxyObject)
-					}
+		
+		// If the object is from the resolvers resource set, take it; otherwise resolve it
+		val resolvedObject = if (eObject.eResource?.resourceSet == resourceSet) {
+			eObject
+		} else {
+			val uri = EcoreUtil.getURI(eObject)
+			if (uri !== null) {
+				resourceSet.getEObject(uri, false)
+			}
+		}
+		// The EClass check avoids that an objects of another type with the same URI is resolved
+		// This is, for example, the case if a modifier in a UML model is changed, as it is only a
+		// marker class that is replaced, having always the same URI on the same model element.
+		if (resolvedObject !== null && resolvedObject.eClass == eObject.eClass) {
+			val resolvedKey = repository.EObjectToUuid.get(resolvedObject)
+			if (resolvedKey !== null) {
+				return resolvedKey
+			}
+		} else {
+			// Finally look for a proxy in the repository (due to a deleted object) and match the URI
+			for (proxyObject : repository.EObjectToUuid.keySet.filterNull.filter[eIsProxy]) {
+				if (EcoreUtil.getURI(proxyObject).equals(EcoreUtil.getURI(eObject))) {
+					return repository.EObjectToUuid.get(proxyObject)
 				}
 			}
 		}
