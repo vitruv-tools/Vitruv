@@ -65,7 +65,7 @@ abstract class CompositeChangePropagationSpecification extends AbstractChangePro
 	protected def propagateChangeViaPreprocessors(TransactionalChange change, CorrespondenceModel correspondenceModel,
 		ResourceAccess resourceAccess) {
 		for (changeProcessor : changePreprocessors) {
-			logger.debug('''Calling change preprocessor «changeProcessor» for change event «change»''');
+			logger.trace('''Calling change preprocessor «changeProcessor» for change event «change»''');
 			changeProcessor.propagateChange(change, correspondenceModel, resourceAccess);
 		}
 	}
@@ -73,7 +73,7 @@ abstract class CompositeChangePropagationSpecification extends AbstractChangePro
 	protected def propagateChangeViaMainprocessors(TransactionalChange change, CorrespondenceModel correspondenceModel,
 		ResourceAccess resourceAccess) {
 		for (changeProcessor : changeMainprocessors) {
-			logger.debug('''Calling change mainprocessor «changeProcessor» for change event «change»''');
+			logger.trace('''Calling change mainprocessor «changeProcessor» for change event «change»''');
 			changeProcessor.propagateChange(change, correspondenceModel, resourceAccess);
 		}
 	}
