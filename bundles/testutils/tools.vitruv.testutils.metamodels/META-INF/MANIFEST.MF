@@ -34,7 +34,7 @@ Export-Package: allElementTypes,
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.emf.ecore;visibility:=reexport,
  org.eclipse.xtend.lib,
- tools.vitruv.testutils;bundle-version="0.3.0",
+ tools.vitruv.testutils,
  edu.kit.ipd.sdq.activextendannotations
 Bundle-ActivationPolicy: lazy
 Bundle-Vendor: %providerName
