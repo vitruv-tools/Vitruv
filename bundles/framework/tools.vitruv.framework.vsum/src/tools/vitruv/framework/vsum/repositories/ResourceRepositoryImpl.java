@@ -345,7 +345,8 @@ public class ResourceRepositoryImpl implements ModelRepository, CorrespondencePr
     }
 
     private void saveVURIsOfVsumModelInstances() {
-        this.fileSystemHelper.saveVsumVURIsToFile(this.modelInstances.keySet());
+        // TODO Reimplement saving of V-SUM with a proper reload mechanism
+        // this.fileSystemHelper.saveVsumVURIsToFile(this.modelInstances.keySet());
     }
 
     private VitruvDomain getMetamodelByURI(final VURI uri) {
