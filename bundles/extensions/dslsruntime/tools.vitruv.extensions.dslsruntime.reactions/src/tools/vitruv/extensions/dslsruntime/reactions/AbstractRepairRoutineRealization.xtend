@@ -150,7 +150,7 @@ abstract class AbstractRepairRoutineRealization extends CallHierarchyHaving impl
 		}
 
 		private def persistAsRoot(EObject rootObject, VURI vuri) {
-			logger.debug("Registered to persist root " + rootObject + " in: " + vuri)
+			logger.trace("Registered to persist root " + rootObject + " in: " + vuri)
 			if (rootObject.eResource?.URI !== vuri.EMFUri) {
 				// Update TUID after removal, as persistence will also change it and rely on an up-to-date value
 				TuidManager.getInstance().registerObjectUnderModification(rootObject)

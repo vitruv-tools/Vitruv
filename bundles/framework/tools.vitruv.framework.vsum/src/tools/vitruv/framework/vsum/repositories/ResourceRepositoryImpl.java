@@ -64,12 +64,13 @@ public class ResourceRepositoryImpl implements ModelRepository, CorrespondencePr
         return this.uuidGeneratorAndResolver;
     }
 
-    public ResourceRepositoryImpl(final File folder, final VitruvDomainRepository metamodelRepository) {
+    public ResourceRepositoryImpl(final File folder, final VitruvDomainRepository metamodelRepository)
+            throws IllegalStateException {
         this(folder, metamodelRepository, null);
     }
 
     public ResourceRepositoryImpl(final File folder, final VitruvDomainRepository metamodelRepository,
-            final ClassLoader classLoader) {
+            final ClassLoader classLoader) throws IllegalStateException {
         this.metamodelRepository = metamodelRepository;
         this.folder = folder;
 
@@ -77,7 +78,13 @@ public class ResourceRepositoryImpl implements ModelRepository, CorrespondencePr
         ResourceSetUtil.addExistingFactoriesToResourceSet(this.resourceSet);
 
         this.modelInstances = new HashMap<VURI, ModelInstance>();
-        this.fileSystemHelper = new FileSystemHelper(this.folder);
+        try {
+            this.fileSystemHelper = new FileSystemHelper(this.folder);
+        } catch (IOException e) {
+            String message = "Unable to initialize V-SUM metadata folders in folder: " + this.folder;
+            logger.error(message, e);
+            throw new IllegalStateException(message, e);
+        }
 
         initializeUuidProviderAndResolver();
         this.domainToRecorder = new HashMap<VitruvDomain, AtomicEmfChangeRecorder>();
@@ -189,6 +196,7 @@ public class ResourceRepositoryImpl implements ModelRepository, CorrespondencePr
                         EcoreResourceBridge.saveResource(resourceToSave, saveOptions);
                     }
                 } catch (IOException e) {
+                    logger.warn("Model could not be saved: " + modelInstance.getURI());
                     throw new RuntimeException("Could not save VURI " + modelInstance.getURI() + ": " + e);
                 }
                 return null;
@@ -243,7 +251,7 @@ public class ResourceRepositoryImpl implements ModelRepository, CorrespondencePr
         for (ModelInstance modelInstance : this.modelInstances.values()) {
             Resource resourceToSave = modelInstance.getResource();
             if (resourceToSave.isModified()) {
-                logger.debug("  Saving resource: " + resourceToSave);
+                logger.trace("  Saving resource: " + resourceToSave);
                 saveModelInstance(modelInstance);
                 modelInstance.getResource().setModified(false);
             }
@@ -254,7 +262,7 @@ public class ResourceRepositoryImpl implements ModelRepository, CorrespondencePr
         executeAsCommand(new Callable<Void>() {
             @Override
             public Void call() throws Exception {
-                logger.debug(
+                logger.trace(
                         "  Saving correspondence model: " + ResourceRepositoryImpl.this.correspondenceModel.getURI());
                 ResourceRepositoryImpl.this.correspondenceModel.saveModel();
                 return null;
@@ -285,7 +293,7 @@ public class ResourceRepositoryImpl implements ModelRepository, CorrespondencePr
             VURI correspondencesVURI = this.fileSystemHelper.getCorrespondencesVURI();
             Resource correspondencesResource = null;
             if (URIUtil.existsResourceAtUri(correspondencesVURI.getEMFUri())) {
-                logger.debug("Loading correspondence model from: " + this.fileSystemHelper.getCorrespondencesVURI());
+                logger.trace("Loading correspondence model from: " + this.fileSystemHelper.getCorrespondencesVURI());
                 correspondencesResource = this.resourceSet.getResource(correspondencesVURI.getEMFUri(), true);
             } else {
                 correspondencesResource = this.resourceSet.createResource(correspondencesVURI.getEMFUri());
@@ -308,7 +316,7 @@ public class ResourceRepositoryImpl implements ModelRepository, CorrespondencePr
             VURI uuidProviderVURI = this.fileSystemHelper.getUuidProviderAndResolverVURI();
             Resource uuidProviderResource = null;
             if (URIUtil.existsResourceAtUri(uuidProviderVURI.getEMFUri())) {
-                logger.debug("Loading uuid provider and resolver model from: "
+                logger.trace("Loading uuid provider and resolver model from: "
                         + this.fileSystemHelper.getUuidProviderAndResolverVURI());
                 uuidProviderResource = this.resourceSet.getResource(uuidProviderVURI.getEMFUri(), true);
             } else {
@@ -344,7 +352,8 @@ public class ResourceRepositoryImpl implements ModelRepository, CorrespondencePr
     }
 
     private void saveVURIsOfVsumModelInstances() {
-        this.fileSystemHelper.saveVsumVURIsToFile(this.modelInstances.keySet());
+        // TODO Reimplement saving of V-SUM with a proper reload mechanism
+        // this.fileSystemHelper.saveVsumVURIsToFile(this.modelInstances.keySet());
     }
 
     private VitruvDomain getMetamodelByURI(final VURI uri) {
@@ -398,7 +407,7 @@ public class ResourceRepositoryImpl implements ModelRepository, CorrespondencePr
                     resource.delete(null);
                     ResourceRepositoryImpl.this.modelInstances.remove(vuri);
                 } catch (final IOException e) {
-                    logger.info("Deletion of resource " + resource + " did not work. Reason: " + e);
+                    logger.error("Deletion of resource " + resource + " did not work", e);
                 }
                 return null;
             }
