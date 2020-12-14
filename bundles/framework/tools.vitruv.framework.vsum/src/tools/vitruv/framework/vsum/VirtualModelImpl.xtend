@@ -97,10 +97,12 @@ class VirtualModelImpl implements InternalVirtualModel {
 	}
 
 	override propagateChange(VitruviusChange change) {
+		LOGGER.info('''Start change propagation''')
 		change.unresolveIfApplicable
 		// Save is done by the change propagator because it has to be performed before finishing sync
 		val result = changePropagator.propagateChange(change)
 		informPropagatedChangeListeners(result)
+		LOGGER.info('''Finished change propagation''')
 		return result
 	}
 
