@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Addresses Recipients Application
+Bundle-Name: Vitruv Addresses-Recipients Demo Application
 Bundle-SymbolicName: tools.vitruv.demo.applications.addressesrecipients;singleton:=true
 Automatic-Module-Name: tools.vitruv.demo.applications.addressesrecipients
 Bundle-Version: 1.1.0.qualifier
