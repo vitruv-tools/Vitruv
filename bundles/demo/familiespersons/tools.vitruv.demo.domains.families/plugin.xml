@@ -8,7 +8,7 @@
    <extension
          id="familiesDomainProvider"
          name="Families Domain Provider"
-         point="tools.vitruv.framework.metamodel.domain">
+         point="tools.vitruv.framework.domains.domain">
       <domainProvider
             class="tools.vitruv.domains.families.FamiliesDomainProvider"></domainProvider>
    </extension>
