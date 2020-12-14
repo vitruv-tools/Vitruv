@@ -65,8 +65,7 @@ public class CreateVsumWizard extends Wizard implements INewWizard {
 		for (VitruvApplication application : applications) {
 			logger.info("  Selected application: " + application.getName());
 		}
-		new VitruvInstanceCreator(name, projectsToDomains, applications).createVsumProject();
-		return true;
+		return new VitruvInstanceCreator(name, projectsToDomains, applications).createVsumProject();
 	}
 
 	@Override
