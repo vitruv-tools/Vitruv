@@ -29,7 +29,8 @@ public final class ProjectBuildUtils {
      *            projects supporting this builder.
      * @throws CoreException
      */
-    public static void issueIncrementalBuildForAllProjectsWithBuilder(final String builderId) throws CoreException {
+    public static void issueIncrementalBuildForAllProjectsWithBuilder(final String builderId)
+            throws IllegalStateException {
         for (IProject project : ResourcesPlugin.getWorkspace().getRoot().getProjects()) {
             if (project.isOpen()) {
                 issueIncrementalBuild(project, builderId);
@@ -37,7 +38,8 @@ public final class ProjectBuildUtils {
         }
     }
 
-    public static void issueIncrementalBuild(final IProject project, final String builderId) throws CoreException {
+    public static void issueIncrementalBuild(final IProject project, final String builderId)
+            throws IllegalStateException {
         LOGGER.debug("Issuing initial build for project " + project.getName());
         try {
             for (ICommand buildCommand : project.getDescription().getBuildSpec()) {
@@ -47,8 +49,9 @@ public final class ProjectBuildUtils {
                 }
             }
         } catch (CoreException e) {
-            LOGGER.error("Could not issue initial build for project " + project.getName() + ":\n" + e.getStackTrace());
-            throw e;
+            String message = "Could not issue initial build for project " + project.getName();
+            LOGGER.error(message, e);
+            throw new IllegalStateException(message, e);
         }
     }
 }
