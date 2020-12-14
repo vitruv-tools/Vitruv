@@ -64,12 +64,13 @@ public class ResourceRepositoryImpl implements ModelRepository, CorrespondencePr
         return this.uuidGeneratorAndResolver;
     }
 
-    public ResourceRepositoryImpl(final File folder, final VitruvDomainRepository metamodelRepository) {
+    public ResourceRepositoryImpl(final File folder, final VitruvDomainRepository metamodelRepository)
+            throws IllegalStateException {
         this(folder, metamodelRepository, null);
     }
 
     public ResourceRepositoryImpl(final File folder, final VitruvDomainRepository metamodelRepository,
-            final ClassLoader classLoader) {
+            final ClassLoader classLoader) throws IllegalStateException {
         this.metamodelRepository = metamodelRepository;
         this.folder = folder;
 
@@ -77,7 +78,13 @@ public class ResourceRepositoryImpl implements ModelRepository, CorrespondencePr
         ResourceSetUtil.addExistingFactoriesToResourceSet(this.resourceSet);
 
         this.modelInstances = new HashMap<VURI, ModelInstance>();
-        this.fileSystemHelper = new FileSystemHelper(this.folder);
+        try {
+            this.fileSystemHelper = new FileSystemHelper(this.folder);
+        } catch (IOException e) {
+            String message = "Unable to initialize V-SUM metadata folders in folder: " + this.folder;
+            logger.error(message, e);
+            throw new IllegalStateException(message, e);
+        }
 
         initializeUuidProviderAndResolver();
         this.domainToRecorder = new HashMap<VitruvDomain, AtomicEmfChangeRecorder>();

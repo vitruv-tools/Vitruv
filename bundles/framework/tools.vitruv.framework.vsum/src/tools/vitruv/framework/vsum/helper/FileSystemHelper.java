@@ -12,6 +12,7 @@ import java.io.ObjectOutputStream;
 import java.io.ObjectStreamClass;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.nio.file.Files;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
@@ -28,12 +29,13 @@ public class FileSystemHelper {
 
     private final File vsumProjectFolder;
 
-    public FileSystemHelper(final File vsumProjectFolder) {
+    public FileSystemHelper(final File vsumProjectFolder) throws IOException {
         this.vsumProjectFolder = vsumProjectFolder;
         createFolderIfNotExisting(vsumProjectFolder);
         createFolderInFolder(getVsumProjectFolder(), VsumConstants.UUID_PROVIDER_AND_RESOLVER_FOLDER_NAME);
         createFolderInFolder(getVsumProjectFolder(), VsumConstants.CORRESPONDENCE_FOLDER_NAME);
         createFolderInFolder(getVsumProjectFolder(), VsumConstants.VSUM_FOLDER_NAME);
+        createFolderInFolder(getVsumProjectFolder(), VsumConstants.CONSISTENCY_METADATA_FOLDER_NAME);
     }
 
     private String getMetadataFilePath(final String... metadataKey) {
@@ -256,7 +258,7 @@ public class FileSystemHelper {
     }
 
     private File getConsistencyMetadataFolder() {
-        return createFolderInFolder(getVsumProjectFolder(), VsumConstants.CONSISTENCY_METADATA_FOLDER_NAME);
+        return getFolderInFolder(getVsumProjectFolder(), VsumConstants.CONSISTENCY_METADATA_FOLDER_NAME);
     }
 
     private String getVsumMapFileName() {
@@ -280,16 +282,14 @@ public class FileSystemHelper {
         return innerFile;
     }
 
-    private File createFolderInFolder(final File parentFolder, final String folderName) {
+    private File createFolderInFolder(final File parentFolder, final String folderName) throws IOException {
         File innerFolder = new File(parentFolder, folderName);
         return createFolderIfNotExisting(innerFolder);
     }
 
-    private File createFolderIfNotExisting(final File folder) {
+    private File createFolderIfNotExisting(final File folder) throws IOException {
         this.LOGGER.trace("Creating folder: " + folder);
-        if (!folder.exists()) {
-            checkState(folder.mkdir(), "Folder " + folder + " could not be created");
-        }
+        Files.createDirectories(folder.toPath());
         return folder;
     }
 
