@@ -11,20 +11,22 @@ import org.eclipse.core.runtime.CoreException
 import java.util.HashMap
 import java.io.File
 import org.apache.log4j.Logger
+import org.eclipse.xtend.lib.annotations.Accessors
 
 class VitruviusProjectBuilderApplicator {
 	static val LOGGER = Logger.getLogger(VitruviusProjectBuilderApplicator)
 
-	public static final String ARGUMENT_VMODEL_NAME = "virtualModelName";
-	public static final String ARGUMENT_FILE_EXTENSIONS = "fileExtensions";
+	public static val ARGUMENT_VMODEL_NAME = "virtualModelName";
+	public static val ARGUMENT_FILE_EXTENSIONS = "fileExtensions";
 
+	@Accessors(PUBLIC_GETTER)
 	val String builderId;
 
 	new(String builderId) {
 		this.builderId = builderId;
 	}
 
-	def void addToProject(IProject project, File vmodelFolder, List<String> fileExtensions) {
+	def void addToProject(IProject project, File vmodelFolder, List<String> fileExtensions) throws IllegalStateException {
 		if (project !== null) {
 			try {
 				val IProjectDescription description = project.getDescription();
@@ -62,19 +64,16 @@ class VitruviusProjectBuilderApplicator {
 					}
 					description.setBuildSpec(buildSpec);
 				}
-
 				project.setDescription(description, null);
-
 			} catch (CoreException e) {
-				// TODO could not read/write project description
-				LOGGER.
-					fatal('''Could not read or write project description of project «project.name» for builder id «builderId»''')
-				e.printStackTrace();
+				val message = '''Could not add the builder with id «builderId» to project description of project «project.name»''';
+				LOGGER.error(message, e)
+				throw new IllegalStateException(message, e);
 			}
 		}
 	}
 
-	def void removeBuilderFromProject(IProject project) {
+	def void removeBuilderFromProject(IProject project) throws IllegalStateException {
 		if (project !== null) {
 			try {
 				val IProjectDescription description = project.getDescription();
@@ -91,13 +90,14 @@ class VitruviusProjectBuilderApplicator {
 				description.setBuildSpec(commands.toArray(<ICommand>newArrayOfSize(commands.size())));
 				project.setDescription(description, null);
 			} catch (CoreException e) {
-				// TODO could not read/write project description
-				e.printStackTrace();
+				val message = '''Could not remove the builder with id «builderId» to project description of project «project.name»''';
+				LOGGER.error(message, e)
+				throw new IllegalStateException(message, e);
 			}
 		}
 	}
 
-	def boolean hasBuilder(IProject project) {
+	def boolean hasBuilder(IProject project) throws IllegalStateException {
 		try {
 			for (buildSpec : project.getDescription().getBuildSpec()) {
 				if (this.builderId.equals(buildSpec.getBuilderName())) {
@@ -105,12 +105,10 @@ class VitruviusProjectBuilderApplicator {
 				}
 			}
 		} catch (CoreException e) {
+			throw new IllegalStateException('''Could not read description of project «project.name»''', e);
 		}
 
 		return false;
 	}
 
-	def String getBuilderId() {
-		return builderId;
-	}
 }
