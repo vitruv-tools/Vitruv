@@ -400,7 +400,7 @@ public class ResourceRepositoryImpl implements ModelRepository, CorrespondencePr
                     resource.delete(null);
                     ResourceRepositoryImpl.this.modelInstances.remove(vuri);
                 } catch (final IOException e) {
-                    logger.error("Deletion of resource " + resource + " did not work. Reason: " + e);
+                    logger.error("Deletion of resource " + resource + " did not work", e);
                 }
                 return null;
             }
