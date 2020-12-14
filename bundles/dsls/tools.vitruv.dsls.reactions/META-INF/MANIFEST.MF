@@ -30,7 +30,7 @@ Require-Bundle: org.eclipse.xtext,
  tools.vitruv.framework.change.processing,
  tools.vitruv.framework.domains;visibility:=reexport,
  edu.kit.ipd.sdq.activextendannotations;bundle-version="1.0.0",
- tools.vitruv.dsls.common;bundle-version="0.2.0",
+ tools.vitruv.dsls.common,
  org.eclipse.emf.mwe.core
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-11
