@@ -46,6 +46,14 @@ class ModelMatchers {
 		new ResourceContainmentMatcher(rootMatcher)
 	}
 
+	def static Matcher<? super URI> isResource() {
+		new ResourceExistingMatcher(true)
+	}
+	
+	def static Matcher<? super URI> isNoResource() {
+		new ResourceExistingMatcher(false)
+	}
+	
 	def static Matcher<? super Resource> exists() {
 		new ResourceExistenceMatcher(true)
 	}
