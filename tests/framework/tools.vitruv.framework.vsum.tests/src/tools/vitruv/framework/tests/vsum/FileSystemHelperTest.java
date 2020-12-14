@@ -1,5 +1,6 @@
 package tools.vitruv.framework.tests.vsum;
 
+import java.io.IOException;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
@@ -12,7 +13,7 @@ public class FileSystemHelperTest extends VsumTest {
     private static final Logger logger = Logger.getLogger(FileSystemHelperTest.class.getSimpleName());
 
     @Test
-    public void testSaveAndLoadVURIs() {
+    public void testSaveAndLoadVURIs() throws IOException {
         final int nrOfVURIs = 1000;
         Set<VURI> vuris = PersistentTestUtil.createDummyVURIs(getCurrentProjectFolder(), nrOfVURIs);
 
