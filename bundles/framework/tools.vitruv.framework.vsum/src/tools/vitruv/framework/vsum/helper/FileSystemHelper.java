@@ -1,5 +1,7 @@
 package tools.vitruv.framework.vsum.helper;
 
+import static com.google.common.base.Preconditions.checkState;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -14,12 +16,16 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.apache.log4j.Logger;
+
 import tools.vitruv.framework.util.VitruviusConstants;
 import tools.vitruv.framework.util.bridges.EMFBridge;
 import tools.vitruv.framework.util.datatypes.VURI;
 import tools.vitruv.framework.vsum.VsumConstants;
 
 public class FileSystemHelper {
+    Logger LOGGER = Logger.getLogger(FileSystemHelper.class);
+
     private final File vsumProjectFolder;
 
     public FileSystemHelper(final File vsumProjectFolder) {
@@ -289,9 +295,8 @@ public class FileSystemHelper {
 
     private File getFolderInFolder(final File parentFolder, final String folderName) {
         File innerFolder = new File(parentFolder, folderName);
-        if (!innerFolder.exists() || !innerFolder.isDirectory()) {
-            throw new IllegalStateException("Folder " + folderName + " does not exist");
-        }
+        checkState(innerFolder.exists() && innerFolder.isDirectory(),
+                "Folder " + folderName + " in " + parentFolder + " does not exist");
         return innerFolder;
     }
 
@@ -306,8 +311,9 @@ public class FileSystemHelper {
     }
 
     private File createFolderIfNotExisting(final File folder) {
+        this.LOGGER.trace("Creating folder: " + folder);
         if (!folder.exists()) {
-            folder.mkdir();
+            checkState(folder.mkdir(), "Folder " + folder + " could not be created");
         }
         return folder;
     }
