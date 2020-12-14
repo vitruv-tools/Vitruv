@@ -27,6 +27,8 @@ import static tools.vitruv.framework.util.XtendAssertHelper.*
 import static extension tools.vitruv.testutils.printing.ModelPrinting.*
 import java.util.Set
 import java.util.HashSet
+import org.hamcrest.core.IsCollectionContaining
+import static tools.vitruv.testutils.matchers.MatcherUtil.a
 
 @Utility
 class ModelMatchers {
@@ -48,11 +50,11 @@ class ModelMatchers {
 	def static Matcher<? super URI> isResource() {
 		new ResourceExistingMatcher(true)
 	}
-	
+
 	def static Matcher<? super URI> isNoResource() {
 		new ResourceExistingMatcher(false)
 	}
-	
+
 	def static Matcher<? super Resource> exists() {
 		new ResourceExistenceMatcher(true)
 	}
@@ -90,6 +92,14 @@ class ModelMatchers {
 
 	def static FeatureMatcher ignoringAllExceptFeaturesOfType(EClassifier... featureTypes) {
 		return new IgnoreAllExceptTypedFeatures(featureTypes)
+	}
+
+	def static Matcher<? super EObject> whose(EStructuralFeature feature, Matcher<?> featureMatcher) {
+		return new EObjectFeatureMatcher(feature, featureMatcher)
+	}
+
+	def static Matcher<? super Object> isInstanceOf(EClassifier classifier) {
+		return new InstanceOfEClassifierMatcher(classifier)
 	}
 }
 
@@ -512,5 +522,72 @@ package class IgnoreAllExceptTypedFeatures implements FeatureMatcher {
 
 	override getMismatch(Object expectedValue, Object itemValue) {
 		null
+	}
+}
+
+@FinalFieldsConstructor
+package class InstanceOfEClassifierMatcher extends TypeSafeMatcher<Object> {
+	val EClassifier expectedType
+
+	override protected matchesSafely(Object item) {
+		expectedType.isInstance(item)
+	}
+
+	override describeTo(Description description) {
+		description.appendText("an instance of ").appendModelValue(expectedType)
+	}
+
+	override describeMismatchSafely(Object item, Description mismatchDescription) {
+		mismatchDescription.appendText("is ").appendText(a( //
+			switch (item) {
+				EObject: item.eClass.name
+				default: item.class.simpleName
+			}
+		)).appendText(":").appendText(System.lineSeparator).appendModelValue(item)
+	}
+}
+
+@FinalFieldsConstructor
+package class EObjectFeatureMatcher extends TypeSafeMatcher<EObject> {
+	val EStructuralFeature feature
+	val Matcher<?> featureMatcher
+
+	override protected matchesSafely(EObject item) {
+		feature.EContainingClass.isInstance(item) && featureMatcher.matches(item.eGet(feature))
+	}
+
+	override describeTo(Description description) {
+		description.appendText(a(feature.EContainingClass.name)).appendText(" whose ").appendText(feature.name).
+			appendText( //
+			switch (featureMatcher) {
+				EObjectFeatureMatcher,
+				IsCollectionContaining<?>: " is "
+				default: " "
+			}).appendDescriptionOf(featureMatcher)
+	}
+
+	override describeMismatchSafely(EObject item, Description mismatchDescription) {
+		if (!feature.EContainingClass.isInstance(item)) {
+			mismatchDescription.appendText(" was ").appendText(a(item.eClass.name))
+		} else {
+			mismatchDescription.appendText("->").appendText(feature.name).appendText( //
+				switch (featureMatcher) {
+					IsCollectionContaining<?> case feature.isOrdered: "[*]"
+					IsCollectionContaining<?>: "{*}"
+					EObjectFeatureMatcher: ""
+					default: " "
+				}
+			)
+			featureMatcher.describeMismatch(item.eGet(feature), mismatchDescription)
+			mismatchDescription.appendText(" for")
+		}
+		mismatchDescription.appendText(":").appendText(System.lineSeparator).appendModelValue(item)
+	}
+}
+
+@Utility
+package class MatcherUtil {
+	def package static a(String string) {
+		(if (#['a', 'e', 'i', 'o'].contains(string.substring(0, 1).toLowerCase)) "an " else "a ") + string
 	}
 }
