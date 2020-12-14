@@ -31,9 +31,6 @@ import static com.google.common.base.Preconditions.checkArgument
 import static com.google.common.base.Preconditions.checkState
 import static org.hamcrest.MatcherAssert.assertThat
 import static tools.vitruv.testutils.matchers.ChangeMatchers.isValid
-import tools.vitruv.framework.correspondence.CorrespondenceModel
-import org.eclipse.emf.common.notify.Notifier
-import org.eclipse.emf.common.util.URI
 import java.io.File
 import static extension tools.vitruv.framework.util.ResourceSetUtil.withGlobalFactories
 
