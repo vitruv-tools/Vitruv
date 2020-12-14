@@ -9,7 +9,7 @@
 		<version>0.7.0</version>
 	</parent>
 	<artifactId>framework-parent</artifactId>
-	<version>0.3.0-SNAPSHOT</version>
+	<version>1.1.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<repositories>
@@ -17,17 +17,17 @@
 		<repository>
 			<id>Demo Metamodels</id>
 			<layout>p2</layout>
-			<url>http://kit-sdq.github.io/updatesite/release/metamodels/demo</url>
+			<url>http://kit-sdq.github.io/updatesite/nightly/metamodels/demo</url>
 		</repository>
 		<repository>
 			<id>SDQ Commons</id>
 			<layout>p2</layout>
-			<url>http://kit-sdq.github.io/updatesite/release/commons</url>
+			<url>http://kit-sdq.github.io/updatesite/nightly/commons</url>
 		</repository>
 		<repository>
 			<id>XAnnotations</id>
 			<layout>p2</layout>
-			<url>https://kit-sdq.github.io/updatesite/release/xannotations</url>
+			<url>https://kit-sdq.github.io/updatesite/nightly/xannotations</url>
 		</repository>
 	</repositories>
 
@@ -120,87 +120,87 @@
 							<dependency>
 								<groupId>tools.vitruv</groupId>
 								<artifactId>tools.vitruv.dsls.reactions</artifactId>
-								<version>0.3.0-SNAPSHOT</version>
+								<version>1.1.0-SNAPSHOT</version>
 							</dependency>
 							<dependency>
 								<groupId>tools.vitruv</groupId>
 								<artifactId>tools.vitruv.dsls.mappings</artifactId>
-								<version>0.3.0-SNAPSHOT</version>
+								<version>1.1.0-SNAPSHOT</version>
 							</dependency>
 							<dependency>
 								<groupId>tools.vitruv</groupId>
 								<artifactId>tools.vitruv.dsls.mirbase</artifactId>
-								<version>0.3.0-SNAPSHOT</version>
+								<version>1.1.0-SNAPSHOT</version>
 							</dependency>
 							<dependency>
 								<groupId>tools.vitruv</groupId>
 								<artifactId>tools.vitruv.dsls.common</artifactId>
-								<version>0.3.0-SNAPSHOT</version>
+								<version>1.1.0-SNAPSHOT</version>
 							</dependency>
 							<dependency>
 								<groupId>tools.vitruv</groupId>
 								<artifactId>tools.vitruv.extensions.dslsruntime.reactions</artifactId>
-								<version>0.3.0-SNAPSHOT</version>
+								<version>1.1.0-SNAPSHOT</version>
 							</dependency>
 							<dependency>
 								<groupId>tools.vitruv</groupId>
 								<artifactId>tools.vitruv.framework.domains</artifactId>
-								<version>0.3.0-SNAPSHOT</version>
+								<version>1.1.0-SNAPSHOT</version>
 							</dependency>
 							<dependency>
 								<groupId>tools.vitruv</groupId>
 								<artifactId>tools.vitruv.framework.change</artifactId>
-								<version>0.3.0-SNAPSHOT</version>
+								<version>1.1.0-SNAPSHOT</version>
 							</dependency>
 							<dependency>
 								<groupId>tools.vitruv</groupId>
 								<artifactId>tools.vitruv.framework.change.echange</artifactId>
-								<version>0.3.0-SNAPSHOT</version>
+								<version>1.1.0-SNAPSHOT</version>
 							</dependency>
 							<dependency>
 								<groupId>tools.vitruv</groupId>
 								<artifactId>tools.vitruv.framework.change.processing</artifactId>
-								<version>0.3.0-SNAPSHOT</version>
+								<version>1.1.0-SNAPSHOT</version>
 							</dependency>
 							<dependency>
 								<groupId>tools.vitruv</groupId>
 								<artifactId>tools.vitruv.framework.tuid</artifactId>
-								<version>0.3.0-SNAPSHOT</version>
+								<version>1.1.0-SNAPSHOT</version>
 							</dependency>
 							<dependency>
 								<groupId>tools.vitruv</groupId>
 								<artifactId>tools.vitruv.framework.uuid</artifactId>
-								<version>0.3.0-SNAPSHOT</version>
+								<version>1.1.0-SNAPSHOT</version>
 							</dependency>
 							<dependency>
 								<groupId>tools.vitruv</groupId>
 								<artifactId>tools.vitruv.framework.util</artifactId>
-								<version>0.3.0-SNAPSHOT</version>
+								<version>1.1.0-SNAPSHOT</version>
 							</dependency>
 							<dependency>
 								<groupId>tools.vitruv</groupId>
 								<artifactId>tools.vitruv.extensions.emf</artifactId>
-								<version>0.3.0-SNAPSHOT</version>
+								<version>1.1.0-SNAPSHOT</version>
 							</dependency>
 							<dependency>
 								<groupId>tools.vitruv</groupId>
 								<artifactId>tools.vitruv.demo.domains.families</artifactId>
-								<version>0.3.0-SNAPSHOT</version>
+								<version>1.1.0-SNAPSHOT</version>
 							</dependency>
 							<dependency>
 								<groupId>tools.vitruv</groupId>
 								<artifactId>tools.vitruv.demo.domains.persons</artifactId>
-								<version>0.3.0-SNAPSHOT</version>
+								<version>1.1.0-SNAPSHOT</version>
 							</dependency>
 							<dependency>
 								<groupId>tools.vitruv</groupId>
 								<artifactId>tools.vitruv.demo.domains.addresses</artifactId>
-								<version>0.3.0-SNAPSHOT</version>
+								<version>1.1.0-SNAPSHOT</version>
 							</dependency>
 							<dependency>
 								<groupId>tools.vitruv</groupId>
 								<artifactId>tools.vitruv.demo.domains.recipients</artifactId>
-								<version>0.3.0-SNAPSHOT</version>
+								<version>1.1.0-SNAPSHOT</version>
 							</dependency>
 						</dependencies>
 					</plugin>

@@ -64,17 +64,19 @@ interface VitruviusChange extends URIHaving {
 	def Iterable<String> getAffectedEObjectIds();
 
 	/**
-	 * Returns the unique {@link Resource} affected by this change, i.e., the resource containing the affected {@link EObject}s.
+	 * Returns the unique {@link Resource} changed by this change, i.e., the resource containing the changed {@link EObject}s.
 	 * If no {@link EObject}s are affected or if the change is not resolved, <code>null</code> is returned.
+	 * The {@link URI} of the returned {@link Resource} is the same as of the change itself,
+	 * i.e., <code>this.changedResource.getURI().equals(this.getURI())</code>
 	 * @throws IllegalStateExecption if the change is not valid (see {@link #validate() validate()})
 	 */
-	def Resource getAffectedResource();
-	
+	def Resource getChangedResource();
+
 	/**
 	 * Returns all user interactions performed during application of this change and performing consistency preservation.
 	 */
 	def Iterable<UserInteractionBase> getUserInteractions()
-	
+
 	/**
 	 * Checks whether the affected EObjects of this change are equal to the EObjects of the other change.
 	 */
