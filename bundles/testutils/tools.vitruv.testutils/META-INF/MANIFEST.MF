@@ -33,5 +33,6 @@ Require-Bundle: tools.vitruv.framework.vsum;visibility:=reexport,
 Export-Package: tools.vitruv.testutils,
  tools.vitruv.testutils.activeannotations,
  tools.vitruv.testutils.domains,
- tools.vitruv.testutils.matchers
+ tools.vitruv.testutils.matchers,
+ tools.vitruv.testutils.printing
 Bundle-Vendor: vitruv.tools

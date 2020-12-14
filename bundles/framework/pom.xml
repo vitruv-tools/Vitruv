@@ -20,7 +20,7 @@
 		<module>tools.vitruv.framework.change.interaction</module>
 		<module>tools.vitruv.framework.change.processing</module>
 		<module>tools.vitruv.framework.correspondence</module>
-		<module>tools.vitruv.framework.metamodel</module>
+		<module>tools.vitruv.framework.domains</module>
 		<module>tools.vitruv.framework.tuid</module>
 		<module>tools.vitruv.framework.ui.monitorededitor</module>
 		<module>tools.vitruv.framework.ui.vsum</module>

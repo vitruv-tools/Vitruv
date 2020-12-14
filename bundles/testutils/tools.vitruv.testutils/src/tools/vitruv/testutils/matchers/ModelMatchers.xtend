@@ -24,18 +24,19 @@ import static com.google.common.base.Preconditions.checkArgument
 import static java.util.Collections.emptyMap
 import static tools.vitruv.framework.util.XtendAssertHelper.*
 
-import static extension tools.vitruv.testutils.matchers.ModelPrinter.appendEObjectValue
-import static extension tools.vitruv.testutils.matchers.ModelPrinter.appendPrettyValue
+import static extension tools.vitruv.testutils.printing.ModelPrinting.*
 import java.util.Set
 import java.util.HashSet
+import org.hamcrest.core.IsCollectionContaining
+import static tools.vitruv.testutils.matchers.MatcherUtil.a
 
 @Utility
 class ModelMatchers {
-	def static Matcher<? super Resource> containsModelOf(Resource otherResource, FeatureMatcher... featureMatchers) {
-		checkArgument(otherResource.contents.size > 0, 'The resource to compare with must contain a model!')
-		checkArgument(otherResource.contents.size < 2, 'The resource to compare with must contain only one model!')
+	def static Matcher<? super Resource> containsModelOf(Resource expected, FeatureMatcher... featureMatchers) {
+		checkArgument(expected.contents.size > 0, 'The resource to compare with must contain a root element!')
+		checkArgument(expected.contents.size < 2, 'The resource to compare with must contain only one root element!')
 
-		contains(otherResource.contents.get(0))
+		contains(expected.contents.get(0))
 	}
 
 	def static Matcher<? super Resource> contains(EObject root, FeatureMatcher... featureMatchers) {
@@ -49,17 +50,21 @@ class ModelMatchers {
 	def static Matcher<? super URI> isResource() {
 		new ResourceExistingMatcher(true)
 	}
-	
+
 	def static Matcher<? super URI> isNoResource() {
 		new ResourceExistingMatcher(false)
 	}
-	
+
 	def static Matcher<? super Resource> exists() {
 		new ResourceExistenceMatcher(true)
 	}
 
 	def static Matcher<? super Resource> doesNotExist() {
 		new ResourceExistenceMatcher(false)
+	}
+
+	def static Matcher<? super EObject> isContainedIn(Resource resource) {
+		new EObjectResourceMatcher(resource)
 	}
 
 	def static Matcher<? super EObject> equalsDeeply(EObject object, FeatureMatcher... featureMatchers) {
@@ -88,13 +93,21 @@ class ModelMatchers {
 	def static FeatureMatcher ignoringAllExceptFeaturesOfType(EClassifier... featureTypes) {
 		return new IgnoreAllExceptTypedFeatures(featureTypes)
 	}
+
+	def static Matcher<? super EObject> whose(EStructuralFeature feature, Matcher<?> featureMatcher) {
+		return new EObjectFeatureMatcher(feature, featureMatcher)
+	}
+
+	def static Matcher<? super Object> isInstanceOf(EClassifier classifier) {
+		return new InstanceOfEClassifierMatcher(classifier)
+	}
 }
 
 @FinalFieldsConstructor
 package class ResourceExistingMatcher extends TypeSafeMatcher<URI> {
 	val boolean shouldExist
 
-	override protected matchesSafely(URI item) {
+	override matchesSafely(URI item) {
 		URIUtil.existsResourceAtUri(item) == shouldExist
 	}
 
@@ -108,7 +121,7 @@ package class ResourceExistingMatcher extends TypeSafeMatcher<URI> {
 		)
 	}
 
-	override protected describeMismatchSafely(URI item, Description mismatchDescription) {
+	override describeMismatchSafely(URI item, Description mismatchDescription) {
 		val qualifier = if (shouldExist) "no" else "a"
 		mismatchDescription.appendText('''there was «qualifier» resource at ''').appendValue(item)
 	}
@@ -119,14 +132,14 @@ package class ResourceContainmentMatcher extends TypeSafeMatcher<Resource> {
 	val Matcher<? super EObject> delegateMatcher
 	boolean exists
 
-	override protected describeMismatchSafely(Resource item, Description mismatchDescription) {
+	override describeMismatchSafely(Resource item, Description mismatchDescription) {
 		if (!exists) {
 			mismatchDescription.appendText("there is no resource at ").appendValue(item.URI)
 		} else if (item.contents.isEmpty) {
-			mismatchDescription.appendText("the resource was empty.")
+			mismatchDescription.appendModelValue(item).appendText(" was empty.")
 		} else if (item.contents.size > 1) {
-			mismatchDescription.appendText("the resource contained ").appendValue(item.contents.size).appendText(
-				" instead of just one content element.")
+			mismatchDescription.appendModelValue(item).appendText(" contained ").appendValue(item.contents.size).
+				appendText(" instead of just one content element.")
 		} else {
 			delegateMatcher.describeMismatch(item.contents.get(0), mismatchDescription)
 		}
@@ -136,7 +149,7 @@ package class ResourceContainmentMatcher extends TypeSafeMatcher<Resource> {
 		description.appendText("a resource containing ").appendDescriptionOf(delegateMatcher)
 	}
 
-	override protected matchesSafely(Resource item) {
+	override matchesSafely(Resource item) {
 		exists = item.resourceSet.URIConverter.exists(item.URI, emptyMap)
 		return exists && item.contents.size == 1 && delegateMatcher.matches(item.contents.get(0))
 	}
@@ -147,25 +160,46 @@ package class ResourceContainmentMatcher extends TypeSafeMatcher<Resource> {
 package class ResourceExistenceMatcher extends TypeSafeMatcher<Resource> {
 	val boolean shouldExist
 
-	override protected describeMismatchSafely(Resource item, Description mismatchDescription) {
-		val qualifier = if (shouldExist) 'no' else 'a'
-		mismatchDescription.appendText('''there was «qualifier» resource at ''').appendValue(item.URI)
-	}
-
 	override describeTo(Description description) {
 		val qualifier = if (shouldExist) '' else 'not'
 		description.appendText('''the resource «qualifier» to exist''');
 	}
 
-	override protected matchesSafely(Resource item) {
+	override matchesSafely(Resource item) {
 		item.resourceSet.URIConverter.exists(item.URI, emptyMap) == shouldExist
 	}
 
+	override describeMismatchSafely(Resource item, Description mismatchDescription) {
+		val qualifier = if (shouldExist) 'no' else 'a'
+		mismatchDescription.appendText('''there was «qualifier» resource at ''').appendValue(item.URI)
+	}
+}
+
+@FinalFieldsConstructor
+package class EObjectResourceMatcher extends TypeSafeMatcher<EObject> {
+	val Resource expectedResource
+
+	override matchesSafely(EObject item) {
+		item.eResource.URI == expectedResource.URI
+	}
+
+	override describeTo(Description description) {
+		description.appendText('''an EObject that is contained in the resource at ''').appendValue(expectedResource.URI)
+	}
+
+	override describeMismatchSafely(EObject item, Description mismatchDescription) {
+		mismatchDescription.appendModelValue(item)
+		val actualResource = item.eResource
+		if (actualResource === null) {
+			mismatchDescription.appendText(' is not in any resource')
+		} else {
+			mismatchDescription.appendText(' is in ').appendModelValue(actualResource)
+		}
+	}
 }
 
 @FinalFieldsConstructor
 package class ModelTreeEqualityMatcher extends TypeSafeMatcher<EObject> {
-
 	package val EObject expectedObject
 	var Deque<String> navigationStack = new ArrayDeque()
 	var Consumer<Description> mismatch
@@ -176,7 +210,7 @@ package class ModelTreeEqualityMatcher extends TypeSafeMatcher<EObject> {
 	var Map<Object, Object> objectMapping = new HashMap
 	val FeatureMatcher[] featureMatchers
 
-	override protected matchesSafely(EObject item) {
+	override matchesSafely(EObject item) {
 		return expectedObject.equalsDeeply(item, false)
 	}
 
@@ -237,9 +271,9 @@ package class ModelTreeEqualityMatcher extends TypeSafeMatcher<EObject> {
 		} else if (mappedItem !== null) {
 			// The object has already been mapped to some other object.
 			mismatch = [
-				appendText("did not match the topologically expected object. Expected ").appendPrettyValue(mappedItem).
-					appendText(" (mapped and equal to ").appendPrettyValue(expected).appendText(") but found ").
-					appendPrettyValue(item).appendText(".")
+				appendText("did not match the topologically expected object. Expected ").appendModelValue(mappedItem).
+					appendText(" (mapped and equal to ").appendModelValue(expected).appendText(") but found ").
+					appendModelValue(item).appendText(".")
 			]
 			return false
 		}
@@ -253,8 +287,8 @@ package class ModelTreeEqualityMatcher extends TypeSafeMatcher<EObject> {
 			mismatch = [
 				appendText(
 					"has already been compared and mapped to some other object in the expected model tree. Expected ").
-					appendPrettyValue(expected).appendText(" but the object ").appendPrettyValue(item).appendText(
-						" has already been mapped to ").appendPrettyValue(mappedExpected).appendText(".")
+					appendModelValue(expected).appendText(" but the object ").appendModelValue(item).appendText(
+						" has already been mapped to ").appendModelValue(mappedExpected).appendText(".")
 			]
 			return false
 		}
@@ -273,15 +307,15 @@ package class ModelTreeEqualityMatcher extends TypeSafeMatcher<EObject> {
 				return true
 			} else {
 				mismatch = [
-					appendText("did not match the expected proxy. Expected ").appendPrettyValue(expected).appendText(
-						" but found ").appendPrettyValue(item).appendText(".")
+					appendText("did not match the expected proxy. Expected ").appendModelValue(expected).appendText(
+						" but found ").appendModelValue(item).appendText(".")
 				]
 				return false
 			}
 		} else if (item.eIsProxy) {
 			mismatch = [
-				appendText("is an unexpected proxy. Expected ").appendPrettyValue(expected).appendText(" but found ").
-					appendPrettyValue(item).appendText(".")
+				appendText("is an unexpected proxy. Expected ").appendModelValue(expected).appendText(" but found ").
+					appendModelValue(item).appendText(".")
 			]
 			return false
 		}
@@ -289,8 +323,8 @@ package class ModelTreeEqualityMatcher extends TypeSafeMatcher<EObject> {
 		// Compare classes:
 		if (expected.eClass !== item.eClass) {
 			mismatch = [
-				appendText("had the wrong EClass. Expected ").appendPrettyValue(expected.eClass.name).appendText(
-					" but found ").appendPrettyValue(item.eClass.name).appendText(".")
+				appendText("had the wrong EClass. Expected ").appendModelValue(expected.eClass.name).appendText(
+					" but found ").appendModelValue(item.eClass.name).appendText(".")
 			]
 			return false
 		}
@@ -407,16 +441,16 @@ package class ModelTreeEqualityMatcher extends TypeSafeMatcher<EObject> {
 
 	def private equalityMismatch(Object expected, Object item) {
 		mismatch = [
-			appendText("had the wrong value. Expected ").appendPrettyValue(expected).appendText(" but found ").
-				appendPrettyValue(item)
+			appendText("had the wrong value. Expected ").appendModelValue(expected).appendText(" but found ").
+				appendModelValue(item)
 		]
 	}
 
 	override describeTo(Description description) {
-		description.appendText('''a «expectedObject.eClass.name» deeply equal to ''').appendEObjectValue(expectedObject)
+		description.appendText('''a «expectedObject.eClass.name» deeply equal to ''').appendModelValue(expectedObject)
 	}
 
-	override protected describeMismatchSafely(EObject item, Description mismatchDescription) {
+	override describeMismatchSafely(EObject item, Description mismatchDescription) {
 		if (navigationStack.isEmpty) {
 			mismatchDescription.appendText('''The «item.eClass.name» ''')
 		} else {
@@ -488,5 +522,72 @@ package class IgnoreAllExceptTypedFeatures implements FeatureMatcher {
 
 	override getMismatch(Object expectedValue, Object itemValue) {
 		null
+	}
+}
+
+@FinalFieldsConstructor
+package class InstanceOfEClassifierMatcher extends TypeSafeMatcher<Object> {
+	val EClassifier expectedType
+
+	override protected matchesSafely(Object item) {
+		expectedType.isInstance(item)
+	}
+
+	override describeTo(Description description) {
+		description.appendText("an instance of ").appendModelValue(expectedType)
+	}
+
+	override describeMismatchSafely(Object item, Description mismatchDescription) {
+		mismatchDescription.appendText("is ").appendText(a( //
+			switch (item) {
+				EObject: item.eClass.name
+				default: item.class.simpleName
+			}
+		)).appendText(":").appendText(System.lineSeparator).appendModelValue(item)
+	}
+}
+
+@FinalFieldsConstructor
+package class EObjectFeatureMatcher extends TypeSafeMatcher<EObject> {
+	val EStructuralFeature feature
+	val Matcher<?> featureMatcher
+
+	override protected matchesSafely(EObject item) {
+		feature.EContainingClass.isInstance(item) && featureMatcher.matches(item.eGet(feature))
+	}
+
+	override describeTo(Description description) {
+		description.appendText(a(feature.EContainingClass.name)).appendText(" whose ").appendText(feature.name).
+			appendText( //
+			switch (featureMatcher) {
+				EObjectFeatureMatcher,
+				IsCollectionContaining<?>: " is "
+				default: " "
+			}).appendDescriptionOf(featureMatcher)
+	}
+
+	override describeMismatchSafely(EObject item, Description mismatchDescription) {
+		if (!feature.EContainingClass.isInstance(item)) {
+			mismatchDescription.appendText(" was ").appendText(a(item.eClass.name))
+		} else {
+			mismatchDescription.appendText("->").appendText(feature.name).appendText( //
+				switch (featureMatcher) {
+					IsCollectionContaining<?> case feature.isOrdered: "[*]"
+					IsCollectionContaining<?>: "{*}"
+					EObjectFeatureMatcher: ""
+					default: " "
+				}
+			)
+			featureMatcher.describeMismatch(item.eGet(feature), mismatchDescription)
+			mismatchDescription.appendText(" for")
+		}
+		mismatchDescription.appendText(":").appendText(System.lineSeparator).appendModelValue(item)
+	}
+}
+
+@Utility
+package class MatcherUtil {
+	def package static a(String string) {
+		(if (#['a', 'e', 'i', 'o'].contains(string.substring(0, 1).toLowerCase)) "an " else "a ") + string
 	}
 }

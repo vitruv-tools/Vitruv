@@ -1,9 +1,9 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <!-- Schema file written by PDE -->
-<schema targetNamespace="tools.vitruv.framework.metamodel" xmlns="http://www.w3.org/2001/XMLSchema">
+<schema targetNamespace="tools.vitruv.framework.domains" xmlns="http://www.w3.org/2001/XMLSchema">
 <annotation>
       <appInfo>
-         <meta.schema plugin="tools.vitruv.framework.metamodel" id="domain" name="Vitruv Domain"/>
+         <meta.schema plugin="tools.vitruv.framework.domains" id="domain" name="Vitruv Domain"/>
       </appInfo>
       <documentation>
          Extension point for registering a Vitruv domain

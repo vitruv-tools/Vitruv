@@ -7,7 +7,7 @@ Automatic-Module-Name: tools.vitruv.framework.applications
 Bundle-Version: 1.1.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Require-Bundle: tools.vitruv.framework.change.processing;visibility:=reexport,
- tools.vitruv.framework.metamodel;visibility:=reexport,
+ tools.vitruv.framework.domains;visibility:=reexport,
  com.google.guava,
  org.eclipse.xtext.xbase.lib,
  org.eclipse.xtend.lib,

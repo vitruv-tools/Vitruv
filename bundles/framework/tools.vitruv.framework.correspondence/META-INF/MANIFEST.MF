@@ -17,7 +17,7 @@ Require-Bundle: org.apache.log4j,
  org.eclipse.emf.ecore.change,
  tools.vitruv.framework.util,
  tools.vitruv.framework.tuid,
- tools.vitruv.framework.metamodel,
+ tools.vitruv.framework.domains,
  tools.vitruv.framework.uuid;visibility:=reexport
 Bundle-ActivationPolicy: lazy
 Export-Package: tools.vitruv.framework.correspondence,
