@@ -1,4 +1,4 @@
-package tools.vitruv.testutils
+package tools.vitruv.framework.util
 
 import static com.google.common.base.Preconditions.checkState
 
@@ -45,7 +45,7 @@ class Capture<T> {
 	/**
 	 * Syntactic sugar for {@linkplain #get getting} this capture’s current value.
 	 */
-	def T operator_plus() {
+	def T operator_minus() {
 		get()
 	}
 	

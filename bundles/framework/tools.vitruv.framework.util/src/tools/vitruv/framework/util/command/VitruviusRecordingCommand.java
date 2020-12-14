@@ -15,63 +15,62 @@ import tools.vitruv.framework.util.bridges.JavaBridge;
 
 public abstract class VitruviusRecordingCommand extends RecordingCommand implements Command {
 
-    protected static final Logger logger = Logger.getLogger(VitruviusRecordingCommand.class.getSimpleName());
+	protected static final Logger logger = Logger.getLogger(VitruviusRecordingCommand.class.getSimpleName());
 
-    private RuntimeException runtimeException;
-    private TransactionalEditingDomain domain;
-    
-    public VitruviusRecordingCommand(TransactionalEditingDomain domain) {
-        super(domain);
-        this.domain = domain;
-        this.runtimeException = null;
-    }
+	private RuntimeException runtimeException;
+	private TransactionalEditingDomain domain;
 
-    @Override
-    protected void preExecute() {
-        this.runtimeException = null;
-        super.preExecute();
-    }
+	public VitruviusRecordingCommand(TransactionalEditingDomain domain) {
+		super(domain);
+		this.domain = domain;
+		this.runtimeException = null;
+	}
 
-    public void setRuntimeException(final RuntimeException e) {
-        this.runtimeException = e;
-    }
+	@Override
+	protected void preExecute() {
+		this.runtimeException = null;
+		super.preExecute();
+	}
 
-    public void rethrowRuntimeExceptionIfExisting() {
-        if (this.runtimeException != null) {
-            throw (this.runtimeException);
-        }
-    }
+	public void setRuntimeException(final RuntimeException e) {
+		this.runtimeException = e;
+	}
 
-    protected void storeAndRethrowException(final Throwable e) {
-        RuntimeException r;
-        if (e instanceof RuntimeException) {
-            r = (RuntimeException) e;
-        } else {
-            // soften
-            r = new RuntimeException(e);
-        }
-        setRuntimeException(r);
-        // just log and rethrow
-        throw (r);
-    }
-    
-    @Override
-    public Collection<?> getAffectedObjects() {
-        Transaction transaction = JavaBridge.getFieldFromClass(RecordingCommand.class, "transaction", this);
-        if (transaction == null) {
-            // TODO DW what to do, if transaction is null? when is this the case?
-            return Collections.EMPTY_SET;
-        }
+	public void rethrowRuntimeExceptionIfExisting() {
+		if (this.runtimeException != null) {
+			throw this.runtimeException;
+		}
+	}
 
-        final TransactionChangeDescription changeDescription = transaction.getChangeDescription();
-        final Collection<EObject> affectedEObjects = EMFChangeBridge.getAffectedObjects(changeDescription);
+	protected void storeAndRethrowException(final Throwable e) {
+		RuntimeException r;
+		if (e instanceof RuntimeException) {
+			r = (RuntimeException) e;
+		} else {
+			// soften
+			r = new RuntimeException(e);
+		}
+		setRuntimeException(r);
+		// just log and rethrow
+		throw (r);
+	}
 
-        return affectedEObjects;
-    }
+	@Override
+	public Collection<?> getAffectedObjects() {
+		Transaction transaction = JavaBridge.getFieldFromClass(RecordingCommand.class, "transaction", this);
+		if (transaction == null) {
+			// TODO DW what to do, if transaction is null? when is this the case?
+			return Collections.EMPTY_SET;
+		}
 
-    public void executeAndRethrowException() {
-    	domain.getCommandStack().execute(this);
-    	rethrowRuntimeExceptionIfExisting();
-    }
-    
+		final TransactionChangeDescription changeDescription = transaction.getChangeDescription();
+		final Collection<EObject> affectedEObjects = EMFChangeBridge.getAffectedObjects(changeDescription);
+
+		return affectedEObjects;
+	}
+
+	public void executeAndRethrowException() {
+		domain.getCommandStack().execute(this);
+		rethrowRuntimeExceptionIfExisting();
+	}
 }

@@ -3,6 +3,8 @@ package tools.vitruv.testutils
 import java.nio.file.Path
 import java.util.List
 import java.util.function.Consumer
+import org.eclipse.emf.common.notify.Notifier
+import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.emf.ecore.resource.ResourceSet
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
@@ -14,26 +16,23 @@ import tools.vitruv.framework.change.description.PropagatedChange
 import tools.vitruv.framework.change.description.VitruviusChangeFactory
 import tools.vitruv.framework.change.processing.ChangePropagationSpecification
 import tools.vitruv.framework.change.recording.AtomicEmfChangeRecorder
+import tools.vitruv.framework.correspondence.CorrespondenceModel
 import tools.vitruv.framework.tuid.TuidManager
 import tools.vitruv.framework.userinteraction.UserInteractionFactory
-import tools.vitruv.framework.util.ResourceSetUtil
 import tools.vitruv.framework.util.bridges.EMFBridge
 import tools.vitruv.framework.uuid.UuidGeneratorAndResolver
 import tools.vitruv.framework.uuid.UuidGeneratorAndResolverImpl
 import tools.vitruv.framework.vsum.InternalVirtualModel
 import tools.vitruv.framework.vsum.VirtualModelConfiguration
 import tools.vitruv.framework.vsum.VirtualModelImpl
+import tools.vitruv.testutils.matchers.CorrespondenceModelContainer
 
 import static com.google.common.base.Preconditions.checkArgument
 import static com.google.common.base.Preconditions.checkState
-import tools.vitruv.testutils.matchers.CorrespondenceModelContainer
-import tools.vitruv.testutils.TestLogging
 import static org.hamcrest.MatcherAssert.assertThat
 import static tools.vitruv.testutils.matchers.ChangeMatchers.isValid
-import tools.vitruv.framework.correspondence.CorrespondenceModel
-import org.eclipse.emf.common.notify.Notifier
-import org.eclipse.emf.common.util.URI
 import java.io.File
+import static extension tools.vitruv.framework.util.ResourceSetUtil.withGlobalFactories
 
 @ExtendWith(TestProjectManager, TestLogging)
 abstract class VitruvApplicationTest implements CorrespondenceModelContainer {
@@ -70,12 +69,11 @@ abstract class VitruvApplicationTest implements CorrespondenceModelContainer {
 		var userInteractor = UserInteractionFactory.instance.createUserInteractor(interactionProvider)
 		// The virtual model has to be created first because otherwise some domain
 		// overwrites may not be applied correctly before instantiating the ResourceSet
-		virtualModel = new VirtualModelImpl(vsumPath.toFile(), userInteractor, new VirtualModelConfiguration() => [
+		virtualModel = new VirtualModelImpl(vsumPath.toFile(), userInteractor, new VirtualModelConfiguration => [
 			domains.forEach[domain|addMetamodel(domain)]
 			changePropagationSpecifications.forEach[spec|addChangePropagationSpecification(spec)]
 		])
-		resourceSet = new ResourceSetImpl()
-		ResourceSetUtil.addExistingFactoriesToResourceSet(resourceSet)
+		resourceSet = new ResourceSetImpl().withGlobalFactories()
 		uuidGeneratorAndResolver = new UuidGeneratorAndResolverImpl(virtualModel.uuidGeneratorAndResolver, resourceSet,
 			true)
 		renewResourceCache()

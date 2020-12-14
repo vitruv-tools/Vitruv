@@ -123,7 +123,7 @@ public class ModelInstance extends AbstractURIHaving {
 	 * Throws an {@link IllegalStateException} if the resource cannot be loaded.
 	 */
 	public void load(final Map<Object, Object> loadOptions, final boolean forceLoadByDoingUnloadBeforeLoad) {
-		EMFCommandBridge.createAndExecuteVitruviusRecordingCommand(() -> {
+		EMFCommandBridge.executeVitruviusRecordingCommand(getTransactionalEditingDomain(), () -> {
 			try {
 				if (null != loadOptions) {
 					this.lastUsedLoadOptions = loadOptions;
@@ -142,8 +142,7 @@ public class ModelInstance extends AbstractURIHaving {
 				// soften
 				throw new IllegalStateException("Problem loading resource: " + resource.getURI());
 			}
-			return null;
-		}, getTransactionalEditingDomain());
+		});
 	}
 
 	public void load(final Map<Object, Object> loadOptions) {
