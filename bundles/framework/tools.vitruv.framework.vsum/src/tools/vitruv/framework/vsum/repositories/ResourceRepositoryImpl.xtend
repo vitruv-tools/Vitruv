@@ -61,7 +61,13 @@ class ResourceRepositoryImpl implements ModelRepository, CorrespondenceProviding
 		this.folder = folder
 		this.resourceSet = new ResourceSetImpl().withGlobalFactories()
 		this.modelInstances = new HashMap<VURI, ModelInstance>()
-		this.fileSystemHelper = new FileSystemHelper(this.folder)
+		try {
+			this.fileSystemHelper = new FileSystemHelper(this.folder)
+		} catch (IOException e) {
+			val message = '''Unable to initialize V-SUM metadata folders in folder: «folder»'''
+            		logger.error(message, e)
+            		throw new IllegalStateException(message, e)
+        	}
 		initializeUuidProviderAndResolver()
 		this.domainToRecorder = new HashMap<VitruvDomain, AtomicEmfChangeRecorder>()
 		initializeCorrespondenceModel()
@@ -288,7 +294,8 @@ class ResourceRepositoryImpl implements ModelRepository, CorrespondenceProviding
 	}
 
 	def private void saveVURIsOfVsumModelInstances() {
-		fileSystemHelper.saveVsumVURIsToFile(modelInstances.keySet)
+	        // TODO Reimplement saving of V-SUM with a proper reload mechanism
+		// fileSystemHelper.saveVsumVURIsToFile(modelInstances.keySet)
 	}
 
 	def private VitruvDomain getMetamodelByURI(VURI uri) {
@@ -323,7 +330,7 @@ class ResourceRepositoryImpl implements ModelRepository, CorrespondenceProviding
 				resource.delete(null)
 				modelInstances.remove(vuri)
 			} catch (IOException e) {
-				logger.info('''Deletion of resource «resource» did not work. Reason: «e»''')
+				logger.error('''Deletion of resource «resource» did not work.''', e)
 				return null
 			}
 		]
