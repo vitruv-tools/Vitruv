@@ -230,6 +230,7 @@ class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 	}
 
 	override registerEObject(String uuid, EObject eObject) {
+		checkState(eObject !== null, "Object must not be null")
 		logger.debug('''Adding UUID «uuid» for EObject: «eObject»''')
 		runAsCommandIfNecessary(eObject) [
 			repository.EObjectToUuid.removeIf[value == uuid]
@@ -300,6 +301,7 @@ class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 	}
 
 	override registerCachedEObject(EObject eObject) {
+		checkState(eObject !== null, "Object must not be null")
 		val uuid = generateUuid
 		cache.EObjectToUuid.put(eObject, uuid)
 		cache.uuidToEObject.put(uuid, eObject)
