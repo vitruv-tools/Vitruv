@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: ChangeVisualization
+Bundle-Name: Vitruv Extension Change Visualization
 Bundle-SymbolicName: tools.vitruv.extensions.changevisualization;singleton:=true
 Automatic-Module-Name: tools.vitruv.extensions.changevisualization
 Bundle-Version: 1.1.0.qualifier

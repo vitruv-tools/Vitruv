@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Vitruv Demo Families-Persons
+Bundle-Name: Vitruv Families-Persons Demo Application
 Bundle-SymbolicName: tools.vitruv.demo.applications.familiespersons;singleton:=true
 Automatic-Module-Name: tools.vitruv.demo.applications.familiespersons
 Bundle-Version: 1.1.0.qualifier
