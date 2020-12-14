@@ -5,7 +5,7 @@ Bundle-SymbolicName: tools.vitruv.testutils.domains;singleton:=true
 Automatic-Module-Name: tools.vitruv.testutils
 Bundle-Version: 1.1.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-11
-Require-Bundle: tools.vitruv.framework.metamodel,
+Require-Bundle: tools.vitruv.framework.domains,
  tools.vitruv.testutils.metamodels,
  tools.vitruv.extensions.emf,
  edu.kit.ipd.sdq.activextendannotations,

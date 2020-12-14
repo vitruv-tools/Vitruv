@@ -8,7 +8,7 @@
    <extension
          id="personsDomainProvider"
          name="Persons Domain Provider"
-         point="tools.vitruv.framework.metamodel.domain">
+         point="tools.vitruv.framework.domains.domain">
       <domainProvider
             class="tools.vitruv.domains.persons.PersonsDomainProvider"></domainProvider>
    </extension>

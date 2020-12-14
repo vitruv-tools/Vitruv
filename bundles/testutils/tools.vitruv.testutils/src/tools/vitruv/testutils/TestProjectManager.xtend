@@ -104,14 +104,8 @@ class TestProjectManager implements ParameterResolver, AfterEachCallback {
 	}
 
 	def private Path getProjectRelativeBasePath(ExtensionContext context) {
-		if (context.testMethod.isPresent) {
-			Path.of(
-				context.testClass.map[simpleName.removeInvalidCharacters()].orElse(""),
-				context.displayName.removeInvalidCharacters()
-			)
-		} else {
-			Path.of(context.displayName.removeInvalidCharacters())
-		}
+		context.parentChain.reverseView.reject[it == root].
+			map[displayName.removeInvalidCharacters()].fold(Path.of(''))[$0.resolve($1)]
 	}
 
 	override resolveParameter(ParameterContext parameterContext, ExtensionContext extensionContext) {

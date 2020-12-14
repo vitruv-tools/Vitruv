@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Vitruv Framework UI Virtual Singl Underlying Model
+Bundle-Name: Vitruv Framework UI Virtual Single Underlying Model
 Bundle-SymbolicName: tools.vitruv.framework.ui.vsum;singleton:=true
 Automatic-Module-Name: tools.vitruv.framework.ui.monitorededitor
 Bundle-Version: 1.1.0.qualifier
@@ -9,7 +9,7 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.core.resources;bundle-version="3.10.1",
  tools.vitruv.framework.applications,
- tools.vitruv.framework.metamodel,
+ tools.vitruv.framework.domains,
  com.google.guava,
  org.eclipse.xtext.xbase.lib,
  org.eclipse.xtend.lib,
