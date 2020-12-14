@@ -28,7 +28,7 @@ class ModelRepositoryImpl {
 			return;
 		}
 		this.rootElements += rootElement;
-		logger.debug("New root in repository " + rootElement);
+		logger.trace("New root in repository " + rootElement);
 		val recorder = new AtomicEmfChangeRecorder(uuidGeneratorAndResolver);
 		recorder.addToRecording(rootElement);
 		rootToRecorder.put(rootElement, recorder);
@@ -47,7 +47,7 @@ class ModelRepositoryImpl {
 		elementsToRemove.forEach[
 			removeElementFromRecording(it);
 			rootElements -= it;
-			logger.debug("Remove root from repository " + it);
+			logger.trace("Remove root from repository " + it);
 		];
 	}
 	
@@ -60,7 +60,7 @@ class ModelRepositoryImpl {
 		}
 		elementsToRemove.forEach[
 			removeElementFromRecording(it);
-			logger.debug("Remove root without resource from repository " + it);
+			logger.trace("Remove root without resource from repository " + it);
 			rootElements.remove(it)
 		];
 	}
