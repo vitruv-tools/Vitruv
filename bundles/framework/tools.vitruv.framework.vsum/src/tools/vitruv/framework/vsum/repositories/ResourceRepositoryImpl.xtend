@@ -241,7 +241,7 @@ class ResourceRepositoryImpl implements ModelRepository, CorrespondenceProviding
 		executeAsCommand[
 			var correspondencesVURI = fileSystemHelper.correspondencesVURI
 			logger.trace('''Creating or loading correspondence model from: «correspondencesVURI»''')
-			val correspondencesResource = loadOrCreateResource(resourceSet, correspondencesVURI.EMFUri)
+			val correspondencesResource = resourceSet.loadOrCreateResource(correspondencesVURI.EMFUri)
 			correspondencesResource.save(null);
 			var recorder = getOrCreateChangeRecorder(correspondencesVURI)
 			recorder.addToRecording(correspondencesResource)
@@ -258,7 +258,7 @@ class ResourceRepositoryImpl implements ModelRepository, CorrespondenceProviding
 		executeAsCommand [
 			var uuidProviderVURI = fileSystemHelper.uuidProviderAndResolverVURI
 			logger.trace('''Creating or loading uuid provider and resolver model from: «uuidProviderVURI»''')
-			var Resource uuidProviderResource = loadOrCreateResource(resourceSet, uuidProviderVURI.EMFUri)
+			var Resource uuidProviderResource = resourceSet.loadOrCreateResource(uuidProviderVURI.EMFUri)
 			// TODO HK We cannot enable strict mode here, because for textual views we will not get
 			// create changes in any case. We should therefore use one monitor per model and turn on
 			// strict mode

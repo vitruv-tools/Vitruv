@@ -113,7 +113,7 @@ abstract class VitruvApplicationTest implements CorrespondenceModelContainer {
 	 */
 	def protected Resource resourceAt(URI modelUri) {
 		synchronized (resourceSet) {
-			loadOrCreateResource(resourceSet, modelUri)
+			resourceSet.loadOrCreateResource(modelUri)
 		}
 	}
 
