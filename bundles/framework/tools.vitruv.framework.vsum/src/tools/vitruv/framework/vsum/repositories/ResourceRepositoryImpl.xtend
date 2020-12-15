@@ -38,6 +38,7 @@ import static extension tools.vitruv.framework.util.ResourceSetUtil.getRequiredT
 import static extension tools.vitruv.framework.util.ResourceSetUtil.withGlobalFactories
 import static extension tools.vitruv.framework.util.command.EMFCommandBridge.executeVitruviusRecordingCommand
 import tools.vitruv.framework.util.command.VitruviusRecordingCommand
+import static extension tools.vitruv.framework.util.bridges.EcoreResourceBridge.loadOrCreateResource
 
 class ResourceRepositoryImpl implements ModelRepository, CorrespondenceProviding {
 	static val logger = Logger.getLogger(ResourceRepositoryImpl.simpleName)
@@ -65,9 +66,9 @@ class ResourceRepositoryImpl implements ModelRepository, CorrespondenceProviding
 			this.fileSystemHelper = new FileSystemHelper(this.folder)
 		} catch (IOException e) {
 			val message = '''Unable to initialize V-SUM metadata folders in folder: «folder»'''
-            		logger.error(message, e)
-            		throw new IllegalStateException(message, e)
-        	}
+			logger.error(message, e)
+			throw new IllegalStateException(message, e)
+		}
 		initializeUuidProviderAndResolver()
 		this.domainToRecorder = new HashMap<VitruvDomain, AtomicEmfChangeRecorder>()
 		initializeCorrespondenceModel()
@@ -160,7 +161,7 @@ class ResourceRepositoryImpl implements ModelRepository, CorrespondenceProviding
 		executeAsCommand [
 			var metamodel = getMetamodelByURI(modelInstance.URI)
 			var resourceToSave = modelInstance.resource
-			val saveOptions = if (metamodel !== null) metamodel.defaultSaveOptions else emptyMap
+			val saveOptions = if(metamodel !== null) metamodel.defaultSaveOptions else emptyMap
 			try {
 				if (!resourceSet.requiredTransactionalEditingDomain.isReadOnly(resourceToSave)) {
 					// we allow resources without a domain for internal uses.
@@ -239,14 +240,9 @@ class ResourceRepositoryImpl implements ModelRepository, CorrespondenceProviding
 	def private void initializeCorrespondenceModel() {
 		executeAsCommand[
 			var correspondencesVURI = fileSystemHelper.correspondencesVURI
-			var Resource correspondencesResource = null
-			if (URIUtil.existsResourceAtUri(correspondencesVURI.EMFUri)) {
-				logger.trace('''Loading correspondence model from: «fileSystemHelper.correspondencesVURI»''')
-				correspondencesResource = resourceSet.getResource(correspondencesVURI.EMFUri, true)
-			} else {
-				correspondencesResource = resourceSet.createResource(correspondencesVURI.EMFUri)
-				correspondencesResource.save(null)
-			}
+			logger.trace('''Creating or loading correspondence model from: «correspondencesVURI»''')
+			val correspondencesResource = loadOrCreateResource(resourceSet, correspondencesVURI.EMFUri)
+			correspondencesResource.save(null);
 			var recorder = getOrCreateChangeRecorder(correspondencesVURI)
 			recorder.addToRecording(correspondencesResource)
 			recorder.beginRecording()
@@ -261,14 +257,8 @@ class ResourceRepositoryImpl implements ModelRepository, CorrespondenceProviding
 	def private void initializeUuidProviderAndResolver() {
 		executeAsCommand [
 			var uuidProviderVURI = fileSystemHelper.uuidProviderAndResolverVURI
-			var Resource uuidProviderResource = null
-			if (URIUtil.existsResourceAtUri(uuidProviderVURI.EMFUri)) {
-				logger.
-					trace('''Loading uuid provider and resolver model from: «fileSystemHelper.uuidProviderAndResolverVURI»''')
-				uuidProviderResource = resourceSet.getResource(uuidProviderVURI.EMFUri, true)
-			} else {
-				uuidProviderResource = resourceSet.createResource(uuidProviderVURI.EMFUri)
-			}
+			logger.trace('''Creating or loading uuid provider and resolver model from: «uuidProviderVURI»''')
+			var Resource uuidProviderResource = loadOrCreateResource(resourceSet, uuidProviderVURI.EMFUri)
 			// TODO HK We cannot enable strict mode here, because for textual views we will not get
 			// create changes in any case. We should therefore use one monitor per model and turn on
 			// strict mode
@@ -294,7 +284,7 @@ class ResourceRepositoryImpl implements ModelRepository, CorrespondenceProviding
 	}
 
 	def private void saveVURIsOfVsumModelInstances() {
-	        // TODO Reimplement saving of V-SUM with a proper reload mechanism
+		// TODO Reimplement saving of V-SUM with a proper reload mechanism
 		// fileSystemHelper.saveVsumVURIsToFile(modelInstances.keySet)
 	}
 
