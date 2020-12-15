@@ -101,14 +101,14 @@ abstract class VitruvApplicationTest implements CorrespondenceModelContainer {
 	 * @param modelPathWithinProject A project-relative path to a model.
 	 */
 	def protected Resource resourceAt(Path modelPathWithinProject) {
-		resourceAt(getPlatformModelUri(modelPathWithinProject))
+		resourceAt(modelPathWithinProject.uri)
 	}
 
 	/**
 	 * Gets the resource at the provided {@link URI}. If the resource does not exist yet, it will be
 	 * created virtually, without being persisted. You can use {@link ModelMatchers.exist} to test
 	 * whether the resource actually exists on the file system.
-	 *
+	 * 
 	 * @param modelUri the {@link URI} of the model to load.
 	 */
 	def protected Resource resourceAt(URI modelUri) {
@@ -167,7 +167,7 @@ abstract class VitruvApplicationTest implements CorrespondenceModelContainer {
 	 * 
 	 * @return the changes resulting from propagating the recorded changes. 
 	 */
-	def protected List<PropagatedChange> saveAndPropagateChanges() {
+	def private List<PropagatedChange> saveAndPropagateChanges() {
 		changeRecorder.endRecording()
 		var compositeChange = VitruviusChangeFactory.instance.createCompositeChange(changeRecorder.changes)
 		assertThat("The recorded change set is not valid!", compositeChange, isValid)
@@ -184,7 +184,7 @@ abstract class VitruvApplicationTest implements CorrespondenceModelContainer {
 
 	def protected TestUserInteraction getUserInteractor() { testUserInteractor }
 
-	def protected final URI getPlatformModelUri(Path modelPathWithinProject) {
+	def protected final URI getUri(Path modelPathWithinProject) {
 		checkArgument(modelPathWithinProject !== null, "The modelPathWithinProject must not be null!")
 		checkArgument(!modelPathWithinProject.isEmpty, "The modelPathWithinProject must not be empty!")
 		return if (usePlatformURIs) {
@@ -199,8 +199,8 @@ abstract class VitruvApplicationTest implements CorrespondenceModelContainer {
 	}
 
 	def private Resource getAndLoadModelResource(Path modelPathWithinProject) {
-		resourceSet.getResource(getPlatformModelUri(modelPathWithinProject), true)
-	}
+		resourceSet.getResource(modelPathWithinProject.uri, true)
+}
 
 	def private void renewResourceCache() {
 		resourceSet.resources.clear()
