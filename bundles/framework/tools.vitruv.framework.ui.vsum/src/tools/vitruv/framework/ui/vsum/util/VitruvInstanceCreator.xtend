@@ -35,7 +35,7 @@ class VitruvInstanceCreator {
 			for (domain : projectToDomains.get(project)) {
 				try {
 					domain.builderApplicator.addToProject(project, virtualModel.folder, domain.fileExtensions.toList)
-					ProjectBuildUtils.issueIncrementalBuild(project, domain.builderApplicator.builderId)
+					ProjectBuildUtils.buildIncrementally(project, domain.builderApplicator.builderId)
 					return true
 				} catch (IllegalStateException e) {
 					LOGGER.error('''Could not initialize V-SUM project for project: «project.name»''')
