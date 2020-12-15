@@ -1,18 +1,20 @@
 package tools.vitruv.framework.ui.monitorededitor;
 
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkState;
+
 import java.util.HashMap;
 
 import org.apache.log4j.Logger;
-import org.eclipse.core.resources.ICommand;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.NullProgressMonitor;
 
 /**
- * {@link ProjectBuildUtils} is a utility class providing methods issuing the execution of a certain
- * builder for all projects which can be built with this builder.
+ * {@link ProjectBuildUtils} is a utility class providing methods issuing a refresh, complete build
+ * or build with a certain builder for a specific or all projects in the workspace.
  */
 public final class ProjectBuildUtils {
     private static final Logger LOGGER = Logger.getLogger(ProjectBuildUtils.class);
@@ -22,36 +24,67 @@ public final class ProjectBuildUtils {
     }
 
     /**
-     * Issues an incremental build of all projects supporting a given builder.
+     * Performs an incremental build of the builder with the given ID for all open projects in the
+     * workspace.
      *
      * @param builderId
-     *            An Eclipse builder ID. Only this builder is executed on the currently existing
-     *            projects supporting this builder.
-     * @throws CoreException
+     *            the ID of the builder to run
+     * @throws IllegalStateException
+     *             if some error occurs during build
      */
-    public static void issueIncrementalBuildForAllProjectsWithBuilder(final String builderId)
-            throws IllegalStateException {
+    public static void buildAllProjectsIncrementally(final String builderId) throws IllegalStateException {
         for (IProject project : ResourcesPlugin.getWorkspace().getRoot().getProjects()) {
             if (project.isOpen()) {
-                issueIncrementalBuild(project, builderId);
+                buildIncrementally(project, builderId);
             }
         }
     }
 
-    public static void issueIncrementalBuild(final IProject project, final String builderId)
-            throws IllegalStateException {
-        LOGGER.debug("Issuing initial build for project " + project.getName());
+    /**
+     * Performs an incremental build of the builder with the given ID in the given {@link IProject}.
+     * The project must not be <code>null</code> and must be open.
+     *
+     * @param project
+     *            the project to build
+     * @param builderId
+     *            the ID of the builder to run
+     * @throws IllegalStateException
+     *             if some error occurs during build
+     */
+    public static void buildIncrementally(final IProject project, final String builderId) throws IllegalStateException {
+        checkArgument(project != null, "Project must not be null");
+        checkState(project.isOpen(), "Project must be open to built");
+        LOGGER.debug("Run builder " + builderId + " for project " + project.getName());
         try {
-            for (ICommand buildCommand : project.getDescription().getBuildSpec()) {
-                if (buildCommand.getBuilderName().equals(builderId)) {
-                    project.build(IncrementalProjectBuilder.INCREMENTAL_BUILD, builderId, new HashMap<String, String>(),
-                            new NullProgressMonitor());
-                }
-            }
+            project.build(IncrementalProjectBuilder.INCREMENTAL_BUILD, builderId, new HashMap<String, String>(), null);
         } catch (CoreException e) {
-            String message = "Could not issue initial build for project " + project.getName();
+            String message = "Could not run builder " + builderId + " for project " + project.getName();
             LOGGER.error(message, e);
             throw new IllegalStateException(message, e);
         }
+    }
+
+    /**
+     * Refreshes the given project and performs an incremental build. The project must not be
+     * <code>null</code> and must be open.
+     *
+     * @param project
+     *            the project to refresh and build
+     * @throws IllegalStateException
+     *             if some error occurs during refresh or build
+     */
+    public static void refreshAndBuildIncrementally(final IProject project) {
+        checkArgument(project != null, "Project must not be null");
+        checkState(project.isOpen(), "Project must be open to be refreshed and built");
+        LOGGER.debug("Refresh and build project " + project.getName());
+        try {
+            project.refreshLocal(IResource.DEPTH_INFINITE, null);
+            project.build(IncrementalProjectBuilder.INCREMENTAL_BUILD, null);
+        } catch (CoreException e) {
+            String message = "Could not refresh or build project " + project.getName();
+            LOGGER.error(message, e);
+            throw new IllegalStateException(message, e);
+        }
+
     }
 }
