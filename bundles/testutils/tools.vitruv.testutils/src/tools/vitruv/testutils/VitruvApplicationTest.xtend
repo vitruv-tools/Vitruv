@@ -33,6 +33,7 @@ import static org.hamcrest.MatcherAssert.assertThat
 import static tools.vitruv.testutils.matchers.ChangeMatchers.isValid
 import java.io.File
 import static extension tools.vitruv.framework.util.ResourceSetUtil.withGlobalFactories
+import static extension tools.vitruv.framework.util.bridges.EcoreResourceBridge.loadOrCreateResource
 
 @ExtendWith(TestProjectManager, TestLogging)
 abstract class VitruvApplicationTest implements CorrespondenceModelContainer {
@@ -112,18 +113,7 @@ abstract class VitruvApplicationTest implements CorrespondenceModelContainer {
 	 */
 	def protected Resource resourceAt(URI modelUri) {
 		synchronized (resourceSet) {
-			var Resource resource = null;
-			try {
-				resource = resourceSet.getResource(modelUri, true)
-			} catch (RuntimeException e) {
-				// EMF failed during demand creation, usually because loading from the file system failed.
-				// If it has created an empty resource, retrieve it, and otherwise create one.
-				resource = resourceSet.getResource(modelUri, false)
-				if (resource === null) {
-					resource = resourceSet.createResource(modelUri)
-				}
-			}
-			return resource
+			loadOrCreateResource(resourceSet, modelUri)
 		}
 	}
 
