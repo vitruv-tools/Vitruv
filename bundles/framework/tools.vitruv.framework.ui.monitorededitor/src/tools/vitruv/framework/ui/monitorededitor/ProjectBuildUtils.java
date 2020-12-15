@@ -79,12 +79,17 @@ public final class ProjectBuildUtils {
         LOGGER.debug("Refresh and build project " + project.getName());
         try {
             project.refreshLocal(IResource.DEPTH_INFINITE, null);
-            project.build(IncrementalProjectBuilder.INCREMENTAL_BUILD, null);
         } catch (CoreException e) {
-            String message = "Could not refresh or build project " + project.getName();
+            String message = "Could not refresh project " + project.getName();
             LOGGER.error(message, e);
             throw new IllegalStateException(message, e);
         }
-
+        try {
+            project.build(IncrementalProjectBuilder.INCREMENTAL_BUILD, null);
+        } catch (CoreException e) {
+            String message = "Could not build project " + project.getName();
+            LOGGER.error(message, e);
+            throw new IllegalStateException(message, e);
+        }
     }
 }
