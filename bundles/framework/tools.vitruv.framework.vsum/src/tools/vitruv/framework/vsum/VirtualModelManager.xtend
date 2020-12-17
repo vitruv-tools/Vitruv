@@ -2,6 +2,7 @@ package tools.vitruv.framework.vsum
 
 import java.util.Map
 import java.io.File
+import java.util.concurrent.ConcurrentHashMap
 
 final class VirtualModelManager {
 	Map<File, InternalVirtualModel> folderToVirtualModelMap;
@@ -9,7 +10,7 @@ final class VirtualModelManager {
 	static val instance = new VirtualModelManager();
 	
 	private new() {
-		this.folderToVirtualModelMap = newHashMap();
+		this.folderToVirtualModelMap = new ConcurrentHashMap();
 	}
 	
 	static def getInstance() {
@@ -17,10 +18,8 @@ final class VirtualModelManager {
 	}
 	
 	def getVirtualModel(File folder) {
-		if (folderToVirtualModelMap.containsKey(folder)) {
-			return folderToVirtualModelMap.get(folder);
-		} else {
-//			// get the workspace root 
+		folderToVirtualModelMap.computeIfAbsent(folder) [
+			// get the workspace root
 //			val root = ResourcesPlugin.getWorkspace().getRoot(); 
 //			// get the project handle 
 //			val project = root.getProject(name); 
@@ -28,7 +27,7 @@ final class VirtualModelManager {
 //			project.open(new NullProgressMonitor());
 //			// TODO HK: Extract VSUM from project
 			throw new UnsupportedOperationException();
-		}
+		]
 	}
 	
 	def putVirtualModel(InternalVirtualModel model) {
