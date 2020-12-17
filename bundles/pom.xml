@@ -13,11 +13,11 @@
 	<name>Bundle Modules</name>
 
 	<modules>
-		<module>demo</module>
 		<module>framework</module>
 		<module>testutils</module>
 		<module>extensions</module>
 		<module>dsls</module>
+		<module>demo</module>
 	</modules>
 
 </project>

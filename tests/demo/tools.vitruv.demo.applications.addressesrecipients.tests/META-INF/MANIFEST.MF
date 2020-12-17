@@ -1,0 +1,13 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Vitruv Addresses-Recipients Demo Application Tests
+Bundle-SymbolicName: tools.vitruv.demo.applications.addressesrecipients.tests
+Automatic-Module-Name: tools.vitruv.dsls.mappings.addressesXrecipients.tests
+Bundle-Version: 1.1.0.qualifier
+Bundle-Vendor: vitruv.tools
+Fragment-Host: tools.vitruv.demo.applications.addressesrecipients
+Require-Bundle: tools.vitruv.testutils,
+ org.junit.jupiter.api,
+ org.hamcrest.core,
+ edu.kit.ipd.sdq.activextendannotations
+Bundle-RequiredExecutionEnvironment: JavaSE-11
