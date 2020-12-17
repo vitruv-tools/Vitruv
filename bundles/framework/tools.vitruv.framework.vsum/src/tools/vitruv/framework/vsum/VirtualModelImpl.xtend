@@ -76,19 +76,19 @@ class VirtualModelImpl implements InternalVirtualModel {
 		this.resourceRepository.getCorrespondenceModel()
 	}
 
-	override getModelInstance(VURI modelVuri) {
+	override synchronized getModelInstance(VURI modelVuri) {
 		return this.resourceRepository.getModel(modelVuri)
 	}
 
-	override save() {
+	override synchronized save() {
 		this.resourceRepository.saveAllModels()
 	}
 
-	override persistRootElement(VURI persistenceVuri, EObject rootElement) {
+	override synchronized persistRootElement(VURI persistenceVuri, EObject rootElement) {
 		this.resourceRepository.persistAsRoot(rootElement, persistenceVuri)
 	}
 
-	override executeCommand(Callable<Void> command) {
+	override synchronized executeCommand(Callable<Void> command) {
 		this.resourceRepository.executeAsCommand(command);
 	}
 
@@ -96,7 +96,7 @@ class VirtualModelImpl implements InternalVirtualModel {
 		changePropagator.addChangePropagationListener(changePropagationListener)
 	}
 
-	override propagateChange(VitruviusChange change) {
+	override synchronized propagateChange(VitruviusChange change) {
 		LOGGER.info('''Start change propagation''')
 		change.unresolveIfApplicable
 		// Save is done by the change propagator because it has to be performed before finishing sync
@@ -109,14 +109,14 @@ class VirtualModelImpl implements InternalVirtualModel {
 	/**
 	 * @see tools.vitruv.framework.vsum.VirtualModel#propagateChangedState(Resource)
 	 */
-	override propagateChangedState(Resource newState) {
+	override synchronized propagateChangedState(Resource newState) {
 		return propagateChangedState(newState, newState?.URI)
 	}
 
 	/**
 	 * @see tools.vitruv.framework.vsum.VirtualModel#propagateChangedState(Resource, URI)
 	 */
-	override propagateChangedState(Resource newState, URI oldLocation) {
+	override synchronized propagateChangedState(Resource newState, URI oldLocation) {
 		if (newState === null || oldLocation === null) {
 			throw new IllegalArgumentException("New state and old location cannot be null!")
 		}
@@ -132,7 +132,7 @@ class VirtualModelImpl implements InternalVirtualModel {
 		return #[] // empty list
 	}
 
-	override reverseChanges(List<PropagatedChange> changes) {
+	override synchronized reverseChanges(List<PropagatedChange> changes) {
 		resourceRepository.executeAsCommand([|
 			changes.reverseView.forEach[it.applyBackward(uuidGeneratorAndResolver)]
 			return null
