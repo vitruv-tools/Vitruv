@@ -1,11 +1,11 @@
 package tools.vitruv.framework.tests.change.rootobject
 
-import org.junit.Test
-import org.junit.Ignore
+import org.junit.jupiter.api.Disabled
+import org.junit.jupiter.api.Test
 
 class ChangeDescription2MoveRootTest extends ChangeDescription2RootChangeTest {
 	
-	@Ignore
+	@Disabled
 	@Test
 	def void moveRootEObjectBetweenResources(){
 		val resource1 = this.rootElement.eResource;

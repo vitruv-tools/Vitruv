@@ -3,20 +3,23 @@ package tools.vitruv.framework.tests.echange.feature.attribute
 import allElementTypes.AllElementTypesFactory
 import allElementTypes.NonRoot
 import allElementTypes.Root
-import org.junit.Assert
-import org.junit.Before
-import org.junit.Test
 import tools.vitruv.framework.change.echange.feature.attribute.RemoveEAttributeValue
 
 import static extension tools.vitruv.framework.tests.echange.util.EChangeAssertHelper.*
 import static extension tools.vitruv.framework.change.echange.resolve.EChangeResolverAndApplicator.*
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
+import static org.junit.jupiter.api.Assertions.assertTrue
+import static org.junit.jupiter.api.Assertions.assertFalse
+import static org.junit.jupiter.api.Assertions.assertEquals
+import static org.junit.jupiter.api.Assertions.assertNull
 
 /**
  * Test class for the concrete {@link RemoveEAttributeValue} EChange,
  * which removes a value in a multivalued attribute.
  */
 class RemoveEAttributeValueTest extends InsertRemoveEAttributeTest {	
-	@Before
+	@BeforeEach
 	override void beforeTest() {
 		super.beforeTest
 		prepareStateBefore
@@ -49,8 +52,8 @@ class RemoveEAttributeValueTest extends InsertRemoveEAttributeTest {
 		// Apply forward
 		resolvedChange.assertApplyForward
 			
-		Assert.assertEquals(attributeContent.size, 1)
-		Assert.assertEquals(attributeContent.get(0), NEW_VALUE_2)
+		assertEquals(attributeContent.size, 1)
+		assertEquals(attributeContent.get(0), NEW_VALUE_2)
 		
 		// Create change and resolve 2
 		val resolvedChange2 = createUnresolvedChange(NEW_VALUE_2, 0).resolveBefore(uuidGeneratorAndResolver)
@@ -85,8 +88,8 @@ class RemoveEAttributeValueTest extends InsertRemoveEAttributeTest {
 		// Apply backward 2
 		resolvedChange2.assertApplyBackward
 		
-		Assert.assertEquals(attributeContent.size, 1)
-		Assert.assertEquals(attributeContent.get(0), NEW_VALUE_2)
+		assertEquals(attributeContent.size, 1)
+		assertEquals(attributeContent.get(0), NEW_VALUE_2)
 				
 		// Apply backward 1
 		resolvedChange.assertApplyBackward
@@ -105,7 +108,7 @@ class RemoveEAttributeValueTest extends InsertRemoveEAttributeTest {
 		// Create change and resolve
 		val resolvedChange = createUnresolvedChange(NEW_VALUE, index).resolveBefore(uuidGeneratorAndResolver)
 			as RemoveEAttributeValue<Root, String>	
-		Assert.assertTrue(resolvedChange.isResolved)
+		assertTrue(resolvedChange.isResolved)
 	
 		// Apply
 	 	resolvedChange.assertCannotBeAppliedForward	 	
@@ -124,10 +127,10 @@ class RemoveEAttributeValueTest extends InsertRemoveEAttributeTest {
 		val resolvedChange = atomicFactory.<NonRoot, Integer>createRemoveAttributeChange
 			(affectedNonRootEObject, affectedFeature, 0, NEW_VALUE).
 			resolveBefore(uuidGeneratorAndResolver)
-		Assert.assertTrue(resolvedChange.isResolved)	
+		assertTrue(resolvedChange.isResolved)	
 			
 		// NonRoot has no such feature
-	 	Assert.assertEquals(affectedNonRootEObject.eClass.getFeatureID(affectedFeature), -1)	
+		assertEquals(affectedNonRootEObject.eClass.getFeatureID(affectedFeature), -1)	
 	 	
 	 	// Apply
 	 	resolvedChange.assertCannotBeAppliedForward	 	
@@ -145,10 +148,10 @@ class RemoveEAttributeValueTest extends InsertRemoveEAttributeTest {
 		val resolvedChange = atomicFactory.<Root, String>createRemoveAttributeChange
 			(affectedEObject, affectedFeature, 0, newInvalidValue).
 			resolveBefore(uuidGeneratorAndResolver)
-		Assert.assertTrue(resolvedChange.isResolved)
+		assertTrue(resolvedChange.isResolved)
 		
 		// Type of attribute is Integer not String
-	 	Assert.assertEquals(affectedFeature.EAttributeType.name, "EIntegerObject")
+		assertEquals(affectedFeature.EAttributeType.name, "EIntegerObject")
 	 	
 	 	// Apply
 	 	resolvedChange.assertCannotBeAppliedForward	 	
@@ -168,16 +171,16 @@ class RemoveEAttributeValueTest extends InsertRemoveEAttributeTest {
 	 * Model is in state before the changes. 
 	 */
 	def private void assertIsStateBefore() {
-		Assert.assertEquals(attributeContent.size, 2)
-		Assert.assertEquals(attributeContent.get(0), NEW_VALUE)
-		Assert.assertEquals(attributeContent.get(1), NEW_VALUE_2)
+		assertEquals(attributeContent.size, 2)
+		assertEquals(attributeContent.get(0), NEW_VALUE)
+		assertEquals(attributeContent.get(1), NEW_VALUE_2)
 	}
 	
 	/**
 	 * Model is in state after the changes.
 	 */
 	def private void assertIsStateAfter() {
-		Assert.assertEquals(attributeContent.size, 0)
+		assertEquals(attributeContent.size, 0)
 	}
 	
 	/**

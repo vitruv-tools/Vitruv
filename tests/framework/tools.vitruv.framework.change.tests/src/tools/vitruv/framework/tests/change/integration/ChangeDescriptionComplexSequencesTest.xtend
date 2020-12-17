@@ -1,12 +1,11 @@
 package tools.vitruv.framework.tests.change.integration
 
-import org.junit.Test
-
 import tools.vitruv.framework.tests.change.ChangeDescription2ChangeTransformationTest
 import allElementTypes.AllElementTypesFactory
 import static allElementTypes.AllElementTypesPackage.Literals.*;
 import static extension tools.vitruv.framework.tests.change.util.AtomicEChangeAssertHelper.*
 import static extension tools.vitruv.framework.tests.change.util.CompoundEChangeAssertHelper.*
+import org.junit.jupiter.api.Test
 
 class ChangeDescriptionComplexSequencesTest extends ChangeDescription2ChangeTransformationTest {
 
@@ -85,5 +84,5 @@ class ChangeDescriptionComplexSequencesTest extends ChangeDescription2ChangeTran
 			.assertReplaceSingleValuedEReference(secondRoot, ROOT__SINGLE_VALUED_NON_CONTAINMENT_EREFERENCE, null, nonRoot, false, false, false)
 			.assertEmpty;		
 	}
-	
+
 }

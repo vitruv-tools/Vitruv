@@ -2,13 +2,18 @@ package tools.vitruv.framework.tests.echange.root
 
 import allElementTypes.Root
 import org.eclipse.emf.ecore.resource.Resource
-import org.junit.Assert
-import org.junit.Before
-import org.junit.Test
 import tools.vitruv.framework.change.echange.root.RemoveRootEObject
 
 import static extension tools.vitruv.framework.tests.echange.util.EChangeAssertHelper.*
 import static extension tools.vitruv.framework.change.echange.resolve.EChangeResolverAndApplicator.*
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
+import static org.junit.jupiter.api.Assertions.assertTrue
+import static org.junit.jupiter.api.Assertions.assertFalse
+import static org.junit.jupiter.api.Assertions.assertEquals
+import static org.junit.jupiter.api.Assertions.assertNull
+import static org.junit.jupiter.api.Assertions.assertSame
+import static org.junit.jupiter.api.Assertions.assertNotSame
 
 /**
  * Test class for the concrete {@link RemoveRootEObject} EChange,
@@ -19,7 +24,7 @@ class RemoveRootEObjectTest extends RootEChangeTest {
 	 * Inserts new root objects into the resource
 	 * to remove them in the tests.
 	 */
-	@Before
+	@BeforeEach
 	override void beforeTest()  {
 		super.beforeTest()
 		prepareStateBefore
@@ -91,7 +96,7 @@ class RemoveRootEObjectTest extends RootEChangeTest {
 		// Apply forward 1	
 		resolvedChange.assertApplyForward
 		
-		Assert.assertEquals(resourceContent.size, 2)
+		assertEquals(resourceContent.size, 2)
 		assertEqualsOrCopy(newRootObject2, resourceContent.get(1))		
 
 		// Create and resolve change 2
@@ -128,8 +133,8 @@ class RemoveRootEObjectTest extends RootEChangeTest {
 		// Apply backward 2
 		resolvedChange2.assertApplyBackward
 		
-		Assert.assertEquals(resourceContent.size, 2)		
-		Assert.assertTrue(resourceContent.contains(newRootObject2))	
+		assertEquals(resourceContent.size, 2)		
+		assertTrue(resourceContent.contains(newRootObject2))	
 			
 		// Apply backward 1
 		resolvedChange.assertApplyBackward
@@ -148,7 +153,7 @@ class RemoveRootEObjectTest extends RootEChangeTest {
 		// Create and resolve change
 		val resolvedChange = createUnresolvedChange(newRootObject, index).resolveBefore(uuidGeneratorAndResolver)
 			as RemoveRootEObject<Root>
-		Assert.assertNull(resolvedChange)
+		assertNull(resolvedChange)
 	}
 	
 	/**
@@ -165,7 +170,7 @@ class RemoveRootEObjectTest extends RootEChangeTest {
 	 */
 	def private void assertIsStateBefore() {
 		// index 0 is root object
-		Assert.assertEquals(resourceContent.size, 3)
+		assertEquals(resourceContent.size, 3)
 		newRootObject.assertEqualsOrCopy(resourceContent.get(1))
 		newRootObject2.assertEqualsOrCopy(resourceContent.get(2))
 	}
@@ -174,25 +179,25 @@ class RemoveRootEObjectTest extends RootEChangeTest {
 	 * Model is in state after the changes.
 	 */
 	def private void assertIsStateAfter() {
-		Assert.assertEquals(resourceContent.size, 1)
+		assertEquals(resourceContent.size, 1)
 	}
 	
 	/**
 	 * Change is not resolved.
 	 */
 	def private static void assertIsNotResolved(RemoveRootEObject<Root> change, Root oldValue) {
-		Assert.assertFalse(change.isResolved)
-		Assert.assertNotSame(change.oldValue, oldValue)
-		Assert.assertNull(change.resource)
+		assertFalse(change.isResolved)
+		assertNotSame(change.oldValue, oldValue)
+		assertNull(change.resource)
 	}
 	
 	/**
 	 * Change is resolved.
 	 */
 	def private static void assertIsResolved(RemoveRootEObject<Root> change, Root oldValue, Resource resource) {
-		Assert.assertTrue(change.isResolved)
-		Assert.assertSame(change.oldValue, oldValue)
-		Assert.assertSame(change.resource, resource)	
+		assertTrue(change.isResolved)
+		assertSame(change.oldValue, oldValue)
+		assertSame(change.resource, resource)	
 	}
 	
 	/**

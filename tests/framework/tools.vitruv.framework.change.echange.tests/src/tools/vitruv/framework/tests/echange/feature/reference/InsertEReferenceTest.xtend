@@ -5,13 +5,17 @@ import allElementTypes.NonRoot
 import allElementTypes.Root
 import org.eclipse.emf.common.util.EList
 import org.eclipse.emf.ecore.EReference
-import org.junit.Assert
-import org.junit.Before
-import org.junit.Test
 import tools.vitruv.framework.change.echange.feature.reference.InsertEReference
 
 import static extension tools.vitruv.framework.tests.echange.util.EChangeAssertHelper.*
 import static extension tools.vitruv.framework.change.echange.resolve.EChangeResolverAndApplicator.*
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
+import static org.junit.jupiter.api.Assertions.assertTrue
+import static org.junit.jupiter.api.Assertions.assertFalse
+import static org.junit.jupiter.api.Assertions.assertEquals
+import static org.junit.jupiter.api.Assertions.assertSame
+import static org.junit.jupiter.api.Assertions.assertNotSame
 
 /**
  * Test class for the concrete {@link InsertEReferenceValue} EChange,
@@ -21,7 +25,7 @@ class InsertEReferenceTest extends ReferenceEChangeTest {
 	protected var EReference affectedFeature = null
 	protected var EList<NonRoot> referenceContent = null
 	
-	@Before
+	@BeforeEach
 	override void beforeTest() {
 		super.beforeTest()
 		resourceContent = resource.contents
@@ -147,8 +151,8 @@ class InsertEReferenceTest extends ReferenceEChangeTest {
 	 	
 	 	// Apply forward
 	 	resolvedChange.assertApplyForward
-	 	Assert.assertEquals(referenceContent.size, 1)
-	 	Assert.assertSame(referenceContent.get(0), newValue)
+		assertEquals(referenceContent.size, 1)
+		assertSame(referenceContent.get(0), newValue)
 
 	 	// Create change 2 (resolved)
 		val resolvedChange2 = createUnresolvedChange(newValue2, 1).resolveBefore(uuidGeneratorAndResolver)
@@ -177,8 +181,8 @@ class InsertEReferenceTest extends ReferenceEChangeTest {
 		// Apply forward
 	 	resolvedChange.assertApplyForward
 	 	
-		Assert.assertEquals(referenceContent.size, 1)
-		Assert.assertSame(referenceContent.get(0), newValue)
+		assertEquals(referenceContent.size, 1)
+		assertSame(referenceContent.get(0), newValue)
 		
 		// Prepare and create change 2
 		val resolvedChange2 = createUnresolvedChange(newValue2, 1).resolveBefore(uuidGeneratorAndResolver)
@@ -203,11 +207,11 @@ class InsertEReferenceTest extends ReferenceEChangeTest {
 		
 		// Create change and apply forward
 		val resolvedChange = createUnresolvedChange(newValue, 0).resolveBefore(uuidGeneratorAndResolver)
-	 	Assert.assertTrue(resolvedChange.applyForward)
+		assertTrue(resolvedChange.applyForward)
 	 	
 	 	// Create change 2 and apply forward			
 		val resolvedChange2 = createUnresolvedChange(newValue2, 1).resolveBefore(uuidGeneratorAndResolver)
-	 	Assert.assertTrue(resolvedChange2.applyForward)			
+		assertTrue(resolvedChange2.applyForward)			
 		
 		// State after
 		assertIsStateAfter
@@ -215,8 +219,8 @@ class InsertEReferenceTest extends ReferenceEChangeTest {
 		// Apply backward 2
 		resolvedChange2.assertApplyBackward
 		
-		Assert.assertEquals(referenceContent.size, 1)
-		Assert.assertSame(referenceContent.get(0), newValue)
+		assertEquals(referenceContent.size, 1)
+		assertSame(referenceContent.get(0), newValue)
 		
 		// Apply backward 1
 		resolvedChange.assertApplyBackward
@@ -250,8 +254,8 @@ class InsertEReferenceTest extends ReferenceEChangeTest {
 		// Apply backward 2
 		resolvedChange2.assertApplyBackward
 		
-		Assert.assertEquals(referenceContent.size, 1)
-		Assert.assertSame(referenceContent.get(0), newValue)		
+		assertEquals(referenceContent.size, 1)
+		assertSame(referenceContent.get(0), newValue)		
 		
 		// Apply backward 1
 		resolvedChange.assertApplyBackward
@@ -268,7 +272,7 @@ class InsertEReferenceTest extends ReferenceEChangeTest {
 		// Set state before
 		isNonContainmentTest
 		var index = 5 // Valid index in empty list is only 0
-		Assert.assertEquals(referenceContent.size, 0)
+		assertEquals(referenceContent.size, 0)
 		
 		// Create and resolve
 		val resolvedChange = createUnresolvedChange(newValue, index).resolveBefore(uuidGeneratorAndResolver)
@@ -293,10 +297,10 @@ class InsertEReferenceTest extends ReferenceEChangeTest {
 		val resolvedChange = atomicFactory.<NonRoot, NonRoot>createInsertReferenceChange
 			(invalidAffectedEObject, affectedFeature, newValue, 0).
 			resolveBefore(uuidGeneratorAndResolver)
-		Assert.assertTrue(resolvedChange.isResolved)
+		assertTrue(resolvedChange.isResolved)
 		
 		// NonRoot has no such feature
-		Assert.assertEquals(invalidAffectedEObject.eClass.getFeatureID(affectedFeature), -1)
+		assertEquals(invalidAffectedEObject.eClass.getFeatureID(affectedFeature), -1)
 		
 		// Apply
 	 	resolvedChange.assertCannotBeAppliedForward	 	
@@ -334,14 +338,14 @@ class InsertEReferenceTest extends ReferenceEChangeTest {
 	 * Model is in state before the change.
 	 */
 	def private void assertIsStateBefore() {
-		Assert.assertEquals(referenceContent.size, 0)
+		assertEquals(referenceContent.size, 0)
 	}
 	
 	/**
 	 * Model is in state after the change.
 	 */
 	def private void assertIsStateAfter() {
-		Assert.assertEquals(referenceContent.size, 2)	
+		assertEquals(referenceContent.size, 2)	
 		newValue.assertEqualsOrCopy(referenceContent.get(0))
 		newValue2.assertEqualsOrCopy(referenceContent.get(1))
 	}
@@ -351,9 +355,9 @@ class InsertEReferenceTest extends ReferenceEChangeTest {
 	 */
 	def private static void assertIsNotResolved(InsertEReference<Root, NonRoot> change, 
 		Root affectedEObject, NonRoot newValue) {
-		Assert.assertFalse(change.isResolved)
-		Assert.assertNotSame(change.affectedEObject, affectedEObject)
-		Assert.assertNotSame(change.newValue, newValue)			
+		assertFalse(change.isResolved)
+		assertNotSame(change.affectedEObject, affectedEObject)
+		assertNotSame(change.newValue, newValue)			
 	}
 
 	/**
@@ -361,9 +365,9 @@ class InsertEReferenceTest extends ReferenceEChangeTest {
 	 */
 	def private static void assertIsResolved(InsertEReference<Root, NonRoot> change, 
 		Root affectedEObject, NonRoot newValue) {
-		Assert.assertTrue(change.isResolved)
-		Assert.assertSame(change.affectedEObject, affectedEObject)
-		Assert.assertSame(change.newValue, newValue)			
+		assertTrue(change.isResolved)
+		assertSame(change.affectedEObject, affectedEObject)
+		assertSame(change.newValue, newValue)			
 	}
 
 	/**

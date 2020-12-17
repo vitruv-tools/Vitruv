@@ -6,14 +6,11 @@ Automatic-Module-Name: tools.vitruv.framework.change.echange.tests
 Bundle-Version: 1.1.0.qualifier
 Bundle-Vendor: vitruv.tools
 Bundle-RequiredExecutionEnvironment: JavaSE-11
-Require-Bundle: org.junit,
+Fragment-Host: tools.vitruv.framework.change.echange
+Require-Bundle: org.junit.jupiter.api,
  org.eclipse.xtext.xbase.lib,
  org.eclipse.xtend.lib,
  tools.vitruv.testutils.metamodels,
- tools.vitruv.framework.change.echange,
- tools.vitruv.framework.util,
- org.eclipse.emf.ecore.xmi,
- org.eclipse.emf.edit,
  tools.vitruv.framework.change
 Export-Package: tools.vitruv.framework.tests.echange;x-internal:=true,
  tools.vitruv.framework.tests.echange.command;x-internal:=true,

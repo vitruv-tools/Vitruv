@@ -1,12 +1,11 @@
 package tools.vitruv.framework.tests.change.reference
 
-import org.junit.Test
-
 import static extension tools.vitruv.framework.tests.change.util.AtomicEChangeAssertHelper.*
 import static extension tools.vitruv.framework.tests.change.util.CompoundEChangeAssertHelper.*
 import static allElementTypes.AllElementTypesPackage.Literals.*;
 import allElementTypes.NonRoot
 import java.util.List
+import org.junit.jupiter.api.Test
 
 class ChangeDescription2RemoveEReferenceTest extends ChangeDescription2EReferenceTest {
 

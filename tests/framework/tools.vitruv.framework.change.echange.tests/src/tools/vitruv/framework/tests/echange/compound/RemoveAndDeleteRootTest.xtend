@@ -4,9 +4,6 @@ import allElementTypes.AllElementTypesFactory
 import allElementTypes.Root
 import org.eclipse.emf.common.util.EList
 import org.eclipse.emf.ecore.EObject
-import org.junit.Assert
-import org.junit.Before
-import org.junit.Test
 import tools.vitruv.framework.tests.echange.EChangeTest
 
 import static extension tools.vitruv.framework.tests.echange.util.EChangeAssertHelper.*
@@ -14,6 +11,12 @@ import tools.vitruv.framework.change.echange.EChange
 import java.util.List
 import tools.vitruv.framework.change.echange.root.RemoveRootEObject
 import tools.vitruv.framework.change.echange.eobject.DeleteEObject
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
+import static org.junit.jupiter.api.Assertions.assertTrue
+import static org.junit.jupiter.api.Assertions.assertFalse
+import static org.junit.jupiter.api.Assertions.assertEquals
+import static org.junit.jupiter.api.Assertions.assertNull
 
 /**
  * Test class for the concrete {@link RemoveAndDeleteRoot} EChange,
@@ -24,9 +27,8 @@ class RemoveAndDeleteRootTest extends EChangeTest {
 	protected var Root newRootObject2 = null
 	protected var EList<EObject> resourceContent = null
 	
-	@Before
-	override void beforeTest() {
-		super.beforeTest()
+	@BeforeEach
+	def void beforeTest() {
 		newRootObject = AllElementTypesFactory.eINSTANCE.createRoot()
 		newRootObject2 = AllElementTypesFactory.eINSTANCE.createRoot()
 		resourceContent = resourceSet.getResource(fileUri, false).contents
@@ -100,9 +102,9 @@ class RemoveAndDeleteRootTest extends EChangeTest {
 		// Apply 1
 		resolvedChange.assertApplyForward
 		
-		Assert.assertEquals(resourceContent.size, 2)
-		Assert.assertFalse(resourceContent.contains(newRootObject))	
-		Assert.assertTrue(resourceContent.contains(newRootObject2))	
+		assertEquals(resourceContent.size, 2)
+		assertFalse(resourceContent.contains(newRootObject))	
+		assertTrue(resourceContent.contains(newRootObject2))	
 		
 		// Create and resolve change 2
 		val resolvedChange2 = createUnresolvedChange(newRootObject2, 1).resolveBefore(uuidGeneratorAndResolver)
@@ -134,8 +136,8 @@ class RemoveAndDeleteRootTest extends EChangeTest {
 		// Apply backward 2
 		resolvedChange2.assertApplyBackward
 
-		Assert.assertEquals(resourceContent.size, 2)
-		Assert.assertTrue(resourceContent.contains(newRootObject2))
+		assertEquals(resourceContent.size, 2)
+		assertTrue(resourceContent.contains(newRootObject2))
 			
 		// Apply backward 1
 		resolvedChange.assertApplyBackward
@@ -166,7 +168,7 @@ class RemoveAndDeleteRootTest extends EChangeTest {
 	 * Model is in state before the changes.
 	 */
 	def private void assertIsStateBefore() {
-		Assert.assertEquals(resourceContent.size, 3)
+		assertEquals(resourceContent.size, 3)
 		newRootObject.assertEqualsOrCopy(resourceContent.get(1))
 		newRootObject2.assertEqualsOrCopy(resourceContent.get(2))
 	}
@@ -175,7 +177,7 @@ class RemoveAndDeleteRootTest extends EChangeTest {
 	 * Model is in state after the changes.
 	 */
 	def private void assertIsStateAfter() {
-		Assert.assertEquals(resourceContent.size, 1)
+		assertEquals(resourceContent.size, 1)
 	}
 
 	/**
@@ -183,10 +185,10 @@ class RemoveAndDeleteRootTest extends EChangeTest {
 	 */
 	def protected static void assertIsNotResolved(List<? extends EChange> changes) {
 		EChangeTest.assertIsNotResolved(changes);
-		Assert.assertEquals(2, changes.size);
+		assertEquals(2, changes.size);
 		val removeChange = assertType(changes.get(0), RemoveRootEObject);
 		val deleteChange = assertType(changes.get(1), DeleteEObject);
-		Assert.assertEquals(removeChange.oldValueID, deleteChange.affectedEObjectID)
+		assertEquals(removeChange.oldValueID, deleteChange.affectedEObjectID)
 	}
 	
 	/**
@@ -194,7 +196,7 @@ class RemoveAndDeleteRootTest extends EChangeTest {
 	 */
 	def private static void assertIsResolved(List<EChange> changes, Root affectedRootObject) {
 		changes.assertIsResolved;
-		Assert.assertEquals(2, changes.size);
+		assertEquals(2, changes.size);
 		val removeChange = assertType(changes.get(0), RemoveRootEObject);
 		val deleteChange = assertType(changes.get(1), DeleteEObject);
 		removeChange.oldValue.assertEqualsOrCopy(affectedRootObject)

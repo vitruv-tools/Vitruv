@@ -1,12 +1,12 @@
 package tools.vitruv.framework.tests.change.attribute
 
 import allElementTypes.AllElementTypesFactory
-import org.junit.Test
 
 import static allElementTypes.AllElementTypesPackage.Literals.*
 
 import static extension tools.vitruv.framework.tests.change.util.AtomicEChangeAssertHelper.*
 import static extension tools.vitruv.framework.tests.change.util.CompoundEChangeAssertHelper.*
+import org.junit.jupiter.api.Test
 
 class ChangeDescription2InsertEAttributeValueTest extends ChangeDescription2ChangeEAttributeTest {
 	@Test

@@ -6,13 +6,17 @@ import allElementTypes.NonRoot
 import allElementTypes.Root
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EReference
-import org.junit.Assert
-import org.junit.Before
-import org.junit.Test
 import tools.vitruv.framework.change.echange.feature.reference.ReplaceSingleValuedEReference
 
 import static extension tools.vitruv.framework.tests.echange.util.EChangeAssertHelper.*
 import static extension tools.vitruv.framework.change.echange.resolve.EChangeResolverAndApplicator.*
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
+import static org.junit.jupiter.api.Assertions.assertTrue
+import static org.junit.jupiter.api.Assertions.assertFalse
+import static org.junit.jupiter.api.Assertions.assertEquals
+import static org.junit.jupiter.api.Assertions.assertSame
+import static org.junit.jupiter.api.Assertions.assertNotSame
 
 /**
  * Test class for the concrete {@link ReplaceSingleValuedEReference} EChange,
@@ -22,7 +26,7 @@ class ReplaceSingleValuedEReferenceTest extends ReferenceEChangeTest {
 	protected var NonRoot oldValue = null	
 	protected var EReference affectedFeature = null
 
-	@Before
+	@BeforeEach
 	override void beforeTest() {
 		super.beforeTest()
 		oldValue = AllElementTypesFactory.eINSTANCE.createNonRoot()	
@@ -371,12 +375,12 @@ class ReplaceSingleValuedEReferenceTest extends ReferenceEChangeTest {
 	 */
 	def private void resourceIsStateBefore() {
 		if (!affectedFeature.containment) {
-			Assert.assertEquals(resourceContent.size, 4)
+			assertEquals(resourceContent.size, 4)
 			newValue.assertEqualsOrCopy(resourceContent.get(1))
 			newValue2.assertEqualsOrCopy(resourceContent.get(2))
 			oldValue.assertEqualsOrCopy(resourceContent.get(3))			
 		} else {
-			Assert.assertEquals(resourceContent.size, 1)
+			assertEquals(resourceContent.size, 1)
 		}
 	}
 	
@@ -393,10 +397,10 @@ class ReplaceSingleValuedEReferenceTest extends ReferenceEChangeTest {
 	 */
 	def private static void assertIsNotResolved(ReplaceSingleValuedEReference<Root, NonRoot> change, 
 		Root affectedEObject, NonRoot oldValue, NonRoot newValue) {
-		Assert.assertFalse(change.isResolved)
-		Assert.assertNotSame(change.affectedEObject, affectedEObject)
-		Assert.assertNotSame(change.oldValue, oldValue)
-		Assert.assertNotSame(change.newValue, newValue)
+		assertFalse(change.isResolved)
+		assertNotSame(change.affectedEObject, affectedEObject)
+		assertNotSame(change.oldValue, oldValue)
+		assertNotSame(change.newValue, newValue)
 	}
 	
 	/**
@@ -404,10 +408,10 @@ class ReplaceSingleValuedEReferenceTest extends ReferenceEChangeTest {
 	 */
 	def private static void assertIsResolved(ReplaceSingleValuedEReference<Root, NonRoot> change, 
 		Root affectedEObject, NonRoot oldValue, NonRoot newValue) {
-		Assert.assertTrue(change.isResolved)
-		Assert.assertSame(change.affectedEObject, affectedEObject)
-		Assert.assertSame(change.oldValue, oldValue)
-		Assert.assertSame(change.newValue, newValue)	
+		assertTrue(change.isResolved)
+		assertSame(change.affectedEObject, affectedEObject)
+		assertSame(change.oldValue, oldValue)
+		assertSame(change.newValue, newValue)	
 	}
 	
 	/**
