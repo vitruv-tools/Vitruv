@@ -5,9 +5,6 @@ import allElementTypes.AllElementTypesPackage
 import allElementTypes.NonRoot
 import allElementTypes.Root
 import org.eclipse.emf.ecore.EReference
-import org.junit.Assert
-import org.junit.Before
-import org.junit.Test
 import tools.vitruv.framework.tests.echange.feature.reference.ReferenceEChangeTest
 
 import static extension tools.vitruv.framework.tests.echange.util.EChangeAssertHelper.*
@@ -17,6 +14,10 @@ import tools.vitruv.framework.change.echange.eobject.CreateEObject
 import tools.vitruv.framework.change.echange.feature.reference.ReplaceSingleValuedEReference
 import tools.vitruv.framework.change.echange.eobject.DeleteEObject
 import tools.vitruv.framework.tests.echange.EChangeTest
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
+import static org.junit.jupiter.api.Assertions.assertTrue
+import static org.junit.jupiter.api.Assertions.assertEquals
 
 /**
  * Test class for the concrete {@link CreateAndReplaceAndDeleteNonRoot} EChange,
@@ -27,7 +28,7 @@ class CreateAndReplaceAndDeleteNonRootTest extends ReferenceEChangeTest {
 	protected var NonRoot oldValue = null	
 	protected var EReference affectedFeature = null
 	
-	@Before
+	@BeforeEach
 	override void beforeTest() {
 		super.beforeTest()
 		oldValue = AllElementTypesFactory.eINSTANCE.createNonRoot()
@@ -128,7 +129,7 @@ class CreateAndReplaceAndDeleteNonRootTest extends ReferenceEChangeTest {
 		prepareStateAfter
 				
 		// Apply backward
-		Assert.assertTrue(resolvedChange.applyBackward)
+		assertTrue(resolvedChange.applyBackward)
 		
 		// State before
 		assertIsStateBefore		
@@ -166,12 +167,12 @@ class CreateAndReplaceAndDeleteNonRootTest extends ReferenceEChangeTest {
 	 */
 	 def protected static void assertIsNotResolved(List<? extends EChange> changes) {
 	 	EChangeTest.assertIsNotResolved(changes)
-		Assert.assertEquals(3, changes.size);
+		assertEquals(3, changes.size);
 		val createChange = assertType(changes.get(0), CreateEObject);
 		val replaceChange = assertType(changes.get(1), ReplaceSingleValuedEReference);
 		val deleteChange = assertType(changes.get(2), DeleteEObject);
-		Assert.assertEquals(replaceChange.newValueID, createChange.affectedEObjectID)
-		Assert.assertEquals(replaceChange.oldValueID, deleteChange.affectedEObjectID)
+		assertEquals(replaceChange.newValueID, createChange.affectedEObjectID)
+		assertEquals(replaceChange.oldValueID, deleteChange.affectedEObjectID)
 	}
 
 	/**
@@ -180,7 +181,7 @@ class CreateAndReplaceAndDeleteNonRootTest extends ReferenceEChangeTest {
 	def private static void assertIsResolved(List<EChange> changes, Root affectedRootObject,
 		NonRoot oldNonRootObject, NonRoot newNonRootObject) {
 		changes.assertIsResolved;
-		Assert.assertEquals(3, changes.size);
+		assertEquals(3, changes.size);
 		val createChange = assertType(changes.get(0), CreateEObject);
 		val replaceChange = assertType(changes.get(1), ReplaceSingleValuedEReference);
 		val deleteChange = assertType(changes.get(2), DeleteEObject);

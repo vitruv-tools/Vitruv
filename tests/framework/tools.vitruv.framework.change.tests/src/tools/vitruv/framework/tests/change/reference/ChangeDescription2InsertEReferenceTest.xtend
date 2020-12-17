@@ -2,13 +2,13 @@ package tools.vitruv.framework.tests.change.reference
 
 import allElementTypes.NonRoot
 import org.eclipse.emf.ecore.EStructuralFeature
-import org.junit.Test
 
 import static allElementTypes.AllElementTypesPackage.Literals.*
 
 import static extension tools.vitruv.framework.tests.change.util.AtomicEChangeAssertHelper.*
 import static extension tools.vitruv.framework.tests.change.util.CompoundEChangeAssertHelper.*
 import tools.vitruv.framework.change.echange.EChange
+import org.junit.jupiter.api.Test
 
 class ChangeDescription2InsertEReferenceTest extends ChangeDescription2EReferenceTest {
 

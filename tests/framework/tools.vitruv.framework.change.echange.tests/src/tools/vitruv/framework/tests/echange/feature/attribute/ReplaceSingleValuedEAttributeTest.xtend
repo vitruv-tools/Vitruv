@@ -5,14 +5,16 @@ import allElementTypes.AllElementTypesPackage
 import allElementTypes.NonRoot
 import allElementTypes.Root
 import org.eclipse.emf.ecore.EAttribute
-import org.junit.Assert
-import org.junit.Before
-import org.junit.Test
 import tools.vitruv.framework.change.echange.feature.attribute.ReplaceSingleValuedEAttribute
 import tools.vitruv.framework.tests.echange.EChangeTest
 
 import static extension tools.vitruv.framework.tests.echange.util.EChangeAssertHelper.*
 import static extension tools.vitruv.framework.change.echange.resolve.EChangeResolverAndApplicator.*
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
+import static org.junit.jupiter.api.Assertions.assertTrue
+import static org.junit.jupiter.api.Assertions.assertFalse
+import static org.junit.jupiter.api.Assertions.assertEquals
 
 /**
  * Test class for the concrete {@link ReplaceSingleValuedEAttribute} EChange, 
@@ -27,9 +29,8 @@ class ReplaceSingleValuedEAttributeTest extends EChangeTest {
   	protected static val DEFAULT_ROOT_NAME = "Root Element"
   	protected static val DEFAULT_SINGLE_VALUED_EATTRIBUTE_VALUE = 123
   	
- 	@Before
- 	override void beforeTest() {
- 		super.beforeTest()
+	@BeforeEach
+	def void beforeTest() {
  		affectedEObject = rootObject
  		affectedFeature = AllElementTypesPackage.Literals.IDENTIFIED__ID
  		oldValue = DEFAULT_ROOT_NAME
@@ -105,7 +106,7 @@ class ReplaceSingleValuedEAttributeTest extends EChangeTest {
 	 	(affectedNonRootEObject, affectedRootFeature, oldIntValue, newIntValue).resolveBefore(uuidGeneratorAndResolver)
 	 	
 	 	// NonRoot has no such feature
-	 	Assert.assertEquals(affectedNonRootEObject.eClass.getFeatureID(affectedRootFeature), -1)	
+		assertEquals(affectedNonRootEObject.eClass.getFeatureID(affectedRootFeature), -1)	
 	 	
 	 	// Apply
 	 	resolvedChange.assertCannotBeAppliedForward	 	
@@ -124,10 +125,10 @@ class ReplaceSingleValuedEAttributeTest extends EChangeTest {
 	 	val resolvedChange = atomicFactory.<Root, Integer>createReplaceSingleAttributeChange
 	 		(affectedEObject, affectedFeature, oldIntValue, newIntValue).
 	 		resolveBefore(uuidGeneratorAndResolver)
-	 	Assert.assertTrue(resolvedChange.isResolved)
+		assertTrue(resolvedChange.isResolved)
 	 		
 	 	// Type of attribute is String not Integer
-	 	Assert.assertEquals(affectedFeature.EAttributeType.name, "EString")
+		assertEquals(affectedFeature.EAttributeType.name, "EString")
 	 	
 	 	// Apply
 	 	resolvedChange.assertCannotBeAppliedForward	 	
@@ -155,14 +156,14 @@ class ReplaceSingleValuedEAttributeTest extends EChangeTest {
 	 * Model is in state before the change.
 	 */
 	def private void assertIsStateBefore() {
-		Assert.assertEquals(affectedEObject.eGet(affectedFeature), oldValue)
+		assertEquals(affectedEObject.eGet(affectedFeature), oldValue)
 	}
 	
 	/**
 	 * Model is in state after the change.
 	 */
 	def private void assertIsStateAfter() {
-		Assert.assertEquals(affectedEObject.eGet(affectedFeature), newValue)
+		assertEquals(affectedEObject.eGet(affectedFeature), newValue)
 	}
 	 
 	/**

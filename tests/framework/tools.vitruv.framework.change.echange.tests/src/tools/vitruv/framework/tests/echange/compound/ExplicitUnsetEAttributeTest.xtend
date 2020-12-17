@@ -5,15 +5,17 @@ import allElementTypes.Root
 import java.util.List
 import org.eclipse.emf.common.util.EList
 import org.eclipse.emf.ecore.EAttribute
-import org.junit.Assert
-import org.junit.Before
-import org.junit.Test
 import tools.vitruv.framework.change.echange.feature.attribute.SubtractiveAttributeEChange
 import tools.vitruv.framework.tests.echange.EChangeTest
 
 import static extension tools.vitruv.framework.tests.echange.util.EChangeAssertHelper.*
 import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.change.echange.feature.UnsetFeature
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
+import static org.junit.jupiter.api.Assertions.assertTrue
+import static org.junit.jupiter.api.Assertions.assertFalse
+import static org.junit.jupiter.api.Assertions.assertEquals
 
 /**
  * Test class for the concrete {@link ExplicitUnsetEAttribute} EChange,
@@ -29,9 +31,8 @@ class ExplicitUnsetEAttributeTest extends EChangeTest {
 	protected static val Integer OLD_VALUE_3 = 333
 	
 	
-	@Before
-	override void beforeTest() {
-		super.beforeTest()
+	@BeforeEach
+	def void beforeTest() {
 		affectedEObject = rootObject	
 	}
 
@@ -199,13 +200,13 @@ class ExplicitUnsetEAttributeTest extends EChangeTest {
 	 * Model is in state before the single or multi valued unset change.
 	 */
 	def private void assertIsStateBefore() {
-		Assert.assertTrue(affectedEObject.eIsSet(affectedFeature))
+		assertTrue(affectedEObject.eIsSet(affectedFeature))
 		if (!affectedFeature.many) {
-			Assert.assertEquals(affectedEObject.eGet(affectedFeature), OLD_VALUE)
+			assertEquals(affectedEObject.eGet(affectedFeature), OLD_VALUE)
 		} else {
-			Assert.assertEquals(attributeContent.get(0), OLD_VALUE)
-			Assert.assertEquals(attributeContent.get(1), OLD_VALUE_2)
-			Assert.assertEquals(attributeContent.get(2), OLD_VALUE_3)			
+			assertEquals(attributeContent.get(0), OLD_VALUE)
+			assertEquals(attributeContent.get(1), OLD_VALUE_2)
+			assertEquals(attributeContent.get(2), OLD_VALUE_3)			
 		}
 	}
 	
@@ -213,7 +214,7 @@ class ExplicitUnsetEAttributeTest extends EChangeTest {
 	 * Model is in state after the single or multi valued unset change.
 	 */
 	def private void assertIsStateAfter() {
-		Assert.assertFalse(affectedEObject.eIsSet(affectedFeature))
+		assertFalse(affectedEObject.eIsSet(affectedFeature))
 	}
 	
 	/**

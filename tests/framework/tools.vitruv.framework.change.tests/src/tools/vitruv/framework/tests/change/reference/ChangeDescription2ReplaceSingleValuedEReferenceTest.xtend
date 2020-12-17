@@ -3,11 +3,11 @@ package tools.vitruv.framework.tests.change.reference
 import allElementTypes.AllElementTypesFactory
 import tools.vitruv.framework.tests.change.ChangeDescription2ChangeTransformationTest
 import org.eclipse.emf.ecore.util.EcoreUtil
-import org.junit.Test
 
 import static extension tools.vitruv.framework.tests.change.util.AtomicEChangeAssertHelper.*
 import static extension tools.vitruv.framework.tests.change.util.CompoundEChangeAssertHelper.*
 import static allElementTypes.AllElementTypesPackage.Literals.*;
+import org.junit.jupiter.api.Test
 
 class ChangeDescription2ReplaceSingleValuedEReferenceTest extends ChangeDescription2ChangeTransformationTest {
 	@Test
@@ -72,6 +72,7 @@ class ChangeDescription2ReplaceSingleValuedEReferenceTest extends ChangeDescript
 
 	@Test
 	def void testSetSingleValuedEReferenceNonContainment() {
+		startRecording
 		// prepare
 		val nonRoot = createAndAddNonRootToContainment(true)
 
@@ -86,7 +87,8 @@ class ChangeDescription2ReplaceSingleValuedEReferenceTest extends ChangeDescript
 
 	@Test
 	def void testReplaceExistingSingleValuedEReferenceNonContainment() {
-		// preapare
+		startRecording
+		// prepare
 		val nonRoot = createAndAddNonRootToRootContainer(false)
 		this.rootElement.singleValuedNonContainmentEReference = nonRoot
 		val replaceNonRoot = createAndAddNonRootToRootContainer(true)

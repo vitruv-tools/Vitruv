@@ -7,11 +7,14 @@ import org.eclipse.emf.common.util.EList
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EStructuralFeature
 import org.eclipse.emf.edit.domain.EditingDomain
-import org.junit.Assert
-import org.junit.Before
-import org.junit.Test
+import static org.junit.jupiter.api.Assertions.assertTrue
+import static org.junit.jupiter.api.Assertions.assertEquals
+import static org.junit.jupiter.api.Assertions.assertFalse
+import static org.junit.jupiter.api.Assertions.assertSame
 import tools.vitruv.framework.change.echange.command.RemoveAtCommand
 import tools.vitruv.framework.change.echange.util.EChangeUtil
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 
 /**
  * Test class for the {@link RemoveAtCommand} which removes 
@@ -23,7 +26,7 @@ class RemoveAtCommandTest extends CommandTest {
 	protected var EStructuralFeature feature = null
 	protected var EList<Integer> list = null
 	
-	@Before
+	@BeforeEach
 	def void beforeTest() {
 		owner = AllElementTypesFactory.eINSTANCE.createRoot
 		feature = AllElementTypesPackage.Literals.ROOT__MULTI_VALUED_EATTRIBUTE
@@ -94,10 +97,10 @@ class RemoveAtCommandTest extends CommandTest {
 	 */
 	def private static RemoveAtCommand assertIsRemoveAtCommand(Command command, EList<?> list, Object value, int index) {
 		var RemoveAtCommand removeAtCommand = command.assertIsInstanceOf(RemoveAtCommand)
-		Assert.assertSame(removeAtCommand.ownerList, list)
-		Assert.assertTrue(removeAtCommand.collection.contains(value))
-		Assert.assertEquals(removeAtCommand.collection.size, 1)
-		Assert.assertEquals(removeAtCommand.index, index)
+		assertSame(removeAtCommand.ownerList, list)
+		assertTrue(removeAtCommand.collection.contains(value))
+		assertEquals(removeAtCommand.collection.size, 1)
+		assertEquals(removeAtCommand.index, index)
 		return removeAtCommand
 	}
 	
@@ -107,9 +110,9 @@ class RemoveAtCommandTest extends CommandTest {
 	def private static void assertRemovedCorrectValueFrom(RemoveAtCommand command, EList<?> list) {
 		var value = command.collection.get(0)
 		var size = list.size
-		Assert.assertEquals(list.get(command.index), value)
+		assertEquals(list.get(command.index), value)
 		command.assertExecuteCommand
-		Assert.assertFalse(list.contains(value))
-		Assert.assertEquals(list.size, size - 1)
+		assertFalse(list.contains(value))
+		assertEquals(list.size, size - 1)
 	}
 }

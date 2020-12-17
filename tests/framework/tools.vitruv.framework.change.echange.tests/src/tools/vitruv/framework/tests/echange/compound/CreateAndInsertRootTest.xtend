@@ -4,9 +4,6 @@ import allElementTypes.AllElementTypesFactory
 import allElementTypes.Root
 import org.eclipse.emf.common.util.EList
 import org.eclipse.emf.ecore.EObject
-import org.junit.Assert
-import org.junit.Before
-import org.junit.Test
 import tools.vitruv.framework.tests.echange.EChangeTest
 
 import static extension tools.vitruv.framework.tests.echange.util.EChangeAssertHelper.*
@@ -14,6 +11,11 @@ import tools.vitruv.framework.change.echange.EChange
 import java.util.List
 import tools.vitruv.framework.change.echange.eobject.CreateEObject
 import tools.vitruv.framework.change.echange.root.InsertRootEObject
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
+import static org.junit.jupiter.api.Assertions.assertTrue
+import static org.junit.jupiter.api.Assertions.assertFalse
+import static org.junit.jupiter.api.Assertions.assertEquals
 
 /**
  * Test class for the concrete {@link CreateAndInsertRoot} EChange,
@@ -29,9 +31,8 @@ class CreateAndInsertRootTest extends EChangeTest {
 	 * Calls setup of the superclass and creates two new root elements
 	 * which can be inserted.
 	 */
-	@Before
-	override void beforeTest() {
-		super.beforeTest()
+	@BeforeEach
+	def void beforeTest() {
 		newRootObject = AllElementTypesFactory.eINSTANCE.createRoot()
 		newRootObject2 = AllElementTypesFactory.eINSTANCE.createRoot()
 		resourceContent = resource.contents
@@ -105,9 +106,9 @@ class CreateAndInsertRootTest extends EChangeTest {
 		// Apply 1
 		resolvedChange.assertApplyForward
 	
-		Assert.assertEquals(resourceContent.size, 2)
+		assertEquals(resourceContent.size, 2)
 		val createChange = assertType(resolvedChange.get(0), CreateEObject);
-		Assert.assertTrue(resourceContent.contains(createChange.affectedEObject))
+		assertTrue(resourceContent.contains(createChange.affectedEObject))
 		
 		// Create and resolve change 2
 		val resolvedChange2 = createUnresolvedChange(newRootObject2, 2).resolveBefore(uuidGeneratorAndResolver)
@@ -139,11 +140,11 @@ class CreateAndInsertRootTest extends EChangeTest {
 		// Apply backward 2
 		resolvedChange2.assertApplyBackward
 		
-		Assert.assertEquals(resourceContent.size, 2)
+		assertEquals(resourceContent.size, 2)
 		val createChange = assertType(resolvedChange.get(0), CreateEObject);
 		val createChange2 = assertType(resolvedChange2.get(0), CreateEObject);
-		Assert.assertTrue(resourceContent.contains(createChange.affectedEObject))
-		Assert.assertFalse(resourceContent.contains(createChange2.affectedEObject))		
+		assertTrue(resourceContent.contains(createChange.affectedEObject))
+		assertFalse(resourceContent.contains(createChange2.affectedEObject))		
 		
 		// Apply backward 1
 		resolvedChange.assertApplyBackward
@@ -165,14 +166,14 @@ class CreateAndInsertRootTest extends EChangeTest {
 	 * Model is in state before the changes.
 	 */
 	def private void assertIsStateBefore() {
-		Assert.assertEquals(resourceContent.size, 1)
+		assertEquals(resourceContent.size, 1)
 	}
 	
 	/**
 	 * Model is in state after the changes
 	 */
 	def private void assertIsStateAfter() {
-		Assert.assertEquals(resourceContent.size, 3)
+		assertEquals(resourceContent.size, 3)
 		newRootObject.assertEqualsOrCopy(resourceContent.get(1))
 		newRootObject2.assertEqualsOrCopy(resourceContent.get(2))
 	}
@@ -182,10 +183,10 @@ class CreateAndInsertRootTest extends EChangeTest {
 	 */
 	def protected static void assertIsNotResolved(List<? extends EChange> changes) {
 		EChangeTest.assertIsNotResolved(changes);
-		Assert.assertEquals(2, changes.size);
+		assertEquals(2, changes.size);
 		val createChange = assertType(changes.get(0), CreateEObject);
 		val insertChange = assertType(changes.get(1), InsertRootEObject);
-		Assert.assertEquals(insertChange.newValueID, createChange.affectedEObjectID)
+		assertEquals(insertChange.newValueID, createChange.affectedEObjectID)
 	}
 	
 	/**
@@ -193,7 +194,7 @@ class CreateAndInsertRootTest extends EChangeTest {
 	 */
 	def private static void assertIsResolved(List<EChange> changes, Root newRoot) {
 		changes.assertIsResolved;
-		Assert.assertEquals(2, changes.size);
+		assertEquals(2, changes.size);
 		val createChange = assertType(changes.get(0), CreateEObject);
 		val insertChange = assertType(changes.get(1), InsertRootEObject);
 		insertChange.newValue.assertEqualsOrCopy(newRoot)

@@ -5,8 +5,8 @@ import allElementTypes.NonRoot
 import allElementTypes.Root
 import org.eclipse.emf.common.util.EList
 import org.eclipse.emf.ecore.EObject
-import org.junit.Before
 import tools.vitruv.framework.tests.echange.EChangeTest
+import org.junit.jupiter.api.BeforeEach
 
 /**
  * Abstract class which is used by all test classes for references.
@@ -20,9 +20,8 @@ abstract class ReferenceEChangeTest extends EChangeTest {
 	/**
 	 * Sets the default object and new value for tests.
 	 */
-	@Before
-	override void beforeTest() {
-		super.beforeTest()
+	@BeforeEach
+	def void beforeTest() {
 		affectedEObject = rootObject
 		newValue = AllElementTypesFactory.eINSTANCE.createNonRoot()
 		newValue2 = AllElementTypesFactory.eINSTANCE.createNonRoot()

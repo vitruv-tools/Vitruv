@@ -1,19 +1,19 @@
 package tools.vitruv.framework.tests.echange.eobject
 
 import allElementTypes.Root
-import org.junit.Before
-import org.junit.Test
 import tools.vitruv.framework.change.echange.eobject.DeleteEObject
 
 import static extension tools.vitruv.framework.tests.echange.util.EChangeAssertHelper.*
 import static extension tools.vitruv.framework.change.echange.resolve.EChangeResolverAndApplicator.*
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 
 /**
  * Test class for the concrete {@link DeleteEObject} EChange,
  * which deletes a EObject from the staging area.
  */
 class DeleteEObjectTest extends EObjectTest {	
-	@Before
+	@BeforeEach
 	override void beforeTest() {
 		super.beforeTest()
 		prepareStateBefore(createdObject)

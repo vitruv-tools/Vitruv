@@ -17,12 +17,12 @@ import tools.vitruv.framework.change.echange.root.InsertRootEObject
 import tools.vitruv.framework.change.echange.root.RemoveRootEObject
 import tools.vitruv.framework.change.echange.root.RootEChange
 
-import static org.junit.Assert.*
-
 import static extension tools.vitruv.framework.tests.change.util.ChangeAssertHelper.*
 import static extension tools.vitruv.framework.tests.change.util.CompoundEChangeAssertHelper.*
-import org.junit.Assert
 import tools.vitruv.framework.change.echange.feature.UnsetFeature
+import static org.junit.jupiter.api.Assertions.assertFalse
+import static org.junit.jupiter.api.Assertions.assertTrue
+import static org.junit.jupiter.api.Assertions.assertEquals
 
 class AtomicEChangeAssertHelper {
 	def static void assertEObjectExistenceChange(EObjectExistenceEChange<?> change, EObject affectedEObject) {
@@ -73,8 +73,8 @@ class AtomicEChangeAssertHelper {
 		removeEAttributeValue.assertAffectedEFeature(affectedFeature)
 		removeEAttributeValue.assertOldValue(expectedOldValue)
 		removeEAttributeValue.assertNewValue(expectedNewValue)
-		Assert.assertEquals(wasUnset, removeEAttributeValue.wasUnset)
-		Assert.assertEquals(isUnset, removeEAttributeValue.isUnset)
+		assertEquals(wasUnset, removeEAttributeValue.wasUnset)
+		assertEquals(isUnset, removeEAttributeValue.isUnset)
 		return changes.tail;
 	}
 	
@@ -86,7 +86,7 @@ class AtomicEChangeAssertHelper {
 		insertEAttributValue.assertNewValue(expectedNewValue)
 		insertEAttributValue.assertIndex(expectedIndex)
 		insertEAttributValue.assertAffectedEFeature(affectedFeature)
-		Assert.assertEquals(wasUnset, insertEAttributValue.wasUnset)
+		assertEquals(wasUnset, insertEAttributValue.wasUnset)
 		return changes.tail;
 	}
 	
@@ -110,8 +110,8 @@ class AtomicEChangeAssertHelper {
 		replaceChange.assertAffectedEFeature(affectedFeature)
 		replaceChange.assertAffectedEObject(affectedEObject)
 		replaceChange.assertContainment(isContainment)
-		Assert.assertEquals(wasUnset, replaceChange.wasUnset)
-		Assert.assertEquals(isUnset, replaceChange.isUnset)
+		assertEquals(wasUnset, replaceChange.wasUnset)
+		assertEquals(isUnset, replaceChange.isUnset)
 		return changes.tail;
 	}
 	
@@ -153,7 +153,7 @@ class AtomicEChangeAssertHelper {
 		insertEReference.assertNewValue(expectedNewValue)
 		insertEReference.assertIndex(expectedIndex)
 		insertEReference.assertContainment(isContainment)
-		Assert.assertEquals(wasUnset, insertEReference.wasUnset)
+		assertEquals(wasUnset, insertEReference.wasUnset)
 		return changes.tail;
 	}
 	
@@ -178,7 +178,7 @@ class AtomicEChangeAssertHelper {
 	}
 	
 	def static assertEmpty(Iterable<? extends EChange> changes) {
-		Assert.assertEquals(0, changes.size);	
+		assertEquals(0, changes.size);	
 	}
 			
 }

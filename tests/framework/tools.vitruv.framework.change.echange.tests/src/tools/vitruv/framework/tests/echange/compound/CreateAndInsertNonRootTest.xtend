@@ -5,9 +5,6 @@ import allElementTypes.NonRoot
 import allElementTypes.Root
 import org.eclipse.emf.common.util.EList
 import org.eclipse.emf.ecore.EReference
-import org.junit.Assert
-import org.junit.Before
-import org.junit.Test
 import tools.vitruv.framework.tests.echange.feature.reference.ReferenceEChangeTest
 
 import static extension tools.vitruv.framework.tests.echange.util.EChangeAssertHelper.*
@@ -16,6 +13,12 @@ import java.util.List
 import tools.vitruv.framework.change.echange.eobject.CreateEObject
 import tools.vitruv.framework.change.echange.feature.reference.InsertEReference
 import tools.vitruv.framework.tests.echange.EChangeTest
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
+import static org.junit.jupiter.api.Assertions.assertTrue
+import static org.junit.jupiter.api.Assertions.assertFalse
+import static org.junit.jupiter.api.Assertions.assertEquals
+import static org.junit.jupiter.api.Assertions.assertSame
 
 /**
  * Test class for the concrete {@link CreateAndInsertNonRoot} EChange,
@@ -25,7 +28,7 @@ class CreateAndInsertNonRootTest extends ReferenceEChangeTest {
 	protected var EReference affectedFeature = null
 	protected var EList<NonRoot> referenceContent = null
 	
-	@Before
+	@BeforeEach
 	override void beforeTest() {
 		super.beforeTest
 		affectedFeature = AllElementTypesPackage.Literals.ROOT__MULTI_VALUED_CONTAINMENT_EREFERENCE
@@ -98,9 +101,9 @@ class CreateAndInsertNonRootTest extends ReferenceEChangeTest {
 		val resolvedChange = createUnresolvedChange(affectedEObject, newValue, 0).resolveBefore(uuidGeneratorAndResolver)
 		resolvedChange.assertApplyForward
 		
-		Assert.assertEquals(referenceContent.size, 1)
+		assertEquals(referenceContent.size, 1)
 		val createChange = assertType(resolvedChange.get(0), CreateEObject)
-		Assert.assertTrue(referenceContent.contains(createChange.affectedEObject))
+		assertTrue(referenceContent.contains(createChange.affectedEObject))
 		
 		// Create and resolve and apply change 2	
 		val resolvedChange2 = createUnresolvedChange(affectedEObject, newValue2, 1).resolveBefore(uuidGeneratorAndResolver)
@@ -133,9 +136,9 @@ class CreateAndInsertNonRootTest extends ReferenceEChangeTest {
 		
 		val createChange = assertType(resolvedChange.get(0), CreateEObject)
 		val createChange2 = assertType(resolvedChange2.get(0), CreateEObject)
-		Assert.assertTrue(referenceContent.contains(createChange.affectedEObject))
-		Assert.assertFalse(referenceContent.contains(createChange2.affectedEObject))	
-		Assert.assertEquals(referenceContent.size, 1)
+		assertTrue(referenceContent.contains(createChange.affectedEObject))
+		assertFalse(referenceContent.contains(createChange2.affectedEObject))	
+		assertEquals(referenceContent.size, 1)
 			
 		// Apply backward 1	
 		resolvedChange.assertApplyBackward
@@ -157,14 +160,14 @@ class CreateAndInsertNonRootTest extends ReferenceEChangeTest {
 	 * Model is in state before the changes.
 	 */
 	def private void assertIsStateBefore() {
-		Assert.assertEquals(referenceContent.size, 0)
+		assertEquals(referenceContent.size, 0)
 	}
 	
 	/**
 	 * Model is in state after the changes.
 	 */
 	def private void assertIsStateAfter() {
-		Assert.assertEquals(referenceContent.size, 2)
+		assertEquals(referenceContent.size, 2)
 		newValue.assertEqualsOrCopy(referenceContent.get(0))
 		newValue2.assertEqualsOrCopy(referenceContent.get(1))
 	}
@@ -174,10 +177,10 @@ class CreateAndInsertNonRootTest extends ReferenceEChangeTest {
 	 */
 	def protected static void assertIsNotResolved(List<? extends EChange> changes) {
 		EChangeTest.assertIsNotResolved(changes)
-		Assert.assertEquals(2, changes.size);
+		assertEquals(2, changes.size);
 		val createChange = assertType(changes.get(0), CreateEObject);
 		val insertChange = assertType(changes.get(1), InsertEReference);
-		Assert.assertEquals(insertChange.newValueID, createChange.affectedEObjectID)
+		assertEquals(insertChange.newValueID, createChange.affectedEObjectID)
 	}
 	
 	/**
@@ -186,12 +189,12 @@ class CreateAndInsertNonRootTest extends ReferenceEChangeTest {
 	def private static void assertIsResolved(List<EChange> changes, Root affectedEObject,
 		NonRoot newNonRoot) {
 		changes.assertIsResolved;
-		Assert.assertEquals(2, changes.size);
+		assertEquals(2, changes.size);
 		val createChange = assertType(changes.get(0), CreateEObject);
 		val insertChange = assertType(changes.get(1), InsertEReference);
 		insertChange.newValue.assertEqualsOrCopy(newNonRoot)
 		createChange.affectedEObject.assertEqualsOrCopy(newNonRoot)
-		Assert.assertSame(insertChange.affectedEObject, affectedEObject)	
+		assertSame(insertChange.affectedEObject, affectedEObject)	
 	}
 		
 	/**

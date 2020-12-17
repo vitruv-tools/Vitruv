@@ -5,9 +5,6 @@ import allElementTypes.AllElementTypesPackage
 import allElementTypes.NonRoot
 import allElementTypes.Root
 import org.eclipse.emf.ecore.EReference
-import org.junit.Assert
-import org.junit.Before
-import org.junit.Test
 import tools.vitruv.framework.tests.echange.EChangeTest
 
 import static extension tools.vitruv.framework.tests.echange.util.EChangeAssertHelper.*
@@ -15,6 +12,10 @@ import tools.vitruv.framework.change.echange.EChange
 import java.util.List
 import tools.vitruv.framework.change.echange.eobject.CreateEObject
 import tools.vitruv.framework.change.echange.feature.reference.ReplaceSingleValuedEReference
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
+import static org.junit.jupiter.api.Assertions.assertNull
+import static org.junit.jupiter.api.Assertions.assertEquals
 
 /**
  * Test class for the concrete {@link CreateAndReplaceNonRoot} EChange,
@@ -26,9 +27,8 @@ class CreateAndReplaceNonRootTest extends EChangeTest {
 	protected var EReference affectedFeature = null
 	protected var NonRoot newNonRootObject = null
 	
-	@Before
-	override void beforeTest() {
-		super.beforeTest
+	@BeforeEach
+	def void beforeTest() {
 		affectedEObject = rootObject
 		affectedFeature = AllElementTypesPackage.Literals.ROOT__SINGLE_VALUED_CONTAINMENT_EREFERENCE
 		newNonRootObject = AllElementTypesFactory.eINSTANCE.createNonRoot
@@ -145,7 +145,7 @@ class CreateAndReplaceNonRootTest extends EChangeTest {
 	 * Model is in state before the change.
 	 */
 	def private void assertIsStateBefore() {
-		Assert.assertNull(affectedEObject.eGet(affectedFeature))
+		assertNull(affectedEObject.eGet(affectedFeature))
 	}
 	
 	/**
@@ -160,10 +160,10 @@ class CreateAndReplaceNonRootTest extends EChangeTest {
 	 */
 	def protected static void assertIsNotResolved(List<? extends EChange> changes) {
 		EChangeTest.assertIsNotResolved(changes);
-		Assert.assertEquals(2, changes.size);
+		assertEquals(2, changes.size);
 		val createChange = assertType(changes.get(0), CreateEObject);
 		val replaceChange = assertType(changes.get(1), ReplaceSingleValuedEReference);
-		Assert.assertEquals(replaceChange.newValueID, createChange.affectedEObjectID)
+		assertEquals(replaceChange.newValueID, createChange.affectedEObjectID)
 	}
 	
 	/**
@@ -171,7 +171,7 @@ class CreateAndReplaceNonRootTest extends EChangeTest {
 	 */
 	def private static void assertIsResolved(List<EChange> changes, Root affectedEObject, NonRoot newValue) {
 		changes.assertIsResolved;
-		Assert.assertEquals(2, changes.size);
+		assertEquals(2, changes.size);
 		val createChange = assertType(changes.get(0), CreateEObject);
 		val replaceChange = assertType(changes.get(1), ReplaceSingleValuedEReference);
 		replaceChange.newValue.assertEqualsOrCopy(newValue)

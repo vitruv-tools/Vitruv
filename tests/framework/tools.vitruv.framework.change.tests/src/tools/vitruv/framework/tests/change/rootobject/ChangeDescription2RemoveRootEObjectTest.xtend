@@ -1,7 +1,7 @@
 package tools.vitruv.framework.tests.change.rootobject
 
 import org.eclipse.emf.ecore.util.EcoreUtil
-import org.junit.Test
+import org.junit.jupiter.api.Test
 
 class ChangeDescription2RemoveRootEObjectTest extends ChangeDescription2RootChangeTest {
 	

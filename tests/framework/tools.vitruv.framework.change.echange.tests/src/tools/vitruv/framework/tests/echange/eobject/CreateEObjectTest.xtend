@@ -1,19 +1,19 @@
 package tools.vitruv.framework.tests.echange.eobject
 
 import allElementTypes.Root
-import org.junit.Test
 import tools.vitruv.framework.change.echange.eobject.CreateEObject
-import org.junit.Before
 
 import static extension tools.vitruv.framework.tests.echange.util.EChangeAssertHelper.*
 import static extension tools.vitruv.framework.change.echange.resolve.EChangeResolverAndApplicator.*
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.BeforeEach
 
 /**
  * Test class for the concrete {@link CreateEObject} EChange,
  * which creates a new EObject and puts it in the staging area.
  */
 class CreateEObjectTest extends EObjectTest {
-	@Before
+	@BeforeEach
 	override void beforeTest() {
 		super.beforeTest
 		prepareStateBefore

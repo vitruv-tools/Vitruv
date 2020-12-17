@@ -2,22 +2,17 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Vitruv Framework Change Metamodel Tests
 Bundle-SymbolicName: tools.vitruv.framework.change.tests
-Automatic-Module-Name: tools.vitruv.framework.change.processing
+Automatic-Module-Name: tools.vitruv.framework.change.tests
 Bundle-Version: 1.1.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-11
-Require-Bundle: org.junit,
+Fragment-Host: tools.vitruv.framework.change
+Require-Bundle: org.junit.jupiter.api,
  com.google.guava,
  org.eclipse.xtext.xbase.lib,
  org.eclipse.xtend.lib,
  org.eclipse.xtend.lib.macro,
- org.eclipse.emf.ecore,
- org.eclipse.emf.ecore.change,
- org.eclipse.emf.ecore.xmi,
- edu.kit.ipd.sdq.commons.util.java;bundle-version="1.6.0",
  tools.vitruv.testutils.metamodels,
- tools.vitruv.framework.change,
- tools.vitruv.framework.change.echange,
- tools.vitruv.framework.util
+ edu.kit.ipd.sdq.activextendannotations
 Bundle-Vendor: vitruv.tools
 Export-Package: tools.vitruv.framework.tests.change;x-internal:=true,
  tools.vitruv.framework.tests.change.attribute;x-internal:=true,
