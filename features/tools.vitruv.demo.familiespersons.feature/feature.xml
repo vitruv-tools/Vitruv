@@ -26,12 +26,12 @@
       <import plugin="org.eclipse.core.resources"/>
       <import plugin="org.eclipse.xtend.lib"/>
       <import plugin="org.eclipse.xtend.lib.macro"/>
-      <import feature="edu.kit.ipd.sdq.commons.util.eclipse.feature" version="1.5.0"/>
-      <import feature="edu.kit.ipd.sdq.commons.util.emf.feature" version="1.5.0"/>
-      <import feature="edu.kit.ipd.sdq.commons.util.java.feature" version="1.5.0"/>
+      <import feature="edu.kit.ipd.sdq.commons.util.eclipse.feature" version="1.6.0"/>
+      <import feature="edu.kit.ipd.sdq.commons.util.emf.feature" version="1.6.0"/>
+      <import feature="edu.kit.ipd.sdq.commons.util.java.feature" version="1.6.0"/>
       <import feature="org.eclipse.xtend.sdk" version="2.19.0" match="greaterOrEqual"/>
       <import feature="org.eclipse.xtext.xbase.lib" version="2.19.0" match="greaterOrEqual"/>
-      <import feature="tools.vitruv.extensions.dslsruntime.feature" version="0.3.0"/>
+      <import feature="tools.vitruv.extensions.dslsruntime.feature"/>
       <import feature="edu.kit.ipd.sdq.metamodels.persons.feature" version="1.3.0" match="greaterOrEqual"/>
       <import feature="edu.kit.ipd.sdq.metamodels.families.feature" version="1.3.0" match="greaterOrEqual"/>
       <import feature="edu.kit.ipd.sdq.metamodels.insurance.feature" version="1.3.0" match="greaterOrEqual"/>
@@ -39,20 +39,6 @@
 
    <plugin
          id="tools.vitruv.demo.applications.familiespersons"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="tools.vitruv.demo.applications.familiespersons.families2persons"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="tools.vitruv.demo.applications.familiespersons.persons2families"
          download-size="0"
          install-size="0"
          version="0.0.0"

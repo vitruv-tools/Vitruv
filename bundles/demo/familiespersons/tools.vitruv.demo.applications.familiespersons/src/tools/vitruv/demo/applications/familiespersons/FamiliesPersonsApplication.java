@@ -3,8 +3,8 @@ package tools.vitruv.demo.applications.familiespersons;
 import java.util.HashSet;
 import java.util.Set;
 
-import tools.vitruv.applications.familiespersons.families2persons.FamiliesToPersonsChangePropagationSpecification;
-import tools.vitruv.applications.familiespersons.persons2families.PersonsToFamiliesChangePropagationSpecification;
+import tools.vitruv.demo.applications.familiespersons.families2persons.FamiliesToPersonsChangePropagationSpecification;
+import tools.vitruv.demo.applications.familiespersons.persons2families.PersonsToFamiliesChangePropagationSpecification;
 import tools.vitruv.domains.families.FamiliesDomainProvider;
 import tools.vitruv.domains.persons.PersonsDomainProvider;
 import tools.vitruv.framework.applications.VitruvApplication;

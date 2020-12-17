@@ -18,8 +18,6 @@
 	  <module>tools.vitruv.demo.domains.families</module>
 	  <module>tools.vitruv.demo.domains.insurance</module>
 	  <module>tools.vitruv.demo.applications.familiespersons</module>
-	  <module>tools.vitruv.demo.applications.familiespersons.families2persons</module>
-	  <module>tools.vitruv.demo.applications.familiespersons.persons2families</module>
 	</modules>
 
 </project>
