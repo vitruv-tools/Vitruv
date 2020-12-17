@@ -95,6 +95,10 @@ class VirtualModelImpl implements InternalVirtualModel {
 	override addChangePropagationListener(ChangePropagationListener changePropagationListener) {
 		changePropagator.addChangePropagationListener(changePropagationListener)
 	}
+	
+	override removeChangePropagationListener(ChangePropagationListener changePropagationListener) {
+		changePropagator.removeChangePropagationListener(changePropagationListener)
+	}
 
 	override synchronized propagateChange(VitruviusChange change) {
 		LOGGER.info('''Start change propagation''')

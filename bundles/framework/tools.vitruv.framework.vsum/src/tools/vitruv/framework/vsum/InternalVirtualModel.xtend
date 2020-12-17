@@ -19,6 +19,7 @@ interface InternalVirtualModel extends VirtualModel {
 		]
 	}
 	def void addChangePropagationListener(ChangePropagationListener propagationListener)
+	def void removeChangePropagationListener(ChangePropagationListener propagationListener)
 	def void setUserInteractor(UserInteractor userInteractor)
 	def void addPropagatedChangeListener(PropagatedChangeListener propagatedChangeListener)
 	def void removePropagatedChangeListener(PropagatedChangeListener propagatedChangeListener)
