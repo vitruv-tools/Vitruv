@@ -1,17 +1,17 @@
 package tools.vitruv.demo.applications.addressesrecipients
 
 import tools.vitruv.framework.applications.AbstractVitruvApplication
-import mir.reactions.adXre_L2R.AdXre_L2RChangePropagationSpecification
-import mir.reactions.adXre_R2L.AdXre_R2LChangePropagationSpecification
+import tools.vitruv.demo.applications.addressesrecipients.transformations.AddressesToRecipientsChangePropagationSpecification
+import tools.vitruv.demo.applications.addressesrecipients.transformations.RecipientsToAddressesChangePropagationSpecification
 
 class AddressesRecipientsApplication extends AbstractVitruvApplication {
 	
 	override getChangePropagationSpecifications() {
-		return #{new AdXre_L2RChangePropagationSpecification(), new AdXre_R2LChangePropagationSpecification()}
+		return #{new AddressesToRecipientsChangePropagationSpecification(), new RecipientsToAddressesChangePropagationSpecification()}
 	}
 	
 	override getName() {
-		return "AddressesXRecipients"
+		return "Addresses-Recipients"
 	}
 	
 }
