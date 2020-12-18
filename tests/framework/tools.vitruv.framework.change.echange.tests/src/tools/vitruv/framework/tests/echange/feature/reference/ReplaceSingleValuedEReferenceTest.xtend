@@ -16,6 +16,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals
 import static org.junit.jupiter.api.Assertions.assertSame
 import static org.junit.jupiter.api.Assertions.assertNotSame
 import static tools.vitruv.testutils.metamodels.AllElementTypesCreators.*
+import static org.hamcrest.MatcherAssert.assertThat
+import static tools.vitruv.testutils.matchers.ModelMatchers.equalsDeeply
 
 /**
  * Test class for the concrete {@link ReplaceSingleValuedEReference} EChange,
@@ -358,7 +360,9 @@ class ReplaceSingleValuedEReferenceTest extends ReferenceEChangeTest {
 	 */
 	def private void assertIsStateBefore(NonRoot valueInStagingArea) {
 		resourceIsStateBefore
-		oldValue.assertEqualsOrCopy(affectedEObject.eGet(affectedFeature) as EObject)
+		val currentValue = affectedEObject.eGet(affectedFeature) as EObject
+		if (oldValue !== null || currentValue !== null)
+			assertThat(oldValue, equalsDeeply(currentValue))
 	}
 
 	/**
@@ -367,9 +371,9 @@ class ReplaceSingleValuedEReferenceTest extends ReferenceEChangeTest {
 	def private void resourceIsStateBefore() {
 		if (!affectedFeature.containment) {
 			assertEquals(resourceContent.size, 4)
-			newValue.assertEqualsOrCopy(resourceContent.get(1))
-			newValue2.assertEqualsOrCopy(resourceContent.get(2))
-			oldValue.assertEqualsOrCopy(resourceContent.get(3))
+			assertThat(newValue, equalsDeeply(resourceContent.get(1)))
+			assertThat(newValue2, equalsDeeply(resourceContent.get(2)))
+			assertThat(oldValue, equalsDeeply(resourceContent.get(3)))
 		} else {
 			assertEquals(resourceContent.size, 1)
 		}
@@ -378,9 +382,11 @@ class ReplaceSingleValuedEReferenceTest extends ReferenceEChangeTest {
 	/**
 	 * Model is in state after the change.
 	 */
-	def private void assertIsStateAfter(NonRoot valueInStagingArea) {
+	def private void assertIsStateAfter(NonRoot valueInStaggingArea) {
 		resourceIsStateBefore
-		newValue.assertEqualsOrCopy(affectedEObject.eGet(affectedFeature) as EObject)
+		val currentValue = affectedEObject.eGet(affectedFeature) as EObject
+		if (newValue !== null || currentValue !== null)
+			assertThat(newValue, equalsDeeply(currentValue))
 	}
 
 	/**

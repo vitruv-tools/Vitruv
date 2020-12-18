@@ -14,6 +14,8 @@ import static org.junit.jupiter.api.Assertions.assertSame
 import static org.junit.jupiter.api.Assertions.assertNotSame
 import static org.junit.jupiter.api.Assertions.assertThrows
 import static extension tools.vitruv.framework.change.echange.resolve.EChangeResolverAndApplicator.*
+import static org.hamcrest.MatcherAssert.assertThat
+import static tools.vitruv.testutils.matchers.ModelMatchers.equalsDeeply
 
 /**
  * Test class for the concrete {@link InsertRootEObject} EChange,
@@ -125,7 +127,7 @@ class InsertRootEObjectTest extends RootEChangeTest {
 		resolvedChange2.assertApplyBackward
 
 		assertEquals(resourceContent.size, 2)
-		assertEqualsOrCopy(newRootObject, resourceContent.get(1))
+		assertThat(newRootObject, equalsDeeply(resourceContent.get(1)))
 
 		// Apply backward 1
 		resolvedChange.assertApplyBackward
@@ -163,8 +165,8 @@ class InsertRootEObjectTest extends RootEChangeTest {
 	 */
 	def private void assertIsStateAfter() {
 		assertEquals(resourceContent.size, 3)
-		newRootObject.assertEqualsOrCopy(resourceContent.get(1))
-		newRootObject2.assertEqualsOrCopy(resourceContent.get(2))
+		assertThat(newRootObject, equalsDeeply(resourceContent.get(1)))
+		assertThat(newRootObject2, equalsDeeply(resourceContent.get(2)))
 	}
 
 	/**

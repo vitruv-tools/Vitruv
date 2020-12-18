@@ -16,6 +16,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue
 import static org.junit.jupiter.api.Assertions.assertFalse
 import static org.junit.jupiter.api.Assertions.assertEquals
 import static tools.vitruv.testutils.metamodels.AllElementTypesCreators.*
+import static org.hamcrest.MatcherAssert.assertThat
+import static tools.vitruv.testutils.matchers.ModelMatchers.equalsDeeply
 
 /**
  * Test class for the concrete {@link CreateAndInsertRoot} EChange,
@@ -173,8 +175,8 @@ class CreateAndInsertRootTest extends EChangeTest {
 	 */
 	def private void assertIsStateAfter() {
 		assertEquals(resourceContent.size, 3)
-		newRootObject.assertEqualsOrCopy(resourceContent.get(1))
-		newRootObject2.assertEqualsOrCopy(resourceContent.get(2))
+		assertThat(newRootObject, equalsDeeply(resourceContent.get(1)))
+		assertThat(newRootObject2, equalsDeeply(resourceContent.get(2)))
 	}
 
 	/**
@@ -196,8 +198,8 @@ class CreateAndInsertRootTest extends EChangeTest {
 		assertEquals(2, changes.size)
 		val createChange = assertType(changes.get(0), CreateEObject)
 		val insertChange = assertType(changes.get(1), InsertRootEObject)
-		insertChange.newValue.assertEqualsOrCopy(newRoot)
-		createChange.affectedEObject.assertEqualsOrCopy(newRoot)
+		assertThat(insertChange.newValue, equalsDeeply(newRoot))
+		assertThat(createChange.affectedEObject, equalsDeeply(newRoot))
 	}
 
 	/**

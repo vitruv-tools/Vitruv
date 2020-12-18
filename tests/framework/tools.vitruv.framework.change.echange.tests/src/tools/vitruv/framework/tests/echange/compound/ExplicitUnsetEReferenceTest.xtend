@@ -26,6 +26,8 @@ import static org.junit.jupiter.api.Assertions.assertNull
 import static org.junit.jupiter.api.Assertions.assertSame
 import static org.junit.jupiter.api.Assertions.assertNotSame
 import static tools.vitruv.testutils.metamodels.AllElementTypesCreators.*
+import static org.hamcrest.MatcherAssert.assertThat
+import static tools.vitruv.testutils.matchers.ModelMatchers.equalsDeeply
 
 /**
  * Test class for the concrete {@link ExplicitUnsetEReference} EChange,
@@ -377,11 +379,11 @@ class ExplicitUnsetEReferenceTest extends EChangeTest {
 			}
 		} else {
 			if (!affectedFeature.many) {
-				oldValue.assertEqualsOrCopy(affectedEObject.eGet(affectedFeature) as Identified)
+				assertThat(oldValue, equalsDeeply(affectedEObject.eGet(affectedFeature) as Identified))
 			} else {
-				oldValue.assertEqualsOrCopy(referenceContent.get(0))
-				oldValue2.assertEqualsOrCopy(referenceContent.get(1))
-				oldValue3.assertEqualsOrCopy(referenceContent.get(2))
+				assertThat(oldValue, equalsDeeply(referenceContent.get(0)))
+				assertThat(oldValue2, equalsDeeply(referenceContent.get(1)))
+				assertThat(oldValue3, equalsDeeply(referenceContent.get(2)))
 			}
 		}
 	}
@@ -392,9 +394,9 @@ class ExplicitUnsetEReferenceTest extends EChangeTest {
 	def private void assertResourceIsStateBefore() {
 		if (!affectedFeature.containment) {
 			// Root object at index 0
-			oldValue.assertEqualsOrCopy(resource.contents.get(1) as Identified)
-			oldValue2.assertEqualsOrCopy(resource.contents.get(2) as Identified)
-			oldValue3.assertEqualsOrCopy(resource.contents.get(3) as Identified)
+			assertThat(oldValue, equalsDeeply(resource.contents.get(1) as Identified))
+			assertThat(oldValue2, equalsDeeply(resource.contents.get(2) as Identified))
+			assertThat(oldValue3, equalsDeeply(resource.contents.get(3) as Identified))
 		} else {
 			assertEquals(resource.contents.size, 1)
 		}
@@ -492,8 +494,8 @@ class ExplicitUnsetEReferenceTest extends EChangeTest {
 				assertType(removeChange, RemoveEReference)
 			}
 		val typedDeleteChange = assertType(deleteChange, DeleteEObject)
-		oldValue.assertEqualsOrCopy(typedRemoveChange.oldValue)
-		oldValue.assertEqualsOrCopy(typedDeleteChange.affectedEObject)
+		assertThat(oldValue, equalsDeeply(typedRemoveChange.oldValue))
+		assertThat(oldValue, equalsDeeply(typedDeleteChange.affectedEObject))
 	}
 
 	/**

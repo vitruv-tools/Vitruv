@@ -4,12 +4,13 @@ import allElementTypes.Root
 import tools.vitruv.framework.change.echange.eobject.CreateEObject
 import tools.vitruv.framework.change.echange.eobject.EObjectExistenceEChange
 
-import static extension tools.vitruv.framework.tests.echange.util.EChangeAssertHelper.*
 import org.junit.jupiter.api.Test
 import static org.junit.jupiter.api.Assertions.assertTrue
 import static org.junit.jupiter.api.Assertions.assertFalse
 import static org.junit.jupiter.api.Assertions.assertNotSame
 import static org.junit.jupiter.api.Assertions.assertThrows
+import static org.hamcrest.MatcherAssert.assertThat
+import static tools.vitruv.testutils.matchers.ModelMatchers.equalsDeeply
 
 /**
  * Test class for the abstract class {@link EObjectExistenceEChange} EChange,
@@ -91,7 +92,7 @@ class EObjectExistenceEChangeTest extends EObjectTest {
 	 */
 	def private static void assertIsResolved(EObjectExistenceEChange<Root> change, Root affectedEObject) {
 		assertTrue(change.isResolved)
-		affectedEObject.assertEqualsOrCopy(change.affectedEObject)
+		assertThat(affectedEObject, equalsDeeply(change.affectedEObject))
 	}
 
 	/**

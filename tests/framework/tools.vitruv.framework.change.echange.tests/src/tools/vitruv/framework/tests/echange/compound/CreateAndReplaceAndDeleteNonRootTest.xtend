@@ -18,6 +18,8 @@ import org.junit.jupiter.api.Test
 import static org.junit.jupiter.api.Assertions.assertTrue
 import static org.junit.jupiter.api.Assertions.assertEquals
 import static tools.vitruv.testutils.metamodels.AllElementTypesCreators.*
+import static org.hamcrest.MatcherAssert.assertThat
+import static tools.vitruv.testutils.matchers.ModelMatchers.equalsDeeply
 
 /**
  * Test class for the concrete {@link CreateAndReplaceAndDeleteNonRoot} EChange,
@@ -112,7 +114,7 @@ class CreateAndReplaceAndDeleteNonRootTest extends ReferenceEChangeTest {
 		resolvedChange2.assertApplyForward
 
 		var NonRoot valueAfterChange2 = affectedEObject.eGet(affectedFeature) as NonRoot
-		valueAfterChange2.assertEqualsOrCopy(newValue2)
+		assertThat(valueAfterChange2, equalsDeeply(newValue2))
 	}
 
 	/**
@@ -151,14 +153,14 @@ class CreateAndReplaceAndDeleteNonRootTest extends ReferenceEChangeTest {
 	 * Model is in state before the changes.
 	 */
 	def private void assertIsStateBefore() {
-		oldValue.assertEqualsOrCopy(affectedEObject.eGet(affectedFeature) as NonRoot)
+		assertThat(oldValue, equalsDeeply(affectedEObject.eGet(affectedFeature) as NonRoot))
 	}
 
 	/**
 	 * Model is in state after the changes.
 	 */
 	def private void assertIsStateAfter() {
-		newValue.assertEqualsOrCopy(affectedEObject.eGet(affectedFeature) as NonRoot)
+		assertThat(newValue, equalsDeeply(affectedEObject.eGet(affectedFeature) as NonRoot))
 	}
 
 	/**
@@ -182,14 +184,14 @@ class CreateAndReplaceAndDeleteNonRootTest extends ReferenceEChangeTest {
 		changes.assertIsResolved
 		assertEquals(3, changes.size)
 		val createChange = assertType(changes.get(0), CreateEObject)
-		val replaceChange = assertType(changes.get(1), ReplaceSingleValuedEReference)
+		val ReplaceSingleValuedEReference<?,?> replaceChange = assertType(changes.get(1), ReplaceSingleValuedEReference)
 		val deleteChange = assertType(changes.get(2), DeleteEObject)
 
-		createChange.affectedEObject.assertEqualsOrCopy(newNonRootObject)
-		replaceChange.oldValue.assertEqualsOrCopy(oldNonRootObject)
-		replaceChange.newValue.assertEqualsOrCopy(newNonRootObject)
-		deleteChange.affectedEObject.assertEqualsOrCopy(oldNonRootObject)
-		replaceChange.affectedEObject.assertEqualsOrCopy(affectedRootObject)
+		assertThat(createChange.affectedEObject, equalsDeeply(newNonRootObject))
+		assertThat(replaceChange.oldValue, equalsDeeply(oldNonRootObject))
+		assertThat(replaceChange.newValue, equalsDeeply(newNonRootObject))
+		assertThat(deleteChange.affectedEObject, equalsDeeply(oldNonRootObject))
+		assertThat(replaceChange.affectedEObject, equalsDeeply(affectedRootObject))
 	}
 
 	/**

@@ -15,6 +15,8 @@ import static org.junit.jupiter.api.Assertions.assertFalse
 import static org.junit.jupiter.api.Assertions.assertEquals
 import static org.junit.jupiter.api.Assertions.assertNull
 import static tools.vitruv.testutils.metamodels.AllElementTypesCreators.*
+import static org.hamcrest.MatcherAssert.assertThat
+import static tools.vitruv.testutils.matchers.ModelMatchers.equalsDeeply
 
 /**
  * Test class for the concrete {@link RemoveAndDeleteRoot} EChange,
@@ -165,8 +167,8 @@ class RemoveAndDeleteRootTest extends EChangeTest {
 	 */
 	def private void assertIsStateBefore() {
 		assertEquals(resourceContent.size, 3)
-		newRootObject.assertEqualsOrCopy(resourceContent.get(1))
-		newRootObject2.assertEqualsOrCopy(resourceContent.get(2))
+		assertThat(newRootObject, equalsDeeply(resourceContent.get(1)))
+		assertThat(newRootObject2, equalsDeeply(resourceContent.get(2)))
 	}
 
 	/** 
@@ -195,8 +197,8 @@ class RemoveAndDeleteRootTest extends EChangeTest {
 		assertEquals(2, changes.size)
 		val removeChange = assertType(changes.get(0), RemoveRootEObject)
 		val deleteChange = assertType(changes.get(1), DeleteEObject)
-		removeChange.oldValue.assertEqualsOrCopy(affectedRootObject)
-		deleteChange.affectedEObject.assertEqualsOrCopy(affectedRootObject)
+		assertThat(removeChange.oldValue, equalsDeeply(affectedRootObject))
+		assertThat(deleteChange.affectedEObject, equalsDeeply(affectedRootObject))
 	}
 
 	/**

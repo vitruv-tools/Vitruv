@@ -1,6 +1,5 @@
 package tools.vitruv.framework.tests.echange.util
 
-import org.eclipse.emf.ecore.EObject
 import tools.vitruv.framework.change.echange.EChange
 import static extension tools.vitruv.framework.change.echange.resolve.EChangeResolverAndApplicator.*
 import java.util.List
@@ -13,7 +12,6 @@ import static org.junit.jupiter.api.Assertions.assertNotSame
 import static org.hamcrest.MatcherAssert.assertThat
 import static org.hamcrest.core.IsInstanceOf.instanceOf
 import static org.hamcrest.core.Is.is
-import static tools.vitruv.testutils.matchers.ModelMatchers.equalsDeeply
 
 /**
  * Utility class for frequently used assert methods in the tests.
@@ -38,18 +36,6 @@ class EChangeAssertHelper {
 		for (var i = 0; i < unresolvedChange.size; i++) {
 			assertDifferentChangeSameClass(unresolvedChange.get(i), resolvedChange.get(i))
 		}
-	}
-
-	/**
-	 * Tests whether two objects are the same object or copies of each other.
-	 */
-	def static void assertEqualsOrCopy(Object object1, Object object2) {
-		if (object1 === null && object2 === null) {
-			return
-		}
-		val typedObject1 = assertType(object1, EObject)
-		val typedObject2 = assertType(object2, EObject)
-		assertThat(typedObject1, equalsDeeply(typedObject2))
 	}
 
 	/**

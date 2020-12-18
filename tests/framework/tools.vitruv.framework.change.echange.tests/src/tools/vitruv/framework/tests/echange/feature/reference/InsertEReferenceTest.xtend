@@ -17,6 +17,8 @@ import static org.junit.jupiter.api.Assertions.assertSame
 import static org.junit.jupiter.api.Assertions.assertNotSame
 import static extension tools.vitruv.framework.change.echange.resolve.EChangeResolverAndApplicator.*
 import static org.junit.jupiter.api.Assertions.assertThrows
+import static org.hamcrest.MatcherAssert.assertThat
+import static tools.vitruv.testutils.matchers.ModelMatchers.equalsDeeply
 
 /**
  * Test class for the concrete {@link InsertEReferenceValue} EChange,
@@ -336,8 +338,8 @@ class InsertEReferenceTest extends ReferenceEChangeTest {
 	 */
 	def private void assertIsStateAfter() {
 		assertEquals(referenceContent.size, 2)
-		newValue.assertEqualsOrCopy(referenceContent.get(0))
-		newValue2.assertEqualsOrCopy(referenceContent.get(1))
+		assertThat(newValue, equalsDeeply(referenceContent.get(0)))
+		assertThat(newValue2, equalsDeeply(referenceContent.get(1)))
 	}
 
 	/**

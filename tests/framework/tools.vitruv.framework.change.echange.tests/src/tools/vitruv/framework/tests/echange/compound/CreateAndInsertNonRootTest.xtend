@@ -19,6 +19,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue
 import static org.junit.jupiter.api.Assertions.assertFalse
 import static org.junit.jupiter.api.Assertions.assertEquals
 import static org.junit.jupiter.api.Assertions.assertSame
+import static org.hamcrest.MatcherAssert.assertThat
+import static tools.vitruv.testutils.matchers.ModelMatchers.equalsDeeply
 
 /**
  * Test class for the concrete {@link CreateAndInsertNonRoot} EChange,
@@ -167,8 +169,8 @@ class CreateAndInsertNonRootTest extends ReferenceEChangeTest {
 	 */
 	def private void assertIsStateAfter() {
 		assertEquals(referenceContent.size, 2)
-		newValue.assertEqualsOrCopy(referenceContent.get(0))
-		newValue2.assertEqualsOrCopy(referenceContent.get(1))
+		assertThat(newValue, equalsDeeply(referenceContent.get(0)))
+		assertThat(newValue2, equalsDeeply(referenceContent.get(1)))
 	}
 
 	/**
@@ -189,9 +191,9 @@ class CreateAndInsertNonRootTest extends ReferenceEChangeTest {
 		changes.assertIsResolved
 		assertEquals(2, changes.size)
 		val createChange = assertType(changes.get(0), CreateEObject)
-		val insertChange = assertType(changes.get(1), InsertEReference)
-		insertChange.newValue.assertEqualsOrCopy(newNonRoot)
-		createChange.affectedEObject.assertEqualsOrCopy(newNonRoot)
+		val InsertEReference<?,?> insertChange = assertType(changes.get(1), InsertEReference)
+		assertThat(insertChange.newValue, equalsDeeply(newNonRoot))
+		assertThat(createChange.affectedEObject, equalsDeeply(newNonRoot))
 		assertSame(insertChange.affectedEObject, affectedEObject)
 	}
 
