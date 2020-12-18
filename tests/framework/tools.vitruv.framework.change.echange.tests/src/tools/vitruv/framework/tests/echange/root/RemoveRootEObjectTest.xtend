@@ -13,6 +13,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals
 import static org.junit.jupiter.api.Assertions.assertNull
 import static org.junit.jupiter.api.Assertions.assertSame
 import static org.junit.jupiter.api.Assertions.assertNotSame
+import static org.hamcrest.MatcherAssert.assertThat
+import static tools.vitruv.testutils.matchers.ModelMatchers.equalsDeeply
 
 /**
  * Test class for the concrete {@link RemoveRootEObject} EChange,
@@ -91,7 +93,7 @@ class RemoveRootEObjectTest extends RootEChangeTest {
 		resolvedChange.assertApplyForward
 
 		assertEquals(resourceContent.size, 2)
-		assertEqualsOrCopy(newRootObject2, resourceContent.get(1))
+		assertThat(newRootObject2, equalsDeeply(resourceContent.get(1)))
 
 		// Create and resolve change 2
 		val resolvedChange2 = createUnresolvedChange(newRootObject2, 1).resolveBefore as RemoveRootEObject<Root>
@@ -161,8 +163,8 @@ class RemoveRootEObjectTest extends RootEChangeTest {
 	def private void assertIsStateBefore() {
 		// index 0 is root object
 		assertEquals(resourceContent.size, 3)
-		newRootObject.assertEqualsOrCopy(resourceContent.get(1))
-		newRootObject2.assertEqualsOrCopy(resourceContent.get(2))
+		assertThat(newRootObject, equalsDeeply(resourceContent.get(1)))
+		assertThat(newRootObject2, equalsDeeply(resourceContent.get(2)))
 	}
 
 	/**

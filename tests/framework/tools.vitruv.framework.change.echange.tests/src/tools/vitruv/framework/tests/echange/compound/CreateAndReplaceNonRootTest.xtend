@@ -16,6 +16,8 @@ import org.junit.jupiter.api.Test
 import static org.junit.jupiter.api.Assertions.assertNull
 import static org.junit.jupiter.api.Assertions.assertEquals
 import static tools.vitruv.testutils.metamodels.AllElementTypesCreators.*
+import static org.hamcrest.MatcherAssert.assertThat
+import static tools.vitruv.testutils.matchers.ModelMatchers.equalsDeeply
 
 /**
  * Test class for the concrete {@link CreateAndReplaceNonRoot} EChange,
@@ -152,7 +154,7 @@ class CreateAndReplaceNonRootTest extends EChangeTest {
 	 * Model is in state after the change.
 	 */
 	def private void assertIsStateAfter() {
-		newNonRootObject.assertEqualsOrCopy(affectedEObject.eGet(affectedFeature) as NonRoot)
+		assertThat(newNonRootObject, equalsDeeply(affectedEObject.eGet(affectedFeature) as NonRoot))
 	}
 
 	/**
@@ -173,10 +175,10 @@ class CreateAndReplaceNonRootTest extends EChangeTest {
 		changes.assertIsResolved
 		assertEquals(2, changes.size)
 		val createChange = assertType(changes.get(0), CreateEObject)
-		val replaceChange = assertType(changes.get(1), ReplaceSingleValuedEReference)
-		replaceChange.newValue.assertEqualsOrCopy(newValue)
-		createChange.affectedEObject.assertEqualsOrCopy(newValue)
-		replaceChange.affectedEObject.assertEqualsOrCopy(affectedEObject)
+		val ReplaceSingleValuedEReference<?,?> replaceChange = assertType(changes.get(1), ReplaceSingleValuedEReference)
+		assertThat(replaceChange.newValue, equalsDeeply(newValue))
+		assertThat(createChange.affectedEObject, equalsDeeply(newValue))
+		assertThat(replaceChange.affectedEObject, equalsDeeply(affectedEObject))
 	}
 
 	/**
