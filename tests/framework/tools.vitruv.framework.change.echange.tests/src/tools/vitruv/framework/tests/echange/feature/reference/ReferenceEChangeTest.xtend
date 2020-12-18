@@ -1,33 +1,34 @@
 package tools.vitruv.framework.tests.echange.feature.reference
 
-import allElementTypes.AllElementTypesFactory
 import allElementTypes.NonRoot
 import allElementTypes.Root
-import org.eclipse.emf.common.util.EList
-import org.eclipse.emf.ecore.EObject
 import tools.vitruv.framework.tests.echange.EChangeTest
 import org.junit.jupiter.api.BeforeEach
+import static tools.vitruv.testutils.metamodels.AllElementTypesCreators.*
+import org.eclipse.xtend.lib.annotations.Accessors
 
 /**
+ * 
  * Abstract class which is used by all test classes for references.
  */
 abstract class ReferenceEChangeTest extends EChangeTest {
-	protected var Root affectedEObject = null
-	protected var NonRoot newValue = null
-	protected var NonRoot newValue2 = null
-	protected var EList<EObject> resourceContent = null
-	
+	@Accessors(PROTECTED_GETTER)
+	var Root affectedEObject
+	@Accessors(PROTECTED_GETTER, PROTECTED_SETTER)
+	var NonRoot newValue
+	@Accessors(PROTECTED_GETTER, PROTECTED_SETTER)
+	var NonRoot newValue2
+
 	/**
 	 * Sets the default object and new value for tests.
 	 */
 	@BeforeEach
-	def void beforeTest() {
+	def final void beforeTest() {
 		affectedEObject = rootObject
-		newValue = AllElementTypesFactory.eINSTANCE.createNonRoot()
-		newValue2 = AllElementTypesFactory.eINSTANCE.createNonRoot()
-		resourceContent = resource.contents
+		newValue = aet.NonRoot
+		newValue2 = aet.NonRoot
 	}
-	
+
 	/**
 	 * Prepares the resource and adds the new values.
 	 */

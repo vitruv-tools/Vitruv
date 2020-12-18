@@ -43,10 +43,10 @@ class EChangeAssertHelper {
 	 */
 	def static void assertEqualsOrCopy(Object object1, Object object2) {
 		if (object1 === null && object2 === null) {
-			return;
+			return
 		}
-		val typedObject1 = assertType(object1, EObject);
-		val typedObject2 = assertType(object2, EObject);
+		val typedObject1 = assertType(object1, EObject)
+		val typedObject2 = assertType(object2, EObject)
 		EcoreUtil.equals(typedObject1, typedObject2)
 	}
 
@@ -116,7 +116,6 @@ class EChangeAssertHelper {
 		if (type.isAssignableFrom(original.class)) {
 			return original as T
 		}
-		fail("Object " + original + " is not expected type " + type);
-		return null;
+		fail("Object " + original + " is not expected type " + type)
 	}
 }

@@ -25,17 +25,16 @@ import static org.junit.jupiter.api.Assertions.assertSame
  * which creates a new non root EObject and inserts it in containment reference.
  */
 class CreateAndInsertNonRootTest extends ReferenceEChangeTest {
-	protected var EReference affectedFeature = null
-	protected var EList<NonRoot> referenceContent = null
-	
+	var EReference affectedFeature
+	var EList<NonRoot> referenceContent
+
 	@BeforeEach
-	override void beforeTest() {
-		super.beforeTest
+	def void prepareState() {
 		affectedFeature = AllElementTypesPackage.Literals.ROOT__MULTI_VALUED_CONTAINMENT_EREFERENCE
 		referenceContent = affectedEObject.eGet(affectedFeature) as EList<NonRoot>
 		assertIsStateBefore
 	}
-	
+
 	/**
 	 * Resolves a {@link CreateAndInsertNonRoot} EChange. The model is in state
 	 * before the change, so the new non root element will be created and inserted
@@ -46,15 +45,15 @@ class CreateAndInsertNonRootTest extends ReferenceEChangeTest {
 		// Create change
 		val unresolvedChange = createUnresolvedChange(affectedEObject, newValue, 0)
 		unresolvedChange.assertIsNotResolved
-			
+
 		// Resolve
-		val resolvedChange = unresolvedChange.resolveBefore(uuidGeneratorAndResolver) 
-		resolvedChange.assertIsResolved(affectedEObject, newValue)	
-			
+		val resolvedChange = unresolvedChange.resolveBefore
+		resolvedChange.assertIsResolved(affectedEObject, newValue)
+
 		// Resolving applies all changes and reverts them, so the model should be unaffected.			
-		assertIsStateBefore		
+		assertIsStateBefore
 	}
-	
+
 	/**
 	 * Resolves a {@link CreateAndInsertNonRoot} EChange. The model is in state
 	 * after the change, so the new non root element is in a containment reference.
@@ -63,19 +62,19 @@ class CreateAndInsertNonRootTest extends ReferenceEChangeTest {
 	def void resolveAfterTest() {
 		// Create change
 		val unresolvedChange = createUnresolvedChange(affectedEObject, newValue, 0)
-		unresolvedChange.assertIsNotResolved		
-		
+		unresolvedChange.assertIsNotResolved
+
 		// Set state after
 		prepareStateAfter
-			
+
 		// Resolve
-		val resolvedChange = unresolvedChange.resolveAfter(uuidGeneratorAndResolver) 
-		resolvedChange.assertIsResolved(affectedEObject, newValue)	
-		
+		val resolvedChange = unresolvedChange.resolveAfter
+		resolvedChange.assertIsResolved(affectedEObject, newValue)
+
 		// Resolving applies all changes and reverts them, so the model should be unaffected.		
-		assertIsStateAfter		
+		assertIsStateAfter
 	}
-	
+
 	/**
 	 * Tests whether resolving the {@link CreateAndInsertNonRoot} EChange
 	 * returns the same class.
@@ -84,12 +83,12 @@ class CreateAndInsertNonRootTest extends ReferenceEChangeTest {
 	def void resolveToCorrectType() {
 		// Create change
 		val unresolvedChange = createUnresolvedChange(affectedEObject, newValue, 0)
-		
+
 		// Resolve		
- 		val resolvedChange = unresolvedChange.resolveBefore(uuidGeneratorAndResolver)
+		val resolvedChange = unresolvedChange.resolveBefore
 		unresolvedChange.assertDifferentChangeSameClass(resolvedChange)
 	}
-	
+
 	/**
 	 * Tests the {@link CreateAndInsertNonRoot} EChange by applying it forward.
 	 * Creates and inserts a new non root object into a multi valued 
@@ -98,21 +97,21 @@ class CreateAndInsertNonRootTest extends ReferenceEChangeTest {
 	@Test
 	def void applyForwardTest() {
 		// Create and resolve and apply change
-		val resolvedChange = createUnresolvedChange(affectedEObject, newValue, 0).resolveBefore(uuidGeneratorAndResolver)
+		val resolvedChange = createUnresolvedChange(affectedEObject, newValue, 0).resolveBefore
 		resolvedChange.assertApplyForward
-		
+
 		assertEquals(referenceContent.size, 1)
 		val createChange = assertType(resolvedChange.get(0), CreateEObject)
 		assertTrue(referenceContent.contains(createChange.affectedEObject))
-		
+
 		// Create and resolve and apply change 2	
-		val resolvedChange2 = createUnresolvedChange(affectedEObject, newValue2, 1).resolveBefore(uuidGeneratorAndResolver)
+		val resolvedChange2 = createUnresolvedChange(affectedEObject, newValue2, 1).resolveBefore
 		resolvedChange2.assertApplyForward
-		
+
 		// State after
 		assertIsStateAfter
 	}
-	
+
 	/**
 	 * Tests the {@link CreateAndInsertNonRoot} EChange by applying it backward.
 	 * A non root object which was added to a containment reference will be removed and
@@ -121,48 +120,48 @@ class CreateAndInsertNonRootTest extends ReferenceEChangeTest {
 	@Test
 	def void applyBackwardTest() {
 		// Create and resolve and apply change 1
-		val resolvedChange = createUnresolvedChange(affectedEObject, newValue, 0).resolveBefore(uuidGeneratorAndResolver)
+		val resolvedChange = createUnresolvedChange(affectedEObject, newValue, 0).resolveBefore
 		resolvedChange.assertApplyForward
-		
+
 		// Create and resolve change 2
-		val resolvedChange2 = createUnresolvedChange(affectedEObject, newValue2, 1).resolveBefore(uuidGeneratorAndResolver)
+		val resolvedChange2 = createUnresolvedChange(affectedEObject, newValue2, 1).resolveBefore
 		resolvedChange2.assertApplyForward
-				
+
 		// State after
 		assertIsStateAfter
-					
+
 		// Apply backward 2
 		resolvedChange2.assertApplyBackward
-		
+
 		val createChange = assertType(resolvedChange.get(0), CreateEObject)
 		val createChange2 = assertType(resolvedChange2.get(0), CreateEObject)
 		assertTrue(referenceContent.contains(createChange.affectedEObject))
-		assertFalse(referenceContent.contains(createChange2.affectedEObject))	
+		assertFalse(referenceContent.contains(createChange2.affectedEObject))
 		assertEquals(referenceContent.size, 1)
-			
+
 		// Apply backward 1	
 		resolvedChange.assertApplyBackward
-		
+
 		// State after
-		assertIsStateBefore	
+		assertIsStateBefore
 	}
-	
+
 	/**
 	 * Sets the state of the model after the changes.
 	 */
 	def private void prepareStateAfter() {
 		referenceContent.add(newValue)
-		referenceContent.add(newValue2)		
+		referenceContent.add(newValue2)
 		assertIsStateAfter
 	}
-	
+
 	/**
 	 * Model is in state before the changes.
 	 */
 	def private void assertIsStateBefore() {
 		assertEquals(referenceContent.size, 0)
 	}
-	
+
 	/**
 	 * Model is in state after the changes.
 	 */
@@ -171,36 +170,36 @@ class CreateAndInsertNonRootTest extends ReferenceEChangeTest {
 		newValue.assertEqualsOrCopy(referenceContent.get(0))
 		newValue2.assertEqualsOrCopy(referenceContent.get(1))
 	}
-	
+
 	/**
 	 * Change is not resolved.
 	 */
 	def protected static void assertIsNotResolved(List<? extends EChange> changes) {
 		EChangeTest.assertIsNotResolved(changes)
-		assertEquals(2, changes.size);
-		val createChange = assertType(changes.get(0), CreateEObject);
-		val insertChange = assertType(changes.get(1), InsertEReference);
+		assertEquals(2, changes.size)
+		val createChange = assertType(changes.get(0), CreateEObject)
+		val insertChange = assertType(changes.get(1), InsertEReference)
 		assertEquals(insertChange.newValueID, createChange.affectedEObjectID)
 	}
-	
+
 	/**
 	 * Change is resolved.
 	 */
-	def private static void assertIsResolved(List<EChange> changes, Root affectedEObject,
-		NonRoot newNonRoot) {
-		changes.assertIsResolved;
-		assertEquals(2, changes.size);
-		val createChange = assertType(changes.get(0), CreateEObject);
-		val insertChange = assertType(changes.get(1), InsertEReference);
+	def private static void assertIsResolved(List<EChange> changes, Root affectedEObject, NonRoot newNonRoot) {
+		changes.assertIsResolved
+		assertEquals(2, changes.size)
+		val createChange = assertType(changes.get(0), CreateEObject)
+		val insertChange = assertType(changes.get(1), InsertEReference)
 		insertChange.newValue.assertEqualsOrCopy(newNonRoot)
 		createChange.affectedEObject.assertEqualsOrCopy(newNonRoot)
-		assertSame(insertChange.affectedEObject, affectedEObject)	
+		assertSame(insertChange.affectedEObject, affectedEObject)
 	}
-		
+
 	/**
 	 * Creates new unresolved change.
 	 */
 	def private List<EChange> createUnresolvedChange(Root affectedRootObject, NonRoot newNonRoot, int index) {
-		return compoundFactory.createCreateAndInsertNonRootChange(affectedRootObject, affectedFeature, newNonRoot, index)
+		return compoundFactory.createCreateAndInsertNonRootChange(affectedRootObject, affectedFeature, newNonRoot,
+			index)
 	}
 }

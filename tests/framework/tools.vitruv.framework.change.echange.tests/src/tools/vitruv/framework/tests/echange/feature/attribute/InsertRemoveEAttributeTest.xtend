@@ -6,19 +6,23 @@ import tools.vitruv.framework.tests.echange.EChangeTest
 import allElementTypes.AllElementTypesPackage
 import org.eclipse.emf.common.util.EList
 import org.junit.jupiter.api.BeforeEach
+import org.eclipse.xtend.lib.annotations.Accessors
 
 /**
  * Abstract class which is used by insert and remove attribute test classes.
  */
 abstract class InsertRemoveEAttributeTest extends EChangeTest {
-	protected var Root affectedEObject = null
-	protected var EAttribute affectedFeature = null
-	protected var EList<Integer> attributeContent = null
-	
+	@Accessors(PROTECTED_GETTER)
+	var Root affectedEObject
+	@Accessors(PROTECTED_GETTER)
+	var EAttribute affectedFeature
+	@Accessors(PROTECTED_GETTER)
+	var EList<Integer> attributeContent
+
 	protected static val Integer NEW_VALUE = 111
 	protected static val Integer NEW_VALUE_2 = 222
 	protected static val Integer NEW_VALUE_3 = 333
-	
+
 	@BeforeEach
 	def void beforeTest() {
 		affectedEObject = rootObject
