@@ -1,7 +1,6 @@
 package tools.vitruv.framework.tests.echange
 
 import allElementTypes.Root
-import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.emf.ecore.resource.ResourceSet
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
@@ -14,9 +13,7 @@ import tools.vitruv.framework.uuid.UuidGeneratorAndResolver
 import java.util.List
 import tools.vitruv.framework.change.echange.EChange
 import static extension tools.vitruv.framework.change.echange.resolve.EChangeResolverAndApplicator.*
-import org.junit.jupiter.api.io.TempDir
 import org.junit.jupiter.api.BeforeEach
-import java.io.File
 import static org.junit.jupiter.api.Assertions.assertFalse
 import static org.junit.jupiter.api.Assertions.assertTrue
 import static org.junit.jupiter.api.Assertions.assertNull
@@ -24,6 +21,9 @@ import static org.junit.jupiter.api.Assertions.assertNotNull
 import static extension tools.vitruv.framework.util.ResourceSetUtil.withGlobalFactories
 import org.eclipse.xtend.lib.annotations.Accessors
 import static tools.vitruv.testutils.metamodels.AllElementTypesCreators.*
+import java.nio.file.Path
+import tools.vitruv.framework.util.bridges.EMFBridge
+import org.junit.jupiter.api.io.TempDir
 
 /**
  * Default class for testing EChange changes.
@@ -54,10 +54,10 @@ abstract class EChangeTest {
 	 * {@link resourceSet2}.
 	 */
 	@BeforeEach
-	def final void beforeTest(@TempDir File testFolder) {
+	def final void beforeTest(@TempDir Path testFolder) {
 		// Setup Files
-		var modelFile = new File(testFolder, MODEL_FILE_NAME + "." + METAMODEL)
-		val fileUri = URI.createFileURI(modelFile.getAbsolutePath())
+		var modelFile = testFolder.resolve(MODEL_FILE_NAME + "." + METAMODEL)
+		val fileUri = EMFBridge.getEmfFileUriForFile(modelFile.toFile)
 
 		// Create model
 		resourceSet = new ResourceSetImpl().withGlobalFactories
