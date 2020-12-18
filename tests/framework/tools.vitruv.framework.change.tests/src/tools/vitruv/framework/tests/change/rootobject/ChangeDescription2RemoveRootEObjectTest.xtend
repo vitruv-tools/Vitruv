@@ -2,22 +2,26 @@ package tools.vitruv.framework.tests.change.rootobject
 
 import org.eclipse.emf.ecore.util.EcoreUtil
 import org.junit.jupiter.api.Test
+import tools.vitruv.framework.tests.change.ChangeDescription2ChangeTransformationTest
+import static extension tools.vitruv.framework.tests.change.util.AtomicEChangeAssertHelper.*
 
-class ChangeDescription2RemoveRootEObjectTest extends ChangeDescription2RootChangeTest {
-	
+class ChangeDescription2RemoveRootEObjectTest extends ChangeDescription2ChangeTransformationTest {
+
 	@Test
 	def void removeDeleteRootEObjectInResource(){
-		val resource = this.rootElement.eResource;
 		// prepare
-		startRecording
+		val root = uniquePersistedRoot
+		val resource = root.eResource
+
 		// test
-		removeRootEObjectInResource()
+		val result = resource.record [
+			EcoreUtil.delete(root)
+		]
+
 		// assert
 		val isDelete = true
-		changes.assertRemoveRoot(isDelete, resource);
+		result.assertChangeCount(2)
+			.assertRemoveRoot(root, isDelete, resource)
 	}
-	
-	def private void removeRootEObjectInResource(){
-		EcoreUtil.delete(this.rootElement)
-	}	
+
 }

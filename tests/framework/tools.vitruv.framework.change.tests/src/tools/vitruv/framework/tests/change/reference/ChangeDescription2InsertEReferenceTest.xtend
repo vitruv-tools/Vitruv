@@ -1,16 +1,14 @@
 package tools.vitruv.framework.tests.change.reference
 
-import allElementTypes.NonRoot
-import org.eclipse.emf.ecore.EStructuralFeature
-
 import static allElementTypes.AllElementTypesPackage.Literals.*
 
 import static extension tools.vitruv.framework.tests.change.util.AtomicEChangeAssertHelper.*
 import static extension tools.vitruv.framework.tests.change.util.CompoundEChangeAssertHelper.*
-import tools.vitruv.framework.change.echange.EChange
 import org.junit.jupiter.api.Test
+import static extension tools.vitruv.testutils.metamodels.AllElementTypesCreators.*
+import tools.vitruv.framework.tests.change.ChangeDescription2ChangeTransformationTest
 
-class ChangeDescription2InsertEReferenceTest extends ChangeDescription2EReferenceTest {
+class ChangeDescription2InsertEReferenceTest extends ChangeDescription2ChangeTransformationTest {
 
 	@Test
 	def void testInsertEReferenceNonContainment() {
@@ -40,41 +38,37 @@ class ChangeDescription2InsertEReferenceTest extends ChangeDescription2EReferenc
 
 	def private testInsertInContainmentEReference(int expectedIndex) {
 		// prepare
-		startRecording
+		uniquePersistedRoot
+		
 		// test
-		val nonRoot = createAndAddNonRootToRootMultiReference(expectedIndex)
+		val nonRoot = aet.NonRoot
+		val result = uniquePersistedRoot.record [
+			multiValuedContainmentEReference.add(expectedIndex, nonRoot)
+		]
+
 		// assert
-		assertCreateAndInsertNonRoot(nonRoot, ROOT__MULTI_VALUED_CONTAINMENT_EREFERENCE, expectedIndex)
+		result.assertChangeCount(3)
+			.assertCreateAndInsertNonRoot(uniquePersistedRoot, ROOT__MULTI_VALUED_CONTAINMENT_EREFERENCE, nonRoot, expectedIndex, false)
+			.assertReplaceSingleValuedEAttribute(nonRoot, IDENTIFIED__ID, null, nonRoot.id, false, false)
+			.assertEmpty
 	}
 
 	def private testInsertInEReference(int expectedIndex) {
-		// prepare 
-		startRecording
-		val nonRoot = createAndAddNonRootToRootMultiReference(expectedIndex)
-		startRecording
-		// test
-		this.rootElement.multiValuedNonContainmentEReference.add(expectedIndex, nonRoot)
+		// prepare
+		val nonRoot = aet.NonRoot
+		uniquePersistedRoot => [
+			multiValuedContainmentEReference.add(expectedIndex, nonRoot)
+		]
+
+		// test			
+		val result = uniquePersistedRoot.record [
+			multiValuedNonContainmentEReference.add(expectedIndex, nonRoot)			
+		]
+
 		// assert
-		val isContainment = false
-		assertInsertEReference(nonRoot, ROOT__MULTI_VALUED_NON_CONTAINMENT_EREFERENCE, expectedIndex, isContainment)
+		result.assertChangeCount(1)
+			.assertInsertEReference(uniquePersistedRoot, ROOT__MULTI_VALUED_NON_CONTAINMENT_EREFERENCE, nonRoot, expectedIndex, false, false)
+			.assertEmpty
 	}
-	
-	def private void assertInsertEReference(NonRoot nonRoot, EStructuralFeature feature, int expectedIndex, boolean isContainment) {
-		var Iterable<? extends EChange> changes = changes;
-		if (isContainment) {
-			changes.assertChangeCount(2);
-			changes = changes.assertReplaceSingleValuedEAttribute(nonRoot, IDENTIFIED__ID, null, nonRoot.id, false, false);
-		} else {
-			changes.assertChangeCount(1);
-		}
-		changes.assertInsertEReference(this.rootElement, feature, nonRoot, expectedIndex, isContainment, false)
-			.assertEmpty;
-	}
-	
-	def private void assertCreateAndInsertNonRoot(NonRoot nonRoot, EStructuralFeature feature, int expectedIndex) {
-		changes.assertChangeCount(3);
-		changes.assertCreateAndInsertNonRoot(this.rootElement, feature, nonRoot, expectedIndex, false)
-			.assertReplaceSingleValuedEAttribute(nonRoot, IDENTIFIED__ID, null, nonRoot.id, false, false)
-			.assertEmpty;
-	}
+
 }

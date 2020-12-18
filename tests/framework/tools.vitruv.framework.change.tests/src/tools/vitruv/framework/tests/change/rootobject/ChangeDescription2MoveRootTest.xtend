@@ -1,24 +1,34 @@
 package tools.vitruv.framework.tests.change.rootobject
 
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
+import static extension tools.vitruv.framework.tests.change.util.AtomicEChangeAssertHelper.*
+import static extension tools.vitruv.testutils.metamodels.AllElementTypesCreators.*
+import tools.vitruv.framework.tests.change.ChangeDescription2ChangeTransformationTest
 
-class ChangeDescription2MoveRootTest extends ChangeDescription2RootChangeTest {
+class ChangeDescription2MoveRootTest extends ChangeDescription2ChangeTransformationTest {
 	
-	@Disabled
 	@Test
 	def void moveRootEObjectBetweenResources(){
-		val resource1 = this.rootElement.eResource;
-		val resource2 = this.rootElement2.eResource;
-		resource2.contents.clear();
 		// prepare
-		startRecording
-		// test 
-		insertRootEObjectInResource(resource2)
+		val root = aet.Root
+		val resource1 = resourceAt("resource1")
+		val resource2 = resourceAt("resource2")
+		resource1.contents += root
+
+		// test
+		val result = resource1.resourceSet.record [
+			resource2 => [
+				contents += root
+			]
+		]
+
 		// assert
 		val isDelete = false
 		val isCreate = false
-		changes.assertRemoveRoot(isDelete, resource1)
-			.assertInsertRoot(isCreate, resource2)
+		result.assertChangeCount(2)
+			.assertRemoveRoot(root, isDelete, resource1)
+			.assertInsertRoot(root, isCreate, resource2)
+			.assertEmpty
 	}
+
 }

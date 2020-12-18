@@ -1,6 +1,5 @@
 package tools.vitruv.framework.tests.change.util
 
-import java.util.List
 import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EStructuralFeature
@@ -23,12 +22,6 @@ import edu.kit.ipd.sdq.activextendannotations.Utility
 @Utility
 class ChangeAssertHelper {
 
-	static def <T> T assertObjectInstanceOf(Object object, Class<T> type) {
-		assertTrue(
-			type.isInstance(object), '''The object «object.class.simpleName» should be type of «type.simpleName»''')
-		return type.cast(object)
-	}
-
 	static def <T extends AdditiveEChange<?>, SubtractiveEChange> assertOldAndNewValue(T eChange, Object oldValue,
 		Object newValue) {
 		eChange.assertOldValue(oldValue)
@@ -47,7 +40,7 @@ class ChangeAssertHelper {
 
 	static def assertNewValue(AdditiveEChange<?> eChange, Object newValue) {
 		val newValueInChange = eChange.newValue
-		var condition = newValue === null && newValueInChange === null;
+		var condition = newValue === null && newValueInChange === null
 		if (newValue instanceof EObject && newValueInChange instanceof EObject) {
 			val newEObject = newValue as EObject
 			var newEObjectInChange = newValueInChange as EObject
@@ -67,21 +60,13 @@ class ChangeAssertHelper {
 			assertEqualsOrCopy(expectedAffectedEObject, eChange.affectedEObject,
 				"The actual affected EObject is a different one than the expected affected EObject or its copy")
 		} else {
-			throw new IllegalArgumentException();
+			throw new IllegalArgumentException()
 		}
 	}
 
 	static def assertAffectedEFeature(EChange eChange, EStructuralFeature expectedEFeature) {
 		assertEquals(expectedEFeature, (eChange as FeatureEChange<?, ?>).affectedFeature,
 			"The actual affected EStructuralFeature is a different one than the expected EStructuralFeature")
-	}
-
-	static def getFeatureByName(EObject eObject, String name) {
-		eObject.eClass.getEStructuralFeature(name)
-	}
-
-	def static void assertPermuteAttributeListTest(List<?> changes, EObject rootElement,
-		List<Integer> expectedIndicesForElementsAtOldIndices, EStructuralFeature affectedFeature) {
 	}
 
 	def static void assertContainment(UpdateReferenceEChange<?> updateEReference, boolean expectedValue) {
@@ -110,8 +95,7 @@ class ChangeAssertHelper {
 		if (type.isAssignableFrom(original.class)) {
 			return original as T
 		}
-		fail('''Object «original» is not expected type «type»''');
-		return null;
+		fail('''Object «original» is not expected type «type»''')
 	}
 
 	static def void assertSizeGreaterEquals(Iterable<?> iterable, int size) {
