@@ -1,25 +1,27 @@
 package tools.vitruv.framework.tests.echange.eobject
 
-import allElementTypes.AllElementTypesFactory
 import allElementTypes.Root
-import org.junit.Before
 import tools.vitruv.framework.tests.echange.EChangeTest
+import org.junit.jupiter.api.BeforeEach
+import org.eclipse.xtend.lib.annotations.Accessors
+import static tools.vitruv.testutils.metamodels.AllElementTypesCreators.*
 
 /**
  * Abstract class which is used by the EObject EChange test classes.
  */
 abstract class EObjectTest extends EChangeTest {
-	protected var Root createdObject = null;
-	protected var Root createdObject2 = null;
-		
+	@Accessors(PROTECTED_GETTER, PROTECTED_SETTER)
+	var Root createdObject = null
+	@Accessors(PROTECTED_GETTER)
+	var Root createdObject2 = null
+
 	/**
 	 * Calls setup of the superclass and creates two new root elements 
 	 * which can be created or deleted in the tests.
 	 */
-	@Before
-	override void beforeTest() {
-		super.beforeTest()
-		createdObject = AllElementTypesFactory.eINSTANCE.createRoot()
-		createdObject2 = AllElementTypesFactory.eINSTANCE.createRoot()
+	@BeforeEach
+	def final void initializeRoots() {
+		createdObject = aet.Root
+		createdObject2 = aet.Root
 	}
 }

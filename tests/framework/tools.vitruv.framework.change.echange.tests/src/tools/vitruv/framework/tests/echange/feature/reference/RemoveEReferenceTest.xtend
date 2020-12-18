@@ -6,27 +6,28 @@ import allElementTypes.Root
 import org.eclipse.emf.common.util.EList
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EReference
-import org.junit.Assert
-import org.junit.Before
-import org.junit.Test
 import tools.vitruv.framework.change.echange.feature.reference.RemoveEReference
 
 import static extension tools.vitruv.framework.tests.echange.util.EChangeAssertHelper.*
+import org.junit.jupiter.api.Test
+import static org.junit.jupiter.api.Assertions.assertTrue
+import static org.junit.jupiter.api.Assertions.assertFalse
+import static org.junit.jupiter.api.Assertions.assertEquals
+import static org.junit.jupiter.api.Assertions.assertNull
+import static org.junit.jupiter.api.Assertions.assertSame
+import static org.junit.jupiter.api.Assertions.assertNotSame
+import static org.junit.jupiter.api.Assertions.assertThrows
 import static extension tools.vitruv.framework.change.echange.resolve.EChangeResolverAndApplicator.*
+import static org.hamcrest.MatcherAssert.assertThat
+import static tools.vitruv.testutils.matchers.ModelMatchers.equalsDeeply
 
 /**
  * Test class for the concrete {@link RemoveEReference} EChange, 
  * which removes a reference from a multivalued attribute.
  */
 class RemoveEReferenceTest extends ReferenceEChangeTest {
-	protected var EReference affectedFeature = null
-	protected var EList<NonRoot> referenceContent = null
-	
-	@Before
-	override void beforeTest() {
-		super.beforeTest()
-		resourceContent = resource.contents
-	}
+	var EReference affectedFeature
+	var EList<NonRoot> referenceContent
 
 	/**
 	 * Test resolves a {@link RemoveEReference} EChange with correct parameters.
@@ -38,17 +39,16 @@ class RemoveEReferenceTest extends ReferenceEChangeTest {
 	def void resolveBeforeNonContainmentTest() {
 		// Set state before
 		isNonContainmentTest
-			
+
 		// Create change
 		val unresolvedChange = createUnresolvedChange(newValue, 0)
 		unresolvedChange.assertIsNotResolved(affectedEObject, newValue)
-		
+
 		// Resolve
-		val resolvedChange = unresolvedChange.resolveBefore(uuidGeneratorAndResolver) 
-			as RemoveEReference<Root, NonRoot>
+		val resolvedChange = unresolvedChange.resolveBefore as RemoveEReference<Root, NonRoot>
 		resolvedChange.assertIsResolved(affectedEObject, newValue)
 	}
-	
+
 	/**
 	 * Test resolves a {@link RemoveEReference} EChange with correct parameters.
 	 * The model is in state before the change was applied forward.
@@ -59,17 +59,16 @@ class RemoveEReferenceTest extends ReferenceEChangeTest {
 	def void resolveBeforeContainmentTest() {
 		// Set state before
 		isContainmentTest
-		
+
 		// Create change
 		val unresolvedChange = createUnresolvedChange(newValue, 0)
 		unresolvedChange.assertIsNotResolved(affectedEObject, newValue)
-		
+
 		// Resolve
-		val resolvedChange = unresolvedChange.resolveBefore(uuidGeneratorAndResolver) 
-			as RemoveEReference<Root, NonRoot>
+		val resolvedChange = unresolvedChange.resolveBefore as RemoveEReference<Root, NonRoot>
 		resolvedChange.assertIsResolved(affectedEObject, newValue)
 	}
-	
+
 	/**
 	 * Test resolves a {@link RemoveEReference} EChange with correct parameters.
 	 * The model is in state after the change was applied forward.
@@ -80,20 +79,19 @@ class RemoveEReferenceTest extends ReferenceEChangeTest {
 	def void resolveAfterNonContainmentTest() {
 		// Set state before
 		isNonContainmentTest
-		
+
 		// Create change
 		val unresolvedChange = createUnresolvedChange(newValue, 0)
 		unresolvedChange.assertIsNotResolved(affectedEObject, newValue)
-		
+
 		// Set state after
 		prepareReferenceAfter
-		
+
 		// Resolve
-		val resolvedChange = unresolvedChange.resolveAfter(uuidGeneratorAndResolver) 
-			as RemoveEReference<Root, NonRoot>
-		resolvedChange.assertIsResolved(affectedEObject, newValue)			
+		val resolvedChange = unresolvedChange.resolveAfter as RemoveEReference<Root, NonRoot>
+		resolvedChange.assertIsResolved(affectedEObject, newValue)
 	}
-	
+
 	/**
 	 * Test resolves a {@link RemoveEReference} EChange with correct parameters.
 	 * The model is in the state after the change was applied forward.
@@ -104,17 +102,16 @@ class RemoveEReferenceTest extends ReferenceEChangeTest {
 	def void resolveAfterContainmentTestTest() {
 		// Set state before
 		isContainmentTest
-		
+
 		// Create change
 		val unresolvedChange = createUnresolvedChange(newValue, 0)
 		unresolvedChange.assertIsNotResolved(affectedEObject, newValue)
-		
+
 		// Resolve
-		val resolvedChange = unresolvedChange.resolveAfter(uuidGeneratorAndResolver) 
-			as RemoveEReference<Root, NonRoot>
-		resolvedChange.assertIsResolved(affectedEObject, newValue)									
+		val resolvedChange = unresolvedChange.resolveAfter as RemoveEReference<Root, NonRoot>
+		resolvedChange.assertIsResolved(affectedEObject, newValue)
 	}
-	
+
 	/**
 	 * Tests whether resolving the {@link RemoveEReference} EChange
 	 * returns the same class.
@@ -123,15 +120,15 @@ class RemoveEReferenceTest extends ReferenceEChangeTest {
 	def void resolveToCorrectType() {
 		// Set state before
 		isNonContainmentTest
-		
+
 		// Create change
 		val unresolvedChange = createUnresolvedChange(newValue, 0)
-			
+
 		// Resolve
-		val resolvedChange = unresolvedChange.resolveAfter(uuidGeneratorAndResolver)
+		val resolvedChange = unresolvedChange.resolveAfter
 		unresolvedChange.assertDifferentChangeSameClass(resolvedChange)
 	}
-	
+
 	/**
 	 * Tests applying the {@link RemoveEReference} EChange forward by
 	 * removing inserted values from a multivalued reference. 
@@ -142,26 +139,26 @@ class RemoveEReferenceTest extends ReferenceEChangeTest {
 	def void applyForwardNonContainmentTest() {
 		// Set state before
 		isNonContainmentTest
-		
+
 		// Create change (resolved)
-		val resolvedChange = createUnresolvedChange(newValue, 0).resolveBefore(uuidGeneratorAndResolver)
-		
-	 	// Apply forward
-	 	resolvedChange.assertApplyForward
-			
-		Assert.assertEquals(referenceContent.size, 1)
-		Assert.assertEquals(referenceContent.get(0), newValue2)
-		
+		val resolvedChange = createUnresolvedChange(newValue, 0).resolveBefore
+
+		// Apply forward
+		resolvedChange.assertApplyForward
+
+		assertEquals(referenceContent.size, 1)
+		assertEquals(referenceContent.get(0), newValue2)
+
 		// Create change 2 (resolved)
-		val resolvedChange2 = createUnresolvedChange(newValue2, 0).resolveBefore(uuidGeneratorAndResolver)
-			
+		val resolvedChange2 = createUnresolvedChange(newValue2, 0).resolveBefore
+
 		// Apply forward 2
 		resolvedChange2.assertApplyForward
-		
+
 		// State after
 		assertIsStateAfter
 	}
-	
+
 	/**
 	 * Tests applying the {@link RemoveEReference} EChange forward by 
 	 * removing inserted values from a multivalued reference.
@@ -172,26 +169,26 @@ class RemoveEReferenceTest extends ReferenceEChangeTest {
 	def void applyForwardContainmentTest() {
 		// Set state before
 		isContainmentTest
-		
+
 		// Create change (resolved)
-		val resolvedChange = createUnresolvedChange(newValue, 0).resolveBefore(uuidGeneratorAndResolver)
-		
-	 	// Apply forward
-	 	resolvedChange.assertApplyForward
-			
-		Assert.assertEquals(referenceContent.size, 1)
-		Assert.assertEquals(referenceContent.get(0), newValue2)
-		
+		val resolvedChange = createUnresolvedChange(newValue, 0).resolveBefore
+
+		// Apply forward
+		resolvedChange.assertApplyForward
+
+		assertEquals(referenceContent.size, 1)
+		assertEquals(referenceContent.get(0), newValue2)
+
 		// Create change 2 (resolved)
-		val resolvedChange2 = createUnresolvedChange(newValue2, 0).resolveBefore(uuidGeneratorAndResolver)
-			
+		val resolvedChange2 = createUnresolvedChange(newValue2, 0).resolveBefore
+
 		// Apply forward 2
 		resolvedChange2.assertApplyForward
-		
+
 		// State after
 		assertIsStateAfter
 	}
-	
+
 	/**
 	 * Tests applying a {@link RemoveEReference} EChange backward. The reference is
 	 * a non containment reference so the values has to be in the resource.
@@ -202,28 +199,28 @@ class RemoveEReferenceTest extends ReferenceEChangeTest {
 		isNonContainmentTest
 
 		// Create change and apply forward
-		val resolvedChange = createUnresolvedChange(newValue, 0).resolveBefore(uuidGeneratorAndResolver)
-	 	resolvedChange.assertApplyForward
-		
-	 	// Create change 2 and apply forward			
-		val resolvedChange2 = createUnresolvedChange(newValue2, 0).resolveBefore(uuidGeneratorAndResolver)
-	 	resolvedChange2.assertApplyForward
+		val resolvedChange = createUnresolvedChange(newValue, 0).resolveBefore
+		resolvedChange.assertApplyForward
+
+		// Create change 2 and apply forward			
+		val resolvedChange2 = createUnresolvedChange(newValue2, 0).resolveBefore
+		resolvedChange2.assertApplyForward
 
 		// State after
 		assertIsStateAfter
-		
+
 		// apply backward 2
 		resolvedChange2.assertApplyBackward
-		Assert.assertEquals(referenceContent.size, 1)
-		Assert.assertEquals(referenceContent.get(0), newValue2)
-		
+		assertEquals(referenceContent.size, 1)
+		assertEquals(referenceContent.get(0), newValue2)
+
 		// apply backward 1
 		resolvedChange.assertApplyBackward
-		
+
 		// State before
 		assertIsStateBefore
 	}
-	
+
 	/**
 	 * Tests applying a {@link RemoveEReference} EChange backward. The reference is
 	 * a containment reference so the values has to be in the staging area
@@ -233,31 +230,31 @@ class RemoveEReferenceTest extends ReferenceEChangeTest {
 	def void applyBackwardContainmentTest() {
 		// Set state before
 		isContainmentTest
-		
+
 		// Create change and apply forward
-		val resolvedChange = createUnresolvedChange(newValue, 0).resolveBefore(uuidGeneratorAndResolver)
-	 	resolvedChange.assertApplyForward
-		
-	 	// Create change 2 and apply forward			
-		val resolvedChange2 = createUnresolvedChange(newValue2, 0).resolveBefore(uuidGeneratorAndResolver)
-	 	resolvedChange2.assertApplyForward
+		val resolvedChange = createUnresolvedChange(newValue, 0).resolveBefore
+		resolvedChange.assertApplyForward
+
+		// Create change 2 and apply forward			
+		val resolvedChange2 = createUnresolvedChange(newValue2, 0).resolveBefore
+		resolvedChange2.assertApplyForward
 
 		// State after
 		assertIsStateAfter
-		
+
 		// apply backward 2
 		resolvedChange2.assertApplyBackward
-		
-		Assert.assertEquals(referenceContent.size, 1)
-		Assert.assertEquals(referenceContent.get(0), newValue2)
-		
+
+		assertEquals(referenceContent.size, 1)
+		assertEquals(referenceContent.get(0), newValue2)
+
 		// apply backward 1
 		resolvedChange.assertApplyBackward
-		
+
 		// State before
 		assertIsStateBefore
 	}
-	
+
 	/**
 	 * Tests a {@link RemoveEReference} EChange with invalid index.
 	 */
@@ -266,19 +263,17 @@ class RemoveEReferenceTest extends ReferenceEChangeTest {
 		// Set state before
 		isNonContainmentTest
 		var index = 5 // Valid index is 0 or 1
-		Assert.assertEquals(referenceContent.size, 2)
-		Assert.assertTrue(referenceContent.get(0) == newValue)
-		
+		assertEquals(referenceContent.size, 2)
+		assertTrue(referenceContent.get(0) == newValue)
+
 		// Create and resolve
-		val resolvedChange = createUnresolvedChange(newValue, index).resolveBefore(uuidGeneratorAndResolver)
-			as RemoveEReference<Root, NonRoot>
+		val resolvedChange = createUnresolvedChange(newValue, index).resolveBefore as RemoveEReference<Root, NonRoot>
 		resolvedChange.assertIsResolved(affectedEObject, newValue)
-		
+
 		// Apply
-	 	resolvedChange.assertCannotBeAppliedForward	 	
-		resolvedChange.assertCannotBeAppliedBackward
+		assertThrows(IllegalStateException) [resolvedChange.applyForward]
 	}
-	
+
 	/**
 	 * Tests a {@link RemoveEReference} EChange with with an affected object which has no 
 	 * such reference.
@@ -288,23 +283,21 @@ class RemoveEReferenceTest extends ReferenceEChangeTest {
 		// Set state before
 		isNonContainmentTest
 		val invalidAffectedEObject = newValue2 // NonRoot element
-		
-		val resolvedChange = atomicFactory.<NonRoot, NonRoot>createRemoveReferenceChange
-		(invalidAffectedEObject, affectedFeature, newValue, 0).
-			resolveBefore(uuidGeneratorAndResolver)
-		Assert.assertTrue(resolvedChange.isResolved)
-			
+		val resolvedChange = atomicFactory.<NonRoot, NonRoot>createRemoveReferenceChange(invalidAffectedEObject,
+			affectedFeature, newValue, 0).resolveBefore
+		assertTrue(resolvedChange.isResolved)
+
 		// NonRoot has no such feature
-		Assert.assertEquals(invalidAffectedEObject.eClass.getFeatureID(affectedFeature), -1)
-		
+		assertEquals(invalidAffectedEObject.eClass.getFeatureID(affectedFeature), -1)
+
 		// Apply
-	 	resolvedChange.assertCannotBeAppliedForward	 	
-		resolvedChange.assertCannotBeAppliedBackward
+		assertThrows(IllegalStateException) [resolvedChange.applyForward]
+		assertThrows(IllegalStateException) [resolvedChange.applyBackward]
 	}
-	
+
 	/**
 	 * Starts a test with a containment feature and sets state before.
-	 */	
+	 */
 	def private void isContainmentTest() {
 		affectedFeature = AllElementTypesPackage.Literals.ROOT__MULTI_VALUED_CONTAINMENT_EREFERENCE
 		referenceContent = affectedEObject.eGet(affectedFeature) as EList<NonRoot>
@@ -314,15 +307,15 @@ class RemoveEReferenceTest extends ReferenceEChangeTest {
 
 	/**
 	 * Starts a test with a non containment feature and sets state before.
-	 */	
+	 */
 	def private void isNonContainmentTest() {
-		affectedFeature = AllElementTypesPackage.Literals.ROOT__MULTI_VALUED_NON_CONTAINMENT_EREFERENCE	
+		affectedFeature = AllElementTypesPackage.Literals.ROOT__MULTI_VALUED_NON_CONTAINMENT_EREFERENCE
 		referenceContent = affectedEObject.eGet(affectedFeature) as EList<NonRoot>
 		prepareReference
-		prepareResource	
+		prepareResource
 		assertIsStateBefore
 	}
-	
+
 	/**
 	 * Prepares the multivalued reference used in the tests 
 	 * and fills it with the new values.
@@ -331,7 +324,7 @@ class RemoveEReferenceTest extends ReferenceEChangeTest {
 		referenceContent.add(newValue)
 		referenceContent.add(newValue2)
 	}
-	
+
 	/**
 	 * Prepares the multivalued reference after the change
 	 * was applied forward.
@@ -344,42 +337,42 @@ class RemoveEReferenceTest extends ReferenceEChangeTest {
 	 * Model is in state before the changes.
 	 */
 	def private void assertIsStateBefore() {
-		Assert.assertEquals(referenceContent.size, 2)
-		newValue.assertEqualsOrCopy(referenceContent.get(0) as EObject)
-		newValue2.assertEqualsOrCopy(referenceContent.get(1) as EObject)
+		assertEquals(referenceContent.size, 2)
+		assertThat(newValue, equalsDeeply(referenceContent.get(0) as EObject))
+		assertThat(newValue2, equalsDeeply(referenceContent.get(1) as EObject))
 	}
-	
+
 	/**
 	 * Model is in state after the changes.
 	 */
 	def private void assertIsStateAfter() {
-		Assert.assertEquals(referenceContent.size, 0)
+		assertEquals(referenceContent.size, 0)
 	}
-	
+
 	/**
 	 * Change is not resolved.
 	 */
-	def private static void assertIsNotResolved(RemoveEReference<Root, NonRoot> change, 
-		Root affectedEObject, NonRoot newValue) {
-		Assert.assertFalse(change.isResolved)
-		Assert.assertNotSame(change.affectedEObject, affectedEObject)
-		Assert.assertNotSame(change.oldValue, newValue)			
+	def private static void assertIsNotResolved(RemoveEReference<Root, NonRoot> change, Root affectedEObject,
+		NonRoot newValue) {
+		assertFalse(change.isResolved)
+		assertNotSame(change.affectedEObject, affectedEObject)
+		assertNotSame(change.oldValue, newValue)
 	}
 
 	/**
 	 * Change is resolved.
 	 */
-	def private static void assertIsResolved(RemoveEReference<Root, NonRoot> change, 
-		Root affectedEObject, NonRoot newValue) {
-		Assert.assertTrue(change.isResolved)
-		Assert.assertSame(change.affectedEObject, affectedEObject)
-		Assert.assertSame(change.oldValue, newValue)			
+	def private static void assertIsResolved(RemoveEReference<Root, NonRoot> change, Root affectedEObject,
+		NonRoot newValue) {
+		assertTrue(change.isResolved)
+		assertSame(change.affectedEObject, affectedEObject)
+		assertSame(change.oldValue, newValue)
 	}
-	
+
 	/**
 	 * Creates new unresolved change.
 	 */
 	def private RemoveEReference<Root, NonRoot> createUnresolvedChange(NonRoot oldValue, int index) {
-		return atomicFactory.createRemoveReferenceChange(affectedEObject, affectedFeature, oldValue, index)	
+		return atomicFactory.createRemoveReferenceChange(affectedEObject, affectedFeature, oldValue, index)
 	}
 }

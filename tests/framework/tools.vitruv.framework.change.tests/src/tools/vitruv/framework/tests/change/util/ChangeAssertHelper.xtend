@@ -1,12 +1,9 @@
 package tools.vitruv.framework.tests.change.util
 
-import java.util.List
 import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EStructuralFeature
 import org.eclipse.emf.ecore.resource.Resource
-import org.eclipse.emf.ecore.util.EcoreUtil
-import org.junit.Assert
 import tools.vitruv.framework.change.echange.AdditiveEChange
 import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.change.echange.SubtractiveEChange
@@ -15,107 +12,95 @@ import tools.vitruv.framework.change.echange.feature.FeatureEChange
 import tools.vitruv.framework.change.echange.feature.list.UpdateSingleListEntryEChange
 import tools.vitruv.framework.change.echange.feature.reference.UpdateReferenceEChange
 import tools.vitruv.framework.change.echange.root.RootEChange
+import static org.junit.jupiter.api.Assertions.assertFalse
+import static org.junit.jupiter.api.Assertions.assertNotNull
+import static org.junit.jupiter.api.Assertions.assertTrue
+import static org.junit.jupiter.api.Assertions.assertEquals
+import edu.kit.ipd.sdq.activextendannotations.Utility
+import static org.hamcrest.MatcherAssert.assertThat
+import static org.hamcrest.core.IsInstanceOf.instanceOf
+import static org.hamcrest.core.Is.is
+import static tools.vitruv.testutils.matchers.ModelMatchers.equalsDeeply
 
+@Utility
 class ChangeAssertHelper {
 
-	private new() {
-	}
-
-	static def <T> T assertObjectInstanceOf(Object object, Class<T> type) {
-		Assert.assertTrue("The object " + object.class.simpleName + " should be type of " + type.simpleName,
-			type.isInstance(object))
-		return type.cast(object)
-	}
-
-	static def <T extends AdditiveEChange<?>, SubtractiveEChange> assertOldAndNewValue(T eChange,
-		Object oldValue, Object newValue) {
+	static def <T extends AdditiveEChange<?>, SubtractiveEChange> assertOldAndNewValue(T eChange, Object oldValue,
+		Object newValue) {
 		eChange.assertOldValue(oldValue)
 		eChange.assertNewValue(newValue)
 	}
 
 	static def assertOldValue(EChange eChange, Object oldValue) {
 		if (oldValue instanceof EObject) {
-			assertEqualsOrCopy("old value must be the same or a copy than the given old value", oldValue,
-				(eChange as SubtractiveEChange<?>).oldValue as EObject)				
+			assertThat("old value must be the same or a copy than the given old value", oldValue,
+				equalsDeeply((eChange as SubtractiveEChange<?>).oldValue as EObject))
 		} else {
-			Assert.assertEquals("old value must be the same than the given old value", oldValue,
-				(eChange as SubtractiveEChange<?>).oldValue)			
+			assertEquals(oldValue, (eChange as SubtractiveEChange<?>).oldValue,
+				"old value must be the same than the given old value")
 		}
 	}
 
 	static def assertNewValue(AdditiveEChange<?> eChange, Object newValue) {
 		val newValueInChange = eChange.newValue
-		var condition = newValue === null && newValueInChange === null;
+		var condition = newValue === null && newValueInChange === null
 		if (newValue instanceof EObject && newValueInChange instanceof EObject) {
 			val newEObject = newValue as EObject
 			var newEObjectInChange = newValueInChange as EObject
-			condition = EcoreUtil.equals(newEObject, newEObjectInChange)
+			assertThat(
+				'''new value in change '«newValueInChange»' must be the same than the given new value '«newValue»!''',
+				newEObject,
+				equalsDeeply(newEObjectInChange)
+			)
 		} else if (!condition) {
-			condition = newValue !== null && newValue.equals(newValueInChange)
+			assertNotNull(newValue)
+			assertEquals(newValue,
+				newValueInChange, '''new value in change '«newValueInChange»' must be the same than the given new value '«newValue»!''')
 		}
-		Assert.assertTrue(
-			"new value in change ' " + newValueInChange + "' must be the same than the given new value '" + newValue +
-				"'!", condition)
 	}
 
 	static def void assertAffectedEObject(EChange eChange, EObject expectedAffectedEObject) {
 		if (eChange instanceof FeatureEChange<?, ?>) {
-			assertEqualsOrCopy("The actual affected EObject is a different one than the expected affected EObject or its copy",
-				expectedAffectedEObject, eChange.affectedEObject)
+			assertThat("The actual affected EObject is a different one than the expected affected EObject or its copy",
+				expectedAffectedEObject, equalsDeeply(eChange.affectedEObject))
 		} else if (eChange instanceof EObjectExistenceEChange<?>) {
-			assertEqualsOrCopy("The actual affected EObject is a different one than the expected affected EObject or its copy",
-				expectedAffectedEObject, eChange.affectedEObject)
+			assertThat("The actual affected EObject is a different one than the expected affected EObject or its copy",
+				expectedAffectedEObject, equalsDeeply(eChange.affectedEObject))
 		} else {
-			throw new IllegalArgumentException();
+			throw new IllegalArgumentException()
 		}
 	}
 
 	static def assertAffectedEFeature(EChange eChange, EStructuralFeature expectedEFeature) {
-		Assert.assertEquals(
-			"The actual affected EStructuralFeature is a different one than the expected EStructuralFeature",
-			expectedEFeature, (eChange as FeatureEChange<?, ?>).affectedFeature)
-	}
-
-	static def getFeatureByName(EObject eObject, String name) {
-		eObject.eClass.getEStructuralFeature(name)
-	}
-
-	def static void assertPermuteAttributeListTest(List<?> changes, EObject rootElement,
-		List<Integer> expectedIndicesForElementsAtOldIndices, EStructuralFeature affectedFeature) {
+		assertEquals(expectedEFeature, (eChange as FeatureEChange<?, ?>).affectedFeature,
+			"The actual affected EStructuralFeature is a different one than the expected EStructuralFeature")
 	}
 
 	def static void assertContainment(UpdateReferenceEChange<?> updateEReference, boolean expectedValue) {
-		Assert.assertEquals("The containment information of the change " + updateEReference + " is wrong",
-			expectedValue, updateEReference.isContainment)
+		assertEquals(expectedValue,
+			updateEReference.isContainment, '''The containment information of the change «updateEReference» is wrong''')
 	}
 
 	def static void assertUri(RootEChange rootChange, String expectedValue) {
-		Assert.assertEquals("Change " + rootChange + " shall have the uri " + URI.createFileURI(expectedValue).toString,
-			URI.createFileURI(expectedValue).toString, rootChange.uri)
+		assertEquals(URI.createFileURI(expectedValue).toString,
+			rootChange.uri, '''Change «rootChange» shall have the uri «URI.createFileURI(expectedValue)»''')
 	}
-	
+
 	def static void assertResource(RootEChange rootChange, Resource resource) {
-		Assert.assertEquals("Change " + rootChange + " shall have the resource " + resource,
-			rootChange.resource, resource)
+		assertEquals(rootChange.resource, resource, '''Change «rootChange» shall have the resource «resource»''')
 	}
 
 	def static void assertIndex(UpdateSingleListEntryEChange<?, ?> change, int expectedIndex) {
-		Assert.assertEquals("The value is not at the correct index", expectedIndex, change.index)
+		assertEquals(expectedIndex, change.index, "The value is not at the correct index")
 	}
 
-	def static assertEqualsOrCopy(String message, EObject object1, EObject object2) {
-		Assert.assertTrue(message, EcoreUtil.equals(object1, object2))
-	}
-	
 	static def <T> T assertType(Object original, Class<T> type) {
-		if (type.isAssignableFrom(original.class)) {
-			return original as T
-		}
-		Assert.fail("Object " + original + " is not expected type " + type);
-		return null;
+		assertThat(original, is(instanceOf(type)))
+		return original as T
 	}
-	
+
 	static def void assertSizeGreaterEquals(Iterable<?> iterable, int size) {
-		Assert.assertTrue(iterable.size >= size)
+		assertTrue(iterable.size >= size)
 	}
+
 }
