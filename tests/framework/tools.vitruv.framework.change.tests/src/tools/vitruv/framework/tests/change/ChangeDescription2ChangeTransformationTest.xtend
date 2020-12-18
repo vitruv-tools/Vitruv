@@ -5,7 +5,6 @@ import java.util.List
 
 import tools.vitruv.framework.change.echange.EChange
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
-import java.io.File
 import tools.vitruv.framework.change.recording.AtomicEmfChangeRecorder
 import tools.vitruv.framework.util.bridges.EMFBridge
 import tools.vitruv.framework.uuid.UuidGeneratorAndResolverImpl
@@ -17,24 +16,28 @@ import static extension tools.vitruv.framework.util.ResourceSetUtil.withGlobalFa
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.AfterEach
 import static org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.io.TempDir
 import tools.vitruv.framework.util.bridges.EcoreResourceBridge
 import static extension tools.vitruv.testutils.metamodels.AllElementTypesCreators.*
 import org.eclipse.emf.common.notify.Notifier
 import java.util.function.Consumer
 import static com.google.common.base.Preconditions.checkState
+import org.junit.jupiter.api.^extension.ExtendWith
+import tools.vitruv.testutils.TestProjectManager
+import tools.vitruv.testutils.TestProject
+import java.nio.file.Path
 
+@ExtendWith(TestProjectManager)
 abstract class ChangeDescription2ChangeTransformationTest {
 	var AtomicEmfChangeRecorder changeRecorder
 	var UuidGeneratorAndResolver uuidGeneratorAndResolver
 	var ResourceSet resourceSet
-	var File tempFolder
+	var Path tempFolder
 
 	/** 
 	 * Create a new model and initialize the change monitoring
 	 */
 	@BeforeEach
-	def void beforeTest(@TempDir File tempFolder) {
+	def void beforeTest(@TestProject Path tempFolder) {
 		this.tempFolder = tempFolder
 		this.resourceSet = new ResourceSetImpl().withGlobalFactories
 		this.uuidGeneratorAndResolver = new UuidGeneratorAndResolverImpl(resourceSet, true)
@@ -58,8 +61,8 @@ abstract class ChangeDescription2ChangeTransformationTest {
 	}
 
 	protected def resourceAt(String name) {
-		val tmpFile = new File(tempFolder, '''«name».xmi''')
-		val uri = EMFBridge.getEmfFileUriForFile(tmpFile)
+		val tmpFile = tempFolder.resolve('''«name».xmi''')
+		val uri = EMFBridge.getEmfFileUriForFile(tmpFile.toFile)
 		EcoreResourceBridge.loadOrCreateResource(resourceSet, uri)
 	}
 
