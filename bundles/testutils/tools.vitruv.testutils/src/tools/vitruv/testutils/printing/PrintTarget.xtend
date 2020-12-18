@@ -1,7 +1,5 @@
 package tools.vitruv.testutils.printing
 
-import java.util.List
-import java.util.Set
 import static extension tools.vitruv.testutils.printing.PrintResultExtension.*
 
 interface PrintTarget {
@@ -13,11 +11,11 @@ interface PrintTarget {
 		print('<') + elementPrinter.apply(this, value) + print('>')
 	}
 
-	def <T> PrintResult printList(List<? extends T> elements, (PrintTarget, T)=>PrintResult elementPrinter) {
+	def <T> PrintResult printList(Iterable<? extends T> elements, (PrintTarget, T)=>PrintResult elementPrinter) {
 		printIterable('[', ']', elements, elementPrinter)
 	}
 
-	def <T> PrintResult printSet(Set<? extends T> elements, (PrintTarget, T)=>PrintResult elementPrinter) {
+	def <T> PrintResult printSet(Iterable<? extends T> elements, (PrintTarget, T)=>PrintResult elementPrinter) {
 		printIterable('{', '}', elements, elementPrinter)
 	}
 

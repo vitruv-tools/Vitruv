@@ -4,8 +4,6 @@ import org.eclipse.xtend.lib.annotations.Accessors
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EClass
 import org.eclipse.emf.ecore.EStructuralFeature
-import java.util.List
-import java.util.Set
 import org.eclipse.emf.ecore.resource.Resource
 import static tools.vitruv.testutils.printing.PrintResult.*
 import static extension tools.vitruv.testutils.printing.PrintResultExtension.*
@@ -44,11 +42,11 @@ class DefaultModelPrinter implements ModelPrinter {
 		return print(feature.name) + print('=') + //
 		if (feature.isMany) {
 			if (feature.isOrdered) {
-				printList(object.eGet(feature) as List<?>) [ subTarget, element |
+				printList(object.eGet(feature) as Iterable<?>) [ subTarget, element |
 					subTarget.printFeatureValue(feature, element)
 				]
 			} else {
-				printSet(object.eGet(feature) as Set<?>) [ subTarget, element |
+				printSet(object.eGet(feature) as Iterable<?>) [ subTarget, element |
 					subTarget.printFeatureValue(feature, element)
 				]
 			}
