@@ -16,6 +16,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals
 import static org.junit.jupiter.api.Assertions.assertNull
 import static org.junit.jupiter.api.Assertions.assertSame
 import static org.junit.jupiter.api.Assertions.assertNotSame
+import static org.junit.jupiter.api.Assertions.assertThrows
+import static extension tools.vitruv.framework.change.echange.resolve.EChangeResolverAndApplicator.*
 
 /**
  * Test class for the concrete {@link RemoveEReference} EChange, 
@@ -267,8 +269,8 @@ class RemoveEReferenceTest extends ReferenceEChangeTest {
 		resolvedChange.assertIsResolved(affectedEObject, newValue)
 
 		// Apply
-		resolvedChange.assertCannotBeAppliedForward
-		resolvedChange.assertCannotBeAppliedBackward
+		assertThrows(IllegalStateException) [resolvedChange.applyForward]
+		assertThrows(IllegalStateException) [resolvedChange.applyBackward]
 	}
 
 	/**
@@ -288,8 +290,8 @@ class RemoveEReferenceTest extends ReferenceEChangeTest {
 		assertEquals(invalidAffectedEObject.eClass.getFeatureID(affectedFeature), -1)
 
 		// Apply
-		resolvedChange.assertCannotBeAppliedForward
-		resolvedChange.assertCannotBeAppliedBackward
+		assertThrows(IllegalStateException) [resolvedChange.applyForward]
+		assertThrows(IllegalStateException) [resolvedChange.applyBackward]
 	}
 
 	/**

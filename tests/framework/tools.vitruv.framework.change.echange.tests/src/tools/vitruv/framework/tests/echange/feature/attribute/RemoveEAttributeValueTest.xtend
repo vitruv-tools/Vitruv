@@ -12,6 +12,8 @@ import static org.junit.jupiter.api.Assertions.assertFalse
 import static org.junit.jupiter.api.Assertions.assertEquals
 import static org.junit.jupiter.api.Assertions.assertNull
 import static tools.vitruv.testutils.metamodels.AllElementTypesCreators.*
+import static org.junit.jupiter.api.Assertions.assertThrows
+import static extension tools.vitruv.framework.change.echange.resolve.EChangeResolverAndApplicator.*
 
 /**
  * Test class for the concrete {@link RemoveEAttributeValue} EChange,
@@ -107,8 +109,8 @@ class RemoveEAttributeValueTest extends InsertRemoveEAttributeTest {
 		assertTrue(resolvedChange.isResolved)
 
 		// Apply
-		resolvedChange.assertCannotBeAppliedForward
-		resolvedChange.assertCannotBeAppliedBackward
+		assertThrows(IllegalStateException) [resolvedChange.applyForward]
+		assertThrows(IllegalStateException) [resolvedChange.applyBackward]
 	}
 
 	/**
@@ -128,8 +130,8 @@ class RemoveEAttributeValueTest extends InsertRemoveEAttributeTest {
 		assertEquals(affectedNonRootEObject.eClass.getFeatureID(affectedFeature), -1)
 
 		// Apply
-		resolvedChange.assertCannotBeAppliedForward
-		resolvedChange.assertCannotBeAppliedBackward
+		assertThrows(IllegalStateException) [resolvedChange.applyForward]
+		assertThrows(IllegalStateException) [resolvedChange.applyBackward]
 	}
 
 	/**
@@ -147,8 +149,8 @@ class RemoveEAttributeValueTest extends InsertRemoveEAttributeTest {
 		assertEquals(affectedFeature.EAttributeType.name, "EIntegerObject")
 
 		// Apply
-		resolvedChange.assertCannotBeAppliedForward
-		resolvedChange.assertCannotBeAppliedBackward
+		assertThrows(IllegalStateException) [resolvedChange.applyForward]
+		assertThrows(IllegalStateException) [resolvedChange.applyBackward]
 	}
 
 	/**
