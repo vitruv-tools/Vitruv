@@ -7,12 +7,14 @@ Bundle-Version: 1.1.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Fragment-Host: tools.vitruv.framework.change
 Require-Bundle: org.junit.jupiter.api,
+ org.hamcrest.core,
  com.google.guava,
  org.eclipse.xtext.xbase.lib,
  org.eclipse.xtend.lib,
  org.eclipse.xtend.lib.macro,
  tools.vitruv.testutils.metamodels,
- edu.kit.ipd.sdq.activextendannotations
+ edu.kit.ipd.sdq.activextendannotations,
+ tools.vitruv.testutils
 Bundle-Vendor: vitruv.tools
 Export-Package: tools.vitruv.framework.tests.change;x-internal:=true,
  tools.vitruv.framework.tests.change.attribute;x-internal:=true,
