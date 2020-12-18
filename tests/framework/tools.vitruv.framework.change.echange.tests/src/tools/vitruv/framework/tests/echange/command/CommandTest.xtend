@@ -14,22 +14,22 @@ abstract class CommandTest {
 	def protected static void assertIsPreparable(Command command) {
 		assertTrue(command.canExecute)
 	}
-	
+
 	/**
 	 * Command is not preparable (cannot be executed)
 	 */
 	def protected static void assertIsNotPreparable(Command command) {
 		assertFalse(command.canExecute)
-	}	
-	
+	}
+
 	/** 
 	 * Checks if a command can be executed and executes it.
 	 */
 	def protected static void assertExecuteCommand(Command command) {
 		assertTrue(command.canExecute)
 		command.execute
-	}	
-		
+	}
+
 	/**
 	 * Command is instance of a specific class.
 	 */

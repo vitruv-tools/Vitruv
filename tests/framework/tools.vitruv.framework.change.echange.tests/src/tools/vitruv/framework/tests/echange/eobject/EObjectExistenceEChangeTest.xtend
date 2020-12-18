@@ -5,7 +5,6 @@ import tools.vitruv.framework.change.echange.eobject.CreateEObject
 import tools.vitruv.framework.change.echange.eobject.EObjectExistenceEChange
 
 import static extension tools.vitruv.framework.tests.echange.util.EChangeAssertHelper.*
-import static extension tools.vitruv.framework.change.echange.resolve.EChangeResolverAndApplicator.*
 import org.junit.jupiter.api.Test
 import static org.junit.jupiter.api.Assertions.assertTrue
 import static org.junit.jupiter.api.Assertions.assertFalse
@@ -32,7 +31,7 @@ class EObjectExistenceEChangeTest extends EObjectTest {
 		assertIsStateBefore
 
 		// Resolve
-		val resolvedChange = unresolvedChange.resolveBefore(uuidGeneratorAndResolver) as CreateEObject<Root>
+		val resolvedChange = unresolvedChange.resolveBefore as CreateEObject<Root>
 		resolvedChange.assertIsResolved(createdObject)
 		assertIsStateBefore
 	}
@@ -54,7 +53,7 @@ class EObjectExistenceEChangeTest extends EObjectTest {
 		assertIsStateAfter
 
 		// Resolve
-		val resolvedChange = unresolvedChange.resolveAfter(uuidGeneratorAndResolver) as CreateEObject<Root>
+		val resolvedChange = unresolvedChange.resolveAfter as CreateEObject<Root>
 		resolvedChange.assertIsResolved(createdObject)
 
 		// State after
@@ -75,8 +74,8 @@ class EObjectExistenceEChangeTest extends EObjectTest {
 //		assertFalse(unresolvedChange.isResolved)
 //		
 //		// Resolve
-//		assertNull(unresolvedChange.resolveBefore(uuidGeneratorAndResolver) as CreateEObject<Root>)
-//		assertNull(unresolvedChange.resolveAfter(uuidGeneratorAndResolver) as CreateEObject<Root>)		
+//		assertNull(unresolvedChange.resolveBefore as CreateEObject<Root>)
+//		assertNull(unresolvedChange.resolveAfter as CreateEObject<Root>)		
 	}
 
 	/**

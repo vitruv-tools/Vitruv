@@ -1,6 +1,5 @@
 package tools.vitruv.framework.tests.echange.feature
 
-import allElementTypes.AllElementTypesFactory
 import allElementTypes.AllElementTypesPackage
 import allElementTypes.Root
 import org.eclipse.emf.ecore.EAttribute
@@ -12,7 +11,6 @@ import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.change.echange.feature.FeatureEChange
 import tools.vitruv.framework.tests.echange.EChangeTest
 import static extension tools.vitruv.framework.change.echange.resolve.EChangeResolverAndApplicator.*
-import org.eclipse.emf.ecore.resource.ResourceSet
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import tools.vitruv.framework.uuid.UuidResolver
 import tools.vitruv.framework.uuid.UuidGeneratorAndResolverImpl
@@ -25,31 +23,29 @@ import static org.junit.jupiter.api.Assertions.assertNull
 import static org.junit.jupiter.api.Assertions.assertSame
 import static org.junit.jupiter.api.Assertions.assertNotSame
 import static org.junit.jupiter.api.Assertions.assertThrows
+import static tools.vitruv.testutils.metamodels.AllElementTypesCreators.*
 
 /**
  * Test class for {@link FeatureEChange} which is used by every {@link EChange} which modifies {@link EStructuralFeature}s 
  * (single- or multi-valued attributes or references) of a {@link EObject}.
  */
 class FeatureEChangeTest extends EChangeTest {
-	protected var Root affectedEObject = null
-	protected var EAttribute affectedFeature = null
+	var Root affectedEObject
+	var EAttribute affectedFeature
 
 	// Second model instance
-	protected var Root rootObject2 = null
-	protected var Resource resource2 = null
-	protected var ResourceSet resourceSet2 = null
-	protected var UuidResolver uuidResolver2;
+	var UuidResolver uuidResolver2
+	var Resource resource2
 
 	@BeforeEach
-	def void beforeTest() {
+	def final void beforeTest() {
 		affectedEObject = rootObject
 		affectedFeature = AllElementTypesPackage.Literals.IDENTIFIED__ID
 
 		// Load model in second resource
-		resourceSet2 = new ResourceSetImpl().withGlobalFactories
-		resource2 = resourceSet2.getResource(fileUri, true)
-		rootObject2 = resource2.getEObject(EcoreUtil.getURI(rootObject).fragment()) as Root
-		this.uuidResolver2 = new UuidGeneratorAndResolverImpl(resourceSet2, true);
+		val resourceSet2 = new ResourceSetImpl().withGlobalFactories
+		this.resource2 = resourceSet2.getResource(resource.URI, true)
+		this.uuidResolver2 = new UuidGeneratorAndResolverImpl(resourceSet2, true)
 	}
 
 	/**
@@ -64,8 +60,7 @@ class FeatureEChangeTest extends EChangeTest {
 		unresolvedChange.assertIsNotResolved(affectedEObject, affectedFeature)
 
 		// Resolve
-		val resolvedChange = unresolvedChange.resolveBefore(
-			uuidGeneratorAndResolver) as FeatureEChange<Root, EAttribute>
+		val resolvedChange = unresolvedChange.resolveBefore as FeatureEChange<Root, EAttribute>
 		resolvedChange.assertIsResolved(affectedEObject, affectedFeature)
 	}
 
@@ -95,12 +90,11 @@ class FeatureEChangeTest extends EChangeTest {
 	@Test
 	def void resolveResolvedEFeatureChange() {
 		// Create change and resolve	
-		val resolvedChange = createUnresolvedChange().resolveBefore(
-			uuidGeneratorAndResolver) as FeatureEChange<Root, EAttribute>
+		val resolvedChange = createUnresolvedChange().resolveBefore as FeatureEChange<Root, EAttribute>
 		resolvedChange.assertIsResolved(affectedEObject, affectedFeature)
 
 		// Resolve again
-		assertThrows(IllegalArgumentException, [resolvedChange.resolveBefore(uuidGeneratorAndResolver)])
+		assertThrows(IllegalArgumentException, [resolvedChange.resolveBefore])
 	}
 
 	/**
@@ -116,7 +110,7 @@ class FeatureEChangeTest extends EChangeTest {
 // 		assertNull(unresolvedChange.affectedEObject)
 // 		
 // 		// Resolve		
-// 		val resolvedChange = unresolvedChange.resolveBefore(uuidGeneratorAndResolver) 
+// 		val resolvedChange = unresolvedChange.resolveBefore 
 // 			as FeatureEChange<Root, EAttribute>
 //		assertNull(resolvedChange)			
 	}
@@ -133,8 +127,7 @@ class FeatureEChangeTest extends EChangeTest {
 		unresolvedChange.assertIsNotResolved(affectedEObject, null)
 
 		// Resolve
-		val resolvedChange = unresolvedChange.resolveBefore(
-			uuidGeneratorAndResolver) as FeatureEChange<Root, EAttribute>
+		val resolvedChange = unresolvedChange.resolveBefore as FeatureEChange<Root, EAttribute>
 		assertNull(resolvedChange)
 	}
 
@@ -156,7 +149,7 @@ class FeatureEChangeTest extends EChangeTest {
 	 * Creates and inserts a new root element in the resource 1.
 	 */
 	def private Root prepareSecondRoot() {
-		val root = AllElementTypesFactory.eINSTANCE.createRoot()
+		val root = aet.Root
 		resource.contents.add(root)
 		return root
 	}

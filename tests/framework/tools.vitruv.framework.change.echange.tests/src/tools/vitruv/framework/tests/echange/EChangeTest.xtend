@@ -1,6 +1,5 @@
 package tools.vitruv.framework.tests.echange
 
-import allElementTypes.AllElementTypesFactory
 import allElementTypes.Root
 import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.resource.Resource
@@ -14,7 +13,6 @@ import tools.vitruv.framework.uuid.UuidGeneratorAndResolverImpl
 import tools.vitruv.framework.uuid.UuidGeneratorAndResolver
 import java.util.List
 import tools.vitruv.framework.change.echange.EChange
-import tools.vitruv.framework.uuid.UuidResolver
 import static extension tools.vitruv.framework.change.echange.resolve.EChangeResolverAndApplicator.*
 import org.junit.jupiter.api.io.TempDir
 import org.junit.jupiter.api.BeforeEach
@@ -25,6 +23,7 @@ import static org.junit.jupiter.api.Assertions.assertNull
 import static org.junit.jupiter.api.Assertions.assertNotNull
 import static extension tools.vitruv.framework.util.ResourceSetUtil.withGlobalFactories
 import org.eclipse.xtend.lib.annotations.Accessors
+import static tools.vitruv.testutils.metamodels.AllElementTypesCreators.*
 
 /**
  * Default class for testing EChange changes.
@@ -32,22 +31,20 @@ import org.eclipse.xtend.lib.annotations.Accessors
  * can be modified by the EChange tests. The model is stored in one temporary file.
  */
 abstract class EChangeTest {
-
-	protected var Root rootObject = null
-	protected var Resource resource = null
-	protected var ResourceSet resourceSet = null
-	protected var UuidGeneratorAndResolver uuidGeneratorAndResolver = null
-
-	protected var TypeInferringAtomicEChangeFactory atomicFactory = null
-	protected var TypeInferringCompoundEChangeFactory compoundFactory = null
-
-	protected URI fileUri = null
-
-	protected static val METAMODEL = "allelementtypes"
-	protected static val MODEL_FILE_NAME = "model"
+	static val METAMODEL = "allelementtypes"
+	static val MODEL_FILE_NAME = "model"
 
 	@Accessors(PROTECTED_GETTER)
-	File testFolder;
+	var Root rootObject
+	@Accessors(PROTECTED_GETTER)
+	var Resource resource
+	var ResourceSet resourceSet
+	var UuidGeneratorAndResolver uuidGeneratorAndResolver
+
+	@Accessors(PROTECTED_GETTER)
+	var TypeInferringAtomicEChangeFactory atomicFactory
+	@Accessors(PROTECTED_GETTER)
+	var TypeInferringCompoundEChangeFactory compoundFactory
 
 	/**
 	 * Sets up a new model and the two model instances before every test.
@@ -57,26 +54,27 @@ abstract class EChangeTest {
 	 * {@link resourceSet2}.
 	 */
 	@BeforeEach
-	def void beforeTest(@TempDir File testFolder) {
-		this.testFolder = testFolder
-
+	def final void beforeTest(@TempDir File testFolder) {
 		// Setup Files
 		var modelFile = new File(testFolder, MODEL_FILE_NAME + "." + METAMODEL)
-		fileUri = URI.createFileURI(modelFile.getAbsolutePath())
+		val fileUri = URI.createFileURI(modelFile.getAbsolutePath())
 
 		// Create model
 		resourceSet = new ResourceSetImpl().withGlobalFactories
 		resource = resourceSet.createResource(fileUri)
 
-		rootObject = AllElementTypesFactory.eINSTANCE.createRoot()
-		resource.getContents().add(rootObject)
-
+		rootObject = aet.Root
+		resource.contents += rootObject
 		resource.save(null)
 
 		// Factories for creating changes
 		this.uuidGeneratorAndResolver = new UuidGeneratorAndResolverImpl(resourceSet, true)
-		atomicFactory = new TypeInferringUnresolvingAtomicEChangeFactory(uuidGeneratorAndResolver);
-		compoundFactory = new TypeInferringUnresolvingCompoundEChangeFactory(uuidGeneratorAndResolver);
+		atomicFactory = new TypeInferringUnresolvingAtomicEChangeFactory(uuidGeneratorAndResolver)
+		compoundFactory = new TypeInferringUnresolvingCompoundEChangeFactory(uuidGeneratorAndResolver)
+	}
+
+	protected def final getResourceContent() {
+		resource.contents
 	}
 
 	/**
@@ -84,9 +82,9 @@ abstract class EChangeTest {
 	 */
 	def protected static void assertIsNotResolved(List<? extends EChange> changes) {
 		for (change : changes) {
-			assertFalse(change.isResolved);
+			assertFalse(change.isResolved)
 			for (involvedObject : change.involvedEObjects) {
-				assertNull(involvedObject);
+				assertNull(involvedObject)
 			}
 		}
 	}
@@ -96,44 +94,48 @@ abstract class EChangeTest {
 	 */
 	def protected static void assertIsResolved(List<? extends EChange> changes) {
 		for (change : changes) {
-			assertTrue(change.isResolved);
+			assertTrue(change.isResolved)
 			for (involvedObject : change.involvedEObjects) {
-				assertNotNull(involvedObject);
+				assertNotNull(involvedObject)
 			}
 		}
 	}
 
-	static def protected List<EChange> resolveBefore(List<? extends EChange> changes, UuidResolver uuidResolver) {
-		val result = newArrayList
-		for (change : changes) {
-			result += change.resolveBefore(uuidResolver);
-		}
-		return result;
+	def protected EChange resolveBefore(EChange change) {
+		return change.resolveBefore(uuidGeneratorAndResolver)
 	}
 
-	static def protected List<EChange> resolveAfter(List<? extends EChange> changes, UuidResolver uuidResolver) {
+	def protected List<EChange> resolveBefore(List<? extends EChange> changes) {
 		val result = newArrayList
-		for (change : changes.reverseView) {
-			result.add(0, change.resolveAfter(uuidResolver));
-		}
-		return result;
+		result += changes.map[resolveBefore]
+		return result
+	}
+
+	def protected EChange resolveAfter(EChange change) {
+		return change.resolveAfter(uuidGeneratorAndResolver)
+	}
+
+	def protected List<EChange> resolveAfter(List<? extends EChange> changes) {
+		val result = newArrayList
+		result += changes.reverseView.map[resolveAfter]
+		return result.reverse
 	}
 
 	static def protected boolean applyBackward(List<EChange> changes) {
-		assertIsResolved(changes);
-		var result = true;
+		assertIsResolved(changes)
+		var result = true
 		for (change : changes.reverseView) {
 			result = result && change.applyBackward
 		}
-		return result;
+		return result
 	}
 
 	static def protected boolean applyForward(List<EChange> changes) {
-		assertIsResolved(changes);
-		var result = true;
+		assertIsResolved(changes)
+		var result = true
 		for (change : changes) {
 			result = result && change.applyForward
 		}
-		return result;
+		return result
 	}
 }

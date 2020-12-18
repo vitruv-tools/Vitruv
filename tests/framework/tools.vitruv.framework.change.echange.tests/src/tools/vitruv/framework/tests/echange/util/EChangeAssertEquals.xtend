@@ -16,7 +16,7 @@ class EChangeAssertEquals {
 		// Is needed so xtend creates the assertEquals(EChange, EChange) method.
 		assertTrue(false)
 	}
-	
+
 	/**
 	 * Compares two {@link ReplaceSingleValuedEAttribute} EChanges.
 	 */
@@ -27,27 +27,27 @@ class EChangeAssertEquals {
 		assertEquals(change.oldValue, replaceChange.oldValue)
 		assertEquals(change.newValue, replaceChange.newValue)
 	}
-	
+
 	/**
 	 * Compares two {@link InsertEAttributeValue} EChanges.
-	 */	
+	 */
 	def dispatch static void assertEquals(InsertEAttributeValue<?, ?> change, EChange change2) {
 		var insertChange = change2.assertIsInstanceOf(InsertEAttributeValue)
 		assertSame(change.affectedEObject, insertChange.affectedEObject)
 		assertSame(change.affectedFeature, insertChange.affectedFeature)
-		assertEquals(change.newValue, insertChange.newValue)	
+		assertEquals(change.newValue, insertChange.newValue)
 	}
-	
+
 	/**
 	 * Compares two {@link RemoveEAttributeValue} EChanges.
-	 */	
+	 */
 	def dispatch static void assertEquals(RemoveEAttributeValue<?, ?> change, EChange change2) {
 		var removeChange = change2.assertIsInstanceOf(RemoveEAttributeValue)
 		assertSame(change.affectedEObject, removeChange.affectedEObject)
-		assertSame(change.affectedFeature, removeChange.affectedFeature)	
-		assertEquals(change.oldValue, removeChange.oldValue)	
+		assertSame(change.affectedFeature, removeChange.affectedFeature)
+		assertEquals(change.oldValue, removeChange.oldValue)
 	}
-	
+
 	def private static <T> T assertIsInstanceOf(EChange change, Class<T> type) {
 		assertTrue(type.isInstance(change))
 		return type.cast(change)
