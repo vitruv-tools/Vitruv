@@ -12,6 +12,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals
 import static org.junit.jupiter.api.Assertions.assertNull
 import static org.junit.jupiter.api.Assertions.assertSame
 import static org.junit.jupiter.api.Assertions.assertNotSame
+import static org.junit.jupiter.api.Assertions.assertThrows
+import static extension tools.vitruv.framework.change.echange.resolve.EChangeResolverAndApplicator.*
 
 /**
  * Test class for the concrete {@link InsertRootEObject} EChange,
@@ -146,7 +148,7 @@ class InsertRootEObjectTest extends RootEChangeTest {
 		resolvedChange.assertIsResolved(newRootObject, resource)
 
 		// Apply		
-		resolvedChange.assertCannotBeAppliedForward
+		assertThrows(IllegalStateException) [resolvedChange.applyForward]
 	}
 
 	/**

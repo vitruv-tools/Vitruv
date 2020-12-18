@@ -82,36 +82,6 @@ class EChangeAssertHelper {
 		change.reverseView.forEach[assertApplyBackward]
 	}
 
-	/**
-	 * Tests whether an non applicable change could be applied forward.
-	 */
-	def static void assertCannotBeAppliedForward(EChange change) {
-		var boolean exceptionThrown = false
-		try {
-			change.applyForward
-		} catch (RuntimeException e) {
-			exceptionThrown = true
-		}
-		if (!exceptionThrown) {
-			fail("No RuntimeException thrown.")
-		}
-	}
-
-	/**
-	 * Tests whether an non applicable change could be applied backward.
-	 */
-	def static void assertCannotBeAppliedBackward(EChange change) {
-		var boolean exceptionThrown = false
-		try {
-			change.applyForward
-		} catch (RuntimeException e) {
-			exceptionThrown = true
-		}
-		if (!exceptionThrown) {
-			fail("No RuntimeException thrown.")
-		}
-	}
-
 	static def <T> T assertType(Object original, Class<T> type) {
 		if (type.isAssignableFrom(original.class)) {
 			return original as T

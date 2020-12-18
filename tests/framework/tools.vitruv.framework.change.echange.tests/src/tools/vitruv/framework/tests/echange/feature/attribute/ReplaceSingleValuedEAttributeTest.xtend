@@ -14,6 +14,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue
 import static org.junit.jupiter.api.Assertions.assertFalse
 import static org.junit.jupiter.api.Assertions.assertEquals
 import static tools.vitruv.testutils.metamodels.AllElementTypesCreators.*
+import static extension tools.vitruv.framework.change.echange.resolve.EChangeResolverAndApplicator.*
+import static org.junit.jupiter.api.Assertions.assertThrows
 
 /**
  * Test class for the concrete {@link ReplaceSingleValuedEAttribute} EChange, 
@@ -106,8 +108,8 @@ class ReplaceSingleValuedEAttributeTest extends EChangeTest {
 		assertEquals(affectedNonRootEObject.eClass.getFeatureID(affectedRootFeature), -1)
 
 		// Apply
-		resolvedChange.assertCannotBeAppliedForward
-		resolvedChange.assertCannotBeAppliedBackward
+		assertThrows(IllegalStateException) [resolvedChange.applyForward]
+		assertThrows(IllegalStateException) [resolvedChange.applyBackward]
 	}
 
 	/**
@@ -127,8 +129,8 @@ class ReplaceSingleValuedEAttributeTest extends EChangeTest {
 		assertEquals(affectedFeature.EAttributeType.name, "EString")
 
 		// Apply
-		resolvedChange.assertCannotBeAppliedForward
-		resolvedChange.assertCannotBeAppliedBackward
+		assertThrows(IllegalStateException) [resolvedChange.applyForward]
+		assertThrows(IllegalStateException) [resolvedChange.applyBackward]
 	}
 
 	/**
