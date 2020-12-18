@@ -270,7 +270,6 @@ class RemoveEReferenceTest extends ReferenceEChangeTest {
 
 		// Apply
 		assertThrows(IllegalStateException) [resolvedChange.applyForward]
-		assertThrows(IllegalStateException) [resolvedChange.applyBackward]
 	}
 
 	/**
