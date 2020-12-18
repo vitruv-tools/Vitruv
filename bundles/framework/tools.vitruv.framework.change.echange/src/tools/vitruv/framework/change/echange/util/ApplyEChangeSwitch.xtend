@@ -23,7 +23,7 @@ class ApplyEChangeSwitch {
 	 */
 	def static boolean applyEChange(EChange change, boolean applyForward) {
 		if (!change.isResolved) {
-			throw new IllegalStateException("The EChange is not resolved.")
+			throw new IllegalStateException('''EChange is not resolved: «change»''')
 		}
 		
 		var List<Command> commands
@@ -43,11 +43,11 @@ class ApplyEChangeSwitch {
 						// so catch that exception and move on
 					}
 				} else {
-					throw new RuntimeException("EChange could not be applied.")
+					throw new IllegalStateException('''EChange could not be applied: «change»''')
 				}
 			}
 			return true
 		}
-		throw new RuntimeException("EChange could not be applied.")
+		throw new IllegalStateException('''EChange could not be applied: «change»''')
 	}
 }
