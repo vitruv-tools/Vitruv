@@ -11,7 +11,9 @@ Require-Bundle: org.junit.jupiter.api,
  org.eclipse.xtext.xbase.lib,
  org.eclipse.xtend.lib,
  tools.vitruv.testutils.metamodels,
- tools.vitruv.framework.change
+ tools.vitruv.framework.change,
+ org.hamcrest.core,
+ tools.vitruv.testutils
 Export-Package: tools.vitruv.framework.tests.echange;x-internal:=true,
  tools.vitruv.framework.tests.echange.command;x-internal:=true,
  tools.vitruv.framework.tests.echange.compound;x-internal:=true,

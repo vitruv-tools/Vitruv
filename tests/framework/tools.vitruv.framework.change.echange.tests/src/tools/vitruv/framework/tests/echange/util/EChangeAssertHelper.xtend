@@ -1,7 +1,6 @@
 package tools.vitruv.framework.tests.echange.util
 
 import org.eclipse.emf.ecore.EObject
-import org.eclipse.emf.ecore.util.EcoreUtil
 import tools.vitruv.framework.change.echange.EChange
 import static extension tools.vitruv.framework.change.echange.resolve.EChangeResolverAndApplicator.*
 import java.util.List
@@ -11,7 +10,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals
 import static org.junit.jupiter.api.Assertions.assertNull
 import static org.junit.jupiter.api.Assertions.assertNotNull
 import static org.junit.jupiter.api.Assertions.assertNotSame
-import static org.junit.jupiter.api.Assertions.fail
+import static org.hamcrest.MatcherAssert.assertThat
+import static org.hamcrest.core.IsInstanceOf.instanceOf
+import static org.hamcrest.core.Is.is
+import static tools.vitruv.testutils.matchers.ModelMatchers.equalsDeeply
 
 /**
  * Utility class for frequently used assert methods in the tests.
@@ -47,7 +49,7 @@ class EChangeAssertHelper {
 		}
 		val typedObject1 = assertType(object1, EObject)
 		val typedObject2 = assertType(object2, EObject)
-		EcoreUtil.equals(typedObject1, typedObject2)
+		assertThat(typedObject1, equalsDeeply(typedObject2))
 	}
 
 	/**
@@ -81,11 +83,10 @@ class EChangeAssertHelper {
 	def static void assertApplyBackward(List<EChange> change) {
 		change.reverseView.forEach[assertApplyBackward]
 	}
-
+	
 	static def <T> T assertType(Object original, Class<T> type) {
-		if (type.isAssignableFrom(original.class)) {
-			return original as T
-		}
-		fail("Object " + original + " is not expected type " + type)
+		assertThat(original, is(instanceOf(type)))
+		return original as T
 	}
+
 }
