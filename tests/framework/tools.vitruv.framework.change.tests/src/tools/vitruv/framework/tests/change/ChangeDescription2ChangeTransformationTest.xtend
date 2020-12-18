@@ -1,18 +1,15 @@
 package tools.vitruv.framework.tests.change
 
-import allElementTypes.AllElementTypesFactory
 import allElementTypes.Root
 import java.util.List
-import org.eclipse.emf.ecore.EStructuralFeature
 
 import tools.vitruv.framework.change.echange.EChange
-import static extension edu.kit.ipd.sdq.commons.util.java.util.ListUtil.*
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import java.io.File
 import tools.vitruv.framework.change.recording.AtomicEmfChangeRecorder
 import tools.vitruv.framework.util.bridges.EMFBridge
 import tools.vitruv.framework.uuid.UuidGeneratorAndResolverImpl
-import static extension tools.vitruv.framework.change.echange.resolve.EChangeResolverAndApplicator.*;
+import static extension tools.vitruv.framework.change.echange.resolve.EChangeResolverAndApplicator.*
 import tools.vitruv.framework.uuid.UuidGeneratorAndResolver
 import tools.vitruv.framework.change.echange.resolve.EChangeUnresolver
 import org.eclipse.emf.ecore.resource.ResourceSet
@@ -21,38 +18,17 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.AfterEach
 import static org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.io.TempDir
-import org.eclipse.xtend.lib.annotations.Accessors
+import tools.vitruv.framework.util.bridges.EcoreResourceBridge
+import static extension tools.vitruv.testutils.metamodels.AllElementTypesCreators.*
+import org.eclipse.emf.common.notify.Notifier
+import java.util.function.Consumer
+import static com.google.common.base.Preconditions.checkState
 
-/** 
- * @author langhamm
- */
 abstract class ChangeDescription2ChangeTransformationTest {
-	@Accessors(PROTECTED_GETTER)
 	var AtomicEmfChangeRecorder changeRecorder
-	@Accessors(PROTECTED_GETTER)
-	var Root rootElement
-	var List<EChange> changes
-	@Accessors(PROTECTED_GETTER)
+	var UuidGeneratorAndResolver uuidGeneratorAndResolver
+	var ResourceSet resourceSet
 	var File tempFolder
-	var ResourceSet rs
-	var UuidGeneratorAndResolver uuidGeneratorAndResolver;
-
-	public static val SINGLE_VALUED_CONTAINMENT_E_REFERENCE_NAME = "singleValuedContainmentEReference"
-	public static val SINGLE_VALUED_NON_CONTAINMENT_E_REFERENCE_NAME = "singleValuedNonContainmentEReference"
-	public static val SINGLE_VALUED_E_ATTRIBUTE_NAME = "singleValuedEAttribute"
-	public static val MULTI_VALUED_CONTAINMENT_E_REFERENCE_NAME = "multiValuedContainmentEReference"
-	public static val MULTI_VALUED_NON_CONTAINMENT_E_REFERENCE_NAME = "multiValuedNonContainmentEReference"
-	public static val MULTI_VALUE_E_ATTRIBUTE_NAME = "multiValuedEAttribute"
-
-	protected def Root createRootInResource(int count) {
-		val rootElement = AllElementTypesFactory.eINSTANCE.createRoot()
-		rootElement.nonRootObjectContainerHelper = AllElementTypesFactory.eINSTANCE.createNonRootObjectContainerHelper()
-		val tmpFile = new File(tempFolder, "dummyURI" + count + ".xmi")
-		val uri = EMFBridge.getEmfFileUriForFile(tmpFile);
-		val resource = rs.createResource(uri)
-		resource.contents += rootElement;
-		return rootElement;
-	}
 
 	/** 
 	 * Create a new model and initialize the change monitoring
@@ -60,94 +36,78 @@ abstract class ChangeDescription2ChangeTransformationTest {
 	@BeforeEach
 	def void beforeTest(@TempDir File tempFolder) {
 		this.tempFolder = tempFolder
-		this.rs = new ResourceSetImpl().withGlobalFactories
-		this.uuidGeneratorAndResolver = new UuidGeneratorAndResolverImpl(rs, false)
+		this.resourceSet = new ResourceSetImpl().withGlobalFactories
+		this.uuidGeneratorAndResolver = new UuidGeneratorAndResolverImpl(resourceSet, true)
 		this.changeRecorder = new AtomicEmfChangeRecorder(uuidGeneratorAndResolver)
-		prepareRootElement();
-	}
-
-	def void prepareRootElement() {
-		changeRecorder.addToRecording(rs);
-		this.rootElement = createRootInResource(1);
+		this.resourceSet.startRecording
 	}
 
 	@AfterEach
 	def void afterTest() {
-		if (this.changeRecorder.isRecording) {
-			this.changeRecorder.endRecording()
-		}
-		this.changeRecorder.dispose()
+		resourceSet.stopRecording
+		changeRecorder.dispose()
 	}
 
-	protected def List<EChange> getChanges() {
-		if (this.changes === null) {
-			this.changes = endRecording()
-			this.changes.forEach[EChangeUnresolver.unresolve(it)]
-			for (var i = this.changes.length - 1; i >= 0; i--) {
-				this.changes.set(i, changes.get(i).resolveAfterAndApplyBackward(this.uuidGeneratorAndResolver));
-			}
-			for (change : this.changes) {
-				change.applyForward;
-			}
-		}
-		return this.changes
+	protected def <T extends Notifier> record(T objectToRecord, Consumer<T> operationToRecord) {
+		resourceSet.stopRecording
+		objectToRecord.startRecording
+		operationToRecord.accept(objectToRecord)
+		objectToRecord.stopRecording
+		resourceSet.startRecording
+		return prepareChanges
 	}
 
-	def List<EChange> endRecording() {
-		changeRecorder.endRecording()
+	protected def resourceAt(String name) {
+		val tmpFile = new File(tempFolder, '''«name».xmi''')
+		val uri = EMFBridge.getEmfFileUriForFile(tmpFile)
+		EcoreResourceBridge.loadOrCreateResource(resourceSet, uri)
+	}
+
+	protected def Root getUniquePersistedRoot() {
+		val resource = resourceAt("dummy")
+		if (resource.contents.empty) {
+			val root = aet.Root
+			resource.contents += root
+			return root
+		} else {
+			return resource.contents.get(0) as Root
+		}
+	}
+
+	private def startRecording(Notifier notifier) {
+		checkState(!changeRecorder.isRecording)
+		this.changeRecorder.addToRecording(notifier)
+		this.changeRecorder.beginRecording
+	}
+
+	private def stopRecording(Notifier notifier) {
+		checkState(changeRecorder.isRecording)
+		this.changeRecorder.endRecording
+		this.changeRecorder.removeFromRecording(notifier)
+	}
+
+	private def List<EChange> prepareChanges() {
 		val changeDescriptions = changeRecorder.changes
-		return changeDescriptions.map[EChanges].flatten.toList;
-	}
-
-	def startRecording() {
-		if (changeRecorder.isRecording) {
-			changeRecorder.stopRecording;
+		val monitoredChanges = changeDescriptions.map[EChanges].flatten
+		monitoredChanges.forEach[EChangeUnresolver.unresolve(it)]
+		val resultingChanges = newArrayList
+		for (change : monitoredChanges.toList.reverseView) {
+			resultingChanges += change.resolveAfterAndApplyBackward(this.uuidGeneratorAndResolver)
 		}
-		this.changes = null
-		this.changeRecorder.addToRecording(rs)
-		this.changeRecorder.beginRecording()
+		resultingChanges.reverse
+		for (change : resultingChanges) {
+			change.applyForward
+		}
+		return resultingChanges
 	}
 
-	def getRootElement() {
-		return this.rootElement
-	}
-
-	static def assertChangeCount(Iterable<?> changes, int expectedCount) {
+	static def assertChangeCount(Iterable<? extends EChange> changes, int expectedCount) {
 		assertEquals(
 			expectedCount,
 			changes.size,
 			'''There were «changes.size» changes, although «expectedCount» were expected'''
-		);
+		)
+		return changes
 	}
 
-	static def EChange claimChange(List<EChange> changes, int index) {
-		return changes.claimElementAt(index)
-	}
-
-	protected def createAndAddNonRootToFeature(EStructuralFeature eStructuralFeature, boolean shouldStartRecording) {
-		val nonRoot = AllElementTypesFactory.eINSTANCE.createNonRoot
-		this.rootElement.nonRootObjectContainerHelper.nonRootObjectsContainment.add(nonRoot)
-		if (shouldStartRecording) {
-			startRecording
-		}
-		return nonRoot
-	}
-
-	protected def createAndAddNonRootToContainment(boolean shouldStartRecording) {
-		val nonRoot = AllElementTypesFactory.eINSTANCE.createNonRoot;
-		this.rootElement.singleValuedContainmentEReference = nonRoot;
-		if (shouldStartRecording) {
-			startRecording
-		}
-		return nonRoot
-	}
-
-	protected def createAndAddNonRootToRootContainer(boolean shouldStartRecording) {
-		val nonRoot = AllElementTypesFactory.eINSTANCE.createNonRoot
-		this.rootElement.nonRootObjectContainerHelper.nonRootObjectsContainment.add(nonRoot)
-		if (shouldStartRecording) {
-			startRecording
-		}
-		return nonRoot
-	}
 }

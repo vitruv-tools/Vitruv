@@ -1,42 +1,61 @@
 package tools.vitruv.framework.tests.change.rootobject
 
+import static allElementTypes.AllElementTypesPackage.Literals.*
 import org.junit.jupiter.api.Test
+import static extension tools.vitruv.testutils.metamodels.AllElementTypesCreators.*
+import static extension tools.vitruv.framework.tests.change.util.AtomicEChangeAssertHelper.*
+import tools.vitruv.framework.tests.change.ChangeDescription2ChangeTransformationTest
 
-class ChangeDescription2InsertRootEObjectTest extends ChangeDescription2RootChangeTest {
+class ChangeDescription2InsertRootEObjectTest extends ChangeDescription2ChangeTransformationTest {
 
 	@Test
 	def void insertCreateRootEObjectInResource() {
-		val resource = this.rootElement.eResource;
-		resource.contents.clear();
 		// prepare
-		startRecording
+		val resource = resourceAt("insertRoot")
+		
 		// test
-		insertRootEObjectInResource(resource)
+		val root = aet.Root
+		val result = resource.record [
+			contents += root
+		]
+		
 		// assert
 		val isCreate = true
-		changes.assertInsertRoot(isCreate, resource);
-		// claimChange(1).assertReplaceSingleValueEAttribute(null, this.rootElement.id)
+		result.assertChangeCount(3)
+			.assertInsertRoot(root, isCreate, resource)
+			.assertReplaceSingleValuedEAttribute(root, IDENTIFIED__ID, null, root.id, false, false)
+			.assertEmpty
 	}
 
 	@Test
 	def void insertCreateTwoRootEObjectsInResource() {
-		val resource1 = this.rootElement.eResource;
-		resource1.contents.clear();
-		val resource2 = this.rootElement2.eResource;
-		resource2.contents.clear();
 		// prepare
-		startRecording
+		val resource1 = resourceAt("insertRoot1")
+		val resource2 = resourceAt("insertRoot2")
+		
 		// test
-		insertRootEObjectInResource(resource1)
+		val root = aet.Root
+		val result1 = resource1.record [
+			contents += root
+		]
+				
 		// assert
 		val isCreate = true
-		changes.assertInsertRoot(isCreate, resource1);
+		result1.assertChangeCount(3)
+			.assertInsertRoot(root, isCreate, resource1)
+			.assertReplaceSingleValuedEAttribute(root, IDENTIFIED__ID, null, root.id, false, false)
+			.assertEmpty
 
-		startRecording
 		// test
-		insertRootEObjectInResource2(resource2)
+		val root2 = aet.Root
+		val result2 = resource2.record [
+			contents += root2
+		]
+				
 		// assert
-		changes.assertInsertRoot2(isCreate, resource2);
-		// claimChange(1).assertReplaceSingleValueEAttribute(null, this.rootElement.id)
+		result2.assertChangeCount(3)
+			.assertInsertRoot(root2, isCreate, resource2)
+			.assertReplaceSingleValuedEAttribute(root2, IDENTIFIED__ID, null, root2.id, false, false)
+			.assertEmpty
 	}
 }
