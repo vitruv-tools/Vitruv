@@ -15,7 +15,6 @@
 
 	<modules>
 		<module>tools.vitruv.extensions.constructionsimulation</module>
-		<module>tools.vitruv.extensions.constructionsimulation.util</module>
 	</modules>
 
 </project>

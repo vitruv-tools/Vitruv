@@ -20,18 +20,11 @@
    </license>
 
    <requires>
-      <import feature="tools.vitruv.framework.feature" version="0.3.0" match="greaterOrEqual"/>
+      <import feature="tools.vitruv.framework.feature" version="0.3.0"/>
    </requires>
 
    <plugin
          id="tools.vitruv.extensions.constructionsimulation"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="tools.vitruv.extensions.constructionsimulation.util"
          download-size="0"
          install-size="0"
          version="0.0.0"

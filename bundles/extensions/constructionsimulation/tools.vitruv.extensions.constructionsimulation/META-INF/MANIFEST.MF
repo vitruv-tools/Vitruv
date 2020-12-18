@@ -23,8 +23,7 @@ Require-Bundle: org.junit,
  tools.vitruv.framework.userinteraction,
  tools.vitruv.framework.change.processing,
  tools.vitruv.framework.change,
- tools.vitruv.framework.change.echange,
- tools.vitruv.extensions.constructionsimulation.util
+ tools.vitruv.framework.change.echange
 Export-Package: tools.vitruv.extensions.constructionsimulation;x-internal:=true,
  tools.vitruv.extensions.constructionsimulation.handler,
  tools.vitruv.extensions.constructionsimulation.invariantcheckers,
