@@ -13,6 +13,7 @@ import java.util.List
 import tools.vitruv.testutils.printing.DefaultModelPrinter
 import static com.google.common.base.Preconditions.checkArgument
 import static tools.vitruv.testutils.printing.PrintResult.PRINTED
+import static extension org.junit.platform.commons.support.AnnotationSupport.findAnnotation
 
 /**
  * JUnit extension that enables {@link UseModelPrinter}.
@@ -33,10 +34,10 @@ class ModelPrinterChange implements BeforeAllCallback, BeforeEachCallback {
 	}
 
 	def private installPrintersFrom(AnnotatedElement settingsSource, ExtensionContext context) {
-		val annotations = settingsSource.getAnnotationsByType(UseModelPrinter)
-		if (annotations.isEmpty) return;
+		val annotation = settingsSource.findAnnotation(UseModelPrinter)
+		if (!annotation.isPresent) return;
 
-		val printers = annotations.flatMap[value.toList].map [ printerClass |
+		val printers = annotation.get.value.map [ printerClass |
 			val constructor = printerClass.constructors.findFirst[it.parameterCount == 0]
 			checkArgument(constructor !== null, '''«printerClass» has no zero-arg constructor!''')
 			try {
@@ -63,6 +64,14 @@ class ModelPrinterChange implements BeforeAllCallback, BeforeEachCallback {
 				PRINTED
 			} else {
 				fallback.printObject(target, object)
+			}
+		}
+
+		override printObjectShortened(PrintTarget target, Object object) {
+			if (printers.exists[printObjectShortened(target, object) == PRINTED]) {
+				PRINTED
+			} else {
+				fallback.printObjectShortened(target, object)
 			}
 		}
 	}

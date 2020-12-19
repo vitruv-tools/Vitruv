@@ -15,4 +15,9 @@ interface ModelPrinter {
 	 * @throws RuntimeException if {@code object} could not be printed successfully. 
 	 */
 	def PrintResult printObject(PrintTarget target, Object object)
+	
+	/**
+	 * Prints the provided {@code object} shortened, i.e. in a manner that conveys only an overview of the object.
+	 */
+	def PrintResult printObjectShortened(PrintTarget target, Object object)
 }
