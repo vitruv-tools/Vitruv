@@ -7,23 +7,31 @@ interface PrintTarget {
 
 	def PrintResult printValue(Object object)
 
-	def <T> PrintResult printValue(T value, (PrintTarget, T)=>PrintResult elementPrinter) {
-		print('<') + elementPrinter.apply(this, value) + print('>')
-	}
+	def PrintResult newLine()
 
-	def <T> PrintResult printList(Iterable<? extends T> elements, (PrintTarget, T)=>PrintResult elementPrinter) {
-		printIterable('[', ']', elements, elementPrinter)
-	}
+	def PrintResult newLineIncreaseIndent()
 
-	def <T> PrintResult printSet(Iterable<? extends T> elements, (PrintTarget, T)=>PrintResult elementPrinter) {
-		printIterable('{', '}', elements, elementPrinter)
-	}
+	def PrintResult newLineDecreaseIndent()
 
-	def <T> PrintResult printIterable(String start, String end, Iterable<? extends T> elements,
+	def <T> PrintResult printIterable(String start, String end, Iterable<? extends T> elements, PrintMode mode,
 		(PrintTarget, T)=>PrintResult elementPrinter)
 
-	def <T> PrintResult printIterableElements(Iterable<? extends T> elements,
+	def <T> PrintResult printList(Iterable<? extends T> elements, PrintMode mode,
 		(PrintTarget, T)=>PrintResult elementPrinter) {
-		printIterable('', '', elements, elementPrinter)
+		printIterable('[', ']', elements, mode, elementPrinter)
+	}
+
+	def <T> PrintResult printSet(Iterable<? extends T> elements, PrintMode mode,
+		(PrintTarget, T)=>PrintResult elementPrinter) {
+		printIterable('{', '}', elements, mode, elementPrinter)
+	}
+
+	def <T> PrintResult printIterableElements(Iterable<? extends T> elements, PrintMode mode,
+		(PrintTarget, T)=>PrintResult elementPrinter) {
+		printIterable('', '', elements, mode, elementPrinter)
+	}
+
+	def <T> PrintResult printValue(T value, (PrintTarget, T)=>PrintResult elementPrinter) {
+		print('<') + elementPrinter.apply(this, value) + print('>')
 	}
 }

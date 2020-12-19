@@ -4,6 +4,7 @@ import tools.vitruv.framework.domains.VitruvDomain
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.xtend.lib.annotations.FinalFieldsConstructor
 import static tools.vitruv.testutils.printing.PrintResult.NOT_RESPONSIBLE
+import org.eclipse.emf.ecore.resource.Resource
 
 @FinalFieldsConstructor
 final class DomainSpecificModelPrinter implements ModelPrinter {
@@ -11,9 +12,24 @@ final class DomainSpecificModelPrinter implements ModelPrinter {
 	val ModelPrinter domainPrinter
 
 	final override printObject(PrintTarget target, Object object) {
+		if (responsibleFor(object))
+			domainPrinter.printObject(target, object)
+		else
+			NOT_RESPONSIBLE
+	}
+
+	final override printObjectShortened(PrintTarget target, Object object) {
+		if (responsibleFor(object))
+			domainPrinter.printObjectShortened(target, object)
+		else
+			NOT_RESPONSIBLE
+	}
+
+	def private responsibleFor(Object object) {
 		switch (object) {
-			EObject case targetDomain.isInstanceOfDomainMetamodel(object): domainPrinter.printObject(target, object)
-			default: NOT_RESPONSIBLE
+			EObject: targetDomain.isInstanceOfDomainMetamodel(object)
+			Resource: targetDomain.fileExtensions.contains(object.URI.fileExtension)
+			default: false
 		}
 	}
 
