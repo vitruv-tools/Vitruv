@@ -1,0 +1,94 @@
+package tools.vitruv.testutils
+
+import java.nio.file.Path
+import org.eclipse.emf.common.util.URI
+import static com.google.common.base.Preconditions.checkState
+import org.eclipse.emf.ecore.resource.Resource
+import org.eclipse.emf.common.notify.Notifier
+import java.util.function.Consumer
+import java.util.List
+import tools.vitruv.framework.change.description.PropagatedChange
+import tools.vitruv.framework.change.recording.AtomicEmfChangeRecorder
+
+/**
+ * A Vitruv view for testing purposes.
+ */
+interface TestView extends AutoCloseable {
+	/**
+	 * Gets the resource at the provided {@code viewRelativePath}. If the resource
+	 * does not exist yet, it will be created virtually, without being persisted.
+	 * 
+	 * @param viewRelativePath a path to a model, relative to this view.
+	 */
+	def Resource resourceAt(Path viewRelativePath) {
+		resourceAt(viewRelativePath.uri)
+	}
+
+	/**
+	 * Gets the resource at the provided {@code modelUri}. If the resource does not exist yet, it will be
+	 * created virtually, without being persisted.
+	 * 
+	 * @param modelUri the {@link URI} of the model to load.
+	 */
+	def Resource resourceAt(URI modelUri)
+
+	/** 
+	 * Loads the model resource for the provided {@code viewRelativePath}, casts its root element to the provided 
+	 * {@code clazz} and returns the casted object.
+	 * 
+	 * @param viewRelativePath A project-relative path to a model.
+	 */
+	def <T> T from(Class<T> clazz, Path viewRelativePath) {
+		clazz.from(viewRelativePath.uri)
+	}
+
+	/** 
+	 * Loads the model resource for the provided {@code viewRelativePath}, casts its root element to the provided 
+	 * {@code clazz} and returns the casted object.
+	 * 
+	 * @param modelUri the {@link URI} of the model to load.
+	 */
+	def <T> T from(Class<T> clazz, URI modelUri)
+
+	/** 
+	 * Casts the root element of the provided {@code resource} to the provided {@code clazz} and returns the casted object.
+	 */
+	def <T> T from(Class<T> clazz, Resource resource) {
+		checkState(!resource.contents.isEmpty(), '''The resource at «resource.URI» is empty!''')
+		return clazz.cast(resource.contents.get(0))
+	}
+
+	/**
+	 * Starts recording changes for the resource of the provided {@code notifier}, executes the provided 
+	 * {@code consumer} on the {@code notifier} and stops recording changes for the {@code notifier} afterwards.
+	 */
+	def <T extends Notifier> T record(T notifier, Consumer<T> consumer)
+
+	/**
+	 * {@linkplain #record Records} the changes to {@code notifier} created by the provided {@code consumer}, 
+	 * saves the modified resource and propagates all recorded changes (including changes that have been recorded 
+	 * before calling this method) to the VSUM this view is connected to.
+	 * 
+	 * @return the changes resulting from propagating the recorded changes.
+	 * @see #saveAndPropagateChanges
+	 */
+	def <T extends Notifier> List<PropagatedChange> propagate(T notifier, Consumer<T> consumer)
+
+	/**
+	 * Gets an EMF URI that can be used to load the resource that is persisted at the provided 
+	 * {@code viewRelativePath}.
+	 */
+	def URI getUri(Path viewRelativePath)
+	
+	/**
+	 * @return the user interaction that can be used to program user interactions for the VSUM of this view.
+	 */
+	def TestUserInteraction getUserInteraction()
+
+	/**
+	 * Access to the change recorder for the legacy {@link LegacyVitruvApplicationTest}.
+	 * Has to be removed as soon as {@link LegacyVitruvApplicationTest} is removed.
+	 */
+	@Deprecated
+	def AtomicEmfChangeRecorder getChangeRecorder()
+}
