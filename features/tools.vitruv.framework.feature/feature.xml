@@ -31,7 +31,6 @@
       <import plugin="org.eclipse.osgi"/>
       <import plugin="org.eclipse.core.expressions"/>
       <import plugin="org.junit"/>
-      <import plugin="org.eclipse.emf.emfstore.common"/>
       <import plugin="org.eclipse.jdt.core"/>
       <import plugin="org.eclipse.jdt.launching"/>
       <import plugin="org.eclipse.emf.common"/>
