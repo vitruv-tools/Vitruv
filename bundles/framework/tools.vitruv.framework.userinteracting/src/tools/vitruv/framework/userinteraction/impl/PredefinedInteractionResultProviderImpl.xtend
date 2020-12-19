@@ -42,7 +42,7 @@ class PredefinedInteractionResultProviderImpl extends PredefinedInteractionResul
 			return decoratedInteractionResultProvider.getConfirmationInteractionResult(windowModality, title, message,
 				positiveDecisionText, negativeDecisionText, cancelDecisionText);
 		} else {
-			throw new IllegalStateException("No input given for confirmation " + title + ": " + message);
+			throw new IllegalStateException("No input given for confirmation:" + printInteraction(title, message));
 		}
 	}
 
@@ -68,7 +68,7 @@ class PredefinedInteractionResultProviderImpl extends PredefinedInteractionResul
 			return decoratedInteractionResultProvider.getTextInputInteractionResult(windowModality, title, message,
 				positiveDecisionText, cancelDecisionText, inputValidator);
 		} else {
-			throw new IllegalStateException("No input given for text input " + title + ": " + message);
+			throw new IllegalStateException("No input given for text input: " + printInteraction(title, message));
 		}
 	}
 
@@ -82,7 +82,8 @@ class PredefinedInteractionResultProviderImpl extends PredefinedInteractionResul
 				getMultipleChoiceSingleSelectionInteractionResult(windowModality, title, message, positiveDecisionText,
 					cancelDecisionText, choices);
 		} else {
-			throw new IllegalStateException("No input given for single selection " + title + ": " + message);
+			throw new IllegalStateException('No input given for single selection:' +
+				printSelection(title, message, choices))
 		}
 	}
 
@@ -96,8 +97,18 @@ class PredefinedInteractionResultProviderImpl extends PredefinedInteractionResul
 				getMultipleChoiceMultipleSelectionInteractionResult(windowModality, title, message,
 					positiveDecisionText, cancelDecisionText, choices);
 		} else {
-			throw new IllegalStateException("No input given for multiple selection " + title + ": " + message);
+			throw new IllegalStateException('No input given for multiple selection:' +
+				printSelection(title, message, choices))
 		}
+	}
+
+	private def printInteraction(String title, String message) {
+		System.lineSeparator + '''«title»: «message»'''
+	}
+
+	private def printSelection(String title, String message, Iterable<String> choices) {
+		printInteraction(title, message) + System.lineSeparator +
+			'''«FOR c : choices SEPARATOR System.lineSeparator»  «'\u2219' /* bullet point */» «c»«ENDFOR»'''
 	}
 
 }
