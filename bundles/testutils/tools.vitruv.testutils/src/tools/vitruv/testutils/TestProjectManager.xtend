@@ -88,7 +88,7 @@ class TestProjectManager implements ParameterResolver, AfterEachCallback {
 		], WorkspaceGuard).workspace
 	}
 
-	def private Path getProject(String variant, ExtensionContext context) {
+	def Path getProject(String variant, ExtensionContext context) {
 		val workspace = getWorkspace(context)
 		val projectPath = if (variant == '')
 				getProjectRelativeBasePath(context)
@@ -104,8 +104,9 @@ class TestProjectManager implements ParameterResolver, AfterEachCallback {
 	}
 
 	def private Path getProjectRelativeBasePath(ExtensionContext context) {
-		context.parentChain.reverseView.reject[it == root].
-			map[displayName.removeInvalidCharacters()].fold(Path.of(''))[$0.resolve($1)]
+		context.parentChain.reverseView.reject[it == root].map[displayName.removeInvalidCharacters()].fold(Path.of('')) [
+			$0.resolve($1)
+		]
 	}
 
 	override resolveParameter(ParameterContext parameterContext, ExtensionContext extensionContext) {

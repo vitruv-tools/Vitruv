@@ -69,32 +69,32 @@ abstract class LegacyVitruvApplicationTest extends VitruvApplicationTest {
 		return result;
 	}
 
-	override CorrespondenceModel getCorrespondenceModel() { 
+	override CorrespondenceModel getCorrespondenceModel() {
 		virtualModel.correspondenceModel
 	}
-	
+
 	@Deprecated
 	def private void startRecordingChanges(Notifier notifier) {
 		checkArgument(notifier !== null, '''The object to record changes of is null!''')
 		this.changeRecorder.addToRecording(notifier)
 	}
-	
+
 	@Deprecated
 	def protected void startRecordingChanges(EObject object) {
 		checkArgument(object !== null, '''The object to record changes of is null!''')
 		object.eResource.startRecordingChanges
 	}
 
-	@Deprecated	
+	@Deprecated
 	def private void stopRecordingChanges(Notifier notifier) {
 		checkArgument(notifier !== null, '''The object to stop recording changes of is null!''')
 		this.changeRecorder.removeFromRecording(notifier)
 	}
-	
+
 	@Deprecated
 	def protected void stopRecordingChanges(EObject object) {
 		checkArgument(object !== null, '''The object to stop recording changes of is null!''')
 		object.eResource.stopRecordingChanges
 	}
-	
+
 }
