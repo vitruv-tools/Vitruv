@@ -54,7 +54,7 @@ class ModelMatchers {
 	}
 
 	def static Matcher<? super EObject> equalsDeeply(EObject object, FeatureMatcher... featureMatchers) {
-		new ModelTreeEqualityMatcher(object, featureMatchers)
+		new ModelDeepEqualityMatcher(object, featureMatchers)
 	}
 
 	def static FeatureMatcher ignoringFeatures(String... featureNames) {

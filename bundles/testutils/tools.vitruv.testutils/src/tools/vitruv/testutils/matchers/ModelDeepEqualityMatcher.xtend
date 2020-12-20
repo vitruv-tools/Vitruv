@@ -16,7 +16,7 @@ import org.eclipse.emf.ecore.InternalEObject
 import java.util.Collection
 
 @FinalFieldsConstructor
-package class ModelTreeEqualityMatcher extends TypeSafeMatcher<EObject> {
+package class ModelDeepEqualityMatcher extends TypeSafeMatcher<EObject> {
 	package val EObject expectedObject
 	var Deque<String> navigationStack = new ArrayDeque()
 	var Consumer<Description> mismatch
