@@ -11,16 +11,16 @@ final class DomainSpecificModelPrinter implements ModelPrinter {
 	val VitruvDomain targetDomain
 	val ModelPrinter domainPrinter
 
-	final override printObject(PrintTarget target, Object object) {
+	final override printObject(PrintTarget target, PrintIdProvider idProvider, Object object) {
 		if (responsibleFor(object))
-			domainPrinter.printObject(target, object)
+			domainPrinter.printObject(target, idProvider, object)
 		else
 			NOT_RESPONSIBLE
 	}
 
-	final override printObjectShortened(PrintTarget target, Object object) {
+	final override printObjectShortened(PrintTarget target, PrintIdProvider idProvider, Object object) {
 		if (responsibleFor(object))
-			domainPrinter.printObjectShortened(target, object)
+			domainPrinter.printObjectShortened(target, idProvider, object)
 		else
 			NOT_RESPONSIBLE
 	}
@@ -32,8 +32,8 @@ final class DomainSpecificModelPrinter implements ModelPrinter {
 			default: false
 		}
 	}
-
-	override setIdProvider(PrintIdProvider idProvider) {
-		domainPrinter.idProvider = idProvider
+	
+	override withSubPrinter(ModelPrinter subPrinter) {
+		new DomainSpecificModelPrinter(targetDomain, domainPrinter.withSubPrinter(subPrinter))
 	}
 }

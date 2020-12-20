@@ -1,6 +1,5 @@
 package tools.vitruv.testutils.printing
 
-import org.eclipse.xtend.lib.annotations.Accessors
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EClass
 import org.eclipse.emf.ecore.EStructuralFeature
@@ -9,41 +8,66 @@ import static tools.vitruv.testutils.printing.PrintResult.*
 import static extension tools.vitruv.testutils.printing.PrintResultExtension.*
 import java.util.Collection
 import static tools.vitruv.testutils.printing.PrintMode.*
+import org.eclipse.emf.common.util.URI
+import org.eclipse.xtend.lib.annotations.FinalFieldsConstructor
+import org.eclipse.xtend.lib.annotations.Accessors
+import static com.google.common.base.Preconditions.checkState
 
+@FinalFieldsConstructor
 class DefaultModelPrinter implements ModelPrinter {
-	@Accessors
-	var PrintIdProvider idProvider = new PrintIdProvider()
+	@Accessors(PROTECTED_GETTER)
+	val ModelPrinter subPrinter
 
-	override printObject(PrintTarget target, Object object) { dispatchPrintObject(target, object) }
+	new() {
+		subPrinter = this
+	}
 
-	override printObjectShortened(PrintTarget target, Object object) { dispatchPrintObjectShortened(target, object) }
+	override printObject(PrintTarget target, PrintIdProvider idProvider, Object object) {
+		dispatchPrintObject(target, idProvider, object)
+	}
 
-	def private dispatch PrintResult dispatchPrintObject(extension PrintTarget target, Resource resource) {
+	override printObjectShortened(PrintTarget target, PrintIdProvider idProvider, Object object) {
+		dispatchPrintObjectShortened(target, idProvider, object)
+	}
+
+	def private dispatch PrintResult dispatchPrintObject(
+		extension PrintTarget target,
+		PrintIdProvider idProvider,
+		Resource resource
+	) {
 		print('Resource(') + newLineIncreaseIndent + //
-		print('uri=') + print(resource.URI.toString) + print(',') + //
+		print('uri=') + target.printResourceUri(resource.URI) + print(',') + //
 		newLine + print('content=') + printList(resource.contents, printModeFor(resource.contents)) [ subTarget, element |
-			subTarget.printObject(element)
+			subPrinter.printObject(target, idProvider, element)
 		] + newLineDecreaseIndent + //
 		print(')')
 	}
 
-	def private dispatch PrintResult dispatchPrintObject(extension PrintTarget target, EClass eClass) {
+	def private dispatch PrintResult dispatchPrintObject(
+		extension PrintTarget target,
+		PrintIdProvider idProvider,
+		EClass eClass
+	) {
 		print(eClass.name)
 	}
 
-	def private dispatch PrintResult dispatchPrintObject(extension PrintTarget target, EObject object) {
-		target.printObjectWithContent(object) [ contentTarget |
+	def private dispatch PrintResult dispatchPrintObject(
+		extension PrintTarget target,
+		PrintIdProvider idProvider,
+		EObject object
+	) {
+		target.printObjectWithContent(idProvider, object) [ contentTarget |
 			contentTarget.printIterableElements(object.eClass.EAllStructuralFeatures) [ subTarget, feature |
-				subTarget.printFeature(object, feature)
+				subTarget.printFeature(idProvider, object, feature)
 			]
 		]
 	}
 
-	def private dispatch PrintResult dispatchPrintObject(extension PrintTarget target, Object object) {
+	def private dispatch dispatchPrintObject(extension PrintTarget target, PrintIdProvider idProvider, Object object) {
 		printValue(object)
 	}
 
-	def private dispatch dispatchPrintObject(extension PrintTarget target, Void void) {
+	def private dispatch dispatchPrintObject(extension PrintTarget target, PrintIdProvider idProvider, Void void) {
 		print('\u2205' /* empty set */ )
 	}
 
@@ -51,20 +75,25 @@ class DefaultModelPrinter implements ModelPrinter {
 	 * Called to print the provided {@code feature} of the provided {@code object}. Should use 
 	 * {@link #printFeatureValue} to print values. 
 	 */
-	def protected PrintResult printFeature(extension PrintTarget target, EObject object, EStructuralFeature feature) {
+	def protected PrintResult printFeature(
+		extension PrintTarget target,
+		PrintIdProvider idProvider,
+		EObject object,
+		EStructuralFeature feature
+	) {
 		if (feature.derived) return PRINTED_NO_OUTPUT
 
 		return print(feature.name) + print('=') + //
 		if (feature.isMany) {
 			if (feature.isOrdered) {
-				target.printFeatureValueList(feature, object.eGet(feature) as Collection<?>)
+				target.printFeatureValueList(idProvider, feature, object.eGet(feature) as Collection<?>)
 			} else {
-				target.printFeatureValueSet(feature, object.eGet(feature) as Collection<?>)
+				target.printFeatureValueSet(idProvider, feature, object.eGet(feature) as Collection<?>)
 			}
 		} else if (!object.eIsSet(feature)) {
 			print('\u2205' /* empty set */ )
 		} else {
-			target.printFeatureValue(feature, object.eGet(feature))
+			target.printFeatureValue(idProvider, feature, object.eGet(feature))
 		}
 	}
 
@@ -78,48 +107,85 @@ class DefaultModelPrinter implements ModelPrinter {
 	/**
 	 * Called when printing the list value of the provided {@code feature}. 
 	 */
-	def protected PrintResult printFeatureValueList(PrintTarget target, EStructuralFeature feature,
-		Collection<?> valueList) {
+	def protected printFeatureValueList(
+		PrintTarget target,
+		PrintIdProvider idProvider,
+		EStructuralFeature feature,
+		Collection<?> valueList
+	) {
 		target.printList(valueList) [ subTarget, element |
-			subTarget.printFeatureValue(feature, element)
+			subTarget.printFeatureValue(idProvider, feature, element)
 		]
 	}
 
 	/**
 	 * Called when printing the set value of the provided {@code feature}. 
 	 */
-	def protected PrintResult printFeatureValueSet(PrintTarget target, EStructuralFeature feature,
-		Collection<?> valueSet) {
+	def protected printFeatureValueSet(
+		PrintTarget target,
+		PrintIdProvider idProvider,
+		EStructuralFeature feature,
+		Collection<?> valueSet
+	) {
 		target.printSet(valueSet) [ subTarget, element |
-			subTarget.printFeatureValue(feature, element)
+			subTarget.printFeatureValue(idProvider, feature, element)
 		]
 	}
 
 	/**
 	 * Called when printing any value of the provided {@code feature}. 
 	 */
-	def protected PrintResult printFeatureValue(PrintTarget target, EStructuralFeature feature, Object value) {
-		target.printObject(value)
+	def protected PrintResult printFeatureValue(
+		PrintTarget target,
+		PrintIdProvider idProvider,
+		EStructuralFeature feature,
+		Object value
+	) {
+		subPrinter.printObject(target, idProvider, value)
 	}
 
-	def private dispatch dispatchPrintObjectShortened(extension PrintTarget target, Resource resource) {
-		print('Resource(uri=') + print(resource.URI.toString) + print(', content=') + //
+	/**
+	 * Called when printing a resource’s URI (a Resource is not an {@link EObject} its features will not be printed
+	 * via {@link #printFeatureValue}.
+	 */
+	def protected PrintResult printResourceUri(extension PrintTarget target, URI uri) {
+		print(uri.toString)
+	}
+
+	def private dispatch dispatchPrintObjectShortened(
+		extension PrintTarget target,
+		PrintIdProvider idProvider,
+		Resource resource
+	) {
+		print('Resource(uri=') + target.printResourceUri(resource.URI) + print(', content=') + //
 		target.printList(resource.contents) [ subTarget, element |
-			subTarget.printObjectShortened(element)
+			subTarget.printObjectShortened(idProvider, element)
 		] + print(')')
 	}
 
-	def private dispatch dispatchPrintObjectShortened(PrintTarget target, EObject object) {
-		target.printObjectWithContent(object) [ contentTarget |
+	def private dispatch dispatchPrintObjectShortened(
+		PrintTarget target,
+		PrintIdProvider idProvider,
+		EObject object
+	) {
+		target.printObjectWithContent(idProvider, object) [ contentTarget |
 			contentTarget.print('…')
 		]
 	}
 
-	def private dispatch dispatchPrintObjectShortened(extension PrintTarget target, Object object) {
+	def private dispatch dispatchPrintObjectShortened(
+		extension PrintTarget target,
+		PrintIdProvider idProvider,
+		Object object
+	) {
 		print(object.class.simpleName) + print('(…)')
 	}
 
-	def private dispatch dispatchPrintObjectShortened(extension PrintTarget target, Void void) {
+	def private dispatch dispatchPrintObjectShortened(
+		extension PrintTarget target,
+		PrintIdProvider idProvider,
+		Void void
+	) {
 		print('\u2205' /* empty set */ )
 	}
 
@@ -127,7 +193,7 @@ class DefaultModelPrinter implements ModelPrinter {
 	 * Helper to print an {@link EObject}. Will print the object’s ID and, if the object has not been printed yet,
 	 * use {@link contentPrinter} to print the object’s content.
 	 */
-	def protected <T extends EObject> printObjectWithContent(PrintTarget target, T object,
+	def protected <T extends EObject> printObjectWithContent(PrintTarget target, PrintIdProvider idProvider, T object,
 		(PrintTarget)=>PrintResult contentPrinter) {
 		idProvider.ifAlreadyHasIdElse(object, [target.printAlreadyPrinted(it)]) [ objectId |
 			target.print(objectId) + target.print('(') + contentPrinter.apply(target) + target.print(')')
@@ -171,5 +237,14 @@ class DefaultModelPrinter implements ModelPrinter {
 	def protected <T> PrintResult printIterableElements(PrintTarget target, Collection<? extends T> elements,
 		(PrintTarget, T)=>PrintResult elementPrinter) {
 		target.printIterableElements(elements, printModeFor(elements), elementPrinter)
+	}
+
+	override withSubPrinter(ModelPrinter printer) {
+		checkState(
+			this.class == DefaultModelPrinter,
+			'''«this.class.simpleName» extends «DefaultModelPrinter.simpleName» without overriding withSubPrinter. «
+			»This is an error because it effectively eliminiates the extending class when a sub printer is set.'''
+		)
+		new DefaultModelPrinter(printer)
 	}
 }
