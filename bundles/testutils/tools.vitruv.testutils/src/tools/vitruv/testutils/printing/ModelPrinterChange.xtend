@@ -50,29 +50,38 @@ class ModelPrinterChange implements BeforeAllCallback, BeforeEachCallback {
 		ModelPrinting.printer = new MultiplePrintersPrinter(printers)
 	}
 
-	@FinalFieldsConstructor
 	private static class MultiplePrintersPrinter implements ModelPrinter {
 		val List<? extends ModelPrinter> printers
-		val fallback = new DefaultModelPrinter
+		val ModelPrinter fallback
 
-		override setIdProvider(PrintIdProvider provider) {
-			printers.forEach[idProvider = provider]
+		new(List<? extends ModelPrinter> printers) {
+			this.printers = printers.map[withSubPrinter(this)]
+			this.fallback = new DefaultModelPrinter(this)
+		}
+		
+		private new(List<? extends ModelPrinter> printers, ModelPrinter fallback) {
+			this.printers = printers
+			this.fallback = fallback
 		}
 
-		override printObject(PrintTarget target, Object object) {
-			if (printers.exists[printObject(target, object) == PRINTED]) {
+		override printObject(PrintTarget target, PrintIdProvider idProvider, Object object) {
+			if (printers.exists[printObject(target, idProvider, object) == PRINTED]) {
 				PRINTED
 			} else {
-				fallback.printObject(target, object)
+				fallback.printObject(target, idProvider, object)
 			}
 		}
 
-		override printObjectShortened(PrintTarget target, Object object) {
-			if (printers.exists[printObjectShortened(target, object) == PRINTED]) {
+		override printObjectShortened(PrintTarget target, PrintIdProvider idProvider, Object object) {
+			if (printers.exists[printObjectShortened(target, idProvider, object) == PRINTED]) {
 				PRINTED
 			} else {
-				fallback.printObjectShortened(target, object)
+				fallback.printObjectShortened(target, idProvider, object)
 			}
+		}
+		
+		override withSubPrinter(ModelPrinter subPrinter) {
+			new MultiplePrintersPrinter(printers.map[withSubPrinter(subPrinter)], fallback.withSubPrinter(subPrinter))
 		}
 	}
 

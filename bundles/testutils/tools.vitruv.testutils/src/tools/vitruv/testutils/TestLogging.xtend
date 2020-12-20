@@ -13,8 +13,8 @@ import tools.vitruv.framework.tuid.TuidManager
 import tools.vitruv.framework.tuid.TuidCalculatorAndResolverBase
 
 /** 
- * Initializes console logger for tests. Sets the logger level to{@link Level#ERROR} by default. If the VM property <i>logOutputLevel</i>
- * is specified, it is used to determine the logger level.
+ * Initializes console logger for tests. Sets the logger level to{@link Level#ERROR} by default. If the VM property
+ * <i>logOutputLevel</i> is specified, it is used to determine the logger level.
  */
 class TestLogging implements BeforeAllCallback {
 	static val VM_ARGUMENT_LOG_OUTPUT_LEVEL = "logOutputLevel"
