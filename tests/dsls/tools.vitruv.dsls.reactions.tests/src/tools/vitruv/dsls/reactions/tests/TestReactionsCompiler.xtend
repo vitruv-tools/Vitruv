@@ -145,6 +145,7 @@ class TestReactionsCompiler {
 
 		def setParameters(Consumer<TestReactionsCompiler.TestReactionsCompilerParameters> configurer) {
 			configurer.accept(parameters)
+			this
 		}
 
 		def createCompiler(Consumer<TestReactionsCompiler.TestReactionsCompilerParameters> configurer) {
