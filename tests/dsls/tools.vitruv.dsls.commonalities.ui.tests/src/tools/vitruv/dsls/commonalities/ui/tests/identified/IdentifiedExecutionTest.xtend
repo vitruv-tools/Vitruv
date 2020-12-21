@@ -5,7 +5,7 @@ import tools.vitruv.dsls.commonalities.testutils.CommonalitiesExecutionTest
 import uml_mockup.UPackage
 
 import static org.hamcrest.MatcherAssert.assertThat
-import static tools.vitruv.testutils.matchers.ModelMatchers.*
+import static extension tools.vitruv.testutils.matchers.ModelMatchers.*
 import tools.vitruv.dsls.commonalities.testutils.ExecutionTestCompiler
 import org.junit.jupiter.api.Test
 import allElementTypes.Root
@@ -237,11 +237,11 @@ class IdentifiedExecutionTest extends CommonalitiesExecutionTest {
 		assertThat(resourceAt('testid'.pcm_mockup), contains(pcm.Repository => [
 			id = 'testid'
 			components += pcm.Component => [name = 'testname']
-		], ignoringFeatures('id')))
+		], ignoringFeatures('id').unlessOn(Repository)))
 		assertThat(resourceAt('testid'.uml_mockup), contains(uml.Package => [
 			id = 'testid'
 			classes += uml.Class => [name = 'testname']
-		], ignoringFeatures('id')))
+		], ignoringFeatures('id').unlessOn(UPackage)))
 	}
 
 	@Test
@@ -255,6 +255,7 @@ class IdentifiedExecutionTest extends CommonalitiesExecutionTest {
 				]
 			]
 		]
+		
 		assertThat(resourceAt('testid'.allElementTypes2), contains(aet2.Root2 => [
 			id2 = 'testid'
 			multiValuedContainmentEReference2 += #[
@@ -275,14 +276,14 @@ class IdentifiedExecutionTest extends CommonalitiesExecutionTest {
 				pcm.Component => [name = 'first'],
 				pcm.Component => [name = 'second']
 			]
-		], ignoringFeatures('id')))
+		], ignoringFeatures('id').unlessOn(Repository)))
 		assertThat(resourceAt('testid'.uml_mockup), contains(uml.Package => [
 			id = 'testid'
 			classes += #[
 				uml.Class => [name = 'first'],
 				uml.Class => [name = 'second']
 			]
-		], ignoringFeatures('id')))
+		], ignoringFeatures('id').unlessOn(UPackage)))
 
 		Repository.from('testid'.pcm_mockup).propagate [
 			components += pcm.Component => [name = 'third']
@@ -310,7 +311,7 @@ class IdentifiedExecutionTest extends CommonalitiesExecutionTest {
 				pcm.Component => [name = 'second'],
 				pcm.Component => [name = 'third']
 			]
-		], ignoringFeatures('id')))
+		], ignoringFeatures('id').unlessOn(Repository)))
 		assertThat(resourceAt('testid'.uml_mockup), contains(uml.Package => [
 			id = 'testid'
 			classes += #[
@@ -318,6 +319,6 @@ class IdentifiedExecutionTest extends CommonalitiesExecutionTest {
 				uml.Class => [name = 'second'],
 				uml.Class => [name = 'third']
 			]
-		], ignoringFeatures('id')))
+		], ignoringFeatures('id').unlessOn(UPackage)))
 	}
 }
