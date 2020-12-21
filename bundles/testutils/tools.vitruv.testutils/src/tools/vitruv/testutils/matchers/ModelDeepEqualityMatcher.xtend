@@ -54,7 +54,7 @@ package class ModelDeepEqualityMatcher extends TypeSafeMatcher<EObject> {
 					}
 				}
 			}
-		}).build.compare(new DefaultComparisonScope(expectedObject, item, null))
+		}).build.compare(new DefaultComparisonScope(item, expectedObject, null))
 		return comparison.differences.isEmpty
 	}
 
@@ -90,7 +90,7 @@ package class ModelDeepEqualityMatcher extends TypeSafeMatcher<EObject> {
 			String context,
 			EObject object
 		) {
-			if (seen.contains(object)) return PRINTED_NO_OUTPUT
+			if (object === null || seen.contains(object)) return PRINTED_NO_OUTPUT
 
 			val thisMatch = comparison.getMatch(object)
 			printIterableElements(thisMatch.differences, MULTI_LINE) [ subTarget, difference |
