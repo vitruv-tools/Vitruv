@@ -38,7 +38,7 @@ class DefaultModelPrinter implements ModelPrinter {
 		print('Resource(') + newLineIncreaseIndent + //
 		print('uri=') + target.printResourceUri(resource.URI) + print(',') + //
 		newLine + print('content=') + printList(resource.contents, printModeFor(resource.contents)) [ subTarget, element |
-			subPrinter.printObject(target, idProvider, element)
+			subPrinter.printObject(subTarget, idProvider, element)
 		] + newLineDecreaseIndent + //
 		print(')')
 	}
@@ -159,7 +159,7 @@ class DefaultModelPrinter implements ModelPrinter {
 	) {
 		print('Resource(uri=') + target.printResourceUri(resource.URI) + print(', content=') + //
 		target.printList(resource.contents) [ subTarget, element |
-			subTarget.printObjectShortened(idProvider, element)
+			subPrinter.printObjectShortened(subTarget, idProvider, element)
 		] + print(')')
 	}
 
