@@ -25,7 +25,8 @@ Require-Bundle: org.apache.log4j,
  tools.vitruv.dsls.commonalities.ui,
  tools.vitruv.dsls.mirbase.ui,
  tools.vitruv.dsls.reactions.ui,
- tools.vitruv.testutils
+ tools.vitruv.testutils,
+ edu.kit.ipd.sdq.activextendannotations
 Export-Package: tools.vitruv.dsls.commonalities.testutils,
  tools.vitruv.dsls.commonalities.testutils.operators
 Bundle-Vendor: vitruv.tools

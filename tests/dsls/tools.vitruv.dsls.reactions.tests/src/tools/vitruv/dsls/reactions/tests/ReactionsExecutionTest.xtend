@@ -9,30 +9,33 @@ import org.junit.jupiter.api.BeforeAll
 import java.nio.file.Path
 import tools.vitruv.testutils.TestProject
 import org.junit.jupiter.api.TestInstance
+import edu.kit.ipd.sdq.activextendannotations.Lazy
+import static com.google.common.base.Preconditions.checkNotNull
 
 @ExtendWith(InjectionExtension)
 @InjectWith(ReactionsLanguageInjectorProvider)
 @TestInstance(PER_CLASS)
 abstract class ReactionsExecutionTest extends VitruvApplicationTest {
-	var TestReactionsCompiler compiler
-	var Path compilationProjectDir
+	Path compilationDir
+	TestReactionsCompiler.Factory factory
+	@Lazy
+	val TestReactionsCompiler compiler = createCompiler(
+		checkNotNull(factory, "The compiler factory was not injected yet!").setParameters [
+			reactionsOwner = this
+			compilationProjectDir = checkNotNull(compilationDir, "The compilation directory was not acquired yet!")
+		]
+	)
 
 	protected abstract def TestReactionsCompiler createCompiler(TestReactionsCompiler.Factory factory)
 
 	@BeforeAll
 	def void acquireCompilationTargetDir(@TestProject(variant="reactions compilation") Path compilationDir) {
-		compilationProjectDir = compilationDir
+		this.compilationDir = compilationDir
 	}
 
 	@Inject
 	def setCompilerFactory(TestReactionsCompiler.Factory factory) {
-		if (compiler === null) {
-			factory.setParameters [
-				reactionsOwner = this
-				it.setCompilationProjectDir = this.compilationProjectDir
-			]
-			compiler = createCompiler(factory)
-		}
+		this.factory = factory
 	}
 
 	override protected getChangePropagationSpecifications() {

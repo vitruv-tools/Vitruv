@@ -280,6 +280,7 @@ final class ExecutionTestCompiler {
 
 		def setParameters(Consumer<ExecutionTestCompiler.Parameters> configurer) {
 			configurer.accept(parameters)
+			this
 		}
 
 		def createCompiler(Consumer<ExecutionTestCompiler.Parameters> configurer) {
