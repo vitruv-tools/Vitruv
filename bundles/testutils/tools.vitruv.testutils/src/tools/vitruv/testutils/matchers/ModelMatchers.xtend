@@ -60,35 +60,43 @@ class ModelMatchers {
 		new ModelDeepEqualityMatcher(object, featureMatchers)
 	}
 
+	def static EqualityFeatureFilter ignoringFeatures(EStructuralFeature... features) {
+		new IgnoreFeatures(Set.of(features))
+	}
+
+	def static EqualityFeatureFilter ignoringAllFeaturesExcept(EStructuralFeature... features) {
+		new IncludeOnlyFeatures(Set.of(features))
+	}
+	
 	def static EqualityFeatureFilter ignoringFeatures(String... featureNames) {
-		return new IgnoreNamedFeatures(Set.of(featureNames))
+		new IgnoreNamedFeatures(Set.of(featureNames))
 	}
 
 	def static EqualityFeatureFilter ignoringAllFeaturesExcept(String... featureNames) {
-		return new IgnoreAllExceptNamedFeatures(Set.of(featureNames))
+		new IgnoreAllExceptNamedFeatures(Set.of(featureNames))
 	}
 
 	def static EqualityFeatureFilter ignoringFeaturesOfType(EClassifier... featureTypes) {
-		return new IgnoreTypedFeatures(Set.of(featureTypes))
+		new IgnoreTypedFeatures(Set.of(featureTypes))
 	}
 
 	def static EqualityFeatureFilter ignoringAllExceptFeaturesOfType(EClassifier... featureTypes) {
-		return new IgnoreAllExceptTypedFeatures(Set.of(featureTypes))
+		new IgnoreAllExceptTypedFeatures(Set.of(featureTypes))
 	}
-	
+
 	def static EqualityFeatureFilter on(EqualityFeatureFilter target, Class<? extends EObject> types) {
 		new TypeIncludingFeatureFilter(Set.of(types), target)
 	}
-	
+
 	def static EqualityFeatureFilter unlessOn(EqualityFeatureFilter target, Class<? extends EObject> types) {
 		new TypeExcludingFeatureFilter(Set.of(types), target)
 	}
 
 	def static Matcher<? super EObject> whose(EStructuralFeature feature, Matcher<?> featureMatcher) {
-		return new EObjectFeatureMatcher(feature, featureMatcher)
+		new EObjectFeatureMatcher(feature, featureMatcher)
 	}
 
 	def static Matcher<? super Object> isInstanceOf(EClassifier classifier) {
-		return new InstanceOfEClassifierMatcher(classifier)
+		new InstanceOfEClassifierMatcher(classifier)
 	}
 }

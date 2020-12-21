@@ -6,7 +6,17 @@ import java.util.Collection
 @Utility
 package class MatcherUtil {
 	def package static a(String string) {
-		(if (#['a', 'e', 'i', 'o'].contains(string.substring(0, 1).toLowerCase)) "an " else "a ") + string
+		switch (string.substring(0, 1).toLowerCase) {
+			case 'a',
+			case 'e',
+			case 'i',
+			case 'o': 'an '
+			default: 'a '
+		} + string
+	}
+
+	def package static plural(Collection<?> reference, String string) {
+		if (reference.size != 1) string + 's' else string
 	}
 
 	def static package <T> joinSemantic(StringBuilder builder, Collection<T> collection, String word,
