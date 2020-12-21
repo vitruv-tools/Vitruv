@@ -36,11 +36,11 @@ class AttributeMappingOperatorTest extends CommonalitiesExecutionTest {
 		assertThat(resourceAt('testid'.allElementTypes), contains(aet.Root => [
 			id = 'testid'
 			singleValuedPrimitiveTypeEAttribute = 123
-		], ignoringUnsetFeatures))
+		]))
 		assertThat(resourceAt('testid'.allElementTypes2), contains(aet2.Root2 => [
 			id2 = 'testid'
 			singleValuedPrimitiveTypeEAttribute2 = 123000
-		], ignoringUnsetFeatures))
+		], ignoringFeatures('multiValuedEAttribute2')))
 	}
 
 	// Value is divided by 1000 and rounded towards zero
@@ -56,11 +56,11 @@ class AttributeMappingOperatorTest extends CommonalitiesExecutionTest {
 		assertThat(resourceAt('testid'.allElementTypes2), contains(aet2.Root2 => [
 			id2 = 'testid'
 			singleValuedPrimitiveTypeEAttribute2 = 123500
-		], ignoringUnsetFeatures))
+		]))
 		assertThat(resourceAt('testid'.allElementTypes), contains(aet.Root => [
 			id = 'testid'
 			singleValuedPrimitiveTypeEAttribute = 123
-		], ignoringUnsetFeatures))
+		]))
 	}
 
 	@Test
@@ -75,11 +75,11 @@ class AttributeMappingOperatorTest extends CommonalitiesExecutionTest {
 		assertThat(resourceAt('testid'.allElementTypes), contains(aet.Root => [
 			id = 'testid'
 			singleValuedEAttribute = 324
-		], ignoringUnsetFeatures))
+		]))
 		assertThat(resourceAt('testid'.allElementTypes2), contains(aet2.Root2 => [
 			id2 = 'testid'
 			multiValuedEAttribute2 += #[3, 2, 4]
-		], ignoringUnsetFeatures))
+		]))
 	}
 
 	@Test
@@ -94,10 +94,10 @@ class AttributeMappingOperatorTest extends CommonalitiesExecutionTest {
 		assertThat(resourceAt('testid'.allElementTypes2), contains(aet2.Root2 => [
 			id2 = 'testid'
 			multiValuedEAttribute2 += #[3, 2, 4]
-		], ignoringUnsetFeatures))
+		]))
 		assertThat(resourceAt('testid'.allElementTypes), contains(aet.Root => [
 			id = 'testid'
 			singleValuedEAttribute = 324
-		], ignoringUnsetFeatures))
+		]))
 	}
 }
