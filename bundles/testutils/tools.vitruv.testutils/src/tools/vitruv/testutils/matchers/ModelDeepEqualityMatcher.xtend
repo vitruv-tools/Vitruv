@@ -117,8 +117,10 @@ package class ModelDeepEqualityMatcher extends TypeSafeMatcher<EObject> {
 		) {
 			if (object === null || seen.contains(object)) return PRINTED_NO_OUTPUT
 			seen += object
-			
+
 			val thisMatch = comparison.getMatch(object)
+			if (thisMatch === null) return PRINTED_NO_OUTPUT
+
 			printIterableElements(thisMatch.differences, MULTI_LINE) [ subTarget, difference |
 				subTarget.printDifference(context, difference)
 			] + object.eClass.EAllReferences.map [ reference |
