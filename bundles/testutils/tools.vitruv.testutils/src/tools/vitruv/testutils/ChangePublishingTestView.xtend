@@ -1,17 +1,14 @@
 package tools.vitruv.testutils
 
-import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.common.notify.Notifier
 import java.util.function.Consumer
 import java.nio.file.Path
 import org.eclipse.emf.ecore.resource.ResourceSet
-import org.eclipse.xtend.lib.annotations.Accessors
 import tools.vitruv.framework.uuid.UuidGeneratorAndResolverImpl
 import tools.vitruv.framework.change.recording.AtomicEmfChangeRecorder
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import tools.vitruv.framework.userinteraction.PredefinedInteractionResultProvider
 import static extension tools.vitruv.framework.util.ResourceSetUtil.withGlobalFactories
-import static extension tools.vitruv.framework.util.bridges.EcoreResourceBridge.loadOrCreateResource
 import tools.vitruv.framework.uuid.UuidGeneratorAndResolver
 import static com.google.common.base.Preconditions.checkState
 import tools.vitruv.framework.change.description.VitruviusChange
@@ -19,19 +16,16 @@ import java.util.List
 import java.util.LinkedList
 import tools.vitruv.framework.change.description.PropagatedChange
 import tools.vitruv.framework.change.description.VitruviusChangeFactory
-import static com.google.common.base.Preconditions.checkArgument
-import tools.vitruv.framework.util.bridges.EMFBridge
 import tools.vitruv.framework.vsum.VirtualModel
+import org.eclipse.xtend.lib.annotations.Delegate
 
 /**
- * A test view that will publish the changes created in it.
+ * A test view that will record and publish the changes created in it.
  */
 class ChangePublishingTestView implements TestView {
 	val ResourceSet resourceSet
-	val Path persistenceDirectory
-	@Accessors
-	val TestUserInteraction userInteraction
-	val UriMode uriMode
+	@Delegate
+	val TestView delegate
 	val AtomicEmfChangeRecorder changeRecorder
 	val List<(VitruviusChange)=>List<PropagatedChange>> changeProcessors = new LinkedList()
 
@@ -54,10 +48,8 @@ class ChangePublishingTestView implements TestView {
 		UriMode uriMode,
 		UuidGeneratorAndResolver parentResolver
 	) {
-		this.resourceSet = new ResourceSetImpl().withGlobalFactories()
-		this.persistenceDirectory = persistenceDirectory
-		this.uriMode = uriMode
-		this.userInteraction = new TestUserInteraction(interactionProvider)
+		resourceSet = new ResourceSetImpl().withGlobalFactories()
+		delegate = new BasicTestView(resourceSet, persistenceDirectory, interactionProvider, uriMode)
 		val uuidResolver = new UuidGeneratorAndResolverImpl(parentResolver, resourceSet, true)
 		changeRecorder = new AtomicEmfChangeRecorder(uuidResolver)
 		changeRecorder.beginRecording()
@@ -79,51 +71,28 @@ class ChangePublishingTestView implements TestView {
 	}
 
 	override close() {
+		delegate.close()
 		changeRecorder.stopRecording()
-	}
-
-	override resourceAt(URI modelUri) {
-		synchronized (resourceSet) {
-			resourceSet.loadOrCreateResource(modelUri)
-		}
-	}
-
-	override <T> T from(Class<T> clazz, URI modelUri) {
-		return from(clazz, resourceSet.getResource(modelUri, true))
 	}
 
 	override <T extends Notifier> T record(T notifier, Consumer<T> consumer) {
 		checkState(changeRecorder.recording, "This test view has already been closed!")
 
-		changeRecorder.addToRecording(notifier)
-		consumer.accept(notifier)
-		changeRecorder.removeFromRecording(notifier)
-
+		try {
+			changeRecorder.addToRecording(notifier)
+			consumer.accept(notifier)
+		} finally {
+			changeRecorder.removeFromRecording(notifier)
+		}
 		return notifier
 	}
 
 	override <T extends Notifier> List<PropagatedChange> propagate(T notifier, Consumer<T> consumer) {
 		notifier.record(consumer)
-		saveAndPropagateChanges()
-	}
-
-	override getUri(Path viewRelativePath) {
-		checkArgument(viewRelativePath !== null, "The viewRelativePath must not be null!")
-		checkArgument(!viewRelativePath.isEmpty, "The viewRelativePath must not be empty!")
-		return switch (uriMode) {
-			case PLATFORM_URIS:
-				// platform URIs must always use '/'
-				EMFBridge.createURI(persistenceDirectory.resolve(viewRelativePath).join('/'))
-			case FILE_URIS:
-				EMFBridge.getEmfFileUriForFile(persistenceDirectory.resolve(viewRelativePath).toFile())
-		}
-	}
-
-	def private List<PropagatedChange> saveAndPropagateChanges() {
 		changeRecorder.endRecording()
 		val compositeChange = VitruviusChangeFactory.instance.createCompositeChange(changeRecorder.changes)
+		compositeChange.changedResource?.save(emptyMap())
 		checkState(compositeChange.validate, "The recorded change set is not valid!")
-		compositeChange.changedResource?.save(emptyMap)
 		val propagationResult = changeProcessors.flatMap[apply(compositeChange)].toList
 		renewResourceCache()
 		changeRecorder.beginRecording()
