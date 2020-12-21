@@ -16,6 +16,7 @@ import static com.google.common.base.Preconditions.checkArgument
 import tools.vitruv.framework.util.bridges.EMFBridge
 import static extension tools.vitruv.framework.util.ResourceSetUtil.withGlobalFactories
 import static extension tools.vitruv.framework.util.bridges.EcoreResourceBridge.loadOrCreateResource
+import tools.vitruv.framework.userinteraction.UserInteractionFactory
 
 /**
  * A minimal test view that gives access to resources, but does not record any changes.
@@ -26,6 +27,15 @@ class BasicTestView implements TestView {
 	@Accessors
 	val TestUserInteraction userInteraction
 	val UriMode uriMode
+
+	/**
+	 * Creates a test view that will store its persisted resources in the provided {@code persistenceDirectory},
+	 * and use the provided {@code uriMode}.
+	 */
+	new(Path persistenceDirectory, UriMode uriMode) {
+		this(persistenceDirectory, UserInteractionFactory.instance.createPredefinedInteractionResultProvider(null),
+			uriMode)
+	}
 
 	/**
 	 * Creates a test view that will store its persisted resources in the provided {@code persistenceDirectory},
