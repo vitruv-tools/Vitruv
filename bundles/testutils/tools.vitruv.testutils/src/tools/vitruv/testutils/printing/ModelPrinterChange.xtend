@@ -10,10 +10,13 @@ import org.junit.jupiter.api.^extension.ExtensionContext.Namespace
 import java.lang.reflect.AnnotatedElement
 import tools.vitruv.testutils.printing.PrintIdProvider
 import java.util.List
-import tools.vitruv.testutils.printing.DefaultModelPrinter
 import static com.google.common.base.Preconditions.checkArgument
-import static tools.vitruv.testutils.printing.PrintResult.PRINTED
+import static tools.vitruv.testutils.printing.PrintResult.*
 import static extension org.junit.platform.commons.support.AnnotationSupport.findAnnotation
+import org.eclipse.emf.ecore.EObject
+import org.eclipse.emf.ecore.EStructuralFeature
+import java.util.Collection
+import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
 
 /**
  * JUnit extension that enables {@link UseModelPrinter}.
@@ -45,43 +48,78 @@ class ModelPrinterChange implements BeforeAllCallback, BeforeEachCallback {
 			} catch (RuntimeException e) {
 				throw new IllegalStateException('''Failed to create an instance of «printerClass»!''', e)
 			}
-		].toList
-		context.getStore(namespace).put(ModelPrinter, new ModelPrintingGuard(ModelPrinting.printer))
-		ModelPrinting.printer = new MultiplePrintersPrinter(printers)
+		]
+		val currentPrinter = ModelPrinting.printer
+		context.getStore(namespace).put(ModelPrinter, new ModelPrintingGuard(currentPrinter))
+		ModelPrinting.printer = new MultiplePrintersPrinter(printers, currentPrinter)
 	}
 
 	private static class MultiplePrintersPrinter implements ModelPrinter {
-		val List<? extends ModelPrinter> printers
-		val ModelPrinter fallback
+		val List<ModelPrinter> printers
 
-		new(List<? extends ModelPrinter> printers) {
-			this.printers = printers.map[withSubPrinter(this)]
-			this.fallback = new DefaultModelPrinter(this)
+		new(List<? extends ModelPrinter> printers, ModelPrinter fallback) {
+			this.printers = (printers + List.of(fallback)).mapFixed[withSubPrinter(this)]
 		}
-		
-		private new(List<? extends ModelPrinter> printers, ModelPrinter fallback) {
+
+		private new(List<ModelPrinter> printers) {
 			this.printers = printers
-			this.fallback = fallback
 		}
 
 		override printObject(PrintTarget target, PrintIdProvider idProvider, Object object) {
-			if (printers.exists[printObject(target, idProvider, object) == PRINTED]) {
-				PRINTED
-			} else {
-				fallback.printObject(target, idProvider, object)
-			}
+			useFirstResponsible[printObject(target, idProvider, object)]
 		}
 
 		override printObjectShortened(PrintTarget target, PrintIdProvider idProvider, Object object) {
-			if (printers.exists[printObjectShortened(target, idProvider, object) == PRINTED]) {
-				PRINTED
-			} else {
-				fallback.printObjectShortened(target, idProvider, object)
-			}
+			useFirstResponsible[printObjectShortened(target, idProvider, object)]
 		}
-		
+
+		override PrintResult printFeature(
+			PrintTarget target,
+			PrintIdProvider idProvider,
+			EObject object,
+			EStructuralFeature feature
+		) {
+			useFirstResponsible[printFeature(target, idProvider, object, feature)]
+		}
+
+		override printFeatureValueList(
+			PrintTarget target,
+			PrintIdProvider idProvider,
+			EStructuralFeature feature,
+			Collection<?> valueList
+		) {
+			useFirstResponsible[printFeatureValueList(target, idProvider, feature, valueList)]
+		}
+
+		override printFeatureValueSet(
+			PrintTarget target,
+			PrintIdProvider idProvider,
+			EStructuralFeature feature,
+			Collection<?> valueSet
+		) {
+			useFirstResponsible[printFeatureValueSet(target, idProvider, feature, valueSet)]
+		}
+
+		override PrintResult printFeatureValue(
+			PrintTarget target,
+			PrintIdProvider idProvider,
+			EStructuralFeature feature,
+			Object value
+		) {
+			useFirstResponsible[printFeatureValue(target, idProvider, feature, value)]
+		}
+
 		override withSubPrinter(ModelPrinter subPrinter) {
-			new MultiplePrintersPrinter(printers.map[withSubPrinter(subPrinter)], fallback.withSubPrinter(subPrinter))
+			new MultiplePrintersPrinter(printers.mapFixed[withSubPrinter(subPrinter)])
+		}
+
+		def private PrintResult useFirstResponsible((ModelPrinter)=>PrintResult action) {
+			for (printer : printers) {
+				val result = action.apply(printer)
+				if (result != NOT_RESPONSIBLE) return result
+			}
+			throw new IllegalStateException(
+				'Could not find a responsible printer! Please make sure that you configure a suitable fallback!')
 		}
 	}
 
