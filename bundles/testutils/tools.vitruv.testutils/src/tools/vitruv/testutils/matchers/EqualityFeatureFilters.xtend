@@ -1,11 +1,40 @@
 package tools.vitruv.testutils.matchers
 
 import org.eclipse.xtend.lib.annotations.FinalFieldsConstructor
+
 import java.util.Set
 import org.eclipse.emf.ecore.EStructuralFeature
 import org.eclipse.emf.ecore.EClassifier
-import static extension tools.vitruv.testutils.matchers.MatcherUtil.joinSemantic
+import static extension tools.vitruv.testutils.matchers.MatcherUtil.*
 import org.eclipse.emf.ecore.EObject
+
+@FinalFieldsConstructor
+package class IgnoreFeatures implements EqualityFeatureFilter {
+	val Set<EStructuralFeature> features
+
+	override includeFeature(EObject object, EStructuralFeature feature) {
+		!features.contains(feature)
+	}
+
+	override describeTo(extension StringBuilder builder) {
+		append('ignored the ').append(plural(features, 'feature')).append(' ') //
+		.joinSemantic(features, 'and')[append(EContainingClass.name).append('.').append(name)]
+	}
+}
+
+@FinalFieldsConstructor
+package class IncludeOnlyFeatures implements EqualityFeatureFilter {
+	val Set<EStructuralFeature> features
+
+	override includeFeature(EObject object, EStructuralFeature feature) {
+		features.contains(feature)
+	}
+
+	override describeTo(extension StringBuilder builder) {
+		append('considered only the ').append(plural(features, 'feature')).append(' ') //
+		.joinSemantic(features, 'and')[append(EContainingClass.name).append('.').append(name)]
+	}
+}
 
 @FinalFieldsConstructor
 package class IgnoreNamedFeatures implements EqualityFeatureFilter {

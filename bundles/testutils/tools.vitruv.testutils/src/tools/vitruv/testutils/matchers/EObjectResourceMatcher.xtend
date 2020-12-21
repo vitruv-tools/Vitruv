@@ -16,7 +16,7 @@ package class EObjectResourceMatcher extends TypeSafeMatcher<EObject> {
 	}
 
 	override describeTo(Description description) {
-		description.appendText('''an EObject that is contained in the resource at ''').appendValue(expectedResource.URI)
+		description.appendText('an EObject that is contained in the resource at ').appendValue(expectedResource.URI)
 	}
 
 	override describeMismatchSafely(EObject item, Description mismatchDescription) {
