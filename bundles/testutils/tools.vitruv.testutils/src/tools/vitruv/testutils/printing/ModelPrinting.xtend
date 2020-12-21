@@ -14,7 +14,7 @@ final class ModelPrinting {
 
 	@Accessors
 	static var ModelPrinter printer = new DefaultModelPrinter()
-
+	
 	def static appendModelValue(Description description, Object object, PrintIdProvider idProvider) {
 		description.applyAsPrintTarget [
 			printValue(object) [ target, element |

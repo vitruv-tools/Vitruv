@@ -8,11 +8,11 @@ import org.eclipse.emf.ecore.EStructuralFeature
 import org.eclipse.emf.ecore.resource.Resource
 import org.hamcrest.Matcher
 import static com.google.common.base.Preconditions.checkArgument
-import java.util.HashSet
+import java.util.Set
 
 @Utility
 class ModelMatchers {
-	def static Matcher<? super Resource> containsModelOf(Resource expected, FeatureMatcher... featureMatchers) {
+	def static Matcher<? super Resource> containsModelOf(Resource expected, DescribedFeatureFilter... featureFilters) {
 		checkArgument(
 			expected.contents.size > 0,
 			'The resource to compare with must contain a root element, but was empty: ' + expected.URI
@@ -22,11 +22,11 @@ class ModelMatchers {
 			'''The resource to compare with must contain only one root element, but contained «expected.contents.size»: «expected.URI»'''
 		)
 
-		contains(expected.contents.get(0))
+		contains(expected.contents.get(0), featureFilters)
 	}
 
-	def static Matcher<? super Resource> contains(EObject root, FeatureMatcher... featureMatchers) {
-		contains(equalsDeeply(root, featureMatchers))
+	def static Matcher<? super Resource> contains(EObject root, DescribedFeatureFilter... featureFilters) {
+		contains(equalsDeeply(root, featureFilters))
 	}
 
 	def static Matcher<? super Resource> contains(Matcher<? super EObject> rootMatcher) {
@@ -53,31 +53,24 @@ class ModelMatchers {
 		new EObjectResourceMatcher(resource)
 	}
 
-	def static Matcher<? super EObject> equalsDeeply(EObject object, FeatureMatcher... featureMatchers) {
+	def static Matcher<? super EObject> equalsDeeply(EObject object, DescribedFeatureFilter... featureMatchers) {
 		new ModelDeepEqualityMatcher(object, featureMatchers)
 	}
 
-	def static FeatureMatcher ignoringFeatures(String... featureNames) {
-		return new IgnoreNamedFeatures(new HashSet(featureNames))
+	def static DescribedFeatureFilter ignoringFeatures(String... featureNames) {
+		return new IgnoreNamedFeatures(Set.of(featureNames))
 	}
 
-	def static FeatureMatcher ignoringAllFeaturesExcept(String... featureNames) {
-		return new IgnoreAllExceptNamedFeatures(new HashSet(featureNames))
+	def static DescribedFeatureFilter ignoringAllFeaturesExcept(String... featureNames) {
+		return new IgnoreAllExceptNamedFeatures(Set.of(featureNames))
 	}
 
-	/**
-	 * ignores features that are unset in the expected (!) object
-	 */
-	def static FeatureMatcher ignoringUnsetFeatures() {
-		return new IgnoreUnsetFeatures()
+	def static DescribedFeatureFilter ignoringFeaturesOfType(EClassifier... featureTypes) {
+		return new IgnoreTypedFeatures(Set.of(featureTypes))
 	}
 
-	def static FeatureMatcher ignoringFeaturesOfType(EClassifier featureType) {
-		return new IgnoreTypedFeatures(featureType)
-	}
-
-	def static FeatureMatcher ignoringAllExceptFeaturesOfType(EClassifier... featureTypes) {
-		return new IgnoreAllExceptTypedFeatures(featureTypes)
+	def static DescribedFeatureFilter ignoringAllExceptFeaturesOfType(EClassifier... featureTypes) {
+		return new IgnoreAllExceptTypedFeatures(Set.of(featureTypes))
 	}
 
 	def static Matcher<? super EObject> whose(EStructuralFeature feature, Matcher<?> featureMatcher) {

@@ -1,278 +1,137 @@
 package tools.vitruv.testutils.matchers
 
-import org.eclipse.xtend.lib.annotations.FinalFieldsConstructor
+import org.eclipse.emf.compare.AttributeChange
+import org.eclipse.emf.compare.Comparison
+import org.eclipse.emf.compare.Diff
+import org.eclipse.emf.compare.EMFCompare
+import org.eclipse.emf.compare.ReferenceChange
+import org.eclipse.emf.compare.scope.DefaultComparisonScope
 import org.eclipse.emf.ecore.EObject
-import java.util.Deque
-import java.util.function.Consumer
-import org.hamcrest.Description
-import java.util.ArrayDeque
-import org.hamcrest.TypeSafeMatcher
-import java.util.Map
-import java.util.HashMap
 import org.eclipse.emf.ecore.EStructuralFeature
+import org.eclipse.xtend.lib.annotations.FinalFieldsConstructor
+import org.hamcrest.Description
+import org.hamcrest.TypeSafeMatcher
+import tools.vitruv.testutils.printing.HamcrestDescriptionPrintTarget
+import tools.vitruv.testutils.printing.PrintIdProvider
+import tools.vitruv.testutils.printing.PrintResult
+import static tools.vitruv.testutils.printing.PrintResult.*
+import tools.vitruv.testutils.printing.PrintTarget
+
+import static tools.vitruv.testutils.matchers.MatcherUtil.a
+import static tools.vitruv.testutils.printing.ModelPrinting.getPrinter
+import static tools.vitruv.testutils.printing.PrintMode.*
+
 import static extension tools.vitruv.testutils.printing.ModelPrinting.*
-import static org.junit.jupiter.api.Assertions.*
-import org.eclipse.emf.ecore.InternalEObject
-import java.util.Collection
+import static extension tools.vitruv.testutils.printing.PrintResultExtension.*
+import org.eclipse.emf.compare.DifferenceKind
+import java.util.Set
+import java.util.HashSet
+import org.eclipse.emf.compare.diff.DefaultDiffEngine
+import org.eclipse.emf.compare.diff.DiffBuilder
+import org.eclipse.emf.ecore.EReference
+import org.eclipse.emf.compare.diff.FeatureFilter
+import org.eclipse.emf.compare.Match
+import org.eclipse.emf.ecore.EAttribute
+import java.util.List
 
 @FinalFieldsConstructor
 package class ModelDeepEqualityMatcher extends TypeSafeMatcher<EObject> {
 	package val EObject expectedObject
-	var Deque<String> navigationStack = new ArrayDeque()
-	var Consumer<Description> mismatch
-	// Bidirectional mapping between objects which have been compared and considered equal.
-	// Note that each object can be considered equal to at most one other object. This ensures that two objects are
-	// considered structurally equal only if the graphs formed by all their referenced objects have the same topology.
-	// This is similar to EMF's implementation of EcoreUtil.equals(EObject, EObject).
-	var Map<Object, Object> objectMapping = new HashMap
-	val FeatureMatcher[] featureMatchers
+	val List<DescribedFeatureFilter> featureFilters
+	var Comparison comparison
+	val idProvider = new PrintIdProvider
 
 	override matchesSafely(EObject item) {
-		return expectedObject.equalsDeeply(item, false)
-	}
-
-	def private findFeatureChecker(EObject expectedObject, EStructuralFeature feature) {
-		for (featureChecker : featureMatchers) {
-			if (featureChecker.isForFeature(expectedObject, feature)) {
-				return featureChecker
-			}
-		}
-		return new FeatureMatcher() {
-			override isForFeature(EObject expectedObject, EStructuralFeature feature) {
-				true
-			}
-
-			override getMismatch(Object expectedValue, Object itemValue) {
-				if (expectedValue.equalsDeeply(itemValue, feature.ordered)) {
-					return null
-				} else {
-					return mismatch
-				}
-			}
-
-		}
-	}
-
-	private def mapObjects(EObject expected, EObject item) {
-		objectMapping.put(expected, item)
-		objectMapping.put(item, expected)
-	}
-
-	private def unmapObjects(EObject expected, EObject item) {
-		objectMapping.remove(expected)
-		objectMapping.remove(item)
-	}
-
-	// The comparison is done similarly to EMF's implementation of EcoreUtil.equals(EObject, EObject).
-	// The difference is that we issue additional diagnostic messages if the object comparison fails at any point.
-	def private dispatch boolean equalsDeeply(EObject expected, EObject item, boolean ordered) {
-		// Null comparisons:
-		if (expected === null) {
-			if (item === null) {
-				return true
-			} else {
-				equalityMismatch(expected, item)
-				return false
-			}
-		}
-		assertTrue(expected !== null)
-		if (item === null) {
-			equalityMismatch(expected, item)
-			return false
-		}
-
-		// Check if the expected object has already been compared:
-		val mappedItem = objectMapping.get(expected)
-		if (mappedItem === item) {
-			return true
-		} else if (mappedItem !== null) {
-			// The object has already been mapped to some other object.
-			mismatch = [
-				appendText("did not match the topologically expected object. Expected: ").appendModelValue(mappedItem).
-					appendText(" (mapped and equal to ").appendModelValue(expected).appendText(") but found ").
-					appendModelValue(item).appendText(".")
-			]
-			return false
-		}
-
-		// Check if the given item object has already been compared:
-		val mappedExpected = objectMapping.get(item)
-		if (mappedExpected === expected) {
-			return true
-		} else if (mappedExpected !== null) {
-			// The object has already been mapped to some other object.
-			mismatch = [
-				appendText(
-					"has already been compared and mapped to some other object in the expected model tree. Expected ").
-					appendModelValue(expected).appendText(" but the object ").appendModelValue(item).appendText(
-						" has already been mapped to ").appendModelValue(mappedExpected).appendText(".")
-			]
-			return false
-		}
-
-		// Check if objects are the same instance:
-		if (expected === item) {
-			mapObjects(expected, item)
-			return true
-		}
-
-		// Compare proxies:
-		if (expected.eIsProxy()) {
-			// item has to be a proxy as well and their URIs need to match:
-			if ((expected as InternalEObject).eProxyURI().equals((item as InternalEObject).eProxyURI())) {
-				mapObjects(expected, item)
-				return true
-			} else {
-				mismatch = [
-					appendText("did not match the expected proxy. Expected ").appendModelValue(expected).appendText(
-						" but found ").appendModelValue(item).appendText(".")
-				]
-				return false
-			}
-		} else if (item.eIsProxy) {
-			mismatch = [
-				appendText("is an unexpected proxy. Expected ").appendModelValue(expected).appendText(" but found ").
-					appendModelValue(item).appendText(".")
-			]
-			return false
-		}
-
-		// Compare classes:
-		if (expected.eClass !== item.eClass) {
-			mismatch = [
-				appendText("had the wrong EClass. Expected ").appendModelValue(expected.eClass.name).appendText(
-					" but found ").appendModelValue(item.eClass.name).appendText(".")
-			]
-			return false
-		}
-
-		// Consider the objects to be equal for now. This helps with situations in which the below feature comparisons
-		// recursively try to compare the same objects again.
-		mapObjects(expected, item)
-
-		// Compare feature values:
-		for (feature : expected.eClass.EAllStructuralFeatures.filter[!derived]) {
-			navigationStack.push('''.«feature.name»''')
-			val matcherMismatch = findFeatureChecker(expected, feature).getMismatch(expected.eGet(feature),
-				item.eGet(feature))
-			if (matcherMismatch !== null) {
-				mismatch = matcherMismatch
-				unmapObjects(expected, item)
-				return false;
-			}
-			navigationStack.pop()
-		}
-		return true;
-	}
-
-	def private dispatch boolean equalsDeeply(Collection<?> expected, Collection<?> item, boolean ordered) {
-		if (expected.size() > item.size()) {
-			mismatch = [
-				appendText("did not contain enough elements. Expected ").appendValue(expected.size).appendText(
-					" elements but found only ").appendValue(item.size).appendText(".")
-			]
-			return false;
-		} else if (expected.size() < item.size()) {
-			mismatch = [
-				appendText("contained too many elements. Expected ").appendValue(expected.size).appendText(
-					" elements but found ").appendValue(item.size).appendText(".")
-			]
-			return false;
-		} else {
-			var count = 0;
-			val expectedIter = expected.iterator()
-			val itemOrdered = if (ordered) item else item.iterator.toList
-			var itemIter = itemOrdered.iterator()
-			var usedItemIndeces = if (ordered) null else newBooleanArrayOfSize(itemOrdered.size)
-
-			while (expectedIter.hasNext()) {
-				navigationStack.push('''[«count»]''')
-				val expectedElement = expectedIter.next
-				val actualElement = itemIter.next
-				// Capture the current navigation stack:
-				val originalNavigationStack = new ArrayDeque(navigationStack)
-				if (!expectedElement.equalsDeeply(actualElement, false)) {
-					if (!ordered) {
-						// If not ordered, retry with all elements not matched yet.
-						if (!itemOrdered.containsDeepEqual(expectedElement, usedItemIndeces)) {
-							val notFoundCount = count
-							// Restore the original navigation stack:
-							this.navigationStack = originalNavigationStack
-							navigationStack.pop()
-							mismatch = [
-								appendText('''did not contain an element equal to the «notFoundCount». expected element ''').
-									appendValue(expectedElement).appendText('.')
-							]
-							return false
-						} else {
-							// Restore the original navigation stack and continue:
-							navigationStack = originalNavigationStack
-						}
-					} else {
-						return false
+		comparison = EMFCompare.builder.setDiffEngine(new DefaultDiffEngine(new DiffBuilder) {
+			override createFeatureFilter() {
+				new FeatureFilter() {
+					override isIgnoredReference(Match match, EReference reference) {
+						featureFilters.exists[!includeFeature(reference)] || super.isIgnoredReference(match, reference)
 					}
-				} else if (!ordered) {
-					usedItemIndeces.set(count, true)
+
+					override isIgnoredAttribute(EAttribute attribute) {
+						featureFilters.exists[!includeFeature(attribute)] || super.isIgnoredAttribute(attribute)
+					}
 				}
-				navigationStack.pop()
-				count++
 			}
-		}
-		return true
-	}
-
-	def private containsDeepEqual(Collection<?> unordered, Object expected, boolean[] usedItemIndeces) {
-		var itemCount = 0
-		val itemIter = unordered.iterator()
-		while (itemIter.hasNext()) {
-			if (itemIter.next.equalsDeeply(expected, false) && !usedItemIndeces.get(itemCount)) {
-				usedItemIndeces.set(itemCount, true)
-				return true
-			}
-			itemCount++
-		}
-		return false
-	}
-
-	def private dispatch boolean equalsDeeply(Object expected, Object item, boolean ordered) {
-		if (expected != item) {
-			equalityMismatch(expected, item)
-			return false
-		}
-		return true
-	}
-
-	def private dispatch boolean equalsDeeply(Void expected, Object item, boolean ordered) {
-		equalityMismatch(expected, item)
-		false
-	}
-
-	def private dispatch boolean equalsDeeply(Object expected, Void item, boolean ordered) {
-		equalityMismatch(expected, item)
-		false
-	}
-
-	def private dispatch boolean equalsDeeply(Void expected, Void item, boolean ordered) {
-		true
-	}
-
-	def private equalityMismatch(Object expected, Object item) {
-		mismatch = [
-			appendText("had the wrong value. Expected ").appendModelValue(expected).appendText(" but found ").
-				appendModelValue(item)
-		]
+		}).build.compare(new DefaultComparisonScope(expectedObject, item, null))
+		return comparison.differences.isEmpty
 	}
 
 	override describeTo(Description description) {
-		description.appendText('''a «expectedObject.eClass.name» deeply equal to ''').appendModelValue(expectedObject)
+		description.appendText(a(expectedObject.eClass.name)).appendText(' deeply equal to ').
+			appendModelValue(expectedObject, idProvider)
 	}
 
 	override describeMismatchSafely(EObject item, Description mismatchDescription) {
-		if (navigationStack.isEmpty) {
-			mismatchDescription.appendText('''The «item.eClass.name» ''')
-		} else {
-			mismatchDescription.appendText('''The value at object«navigationStack.descendingIterator.join» ''')
+		comparison.getMatch(expectedObject)
+		mismatchDescription.appendText('found the following differences: ')
+		new ComparisonPrinter(idProvider, comparison) //
+		.printDifferenceRecursively(new HamcrestDescriptionPrintTarget(mismatchDescription), expectedObject)
+		mismatchDescription.appendText('for object ').appendModelValue(item, idProvider)
+		if (featureFilters.length > 0) {
+			mismatchDescription.appendText(System.lineSeparator).appendText(System.lineSeparator) //
+			.appendText('(matching ').appendText(featureFilters.join('; ')[describe()]).appendText(')')
 		}
-		mismatch.accept(mismatchDescription)
+	}
+
+	@FinalFieldsConstructor
+	private static class ComparisonPrinter {
+		val PrintIdProvider idProvider
+		val Comparison comparison
+		val Set<EObject> seen = new HashSet
+
+		def private PrintResult printDifferenceRecursively(PrintTarget target, EObject object) {
+			target.printDifferenceRecursively("", object)
+		}
+
+		def private PrintResult printDifferenceRecursively(
+			extension PrintTarget target,
+			String context,
+			EObject object
+		) {
+			if (seen.contains(object)) return PRINTED_NO_OUTPUT
+
+			val thisMatch = comparison.getMatch(object)
+			printIterableElements(thisMatch.differences, MULTI_LINE) [ subTarget, difference |
+				subTarget.printDifference(context, difference)
+			] + object.eClass.EAllReferences.map [ reference |
+				val referenceContext = context + '.' + reference.name
+				if (reference.isMany) {
+					val format = if (reference.isOrdered) "{%d}" else "[%d]"
+					(object.eGet(reference) as Iterable<? extends EObject>).indexed.map [
+						target.printDifferenceRecursively(referenceContext + String.format(format, key), value)
+					].combine()
+				} else {
+					target.printDifferenceRecursively(referenceContext, object.eGet(reference) as EObject)
+				}
+			].combine()
+		}
+
+		def private PrintResult printDifference(extension PrintTarget target, String context, Diff difference) {
+			print('• ') + switch (difference) {
+				AttributeChange:
+					target.printFeatureDifference(difference.attribute, context, difference, difference.value)
+				ReferenceChange:
+					target.printFeatureDifference(difference.reference, context, difference, difference.value)
+				default:
+					printer.printObject(target, idProvider, difference)
+			}
+		}
+
+		def private PrintResult printFeatureDifference(extension PrintTarget target, EStructuralFeature feature,
+			String context, Diff difference, Object value) {
+			print(context) + print('.') + print(feature.name) + print(' ') + print(difference.kind.verb) + print(' ') //
+			+ printer.printObject(target, idProvider, value)
+		}
+
+		def private String getVerb(DifferenceKind kind) {
+			switch (kind) {
+				case ADD: "contained the unexpected value"
+				case DELETE: "was missing the value"
+				case CHANGE: "had the wrong value"
+				case MOVE: "was moved"
+			}
+		}
 	}
 }
