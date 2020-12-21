@@ -13,6 +13,7 @@ import java.util.List
 import tools.vitruv.testutils.printing.DefaultModelPrinter
 import static com.google.common.base.Preconditions.checkArgument
 import static tools.vitruv.testutils.printing.PrintResult.PRINTED
+import static extension org.junit.platform.commons.support.AnnotationSupport.findAnnotation
 
 /**
  * JUnit extension that enables {@link UseModelPrinter}.
@@ -33,10 +34,10 @@ class ModelPrinterChange implements BeforeAllCallback, BeforeEachCallback {
 	}
 
 	def private installPrintersFrom(AnnotatedElement settingsSource, ExtensionContext context) {
-		val annotations = settingsSource.getAnnotationsByType(UseModelPrinter)
-		if (annotations.isEmpty) return;
+		val annotation = settingsSource.findAnnotation(UseModelPrinter)
+		if (!annotation.isPresent) return;
 
-		val printers = annotations.flatMap[value.toList].map [ printerClass |
+		val printers = annotation.get.value.map [ printerClass |
 			val constructor = printerClass.constructors.findFirst[it.parameterCount == 0]
 			checkArgument(constructor !== null, '''«printerClass» has no zero-arg constructor!''')
 			try {
@@ -49,21 +50,38 @@ class ModelPrinterChange implements BeforeAllCallback, BeforeEachCallback {
 		ModelPrinting.printer = new MultiplePrintersPrinter(printers)
 	}
 
-	@FinalFieldsConstructor
 	private static class MultiplePrintersPrinter implements ModelPrinter {
 		val List<? extends ModelPrinter> printers
-		val fallback = new DefaultModelPrinter
+		val ModelPrinter fallback
 
-		override setIdProvider(PrintIdProvider provider) {
-			printers.forEach[idProvider = provider]
+		new(List<? extends ModelPrinter> printers) {
+			this.printers = printers.map[withSubPrinter(this)]
+			this.fallback = new DefaultModelPrinter(this)
+		}
+		
+		private new(List<? extends ModelPrinter> printers, ModelPrinter fallback) {
+			this.printers = printers
+			this.fallback = fallback
 		}
 
-		override printObject(PrintTarget target, Object object) {
-			if (printers.exists[printObject(target, object) == PRINTED]) {
+		override printObject(PrintTarget target, PrintIdProvider idProvider, Object object) {
+			if (printers.exists[printObject(target, idProvider, object) == PRINTED]) {
 				PRINTED
 			} else {
-				fallback.printObject(target, object)
+				fallback.printObject(target, idProvider, object)
 			}
+		}
+
+		override printObjectShortened(PrintTarget target, PrintIdProvider idProvider, Object object) {
+			if (printers.exists[printObjectShortened(target, idProvider, object) == PRINTED]) {
+				PRINTED
+			} else {
+				fallback.printObjectShortened(target, idProvider, object)
+			}
+		}
+		
+		override withSubPrinter(ModelPrinter subPrinter) {
+			new MultiplePrintersPrinter(printers.map[withSubPrinter(subPrinter)], fallback.withSubPrinter(subPrinter))
 		}
 	}
 

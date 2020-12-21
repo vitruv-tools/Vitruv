@@ -32,4 +32,12 @@ class PrintResultExtension {
 			}
 		}
 	}
+
+	static def appendIfPrinted(PrintResult result, ()=>PrintResult printer) {
+		switch (result) {
+			case PRINTED: result + printer.apply()
+			case PRINTED_NO_OUTPUT,
+			case NOT_RESPONSIBLE: result
+		}
+	}
 }

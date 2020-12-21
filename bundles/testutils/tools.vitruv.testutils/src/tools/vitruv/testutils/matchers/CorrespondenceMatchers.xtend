@@ -15,6 +15,7 @@ import org.hamcrest.SelfDescribing
 import org.hamcrest.TypeSafeMatcher
 import static extension tools.vitruv.testutils.printing.ModelPrinting.appendModelValueSet
 import java.util.Set
+import static tools.vitruv.testutils.printing.PrintMode.*
 
 @Utility
 class CorrespondenceMatchers {
@@ -166,7 +167,7 @@ package class NoCorrespondenceMatcher extends TypeSafeMatcher<EObject> {
 	}
 
 	override describeMismatchSafely(EObject item, Description mismatchDescription) {
-		mismatchDescription.appendText("found correspondences: ").appendModelValueSet(correspondences)
+		mismatchDescription.appendText("found correspondences: ").appendModelValueSet(correspondences, MULTI_LINE)
 	}
 
 	override describeTo(Description description) {
@@ -191,7 +192,7 @@ package class HasExactlyOneCorrespondenceMatcher extends TypeSafeMatcher<EObject
 			mismatchDescription.appendText("found no such correspondences")
 		} else if (correspondences.size > 1) {
 			mismatchDescription.appendText("found more than one such correspondence: ").
-				appendModelValueSet(correspondences)
+				appendModelValueSet(correspondences, MULTI_LINE)
 		} else {
 			correspondenceMatcher.describeMismatch(correspondences.get(0), mismatchDescription)
 		}

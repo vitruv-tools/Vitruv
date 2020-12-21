@@ -33,8 +33,14 @@ import static tools.vitruv.testutils.matchers.MatcherUtil.a
 @Utility
 class ModelMatchers {
 	def static Matcher<? super Resource> containsModelOf(Resource expected, FeatureMatcher... featureMatchers) {
-		checkArgument(expected.contents.size > 0, 'The resource to compare with must contain a root element!')
-		checkArgument(expected.contents.size < 2, 'The resource to compare with must contain only one root element!')
+		checkArgument(
+			expected.contents.size > 0,
+			'The resource to compare with must contain a root element, but was empty: ' + expected.URI
+		)
+		checkArgument(
+			expected.contents.size < 2,
+			'''The resource to compare with must contain only one root element, but contained «expected.contents.size»: «expected.URI»'''
+		)
 
 		contains(expected.contents.get(0))
 	}
@@ -271,7 +277,7 @@ package class ModelTreeEqualityMatcher extends TypeSafeMatcher<EObject> {
 		} else if (mappedItem !== null) {
 			// The object has already been mapped to some other object.
 			mismatch = [
-				appendText("did not match the topologically expected object. Expected ").appendModelValue(mappedItem).
+				appendText("did not match the topologically expected object. Expected: ").appendModelValue(mappedItem).
 					appendText(" (mapped and equal to ").appendModelValue(expected).appendText(") but found ").
 					appendModelValue(item).appendText(".")
 			]

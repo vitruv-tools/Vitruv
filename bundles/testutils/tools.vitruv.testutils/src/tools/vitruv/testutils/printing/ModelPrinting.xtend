@@ -5,6 +5,8 @@ import org.hamcrest.Description
 import java.util.List
 import java.util.Set
 import org.hamcrest.Description.NullDescription
+import tools.vitruv.testutils.printing.PrintMode
+import static com.google.common.base.Preconditions.checkState
 
 final class ModelPrinting {
 	private new() {
@@ -14,36 +16,91 @@ final class ModelPrinting {
 	static var ModelPrinter printer = new DefaultModelPrinter()
 
 	def static appendModelValue(Description description, Object object, PrintIdProvider idProvider) {
-		description.applyAsPrintTargetUsingIds(idProvider)[printValue(object)[printer.printObject($0, $1)]]
+		description.applyAsPrintTarget [
+			printValue(object) [ target, element |
+				printer.printObject(target, idProvider, element)
+			]
+		]
 	}
 
-	def static appendModelValueList(Description description, List<?> objects, PrintIdProvider idProvider) {
-		description.applyAsPrintTargetUsingIds(idProvider)[printList(objects)[printer.printObject($0, $1)]]
+	def static appendModelValueList(Description description, List<?> objects, PrintMode mode,
+		PrintIdProvider idProvider) {
+		description.applyAsPrintTarget [
+			printList(objects, mode) [ target, element |
+				printer.printObject(target, idProvider, element)
+			]
+		]
 	}
 
-	def static appendModelValueSet(Description description, Set<?> objects, PrintIdProvider idProvider) {
-		description.applyAsPrintTargetUsingIds(idProvider)[printSet(objects)[printer.printObject($0, $1)]]
+	def static appendModelValueSet(Description description, Set<?> objects, PrintMode mode,
+		PrintIdProvider idProvider) {
+		description.applyAsPrintTarget [
+			printSet(objects, mode) [ target, element |
+				printer.printObject(target, idProvider, element)
+			]
+		]
+	}
+
+	def static appendShortenedModelValue(Description description, Object object, PrintIdProvider idProvider) {
+		description.applyAsPrintTarget [
+			printValue(object) [ target, element |
+				printer.printObjectShortened(target, idProvider, element)
+			]
+		]
+	}
+
+	def static appendShortenedModelValueList(Description description, List<?> objects, PrintMode mode,
+		PrintIdProvider idProvider) {
+		description.applyAsPrintTarget [
+			printList(objects, mode) [ target, element |
+				printer.printObjectShortened(target, idProvider, element)
+			]
+		]
+	}
+
+	def static appendShortenedModelValueSet(Description description, Set<?> objects, PrintMode mode,
+		PrintIdProvider idProvider) {
+		description.applyAsPrintTarget [
+			printSet(objects, mode) [ target, element |
+				printer.printObjectShortened(target, idProvider, element)
+			]
+		]
 	}
 
 	def static appendModelValue(Description description, Object object) {
 		appendModelValue(description, object, new PrintIdProvider)
 	}
 
-	def static appendModelValueList(Description description, List<?> objects) {
-		appendModelValueList(description, objects, new PrintIdProvider)
+	def static appendModelValueList(Description description, List<?> objects, PrintMode mode) {
+		appendModelValueList(description, objects, mode, new PrintIdProvider)
 	}
 
-	def static appendModelValueSet(Description description, Set<?> objects) {
-		appendModelValueSet(description, objects, new PrintIdProvider)
+	def static appendModelValueSet(Description description, Set<?> objects, PrintMode mode) {
+		appendModelValueSet(description, objects, mode, new PrintIdProvider)
 	}
 
-	def private static Description applyAsPrintTargetUsingIds(Description description, PrintIdProvider idProvider,
-		(PrintTarget)=>void block) {
+	def static appendShortenedModelValue(Description description, Object object) {
+		appendShortenedModelValue(description, object, new PrintIdProvider)
+	}
+
+	def static appendShortenedModelValueList(Description description, List<?> objects, PrintMode mode) {
+		appendShortenedModelValueList(description, objects, mode, new PrintIdProvider)
+	}
+
+	def static appendShortenedModelValueSet(Description description, Set<?> objects, PrintMode mode) {
+		appendShortenedModelValueSet(description, objects, mode, new PrintIdProvider)
+	}
+
+	def private static Description applyAsPrintTarget(Description description, (PrintTarget)=>PrintResult block) {
 		// printing can be expensive, so avoid it if the result will not be used anyway
 		if (description instanceof NullDescription) return description
 
-		printer.idProvider = idProvider
-		block.apply(new HamcrestDescriptionPrintTarget(description))
+		assertResponsible(block.apply(new HamcrestDescriptionPrintTarget(description)))
 		return description
+	}
+	
+	def private static assertResponsible(PrintResult result) {
+		checkState(result != PrintResult.NOT_RESPONSIBLE, '''The current printer is not responsible for printing the provided content! Please make sure that you have set up an appropriate printer!''')
+		result
 	}
 }
