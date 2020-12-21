@@ -1,11 +1,21 @@
 package tools.vitruv.testutils.matchers
 
+import java.util.HashSet
+import java.util.List
+import java.util.Set
 import org.eclipse.emf.compare.AttributeChange
 import org.eclipse.emf.compare.Comparison
 import org.eclipse.emf.compare.Diff
+import org.eclipse.emf.compare.DifferenceKind
 import org.eclipse.emf.compare.EMFCompare
+import org.eclipse.emf.compare.Match
 import org.eclipse.emf.compare.ReferenceChange
+import org.eclipse.emf.compare.diff.DefaultDiffEngine
+import org.eclipse.emf.compare.diff.DiffBuilder
+import org.eclipse.emf.compare.diff.FeatureFilter
+import org.eclipse.emf.compare.match.impl.MatchEngineFactoryImpl
 import org.eclipse.emf.compare.scope.DefaultComparisonScope
+import org.eclipse.emf.compare.utils.UseIdentifiers
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EStructuralFeature
 import org.eclipse.xtend.lib.annotations.FinalFieldsConstructor
@@ -14,47 +24,30 @@ import org.hamcrest.TypeSafeMatcher
 import tools.vitruv.testutils.printing.HamcrestDescriptionPrintTarget
 import tools.vitruv.testutils.printing.PrintIdProvider
 import tools.vitruv.testutils.printing.PrintResult
-import static tools.vitruv.testutils.printing.PrintResult.*
 import tools.vitruv.testutils.printing.PrintTarget
 
+import static java.util.Spliterators.spliteratorUnknownSize
+import static java.util.Spliterator.*
+import static java.util.stream.StreamSupport.stream
 import static tools.vitruv.testutils.matchers.MatcherUtil.a
 import static tools.vitruv.testutils.printing.ModelPrinting.getPrinter
 import static tools.vitruv.testutils.printing.PrintMode.*
+import static tools.vitruv.testutils.printing.PrintResult.*
 
 import static extension tools.vitruv.testutils.printing.ModelPrinting.*
 import static extension tools.vitruv.testutils.printing.PrintResultExtension.*
-import org.eclipse.emf.compare.DifferenceKind
-import java.util.Set
-import java.util.HashSet
-import org.eclipse.emf.compare.diff.DefaultDiffEngine
-import org.eclipse.emf.compare.diff.DiffBuilder
-import org.eclipse.emf.ecore.EReference
-import org.eclipse.emf.compare.diff.FeatureFilter
-import org.eclipse.emf.compare.Match
-import org.eclipse.emf.ecore.EAttribute
-import java.util.List
+import java.util.Iterator
+import org.eclipse.emf.compare.rcp.EMFCompareRCPPlugin
 
 @FinalFieldsConstructor
 package class ModelDeepEqualityMatcher extends TypeSafeMatcher<EObject> {
 	package val EObject expectedObject
-	val List<DescribedFeatureFilter> featureFilters
+	val List<EqualityFeatureFilter> featureFilters
 	var Comparison comparison
 	val idProvider = new PrintIdProvider
 
 	override matchesSafely(EObject item) {
-		comparison = EMFCompare.builder.setDiffEngine(new DefaultDiffEngine(new DiffBuilder) {
-			override createFeatureFilter() {
-				new FeatureFilter() {
-					override isIgnoredReference(Match match, EReference reference) {
-						featureFilters.exists[!includeFeature(reference)] || super.isIgnoredReference(match, reference)
-					}
-
-					override isIgnoredAttribute(EAttribute attribute) {
-						featureFilters.exists[!includeFeature(attribute)] || super.isIgnoredAttribute(attribute)
-					}
-				}
-			}
-		}).build.compare(new DefaultComparisonScope(item, expectedObject, null))
+		comparison = emfCompare.compare(new DefaultComparisonScope(item, expectedObject, null))
 		return comparison.differences.isEmpty
 	}
 
@@ -69,10 +62,42 @@ package class ModelDeepEqualityMatcher extends TypeSafeMatcher<EObject> {
 		new ComparisonPrinter(idProvider, comparison) //
 		.printDifferenceRecursively(new HamcrestDescriptionPrintTarget(mismatchDescription), expectedObject)
 		mismatchDescription.appendText('for object ').appendModelValue(item, idProvider)
-		if (featureFilters.length > 0) {
+		if (!featureFilters.isEmpty) {
 			mismatchDescription.appendText(System.lineSeparator).appendText(System.lineSeparator) //
 			.appendText('(matching ').appendText(featureFilters.join('; ')[describe()]).appendText(')')
 		}
+	}
+
+	private def getEmfCompare() {
+		(EMFCompare.builder => [
+			matchEngineFactoryRegistry = EMFCompareRCPPlugin.getDefault.matchEngineFactoryRegistry => [
+				add(new MatchEngineFactoryImpl(UseIdentifiers.NEVER) => [
+					ranking = 11 // default engine ranking is 10, must be higher to override.
+				])
+			]
+			if (!featureFilters.isEmpty) {
+				diffEngine = new DefaultDiffEngine(new DiffBuilder) {
+					override createFeatureFilter() {
+						new FeatureFilter() {
+							override getAttributesToCheck(Match match) {
+								filter(match, super.getAttributesToCheck(match))
+							}
+
+							override getReferencesToCheck(Match match) {
+								filter(match, super.getReferencesToCheck(match))
+							}
+
+							private def <T extends EStructuralFeature> filter(Match match, Iterator<T> iterator) {
+								val object = match.right ?: match.left
+								stream(spliteratorUnknownSize(iterator, IMMUTABLE + NONNULL + DISTINCT), false).filter [ feature |
+									!featureFilters.exists[!includeFeature(object, feature)]
+								].iterator()
+							}
+						}
+					}
+				}
+			}
+		]).build()
 	}
 
 	@FinalFieldsConstructor
@@ -115,14 +140,14 @@ package class ModelDeepEqualityMatcher extends TypeSafeMatcher<EObject> {
 				ReferenceChange:
 					target.printFeatureDifference(difference.reference, context, difference, difference.value)
 				default:
-					printer.printObject(target, idProvider, difference)
+					target.printValue(difference)[valueTarget, diff|printer.printObject(valueTarget, idProvider, diff)]
 			}
 		}
 
 		def private PrintResult printFeatureDifference(extension PrintTarget target, EStructuralFeature feature,
 			String context, Diff difference, Object value) {
 			print(context) + print('.') + print(feature.name) + print(' ') + print(difference.kind.verb) + print(' ') //
-			+ printer.printObject(target, idProvider, value)
+			+ target.printValue(value)[valueTarget, theValue|printer.printObject(valueTarget, idProvider, theValue)]
 		}
 
 		def private String getVerb(DifferenceKind kind) {
