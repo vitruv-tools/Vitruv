@@ -1,0 +1,20 @@
+module generate
+
+import org.eclipse.emf.mwe2.ecore.EcoreGenerator
+import org.eclipse.emf.mwe.utils.StandaloneSetup
+
+Workflow {
+
+	bean = StandaloneSetup {
+		scanClassPath = true
+		platformUri = "."
+		registerGenModelFile = "platform:/resource/tools.vitruv.framework.uuid/model/Uuid.genmodel"
+	}
+
+	component = EcoreGenerator {
+		srcPath = "platform:/resource/tools.vitruv.framework.correspondence/src-gen"
+		genModel = "platform:/resource/tools.vitruv.framework.correspondence/metamodel/correspondence.genmodel"
+		generateCustomClasses = false
+	}
+
+}

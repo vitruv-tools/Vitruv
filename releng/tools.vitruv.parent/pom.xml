@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>tools.vitruv</groupId>
 		<artifactId>parent</artifactId>
-		<version>0.8.0</version>
+		<version>0.9.0</version>
 	</parent>
 	<artifactId>framework-parent</artifactId>
 	<version>1.1.0-SNAPSHOT</version>
@@ -61,6 +61,7 @@
 							</execution>
 						</executions>
 					</plugin>
+					<!-- Deactivate Xtend, because it is executed by xtext-maven-plugin -->
 					<plugin>
 						<groupId>org.eclipse.xtend</groupId>
 						<artifactId>xtend-maven-plugin</artifactId>
