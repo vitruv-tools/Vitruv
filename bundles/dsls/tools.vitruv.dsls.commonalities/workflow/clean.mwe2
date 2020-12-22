@@ -1,0 +1,37 @@
+module clean
+
+import org.eclipse.emf.mwe.utils.DirectoryCleaner
+
+var rootPath = ".."
+var testRootPath = "${rootPath}/../../tests/dsls"
+var baseName = "tools.vitruv.dsls.commonalities"
+var basePath = "${rootPath}/${baseName}"
+var testBasePath = "${testRootPath}/${baseName}"
+
+Workflow {
+
+	component = DirectoryCleaner {
+		directory = "${basePath}/src-gen"
+	}
+
+	component = DirectoryCleaner {
+		directory = "${basePath}/model-gen"
+	}
+
+	component = DirectoryCleaner {
+		directory = "${basePath}.ui/src-gen"
+	}
+
+	component = DirectoryCleaner {
+		directory = "${basePath}.ide/src-gen"
+	}
+
+	component = DirectoryCleaner {
+		directory = "${testBasePath}.tests/src-gen"
+	}
+
+	component = DirectoryCleaner {
+		directory = "${testBasePath}.ui.tests/src-gen"
+	}
+
+}
