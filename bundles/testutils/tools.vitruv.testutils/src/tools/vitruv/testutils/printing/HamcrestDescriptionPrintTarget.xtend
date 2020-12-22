@@ -5,9 +5,12 @@ import org.hamcrest.Description
 import static tools.vitruv.testutils.printing.PrintResult.*
 import static extension tools.vitruv.testutils.printing.PrintResultExtension.*
 import static com.google.common.base.Preconditions.checkState
+import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.mapFixed
+import org.hamcrest.SelfDescribing
+import org.hamcrest.StringDescription
 
 @FinalFieldsConstructor
-class HamcrestDescriptionPrintTarget implements PrintTarget {
+class HamcrestDescriptionPrintTarget implements PrintTarget, SelfDescribing {
 	val Description description
 	val String linePrefix
 	var indent = ''
@@ -37,7 +40,7 @@ class HamcrestDescriptionPrintTarget implements PrintTarget {
 		(PrintTarget, T)=>PrintResult elementPrinter) {
 		val printResults = printElements(elements, elementPrinter)
 
-		return switch (effectiveResult(printResults)) {
+		return switch (printResults.map[value].combine()) {
 			case NOT_RESPONSIBLE:
 				NOT_RESPONSIBLE
 			case PRINTED: {
@@ -60,7 +63,7 @@ class HamcrestDescriptionPrintTarget implements PrintTarget {
 		]
 		decreaseIndent()
 
-		return switch (effectiveResult(printResults)) {
+		return switch (printResults.map[value].combine()) {
 			case NOT_RESPONSIBLE:
 				NOT_RESPONSIBLE
 			case PRINTED: {
@@ -75,14 +78,10 @@ class HamcrestDescriptionPrintTarget implements PrintTarget {
 	}
 
 	def private <T> printElements(Iterable<? extends T> elements, (PrintTarget, T)=>PrintResult elementPrinter) {
-		elements.map [ element |
-			val target = new SelfDescribingPrintTarget(linePrefix + indent)
+		elements.mapFixed [ element |
+			val target = new HamcrestDescriptionPrintTarget(new StringDescription, linePrefix + indent)
 			target -> elementPrinter.apply(target, element)
-		].toList
-	}
-
-	def private effectiveResult(Iterable<? extends Pair<? extends PrintTarget, PrintResult>> printResults) {
-		printResults.map[value].fold(PRINTED_NO_OUTPUT)[$0 + $1]
+		]
 	}
 
 	override printValue(Object object) {
@@ -113,7 +112,11 @@ class HamcrestDescriptionPrintTarget implements PrintTarget {
 	}
 
 	def private decreaseIndent() {
-		checkState(indent.length > 0, '''The indentation is already 0!''')
+		checkState(indent.length > 0, 'The indentation is already 0!')
 		indent = indent.substring(8)
+	}
+	
+	override describeTo(Description description) {
+		description.appendText(this.description.toString)
 	}
 }
