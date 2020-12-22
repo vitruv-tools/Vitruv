@@ -32,6 +32,7 @@ jobs:
             ./mvnw -B clean verify 
             -Dstyle.color=always
             -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
+            -Dorg.slf4j.simpleLogger.log.org.eclipse.tycho.core.resolver.DefaultTychoResolver=warn
             -Dorg.slf4j.simpleLogger.log.org.eclipse.sisu.equinox.launching.internal.DefaultEquinoxLauncher=warn
             -Dorg.slf4j.simpleLogger.log.org.eclipse.xtext.maven.XtextGenerateMojo=warn
             -Dorg.apache.commons.logging.Log=org.apache.commons.logging.impl.NoOpLog
