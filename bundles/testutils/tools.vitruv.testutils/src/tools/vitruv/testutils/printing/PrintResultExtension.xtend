@@ -32,6 +32,10 @@ class PrintResultExtension {
 			}
 		}
 	}
+	
+	static def combine(Iterable<? extends PrintResult> results) {
+		results.fold(PRINTED_NO_OUTPUT)[$0 + $1]
+	}
 
 	static def appendIfPrinted(PrintResult result, ()=>PrintResult printer) {
 		switch (result) {
