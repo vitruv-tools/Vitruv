@@ -5,38 +5,35 @@
       <repositories location="../tools.vitruv.updatesite/target/repository"/>
     </contributions>
     <contributions label="externals">
-      <repositories location="http://download.eclipse.org/eclipse/updates/4.16" mirrorArtifacts="false">
-        <features name="org.eclipse.emf.ecore.feature.group" versionRange="2.22.0"/>
-        <features name="org.eclipse.emf.common.feature.group" versionRange="2.19.0"/>
-      </repositories>
-      <repositories location="http://vitruv-tools.github.io/updatesite/release/license" mirrorArtifacts="false">
+      <repositories location="http://vitruv-tools.github.io/updatesite/release/license/1.0.0" mirrorArtifacts="false">
         <features name="tools.vitruv.license.feature.feature.group" versionRange="[1.0.0,1.0.1)"/>
       </repositories>
-      <repositories location="http://kit-sdq.github.io/updatesite/nightly/commons" mirrorArtifacts="false">
-        <features name="edu.kit.ipd.sdq.commons.util.java.feature.feature.group" versionRange="[1.5.0,2.0.0)"/>
-        <features name="edu.kit.ipd.sdq.commons.util.emf.feature.feature.group" versionRange="[1.5.0,2.0.0)"/>
-        <features name="edu.kit.ipd.sdq.commons.util.eclipse.feature.feature.group" versionRange="[1.5.0,2.0.0]"/>
+      <repositories location="http://kit-sdq.github.io/updatesite/release/commons/1.8.0" mirrorArtifacts="false">
+        <features name="edu.kit.ipd.sdq.commons.util.java.feature.feature.group"/>
+        <features name="edu.kit.ipd.sdq.commons.util.emf.feature.feature.group"/>
+        <features name="edu.kit.ipd.sdq.commons.util.eclipse.feature.feature.group"/>
       </repositories>
-      <repositories location="https://kit-sdq.github.io/updatesite/nightly/xannotations" mirrorArtifacts="false">
-        <features name="edu.kit.ipd.sdq.activextendannotations.feature.feature.group" versionRange="[1.2.0,2.0.0)"/>
+      <repositories location="https://kit-sdq.github.io/updatesite/release/xannotations/1.4.0" mirrorArtifacts="false">
+        <features name="edu.kit.ipd.sdq.activextendannotations.feature.feature.group"/>
       </repositories>
-      <repositories location="https://kit-sdq.github.io/updatesite/nightly/metamodels/demo" mirrorArtifacts="false">
-        <features name="edu.kit.ipd.sdq.metamodels.addresses.feature.feature.group" versionRange="[1.3.0,2.0.0)" categories="//@customCategories[identifier='metamodels']"/>
-        <features name="edu.kit.ipd.sdq.metamodels.recipients.feature.feature.group" versionRange="[1.3.0,2.0.0)" categories="//@customCategories[identifier='metamodels']"/>
-        <features name="edu.kit.ipd.sdq.metamodels.families.feature.feature.group" versionRange="[1.3.0,2.0.0]" categories="//@customCategories[identifier='metamodels']"/>
-        <features name="edu.kit.ipd.sdq.metamodels.persons.feature.feature.group" versionRange="[1.3.0,2.0.0]" categories="//@customCategories[identifier='metamodels']"/>
-        <features name="edu.kit.ipd.sdq.metamodels.insurance.feature.feature.group" versionRange="[1.3.0,2.0.0]" categories="//@customCategories[identifier='metamodels']"/>
+      <repositories location="https://kit-sdq.github.io/updatesite/release/metamodels/demo/1.4.0" mirrorArtifacts="false">
+        <features name="edu.kit.ipd.sdq.metamodels.addresses.feature.feature.group" categories="//@customCategories[identifier='metamodels']"/>
+        <features name="edu.kit.ipd.sdq.metamodels.recipients.feature.feature.group" categories="//@customCategories[identifier='metamodels']"/>
+        <features name="edu.kit.ipd.sdq.metamodels.families.feature.feature.group" categories="//@customCategories[identifier='metamodels']"/>
+        <features name="edu.kit.ipd.sdq.metamodels.persons.feature.feature.group" categories="//@customCategories[identifier='metamodels']"/>
+        <features name="edu.kit.ipd.sdq.metamodels.insurance.feature.feature.group" categories="//@customCategories[identifier='metamodels']"/>
       </repositories>
-      <repositories location="http://download.eclipse.org/releases/2020-06/" mirrorArtifacts="false">
-        <features name="org.eclipse.emf.ecore.edit.feature.group" versionRange="2.14.0"/>
-        <features name="org.eclipse.emf.transaction.feature.group" versionRange="1.12.0"/>
-        <features name="org.eclipse.xtend.sdk.feature.group" versionRange="2.22.0"/>
-        <features name="org.eclipse.emf.ecore.feature.group" versionRange="2.22.0"/>
+      <repositories location="http://download.eclipse.org/releases/2020-12" mirrorArtifacts="false">
+        <features name="org.eclipse.emf.ecore.edit.feature.group"/>
+        <features name="org.eclipse.emf.transaction.feature.group"/>
+        <features name="org.eclipse.xtend.sdk.feature.group"/>
+        <features name="org.eclipse.emf.ecore.feature.group"/>
+        <features name="org.eclipse.emf.common.feature.group"/>
       </repositories>
     </contributions>
   </validationSets>
   <configurations architecture="x86_64"/>
   <configurations operatingSystem="linux" windowSystem="gtk" architecture="x86_64"/>
   <configurations operatingSystem="macosx" windowSystem="cocoa" architecture="x86_64"/>
-  <customCategories identifier="metamodels" label="Vitruv Demo Metamodels" description="Metamodels for the demo applications" features="//@validationSets[label='main']/@contributions[label='externals']/@repositories.4/@features.0 //@validationSets[label='main']/@contributions[label='externals']/@repositories.4/@features.2 //@validationSets[label='main']/@contributions[label='externals']/@repositories.4/@features.4 //@validationSets[label='main']/@contributions[label='externals']/@repositories.4/@features.3 //@validationSets[label='main']/@contributions[label='externals']/@repositories.4/@features.1"/>
+  <customCategories identifier="metamodels" label="Vitruv Demo Metamodels" description="Metamodels for the demo applications" features="//@validationSets[label='main']/@contributions[label='externals']/@repositories.3/@features.0 //@validationSets[label='main']/@contributions[label='externals']/@repositories.3/@features.2 //@validationSets[label='main']/@contributions[label='externals']/@repositories.3/@features.4 //@validationSets[label='main']/@contributions[label='externals']/@repositories.3/@features.3 //@validationSets[label='main']/@contributions[label='externals']/@repositories.3/@features.1"/>
 </aggregator:Aggregation>
