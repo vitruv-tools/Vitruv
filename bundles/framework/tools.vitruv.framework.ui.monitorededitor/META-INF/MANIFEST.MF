@@ -14,7 +14,7 @@ Require-Bundle: org.apache.log4j,
  org.eclipse.xtext.xbase.lib,
  org.eclipse.xtend.lib,
  org.eclipse.xtend.lib.macro,
- org.eclipse.core.expressions,
+ org.eclipse.core.expressions;visibility:=reexport,
  org.eclipse.core.resources,
  tools.vitruv.framework.vsum,
  tools.vitruv.framework.domains
