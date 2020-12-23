@@ -164,6 +164,13 @@ class ModelCreatorsProcessor extends AbstractClassProcessor {
 			body = '''return _createInstance(className);'''
 		]
 
+		annotatedClass.addMethod("create") [
+			val type = addTypeParameter('M', newTypeReference(EObject))
+			returnType = type.newSelfTypeReference
+			addParameter("clazz", newTypeReference(Class, newWildcardTypeReference(type.newSelfTypeReference)))
+			body = '''return clazz.cast(_createInstance(clazz.getSimpleName()));'''
+		]
+
 		if (annotatedClass.declaredConstructors.isEmpty) {
 			annotatedClass.addConstructor [
 				visibility = PRIVATE
