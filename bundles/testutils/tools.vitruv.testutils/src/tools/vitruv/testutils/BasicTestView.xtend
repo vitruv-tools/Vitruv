@@ -84,9 +84,10 @@ class BasicTestView implements TestView {
 		checkArgument(viewRelativePath !== null, "The viewRelativePath must not be null!")
 		checkArgument(!viewRelativePath.isEmpty, "The viewRelativePath must not be empty!")
 		return switch (uriMode) {
-			case PLATFORM_URIS:
-				// platform URIs must always use '/'
-				EMFBridge.createURI(persistenceDirectory.resolve(viewRelativePath).join('/'))
+			case PLATFORM_URIS: {
+				// platform URIs must always use '/' and be relative to the project (fileName) rather than the workspace
+				EMFBridge.createURI(persistenceDirectory.fileName.resolve(viewRelativePath).join('/'))
+			}
 			case FILE_URIS:
 				EMFBridge.getEmfFileUriForFile(persistenceDirectory.resolve(viewRelativePath).toFile())
 		}
