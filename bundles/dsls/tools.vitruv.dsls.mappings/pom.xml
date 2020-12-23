@@ -6,22 +6,16 @@
 		<groupId>tools.vitruv</groupId>
 		<artifactId>dsls</artifactId>
 		<version>1.1.0-SNAPSHOT</version>
-		<relativePath>../</relativePath>
 	</parent>
 	<artifactId>tools.vitruv.dsls.mappings</artifactId>
 	<packaging>eclipse-plugin</packaging>
 
 	<build>
-		<!-- This is only taken into account by the maven-compiler-plugin -->
-		<sourceDirectory>generator-src</sourceDirectory>
-
-		<plugins>
-			<!-- compile the code in generator-src first, as it’s required by the 
-				generator workflow -->
+			<plugins>
+			<!-- Compile the code in generator-src first, as it's required by the generator workflow -->
 			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-compiler-plugin</artifactId>
 				<executions>
 					<execution>
 						<id>compile-generator-code</id>
@@ -36,35 +30,6 @@
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>exec-maven-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>generate-xtext</id>
-						<phase>generate-sources</phase>
-						<configuration>
-							<arguments>
-								<argument>/${project.basedir}/src/tools/vitruv/dsls/mappings/GenerateMappingsLanguage.mwe2</argument>
-								<argument>-p</argument>
-								<argument>rootPath=/${project.basedir}/..</argument>
-							</arguments>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-
-			<plugin>
-				<groupId>org.eclipse.xtend</groupId>
-				<artifactId>xtend-maven-plugin</artifactId>
-			</plugin>
-
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-clean-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>clean-xtext</id>
-						<phase>clean</phase>
-					</execution>
-				</executions>
 			</plugin>
 		</plugins>
 	</build>

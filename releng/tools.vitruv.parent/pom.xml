@@ -6,28 +6,27 @@
 	<parent>
 		<groupId>tools.vitruv</groupId>
 		<artifactId>parent</artifactId>
-		<version>0.8.0</version>
+		<version>0.9.0</version>
 	</parent>
 	<artifactId>framework-parent</artifactId>
 	<version>1.1.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<repositories>
-		<!-- If you adjust a repository here, please also adjust the repository in the b3 aggregator. -->
 		<repository>
 			<id>Demo Metamodels</id>
 			<layout>p2</layout>
-			<url>http://kit-sdq.github.io/updatesite/nightly/metamodels/demo</url>
+			<url>http://kit-sdq.github.io/updatesite/release/metamodels/demo/1.4.0/</url>
 		</repository>
 		<repository>
 			<id>SDQ Commons</id>
 			<layout>p2</layout>
-			<url>http://kit-sdq.github.io/updatesite/nightly/commons</url>
+			<url>http://kit-sdq.github.io/updatesite/release/commons/1.8.1/</url>
 		</repository>
 		<repository>
 			<id>XAnnotations</id>
 			<layout>p2</layout>
-			<url>https://kit-sdq.github.io/updatesite/nightly/xannotations</url>
+			<url>https://kit-sdq.github.io/updatesite/release/xannotations/1.4.0/</url>
 		</repository>
 	</repositories>
 
@@ -61,6 +60,7 @@
 							</execution>
 						</executions>
 					</plugin>
+					<!-- Deactivate Xtend, because it is executed by xtext-maven-plugin -->
 					<plugin>
 						<groupId>org.eclipse.xtend</groupId>
 						<artifactId>xtend-maven-plugin</artifactId>

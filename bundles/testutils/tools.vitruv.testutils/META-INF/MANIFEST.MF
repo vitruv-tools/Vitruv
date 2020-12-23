@@ -28,7 +28,9 @@ Require-Bundle: tools.vitruv.framework.vsum;visibility:=reexport,
  tools.vitruv.framework.change.interaction,
  org.hamcrest.core,
  org.junit.jupiter.api,
- org.junit.platform.commons
+ org.junit.platform.commons,
+ org.eclipse.emf.compare,
+ org.eclipse.emf.compare.rcp
 Export-Package: tools.vitruv.testutils,
  tools.vitruv.testutils.activeannotations,
  tools.vitruv.testutils.domains,

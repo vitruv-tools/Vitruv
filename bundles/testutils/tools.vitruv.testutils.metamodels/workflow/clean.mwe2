@@ -1,0 +1,15 @@
+module clean
+
+import org.eclipse.emf.mwe.utils.DirectoryCleaner
+
+var rootPath = ".."
+var pluginName = "tools.vitruv.testutils.metamodels"
+var basePath = "${rootPath}/${pluginName}"
+
+Workflow {
+
+	component = DirectoryCleaner {
+		directory = "${basePath}/src-gen"
+	}
+
+}
