@@ -1,11 +1,13 @@
 package tools.vitruv.testutils.matchers
 
-import org.eclipse.xtend.lib.annotations.FinalFieldsConstructor
-import org.hamcrest.TypeSafeMatcher
-import org.eclipse.emf.ecore.resource.Resource
-import org.hamcrest.Matcher
 import org.eclipse.emf.ecore.EObject
+import org.eclipse.emf.ecore.resource.Resource
+import org.eclipse.xtend.lib.annotations.FinalFieldsConstructor
 import org.hamcrest.Description
+import org.hamcrest.Matcher
+import org.hamcrest.TypeSafeMatcher
+
+import static java.lang.System.lineSeparator
 import static extension tools.vitruv.testutils.printing.ModelPrinting.*
 
 @FinalFieldsConstructor
@@ -23,6 +25,7 @@ package class ResourceContainmentMatcher extends TypeSafeMatcher<Resource> {
 				appendText(" instead of just one content element.")
 		} else {
 			delegateMatcher.describeMismatch(item.contents.get(0), mismatchDescription)
+			mismatchDescription.appendText(lineSeparator()).appendText('    in the resource at ').appendModelValue(item.URI)
 		}
 	}
 

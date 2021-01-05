@@ -186,14 +186,14 @@ package class ModelDeepEqualityMatcher extends TypeSafeMatcher<EObject> {
 				ReferenceChange:
 					target.printFeatureDifference(difference.reference, context, difference, difference.value)
 				default:
-					target.printValue(difference)[valueTarget, diff|printObject(valueTarget, idProvider, diff)]
+					target.printObject(idProvider, difference)
 			}
 		}
 
 		def private PrintResult printFeatureDifference(extension PrintTarget target, EStructuralFeature feature,
 			String context, Diff difference, Object value) {
 			print(context) + print('.') + print(feature.name) + print(' ') + print(difference.kind.verb) + print(' ') //
-			+ printObject(target, idProvider, value)
+			+ printValue(value) [subTarget, theValue | printObject(subTarget, idProvider, theValue) ]
 		}
 
 		def private String getVerb(DifferenceKind kind) {

@@ -4,6 +4,7 @@ import org.eclipse.xtend.lib.annotations.FinalFieldsConstructor
 import org.hamcrest.TypeSafeMatcher
 import org.hamcrest.Description
 import org.eclipse.emf.ecore.resource.Resource
+import static extension tools.vitruv.testutils.printing.ModelPrinting.*
 
 @FinalFieldsConstructor
 package class ResourceExistenceMatcher extends TypeSafeMatcher<Resource> {
@@ -20,6 +21,6 @@ package class ResourceExistenceMatcher extends TypeSafeMatcher<Resource> {
 
 	override describeMismatchSafely(Resource item, Description mismatchDescription) {
 		val qualifier = if (shouldExist) 'no' else 'a'
-		mismatchDescription.appendText('''there was «qualifier» resource at ''').appendValue(item.URI)
+		mismatchDescription.appendText('''there was «qualifier» resource at ''').appendModelValue(item.URI)
 	}
 }
