@@ -8,6 +8,7 @@ import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.emf.ecore.resource.Resource;
 
 /**
  * NotificationInfo is a type safe wrapper for EMF Notifications. It wraps a {@link Notification}
@@ -91,7 +92,7 @@ public class NotificationInfo implements Notification {
 	 */
 	public boolean isTransient() {
 		return isReferenceNotification() && getReference().isTransient()
-			|| isAttributeNotification() && getAttribute().isTransient();
+				|| isAttributeNotification() && getAttribute().isTransient();
 	}
 
 	/**
@@ -171,12 +172,12 @@ public class NotificationInfo implements Notification {
 				}
 			}
 
-//			// notifications from project are never propagated, thus considered nonexistent
-//			// however, they themselves might have followups
-//			if (nextNotification.getNotifier() instanceof Project) {
-//				final NotificationInfo nextNextInfo = new NotificationInfo(nextNotification);
-//				return nextNextInfo.hasNext();
-//			}
+			//			// notifications from project are never propagated, thus considered nonexistent
+			//			// however, they themselves might have followups
+			//			if (nextNotification.getNotifier() instanceof Project) {
+			//				final NotificationInfo nextNextInfo = new NotificationInfo(nextNotification);
+			//				return nextNextInfo.hasNext();
+			//			}
 			return true;
 
 			// BEGIN SUPRESS CATCH EXCEPTION
@@ -193,6 +194,7 @@ public class NotificationInfo implements Notification {
 	/**
 	 * @return @see org.eclipse.emf.common.notify.Notification#getEventType()
 	 */
+	@Override
 	public int getEventType() {
 		return notification.getEventType();
 	}
@@ -200,6 +202,7 @@ public class NotificationInfo implements Notification {
 	/**
 	 * @return @see org.eclipse.emf.common.notify.Notification#getFeature()
 	 */
+	@Override
 	public Object getFeature() {
 		return notification.getFeature();
 	}
@@ -208,6 +211,7 @@ public class NotificationInfo implements Notification {
 	 * @param expectedClass @see org.eclipse.emf.common.notify.Notification#getFeatureID(java.lang.Class)
 	 * @return @see org.eclipse.emf.common.notify.Notification#getFeatureID(java.lang.Class)
 	 */
+	@Override
 	public int getFeatureID(Class<?> expectedClass) {
 		return notification.getFeatureID(expectedClass);
 	}
@@ -216,6 +220,7 @@ public class NotificationInfo implements Notification {
 	 * @return @see org.eclipse.emf.common.notify.Notification#getNewBooleanValue()
 	 */
 
+	@Override
 	public boolean getNewBooleanValue() {
 		return notification.getNewBooleanValue();
 	}
@@ -223,6 +228,7 @@ public class NotificationInfo implements Notification {
 	/**
 	 * @return @see org.eclipse.emf.common.notify.Notification#getNewByteValue()
 	 */
+	@Override
 	public byte getNewByteValue() {
 		return notification.getNewByteValue();
 	}
@@ -230,6 +236,7 @@ public class NotificationInfo implements Notification {
 	/**
 	 * @return @see org.eclipse.emf.common.notify.Notification#getNewCharValue()
 	 */
+	@Override
 	public char getNewCharValue() {
 		return notification.getNewCharValue();
 	}
@@ -238,6 +245,7 @@ public class NotificationInfo implements Notification {
 	 * @return @see org.eclipse.emf.common.notify.Notification#getNewDoubleValue()
 	 */
 
+	@Override
 	public double getNewDoubleValue() {
 		return notification.getNewDoubleValue();
 	}
@@ -245,6 +253,7 @@ public class NotificationInfo implements Notification {
 	/**
 	 * @return @see org.eclipse.emf.common.notify.Notification#getNewFloatValue()
 	 */
+	@Override
 	public float getNewFloatValue() {
 		return notification.getNewFloatValue();
 	}
@@ -252,6 +261,7 @@ public class NotificationInfo implements Notification {
 	/**
 	 * @return @see org.eclipse.emf.common.notify.Notification#getNewIntValue()
 	 */
+	@Override
 	public int getNewIntValue() {
 		return notification.getNewIntValue();
 	}
@@ -259,6 +269,7 @@ public class NotificationInfo implements Notification {
 	/**
 	 * @return @see org.eclipse.emf.common.notify.Notification#getNewLongValue()
 	 */
+	@Override
 	public long getNewLongValue() {
 		return notification.getNewLongValue();
 	}
@@ -266,6 +277,7 @@ public class NotificationInfo implements Notification {
 	/**
 	 * @return @see org.eclipse.emf.common.notify.Notification#getNewShortValue()
 	 */
+	@Override
 	public short getNewShortValue() {
 		return notification.getNewShortValue();
 	}
@@ -273,6 +285,7 @@ public class NotificationInfo implements Notification {
 	/**
 	 * @return @see org.eclipse.emf.common.notify.Notification#getNewStringValue()
 	 */
+	@Override
 	public String getNewStringValue() {
 		return notification.getNewStringValue();
 	}
@@ -280,6 +293,7 @@ public class NotificationInfo implements Notification {
 	/**
 	 * @return @see org.eclipse.emf.common.notify.Notification#getNewValue()
 	 */
+	@Override
 	public Object getNewValue() {
 		return notification.getNewValue();
 	}
@@ -294,6 +308,7 @@ public class NotificationInfo implements Notification {
 	/**
 	 * @return @see org.eclipse.emf.common.notify.Notification#getNotifier()
 	 */
+	@Override
 	public Object getNotifier() {
 		return notification.getNotifier();
 	}
@@ -301,6 +316,7 @@ public class NotificationInfo implements Notification {
 	/**
 	 * @return @see org.eclipse.emf.common.notify.Notification#getOldBooleanValue()
 	 */
+	@Override
 	public boolean getOldBooleanValue() {
 		return notification.getOldBooleanValue();
 	}
@@ -308,6 +324,7 @@ public class NotificationInfo implements Notification {
 	/**
 	 * @return @see org.eclipse.emf.common.notify.Notification#getOldByteValue()
 	 */
+	@Override
 	public byte getOldByteValue() {
 		return notification.getOldByteValue();
 	}
@@ -315,6 +332,7 @@ public class NotificationInfo implements Notification {
 	/**
 	 * @return @see org.eclipse.emf.common.notify.Notification#getOldCharValue()
 	 */
+	@Override
 	public char getOldCharValue() {
 		return notification.getOldCharValue();
 	}
@@ -322,6 +340,7 @@ public class NotificationInfo implements Notification {
 	/**
 	 * @return @see org.eclipse.emf.common.notify.Notification#getOldDoubleValue()
 	 */
+	@Override
 	public double getOldDoubleValue() {
 		return notification.getOldDoubleValue();
 	}
@@ -329,6 +348,7 @@ public class NotificationInfo implements Notification {
 	/**
 	 * @return @see org.eclipse.emf.common.notify.Notification#getOldFloatValue()
 	 */
+	@Override
 	public float getOldFloatValue() {
 		return notification.getOldFloatValue();
 	}
@@ -336,6 +356,7 @@ public class NotificationInfo implements Notification {
 	/**
 	 * @return @see org.eclipse.emf.common.notify.Notification#getOldIntValue()
 	 */
+	@Override
 	public int getOldIntValue() {
 		return notification.getOldIntValue();
 	}
@@ -343,6 +364,7 @@ public class NotificationInfo implements Notification {
 	/**
 	 * @return @see org.eclipse.emf.common.notify.Notification#getOldLongValue()
 	 */
+	@Override
 	public long getOldLongValue() {
 		return notification.getOldLongValue();
 	}
@@ -350,6 +372,7 @@ public class NotificationInfo implements Notification {
 	/**
 	 * @return @see org.eclipse.emf.common.notify.Notification#getOldShortValue()
 	 */
+	@Override
 	public short getOldShortValue() {
 		return notification.getOldShortValue();
 	}
@@ -357,6 +380,7 @@ public class NotificationInfo implements Notification {
 	/**
 	 * @return @see org.eclipse.emf.common.notify.Notification#getOldStringValue()
 	 */
+	@Override
 	public String getOldStringValue() {
 		return notification.getOldStringValue();
 	}
@@ -364,6 +388,7 @@ public class NotificationInfo implements Notification {
 	/**
 	 * @return @see org.eclipse.emf.common.notify.Notification#getOldValue()
 	 */
+	@Override
 	public Object getOldValue() {
 		return notification.getOldValue();
 	}
@@ -378,10 +403,11 @@ public class NotificationInfo implements Notification {
 	/**
 	 * @return @see org.eclipse.emf.common.notify.Notification#getPosition()
 	 */
+	@Override
 	public int getPosition() {
 		return notification.getPosition();
 	}
-	
+
 	public int getInitialIndex() {
 		return getPosition() == NotificationInfo.NO_INDEX ? 0 : getPosition();
 	}
@@ -389,6 +415,7 @@ public class NotificationInfo implements Notification {
 	/**
 	 * @return @see org.eclipse.emf.common.notify.Notification#isReset()
 	 */
+	@Override
 	public boolean isReset() {
 		return notification.isReset();
 	}
@@ -396,6 +423,7 @@ public class NotificationInfo implements Notification {
 	/**
 	 * @return @see org.eclipse.emf.common.notify.Notification#isTouch()
 	 */
+	@Override
 	public boolean isTouch() {
 		return notification.isTouch();
 	}
@@ -405,6 +433,7 @@ public class NotificationInfo implements Notification {
 	 *            org.eclipse.emf.common.notify.Notification#merge(org.eclipse.emf.common.notify.Notification)
 	 * @return @see org.eclipse.emf.common.notify.Notification#merge(org.eclipse.emf.common.notify.Notification)
 	 */
+	@Override
 	public boolean merge(Notification notification) {
 		return notification.merge(notification);
 	}
@@ -429,6 +458,13 @@ public class NotificationInfo implements Notification {
 	 */
 	public EObject getNotifierModelElement() {
 		return (EObject) notification.getNotifier();
+	}
+
+	/**
+	 * @return @see org.eclipse.emf.common.notify.Notification#getNotifier()
+	 */
+	public Resource getNotifierResource() {
+		return (Resource) notification.getNotifier();
 	}
 
 	/**
@@ -508,6 +544,7 @@ public class NotificationInfo implements Notification {
 	 *
 	 * @see org.eclipse.emf.common.notify.Notification#wasSet()
 	 */
+	@Override
 	public boolean wasSet() {
 		return notification.wasSet();
 	}
