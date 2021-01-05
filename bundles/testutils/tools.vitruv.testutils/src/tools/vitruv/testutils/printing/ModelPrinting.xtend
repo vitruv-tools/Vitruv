@@ -7,18 +7,19 @@ import java.util.Set
 import org.hamcrest.Description.NullDescription
 import tools.vitruv.testutils.printing.PrintMode
 import static com.google.common.base.Preconditions.checkState
+import static tools.vitruv.testutils.printing.PrintResult.NOT_RESPONSIBLE
 
 final class ModelPrinting {
 	private new() {
 	}
 
-	@Accessors
+	@Accessors(PUBLIC_GETTER)
 	static var ModelPrinter printer = new DefaultModelPrinter()
-	
+
 	def static appendModelValue(Description description, Object object, PrintIdProvider idProvider) {
 		description.applyAsPrintTarget [
-			printValue(object) [ target, element |
-				printer.printObject(target, idProvider, element)
+			printValue(object) [ subTarget, theObject |
+				printer.printObject(subTarget, idProvider, theObject)
 			]
 		]
 	}
@@ -43,8 +44,8 @@ final class ModelPrinting {
 
 	def static appendShortenedModelValue(Description description, Object object, PrintIdProvider idProvider) {
 		description.applyAsPrintTarget [
-			printValue(object) [ target, element |
-				printer.printObjectShortened(target, idProvider, element)
+			printValue(object) [ subTarget, theObject |
+				printer.printObjectShortened(subTarget, idProvider, theObject)
 			]
 		]
 	}
@@ -91,6 +92,18 @@ final class ModelPrinting {
 		appendShortenedModelValueSet(description, objects, mode, new PrintIdProvider)
 	}
 
+	/**
+	 * Makes model printing use the printer provided by {@code printerProvider}.
+	 * 
+	 * @param printerProvider function that will receive the current model printer and returns the new printer to use.
+	 * @return A closeable that, when closed, will revert the printer change. 
+	 */
+	def static AutoCloseable use((ModelPrinter)=>ModelPrinter printerProvider) {
+		val oldPrinter = ModelPrinting.printer
+		ModelPrinting.printer = printerProvider.apply(oldPrinter)
+		return [ModelPrinting.printer = oldPrinter]
+	}
+
 	def private static Description applyAsPrintTarget(Description description, (PrintTarget)=>PrintResult block) {
 		// printing can be expensive, so avoid it if the result will not be used anyway
 		if (description instanceof NullDescription) return description
@@ -98,9 +111,12 @@ final class ModelPrinting {
 		assertResponsible(block.apply(new HamcrestDescriptionPrintTarget(description)))
 		return description
 	}
-	
+
 	def private static assertResponsible(PrintResult result) {
-		checkState(result != PrintResult.NOT_RESPONSIBLE, '''The current printer is not responsible for printing the provided content! Please make sure that you have set up an appropriate printer!''')
+		checkState(
+			result != NOT_RESPONSIBLE,
+			'''The current printer is not responsible for printing the provided content! Please make sure that you have set up an appropriate printer!'''
+		)
 		result
 	}
 }
