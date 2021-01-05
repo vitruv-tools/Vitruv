@@ -5,8 +5,6 @@ import static extension tools.vitruv.testutils.printing.PrintResultExtension.*
 interface PrintTarget {
 	def PrintResult print(String text)
 
-	def PrintResult printValue(Object object)
-
 	def PrintResult newLine()
 
 	def PrintResult newLineIncreaseIndent()
@@ -30,8 +28,15 @@ interface PrintTarget {
 		(PrintTarget, T)=>PrintResult elementPrinter) {
 		printIterable('', '', elements, mode, elementPrinter)
 	}
-
-	def <T> PrintResult printValue(T value, (PrintTarget, T)=>PrintResult elementPrinter) {
-		print('<') + elementPrinter.apply(this, value) + print('>')
+	
+	def <T> PrintResult printValue(T value, (PrintTarget, T)=>PrintResult valuePrinter) {
+		switch (value) {
+			Number:
+				valuePrinter.apply(this, value)
+			String:
+				print('"') + valuePrinter.apply(this, value) + print('"')
+			default:
+				print('<') + valuePrinter.apply(this, value) + print('>')
+		}
 	}
 }
