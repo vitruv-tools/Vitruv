@@ -7,12 +7,19 @@ import org.eclipse.emf.ecore.EStructuralFeature
 
 /**
  * Strategy determining how to print model objects.
+ * <p>
+ * Implementation note: Model printers are expected to be immutable. Furthermore, they should delegate to a sub printer
+ * whenever they do not feel responsible for printing some value. This allows other printers to modify the behaviour
+ * if they wish. Model printers get the sub printer they should use handed in through the method [#withSubPrinter].
  */
 interface ModelPrinter {
 	/**
 	 * Creates a copy of this printer that delegates to {@code subPrinter} whenever printing a subpart of an object. 
 	 * This allows other printers to change the printing logic for objects referenced by an object that is printed
 	 * by this printer.
+	 * <p>
+	 * Implementation note: Because model printers are expected to be immutable, implementations should either return
+	 * {@code this} (if they don’t need a sub printer) or create a new instance with the {@code subPrinter}.
 	 */
 	def ModelPrinter withSubPrinter(ModelPrinter subPrinter)
 
