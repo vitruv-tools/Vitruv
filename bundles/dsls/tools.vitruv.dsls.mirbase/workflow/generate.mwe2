@@ -37,6 +37,10 @@ Workflow {
 			name = "tools.vitruv.dsls.mirbase.MirBase"
 			fileExtensions = "mirbase"
 
+			junitSupport = {
+				junitVersion = "5"
+			}
+			
 			serializer = {
 				generateStub = false
 			}
