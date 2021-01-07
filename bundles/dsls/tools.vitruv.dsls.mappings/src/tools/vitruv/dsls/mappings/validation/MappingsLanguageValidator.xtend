@@ -11,6 +11,14 @@ package tools.vitruv.dsls.mappings.validation
  */
 class MappingsLanguageValidator extends AbstractMappingsLanguageValidator {
 	
+	public static val PLUGIN_DEPENDENCIES = #[
+		"tools.vitruv.extensions.dslsruntime.mappings"
+	]
+	
+	override protected getDependencies() {
+		PLUGIN_DEPENDENCIES
+	}
+	
 //	public static val INVALID_NAME = 'invalidName'
 //
 //	@Check

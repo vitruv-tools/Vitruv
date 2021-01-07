@@ -35,6 +35,14 @@ class ReactionsLanguageValidator extends AbstractReactionsLanguageValidator {
 
 	@Inject ReactionsImportScopeHelper reactionsImportScopeHelper;
 
+	public static val PLUGIN_DEPENDENCIES = #[
+		"tools.vitruv.extensions.dslsruntime.reactions"
+	]
+	
+	override protected getDependencies() {
+		PLUGIN_DEPENDENCIES
+	}
+
 	@Check
 	def checkReactionsFile(ReactionsFile reactionsFile) {
 		// check for duplicate reactions segment names in same file:

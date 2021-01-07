@@ -4,6 +4,7 @@
 package tools.vitruv.dsls.mappings.ui.quickfix
 
 import tools.vitruv.dsls.mirbase.ui.quickfix.MirBaseQuickfixProvider
+import tools.vitruv.dsls.mappings.validation.MappingsLanguageValidator
 
 /**
  * Custom quickfixes.
@@ -11,6 +12,10 @@ import tools.vitruv.dsls.mirbase.ui.quickfix.MirBaseQuickfixProvider
  * See https://www.eclipse.org/Xtext/documentation/310_eclipse_support.html#quick-fixes
  */
 class MappingsLanguageQuickfixProvider extends MirBaseQuickfixProvider {
+
+	override protected getDependencies() {
+		MappingsLanguageValidator.PLUGIN_DEPENDENCIES
+	}
 
 //	@Fix(MappingsLanguageValidator.INVALID_NAME)
 //	def capitalizeName(Issue issue, IssueResolutionAcceptor acceptor) {

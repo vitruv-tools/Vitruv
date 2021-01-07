@@ -10,7 +10,6 @@ import org.eclipse.xtext.ui.editor.quickfix.IssueResolutionAcceptor
 import org.eclipse.xtext.validation.Issue
 
 import static tools.vitruv.dsls.mirbase.validation.EclipsePluginHelper.*
-import tools.vitruv.dsls.common.VitruviusDslsCommonConstants
 import tools.vitruv.dsls.mirbase.mirBase.DomainReference
 import tools.vitruv.framework.domains.VitruvDomainProviderRegistry
 import org.eclipse.xtext.xbase.ui.quickfix.XbaseQuickfixProvider
@@ -43,12 +42,16 @@ class MirBaseQuickfixProvider extends XbaseQuickfixProvider {
 	def addVitruviusDependenciesToManifest(Issue issue, IssueResolutionAcceptor acceptor) {
 		acceptor.accept(issue, 'Add all Vitruvius depdendencies.', 'Add all Vitruvius depdendencies.', null) [ element, context |
 			val project = getProject(element.eResource)
-			for (String dependency : VitruviusDslsCommonConstants.VITRUVIUS_DEPENDENCIES) {
+			for (String dependency : dependencies) {
 				println(dependency)
 				if (!hasDependency(project, dependency)) {
 					addDependency(project, dependency)
 				}
 			}
 		]
+	}
+	
+	def protected Iterable<String> getDependencies() {
+		#[]
 	}
 }
