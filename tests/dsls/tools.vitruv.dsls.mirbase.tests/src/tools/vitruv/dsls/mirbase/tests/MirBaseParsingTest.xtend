@@ -4,15 +4,15 @@
 package tools.vitruv.dsls.mirbase.tests
 
 import com.google.inject.Inject
-import org.junit.Assert
-import org.junit.Test
-import org.junit.runner.RunWith
+import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.Test
 import tools.vitruv.dsls.mirbase.mirBase.DummyEntryRule
-import org.eclipse.xtext.testing.XtextRunner
 import org.eclipse.xtext.testing.InjectWith
 import org.eclipse.xtext.testing.util.ParseHelper
+import org.eclipse.xtext.testing.extensions.InjectionExtension
+import org.junit.jupiter.api.^extension.ExtendWith
 
-@RunWith(XtextRunner)
+@ExtendWith(InjectionExtension)
 @InjectWith(MirBaseInjectorProvider)
 class MirBaseParsingTest{
 
@@ -24,7 +24,7 @@ class MirBaseParsingTest{
 		val result = parseHelper.parse('''
 			Hello Xtext!
 		''')
-		Assert.assertNotNull(result)
+		Assertions.assertNotNull(result)
 	}
 
 }
