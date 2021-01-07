@@ -31,7 +31,6 @@ import org.eclipse.xtend.lib.annotations.Accessors
 import org.eclipse.xtend.lib.annotations.FinalFieldsConstructor
 import org.eclipse.xtext.ui.XtextProjectHelper
 import org.eclipse.xtext.ui.util.JREContainerProvider
-import tools.vitruv.dsls.common.VitruviusDslsCommonConstants
 import tools.vitruv.dsls.commonalities.generator.CommonalitiesGenerationSettings
 import tools.vitruv.framework.change.processing.ChangePropagationSpecification
 
@@ -171,27 +170,22 @@ final class ExecutionTestCompiler {
 	}
 
 	private def createManifestMf(IProject project) {
-		val relevantMirbaseDependencies = VitruviusDslsCommonConstants.VITRUVIUS_DEPENDENCIES.filter [
-			!contains('mapping')
-		]
 		val mf = '''
 			Manifest-Version: 1.0
 			Bundle-ManifestVersion: 2
 			Bundle-Name: Commonalities Language Test Project
-			Bundle-Vendor: Vitruv-Tools
+			Bundle-Vendor: vitruv.tools
 			Bundle-Version: 1.1.0.qualifier
 			Bundle-SymbolicName: «project.name»; singleton:=true
 			Bundle-ActivationPolicy: lazy
 			Require-Bundle: tools.vitruv.extensions.dslsruntime.commonalities,
 			  tools.vitruv.framework.domains,
 			  tools.vitruv.extensions.emf,
-			  org.eclipse.xtext.xbase.lib,
 			  «FOR domainDependency : domainDependencies»
 			  	«domainDependency»,
 			  «ENDFOR»
-			  «FOR mirbaseDependency : relevantMirbaseDependencies SEPARATOR ','»
-			  	«mirbaseDependency»
-			  «ENDFOR»
+			  org.eclipse.xtext.xbase.lib
+			  
 			Bundle-RequiredExecutionEnvironment: JavaSE-«COMPLIANCE_LEVEL»
 		'''
 		(project.getFolder('META-INF') => [create(true, false, null)]).getFile('MANIFEST.MF').create(

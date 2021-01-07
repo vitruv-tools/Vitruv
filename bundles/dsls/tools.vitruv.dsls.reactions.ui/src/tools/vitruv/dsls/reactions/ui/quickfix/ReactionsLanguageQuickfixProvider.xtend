@@ -4,6 +4,7 @@
 package tools.vitruv.dsls.reactions.ui.quickfix
 
 import tools.vitruv.dsls.mirbase.ui.quickfix.MirBaseQuickfixProvider
+import tools.vitruv.dsls.reactions.validation.ReactionsLanguageValidator
 
 /**
  * Custom quickfixes.
@@ -12,6 +13,10 @@ import tools.vitruv.dsls.mirbase.ui.quickfix.MirBaseQuickfixProvider
  */
 class ReactionsLanguageQuickfixProvider extends MirBaseQuickfixProvider {
 
+	override protected getDependencies() {
+		ReactionsLanguageValidator.PLUGIN_DEPENDENCIES
+	}
+	
 //	@Fix(ReactionsLanguageValidator.INVALID_NAME)
 //	def capitalizeName(Issue issue, IssueResolutionAcceptor acceptor) {
 //		acceptor.accept(issue, 'Capitalize name', 'Capitalize the name.', 'upcase.png') [

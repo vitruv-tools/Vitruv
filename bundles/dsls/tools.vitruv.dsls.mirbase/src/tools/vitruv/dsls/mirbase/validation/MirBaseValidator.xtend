@@ -9,7 +9,6 @@ import tools.vitruv.framework.util.bridges.EclipseBridge
 import org.eclipse.xtext.validation.Check
 
 import static tools.vitruv.dsls.mirbase.validation.EclipsePluginHelper.*
-import tools.vitruv.dsls.common.VitruviusDslsCommonConstants
 import tools.vitruv.dsls.mirbase.mirBase.DomainReference
 import tools.vitruv.framework.domains.VitruvDomainProviderRegistry
 import org.eclipse.core.runtime.Platform
@@ -62,12 +61,16 @@ class MirBaseValidator extends AbstractMirBaseValidator {
 		
 		val project = getProject(mirBaseFile.eResource)
 		
-		for (String dependency : VitruviusDslsCommonConstants.VITRUVIUS_DEPENDENCIES) {
+		for (String dependency : dependencies) {
 			if (!hasDependency(project, dependency)) {
 				warning('''Plug-in does not declare all needed dependencies for Vitruvius (missing: «dependency»).''', mirBaseFile, null, VITRUVIUS_DEPENDENCY_MISSING)
 				return
 			}
 		}
+	}
+	
+	protected def Iterable<String> getDependencies() {
+		return #[];
 	}
 	
 	@Check
