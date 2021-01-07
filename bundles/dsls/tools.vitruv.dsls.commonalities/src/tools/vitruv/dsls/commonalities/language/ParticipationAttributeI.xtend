@@ -13,7 +13,7 @@ package class ParticipationAttributeI extends ParticipationAttributeImpl {
 	}
 
 	override isMultiValued() {
-		attribute?.isMultiValued
+		attribute !== null && attribute.isMultiValued
 	}
 
 	override getName() {
