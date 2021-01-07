@@ -199,6 +199,7 @@ class CommonalitiesLanguageValidator extends AbstractCommonalitiesLanguageValida
 				referenceRightType».''', SIMPLE_REFERENCE_MAPPING__REFERENCE)
 			return false
 		}
+		return true
 	}
 
 	// Returns false in case of error.
@@ -215,11 +216,12 @@ class CommonalitiesLanguageValidator extends AbstractCommonalitiesLanguageValida
 				return false
 			}
 		}
+		return true
 	}
 
 	@Check
 	def checkParticipationClassSuperclassIsNotAbstract(ParticipationClass participationClass) {
-		if (participationClass.superMetaclass?.isAbstract) {
+		if (participationClass.superMetaclass !== null && participationClass.superMetaclass.isAbstract) {
 			error('''Abstract classes cannot be used as participations.''', PARTICIPATION_CLASS__SUPER_METACLASS)
 		}
 	}
