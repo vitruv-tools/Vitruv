@@ -94,7 +94,7 @@ class ChangePublishingTestView implements TestView {
 	protected def propagate() {
 		changeRecorder.endRecording()
 		val compositeChange = VitruviusChangeFactory.instance.createCompositeChange(changeRecorder.changes)
-		compositeChange.changedResource?.save(emptyMap())
+		compositeChange.saveOrDeleteResource
 		checkState(compositeChange.validate, "The recorded change set is not valid!")
 		val propagationResult = changeProcessors.flatMap[apply(compositeChange)].toList
 		if (renewResourceCacheAfterPropagation) {
@@ -106,6 +106,17 @@ class ChangePublishingTestView implements TestView {
 
 	protected def renewResourceCache() {
 		resourceSet.resources.clear()
+	}
+
+	private def void saveOrDeleteResource(VitruviusChange change) {
+		val changedResource = change.changedResource
+		if (changedResource !== null) {
+			if (changedResource.contents.empty) {
+				changedResource.delete(emptyMap())
+			} else {
+				changedResource.save(emptyMap())
+			}
+		}
 	}
 
 	/**
