@@ -8,7 +8,6 @@ import org.eclipse.emf.common.notify.Notifier
 import java.util.function.Consumer
 import java.util.List
 import tools.vitruv.framework.change.description.PropagatedChange
-import tools.vitruv.framework.change.recording.AtomicEmfChangeRecorder
 
 /**
  * A Vitruv view for testing purposes.
@@ -60,8 +59,8 @@ interface TestView extends AutoCloseable {
 	}
 
 	/**
-	 * Starts recording changes for the resource of the provided {@code notifier}, executes the provided 
-	 * {@code consumer} on the {@code notifier} and stops recording changes for the {@code notifier} afterwards.
+	 * Starts recording changes for the provided {@code notifier}, executes the provided  {@code consumer} on the 
+	 * {@code notifier} and stops recording changes for the {@code notifier} afterwards.
 	 * <p>
 	 * Whether changes will effectively be recorded depends on this view. It is permissible for a view not to record
 	 * any changes if it deems them irrelevant.
@@ -91,10 +90,4 @@ interface TestView extends AutoCloseable {
 	 */
 	def TestUserInteraction getUserInteraction()
 
-	/**
-	 * Access to the change recorder for the legacy {@link LegacyVitruvApplicationTest}.
-	 * Has to be removed as soon as {@link LegacyVitruvApplicationTest} is removed.
-	 */
-	@Deprecated
-	def AtomicEmfChangeRecorder getChangeRecorder()
 }

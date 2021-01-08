@@ -16,6 +16,7 @@ import tools.vitruv.testutils.matchers.CorrespondenceModelContainer
 
 import org.eclipse.xtend.lib.annotations.Delegate
 import static tools.vitruv.testutils.UriMode.*
+import tools.vitruv.framework.userinteraction.PredefinedInteractionResultProvider
 
 @ExtendWith(TestProjectManager, TestLogging)
 abstract class VitruvApplicationTest implements CorrespondenceModelContainer, TestView {
@@ -45,8 +46,13 @@ abstract class VitruvApplicationTest implements CorrespondenceModelContainer, Te
 			domains.forEach[domain|addMetamodel(domain)]
 			changePropagationSpecifications.forEach[spec|addChangePropagationSpecification(spec)]
 		])
-		testView = new ChangePublishingTestView(testProjectPath, interactionProvider, this.uriMode, virtualModel)
- 	}
+		testView = generateTestView(testProjectPath, interactionProvider);
+	}
+
+	package def TestView generateTestView(Path testProjectPath,
+		PredefinedInteractionResultProvider interactionProvider) {
+		new ChangePublishingTestView(testProjectPath, interactionProvider, this.uriMode, virtualModel)
+	}
 
 	@AfterEach
 	def final package void closeAfterTest() {
@@ -56,7 +62,5 @@ abstract class VitruvApplicationTest implements CorrespondenceModelContainer, Te
 	override CorrespondenceModel getCorrespondenceModel() { virtualModel.correspondenceModel }
 
 	def protected InternalVirtualModel getVirtualModel() { virtualModel }
-	
-	@Deprecated
-	override getChangeRecorder() { testView.changeRecorder }
+
 }
