@@ -126,16 +126,18 @@ class ChangePublishingTestView implements TestView {
 		changeProcessors += processor
 	}
 
-	protected def startRecordingChanges(Notifier notifier) {
+	protected def <T extends Notifier> T startRecordingChanges(T notifier) {
 		checkState(changeRecorder.recording, "This test view has already been closed!")
 		checkArgument(notifier !== null, '''The object to record changes of is null!''')
 		changeRecorder.addToRecording(notifier)
+		return notifier
 	}
 
-	protected def stopRecordingChanges(Notifier notifier) {
+	protected def <T extends Notifier> T stopRecordingChanges(T notifier) {
 		checkState(changeRecorder.recording, "This test view has already been closed!")
 		checkArgument(notifier !== null, '''The object to stop recording changes of is null!''')
 		changeRecorder.removeFromRecording(notifier)
+		return notifier
 	}
 
 	protected def isRenewResourceCacheAfterPropagation() {

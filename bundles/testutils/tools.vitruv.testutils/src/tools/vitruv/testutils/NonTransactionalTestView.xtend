@@ -13,20 +13,24 @@ interface NonTransactionalTestView extends TestView {
 	/**
 	 * Starts recording changes for the given {@code notifier} and all its contained elements. Has to be stopped by calling 
 	 * {@link #stopRecordingChanges stopRecordingChanges} with the same argument.
+	 * Returns the given {@code notifier}.
+	 * <p>
 	 * Use {@link #record record} to run recording in a transaction that automatically stops recording on return. 
 	 * <p>
 	 * Whether changes will effectively be recorded depends on this view. It is permissible for a view not to record
 	 * any changes if it deems them irrelevant.
 	 */
-	def void startRecordingChanges(Notifier notifier)
+	def <T extends Notifier> T startRecordingChanges(T notifier)
 
 	/**
 	 * Stops recording changes for the given {@code notifier} and all its contained elements. Has to be started by calling 
 	 * {@link #startRecordingChanges startRecordingChanges} with the same argument before.
 	 * Has no effect if recording has not been started before.
+	 * Returns the given {@code notifier}.
+	 * <p>
 	 * Use {@link #record record} to run recording in a transaction that automatically stops recording on return. 
 	 */
-	def void stopRecordingChanges(Notifier notifier)
+	def <T extends Notifier> T stopRecordingChanges(T notifier)
 
 	/**
 	 * Propagates all changes recorded since the last call of this method at all objects for which recording has been started
