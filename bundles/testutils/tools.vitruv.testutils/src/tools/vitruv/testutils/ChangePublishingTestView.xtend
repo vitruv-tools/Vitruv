@@ -23,12 +23,13 @@ import org.eclipse.xtend.lib.annotations.Delegate
 /**
  * A test view that will record and publish the changes created in it.
  */
-class ChangePublishingTestView implements TestView {
+class ChangePublishingTestView implements NonTransactionalTestView {
 	val ResourceSet resourceSet
 	@Delegate
 	val TestView delegate
 	val AtomicEmfChangeRecorder changeRecorder
 	val List<(VitruviusChange)=>List<PropagatedChange>> changeProcessors = new LinkedList()
+	var renewResourceCacheAfterPropagation = true
 
 	/**
 	 * Creates a test view that will store its persisted resources in the provided {@code persistenceDirectory},
@@ -91,7 +92,7 @@ class ChangePublishingTestView implements TestView {
 		propagate
 	}
 
-	protected def propagate() {
+	override propagate() {
 		changeRecorder.endRecording()
 		val compositeChange = VitruviusChangeFactory.instance.createCompositeChange(changeRecorder.changes)
 		compositeChange.saveOrDeleteResource
@@ -104,7 +105,7 @@ class ChangePublishingTestView implements TestView {
 		return propagationResult
 	}
 
-	protected def renewResourceCache() {
+	override renewResourceCache() {
 		resourceSet.resources.clear()
 	}
 
@@ -126,21 +127,21 @@ class ChangePublishingTestView implements TestView {
 		changeProcessors += processor
 	}
 
-	protected def <T extends Notifier> T startRecordingChanges(T notifier) {
+	override <T extends Notifier> T startRecordingChanges(T notifier) {
 		checkState(changeRecorder.recording, "This test view has already been closed!")
 		checkArgument(notifier !== null, '''The object to record changes of is null!''')
 		changeRecorder.addToRecording(notifier)
 		return notifier
 	}
 
-	protected def <T extends Notifier> T stopRecordingChanges(T notifier) {
+	override <T extends Notifier> T stopRecordingChanges(T notifier) {
 		checkState(changeRecorder.recording, "This test view has already been closed!")
 		checkArgument(notifier !== null, '''The object to stop recording changes of is null!''')
 		changeRecorder.removeFromRecording(notifier)
 		return notifier
 	}
 
-	protected def isRenewResourceCacheAfterPropagation() {
-		return true
+	def setRenewResourceCacheAfterPropagation(boolean enabled) {
+		renewResourceCacheAfterPropagation = enabled
 	}
 }
