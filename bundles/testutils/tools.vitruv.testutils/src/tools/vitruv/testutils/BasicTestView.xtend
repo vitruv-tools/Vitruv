@@ -101,11 +101,6 @@ class BasicTestView implements TestView {
 		}
 	}
 
-	@Deprecated
-	override getChangeRecorder() {
-		throw new UnsupportedOperationException('''«BasicTestView.simpleName» has no change recorder!''')
-	}
-
 	override close() throws Exception {
 		// nothing to do
 	}

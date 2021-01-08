@@ -11,6 +11,7 @@ import tools.vitruv.framework.userinteraction.PredefinedInteractionResultProvide
 import static extension tools.vitruv.framework.util.ResourceSetUtil.withGlobalFactories
 import tools.vitruv.framework.uuid.UuidGeneratorAndResolver
 import static com.google.common.base.Preconditions.checkState
+import static com.google.common.base.Preconditions.checkArgument
 import tools.vitruv.framework.change.description.VitruviusChange
 import java.util.List
 import java.util.LinkedList
@@ -76,30 +77,34 @@ class ChangePublishingTestView implements TestView {
 	}
 
 	override <T extends Notifier> T record(T notifier, Consumer<T> consumer) {
-		checkState(changeRecorder.recording, "This test view has already been closed!")
-
 		try {
-			changeRecorder.addToRecording(notifier)
+			notifier.startRecordingChanges
 			consumer.accept(notifier)
 		} finally {
-			changeRecorder.removeFromRecording(notifier)
+			notifier.stopRecordingChanges
 		}
 		return notifier
 	}
 
 	override <T extends Notifier> List<PropagatedChange> propagate(T notifier, Consumer<T> consumer) {
 		notifier.record(consumer)
+		propagate
+	}
+
+	protected def propagate() {
 		changeRecorder.endRecording()
 		val compositeChange = VitruviusChangeFactory.instance.createCompositeChange(changeRecorder.changes)
 		compositeChange.changedResource?.save(emptyMap())
 		checkState(compositeChange.validate, "The recorded change set is not valid!")
 		val propagationResult = changeProcessors.flatMap[apply(compositeChange)].toList
-		renewResourceCache()
+		if (renewResourceCacheAfterPropagation) {
+			renewResourceCache()
+		}
 		changeRecorder.beginRecording()
 		return propagationResult
 	}
 
-	def private renewResourceCache() {
+	protected def renewResourceCache() {
 		resourceSet.resources.clear()
 	}
 
@@ -110,6 +115,19 @@ class ChangePublishingTestView implements TestView {
 		changeProcessors += processor
 	}
 
-	@Deprecated
-	override getChangeRecorder() { changeRecorder }
+	protected def startRecordingChanges(Notifier notifier) {
+		checkState(changeRecorder.recording, "This test view has already been closed!")
+		checkArgument(notifier !== null, '''The object to record changes of is null!''')
+		changeRecorder.addToRecording(notifier)
+	}
+
+	protected def stopRecordingChanges(Notifier notifier) {
+		checkState(changeRecorder.recording, "This test view has already been closed!")
+		checkArgument(notifier !== null, '''The object to stop recording changes of is null!''')
+		changeRecorder.removeFromRecording(notifier)
+	}
+
+	protected def isRenewResourceCacheAfterPropagation() {
+		return true
+	}
 }
