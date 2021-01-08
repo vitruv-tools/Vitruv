@@ -73,6 +73,11 @@ final class NotificationToEChangeConverter {
 							case REMOVE_MANY: handleMultiRemoveRootChange(notification)
 							default: emptyList()
 						}
+					case Resource.RESOURCE__URI:
+						switch (eventType) {
+							case SET: handleSetUriChange(notification)
+							default: emptyList()
+						}
 					default:
 						emptyList()
 				}
@@ -228,6 +233,16 @@ final class NotificationToEChangeConverter {
 		oldValues.reverseView.mapFixedIndexed [ index, value |
 			val valueIndex = initialIndex + oldValues.size - 1 - index
 			createRemoveRootChange(value, notifierResource, valueIndex).withGeneratedId()
+		]
+	}
+
+	private def Iterable<? extends EChange> handleSetUriChange(extension NotificationInfo notification) {
+		notifierResource.contents.mapFixedIndexed [ index, value |
+			val valueIndex = initialIndex + notifierResource.contents.size - 1 - index
+			createRemoveRootChange(value, notifierResource, valueIndex).withGeneratedId()
+		] + notifierResource.contents.flatMapFixedIndexed [ index, value |
+			createInsertRootChange(value, notifierResource, initialIndex + index).
+				surroundWithCreateAndFeatureChangesIfNecessary().mapFixed[withGeneratedId()]
 		]
 	}
 
