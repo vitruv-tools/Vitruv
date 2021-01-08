@@ -49,7 +49,7 @@ abstract class VitruvApplicationTest implements CorrespondenceModelContainer, Te
 		testView = generateTestView(testProjectPath, interactionProvider);
 	}
 
-	package def TestView generateTestView(Path testProjectPath,
+	def package TestView generateTestView(Path testProjectPath,
 		PredefinedInteractionResultProvider interactionProvider) {
 		new ChangePublishingTestView(testProjectPath, interactionProvider, this.uriMode, virtualModel)
 	}

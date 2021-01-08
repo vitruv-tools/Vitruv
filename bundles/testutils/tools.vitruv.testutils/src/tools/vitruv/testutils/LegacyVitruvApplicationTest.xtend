@@ -18,7 +18,9 @@ abstract class LegacyVitruvApplicationTest extends VitruvApplicationTest impleme
 	NonTransactionalTestView testView
 
 	override generateTestView(Path testProjectPath, PredefinedInteractionResultProvider interactionResultProvider) {
-		testView = new NonTransactionalChangePublishingTestView(testProjectPath, interactionResultProvider,
+		val testView = new ChangePublishingTestView(testProjectPath, interactionResultProvider,
 			this.uriMode, virtualModel);
+		testView.renewResourceCacheAfterPropagation = false
+		this.testView = testView
 	}
 }
