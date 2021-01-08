@@ -45,7 +45,7 @@ class MappingRoutineStorage {
 	 * Generates a routine from a routine generator
 	 */
 	def generateRoutine(AbstractMappingRoutineGenerator generator) {
-		logger.info('''=> generate routine: «generator.toString»''')
+		logger.trace('''=> generate routine: «generator.toString»''')
 		generator.init(mappingName, fromParameters, toParameters)
 		generator.prepareGenerator(singleSidedConditions, correspondingSingleSidedConditions, bidirectionalConditions,
 			this)
