@@ -17,6 +17,8 @@ import tools.vitruv.framework.util.bridges.EMFBridge
 import static extension tools.vitruv.framework.util.ResourceSetUtil.withGlobalFactories
 import static extension tools.vitruv.framework.util.bridges.EcoreResourceBridge.loadOrCreateResource
 import tools.vitruv.framework.userinteraction.UserInteractionFactory
+import static extension java.nio.file.Files.move
+import static java.nio.file.Files.createDirectories
 
 /**
  * A minimal test view that gives access to resources, but does not record any changes.
@@ -79,6 +81,21 @@ class BasicTestView implements TestView {
 		(toSave ?: determineResource(notifier)).save(emptyMap())
 		return emptyList()
 	}
+	
+	override moveTo(Resource resource, Path newViewRelativePath) {
+		resource.URI.absolutePath.moveSafelyTo(persistenceDirectory.resolve(newViewRelativePath))
+		resource.URI = newViewRelativePath.uri
+	}
+
+	override moveTo(Resource resource, URI newUri) {
+		resource.URI.absolutePath.moveSafelyTo(newUri.absolutePath)
+		resource.URI = newUri
+	}
+	
+	def private moveSafelyTo(Path source, Path target) {
+		createDirectories(target.parent)
+		move(source, target)
+	}
 
 	override getUri(Path viewRelativePath) {
 		checkArgument(viewRelativePath !== null, "The viewRelativePath must not be null!")
@@ -86,10 +103,21 @@ class BasicTestView implements TestView {
 		return switch (uriMode) {
 			case PLATFORM_URIS: {
 				// platform URIs must always use '/' and be relative to the project (fileName) rather than the workspace
-				EMFBridge.createURI(persistenceDirectory.fileName.resolve(viewRelativePath).join('/'))
+				EMFBridge.createURI(persistenceDirectory.fileName.resolve(viewRelativePath).normalize().join('/'))
 			}
 			case FILE_URIS:
-				EMFBridge.getEmfFileUriForFile(persistenceDirectory.resolve(viewRelativePath).toFile())
+				EMFBridge.getEmfFileUriForFile(persistenceDirectory.resolve(viewRelativePath).normalize().toFile())
+		}
+	}
+	
+	def private getAbsolutePath(URI uri) {
+		if (uri.isFile) {
+			checkArgument(uri.hasAbsolutePath, '''«uri» is a file URI but does not have an absolute path!''')
+			Path.of(URI.decode(uri.path))
+		} else if (uri.isPlatformResource) {
+			persistenceDirectory.resolveSibling(uri.toPlatformString(true))
+		} else {
+			throw new IllegalArgumentException('''This URI is not supported by this view: «uri»''')
 		}
 	}
 

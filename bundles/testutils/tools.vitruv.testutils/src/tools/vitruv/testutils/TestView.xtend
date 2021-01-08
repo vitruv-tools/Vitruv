@@ -58,6 +58,18 @@ interface TestView extends AutoCloseable {
 		return clazz.cast(resource.contents.get(0))
 	}
 
+		/**
+	 * Moves the provided {@code resource} to its {@code newViewRelativePath} by both updating its URI and moving its
+	 * serialization on the file system (if it exists).
+	 */
+	def void moveTo(Resource resource, Path newViewRelativePath)
+
+	/**
+	 * Moves the provided {@code resource} to its {@code newUri} by both updating its URI and moving its serialization
+	 * on the file system (if it exists).
+	 */
+	def void moveTo(Resource resource, URI newUri)
+
 	/**
 	 * Starts recording changes for the provided {@code notifier}, executes the provided  {@code consumer} on the 
 	 * {@code notifier} and stops recording changes for the {@code notifier} afterwards.
