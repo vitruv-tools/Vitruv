@@ -66,7 +66,7 @@ class DirectionalMappingReactionGenerator {
 		reactionTriggerGenerators.appendBidirectionalMappingAttributeReactions(observeChanges)
 		// create reaction triggers from the generators and connect them with the created routines
 		reactionTriggerGenerators.forEach [ reactionTriggerGenerator |
-			logger.info('''=> generate reaction trigger: «reactionTriggerGenerator.toString»''')
+			logger.trace('''=> generate reaction trigger: «reactionTriggerGenerator.toString»''')
 			val reactionTemplate = reactionTriggerGenerator.generateTrigger(context)
 			context.getSegmentBuilder +=
 				routinesGenerator.generateRoutineCall(reactionTemplate, reactionTriggerGenerator)
