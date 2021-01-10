@@ -1,22 +1,14 @@
 package tools.vitruv.dsls.commonalities.testutils
 
 import com.google.inject.Inject
-import edu.kit.ipd.sdq.commons.util.org.eclipse.core.resources.IProjectUtil
-import java.io.ByteArrayInputStream
 import java.io.File
 import java.net.URLClassLoader
 import java.nio.file.Files
 import java.nio.file.Path
 import java.util.ArrayList
 import java.util.HashSet
-import java.util.Hashtable
-import java.util.List
 import java.util.function.Consumer
 import org.apache.log4j.Logger
-import org.eclipse.core.resources.IFolder
-import org.eclipse.core.resources.IProject
-import org.eclipse.core.resources.IResource
-import org.eclipse.core.resources.IncrementalProjectBuilder
 import org.eclipse.core.runtime.NullProgressMonitor
 import org.eclipse.core.runtime.Platform
 import org.eclipse.jdt.core.JavaCore
@@ -24,34 +16,29 @@ import org.eclipse.osgi.internal.framework.EquinoxBundle
 import org.eclipse.osgi.storage.BundleInfo.Generation
 import org.eclipse.pde.core.target.ITargetLocation
 import org.eclipse.pde.core.target.LoadTargetDefinitionJob
-import org.eclipse.pde.internal.core.PDECore
 import org.eclipse.pde.internal.core.natures.PDE
 import org.eclipse.pde.internal.core.target.TargetPlatformService
 import org.eclipse.xtend.lib.annotations.Accessors
 import org.eclipse.xtend.lib.annotations.FinalFieldsConstructor
 import org.eclipse.xtext.ui.XtextProjectHelper
-import org.eclipse.xtext.ui.util.JREContainerProvider
 import tools.vitruv.dsls.commonalities.generator.CommonalitiesGenerationSettings
-import tools.vitruv.dsls.commonalities.util.CommonalitiesLanguageConstants
 import tools.vitruv.framework.change.processing.ChangePropagationSpecification
 
 import static com.google.common.base.Preconditions.*
 import static java.util.stream.Collectors.toList
 import static org.eclipse.core.resources.ResourcesPlugin.getWorkspace
 import static tools.vitruv.testutils.TestLauncher.currentTestLauncher
-import static java.lang.System.lineSeparator
 
 import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
-import java.io.InputStream
+import static extension tools.vitruv.dsls.commonalities.testutils.CommonalitiesProjectSetup.*
+import static extension tools.vitruv.dsls.common.ui.PluginProjectExtensions.*
+import static extension tools.vitruv.dsls.common.ui.ProjectAccess.*
+import edu.kit.ipd.sdq.commons.util.org.eclipse.core.resources.IProjectUtil
+import edu.kit.ipd.sdq.activextendannotations.CloseResource
 
 @FinalFieldsConstructor
 final class ExecutionTestCompiler {
 	static val Logger logger = Logger.getLogger(ExecutionTestCompiler)
-
-	static val String COMPLIANCE_LEVEL = '11';
-	static val TEST_PROJECT_GENERATED_SOURCES_FOLDER_NAME = 'src-gen'
-	static val TEST_PROJECT_SOURCES_FOLDER_NAME = 'src'
-	static val TEST_PROJECT_COMPILATION_FOLDER = 'bin'
 
 	var Iterable<Class<? extends ChangePropagationSpecification>> loadedChangePropagationClasses
 	var compiled = false
@@ -63,7 +50,7 @@ final class ExecutionTestCompiler {
 
 	def getChangePropagationSpecifications() {
 		if (!compiled) {
-			val compiledFolder = compile()
+			val compiledFolder = compile(prepareWorkspace())
 			compiled = true
 
 			val classLoader = new URLClassLoader(#[compiledFolder.toUri.toURL], commonalitiesOwningClass.classLoader)
@@ -86,12 +73,9 @@ final class ExecutionTestCompiler {
 		]
 	}
 
-	private def compile() {
+	private def Path compile(@CloseResource AutoCloseable workspacePreparation) {
 		val testProject = prepareTestProject()
 		setGenerationSettings()
-
-		// Disable automatic building
-		workspace.description = workspace.description => [autoBuilding = false]
 
 		// copy in the source files
 		for (commonalityFile : commonalityFilePaths) {
@@ -119,6 +103,17 @@ final class ExecutionTestCompiler {
 		return testProject.binFolder.path
 	}
 
+	private def AutoCloseable prepareWorkspace() {
+		closeWelcomePage()
+
+		return if (workspace.description.autoBuilding) {
+			workspace.description = workspace.description => [autoBuilding = false]
+			[workspace.description = workspace.description => [autoBuilding = true]]
+		} else {
+			[]
+		}
+	}
+
 	/**
 	 * Sets up the test project. Applies all settings needed to make the
 	 * project usable. Some of those settings are not required for the tests to
@@ -128,34 +123,15 @@ final class ExecutionTestCompiler {
 	private def prepareTestProject() {
 		setTargetPlatform()
 
-		val projectName = '''«commonalitiesOwningClass.simpleName»-Commonalities'''
-		val eclipseProject = IProjectUtil.createProjectAt(projectName, compilationProjectDir) => [
-			open(null)
-			setDescription(description => [
-				natureIds = #[JavaCore.NATURE_ID, XtextProjectHelper.NATURE_ID, PDE.PLUGIN_NATURE]
-			], null)
-			createManifestMf()
-		]
-		val sourcesFolder = eclipseProject.createFolder(TEST_PROJECT_SOURCES_FOLDER_NAME)
-		val generatedSourcesFolder = eclipseProject.createFolder(TEST_PROJECT_GENERATED_SOURCES_FOLDER_NAME)
-		val generatedSourcesSourceFolder = JavaCore.newSourceEntry(generatedSourcesFolder.fullPath)
-		val sourcesSourceFolder = JavaCore.newSourceEntry(sourcesFolder.fullPath)
-		val requiredPluginsContainer = JavaCore.newContainerEntry(PDECore.REQUIRED_PLUGINS_CONTAINER_PATH)
-		val jreContainer = JREContainerProvider.defaultJREContainerEntry
-		val javaProjectBinFolder = eclipseProject.getFolder(TEST_PROJECT_COMPILATION_FOLDER)
-		val projectClasspath = #[sourcesSourceFolder, generatedSourcesSourceFolder, jreContainer,
-			requiredPluginsContainer]
-		JavaCore.create(eclipseProject) => [
-			options = new Hashtable => [
-				put(JavaCore.COMPILER_CODEGEN_TARGET_PLATFORM, COMPLIANCE_LEVEL)
-				put(JavaCore.COMPILER_COMPLIANCE, COMPLIANCE_LEVEL)
-				put(JavaCore.COMPILER_SOURCE, COMPLIANCE_LEVEL)
-			]
-			setRawClasspath(projectClasspath, javaProjectBinFolder.fullPath, true, null)
-			save(null, true)
-		]
+		val testProject = IProjectUtil.createProjectAt('''«commonalitiesOwningClass.simpleName»-Commonalities''',
+			compilationProjectDir).setupAsCommonalitiesProject()
+		val testPluginProject = testProject.pluginProject
+		for (domainDependency : domainDependencies) {
+			testPluginProject.addRequiredBundle(domainDependency)
+		}
+		testPluginProject.apply(new NullProgressMonitor)
 
-		return new Project(eclipseProject, sourcesFolder, javaProjectBinFolder)
+		return testProject
 	}
 
 	private def setGenerationSettings() {
@@ -168,37 +144,6 @@ final class ExecutionTestCompiler {
 				generationSettings.createReactionFiles = false
 			case UNKNOWN: {
 			} // use default 
-		}
-	}
-
-	private def createManifestMf(IProject project) {
-		val allDependencies = List.of(CommonalitiesLanguageConstants.RUNTIME_BUNDLE) + domainDependencies
-		val mf = '''
-			Manifest-Version: 1.0
-			Bundle-ManifestVersion: 2
-			Bundle-Name: Commonalities Language Test Project
-			Bundle-Vendor: vitruv.tools
-			Bundle-Version: 1.1.0.qualifier
-			Bundle-SymbolicName: «project.name»; singleton:=true
-			Bundle-ActivationPolicy: lazy
-			Require-Bundle: «allDependencies.join(',' + lineSeparator + '  ')»
-			Bundle-RequiredExecutionEnvironment: JavaSE-«COMPLIANCE_LEVEL»
-		'''
-		project.createFolder('META-INF').createFile('MANIFEST.MF', mf)
-	}
-
-	@FinalFieldsConstructor
-	private static class Project {
-		val IProject eclipseProject
-		val IFolder sourceFolder
-		val IFolder binFolder
-
-		private def build(String configName) {
-			eclipseProject.build(IncrementalProjectBuilder.FULL_BUILD, configName, null, new NullProgressMonitor)
-		}
-
-		private def refresh() {
-			eclipseProject.refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor)
 		}
 	}
 
@@ -240,24 +185,6 @@ final class ExecutionTestCompiler {
 		val job = new LoadTargetDefinitionJob(targetDef)
 		job.schedule()
 		job.join()
-	}
-
-	private static def createFolder(IProject project, String name) {
-		project.getFolder(name) => [
-			create(true, false, null)
-		]
-	}
-
-	private static def createFile(IFolder folder, String fileName, InputStream content) {
-		folder.getFile(fileName).create(content, true, null)
-	}
-
-	private static def createFile(IFolder folder, String fileName, String content) {
-		folder.createFile(fileName, new ByteArrayInputStream(content.bytes))
-	}
-
-	private static def getPath(IResource eclipseResource) {
-		eclipseResource.rawLocation.toFile.toPath
 	}
 
 	@Accessors

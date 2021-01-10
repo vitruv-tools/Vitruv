@@ -1,0 +1,26 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Vitruv DSLs Common for Eclipse
+Bundle-SymbolicName: tools.vitruv.dsls.common.ui
+Automatic-Module-Name: tools.vitruv.dsls.common
+Bundle-Version: 1.1.0.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-11
+Require-Bundle: com.google.guava,
+ org.eclipse.xtext.xbase.lib,
+ org.eclipse.xtend.lib,
+ org.eclipse.xtend.lib.macro,
+ org.eclipse.emf.ecore,
+ edu.kit.ipd.sdq.activextendannotations,
+ org.eclipse.jdt.core,
+ org.eclipse.pde.core,
+ org.eclipse.core.resources,
+ org.eclipse.core.runtime,
+ org.eclipse.xtext.ui,
+ tools.vitruv.dsls.common,
+ tools.vitruv.framework.domains,
+ org.eclipse.pde.ui,
+ org.eclipse.ui.ide
+Export-Package: tools.vitruv.dsls.common.ui,
+ tools.vitruv.dsls.common.ui.quickfix,
+ tools.vitruv.dsls.common.ui.validation
+Bundle-Vendor: vitruv.tools

@@ -2,7 +2,7 @@ package tools.vitruv.dsls.commonalities.generator.domain
 
 import edu.kit.ipd.sdq.activextendannotations.Utility
 import org.eclipse.emf.common.util.URI
-import tools.vitruv.dsls.common.helper.GenericClassNameGenerator
+import tools.vitruv.dsls.common.GenericClassNameGenerator
 import tools.vitruv.dsls.commonalities.language.Concept
 
 import static extension tools.vitruv.dsls.commonalities.generator.intermediatemodel.IntermediateModelConstants.*

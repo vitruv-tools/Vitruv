@@ -21,7 +21,8 @@ Require-Bundle: tools.vitruv.dsls.reactions,
  org.eclipse.xtext.xbase.ui,
  org.eclipse.compare,
  org.eclipse.xtext.builder,
- org.eclipse.jdt.debug.ui
+ org.eclipse.jdt.debug.ui,
+ tools.vitruv.dsls.common.ui
 Import-Package: org.apache.log4j
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Export-Package: tools.vitruv.dsls.reactions.ui.contentassist,

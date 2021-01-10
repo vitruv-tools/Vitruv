@@ -1,0 +1,134 @@
+package tools.vitruv.dsls.commonalities.testutils
+
+import edu.kit.ipd.sdq.activextendannotations.Utility
+import org.eclipse.core.resources.IncrementalProjectBuilder
+import org.eclipse.core.runtime.NullProgressMonitor
+import org.eclipse.core.resources.IProject
+import org.eclipse.core.resources.IResource
+import org.eclipse.jdt.core.JavaCore
+import org.eclipse.xtext.ui.XtextProjectHelper
+import tools.vitruv.dsls.commonalities.util.CommonalitiesLanguageConstants
+import org.eclipse.core.resources.IFolder
+import java.io.InputStream
+import java.io.ByteArrayInputStream
+import org.eclipse.xtext.ui.util.JREContainerProvider
+import org.eclipse.pde.internal.core.PDECore
+import java.util.Hashtable
+import org.eclipse.pde.core.project.IBundleProjectDescription
+import org.eclipse.pde.core.project.IRequiredBundleDescription
+import org.eclipse.ui.PlatformUI
+import org.eclipse.swt.widgets.Display
+
+@Utility
+class CommonalitiesProjectSetup {
+	static val String COMPLIANCE_LEVEL = '11';
+	static val TEST_PROJECT_GENERATED_SOURCES_FOLDER_NAME = 'src-gen'
+	static val TEST_PROJECT_SOURCES_FOLDER_NAME = 'src'
+	static val TEST_PROJECT_COMPILATION_FOLDER = 'bin'
+
+	def static IProject setupAsCommonalitiesProject(IProject project) {
+		project.open(null)
+		project.setDescription(project.description => [
+			natureIds = #[JavaCore.NATURE_ID, XtextProjectHelper.NATURE_ID, IBundleProjectDescription.PLUGIN_NATURE]
+		], null)
+		project.createManifestMf()
+		val sourcesFolder = project.createFolder(TEST_PROJECT_SOURCES_FOLDER_NAME)
+		val generatedSourcesFolder = project.createFolder(TEST_PROJECT_GENERATED_SOURCES_FOLDER_NAME)
+		val generatedSourcesSourceFolder = JavaCore.newSourceEntry(generatedSourcesFolder.fullPath)
+		val sourcesSourceFolder = JavaCore.newSourceEntry(sourcesFolder.fullPath)
+		val requiredPluginsContainer = JavaCore.newContainerEntry(PDECore.REQUIRED_PLUGINS_CONTAINER_PATH)
+		val jreContainer = JREContainerProvider.defaultJREContainerEntry
+		val javaProjectBinFolder = project.getFolder(TEST_PROJECT_COMPILATION_FOLDER)
+		val projectClasspath = #[sourcesSourceFolder, generatedSourcesSourceFolder, jreContainer,
+			requiredPluginsContainer]
+		JavaCore.create(project) => [
+			options = new Hashtable => [
+				put(JavaCore.COMPILER_CODEGEN_TARGET_PLATFORM, COMPLIANCE_LEVEL)
+				put(JavaCore.COMPILER_COMPLIANCE, COMPLIANCE_LEVEL)
+				put(JavaCore.COMPILER_SOURCE, COMPLIANCE_LEVEL)
+			]
+			setRawClasspath(projectClasspath, javaProjectBinFolder.fullPath, true, null)
+			save(null, true)
+		]
+		return project
+	}
+
+	def private static createManifestMf(IProject project) {
+		val mf = '''
+			Manifest-Version: 1.0
+			Bundle-ManifestVersion: 2
+			Bundle-Name: Commonalities Language Test Project
+			Bundle-Vendor: vitruv.tools
+			Bundle-Version: 1.1.0.qualifier
+			Bundle-SymbolicName: «project.name.replace(' ', '-')»; singleton:=true
+			Bundle-ActivationPolicy: lazy
+			Require-Bundle: «CommonalitiesLanguageConstants.RUNTIME_BUNDLE»
+			Bundle-RequiredExecutionEnvironment: JavaSE-«COMPLIANCE_LEVEL»
+		'''
+		project.createFolder('META-INF').createFile('MANIFEST.MF', mf)
+	}
+
+	def static removeRequiredBundle(IBundleProjectDescription pluginProject, String requiredBundleName) {
+		val currentlyRequiredBundles = pluginProject.requiredBundles
+		if (currentlyRequiredBundles === null) return;
+		if (currentlyRequiredBundles.length === 1) {
+			pluginProject.requiredBundles = null
+		} else {
+			var removeIndex = currentlyRequiredBundles.indexed.findFirst[value.name == requiredBundleName]?.key
+			if (removeIndex === null) return;
+			val newRequiredBundles = <IRequiredBundleDescription>newArrayOfSize(currentlyRequiredBundles.length - 1)
+			if (removeIndex > 0) {
+				System.arraycopy(currentlyRequiredBundles, 0, newRequiredBundles, 0, removeIndex)
+			}
+			if (removeIndex < newRequiredBundles.length) {
+				System.arraycopy(currentlyRequiredBundles, removeIndex + 1, newRequiredBundles, removeIndex,
+					newRequiredBundles.length - removeIndex)
+			}
+			pluginProject.requiredBundles = newRequiredBundles
+		}
+	}
+
+	def static closeWelcomePage() {
+		Display.^default.asyncExec [
+			val introManager = PlatformUI.workbench.introManager
+			val intro = introManager.intro
+			if (intro !== null) {
+				introManager.closeIntro(intro);
+			}
+		]
+	}
+
+	def static build(IProject project, String configName) {
+		project.build(IncrementalProjectBuilder.FULL_BUILD, configName, null, new NullProgressMonitor)
+	}
+
+	def static refresh(IProject project) {
+		project.refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor)
+	}
+
+	def static getSourceFolder(IProject project) {
+		project.getFolder(TEST_PROJECT_SOURCES_FOLDER_NAME)
+	}
+
+	def static getBinFolder(IProject project) {
+		project.getFolder(TEST_PROJECT_COMPILATION_FOLDER)
+	}
+
+	def private static createFolder(IProject project, String name) {
+		project.getFolder(name) => [
+			create(true, false, null)
+		]
+	}
+
+	def static createFile(IFolder folder, String fileName, InputStream content) {
+		folder.getFile(fileName).create(content, true, null)
+	}
+
+	def private static createFile(IFolder folder, String fileName, String content) {
+		folder.createFile(fileName, new ByteArrayInputStream(content.bytes))
+	}
+
+	def static getPath(IResource eclipseResource) {
+		eclipseResource.rawLocation.toFile.toPath
+	}
+}
