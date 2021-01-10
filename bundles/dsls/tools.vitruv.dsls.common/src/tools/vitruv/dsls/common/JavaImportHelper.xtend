@@ -1,4 +1,4 @@
-package tools.vitruv.dsls.common.helper
+package tools.vitruv.dsls.common
 
 import java.util.Map
 import java.util.Collections
@@ -27,7 +27,7 @@ class JavaImportHelper {
 
 		return javaClass.name + FQN_SEPARATOR + methodName;
 	}
-	
+
 	def typeRef(ClassNameGenerator nameGenerator) {
 		typeRef(nameGenerator.qualifiedName)
 	}
@@ -46,7 +46,7 @@ class JavaImportHelper {
 			return fullyQualifiedJVMNameString
 
 		val className = ClassNameGenerator.fromQualifiedName(fullyQualifiedJVMNameString)
-		
+
 		if (NO_IMPORT_NEEDED.contains(className.packageName)) {
 			return className.simpleName
 		}
@@ -61,7 +61,7 @@ class JavaImportHelper {
 	}
 
 	def private static isSimpleName(String fqn) {
-		val	lastSeparatorPos = fqn.lastIndexOf(FQN_SEPARATOR);
+		val lastSeparatorPos = fqn.lastIndexOf(FQN_SEPARATOR);
 		return (lastSeparatorPos == -1);
 	}
 }

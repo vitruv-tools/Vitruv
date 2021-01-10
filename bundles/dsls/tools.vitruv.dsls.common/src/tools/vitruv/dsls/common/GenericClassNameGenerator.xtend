@@ -1,4 +1,4 @@
-package tools.vitruv.dsls.common.helper
+package tools.vitruv.dsls.common
 
 import org.eclipse.xtend.lib.annotations.FinalFieldsConstructor
 

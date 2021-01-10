@@ -15,7 +15,7 @@ import static extension tools.vitruv.dsls.reactions.codegen.helper.ReactionsImpo
 import static extension tools.vitruv.dsls.reactions.codegen.helper.ReactionsLanguageHelper.*
 import tools.vitruv.dsls.reactions.codegen.typesbuilder.TypesBuilderExtensionProvider
 import org.eclipse.xtext.common.types.JvmGenericType
-import tools.vitruv.dsls.common.helper.ClassNameGenerator
+import tools.vitruv.dsls.common.ClassNameGenerator
 import tools.vitruv.extensions.dslsruntime.reactions.ReactionExecutionState
 import tools.vitruv.extensions.dslsruntime.reactions.structure.CallHierarchyHaving
 import tools.vitruv.extensions.dslsruntime.reactions.RoutinesFacadeExecutionState
@@ -42,7 +42,7 @@ class RoutineFacadeClassGenerator extends ClassGenerator {
 	}
 
 	override generateBody() {
-		this.includedRoutinesFacades =  reactionsSegment.includedRoutinesFacades;
+		this.includedRoutinesFacades = reactionsSegment.includedRoutinesFacades;
 		generatedClass => [
 			superTypes += typeRef(AbstractRepairRoutinesFacade);
 			members += generateConstructor();
@@ -52,7 +52,8 @@ class RoutineFacadeClassGenerator extends ClassGenerator {
 			members += includedRoutinesFacades.entrySet.map [
 				val includedReactionsSegment = it.key;
 				val includedRoutinesFacadeFieldName = includedReactionsSegment.name;
-				val includedRoutinesFacadeClassName = includedReactionsSegment.routinesFacadeClassNameGenerator.qualifiedName;
+				val includedRoutinesFacadeClassName = includedReactionsSegment.routinesFacadeClassNameGenerator.
+					qualifiedName;
 				reactionsSegment.toField(includedRoutinesFacadeFieldName, typeRef(includedRoutinesFacadeClassName)) [
 					final = true;
 					visibility = JvmVisibility.PUBLIC;
@@ -77,7 +78,8 @@ class RoutineFacadeClassGenerator extends ClassGenerator {
 
 	protected def JvmConstructor generateConstructor() {
 		return reactionsSegment.toConstructor() [
-			val routinesFacadesProviderParameter = generateParameter("routinesFacadesProvider", typeRef(RoutinesFacadesProvider));
+			val routinesFacadesProviderParameter = generateParameter("routinesFacadesProvider",
+				typeRef(RoutinesFacadesProvider));
 			val reactionsImportPathParameter = generateParameter("reactionsImportPath", typeRef(ReactionsImportPath));
 			val executionState = generateParameter("executionState", typeRef(RoutinesFacadeExecutionState));
 			parameters += routinesFacadesProviderParameter;
@@ -116,7 +118,8 @@ class RoutineFacadeClassGenerator extends ClassGenerator {
 	}
 
 	// included routine (original, no override), together the relative import path to the routine's segment:
-	private def JvmOperation generateIncludedRoutineCallMethod(Routine routine, ReactionsImportPath relativeImportPath) {
+	private def JvmOperation generateIncludedRoutineCallMethod(Routine routine,
+		ReactionsImportPath relativeImportPath) {
 		val routinesFacadeNameGenerator = routine.reactionsSegment.routinesFacadeClassNameGenerator;
 		routine.associatePrimary(routine.toMethod(routine.name, typeRef(Boolean.TYPE)) [
 			visibility = JvmVisibility.PUBLIC;
@@ -130,8 +133,8 @@ class RoutineFacadeClassGenerator extends ClassGenerator {
 	}
 
 	protected def StringConcatenationClient generateGetOwnRoutinesFacade() '''
-		this'''
+	this'''
 
 	private def StringConcatenationClient generateGetRoutinesFacadeCall(ReactionsImportPath relativeImportPath) '''
-		this._getRoutinesFacadesProvider().getRoutinesFacade(this._getReactionsImportPath().append(«ReactionsImportPath».fromPathString("«relativeImportPath.pathString»")))'''
+	this._getRoutinesFacadesProvider().getRoutinesFacade(this._getReactionsImportPath().append(«ReactionsImportPath».fromPathString("«relativeImportPath.pathString»")))'''
 }
