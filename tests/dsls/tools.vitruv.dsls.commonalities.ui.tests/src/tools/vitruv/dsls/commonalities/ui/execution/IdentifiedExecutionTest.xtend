@@ -1,4 +1,4 @@
-package tools.vitruv.dsls.commonalities.ui.tests.identified
+package tools.vitruv.dsls.commonalities.ui.execution
 
 import pcm_mockup.Repository
 import tools.vitruv.dsls.commonalities.testutils.CommonalitiesExecutionTest
@@ -15,11 +15,13 @@ import static tools.vitruv.testutils.metamodels.AllElementTypes2Creators.aet2
 import static extension tools.vitruv.testutils.domains.DomainModelCreators.*
 import static tools.vitruv.testutils.metamodels.PcmMockupCreators.pcm
 import static tools.vitruv.testutils.metamodels.UmlMockupCreators.uml
+import org.junit.jupiter.api.DisplayName
 
+@DisplayName('executing simple commonalities')
 class IdentifiedExecutionTest extends CommonalitiesExecutionTest {
 	override createCompiler(ExecutionTestCompiler.Factory factory) {
 		factory.createCompiler [
-			commonalities = #['Identified.commonality', 'Sub.commonality']
+			commonalities = #['Identified.commonality', 'SubIdentified.commonality']
 			domainDependencies = #[
 				'tools.vitruv.testutils.domains',
 				'tools.vitruv.testutils.metamodels'
@@ -28,6 +30,7 @@ class IdentifiedExecutionTest extends CommonalitiesExecutionTest {
 	}
 
 	@Test
+	@DisplayName('propagates a root insertion')
 	def void rootInsert() {
 		resourceAt('testid'.allElementTypes2).propagate [
 			contents += aet2.Root2 => [id2 = 'testid']
@@ -40,6 +43,7 @@ class IdentifiedExecutionTest extends CommonalitiesExecutionTest {
 	}
 
 	@Test
+	@DisplayName('propagates root insertions in multiple resources')
 	def void multiRootInsert() {
 		#['first', 'second', 'third'].forEach [ name |
 			resourceAt(name.allElementTypes2).propagate [
@@ -64,7 +68,8 @@ class IdentifiedExecutionTest extends CommonalitiesExecutionTest {
 	}
 
 	@Test
-	def void rootDelete() {
+	@DisplayName('propagates root deletions in multiple resources')
+	def void multiRootDelete() {
 		#['first', 'second', 'third'].forEach [ name |
 			resourceAt(name.allElementTypes2).propagate [
 				contents += aet2.Root2 => [id2 = name]
@@ -79,6 +84,7 @@ class IdentifiedExecutionTest extends CommonalitiesExecutionTest {
 	}
 
 	@Test
+	@DisplayName('propagates setting the ID attribute')
 	def void setIdAttribute() {
 		resourceAt('startid'.allElementTypes2).propagate[contents += aet2.Root2 => [id2 = 'startid']]
 
@@ -108,6 +114,7 @@ class IdentifiedExecutionTest extends CommonalitiesExecutionTest {
 	}
 
 	@Test
+	@DisplayName('propagates setting a simple attribute')
 	def void setSimpleAttribute() {
 		resourceAt('test'.allElementTypes2).propagate [
 			contents += aet2.Root2 => [
@@ -159,6 +166,7 @@ class IdentifiedExecutionTest extends CommonalitiesExecutionTest {
 	}
 
 	@Test
+	@DisplayName('propagates setting a multi-valued attribute')
 	def void setMultiValue() {
 		resourceAt('test'.allElementTypes2).propagate [
 			contents += aet2.Root2 => [
@@ -218,6 +226,7 @@ class IdentifiedExecutionTest extends CommonalitiesExecutionTest {
 	}
 
 	@Test
+	@DisplayName('propagates inserting a reference')
 	def void rootWithReferenceInsert() {
 		resourceAt('testid'.allElementTypes2).propagate [
 			contents += aet2.Root2 => [
@@ -245,6 +254,7 @@ class IdentifiedExecutionTest extends CommonalitiesExecutionTest {
 	}
 
 	@Test
+	@DisplayName('propagates inserting multiple references')
 	def void multiReferenceInsert() {
 		resourceAt('testid'.allElementTypes2).propagate [
 			contents += aet2.Root2 => [
@@ -255,7 +265,7 @@ class IdentifiedExecutionTest extends CommonalitiesExecutionTest {
 				]
 			]
 		]
-		
+
 		assertThat(resourceAt('testid'.allElementTypes2), contains(aet2.Root2 => [
 			id2 = 'testid'
 			multiValuedContainmentEReference2 += #[

@@ -1,7 +1,7 @@
-package tools.vitruv.dsls.commonalities.ui.tests.conditions
+package tools.vitruv.dsls.commonalities.ui.execution
 
 import tools.vitruv.dsls.commonalities.testutils.ExecutionTestCompiler
-import tools.vitruv.dsls.commonalities.ui.tests.identified.IdentifiedExecutionTest
+import org.junit.jupiter.api.DisplayName
 
 /**
  * Inherits the Identified execution tests, but uses the modified commonalities
@@ -9,10 +9,11 @@ import tools.vitruv.dsls.commonalities.ui.tests.identified.IdentifiedExecutionTe
  * <p>
  * TODO: Expand these tests to make use of more complex conditions and containment hierarchies.
  */
-class ConditionsTest extends IdentifiedExecutionTest {
+@DisplayName('executing commonalities with conditions')
+class ConditionsExecutionTest extends IdentifiedExecutionTest {
 	override createCompiler(ExecutionTestCompiler.Factory factory) {
 		factory.createCompiler [
-			commonalities = #['Identified.commonality', 'Sub.commonality']
+			commonalities = #['IdentifiedWithConditions.commonality', 'SubIdentified.commonality']
 			domainDependencies = #[
 				'tools.vitruv.testutils.domains',
 				'tools.vitruv.testutils.metamodels'

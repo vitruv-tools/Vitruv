@@ -1,9 +1,9 @@
 /*
  *Copied from Identified execution tests, but uses aliases.
  */
-concept aliases
+concept test
 
-commonality Identified {
+commonality IdentifiedWithAliases {
 
 	with AllElementTypes:(Root in Resource) as "All"
 	with AllElementTypes2:(Root2 in Resource)
@@ -31,7 +31,7 @@ commonality Identified {
 		= AllElementTypes2:Root2.multiValuedEAttribute2
 	}
 
-	has sub referencing aliases:Sub {
+	has sub referencing test:SubWithAliases {
 		= All:Root.multiValuedContainmentEReference
 		= AllElementTypes2:Root2.multiValuedContainmentEReference2
 		= Palladio:Repo.components

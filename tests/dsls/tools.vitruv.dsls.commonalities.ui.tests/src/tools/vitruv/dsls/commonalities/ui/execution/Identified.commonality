@@ -1,26 +1,11 @@
-/*
- * Copied from Identified execution tests, but uses participation conditions.
- */
-concept conditions
+concept test
 
 commonality Identified {
 
-	with AllElementTypes:(Root, Resource)
-	whereat {
-		Root in Resource
-	}
-	with AllElementTypes2:(Root2, Resource)
-	whereat {
-		Root2 in Resource
-	}
-	with PcmMockup:(Repository, Resource)
-	whereat {
-		Repository in Resource
-	}
-	with UmlMockup:(UPackage, Resource)
-	whereat {
-		UPackage in Resource
-	}
+	with AllElementTypes:(Root in Resource)
+	with AllElementTypes2:(Root2 in Resource)
+	with PcmMockup:(Repository in Resource)
+	with UmlMockup:(UPackage in Resource)
 
 	has id {
 		= AllElementTypes:Root.id
@@ -43,7 +28,7 @@ commonality Identified {
 		= AllElementTypes2:Root2.multiValuedEAttribute2
 	}
 
-	has sub referencing conditions:Sub {
+	has sub referencing test:SubIdentified {
 		= AllElementTypes:Root.multiValuedContainmentEReference
 		= AllElementTypes2:Root2.multiValuedContainmentEReference2
 		= PcmMockup:Repository.components
