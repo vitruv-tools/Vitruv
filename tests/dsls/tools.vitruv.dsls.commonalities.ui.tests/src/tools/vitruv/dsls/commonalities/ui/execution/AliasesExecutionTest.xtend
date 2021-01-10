@@ -1,16 +1,17 @@
-package tools.vitruv.dsls.commonalities.ui.tests.aliases
+package tools.vitruv.dsls.commonalities.ui.execution
 
 import tools.vitruv.dsls.commonalities.testutils.ExecutionTestCompiler
-import tools.vitruv.dsls.commonalities.ui.tests.identified.IdentifiedExecutionTest
+import org.junit.jupiter.api.DisplayName
 
 /**
  * Inherits the Identified execution tests, but uses the modified commonalities
  * files located in this package.
  */
-class AliasesTest extends IdentifiedExecutionTest {
+@DisplayName('executing commonalities with aliases')
+class AliasesExecutionTest extends IdentifiedExecutionTest {
 	override createCompiler(ExecutionTestCompiler.Factory factory) {
 		factory.createCompiler [
-			commonalities = #['Identified.commonality', 'Sub.commonality']
+			commonalities = #['IdentifiedWithAliases.commonality', 'SubWithAliases.commonality']
 			domainDependencies = #[
 				'tools.vitruv.testutils.domains',
 				'tools.vitruv.testutils.metamodels'

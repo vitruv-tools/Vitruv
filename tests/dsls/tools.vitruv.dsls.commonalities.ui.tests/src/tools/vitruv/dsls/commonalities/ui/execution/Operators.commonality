@@ -3,7 +3,7 @@ import tools.vitruv.dsls.commonalities.testutils.operators.DigitsAttributeOperat
 
 concept attributeoperators
 
-commonality Identified {
+commonality Operators {
 
 	with AllElementTypes:(Root in Resource)
 	with AllElementTypes2:(Root2 in Resource)

@@ -1,4 +1,4 @@
-package tools.vitruv.dsls.commonalities.ui.tests.attributeoperators
+package tools.vitruv.dsls.commonalities.ui.execution
 
 import tools.vitruv.dsls.commonalities.testutils.CommonalitiesExecutionTest
 
@@ -10,11 +10,13 @@ import static extension tools.vitruv.testutils.domains.DomainModelCreators.allEl
 import static extension tools.vitruv.testutils.domains.DomainModelCreators.allElementTypes2
 import static extension tools.vitruv.testutils.metamodels.AllElementTypes2Creators.*
 import static extension tools.vitruv.testutils.metamodels.AllElementTypesCreators.*
+import org.junit.jupiter.api.DisplayName
 
-class AttributeMappingOperatorTest extends CommonalitiesExecutionTest {
+@DisplayName('executing a commonality with attribute mapping operators')
+class AttributeMappingOperatorExecutionTest extends CommonalitiesExecutionTest {
 	override createCompiler(ExecutionTestCompiler.Factory factory) {
 		factory.createCompiler [
-			commonalities = #['Identified.commonality']
+			commonalities = #['Operators.commonality']
 			domainDependencies = #[
 				'tools.vitruv.testutils.domains',
 				'tools.vitruv.testutils.metamodels',
@@ -23,8 +25,8 @@ class AttributeMappingOperatorTest extends CommonalitiesExecutionTest {
 		]
 	}
 
-	// Value is multiplied by 1000
 	@Test
+	@DisplayName('maps a simple attribute')
 	def void singleToSingleValuedAttribute() {
 		resourceAt('testid'.allElementTypes).propagate [
 			contents += aet.Root => [
@@ -45,6 +47,7 @@ class AttributeMappingOperatorTest extends CommonalitiesExecutionTest {
 
 	// Value is divided by 1000 and rounded towards zero
 	@Test
+	@DisplayName('maps a simple attribute (reverse)')
 	def void singleToSingleValuedAttributeReverse() {
 		resourceAt('testid'.allElementTypes2).propagate [
 			contents += aet2.Root2 => [
@@ -64,6 +67,7 @@ class AttributeMappingOperatorTest extends CommonalitiesExecutionTest {
 	}
 
 	@Test
+	@DisplayName('maps a single-valued attribute to a multi-valued one')
 	def void singleToMultiValuedAttribute() {
 		resourceAt('testid'.allElementTypes).propagate [
 			contents += aet.Root => [
@@ -83,6 +87,7 @@ class AttributeMappingOperatorTest extends CommonalitiesExecutionTest {
 	}
 
 	@Test
+	@DisplayName('maps a multi-valued attribute to single-valued one')
 	def void multiToSingleValuedAttribute() {
 		resourceAt('testid'.allElementTypes2).propagate [
 			contents += aet2.Root2 => [

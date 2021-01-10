@@ -1,9 +1,9 @@
 /*
  * Copied from Identified execution tests, but uses aliases.
  */
-concept aliases
+concept test
 
-commonality Sub {
+commonality SubWithAliases {
 
 	with AllElementTypes:NonRoot
 	with AllElementTypes2:NonRoot2 called "SecondNonRoot"

@@ -1,6 +1,6 @@
 concept test
 
-commonality Sub {
+commonality SubIdentified {
 
 	with AllElementTypes:NonRoot
 	with AllElementTypes2:NonRoot2
