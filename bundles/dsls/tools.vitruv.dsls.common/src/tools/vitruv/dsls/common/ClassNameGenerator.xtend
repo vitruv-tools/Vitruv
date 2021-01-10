@@ -1,4 +1,4 @@
-package tools.vitruv.dsls.common.helper
+package tools.vitruv.dsls.common
 
 interface ClassNameGenerator {
 	public static val QNAME_SEPARATOR = '.'
