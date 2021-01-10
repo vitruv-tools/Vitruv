@@ -4,6 +4,11 @@
 package tools.vitruv.dsls.commonalities.ui.quickfix
 
 import org.eclipse.xtext.xbase.ui.quickfix.XbaseQuickfixProvider
+import org.eclipse.xtext.ui.editor.quickfix.Fix
+import org.eclipse.xtext.validation.Issue
+import org.eclipse.xtext.ui.editor.quickfix.IssueResolutionAcceptor
+import tools.vitruv.dsls.common.ui.validation.ProjectValidation
+import tools.vitruv.dsls.common.ui.quickfix.ProjectQuickfix
 
 /**
  * Custom quickfixes.
@@ -11,14 +16,18 @@ import org.eclipse.xtext.xbase.ui.quickfix.XbaseQuickfixProvider
  * See https://www.eclipse.org/Xtext/documentation/310_eclipse_support.html#quick-fixes
  */
 class CommonalitiesLanguageQuickfixProvider extends XbaseQuickfixProvider {
-
-//	@Fix(CommonalitiesLanguageValidator.INVALID_NAME)
-//	def capitalizeName(Issue issue, IssueResolutionAcceptor acceptor) {
-//		acceptor.accept(issue, 'Capitalize name', 'Capitalize the name.', 'upcase.png') [
-//			context |
-//			val xtextDocument = context.xtextDocument
-//			val firstLetter = xtextDocument.get(issue.offset, 1)
-//			xtextDocument.replace(issue.offset, 1, firstLetter.toUpperCase)
-//		]
-//	}
+	@Fix(ProjectValidation.ErrorCodes.BUNDLE_MISSING_ON_CLASSPATH)
+	def addBundleToProject(Issue issue, IssueResolutionAcceptor acceptor) {
+		ProjectQuickfix.addBundleToProject(issue, acceptor)
+	}
+	
+	@Fix(ProjectValidation.ErrorCodes.NOT_A_PLUGIN_PROJECT)
+	def convertToPluginProject(Issue issue, IssueResolutionAcceptor acceptor) {
+		ProjectQuickfix.convertToPluginProject(issue, acceptor)
+	}
+	
+	@Fix(ProjectValidation.ErrorCodes.NOT_A_JAVA_PROJECT)
+	def convertToJavaProject(Issue issue, IssueResolutionAcceptor acceptor) {
+		ProjectQuickfix.convertToJavaProject(issue, acceptor)
+	}
 }

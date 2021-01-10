@@ -24,8 +24,12 @@ Require-Bundle: org.eclipse.compare,
  org.eclipse.xtext.xbase.ui,
  tools.vitruv.dsls.commonalities.ide,
  tools.vitruv.dsls.commonalities,
- edu.kit.ipd.sdq.activextendannotations;bundle-version="1.0.0",
- edu.kit.ipd.sdq.commons.util.java;bundle-version="1.6.0"
+ edu.kit.ipd.sdq.activextendannotations,
+ edu.kit.ipd.sdq.commons.util.java,
+ org.eclipse.jdt.core,
+ tools.vitruv.framework.domains,
+ org.eclipse.pde.core,
+ tools.vitruv.dsls.common.ui
 Import-Package: org.apache.log4j
 Bundle-Activator: tools.vitruv.dsls.commonalities.ui.internal.CommonalitiesActivator
 Bundle-Vendor: vitruv.tools

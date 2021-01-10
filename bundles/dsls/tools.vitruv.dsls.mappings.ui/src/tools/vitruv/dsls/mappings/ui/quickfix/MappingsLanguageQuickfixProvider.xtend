@@ -5,25 +5,20 @@ package tools.vitruv.dsls.mappings.ui.quickfix
 
 import tools.vitruv.dsls.mirbase.ui.quickfix.MirBaseQuickfixProvider
 import tools.vitruv.dsls.mappings.validation.MappingsLanguageValidator
+import org.eclipse.xtext.ui.editor.quickfix.Fix
+import tools.vitruv.dsls.common.ui.validation.ProjectValidation
+import tools.vitruv.dsls.common.ui.quickfix.ProjectQuickfix
+import org.eclipse.xtext.validation.Issue
+import org.eclipse.xtext.ui.editor.quickfix.IssueResolutionAcceptor
 
 /**
  * Custom quickfixes.
- *
+ * 
  * See https://www.eclipse.org/Xtext/documentation/310_eclipse_support.html#quick-fixes
  */
 class MappingsLanguageQuickfixProvider extends MirBaseQuickfixProvider {
-
-	override protected getDependencies() {
-		MappingsLanguageValidator.PLUGIN_DEPENDENCIES
+	@Fix(ProjectValidation.ErrorCodes.BUNDLE_MISSING_ON_CLASSPATH)
+	def addBundleToProject(Issue issue, IssueResolutionAcceptor acceptor) {
+		ProjectQuickfix.addBundleToProject(issue, acceptor)
 	}
-
-//	@Fix(MappingsLanguageValidator.INVALID_NAME)
-//	def capitalizeName(Issue issue, IssueResolutionAcceptor acceptor) {
-//		acceptor.accept(issue, 'Capitalize name', 'Capitalize the name.', 'upcase.png') [
-//			context |
-//			val xtextDocument = context.xtextDocument
-//			val firstLetter = xtextDocument.get(issue.offset, 1)
-//			xtextDocument.replace(issue.offset, 1, firstLetter.toUpperCase)
-//		]
-//	}
 }

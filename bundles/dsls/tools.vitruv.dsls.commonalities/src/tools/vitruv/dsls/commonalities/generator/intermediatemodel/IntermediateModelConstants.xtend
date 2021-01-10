@@ -1,7 +1,7 @@
 package tools.vitruv.dsls.commonalities.generator.intermediatemodel
 
 import edu.kit.ipd.sdq.activextendannotations.Utility
-import tools.vitruv.dsls.common.helper.GenericClassNameGenerator
+import tools.vitruv.dsls.common.GenericClassNameGenerator
 import tools.vitruv.dsls.commonalities.language.Commonality
 import tools.vitruv.dsls.commonalities.language.Concept
 

@@ -1,0 +1,87 @@
+package tools.vitruv.dsls.common.ui.validation
+
+import static extension tools.vitruv.dsls.common.ValidationMessageAcceptorExtensions.*
+import org.eclipse.emf.ecore.EObject
+import org.eclipse.emf.ecore.EStructuralFeature
+import org.eclipse.xtext.validation.ValidationMessageAcceptor
+import static extension tools.vitruv.dsls.common.ui.ProjectAccess.*
+import static extension tools.vitruv.dsls.common.ui.JavaProjectExtensions.*
+import org.eclipse.core.runtime.CoreException
+import edu.kit.ipd.sdq.activextendannotations.Utility
+import tools.vitruv.framework.domains.VitruvDomainProviderRegistry
+import org.osgi.framework.FrameworkUtil
+
+@Utility
+class ProjectValidation {
+	static class ErrorCodes {
+		public static val PREFIX = 'tools.vitruv.dsls.common.ui.validation.ProjectValidation.'
+		public static val BUNDLE_MISSING_ON_CLASSPATH = PREFIX + 'BUNDLE_MISSING_ON_CLASSPATH'
+		public static val NOT_A_JAVA_PROJECT = PREFIX + 'NOT_A_JAVA_PROJECT'
+		public static val NOT_A_PLUGIN_PROJECT = PREFIX + 'NOT_A_PLUGIN_PROJECT'
+	}
+
+	def static checkIsJavaPluginProject(ValidationMessageAcceptor acceptor, EObject referenceObject) {
+		checkIsJavaPluginProject(acceptor, referenceObject, null)
+	}
+
+	def static checkIsJavaPluginProject(ValidationMessageAcceptor acceptor, EObject referenceObject,
+		EStructuralFeature messageTargetFeature) {
+		val project = referenceObject.eclipseProject
+		if (!project.isJavaProject) {
+			acceptor.warning("The project is not a Java project", referenceObject, messageTargetFeature,
+				ErrorCodes.NOT_A_JAVA_PROJECT)
+		}
+		if (!project.isPluginProject) {
+			acceptor.warning("The project is not an Eclipse plugin project", referenceObject, messageTargetFeature,
+				ErrorCodes.NOT_A_PLUGIN_PROJECT)
+		}
+	}
+
+	def static checkRuntimeProjectIsOnClasspath(ValidationMessageAcceptor acceptor, String requiredBundle,
+		String markerType, EObject referenceObject) {
+		checkRuntimeProjectIsOnClasspath(acceptor, requiredBundle, markerType, referenceObject, null)
+	}
+
+	def static checkRuntimeProjectIsOnClasspath(ValidationMessageAcceptor acceptor, String requiredBundle,
+		String markerType, EObject referenceObject, EStructuralFeature messageTargetFeature) {
+		val javaProject = referenceObject.eclipseProject.javaProject
+		if (javaProject === null) return;
+
+		try {
+			if (!javaProject.hasTypeOnClassPath(markerType)) {
+				acceptor.error("The runtime project is not on the classpath", referenceObject, messageTargetFeature,
+					ErrorCodes.BUNDLE_MISSING_ON_CLASSPATH,
+					#[javaProject.project.isPluginProject.toString, requiredBundle])
+			}
+		} catch (CoreException e) {
+			acceptor.
+				error('''Failed to search this project’s classpath. Please check that your project is set up correctly: «e.message»''',
+					referenceObject, messageTargetFeature)
+		}
+	}
+
+	def static checkDomainProjectIsOnClasspath(ValidationMessageAcceptor acceptor, String requiredDomainName,
+		EObject referenceObject) {
+		checkDomainProjectIsOnClasspath(acceptor, requiredDomainName, referenceObject, null)
+	}
+
+	def static checkDomainProjectIsOnClasspath(ValidationMessageAcceptor acceptor, String requiredDomainName,
+		EObject referenceObject, EStructuralFeature messageTargetFeature) {
+		val javaProject = referenceObject.eclipseProject.javaProject
+		if (javaProject === null) return;
+
+		val domainProviderClass = VitruvDomainProviderRegistry.getDomainProvider(requiredDomainName).class
+		try {
+			if (!javaProject.hasTypeOnClassPath(domainProviderClass.name)) {
+				val providingBundle = FrameworkUtil.getBundle(domainProviderClass).symbolicName
+				acceptor.error('''«domainProviderClass.simpleName» is not on the classpath''', referenceObject,
+					messageTargetFeature, ErrorCodes.BUNDLE_MISSING_ON_CLASSPATH,
+					#[javaProject.project.isPluginProject.toString, providingBundle])
+			}
+		} catch (CoreException e) {
+			acceptor.
+				error('''Failed to search this project’s classpath. Please check that your project is set up correctly: «e.message»''',
+					referenceObject, messageTargetFeature)
+		}
+	}
+}

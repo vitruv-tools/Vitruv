@@ -7,7 +7,7 @@ Automatic-Module-Name: tools.vitruv.dsls.mirbase
 Bundle-ActivationPolicy: lazy
 Require-Bundle: org.eclipse.xtext,
  org.eclipse.xtext.xbase,
- org.eclipse.equinox.common;bundle-version="3.9.0",
+ org.eclipse.equinox.common,
  org.eclipse.emf.ecore,
  org.eclipse.xtext.common.types,
  org.eclipse.xtext.xbase.lib;bundle-version="2.14.0",
@@ -17,12 +17,9 @@ Require-Bundle: org.eclipse.xtext,
  org.eclipse.xtend.lib;bundle-version="2.14.0",
  org.eclipse.emf.common,
  tools.vitruv.framework.util,
- org.eclipse.core.resources,
- org.eclipse.pde.core,
- org.eclipse.core.runtime,
  tools.vitruv.dsls.common,
  tools.vitruv.framework.domains,
- edu.kit.ipd.sdq.activextendannotations;bundle-version="1.0.0"
+ edu.kit.ipd.sdq.activextendannotations
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Export-Package: tools.vitruv.dsls.mirbase,
  tools.vitruv.dsls.mirbase.formatting2,

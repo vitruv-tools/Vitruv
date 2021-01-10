@@ -20,6 +20,11 @@ Require-Bundle: org.eclipse.xtext.testing,
  org.junit.jupiter.api,
  org.hamcrest.core,
  edu.kit.ipd.sdq.activextendannotations,
- tools.vitruv.dsls.common.ui
+ tools.vitruv.dsls.common.ui,
+ org.eclipse.pde.core,
+ org.eclipse.core.runtime,
+ org.eclipse.ui.workbench;resolution:=optional,
+ org.eclipse.xtext.xbase.junit
 Bundle-RequiredExecutionEnvironment: JavaSE-11
-Export-Package: tools.vitruv.dsls.commonalities.ui.execution;x-internal:=true
+Export-Package: tools.vitruv.dsls.commonalities.ui.execution;x-internal:=true,
+ tools.vitruv.dsls.commonalities.ui.tests;x-internal=true
