@@ -7,10 +7,10 @@ import java.io.File
 import java.net.URLClassLoader
 import java.nio.file.Files
 import java.nio.file.Path
-import java.nio.file.Paths
 import java.util.ArrayList
 import java.util.HashSet
 import java.util.Hashtable
+import java.util.List
 import java.util.function.Consumer
 import org.apache.log4j.Logger
 import org.eclipse.core.resources.IFolder
@@ -32,20 +32,23 @@ import org.eclipse.xtend.lib.annotations.FinalFieldsConstructor
 import org.eclipse.xtext.ui.XtextProjectHelper
 import org.eclipse.xtext.ui.util.JREContainerProvider
 import tools.vitruv.dsls.commonalities.generator.CommonalitiesGenerationSettings
+import tools.vitruv.dsls.commonalities.util.CommonalitiesLanguageConstants
 import tools.vitruv.framework.change.processing.ChangePropagationSpecification
 
 import static com.google.common.base.Preconditions.*
 import static java.util.stream.Collectors.toList
 import static org.eclipse.core.resources.ResourcesPlugin.getWorkspace
 import static tools.vitruv.testutils.TestLauncher.currentTestLauncher
+import static java.lang.System.lineSeparator
 
 import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
+import java.io.InputStream
 
 @FinalFieldsConstructor
 final class ExecutionTestCompiler {
 	static val Logger logger = Logger.getLogger(ExecutionTestCompiler)
 
-	static val String COMPLIANCE_LEVEL = '1.8';
+	static val String COMPLIANCE_LEVEL = '11';
 	static val TEST_PROJECT_GENERATED_SOURCES_FOLDER_NAME = 'src-gen'
 	static val TEST_PROJECT_SOURCES_FOLDER_NAME = 'src'
 	static val TEST_PROJECT_COMPILATION_FOLDER = 'bin'
@@ -94,10 +97,9 @@ final class ExecutionTestCompiler {
 		for (commonalityFile : commonalityFilePaths) {
 			val commonalityFileInputStream = commonalitiesOwningClass.getResourceAsStream(commonalityFile)
 			if (commonalityFileInputStream === null) {
-				throw new RuntimeException("Could not find commonality file at: " + commonalityFile)
+				throw new IllegalArgumentException("Could not find commonality file at: " + commonalityFile)
 			}
-			testProject.sourceFolder.getFile(Paths.get(commonalityFile).fileName.toString).create(
-				commonalityFileInputStream, true, null)
+			testProject.sourceFolder.createFile(Path.of(commonalityFile).fileName.toString, commonalityFileInputStream)
 		}
 
 		testProject.refresh()
@@ -170,6 +172,7 @@ final class ExecutionTestCompiler {
 	}
 
 	private def createManifestMf(IProject project) {
+		val allDependencies = List.of(CommonalitiesLanguageConstants.RUNTIME_BUNDLE) + domainDependencies
 		val mf = '''
 			Manifest-Version: 1.0
 			Bundle-ManifestVersion: 2
@@ -178,18 +181,10 @@ final class ExecutionTestCompiler {
 			Bundle-Version: 1.1.0.qualifier
 			Bundle-SymbolicName: «project.name»; singleton:=true
 			Bundle-ActivationPolicy: lazy
-			Require-Bundle: tools.vitruv.extensions.dslsruntime.commonalities,
-			  tools.vitruv.framework.domains,
-			  tools.vitruv.extensions.emf,
-			  «FOR domainDependency : domainDependencies»
-			  	«domainDependency»,
-			  «ENDFOR»
-			  org.eclipse.xtext.xbase.lib
-			  
+			Require-Bundle: «allDependencies.join(',' + lineSeparator + '  ')»
 			Bundle-RequiredExecutionEnvironment: JavaSE-«COMPLIANCE_LEVEL»
 		'''
-		(project.getFolder('META-INF') => [create(true, false, null)]).getFile('MANIFEST.MF').create(
-			new ByteArrayInputStream(mf.bytes), true, null)
+		project.createFolder('META-INF').createFile('MANIFEST.MF', mf)
 	}
 
 	@FinalFieldsConstructor
@@ -199,10 +194,7 @@ final class ExecutionTestCompiler {
 		val IFolder binFolder
 
 		private def build(String configName) {
-			eclipseProject.setDescription(eclipseProject.description => [
-				buildSpec = #[newCommand => [builderName = configName]]
-			], null)
-			eclipseProject.build(IncrementalProjectBuilder.FULL_BUILD, new NullProgressMonitor)
+			eclipseProject.build(IncrementalProjectBuilder.FULL_BUILD, configName, null, new NullProgressMonitor)
 		}
 
 		private def refresh() {
@@ -250,10 +242,18 @@ final class ExecutionTestCompiler {
 		job.join()
 	}
 
-	private def createFolder(IProject project, String name) {
+	private static def createFolder(IProject project, String name) {
 		project.getFolder(name) => [
 			create(true, false, null)
 		]
+	}
+
+	private static def createFile(IFolder folder, String fileName, InputStream content) {
+		folder.getFile(fileName).create(content, true, null)
+	}
+
+	private static def createFile(IFolder folder, String fileName, String content) {
+		folder.createFile(fileName, new ByteArrayInputStream(content.bytes))
 	}
 
 	private static def getPath(IResource eclipseResource) {
