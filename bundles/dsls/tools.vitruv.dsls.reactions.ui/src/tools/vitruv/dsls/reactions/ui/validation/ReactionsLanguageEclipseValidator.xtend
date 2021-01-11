@@ -9,7 +9,7 @@ import tools.vitruv.dsls.mirbase.ui.validation.MirBaseEclipseValidation
 
 class ReactionsLanguageEclipseValidator extends ReactionsLanguageValidator {
 	static val RUNTIME_PROJECT_BUNDLE = "tools.vitruv.extensions.dslsruntime.reactions"
-	static val RUNTIME_PROJECT_MARKER_TYPE = "tools.vitruv.extensions.dslruntime.reactions.RuntimeProjectMarker"
+	static val RUNTIME_PROJECT_MARKER_TYPE = "tools.vitruv.extensions.dslsruntime.reactions.marker.RuntimeProjectMarker"
 
 	@Check(NORMAL)
 	def checkDomainDependency(DomainReference domainReference) {

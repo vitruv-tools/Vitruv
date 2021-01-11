@@ -13,7 +13,7 @@ import tools.vitruv.dsls.commonalities.language.Participation
  */
 class CommonalitiesLanguageEclipseValidator extends CommonalitiesLanguageValidator {
 	static val RUNTIME_PROJECT_BUNDLE = "tools.vitruv.extensions.dslsruntime.commonalities"
-	static val RUNTIME_PROJECT_MARKER_TYPE = "tools.vitruv.extensions.dslruntime.commonalities.RuntimeProjectMarker"
+	static val RUNTIME_PROJECT_MARKER_TYPE = "tools.vitruv.extensions.dslruntime.commonalities.marker.RuntimeProjectMarker"
 
 	@Check(NORMAL)
 	def checkProjectSetup(CommonalityFile commonalityFile) {
