@@ -4,7 +4,6 @@
 package tools.vitruv.dsls.mappings.ui.quickfix
 
 import tools.vitruv.dsls.mirbase.ui.quickfix.MirBaseQuickfixProvider
-import tools.vitruv.dsls.mappings.validation.MappingsLanguageValidator
 import org.eclipse.xtext.ui.editor.quickfix.Fix
 import tools.vitruv.dsls.common.ui.validation.ProjectValidation
 import tools.vitruv.dsls.common.ui.quickfix.ProjectQuickfix

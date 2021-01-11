@@ -10,8 +10,6 @@ import org.eclipse.jdt.core.search.SearchMatch
 import org.eclipse.core.runtime.CoreException
 import org.eclipse.core.runtime.NullProgressMonitor
 import edu.kit.ipd.sdq.activextendannotations.Utility
-import org.eclipse.jdt.internal.core.JrtPackageFragmentRoot
-import org.eclipse.pde.internal.core.search.PluginJavaSearchUtil
 import org.eclipse.jdt.internal.core.ExternalPackageFragmentRoot
 import org.eclipse.jdt.core.search.IJavaSearchScope
 import org.eclipse.jdt.core.IJavaElement
