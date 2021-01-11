@@ -13,14 +13,14 @@ class ReactionsLanguageEclipseValidator extends ReactionsLanguageValidator {
 
 	@Check(NORMAL)
 	def checkDomainDependency(DomainReference domainReference) {
-		MirBaseEclipseValidation.checkDomainDependency(this, domainReference)
+		MirBaseEclipseValidation.checkDomainDependency(this, services.typeReferences, domainReference)
 	}
 
 	@Check(NORMAL)
 	override checkReactionsFile(ReactionsFile reactionsFile) {
 		super.checkReactionsFile(reactionsFile)
 		ProjectValidation.checkIsJavaPluginProject(this, reactionsFile)
-		ProjectValidation.checkRuntimeProjectIsOnClasspath(this, RUNTIME_PROJECT_BUNDLE, RUNTIME_PROJECT_MARKER_TYPE,
-			reactionsFile)
+		ProjectValidation.checkRuntimeProjectIsOnClasspath(this, services.typeReferences, RUNTIME_PROJECT_BUNDLE,
+			RUNTIME_PROJECT_MARKER_TYPE, reactionsFile)
 	}
 }
