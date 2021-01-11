@@ -8,10 +8,7 @@ import static extension tools.vitruv.dsls.common.ui.ProjectAccess.*
 import static extension tools.vitruv.dsls.common.ui.PluginProjectExtensions.*
 import org.eclipse.core.runtime.NullProgressMonitor
 import edu.kit.ipd.sdq.activextendannotations.Utility
-import edu.kit.ipd.sdq.commons.util.org.eclipse.core.resources.IProjectUtil
-import org.eclipse.jdt.core.JavaCore
-import org.eclipse.core.runtime.Path
-import org.eclipse.jdt.core.IClasspathAttribute
+import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.core.resources.IProjectUtil.*
 import org.eclipse.pde.internal.ui.wizards.tools.ConvertProjectToPluginOperation
 
 @Utility
@@ -51,15 +48,7 @@ class ProjectQuickfix {
 		issue.checkCode(ProjectValidation.ErrorCodes.NOT_A_JAVA_PROJECT)
 
 		acceptor.accept(issue, 'Convert the project to a Java project', null, null) [ context |
-			val project = context.eclipseProject
-			val javaProject = IProjectUtil.configureAsJavaProject(project)
-			val srcGenEntry = JavaCore.newSourceEntry(new Path("src-gen"), newArrayOfSize(0), newArrayOfSize(0), null,
-				#[JavaCore.newClasspathAttribute(IClasspathAttribute.IGNORE_OPTIONAL_PROBLEMS, 'true')])
-			val oldEntries = javaProject.getRawClasspath()
-			val newEntries = newArrayOfSize(oldEntries.length + 1)
-			System.arraycopy(oldEntries, 0, newEntries, 0, oldEntries.length)
-			newEntries.set(oldEntries.length, srcGenEntry)
-			javaProject.setRawClasspath(newEntries, null)
+			context.eclipseProject.configureAsJavaProject().configureSrcGenFolder()
 		]
 	}
 
