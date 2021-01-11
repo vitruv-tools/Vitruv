@@ -18,12 +18,13 @@ class CommonalitiesLanguageEclipseValidator extends CommonalitiesLanguageValidat
 	@Check(NORMAL)
 	def checkProjectSetup(CommonalityFile commonalityFile) {
 		ProjectValidation.checkIsJavaPluginProject(this, commonalityFile, COMMONALITY_FILE__CONCEPT)
-		ProjectValidation.checkRuntimeProjectIsOnClasspath(this, RUNTIME_PROJECT_BUNDLE, RUNTIME_PROJECT_MARKER_TYPE,
-			commonalityFile, COMMONALITY_FILE__CONCEPT)
+		ProjectValidation.checkRuntimeProjectIsOnClasspath(this, services.typeReferences, RUNTIME_PROJECT_BUNDLE,
+			RUNTIME_PROJECT_MARKER_TYPE, commonalityFile, COMMONALITY_FILE__CONCEPT)
 	}
 
 	@Check(NORMAL)
 	def checkParticipationDomainOnClasspath(Participation participation) {
-		ProjectValidation.checkDomainProjectIsOnClasspath(this, participation.domainName, participation)
+		ProjectValidation.checkDomainProjectIsOnClasspath(this, services.typeReferences, participation.domainName,
+			participation)
 	}
 }
