@@ -22,6 +22,7 @@ import java.util.Set
 import javax.inject.Inject
 import static tools.vitruv.dsls.commonalities.ui.quickfix.XtextAssertions.getCurrentlyOpenedXtextDocument
 import tools.vitruv.dsls.commonalities.testutils.BugFixedAbstractQuickfixTest
+import org.eclipse.xtext.ui.testing.util.IResourcesSetupUtil
 
 @DisplayName("quick fixes for missing bundles")
 @ExtendWith(#[InjectionExtension, TestProjectManager])
@@ -61,6 +62,7 @@ class MissingBundlesQuickfixTest extends BugFixedAbstractQuickfixTest {
 
 		val requiredBundles = (testProject.pluginProject.requiredBundles?.toList() ?: emptyList()).map[name].toSet()
 		MatcherAssert.assertThat(requiredBundles, is(Set.of(RUNTIME_BUNDLE)))
+		IResourcesSetupUtil.waitForBuild()
 		MatcherAssert.assertThat(currentlyOpenedXtextDocument, hasNoValidationIssues)
 	}
 
@@ -83,9 +85,10 @@ class MissingBundlesQuickfixTest extends BugFixedAbstractQuickfixTest {
 			ProjectValidation.ErrorCodes.BUNDLE_MISSING_ON_CLASSPATH,
 			new Quickfix( '''Add dependency on ‹«missingBundle»›''', null, testCommonality)
 		)
-
+		
 		val requiredBundles = (testProject.pluginProject.requiredBundles?.toList() ?: emptyList()).map[name].toSet()
 		MatcherAssert.assertThat(requiredBundles, is(Set.of(RUNTIME_BUNDLE, missingBundle)))
+		IResourcesSetupUtil.waitForBuild()
 		MatcherAssert.assertThat(currentlyOpenedXtextDocument, hasNoValidationIssues)
 	}
 
