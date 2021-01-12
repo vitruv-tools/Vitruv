@@ -71,14 +71,14 @@ class ProjectValidation {
 		try {
 			if (typeReferences.findDeclaredType(searchedClass, referenceObject) === null) {
 				if (!project.isPluginProject) {
-					acceptor.warning(message, referenceObject, messageTargetFeature, ErrorCodes.CANNOT_ACCESS_TYPE)
+					acceptor.error(message, referenceObject, messageTargetFeature, ErrorCodes.CANNOT_ACCESS_TYPE)
 				} else {
 					val providingBundle = FrameworkUtil.getBundle(searchedClass).symbolicName
 					val currentlyRequiredBundles = project.pluginProject.requiredBundles?.toList ?: emptyList
 					if (currentlyRequiredBundles.exists[name == providingBundle]) {
-						acceptor.warning(message, referenceObject, messageTargetFeature, ErrorCodes.CANNOT_ACCESS_TYPE)
+						acceptor.error(message, referenceObject, messageTargetFeature, ErrorCodes.CANNOT_ACCESS_TYPE)
 					} else {
-						acceptor.warning(message, referenceObject, messageTargetFeature,
+						acceptor.error(message, referenceObject, messageTargetFeature,
 							ErrorCodes.BUNDLE_MISSING_ON_CLASSPATH, #[providingBundle])
 					}
 				}
