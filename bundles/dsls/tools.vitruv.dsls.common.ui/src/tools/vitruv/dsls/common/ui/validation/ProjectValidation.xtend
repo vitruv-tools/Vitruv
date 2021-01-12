@@ -69,7 +69,7 @@ class ProjectValidation {
 			if (typeReferences.findDeclaredType(searchedClass, referenceObject) === null) {
 				val providingBundle = FrameworkUtil.getBundle(searchedClass).symbolicName
 				acceptor.error(message, referenceObject, messageTargetFeature, ErrorCodes.BUNDLE_MISSING_ON_CLASSPATH,
-					#[referenceObject.eclipseProject.isPluginProject.toString, providingBundle])
+					#[providingBundle])
 			}
 		} catch (CoreException e) {
 			acceptor.

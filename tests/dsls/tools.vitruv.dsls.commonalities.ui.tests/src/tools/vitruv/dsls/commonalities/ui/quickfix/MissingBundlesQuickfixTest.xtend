@@ -59,7 +59,7 @@ class MissingBundlesQuickfixTest extends BugFixedAbstractQuickfixTest {
 			new Quickfix('''Add dependency on ‹«RUNTIME_BUNDLE»›''', null, testCommonality)
 		)
 
-		val requiredBundles = (testProject.pluginProject.requiredBundles.toList() ?: emptyList()).map[name].toSet()
+		val requiredBundles = (testProject.pluginProject.requiredBundles?.toList() ?: emptyList()).map[name].toSet()
 		MatcherAssert.assertThat(requiredBundles, is(Set.of(RUNTIME_BUNDLE)))
 		MatcherAssert.assertThat(currentlyOpenedXtextDocument, hasNoValidationIssues)
 	}
@@ -84,7 +84,7 @@ class MissingBundlesQuickfixTest extends BugFixedAbstractQuickfixTest {
 			new Quickfix( '''Add dependency on ‹«missingBundle»›''', null, testCommonality)
 		)
 
-		val requiredBundles = (testProject.pluginProject.requiredBundles.toList() ?: emptyList()).map[name].toSet()
+		val requiredBundles = (testProject.pluginProject.requiredBundles?.toList() ?: emptyList()).map[name].toSet()
 		MatcherAssert.assertThat(requiredBundles, is(Set.of(RUNTIME_BUNDLE, missingBundle)))
 		MatcherAssert.assertThat(currentlyOpenedXtextDocument, hasNoValidationIssues)
 	}
