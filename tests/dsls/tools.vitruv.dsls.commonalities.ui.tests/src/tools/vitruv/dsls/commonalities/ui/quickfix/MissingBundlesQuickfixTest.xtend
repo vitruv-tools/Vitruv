@@ -20,11 +20,16 @@ import tools.vitruv.testutils.TestProject
 import static edu.kit.ipd.sdq.commons.util.org.eclipse.core.resources.IProjectUtil.*
 import java.util.Set
 import tools.vitruv.dsls.commonalities.testutils.BugFixedAbstractQuickfixTest
+import javax.inject.Inject
+import static tools.vitruv.dsls.commonalities.ui.quickfix.XtextAssertions.getCurrentlyOpenedXtextDocument
 
 @DisplayName("quick fixes for missing bundles")
 @ExtendWith(#[InjectionExtension, TestProjectManager])
 @InjectWith(CommonalitiesLanguageUiInjectorProvider)
 class MissingBundlesQuickfixTest extends BugFixedAbstractQuickfixTest {
+	@Inject
+	extension var XtextAssertions xtextAssertions
+
 	var Path projectLocation
 
 	@BeforeEach
@@ -56,6 +61,7 @@ class MissingBundlesQuickfixTest extends BugFixedAbstractQuickfixTest {
 
 		val requiredBundles = (testProject.pluginProject.requiredBundles.toList() ?: emptyList()).map[name].toSet()
 		MatcherAssert.assertThat(requiredBundles, is(Set.of(RUNTIME_BUNDLE)))
+		MatcherAssert.assertThat(currentlyOpenedXtextDocument, hasNoValidationIssues)
 	}
 
 	@Test
@@ -80,6 +86,7 @@ class MissingBundlesQuickfixTest extends BugFixedAbstractQuickfixTest {
 
 		val requiredBundles = (testProject.pluginProject.requiredBundles.toList() ?: emptyList()).map[name].toSet()
 		MatcherAssert.assertThat(requiredBundles, is(Set.of(RUNTIME_BUNDLE, missingBundle)))
+		MatcherAssert.assertThat(currentlyOpenedXtextDocument, hasNoValidationIssues)
 	}
 
 	def private setupProject() {
