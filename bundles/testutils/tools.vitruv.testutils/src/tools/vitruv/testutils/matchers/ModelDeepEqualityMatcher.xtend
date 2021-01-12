@@ -40,6 +40,13 @@ import org.eclipse.emf.common.util.Monitor
 import org.eclipse.emf.compare.postprocessor.BasicPostProcessorDescriptorImpl
 import tools.vitruv.testutils.printing.ModelPrinting
 import tools.vitruv.testutils.printing.ModelPrinter
+import org.eclipse.core.runtime.Platform
+import org.eclipse.emf.compare.match.impl.MatchEngineFactoryRegistryImpl
+import org.eclipse.emf.compare.postprocessor.PostProcessorDescriptorRegistryImpl
+import java.util.HashMap
+import java.util.Collection
+import java.util.function.Predicate
+import static com.google.common.base.Preconditions.checkState
 
 @FinalFieldsConstructor
 package class ModelDeepEqualityMatcher extends TypeSafeMatcher<EObject> {
@@ -72,7 +79,7 @@ package class ModelDeepEqualityMatcher extends TypeSafeMatcher<EObject> {
 
 	private def buildEmfCompare(EObject item) {
 		(EMFCompare.builder => [
-			matchEngineFactoryRegistry = EMFCompareRCPPlugin.getDefault.matchEngineFactoryRegistry => [
+			matchEngineFactoryRegistry = appropriateMatchEngineFactoryRegistry => [
 				// identifiers are often wrong or irrelevant in tests. Content-based matching yield better results
 				// in these cases.
 				add(new MatchEngineFactoryImpl(UseIdentifiers.NEVER) => [
@@ -82,24 +89,44 @@ package class ModelDeepEqualityMatcher extends TypeSafeMatcher<EObject> {
 			diffEngine = new DefaultDiffEngine(new DiffBuilder) {
 				override createFeatureFilter() { emfCompareFeatureFilter }
 			}
-			postProcessorRegistry = EMFCompareRCPPlugin.getDefault.postProcessorRegistry => [
+			postProcessorRegistry = appropriatePostProcessorRegistry => [
 				put(
-					AlwaysMatchRoots.name,
-					new BasicPostProcessorDescriptorImpl(new AlwaysMatchRoots(expectedObject, item),
+					RepairWrongUnmatches.name,
+					new BasicPostProcessorDescriptorImpl(
+						new RepairWrongUnmatches(item, expectedObject, emfCompareFeatureFilter),
 						Pattern.compile('.*'), null)
 				)
 			]
 		]).build()
 	}
 
-	/**
-	 * Differences become difficult to read if EMF Compare does to match the root objects together. Some differences
-	 * can even not be recovered. Hence, we enforce to match the root objects.
+	private def getAppropriateMatchEngineFactoryRegistry() {
+		if (Platform.isRunning)
+			EMFCompareRCPPlugin.^default.matchEngineFactoryRegistry
+		else
+			MatchEngineFactoryRegistryImpl.createStandaloneInstance
+	}
+
+	private def getAppropriatePostProcessorRegistry() {
+		if (Platform.isRunning)
+			EMFCompareRCPPlugin.^default.postProcessorRegistry
+		else
+			new PostProcessorDescriptorRegistryImpl
+	}
+
+	/* Differences become difficult to read if EMF Compare does to match objects together. If the objects are the two
+	 * root objects, some differences can even not be recovered. Furthermore, matching does *not* consider the ignored
+	 * features, which can lead to wrong results (two objects might not get matched because they differ only in an
+	 * ignored feature or reference. The assertion will then fail, even though it shouldn’t). Hence, we repair any 
+	 * missing match by matching it with its topological partner, if they are equal ignoring the references.
 	 */
 	@FinalFieldsConstructor
-	private static class AlwaysMatchRoots implements IPostProcessor {
-		val EObject expectedObject
-		val EObject item
+	private static class RepairWrongUnmatches implements IPostProcessor {
+		val EObject leftRoot
+		val EObject rightRoot
+		val FeatureFilter featureFilter
+		val Set<EObject> checked = new HashSet()
+		val HashMap<Pair<EObject, EObject>, Boolean> matchCache = new HashMap()
 
 		override postComparison(Comparison comparison, Monitor monitor) {}
 
@@ -110,15 +137,150 @@ package class ModelDeepEqualityMatcher extends TypeSafeMatcher<EObject> {
 		override postEquivalences(Comparison comparison, Monitor monitor) {}
 
 		override postMatch(Comparison comparison, Monitor monitor) {
-			val expectedMatch = comparison.getMatch(expectedObject)
-			val itemMatch = comparison.getMatch(item)
-			if (expectedMatch != itemMatch) {
-				comparison.matches -= itemMatch
-				expectedMatch.left = item
+			ensureMatched(comparison, leftRoot, rightRoot)
+			checkMatches(comparison, leftRoot, rightRoot)
+		}
+
+		def private ensureMatched(Comparison comparison, EObject left, EObject right) {
+			ensureMatched(comparison, left, right, comparison.getMatch(left), comparison.getMatch(right))
+		}
+
+		def private ensureMatched(Comparison comparison, EObject left, EObject right, Match leftMatch,
+			Match rightMatch) {
+			if (leftMatch != rightMatch) combineMatches(comparison, left, right, leftMatch, rightMatch)
+		}
+
+		def private combineMatches(Comparison comparison, EObject left, EObject right, Match leftMatch,
+			Match rightMatch) {
+			// these checks guarantee that we do not throw away any values
+			checkState(
+				rightMatch.left === null,
+				'''«right» should be matched with «left», but is already matched with «rightMatch.left»!'''
+			)
+			checkState(
+				leftMatch.right === null,
+				'''«left» should be matched with «right», but is already matched with «leftMatch.right»!'''
+			)
+			(leftMatch.eContainer as Match).submatches -= leftMatch
+			comparison.matches -= leftMatch
+			rightMatch.left = left
+			return rightMatch
+		}
+
+		def private void checkMatches(Comparison comparison, EObject left, EObject right) {
+			if (checked.contains(left) && checked.contains(right)) return;
+			checked += left
+			checked += right
+
+			var leftMatch = comparison.getMatch(left)
+			var rightMatch = comparison.getMatch(right)
+			if (leftMatch.right === null && rightMatch.left === null &&
+				shouldBeMatched(comparison, left, right, rightMatch)) {
+				leftMatch = combineMatches(comparison, left, right, leftMatch, rightMatch)
+				rightMatch = leftMatch
+			}
+
+			if (leftMatch == rightMatch) {
+				iterateReferenceMatches(comparison, left, right, rightMatch)
+			}
+		}
+
+		def private iterateReferenceMatches(Comparison comparison, EObject left, EObject right, Match rightMatch) {
+			featureFilter.getReferencesToCheck(rightMatch).forEach [ reference |
+				if (!reference.isMany) {
+					checkMatches(comparison, left.eGet(reference) as EObject, right.eGet(reference) as EObject)
+				} else {
+					val leftItems = left.eGet(reference) as List<? extends EObject>
+					val rightItems = right.eGet(reference) as List<? extends EObject>
+					if (leftItems.size == rightItems.size) {
+						if (reference.isOrdered) {
+							if (leftItems.size == rightItems.size) {
+								for (var i = 0; i < leftItems.size; i += 1) {
+									checkMatches(comparison, leftItems.get(i), rightItems.get(i))
+								}
+							}
+						} else {
+							val leftToMatch = new HashSet(rightItems)
+							for (rightItem : rightItems) {
+								val rightItemMatch = comparison.getMatch(rightItem)
+								val leftCandidate = rightItemMatch.left ?: leftToMatch.findFirst [
+									shouldBeMatched(comparison, it, rightItem, rightItemMatch)
+								]
+								if (leftCandidate !== null) {
+									leftToMatch -= leftCandidate
+									checkMatches(comparison, leftCandidate, rightItem)
+								}
+							}
+						}
+					}
+				}
+			]
+		}
+
+		def private boolean shouldBeMatched(Comparison comparison, EObject left, EObject right) {
+			shouldBeMatched(comparison, left, right, comparison.getMatch(right))
+		}
+
+		def private boolean shouldBeMatched(Comparison comparison, EObject left, EObject right, Match rightMatch) {
+			// if we match values that should not be matched, the error messages will be harder to read.
+			// if do not match values that should be matched, the result can be wrong.
+			// hence, it is better to match too much than not enough
+			val pair = left -> right
+			matchCache.get(pair) ?: {
+				val quickResult = (left.eClass == right.eClass) && featureFilter.getAttributesToCheck(rightMatch).all [ attribute |
+					left.eGet(attribute) == right.eGet(attribute)
+				]
+				// save attribute result already here, in case we come back while checking references
+				matchCache.put(pair, quickResult)
+				if (quickResult) {
+					val referenceResult = featureFilter.getReferencesToCheck(rightMatch).all [ reference |
+						if (!reference.isMany) {
+							shouldBeMatched(comparison, left.eGet(reference) as EObject,
+								right.eGet(reference) as EObject)
+						} else {
+							val leftObjects = left.eGet(reference) as Collection<? extends EObject>
+							val rightObjects = right.eGet(reference) as Collection<? extends EObject>
+							leftObjects.size != rightObjects.size || {
+								if (reference.isOrdered) {
+									leftObjects.allIndexed [ leftItem, index |
+										val rightItem = rightObjects.get(index)
+										shouldBeMatched(comparison, leftItem, rightItem)
+									]
+								} else {
+									leftObjects.all [ leftItem |
+										rightObjects.exists [ rightItem |
+											shouldBeMatched(comparison, leftItem, rightItem)
+										]
+									]
+								}
+							}
+						}
+					]
+					matchCache.put(pair, referenceResult)
+					referenceResult
+				} else
+					false
 			}
 		}
 
 		override postRequirements(Comparison comparison, Monitor monitor) {}
+
+		def private static <T> boolean all(Iterator<? extends T> elements, Predicate<T> predicate) {
+			!elements.exists(predicate.negate())
+		}
+
+		def private static <T> boolean all(Iterable<? extends T> elements, Predicate<T> predicate) {
+			!elements.exists(predicate.negate())
+		}
+
+		def private static <T> boolean allIndexed(Collection<? extends T> elements, (T, Integer)=>Boolean predicate) {
+			for (var i = 0; i < elements.size; i++) {
+				if (!predicate.apply(elements.get(i), i)) {
+					return false
+				}
+			}
+			return true
+		}
 	}
 
 	private def getEmfCompareFeatureFilter() {
