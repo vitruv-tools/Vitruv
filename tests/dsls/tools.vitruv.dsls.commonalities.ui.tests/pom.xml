@@ -10,7 +10,7 @@
 		<relativePath>../</relativePath>
 	</parent>
 	<artifactId>tools.vitruv.dsls.commonalities.ui.tests</artifactId>
-	<packaging>eclipse-plugin</packaging>
+	<packaging>eclipse-test-plugin</packaging>
 	<name>Vitruv DSLs Commonalities Language Eclipse Integration Tests</name>
 
 	<build>
