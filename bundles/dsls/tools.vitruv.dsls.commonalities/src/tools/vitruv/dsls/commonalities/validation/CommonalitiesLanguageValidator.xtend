@@ -34,14 +34,12 @@ import static extension tools.vitruv.dsls.commonalities.participation.Participat
  * See https://www.eclipse.org/Xtext/documentation/303_runtime_concepts.html#validation
  */
 class CommonalitiesLanguageValidator extends AbstractCommonalitiesLanguageValidator {
-
 	// TODO Check that singleton classes are not accessed inside mappings.
 	// Mappings keep specific intermediate and participation instances
 	// consistent. But the singleton objects are shared by those participation
 	// instances: Modifying them in reaction to changes to individual
 	// intermediate instances bears the risk for issues, such as those
 	// modifications overwriting each other.
-
 	// Note: This is a subset of the valid IDs
 	static val ALIAS_REGEX = "^[a-zA-Z][a-zA-z0-9_]*$"
 	static val ALIAS_PATTERN = Pattern.compile(ALIAS_REGEX)
@@ -51,7 +49,7 @@ class CommonalitiesLanguageValidator extends AbstractCommonalitiesLanguageValida
 		val alias = aliasable.alias
 		if (alias === null) return; // has no alias -> ignore
 		if (!ALIAS_PATTERN.matcher(alias).matches) {
-			error('''Invalid alias («alias»). Valid format: «ALIAS_REGEX»)''', ALIASABLE__ALIAS)
+			error('''Invalid alias ‹«alias»›. Aliases must conform to the pattern «ALIAS_REGEX».''', ALIASABLE__ALIAS)
 		}
 	}
 
@@ -62,7 +60,7 @@ class CommonalitiesLanguageValidator extends AbstractCommonalitiesLanguageValida
 		} else if (participation.nonRootClasses.empty) {
 			error("Participation has no non-root classes.", participation, null)
 		}
-		// TODO check for containment cycles
+	// TODO check for containment cycles
 	}
 
 	@Check
@@ -71,13 +69,13 @@ class CommonalitiesLanguageValidator extends AbstractCommonalitiesLanguageValida
 		val attributeNames = new HashSet
 		for (CommonalityAttribute attribute : commonality.attributes) {
 			if (!attributeNames.add(attribute.name)) {
-				error('''There is already another attribute or reference with name '«attribute.name»'.''', attribute,
+				error('''There is already another attribute or reference with name ‹«attribute.name»›.''', attribute,
 					COMMONALITY_ATTRIBUTE__NAME)
 			}
 		}
 		for (CommonalityReference reference : commonality.references) {
 			if (!attributeNames.add(reference.name)) {
-				error('''There is already another attribute or reference with name '«reference.name»'.''', reference,
+				error('''There is already another attribute or reference with name ‹«reference.name»›.''', reference,
 					COMMONALITY_REFERENCE__NAME)
 			}
 		}
@@ -92,8 +90,8 @@ class CommonalitiesLanguageValidator extends AbstractCommonalitiesLanguageValida
 			val participationAttribute = mapping.participationAttribute
 			if (participationAttribute !== null) {
 				if (!readParticipationAttributes.add(participationAttribute)) {
-					error('''There are multiple mappings which read the participation attribute '«
-						participationAttribute»'.''', COMMONALITY_ATTRIBUTE__MAPPINGS)
+					error('''There are multiple mappings which read the participation attribute '«participationAttribute»'.''',
+						COMMONALITY_ATTRIBUTE__MAPPINGS)
 				}
 			}
 		}
@@ -104,15 +102,15 @@ class CommonalitiesLanguageValidator extends AbstractCommonalitiesLanguageValida
 		val commonalityAttributeType = mapping.commonalityAttributeType
 		if (commonalityAttributeType === null) {
 			val typeDescription = mapping.operator.commonalityAttributeTypeDescription
-			error('''Could not find the operator's declared commonality attribute type `«
-				typeDescription.qualifiedTypeName»`.''', OPERATOR_ATTRIBUTE_MAPPING__OPERATOR)
+			error('''Could not find the operator’s declared commonality attribute type ‹«typeDescription.qualifiedTypeName»›.''',
+				OPERATOR_ATTRIBUTE_MAPPING__OPERATOR)
 		}
 
 		val participationAttributeType = mapping.participationAttributeType
 		if (participationAttributeType === null) {
 			val typeDescription = mapping.operator.participationAttributeTypeDescription
-			error('''Could not find the operator's declared participation attribute type '«
-				typeDescription.qualifiedTypeName»'.''', OPERATOR_ATTRIBUTE_MAPPING__OPERATOR)
+			error('''Could not find the operator’s declared participation attribute type ‹«typeDescription.qualifiedTypeName»›.''',
+				OPERATOR_ATTRIBUTE_MAPPING__OPERATOR)
 		}
 
 		val participationAttributeOperandsCount = mapping.participationAttributeOperands.size
@@ -159,8 +157,8 @@ class CommonalitiesLanguageValidator extends AbstractCommonalitiesLanguageValida
 
 		val referencedParticipations = mapping.referencedParticipations.toList
 		if (referencedParticipations.size === 0) {
-			error('''«mapping.referencedCommonality» has no participation of domain «
-				participation.domainName».''', mapping, null)
+			error('''«mapping.referencedCommonality» has no participation of domain «participation.domainName».''',
+				mapping, null)
 			return;
 		} else if (referencedParticipations.size > 1) {
 			error('''Ambiguous reference mapping: «mapping.referencedCommonality» has more than one participation of «
@@ -194,9 +192,8 @@ class CommonalitiesLanguageValidator extends AbstractCommonalitiesLanguageValida
 		val nonRootBoundaryClasses = referencedParticipation.nonRootBoundaryClasses
 		assertTrue(!nonRootBoundaryClasses.empty)
 		if (!nonRootBoundaryClasses.filter[!mapping.isAssignmentCompatible(it)].empty) {
-			error('''The referenced classes of participation '«referencedParticipation»' in «
-				mapping.referencedCommonality» are not assignment compatible with reference type «
-				referenceRightType».''', SIMPLE_REFERENCE_MAPPING__REFERENCE)
+			error('''The referenced classes of participation ‹«referencedParticipation»› in «mapping.referencedCommonality» are not assignment compatible with reference type «referenceRightType».''',
+				SIMPLE_REFERENCE_MAPPING__REFERENCE)
 			return false
 		}
 		return true
@@ -263,7 +260,8 @@ class CommonalitiesLanguageValidator extends AbstractCommonalitiesLanguageValida
 			error('''Participations can only contain a single singleton class.''', participation, null)
 		} else {
 			if (!participation.hasResourceClass) {
-				error('''Participations with a singleton class marked need to specify a Resource root.''', participation, null)
+				error('''Participations with a singleton class marked need to specify a Resource root.''',
+					participation, null)
 			}
 
 			// Note: The singleton class also indicates the head of the participation's root. We therefore prohibit

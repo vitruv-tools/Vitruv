@@ -3,7 +3,7 @@ package tools.vitruv.dsls.reactions.codegen.classgenerators
 import org.eclipse.xtend2.lib.StringConcatenationClient
 import org.eclipse.xtext.common.types.JvmGenericType
 import org.eclipse.xtext.common.types.JvmVisibility
-import tools.vitruv.dsls.common.helper.ClassNameGenerator
+import tools.vitruv.dsls.common.ClassNameGenerator
 import tools.vitruv.dsls.reactions.codegen.typesbuilder.TypesBuilderExtensionProvider
 import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsSegment
 import tools.vitruv.extensions.dslsruntime.reactions.structure.ReactionsImportPath

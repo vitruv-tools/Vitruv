@@ -4,7 +4,7 @@ import java.util.LinkedHashMap
 import java.util.Map
 import org.eclipse.xtext.common.types.JvmGenericType
 import org.eclipse.xtext.common.types.JvmVisibility
-import tools.vitruv.dsls.common.helper.ClassNameGenerator
+import tools.vitruv.dsls.common.ClassNameGenerator
 import tools.vitruv.dsls.reactions.codegen.typesbuilder.TypesBuilderExtensionProvider
 import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsSegment
 import tools.vitruv.extensions.dslsruntime.reactions.AbstractRepairRoutinesFacade
@@ -30,7 +30,8 @@ class RoutinesFacadesProviderClassGenerator extends ClassGenerator {
 	}
 
 	override generateEmptyClass() {
-		generatedClass = reactionsSegment.toClass(reactionsSegment.routinesFacadesProviderClassNameGenerator.qualifiedName) [
+		generatedClass = reactionsSegment.toClass(
+			reactionsSegment.routinesFacadesProviderClassNameGenerator.qualifiedName) [
 			visibility = JvmVisibility.PUBLIC;
 		];
 	}
@@ -43,8 +44,10 @@ class RoutinesFacadesProviderClassGenerator extends ClassGenerator {
 			// create routines facades for the whole reactions import hierarchy:
 			members += reactionsSegment.toMethod("createRoutinesFacade", typeRef(AbstractRepairRoutinesFacade)) [
 				visibility = JvmVisibility.PUBLIC;
-				val reactionsImportPathParameter = generateParameter("reactionsImportPath", typeRef(ReactionsImportPath));
-				val sharedExecutionStateParameter = generateParameter("sharedExecutionState", typeRef(RoutinesFacadeExecutionState));
+				val reactionsImportPathParameter = generateParameter("reactionsImportPath",
+					typeRef(ReactionsImportPath));
+				val sharedExecutionStateParameter = generateParameter("sharedExecutionState",
+					typeRef(RoutinesFacadeExecutionState));
 				parameters += reactionsImportPathParameter;
 				parameters += sharedExecutionStateParameter;
 				body = '''
@@ -57,7 +60,7 @@ class RoutinesFacadesProviderClassGenerator extends ClassGenerator {
 							}
 					«ENDFOR»
 						default: {
-							throw new IllegalArgumentException("Unexpected import path: " + «reactionsImportPathParameter.name».getPathString());
+						throw new IllegalArgumentException("Unexpected import path: " + «reactionsImportPathParameter.name».getPathString());
 						}
 					}
 				'''
@@ -66,7 +69,8 @@ class RoutinesFacadesProviderClassGenerator extends ClassGenerator {
 	}
 
 	// gets the routines facade class name generators for all reactions segments in the routines import hierarchy, including the root segment:
-	private static def Map<ReactionsImportPath, ClassNameGenerator> getImportHierarchyRoutinesFacades(ReactionsSegment rootReactionsSegment) {
+	private static def Map<ReactionsImportPath, ClassNameGenerator> getImportHierarchyRoutinesFacades(
+		ReactionsSegment rootReactionsSegment) {
 		val importHierarchyRoutinesFacades = new LinkedHashMap<ReactionsImportPath, ClassNameGenerator>();
 		for (importHierarchyEntry : rootReactionsSegment.routinesImportHierarchy.entrySet) {
 			// for each reactions segment in the import hierarchy determine the routines facade class of the top-most reactions segment
@@ -77,7 +81,7 @@ class RoutinesFacadesProviderClassGenerator extends ClassGenerator {
 
 			val overrideRootResult = rootReactionsSegment.getRoutinesOverrideRoot(relativeImportPath, true);
 			val overrideRootSegment = overrideRootResult.value;
-			
+
 			var ClassNameGenerator routinesFacadeClassNameGenerator;
 			if (overrideRootSegment.name.equals(currentReactionsSegment.name)) {
 				// the override root is the overridden reactions segment itself: using the original routines facade:
@@ -85,7 +89,8 @@ class RoutinesFacadesProviderClassGenerator extends ClassGenerator {
 			} else {
 				// get the overridden routines facade from the override root:
 				val relativeImportPathFromOverrideRoot = absoluteImportPath.relativeTo(overrideRootSegment.name);
-				routinesFacadeClassNameGenerator = overrideRootSegment.getOverriddenRoutinesFacadeClassNameGenerator(relativeImportPathFromOverrideRoot);
+				routinesFacadeClassNameGenerator = overrideRootSegment.
+					getOverriddenRoutinesFacadeClassNameGenerator(relativeImportPathFromOverrideRoot);
 			}
 			importHierarchyRoutinesFacades.put(absoluteImportPath, routinesFacadeClassNameGenerator);
 		}

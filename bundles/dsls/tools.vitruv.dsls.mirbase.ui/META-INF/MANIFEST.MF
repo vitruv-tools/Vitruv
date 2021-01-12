@@ -10,8 +10,8 @@ Require-Bundle: tools.vitruv.dsls.mirbase,
  org.eclipse.xtext.ui,
  org.eclipse.xtext.ui.shared,
  org.eclipse.xtext.ui.codetemplates.ui,
- org.eclipse.ui.editors;bundle-version="3.5.0",
- org.eclipse.ui.ide;bundle-version="3.5.0",
+ org.eclipse.ui.editors,
+ org.eclipse.ui.ide,
  org.eclipse.xtext.xbase.lib;bundle-version="2.14.0",
  org.eclipse.xtext.common.types.ui,
  org.eclipse.xtend.lib;bundle-version="2.14.0";resolution:=optional,
@@ -22,15 +22,18 @@ Require-Bundle: tools.vitruv.dsls.mirbase,
  org.eclipse.jdt.debug.ui,
  tools.vitruv.framework.util,
  tools.vitruv.dsls.common,
- tools.vitruv.framework.domains
+ tools.vitruv.framework.domains,
+ tools.vitruv.dsls.common.ui,
+ org.eclipse.pde.core
 Import-Package: org.apache.log4j
 Bundle-RequiredExecutionEnvironment: JavaSE-11
-Export-Package: tools.vitruv.dsls.mirbase.ui.internal,
- tools.vitruv.dsls.mirbase.ui.quickfix,
+Export-Package: tools.vitruv.dsls.mirbase.ui;x-internal:=true,
  tools.vitruv.dsls.mirbase.ui.contentassist,
  tools.vitruv.dsls.mirbase.ui.editor,
- tools.vitruv.dsls.mirbase.ui;x-internal:=true,
+ tools.vitruv.dsls.mirbase.ui.internal,
  tools.vitruv.dsls.mirbase.ui.labeling;x-internal:=true,
- tools.vitruv.dsls.mirbase.ui.outline;x-internal:=true
+ tools.vitruv.dsls.mirbase.ui.outline;x-internal:=true,
+ tools.vitruv.dsls.mirbase.ui.quickfix,
+ tools.vitruv.dsls.mirbase.ui.validation
 Bundle-Activator: tools.vitruv.dsls.mirbase.ui.internal.MirbaseActivator
 Bundle-Vendor: vitruv.tools

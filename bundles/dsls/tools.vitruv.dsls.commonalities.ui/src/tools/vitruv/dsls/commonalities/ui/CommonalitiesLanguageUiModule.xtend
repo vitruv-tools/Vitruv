@@ -4,10 +4,17 @@
 package tools.vitruv.dsls.commonalities.ui
 
 import org.eclipse.xtend.lib.annotations.FinalFieldsConstructor
+import tools.vitruv.dsls.commonalities.validation.CommonalitiesLanguageValidator
+import tools.vitruv.dsls.commonalities.ui.validation.CommonalitiesLanguageEclipseValidator
+import org.eclipse.xtext.service.SingletonBinding
 
 /**
  * Use this class to register components to be used within the Eclipse IDE.
  */
 @FinalFieldsConstructor
 class CommonalitiesLanguageUiModule extends AbstractCommonalitiesLanguageUiModule {
+	@SingletonBinding(eager=true)
+	def Class<? extends CommonalitiesLanguageValidator> bindCommonalitiesLanguageValidator() {
+		CommonalitiesLanguageEclipseValidator
+	}
 }
