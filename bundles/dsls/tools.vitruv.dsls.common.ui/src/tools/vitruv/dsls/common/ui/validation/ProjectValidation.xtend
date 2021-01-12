@@ -58,7 +58,9 @@ class ProjectValidation {
 
 	def static checkDomainProjectIsOnClasspath(ValidationMessageAcceptor acceptor, TypeReferences typeReferences,
 		String requiredDomainName, EObject referenceObject, EStructuralFeature messageTargetFeature) {
-
+		if (!VitruvDomainProviderRegistry.hasDomainProvider(requiredDomainName)) {
+			return
+		}
 		val domainProviderClass = VitruvDomainProviderRegistry.getDomainProvider(requiredDomainName).class
 		checkOnClasspath(acceptor, typeReferences, domainProviderClass, referenceObject,
 			messageTargetFeature, '''«domainProviderClass.simpleName» is not on the classpath''')
@@ -67,7 +69,7 @@ class ProjectValidation {
 	def private static checkOnClasspath(ValidationMessageAcceptor acceptor, TypeReferences typeReferences,
 		Class<?> searchedClass, EObject referenceObject, EStructuralFeature messageTargetFeature, String message) {
 		val project = referenceObject.eclipseProject
-		if (!project.isJavaProject) return;
+		if(!project.isJavaProject) return;
 
 		try {
 			if (typeReferences.findDeclaredType(searchedClass, referenceObject) === null) {
