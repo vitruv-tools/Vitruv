@@ -2,7 +2,6 @@ package tools.vitruv.dsls.commonalities.generator.reactions
 
 import com.google.inject.Inject
 import com.google.inject.Provider
-import java.util.List
 import org.apache.log4j.Logger
 import org.eclipse.emf.common.util.URI
 import org.eclipse.xtext.resource.IGlobalServiceProvider
@@ -70,22 +69,30 @@ class ReactionsGenerator extends SubGenerator {
 		globalServiceProvider.findService(URI.createFileURI('fake.reactions'), IReactionsGenerator)
 
 		// Generate reactions:
-		val reactionsFiles = generateReactions()
+		val reactionsFile = generateReactions()
 
 		// Generate reactions code:
-		generateReactionsCode(reactionsFiles)
+		if (reactionsFile.willGenerateCode) {
+			generateReactionsCode(reactionsFile)
+		}
 	}
 
-	private def List<FluentReactionsFileBuilder> generateReactions() {
+	private def FluentReactionsFileBuilder generateReactions() {
 		val reactionsFile = create.reactionsFile(commonality.name)
 		for (participation : commonalityFile.commonality.participations) {
-			reactionsFile += generateCommonalityFromParticipationSegment(participation)
-			reactionsFile += generateCommonalityToParticipationSegment(participation)
+			val fromSegment = generateCommonalityFromParticipationSegment(participation)
+			if (fromSegment.willGenerateCode) {
+				reactionsFile += fromSegment
+			}
+			val toSegment = generateCommonalityToParticipationSegment(participation)
+			if (toSegment.willGenerateCode) {
+				reactionsFile += toSegment
+			}
 		}
-		return #[reactionsFile]
+		return reactionsFile
 	}
 
-	private def generateReactionsCode(FluentReactionsFileBuilder... reactionsFiles) {
+	private def generateReactionsCode(FluentReactionsFileBuilder reactionsFile) {
 		// Get and setup the code generator of the Reactions language:
 		val reactionsGenerator = reactionsGeneratorProvider.get() => [
 			useResourceSet(resourceSet)
@@ -100,9 +107,7 @@ class ReactionsGenerator extends SubGenerator {
 
 		try {
 			// Generate the Java code for the given reactions:
-			reactionsFiles.forEach [reactionsFile |
-				reactionsGenerator.addReactionsFile(reactionsFile)
-			]
+			reactionsGenerator.addReactionsFile(reactionsFile)
 			reactionsGenerator.generate(fsa)
 
 			// Optionally: Also persist the reactions in the Reactions language itself.

@@ -13,8 +13,8 @@ import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsLanguageFactory
 /**
  * Entry point for fluent reaction builders. The offered methods each create a 
  * builder for a reactions language element. The builders offer only methods
- * that make sense in the current context and are named to match closely the 
- * reactions language’s syntax of. Because of that, using them should be 
+ * that make sense in the current context and are named to match  the reactions
+ * language’s syntax closely. Because of that, using them should be
  * self-explanatory.
  * 
  * <p>Unlike the builders, this class does not hold any state and can thus be
