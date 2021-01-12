@@ -9,7 +9,7 @@ import org.eclipse.xtext.ui.testing.AbstractWorkbenchTest
 import org.eclipse.swt.widgets.Display
 
 /**
- * Fixes shortcomings of {@link BugFixedAbstractQuickfixTest}.
+ * Fixes shortcomings of {@link AbstractQuickfixTest}.
  */
 class BugFixedAbstractQuickfixTest extends AbstractQuickfixTest {
 	override XtextResource getXtextResource(String model) {
