@@ -3,7 +3,6 @@ package tools.vitruv.dsls.commonalities.testutils
 import org.eclipse.xtext.resource.XtextResource
 import org.eclipse.xtext.ui.testing.AbstractQuickfixTest
 import tools.vitruv.framework.util.bridges.EMFBridge
-import java.nio.file.Path
 import org.junit.jupiter.api.BeforeAll
 import org.eclipse.xtext.ui.testing.AbstractWorkbenchTest
 import org.eclipse.swt.widgets.Display
@@ -15,7 +14,7 @@ class BugFixedAbstractQuickfixTest extends AbstractQuickfixTest {
 	override XtextResource getXtextResource(String model) {
 		// fix that the Xtext test does not setup the resource properly
 		val xtextResource = super.getXtextResource(model)
-		xtextResource.URI = EMFBridge.createURI(Path.of(projectName).resolve(model).join('/'))
+		xtextResource.URI = EMFBridge.createURI('''«projectName»/«fileName».«fileExtension»''')
 		return xtextResource
 	}
 
