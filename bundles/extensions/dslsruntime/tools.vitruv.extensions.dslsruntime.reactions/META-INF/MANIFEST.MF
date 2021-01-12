@@ -33,4 +33,5 @@ Export-Package: tools.vitruv.dsls.reactions.meta.correspondence.reactions,
  tools.vitruv.extensions.dslsruntime.reactions.correspondenceFailHandler;x-internal:=true,
  tools.vitruv.extensions.dslsruntime.reactions.effects;x-internal:=true,
  tools.vitruv.extensions.dslsruntime.reactions.helper,
+ tools.vitruv.extensions.dslsruntime.reactions.marker,
  tools.vitruv.extensions.dslsruntime.reactions.structure

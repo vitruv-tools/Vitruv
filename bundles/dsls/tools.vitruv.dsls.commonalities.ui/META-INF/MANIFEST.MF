@@ -14,13 +14,13 @@ Require-Bundle: org.eclipse.compare,
  org.eclipse.jdt.debug.ui,
  org.eclipse.ui,
  org.eclipse.ui.editors,
- org.eclipse.xtend.lib;bundle-version="2.14.0";resolution:=optional,
+ org.eclipse.xtend.lib;resolution:=optional,
  org.eclipse.xtext.builder,
  org.eclipse.xtext.common.types.ui,
  org.eclipse.xtext.ui,
  org.eclipse.xtext.ui.codetemplates.ui,
  org.eclipse.xtext.ui.shared,
- org.eclipse.xtext.xbase.lib;bundle-version="2.14.0",
+ org.eclipse.xtext.xbase.lib,
  org.eclipse.xtext.xbase.ui,
  tools.vitruv.dsls.commonalities.ide,
  tools.vitruv.dsls.commonalities,
@@ -29,7 +29,8 @@ Require-Bundle: org.eclipse.compare,
  org.eclipse.jdt.core,
  tools.vitruv.framework.domains,
  org.eclipse.pde.core,
- tools.vitruv.dsls.common.ui
+ tools.vitruv.dsls.common.ui,
+ tools.vitruv.extensions.dslsruntime.commonalities
 Import-Package: org.apache.log4j
 Bundle-Activator: tools.vitruv.dsls.commonalities.ui.internal.CommonalitiesActivator
 Bundle-Vendor: vitruv.tools

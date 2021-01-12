@@ -6,11 +6,9 @@ import tools.vitruv.dsls.mappings.mappingsLanguage.MappingsFile
 import tools.vitruv.dsls.common.ui.validation.ProjectValidation
 import org.eclipse.xtext.validation.Check
 import tools.vitruv.dsls.mirbase.ui.validation.MirBaseEclipseValidation
+import tools.vitruv.extensions.dslsruntime.mappings.marker.RuntimeProjectMarker
 
 class MappingsLanguageEclipseValidator extends MappingsLanguageValidator {
-	static val RUNTIME_PROJECT_BUNDLE = "tools.vitruv.extensions.dslsruntime.mappings"
-	static val RUNTIME_PROJECT_MARKER_TYPE = "tools.vitruv.extensions.dslsruntime.mappings.marker.RuntimeProjectMarker"
-
 	@Check(NORMAL)
 	def checkDomainDependency(DomainReference domainReference) {
 		MirBaseEclipseValidation.checkDomainDependency(this, services.typeReferences, domainReference)
@@ -19,7 +17,7 @@ class MappingsLanguageEclipseValidator extends MappingsLanguageValidator {
 	@Check(NORMAL)
 	def checkMappingBaseFile(MappingsFile mappingsFile) {
 		ProjectValidation.checkIsJavaPluginProject(this, mappingsFile)
-		ProjectValidation.checkRuntimeProjectIsOnClasspath(this, services.typeReferences, RUNTIME_PROJECT_BUNDLE,
-			RUNTIME_PROJECT_MARKER_TYPE, mappingsFile)
+		ProjectValidation.checkRuntimeProjectIsOnClasspath(this, services.typeReferences, RuntimeProjectMarker,
+			mappingsFile)
 	}
 }

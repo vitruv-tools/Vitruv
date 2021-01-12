@@ -51,10 +51,10 @@ class MissingBundlesQuickfixTest extends BugFixedAbstractQuickfixTest {
 		testQuickfixesOn(
 			testCommonality,
 			ProjectValidation.ErrorCodes.BUNDLE_MISSING_ON_CLASSPATH,
-			new Quickfix( '''Add dependency on ‹«RUNTIME_BUNDLE»›''', null, testCommonality)
+			new Quickfix('''Add dependency on ‹«RUNTIME_BUNDLE»›''', null, testCommonality)
 		)
 
-		val requiredBundles = testProject.pluginProject.requiredBundles.map[name].toSet()
+		val requiredBundles = (testProject.pluginProject.requiredBundles.toList() ?: emptyList()).map[name].toSet()
 		MatcherAssert.assertThat(requiredBundles, is(Set.of(RUNTIME_BUNDLE)))
 	}
 
@@ -78,7 +78,7 @@ class MissingBundlesQuickfixTest extends BugFixedAbstractQuickfixTest {
 			new Quickfix( '''Add dependency on ‹«missingBundle»›''', null, testCommonality)
 		)
 
-		val requiredBundles = testProject.pluginProject.requiredBundles.map[name].toSet()
+		val requiredBundles = (testProject.pluginProject.requiredBundles.toList() ?: emptyList()).map[name].toSet()
 		MatcherAssert.assertThat(requiredBundles, is(Set.of(RUNTIME_BUNDLE, missingBundle)))
 	}
 
