@@ -38,25 +38,14 @@ class ProjectValidation {
 	}
 
 	def static checkRuntimeProjectIsOnClasspath(ValidationMessageAcceptor acceptor, TypeReferences typeReferences,
-		String requiredBundle, String markerType, EObject referenceObject) {
-		checkRuntimeProjectIsOnClasspath(acceptor, typeReferences, requiredBundle, markerType, referenceObject, null)
+		Class<?> markerType, EObject referenceObject) {
+		checkRuntimeProjectIsOnClasspath(acceptor, typeReferences, markerType, referenceObject, null)
 	}
 
 	def static checkRuntimeProjectIsOnClasspath(ValidationMessageAcceptor acceptor, TypeReferences typeReferences,
-		String requiredBundle, String markerType, EObject referenceObject, EStructuralFeature messageTargetFeature) {
-		if (!referenceObject.eclipseProject.isJavaProject) return;
-
-		try {
-			if (typeReferences.findDeclaredType(markerType, referenceObject) === null) {
-				acceptor.error("The runtime project is not on the classpath", referenceObject, messageTargetFeature,
-					ErrorCodes.BUNDLE_MISSING_ON_CLASSPATH,
-					#[referenceObject.eclipseProject.isPluginProject.toString, requiredBundle])
-			}
-		} catch (CoreException e) {
-			acceptor.
-				error('''Failed to search this project’s classpath. Please check that your project is set up correctly: «e.message»''',
-					referenceObject, messageTargetFeature)
-		}
+		Class<?> markerType, EObject referenceObject, EStructuralFeature messageTargetFeature) {
+		checkOnClasspath(acceptor, typeReferences, markerType, referenceObject, messageTargetFeature,
+			"The runtime bundle is not on the classpath")
 	}
 
 	def static checkDomainProjectIsOnClasspath(ValidationMessageAcceptor acceptor, TypeReferences typeReferences,
@@ -66,14 +55,20 @@ class ProjectValidation {
 
 	def static checkDomainProjectIsOnClasspath(ValidationMessageAcceptor acceptor, TypeReferences typeReferences,
 		String requiredDomainName, EObject referenceObject, EStructuralFeature messageTargetFeature) {
-		if (!referenceObject.eclipseProject.isJavaProject) return;
 
 		val domainProviderClass = VitruvDomainProviderRegistry.getDomainProvider(requiredDomainName).class
+		checkOnClasspath(acceptor, typeReferences, domainProviderClass, referenceObject,
+			messageTargetFeature, '''«domainProviderClass.simpleName» is not on the classpath''')
+	}
+
+	def private static checkOnClasspath(ValidationMessageAcceptor acceptor, TypeReferences typeReferences,
+		Class<?> searchedClass, EObject referenceObject, EStructuralFeature messageTargetFeature, String message) {
+		if (!referenceObject.eclipseProject.isJavaProject) return;
+
 		try {
-			if (typeReferences.findDeclaredType(domainProviderClass, referenceObject) === null) {
-				val providingBundle = FrameworkUtil.getBundle(domainProviderClass).symbolicName
-				acceptor.error('''«domainProviderClass.simpleName» is not on the classpath''', referenceObject,
-					messageTargetFeature, ErrorCodes.BUNDLE_MISSING_ON_CLASSPATH,
+			if (typeReferences.findDeclaredType(searchedClass, referenceObject) === null) {
+				val providingBundle = FrameworkUtil.getBundle(searchedClass).symbolicName
+				acceptor.error(message, referenceObject, messageTargetFeature, ErrorCodes.BUNDLE_MISSING_ON_CLASSPATH,
 					#[referenceObject.eclipseProject.isPluginProject.toString, providingBundle])
 			}
 		} catch (CoreException e) {

@@ -7,19 +7,17 @@ import static tools.vitruv.dsls.commonalities.language.LanguagePackage.Literals.
 import static extension tools.vitruv.dsls.commonalities.language.extensions.CommonalitiesLanguageModelExtensions.*
 import tools.vitruv.dsls.common.ui.validation.ProjectValidation
 import tools.vitruv.dsls.commonalities.language.Participation
+import tools.vitruv.extensions.dslruntime.commonalities.marker.RuntimeProjectMarker
 
 /**
  * Validations that are only applicable when running in Eclipse.
  */
 class CommonalitiesLanguageEclipseValidator extends CommonalitiesLanguageValidator {
-	static val RUNTIME_PROJECT_BUNDLE = "tools.vitruv.extensions.dslsruntime.commonalities"
-	static val RUNTIME_PROJECT_MARKER_TYPE = "tools.vitruv.extensions.dslruntime.commonalities.marker.RuntimeProjectMarker"
-
 	@Check(NORMAL)
 	def checkProjectSetup(CommonalityFile commonalityFile) {
 		ProjectValidation.checkIsJavaPluginProject(this, commonalityFile, COMMONALITY_FILE__CONCEPT)
-		ProjectValidation.checkRuntimeProjectIsOnClasspath(this, services.typeReferences, RUNTIME_PROJECT_BUNDLE,
-			RUNTIME_PROJECT_MARKER_TYPE, commonalityFile, COMMONALITY_FILE__CONCEPT)
+		ProjectValidation.checkRuntimeProjectIsOnClasspath(this, services.typeReferences, RuntimeProjectMarker,
+			commonalityFile, COMMONALITY_FILE__CONCEPT)
 	}
 
 	@Check(NORMAL)
