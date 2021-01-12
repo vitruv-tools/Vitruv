@@ -1,6 +1,5 @@
 package tools.vitruv.dsls.commonalities.ui.quickfix
 
-import tools.vitruv.dsls.commonalities.testutils.BugFixedAbstractQuickfixTest
 import org.eclipse.xtext.testing.extensions.InjectionExtension
 import tools.vitruv.testutils.TestProjectManager
 import tools.vitruv.dsls.commonalities.ui.tests.CommonalitiesLanguageUiInjectorProvider
@@ -18,6 +17,7 @@ import org.junit.jupiter.api.Assertions
 import static extension tools.vitruv.dsls.common.ui.ProjectAccess.*
 import java.util.List
 import org.eclipse.pde.core.project.IBundleProjectDescription
+import tools.vitruv.dsls.commonalities.testutils.BugFixedAbstractQuickfixTest
 
 @DisplayName("quick fixes for project natures")
 @ExtendWith(#[InjectionExtension, TestProjectManager])
@@ -66,7 +66,7 @@ class ProjectConversionQuickfixTest extends BugFixedAbstractQuickfixTest {
 				natureIds = natureIds + List.of(IBundleProjectDescription.PLUGIN_NATURE)
 			], null)
 		]
-		
+
 		testQuickfixesOn(
 			testCommonality,
 			ProjectValidation.ErrorCodes.NOT_A_JAVA_PROJECT,

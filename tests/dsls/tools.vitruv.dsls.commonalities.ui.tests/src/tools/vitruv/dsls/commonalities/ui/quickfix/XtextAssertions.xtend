@@ -88,7 +88,7 @@ class XtextAssertions {
 					missingIssueCodes += issueCode
 				}
 			}
-			return !expectedIssueCodes.exists[!issues.exists[code == it]]
+			return missingIssueCodes.isEmpty
 		}
 
 		override protected describeMismatchSafely(IXtextDocument document, Description mismatchDescription) {

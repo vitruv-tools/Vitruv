@@ -19,9 +19,9 @@ import java.nio.file.Path
 import tools.vitruv.testutils.TestProject
 import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.core.resources.IProjectUtil.*
 import java.util.Set
-import tools.vitruv.dsls.commonalities.testutils.BugFixedAbstractQuickfixTest
 import javax.inject.Inject
 import static tools.vitruv.dsls.commonalities.ui.quickfix.XtextAssertions.getCurrentlyOpenedXtextDocument
+import tools.vitruv.dsls.commonalities.testutils.BugFixedAbstractQuickfixTest
 
 @DisplayName("quick fixes for missing bundles")
 @ExtendWith(#[InjectionExtension, TestProjectManager])
@@ -90,7 +90,7 @@ class MissingBundlesQuickfixTest extends BugFixedAbstractQuickfixTest {
 	}
 
 	@Test
-	@DisplayName("does not offer the quickfix when the project is not a plugin project")
+	@DisplayName("does not offer a quick fix to add a bundle when the project is not a plugin project")
 	def void notPluginProject() {
 		createProjectAt(projectName, projectLocation) => [configureAsJavaProject()]
 
@@ -103,14 +103,21 @@ class MissingBundlesQuickfixTest extends BugFixedAbstractQuickfixTest {
 		'''
 
 		// checks that there are no quickfixes
-		testQuickfixesOn(
-			testCommonality,
-			ProjectValidation.ErrorCodes.BUNDLE_MISSING_ON_CLASSPATH
-		)
+		MatcherAssert.assertThat(testCommonality.allQuickfixes.filter [
+			label != 'Convert the project to a plugin project'
+		].toList, is(emptyList()))
 		MatcherAssert.assertThat(currentlyOpenedXtextDocument, hasIssues(
 			ProjectValidation.ErrorCodes.CANNOT_ACCESS_TYPE,
 			ProjectValidation.ErrorCodes.CANNOT_ACCESS_TYPE
 		))
+	}
+
+	def private getAllQuickfixes(CharSequence code) {
+		val dslFile = dslFile(projectName, fileName, fileExtension, code)
+		this.project = dslFile.project
+		val editor = openInEditor(dslFile)
+		val issues = editor.document.allValidationIssues
+		return issues.flatMap[issueResolutionProvider.getResolutions(it)]
 	}
 
 	def private setupProject() {

@@ -8,7 +8,6 @@ import org.eclipse.core.resources.IResource
 import org.eclipse.jdt.core.JavaCore
 import org.eclipse.xtext.ui.XtextProjectHelper
 import tools.vitruv.dsls.commonalities.util.CommonalitiesLanguageConstants
-import org.eclipse.core.resources.IFolder
 import java.io.InputStream
 import java.io.ByteArrayInputStream
 import org.eclipse.xtext.ui.util.JREContainerProvider
@@ -18,6 +17,8 @@ import org.eclipse.pde.core.project.IBundleProjectDescription
 import org.eclipse.pde.core.project.IRequiredBundleDescription
 import org.eclipse.ui.PlatformUI
 import org.eclipse.swt.widgets.Display
+import org.eclipse.core.resources.IContainer
+import org.eclipse.core.runtime.Path
 
 @Utility
 class CommonalitiesProjectSetup {
@@ -120,12 +121,14 @@ class CommonalitiesProjectSetup {
 		]
 	}
 
-	def static createFile(IFolder folder, String fileName, InputStream content) {
-		folder.getFile(fileName).create(content, true, null)
+	def static createFile(IContainer container, String fileName, InputStream content) {
+		val file = container.getFile(new Path(fileName))
+		file.create(content, true, null)
+		return file
 	}
 
-	def private static createFile(IFolder folder, String fileName, String content) {
-		folder.createFile(fileName, new ByteArrayInputStream(content.bytes))
+	def static createFile(IContainer container, String fileName, String content) {
+		container.createFile(fileName, new ByteArrayInputStream(content.bytes))
 	}
 
 	def static getPath(IResource eclipseResource) {
