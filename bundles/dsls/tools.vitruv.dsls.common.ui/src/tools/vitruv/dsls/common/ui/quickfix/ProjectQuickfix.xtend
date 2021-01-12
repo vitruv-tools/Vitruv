@@ -18,16 +18,12 @@ class ProjectQuickfix {
 	 */
 	def static addBundleToProject(Issue issue, IssueResolutionAcceptor acceptor) {
 		issue.checkCode(ProjectValidation.ErrorCodes.BUNDLE_MISSING_ON_CLASSPATH)
-
 		val requiredBundle = issue.data.get(0)
-		val pluginProject = issue.uriToProblem.eclipseProject.pluginProject
-		if (pluginProject === null) return;
-		if ((pluginProject.requiredBundles?.toList() ?: emptyList()).exists[name == requiredBundle]) return;
 
 		acceptor.accept(issue, '''Add dependency on ‹«requiredBundle»›''', null, null) [ context |
-			val contextPluginProject = context.eclipseProject.pluginProject
-			contextPluginProject.addRequiredBundle(requiredBundle)
-			contextPluginProject.apply(new NullProgressMonitor)
+			val pluginProject = context.eclipseProject.pluginProject
+			pluginProject.addRequiredBundle(requiredBundle)
+			pluginProject.apply(new NullProgressMonitor)
 		]
 	}
 

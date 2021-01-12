@@ -17,7 +17,7 @@ import tools.vitruv.testutils.TestProjectManager
 import org.junit.jupiter.api.BeforeEach
 import java.nio.file.Path
 import tools.vitruv.testutils.TestProject
-import static edu.kit.ipd.sdq.commons.util.org.eclipse.core.resources.IProjectUtil.*
+import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.core.resources.IProjectUtil.*
 import java.util.Set
 import tools.vitruv.dsls.commonalities.testutils.BugFixedAbstractQuickfixTest
 import javax.inject.Inject
@@ -87,6 +87,30 @@ class MissingBundlesQuickfixTest extends BugFixedAbstractQuickfixTest {
 		val requiredBundles = (testProject.pluginProject.requiredBundles?.toList() ?: emptyList()).map[name].toSet()
 		MatcherAssert.assertThat(requiredBundles, is(Set.of(RUNTIME_BUNDLE, missingBundle)))
 		MatcherAssert.assertThat(currentlyOpenedXtextDocument, hasNoValidationIssues)
+	}
+
+	@Test
+	@DisplayName("does not offer the quickfix when the project is not a plugin project")
+	def void notPluginProject() {
+		createProjectAt(projectName, projectLocation) => [configureAsJavaProject()]
+
+		val testCommonality = '''
+			concept test
+			
+			commonality Test {
+				with AllElementTypes:Root
+			}
+		'''
+
+		// checks that there are no quickfixes
+		testQuickfixesOn(
+			testCommonality,
+			ProjectValidation.ErrorCodes.BUNDLE_MISSING_ON_CLASSPATH
+		)
+		MatcherAssert.assertThat(currentlyOpenedXtextDocument, hasIssues(
+			ProjectValidation.ErrorCodes.CANNOT_ACCESS_TYPE,
+			ProjectValidation.ErrorCodes.CANNOT_ACCESS_TYPE
+		))
 	}
 
 	def private setupProject() {

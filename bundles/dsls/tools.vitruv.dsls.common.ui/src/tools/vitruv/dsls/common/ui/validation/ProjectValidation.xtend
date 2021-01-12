@@ -15,7 +15,10 @@ import org.eclipse.xtext.common.types.util.TypeReferences
 class ProjectValidation {
 	static class ErrorCodes {
 		public static val PREFIX = 'tools.vitruv.dsls.common.ui.validation.ProjectValidation.'
+		// a type is missing on the classpath and adding a specific bundle will most likely fix it
 		public static val BUNDLE_MISSING_ON_CLASSPATH = PREFIX + 'BUNDLE_MISSING_ON_CLASSPATH'
+		// a type is missing on the classpath, but we do not know how to fix it
+		public static val CANNOT_ACCESS_TYPE = PREFIX + 'CANNOT_ACCESS_TYPE'
 		public static val NOT_A_JAVA_PROJECT = PREFIX + 'NOT_A_JAVA_PROJECT'
 		public static val NOT_A_PLUGIN_PROJECT = PREFIX + 'NOT_A_PLUGIN_PROJECT'
 	}
@@ -63,13 +66,23 @@ class ProjectValidation {
 
 	def private static checkOnClasspath(ValidationMessageAcceptor acceptor, TypeReferences typeReferences,
 		Class<?> searchedClass, EObject referenceObject, EStructuralFeature messageTargetFeature, String message) {
-		if (!referenceObject.eclipseProject.isJavaProject) return;
+		val project = referenceObject.eclipseProject
+		if (!project.isJavaProject) return;
 
 		try {
 			if (typeReferences.findDeclaredType(searchedClass, referenceObject) === null) {
-				val providingBundle = FrameworkUtil.getBundle(searchedClass).symbolicName
-				acceptor.error(message, referenceObject, messageTargetFeature, ErrorCodes.BUNDLE_MISSING_ON_CLASSPATH,
-					#[providingBundle])
+				if (!project.isPluginProject) {
+					acceptor.error(message, referenceObject, messageTargetFeature, ErrorCodes.CANNOT_ACCESS_TYPE)
+				} else {
+					val providingBundle = FrameworkUtil.getBundle(searchedClass).symbolicName
+					val currentlyRequiredBundles = project.pluginProject.requiredBundles?.toList ?: emptyList
+					if (currentlyRequiredBundles.exists[name == providingBundle]) {
+						acceptor.error(message, referenceObject, messageTargetFeature, ErrorCodes.CANNOT_ACCESS_TYPE)
+					} else {
+						acceptor.error(message, referenceObject, messageTargetFeature,
+							ErrorCodes.BUNDLE_MISSING_ON_CLASSPATH, #[providingBundle])
+					}
+				}
 			}
 		} catch (CoreException e) {
 			acceptor.
