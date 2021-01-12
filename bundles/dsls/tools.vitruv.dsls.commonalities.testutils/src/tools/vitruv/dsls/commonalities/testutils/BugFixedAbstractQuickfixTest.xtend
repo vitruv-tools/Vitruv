@@ -6,6 +6,10 @@ import tools.vitruv.framework.util.bridges.EMFBridge
 import org.junit.jupiter.api.BeforeAll
 import org.eclipse.xtext.ui.testing.AbstractWorkbenchTest
 import org.eclipse.swt.widgets.Display
+import org.eclipse.xtext.ui.editor.XtextEditor
+import org.eclipse.core.resources.IFile
+import tools.vitruv.framework.util.Capture
+import static extension tools.vitruv.framework.util.Capture.*
 
 /**
  * Fixes shortcomings of {@link AbstractQuickfixTest}.
@@ -22,6 +26,13 @@ class BugFixedAbstractQuickfixTest extends AbstractQuickfixTest {
 	def static prepareWorkbench() {
 		// fix that the Xtext test does not support running outside the UI thread
 		Display.^default.asyncExec[AbstractWorkbenchTest.prepareWorkbench()]
+	}
+
+	override XtextEditor openEditor(IFile file) {
+		// fix that the Xtext test does not support running outside the UI thread
+		val editor = new Capture<XtextEditor>
+		Display.^default.syncExec[super.openEditor(file) >> editor]
+		return -editor
 	}
 
 	override setUp() {
