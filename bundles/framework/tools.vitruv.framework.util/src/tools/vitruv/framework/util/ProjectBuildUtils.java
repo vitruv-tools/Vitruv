@@ -1,4 +1,4 @@
-package tools.vitruv.framework.ui.monitorededitor;
+package tools.vitruv.framework.util;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkState;
