@@ -7,7 +7,7 @@ import tools.vitruv.dsls.reactions.reactionsLanguage.Routine
 import tools.vitruv.dsls.reactions.reactionsLanguage.Reaction
 import tools.vitruv.extensions.dslsruntime.reactions.structure.ReactionsImportPath
 import edu.kit.ipd.sdq.activextendannotations.Utility
-import tools.vitruv.dsls.common.helper.ClassNameGenerator
+import tools.vitruv.dsls.common.ClassNameGenerator
 
 @Utility class ClassNamesGenerators {
 	static val String BASIC_PACKAGE = "mir"

@@ -24,16 +24,18 @@ import tools.vitruv.extensions.dslruntime.commonalities.intermediatemodelbase.In
 import tools.vitruv.framework.util.VitruviusConstants
 
 import static extension tools.vitruv.dsls.commonalities.generator.intermediatemodel.IntermediateModelConstants.*
+import static java.lang.System.lineSeparator
+import java.util.List
 
 class IntermediateMetamodelCodeGenerator extends SubGenerator {
 
 	static val Logger logger = Logger.getLogger(IntermediateMetamodelCodeGenerator)
 	static val GENERATED_CODE_COMPLIANCE_LEVEL = GenJDKLevel.JDK80_LITERAL
 	static val GENERATED_CODE_FOLDER = "."
-	static val INTERMEDIATEMODELBASE_GENMODEL_URI = EcorePlugin.getEPackageNsURIToGenModelLocationMap(true)
-		.get(IntermediateModelBasePackage.eINSTANCE.nsURI)
-	@Lazy val GenModel intermediateModelBaseGenModel = resourceSet
-		.getResource(INTERMEDIATEMODELBASE_GENMODEL_URI, true).contents.head as GenModel
+	static val INTERMEDIATEMODELBASE_GENMODEL_URI = EcorePlugin.getEPackageNsURIToGenModelLocationMap(true).get(
+		IntermediateModelBasePackage.eINSTANCE.nsURI)
+	@Lazy val GenModel intermediateModelBaseGenModel = resourceSet.getResource(INTERMEDIATEMODELBASE_GENMODEL_URI,
+		true).contents.head as GenModel
 
 	override generate() {
 		if (!isNewResourceSet) return
@@ -80,7 +82,8 @@ class IntermediateMetamodelCodeGenerator extends SubGenerator {
 		]
 		val result = generator.generate(generatedGenModel, GenBaseGeneratorAdapter.MODEL_PROJECT_TYPE, new BasicMonitor)
 		if (result.severity != Diagnostic.OK) {
-			throw new RuntimeException(result.message)
+			throw new IllegalStateException("Generating the intermediate model failed:" + lineSeparator +
+				result.explanation)
 		}
 
 		// TODO Workaround: When running in Eclipse, Xtext uses JDT to lookup
@@ -97,6 +100,20 @@ class IntermediateMetamodelCodeGenerator extends SubGenerator {
 		if (javaProject !== null) {
 			javaProject.close
 			javaProject.open(null)
+		}
+	}
+
+	private def getExplanation(Diagnostic diagnostic) {
+		diagnostic.notOkayChildren.join(lineSeparator) [it.message]
+	}
+
+	private def Iterable<Diagnostic> getNotOkayChildren(Diagnostic diagnostic) {
+		if (diagnostic.severity == Diagnostic.OK) {
+			emptyList
+		} else if (diagnostic.children.isEmpty) {
+			List.of(diagnostic)
+		} else {
+			diagnostic.children.flatMap[notOkayChildren]
 		}
 	}
 

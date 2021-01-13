@@ -45,8 +45,9 @@ final class TuidManager {
 	}
 	
 	def reinitialize() {
-		flushRegisteredObjectsUnderModification();
-		Tuid.reinitialize();
+		tuidCalculator.clear()
+		flushRegisteredObjectsUnderModification()
+		Tuid.reinitialize()
 	}
 	
 	def private TuidCalculator getTuidCalculator(EObject object) {

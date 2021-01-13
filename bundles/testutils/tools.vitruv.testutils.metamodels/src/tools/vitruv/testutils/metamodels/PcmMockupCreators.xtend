@@ -6,7 +6,4 @@ import tools.vitruv.testutils.activeannotations.ModelCreators
 @ModelCreators(factory=Pcm_mockupFactory, stripPrefix = "P")
 final class PcmMockupCreators {
 	public static val pcm = new PcmMockupCreators()
-
-	private new() {
-	}
 }

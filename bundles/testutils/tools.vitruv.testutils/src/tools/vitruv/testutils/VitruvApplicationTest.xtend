@@ -56,7 +56,7 @@ abstract class VitruvApplicationTest implements CorrespondenceModelContainer, Te
 
 	@AfterEach
 	def final package void closeAfterTest() {
-		close()
+		testView?.close()
 	}
 
 	override CorrespondenceModel getCorrespondenceModel() { virtualModel.correspondenceModel }
