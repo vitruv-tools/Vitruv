@@ -30,7 +30,8 @@ Require-Bundle: tools.vitruv.framework.vsum;visibility:=reexport,
  org.junit.jupiter.api,
  org.junit.platform.commons,
  org.eclipse.emf.compare,
- org.eclipse.emf.compare.rcp
+ org.eclipse.emf.compare.rcp,
+ org.junit.jupiter.params
 Export-Package: tools.vitruv.testutils,
  tools.vitruv.testutils.activeannotations,
  tools.vitruv.testutils.domains,

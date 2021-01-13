@@ -11,6 +11,7 @@ import static tools.vitruv.testutils.printing.PrintMode.*
 import org.eclipse.xtend.lib.annotations.FinalFieldsConstructor
 import org.eclipse.xtend.lib.annotations.Accessors
 import static com.google.common.base.Preconditions.checkState
+import org.eclipse.emf.common.util.URI
 
 @FinalFieldsConstructor
 class DefaultModelPrinter implements ModelPrinter {
@@ -34,12 +35,11 @@ class DefaultModelPrinter implements ModelPrinter {
 		PrintIdProvider idProvider,
 		Resource resource
 	) {
-		print('Resource(') + newLineIncreaseIndent + //
-		print('uri=') + target.printObject(idProvider, resource.URI) + print(',') + //
-		newLine + print('content=') + printList(resource.contents, printModeFor(resource.contents)) [ subTarget, element |
+		print('Resource@') + target.printValue(resource.URI) [ subTarget, uri |
+			subPrinter.printObject(subTarget, idProvider, uri)
+		] + printList(resource.contents, MULTI_LINE) [ subTarget, element |
 			subPrinter.printObject(subTarget, idProvider, element)
-		] + newLineDecreaseIndent + //
-		print(')')
+		]
 	}
 
 	def private dispatch PrintResult dispatchPrintObject(
@@ -62,8 +62,12 @@ class DefaultModelPrinter implements ModelPrinter {
 		]
 	}
 
+	def private dispatch dispatchPrintObject(extension PrintTarget target, PrintIdProvider idProvider, URI uri) {
+		print(URI.decode(uri.toString()))
+	}
+
 	def private dispatch dispatchPrintObject(extension PrintTarget target, PrintIdProvider idProvider, Object object) {
-		printValue(object)
+		print(object.toString())
 	}
 
 	def private dispatch dispatchPrintObject(extension PrintTarget target, PrintIdProvider idProvider, Void void) {
@@ -127,7 +131,10 @@ class DefaultModelPrinter implements ModelPrinter {
 		EStructuralFeature feature,
 		Object value
 	) {
-		subPrinter.printObject(target, idProvider, value)
+		switch (value) {
+			EObject: printObject(target, idProvider, value)
+			default: target.printValue(value)[subTarget, theValue|printObject(subTarget, idProvider, theValue)]
+		}
 	}
 
 	def private dispatch dispatchPrintObjectShortened(
@@ -135,10 +142,11 @@ class DefaultModelPrinter implements ModelPrinter {
 		PrintIdProvider idProvider,
 		Resource resource
 	) {
-		print('Resource(uri=') + subPrinter.printObject(target, idProvider, resource.URI) + print(', content=') + //
-		target.printList(resource.contents) [ subTarget, element |
+		print('Resource@') + target.printValue(resource.URI) [ subTarget, uri |
+			subPrinter.printObjectShortened(subTarget, idProvider, uri)
+		] + printList(resource.contents, SINGLE_LINE) [ subTarget, element |
 			subPrinter.printObjectShortened(subTarget, idProvider, element)
-		] + print(')')
+		]
 	}
 
 	def private dispatch dispatchPrintObjectShortened(

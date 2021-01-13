@@ -5,6 +5,7 @@ import org.hamcrest.TypeSafeMatcher
 import org.eclipse.emf.common.util.URI
 import edu.kit.ipd.sdq.commons.util.org.eclipse.emf.common.util.URIUtil
 import org.hamcrest.Description
+import static extension tools.vitruv.testutils.printing.ModelPrinting.*
 
 @FinalFieldsConstructor
 package class ResourceExistingMatcher extends TypeSafeMatcher<URI> {
@@ -26,6 +27,6 @@ package class ResourceExistingMatcher extends TypeSafeMatcher<URI> {
 
 	override describeMismatchSafely(URI item, Description mismatchDescription) {
 		val qualifier = if (shouldExist) "no" else "a"
-		mismatchDescription.appendText('''there was «qualifier» resource at ''').appendValue(item)
+		mismatchDescription.appendText('''there was «qualifier» resource at ''').appendModelValue(item)
 	}
 }
