@@ -6,7 +6,6 @@ import tools.vitruv.framework.domains.VitruvDomain
 import tools.vitruv.framework.applications.VitruvApplication
 import java.util.Map
 import org.eclipse.core.resources.IProject
-import tools.vitruv.framework.ui.monitorededitor.ProjectBuildUtils
 import org.eclipse.core.resources.ResourcesPlugin
 import tools.vitruv.framework.change.processing.ChangePropagationSpecification
 import java.util.Set
@@ -14,6 +13,7 @@ import tools.vitruv.framework.vsum.VirtualModelConfigurationBuilder
 import tools.vitruv.framework.vsum.VirtualModelImpl
 import tools.vitruv.framework.userinteraction.UserInteractionFactory
 import org.apache.log4j.Logger
+import static tools.vitruv.framework.util.ProjectBuildUtils.buildIncrementally
 
 class VitruvInstanceCreator {
 	static val LOGGER = Logger.getLogger(VitruvInstanceCreator)
@@ -35,7 +35,7 @@ class VitruvInstanceCreator {
 			for (domain : projectToDomains.get(project)) {
 				try {
 					domain.builderApplicator.addToProject(project, virtualModel.folder, domain.fileExtensions.toList)
-					ProjectBuildUtils.buildIncrementally(project, domain.builderApplicator.builderId)
+					buildIncrementally(project, domain.builderApplicator.builderId)
 					return true
 				} catch (IllegalStateException e) {
 					LOGGER.error('''Could not initialize V-SUM project for project: «project.name»''')
