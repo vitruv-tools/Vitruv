@@ -5,6 +5,7 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.Platform;
 
 import tools.vitruv.framework.domains.VitruviusProjectBuilderApplicator;
+import static tools.vitruv.framework.util.ProjectBuildUtils.hasBuilder;
 
 public class TestBuilderEnabled extends PropertyTester {
 
@@ -22,7 +23,7 @@ public class TestBuilderEnabled extends PropertyTester {
             final IProject project = Platform.getAdapterManager().getAdapter(receiver, IProject.class);
 
             if (project != null) {
-                return this.builderApplicator.hasBuilder(project);
+                return hasBuilder(project, builderApplicator.getBuilderId());
             }
         }
 
