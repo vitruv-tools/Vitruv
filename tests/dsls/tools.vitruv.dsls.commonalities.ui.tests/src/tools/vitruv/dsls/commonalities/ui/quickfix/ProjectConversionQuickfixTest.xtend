@@ -18,6 +18,7 @@ import static extension tools.vitruv.dsls.common.ui.ProjectAccess.*
 import java.util.List
 import org.eclipse.pde.core.project.IBundleProjectDescription
 import tools.vitruv.dsls.commonalities.testutils.BugFixedAbstractQuickfixTest
+import org.eclipse.xtext.ui.testing.util.IResourcesSetupUtil
 
 @DisplayName("quick fixes for project natures")
 @ExtendWith(#[InjectionExtension, TestProjectManager])
@@ -45,6 +46,7 @@ class ProjectConversionQuickfixTest extends BugFixedAbstractQuickfixTest {
 			ProjectValidation.ErrorCodes.NOT_A_PLUGIN_PROJECT,
 			new Quickfix('Convert the project to a plugin project', null, testCommonality)
 		)
+		IResourcesSetupUtil.waitForBuild()
 
 		Assertions.assertTrue(testProject.isPluginProject, "is plugin project")
 		Assertions.assertTrue(
@@ -72,6 +74,7 @@ class ProjectConversionQuickfixTest extends BugFixedAbstractQuickfixTest {
 			ProjectValidation.ErrorCodes.NOT_A_JAVA_PROJECT,
 			new Quickfix('Convert the project to a Java project', null, testCommonality)
 		)
+		IResourcesSetupUtil.waitForBuild()
 
 		Assertions.assertTrue(testProject.isJavaProject, "is Java project")
 	}
@@ -86,11 +89,13 @@ class ProjectConversionQuickfixTest extends BugFixedAbstractQuickfixTest {
 			ProjectValidation.ErrorCodes.NOT_A_JAVA_PROJECT,
 			new Quickfix('Convert the project to a Java project', null, testCommonality)
 		)
+		IResourcesSetupUtil.waitForBuild()
 		testQuickfixesOn(
 			testCommonality,
 			ProjectValidation.ErrorCodes.NOT_A_PLUGIN_PROJECT,
 			new Quickfix('Convert the project to a plugin project', null, testCommonality)
 		)
+		IResourcesSetupUtil.waitForBuild()
 
 		Assertions.assertTrue(testProject.isJavaProject, "is Java project")
 		Assertions.assertTrue(testProject.isPluginProject, "is plugin project")
