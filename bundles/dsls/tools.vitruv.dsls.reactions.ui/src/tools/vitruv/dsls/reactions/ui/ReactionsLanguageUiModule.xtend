@@ -4,10 +4,17 @@
 package tools.vitruv.dsls.reactions.ui
 
 import org.eclipse.xtend.lib.annotations.FinalFieldsConstructor
+import org.eclipse.xtext.service.SingletonBinding
+import tools.vitruv.dsls.reactions.validation.ReactionsLanguageValidator
+import tools.vitruv.dsls.reactions.ui.validation.ReactionsLanguageEclipseValidator
 
 /**
  * Use this class to register components to be used within the Eclipse IDE.
  */
 @FinalFieldsConstructor
 class ReactionsLanguageUiModule extends AbstractReactionsLanguageUiModule {
+	@SingletonBinding(eager=true)
+	def Class<? extends ReactionsLanguageValidator> bindReactionsLanguageValidator() {
+		ReactionsLanguageEclipseValidator
+	}
 }

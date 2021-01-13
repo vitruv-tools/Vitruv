@@ -15,7 +15,7 @@ import org.eclipse.emf.ecore.EcorePackage
 import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.emf.ecore.resource.ResourceSet
 import org.eclipse.emf.ecore.xmi.impl.XMLResourceFactoryImpl
-import tools.vitruv.dsls.common.helper.ClassNameGenerator
+import tools.vitruv.dsls.common.ClassNameGenerator
 import tools.vitruv.dsls.commonalities.generator.GenerationContext
 import tools.vitruv.dsls.commonalities.generator.SubGenerator
 import tools.vitruv.dsls.commonalities.language.Commonality
@@ -42,19 +42,19 @@ class IntermediateMetamodelGenerator extends SubGenerator {
 	override beforeGenerate() {
 		if (isNewResourceSet) {
 			val resourceSet = resourceSet
-			val conceptToCommonalityFiles = resourceSet.resources
-				.map[optionalContainedCommonalityFile]
-				.filterNull
-				.groupBy[concept.name]
+			val conceptToCommonalityFiles = resourceSet.resources.map[optionalContainedCommonalityFile].filterNull.
+				groupBy[concept.name]
 
 			outputResources = new ArrayList(conceptToCommonalityFiles.size)
-			resourceSet.resourceFactoryRegistry.extensionToFactoryMap.computeIfAbsent('ecore', [new XMLResourceFactoryImpl])
+			resourceSet.resourceFactoryRegistry.extensionToFactoryMap.computeIfAbsent('ecore', [
+				new XMLResourceFactoryImpl
+			])
 
 			conceptToCommonalityFiles.entrySet.map [
 				val concept = key
 				val commonalityFiles = value
-				logger.debug('''Generating intermediate metamodel for concept '«concept»' and commonalities «
-					commonalityFiles.map[commonality.name].toList»''')
+				logger.
+					debug('''Generating intermediate metamodel for concept '«concept»' and commonalities «commonalityFiles.map[commonality.name].toList»''')
 
 				val packageGenerator = generateCommonalityEPackage(concept, commonalityFiles, resourceSet)
 				reportGeneratedIntermediateMetamodel(concept, packageGenerator.generatedEPackage)
@@ -94,7 +94,8 @@ class IntermediateMetamodelGenerator extends SubGenerator {
 		val extension GenerationContext generationContext
 		val List<Runnable> linkCallbacks = new ArrayList
 
-		private new(String conceptName, Iterable<CommonalityFile> commonalityFiles, GenerationContext generationContext) {
+		private new(String conceptName, Iterable<CommonalityFile> commonalityFiles,
+			GenerationContext generationContext) {
 			this.conceptName = conceptName
 			this.commonalityFiles = commonalityFiles
 			this.generationContext = generationContext

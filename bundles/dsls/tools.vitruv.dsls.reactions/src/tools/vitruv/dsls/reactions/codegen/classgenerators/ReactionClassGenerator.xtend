@@ -17,7 +17,7 @@ import tools.vitruv.dsls.reactions.codegen.typesbuilder.TypesBuilderExtensionPro
 import tools.vitruv.dsls.reactions.codegen.helper.AccessibleElement
 import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
 import tools.vitruv.dsls.reactions.codegen.changetyperepresentation.ChangeSequenceRepresentation
-import tools.vitruv.dsls.common.helper.ClassNameGenerator
+import tools.vitruv.dsls.common.ClassNameGenerator
 import static extension tools.vitruv.dsls.reactions.codegen.helper.ReactionsLanguageHelper.*
 
 class ReactionClassGenerator extends ClassGenerator {

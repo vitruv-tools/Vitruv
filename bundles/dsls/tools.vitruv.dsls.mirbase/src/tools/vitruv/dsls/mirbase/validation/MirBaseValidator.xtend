@@ -3,88 +3,32 @@
  */
 package tools.vitruv.dsls.mirbase.validation
 
-import tools.vitruv.dsls.mirbase.mirBase.MirBaseFile
 import tools.vitruv.dsls.mirbase.mirBase.MirBasePackage
-import tools.vitruv.framework.util.bridges.EclipseBridge
 import org.eclipse.xtext.validation.Check
 
-import static tools.vitruv.dsls.mirbase.validation.EclipsePluginHelper.*
 import tools.vitruv.dsls.mirbase.mirBase.DomainReference
 import tools.vitruv.framework.domains.VitruvDomainProviderRegistry
-import org.eclipse.core.runtime.Platform
 
 /**
  * This class contains custom validation rules. 
- *
+ * 
  * See https://www.eclipse.org/Xtext/documentation/303_runtime_concepts.html#validation
  */
 class MirBaseValidator extends AbstractMirBaseValidator {
-	public static val DOMAIN_IMPORT_DEPENDENCY_MISSING = "domainImportDependencyMissing"
-	public static val VITRUVIUS_DEPENDENCY_MISSING = "vitruviusDependencyMissing"
+	@Check
+	def checkDomainReference(DomainReference domainReference) {
+		if (!domainReference.isValid) {
+			val domainNames = VitruvDomainProviderRegistry.allDomainProviders.map[domain.name]
+			error(
+				'''No domain with the specified name found. Available domains are : «FOR domainName : domainNames SEPARATOR ", "»«domainName»«ENDFOR»''',
+				domainReference,
+				MirBasePackage.Literals.DOMAIN_REFERENCE__DOMAIN
+			)
+		}
+	}
 
-	@Check
-	def checkDomainDependency(DomainReference domainReference) {
-		if (!Platform.isRunning()) {
-			return;
-		}
-		
-		if (!isValidDomainReference(domainReference)) {
-			return;
-		}
-		val domainProvider = VitruvDomainProviderRegistry.getDomainProvider(domainReference.domain);
-		val contributorName = EclipseBridge.getNameOfContributorOfExtension(
-					VitruvDomainProviderRegistry.EXTENSION_POINT_ID,
-					"class", domainProvider.class.name);
-		val project = getProject(domainReference.eResource)
-		if (!hasDependency(project, contributorName)) {
-			warning('''Dependency to plug-in '«contributorName»' missing.''', domainReference, MirBasePackage.Literals.DOMAIN_REFERENCE__DOMAIN, DOMAIN_IMPORT_DEPENDENCY_MISSING)
-		}
-	}
-	
-	@Check
-	def checkMirBaseFile(MirBaseFile mirBaseFile) {
-		if (!Platform.isRunning()) {
-			return;
-		}
-		val project = getProject(mirBaseFile?.eResource)
-		
-		if (!isPluginProject(project)) {
-			warning('''The resource should be contained in a plug-in project.''', mirBaseFile, null)
-		}
-	}
-	
-	@Check
-	def checkVitruviusDependencies(MirBaseFile mirBaseFile) {
-		if (!Platform.isRunning()) {
-			return;
-		}
-		
-		val project = getProject(mirBaseFile.eResource)
-		
-		for (String dependency : dependencies) {
-			if (!hasDependency(project, dependency)) {
-				warning('''Plug-in does not declare all needed dependencies for Vitruvius (missing: «dependency»).''', mirBaseFile, null, VITRUVIUS_DEPENDENCY_MISSING)
-				return
-			}
-		}
-	}
-	
-	protected def Iterable<String> getDependencies() {
-		return #[];
-	}
-	
-	@Check
-	def checkDomainRefrence(DomainReference domainReference) {
-		val domainNames = VitruvDomainProviderRegistry.allDomainProviders.map[domain.name].toList;
-	    if (!isValidDomainReference(domainReference)) {
-	    	error('''No domain with the specified name found. Available domains are : «FOR domainName : domainNames SEPARATOR ", "»«domainName»«ENDFOR»''', domainReference,
-	    		MirBasePackage.Literals.DOMAIN_REFERENCE__DOMAIN
-	    	);
-	    }
-	}
-	
-	private def boolean isValidDomainReference(DomainReference domainReference) {
-		val domainNames = VitruvDomainProviderRegistry.allDomainProviders.map[domain.name].toList;
-	    return domainNames.contains(domainReference.domain);
+	def static boolean isValid(DomainReference domainReference) {
+		val domainNames = VitruvDomainProviderRegistry.allDomainProviders.map[domain.name].toList
+		return domainNames.contains(domainReference.domain)
 	}
 }
