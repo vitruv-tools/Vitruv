@@ -34,7 +34,7 @@ class VitruvInstanceCreator {
 		for (project : projectToDomains.keySet) {
 			for (domain : projectToDomains.get(project)) {
 				try {
-					domain.builderApplicator.addToProject(project, virtualModel.folder, domain.fileExtensions.toList)
+					domain.builderApplicator.addBuilder(project, virtualModel.folder, domain.fileExtensions.toSet)
 					buildIncrementally(project, domain.builderApplicator.builderId)
 					return true
 				} catch (IllegalStateException e) {
