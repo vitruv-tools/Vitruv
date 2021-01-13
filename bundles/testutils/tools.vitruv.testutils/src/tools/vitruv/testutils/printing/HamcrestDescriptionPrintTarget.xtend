@@ -84,11 +84,6 @@ class HamcrestDescriptionPrintTarget implements PrintTarget, SelfDescribing {
 		]
 	}
 
-	override printValue(Object object) {
-		description.appendValue(object)
-		return PRINTED
-	}
-
 	override toString() {
 		description.toString()
 	}

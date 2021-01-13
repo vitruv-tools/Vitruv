@@ -32,11 +32,11 @@ import static com.google.common.base.Preconditions.*
  * <ol>
  * <li>Building phase. The user is using the offered methods to create the
  * desired elements. They must leave all builders in a sufficiently initialized
- * state (such that {@link #readyToBeAttached} is {@code true}.
+ * state (such that {@link #readyToBeAttached} is {@code true}).
  * <li>Attachment preparation phase. Just before the builder is to be attached
  * to a resource, this phase is triggered. The user may not modify builders
  * anymore and the builders do outstanding initializations (which can now rely
- * on the fact that things will not be changed by the user anymore).
+ * on the fact that nothing will be changed by the user anymore).
  * <li>Jvm Types Linking phase. After the builders have been attached to a 
  * resource, generated JVM types will be available. The builders now use them
  * to create the missing elements. Building is finished afterwards.
@@ -74,6 +74,15 @@ abstract package class FluentReactionElementBuilder {
 
 	protected new(FluentBuilderContext context) {
 		this.context = context
+	}
+	
+	/**
+	 * Determines whether building this builder in its current state will 
+	 * generate code. If this method returns {@code false}, there is no 
+	 * use in building this builder, and doing so might throw an exception.
+	 */
+	def boolean willGenerateCode() {
+		childBuilders.exists[willGenerateCode]
 	}
 
 	def package void triggerBeforeAttached(ReactionsFile reactionsFile, Resource targetResource) {
@@ -122,7 +131,7 @@ abstract package class FluentReactionElementBuilder {
 		afterJvmTypeCreation.add([initializer.accept(element)])
 		element
 	}
-
+	
 	def protected delegateTypeProvider() {
 		context.typeProviderFactory.findOrCreateTypeProvider(attachedReactionsFile.eResource.resourceSet)
 	}

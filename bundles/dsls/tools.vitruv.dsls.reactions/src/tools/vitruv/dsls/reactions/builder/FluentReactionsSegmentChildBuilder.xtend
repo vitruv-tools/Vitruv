@@ -18,6 +18,10 @@ abstract package class FluentReactionsSegmentChildBuilder extends FluentReaction
 		super(context)
 	}
 
+	override willGenerateCode() {
+		true
+	}
+
 	def protected void transferReactionsSegmentTo(FluentReactionsSegmentChildBuilder infector,
 		FluentReactionsSegmentChildBuilder infected) {
 		infector.beforeAttached[infect(infected)]
@@ -48,8 +52,7 @@ abstract package class FluentReactionsSegmentChildBuilder extends FluentReaction
 		val parameter = method.parameters.findFirst[name == parameterName]
 		if (parameter === null) {
 			// most likely an error by the client
-			throw new IllegalStateException('''Could not find the variable or parameter “«parameterName»” in the «
-				createdElementType» “«createdElementName»”.''')
+			throw new IllegalStateException('''Could not find the variable or parameter “«parameterName»” in the «createdElementType» “«createdElementName»”.''')
 		}
 		return parameter
 	}
@@ -60,8 +63,7 @@ abstract package class FluentReactionsSegmentChildBuilder extends FluentReaction
 		if (method instanceof JvmOperation) {
 			return method
 		}
-		throw new IllegalStateException('''Could not find the method corresponding to “«correpondingExpression
-			»” in the «createdElementType» “«createdElementName»”''')
+		throw new IllegalStateException('''Could not find the method corresponding to “«correpondingExpression»” in the «createdElementType» “«createdElementName»”''')
 	}
 
 	def protected static extractExpressions(XExpression expression) {
