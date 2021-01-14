@@ -93,7 +93,7 @@ final class ModelPrinting {
 	}
 
 	/**
-	 * Makes model printing use the printer provided by {@code printerProvider}.
+	 * Makes model printing use the printer provided by {@code printerProvider}. Replaces the current printer.
 	 * 
 	 * @param printerProvider function that will receive the current model printer and returns the new printer to use.
 	 * @return A closeable that, when closed, will revert the printer change. 
@@ -102,6 +102,17 @@ final class ModelPrinting {
 		val oldPrinter = ModelPrinting.printer
 		ModelPrinting.printer = printerProvider.apply(oldPrinter)
 		return [ModelPrinting.printer = oldPrinter]
+	}
+	
+	/**
+	 * Makes model printing use the provided printers. Installs a printer that will try the provided printers one after
+	 * the other until a responsible printer is found, and fall back to the currently installed printer none of the
+	 * provided printers are responsible.
+	 * 
+	 * @return A closeable that, when closed, will revert the printer change. 
+	 */
+	def static AutoCloseable prepend(ModelPrinter... printers) {
+		use[currentPrinter|new CombinedModelPrinter(printers, currentPrinter)]
 	}
 
 	def private static Description applyAsPrintTarget(Description description, (PrintTarget)=>PrintResult block) {
