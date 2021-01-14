@@ -48,9 +48,11 @@ import java.util.Collection
 import java.util.function.Predicate
 import static com.google.common.base.Preconditions.checkState
 import static tools.vitruv.testutils.printing.PrintResult.NOT_RESPONSIBLE
-import org.eclipse.emf.compare.CompareFactory
 import edu.kit.ipd.sdq.activextendannotations.CloseResource
 import edu.kit.ipd.sdq.activextendannotations.Lazy
+import org.eclipse.emf.ecore.util.EcoreUtil
+
+import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
 
 @FinalFieldsConstructor
 package class ModelDeepEqualityMatcher extends TypeSafeMatcher<EObject> {
@@ -125,9 +127,9 @@ package class ModelDeepEqualityMatcher extends TypeSafeMatcher<EObject> {
 			}
 			postProcessorRegistry = appropriatePostProcessorRegistry => [
 				put(
-					RepairWrongUnmatches.name,
+					RepairWrongMatches.name,
 					new BasicPostProcessorDescriptorImpl(
-						new RepairWrongUnmatches(item, expectedObject, emfCompareFeatureFilter),
+						new RepairWrongMatches(item, expectedObject, emfCompareFeatureFilter),
 						Pattern.compile('.*'), null)
 				)
 			]
@@ -148,17 +150,25 @@ package class ModelDeepEqualityMatcher extends TypeSafeMatcher<EObject> {
 			new PostProcessorDescriptorRegistryImpl
 	}
 
-	/* Differences become difficult to read if EMF Compare does to match objects together. If the objects are the two
+	/* 
+	 * Fixes all the quicks of EMF Compare’s matching algorithm that stem from a combination of a bad implementation on
+	 * EMF Compare’s behalf and the fact that EMF Compare was written with another intention (visualizing changes).
+	 * Differences become difficult to read if EMF Compare does to match objects together. If the objects are the two
 	 * root objects, some differences can even not be recovered. Furthermore, matching does *not* consider the ignored
-	 * features, which can lead to wrong results (two objects might not get matched because they differ only in an
-	 * ignored feature or reference. The assertion will then fail, even though it shouldn’t). Hence, we repair any 
-	 * missing match by matching it with its topological partner, if they are equal ignoring the references.
+	 * features, which can lead to wrong results:
+	 *   * Two objects might not get matched because they differ only in an ignored feature or reference.
+	 *   * Objects that can only be navigated via an ignored reference should not be compared at all, however, EMF 
+	 *     Compare considers them.
+	 * This assertion will fail in those cases will then even though it shouldn’t.
+	 * Hence, we repair any missing match by matching it with its topological partner, if the partners are equal 
+	 * ignoring the ignored features. Furthermore, we remove all matches for objects that cannot be navigated to.
 	 */
 	@FinalFieldsConstructor
-	private static class RepairWrongUnmatches implements IPostProcessor {
+	private static class RepairWrongMatches implements IPostProcessor {
 		val EObject leftRoot
 		val EObject rightRoot
 		val FeatureFilter featureFilter
+		val Set<EObject> navigable = new HashSet()
 		val Set<EObject> checked = new HashSet()
 		val HashMap<Pair<EObject, EObject>, Boolean> matchCache = new HashMap()
 
@@ -173,6 +183,9 @@ package class ModelDeepEqualityMatcher extends TypeSafeMatcher<EObject> {
 		override postMatch(Comparison comparison, Monitor monitor) {
 			ensureMatched(comparison, leftRoot, rightRoot)
 			checkMatches(comparison, leftRoot, rightRoot)
+			collectNavigableObjects(comparison, leftRoot)
+			collectNavigableObjects(comparison, rightRoot)
+			removeNotNavigableMatches(comparison)
 		}
 
 		def private ensureMatched(Comparison comparison, EObject left, EObject right) {
@@ -195,10 +208,46 @@ package class ModelDeepEqualityMatcher extends TypeSafeMatcher<EObject> {
 				leftMatch.right === null,
 				'''«left» should be matched with «right», but is already matched with «leftMatch.right»!'''
 			)
-			(leftMatch.eContainer as Match).submatches -= leftMatch
-			comparison.matches -= leftMatch
+			rightMatch.submatches += leftMatch.submatches
+			EcoreUtil.delete(leftMatch)
 			rightMatch.left = left
 			return rightMatch
+		}
+
+		// this is rather expensive because of the comparison.getMatch calls. However, we cannot merge this with 
+		// iterateReferenceMatches because iterateReferenceMatches may not visit all objects.
+		def private void collectNavigableObjects(Comparison comparison, EObject object) {
+			if (object !== null && !navigable.contains(object)) {
+				navigable += object
+				val match = comparison.getMatch(object)
+				featureFilter.getReferencesToCheck(match).forEach [ reference |
+					if (reference.isMany) {
+						(object.eGet(reference) as Collection<? extends EObject>).forEach [ referenced |
+							collectNavigableObjects(comparison, referenced)
+						]
+					} else {
+						collectNavigableObjects(comparison, object.eGet(reference) as EObject)
+					}
+				]
+			}
+		}
+
+		def private void removeNotNavigableMatches(Comparison comparison) {
+			comparison.matches.flatMapFixed[allMatches].forEach [ match |
+				if ((match.left === null || !navigable.contains(match.left)) &&
+					(match.right === null || !navigable.contains(match.right))) {
+						val matchContainer = match.eContainer
+						switch(matchContainer) {
+							Match: matchContainer.submatches += match.submatches
+							default: comparison.matches += match.submatches
+						}
+						EcoreUtil.delete(match)
+				}
+			]
+		}
+
+		def private Iterable<Match> getAllMatches(Match match) {
+			match.submatches + match.submatches.flatMap[allMatches]
 		}
 
 		def private void checkMatches(Comparison comparison, EObject left, EObject right) {
