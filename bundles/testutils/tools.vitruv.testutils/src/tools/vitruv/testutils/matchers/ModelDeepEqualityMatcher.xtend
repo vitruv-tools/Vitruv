@@ -105,11 +105,11 @@ package class ModelDeepEqualityMatcher extends TypeSafeMatcher<EObject> {
 		Description mismatchDescription) {
 		comparison.getMatch(expectedObject)
 		mismatchDescription.appendText('found the following differences: ')
-		
+
 		idProvider.reprintAlreadyPrintedObjects()
 		new ComparisonPrinter(idProvider, comparison, emfCompareFeatureFilter, ModelPrinting.printer) //
 		.printDifferenceRecursively(new HamcrestDescriptionPrintTarget(mismatchDescription), expectedObject)
-		
+
 		idProvider.reprintAlreadyPrintedObjects()
 		mismatchDescription.appendText('    for object ').appendModelValue(item, idProvider)
 		if (!featureFilters.isEmpty) {
@@ -165,8 +165,8 @@ package class ModelDeepEqualityMatcher extends TypeSafeMatcher<EObject> {
 	 *   * Objects that can only be navigated via an ignored reference should not be compared at all, however, EMF 
 	 *     Compare considers them.
 	 * This assertion will fail in those cases will then even though it shouldn’t.
-	 * Hence, we repair any missing match by matching it with its topological partner, if the partners are equal 
-	 * ignoring the ignored features. Furthermore, we remove all matches for objects that cannot be navigated to.
+	 * Hence, we repair any missing match by matching it with its topological partner. Furthermore, we remove all 
+	 * matches for objects that cannot be navigated to.
 	 */
 	@FinalFieldsConstructor
 	private static class RepairWrongMatches implements IPostProcessor {
@@ -256,14 +256,16 @@ package class ModelDeepEqualityMatcher extends TypeSafeMatcher<EObject> {
 		}
 
 		def private void checkMatches(Comparison comparison, EObject left, EObject right) {
+			// if we match values that should not be matched, the error messages will be harder to read.
+			// if do not match values that should be matched, the result can be wrong.
+			// hence, it is better to match too much than not enough
 			if (left === null || right === null || (checked.contains(left) && checked.contains(right))) return;
 			checked += left
 			checked += right
 
 			var leftMatch = comparison.getMatch(left)
 			var rightMatch = comparison.getMatch(right)
-			if (leftMatch.right === null && rightMatch.left === null &&
-				shouldBeMatched(comparison, left, right, rightMatch)) {
+			if (leftMatch.right === null && rightMatch.left === null) {
 				leftMatch = combineMatches(comparison, left, right, leftMatch, rightMatch)
 				rightMatch = leftMatch
 			}
@@ -288,11 +290,13 @@ package class ModelDeepEqualityMatcher extends TypeSafeMatcher<EObject> {
 								}
 							}
 						} else {
+							// tricky, because we can’t use topology here. Hence: leave everything that already has
+							// a match, and try to find matches that definitely belong together.
 							val leftToMatch = new HashSet(rightItems)
 							for (rightItem : rightItems) {
 								val rightItemMatch = comparison.getMatch(rightItem)
 								val leftCandidate = rightItemMatch.left ?: leftToMatch.findFirst [
-									shouldBeMatched(comparison, it, rightItem, rightItemMatch)
+									shouldDefinitelyBeMatched(comparison, it, rightItem, rightItemMatch)
 								]
 								if (leftCandidate !== null) {
 									leftToMatch -= leftCandidate
@@ -306,13 +310,10 @@ package class ModelDeepEqualityMatcher extends TypeSafeMatcher<EObject> {
 		}
 
 		def private boolean shouldBeMatched(Comparison comparison, EObject left, EObject right) {
-			shouldBeMatched(comparison, left, right, comparison.getMatch(right))
+			shouldDefinitelyBeMatched(comparison, left, right, comparison.getMatch(right))
 		}
 
-		def private boolean shouldBeMatched(Comparison comparison, EObject left, EObject right, Match rightMatch) {
-			// if we match values that should not be matched, the error messages will be harder to read.
-			// if do not match values that should be matched, the result can be wrong.
-			// hence, it is better to match too much than not enough
+		def private boolean shouldDefinitelyBeMatched(Comparison comparison, EObject left, EObject right, Match rightMatch) {
 			val pair = left -> right
 			matchCache.get(pair) ?: {
 				val quickResult = (left.eClass == right.eClass) && featureFilter.getAttributesToCheck(rightMatch).all [ attribute |
@@ -408,7 +409,7 @@ package class ModelDeepEqualityMatcher extends TypeSafeMatcher<EObject> {
 			]
 			delegate.ifAlreadyPrintedElse(object, printFunction, printFunction)
 		}
-		
+
 		def reprintAlreadyPrintedObjects() {
 			alreadyPrinted.clear()
 		}
@@ -462,7 +463,7 @@ package class ModelDeepEqualityMatcher extends TypeSafeMatcher<EObject> {
 
 		def private PrintResult printFeatureDifference(extension PrintTarget target, EStructuralFeature feature,
 			String context, Diff difference, Object value) {
-			print(context) + print('.') + print(feature.name) + print(' ') + print(difference.kind.verb) + print(' ') //
+			print(context) + print('.') + print(feature.name) + print(' ') + print(difference.kind.verb) + print(': ') //
 			+ printValue(value)[subTarget, theValue|printObject(subTarget, idProvider, theValue)]
 		}
 
