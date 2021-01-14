@@ -46,12 +46,13 @@ import java.util.HashMap
 import java.util.Collection
 import java.util.function.Predicate
 import static com.google.common.base.Preconditions.checkState
-import static tools.vitruv.testutils.printing.PrintResult.NOT_RESPONSIBLE
+import static tools.vitruv.testutils.printing.PrintResult.*
 import edu.kit.ipd.sdq.activextendannotations.CloseResource
 import org.eclipse.emf.ecore.util.EcoreUtil
 
 import tools.vitruv.testutils.printing.DefaultPrintIdProvider
 import tools.vitruv.testutils.printing.PrintIdProvider
+import org.eclipse.emf.ecore.EReference
 
 package class ModelDeepEqualityMatcher extends TypeSafeMatcher<EObject> {
 	val EObject expectedObject
@@ -148,7 +149,7 @@ package class ModelDeepEqualityMatcher extends TypeSafeMatcher<EObject> {
 	@FinalFieldsConstructor
 	private static class EmfCompareEqualityFeatureFilter extends FeatureFilter {
 		val List<? extends EqualityFeatureFilter> featureFilters
-		
+
 		override getAttributesToCheck(Match match) {
 			filter(match, super.getAttributesToCheck(match))
 		}
@@ -415,33 +416,37 @@ package class ModelDeepEqualityMatcher extends TypeSafeMatcher<EObject> {
 		val Comparison comparison
 		val FeatureFilter featureFilter
 		extension val ModelPrinter modelPrinter
-		val Set<EObject> seen = new HashSet
+		val Set<Match> seen = new HashSet
 
-		def private PrintResult printDifferenceRecursively(extension PrintTarget target, EObject object) {
-			printIterableElements(getDifferencesWithContext("", object), MULTI_LINE) [ subTarget, difference |
+		def private PrintResult printDifferenceRecursively(extension PrintTarget target, EObject root) {
+			printIterableElements(getDifferencesWithContext("", root), MULTI_LINE) [ subTarget, difference |
 				subTarget.printDifference(difference.key, difference.value)
 			]
 		}
 
 		def private Iterable<Pair<String, Diff>> getDifferencesWithContext(String context, EObject object) {
-			if (object === null || seen.contains(object)) return emptyList()
-			seen += object
-
+			if (object === null) return emptyList()
 			val thisMatch = comparison.getMatch(object)
-			if (thisMatch === null) return emptyList()
+			if (thisMatch === null || seen.contains(thisMatch)) return emptyList()
+			seen += thisMatch
 
 			thisMatch.differences.map[difference|context -> difference] //
 			+ featureFilter.getReferencesToCheck(thisMatch).toIterable.flatMap [ reference |
-				val referenceContext = context + '.' + reference.name
-				if (reference.isMany) {
-					(object.eGet(reference) as Iterable<? extends EObject>).indexed.flatMap [ el |
-						val elementIndicator = if (reference.isOrdered) '''[«el.key»]''' else '''{«el.key»}'''
-						getDifferencesWithContext(referenceContext + elementIndicator, el.value)
-					]
-				} else {
-					getDifferencesWithContext(referenceContext, object.eGet(reference) as EObject)
-				}
+				(thisMatch.left?.getReferenceDifferencesWithContext(context, reference) ?: emptyList()) +
+					(thisMatch.right?.getReferenceDifferencesWithContext(context, reference) ?: emptyList())
 			]
+		}
+
+		def private getReferenceDifferencesWithContext(EObject object, String context, EReference reference) {
+			val referenceContext = context + '.' + reference.name
+			if (reference.isMany) {
+				(object.eGet(reference) as Iterable<? extends EObject>).indexed.flatMap [ el |
+					val elementIndicator = if (reference.isOrdered) '''[«el.key»]''' else '''{«el.key»}'''
+					getDifferencesWithContext(referenceContext + elementIndicator, el.value)
+				]
+			} else {
+				getDifferencesWithContext(referenceContext, object.eGet(reference) as EObject)
+			}
 		}
 
 		def private PrintResult printDifference(extension PrintTarget target, String context, Diff difference) {
@@ -457,8 +462,12 @@ package class ModelDeepEqualityMatcher extends TypeSafeMatcher<EObject> {
 
 		def private PrintResult printFeatureDifference(extension PrintTarget target, EStructuralFeature feature,
 			String context, Diff difference, Object value) {
-			print(context) + print(' (') + idProvider.printWithId(difference.match.left)[_, id|print(id)] + print(').') //
-			+ print(feature.name) + print(' ') + print(difference.kind.verb) + print(': ') //
+			print(context) //
+			+ (if (difference.match.left !== null) {
+				print(' (') + idProvider.printWithId(difference.match.left)[_, id|print(id)] + print(')')
+			} else {
+				PRINTED_NO_OUTPUT
+			}) + print('.') + print(feature.name) + print(' ') + print(difference.kind.verb) + print(': ') //
 			+ printValue(value)[subTarget, theValue|printObject(subTarget, idProvider, theValue)]
 		}
 
