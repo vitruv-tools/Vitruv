@@ -89,8 +89,6 @@ class DefaultModelPrinter implements ModelPrinter {
 			} else {
 				subPrinter.printFeatureValueSet(target, idProvider, feature, object.eGet(feature) as Collection<?>)
 			}
-		} else if (!object.eIsSet(feature)) {
-			print('\u2205' /* empty set */ )
 		} else {
 			subPrinter.printFeatureValue(target, idProvider, feature, object.eGet(feature))
 		}
@@ -181,7 +179,7 @@ class DefaultModelPrinter implements ModelPrinter {
 	 */
 	def protected <T extends EObject> printObjectWithContent(PrintTarget target, PrintIdProvider idProvider, T object,
 		(PrintTarget)=>PrintResult contentPrinter) {
-		idProvider.ifAlreadyHasIdElse(object, [target.printAlreadyPrinted(it)]) [ objectId |
+		idProvider.ifAlreadyPrintedElse(object, [target.printAlreadyPrinted(it)]) [ objectId |
 			target.print(objectId) + target.print('(') + contentPrinter.apply(target) + target.print(')')
 		]
 	}

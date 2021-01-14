@@ -69,27 +69,27 @@ final class ModelPrinting {
 	}
 
 	def static appendModelValue(Description description, Object object) {
-		appendModelValue(description, object, new PrintIdProvider)
+		appendModelValue(description, object, new DefaultPrintIdProvider)
 	}
 
 	def static appendModelValueList(Description description, List<?> objects, PrintMode mode) {
-		appendModelValueList(description, objects, mode, new PrintIdProvider)
+		appendModelValueList(description, objects, mode, new DefaultPrintIdProvider)
 	}
 
 	def static appendModelValueSet(Description description, Set<?> objects, PrintMode mode) {
-		appendModelValueSet(description, objects, mode, new PrintIdProvider)
+		appendModelValueSet(description, objects, mode, new DefaultPrintIdProvider)
 	}
 
 	def static appendShortenedModelValue(Description description, Object object) {
-		appendShortenedModelValue(description, object, new PrintIdProvider)
+		appendShortenedModelValue(description, object, new DefaultPrintIdProvider)
 	}
 
 	def static appendShortenedModelValueList(Description description, List<?> objects, PrintMode mode) {
-		appendShortenedModelValueList(description, objects, mode, new PrintIdProvider)
+		appendShortenedModelValueList(description, objects, mode, new DefaultPrintIdProvider)
 	}
 
 	def static appendShortenedModelValueSet(Description description, Set<?> objects, PrintMode mode) {
-		appendShortenedModelValueSet(description, objects, mode, new PrintIdProvider)
+		appendShortenedModelValueSet(description, objects, mode, new DefaultPrintIdProvider)
 	}
 
 	/**
