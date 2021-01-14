@@ -48,38 +48,27 @@ import java.util.function.Predicate
 import static com.google.common.base.Preconditions.checkState
 import static tools.vitruv.testutils.printing.PrintResult.NOT_RESPONSIBLE
 import edu.kit.ipd.sdq.activextendannotations.CloseResource
-import edu.kit.ipd.sdq.activextendannotations.Lazy
 import org.eclipse.emf.ecore.util.EcoreUtil
 
 import tools.vitruv.testutils.printing.DefaultPrintIdProvider
 import tools.vitruv.testutils.printing.PrintIdProvider
 
-@FinalFieldsConstructor
 package class ModelDeepEqualityMatcher extends TypeSafeMatcher<EObject> {
-	package val EObject expectedObject
-	val List<EqualityFeatureFilter> featureFilters
-	var Comparison comparison
+	val EObject expectedObject
+	val List<? extends EqualityFeatureFilter> featureFilters
 	val idProvider = new ComparisonAwarePrintIdProvider
-	@Lazy val ModelPrinter descriptionPrinter = new IgnoredFeaturesPrinter(featureFilters)
-	val emfCompareFeatureFilter = new FeatureFilter() {
-		override getAttributesToCheck(Match match) {
-			filter(match, super.getAttributesToCheck(match))
-		}
+	val ModelPrinter descriptionPrinter
+	val FeatureFilter emfCompareFeatureFilter
+	var Comparison comparison
 
-		override getReferencesToCheck(Match match) {
-			filter(match, super.getReferencesToCheck(match))
-		}
-
-		private def <T extends EStructuralFeature> filter(Match match, Iterator<T> iterator) {
-			if (featureFilters.isEmpty)
-				iterator
-			else {
-				val object = match.right ?: match.left
-				iterator.toIterable.filter [ feature |
-					!featureFilters.exists[!includeFeature(object, feature)]
-				].iterator()
-			}
-		}
+	package new(EObject expectedEObject, List<? extends EqualityFeatureFilter> featureFilters) {
+		this.expectedObject = expectedEObject
+		this.featureFilters = featureFilters
+		descriptionPrinter = new IgnoredFeaturesPrinter(featureFilters)
+		emfCompareFeatureFilter = if (featureFilters.isEmpty)
+			new FeatureFilter()
+		else
+			new EmfCompareEqualityFeatureFilter(featureFilters)
 	}
 
 	override matchesSafely(EObject item) {
@@ -156,8 +145,28 @@ package class ModelDeepEqualityMatcher extends TypeSafeMatcher<EObject> {
 			new PostProcessorDescriptorRegistryImpl
 	}
 
+	@FinalFieldsConstructor
+	private static class EmfCompareEqualityFeatureFilter extends FeatureFilter {
+		val List<? extends EqualityFeatureFilter> featureFilters
+		
+		override getAttributesToCheck(Match match) {
+			filter(match, super.getAttributesToCheck(match))
+		}
+
+		override getReferencesToCheck(Match match) {
+			filter(match, super.getReferencesToCheck(match))
+		}
+
+		private def <T extends EStructuralFeature> filter(Match match, Iterator<T> iterator) {
+			val object = match.right ?: match.left
+			iterator.filter [ feature |
+				featureFilters.all[includeFeature(object, feature)]
+			]
+		}
+	}
+
 	/* 
-	 * Fixes all the quicks of EMF Compare’s matching algorithm that stem from a combination of a bad implementation on
+	 * Fixes all the quirks of EMF Compare’s matching algorithm that stem from a combination of a bad implementation on
 	 * EMF Compare’s behalf and the fact that EMF Compare was written with another intention (visualizing changes).
 	 * Differences become difficult to read if EMF Compare does to match objects together. If the objects are the two
 	 * root objects, some differences can even not be recovered. Furthermore, matching does *not* consider the ignored
@@ -351,28 +360,11 @@ package class ModelDeepEqualityMatcher extends TypeSafeMatcher<EObject> {
 		}
 
 		override postRequirements(Comparison comparison, Monitor monitor) {}
-
-		def private static <T> boolean all(Iterator<? extends T> elements, Predicate<T> predicate) {
-			!elements.exists(predicate.negate())
-		}
-
-		def private static <T> boolean all(Iterable<? extends T> elements, Predicate<T> predicate) {
-			!elements.exists(predicate.negate())
-		}
-
-		def private static <T> boolean allIndexed(Collection<? extends T> elements, (T, Integer)=>Boolean predicate) {
-			for (var i = 0; i < elements.size; i++) {
-				if (!predicate.apply(elements.get(i), i)) {
-					return false
-				}
-			}
-			return true
-		}
 	}
 
 	@FinalFieldsConstructor
 	private static class IgnoredFeaturesPrinter implements ModelPrinter {
-		val List<EqualityFeatureFilter> featureFilters
+		val List<? extends EqualityFeatureFilter> featureFilters
 
 		override withSubPrinter(ModelPrinter subPrinter) {
 			this
@@ -486,5 +478,22 @@ package class ModelDeepEqualityMatcher extends TypeSafeMatcher<EObject> {
 
 	def private static Iterable<Match> getAllMatches(Comparison comparison) {
 		comparison.matches + comparison.matches.flatMap[allMatches]
+	}
+
+	def private static <T> boolean all(Iterator<? extends T> elements, Predicate<T> predicate) {
+		!elements.exists(predicate.negate())
+	}
+
+	def private static <T> boolean all(Iterable<? extends T> elements, Predicate<T> predicate) {
+		!elements.exists(predicate.negate())
+	}
+
+	def private static <T> boolean allIndexed(Collection<? extends T> elements, (T, Integer)=>Boolean predicate) {
+		for (var i = 0; i < elements.size; i++) {
+			if (!predicate.apply(elements.get(i), i)) {
+				return false
+			}
+		}
+		return true
 	}
 }
