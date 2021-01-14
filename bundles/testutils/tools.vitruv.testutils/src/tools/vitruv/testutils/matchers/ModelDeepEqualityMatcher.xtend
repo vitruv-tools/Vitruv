@@ -25,7 +25,6 @@ import org.eclipse.xtend.lib.annotations.FinalFieldsConstructor
 import org.hamcrest.Description
 import org.hamcrest.TypeSafeMatcher
 import tools.vitruv.testutils.printing.HamcrestDescriptionPrintTarget
-import tools.vitruv.testutils.printing.PrintIdProvider
 import tools.vitruv.testutils.printing.PrintResult
 import tools.vitruv.testutils.printing.PrintTarget
 
@@ -53,13 +52,15 @@ import edu.kit.ipd.sdq.activextendannotations.Lazy
 import org.eclipse.emf.ecore.util.EcoreUtil
 
 import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
+import tools.vitruv.testutils.printing.DefaultPrintIdProvider
+import tools.vitruv.testutils.printing.PrintIdProvider
 
 @FinalFieldsConstructor
 package class ModelDeepEqualityMatcher extends TypeSafeMatcher<EObject> {
 	package val EObject expectedObject
 	val List<EqualityFeatureFilter> featureFilters
 	var Comparison comparison
-	val idProvider = new PrintIdProvider
+	val idProvider = new RePrintingPrintIdProvider
 	@Lazy val ModelPrinter descriptionPrinter = new IgnoredFeaturesPrinter(featureFilters)
 	val emfCompareFeatureFilter = new FeatureFilter() {
 		override getAttributesToCheck(Match match) {
@@ -104,8 +105,12 @@ package class ModelDeepEqualityMatcher extends TypeSafeMatcher<EObject> {
 		Description mismatchDescription) {
 		comparison.getMatch(expectedObject)
 		mismatchDescription.appendText('found the following differences: ')
+		
+		idProvider.reprintAlreadyPrintedObjects()
 		new ComparisonPrinter(idProvider, comparison, emfCompareFeatureFilter, ModelPrinting.printer) //
 		.printDifferenceRecursively(new HamcrestDescriptionPrintTarget(mismatchDescription), expectedObject)
+		
+		idProvider.reprintAlreadyPrintedObjects()
 		mismatchDescription.appendText('    for object ').appendModelValue(item, idProvider)
 		if (!featureFilters.isEmpty) {
 			mismatchDescription.appendText(System.lineSeparator).appendText(System.lineSeparator) //
@@ -236,12 +241,12 @@ package class ModelDeepEqualityMatcher extends TypeSafeMatcher<EObject> {
 			comparison.matches.flatMapFixed[allMatches].forEach [ match |
 				if ((match.left === null || !navigable.contains(match.left)) &&
 					(match.right === null || !navigable.contains(match.right))) {
-						val matchContainer = match.eContainer
-						switch(matchContainer) {
-							Match: matchContainer.submatches += match.submatches
-							default: comparison.matches += match.submatches
-						}
-						EcoreUtil.delete(match)
+					val matchContainer = match.eContainer
+					switch (matchContainer) {
+						Match: matchContainer.submatches += match.submatches
+						default: comparison.matches += match.submatches
+					}
+					EcoreUtil.delete(match)
 				}
 			]
 		}
@@ -384,6 +389,28 @@ package class ModelDeepEqualityMatcher extends TypeSafeMatcher<EObject> {
 				print(feature.name) + print('=…')
 			} else
 				NOT_RESPONSIBLE
+		}
+	}
+
+	private static class RePrintingPrintIdProvider implements PrintIdProvider {
+		val delegate = new DefaultPrintIdProvider
+		val alreadyPrinted = new HashSet<EObject>()
+
+		override ifAlreadyPrintedElse(EObject object, (String)=>PrintResult existingPrinter,
+			(String)=>PrintResult newPrinter) {
+			val printFunction = [ String id |
+				if (alreadyPrinted.contains(object)) {
+					existingPrinter.apply(id)
+				} else {
+					alreadyPrinted += object
+					newPrinter.apply(id)
+				}
+			]
+			delegate.ifAlreadyPrintedElse(object, printFunction, printFunction)
+		}
+		
+		def reprintAlreadyPrintedObjects() {
+			alreadyPrinted.clear()
 		}
 	}
 
