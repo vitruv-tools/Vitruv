@@ -47,84 +47,44 @@ PackageLike:
 ;
 
 Participation:
-	'with' (SimpleParticipation | TupleParticipation)
-	('as' Aliasable)?
+	'with' (domainName=DomainName | '(' domainName=DomainName ('as' domainAlias=ValidID)? ')')
+	':' (parts += SimpleParticipationClass | '(' parts += ParticipationPart (',' parts+=ParticipationPart)* ')')
 	('whereat' '{'
-		(
-			conditions+=ParticipationCondition
-			(',' conditions+=ParticipationCondition)*
-		)?
+		(conditions+=ParticipationCondition (',' conditions+=ParticipationCondition)*)?
 	'}')?
-;
-
-SimpleParticipation:
-	participationClass=QualifiedParticipationClassDeclaration
-;
-
-TupleParticipation:
-	domainName=DomainName ':' '(' parts+=TupleParticipationPart (','
-	parts+=TupleParticipationPart)* ')'
-;
-
-TupleParticipationPart:
-	SimpleTupleParticipationPart | ParticipationRelation
-;
-
-SimpleTupleParticipationPart:
-	participationClass=UnqualifiedParticipationClassDeclaration
-;
-
-ParticipationRelation:
-	SimpleParticipationRelation | BracedParticipationRelation
-;
-
-SimpleParticipationRelation returns ParticipationRelation:
-	leftClasses+=UnqualifiedParticipationClassDeclaration operator=ParticipationRelationOperator
-	rightClasses+=UnqualifiedParticipationClassDeclaration
-;
-
-BracedParticipationRelation returns ParticipationRelation:
-	'(' leftClasses+=UnqualifiedParticipationClassDeclaration (',' leftClasses+=UnqualifiedParticipationClassDeclaration)*
-	operator=ParticipationRelationOperator
-	rightClasses+=UnqualifiedParticipationClassDeclaration (',' rightClasses+=UnqualifiedParticipationClassDeclaration)*
-	')'
-;
-
-ParticipationRelationOperator:
-	jvmType=[jvmTypes::JvmDeclaredType|OperatorName]
-;
-
-fragment Aliasable:
-	alias=STRING
 ;
 
 ClassLike:
 	ParticipationClass
 ;
 
-ParticipationClass:
-	QualifiedParticipationClassDeclaration | UnqualifiedParticipationClassDeclaration
+ParticipationClass: // never used as a parser rule, only establishes the inheritance hierarchy
+	->SimpleParticipationClass | FullParticipationClass
 ;
 
-QualifiedParticipationClassDeclaration returns ParticipationClass:
-	(singleton?='single')? superMetaclass=[Metaclass|QualifiedClass] ('called' Aliasable)?
+SimpleParticipationClass returns ParticipationClass:
+	superMetaclass=[Metaclass|UnqualifiedClass]
 ;
 
-UnqualifiedParticipationClassDeclaration returns ParticipationClass:
-	(singleton?='single')? superMetaclass=[Metaclass|UnqualifiedClass] ('called' Aliasable)?
+FullParticipationClass returns ParticipationClass: 
+	{ParticipationClass} (singleton?='single')? superMetaclass=[Metaclass|UnqualifiedClass] ('as' classAlias=ValidID)?
+;
+
+ParticipationPart:
+	FullParticipationClass | '(' FullParticipationClass ')' | ParticipationRelation
+;
+
+ParticipationRelation:
+	(leftParts += SimpleParticipationClass | '(' leftParts += ParticipationPart (',' leftParts+=ParticipationPart)* ')')
+	operator=[jvmTypes::JvmDeclaredType|OperatorName]
+	(rightParts += SimpleParticipationClass | '(' rightParts += ParticipationPart (',' rightParts+=ParticipationPart)* ')')
 ;
 
 ParticipationCondition:
 	({BidirectionalParticipationCondition} | '->' {EnforcedParticipationCondition} | '<-' {CheckedParticipationCondition})
-	leftOperand=ParticipationConditionLeftOperand operator=ParticipationConditionOperator
-	(
-		(rightOperands+=ParticipationConditionRightOperand)
-		| ('(' (rightOperands+=ParticipationConditionRightOperand (',' rightOperands+=ParticipationConditionRightOperand)*)? ')')
-	)?
-;
-
-ParticipationConditionOperator:
-	jvmType=[jvmTypes::JvmDeclaredType|OperatorName]
+	leftOperand=ParticipationConditionLeftOperand 
+	operator=[jvmTypes::JvmDeclaredType|OperatorName]
+	((rightOperands+=ParticipationConditionRightOperand) | ('(' (rightOperands+=ParticipationConditionRightOperand (',' rightOperands+=ParticipationConditionRightOperand)*)? ')'))?
 ;
 
 ParticipationConditionLeftOperand returns ParticipationConditionOperand:
@@ -142,7 +102,6 @@ ParticipationConditionOperand:
 /**************
  * Attributes *
  **************/
-
 Attribute:
 	CommonalityAttribute | ParticipationAttribute | CommonalityReference
 ;
@@ -158,13 +117,14 @@ CommonalityAttributeMapping:
 ;
 
 SimpleAttributeMapping:
-	(readAndWrite?='=' | write?='->'| read?='<-')
+	(readAndWrite?='=' | write?='->' | read?='<-')
 	attribute=QualifiedParticipationAttribute
 ;
 
 OperatorAttributeMapping:
-	(readAndWrite?='=' | write?='->'| read?='<-')
-	operator=AttributeMappingOperator '(' (operands+=AttributeMappingOperand (',' operands+=AttributeMappingOperand)*)? ')'
+	(readAndWrite?='=' | write?='->' | read?='<-')
+	operator=AttributeMappingOperator
+	'(' (operands+=AttributeMappingOperand (',' operands+=AttributeMappingOperand)*)? ')'
 ;
 
 AttributeMappingOperator:
@@ -172,7 +132,8 @@ AttributeMappingOperator:
 ;
 
 AttributeMappingOperand:
-	LocalUnqualifiedCommonalityAttributeOperand | QualifiedParticipationAttributeOperand | QualifiedParticipationClassOperand | LiteralOperand
+	LocalUnqualifiedCommonalityAttributeOperand | QualifiedParticipationAttributeOperand |
+	QualifiedParticipationClassOperand | LiteralOperand
 ;
 
 ParticipationAttribute:
@@ -211,14 +172,14 @@ CommonalityReferenceMapping:
 ;
 
 SimpleReferenceMapping:
-	(readAndWrite?='=' | write?='->'| read?='<-')
+	(readAndWrite?='=' | write?='->' | read?='<-')
 	reference=QualifiedParticipationAttribute
 	// TODO not used right now
 	('via' referenceTargets+=[ParticipationClass|QualifiedClass] (',' referenceTargets+=[ParticipationClass|QualifiedClass])*)?
 ;
 
 OperatorReferenceMapping:
-	(readAndWrite?='=' | write?='->'| read?='<-')
+	(readAndWrite?='=' | write?='->' | read?='<-')
 	participationClass=[ParticipationClass|QualifiedClass] '.' operator=ReferenceMappingOperator
 	'(' (operands+=ReferenceMappingOperand (',' operands+=ReferenceMappingOperand)*)? ')'
 ;

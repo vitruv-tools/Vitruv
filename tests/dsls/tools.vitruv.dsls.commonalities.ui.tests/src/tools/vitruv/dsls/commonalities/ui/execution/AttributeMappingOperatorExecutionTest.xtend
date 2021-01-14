@@ -19,7 +19,6 @@ class AttributeMappingOperatorExecutionTest extends CommonalitiesExecutionTest {
 			commonalities = #['Operators.commonality']
 			domainDependencies = #[
 				'tools.vitruv.testutils.domains',
-				'tools.vitruv.testutils.metamodels',
 				'tools.vitruv.dsls.commonalities.testutils'
 			]
 		]

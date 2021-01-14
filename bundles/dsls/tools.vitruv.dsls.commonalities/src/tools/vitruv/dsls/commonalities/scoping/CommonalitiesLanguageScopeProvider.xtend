@@ -16,7 +16,6 @@ import tools.vitruv.dsls.commonalities.language.Participation
 import tools.vitruv.dsls.commonalities.language.ParticipationAttribute
 import tools.vitruv.dsls.commonalities.language.ParticipationClass
 import tools.vitruv.dsls.commonalities.language.ParticipationClassOperand
-import tools.vitruv.dsls.commonalities.language.TupleParticipation
 import tools.vitruv.dsls.commonalities.names.IEObjectDescriptionProvider
 
 import static tools.vitruv.dsls.commonalities.language.LanguagePackage.Literals.*
@@ -73,7 +72,8 @@ class CommonalitiesLanguageScopeProvider extends AbstractCommonalitiesLanguageSc
 
 					val referenceMapping = context.optionalContainingOperatorReferenceMapping
 					if (referenceMapping !== null) {
-						val referencedAttributeOperand = context.optionalContainingReferencedParticipationAttributeOperand
+						val referencedAttributeOperand = context.
+							optionalContainingReferencedParticipationAttributeOperand
 						if (referencedAttributeOperand !== null) {
 							val participation = referenceMapping.referencedParticipation
 							return participation.unqualifiedParticipationClassScope
@@ -84,7 +84,7 @@ class CommonalitiesLanguageScopeProvider extends AbstractCommonalitiesLanguageSc
 							val participation = referenceMapping.participation
 							return participation.unqualifiedParticipationClassScope
 						}
-						// Else: Qualified participation class.
+					// Else: Qualified participation class.
 					}
 
 					val commonality = context.containingCommonality
@@ -98,20 +98,11 @@ class CommonalitiesLanguageScopeProvider extends AbstractCommonalitiesLanguageSc
 				}
 			}
 			case PARTICIPATION_CLASS__SUPER_METACLASS: {
-				val participation = switch context {
-					ParticipationClass: context.participation
-					Participation: context
-					default: null
-				}
-				if (participation !== null) {
+				if (context instanceof ParticipationClass) {
+					val participation = context.participation
+					val domainName = participation.domainName.qualifiedDomainName
 					val globalScope = globalScopeProvider.getScope(context.eResource, reference, null)
-					switch participation {
-						TupleParticipation: {
-							return participation.getUnqualifiedMetaclassScope(globalScope)
-						}
-						default:
-							return globalScope
-					}
+					return new PrefixedScope(globalScope, domainName)
 				}
 			}
 			case COMMONALITY_ATTRIBUTE_REFERENCE__COMMONALITY: {
@@ -143,11 +134,6 @@ class CommonalitiesLanguageScopeProvider extends AbstractCommonalitiesLanguageSc
 		val participationClassScope = commonality.participationClassScope
 		val parentQualifiedName = participation.fullyQualifiedName
 		return new PrefixedScope(participationClassScope, parentQualifiedName)
-	}
-
-	private def getUnqualifiedMetaclassScope(TupleParticipation participation, IScope metaclassScope) {
-		val parentQualifiedName = participation.domainName.qualifiedDomainName
-		return new PrefixedScope(metaclassScope, parentQualifiedName)
 	}
 
 	private def getUnqualifiedParticipationAttributeScope(ParticipationClass participationClass) {

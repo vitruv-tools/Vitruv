@@ -7,45 +7,21 @@ import tools.vitruv.dsls.commonalities.language.Participation
 import tools.vitruv.dsls.commonalities.language.ParticipationClass
 import tools.vitruv.dsls.commonalities.language.ParticipationCondition
 import tools.vitruv.dsls.commonalities.language.ParticipationRelation
-import tools.vitruv.dsls.commonalities.language.SimpleParticipation
-import tools.vitruv.dsls.commonalities.language.SimpleTupleParticipationPart
-import tools.vitruv.dsls.commonalities.language.TupleParticipation
 
 import static extension tools.vitruv.dsls.commonalities.language.extensions.ParticipationClassExtension.*
 import static extension tools.vitruv.dsls.commonalities.language.extensions.ParticipationConditionExtension.*
 import static extension tools.vitruv.dsls.commonalities.language.extensions.ParticipationRelationExtension.*
+import static extension tools.vitruv.dsls.commonalities.language.extensions.ParticipationPartExtension.*
 
 @Utility
 package class ParticipationExtension {
 
-	static def dispatch Iterable<ParticipationClass> getClasses(SimpleParticipation participation) {
-		Collections.singleton(participation.participationClass)
-	}
-
-	static def dispatch Iterable<ParticipationClass> getClasses(TupleParticipation participation) {
-		participation.parts.flatMap[containedClasses]
-	}
-
-	private static def dispatch Iterable<ParticipationClass> getContainedClasses(
-		SimpleTupleParticipationPart participationPart) {
-		Collections.singleton(participationPart.participationClass)
-	}
-
-	private static def dispatch Iterable<ParticipationClass> getContainedClasses(
-		ParticipationRelation participationPart) {
-		participationPart.leftClasses + participationPart.rightClasses
-	}
-
-	static def dispatch getDomainName(SimpleParticipation participation) {
-		participation?.participationClass?.superMetaclass?.domain?.name
-	}
-
-	static def dispatch getDomainName(TupleParticipation participation) {
-		participation.domainName
+	static def Iterable<ParticipationClass> getAllClasses(Participation participation) {
+		participation.parts.flatMap[allParticipationClasses]
 	}
 
 	static def getDomain(Participation participation) {
-		participation.classes.head?.superMetaclass?.domain
+		participation.allClasses.findFirst[superMetaclass !== null]?.domain
 	}
 
 	static def isCommonalityParticipation(Participation participation) {
@@ -57,21 +33,8 @@ package class ParticipationExtension {
 		return (domain instanceof Concept) ? domain : null
 	}
 
-	static def dispatch Iterable<ParticipationRelation> getAllRelations(SimpleParticipation participation) {
-		return #[]
-	}
-
-	static def dispatch Iterable<ParticipationRelation> getAllRelations(TupleParticipation participation) {
-		return participation.parts.flatMap[relations]
-	}
-
-	private static def dispatch Iterable<ParticipationRelation> getRelations(
-		SimpleTupleParticipationPart participationPart) {
-		return #[]
-	}
-
-	private static def dispatch Iterable<ParticipationRelation> getRelations(ParticipationRelation participationPart) {
-		return #[participationPart]
+	static def Iterable<ParticipationRelation> getAllRelations(Participation participation) {
+		participation.parts.flatMap[allParticipationRelations]
 	}
 
 	static def Iterable<ParticipationRelation> getAllContainmentRelations(Participation participation) {
@@ -91,8 +54,8 @@ package class ParticipationExtension {
 	}
 
 	static def getContainments(Participation participation) {
-		return participation.allContainmentRelations.flatMap[getContainments]
-			+ participation.allContainmentConditions.map[getContainment].filterNull
+		return participation.allContainmentRelations.flatMap[getContainments] +
+			participation.allContainmentConditions.map[getContainment].filterNull
 	}
 
 	// If the participation has a Resource class, that class needs to be the
@@ -100,7 +63,7 @@ package class ParticipationExtension {
 	// multiple non-Resource root container classes.
 	// TODO support multiple Resource roots?
 	static def getRootContainerClasses(Participation participation) {
-		return participation.classes.map[it.rootContainerClass].toSet
+		return participation.allClasses.map[it.rootContainerClass].toSet
 	}
 
 	static def hasResourceClass(Participation participation) {
@@ -109,7 +72,7 @@ package class ParticipationExtension {
 
 	// There can only be at most one resource class per participation (currently).
 	static def getResourceClass(Participation participation) {
-		return participation.classes.findFirst[isForResource]
+		return participation.allClasses.findFirst[isForResource]
 	}
 
 	static def getResourceContainments(Participation participation) {
@@ -122,7 +85,7 @@ package class ParticipationExtension {
 
 	// There can only be at most one singleton class per participation (currently).
 	static def getSingletonClass(Participation participation) {
-		return participation.classes.findFirst[isSingleton]
+		return participation.allClasses.findFirst[isSingleton]
 	}
 
 	/**

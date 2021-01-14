@@ -13,7 +13,6 @@ import static extension tools.vitruv.dsls.commonalities.language.extensions.Part
 
 @Utility
 package class OperandExtension {
-
 	static def Participation getParticipation(Operand operand) {
 		return operand.participationClass?.participation // can be null
 	}

@@ -99,4 +99,8 @@ class ModelMatchers {
 	def static Matcher<? super Object> isInstanceOf(EClassifier classifier) {
 		new InstanceOfEClassifierMatcher(classifier)
 	}
+	
+	def static Matcher<? super Resource> hasNoErrors() {
+		new ResourceHasNoErrorsMatcher
+	}
 }

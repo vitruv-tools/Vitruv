@@ -36,7 +36,7 @@ class CommonalitiesLanguageLabelProvider extends XbaseLabelProvider {
 //	}
 
 	def text(Participation participation) {
-		val participationClasses = participation.classes.toList
+		val participationClasses = participation.allClasses.toList
 		val result = new StyledString().append(participation.domainName ?: '?')
 		if (participationClasses.size == 1) {
 			result.append(':').append(participationClasses.head.name ?: '?')

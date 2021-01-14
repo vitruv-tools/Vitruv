@@ -22,10 +22,7 @@ class IdentifiedExecutionTest extends CommonalitiesExecutionTest {
 	override createCompiler(ExecutionTestCompiler.Factory factory) {
 		factory.createCompiler [
 			commonalities = #['Identified.commonality', 'SubIdentified.commonality']
-			domainDependencies = #[
-				'tools.vitruv.testutils.domains',
-				'tools.vitruv.testutils.metamodels'
-			]
+			domainDependencies = #['tools.vitruv.testutils.domains']
 		]
 	}
 

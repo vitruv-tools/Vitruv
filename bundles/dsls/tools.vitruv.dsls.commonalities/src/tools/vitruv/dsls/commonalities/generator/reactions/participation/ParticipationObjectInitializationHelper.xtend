@@ -1,7 +1,6 @@
 package tools.vitruv.dsls.commonalities.generator.reactions.participation
 
 import com.google.inject.Inject
-import java.util.function.Function
 import org.eclipse.xtext.xbase.XExpression
 import org.eclipse.xtext.xbase.XbaseFactory
 import tools.vitruv.dsls.commonalities.generator.reactions.condition.ParticipationConditionInitializationHelper
@@ -27,8 +26,7 @@ class ParticipationObjectInitializationHelper extends ReactionsGenerationHelper 
 	package new() {
 	}
 
-	def toBlockExpression(Iterable<Function<TypeProvider, XExpression>> expressionBuilders,
-		TypeProvider typeProvider) {
+	def toBlockExpression(Iterable<(TypeProvider)=>XExpression> expressionBuilders, TypeProvider typeProvider) {
 		return XbaseFactory.eINSTANCE.createXBlockExpression => [
 			expressions += expressionBuilders.map[apply(typeProvider)]
 		]
@@ -45,20 +43,24 @@ class ParticipationObjectInitializationHelper extends ReactionsGenerationHelper 
 		].filterNull
 	}
 
-	private def Function<TypeProvider, XExpression> getResourceInitializer(ParticipationClass participationClass) {
-		if (!participationClass.isForResource) return null
-		return [ extension TypeProvider typeProvider |
-			val resourceBridge = variable(participationClass.correspondingVariableName)
-			participationClass.initNewResourceBridge(resourceBridge, typeProvider)
-		]
+	private def (TypeProvider)=>XExpression getResourceInitializer(ParticipationClass participationClass) {
+		if (!participationClass.isForResource)
+			null
+		else
+			[
+				val resourceBridge = variable(participationClass.correspondingVariableName)
+				participationClass.initNewResourceBridge(resourceBridge, it)
+			]
 	}
 
-	private def Function<TypeProvider, XExpression> getCommonalityParticipationClassInitializer(
+	private def (TypeProvider)=>XExpression getCommonalityParticipationClassInitializer(
 		ParticipationClass participationClass) {
-		if (!participationClass.participation.isCommonalityParticipation) return null
-		return [ extension TypeProvider typeProvider |
-			claimIntermediateId(typeProvider, variable(participationClass.correspondingVariableName))
-		]
+		if (!participationClass.participation.isCommonalityParticipation)
+			null
+		else
+			[ extension TypeProvider typeProvider |
+				claimIntermediateId(typeProvider, variable(participationClass.correspondingVariableName))
+			]
 	}
 
 	/**
@@ -69,7 +71,7 @@ class ParticipationObjectInitializationHelper extends ReactionsGenerationHelper 
 	 * may want to reference other participation objects.
 	 */
 	def getPostInitializers(ParticipationContext participationContext, ContextClass contextClass) {
-		return (participationContext.getParticipationRelationsInitializers(contextClass)
-			+ participationContext.getParticipationConditionsInitializers(contextClass)).toList
+		return (participationContext.getParticipationRelationsInitializers(contextClass) +
+			participationContext.getParticipationConditionsInitializers(contextClass)).toList
 	}
 }

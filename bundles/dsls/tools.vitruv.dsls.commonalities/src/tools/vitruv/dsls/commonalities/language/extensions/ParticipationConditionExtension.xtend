@@ -11,7 +11,10 @@ import tools.vitruv.dsls.commonalities.participation.ReferenceContainment
 
 import static extension tools.vitruv.dsls.commonalities.language.extensions.CommonalitiesLanguageElementExtension.*
 import static extension tools.vitruv.dsls.commonalities.language.extensions.OperandExtension.*
-import static extension tools.vitruv.dsls.commonalities.language.extensions.ParticipationConditionOperatorExtension.*
+import static extension tools.vitruv.dsls.commonalities.util.JvmAnnotationHelper.*
+import tools.vitruv.extensions.dslruntime.commonalities.operators.participation.condition.ParticipationConditionOperator
+import org.eclipse.xtext.common.types.JvmDeclaredType
+import tools.vitruv.extensions.dslruntime.commonalities.operators.participation.condition.ContainmentOperator
 
 @Utility
 package class ParticipationConditionExtension {
@@ -44,10 +47,6 @@ package class ParticipationConditionExtension {
 		true
 	}
 
-	static def isContainment(ParticipationCondition condition) {
-		return condition.operator.isContainment
-	}
-
 	static def Containment getContainment(ParticipationCondition condition) {
 		if (!condition.isContainment) {
 			return null
@@ -59,5 +58,24 @@ package class ParticipationConditionExtension {
 		}
 		val contained = condition.leftOperand.participationClass
 		return new ReferenceContainment(container, contained, containerOperand.participationAttribute)
+	}
+	
+	private static def getParticipationConditionOperatorAnnotation(JvmDeclaredType operatorType) {
+		return operatorType.annotations
+			.filter[annotation.qualifiedName == ParticipationConditionOperator.name]
+			.head
+	}
+
+	static def getParticipationConditionOperatorName(JvmDeclaredType operatorType) {
+		operatorType.participationConditionOperatorAnnotation?.getStringAnnotationValue('name')
+	}
+
+	static def getOperatorName(ParticipationCondition condition) {
+		condition.operator.participationConditionOperatorName
+	}
+
+	// TODO support other structural operators
+	static def isContainment(ParticipationCondition condition) {
+		return condition.operator.qualifiedName == ContainmentOperator.name
 	}
 }

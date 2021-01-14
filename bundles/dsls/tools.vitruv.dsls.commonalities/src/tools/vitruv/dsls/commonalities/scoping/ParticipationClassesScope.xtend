@@ -29,19 +29,19 @@ class ParticipationClassesScope implements IScope {
 
 	override getAllElements() {
 		checkCommonalitySet()
-		commonality.participations.flatMap[classes].map(descriptionProvider)
+		commonality.participations.flatMap[allClasses].map(descriptionProvider)
 	}
 
 	override getElements(QualifiedName qName) {
 		checkCommonalitySet()
 		val domainName = qName.domainName
-		if (domainName === null) return #[]
+		if (domainName === null) return emptyList()
 		val className = qName.className
-		if (className === null) return #[]
+		if (className === null) return emptyList()
 
 		return commonality.participations
 			.filter[name == domainName]
-			.flatMap[classes]
+			.flatMap[allClasses]
 			.filter[name == className]
 			.map(descriptionProvider)
 	}

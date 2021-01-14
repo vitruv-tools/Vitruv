@@ -68,7 +68,7 @@ class ParticipationConditionOperatorHelper extends ReactionsGenerationHelper {
 		val extension typeProvider = operatorContext.typeProvider
 		val leftOperand = participationCondition.leftOperand
 		return XbaseFactory.eINSTANCE.createXConstructorCall => [
-			val operatorType = participationCondition.operator.jvmType.imported
+			val operatorType = participationCondition.operator.imported
 			constructor = operatorType.findConstructor(Object, List)
 			explicitConstructorCall = true
 			arguments += leftOperand.getOperandExpression(operatorContext)

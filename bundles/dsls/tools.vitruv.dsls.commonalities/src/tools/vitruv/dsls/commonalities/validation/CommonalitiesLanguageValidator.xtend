@@ -4,9 +4,7 @@
 package tools.vitruv.dsls.commonalities.validation
 
 import java.util.HashSet
-import java.util.regex.Pattern
 import org.eclipse.xtext.validation.Check
-import tools.vitruv.dsls.commonalities.language.Aliasable
 import tools.vitruv.dsls.commonalities.language.Commonality
 import tools.vitruv.dsls.commonalities.language.CommonalityAttribute
 import tools.vitruv.dsls.commonalities.language.CommonalityAttributeMapping
@@ -40,22 +38,10 @@ class CommonalitiesLanguageValidator extends AbstractCommonalitiesLanguageValida
 	// instances: Modifying them in reaction to changes to individual
 	// intermediate instances bears the risk for issues, such as those
 	// modifications overwriting each other.
-	// Note: This is a subset of the valid IDs
-	static val ALIAS_REGEX = "^[a-zA-Z][a-zA-z0-9_]*$"
-	static val ALIAS_PATTERN = Pattern.compile(ALIAS_REGEX)
-
-	@Check
-	def checkAlias(Aliasable aliasable) {
-		val alias = aliasable.alias
-		if (alias === null) return; // has no alias -> ignore
-		if (!ALIAS_PATTERN.matcher(alias).matches) {
-			error('''Invalid alias ‹«alias»›. Aliases must conform to the pattern «ALIAS_REGEX».''', ALIASABLE__ALIAS)
-		}
-	}
 
 	@Check
 	def checkParticipationClasses(Participation participation) {
-		if (participation.classes.empty) {
+		if (participation.allClasses.isEmpty) {
 			error("Participation is empty.", participation, null)
 		} else if (participation.nonRootClasses.empty) {
 			error("Participation has no non-root classes.", participation, null)
@@ -248,7 +234,7 @@ class CommonalitiesLanguageValidator extends AbstractCommonalitiesLanguageValida
 	}
 
 	private static def getResourceClasses(Participation participation) {
-		return participation.classes.filter[isForResource]
+		return participation.allClasses.filter[isForResource]
 	}
 
 	@Check
@@ -276,6 +262,6 @@ class CommonalitiesLanguageValidator extends AbstractCommonalitiesLanguageValida
 	}
 
 	private static def getSingletonClasses(Participation participation) {
-		return participation.classes.filter[isSingleton]
+		return participation.allClasses.filter[isSingleton]
 	}
 }

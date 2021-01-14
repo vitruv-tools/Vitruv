@@ -1,7 +1,6 @@
 package tools.vitruv.dsls.commonalities.generator.reactions.condition
 
 import com.google.inject.Inject
-import java.util.function.Function
 import org.eclipse.xtext.xbase.XExpression
 import tools.vitruv.dsls.commonalities.generator.reactions.condition.ParticipationConditionOperatorHelper.ParticipationConditionOperatorContext
 import tools.vitruv.dsls.commonalities.generator.reactions.helper.ReactionsGenerationHelper
@@ -25,11 +24,8 @@ class ParticipationConditionInitializationHelper extends ReactionsGenerationHelp
 		]
 	}
 
-	private def Function<TypeProvider, XExpression> getParticipationConditionInitializer(
+	private def (TypeProvider)=>XExpression getParticipationConditionInitializer(
 		ParticipationCondition participationCondition) {
-		return [ extension TypeProvider typeProvider |
-			val operatorContext = new ParticipationConditionOperatorContext(typeProvider)
-			return participationCondition.enforce(operatorContext)
-		]
+		[participationCondition.enforce(new ParticipationConditionOperatorContext(it))]
 	}
 }

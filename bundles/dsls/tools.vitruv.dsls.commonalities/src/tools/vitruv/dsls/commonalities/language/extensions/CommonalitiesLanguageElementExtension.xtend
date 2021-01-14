@@ -13,7 +13,7 @@ package class CommonalitiesLanguageElementExtension {
 	 * @return the container of the given type
 	 * @throws RuntimeException if no container of the given type is found
 	 */
-	package static def <T extends EObject> T getContainer(EObject object, Class<T> containerType) {
+	package static def <T> T getContainer(EObject object, Class<T> containerType) {
 		val typedContainer = object.getOptionalContainer(containerType)
 		if (typedContainer !== null) {
 			return typedContainer
@@ -25,7 +25,7 @@ package class CommonalitiesLanguageElementExtension {
 	/**
 	 * @return the container of the given type, or <code>null</code> if no such container is found
 	 */
-	package static def <T extends EObject> T getOptionalContainer(EObject object, Class<T> containerType) {
+	package static def <T> T getOptionalContainer(EObject object, Class<T> containerType) {
 		val typedContainer = object.getOptionalDirectContainer(containerType)
 		if (typedContainer !== null) {
 			return typedContainer
@@ -33,7 +33,7 @@ package class CommonalitiesLanguageElementExtension {
 		return object.eContainer?.getOptionalContainer(containerType)
 	}
 
-	package static def <T extends EObject> T getDirectContainer(EObject object, Class<T> containerType) {
+	package static def <T> T getDirectContainer(EObject object, Class<T> containerType) {
 		val typedContainer = object.getOptionalDirectContainer(containerType)
 		if (typedContainer !== null) {
 			return typedContainer
@@ -42,7 +42,7 @@ package class CommonalitiesLanguageElementExtension {
 			») is not directly contained inside a «containerType.simpleName»!''')
 	}
 
-	package static def <T extends EObject> T getOptionalDirectContainer(EObject object, Class<T> containerType) {
+	package static def <T> T getOptionalDirectContainer(EObject object, Class<T> containerType) {
 		val container = object.eContainer
 		if (container === null) {
 			return null

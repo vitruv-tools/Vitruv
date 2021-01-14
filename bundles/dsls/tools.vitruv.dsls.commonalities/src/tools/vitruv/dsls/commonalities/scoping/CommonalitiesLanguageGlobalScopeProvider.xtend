@@ -33,9 +33,9 @@ class CommonalitiesLanguageGlobalScopeProvider extends TypesAwareDefaultGlobalSc
 				attributeMappingOperatorScopeProvider.getScope(resource, reference, filter)
 			case REFERENCE_MAPPING_OPERATOR__JVM_TYPE:
 				referenceMappingOperatorScopeProvider.getScope(resource, reference, filter)
-			case PARTICIPATION_RELATION_OPERATOR__JVM_TYPE:
+			case PARTICIPATION_RELATION__OPERATOR:
 				relationOperatorScopeProvider.getScope(resource, reference, filter)
-			case PARTICIPATION_CONDITION_OPERATOR__JVM_TYPE:
+			case PARTICIPATION_CONDITION__OPERATOR:
 				conditionOperatorScopeProvider.getScope(resource, reference, filter)
 			default: {
 				new ComposedScope(

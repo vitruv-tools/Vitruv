@@ -5,9 +5,7 @@ Bundle-SymbolicName: tools.vitruv.dsls.commonalities.testutils
 Automatic-Module-Name: tools.vitruv.dsls.commonalities.testutils
 Bundle-Version: 1.1.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-11
-Require-Bundle: org.apache.log4j,
- com.google.guava,
- org.eclipse.core.runtime,
+Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.pde.core,
  org.eclipse.xtext.xbase.lib,
  org.eclipse.xtend.lib,
@@ -26,7 +24,8 @@ Require-Bundle: org.apache.log4j,
  edu.kit.ipd.sdq.activextendannotations,
  tools.vitruv.dsls.common.ui,
  org.eclipse.xtext.ui.testing,
- tools.vitruv.dsls.reactions.ui
+ tools.vitruv.dsls.reactions.ui,
+ org.junit.jupiter.params
 Export-Package: tools.vitruv.dsls.commonalities.testutils,
  tools.vitruv.dsls.commonalities.testutils.operators
 Bundle-Vendor: vitruv.tools

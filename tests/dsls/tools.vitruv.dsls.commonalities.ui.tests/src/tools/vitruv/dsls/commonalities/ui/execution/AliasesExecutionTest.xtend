@@ -12,10 +12,7 @@ class AliasesExecutionTest extends IdentifiedExecutionTest {
 	override createCompiler(ExecutionTestCompiler.Factory factory) {
 		factory.createCompiler [
 			commonalities = #['IdentifiedWithAliases.commonality', 'SubWithAliases.commonality']
-			domainDependencies = #[
-				'tools.vitruv.testutils.domains',
-				'tools.vitruv.testutils.metamodels'
-			]
+			domainDependencies = #['tools.vitruv.testutils.domains']
 		]
 	}
 }

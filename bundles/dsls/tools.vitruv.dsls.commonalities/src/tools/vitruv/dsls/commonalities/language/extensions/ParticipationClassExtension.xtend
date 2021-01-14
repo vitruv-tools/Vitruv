@@ -11,6 +11,7 @@ import tools.vitruv.dsls.commonalities.language.elements.ResourceMetaclass
 import static extension tools.vitruv.dsls.commonalities.language.extensions.CommonalitiesLanguageElementExtension.*
 import static extension tools.vitruv.dsls.commonalities.language.extensions.OperandExtension.*
 import static extension tools.vitruv.dsls.commonalities.language.extensions.ParticipationExtension.*
+import static extension tools.vitruv.dsls.commonalities.language.extensions.ParticipationPartExtension.*
 
 @Utility
 package class ParticipationClassExtension {
@@ -45,8 +46,8 @@ package class ParticipationClassExtension {
 	 */
 	static def ParticipationClass getContainerClass(ParticipationClass contained) {
 		var container = contained.participation.allContainmentRelations
-			.findFirst[leftClasses.contains(contained)]
-			?.rightClasses?.head
+			.findFirst[leftParts.contains(contained)]
+			?.container
 		if (container === null) {
 			container = contained.participation.allContainmentConditions
 				.findFirst[leftOperand.participationClass == contained]
@@ -95,8 +96,8 @@ package class ParticipationClassExtension {
 	 */
 	static def getContainedClasses(ParticipationClass container) {
 		return container.participation.allContainmentRelations
-			.filter[rightClasses.contains(container)]
-			.flatMap[leftClasses]
+			.filter[it.container == container]
+			.flatMap[leftParts.filter(ParticipationClass)]
 		+ container.participation.allContainmentConditions
 				.filter[rightOperands.map[participationClass].contains(container)]
 				.map[leftOperand].map[participationClass].filterNull

@@ -13,7 +13,7 @@ import tools.vitruv.dsls.commonalities.language.CommonalityFile
 
 import static org.hamcrest.CoreMatchers.*
 import static org.hamcrest.MatcherAssert.assertThat
-import static tools.vitruv.dsls.commonalities.tests.matchers.EResourceMatchers.*
+import static tools.vitruv.testutils.matchers.ModelMatchers.hasNoErrors
 
 @RunWith(XtextRunner)
 @InjectWith(CommonalitiesLanguageInjectorProvider)

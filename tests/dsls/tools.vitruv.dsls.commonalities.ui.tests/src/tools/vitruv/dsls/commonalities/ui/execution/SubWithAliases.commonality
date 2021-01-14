@@ -6,8 +6,8 @@ concept test
 commonality SubWithAliases {
 
 	with AllElementTypes:NonRoot
-	with AllElementTypes2:NonRoot2 called "SecondNonRoot"
-	with PcmMockup:Component as "Palladio"
+	with AllElementTypes2:(NonRoot2 as SecondNonRoot)
+	with (PcmMockup as Palladio):Component
 	with UmlMockup:UClass
 
 	has name {

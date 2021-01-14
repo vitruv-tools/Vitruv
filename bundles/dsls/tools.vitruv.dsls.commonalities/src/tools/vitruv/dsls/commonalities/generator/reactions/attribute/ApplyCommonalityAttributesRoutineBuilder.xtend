@@ -55,7 +55,7 @@ class ApplyCommonalityAttributesRoutineBuilder extends ReactionsGenerationHelper
 					model(commonality.changeClass, INTERMEDIATE)
 				]
 				.match [
-					participation.classes.forEach [ participationClass |
+					participation.allClasses.forEach [ participationClass |
 						retrieveAssertedParticipationObject(participationClass) [
 							variable(INTERMEDIATE) // correspondence source
 						]

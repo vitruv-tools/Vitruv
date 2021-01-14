@@ -1,0 +1,36 @@
+package tools.vitruv.dsls.commonalities
+
+import com.google.inject.Inject
+import org.eclipse.xtext.testing.InjectWith
+
+import static org.hamcrest.MatcherAssert.assertThat
+import org.junit.jupiter.api.^extension.ExtendWith
+import org.eclipse.xtext.testing.extensions.InjectionExtension
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.DisplayName
+import static tools.vitruv.testutils.matchers.ModelMatchers.equalsDeeply
+import static tools.vitruv.dsls.commonalities.testutils.CommonalitiesLanguageCreators.commonalities
+import tools.vitruv.dsls.commonalities.tests.CommonalitiesLanguageInjectorProvider
+
+@ExtendWith(InjectionExtension)
+@InjectWith(CommonalitiesLanguageInjectorProvider)
+@DisplayName("parsing whole Commonalities")
+class CommonalityParsingTest {
+	@Inject
+	extension CommonalityParseHelper parseHelper
+
+	@Test
+	@DisplayName("parses a minimal commonality")
+	def void minimalCommonality() {
+		assertThat(parse('''
+			concept test
+			
+			commonality Example {}
+		'''), equalsDeeply(commonalities.CommonalityFile => [
+			concept = commonalities.Concept => [name = "test"]
+			commonality = commonalities.Commonality => [
+				name = "Example"
+			]
+		]))
+	}
+}

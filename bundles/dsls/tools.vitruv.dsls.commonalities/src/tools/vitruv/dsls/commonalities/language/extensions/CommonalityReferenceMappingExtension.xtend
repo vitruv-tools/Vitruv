@@ -10,12 +10,10 @@ import tools.vitruv.dsls.commonalities.language.SimpleReferenceMapping
 
 import static extension tools.vitruv.dsls.commonalities.language.extensions.CommonalitiesLanguageElementExtension.*
 import static extension tools.vitruv.dsls.commonalities.language.extensions.ParticipationClassExtension.*
-import static extension tools.vitruv.dsls.commonalities.language.extensions.ParticipationExtension.*
 import static extension tools.vitruv.dsls.commonalities.language.extensions.ReferenceMappingOperatorExtension.*
 
 @Utility
 package class CommonalityReferenceMappingExtension {
-
 	static def isSimpleMapping(CommonalityReferenceMapping mapping) {
 		return (mapping instanceof SimpleReferenceMapping)
 	}
