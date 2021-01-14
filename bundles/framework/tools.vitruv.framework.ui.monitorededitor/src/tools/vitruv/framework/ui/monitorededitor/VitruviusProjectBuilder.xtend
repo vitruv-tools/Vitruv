@@ -10,50 +10,44 @@ import org.eclipse.core.resources.IProject
 import java.util.Map
 import org.eclipse.core.runtime.IProgressMonitor
 import org.eclipse.core.runtime.CoreException
-import java.util.Collection
 import java.io.File
 import tools.vitruv.framework.domains.VitruviusProjectBuilderApplicator
+import org.eclipse.xtend.lib.annotations.Accessors
 
 abstract class VitruviusProjectBuilder extends IncrementalProjectBuilder {
-	static final Logger logger = Logger.getLogger(VitruviusProjectBuilder.getSimpleName())
-	
-	Set<String> monitoredFileTypes
-	VirtualModel virtualModel;
-	boolean initialized
-	
-	new() {
-		this.initialized = false;
-		this.monitoredFileTypes = new HashSet<String>();
-	}
-	
-	private def void initializeBuilder() {
-		val vmodelFolderName = getCommand().getArguments().get(VitruviusProjectBuilderApplicator.ARGUMENT_VMODEL_NAME);
-		this.virtualModel = VirtualModelManager.getInstance().getVirtualModel(new File(vmodelFolderName));
+	static final Logger logger = Logger.getLogger(VitruviusProjectBuilder)
 
-		for (String fileExtension : getCommand().getArguments().get(VitruviusProjectBuilderApplicator.ARGUMENT_FILE_EXTENSIONS).split(",").map[trim].filter[!nullOrEmpty]) {
-			monitoredFileTypes.add(fileExtension)
-		}
-		
+	@Accessors(PROTECTED_GETTER)
+	final Set<String> monitoredFileTypes
+	@Accessors(PROTECTED_GETTER)
+	VirtualModel virtualModel
+	boolean initialized
+
+	new() {
+		this.initialized = false
+		this.monitoredFileTypes = new HashSet<String>()
+	}
+
+	private def void initializeBuilder() {
+		val vmodelFolderName = command.arguments.get(VitruviusProjectBuilderApplicator.ARGUMENT_VMODEL_NAME)
+		virtualModel = VirtualModelManager.instance.getVirtualModel(new File(vmodelFolderName))
+		monitoredFileTypes +=
+			command.arguments.get(VitruviusProjectBuilderApplicator.ARGUMENT_FILE_EXTENSIONS).split("\\s*,\\s*").filter [
+				!nullOrEmpty
+			]
 		initialized = true
-		logger.debug("Initialized builder reference to virtual model");
-		this.startMonitoring(); 
+		logger.debug("Initialized builder reference to virtual model")
+		startMonitoring
 	}
-	
-	protected override IProject[] build(int kind, Map<String, String> args, IProgressMonitor monitor) throws CoreException {
+
+	protected override IProject[] build(int kind, Map<String, String> args,
+		IProgressMonitor monitor) throws CoreException {
 		if (!initialized) {
-			initializeBuilder();
+			initializeBuilder
 		}
-		return null;
+		return null
 	}
-	
-	protected def VirtualModel getVirtualModel() {
-		return virtualModel;
-	}
-	
-	protected def Collection<String> getMonitoredFileTypes() {
-		return monitoredFileTypes;
-	}
-	
-	protected abstract def void startMonitoring();
-	
+
+	protected abstract def void startMonitoring()
+
 }
