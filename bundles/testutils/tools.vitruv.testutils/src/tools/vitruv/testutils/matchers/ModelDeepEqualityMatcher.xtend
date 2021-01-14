@@ -47,6 +47,10 @@ import java.util.HashMap
 import java.util.Collection
 import java.util.function.Predicate
 import static com.google.common.base.Preconditions.checkState
+import static tools.vitruv.testutils.printing.PrintResult.NOT_RESPONSIBLE
+import org.eclipse.emf.compare.CompareFactory
+import edu.kit.ipd.sdq.activextendannotations.CloseResource
+import edu.kit.ipd.sdq.activextendannotations.Lazy
 
 @FinalFieldsConstructor
 package class ModelDeepEqualityMatcher extends TypeSafeMatcher<EObject> {
@@ -54,6 +58,27 @@ package class ModelDeepEqualityMatcher extends TypeSafeMatcher<EObject> {
 	val List<EqualityFeatureFilter> featureFilters
 	var Comparison comparison
 	val idProvider = new PrintIdProvider
+	@Lazy val ModelPrinter descriptionPrinter = new IgnoredFeaturesPrinter(featureFilters)
+	val emfCompareFeatureFilter = new FeatureFilter() {
+		override getAttributesToCheck(Match match) {
+			filter(match, super.getAttributesToCheck(match))
+		}
+
+		override getReferencesToCheck(Match match) {
+			filter(match, super.getReferencesToCheck(match))
+		}
+
+		private def <T extends EStructuralFeature> filter(Match match, Iterator<T> iterator) {
+			if (featureFilters.isEmpty)
+				iterator
+			else {
+				val object = match.right ?: match.left
+				iterator.toIterable.filter [ feature |
+					!featureFilters.exists[!includeFeature(object, feature)]
+				].iterator()
+			}
+		}
+	}
 
 	override matchesSafely(EObject item) {
 		comparison = buildEmfCompare(item).compare(new DefaultComparisonScope(item, expectedObject, null))
@@ -61,11 +86,20 @@ package class ModelDeepEqualityMatcher extends TypeSafeMatcher<EObject> {
 	}
 
 	override describeTo(Description description) {
+		describeTo(ModelPrinting.prepend(descriptionPrinter), description)
+	}
+
+	def private void describeTo(@CloseResource AutoCloseable printerChange, Description description) {
 		description.appendText(a(expectedObject.eClass.name)).appendText(' deeply equal to ').
 			appendModelValue(expectedObject, idProvider)
 	}
 
 	override describeMismatchSafely(EObject item, Description mismatchDescription) {
+		describeMismatchSafely(ModelPrinting.prepend(descriptionPrinter), item, mismatchDescription)
+	}
+
+	private def void describeMismatchSafely(@CloseResource AutoCloseable printerChange, EObject item,
+		Description mismatchDescription) {
 		comparison.getMatch(expectedObject)
 		mismatchDescription.appendText('found the following differences: ')
 		new ComparisonPrinter(idProvider, comparison, emfCompareFeatureFilter, ModelPrinting.printer) //
@@ -283,26 +317,24 @@ package class ModelDeepEqualityMatcher extends TypeSafeMatcher<EObject> {
 		}
 	}
 
-	private def getEmfCompareFeatureFilter() {
-		new FeatureFilter() {
-			override getAttributesToCheck(Match match) {
-				filter(match, super.getAttributesToCheck(match))
-			}
+	@FinalFieldsConstructor
+	private static class IgnoredFeaturesPrinter implements ModelPrinter {
+		val List<EqualityFeatureFilter> featureFilters
 
-			override getReferencesToCheck(Match match) {
-				filter(match, super.getReferencesToCheck(match))
-			}
+		override withSubPrinter(ModelPrinter subPrinter) {
+			this
+		}
 
-			private def <T extends EStructuralFeature> filter(Match match, Iterator<T> iterator) {
-				if (featureFilters.isEmpty)
-					iterator
-				else {
-					val object = match.right ?: match.left
-					iterator.toIterable.filter [ feature |
-						!featureFilters.exists[!includeFeature(object, feature)]
-					].iterator()
-				}
-			}
+		override PrintResult printFeature(
+			extension PrintTarget target,
+			PrintIdProvider idProvider,
+			EObject object,
+			EStructuralFeature feature
+		) {
+			if (featureFilters.exists[!includeFeature(object, feature)]) {
+				print(feature.name) + print('=…')
+			} else
+				NOT_RESPONSIBLE
 		}
 	}
 
@@ -355,7 +387,7 @@ package class ModelDeepEqualityMatcher extends TypeSafeMatcher<EObject> {
 		def private PrintResult printFeatureDifference(extension PrintTarget target, EStructuralFeature feature,
 			String context, Diff difference, Object value) {
 			print(context) + print('.') + print(feature.name) + print(' ') + print(difference.kind.verb) + print(' ') //
-			+ printValue(value) [subTarget, theValue | printObject(subTarget, idProvider, theValue) ]
+			+ printValue(value)[subTarget, theValue|printObject(subTarget, idProvider, theValue)]
 		}
 
 		def private String getVerb(DifferenceKind kind) {
