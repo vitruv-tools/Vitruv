@@ -168,7 +168,7 @@ package class ModelDeepEqualityMatcher extends TypeSafeMatcher<EObject> {
 		}
 
 		def private void checkMatches(Comparison comparison, EObject left, EObject right) {
-			if (checked.contains(left) && checked.contains(right)) return;
+			if (left === null || right === null || (checked.contains(left) && checked.contains(right))) return;
 			checked += left
 			checked += right
 
