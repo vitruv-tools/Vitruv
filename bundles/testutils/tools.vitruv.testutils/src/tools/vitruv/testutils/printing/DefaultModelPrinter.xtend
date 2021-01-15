@@ -55,9 +55,9 @@ class DefaultModelPrinter implements ModelPrinter {
 		PrintIdProvider idProvider,
 		EObject object
 	) {
-		target.printObjectWithContent(idProvider, object) [ contentTarget |
-			contentTarget.printIterableElements(object.eClass.EAllStructuralFeatures) [ subTarget, feature |
-				subPrinter.printFeature(subTarget, idProvider, object, feature)
+		target.printObjectWithContent(idProvider, object) [ contentTarget, toPrint |
+			contentTarget.printIterableElements(toPrint.eClass.EAllStructuralFeatures) [ subTarget, feature |
+				subPrinter.printFeature(subTarget, idProvider, toPrint, feature)
 			]
 		]
 	}
@@ -152,7 +152,7 @@ class DefaultModelPrinter implements ModelPrinter {
 		PrintIdProvider idProvider,
 		EObject object
 	) {
-		target.printObjectWithContent(idProvider, object) [ contentTarget |
+		target.printObjectWithContent(idProvider, object) [ contentTarget, _ |
 			contentTarget.print('…')
 		]
 	}
@@ -178,16 +178,16 @@ class DefaultModelPrinter implements ModelPrinter {
 	 * use {@link contentPrinter} to print the object’s content.
 	 */
 	def protected <T extends EObject> printObjectWithContent(PrintTarget target, PrintIdProvider idProvider, T object,
-		(PrintTarget)=>PrintResult contentPrinter) {
-		idProvider.ifAlreadyPrintedElse(object, [target.printAlreadyPrinted(it)]) [ objectId |
-			target.print(objectId) + target.print('(') + contentPrinter.apply(target) + target.print(')')
+		(PrintTarget, T)=>PrintResult contentPrinter) {
+		idProvider.ifAlreadyPrintedElse(object, [obj, id|target.printAlreadyPrinted(obj, id)]) [ toPrint, id |
+			target.print(id) + target.print('(') + contentPrinter.apply(target, toPrint) + target.print(')')
 		]
 	}
 
 	/**
 	 * Called when printing an {@link EObject} that has previously been printed.
 	 */
-	def protected printAlreadyPrinted(extension PrintTarget target, String id) {
+	def protected printAlreadyPrinted(extension PrintTarget target, EObject object, String id) {
 		print(id)
 	}
 
