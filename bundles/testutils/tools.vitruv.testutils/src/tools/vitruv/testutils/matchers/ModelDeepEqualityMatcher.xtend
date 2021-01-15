@@ -391,7 +391,7 @@ package class ModelDeepEqualityMatcher extends TypeSafeMatcher<EObject> {
 
 		override <T extends EObject> ifAlreadyPrintedElse(T object, (T, String)=>PrintResult existingPrinter,
 			(T, String)=>PrintResult newPrinter) {
-			delegate.printWithId(replaceWithRight(object)) [ T toPrint, String id |
+			delegate.printWithId(replaceWithRight(object)) [ toPrint, id |
 				if (alreadyPrinted.contains(toPrint)) {
 					existingPrinter.apply(toPrint, id)
 				} else {

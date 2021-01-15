@@ -8,15 +8,15 @@ class DefaultPrintIdProvider implements PrintIdProvider {
 	val printed = new HashMap<EObject, String>()
 	val classCount = new HashMap<EClass, Integer>()
 
-	override ifAlreadyPrintedElse(EObject object, (String)=>PrintResult existingPrinter,
-		(String)=>PrintResult newPrinter) {
+	override <T extends EObject> ifAlreadyPrintedElse(T object, (T, String)=>PrintResult existingPrinter,
+		(T, String)=>PrintResult newPrinter) {
 		var objectId = printed.get(object)
 		if (objectId !== null) {
-			existingPrinter.apply(objectId)
+			existingPrinter.apply(object, objectId)
 		} else {
 			objectId = assignId(object)
 			printed.put(object, objectId)
-			newPrinter.apply(objectId)
+			newPrinter.apply(object, objectId)
 		}
 	}
 
