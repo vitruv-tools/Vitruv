@@ -36,7 +36,7 @@ import tools.vitruv.framework.vsum.helper.FileSystemHelper
 import static java.util.Collections.emptyMap
 import static extension tools.vitruv.framework.util.ResourceSetUtil.getRequiredTransactionalEditingDomain
 import static extension tools.vitruv.framework.util.ResourceSetUtil.withGlobalFactories
-import static extension tools.vitruv.framework.util.command.EMFCommandBridge.executeVitruviusRecordingCommand
+import static extension tools.vitruv.framework.util.command.EMFCommandBridge.executeVitruviusRecordingCommandAndFlushHistory
 import tools.vitruv.framework.util.command.VitruviusRecordingCommand
 import static extension tools.vitruv.framework.util.bridges.EcoreResourceBridge.loadOrCreateResource
 
@@ -329,11 +329,11 @@ class ResourceRepositoryImpl implements ModelRepository, CorrespondenceProviding
 	}
 
 	override <T> T executeAsCommand(Callable<T> command) {
-		resourceSet.requiredTransactionalEditingDomain.executeVitruviusRecordingCommand(command)
+		resourceSet.requiredTransactionalEditingDomain.executeVitruviusRecordingCommandAndFlushHistory(command)
 	}
 
 	override VitruviusRecordingCommand executeAsCommand(Runnable command) {
-		resourceSet.requiredTransactionalEditingDomain.executeVitruviusRecordingCommand(command)
+		resourceSet.requiredTransactionalEditingDomain.executeVitruviusRecordingCommandAndFlushHistory(command)
 	}
 
 	override void executeOnUuidResolver(Consumer<UuidResolver> function) {

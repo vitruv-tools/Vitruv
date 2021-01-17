@@ -9,7 +9,7 @@ import org.eclipse.emf.ecore.resource.Resource
 import org.apache.log4j.Logger
 import tools.vitruv.framework.util.bridges.EcoreResourceBridge
 import static extension tools.vitruv.framework.util.bridges.JavaBridge.*
-import static extension tools.vitruv.framework.util.command.EMFCommandBridge.executeVitruviusRecordingCommand
+import static extension tools.vitruv.framework.util.command.EMFCommandBridge.executeVitruviusRecordingCommandAndFlushHistory
 import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.EClass
 import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.common.util.URIUtil.*
@@ -350,7 +350,7 @@ class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 		return if (domain !== null &&
 			(affectedObject === null || affectedObject.eResource?.resourceSet === resourceSet ||
 				affectedObject instanceof EClass)) {
-			domain.executeVitruviusRecordingCommand(callable)
+			domain.executeVitruviusRecordingCommandAndFlushHistory(callable)
 		} else {
 			callable.call()
 		}
