@@ -28,10 +28,12 @@ interface PrintTarget {
 		(PrintTarget, T)=>PrintResult elementPrinter) {
 		printIterable('', '', elements, mode, elementPrinter)
 	}
-	
+
 	def <T> PrintResult printValue(T value, (PrintTarget, T)=>PrintResult valuePrinter) {
 		switch (value) {
-			Number:
+			case null,
+			Number,
+			Boolean:
 				valuePrinter.apply(this, value)
 			String:
 				print('"') + valuePrinter.apply(this, value) + print('"')
