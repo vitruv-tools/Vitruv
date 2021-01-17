@@ -4,15 +4,16 @@ import org.eclipse.core.expressions.PropertyTester;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.Platform;
 
-import tools.vitruv.framework.domains.VitruviusProjectBuilderApplicator;
+import tools.vitruv.framework.domains.VitruvProjectBuilderApplicator;
+
 import static tools.vitruv.framework.util.ProjectBuildUtils.hasBuilder;
 
 public class TestBuilderEnabled extends PropertyTester {
 
     private static final String IS_ENABLED = "isEnabled";
-    private final VitruviusProjectBuilderApplicator builderApplicator;
+    private final VitruvProjectBuilderApplicator builderApplicator;
 
-    protected TestBuilderEnabled(final VitruviusProjectBuilderApplicator builderApplicator) {
+    protected TestBuilderEnabled(final VitruvProjectBuilderApplicator builderApplicator) {
         this.builderApplicator = builderApplicator;
     }
 

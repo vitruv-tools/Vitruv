@@ -1,8 +1,8 @@
 package tools.vitruv.domains.emf.builder
 
-import tools.vitruv.framework.domains.VitruviusProjectBuilderApplicator
+import tools.vitruv.framework.ui.monitorededitor.VitruvProjectBuilderApplicatorImpl
 
-class VitruviusEmfBuilderApplicator extends VitruviusProjectBuilderApplicator {
+class VitruviusEmfBuilderApplicator extends VitruvProjectBuilderApplicatorImpl {
 	
 	new() {
 		super(VitruviusEmfBuilder.BUILDER_ID)

@@ -17,7 +17,8 @@ Require-Bundle: org.apache.log4j,
  org.eclipse.core.expressions;visibility:=reexport,
  org.eclipse.core.resources,
  tools.vitruv.framework.vsum,
- tools.vitruv.framework.domains
+ tools.vitruv.framework.domains,
+ edu.kit.ipd.sdq.activextendannotations
 Export-Package: tools.vitruv.framework.ui.monitorededitor,
  tools.vitruv.framework.ui.monitorededitor.registries
 Bundle-Vendor: vitruv.tools

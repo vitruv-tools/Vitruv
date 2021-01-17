@@ -3,7 +3,7 @@ package tools.vitruv.testutils.domains;
 import pcm_mockup.Pcm_mockupPackage;
 import tools.vitruv.domains.emf.builder.VitruviusEmfBuilderApplicator;
 import tools.vitruv.framework.domains.AbstractTuidAwareVitruvDomain;
-import tools.vitruv.framework.domains.VitruviusProjectBuilderApplicator;
+import tools.vitruv.framework.domains.VitruvProjectBuilderApplicator;
 import tools.vitruv.framework.tuid.AttributeTuidCalculatorAndResolver;
 
 public final class PcmMockupDomain extends AbstractTuidAwareVitruvDomain {
@@ -17,7 +17,7 @@ public final class PcmMockupDomain extends AbstractTuidAwareVitruvDomain {
 	}
 
 	@Override
-	public VitruviusProjectBuilderApplicator getBuilderApplicator() {
+	public VitruvProjectBuilderApplicator getBuilderApplicator() {
 		return new VitruviusEmfBuilderApplicator();
 	}
 	
