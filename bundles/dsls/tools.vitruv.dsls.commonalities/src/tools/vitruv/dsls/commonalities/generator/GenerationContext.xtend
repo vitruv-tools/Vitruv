@@ -1,6 +1,5 @@
 package tools.vitruv.dsls.commonalities.generator
 
-import java.util.Collections
 import java.util.HashMap
 import java.util.Map
 import org.eclipse.emf.ecore.EAttribute
@@ -37,10 +36,11 @@ import static com.google.common.base.Preconditions.*
 import static extension tools.vitruv.dsls.commonalities.generator.domain.ConceptDomainConstants.*
 import static extension tools.vitruv.dsls.commonalities.generator.intermediatemodel.IntermediateModelConstants.*
 import static extension tools.vitruv.dsls.commonalities.language.extensions.CommonalitiesLanguageModelExtensions.*
+import javax.inject.Inject
+import java.util.Set
 
 @GenerationScoped
 class GenerationContext {
-
 	static class Factory extends InjectingFactoryBase {
 		def create(IFileSystemAccess2 fsa, CommonalityFile commonalityFile) {
 			return new GenerationContext(fsa, commonalityFile).injectMembers
@@ -50,7 +50,7 @@ class GenerationContext {
 	// TODO verify that this caching heuristic actually produces the desired results
 	// see https://github.com/eclipse/xtext-core/issues/413
 	static var int lastSeenResourceSetHash
-	static var Iterable<String> generatedConcepts = Collections.emptyList
+	static var Set<String> generatedConcepts = emptySet
 
 	@Accessors(PUBLIC_GETTER)
 	val IFileSystemAccess2 fsa
@@ -58,6 +58,8 @@ class GenerationContext {
 	val CommonalityFile commonalityFile
 	@Accessors(PUBLIC_GETTER)
 	val boolean isNewResourceSet
+	@Accessors(PUBLIC_GETTER)
+	@Inject CommonalitiesGenerationSettings settings
 
 	// TODO Cache for complete ResourceSet (but: how to known when to cleanup)?
 	val Map<String, EPackage> intermediateMetamodelPackages = new HashMap
@@ -87,7 +89,7 @@ class GenerationContext {
 		val isNewResourceSet = (resourceSetHashCode != lastSeenResourceSetHash);
 		if (isNewResourceSet) {
 			lastSeenResourceSetHash = resourceSetHashCode
-			generatedConcepts = Collections.emptyList
+			generatedConcepts = emptySet
 		}
 		return isNewResourceSet
 	}
@@ -104,7 +106,7 @@ class GenerationContext {
 		commonalityFile.eResource.resourceSet
 	}
 
-	def setGeneratedConcepts(Iterable<String> newGeneratedConcepts) {
+	def setGeneratedConcepts(Set<String> newGeneratedConcepts) {
 		generatedConcepts = newGeneratedConcepts
 	}
 
