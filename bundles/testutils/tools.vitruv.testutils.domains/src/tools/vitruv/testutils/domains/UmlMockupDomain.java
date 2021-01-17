@@ -2,7 +2,7 @@ package tools.vitruv.testutils.domains;
 
 import tools.vitruv.domains.emf.builder.VitruviusEmfBuilderApplicator;
 import tools.vitruv.framework.domains.AbstractTuidAwareVitruvDomain;
-import tools.vitruv.framework.domains.VitruviusProjectBuilderApplicator;
+import tools.vitruv.framework.domains.VitruvProjectBuilderApplicator;
 import tools.vitruv.framework.tuid.AttributeTuidCalculatorAndResolver;
 import uml_mockup.Uml_mockupPackage;
 
@@ -16,7 +16,7 @@ public final class UmlMockupDomain extends AbstractTuidAwareVitruvDomain {
 	}
 
 	@Override
-	public VitruviusProjectBuilderApplicator getBuilderApplicator() {
+	public VitruvProjectBuilderApplicator getBuilderApplicator() {
 		return new VitruviusEmfBuilderApplicator();
 	}
 	
