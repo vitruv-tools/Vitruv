@@ -1,4 +1,4 @@
-package tools.vitruv.framework.ui.monitorededitor
+package tools.vitruv.framework.domains.ui.builder
 
 import org.eclipse.core.resources.IProject
 import org.eclipse.core.resources.ICommand
@@ -11,7 +11,7 @@ import org.eclipse.xtend.lib.annotations.Accessors
 import static extension tools.vitruv.framework.util.ProjectBuildUtils.hasBuilder
 import java.util.Set
 import static com.google.common.base.Preconditions.checkArgument
-import static extension tools.vitruv.framework.ui.monitorededitor.VitruvProjectBuilderArguments.*
+import static extension tools.vitruv.framework.domains.ui.builder.VitruvProjectBuilderArguments.*
 import tools.vitruv.framework.domains.VitruvProjectBuilderApplicator
 
 class VitruvProjectBuilderApplicatorImpl implements VitruvProjectBuilderApplicator {

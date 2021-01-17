@@ -1,4 +1,4 @@
-package tools.vitruv.framework.ui.monitorededitor
+package tools.vitruv.framework.domains.ui.monitorededitor
 
 interface MonitoredEditor {
 	/**

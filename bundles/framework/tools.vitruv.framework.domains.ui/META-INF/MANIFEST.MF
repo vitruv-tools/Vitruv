@@ -1,12 +1,12 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Vitruv Framework UI Monitored Editors
-Bundle-SymbolicName: tools.vitruv.framework.ui.monitorededitor;singleton:=true
-Automatic-Module-Name: tools.vitruv.framework.ui.monitorededitor
+Bundle-SymbolicName: tools.vitruv.framework.domains.ui;singleton:=true
+Automatic-Module-Name: tools.vitruv.framework.domains.ui
 Bundle-Version: 1.1.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-ActivationPolicy: lazy
-Bundle-Activator: tools.vitruv.framework.ui.monitorededitor.Activator
+Bundle-Activator: tools.vitruv.framework.domains.ui.Activator
 Require-Bundle: org.apache.log4j,
  org.eclipse.core.runtime,
  org.eclipse.osgi,
@@ -19,6 +19,6 @@ Require-Bundle: org.apache.log4j,
  tools.vitruv.framework.vsum,
  tools.vitruv.framework.domains,
  edu.kit.ipd.sdq.activextendannotations
-Export-Package: tools.vitruv.framework.ui.monitorededitor,
- tools.vitruv.framework.ui.monitorededitor.registries
+Export-Package: tools.vitruv.framework.domains.ui.monitorededitor,
+ tools.vitruv.framework.domains.ui.builder
 Bundle-Vendor: vitruv.tools

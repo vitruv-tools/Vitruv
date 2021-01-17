@@ -1,4 +1,4 @@
-package tools.vitruv.framework.ui.monitorededitor
+package tools.vitruv.framework.domains.ui.builder
 
 import org.apache.log4j.Logger
 import java.util.Set
@@ -8,8 +8,8 @@ import org.eclipse.core.resources.IProject
 import java.util.Map
 import org.eclipse.core.runtime.IProgressMonitor
 import org.eclipse.core.runtime.CoreException
-import static extension tools.vitruv.framework.ui.monitorededitor.VitruvProjectBuilderArguments.getVirtualModelFolder
-import static extension tools.vitruv.framework.ui.monitorededitor.VitruvProjectBuilderArguments.getFileExtensions
+import static extension tools.vitruv.framework.domains.ui.builder.VitruvProjectBuilderArguments.getVirtualModelFolder
+import static extension tools.vitruv.framework.domains.ui.builder.VitruvProjectBuilderArguments.getFileExtensions
 import tools.vitruv.framework.vsum.VirtualModelManager
 
 abstract class VitruvProjectBuilder extends IncrementalProjectBuilder {
