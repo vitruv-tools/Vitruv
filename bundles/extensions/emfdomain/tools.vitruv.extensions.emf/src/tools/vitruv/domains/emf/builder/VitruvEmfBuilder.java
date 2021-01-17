@@ -28,9 +28,9 @@ import tools.vitruv.framework.domains.ui.builder.VitruvProjectBuilder;
 import tools.vitruv.framework.util.datatypes.ModelInstance;
 import tools.vitruv.framework.util.datatypes.VURI;
 
-public class VitruviusEmfBuilder extends VitruvProjectBuilder {
-	public static final String BUILDER_ID = "tools.vitruv.domains.emf.builder.VitruviusEmfBuilder.id";
-    private static final Logger LOGGER = Logger.getLogger(VitruviusEmfBuilder.class.getSimpleName());
+public class VitruvEmfBuilder extends VitruvProjectBuilder {
+	public static final String BUILDER_ID = "tools.vitruv.domains.emf.builder.VitruvEmfBuilder.id";
+    private static final Logger LOGGER = Logger.getLogger(VitruvEmfBuilder.class.getSimpleName());
 
     private final VitruviusEMFDeltaVisitor vitruviusEMFDeltaVisitor;
 
@@ -42,11 +42,11 @@ public class VitruviusEmfBuilder extends VitruvProjectBuilder {
     
     private final boolean isInTestingMode = true;
 
-    public VitruviusEmfBuilder() {
+    public VitruvEmfBuilder() {
         this(null, null, null);
     }
 
-    public VitruviusEmfBuilder(final IResourceDeltaProviding resourceDeltaProviding,
+    public VitruvEmfBuilder(final IResourceDeltaProviding resourceDeltaProviding,
             final IProjectProviding projectProviding, final EMFEditorMonitorFactory monitorFactory) {
         LOGGER.trace("Created a VitruviusEmfBuilder.");
         this.vitruviusEMFDeltaVisitor = new VitruviusEMFDeltaVisitor();
@@ -55,7 +55,7 @@ public class VitruviusEmfBuilder extends VitruvProjectBuilder {
             this.resourceDeltaProviding = new IResourceDeltaProviding() {
                 @Override
                 public IResourceDelta getDelta(final IProject project) {
-                    return VitruviusEmfBuilder.this.getDelta(project);
+                    return VitruvEmfBuilder.this.getDelta(project);
                 }
             };
         } else {
@@ -66,7 +66,7 @@ public class VitruviusEmfBuilder extends VitruvProjectBuilder {
             this.projectProviding = new IProjectProviding() {
                 @Override
                 public IProject getProject() {
-                    return VitruviusEmfBuilder.this.getProject();
+                    return VitruvEmfBuilder.this.getProject();
                 }
             };
         } else {
@@ -98,7 +98,7 @@ public class VitruviusEmfBuilder extends VitruvProjectBuilder {
             @Override
             public boolean isModelMonitored(final VURI modelUri) {
                 boolean doMonitor = getMonitoredFileExtensions().contains(modelUri.getFileExtension());
-                doMonitor &= VitruviusEmfBuilder.this.isFileBelongingToThisProject(modelUri);
+                doMonitor &= VitruvEmfBuilder.this.isFileBelongingToThisProject(modelUri);
                 LOGGER.trace("Monitor " + modelUri + "? " + doMonitor);
                 return doMonitor;
             }
@@ -135,15 +135,15 @@ public class VitruviusEmfBuilder extends VitruvProjectBuilder {
                 switch (delta.getKind()) {
                 case IResourceDelta.ADDED:
                     LOGGER.debug("Importing to Vitruvius: " + iResource);
-                    VitruviusEmfBuilder.this.importToVitruvius(iResource);
+                    VitruvEmfBuilder.this.importToVitruvius(iResource);
                     break;
                 case IResourceDelta.REMOVED:
                     LOGGER.debug("Removing from Vitruvius: " + iResource);
-                    VitruviusEmfBuilder.this.removeFromVitruvius(iResource);
+                    VitruvEmfBuilder.this.removeFromVitruvius(iResource);
                     break;
                 case IResourceDelta.CHANGED:
                     // LOGGER.debug("Resource changed: " + iResource);
-                    VitruviusEmfBuilder.this.triggerSynchronisation(iResource);
+                    VitruvEmfBuilder.this.triggerSynchronisation(iResource);
                     break;
                 default:
                     LOGGER.debug("No action for change kind: '" + delta.getKind() + "' executed.");
