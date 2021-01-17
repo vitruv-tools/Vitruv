@@ -10,7 +10,7 @@ import org.eclipse.emf.ecore.resource.Resource;
 
 import tools.vitruv.framework.util.ResourceSetUtil;
 import tools.vitruv.framework.util.bridges.EcoreResourceBridge;
-import tools.vitruv.framework.util.command.EMFCommandBridge;
+import static tools.vitruv.framework.util.command.EMFCommandBridge.executeVitruviusRecordingCommandAndFlushHistory;;
 
 public class ModelInstance extends AbstractURIHaving {
 	private static final Logger LOGGER = Logger.getLogger(ModelInstance.class.getSimpleName());
@@ -116,7 +116,7 @@ public class ModelInstance extends AbstractURIHaving {
 	public void load(final Map<Object, Object> loadOptions, final boolean forceLoadByDoingUnloadBeforeLoad) {
 		// TODO HK This should be done differently: The VSUM provides the editing domain!
 		var domain = ResourceSetUtil.getRequiredTransactionalEditingDomain(resource.getResourceSet());
-		EMFCommandBridge.executeVitruviusRecordingCommand(domain, () -> {
+		executeVitruviusRecordingCommandAndFlushHistory(domain, () -> {
 			try {
 				if (null != loadOptions) {
 					this.lastUsedLoadOptions = loadOptions;
