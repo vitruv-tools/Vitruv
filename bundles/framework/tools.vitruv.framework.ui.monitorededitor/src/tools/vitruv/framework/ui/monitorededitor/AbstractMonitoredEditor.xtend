@@ -21,6 +21,7 @@ abstract class AbstractMonitoredEditor implements MonitoredEditor {
 
 	new(VirtualModel virtualModel) {
 		this.virtualModel = virtualModel
+		this.automaticPropagationAfterMilliseconds = -1
 	}
 
 }
