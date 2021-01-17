@@ -35,6 +35,7 @@ import tools.vitruv.framework.vsum.helper.FileSystemHelper
 
 import static java.util.Collections.emptyMap
 import static extension tools.vitruv.framework.util.ResourceSetUtil.getRequiredTransactionalEditingDomain
+import static extension tools.vitruv.framework.util.ResourceSetUtil.getTransactionalEditingDomain
 import static extension tools.vitruv.framework.util.ResourceSetUtil.withGlobalFactories
 import static extension tools.vitruv.framework.util.command.EMFCommandBridge.executeVitruviusRecordingCommandAndFlushHistory
 import tools.vitruv.framework.util.command.VitruviusRecordingCommand
@@ -346,5 +347,14 @@ class ResourceRepositoryImpl implements ModelRepository, CorrespondenceProviding
 
 	override Resource getModelResource(VURI vuri) {
 		getModelInstanceOriginal(vuri).resource
+	}
+	
+	def dispose() {
+		resourceSet.transactionalEditingDomain?.dispose
+		resourceSet.resources.forEach[
+			allContents.forEach[eAdapters.clear]
+			unload
+		]
+		resourceSet.resources.clear
 	}
 }

@@ -212,5 +212,9 @@ class VirtualModelImpl implements InternalVirtualModel {
 	private def boolean isValid(Resource currentState, Resource newState) {
 		newState.resourceSet.URIConverter.exists(currentState.URI, Collections.emptyMap)
 	}
+	
+	override void dispose() {
+		resourceRepository.dispose	
+	}
 
 }
