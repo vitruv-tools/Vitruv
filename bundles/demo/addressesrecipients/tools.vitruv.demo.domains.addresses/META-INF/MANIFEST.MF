@@ -13,7 +13,6 @@ Require-Bundle: org.junit,
  com.google.guava,
  org.eclipse.xtext.xbase.lib,
  org.eclipse.xtend.lib,
- org.eclipse.xtend.lib.macro,
- tools.vitruv.extensions.emf
+  org.eclipse.xtend.lib.macro
 Export-Package: tools.vitruv.demo.domains.addresses
 Bundle-Vendor: vitruv.tools

@@ -13,7 +13,7 @@ import tools.vitruv.framework.vsum.VirtualModelConfigurationBuilder
 import tools.vitruv.framework.vsum.VirtualModelImpl
 import tools.vitruv.framework.userinteraction.UserInteractionFactory
 import org.apache.log4j.Logger
-import static tools.vitruv.framework.util.ProjectBuildUtils.buildIncrementally
+import tools.vitruv.framework.domains.ui.builder.VitruvProjectBuilderApplicator
 
 class VitruvInstanceCreator {
 	static val LOGGER = Logger.getLogger(VitruvInstanceCreator)
@@ -35,8 +35,9 @@ class VitruvInstanceCreator {
 			for (domain : projectToDomains.get(project)) {
 				try {
 					// TODO HK Provide dialog option for enabling automatic propagation
-					domain.builderApplicator.setPropagateAfterBuild(true).addBuilder(project, virtualModel.folder, domain.fileExtensions.toSet)
-					buildIncrementally(project, domain.builderApplicator.builderId)
+					VitruvProjectBuilderApplicator.getApplicatorsForVitruvDomain(domain).forEach[
+						setPropagateAfterBuild(true).addBuilder(project, virtualModel.folder, domain.fileExtensions.toSet)
+					]
 					return true
 				} catch (IllegalStateException e) {
 					LOGGER.error('''Could not initialize V-SUM project for project: «project.name»''')

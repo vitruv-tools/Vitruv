@@ -16,7 +16,4 @@ class ConcreteTuidAwareVitruvDomain extends AbstractTuidAwareVitruvDomain {
 		super(name, metamodelRootPackage, furtherRootPackages, tuidCalculator, fileExtensions)
 	}
 
-	override getBuilderApplicator() {
-		null
-	}
 }

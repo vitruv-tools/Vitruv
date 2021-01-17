@@ -4,17 +4,15 @@ import org.eclipse.core.expressions.PropertyTester;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.Platform;
 
-import tools.vitruv.framework.domains.VitruvProjectBuilderApplicator;
-
 import static tools.vitruv.framework.util.ProjectBuildUtils.hasBuilder;
 
 public class TestBuilderEnabled extends PropertyTester {
 
     private static final String IS_ENABLED = "isEnabled";
-    private final VitruvProjectBuilderApplicator builderApplicator;
+    private final String builderId;
 
-    protected TestBuilderEnabled(final VitruvProjectBuilderApplicator builderApplicator) {
-        this.builderApplicator = builderApplicator;
+    protected TestBuilderEnabled(final String builderId) {
+        this.builderId = builderId;
     }
 
     @Override
@@ -24,10 +22,11 @@ public class TestBuilderEnabled extends PropertyTester {
             final IProject project = Platform.getAdapterManager().getAdapter(receiver, IProject.class);
 
             if (project != null) {
-                return hasBuilder(project, builderApplicator.getBuilderId());
+                return hasBuilder(project, builderId);
             }
         }
 
         return false;
     }
+    
 }

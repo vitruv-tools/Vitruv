@@ -10,5 +10,13 @@
          </run>
        </builder>
    </extension>
+   <extension
+         name="Vitruv EMF Project Builder"
+         point="tools.vitruv.framework.domains.ui.builder">
+      <assignment
+            builderId="tools.vitruv.domains.emf.builder.VitruviusEmfBuilder.id"
+            domain="tools.vitruv.framework.domains.AbstractVitruvDomain">
+      </assignment>
+   </extension>
 
 </plugin>

@@ -1,9 +1,7 @@
 package tools.vitruv.testutils.domains;
 
 import allElementTypes.AllElementTypesPackage;
-import tools.vitruv.domains.emf.builder.VitruviusEmfBuilderApplicator;
 import tools.vitruv.framework.domains.AbstractTuidAwareVitruvDomain;
-import tools.vitruv.framework.domains.VitruvProjectBuilderApplicator;
 import tools.vitruv.framework.tuid.AttributeTuidCalculatorAndResolver;
 
 public final class AllElementTypesDomain extends AbstractTuidAwareVitruvDomain {
@@ -16,11 +14,6 @@ public final class AllElementTypesDomain extends AbstractTuidAwareVitruvDomain {
 				FILE_EXTENSION);
 	}
 
-	@Override
-	public VitruvProjectBuilderApplicator getBuilderApplicator() {
-		return new VitruviusEmfBuilderApplicator();
-	}
-	
 	@Override
 	public boolean isUserVisible() {
 		return false;

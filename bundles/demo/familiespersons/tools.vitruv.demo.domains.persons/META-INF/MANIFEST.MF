@@ -13,8 +13,7 @@ Require-Bundle: com.google.guava,
  tools.vitruv.framework.util,
  tools.vitruv.framework.tuid,
  edu.kit.ipd.sdq.metamodels.persons;visibility:=reexport,
- org.apache.log4j,
- tools.vitruv.extensions.emf
+ org.apache.log4j
 Export-Package: tools.vitruv.domains.persons,
  tools.vitruv.domains.persons.tuid;x-internal:=true
 Bundle-Vendor: vitruv.tools

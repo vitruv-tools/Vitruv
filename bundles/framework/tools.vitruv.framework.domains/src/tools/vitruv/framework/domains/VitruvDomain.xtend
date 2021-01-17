@@ -28,8 +28,6 @@ interface VitruvDomain extends URIHaving, Comparable<URIHaving> {
 
 	def Map<Object, Object> getDefaultSaveOptions();
 
-	def VitruvProjectBuilderApplicator getBuilderApplicator();
-
 	def Collection<String> getFileExtensions();
 
 	/**

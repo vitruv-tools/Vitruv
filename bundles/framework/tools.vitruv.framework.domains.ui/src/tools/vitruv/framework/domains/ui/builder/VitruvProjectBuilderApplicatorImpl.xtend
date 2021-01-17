@@ -7,19 +7,16 @@ import org.eclipse.core.runtime.CoreException
 import java.util.HashMap
 import java.io.File
 import org.apache.log4j.Logger
-import org.eclipse.xtend.lib.annotations.Accessors
 import static extension tools.vitruv.framework.util.ProjectBuildUtils.hasBuilder
 import java.util.Set
 import static com.google.common.base.Preconditions.checkArgument
 import static extension tools.vitruv.framework.domains.ui.builder.VitruvProjectBuilderArguments.*
-import tools.vitruv.framework.domains.VitruvProjectBuilderApplicator
+import static extension tools.vitruv.framework.util.ProjectBuildUtils.buildIncrementally
 
-class VitruvProjectBuilderApplicatorImpl implements VitruvProjectBuilderApplicator {
+final class VitruvProjectBuilderApplicatorImpl implements VitruvProjectBuilderApplicator {
 	static val LOGGER = Logger.getLogger(VitruvProjectBuilderApplicatorImpl)
 
-	@Accessors(PUBLIC_GETTER)
 	val String builderId
-
 	var Boolean isPropagateAfterBuild = null
 	var Integer millisecondsToPropagateAfter = null
 	
@@ -73,6 +70,7 @@ class VitruvProjectBuilderApplicatorImpl implements VitruvProjectBuilderApplicat
 			LOGGER.error(message, e)
 			throw new IllegalStateException(message, e)
 		}
+		buildIncrementally(project, builderId)
 	}
 
 	override void removeBuilder(IProject project) throws IllegalStateException {
