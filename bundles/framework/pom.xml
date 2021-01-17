@@ -23,11 +23,11 @@
 		<module>tools.vitruv.framework.domains</module>
 		<module>tools.vitruv.framework.domains.ui</module>
 		<module>tools.vitruv.framework.tuid</module>
-		<module>tools.vitruv.framework.ui.vsum</module>
 		<module>tools.vitruv.framework.userinteracting</module>
 		<module>tools.vitruv.framework.util</module>
 		<module>tools.vitruv.framework.uuid</module>
 		<module>tools.vitruv.framework.vsum</module>
+		<module>tools.vitruv.framework.vsum.ui</module>
 	</modules>
 
 </project>

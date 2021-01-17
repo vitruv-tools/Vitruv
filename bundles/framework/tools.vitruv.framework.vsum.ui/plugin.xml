@@ -4,14 +4,14 @@
    <extension
          point="org.eclipse.ui.newWizards">
       <category
-            id="tools.vitruv.framework.ui.vsum.Vitruv"
+            id="tools.vitruv.framework.vsum.ui.Vitruv"
             name="Vitruv">
       </category>
       <wizard
-            category="tools.vitruv.framework.ui.vsum.Vitruv"
-            class="tools.vitruv.framework.ui.vsum.wizard.CreateVsumWizard"
+            category="tools.vitruv.framework.vsum.ui.Vitruv"
+            class="tools.vitruv.framework.vsum.ui.wizard.CreateVsumWizard"
             icon="images/vitruvian.png"
-            id="tools.vitruv.framework.ui.vsum.newvitruvwizard"
+            id="tools.vitruv.framework.vsum.ui.newvitruvwizard"
             name="Vitruv Project">
       </wizard>
    </extension>
@@ -21,9 +21,9 @@
             allPopups="false"
             locationURI="toolbar:org.eclipse.ui.main.toolbar">
          <toolbar
-               id="tools.vitruv.framework.ui.vsum.toolbar">
+               id="tools.vitruv.framework.vsum.ui.toolbar">
             <command
-                  commandId="tools.vitruv.framework.ui.vsum.vitruvwizardcommand"
+                  commandId="tools.vitruv.framework.vsum.ui.vitruvwizardcommand"
                   icon="images/vitruvian.png"
                   style="push">
             </command>
@@ -31,11 +31,11 @@
       </menuContribution>
    </extension>
    <extension
-         id="tools.vitruv.framework.ui.vsum.vitruvwizardcommand"
+         id="tools.vitruv.framework.vsum.ui.vitruvwizardcommand"
          point="org.eclipse.ui.commands">
       <command
-            defaultHandler="tools.vitruv.framework.ui.vsum.CreateVsumButtonHandler"
-            id="tools.vitruv.framework.ui.vsum.vitruvwizardcommand"
+            defaultHandler="tools.vitruv.framework.vsum.ui.CreateVsumButtonHandler"
+            id="tools.vitruv.framework.vsum.ui.vitruvwizardcommand"
             name="VitruvWizard">
       </command>
    </extension>

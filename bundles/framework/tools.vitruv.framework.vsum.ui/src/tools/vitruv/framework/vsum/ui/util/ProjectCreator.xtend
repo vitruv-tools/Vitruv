@@ -1,4 +1,4 @@
-package tools.vitruv.framework.ui.vsum.util
+package tools.vitruv.framework.vsum.ui.util
 
 import static edu.kit.ipd.sdq.commons.util.org.eclipse.core.resources.IProjectUtil.*
 
