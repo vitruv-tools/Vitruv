@@ -3,9 +3,6 @@ package tools.vitruv.framework.domains.ui;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 
-import tools.vitruv.framework.ui.monitorededitor.registries.MonitoredEditorsRegistry;
-import tools.vitruv.framework.ui.monitorededitor.registries.MonitoredProjectsRegistry;
-
 /**
  * Activator for the monitored editor base plugin.
  *
@@ -33,8 +30,6 @@ public class Activator implements BundleActivator {
     @Override
     public void start(final BundleContext bundleContext) throws Exception {
         Activator.context = bundleContext;
-        MonitoredProjectsRegistry.init();
-        MonitoredEditorsRegistry.init();
     }
 
     /**
