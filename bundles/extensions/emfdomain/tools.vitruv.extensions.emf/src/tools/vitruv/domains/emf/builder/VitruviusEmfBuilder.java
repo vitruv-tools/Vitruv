@@ -24,7 +24,7 @@ import tools.vitruv.framework.change.description.CompositeChange;
 import tools.vitruv.framework.change.description.ConcreteChange;
 import tools.vitruv.framework.change.description.VitruviusChangeFactory;
 import tools.vitruv.framework.change.description.VitruviusChangeFactory.FileChangeKind;
-import tools.vitruv.framework.ui.monitorededitor.VitruvProjectBuilder;
+import tools.vitruv.framework.domains.ui.builder.VitruvProjectBuilder;
 import tools.vitruv.framework.util.datatypes.ModelInstance;
 import tools.vitruv.framework.util.datatypes.VURI;
 
