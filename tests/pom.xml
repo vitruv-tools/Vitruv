@@ -15,7 +15,7 @@
 	<modules>
 		<module>framework</module>
 		<module>dsls</module>
-		<module>extensions</module>
+		<module>domains</module>
 		<module>demo</module>
 	</modules>
 	

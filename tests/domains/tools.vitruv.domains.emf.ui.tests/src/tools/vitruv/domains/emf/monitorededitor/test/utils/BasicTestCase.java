@@ -22,7 +22,7 @@ import tools.vitruv.testutils.TestLogging;
 
 @ExtendWith(TestLogging.class)
 public class BasicTestCase {
-    public static final String PLUGIN_NAME = "tools.vitruv.extensions.emf.monitorededitor.tests";
+    public static final String PLUGIN_NAME = "tools.vitruv.domains.emf.ui.tests";
     protected Logger LOGGER = Logger.getLogger(BasicTestCase.class);
 
     @BeforeAll
