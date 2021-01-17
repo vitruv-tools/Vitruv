@@ -1,12 +1,12 @@
-package tools.vitruv.framework.domains
+package tools.vitruv.framework.domains.ui.builder
 
 import org.eclipse.core.resources.IProject
 import java.io.File
 import java.util.Set
+import tools.vitruv.framework.domains.VitruvDomain
+import com.google.common.collect.Sets
 
 interface VitruvProjectBuilderApplicator {
-	def String getBuilderId()
-
 	/**
 	 * Enables or disables automatically running change propagation after a build was triggered in the generated builder.
 	 */
@@ -19,6 +19,7 @@ interface VitruvProjectBuilderApplicator {
 
 	/**
 	 * Adds the builder for the virtual model in the given folder and for the given file extensions to the given project.
+	 * It runs an incremental build of the given project to initialize the builder.
 	 * <p>
 	 * None of the arguments must be {@code null} and {@code fileExtensions} must not be empty.
 	 * 
@@ -33,4 +34,9 @@ interface VitruvProjectBuilderApplicator {
 	 * @throws IllegalStateException if the builder could be removed from the given project
 	 */
 	def void removeBuilder(IProject project) throws IllegalStateException
+	
+	static def Set<VitruvProjectBuilderApplicator> getApplicatorsForVitruvDomain(VitruvDomain domain) {
+		Sets.newHashSet(VitruvProjectBuilderRegistry.INSTANCE.getProjectBuilderIds(domain).map[new VitruvProjectBuilderApplicatorImpl(it)])
+	}
+	
 }

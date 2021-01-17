@@ -1,7 +1,6 @@
 package tools.vitruv.domains.insurance
 
 import tools.vitruv.framework.tuid.TuidCalculatorAndResolver
-import tools.vitruv.domains.emf.builder.VitruviusEmfBuilderApplicator
 import tools.vitruv.framework.domains.AbstractTuidAwareVitruvDomain
 import edu.kit.ipd.sdq.metamodels.insurance.InsurancePackage
 import tools.vitruv.domains.insurance.tuid.InsuranceTuidCalculatorAndResolver
@@ -19,10 +18,6 @@ class InsuranceDomain extends AbstractTuidAwareVitruvDomain {
 		return new InsuranceTuidCalculatorAndResolver(InsurancePackage.eNS_URI);
 	}
 
-	override getBuilderApplicator() {
-		return new VitruviusEmfBuilderApplicator();
-	}
-	
 	override boolean isUserVisible() {
 		return false;
 	}
