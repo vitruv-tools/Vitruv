@@ -179,11 +179,6 @@
 							</dependency>
 							<dependency>
 								<groupId>tools.vitruv</groupId>
-								<artifactId>tools.vitruv.extensions.emf</artifactId>
-								<version>1.1.0-SNAPSHOT</version>
-							</dependency>
-							<dependency>
-								<groupId>tools.vitruv</groupId>
 								<artifactId>tools.vitruv.demo.domains.families</artifactId>
 								<version>1.1.0-SNAPSHOT</version>
 							</dependency>
