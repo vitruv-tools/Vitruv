@@ -21,8 +21,8 @@
 		<module>tools.vitruv.framework.change.processing</module>
 		<module>tools.vitruv.framework.correspondence</module>
 		<module>tools.vitruv.framework.domains</module>
+		<module>tools.vitruv.framework.domains.ui</module>
 		<module>tools.vitruv.framework.tuid</module>
-		<module>tools.vitruv.framework.ui.monitorededitor</module>
 		<module>tools.vitruv.framework.ui.vsum</module>
 		<module>tools.vitruv.framework.userinteracting</module>
 		<module>tools.vitruv.framework.util</module>
