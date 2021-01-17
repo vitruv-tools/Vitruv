@@ -1,4 +1,4 @@
-package tools.vitruv.framework.ui.vsum.wizard;
+package tools.vitruv.framework.vsum.ui.wizard;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -22,7 +22,7 @@ import org.eclipse.swt.widgets.TreeItem;
 import tools.vitruv.framework.domains.VitruvDomain;
 import tools.vitruv.framework.domains.VitruvDomainProvider;
 import tools.vitruv.framework.domains.VitruvDomainProviderRegistry;
-import tools.vitruv.framework.ui.vsum.util.ProjectCreator;
+import tools.vitruv.framework.vsum.ui.util.ProjectCreator;
 
 import java.util.HashMap;
 import java.util.HashSet;
