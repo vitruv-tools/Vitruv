@@ -3,9 +3,9 @@
       id="tools.vitruv.extensions.changevisualization.feature"
       label="%featureName"
       version="1.1.0.qualifier"
-      provider-name="%providerName"	  
+      provider-name="%providerName"
       license-feature="tools.vitruv.license.feature"
-	  license-feature-version="1.0.0">
+      license-feature-version="1.0.0">
 
    <description>
       %description
@@ -20,7 +20,15 @@
    </license>
 
    <requires>
-      <import feature="tools.vitruv.framework.feature" version="0.3.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.ui"/>
+      <import plugin="org.eclipse.core.resources"/>
+      <import plugin="org.eclipse.core.runtime"/>
+      <import plugin="org.eclipse.emf.common"/>
+      <import plugin="org.eclipse.emf.ecore"/>
+      <import plugin="tools.vitruv.framework.change"/>
+      <import plugin="tools.vitruv.framework.change.echange"/>
+      <import plugin="tools.vitruv.framework.domains"/>
+      <import plugin="tools.vitruv.framework.vsum"/>
    </requires>
 
    <plugin
