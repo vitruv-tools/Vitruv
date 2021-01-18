@@ -14,8 +14,6 @@
 	<name>Demo Addresses Recipients Modules</name>
 
 	<modules>
-	  <module>tools.vitruv.demo.domains.addresses</module>
-	  <module>tools.vitruv.demo.domains.recipients</module>
 	  <module>tools.vitruv.demo.applications.addressesrecipients</module>
 	</modules>
 

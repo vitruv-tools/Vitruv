@@ -1,7 +1,7 @@
 package tools.vitruv.dsls.mappings.addressesXrecipients
 
 import edu.kit.ipd.sdq.metamodels.addresses.AddressesFactory
-import tools.vitruv.demo.domains.addresses.AddressesDomainProvider
+import tools.vitruv.domains.demo.addresses.AddressesDomainProvider
 import tools.vitruv.testutils.domains.DomainUtil
 import tools.vitruv.testutils.activeannotations.ModelCreators
 

@@ -14,9 +14,6 @@
 	<name>Demo Families Persons Modules</name>
 
 	<modules>
-	  <module>tools.vitruv.demo.domains.persons</module>
-	  <module>tools.vitruv.demo.domains.families</module>
-	  <module>tools.vitruv.demo.domains.insurance</module>
 	  <module>tools.vitruv.demo.applications.familiespersons</module>
 	</modules>
 

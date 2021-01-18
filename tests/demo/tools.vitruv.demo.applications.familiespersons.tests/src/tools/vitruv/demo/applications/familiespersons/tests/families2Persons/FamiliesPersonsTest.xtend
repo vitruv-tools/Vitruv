@@ -5,8 +5,8 @@ import edu.kit.ipd.sdq.metamodels.families.FamilyRegister
 import edu.kit.ipd.sdq.metamodels.persons.Person
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import tools.vitruv.domains.families.FamiliesDomainProvider
-import tools.vitruv.domains.persons.PersonsDomainProvider
+import tools.vitruv.domains.demo.families.FamiliesDomainProvider
+import tools.vitruv.domains.demo.persons.PersonsDomainProvider
 import tools.vitruv.framework.correspondence.CorrespondenceModelUtil
 
 import static org.hamcrest.CoreMatchers.is
