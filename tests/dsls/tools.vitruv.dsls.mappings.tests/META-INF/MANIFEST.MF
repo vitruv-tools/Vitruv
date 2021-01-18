@@ -5,34 +5,15 @@ Bundle-SymbolicName: tools.vitruv.dsls.mappings.tests;singleton:=true
 Bundle-Version: 1.1.0.qualifier
 Bundle-Vendor: vitruv.tools
 Require-Bundle: tools.vitruv.dsls.mappings,
+ tools.vitruv.testutils,
+ tools.vitruv.framework.applications,
  org.eclipse.xtext.testing,
  org.eclipse.xtext.xbase.testing,
- org.eclipse.xtext.xbase.lib;bundle-version="2.14.0",
  org.objectweb.asm;bundle-version="[9.0.0,9.1.0)";resolution:=optional,
- org.apache.log4j,
- com.google.guava,
- org.eclipse.emf.ecore,
- org.eclipse.core.resources,
- org.eclipse.xtend.lib,
- org.eclipse.xtend.lib.macro,
- tools.vitruv.testutils,
- tools.vitruv.framework.change.processing,
- tools.vitruv.framework.applications,
- tools.vitruv.framework.util,
- tools.vitruv.framework.change,
- tools.vitruv.framework.change.processing,
- tools.vitruv.framework.correspondence,
- tools.vitruv.framework.userinteraction,
- tools.vitruv.extensions.dslsruntime.reactions;visibility:=reexport,
- tools.vitruv.extensions.dslsruntime.mappings,
- org.palladiosimulator.pcm,
- org.palladiosimulator.pcm.resources,
  org.eclipse.uml2.uml,
- tools.vitruv.dsls.reactions,
- tools.vitruv.dsls.mirbase,
- tools.vitruv.dsls.mappings,
  org.hamcrest.core,
- org.junit.jupiter.api
+ org.junit.jupiter.api,
+ org.eclipse.xtext.xbase.lib;bundle-version="2.14.0"
 Automatic-Module-Name: tools.vitruv.dsls.mappings.tests
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-ActivationPolicy: lazy

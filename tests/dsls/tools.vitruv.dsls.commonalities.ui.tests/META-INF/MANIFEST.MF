@@ -6,25 +6,20 @@ Bundle-Version: 1.1.0.qualifier
 Bundle-SymbolicName: tools.vitruv.dsls.commonalities.ui.tests; singleton:=true
 Automatic-Module-Name: tools.vitruv.dsls.commonalities.ui.tests
 Bundle-ActivationPolicy: lazy
-Require-Bundle: org.eclipse.xtext.testing,
- org.eclipse.xtext.ui.testing,
- org.eclipse.xtext.xbase.lib,
- org.eclipse.xtext.xbase.testing,
- tools.vitruv.dsls.commonalities,
+Require-Bundle: tools.vitruv.dsls.commonalities,
  tools.vitruv.dsls.commonalities.ui,
- tools.vitruv.extensions.dslsruntime.commonalities,
  tools.vitruv.dsls.commonalities.testutils,
  tools.vitruv.testutils,
  tools.vitruv.testutils.domains,
- tools.vitruv.testutils.metamodels,
+ org.eclipse.xtext.testing,
+ org.eclipse.xtext.ui.testing,
+ org.eclipse.xtext.xbase.testing,
  org.junit.jupiter.api,
  org.hamcrest.core,
- edu.kit.ipd.sdq.activextendannotations,
- tools.vitruv.dsls.common.ui,
  org.eclipse.pde.core,
+ org.eclipse.xtext.xbase.junit,
  org.eclipse.core.runtime,
- org.eclipse.ui.workbench;resolution:=optional,
- org.eclipse.xtext.xbase.junit
+ org.eclipse.ui.workbench;resolution:=optional
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Export-Package: tools.vitruv.dsls.commonalities.ui.execution;x-internal:=true,
  tools.vitruv.dsls.commonalities.ui.tests;x-internal=true

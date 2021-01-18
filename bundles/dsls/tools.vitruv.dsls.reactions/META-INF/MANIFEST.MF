@@ -7,31 +7,22 @@ Bundle-Vendor: %providerName
 Bundle-Localization: plugin
 Bundle-SymbolicName: tools.vitruv.dsls.reactions;singleton:=true
 Automatic-Module-Name: tools.vitruv.dsls.reactions
-Require-Bundle: org.eclipse.xtext,
+Require-Bundle: edu.kit.ipd.sdq.activextendannotations,
+ tools.vitruv.dsls.common;visibility:=reexport,
+ tools.vitruv.dsls.mirbase;visibility:=reexport,
+ tools.vitruv.extensions.dslsruntime.reactions;visibility:=reexport,
  org.eclipse.xtext.xbase,
- org.eclipse.equinox.common;bundle-version="3.9.0",
- org.eclipse.core.runtime,
+ org.antlr.runtime;bundle-version="[3.2.0,3.2.1)",
+ org.eclipse.xtext.ui,
+ org.eclipse.xtext.xtext.generator,
+ org.objectweb.asm;bundle-version="[9.0.0,9.1.0)";resolution:=optional,
  org.eclipse.emf.ecore,
  org.eclipse.xtext.common.types,
  org.eclipse.xtext.xbase.lib;bundle-version="2.14.0",
- org.antlr.runtime;bundle-version="[3.2.0,3.2.1)",
  org.eclipse.xtext.util,
- org.eclipse.xtend.lib;bundle-version="2.14.0",
  org.eclipse.emf.common,
- org.eclipse.core.resources,
- tools.vitruv.framework.util,
- tools.vitruv.extensions.dslsruntime.reactions,
- tools.vitruv.framework.userinteraction,
- tools.vitruv.dsls.mirbase;visibility:=reexport,
- org.eclipse.xtext.ui,
- org.eclipse.xtext.xtext.generator,
- tools.vitruv.framework.change.echange,
- tools.vitruv.framework.change.processing,
- tools.vitruv.framework.domains;visibility:=reexport,
- edu.kit.ipd.sdq.activextendannotations;bundle-version="1.0.0",
- tools.vitruv.dsls.common,
- org.eclipse.emf.mwe.core,
- org.objectweb.asm;bundle-version="[9.0.0,9.1.0)";resolution:=optional
+ org.eclipse.xtend.lib;bundle-version="2.14.0",
+ org.eclipse.xtext
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Export-Package: tools.vitruv.dsls.reactions,
@@ -61,5 +52,4 @@ Export-Package: tools.vitruv.dsls.reactions,
  tools.vitruv.dsls.reactions.codegen.typesbuilder;x-internal:=true,
  tools.vitruv.dsls.reactions.linking;x-internal:=true,
  tools.vitruv.dsls.reactions.postprocessor;x-internal:=true
-Import-Package: org.apache.log4j,
- org.eclipse.xtext.builder
+Import-Package: org.apache.log4j
