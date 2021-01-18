@@ -9,6 +9,7 @@ import tools.vitruv.framework.tuid.AttributeTuidCalculatorAndResolver
 
 import static extension tools.vitruv.dsls.commonalities.generator.domain.ConceptDomainConstants.*
 import static extension tools.vitruv.dsls.commonalities.generator.intermediatemodel.IntermediateModelConstants.*
+import tools.vitruv.framework.domains.VitruvDomainProviderRegistry
 
 /**
  * Dummy {@link VitruvDomain} which represents the concept domain during the
@@ -33,6 +34,7 @@ class ConceptDomain extends IntermediateVitruvDomain {
 		this.provider
 	}
 
+	@VitruvDomainProviderRegistry.IgnoreInStandalone
 	private static class Provider implements VitruvDomainProvider<ConceptDomain> {
 
 		val ConceptDomain domain

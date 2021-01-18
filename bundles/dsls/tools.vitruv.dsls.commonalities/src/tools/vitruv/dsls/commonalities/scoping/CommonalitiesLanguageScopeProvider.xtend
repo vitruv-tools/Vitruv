@@ -35,6 +35,10 @@ class CommonalitiesLanguageScopeProvider extends AbstractCommonalitiesLanguageSc
 	@Inject Provider<ParticipationClassesScope> participationClassesScope
 	@Inject Provider<ParticipationAttributesScope> participationAttributesScope
 	@Inject Provider<CommonalityAttributesScope> commonalityAttributesScope
+	@Inject ParticipationRelationOperatorScopeProvider relationOperatorScopeProvider
+	@Inject ParticipationConditionOperatorScopeProvider conditionOperatorScopeProvider
+	@Inject AttributeMappingOperatorScopeProvider attributeMappingOperatorScopeProvider
+	@Inject ReferenceMappingOperatorScopeProvider referenceMappingOperatorScopeProvider
 	@Inject IGlobalScopeProvider globalScopeProvider
 	@Inject extension IQualifiedNameProvider qualifiedNameProvider
 	@Inject extension IEObjectDescriptionProvider descriptionProvider
@@ -130,7 +134,20 @@ class CommonalitiesLanguageScopeProvider extends AbstractCommonalitiesLanguageSc
 					return commonality.unqualifiedCommonalityAttributeScope
 				}
 			}
+			
+			case ATTRIBUTE_MAPPING_OPERATOR__JVM_TYPE:
+				return attributeMappingOperatorScopeProvider.getScope(context, reference)
+				
+			case REFERENCE_MAPPING_OPERATOR__JVM_TYPE:
+				return referenceMappingOperatorScopeProvider.getScope(context, reference)
+				
+			case PARTICIPATION_RELATION_OPERATOR__JVM_TYPE:
+				return relationOperatorScopeProvider.getScope(context, reference)
+				
+			case PARTICIPATION_CONDITION_OPERATOR__JVM_TYPE:
+				return conditionOperatorScopeProvider.getScope(context, reference)
 		}
+		
 		return globalScopeProvider.getScope(context.eResource, reference, null)
 	}
 

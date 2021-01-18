@@ -14,7 +14,7 @@ CommonalityFile:
 ;
 
 OperatorImport:
-	'import' (importedType=[jvmTypes::JvmDeclaredType|QualifiedName] | importedNamespace=QualifiedNameWithWildcard)
+	'import' (importedNamespace=QualifiedOperatorName | importedNamespace=QualifiedOperatorWildCard)
 ;
 
 Domain:
@@ -293,13 +293,24 @@ UnqualifiedAttribute:
 
 // To correctly parse character combinations, we need to copy all tokens that
 // already occurred in the parent grammars (i.e. Xbase).
-// '->' and '<-': Ambiguous since the next participation condition may start with this as well
+// Excluded are:
+//   * '->' and '<-': Ambiguous since the next participation condition may start with this as well
+//   * '_' because it is used for a wildcard import
 OperatorName:
 	ID |
 	( '+=' | '-=' | '*=' | '/=' | '%=' | '>=' | '<=' | '||' | '&&' | '==' | '!=' | '===' | '!=='
 	| '=>' | '<>' | '?:' | '**' | '--' | '++' | '::'
-	| '=' | '!' | '%' | '&' | '*' | '+' | '-' | '/' | '<' | '>' | '^' | '~' | '_' | ':' | '?')+
+	| '=' | '!' | '%' | '&' | '*' | '+' | '-' | '/' | '<' | '>' | '^' | '~' | ':' | '?')+
 ;
+
+QualifiedOperatorName:
+	ValidID (=>'.' ValidID)* '.' OperatorName
+;
+
+QualifiedOperatorWildCard: 
+	ValidID (=>'.' ValidID)* '.' '_'
+;
+
 
 /******************
  * Terminal Rules *

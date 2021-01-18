@@ -6,13 +6,13 @@ import com.google.inject.Singleton
 import org.eclipse.xtext.RuleCall
 import org.eclipse.xtext.conversion.IValueConverterService
 import org.eclipse.xtext.conversion.ValueConverterException
-import org.eclipse.xtext.conversion.impl.AbstractValueConverter
 import org.eclipse.xtext.nodemodel.ILeafNode
 import org.eclipse.xtext.nodemodel.INode
 import tools.vitruv.dsls.commonalities.names.QualifiedNameHelper
+import org.eclipse.xtext.conversion.IValueConverter
 
 @Singleton
-class QualifiedClassValueConverter extends AbstractValueConverter<String> {
+class QualifiedClassValueConverter implements IValueConverter<String> {
 
 	static val DELIMITER = QualifiedNameHelper.DOMAIN_METACLASS_SEPARATOR
 	static val DOMAIN_NAME_RULE = 'DomainName'

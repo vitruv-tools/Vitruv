@@ -9,6 +9,7 @@ import org.apache.log4j.Logger
 import java.lang.annotation.Target
 import java.lang.annotation.Retention
 import edu.kit.ipd.sdq.activextendannotations.Lazy
+import static edu.kit.ipd.sdq.activextendannotations.Visibility.PRIVATE
 import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
 
 /**
@@ -17,14 +18,14 @@ import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
  * extension point {@link #EXTENSION_POINT_ID}. They can, however, also be
  * registered at runtime.
  */
-class VitruvDomainProviderRegistry {
-
+final class VitruvDomainProviderRegistry {
 	static val LOGGER = Logger.getLogger(VitruvDomainProviderRegistry)
 
 	private new() {
 	}
 
-	@Lazy static val List<VitruvDomainProvider<?>> staticallyRegisteredProviders = readAllDomainProvidersFromPlatform()
+	@Lazy(value = PRIVATE, synchronizeInitialization = true) 
+	static val List<VitruvDomainProvider<?>> staticallyRegisteredProviders = readAllDomainProvidersFromPlatform()
 	static val runtimeRegisteredProviders = new HashMap<String, VitruvDomainProvider<?>>
 	public static val EXTENSION_POINT_ID = "tools.vitruv.framework.domains.provider"
 
@@ -59,8 +60,7 @@ class VitruvDomainProviderRegistry {
 	def static void unregisterDomainProvider(String domainName) {
 		if (!runtimeRegisteredProviders.containsKey(domainName)) {
 			val extensionPointProvider = findStaticallyRegisteredProviders(domainName).findFirst[true]
-			checkArgument(extensionPointProvider ===
-				null, '''The provider «extensionPointProvider» for the domain “«domainName» was registered via extension point and can thus not be unregistered!''')
+			checkArgument(extensionPointProvider === null, '''The provider «extensionPointProvider» for the domain “«domainName»” was registered statically (e.g. via extension point) and can thus not be unregistered!''')
 		}
 		runtimeRegisteredProviders.remove(domainName)
 	}
@@ -118,7 +118,7 @@ class VitruvDomainProviderRegistry {
 		// We cannot use the classpath in Eclipse, because a classloader can only resolve within a bundle,
 		// so we would need to know the name of the bundle to get the classloader from. In a non-Eclipse
 		// environment, the bundles are mapped into one classpath.
-		if (Platform.running) {
+		if (Platform.isRunning) {
 			Platform.extensionRegistry.getConfigurationElementsFor(EXTENSION_POINT_ID)
 				.map [it.createExecutableExtension("class")]
 				.filter(VitruvDomainProvider as Class<?> as Class<VitruvDomainProvider<?>>)

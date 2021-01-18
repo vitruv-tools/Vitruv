@@ -5,23 +5,18 @@ import org.eclipse.xtext.common.types.JvmDeclaredType
 import tools.vitruv.dsls.commonalities.language.AttributeMappingOperator
 
 import static extension tools.vitruv.dsls.commonalities.util.JvmAnnotationHelper.*
+import tools.vitruv.extensions.dslruntime.commonalities.operators.CommonalitiesOperatorConventions
 
 @Utility
 package class AttributeMappingOperatorExtension {
-
-	static val ANNOTATION = tools.vitruv.extensions.dslruntime.commonalities.operators.mapping.attribute.AttributeMappingOperator
-	static val ANNOTATION_NAME = ANNOTATION.name
-
 	private static def getAttributeMappingOperatorAnnotation(JvmDeclaredType operatorType) {
 		return operatorType.annotations
-			.filter[annotation.qualifiedName == ANNOTATION_NAME]
+			.filter[annotation.qualifiedName == tools.vitruv.extensions.dslruntime.commonalities.operators.mapping.attribute.AttributeMappingOperator.name]
 			.head
 	}
 
 	static def getAttributeMappingOperatorName(JvmDeclaredType operatorType) {
-		val annotation = operatorType.attributeMappingOperatorAnnotation
-		if (annotation === null) return null
-		return annotation.getStringAnnotationValue('name')
+		CommonalitiesOperatorConventions.toOperatorLanguageName(operatorType.simpleName)
 	}
 
 	static def getName(AttributeMappingOperator operator) {

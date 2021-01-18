@@ -5,7 +5,6 @@ import org.eclipse.xtext.naming.QualifiedName
 
 @Utility
 class QualifiedNameHelper {
-
 	public static val DOMAIN_METACLASS_SEPARATOR = ":"
 	public static val METACLASS_ATTRIBUTE_SEPARATOR = "."
 	public static val DOMAIN_METACLASS_SEPARATOR_SEGMENT = ":"

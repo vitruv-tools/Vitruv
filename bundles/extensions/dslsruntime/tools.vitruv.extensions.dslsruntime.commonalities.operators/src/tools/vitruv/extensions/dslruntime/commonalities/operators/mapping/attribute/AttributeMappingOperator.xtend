@@ -11,7 +11,6 @@ import org.eclipse.xtend.lib.macro.Active
 @Retention(RUNTIME)
 @Active(AttributeMappingOperatorProcessor)
 annotation AttributeMappingOperator {
-
 	String name
 	// TODO Principally the operator may require a less specific input type and provide a more specific output type,
 	// for both the commonality and the participation side.

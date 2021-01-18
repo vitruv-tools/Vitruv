@@ -5,38 +5,33 @@ import org.eclipse.xtext.common.types.JvmDeclaredType
 import tools.vitruv.dsls.commonalities.language.ReferenceMappingOperator
 
 import static extension tools.vitruv.dsls.commonalities.util.JvmAnnotationHelper.*
+import tools.vitruv.extensions.dslruntime.commonalities.operators.CommonalitiesOperatorConventions
 
 @Utility
 package class ReferenceMappingOperatorExtension {
-
-	static val ANNOTATION = tools.vitruv.extensions.dslruntime.commonalities.operators.mapping.reference.ReferenceMappingOperator
-	static val ANNOTATION_NAME = ANNOTATION.name
-
 	private static def getReferenceMappingOperatorAnnotation(JvmDeclaredType operatorType) {
 		return operatorType.annotations
-			.filter[annotation.qualifiedName == ANNOTATION_NAME]
+			.filter[annotation.qualifiedName == tools.vitruv.extensions.dslruntime.commonalities.operators.mapping.reference.ReferenceMappingOperator.name]
 			.head
 	}
 
 	static def getReferenceMappingOperatorName(JvmDeclaredType operatorType) {
-		val annotation = operatorType.referenceMappingOperatorAnnotation
-		if (annotation === null) return null
-		return annotation.getStringAnnotationValue('name')
+		CommonalitiesOperatorConventions.toOperatorLanguageName(operatorType.simpleName)
 	}
 
 	static def getName(ReferenceMappingOperator operator) {
-		return operator.jvmType.referenceMappingOperatorName
+		operator.jvmType.referenceMappingOperatorName
 	}
 
 	static def boolean isMultiValued(ReferenceMappingOperator operator) {
 		val annotation = operator.jvmType.referenceMappingOperatorAnnotation
 		if (annotation === null) return false
-		return annotation.getBooleanAnnotationValue('isMultiValued')
+		annotation.getBooleanAnnotationValue('isMultiValued')
 	}
 
 	static def boolean isAttributeReference(ReferenceMappingOperator operator) {
 		val annotation = operator.jvmType.referenceMappingOperatorAnnotation
 		if (annotation === null) return false
-		return annotation.getBooleanAnnotationValue('isAttributeReference')
+		annotation.getBooleanAnnotationValue('isAttributeReference')
 	}
 }
