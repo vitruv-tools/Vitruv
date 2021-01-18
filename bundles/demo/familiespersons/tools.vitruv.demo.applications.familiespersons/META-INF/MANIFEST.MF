@@ -2,6 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Vitruv Families-Persons Demo Application
 Bundle-SymbolicName: tools.vitruv.demo.applications.familiespersons;singleton:=true
+Automatic-Module-Name: tools.vitruv.demo.applications.familiespersons
 Bundle-Version: 1.1.0.qualifier
 Bundle-Vendor: vitruv.tools
 Export-Package: tools.vitruv.demo.applications.familiespersons
@@ -10,17 +11,6 @@ Require-Bundle: tools.vitruv.framework.applications,
  org.eclipse.xtext.xbase.lib,
  org.eclipse.xtend.lib,
  org.eclipse.xtend.lib.macro,
- org.apache.log4j,
- org.eclipse.emf.ecore,
- org.eclipse.core.resources,
- tools.vitruv.framework.util,
- tools.vitruv.framework.change,
- tools.vitruv.framework.change.processing,
- tools.vitruv.framework.correspondence,
- tools.vitruv.framework.userinteraction,
  tools.vitruv.extensions.dslsruntime.reactions;visibility:=reexport,
- tools.vitruv.extensions.dslsruntime.mappings,
- tools.vitruv.demo.domains.families,
- tools.vitruv.demo.domains.persons
+ tools.vitruv.domains.demo
 Bundle-RequiredExecutionEnvironment: JavaSE-11
-Automatic-Module-Name: tools.vitruv.demo.applications.familiespersons

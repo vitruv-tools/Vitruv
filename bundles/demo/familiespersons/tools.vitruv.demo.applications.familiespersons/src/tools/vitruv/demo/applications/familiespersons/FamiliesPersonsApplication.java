@@ -5,8 +5,8 @@ import java.util.Set;
 
 import tools.vitruv.demo.applications.familiespersons.families2persons.FamiliesToPersonsChangePropagationSpecification;
 import tools.vitruv.demo.applications.familiespersons.persons2families.PersonsToFamiliesChangePropagationSpecification;
-import tools.vitruv.domains.families.FamiliesDomainProvider;
-import tools.vitruv.domains.persons.PersonsDomainProvider;
+import tools.vitruv.domains.demo.families.FamiliesDomainProvider;
+import tools.vitruv.domains.demo.persons.PersonsDomainProvider;
 import tools.vitruv.framework.applications.VitruvApplication;
 import tools.vitruv.framework.change.processing.ChangePropagationSpecification;
 import tools.vitruv.framework.domains.VitruvDomain;

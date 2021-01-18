@@ -20,7 +20,6 @@ Require-Bundle: com.google.guava,
  tools.vitruv.framework.correspondence,
  tools.vitruv.framework.userinteraction,
  tools.vitruv.extensions.dslsruntime.mappings,
- tools.vitruv.demo.domains.addresses,
- tools.vitruv.demo.domains.recipients
+ tools.vitruv.domains.demo
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Automatic-Module-Name: tools.vitruv.demo.applications.addressesrecipients

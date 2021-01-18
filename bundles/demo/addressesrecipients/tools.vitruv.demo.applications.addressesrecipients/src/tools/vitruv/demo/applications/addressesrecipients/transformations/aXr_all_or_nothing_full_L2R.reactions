@@ -2,7 +2,7 @@ import static tools.vitruv.demo.applications.addressesrecipients.tests.allornoth
 import static tools.vitruv.demo.applications.addressesrecipients.tests.allornothing.AddressXRecipientLocationCityMapping.*
 import static tools.vitruv.demo.applications.addressesrecipients.tests.allornothing.conditions.AdRootXReRootConditions.*
 import static tools.vitruv.demo.applications.addressesrecipients.tests.allornothing.conditions.AddressXRecipientLocationCityConditions.*
-import tools.vitruv.demo.domains.recipients.RecipientsNamespace
+import static tools.vitruv.domains.demo.recipients.RecipientsDomain.*
 
 import "edu.kit.ipd.sdq.metamodels.addresses" as ad
 import "edu.kit.ipd.sdq.metamodels.recipients" as re
@@ -101,7 +101,7 @@ routine createAdRootXReRootMappingInstance(ad::Addresses aRoot) {
 		}
 		execute {
 			adRootXReRootMapping.registerRightElementsAndPromoteCandidates(aRoot, rRoot)
-			persistProjectRelative(aRoot, rRoot, aRoot.eResource.URI.trimFileExtension.lastSegment + "." + RecipientsNamespace.FILE_EXTENSION)
+			persistProjectRelative(aRoot, rRoot, aRoot.eResource.URI.trimFileExtension.lastSegment + "." + FILE_EXTENSION)
 		}
 	}
 }
