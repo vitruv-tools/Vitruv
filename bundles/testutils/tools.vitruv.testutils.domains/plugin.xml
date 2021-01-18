@@ -6,30 +6,26 @@
 
 <plugin>
    <extension
-         id="allElementTypesDomainProvider"
-         name="AllElementTypes Domain Provider"
-         point="tools.vitruv.framework.domains.domain">
+         name="Vitruv AllElementTypes Test Domain Provider"
+         point="tools.vitruv.framework.domains.provider">
       <domainProvider
             class="tools.vitruv.testutils.domains.AllElementTypesDomainProvider"></domainProvider>
    </extension>
    <extension
-         id="allElementTypes2DomainProvider"
-         name="AllElementTypes2 Domain Provider"
-         point="tools.vitruv.framework.domains.domain">
+         name="Vitruv AllElementTypes2 Test Domain Provider"
+         point="tools.vitruv.framework.domains.provider">
       <domainProvider
             class="tools.vitruv.testutils.domains.AllElementTypes2DomainProvider"></domainProvider>
    </extension>
    <extension
-         id="pcmMockupDomainProvider"
-         name="PCM Mockup Domain Provider"
-         point="tools.vitruv.framework.domains.domain">
+         name="Vitruv PCM Mockup Test Domain Provider"
+         point="tools.vitruv.framework.domains.provider">
       <domainProvider
             class="tools.vitruv.testutils.domains.PcmMockupDomainProvider"></domainProvider>
    </extension>
    <extension
-         id="umlMockupDomainProvider"
-         name="UML Mockup Domain Provider"
-         point="tools.vitruv.framework.domains.domain">
+         name="Vitruv UML Mockup Test Domain Provider"
+         point="tools.vitruv.framework.domains.provider">
       <domainProvider
             class="tools.vitruv.testutils.domains.UmlMockupDomainProvider"></domainProvider>
    </extension>
