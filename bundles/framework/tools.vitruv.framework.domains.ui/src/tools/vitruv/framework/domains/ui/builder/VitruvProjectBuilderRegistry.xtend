@@ -10,13 +10,15 @@ import org.eclipse.core.runtime.Platform
 import tools.vitruv.framework.domains.AbstractVitruvDomain
 
 final class VitruvProjectBuilderRegistry {
-	public static val INSTANCE = new VitruvProjectBuilderRegistry
+	public static val EXTENSION_POINT_ID = "tools.vitruv.framework.domains.ui.builder"
+	static val EXTENSION_DOMAIN_ATTRIBUTE = "domain"
+	static val EXTENSION_BUILDER_ATTRIBUTE = "builderId"
 
+	public static val INSTANCE = new VitruvProjectBuilderRegistry
+	static val runtimeRegisteredBuilderIds = new HashMap<VitruvDomain, Set<String>>
+	
 	new() {
 	}
-
-	static val runtimeRegisteredBuilderIds = new HashMap<VitruvDomain, Set<String>>
-	public static val EXTENSION_POINT_ID = "tools.vitruv.framework.domains.ui.builder"
 
 	/**
 	 * Registers project builder with the given ID for the given {@link VitruvDomain}.
@@ -77,9 +79,9 @@ final class VitruvProjectBuilderRegistry {
 	private def static Set<String> getAllProjectBuilderIdsForDomainFromExtensionPoint(Class<? extends VitruvDomain> domainClass) {
 		checkState(Platform.running, "Platform must be running to apply Eclipse project builders")
 		Platform.getExtensionRegistry().getConfigurationElementsFor(EXTENSION_POINT_ID).filter [
-			it.getAttribute("domain") !== null && it.getAttribute("domain").equals(domainClass.name)
+			it.getAttribute(EXTENSION_DOMAIN_ATTRIBUTE) !== null && it.getAttribute("domain").equals(domainClass.name)
 		].map [
-			it.getAttribute("builder")
+			it.getAttribute(EXTENSION_BUILDER_ATTRIBUTE)
 		].filterNull.toSet
 	}
 	
