@@ -1,7 +1,0 @@
-package tools.vitruv.demo.applications.addressesrecipients.transformations
-
-import mir.reactions.adXre_R2L.AdXre_R2LChangePropagationSpecification
-
-class RecipientsToAddressesChangePropagationSpecification extends AdXre_R2LChangePropagationSpecification {
-	
-}
