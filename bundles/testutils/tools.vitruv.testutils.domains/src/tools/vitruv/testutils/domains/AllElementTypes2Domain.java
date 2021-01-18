@@ -1,22 +1,16 @@
 package tools.vitruv.testutils.domains;
 
-import allElementTypes2.AllElementTypes2Package;
-import tools.vitruv.framework.domains.AbstractTuidAwareVitruvDomain;
-import tools.vitruv.framework.tuid.AttributeTuidCalculatorAndResolver;
+import java.util.List;
 
-public final class AllElementTypes2Domain extends AbstractTuidAwareVitruvDomain {
+import allElementTypes2.AllElementTypes2Package;
+
+public final class AllElementTypes2Domain extends VitruvTestDomain {
 	public static final String METAMODEL_NAME = "AllElementTypes2";
 	public static final String FILE_EXTENSION = "allElementTypes2";
-	
+
 	AllElementTypes2Domain() {
-		super(METAMODEL_NAME, AllElementTypes2Package.eINSTANCE, 
-				new AttributeTuidCalculatorAndResolver(AllElementTypes2Package.eNS_URI, AllElementTypes2Package.Literals.IDENTIFIED2__ID2.getName()), 
-				FILE_EXTENSION);
+		super(METAMODEL_NAME, AllElementTypes2Package.eINSTANCE,
+				List.of(AllElementTypes2Package.Literals.IDENTIFIED2__ID2), FILE_EXTENSION);
 	}
 
-	@Override
-	public boolean isUserVisible() {
-		return false;
-	}
-	
 }
