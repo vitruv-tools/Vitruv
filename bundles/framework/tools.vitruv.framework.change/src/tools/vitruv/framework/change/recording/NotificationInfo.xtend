@@ -130,8 +130,7 @@ class NotificationInfo implements Notification {
 			}
 			val Object feature = nextNotification.getFeature()
 			if (feature instanceof EReference) {
-				val EReference eReference = (feature as EReference)
-				if (eReference.isTransient()) {
+				if (feature.isTransient()) {
 					return false
 				}
 			}
