@@ -6,13 +6,8 @@ Automatic-Module-Name: tools.vitruv.framework.change
 Bundle-Version: 1.1.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Require-Bundle: org.apache.log4j,
- com.google.guava,
- org.eclipse.xtext.xbase.lib,
  org.eclipse.xtend.lib,
- org.eclipse.xtend.lib.macro,
  org.eclipse.emf.ecore.change,
- tools.vitruv.framework.util,
- edu.kit.ipd.sdq.commons.util.emf,
  tools.vitruv.framework.tuid,
  tools.vitruv.framework.change.echange;visibility:=reexport,
  tools.vitruv.framework.change.interaction
