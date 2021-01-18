@@ -22,7 +22,8 @@ Require-Bundle: edu.kit.ipd.sdq.activextendannotations,
  org.eclipse.xtext.util,
  org.eclipse.emf.common,
  org.eclipse.xtend.lib;bundle-version="2.14.0",
- org.eclipse.xtext
+ org.eclipse.xtext,
+ org.eclipse.emf.mwe.core
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Export-Package: tools.vitruv.dsls.reactions,
