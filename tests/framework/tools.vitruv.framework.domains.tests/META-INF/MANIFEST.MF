@@ -5,24 +5,11 @@ Bundle-SymbolicName: tools.vitruv.framework.domains.tests;singleton:=true
 Automatic-Module-Name: tools.vitruv.framework.domains.tests
 Bundle-Version: 1.1.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-11
-Require-Bundle: tools.vitruv.framework.util,
- org.eclipse.core.runtime,
- org.eclipse.core.resources,
- tools.vitruv.testutils,
+Require-Bundle: tools.vitruv.testutils,
  tools.vitruv.testutils.metamodels,
- org.apache.commons.lang,
- org.eclipse.xtext.xbase.lib,
  org.eclipse.xtend.lib,
- org.eclipse.xtend.lib.macro,
- tools.vitruv.framework.change,
- tools.vitruv.framework.change.echange,
- tools.vitruv.framework.change.processing,
- tools.vitruv.framework.tuid,
- tools.vitruv.framework.correspondence,
  org.eclipse.uml2.uml,
- org.junit.jupiter.api,
- org.hamcrest.core,
- tools.vitruv.testutils.domains;bundle-version="0.3.0"
+ org.junit.jupiter.api
 Bundle-ActivationPolicy: lazy
 Bundle-Vendor: vitruv.tools
 Export-Package: tools.vitruv.framework.tests.domains;x-internal:=true

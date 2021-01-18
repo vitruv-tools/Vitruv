@@ -7,18 +7,11 @@ Bundle-Version: 1.1.0.qualifier
 Bundle-ClassPath: ., jars/reflections-0.9.10.jar, jars/javassist-3.19.0-GA.jar
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Require-Bundle: org.apache.log4j,
- com.google.guava,
- org.eclipse.xtext.xbase.lib,
  org.eclipse.xtend.lib,
- org.eclipse.xtend.lib.macro,
- org.eclipse.core.runtime,
- org.eclipse.emf.ecore;visibility:=reexport,
  org.eclipse.emf.transaction,
- tools.vitruv.framework.util,
  tools.vitruv.framework.tuid;visibility:=reexport,
  tools.vitruv.framework.change,
- org.eclipse.emf.compare,
- edu.kit.ipd.sdq.activextendannotations
+ org.eclipse.emf.compare
 Bundle-ActivationPolicy: lazy
 Export-Package: tools.vitruv.framework.domains,
  tools.vitruv.framework.domains.repository

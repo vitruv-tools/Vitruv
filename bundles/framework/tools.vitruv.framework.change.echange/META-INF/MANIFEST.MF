@@ -34,17 +34,8 @@ Export-Package: tools.vitruv.framework.change.echange,
  tools.vitruv.framework.change.echange.root.impl,
  tools.vitruv.framework.change.echange.root.util,
  tools.vitruv.framework.change.echange.util
-Require-Bundle: com.google.guava,
- org.eclipse.xtext.xbase.lib,
- org.eclipse.xtend.lib,
- org.eclipse.xtend.lib.macro,
+Require-Bundle: org.eclipse.xtend.lib,
  org.apache.log4j,
- org.eclipse.core.runtime,
- org.eclipse.emf.ecore;visibility:=reexport,
- edu.kit.ipd.sdq.commons.util.emf,
- tools.vitruv.framework.change.echange;visibility:=reexport,
  org.eclipse.emf.ecore.edit,
- tools.vitruv.framework.util,
- tools.vitruv.framework.uuid;visibility:=reexport,
- edu.kit.ipd.sdq.activextendannotations
+ tools.vitruv.framework.uuid;visibility:=reexport
 Bundle-ActivationPolicy: lazy

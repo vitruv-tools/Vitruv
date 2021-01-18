@@ -7,21 +7,12 @@ Bundle-Version: 1.1.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-ActivationPolicy: lazy
 Require-Bundle: org.apache.log4j,
- org.eclipse.osgi,
  org.eclipse.swt,
  org.eclipse.ui.workbench,
  org.eclipse.jface,
- org.eclipse.emf.common,
  tools.vitruv.framework.util,
  tools.vitruv.framework.change.interaction;visibility:=reexport,
- com.google.guava,
- org.eclipse.xtext.xbase.lib,
- org.eclipse.xtend.lib,
- org.eclipse.xtend.lib.macro
+ org.eclipse.xtend.lib
 Export-Package: tools.vitruv.framework.userinteraction,
- tools.vitruv.framework.userinteraction.builder,
- tools.vitruv.framework.userinteraction.builder.impl;x-internal:=true,
- tools.vitruv.framework.userinteraction.dialogs;x-internal:=true,
- tools.vitruv.framework.userinteraction.impl;x-internal:=true,
- tools.vitruv.framework.userinteraction.types;x-internal:=true
+ tools.vitruv.framework.userinteraction.builder
 Bundle-Vendor: vitruv.tools
