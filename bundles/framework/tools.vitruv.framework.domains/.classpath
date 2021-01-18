@@ -12,7 +12,6 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
-	<classpathentry kind="lib" path="jars/javassist-3.19.0-GA.jar"/>
 	<classpathentry kind="lib" path="jars/reflections-0.9.10.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
