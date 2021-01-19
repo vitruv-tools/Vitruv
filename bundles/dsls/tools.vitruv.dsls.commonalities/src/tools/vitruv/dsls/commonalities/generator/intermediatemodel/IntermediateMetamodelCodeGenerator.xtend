@@ -30,9 +30,6 @@ import edu.kit.ipd.sdq.activextendannotations.CloseResource
 import static com.google.common.base.Preconditions.checkArgument
 import static com.google.common.base.Preconditions.checkState
 import org.eclipse.core.runtime.Platform
-import org.eclipse.emf.common.EMFPlugin
-import org.eclipse.core.resources.ResourcesPlugin
-import org.eclipse.core.runtime.Path
 
 @GenerationScoped
 class IntermediateMetamodelCodeGenerator implements SubGenerator {

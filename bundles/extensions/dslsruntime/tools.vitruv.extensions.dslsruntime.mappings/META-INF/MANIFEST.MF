@@ -6,13 +6,7 @@ Automatic-Module-Name: tools.vitruv.extensions.dslsruntime.mappings
 Bundle-Version: 1.1.0.qualifier
 Bundle-Vendor: %providerName
 Bundle-RequiredExecutionEnvironment: JavaSE-11
-Require-Bundle: com.google.guava,
- org.eclipse.xtext.xbase.lib,
- org.eclipse.xtend.lib,
- org.eclipse.xtend.lib.macro,
- org.eclipse.emf.ecore,
- edu.kit.ipd.sdq.activextendannotations,
- edu.kit.ipd.sdq.commons.util.java,
+Require-Bundle: edu.kit.ipd.sdq.activextendannotations,
  tools.vitruv.extensions.dslsruntime.reactions;visibility:=reexport
 Export-Package: tools.vitruv.extensions.dslsruntime.mappings,
  tools.vitruv.extensions.dslsruntime.mappings.impl;x-internal:=true,

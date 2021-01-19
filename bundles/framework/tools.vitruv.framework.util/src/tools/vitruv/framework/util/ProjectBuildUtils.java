@@ -106,7 +106,9 @@ public final class ProjectBuildUtils {
 				}
 			}
 		} catch (CoreException e) {
-			throw new IllegalStateException("Could not read description of project " + project.getName(), e);
+			String message = "Could not read description of project " + project.getName(); 
+			LOGGER.error(message, e);
+			throw new IllegalStateException(message, e);
 		}
 
 		return false;

@@ -102,6 +102,7 @@ class BasicTestView implements TestView {
 	}
 
 	override close() throws Exception {
-		// nothing to do
+		resourceSet.resources.forEach[unload]
+		resourceSet.resources.clear
 	}
 }

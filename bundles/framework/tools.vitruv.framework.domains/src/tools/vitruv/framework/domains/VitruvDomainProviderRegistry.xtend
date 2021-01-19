@@ -9,7 +9,6 @@ import org.apache.log4j.Logger
 import java.lang.annotation.Target
 import java.lang.annotation.Retention
 import edu.kit.ipd.sdq.activextendannotations.Lazy
-import static edu.kit.ipd.sdq.activextendannotations.Visibility.PRIVATE
 import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
 
 /**

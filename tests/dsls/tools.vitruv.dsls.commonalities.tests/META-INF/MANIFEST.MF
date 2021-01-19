@@ -8,16 +8,14 @@ Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-ActivationPolicy: lazy
 Export-Package: tools.vitruv.dsls.commonalities.tests;x-internal=true,
  tools.vitruv.dsls.commonalities.tests.matchers;x-internal:=true
-Require-Bundle: org.eclipse.xtext.xbase.lib;bundle-version="2.14.0",
+Require-Bundle: tools.vitruv.dsls.commonalities,
+ tools.vitruv.testutils,
  org.eclipse.xtext.testing,
  org.eclipse.xtext.xbase.testing,
- tools.vitruv.dsls.commonalities,
- tools.vitruv.extensions.dslsruntime.commonalities,
- org.junit.jupiter.api,
  org.hamcrest.core,
- tools.vitruv.testutils,
- tools.vitruv.testutils.domains,
- org.eclipse.core.runtime,
+ org.eclipse.xtext.xbase.lib;bundle-version="2.14.0",
+ org.junit.jupiter.api,
  org.objectweb.asm;bundle-version="[9.0.0,9.1.0)";resolution:=optional,
- tools.vitruv.dsls.commonalities.testutils
+ tools.vitruv.dsls.commonalities.testutils,
+ tools.vitruv.testutils.domains
 Bundle-Vendor: vitruv.tools

@@ -20,12 +20,16 @@
    </license>
 
    <requires>
-      <import feature="org.eclipse.xtext.xbase.lib" version="2.19.0"/>
-      <import feature="edu.kit.ipd.sdq.activextendannotations.feature" version="1.2.0"/>
-      <import feature="tools.vitruv.framework.feature" version="0.3.0"/>
-      <import feature="org.eclipse.xtext.xbase" version="2.19.0"/>
-      <import feature="org.eclipse.xtext.xbase.lib" version="2.19.0"/>
-      <import feature="org.eclipse.emf.mwe2.launcher" version="2.11.0"/>
+      <import plugin="org.apache.log4j"/>
+      <import plugin="org.eclipse.xtend.lib"/>
+      <import plugin="org.eclipse.core.resources"/>
+      <import plugin="org.eclipse.core.runtime"/>
+      <import plugin="tools.vitruv.framework.change"/>
+      <import plugin="tools.vitruv.framework.change.processing"/>
+      <import plugin="tools.vitruv.framework.domains"/>
+      <import plugin="tools.vitruv.framework.util"/>
+      <import plugin="tools.vitruv.framework.userinteraction"/>
+      <import plugin="org.eclipse.emf.ecore.xmi"/>
    </requires>
 
    <plugin

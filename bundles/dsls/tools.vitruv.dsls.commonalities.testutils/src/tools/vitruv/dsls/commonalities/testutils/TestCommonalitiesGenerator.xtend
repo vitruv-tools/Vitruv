@@ -174,10 +174,6 @@ class TestCommonalitiesGenerator {
 		}
 	}
 	
-	def private Iterable<EPackage> allSubPackages(EPackage ePackage) {
-		List.of(ePackage) + ePackage.ESubpackages.flatMap[allSubPackages]
-	}
-	
 	private static class RelativeAndAbsolutePath {
 		val Path baseDir
 		val Path path
