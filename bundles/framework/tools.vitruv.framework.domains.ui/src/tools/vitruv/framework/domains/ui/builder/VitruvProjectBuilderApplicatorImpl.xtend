@@ -30,7 +30,7 @@ final class VitruvProjectBuilderApplicatorImpl implements VitruvProjectBuilderAp
 	}
 	
 	override setPropagateAfterChangeMilliseconds(int milliseconds) {
-		propagateAfterChangeMilliseconds = milliseconds
+		millisecondsToPropagateAfter = milliseconds
 		this
 	}
 
