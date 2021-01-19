@@ -20,6 +20,8 @@ import org.eclipse.swt.widgets.Display
 import org.eclipse.core.resources.IContainer
 import org.eclipse.core.runtime.Path
 import edu.kit.ipd.sdq.commons.util.org.eclipse.core.resources.IProjectUtil
+import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.core.resources.IResourceUtil.*
+import org.eclipse.jdt.core.IClasspathEntry
 
 @Utility
 class CommonalitiesProjectSetup {
@@ -31,15 +33,15 @@ class CommonalitiesProjectSetup {
 			natureIds = #[JavaCore.NATURE_ID, XtextProjectHelper.NATURE_ID, IBundleProjectDescription.PLUGIN_NATURE]
 		], null)
 		project.createManifestMf()
-		val sourcesFolder = project.createFolder(IProjectUtil.SOURCE_GEN_FOLDER.toString)
-		val generatedSourcesFolder = project.createFolder(IProjectUtil.SOURCE_GEN_FOLDER.toString)
-		val generatedSourcesSourceFolder = JavaCore.newSourceEntry(generatedSourcesFolder.fullPath)
-		val sourcesSourceFolder = JavaCore.newSourceEntry(sourcesFolder.fullPath)
-		val requiredPluginsContainer = JavaCore.newContainerEntry(PDECore.REQUIRED_PLUGINS_CONTAINER_PATH)
-		val jreContainer = JREContainerProvider.defaultJREContainerEntry
+		val sourcesFolder = project.getFolder(IProjectUtil.JAVA_SOURCE_FOLDER.toString).createIfNotExists()
+		val generatedSourcesFolder = project.getFolder(IProjectUtil.SOURCE_GEN_FOLDER.toString).createIfNotExists()
 		val javaProjectBinFolder = project.getFolder(IProjectUtil.JAVA_BIN_FOLDER.toString)
-		val projectClasspath = #[sourcesSourceFolder, generatedSourcesSourceFolder, jreContainer,
-			requiredPluginsContainer]
+		val IClasspathEntry[] projectClasspath = #[
+			JREContainerProvider.defaultJREContainerEntry,
+			JavaCore.newContainerEntry(PDECore.REQUIRED_PLUGINS_CONTAINER_PATH),
+			JavaCore.newSourceEntry(sourcesFolder.fullPath),
+			JavaCore.newSourceEntry(generatedSourcesFolder.fullPath)
+		]
 		JavaCore.create(project) => [
 			options = new Hashtable => [
 				put(JavaCore.COMPILER_CODEGEN_TARGET_PLATFORM, COMPLIANCE_LEVEL)
@@ -64,7 +66,7 @@ class CommonalitiesProjectSetup {
 			Require-Bundle: «CommonalitiesLanguageConstants.RUNTIME_BUNDLE»
 			Bundle-RequiredExecutionEnvironment: JavaSE-«COMPLIANCE_LEVEL»
 		'''
-		project.createFolder('META-INF').createFile('MANIFEST.MF', mf)
+		project.getFolder('META-INF').createIfNotExists().createFile('MANIFEST.MF', mf)
 	}
 
 	def static removeRequiredBundle(IBundleProjectDescription pluginProject, String requiredBundleName) {
@@ -111,12 +113,6 @@ class CommonalitiesProjectSetup {
 
 	def static getBinFolder(IProject project) {
 		project.getFolder(IProjectUtil.JAVA_BIN_FOLDER.toString)
-	}
-
-	def private static createFolder(IProject project, String name) {
-		project.getFolder(name) => [
-			create(true, false, null)
-		]
 	}
 
 	def static createFile(IContainer container, String fileName, InputStream content) {

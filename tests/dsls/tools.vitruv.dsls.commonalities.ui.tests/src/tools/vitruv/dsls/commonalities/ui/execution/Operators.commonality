@@ -1,5 +1,5 @@
-import tools.vitruv.dsls.commonalities.testutils.operators.MultiplyAttributeOperator
-import tools.vitruv.dsls.commonalities.testutils.operators.DigitsAttributeOperator
+import tools.vitruv.dsls.commonalities.testutils.operators.multiply
+import tools.vitruv.dsls.commonalities.testutils.operators.digits
 
 concept attributeoperators
 
