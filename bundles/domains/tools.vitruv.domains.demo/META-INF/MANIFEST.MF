@@ -1,0 +1,24 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Vitruvius Demo Domain Addresses
+Bundle-SymbolicName: tools.vitruv.domains.demo;singleton:=true
+Automatic-Module-Name: tools.vitruv.domains.demo
+Bundle-Version: 1.1.0.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-11
+Require-Bundle: tools.vitruv.framework.domains;visibility:=reexport,
+ edu.kit.ipd.sdq.metamodels.addresses;visibility:=reexport,
+ edu.kit.ipd.sdq.metamodels.families;visibility:=reexport,
+ edu.kit.ipd.sdq.metamodels.insurance;visibility:=reexport,
+ edu.kit.ipd.sdq.metamodels.persons;visibility:=reexport,
+ edu.kit.ipd.sdq.metamodels.recipients;visibility:=reexport,
+ com.google.guava,
+ org.eclipse.xtext.xbase.lib,
+ org.eclipse.xtend.lib,
+ org.eclipse.xtend.lib.macro,
+ edu.kit.ipd.sdq.activextendannotations
+Export-Package: tools.vitruv.domains.demo.addresses,
+ tools.vitruv.domains.demo.families,
+ tools.vitruv.domains.demo.insurance,
+ tools.vitruv.domains.demo.persons,
+ tools.vitruv.domains.demo.recipients
+Bundle-Vendor: vitruv.tools

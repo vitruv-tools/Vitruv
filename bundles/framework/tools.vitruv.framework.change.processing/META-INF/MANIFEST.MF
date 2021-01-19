@@ -6,15 +6,10 @@ Automatic-Module-Name: tools.vitruv.framework.change.processing
 Bundle-Version: 1.1.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Require-Bundle: org.apache.log4j,
- com.google.guava,
- org.eclipse.xtext.xbase.lib,
  org.eclipse.xtend.lib,
- org.eclipse.xtend.lib.macro,
- edu.kit.ipd.sdq.commons.util.emf,
- tools.vitruv.framework.util,
  tools.vitruv.framework.correspondence;visibility:=reexport,
  tools.vitruv.framework.userinteraction;visibility:=reexport,
- tools.vitruv.framework.change,
+ tools.vitruv.framework.change;visibility:=reexport,
  tools.vitruv.framework.domains
 Export-Package: tools.vitruv.framework.change.processing,
  tools.vitruv.framework.change.processing.impl

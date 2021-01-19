@@ -14,6 +14,7 @@
 	<name>Domains Modules</name>
 
 	<modules>
+		<module>tools.vitruv.domains.demo</module>
 		<module>tools.vitruv.domains.emf.ui</module>
 	</modules>
 

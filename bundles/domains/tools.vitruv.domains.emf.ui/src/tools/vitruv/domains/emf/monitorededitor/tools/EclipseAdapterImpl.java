@@ -52,13 +52,13 @@ class EclipseAdapterImpl implements IEclipseAdapter {
 
     @Override
     public void addCommandServiceListener(IExecutionListener iel) {
-        final ICommandService service = (ICommandService) PlatformUI.getWorkbench().getService(ICommandService.class);
+        final ICommandService service = PlatformUI.getWorkbench().getService(ICommandService.class);
         service.addExecutionListener(iel);
     }
 
     @Override
     public void removeCommandServiceListener(IExecutionListener iel) {
-        final ICommandService service = (ICommandService) PlatformUI.getWorkbench().getService(ICommandService.class);
+        final ICommandService service = PlatformUI.getWorkbench().getService(ICommandService.class);
         service.removeExecutionListener(iel);
     }
 

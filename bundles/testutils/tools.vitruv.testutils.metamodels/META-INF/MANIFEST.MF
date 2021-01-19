@@ -31,11 +31,8 @@ Export-Package: allElementTypes,
  uml_mockup,
  uml_mockup.impl,
  uml_mockup.util
-Require-Bundle: org.eclipse.core.runtime,
- org.eclipse.emf.ecore;visibility:=reexport,
- org.eclipse.xtend.lib,
+Require-Bundle: org.eclipse.xtend.lib,
  tools.vitruv.testutils,
- edu.kit.ipd.sdq.activextendannotations,
  org.junit.jupiter.params,
  org.junit.jupiter.api
 Bundle-ActivationPolicy: lazy

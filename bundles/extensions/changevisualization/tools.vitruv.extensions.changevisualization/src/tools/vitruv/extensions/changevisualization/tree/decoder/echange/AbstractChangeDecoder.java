@@ -65,7 +65,7 @@ public abstract class AbstractChangeDecoder implements ChangeDecoder {
 		if(eObject==null) {
 			return null;
 		}
-		Object sf = ModelHelper.getStructuralFeatureValue((EObject)eObject,"entityName");
+		Object sf = ModelHelper.getStructuralFeatureValue(eObject,"entityName");
 		return sf==null?null:sf.toString();
 	}	
 

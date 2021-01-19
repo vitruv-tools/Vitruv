@@ -12,9 +12,7 @@ Bundle-ActivationPolicy: lazy
 Require-Bundle: tools.vitruv.framework.domains;visibility:=reexport,
  edu.kit.ipd.sdq.activextendannotations,
  tools.vitruv.extensions.dslsruntime.reactions;visibility:=reexport,
- org.eclipse.emf.ecore.xmi,
- edu.kit.ipd.sdq.commons.util.java,
- org.eclipse.emf.ecore;visibility:=reexport
+ org.eclipse.emf.ecore.xmi
 Export-Package: tools.vitruv.extensions.dslruntime.commonalities,
  tools.vitruv.extensions.dslruntime.commonalities.helper,
  tools.vitruv.extensions.dslruntime.commonalities.intermediatemodelbase,

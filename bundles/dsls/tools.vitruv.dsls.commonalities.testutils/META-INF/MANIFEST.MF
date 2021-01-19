@@ -5,29 +5,17 @@ Bundle-SymbolicName: tools.vitruv.dsls.commonalities.testutils
 Automatic-Module-Name: tools.vitruv.dsls.commonalities.testutils
 Bundle-Version: 1.1.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-11
-Require-Bundle: org.eclipse.core.runtime,
- org.eclipse.pde.core,
- org.eclipse.xtext.xbase.lib,
- org.eclipse.xtend.lib,
- org.eclipse.xtend.lib.macro,
- org.eclipse.xtext.testing,
- org.eclipse.xtext.xbase.testing,
- org.eclipse.xtext.ui,
- edu.kit.ipd.sdq.commons.util.java,
- tools.vitruv.framework.change.processing,
- tools.vitruv.framework.domains,
- tools.vitruv.extensions.dslsruntime.commonalities,
- tools.vitruv.dsls.common,
+Require-Bundle: edu.kit.ipd.sdq.activextendannotations,
  tools.vitruv.dsls.commonalities,
+ tools.vitruv.dsls.reactions.ui,
  tools.vitruv.dsls.commonalities.ui,
  tools.vitruv.testutils,
- edu.kit.ipd.sdq.activextendannotations,
- tools.vitruv.dsls.common.ui,
+ org.eclipse.pde.core,
+ org.eclipse.xtext.testing,
+ org.eclipse.xtext.xbase.testing,
  org.eclipse.xtext.ui.testing,
- tools.vitruv.dsls.reactions.ui,
+ org.junit.jupiter.api,
  org.junit.jupiter.params
 Export-Package: tools.vitruv.dsls.commonalities.testutils,
  tools.vitruv.dsls.commonalities.testutils.operators
 Bundle-Vendor: vitruv.tools
-Import-Package: org.junit.jupiter.api;version="5.6.0",
- org.junit.jupiter.api.extension;version="5.6.0"

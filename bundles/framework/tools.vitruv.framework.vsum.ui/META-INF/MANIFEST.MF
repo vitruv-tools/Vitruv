@@ -7,13 +7,9 @@ Bundle-Version: 1.1.0.qualifier
 Bundle-Activator: tools.vitruv.framework.vsum.ui.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
- org.eclipse.core.resources;bundle-version="3.10.1",
+ org.eclipse.core.resources,
  tools.vitruv.framework.applications,
- tools.vitruv.framework.domains,
- com.google.guava,
- org.eclipse.xtext.xbase.lib,
  org.eclipse.xtend.lib,
- org.eclipse.xtend.lib.macro,
  tools.vitruv.framework.vsum,
  tools.vitruv.framework.domains.ui,
  org.apache.log4j
