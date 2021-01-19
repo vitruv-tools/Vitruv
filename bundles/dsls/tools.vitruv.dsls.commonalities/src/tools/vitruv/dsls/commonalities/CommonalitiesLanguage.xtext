@@ -304,11 +304,11 @@ OperatorName:
 ;
 
 QualifiedOperatorName:
-	ValidID (=>'.' ValidID)* '.' OperatorName
+	ValidID ('.' ValidID)* '.' OperatorName
 ;
 
 QualifiedOperatorWildCard: 
-	ValidID (=>'.' ValidID)* '.' '_'
+	ValidID ('.' ValidID)* '.' '_'
 ;
 
 

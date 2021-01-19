@@ -30,22 +30,28 @@ final class OperatorScopeProvider extends ImportedNamespaceAwareLocalScopeProvid
 		translatedImports.map [createImportedNamespaceResolver(it, ignoreCase)]
 	}
 	
-	override protected String getImportedNamespace(EObject object) {
-		CommonalitiesOperatorConventions.toOperatorTypeQualifiedName(super.getImportedNamespace(object))
-	}
-	
 	override protected IScope getLocalElementsScope(IScope parent, EObject context, EReference reference) {
 		// no new operators can be defined locally
 		parent
 	}
 	
 	override protected IScope getResourceScope(IScope parent, EObject context, EReference reference) {
-		// no new operators can be defined in a resource
-		parent
+		// only find the import declarations
+		val ignoreCase = isIgnoreCase(reference)
+		val namespaceResolvers = getImportedNamespaceResolvers(context, ignoreCase)
+		if (!namespaceResolvers.isEmpty()) {
+			createImportScope(parent, namespaceResolvers, null, reference.getEReferenceType(), ignoreCase)
+		} else {
+			parent
+		}
 	}
 	
 	override getWildCard() {
 		'_'
+	}
+	
+	override protected isRelativeImport() {
+		false
 	}
 	
 	static class Factory extends InjectingFactoryBase {

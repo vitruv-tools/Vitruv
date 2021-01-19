@@ -227,5 +227,4 @@ class InternalReactionsGenerator implements IReactionsGenerator {
 		artificialReactionsResourceSet = resourceSet
 		reactionFileResourceSets += resourceSet
 	}
-
 }

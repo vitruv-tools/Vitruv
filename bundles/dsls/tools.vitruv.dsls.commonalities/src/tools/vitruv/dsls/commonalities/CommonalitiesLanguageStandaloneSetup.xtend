@@ -12,7 +12,7 @@ import org.eclipse.emf.ecore.plugin.EcorePlugin
  */
 class CommonalitiesLanguageStandaloneSetup extends CommonalitiesLanguageStandaloneSetupGenerated {
 	override Injector createInjectorAndDoEMFRegistration() {
-		// Makes ECore register our custom implementations of E
+		// Makes ECore register our custom implementations of EPackages
 		EcorePlugin.ExtensionProcessor.process(null)
 		// Set up Reactions Language dependency:
 		ReactionsLanguageStandaloneSetup.doSetup()

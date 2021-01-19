@@ -19,13 +19,11 @@ import org.eclipse.ui.PlatformUI
 import org.eclipse.swt.widgets.Display
 import org.eclipse.core.resources.IContainer
 import org.eclipse.core.runtime.Path
+import edu.kit.ipd.sdq.commons.util.org.eclipse.core.resources.IProjectUtil
 
 @Utility
 class CommonalitiesProjectSetup {
 	static val String COMPLIANCE_LEVEL = '11';
-	static val TEST_PROJECT_GENERATED_SOURCES_FOLDER_NAME = 'src-gen'
-	static val TEST_PROJECT_SOURCES_FOLDER_NAME = 'src'
-	static val TEST_PROJECT_COMPILATION_FOLDER = 'bin'
 
 	def static IProject setupAsCommonalitiesProject(IProject project) {
 		project.open(null)
@@ -33,13 +31,13 @@ class CommonalitiesProjectSetup {
 			natureIds = #[JavaCore.NATURE_ID, XtextProjectHelper.NATURE_ID, IBundleProjectDescription.PLUGIN_NATURE]
 		], null)
 		project.createManifestMf()
-		val sourcesFolder = project.createFolder(TEST_PROJECT_SOURCES_FOLDER_NAME)
-		val generatedSourcesFolder = project.createFolder(TEST_PROJECT_GENERATED_SOURCES_FOLDER_NAME)
+		val sourcesFolder = project.createFolder(IProjectUtil.SOURCE_GEN_FOLDER.toString)
+		val generatedSourcesFolder = project.createFolder(IProjectUtil.SOURCE_GEN_FOLDER.toString)
 		val generatedSourcesSourceFolder = JavaCore.newSourceEntry(generatedSourcesFolder.fullPath)
 		val sourcesSourceFolder = JavaCore.newSourceEntry(sourcesFolder.fullPath)
 		val requiredPluginsContainer = JavaCore.newContainerEntry(PDECore.REQUIRED_PLUGINS_CONTAINER_PATH)
 		val jreContainer = JREContainerProvider.defaultJREContainerEntry
-		val javaProjectBinFolder = project.getFolder(TEST_PROJECT_COMPILATION_FOLDER)
+		val javaProjectBinFolder = project.getFolder(IProjectUtil.JAVA_BIN_FOLDER.toString)
 		val projectClasspath = #[sourcesSourceFolder, generatedSourcesSourceFolder, jreContainer,
 			requiredPluginsContainer]
 		JavaCore.create(project) => [
@@ -108,11 +106,11 @@ class CommonalitiesProjectSetup {
 	}
 
 	def static getSourceFolder(IProject project) {
-		project.getFolder(TEST_PROJECT_SOURCES_FOLDER_NAME)
+		project.getFolder(IProjectUtil.SOURCE_GEN_FOLDER.toString)
 	}
 
 	def static getBinFolder(IProject project) {
-		project.getFolder(TEST_PROJECT_COMPILATION_FOLDER)
+		project.getFolder(IProjectUtil.JAVA_BIN_FOLDER.toString)
 	}
 
 	def private static createFolder(IProject project, String name) {

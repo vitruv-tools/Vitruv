@@ -16,9 +16,6 @@ import org.eclipse.emf.common.util.Diagnostic
 import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.EPackage
 import org.eclipse.emf.ecore.plugin.EcorePlugin
-import org.eclipse.emf.ecore.resource.ResourceSet
-import org.eclipse.jdt.core.IJavaProject
-import org.eclipse.xtext.resource.XtextResourceSet
 import tools.vitruv.dsls.commonalities.generator.SubGenerator
 import tools.vitruv.extensions.dslruntime.commonalities.intermediatemodelbase.IntermediateModelBasePackage
 
@@ -32,6 +29,10 @@ import static org.eclipse.emf.common.util.URI.*
 import edu.kit.ipd.sdq.activextendannotations.CloseResource
 import static com.google.common.base.Preconditions.checkArgument
 import static com.google.common.base.Preconditions.checkState
+import org.eclipse.core.runtime.Platform
+import org.eclipse.emf.common.EMFPlugin
+import org.eclipse.core.resources.ResourcesPlugin
+import org.eclipse.core.runtime.Path
 
 @GenerationScoped
 class IntermediateMetamodelCodeGenerator implements SubGenerator {
@@ -56,7 +57,7 @@ class IntermediateMetamodelCodeGenerator implements SubGenerator {
 		val fsaTargetUri = fsa.getURI(GENERATED_CODE_FOLDER)
 		val target = if (fsaTargetUri.isPlatformResource) {
 			new PlatformResourceTarget(fsaTargetUri)
-		} else if(fsaTargetUri.isFile) {
+		} else if(fsaTargetUri.isFile && !Platform.isRunning) {
 			new GloballyRegisteredFileTarget(fsaTargetUri)
 		} else {
 			throw new IllegalStateException('''Unsupported URI type: ‹«fsaTargetUri»›''')
@@ -101,22 +102,6 @@ class IntermediateMetamodelCodeGenerator implements SubGenerator {
 		if (result.severity != Diagnostic.OK) {
 			throw new IllegalStateException("Generating the intermediate model failed:" + lineSeparator + result.explanation)
 		}
-
-		// TODO Workaround: When running in Eclipse, Xtext uses JDT to lookup
-		// JVM types. However, JDT keeps internal caches of its Java Model
-		// (such as the contents of source folders, packages, etc.), which
-		// don't seem to get updated in time, causing Xtext to not be able to
-		// find the JVM types for the generated intermediate metamodel code
-		// when we generate the reactions code for our Commonalities.
-		// Manually closing and reopening the JavaProject flushes these
-		// internal caches, forcing JDT to freshly check for and parse
-		// generated packages and source files when Xtext's JdtTypeProvider
-		// requests a Java type lookup by name.
-		val javaProject = resourceSet.javaProject
-		if (javaProject !== null) {
-			javaProject.close
-			javaProject.open(null)
-		}
 	}
 
 	private def getExplanation(Diagnostic diagnostic) {
@@ -133,18 +118,6 @@ class IntermediateMetamodelCodeGenerator implements SubGenerator {
 		}
 	}
 
-	// See: org.eclipse.xtext.common.types.xtext.ui.XtextResourceSetBasedProjectProvider
-	private def IJavaProject getJavaProject(ResourceSet resourceSet) {
-		if (resourceSet instanceof XtextResourceSet) {
-			val xtextResourceSet = resourceSet as XtextResourceSet
-			val Object context = xtextResourceSet.getClasspathURIContext()
-			if (context instanceof IJavaProject) {
-				return context as IJavaProject
-			}
-		}
-		return null
-	}
-	
 	private static def ensurePlatformPlugin(URI uri) {
 		if (uri.isPlatformResource) {
 			uri.replacePrefix(URI.createPlatformResourceURI("/", false), URI.createPlatformPluginURI("/", false))
@@ -160,7 +133,7 @@ class IntermediateMetamodelCodeGenerator implements SubGenerator {
 	}
 	
 	// In the easiest case, we generate into a platform resource target. This can be directly
-	// resolve by the ECore generator.
+	// resolved by the ECore generator.
 	private static class PlatformResourceTarget implements ECoreCodeGenerationTarget {
 		val URI uri
 		

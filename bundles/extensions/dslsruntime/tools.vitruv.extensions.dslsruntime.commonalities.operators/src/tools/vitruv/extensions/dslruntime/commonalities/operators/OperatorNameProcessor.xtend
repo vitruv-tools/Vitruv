@@ -17,6 +17,7 @@ import org.eclipse.xtend.lib.macro.declaration.ResolvedMethod
 import edu.kit.ipd.sdq.activextendannotations.TypeCopier
 import org.eclipse.xtend.lib.macro.declaration.TypeReference
 import org.eclipse.xtend.lib.macro.declaration.InterfaceDeclaration
+import java.util.List
 
 interface ClassProcessor extends
 	RegisterGlobalsParticipant<ClassDeclaration>,
@@ -30,16 +31,29 @@ final class OperatorNameProcessor extends AbstractClassProcessor implements Clas
 	val Class<? extends Annotation> annotationType
 	
 	override doRegisterGlobals(ClassDeclaration annotatedClass, extension RegisterGlobalsContext context) {
-		registerClass(annotatedClass.getTargetQualifedName(findUpstreamType(annotationType)))
+		val annotationTypeReference = findUpstreamType(annotationType)
+		val operatorLanguageName = annotatedClass.getOperatorName(annotationTypeReference)
+		if (operatorLanguageName.nameProblems.isEmpty) {
+			registerClass(annotatedClass.getTargetQualifedName(annotationTypeReference))
+		}
 	}
 	
 	override doTransform(MutableClassDeclaration annotatedClass, extension TransformationContext context) {
-		findClass(annotatedClass.getTargetQualifedName(findTypeGlobally(annotationType))) => [
+		val annotationTypeReference = findTypeGlobally(annotationType)
+		val operatorLanguageName = annotatedClass.getOperatorName(annotationTypeReference)
+		val nameProblems = operatorLanguageName.nameProblems
+		if (!nameProblems.isEmpty) {
+			nameProblems.forEach [problem | annotatedClass.addError(problem)]
+			return
+		}
+		
+		findClass(annotatedClass.getTargetQualifedName(annotationTypeReference)) => [
 			extension val classTypeCopier = new TypeCopier(context)
 			annotatedClass.allImplementedInterfaces.forEach [ parentInterface |
 				copyTypeParametersFrom(parentInterface)
 			]
 			implementedInterfaces = annotatedClass.allImplementedInterfaces.map[replaceTypeParameters]
+			annotatedClass.annotations.forEach [sourceAnnotation | addAnnotation(sourceAnnotation.newAnnotationReference())]
 			primarySourceElement = annotatedClass
 			
 			addField("delegate") [
@@ -77,6 +91,10 @@ final class OperatorNameProcessor extends AbstractClassProcessor implements Clas
 		]
 	}
 	
+	def private getNameProblems(String name) {
+		check(!name.endsWith('_'), "Operator names must not end with underscores!")
+	}
+	
 	def private String getTargetQualifedName(ClassDeclaration annotatedClass, Type annotationType) {
 		val lastDot = annotatedClass.qualifiedName.lastIndexOf('.')
 		CommonalitiesOperatorConventions.toOperatorTypeQualifiedName(
@@ -87,7 +105,7 @@ final class OperatorNameProcessor extends AbstractClassProcessor implements Clas
 	
 	def private getOperatorName(ClassDeclaration annotatedClass, Type annotationType) {
 		annotatedClass.findAnnotation(annotationType)?.getStringValue("name")
-			?: annotatedClass.simpleName
+			?: annotatedClass.simpleName.toFirstLower
 	}
 
 	def private Iterable<TypeReference> getAllImplementedInterfaces(MutableClassDeclaration annotatedClass) {
@@ -105,5 +123,9 @@ final class OperatorNameProcessor extends AbstractClassProcessor implements Clas
 	
 	def private <T> Iterable<T> uniqueBy(Iterable<T> elements, (T)=> Object identifier) {
 		elements.groupBy(identifier).values.map[get(0)]
+	}
+	
+	def private static check(boolean condition, String message) {
+		if (!condition) List.of(message) else emptyList()
 	}
 }

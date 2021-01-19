@@ -17,7 +17,6 @@ import static extension tools.vitruv.dsls.commonalities.generator.reactions.util
 import static extension tools.vitruv.dsls.commonalities.participation.ParticipationConditionHelper.*
 
 class CheckedParticipationConditionsHelper extends ReactionsGenerationHelper {
-
 	@Inject extension ParticipationConditionOperatorHelper participationConditionOperatorHelper
 	@Inject extension ParticipationObjectsHelper participationObjectsHelper
 
@@ -64,10 +63,9 @@ class CheckedParticipationConditionsHelper extends ReactionsGenerationHelper {
 				isTrue = true
 			]
 		} else {
-			val combinedCheck = checks.reduce [check1, check2 |
+			return checks.reduce [check1, check2 |
 				XbaseHelper.and(check1, check2, typeProvider)
 			]
-			return combinedCheck
 		}
 	}
 }

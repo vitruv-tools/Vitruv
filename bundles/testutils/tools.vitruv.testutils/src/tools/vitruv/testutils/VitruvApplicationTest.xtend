@@ -17,6 +17,7 @@ import tools.vitruv.testutils.matchers.CorrespondenceModelContainer
 import org.eclipse.xtend.lib.annotations.Delegate
 import static tools.vitruv.testutils.UriMode.*
 import tools.vitruv.framework.userinteraction.PredefinedInteractionResultProvider
+import java.util.List
 
 @ExtendWith(TestProjectManager, TestLogging)
 abstract class VitruvApplicationTest implements CorrespondenceModelContainer, TestView {
@@ -39,7 +40,7 @@ abstract class VitruvApplicationTest implements CorrespondenceModelContainer, Te
 		@TestProject(variant="vsum") Path vsumPath) {
 		TuidManager.instance.reinitialize()
 		val changePropagationSpecifications = this.changePropagationSpecifications
-		val domains = changePropagationSpecifications.flatMap[#[sourceDomain, targetDomain]].toSet
+		val domains = changePropagationSpecifications.flatMap[List.of(sourceDomain, targetDomain)].toSet
 		var interactionProvider = UserInteractionFactory.instance.createPredefinedInteractionResultProvider(null)
 		var userInteractor = UserInteractionFactory.instance.createUserInteractor(interactionProvider)
 		virtualModel = new VirtualModelImpl(vsumPath.toFile(), userInteractor, new VirtualModelConfiguration => [

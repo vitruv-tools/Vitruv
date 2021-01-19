@@ -19,6 +19,7 @@ import tools.vitruv.framework.domains.VitruvDomainProviderRegistry
 
 import static extension tools.vitruv.dsls.commonalities.language.extensions.CommonalitiesLanguageModelExtensions.*
 import tools.vitruv.dsls.commonalities.generator.GenerationContext
+import org.eclipse.emf.ecore.EPackage
 
 /**
  * Generates reactions in the Reactions language and the corresponding Java
@@ -42,8 +43,8 @@ class ReactionsGenerator implements SubGenerator {
 	
 	override beforeGenerate() {
 		// Prepare the Reactions language:
-		// This has the side-effect of initializing the Reactions language's injector if that hasn't happened yet:
 		if (isNewResourceSet) {
+			// This has the side-effect of initializing the Reactions language's injector if that hasn't happened yet:
 			globalServiceProvider.findService(URI.createFileURI('fake.reactions'), IReactionsGenerator)
 		}
 	}

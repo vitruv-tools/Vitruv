@@ -13,7 +13,6 @@ import tools.vitruv.dsls.reactions.builder.TypeProvider
 import static extension tools.vitruv.dsls.commonalities.participation.ParticipationConditionHelper.*
 
 class ParticipationConditionInitializationHelper extends ReactionsGenerationHelper {
-
 	@Inject extension ParticipationConditionOperatorHelper participationConditionOperatorHelper
 
 	package new() {

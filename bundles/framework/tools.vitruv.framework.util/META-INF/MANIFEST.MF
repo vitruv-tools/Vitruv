@@ -31,5 +31,6 @@ Require-Bundle: org.apache.log4j,
  edu.kit.ipd.sdq.commons.util.eclipse;visibility:=reexport,
  edu.kit.ipd.sdq.commons.util.emf;visibility:=reexport,
  edu.kit.ipd.sdq.commons.util.java;visibility:=reexport,
- edu.kit.ipd.sdq.activextendannotations
+ edu.kit.ipd.sdq.activextendannotations,
+ org.eclipse.core.expressions
 Bundle-Vendor: vitruv.tools
