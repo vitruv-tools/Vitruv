@@ -6,23 +6,11 @@ Automatic-Module-Name: tools.vitruv.framework.vsum.tests
 Bundle-Version: 1.1.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Export-Package: tools.vitruv.framework.tests.vsum
-Require-Bundle: tools.vitruv.framework.vsum,
- org.apache.log4j,
- tools.vitruv.framework.util,
- org.eclipse.core.runtime,
- org.eclipse.core.resources,
+Require-Bundle: org.apache.log4j,
  tools.vitruv.testutils,
  tools.vitruv.testutils.metamodels,
  org.apache.commons.lang,
- com.google.guava,
- org.eclipse.xtext.xbase.lib,
  org.eclipse.xtend.lib,
- org.eclipse.xtend.lib.macro,
- tools.vitruv.framework.change,
- tools.vitruv.framework.change.echange,
- tools.vitruv.framework.change.processing,
- tools.vitruv.framework.tuid,
- tools.vitruv.framework.correspondence,
  org.eclipse.uml2.uml,
  org.junit.jupiter.api,
  org.hamcrest.core

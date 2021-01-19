@@ -3,7 +3,7 @@
 <plugin>
 	<extension point="org.eclipse.emf.ecore.generated_package">
 		<package 
-			uri = "http://www.kit.edu/ipd/sdq/vitruvius/dsls/MirBase"
+			uri = "http://www.kit.edu/ipd/sdq/vitruvius/dsls/mirbase/MirBase"
 			class = "tools.vitruv.dsls.mirbase.mirBase.MirBasePackage"
 			genModel = "model/generated/MirBase.genmodel" />
 	</extension>

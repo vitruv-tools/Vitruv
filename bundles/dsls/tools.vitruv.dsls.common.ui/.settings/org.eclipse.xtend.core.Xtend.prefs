@@ -1,2 +1,2 @@
 eclipse.preferences.version=1
-org.eclipse.xtext.xbase.validation.IssueCodes.discouraged_reference=ignore
+org.eclipse.xtext.xbase.validation.IssueCodes.discouraged_reference=info

@@ -15,8 +15,8 @@
 	<modules>
 		<module>framework</module>
 		<module>dsls</module>
-		<module>extensions</module>
-		<module>demo</module>
+		<module>domains</module>
+		<module>applications</module>
 	</modules>
 	
 </project>

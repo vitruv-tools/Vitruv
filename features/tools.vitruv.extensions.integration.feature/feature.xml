@@ -3,9 +3,9 @@
       id="tools.vitruv.extensions.integration.feature"
       label="%featureName"
       version="1.1.0.qualifier"
-      provider-name="%providerName"	  
+      provider-name="%providerName"
       license-feature="tools.vitruv.license.feature"
-	  license-feature-version="1.0.0">
+      license-feature-version="1.0.0">
 
    <description>
       %description
@@ -20,7 +20,8 @@
    </license>
 
    <requires>
-      <import feature="tools.vitruv.framework.feature" version="0.3.0"/>
+      <import plugin="tools.vitruv.extensions.dslsruntime.reactions"/>
+      <import plugin="tools.vitruv.framework.tuid"/>
    </requires>
 
    <plugin
