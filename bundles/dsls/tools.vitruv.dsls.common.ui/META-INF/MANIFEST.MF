@@ -12,7 +12,7 @@ Require-Bundle: org.eclipse.xtend.lib,
  org.eclipse.ui.ide,
  org.eclipse.xtext.common.types,
  edu.kit.ipd.sdq.activextendannotations,
- tools.vitruv.dsls.common,
+ tools.vitruv.dsls.common;visibility:=reexport,
  tools.vitruv.framework.domains
 Export-Package: tools.vitruv.dsls.common.ui,
  tools.vitruv.dsls.common.ui.quickfix,
