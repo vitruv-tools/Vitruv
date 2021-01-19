@@ -11,7 +11,6 @@ import org.eclipse.xtext.testing.InjectWith
 import tools.vitruv.dsls.commonalities.tests.CommonalitiesLanguageInjectorProvider
 import org.junit.jupiter.api.TestInstance
 import javax.inject.Inject
-import tools.vitruv.dsls.commonalities.testutils.TestCommonalitiesGenerator
 import org.eclipse.xtend.lib.annotations.Accessors
 import tools.vitruv.framework.change.processing.ChangePropagationSpecification
 import org.junit.jupiter.api.BeforeAll
@@ -22,6 +21,7 @@ import static tools.vitruv.testutils.metamodels.AllElementTypes2Creators.aet2
 import static tools.vitruv.testutils.matchers.ModelMatchers.contains
 import static tools.vitruv.testutils.matchers.ModelMatchers.ignoringFeatures
 import tools.vitruv.testutils.VitruvApplicationTest
+import tools.vitruv.dsls.commonalities.tests.util.TestCommonalitiesGenerator
 
 @ExtendWith(InjectionExtension)
 @InjectWith(CommonalitiesLanguageInjectorProvider)

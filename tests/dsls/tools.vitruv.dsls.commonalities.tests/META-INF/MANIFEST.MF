@@ -16,6 +16,7 @@ Require-Bundle: tools.vitruv.dsls.commonalities,
  org.eclipse.xtext.xbase.lib;bundle-version="2.14.0",
  org.junit.jupiter.api,
  org.objectweb.asm;bundle-version="[9.0.0,9.1.0)";resolution:=optional,
- tools.vitruv.dsls.commonalities.testutils,
- tools.vitruv.testutils.domains
+ tools.vitruv.testutils.domains,
+ edu.kit.ipd.sdq.activextendannotations,
+ org.eclipse.core.runtime
 Bundle-Vendor: vitruv.tools

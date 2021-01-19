@@ -17,8 +17,8 @@ import org.junit.jupiter.api.Assertions
 import static extension tools.vitruv.dsls.common.ui.ProjectAccess.*
 import java.util.List
 import org.eclipse.pde.core.project.IBundleProjectDescription
-import tools.vitruv.dsls.commonalities.testutils.BugFixedAbstractQuickfixTest
 import org.eclipse.xtext.ui.testing.util.IResourcesSetupUtil
+import tools.vitruv.testutils.xtext.BugFixedAbstractQuickfixTest
 
 @DisplayName("quick fixes for project natures")
 @ExtendWith(#[InjectionExtension, TestProjectManager])

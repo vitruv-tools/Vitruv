@@ -1,4 +1,4 @@
-package tools.vitruv.dsls.commonalities.testutils
+package tools.vitruv.dsls.commonalities.ui.setup
 
 import edu.kit.ipd.sdq.activextendannotations.Utility
 import org.eclipse.core.resources.IncrementalProjectBuilder

@@ -1,4 +1,4 @@
-package tools.vitruv.dsls.commonalities.testutils
+package tools.vitruv.testutils.xtext
 
 import org.eclipse.xtext.resource.XtextResource
 import org.eclipse.xtext.ui.testing.AbstractQuickfixTest

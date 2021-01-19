@@ -7,7 +7,6 @@ import org.junit.jupiter.api.Test
 import javax.inject.Inject
 import tools.vitruv.testutils.TestProject
 import java.nio.file.Path
-import tools.vitruv.dsls.commonalities.testutils.TestCommonalitiesGenerator
 import tools.vitruv.testutils.VitruvApplicationTest
 import tools.vitruv.framework.change.processing.ChangePropagationSpecification
 import org.junit.jupiter.api.TestInstance
@@ -29,6 +28,7 @@ import static tools.vitruv.testutils.matchers.ModelMatchers.doesNotExist
 import allElementTypes.Root
 import allElementTypes2.Root2
 import tools.vitruv.dsls.commonalities.tests.CommonalitiesLanguageInjectorProvider
+import tools.vitruv.dsls.commonalities.tests.util.TestCommonalitiesGenerator
 
 @ExtendWith(InjectionExtension)
 @InjectWith(CommonalitiesLanguageInjectorProvider)

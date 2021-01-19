@@ -1,4 +1,4 @@
-package tools.vitruv.dsls.commonalities.testutils
+package tools.vitruv.testutils.xtext
 
 import org.junit.jupiter.api.BeforeAll
 import org.eclipse.xtext.ui.testing.AbstractWorkbenchTest

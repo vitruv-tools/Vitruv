@@ -1,4 +1,4 @@
-package tools.vitruv.dsls.commonalities.testutils
+package tools.vitruv.dsls.commonalities.tests.util
 
 import com.google.inject.Provider
 import java.nio.file.Path
@@ -34,10 +34,10 @@ import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
 import org.eclipse.jdt.core.compiler.CategorizedProblem
 import static extension java.lang.reflect.Modifier.*
 import java.util.List
-import org.eclipse.emf.ecore.EPackage
 import static com.google.common.base.Preconditions.checkState
 import org.eclipse.core.runtime.Platform
 import static extension tools.vitruv.testutils.change.processing.MetamodelRegisteringChangePropagationSpecification.registerMetamodelsBeforePropagating
+import tools.vitruv.testutils.change.processing.CombinedChangePropagationSpecification
 
 /**
  * Xtext’s {@link CompilationTestHelper} is bug-ridden and does not work with the Ecore generator.
@@ -145,9 +145,9 @@ class TestCommonalitiesGenerator {
 	def private findAndCombineChangePropagationSpecifications(Iterable<? extends Class<?>> sourceClasses) {
 		sourceClasses.filter [
 			allInterfaces.contains(ChangePropagationSpecification) 
-				&& modifiers.isPublic && declaredConstructor.modifiers.isPublic
+				&& modifiers.isPublic && getDeclaredConstructor.modifiers.isPublic
 		]
-			.map [declaredConstructor.newInstance as ChangePropagationSpecification]
+			.map [getDeclaredConstructor.newInstance as ChangePropagationSpecification]
 			.groupBy [sourceDomain -> targetDomain]
 			.entrySet
 			.mapFixed [
