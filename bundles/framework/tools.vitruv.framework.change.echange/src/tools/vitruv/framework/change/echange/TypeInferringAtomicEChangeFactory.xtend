@@ -27,6 +27,7 @@ import org.eclipse.emf.ecore.resource.Resource
 import tools.vitruv.framework.change.echange.util.EChangeUtil
 import tools.vitruv.framework.change.echange.feature.FeatureFactory
 import tools.vitruv.framework.change.echange.feature.UnsetFeature
+import org.eclipse.emf.common.util.URI
 
 /**
  * Factory singleton class for elements of change models.
@@ -55,10 +56,11 @@ class TypeInferringAtomicEChangeFactory {
 	 * Sets the attributes of a RootEChange.
 	 * @param change The RootEChange which attributes are to be set.
 	 * @param resourceURI The affected resource of the change.
+	 * @param URI the URI of the resource. May differ from URI of the resource if it has changed.
 	 * @param index The affected index of the resource.
 	 */
-	def protected setRootChangeFeatures(RootEChange change, Resource resource, int index) {
-		change.uri = resource.URI.toString
+	def protected setRootChangeFeatures(RootEChange change, Resource resource, URI uri, int index) {
+		change.uri = uri.toString
 		change.resource = resource
 		change.index = index
 	}
@@ -115,7 +117,22 @@ class TypeInferringAtomicEChangeFactory {
 	def <T extends EObject> InsertRootEObject<T> createInsertRootChange(T newValue, Resource resource, int index) {
 		val c = RootFactory.eINSTANCE.createInsertRootEObject
 		setNewValue(c, newValue)
-		setRootChangeFeatures(c, resource, index)
+		setRootChangeFeatures(c, resource, resource.URI, index)
+		return c
+	}
+
+	/**
+	 * Creates a new {@link RemoveRootEObject} EChange.
+	 * @param oldValue The root EObject which is removed.
+	 * @param resource The resource which the root object is removed from.
+	 * @param index The index of the resource which the root object is removed from.
+	 * @param oldUri The old URI of the resource. May differ from the current resource URI if it has been changed.
+	 * @return The created RemoveRootEObject EChange.
+	 */
+	def <T extends EObject> RemoveRootEObject<T> createRemoveRootChange(T oldValue, Resource resource, URI oldUri, int index) {
+		val c = RootFactory.eINSTANCE.createRemoveRootEObject
+		setOldValue(c, oldValue)
+		setRootChangeFeatures(c, resource, oldUri, index)
 		return c
 	}
 
@@ -127,10 +144,7 @@ class TypeInferringAtomicEChangeFactory {
 	 * @return The created RemoveRootEObject EChange.
 	 */
 	def <T extends EObject> RemoveRootEObject<T> createRemoveRootChange(T oldValue, Resource resource, int index) {
-		val c = RootFactory.eINSTANCE.createRemoveRootEObject
-		setOldValue(c, oldValue)
-		setRootChangeFeatures(c, resource, index)
-		return c
+		createRemoveRootChange(oldValue, resource, resource.URI, index)
 	}
 
 	/**
