@@ -25,24 +25,30 @@ class ChangeDescription2MoveRootTest extends ChangeDescription2ChangeTransformat
 		// assert
 		val isDelete = false
 		val isCreate = false
-		result.assertChangeCount(2).assertRemoveRoot(root, isDelete, resource1).assertInsertRoot(root, isCreate,
-			resource2).assertEmpty
+		result.assertChangeCount(2) //
+		.assertRemoveRoot(root, isDelete, resource1) //
+		.assertInsertRoot(root, isCreate, resource2) //
+		.assertEmpty
 	}
 
 	@Test
 	def void moveResource() {
+		val originalResourceName = "resource"
+		val changedResourceName = "newLocation"
+
 		val root = aet.Root
-		val resource = resourceAt("resource") => [contents += root]
+		val resource = resourceAt(originalResourceName) => [contents += root]
+		val originalUri = resource.URI
 
 		val result = resource.record [
-			URI = "newLocation".uri
+			URI = '''«changedResourceName».xmi'''.uri
 		]
 
 		val isDelete = false
 		val isCreate = false
 		result.assertChangeCount(2) //
-		.assertRemoveRoot(root, isDelete, resource) //
-		.assertInsertRoot(root, isCreate, resource) //
+		.assertRemoveRoot(root, isDelete, resourceAt(originalResourceName), originalUri) //
+		.assertInsertRoot(root, isCreate, resourceAt(changedResourceName)) //
 		.assertEmpty
 	}
 }
