@@ -15,6 +15,7 @@ import static org.eclipse.emf.common.notify.Notification.*
 import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
 import org.eclipse.xtend.lib.annotations.FinalFieldsConstructor
 import org.eclipse.emf.ecore.EAttribute
+import org.eclipse.emf.common.util.URI
 
 /** 
  * Converts an EMF notification to an {@link EChange}.
@@ -237,9 +238,10 @@ final class NotificationToEChangeConverter {
 	}
 
 	private def Iterable<? extends EChange> handleSetUriChange(extension NotificationInfo notification) {
+		val oldUri = notification.oldValue as URI
 		notifierResource.contents.mapFixedIndexed [ index, value |
 			val valueIndex = initialIndex + notifierResource.contents.size - 1 - index
-			createRemoveRootChange(value, notifierResource, valueIndex).withGeneratedId()
+			createRemoveRootChange(value, notifierResource, oldUri, valueIndex).withGeneratedId()
 		] + notifierResource.contents.flatMapFixedIndexed [ index, value |
 			createInsertRootChange(value, notifierResource, initialIndex + index).
 				surroundWithCreateAndFeatureChangesIfNecessary().mapFixed[withGeneratedId()]
