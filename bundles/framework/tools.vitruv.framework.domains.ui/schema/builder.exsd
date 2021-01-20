@@ -1,0 +1,134 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- Schema file written by PDE -->
+<schema targetNamespace="tools.vitruv.framework.domains.ui" xmlns="http://www.w3.org/2001/XMLSchema">
+<annotation>
+      <appinfo>
+         <meta.schema plugin="tools.vitruv.framework.domains.ui" id="builder" name="Vitruvius Project Builder"/>
+      </appinfo>
+      <documentation>
+         Defines a VitruvProjectBuilder to use for a specified VitruvDomain.
+      </documentation>
+   </annotation>
+
+   <element name="extension">
+      <annotation>
+         <appinfo>
+            <meta.element />
+         </appinfo>
+      </annotation>
+      <complexType>
+         <choice>
+            <element ref="assignment" minOccurs="1" maxOccurs="unbounded"/>
+         </choice>
+         <attribute name="point" type="string" use="required">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="id" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="name" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+               <appinfo>
+                  <meta.attribute translatable="true"/>
+               </appinfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="assignment">
+      <complexType>
+         <attribute name="builderId" type="string" use="required">
+            <annotation>
+               <documentation>
+                  The id of the builder to apply for the specified domain. The builder should be a subclass of VitruvProjectBuilder.
+               </documentation>
+               <appinfo>
+                  <meta.attribute kind="identifier" basedOn="org.eclipse.core.resources.builders/@id"/>
+               </appinfo>
+            </annotation>
+         </attribute>
+         <attribute name="domain" type="string" use="required">
+            <annotation>
+               <documentation>
+                  The domain to apply the specified builder for.
+               </documentation>
+               <appinfo>
+                  <meta.attribute kind="java" basedOn=":tools.vitruv.framework.domains.VitruvDomain"/>
+               </appinfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <annotation>
+      <appinfo>
+         <meta.section type="since"/>
+      </appinfo>
+      <documentation>
+         1.1.0
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appinfo>
+         <meta.section type="examples"/>
+      </appinfo>
+      <documentation>
+         &lt;p&gt;
+&lt;pre&gt;
+&lt;extension
+      id=&quot;tools.vitruv.extensions.emf.builder&quot;
+      name=&quot;Vitruv EMF Project Builder&quot;
+      point=&quot;tools.vitruv.framework.domains.ui.builder&quot;&gt;
+   &lt;assignment
+         builder_id=&quot;tools.vitruv.domains.emf.builder.VitruviusEmfBuilder.id&quot;
+         domain=&quot;tools.vitruv.framework.domains.AbstractVitruvDomain&quot;&gt;
+   &lt;/assignment&gt;
+&lt;/extension&gt;
+&lt;/pre&gt;
+&lt;/p&gt;
+The example registers a build with ID &quot;tools.vitruv.domains.emf.builder.VitruviusEmfBuilder.id&quot; as a default for all domains, defined by &quot;tools.vitruv.framework.domains.AbstractVitruvDomain&quot;.
+Using a subclass of that domain will apply the given builder only for the specified domain.
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appinfo>
+         <meta.section type="apiinfo"/>
+      </appinfo>
+      <documentation>
+         The value of the builder ID attribute must reference a builder that is a subclass of &lt;samp&gt;tools.vitruv.domains.ui.builder.VitruvProjectBuilder&lt;/samp&gt;.
+      </documentation>
+   </annotation>
+
+
+   <annotation>
+      <appinfo>
+         <meta.section type="copyright"/>
+      </appinfo>
+      <documentation>
+         Copyright (c) 2014-2021 vitruv.tools&lt;br&gt;
+Karlsruhe Institute of Technology (KIT), Software Design and Quality, Karlsruhe, Germany
+
+This program and the accompanying materials are made 
+available under the terms of the Eclipse Public License 2.0 which 
+accompanies this distribution, and is available at 
+&lt;a href=&quot;https://www.eclipse.org/legal/epl-2.0&quot;&gt;https://www.eclipse.org/legal/epl-v20.html&lt;/a&gt;/
+
+SPDX-License-Identifier: EPL-2.0
+      </documentation>
+   </annotation>
+
+</schema>

@@ -13,6 +13,5 @@ Require-Bundle: org.antlr.runtime;bundle-version="[3.2.0,3.2.1)",
  com.google.inject,
  org.eclipse.xtext.ide,
  org.eclipse.xtext.xbase.ide,
- org.eclipse.xtext,
  tools.vitruv.dsls.commonalities
 Bundle-Vendor: vitruv.tools

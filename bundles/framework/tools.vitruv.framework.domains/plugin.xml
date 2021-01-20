@@ -5,5 +5,5 @@
 -->
 
 <plugin>
-   <extension-point id="domain" name="Vitruv Domain" schema="schema/domain.exsd"/>
+   <extension-point id="provider" name="Vitruv Domain Provider" schema="schema/provider.exsd"/>
 </plugin>

@@ -1,6 +1,7 @@
 package tools.vitruv.framework.util
 
 import static com.google.common.base.Preconditions.checkState
+import org.eclipse.xtend.lib.annotations.Accessors
 
 /**
  * Helper to capture values that are created in Lambdas, so that they can be used outside the Lambda. This is 
@@ -22,6 +23,7 @@ import static com.google.common.base.Preconditions.checkState
  * </pre> 
  */
 class Capture<T> {
+	@Accessors(PUBLIC_GETTER)
 	var isSet = false
 	var T instance = null
 

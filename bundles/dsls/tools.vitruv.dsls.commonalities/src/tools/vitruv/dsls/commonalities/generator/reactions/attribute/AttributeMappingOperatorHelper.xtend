@@ -71,7 +71,7 @@ class AttributeMappingOperatorHelper extends ReactionsGenerationHelper {
 	def constructOperator(OperatorAttributeMapping mapping, AttributeMappingOperatorContext operatorContext) {
 		val extension typeProvider = operatorContext.typeProvider
 		return XbaseFactory.eINSTANCE.createXConstructorCall => [
-			val operatorType = mapping.operator.jvmType.imported
+			val operatorType = mapping.operator.imported
 			// Assert: There is only one constructor and it matches the passed operands.
 			// TODO Ensure this via validation.
 			constructor = operatorType.findConstructor()

@@ -17,7 +17,7 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.AfterEach
 import static org.junit.jupiter.api.Assertions.assertEquals
 import tools.vitruv.framework.util.bridges.EcoreResourceBridge
-import static extension tools.vitruv.testutils.metamodels.AllElementTypesCreators.*
+import static tools.vitruv.testutils.metamodels.AllElementTypesCreators.aet
 import org.eclipse.emf.common.notify.Notifier
 import java.util.function.Consumer
 import static com.google.common.base.Preconditions.checkState
@@ -25,14 +25,15 @@ import org.junit.jupiter.api.^extension.ExtendWith
 import tools.vitruv.testutils.TestProjectManager
 import tools.vitruv.testutils.TestProject
 import java.nio.file.Path
+import tools.vitruv.testutils.RegisterMetamodelsInStandalone
 
-@ExtendWith(TestProjectManager)
+@ExtendWith(TestProjectManager, RegisterMetamodelsInStandalone)
 abstract class ChangeDescription2ChangeTransformationTest {
 	var AtomicEmfChangeRecorder changeRecorder
 	var UuidGeneratorAndResolver uuidGeneratorAndResolver
 	var ResourceSet resourceSet
 	var Path tempFolder
-
+	
 	/** 
 	 * Create a new model and initialize the change monitoring
 	 */

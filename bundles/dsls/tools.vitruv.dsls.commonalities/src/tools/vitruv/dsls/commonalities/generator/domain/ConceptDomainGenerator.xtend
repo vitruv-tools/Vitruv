@@ -22,11 +22,14 @@ import tools.vitruv.framework.tuid.AttributeTuidCalculatorAndResolver
 
 import static extension tools.vitruv.dsls.commonalities.generator.domain.ConceptDomainConstants.*
 import static extension tools.vitruv.dsls.commonalities.generator.intermediatemodel.IntermediateModelConstants.*
+import tools.vitruv.dsls.commonalities.generator.util.guice.GenerationScoped
+import tools.vitruv.dsls.commonalities.generator.GenerationContext
 
-class ConceptDomainGenerator extends SubGenerator {
+@GenerationScoped
+class ConceptDomainGenerator implements SubGenerator {
+	static val Logger log = Logger.getLogger(ConceptDomainGenerator)
 
-	static val Logger logger = Logger.getLogger(ConceptDomainGenerator)
-
+	@Inject extension GenerationContext
 	@Inject JvmModelGenerator delegate
 	@Inject JvmTypeReferenceBuilder.Factory typeReferenceFactory
 	@Inject Provider<XtextResource> resourceProvider
@@ -45,7 +48,7 @@ class ConceptDomainGenerator extends SubGenerator {
 		if (!isNewResourceSet) return;
 		val typeReferenceBuilder = typeReferenceFactory.create(resourceSet)
 		generatedConcepts.flatMap [ concept |
-			logger.debug('''Generating domain and domain provider for concept '«concept»'.''')
+			log.debug('''Generating domain and domain provider for concept '«concept»'.''')
 			val domainType = concept.createDomain(typeReferenceBuilder)
 			val domainProviderType = concept.createDomainProvider(typeReferenceBuilder, domainType)
 			return #[domainType, domainProviderType]
@@ -69,9 +72,7 @@ class ConceptDomainGenerator extends SubGenerator {
 						// This attribute delegates to 'fullPath' for intermediate resource bridges
 						// TODO remove once resource creation is handled by domains
 						»
-						new «AttributeTuidCalculatorAndResolver.typeRef»("«
-							conceptName.intermediateMetamodelPackage.nsURI»", "«
-							IntermediateModelBasePackage.eINSTANCE.intermediate_IntermediateId.name»"),
+						new «AttributeTuidCalculatorAndResolver.typeRef»("«conceptName.intermediateMetamodelPackage.nsURI»", "«IntermediateModelBasePackage.eINSTANCE.intermediate_IntermediateId.name»"),
 						"«conceptName.intermediateModelFileExtension»");'''
 				]
 			)

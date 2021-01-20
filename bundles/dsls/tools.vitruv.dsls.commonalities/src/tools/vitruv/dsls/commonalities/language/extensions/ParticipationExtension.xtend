@@ -14,12 +14,13 @@ import tools.vitruv.dsls.commonalities.language.TupleParticipation
 import static extension tools.vitruv.dsls.commonalities.language.extensions.ParticipationClassExtension.*
 import static extension tools.vitruv.dsls.commonalities.language.extensions.ParticipationConditionExtension.*
 import static extension tools.vitruv.dsls.commonalities.language.extensions.ParticipationRelationExtension.*
+import java.util.Set
 
 @Utility
 package class ParticipationExtension {
 
 	static def dispatch Iterable<ParticipationClass> getClasses(SimpleParticipation participation) {
-		Collections.singleton(participation.participationClass)
+		participation.participationClass !== null ? Set.of(participation.participationClass) : emptySet()
 	}
 
 	static def dispatch Iterable<ParticipationClass> getClasses(TupleParticipation participation) {

@@ -27,7 +27,6 @@ import static extension tools.vitruv.dsls.commonalities.language.extensions.Comm
 class InsertResourceBridgeRoutineBuilder extends ReactionsGenerationHelper {
 
 	static class Provider extends ReactionsSegmentScopedProvider<InsertResourceBridgeRoutineBuilder> {
-
 		protected override createFor(FluentReactionsSegmentBuilder segment) {
 			return new InsertResourceBridgeRoutineBuilder(segment).injectMembers
 		}

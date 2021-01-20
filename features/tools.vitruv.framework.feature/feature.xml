@@ -20,40 +20,32 @@
    </license>
 
    <requires>
-      <import plugin="org.apache.log4j"/>
       <import plugin="com.google.guava"/>
-      <import plugin="org.eclipse.emf.ecore.change"/>
+      <import plugin="org.eclipse.xtext.xbase.lib"/>
+      <import plugin="org.eclipse.xtend.lib"/>
+      <import plugin="org.eclipse.xtend.lib.macro"/>
       <import plugin="org.eclipse.core.runtime"/>
-      <import plugin="org.eclipse.emf.ecore"/>
+      <import plugin="org.apache.log4j"/>
+      <import plugin="org.eclipse.emf.ecore.change"/>
       <import plugin="org.eclipse.emf.ecore.edit"/>
-      <import plugin="org.eclipse.core.resources"/>
+      <import plugin="org.eclipse.emf.ecore"/>
       <import plugin="org.eclipse.emf.transaction"/>
-      <import plugin="org.eclipse.osgi"/>
+      <import plugin="org.eclipse.emf.compare"/>
+      <import plugin="org.eclipse.core.resources"/>
       <import plugin="org.eclipse.core.expressions"/>
-      <import plugin="org.junit"/>
-      <import plugin="org.eclipse.jdt.core"/>
-      <import plugin="org.eclipse.jdt.launching"/>
-      <import plugin="org.eclipse.emf.common"/>
+      <import plugin="edu.kit.ipd.sdq.activextendannotations"/>
       <import plugin="org.eclipse.swt"/>
       <import plugin="org.eclipse.ui.workbench"/>
       <import plugin="org.eclipse.jface"/>
-      <import plugin="org.apache.commons.lang"/>
-      <import plugin="org.eclipse.equinox.registry"/>
       <import plugin="org.eclipse.emf.ecore.xmi"/>
       <import plugin="org.eclipse.emf.common.ui"/>
+      <import plugin="edu.kit.ipd.sdq.commons.util.eclipse"/>
+      <import plugin="edu.kit.ipd.sdq.commons.util.emf"/>
+      <import plugin="edu.kit.ipd.sdq.commons.util.java"/>
       <import plugin="org.eclipse.ui"/>
-      <import plugin="org.eclipse.core.resources" version="3.10.1" match="greaterOrEqual"/>
       <import plugin="org.eclipse.core.commands"/>
-      <import plugin="org.eclipse.emf" version="2.6.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.emf.edit"/>
-      <import plugin="org.eclipse.gmf.runtime.diagram.ui" version="1.7.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.gmf.runtime.diagram.ui.resources.editor" version="1.7.0" match="greaterOrEqual"/>
-      <import feature="edu.kit.ipd.sdq.commons.util.eclipse.feature" version="1.5.0"/>
-      <import feature="edu.kit.ipd.sdq.commons.util.emf.feature" version="1.5.0"/>
-      <import feature="edu.kit.ipd.sdq.commons.util.java.feature" version="1.5.0"/>
-      <import feature="org.eclipse.xtend.sdk" version="2.19.0" match="greaterOrEqual"/>
-      <import feature="org.eclipse.xtext.xbase.lib" version="2.19.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.xtend.lib" version="2.19.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.gmf.runtime.diagram.ui"/>
+      <import plugin="org.eclipse.gmf.runtime.diagram.ui.resources.editor"/>
    </requires>
 
    <plugin
@@ -62,7 +54,7 @@
          install-size="0"
          version="0.0.0"
          unpack="false"/>
-         
+
    <plugin
          id="tools.vitruv.framework.change"
          download-size="0"
@@ -76,8 +68,8 @@
          install-size="0"
          version="0.0.0"
          unpack="false"/>
-		 
-	<plugin
+
+   <plugin
          id="tools.vitruv.framework.change.interaction"
          download-size="0"
          install-size="0"
@@ -90,7 +82,7 @@
          install-size="0"
          version="0.0.0"
          unpack="false"/>
-         
+
    <plugin
          id="tools.vitruv.framework.correspondence"
          download-size="0"
@@ -100,6 +92,13 @@
 
    <plugin
          id="tools.vitruv.framework.domains"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="tools.vitruv.framework.domains.ui"
          download-size="0"
          install-size="0"
          version="0.0.0"
@@ -119,20 +118,6 @@
          version="0.0.0"
          unpack="false"/>
 
-   <plugin
-         id="tools.vitruv.framework.ui.monitorededitor"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="tools.vitruv.framework.ui.vsum"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-         
    <plugin
          id="tools.vitruv.framework.uuid"
          download-size="0"
@@ -155,14 +140,14 @@
          unpack="false"/>
 
    <plugin
-         id="tools.vitruv.extensions.emf"
+         id="tools.vitruv.framework.vsum.ui"
          download-size="0"
          install-size="0"
          version="0.0.0"
          unpack="false"/>
 
    <plugin
-         id="tools.vitruv.extensions.emf.monitorededitor"
+         id="tools.vitruv.domains.emf.ui"
          download-size="0"
          install-size="0"
          version="0.0.0"

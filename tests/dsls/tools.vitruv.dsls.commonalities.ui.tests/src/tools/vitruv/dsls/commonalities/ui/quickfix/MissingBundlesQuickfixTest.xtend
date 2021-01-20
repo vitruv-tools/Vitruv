@@ -4,7 +4,7 @@ import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import tools.vitruv.dsls.common.ui.validation.ProjectValidation
 import static tools.vitruv.dsls.commonalities.util.CommonalitiesLanguageConstants.RUNTIME_BUNDLE
-import static extension tools.vitruv.dsls.commonalities.testutils.CommonalitiesProjectSetup.*
+import static extension tools.vitruv.dsls.commonalities.ui.setup.CommonalitiesProjectSetup.*
 import org.junit.jupiter.api.^extension.ExtendWith
 import static extension tools.vitruv.dsls.common.ui.ProjectAccess.*
 import static org.hamcrest.CoreMatchers.is
@@ -21,11 +21,11 @@ import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.core.resources.
 import java.util.Set
 import javax.inject.Inject
 import static tools.vitruv.dsls.commonalities.ui.quickfix.XtextAssertions.getCurrentlyOpenedXtextDocument
-import tools.vitruv.dsls.commonalities.testutils.BugFixedAbstractQuickfixTest
 import org.eclipse.xtext.ui.testing.util.IResourcesSetupUtil
+import tools.vitruv.testutils.xtext.BugFixedAbstractQuickfixTest
 
 @DisplayName("quick fixes for missing bundles")
-@ExtendWith(#[InjectionExtension, TestProjectManager])
+@ExtendWith(InjectionExtension, TestProjectManager)
 @InjectWith(CommonalitiesLanguageUiInjectorProvider)
 class MissingBundlesQuickfixTest extends BugFixedAbstractQuickfixTest {
 	@Inject

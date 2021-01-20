@@ -3,9 +3,9 @@
       id="tools.vitruv.extensions.constructionsimulation.feature"
       label="%featureName"
       version="1.1.0.qualifier"
-      provider-name="%providerName"	  
+      provider-name="%providerName"
       license-feature="tools.vitruv.license.feature"
-	  license-feature-version="1.0.0">
+      license-feature-version="1.0.0">
 
    <description>
       %description
@@ -20,7 +20,13 @@
    </license>
 
    <requires>
-      <import feature="tools.vitruv.framework.feature" version="0.3.0"/>
+      <import plugin="org.apache.log4j"/>
+      <import plugin="org.eclipse.core.runtime"/>
+      <import plugin="org.eclipse.emf.ecore.xmi"/>
+      <import plugin="org.eclipse.core.resources"/>
+      <import plugin="org.eclipse.jface"/>
+      <import plugin="org.eclipse.ui.workbench"/>
+      <import plugin="tools.vitruv.testutils"/>
    </requires>
 
    <plugin

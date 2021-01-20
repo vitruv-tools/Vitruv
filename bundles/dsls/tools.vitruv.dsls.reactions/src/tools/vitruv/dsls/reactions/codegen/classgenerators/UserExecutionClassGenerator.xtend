@@ -127,7 +127,7 @@ class UserExecutionClassGenerator extends ClassGenerator {
 		Iterable<AccessibleElement> accessibleElements) {
 		val methodName = "getElement" + counterGetElementMethods++;
 
-		return reference.code.getOrGenerateMethod(methodName, typeRef(EObject)) [
+		return reference.code.getOrGenerateMethod(methodName, reference?.code?.inferredType?: typeRef(EObject)) [
 			parameters += generateAccessibleElementsParameters(accessibleElements);
 			val correspondenceSourceBlock = reference?.code;
 			body = correspondenceSourceBlock;

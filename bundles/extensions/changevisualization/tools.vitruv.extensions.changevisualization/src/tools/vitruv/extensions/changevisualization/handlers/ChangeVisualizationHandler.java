@@ -106,7 +106,7 @@ public class ChangeVisualizationHandler extends AbstractHandler {
 		ISelection sel = HandlerUtil.getCurrentSelection(event);
 		if (sel instanceof IStructuredSelection){
 			Object selected = ((IStructuredSelection)sel).getFirstElement();
-			IResource resource = (IResource)Platform.getAdapterManager().getAdapter(selected, IResource.class);
+			IResource resource = Platform.getAdapterManager().getAdapter(selected, IResource.class);
 			if (resource != null) {
 				IProject project = resource.getProject();
 				return project;

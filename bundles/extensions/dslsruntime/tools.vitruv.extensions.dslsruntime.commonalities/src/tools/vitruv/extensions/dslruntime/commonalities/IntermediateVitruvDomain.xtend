@@ -3,7 +3,6 @@ package tools.vitruv.extensions.dslruntime.commonalities
 import java.util.Set
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EPackage
-import tools.vitruv.domains.emf.builder.VitruviusEmfBuilderApplicator
 import tools.vitruv.extensions.dslruntime.commonalities.resources.IntermediateResourceBridge
 import tools.vitruv.framework.domains.AbstractTuidAwareVitruvDomain
 import tools.vitruv.framework.tuid.TuidCalculatorAndResolver
@@ -19,11 +18,7 @@ abstract class IntermediateVitruvDomain extends AbstractTuidAwareVitruvDomain {
 		String... fileExtensions) {
 		super(name, metamodelRootPackage, tuidCalculator, fileExtensions)
 	}
-
-	override getBuilderApplicator() {
-		return new VitruviusEmfBuilderApplicator()
-	}
-
+	
 	override shouldTransitivelyPropagateChanges() {
 		true
 	}

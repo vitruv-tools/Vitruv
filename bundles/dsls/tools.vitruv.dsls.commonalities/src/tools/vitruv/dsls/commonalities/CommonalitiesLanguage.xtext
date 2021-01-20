@@ -14,7 +14,7 @@ CommonalityFile:
 ;
 
 OperatorImport:
-	'import' (importedType=[jvmTypes::JvmDeclaredType|QualifiedName] | importedNamespace=QualifiedNameWithWildcard)
+	'import' (importedNamespace=QualifiedOperatorName | importedNamespace=QualifiedOperatorWildCard)
 ;
 
 Domain:
@@ -158,17 +158,14 @@ CommonalityAttributeMapping:
 ;
 
 SimpleAttributeMapping:
-	(readAndWrite?='=' | write?='->'| read?='<-')
+	(readAndWrite?='=' | write?='->' | read?='<-')
 	attribute=QualifiedParticipationAttribute
 ;
 
 OperatorAttributeMapping:
-	(readAndWrite?='=' | write?='->'| read?='<-')
-	operator=AttributeMappingOperator '(' (operands+=AttributeMappingOperand (',' operands+=AttributeMappingOperand)*)? ')'
-;
-
-AttributeMappingOperator:
-	jvmType=[jvmTypes::JvmDeclaredType|OperatorName]
+	(readAndWrite?='=' | write?='->' | read?='<-')
+	operator=[jvmTypes::JvmDeclaredType|OperatorName]
+	'(' (operands+=AttributeMappingOperand (',' operands+=AttributeMappingOperand)*)? ')'
 ;
 
 AttributeMappingOperand:
@@ -218,13 +215,9 @@ SimpleReferenceMapping:
 ;
 
 OperatorReferenceMapping:
-	(readAndWrite?='=' | write?='->'| read?='<-')
-	participationClass=[ParticipationClass|QualifiedClass] '.' operator=ReferenceMappingOperator
+	(readAndWrite?='=' | write?='->' | read?='<-')
+	participationClass=[ParticipationClass|QualifiedClass] '.' operator=[jvmTypes::JvmDeclaredType|OperatorName]
 	'(' (operands+=ReferenceMappingOperand (',' operands+=ReferenceMappingOperand)*)? ')'
-;
-
-ReferenceMappingOperator:
-	jvmType=[jvmTypes::JvmDeclaredType|OperatorName]
 ;
 
 ReferenceMappingOperand:
@@ -293,13 +286,25 @@ UnqualifiedAttribute:
 
 // To correctly parse character combinations, we need to copy all tokens that
 // already occurred in the parent grammars (i.e. Xbase).
-// '->' and '<-': Ambiguous since the next participation condition may start with this as well
+// Must be in sync with CommonalitiesOperatorConventions.TYPE_NAME_TO_LANGUAGE_IDENTIFIER!
+// Excluded are:
+//   * '->' and '<-': Ambiguous since the next participation condition may start with this as well
+//   * '_' because it is used for a wildcard import
 OperatorName:
 	ID |
 	( '+=' | '-=' | '*=' | '/=' | '%=' | '>=' | '<=' | '||' | '&&' | '==' | '!=' | '===' | '!=='
 	| '=>' | '<>' | '?:' | '**' | '--' | '++' | '::'
-	| '=' | '!' | '%' | '&' | '*' | '+' | '-' | '/' | '<' | '>' | '^' | '~' | '_' | ':' | '?')+
+	| '=' | '!' | '%' | '&' | '*' | '+' | '-' | '/' | '<' | '>' | '^' | '~' | ':' | '?')+
 ;
+
+QualifiedOperatorName:
+	ValidID ('.' ValidID)* '.' OperatorName
+;
+
+QualifiedOperatorWildCard: 
+	ValidID ('.' ValidID)* '.' '_'
+;
+
 
 /******************
  * Terminal Rules *

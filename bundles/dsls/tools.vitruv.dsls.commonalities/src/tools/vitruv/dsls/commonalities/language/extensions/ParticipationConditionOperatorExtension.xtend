@@ -5,24 +5,19 @@ import org.eclipse.xtext.common.types.JvmDeclaredType
 import tools.vitruv.dsls.commonalities.language.ParticipationConditionOperator
 import tools.vitruv.extensions.dslruntime.commonalities.operators.participation.condition.ContainmentOperator
 
-import static extension tools.vitruv.dsls.commonalities.util.JvmAnnotationHelper.*
+import tools.vitruv.extensions.dslruntime.commonalities.operators.CommonalitiesOperatorConventions
 
 @Utility
 package class ParticipationConditionOperatorExtension {
-
-	static val ANNOTATION = tools.vitruv.extensions.dslruntime.commonalities.operators.participation.condition.ParticipationConditionOperator
-	static val ANNOTATION_NAME = ANNOTATION.name
-
-	private static def getParticipationConditionOperatorAnnotation(JvmDeclaredType operatorType) {
-		return operatorType.annotations
-			.filter[annotation.qualifiedName == ANNOTATION_NAME]
-			.head
-	}
+	static val containmentOperatorTypeQualifiedName = CommonalitiesOperatorConventions.toOperatorTypeQualifiedName(
+		ContainmentOperator.packageName,
+		ContainmentOperator.annotations
+			.filter(tools.vitruv.extensions.dslruntime.commonalities.operators.participation.condition.ParticipationConditionOperator)
+			.head.name
+	)
 
 	static def getParticipationConditionOperatorName(JvmDeclaredType operatorType) {
-		val annotation = operatorType.participationConditionOperatorAnnotation
-		if (annotation === null) return null
-		return annotation.getStringAnnotationValue('name')
+		CommonalitiesOperatorConventions.toOperatorLanguageName(operatorType.simpleName)
 	}
 
 	static def getName(ParticipationConditionOperator operator) {
@@ -31,6 +26,6 @@ package class ParticipationConditionOperatorExtension {
 
 	// TODO support other structural operators
 	static def isContainment(ParticipationConditionOperator operator) {
-		return (operator.jvmType.qualifiedName == ContainmentOperator.name)
+		operator.jvmType.qualifiedName == containmentOperatorTypeQualifiedName
 	}
 }

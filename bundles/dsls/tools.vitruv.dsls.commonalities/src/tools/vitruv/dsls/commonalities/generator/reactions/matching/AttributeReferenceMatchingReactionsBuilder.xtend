@@ -106,7 +106,7 @@ class AttributeReferenceMatchingReactionsBuilder extends ReactionsGenerationHelp
 
 		participationContext.attributeReferenceContainments.forEach [ extension contextContainment |
 			val containment = containment
-			assertTrue(containment.mapping.operator.isAttributeReference)
+			assertTrue(containment.mapping.isAttributeReference)
 			segment += participationContext.reactionsForAttributeReferenceChange(containment)
 		]
 	}

@@ -1,29 +1,16 @@
 package tools.vitruv.testutils.domains;
 
-import allElementTypes.AllElementTypesPackage;
-import tools.vitruv.domains.emf.builder.VitruviusEmfBuilderApplicator;
-import tools.vitruv.framework.domains.AbstractTuidAwareVitruvDomain;
-import tools.vitruv.framework.domains.VitruviusProjectBuilderApplicator;
-import tools.vitruv.framework.tuid.AttributeTuidCalculatorAndResolver;
+import java.util.List;
 
-public final class AllElementTypesDomain extends AbstractTuidAwareVitruvDomain {
+import allElementTypes.AllElementTypesPackage;
+
+public final class AllElementTypesDomain extends VitruvTestDomain {
 	public static final String METAMODEL_NAME = "AllElementTypes";
 	public static final String FILE_EXTENSION = "allElementTypes";
-	
+
 	AllElementTypesDomain() {
-		super(METAMODEL_NAME, AllElementTypesPackage.eINSTANCE, 
-				new AttributeTuidCalculatorAndResolver(AllElementTypesPackage.eNS_URI, AllElementTypesPackage.Literals.IDENTIFIED__ID.getName()), 
+		super(METAMODEL_NAME, AllElementTypesPackage.eINSTANCE, List.of(AllElementTypesPackage.Literals.IDENTIFIED__ID),
 				FILE_EXTENSION);
 	}
 
-	@Override
-	public VitruviusProjectBuilderApplicator getBuilderApplicator() {
-		return new VitruviusEmfBuilderApplicator();
-	}
-	
-	@Override
-	public boolean isUserVisible() {
-		return false;
-	}
-	
 }

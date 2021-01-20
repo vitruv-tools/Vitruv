@@ -18,9 +18,7 @@ import static extension tools.vitruv.dsls.commonalities.generator.reactions.Reac
 import static extension tools.vitruv.dsls.commonalities.language.extensions.CommonalitiesLanguageModelExtensions.*
 
 class ApplyCommonalityAttributesRoutineBuilder extends ReactionsGenerationHelper {
-
 	static class Provider extends ReactionsSegmentScopedProvider<ApplyCommonalityAttributesRoutineBuilder> {
-
 		protected override createFor(FluentReactionsSegmentBuilder segment) {
 			return new ApplyCommonalityAttributesRoutineBuilder(segment).injectMembers
 		}
