@@ -11,14 +11,6 @@
 package tools.vitruv.framework.util.bridges;
 
 import java.io.File;
-import java.util.regex.Pattern;
-
-import org.eclipse.core.resources.IContainer;
-import org.eclipse.core.resources.IFolder;
-import org.eclipse.core.resources.IProject;
-import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.NullProgressMonitor;
-import org.eclipse.core.runtime.Path;
 import org.eclipse.emf.common.util.URI;
 
 import tools.vitruv.framework.util.VitruviusConstants;
@@ -108,30 +100,6 @@ public final class EMFBridge {
 	private static boolean startsWithWindowsDriveLetterColonBackslash(final String uriString) {
 		char firstChar = uriString.charAt(0);
 		return Character.isLetter(firstChar) && uriString.regionMatches(1, ":\\", 0, 2);
-	}
-	
-	/**
-	 * @deprecated {@link edu.kit.ipd.sdq.commons.util.org.eclipse.core.resources.IProjectUtil#createFolderInProjectIfNecessary(IProject, String)}
-	 */
-	@Deprecated
-	public static IFolder createFolderInProjectIfNecessary(IProject project, String folderName) {
-		Pattern pattern = Pattern.compile(Pattern.quote(File.separator));
-		String[] folderNames = pattern.split(folderName);
-		IContainer currentContainer = project;
-		IFolder folder = null;
-		for (int i = 0; i < folderNames.length; i++) {
-			folder = currentContainer.getFolder(new Path(folderNames[i]));
-			if (!folder.exists()) {
-				try {
-					folder.create(true, true, new NullProgressMonitor());
-				} catch (CoreException e) {
-					// soften
-					throw new RuntimeException(e);
-				}
-			}
-			currentContainer = folder;
-		}
-		return folder;
 	}
 
 }
