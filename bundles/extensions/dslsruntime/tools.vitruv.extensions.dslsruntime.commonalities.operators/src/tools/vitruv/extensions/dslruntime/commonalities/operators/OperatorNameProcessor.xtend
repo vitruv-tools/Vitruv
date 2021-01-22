@@ -18,6 +18,7 @@ import edu.kit.ipd.sdq.activextendannotations.TypeCopier
 import org.eclipse.xtend.lib.macro.declaration.TypeReference
 import org.eclipse.xtend.lib.macro.declaration.InterfaceDeclaration
 import java.util.List
+import javax.lang.model.SourceVersion
 
 interface ClassProcessor extends
 	RegisterGlobalsParticipant<ClassDeclaration>,
@@ -92,7 +93,9 @@ final class OperatorNameProcessor extends AbstractClassProcessor implements Clas
 	}
 	
 	def private getNameProblems(String name) {
+		val convertedName = CommonalitiesOperatorConventions.toOperatorTypeName(name)
 		check(!name.endsWith('_'), "Operator names must not end with underscores!")
+			+ check(SourceVersion.isName(convertedName), '''‹«convertedName»› is not a legal Java type name!''')
 	}
 	
 	def private String getTargetQualifedName(ClassDeclaration annotatedClass, Type annotationType) {

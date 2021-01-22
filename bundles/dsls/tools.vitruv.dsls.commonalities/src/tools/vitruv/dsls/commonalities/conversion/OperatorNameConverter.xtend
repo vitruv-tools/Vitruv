@@ -7,7 +7,7 @@ import tools.vitruv.extensions.dslruntime.commonalities.operators.CommonalitiesO
 
 /**
  * Converts operator names from their language notation (like ‘=’) to their type names 
- * (like ‘__equals__’). Doing this so early provides a consistent representation in the
+ * (like ‘equals_’). Doing this so early provides a consistent representation in the
  * AST: operators will always be represented by the expected type name. The language 
  * notation can only be found in the concrete syntax.
  */
