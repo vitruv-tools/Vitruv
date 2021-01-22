@@ -130,11 +130,10 @@ class TestCommonalitiesGenerator {
 		)
 		// use the same class loader for all classes!
 		val classLoader = result.classLoader
-		// TODO active as soon as reactions generation is fixed
-		//if (result.compilationProblems.exists [isError]) {
-		//	throw new AssertionError("compiling the generated code failed with these errors:" + lineSeparator 
-		//u		+ result.compilationProblems.filter [isError].join(lineSeparator) ['    • ' + format()])
-		//}
+		if (result.compilationProblems.exists [isError]) {
+			throw new AssertionError("compiling the generated code failed with these errors:" + lineSeparator 
+				+ result.compilationProblems.filter [isError].join(lineSeparator) ['    • ' + format()])
+		}
 		sourceFilePaths.mapFixed [classLoader.loadClass(relative.className)]
 	}
 	
