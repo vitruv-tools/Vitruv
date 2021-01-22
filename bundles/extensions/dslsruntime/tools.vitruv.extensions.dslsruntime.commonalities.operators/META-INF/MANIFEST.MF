@@ -11,7 +11,7 @@ Bundle-ActivationPolicy: lazy
 Require-Bundle: edu.kit.ipd.sdq.commons.util.java,
  org.eclipse.emf.ecore;visibility:=reexport,
  org.eclipse.xtend.lib,
- edu.kit.ipd.sdq.activextendannotations
+ edu.kit.ipd.sdq.activextendannotations;visibility:=reexport
 Export-Package: tools.vitruv.extensions.dslruntime.commonalities.operators,
  tools.vitruv.extensions.dslruntime.commonalities.operators.mapping.attribute,
  tools.vitruv.extensions.dslruntime.commonalities.operators.mapping.reference,
