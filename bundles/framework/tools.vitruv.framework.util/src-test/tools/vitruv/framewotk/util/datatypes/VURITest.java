@@ -43,8 +43,8 @@ public class VURITest {
 		String testKeyWithPlatformRes = VitruviusConstants.getPlatformResourcePrefix() + "testResource";
 		VURI orgVURI = testWithKey(testKeyWithPlatformRes);
 		ensureStartsWithPlatformResource(orgVURI);
-		assertEquals("Platform resource string does not equal the EMF URI string of the VURI",
-				orgVURI.getEMFUri().toString(), testKeyWithPlatformRes);
+		assertEquals(orgVURI.getEMFUri().toString(), testKeyWithPlatformRes,
+				"Platform resource string does not equal the EMF URI string of the VURI");
 	}
 
 	@Test

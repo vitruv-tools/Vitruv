@@ -4,10 +4,10 @@ import com.google.common.collect.Sets
 import java.util.Set
 import org.eclipse.emf.ecore.EObject
 
-import static extension tools.vitruv.framework.util.bridges.CollectionBridge.toList
 import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
 import tools.vitruv.framework.correspondence.CorrespondenceModel
 import tools.vitruv.framework.correspondence.Correspondence
+import java.util.List
 
 class CorrespondenceModelUtil {
 	private new() {
@@ -24,7 +24,7 @@ class CorrespondenceModelUtil {
 	 */
 	// FIXME ML is this method correct? Is there some cool Xtend feature which makes this method shorter? 
 	def static Set<EObject> getCorrespondingEObjects(CorrespondenceModelView<?> ci, EObject eObject) {
-		val correspondingEObjects = ci.getCorrespondingEObjects(eObject.toList)
+		val correspondingEObjects = ci.getCorrespondingEObjects(List.of(eObject))
 		val eObjects = Sets.newHashSet
 		correspondingEObjects.forEach(list|eObjects.addAll(list))
 		return eObjects
@@ -41,7 +41,7 @@ class CorrespondenceModelUtil {
 	 */
 	def static Correspondence claimUniqueCorrespondence(CorrespondenceModelView<Correspondence> ci,
 		EObject eObject) {
-		return ci.getCorrespondences(eObject.toList).claimOne
+		return ci.getCorrespondences(List.of(eObject)).claimOne
 	}
 
 	/**
@@ -54,11 +54,11 @@ class CorrespondenceModelUtil {
 	 */
 	def static Set<Correspondence> claimCorrespondences(CorrespondenceModelView<?> ci,
 		EObject eObject) {
-		return ci.getCorrespondences(eObject.toList).claimNotEmpty as Set<Correspondence>
+		return ci.getCorrespondences(List.of(eObject)).claimNotEmpty as Set<Correspondence>
 	}
 
 	def static Correspondence createAndAddCorrespondence(CorrespondenceModel ci, EObject a, EObject b) {
-		return ci.createAndAddCorrespondence(a.toList, b.toList, null)
+		return ci.createAndAddCorrespondence(List.of(a), List.of(b), null)
 	}
 
 	/**
