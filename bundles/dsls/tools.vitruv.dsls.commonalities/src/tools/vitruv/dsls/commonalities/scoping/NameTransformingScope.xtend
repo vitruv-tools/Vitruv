@@ -8,11 +8,8 @@ import org.eclipse.xtext.resource.impl.AliasedEObjectDescription
 import org.eclipse.xtext.scoping.IScope
 
 @FinalFieldsConstructor
-class NameTransformingScope implements IScope {
-
-	val IScope delegate
-	val (QualifiedName)=>QualifiedName queryTransformer
-	val (QualifiedName)=>QualifiedName resultTransformer
+abstract class NameTransformingScope implements IScope {
+	protected val IScope delegate
 
 	override getAllElements() {
 		delegate.allElements.map [transformResult()]
@@ -34,13 +31,9 @@ class NameTransformingScope implements IScope {
 		delegate.getSingleElement(object).transformResult()
 	}
 
-	private def QualifiedName transformQuery(QualifiedName name) {
-		queryTransformer.apply(name)
-	}
+	def protected abstract QualifiedName transformQuery(QualifiedName name)
 
-	private def QualifiedName transformResult(QualifiedName name) {
-		resultTransformer.apply(name)
-	}
+	def protected abstract QualifiedName transformResult(QualifiedName name)
 
 	private def IEObjectDescription transformResult(IEObjectDescription description) {
 		if (description === null) return null
