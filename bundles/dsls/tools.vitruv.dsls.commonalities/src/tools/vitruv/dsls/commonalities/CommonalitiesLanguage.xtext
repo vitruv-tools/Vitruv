@@ -158,17 +158,14 @@ CommonalityAttributeMapping:
 ;
 
 SimpleAttributeMapping:
-	(readAndWrite?='=' | write?='->'| read?='<-')
+	(readAndWrite?='=' | write?='->' | read?='<-')
 	attribute=QualifiedParticipationAttribute
 ;
 
 OperatorAttributeMapping:
-	(readAndWrite?='=' | write?='->'| read?='<-')
-	operator=AttributeMappingOperator '(' (operands+=AttributeMappingOperand (',' operands+=AttributeMappingOperand)*)? ')'
-;
-
-AttributeMappingOperator:
-	jvmType=[jvmTypes::JvmDeclaredType|OperatorName]
+	(readAndWrite?='=' | write?='->' | read?='<-')
+	operator=[jvmTypes::JvmDeclaredType|OperatorName]
+	'(' (operands+=AttributeMappingOperand (',' operands+=AttributeMappingOperand)*)? ')'
 ;
 
 AttributeMappingOperand:
@@ -218,13 +215,9 @@ SimpleReferenceMapping:
 ;
 
 OperatorReferenceMapping:
-	(readAndWrite?='=' | write?='->'| read?='<-')
-	participationClass=[ParticipationClass|QualifiedClass] '.' operator=ReferenceMappingOperator
+	(readAndWrite?='=' | write?='->' | read?='<-')
+	participationClass=[ParticipationClass|QualifiedClass] '.' operator=[jvmTypes::JvmDeclaredType|OperatorName]
 	'(' (operands+=ReferenceMappingOperand (',' operands+=ReferenceMappingOperand)*)? ')'
-;
-
-ReferenceMappingOperator:
-	jvmType=[jvmTypes::JvmDeclaredType|OperatorName]
 ;
 
 ReferenceMappingOperand:

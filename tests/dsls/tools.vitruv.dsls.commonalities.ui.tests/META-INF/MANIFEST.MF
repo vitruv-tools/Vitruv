@@ -23,4 +23,5 @@ Require-Bundle: tools.vitruv.dsls.commonalities,
  tools.vitruv.dsls.reactions.ui
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Export-Package: tools.vitruv.dsls.commonalities.ui.quickfix;x-internal=true,
- tools.vitruv.dsls.commonalities.ui.setup;x-internal=true
+ tools.vitruv.dsls.commonalities.ui.setup;x-internal=true,
+ tools.vitruv.dsls.commonalities.ui.tests;x-internal=true

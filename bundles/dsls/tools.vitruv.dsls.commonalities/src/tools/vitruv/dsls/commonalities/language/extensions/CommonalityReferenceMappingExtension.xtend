@@ -11,7 +11,7 @@ import tools.vitruv.dsls.commonalities.language.SimpleReferenceMapping
 import static extension tools.vitruv.dsls.commonalities.language.extensions.CommonalitiesLanguageElementExtension.*
 import static extension tools.vitruv.dsls.commonalities.language.extensions.ParticipationClassExtension.*
 import static extension tools.vitruv.dsls.commonalities.language.extensions.ParticipationExtension.*
-import static extension tools.vitruv.dsls.commonalities.language.extensions.ReferenceMappingOperatorExtension.*
+import static extension tools.vitruv.dsls.commonalities.language.extensions.ReferenceMappingExtension.*
 
 @Utility
 package class CommonalityReferenceMappingExtension {
@@ -29,7 +29,7 @@ package class CommonalityReferenceMappingExtension {
 	}
 
 	static def dispatch boolean isMultiValued(OperatorReferenceMapping mapping) {
-		return mapping.operator.isMultiValued
+		return mapping.isMultiValued
 	}
 
 	static def dispatch ParticipationClass getParticipationClass(SimpleReferenceMapping mapping) {

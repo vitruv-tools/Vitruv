@@ -135,10 +135,10 @@ class CommonalitiesLanguageScopeProvider extends AbstractCommonalitiesLanguageSc
 				}
 			}
 			
-			case ATTRIBUTE_MAPPING_OPERATOR__JVM_TYPE:
+			case OPERATOR_ATTRIBUTE_MAPPING__OPERATOR:
 				return attributeMappingOperatorScopeProvider.getScope(context, reference)
 				
-			case REFERENCE_MAPPING_OPERATOR__JVM_TYPE:
+			case OPERATOR_REFERENCE_MAPPING__OPERATOR:
 				return referenceMappingOperatorScopeProvider.getScope(context, reference)
 				
 			case PARTICIPATION_RELATION_OPERATOR__JVM_TYPE:
