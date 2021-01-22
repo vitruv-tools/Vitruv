@@ -36,10 +36,10 @@ package class AttributeMappingExtension {
 	}
 
 	static def AttributeTypeDescription getCommonalityAttributeTypeDescription(OperatorAttributeMapping mapping) {
-		return mapping.operator.getAttributeTypeDescription('commonalityAttributeType')
+		return mapping.operator?.getAttributeTypeDescription('commonalityAttributeType')
 	}
 
 	static def AttributeTypeDescription getParticipationAttributeTypeDescription(OperatorAttributeMapping mapping) {
-		return mapping.operator.getAttributeTypeDescription('participationAttributeType')
+		return mapping.operator?.getAttributeTypeDescription('participationAttributeType')
 	}
 }

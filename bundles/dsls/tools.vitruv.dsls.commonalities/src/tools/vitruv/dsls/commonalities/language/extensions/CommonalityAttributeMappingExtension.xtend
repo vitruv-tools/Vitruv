@@ -80,7 +80,8 @@ package class CommonalityAttributeMappingExtension {
 	}
 
 	static def dispatch boolean isMultiValuedRead(OperatorAttributeMapping mapping) {
-		return mapping.commonalityAttributeTypeDescription.isMultiValued
+		val typeDescription = mapping.commonalityAttributeTypeDescription
+		return typeDescription !== null ? typeDescription.isMultiValued : false
 	}
 
 	/**
@@ -92,7 +93,8 @@ package class CommonalityAttributeMappingExtension {
 	}
 
 	static def dispatch boolean isMultiValuedWrite(OperatorAttributeMapping mapping) {
-		return mapping.participationAttributeTypeDescription.isMultiValued
+		val typeDescription = mapping.participationAttributeTypeDescription
+		return typeDescription !== null ? typeDescription.isMultiValued : false
 	}
 
 	static def dispatch Classifier getCommonalityAttributeType(SimpleAttributeMapping mapping) {
@@ -100,9 +102,11 @@ package class CommonalityAttributeMappingExtension {
 	}
 
 	static def dispatch Classifier getCommonalityAttributeType(OperatorAttributeMapping mapping) {
-		val domain = mapping.participation.domain
+		val domain = mapping.participation?.domain
+		if (domain === null) return null
+		
 		val attributeTypeDescription = mapping.commonalityAttributeTypeDescription
-		return ClassifierProvider.INSTANCE.findClassifier(domain, attributeTypeDescription.qualifiedTypeName)
+		return ClassifierProvider.INSTANCE.findClassifier(domain, attributeTypeDescription?.qualifiedTypeName)
 	}
 
 	static def dispatch Classifier getParticipationAttributeType(SimpleAttributeMapping mapping) {
@@ -110,9 +114,11 @@ package class CommonalityAttributeMappingExtension {
 	}
 
 	static def dispatch Classifier getParticipationAttributeType(OperatorAttributeMapping mapping) {
-		val domain = mapping.participation.domain
+		val domain = mapping.participation?.domain
+		if (domain === null) return null
+		
 		val attributeTypeDescription = mapping.participationAttributeTypeDescription
-		return ClassifierProvider.INSTANCE.findClassifier(domain, attributeTypeDescription.qualifiedTypeName)
+		return ClassifierProvider.INSTANCE.findClassifier(domain, attributeTypeDescription?.qualifiedTypeName)
 	}
 
 	// Gets the output type when applied in read direction, or null if the

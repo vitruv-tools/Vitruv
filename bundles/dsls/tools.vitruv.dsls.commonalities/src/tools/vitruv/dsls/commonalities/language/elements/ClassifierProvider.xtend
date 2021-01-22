@@ -21,16 +21,11 @@ class ClassifierProvider {
 	 * and EDataType adapters in. This resource is never serialized and has no
 	 * other purpose.
 	 */
-	val container = createContainerResource
+	val container = new ResourceSetImpl().createResource(CONTAINER_RESOURCE_URI)
 	val Map<Domain, Map<EClass, Metaclass>> metaclasses = new HashMap
 	val Map<EDataType, EDataTypeClassifier> dataTypes = new HashMap
 
 	private new() {
-	}
-
-	private def createContainerResource() {
-		val resourceSet = new ResourceSetImpl
-		return resourceSet.createResource(CONTAINER_RESOURCE_URI)
 	}
 
 	def dispatch Classifier toClassifier(EDataType eDataType, Domain containingDomain) {
@@ -73,11 +68,11 @@ class ClassifierProvider {
 			domainPackages = containingDomain.allPackages
 		}
 		val relevantPackages = #[EcorePackage.eINSTANCE] + domainPackages
-		return relevantPackages.map[findEClassifier(qualifiedInstanceClassName)].filterNull.head
+		return relevantPackages.map [findEClassifier(qualifiedInstanceClassName)].filterNull.head
 	}
 
 	private static def EClassifier findEClassifier(EPackage ePackage, String qualifiedInstanceClassName) {
 		if (qualifiedInstanceClassName.nullOrEmpty) return null
-		return ePackage.EClassifiers.filter[it.instanceClassName == qualifiedInstanceClassName].head
+		return ePackage.EClassifiers.filter [instanceClassName == qualifiedInstanceClassName].head
 	}
 }

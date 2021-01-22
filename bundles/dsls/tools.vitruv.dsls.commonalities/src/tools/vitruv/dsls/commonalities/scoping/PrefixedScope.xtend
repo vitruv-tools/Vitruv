@@ -8,7 +8,6 @@ import org.eclipse.xtext.scoping.IScope
  * The prefix is removed from the name of results.
  */
 class PrefixedScope extends NameTransformingScope {
-
 	new(IScope delegate, QualifiedName prefix) {
 		super(delegate, [
 			prefix.append(it)

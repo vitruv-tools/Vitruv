@@ -99,17 +99,17 @@ class CommonalitiesLanguageValidator extends AbstractCommonalitiesLanguageValida
 
 	@Check
 	def checkOperatorAttributeMapping(OperatorAttributeMapping mapping) {
+		if (mapping.operator.qualifiedName.isNullOrEmpty) return
+		
 		val commonalityAttributeType = mapping.commonalityAttributeType
 		if (commonalityAttributeType === null) {
-			val typeDescription = mapping.commonalityAttributeTypeDescription
-			error('''Could not find the operator’s declared commonality attribute type ‹«typeDescription.qualifiedTypeName»›.''',
+			error('''Could not find the operator’s declared commonality attribute type ‹«mapping.operator.qualifiedName»›.''',
 				OPERATOR_ATTRIBUTE_MAPPING__OPERATOR)
 		}
 
 		val participationAttributeType = mapping.participationAttributeType
 		if (participationAttributeType === null) {
-			val typeDescription = mapping.participationAttributeTypeDescription
-			error('''Could not find the operator’s declared participation attribute type ‹«typeDescription.qualifiedTypeName»›.''',
+			error('''Could not find the operator’s declared participation attribute type ‹«mapping.operator.qualifiedName»›.''',
 				OPERATOR_ATTRIBUTE_MAPPING__OPERATOR)
 		}
 
