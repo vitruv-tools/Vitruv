@@ -32,6 +32,7 @@ import static extension tools.vitruv.dsls.commonalities.language.extensions.Comm
 import org.eclipse.xtend.lib.annotations.FinalFieldsConstructor
 import tools.vitruv.dsls.commonalities.generator.util.guice.GenerationScoped
 import javax.inject.Inject
+import tools.vitruv.dsls.commonalities.language.elements.LeastSpecificType
 
 @GenerationScoped
 class IntermediateMetamodelGenerator implements SubGenerator {
@@ -44,9 +45,9 @@ class IntermediateMetamodelGenerator implements SubGenerator {
 		if (isNewResourceSet) {
 			val resourceSet = resourceSet
 			val conceptToCommonalityFiles = resourceSet.resources
-				.map[optionalContainedCommonalityFile]
+				.map [optionalContainedCommonalityFile]
 				.filterNull
-				.groupBy[concept.name]
+				.groupBy [concept.name]
 
 			resourceSet.resourceFactoryRegistry.extensionToFactoryMap.computeIfAbsent('ecore', [
 				new XMLResourceFactoryImpl
@@ -80,7 +81,7 @@ class IntermediateMetamodelGenerator implements SubGenerator {
 		val outputUri = conceptName.intermediateMetamodelUri
 		val outputResource = resourceSet.getResource(outputUri, false) ?: resourceSet.createResource(outputUri)
 		// Delete any previously existing intermediate metamodel:
-		outputResource.contents.clear
+		outputResource.contents.clear()
 
 		val packageGenerator = new EPackageGenerator(conceptName, commonalityFiles, generationContext)
 		val generatedPackage = packageGenerator.generateEPackage()
@@ -135,6 +136,12 @@ class IntermediateMetamodelGenerator implements SubGenerator {
 				EClassAdapter:
 					EcoreFactory.eINSTANCE.createEReference => [
 						EType = attributeType.wrapped
+					]
+				LeastSpecificType:
+					// type inference failed, but we still create a reference 
+					// so generation can continue
+					EcoreFactory.eINSTANCE.createEReference => [
+						EType = EcorePackage.Literals.EOBJECT
 					]
 				default:
 					throw new IllegalStateException('''The Attribute declaration ‹«attribute»› has the type «

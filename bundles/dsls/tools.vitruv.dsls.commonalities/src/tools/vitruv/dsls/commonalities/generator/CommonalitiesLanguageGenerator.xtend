@@ -41,19 +41,19 @@ class CommonalitiesLanguageGenerator implements IGenerator2 {
 		generationScopes.put(input, generationScope)
 
 		input.runInGenerationScope [
-			subGenerators.forEach[beforeGenerate]
+			subGenerators.forEach [beforeGenerate()]
 		]
 	}
 
 	override doGenerate(Resource input, IFileSystemAccess2 fsa, IGeneratorContext context) {
 		input.runInGenerationScope [
-			subGenerators.forEach[generate]
+			subGenerators.forEach [generate()]
 		]
 	}
 
 	override afterGenerate(Resource input, IFileSystemAccess2 fsa, IGeneratorContext context) {
 		input.runInGenerationScope [
-			subGenerators.forEach[afterGenerate]
+			subGenerators.forEach [afterGenerate()]
 		]
 		generationScopes.remove(input)
 	}

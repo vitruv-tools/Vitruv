@@ -10,6 +10,8 @@ import tools.vitruv.dsls.reactions.builder.FluentReactionBuilder
 import tools.vitruv.dsls.reactions.builder.FluentReactionBuilder.RoutineCallBuilder
 
 import static extension tools.vitruv.dsls.commonalities.generator.reactions.ReactionsGeneratorConventions.*
+import java.util.List
+import tools.vitruv.dsls.commonalities.language.elements.LeastSpecificType
 
 class AttributeChangeReactionsHelper extends ReactionsGenerationHelper {
 
@@ -31,26 +33,32 @@ class AttributeChangeReactionsHelper extends ReactionsGenerationHelper {
 		BiFunction<AttributeChangeReactionType, RoutineCallBuilder, FluentReactionBuilder> actionBuilder) {
 		switch (attribute.type) {
 			EDataTypeAdapter case !attribute.isMultiValued:
-				Collections.singleton(
+				List.of(
 					attribute.singleAttributeReplacedReaction(reactionNameSuffix, actionBuilder)
 				)
 
 			EDataTypeAdapter case attribute.isMultiValued:
-				#[
+				List.of(
 					attribute.multiAttributeInsertReaction(reactionNameSuffix, actionBuilder),
 					attribute.multiAttributeRemoveReaction(reactionNameSuffix, actionBuilder)
-				]
+				)
 
 			EClassAdapter case !attribute.isMultiValued:
-				Collections.singleton(
+				List.of(
 					attribute.singleReferenceReplacedReaction(reactionNameSuffix, actionBuilder)
 				)
 
 			EClassAdapter case attribute.isMultiValued:
-				#[
+				List.of(
 					attribute.multiReferenceInsertReaction(reactionNameSuffix, actionBuilder),
 					attribute.multiReferenceRemoveReaction(reactionNameSuffix, actionBuilder)
-				]
+				)
+				
+			LeastSpecificType:
+				emptyList()
+				
+			default:
+				throw new IllegalStateException('''Unexpected attribute type ‹«attribute.type»›!''')
 		}
 	}
 
