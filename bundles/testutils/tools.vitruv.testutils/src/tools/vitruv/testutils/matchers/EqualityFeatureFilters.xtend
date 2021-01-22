@@ -121,3 +121,13 @@ package class TypeExcludingFeatureFilter implements EqualityFeatureFilter {
 		append(' unless it was on a ').joinSemantic(filteredTypes, 'or')[append(simpleName)]
 	}
 }
+
+package class IgnoreUnsetFeaturesFilter implements EqualityFeatureFilter {
+	override includeFeature(EObject object, EStructuralFeature feature) {
+		object.eIsSet(feature)
+	}
+
+	override describeTo(extension StringBuilder builder) {
+		append('ignored unset features')
+	}
+}

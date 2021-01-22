@@ -91,6 +91,10 @@ class ModelMatchers {
 	def static EqualityFeatureFilter unlessOn(EqualityFeatureFilter target, Class<? extends EObject> types) {
 		new TypeExcludingFeatureFilter(Set.of(types), target)
 	}
+	
+	def static EqualityFeatureFilter ignoringUnsetFeatures() {
+		new IgnoreUnsetFeaturesFilter
+	}
 
 	def static Matcher<? super EObject> whose(EStructuralFeature feature, Matcher<?> featureMatcher) {
 		new EObjectFeatureMatcher(feature, featureMatcher)
