@@ -159,7 +159,12 @@ class CommonalitiesLanguageScopeProvider extends AbstractCommonalitiesLanguageSc
 		val commonality = participation.containingCommonality
 		val participationClassScope = commonality.participationClassScope
 		val parentQualifiedName = participation.fullyQualifiedName
-		return new PrefixedScope(participationClassScope, parentQualifiedName)
+		
+		return if (parentQualifiedName !== null) {
+			new PrefixedScope(participationClassScope, parentQualifiedName)
+		} else {
+			participationClassScope
+		}
 	}
 
 	private def getUnqualifiedMetaclassScope(TupleParticipation participation, IScope metaclassScope) {

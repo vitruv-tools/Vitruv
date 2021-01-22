@@ -2,6 +2,7 @@ package tools.vitruv.dsls.commonalities.scoping
 
 import org.eclipse.xtext.naming.QualifiedName
 import org.eclipse.xtext.scoping.IScope
+import static com.google.common.base.Preconditions.checkNotNull
 
 /**
  * Queries for objects for a given name are prefixed with the specified name.
@@ -12,7 +13,7 @@ class PrefixedScope extends NameTransformingScope {
 	
 	new(IScope delegate, QualifiedName prefix) {
 		super(delegate)
-		this.prefix = prefix
+		this.prefix = checkNotNull(prefix, "prefix was null!")
 	}
 	
 	override protected transformQuery(QualifiedName name) {
