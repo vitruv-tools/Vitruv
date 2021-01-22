@@ -23,6 +23,8 @@ Export-Package: tools.vitruv.extensions.dslruntime.commonalities,
  tools.vitruv.extensions.dslruntime.commonalities.operators.mapping.attribute,
  tools.vitruv.extensions.dslruntime.commonalities.operators.mapping.reference,
  tools.vitruv.extensions.dslruntime.commonalities.operators.participation.condition,
+ tools.vitruv.extensions.dslruntime.commonalities.operators.participation.condition.cl_operators__,
  tools.vitruv.extensions.dslruntime.commonalities.operators.participation.relation,
+ tools.vitruv.extensions.dslruntime.commonalities.operators.participation.relation.cl_operators__,
  tools.vitruv.extensions.dslruntime.commonalities.resources,
  tools.vitruv.extensions.dslruntime.commonalities.resources.impl
