@@ -19,7 +19,7 @@ import org.junit.jupiter.api.Test
 import org.eclipse.xtext.ui.testing.util.IResourcesSetupUtil
 import tools.vitruv.testutils.xtext.BugFixedAbstractEditorTest
 
-@ExtendWith(#[InjectionExtension, TestProjectManager])
+@ExtendWith(InjectionExtension, TestProjectManager)
 @InjectWith(CommonalitiesLanguageUiInjectorProvider)
 @DisplayName("missing bundles validation")
 class MissingBundlesValidationTest extends BugFixedAbstractEditorTest {

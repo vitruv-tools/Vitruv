@@ -25,7 +25,7 @@ import org.eclipse.xtext.ui.testing.util.IResourcesSetupUtil
 import tools.vitruv.testutils.xtext.BugFixedAbstractQuickfixTest
 
 @DisplayName("quick fixes for missing bundles")
-@ExtendWith(#[InjectionExtension, TestProjectManager])
+@ExtendWith(InjectionExtension, TestProjectManager)
 @InjectWith(CommonalitiesLanguageUiInjectorProvider)
 class MissingBundlesQuickfixTest extends BugFixedAbstractQuickfixTest {
 	@Inject

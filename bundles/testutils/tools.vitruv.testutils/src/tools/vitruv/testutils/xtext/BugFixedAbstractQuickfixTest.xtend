@@ -30,9 +30,9 @@ class BugFixedAbstractQuickfixTest extends AbstractQuickfixTest {
 		UIThread.runSync [super.openEditor(file)]
 	}
 
-	override setUp() {
+	override waitForEventProcessing() {
 		// fix that the Xtext test does not support running outside the UI thread
-		UIThread.runSync [super.setUp()]
+		UIThread.runSync [super.waitForEventProcessing()]
 	}
 
 	override tearDown() {
