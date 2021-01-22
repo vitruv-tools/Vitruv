@@ -61,12 +61,16 @@
 						<artifactId>maven-clean-plugin</artifactId>
 						<executions>
 							<execution>
-								<id>xtext-gen-clean</id>
-								<phase>clean</phase>
+								<id>src-gen-clean</id>
+								<!-- Mapping generate reactions, but those reactions must not be part of the Xtext
+							         build. Because of that, we always need to clean the generated directory for a
+							         correct build, regardless of whether clean was requested -->
+								<phase>initialize</phase>
 								<goals>
 									<goal>clean</goal>
 								</goals>
 								<configuration>
+									<excludeDefaultDirectories>true</excludeDefaultDirectories>
 									<filesets>
 										<fileset>
 											<directory>src-gen</directory>
