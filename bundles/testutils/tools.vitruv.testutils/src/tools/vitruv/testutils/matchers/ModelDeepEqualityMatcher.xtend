@@ -282,6 +282,10 @@ package class ModelDeepEqualityMatcher extends TypeSafeMatcher<EObject> {
 
 			var leftMatch = comparison.getMatch(left)
 			var rightMatch = comparison.getMatch(right)
+			if (leftMatch === null && rightMatch === null) return;
+			checkState(leftMatch !== null, "right match without left match: %s", rightMatch)
+			checkState(rightMatch !== null, "left match without right match: %s", leftMatch)
+			
 			if (leftMatch.right === null && rightMatch.left === null) {
 				leftMatch = combineMatches(comparison, left, right, leftMatch, rightMatch)
 				rightMatch = leftMatch
