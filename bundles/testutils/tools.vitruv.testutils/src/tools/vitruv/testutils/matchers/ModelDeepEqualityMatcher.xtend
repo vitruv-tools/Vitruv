@@ -235,18 +235,19 @@ package class ModelDeepEqualityMatcher extends TypeSafeMatcher<EObject> {
 		// this is rather expensive because of the comparison.getMatch calls. However, we cannot merge this with 
 		// iterateReferenceMatches because iterateReferenceMatches may not visit all objects.
 		def private void collectNavigableObjects(Comparison comparison, EObject object) {
-			if (object !== null && !navigable.contains(object)) {
-				navigable += object
-				val match = comparison.getMatch(object)
-				for (val references = featureFilter.getReferencesToCheck(match); references.hasNext();) {
-					val reference = references.next() 
-					if (reference.isMany) {
-						for (referenced : object.eGet(reference) as Collection<? extends EObject>) {
-							collectNavigableObjects(comparison, referenced)
-						}
-					} else {
-						collectNavigableObjects(comparison, object.eGet(reference) as EObject)
+			if (object === null || navigable.contains(object)) return; 
+			navigable += object
+			val match = comparison.getMatch(object)
+			if (match !== null) return;
+			
+			for (val references = featureFilter.getReferencesToCheck(match); references.hasNext();) {
+				val reference = references.next() 
+				if (reference.isMany) {
+					for (referenced : object.eGet(reference) as Collection<? extends EObject>) {
+						collectNavigableObjects(comparison, referenced)
 					}
+				} else {
+					collectNavigableObjects(comparison, object.eGet(reference) as EObject)
 				}
 			}
 		}
