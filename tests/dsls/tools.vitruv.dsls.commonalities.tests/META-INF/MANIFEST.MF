@@ -12,14 +12,11 @@ Require-Bundle: tools.vitruv.dsls.commonalities,
  tools.vitruv.testutils,
  org.eclipse.xtext.testing,
  org.eclipse.xtext.xbase.testing,
- org.hamcrest.core;bundle-version="1.3.0",
+ org.hamcrest.core,
+ org.eclipse.xtext.xbase.lib;bundle-version="2.14.0",
+ org.junit.jupiter.api,
  org.objectweb.asm;bundle-version="[9.0.0,9.1.0)";resolution:=optional,
- org.eclipse.xtext.xbase.lib;bundle-version="2.14.0"
-Import-Package: org.hamcrest.core,
- org.junit.runner.manipulation;version="4.5.0",
- org.junit.runner.notification;version="4.5.0",
- org.junit.runner;version="4.5.0",
- org.junit.runners.model;version="4.5.0",
- org.junit.runners;version="4.5.0",
- org.junit;version="4.5.0"
+ tools.vitruv.testutils.domains,
+ edu.kit.ipd.sdq.activextendannotations,
+ org.eclipse.core.runtime
 Bundle-Vendor: vitruv.tools

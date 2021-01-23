@@ -1,32 +1,19 @@
 package tools.vitruv.dsls.commonalities.scoping
 
 import com.google.inject.Singleton
-import java.util.List
-import org.eclipse.xtext.common.types.JvmDeclaredType
 import tools.vitruv.extensions.dslruntime.commonalities.operators.participation.condition.IParticipationConditionOperator
 
-import static extension tools.vitruv.dsls.commonalities.language.extensions.CommonalitiesLanguageModelExtensions.*
+import org.eclipse.xtext.scoping.IScopeProvider
+import org.eclipse.xtend.lib.annotations.Delegate
+import javax.inject.Inject
 
 @Singleton
-class ParticipationConditionOperatorScopeProvider extends AbstractOperatorScopeProvider {
-
-	static List<String> DEFAULT_OPERATOR_IMPORTS = #[
-		'tools.vitruv.extensions.dslruntime.commonalities.operators.participation.condition.*'
-	]
-
-	override protected getOperatorTypeName() {
-		return 'condition'
-	}
-
-	override protected getDefaultOperatorImports() {
-		return DEFAULT_OPERATOR_IMPORTS
-	}
-
-	override protected getOperatorBaseType() {
-		return IParticipationConditionOperator
-	}
-
-	override protected getOperatorName(JvmDeclaredType operatorType) {
-		return operatorType.participationConditionOperatorName
+class ParticipationConditionOperatorScopeProvider implements IScopeProvider {
+	@Delegate val IScopeProvider delegate
+	
+	@Inject
+	new(OperatorScopeProvider.Factory factory) {
+		delegate = factory.forOperatorType(IParticipationConditionOperator)
+			.withDefaultImports("tools.vitruv.extensions.dslruntime.commonalities.operators.participation.condition._")
 	}
 }

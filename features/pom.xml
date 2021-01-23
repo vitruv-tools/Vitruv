@@ -20,7 +20,6 @@
 		<module>tools.vitruv.extensions.constructionsimulation.feature</module>
 		<module>tools.vitruv.extensions.integration.feature</module>
 		<module>tools.vitruv.dsls.feature</module>
-		<module>tools.vitruv.dsls.testutils.feature</module>
 		<module>tools.vitruv.domains.demo.feature</module>
 		<module>tools.vitruv.applications.demo.familiespersons.feature</module>
 		<module>tools.vitruv.applications.demo.addressesrecipients.feature</module>

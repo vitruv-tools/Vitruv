@@ -28,7 +28,6 @@
 		<module>tools.vitruv.dsls.commonalities</module>
 		<module>tools.vitruv.dsls.commonalities.ide</module>
 		<module>tools.vitruv.dsls.commonalities.ui</module>
-		<module>tools.vitruv.dsls.commonalities.testutils</module>
 	</modules>
 
 	<build>

@@ -22,7 +22,7 @@ class CommonalitiesLanguageEclipseValidator extends CommonalitiesLanguageValidat
 
 	@Check(NORMAL)
 	def checkParticipationDomainOnClasspath(Participation participation) {
-		if (!participation.isCommonalityParticipation) {
+		if (participation.domainName !== null && !participation.isCommonalityParticipation) {
 			ProjectValidation.checkDomainProjectIsOnClasspath(this, services.typeReferences, participation.domainName,
 				participation)
 		}

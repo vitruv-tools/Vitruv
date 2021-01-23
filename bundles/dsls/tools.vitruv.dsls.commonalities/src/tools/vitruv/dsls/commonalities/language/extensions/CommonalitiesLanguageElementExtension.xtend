@@ -18,7 +18,7 @@ package class CommonalitiesLanguageElementExtension {
 		if (typedContainer !== null) {
 			return typedContainer
 		}
-		throw new RuntimeException('''The given «object.class.simpleName» («object») is not contained inside any «
+		throw new RuntimeException('''The given «object.eClass.name» ‹«object»› is not contained inside any «
 			containerType.simpleName»!''')
 	}
 

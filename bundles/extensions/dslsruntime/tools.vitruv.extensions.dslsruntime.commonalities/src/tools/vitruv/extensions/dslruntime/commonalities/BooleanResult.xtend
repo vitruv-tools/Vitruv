@@ -8,7 +8,6 @@ import org.eclipse.xtend.lib.annotations.ToString
 @ToString
 @EqualsHashCode
 class BooleanResult {
-
 	var boolean value = false
 
 	new() {

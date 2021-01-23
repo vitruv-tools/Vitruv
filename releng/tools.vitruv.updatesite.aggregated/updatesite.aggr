@@ -13,7 +13,7 @@
         <features name="edu.kit.ipd.sdq.commons.util.emf.feature.feature.group"/>
         <features name="edu.kit.ipd.sdq.commons.util.eclipse.feature.feature.group"/>
       </repositories>
-      <repositories location="https://kit-sdq.github.io/updatesite/release/xannotations/1.4.0" mirrorArtifacts="false">
+      <repositories location="https://kit-sdq.github.io/updatesite/release/xannotations/1.5.0" mirrorArtifacts="false">
         <features name="edu.kit.ipd.sdq.activextendannotations.feature.feature.group"/>
       </repositories>
       <repositories location="https://kit-sdq.github.io/updatesite/release/metamodels/demo/1.4.0" mirrorArtifacts="false">

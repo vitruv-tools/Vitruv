@@ -9,16 +9,18 @@ import tools.vitruv.framework.tuid.AttributeTuidCalculatorAndResolver
 
 import static extension tools.vitruv.dsls.commonalities.generator.domain.ConceptDomainConstants.*
 import static extension tools.vitruv.dsls.commonalities.generator.intermediatemodel.IntermediateModelConstants.*
+import tools.vitruv.framework.domains.VitruvDomainProviderRegistry
+import org.eclipse.xtend.lib.annotations.Accessors
 
 /**
  * Dummy {@link VitruvDomain} which represents the concept domain during the
  * generation process (mainly during the generation of reactions).
  * <p>
- * This is required because the generated concept domain is not usable yet
+ * This is required because the generated concept domain cannot be used
  * until after the compilation of the generated code.
  */
 class ConceptDomain extends IntermediateVitruvDomain {
-
+	@Accessors
 	val Provider provider
 
 	new(String conceptName, EPackage conceptPackage) {
@@ -29,12 +31,8 @@ class ConceptDomain extends IntermediateVitruvDomain {
 		provider = new Provider(this, conceptName.conceptDomainProviderClassName.qualifiedName)
 	}
 
-	def getProvider() {
-		this.provider
-	}
-
+	@VitruvDomainProviderRegistry.IgnoreInStandalone
 	private static class Provider implements VitruvDomainProvider<ConceptDomain> {
-
 		val ConceptDomain domain
 		val String canonicalName
 

@@ -1,7 +1,6 @@
 package tools.vitruv.dsls.commonalities.generator.intermediatemodel
 
 import java.util.ArrayList
-import java.util.Collections
 import java.util.HashSet
 import java.util.List
 import java.util.function.Consumer
@@ -12,7 +11,6 @@ import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EPackage
 import org.eclipse.emf.ecore.EcoreFactory
 import org.eclipse.emf.ecore.EcorePackage
-import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.emf.ecore.resource.ResourceSet
 import org.eclipse.emf.ecore.xmi.impl.XMLResourceFactoryImpl
 import tools.vitruv.dsls.common.ClassNameGenerator
@@ -31,78 +29,76 @@ import static org.eclipse.emf.ecore.ETypedElement.UNBOUNDED_MULTIPLICITY
 
 import static extension tools.vitruv.dsls.commonalities.generator.intermediatemodel.IntermediateModelConstants.*
 import static extension tools.vitruv.dsls.commonalities.language.extensions.CommonalitiesLanguageModelExtensions.*
+import org.eclipse.xtend.lib.annotations.FinalFieldsConstructor
+import tools.vitruv.dsls.commonalities.generator.util.guice.GenerationScoped
+import javax.inject.Inject
+import tools.vitruv.dsls.commonalities.language.elements.LeastSpecificType
 
-class IntermediateMetamodelGenerator extends SubGenerator {
-
-	static val Logger logger = Logger.getLogger(IntermediateMetamodelGenerator)
+@GenerationScoped
+class IntermediateMetamodelGenerator implements SubGenerator {
+	static val Logger log = Logger.getLogger(IntermediateMetamodelGenerator)
 	static val NS_URI_PREFIX = URI.createURI('http://vitruv.tools/commonalities')
 
-	var List<Resource> outputResources = Collections.emptyList
+	@Inject extension GenerationContext generationContext
 
 	override beforeGenerate() {
 		if (isNewResourceSet) {
 			val resourceSet = resourceSet
-			val conceptToCommonalityFiles = resourceSet.resources.map[optionalContainedCommonalityFile].filterNull.
-				groupBy[concept.name]
+			val conceptToCommonalityFiles = resourceSet.resources
+				.map [optionalContainedCommonalityFile]
+				.filterNull
+				.groupBy [concept.name]
 
-			outputResources = new ArrayList(conceptToCommonalityFiles.size)
 			resourceSet.resourceFactoryRegistry.extensionToFactoryMap.computeIfAbsent('ecore', [
 				new XMLResourceFactoryImpl
 			])
 
-			conceptToCommonalityFiles.entrySet.map [
-				val concept = key
-				val commonalityFiles = value
-				logger.
-					debug('''Generating intermediate metamodel for concept '«concept»' and commonalities «commonalityFiles.map[commonality.name].toList»''')
+			conceptToCommonalityFiles.forEach [ concept, commonalityFiles |
+				log.debug('''Generating intermediate metamodel for concept ‹«concept»› and commonalities «
+					commonalityFiles.join(', ') ['''‹«commonality.name»›''']»''')
 
 				val packageGenerator = generateCommonalityEPackage(concept, commonalityFiles, resourceSet)
 				reportGeneratedIntermediateMetamodel(concept, packageGenerator.generatedEPackage)
-				return packageGenerator
-			].forEach[link]
+				packageGenerator.link()
+			]
 
 			generatedConcepts = new HashSet(conceptToCommonalityFiles.keySet)
 		}
 	}
 
 	override generate() {
-		outputResources.forEach [ resource |
-			logger.debug('''Saving generated intermediate metamodel at: «resource.URI»''')
-			resource.save(Collections.emptyMap)
-		]
+		if (isNewResourceSet && settings.createEcoreFiles) {
+			for(conceptName : generatedConcepts) {
+				val intermediateModelUri = conceptName.intermediateMetamodelUri
+				log.debug('''Saving generated intermediate metamodel at: «intermediateModelUri»''')
+				resourceSet.getResource(intermediateModelUri, false).save(emptyMap)
+			}
+		}
 	}
-
+	
 	private def generateCommonalityEPackage(String conceptName, Iterable<CommonalityFile> commonalityFiles,
 		ResourceSet resourceSet) {
 		val outputUri = conceptName.intermediateMetamodelUri
 		val outputResource = resourceSet.getResource(outputUri, false) ?: resourceSet.createResource(outputUri)
 		// Delete any previously existing intermediate metamodel:
-		outputResource.contents.clear
+		outputResource.contents.clear()
 
 		val packageGenerator = new EPackageGenerator(conceptName, commonalityFiles, generationContext)
 		val generatedPackage = packageGenerator.generateEPackage()
 		outputResource.contents += generatedPackage
-		outputResources += outputResource
 		return packageGenerator
 	}
 
+	@FinalFieldsConstructor
 	private static class EPackageGenerator {
-
-		val EPackage generatedEPackage = EcoreFactory.eINSTANCE.createEPackage
-		val Iterable<CommonalityFile> commonalityFiles
 		val String conceptName
-		val extension GenerationContext generationContext
+		val Iterable<CommonalityFile> commonalityFiles
+		val extension GenerationContext
+		val EPackage generatedEPackage = EcoreFactory.eINSTANCE.createEPackage
 		val List<Runnable> linkCallbacks = new ArrayList
 
-		private new(String conceptName, Iterable<CommonalityFile> commonalityFiles,
-			GenerationContext generationContext) {
-			this.conceptName = conceptName
-			this.commonalityFiles = commonalityFiles
-			this.generationContext = generationContext
-		}
-
 		private def <T> whenLinking(T object, Consumer<T> linker) {
-			linkCallbacks.add([linker.accept(object)])
+			linkCallbacks.add [linker.accept(object)]
 			return object
 		}
 
@@ -140,6 +136,12 @@ class IntermediateMetamodelGenerator extends SubGenerator {
 				EClassAdapter:
 					EcoreFactory.eINSTANCE.createEReference => [
 						EType = attributeType.wrapped
+					]
+				LeastSpecificType:
+					// type inference failed, but we still create a reference 
+					// so generation can continue
+					EcoreFactory.eINSTANCE.createEReference => [
+						EType = EcorePackage.Literals.EOBJECT
 					]
 				default:
 					throw new IllegalStateException('''The Attribute declaration ‹«attribute»› has the type «

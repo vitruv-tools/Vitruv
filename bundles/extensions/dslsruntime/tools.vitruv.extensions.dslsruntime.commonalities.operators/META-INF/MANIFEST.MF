@@ -1,0 +1,19 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Vitruv Extension Commonalities Language Operators
+Bundle-SymbolicName: tools.vitruv.extensions.dslsruntime.commonalities.operators;singleton:=true
+Automatic-Module-Name: tools.vitruv.extensions.dslsruntime.commonalities
+Bundle-Version: 1.1.0.qualifier
+Bundle-ClassPath: .
+Bundle-RequiredExecutionEnvironment: JavaSE-11
+Bundle-Vendor: vitruv.tools
+Bundle-ActivationPolicy: lazy
+Require-Bundle: edu.kit.ipd.sdq.commons.util.java,
+ org.eclipse.emf.ecore;visibility:=reexport,
+ org.eclipse.xtend.lib,
+ edu.kit.ipd.sdq.activextendannotations;visibility:=reexport
+Export-Package: tools.vitruv.extensions.dslruntime.commonalities.operators,
+ tools.vitruv.extensions.dslruntime.commonalities.operators.mapping.attribute,
+ tools.vitruv.extensions.dslruntime.commonalities.operators.mapping.reference,
+ tools.vitruv.extensions.dslruntime.commonalities.operators.participation.condition,
+ tools.vitruv.extensions.dslruntime.commonalities.operators.participation.relation

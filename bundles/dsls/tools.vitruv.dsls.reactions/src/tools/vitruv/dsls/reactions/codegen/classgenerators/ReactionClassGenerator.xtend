@@ -57,7 +57,9 @@ class ReactionClassGenerator extends ClassGenerator {
 		generatedClass => [
 			documentation = getCommentWithoutMarkers(reaction.documentation)
 			superTypes += typeRef(AbstractReactionRealization)
-			members += changeSequenceRepresentation.fields.map[reaction.toField(name, it.generateTypeRef(_typeReferenceBuilder))]
+			members += changeSequenceRepresentation.fields.map[
+				reaction.toField(name, it.generateTypeRef(_typeReferenceBuilder))
+			]
 			members += reaction.toField(CHANCE_COUNTER_VARIABLE, typeRef(Integer.TYPE))
 			members += reaction.generateConstructor();
 			members += generatedMethods

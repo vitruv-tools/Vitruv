@@ -99,17 +99,17 @@ class CommonalitiesLanguageValidator extends AbstractCommonalitiesLanguageValida
 
 	@Check
 	def checkOperatorAttributeMapping(OperatorAttributeMapping mapping) {
+		if (mapping.operator.qualifiedName.isNullOrEmpty) return
+		
 		val commonalityAttributeType = mapping.commonalityAttributeType
 		if (commonalityAttributeType === null) {
-			val typeDescription = mapping.operator.commonalityAttributeTypeDescription
-			error('''Could not find the operator’s declared commonality attribute type ‹«typeDescription.qualifiedTypeName»›.''',
+			error('''Could not find the operator’s declared commonality attribute type ‹«mapping.operator.qualifiedName»›.''',
 				OPERATOR_ATTRIBUTE_MAPPING__OPERATOR)
 		}
 
 		val participationAttributeType = mapping.participationAttributeType
 		if (participationAttributeType === null) {
-			val typeDescription = mapping.operator.participationAttributeTypeDescription
-			error('''Could not find the operator’s declared participation attribute type ‹«typeDescription.qualifiedTypeName»›.''',
+			error('''Could not find the operator’s declared participation attribute type ‹«mapping.operator.qualifiedName»›.''',
 				OPERATOR_ATTRIBUTE_MAPPING__OPERATOR)
 		}
 
@@ -201,7 +201,7 @@ class CommonalitiesLanguageValidator extends AbstractCommonalitiesLanguageValida
 
 	// Returns false in case of error.
 	private def dispatch boolean checkConcreteReferenceMapping(OperatorReferenceMapping mapping) {
-		if (mapping.operator.isAttributeReference) {
+		if (mapping.isAttributeReference) {
 			// Checks specific to attribute reference mappings:
 			if (mapping.operands.filter(ReferencedParticipationAttributeOperand).empty) {
 				error("No referenced participation attribute specified.", OPERATOR_REFERENCE_MAPPING__OPERANDS)

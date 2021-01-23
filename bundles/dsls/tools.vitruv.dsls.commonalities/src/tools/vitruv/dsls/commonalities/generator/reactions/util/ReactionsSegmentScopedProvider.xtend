@@ -12,7 +12,6 @@ import tools.vitruv.dsls.reactions.builder.FluentReactionsSegmentBuilder
  */
 @GenerationScoped
 abstract class ReactionsSegmentScopedProvider<T> extends InjectingFactoryBase {
-
 	val Map<FluentReactionsSegmentBuilder, T> bySegment = new HashMap
 
 	def getFor(FluentReactionsSegmentBuilder segment) {

@@ -1,32 +1,19 @@
 package tools.vitruv.dsls.commonalities.scoping
 
 import com.google.inject.Singleton
-import java.util.List
-import org.eclipse.xtext.common.types.JvmDeclaredType
 import tools.vitruv.extensions.dslruntime.commonalities.operators.mapping.attribute.IAttributeMappingOperator
 
-import static extension tools.vitruv.dsls.commonalities.language.extensions.CommonalitiesLanguageModelExtensions.*
+import org.eclipse.xtend.lib.annotations.Delegate
+import org.eclipse.xtext.scoping.IScopeProvider
+import javax.inject.Inject
 
 @Singleton
-class AttributeMappingOperatorScopeProvider extends AbstractOperatorScopeProvider {
-
-	static List<String> DEFAULT_OPERATOR_IMPORTS = #[
-		'tools.vitruv.extensions.dslruntime.commonalities.operators.mapping.attribute.*'
-	]
-
-	override protected getOperatorTypeName() {
-		return 'attribute mapping'
-	}
-
-	override protected getDefaultOperatorImports() {
-		return DEFAULT_OPERATOR_IMPORTS
-	}
-
-	override protected getOperatorBaseType() {
-		return IAttributeMappingOperator
-	}
-
-	override protected getOperatorName(JvmDeclaredType operatorType) {
-		return operatorType.attributeMappingOperatorName
+class AttributeMappingOperatorScopeProvider implements IScopeProvider {
+	@Delegate val IScopeProvider delegate
+	
+	@Inject
+	new(OperatorScopeProvider.Factory factory) {
+		delegate = factory.forOperatorType(IAttributeMappingOperator)
+			.withDefaultImports("tools.vitruv.extensions.dslruntime.commonalities.operators.mapping.attribute._")
 	}
 }

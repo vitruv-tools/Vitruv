@@ -5,7 +5,6 @@ import com.google.inject.Provider
 import org.apache.log4j.Logger
 import org.eclipse.emf.common.util.URI
 import org.eclipse.xtext.resource.IGlobalServiceProvider
-import tools.vitruv.dsls.commonalities.generator.CommonalitiesGenerationSettings
 import tools.vitruv.dsls.commonalities.generator.SubGenerator
 import tools.vitruv.dsls.commonalities.generator.reactions.attribute.CommonalityAttributeChangeReactionsBuilder
 import tools.vitruv.dsls.commonalities.generator.reactions.attribute.ParticipationAttributeChangeReactionsBuilder
@@ -19,19 +18,19 @@ import tools.vitruv.dsls.reactions.builder.FluentReactionsSegmentBuilder
 import tools.vitruv.framework.domains.VitruvDomainProviderRegistry
 
 import static extension tools.vitruv.dsls.commonalities.language.extensions.CommonalitiesLanguageModelExtensions.*
+import tools.vitruv.dsls.commonalities.generator.GenerationContext
 
 /**
  * Generates reactions in the Reactions language and the corresponding Java
  * code to transform changes between a commonality and its participations.
  */
-class ReactionsGenerator extends SubGenerator {
-
+class ReactionsGenerator implements SubGenerator {
 	static val Logger logger = Logger.getLogger(ReactionsGenerator)
 
 	@Inject IGlobalServiceProvider globalServiceProvider
 	@Inject Provider<IReactionsGenerator> reactionsGeneratorProvider
+	@Inject extension GenerationContext
 
-	@Inject CommonalitiesGenerationSettings generationSettings
 	@Inject extension ReactionsGenerationContext reactionsGenerationContext
 
 	@Inject CommonalityInsertReactionsBuilder.Factory commonalityInsertReactionsBuilder
@@ -40,6 +39,14 @@ class ReactionsGenerator extends SubGenerator {
 	@Inject MatchParticipationReactionsBuilder.Factory matchParticipationReactionsBuilder
 	@Inject MatchParticipationReferencesReactionsBuilder.Factory matchParticipationReferencesReactionsBuilder
 	@Inject ParticipationAttributeChangeReactionsBuilder.Factory participationAttributeChangeReactionsBuilder
+	
+	override beforeGenerate() {
+		// Prepare the Reactions language:
+		if (isNewResourceSet) {
+			// This has the side-effect of initializing the Reactions language's injector if that hasn't happened yet:
+			globalServiceProvider.findService(URI.createFileURI('fake.reactions'), IReactionsGenerator)
+		}
+	}
 
 	/**
 	 * Generates the reactions and corresponding Java code to transform changes
@@ -58,15 +65,6 @@ class ReactionsGenerator extends SubGenerator {
 	 */
 	override generate() {
 		logger.debug('''Generating reactions for commonality «commonality»''')
-		if (commonality.participations.length + commonality.allMembers.length == 0) {
-			// nothing to generate
-			logger.debug("  Ignoring empty commonality")
-			return;
-		}
-
-		// Prepare the Reactions language:
-		// This has the side-effect of initializing the Reactions language's injector if that hasn't happened yet:
-		globalServiceProvider.findService(URI.createFileURI('fake.reactions'), IReactionsGenerator)
 
 		// Generate reactions:
 		val reactionsFile = generateReactions()
@@ -74,6 +72,8 @@ class ReactionsGenerator extends SubGenerator {
 		// Generate reactions code:
 		if (reactionsFile.willGenerateCode) {
 			generateReactionsCode(reactionsFile)
+		} else {
+			logger.debug("  Ignoring empty commonality")
 		}
 	}
 
@@ -111,7 +111,7 @@ class ReactionsGenerator extends SubGenerator {
 			reactionsGenerator.generate(fsa)
 
 			// Optionally: Also persist the reactions in the Reactions language itself.
-			if (generationSettings.createReactionFiles) {
+			if (settings.createReactionFiles) {
 				reactionsGenerator.writeReactions(fsa)
 			}
 		} finally {

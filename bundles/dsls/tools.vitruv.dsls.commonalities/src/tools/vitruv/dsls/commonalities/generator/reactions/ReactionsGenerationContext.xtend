@@ -7,7 +7,6 @@ import tools.vitruv.dsls.reactions.builder.FluentReactionsLanguageBuilder
 
 @GenerationScoped
 class ReactionsGenerationContext {
-
 	@Accessors(PUBLIC_GETTER)
 	@Inject FluentReactionsLanguageBuilder create
 }

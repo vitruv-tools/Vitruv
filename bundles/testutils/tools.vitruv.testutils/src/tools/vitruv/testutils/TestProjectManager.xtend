@@ -28,6 +28,7 @@ import org.junit.jupiter.api.^extension.AfterEachCallback
 import static com.google.common.base.Preconditions.checkArgument
 import java.nio.file.NoSuchFileException
 import java.util.stream.Stream
+import org.eclipse.core.runtime.Platform
 
 /**
  * Extension managing the test projects for Eclipse tests. Test classes using this extension can have test project 
@@ -41,6 +42,10 @@ class TestProjectManager implements ParameterResolver, AfterEachCallback {
 	 * the test projects always, only when the corresponding test failed, or never. The default is “{@code on_failure}”.
 	 */
 	public static val RETAIN_TEST_PROJECTS_SYSTEM_PROPERTY = "vitruv.retainTestProjects"
+	/**
+	 * Set this system property to overwrite the workspace path 
+	 */
+	public static val WORKSPACE_PATH_SYSTEM_PROPERTY = "vitruv.workspace"
 	static val log = Logger.getLogger(TestProjectManager) => [level = INFO]
 	static val namespace = ExtensionContext.Namespace.create(TestProjectManager)
 	static val observedFailure = "observedFailure"
@@ -76,10 +81,23 @@ class TestProjectManager implements ParameterResolver, AfterEachCallback {
 	def private Path setupWorkspace() {
 		if (workspaceCache !== null) return workspaceCache
 
-		val testWorkspace = ResourcesPlugin.workspace.root.location.toFile.toPath
-		workspaceCache = createUniqueDirectory(testWorkspace.resolve('Vitruv'))
-		log.info('''Running in the test workspace at «TestProjectManager.workspaceCache»''')
+		val testWorkspace = System.getProperty(WORKSPACE_PATH_SYSTEM_PROPERTY)?.toPath() ?:
+			if (Platform.isRunning()) ResourcesPlugin.workspace.root.location.toFile.toPath
+			else System.getProperty("java.io.tmpdir").toPath()
+		
+		val targetDir = testWorkspace.resolve('Vitruv')
+		try {
+			walkIfExists(targetDir).sorted(reverseOrder).forEach[delete(it)]
+		} catch (IOException e) {
+			// it’s okay if we cannot clear
+		}
+		workspaceCache = createUniqueDirectory(targetDir)
+		log.info('''Running in the test workspace at «workspaceCache»''')
 		workspaceCache
+	}
+	
+	def private static toPath(String string) {
+		Path.of(string)
 	}
 
 	def private Path getWorkspace(ExtensionContext context) {
@@ -191,13 +209,13 @@ class TestProjectManager implements ParameterResolver, AfterEachCallback {
 				}
 			}
 		}
-
-		def private static walkIfExists(Path path) {
-			try {
-				walk(path)
-			} catch (NoSuchFileException noSuchFile) {
-				Stream.empty()
-			}
+	}
+	
+	def private static walkIfExists(Path path) {
+		try {
+			walk(path)
+		} catch (NoSuchFileException noSuchFile) {
+			Stream.empty()
 		}
 	}
 }
