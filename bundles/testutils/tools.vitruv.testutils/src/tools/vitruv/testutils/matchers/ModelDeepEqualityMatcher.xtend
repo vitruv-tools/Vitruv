@@ -53,6 +53,8 @@ import org.eclipse.emf.ecore.util.EcoreUtil
 import tools.vitruv.testutils.printing.DefaultPrintIdProvider
 import tools.vitruv.testutils.printing.PrintIdProvider
 import org.eclipse.emf.ecore.EReference
+import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
+
 
 package class ModelDeepEqualityMatcher extends TypeSafeMatcher<EObject> {
 	val EObject expectedObject
@@ -236,30 +238,38 @@ package class ModelDeepEqualityMatcher extends TypeSafeMatcher<EObject> {
 			if (object !== null && !navigable.contains(object)) {
 				navigable += object
 				val match = comparison.getMatch(object)
-				featureFilter.getReferencesToCheck(match).forEach [ reference |
+				for (val references = featureFilter.getReferencesToCheck(match); references.hasNext();) {
+					val reference = references.next() 
 					if (reference.isMany) {
-						(object.eGet(reference) as Collection<? extends EObject>).forEach [ referenced |
+						for (referenced : object.eGet(reference) as Collection<? extends EObject>) {
 							collectNavigableObjects(comparison, referenced)
-						]
+						}
 					} else {
 						collectNavigableObjects(comparison, object.eGet(reference) as EObject)
 					}
-				]
+				}
 			}
 		}
 
 		def private void removeNotNavigableMatches(Comparison comparison) {
-			comparison.allMatches.forEach [ match |
+			// fix the list before navigating it to avoid a ConcurrentModificationException
+			for (match : comparison.allMatches.toList) {
 				if ((match.left === null || !navigable.contains(match.left)) &&
 					(match.right === null || !navigable.contains(match.right))) {
 					val matchContainer = match.eContainer
 					switch (matchContainer) {
-						Match: matchContainer.submatches += match.submatches
-						default: comparison.matches += match.submatches
+						Match: {
+							matchContainer.submatches += match.submatches
+							matchContainer.submatches -= match
+						}
+						case comparison: {
+							comparison.matches += match.submatches
+							comparison.matches -= match
+						}
+						default: throw new IllegalStateException('''Unexpected match container: «matchContainer» (of «match»)''')
 					}
-					EcoreUtil.delete(match)
 				}
-			]
+			}
 		}
 
 		def private void checkMatches(Comparison comparison, EObject left, EObject right) {
@@ -283,7 +293,8 @@ package class ModelDeepEqualityMatcher extends TypeSafeMatcher<EObject> {
 		}
 
 		def private iterateReferenceMatches(Comparison comparison, EObject left, EObject right, Match rightMatch) {
-			featureFilter.getReferencesToCheck(rightMatch).forEach [ reference |
+			for (val references = featureFilter.getReferencesToCheck(rightMatch); references.hasNext();) {
+				val reference = references.next()
 				if (!reference.isMany) {
 					checkMatches(comparison, left.eGet(reference) as EObject, right.eGet(reference) as EObject)
 				} else {
@@ -313,7 +324,7 @@ package class ModelDeepEqualityMatcher extends TypeSafeMatcher<EObject> {
 						}
 					}
 				}
-			]
+			}
 		}
 
 		def private boolean shouldBeMatched(Comparison comparison, EObject left, EObject right) {
@@ -419,12 +430,12 @@ package class ModelDeepEqualityMatcher extends TypeSafeMatcher<EObject> {
 		val Set<Match> seen = new HashSet
 
 		def private PrintResult printDifferenceRecursively(extension PrintTarget target, EObject root) {
-			printIterableElements(getDifferencesWithContext("", root), MULTI_LINE) [ subTarget, difference |
+			printIterableElements(root.getDifferencesWithContext(""), MULTI_LINE) [ subTarget, difference |
 				subTarget.printDifference(difference.key, difference.value)
 			]
 		}
 
-		def private Iterable<Pair<String, Diff>> getDifferencesWithContext(String context, EObject object) {
+		def private Iterable<Pair<String, Diff>> getDifferencesWithContext(EObject object, String context) {
 			if (object === null) return emptyList()
 			val thisMatch = comparison.getMatch(object)
 			if (thisMatch === null || seen.contains(thisMatch)) return emptyList()
@@ -438,14 +449,14 @@ package class ModelDeepEqualityMatcher extends TypeSafeMatcher<EObject> {
 		}
 
 		def private getReferenceDifferencesWithContext(EObject object, String context, EReference reference) {
-			val referenceContext = context + '.' + reference.name
+			val referenceContext = '''«context».«reference.name»'''
 			if (reference.isMany) {
-				(object.eGet(reference) as Iterable<? extends EObject>).indexed.flatMap [ el |
-					val elementIndicator = if (reference.isOrdered) '''[«el.key»]''' else '''{«el.key»}'''
-					getDifferencesWithContext(referenceContext + elementIndicator, el.value)
+				(object.eGet(reference) as Iterable<? extends EObject>).flatMapFixedIndexed [ index, element |
+					val elementIndicator = if (reference.isOrdered) '''[«index»]''' else '''{«index»}'''
+					element.getDifferencesWithContext(referenceContext + elementIndicator)
 				]
 			} else {
-				getDifferencesWithContext(referenceContext, object.eGet(reference) as EObject)
+				(object.eGet(reference) as EObject).getDifferencesWithContext(referenceContext)
 			}
 		}
 
@@ -481,12 +492,18 @@ package class ModelDeepEqualityMatcher extends TypeSafeMatcher<EObject> {
 		}
 	}
 
+	/**
+	 * An iterator for the whole match hierarchy under and including {@code match}, in bottom-up order.
+	 */
 	def private static Iterable<Match> getAllMatches(Match match) {
-		match.submatches + match.submatches.flatMap[allMatches]
+		match.submatches.flatMap[allMatches] + match.submatches
 	}
 
+	/**
+	 * An iterator for the whole match hierarchy under {@code comparison}, in bottom-up order.
+	 */
 	def private static Iterable<Match> getAllMatches(Comparison comparison) {
-		comparison.matches + comparison.matches.flatMap[allMatches]
+		comparison.matches.flatMap[allMatches] + comparison.matches
 	}
 
 	def private static <T> boolean all(Iterator<? extends T> elements, Predicate<T> predicate) {
