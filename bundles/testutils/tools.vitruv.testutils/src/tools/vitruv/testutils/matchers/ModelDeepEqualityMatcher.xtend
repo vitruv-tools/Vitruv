@@ -48,7 +48,6 @@ import java.util.function.Predicate
 import static com.google.common.base.Preconditions.checkState
 import static tools.vitruv.testutils.printing.PrintResult.*
 import edu.kit.ipd.sdq.activextendannotations.CloseResource
-import org.eclipse.emf.ecore.util.EcoreUtil
 
 import tools.vitruv.testutils.printing.DefaultPrintIdProvider
 import tools.vitruv.testutils.printing.PrintIdProvider
@@ -227,7 +226,8 @@ package class ModelDeepEqualityMatcher extends TypeSafeMatcher<EObject> {
 				'''«left» should be matched with «right», but is already matched with «leftMatch.right»!'''
 			)
 			rightMatch.submatches += leftMatch.submatches
-			EcoreUtil.delete(leftMatch)
+			val leftContainer = leftMatch.eContainer.eGet(leftMatch.eContainingFeature) as Collection<EObject>
+			leftContainer -= leftMatch
 			rightMatch.left = left
 			return rightMatch
 		}
