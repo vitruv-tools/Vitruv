@@ -48,7 +48,7 @@ class ConceptDomainGenerator implements SubGenerator {
 		if (!isNewResourceSet) return;
 		val typeReferenceBuilder = typeReferenceFactory.create(resourceSet)
 		generatedConcepts.flatMap [ concept |
-			tools.vitruv.dsls.commonalities.generator.domain.ConceptDomainGenerator.log.debug('''Generating domain and domain provider for concept '«concept»'.''')
+			log.debug('''Generating domain and domain provider for concept '«concept»'.''')
 			val domainType = concept.createDomain(typeReferenceBuilder)
 			val domainProviderType = concept.createDomainProvider(typeReferenceBuilder, domainType)
 			return #[domainType, domainProviderType]

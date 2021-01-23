@@ -4,7 +4,7 @@ import edu.kit.ipd.sdq.activextendannotations.StaticDelegate
 import edu.kit.ipd.sdq.activextendannotations.Utility
 
 @StaticDelegate(#[
-	tools.vitruv.dsls.commonalities.language.extensions.AttributeMappingExtension,
+	AttributeMappingExtension,
 	AttributeMappingOperandExtension,
 	CommonalityExtension,
 	CommonalitiesLanguageElementExtension,
@@ -24,7 +24,7 @@ import edu.kit.ipd.sdq.activextendannotations.Utility
 	ParticipationConditionOperatorExtension,
 	ParticipationConditionOperandExtension,
 	ReferenceMappingOperandExtension,
-	tools.vitruv.dsls.commonalities.language.extensions.ReferenceMappingExtension
+	ReferenceMappingExtension
 ])
 @Utility
 class CommonalitiesLanguageModelExtensions {
