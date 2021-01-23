@@ -5,3 +5,4 @@ eclipse.preferences.version=1
 outlet.DEFAULT_OUTPUT.hideLocalSyntheticVariables=true
 outlet.DEFAULT_OUTPUT.installDslAsPrimarySource=false
 outlet.DEFAULT_OUTPUT.userOutputPerSourceFolder=true
+org.eclipse.xtext.xbase.validation.IssueCodes.discouraged_reference=info
