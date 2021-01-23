@@ -45,7 +45,6 @@ import org.eclipse.emf.compare.postprocessor.PostProcessorDescriptorRegistryImpl
 import java.util.HashMap
 import java.util.Collection
 import java.util.function.Predicate
-import static com.google.common.base.Preconditions.checkState
 import static tools.vitruv.testutils.printing.PrintResult.*
 import edu.kit.ipd.sdq.activextendannotations.CloseResource
 
@@ -217,13 +216,11 @@ package class ModelDeepEqualityMatcher extends TypeSafeMatcher<EObject> {
 		def private combineMatches(Comparison comparison, EObject left, EObject right, Match leftMatch,
 			Match rightMatch) {
 			// these checks guarantee that we do not throw away any values
-			checkState(
-				rightMatch.left === null,
-				'''«right» should be matched with «left», but is already matched with «rightMatch.left»!'''
+			if (rightMatch.left !== null) throw new IllegalStateException(
+				'''«right» is to be matched with «left», but it is already matched with «rightMatch.left»!'''
 			)
-			checkState(
-				leftMatch.right === null,
-				'''«left» should be matched with «right», but is already matched with «leftMatch.right»!'''
+			if (leftMatch.right !== null) throw new IllegalStateException(
+				'''«left» is to be matched with «right», but it is already matched with «leftMatch.right»!'''
 			)
 			rightMatch.submatches += leftMatch.submatches
 			val leftContainer = leftMatch.eContainer.eGet(leftMatch.eContainingFeature) as Collection<EObject>
@@ -284,8 +281,8 @@ package class ModelDeepEqualityMatcher extends TypeSafeMatcher<EObject> {
 			var leftMatch = comparison.getMatch(left)
 			var rightMatch = comparison.getMatch(right)
 			if (leftMatch === null && rightMatch === null) return;
-			checkState(leftMatch !== null, "right match without left match: %s", rightMatch)
-			checkState(rightMatch !== null, "left match without right match: %s", leftMatch)
+			if (leftMatch !== null) throw new IllegalStateException('''right match without left match: «rightMatch»''')
+			if (rightMatch !== null) throw new IllegalStateException('''left match without right match: «rightMatch»''')
 			
 			if (leftMatch.right === null && rightMatch.left === null) {
 				leftMatch = combineMatches(comparison, left, right, leftMatch, rightMatch)
