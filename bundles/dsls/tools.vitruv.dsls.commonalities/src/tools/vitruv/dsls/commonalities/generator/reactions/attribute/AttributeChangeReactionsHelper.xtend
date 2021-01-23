@@ -1,6 +1,5 @@
 package tools.vitruv.dsls.commonalities.generator.reactions.attribute
 
-import java.util.Collections
 import java.util.function.BiFunction
 import tools.vitruv.dsls.commonalities.generator.reactions.helper.ReactionsGenerationHelper
 import tools.vitruv.dsls.commonalities.language.elements.Attribute
