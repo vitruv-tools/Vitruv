@@ -15,39 +15,39 @@ import static extension tools.vitruv.dsls.commonalities.language.extensions.Refe
 @Utility
 package class CommonalityReferenceMappingExtension {
 	static def isSimpleMapping(CommonalityReferenceMapping mapping) {
-		return (mapping instanceof SimpleReferenceMapping)
+		mapping instanceof SimpleReferenceMapping
 	}
 
 	static def isOperatorMapping(CommonalityReferenceMapping mapping) {
-		return (mapping instanceof OperatorReferenceMapping)
+		mapping instanceof OperatorReferenceMapping
 	}
 
 	static def dispatch boolean isMultiValued(SimpleReferenceMapping mapping) {
-		return mapping.reference.isMultiValued
+		mapping.reference.isMultiValued
 	}
 
 	static def dispatch boolean isMultiValued(OperatorReferenceMapping mapping) {
-		return mapping.isMultiValued
+		mapping.isMultiValued
 	}
 
 	static def dispatch ParticipationClass getParticipationClass(SimpleReferenceMapping mapping) {
-		return mapping.reference.participationClass
+		mapping.reference.participationClass
 	}
 
 	static def dispatch ParticipationClass getParticipationClass(OperatorReferenceMapping mapping) {
-		return mapping.participationClass
+		mapping.participationClass
 	}
 
 	static def Participation getParticipation(CommonalityReferenceMapping mapping) {
-		return mapping.participationClass.participation
+		mapping.participationClass.participation
 	}
 
 	static def getDeclaringReference(CommonalityReferenceMapping mapping) {
-		return mapping.getDirectContainer(CommonalityReference)
+		mapping.getDirectEContainer(CommonalityReference)
 	}
 
 	static def getReferencedCommonality(CommonalityReferenceMapping mapping) {
-		return mapping.declaringReference.referenceType
+		mapping.declaringReference.referenceType
 	}
 
 	static def getReferencedParticipation(CommonalityReferenceMapping mapping) {
@@ -76,6 +76,6 @@ package class CommonalityReferenceMappingExtension {
 	static def dispatch boolean isAssignmentCompatible(OperatorReferenceMapping mapping,
 		ParticipationClass referencedClass) {
 		// depends on the operator, for which we have no compile-time checking currently
-		return true
+		true
 	}
 }

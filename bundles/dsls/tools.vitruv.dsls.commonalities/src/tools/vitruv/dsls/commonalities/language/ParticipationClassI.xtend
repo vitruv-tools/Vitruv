@@ -11,7 +11,7 @@ package class ParticipationClassI extends ParticipationClassImpl {
 	}
 
 	override basicGetPackageLikeContainer() {
-		participation
+		getOptionalEContainer(Participation)
 	}
 
 	override toString() {

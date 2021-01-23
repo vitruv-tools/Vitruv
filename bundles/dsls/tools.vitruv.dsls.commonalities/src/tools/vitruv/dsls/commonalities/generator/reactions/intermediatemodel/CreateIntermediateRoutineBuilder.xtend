@@ -65,7 +65,7 @@ class CreateIntermediateRoutineBuilder extends ReactionsGenerationHelper {
 
 	def getCreateIntermediateRoutine(ParticipationContext participationContext) {
 		val participation = participationContext.participation
-		val commonality = participation.containingCommonality
+		val commonality = participation.declaringCommonality
 		return createIntermediateRoutines.computeIfAbsent(participationContext) [
 			create.routine('''createIntermediate_«commonality.name»«reactionNameSuffix»''')
 				.input [
@@ -139,7 +139,7 @@ class CreateIntermediateRoutineBuilder extends ReactionsGenerationHelper {
 	 */
 	private def getSetupSingletonRoutine(ParticipationClass singletonClass) {
 		val participation = singletonClass.participation
-		val commonality = participation.containingCommonality
+		val commonality = participation.declaringCommonality
 		val singletonEClass = singletonClass.changeClass
 		return create.routine('''setupSingleton_«participation.name»_«singletonClass.name»''')
 			.input [

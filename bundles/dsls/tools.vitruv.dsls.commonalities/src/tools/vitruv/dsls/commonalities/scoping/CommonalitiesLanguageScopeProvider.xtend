@@ -2,7 +2,6 @@ package tools.vitruv.dsls.commonalities.scoping
 
 import com.google.inject.Inject
 import com.google.inject.Provider
-import java.util.Collections
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EReference
 import org.eclipse.xtext.naming.IQualifiedNameProvider
@@ -22,6 +21,10 @@ import static tools.vitruv.dsls.commonalities.language.LanguagePackage.Literals.
 
 import static extension tools.vitruv.dsls.commonalities.language.extensions.CommonalitiesLanguageModelExtensions.*
 import static extension tools.vitruv.dsls.commonalities.names.QualifiedNameHelper.*
+import java.util.List
+import tools.vitruv.dsls.commonalities.language.ParticipationCondition
+import tools.vitruv.dsls.commonalities.language.ReferencedParticipationAttributeOperand
+import tools.vitruv.dsls.commonalities.language.ParticipationAttributeOperand
 
 /**
  * This class contains custom scoping description.
@@ -31,9 +34,9 @@ import static extension tools.vitruv.dsls.commonalities.names.QualifiedNameHelpe
  */
 class CommonalitiesLanguageScopeProvider extends AbstractCommonalitiesLanguageScopeProvider {
 
-	@Inject Provider<ParticipationClassesScope> participationClassesScope
+	@Inject ParticipationClassesScope.Factory createParticipationClassesScope
 	@Inject Provider<ParticipationAttributesScope> participationAttributesScope
-	@Inject Provider<CommonalityAttributesScope> commonalityAttributesScope
+	@Inject CommonalityAttributesScope.Factory createCommonalityAttributesScope
 	@Inject ParticipationRelationOperatorScopeProvider relationOperatorScopeProvider
 	@Inject ParticipationConditionOperatorScopeProvider conditionOperatorScopeProvider
 	@Inject AttributeMappingOperatorScopeProvider attributeMappingOperatorScopeProvider
@@ -50,11 +53,9 @@ class CommonalitiesLanguageScopeProvider extends AbstractCommonalitiesLanguageSc
 			case PARTICIPATION_CLASS_OPERAND__PARTICIPATION_CLASS: {
 				if (context instanceof ParticipationClassOperand) {
 					if (context.isInParticipationConditionContext) {
-						val participation = context.participation
-						return participation.unqualifiedParticipationClassScope
+						return createUnqualifiedParticipationClassScope(context.participation)
 					} else if (context.isInAttributeMappingContext) {
-						val commonality = context.containingCommonality
-						return commonality.participationClassScope
+						return createParticipationClassesScope.forCommonality(context.getEContainer(Commonality))
 					} else {
 						throw new IllegalStateException("Unexpected ParticipationClassOperand context")
 					}
@@ -62,43 +63,32 @@ class CommonalitiesLanguageScopeProvider extends AbstractCommonalitiesLanguageSc
 			}
 			case OPERATOR_REFERENCE_MAPPING__PARTICIPATION_CLASS: {
 				if (context instanceof OperatorReferenceMapping) {
-					val commonality = context.containingCommonality
-					return commonality.participationClassScope
+					return createParticipationClassesScope.forCommonality(context.getEContainer(Commonality))
 				}
 			}
 			case PARTICIPATION_ATTRIBUTE__PARTICIPATION_CLASS: {
 				if (context instanceof ParticipationAttribute) {
-					val participationCondition = context.optionalContainingParticipationCondition
+					val participationCondition = context.getOptionalEContainer(ParticipationCondition)
 					if (participationCondition !== null) {
-						val participation = participationCondition.participation
-						return participation.unqualifiedParticipationClassScope
+						return createUnqualifiedParticipationClassScope(participationCondition.participation)
 					}
 
-					val referenceMapping = context.optionalContainingOperatorReferenceMapping
+					val referenceMapping = context.getOptionalEContainer(OperatorReferenceMapping)
 					if (referenceMapping !== null) {
-						val referencedAttributeOperand = context.
-							optionalContainingReferencedParticipationAttributeOperand
-						if (referencedAttributeOperand !== null) {
-							val participation = referenceMapping.referencedParticipation
-							return participation.unqualifiedParticipationClassScope
-						}
-
-						val attributeOperand = context.optionalContainingParticipationAttributeOperand
-						if (attributeOperand !== null) {
-							val participation = referenceMapping.participation
-							return participation.unqualifiedParticipationClassScope
+						if (context.hasEContainer(ReferencedParticipationAttributeOperand)) {
+							return createUnqualifiedParticipationClassScope(referenceMapping.referencedParticipation)
+						} else if (context.hasEContainer(ParticipationAttributeOperand)) {
+							return createUnqualifiedParticipationClassScope(referenceMapping.participation)
 						}
 					// Else: Qualified participation class.
 					}
 
-					val commonality = context.containingCommonality
-					return commonality.participationClassScope
+					return createParticipationClassesScope.forCommonality(context.getEContainer(Commonality))
 				}
 			}
 			case PARTICIPATION_ATTRIBUTE__ATTRIBUTE: {
 				if (context instanceof ParticipationAttribute) {
-					val participationClass = context.participationClass
-					return participationClass.unqualifiedParticipationAttributeScope
+					return createUnqualifiedParticipationAttributeScope(context.participationClass)
 				}
 			}
 			case PARTICIPATION_CLASS__SUPER_METACLASS: {
@@ -113,16 +103,15 @@ class CommonalitiesLanguageScopeProvider extends AbstractCommonalitiesLanguageSc
 				if (context instanceof CommonalityAttributeReference) {
 					// We currently only support unqualified commonality attribute references (which omit the concept
 					// name) to the local commonality:
-					val commonality = context.containingCommonality
+					val commonality = context.getEContainer(Commonality )
 					val conceptName = commonality.concept.name
-					val commonalityScope = commonality.singleCommonalityScope
-					return conceptName.getUnqualifiedCommonalityScope(commonalityScope)
+					val commonalityScope = createSingleCommonalityScope(commonality)
+					return createUnqualifiedCommonalityScope(conceptName, commonalityScope)
 				}
 			}
 			case COMMONALITY_ATTRIBUTE_REFERENCE__ATTRIBUTE: {
 				if (context instanceof CommonalityAttributeReference) {
-					val commonality = context.commonality
-					return commonality.unqualifiedCommonalityAttributeScope
+					return createUnqualifiedCommonalityAttributeScope(context.commonality)
 				}
 			}
 			
@@ -142,13 +131,12 @@ class CommonalitiesLanguageScopeProvider extends AbstractCommonalitiesLanguageSc
 		return globalScopeProvider.getScope(context.eResource, reference, null)
 	}
 
-	private def getParticipationClassScope(Commonality commonality) {
-		return participationClassesScope.get.forCommonality(commonality)
-	}
-
-	private def getUnqualifiedParticipationClassScope(Participation participation) {
-		val commonality = participation.containingCommonality
-		val participationClassScope = commonality.participationClassScope
+	private def createUnqualifiedParticipationClassScope(Participation participation) {
+		if (participation === null) {
+			// sometimes we don’t know the target Participation yet
+			return IScope.NULLSCOPE
+		}
+		val participationClassScope = createParticipationClassesScope.forCommonality(participation.declaringCommonality)
 		val parentQualifiedName = participation.fullyQualifiedName
 		
 		return if (parentQualifiedName !== null) {
@@ -158,7 +146,7 @@ class CommonalitiesLanguageScopeProvider extends AbstractCommonalitiesLanguageSc
 		}
 	}
 
-	private def getUnqualifiedParticipationAttributeScope(ParticipationClass participationClass) {
+	private def createUnqualifiedParticipationAttributeScope(ParticipationClass participationClass) {
 		if (participationClass.eIsProxy) {
 			// This may indicate an issue with the participation class scoping, but may also be the result of an
 			// invalid/incomplete commonality file.
@@ -169,23 +157,20 @@ class CommonalitiesLanguageScopeProvider extends AbstractCommonalitiesLanguageSc
 		return new PrefixedScope(participationAttributeScope, parentQualifiedName)
 	}
 
-	private def getSingleCommonalityScope(Commonality commonality) {
-		return new SimpleScope(IScope.NULLSCOPE, Collections.singleton(
-			commonality.describe()
-		))
+	private def createSingleCommonalityScope(Commonality commonality) {
+		new SimpleScope(IScope.NULLSCOPE, List.of(commonality.describe()))
 	}
 
-	private def getUnqualifiedCommonalityScope(String conceptName, IScope qualifiedCommonalityScope) {
-		val parentQualifiedName = conceptName.qualifiedDomainName
-		return new PrefixedScope(qualifiedCommonalityScope, parentQualifiedName)
+	private def createUnqualifiedCommonalityScope(String conceptName, IScope qualifiedCommonalityScope) {
+		new PrefixedScope(qualifiedCommonalityScope, conceptName.qualifiedDomainName)
 	}
 
-	private def getUnqualifiedCommonalityAttributeScope(Commonality commonality) {
+	private def createUnqualifiedCommonalityAttributeScope(Commonality commonality) {
 		if (commonality.eIsProxy) {
 			// The commonality could not be resolved:
 			return IScope.NULLSCOPE
 		}
-		val commonalityAttributeScope = commonalityAttributesScope.get.forCommonality(commonality)
+		val commonalityAttributeScope = createCommonalityAttributesScope.forCommonality(commonality)
 		val parentQualifiedName = commonality.fullyQualifiedName
 		return new PrefixedScope(commonalityAttributeScope, parentQualifiedName)
 	}

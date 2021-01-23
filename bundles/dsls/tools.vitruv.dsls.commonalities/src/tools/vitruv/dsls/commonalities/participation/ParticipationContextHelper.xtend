@@ -63,10 +63,10 @@ class ParticipationContextHelper {
 			// container (enforced via validation)
 			// TODO support multiple resource roots
 			var current = leaf
-			var container = current.containerClass
+			var container = current.declaredContainerClass
 			while (!current.hasRootMarker && container !== null) {
 				current = container
-				container = current.containerClass
+				container = current.declaredContainerClass
 			}
 			assertTrue(current.hasRootMarker || current.forResource)
 			// The current class (and all of its transitive container classes) are

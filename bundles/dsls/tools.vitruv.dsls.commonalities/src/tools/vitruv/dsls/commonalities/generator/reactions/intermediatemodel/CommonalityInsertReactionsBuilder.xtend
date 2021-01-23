@@ -18,7 +18,6 @@ import tools.vitruv.dsls.commonalities.generator.reactions.reference.ReferenceMa
 import tools.vitruv.dsls.commonalities.generator.reactions.resource.InsertResourceBridgeRoutineBuilder
 import tools.vitruv.dsls.commonalities.generator.reactions.resource.ResourceBridgeHelper
 import tools.vitruv.dsls.commonalities.generator.util.guice.InjectingFactoryBase
-import tools.vitruv.dsls.commonalities.language.Commonality
 import tools.vitruv.dsls.commonalities.language.Participation
 import tools.vitruv.dsls.commonalities.language.ParticipationClass
 import tools.vitruv.dsls.commonalities.participation.OperatorContainment
@@ -62,7 +61,6 @@ class CommonalityInsertReactionsBuilder extends ReactionsSubGenerator {
 	@Inject extension ApplyCommonalityAttributesRoutineBuilder.Provider
 	@Inject extension AttributeReferenceMatchingReactionsBuilder.Provider
 
-	val Commonality commonality
 	val Participation targetParticipation
 
 	// Assumption: We use this reactions builder only for a single reactions segment.
@@ -71,13 +69,11 @@ class CommonalityInsertReactionsBuilder extends ReactionsSubGenerator {
 
 	private new(Participation targetParticipation) {
 		checkNotNull(targetParticipation, "targetParticipation is null")
-		this.commonality = targetParticipation.containingCommonality
 		this.targetParticipation = targetParticipation
 	}
 
 	// Dummy constructor for Guice
 	package new() {
-		this.commonality = null
 		this.targetParticipation = null
 		throw new IllegalStateException("Use the Factory to create instances of this class!")
 	}
@@ -107,7 +103,7 @@ class CommonalityInsertReactionsBuilder extends ReactionsSubGenerator {
 	private def reactionForCommonalityInsert(ParticipationContext participationContext,
 		FluentReactionsSegmentBuilder segment) {
 		val participation = participationContext.participation
-		val commonality = participation.containingCommonality
+		val commonality = participation.declaringCommonality
 
 		// Note: The intermediate might have been moved again in the meantime (due to attribute reference matching
 		// during intermediate creation), so we check the reaction's trigger condition again before execution.
@@ -153,7 +149,7 @@ class CommonalityInsertReactionsBuilder extends ReactionsSubGenerator {
 	private def createParticipationRoutine(ParticipationContext participationContext,
 		FluentReactionsSegmentBuilder segment) {
 		val participation = participationContext.participation
-		val commonality = participation.containingCommonality
+		val commonality = participation.declaringCommonality
 		val managedClasses = participationContext.managedClasses.toList
 
 		return create.routine('''createParticipation_«participation.name»«participationContext.reactionNameSuffix»''')
@@ -217,7 +213,7 @@ class CommonalityInsertReactionsBuilder extends ReactionsSubGenerator {
 		FluentReactionsSegmentBuilder segment) {
 		assertTrue(participationContext.isForSingletonRoot)
 		val participation = participationContext.participation
-		val commonality = participation.containingCommonality
+		val commonality = participation.declaringCommonality
 		val singletonClass = participation.singletonClass
 		val singletonEClass = singletonClass.changeClass
 		return create.routine('''createSingleton_«participation.name»_«singletonClass.name»''')
@@ -401,12 +397,12 @@ class CommonalityInsertReactionsBuilder extends ReactionsSubGenerator {
 
 	private def reactionForCommonalityRemove(ParticipationContext participationContext) {
 		val participation = participationContext.participation
-		val commonality = participation.containingCommonality
+		val commonality = participation.declaringCommonality
 
 		var PreconditionOrRoutineCallBuilder reaction
 		if (participationContext.forReferenceMapping) {
 			val reference = participationContext.declaringReference
-			val referencingCommonality = reference.containingCommonality
+			val referencingCommonality = reference.declaringCommonality
 			reaction = create.reaction('''«commonality.concept.name»_«commonality.name»_removedFrom«
 				referencingCommonality.name»_«reference.name»«participationContext.reactionNameSuffix»''')
 				.afterElement(commonality.changeClass).removedFrom(reference.correspondingEReference)
@@ -449,7 +445,7 @@ class CommonalityInsertReactionsBuilder extends ReactionsSubGenerator {
 		val participation = participationContext.participation
 		return matchSubParticipationsRoutines.computeIfAbsent(participation) [
 			val extension matchingReactionsBuilder = participationMatchingReactionsBuilderProvider.getFor(segment)
-			val commonality = participation.containingCommonality
+			val commonality = participation.declaringCommonality
 			// TODO We do not take the 'read' flag of reference mappings into account currently. The semantics and use
 			// cases for this flag are not clear currently. Remove it?
 			val matchingRoutines = commonality.references.flatMap[referenceParticipationContexts].filter [

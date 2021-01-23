@@ -11,11 +11,11 @@ package class OperatorAttributeMappingExtension {
 	// Can return null
 	static def getParticipationAttributeOperand(OperatorAttributeMapping mapping) {
 		// Assert: There is at most one ParticipationAttributeOperand (ensured via validation)
-		return mapping.operands.filter(ParticipationAttributeOperand).head
+		mapping.operands.filter(ParticipationAttributeOperand).head
 	}
 
 	static def getParticipationClassOperands(OperatorAttributeMapping mapping) {
-		return mapping.operands.filter(ParticipationClass)
+		mapping.operands.filter(ParticipationClass)
 	}
 
 	/**
@@ -27,7 +27,7 @@ package class OperatorAttributeMappingExtension {
 	static def getCommonOperands(OperatorAttributeMapping mapping) {
 		// Assert: Does not include any commonality attribute operand for the commonality attribute the mapping is
 		// declared for. This is ensured via validation.
-		return mapping.operands.filter [ operand |
+		mapping.operands.filter [ operand |
 			!(operand instanceof ParticipationAttributeOperand)
 		]
 	}

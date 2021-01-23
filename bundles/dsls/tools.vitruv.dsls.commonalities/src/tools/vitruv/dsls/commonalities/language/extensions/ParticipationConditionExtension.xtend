@@ -1,6 +1,7 @@
 package tools.vitruv.dsls.commonalities.language.extensions
 
 import edu.kit.ipd.sdq.activextendannotations.Utility
+import org.eclipse.xtext.common.types.JvmDeclaredType
 import tools.vitruv.dsls.commonalities.language.BidirectionalParticipationCondition
 import tools.vitruv.dsls.commonalities.language.CheckedParticipationCondition
 import tools.vitruv.dsls.commonalities.language.EnforcedParticipationCondition
@@ -8,13 +9,12 @@ import tools.vitruv.dsls.commonalities.language.Participation
 import tools.vitruv.dsls.commonalities.language.ParticipationCondition
 import tools.vitruv.dsls.commonalities.participation.Containment
 import tools.vitruv.dsls.commonalities.participation.ReferenceContainment
+import tools.vitruv.extensions.dslruntime.commonalities.operators.CommonalitiesOperatorConventions
+import tools.vitruv.extensions.dslruntime.commonalities.operators.participation.condition.ContainmentOperator
+import tools.vitruv.extensions.dslruntime.commonalities.operators.participation.condition.ParticipationConditionOperator
 
 import static extension tools.vitruv.dsls.commonalities.language.extensions.CommonalitiesLanguageElementExtension.*
 import static extension tools.vitruv.dsls.commonalities.language.extensions.OperandExtension.*
-import org.eclipse.xtext.common.types.JvmDeclaredType
-import tools.vitruv.extensions.dslruntime.commonalities.operators.participation.condition.ContainmentOperator
-import tools.vitruv.extensions.dslruntime.commonalities.operators.CommonalitiesOperatorConventions
-import tools.vitruv.extensions.dslruntime.commonalities.operators.participation.condition.ParticipationConditionOperator
 
 @Utility
 package class ParticipationConditionExtension {
@@ -28,7 +28,7 @@ package class ParticipationConditionExtension {
 	}
 
 	static def getName(ParticipationCondition condition) {
-		return condition.operator.participationConditionOperatorName
+		condition.operator.participationConditionOperatorName
 	}
 
 	// TODO support other structural operators
@@ -37,7 +37,7 @@ package class ParticipationConditionExtension {
 	}
 
 	static def Participation getParticipation(ParticipationCondition participationCondition) {
-		return participationCondition.getDirectContainer(Participation)
+		participationCondition.getDirectEContainer(Participation)
 	}
 
 	static def dispatch isEnforced(BidirectionalParticipationCondition condition) {

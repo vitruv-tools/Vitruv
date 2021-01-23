@@ -1,15 +1,15 @@
 package tools.vitruv.dsls.commonalities.language.extensions
 
 import edu.kit.ipd.sdq.activextendannotations.Utility
+import org.eclipse.xtext.common.types.JvmDeclaredType
 import tools.vitruv.dsls.commonalities.language.ParticipationRelation
 import tools.vitruv.dsls.commonalities.participation.Containment
 import tools.vitruv.dsls.commonalities.participation.ReferenceContainment
+import tools.vitruv.extensions.dslruntime.commonalities.operators.CommonalitiesOperatorConventions
+import tools.vitruv.extensions.dslruntime.commonalities.operators.participation.relation.ContainmentOperator
+import tools.vitruv.extensions.dslruntime.commonalities.operators.participation.relation.ParticipationRelationOperator
 
 import static extension tools.vitruv.dsls.commonalities.language.extensions.ParticipationPartExtension.*
-import tools.vitruv.extensions.dslruntime.commonalities.operators.participation.relation.ContainmentOperator
-import org.eclipse.xtext.common.types.JvmDeclaredType
-import tools.vitruv.extensions.dslruntime.commonalities.operators.CommonalitiesOperatorConventions
-import tools.vitruv.extensions.dslruntime.commonalities.operators.participation.relation.ParticipationRelationOperator
 
 @Utility
 package class ParticipationRelationExtension {
@@ -27,12 +27,12 @@ package class ParticipationRelationExtension {
 		if (!relation.isContainment) {
 			return emptyList()
 		}
-		val container = relation.container
+		val container = relation.declaredContainerClass
 		if (container === null) {
 			return emptyList()
 		}
 		return relation.leftParts.map [ containedPart |
-			new ReferenceContainment(container, containedPart.container, null)
+			new ReferenceContainment(container, containedPart.declaredContainerClass, null)
 		]
 	}
 

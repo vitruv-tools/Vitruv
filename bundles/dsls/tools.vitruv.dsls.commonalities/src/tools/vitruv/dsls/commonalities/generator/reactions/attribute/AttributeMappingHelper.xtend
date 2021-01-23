@@ -44,17 +44,16 @@ class AttributeMappingHelper extends ReactionsGenerationHelper {
 	 */
 
 	def getRelevantReadMappings(Participation participation) {
-		val commonality = participation.containingCommonality
-		return commonality.attributes.flatMap[it.getRelevantReadMappings(participation)]
+		participation.declaringCommonality.attributes.flatMap [it.getRelevantReadMappings(participation)]
 	}
 
 	def getRelevantReadMappings(CommonalityAttribute attribute, Participation participation) {
-		return attribute.mappings.filter[isRead && it.participation == participation]
+		attribute.mappings.filter [isRead && it.participation == participation]
 	}
 
 	def Function<ParticipationClass, XExpression> participationClassToNullableObject(
 		Map<ParticipationClass, XVariableDeclaration> participationObjectVars) {
-		return [ participationClass |
+		[ participationClass |
 			participationObjectVars.get(participationClass).featureCall
 		]
 	}
@@ -139,12 +138,11 @@ class AttributeMappingHelper extends ReactionsGenerationHelper {
 	 */
 
 	def getRelevantWriteMappings(Participation participation) {
-		val commonality = participation.containingCommonality
-		return commonality.attributes.flatMap[it.getRelevantWriteMappings(participation)]
+		participation.declaringCommonality.attributes.flatMap [it.getRelevantWriteMappings(participation)]
 	}
 
 	def getRelevantWriteMappings(CommonalityAttribute attribute, Participation participation) {
-		return attribute.mappings.filter[isWrite && it.participation == participation]
+		attribute.mappings.filter [isWrite && it.participation == participation]
 			// We ignore all mappings which don't specify a participation attribute:
 			.filter[participationAttribute !== null]
 	}

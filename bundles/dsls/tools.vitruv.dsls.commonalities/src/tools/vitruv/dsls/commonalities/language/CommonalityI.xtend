@@ -11,7 +11,7 @@ import static extension tools.vitruv.dsls.commonalities.language.extensions.Comm
 package class CommonalityI extends CommonalityImpl {
 
 	override basicGetPackageLikeContainer() {
-		domain
+		getOptionalDirectEContainer(CommonalityFile)?.concept
 	}
 
 	override getAllMembers() {
@@ -31,7 +31,7 @@ package class CommonalityI extends CommonalityImpl {
 	}
 
 	override basicGetDomain() {
-		optionalContainingCommonalityFile?.concept
+		concept
 	}
 
 	override toString() {

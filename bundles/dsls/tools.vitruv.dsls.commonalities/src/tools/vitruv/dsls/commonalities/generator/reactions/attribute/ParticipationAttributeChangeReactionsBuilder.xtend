@@ -8,7 +8,6 @@ import tools.vitruv.dsls.commonalities.generator.reactions.ReactionsSubGenerator
 import tools.vitruv.dsls.commonalities.generator.reactions.attribute.AttributeMappingOperatorHelper.AttributeMappingOperatorContext
 import tools.vitruv.dsls.commonalities.generator.reactions.participation.ParticipationObjectsRetrievalHelper
 import tools.vitruv.dsls.commonalities.generator.util.guice.InjectingFactoryBase
-import tools.vitruv.dsls.commonalities.language.Commonality
 import tools.vitruv.dsls.commonalities.language.CommonalityAttributeMapping
 import tools.vitruv.dsls.commonalities.language.Participation
 import tools.vitruv.dsls.commonalities.language.ParticipationClass
@@ -36,7 +35,6 @@ class ParticipationAttributeChangeReactionsBuilder extends ReactionsSubGenerator
 	@Inject extension ParticipationObjectsRetrievalHelper participationObjectsRetrievalHelper
 
 	val Participation participation
-	val Commonality commonality
 
 	@Lazy val List<CommonalityAttributeMapping> relevantMappings = calculateRelevantMappings()
 	@Lazy val Set<ParticipationClass> relevantParticipationClasses = calculateRelevantParticipationClasses()
@@ -44,13 +42,11 @@ class ParticipationAttributeChangeReactionsBuilder extends ReactionsSubGenerator
 	private new(Participation participation) {
 		checkNotNull(participation, "participation is null")
 		this.participation = participation
-		this.commonality = participation.containingCommonality
 	}
 
 	// Dummy constructor for Guice
 	package new() {
 		this.participation = null
-		this.commonality = null
 		throw new IllegalStateException("Use the Factory to create instances of this class!")
 	}
 

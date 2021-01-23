@@ -45,7 +45,7 @@ class InsertReferencedIntermediateRoutineBuilder extends ReactionsGenerationHelp
 	def getInsertReferencedIntermediateRoutine(CommonalityReference reference) {
 		return insertReferencedIntermediateRoutines.computeIfAbsent(reference) [
 			val referencedCommonality = reference.referenceType
-			val referencingCommonality = reference.containingCommonality
+			val referencingCommonality = reference.declaringCommonality
 			create.routine('''insertReferencedIntermediate_«reference.reactionName»''')
 				.input [
 					model(referencedCommonality.changeClass, REFERENCED_INTERMEDIATE)

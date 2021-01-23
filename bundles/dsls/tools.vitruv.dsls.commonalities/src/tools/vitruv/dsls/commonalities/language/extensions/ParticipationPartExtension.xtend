@@ -1,12 +1,25 @@
 package tools.vitruv.dsls.commonalities.language.extensions
 
 import edu.kit.ipd.sdq.activextendannotations.Utility
-import tools.vitruv.dsls.commonalities.language.ParticipationRelation
-import tools.vitruv.dsls.commonalities.language.ParticipationClass
 import java.util.List
+import tools.vitruv.dsls.commonalities.language.ParticipationClass
+import tools.vitruv.dsls.commonalities.language.ParticipationRelation
+import tools.vitruv.dsls.commonalities.language.ParticipationPart
+
+import static extension tools.vitruv.dsls.commonalities.language.extensions.CommonalitiesLanguageElementExtension.*
+import static extension tools.vitruv.dsls.commonalities.language.extensions.ParticipationExtension.*
+import tools.vitruv.dsls.commonalities.language.Participation
 
 @Utility
 package class ParticipationPartExtension {
+	static def getDeclaringParticipation(ParticipationPart participationPart) {
+		participationPart.getEContainer(Participation)
+	}
+	
+	static def getDeclaringCommonality(ParticipationPart participationPart) {
+		participationPart.declaringParticipation.declaringCommonality
+	}
+	
 	static def dispatch Iterable<ParticipationClass> getAllParticipationClasses(ParticipationClass pClass) {
 		List.of(pClass)
 	}
@@ -24,11 +37,11 @@ package class ParticipationPartExtension {
 		relation.leftParts.flatMap[allParticipationRelations] + relation.rightParts.flatMap[allParticipationRelations]
 	}
 	
-	static def dispatch ParticipationClass getContainer(ParticipationClass pClass) {
+	static def dispatch ParticipationClass getDeclaredContainerClass(ParticipationClass pClass) {
 		pClass
 	}
 
-	static def dispatch ParticipationClass getContainer(ParticipationRelation relation) {
-		relation.rightParts.head?.container
+	static def dispatch ParticipationClass getDeclaredContainerClass(ParticipationRelation relation) {
+		relation.rightParts.head?.declaredContainerClass
 	}
 }

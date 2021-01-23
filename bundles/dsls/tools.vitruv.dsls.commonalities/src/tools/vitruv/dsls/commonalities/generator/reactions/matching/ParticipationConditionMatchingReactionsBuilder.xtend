@@ -126,7 +126,7 @@ class ParticipationConditionMatchingReactionsBuilder extends ReactionsGeneration
 	private def getValidateParticipationRoutine(ParticipationContext participationContext) {
 		return validateParticipationRoutines.computeIfAbsent(participationContext) [
 			val participation = participationContext.participation
-			val commonality = participation.containingCommonality
+			val commonality = participation.declaringCommonality
 			val extension routineCallContext = new RoutineCallContext
 			create.routine('''validateParticipation«participationContext.reactionNameSuffix»''')
 				.input [

@@ -11,16 +11,16 @@ package class OperatorReferenceMappingExtension {
 	static def getReferencedParticipationAttributes(OperatorReferenceMapping mapping) {
 		return mapping.operands
 			.filter(ReferencedParticipationAttributeOperand)
-			.map[participationAttribute]
+			.map [participationAttribute]
 	}
 
 	static def getReferencedParticipationClasses(OperatorReferenceMapping mapping) {
-		return mapping.referencedParticipationAttributes.map[participationClass].toSet
+		mapping.referencedParticipationAttributes.map[participationClass].toSet
 	}
 
 	// Gets the operands that are passed to the operator via its constructor:
 	static def getPassedOperands(OperatorReferenceMapping mapping) {
 		// Does not include any attribute operands:
-		return mapping.operands.filter(LiteralOperand)
+		mapping.operands.filter(LiteralOperand)
 	}
 }

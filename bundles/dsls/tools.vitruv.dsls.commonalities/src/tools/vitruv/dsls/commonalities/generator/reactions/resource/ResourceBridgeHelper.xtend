@@ -57,7 +57,7 @@ class ResourceBridgeHelper extends ReactionsGenerationHelper {
 	 */
 	private def setupResourceBridge(ParticipationClass resourceClass, XFeatureCall resourceBridge,
 		extension TypeProvider typeProvider) {
-		val commonality = resourceClass.containingCommonality
+		val commonality = resourceClass.declaringCommonality
 		return XbaseFactory.eINSTANCE.createXBlockExpression => [
 			expressions += expressions(
 				XbaseFactory.eINSTANCE.createXAssignment => [

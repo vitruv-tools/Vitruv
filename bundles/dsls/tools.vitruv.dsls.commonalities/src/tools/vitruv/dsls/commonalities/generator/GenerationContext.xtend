@@ -161,7 +161,7 @@ class GenerationContext {
 	}
 
 	def dispatch EStructuralFeature getCorrespondingEFeature(CommonalityAttribute attribute) {
-		attribute.containingCommonality.intermediateMetamodelClass.getEStructuralFeature(attribute.name)
+		attribute.declaringCommonality.intermediateMetamodelClass.getEStructuralFeature(attribute.name)
 	}
 
 	def dispatch EStructuralFeature getCorrespondingEFeature(EFeatureAdapter adapter) {
@@ -173,7 +173,7 @@ class GenerationContext {
 	}
 
 	def dispatch EStructuralFeature getCorrespondingEFeature(CommonalityReference reference) {
-		reference.containingCommonality.intermediateMetamodelClass.getEStructuralFeature(reference.name)
+		reference.declaringCommonality.intermediateMetamodelClass.getEStructuralFeature(reference.name)
 	}
 
 	def dispatch EStructuralFeature getCorrespondingEFeature(Attribute attribute) {
