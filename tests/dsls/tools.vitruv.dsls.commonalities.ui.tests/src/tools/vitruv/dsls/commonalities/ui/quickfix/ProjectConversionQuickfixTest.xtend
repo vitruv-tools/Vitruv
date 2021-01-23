@@ -17,11 +17,15 @@ import org.junit.jupiter.api.Assertions
 import static extension tools.vitruv.dsls.common.ui.ProjectAccess.*
 import java.util.List
 import org.eclipse.pde.core.project.IBundleProjectDescription
-import tools.vitruv.dsls.commonalities.testutils.BugFixedAbstractQuickfixTest
 import org.eclipse.xtext.ui.testing.util.IResourcesSetupUtil
+import tools.vitruv.testutils.xtext.BugFixedAbstractQuickfixTest
+import org.eclipse.xtext.ui.XtextProjectHelper
+import org.eclipse.xtext.ui.editor.XtextEditor
+import org.eclipse.core.resources.IFile
+import tools.vitruv.testutils.DisableAutoBuild
 
 @DisplayName("quick fixes for project natures")
-@ExtendWith(#[InjectionExtension, TestProjectManager])
+@ExtendWith(InjectionExtension, TestProjectManager, DisableAutoBuild)
 @InjectWith(CommonalitiesLanguageUiInjectorProvider)
 class ProjectConversionQuickfixTest extends BugFixedAbstractQuickfixTest {
 	Path projectLocation
@@ -30,7 +34,7 @@ class ProjectConversionQuickfixTest extends BugFixedAbstractQuickfixTest {
 		
 		commonality Test {}
 	'''
-
+	
 	@BeforeEach
 	def void captureTestProject(@TestProject Path projectLocation) {
 		this.projectLocation = projectLocation
@@ -65,7 +69,7 @@ class ProjectConversionQuickfixTest extends BugFixedAbstractQuickfixTest {
 		val testProject = createProjectAt(projectName, projectLocation) => [
 			open(null)
 			setDescription(description => [
-				natureIds = natureIds + List.of(IBundleProjectDescription.PLUGIN_NATURE)
+				natureIds = List.of(IBundleProjectDescription.PLUGIN_NATURE, XtextProjectHelper.NATURE_ID)
 			], null)
 		]
 
@@ -111,5 +115,16 @@ class ProjectConversionQuickfixTest extends BugFixedAbstractQuickfixTest {
 
 	override getProjectName() {
 		projectLocation.fileName.toString
+	}
+	
+	override XtextEditor openInEditor(IFile dslFile) {
+		// the parent implementation waits for the build, but building the DSL
+		// file will add the Java nature (the EMF builder does that). So let’s
+		// do not build.
+		try {
+			return openEditor(dslFile);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
 	}
 }

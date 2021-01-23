@@ -1,14 +1,13 @@
 package tools.vitruv.dsls.commonalities.generator;
 
 import org.eclipse.xtext.generator.IGenerator2
-import tools.vitruv.dsls.commonalities.generator.helper.GenerationHelper
 
 /**
- * Base class for generators invoked by the
- * {@link CommonalitiesLanguageGenerator}.
+ * A generator invoked by the {@link CommonalitiesLanguageGenerator}. Unlike {@link IGenerator2},
+ * sub generators do not receive arguments through method parameters, but rather by running in
+ * the generation scope and having {@link GenerationContext} injected. 
  */
-abstract class SubGenerator extends GenerationHelper {
-
+interface SubGenerator {
 	/**
 	 * @see IGenerator2#beforeGenerate
 	 */

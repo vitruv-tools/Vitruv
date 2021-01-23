@@ -59,18 +59,17 @@ class ParticipationAttributeChangeReactionsBuilder extends ReactionsSubGenerator
 	}
 
 	private def calculateRelevantParticipationClasses() {
-		return relevantMappings.flatMap[involvedParticipationClasses].toSet
+		return relevantMappings.flatMap [involvedParticipationClasses].toSet
 	}
 
 	def void generateReactions(FluentReactionsSegmentBuilder segment) {
-		segment += relevantMappings.flatMap[reactionsForAttributeMappingRightChange]
+		segment += relevantMappings.flatMap [reactionsForAttributeMappingRightChange]
 	}
 
 	private def reactionsForAttributeMappingRightChange(CommonalityAttributeMapping mapping) {
-		val participationAttribute = mapping.participationAttribute // Can be null
-		if (participationAttribute === null) {
-			return #[]
-		}
+		val participationAttribute = mapping.participationAttribute 
+		if (participationAttribute === null) return emptyList
+		 
 		// Assert: For every participation attribute there is at most one reading attribute mapping within the same
 		// commonality attribute (ensured via validation).
 		// However, there may be multiple reading attribute mappings for the same participation attribute across
@@ -78,8 +77,8 @@ class ParticipationAttributeChangeReactionsBuilder extends ReactionsSubGenerator
 		// the generated attribute change reactions.
 		val commonalityAttribute = mapping.declaringAttribute
 		val reactionNameSuffix = commonalityAttribute.reactionNameSuffix
-		return participationAttribute.getAttributeChangeReactions(reactionNameSuffix) [ changeType , it |
-			call[buildAttributeChangedRoutine(mapping)]
+		return participationAttribute.getAttributeChangeReactions(reactionNameSuffix) [ changeType, it |
+			call [buildAttributeChangedRoutine(mapping)]
 		]
 	}
 

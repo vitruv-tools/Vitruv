@@ -3,10 +3,13 @@ package tools.vitruv.framework.domains
 import java.util.HashMap
 import org.eclipse.core.runtime.Platform
 import java.util.List
-import java.util.LinkedList
 import static com.google.common.base.Preconditions.*
 import org.reflections.Reflections
 import org.apache.log4j.Logger
+import java.lang.annotation.Target
+import java.lang.annotation.Retention
+import edu.kit.ipd.sdq.activextendannotations.Lazy
+import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
 
 /**
  * Registry of all {@linkplain VitruvDomainProvider DomainProviders} known to
@@ -14,13 +17,14 @@ import org.apache.log4j.Logger
  * extension point {@link #EXTENSION_POINT_ID}. They can, however, also be
  * registered at runtime.
  */
-class VitruvDomainProviderRegistry {
-
+final class VitruvDomainProviderRegistry {
 	static val LOGGER = Logger.getLogger(VitruvDomainProviderRegistry)
 
 	private new() {
 	}
 
+	@Lazy(value = PRIVATE, synchronizeInitialization = true) 
+	static val List<VitruvDomainProvider<?>> staticallyRegisteredProviders = readAllDomainProvidersFromPlatform()
 	static val runtimeRegisteredProviders = new HashMap<String, VitruvDomainProvider<?>>
 	public static val EXTENSION_POINT_ID = "tools.vitruv.framework.domains.provider"
 
@@ -37,7 +41,7 @@ class VitruvDomainProviderRegistry {
 		checkNotNull(domainName)
 
 		var VitruvDomainProvider<?> existingProvider = runtimeRegisteredProviders.get(domainName) ?:
-			getExtensionPointProviders(domainName).findFirst[true]
+			findStaticallyRegisteredProviders(domainName).findFirst[true]
 		checkState(existingProvider ===
 			null, '''There is already a provider registered for the domain “«domainName»”: «existingProvider»''')
 		runtimeRegisteredProviders.put(domainName, provider)
@@ -54,19 +58,18 @@ class VitruvDomainProviderRegistry {
 	 */
 	def static void unregisterDomainProvider(String domainName) {
 		if (!runtimeRegisteredProviders.containsKey(domainName)) {
-			val extensionPointProvider = getExtensionPointProviders(domainName).findFirst[true]
-			checkArgument(extensionPointProvider ===
-				null, '''The provider «extensionPointProvider» for the domain “«domainName» was registered via extension point and can thus not be unregistered!''')
+			val extensionPointProvider = findStaticallyRegisteredProviders(domainName).findFirst[true]
+			checkArgument(extensionPointProvider === null, '''The provider «extensionPointProvider» for the domain “«domainName»” was registered statically (e.g. via extension point) and can thus not be unregistered!''')
 		}
 		runtimeRegisteredProviders.remove(domainName)
 	}
 
-	def private static getExtensionPointProviders(String domainName) {
-		getAllDomainProvidersFromExtensionPoint.filter[domain.name.equals(domainName)];
+	def private static findStaticallyRegisteredProviders(String domainName) {
+		staticallyRegisteredProviders.filter[domain.name.equals(domainName)]
 	}
 
 	def static getAllDomainProviders() {
-		getAllDomainProvidersFromExtensionPoint + runtimeRegisteredProviders.values()
+		staticallyRegisteredProviders + runtimeRegisteredProviders.values()
 	}
 
 	/**
@@ -75,7 +78,8 @@ class VitruvDomainProviderRegistry {
 	 * @param domainName - the name of the domain to look for
 	 */
 	def static boolean hasDomainProvider(String domainName) {
-		return runtimeRegisteredProviders.containsKey(domainName) || getExtensionPointProviders(domainName).size > 0;
+		return runtimeRegisteredProviders.containsKey(domainName) 
+			|| findStaticallyRegisteredProviders(domainName).size > 0
 	}
 
 	/**
@@ -89,7 +93,7 @@ class VitruvDomainProviderRegistry {
 		if (runtimeRegisteredProviders.containsKey(domainName)) {
 			return runtimeRegisteredProviders.get(domainName)
 		}
-		val potentialDomainProviders = getExtensionPointProviders(domainName)
+		val potentialDomainProviders = findStaticallyRegisteredProviders(domainName)
 		if (potentialDomainProviders.size == 0) {
 			throw new IllegalStateException(
 				'''Found no provider for domain “«domainName»”!'''
@@ -107,31 +111,42 @@ class VitruvDomainProviderRegistry {
 	 * Retrieves all providers for domain from the extensions registered to the VitruvDomain
 	 * extension point.
 	 */
-	def private static Iterable<VitruvDomainProvider<?>> getAllDomainProvidersFromExtensionPoint() {
-		val List<VitruvDomainProvider<?>> domainProvider = new LinkedList<VitruvDomainProvider<?>>();
+	def private static List<VitruvDomainProvider<?>> readAllDomainProvidersFromPlatform() {
 		// If we are in an Eclipse environment, read the VitruvDomainProvider from the extension point.
 		// If we are not in an Eclipse environment, read the VitruvDomainProvider from the classpath.
 		// We cannot use the classpath in Eclipse, because a classloader can only resolve within a bundle,
 		// so we would need to know the name of the bundle to get the classloader from. In a non-Eclipse
 		// environment, the bundles are mapped into one classpath.
-		if (Platform.running) {
-			Platform.getExtensionRegistry().getConfigurationElementsFor(EXTENSION_POINT_ID).map [
-				it.createExecutableExtension("class")
-			].forEach[if (it instanceof VitruvDomainProvider<?>) domainProvider.add(it)];
+		if (Platform.isRunning) {
+			Platform.extensionRegistry.getConfigurationElementsFor(EXTENSION_POINT_ID)
+				.map [it.createExecutableExtension("class")]
+				.filter(VitruvDomainProvider as Class<?> as Class<VitruvDomainProvider<?>>)
+				.toList
 		} else {
-			val domainProviderClasses = new Reflections("tools.vitruv").getSubTypesOf(VitruvDomainProvider);
-			for (domainProviderClass : domainProviderClasses) {
-				// Ensure that domain provider has a default constructor
-				if (domainProviderClass.constructors.exists[it.parameterCount == 0]) {
-					domainProvider.add(domainProviderClass.constructor?.newInstance)
-				} else {
-					LOGGER.warn("Domain provider '" + domainProviderClass.name + "' has no default constructor and not added to domain provider registry.")
-				}
-			}
+			val providers = new Reflections("tools.vitruv")
+				.getSubTypesOf(VitruvDomainProvider as Class<?> as Class<VitruvDomainProvider<?>>)
+				.filter [!annotations.exists [it instanceof IgnoreInStandalone]]
+				.filter [
+					if (!constructors.exists [parameterCount == 0]) {
+						LOGGER.warn('''Domain provider '«name»' has no default constructor and will not be added to the domain provider registry.''')
+						false
+					} else true
+				]
+				.mapFixed [constructor.newInstance()]
+				
 			// Get the domain for each provider when we are not an Eclipse environment to register the
 			// packages of the domains appropriately, so they can be resolved
-			domainProvider.forEach[domain]
+			providers.forEach [getDomain()]
+			providers
 		}
-		return domainProvider
 	}
+	
+	/**
+	 * Annotation for domain providers that should be ignored when running in standalone mode.
+	 * This annotation has no effect when running in Eclipse, because domain providers will then
+	 * be registered via extension points, with no need to ignore types.  
+	 */
+	@Target(TYPE)
+ 	@Retention(RUNTIME)
+	annotation IgnoreInStandalone {}
 }

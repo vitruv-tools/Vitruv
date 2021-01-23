@@ -16,10 +16,13 @@ Require-Bundle: tools.vitruv.framework.vsum;visibility:=reexport,
  org.junit.platform.commons,
  org.eclipse.emf.compare,
  org.eclipse.emf.compare.rcp,
- org.junit.jupiter.params
+ org.junit.jupiter.params,
+ org.eclipse.xtext.ui.testing
 Export-Package: tools.vitruv.testutils,
  tools.vitruv.testutils.activeannotations,
+ tools.vitruv.testutils.change.processing,
  tools.vitruv.testutils.domains,
  tools.vitruv.testutils.matchers,
- tools.vitruv.testutils.printing
+ tools.vitruv.testutils.printing,
+ tools.vitruv.testutils.xtext
 Bundle-Vendor: vitruv.tools

@@ -19,34 +19,17 @@ import static tools.vitruv.dsls.commonalities.language.LanguagePackage.Literals.
 import static extension tools.vitruv.dsls.commonalities.language.extensions.CommonalitiesLanguageModelExtensions.*
 
 class CommonalitiesLanguageGlobalScopeProvider extends TypesAwareDefaultGlobalScopeProvider {
-
-	@Inject ParticipationRelationOperatorScopeProvider relationOperatorScopeProvider
-	@Inject ParticipationConditionOperatorScopeProvider conditionOperatorScopeProvider
-	@Inject AttributeMappingOperatorScopeProvider attributeMappingOperatorScopeProvider
-	@Inject ReferenceMappingOperatorScopeProvider referenceMappingOperatorScopeProvider
 	@Inject Provider<VitruvDomainMetaclassesScope> allMetaclassesScope
 	@Inject extension IEObjectDescriptionProvider descriptionProvider
 
 	override getScope(Resource resource, EReference reference, Predicate<IEObjectDescription> filter) {
-		switch (reference) {
-			case ATTRIBUTE_MAPPING_OPERATOR__JVM_TYPE:
-				attributeMappingOperatorScopeProvider.getScope(resource, reference, filter)
-			case REFERENCE_MAPPING_OPERATOR__JVM_TYPE:
-				referenceMappingOperatorScopeProvider.getScope(resource, reference, filter)
-			case PARTICIPATION_RELATION__OPERATOR:
-				relationOperatorScopeProvider.getScope(resource, reference, filter)
-			case PARTICIPATION_CONDITION__OPERATOR:
-				conditionOperatorScopeProvider.getScope(resource, reference, filter)
-			default: {
-				new ComposedScope(
-					// Note: Delegating to the default global scope provider first ensures that we get actual Concept and
-					// Commonality instances for commonality participation domains and participation classes, rather than
-					// EClassAdapters as they would get created by the VitruvDomainMetaclassesScope.
-					super.getScope(resource, reference, filter),
-					new FilteringScope(_getScope(resource, reference), filter ?: Predicates.alwaysTrue)
-				)
-			}
-		}
+		new ComposedScope(
+			// Delegating to the default global scope provider first ensures that we get actual Concept and
+			// Commonality instances for commonality participation domains and participation classes, rather than
+			// EClassAdapters as they would get created by the VitruvDomainMetaclassesScope.
+			super.getScope(resource, reference, filter),
+			new FilteringScope(_getScope(resource, reference), filter ?: Predicates.alwaysTrue)
+		)
 	}
 
 	private def _getScope(Resource resource, EReference reference) {

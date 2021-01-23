@@ -240,7 +240,7 @@ package class MatchParticipationRoutineBuilder extends ReactionsGenerationHelper
 				val operatorMapping = containment.mapping
 				val operatorContext = new ReferenceMappingOperatorContext(typeProvider)
 				val operatorInstance = operatorMapping.constructOperator(operatorContext)
-				if (operatorMapping.operator.isAttributeReference) {
+				if (operatorMapping.isAttributeReference) {
 					containmentContextBuilder.addAttributeReferenceEdge(contained.name, operatorInstance)
 				} else {
 					containmentContextBuilder.addOperatorEdge(container.name, contained.name, operatorInstance)

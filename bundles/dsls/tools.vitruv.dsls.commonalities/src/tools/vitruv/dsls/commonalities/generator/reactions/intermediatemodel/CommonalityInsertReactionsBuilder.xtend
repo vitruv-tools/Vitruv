@@ -51,16 +51,16 @@ class CommonalityInsertReactionsBuilder extends ReactionsSubGenerator {
 		}
 	}
 
-	@Inject extension ResourceBridgeHelper resourceBridgeHelper
-	@Inject extension ContainmentHelper containmentHelper
-	@Inject extension ParticipationObjectInitializationHelper participationObjectInitializationHelper
-	@Inject extension ReferenceMappingOperatorHelper referenceMappingOperatorHelper
-	@Inject extension IntermediateContainmentReactionsHelper intermediateContainmentReactionsHelper
-	@Inject extension InsertResourceBridgeRoutineBuilder.Provider insertResourceBridgeRoutineBuilderProvider
+	@Inject extension ResourceBridgeHelper
+	@Inject extension ContainmentHelper
+	@Inject extension ParticipationObjectInitializationHelper
+	@Inject extension ReferenceMappingOperatorHelper
+	@Inject extension IntermediateContainmentReactionsHelper
+	@Inject extension InsertResourceBridgeRoutineBuilder.Provider
 	@Inject ParticipationMatchingReactionsBuilder.Provider participationMatchingReactionsBuilderProvider
-	@Inject extension InsertIntermediateRoutineBuilder.Provider insertIntermediateRoutineBuilderProvider
-	@Inject extension ApplyCommonalityAttributesRoutineBuilder.Provider applyCommonalityAttributesRoutineBuilderProvider
-	@Inject extension AttributeReferenceMatchingReactionsBuilder.Provider attributeReferenceMatchingReactionsBuilderProvider
+	@Inject extension InsertIntermediateRoutineBuilder.Provider
+	@Inject extension ApplyCommonalityAttributesRoutineBuilder.Provider
+	@Inject extension AttributeReferenceMatchingReactionsBuilder.Provider
 
 	val Commonality commonality
 	val Participation targetParticipation

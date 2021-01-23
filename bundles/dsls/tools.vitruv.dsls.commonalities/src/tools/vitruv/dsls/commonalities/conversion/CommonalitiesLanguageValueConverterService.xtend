@@ -12,24 +12,40 @@ class CommonalitiesLanguageValueConverterService extends XbaseValueConverterServ
 
 	@Inject KeywordAlternativeConverter validIDConverter
 	@Inject QualifiedClassValueConverter qualifiedClassValueConverter
+	@Inject OperatorNameConverter operatorNameConverter
 
 	@ValueConverter(rule = "DomainName")
 	def IValueConverter<String> getDomainNameConverter() {
-		return validIDConverter
+		validIDConverter
 	}
 
 	@ValueConverter(rule = "UnqualifiedClass")
 	def IValueConverter<String> getUnqualifiedClassConverter() {
-		return validIDConverter
+		validIDConverter
 	}
 
 	@ValueConverter(rule = "QualifiedClass")
 	def IValueConverter<String> getQualifiedClassConverter() {
-		return qualifiedClassValueConverter
+		qualifiedClassValueConverter
 	}
 
 	@ValueConverter(rule = "UnqualifiedAttribute")
 	def IValueConverter<String> getUnqualifiedAttributeConverter() {
-		return validIDConverter
+		validIDConverter
+	}
+	
+	@ValueConverter(rule = "OperatorName")
+	def IValueConverter<String> getOperatorNameConverter() {
+		operatorNameConverter
+	}
+	
+	@ValueConverter(rule = "QualifiedOperatorName")
+	def IValueConverter<String> getQualifierOperatorNameConverter() {
+		operatorNameConverter
+	}
+	
+	@ValueConverter(rule = "QualifiedOperatorWildCard")
+	def IValueConverter<String> getQualifierOperatorWilCardConverter() {
+		operatorNameConverter
 	}
 }

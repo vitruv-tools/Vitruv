@@ -240,7 +240,7 @@ class ParticipationMatchingReactionsBuilder extends ReactionsGenerationHelper {
 				segment += participationContext.reactionForParticipationClassRemove(containment)
 			} else if (containment instanceof OperatorContainment) {
 				val operatorMapping = containment.mapping
-				if (operatorMapping.operator.isAttributeReference) {
+				if (operatorMapping.isAttributeReference) {
 					throw new IllegalStateException('''Not expecting attribute reference containments for «
 						»non-attribute-reference participation context''')
 				} else {

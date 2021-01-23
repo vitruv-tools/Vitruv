@@ -6,8 +6,13 @@ import org.eclipse.emf.ecore.EClass
 import org.eclipse.emf.ecore.EReference
 import tools.vitruv.dsls.commonalities.participation.ReferenceContainment
 import tools.vitruv.extensions.dslruntime.commonalities.operators.participation.relation.ContainmentOperator
+import tools.vitruv.dsls.commonalities.generator.util.guice.GenerationScoped
+import javax.inject.Inject
+import tools.vitruv.dsls.commonalities.generator.GenerationContext
 
-class ContainmentHelper extends GenerationHelper {
+@GenerationScoped
+class ContainmentHelper {
+	@Inject protected extension GenerationContext
 
 	package new() {
 	}

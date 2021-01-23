@@ -34,6 +34,10 @@ class CommonalitiesLanguageScopeProvider extends AbstractCommonalitiesLanguageSc
 	@Inject Provider<ParticipationClassesScope> participationClassesScope
 	@Inject Provider<ParticipationAttributesScope> participationAttributesScope
 	@Inject Provider<CommonalityAttributesScope> commonalityAttributesScope
+	@Inject ParticipationRelationOperatorScopeProvider relationOperatorScopeProvider
+	@Inject ParticipationConditionOperatorScopeProvider conditionOperatorScopeProvider
+	@Inject AttributeMappingOperatorScopeProvider attributeMappingOperatorScopeProvider
+	@Inject ReferenceMappingOperatorScopeProvider referenceMappingOperatorScopeProvider
 	@Inject IGlobalScopeProvider globalScopeProvider
 	@Inject extension IQualifiedNameProvider qualifiedNameProvider
 	@Inject extension IEObjectDescriptionProvider descriptionProvider
@@ -121,7 +125,20 @@ class CommonalitiesLanguageScopeProvider extends AbstractCommonalitiesLanguageSc
 					return commonality.unqualifiedCommonalityAttributeScope
 				}
 			}
+			
+			case OPERATOR_ATTRIBUTE_MAPPING__OPERATOR:
+				return attributeMappingOperatorScopeProvider.getScope(context, reference)
+				
+			case OPERATOR_REFERENCE_MAPPING__OPERATOR:
+				return referenceMappingOperatorScopeProvider.getScope(context, reference)
+				
+			case PARTICIPATION_RELATION__OPERATOR:
+				return relationOperatorScopeProvider.getScope(context, reference)
+				
+			case PARTICIPATION_CONDITION__OPERATOR:
+				return conditionOperatorScopeProvider.getScope(context, reference)
 		}
+		
 		return globalScopeProvider.getScope(context.eResource, reference, null)
 	}
 
@@ -133,7 +150,12 @@ class CommonalitiesLanguageScopeProvider extends AbstractCommonalitiesLanguageSc
 		val commonality = participation.containingCommonality
 		val participationClassScope = commonality.participationClassScope
 		val parentQualifiedName = participation.fullyQualifiedName
-		return new PrefixedScope(participationClassScope, parentQualifiedName)
+		
+		return if (parentQualifiedName !== null) {
+			new PrefixedScope(participationClassScope, parentQualifiedName)
+		} else {
+			participationClassScope
+		}
 	}
 
 	private def getUnqualifiedParticipationAttributeScope(ParticipationClass participationClass) {

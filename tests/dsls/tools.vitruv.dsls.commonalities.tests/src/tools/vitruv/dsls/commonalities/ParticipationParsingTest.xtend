@@ -9,7 +9,7 @@ import tools.vitruv.dsls.commonalities.tests.CommonalitiesLanguageInjectorProvid
 import org.junit.jupiter.api.Test
 import static org.hamcrest.MatcherAssert.assertThat
 import static tools.vitruv.testutils.matchers.ModelMatchers.equalsDeeply
-import static tools.vitruv.dsls.commonalities.testutils.CommonalitiesLanguageCreators.commonalities
+import static tools.vitruv.dsls.commonalities.tests.util.CommonalitiesLanguageCreators.commonalities
 import static tools.vitruv.testutils.matchers.ModelMatchers.ignoringFeatures
 import static tools.vitruv.dsls.commonalities.language.LanguagePackage.Literals.*
 import static java.lang.System.lineSeparator

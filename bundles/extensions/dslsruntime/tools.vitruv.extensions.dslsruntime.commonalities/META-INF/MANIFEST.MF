@@ -12,17 +12,19 @@ Bundle-ActivationPolicy: lazy
 Require-Bundle: tools.vitruv.framework.domains;visibility:=reexport,
  edu.kit.ipd.sdq.activextendannotations,
  tools.vitruv.extensions.dslsruntime.reactions;visibility:=reexport,
- org.eclipse.emf.ecore.xmi
+ org.eclipse.emf.ecore.xmi,
+ tools.vitruv.extensions.dslsruntime.commonalities.operators;visibility:=reexport
 Export-Package: tools.vitruv.extensions.dslruntime.commonalities,
  tools.vitruv.extensions.dslruntime.commonalities.helper,
  tools.vitruv.extensions.dslruntime.commonalities.intermediatemodelbase,
  tools.vitruv.extensions.dslruntime.commonalities.intermediatemodelbase.impl,
  tools.vitruv.extensions.dslruntime.commonalities.marker,
  tools.vitruv.extensions.dslruntime.commonalities.matching,
- tools.vitruv.extensions.dslruntime.commonalities.operators,
  tools.vitruv.extensions.dslruntime.commonalities.operators.mapping.attribute,
  tools.vitruv.extensions.dslruntime.commonalities.operators.mapping.reference,
  tools.vitruv.extensions.dslruntime.commonalities.operators.participation.condition,
+ tools.vitruv.extensions.dslruntime.commonalities.operators.participation.condition.cl_operators__,
  tools.vitruv.extensions.dslruntime.commonalities.operators.participation.relation,
+ tools.vitruv.extensions.dslruntime.commonalities.operators.participation.relation.cl_operators__,
  tools.vitruv.extensions.dslruntime.commonalities.resources,
  tools.vitruv.extensions.dslruntime.commonalities.resources.impl

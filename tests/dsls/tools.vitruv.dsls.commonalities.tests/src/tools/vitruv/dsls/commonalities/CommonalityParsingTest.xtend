@@ -9,7 +9,7 @@ import org.eclipse.xtext.testing.extensions.InjectionExtension
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.DisplayName
 import static tools.vitruv.testutils.matchers.ModelMatchers.equalsDeeply
-import static tools.vitruv.dsls.commonalities.testutils.CommonalitiesLanguageCreators.commonalities
+import static tools.vitruv.dsls.commonalities.tests.util.CommonalitiesLanguageCreators.commonalities
 import tools.vitruv.dsls.commonalities.tests.CommonalitiesLanguageInjectorProvider
 
 @ExtendWith(InjectionExtension)

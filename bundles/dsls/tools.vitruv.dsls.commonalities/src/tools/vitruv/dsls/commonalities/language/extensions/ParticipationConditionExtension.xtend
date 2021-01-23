@@ -11,13 +11,30 @@ import tools.vitruv.dsls.commonalities.participation.ReferenceContainment
 
 import static extension tools.vitruv.dsls.commonalities.language.extensions.CommonalitiesLanguageElementExtension.*
 import static extension tools.vitruv.dsls.commonalities.language.extensions.OperandExtension.*
-import static extension tools.vitruv.dsls.commonalities.util.JvmAnnotationHelper.*
-import tools.vitruv.extensions.dslruntime.commonalities.operators.participation.condition.ParticipationConditionOperator
 import org.eclipse.xtext.common.types.JvmDeclaredType
 import tools.vitruv.extensions.dslruntime.commonalities.operators.participation.condition.ContainmentOperator
+import tools.vitruv.extensions.dslruntime.commonalities.operators.CommonalitiesOperatorConventions
+import tools.vitruv.extensions.dslruntime.commonalities.operators.participation.condition.ParticipationConditionOperator
 
 @Utility
 package class ParticipationConditionExtension {
+	static val containmentOperatorTypeQualifiedName = CommonalitiesOperatorConventions.toOperatorTypeQualifiedName(
+		ContainmentOperator.packageName,
+		ContainmentOperator.annotations.filter(ParticipationConditionOperator).head.name 
+	)
+
+	static def getParticipationConditionOperatorName(JvmDeclaredType operatorType) {
+		CommonalitiesOperatorConventions.toOperatorLanguageName(operatorType.simpleName)
+	}
+
+	static def getName(ParticipationCondition condition) {
+		return condition.operator.participationConditionOperatorName
+	}
+
+	// TODO support other structural operators
+	static def isContainment(ParticipationCondition condition) {
+		condition.operator.qualifiedName == containmentOperatorTypeQualifiedName
+	}
 
 	static def Participation getParticipation(ParticipationCondition participationCondition) {
 		return participationCondition.getDirectContainer(Participation)
@@ -58,24 +75,5 @@ package class ParticipationConditionExtension {
 		}
 		val contained = condition.leftOperand.participationClass
 		return new ReferenceContainment(container, contained, containerOperand.participationAttribute)
-	}
-	
-	private static def getParticipationConditionOperatorAnnotation(JvmDeclaredType operatorType) {
-		return operatorType.annotations
-			.filter[annotation.qualifiedName == ParticipationConditionOperator.name]
-			.head
-	}
-
-	static def getParticipationConditionOperatorName(JvmDeclaredType operatorType) {
-		operatorType.participationConditionOperatorAnnotation?.getStringAnnotationValue('name')
-	}
-
-	static def getOperatorName(ParticipationCondition condition) {
-		condition.operator.participationConditionOperatorName
-	}
-
-	// TODO support other structural operators
-	static def isContainment(ParticipationCondition condition) {
-		return condition.operator.qualifiedName == ContainmentOperator.name
 	}
 }

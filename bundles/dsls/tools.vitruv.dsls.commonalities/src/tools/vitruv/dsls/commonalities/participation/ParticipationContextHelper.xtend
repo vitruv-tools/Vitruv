@@ -123,7 +123,7 @@ class ParticipationContextHelper {
 			if (mappings.size == 1) {
 				val mapping = mappings.head
 				if (mapping instanceof OperatorReferenceMapping) {
-					if (mapping.operator.isAttributeReference) {
+					if (mapping.isAttributeReference) {
 						return mapping.attributeReferenceParticipationRoot
 					}
 				}
@@ -140,7 +140,7 @@ class ParticipationContextHelper {
 
 	// TODO Support the combination of multiple attribute reference mappings.
 	private static def getAttributeReferenceParticipationRoot(OperatorReferenceMapping mapping) {
-		assertTrue(mapping.operator.isAttributeReference)
+		assertTrue(mapping.isAttributeReference)
 		val referenceParticipationRoot = new ParticipationRoot
 		referenceParticipationRoot.referenceMappings += mapping
 

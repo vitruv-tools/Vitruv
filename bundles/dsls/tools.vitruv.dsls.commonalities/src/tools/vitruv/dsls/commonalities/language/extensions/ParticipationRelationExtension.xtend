@@ -8,13 +8,19 @@ import tools.vitruv.dsls.commonalities.participation.ReferenceContainment
 import static extension tools.vitruv.dsls.commonalities.language.extensions.ParticipationPartExtension.*
 import tools.vitruv.extensions.dslruntime.commonalities.operators.participation.relation.ContainmentOperator
 import org.eclipse.xtext.common.types.JvmDeclaredType
+import tools.vitruv.extensions.dslruntime.commonalities.operators.CommonalitiesOperatorConventions
 import tools.vitruv.extensions.dslruntime.commonalities.operators.participation.relation.ParticipationRelationOperator
-import static extension tools.vitruv.dsls.commonalities.util.JvmAnnotationHelper.*
 
 @Utility
 package class ParticipationRelationExtension {
+	static val containmentOperatorTypeQualifiedName = CommonalitiesOperatorConventions.toOperatorTypeQualifiedName(
+		ContainmentOperator.packageName,
+		ContainmentOperator.annotations.filter(ParticipationRelationOperator).head.name 
+	)
+	
+	// TODO support other structural operators
 	static def isContainment(ParticipationRelation relation) {
-		relation.operator.qualifiedName == ContainmentOperator.name
+		relation.operator.qualifiedName == containmentOperatorTypeQualifiedName
 	}
 
 	static def Iterable<Containment> getContainments(ParticipationRelation relation) {
@@ -30,12 +36,8 @@ package class ParticipationRelationExtension {
 		]
 	}
 
-	private static def getParticipationRelationOperatorAnnotation(JvmDeclaredType operatorType) {
-		return operatorType.annotations.filter[annotation.qualifiedName == ParticipationRelationOperator.name].head
-	}
-	
 	static def getParticipationRelationOperatorName(JvmDeclaredType operatorType) {
-		return operatorType.participationRelationOperatorAnnotation?.getStringAnnotationValue('name')
+		CommonalitiesOperatorConventions.toOperatorLanguageName(operatorType.simpleName)
 	}
 
 	static def getOperatorName(ParticipationRelation relation) {

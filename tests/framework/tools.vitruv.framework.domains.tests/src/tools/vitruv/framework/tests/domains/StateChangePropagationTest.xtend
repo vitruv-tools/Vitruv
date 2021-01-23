@@ -27,8 +27,9 @@ import static org.junit.jupiter.api.Assertions.*
 import static tools.vitruv.testutils.metamodels.PcmMockupCreators.pcm
 import static tools.vitruv.testutils.metamodels.UmlMockupCreators.uml
 import tools.vitruv.testutils.TestProjectManager
+import tools.vitruv.testutils.RegisterMetamodelsInStandalone
 
-@ExtendWith(TestProjectManager, TestLogging)
+@ExtendWith(TestProjectManager, TestLogging, RegisterMetamodelsInStandalone)
 abstract class StateChangePropagationTest {
 	protected static final String PCM_FILE_EXT = "pcm_mockup"
 	protected static final String UML_FILE_EXT = "uml_mockup"
