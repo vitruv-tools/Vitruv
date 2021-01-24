@@ -15,7 +15,6 @@ import org.eclipse.emf.compare.ReferenceChange
 import org.eclipse.emf.compare.diff.DefaultDiffEngine
 import org.eclipse.emf.compare.diff.DiffBuilder
 import org.eclipse.emf.compare.diff.FeatureFilter
-import org.eclipse.emf.compare.match.impl.MatchEngineFactoryImpl
 import org.eclipse.emf.compare.rcp.EMFCompareRCPPlugin
 import org.eclipse.emf.compare.scope.DefaultComparisonScope
 import org.eclipse.emf.compare.utils.UseIdentifiers
@@ -52,19 +51,35 @@ import tools.vitruv.testutils.printing.DefaultPrintIdProvider
 import tools.vitruv.testutils.printing.PrintIdProvider
 import org.eclipse.emf.ecore.EReference
 import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
-
+import org.eclipse.emf.compare.match.eobject.EqualityHelperExtensionProviderDescriptorRegistryImpl
+import tools.vitruv.testutils.matchers.ModelDeepEqualityOption.EqualityFeatureFilter
+import tools.vitruv.testutils.matchers.ModelDeepEqualityOption.EqualityStrategy
+import org.eclipse.emf.compare.match.eobject.EqualityHelperExtensionProvider
+import org.eclipse.emf.compare.utils.IEqualityHelper
+import static extension tools.vitruv.testutils.matchers.MatcherUtil.joinSemantic
+import org.eclipse.emf.compare.match.IMatchEngine
+import org.eclipse.emf.compare.scope.IComparisonScope
+import org.eclipse.xtend.lib.annotations.Accessors
+import org.eclipse.emf.compare.match.DefaultMatchEngine
+import org.eclipse.emf.compare.match.eobject.WeightProviderDescriptorRegistryImpl
+import org.eclipse.emf.compare.match.DefaultComparisonFactory
+import org.eclipse.emf.compare.match.DefaultEqualityHelperFactory
+import org.eclipse.emf.compare.utils.EqualityHelper
+import org.eclipse.emf.compare.match.resource.StrategyResourceMatcher
 
 package class ModelDeepEqualityMatcher extends TypeSafeMatcher<EObject> {
 	val EObject expectedObject
 	val List<? extends EqualityFeatureFilter> featureFilters
+	val List<? extends EqualityStrategy> equalityStrategies 
 	val idProvider = new ComparisonAwarePrintIdProvider
 	val ModelPrinter descriptionPrinter
 	val FeatureFilter emfCompareFeatureFilter
 	var Comparison comparison
 
-	package new(EObject expectedEObject, List<? extends EqualityFeatureFilter> featureFilters) {
+	package new(EObject expectedEObject, List<? extends ModelDeepEqualityOption> options) {
 		this.expectedObject = expectedEObject
-		this.featureFilters = featureFilters
+		this.featureFilters = options.filter(EqualityFeatureFilter).toList
+		this.equalityStrategies = options.filter(EqualityStrategy).toList
 		descriptionPrinter = new IgnoredFeaturesPrinter(featureFilters)
 		emfCompareFeatureFilter = if (featureFilters.isEmpty)
 			new FeatureFilter()
@@ -76,7 +91,7 @@ package class ModelDeepEqualityMatcher extends TypeSafeMatcher<EObject> {
 		comparison = buildEmfCompare(item).compare(new DefaultComparisonScope(item, expectedObject, null))
 		return comparison.differences.isEmpty
 	}
-
+	
 	override describeTo(Description description) {
 		describeTo(ModelPrinting.prepend(descriptionPrinter), description)
 	}
@@ -97,15 +112,17 @@ package class ModelDeepEqualityMatcher extends TypeSafeMatcher<EObject> {
 
 		val previouslyPrinted = idProvider.alreadyPrinted
 		idProvider.alreadyPrinted = new HashSet()
-		new ComparisonPrinter(idProvider, comparison, emfCompareFeatureFilter, ModelPrinting.printer) //
-		.printDifferenceRecursively(new HamcrestDescriptionPrintTarget(mismatchDescription), expectedObject)
+		new ComparisonPrinter(idProvider, comparison, emfCompareFeatureFilter, ModelPrinting.printer)
+			.printDifferenceRecursively(new HamcrestDescriptionPrintTarget(mismatchDescription), expectedObject)
 
 		idProvider.alreadyPrinted = previouslyPrinted
 		idProvider.comparison = comparison
 		mismatchDescription.appendText('    for object ').appendModelValue(item, idProvider)
-		if (!featureFilters.isEmpty) {
-			mismatchDescription.appendText(System.lineSeparator).appendText(System.lineSeparator) //
-			.appendText('    (the comparison ').appendText(featureFilters.join('; ')[describe()]).appendText(')')
+		if (!featureFilters.isEmpty || !equalityStrategies.isEmpty) {
+			mismatchDescription.appendText(System.lineSeparator).appendText(System.lineSeparator)
+				.appendText('    (the comparison ')
+				.appendText((featureFilters  + equalityStrategies).joinSemantic('and', ';')[target, it | describeTo(target)])
+				.appendText(')')
 		}
 	}
 
@@ -114,9 +131,15 @@ package class ModelDeepEqualityMatcher extends TypeSafeMatcher<EObject> {
 			matchEngineFactoryRegistry = appropriateMatchEngineFactoryRegistry => [
 				// identifiers are often wrong or irrelevant in tests. Content-based matching yield better results
 				// in these cases.
-				add(new MatchEngineFactoryImpl(UseIdentifiers.NEVER) => [
-					ranking = MAX_VALUE
-				])
+				add(new ParametersAwareMatcheEngineFactory(
+					UseIdentifiers.NEVER,
+					appropriateEqualityHelperExtensionProviderDescriptorRegistry => [
+						var strategyCounter = 1
+						for (equalityStrategy : equalityStrategies) {
+							put("Strategy#" + strategyCounter++, new EqualityStrategyDescriptor(equalityStrategy))
+						}
+					]
+				))
 			]
 			diffEngine = new DefaultDiffEngine(new DiffBuilder) {
 				override createFeatureFilter() { emfCompareFeatureFilter }
@@ -144,6 +167,13 @@ package class ModelDeepEqualityMatcher extends TypeSafeMatcher<EObject> {
 			EMFCompareRCPPlugin.^default.postProcessorRegistry
 		else
 			new PostProcessorDescriptorRegistryImpl
+	}
+	
+	private def getAppropriateEqualityHelperExtensionProviderDescriptorRegistry() {
+		if (Platform.isRunning)
+			EMFCompareRCPPlugin.^default.equalityHelperExtensionProviderRegistry
+		else 
+			EqualityHelperExtensionProviderDescriptorRegistryImpl.createStandaloneInstance()
 	}
 
 	@FinalFieldsConstructor
@@ -392,8 +422,9 @@ package class ModelDeepEqualityMatcher extends TypeSafeMatcher<EObject> {
 		) {
 			if (featureFilters.exists[!includeFeature(object, feature)]) {
 				print(feature.name) + print('=…')
-			} else
+			} else {
 				NOT_RESPONSIBLE
+			}
 		}
 	}
 
@@ -493,7 +524,61 @@ package class ModelDeepEqualityMatcher extends TypeSafeMatcher<EObject> {
 			}
 		}
 	}
-
+	
+	
+	@FinalFieldsConstructor
+	private static class EqualityStrategyDescriptor 
+		implements EqualityHelperExtensionProvider.Descriptor, EqualityHelperExtensionProvider {
+		val EqualityStrategy strategy
+		
+		override getEqualityHelperExtensionProvider() {
+			this
+		}
+		
+		override getNsURI() {
+			Pattern.compile(strategy.targetNsUris.join('|') [Pattern.quote(it)])
+		}
+		
+		override getRanking() {
+			MAX_VALUE
+		}
+		
+		override matchingEObjects(EObject object1, EObject object2, IEqualityHelper equalityHelper) {
+			strategy.compare(object1, object2, equalityHelper)
+		}
+	}
+	
+	@FinalFieldsConstructor
+	private static class ParametersAwareMatcheEngineFactory implements IMatchEngine.Factory {
+		val UseIdentifiers useIdentifiers
+		val EqualityHelperExtensionProvider.Descriptor.Registry equalityHelperExtensionProviderDescriptorRegistry
+		@Accessors
+		var int ranking = MAX_VALUE
+		
+		override getMatchEngine() {
+			val comparisonFactory = new DefaultComparisonFactory(
+				new DefaultEqualityHelperFactory() {
+					override createEqualityHelper() {
+						new EqualityHelper(
+							EqualityHelper.createDefaultCache(cacheBuilder),
+							equalityHelperExtensionProviderDescriptorRegistry
+						)
+					}
+				}
+			)
+			val eObjectMatcher = DefaultMatchEngine.createDefaultEObjectMatcher(
+				useIdentifiers,
+				WeightProviderDescriptorRegistryImpl.createStandaloneInstance(),
+				equalityHelperExtensionProviderDescriptorRegistry
+			)
+			return new DefaultMatchEngine(eObjectMatcher, new StrategyResourceMatcher, comparisonFactory)
+		}
+		
+		override isMatchEngineFactoryFor(IComparisonScope scope) {
+			true
+		}
+	}
+	
 	/**
 	 * An iterator for the whole match hierarchy under and including {@code match}, in bottom-up order.
 	 */

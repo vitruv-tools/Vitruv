@@ -7,9 +7,10 @@ import org.eclipse.emf.ecore.EStructuralFeature
 import org.eclipse.emf.ecore.EClassifier
 import static extension tools.vitruv.testutils.matchers.MatcherUtil.*
 import org.eclipse.emf.ecore.EObject
+import tools.vitruv.testutils.matchers.ModelDeepEqualityOption.EqualityFeatureFilter
 
 @FinalFieldsConstructor
-package class IgnoreFeatures implements EqualityFeatureFilter {
+package class IgnoreFeatures extends EqualityFeatureFilter {
 	val Set<EStructuralFeature> features
 
 	override includeFeature(EObject object, EStructuralFeature feature) {
@@ -23,7 +24,7 @@ package class IgnoreFeatures implements EqualityFeatureFilter {
 }
 
 @FinalFieldsConstructor
-package class IncludeOnlyFeatures implements EqualityFeatureFilter {
+package class IncludeOnlyFeatures extends EqualityFeatureFilter {
 	val Set<EStructuralFeature> features
 
 	override includeFeature(EObject object, EStructuralFeature feature) {
@@ -37,7 +38,7 @@ package class IncludeOnlyFeatures implements EqualityFeatureFilter {
 }
 
 @FinalFieldsConstructor
-package class IgnoreNamedFeatures implements EqualityFeatureFilter {
+package class IgnoreNamedFeatures extends EqualityFeatureFilter {
 	val Set<String> featureNames
 
 	override includeFeature(EObject object, EStructuralFeature feature) {
@@ -51,7 +52,7 @@ package class IgnoreNamedFeatures implements EqualityFeatureFilter {
 }
 
 @FinalFieldsConstructor
-package class IgnoreAllExceptNamedFeatures implements EqualityFeatureFilter {
+package class IgnoreAllExceptNamedFeatures extends EqualityFeatureFilter {
 	val Set<String> featureNames
 
 	override includeFeature(EObject object, EStructuralFeature feature) {
@@ -65,7 +66,7 @@ package class IgnoreAllExceptNamedFeatures implements EqualityFeatureFilter {
 }
 
 @FinalFieldsConstructor
-package class IgnoreTypedFeatures implements EqualityFeatureFilter {
+package class IgnoreTypedFeatures extends EqualityFeatureFilter {
 	val Set<EClassifier> featureTypes
 
 	override includeFeature(EObject object, EStructuralFeature feature) {
@@ -79,7 +80,7 @@ package class IgnoreTypedFeatures implements EqualityFeatureFilter {
 }
 
 @FinalFieldsConstructor
-package class IgnoreAllExceptTypedFeatures implements EqualityFeatureFilter {
+package class IgnoreAllExceptTypedFeatures extends EqualityFeatureFilter {
 	val Set<EClassifier> featureTypes
 
 	override includeFeature(EObject object, EStructuralFeature feature) {
@@ -93,7 +94,7 @@ package class IgnoreAllExceptTypedFeatures implements EqualityFeatureFilter {
 }
 
 @FinalFieldsConstructor
-package class TypeIncludingFeatureFilter implements EqualityFeatureFilter {
+package class TypeIncludingFeatureFilter extends EqualityFeatureFilter {
 	val Set<Class<? extends EObject>> filteredTypes
 	val EqualityFeatureFilter filter
 
@@ -108,7 +109,7 @@ package class TypeIncludingFeatureFilter implements EqualityFeatureFilter {
 }
 
 @FinalFieldsConstructor
-package class TypeExcludingFeatureFilter implements EqualityFeatureFilter {
+package class TypeExcludingFeatureFilter extends EqualityFeatureFilter {
 	val Set<Class<? extends EObject>> filteredTypes
 	val EqualityFeatureFilter filter
 
@@ -122,7 +123,7 @@ package class TypeExcludingFeatureFilter implements EqualityFeatureFilter {
 	}
 }
 
-package class IgnoreUnsetFeaturesFilter implements EqualityFeatureFilter {
+package class IgnoreUnsetFeaturesFilter extends EqualityFeatureFilter {
 	override includeFeature(EObject object, EStructuralFeature feature) {
 		object.eIsSet(feature)
 	}

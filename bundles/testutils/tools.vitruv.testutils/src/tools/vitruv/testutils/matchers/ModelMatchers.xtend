@@ -9,11 +9,14 @@ import org.eclipse.emf.ecore.resource.Resource
 import org.hamcrest.Matcher
 import static com.google.common.base.Preconditions.checkArgument
 import java.util.Set
+import tools.vitruv.testutils.matchers.ModelDeepEqualityOption.EqualityFeatureFilter
+import org.eclipse.emf.ecore.EClass
+import tools.vitruv.testutils.matchers.ModelDeepEqualityOption.EqualityStrategy
 
 @Utility
 class ModelMatchers {
-	def static Matcher<? super Resource> containsModelOf(Resource expected, EqualityFeatureFilter... featureFilters) {
-		contains(checkResourceContent(expected), featureFilters)
+	def static Matcher<? super Resource> containsModelOf(Resource expected, ModelDeepEqualityOption... options) {
+		contains(checkResourceContent(expected), options)
 	}
 
 	def private static EObject checkResourceContent(Resource resource) {
@@ -28,8 +31,8 @@ class ModelMatchers {
 		resource.contents.get(0)
 	}
 
-	def static Matcher<? super Resource> contains(EObject root, EqualityFeatureFilter... featureFilters) {
-		contains(equalsDeeply(root, featureFilters))
+	def static Matcher<? super Resource> contains(EObject root, ModelDeepEqualityOption... options) {
+		contains(equalsDeeply(root, options))
 	}
 
 	def static Matcher<? super Resource> contains(Matcher<? super EObject> rootMatcher) {
@@ -56,8 +59,11 @@ class ModelMatchers {
 		new EObjectResourceMatcher(resource)
 	}
 
-	def static Matcher<? super EObject> equalsDeeply(EObject object, EqualityFeatureFilter... featureMatchers) {
-		new ModelDeepEqualityMatcher(object, featureMatchers)
+	/**
+	 * A highly configurable matcher for comparing EObjects with detailed difference printing.
+	 */
+	def static Matcher<? super EObject> equalsDeeply(EObject object, ModelDeepEqualityOption... options) {
+		new ModelDeepEqualityMatcher(object, options)
 	}
 
 	def static EqualityFeatureFilter ignoringFeatures(EStructuralFeature... features) {
@@ -84,16 +90,32 @@ class ModelMatchers {
 		new IgnoreAllExceptTypedFeatures(Set.of(featureTypes))
 	}
 
-	def static EqualityFeatureFilter on(EqualityFeatureFilter target, Class<? extends EObject> types) {
+	/**
+	 * Limits an {@link EqualityFeatureFilter} to the provided {@code types}.
+	 */
+	def static EqualityFeatureFilter on(EqualityFeatureFilter target, Class<? extends EObject>... types) {
 		new TypeIncludingFeatureFilter(Set.of(types), target)
 	}
 
-	def static EqualityFeatureFilter unlessOn(EqualityFeatureFilter target, Class<? extends EObject> types) {
+	/**
+	 * Creates an exception for an {@link EqualityFeatureFilter} by making it not apply to the provided {@code types}.
+	 */
+	def static EqualityFeatureFilter unlessOn(EqualityFeatureFilter target, Class<? extends EObject>... types) {
 		new TypeExcludingFeatureFilter(Set.of(types), target)
 	}
 	
+	/**
+	 * Ignores all features that are unset on the reference object.
+	 */
 	def static EqualityFeatureFilter ignoringUnsetFeatures() {
 		new IgnoreUnsetFeaturesFilter
+	}
+	
+	/**
+	 * Uses {@link Object#equals} to instances of the provided {@code eClasses}.
+	 */
+	def static EqualityStrategy usingEqualsFor(EClass... eClasses) {
+		new EqualsStrategy(Set.of(eClasses))
 	}
 
 	def static Matcher<? super EObject> whose(EStructuralFeature feature, Matcher<?> featureMatcher) {
