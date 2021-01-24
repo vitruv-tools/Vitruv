@@ -51,16 +51,17 @@ package class CommonalityReferenceMappingExtension {
 	}
 
 	static def getReferencedParticipation(CommonalityReferenceMapping mapping) {
-		val participationDomainName = mapping.participation.domainName
+		val referencedParticipation = mapping.participation
+		if (referencedParticipation === null) return null
 		val referencedCommonality = mapping.referencedCommonality
 		// Note: We verify via validation that there is exactly one matching participation.
 		val participation = referencedCommonality.participations.findFirst [
-			it.domainName == participationDomainName
+			it.domainName == referencedParticipation.domainName
 			// TODO Support for multiple participations with the same domain inside the referenced commonality.
 		]
 		if (participation === null) {
 			// This is usually a hint for a scoping related issue:
-			throw new RuntimeException('''Could not find referenced participation '«participationDomainName
+			throw new RuntimeException('''Could not find referenced participation '«referencedParticipation.domainName
 				»' in commonality '«referencedCommonality»' for mapping of reference '«
 				mapping.declaringReference»'. ''')
 		}

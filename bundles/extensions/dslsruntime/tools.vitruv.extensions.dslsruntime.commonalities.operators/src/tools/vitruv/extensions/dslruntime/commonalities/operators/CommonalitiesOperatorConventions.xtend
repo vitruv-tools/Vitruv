@@ -72,6 +72,10 @@ class CommonalitiesOperatorConventions {
 		languagePackage + '.' + OPERATOR_TYPES_PACKAGE_NAME + '.' + toOperatorTypeName(languageName)
 	}
 	
+	def static isPotentialOperator(String typeQualifiedName) {
+		typeQualifiedName.contains(OPERATOR_TYPES_PACKAGE_NAME)
+	}
+	
 	def static toOperatorLanguageQualifiedName(String typeQualifiedName) {
 		if (typeQualifiedName === null) null
 		else {
@@ -87,6 +91,6 @@ class CommonalitiesOperatorConventions {
 	def static toOperatorLanguageQualifiedName(String typePackage, String typeName) {
 		val packageEnd = typePackage.lastIndexOf('.' + OPERATOR_TYPES_PACKAGE_NAME)
 		checkArgument(packageEnd != -1, '''The provided package does not contain «OPERATOR_TYPES_PACKAGE_NAME»: ‹«typePackage»›''')
-		typePackage.substring(0, packageEnd - 1) + toOperatorLanguageName(typeName)		
+		typePackage.substring(0, packageEnd - 1) + toOperatorLanguageName(typeName)
 	}
 }

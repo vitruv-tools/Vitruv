@@ -124,4 +124,19 @@ class EClassAdapter extends EClassMetaclassImpl implements Wrapper<EClass> {
 		checkEClassSet()
 		wrappedEClass.isAbstract
 	}
+	
+	override equals(Object o) {
+		if (this === o) true
+		else if (o === null) false
+		else if (o instanceof EClassAdapter) {
+			this.containingDomain == o.containingDomain && this.wrappedEClass == o.wrappedEClass
+		}
+		else false
+	}
+	
+	override hashCode() {
+		val prime = 53
+		return (prime + ((containingDomain === null) ? 0 : containingDomain.hashCode()))
+			* prime + ((wrappedEClass === null) ? 0 : wrappedEClass.hashCode())
+	}
 }

@@ -1,4 +1,4 @@
-package tools.vitruv.dsls.commonalities
+package tools.vitruv.dsls.commonalities.tests.syntax
 
 import org.junit.jupiter.api.DisplayName
 import javax.inject.Inject
@@ -16,13 +16,13 @@ import static java.lang.System.lineSeparator
 import tools.vitruv.dsls.commonalities.language.Participation
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.ValueSource
+import tools.vitruv.dsls.commonalities.tests.util.CommonalityParseHelper
 
 @ExtendWith(InjectionExtension)
 @InjectWith(CommonalitiesLanguageInjectorProvider)
 @DisplayName("parsing Participations")
 class ParticipationParsingTest {
-	@Inject
-	extension CommonalityParseHelper parseHelper
+	@Inject extension CommonalityParseHelper
 
 	@ParameterizedTest(name="{0}")
 	@DisplayName("single ParticipationClass")
