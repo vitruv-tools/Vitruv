@@ -512,7 +512,7 @@ package class ModelDeepEqualityMatcher extends TypeSafeMatcher<EObject> {
 			} else {
 				PRINTED_NO_OUTPUT
 			}) + print('.') + print(feature.name) + print(' ') + print(difference.kind.verb) + print(': ') //
-			+ printValue(value)[subTarget, theValue|printObject(subTarget, idProvider, theValue)]
+			+ printValue(value) [subTarget, theValue | printFeatureValue(subTarget, idProvider, feature, theValue)]
 		}
 
 		def private String getVerb(DifferenceKind kind) {
