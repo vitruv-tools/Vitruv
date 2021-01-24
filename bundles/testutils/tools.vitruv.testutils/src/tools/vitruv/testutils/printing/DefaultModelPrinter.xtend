@@ -130,8 +130,10 @@ class DefaultModelPrinter implements ModelPrinter {
 		Object value
 	) {
 		switch (value) {
-			EObject: printObject(target, idProvider, value)
-			default: target.printValue(value)[subTarget, theValue|printObject(subTarget, idProvider, theValue)]
+			EObject: subPrinter.printObject(target, idProvider, value)
+			default: target.printValue(value)[subTarget, theValue |
+				subPrinter.printObject(subTarget, idProvider, theValue)
+			]
 		}
 	}
 
