@@ -24,6 +24,6 @@ class DefaultPrintIdProvider implements PrintIdProvider {
 		val index = classCount.compute(object.eClass) [ key, oldValue |
 			if (oldValue === null) 1 else oldValue + 1
 		]
-		object.eClass.name + if (index == 1) "" else "#" + index
+		object.eClass.name + "#" + index
 	}
 }
