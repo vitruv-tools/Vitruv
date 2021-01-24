@@ -235,7 +235,7 @@ package class ModelDeepEqualityMatcher extends TypeSafeMatcher<EObject> {
 			if (object === null || navigable.contains(object)) return; 
 			navigable += object
 			val match = comparison.getMatch(object)
-			if (match !== null) return;
+			if (match === null) return;
 			
 			for (val references = featureFilter.getReferencesToCheck(match); references.hasNext();) {
 				val reference = references.next() 
@@ -281,8 +281,8 @@ package class ModelDeepEqualityMatcher extends TypeSafeMatcher<EObject> {
 			var leftMatch = comparison.getMatch(left)
 			var rightMatch = comparison.getMatch(right)
 			if (leftMatch === null && rightMatch === null) return;
-			if (leftMatch !== null) throw new IllegalStateException('''right match without left match: «rightMatch»''')
-			if (rightMatch !== null) throw new IllegalStateException('''left match without right match: «rightMatch»''')
+			if (leftMatch === null) throw new IllegalStateException('''right match without left match: «rightMatch»''')
+			if (rightMatch === null) throw new IllegalStateException('''left match without right match: «rightMatch»''')
 			
 			if (leftMatch.right === null && rightMatch.left === null) {
 				leftMatch = combineMatches(comparison, left, right, leftMatch, rightMatch)
