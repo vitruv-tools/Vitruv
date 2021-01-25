@@ -35,18 +35,19 @@ class ParticipationObjectsHelper extends ReactionsGenerationHelper {
 
 	def XExpression getParticipationObject(ContextClass contextClass, XFeatureCall participationObjects,
 		TypeProvider typeProvider) {
-		return contextClass.name.getParticipationObject(participationObjects, typeProvider)
+		return getParticipationObject(contextClass.participationClass, contextClass.name, participationObjects, typeProvider)
 	}
 
 	def XExpression getParticipationObject(ParticipationClass participationClass, XFeatureCall participationObjects,
 		TypeProvider typeProvider) {
-		return participationClass.name.getParticipationObject(participationObjects, typeProvider)
+		return getParticipationObject(participationClass, participationClass.name, participationObjects, typeProvider)
 	}
 
-	private def XExpression getParticipationObject(String objectName, XFeatureCall participationObjects,
-		TypeProvider typeProvider) {
+	private def XExpression getParticipationObject(ParticipationClass participationClass, String objectName,
+		XFeatureCall participationObjects, TypeProvider typeProvider) {
 		participationObjects.memberFeatureCall => [
 			feature = typeProvider.findDeclaredType(ParticipationObjects).findMethod('getObject', String)
+			typeArguments += typeProvider.jvmTypeReferenceBuilder.typeRef(participationClass.changeClass.javaClassName)
 			memberCallArguments += stringLiteral(objectName)
 			explicitOperationCall = true
 		]
