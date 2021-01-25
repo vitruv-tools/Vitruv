@@ -20,6 +20,8 @@ import static extension tools.vitruv.dsls.commonalities.generator.reactions.util
 import static extension tools.vitruv.dsls.commonalities.generator.reactions.util.ReactionsHelper.*
 import static extension tools.vitruv.dsls.commonalities.generator.reactions.util.XbaseHelper.*
 import static extension tools.vitruv.dsls.commonalities.language.extensions.CommonalitiesLanguageModelExtensions.*
+import org.eclipse.xtext.common.types.impl.JvmTypeImpl
+import org.eclipse.xtend.lib.annotations.FinalFieldsConstructor
 
 class ReferenceMappingOperatorHelper extends ReactionsGenerationHelper {
 
@@ -128,16 +130,15 @@ class ReferenceMappingOperatorHelper extends ReactionsGenerationHelper {
 		val extension typeProvider = operatorContext.typeProvider
 		val attributeReferenceHelperType = typeProvider.findDeclaredType(AttributeReferenceHelper).imported
 		val method = attributeReferenceHelperType.findMethod('getPotentiallyContainedIntermediates')
-		val intermediateJvmType = typeProvider.findTypeByName(intermediateType.javaClassName)
 		return attributeReferenceHelperType.memberFeatureCall(method) => [
 			staticWithDeclaringType = true
-			typeArguments += jvmTypeReferenceBuilder.typeRef(intermediateJvmType)
+			typeArguments += jvmTypeReferenceBuilder.typeRef(intermediateType.javaClassName)
 			memberCallArguments += expressions(
 				mapping.constructOperator(operatorContext),
 				containerObject,
 				correspondenceModel,
 				XbaseFactory.eINSTANCE.createXTypeLiteral => [
-					type = intermediateJvmType
+					type = new UnknownJvmType(intermediateType.javaClassName)
 				]
 			)
 		]
@@ -148,18 +149,36 @@ class ReferenceMappingOperatorHelper extends ReactionsGenerationHelper {
 		val extension typeProvider = operatorContext.typeProvider
 		val attributeReferenceHelperType = typeProvider.findDeclaredType(AttributeReferenceHelper).imported
 		val method = attributeReferenceHelperType.findMethod('getPotentialContainerIntermediate')
-		val intermediateJvmType = typeProvider.findTypeByName(intermediateType.javaClassName)
 		return attributeReferenceHelperType.memberFeatureCall(method) => [
 			staticWithDeclaringType = true
-			typeArguments += jvmTypeReferenceBuilder.typeRef(intermediateJvmType)
+			typeArguments += jvmTypeReferenceBuilder.typeRef(intermediateType.javaClassName)
 			memberCallArguments += expressions(
 				mapping.constructOperator(operatorContext),
 				containedObject,
 				correspondenceModel,
 				XbaseFactory.eINSTANCE.createXTypeLiteral => [
-					type = intermediateJvmType
+					type = new UnknownJvmType(intermediateType.javaClassName)
 				]
 			)
 		]
+	}
+	
+	// Hack to create a XTypeLiteral for an unknown type.
+	// TODO: is there an Xbase-native way to do this? 
+	@FinalFieldsConstructor
+	private static class UnknownJvmType extends JvmTypeImpl {
+		val String fqn
+		
+		override getSimpleName() {
+			fqn.substring(fqn.lastIndexOf('.') + 1)
+		}
+		
+		override getQualifiedName(char innerClassDelimiter) {
+			fqn
+		}
+		
+		override getIdentifier() {
+			simpleName
+		}
 	}
 }
