@@ -8,6 +8,7 @@ import org.eclipse.emf.ecore.EAttribute
 import org.eclipse.emf.ecore.EReference
 import tools.vitruv.framework.uuid.UuidGeneratorAndResolver
 import org.eclipse.emf.ecore.EStructuralFeature
+import org.eclipse.emf.common.util.URI
 
 /**
  * Factory singleton class for elements of change models.
@@ -76,11 +77,15 @@ final class TypeInferringUnresolvingAtomicEChangeFactory extends TypeInferringAt
 		return result;
 	}
 	
-	override <T extends EObject> createRemoveRootChange(T oldValue, Resource resource, int index) {
-		val result = super.<T>createRemoveRootChange(oldValue, resource, index)
+	override <T extends EObject> createRemoveRootChange(T oldValue, Resource resource, URI oldUri, int index) {
+		val result = super.<T>createRemoveRootChange(oldValue, resource, oldUri, index)
 		setIds(result);
 		result.unresolve
 		return result;
+	}
+	
+	override <T extends EObject> createRemoveRootChange(T oldValue, Resource resource, int index) {
+		createRemoveRootChange(oldValue, resource, resource.URI, index);
 	}
 	
 	override <A extends EObject,T> createReplaceSingleAttributeChange(A affectedEObject, EAttribute affectedAttribute, T oldValue, T newValue) {
