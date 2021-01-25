@@ -93,8 +93,7 @@ class ParticipationContextHelper {
 
 	static def getReferenceParticipationContexts(CommonalityReference reference) {
 		return reference.mappings
-			// tolerate unresolved mappings
-			.map [participation?.domainName].filterNull.toSet
+			.map [participation.domainName].filterNull.toSet
 			.map [reference.getReferenceParticipationContext(it)]
 	}
 

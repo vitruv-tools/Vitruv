@@ -10,7 +10,7 @@ import tools.vitruv.dsls.commonalities.language.Commonality
 @Utility
 package class CommonalityReferenceExtension {
 	static def getMappings(CommonalityReference reference, String domainName) {
-		reference.mappings.filter [participation?.domainName == domainName].toList
+		reference.mappings.filter [participation.domainName == domainName].toList
 	}
 	
 	static def getDeclaringCommonality(CommonalityReference reference) {
