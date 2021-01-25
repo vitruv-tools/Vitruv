@@ -11,23 +11,15 @@ import tools.vitruv.dsls.commonalities.names.IEObjectDescriptionProvider
 import static com.google.common.base.Preconditions.*
 
 import static extension tools.vitruv.dsls.commonalities.names.QualifiedNameHelper.*
+import tools.vitruv.dsls.commonalities.generator.util.guice.InjectingFactoryBase
+import org.eclipse.xtend.lib.annotations.FinalFieldsConstructor
 
+@FinalFieldsConstructor
 class CommonalityAttributesScope implements IScope {
-
 	@Inject IEObjectDescriptionProvider descriptionProvider
-	var Commonality commonality
-
-	def forCommonality(Commonality commonality) {
-		this.commonality = checkNotNull(commonality)
-		this
-	}
-
-	private def checkCommonalitySet() {
-		checkState(commonality !== null, "No commonality to get attributes from was set!")
-	}
+	val Commonality commonality
 
 	private def allAttributes() {
-		checkCommonalitySet()
 		commonality.attributes
 	}
 
@@ -37,14 +29,16 @@ class CommonalityAttributesScope implements IScope {
 
 	override getElements(QualifiedName qName) {
 		val memberName = qName.memberName
-		if (memberName === null) return #[]
-		return allAttributes.filter[name == memberName].map(descriptionProvider)
+		return if (memberName !== null) { 
+			allAttributes.filter[name == memberName].map(descriptionProvider)
+		} else {
+			emptyList()
+		}
 	}
 
 	override getElements(EObject object) {
-		checkCommonalitySet()
 		val objectURI = EcoreUtil2.getURI(object)
-		return allElements.filter[it.EObjectOrProxy === object || it.EObjectURI == objectURI]
+		return allElements.filter [it.EObjectOrProxy === object || it.EObjectURI == objectURI]
 	}
 
 	override getSingleElement(QualifiedName name) {
@@ -53,5 +47,11 @@ class CommonalityAttributesScope implements IScope {
 
 	override getSingleElement(EObject object) {
 		getElements(object).head
+	}
+	
+	static class Factory extends InjectingFactoryBase {
+		def forCommonality(Commonality commonality) {
+			new CommonalityAttributesScope(checkNotNull(commonality)).injectMembers
+		}
 	}
 }

@@ -8,7 +8,7 @@ import static extension tools.vitruv.dsls.commonalities.language.extensions.Comm
 package class CommonalityReferenceI extends CommonalityReferenceImpl {
 
 	override basicGetClassLikeContainer() {
-		containingCommonalityFile.commonality
+		getOptionalDirectEContainer(Commonality)
 	}
 
 	override isMultiValued() {

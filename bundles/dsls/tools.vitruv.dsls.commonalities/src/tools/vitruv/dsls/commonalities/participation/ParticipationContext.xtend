@@ -173,7 +173,7 @@ class ParticipationContext {
 	}
 
 	def getReferencingCommonality() {
-		return referenceMappings.head?.containingCommonality
+		return referenceMappings.head?.declaringReference.declaringCommonality
 	}
 
 	def getReferencedCommonality() {

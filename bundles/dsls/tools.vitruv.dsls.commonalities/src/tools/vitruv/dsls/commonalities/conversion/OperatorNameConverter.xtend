@@ -13,8 +13,14 @@ import tools.vitruv.extensions.dslruntime.commonalities.operators.CommonalitiesO
  */
 class OperatorNameConverter implements IValueConverter<String> {
 	override toString(String typeName) throws ValueConverterException {
+		// this will not only be called for existing models, but also
+		// for candidates. Thus, don’t break on invalid names!
 		if (typeName.contains('.')) {
-			CommonalitiesOperatorConventions.toOperatorLanguageQualifiedName(typeName)
+			if (CommonalitiesOperatorConventions.isPotentialOperator(typeName)) {
+				CommonalitiesOperatorConventions.toOperatorLanguageQualifiedName(typeName)
+			} else {
+				typeName
+			} 
 		} else {
 			CommonalitiesOperatorConventions.toOperatorLanguageName(typeName)
 		}

@@ -7,9 +7,9 @@ import tools.vitruv.dsls.commonalities.language.elements.impl.VitruviusDomainImp
 import tools.vitruv.framework.domains.VitruvDomain
 
 import static com.google.common.base.Preconditions.*
+import java.util.List
 
 class VitruvDomainAdapter extends VitruviusDomainImpl implements Wrapper<VitruvDomain> {
-
 	VitruvDomain wrappedVitruvDomain
 	var extension ClassifierProvider classifierProvider
 
@@ -42,7 +42,7 @@ class VitruvDomainAdapter extends VitruviusDomainImpl implements Wrapper<VitruvD
 	}
 
 	private def Set<EPackage> getRootPackages() {
-		return (#[wrappedVitruvDomain.metamodelRootPackage] + wrappedVitruvDomain.furtherRootPackages).toSet
+		return (List.of(wrappedVitruvDomain.metamodelRootPackage) + wrappedVitruvDomain.furtherRootPackages).toSet
 	}
 
 	def Set<EPackage> getAllPackages() {
@@ -56,11 +56,16 @@ class VitruvDomainAdapter extends VitruviusDomainImpl implements Wrapper<VitruvD
 
 	private def loadMetaclasses() {
 		allPackages
-			.flatMap[EClassifiers]
+			.flatMap [EClassifiers]
 			.filter(EClass)
-			.map[toMetaclass(this)]
-			+ #[LanguageElementsFactory.eINSTANCE.createResourceMetaclass
-				.withClassifierProvider(classifierProvider).fromDomain(this)]
+			.map [toMetaclass(this)]
+			+ List.of(createResourceMetaclass())
+	}
+	
+	private def createResourceMetaclass() {
+		LanguageElementsFactory.eINSTANCE.createResourceMetaclass 
+			.withClassifierProvider(classifierProvider)
+			.fromDomain(this)
 	}
 
 	override getName() {
@@ -75,5 +80,18 @@ class VitruvDomainAdapter extends VitruviusDomainImpl implements Wrapper<VitruvD
 
 	override toString() {
 		'''{{«wrappedVitruvDomain?.name»}}'''
+	}
+	
+	override equals(Object o) {
+		if (this === o) true
+		else if (o === null) false
+		else if (o instanceof VitruvDomainAdapter) {
+			this.wrappedVitruvDomain == o.wrappedVitruvDomain
+		}
+		else false
+	}
+	
+	override hashCode() {
+		5 * ((wrappedVitruvDomain === null) ? 0 : wrappedVitruvDomain.hashCode())
 	}
 }

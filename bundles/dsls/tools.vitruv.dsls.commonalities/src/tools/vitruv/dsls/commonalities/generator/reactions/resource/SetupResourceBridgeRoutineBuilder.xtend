@@ -48,7 +48,7 @@ class SetupResourceBridgeRoutineBuilder extends ReactionsGenerationHelper {
 	def getSetupResourceBridgeRoutine(ParticipationClass resourceClass) {
 		checkNotNull(resourceClass, "resourceClass is null")
 		checkArgument(resourceClass.isForResource, "The given resourceClass does to refer to the Resource metaclass")
-		val concept = resourceClass.containingCommonality.concept
+		val concept = resourceClass.declaringCommonality.concept
 		return setupResourceBridgeRoutines.computeIfAbsent(concept.name) [
 			create.routine('''setupResourceBridge_«concept.name»''')
 				.input [

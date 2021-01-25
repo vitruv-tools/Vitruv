@@ -19,7 +19,9 @@ Require-Bundle: tools.vitruv.dsls.mappings,
  org.eclipse.ui.editors,
  org.eclipse.xtext.xbase.lib;bundle-version="2.14.0",
  org.eclipse.ui,
- org.eclipse.xtend.lib;bundle-version="2.14.0";resolution:=optional,
+ org.eclipse.xtend.lib;bundle-version="2.14.0",
+ tools.vitruv.dsls.mirbase.ui,
+ tools.vitruv.dsls.common.ui,
  org.eclipse.jdt.debug.ui
 Import-Package: org.apache.log4j
 Bundle-RequiredExecutionEnvironment: JavaSE-11

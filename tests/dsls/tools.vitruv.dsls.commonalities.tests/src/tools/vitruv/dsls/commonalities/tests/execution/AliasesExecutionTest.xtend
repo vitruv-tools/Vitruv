@@ -18,10 +18,10 @@ class AliasesExecutionTest extends IdentifiedExecutionTest {
 				
 				commonality IdentifiedWithAliases {
 				
-					with AllElementTypes:(Root in Resource) as "All"
+					with (AllElementTypes as All):(Root in Resource)
 					with AllElementTypes2:(Root2 in Resource)
-					with PcmMockup:(Repository called "Repo" in Resource called "Res") as "Palladio"
-					with UmlMockup:(UPackage called "Package" in Resource)
+					with (PcmMockup as Palladio):((Repository as Repo) in (Resource as Res))
+					with UmlMockup:((UPackage as Package) in Resource)
 				
 					has id {
 						= All:Root.id
@@ -58,8 +58,8 @@ class AliasesExecutionTest extends IdentifiedExecutionTest {
 				commonality SubWithAliases {
 				
 					with AllElementTypes:NonRoot
-					with AllElementTypes2:NonRoot2 called "SecondNonRoot"
-					with PcmMockup:Component as "Palladio"
+					with AllElementTypes2:(NonRoot2 as SecondNonRoot)
+					with (PcmMockup as Palladio):Component
 					with UmlMockup:UClass
 				
 					has name {

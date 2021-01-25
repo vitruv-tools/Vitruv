@@ -4,13 +4,11 @@ import com.google.inject.Inject
 import org.apache.log4j.Logger
 import tools.vitruv.dsls.commonalities.generator.reactions.ReactionsSubGenerator
 import tools.vitruv.dsls.commonalities.generator.util.guice.InjectingFactoryBase
-import tools.vitruv.dsls.commonalities.language.Commonality
 import tools.vitruv.dsls.commonalities.language.Participation
 import tools.vitruv.dsls.reactions.builder.FluentReactionsSegmentBuilder
 
 import static com.google.common.base.Preconditions.*
 
-import static extension tools.vitruv.dsls.commonalities.language.extensions.CommonalitiesLanguageModelExtensions.*
 import static extension tools.vitruv.dsls.commonalities.participation.ParticipationContextHelper.*
 
 /**
@@ -31,18 +29,15 @@ class MatchParticipationReactionsBuilder extends ReactionsSubGenerator {
 
 	// Note: May be a commonality participation.
 	val Participation participation
-	val Commonality commonality
 
 	private new(Participation participation) {
 		checkNotNull(participation, "participation is null")
 		this.participation = participation
-		this.commonality = participation.containingCommonality
 	}
 
 	// Dummy constructor for Guice
 	package new() {
 		this.participation = null
-		this.commonality = null
 		throw new IllegalStateException("Use the Factory to create instances of this class!")
 	}
 

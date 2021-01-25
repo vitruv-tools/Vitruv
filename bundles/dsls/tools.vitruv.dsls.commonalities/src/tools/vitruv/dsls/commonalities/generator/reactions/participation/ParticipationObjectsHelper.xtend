@@ -54,7 +54,7 @@ class ParticipationObjectsHelper extends ReactionsGenerationHelper {
 
 	def Map<ParticipationClass, XVariableDeclaration> getParticipationObjectVars(Participation participation,
 		XFeatureCall participationObjects, extension TypeProvider typeProvider) {
-		return participation.classes.toInvertedMap [ participationClass |
+		return participation.allClasses.toInvertedMap [ participationClass |
 			XbaseFactory.eINSTANCE.createXVariableDeclaration => [
 				type = jvmTypeReferenceBuilder.typeRef(participationClass.changeClass.javaClassName)
 				name = participationClass.correspondingVariableName

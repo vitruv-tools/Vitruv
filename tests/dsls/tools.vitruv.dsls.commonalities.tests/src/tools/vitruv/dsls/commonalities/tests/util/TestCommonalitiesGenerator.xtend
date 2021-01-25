@@ -38,6 +38,8 @@ import static com.google.common.base.Preconditions.checkState
 import org.eclipse.core.runtime.Platform
 import static extension tools.vitruv.testutils.change.processing.MetamodelRegisteringChangePropagationSpecification.registerMetamodelsBeforePropagating
 import tools.vitruv.testutils.change.processing.CombinedChangePropagationSpecification
+import static org.hamcrest.MatcherAssert.assertThat
+import static tools.vitruv.testutils.matchers.ModelMatchers.hasNoErrors
 
 /**
  * Xtext’s {@link CompilationTestHelper} is bug-ridden and does not work with the Ecore generator.
@@ -92,7 +94,7 @@ class TestCommonalitiesGenerator {
 			sourceResource.resourceServiceProvider
 				.resourceValidator
 				.validate(sourceResource, CheckMode.ALL, CancelIndicator.NullImpl)
-			// assertThat(sourceResource, hasNoErrors) TODO activate after merging
+			assertThat(sourceResource, hasNoErrors)
 		}
 	}
 	

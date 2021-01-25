@@ -194,14 +194,14 @@ class ParticipationMatchingReactionsBuilder extends ReactionsGenerationHelper {
 				»' and reference '«reference.name»'.'''
 		} else {
 			val participation = participationContext.participation
-			val commonality = participation.containingCommonality
+			val commonality = participation.declaringCommonality
 			return '''Commonality «commonality»: Generating matching reactions for participation '«participation»'.'''
 		}
 	}
 
 	private def generateRoutines(ParticipationContext participationContext) {
 		val participation = participationContext.participation
-		val commonality = participation.containingCommonality
+		val commonality = participation.declaringCommonality
 
 		segment += segment.getMatchParticipationRoutine(participationContext)
 		segment += segment.getCreateIntermediateRoutine(participationContext)
@@ -294,7 +294,7 @@ class ParticipationMatchingReactionsBuilder extends ReactionsGenerationHelper {
 	private def reactionForParticipationClassRemove(ParticipationContext participationContext,
 		ReferenceContainment containment) {
 		val participation = participationContext.participation
-		val commonality = participation.containingCommonality
+		val commonality = participation.declaringCommonality
 		val containerClass = containment.container
 		val containedClass = containment.contained
 		var PreconditionOrRoutineCallBuilder reaction

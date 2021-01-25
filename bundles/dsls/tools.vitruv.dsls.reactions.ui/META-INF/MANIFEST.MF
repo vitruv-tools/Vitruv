@@ -7,7 +7,7 @@ Automatic-Module-Name: tools.vitruv.dsls.reactions.ui
 Bundle-ActivationPolicy: lazy
 Require-Bundle: tools.vitruv.dsls.reactions,
  tools.vitruv.dsls.reactions.ide,
- tools.vitruv.dsls.mirbase.ui;visibility:=reexport,
+ tools.vitruv.dsls.mirbase.ui,
  org.eclipse.xtext.ui,
  org.eclipse.xtext.ui.shared,
  org.eclipse.xtext.ui.codetemplates.ui,

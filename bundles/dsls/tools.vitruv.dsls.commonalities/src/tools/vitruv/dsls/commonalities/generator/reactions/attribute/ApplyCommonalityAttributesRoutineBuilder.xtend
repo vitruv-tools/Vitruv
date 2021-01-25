@@ -47,13 +47,13 @@ class ApplyCommonalityAttributesRoutineBuilder extends ReactionsGenerationHelper
 
 	def getApplyAttributesRoutine(Participation participation) {
 		return routines.computeIfAbsent(participation) [
-			val commonality = participation.containingCommonality
+			val commonality = participation.declaringCommonality
 			create.routine('''applyCommonalityAttributes_«participation.reactionName»''')
 				.input [
 					model(commonality.changeClass, INTERMEDIATE)
 				]
 				.match [
-					participation.classes.forEach [ participationClass |
+					participation.allClasses.forEach [ participationClass |
 						retrieveAssertedParticipationObject(participationClass) [
 							variable(INTERMEDIATE) // correspondence source
 						]

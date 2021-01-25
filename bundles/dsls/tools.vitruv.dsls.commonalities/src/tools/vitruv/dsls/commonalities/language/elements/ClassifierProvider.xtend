@@ -9,6 +9,7 @@ import org.eclipse.emf.ecore.EDataType
 import org.eclipse.emf.ecore.EPackage
 import org.eclipse.emf.ecore.EcorePackage
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
+import java.util.List
 
 class ClassifierProvider {
 
@@ -63,11 +64,12 @@ class ClassifierProvider {
 	// Searches the Ecore package and the domain specific packages for a matching EClassifier:
 	private static def EClassifier findEClassifier(Domain containingDomain, String qualifiedInstanceClassName) {
 		if (qualifiedInstanceClassName.nullOrEmpty) return null
-		var Iterable<EPackage> domainPackages = #[]
-		if (containingDomain instanceof VitruvDomainAdapter) {
-			domainPackages = containingDomain.allPackages
+		var domainPackages = if (containingDomain instanceof VitruvDomainAdapter) {
+			containingDomain.allPackages
+		} else { 
+			emptyList
 		}
-		val relevantPackages = #[EcorePackage.eINSTANCE] + domainPackages
+		val relevantPackages = List.of(EcorePackage.eINSTANCE) + domainPackages
 		return relevantPackages.map [findEClassifier(qualifiedInstanceClassName)].filterNull.head
 	}
 

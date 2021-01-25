@@ -115,7 +115,7 @@ class EClassAdapter extends EClassMetaclassImpl implements Wrapper<EClass> {
 		if (eIsProxy) {
 			'''unresolved «class.simpleName»: «eProxyURI»'''
 		} else {
-			'''{{«containingDomain.name»:«wrappedEClass?.name»}}'''
+			'''«containingDomain.name»:«wrappedEClass?.name»'''
 		}
 	}
 
@@ -123,5 +123,20 @@ class EClassAdapter extends EClassMetaclassImpl implements Wrapper<EClass> {
 		if (eIsProxy) return false
 		checkEClassSet()
 		wrappedEClass.isAbstract
+	}
+	
+	override equals(Object o) {
+		if (this === o) true
+		else if (o === null) false
+		else if (o instanceof EClassAdapter) {
+			this.containingDomain == o.containingDomain && this.wrappedEClass == o.wrappedEClass
+		}
+		else false
+	}
+	
+	override hashCode() {
+		val prime = 53
+		return (prime + ((containingDomain === null) ? 0 : containingDomain.hashCode()))
+			* prime + ((wrappedEClass === null) ? 0 : wrappedEClass.hashCode())
 	}
 }

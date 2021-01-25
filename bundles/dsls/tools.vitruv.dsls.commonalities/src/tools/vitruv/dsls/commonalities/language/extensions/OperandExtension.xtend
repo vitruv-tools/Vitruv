@@ -13,36 +13,35 @@ import static extension tools.vitruv.dsls.commonalities.language.extensions.Part
 
 @Utility
 package class OperandExtension {
-
 	static def Participation getParticipation(Operand operand) {
-		return operand.participationClass?.participation // can be null
+		operand.participationClass?.participation // can be null
 	}
 
 	static def dispatch ParticipationClass getParticipationClass(ParticipationClassOperand operand) {
-		return operand.participationClass
+		operand.participationClass
 	}
 
 	static def dispatch ParticipationClass getParticipationClass(ParticipationAttributeOperand operand) {
-		return operand.participationAttribute.participationClass
+		 operand.participationAttribute.participationClass
 	}
 
 	static def dispatch ParticipationClass getParticipationClass(ReferencedParticipationAttributeOperand operand) {
-		return operand.participationAttribute.participationClass
+		operand.participationAttribute.participationClass
 	}
 
 	static def dispatch ParticipationClass getParticipationClass(Operand operand) {
-		return null // catch any other
+		null // catch any other
 	}
 
 	static def dispatch ParticipationAttribute getParticipationAttribute(ParticipationAttributeOperand operand) {
-		return operand.participationAttribute
+		operand.participationAttribute
 	}
 
 	static def dispatch ParticipationAttribute getParticipationAttribute(ReferencedParticipationAttributeOperand operand) {
-		return operand.participationAttribute
+		operand.participationAttribute
 	}
 
 	static def dispatch ParticipationAttribute getParticipationAttribute(Operand operand) {
-		return null // catch any other
+		null // catch any other
 	}
 }

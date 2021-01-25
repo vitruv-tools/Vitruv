@@ -11,7 +11,7 @@ import static extension tools.vitruv.dsls.commonalities.language.extensions.Comm
 package class CommonalityAttributeI extends CommonalityAttributeImpl {
 
 	override basicGetClassLikeContainer() {
-		containingCommonalityFile.commonality
+		getOptionalDirectEContainer(Commonality)
 	}
 
 	override isMultiValued() {

@@ -26,7 +26,7 @@ class IntermediateContainmentReactionsHelper extends ReactionsGenerationHelper {
 		return XbaseFactory.eINSTANCE.createXIfExpression => [
 			^if = isIntermediateContainmentReferenceMatching(typeProvider, containedIntermediate, commonalityReference)
 			then = XbaseFactory.eINSTANCE.createXCastedExpression => [
-				val containerCommonality = commonalityReference.containingCommonality
+				val containerCommonality = commonalityReference.declaringCommonality
 				target = getEContainer(typeProvider, containedIntermediate.copy)
 				type = jvmTypeReferenceBuilder.typeRef(containerCommonality.changeClass.javaClassName)
 			]

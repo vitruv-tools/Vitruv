@@ -8,7 +8,6 @@ import tools.vitruv.extensions.dslruntime.commonalities.operators.mapping.attrib
  */
 @Data
 class AttributeTypeDescription {
-
 	val boolean multiValued
 	val String qualifiedTypeName
 }

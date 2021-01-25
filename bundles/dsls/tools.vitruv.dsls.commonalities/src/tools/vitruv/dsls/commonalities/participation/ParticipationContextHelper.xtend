@@ -56,17 +56,17 @@ class ParticipationContextHelper {
 
 			// We start at a random class and then walk towards one of the leaf
 			// classes:
-			val leaf = participation.classes.head.leafClasses.head
+			val leaf = participation.allClasses.head.leafClasses.head
 			// From there we walk along the chain of containers until a class is
 			// either marked as 'root' or we are at the Resource root class
 			// assert: Participations with a Resource contain only a single root
 			// container (enforced via validation)
 			// TODO support multiple resource roots
 			var current = leaf
-			var container = current.containerClass
+			var container = current.declaredContainerClass
 			while (!current.hasRootMarker && container !== null) {
 				current = container
-				container = current.containerClass
+				container = current.declaredContainerClass
 			}
 			assertTrue(current.hasRootMarker || current.forResource)
 			// The current class (and all of its transitive container classes) are
@@ -93,8 +93,8 @@ class ParticipationContextHelper {
 
 	static def getReferenceParticipationContexts(CommonalityReference reference) {
 		return reference.mappings
-			.map[it.participation.domainName].toSet
-			.map[reference.getReferenceParticipationContext(it)]
+			.map [participation.domainName].filterNull.toSet
+			.map [reference.getReferenceParticipationContext(it)]
 	}
 
 	static def getReferenceParticipationContext(CommonalityReference reference, String domainName) {
@@ -212,7 +212,7 @@ class ParticipationContextHelper {
 
 	static def getNonRootClasses(Participation participation) {
 		val participationRoot = participation.participationRoot // can be empty
-		return participation.classes.filter[!participationRoot.isRootClass(it)]
+		return participation.allClasses.filter[!participationRoot.isRootClass(it)]
 	}
 
 	static def isRootClass(ParticipationClass participationClass) {

@@ -53,7 +53,7 @@ class ReactionsGeneratorConventions {
 	}
 
 	static def String getCorrespondenceTag(ParticipationClass participationClass) {
-		val commonality = participationClass.containingCommonality
+		val commonality = participationClass.declaringCommonality
 		return '''«commonality.concept.name».«commonality.name»/«participationClass.participation.name».«
 			participationClass.name»'''
 	}
@@ -79,8 +79,7 @@ class ReactionsGeneratorConventions {
 	}
 
 	static def String getReactionName(Participation participation) {
-		val commonality = participation.containingCommonality
-		'''«commonality.name»_«participation.name»'''
+		'''«participation.declaringCommonality.name»_«participation.name»'''
 	}
 
 	static def String getReactionNameSuffix(ParticipationContext participationContext) {

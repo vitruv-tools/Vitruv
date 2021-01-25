@@ -11,21 +11,23 @@ import static tools.vitruv.dsls.commonalities.generator.reactions.util.XbaseHelp
 
 import static extension tools.vitruv.dsls.commonalities.generator.reactions.ReactionsGeneratorConventions.*
 import static extension tools.vitruv.dsls.commonalities.generator.reactions.util.JvmTypeProviderHelper.*
+import tools.vitruv.dsls.commonalities.language.ParticipationClass
 
 @Utility
 package class ParticipationRelationOperatorHelper {
 
+	// TODO support nested operators
 	private static def constructOperator(ParticipationRelation relation, extension TypeProvider typeProvider) {
 		XbaseFactory.eINSTANCE.createXConstructorCall => [
-			val operatorType = relation.operator.jvmType.imported
+			val operatorType = relation.operator.imported
 			constructor = operatorType.findConstructor(EObject.arrayClass, EObject.arrayClass)
 			explicitConstructorCall = true
 			arguments += expressions(
 				XbaseFactory.eINSTANCE.createXListLiteral => [
-					elements += relation.leftClasses.map[variable(correspondingVariableName)]
+					elements += relation.leftParts.filter(ParticipationClass).map[variable(correspondingVariableName)]
 				],
 				XbaseFactory.eINSTANCE.createXListLiteral => [
-					elements += relation.rightClasses.map[variable(correspondingVariableName)]
+					elements += relation.rightParts.filter(ParticipationClass).map[variable(correspondingVariableName)]
 				]
 			)
 		]

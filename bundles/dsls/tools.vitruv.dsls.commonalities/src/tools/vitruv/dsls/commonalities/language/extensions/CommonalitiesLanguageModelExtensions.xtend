@@ -8,6 +8,7 @@ import edu.kit.ipd.sdq.activextendannotations.Utility
 	AttributeMappingOperandExtension,
 	CommonalityExtension,
 	CommonalitiesLanguageElementExtension,
+	CommonalityAttributeExtension,
 	CommonalityAttributeMappingExtension,
 	CommonalityReferenceExtension,
 	CommonalityReferenceMappingExtension,
@@ -18,10 +19,7 @@ import edu.kit.ipd.sdq.activextendannotations.Utility
 	ParticipationPartExtension,
 	ParticipationClassExtension,
 	ParticipationRelationExtension,
-	ParticipationRelationOperatorExtension,
-	ParticipationAttributeExtension,
 	ParticipationConditionExtension,
-	ParticipationConditionOperatorExtension,
 	ParticipationConditionOperandExtension,
 	ReferenceMappingOperandExtension,
 	ReferenceMappingExtension
