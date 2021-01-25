@@ -35,7 +35,7 @@ package class MatcherUtil {
 			val element = iterator.next
 			if (i > 0) {
 				builder.append(separator).append(' ')
-				if (i == collection.size - 2) {
+				if (i == collection.size - 1) {
 					builder.append(word).append(' ')
 				}
 			}

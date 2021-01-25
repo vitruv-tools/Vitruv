@@ -9,34 +9,40 @@ import org.eclipse.emf.ecore.EStructuralFeature
 import static tools.vitruv.dsls.commonalities.language.LanguagePackage.Literals.*
 import tools.vitruv.dsls.commonalities.language.Commonality
 import static extension tools.vitruv.testutils.printing.PrintResultExtension.*
+import tools.vitruv.dsls.commonalities.language.elements.EFeatureAdapter
+import tools.vitruv.testutils.printing.PrintResult
 
 class CommonalitiesLanguageElementsPrinter implements ModelPrinter {
-	override printObject(extension PrintTarget target, PrintIdProvider idProvider, Object object) {
+	override printObject(PrintTarget target, PrintIdProvider idProvider, Object object) {
 		switch(object) {
-			EClassAdapter: print(object.toString)
+			EClassAdapter,
+			EFeatureAdapter: target.printReference [print(object.toString)]
 			default: NOT_RESPONSIBLE
 		}
 	}
 
-	override printObjectShortened(extension PrintTarget target, PrintIdProvider idProvider, Object object) {
+	override printObjectShortened(PrintTarget target, PrintIdProvider idProvider, Object object) {
 		switch(object) {
-			EClassAdapter: print(object.toString)
-			Commonality: print(object.toString)
-			default: NOT_RESPONSIBLE
+			Commonality: target.printReference [print(object.toString)]
+			default: printObject(target, idProvider, object)
 		}
 	}
 	
 	override printFeatureValue(
-		extension PrintTarget target,
+		PrintTarget target,
 		PrintIdProvider idProvider,
 		EStructuralFeature feature,
 		Object value
 	) {
 		switch(feature) {
 			case COMMONALITY_REFERENCE__REFERENCE_TYPE: 
-				print('{{') + printObjectShortened(target, idProvider, value) + print('}}')
+				target.printReference [printObjectShortened(idProvider, value)]
 			default: NOT_RESPONSIBLE
 		}
+	}
+	
+	def printReference(extension PrintTarget target, (PrintTarget)=>PrintResult valuePrinter) {
+		print('\u21AA' /* rightwards arrow with hook */) + valuePrinter.apply(target) 
 	}
 	
 	override withSubPrinter(ModelPrinter subPrinter) {

@@ -115,7 +115,7 @@ class EClassAdapter extends EClassMetaclassImpl implements Wrapper<EClass> {
 		if (eIsProxy) {
 			'''unresolved «class.simpleName»: «eProxyURI»'''
 		} else {
-			'''{{«containingDomain.name»:«wrappedEClass?.name»}}'''
+			'''«containingDomain.name»:«wrappedEClass?.name»'''
 		}
 	}
 

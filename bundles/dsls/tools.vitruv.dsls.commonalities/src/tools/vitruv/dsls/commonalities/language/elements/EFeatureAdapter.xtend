@@ -79,6 +79,21 @@ class EFeatureAdapter extends EFeatureAttributeImpl implements Wrapper<EStructur
 	}
 
 	override toString() {
-		'''{{«wrappedEFeature?.name»}}'''
+		'''«containingMetaclass».«wrappedEFeature?.name»'''
+	}
+	
+	override equals(Object o) {
+		if (this === o) true
+		else if (o === null) false
+		else if (o instanceof EFeatureAdapter) {
+			this.containingMetaclass == o.containingMetaclass && this.wrappedEFeature == o.wrappedEFeature
+		}
+		else false
+	}
+	
+	override hashCode() {
+		val prime = 109
+		return (prime + ((containingMetaclass === null) ? 0 : containingMetaclass.hashCode()))
+			* prime + ((wrappedEFeature === null) ? 0 : wrappedEFeature.hashCode())
 	}
 }

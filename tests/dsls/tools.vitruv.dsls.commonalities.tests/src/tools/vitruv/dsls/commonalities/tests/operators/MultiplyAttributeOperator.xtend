@@ -1,4 +1,4 @@
-package tools.vitruv.dsls.commonalities.tests.execution.operators
+package tools.vitruv.dsls.commonalities.tests.operators
 
 import tools.vitruv.extensions.dslruntime.commonalities.operators.mapping.attribute.AbstractAttributeMappingOperator
 import tools.vitruv.extensions.dslruntime.commonalities.operators.mapping.attribute.AttributeMappingOperator

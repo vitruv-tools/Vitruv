@@ -11,7 +11,6 @@ import org.eclipse.xtend.lib.macro.Active
 @Retention(RUNTIME)
 @Active(ReferenceMappingOperatorProcessor)
 annotation ReferenceMappingOperator {
-
 	String name
 	boolean isMultiValued
 	boolean isAttributeReference = false

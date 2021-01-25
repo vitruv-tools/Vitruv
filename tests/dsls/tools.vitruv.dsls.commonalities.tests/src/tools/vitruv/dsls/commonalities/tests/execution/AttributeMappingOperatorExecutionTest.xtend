@@ -37,8 +37,8 @@ class AttributeMappingOperatorExecutionTest extends VitruvApplicationTest {
 	def void generate(@TestProject(variant = "commonalities") Path testProject) {
 		changePropagationSpecifications = generator.generate(testProject,
 			'WithAttributeMappingOperators.commonality' -> '''
-				import tools.vitruv.dsls.commonalities.tests.execution.operators.multiply
-				import tools.vitruv.dsls.commonalities.tests.execution.operators.digits
+				import tools.vitruv.dsls.commonalities.tests.operators.multiply
+				import tools.vitruv.dsls.commonalities.tests.operators.digits
 				
 				concept operators
 				
