@@ -67,8 +67,8 @@ import org.eclipse.emf.compare.match.DefaultEqualityHelperFactory
 import org.eclipse.emf.compare.utils.EqualityHelper
 import org.eclipse.emf.compare.match.resource.StrategyResourceMatcher
 
-package class ModelDeepEqualityMatcher extends TypeSafeMatcher<EObject> {
-	val EObject expectedObject
+package class ModelDeepEqualityMatcher<O extends EObject> extends TypeSafeMatcher<O> {
+	val O expectedObject
 	val List<? extends EqualityFeatureFilter> featureFilters
 	val List<? extends EqualityStrategy> equalityStrategies 
 	val idProvider = new ComparisonAwarePrintIdProvider
@@ -76,7 +76,7 @@ package class ModelDeepEqualityMatcher extends TypeSafeMatcher<EObject> {
 	val FeatureFilter emfCompareFeatureFilter
 	var Comparison comparison
 
-	package new(EObject expectedEObject, List<? extends ModelDeepEqualityOption> options) {
+	package new(O expectedEObject, List<? extends ModelDeepEqualityOption> options) {
 		this.expectedObject = expectedEObject
 		this.featureFilters = options.filter(EqualityFeatureFilter).toList
 		this.equalityStrategies = options.filter(EqualityStrategy).toList

@@ -32,7 +32,7 @@ class ModelMatchers {
 	}
 
 	def static Matcher<? super Resource> contains(EObject root, ModelDeepEqualityOption... options) {
-		contains(equalsDeeply(root, options))
+		contains(ModelMatchers.equalsDeeply(root, options))
 	}
 
 	def static Matcher<? super Resource> contains(Matcher<? super EObject> rootMatcher) {
@@ -62,7 +62,7 @@ class ModelMatchers {
 	/**
 	 * A highly configurable matcher for comparing EObjects with detailed difference printing.
 	 */
-	def static Matcher<? super EObject> equalsDeeply(EObject object, ModelDeepEqualityOption... options) {
+	def static <O extends EObject> Matcher<? super O> equalsDeeply(O object, ModelDeepEqualityOption... options) {
 		new ModelDeepEqualityMatcher(object, options)
 	}
 
