@@ -191,7 +191,7 @@ package class ModelDeepEqualityMatcher extends TypeSafeMatcher<EObject> {
 		private def <T extends EStructuralFeature> filter(Match match, Iterator<T> iterator) {
 			val object = match.right ?: match.left
 			iterator.filter [ feature |
-				featureFilters.all[includeFeature(object, feature)]
+				featureFilters.all [includeFeature(object, feature)]
 			]
 		}
 	}
@@ -314,7 +314,7 @@ package class ModelDeepEqualityMatcher extends TypeSafeMatcher<EObject> {
 			if (leftMatch === null) throw new IllegalStateException('''right match without left match: «rightMatch»''')
 			if (rightMatch === null) throw new IllegalStateException('''left match without right match: «rightMatch»''')
 			
-			if (leftMatch.right === null && rightMatch.left === null) {
+			if (leftMatch.right === null && rightMatch.left === null && left.eClass == right.eClass) {
 				leftMatch = combineMatches(comparison, left, right, leftMatch, rightMatch)
 				rightMatch = leftMatch
 			}
