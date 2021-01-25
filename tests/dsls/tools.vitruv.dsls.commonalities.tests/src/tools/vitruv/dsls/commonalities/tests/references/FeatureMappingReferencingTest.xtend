@@ -189,7 +189,7 @@ class FeatureMappingReferencingTest {
 		String attributeReference
 	) {
 		inSameResourceSet [
-			val referenced = parseAndValidateInSet('''
+			val referenced = parseInSet('''
 				concept Referenced 
 				
 				commonality Target {

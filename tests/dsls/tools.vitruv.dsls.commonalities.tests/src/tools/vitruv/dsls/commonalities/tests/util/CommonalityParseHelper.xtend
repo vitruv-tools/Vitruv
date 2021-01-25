@@ -12,6 +12,7 @@ import org.eclipse.xtext.testing.validation.ValidationTestHelper
 import org.eclipse.emf.ecore.resource.ResourceSet
 import org.eclipse.xtext.resource.XtextResourceSet
 import javax.inject.Provider
+import org.eclipse.xtext.testing.util.ResourceHelper
 
 @Singleton
 class CommonalityParseHelper {

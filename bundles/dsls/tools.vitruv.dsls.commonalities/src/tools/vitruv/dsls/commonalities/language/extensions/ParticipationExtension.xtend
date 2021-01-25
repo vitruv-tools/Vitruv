@@ -22,11 +22,11 @@ package class ParticipationExtension {
 	}
 
 	static def Iterable<ParticipationClass> getAllClasses(Participation participation) {
-		participation.parts.flatMap[allParticipationClasses]
+		participation.parts.flatMap [allParticipationClasses]
 	}
 
 	static def getDomain(Participation participation) {
-		participation.allClasses.findFirst[superMetaclass !== null]?.domain
+		participation.allClasses.findFirst [superMetaclass !== null]?.domain
 	}
 
 	static def isCommonalityParticipation(Participation participation) {

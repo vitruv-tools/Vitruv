@@ -3,21 +3,20 @@ package tools.vitruv.dsls.commonalities.language
 import tools.vitruv.dsls.commonalities.language.impl.ParticipationAttributeImpl
 
 package class ParticipationAttributeI extends ParticipationAttributeImpl {
-
 	override getType() {
-		attribute?.type
+		getAttribute()?.type
 	}
 
 	override basicGetClassLikeContainer() {
-		participationClass
+		getParticipationClass()
 	}
 
 	override isMultiValued() {
-		attribute !== null && attribute.isMultiValued
+		getAttribute() !== null && getAttribute().isMultiValued
 	}
 
 	override getName() {
-		attribute?.name
+		getAttribute()?.name
 	}
 
 	override toString() {
