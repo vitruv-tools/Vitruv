@@ -62,9 +62,11 @@ abstract class ChangeDescription2ChangeTransformationTest {
 	}
 
 	protected def resourceAt(String name) {
-		val tmpFile = tempFolder.resolve('''«name».xmi''')
-		val uri = EMFBridge.getEmfFileUriForFile(tmpFile.toFile)
-		EcoreResourceBridge.loadOrCreateResource(resourceSet, uri)
+		EcoreResourceBridge.loadOrCreateResource(resourceSet, '''«name».xmi'''.uri)
+	}
+
+	protected def getUri(CharSequence relativePath) {
+		EMFBridge.getEmfFileUriForFile(tempFolder.resolve(relativePath.toString).toFile)
 	}
 
 	protected def Root getUniquePersistedRoot() {

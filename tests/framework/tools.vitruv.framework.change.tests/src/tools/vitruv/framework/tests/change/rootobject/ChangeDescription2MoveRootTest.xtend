@@ -6,9 +6,9 @@ import static extension tools.vitruv.testutils.metamodels.AllElementTypesCreator
 import tools.vitruv.framework.tests.change.ChangeDescription2ChangeTransformationTest
 
 class ChangeDescription2MoveRootTest extends ChangeDescription2ChangeTransformationTest {
-	
+
 	@Test
-	def void moveRootEObjectBetweenResources(){
+	def void moveRootEObjectBetweenResources() {
 		// prepare
 		val root = aet.Root
 		val resource1 = resourceAt("resource1")
@@ -25,10 +25,30 @@ class ChangeDescription2MoveRootTest extends ChangeDescription2ChangeTransformat
 		// assert
 		val isDelete = false
 		val isCreate = false
-		result.assertChangeCount(2)
-			.assertRemoveRoot(root, isDelete, resource1)
-			.assertInsertRoot(root, isCreate, resource2)
-			.assertEmpty
+		result.assertChangeCount(2) //
+		.assertRemoveRoot(root, isDelete, resource1) //
+		.assertInsertRoot(root, isCreate, resource2) //
+		.assertEmpty
 	}
 
+	@Test
+	def void moveResource() {
+		val originalResourceName = "resource"
+		val changedResourceName = "newLocation"
+
+		val root = aet.Root
+		val resource = resourceAt(originalResourceName) => [contents += root]
+		val originalUri = resource.URI
+
+		val result = resource.record [
+			URI = '''«changedResourceName».xmi'''.uri
+		]
+
+		val isDelete = false
+		val isCreate = false
+		result.assertChangeCount(2) //
+		.assertRemoveRoot(root, isDelete, resourceAt(originalResourceName), originalUri) //
+		.assertInsertRoot(root, isCreate, resourceAt(changedResourceName)) //
+		.assertEmpty
+	}
 }
