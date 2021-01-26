@@ -38,14 +38,13 @@ class VitruvInstanceCreator {
 					VitruvProjectBuilderApplicator.getApplicatorsForVitruvDomain(domain).forEach[
 						setPropagateAfterBuild(true).addBuilder(project, virtualModel.folder, domain.fileExtensions.toSet)
 					]
-					return true
 				} catch (IllegalStateException e) {
 					LOGGER.error('''Could not initialize V-SUM project for project: «project.name»''')
 					return false
 				}
 			}
-
 		}
+		return true
 	}
 
 	private def InternalVirtualModel createVirtualModel(String vsumName) {
