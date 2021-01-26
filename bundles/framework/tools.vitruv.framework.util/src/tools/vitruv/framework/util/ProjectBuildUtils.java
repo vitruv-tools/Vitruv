@@ -98,7 +98,7 @@ public final class ProjectBuildUtils {
 	 */
 	public static boolean hasBuilder(final IProject project, final String builderId) {
 		checkArgument(project != null, "Project must not be null");
-		checkState(project.isOpen(), "Project must be open to be refreshed and built");
+		checkState(project.isOpen(), "Project must be open");
 		try {
 			for (ICommand buildSpec : project.getDescription().getBuildSpec()) {
 				if (builderId.equals(buildSpec.getBuilderName())) {
