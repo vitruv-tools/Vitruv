@@ -20,8 +20,7 @@ import static extension tools.vitruv.dsls.commonalities.generator.reactions.util
 import static extension tools.vitruv.dsls.commonalities.generator.reactions.util.ReactionsHelper.*
 import static extension tools.vitruv.dsls.commonalities.generator.reactions.util.XbaseHelper.*
 import static extension tools.vitruv.dsls.commonalities.language.extensions.CommonalitiesLanguageModelExtensions.*
-import org.eclipse.xtext.common.types.impl.JvmTypeImpl
-import org.eclipse.xtend.lib.annotations.FinalFieldsConstructor
+import org.eclipse.xtext.common.types.TypesFactory
 
 class ReferenceMappingOperatorHelper extends ReactionsGenerationHelper {
 
@@ -138,7 +137,7 @@ class ReferenceMappingOperatorHelper extends ReactionsGenerationHelper {
 				containerObject,
 				correspondenceModel,
 				XbaseFactory.eINSTANCE.createXTypeLiteral => [
-					type = new UnknownJvmType(intermediateType.javaClassName)
+					type = intermediateType.javaClassName.jvmTypeForQualifiedName
 				]
 			)
 		]
@@ -151,34 +150,26 @@ class ReferenceMappingOperatorHelper extends ReactionsGenerationHelper {
 		val method = attributeReferenceHelperType.findMethod('getPotentialContainerIntermediate')
 		return attributeReferenceHelperType.memberFeatureCall(method) => [
 			staticWithDeclaringType = true
-			typeArguments += jvmTypeReferenceBuilder.typeRef(intermediateType.javaClassName)
+			val typeRef = jvmTypeReferenceBuilder.typeRef(intermediateType.javaClassName)
+			typeArguments += typeRef
 			memberCallArguments += expressions(
 				mapping.constructOperator(operatorContext),
 				containedObject,
 				correspondenceModel,
 				XbaseFactory.eINSTANCE.createXTypeLiteral => [
-					type = new UnknownJvmType(intermediateType.javaClassName)
+					type = intermediateType.javaClassName.jvmTypeForQualifiedName
 				]
 			)
 		]
 	}
-	
-	// Hack to create a XTypeLiteral for an unknown type.
-	// TODO: is there an Xbase-native way to do this? 
-	@FinalFieldsConstructor
-	private static class UnknownJvmType extends JvmTypeImpl {
-		val String fqn
-		
-		override getSimpleName() {
-			fqn.substring(fqn.lastIndexOf('.') + 1)
-		}
-		
-		override getQualifiedName(char innerClassDelimiter) {
-			fqn
-		}
-		
-		override getIdentifier() {
-			simpleName
-		}
+
+	private def getJvmTypeForQualifiedName(String name) {
+		TypesFactory.eINSTANCE.createJvmGenericType => [
+			val simpleNameSeparatorIndex = name.lastIndexOf('.')
+			if (simpleNameSeparatorIndex != -1)
+				packageName = name.substring(0, simpleNameSeparatorIndex)
+			simpleName = name.substring(simpleNameSeparatorIndex + 1)
+		]
 	}
+
 }
