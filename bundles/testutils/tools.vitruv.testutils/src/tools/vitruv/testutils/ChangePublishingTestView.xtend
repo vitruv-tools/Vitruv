@@ -19,6 +19,7 @@ import tools.vitruv.framework.change.description.PropagatedChange
 import tools.vitruv.framework.change.description.VitruviusChangeFactory
 import tools.vitruv.framework.vsum.VirtualModel
 import org.eclipse.xtend.lib.annotations.Delegate
+import org.eclipse.emf.ecore.resource.Resource
 
 /**
  * A test view that will record and publish the changes created in it.
@@ -95,7 +96,7 @@ class ChangePublishingTestView implements NonTransactionalTestView {
 	override propagate() {
 		changeRecorder.endRecording()
 		val compositeChange = VitruviusChangeFactory.instance.createCompositeChange(changeRecorder.changes)
-		compositeChange.saveOrDeleteResource
+		compositeChange.changedResource?.saveOrDelete()
 		checkState(compositeChange.validate, "The recorded change set is not valid!")
 		val propagationResult = changeProcessors.flatMap[apply(compositeChange)].toList
 		if (renewResourceCacheAfterPropagation) {
@@ -109,14 +110,11 @@ class ChangePublishingTestView implements NonTransactionalTestView {
 		resourceSet.resources.clear()
 	}
 
-	private def void saveOrDeleteResource(VitruviusChange change) {
-		val changedResource = change.changedResource
-		if (changedResource !== null) {
-			if (changedResource.contents.empty) {
-				changedResource.delete(emptyMap())
-			} else {
-				changedResource.save(emptyMap())
-			}
+	private def void saveOrDelete(Resource resource){
+		if (resource.contents.isEmpty) {
+			resource.delete(emptyMap)
+		} else {
+			resource.save(emptyMap)
 		}
 	}
 
