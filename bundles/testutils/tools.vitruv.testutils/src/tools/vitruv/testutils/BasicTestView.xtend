@@ -78,7 +78,7 @@ class BasicTestView implements TestView {
 	override <T extends Notifier> List<PropagatedChange> propagate(T notifier, Consumer<T> consumer) {
 		val toSave = determineResource(notifier)
 		notifier.record(consumer)
-		(toSave ?: determineResource(notifier)).save(emptyMap())
+		(toSave ?: determineResource(notifier))?.saveOrDelete()
 		return emptyList()
 	}
 	
@@ -97,6 +97,14 @@ class BasicTestView implements TestView {
 		move(source, target)
 	}
 
+	def private saveOrDelete(Resource resource) {
+		if (resource.contents.isEmpty) {
+			resource.delete(emptyMap)
+		} else {
+			resource.save(emptyMap)
+		}
+	}
+	 
 	override getUri(Path viewRelativePath) {
 		checkArgument(viewRelativePath !== null, "The viewRelativePath must not be null!")
 		checkArgument(!viewRelativePath.isEmpty, "The viewRelativePath must not be empty!")
