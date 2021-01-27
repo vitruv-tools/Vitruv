@@ -17,9 +17,8 @@ import java.util.List
 import java.util.ArrayList
 import tools.vitruv.framework.userinteraction.types.InteractionFactoryImpl
 import tools.vitruv.framework.userinteraction.UserInteractionOptions.WindowModality
-import java.util.function.Function
 import tools.vitruv.framework.userinteraction.InteractionResultProvider
-import tools.vitruv.framework.userinteraction.DecoratingInteractionResultProvider
+import static com.google.common.base.Preconditions.checkNotNull
 
 /**
  * The default implementation of the {@link InternalUserInteractor}.
@@ -70,24 +69,19 @@ class UserInteractorImpl implements InternalUserInteractor {
 		this.userInteractionListener += listener;
 	}
 
-	override decorateUserInteractionResultProvider(
-		Function<InteractionResultProvider, DecoratingInteractionResultProvider> decoratingInteractionResultProviderProducer) {
-		if (interactionResultProvider === null) {
-			throw new IllegalArgumentException("Interaction result provider must not be null");
-		}
-		this.interactionResultProvider = decoratingInteractionResultProviderProducer.apply(interactionResultProvider);
-		updateInteractionFactory();
-	}
-
-	override removeDecoratingUserInteractionResultProvider() {
-		if (this.interactionResultProvider.decoratedInteractionResultProvider !== null) {
-			this.interactionResultProvider = this.interactionResultProvider.decoratedInteractionResultProvider;
-			updateInteractionFactory();
-		}
+	override replaceUserInteractionResultProvider(
+		(InteractionResultProvider) => InteractionResultProvider decoratingInteractionResultProviderProducer
+	) {
+		val oldProvider = checkNotNull(interactionResultProvider, "No user interaction result provider is set!")
+		this.interactionResultProvider = decoratingInteractionResultProviderProducer.apply(interactionResultProvider)
+		updateInteractionFactory()
+		return [
+			this.interactionResultProvider = oldProvider
+			updateInteractionFactory()
+		]
 	}
 
 	private def updateInteractionFactory() {
 		this.interactionFactory = new InteractionFactoryImpl(interactionResultProvider, defaultWindowModality);
 	}
-
 }

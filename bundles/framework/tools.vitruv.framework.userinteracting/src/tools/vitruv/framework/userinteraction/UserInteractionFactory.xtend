@@ -65,17 +65,16 @@ class UserInteractionFactory {
 	}
 
 	/**
-	 * Creates a {@link PredefinedInteractionResultProvider} on which used inputs can be predefined and which simulates a think time everytime an 
-	 * interaction is performed. This can, for example, be performed for performance evaluations. The given {@link InteractionResultProvider}
-	 * is used as a fallback if not appropriate result is predefined.
+	 * Creates a {@link InteractionResultProvider} which simulates waiting for the user. This can, for 
+	 * example, be used for performance evaluations. The given {@code delegate} is used to actually provide results.
 	 * 
 	 * @param fallbackResultProvider - the provider to be used if no input was predefined
 	 * @param minWaittime - the minimum time to wait in milliseconds
 	 * @param maxWaittime - the maximum time to wait in milliseconds
 	 */
-	def PredefinedInteractionResultProvider createPredefinedThinktimeSimulatingInteractionResultProvider(
-		InteractionResultProvider fallbackResultProvider, int minWaittime, int maxWaittime) {
-		return new PredefinedThinktimeSimulatingInteractionResultProviderImpl(fallbackResultProvider, minWaittime,
+	def InteractionResultProvider createPredefinedThinktimeSimulatingInteractionResultProvider(
+		InteractionResultProvider delegate, int minWaittime, int maxWaittime) {
+		return new PredefinedThinktimeSimulatingInteractionResultProviderImpl(delegate, minWaittime,
 			maxWaittime);
 	}
 }

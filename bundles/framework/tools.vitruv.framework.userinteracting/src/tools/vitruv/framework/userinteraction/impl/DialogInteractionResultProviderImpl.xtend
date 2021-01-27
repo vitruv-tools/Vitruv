@@ -75,9 +75,4 @@ class DialogInteractionResultProviderImpl implements InteractionResultProvider {
 		dialog.showDialog()
 		return dialog.selectedChoices;
 	}
-
-	override getDecoratedInteractionResultProvider() {
-		return this;
-	}
-
 }

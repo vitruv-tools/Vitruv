@@ -6,6 +6,7 @@ import tools.vitruv.framework.userinteraction.UserInteractionOptions.InputValida
 import tools.vitruv.framework.change.interaction.UserInteractionBase
 import tools.vitruv.framework.userinteraction.InteractionResultProvider
 import tools.vitruv.framework.userinteraction.PredefinedInteractionResultProvider
+import org.eclipse.xtend.lib.annotations.FinalFieldsConstructor
 
 /**
  * An interaction result provider using predefined inputs, given using the 
@@ -14,20 +15,10 @@ import tools.vitruv.framework.userinteraction.PredefinedInteractionResultProvide
  * request is found.
  * @author Heiko Klare
  */
-class PredefinedInteractionResultProviderImpl extends PredefinedInteractionResultProvider {
-	final PredefinedInteractionMatcher predefinedInteractionMatcher;
-
-	/**
-	 * Instantiates a new provider.
-	 * The <code>fallbackResultProvider</code> is used whenever no matching input for a request was predefined.
-	 * If no fallback provider is specified, an exception is thrown when no matching predefined input is found.
-	 * 
-	 * @param fallbackResultProvider - the result provider to use when not matching predefined input is found
-	 */
-	new(InteractionResultProvider fallbackResultProvider) {
-		super(fallbackResultProvider)
-		this.predefinedInteractionMatcher = new PredefinedInteractionMatcher();
-	}
+ @FinalFieldsConstructor
+class PredefinedInteractionResultProviderImpl implements PredefinedInteractionResultProvider {
+	val InteractionResultProvider fallback 
+	val PredefinedInteractionMatcher predefinedInteractionMatcher = new PredefinedInteractionMatcher();
 
 	override void addUserInteractions(UserInteractionBase... interactions) {
 		interactions.forEach[predefinedInteractionMatcher.addInteraction(it)]
@@ -35,71 +26,54 @@ class PredefinedInteractionResultProviderImpl extends PredefinedInteractionResul
 
 	override getConfirmationInteractionResult(WindowModality windowModality, String title, String message,
 		String positiveDecisionText, String negativeDecisionText, String cancelDecisionText) {
-		val reusableInput = predefinedInteractionMatcher.getConfirmationResult(message);
-		if (reusableInput !== null) {
-			return reusableInput
-		} else if (decoratedInteractionResultProvider !== null) {
-			return decoratedInteractionResultProvider.getConfirmationInteractionResult(windowModality, title, message,
-				positiveDecisionText, negativeDecisionText, cancelDecisionText);
-		} else {
-			throw new IllegalStateException("No input given for confirmation:" + printInteraction(title, message));
+		var result = predefinedInteractionMatcher.getConfirmationResult(message)
+		if (result === null && fallback !== null) {
+			result = fallback.getConfirmationInteractionResult(windowModality, title, message, positiveDecisionText,
+				negativeDecisionText, cancelDecisionText)
 		}
+		return result.ifNullThrow [
+			"No input given for confirmation:" + printInteraction(title, message)
+		]
 	}
 
 	override getNotificationInteractionResult(WindowModality windowModality, String title, String message,
 		String positiveDecisionText, NotificationType notificationType) {
-		val reusableInput = predefinedInteractionMatcher.getNotificationResult(message);
-		if (reusableInput !== null) {
-			return;
-		} else if (decoratedInteractionResultProvider !== null) {
-			decoratedInteractionResultProvider.getNotificationInteractionResult(windowModality, title, message,
-				positiveDecisionText, notificationType);
-		} else {
-			// throw new IllegalStateException("No input given for notification " + title + ": " + message);
+		val result = predefinedInteractionMatcher.getNotificationResult(message)
+		if (result === null) {
+			fallback?.getNotificationInteractionResult(windowModality, title, message, positiveDecisionText, notificationType)
 		}
 	}
 
 	override getTextInputInteractionResult(WindowModality windowModality, String title, String message,
 		String positiveDecisionText, String cancelDecisionText, InputValidator inputValidator) {
-		val reusableInput = predefinedInteractionMatcher.getTextInputResult(message);
-		if (reusableInput !== null) {
-			return reusableInput;
-		} else if (decoratedInteractionResultProvider !== null) {
-			return decoratedInteractionResultProvider.getTextInputInteractionResult(windowModality, title, message,
-				positiveDecisionText, cancelDecisionText, inputValidator);
-		} else {
-			throw new IllegalStateException("No input given for text input: " + printInteraction(title, message));
-		}
+		predefinedInteractionMatcher.getTextInputResult(message)
+			?: fallback?.getTextInputInteractionResult(windowModality, title, message, positiveDecisionText,
+				cancelDecisionText, inputValidator)
+			.ifNullThrow [
+				"No input given for text input: " + printInteraction(title, message)
+			]
 	}
 
 	override getMultipleChoiceSingleSelectionInteractionResult(WindowModality windowModality, String title,
 		String message, String positiveDecisionText, String cancelDecisionText, Iterable<String> choices) {
-		val reusableInput = predefinedInteractionMatcher.getSingleSelectionResult(message, choices);
-		if (reusableInput !== null) {
-			return reusableInput;
-		} else if (decoratedInteractionResultProvider !== null) {
-			return decoratedInteractionResultProvider.
-				getMultipleChoiceSingleSelectionInteractionResult(windowModality, title, message, positiveDecisionText,
-					cancelDecisionText, choices);
-		} else {
-			throw new IllegalStateException('No input given for single selection:' +
-				printSelection(title, message, choices))
+		var result = predefinedInteractionMatcher.getSingleSelectionResult(message, choices)
+		if (result === null && fallback !== null) {
+			result = fallback.getMultipleChoiceSingleSelectionInteractionResult(windowModality, title, message,
+				positiveDecisionText, cancelDecisionText, choices)
 		}
+		return result.ifNullThrow [
+			'No input given for single selection:' + printSelection(title, message, choices)
+		]
 	}
 
 	override getMultipleChoiceMultipleSelectionInteractionResult(WindowModality windowModality, String title,
 		String message, String positiveDecisionText, String cancelDecisionText, Iterable<String> choices) {
-		val reusableInput = predefinedInteractionMatcher.getMultiSelectionResult(message, choices);
-		if (reusableInput !== null) {
-			return reusableInput;
-		} else if (decoratedInteractionResultProvider !== null) {
-			return decoratedInteractionResultProvider.
-				getMultipleChoiceMultipleSelectionInteractionResult(windowModality, title, message,
-					positiveDecisionText, cancelDecisionText, choices);
-		} else {
-			throw new IllegalStateException('No input given for multiple selection:' +
-				printSelection(title, message, choices))
-		}
+		predefinedInteractionMatcher.getMultiSelectionResult(message, choices)
+			?: fallback?.getMultipleChoiceMultipleSelectionInteractionResult(windowModality, title, message,
+				positiveDecisionText, cancelDecisionText, choices)
+			.ifNullThrow [
+				'No input given for multiple selection:' + printSelection(title, message, choices)
+			]
 	}
 
 	private def printInteraction(String title, String message) {
@@ -111,4 +85,11 @@ class PredefinedInteractionResultProviderImpl extends PredefinedInteractionResul
 			'''«FOR c : choices SEPARATOR System.lineSeparator»  «'\u2219' /* bullet point */» «c»«ENDFOR»'''
 	}
 
+	private def <T> T ifNullThrow(T value, () => String messageProducer) {
+		if (value === null) {
+			throw new IllegalStateException(messageProducer.apply())
+		} else {
+			return value
+		}
+	}
 }
