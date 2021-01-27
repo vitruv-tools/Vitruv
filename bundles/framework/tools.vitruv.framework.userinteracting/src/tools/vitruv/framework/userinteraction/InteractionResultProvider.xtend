@@ -25,6 +25,4 @@ interface InteractionResultProvider {
 
 	def Iterable<Integer> getMultipleChoiceMultipleSelectionInteractionResult(WindowModality windowModality,
 		String title, String message, String positiveDecisionText, String cancelDecisionText, Iterable<String> choices);
-
-	def InteractionResultProvider getDecoratedInteractionResultProvider();
 }
