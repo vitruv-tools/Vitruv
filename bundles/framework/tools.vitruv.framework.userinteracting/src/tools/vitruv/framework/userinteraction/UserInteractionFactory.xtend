@@ -4,7 +4,7 @@ import tools.vitruv.framework.userinteraction.impl.UserInteractorImpl
 import tools.vitruv.framework.change.interaction.UserInteractionBase
 import tools.vitruv.framework.userinteraction.impl.DialogInteractionResultProviderImpl
 import tools.vitruv.framework.userinteraction.impl.PredefinedInteractionResultProviderImpl
-import tools.vitruv.framework.userinteraction.impl.PredefinedThinktimeSimulatingInteractionResultProviderImpl
+import tools.vitruv.framework.userinteraction.impl.ThinktimeSimulatingInteractionResultProvider
 
 /**
  * Factory for {@link UserInteraction}s and {@link InteractionResultProvider}.
@@ -68,13 +68,13 @@ class UserInteractionFactory {
 	 * Creates a {@link InteractionResultProvider} which simulates waiting for the user. This can, for 
 	 * example, be used for performance evaluations. The given {@code delegate} is used to actually provide results.
 	 * 
-	 * @param fallbackResultProvider - the provider to be used if no input was predefined
+	 * @param delegate - the provider to be used if no input was predefined
 	 * @param minWaittime - the minimum time to wait in milliseconds
 	 * @param maxWaittime - the maximum time to wait in milliseconds
 	 */
-	def InteractionResultProvider createPredefinedThinktimeSimulatingInteractionResultProvider(
+	def InteractionResultProvider createThinktimeSimulatingInteractionResultProvider(
 		InteractionResultProvider delegate, int minWaittime, int maxWaittime) {
-		return new PredefinedThinktimeSimulatingInteractionResultProviderImpl(delegate, minWaittime,
+		return new ThinktimeSimulatingInteractionResultProvider(delegate, minWaittime,
 			maxWaittime);
 	}
 }

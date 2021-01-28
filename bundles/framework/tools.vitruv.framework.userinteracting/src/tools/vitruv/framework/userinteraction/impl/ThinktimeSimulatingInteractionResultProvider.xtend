@@ -10,8 +10,8 @@ import org.eclipse.xtend.lib.annotations.Delegate
  * 
  * @author Heiko Klare
  */
-class PredefinedThinktimeSimulatingInteractionResultProviderImpl implements InteractionResultProvider {
-	static val Logger logger = Logger.getLogger(PredefinedThinktimeSimulatingInteractionResultProviderImpl)
+class ThinktimeSimulatingInteractionResultProvider implements InteractionResultProvider {
+	static val Logger logger = Logger.getLogger(ThinktimeSimulatingInteractionResultProvider)
 	val Random random = new Random()
 	val int minWaittime
 	val int maxWaittime
