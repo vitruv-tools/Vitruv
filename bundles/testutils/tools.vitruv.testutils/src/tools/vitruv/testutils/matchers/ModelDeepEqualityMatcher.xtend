@@ -506,13 +506,13 @@ package class ModelDeepEqualityMatcher<O extends EObject> extends TypeSafeMatche
 
 		def private PrintResult printFeatureDifference(extension PrintTarget target, EStructuralFeature feature,
 			String context, Diff difference, Object value) {
-			print(context) //
-			+ (if (difference.match.left !== null) {
-				print(' (') + idProvider.printWithId(difference.match.left)[_, id|print(id)] + print(')')
-			} else {
-				PRINTED_NO_OUTPUT
-			}) + print('.') + print(feature.name) + print(' ') + print(difference.kind.verb) + print(': ') //
-			+ printValue(value) [subTarget, theValue | printFeatureValue(subTarget, idProvider, feature, theValue)]
+			print(context)
+				+ (if (difference.match.left !== null) {
+					print(' (') + idProvider.printWithId(difference.match.left)[_, id|print(id)] + print(')')
+				} else {
+					PRINTED_NO_OUTPUT
+				}) + print('.') + print(feature.name) + print(' ') + print(difference.kind.verb) + print(': ')
+			+ target.printFeatureValue(idProvider, feature, value)
 		}
 
 		def private String getVerb(DifferenceKind kind) {
