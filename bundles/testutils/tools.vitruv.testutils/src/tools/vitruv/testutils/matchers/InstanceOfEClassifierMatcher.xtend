@@ -6,7 +6,7 @@ import org.eclipse.emf.ecore.EClassifier
 import org.hamcrest.Description
 import org.eclipse.emf.ecore.EObject
 import static extension tools.vitruv.testutils.printing.ModelPrinting.*
-import static tools.vitruv.testutils.matchers.MatcherUtil.a
+import static tools.vitruv.testutils.printing.TestMessages.a
 
 @FinalFieldsConstructor
 package class InstanceOfEClassifierMatcher extends TypeSafeMatcher<Object> {

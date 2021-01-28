@@ -8,7 +8,7 @@ import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.compare.utils.IEqualityHelper
 import tools.vitruv.testutils.matchers.ModelDeepEqualityOption.EqualityStrategy
 import java.util.Set
-import static extension tools.vitruv.testutils.matchers.MatcherUtil.*
+import static extension tools.vitruv.testutils.printing.TestMessages.*
 
 @FinalFieldsConstructor
 package class EqualsStrategy extends EqualityStrategy {

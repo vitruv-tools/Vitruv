@@ -7,7 +7,6 @@ import org.eclipse.emf.ecore.resource.ResourceSet
 import tools.vitruv.framework.uuid.UuidGeneratorAndResolverImpl
 import tools.vitruv.framework.change.recording.AtomicEmfChangeRecorder
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
-import tools.vitruv.framework.userinteraction.PredefinedInteractionResultProvider
 import static extension tools.vitruv.framework.util.ResourceSetUtil.withGlobalFactories
 import tools.vitruv.framework.uuid.UuidGeneratorAndResolver
 import static com.google.common.base.Preconditions.checkState
@@ -34,25 +33,25 @@ class ChangePublishingTestView implements NonTransactionalTestView {
 
 	/**
 	 * Creates a test view that will store its persisted resources in the provided {@code persistenceDirectory},
-	 * allow to program interactions for the provided {@code interactionProvider} and use the provided {@code uriMode}.
+	 * allow to program interactions through the provided {@code userInteraction} and use the provided {@code uriMode}.
 	 */
-	new(Path persistenceDirectory, PredefinedInteractionResultProvider interactionProvider, UriMode uriMode) {
-		this(persistenceDirectory, interactionProvider, uriMode, null as UuidGeneratorAndResolver)
+	new(Path persistenceDirectory, TestUserInteraction userInteraction, UriMode uriMode) {
+		this(persistenceDirectory, userInteraction, uriMode, null as UuidGeneratorAndResolver)
 	}
 
 	/**
 	 * Creates a test view that will store its persisted resources in the provided {@code persistenceDirectory},
-	 * allow to program interactions for the provided {@code interactionProvider}, use the provided {@code uriMode} and
+	 * allow to program interactions through the provided {@code userInteraction}, use the provided {@code uriMode} and
 	 * use the provided {@code parentResolver} as parent resolver for UUID resolving.
 	 */
 	new(
 		Path persistenceDirectory,
-		PredefinedInteractionResultProvider interactionProvider,
+		TestUserInteraction userInteraction,
 		UriMode uriMode,
 		UuidGeneratorAndResolver parentResolver
 	) {
 		resourceSet = new ResourceSetImpl().withGlobalFactories()
-		delegate = new BasicTestView(resourceSet, persistenceDirectory, interactionProvider, uriMode)
+		delegate = new BasicTestView(resourceSet, persistenceDirectory, userInteraction, uriMode)
 		val uuidResolver = new UuidGeneratorAndResolverImpl(parentResolver, resourceSet, true)
 		changeRecorder = new AtomicEmfChangeRecorder(uuidResolver)
 		changeRecorder.beginRecording()
@@ -60,16 +59,16 @@ class ChangePublishingTestView implements NonTransactionalTestView {
 
 	/**
 	 * Creates a test view that will store its persisted resources in the provided {@code persistenceDirectory},
-	 * allow to program interactions for the provided {@code interactionProvider}, use the provided {@code uriMode} and
+	 * allow to program interactions through the provided {@code userInteraction}, use the provided {@code uriMode} and
 	 * be connected to the provided {@code virtualModel}.
 	 */
 	new(
 		Path persistenceDirectory,
-		PredefinedInteractionResultProvider interactionProvider,
+		TestUserInteraction userInteraction,
 		UriMode uriMode,
 		VirtualModel virtualModel
 	) {
-		this(persistenceDirectory, interactionProvider, uriMode, virtualModel.uuidGeneratorAndResolver)
+		this(persistenceDirectory, userInteraction, uriMode, virtualModel.uuidGeneratorAndResolver)
 		registerChangeProcessor[change|virtualModel.propagateChange(change)]
 	}
 

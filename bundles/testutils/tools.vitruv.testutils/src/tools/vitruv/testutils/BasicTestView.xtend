@@ -4,7 +4,6 @@ import org.eclipse.emf.ecore.resource.ResourceSet
 import java.nio.file.Path
 import org.eclipse.xtend.lib.annotations.Accessors
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
-import tools.vitruv.framework.userinteraction.PredefinedInteractionResultProvider
 import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.common.notify.Notifier
 import java.util.function.Consumer
@@ -16,13 +15,14 @@ import static com.google.common.base.Preconditions.checkArgument
 import tools.vitruv.framework.util.bridges.EMFBridge
 import static extension tools.vitruv.framework.util.ResourceSetUtil.withGlobalFactories
 import static extension tools.vitruv.framework.util.bridges.EcoreResourceBridge.loadOrCreateResource
-import tools.vitruv.framework.userinteraction.UserInteractionFactory
 import static extension java.nio.file.Files.move
 import static java.nio.file.Files.createDirectories
+import org.eclipse.xtend.lib.annotations.FinalFieldsConstructor
 
 /**
  * A minimal test view that gives access to resources, but does not record any changes.
- */
+ */ 
+@FinalFieldsConstructor
 class BasicTestView implements TestView {
 	val ResourceSet resourceSet
 	val Path persistenceDirectory
@@ -35,29 +35,15 @@ class BasicTestView implements TestView {
 	 * and use the provided {@code uriMode}.
 	 */
 	new(Path persistenceDirectory, UriMode uriMode) {
-		this(persistenceDirectory, UserInteractionFactory.instance.createPredefinedInteractionResultProvider(null),
-			uriMode)
+		this(persistenceDirectory, new TestUserInteraction(), uriMode)
 	}
 
 	/**
 	 * Creates a test view that will store its persisted resources in the provided {@code persistenceDirectory},
-	 * allow to program interactions for the provided {@code interactionProvider}, and use the provided {@code uriMode}.
+	 * allow to program interactions through the provided {@code userInteraction}, and use the provided {@code uriMode}.
 	 */
-	new(Path persistenceDirectory, PredefinedInteractionResultProvider interactionProvider, UriMode uriMode) {
-		this(new ResourceSetImpl().withGlobalFactories(), persistenceDirectory, interactionProvider, uriMode)
-	}
-
-	/**
-	 * Creates a test view that will store its persisted resources in the provided {@code persistenceDirectory}, load
-	 * resources into the provided {@code resourceSet}, allow to program interactions for the provided
-	 *  {@code interactionProvider}, and use the provided {@code uriMode}.
-	 */
-	new(ResourceSet resourceSet, Path persistenceDirectory, PredefinedInteractionResultProvider interactionProvider,
-		UriMode uriMode) {
-		this.resourceSet = resourceSet
-		this.persistenceDirectory = persistenceDirectory
-		this.uriMode = uriMode
-		this.userInteraction = new TestUserInteraction(interactionProvider)
+	new(Path persistenceDirectory, TestUserInteraction userInteraction, UriMode uriMode) {
+		this(new ResourceSetImpl().withGlobalFactories(), persistenceDirectory, userInteraction, uriMode)
 	}
 
 	override resourceAt(URI modelUri) {
