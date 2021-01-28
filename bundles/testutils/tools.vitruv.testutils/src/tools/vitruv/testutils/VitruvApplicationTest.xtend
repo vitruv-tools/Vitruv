@@ -16,7 +16,6 @@ import tools.vitruv.testutils.matchers.CorrespondenceModelContainer
 
 import org.eclipse.xtend.lib.annotations.Delegate
 import static tools.vitruv.testutils.UriMode.*
-import tools.vitruv.framework.userinteraction.PredefinedInteractionResultProvider
 import java.util.List
 
 @ExtendWith(TestProjectManager, TestLogging)
@@ -41,18 +40,17 @@ abstract class VitruvApplicationTest implements CorrespondenceModelContainer, Te
 		TuidManager.instance.reinitialize()
 		val changePropagationSpecifications = this.changePropagationSpecifications
 		val domains = changePropagationSpecifications.flatMap[List.of(sourceDomain, targetDomain)].toSet
-		var interactionProvider = UserInteractionFactory.instance.createPredefinedInteractionResultProvider(null)
-		var userInteractor = UserInteractionFactory.instance.createUserInteractor(interactionProvider)
+		val userInteraction = new TestUserInteraction
+		var userInteractor = UserInteractionFactory.instance.createUserInteractor(new TestUserInteraction.ResultProvider(userInteraction))
 		virtualModel = new VirtualModelImpl(vsumPath.toFile(), userInteractor, new VirtualModelConfiguration => [
 			domains.forEach[domain|addMetamodel(domain)]
 			changePropagationSpecifications.forEach[spec|addChangePropagationSpecification(spec)]
 		])
-		testView = generateTestView(testProjectPath, interactionProvider);
+		testView = generateTestView(testProjectPath, userInteraction);
 	}
 
-	def package TestView generateTestView(Path testProjectPath,
-		PredefinedInteractionResultProvider interactionProvider) {
-		new ChangePublishingTestView(testProjectPath, interactionProvider, this.uriMode, virtualModel)
+	def package TestView generateTestView(Path testProjectPath, TestUserInteraction userInteraction) {
+		new ChangePublishingTestView(testProjectPath, userInteraction, this.uriMode, virtualModel)
 	}
 
 	@AfterEach
@@ -64,5 +62,4 @@ abstract class VitruvApplicationTest implements CorrespondenceModelContainer, Te
 	override CorrespondenceModel getCorrespondenceModel() { virtualModel.correspondenceModel }
 
 	def protected InternalVirtualModel getVirtualModel() { virtualModel }
-
 }

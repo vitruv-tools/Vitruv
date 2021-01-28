@@ -1,11 +1,10 @@
 package tools.vitruv.testutils.matchers
 
 import org.eclipse.xtend.lib.annotations.FinalFieldsConstructor
-
 import java.util.Set
 import org.eclipse.emf.ecore.EStructuralFeature
 import org.eclipse.emf.ecore.EClassifier
-import static extension tools.vitruv.testutils.matchers.MatcherUtil.*
+import static extension tools.vitruv.testutils.printing.TestMessages.*
 import org.eclipse.emf.ecore.EObject
 import tools.vitruv.testutils.matchers.ModelDeepEqualityOption.EqualityFeatureFilter
 

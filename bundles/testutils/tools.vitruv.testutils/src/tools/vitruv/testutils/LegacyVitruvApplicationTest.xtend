@@ -2,7 +2,6 @@ package tools.vitruv.testutils
 
 import tools.vitruv.testutils.VitruvApplicationTest
 import java.nio.file.Path
-import tools.vitruv.framework.userinteraction.PredefinedInteractionResultProvider
 import edu.kit.ipd.sdq.activextendannotations.DelegateExcept
 
 /** 
@@ -17,9 +16,8 @@ abstract class LegacyVitruvApplicationTest extends VitruvApplicationTest impleme
 	@DelegateExcept(TestView)
 	NonTransactionalTestView testView
 
-	override generateTestView(Path testProjectPath, PredefinedInteractionResultProvider interactionResultProvider) {
-		val testView = new ChangePublishingTestView(testProjectPath, interactionResultProvider,
-			this.uriMode, virtualModel);
+	override generateTestView(Path testProjectPath, TestUserInteraction userInteraction) {
+		val testView = new ChangePublishingTestView(testProjectPath, userInteraction, this.uriMode, virtualModel)
 		testView.renewResourceCacheAfterPropagation = false
 		this.testView = testView
 	}

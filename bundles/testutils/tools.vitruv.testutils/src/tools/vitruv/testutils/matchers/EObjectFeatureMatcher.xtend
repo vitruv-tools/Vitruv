@@ -5,7 +5,7 @@ import org.hamcrest.TypeSafeMatcher
 import org.eclipse.emf.ecore.EStructuralFeature
 import org.eclipse.emf.ecore.EObject
 import org.hamcrest.Description
-import static tools.vitruv.testutils.matchers.MatcherUtil.a
+import static tools.vitruv.testutils.printing.TestMessages.a
 import org.hamcrest.Matcher
 import org.hamcrest.core.IsCollectionContaining
 import static extension tools.vitruv.testutils.printing.ModelPrinting.*

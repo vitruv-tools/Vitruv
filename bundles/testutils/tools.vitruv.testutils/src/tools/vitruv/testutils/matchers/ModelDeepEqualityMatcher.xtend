@@ -27,7 +27,6 @@ import tools.vitruv.testutils.printing.HamcrestDescriptionPrintTarget
 import tools.vitruv.testutils.printing.PrintResult
 import tools.vitruv.testutils.printing.PrintTarget
 
-import static tools.vitruv.testutils.matchers.MatcherUtil.a
 import static tools.vitruv.testutils.printing.PrintMode.*
 import static java.lang.Integer.MAX_VALUE
 
@@ -56,7 +55,7 @@ import tools.vitruv.testutils.matchers.ModelDeepEqualityOption.EqualityFeatureFi
 import tools.vitruv.testutils.matchers.ModelDeepEqualityOption.EqualityStrategy
 import org.eclipse.emf.compare.match.eobject.EqualityHelperExtensionProvider
 import org.eclipse.emf.compare.utils.IEqualityHelper
-import static extension tools.vitruv.testutils.matchers.MatcherUtil.joinSemantic
+import static extension tools.vitruv.testutils.printing.TestMessages.*
 import org.eclipse.emf.compare.match.IMatchEngine
 import org.eclipse.emf.compare.scope.IComparisonScope
 import org.eclipse.xtend.lib.annotations.Accessors
