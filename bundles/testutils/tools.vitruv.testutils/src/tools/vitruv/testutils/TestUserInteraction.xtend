@@ -206,7 +206,7 @@ class TestUserInteraction {
 		}
 		
 		def respondWithChoicesAt(int... resultIndeces) {
-			respondWithChoicesMatching [index, _ | index == resultIndeces.contains(index)]
+			respondWithChoicesMatching [index, _ | resultIndeces.contains(index)]
 		}
 		
 		def respondWithChoicesMatching((Integer, String)=>boolean selector) {
