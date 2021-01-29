@@ -96,7 +96,7 @@ abstract class AbstractVitruvDomain extends AbstractURIHaving implements VitruvD
 	}
 
 	override toString() {
-		return "Metamodel for namespaces: " + nsURIs;
+		return '''domain ‘«name»’''';
 	}
 
 	def boolean isMetamodelForVuri(VURI metamodelVURI) {

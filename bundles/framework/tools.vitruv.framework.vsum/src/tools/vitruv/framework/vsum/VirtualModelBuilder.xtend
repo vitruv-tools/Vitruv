@@ -122,7 +122,7 @@ class VirtualModelBuilder {
 		checkState(userInteractor !== null, "No user interactor was configured!")
 		if (domainRepository === null) {
 			checkState(!domains.isEmpty, "No domains were configured!")
-			new VitruvDomainRepositoryImpl(domains)
+			domainRepository = new VitruvDomainRepositoryImpl(domains)
 		}
 		for (tuidDomain : domainRepository.filter(TuidAwareVitruvDomain)) {
 			tuidDomain.registerAtTuidManagement()

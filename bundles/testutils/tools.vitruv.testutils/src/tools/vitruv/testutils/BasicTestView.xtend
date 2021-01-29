@@ -18,7 +18,9 @@ import static extension tools.vitruv.framework.util.bridges.EcoreResourceBridge.
 import static extension java.nio.file.Files.move
 import static java.nio.file.Files.createDirectories
 import org.eclipse.xtend.lib.annotations.FinalFieldsConstructor
-import static extension tools.vitruv.framework.domains.VitruvDomainResourceHandling.*
+import tools.vitruv.framework.domains.repository.VitruvDomainRepository
+import static com.google.common.base.Preconditions.checkNotNull
+import java.util.HashMap
 
 /**
  * A minimal test view that gives access to resources, but does not record any changes.
@@ -30,21 +32,28 @@ class BasicTestView implements TestView {
 	@Accessors
 	val TestUserInteraction userInteraction
 	val UriMode uriMode
+	val VitruvDomainRepository targetDomains
 	
 	/**
-	 * Creates a test view that will store its persisted resources in the provided {@code persistenceDirectory},
-	 * and use the provided {@code uriMode}.
+	 * Creates a test view for the provided {@code targetDomains} that will store its persisted resources in the
+	 *  provided {@code persistenceDirectory}, and use the provided {@code uriMode}.
 	 */
-	new(Path persistenceDirectory, UriMode uriMode) {
-		this(persistenceDirectory, new TestUserInteraction(), uriMode)
+	new(Path persistenceDirectory, UriMode uriMode, VitruvDomainRepository targetDomains) {
+		this(persistenceDirectory, new TestUserInteraction(), uriMode, targetDomains)
 	}
 
 	/**
-	 * Creates a test view that will store its persisted resources in the provided {@code persistenceDirectory},
-	 * allow to program interactions through the provided {@code userInteraction}, and use the provided {@code uriMode}.
+	 * Creates a test view for the provided {@code targetDomains} that will store its persisted resources in the
+	 * provided {@code persistenceDirectory}, allow to program interactions through the provided {@code userInteraction},
+	 * and use the provided {@code uriMode}.
 	 */
-	new(Path persistenceDirectory, TestUserInteraction userInteraction, UriMode uriMode) {
-		this(new ResourceSetImpl().withGlobalFactories(), persistenceDirectory, userInteraction, uriMode)
+	new(
+		Path persistenceDirectory,
+		TestUserInteraction userInteraction,
+		UriMode uriMode,
+		VitruvDomainRepository targetDomains
+	) {
+		this(new ResourceSetImpl().withGlobalFactories(), persistenceDirectory, userInteraction, uriMode, targetDomains)
 	}
 
 	override resourceAt(URI modelUri) {
@@ -55,7 +64,7 @@ class BasicTestView implements TestView {
 
 	override <T extends EObject> T from(Class<T> clazz, URI modelUri) {
 		val resource = resourceSet.withDomainLoadOptionsFor(modelUri) [getResource(modelUri, true)]
-		return from(clazz, resource)
+		return clazz.from(resource)
 	}
 
 	override <T extends Notifier> T record(T notifier, Consumer<T> consumer) {
@@ -65,7 +74,7 @@ class BasicTestView implements TestView {
 
 	override <T extends Notifier> List<PropagatedChange> propagate(T notifier, Consumer<T> consumer) {
 		val toSave = determineResource(notifier)
-		notifier.record(consumer)
+		consumer.accept(notifier)
 		(toSave ?: determineResource(notifier))?.saveOrDelete()
 		return emptyList()
 	}
@@ -128,5 +137,30 @@ class BasicTestView implements TestView {
 	override close() throws Exception {
 		resourceSet.resources.forEach[unload]
 		resourceSet.resources.clear
+	}
+	
+	def <RS extends ResourceSet, R> R withDomainLoadOptionsFor(RS resourceSet, URI uri, (RS)=>R block) {
+		val loadOptions = targetDomains.getDomain(uri.fileExtension)?.defaultLoadOptions ?: emptyMap
+		if (loadOptions.isEmpty) {
+			block.apply(resourceSet)
+		} else {
+			synchronized (resourceSet) {
+				val resourceSetLoadOptions = resourceSet.loadOptions
+				val oldOptions = if (!resourceSetLoadOptions.isEmpty) new HashMap(resourceSetLoadOptions) else emptyMap
+				resourceSetLoadOptions.putAll(loadOptions)
+				try {
+					block.apply(resourceSet)
+				} finally {
+					resourceSetLoadOptions.clear()
+					resourceSetLoadOptions.putAll(oldOptions)
+				}
+			}
+		}
+	}
+
+	def saveWithDomainOptions(Resource resource) {
+		val uri = checkNotNull(resource.URI, "Cannot save a resource without an URI!")
+		val saveOptions = targetDomains.getDomain(uri.fileExtension)?.defaultSaveOptions ?: emptyMap
+		resource.save(saveOptions)
 	}
 }
