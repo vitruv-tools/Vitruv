@@ -107,7 +107,7 @@ class ResourceRepositoryImpl implements ModelRepository, CorrespondenceProviding
 
 	def private void relinkUuids(ModelInstance modelInstance) {
 		for (EObject root : modelInstance.rootElements) {
-			root.eAllContents.forEachRemaining([ object |
+			root.eAllContents.forEachRemaining [ object |
 				if (uuidGeneratorAndResolver.hasUuid(object)) {
 					uuidGeneratorAndResolver.registerEObject(this.uuidGeneratorAndResolver.getUuid(object), object)
 				} else {
@@ -115,7 +115,7 @@ class ResourceRepositoryImpl implements ModelRepository, CorrespondenceProviding
 					// for Java
 					logger.trace('''Element «object» has no UUID that can be linked during resource reload''')
 				}
-			])
+			]
 		}
 	}
 
@@ -206,12 +206,12 @@ class ResourceRepositoryImpl implements ModelRepository, CorrespondenceProviding
 
 	def private void saveAllChangedModels() {
 		deleteEmptyModels()
-		for (ModelInstance modelInstance : this.modelInstances.values()) {
-			var Resource resourceToSave = modelInstance.resource
+		for (modelInstance : this.modelInstances.values) {
+			val resourceToSave = modelInstance.resource
 			if (resourceToSave.isModified()) {
 				logger.trace('''Saving resource: «resourceToSave»''')
 				saveModelInstance(modelInstance)
-				modelInstance.getResource().setModified(false)
+				resourceToSave.setModified(false)
 			}
 		}
 	}
@@ -241,7 +241,7 @@ class ResourceRepositoryImpl implements ModelRepository, CorrespondenceProviding
 	}
 
 	def private void initializeCorrespondenceModel() {
-		executeAsCommand[
+		executeAsCommand [
 			var correspondencesVURI = fileSystemHelper.correspondencesVURI
 			logger.trace('''Creating or loading correspondence model from: «correspondencesVURI»''')
 			val correspondencesResource = resourceSet.loadOrCreateResource(correspondencesVURI.EMFUri)

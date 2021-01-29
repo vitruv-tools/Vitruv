@@ -21,8 +21,7 @@ import tools.vitruv.framework.util.bridges.EMFBridge;
 import tools.vitruv.framework.util.datatypes.ModelInstance;
 import tools.vitruv.framework.util.datatypes.VURI;
 import tools.vitruv.framework.vsum.InternalVirtualModel;
-import tools.vitruv.framework.vsum.VirtualModelConfiguration;
-import tools.vitruv.framework.vsum.VirtualModelImpl;
+import tools.vitruv.framework.vsum.VirtualModelBuilder;
 import tools.vitruv.testutils.RegisterMetamodelsInStandalone;
 import tools.vitruv.testutils.TestLogging;
 import tools.vitruv.testutils.TestProject;
@@ -144,12 +143,11 @@ public abstract class VsumTest {
 	}
 
 	protected InternalVirtualModel createVirtualModel(final String vsumName) {
-		var interactionProvider = UserInteractionFactory.instance.createPredefinedInteractionResultProvider(null);
-		var userInteractor = UserInteractionFactory.instance.createUserInteractor(interactionProvider);
-		var configuration = new VirtualModelConfiguration();
-		configuration.addMetamodel(UmlDomain);
-		configuration.addMetamodel(PcmDomain);
-		return new VirtualModelImpl(this.testProjectFolder.resolve(vsumName).toFile(), userInteractor, configuration);
+		return new VirtualModelBuilder()
+			.withStorageFolder(testProjectFolder.resolve(vsumName))
+			.withUserInteractorForResultProvider(UserInteractionFactory.instance.createPredefinedInteractionResultProvider(null))
+			.withDomains(UmlDomain, PcmDomain)
+			.build();
 	}
 
 	private void createMockupModelsWithDefaultUris(final InternalVirtualModel vsum) {

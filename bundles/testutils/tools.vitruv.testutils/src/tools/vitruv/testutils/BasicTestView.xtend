@@ -18,6 +18,7 @@ import static extension tools.vitruv.framework.util.bridges.EcoreResourceBridge.
 import static extension java.nio.file.Files.move
 import static java.nio.file.Files.createDirectories
 import org.eclipse.xtend.lib.annotations.FinalFieldsConstructor
+import static extension tools.vitruv.framework.domains.VitruvDomainResourceHandling.*
 
 /**
  * A minimal test view that gives access to resources, but does not record any changes.
@@ -29,7 +30,7 @@ class BasicTestView implements TestView {
 	@Accessors
 	val TestUserInteraction userInteraction
 	val UriMode uriMode
-
+	
 	/**
 	 * Creates a test view that will store its persisted resources in the provided {@code persistenceDirectory},
 	 * and use the provided {@code uriMode}.
@@ -48,12 +49,13 @@ class BasicTestView implements TestView {
 
 	override resourceAt(URI modelUri) {
 		synchronized (resourceSet) {
-			resourceSet.loadOrCreateResource(modelUri)
+			resourceSet.withDomainLoadOptionsFor(modelUri) [loadOrCreateResource(modelUri)]
 		}
 	}
 
-	override <T> T from(Class<T> clazz, URI modelUri) {
-		return from(clazz, resourceSet.getResource(modelUri, true))
+	override <T extends EObject> T from(Class<T> clazz, URI modelUri) {
+		val resource = resourceSet.withDomainLoadOptionsFor(modelUri) [getResource(modelUri, true)]
+		return from(clazz, resource)
 	}
 
 	override <T extends Notifier> T record(T notifier, Consumer<T> consumer) {
@@ -87,7 +89,7 @@ class BasicTestView implements TestView {
 		if (resource.contents.isEmpty) {
 			resource.delete(emptyMap)
 		} else {
-			resource.save(emptyMap)
+			resource.saveWithDomainOptions()
 		}
 	}
 	 

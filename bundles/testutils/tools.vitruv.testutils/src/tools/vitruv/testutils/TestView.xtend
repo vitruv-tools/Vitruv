@@ -8,6 +8,7 @@ import org.eclipse.emf.common.notify.Notifier
 import java.util.function.Consumer
 import java.util.List
 import tools.vitruv.framework.change.description.PropagatedChange
+import org.eclipse.emf.ecore.EObject
 
 /**
  * A Vitruv view for testing purposes.
@@ -37,7 +38,7 @@ interface TestView extends AutoCloseable {
 	 * 
 	 * @param viewRelativePath A project-relative path to a model.
 	 */
-	def <T> T from(Class<T> clazz, Path viewRelativePath) {
+	def <T extends EObject> T from(Class<T> clazz, Path viewRelativePath) {
 		clazz.from(viewRelativePath.uri)
 	}
 
@@ -47,13 +48,13 @@ interface TestView extends AutoCloseable {
 	 * 
 	 * @param modelUri the {@link URI} of the model to load.
 	 */
-	def <T> T from(Class<T> clazz, URI modelUri)
+	def <T extends EObject> T from(Class<T> clazz, URI modelUri)
 
 	/** 
 	 * Casts the root element of the provided {@code resource} to the provided {@code clazz} and returns the casted 
 	 * object.
 	 */
-	def <T> T from(Class<T> clazz, Resource resource) {
+	def <T extends EObject> T from(Class<T> clazz, Resource resource) {
 		checkState(!resource.contents.isEmpty(), '''The resource at «resource.URI» is empty!''')
 		return clazz.cast(resource.contents.get(0))
 	}

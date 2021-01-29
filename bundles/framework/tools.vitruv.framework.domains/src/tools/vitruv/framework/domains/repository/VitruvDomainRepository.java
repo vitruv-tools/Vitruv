@@ -8,7 +8,6 @@ import tools.vitruv.framework.tuid.Tuid;
 import tools.vitruv.framework.util.datatypes.VURI;
 
 public interface VitruvDomainRepository extends Iterable<VitruvDomain> {
-    void addDomain(VitruvDomain metamodel);
     VitruvDomain getDomain(EObject object);
     boolean hasDomain(EObject object);
     TuidAwareVitruvDomain getDomain(Tuid tuid);

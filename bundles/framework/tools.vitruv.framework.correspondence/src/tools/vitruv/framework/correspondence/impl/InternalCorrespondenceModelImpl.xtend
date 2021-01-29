@@ -72,13 +72,11 @@ class InternalCorrespondenceModelImpl extends ModelInstance implements InternalC
 	}
 
 	private def void addCorrespondence(Correspondence correspondence) {
-		this.modelCommandExecutor.executeAsCommand(
-				[|
+		this.modelCommandExecutor.executeAsCommand[
 			addCorrespondenceToModel(correspondence)
 			registerCorrespondence(correspondence)
 			setChangedAfterLastSaveFlag()
-			return null
-		]);
+		]
 	}
 
 	def private void registerCorrespondence(Correspondence correspondence) {

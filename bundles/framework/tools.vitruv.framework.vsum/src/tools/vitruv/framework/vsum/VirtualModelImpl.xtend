@@ -10,10 +10,7 @@ import org.eclipse.emf.ecore.resource.Resource
 import tools.vitruv.framework.change.description.PropagatedChange
 import tools.vitruv.framework.change.description.VitruviusChange
 import tools.vitruv.framework.change.processing.ChangePropagationSpecificationProvider
-import tools.vitruv.framework.change.processing.ChangePropagationSpecificationRepository
-import tools.vitruv.framework.domains.TuidAwareVitruvDomain
 import tools.vitruv.framework.domains.repository.VitruvDomainRepository
-import tools.vitruv.framework.domains.repository.VitruvDomainRepositoryImpl
 import tools.vitruv.framework.userinteraction.InternalUserInteractor
 import tools.vitruv.framework.userinteraction.UserInteractor
 import tools.vitruv.framework.util.datatypes.VURI
@@ -27,10 +24,10 @@ import org.apache.log4j.Logger
 import org.eclipse.emf.common.util.URI
 
 class VirtualModelImpl implements InternalVirtualModel {
-	static val Logger LOGGER = Logger.getLogger(VirtualModelImpl.name)
+	static val Logger LOGGER = Logger.getLogger(VirtualModelImpl)
 	val ResourceRepositoryImpl resourceRepository
 	val ModelRepositoryImpl modelRepository
-	val VitruvDomainRepository metamodelRepository
+	val VitruvDomainRepository domainRepository
 	val ChangePropagator changePropagator
 	val ChangePropagationSpecificationProvider changePropagationSpecificationProvider
 	val File folder
@@ -41,27 +38,17 @@ class VirtualModelImpl implements InternalVirtualModel {
 	 */
 	val List<PropagatedChangeListener> propagatedChangeListeners
 
-	new(File folder, InternalUserInteractor userInteractor, VirtualModelConfiguration modelConfiguration) {
+	package new(File folder, InternalUserInteractor userInteractor, VitruvDomainRepository domainRepository, 
+		ChangePropagationSpecificationProvider changePropagationSpecificationProvider) {
 		this.folder = folder
-		this.metamodelRepository = new VitruvDomainRepositoryImpl()
-		for (metamodel : modelConfiguration.metamodels) {
-			this.metamodelRepository.addDomain(metamodel)
-			if (metamodel instanceof TuidAwareVitruvDomain) {
-				metamodel.registerAtTuidManagement()
-			}
-		}
-		this.resourceRepository = new ResourceRepositoryImpl(folder, metamodelRepository)
+		this.domainRepository = domainRepository
+		this.changePropagationSpecificationProvider = changePropagationSpecificationProvider
+		this.resourceRepository = new ResourceRepositoryImpl(folder, domainRepository)
 		this.modelRepository = new ModelRepositoryImpl(resourceRepository.uuidGeneratorAndResolver)
-		val changePropagationSpecificationRepository = new ChangePropagationSpecificationRepository()
-		for (changePropagationSpecification : modelConfiguration.changePropagationSpecifications) {
-			changePropagationSpecification.userInteractor = userInteractor
-			changePropagationSpecificationRepository.putChangePropagationSpecification(changePropagationSpecification)
-		}
-		this.changePropagationSpecificationProvider = changePropagationSpecificationRepository
 		this.changePropagator = new ChangePropagatorImpl(
 			resourceRepository,
 			changePropagationSpecificationProvider,
-			metamodelRepository,
+			domainRepository,
 			resourceRepository,
 			modelRepository,
 			userInteractor
@@ -69,7 +56,7 @@ class VirtualModelImpl implements InternalVirtualModel {
 		VirtualModelManager.instance.putVirtualModel(this)
 
 		this.propagatedChangeListeners = new Vector<PropagatedChangeListener>()
-		this.changeDomainExtractor = new ChangeDomainExtractor(metamodelRepository)
+		this.changeDomainExtractor = new ChangeDomainExtractor(domainRepository)
 	}
 
 	override getCorrespondenceModel() {
@@ -125,7 +112,7 @@ class VirtualModelImpl implements InternalVirtualModel {
 			throw new IllegalArgumentException("New state and old location cannot be null!")
 		}
 		val vuri = VURI.getInstance(oldLocation) // using the URI of a resource allows using the model resource, the model root, or any model element as input.
-		val vitruvDomain = metamodelRepository.getDomain(vuri.fileExtension)
+		val vitruvDomain = domainRepository.getDomain(vuri.fileExtension)
 		val currentState = resourceRepository.getModel(vuri).resource
 		if (currentState.isValid(newState)) {
 			val strategy = vitruvDomain.stateChangePropagationStrategy

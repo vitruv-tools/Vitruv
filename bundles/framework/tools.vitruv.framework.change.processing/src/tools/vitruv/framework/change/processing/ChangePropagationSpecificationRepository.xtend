@@ -2,36 +2,22 @@ package tools.vitruv.framework.change.processing
 
 import java.util.Map
 import java.util.List
-import java.util.HashMap
 import java.util.ArrayList
 import tools.vitruv.framework.domains.VitruvDomain
 
 class ChangePropagationSpecificationRepository implements ChangePropagationSpecificationProvider {
-	Map<VitruvDomain, List<ChangePropagationSpecification>> metamodelToPropagationSpecifications;
+	Map<VitruvDomain, List<ChangePropagationSpecification>> sourceDomainToPropagationSpecifications
 
-	new() {
-		metamodelToPropagationSpecifications = new HashMap<VitruvDomain, List<ChangePropagationSpecification>>();
+	new(Iterable<ChangePropagationSpecification> specifications) {
+		sourceDomainToPropagationSpecifications = specifications.groupBy [sourceDomain]
 	}
 	
 	override List<ChangePropagationSpecification> getChangePropagationSpecifications(VitruvDomain sourceDomain) {
-		val result = new ArrayList<ChangePropagationSpecification>();
-		if (metamodelToPropagationSpecifications.containsKey(sourceDomain)) {
-			result.addAll(metamodelToPropagationSpecifications.get(sourceDomain));
-		}
-		return result;
-	}
-	
-	def void putChangePropagationSpecification(ChangePropagationSpecification changePropagationSpecification) {
-		val changedDomain = changePropagationSpecification.sourceDomain;
-		if (!this.metamodelToPropagationSpecifications.containsKey(changedDomain)) {
-			this.metamodelToPropagationSpecifications.put(changedDomain, new ArrayList<ChangePropagationSpecification>());
-		}
-		val propagationSpecifications = this.metamodelToPropagationSpecifications.get(changedDomain);
-		propagationSpecifications.add(changePropagationSpecification);
+		val result = sourceDomainToPropagationSpecifications.get(sourceDomain)
+		return if (result !== null) new ArrayList(result) else emptyList
 	}
 	
 	override iterator() {
-		return metamodelToPropagationSpecifications.values.flatten.toList.iterator();
+		return sourceDomainToPropagationSpecifications.values.flatten.toList.iterator()
 	}
-	
 }
