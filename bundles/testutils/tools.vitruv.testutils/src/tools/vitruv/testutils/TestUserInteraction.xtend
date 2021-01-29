@@ -12,13 +12,15 @@ import org.eclipse.xtend.lib.annotations.Accessors
 import static extension tools.vitruv.testutils.printing.TestMessages.*
 import java.util.Collection
 import java.util.List
+import java.util.ArrayList
+import java.util.Set
 
 class TestUserInteraction {
 	val Deque<Pair<(ConfirmationInteractionDescription)=>boolean, Boolean>> confirmations = new LinkedList
 	val Deque<Pair<(NotificationInteractionDescription)=>boolean, Void>> notificationReactions = new LinkedList
 	val Deque<Pair<(TextInputInteractionDescription)=>boolean, String>> textInputs = new LinkedList
-	val Deque<Pair<(MultipleChoiceInteractionDescription)=>boolean, (Integer, String)=>boolean>> multipleChoices = new LinkedList
-	val Deque<Pair<(MultipleChoiceMultipleSelectionInteractionDescription)=>boolean, (Integer, String)=>boolean>> multipleChoiceMultipleSelections = new LinkedList
+	val Deque<Pair<(MultipleChoiceInteractionDescription)=>boolean, (MultipleChoiceInteractionDescription)=>int>> multipleChoices = new LinkedList
+	val Deque<Pair<(MultipleChoiceMultipleSelectionInteractionDescription)=>boolean, (MultipleChoiceMultipleSelectionInteractionDescription)=>int[]>> multipleChoiceMultipleSelections = new LinkedList
 
 	def void addNextConfirmationInput(boolean nextConfirmation) {
 		onNextConfirmation.respondWith(nextConfirmation)
@@ -182,17 +184,26 @@ class TestUserInteraction {
 		val (MultipleChoiceInteractionDescription)=>boolean condition
 		
 		def respondWith(String result) {
-			respondWithChoiceMatching [value, _ | value == result]
+			respondWithChoiceMatching [it == result]
 			return owner
 		}
 		
 		def respondWithChoiceAt(int resultIndex) {
-			respondWithChoiceMatching [index, _ | index == resultIndex]
+			owner.multipleChoices.push(condition -> [resultIndex])
 		}
 		
-		def respondWithChoiceMatching((Integer, String)=>boolean selector) {
-			owner.multipleChoices.push(condition -> selector)
+		def respondWithChoiceMatching((String)=>boolean selector) {
+			owner.multipleChoices.push(condition -> [assertedIndexBy(selector)])
 			return owner
+		}
+		
+		def private static int assertedIndexBy(MultipleChoiceInteractionDescription interaction, (String)=>boolean selector) {
+			for (var i = 0, val choiceIt = interaction.choices.iterator; choiceIt.hasNext; i += 1) {
+				if (selector.apply(choiceIt.next)) {
+					return i
+				}
+			}
+			throw new AssertionError('''«interaction.type» without an acceptable choice:«lineSeparator»«interaction»''')
 		}
 	}
 	
@@ -202,16 +213,33 @@ class TestUserInteraction {
 		val (MultipleChoiceMultipleSelectionInteractionDescription)=>boolean condition
 		
 		def respondWith(String... results) {
-			respondWithChoicesMatching [value, _ | results.contains(value)]
+			respondWith(Set.of(results))
+		}
+		
+		def respondWith(Set<String> results) {
+			respondWithChoicesMatching [results.contains(it)]
 		}
 		
 		def respondWithChoicesAt(int... resultIndeces) {
-			respondWithChoicesMatching [index, _ | resultIndeces.contains(index)]
+			owner.multipleChoiceMultipleSelections.push(condition -> [resultIndeces])
 		}
 		
-		def respondWithChoicesMatching((Integer, String)=>boolean selector) {
-			owner.multipleChoiceMultipleSelections.push(condition -> selector)
+		def respondWithChoicesMatching((String)=>boolean selector) {
+			owner.multipleChoiceMultipleSelections.push(condition -> [assertedIndecesBy(selector)])
 			return owner
+		}
+		
+		def private static int[] assertedIndecesBy(MultipleChoiceMultipleSelectionInteractionDescription interaction, (String)=>boolean selector) {
+			val result = new ArrayList<Integer>
+			for (var i = 0, val choiceIt = interaction.getChoices.iterator; choiceIt.hasNext; i += 1) {
+				if (selector.apply(choiceIt.next)) {
+					result += i
+				}
+			}
+			if (result.isEmpty) {
+				throw new AssertionError('''«interaction.type» without any acceptable choice:«lineSeparator»«interaction»''')
+			}
+			return result
 		}
 	}
 	
@@ -321,27 +349,15 @@ class TestUserInteraction {
 			String message, String positiveDecisionText, String cancelDecisionText, Iterable<String> choices) {
 			val interaction = new MultipleChoiceInteractionDescription(windowModality, title, message,
 					 positiveDecisionText, cancelDecisionText, choices)
-			val selector = source.multipleChoices.requireMatchingInteraction(interaction)
-			val result = choices.selectedBy(selector).head
-			if (result === null) {
-				throw new AssertionError('''«interaction.type» without an acceptable choice:«lineSeparator»«interaction»''')
-			}
-			return result
+			val resultProvider = source.multipleChoices.requireMatchingInteraction(interaction)
+			return resultProvider.apply(interaction)
 		}
 		
 		override getMultipleChoiceMultipleSelectionInteractionResult(WindowModality windowModality, String title, String message, String positiveDecisionText, String cancelDecisionText, Iterable<String> choices) {
 			val interaction = new MultipleChoiceMultipleSelectionInteractionDescription(windowModality, title, message,
 			 	positiveDecisionText, cancelDecisionText, choices)
-			val selector = source.multipleChoiceMultipleSelections.requireMatchingInteraction(interaction)
-			val result = choices.selectedBy(selector).toList
-			if (result.isEmpty) {
-				throw new AssertionError('''«interaction.type» without an acceptable choice:«lineSeparator»«interaction»''')
-			}
-			return result
-		}
-		
-		private static def <T> selectedBy(Iterable<T> choices, (Integer, T)=>boolean selector) {
-			choices.indexed.filter [selector.apply(key, value)].map [key]
+			val resultProvider = source.multipleChoiceMultipleSelections.requireMatchingInteraction(interaction)
+			return resultProvider.apply(interaction)
 		}
 		
 		private static def <Description extends InteractionDescription, Result> requireMatchingInteraction(
