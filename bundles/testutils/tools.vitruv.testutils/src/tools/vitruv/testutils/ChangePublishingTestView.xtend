@@ -19,6 +19,7 @@ import tools.vitruv.framework.change.description.VitruviusChangeFactory
 import tools.vitruv.framework.vsum.VirtualModel
 import org.eclipse.xtend.lib.annotations.Delegate
 import org.eclipse.emf.ecore.resource.Resource
+import static extension tools.vitruv.framework.domains.VitruvDomainResourceHandling.saveWithDomainOptions
 
 /**
  * A test view that will record and publish the changes created in it.
@@ -113,7 +114,7 @@ class ChangePublishingTestView implements NonTransactionalTestView {
 		if (resource.contents.isEmpty) {
 			resource.delete(emptyMap)
 		} else {
-			resource.save(emptyMap)
+			resource.saveWithDomainOptions()
 		}
 	}
 
