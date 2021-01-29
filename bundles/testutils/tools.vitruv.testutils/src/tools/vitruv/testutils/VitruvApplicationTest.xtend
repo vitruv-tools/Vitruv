@@ -15,6 +15,8 @@ import org.eclipse.xtend.lib.annotations.Delegate
 import static tools.vitruv.testutils.UriMode.*
 import java.util.List
 import tools.vitruv.framework.vsum.VirtualModelBuilder
+import tools.vitruv.framework.domains.repository.VitruvDomainRepository
+import tools.vitruv.framework.domains.repository.VitruvDomainRepositoryImpl
 
 @ExtendWith(TestProjectManager, TestLogging)
 abstract class VitruvApplicationTest implements CorrespondenceModelContainer, TestView {
@@ -38,17 +40,20 @@ abstract class VitruvApplicationTest implements CorrespondenceModelContainer, Te
 		TuidManager.instance.reinitialize()
 		val changePropagationSpecifications = this.changePropagationSpecifications
 		val userInteraction = new TestUserInteraction
+		val targetDomains = new VitruvDomainRepositoryImpl(
+			changePropagationSpecifications.flatMap [List.of(sourceDomain, targetDomain)].toSet
+		)
 		virtualModel = new VirtualModelBuilder()
 			.withStorageFolder(vsumPath)
 			.withUserInteractorForResultProvider(new TestUserInteraction.ResultProvider(userInteraction))
-			.withDomains(changePropagationSpecifications.flatMap [List.of(sourceDomain, targetDomain)])
+			.withDomainRepository(targetDomains)
 			.withChangePropagationSpecifications(changePropagationSpecifications)
 			.build()
-		testView = generateTestView(testProjectPath, userInteraction);
+		testView = generateTestView(testProjectPath, userInteraction, targetDomains)
 	}
 
-	def package TestView generateTestView(Path testProjectPath, TestUserInteraction userInteraction) {
-		new ChangePublishingTestView(testProjectPath, userInteraction, this.uriMode, virtualModel)
+	def package TestView generateTestView(Path testProjectPath, TestUserInteraction userInteraction, VitruvDomainRepository targetDomains) {
+		new ChangePublishingTestView(testProjectPath, userInteraction, this.uriMode, virtualModel, targetDomains)
 	}
 
 	@AfterEach
