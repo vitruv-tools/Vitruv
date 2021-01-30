@@ -56,18 +56,9 @@ class TestUserInteraction {
 	}
 	
 	/**
-	 * Configures the provided {@code check} to be run on the next notification interaction.
+	 * Acknowledges once (i.e. does not raise an error for) a notification passing the provided {@code check}.
 	 */
-	def onNextNotification((NotificationInteractionDescription)=>void check) {
-		checkNotifications [check.apply(it); true]
-		return this
-	}
-	
-	/**
-	 * Configures the provided {@code check} to be run on every notification from here on, until {@code check}
-	 * return {@code true}.
-	 */
-	def checkNotifications((NotificationInteractionDescription)=>boolean check) {
+	def acknowledgeNotification((NotificationInteractionDescription)=>boolean check) {
 		notificationReactions.push(check -> null)
 		return this
 	}
