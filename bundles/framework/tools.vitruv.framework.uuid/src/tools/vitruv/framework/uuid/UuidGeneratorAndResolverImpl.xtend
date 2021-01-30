@@ -258,14 +258,8 @@ class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 		return resourceSet
 	}
 
-	private def EObject resolveObject(URI uri) {
-		// TODO running as command should never be necessary for non-Java domains.
-		// Running in a command should probably be removed after domains can modify the UUID behaviour (see #326)
-		runAsCommandIfNecessary(null)[resourceSet.getEObject(uri, true)]
-	}
-
 	override registerUuidForGlobalUri(String uuid, URI uri) {
-		val localObject = resolveObject(uri)
+		val localObject = resourceSet.getEObject(uri, true)
 		if (localObject !== null) {
 			registerEObject(uuid, localObject)
 			// Recursively do that
@@ -317,21 +311,14 @@ class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 			// Not having a UUID is only supported for pathmap resources and currently Java root elements
 			if (hasUuid(element)) {
 				childResolver.registerEObject(getUuid(element), element)
-			} else {
-				if (uri.isPathmap || uri.fileExtension == "java") {
-					val resolvedObject = resolveObject(EcoreUtil.getURI(element))
-					if (resolvedObject !== null) {
-						childResolver.registerEObject(generateUuid(resolvedObject), element)
-					// several objects in the Java domain are created ad-hoc while loading a resource. We won’t find
-					// UUIDs for them, however, until now, this has not caused problems. Hence, we tolerate missing
-					// UUIDs for the Java domain and hope for the best
-					// TODO externalize to the Java domain, see #326
-					} else if (uri.fileExtension != "java") {
-						throw new IllegalStateException('''Object could not be resolved in this UuidResolver's resource set: «element»''')
-					}
-				} else {
-					throw new IllegalStateException('''Element does not have a UUID but should have one: «element»''')
+			} else if (uri.isPathmap) {
+				val resolvedObject = resourceSet.getEObject(EcoreUtil.getURI(element), true)
+				if (resolvedObject === null) {
+					throw new IllegalStateException('''Object could not be resolved in this UuidResolver's resource set: «element»''')
 				}
+				childResolver.registerEObject(generateUuid(resolvedObject), element)
+			} else {
+				throw new IllegalStateException('''Element does not have a UUID but should have one: «element»''')
 			}
 		}
 	}
