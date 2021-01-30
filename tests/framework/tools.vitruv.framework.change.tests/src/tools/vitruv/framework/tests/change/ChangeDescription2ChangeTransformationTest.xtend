@@ -26,6 +26,8 @@ import tools.vitruv.testutils.TestProjectManager
 import tools.vitruv.testutils.TestProject
 import java.nio.file.Path
 import tools.vitruv.testutils.RegisterMetamodelsInStandalone
+import tools.vitruv.framework.domains.repository.DomainAwareResourceSet
+import tools.vitruv.testutils.domains.TestDomainsRepository
 
 @ExtendWith(TestProjectManager, RegisterMetamodelsInStandalone)
 abstract class ChangeDescription2ChangeTransformationTest {
@@ -40,7 +42,7 @@ abstract class ChangeDescription2ChangeTransformationTest {
 	@BeforeEach
 	def void beforeTest(@TestProject Path tempFolder) {
 		this.tempFolder = tempFolder
-		this.resourceSet = new ResourceSetImpl().withGlobalFactories
+		this.resourceSet = new DomainAwareResourceSet(TestDomainsRepository.INSTANCE)
 		this.uuidGeneratorAndResolver = new UuidGeneratorAndResolverImpl(resourceSet, true)
 		this.changeRecorder = new AtomicEmfChangeRecorder(uuidGeneratorAndResolver)
 		this.resourceSet.startRecording

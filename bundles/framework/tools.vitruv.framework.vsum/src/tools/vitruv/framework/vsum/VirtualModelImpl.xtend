@@ -204,4 +204,7 @@ class VirtualModelImpl implements InternalVirtualModel {
 		resourceRepository.dispose	
 	}
 
+	override getDomains() {
+		domainRepository
+	}
 }

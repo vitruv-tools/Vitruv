@@ -11,7 +11,8 @@ Require-Bundle: org.junit.jupiter.api,
  org.eclipse.xtend.lib,
  tools.vitruv.testutils.metamodels,
  edu.kit.ipd.sdq.activextendannotations,
- tools.vitruv.testutils
+ tools.vitruv.testutils,
+ tools.vitruv.testutils.domains
 Bundle-Vendor: vitruv.tools
 Export-Package: tools.vitruv.framework.tests.change;x-internal:=true,
  tools.vitruv.framework.tests.change.attribute;x-internal:=true,

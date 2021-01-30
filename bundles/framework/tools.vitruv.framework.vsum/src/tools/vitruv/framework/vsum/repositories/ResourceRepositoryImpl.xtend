@@ -12,7 +12,6 @@ import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.emf.ecore.resource.ResourceSet
-import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import org.eclipse.xtend.lib.annotations.Accessors
 import tools.vitruv.framework.change.description.TransactionalChange
 import tools.vitruv.framework.change.description.VitruviusChangeFactory
@@ -36,15 +35,15 @@ import tools.vitruv.framework.vsum.helper.FileSystemHelper
 import static java.util.Collections.emptyMap
 import static extension tools.vitruv.framework.util.ResourceSetUtil.getRequiredTransactionalEditingDomain
 import static extension tools.vitruv.framework.util.ResourceSetUtil.getTransactionalEditingDomain
-import static extension tools.vitruv.framework.util.ResourceSetUtil.withGlobalFactories
 import static extension tools.vitruv.framework.util.command.EMFCommandBridge.executeVitruviusRecordingCommandAndFlushHistory
 import tools.vitruv.framework.util.command.VitruviusRecordingCommand
 import static extension tools.vitruv.framework.util.bridges.EcoreResourceBridge.loadOrCreateResource
+import tools.vitruv.framework.domains.repository.DomainAwareResourceSet
 
 class ResourceRepositoryImpl implements ModelRepository, CorrespondenceProviding {
 	static val logger = Logger.getLogger(ResourceRepositoryImpl.simpleName)
 	val ResourceSet resourceSet
-	val VitruvDomainRepository metamodelRepository
+	val VitruvDomainRepository domainRepository
 	val Map<VURI, ModelInstance> modelInstances
 	InternalCorrespondenceModel correspondenceModel
 	val FileSystemHelper fileSystemHelper
@@ -58,10 +57,10 @@ class ResourceRepositoryImpl implements ModelRepository, CorrespondenceProviding
 		this(folder, metamodelRepository, null)
 	}
 
-	new(File folder, VitruvDomainRepository metamodelRepository, ClassLoader classLoader) {
-		this.metamodelRepository = metamodelRepository
+	new(File folder, VitruvDomainRepository domainRepository, ClassLoader classLoader) {
+		this.domainRepository = domainRepository
 		this.folder = folder
-		this.resourceSet = new ResourceSetImpl().withGlobalFactories()
+		this.resourceSet = new DomainAwareResourceSet(domainRepository)
 		this.modelInstances = new HashMap<VURI, ModelInstance>()
 		try {
 			this.fileSystemHelper = new FileSystemHelper(this.folder)
@@ -225,7 +224,7 @@ class ResourceRepositoryImpl implements ModelRepository, CorrespondenceProviding
 
 	def private ModelInstance getOrCreateUnregisteredModelInstance(VURI modelURI) {
 		var String fileExtension = modelURI.fileExtension
-		var VitruvDomain metamodel = this.metamodelRepository.getDomain(fileExtension)
+		var VitruvDomain metamodel = this.domainRepository.getDomain(fileExtension)
 		if (metamodel === null) {
 			throw new RuntimeException( '''Cannot create a new model instance at the uri '«modelURI»' because no metamodel is registered for the file extension '«fileExtension»'!''')
 		}
@@ -250,7 +249,7 @@ class ResourceRepositoryImpl implements ModelRepository, CorrespondenceProviding
 			recorder.addToRecording(correspondencesResource)
 			recorder.beginRecording()
 			correspondenceModel = CorrespondenceModelFactory.instance.createCorrespondenceModel(
-				new TuidResolverImpl(metamodelRepository, this), uuidGeneratorAndResolver, this, metamodelRepository,
+				new TuidResolverImpl(domainRepository, this), uuidGeneratorAndResolver, this, domainRepository,
 				correspondencesVURI, correspondencesResource)
 			recorder.endRecording()
 			recorder.addToRecording(correspondencesResource)
@@ -292,7 +291,7 @@ class ResourceRepositoryImpl implements ModelRepository, CorrespondenceProviding
 	}
 
 	def private VitruvDomain getMetamodelByURI(VURI uri) {
-		metamodelRepository.getDomain(uri.fileExtension)
+		domainRepository.getDomain(uri.fileExtension)
 	}
 
 	override void startRecording() {

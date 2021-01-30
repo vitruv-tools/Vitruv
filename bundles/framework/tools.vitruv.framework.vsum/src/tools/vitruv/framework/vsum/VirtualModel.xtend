@@ -9,6 +9,7 @@ import tools.vitruv.framework.util.datatypes.ModelInstance
 import tools.vitruv.framework.util.datatypes.VURI
 import tools.vitruv.framework.uuid.UuidGeneratorAndResolver
 import org.eclipse.emf.common.util.URI
+import tools.vitruv.framework.domains.repository.VitruvDomainRepository
 
 interface VirtualModel {
 	def File getFolder();
@@ -37,4 +38,6 @@ interface VirtualModel {
 	def ModelInstance getModelInstance(VURI modelVuri);
 
 	def UuidGeneratorAndResolver getUuidGeneratorAndResolver();
+	
+	def VitruvDomainRepository getDomains()
 }

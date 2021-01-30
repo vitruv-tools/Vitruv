@@ -6,8 +6,6 @@ import java.nio.file.Path
 import org.eclipse.emf.ecore.resource.ResourceSet
 import tools.vitruv.framework.uuid.UuidGeneratorAndResolverImpl
 import tools.vitruv.framework.change.recording.AtomicEmfChangeRecorder
-import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
-import static extension tools.vitruv.framework.util.ResourceSetUtil.withGlobalFactories
 import tools.vitruv.framework.uuid.UuidGeneratorAndResolver
 import static com.google.common.base.Preconditions.checkState
 import static com.google.common.base.Preconditions.checkArgument
@@ -22,6 +20,7 @@ import tools.vitruv.framework.domains.repository.VitruvDomainRepository
 import tools.vitruv.framework.change.description.TransactionalChange
 import java.util.ArrayList
 import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
+import tools.vitruv.framework.domains.repository.DomainAwareResourceSet
 
 /**
  * A test view that will record and publish the changes created in it.
@@ -60,10 +59,11 @@ class ChangePublishingTestView implements NonTransactionalTestView {
 		UuidGeneratorAndResolver parentResolver,
 		VitruvDomainRepository targetDomains
 	) {
-		resourceSet = new ResourceSetImpl().withGlobalFactories()
-		delegate = new BasicTestView(resourceSet, persistenceDirectory, userInteraction, uriMode, targetDomains)
+		val resourceSet = new DomainAwareResourceSet(targetDomains)
+		this.resourceSet = resourceSet
+		this. delegate = new BasicTestView(persistenceDirectory, resourceSet, userInteraction, uriMode)
 		val uuidResolver = new UuidGeneratorAndResolverImpl(parentResolver, resourceSet, true)
-		changeRecorder = new AtomicEmfChangeRecorder(uuidResolver)
+		this.changeRecorder = new AtomicEmfChangeRecorder(uuidResolver)
 		changeRecorder.beginRecording()
 	}
 

@@ -16,10 +16,11 @@ class ResourceSetUtil {
 	}
 
 	def static getRequiredTransactionalEditingDomain(ResourceSet resourceSet) {
-		synchronized (resourceSet) {
-			resourceSet.transactionalEditingDomain ?:
-				TransactionalEditingDomain.Factory.INSTANCE.createEditingDomain(resourceSet)
-		}
+		resourceSet.transactionalEditingDomain ?:
+			synchronized (resourceSet) {
+				resourceSet.transactionalEditingDomain ?:
+					TransactionalEditingDomain.Factory.INSTANCE.createEditingDomain(resourceSet)
+			}
 	}
 
 	def static getTransactionalEditingDomain(ResourceSet resourceSet) {
