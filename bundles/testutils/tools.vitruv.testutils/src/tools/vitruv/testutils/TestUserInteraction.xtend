@@ -5,7 +5,6 @@ import tools.vitruv.framework.userinteraction.UserInteractionOptions.WindowModal
 import tools.vitruv.framework.userinteraction.UserInteractionOptions.NotificationType
 import tools.vitruv.framework.userinteraction.UserInteractionOptions.InputValidator
 import org.eclipse.xtend.lib.annotations.FinalFieldsConstructor
-import java.util.Deque
 import java.util.LinkedList
 import static java.lang.System.lineSeparator
 import org.eclipse.xtend.lib.annotations.Accessors
@@ -16,11 +15,11 @@ import java.util.ArrayList
 import java.util.Set
 
 class TestUserInteraction {
-	val Deque<Pair<(ConfirmationInteractionDescription)=>boolean, Boolean>> confirmations = new LinkedList
-	val Deque<Pair<(NotificationInteractionDescription)=>boolean, Void>> notificationReactions = new LinkedList
-	val Deque<Pair<(TextInputInteractionDescription)=>boolean, String>> textInputs = new LinkedList
-	val Deque<Pair<(MultipleChoiceInteractionDescription)=>boolean, (MultipleChoiceInteractionDescription)=>int>> multipleChoices = new LinkedList
-	val Deque<Pair<(MultipleChoiceMultipleSelectionInteractionDescription)=>boolean, (MultipleChoiceMultipleSelectionInteractionDescription)=>int[]>> multipleChoiceMultipleSelections = new LinkedList
+	val List<Pair<(ConfirmationInteractionDescription)=>boolean, Boolean>> confirmations = new LinkedList
+	val List<Pair<(NotificationInteractionDescription)=>boolean, Void>> notificationReactions = new LinkedList
+	val List<Pair<(TextInputInteractionDescription)=>boolean, String>> textInputs = new LinkedList
+	val List<Pair<(MultipleChoiceInteractionDescription)=>boolean, (MultipleChoiceInteractionDescription)=>int>> multipleChoices = new LinkedList
+	val List<Pair<(MultipleChoiceMultipleSelectionInteractionDescription)=>boolean, (MultipleChoiceMultipleSelectionInteractionDescription)=>int[]>> multipleChoiceMultipleSelections = new LinkedList
 
 	def void addNextConfirmationInput(boolean nextConfirmation) {
 		onNextConfirmation.respondWith(nextConfirmation)
@@ -59,7 +58,7 @@ class TestUserInteraction {
 	 * Acknowledges once (i.e. does not raise an error for) a notification passing the provided {@code check}.
 	 */
 	def acknowledgeNotification((NotificationInteractionDescription)=>boolean check) {
-		notificationReactions.push(check -> null)
+		notificationReactions += check -> null
 		return this
 	}
 	
@@ -157,14 +156,14 @@ class TestUserInteraction {
 	@FinalFieldsConstructor
 	static class SimpleResponseBuilder<Description, Result> {
 		val TestUserInteraction owner
-		val Deque<Pair<(Description)=>boolean, Result>> targetDeque
+		val List<Pair<(Description)=>boolean, Result>> targetQueue
 		val (Description)=>boolean condition
 		
 		/**
 		 * Responds the interaction with the provided {@code result} if the condition this builder was created for holds.
 		 */
-		def respondWith(Result result) {
-			targetDeque.push(condition -> result)
+		def TestUserInteraction respondWith(Result result) {
+			targetQueue += condition -> result
 			return owner
 		}
 	}
@@ -174,17 +173,17 @@ class TestUserInteraction {
 		val TestUserInteraction owner
 		val (MultipleChoiceInteractionDescription)=>boolean condition
 		
-		def respondWith(String result) {
+		def TestUserInteraction respondWith(String result) {
 			respondWithChoiceMatching [it == result]
+		}
+		
+		def TestUserInteraction respondWithChoiceAt(int resultIndex) {
+			owner.multipleChoices.add(condition -> [resultIndex])
 			return owner
 		}
 		
-		def respondWithChoiceAt(int resultIndex) {
-			owner.multipleChoices.push(condition -> [resultIndex])
-		}
-		
-		def respondWithChoiceMatching((String)=>boolean selector) {
-			owner.multipleChoices.push(condition -> [assertedIndexBy(selector)])
+		def TestUserInteraction respondWithChoiceMatching((String)=>boolean selector) {
+			owner.multipleChoices.add(condition -> [assertedIndexBy(selector)])
 			return owner
 		}
 		
@@ -203,20 +202,21 @@ class TestUserInteraction {
 		val TestUserInteraction owner
 		val (MultipleChoiceMultipleSelectionInteractionDescription)=>boolean condition
 		
-		def respondWith(String... results) {
+		def TestUserInteraction respondWith(String... results) {
 			respondWith(Set.of(results))
 		}
 		
-		def respondWith(Set<String> results) {
+		def TestUserInteraction respondWith(Set<String> results) {
 			respondWithChoicesMatching [results.contains(it)]
 		}
 		
-		def respondWithChoicesAt(int... resultIndeces) {
-			owner.multipleChoiceMultipleSelections.push(condition -> [resultIndeces])
+		def TestUserInteraction respondWithChoicesAt(int... resultIndeces) {
+			owner.multipleChoiceMultipleSelections.add(condition -> [resultIndeces])
+			return owner
 		}
 		
-		def respondWithChoicesMatching((String)=>boolean selector) {
-			owner.multipleChoiceMultipleSelections.push(condition -> [assertedIndecesBy(selector)])
+		def TestUserInteraction respondWithChoicesMatching((String)=>boolean selector) {
+			owner.multipleChoiceMultipleSelections.add(condition -> [assertedIndecesBy(selector)])
 			return owner
 		}
 		
