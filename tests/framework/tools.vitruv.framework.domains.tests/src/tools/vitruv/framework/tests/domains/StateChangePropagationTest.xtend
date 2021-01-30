@@ -28,6 +28,8 @@ import static tools.vitruv.testutils.metamodels.PcmMockupCreators.pcm
 import static tools.vitruv.testutils.metamodels.UmlMockupCreators.uml
 import tools.vitruv.testutils.TestProjectManager
 import tools.vitruv.testutils.RegisterMetamodelsInStandalone
+import tools.vitruv.framework.domains.repository.DomainAwareResourceSet
+import tools.vitruv.testutils.domains.TestDomainsRepository
 
 @ExtendWith(TestProjectManager, TestLogging, RegisterMetamodelsInStandalone)
 abstract class StateChangePropagationTest {
@@ -56,7 +58,7 @@ abstract class StateChangePropagationTest {
 		// Setup:
 		strategyToTest = new DefaultStateBasedChangeResolutionStrategy
 		resourceSet = new ResourceSetImpl
-		checkpointResourceSet = new ResourceSetImpl
+		checkpointResourceSet = new DomainAwareResourceSet(TestDomainsRepository.INSTANCE)
 		setupResolver = new UuidGeneratorAndResolverImpl(resourceSet, true)
 		changeRecorder = new AtomicEmfChangeRecorder(setupResolver)
 		// Create mockup models:

@@ -1,9 +1,7 @@
 package tools.vitruv.testutils
 
-import org.eclipse.emf.ecore.resource.ResourceSet
 import java.nio.file.Path
 import org.eclipse.xtend.lib.annotations.Accessors
-import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.common.notify.Notifier
 import java.util.function.Consumer
@@ -13,26 +11,22 @@ import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.emf.ecore.EObject
 import static com.google.common.base.Preconditions.checkArgument
 import tools.vitruv.framework.util.bridges.EMFBridge
-import static extension tools.vitruv.framework.util.ResourceSetUtil.withGlobalFactories
-import static extension tools.vitruv.framework.util.bridges.EcoreResourceBridge.loadOrCreateResource
 import static extension java.nio.file.Files.move
 import static java.nio.file.Files.createDirectories
-import org.eclipse.xtend.lib.annotations.FinalFieldsConstructor
 import tools.vitruv.framework.domains.repository.VitruvDomainRepository
-import static com.google.common.base.Preconditions.checkNotNull
-import java.util.HashMap
+import tools.vitruv.framework.util.SavingResourceSet
+import tools.vitruv.framework.domains.repository.DomainAwareResourceSet
+import static extension tools.vitruv.framework.util.bridges.EcoreResourceBridge.loadOrCreateResource
 
 /**
  * A minimal test view that gives access to resources, but does not record any changes.
  */ 
-@FinalFieldsConstructor
 class BasicTestView implements TestView {
-	val ResourceSet resourceSet
 	val Path persistenceDirectory
+	val SavingResourceSet resourceSet
 	@Accessors
 	val TestUserInteraction userInteraction
 	val UriMode uriMode
-	val VitruvDomainRepository targetDomains
 	
 	/**
 	 * Creates a test view for the provided {@code targetDomains} that will store its persisted resources in the
@@ -53,17 +47,32 @@ class BasicTestView implements TestView {
 		UriMode uriMode,
 		VitruvDomainRepository targetDomains
 	) {
-		this(new ResourceSetImpl().withGlobalFactories(), persistenceDirectory, userInteraction, uriMode, targetDomains)
+		this(persistenceDirectory, new DomainAwareResourceSet(targetDomains), userInteraction, uriMode)
 	}
-
+	
+	/**
+	 * Creates a test view that will store its persisted resources in the provided {@code persistenceDirectory}, access
+	 * resources through the provided {@code resourceSet}, allow to program interactions through the provided 
+	 * {@code userInteraction}, and use the provided {@code uriMode}.
+	 */
+	new(
+		Path persistenceDirectory,
+		SavingResourceSet resourceSet,
+		TestUserInteraction userInteraction,
+		UriMode uriMode
+	) {
+		this.persistenceDirectory = persistenceDirectory
+		this.resourceSet = resourceSet
+		this.userInteraction = userInteraction
+		this.uriMode = uriMode
+	}
+	
 	override resourceAt(URI modelUri) {
-		synchronized (resourceSet) {
-			resourceSet.withDomainLoadOptionsFor(modelUri) [loadOrCreateResource(modelUri)]
-		}
+		resourceSet.loadOrCreateResource(modelUri)
 	}
 
 	override <T extends EObject> T from(Class<T> clazz, URI modelUri) {
-		val resource = resourceSet.withDomainLoadOptionsFor(modelUri) [getResource(modelUri, true)]
+		val resource = resourceSet.getResource(modelUri, true)
 		return clazz.from(resource)
 	}
 
@@ -98,7 +107,7 @@ class BasicTestView implements TestView {
 		if (resource.contents.isEmpty) {
 			resource.delete(emptyMap)
 		} else {
-			resource.saveWithDomainOptions()
+			resourceSet.save(resource)
 		}
 	}
 	 
@@ -135,32 +144,7 @@ class BasicTestView implements TestView {
 	}
 
 	override close() throws Exception {
-		resourceSet.resources.forEach[unload]
-		resourceSet.resources.clear
-	}
-	
-	def <RS extends ResourceSet, R> R withDomainLoadOptionsFor(RS resourceSet, URI uri, (RS)=>R block) {
-		val loadOptions = targetDomains.getDomain(uri.fileExtension)?.defaultLoadOptions ?: emptyMap
-		if (loadOptions.isEmpty) {
-			block.apply(resourceSet)
-		} else {
-			synchronized (resourceSet) {
-				val resourceSetLoadOptions = resourceSet.loadOptions
-				val oldOptions = if (!resourceSetLoadOptions.isEmpty) new HashMap(resourceSetLoadOptions) else emptyMap
-				resourceSetLoadOptions.putAll(loadOptions)
-				try {
-					block.apply(resourceSet)
-				} finally {
-					resourceSetLoadOptions.clear()
-					resourceSetLoadOptions.putAll(oldOptions)
-				}
-			}
-		}
-	}
-
-	def saveWithDomainOptions(Resource resource) {
-		val uri = checkNotNull(resource.URI, "Cannot save a resource without an URI!")
-		val saveOptions = targetDomains.getDomain(uri.fileExtension)?.defaultSaveOptions ?: emptyMap
-		resource.save(saveOptions)
+		resourceSet.resources.forEach [unload()]
+		resourceSet.resources.clear()
 	}
 }
