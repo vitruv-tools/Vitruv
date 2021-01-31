@@ -4,7 +4,6 @@ import allElementTypes.Root
 import java.util.List
 
 import tools.vitruv.framework.change.echange.EChange
-import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import tools.vitruv.framework.change.recording.AtomicEmfChangeRecorder
 import tools.vitruv.framework.util.bridges.EMFBridge
 import tools.vitruv.framework.uuid.UuidGeneratorAndResolverImpl
@@ -12,7 +11,6 @@ import static extension tools.vitruv.framework.change.echange.resolve.EChangeRes
 import tools.vitruv.framework.uuid.UuidGeneratorAndResolver
 import tools.vitruv.framework.change.echange.resolve.EChangeUnresolver
 import org.eclipse.emf.ecore.resource.ResourceSet
-import static extension tools.vitruv.framework.util.ResourceSetUtil.withGlobalFactories
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.AfterEach
 import static org.junit.jupiter.api.Assertions.assertEquals
