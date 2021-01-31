@@ -11,6 +11,8 @@
 
 package tools.vitruv.domains.emf.monitorededitor.test.utils;
 
+import static java.util.Collections.emptyList;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -23,6 +25,8 @@ import tools.vitruv.domains.emf.monitorededitor.ISynchronizingMonitoredEmfEditor
 import tools.vitruv.domains.emf.monitorededitor.IVitruviusEMFEditorMonitor.IVitruviusAccessor;
 import tools.vitruv.framework.change.description.PropagatedChange;
 import tools.vitruv.framework.change.description.VitruviusChange;
+import tools.vitruv.framework.domains.repository.VitruvDomainRepository;
+import tools.vitruv.framework.domains.repository.VitruvDomainRepositoryImpl;
 import tools.vitruv.framework.util.datatypes.ModelInstance;
 import tools.vitruv.framework.util.datatypes.VURI;
 import tools.vitruv.framework.uuid.UuidGeneratorAndResolver;
@@ -72,6 +76,10 @@ public class DefaultImplementations {
             return null;
         }
 
+		@Override
+		public VitruvDomainRepository getDomains() {
+			return new VitruvDomainRepositoryImpl(emptyList());
+		}
     };
 
     public static final IVitruviusAccessor ALL_ACCEPTING_VITRUV_ACCESSOR = new IVitruviusAccessor() {
@@ -160,5 +168,9 @@ public class DefaultImplementations {
             return null;
         }
 
+		@Override
+		public VitruvDomainRepository getDomains() {
+			return new VitruvDomainRepositoryImpl(emptyList());
+		}
     }
 }

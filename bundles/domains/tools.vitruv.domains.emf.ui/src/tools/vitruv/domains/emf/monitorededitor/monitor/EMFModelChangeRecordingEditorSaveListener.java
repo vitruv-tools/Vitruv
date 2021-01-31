@@ -152,7 +152,9 @@ public abstract class EMFModelChangeRecordingEditorSaveListener {
             ? virtualModel.getUuidGeneratorAndResolver()
                 : null;
         // TODO Set strict mode to false
-        var resolverResourceSet = new DomainAwareResourceSet(targetResource.getResourceSet(), virtualModel.getDomains());
+        var resolverResourceSet = virtualModel != null
+            ? new DomainAwareResourceSet(targetResource.getResourceSet(), virtualModel.getDomains())
+                : targetResource.getResourceSet();
         UuidGeneratorAndResolver localUuidResolver = new UuidGeneratorAndResolverImpl(globalUuidGeneratorAndResolver,
             resolverResourceSet, false);
 
