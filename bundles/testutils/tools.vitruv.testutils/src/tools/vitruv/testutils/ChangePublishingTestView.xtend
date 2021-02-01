@@ -125,7 +125,7 @@ class ChangePublishingTestView implements NonTransactionalTestView {
 	def private propagateChanges(Iterable<TransactionalChange> changes) {
 		val compositeChange = VitruviusChangeFactory.instance.createCompositeChange(changes)
 		checkState(compositeChange.validate, "The recorded change set is not valid!")
-		val propagationResult = changeProcessors.flatMap[apply(compositeChange)].toList
+		val propagationResult = changeProcessors.flatMapFixed [apply(compositeChange)]
 		if (renewResourceCacheAfterPropagation) {
 			renewResourceCache()
 		}
