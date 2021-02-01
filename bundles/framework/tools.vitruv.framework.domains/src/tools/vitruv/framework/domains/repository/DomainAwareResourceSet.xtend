@@ -10,14 +10,16 @@ import static extension tools.vitruv.framework.util.ResourceSetUtil.*
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import org.eclipse.xtend.lib.annotations.Delegate
 import tools.vitruv.framework.util.SavingResourceSet
+import org.eclipse.xtend.lib.annotations.Accessors
+import tools.vitruv.framework.util.DecoratedResourceSet
 
 /**
  * A resource set allowing loading and saving EMF resources while respecting domain settings. Domain settings will 
  * only be respected when using methods from this class. Calling methods like {@link Resource#load} or 
  * {@link Resource#save} directly on the returned resources will <em>not</em> respect domain settings!
  */
-class DomainAwareResourceSet implements SavingResourceSet {
-	@Delegate val ResourceSet resourceSet
+class DomainAwareResourceSet implements SavingResourceSet, DecoratedResourceSet {
+	@Delegate @Accessors val ResourceSet original
 	val VitruvDomainRepository domains
 	
 	/**
@@ -25,7 +27,7 @@ class DomainAwareResourceSet implements SavingResourceSet {
 	 * provided {@code domains}.
 	 */
 	new(ResourceSet resourceSet, VitruvDomainRepository domains) {
-		this.resourceSet = resourceSet
+		this.original = resourceSet
 		this.domains = domains
 	}
 	
@@ -39,18 +41,18 @@ class DomainAwareResourceSet implements SavingResourceSet {
 	override getResource(URI uri, boolean loadOnDemand) {
 		var Map<?, ?> loadOptions
 		if (!loadOnDemand || (loadOptions = getLoadOptionsFor(uri)).isEmpty) {
-			resourceSet.getResource(uri, loadOnDemand)
+			original.getResource(uri, loadOnDemand)
 		} else {
-			resourceSet.withLoadOptions(loadOptions) [getResource(uri, loadOnDemand)]
+			original.withLoadOptions(loadOptions) [getResource(uri, loadOnDemand)]
 		}
 	}
 	
 	override getEObject(URI uri, boolean loadOnDemand) {
 		var Map<?, ?> loadOptions
 		if (!loadOnDemand || (loadOptions = getLoadOptionsFor(uri)).isEmpty) {
-			resourceSet.getEObject(uri, loadOnDemand)
+			original.getEObject(uri, loadOnDemand)
 		} else {
-			resourceSet.withLoadOptions(loadOptions) [getEObject(uri, loadOnDemand)]
+			original.withLoadOptions(loadOptions) [getEObject(uri, loadOnDemand)]
 		}
 	}
 	
