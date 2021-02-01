@@ -44,13 +44,13 @@ class ResourceRepositoryImpl implements ModelRepository, CorrespondenceProviding
 	static val logger = Logger.getLogger(ResourceRepositoryImpl.simpleName)
 	val ResourceSet resourceSet
 	val VitruvDomainRepository domainRepository
-	val Map<VURI, ModelInstance> modelInstances
-	InternalCorrespondenceModel correspondenceModel
+	val Map<VURI, ModelInstance> modelInstances = new HashMap()
+	val InternalCorrespondenceModel correspondenceModel
 	val FileSystemHelper fileSystemHelper
 	val File folder
-	@Accessors(PUBLIC_GETTER, PRIVATE_SETTER)
-	UuidGeneratorAndResolver uuidGeneratorAndResolver
-	val Map<VitruvDomain, AtomicEmfChangeRecorder> domainToRecorder
+	@Accessors
+	val UuidGeneratorAndResolver uuidGeneratorAndResolver
+	val Map<VitruvDomain, AtomicEmfChangeRecorder> domainToRecorder = new HashMap()
 	var isRecording = false
 
 	new(File folder, VitruvDomainRepository metamodelRepository) {
@@ -61,17 +61,15 @@ class ResourceRepositoryImpl implements ModelRepository, CorrespondenceProviding
 		this.domainRepository = domainRepository
 		this.folder = folder
 		this.resourceSet = new DomainAwareResourceSet(domainRepository)
-		this.modelInstances = new HashMap<VURI, ModelInstance>()
 		try {
-			this.fileSystemHelper = new FileSystemHelper(this.folder)
+			this.fileSystemHelper = new FileSystemHelper(folder)
 		} catch (IOException e) {
 			val message = '''Unable to initialize V-SUM metadata folders in folder: «folder»'''
 			logger.error(message, e)
 			throw new IllegalStateException(message, e)
 		}
-		initializeUuidProviderAndResolver()
-		this.domainToRecorder = new HashMap<VitruvDomain, AtomicEmfChangeRecorder>()
-		initializeCorrespondenceModel()
+		this.uuidGeneratorAndResolver = initializeUuidProviderAndResolver()
+		this.correspondenceModel = initializeCorrespondenceModel()
 		loadVURIsOfVSMUModelInstances()
 	}
 
@@ -239,24 +237,25 @@ class ResourceRepositoryImpl implements ModelRepository, CorrespondenceProviding
 		return modelInstance
 	}
 
-	def private void initializeCorrespondenceModel() {
+	def private initializeCorrespondenceModel() {
 		executeAsCommand [
 			var correspondencesVURI = fileSystemHelper.correspondencesVURI
 			logger.trace('''Creating or loading correspondence model from: «correspondencesVURI»''')
 			val correspondencesResource = resourceSet.loadOrCreateResource(correspondencesVURI.EMFUri)
-			correspondencesResource.save(null);
+			correspondencesResource.save(null)
 			var recorder = getOrCreateChangeRecorder(correspondencesVURI)
 			recorder.addToRecording(correspondencesResource)
 			recorder.beginRecording()
-			correspondenceModel = CorrespondenceModelFactory.instance.createCorrespondenceModel(
+			val correspondenceModel = CorrespondenceModelFactory.instance.createCorrespondenceModel(
 				new TuidResolverImpl(domainRepository, this), uuidGeneratorAndResolver, this, domainRepository,
 				correspondencesVURI, correspondencesResource)
 			recorder.endRecording()
 			recorder.addToRecording(correspondencesResource)
+			correspondenceModel
 		]
 	}
 
-	def private void initializeUuidProviderAndResolver() {
+	def private initializeUuidProviderAndResolver() {
 		executeAsCommand [
 			var uuidProviderVURI = fileSystemHelper.uuidProviderAndResolverVURI
 			logger.trace('''Creating or loading uuid provider and resolver model from: «uuidProviderVURI»''')
@@ -265,7 +264,7 @@ class ResourceRepositoryImpl implements ModelRepository, CorrespondenceProviding
 			// create changes in any case. We should therefore use one monitor per model and turn on
 			// strict mode
 			// depending on the kind of model/view (textual vs. semantic)
-			uuidGeneratorAndResolver = new UuidGeneratorAndResolverImpl(this.resourceSet, uuidProviderResource, false)
+			new UuidGeneratorAndResolverImpl(this.resourceSet, uuidProviderResource, false)
 		]
 	}
 
