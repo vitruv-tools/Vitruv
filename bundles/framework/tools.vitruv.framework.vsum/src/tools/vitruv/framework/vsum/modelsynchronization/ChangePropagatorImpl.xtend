@@ -113,14 +113,13 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 		TransactionalChange change,
 		ChangedResourcesTracker changedResourcesTracker
 	) {
-		val changeApplicationFunction = [ UuidResolver uuidResolver |
+		this.resourceRepository.executeOnUuidResolver [ UuidResolver uuidResolver |
 			change.resolveBeforeAndApplyForward(uuidResolver)
 			// If change has a URI, add the model to the repository
 			if(change.URI !== null) resourceRepository.getModel(change.getURI())
 			change.affectedEObjects.forEach[modelRepository.addRootElement(it)]
 			return
 		]
-		this.resourceRepository.executeOnUuidResolver(changeApplicationFunction)
 		modelRepository.cleanupRootElements
 
 		val changedObjects = change.affectedEObjects
