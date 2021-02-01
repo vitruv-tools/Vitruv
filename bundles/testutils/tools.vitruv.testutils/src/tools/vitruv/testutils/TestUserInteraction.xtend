@@ -38,7 +38,7 @@ class TestUserInteraction {
 	}
 	
 	/**
-	 * Configure as response to a confirmation interaction. The next confirmation that matches the
+	 * Configure a response to a confirmation interaction. The next confirmation that matches the
 	 * provided {@code condition} will be responded to with the result that is configured on the returned builder.
 	 * Once the result has been provided, it will not be used again. If the {@code condition} matches an interaction
 	 * that already has a programmed response, the response programmed on the returned builder will take precedence.

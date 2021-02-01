@@ -295,21 +295,24 @@ class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 
 	override void loadUuidsToChild(UuidResolver childResolver, URI uri) {
 		// Only load UUIDs if resource exists (a pathmap resource always exists)
-		if (!(((uri.file || uri.platform) && uri.existsResourceAtUri) || uri.isPathmap)) {
-			return
-		}
-		for (val allContents = childResolver.resourceSet.getResource(uri, true).allContents; allContents.hasNext;) {
-			val element = allContents.next
-			if (hasUuid(element)) {
-				childResolver.registerEObject(getUuid(element), element)
-			} else if (uri.isPathmap) { // Not having a UUID is only supported for pathmap resources
-				val resolvedObject = resourceSet.getEObject(EcoreUtil.getURI(element), true)
-				if (resolvedObject === null) {
-					throw new IllegalStateException('''Object could not be resolved in this UuidResolver's resource set: «element»''')
+		if (((uri.isFile || uri.isPlatform) && uri.existsResourceAtUri) || uri.isPathmap) {
+			for (val allContents = childResolver.resourceSet.getResource(uri, true).allContents; allContents.hasNext;) {
+				val element = allContents.next
+				var elementUuid = internalGetUuid(element)
+				
+				// Not having a UUID is only supported for pathmap resources
+				if (elementUuid === null && uri.isPathmap) {
+					val resolvedObject = resourceSet.getEObject(EcoreUtil.getURI(element), true)
+					if (resolvedObject === null) {
+						throw new IllegalStateException('''Object could not be resolved in this UuidResolver's resource set: «element»''')
+					}
+					elementUuid = generateUuid(resolvedObject)
+				}		
+				if (elementUuid === null) {
+					throw new IllegalStateException('''Element does not have a UUID but should have one: «element»''')
 				}
-				childResolver.registerEObject(generateUuid(resolvedObject), element)
-			} else {
-				throw new IllegalStateException('''Element does not have a UUID but should have one: «element»''')
+				
+				childResolver.registerEObject(elementUuid, element)
 			}
 		}
 	}
