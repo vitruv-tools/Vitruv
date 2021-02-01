@@ -135,34 +135,32 @@ class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 			return localResult
 		}
 		
-		// If the object is from the resolvers resource set, take it; otherwise resolve it
-		val resolvedObject = if (eObject.eResource?.resourceSet == resourceSet) {
-			eObject
-		} else {
-			val uri = EcoreUtil.getURI(eObject)
-			if (uri !== null) {
-				resourceSet.getEObject(uri, false)
-			}
-		}
-		// The EClass check avoids that an objects of another type with the same URI is resolved
-		// This is, for example, the case if a modifier in a UML model is changed, as it is only a
-		// marker class that is replaced, having always the same URI on the same model element.
-		if (resolvedObject !== null && resolvedObject.eClass == eObject.eClass) {
-			val resolvedKey = repository.EObjectToUuid.get(resolvedObject)
-			if (resolvedKey !== null) {
-				return resolvedKey
-			}
-		} else {
-			// Finally look for a proxy in the repository (due to a deleted object) and match the URI
-			for (proxyObject : repository.EObjectToUuid.keySet.filterNull.filter[eIsProxy]) {
-				if (EcoreUtil.getURI(proxyObject).equals(EcoreUtil.getURI(eObject))) {
-					return repository.EObjectToUuid.get(proxyObject)
+		val objectUri = EcoreUtil.getURI(eObject)
+		// If the object is not from the resolver’s resource set, resolve it and try again
+		if (eObject.eResource?.resourceSet != repository.eResource.resourceSet) {
+			val resolvedObject = resourceSet.getEObject(objectUri, false)
+			// The EClass check avoids that an objects of another type with the same URI is resolved
+			// This is, for example, the case if a modifier in a UML model is changed, as it is only a
+			// marker class that is replaced, having always the same URI on the same model element.
+			if (resolvedObject !== null && resolvedObject.eClass == eObject.eClass) {
+				val resolvedObjectUuid = repository.EObjectToUuid.get(resolvedObject)
+				if (resolvedObjectUuid !== null) {
+					return resolvedObjectUuid
 				}
 			}
 		}
 
+		// Finally look for a proxy in the repository (due to a deleted object) and match the URI
+		val uuidByProxy = repository.EObjectToUuid.entrySet
+			.filter [key.eIsProxy]
+			.findFirst [EcoreUtil.getURI(key) == objectUri]
+			?.value
+		if (uuidByProxy !== null) {
+			return uuidByProxy
+		}
+
 		if (eObject instanceof EClass) {
-			return eObject.generateUuid
+			return generateUuid(eObject)
 		}
 
 		return null
@@ -177,10 +175,8 @@ class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 	}
 
 	override getPotentiallyCachedEObject(String uuid) {
-		if (cache.uuidToEObject.containsKey(uuid)) {
-			return cache.uuidToEObject.get(uuid)
-		}
-		return getEObject(uuid)
+		cache.uuidToEObject.get(uuid)
+			?: getEObject(uuid)
 	}
 
 	private def EObject internalGetEObject(String uuid) {
@@ -239,10 +235,8 @@ class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 	}
 
 	override hasPotentiallyCachedEObject(String uuid) {
-		if (cache.uuidToEObject.containsKey(uuid)) {
-			return true
-		}
-		return internalGetEObject(uuid) !== null
+		cache.uuidToEObject.containsKey(uuid)
+			|| internalGetEObject(uuid) !== null
 	}
 
 	override hasUuid(EObject object) {
@@ -278,12 +272,9 @@ class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 	}
 
 	override getPotentiallyCachedUuid(EObject eObject) {
-		if (cache.EObjectToUuid.containsKey(eObject)) {
-			return cache.EObjectToUuid.get(eObject)
-		} else if (cache.EObjectToUuid.exists[EcoreUtil.equals(eObject, key)]) {
-			return cache.EObjectToUuid.findFirst[EcoreUtil.equals(eObject, key)].value
-		}
-		return getUuid(eObject)
+		return cache.EObjectToUuid.get(eObject)
+			?: cache.EObjectToUuid.findFirst [EcoreUtil.equals(eObject, key)]?.value
+			?: getUuid(eObject)
 	}
 
 	override hasPotentiallyCachedUuid(EObject eObject) {
