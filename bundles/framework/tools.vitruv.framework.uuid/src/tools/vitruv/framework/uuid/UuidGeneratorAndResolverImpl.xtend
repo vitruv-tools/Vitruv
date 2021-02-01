@@ -153,7 +153,7 @@ class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 
 		// Finally look for a proxy in the repository (due to a deleted object) and match the URI
 		val uuidByProxy = repository.EObjectToUuid.entrySet
-			.filter [key.eIsProxy]
+			.filter [key !== null && key.eIsProxy]
 			.findFirst [EcoreUtil.getURI(key) == objectUri]
 			?.value
 		if (uuidByProxy !== null) {
