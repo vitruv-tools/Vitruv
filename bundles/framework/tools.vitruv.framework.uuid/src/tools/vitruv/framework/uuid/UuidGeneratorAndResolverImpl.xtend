@@ -7,7 +7,7 @@ import org.eclipse.emf.ecore.resource.ResourceSet
 import org.eclipse.emf.ecore.util.EcoreUtil
 import org.eclipse.emf.ecore.resource.Resource
 import org.apache.log4j.Logger
-import tools.vitruv.framework.util.bridges.EcoreResourceBridge
+import static extension tools.vitruv.framework.util.bridges.EcoreResourceBridge.*
 import static extension tools.vitruv.framework.util.bridges.JavaBridge.*
 import static extension tools.vitruv.framework.util.command.EMFCommandBridge.executeVitruviusRecordingCommandAndFlushHistory
 import org.eclipse.emf.common.util.URI
@@ -111,9 +111,8 @@ class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 	}
 
 	def private loadAndRegisterUuidProviderAndResolver(Resource uuidResource) {
-		var UuidToEObjectRepository repository = if (uuidResource !== null)
-				EcoreResourceBridge.getResourceContentRootIfUnique(uuidResource)?.dynamicCast(UuidToEObjectRepository,
-					"uuid provider and resolver model")
+		var UuidToEObjectRepository repository = uuidResource?.resourceContentRootIfUnique
+			?.dynamicCast(UuidToEObjectRepository, "uuid provider and resolver model")
 		if (repository === null) {
 			repository = UuidFactory.eINSTANCE.createUuidToEObjectRepository
 			if (uuidResource !== null) {
@@ -232,7 +231,7 @@ class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 	override registerEObject(String uuid, EObject eObject) {
 		checkState(eObject !== null, "Object must not be null")
 		logger.debug('''Adding UUID «uuid» for EObject: «eObject»''')
-		runAsCommandIfNecessary(eObject) [
+		repository.runAsCommandIfNecessary [
 			repository.EObjectToUuid.removeIf[value == uuid]
 			repository.uuidToEObject.put(uuid, eObject)
 			repository.EObjectToUuid.put(eObject, uuid)
@@ -333,10 +332,8 @@ class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 	// lead to errors if the ResourceSet is also modified by the test, as these modifications
 	// would also have to be made on the TransactionalEditingDomain once it was created.
 	def private <T> T runAsCommandIfNecessary(EObject affectedObject, Callable<T> callable) {
-		val domain = resourceSet.transactionalEditingDomain
-		return if (domain !== null &&
-			(affectedObject === null || affectedObject.eResource?.resourceSet === resourceSet ||
-				affectedObject instanceof EClass)) {
+		val domain = affectedObject.eResource?.resourceSet?.transactionalEditingDomain
+		return if (domain !== null) {
 			domain.executeVitruviusRecordingCommandAndFlushHistory(callable)
 		} else {
 			callable.call()
