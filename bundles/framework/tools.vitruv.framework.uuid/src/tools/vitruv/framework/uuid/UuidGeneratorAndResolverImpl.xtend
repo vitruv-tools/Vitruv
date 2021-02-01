@@ -306,11 +306,11 @@ class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 		if (!(((uri.file || uri.platform) && uri.existsResourceAtUri) || uri.isPathmap)) {
 			return
 		}
-		for (element : childResolver.resourceSet.getResource(uri, true).allContents.toList) {
-			// Not having a UUID is only supported for pathmap resources and currently Java root elements
+		for (val allContents = childResolver.resourceSet.getResource(uri, true).allContents; allContents.hasNext;) {
+			val element = allContents.next
 			if (hasUuid(element)) {
 				childResolver.registerEObject(getUuid(element), element)
-			} else if (uri.isPathmap) {
+			} else if (uri.isPathmap) { // Not having a UUID is only supported for pathmap resources
 				val resolvedObject = resourceSet.getEObject(EcoreUtil.getURI(element), true)
 				if (resolvedObject === null) {
 					throw new IllegalStateException('''Object could not be resolved in this UuidResolver's resource set: «element»''')
