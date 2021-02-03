@@ -139,7 +139,7 @@ class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 		val objectUri = EcoreUtil.getURI(eObject)
 		// If the object is not from the resolver’s resource set, resolve it and try again
 		if (eObject.eResource?.resourceSet != resourceSet.original) {
-			val resolvedObject = resourceSet.getEObject(objectUri, false)
+			val resolvedObject = resolve(objectUri)
 			// The EClass check avoids that an objects of another type with the same URI is resolved
 			// This is, for example, the case if a modifier in a UML model is changed, as it is only a
 			// marker class that is replaced, having always the same URI on the same model element.
@@ -195,13 +195,11 @@ class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 	}
 
 	override String generateUuid(EObject eObject) {
-		val uuid = if (cache.EObjectToUuid.containsKey(eObject)) {
-				val uuid = cache.EObjectToUuid.removeKey(eObject)
-				cache.uuidToEObject.remove(uuid)
-				uuid
-			} else {
-				generateUuid
-			}
+		val cachedUuid = cache.EObjectToUuid.removeKey(eObject)
+		if (cachedUuid !== null) {
+			cache.uuidToEObject.remove(cachedUuid)
+		}
+		val uuid = cachedUuid ?: generateUuid()
 		registerEObject(uuid, eObject)
 		return uuid
 	}
@@ -228,7 +226,7 @@ class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 	override registerEObject(String uuid, EObject eObject) {
 		checkState(eObject !== null, "Object must not be null")
 		logger.debug('''Adding UUID «uuid» for EObject: «eObject»''')
-		repository.runAsCommandIfNecessary [
+		repository.eResource?.resourceSet.runAsCommandIfNecessary [
 			repository.EObjectToUuid.removeIf[value == uuid]
 			repository.uuidToEObject.put(uuid, eObject)
 			repository.EObjectToUuid.put(eObject, uuid)
@@ -253,7 +251,7 @@ class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 	}
 
 	override registerUuidForGlobalUri(String uuid, URI uri) {
-		val localObject = resourceSet.getEObject(uri, true)
+		val localObject = resolve(uri)
 		if (localObject !== null) {
 			registerEObject(uuid, localObject)
 			// Recursively do that
@@ -279,15 +277,13 @@ class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 	}
 
 	override hasPotentiallyCachedUuid(EObject eObject) {
-		if (this.cache.EObjectToUuid.containsKey(eObject)) {
-			return true
-		}
-		return hasUuid(eObject)
+		cache.EObjectToUuid.containsKey(eObject) 
+			|| hasUuid(eObject)
 	}
 
 	override registerCachedEObject(EObject eObject) {
 		checkState(eObject !== null, "Object must not be null")
-		val uuid = generateUuid
+		val uuid = generateUuid()
 		cache.EObjectToUuid.put(eObject, uuid)
 		cache.uuidToEObject.put(uuid, eObject)
 		return uuid
@@ -297,22 +293,22 @@ class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 		// Only load UUIDs if resource exists (a pathmap resource always exists)
 		if (((uri.isFile || uri.isPlatform) && uri.existsResourceAtUri) || uri.isPathmap) {
 			for (val allContents = childResolver.resourceSet.getResource(uri, true).allContents; allContents.hasNext;) {
-				val element = allContents.next
-				var elementUuid = internalGetUuid(element)
+				val contentObject = allContents.next
+				var objectUuid = internalGetUuid(contentObject)
 				
 				// Not having a UUID is only supported for pathmap resources
-				if (elementUuid === null && uri.isPathmap) {
-					val resolvedObject = resourceSet.getEObject(EcoreUtil.getURI(element), true)
+				if (objectUuid === null && uri.isPathmap) {
+					val resolvedObject = resolve(EcoreUtil.getURI(contentObject))
 					if (resolvedObject === null) {
-						throw new IllegalStateException('''Object could not be resolved in this UuidResolver's resource set: «element»''')
+						throw new IllegalStateException('''Object could not be resolved in this UuidResolver's resource set: «contentObject»''')
 					}
-					elementUuid = generateUuid(resolvedObject)
+					objectUuid = generateUuid(resolvedObject)
 				}		
-				if (elementUuid === null) {
-					throw new IllegalStateException('''Element does not have a UUID but should have one: «element»''')
+				if (objectUuid === null) {
+					throw new IllegalStateException('''Element does not have a UUID but should have one: «contentObject»''')
 				}
 				
-				childResolver.registerEObject(elementUuid, element)
+				childResolver.registerEObject(objectUuid, contentObject)
 			}
 		}
 	}
@@ -320,14 +316,20 @@ class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 	def void loadUuidsFromParent(Resource resource) {
 		parentUuidResolver.loadUuidsToChild(this, resource.URI)
 	}
+	
+	private def EObject resolve(URI uri) {
+		// TODO running as command should never be necessary for non-Java domains.
+		// Running in a command should probably be removed after domains can modify the UUID behaviour (see #326)
+		resourceSet.runAsCommandIfNecessary [resourceSet.getEObject(uri, true)]
+	}
 
 	// If there is a TransactionalEditingDomain registered on the resource set, we have
 	// to also execute our command on that domain, otherwise (e.g. in change tests),
 	// there is no need to execute the command on a TransactionalEditingDomain. It can even
 	// lead to errors if the ResourceSet is also modified by the test, as these modifications
 	// would also have to be made on the TransactionalEditingDomain once it was created.
-	def private <T> T runAsCommandIfNecessary(EObject affectedObject, Callable<T> callable) {
-		val domain = affectedObject.eResource?.resourceSet?.transactionalEditingDomain
+	def private <T> T runAsCommandIfNecessary(ResourceSet resourceSet, Callable<T> callable) {
+		val domain = resourceSet?.transactionalEditingDomain
 		return if (domain !== null) {
 			domain.executeVitruviusRecordingCommandAndFlushHistory(callable)
 		} else {
