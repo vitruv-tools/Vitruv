@@ -137,8 +137,9 @@ class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 		}
 		
 		val objectUri = EcoreUtil.getURI(eObject)
-		// If the object is not from the resolver’s resource set, resolve it and try again
-		if (eObject.eResource?.resourceSet != resourceSet.original) {
+		// If the object already has a resource, but is not from the resolver’s resource set, resolve it and try again
+		val objectResource = eObject.eResource
+		if (objectResource !== null && objectResource.resourceSet != resourceSet.original) {
 			val resolvedObject = resolve(objectUri)
 			// The EClass check avoids that an objects of another type with the same URI is resolved
 			// This is, for example, the case if a modifier in a UML model is changed, as it is only a
