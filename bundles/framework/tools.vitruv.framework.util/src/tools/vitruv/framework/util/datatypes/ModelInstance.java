@@ -1,8 +1,10 @@
 package tools.vitruv.framework.util.datatypes;
 
+import static java.util.Collections.emptyMap;
+import static tools.vitruv.framework.util.command.EMFCommandBridge.executeVitruviusRecordingCommandAndFlushHistory;
+
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.eclipse.emf.ecore.EObject;
@@ -10,12 +12,10 @@ import org.eclipse.emf.ecore.resource.Resource;
 
 import tools.vitruv.framework.util.ResourceSetUtil;
 import tools.vitruv.framework.util.bridges.EcoreResourceBridge;
-import static tools.vitruv.framework.util.command.EMFCommandBridge.executeVitruviusRecordingCommandAndFlushHistory;;
 
 public class ModelInstance extends AbstractURIHaving {
 	private static final Logger LOGGER = Logger.getLogger(ModelInstance.class.getSimpleName());
 	private Resource resource;
-	private Map<Object, Object> lastUsedLoadOptions;
 
 	public ModelInstance(final VURI uri, final Resource resource) {
 		super(uri);
@@ -67,8 +67,7 @@ public class ModelInstance extends AbstractURIHaving {
 		try {
 			return EcoreResourceBridge.getFirstRootEObject(this.resource, getURI().toString());
 		} catch (RuntimeException re) {
-			boolean forceLoad = true;
-			this.load(this.lastUsedLoadOptions, forceLoad);
+			this.load(true);
 			return EcoreResourceBridge.getFirstRootEObject(this.resource, getURI().toString());
 		}
 	}
@@ -113,14 +112,11 @@ public class ModelInstance extends AbstractURIHaving {
 	 *
 	 * Throws an {@link IllegalStateException} if the resource cannot be loaded.
 	 */
-	public void load(final Map<Object, Object> loadOptions, final boolean forceLoadByDoingUnloadBeforeLoad) {
+	public void load(final boolean forceLoadByDoingUnloadBeforeLoad) {
 		// TODO HK This should be done differently: The VSUM provides the editing domain!
 		var domain = ResourceSetUtil.getRequiredTransactionalEditingDomain(resource.getResourceSet());
 		executeVitruviusRecordingCommandAndFlushHistory(domain, () -> {
 			try {
-				if (null != loadOptions) {
-					this.lastUsedLoadOptions = loadOptions;
-				}
 				if (this.resource.isModified() || forceLoadByDoingUnloadBeforeLoad) {
 					// TODO If the model resource already exists, this method
 					// may also get called for already loaded resources
@@ -129,7 +125,7 @@ public class ModelInstance extends AbstractURIHaving {
 					// saved model objects are lost after the following unload call.
 					this.resource.unload();
 				}
-				this.resource.load(this.lastUsedLoadOptions);
+				this.resource.load(emptyMap());
 				LOGGER.trace("Resource was loaded: " + resource.getURI());
 			} catch (IOException e) {
 				// soften
@@ -138,7 +134,7 @@ public class ModelInstance extends AbstractURIHaving {
 		});
 	}
 
-	public void load(final Map<Object, Object> loadOptions) {
-		load(loadOptions, false);
+	public void load() {
+		load(false);
 	}
 }

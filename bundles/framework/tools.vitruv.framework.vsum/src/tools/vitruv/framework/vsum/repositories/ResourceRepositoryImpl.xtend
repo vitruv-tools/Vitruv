@@ -92,7 +92,7 @@ class ResourceRepositoryImpl implements ModelRepository, CorrespondenceProviding
 		val ModelInstance modelInstance = getModelInstanceOriginal(modelURI)
 		try {
 			if (modelURI.EMFUri.toString().startsWith("pathmap") || URIUtil.existsResourceAtUri(modelURI.EMFUri)) {
-				modelInstance.load(getMetamodelByURI(modelURI).defaultLoadOptions, forceLoadByDoingUnloadBeforeLoad)
+				modelInstance.load(forceLoadByDoingUnloadBeforeLoad)
 				relinkUuids(modelInstance)
 			}
 		} catch (RuntimeException re) {
@@ -161,13 +161,11 @@ class ResourceRepositoryImpl implements ModelRepository, CorrespondenceProviding
 
 	def private void saveModelInstance(ModelInstance modelInstance) {
 		executeAsCommand [
-			var metamodel = getMetamodelByURI(modelInstance.URI)
 			var resourceToSave = modelInstance.resource
-			val saveOptions = if(metamodel !== null) metamodel.defaultSaveOptions else emptyMap
 			try {
 				if (!resourceSet.requiredTransactionalEditingDomain.isReadOnly(resourceToSave)) {
 					// we allow resources without a domain for internal uses.
-					EcoreResourceBridge.saveResource(resourceToSave, saveOptions)
+					EcoreResourceBridge.saveResource(resourceToSave, emptyMap())
 				}
 			} catch (IOException e) {
 				logger.warn('''Model could not be saved: «modelInstance.URI»''')
