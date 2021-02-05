@@ -1,0 +1,8 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Tests
+Bundle-SymbolicName: tools.vitruv.framework.variability.tests
+Bundle-Version: 1.1.0.qualifier
+Bundle-Vendor: vitruv.tools
+Automatic-Module-Name: tools.vitruv.framework.variability.tests
+Bundle-RequiredExecutionEnvironment: JavaSE-11
