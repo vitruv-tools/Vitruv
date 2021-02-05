@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Vitruv Addresses-Recipients Demo Application Tests
 Bundle-SymbolicName: tools.vitruv.applications.demo.addressesrecipients.tests
 Automatic-Module-Name: tools.vitruv.dsls.mappings.addressesXrecipients.tests
-Bundle-Version: 1.1.0.qualifier
+Bundle-Version: 2.1.0.qualifier
 Bundle-Vendor: vitruv.tools
 Fragment-Host: tools.vitruv.applications.demo.addressesrecipients
 Require-Bundle: tools.vitruv.testutils,

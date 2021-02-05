@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Vitruv Framework Domains
 Bundle-SymbolicName: tools.vitruv.framework.domains;singleton:=true
 Automatic-Module-Name: tools.vitruv.framework.domains
-Bundle-Version: 1.1.0.qualifier
+Bundle-Version: 2.1.0.qualifier
 Bundle-ClassPath: ., jars/reflections-0.9.10.jar, jars/javassist-3.19.0-GA.jar
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Require-Bundle: org.apache.log4j,

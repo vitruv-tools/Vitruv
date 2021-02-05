@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Vitruv Framework Change Metamodel Tests
 Bundle-SymbolicName: tools.vitruv.framework.change.tests
 Automatic-Module-Name: tools.vitruv.framework.change.tests
-Bundle-Version: 1.1.0.qualifier
+Bundle-Version: 2.1.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Fragment-Host: tools.vitruv.framework.change
 Require-Bundle: org.junit.jupiter.api,

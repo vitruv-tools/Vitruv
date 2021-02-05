@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Vitruv Families-Persons Demo Application
 Bundle-SymbolicName: tools.vitruv.applications.demo.familiespersons;singleton:=true
 Automatic-Module-Name: tools.vitruv.applications.demo.familiespersons
-Bundle-Version: 1.1.0.qualifier
+Bundle-Version: 2.1.0.qualifier
 Bundle-Vendor: vitruv.tools
 Export-Package: tools.vitruv.applications.demo.familiespersons
 Require-Bundle: tools.vitruv.framework.applications,

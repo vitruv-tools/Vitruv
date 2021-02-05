@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Vitruv Extension Change Visualization
 Bundle-SymbolicName: tools.vitruv.extensions.changevisualization;singleton:=true
 Automatic-Module-Name: tools.vitruv.extensions.changevisualization
-Bundle-Version: 1.1.0.qualifier
+Bundle-Version: 2.1.0.qualifier
 Require-Bundle: org.eclipse.ui
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Export-Package: tools.vitruv.extensions.changevisualization,

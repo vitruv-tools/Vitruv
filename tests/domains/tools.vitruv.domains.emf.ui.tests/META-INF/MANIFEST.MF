@@ -4,7 +4,7 @@ Bundle-Name: Vitruv Domains EMF UI Tests
 Bundle-Vendor: vitruv.tools
 Bundle-SymbolicName: tools.vitruv.domains.emf.ui.tests;singleton:=true
 Automatic-Module-Name: tools.vitruv.domains.emf.ui.tests
-Bundle-Version: 1.1.0.qualifier
+Bundle-Version: 2.1.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-ActivationPolicy: lazy
 Require-Bundle: tools.vitruv.testutils,

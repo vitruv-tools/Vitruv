@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Vitruv Framwork Virtual Single Underlying Model Tests
 Bundle-SymbolicName: tools.vitruv.framework.vsum.tests;singleton:=true
 Automatic-Module-Name: tools.vitruv.framework.vsum.tests
-Bundle-Version: 1.1.0.qualifier
+Bundle-Version: 2.1.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Export-Package: tools.vitruv.framework.tests.vsum
 Require-Bundle: org.apache.log4j,

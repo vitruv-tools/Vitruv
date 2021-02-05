@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Vitruvius Demo Domain Addresses
 Bundle-SymbolicName: tools.vitruv.domains.demo;singleton:=true
 Automatic-Module-Name: tools.vitruv.domains.demo
-Bundle-Version: 1.1.0.qualifier
+Bundle-Version: 2.1.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Require-Bundle: tools.vitruv.framework.domains;visibility:=reexport,
  edu.kit.ipd.sdq.metamodels.addresses;visibility:=reexport,

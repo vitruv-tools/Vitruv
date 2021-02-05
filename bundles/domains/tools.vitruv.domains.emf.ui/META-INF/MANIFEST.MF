@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Vitruv Domains EMF UI
 Bundle-SymbolicName: tools.vitruv.domains.emf.ui;singleton:=true
 Automatic-Module-Name: tools.vitruv.extensions.emf.ui
-Bundle-Version: 1.1.0.qualifier
+Bundle-Version: 2.1.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Require-Bundle: org.eclipse.core.resources,
  org.eclipse.core.runtime,

@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Vitruv DSLs Commonalities Language Shared IDE Integration
 Bundle-SymbolicName: tools.vitruv.dsls.commonalities.ide;singleton:=true
 Automatic-Module-Name: tools.vitruv.dsls.commonalities.ide
-Bundle-Version: 1.1.0.qualifier
+Bundle-Version: 2.1.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-ActivationPolicy: lazy
 Export-Package: tools.vitruv.dsls.commonalities.ide;x-internal:=true,

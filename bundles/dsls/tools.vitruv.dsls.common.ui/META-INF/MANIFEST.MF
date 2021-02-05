@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Vitruv DSLs Common for Eclipse
 Bundle-SymbolicName: tools.vitruv.dsls.common.ui
 Automatic-Module-Name: tools.vitruv.dsls.common
-Bundle-Version: 1.1.0.qualifier
+Bundle-Version: 2.1.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Require-Bundle: org.eclipse.xtend.lib,
  org.eclipse.jdt.core,

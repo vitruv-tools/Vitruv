@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Vitruv Framework UI Monitored Editors
 Bundle-SymbolicName: tools.vitruv.framework.domains.ui;singleton:=true
 Automatic-Module-Name: tools.vitruv.framework.domains.ui
-Bundle-Version: 1.1.0.qualifier
+Bundle-Version: 2.1.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-ActivationPolicy: lazy
 Bundle-Activator: tools.vitruv.framework.domains.ui.Activator

@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Vitruv DSLs Mappings Language Eclipse Integration
 Bundle-Vendor: vitruv.tools
-Bundle-Version: 1.1.0.qualifier
+Bundle-Version: 2.1.0.qualifier
 Bundle-SymbolicName: tools.vitruv.dsls.mappings.ui; singleton:=true
 Automatic-Module-Name: tools.vitruv.dsls.mappings.ui
 Bundle-ActivationPolicy: lazy

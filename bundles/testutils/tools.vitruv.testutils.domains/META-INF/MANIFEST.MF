@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Vitruv Test Utilities Domains
 Bundle-SymbolicName: tools.vitruv.testutils.domains;singleton:=true
 Automatic-Module-Name: tools.vitruv.testutils
-Bundle-Version: 1.1.0.qualifier
+Bundle-Version: 2.1.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Require-Bundle: tools.vitruv.testutils.metamodels;visibility:=reexport,
  edu.kit.ipd.sdq.activextendannotations,
