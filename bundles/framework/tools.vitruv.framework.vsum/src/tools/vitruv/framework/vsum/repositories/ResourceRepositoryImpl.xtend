@@ -71,9 +71,9 @@ class ResourceRepositoryImpl implements ModelRepository, CorrespondenceProviding
 	}
 
 	def private AtomicEmfChangeRecorder getOrCreateChangeRecorder(VURI vuri) {
-		var VitruvDomain domain = getDomainForURI(vuri)
-		domainToRecorder.putIfAbsent(domain, new AtomicEmfChangeRecorder(this.uuidGeneratorAndResolver))
-		return domainToRecorder.get(domain)
+		domainToRecorder.computeIfAbsent(getDomainForURI(vuri)) [
+			new AtomicEmfChangeRecorder(this.uuidGeneratorAndResolver)
+		]
 	}
 
 	/** 
