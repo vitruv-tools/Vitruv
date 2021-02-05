@@ -17,7 +17,6 @@ import static com.google.common.base.Preconditions.checkArgument
 import static com.google.common.base.Preconditions.checkState
 import static extension tools.vitruv.framework.util.ResourceSetUtil.getTransactionalEditingDomain
 import java.util.concurrent.Callable
-import static extension tools.vitruv.framework.util.DecoratedResourceSet.getOriginal
 
 /**
  * {@link UuidGeneratorAndResolver}
@@ -139,7 +138,7 @@ class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 		val objectUri = EcoreUtil.getURI(eObject)
 		// If the object already has a resource, but is not from the resolver’s resource set, resolve it and try again
 		val objectResource = eObject.eResource
-		if (objectResource !== null && objectResource.resourceSet != resourceSet.original) {
+		if (objectResource !== null && objectResource.resourceSet != resourceSet) {
 			val resolvedObject = resolve(objectUri)
 			// The EClass check avoids that an objects of another type with the same URI is resolved
 			// This is, for example, the case if a modifier in a UML model is changed, as it is only a

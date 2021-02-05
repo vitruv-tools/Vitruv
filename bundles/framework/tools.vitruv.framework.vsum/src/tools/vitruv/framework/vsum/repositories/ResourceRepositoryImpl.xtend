@@ -38,7 +38,9 @@ import static extension tools.vitruv.framework.util.ResourceSetUtil.getTransacti
 import static extension tools.vitruv.framework.util.command.EMFCommandBridge.executeVitruviusRecordingCommandAndFlushHistory
 import tools.vitruv.framework.util.command.VitruviusRecordingCommand
 import static extension tools.vitruv.framework.util.bridges.EcoreResourceBridge.loadOrCreateResource
-import tools.vitruv.framework.domains.repository.DomainAwareResourceSet
+import static extension tools.vitruv.framework.util.ResourceSetUtil.withGlobalFactories
+import static extension tools.vitruv.framework.domains.repository.DomainAwareResourceSet.awareOfDomains
+import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 
 class ResourceRepositoryImpl implements ModelRepository, CorrespondenceProviding {
 	static val logger = Logger.getLogger(ResourceRepositoryImpl.simpleName)
@@ -60,7 +62,7 @@ class ResourceRepositoryImpl implements ModelRepository, CorrespondenceProviding
 	new(File folder, VitruvDomainRepository domainRepository, ClassLoader classLoader) {
 		this.domainRepository = domainRepository
 		this.folder = folder
-		this.resourceSet = new DomainAwareResourceSet(domainRepository)
+		this.resourceSet = new ResourceSetImpl().withGlobalFactories().awareOfDomains(domainRepository)
 		try {
 			this.fileSystemHelper = new FileSystemHelper(folder)
 		} catch (IOException e) {
