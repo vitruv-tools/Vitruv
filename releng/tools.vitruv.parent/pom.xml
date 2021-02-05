@@ -28,6 +28,11 @@
 			<layout>p2</layout>
 			<url>https://kit-sdq.github.io/updatesite/release/xannotations/1.5.0/</url>
 		</repository>
+		<repository>
+			<id>Vave Metamodel</id>
+			<layout>p2</layout>
+			<url>http://kit-sdq.github.io/updatesite/release/vavemodel</url>
+		</repository>
 	</repositories>
 
 	<build>
