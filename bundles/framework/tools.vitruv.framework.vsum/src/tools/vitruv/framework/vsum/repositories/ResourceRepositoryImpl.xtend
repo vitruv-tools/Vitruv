@@ -54,11 +54,7 @@ class ResourceRepositoryImpl implements ModelRepository, CorrespondenceProviding
 	val Map<VitruvDomain, AtomicEmfChangeRecorder> domainToRecorder = new HashMap()
 	var isRecording = false
 
-	new(File folder, VitruvDomainRepository metamodelRepository) {
-		this(folder, metamodelRepository, null)
-	}
-
-	new(File folder, VitruvDomainRepository domainRepository, ClassLoader classLoader) {
+	new(File folder, VitruvDomainRepository domainRepository) {
 		this.domainRepository = domainRepository
 		this.folder = folder
 		this.resourceSet = new ResourceSetImpl().withGlobalFactories().awareOfDomains(domainRepository)
