@@ -10,7 +10,6 @@ import tools.vitruv.framework.change.description.TransactionalChange
 import tools.vitruv.framework.change.description.VitruviusChange
 import tools.vitruv.framework.change.processing.ChangePropagationSpecification
 import tools.vitruv.framework.change.processing.ChangePropagationSpecificationProvider
-import tools.vitruv.framework.correspondence.CorrespondenceProviding
 import tools.vitruv.framework.domains.repository.VitruvDomainRepository
 import tools.vitruv.framework.change.processing.ChangePropagationObserver
 import tools.vitruv.framework.change.description.PropagatedChange
@@ -28,31 +27,32 @@ import tools.vitruv.framework.userinteraction.UserInteractionListener
 import tools.vitruv.framework.change.interaction.UserInteractionBase
 import tools.vitruv.framework.userinteraction.UserInteractionFactory
 import static com.google.common.base.Preconditions.checkState
+import tools.vitruv.framework.vsum.InternalVirtualModel
 
 class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserver, UserInteractionListener {
 	static Logger logger = Logger.getLogger(ChangePropagatorImpl)
 	final VitruvDomainRepository metamodelRepository
 	final ModelRepository resourceRepository
 	final ChangePropagationSpecificationProvider changePropagationProvider
-	final CorrespondenceProviding correspondenceProviding
 	final Set<ChangePropagationListener> changePropagationListeners
 	final ModelRepositoryImpl modelRepository
 	final List<EObject> objectsCreatedDuringPropagation
-	final InternalUserInteractor userInteractor
+	final InternalVirtualModel virtualModel
 	final List<UserInteractionBase> userInteractions
+	final InternalUserInteractor userInteractor
 
 	new(ModelRepository resourceRepository, ChangePropagationSpecificationProvider changePropagationProvider,
-		VitruvDomainRepository metamodelRepository, CorrespondenceProviding correspondenceProviding,
-		ModelRepositoryImpl modelRepository, InternalUserInteractor userInteractor) {
+		VitruvDomainRepository metamodelRepository, ModelRepositoryImpl modelRepository,
+		InternalVirtualModel virtualModel, InternalUserInteractor userInteractor) {
 		this.resourceRepository = resourceRepository
 		this.modelRepository = modelRepository
 		this.changePropagationProvider = changePropagationProvider
 		changePropagationProvider.forEach[it.registerObserver(this)]
-		this.correspondenceProviding = correspondenceProviding
 		this.changePropagationListeners = Collections.synchronizedSet(newHashSet)
 		this.userInteractions = Collections.synchronizedList(newArrayList)
 		this.metamodelRepository = metamodelRepository
 		this.objectsCreatedDuringPropagation = newArrayList
+		this.virtualModel = virtualModel
 		this.userInteractor = userInteractor
 		userInteractor.registerUserInputListener(this)
 	}
@@ -84,9 +84,9 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 		}
 		handleObjectsWithoutResource()
 		changedResourcesTracker.markNonSourceResourceAsChanged()
-		// FIXME HK This is not clear! VirtualModel knows how to save, we bypass that, but currently this is necessary
-		// because saving has to be performed before finishing propagation. Maybe we should move the observable to the VirtualModel
-		resourceRepository.saveAllModels
+		// FIXME we save here because saving has to be performed before finishing propagation. Maybe we should move 
+		// the observable to the VirtualModel
+		virtualModel.save()
 		logger.trace(modelRepository)
 		logger.trace('''
 			Propagated changes:
@@ -222,21 +222,19 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 
 	private def void handleObjectsWithoutResource() {
 		modelRepository.cleanupRootElementsWithoutResource
+		val correspondenceModel = virtualModel.correspondenceModel
 		// Find created objects without resource
 		for (createdObjectWithoutResource : objectsCreatedDuringPropagation.filter[eResource === null]) {
-			val hasCorrespondence = correspondenceProviding.correspondenceModel.hasCorrespondences(
-				#[createdObjectWithoutResource])
-			checkState(
-				!hasCorrespondence, '''Every object must be contained within a resource: «createdObjectWithoutResource»''')
-			logger.warn("Object was created but has no correspondence and is thus lost: " +
-				createdObjectWithoutResource)
+			val hasCorrespondence = correspondenceModel.hasCorrespondences(List.of(createdObjectWithoutResource))
+			checkState(!hasCorrespondence, '''Every object must be contained within a resource: «createdObjectWithoutResource»''')
+			logger.warn("Object was created but has no correspondence and is thus lost: " + createdObjectWithoutResource)
 		}
 		objectsCreatedDuringPropagation.clear()
 	}
 
 	private def void propagateChangeForChangePropagationSpecification(TransactionalChange change,
 		ChangePropagationSpecification propagationSpecification, ChangedResourcesTracker changedResourcesTracker) {
-		val correspondenceModel = correspondenceProviding.getCorrespondenceModel()
+		val correspondenceModel = virtualModel.correspondenceModel
 
 		// TODO HK: Clone the changes for each synchronization! Should even be cloned for
 		// each consistency repair routines that uses it,
@@ -259,5 +257,4 @@ class ChangePropagatorImpl implements ChangePropagator, ChangePropagationObserve
 	override onUserInteractionReceived(UserInteractionBase interaction) {
 		userInteractions.add(interaction)
 	}
-
 }

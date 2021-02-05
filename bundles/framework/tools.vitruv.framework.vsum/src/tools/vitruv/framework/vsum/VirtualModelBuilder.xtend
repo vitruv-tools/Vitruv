@@ -14,6 +14,7 @@ import tools.vitruv.framework.domains.TuidAwareVitruvDomain
 import tools.vitruv.framework.change.processing.ChangePropagationSpecificationRepository
 import tools.vitruv.framework.userinteraction.InteractionResultProvider
 import tools.vitruv.framework.userinteraction.UserInteractionFactory
+import tools.vitruv.framework.vsum.helper.VsumFileSystemLayout
 
 class VirtualModelBuilder {
 	var VitruvDomainRepository domainRepository = null
@@ -117,7 +118,7 @@ class VirtualModelBuilder {
 		return this
 	}
 
-	def InternalVirtualModel build() {
+	def InternalVirtualModel buildAndInitialize() {
 		checkState(storageFolder !== null, "No storage folder was configured!")
 		checkState(userInteractor !== null, "No user interactor was configured!")
 		if (domainRepository === null) {
@@ -140,6 +141,10 @@ class VirtualModelBuilder {
 			changePropagationSpecification.userInteractor = this.userInteractor
 		}
 
-		new VirtualModelImpl(storageFolder, userInteractor, domainRepository, changeSpecificationRepository)
+		val fileSystemLayout = new VsumFileSystemLayout(storageFolder)
+		fileSystemLayout.initialize()
+		val vsum = new VirtualModelImpl(fileSystemLayout, userInteractor, domainRepository, changeSpecificationRepository)
+		VirtualModelManager.instance.putVirtualModel(vsum)
+		return vsum
 	}
 }
