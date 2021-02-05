@@ -25,7 +25,6 @@ import tools.vitruv.domains.emf.monitorededitor.tools.ResourceReloadListener;
 import tools.vitruv.domains.emf.monitorededitor.tools.SaveEventListenerMgr;
 import tools.vitruv.framework.change.description.TransactionalChange;
 import tools.vitruv.framework.change.recording.AtomicEmfChangeRecorder;
-import tools.vitruv.framework.domains.repository.DomainAwareResourceSet;
 import tools.vitruv.framework.uuid.UuidGeneratorAndResolver;
 import tools.vitruv.framework.uuid.UuidGeneratorAndResolverImpl;
 import tools.vitruv.framework.vsum.VirtualModel;
@@ -35,12 +34,12 @@ import tools.vitruv.framework.vsum.VirtualModel;
  * A listener for EMF/GMF editors recording the changes in the editor's EMF model, calling the
  * method <code>onSavedResource()</code> whenever the user saves the edited file.
  * </p>
- *
+ * 
  * <p>
  * The listener is initially inactive and can be activated by calling <code>initialize()</code>. It
  * remains active until <code>dispose()</code> is called.
  * </p>
- *
+ * 
  * <p>
  * This listener class can be used by extending it and implementing the
  * <code>onSavedResource()</code> method.
@@ -72,7 +71,7 @@ public abstract class EMFModelChangeRecordingEditorSaveListener {
     /**
      * A constructor for {@link EMFModelChangeRecordingEditorSaveListener} instances. The listener
      * remains inactive until <code>initialize()</code> is called.
-     *
+     * 
      * @param editorAdapter
      *            An {@link IEditorPartAdapter} instance adapting the EMF/GMF editor which needs to be
      *            monitored.
@@ -82,7 +81,7 @@ public abstract class EMFModelChangeRecordingEditorSaveListener {
         this.saveActionListenerManager = new SaveEventListenerMgr();
         saveActionListenerManager.restrictSaveActionsToEditorPart(editorAdapter.getEditorPart());
         LOGGER.trace("Constructed a listener for an editor of type " + editorAdapter.getClass().getCanonicalName()
-            + " for Res. " + targetResource);
+                + " for Res. " + targetResource);
     }
 
     /**
@@ -95,7 +94,7 @@ public abstract class EMFModelChangeRecordingEditorSaveListener {
     /**
      * Creates a {@link ISaveEventListener} instance reading out the <code>changeRecorder</code> and
      * calling <code>onSavedResource()</code> after the user has saved the edited file.
-     *
+     * 
      * @return The newly created {@link SaveActionExecutionListener}.
      */
     protected ISaveEventListener createSaveActionExecutionListener() {
@@ -149,14 +148,11 @@ public abstract class EMFModelChangeRecordingEditorSaveListener {
     protected void resetChangeRecorder() {
         deactivateChangeRecorder();
         UuidGeneratorAndResolver globalUuidGeneratorAndResolver = virtualModel != null
-            ? virtualModel.getUuidGeneratorAndResolver()
+                ? virtualModel.getUuidGeneratorAndResolver()
                 : null;
         // TODO Set strict mode to false
-        var resolverResourceSet = virtualModel != null
-            ? new DomainAwareResourceSet(targetResource.getResourceSet(), virtualModel.getDomains())
-                : targetResource.getResourceSet();
         UuidGeneratorAndResolver localUuidResolver = new UuidGeneratorAndResolverImpl(globalUuidGeneratorAndResolver,
-            resolverResourceSet, false);
+                targetResource.getResourceSet(), false);
 
         changeRecorder = new AtomicEmfChangeRecorder(localUuidResolver);
         changeRecorder.addToRecording(targetResource);
@@ -213,7 +209,7 @@ public abstract class EMFModelChangeRecordingEditorSaveListener {
 
     /**
      * The "listener" method getting called when the user saves the edited file.
-     *
+     * 
      * @param changeDescription
      *            The EMF {@link ChangeDescription} describing the changes to the EMF model since last
      *            saving it (rsp. since opening it, in case it has not been saved yet). This object is
