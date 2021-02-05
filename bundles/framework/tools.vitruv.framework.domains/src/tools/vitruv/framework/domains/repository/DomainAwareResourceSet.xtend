@@ -7,7 +7,7 @@ import edu.kit.ipd.sdq.activextendannotations.Utility
 @Utility
 class DomainAwareResourceSet {
 	def static ResourceSet awareOfDomains(ResourceSet resourceSet, VitruvDomainRepository domains) {
-		resourceSet.resourceFactoryRegistry = new DomainAwareResourceFactory.Registry(
+		resourceSet.resourceFactoryRegistry = new DomainAwareResource.Factory.Registry(
 			resourceSet.resourceFactoryRegistry,
 			domains
 		)
