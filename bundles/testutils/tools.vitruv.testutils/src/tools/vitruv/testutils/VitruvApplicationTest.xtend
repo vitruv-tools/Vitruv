@@ -48,7 +48,7 @@ abstract class VitruvApplicationTest implements CorrespondenceModelContainer, Te
 			.withUserInteractorForResultProvider(new TestUserInteraction.ResultProvider(userInteraction))
 			.withDomainRepository(targetDomains)
 			.withChangePropagationSpecifications(changePropagationSpecifications)
-			.build()
+			.buildAndInitialize()
 		testView = generateTestView(testProjectPath, userInteraction, targetDomains)
 	}
 
