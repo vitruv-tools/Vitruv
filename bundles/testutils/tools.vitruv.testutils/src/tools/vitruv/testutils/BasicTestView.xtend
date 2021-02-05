@@ -14,16 +14,18 @@ import tools.vitruv.framework.util.bridges.EMFBridge
 import static extension java.nio.file.Files.move
 import static java.nio.file.Files.createDirectories
 import tools.vitruv.framework.domains.repository.VitruvDomainRepository
-import tools.vitruv.framework.util.SavingResourceSet
-import tools.vitruv.framework.domains.repository.DomainAwareResourceSet
+import static extension tools.vitruv.framework.util.ResourceSetUtil.withGlobalFactories
+import static extension tools.vitruv.framework.domains.repository.DomainAwareResourceSet.awareOfDomains
 import static extension tools.vitruv.framework.util.bridges.EcoreResourceBridge.loadOrCreateResource
+import org.eclipse.emf.ecore.resource.ResourceSet
+import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 
 /**
  * A minimal test view that gives access to resources, but does not record any changes.
  */ 
 class BasicTestView implements TestView {
 	val Path persistenceDirectory
-	val SavingResourceSet resourceSet
+	val ResourceSet resourceSet
 	@Accessors
 	val TestUserInteraction userInteraction
 	val UriMode uriMode
@@ -47,7 +49,12 @@ class BasicTestView implements TestView {
 		UriMode uriMode,
 		VitruvDomainRepository targetDomains
 	) {
-		this(persistenceDirectory, new DomainAwareResourceSet(targetDomains), userInteraction, uriMode)
+		this(
+			persistenceDirectory,
+			new ResourceSetImpl().withGlobalFactories().awareOfDomains(targetDomains),
+			userInteraction,
+			uriMode
+		)
 	}
 	
 	/**
@@ -57,7 +64,7 @@ class BasicTestView implements TestView {
 	 */
 	new(
 		Path persistenceDirectory,
-		SavingResourceSet resourceSet,
+		ResourceSet resourceSet,
 		TestUserInteraction userInteraction,
 		UriMode uriMode
 	) {
@@ -107,7 +114,7 @@ class BasicTestView implements TestView {
 		if (resource.contents.isEmpty) {
 			resource.delete(emptyMap)
 		} else {
-			resourceSet.save(resource)
+			resource.save(emptyMap)
 		}
 	}
 	 

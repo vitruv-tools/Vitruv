@@ -20,7 +20,9 @@ import tools.vitruv.framework.domains.repository.VitruvDomainRepository
 import tools.vitruv.framework.change.description.TransactionalChange
 import java.util.ArrayList
 import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
-import tools.vitruv.framework.domains.repository.DomainAwareResourceSet
+import static extension tools.vitruv.framework.util.ResourceSetUtil.withGlobalFactories
+import static extension tools.vitruv.framework.domains.repository.DomainAwareResourceSet.awareOfDomains
+import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 
 /**
  * A test view that will record and publish the changes created in it.
@@ -59,9 +61,8 @@ class ChangePublishingTestView implements NonTransactionalTestView {
 		UuidGeneratorAndResolver parentResolver,
 		VitruvDomainRepository targetDomains
 	) {
-		val resourceSet = new DomainAwareResourceSet(targetDomains)
-		this.resourceSet = resourceSet
-		this. delegate = new BasicTestView(persistenceDirectory, resourceSet, userInteraction, uriMode)
+		this.resourceSet = new ResourceSetImpl().withGlobalFactories().awareOfDomains(targetDomains)
+		this.delegate = new BasicTestView(persistenceDirectory, resourceSet, userInteraction, uriMode)
 		val uuidResolver = new UuidGeneratorAndResolverImpl(parentResolver, resourceSet, true)
 		this.changeRecorder = new AtomicEmfChangeRecorder(uuidResolver)
 		changeRecorder.beginRecording()
