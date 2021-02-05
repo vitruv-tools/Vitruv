@@ -101,15 +101,7 @@ class ResourceRepositoryImpl implements ModelRepository, CorrespondenceProviding
 
 	def private void relinkUuids(ModelInstance modelInstance) {
 		for (EObject root : modelInstance.rootElements) {
-			root.eAllContents.forEachRemaining [ object |
-				if (uuidGeneratorAndResolver.hasUuid(object)) {
-					uuidGeneratorAndResolver.registerEObject(this.uuidGeneratorAndResolver.getUuid(object), object)
-				} else {
-					// TODO Move logic to UUID generator and resolver and reuse the special cases
-					// for Java
-					logger.trace('''Element «object» has no UUID that can be linked during resource reload''')
-				}
-			]
+			root.eAllContents.forEachRemaining [uuidGeneratorAndResolver.registerEObject(it)]
 		}
 	}
 
