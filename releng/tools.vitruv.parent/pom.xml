@@ -9,7 +9,7 @@
 		<version>1.1.1</version>
 	</parent>
 	<artifactId>framework-parent</artifactId>
-	<version>2.0.0</version>
+	<version>2.1.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	
 	<repositories>
@@ -140,67 +140,67 @@
 							<dependency>
 								<groupId>tools.vitruv</groupId>
 								<artifactId>tools.vitruv.dsls.reactions</artifactId>
-								<version>2.0.0</version>
+								<version>2.1.0-SNAPSHOT</version>
 							</dependency>
 							<dependency>
 								<groupId>tools.vitruv</groupId>
 								<artifactId>tools.vitruv.dsls.mappings</artifactId>
-								<version>2.0.0</version>
+								<version>2.1.0-SNAPSHOT</version>
 							</dependency>
 							<dependency>
 								<groupId>tools.vitruv</groupId>
 								<artifactId>tools.vitruv.dsls.mirbase</artifactId>
-								<version>2.0.0</version>
+								<version>2.1.0-SNAPSHOT</version>
 							</dependency>
 							<dependency>
 								<groupId>tools.vitruv</groupId>
 								<artifactId>tools.vitruv.dsls.common</artifactId>
-								<version>2.0.0</version>
+								<version>2.1.0-SNAPSHOT</version>
 							</dependency>
 							<dependency>
 								<groupId>tools.vitruv</groupId>
 								<artifactId>tools.vitruv.extensions.dslsruntime.reactions</artifactId>
-								<version>2.0.0</version>
+								<version>2.1.0-SNAPSHOT</version>
 							</dependency>
 							<dependency>
 								<groupId>tools.vitruv</groupId>
 								<artifactId>tools.vitruv.framework.domains</artifactId>
-								<version>2.0.0</version>
+								<version>2.1.0-SNAPSHOT</version>
 							</dependency>
 							<dependency>
 								<groupId>tools.vitruv</groupId>
 								<artifactId>tools.vitruv.framework.change</artifactId>
-								<version>2.0.0</version>
+								<version>2.1.0-SNAPSHOT</version>
 							</dependency>
 							<dependency>
 								<groupId>tools.vitruv</groupId>
 								<artifactId>tools.vitruv.framework.change.echange</artifactId>
-								<version>2.0.0</version>
+								<version>2.1.0-SNAPSHOT</version>
 							</dependency>
 							<dependency>
 								<groupId>tools.vitruv</groupId>
 								<artifactId>tools.vitruv.framework.change.processing</artifactId>
-								<version>2.0.0</version>
+								<version>2.1.0-SNAPSHOT</version>
 							</dependency>
 							<dependency>
 								<groupId>tools.vitruv</groupId>
 								<artifactId>tools.vitruv.framework.tuid</artifactId>
-								<version>2.0.0</version>
+								<version>2.1.0-SNAPSHOT</version>
 							</dependency>
 							<dependency>
 								<groupId>tools.vitruv</groupId>
 								<artifactId>tools.vitruv.framework.uuid</artifactId>
-								<version>2.0.0</version>
+								<version>2.1.0-SNAPSHOT</version>
 							</dependency>
 							<dependency>
 								<groupId>tools.vitruv</groupId>
 								<artifactId>tools.vitruv.framework.util</artifactId>
-								<version>2.0.0</version>
+								<version>2.1.0-SNAPSHOT</version>
 							</dependency>
 							<dependency>
 								<groupId>tools.vitruv</groupId>
 								<artifactId>tools.vitruv.domains.demo</artifactId>
-								<version>2.0.0</version>
+								<version>2.1.0-SNAPSHOT</version>
 							</dependency>
 						</dependencies>
 					</plugin>
