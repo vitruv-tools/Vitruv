@@ -42,7 +42,7 @@ class TuidResolverImpl implements tools.vitruv.framework.tuid.TuidResolver{
 		if (null === resolvedEobject && modelInstance !== null) {
 			// reload the model and try to solve it again
 			try {
-				modelInstance.load(null, true)
+				modelInstance.load(true)
 			} catch (IllegalStateException e) {
 				throw new IllegalStateException("TUID " + tuid + " cannot be resolved, because the resource " + modelInstance.resource.URI + " cannot be loaded.")
 			}
