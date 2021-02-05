@@ -8,7 +8,6 @@ import java.util.Map
 import java.util.concurrent.Callable
 import java.util.function.Consumer
 import org.apache.log4j.Logger
-import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.emf.ecore.resource.ResourceSet
@@ -76,7 +75,7 @@ class ResourceRepositoryImpl implements ModelRepository, CorrespondenceProviding
 	}
 
 	def private AtomicEmfChangeRecorder getOrCreateChangeRecorder(VURI vuri) {
-		var VitruvDomain domain = getMetamodelByURI(vuri)
+		var VitruvDomain domain = getDomainForURI(vuri)
 		domainToRecorder.putIfAbsent(domain, new AtomicEmfChangeRecorder(this.uuidGeneratorAndResolver))
 		return domainToRecorder.get(domain)
 	}
@@ -165,11 +164,11 @@ class ResourceRepositoryImpl implements ModelRepository, CorrespondenceProviding
 			try {
 				if (!resourceSet.requiredTransactionalEditingDomain.isReadOnly(resourceToSave)) {
 					// we allow resources without a domain for internal uses.
-					EcoreResourceBridge.saveResource(resourceToSave, emptyMap())
+					EcoreResourceBridge.saveResource(resourceToSave, emptyMap)
 				}
 			} catch (IOException e) {
 				logger.warn('''Model could not be saved: «modelInstance.URI»''')
-				throw new RuntimeException('''Could not save VURI «modelInstance.URI»: «e»''')
+				throw new RuntimeException('''Could not save VURI «modelInstance.URI»''', e)
 			}
 			return null
 		]
@@ -221,18 +220,11 @@ class ResourceRepositoryImpl implements ModelRepository, CorrespondenceProviding
 	}
 
 	def private ModelInstance getOrCreateUnregisteredModelInstance(VURI modelURI) {
-		var String fileExtension = modelURI.fileExtension
-		var VitruvDomain metamodel = this.domainRepository.getDomain(fileExtension)
-		if (metamodel === null) {
-			throw new RuntimeException( '''Cannot create a new model instance at the uri '«modelURI»' because no metamodel is registered for the file extension '«fileExtension»'!''')
+		if (getDomainForURI(modelURI) === null) {
+			throw new RuntimeException( '''Cannot create a new model instance at the uri '«modelURI»' because no domain is registered for the URI «modelURI»!''')
 		}
-		return loadModelInstance(modelURI, metamodel)
-	}
-
-	def private ModelInstance loadModelInstance(VURI modelURI, VitruvDomain metamodel) {
-		var URI emfURI = modelURI.EMFUri
-		var Resource modelResource = URIUtil.loadResourceAtURI(emfURI, this.resourceSet, metamodel.defaultLoadOptions)
-		var ModelInstance modelInstance = new ModelInstance(modelURI, modelResource)
+		val modelResource = URIUtil.loadResourceAtURI(modelURI.EMFUri, this.resourceSet)
+		val modelInstance = new ModelInstance(modelURI, modelResource)
 		relinkUuids(modelInstance)
 		return modelInstance
 	}
@@ -278,8 +270,7 @@ class ResourceRepositoryImpl implements ModelRepository, CorrespondenceProviding
 
 	def private void loadVURIsOfVSMUModelInstances() {
 		for (VURI vuri : fileSystemHelper.loadVsumVURIsFromFile()) {
-			var metamodel = getMetamodelByURI(vuri)
-			var modelInstance = loadModelInstance(vuri, metamodel)
+			var modelInstance = getOrCreateUnregisteredModelInstance(vuri)
 			registerModelInstance(vuri, modelInstance)
 		}
 	}
@@ -289,7 +280,7 @@ class ResourceRepositoryImpl implements ModelRepository, CorrespondenceProviding
 		// fileSystemHelper.saveVsumVURIsToFile(modelInstances.keySet)
 	}
 
-	def private VitruvDomain getMetamodelByURI(VURI uri) {
+	def private VitruvDomain getDomainForURI(VURI uri) {
 		domainRepository.getDomain(uri.fileExtension)
 	}
 
