@@ -208,7 +208,7 @@ class ResourceRepositoryImpl implements ModelRepository {
 	}
 
 	def private void loadVURIsOfVSMUModelInstances() {
-		for (VURI vuri : fileSystemLayout.loadVsumVURIsFromFile()) {
+		for (VURI vuri : fileSystemLayout.loadVsumVURIs()) {
 			var modelInstance = getOrCreateUnregisteredModelInstance(vuri)
 			registerModelInstance(vuri, modelInstance)
 		}

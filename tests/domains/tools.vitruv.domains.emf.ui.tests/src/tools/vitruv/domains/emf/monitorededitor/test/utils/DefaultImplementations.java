@@ -11,7 +11,7 @@
 
 package tools.vitruv.domains.emf.monitorededitor.test.utils;
 
-import java.io.File;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -49,7 +49,7 @@ public class DefaultImplementations {
         }
 
         @Override
-        public File getFolder() {
+        public Path getFolder() {
             return null;
         }
 
@@ -137,7 +137,7 @@ public class DefaultImplementations {
         }
 
         @Override
-        public File getFolder() {
+        public Path getFolder() {
             return null;
         }
 
