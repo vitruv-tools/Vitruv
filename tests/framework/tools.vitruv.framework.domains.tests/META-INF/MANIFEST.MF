@@ -10,7 +10,8 @@ Require-Bundle: tools.vitruv.testutils,
  org.eclipse.xtend.lib,
  org.eclipse.uml2.uml,
  org.junit.jupiter.api,
- tools.vitruv.testutils.domains
+ tools.vitruv.testutils.domains,
+ org.hamcrest.core
 Bundle-ActivationPolicy: lazy
 Bundle-Vendor: vitruv.tools
 Export-Package: tools.vitruv.framework.tests.domains;x-internal:=true
