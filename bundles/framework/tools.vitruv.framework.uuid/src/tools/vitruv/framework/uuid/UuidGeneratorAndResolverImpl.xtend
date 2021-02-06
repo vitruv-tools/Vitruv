@@ -135,11 +135,10 @@ class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 			return localResult
 		}
 		
-		val objectUri = EcoreUtil.getURI(eObject)
 		// If the object already has a resource, but is not from the resolver’s resource set, resolve it and try again
 		val objectResource = eObject.eResource
 		if (objectResource !== null && objectResource.resourceSet != resourceSet) {
-			val resolvedObject = resolve(objectUri)
+			val resolvedObject = resolve(eObject.resolvableUri)
 			// The EClass check avoids that an objects of another type with the same URI is resolved
 			// This is, for example, the case if a modifier in a UML model is changed, as it is only a
 			// marker class that is replaced, having always the same URI on the same model element.
@@ -151,6 +150,7 @@ class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 			}
 		}
 
+		val objectUri = EcoreUtil.getURI(eObject)
 		// Finally look for a proxy in the repository (due to a deleted object) and match the URI
 		val uuidByProxy = repository.EObjectToUuid.entrySet
 			.filter [key !== null && key.eIsProxy]
@@ -298,7 +298,7 @@ class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 				
 				// Not having a UUID is only supported for pathmap resources
 				if (objectUuid === null && uri.isPathmap) {
-					val resolvedObject = resolve(EcoreUtil.getURI(contentObject))
+					val resolvedObject = resolve(contentObject.resolvableUri)
 					if (resolvedObject === null) {
 						throw new IllegalStateException('''Object could not be resolved in this UuidResolver's resource set: «contentObject»''')
 					}
@@ -334,6 +334,20 @@ class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 			domain.executeVitruviusRecordingCommandAndFlushHistory(callable)
 		} else {
 			callable.call()
+		}
+	}
+	
+	def private static getResolvableUri(EObject object) {
+		val resourceUri = object.eResource.URI
+		// we cannot simply use EcoreUtil#getURI, because object’s domain might use XMI	UUIDs. Since
+		// XMI UUIDs can be different for different resource sets, we cannot use URIs with XMI UUIDs to identify objects
+		// across resource sets. Hence, we force hierarchical URIs. This assumes that the resolved object’s graph
+		// has the same topology in the resolving resource set. This assumption holds when we use this method.  
+		val fragmentPath = EcoreUtil.getRelativeURIFragmentPath(null, object)
+		if (fragmentPath.isEmpty) {
+			resourceUri.appendFragment('/')
+		} else {
+			resourceUri.appendFragment('//' + fragmentPath)
 		}
 	}
 }
