@@ -19,13 +19,13 @@ public class VsumFileSystemLayoutTest extends VsumTest {
 
 		long start = System.currentTimeMillis();
 		// save to disk
-		VsumFileSystemLayout fsHelper = new VsumFileSystemLayout(getCurrentProjectFolder().toFile());
-		fsHelper.initialize();
-		fsHelper.saveVsumVURIsToFile(vuris);
+		VsumFileSystemLayout fsHelper = new VsumFileSystemLayout(getCurrentProjectFolder());
+		fsHelper.prepare();
+		fsHelper.saveVsumVURIs(vuris);
 		long durationForSave = System.currentTimeMillis() - start;
 		long startLoad = System.currentTimeMillis();
 		// load from Disk
-		Set<VURI> loadedVURIs = fsHelper.loadVsumVURIsFromFile();
+		Set<VURI> loadedVURIs = fsHelper.loadVsumVURIs();
 
 		long durationForLoad = System.currentTimeMillis() - startLoad;
 		long durationForLoadAndSave = System.currentTimeMillis() - start;

@@ -1,6 +1,5 @@
 package tools.vitruv.framework.vsum
 
-import java.io.File
 import java.util.Collections
 import java.util.List
 import java.util.Vector
@@ -28,6 +27,7 @@ import static extension tools.vitruv.framework.util.bridges.EcoreResourceBridge.
 import tools.vitruv.framework.vsum.repositories.TuidResolverImpl
 import tools.vitruv.framework.correspondence.CorrespondenceModelFactory
 import tools.vitruv.framework.correspondence.InternalCorrespondenceModel
+import java.nio.file.Path
 
 class VirtualModelImpl implements InternalVirtualModel {
 	static val Logger LOGGER = Logger.getLogger(VirtualModelImpl)
@@ -141,7 +141,7 @@ class VirtualModelImpl implements InternalVirtualModel {
 		save()
 	}
 
-	override File getFolder() {
+	override Path getFolder() {
 		return fileSystemLayout.vsumProjectFolder
 	}
 
@@ -174,7 +174,7 @@ class VirtualModelImpl implements InternalVirtualModel {
 	 * @return The name of the virtual model
 	 */
 	def getName() {
-		this.folder.name
+		folder.fileName.toString
 	}
 
 	/**

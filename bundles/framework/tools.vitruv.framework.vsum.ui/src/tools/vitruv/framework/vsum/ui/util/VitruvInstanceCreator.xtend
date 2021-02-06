@@ -35,7 +35,7 @@ class VitruvInstanceCreator {
 				try {
 					// TODO HK Provide dialog option for enabling automatic propagation
 					VitruvProjectBuilderApplicator.getApplicatorsForVitruvDomain(domain).forEach[
-						setPropagateAfterBuild(true).addBuilder(project, virtualModel.folder, domain.fileExtensions.toSet)
+						setPropagateAfterBuild(true).addBuilder(project, virtualModel.folder.toFile, domain.fileExtensions.toSet)
 					]
 				} catch (IllegalStateException e) {
 					LOGGER.error('''Could not initialize V-SUM project for project: «project.name»''')

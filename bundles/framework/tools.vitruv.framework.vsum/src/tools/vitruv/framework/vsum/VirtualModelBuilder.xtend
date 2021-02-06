@@ -20,7 +20,7 @@ class VirtualModelBuilder {
 	var VitruvDomainRepository domainRepository = null
 	val Set<VitruvDomain> domains = new HashSet
 	val Set<ChangePropagationSpecification> changePropagationSpecifications = new HashSet()
-	var File storageFolder
+	var Path storageFolder
 	var InternalUserInteractor userInteractor
 	
 	def VirtualModelBuilder withDomainRepository(VitruvDomainRepository repository) {
@@ -32,13 +32,13 @@ class VirtualModelBuilder {
 	}
 	
 	def VirtualModelBuilder withStorageFolder(File folder) {
-		checkState(storageFolder === null || storageFolder == folder, "There is already another storage folder set: %s", storageFolder)
-		storageFolder = folder
-		return this
+		withStorageFolder(folder.toPath)
 	}
 	
 	def VirtualModelBuilder withStorageFolder(Path folder) {
-		withStorageFolder(folder.toFile)
+		checkState(storageFolder === null || storageFolder == folder, "There is already another storage folder set: %s", storageFolder)
+		storageFolder = folder
+		return this
 	}
 	
 	def VirtualModelBuilder withUserInteractorForResultProvider(InteractionResultProvider resultProvider) {
@@ -142,7 +142,7 @@ class VirtualModelBuilder {
 		}
 
 		val fileSystemLayout = new VsumFileSystemLayout(storageFolder)
-		fileSystemLayout.initialize()
+		fileSystemLayout.prepare()
 		val vsum = new VirtualModelImpl(fileSystemLayout, userInteractor, domainRepository, changeSpecificationRepository)
 		VirtualModelManager.instance.putVirtualModel(vsum)
 		return vsum

@@ -89,7 +89,7 @@ public class ChangeVisualizationHandler extends AbstractHandler {
 	 */
 	private InternalVirtualModel getVirtualModelImpl(IProject project) {
 	      try {
-	    	  return VirtualModelManager.getInstance().getVirtualModel(project.getLocation().toFile());
+	    	  return VirtualModelManager.getInstance().getVirtualModel(project.getLocation().toFile().toPath());
 	      }catch(UnsupportedOperationException ex) {
 	    	  //If none is found, an exception is thrown rather than returning null
 	    	  return null;

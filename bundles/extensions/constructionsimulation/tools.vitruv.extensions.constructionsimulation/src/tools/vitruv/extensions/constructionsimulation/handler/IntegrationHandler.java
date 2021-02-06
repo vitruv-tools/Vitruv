@@ -107,7 +107,7 @@ public abstract class IntegrationHandler<T> extends AbstractHandler {
      */
     private void cleanUpIntegration() {
 
-        vsum.getFolder().delete();
+        vsum.getFolder().toFile().delete();
         LogManager.shutdown();
 
     }
