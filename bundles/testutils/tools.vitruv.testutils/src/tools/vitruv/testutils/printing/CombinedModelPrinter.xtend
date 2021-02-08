@@ -44,28 +44,31 @@ class CombinedModelPrinter implements ModelPrinter {
 		override printFeatureValueList(
 			PrintTarget target,
 			PrintIdProvider idProvider,
+			EObject object,
 			EStructuralFeature feature,
 			Collection<?> valueList
 		) {
-			useFirstResponsible[printFeatureValueList(target, idProvider, feature, valueList)]
+			useFirstResponsible[printFeatureValueList(target, idProvider, object, feature, valueList)]
 		}
 
 		override printFeatureValueSet(
 			PrintTarget target,
 			PrintIdProvider idProvider,
+			EObject object,
 			EStructuralFeature feature,
 			Collection<?> valueSet
 		) {
-			useFirstResponsible[printFeatureValueSet(target, idProvider, feature, valueSet)]
+			useFirstResponsible[printFeatureValueSet(target, idProvider, object, feature, valueSet)]
 		}
 
 		override PrintResult printFeatureValue(
 			PrintTarget target,
 			PrintIdProvider idProvider,
+			EObject object,
 			EStructuralFeature feature,
 			Object value
 		) {
-			useFirstResponsible[printFeatureValue(target, idProvider, feature, value)]
+			useFirstResponsible[printFeatureValue(target, idProvider, object, feature, value)]
 		}
 
 		override withSubPrinter(ModelPrinter subPrinter) {

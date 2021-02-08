@@ -413,18 +413,43 @@ package class ModelDeepEqualityMatcher<O extends EObject> extends TypeSafeMatche
 			this
 		}
 
-		override PrintResult printFeature(
-			extension PrintTarget target,
+		override PrintResult printFeatureValue(
+			PrintTarget target,
 			PrintIdProvider idProvider,
 			EObject object,
-			EStructuralFeature feature
+			EStructuralFeature feature,
+			Object value
 		) {
+			printIfIgnored(target, object, feature)
+		}
+		
+		override PrintResult printFeatureValueSet(
+			PrintTarget target,
+			PrintIdProvider idProvider,
+			EObject object,
+			EStructuralFeature feature,
+			Collection<?> values
+		) {
+			printIfIgnored(target, object, feature)
+		}
+		
+		override PrintResult printFeatureValueList(
+			PrintTarget target,
+			PrintIdProvider idProvider,
+			EObject object,
+			EStructuralFeature feature,
+			Collection<?> values
+		) {
+			printIfIgnored(target, object, feature)
+		}
+		
+		def private printIfIgnored(extension PrintTarget target, EObject object, EStructuralFeature feature) {
 			if (featureFilters.exists[!includeFeature(object, feature)]) {
-				print(feature.name) + print('=…')
+				print('…')
 			} else {
 				NOT_RESPONSIBLE
 			}
-		}
+		} 
 	}
 
 	private static class ComparisonAwarePrintIdProvider implements PrintIdProvider {
@@ -511,7 +536,7 @@ package class ModelDeepEqualityMatcher<O extends EObject> extends TypeSafeMatche
 				} else {
 					PRINTED_NO_OUTPUT
 				}) + print('.') + print(feature.name) + print(' ') + print(difference.kind.verb) + print(': ')
-			+ target.printFeatureValue(idProvider, feature, value)
+			+ target.printFeatureValue(idProvider, difference.match.left ?: difference.match.right, feature, value)
 		}
 
 		def private String getVerb(DifferenceKind kind) {

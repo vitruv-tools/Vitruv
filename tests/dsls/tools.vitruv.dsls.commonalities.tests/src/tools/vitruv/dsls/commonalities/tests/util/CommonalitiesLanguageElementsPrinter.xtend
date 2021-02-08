@@ -11,6 +11,7 @@ import tools.vitruv.dsls.commonalities.language.Commonality
 import static extension tools.vitruv.testutils.printing.PrintResultExtension.*
 import tools.vitruv.dsls.commonalities.language.elements.EFeatureAdapter
 import tools.vitruv.testutils.printing.PrintResult
+import org.eclipse.emf.ecore.EObject
 
 class CommonalitiesLanguageElementsPrinter implements ModelPrinter {
 	override printObject(PrintTarget target, PrintIdProvider idProvider, Object object) {
@@ -31,6 +32,7 @@ class CommonalitiesLanguageElementsPrinter implements ModelPrinter {
 	override printFeatureValue(
 		PrintTarget target,
 		PrintIdProvider idProvider,
+		EObject object,
 		EStructuralFeature feature,
 		Object value
 	) {
