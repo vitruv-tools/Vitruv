@@ -58,6 +58,7 @@ interface ModelPrinter {
 	def printFeatureValueList(
 		PrintTarget target,
 		PrintIdProvider idProvider,
+		EObject object,
 		EStructuralFeature feature,
 		Collection<?> valueList
 	) {
@@ -70,6 +71,7 @@ interface ModelPrinter {
 	def printFeatureValueSet(
 		PrintTarget target,
 		PrintIdProvider idProvider,
+		EObject object,
 		EStructuralFeature feature,
 		Collection<?> valueSet
 	) {
@@ -82,6 +84,7 @@ interface ModelPrinter {
 	def PrintResult printFeatureValue(
 		PrintTarget target,
 		PrintIdProvider idProvider,
+		EObject object,
 		EStructuralFeature feature,
 		Object value
 	) {
