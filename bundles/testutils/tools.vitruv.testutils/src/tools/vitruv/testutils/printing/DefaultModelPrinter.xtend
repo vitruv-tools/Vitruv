@@ -85,12 +85,12 @@ class DefaultModelPrinter implements ModelPrinter {
 		return print(feature.name) + print('=') + //
 		if (feature.isMany) {
 			if (feature.isOrdered) {
-				subPrinter.printFeatureValueList(target, idProvider, feature, object.eGet(feature) as Collection<?>)
+				subPrinter.printFeatureValueList(target, idProvider, object, feature, object.eGet(feature) as Collection<?>)
 			} else {
-				subPrinter.printFeatureValueSet(target, idProvider, feature, object.eGet(feature) as Collection<?>)
+				subPrinter.printFeatureValueSet(target, idProvider, object, feature, object.eGet(feature) as Collection<?>)
 			}
 		} else {
-			subPrinter.printFeatureValue(target, idProvider, feature, object.eGet(feature))
+			subPrinter.printFeatureValue(target, idProvider, object, feature, object.eGet(feature))
 		}
 	}
 
@@ -104,28 +104,31 @@ class DefaultModelPrinter implements ModelPrinter {
 	override printFeatureValueList(
 		PrintTarget target,
 		PrintIdProvider idProvider,
+		EObject object,
 		EStructuralFeature feature,
 		Collection<?> valueList
 	) {
 		target.printList(valueList) [ subTarget, element |
-			subPrinter.printFeatureValue(subTarget, idProvider, feature, element)
+			subPrinter.printFeatureValue(subTarget, idProvider, object, feature, element)
 		]
 	}
 
 	override printFeatureValueSet(
 		PrintTarget target,
 		PrintIdProvider idProvider,
+		EObject object,
 		EStructuralFeature feature,
 		Collection<?> valueSet
 	) {
 		target.printSet(valueSet) [ subTarget, element |
-			subPrinter.printFeatureValue(subTarget, idProvider, feature, element)
+			subPrinter.printFeatureValue(subTarget, idProvider, object, feature, element)
 		]
 	}
 
 	override PrintResult printFeatureValue(
 		PrintTarget target,
 		PrintIdProvider idProvider,
+		EObject object,
 		EStructuralFeature feature,
 		Object value
 	) {
