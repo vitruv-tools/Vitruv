@@ -348,13 +348,11 @@ class ResourceRepositoryImpl implements ModelRepository, CorrespondenceProviding
 	override Resource getModelResource(VURI vuri) {
 		getModelInstanceOriginal(vuri).resource
 	}
-	
+
 	def dispose() {
 		resourceSet.transactionalEditingDomain?.dispose
-		resourceSet.resources.forEach[
-			allContents.forEach[eAdapters.clear]
-			unload
-		]
+		resourceSet.resources.forEach[unload]
 		resourceSet.resources.clear
 	}
+
 }
