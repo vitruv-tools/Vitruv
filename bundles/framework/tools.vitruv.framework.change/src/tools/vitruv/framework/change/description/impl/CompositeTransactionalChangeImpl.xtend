@@ -7,14 +7,21 @@ import tools.vitruv.framework.uuid.UuidResolver
 import tools.vitruv.framework.change.interaction.UserInteractionBase
 import java.util.List
 import java.util.ArrayList
+import java.util.Collection
 
 class CompositeTransactionalChangeImpl extends AbstractCompositeChangeImpl<TransactionalChange> implements CompositeTransactionalChange {
-	List<UserInteractionBase> userInteractions = new ArrayList<UserInteractionBase>;
+	List<UserInteractionBase> userInteractions = new ArrayList<UserInteractionBase>
+	
+	new() { super() }
+
+	new(Collection<? extends TransactionalChange> changes) {
+		super(changes)
+	}
 	
 	override removeChange(TransactionalChange change) {
 		if (change !== null && this.changes.contains(change)) {
 			if (changes.size == 1) {
-				val emptyChange = VitruviusChangeFactory.instance.createEmptyChange(change.URI);
+				val emptyChange = VitruviusChangeFactory.instance.emptyChange
 				this.changes += emptyChange;
 			}
 		}
@@ -39,7 +46,7 @@ class CompositeTransactionalChangeImpl extends AbstractCompositeChangeImpl<Trans
 	}
 	
 	private def getSubUserInteractions() {
-		return changes.map[it.userInteractions].flatten	
+		return changes.flatMap [userInteractions]	
 	}
 	
 	override setUserInteractions(Iterable<UserInteractionBase> userInputs) {
@@ -52,5 +59,8 @@ class CompositeTransactionalChangeImpl extends AbstractCompositeChangeImpl<Trans
 		userInteractions.clear;
 		userInteractions += userInputs;
 	}
-
+	
+	override CompositeTransactionalChangeImpl copy() {
+		new CompositeTransactionalChangeImpl(changes.map [copy()])
+	}
 }

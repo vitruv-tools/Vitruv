@@ -201,5 +201,4 @@ class EMFModelChangeTransformationUtil {
 					affectedReference, oldReferenceValue, newReferenceValue))
 		}
 	}
-
 }

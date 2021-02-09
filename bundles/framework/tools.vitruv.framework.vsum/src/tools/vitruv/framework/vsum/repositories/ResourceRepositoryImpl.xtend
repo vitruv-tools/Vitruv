@@ -296,11 +296,9 @@ class ResourceRepositoryImpl implements ModelRepository, CorrespondenceProviding
 		executeAsCommand[
 			domainToRecorder.values.forEach[endRecording()]
 		]
-		return domainToRecorder.values.map [ recorder |
-			val compChange = VitruviusChangeFactory.instance.createCompositeTransactionalChange()
-			recorder.changes.forEach[compChange.addChange(it)]
-			return compChange
-		].filter[it.containsConcreteChange()]
+		return domainToRecorder.values
+			.map [recorder | VitruviusChangeFactory.instance.createCompositeTransactionalChange(recorder.changes)]
+			.filter[containsConcreteChange()]
 	}
 
 	def private void deleteModel(VURI vuri) {

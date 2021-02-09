@@ -109,14 +109,17 @@ class ChangePublishingTestView implements NonTransactionalTestView {
 	override propagate() {
 		changeRecorder.endRecording()
 		val recordedChanges = changeRecorder.changes
-		val delegateChanges = recordedChanges.map [changedResource]
-			.filterNull.toSet
-			.flatMapFixed [changedResource | 
-				// Propagating an empty modification for every changed resource gives the delegate a 
-				// chance to participate in change propagation (e.g. BasicTestView saves or cleans up resources).
-				// This is not a meaningful operation at all, but rather a hack to bridge between this 
-				// non-transactional operation and the transactional delegate.
-				delegate.propagate(changedResource) []
+		val delegateChanges = recordedChanges.flatMap [changedVURIs]
+			.toSet
+			.flatMapFixed [changedVURI | 
+				val changedResource = resourceSet.getResource(changedVURI.EMFUri, false)
+				if (changedResource !== null) {
+					// Propagating an empty modification for every changed resource gives the delegate a 
+					// chance to participate in change propagation (e.g. BasicTestView saves or cleans up resources).
+					// This is not a meaningful operation at all, but rather a hack to bridge between this 
+					// non-transactional operation and the transactional delegate.
+					delegate.propagate(changedResource) []
+				}
 			] 
 		val ourChanges = propagateChanges(recordedChanges)
 		changeRecorder.beginRecording()
@@ -125,7 +128,6 @@ class ChangePublishingTestView implements NonTransactionalTestView {
 	
 	def private propagateChanges(Iterable<TransactionalChange> changes) {
 		val compositeChange = VitruviusChangeFactory.instance.createCompositeChange(changes)
-		checkState(compositeChange.validate, "The recorded change set is not valid!")
 		val propagationResult = changeProcessors.flatMapFixed [apply(compositeChange)]
 		if (renewResourceCacheAfterPropagation) {
 			renewResourceCache()

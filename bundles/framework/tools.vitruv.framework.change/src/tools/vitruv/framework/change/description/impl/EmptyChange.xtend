@@ -1,34 +1,26 @@
 package tools.vitruv.framework.change.description.impl
 
-import tools.vitruv.framework.util.datatypes.VURI
 import tools.vitruv.framework.change.description.TransactionalChange
 import tools.vitruv.framework.uuid.UuidResolver
 import tools.vitruv.framework.change.interaction.UserInteractionBase
 import tools.vitruv.framework.change.description.VitruviusChange
 
-class EmptyChangeImpl extends AbstractVitruviusChangeImpl implements TransactionalChange {
-	val VURI vuri;
-
-	new(VURI vuri) {
-		this.vuri = vuri;
-	}
+class EmptyChange implements TransactionalChange {
+	public static val INSTANCE = new EmptyChange()
+	private new(){}
 
 	override containsConcreteChange() {
-		return true;
+		false
 	}
-
-	override validate() {
-		return true;
+	
+	override getChangedVURIs() {
+		emptyList
 	}
 
 	override getEChanges() {
-		return #[];
+		emptyList
 	}
-
-	override getURI() {
-		return vuri;
-	}
-
+	
 	override resolveBeforeAndApplyForward(UuidResolver uuidResolver) {
 		// Do nothing		
 	}
@@ -42,15 +34,15 @@ class EmptyChangeImpl extends AbstractVitruviusChangeImpl implements Transaction
 	}
 
 	override getAffectedEObjects() {
-		return #[]
+		emptyList
 	}
 
 	override getAffectedEObjectIds() {
-		return #[]
+		emptyList
 	}
 
 	override getUserInteractions() {
-		#[]
+		emptyList
 	}
 
 	override setUserInteractions(Iterable<UserInteractionBase> userInputs) {
@@ -58,7 +50,14 @@ class EmptyChangeImpl extends AbstractVitruviusChangeImpl implements Transaction
 	}
 
 	override changedEObjectEquals(VitruviusChange change) {
-		return change.affectedEObjects.empty
+		change.affectedEObjects.empty
 	}
 	
+	override EmptyChange copy() {
+		this
+	}
+	
+	override toString() {
+		"empty change"
+	}
 }

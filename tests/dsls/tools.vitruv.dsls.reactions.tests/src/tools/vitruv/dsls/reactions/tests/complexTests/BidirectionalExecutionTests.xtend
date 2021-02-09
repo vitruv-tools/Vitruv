@@ -53,7 +53,7 @@ class BidirectionalExecutionTests extends ReactionsExecutionTest {
 
 	private def VitruviusChange getSourceModelChanges(PropagatedChange propagatedChange) {
 		return (propagatedChange.consequentialChanges as CompositeContainerChange).changes.findFirst [
-			URI.toString.endsWith(SOURCE_MODEL.toString)
+			changedVURIs.exists [lastSegment == SOURCE_MODEL.toString]
 		]
 	}
 
