@@ -11,16 +11,14 @@ import org.eclipse.emf.ecore.change.impl.ChangeDescriptionImpl
 import tools.vitruv.framework.uuid.UuidGeneratorAndResolver
 
 class ModelRepositoryImpl {
-	val logger = Logger.getLogger(ModelRepositoryImpl);
-	val Set<EObject> rootElements;
-	val Map<EObject, AtomicEmfChangeRecorder> rootToRecorder;
-	var boolean isRecording = false;
-	val UuidGeneratorAndResolver uuidGeneratorAndResolver;
+	val logger = Logger.getLogger(ModelRepositoryImpl)
+	val Set<EObject> rootElements = new HashSet()
+	val Map<EObject, AtomicEmfChangeRecorder> rootToRecorder = new HashMap()
+	var boolean isRecording = false
+	val UuidGeneratorAndResolver uuidGeneratorAndResolver
 	
 	new(UuidGeneratorAndResolver uuidGeneratorAndResolver) {
-		this.uuidGeneratorAndResolver = uuidGeneratorAndResolver;
-		rootElements = new HashSet<EObject>();
-		rootToRecorder = new HashMap<EObject, AtomicEmfChangeRecorder>();
+		this.uuidGeneratorAndResolver = uuidGeneratorAndResolver
 	}
 	
 	def void addRootElement(EObject rootElement) {

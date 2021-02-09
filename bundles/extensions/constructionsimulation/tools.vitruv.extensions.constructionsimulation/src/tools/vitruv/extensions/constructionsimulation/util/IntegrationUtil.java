@@ -18,6 +18,6 @@ public class IntegrationUtil {
 			.withStorageFolder(ResourcesPlugin.getWorkspace().getRoot().getLocation().append("/vitruvius.meta").toFile())
 			.withUserInteractorForResultProvider(UserInteractionFactory.instance.createPredefinedInteractionResultProvider(null))
 			.withDomains(domains)
-			.build();
+			.buildAndInitialize();
 	}
 }

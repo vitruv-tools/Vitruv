@@ -147,7 +147,7 @@ public abstract class VsumTest {
 			.withStorageFolder(testProjectFolder.resolve(vsumName))
 			.withUserInteractorForResultProvider(UserInteractionFactory.instance.createPredefinedInteractionResultProvider(null))
 			.withDomains(UmlDomain, PcmDomain)
-			.build();
+			.buildAndInitialize();
 	}
 
 	private void createMockupModelsWithDefaultUris(final InternalVirtualModel vsum) {

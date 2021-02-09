@@ -1,7 +1,6 @@
 package tools.vitruv.framework.vsum.repositories
 
 import edu.kit.ipd.sdq.commons.util.org.eclipse.emf.common.util.URIUtil
-import java.io.File
 import java.io.IOException
 import java.util.HashMap
 import java.util.Map
@@ -15,10 +14,6 @@ import org.eclipse.xtend.lib.annotations.Accessors
 import tools.vitruv.framework.change.description.TransactionalChange
 import tools.vitruv.framework.change.description.VitruviusChangeFactory
 import tools.vitruv.framework.change.recording.AtomicEmfChangeRecorder
-import tools.vitruv.framework.correspondence.CorrespondenceModel
-import tools.vitruv.framework.correspondence.CorrespondenceModelFactory
-import tools.vitruv.framework.correspondence.CorrespondenceProviding
-import tools.vitruv.framework.correspondence.InternalCorrespondenceModel
 import tools.vitruv.framework.domains.VitruvDomain
 import tools.vitruv.framework.domains.repository.VitruvDomainRepository
 import tools.vitruv.framework.tuid.TuidManager
@@ -29,7 +24,6 @@ import tools.vitruv.framework.uuid.UuidGeneratorAndResolver
 import tools.vitruv.framework.uuid.UuidGeneratorAndResolverImpl
 import tools.vitruv.framework.uuid.UuidResolver
 import tools.vitruv.framework.vsum.ModelRepository
-import tools.vitruv.framework.vsum.helper.FileSystemHelper
 
 import static java.util.Collections.emptyMap
 import static extension tools.vitruv.framework.util.ResourceSetUtil.getRequiredTransactionalEditingDomain
@@ -40,44 +34,31 @@ import static extension tools.vitruv.framework.util.bridges.EcoreResourceBridge.
 import static extension tools.vitruv.framework.util.ResourceSetUtil.withGlobalFactories
 import static extension tools.vitruv.framework.domains.repository.DomainAwareResourceSet.awareOfDomains
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
+import tools.vitruv.framework.vsum.helper.VsumFileSystemLayout
 
-class ResourceRepositoryImpl implements ModelRepository, CorrespondenceProviding {
+class ResourceRepositoryImpl implements ModelRepository {
 	static val logger = Logger.getLogger(ResourceRepositoryImpl.simpleName)
 	val ResourceSet resourceSet
 	val VitruvDomainRepository domainRepository
 	val Map<VURI, ModelInstance> modelInstances = new HashMap()
-	val InternalCorrespondenceModel correspondenceModel
-	val FileSystemHelper fileSystemHelper
-	val File folder
+	val VsumFileSystemLayout fileSystemLayout
 	@Accessors
 	val UuidGeneratorAndResolver uuidGeneratorAndResolver
 	val Map<VitruvDomain, AtomicEmfChangeRecorder> domainToRecorder = new HashMap()
 	var isRecording = false
 
-	new(File folder, VitruvDomainRepository metamodelRepository) {
-		this(folder, metamodelRepository, null)
-	}
-
-	new(File folder, VitruvDomainRepository domainRepository, ClassLoader classLoader) {
+	new(VsumFileSystemLayout fileSystemLayout, VitruvDomainRepository domainRepository) {
 		this.domainRepository = domainRepository
-		this.folder = folder
+		this.fileSystemLayout = fileSystemLayout
 		this.resourceSet = new ResourceSetImpl().withGlobalFactories().awareOfDomains(domainRepository)
-		try {
-			this.fileSystemHelper = new FileSystemHelper(folder)
-		} catch (IOException e) {
-			val message = '''Unable to initialize V-SUM metadata folders in folder: «folder»'''
-			logger.error(message, e)
-			throw new IllegalStateException(message, e)
-		}
 		this.uuidGeneratorAndResolver = initializeUuidProviderAndResolver()
-		this.correspondenceModel = initializeCorrespondenceModel()
 		loadVURIsOfVSMUModelInstances()
 	}
 
 	def private AtomicEmfChangeRecorder getOrCreateChangeRecorder(VURI vuri) {
-		var VitruvDomain domain = getDomainForURI(vuri)
-		domainToRecorder.putIfAbsent(domain, new AtomicEmfChangeRecorder(this.uuidGeneratorAndResolver))
-		return domainToRecorder.get(domain)
+		domainToRecorder.computeIfAbsent(getDomainForURI(vuri)) [
+			new AtomicEmfChangeRecorder(this.uuidGeneratorAndResolver)
+		]
 	}
 
 	/** 
@@ -105,15 +86,7 @@ class ResourceRepositoryImpl implements ModelRepository, CorrespondenceProviding
 
 	def private void relinkUuids(ModelInstance modelInstance) {
 		for (EObject root : modelInstance.rootElements) {
-			root.eAllContents.forEachRemaining [ object |
-				if (uuidGeneratorAndResolver.hasUuid(object)) {
-					uuidGeneratorAndResolver.registerEObject(this.uuidGeneratorAndResolver.getUuid(object), object)
-				} else {
-					// TODO Move logic to UUID generator and resolver and reuse the special cases
-					// for Java
-					logger.trace('''Element «object» has no UUID that can be linked during resource reload''')
-				}
-			]
+			root.eAllContents.forEachRemaining [uuidGeneratorAndResolver.registerEObject(it)]
 		}
 	}
 
@@ -190,9 +163,8 @@ class ResourceRepositoryImpl implements ModelRepository, CorrespondenceProviding
 	}
 
 	override void saveAllModels() {
-		logger.debug('''Saving all models of model repository for VSUM: «this.folder»''')
+		logger.debug('''Saving all models of model repository for VSUM «fileSystemLayout»''')
 		saveAllChangedModels()
-		saveAllChangedCorrespondenceModels()
 	}
 
 	def private void deleteEmptyModels() {
@@ -212,13 +184,6 @@ class ResourceRepositoryImpl implements ModelRepository, CorrespondenceProviding
 		}
 	}
 
-	def private void saveAllChangedCorrespondenceModels() {
-		executeAsCommand [
-			logger.trace( '''Saving correspondence model: «correspondenceModel.URI»''')
-			correspondenceModel.saveModel()
-		]
-	}
-
 	def private ModelInstance getOrCreateUnregisteredModelInstance(VURI modelURI) {
 		if (getDomainForURI(modelURI) === null) {
 			throw new RuntimeException( '''Cannot create a new model instance at the uri '«modelURI»' because no domain is registered for the URI «modelURI»!''')
@@ -229,27 +194,9 @@ class ResourceRepositoryImpl implements ModelRepository, CorrespondenceProviding
 		return modelInstance
 	}
 
-	def private initializeCorrespondenceModel() {
-		executeAsCommand [
-			var correspondencesVURI = fileSystemHelper.correspondencesVURI
-			logger.trace('''Creating or loading correspondence model from: «correspondencesVURI»''')
-			val correspondencesResource = resourceSet.loadOrCreateResource(correspondencesVURI.EMFUri)
-			correspondencesResource.save(null)
-			var recorder = getOrCreateChangeRecorder(correspondencesVURI)
-			recorder.addToRecording(correspondencesResource)
-			recorder.beginRecording()
-			val correspondenceModel = CorrespondenceModelFactory.instance.createCorrespondenceModel(
-				new TuidResolverImpl(domainRepository, this), uuidGeneratorAndResolver, this, domainRepository,
-				correspondencesVURI, correspondencesResource)
-			recorder.endRecording()
-			recorder.addToRecording(correspondencesResource)
-			correspondenceModel
-		]
-	}
-
 	def private initializeUuidProviderAndResolver() {
 		executeAsCommand [
-			var uuidProviderVURI = fileSystemHelper.uuidProviderAndResolverVURI
+			var uuidProviderVURI = fileSystemLayout.uuidProviderAndResolverVURI
 			logger.trace('''Creating or loading uuid provider and resolver model from: «uuidProviderVURI»''')
 			var Resource uuidProviderResource = resourceSet.loadOrCreateResource(uuidProviderVURI.EMFUri)
 			// TODO HK We cannot enable strict mode here, because for textual views we will not get
@@ -260,16 +207,8 @@ class ResourceRepositoryImpl implements ModelRepository, CorrespondenceProviding
 		]
 	}
 
-	/** 
-	 * Returns the correspondence model in this model repository
-	 * @return the correspondence model
-	 */
-	override CorrespondenceModel getCorrespondenceModel() {
-		correspondenceModel.genericView
-	}
-
 	def private void loadVURIsOfVSMUModelInstances() {
-		for (VURI vuri : fileSystemHelper.loadVsumVURIsFromFile()) {
+		for (VURI vuri : fileSystemLayout.loadVsumVURIs()) {
 			var modelInstance = getOrCreateUnregisteredModelInstance(vuri)
 			registerModelInstance(vuri, modelInstance)
 		}
@@ -331,7 +270,7 @@ class ResourceRepositoryImpl implements ModelRepository, CorrespondenceProviding
 	}
 
 	override VURI getMetadataModelURI(String... metadataKey) {
-		fileSystemHelper.getConsistencyMetadataModelVURI(metadataKey)
+		fileSystemLayout.getConsistencyMetadataModelVURI(metadataKey)
 	}
 
 	override Resource getModelResource(VURI vuri) {
