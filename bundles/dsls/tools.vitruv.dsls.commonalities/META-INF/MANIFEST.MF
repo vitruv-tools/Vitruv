@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Vitruv DSLs Commonalities Language
 Bundle-Vendor: vitruv.tools
-Bundle-Version: 2.0.0
+Bundle-Version: 2.0.1
 Bundle-ClassPath: .
 Bundle-SymbolicName: tools.vitruv.dsls.commonalities;singleton:=true
 Automatic-Module-Name: tools.vitruv.dsls.common
