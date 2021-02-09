@@ -226,8 +226,10 @@ class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 		checkState(eObject !== null, "Object must not be null")
 		logger.debug('''Adding UUID «uuid» for EObject: «eObject»''')
 		repository.eResource?.resourceSet.runAsCommandIfNecessary [
-			repository.EObjectToUuid.removeIf[value == uuid]
-			repository.uuidToEObject.put(uuid, eObject)
+			val uuidMapped = repository.uuidToEObject.put(uuid, eObject)
+			if (uuidMapped !== null) {
+				repository.EObjectToUuid.remove(uuidMapped)
+			}
 			repository.EObjectToUuid.put(eObject, uuid)
 		]
 	}
