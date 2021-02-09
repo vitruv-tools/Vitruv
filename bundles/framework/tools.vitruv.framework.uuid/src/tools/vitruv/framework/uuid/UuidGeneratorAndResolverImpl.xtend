@@ -16,7 +16,6 @@ import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.common.util
 import static com.google.common.base.Preconditions.checkArgument
 import static com.google.common.base.Preconditions.checkState
 import static extension tools.vitruv.framework.util.ResourceSetUtil.getTransactionalEditingDomain
-import java.util.concurrent.Callable
 
 /**
  * {@link UuidGeneratorAndResolver}
@@ -292,23 +291,23 @@ class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 	override void loadUuidsToChild(UuidResolver childResolver, URI uri) {
 		// Only load UUIDs if resource exists (a pathmap resource always exists)
 		if (((uri.isFile || uri.isPlatform) && uri.existsResourceAtUri) || uri.isPathmap) {
-			for (val allContents = childResolver.resourceSet.getResource(uri, true).allContents; allContents.hasNext;) {
-				val contentObject = allContents.next
-				var objectUuid = internalGetUuid(contentObject)
+			val childContents = childResolver.resourceSet.runAsCommandIfNecessary [getResource(uri, true)].allContents
+			val ourContents = this.resourceSet.runAsCommandIfNecessary [getResource(uri, true)].allContents
+			while (childContents.hasNext) {
+				val childObject = childContents.next
+				checkState(ourContents.hasNext, "Cannot find %s in our resource set!", childObject)
+				val ourObject = ourContents.next
 				
+				var objectUuid = repository.EObjectToUuid.get(ourObject)
 				// Not having a UUID is only supported for pathmap resources
 				if (objectUuid === null && uri.isPathmap) {
-					val resolvedObject = resolve(contentObject.resolvableUri)
-					if (resolvedObject === null) {
-						throw new IllegalStateException('''Object could not be resolved in this UuidResolver's resource set: «contentObject»''')
-					}
-					objectUuid = generateUuid(resolvedObject)
+					objectUuid = generateUuid(ourObject)
 				}		
 				if (objectUuid === null) {
-					throw new IllegalStateException('''Element does not have a UUID but should have one: «contentObject»''')
+					throw new IllegalStateException('''Element does not have a UUID but should have one: «ourObject»''')
 				}
 				
-				childResolver.registerEObject(objectUuid, contentObject)
+				childResolver.registerEObject(objectUuid, childObject)
 			}
 		}
 	}
@@ -320,7 +319,7 @@ class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 	private def EObject resolve(URI uri) {
 		// TODO running as command should never be necessary for non-Java domains.
 		// Running in a command should probably be removed after domains can modify the UUID behaviour (see #326)
-		resourceSet.runAsCommandIfNecessary [resourceSet.getEObject(uri, true)]
+		resourceSet.runAsCommandIfNecessary [getEObject(uri, true)]
 	}
 
 	// If there is a TransactionalEditingDomain registered on the resource set, we have
@@ -328,12 +327,12 @@ class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 	// there is no need to execute the command on a TransactionalEditingDomain. It can even
 	// lead to errors if the ResourceSet is also modified by the test, as these modifications
 	// would also have to be made on the TransactionalEditingDomain once it was created.
-	def private <T> T runAsCommandIfNecessary(ResourceSet resourceSet, Callable<T> callable) {
+	def private <T> T runAsCommandIfNecessary(ResourceSet resourceSet, (ResourceSet)=>T callable) {
 		val domain = resourceSet?.transactionalEditingDomain
 		return if (domain !== null) {
-			domain.executeVitruviusRecordingCommandAndFlushHistory(callable)
+			domain.executeVitruviusRecordingCommandAndFlushHistory [callable.apply(resourceSet)]
 		} else {
-			callable.call()
+			callable.apply(resourceSet)
 		}
 	}
 	
