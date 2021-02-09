@@ -5,13 +5,13 @@ import org.eclipse.core.resources.ICommand
 import java.util.Arrays
 import org.eclipse.core.runtime.CoreException
 import java.util.HashMap
-import java.io.File
 import org.apache.log4j.Logger
 import static extension tools.vitruv.framework.util.ProjectBuildUtils.hasBuilder
 import java.util.Set
 import static com.google.common.base.Preconditions.checkArgument
 import static extension tools.vitruv.framework.domains.ui.builder.VitruvProjectBuilderArguments.*
 import static extension tools.vitruv.framework.util.ProjectBuildUtils.buildIncrementally
+import java.nio.file.Path
 
 final class VitruvProjectBuilderApplicatorImpl implements VitruvProjectBuilderApplicator {
 	static val LOGGER = Logger.getLogger(VitruvProjectBuilderApplicatorImpl)
@@ -34,7 +34,7 @@ final class VitruvProjectBuilderApplicatorImpl implements VitruvProjectBuilderAp
 		this
 	}
 
-	override void addBuilder(IProject project, File virtualModelFolder, Set<String> fileExtensions) {
+	override void addBuilder(IProject project, Path virtualModelFolder, Set<String> fileExtensions) {
 		checkArgument(project !== null, "Project must not be null")
 		checkArgument(virtualModelFolder !== null, "Virtual model folder must not be null")
 		checkArgument(!fileExtensions.nullOrEmpty, "File extensions of builder must not be null or empty")

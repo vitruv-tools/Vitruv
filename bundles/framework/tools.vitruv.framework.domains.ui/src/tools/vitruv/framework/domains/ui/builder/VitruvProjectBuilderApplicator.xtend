@@ -1,10 +1,10 @@
 package tools.vitruv.framework.domains.ui.builder
 
 import org.eclipse.core.resources.IProject
-import java.io.File
 import java.util.Set
 import tools.vitruv.framework.domains.VitruvDomain
 import com.google.common.collect.Sets
+import java.nio.file.Path
 
 interface VitruvProjectBuilderApplicator {
 	/**
@@ -25,7 +25,7 @@ interface VitruvProjectBuilderApplicator {
 	 * 
 	 * @throws IllegalStateException if the builder could be added to the given project
 	 */
-	def void addBuilder(IProject project, File virtualModelFolder,
+	def void addBuilder(IProject project, Path virtualModelFolder,
 		Set<String> fileExtensions) throws IllegalStateException
 
 	/**

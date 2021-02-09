@@ -1,7 +1,6 @@
 package tools.vitruv.framework.domains.ui.builder
 
 import org.eclipse.core.resources.ICommand
-import java.io.File
 import edu.kit.ipd.sdq.activextendannotations.Utility
 import static com.google.common.base.Preconditions.checkState
 import static com.google.common.base.Preconditions.checkArgument
@@ -32,7 +31,7 @@ class VitruvProjectBuilderArguments {
 		Boolean.parseBoolean(command.arguments.getOrDefault(ARGUMENT_AUTO_PROPAGATE_BUILD, "false"))
 	}
 
-	static def void setVirtualModelFolder(ICommand command, File virtualModelFolder) {
+	static def void setVirtualModelFolder(ICommand command, Path virtualModelFolder) {
 		checkArgument(virtualModelFolder !== null, "Virtual model folder must not be null")
 		checkState(
 			!command.arguments.containsKey(
