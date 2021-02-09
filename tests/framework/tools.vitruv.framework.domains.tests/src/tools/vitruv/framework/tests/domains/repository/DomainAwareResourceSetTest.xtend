@@ -94,6 +94,8 @@ class DomainAwareResourceSetTest {
 			contents += aet2.Root2
 			save(outputStream, emptyMap)
 		]
+		outputStream.close
+		
 		assertThat(TestResource.lastSaveOptions, is(<Object, Object>emptyMap))
 	}
 	
@@ -207,6 +209,7 @@ class DomainAwareResourceSetTest {
 			contents += aet.Root
 			save(outputStream, emptyMap)
 		]
+		outputStream.close
 		
 		assertThat(TestResource.lastSaveOptions, is(Map.of("key1", 1)))
 	}
@@ -220,6 +223,7 @@ class DomainAwareResourceSetTest {
 			contents += aet.Root
 			save(outputStream, Map.of("commonKey", "overridden", "key2", 2))
 		]
+		outputStream.close
 		
 		assertThat(TestResource.lastSaveOptions, is(Map.of("key1", 1, "commonKey", "overridden", "key2", 2)))
 	}
