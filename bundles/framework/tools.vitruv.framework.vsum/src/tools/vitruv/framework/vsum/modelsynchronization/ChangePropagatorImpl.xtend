@@ -87,38 +87,40 @@ class ChangePropagatorImpl {
 			changePropagationProvider.forEach [registerObserver(this)]
 			userInteractor.registerUserInputListener(this)
 
-			// target domain to changes in that domain
-			val propagationResults = try {
-				changePropagationProvider.getChangePropagationSpecifications(sourceDomain).mapFixed [
-					targetDomain -> propagateChangeForChangePropagationSpecification(change, it)
-				]
+			val propagationResultChanges = try {
+				// modelRepository.startRecording
+				resourceRepository.startRecording()
+				for (propagator : changePropagationProvider.getChangePropagationSpecifications(sourceDomain)) {
+					propagateChangeForChangePropagationSpecification(change, propagator)
+				}
+				resourceRepository.endRecording() /* + modelRepository.endRecording() */
 			} finally {
 				userInteractor.deregisterUserInputListener(this)
 				changePropagationProvider.forEach [deregisterObserver(this)]
 				userInteractorChange.close()
 			}
 			
-			if (logger.traceEnabled) {
+			if (logger.isTraceEnabled) {
 				logger.trace('''
-					«FOR result : propagationResults»
-					Changes generated in «result.key» by change propagation:
-						«result.value»
+					Changes generate by change propagation:
+					«FOR resultChange : propagationResultChanges»
+						«resultChange»
 					«ENDFOR»
 				''')
 			}
+
 			change.userInteractions = userInteractions
-	
 			val propagatedChange = new PropagatedChange(change,
-				VitruviusChangeFactory.instance.createCompositeChange(propagationResults.flatMapFixed [value]))
+				VitruviusChangeFactory.instance.createCompositeChange(propagationResultChanges))
 			val resultingChanges = new ArrayList()
 			resultingChanges += propagatedChange
 	
-			val nextPropagations = propagationResults
-				.filter [key.shouldTransitivelyPropagateChanges && value.exists [containsConcreteChange]]
-				.mapFixed [
-					new ChangePropagation(outer, VitruviusChangeFactory.instance.createCompositeChange(value), key)
-				]
-	
+			val nextPropagations = propagationResultChanges
+				.filter [containsConcreteChange]
+				.map [changedDomain -> it]
+				.filter [key.shouldTransitivelyPropagateChanges]
+				.mapFixed [new ChangePropagation(outer, value, key)]
+
 			for (nextPropagation : nextPropagations) {
 				resultingChanges += nextPropagation.propagateChanges()
 			}
@@ -126,13 +128,10 @@ class ChangePropagatorImpl {
 			return resultingChanges
 		}
 		
-		private def Iterable<? extends TransactionalChange> propagateChangeForChangePropagationSpecification(
+		private def propagateChangeForChangePropagationSpecification(
 			TransactionalChange change,
 			ChangePropagationSpecification propagationSpecification
 		) {
-			// modelRepository.startRecording
-			resourceRepository.startRecording()
-
 			// TODO HK: Clone the changes for each synchronization! Should even be cloned for
 			// each consistency repair routines that uses it,
 			// or: make them read only, i.e. give them a read-only interface!
@@ -144,8 +143,6 @@ class ChangePropagatorImpl {
 			// Store modification information
 			changedEObjects.forEach[changedResourcesTracker.addInvolvedModelResource(eResource)]
 			changedResourcesTracker.addSourceResourceOfChange(change)
-			
-			resourceRepository.endRecording() /* + modelRepository.endRecording() */
 		}
 		
 		private def AutoCloseable installUserInteractorForChange(VitruviusChange change) {
