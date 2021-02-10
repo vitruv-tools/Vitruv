@@ -2,7 +2,6 @@ package tools.vitruv.framework.vsum
 
 import java.util.Collections
 import java.util.List
-import java.util.Vector
 import java.util.concurrent.Callable
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.resource.Resource
@@ -30,6 +29,8 @@ import java.nio.file.Path
 import static com.google.common.base.Preconditions.checkState
 import static com.google.common.base.Preconditions.checkNotNull
 import java.util.Set
+import java.util.HashSet
+import java.util.LinkedList
 
 class VirtualModelImpl implements InternalVirtualModel {
 	static val Logger LOGGER = Logger.getLogger(VirtualModelImpl)
@@ -39,13 +40,9 @@ class VirtualModelImpl implements InternalVirtualModel {
 	val ChangePropagatorImpl changePropagator
 	val VsumFileSystemLayout fileSystemLayout
 	val InternalCorrespondenceModel correspondenceModel
-	val Set<ChangePropagationListener> changePropagationListeners = Collections.synchronizedSet(newHashSet)
+	val Set<ChangePropagationListener> changePropagationListeners = new HashSet()
+	val List<PropagatedChangeListener> propagatedChangeListeners = new LinkedList()
 	val extension ChangeDomainExtractor changeDomainExtractor
-
-	/**
-	 * A list of {@link PropagatedChangeListener}s that are informed of all changes made
-	 */
-	val List<PropagatedChangeListener> propagatedChangeListeners
 
 	package new(VsumFileSystemLayout fileSystemLayout, InternalUserInteractor userInteractor,
 		VitruvDomainRepository domainRepository,
@@ -54,7 +51,6 @@ class VirtualModelImpl implements InternalVirtualModel {
 		this.domainRepository = domainRepository
 		this.resourceRepository = new ResourceRepositoryImpl(fileSystemLayout, domainRepository)
 		this.modelRepository = new ModelRepositoryImpl(resourceRepository.uuidGeneratorAndResolver)
-		this.propagatedChangeListeners = new Vector<PropagatedChangeListener>()
 		this.changeDomainExtractor = new ChangeDomainExtractor(domainRepository)
 		this.correspondenceModel = loadCorrespondenceModel()
 		this.changePropagator = new ChangePropagatorImpl(
@@ -176,7 +172,7 @@ class VirtualModelImpl implements InternalVirtualModel {
 	 * Registers the given {@link ChangePropagationListener}.
 	 * The listener must not be <code>null</code>.
 	 */
-	override void addChangePropagationListener(ChangePropagationListener propagationListener) {
+	override synchronized void addChangePropagationListener(ChangePropagationListener propagationListener) {
 		checkNotNull(propagationListener)
 		this.changePropagationListeners.add(propagationListener)
 	}
@@ -185,7 +181,7 @@ class VirtualModelImpl implements InternalVirtualModel {
 	 * Unregisters the given {@link ChangePropagationListener}.
 	 * The listener must not be <code>null</code>.
 	 */
-	override void removeChangePropagationListener(ChangePropagationListener propagationListener) {
+	override synchronized void removeChangePropagationListener(ChangePropagationListener propagationListener) {
 		checkNotNull(propagationListener)
 		this.changePropagationListeners.remove(propagationListener)
 	}
@@ -194,7 +190,7 @@ class VirtualModelImpl implements InternalVirtualModel {
 	 * Registers the given {@link PropagatedChangeListener}.
 	 * The listener must not be <code>null</code>.
 	 */
-	override void addPropagatedChangeListener(PropagatedChangeListener propagatedChangeListener) {
+	override synchronized void addPropagatedChangeListener(PropagatedChangeListener propagatedChangeListener) {
 		checkNotNull(propagatedChangeListener)
 		this.propagatedChangeListeners.add(propagatedChangeListener)
 	}
@@ -203,7 +199,7 @@ class VirtualModelImpl implements InternalVirtualModel {
 	 * Unregister the given {@link PropagatedChangeListener}. 
 	 * The listener must not be <code>null</code>.
 	 */
-	override void removePropagatedChangeListener(PropagatedChangeListener propagatedChangeListener) {
+	override synchronized void removePropagatedChangeListener(PropagatedChangeListener propagatedChangeListener) {
 		checkNotNull(propagatedChangeListener)
 		this.propagatedChangeListeners.remove(propagatedChangeListener)
 	}
