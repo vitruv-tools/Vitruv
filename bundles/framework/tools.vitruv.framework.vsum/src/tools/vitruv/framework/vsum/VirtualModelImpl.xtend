@@ -154,9 +154,10 @@ class VirtualModelImpl implements InternalVirtualModel {
 		])
 
 		// TODO HK Instead of this make the changes set the modified flag of the resource when applied
-		val changedEObjects = changes.map[originalChange.affectedEObjects + consequentialChanges.affectedEObjects].
-			flatten
-		changedEObjects.map[eResource].filterNull.forEach[modified = true]
+		changes.flatMap[originalChange.affectedEObjects + consequentialChanges.affectedEObjects]
+			.map[eResource]
+			.filterNull
+			.forEach[modified = true]
 		save()
 	}
 
@@ -167,7 +168,7 @@ class VirtualModelImpl implements InternalVirtualModel {
 	override getUuidGeneratorAndResolver() {
 		return resourceRepository.uuidGeneratorAndResolver
 	}
-	
+
 	/**
 	 * Registers the given {@link ChangePropagationListener}.
 	 * The listener must not be <code>null</code>.
@@ -243,8 +244,8 @@ class VirtualModelImpl implements InternalVirtualModel {
 	def private loadCorrespondenceModel() {
 		var correspondencesVURI = fileSystemLayout.correspondencesVURI
 		LOGGER.trace('''Creating or loading correspondence model from: «correspondencesVURI»''')
-		val correspondencesResource = new ResourceSetImpl().withGlobalFactories()
-			.loadOrCreateResource(correspondencesVURI.EMFUri)
+		val correspondencesResource = new ResourceSetImpl().withGlobalFactories().loadOrCreateResource(
+			correspondencesVURI.EMFUri)
 		CorrespondenceModelFactory.instance.createCorrespondenceModel(
 			new TuidResolverImpl(domainRepository, resourceRepository), uuidGeneratorAndResolver, resourceRepository,
 			domainRepository, correspondencesVURI, correspondencesResource)
