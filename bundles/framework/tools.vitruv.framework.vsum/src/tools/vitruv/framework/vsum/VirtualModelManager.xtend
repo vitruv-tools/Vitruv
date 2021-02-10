@@ -1,11 +1,11 @@
 package tools.vitruv.framework.vsum
 
 import java.util.Map
-import java.io.File
 import java.util.concurrent.ConcurrentHashMap
+import java.nio.file.Path
 
 final class VirtualModelManager {
-	Map<File, InternalVirtualModel> folderToVirtualModelMap;
+	Map<Path, InternalVirtualModel> folderToVirtualModelMap;
 	
 	static val instance = new VirtualModelManager();
 	
@@ -17,7 +17,7 @@ final class VirtualModelManager {
 		return instance;
 	}
 	
-	def getVirtualModel(File folder) {
+	def getVirtualModel(Path folder) {
 		folderToVirtualModelMap.computeIfAbsent(folder) [
 			// get the workspace root
 //			val root = ResourcesPlugin.getWorkspace().getRoot(); 

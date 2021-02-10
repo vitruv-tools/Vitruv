@@ -14,12 +14,13 @@ import tools.vitruv.framework.domains.TuidAwareVitruvDomain
 import tools.vitruv.framework.change.processing.ChangePropagationSpecificationRepository
 import tools.vitruv.framework.userinteraction.InteractionResultProvider
 import tools.vitruv.framework.userinteraction.UserInteractionFactory
+import tools.vitruv.framework.vsum.helper.VsumFileSystemLayout
 
 class VirtualModelBuilder {
 	var VitruvDomainRepository domainRepository = null
 	val Set<VitruvDomain> domains = new HashSet
 	val Set<ChangePropagationSpecification> changePropagationSpecifications = new HashSet()
-	var File storageFolder
+	var Path storageFolder
 	var InternalUserInteractor userInteractor
 	
 	def VirtualModelBuilder withDomainRepository(VitruvDomainRepository repository) {
@@ -31,13 +32,13 @@ class VirtualModelBuilder {
 	}
 	
 	def VirtualModelBuilder withStorageFolder(File folder) {
-		checkState(storageFolder === null || storageFolder == folder, "There is already another storage folder set: %s", storageFolder)
-		storageFolder = folder
-		return this
+		withStorageFolder(folder.toPath)
 	}
 	
 	def VirtualModelBuilder withStorageFolder(Path folder) {
-		withStorageFolder(folder.toFile)
+		checkState(storageFolder === null || storageFolder == folder, "There is already another storage folder set: %s", storageFolder)
+		storageFolder = folder
+		return this
 	}
 	
 	def VirtualModelBuilder withUserInteractorForResultProvider(InteractionResultProvider resultProvider) {
@@ -117,7 +118,7 @@ class VirtualModelBuilder {
 		return this
 	}
 
-	def InternalVirtualModel build() {
+	def InternalVirtualModel buildAndInitialize() {
 		checkState(storageFolder !== null, "No storage folder was configured!")
 		checkState(userInteractor !== null, "No user interactor was configured!")
 		if (domainRepository === null) {
@@ -140,6 +141,10 @@ class VirtualModelBuilder {
 			changePropagationSpecification.userInteractor = this.userInteractor
 		}
 
-		new VirtualModelImpl(storageFolder, userInteractor, domainRepository, changeSpecificationRepository)
+		val fileSystemLayout = new VsumFileSystemLayout(storageFolder)
+		fileSystemLayout.prepare()
+		val vsum = new VirtualModelImpl(fileSystemLayout, userInteractor, domainRepository, changeSpecificationRepository)
+		VirtualModelManager.instance.putVirtualModel(vsum)
+		return vsum
 	}
 }

@@ -3,7 +3,6 @@ package tools.vitruv.framework.correspondence.impl
 import edu.kit.ipd.sdq.commons.util.java.Pair
 import java.io.IOException
 import java.util.ArrayList
-import java.util.HashMap
 import java.util.HashSet
 import java.util.List
 import java.util.Map
@@ -50,7 +49,6 @@ class InternalCorrespondenceModelImpl extends ModelInstance implements InternalC
 	final ClaimableMap<Tuid, Set<List<Tuid>>> tuid2tuidListsMap
 	protected final ClaimableMap<List<Tuid>, Set<Correspondence>> tuid2CorrespondencesMap
 	boolean changedAfterLastSave = false
-	final Map<String, String> saveCorrespondenceOptions
 	final TuidResolver tuidResolver;
 	final UuidResolver uuidResolver;
 
@@ -61,14 +59,17 @@ class InternalCorrespondenceModelImpl extends ModelInstance implements InternalC
 		// TODO MK use MutatingListFixing... when necessary (for both maps!)
 		this.tuid2tuidListsMap = new ClaimableHashMap<Tuid, Set<List<Tuid>>>()
 		this.tuid2CorrespondencesMap = new ClaimableHashMap<List<Tuid>, Set<Correspondence>>()
-		this.saveCorrespondenceOptions = new HashMap<String, String>()
-		this.saveCorrespondenceOptions.put(VitruviusConstants::getOptionProcessDanglingHref(),
-			VitruviusConstants::getOptionProcessDanglingHrefDiscard())
 		this.correspondences = loadAndRegisterCorrespondences(correspondencesResource)
 		this.domainRepository = domainRepository;
 		this.tuidResolver = tuidResolver;
 		this.uuidResolver = uuidResolver;
 		TuidManager.instance.addTuidUpdateListener(this);
+	}
+	
+	def private getSaveAndLoadOptions() {
+		Map.of(
+			VitruviusConstants.optionProcessDanglingHref, VitruviusConstants.optionProcessDanglingHrefDiscard
+		)
 	}
 
 	private def void addCorrespondence(Correspondence correspondence) {
@@ -217,12 +218,12 @@ class InternalCorrespondenceModelImpl extends ModelInstance implements InternalC
 			return;
 		}
 		try {
-			EcoreResourceBridge::saveResource(getResource(), this.saveCorrespondenceOptions)
+			EcoreResourceBridge::saveResource(getResource(), saveAndLoadOptions)
 			this.resetChangedAfterLastSaveFlag;
 		} catch (IOException e) {
 			throw new RuntimeException(
-				'''Could not save correspondence instance '«»«this»' using the resource '«»«getResource()»' and the options '«»«this.saveCorrespondenceOptions»': «e»'''.
-					toString)
+				'''Could not save correspondence instance ‹«this»› using the resource ‹«resource»› and the options ‹«
+				saveAndLoadOptions»›''', e)
 		}
 	}
 
@@ -243,7 +244,7 @@ class InternalCorrespondenceModelImpl extends ModelInstance implements InternalC
 
 	def private Correspondences loadAndRegisterCorrespondences(Resource correspondencesResource) {
 		try {
-			correspondencesResource.load(this.saveCorrespondenceOptions)
+			correspondencesResource.load(saveAndLoadOptions)
 		} catch (IOException e) {
 			if (e.cause instanceof Exception) {
 				logger.trace(
