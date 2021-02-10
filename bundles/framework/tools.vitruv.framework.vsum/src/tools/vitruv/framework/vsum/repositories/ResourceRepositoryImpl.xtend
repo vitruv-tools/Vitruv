@@ -30,6 +30,11 @@ import tools.vitruv.framework.uuid.UuidGeneratorAndResolverImpl
 import tools.vitruv.framework.uuid.UuidResolver
 import tools.vitruv.framework.vsum.ModelRepository
 import tools.vitruv.framework.vsum.helper.FileSystemHelper
+import tools.vitruv.framework.variability.vave.VaveProviding
+import tools.vitruv.framework.variability.vave.VaveModelFactory
+import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
+import tools.vitruv.framework.variability.vave.VaveModel
+import tools.vitruv.framework.variability.vave.impl.VaveModelImpl
 
 import static java.util.Collections.emptyMap
 import static extension tools.vitruv.framework.util.ResourceSetUtil.getRequiredTransactionalEditingDomain
@@ -39,9 +44,8 @@ import tools.vitruv.framework.util.command.VitruviusRecordingCommand
 import static extension tools.vitruv.framework.util.bridges.EcoreResourceBridge.loadOrCreateResource
 import static extension tools.vitruv.framework.util.ResourceSetUtil.withGlobalFactories
 import static extension tools.vitruv.framework.domains.repository.DomainAwareResourceSet.awareOfDomains
-import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 
-class ResourceRepositoryImpl implements ModelRepository, CorrespondenceProviding {
+class ResourceRepositoryImpl implements ModelRepository, CorrespondenceProviding, VaveProviding {
 	static val logger = Logger.getLogger(ResourceRepositoryImpl.simpleName)
 	val ResourceSet resourceSet
 	val VitruvDomainRepository domainRepository
@@ -53,6 +57,7 @@ class ResourceRepositoryImpl implements ModelRepository, CorrespondenceProviding
 	val UuidGeneratorAndResolver uuidGeneratorAndResolver
 	val Map<VitruvDomain, AtomicEmfChangeRecorder> domainToRecorder = new HashMap()
 	var isRecording = false
+//	val VaveModelImpl vaveModel;
 
 	new(File folder, VitruvDomainRepository metamodelRepository) {
 		this(folder, metamodelRepository, null)
@@ -71,6 +76,7 @@ class ResourceRepositoryImpl implements ModelRepository, CorrespondenceProviding
 		}
 		this.uuidGeneratorAndResolver = initializeUuidProviderAndResolver()
 		this.correspondenceModel = initializeCorrespondenceModel()
+//		this.vaveModel = initializeVaveModel()
 		loadVURIsOfVSMUModelInstances()
 	}
 
@@ -246,6 +252,22 @@ class ResourceRepositoryImpl implements ModelRepository, CorrespondenceProviding
 			correspondenceModel
 		]
 	}
+	
+	def private initializeVaveModel() {
+        executeAsCommand [
+            var vaveVURI = this.fileSystemHelper.getVaveVURI();
+            logger.trace('''Creating or loading vave model from: «vaveVURI»''')
+            val vaveResource = resourceSet.loadOrCreateResource(vaveVURI.EMFUri)
+            vaveResource.save(null)
+			var recorder = getOrCreateChangeRecorder(vaveVURI)
+			recorder.addToRecording(vaveResource)
+			recorder.beginRecording()
+            val vaveModel = VaveModelFactory.instance.createVaveModel()
+			recorder.endRecording()
+			recorder.addToRecording(vaveResource)
+			vaveModel
+        ]
+    }
 
 	def private initializeUuidProviderAndResolver() {
 		executeAsCommand [
@@ -266,6 +288,14 @@ class ResourceRepositoryImpl implements ModelRepository, CorrespondenceProviding
 	 */
 	override CorrespondenceModel getCorrespondenceModel() {
 		correspondenceModel.genericView
+	}
+	
+	/** 
+	 * Returns the vave model in this model repository
+	 * @return the vave model
+	 */
+	override VaveModel getVaveModel() {
+		return this.vaveModel
 	}
 
 	def private void loadVURIsOfVSMUModelInstances() {

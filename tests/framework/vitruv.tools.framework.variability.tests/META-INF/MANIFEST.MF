@@ -10,5 +10,6 @@ Require-Bundle: org.eclipse.emf;bundle-version="2.8.0",
  org.junit;bundle-version="4.13.0",
  edu.kit.ipd.sdq.vavemodel;bundle-version="1.0.0",
  org.junit,
- org.junit.jupiter.api
+ org.junit.jupiter.api,
+ tools.vitruv.framework.variability
 Import-Package: tools.vitruv.framework.variability.vave

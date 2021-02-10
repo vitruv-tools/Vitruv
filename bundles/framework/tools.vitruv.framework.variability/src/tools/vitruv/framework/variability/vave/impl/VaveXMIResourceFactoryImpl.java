@@ -1,4 +1,4 @@
-package tools.vitruv.framework.variability.vave;
+package tools.vitruv.framework.variability.vave.impl;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;

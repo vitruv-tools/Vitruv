@@ -6,9 +6,11 @@ import org.eclipse.emf.ecore.EObject
 import java.util.concurrent.Callable
 import tools.vitruv.framework.vsum.modelsynchronization.ChangePropagationListener
 import tools.vitruv.framework.userinteraction.UserInteractor
+import tools.vitruv.framework.variability.vave.VaveModel
 
 interface InternalVirtualModel extends VirtualModel {
 	def CorrespondenceModel getCorrespondenceModel()
+	def VaveModel getVaveModel()
 	def void save()
 	def void persistRootElement(VURI persistenceVuri, EObject rootElement)
 	def void executeCommand(Callable<Void> command)

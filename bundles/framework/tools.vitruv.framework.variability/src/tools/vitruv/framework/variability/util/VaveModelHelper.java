@@ -1,4 +1,4 @@
-package tools.vitruv.framework.variability.vave;
+package tools.vitruv.framework.variability.util;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.TreeIterator;

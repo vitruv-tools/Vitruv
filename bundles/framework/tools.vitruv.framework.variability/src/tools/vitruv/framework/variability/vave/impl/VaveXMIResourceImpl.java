@@ -1,4 +1,4 @@
-package tools.vitruv.framework.variability.vave;
+package tools.vitruv.framework.variability.vave.impl;
 
 import java.io.IOException;
 import java.util.Map;
