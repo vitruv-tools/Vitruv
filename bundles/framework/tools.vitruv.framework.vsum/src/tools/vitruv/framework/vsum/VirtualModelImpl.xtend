@@ -28,6 +28,7 @@ import tools.vitruv.framework.correspondence.CorrespondenceModelFactory
 import tools.vitruv.framework.correspondence.InternalCorrespondenceModel
 import java.nio.file.Path
 import static com.google.common.base.Preconditions.checkState
+import static com.google.common.base.Preconditions.checkNotNull
 import java.util.Set
 
 class VirtualModelImpl implements InternalVirtualModel {
@@ -85,16 +86,6 @@ class VirtualModelImpl implements InternalVirtualModel {
 
 	override synchronized executeCommand(Callable<Void> command) {
 		this.resourceRepository.executeAsCommand(command);
-	}
-
-	override void addChangePropagationListener(ChangePropagationListener propagationListener) {
-		if (propagationListener !== null) {
-			this.changePropagationListeners.add(propagationListener)
-		}
-	}
-
-	override void removeChangePropagationListener(ChangePropagationListener propagationListener) {
-		this.changePropagationListeners.remove(propagationListener)
 	}
 
 	override synchronized propagateChange(VitruviusChange change) {
@@ -180,23 +171,40 @@ class VirtualModelImpl implements InternalVirtualModel {
 	override getUuidGeneratorAndResolver() {
 		return resourceRepository.uuidGeneratorAndResolver
 	}
+	
+	/**
+	 * Registers the given {@link ChangePropagationListener}.
+	 * The listener must not be <code>null</code>.
+	 */
+	override void addChangePropagationListener(ChangePropagationListener propagationListener) {
+		checkNotNull(propagationListener)
+		this.changePropagationListeners.add(propagationListener)
+	}
 
 	/**
-	 * Registers a given {@link PropagatedChangeListener}.
-	 * 
-	 * @param propagatedChangeListener The listener to register
+	 * Unregisters the given {@link ChangePropagationListener}.
+	 * The listener must not be <code>null</code>.
+	 */
+	override void removeChangePropagationListener(ChangePropagationListener propagationListener) {
+		checkNotNull(propagationListener)
+		this.changePropagationListeners.remove(propagationListener)
+	}
+
+	/**
+	 * Registers the given {@link PropagatedChangeListener}.
+	 * The listener must not be <code>null</code>.
 	 */
 	override void addPropagatedChangeListener(PropagatedChangeListener propagatedChangeListener) {
+		checkNotNull(propagatedChangeListener)
 		this.propagatedChangeListeners.add(propagatedChangeListener)
 	}
 
 	/**
-	 * Removes a given {@link PropagatedChangeListener}. 
-	 * Does nothing if the listener was not registered before.
-	 * 
-	 * @param propagatedChangeListener The listener to remove
+	 * Unregister the given {@link PropagatedChangeListener}. 
+	 * The listener must not be <code>null</code>.
 	 */
 	override void removePropagatedChangeListener(PropagatedChangeListener propagatedChangeListener) {
+		checkNotNull(propagatedChangeListener)
 		this.propagatedChangeListeners.remove(propagatedChangeListener)
 	}
 
