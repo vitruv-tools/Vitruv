@@ -34,11 +34,11 @@ class ChangePropagatorImpl implements ChangePropagationObserver, UserInteraction
 	final ModelRepository resourceRepository
 	final ChangePropagationSpecificationProvider changePropagationProvider
 	final ModelRepositoryImpl modelRepository
-	final List<EObject> objectsCreatedDuringPropagation
 	final CorrespondenceModel correspondenceModel
-	final List<UserInteractionBase> userInteractions
 	final InternalUserInteractor userInteractor
-
+	final List<EObject> objectsCreatedDuringPropagation = newArrayList
+	final List<UserInteractionBase> userInteractions = newArrayList
+	
 	new(ModelRepository resourceRepository, ChangePropagationSpecificationProvider changePropagationProvider,
 		VitruvDomainRepository metamodelRepository, ModelRepositoryImpl modelRepository,
 		CorrespondenceModel correspondenceModel, InternalUserInteractor userInteractor) {
@@ -46,15 +46,13 @@ class ChangePropagatorImpl implements ChangePropagationObserver, UserInteraction
 		this.modelRepository = modelRepository
 		this.changePropagationProvider = changePropagationProvider
 		changePropagationProvider.forEach[it.registerObserver(this)]
-		this.userInteractions = Collections.synchronizedList(newArrayList)
 		this.metamodelRepository = metamodelRepository
-		this.objectsCreatedDuringPropagation = newArrayList
 		this.correspondenceModel = correspondenceModel
 		this.userInteractor = userInteractor
 		userInteractor.registerUserInputListener(this)
 	}
 
-	def synchronized List<PropagatedChange> propagateChange(VitruviusChange change) {
+	def List<PropagatedChange> propagateChange(VitruviusChange change) {
 		val List<PropagatedChange> changePropagationResult = new ArrayList
 		val changedResourcesTracker = new ChangedResourcesTracker()
 		for (transactionalChange : change.transactionalChangeSequence) {
@@ -206,7 +204,7 @@ class ChangePropagatorImpl implements ChangePropagationObserver, UserInteraction
 		changedResourcesTracker.addSourceResourceOfChange(change)
 	}
 
-	override synchronized objectCreated(EObject createdObject) {
+	override objectCreated(EObject createdObject) {
 		this.objectsCreatedDuringPropagation += createdObject
 		this.modelRepository.addRootElement(createdObject)
 	}
