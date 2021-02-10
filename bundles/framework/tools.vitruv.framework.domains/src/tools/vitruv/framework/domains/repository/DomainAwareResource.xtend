@@ -43,6 +43,8 @@ class DomainAwareResource implements Resource.Internal {
 		}
 	}
 	
+	override toString() '''«original» of «domain»''' 
+	
 	@FinalFieldsConstructor
 	static class Factory implements Resource.Factory {
 		val Resource.Factory original

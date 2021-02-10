@@ -1,13 +1,10 @@
 package tools.vitruv.framework.vsum.modelsynchronization
 
 import java.util.ArrayList
-import java.util.Collections
 import java.util.List
 import org.apache.log4j.Logger
 import org.eclipse.emf.ecore.EObject
 import tools.vitruv.framework.change.description.CompositeChange
-import tools.vitruv.framework.change.description.CompositeTransactionalChange
-import tools.vitruv.framework.change.description.ConcreteChange
 import tools.vitruv.framework.change.description.PropagatedChange
 import tools.vitruv.framework.change.description.TransactionalChange
 import tools.vitruv.framework.change.description.VitruviusChange
@@ -16,7 +13,6 @@ import tools.vitruv.framework.change.interaction.UserInteractionBase
 import tools.vitruv.framework.change.processing.ChangePropagationObserver
 import tools.vitruv.framework.change.processing.ChangePropagationSpecification
 import tools.vitruv.framework.change.processing.ChangePropagationSpecificationProvider
-import tools.vitruv.framework.correspondence.CorrespondencePackage
 import tools.vitruv.framework.domains.VitruvDomain
 import tools.vitruv.framework.domains.repository.VitruvDomainRepository
 import tools.vitruv.framework.userinteraction.InternalUserInteractor
@@ -60,7 +56,7 @@ class ChangePropagatorImpl {
 	private def void applySingleChange(TransactionalChange change) {
 		resourceRepository.executeOnUuidResolver [ UuidResolver uuidResolver |
 			change.resolveBeforeAndApplyForward(uuidResolver)
-			// If change has a URI, add the model to the repository
+			// add all affected models to the repository
 			change.changedVURIs.forEach [resourceRepository.getModel(it)]
 			change.affectedEObjects.forEach [modelRepository.addRootElement(it)]
 		]
@@ -118,10 +114,10 @@ class ChangePropagatorImpl {
 			resultingChanges += propagatedChange
 	
 			val nextPropagations = propagationResults
-				.filter [key.shouldTransitivelyPropagateChanges]
-				.map [key -> VitruviusChangeFactory.instance.createCompositeChange(value.dropCorrespondenceChanges)]
-				.filter [value.containsConcreteChange]
-				.mapFixed [new ChangePropagation(outer, value, key)]
+				.filter [key.shouldTransitivelyPropagateChanges && value.exists [containsConcreteChange]]
+				.mapFixed [
+					new ChangePropagation(outer, VitruviusChangeFactory.instance.createCompositeChange(value), key)
+				]
 	
 			for (nextPropagation : nextPropagations) {
 				resultingChanges += nextPropagation.propagateChanges()
@@ -176,7 +172,7 @@ class ChangePropagatorImpl {
 			}
 		}
 		
-		override synchronized objectCreated(EObject createdObject) {
+		override objectCreated(EObject createdObject) {
 			createdObjects += createdObject
 			modelRepository.addRootElement(createdObject)
 		}
@@ -184,26 +180,6 @@ class ChangePropagatorImpl {
 		override onUserInteractionReceived(UserInteractionBase interaction) {
 			userInteractions += interaction
 		}
-	}
-	
-	def private static List<? extends TransactionalChange> dropCorrespondenceChanges(Iterable<? extends TransactionalChange> changes) {
-		changes.map [rewrapWithoutCorrespondenceChanges].filterNull.toList
-	}
-
-	def private static dispatch TransactionalChange rewrapWithoutCorrespondenceChanges(CompositeTransactionalChange change) {
-		val newChanges = change.changes.dropCorrespondenceChanges()
-		if (!newChanges.isEmpty) {
-			VitruviusChangeFactory.instance.createCompositeTransactionalChange(newChanges)
-		} else null
-	}
-
-	def private static dispatch TransactionalChange rewrapWithoutCorrespondenceChanges(ConcreteChange change) {
-		return if (!change.affectedEObjects.exists [isFromCorrespondencePackage]) change else null
-	}
-
-	def private static boolean isFromCorrespondencePackage(EObject object) {
-		val typeAndSuperTypes = Collections.singletonList(object.eClass) + object.eClass.EAllSuperTypes
-		return typeAndSuperTypes.exists [EPackage === CorrespondencePackage.eINSTANCE]
 	}
 	
 	def private Iterable<TransactionalChange> getTransactionalChangeSequence(VitruviusChange change) {
