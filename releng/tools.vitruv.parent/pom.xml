@@ -28,6 +28,11 @@
 			<layout>p2</layout>
 			<url>https://kit-sdq.github.io/updatesite/release/xannotations/1.5.0/</url>
 		</repository>
+		<repository>
+			<id>Vave Metamodel</id>
+			<layout>p2</layout>
+			<url>http://kit-sdq.github.io/updatesite/release/vavemodel</url>
+		</repository>
 	</repositories>
 
 	<build>
@@ -196,6 +201,11 @@
 								<groupId>tools.vitruv</groupId>
 								<artifactId>tools.vitruv.framework.util</artifactId>
 								<version>2.1.0-SNAPSHOT</version>
+							</dependency>
+							<dependency>
+								<groupId>tools.vitruv</groupId>
+								<artifactId>tools.vitruv.framework.variability</artifactId>
+								<version>1.1.0-SNAPSHOT</version>
 							</dependency>
 							<dependency>
 								<groupId>tools.vitruv</groupId>

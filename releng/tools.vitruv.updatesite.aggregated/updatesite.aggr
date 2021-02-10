@@ -30,6 +30,9 @@
         <features name="org.eclipse.emf.ecore.feature.group"/>
         <features name="org.eclipse.emf.common.feature.group"/>
       </repositories>
+	  <repositories location="http://kit-sdq.github.io/updatesite/release/vavemodel" mirrorArtifacts="false">
+        <features name="edu.kit.ipd.sdq.vavemodel.feature.feature.group" versionRange="[1.0.0,2.0.0)"/>
+      </repositories>
     </contributions>
   </validationSets>
   <configurations architecture="x86_64"/>
