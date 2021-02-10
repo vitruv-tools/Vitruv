@@ -13,7 +13,6 @@ import tools.vitruv.framework.userinteraction.InternalUserInteractor
 import tools.vitruv.framework.util.datatypes.VURI
 import tools.vitruv.framework.vsum.helper.ChangeDomainExtractor
 import tools.vitruv.framework.vsum.modelsynchronization.ChangePropagationListener
-import tools.vitruv.framework.vsum.modelsynchronization.ChangePropagatorImpl
 import tools.vitruv.framework.vsum.repositories.ModelRepositoryImpl
 import tools.vitruv.framework.vsum.repositories.ResourceRepositoryImpl
 import org.apache.log4j.Logger
@@ -29,13 +28,14 @@ import java.nio.file.Path
 import static com.google.common.base.Preconditions.checkNotNull
 import java.util.LinkedList
 import static com.google.common.base.Preconditions.checkArgument
+import tools.vitruv.framework.vsum.modelsynchronization.ChangePropagator
 
 class VirtualModelImpl implements InternalVirtualModel {
 	static val Logger LOGGER = Logger.getLogger(VirtualModelImpl)
 	val ResourceRepositoryImpl resourceRepository
 	val ModelRepositoryImpl modelRepository
 	val VitruvDomainRepository domainRepository
-	val ChangePropagatorImpl changePropagator
+	val ChangePropagator changePropagator
 	val VsumFileSystemLayout fileSystemLayout
 	val InternalCorrespondenceModel correspondenceModel
 	val List<ChangePropagationListener> changePropagationListeners = new LinkedList()
@@ -51,7 +51,7 @@ class VirtualModelImpl implements InternalVirtualModel {
 		this.modelRepository = new ModelRepositoryImpl(resourceRepository.uuidGeneratorAndResolver)
 		this.changeDomainExtractor = new ChangeDomainExtractor(domainRepository)
 		this.correspondenceModel = loadCorrespondenceModel()
-		this.changePropagator = new ChangePropagatorImpl(
+		this.changePropagator = new ChangePropagator(
 			resourceRepository,
 			changePropagationSpecificationProvider,
 			domainRepository,

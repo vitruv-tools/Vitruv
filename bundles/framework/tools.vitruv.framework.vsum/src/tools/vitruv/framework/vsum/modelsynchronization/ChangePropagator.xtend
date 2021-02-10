@@ -28,8 +28,8 @@ import org.eclipse.xtend.lib.annotations.FinalFieldsConstructor
 import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
 import tools.vitruv.framework.correspondence.CorrespondenceModel
 
-class ChangePropagatorImpl {
-	static val logger = Logger.getLogger(ChangePropagatorImpl)
+class ChangePropagator {
+	static val logger = Logger.getLogger(ChangePropagator)
 	val VitruvDomainRepository domainRepository
 	val ModelRepository resourceRepository
 	val ChangePropagationSpecificationProvider changePropagationProvider
@@ -65,7 +65,7 @@ class ChangePropagatorImpl {
 	
 	@FinalFieldsConstructor
 	private static class ChangePropagation implements ChangePropagationObserver, UserInteractionListener {
-		extension val ChangePropagatorImpl outer
+		extension val ChangePropagator outer
 		val VitruviusChange sourceChange
 		val VitruvDomain sourceDomain
 		val ChangedResourcesTracker changedResourcesTracker = new ChangedResourcesTracker
