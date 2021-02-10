@@ -16,7 +16,6 @@ import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.common.util
 import static com.google.common.base.Preconditions.checkArgument
 import static com.google.common.base.Preconditions.checkState
 import static extension tools.vitruv.framework.util.ResourceSetUtil.getTransactionalEditingDomain
-import java.util.concurrent.Callable
 
 /**
  * {@link UuidGeneratorAndResolver}
@@ -135,11 +134,10 @@ class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 			return localResult
 		}
 		
-		val objectUri = EcoreUtil.getURI(eObject)
 		// If the object already has a resource, but is not from the resolver’s resource set, resolve it and try again
 		val objectResource = eObject.eResource
 		if (objectResource !== null && objectResource.resourceSet != resourceSet) {
-			val resolvedObject = resolve(objectUri)
+			val resolvedObject = resolve(eObject.resolvableUri)
 			// The EClass check avoids that an objects of another type with the same URI is resolved
 			// This is, for example, the case if a modifier in a UML model is changed, as it is only a
 			// marker class that is replaced, having always the same URI on the same model element.
@@ -151,6 +149,7 @@ class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 			}
 		}
 
+		val objectUri = EcoreUtil.getURI(eObject)
 		// Finally look for a proxy in the repository (due to a deleted object) and match the URI
 		val uuidByProxy = repository.EObjectToUuid.entrySet
 			.filter [key !== null && key.eIsProxy]
@@ -227,8 +226,10 @@ class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 		checkState(eObject !== null, "Object must not be null")
 		logger.debug('''Adding UUID «uuid» for EObject: «eObject»''')
 		repository.eResource?.resourceSet.runAsCommandIfNecessary [
-			repository.EObjectToUuid.removeIf[value == uuid]
-			repository.uuidToEObject.put(uuid, eObject)
+			val uuidMapped = repository.uuidToEObject.put(uuid, eObject)
+			if (uuidMapped !== null) {
+				repository.EObjectToUuid.remove(uuidMapped)
+			}
 			repository.EObjectToUuid.put(eObject, uuid)
 		]
 	}
@@ -292,23 +293,23 @@ class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 	override void loadUuidsToChild(UuidResolver childResolver, URI uri) {
 		// Only load UUIDs if resource exists (a pathmap resource always exists)
 		if (((uri.isFile || uri.isPlatform) && uri.existsResourceAtUri) || uri.isPathmap) {
-			for (val allContents = childResolver.resourceSet.getResource(uri, true).allContents; allContents.hasNext;) {
-				val contentObject = allContents.next
-				var objectUuid = internalGetUuid(contentObject)
+			val childContents = childResolver.resourceSet.runAsCommandIfNecessary [getResource(uri, true)].allContents
+			val ourContents = this.resourceSet.runAsCommandIfNecessary [getResource(uri, true)].allContents
+			while (childContents.hasNext) {
+				val childObject = childContents.next
+				checkState(ourContents.hasNext, "Cannot find %s in our resource set!", childObject)
+				val ourObject = ourContents.next
 				
+				var objectUuid = repository.EObjectToUuid.get(ourObject)
 				// Not having a UUID is only supported for pathmap resources
 				if (objectUuid === null && uri.isPathmap) {
-					val resolvedObject = resolve(EcoreUtil.getURI(contentObject))
-					if (resolvedObject === null) {
-						throw new IllegalStateException('''Object could not be resolved in this UuidResolver's resource set: «contentObject»''')
-					}
-					objectUuid = generateUuid(resolvedObject)
+					objectUuid = generateUuid(ourObject)
 				}		
 				if (objectUuid === null) {
-					throw new IllegalStateException('''Element does not have a UUID but should have one: «contentObject»''')
+					throw new IllegalStateException('''Element does not have a UUID but should have one: «ourObject»''')
 				}
 				
-				childResolver.registerEObject(objectUuid, contentObject)
+				childResolver.registerEObject(objectUuid, childObject)
 			}
 		}
 	}
@@ -320,7 +321,7 @@ class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 	private def EObject resolve(URI uri) {
 		// TODO running as command should never be necessary for non-Java domains.
 		// Running in a command should probably be removed after domains can modify the UUID behaviour (see #326)
-		resourceSet.runAsCommandIfNecessary [resourceSet.getEObject(uri, true)]
+		resourceSet.runAsCommandIfNecessary [getEObject(uri, true)]
 	}
 
 	// If there is a TransactionalEditingDomain registered on the resource set, we have
@@ -328,12 +329,26 @@ class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 	// there is no need to execute the command on a TransactionalEditingDomain. It can even
 	// lead to errors if the ResourceSet is also modified by the test, as these modifications
 	// would also have to be made on the TransactionalEditingDomain once it was created.
-	def private <T> T runAsCommandIfNecessary(ResourceSet resourceSet, Callable<T> callable) {
+	def private <T> T runAsCommandIfNecessary(ResourceSet resourceSet, (ResourceSet)=>T callable) {
 		val domain = resourceSet?.transactionalEditingDomain
 		return if (domain !== null) {
-			domain.executeVitruviusRecordingCommandAndFlushHistory(callable)
+			domain.executeVitruviusRecordingCommandAndFlushHistory [callable.apply(resourceSet)]
 		} else {
-			callable.call()
+			callable.apply(resourceSet)
+		}
+	}
+	
+	def private static getResolvableUri(EObject object) {
+		val resourceUri = object.eResource.URI
+		// we cannot simply use EcoreUtil#getURI, because object’s domain might use XMI	UUIDs. Since
+		// XMI UUIDs can be different for different resource sets, we cannot use URIs with XMI UUIDs to identify objects
+		// across resource sets. Hence, we force hierarchical URIs. This assumes that the resolved object’s graph
+		// has the same topology in the resolving resource set. This assumption holds when we use this method.  
+		val fragmentPath = EcoreUtil.getRelativeURIFragmentPath(null, object)
+		if (fragmentPath.isEmpty) {
+			resourceUri.appendFragment('/')
+		} else {
+			resourceUri.appendFragment('//' + fragmentPath)
 		}
 	}
 }
