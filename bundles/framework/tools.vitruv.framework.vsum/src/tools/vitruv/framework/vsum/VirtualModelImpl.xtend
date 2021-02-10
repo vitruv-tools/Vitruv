@@ -28,8 +28,6 @@ import tools.vitruv.framework.correspondence.InternalCorrespondenceModel
 import java.nio.file.Path
 import static com.google.common.base.Preconditions.checkState
 import static com.google.common.base.Preconditions.checkNotNull
-import java.util.Set
-import java.util.HashSet
 import java.util.LinkedList
 
 class VirtualModelImpl implements InternalVirtualModel {
@@ -40,7 +38,7 @@ class VirtualModelImpl implements InternalVirtualModel {
 	val ChangePropagatorImpl changePropagator
 	val VsumFileSystemLayout fileSystemLayout
 	val InternalCorrespondenceModel correspondenceModel
-	val Set<ChangePropagationListener> changePropagationListeners = new HashSet()
+	val List<ChangePropagationListener> changePropagationListeners = new LinkedList()
 	val List<PropagatedChangeListener> propagatedChangeListeners = new LinkedList()
 	val extension ChangeDomainExtractor changeDomainExtractor
 
