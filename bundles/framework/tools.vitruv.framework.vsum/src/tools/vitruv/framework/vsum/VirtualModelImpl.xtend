@@ -172,8 +172,7 @@ class VirtualModelImpl implements InternalVirtualModel {
 	 * The listener must not be <code>null</code>.
 	 */
 	override synchronized void addChangePropagationListener(ChangePropagationListener propagationListener) {
-		checkNotNull(propagationListener)
-		this.changePropagationListeners.add(propagationListener)
+		this.changePropagationListeners.add(checkNotNull(propagationListener, "propagationListener"))
 	}
 
 	/**
@@ -181,8 +180,7 @@ class VirtualModelImpl implements InternalVirtualModel {
 	 * The listener must not be <code>null</code>.
 	 */
 	override synchronized void removeChangePropagationListener(ChangePropagationListener propagationListener) {
-		checkNotNull(propagationListener)
-		this.changePropagationListeners.remove(propagationListener)
+		this.changePropagationListeners.remove(checkNotNull(propagationListener, "propagationListener"))
 	}
 
 	/**
@@ -190,8 +188,7 @@ class VirtualModelImpl implements InternalVirtualModel {
 	 * The listener must not be <code>null</code>.
 	 */
 	override synchronized void addPropagatedChangeListener(PropagatedChangeListener propagatedChangeListener) {
-		checkNotNull(propagatedChangeListener)
-		this.propagatedChangeListeners.add(propagatedChangeListener)
+		this.propagatedChangeListeners.add(checkNotNull(propagatedChangeListener, "propagatedChangeListener"))
 	}
 
 	/**
@@ -199,8 +196,7 @@ class VirtualModelImpl implements InternalVirtualModel {
 	 * The listener must not be <code>null</code>.
 	 */
 	override synchronized void removePropagatedChangeListener(PropagatedChangeListener propagatedChangeListener) {
-		checkNotNull(propagatedChangeListener)
-		this.propagatedChangeListeners.remove(propagatedChangeListener)
+		this.propagatedChangeListeners.remove(checkNotNull(propagatedChangeListener, "propagatedChangeListener"))
 	}
 
 	/**
