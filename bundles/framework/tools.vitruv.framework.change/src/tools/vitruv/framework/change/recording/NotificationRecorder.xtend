@@ -2,7 +2,6 @@ package tools.vitruv.framework.change.recording
 
 import org.eclipse.emf.common.notify.Adapter
 import java.util.List
-import tools.vitruv.framework.change.echange.EChange
 import org.eclipse.emf.common.notify.Notifier
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.common.notify.Notification
@@ -18,6 +17,10 @@ import tools.vitruv.framework.change.echange.eobject.EObjectAddedEChange
 import static extension tools.vitruv.framework.change.echange.util.EChangeUtil.*
 import tools.vitruv.framework.change.echange.eobject.EObjectSubtractedEChange
 import org.eclipse.xtend.lib.annotations.Data
+import java.util.HashSet
+import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
+import static com.google.common.base.Preconditions.checkState
+import java.util.ArrayList
 
 /**
  * This {@link Adapter} records changes to the given model elements as {@link CompositeTransactionalChanges}.
@@ -26,15 +29,13 @@ import org.eclipse.xtend.lib.annotations.Data
  * an appropriate delete change.
  */
 class NotificationRecorder implements Adapter {
-	Set<Notifier> rootObjects;
+	val Set<Notifier> rootObjects = new HashSet
 	boolean isRecording = false
-	List<EChange> changes;
-	List<CompositeTransactionalChange> resultChanges;
+	List<CompositeTransactionalChange> resultChanges
 	val EChangeIdManager idManager
 	
 	new (EChangeIdManager idManager) {
 		this.idManager = idManager;	
-		rootObjects = newHashSet();
 	}
 	
 	override getTarget() {
@@ -47,7 +48,7 @@ class NotificationRecorder implements Adapter {
 
 	override notifyChanged(Notification notification) {
 		if (notification.newValue instanceof Notifier) {
-			addToRecording(notification.newValue as Notifier);
+			recursivelyAddAdapter(notification.newValue as Notifier)
 		}
 //		val notifier = notification.notifier;
 //		if (notifier instanceof EObject) {
@@ -57,14 +58,13 @@ class NotificationRecorder implements Adapter {
 //			return;
 //		}
 		if (!isRecording) {
-			return;
+			return
 		}
 		val newChanges = new NotificationToEChangeConverter(idManager).convert(new NotificationInfo(notification))
-		changes += newChanges
-		if (!newChanges.empty) {
-			val transactionalChange = VitruviusChangeFactory.instance.createCompositeTransactionalChange
-			newChanges.forEach[transactionalChange.addChange(VitruviusChangeFactory.instance.createConcreteApplicableChange(it))]
-			resultChanges += transactionalChange
+		if (!newChanges.isEmpty) {
+			resultChanges += VitruviusChangeFactory.instance.createCompositeTransactionalChange(
+				newChanges.map [VitruviusChangeFactory.instance.createConcreteApplicableChange(it)]
+			)
 		}
 	}
 
@@ -78,8 +78,9 @@ class NotificationRecorder implements Adapter {
 	 * @param notifier - the {@link Notifier} to add the recorder to
 	 */
 	def void addToRecording(Notifier notifier) {
-		rootObjects += notifier;
-		recursivelyAddAdapter(notifier);
+		if (rootObjects += notifier) {
+			recursivelyAddAdapter(notifier)
+		}
 	}
 	
 	/**
@@ -87,21 +88,18 @@ class NotificationRecorder implements Adapter {
 	 * @param notifier - the {@link Notifier} to remove the recorder from
 	 */
 	def void removeFromRecording(Notifier notifier) {
-		rootObjects -= notifier;
-		recursivelyRemoveAdapter(notifier);
+		if (rootObjects -= notifier) {
+			recursivelyRemoveAdapter(notifier)
+		}
 	}
 	
 	/**
 	 * Starts recording changes on the registered elements.
 	 */
 	def beginRecording() {
-		if (!isRecording) {
-			changes = newArrayList();
-			resultChanges = newArrayList();
-			isRecording = true;
-		} else {
-			throw new IllegalStateException
-		}
+		checkState(!isRecording, "This recorder is already recording!")
+		isRecording = true
+		resultChanges = new ArrayList
 	}
 
 	/**
@@ -112,7 +110,7 @@ class NotificationRecorder implements Adapter {
 	 */
 	def endRecording() {
 		isRecording = false;
-		postprocessRemovals();
+		resultChanges = postprocessRemovals(resultChanges);
 	}
 	
 	@Data
@@ -122,34 +120,49 @@ class NotificationRecorder implements Adapter {
 		EObjectSubtractedEChange<?> atomicRemoveChange;
 	}
 	
-	def postprocessRemovals() {
-		val potentialRemovals = newArrayList;
-		for (resultChange : resultChanges) {
-			for (concreteChange : resultChange.changes.filter(ConcreteChange)) {
-				val eChange = concreteChange.EChange;
-				if (eChange instanceof EObjectSubtractedEChange<?>) {
-					if (eChange.isContainmentRemoval) {
-						potentialRemovals.add(new PotentialRemoval(resultChange, concreteChange, eChange));
-					}
-				}
-				if (eChange instanceof EObjectAddedEChange<?>) {
-					if (eChange.isContainmentInsertion) {
-						potentialRemovals.removeIf[it.atomicRemoveChange.oldValueID == eChange.newValueID]
-					}
-				}
+	def postprocessRemovals(List<CompositeTransactionalChange> changes) {
+		val Set<String> removedIds = new HashSet
+		for (eChange : changes.flatMap [EChanges]) {
+			switch(eChange) {
+				EObjectSubtractedEChange<?> case eChange.isContainmentRemoval:
+					removedIds += eChange.oldValueID
+				EObjectAddedEChange<?> case eChange.isContainmentInsertion:
+					removedIds -= eChange.newValueID
 			}
 		}
-		for (removal : potentialRemovals) {
-			val deleteChange = new NotificationToEChangeConverter(idManager).createDeleteChange(removal.atomicRemoveChange);
-			val currentChanges = removal.transactionalChange.changes;
-			val indexOfRemoveChange = currentChanges.indexOf(removal.removeChange);
-			val packagedDeleteChange = VitruviusChangeFactory.instance.createConcreteApplicableChange(deleteChange);
-			currentChanges.add(indexOfRemoveChange + 1, packagedDeleteChange);
-		}
+		if (removedIds.isEmpty) {
+			return changes
+		} 
+		
+		return changes.mapFixed [ compositeChange |
+			val newChanges = compositeChange.changes.flatMapFixed [ change |
+				if (change instanceof ConcreteChange) {
+					val eChange = change.EChange
+					switch (eChange) {
+						EObjectSubtractedEChange<?> case 
+							eChange.isContainmentRemoval && removedIds.contains(eChange.oldValueID): {
+							val deleteChange = VitruviusChangeFactory.instance.createConcreteApplicableChange(
+								new NotificationToEChangeConverter(idManager).createDeleteChange(eChange)
+							)
+							List.of(change, deleteChange)
+						}
+						default: List.of(change)
+					}
+				} else {
+					List.of(change)
+				}
+			]
+			// this condition relies on the fact that we only ever *add* changes
+			if (newChanges.size == compositeChange.changes.size) {
+				compositeChange
+			} else {
+				VitruviusChangeFactory.instance.createCompositeTransactionalChange(newChanges)
+			}
+		]
 	}
-
+	
 	def List<TransactionalChange> getChanges() {
-		return resultChanges.filter(TransactionalChange).toList;
+		return List.copyOf(resultChanges)
 	}
 
 	def isRecording() {
@@ -176,8 +189,7 @@ class NotificationRecorder implements Adapter {
 	}
 
 	private def void removeAdapter(Notifier notifier) {
-		val eAdapters = notifier.eAdapters();
-		eAdapters.remove(this);
+		notifier.eAdapters() -= this
 	}
 		
 	private def dispatch void recursivelyAddAdapter(Notifier notifier) {
@@ -185,25 +197,24 @@ class NotificationRecorder implements Adapter {
 	}
 	
 	private def dispatch void recursivelyAddAdapter(EObject object) {
-		object.eContents().filter[eResource == object.eResource].forEach[recursivelyAddAdapter];
-		object.addAdapter;
+		object.eContents().filter[eResource == object.eResource].forEach[recursivelyAddAdapter]
+		object.addAdapter
 	}
 	
 	private def dispatch void recursivelyAddAdapter(Resource resource) {
 		resource.contents.forEach[recursivelyAddAdapter]
-		resource.addAdapter;
+		resource.addAdapter
 	}
 	
 	private def dispatch void recursivelyAddAdapter(ResourceSet resourceSet) {
 		resourceSet.resources.forEach[recursivelyAddAdapter]
-		resourceSet.addAdapter;
+		resourceSet.addAdapter
 	}
 
 	private def void addAdapter(Notifier notifier) {
-		val eAdapters = notifier.eAdapters();
+		val eAdapters = notifier.eAdapters()
 		if (!eAdapters.contains(this)) {
-			eAdapters.add(this);
+			eAdapters.add(this)
 		}
 	}
-
 }
