@@ -88,12 +88,9 @@ class ChangePropagator {
 			userInteractor.registerUserInputListener(this)
 
 			val propagationResultChanges = try {
-				// modelRepository.startRecording
-				resourceRepository.startRecording()
-				for (propagator : changePropagationProvider.getChangePropagationSpecifications(sourceDomain)) {
-					propagateChangeForChangePropagationSpecification(change, propagator)
-				}
-				resourceRepository.endRecording() /* + modelRepository.endRecording() */
+				changePropagationProvider.getChangePropagationSpecifications(sourceDomain).mapFixed [
+					targetDomain -> propagateChangeForChangePropagationSpecification(change, it)
+				]
 			} finally {
 				userInteractor.deregisterUserInputListener(this)
 				changePropagationProvider.forEach [deregisterObserver(this)]
@@ -111,15 +108,15 @@ class ChangePropagator {
 
 			change.userInteractions = userInteractions
 			val propagatedChange = new PropagatedChange(change,
-				VitruviusChangeFactory.instance.createCompositeChange(propagationResultChanges))
+				VitruviusChangeFactory.instance.createCompositeChange(propagationResultChanges.flatMapFixed [value]))
 			val resultingChanges = new ArrayList()
 			resultingChanges += propagatedChange
 	
 			val nextPropagations = propagationResultChanges
-				.filter [containsConcreteChange]
-				.map [changedDomain -> it]
-				.filter [key.shouldTransitivelyPropagateChanges]
-				.mapFixed [new ChangePropagation(outer, value, key)]
+				.filter [key.shouldTransitivelyPropagateChanges && value.exists[containsConcreteChange]]
+				.mapFixed [
+					new ChangePropagation(outer, VitruviusChangeFactory.instance.createCompositeChange(value), key)
+				]
 
 			for (nextPropagation : nextPropagations) {
 				resultingChanges += nextPropagation.propagateChanges()
@@ -132,6 +129,9 @@ class ChangePropagator {
 			TransactionalChange change,
 			ChangePropagationSpecification propagationSpecification
 		) {
+			// modelRepository.startRecording
+			resourceRepository.startRecording()
+			
 			// TODO HK: Clone the changes for each synchronization! Should even be cloned for
 			// each consistency repair routines that uses it,
 			// or: make them read only, i.e. give them a read-only interface!
@@ -143,6 +143,8 @@ class ChangePropagator {
 			// Store modification information
 			changedEObjects.forEach[changedResourcesTracker.addInvolvedModelResource(eResource)]
 			changedResourcesTracker.addSourceResourceOfChange(change)
+			
+			resourceRepository.endRecording() /* + modelRepository.endRecording() */
 		}
 		
 		private def AutoCloseable installUserInteractorForChange(VitruviusChange change) {
