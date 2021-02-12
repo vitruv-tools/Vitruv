@@ -37,7 +37,7 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import tools.vitruv.framework.vsum.helper.VsumFileSystemLayout
 
 class ResourceRepositoryImpl implements ModelRepository {
-	static val logger = Logger.getLogger(ResourceRepositoryImpl.simpleName)
+	static val logger = Logger.getLogger(ResourceRepositoryImpl)
 	val ResourceSet resourceSet
 	val VitruvDomainRepository domainRepository
 	val Map<VURI, ModelInstance> modelInstances = new HashMap()

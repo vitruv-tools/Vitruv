@@ -35,7 +35,7 @@ import tools.vitruv.testutils.TestLogging;
  */
 @ExtendWith({TestLogging.class, RegisterMetamodelsInStandalone.class})
 public class TuidCacheTest {
-	private static final Logger LOGGER = Logger.getLogger(TuidCacheTest.class.getSimpleName());
+	private static final Logger LOGGER = Logger.getLogger(TuidCacheTest.class);
 
 	List<File> filesToDelete = new ArrayList<>();
 
