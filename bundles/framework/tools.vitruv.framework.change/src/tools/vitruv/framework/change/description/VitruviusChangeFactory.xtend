@@ -52,16 +52,8 @@ class VitruviusChangeFactory {
 		}
 	}
 	
-	def CompositeContainerChange createCompositeContainerChange() {
-		return new CompositeContainerChangeImpl();
-	}
-		
 	def CompositeContainerChange createCompositeChange(Iterable<? extends VitruviusChange> innerChanges) {
 		new CompositeContainerChangeImpl(innerChanges.toList)
-	}
-	
-	def CompositeTransactionalChange createCompositeTransactionalChange() {
-		return new CompositeTransactionalChangeImpl();
 	}
 	
 	def CompositeTransactionalChange createCompositeTransactionalChange(Iterable<? extends TransactionalChange> innerChanges) {

@@ -3,10 +3,9 @@ package tools.vitruv.framework.change.description.impl
 import tools.vitruv.framework.change.description.CompositeContainerChange
 import tools.vitruv.framework.change.description.VitruviusChange
 import java.util.Collection
+import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
 
 class CompositeContainerChangeImpl extends AbstractCompositeChangeImpl<VitruviusChange> implements CompositeContainerChange {
-	new() { super() }
-
 	new(Collection<? extends VitruviusChange> changes) {
 		super(changes)
 	}
@@ -19,6 +18,6 @@ class CompositeContainerChangeImpl extends AbstractCompositeChangeImpl<Vitruvius
 		'''
 			
 	override CompositeContainerChangeImpl copy() {
-		new CompositeContainerChangeImpl(changes.map [copy()])
+		new CompositeContainerChangeImpl(changes.mapFixed [copy()])
 	}
 }

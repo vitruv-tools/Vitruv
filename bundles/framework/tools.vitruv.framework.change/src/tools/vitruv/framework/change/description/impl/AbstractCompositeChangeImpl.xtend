@@ -7,30 +7,17 @@ import tools.vitruv.framework.change.description.VitruviusChange
 import tools.vitruv.framework.uuid.UuidResolver
 import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
 import java.util.LinkedHashSet
-import java.util.HashSet
 import java.util.Collection
 
 abstract class AbstractCompositeChangeImpl<C extends VitruviusChange> implements CompositeChange<C> {
 	List<C> changes
 
-	new() {
-		this.changes = new LinkedList<C>()
-	}
-
 	new(Collection<? extends C> changes) {
-		this.changes = new LinkedList<C>(changes)
+		this.changes = List.copyOf(changes)
 	}
 
 	override List<C> getChanges() {
 		return this.changes
-	}
-
-	override addChange(C change) {
-		if (change !== null) this.changes.add(change)
-	}
-
-	override removeChange(C change) {
-		if (change !== null) this.changes.remove(change)
 	}
 
 	override containsConcreteChange() {
@@ -90,13 +77,13 @@ abstract class AbstractCompositeChangeImpl<C extends VitruviusChange> implements
 		if (other === this) true
 		else if (other === null) false
 		else if (other instanceof CompositeChange<?>) {
-			changes.size == other.changes.size && new HashSet(changes).containsAll(other.changes)
+			changes == other.changes
 		}
 		else false
 	}
 	
 	override hashCode() {
-		changes.fold(0) [result, change | result + change.hashCode()]
+		changes.hashCode()
 	}
 
 	override boolean changedEObjectEquals(VitruviusChange change) {
