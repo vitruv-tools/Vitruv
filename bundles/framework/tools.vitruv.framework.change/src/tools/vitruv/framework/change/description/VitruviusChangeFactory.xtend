@@ -12,7 +12,6 @@ import tools.vitruv.framework.util.datatypes.VURI
 import tools.vitruv.framework.change.description.impl.ConcreteApplicableChangeImpl
 import java.util.List
 import tools.vitruv.framework.change.description.impl.EmptyChange
-import tools.vitruv.framework.change.description.impl.ConcreteChangeWithFixedVuri
 
 class VitruviusChangeFactory {
 	static val logger = Logger.getLogger(VitruviusChangeFactory);
@@ -38,10 +37,6 @@ class VitruviusChangeFactory {
 	
 	def ConcreteChange createConcreteChange(EChange change) {
 		return new ConcreteChangeImpl(change);
-	}
-	
-	def ConcreteChange createConcreteChangeWithVuri(EChange change, VURI vuri) {
-		return new ConcreteChangeWithFixedVuri(change, vuri)
 	}
 	
 	def List<ConcreteChange> createFileChange(FileChangeKind kind, Resource changedFileResource) {
