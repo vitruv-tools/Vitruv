@@ -237,7 +237,8 @@ class ResourceRepositoryImpl implements ModelRepository {
 		]
 		return domainToRecorder.values
 			.map [recorder | VitruviusChangeFactory.instance.createCompositeTransactionalChange(recorder.changes)]
-			.filter[containsConcreteChange()]
+			.filter [containsConcreteChange]
+			.toList()
 	}
 
 	def private void deleteModel(VURI vuri) {
