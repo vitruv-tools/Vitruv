@@ -18,7 +18,6 @@ import static java.nio.file.Files.createDirectories
 import static java.nio.file.Files.createDirectory
 import static java.nio.file.Files.walk
 import static java.util.Comparator.reverseOrder
-import static org.apache.log4j.Level.INFO
 import static tools.vitruv.framework.util.VitruviusConstants.getTestProjectMarkerFileName
 import java.util.regex.Pattern
 import org.eclipse.core.resources.ResourcesPlugin
@@ -46,7 +45,7 @@ class TestProjectManager implements ParameterResolver, AfterEachCallback {
 	 * Set this system property to overwrite the workspace path 
 	 */
 	public static val WORKSPACE_PATH_SYSTEM_PROPERTY = "vitruv.workspace"
-	static val log = Logger.getLogger(TestProjectManager) => [level = INFO]
+	static val log = Logger.getLogger(TestProjectManager)
 	static val namespace = ExtensionContext.Namespace.create(TestProjectManager)
 	static val observedFailure = "observedFailure"
 	static val projectNamespace = ExtensionContext.Namespace.create(TestProjectManager, "projects")

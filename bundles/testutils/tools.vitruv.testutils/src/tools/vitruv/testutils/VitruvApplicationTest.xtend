@@ -18,7 +18,7 @@ import tools.vitruv.framework.vsum.VirtualModelBuilder
 import tools.vitruv.framework.domains.repository.VitruvDomainRepository
 import tools.vitruv.framework.domains.repository.VitruvDomainRepositoryImpl
 
-@ExtendWith(TestProjectManager, TestLogging)
+@ExtendWith(TestLogging, TestProjectManager)
 abstract class VitruvApplicationTest implements CorrespondenceModelContainer, TestView {
 	InternalVirtualModel virtualModel
 	@Delegate
