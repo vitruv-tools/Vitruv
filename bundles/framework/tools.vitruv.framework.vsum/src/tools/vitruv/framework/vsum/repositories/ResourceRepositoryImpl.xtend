@@ -4,7 +4,6 @@ import edu.kit.ipd.sdq.commons.util.org.eclipse.emf.common.util.URIUtil
 import java.io.IOException
 import java.util.HashMap
 import java.util.Map
-import java.util.concurrent.Callable
 import java.util.function.Consumer
 import org.apache.log4j.Logger
 import org.eclipse.emf.ecore.EObject
@@ -25,10 +24,6 @@ import tools.vitruv.framework.uuid.UuidResolver
 import tools.vitruv.framework.vsum.ModelRepository
 
 import static java.util.Collections.emptyMap
-import static extension tools.vitruv.framework.util.ResourceSetUtil.getRequiredTransactionalEditingDomain
-import static extension tools.vitruv.framework.util.ResourceSetUtil.getTransactionalEditingDomain
-import static extension tools.vitruv.framework.util.command.EMFCommandBridge.executeVitruviusRecordingCommandAndFlushHistory
-import tools.vitruv.framework.util.command.VitruviusRecordingCommand
 import static extension tools.vitruv.framework.util.bridges.EcoreResourceBridge.loadOrCreateResource
 import static extension tools.vitruv.framework.util.ResourceSetUtil.withGlobalFactories
 import static extension tools.vitruv.framework.domains.repository.DomainAwareResourceSet.awareOfDomains
@@ -78,7 +73,9 @@ class ResourceRepositoryImpl implements ModelRepository {
 		} catch (RuntimeException re) {
 			// could not load model instance --> this should only be the case when the
 			// model is not existing yet
-			logger.info('''Exception during loading of model instance «modelInstance» occured: «re»''')
+			if (logger.isInfoEnabled) {
+				logger.info('''Exception during loading of model instance «modelInstance» occured: «re»''')
+			}
 		}
 
 		return modelInstance
@@ -103,12 +100,9 @@ class ResourceRepositoryImpl implements ModelRepository {
 	def private ModelInstance getModelInstanceOriginal(VURI modelURI) {
 		var ModelInstance modelInstance = modelInstances.get(modelURI)
 		if (modelInstance === null) {
-			executeAsCommand [
-				// case 2 or 3
-				var ModelInstance internalModelInstance = getOrCreateUnregisteredModelInstance(modelURI)
-				registerModelInstance(modelURI, internalModelInstance)
-			]
-			modelInstance = modelInstances.get(modelURI)
+			// case 2 or 3
+			modelInstance = getOrCreateUnregisteredModelInstance(modelURI)
+			registerModelInstance(modelURI, modelInstance)
 		}
 		return modelInstance
 	}
@@ -132,38 +126,30 @@ class ResourceRepositoryImpl implements ModelRepository {
 	}
 
 	def private void saveModelInstance(ModelInstance modelInstance) {
-		executeAsCommand [
-			var resourceToSave = modelInstance.resource
-			try {
-				if (!resourceSet.requiredTransactionalEditingDomain.isReadOnly(resourceToSave)) {
-					// we allow resources without a domain for internal uses.
-					EcoreResourceBridge.saveResource(resourceToSave, emptyMap)
-				}
-			} catch (IOException e) {
-				logger.warn('''Model could not be saved: «modelInstance.URI»''')
-				throw new RuntimeException('''Could not save VURI «modelInstance.URI»''', e)
-			}
-			return null
-		]
+		var resourceToSave = modelInstance.resource
+		try {
+			EcoreResourceBridge.saveResource(resourceToSave, emptyMap)
+		} catch (IOException e) {
+			logger.warn('''Model could not be saved: «modelInstance.URI»''')
+			throw new RuntimeException('''Could not save VURI «modelInstance.URI»''', e)
+		}
 	}
 
 	override void persistAsRoot(EObject rootEObject, VURI vuri) {
 		val ModelInstance modelInstance = getModelInstanceOriginal(vuri)
-		executeAsCommand [
-			TuidManager.instance.registerObjectUnderModification(rootEObject)
-			val resource = modelInstance.resource
-			resource.contents += rootEObject
-			resource.modified = true
-			logger.debug('''Create model with resource: «resource»'''.toString)
-			TuidManager.instance.updateTuidsOfRegisteredObjects()
+		TuidManager.instance.registerObjectUnderModification(rootEObject)
+		val resource = modelInstance.resource
+		resource.contents += rootEObject
+		resource.modified = true
+		if (logger.isDebugEnabled) logger.debug('''Create model with resource: «resource»''')
+		TuidManager.instance.updateTuidsOfRegisteredObjects()
 		// Usually we should deregister the object, but since we do not know if it was
 		// registered before and if the other objects should still be registered
 		// we cannot remove it or flush the registry
-		]
 	}
 
 	override void saveAllModels() {
-		logger.debug('''Saving all models of model repository for VSUM «fileSystemLayout»''')
+		if (logger.isDebugEnabled) logger.debug('''Saving all models of model repository for VSUM «fileSystemLayout»''')
 		saveAllChangedModels()
 	}
 
@@ -195,16 +181,16 @@ class ResourceRepositoryImpl implements ModelRepository {
 	}
 
 	def private initializeUuidProviderAndResolver() {
-		executeAsCommand [
-			var uuidProviderVURI = fileSystemLayout.uuidProviderAndResolverVURI
+		var uuidProviderVURI = fileSystemLayout.uuidProviderAndResolverVURI
+		if (logger.isTraceEnabled) {
 			logger.trace('''Creating or loading uuid provider and resolver model from: «uuidProviderVURI»''')
-			var Resource uuidProviderResource = resourceSet.loadOrCreateResource(uuidProviderVURI.EMFUri)
-			// TODO HK We cannot enable strict mode here, because for textual views we will not get
-			// create changes in any case. We should therefore use one monitor per model and turn on
-			// strict mode
-			// depending on the kind of model/view (textual vs. semantic)
-			new UuidGeneratorAndResolverImpl(this.resourceSet, uuidProviderResource, false)
-		]
+		}
+		var Resource uuidProviderResource = resourceSet.loadOrCreateResource(uuidProviderVURI.EMFUri)
+		// TODO HK We cannot enable strict mode here, because for textual views we will not get
+		// create changes in any case. We should therefore use one monitor per model and turn on
+		// strict mode
+		// depending on the kind of model/view (textual vs. semantic)
+		new UuidGeneratorAndResolverImpl(this.resourceSet, uuidProviderResource, false)
 	}
 
 	def private void loadVURIsOfVSMUModelInstances() {
@@ -232,9 +218,7 @@ class ResourceRepositoryImpl implements ModelRepository {
 	override Iterable<? extends TransactionalChange> endRecording() {
 		logger.debug("End recording virtual model")
 		isRecording = false
-		executeAsCommand[
-			domainToRecorder.values.forEach[endRecording()]
-		]
+		domainToRecorder.values.forEach[endRecording()]
 		return domainToRecorder.values
 			.map [recorder | VitruviusChangeFactory.instance.createCompositeTransactionalChange(recorder.changes)]
 			.filter [containsConcreteChange]
@@ -244,28 +228,17 @@ class ResourceRepositoryImpl implements ModelRepository {
 	def private void deleteModel(VURI vuri) {
 		val modelInstance = getModelInstanceOriginal(vuri)
 		val resource = modelInstance.resource
-		executeAsCommand [
-			try {
-				logger.debug('''Deleting resource: «resource»''')
-				resource.delete(null)
-				modelInstances.remove(vuri)
-			} catch (IOException e) {
-				logger.error('''Deletion of resource «resource» did not work.''', e)
-				return null
-			}
-		]
-	}
-
-	override <T> T executeAsCommand(Callable<T> command) {
-		resourceSet.requiredTransactionalEditingDomain.executeVitruviusRecordingCommandAndFlushHistory(command)
-	}
-
-	override VitruviusRecordingCommand executeAsCommand(Runnable command) {
-		resourceSet.requiredTransactionalEditingDomain.executeVitruviusRecordingCommandAndFlushHistory(command)
+		try {
+			logger.debug('''Deleting resource: «resource»''')
+			resource.delete(null)
+			modelInstances.remove(vuri)
+		} catch (IOException e) {
+			logger.error('''Deletion of resource «resource» did not work.''', e)
+		}
 	}
 
 	override void executeOnUuidResolver(Consumer<UuidResolver> function) {
-		executeAsCommand [function.accept(uuidGeneratorAndResolver)]
+		function.accept(uuidGeneratorAndResolver)
 	}
 
 	override VURI getMetadataModelURI(String... metadataKey) {
@@ -277,7 +250,6 @@ class ResourceRepositoryImpl implements ModelRepository {
 	}
 
 	def dispose() {
-		resourceSet.transactionalEditingDomain?.dispose
 		resourceSet.resources.forEach[unload]
 		resourceSet.resources.clear
 	}

@@ -8,7 +8,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.Iterator;
-import java.util.concurrent.Callable;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
@@ -46,13 +45,7 @@ public class SimpleVsumTest extends VsumTest {
         final Repository repo = Pcm_mockupFactory.eINSTANCE.createRepository();
         vsum.persistRootElement(vuri, repo);
         final Component component = Pcm_mockupFactory.eINSTANCE.createComponent();
-        vsum.executeCommand(new Callable<Void>() {
-            @Override
-            public Void call() {
-                repo.getComponents().add(component);
-                return null;
-            }
-        });
+        repo.getComponents().add(component);
 
         // save test model
         vsum.save();// (vuri);
@@ -89,13 +82,7 @@ public class SimpleVsumTest extends VsumTest {
         final Repository repo = Pcm_mockupFactory.eINSTANCE.createRepository();
         vsum.persistRootElement(vuri, repo);
         final Component component = Pcm_mockupFactory.eINSTANCE.createComponent();
-        vsum.executeCommand(new Callable<Void>() {
-            @Override
-            public Void call() {
-                repo.getComponents().add(component);
-                return null;
-            }
-        });
+        repo.getComponents().add(component);
         vsum.save();// (vuri);
         // simulate external change
         changeTestModelExternally(vuri);

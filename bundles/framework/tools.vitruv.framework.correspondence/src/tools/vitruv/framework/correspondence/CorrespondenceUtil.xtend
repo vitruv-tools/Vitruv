@@ -27,7 +27,7 @@ class CorrespondenceUtil {
 				'''The correspondence '«»«correspondence»' links to an empty Uuid '«»«aUuids»' or '«»«bUuids»'!'''.
 					toString)
 		}
-		if (aUuids.equals(uuids)) {
+		if (aUuids == uuids) {
 			return bUuids;
 		} else {
 			return aUuids

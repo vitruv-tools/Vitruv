@@ -38,12 +38,12 @@ import tools.vitruv.framework.correspondence.InternalCorrespondenceModel
 import tools.vitruv.framework.correspondence.CorrespondenceModelView
 import tools.vitruv.framework.correspondence.CorrespondenceModelViewFactory
 import java.util.function.Predicate
-import tools.vitruv.framework.util.command.CommandCreatorAndExecutor
+import static com.google.common.base.Preconditions.checkState
+import java.util.LinkedHashSet
 
 // TODO move all methods that don't need direct instance variable access to some kind of util class
 class InternalCorrespondenceModelImpl extends ModelInstance implements InternalCorrespondenceModel, TuidUpdateListener {
 	static val logger = Logger.getLogger(InternalCorrespondenceModelImpl)
-	final CommandCreatorAndExecutor modelCommandExecutor
 	final VitruvDomainRepository domainRepository;
 	final Correspondences correspondences
 	final ClaimableMap<Tuid, Set<List<Tuid>>> tuid2tuidListsMap
@@ -52,10 +52,9 @@ class InternalCorrespondenceModelImpl extends ModelInstance implements InternalC
 	final TuidResolver tuidResolver;
 	final UuidResolver uuidResolver;
 
-	new(TuidResolver tuidResolver, UuidResolver uuidResolver, CommandCreatorAndExecutor modelCommandExecutor,
-		VitruvDomainRepository domainRepository, VURI correspondencesVURI, Resource correspondencesResource) {
+	new(TuidResolver tuidResolver, UuidResolver uuidResolver, VitruvDomainRepository domainRepository, 
+		VURI correspondencesVURI, Resource correspondencesResource) {
 		super(correspondencesVURI, correspondencesResource)
-		this.modelCommandExecutor = modelCommandExecutor
 		// TODO MK use MutatingListFixing... when necessary (for both maps!)
 		this.tuid2tuidListsMap = new ClaimableHashMap<Tuid, Set<List<Tuid>>>()
 		this.tuid2CorrespondencesMap = new ClaimableHashMap<List<Tuid>, Set<Correspondence>>()
@@ -73,11 +72,9 @@ class InternalCorrespondenceModelImpl extends ModelInstance implements InternalC
 	}
 
 	private def void addCorrespondence(Correspondence correspondence) {
-		this.modelCommandExecutor.executeAsCommand[
-			addCorrespondenceToModel(correspondence)
-			registerCorrespondence(correspondence)
-			setChangedAfterLastSaveFlag()
-		]
+		addCorrespondenceToModel(correspondence)
+		registerCorrespondence(correspondence)
+		setChangedAfterLastSaveFlag()
 	}
 
 	def private void registerCorrespondence(Correspondence correspondence) {
@@ -140,9 +137,11 @@ class InternalCorrespondenceModelImpl extends ModelInstance implements InternalC
 		val List<Tuid> tuids = calculateTuidsFromEObjects(eObjects)
 		correspondences += getCorrespondencesForTuids(tuids);
 
-		return correspondences.filter(correspondenceType).filter(correspondencesFilter).filter [
-			tag === null || it.tag == tag
-		].toSet;
+		return correspondences
+			.filter(correspondenceType)
+			.filter(correspondencesFilter)
+			.filter [tag === null || it.tag == tag]
+			.toSet;
 	}
 
 	/**
@@ -180,12 +179,8 @@ class InternalCorrespondenceModelImpl extends ModelInstance implements InternalC
 
 	override <C extends Correspondence> Set<List<EObject>> getCorrespondingEObjects(Class<C> correspondenceType,
 		Predicate<C> correspondencesFilter, List<EObject> eObjects, String tag) {
-		val Set<List<EObject>> result = newHashSet;
-		val correspondences = getCorrespondences(correspondenceType, correspondencesFilter, eObjects, tag);
-		for (correspondence : correspondences) {
-			result += resolveCorrespondingObjects(correspondence, eObjects);
-		}
-		return result.toSet;
+		getCorrespondences(correspondenceType, correspondencesFilter, eObjects, tag)
+			.mapFixedTo(new LinkedHashSet) [resolveCorrespondingObjects(it, eObjects)]
 	}
 
 	override List<EObject> getCorrespondingEObjectsInCorrespondence(Correspondence correspondence,
@@ -195,21 +190,23 @@ class InternalCorrespondenceModelImpl extends ModelInstance implements InternalC
 
 	private def List<EObject> resolveCorrespondingObjects(Correspondence correspondence, List<EObject> eObjects) {
 		if (correspondence.isUuidBased) {
-			val uuids = eObjects.map[uuidResolver.getPotentiallyCachedUuid(it)];
-			val correspondingUuids = correspondence.getCorrespondingUuids(uuids);
-			return correspondingUuids.map[resolveEObjectFromUuid];
+			correspondence.getCorrespondingUuids(
+				eObjects.map [uuidResolver.getPotentiallyCachedUuid(it)]
+			)
+				.mapFixed [resolveEObjectFromUuid()]
 		} else {
-			val tuids = eObjects.map[calculateTuidFromEObject];
-			val correspondingTuids = correspondence.getCorrespondingTuids(tuids);
-			try {
-				return correspondingTuids.map[resolveEObjectFromTuid]
-			} catch (IllegalStateException e) {
-				throw new IllegalStateException('''Corresponding objects for eObjects 
-				«FOR object : eObjects BEFORE "\n" SEPARATOR "\n"»	«object»«ENDFOR»
-				cannot be resolved, because one of the TUIDs 
-				«FOR tuid : correspondingTuids BEFORE "\n" SEPARATOR "\n"»	«tuid»«ENDFOR»
-				cannot be resolved.''')
-			}
+			correspondence.getCorrespondingTuids(eObjects.map[calculateTuidFromEObject])
+				.mapFixed [
+					try {
+						resolveEObjectFromTuid()
+					} catch (IllegalStateException e) {
+						throw new IllegalStateException('''
+							The corresponding objects for eObjects 
+							«FOR object : eObjects SEPARATOR System.lineSeparator»	«object»«ENDFOR»
+							cannot be resolved, because one the TUID ‹«it»› cannot be resolved.
+						''', e) 
+					}
+				]
 		}
 	}
 
@@ -376,28 +373,21 @@ class InternalCorrespondenceModelImpl extends ModelInstance implements InternalC
 	 * @param removedMapEntries
 	 */
 	override void performPostAction(Tuid tuid) {
-		// The correspondence model is an EMF-based model, so modifications have to be
-		// performed within a transaction.
-		this.modelCommandExecutor.executeAsCommand([|
-			if (tuidUpdateData === null) {
-				throw new IllegalStateException("Update was not started before performing post action");
-			}
-			val oldTuidList2Correspondences = tuidUpdateData;
-			val newSetOfoldTuidLists = new HashSet<List<Tuid>>()
-			for (oldTuidList2CorrespondencesEntry : oldTuidList2Correspondences) {
-				val oldTuidList = new ArrayList<Tuid>(oldTuidList2CorrespondencesEntry.first);
-				val correspondences = oldTuidList2CorrespondencesEntry.second
-				// re-add the tuid list with the new hashcode to the set for the  for the tuid2tuidListsMap entry
-				newSetOfoldTuidLists.add(oldTuidList)
-				// re-add the correspondences entry for the current list of tuids with the new hashcode 
-				tuid2CorrespondencesMap.put(oldTuidList, correspondences)
-			}
-			// re-add the entry that maps the tuid to the set if tuid lists that contain it
-			tuid2tuidListsMap.put(tuid, newSetOfoldTuidLists)
-			tuidUpdateData = null;
-			setChangedAfterLastSaveFlag();
-			return null;
-		]);
+		checkState(tuidUpdateData !== null, "Update was not started before performing post action")
+		val oldTuidList2Correspondences = tuidUpdateData;
+		val newSetOfoldTuidLists = new HashSet<List<Tuid>>()
+		for (oldTuidList2CorrespondencesEntry : oldTuidList2Correspondences) {
+			val oldTuidList = new ArrayList<Tuid>(oldTuidList2CorrespondencesEntry.first);
+			val correspondences = oldTuidList2CorrespondencesEntry.second
+			// re-add the tuid list with the new hashcode to the set for the  for the tuid2tuidListsMap entry
+			newSetOfoldTuidLists.add(oldTuidList)
+			// re-add the correspondences entry for the current list of tuids with the new hashcode 
+			tuid2CorrespondencesMap.put(oldTuidList, correspondences)
+		}
+		// re-add the entry that maps the tuid to the set if tuid lists that contain it
+		tuid2tuidListsMap.put(tuid, newSetOfoldTuidLists)
+		tuidUpdateData = null;
+		setChangedAfterLastSaveFlag();
 	}
 
 	private def List<Tuid> calculateTuidsFromEObjects(List<EObject> eObjects) {
@@ -436,8 +426,8 @@ class InternalCorrespondenceModelImpl extends ModelInstance implements InternalC
 
 	override <C extends Correspondence> Set<Correspondence> removeCorrespondencesFor(Class<C> correspondenceType,
 		Predicate<C> correspondencesFilter, List<EObject> eObjects, String tag) {
-		val correspondences = getCorrespondences(correspondenceType, correspondencesFilter, eObjects, tag);
-		return correspondences.toList.mapFixed[removeCorrespondencesAndDependendCorrespondences].flatten.toSet
+		getCorrespondences(correspondenceType, correspondencesFilter, eObjects, tag)
+			.flatMapFixedTo(new HashSet()) [removeCorrespondencesAndDependendCorrespondences()]
 	}
 
 	private def Set<Correspondence> removeCorrespondencesAndDependendCorrespondences(Correspondence correspondence) {
@@ -466,13 +456,18 @@ class InternalCorrespondenceModelImpl extends ModelInstance implements InternalC
 
 	override <E, C extends Correspondence> getAllEObjectsOfTypeInCorrespondences(Class<C> correspondenceType,
 		Predicate<C> correspondencesFilter, Class<E> type) {
-		allCorrespondences.filter(correspondenceType).filter(correspondencesFilter).map [
-			if (it.isUuidBased) {
-				(it.AUuids + it.BUuids).toList.map[resolveEObjectFromUuid]
-			} else {
-				(it.ATuids + it.BTuids).toList.map[resolveEObjectFromTuid]
-			}
-		].flatten.filter(type).toSet
+		allCorrespondences
+			.filter(correspondenceType)
+			.filter(correspondencesFilter)
+			.flatMap [
+				if (isUuidBased) {
+					(AUuids + BUuids).map [resolveEObjectFromUuid()]
+				} else {
+					(ATuids + BTuids).map [resolveEObjectFromTuid()]
+				}
+			]
+			.filter(type)
+			.toSet
 	}
 
 	override <V extends CorrespondenceModelView<?>> getView(
@@ -488,5 +483,4 @@ class InternalCorrespondenceModelImpl extends ModelInstance implements InternalC
 	override getGenericView() {
 		return new GenericCorrespondenceModelViewImpl(this);
 	}
-
 }
