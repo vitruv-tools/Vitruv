@@ -14,7 +14,7 @@ class EmptyChange implements TransactionalChange {
 	}
 	
 	override getChangedVURIs() {
-		emptyList
+		emptySet
 	}
 
 	override getEChanges() {
@@ -32,13 +32,21 @@ class EmptyChange implements TransactionalChange {
 	override unresolveIfApplicable() {
 		// Do nothing
 	}
-
+	
 	override getAffectedEObjects() {
-		emptyList
+		emptySet
+	}
+	
+	override getAffectedEObjectIds() {
+		emptySet
 	}
 
-	override getAffectedEObjectIds() {
-		emptyList
+	override getAffectedAndReferencedEObjects() {
+		emptySet
+	}
+
+	override getAffectedAndReferencedEObjectIds() {
+		emptySet
 	}
 
 	override getUserInteractions() {
@@ -50,7 +58,7 @@ class EmptyChange implements TransactionalChange {
 	}
 
 	override changedEObjectEquals(VitruviusChange change) {
-		change.affectedEObjects.empty
+		change.affectedAndReferencedEObjects.empty
 	}
 	
 	override EmptyChange copy() {

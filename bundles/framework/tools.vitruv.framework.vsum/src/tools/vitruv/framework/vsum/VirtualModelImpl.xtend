@@ -146,14 +146,13 @@ class VirtualModelImpl implements InternalVirtualModel {
 	}
 
 	override synchronized reverseChanges(List<PropagatedChange> changes) {
-		resourceRepository.executeAsCommand([|
-			changes.reverseView.forEach[it.applyBackward(uuidGeneratorAndResolver)]
-			return null
-		])
+		resourceRepository.executeAsCommand [
+			changes.reverseView.forEach [applyBackward(uuidGeneratorAndResolver)]
+		]
 
 		// TODO HK Instead of this make the changes set the modified flag of the resource when applied
-		changes.flatMap[originalChange.affectedEObjects + consequentialChanges.affectedEObjects]
-			.map[eResource]
+		changes.flatMap [originalChange.affectedEObjects + consequentialChanges.affectedEObjects]
+			.map [eResource]
 			.filterNull
 			.forEach[modified = true]
 		save()

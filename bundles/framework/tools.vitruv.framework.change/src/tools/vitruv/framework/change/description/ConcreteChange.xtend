@@ -3,6 +3,7 @@ package tools.vitruv.framework.change.description
 import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.util.datatypes.VURI
 import java.util.List
+import java.util.Set
 
 interface ConcreteChange extends TransactionalChange {
 	def EChange getEChange()
@@ -15,10 +16,7 @@ interface ConcreteChange extends TransactionalChange {
 	 * not determined yet.
 	 */
 	def VURI getChangedVURI()
-	/**
-	 * @return a list containing only
-	 */
-	override Iterable<VURI> getChangedVURIs()
+	override Set<VURI> getChangedVURIs()
 	
 	override ConcreteChange copy()
 }
