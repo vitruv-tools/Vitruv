@@ -39,13 +39,21 @@ abstract class AbstractCompositeChangeImpl<C extends VitruviusChange> implements
 	override resolveAfterAndApplyBackward(UuidResolver uuidResolver) {
 		changes.reverseView.forEach [resolveAfterAndApplyBackward(uuidResolver)]
 	}
-
+	
 	override getAffectedEObjects() {
 		changes.flatMapFixedTo(new LinkedHashSet) [affectedEObjects]
 	}
-
+	
 	override getAffectedEObjectIds() {
 		changes.flatMapFixedTo(new LinkedHashSet) [affectedEObjectIds]
+	}
+
+	override getAffectedAndReferencedEObjects() {
+		changes.flatMapFixedTo(new LinkedHashSet) [affectedAndReferencedEObjects]
+	}
+
+	override getAffectedAndReferencedEObjectIds() {
+		changes.flatMapFixedTo(new LinkedHashSet) [affectedAndReferencedEObjectIds]
 	}
 
 	override unresolveIfApplicable() {

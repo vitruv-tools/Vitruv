@@ -39,7 +39,7 @@ class ConcreteApplicableChangeImpl extends ConcreteChangeImpl {
 		// We currently support 3 hierarchy layers upwards update. This is necessary
 		// e.g. for Operations whose TUIDs depend on the values of their parameter type references.
 		// This number of layers may still be too few, this is just a random number.
-		this.affectedEObjects.map[#{it, it.eContainer, it.eContainer?.eContainer, it.eContainer?.eContainer?.eContainer}].flatten.filterNull.toSet
+		this.affectedAndReferencedEObjects.map[#{it, it.eContainer, it.eContainer?.eContainer, it.eContainer?.eContainer?.eContainer}].flatten.filterNull.toSet
 	}
 
 	private def void registerOldObjectTuidsForUpdate(Iterable<EObject> objects) {

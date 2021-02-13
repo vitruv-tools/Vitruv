@@ -7,6 +7,7 @@ import tools.vitruv.framework.uuid.UuidResolver
 import tools.vitruv.framework.change.interaction.UserInteractionBase
 import org.eclipse.emf.ecore.resource.Resource
 import tools.vitruv.framework.util.datatypes.VURI
+import java.util.Set
 
 /** 
  * Base interface for all kinds of changes in Vitruvius.
@@ -46,25 +47,35 @@ interface VitruviusChange {
 	 * (as a new resolution is impossible).
 	 */
 	def void unresolveIfApplicable()
+	
+	/**
+	 * Returns all {@link EObject}s directly affected by this change. This does not include referenced elements.
+	 */
+	def Set<EObject> getAffectedEObjects()
+	
+	/**
+	 * Returns the ID all {@link EObject}s directly affected by this change. This does not include referenced elements.
+	 */
+	def Set<String> getAffectedEObjectIds()
 
 	/**
 	 * Returns all {@link EObject}s affected by this change, including both the elements of which an attribute or
 	 * reference was changes, as well as the referenced elements.
 	 */
-	def Iterable<EObject> getAffectedEObjects()
+	def Set<EObject> getAffectedAndReferencedEObjects()
 
 	/**
 	 * Returns the IDs of all {@link EObject}s affected by this change, including both the elements of which an attribute or
 	 * reference was changes, as well as the referenced elements.
 	 */
-	def Iterable<String> getAffectedEObjectIds()
+	def Set<String> getAffectedAndReferencedEObjectIds()
 
 	/**
 	 * Returns the {@link VURI}s of all {@link Resource}s changed by this change, i.e. the resources containing the 
 	 * changed {@link EObject}s. The returned {@link Iterable} may be empty if no {@link EObject}s are affected by this
 	 * change or if this change was not resolved yet.
 	 */
-	def Iterable<VURI> getChangedVURIs()
+	def Set<VURI> getChangedVURIs()
 
 	/**
 	 * Returns all user interactions performed during application of this change and performing consistency preservation.

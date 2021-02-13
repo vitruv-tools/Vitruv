@@ -66,7 +66,7 @@ class ChangePropagator {
 			change.resolveBeforeAndApplyForward(uuidResolver)
 			// add all affected models to the repository
 			change.changedVURIs.forEach [resourceRepository.getModel(it)]
-			change.affectedEObjects.forEach [modelRepository.addRootElement(it)]
+			change.affectedAndReferencedEObjects.forEach [modelRepository.addRootElement(it)]
 		]
 		modelRepository.cleanupRootElements()
 	}

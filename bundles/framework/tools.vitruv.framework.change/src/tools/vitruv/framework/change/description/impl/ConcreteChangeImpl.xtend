@@ -31,6 +31,8 @@ import tools.vitruv.framework.change.echange.feature.reference.AdditiveReference
 import tools.vitruv.framework.change.echange.feature.reference.SubtractiveReferenceEChange
 import tools.vitruv.framework.change.echange.feature.attribute.InsertEAttributeValue
 import tools.vitruv.framework.change.echange.feature.attribute.RemoveEAttributeValue
+import java.util.Set
+import tools.vitruv.framework.change.echange.feature.attribute.UpdateAttributeEChange
 
 class ConcreteChangeImpl implements ConcreteChange {
 	static val logger = Logger.getLogger(ConcreteChangeImpl)
@@ -46,11 +48,15 @@ class ConcreteChangeImpl implements ConcreteChange {
 	}
 	
 	override getChangedVURI() {
-		eChange.changedVuri
+		switch(eChange) {
+			FeatureEChange<?, ?>: eChange.affectedEObject?.objectVuri
+			EObjectExistenceEChange<?>: eChange.affectedEObject?.objectVuri
+			RootEChange: VURI.getInstance(eChange.uri)
+		}
 	}
 	
 	override getChangedVURIs() {
-		listOfNotNull(changedVURI)
+		setOfNotNull(changedVURI)
 	}
 
 	override getEChange() {
@@ -73,16 +79,48 @@ class ConcreteChangeImpl implements ConcreteChange {
 		// Do nothing	
 	}
 
-	def getAffectedNotReferencedEObjects() {
-		return eChange.affectedEObjects
-	}
-
-	override getAffectedEObjectIds() {
-		return eChange.affectedEObjectIds
-	}
-
 	override getAffectedEObjects() {
-		return affectedNotReferencedEObjects + eChange.referencedEObjects
+		switch (eChange) {
+			FeatureEChange<?, ?>: Set.of(eChange.affectedEObject)
+			EObjectExistenceEChange<?>: Set.of(eChange.affectedEObject)
+			InsertRootEObject<?>: Set.of(eChange.newValue)
+			RemoveRootEObject<?>: Set.of(eChange.oldValue)
+		}
+	}
+	
+	override getAffectedEObjectIds() {
+		switch (eChange) {
+			FeatureEChange<?, ?>: Set.of(eChange.affectedEObjectID)
+			EObjectExistenceEChange<?>: Set.of(eChange.affectedEObjectID)
+			InsertRootEObject<?>: Set.of(eChange.newValueID)
+			RemoveRootEObject<?>: Set.of(eChange.oldValueID)
+		}
+	}
+
+	override getAffectedAndReferencedEObjects() {
+		switch (eChange) {
+			UpdateAttributeEChange<?>: Set.of(eChange.affectedEObject)
+			ReplaceSingleValuedEReference<?, ?>:
+				setOfNotNull(eChange.affectedEObject, eChange.oldValue, eChange.newValue)
+			InsertEReference<?, ?>: Set.of(eChange.affectedEObject, eChange.newValue)
+			RemoveEReference<?, ?>: Set.of(eChange.affectedEObject, eChange.oldValue)
+			EObjectExistenceEChange<?>: Set.of(eChange.affectedEObject)
+			InsertRootEObject<?>: Set.of(eChange.newValue)
+			RemoveRootEObject<?>: Set.of(eChange.oldValue)
+		}
+	}
+	
+	override getAffectedAndReferencedEObjectIds() {
+		switch (eChange) {
+			UpdateAttributeEChange<?>: Set.of(eChange.affectedEObjectID)
+			ReplaceSingleValuedEReference<?, ?>: 
+				setOfNotNull(eChange.affectedEObjectID, eChange.oldValueID, eChange.newValueID)
+			InsertEReference<?, ?>: Set.of(eChange.affectedEObjectID, eChange.newValueID)
+			RemoveEReference<?, ?>: Set.of(eChange.affectedEObjectID, eChange.oldValueID)
+			EObjectExistenceEChange<?>: Set.of(eChange.affectedEObjectID)
+			InsertRootEObject<?>: Set.of(eChange.newValueID)
+			RemoveRootEObject<?>: Set.of(eChange.oldValueID)
+		}
 	}
 
 	override getUserInteractions() {
@@ -121,98 +159,6 @@ class ConcreteChangeImpl implements ConcreteChange {
 			EcoreUtil.equals(EChange.involvedEObjects, change.EChange.involvedEObjects)
 		} else false
 	}
-
-	private def dispatch List<String> getAffectedEObjectIds(EChange eChange) {
-		return emptyList
-	}
-
-	private def dispatch List<String> getAffectedEObjectIds(InsertRootEObject<?> eChange) {
-		return List.of(eChange.newValueID)
-	}
-
-	private def dispatch List<String> getAffectedEObjectIds(RemoveRootEObject<?> eChange) {
-		return List.of(eChange.oldValueID)
-	}
-
-	private def dispatch List<String> getAffectedEObjectIds(InsertEReference<?, ?> eChange) {
-		return List.of(eChange.affectedEObjectID, eChange.newValueID)
-	}
-
-	private def dispatch List<String> getAffectedEObjectIds(RemoveEReference<?, ?> eChange) {
-		return List.of(eChange.affectedEObjectID, eChange.oldValueID)
-	}
-
-	private def dispatch List<String> getAffectedEObjectIds(ReplaceSingleValuedEReference<?, ?> eChange) {
-		return List.of(eChange.affectedEObjectID, eChange.newValueID, eChange.oldValueID)
-	}
-
-	private def dispatch List<String> getAffectedEObjectIds(FeatureEChange<?, ?> eChange) {
-		return List.of(eChange.affectedEObjectID)
-	}
-
-	private def dispatch List<String> getAffectedEObjectIds(EObjectExistenceEChange<?> eChange) {
-		return List.of(eChange.affectedEObjectID)
-	}
-
-	private def dispatch List<EObject> getAffectedEObjects(EChange eChange) {
-		return emptyList
-	}
-
-	private def dispatch List<EObject> getAffectedEObjects(InsertRootEObject<?> eChange) {
-		return listOfNotNull(eChange.newValue)
-	}
-
-	private def dispatch List<EObject> getAffectedEObjects(RemoveRootEObject<?> eChange) {
-		return List.of(eChange.oldValue)
-	}
-
-	private def dispatch List<EObject> getAffectedEObjects(InsertEReference<?, ?> eChange) {
-		return List.of(eChange.affectedEObject)
-	}
-
-	private def dispatch List<EObject> getAffectedEObjects(RemoveEReference<?, ?> eChange) {
-		return List.of(eChange.affectedEObject)
-	}
-
-	private def dispatch List<EObject> getAffectedEObjects(ReplaceSingleValuedEReference<?, ?> eChange) {
-		return List.of(eChange.affectedEObject)
-	}
-
-	private def dispatch List<EObject> getAffectedEObjects(FeatureEChange<?, ?> eChange) {
-		listOfNotNull(eChange.affectedEObject)
-	}
-
-	private def dispatch List<EObject> getAffectedEObjects(EObjectExistenceEChange<?> eChange) {
-		listOfNotNull(eChange.affectedEObject)
-	}
-
-	private def dispatch List<EObject> getReferencedEObjects(EChange eChange) {
-		return emptyList
-	}
-
-	private def dispatch List<EObject> getReferencedEObjects(InsertEReference<?, ?> eChange) {
-		return List.of(eChange.newValue)
-	}
-
-	private def dispatch List<EObject> getReferencedEObjects(RemoveEReference<?, ?> eChange) {
-		return List.of(eChange.oldValue)
-	}
-
-	private def dispatch List<EObject> getReferencedEObjects(ReplaceSingleValuedEReference<?, ?> eChange) {
-		return listOfNotNull(eChange.affectedEObject, eChange.oldValue, eChange.newValue)
-	}
-	
-	private def dispatch getChangedVuri(FeatureEChange<?, ?> eChange) {
-		eChange.affectedEObject?.objectVuri
-	}
-	
-	private def dispatch getChangedVuri(EObjectExistenceEChange<?> eChange) {
-		eChange.affectedEObject?.objectVuri
-	}
-	
-	private def dispatch getChangedVuri(RootEChange eChange) {
-		VURI.getInstance(eChange.uri)
-	}
 	
 	private def getObjectVuri(EObject object) {
 		val objectResource = object.eResource
@@ -227,21 +173,21 @@ class ConcreteChangeImpl implements ConcreteChange {
 		} else null
 	}
 	
-	def private static <T> List<T> listOfNotNull(T element) {
-		element !== null ? List.of(element) : emptyList
+	def private static <T> Set<T> setOfNotNull(T element) {
+		element !== null ? Set.of(element) : emptySet
 	}
 	
-	def private static <T> List<T> listOfNotNull(T element1, T element2) {
-		if (element1 === null) listOfNotNull(element2)
-		else if (element2 === null) List.of(element1)
-		else List.of(element1, element2)
+	def private static <T> Set<T> setOfNotNull(T element1, T element2) {
+		if (element1 === null) setOfNotNull(element2)
+		else if (element2 === null) Set.of(element1)
+		else Set.of(element1, element2)
 	}
 	
-	def private static <T> List<T> listOfNotNull(T element1, T element2, T element3) {
-		if (element1 === null) listOfNotNull(element2, element3)
-		else if (element2 === null) listOfNotNull(element1, element3)
-		else if (element3 === null) List.of(element1, element2)
-		else List.of(element1, element2, element3)
+	def private static <T> Set<T> setOfNotNull(T element1, T element2, T element3) {
+		if (element1 === null) setOfNotNull(element2, element3)
+		else if (element2 === null) setOfNotNull(element1, element3)
+		else if (element3 === null) Set.of(element1, element2)
+		else Set.of(element1, element2, element3)
 	}
 
     override String toString() {
