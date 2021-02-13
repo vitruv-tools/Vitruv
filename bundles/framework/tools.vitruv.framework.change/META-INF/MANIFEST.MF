@@ -10,7 +10,7 @@ Require-Bundle: org.apache.log4j,
  org.eclipse.emf.ecore.change,
  tools.vitruv.framework.tuid,
  tools.vitruv.framework.change.echange;visibility:=reexport,
- tools.vitruv.framework.change.interaction
+ tools.vitruv.framework.change.interaction;visibility:=reexport
 Export-Package: tools.vitruv.framework.change.description,
  tools.vitruv.framework.change.preparation,
  tools.vitruv.framework.change.recording,
