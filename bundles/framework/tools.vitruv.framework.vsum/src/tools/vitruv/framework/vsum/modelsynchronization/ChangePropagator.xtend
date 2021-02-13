@@ -143,20 +143,20 @@ class ChangePropagator {
 		) {
 			// modelRepository.startRecording
 			resourceRepository.startRecording()
-			
 			// TODO HK: Clone the changes for each synchronization! Should even be cloned for
 			// each consistency repair routines that uses it,
 			// or: make them read only, i.e. give them a read-only interface!
-			val changedEObjects = resourceRepository.executeAsCommand [
+			resourceRepository.executeAsCommand [
 				propagationSpecification.propagateChange(change, correspondenceModel, resourceRepository)
 				modelRepository.cleanupRootElements()
-			].affectedObjects.filter(EObject)
+			]
+			val changes = resourceRepository.endRecording() /* + modelRepository.endRecording() */
 	
 			// Store modification information
-			changedEObjects.forEach[changedResourcesTracker.addInvolvedModelResource(eResource)]
+			changes.flatMap [affectedEObjects].forEach [changedResourcesTracker.addInvolvedModelResource(eResource)]
 			changedResourcesTracker.addSourceResourceOfChange(change)
 			
-			resourceRepository.endRecording() /* + modelRepository.endRecording() */
+			return changes
 		}
 		
 		def private AutoCloseable installUserInteractorForChange(VitruviusChange change) {
