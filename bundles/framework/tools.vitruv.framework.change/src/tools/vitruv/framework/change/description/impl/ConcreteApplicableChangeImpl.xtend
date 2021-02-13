@@ -9,6 +9,9 @@ import tools.vitruv.framework.uuid.UuidResolver
 
 import static extension tools.vitruv.framework.change.echange.resolve.EChangeResolverAndApplicator.*
 import static com.google.common.base.Preconditions.checkState
+import java.util.ArrayList
+import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
+import java.util.HashSet
 
 class ConcreteApplicableChangeImpl extends ConcreteChangeImpl {
 	new(EChange eChange) {
@@ -39,7 +42,16 @@ class ConcreteApplicableChangeImpl extends ConcreteChangeImpl {
 		// We currently support 3 hierarchy layers upwards update. This is necessary
 		// e.g. for Operations whose TUIDs depend on the values of their parameter type references.
 		// This number of layers may still be too few, this is just a random number.
-		this.affectedAndReferencedEObjects.map[#{it, it.eContainer, it.eContainer?.eContainer, it.eContainer?.eContainer?.eContainer}].flatten.filterNull.toSet
+		this.affectedAndReferencedEObjects
+			.flatMapFixedTo(new HashSet) [withContainers(3)]
+	}
+	
+	private def withContainers(EObject object, int levels) {
+		val result = new ArrayList(levels + 1)
+		for (var i = 0, var current = object; i <= levels && current !== null; i += 1, current = current.eContainer) {
+			result += current
+		}
+		return result
 	}
 
 	private def void registerOldObjectTuidsForUpdate(Iterable<EObject> objects) {

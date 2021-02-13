@@ -1,8 +1,6 @@
 package tools.vitruv.framework.util.datatypes;
 
 import static java.util.Collections.emptyMap;
-import static tools.vitruv.framework.util.command.EMFCommandBridge.executeVitruviusRecordingCommandAndFlushHistory;
-
 import java.io.IOException;
 import java.util.List;
 
@@ -10,7 +8,6 @@ import org.apache.log4j.Logger;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 
-import tools.vitruv.framework.util.ResourceSetUtil;
 import tools.vitruv.framework.util.bridges.EcoreResourceBridge;
 
 public class ModelInstance extends AbstractURIHaving {
@@ -113,25 +110,21 @@ public class ModelInstance extends AbstractURIHaving {
 	 * Throws an {@link IllegalStateException} if the resource cannot be loaded.
 	 */
 	public void load(final boolean forceLoadByDoingUnloadBeforeLoad) {
-		// TODO HK This should be done differently: The VSUM provides the editing domain!
-		var domain = ResourceSetUtil.getRequiredTransactionalEditingDomain(resource.getResourceSet());
-		executeVitruviusRecordingCommandAndFlushHistory(domain, () -> {
-			try {
-				if (this.resource.isModified() || forceLoadByDoingUnloadBeforeLoad) {
-					// TODO If the model resource already exists, this method
-					// may also get called for already loaded resources
-					// (see ResourceRepositoryImpl#getAndLoadModelInstanceOriginal).
-					// If the resource has been marked as modified, any not yet
-					// saved model objects are lost after the following unload call.
-					this.resource.unload();
-				}
-				this.resource.load(emptyMap());
-				LOGGER.trace("Resource was loaded: " + resource.getURI());
-			} catch (IOException e) {
-				// soften
-				throw new IllegalStateException("Problem loading resource: " + resource.getURI());
+		try {
+			if (this.resource.isModified() || forceLoadByDoingUnloadBeforeLoad) {
+				// TODO If the model resource already exists, this method
+				// may also get called for already loaded resources
+				// (see ResourceRepositoryImpl#getAndLoadModelInstanceOriginal).
+				// If the resource has been marked as modified, any not yet
+				// saved model objects are lost after the following unload call.
+				this.resource.unload();
 			}
-		});
+			this.resource.load(emptyMap());
+			LOGGER.trace("Resource was loaded: " + resource.getURI());
+		} catch (IOException e) {
+			// soften
+			throw new IllegalStateException("Problem loading resource: " + resource.getURI(), e);
+		}
 	}
 
 	public void load() {

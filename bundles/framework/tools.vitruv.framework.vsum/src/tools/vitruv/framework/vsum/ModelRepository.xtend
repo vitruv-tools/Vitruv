@@ -6,9 +6,8 @@ import java.util.function.Consumer
 import tools.vitruv.framework.change.description.TransactionalChange
 import tools.vitruv.framework.uuid.UuidResolver
 import tools.vitruv.framework.util.command.ResourceAccess
-import tools.vitruv.framework.util.command.CommandCreatorAndExecutor
 
-interface ModelRepository extends CommandCreatorAndExecutor, ResourceAccess {
+interface ModelRepository extends ResourceAccess {
 	def ModelInstance getModel(VURI modelVuri);
 	def void forceReloadModelIfExisting(VURI modelVuri);
     def void saveAllModels();

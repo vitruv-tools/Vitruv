@@ -2,7 +2,6 @@ package tools.vitruv.framework.vsum
 
 import java.util.Collections
 import java.util.List
-import java.util.concurrent.Callable
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.resource.Resource
 import tools.vitruv.framework.change.description.PropagatedChange
@@ -78,45 +77,43 @@ class VirtualModelImpl implements InternalVirtualModel {
 		this.resourceRepository.persistAsRoot(rootElement, persistenceVuri)
 	}
 
-	override synchronized executeCommand(Callable<Void> command) {
-		this.resourceRepository.executeAsCommand(command);
-	}
-
 	override synchronized propagateChange(VitruviusChange change) {
 		checkNotNull(change, "change to propagate")
 		checkArgument(change.containsConcreteChange, 
 			"This change contains no concrete changes:%s%s", System.lineSeparator, change)
 
-		LOGGER.info('''Start change propagation''')
+		LOGGER.info("Start change propagation")
 		startChangePropagation(change)
 
 		change.unresolveIfApplicable
 		val result = changePropagator.propagateChange(change)
 		save()
 		
-		LOGGER.trace(modelRepository)
-		LOGGER.trace('''
-			Propagated changes:
-			«FOR propagatedChange : result»
-				Propagated Change:
-				«propagatedChange»
-			«ENDFOR»
-		''')
-
+		if (LOGGER.isTraceEnabled) {
+			LOGGER.trace(modelRepository)
+			LOGGER.trace('''
+				Propagated changes:
+				«FOR propagatedChange : result»
+					Propagated Change:
+					«propagatedChange»
+				«ENDFOR»
+			''')
+		}
+		
 		finishChangePropagation(change)
 		informPropagatedChangeListeners(result)
-		LOGGER.info('''Finished change propagation''')
+		LOGGER.info("Finished change propagation")
 		return result
 	}
 
 	private def void startChangePropagation(VitruviusChange change) {
-		LOGGER.debug('''Started synchronizing change: «change»''')
+		if (LOGGER.isDebugEnabled) LOGGER.debug('''Started synchronizing change: «change»''')
 		changePropagationListeners.forEach[startedChangePropagation]
 	}
 
 	private def void finishChangePropagation(VitruviusChange change) {
-		changePropagationListeners.forEach[finishedChangePropagation]
-		LOGGER.debug('''Finished synchronizing change: «change»''')
+		changePropagationListeners.forEach [finishedChangePropagation]
+		if (LOGGER.isDebugEnabled) LOGGER.debug('''Finished synchronizing change: «change»''')
 	}
 
 	/**
@@ -146,9 +143,7 @@ class VirtualModelImpl implements InternalVirtualModel {
 	}
 
 	override synchronized reverseChanges(List<PropagatedChange> changes) {
-		resourceRepository.executeAsCommand [
 			changes.reverseView.forEach [applyBackward(uuidGeneratorAndResolver)]
-		]
 
 		// TODO HK Instead of this make the changes set the modified flag of the resource when applied
 		changes.flatMap [originalChange.affectedEObjects + consequentialChanges.affectedEObjects]
@@ -236,11 +231,13 @@ class VirtualModelImpl implements InternalVirtualModel {
 
 	def private loadCorrespondenceModel() {
 		var correspondencesVURI = fileSystemLayout.correspondencesVURI
-		LOGGER.trace('''Creating or loading correspondence model from: «correspondencesVURI»''')
-		val correspondencesResource = new ResourceSetImpl().withGlobalFactories().loadOrCreateResource(
-			correspondencesVURI.EMFUri)
+		if (LOGGER.isTraceEnabled) {
+			LOGGER.trace('''Creating or loading correspondence model from: «correspondencesVURI»''')
+		}
+		val correspondencesResource = new ResourceSetImpl().withGlobalFactories()
+			.loadOrCreateResource(correspondencesVURI.EMFUri)
 		CorrespondenceModelFactory.instance.createCorrespondenceModel(
-			new TuidResolverImpl(domainRepository, resourceRepository), uuidGeneratorAndResolver, resourceRepository,
-			domainRepository, correspondencesVURI, correspondencesResource)
+			new TuidResolverImpl(domainRepository, resourceRepository), uuidGeneratorAndResolver, domainRepository,
+			correspondencesVURI, correspondencesResource)
 	}
 }

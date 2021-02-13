@@ -8,7 +8,6 @@ Bundle-RequiredExecutionEnvironment: JavaSE-11
 Require-Bundle: tools.vitruv.framework.vsum;visibility:=reexport,
  org.apache.log4j,
  tools.vitruv.framework.change.processing;visibility:=reexport,
- org.eclipse.emf.transaction,
  org.eclipse.xtend.lib,
  edu.kit.ipd.sdq.activextendannotations,
  org.hamcrest.core,

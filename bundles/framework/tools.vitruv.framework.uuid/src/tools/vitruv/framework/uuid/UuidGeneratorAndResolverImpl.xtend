@@ -9,13 +9,11 @@ import org.eclipse.emf.ecore.resource.Resource
 import org.apache.log4j.Logger
 import static extension tools.vitruv.framework.util.bridges.EcoreResourceBridge.*
 import static extension tools.vitruv.framework.util.bridges.JavaBridge.*
-import static extension tools.vitruv.framework.util.command.EMFCommandBridge.executeVitruviusRecordingCommandAndFlushHistory
 import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.EClass
 import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.common.util.URIUtil.*
 import static com.google.common.base.Preconditions.checkArgument
 import static com.google.common.base.Preconditions.checkState
-import static extension tools.vitruv.framework.util.ResourceSetUtil.getTransactionalEditingDomain
 
 /**
  * {@link UuidGeneratorAndResolver}
@@ -224,14 +222,13 @@ class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 
 	override registerEObject(String uuid, EObject eObject) {
 		checkState(eObject !== null, "Object must not be null")
-		logger.debug('''Adding UUID «uuid» for EObject: «eObject»''')
-		repository.eResource?.resourceSet.runAsCommandIfNecessary [
-			val uuidMapped = repository.uuidToEObject.put(uuid, eObject)
-			if (uuidMapped !== null) {
-				repository.EObjectToUuid.remove(uuidMapped)
-			}
-			repository.EObjectToUuid.put(eObject, uuid)
-		]
+		if (logger.isDebugEnabled) logger.debug('''Adding UUID «uuid» for EObject: «eObject»''')
+		
+		val uuidMapped = repository.uuidToEObject.put(uuid, eObject)
+		if (uuidMapped !== null) {
+			repository.EObjectToUuid.remove(uuidMapped)
+		}
+		repository.EObjectToUuid.put(eObject, uuid)
 	}
 
 	override hasPotentiallyCachedEObject(String uuid) {
@@ -293,8 +290,8 @@ class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 	override void loadUuidsToChild(UuidResolver childResolver, URI uri) {
 		// Only load UUIDs if resource exists (a pathmap resource always exists)
 		if (((uri.isFile || uri.isPlatform) && uri.existsResourceAtUri) || uri.isPathmap) {
-			val childContents = childResolver.resourceSet.runAsCommandIfNecessary [getResource(uri, true)].allContents
-			val ourContents = this.resourceSet.runAsCommandIfNecessary [getResource(uri, true)].allContents
+			val childContents = childResolver.resourceSet.getResource(uri, true).allContents
+			val ourContents = this.resourceSet.getResource(uri, true).allContents
 			while (childContents.hasNext) {
 				val childObject = childContents.next
 				checkState(ourContents.hasNext, "Cannot find %s in our resource set!", childObject)
@@ -319,25 +316,9 @@ class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 	}
 	
 	private def EObject resolve(URI uri) {
-		// TODO running as command should never be necessary for non-Java domains.
-		// Running in a command should probably be removed after domains can modify the UUID behaviour (see #326)
-		resourceSet.runAsCommandIfNecessary [getEObject(uri, true)]
+		resourceSet.getEObject(uri, true)
 	}
 
-	// If there is a TransactionalEditingDomain registered on the resource set, we have
-	// to also execute our command on that domain, otherwise (e.g. in change tests),
-	// there is no need to execute the command on a TransactionalEditingDomain. It can even
-	// lead to errors if the ResourceSet is also modified by the test, as these modifications
-	// would also have to be made on the TransactionalEditingDomain once it was created.
-	def private <T> T runAsCommandIfNecessary(ResourceSet resourceSet, (ResourceSet)=>T callable) {
-		val domain = resourceSet?.transactionalEditingDomain
-		return if (domain !== null) {
-			domain.executeVitruviusRecordingCommandAndFlushHistory [callable.apply(resourceSet)]
-		} else {
-			callable.apply(resourceSet)
-		}
-	}
-	
 	def private static getResolvableUri(EObject object) {
 		val resourceUri = object.eResource.URI
 		// we cannot simply use EcoreUtil#getURI, because object’s domain might use XMI	UUIDs. Since

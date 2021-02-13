@@ -14,5 +14,5 @@ Export-Package: tools.vitruv.framework.uuid.impl,
 Require-Bundle: org.eclipse.xtend.lib,
  org.apache.log4j,
  tools.vitruv.framework.util,
- org.eclipse.emf.transaction
+ org.eclipse.emf.ecore
 Bundle-ActivationPolicy: lazy
