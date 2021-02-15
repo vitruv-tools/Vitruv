@@ -179,6 +179,8 @@ class ChangePropagator {
 		override onUserInteractionReceived(UserInteractionBase interaction) {
 			userInteractions += interaction
 		}
+		
+		override toString() '''propagate in «sourceDomain»: «sourceChange»'''
 	}
 	
 	def private Iterable<TransactionalChange> getTransactionalChangeSequence(VitruviusChange change) {
