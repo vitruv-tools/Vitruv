@@ -3,7 +3,6 @@ package tools.vitruv.framework.change.recording
 import java.util.ArrayList
 import java.util.HashSet
 import java.util.List
-import java.util.Map
 import java.util.Set
 import org.eclipse.emf.common.notify.Adapter
 import org.eclipse.emf.common.notify.Notification
@@ -17,9 +16,7 @@ import tools.vitruv.framework.change.description.ConcreteChange
 import tools.vitruv.framework.change.description.TransactionalChange
 import tools.vitruv.framework.change.description.VitruviusChangeFactory
 import tools.vitruv.framework.change.echange.EChangeIdManager
-import tools.vitruv.framework.change.echange.eobject.DeleteEObject
 import tools.vitruv.framework.change.echange.eobject.EObjectAddedEChange
-import tools.vitruv.framework.change.echange.eobject.EObjectExistenceEChange
 import tools.vitruv.framework.change.echange.eobject.EObjectSubtractedEChange
 import tools.vitruv.framework.uuid.UuidGeneratorAndResolver
 
@@ -30,8 +27,6 @@ import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
 import static extension org.eclipse.emf.ecore.util.EcoreUtil.*
 import static extension tools.vitruv.framework.change.echange.util.EChangeUtil.*
 import org.eclipse.emf.ecore.EReference
-import tools.vitruv.framework.change.echange.eobject.CreateEObject
-import java.util.HashMap
 
 /**
  * Records changes to the given model elements as {@link CompositeTransactionalChanges}.
@@ -130,7 +125,7 @@ class ChangeRecorder implements AutoCloseable {
 			}
 		}
 	
-		val withDeletes = if (removedIds.isEmpty) {
+		return if (removedIds.isEmpty) {
 		 	changes
 		} else {
 			changes.mapFixed [
@@ -142,30 +137,6 @@ class ChangeRecorder implements AutoCloseable {
 								converter.createDeleteChange(eChange)
 							)
 						default: null
-					}
-				]
-			]
-		}
-		
-		// FIXME this is legacy behaviour that some applications, unfortunately, started to rely on. This
-		// post-processing is *not* necessary anymore because there are no wrong delete+create sequences created
-		// by change recording anymore. All applications should be fixed to not wrongly produce such sequences and
-		// then the code below should be removed. The problem with this code is that recreation can carry semantic
-		// value and must not simply be ignored.
-		val createdObjects = withDeletes.lastOccurencePerAffectedObject(trickTypeSystem(CreateEObject))
-		val deletedObjects = withDeletes.lastOccurencePerAffectedObject(trickTypeSystem(DeleteEObject))
-		val ignoreDeletions = deletedObjects.entrySet.filter [
-			createdObjects.getOrDefault(key, Integer.MIN_VALUE) > value
-		].toSet
-		
-		return if (ignoreDeletions.isEmpty) {
-			withDeletes
-		} else {
-			withDeletes.mapFixed [
-				filterChanges [ innerChange |
-					switch (eChange: innerChange.EChange) {
-						EObjectExistenceEChange<?>: !ignoreDeletions.contains(eChange.affectedEObjectID)
-						default: true
 					}
 				]
 			]
@@ -213,41 +184,6 @@ class ChangeRecorder implements AutoCloseable {
 		} else target
 	}
 	
-	def private static CompositeTransactionalChange filterChanges(
-		CompositeTransactionalChange target,
-		(ConcreteChange)=>boolean filter
-	) {
-		var List<TransactionalChange> resultChanges = null
-		for (val subchanges = target.changes, var i = 0; i < subchanges.size; i += 1) {
-			switch (change: subchanges.get(i)) {
-				ConcreteChange: {
-					if (filter.apply(change)) {
-						resultChanges?.add(change)
-					} else {
-						if (resultChanges === null) {
-							resultChanges = new ArrayList(subchanges.size - 1)
-							resultChanges.addAll(subchanges.subList(0, i))
-						}
-					}
-				}
-				CompositeTransactionalChange: {
-					val result = filterChanges(change, filter)
-					if (result !== change && resultChanges === null) {
-						resultChanges = new ArrayList(subchanges.size)
-						resultChanges.addAll(subchanges.subList(0, i))
-					}
-					if (resultChanges !== null && result.containsConcreteChange) {
-						resultChanges.add(result)
-					}
-				}
-				default: throw new IllegalStateException('''unexpected change type «change.class.simpleName»: «change»''')
-			}
-		}
-		return if (resultChanges !== null) {
-			VitruviusChangeFactory.instance.createCompositeTransactionalChange(resultChanges)
-		} else target
-	}
-	
 	def List<? extends TransactionalChange> getChanges() {
 		checkNotDisposed()
 		checkState(!isRecording, "This recorder is still recording!")
@@ -283,23 +219,6 @@ class ChangeRecorder implements AutoCloseable {
 		if (!eAdapters.contains(recordingAdapter)) {
 			eAdapters.add(recordingAdapter)
 		}
-	}
-	
- 	def private static Map<String, Integer> lastOccurencePerAffectedObject(
- 		List<? extends TransactionalChange> changes,
- 		Class<? extends EObjectExistenceEChange<?>> changeType
- 	) {
- 		new HashMap(
- 			changes.flatMap [EChanges]
- 				.indexed
- 				.filter [changeType.isInstance(value)]
-	 			.groupBy [(value as EObjectExistenceEChange<?>).affectedEObjectID]
-	 			.mapValues [maxBy [key].key]
- 		)
-	}
-	
-	def private static <T> Class<T> trickTypeSystem(Class<?> clazz) {
-		clazz as Class<T>
 	}
 	
 	@FinalFieldsConstructor
