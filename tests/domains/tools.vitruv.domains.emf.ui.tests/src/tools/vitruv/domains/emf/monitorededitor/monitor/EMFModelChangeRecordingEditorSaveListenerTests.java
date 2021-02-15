@@ -66,7 +66,7 @@ public class EMFModelChangeRecordingEditorSaveListenerTests extends BasicTestCas
         EMFModelChangeRecordingEditorSaveListener listener = new EMFModelChangeRecordingEditorSaveListener(
                 editorPartAdapter) {
             @Override
-            protected void onSavedResource(List<TransactionalChange> changeDescriptions) {
+            protected void onSavedResource(List<? extends TransactionalChange> changeDescriptions) {
                 assert changeDescriptions != null;
                 changeDescriptions.forEach((TransactionalChange descr) -> assertTrue(descr.getEChanges().isEmpty()));
                 ensureExecuted.markExecuted();
@@ -90,7 +90,7 @@ public class EMFModelChangeRecordingEditorSaveListenerTests extends BasicTestCas
         EMFModelChangeRecordingEditorSaveListener listener = new EMFModelChangeRecordingEditorSaveListener(
                 editorPartAdapter) {
             @Override
-            protected void onSavedResource(List<TransactionalChange> changeDescriptions) {
+            protected void onSavedResource(List<? extends TransactionalChange> changeDescriptions) {
                 assert changeDescriptions != null;
                 // assert changeDescriptions.size() == 1;
                 int counter = 0;
@@ -127,7 +127,7 @@ public class EMFModelChangeRecordingEditorSaveListenerTests extends BasicTestCas
         EMFModelChangeRecordingEditorSaveListener listener = new EMFModelChangeRecordingEditorSaveListener(
                 editorPartAdapter) {
             @Override
-            protected void onSavedResource(List<TransactionalChange> changeDescriptions) {
+            protected void onSavedResource(List<? extends TransactionalChange> changeDescriptions) {
                 ensureNotExecuted.markExecuted();
             }
         };

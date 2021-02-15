@@ -13,7 +13,6 @@ import org.eclipse.emf.ecore.resource.ResourceSet
 import org.eclipse.xtend.lib.annotations.Accessors
 import tools.vitruv.framework.change.description.TransactionalChange
 import tools.vitruv.framework.change.description.VitruviusChangeFactory
-import tools.vitruv.framework.change.recording.AtomicEmfChangeRecorder
 import tools.vitruv.framework.domains.VitruvDomain
 import tools.vitruv.framework.domains.repository.VitruvDomainRepository
 import tools.vitruv.framework.tuid.TuidManager
@@ -35,6 +34,7 @@ import static extension tools.vitruv.framework.util.ResourceSetUtil.withGlobalFa
 import static extension tools.vitruv.framework.domains.repository.DomainAwareResourceSet.awareOfDomains
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import tools.vitruv.framework.vsum.helper.VsumFileSystemLayout
+import tools.vitruv.framework.change.recording.ChangeRecorder
 
 class ResourceRepositoryImpl implements ModelRepository {
 	static val logger = Logger.getLogger(ResourceRepositoryImpl)
@@ -44,7 +44,7 @@ class ResourceRepositoryImpl implements ModelRepository {
 	val VsumFileSystemLayout fileSystemLayout
 	@Accessors
 	val UuidGeneratorAndResolver uuidGeneratorAndResolver
-	val Map<VitruvDomain, AtomicEmfChangeRecorder> domainToRecorder = new HashMap()
+	val Map<VitruvDomain, ChangeRecorder> domainToRecorder = new HashMap()
 	var isRecording = false
 
 	new(VsumFileSystemLayout fileSystemLayout, VitruvDomainRepository domainRepository) {
@@ -55,9 +55,9 @@ class ResourceRepositoryImpl implements ModelRepository {
 		loadVURIsOfVSMUModelInstances()
 	}
 
-	def private AtomicEmfChangeRecorder getOrCreateChangeRecorder(VURI vuri) {
+	def private ChangeRecorder getOrCreateChangeRecorder(VURI vuri) {
 		domainToRecorder.computeIfAbsent(getDomainForURI(vuri)) [
-			new AtomicEmfChangeRecorder(this.uuidGeneratorAndResolver)
+			new ChangeRecorder(this.uuidGeneratorAndResolver)
 		]
 	}
 
