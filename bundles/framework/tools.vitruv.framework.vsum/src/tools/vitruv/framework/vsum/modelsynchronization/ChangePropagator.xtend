@@ -50,10 +50,18 @@ class ChangePropagator {
 
 	def List<PropagatedChange> propagateChange(VitruviusChange change) {
 		change.transactionalChangeSequence.forEach [applySingleChange(it)]
-		return new ChangePropagation(this, change, change.changedDomain).propagateChanges()
+		
+		val changedDomain = change.changedDomain
+		if (logger.isTraceEnabled) {
+			logger.trace('''
+				Will now propagate this input change:
+					«change»
+			''')
+		}
+		return new ChangePropagation(this, change, changedDomain, null).propagateChanges()
 	}
 
-	private def void applySingleChange(TransactionalChange change) {
+	def private void applySingleChange(TransactionalChange change) {
 		resourceRepository.executeOnUuidResolver [ UuidResolver uuidResolver |
 			change.resolveBeforeAndApplyForward(uuidResolver)
 			// add all affected models to the repository
@@ -68,18 +76,19 @@ class ChangePropagator {
 		extension val ChangePropagator outer
 		val VitruviusChange sourceChange
 		val VitruvDomain sourceDomain
+		val ChangePropagation previous
 		val ChangedResourcesTracker changedResourcesTracker = new ChangedResourcesTracker
 		val List<EObject> createdObjects = new ArrayList
 		val List<UserInteractionBase> userInteractions = new ArrayList
 		
-		private def propagateChanges() {
+		def private propagateChanges() {
 			val result = sourceChange.transactionalChangeSequence.flatMapFixed [propagateSingleChange(it)]
 			handleObjectsWithoutResource()
 			changedResourcesTracker.markNonSourceResourceAsChanged()
 			return result
 		}
 		
-		private def List<PropagatedChange> propagateSingleChange(TransactionalChange change) {
+		def private List<PropagatedChange> propagateSingleChange(TransactionalChange change) {
 			checkState(!change.affectedEObjects.isNullOrEmpty, 
 				"There are no objects affected by this change:%s%s", System.lineSeparator, change)
 
@@ -97,12 +106,15 @@ class ChangePropagator {
 				userInteractorChange.close()
 			}
 			
+			if (logger.isDebugEnabled) {
+				logger.debug('''Propagated «FOR p : propagationPath SEPARATOR ' -> '»«p»«ENDFOR» -> {«FOR result: propagationResultChanges SEPARATOR ", "»«result.key»«ENDFOR»}''')
+			}
 			if (logger.isTraceEnabled) {
 				logger.trace('''
-					Changes generate by change propagation:
-					«FOR resultChange : propagationResultChanges»
-						«resultChange»
-					«ENDFOR»
+					Result changes:
+						«FOR result : propagationResultChanges»
+							«result.key»: «result.value»
+						«ENDFOR»
 				''')
 			}
 
@@ -115,7 +127,7 @@ class ChangePropagator {
 			val nextPropagations = propagationResultChanges
 				.filter [key.shouldTransitivelyPropagateChanges && value.exists[containsConcreteChange]]
 				.mapFixed [
-					new ChangePropagation(outer, VitruviusChangeFactory.instance.createCompositeChange(value), key)
+					new ChangePropagation(outer, VitruviusChangeFactory.instance.createCompositeChange(value), key, this)
 				]
 
 			for (nextPropagation : nextPropagations) {
@@ -125,7 +137,7 @@ class ChangePropagator {
 			return resultingChanges
 		}
 		
-		private def propagateChangeForChangePropagationSpecification(
+		def private propagateChangeForChangePropagationSpecification(
 			TransactionalChange change,
 			ChangePropagationSpecification propagationSpecification
 		) {
@@ -147,7 +159,7 @@ class ChangePropagator {
 			resourceRepository.endRecording() /* + modelRepository.endRecording() */
 		}
 		
-		private def AutoCloseable installUserInteractorForChange(VitruviusChange change) {
+		def private AutoCloseable installUserInteractorForChange(VitruviusChange change) {
 			// retrieve user inputs from past changes, construct a UserInteractor which tries to reuse them:
 			val pastUserInputsFromChange = change.userInteractions
 	
@@ -160,7 +172,7 @@ class ChangePropagator {
 		}
 		
 		
-		private def void handleObjectsWithoutResource() {
+		def private void handleObjectsWithoutResource() {
 			modelRepository.cleanupRootElementsWithoutResource
 			// Find created objects without resource
 			for (createdObjectWithoutResource : createdObjects.filter[eResource === null]) {
@@ -180,7 +192,12 @@ class ChangePropagator {
 			userInteractions += interaction
 		}
 		
-		override toString() '''propagate in «sourceDomain»: «sourceChange»'''
+		override toString() '''propagate «FOR p : propagationPath SEPARATOR ' -> '»«p»«ENDFOR»: «sourceChange»'''
+		
+		def private Iterable<String> getPropagationPath() {
+			if (previous === null) List.of("<input change> in " + sourceDomain.toString)
+			else previous.propagationPath + List.of(sourceDomain.toString)
+		}
 	}
 	
 	def private Iterable<TransactionalChange> getTransactionalChangeSequence(VitruviusChange change) {
@@ -192,7 +209,7 @@ class ChangePropagator {
 		}
 	}
 
-	private def VitruvDomain getChangedDomain(VitruviusChange change) {
+	def private VitruvDomain getChangedDomain(VitruviusChange change) {
 		val changeDomain = change.changedVURIs.fold(null as VitruvDomain) [changeDomain, changedVuri |
 			val resourceDomain = domainRepository.getDomain(changedVuri.fileExtension)
 			if (changeDomain === null) {
