@@ -17,7 +17,10 @@ Require-Bundle: tools.vitruv.framework.vsum;visibility:=reexport,
  org.eclipse.emf.compare,
  org.eclipse.emf.compare.rcp,
  org.junit.jupiter.params,
- org.eclipse.xtext.ui.testing
+ org.eclipse.xtext.ui.testing,
+ org.slf4j.api,
+ ch.qos.logback.classic,
+ ch.qos.logback.core
 Export-Package: tools.vitruv.testutils,
  tools.vitruv.testutils.activeannotations,
  tools.vitruv.testutils.change.processing,

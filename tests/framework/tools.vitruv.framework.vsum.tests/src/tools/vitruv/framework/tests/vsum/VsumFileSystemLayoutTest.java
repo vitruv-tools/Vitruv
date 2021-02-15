@@ -10,7 +10,7 @@ import tools.vitruv.framework.util.datatypes.VURI;
 import tools.vitruv.framework.vsum.helper.VsumFileSystemLayout;
 
 public class VsumFileSystemLayoutTest extends VsumTest {
-	private static final Logger logger = Logger.getLogger(VsumFileSystemLayoutTest.class.getSimpleName());
+	private static final Logger logger = Logger.getLogger(VsumFileSystemLayoutTest.class);
 
 	@Test
 	public void testSaveAndLoadVURIs() throws IOException {

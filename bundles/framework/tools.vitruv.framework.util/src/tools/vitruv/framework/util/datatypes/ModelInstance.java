@@ -14,7 +14,7 @@ import tools.vitruv.framework.util.ResourceSetUtil;
 import tools.vitruv.framework.util.bridges.EcoreResourceBridge;
 
 public class ModelInstance extends AbstractURIHaving {
-	private static final Logger LOGGER = Logger.getLogger(ModelInstance.class.getSimpleName());
+	private static final Logger LOGGER = Logger.getLogger(ModelInstance.class);
 	private Resource resource;
 
 	public ModelInstance(final VURI uri, final Resource resource) {

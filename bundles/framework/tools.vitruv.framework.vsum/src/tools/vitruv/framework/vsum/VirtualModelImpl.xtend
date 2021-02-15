@@ -55,7 +55,6 @@ class VirtualModelImpl implements InternalVirtualModel {
 			resourceRepository,
 			changePropagationSpecificationProvider,
 			domainRepository,
-			modelRepository,
 			getCorrespondenceModel(),
 			userInteractor
 		)

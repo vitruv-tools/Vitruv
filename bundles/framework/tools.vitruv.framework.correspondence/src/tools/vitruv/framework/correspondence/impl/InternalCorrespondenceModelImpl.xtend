@@ -42,7 +42,7 @@ import tools.vitruv.framework.util.command.CommandCreatorAndExecutor
 
 // TODO move all methods that don't need direct instance variable access to some kind of util class
 class InternalCorrespondenceModelImpl extends ModelInstance implements InternalCorrespondenceModel, TuidUpdateListener {
-	static final Logger logger = Logger::getLogger(typeof(InternalCorrespondenceModelImpl).getSimpleName())
+	static val logger = Logger.getLogger(InternalCorrespondenceModelImpl)
 	final CommandCreatorAndExecutor modelCommandExecutor
 	final VitruvDomainRepository domainRepository;
 	final Correspondences correspondences

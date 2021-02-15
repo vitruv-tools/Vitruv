@@ -57,7 +57,7 @@ public abstract class EMFModelChangeRecordingEditorSaveListener {
     /**
      * The {@link ChangeRecorder} used to record changes to the edited model.
      */
-    private tools.vitruv.framework.change.recording.ChangeRecorder changeRecorder;
+    private ChangeRecorder changeRecorder;
 
     /** The monitored EMF model resource. */
     private final Resource targetResource;

@@ -58,7 +58,7 @@ abstract class StateChangePropagationTest {
 		this.testProjectFolder = testProjectFolder
 		// Setup:
 		strategyToTest = new DefaultStateBasedChangeResolutionStrategy
-		resourceSet = new ResourceSetImpl
+		resourceSet = new ResourceSetImpl().withGlobalFactories().awareOfDomains(TestDomainsRepository.INSTANCE)
 		checkpointResourceSet = new ResourceSetImpl().withGlobalFactories().awareOfDomains(TestDomainsRepository.INSTANCE)
 		setupResolver = new UuidGeneratorAndResolverImpl(resourceSet, true)
 		changeRecorder = new ChangeRecorder(setupResolver)

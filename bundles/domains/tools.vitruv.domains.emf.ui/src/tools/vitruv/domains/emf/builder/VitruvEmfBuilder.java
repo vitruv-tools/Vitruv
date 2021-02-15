@@ -30,7 +30,7 @@ import tools.vitruv.framework.util.datatypes.VURI;
 
 public class VitruvEmfBuilder extends VitruvProjectBuilder {
 	public static final String BUILDER_ID = "tools.vitruv.domains.emf.builder.VitruvEmfBuilder.id";
-    private static final Logger LOGGER = Logger.getLogger(VitruvEmfBuilder.class.getSimpleName());
+    private static final Logger LOGGER = Logger.getLogger(VitruvEmfBuilder.class);
 
     private final VitruviusEMFDeltaVisitor vitruviusEMFDeltaVisitor;
 
