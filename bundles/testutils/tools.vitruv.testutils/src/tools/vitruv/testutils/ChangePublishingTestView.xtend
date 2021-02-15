@@ -5,7 +5,6 @@ import java.util.function.Consumer
 import java.nio.file.Path
 import org.eclipse.emf.ecore.resource.ResourceSet
 import tools.vitruv.framework.uuid.UuidGeneratorAndResolverImpl
-import tools.vitruv.framework.change.recording.AtomicEmfChangeRecorder
 import tools.vitruv.framework.uuid.UuidGeneratorAndResolver
 import static com.google.common.base.Preconditions.checkState
 import static com.google.common.base.Preconditions.checkArgument
@@ -23,6 +22,7 @@ import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
 import static extension tools.vitruv.framework.util.ResourceSetUtil.withGlobalFactories
 import static extension tools.vitruv.framework.domains.repository.DomainAwareResourceSet.awareOfDomains
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
+import tools.vitruv.framework.change.recording.ChangeRecorder
 
 /**
  * A test view that will record and publish the changes created in it.
@@ -31,7 +31,7 @@ class ChangePublishingTestView implements NonTransactionalTestView {
 	val ResourceSet resourceSet
 	@Delegate
 	val TestView delegate
-	val AtomicEmfChangeRecorder changeRecorder
+	val ChangeRecorder changeRecorder
 	val List<(VitruviusChange)=>List<PropagatedChange>> changeProcessors = new LinkedList()
 	var renewResourceCacheAfterPropagation = true
 
@@ -64,7 +64,7 @@ class ChangePublishingTestView implements NonTransactionalTestView {
 		this.resourceSet = new ResourceSetImpl().withGlobalFactories().awareOfDomains(targetDomains)
 		this.delegate = new BasicTestView(persistenceDirectory, resourceSet, userInteraction, uriMode)
 		val uuidResolver = new UuidGeneratorAndResolverImpl(parentResolver, resourceSet, true)
-		this.changeRecorder = new AtomicEmfChangeRecorder(uuidResolver)
+		this.changeRecorder = new ChangeRecorder(uuidResolver)
 		changeRecorder.beginRecording()
 	}
 
@@ -86,7 +86,7 @@ class ChangePublishingTestView implements NonTransactionalTestView {
 
 	override close() {
 		delegate.close()
-		changeRecorder.stopRecording()
+		changeRecorder.close()
 	}
 
 	override <T extends Notifier> T record(T notifier, Consumer<T> consumer) {
@@ -126,7 +126,7 @@ class ChangePublishingTestView implements NonTransactionalTestView {
 		return delegateChanges + ourChanges
 	}
 	
-	def private propagateChanges(Iterable<TransactionalChange> changes) {
+	def private propagateChanges(Iterable<? extends TransactionalChange> changes) {
 		val compositeChange = VitruviusChangeFactory.instance.createCompositeChange(changes)
 		val propagationResult = changeProcessors.flatMapFixed [apply(compositeChange)]
 		if (renewResourceCacheAfterPropagation) {
