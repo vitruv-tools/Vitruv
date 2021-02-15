@@ -10,13 +10,6 @@ class CompositeContainerChangeImpl extends AbstractCompositeChangeImpl<Vitruvius
 		super(changes)
 	}
 	
-	override toString() '''
-		Composite container change:
-			«FOR change : changes»
-				«change»
-			«ENDFOR»
-		'''
-			
 	override CompositeContainerChangeImpl copy() {
 		new CompositeContainerChangeImpl(changes.mapFixed [copy()])
 	}
