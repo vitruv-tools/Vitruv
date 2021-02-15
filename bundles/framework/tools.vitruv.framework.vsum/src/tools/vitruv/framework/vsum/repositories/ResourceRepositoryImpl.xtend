@@ -37,7 +37,7 @@ import tools.vitruv.framework.vsum.helper.VsumFileSystemLayout
 import tools.vitruv.framework.change.recording.ChangeRecorder
 
 class ResourceRepositoryImpl implements ModelRepository {
-	static val logger = Logger.getLogger(ResourceRepositoryImpl.simpleName)
+	static val logger = Logger.getLogger(ResourceRepositoryImpl)
 	val ResourceSet resourceSet
 	val VitruvDomainRepository domainRepository
 	val Map<VURI, ModelInstance> modelInstances = new HashMap()

@@ -15,7 +15,7 @@ import tools.vitruv.framework.util.bridges.JavaBridge;
 
 public abstract class VitruviusRecordingCommand extends RecordingCommand implements Command {
 
-	protected static final Logger logger = Logger.getLogger(VitruviusRecordingCommand.class.getSimpleName());
+	protected static final Logger logger = Logger.getLogger(VitruviusRecordingCommand.class);
 
 	private RuntimeException runtimeException;
 	private TransactionalEditingDomain domain;
