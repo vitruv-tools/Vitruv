@@ -15,9 +15,9 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import org.eclipse.emf.ecore.util.EcoreUtil
 import tools.vitruv.framework.change.description.TransactionalChange
 import tools.vitruv.framework.change.description.VitruviusChangeFactory
-import tools.vitruv.framework.change.recording.AtomicEmfChangeRecorder
 import tools.vitruv.framework.uuid.UuidGeneratorAndResolver
 import tools.vitruv.framework.uuid.UuidGeneratorAndResolverImpl
+import tools.vitruv.framework.change.recording.ChangeRecorder
 
 /**
  * This default strategy for diff based state changes uses EMFCompare to resolve a 
@@ -69,18 +69,19 @@ class DefaultStateBasedChangeResolutionStrategy implements StateBasedChangeResol
 	/**
 	 * Replays a list of of EMFCompare differences and records the changes to receive Vitruv change sequences. 
 	 */
-	private def List<TransactionalChange> replayChanges(List<Diff> changesToReplay, Notifier currentState, UuidGeneratorAndResolver resolver) {
+	private def List<? extends TransactionalChange> replayChanges(List<Diff> changesToReplay, Notifier currentState, UuidGeneratorAndResolver resolver) {
 		// Setup recorder:
-		val changeRecorder = new AtomicEmfChangeRecorder(resolver)
-		changeRecorder.addToRecording(currentState)
-		changeRecorder.beginRecording
-		// replay the EMF compare diffs:
-		val mergerRegistry = IMerger.RegistryImpl.createStandaloneInstance()
-		val merger = new BatchMerger(mergerRegistry)
-		merger.copyAllLeftToRight(changesToReplay, new BasicMonitor)
-		// Finish recording:
-		changeRecorder.endRecording
-		return changeRecorder.changes
+		try (val changeRecorder = new ChangeRecorder(resolver)) {
+			changeRecorder.addToRecording(currentState)
+			changeRecorder.beginRecording
+			// replay the EMF compare diffs:
+			val mergerRegistry = IMerger.RegistryImpl.createStandaloneInstance()
+			val merger = new BatchMerger(mergerRegistry)
+			merger.copyAllLeftToRight(changesToReplay, new BasicMonitor)
+			// Finish recording:
+			changeRecorder.endRecording
+			return changeRecorder.changes
+		}
 	}
 
 	/**
