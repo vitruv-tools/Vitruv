@@ -577,6 +577,39 @@ class ChangeRecorderTest {
 	}
 	
 	@Test
+	@DisplayName("tolerates an object without a resource")
+	def void toleratesObjectWithoutResource() {
+		assertDoesNotThrow [changeRecorder.addToRecording(aet.Root)]
+	}
+	
+	@Test
+	@DisplayName("tolerates an object without a resource set")
+	def void toleratesObjectWithoutResourceSet() {
+		val uri = URI.createURI('test://test.aet')
+		val root = aet.Root
+		// we need to record the creation so an UUID will be assigned, because the UUID cannot be 
+		// resolved later
+		changeRecorder.addToRecording(resourceSet)
+		changeRecorder.beginRecording()
+		resourceSet.createResource(uri) => [
+			contents += root 
+		]
+		changeRecorder.endRecording()
+		changeRecorder.removeFromRecording(resourceSet)
+		resourceSet.resources.clear()
+		
+		assertDoesNotThrow [changeRecorder.addToRecording(root)]
+	}
+	
+	@Test
+	@DisplayName("tolerates a resource without a resource set")
+	def void toleratesResourceWithoutResourceSet() {
+		val uri = URI.createURI('test://test.aet')
+		val resource = resourceSet.resourceFactoryRegistry.getFactory(uri).createResource(uri)
+		assertDoesNotThrow [changeRecorder.addToRecording(resource)]
+	}
+	
+	@Test
 	@DisplayName("allows no interactions after being closed")
 	def void noInteractionsAfterClose() {
 		changeRecorder.addToRecording(aet.Root)
