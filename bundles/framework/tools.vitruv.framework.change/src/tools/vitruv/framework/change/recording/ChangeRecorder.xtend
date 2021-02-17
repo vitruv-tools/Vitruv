@@ -237,9 +237,9 @@ class ChangeRecorder implements AutoCloseable {
 	
 	def private boolean isInOurResourceSet(Notifier notifier) {
 		switch (notifier) {
-			EObject: 
-				notifier.eResource === null || notifier.eResource.resourceSet == uuidGeneratorAndResolver.resourceSet
-			Resource: notifier.resourceSet == uuidGeneratorAndResolver.resourceSet
+			case null: true
+			EObject: isInOurResourceSet(notifier?.eResource)
+			Resource: isInOurResourceSet(notifier?.resourceSet)
 			ResourceSet: notifier == uuidGeneratorAndResolver.resourceSet
 			default: throw new IllegalStateException("Unexpected notifier type: " + notifier.class.simpleName)
 		}
