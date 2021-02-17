@@ -20,7 +20,6 @@ import tools.vitruv.framework.userinteraction.UserInteractionFactory
 import tools.vitruv.framework.userinteraction.UserInteractionListener
 import tools.vitruv.framework.uuid.UuidResolver
 import tools.vitruv.framework.vsum.ModelRepository
-import tools.vitruv.framework.vsum.repositories.ModelRepositoryImpl
 
 import static com.google.common.base.Preconditions.checkNotNull
 import static com.google.common.base.Preconditions.checkState
@@ -34,14 +33,12 @@ class ChangePropagator {
 	val ModelRepository resourceRepository
 	val ChangePropagationSpecificationProvider changePropagationProvider
 	val CorrespondenceModel correspondenceModel
-	val ModelRepositoryImpl modelRepository
 	val InternalUserInteractor userInteractor
 
 	new(ModelRepository resourceRepository, ChangePropagationSpecificationProvider changePropagationProvider,
-		VitruvDomainRepository domainRepository, ModelRepositoryImpl modelRepository,
-		CorrespondenceModel correspondenceModel, InternalUserInteractor userInteractor) {
+		VitruvDomainRepository domainRepository, CorrespondenceModel correspondenceModel,
+		InternalUserInteractor userInteractor) {
 		this.resourceRepository = resourceRepository
-		this.modelRepository = modelRepository
 		this.changePropagationProvider = changePropagationProvider
 		this.correspondenceModel = correspondenceModel
 		this.domainRepository = domainRepository
@@ -66,9 +63,7 @@ class ChangePropagator {
 			change.resolveBeforeAndApplyForward(uuidResolver)
 			// add all affected models to the repository
 			change.changedVURIs.forEach [resourceRepository.getModel(it)]
-			change.affectedEObjects.forEach [modelRepository.addRootElement(it)]
 		]
-		modelRepository.cleanupRootElements()
 	}
 	
 	@FinalFieldsConstructor
@@ -141,7 +136,6 @@ class ChangePropagator {
 			TransactionalChange change,
 			ChangePropagationSpecification propagationSpecification
 		) {
-			// modelRepository.startRecording
 			resourceRepository.startRecording()
 			
 			// TODO HK: Clone the changes for each synchronization! Should even be cloned for
@@ -149,14 +143,13 @@ class ChangePropagator {
 			// or: make them read only, i.e. give them a read-only interface!
 			val changedEObjects = resourceRepository.executeAsCommand [
 				propagationSpecification.propagateChange(change, correspondenceModel, resourceRepository)
-				modelRepository.cleanupRootElements()
 			].affectedObjects.filter(EObject)
 	
 			// Store modification information
 			changedEObjects.forEach[changedResourcesTracker.addInvolvedModelResource(eResource)]
 			changedResourcesTracker.addSourceResourceOfChange(change)
 			
-			resourceRepository.endRecording() /* + modelRepository.endRecording() */
+			resourceRepository.endRecording()
 		}
 		
 		def private AutoCloseable installUserInteractorForChange(VitruviusChange change) {
@@ -173,7 +166,6 @@ class ChangePropagator {
 		
 		
 		def private void handleObjectsWithoutResource() {
-			modelRepository.cleanupRootElementsWithoutResource
 			// Find created objects without resource
 			for (createdObjectWithoutResource : createdObjects.filter[eResource === null]) {
 				checkState(!correspondenceModel.hasCorrespondences(List.of(createdObjectWithoutResource)),
@@ -185,7 +177,6 @@ class ChangePropagator {
 		
 		override objectCreated(EObject createdObject) {
 			createdObjects += createdObject
-			modelRepository.addRootElement(createdObject)
 		}
 		
 		override onUserInteractionReceived(UserInteractionBase interaction) {
