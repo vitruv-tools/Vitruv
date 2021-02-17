@@ -8,7 +8,6 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import pcm_mockup.Repository
 import tools.vitruv.framework.change.description.VitruviusChange
 import tools.vitruv.framework.change.description.VitruviusChangeFactory
-import tools.vitruv.framework.change.recording.AtomicEmfChangeRecorder
 import tools.vitruv.framework.util.bridges.EMFBridge
 import tools.vitruv.framework.util.bridges.EcoreResourceBridge
 import tools.vitruv.framework.uuid.UuidGeneratorAndResolver
@@ -31,6 +30,7 @@ import tools.vitruv.testutils.RegisterMetamodelsInStandalone
 import tools.vitruv.testutils.domains.TestDomainsRepository
 import static extension tools.vitruv.framework.util.ResourceSetUtil.withGlobalFactories
 import static extension tools.vitruv.framework.domains.repository.DomainAwareResourceSet.awareOfDomains
+import tools.vitruv.framework.change.recording.ChangeRecorder
 
 @ExtendWith(TestProjectManager, TestLogging, RegisterMetamodelsInStandalone)
 abstract class StateChangePropagationTest {
@@ -44,7 +44,7 @@ abstract class StateChangePropagationTest {
 	protected var Resource pcmModel
 	protected var Repository pcmRoot
 	protected var UPackage umlRoot
-	protected var AtomicEmfChangeRecorder changeRecorder
+	protected var ChangeRecorder changeRecorder
 	protected var UuidGeneratorAndResolver setupResolver
 	protected var UuidGeneratorAndResolver checkpointResolver
 	protected var ResourceSet resourceSet
@@ -54,14 +54,14 @@ abstract class StateChangePropagationTest {
 	 * Creates the strategy, sets up the test model and prepares everything for detemining changes.
 	 */
 	@BeforeEach
-	def setup(@TestProject Path testProjectFolder) {
+	def void setup(@TestProject Path testProjectFolder) {
 		this.testProjectFolder = testProjectFolder
 		// Setup:
 		strategyToTest = new DefaultStateBasedChangeResolutionStrategy
-		resourceSet = new ResourceSetImpl
+		resourceSet = new ResourceSetImpl().withGlobalFactories().awareOfDomains(TestDomainsRepository.INSTANCE)
 		checkpointResourceSet = new ResourceSetImpl().withGlobalFactories().awareOfDomains(TestDomainsRepository.INSTANCE)
 		setupResolver = new UuidGeneratorAndResolverImpl(resourceSet, true)
-		changeRecorder = new AtomicEmfChangeRecorder(setupResolver)
+		changeRecorder = new ChangeRecorder(setupResolver)
 		// Create mockup models:
 		resourceSet.startRecording
 		createPcmMockupModel()
@@ -80,9 +80,7 @@ abstract class StateChangePropagationTest {
 	 */
 	@AfterEach
 	def stopRecording() {
-		if (changeRecorder.isRecording) {
-			changeRecorder.stopRecording
-		}
+		changeRecorder.close()
 	}
 
 	/**

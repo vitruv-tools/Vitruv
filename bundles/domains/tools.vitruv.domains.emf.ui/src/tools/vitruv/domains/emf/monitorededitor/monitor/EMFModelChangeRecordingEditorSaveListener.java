@@ -16,7 +16,6 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.emf.ecore.change.ChangeDescription;
-import org.eclipse.emf.ecore.change.util.ChangeRecorder;
 import org.eclipse.emf.ecore.resource.Resource;
 
 import tools.vitruv.domains.emf.monitorededitor.IEditorPartAdapterFactory.IEditorPartAdapter;
@@ -24,7 +23,7 @@ import tools.vitruv.domains.emf.monitorededitor.tools.ISaveEventListener;
 import tools.vitruv.domains.emf.monitorededitor.tools.ResourceReloadListener;
 import tools.vitruv.domains.emf.monitorededitor.tools.SaveEventListenerMgr;
 import tools.vitruv.framework.change.description.TransactionalChange;
-import tools.vitruv.framework.change.recording.AtomicEmfChangeRecorder;
+import tools.vitruv.framework.change.recording.ChangeRecorder;
 import tools.vitruv.framework.uuid.UuidGeneratorAndResolver;
 import tools.vitruv.framework.uuid.UuidGeneratorAndResolverImpl;
 import tools.vitruv.framework.vsum.VirtualModel;
@@ -58,7 +57,7 @@ public abstract class EMFModelChangeRecordingEditorSaveListener {
     /**
      * The {@link ChangeRecorder} used to record changes to the edited model.
      */
-    private AtomicEmfChangeRecorder changeRecorder;
+    private ChangeRecorder changeRecorder;
 
     /** The monitored EMF model resource. */
     private final Resource targetResource;
@@ -105,7 +104,7 @@ public abstract class EMFModelChangeRecordingEditorSaveListener {
 
             @Override
             public void onPostSave() {
-                List<TransactionalChange> changes = readOutChangesAndEndRecording();
+                var changes = readOutChangesAndEndRecording();
                 LOGGER.trace("Detected a user save action, got change descriptions: " + changes);
                 onSavedResource(changes);
                 resetChangeRecorder();
@@ -137,7 +136,7 @@ public abstract class EMFModelChangeRecordingEditorSaveListener {
 
     private void deactivateChangeRecorder() {
         if (changeRecorder != null) {
-            changeRecorder.dispose();
+            changeRecorder.close();
         }
         changeRecorder = null;
     }
@@ -154,7 +153,7 @@ public abstract class EMFModelChangeRecordingEditorSaveListener {
         UuidGeneratorAndResolver localUuidResolver = new UuidGeneratorAndResolverImpl(globalUuidGeneratorAndResolver,
                 targetResource.getResourceSet(), false);
 
-        changeRecorder = new AtomicEmfChangeRecorder(localUuidResolver);
+        changeRecorder = new ChangeRecorder(localUuidResolver);
         changeRecorder.addToRecording(targetResource);
         changeRecorder.beginRecording();
     }
@@ -162,7 +161,7 @@ public abstract class EMFModelChangeRecordingEditorSaveListener {
     /**
      * @return The changes recorded since last resetting the change recorder.
      */
-    protected List<TransactionalChange> readOutChangesAndEndRecording() {
+    protected List<? extends TransactionalChange> readOutChangesAndEndRecording() {
         changeRecorder.endRecording();
         return changeRecorder.getChanges();
     }
@@ -191,7 +190,7 @@ public abstract class EMFModelChangeRecordingEditorSaveListener {
         if (isInitialized) {
             saveActionListenerManager.dispose();
             if (changeRecorder != null) {
-                changeRecorder.dispose();
+                changeRecorder.close();
             }
 
             isInitialized = false;
@@ -215,5 +214,5 @@ public abstract class EMFModelChangeRecordingEditorSaveListener {
      *            saving it (rsp. since opening it, in case it has not been saved yet). This object is
      *            provided "as is" from a {@link ChangeRecorder} instance.
      */
-    protected abstract void onSavedResource(List<TransactionalChange> changeDescription);
+    protected abstract void onSavedResource(List<? extends TransactionalChange> changeDescription);
 }
