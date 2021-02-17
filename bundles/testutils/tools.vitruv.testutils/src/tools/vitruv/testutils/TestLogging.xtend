@@ -79,12 +79,12 @@ class TestLogging implements BeforeAllCallback {
 					start()
 				]
 				root.detachAndStopAllAppenders()
-				root.level = Level.toLevel(desiredLogLevel, Level.WARN)
+				root.level = Level.toLevel(desiredLogLevel, Level.ERROR)
 				root.addAppender(consoleAppender)
 				// there are currently (2021-02-12) no Vitruv loggers, but let's set this up anyway to be prepared
 				VITRUV_LOG_ROOTS.forEach [
-				(LoggerFactory.ILoggerFactory.getLogger(it) as ch.qos.logback.classic.Logger)
-					.level = Level.toLevel(desiredLogLevel, Level.WARN)
+					(LoggerFactory.ILoggerFactory.getLogger(it) as ch.qos.logback.classic.Logger)
+						.level = Level.toLevel(desiredLogLevel, Level.WARN)
 				]
 			}
 		}
