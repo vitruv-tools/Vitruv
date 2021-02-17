@@ -17,10 +17,18 @@ Require-Bundle: tools.vitruv.framework.vsum;visibility:=reexport,
  org.eclipse.emf.compare,
  org.eclipse.emf.compare.rcp,
  org.junit.jupiter.params,
- org.eclipse.xtext.ui.testing,
- org.slf4j.api,
- ch.qos.logback.classic,
- ch.qos.logback.core
+ org.eclipse.xtext.ui.testing
+Import-Package-Comment: We import the slf4j & logback dependencies so that we can setup logback if any other bundle
+ uses logback. However, we don’t want to force the slf4j or logback dependencies onto clients, because Vitruv is
+ currently not using slf4j.
+Import-Package: ch.qos.logback.classic;resolution:=optional,
+ ch.qos.logback.classic.encoder;resolution:=optional,
+ ch.qos.logback.classic.spi;resolution:=optional,
+ ch.qos.logback.core;resolution:=optional,
+ ch.qos.logback.core.encoder;resolution:=optional,
+ ch.qos.logback.core.pattern;resolution:=optional,
+ ch.qos.logback.core.spi;resolution:=optional,
+ org.slf4j;resolution:=optional
 Export-Package: tools.vitruv.testutils,
  tools.vitruv.testutils.activeannotations,
  tools.vitruv.testutils.change.processing,
