@@ -1,6 +1,5 @@
 package tools.vitruv.framework.vsum
 
-import java.io.File
 import java.util.List
 import org.eclipse.emf.ecore.resource.Resource
 import tools.vitruv.framework.change.description.PropagatedChange
@@ -9,9 +8,10 @@ import tools.vitruv.framework.util.datatypes.ModelInstance
 import tools.vitruv.framework.util.datatypes.VURI
 import tools.vitruv.framework.uuid.UuidGeneratorAndResolver
 import org.eclipse.emf.common.util.URI
+import java.nio.file.Path
 
 interface VirtualModel {
-	def File getFolder();
+	def Path getFolder();
 
 	def List<PropagatedChange> propagateChange(VitruviusChange change);
 

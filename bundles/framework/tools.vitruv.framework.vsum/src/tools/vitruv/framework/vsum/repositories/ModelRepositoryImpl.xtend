@@ -4,23 +4,21 @@ import java.util.Set
 import org.eclipse.emf.ecore.EObject
 import java.util.HashSet
 import org.apache.log4j.Logger
-import tools.vitruv.framework.change.recording.AtomicEmfChangeRecorder
 import java.util.Map
 import java.util.HashMap
 import org.eclipse.emf.ecore.change.impl.ChangeDescriptionImpl
 import tools.vitruv.framework.uuid.UuidGeneratorAndResolver
+import tools.vitruv.framework.change.recording.ChangeRecorder
 
 class ModelRepositoryImpl {
-	val logger = Logger.getLogger(ModelRepositoryImpl);
-	val Set<EObject> rootElements;
-	val Map<EObject, AtomicEmfChangeRecorder> rootToRecorder;
-	var boolean isRecording = false;
-	val UuidGeneratorAndResolver uuidGeneratorAndResolver;
+	val logger = Logger.getLogger(ModelRepositoryImpl)
+	val Set<EObject> rootElements = new HashSet()
+	val Map<EObject, ChangeRecorder> rootToRecorder = new HashMap()
+	var boolean isRecording = false
+	val UuidGeneratorAndResolver uuidGeneratorAndResolver
 	
 	new(UuidGeneratorAndResolver uuidGeneratorAndResolver) {
-		this.uuidGeneratorAndResolver = uuidGeneratorAndResolver;
-		rootElements = new HashSet<EObject>();
-		rootToRecorder = new HashMap<EObject, AtomicEmfChangeRecorder>();
+		this.uuidGeneratorAndResolver = uuidGeneratorAndResolver
 	}
 	
 	def void addRootElement(EObject rootElement) {
@@ -29,7 +27,7 @@ class ModelRepositoryImpl {
 		}
 		this.rootElements += rootElement;
 		logger.trace("New root in repository " + rootElement);
-		val recorder = new AtomicEmfChangeRecorder(uuidGeneratorAndResolver);
+		val recorder = new ChangeRecorder(uuidGeneratorAndResolver);
 		recorder.addToRecording(rootElement);
 		rootToRecorder.put(rootElement, recorder);
 		if (isRecording) {
@@ -97,8 +95,8 @@ class ModelRepositoryImpl {
 	
 	private def void removeElementFromRecording(EObject element) {
 		val recorder = rootToRecorder.get(element);
-		if (recorder !== null && recorder.isRecording) {
-			recorder.stopRecording;
+		if (recorder.isRecording) {
+			recorder.endRecording();
 		}
 		recorder.removeFromRecording(element);
 		rootToRecorder.remove(element);

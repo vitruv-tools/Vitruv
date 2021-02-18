@@ -1,9 +1,7 @@
 package tools.vitruv.framework.vsum
 
-import java.io.File
 import java.util.Collections
 import java.util.List
-import java.util.Vector
 import java.util.concurrent.Callable
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.resource.Resource
@@ -12,55 +10,58 @@ import tools.vitruv.framework.change.description.VitruviusChange
 import tools.vitruv.framework.change.processing.ChangePropagationSpecificationProvider
 import tools.vitruv.framework.domains.repository.VitruvDomainRepository
 import tools.vitruv.framework.userinteraction.InternalUserInteractor
-import tools.vitruv.framework.userinteraction.UserInteractor
 import tools.vitruv.framework.util.datatypes.VURI
 import tools.vitruv.framework.vsum.helper.ChangeDomainExtractor
 import tools.vitruv.framework.vsum.modelsynchronization.ChangePropagationListener
-import tools.vitruv.framework.vsum.modelsynchronization.ChangePropagator
 import tools.vitruv.framework.vsum.modelsynchronization.ChangePropagatorImpl
 import tools.vitruv.framework.vsum.repositories.ModelRepositoryImpl
 import tools.vitruv.framework.vsum.repositories.ResourceRepositoryImpl
 import org.apache.log4j.Logger
 import org.eclipse.emf.common.util.URI
+import tools.vitruv.framework.vsum.helper.VsumFileSystemLayout
+import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
+import static extension tools.vitruv.framework.util.ResourceSetUtil.withGlobalFactories
+import static extension tools.vitruv.framework.util.bridges.EcoreResourceBridge.loadOrCreateResource
+import tools.vitruv.framework.vsum.repositories.TuidResolverImpl
+import tools.vitruv.framework.correspondence.CorrespondenceModelFactory
+import tools.vitruv.framework.correspondence.InternalCorrespondenceModel
+import java.nio.file.Path
+import static com.google.common.base.Preconditions.checkState
+import static com.google.common.base.Preconditions.checkNotNull
+import java.util.LinkedList
 
 class VirtualModelImpl implements InternalVirtualModel {
 	static val Logger LOGGER = Logger.getLogger(VirtualModelImpl)
 	val ResourceRepositoryImpl resourceRepository
 	val ModelRepositoryImpl modelRepository
 	val VitruvDomainRepository domainRepository
-	val ChangePropagator changePropagator
-	val ChangePropagationSpecificationProvider changePropagationSpecificationProvider
-	val File folder
+	val ChangePropagatorImpl changePropagator
+	val VsumFileSystemLayout fileSystemLayout
+	val InternalCorrespondenceModel correspondenceModel
+	val List<ChangePropagationListener> changePropagationListeners = new LinkedList()
+	val List<PropagatedChangeListener> propagatedChangeListeners = new LinkedList()
 	val extension ChangeDomainExtractor changeDomainExtractor
 
-	/**
-	 * A list of {@link PropagatedChangeListener}s that are informed of all changes made
-	 */
-	val List<PropagatedChangeListener> propagatedChangeListeners
-
-	package new(File folder, InternalUserInteractor userInteractor, VitruvDomainRepository domainRepository, 
+	package new(VsumFileSystemLayout fileSystemLayout, InternalUserInteractor userInteractor,
+		VitruvDomainRepository domainRepository,
 		ChangePropagationSpecificationProvider changePropagationSpecificationProvider) {
-		this.folder = folder
+		this.fileSystemLayout = fileSystemLayout
 		this.domainRepository = domainRepository
-		this.changePropagationSpecificationProvider = changePropagationSpecificationProvider
-		this.resourceRepository = new ResourceRepositoryImpl(folder, domainRepository)
+		this.resourceRepository = new ResourceRepositoryImpl(fileSystemLayout, domainRepository)
 		this.modelRepository = new ModelRepositoryImpl(resourceRepository.uuidGeneratorAndResolver)
+		this.changeDomainExtractor = new ChangeDomainExtractor(domainRepository)
+		this.correspondenceModel = loadCorrespondenceModel()
 		this.changePropagator = new ChangePropagatorImpl(
 			resourceRepository,
 			changePropagationSpecificationProvider,
 			domainRepository,
-			resourceRepository,
-			modelRepository,
+			getCorrespondenceModel(),
 			userInteractor
 		)
-		VirtualModelManager.instance.putVirtualModel(this)
-
-		this.propagatedChangeListeners = new Vector<PropagatedChangeListener>()
-		this.changeDomainExtractor = new ChangeDomainExtractor(domainRepository)
 	}
 
 	override getCorrespondenceModel() {
-		this.resourceRepository.getCorrespondenceModel()
+		correspondenceModel.genericView
 	}
 	
 	override getVaveModel() {
@@ -73,6 +74,7 @@ class VirtualModelImpl implements InternalVirtualModel {
 
 	override synchronized save() {
 		this.resourceRepository.saveAllModels()
+		this.correspondenceModel.saveModel()
 	}
 
 	override synchronized persistRootElement(VURI persistenceVuri, EObject rootElement) {
@@ -83,22 +85,41 @@ class VirtualModelImpl implements InternalVirtualModel {
 		this.resourceRepository.executeAsCommand(command);
 	}
 
-	override addChangePropagationListener(ChangePropagationListener changePropagationListener) {
-		changePropagator.addChangePropagationListener(changePropagationListener)
-	}
-	
-	override removeChangePropagationListener(ChangePropagationListener changePropagationListener) {
-		changePropagator.removeChangePropagationListener(changePropagationListener)
-	}
-
 	override synchronized propagateChange(VitruviusChange change) {
 		LOGGER.info('''Start change propagation''')
+		checkState(change !== null, '''Given change must not be empty''')
+		if (!change.containsConcreteChange()) {
+			LOGGER.info('''The change does not contain any changes to synchronize: «change»''')
+			return Collections.emptyList()
+		}
+		checkState(change.validate(), '''Change contains changes from different models: «change»''')
+		startChangePropagation(change)
+
 		change.unresolveIfApplicable
-		// Save is done by the change propagator because it has to be performed before finishing sync
 		val result = changePropagator.propagateChange(change)
+		save()
+		LOGGER.trace(modelRepository)
+		LOGGER.trace('''
+			Propagated changes:
+			«FOR propagatedChange : result»
+				Propagated Change:
+				«propagatedChange»«ENDFOR»
+		''')
+
+		finishChangePropagation(change)
 		informPropagatedChangeListeners(result)
 		LOGGER.info('''Finished change propagation''')
 		return result
+	}
+
+	private def void startChangePropagation(VitruviusChange change) {
+		LOGGER.debug('''Started synchronizing change: «change»''')
+		changePropagationListeners.forEach[startedChangePropagation]
+	}
+
+	private def void finishChangePropagation(VitruviusChange change) {
+		changePropagationListeners.forEach[finishedChangePropagation]
+		LOGGER.debug('''Finished synchronizing change: «change»''')
 	}
 
 	/**
@@ -124,7 +145,7 @@ class VirtualModelImpl implements InternalVirtualModel {
 			return propagateChange(compositeChange)
 		}
 		LOGGER.error("Could not load current state for new state. No changes were propagated!")
-		return #[] // empty list
+		return emptyList
 	}
 
 	override synchronized reverseChanges(List<PropagatedChange> changes) {
@@ -132,21 +153,17 @@ class VirtualModelImpl implements InternalVirtualModel {
 			changes.reverseView.forEach[it.applyBackward(uuidGeneratorAndResolver)]
 			return null
 		])
-		
+
 		// TODO HK Instead of this make the changes set the modified flag of the resource when applied
-		val changedEObjects = changes.map[originalChange.affectedEObjects + consequentialChanges.affectedEObjects].flatten
-		changedEObjects.map[eResource].filterNull.forEach[modified = true]
+		changes.flatMap[originalChange.affectedEObjects + consequentialChanges.affectedEObjects]
+			.map[eResource]
+			.filterNull
+			.forEach[modified = true]
 		save()
 	}
 
-	override setUserInteractor(UserInteractor userInteractor) {
-		for (propagationSpecification : this.changePropagationSpecificationProvider) {
-			propagationSpecification.userInteractor = userInteractor
-		}
-	}
-
-	override File getFolder() {
-		return folder
+	override Path getFolder() {
+		return fileSystemLayout.vsumProjectFolder
 	}
 
 	override getUuidGeneratorAndResolver() {
@@ -154,22 +171,35 @@ class VirtualModelImpl implements InternalVirtualModel {
 	}
 
 	/**
-	 * Registers a given {@link PropagatedChangeListener}.
-	 * 
-	 * @param propagatedChangeListener The listener to register
+	 * Registers the given {@link ChangePropagationListener}.
+	 * The listener must not be <code>null</code>.
 	 */
-	override void addPropagatedChangeListener(PropagatedChangeListener propagatedChangeListener) {
-		this.propagatedChangeListeners.add(propagatedChangeListener)
+	override synchronized void addChangePropagationListener(ChangePropagationListener propagationListener) {
+		this.changePropagationListeners.add(checkNotNull(propagationListener, "propagationListener"))
 	}
 
 	/**
-	 * Removes a given {@link PropagatedChangeListener}. 
-	 * Does nothing if the listener was not registered before.
-	 * 
-	 * @param propagatedChangeListener The listener to remove
+	 * Unregisters the given {@link ChangePropagationListener}.
+	 * The listener must not be <code>null</code>.
 	 */
-	override void removePropagatedChangeListener(PropagatedChangeListener propagatedChangeListener) {
-		this.propagatedChangeListeners.remove(propagatedChangeListener)
+	override synchronized void removeChangePropagationListener(ChangePropagationListener propagationListener) {
+		this.changePropagationListeners.remove(checkNotNull(propagationListener, "propagationListener"))
+	}
+
+	/**
+	 * Registers the given {@link PropagatedChangeListener}.
+	 * The listener must not be <code>null</code>.
+	 */
+	override synchronized void addPropagatedChangeListener(PropagatedChangeListener propagatedChangeListener) {
+		this.propagatedChangeListeners.add(checkNotNull(propagatedChangeListener, "propagatedChangeListener"))
+	}
+
+	/**
+	 * Unregister the given {@link PropagatedChangeListener}. 
+	 * The listener must not be <code>null</code>.
+	 */
+	override synchronized void removePropagatedChangeListener(PropagatedChangeListener propagatedChangeListener) {
+		this.propagatedChangeListeners.remove(checkNotNull(propagatedChangeListener, "propagatedChangeListener"))
 	}
 
 	/**
@@ -178,7 +208,7 @@ class VirtualModelImpl implements InternalVirtualModel {
 	 * @return The name of the virtual model
 	 */
 	def getName() {
-		this.folder.name
+		folder.fileName.toString
 	}
 
 	/**
@@ -203,8 +233,18 @@ class VirtualModelImpl implements InternalVirtualModel {
 	private def boolean isValid(Resource currentState, Resource newState) {
 		newState.resourceSet.URIConverter.exists(currentState.URI, Collections.emptyMap)
 	}
-	
+
 	override void dispose() {
-		resourceRepository.dispose	
+		resourceRepository.dispose
+	}
+
+	def private loadCorrespondenceModel() {
+		var correspondencesVURI = fileSystemLayout.correspondencesVURI
+		LOGGER.trace('''Creating or loading correspondence model from: «correspondencesVURI»''')
+		val correspondencesResource = new ResourceSetImpl().withGlobalFactories().loadOrCreateResource(
+			correspondencesVURI.EMFUri)
+		CorrespondenceModelFactory.instance.createCorrespondenceModel(
+			new TuidResolverImpl(domainRepository, resourceRepository), uuidGeneratorAndResolver, resourceRepository,
+			domainRepository, correspondencesVURI, correspondencesResource)
 	}
 }

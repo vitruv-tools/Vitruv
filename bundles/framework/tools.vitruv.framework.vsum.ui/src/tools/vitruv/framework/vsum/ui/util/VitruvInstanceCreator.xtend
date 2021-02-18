@@ -56,7 +56,7 @@ class VitruvInstanceCreator {
 			.withUserInteractor(UserInteractionFactory.instance.createDialogUserInteractor())
 			.withDomains(domains)
 			.withChangePropagationSpecifications(createChangePropagationSpecifications())
-			.build()
+			.buildAndInitialize()
 	}
 
 	private def Iterable<VitruvDomain> getDomains() {

@@ -25,7 +25,6 @@ import tools.vitruv.dsls.commonalities.participation.ParticipationContext
 import tools.vitruv.dsls.commonalities.participation.ParticipationContext.ContextClass
 import tools.vitruv.dsls.commonalities.participation.ParticipationContext.ContextContainment
 import tools.vitruv.dsls.commonalities.participation.ReferenceContainment
-import tools.vitruv.dsls.reactions.builder.FluentReactionBuilder.PreconditionOrRoutineCallBuilder
 import tools.vitruv.dsls.reactions.builder.FluentReactionBuilder.RoutineCallBuilder
 import tools.vitruv.dsls.reactions.builder.FluentReactionsSegmentBuilder
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder
@@ -399,38 +398,25 @@ class CommonalityInsertReactionsBuilder extends ReactionsSubGenerator {
 		val participation = participationContext.participation
 		val commonality = participation.declaringCommonality
 
-		var PreconditionOrRoutineCallBuilder reaction
-		if (participationContext.forReferenceMapping) {
-			val reference = participationContext.declaringReference
-			val referencingCommonality = reference.declaringCommonality
-			reaction = create.reaction('''«commonality.concept.name»_«commonality.name»_removedFrom«
-				referencingCommonality.name»_«reference.name»«participationContext.reactionNameSuffix»''')
-				.afterElement(commonality.changeClass).removedFrom(reference.correspondingEReference)
-		} else {
-			reaction = create.reaction('''«commonality.concept.name»_«commonality.name»_removedFromRoot«
-				participationContext.reactionNameSuffix»''')
-				.afterElementRemovedAsRoot(commonality.changeClass)
-		}
-		return reaction.call [
-			match [
-				// If the intermediate has been moved during creation (due to attribute reference matching), the
-				// corresponding participations might not have been created yet. We therefore do not assert the
-				// existence of the participation objects.
-				participationContext.managedClasses.forEach [ contextClass |
-					assertTrue(!contextClass.isExternal)
-					val participationClass = contextClass.participationClass
-					vall(participationClass.correspondingVariableName)
-						.retrieve(participationClass.changeClass)
-						.correspondingTo.oldValue
-						.taggedWith(participationClass.correspondenceTag)
-				]
-			].action [
-				participationContext.managedClasses.forEach [ contextClass |
-					val participationClass = contextClass.participationClass
-					delete(participationClass.correspondingVariableName)
+		create.reaction('''«commonality.concept.name»_«commonality.name»_deleted«participationContext.reactionNameSuffix»''')
+			.afterElement(commonality.changeClass).deleted
+			.call [
+				match [
+					participationContext.managedClasses.forEach [ contextClass |
+						assertTrue(!contextClass.isExternal)
+						val participationClass = contextClass.participationClass
+						vall(participationClass.correspondingVariableName)
+							.retrieve(participationClass.changeClass)
+							.correspondingTo.affectedEObject
+							.taggedWith(participationClass.correspondenceTag)
+					]
+				].action [
+					participationContext.managedClasses.forEach [ contextClass |
+						val participationClass = contextClass.participationClass
+						delete(participationClass.correspondingVariableName)
+					]
 				]
 			]
-		]
 	}
 
 	/**

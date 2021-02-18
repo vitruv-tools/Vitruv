@@ -1,11 +1,11 @@
 package tools.vitruv.framework.domains.ui.builder
 
 import org.eclipse.core.resources.ICommand
-import java.io.File
 import edu.kit.ipd.sdq.activextendannotations.Utility
 import static com.google.common.base.Preconditions.checkState
 import static com.google.common.base.Preconditions.checkArgument
 import java.util.Set
+import java.nio.file.Path
 
 @Utility
 class VitruvProjectBuilderArguments {
@@ -14,9 +14,9 @@ class VitruvProjectBuilderArguments {
 	public static val ARGUMENT_AUTO_PROPAGATE_CHANGE_INTERVAL = "propagateAfterChangeMilliseconds"
 	public static val ARGUMENT_AUTO_PROPAGATE_BUILD = "propagateAfterBuild"
 
-	static def File getVirtualModelFolder(ICommand command) {
+	static def Path getVirtualModelFolder(ICommand command) {
 		checkState(command.arguments.containsKey(ARGUMENT_VMODEL_NAME), '''Virtual model folder is not set''')
-		new File(command.arguments.get(ARGUMENT_VMODEL_NAME))
+		Path.of(command.arguments.get(ARGUMENT_VMODEL_NAME))
 	}
 
 	static def Set<String> getFileExtensions(ICommand command) {
@@ -31,7 +31,7 @@ class VitruvProjectBuilderArguments {
 		Boolean.parseBoolean(command.arguments.getOrDefault(ARGUMENT_AUTO_PROPAGATE_BUILD, "false"))
 	}
 
-	static def void setVirtualModelFolder(ICommand command, File virtualModelFolder) {
+	static def void setVirtualModelFolder(ICommand command, Path virtualModelFolder) {
 		checkArgument(virtualModelFolder !== null, "Virtual model folder must not be null")
 		checkState(
 			!command.arguments.containsKey(

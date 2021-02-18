@@ -176,7 +176,7 @@ public class SynchronizingMonitoredEmfEditorImpl implements ISynchronizingMonito
     private void setupMonitorForEditor(final IEditorPartAdapter editorPart) {
         EMFModelChangeRecordingEditorSaveListener listener = new EMFModelChangeRecordingEditorSaveListener(editorPart) {
             @Override
-            protected void onSavedResource(final List<TransactionalChange> changeDescriptions) {
+            protected void onSavedResource(final List<? extends TransactionalChange> changeDescriptions) {
                 LOGGER.trace("Received change descriptions " + changeDescriptions);
                 if (null == changeDescriptions || changeDescriptions.isEmpty()) {
                     LOGGER.trace("changeDescription is null. Change can not be synchronized: " + this);

@@ -25,7 +25,7 @@ import static extension tools.vitruv.framework.correspondence.CorrespondenceMode
 import org.junit.jupiter.api.Test
 
 class CorrespondenceTest extends VsumTest {
-	static final Logger LOGGER = Logger.getLogger(CorrespondenceTest.getSimpleName())
+	static final Logger LOGGER = Logger.getLogger(CorrespondenceTest)
 
 	@Test
 	def void testAllInCommand() {

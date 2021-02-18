@@ -14,7 +14,7 @@ import tools.vitruv.extensions.dslsruntime.mappings.interfaces.IMappingInstanceH
  * mapping instantiation and each mapping instantiation candidate.
  */
 class HashMapCandidatesAndInstanceHalvesRegistry<H extends IMappingInstanceHalf> {
-	static extension Logger LOGGER = Logger.getLogger(HashMapCandidatesAndInstanceHalvesRegistry.getSimpleName())
+	static extension Logger LOGGER = Logger.getLogger(HashMapCandidatesAndInstanceHalvesRegistry)
 	val String mappingName
 	val String sideName
 	val Map<List<EObject>,H> candidatesRegistry = newHashMap()

@@ -11,9 +11,12 @@ Require-Bundle: org.apache.log4j,
  tools.vitruv.framework.change.processing,
  org.eclipse.xtend.lib,
  org.eclipse.emf.ecore.xmi,
+ edu.kit.ipd.sdq.activextendannotations,
  tools.vitruv.framework.variability;bundle-version="1.1.0"
 Export-Package: tools.vitruv.framework.vsum,
  tools.vitruv.framework.vsum.helper,
  tools.vitruv.framework.vsum.modelsynchronization,
  tools.vitruv.framework.vsum.repositories;x-internal:=true
 Bundle-Vendor: vitruv.tools
+
+

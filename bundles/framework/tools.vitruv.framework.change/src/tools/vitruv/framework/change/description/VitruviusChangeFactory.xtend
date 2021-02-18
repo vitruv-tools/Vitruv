@@ -60,6 +60,14 @@ class VitruviusChangeFactory {
 		return new CompositeTransactionalChangeImpl();
 	}
 	
+	def CompositeTransactionalChange createCompositeTransactionalChange(Iterable<? extends TransactionalChange> innerChanges) {
+		val compositeChange = new CompositeTransactionalChangeImpl();
+		for (innerChange : innerChanges) {
+			compositeChange.addChange(innerChange);
+		}
+		return compositeChange;
+	}
+	
 	def TransactionalChange createEmptyChange(VURI vuri) {
 		return new EmptyChangeImpl(vuri);
 	}
