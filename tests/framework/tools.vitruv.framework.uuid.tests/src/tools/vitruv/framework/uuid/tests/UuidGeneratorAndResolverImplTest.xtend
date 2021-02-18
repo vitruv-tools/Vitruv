@@ -11,25 +11,18 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import static extension tools.vitruv.framework.util.ResourceSetUtil.withGlobalFactories
 import org.eclipse.emf.common.util.URI
 import tools.vitruv.framework.uuid.UuidGeneratorAndResolverImpl
-import tools.vitruv.framework.uuid.UuidGeneratorAndResolver
-import org.eclipse.emf.ecore.resource.ResourceSet
 import tools.vitruv.testutils.TestProject
 import java.nio.file.Path
 import static org.junit.jupiter.api.Assertions.assertEquals
 import static org.junit.jupiter.api.Assertions.assertNotEquals
-import org.eclipse.emf.ecore.util.EcoreUtil
+import static extension org.eclipse.emf.ecore.util.EcoreUtil.getURI
 import org.junit.jupiter.api.BeforeEach
 
 @ExtendWith(TestProjectManager, RegisterMetamodelsInStandalone)
 class UuidGeneratorAndResolverImplTest {
-	val ResourceSet resourceSet
-	val UuidGeneratorAndResolver uuidGeneratorAndResolver
+	val resourceSet = new ResourceSetImpl().withGlobalFactories()
+	val uuidGeneratorAndResolver = new UuidGeneratorAndResolverImpl(resourceSet, true)
 	var Path testProjectPath
-
-	new() {
-		resourceSet = new ResourceSetImpl().withGlobalFactories()
-		uuidGeneratorAndResolver = new UuidGeneratorAndResolverImpl(resourceSet, true)
-	}
 
 	@BeforeEach
 	def void setup(@TestProject Path testProjectPath) {
@@ -58,7 +51,7 @@ class UuidGeneratorAndResolverImplTest {
 
 		// UUID generation and registration
 		val generatedUuid = childUuidGeneratorAndResolver.generateUuid(nonRoot)
-		val parentResolverNonRoot = resourceSet.getEObject(EcoreUtil.getURI(nonRoot), true)
+		val parentResolverNonRoot = resourceSet.getEObject(nonRoot.URI, true)
 		uuidGeneratorAndResolver.registerEObject(generatedUuid, parentResolverNonRoot)
 
 		// This requires to resolve the element in the parent resolver's resource set with its URI
@@ -86,8 +79,8 @@ class UuidGeneratorAndResolverImplTest {
 		// UUID generation and registration
 		val firstRootUuid = childUuidGeneratorAndResolver.generateUuid(firstRoot)
 		val secondRootUuid = childUuidGeneratorAndResolver.generateUuid(secondRoot)
-		val parentResolverFirstRoot = resourceSet.getEObject(EcoreUtil.getURI(firstRoot), true)
-		val parentResolverSecondRoot = resourceSet.getEObject(EcoreUtil.getURI(secondRoot), true)
+		val parentResolverFirstRoot = resourceSet.getEObject(firstRoot.URI, true)
+		val parentResolverSecondRoot = resourceSet.getEObject(secondRoot.URI, true)
 		uuidGeneratorAndResolver.registerEObject(firstRootUuid, parentResolverFirstRoot)
 		uuidGeneratorAndResolver.registerEObject(secondRootUuid, parentResolverSecondRoot)
 
@@ -125,9 +118,9 @@ class UuidGeneratorAndResolverImplTest {
 		val firstNonRootUuid = childUuidGeneratorAndResolver.generateUuid(firstNonRoot)
 		val secondNonRootUuid = childUuidGeneratorAndResolver.generateUuid(secondNonRoot)
 		val deeperContainedElementUuid = childUuidGeneratorAndResolver.generateUuid(deeperContainedElement)
-		val parentResolverFirstNonRoot = resourceSet.getEObject(EcoreUtil.getURI(firstNonRoot), true)
-		val parentResolverSecondNonRoot = resourceSet.getEObject(EcoreUtil.getURI(secondNonRoot), true)
-		val parentResolverdeeperContainedElement = resourceSet.getEObject(EcoreUtil.getURI(deeperContainedElement), true)
+		val parentResolverFirstNonRoot = resourceSet.getEObject(firstNonRoot.URI, true)
+		val parentResolverSecondNonRoot = resourceSet.getEObject(secondNonRoot.URI, true)
+		val parentResolverdeeperContainedElement = resourceSet.getEObject(deeperContainedElement.URI, true)
 		uuidGeneratorAndResolver.registerEObject(firstNonRootUuid, parentResolverFirstNonRoot)
 		uuidGeneratorAndResolver.registerEObject(secondNonRootUuid, parentResolverSecondNonRoot)
 		uuidGeneratorAndResolver.registerEObject(deeperContainedElementUuid, parentResolverdeeperContainedElement)
