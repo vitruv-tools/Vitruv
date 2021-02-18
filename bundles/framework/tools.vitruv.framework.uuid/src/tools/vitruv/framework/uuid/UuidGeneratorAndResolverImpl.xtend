@@ -329,17 +329,31 @@ class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 	}
 	
 	def private static getResolvableUri(EObject object) {
-		val resourceUri = object.eResource.URI
-		val resourceRoot = object.eResource.firstRootEObject
+		val resource = object.eResource
+		val resourceRoot = if (resource.contents.size <= 1) {
+			object.eResource.firstRootEObject
+		} else {
+			// move up containment hierarchy until some container is one of the resource's root elements
+			var container = object
+			while (!resource.contents.contains(container) && container !== null) {
+				container = container.eContainer
+			}
+			checkState(container !== null, '''some container of «object» must be a root element of its resource''')
+			container
+		}
 		// we cannot simply use EcoreUtil#getURI, because object’s domain might use XMI	UUIDs. Since
 		// XMI UUIDs can be different for different resource sets, we cannot use URIs with XMI UUIDs to identify objects
 		// across resource sets. Hence, we force hierarchical URIs. This assumes that the resolved object’s graph
 		// has the same topology in the resolving resource set. This assumption holds when we use this method.  
 		val fragmentPath = EcoreUtil.getRelativeURIFragmentPath(resourceRoot, object)
+		val rootElementIndex = resource.contents.indexOf(resourceRoot)
 		if (fragmentPath.isEmpty) {
-			resourceUri.appendFragment('/')
+			resource.URI.appendFragment('/' +  rootElementIndex)
 		} else {
-			resourceUri.appendFragment('//' + fragmentPath)
+			resource.URI.appendFragment('/' +  rootElementIndex + '/' + fragmentPath)
 		}
 	}
+	
+	
+	
 }
