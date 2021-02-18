@@ -341,7 +341,7 @@ class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 				container = container.eContainer
 				rootElementIndex = resource.contents.indexOf(container)
 			}
-			checkState(container !== null, '''some container of «object» must be a root element of its resource''')
+			checkState(container !== null, "some container of %s must be a root element of its resource", object)
 			container
 		}
 		// we cannot simply use EcoreUtil#getURI, because object’s domain might use XMI	UUIDs. Since
