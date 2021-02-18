@@ -9,14 +9,11 @@ import static extension tools.vitruv.testutils.printing.PrintResultExtension.*
 import java.util.Collection
 import static tools.vitruv.testutils.printing.PrintMode.*
 import org.eclipse.xtend.lib.annotations.FinalFieldsConstructor
-import org.eclipse.xtend.lib.annotations.Accessors
-import static com.google.common.base.Preconditions.checkState
 import org.eclipse.emf.common.util.URI
 import static tools.vitruv.testutils.printing.PrintMode.multiLineIfAtLeast
 
 @FinalFieldsConstructor
-class DefaultModelPrinter implements ModelPrinter {
-	@Accessors(PROTECTED_GETTER)
+final class DefaultModelPrinter implements ModelPrinter {
 	val ModelPrinter subPrinter
 	static val ITERABLE_PRINT_MODE = multiLineIfAtLeast(2)
 
@@ -180,26 +177,14 @@ class DefaultModelPrinter implements ModelPrinter {
 	 * Helper to print an {@link EObject}. Will print the object’s ID and, if the object has not been printed yet,
 	 * use {@link contentPrinter} to print the object’s content.
 	 */
-	def protected <T extends EObject> printObjectWithContent(PrintTarget target, PrintIdProvider idProvider, T object,
+	def private <T extends EObject> printObjectWithContent(PrintTarget target, PrintIdProvider idProvider, T object,
 		(PrintTarget, T)=>PrintResult contentPrinter) {
-		idProvider.ifAlreadyPrintedElse(object, [obj, id|target.printAlreadyPrinted(obj, id)]) [ toPrint, id |
+		idProvider.ifAlreadyPrintedElse(object, [obj, id|target.print(id)]) [ toPrint, id |
 			target.print(id) + target.print('(') + contentPrinter.apply(target, toPrint) + target.print(')')
 		]
 	}
 
-	/**
-	 * Called when printing an {@link EObject} that has previously been printed.
-	 */
-	def protected printAlreadyPrinted(extension PrintTarget target, EObject object, String id) {
-		print(id)
-	}
-
 	override withSubPrinter(ModelPrinter printer) {
-		checkState(
-			this.class == DefaultModelPrinter,
-			'''«this.class.simpleName» extends «DefaultModelPrinter.simpleName» without overriding withSubPrinter. «
-			»This is an error because it effectively eliminiates the extending class when a sub printer is set.'''
-		)
 		new DefaultModelPrinter(printer)
 	}
 }
