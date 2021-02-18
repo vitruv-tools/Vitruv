@@ -1,0 +1,13 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Vitruv Framework UUID Management Tests
+Bundle-SymbolicName: tools.vitruv.framework.uuid.tests;singleton:=true
+Automatic-Module-Name: tools.vitruv.framework.uuid.tests
+Bundle-Version: 2.1.0.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-11
+Fragment-Host: tools.vitruv.framework.uuid
+Require-Bundle: org.junit.jupiter.api,
+ org.hamcrest.core,
+ tools.vitruv.testutils,
+ tools.vitruv.testutils.metamodels
+Bundle-Vendor: tools.vitruv
