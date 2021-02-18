@@ -340,13 +340,16 @@ class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 	
 	def private static getResolvableUri(EObject object) {
 		val resource = object.eResource
+		var rootElementIndex = 0;
 		val resourceRoot = if (resource.contents.size <= 1) {
 			object.eResource.firstRootEObject
 		} else {
 			// move up containment hierarchy until some container is one of the resource's root elements
 			var container = object
-			while (!resource.contents.contains(container) && container !== null) {
+			rootElementIndex = resource.contents.indexOf(container)
+			while (rootElementIndex == -1 && container !== null) {
 				container = container.eContainer
+				rootElementIndex = resource.contents.indexOf(container)
 			}
 			checkState(container !== null, '''some container of «object» must be a root element of its resource''')
 			container
@@ -356,7 +359,6 @@ class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 		// across resource sets. Hence, we force hierarchical URIs. This assumes that the resolved object’s graph
 		// has the same topology in the resolving resource set. This assumption holds when we use this method.  
 		val fragmentPath = EcoreUtil.getRelativeURIFragmentPath(resourceRoot, object)
-		val rootElementIndex = resource.contents.indexOf(resourceRoot)
 		if (fragmentPath.isEmpty) {
 			resource.URI.appendFragment('/' +  rootElementIndex)
 		} else {
