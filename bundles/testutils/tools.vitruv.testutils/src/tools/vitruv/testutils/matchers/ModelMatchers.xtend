@@ -9,9 +9,7 @@ import org.eclipse.emf.ecore.resource.Resource
 import org.hamcrest.Matcher
 import static com.google.common.base.Preconditions.checkArgument
 import java.util.Set
-import tools.vitruv.testutils.matchers.ModelDeepEqualityOption.EqualityFeatureFilter
 import org.eclipse.emf.ecore.EClass
-import tools.vitruv.testutils.matchers.ModelDeepEqualityOption.EqualityStrategy
 
 @Utility
 class ModelMatchers {
@@ -115,7 +113,7 @@ class ModelMatchers {
 	 * Uses {@link Object#equals} to instances of the provided {@code eClasses}.
 	 */
 	def static EqualityStrategy usingEqualsFor(EClass... eClasses) {
-		new EqualsStrategy(Set.of(eClasses))
+		new EqualityStrategies(Set.of(eClasses))
 	}
 
 	def static Matcher<? super EObject> whose(EStructuralFeature feature, Matcher<?> featureMatcher) {
