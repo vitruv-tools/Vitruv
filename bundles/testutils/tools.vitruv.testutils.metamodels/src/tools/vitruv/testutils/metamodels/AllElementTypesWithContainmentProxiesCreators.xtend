@@ -1,0 +1,9 @@
+package tools.vitruv.testutils.metamodels
+
+import allElementTypesWithContainmentProxies.AllElementTypesWithContainmentProxiesFactory
+import tools.vitruv.testutils.activeannotations.ModelCreators
+
+@ModelCreators(factory=AllElementTypesWithContainmentProxiesFactory)
+final class AllElementTypesWithContainmentProxiesCreators {
+	public static val aetWithContainmentProxies = new AllElementTypesWithContainmentProxiesCreators()
+}
