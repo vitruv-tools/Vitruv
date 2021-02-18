@@ -329,6 +329,10 @@ class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 	}
 	
 	def private static getResolvableUri(EObject object) {
+		// we cannot simply use EcoreUtil#getURI, because object’s domain might use XMI	UUIDs. Since
+		// XMI UUIDs can be different for different resource sets, we cannot use URIs with XMI UUIDs to identify objects
+		// across resource sets. Hence, we force hierarchical URIs. This assumes that the resolved object’s graph
+		// has the same topology in the resolving resource set. This assumption holds when we use this method.
 		val resource = object.eResource
 		var rootElementIndex = 0;
 		val resourceRoot = if (resource.contents.size <= 1) {
@@ -336,18 +340,12 @@ class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 		} else {
 			// move up containment hierarchy until some container is one of the resource's root elements
 			var container = object
-			rootElementIndex = resource.contents.indexOf(container)
-			while (rootElementIndex == -1 && container !== null) {
-				container = container.eContainer
-				rootElementIndex = resource.contents.indexOf(container)
+			while (container !== null && (rootElementIndex = resource.contents.indexOf(container)) == -1) {
+    			container = container.eContainer
 			}
 			checkState(container !== null, "some container of %s must be a root element of its resource", object)
 			container
-		}
-		// we cannot simply use EcoreUtil#getURI, because object’s domain might use XMI	UUIDs. Since
-		// XMI UUIDs can be different for different resource sets, we cannot use URIs with XMI UUIDs to identify objects
-		// across resource sets. Hence, we force hierarchical URIs. This assumes that the resolved object’s graph
-		// has the same topology in the resolving resource set. This assumption holds when we use this method.  
+		}  
 		val fragmentPath = EcoreUtil.getRelativeURIFragmentPath(resourceRoot, object)
 		if (fragmentPath.isEmpty) {
 			resource.URI.appendFragment('/' +  rootElementIndex)
@@ -355,7 +353,5 @@ class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 			resource.URI.appendFragment('/' +  rootElementIndex + '/' + fragmentPath)
 		}
 	}
-	
-	
 	
 }
