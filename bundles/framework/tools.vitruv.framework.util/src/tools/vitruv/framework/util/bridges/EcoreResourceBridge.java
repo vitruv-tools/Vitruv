@@ -162,7 +162,7 @@ public final class EcoreResourceBridge {
 	/**
 	 * Returns the root element of the model instance, which is the first one. It is
 	 * NOT necessary to have exactly one root element. If there is not at least one
-	 * root element a {@link java.lang.RuntimeException RuntimeException} is thrown.
+	 * root element a {@link java.lang.IllegalStateException IllegalStateException} is thrown.
 	 *
 	 * @param resource  a resource
 	 * @param modelName the name of the model represented by this resource (for
@@ -171,10 +171,22 @@ public final class EcoreResourceBridge {
 	 */
 	public static EObject getFirstRootEObject(final Resource resource, final String modelName) {
 		if (resource.getContents().size() < 1) {
-			throw new RuntimeException("The resource " + modelName + " does not contain a root element.");
+			throw new IllegalStateException("The resource " + modelName + " does not contain a root element.");
 		}
 		return resource.getContents().get(0);
 	}
+	
+	/**
+	 * Returns the root element of the model instance, which is the first one. It is
+	 * NOT necessary to have exactly one root element. If there is not at least one
+	 * root element a {@link java.lang.IllegalStateException IllegalStateException} is thrown.
+	 *
+	 * @param resource  a resource
+	 * @return the root element
+	 */
+	public static EObject getFirstRootEObject(final Resource resource) {
+		return getFirstRootEObject(resource, resource.getURI().toString());
+	}	
 
 	/**
 	 * Returns a set containing all contents of the given resource.
