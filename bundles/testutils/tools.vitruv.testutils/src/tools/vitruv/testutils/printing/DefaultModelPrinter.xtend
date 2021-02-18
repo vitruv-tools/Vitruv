@@ -12,11 +12,13 @@ import org.eclipse.xtend.lib.annotations.FinalFieldsConstructor
 import org.eclipse.xtend.lib.annotations.Accessors
 import static com.google.common.base.Preconditions.checkState
 import org.eclipse.emf.common.util.URI
+import static tools.vitruv.testutils.printing.PrintMode.multiLineIfAtLeast
 
 @FinalFieldsConstructor
 class DefaultModelPrinter implements ModelPrinter {
 	@Accessors(PROTECTED_GETTER)
 	val ModelPrinter subPrinter
+	static val ITERABLE_PRINT_MODE = multiLineIfAtLeast(2)
 
 	new() {
 		subPrinter = this
@@ -56,7 +58,8 @@ class DefaultModelPrinter implements ModelPrinter {
 		EObject object
 	) {
 		target.printObjectWithContent(idProvider, object) [ contentTarget, toPrint |
-			contentTarget.printIterableElements(toPrint.eClass.EAllStructuralFeatures) [ subTarget, feature |
+			val allFeatures = toPrint.eClass.EAllStructuralFeatures
+			contentTarget.printIterableElements(allFeatures, ITERABLE_PRINT_MODE) [ subTarget, feature |
 				subPrinter.printFeature(subTarget, idProvider, toPrint, feature)
 			]
 		]
@@ -94,12 +97,7 @@ class DefaultModelPrinter implements ModelPrinter {
 		}
 	}
 
-	/**
-	 * Determines the mode to print the provided {@code elements} with.
-	 */
-	def protected printModeFor(Collection<?> elements) {
-		if (elements.size > 1) MULTI_LINE else SINGLE_LINE
-	}
+	def protected getPrintMode() { multiLineIfAtLeast(2) }
 
 	override printFeatureValueList(
 		PrintTarget target,
@@ -108,7 +106,7 @@ class DefaultModelPrinter implements ModelPrinter {
 		EStructuralFeature feature,
 		Collection<?> valueList
 	) {
-		target.printList(valueList) [ subTarget, element |
+		target.printList(valueList, ITERABLE_PRINT_MODE) [ subTarget, element |
 			subPrinter.printFeatureValue(subTarget, idProvider, object, feature, element)
 		]
 	}
@@ -120,7 +118,7 @@ class DefaultModelPrinter implements ModelPrinter {
 		EStructuralFeature feature,
 		Collection<?> valueSet
 	) {
-		target.printSet(valueSet) [ subTarget, element |
+		target.printSet(valueSet, ITERABLE_PRINT_MODE) [ subTarget, element |
 			subPrinter.printFeatureValue(subTarget, idProvider, object, feature, element)
 		]
 	}
@@ -194,38 +192,6 @@ class DefaultModelPrinter implements ModelPrinter {
 	 */
 	def protected printAlreadyPrinted(extension PrintTarget target, EObject object, String id) {
 		print(id)
-	}
-
-	/**
-	 * Delegates to {@link PrintTarget#printIterable} after consulting {@link #printModeFor}.
-	 */
-	def protected <T> PrintResult printIterable(PrintTarget target, String start, String end,
-		Collection<? extends T> elements, (PrintTarget, T)=>PrintResult elementPrinter) {
-		target.printIterable(start, end, elements, printModeFor(elements), elementPrinter)
-	}
-
-	/**
-	 * Delegates to {@link PrintTarget#printList} after consulting {@link #printModeFor}.
-	 */
-	def protected <T> PrintResult printList(PrintTarget target, Collection<? extends T> elements,
-		(PrintTarget, T)=>PrintResult elementPrinter) {
-		target.printList(elements, printModeFor(elements), elementPrinter)
-	}
-
-	/**
-	 * Delegates to {@link PrintTarget#printSet} after consulting {@link #printModeFor}.
-	 */
-	def protected <T> PrintResult printSet(PrintTarget target, Collection<? extends T> elements,
-		(PrintTarget, T)=>PrintResult elementPrinter) {
-		target.printSet(elements, printModeFor(elements), elementPrinter)
-	}
-
-	/**
-	 * Delegates to {@link PrintTarget#printIterableElements} after consulting {@link #printModeFor}.
-	 */
-	def protected <T> PrintResult printIterableElements(PrintTarget target, Collection<? extends T> elements,
-		(PrintTarget, T)=>PrintResult elementPrinter) {
-		target.printIterableElements(elements, printModeFor(elements), elementPrinter)
 	}
 
 	override withSubPrinter(ModelPrinter printer) {
