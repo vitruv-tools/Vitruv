@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/tools.vitruv.testutils.metamodels/src-gen" modelPluginID="tools.vitruv.testutils.metamodels"
+    modelName="AllElementTypesWithContainmentProxies" rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container"
+    importerID="org.eclipse.emf.importer.ecore" containmentProxies="true" complianceLevel="5.0"
+    copyrightFields="false" operationReflection="true" importOrganizing="true">
+  <foreignModel>allElementTypesWithContainmentProxies.ecore</foreignModel>
+  <genPackages prefix="AllElementTypesWithContainmentProxies" disposableProviderFactory="true"
+      ecorePackage="allElementTypesWithContainmentProxies.ecore#/">
+    <genClasses ecoreClass="allElementTypesWithContainmentProxies.ecore#//RootWithContainmentProxies">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute allElementTypesWithContainmentProxies.ecore#//RootWithContainmentProxies/singleValuedEAttribute"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute allElementTypesWithContainmentProxies.ecore#//RootWithContainmentProxies/singleValuedPrimitiveTypeEAttribute"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute allElementTypesWithContainmentProxies.ecore#//RootWithContainmentProxies/singleValuedUnsettableEAttribute"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference allElementTypesWithContainmentProxies.ecore#//RootWithContainmentProxies/singleValuedNonContainmentEReference"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference allElementTypesWithContainmentProxies.ecore#//RootWithContainmentProxies/singleValuedUnsettableNonContainmentEReference"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference allElementTypesWithContainmentProxies.ecore#//RootWithContainmentProxies/singleValuedContainmentEReference"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference allElementTypesWithContainmentProxies.ecore#//RootWithContainmentProxies/singleValuedUnsettableContainmentEReference"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute allElementTypesWithContainmentProxies.ecore#//RootWithContainmentProxies/multiValuedEAttribute"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute allElementTypesWithContainmentProxies.ecore#//RootWithContainmentProxies/multiValuedUnsettableEAttribute"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference allElementTypesWithContainmentProxies.ecore#//RootWithContainmentProxies/multiValuedNonContainmentEReference"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference allElementTypesWithContainmentProxies.ecore#//RootWithContainmentProxies/multiValuedUnsettableNonContainmentEReference"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference allElementTypesWithContainmentProxies.ecore#//RootWithContainmentProxies/multiValuedContainmentEReference"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference allElementTypesWithContainmentProxies.ecore#//RootWithContainmentProxies/multiValuedUnsettableContainmentEReference"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference allElementTypesWithContainmentProxies.ecore#//RootWithContainmentProxies/nonRootObjectContainerHelper"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference allElementTypesWithContainmentProxies.ecore#//RootWithContainmentProxies/recursiveRoot"/>
+    </genClasses>
+    <genClasses ecoreClass="allElementTypesWithContainmentProxies.ecore#//NonRootWithContainmentProxies"/>
+    <genClasses ecoreClass="allElementTypesWithContainmentProxies.ecore#//NonRootObjectContainerHelperWithContainmentProxies">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference allElementTypesWithContainmentProxies.ecore#//NonRootObjectContainerHelperWithContainmentProxies/nonRootObjectsContainment"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="allElementTypesWithContainmentProxies.ecore#//IdentifiedWithContainmentProxies">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute allElementTypesWithContainmentProxies.ecore#//IdentifiedWithContainmentProxies/id"/>
+    </genClasses>
+  </genPackages>
+</genmodel:GenModel>
