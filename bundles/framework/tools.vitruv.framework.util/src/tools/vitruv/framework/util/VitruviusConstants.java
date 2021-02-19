@@ -9,7 +9,6 @@ public class VitruviusConstants {
 	private static final String CORRESPONDENCES_FILE_EXT = "correspondence";
 	private static final String UUID_FILE_EXT = "uuid";
 	private static final String DEFAULT_NAME_OF_IDENTIFIER_FEATURE = "id";
-	private static final String Tuid_SEGMENT_SEPERATOR = "#";
 	private static final String DEFAULT_NAME_OF_NAME_FEAUTRE = "entityName";
 	private static final String FILE_EXT_SEPARATOR = ".";
 	/**
@@ -18,8 +17,6 @@ public class VitruviusConstants {
 	 */
 	private static final String OPTION_PROCESS_DANGLING_HREF = "PROCESS_DANGLING_HREF";
 	private static final String OPTION_PROCESS_DANGLING_HREF_DISCARD = "DISCARD";
-
-	private static final String CACHED_Tuid_MARKER = "45gBeLT4L9BWQtesOVNdXzAZP4RBPBRdxL8wGJV+jyo=";
 
 	/**
 	 * @return the name of the executable property of extension points
@@ -52,10 +49,6 @@ public class VitruviusConstants {
 		return DEFAULT_NAME_OF_IDENTIFIER_FEATURE;
 	}
 
-	public static String getTuidSegmentSeperator() {
-		return Tuid_SEGMENT_SEPERATOR;
-	}
-
 	public static String getDefaultNameOfNameFeature() {
 		return DEFAULT_NAME_OF_NAME_FEAUTRE;
 	}
@@ -70,10 +63,6 @@ public class VitruviusConstants {
 
 	public static String getOptionProcessDanglingHrefDiscard() {
 		return OPTION_PROCESS_DANGLING_HREF_DISCARD;
-	}
-
-	public static String getCachedTuidMarker() {
-		return CACHED_Tuid_MARKER;
 	}
 
 	/**

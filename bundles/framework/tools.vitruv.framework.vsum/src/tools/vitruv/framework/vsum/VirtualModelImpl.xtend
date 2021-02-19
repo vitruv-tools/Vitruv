@@ -22,7 +22,6 @@ import tools.vitruv.framework.vsum.helper.VsumFileSystemLayout
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import static extension tools.vitruv.framework.util.ResourceSetUtil.withGlobalFactories
 import static extension tools.vitruv.framework.util.bridges.EcoreResourceBridge.loadOrCreateResource
-import tools.vitruv.framework.vsum.repositories.TuidResolverImpl
 import tools.vitruv.framework.correspondence.CorrespondenceModelFactory
 import tools.vitruv.framework.correspondence.InternalCorrespondenceModel
 import java.nio.file.Path
@@ -240,7 +239,7 @@ class VirtualModelImpl implements InternalVirtualModel {
 		val correspondencesResource = new ResourceSetImpl().withGlobalFactories().loadOrCreateResource(
 			correspondencesVURI.EMFUri)
 		CorrespondenceModelFactory.instance.createCorrespondenceModel(
-			new TuidResolverImpl(domainRepository, resourceRepository), uuidGeneratorAndResolver, resourceRepository,
-			domainRepository, correspondencesVURI, correspondencesResource)
+			uuidGeneratorAndResolver, resourceRepository,
+			correspondencesVURI, correspondencesResource)
 	}
 }

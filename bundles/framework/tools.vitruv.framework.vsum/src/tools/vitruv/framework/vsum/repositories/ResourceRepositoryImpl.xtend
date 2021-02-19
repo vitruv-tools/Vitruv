@@ -15,7 +15,6 @@ import tools.vitruv.framework.change.description.TransactionalChange
 import tools.vitruv.framework.change.description.VitruviusChangeFactory
 import tools.vitruv.framework.domains.VitruvDomain
 import tools.vitruv.framework.domains.repository.VitruvDomainRepository
-import tools.vitruv.framework.tuid.TuidManager
 import tools.vitruv.framework.util.bridges.EcoreResourceBridge
 import tools.vitruv.framework.util.datatypes.ModelInstance
 import tools.vitruv.framework.util.datatypes.VURI
@@ -150,15 +149,10 @@ class ResourceRepositoryImpl implements ModelRepository {
 	override void persistAsRoot(EObject rootEObject, VURI vuri) {
 		val ModelInstance modelInstance = getModelInstanceOriginal(vuri)
 		executeAsCommand [
-			TuidManager.instance.registerObjectUnderModification(rootEObject)
 			val resource = modelInstance.resource
 			resource.contents += rootEObject
 			resource.modified = true
 			logger.debug('''Create model with resource: «resource»'''.toString)
-			TuidManager.instance.updateTuidsOfRegisteredObjects()
-		// Usually we should deregister the object, but since we do not know if it was
-		// registered before and if the other objects should still be registered
-		// we cannot remove it or flush the registry
 		]
 	}
 

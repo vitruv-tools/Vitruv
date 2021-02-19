@@ -14,8 +14,8 @@ import pcm_mockup.PInterface;
 import pcm_mockup.Pcm_mockupFactory;
 import pcm_mockup.Pcm_mockupPackage;
 import pcm_mockup.Repository;
+import tools.vitruv.framework.domains.AbstractVitruvDomain;
 import tools.vitruv.framework.domains.VitruvDomain;
-import tools.vitruv.framework.tuid.AttributeTuidCalculatorAndResolver;
 import tools.vitruv.framework.userinteraction.UserInteractionFactory;
 import tools.vitruv.framework.util.bridges.EMFBridge;
 import tools.vitruv.framework.util.datatypes.ModelInstance;
@@ -26,7 +26,6 @@ import tools.vitruv.testutils.RegisterMetamodelsInStandalone;
 import tools.vitruv.testutils.TestLogging;
 import tools.vitruv.testutils.TestProject;
 import tools.vitruv.testutils.TestProjectManager;
-import tools.vitruv.testutils.domains.ConcreteTuidAwareVitruvDomain;
 import uml_mockup.UClass;
 import uml_mockup.UPackage;
 import uml_mockup.Uml_mockupFactory;
@@ -49,11 +48,11 @@ public abstract class VsumTest {
 		this.testProjectFolder = testProjectFolder;
 	}
 
-	private static final VitruvDomain UmlDomain = new ConcreteTuidAwareVitruvDomain("UML", Uml_mockupPackage.eINSTANCE,
-		new AttributeTuidCalculatorAndResolver(Uml_mockupPackage.eINSTANCE.getNsURI(), "id"), UML_FILE_EXT);
+	private static final VitruvDomain UmlDomain = new AbstractVitruvDomain("UML", Uml_mockupPackage.eINSTANCE,
+		UML_FILE_EXT) {};
 
-	private static final VitruvDomain PcmDomain = new ConcreteTuidAwareVitruvDomain("PCM", Pcm_mockupPackage.eINSTANCE,
-		new AttributeTuidCalculatorAndResolver(Pcm_mockupPackage.eINSTANCE.getNsURI(), "id"), PCM_FILE_EXT);
+	private static final VitruvDomain PcmDomain = new AbstractVitruvDomain("PCM", Pcm_mockupPackage.eINSTANCE,
+		PCM_FILE_EXT) {};
 
 	protected Path getCurrentProjectFolder() {
 		return this.testProjectFolder;

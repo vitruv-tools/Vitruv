@@ -10,7 +10,6 @@ import pcm_mockup.PInterface
 import pcm_mockup.Repository
 import tools.vitruv.framework.correspondence.Correspondence
 import tools.vitruv.framework.correspondence.CorrespondenceModel
-import tools.vitruv.framework.tuid.TuidManager
 import tools.vitruv.framework.util.datatypes.ModelInstance
 import tools.vitruv.framework.util.datatypes.VURI
 import tools.vitruv.framework.vsum.InternalVirtualModel
@@ -119,10 +118,7 @@ class CorrespondenceTest extends VsumTest {
 	}
 
 	def private void removePkgFromFileAndUpdateCorrespondence(UPackage pkg, CorrespondenceModel correspondenceModel) {
-		TuidManager.instance.registerObjectUnderModification(pkg)
 		EcoreUtil.remove(pkg)
-		TuidManager.instance.updateTuidsOfRegisteredObjects
-		TuidManager.instance.flushRegisteredObjectsUnderModification
 	}
 
 	def private void testCorrespondencePersistence(InternalVirtualModel vsum, Repository repo, UPackage pkg,

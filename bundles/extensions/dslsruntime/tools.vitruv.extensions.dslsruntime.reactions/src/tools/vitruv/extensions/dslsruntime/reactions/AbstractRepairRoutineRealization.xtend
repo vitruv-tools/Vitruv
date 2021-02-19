@@ -13,7 +13,6 @@ import tools.vitruv.extensions.dslsruntime.reactions.helper.ReactionsCorresponde
 import tools.vitruv.extensions.dslsruntime.reactions.structure.CallHierarchyHaving
 import tools.vitruv.extensions.dslsruntime.reactions.structure.Loggable
 import tools.vitruv.framework.correspondence.CorrespondenceModel
-import tools.vitruv.framework.tuid.TuidManager
 import tools.vitruv.framework.userinteraction.UserInteractor
 import tools.vitruv.framework.util.command.ResourceAccess
 import tools.vitruv.framework.util.datatypes.VURI
@@ -152,10 +151,7 @@ abstract class AbstractRepairRoutineRealization extends CallHierarchyHaving impl
 		private def persistAsRoot(EObject rootObject, VURI vuri) {
 			logger.trace("Registered to persist root " + rootObject + " in: " + vuri)
 			if (rootObject.eResource?.URI !== vuri.EMFUri) {
-				// Update TUID after removal, as persistence will also change it and rely on an up-to-date value
-				TuidManager.getInstance().registerObjectUnderModification(rootObject)
 				EcoreUtil.remove(rootObject)
-				TuidManager.getInstance().updateTuidsOfRegisteredObjects()
 				resourceAccess.persistAsRoot(rootObject, vuri)
 			}
 		}

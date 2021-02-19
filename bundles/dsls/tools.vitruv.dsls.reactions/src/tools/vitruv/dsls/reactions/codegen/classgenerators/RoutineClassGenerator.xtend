@@ -179,9 +179,6 @@ class RoutineClassGenerator extends ClassGenerator {
 			«IF !name.nullOrEmpty»«List»<«typeName»> «name» = «ENDIF»getCorrespondingElements(
 				«generalArguments»
 			);
-			for (EObject _element : «name») {	
-				registerObjectUnderModification(_element);
-			}
 		'''
 		currentlyAccessibleElements += new AccessibleElement(name, List.name, typeName);
 		return statement;
@@ -212,7 +209,6 @@ class RoutineClassGenerator extends ClassGenerator {
 					if («name» == null) {
 						return false;
 					}«ENDIF»
-				registerObjectUnderModification(«IF retrieveElement.optional»«name».isPresent() ? «name».get() : null«ELSE»«name»«ENDIF»);
 			'''
 			if (retrieveElement.optional) {
 				currentlyAccessibleElements += new AccessibleElement(name, Optional.name, typeName);
@@ -330,8 +326,6 @@ class RoutineClassGenerator extends ClassGenerator {
 					«effectStatementsMap.get(effectStatement)»
 					
 				«ENDFOR»
-				postprocessElements();
-				
 				return true;
 			'''
 		];

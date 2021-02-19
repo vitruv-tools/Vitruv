@@ -2,10 +2,8 @@ package tools.vitruv.dsls.commonalities.generator.domain
 
 import org.eclipse.emf.ecore.EPackage
 import tools.vitruv.extensions.dslruntime.commonalities.IntermediateVitruvDomain
-import tools.vitruv.extensions.dslruntime.commonalities.intermediatemodelbase.IntermediateModelBasePackage
 import tools.vitruv.framework.domains.VitruvDomain
 import tools.vitruv.framework.domains.VitruvDomainProvider
-import tools.vitruv.framework.tuid.AttributeTuidCalculatorAndResolver
 
 import static extension tools.vitruv.dsls.commonalities.generator.domain.ConceptDomainConstants.*
 import static extension tools.vitruv.dsls.commonalities.generator.intermediatemodel.IntermediateModelConstants.*
@@ -25,8 +23,6 @@ class ConceptDomain extends IntermediateVitruvDomain {
 
 	new(String conceptName, EPackage conceptPackage) {
 		super(conceptName.conceptDomainName, conceptPackage,
-			new AttributeTuidCalculatorAndResolver(conceptPackage.nsURI,
-				IntermediateModelBasePackage.eINSTANCE.intermediate_IntermediateId.name),
 			conceptName.intermediateModelFileExtension)
 		provider = new Provider(this, conceptName.conceptDomainProviderClassName.qualifiedName)
 	}
