@@ -16,9 +16,10 @@
 	<modules>
 		<module>tools.vitruv.framework.change.echange.tests</module>
 		<module>tools.vitruv.framework.change.tests</module>
-		<module>tools.vitruv.framework.vsum.tests</module>
 		<module>tools.vitruv.framework.domains.tests</module>
+		<module>tools.vitruv.framework.util.tests</module>
 		<module>tools.vitruv.framework.uuid.tests</module>
+		<module>tools.vitruv.framework.vsum.tests</module>
 	</modules>
 
 </project>
