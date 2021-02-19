@@ -1,4 +1,4 @@
-package tools.vitruv.framewotk.util.datatypes;
+package tools.vitruv.framework.util.datatypes;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -9,7 +9,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import tools.vitruv.framework.util.VitruviusConstants;
-import tools.vitruv.framework.util.datatypes.VURI;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
