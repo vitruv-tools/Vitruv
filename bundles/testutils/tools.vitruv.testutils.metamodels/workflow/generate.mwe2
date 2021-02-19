@@ -25,12 +25,6 @@ Workflow {
 		genModel = "${metamodelsPath}/allElementTypes2.genmodel"
 		generateCustomClasses = false
 	}
-	
-	component = EcoreGenerator {
-		srcPath = "${platformPluginPath}/src"
-		genModel = "${metamodelsPath}/allElementTypesWithContainmentProxies.genmodel"
-		generateCustomClasses = false
-	}
 
 	component = EcoreGenerator {
 		srcPath = "${platformPluginPath}/src"
