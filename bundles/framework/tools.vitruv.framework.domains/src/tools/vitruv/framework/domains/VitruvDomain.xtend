@@ -5,30 +5,19 @@ import java.util.Map
 import java.util.Set
 import org.eclipse.emf.ecore.EObject
 import tools.vitruv.framework.util.datatypes.URIHaving
-import java.util.Collection
 
 interface VitruvDomain extends URIHaving, Comparable<URIHaving> {
-	def String getName();
+	def String getName()
 
-	/**
-	 * Returns the state change propagation strategy responsible for the
-	 * propagation of state diff based changes. 
-	 */
-	def StateBasedChangeResolutionStrategy getStateChangePropagationStrategy();
+	def EPackage getMetamodelRootPackage()
+	def Set<EPackage> getFurtherRootPackages()
+	def Set<String> getFileExtensions()
+	def Set<String> getNsUris()
 
-	def EPackage getMetamodelRootPackage();
+	def Map<Object, Object> getDefaultLoadOptions()
+	def Map<Object, Object> getDefaultSaveOptions()
 
-	def Set<EPackage> getFurtherRootPackages();
-
-	def Set<String> getNsUris();
-
-	def boolean isInstanceOfDomainMetamodel(EObject object);
-
-	def Map<Object, Object> getDefaultLoadOptions();
-
-	def Map<Object, Object> getDefaultSaveOptions();
-
-	def Collection<String> getFileExtensions();
+	def boolean isInstanceOfDomainMetamodel(EObject object)
 
 	/**
 	 * Whether this domain should be visible to users. Some domains exist only
@@ -43,5 +32,11 @@ interface VitruvDomain extends URIHaving, Comparable<URIHaving> {
 	 * specifications.
 	 */
 	def boolean shouldTransitivelyPropagateChanges()
+
+	/**
+	 * Returns the state change propagation strategy responsible for the
+	 * propagation of state diff based changes. 
+	 */
+	def StateBasedChangeResolutionStrategy getStateChangePropagationStrategy()
 
 }
