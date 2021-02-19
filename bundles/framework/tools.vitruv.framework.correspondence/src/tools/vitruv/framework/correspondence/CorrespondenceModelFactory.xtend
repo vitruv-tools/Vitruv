@@ -4,7 +4,6 @@ import tools.vitruv.framework.uuid.UuidResolver
 import tools.vitruv.framework.util.datatypes.VURI
 import org.eclipse.emf.ecore.resource.Resource
 import tools.vitruv.framework.correspondence.impl.InternalCorrespondenceModelImpl
-import tools.vitruv.framework.util.command.CommandCreatorAndExecutor
 
 final class CorrespondenceModelFactory {
 	static CorrespondenceModelFactory instance;
@@ -19,8 +18,7 @@ final class CorrespondenceModelFactory {
 		return instance;
 	}
 	
-	def createCorrespondenceModel(UuidResolver uuidResolver, CommandCreatorAndExecutor modelCommandExecutor,
-		VURI correspondencesVURI, Resource correspondencesResource) {
-		return new InternalCorrespondenceModelImpl(uuidResolver, modelCommandExecutor, correspondencesVURI, correspondencesResource);
+	def createCorrespondenceModel(UuidResolver uuidResolver, VURI correspondencesVURI, Resource correspondencesResource) {
+		return new InternalCorrespondenceModelImpl(uuidResolver, correspondencesVURI, correspondencesResource);
 	}
 }

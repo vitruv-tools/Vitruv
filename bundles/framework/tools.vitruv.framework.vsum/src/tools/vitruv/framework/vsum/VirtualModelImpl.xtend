@@ -239,7 +239,6 @@ class VirtualModelImpl implements InternalVirtualModel {
 		val correspondencesResource = new ResourceSetImpl().withGlobalFactories().loadOrCreateResource(
 			correspondencesVURI.EMFUri)
 		CorrespondenceModelFactory.instance.createCorrespondenceModel(
-			uuidGeneratorAndResolver, resourceRepository,
-			correspondencesVURI, correspondencesResource)
+			uuidGeneratorAndResolver, correspondencesVURI, correspondencesResource)
 	}
 }
