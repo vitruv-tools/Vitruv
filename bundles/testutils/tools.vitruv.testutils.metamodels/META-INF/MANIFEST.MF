@@ -30,10 +30,7 @@ Export-Package: allElementTypes,
  tools.vitruv.testutils.metamodels,
  uml_mockup,
  uml_mockup.impl,
- uml_mockup.util,
- allElementTypesWithContainmentProxies,
- allElementTypesWithContainmentProxies.impl,
- allElementTypesWithContainmentProxies.util
+ uml_mockup.util
 Require-Bundle: org.eclipse.xtend.lib,
  tools.vitruv.testutils,
  org.junit.jupiter.params,

@@ -126,12 +126,4 @@
       </factory>
    </extension>
 
-   <extension point="org.eclipse.emf.ecore.generated_package">
-      <!-- @generated allElementTypesWithContainmentProxies -->
-      <package
-            uri="http://tools.vitruv.testutils.metamodels.allElementTypesWithContainmentProxies"
-            class="allElementTypesWithContainmentProxies.AllElementTypesWithContainmentProxiesPackage"
-            genModel="metamodels/allElementTypesWithContainmentProxies.genmodel"/>
-   </extension>
-
 </plugin>

@@ -5,7 +5,6 @@ import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.^extension.ExtendWith
 import tools.vitruv.testutils.TestProjectManager
 import tools.vitruv.testutils.RegisterMetamodelsInStandalone
-import static tools.vitruv.testutils.metamodels.AllElementTypesWithContainmentProxiesCreators.aetWithContainmentProxies
 import static tools.vitruv.testutils.metamodels.AllElementTypesCreators.aet
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import static extension tools.vitruv.framework.util.ResourceSetUtil.withGlobalFactories
@@ -37,9 +36,9 @@ class UuidGeneratorAndResolverImplTest {
 			true)
 
 		// Model generation
-		val nonRoot = aetWithContainmentProxies.NonRootWithContainmentProxies
+		val nonRoot = aet.NonRoot
 		childResourceSet.createResource(URI.createFileURI(testProjectPath.resolve("root.aet").toString)) => [
-			contents += aetWithContainmentProxies.RootWithContainmentProxies => [
+			contents += aet.Root=> [
 				singleValuedContainmentEReference = nonRoot
 			]
 			save(null)
