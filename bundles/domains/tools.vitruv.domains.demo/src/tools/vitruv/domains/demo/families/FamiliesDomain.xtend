@@ -8,12 +8,7 @@ class FamiliesDomain extends VitruvDemoDomain {
 	public static val String FILE_EXTENSION = "families"
 
 	package new() {
-		super(METAMODEL_NAME, FamiliesPackage.eINSTANCE, identifyingAttributes, FILE_EXTENSION)
-	}
-
-	def private static getIdentifyingAttributes() {
-		#[FamiliesPackage.Literals.FAMILY_REGISTER__ID, FamiliesPackage.Literals.FAMILY__LAST_NAME,
-			FamiliesPackage.Literals.MEMBER__FIRST_NAME]
+		super(METAMODEL_NAME, FamiliesPackage.eINSTANCE, FILE_EXTENSION)
 	}
 
 }
