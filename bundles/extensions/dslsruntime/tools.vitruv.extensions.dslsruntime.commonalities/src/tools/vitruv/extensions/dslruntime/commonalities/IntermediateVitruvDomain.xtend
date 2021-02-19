@@ -4,21 +4,18 @@ import java.util.Set
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EPackage
 import tools.vitruv.extensions.dslruntime.commonalities.resources.IntermediateResourceBridge
-import tools.vitruv.framework.domains.AbstractTuidAwareVitruvDomain
-import tools.vitruv.framework.tuid.TuidCalculatorAndResolver
+import tools.vitruv.framework.domains.AbstractVitruvDomain
 
-abstract class IntermediateVitruvDomain extends AbstractTuidAwareVitruvDomain {
+abstract class IntermediateVitruvDomain extends AbstractVitruvDomain {
 
-	new(String name, EPackage metamodelRootPackage, Set<EPackage> furtherRootPackages,
-		TuidCalculatorAndResolver tuidCalculator, String... fileExtensions) {
-		super(name, metamodelRootPackage, furtherRootPackages, tuidCalculator, fileExtensions)
+	new(String name, EPackage metamodelRootPackage, Set<EPackage> furtherRootPackages, String... fileExtensions) {
+		super(name, metamodelRootPackage, furtherRootPackages, fileExtensions)
 	}
 
-	new(String name, EPackage metamodelRootPackage, TuidCalculatorAndResolver tuidCalculator,
-		String... fileExtensions) {
-		super(name, metamodelRootPackage, tuidCalculator, fileExtensions)
+	new(String name, EPackage metamodelRootPackage, String... fileExtensions) {
+		super(name, metamodelRootPackage, fileExtensions)
 	}
-	
+
 	override shouldTransitivelyPropagateChanges() {
 		true
 	}

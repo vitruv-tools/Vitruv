@@ -7,7 +7,6 @@ import org.junit.jupiter.api.TestInfo
 import org.junit.jupiter.api.^extension.ExtendWith
 import tools.vitruv.framework.change.processing.ChangePropagationSpecification
 import tools.vitruv.framework.correspondence.CorrespondenceModel
-import tools.vitruv.framework.tuid.TuidManager
 import tools.vitruv.framework.vsum.InternalVirtualModel
 import tools.vitruv.testutils.matchers.CorrespondenceModelContainer
 
@@ -37,7 +36,6 @@ abstract class VitruvApplicationTest implements CorrespondenceModelContainer, Te
 	@BeforeEach
 	def final package void prepareVirtualModelAndView(TestInfo testInfo, @TestProject Path testProjectPath,
 		@TestProject(variant="vsum") Path vsumPath) {
-		TuidManager.instance.reinitialize()
 		val changePropagationSpecifications = this.changePropagationSpecifications
 		val userInteraction = new TestUserInteraction
 		val targetDomains = new VitruvDomainRepositoryImpl(

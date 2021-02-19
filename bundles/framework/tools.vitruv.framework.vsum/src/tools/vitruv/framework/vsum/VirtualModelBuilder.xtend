@@ -10,7 +10,6 @@ import java.io.File
 import tools.vitruv.framework.userinteraction.InternalUserInteractor
 import java.nio.file.Path
 import tools.vitruv.framework.domains.repository.VitruvDomainRepositoryImpl
-import tools.vitruv.framework.domains.TuidAwareVitruvDomain
 import tools.vitruv.framework.change.processing.ChangePropagationSpecificationRepository
 import tools.vitruv.framework.userinteraction.InteractionResultProvider
 import tools.vitruv.framework.userinteraction.UserInteractionFactory
@@ -124,9 +123,6 @@ class VirtualModelBuilder {
 		if (domainRepository === null) {
 			checkState(!domains.isEmpty, "No domains were configured!")
 			domainRepository = new VitruvDomainRepositoryImpl(domains)
-		}
-		for (tuidDomain : domainRepository.filter(TuidAwareVitruvDomain)) {
-			tuidDomain.registerAtTuidManagement()
 		}
 		val changeSpecificationRepository = new ChangePropagationSpecificationRepository(changePropagationSpecifications)
 		for (changePropagationSpecification : changePropagationSpecifications) {

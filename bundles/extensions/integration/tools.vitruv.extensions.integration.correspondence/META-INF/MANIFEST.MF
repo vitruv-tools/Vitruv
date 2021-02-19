@@ -9,8 +9,7 @@ Bundle-Vendor: %providerName
 Bundle-Localization: plugin
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-ActivationPolicy: lazy
-Require-Bundle: tools.vitruv.extensions.dslsruntime.reactions;visibility:=reexport,
- tools.vitruv.framework.tuid
+Require-Bundle: tools.vitruv.extensions.dslsruntime.reactions;visibility:=reexport
 Export-Package: tools.vitruv.extensions.integration.correspondence.integration,
  tools.vitruv.extensions.integration.correspondence.integration.impl,
  tools.vitruv.extensions.integration.correspondence.integration.util,

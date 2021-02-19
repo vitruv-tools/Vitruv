@@ -29,15 +29,6 @@ abstract class AbstractVitruvDomain extends AbstractURIHaving implements VitruvD
 		return (#[rootPackage.nsURI] + rootPackage.ESubpackages.map[it.nsURIsRecursive].flatten).toSet;
 	}
 
-	def protected static String getTuidPrefix(Iterable<String> nsURIs) {
-		if (nsURIs !== null && nsURIs.size() > 0) {
-			return nsURIs.iterator().next()
-		} else {
-			throw new RuntimeException(
-				'''Cannot get a Tuid prefix from the set of namespace URIs '«»«nsURIs»'!'''.toString)
-		}
-	}
-
 	/** 
 	 * Convenience method if the metamodel consists of only a single namespace
 	 */
@@ -125,10 +116,6 @@ abstract class AbstractVitruvDomain extends AbstractURIHaving implements VitruvD
 	
 	override shouldTransitivelyPropagateChanges() {
 		false
-	}
-	
-	override supportsUuids() {
-		true
 	}
 	
 }

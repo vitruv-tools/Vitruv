@@ -9,7 +9,6 @@ import tools.vitruv.extensions.dslruntime.commonalities.resources.Resource
 import tools.vitruv.extensions.dslruntime.commonalities.resources.ResourcesPackage
 import tools.vitruv.extensions.dslsruntime.reactions.helper.PersistenceHelper
 import tools.vitruv.extensions.dslsruntime.reactions.helper.ReactionsCorrespondenceHelper
-import tools.vitruv.framework.tuid.TuidManager
 import tools.vitruv.framework.util.datatypes.VURI
 
 import static com.google.common.base.Preconditions.*
@@ -95,7 +94,6 @@ class IntermediateResourceBridgeI extends IntermediateResourceBridgeImpl {
 	}
 
 	private def persist() {
-		TuidManager.instance.updateTuidsOfRegisteredObjects()
 		resourceAccess.persistAsRoot(content, VURI.getInstance(resourceUri))
 		this.isPersisted = true
 		if (eContainer === null) {
