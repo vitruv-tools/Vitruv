@@ -8,11 +8,7 @@ class InsuranceDomain extends VitruvDemoDomain {
 	public static val String FILE_EXTENSION = "insurance"
 
 	package new() {
-		super(METAMODEL_NAME, InsurancePackage.eINSTANCE, identifyingAttributes, FILE_EXTENSION)
-	}
-
-	def private static getIdentifyingAttributes() {
-		#[InsurancePackage.Literals.INSURANCE_CLIENT__NAME]
+		super(METAMODEL_NAME, InsurancePackage.eINSTANCE, FILE_EXTENSION)
 	}
 
 }
