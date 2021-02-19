@@ -25,6 +25,7 @@ import tools.vitruv.framework.correspondence.InternalCorrespondenceModel
 import tools.vitruv.framework.correspondence.CorrespondenceModelView
 import tools.vitruv.framework.correspondence.CorrespondenceModelViewFactory
 import java.util.function.Predicate
+import java.util.LinkedHashSet
 
 class InternalCorrespondenceModelImpl extends ModelInstance implements InternalCorrespondenceModel {
 	static val logger = Logger.getLogger(InternalCorrespondenceModelImpl)
@@ -123,13 +124,13 @@ class InternalCorrespondenceModelImpl extends ModelInstance implements InternalC
 		Predicate<C> correspondencesFilter, List<EObject> aEObjects, List<EObject> bEObjects, String tag) {
 		getCorrespondences(correspondenceType, correspondencesFilter, aEObjects, tag)
 			.filter[EcoreUtil.equals(bEObjects, resolveCorrespondingObjects(aEObjects))]
-			.flatMapFixed[removeCorrespondencesAndDependendCorrespondences].toSet
+			.flatMapFixedTo(new LinkedHashSet) [removeCorrespondencesAndDependendCorrespondences()]
 	}
 
 	override <C extends Correspondence> Set<Correspondence> removeCorrespondencesFor(Class<C> correspondenceType,
 		Predicate<C> correspondencesFilter, List<EObject> eObjects, String tag) {
 		getCorrespondences(correspondenceType, correspondencesFilter, eObjects, tag)
-			.flatMapFixed[removeCorrespondencesAndDependendCorrespondences].toSet
+			.flatMapFixedTo(new LinkedHashSet) [removeCorrespondencesAndDependendCorrespondences()]
 	}
 
 	private def Set<Correspondence> removeCorrespondencesAndDependendCorrespondences(Correspondence correspondence) {
@@ -177,7 +178,7 @@ class InternalCorrespondenceModelImpl extends ModelInstance implements InternalC
 	override <C extends Correspondence> Set<List<EObject>> getCorrespondingEObjects(Class<C> correspondenceType,
 		Predicate<C> correspondencesFilter, List<EObject> eObjects, String tag) {
 		return getCorrespondences(correspondenceType, correspondencesFilter, eObjects, tag)
-			.mapFixed[resolveCorrespondingObjects(eObjects)].toSet
+			.mapFixedTo(new LinkedHashSet) [resolveCorrespondingObjects(eObjects)]
 	}
 
 	override List<EObject> getCorrespondingEObjectsInCorrespondence(Correspondence correspondence,
