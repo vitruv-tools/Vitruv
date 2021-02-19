@@ -34,7 +34,6 @@ public class SimpleVsumTest extends VsumTest {
         createDefaultVirtualModel();
     }
 
-    @Disabled
     @Test
     public void testVsumAddGetChangeAndSaveModel() {
         // create VSUM
@@ -77,7 +76,7 @@ public class SimpleVsumTest extends VsumTest {
         assertNotNull(mi.getResource(), "Resource of model instance is null");
     }
 
-    @Disabled // Only because Travis-CI cannot handle this
+    @Disabled
     @Test
     public void testVUMResourceIsChangedExternally() throws IOException {
         // same as above

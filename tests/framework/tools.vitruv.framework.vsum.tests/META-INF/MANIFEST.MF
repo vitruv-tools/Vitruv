@@ -8,7 +8,8 @@ Bundle-RequiredExecutionEnvironment: JavaSE-11
 Export-Package: tools.vitruv.framework.tests.vsum
 Require-Bundle: org.apache.log4j,
  tools.vitruv.testutils,
- tools.vitruv.testutils.metamodels,
+ tools.vitruv.testutils.domains,
+ org.eclipse.core.expressions,
  org.apache.commons.lang,
  org.eclipse.xtend.lib,
  org.eclipse.uml2.uml,
