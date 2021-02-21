@@ -1,7 +1,6 @@
 package tools.vitruv.testutils.printing
 
 import org.eclipse.emf.ecore.EObject
-import org.eclipse.emf.ecore.EClass
 import org.eclipse.emf.ecore.EStructuralFeature
 import org.eclipse.emf.ecore.resource.Resource
 import static tools.vitruv.testutils.printing.PrintResult.*
@@ -17,7 +16,8 @@ import java.util.List
 @FinalFieldsConstructor
 final class DefaultModelPrinter implements ModelPrinter {
 	val ModelPrinter subPrinter
-	static val ITERABLE_PRINT_MODE = multiLineIfAtLeast(2)
+	static val ITERABLE_PRINT_MODE = multiLineIfAtLeast(2).withSeparator(",")
+	static val FEATURE_PRINT_MODE = multiLineIfAtLeast(2).withSeparator('')
 
 	new() {
 		subPrinter = this
@@ -38,17 +38,9 @@ final class DefaultModelPrinter implements ModelPrinter {
 	) {
 		print('Resource@') + target.printValue(resource.URI) [ subTarget, uri |
 			subPrinter.printObject(subTarget, idProvider, uri)
-		] + printList(resource.contents, MULTI_LINE) [ subTarget, element |
+		] + printList(resource.contents, MULTI_LINE_LIST) [ subTarget, element |
 			subPrinter.printObject(subTarget, idProvider, element)
 		]
-	}
-
-	def private dispatch PrintResult dispatchPrintObject(
-		extension PrintTarget target,
-		PrintIdProvider idProvider,
-		EClass eClass
-	) {
-		print(eClass.name)
 	}
 
 	def private dispatch PrintResult dispatchPrintObject(
@@ -64,7 +56,7 @@ final class DefaultModelPrinter implements ModelPrinter {
 		 	
 		print(eClass.name) 
 			+ (if (idAttribute === null) print('#') + print(idProvider.getFallbackId(object)) else PRINTED_NO_OUTPUT)
-			+ printIterable('(', ')', featuresToPrint, ITERABLE_PRINT_MODE) [ subTarget, feature |
+			+ printIterable('(', ')', featuresToPrint, FEATURE_PRINT_MODE) [ subTarget, feature |
 				subPrinter.printFeature(subTarget, idProvider, object, feature)
 			]
 	}
@@ -78,7 +70,7 @@ final class DefaultModelPrinter implements ModelPrinter {
 	}
 
 	def private dispatch dispatchPrintObject(extension PrintTarget target, PrintIdProvider idProvider, Void void) {
-		print('\u2205' /* empty set */ )
+		print('\u2205' /* empty set */)
 	}
 
 	override PrintResult printFeature(
@@ -100,8 +92,6 @@ final class DefaultModelPrinter implements ModelPrinter {
 			subPrinter.printFeatureValue(target, idProvider, object, feature, object.eGet(feature))
 		}
 	}
-
-	def protected getPrintMode() { multiLineIfAtLeast(2) }
 
 	override printFeatureValueList(
 		PrintTarget target,
@@ -146,7 +136,7 @@ final class DefaultModelPrinter implements ModelPrinter {
 			]
 		}
 	}
-
+	
 	def private dispatch dispatchPrintObjectShortened(
 		extension PrintTarget target,
 		PrintIdProvider idProvider,
@@ -154,7 +144,7 @@ final class DefaultModelPrinter implements ModelPrinter {
 	) {
 		print('Resource@') + target.printValue(resource.URI) [ subTarget, uri |
 			subPrinter.printObjectShortened(subTarget, idProvider, uri)
-		] + printList(resource.contents, SINGLE_LINE) [ subTarget, element |
+		] + printList(resource.contents, SINGLE_LINE_LIST) [ subTarget, element |
 			subPrinter.printObjectShortened(subTarget, idProvider, element)
 		]
 	}
@@ -176,9 +166,26 @@ final class DefaultModelPrinter implements ModelPrinter {
 	def private dispatch dispatchPrintObjectShortened(
 		extension PrintTarget target,
 		PrintIdProvider idProvider,
+		String string
+	) {
+		if (string.length > 10) {
+			print(string.substring(0, 9)) + print('…')
+		}  else {
+			print(string)
+		}
+	}
+
+	def private dispatch dispatchPrintObjectShortened(
+		extension PrintTarget target,
+		PrintIdProvider idProvider,
 		Object object
 	) {
-		print(object.class.simpleName) + print('#') + print(idProvider.getFallbackId(object))
+		switch (object) {
+			Number,
+			Boolean,
+			URI: print(object.toString())
+			default: print(object.class.simpleName) + print('#') + print(idProvider.getFallbackId(object))
+		}
 	}
 
 	def private dispatch dispatchPrintObjectShortened(

@@ -123,22 +123,22 @@ class DefaultPrintTargetTest {
 	def void emptyIterables() {
 		val (PrintTarget, Object)=>PrintResult shouldNotBeCalled = [fail("the print function should not be called!")]
 		var printed = new DefaultPrintTarget() => [
-			printIterableElements(emptyList, SINGLE_LINE, shouldNotBeCalled)
+			printIterableElements(emptyList, SINGLE_LINE_LIST, shouldNotBeCalled)
 		]
 		assertThat(printed.toString(), is(""))
 		
 		printed = new DefaultPrintTarget() => [
-			printIterable('/{', '}!', emptyList, SINGLE_LINE, shouldNotBeCalled)
+			printIterable('/{', '}!', emptyList, SINGLE_LINE_LIST, shouldNotBeCalled)
 		]
 		assertThat(printed.toString(), is("/{}!"))
 		
 		printed = new DefaultPrintTarget() => [
-			printList(emptyList, SINGLE_LINE, shouldNotBeCalled)
+			printList(emptyList, SINGLE_LINE_LIST, shouldNotBeCalled)
 		]
 		assertThat(printed.toString(), is("[]"))
 		
 		printed = new DefaultPrintTarget() => [
-			printSet(emptyList, SINGLE_LINE, shouldNotBeCalled)
+			printSet(emptyList, SINGLE_LINE_LIST, shouldNotBeCalled)
 		]
 		assertThat(printed.toString(), is("{}"))
 	}
@@ -146,19 +146,19 @@ class DefaultPrintTargetTest {
 	@Test
 	@DisplayName("reports if nothing was printed when printing an empty iterables")
 	def void printedNoOutputIfNoOutputForIterable() {
-		assertThat(new DefaultPrintTarget().printIterableElements(emptyList, SINGLE_LINE)[], is(PRINTED_NO_OUTPUT))
+		assertThat(new DefaultPrintTarget().printIterableElements(emptyList, SINGLE_LINE_LIST)[], is(PRINTED_NO_OUTPUT))
 	}
 	
 	@Test
 	@DisplayName("prints iterables as a single line")
 	def void iterableSingleLine() {
 		var printed = new DefaultPrintTarget() => [
-			printIterable('(', ')', List.of(1), SINGLE_LINE) [$0.print(String.valueOf($1))]
+			printIterable('(', ')', List.of(1), SINGLE_LINE_LIST) [$0.print(String.valueOf($1))]
 		]
 		assertThat(printed.toString(), is("(1)"))
 		
 		printed = new DefaultPrintTarget() => [
-			printIterable('(', ')', List.of(1, 2, 3, 4, 5, 6), SINGLE_LINE) [$0.print(String.valueOf($1))]
+			printIterable('(', ')', List.of(1, 2, 3, 4, 5, 6), SINGLE_LINE_LIST) [$0.print(String.valueOf($1))]
 		]
 		assertThat(printed.toString(), is("(1, 2, 3, 4, 5, 6)"))
 	}
@@ -167,12 +167,12 @@ class DefaultPrintTargetTest {
 	@DisplayName("prints iterables on multiple lines")
 	def void iterableMultiLine() {
 		var printed = new DefaultPrintTarget() => [
-			printIterable('(', ')', emptyList, MULTI_LINE) [$0.print($1)]
+			printIterable('(', ')', emptyList, MULTI_LINE_LIST) [$0.print($1)]
 		]
 		assertThat(printed.toString(), is("()"))
 		
 		printed = new DefaultPrintTarget() => [
-			printIterable('(', ')', List.of(1), MULTI_LINE) [$0.print(String.valueOf($1))]
+			printIterable('(', ')', List.of(1), MULTI_LINE_LIST) [$0.print(String.valueOf($1))]
 		]
 		assertThat(printed.toString(), is('''
 			(
@@ -181,7 +181,7 @@ class DefaultPrintTargetTest {
 		))
 		
 		printed = new DefaultPrintTarget() => [
-			printIterable('(', ')', List.of(1, 2, 3, 4, 5, 6), MULTI_LINE) [$0.print(String.valueOf($1))]
+			printIterable('(', ')', List.of(1, 2, 3, 4, 5, 6), MULTI_LINE_LIST) [$0.print(String.valueOf($1))]
 		]
 				assertThat(printed.toString(), is('''
 			(
@@ -196,45 +196,46 @@ class DefaultPrintTargetTest {
 	}
 	
 	@Test
-	@DisplayName("respects the request threshold for multiple lines when printing iterables")
+	@DisplayName("respects the requested threshold for multiple lines when printing iterables")
 	def void iterableMultilineThreshold() {
+		val printMode = multiLineIfAtLeast(4).withSeparator("; ")
 		var printed = new DefaultPrintTarget() => [
-			printIterable('(', ')', emptyList, multiLineIfAtLeast(4)) [$0.print($1)]
+			printIterable('(', ')', emptyList, printMode) [$0.print($1)]
 		]
 		assertThat(printed.toString(), is("()"))
 		
 		printed = new DefaultPrintTarget() => [
-			printIterable('(', ')', List.of(1), multiLineIfAtLeast(4)) [$0.print(String.valueOf($1))]
+			printIterable('(', ')', List.of(1), printMode) [$0.print(String.valueOf($1))]
 		]
 		assertThat(printed.toString(), is('''(1)'''))
 		
 		printed = new DefaultPrintTarget() => [
-			printIterable('(', ')', List.of(1, 2, 3), multiLineIfAtLeast(4)) [$0.print(String.valueOf($1))]
+			printIterable('(', ')', List.of(1, 2, 3), printMode) [$0.print(String.valueOf($1))]
 		]
-		assertThat(printed.toString(), is('''(1, 2, 3)'''))
+		assertThat(printed.toString(), is('''(1; 2; 3)'''))
 		
 		printed = new DefaultPrintTarget() => [
-			printIterable('(', ')', List.of(1, 2, 3, 4), multiLineIfAtLeast(4)) [$0.print(String.valueOf($1))]
+			printIterable('(', ')', List.of(1, 2, 3, 4), printMode) [$0.print(String.valueOf($1))]
 		]
 		assertThat(printed.toString(), is('''
 			(
-			        1,
-			        2,
-			        3,
+			        1; 
+			        2; 
+			        3; 
 			        4
 			)'''
 		))
 		
 		printed = new DefaultPrintTarget() => [
-			printIterable('(', ')', List.of(1, 2, 3, 4, 5, 6), multiLineIfAtLeast(4)) [$0.print(String.valueOf($1))]
+			printIterable('(', ')', List.of(1, 2, 3, 4, 5, 6), printMode) [$0.print(String.valueOf($1))]
 		]
 				assertThat(printed.toString(), is('''
 			(
-			        1,
-			        2,
-			        3,
-			        4,
-			        5,
+			        1; 
+			        2; 
+			        3; 
+			        4; 
+			        5; 
 			        6
 			)'''
 		))
@@ -244,7 +245,7 @@ class DefaultPrintTargetTest {
 	@DisplayName("returns NOT_RESPONSIBLE when printing an iterable the printer is not responsible for")
 	def void iterableNotResponsible() {
 		val target = new DefaultPrintTarget()
-		assertThat(target.printIterable('a', 'b', List.of(1, 2, 3, 4), SINGLE_LINE) [print("bad"); NOT_RESPONSIBLE],
+		assertThat(target.printIterable('a', 'b', List.of(1, 2, 3, 4), SINGLE_LINE_LIST) [print("bad"); NOT_RESPONSIBLE],
 			is(NOT_RESPONSIBLE))
 		assertThat(target.toString(), is(""))			
 	}
@@ -253,7 +254,7 @@ class DefaultPrintTargetTest {
 	@DisplayName("throws if getting NOT_RESPONSIBLE after PRINTED when printing an iterable")
 	def void iterableNotResponsibleAfterPrinted() {
 		assertThrows(IllegalStateException) [
-			new DefaultPrintTarget().printIterable('a', 'b', List.of(1, 2, 3, 4), SINGLE_LINE) [ target, number |
+			new DefaultPrintTarget().printIterable('a', 'b', List.of(1, 2, 3, 4), SINGLE_LINE_LIST) [ target, number |
 				 switch (number) {
 				 	case 1: PRINTED
 				 	case 2: NOT_RESPONSIBLE
@@ -267,7 +268,7 @@ class DefaultPrintTargetTest {
 	@DisplayName("tolerates if getting NOT_RESPONSIBLE after PRINTED_NO_OUTPUT when printing an iterable ")
 	def void iterableNotResponsibleAfterPrintedNoOutput() {
 		val target = new DefaultPrintTarget()
-		assertThat(target.printIterable('a', 'b', List.of(1, 2, 3, 4), SINGLE_LINE) [ subTarget, number |
+		assertThat(target.printIterable('a', 'b', List.of(1, 2, 3, 4), SINGLE_LINE_LIST) [ subTarget, number |
 			subTarget.print("bad")
 			 switch (number) {
 			 	case 1: PRINTED_NO_OUTPUT
@@ -283,7 +284,7 @@ class DefaultPrintTargetTest {
 	def void appendIterable() {
 		val printed = new DefaultPrintTarget => [
 			print("previous")
-			printIterable('(', ')', List.of(1, 2, 3), MULTI_LINE) [$0.print(String.valueOf($1))]
+			printIterable('(', ')', List.of(1, 2, 3), MULTI_LINE_LIST) [$0.print(String.valueOf($1))]
 		]
 		assertThat(printed.toString(), is('''
 			previous(
@@ -297,15 +298,16 @@ class DefaultPrintTargetTest {
 	@Test
 	@DisplayName("manages indents correctly when printing nested iterables")
 	def void nestedIterables() {
+		val printMode = multiLineIfAtLeast(2).withSeparator(',')
 		val printed = new DefaultPrintTarget => [
 			printIterable('(', ')', List.of(
 				List.of(List.of(1), List.of(2, 2, 2 ,2)),
 				emptyList,
 				List.of(List.of(3)),
 				List.of(emptyList, List.of(4, 4), List.of(5))
-			), multiLineIfAtLeast(2)) [subTarget, subList |
-				subTarget.printIterable('[', ']', subList, multiLineIfAtLeast(2)) [subSubTarget, subSubList |
-					subSubTarget.printIterable('{', '}', subSubList, multiLineIfAtLeast(2)) [$0.print(String.valueOf($1))]
+			), printMode) [subTarget, subList |
+				subTarget.printIterable('[', ']', subList, printMode) [subSubTarget, subSubList |
+					subSubTarget.printIterable('{', '}', subSubList, printMode) [$0.print(String.valueOf($1))]
 				]
 			]
 		]

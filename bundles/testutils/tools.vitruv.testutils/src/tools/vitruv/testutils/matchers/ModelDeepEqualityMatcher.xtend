@@ -286,6 +286,7 @@ package class ModelDeepEqualityMatcher<O extends EObject> extends TypeSafeMatche
 
 	@FinalFieldsConstructor
 	private static class ComparisonPrinter {
+		static val DIFFERENCE_PRINT_MODE = multiLineIfAtLeast(1).withSeparator('')
 		val PrintIdProvider idProvider
 		val Comparison comparison
 		val FeatureFilter featureFilter
@@ -294,7 +295,7 @@ package class ModelDeepEqualityMatcher<O extends EObject> extends TypeSafeMatche
 		val Set<Match> seenMatches = new HashSet
 
 		def private PrintResult printDifferences(extension PrintTarget target, EObject root) {
-			printIterableElements(root.getDifferencesWithContext(), MULTI_LINE) [ subTarget, difference |
+			printIterableElements(root.getDifferencesWithContext(), DIFFERENCE_PRINT_MODE) [ subTarget, difference |
 				subTarget.printDifference(difference.key, difference.value)
 			]
 		}
