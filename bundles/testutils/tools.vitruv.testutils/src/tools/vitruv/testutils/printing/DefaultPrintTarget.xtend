@@ -78,7 +78,7 @@ class DefaultPrintTarget implements PrintTarget {
 		for (val outputs = preprinted.iterator; outputs.hasNext;) {
 			result += print(outputs.next)
 			if (outputs.hasNext) {
-				result += print(', ') + newLine()
+				result += print(',') + newLine()
 			}
 		}
 		return result + newLineDecreaseIndent() + print(end)
