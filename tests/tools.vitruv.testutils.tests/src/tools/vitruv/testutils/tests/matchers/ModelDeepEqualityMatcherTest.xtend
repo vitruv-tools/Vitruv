@@ -891,14 +891,14 @@ class ModelDeepEqualityMatcherTest {
 		assertThat(exception.message, is('''
 			
 			Expected: a ValueBased deeply equal to <ValueBased#1(
-			        value="test", 
+			        value="test"
 			        children=[ValueBased#2(value="test")]
 			)>
 			     but: found the following differences:
-			        •  (ValueBased#1).children contained the unexpected value: ValueBased#3(value="different"), 
+			        •  (ValueBased#1).children contained the unexpected value: ValueBased#3(value="different")
 			        •  (ValueBased#1).children was missing the value: ValueBased#2(value="test")
 			    for object <ValueBased#1(
-			        value="test", 
+			        value="test"
 			        children=[ValueBased#3(value="different")]
 			)>'''
 		))

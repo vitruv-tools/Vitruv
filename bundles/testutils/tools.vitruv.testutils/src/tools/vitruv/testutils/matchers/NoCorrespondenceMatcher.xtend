@@ -5,8 +5,8 @@ import org.hamcrest.TypeSafeMatcher
 import org.eclipse.emf.ecore.EObject
 import java.util.Set
 import org.hamcrest.Description
-import static tools.vitruv.testutils.printing.PrintMode.MULTI_LINE
 import static extension tools.vitruv.testutils.printing.ModelPrinting.*
+import static tools.vitruv.testutils.printing.PrintMode.MULTI_LINE_LIST
 
 @FinalFieldsConstructor
 package class NoCorrespondenceMatcher extends TypeSafeMatcher<EObject> {
@@ -19,7 +19,7 @@ package class NoCorrespondenceMatcher extends TypeSafeMatcher<EObject> {
 	}
 
 	override describeMismatchSafely(EObject item, Description mismatchDescription) {
-		mismatchDescription.appendText("found correspondences: ").appendModelValueSet(correspondences, MULTI_LINE)
+		mismatchDescription.appendText("found correspondences: ").appendModelValueSet(correspondences, MULTI_LINE_LIST)
 	}
 
 	override describeTo(Description description) {

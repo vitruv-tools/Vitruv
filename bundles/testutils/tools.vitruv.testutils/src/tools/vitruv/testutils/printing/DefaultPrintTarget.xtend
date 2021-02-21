@@ -58,27 +58,28 @@ class DefaultPrintTarget implements PrintTarget {
 		}
 		
 		return if (preprinted.isEmpty) print(start) + print(end)
-		else if (preprinted.size >= mode.multiLineIfAtLeastItemCount) printMultiLine(start, end, preprinted)
-		else printSingleLine(start, end, preprinted)
+		else if (preprinted.size >= mode.multiLineIfAtLeastItemCount)
+		 	printMultiLine(start, end, mode.separator, preprinted)
+		else printSingleLine(start, end, mode.separator, preprinted)
 	}
 
-	def private <T> printSingleLine(String start, String end, Collection<DefaultPrintTarget> preprinted) {
+	def private <T> printSingleLine(String start, String end, String separator, Collection<DefaultPrintTarget> preprinted) {
 		var result = print(start)
 		for (val outputs = preprinted.iterator; outputs.hasNext;) {
 			result += print(outputs.next)
 			if (outputs.hasNext) {
-				result += print(', ')
+				result += print(separator)
 			}
 		}
 		return result + print(end)
 	}
 
-	def private <T> printMultiLine(String start, String end, Collection<DefaultPrintTarget> preprinted) {
+	def private <T> printMultiLine(String start, String end, String separator, Collection<DefaultPrintTarget> preprinted) {
 		var result = print(start) + newLineIncreaseIndent()
 		for (val outputs = preprinted.iterator; outputs.hasNext;) {
 			result += print(outputs.next)
 			if (outputs.hasNext) {
-				result += print(',') + newLine()
+				result += print(separator) + newLine()
 			}
 		}
 		return result + newLineDecreaseIndent() + print(end)

@@ -6,8 +6,8 @@ import org.eclipse.emf.ecore.EObject
 import java.util.Set
 import org.hamcrest.Matcher
 import org.hamcrest.Description
-import static tools.vitruv.testutils.printing.PrintMode.MULTI_LINE
 import static extension tools.vitruv.testutils.printing.ModelPrinting.*
+import static tools.vitruv.testutils.printing.PrintMode.MULTI_LINE_LIST
 
 @FinalFieldsConstructor
 package class HasExactlyOneCorrespondenceMatcher extends TypeSafeMatcher<EObject> {
@@ -26,7 +26,7 @@ package class HasExactlyOneCorrespondenceMatcher extends TypeSafeMatcher<EObject
 			mismatchDescription.appendText("found no such correspondences")
 		} else if (correspondences.size > 1) {
 			mismatchDescription.appendText("found more than one such correspondence: ").
-				appendModelValueSet(correspondences, MULTI_LINE)
+				appendModelValueSet(correspondences, MULTI_LINE_LIST)
 		} else {
 			correspondenceMatcher.describeMismatch(correspondences.get(0), mismatchDescription)
 		}
