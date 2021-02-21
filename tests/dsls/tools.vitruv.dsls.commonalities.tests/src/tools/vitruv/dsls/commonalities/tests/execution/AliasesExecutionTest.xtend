@@ -26,8 +26,8 @@ class AliasesExecutionTest extends IdentifiedExecutionTest {
 					has id {
 						= All:Root.id
 						= AllElementTypes2:Root2.id2
-						= Palladio:Repo.id
-						= UmlMockup:Package.id
+						= Palladio:Repo.name
+						= UmlMockup:Package.name
 						-> All:Resource.name
 						-> AllElementTypes2:Resource.name
 						-> Palladio:Res.name

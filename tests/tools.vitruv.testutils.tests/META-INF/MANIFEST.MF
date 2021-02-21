@@ -1,0 +1,15 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Vitruv Test Utilities Tests
+Bundle-SymbolicName: tools.vitruv.testutils.tests
+Bundle-Version: 2.1.0.qualifier
+Automatic-Module-Name: tools.vitruv.testutils.tests
+Bundle-RequiredExecutionEnvironment: JavaSE-11
+Bundle-Vendor: vitruv.tools
+Require-Bundle: tools.vitruv.testutils,
+ org.junit.jupiter.api,
+ org.junit.jupiter.params,
+ org.hamcrest.core,
+ com.google.guava,
+ org.eclipse.xtend.lib,
+ tools.vitruv.testutils.domains

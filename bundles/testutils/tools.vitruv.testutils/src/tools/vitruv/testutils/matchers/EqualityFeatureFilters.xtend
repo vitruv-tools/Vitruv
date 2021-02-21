@@ -5,20 +5,21 @@ import java.util.Set
 import org.eclipse.emf.ecore.EStructuralFeature
 import org.eclipse.emf.ecore.EClassifier
 import static extension tools.vitruv.testutils.printing.TestMessages.*
-import org.eclipse.emf.ecore.EObject
 import tools.vitruv.testutils.matchers.EqualityFeatureFilter
+import org.eclipse.emf.ecore.EClass
+import java.util.List
 
 @FinalFieldsConstructor
 package class IgnoreFeatures implements EqualityFeatureFilter {
 	val Set<EStructuralFeature> features
 
-	override includeFeature(EObject object, EStructuralFeature feature) {
+	override includeFeature(EStructuralFeature feature) {
 		!features.contains(feature)
 	}
 
 	override describeTo(extension StringBuilder builder) {
-		append('ignored the ').append(plural(features, 'feature')).append(' ') //
-		.joinSemantic(features, 'and')[append(EContainingClass.name).append('.').append(name)]
+		append('ignored the ').append(plural(features, 'feature')).append(' ')
+			.joinSemantic(features, 'and') [append(EContainingClass.name).append('.').append(name)]
 	}
 }
 
@@ -26,13 +27,13 @@ package class IgnoreFeatures implements EqualityFeatureFilter {
 package class IncludeOnlyFeatures implements EqualityFeatureFilter {
 	val Set<EStructuralFeature> features
 
-	override includeFeature(EObject object, EStructuralFeature feature) {
+	override includeFeature(EStructuralFeature feature) {
 		features.contains(feature)
 	}
 
 	override describeTo(extension StringBuilder builder) {
-		append('considered only the ').append(plural(features, 'feature')).append(' ') //
-		.joinSemantic(features, 'and')[append(EContainingClass.name).append('.').append(name)]
+		append('considered only the ').append(plural(features, 'feature')).append(' ')
+			.joinSemantic(features, 'and') [append(EContainingClass.name).append('.').append(name)]
 	}
 }
 
@@ -40,13 +41,13 @@ package class IncludeOnlyFeatures implements EqualityFeatureFilter {
 package class IgnoreNamedFeatures implements EqualityFeatureFilter {
 	val Set<String> featureNames
 
-	override includeFeature(EObject object, EStructuralFeature feature) {
+	override includeFeature(EStructuralFeature feature) {
 		!featureNames.contains(feature.name)
 	}
 
 	override describeTo(extension StringBuilder builder) {
-		append('ignored any feature called ') //
-		.joinSemantic(featureNames, 'or')[append("'").append(it).append("'")]
+		append('ignored any feature called ') 
+			.joinSemantic(featureNames, 'or') [append("'").append(it).append("'")]
 	}
 }
 
@@ -54,13 +55,13 @@ package class IgnoreNamedFeatures implements EqualityFeatureFilter {
 package class IgnoreAllExceptNamedFeatures implements EqualityFeatureFilter {
 	val Set<String> featureNames
 
-	override includeFeature(EObject object, EStructuralFeature feature) {
+	override includeFeature(EStructuralFeature feature) {
 		featureNames.contains(feature.name)
 	}
 
 	override describeTo(extension StringBuilder builder) {
 		append('considered only features called ') //
-		.joinSemantic(featureNames, 'or')[append("'").append(it).append("'")]
+			.joinSemantic(featureNames, 'or') [append("'").append(it).append("'")]
 	}
 }
 
@@ -68,13 +69,17 @@ package class IgnoreAllExceptNamedFeatures implements EqualityFeatureFilter {
 package class IgnoreTypedFeatures implements EqualityFeatureFilter {
 	val Set<EClassifier> featureTypes
 
-	override includeFeature(EObject object, EStructuralFeature feature) {
-		!featureTypes.contains(feature.EType)
+	override includeFeature(EStructuralFeature feature) {
+		val featureType = feature.EType
+		switch (featureType) {
+			EClass: !featureTypes.contains(featureType) && !featureType.EAllSuperTypes.exists [featureTypes.contains(it)]
+			default: !featureTypes.contains(featureType)
+		}
 	}
 
 	override describeTo(extension StringBuilder builder) {
-		append('ignored any feature of type ') //
-		.joinSemantic(featureTypes, 'or')[append(name)]
+		append('ignored any feature of type ')
+			.joinSemantic(featureTypes, 'or') [append(name)]
 	}
 }
 
@@ -82,52 +87,29 @@ package class IgnoreTypedFeatures implements EqualityFeatureFilter {
 package class IgnoreAllExceptTypedFeatures implements EqualityFeatureFilter {
 	val Set<EClassifier> featureTypes
 
-	override includeFeature(EObject object, EStructuralFeature feature) {
-		featureTypes.contains(feature.EType)
+	override includeFeature(EStructuralFeature feature) {
+		val featureType = feature.EType
+		switch (featureType) {
+			EClass: featureTypes.contains(featureType) || featureType.EAllSuperTypes.exists [featureTypes.contains(it)]
+			default: featureTypes.contains(featureType)
+		}
 	}
 
 	override describeTo(extension StringBuilder builder) {
-		append('considered only features of type ') //
-		.joinSemantic(featureTypes, 'or')[append(name)]
+		append('considered only features of type ')
+			.joinSemantic(featureTypes, 'or') [append(name)]
 	}
 }
 
 @FinalFieldsConstructor
-package class TypeIncludingFeatureFilter implements EqualityFeatureFilter {
-	val Set<Class<? extends EObject>> filteredTypes
-	val EqualityFeatureFilter filter
-
-	override includeFeature(EObject object, EStructuralFeature feature) {
-		if (filteredTypes.exists[isInstance(object)]) filter.includeFeature(object, feature) else true
+package class MultiEqualityFeatureFilter implements EqualityFeatureFilter {
+	val List<EqualityFeatureFilter> filters
+	
+	override includeFeature(EStructuralFeature feature) {
+		!filters.exists [!includeFeature(feature)]
 	}
-
-	override describeTo(extension StringBuilder builder) {
-		filter.describeTo(builder)
-		append(' on ').joinSemantic(filteredTypes, 'and')[append(simpleName).append('s')]
-	}
-}
-
-@FinalFieldsConstructor
-package class TypeExcludingFeatureFilter implements EqualityFeatureFilter {
-	val Set<Class<? extends EObject>> filteredTypes
-	val EqualityFeatureFilter filter
-
-	override includeFeature(EObject object, EStructuralFeature feature) {
-		if (!filteredTypes.exists[isInstance(object)]) filter.includeFeature(object, feature) else true
-	}
-
-	override describeTo(extension StringBuilder builder) {
-		filter.describeTo(builder)
-		append(' unless it was on a ').joinSemantic(filteredTypes, 'or')[append(simpleName)]
-	}
-}
-
-package class IgnoreUnsetFeaturesFilter implements EqualityFeatureFilter {
-	override includeFeature(EObject object, EStructuralFeature feature) {
-		object.eIsSet(feature)
-	}
-
-	override describeTo(extension StringBuilder builder) {
-		append('ignored unset features')
+	
+	override describeTo(StringBuilder builder) {
+		filters.joinSemantic('and', ';') [target, it | describeTo(target)]
 	}
 }
