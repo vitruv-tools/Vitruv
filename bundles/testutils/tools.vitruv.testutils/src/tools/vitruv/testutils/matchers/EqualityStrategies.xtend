@@ -8,25 +8,23 @@ import static tools.vitruv.testutils.matchers.EqualityStrategy.Result.*
 import java.util.Set
 import static extension tools.vitruv.testutils.printing.TestMessages.*
 import java.util.List
-import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
-import java.util.HashSet
 
 @FinalFieldsConstructor
-package class EqualityStrategies implements EqualityStrategy {
+package class EqualsBasedEqualityStrategy implements EqualityStrategy {
 	val Set<EClass> targetEClasses
-	
+
 	override Result compare(EObject left, EObject right) {
-		if (!targetEClasses.contains(left.eClass) || !targetEClasses.contains(right.eClass)) UNKNOWN
+		if (!isTargetInstance(left) || !isTargetInstance(right)) UNKNOWN
 		else if (left == right) EQUAL
 		else UNEQUAL
 	}
 	
-	override getTargetNsUris() {
-		targetEClasses.mapFixedTo(new HashSet) [EPackage.nsURI]
+	def isTargetInstance(EObject object) {
+		targetEClasses.contains(object.eClass) || targetEClasses.exists [isInstance(object)]
 	}
 	
 	override describeTo(extension StringBuilder builder) {
-		append("used equals() to compare ").joinSemantic(targetEClasses, 'and') [append(plural(name))]
+		append("used equals() to compare referenced ").joinSemantic(targetEClasses, 'and') [append(plural(name))]
 	}
 }
 
@@ -40,10 +38,6 @@ package class MultiEqualityStrategy implements EqualityStrategy {
 			if (strategyResult != EqualityStrategy.Result.UNKNOWN) return strategyResult
 		}
 		return EqualityStrategy.Result.UNKNOWN
-	}
-	
-	override getTargetNsUris() {
-		strategies.flatMapFixedTo(new HashSet) [targetNsUris]
 	}
 	
 	override describeTo(StringBuilder builder) {

@@ -14,7 +14,7 @@ import org.junit.jupiter.api.Test
 import static tools.vitruv.testutils.matchers.ModelMatchers.equalsDeeply
 import static tools.vitruv.dsls.commonalities.tests.util.CommonalitiesLanguageCreators.commonalities
 import static org.hamcrest.MatcherAssert.assertThat
-import static tools.vitruv.testutils.matchers.ModelMatchers.usingEqualsFor
+import static tools.vitruv.testutils.matchers.ModelMatchers.usingEqualsForReferencesTo
 
 @ExtendWith(InjectionExtension, ModelPrinterChange)
 @InjectWith(CommonalitiesLanguageInjectorProvider)
@@ -41,7 +41,7 @@ class ReferenceReferencingTest {
 			commonalities.CommonalityReference => [
 				name = "selfref"
 				referenceType = commonality
-			], usingEqualsFor(commonalities.Commonality.eClass)
+			], usingEqualsForReferencesTo(commonalities.Commonality.eClass)
 		))
 	}
 	
@@ -66,7 +66,7 @@ class ReferenceReferencingTest {
 				commonalities.CommonalityReference => [
 					name = "foreignref"
 					referenceType = referenced.commonality
-				], usingEqualsFor(commonalities.Commonality.eClass)				
+				], usingEqualsForReferencesTo(commonalities.Commonality.eClass)				
 			))
 		]
 	}

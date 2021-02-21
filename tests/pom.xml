@@ -17,6 +17,7 @@
 		<module>dsls</module>
 		<module>domains</module>
 		<module>applications</module>
+		<module>toolts.vitruv.testutils.tests</module>
 	</modules>
 	
 </project>

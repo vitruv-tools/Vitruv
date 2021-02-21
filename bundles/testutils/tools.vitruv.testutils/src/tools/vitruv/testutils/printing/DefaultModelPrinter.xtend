@@ -11,6 +11,8 @@ import static tools.vitruv.testutils.printing.PrintMode.*
 import org.eclipse.xtend.lib.annotations.FinalFieldsConstructor
 import org.eclipse.emf.common.util.URI
 import static tools.vitruv.testutils.printing.PrintMode.multiLineIfAtLeast
+import org.eclipse.emf.ecore.EReference
+import java.util.List
 
 @FinalFieldsConstructor
 final class DefaultModelPrinter implements ModelPrinter {
@@ -54,12 +56,17 @@ final class DefaultModelPrinter implements ModelPrinter {
 		PrintIdProvider idProvider,
 		EObject object
 	) {
-		target.printObjectWithContent(idProvider, object) [ contentTarget, toPrint |
-			val allFeatures = toPrint.eClass.EAllStructuralFeatures
-			contentTarget.printIterableElements(allFeatures, ITERABLE_PRINT_MODE) [ subTarget, feature |
-				subPrinter.printFeature(subTarget, idProvider, toPrint, feature)
+		val eClass = object.eClass
+		val idAttribute = eClass.EIDAttribute
+		val featuresToPrint = (if (idAttribute !== null) List.of(idAttribute) else emptyList)
+			+ eClass.EAllAttributes.filter [it != idAttribute]
+		 	+ eClass.EAllReferences
+		 	
+		print(eClass.name) 
+			+ (if (idAttribute === null) print('#') + print(idProvider.getFallbackId(object)) else PRINTED_NO_OUTPUT)
+			+ printIterable('(', ')', featuresToPrint, ITERABLE_PRINT_MODE) [ subTarget, feature |
+				subPrinter.printFeature(subTarget, idProvider, object, feature)
 			]
-		]
 	}
 
 	def private dispatch dispatchPrintObject(extension PrintTarget target, PrintIdProvider idProvider, URI uri) {
@@ -128,7 +135,12 @@ final class DefaultModelPrinter implements ModelPrinter {
 		Object value
 	) {
 		switch (value) {
-			EObject: subPrinter.printObject(target, idProvider, value)
+			EObject: {
+				switch (feature) {
+					EReference case feature.isContainment: subPrinter.printObject(target, idProvider, value)
+					default: subPrinter.printObjectShortened(target, idProvider, value)
+				}
+			}
 			default: target.printValue(value)[subTarget, theValue |
 				subPrinter.printObject(subTarget, idProvider, theValue)
 			]
@@ -148,13 +160,17 @@ final class DefaultModelPrinter implements ModelPrinter {
 	}
 
 	def private dispatch dispatchPrintObjectShortened(
-		PrintTarget target,
+		extension PrintTarget target,
 		PrintIdProvider idProvider,
 		EObject object
 	) {
-		target.printObjectWithContent(idProvider, object) [ contentTarget, _ |
-			contentTarget.print('…')
-		]
+		val idAttribute = object.eClass.EIDAttribute
+		print(object.eClass.name)
+			+ if (idAttribute !== null) {
+			 	print('(') + printFeature(target, idProvider, object, idAttribute) + print(')')
+			} else {
+				print('#') + print(idProvider.getFallbackId(object))
+			}
 	}
 
 	def private dispatch dispatchPrintObjectShortened(
@@ -162,7 +178,7 @@ final class DefaultModelPrinter implements ModelPrinter {
 		PrintIdProvider idProvider,
 		Object object
 	) {
-		print(object.class.simpleName) + print('(…)')
+		print(object.class.simpleName) + print('#') + print(idProvider.getFallbackId(object))
 	}
 
 	def private dispatch dispatchPrintObjectShortened(
@@ -171,17 +187,6 @@ final class DefaultModelPrinter implements ModelPrinter {
 		Void void
 	) {
 		print('\u2205' /* empty set */ )
-	}
-
-	/**
-	 * Helper to print an {@link EObject}. Will print the object’s ID and, if the object has not been printed yet,
-	 * use {@link contentPrinter} to print the object’s content.
-	 */
-	def private <T extends EObject> printObjectWithContent(PrintTarget target, PrintIdProvider idProvider, T object,
-		(PrintTarget, T)=>PrintResult contentPrinter) {
-		idProvider.ifAlreadyPrintedElse(object, [obj, id|target.print(id)]) [ toPrint, id |
-			target.print(id) + target.print('(') + contentPrinter.apply(target, toPrint) + target.print(')')
-		]
 	}
 
 	override withSubPrinter(ModelPrinter printer) {
