@@ -265,8 +265,8 @@ class ChangeRecorder implements AutoCloseable {
 						case ADD,
 						case SET: infect(notification.newValue)
 						case ADD_MANY: (notification.newValue as Iterable<?>).forEach [infect()]
-						// RESOLVE can only be dispatched for non-containment references, so we don’t need
-						// to react to it
+						// We currently resolve all containment references in #recursively, which is why we don’t
+						// need to react to RESOLVE notifications here.
 					}
 				}
 			}
