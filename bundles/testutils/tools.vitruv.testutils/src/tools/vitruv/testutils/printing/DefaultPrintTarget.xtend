@@ -124,7 +124,11 @@ class DefaultPrintTarget implements PrintTarget {
 		return if (lines.isEmpty) ''
 		else if (lines.size === 1) lines.get(0).toString
 		else {
-			val result = new StringBuilder()
+			var resultLength = 0
+			for (line: lines) resultLength += line.length
+			resultLength += (lines.size - 1) * System.lineSeparator.length
+			
+			val result = new StringBuilder(resultLength)
 			for (val linesIt = lines.iterator; linesIt.hasNext;) {
 				result.append(linesIt.next)
 				if (linesIt.hasNext) result.append(System.lineSeparator)
