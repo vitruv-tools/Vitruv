@@ -888,7 +888,7 @@ class ModelDeepEqualityMatcherTest {
 				children += aet.ValueBased => [value = 'test']
 			]))
 		]
-		assertThat(exception.message, is('''
+		assertThat(exception.message.replaceAll('\r?\\n', System.lineSeparator), is('''
 			
 			Expected: a ValueBased deeply equal to <ValueBased#1(
 			        value="test"
