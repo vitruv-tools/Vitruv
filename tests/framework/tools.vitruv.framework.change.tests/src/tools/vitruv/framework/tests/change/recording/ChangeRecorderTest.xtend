@@ -34,6 +34,8 @@ import org.junit.jupiter.api.^extension.ExtendWith
 import tools.vitruv.testutils.TestProjectManager
 import tools.vitruv.testutils.RegisterMetamodelsInStandalone
 import static org.junit.jupiter.api.Assertions.assertTrue
+import static extension org.eclipse.emf.ecore.util.EcoreUtil.*
+import org.eclipse.emf.ecore.InternalEObject
 
 @ExtendWith(TestProjectManager, RegisterMetamodelsInStandalone)
 class ChangeRecorderTest {
@@ -183,6 +185,37 @@ class ChangeRecorderTest {
 		val nonRoot = aet.NonRoot
 		if (isRecordingWhileAddingObject) changeRecorder.beginRecording()
 		root.multiValuedContainmentEReference += nonRoot
+		if (isRecordingWhileAddingObject) changeRecorder.endRecording()
+		
+		changeRecorder.beginRecording()
+		nonRoot.id = 'foobar'
+		changeRecorder.endRecording()
+		
+		assertThat(changeRecorder.changes, hasEChanges(ReplaceSingleValuedEAttribute))
+	}
+	
+	@ParameterizedTest(name = "while isRecording={0}")
+	@DisplayName("adds an object that was resolved from its proxy to the recording")
+	@ValueSource(booleans = #[false, true])
+	def void recordsOnResolvedProxyInContainment(boolean isRecordingWhileAddingObject, @TestProject Path testDir) {
+		val savedNonRoot = aet.NonRoot
+		resourceSet.createResource(URI.createFileURI(testDir.resolve('test.aet').toString)) => [
+			contents += aet.Root => [
+				singleValuedContainmentEReference = savedNonRoot
+			]
+			save(emptyMap)
+		]
+		val root = aet.Root => [
+			singleValuedContainmentEReference = aet.NonRoot => [
+				(it as InternalEObject).eSetProxyURI(savedNonRoot.URI)
+			]
+		]
+		// proxy resolving should be done in resources
+		resourceSet.createResource(URI.createURI('test://test2.aet')) => [contents += root]
+		if (isRecordingWhileAddingObject) changeRecorder.beginRecording()
+		// we currently resolve containment proxies when adding an object
+		changeRecorder.addToRecording(root)
+		val nonRoot = root.singleValuedContainmentEReference
 		if (isRecordingWhileAddingObject) changeRecorder.endRecording()
 		
 		changeRecorder.beginRecording()
@@ -399,7 +432,7 @@ class ChangeRecorderTest {
 	@ParameterizedTest(name = "while isRecording={0}")
 	@DisplayName("removes multiple removed resources from the recording")
 	@ValueSource(booleans = #[false, true])
-	def void recordsOnMultipleRemovedResource(boolean isRecordingWhileRemovingObject) {
+	def void removeAfterMultipleRemovedResource(boolean isRecordingWhileRemovingObject) {
 		val resource1 = resourceSet.createResource(URI.createURI('test://test1.aet'))
 		val resource2 = resourceSet.createResource(URI.createURI('test://test2.aet'))
 		val resource3 = resourceSet.createResource(URI.createURI('test://test3.aet'))
