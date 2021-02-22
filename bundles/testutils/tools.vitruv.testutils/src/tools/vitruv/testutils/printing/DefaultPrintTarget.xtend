@@ -114,8 +114,8 @@ class DefaultPrintTarget implements PrintTarget {
 	
 	def private checkIsOpen() {
 		if (lines === null) {
-		 throw new IllegalStateException("This printer has already been incorporated into another printer and " + 
-			"must not be used anymore!")
+			throw new IllegalStateException("This printer has already been incorporated into another printer and " + 
+				"must not be used anymore!")
 		}
 	}
 	
