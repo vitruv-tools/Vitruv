@@ -1,6 +1,5 @@
 package tools.vitruv.framework.vsum.repositories
 
-import edu.kit.ipd.sdq.commons.util.org.eclipse.emf.common.util.URIUtil
 import java.util.HashMap
 import java.util.Map
 import org.apache.log4j.Logger
@@ -19,6 +18,7 @@ import tools.vitruv.framework.uuid.UuidGeneratorAndResolverImpl
 import tools.vitruv.framework.vsum.ModelRepository
 
 import static extension tools.vitruv.framework.util.bridges.EcoreResourceBridge.loadOrCreateResource
+import static extension tools.vitruv.framework.util.bridges.EcoreResourceBridge.getOrCreateResource
 import static extension tools.vitruv.framework.util.ResourceSetUtil.withGlobalFactories
 import static extension tools.vitruv.framework.domains.repository.DomainAwareResourceSet.awareOfDomains
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
@@ -58,9 +58,9 @@ class ResourceRepositoryImpl implements ModelRepository {
 	def private createOrLoadModel(VURI modelURI, boolean forceLoadAndRelinkUuids) {
 		checkState(getDomainForURI(modelURI) !== null, "Cannot create a new model instance at the URI '%s' because no domain is registered for that URI", modelURI)
 		val resource = if (modelURI.EMFUri.toString().startsWith("pathmap") || forceLoadAndRelinkUuids) {
-			loadResource(modelURI, !forceLoadAndRelinkUuids)
+			loadOrCreateResource(modelURI, !forceLoadAndRelinkUuids)
 		} else {
-			createResource(modelURI)
+			getOrCreateResource(modelURI)
 		}
 		val modelInstance = new ModelInstance(resource)
 		this.modelInstances.put(modelURI, modelInstance)
@@ -68,16 +68,12 @@ class ResourceRepositoryImpl implements ModelRepository {
 		return modelInstance
 	}
 	
-	def private createResource(VURI modelURI) {
-		var resource = this.resourceSet.getResource(modelURI.EMFUri, false)
-		if (resource === null) {
-			resource = this.resourceSet.createResource(modelURI.EMFUri)
-		}
-		return resource
+	def private getOrCreateResource(VURI modelURI) {
+		return resourceSet.getOrCreateResource(modelURI.EMFUri)
 	}
 
-	def private loadResource(VURI modelURI, boolean generateUuids) {
-		val resource = URIUtil.loadResourceAtURI(modelURI.EMFUri, this.resourceSet)
+	def private loadOrCreateResource(VURI modelURI, boolean generateUuids) {
+		val resource = resourceSet.loadOrCreateResource(modelURI.EMFUri)
 		if (!generateUuids) {
 			relinkUuids(resource)
 		} else {
