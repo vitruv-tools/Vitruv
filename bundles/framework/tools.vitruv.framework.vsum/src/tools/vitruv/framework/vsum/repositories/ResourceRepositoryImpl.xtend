@@ -47,7 +47,7 @@ class ResourceRepositoryImpl implements ModelRepository {
 		this.resourceSet = new ResourceSetImpl().withGlobalFactories().awareOfDomains(domainRepository)
 		this.uuidGeneratorAndResolver = initializeUuidProviderAndResolver()
 		loadVURIsOfVSMUModelInstances()
-		resourceSet.eAdapters += new ResourceRegistrationAdapter [createModel(VURI.getInstance(it))]
+		resourceSet.eAdapters += new ResourceRegistrationAdapter [getModel(VURI.getInstance(it))]
 	}
 
 	def private ChangeRecorder getOrCreateChangeRecorder(VURI vuri) {
@@ -56,44 +56,46 @@ class ResourceRepositoryImpl implements ModelRepository {
 		]
 	}
 
-	override ModelInstance getModel(VURI modelURI) {
-		if (modelURI.EMFUri.toString().startsWith("pathmap")) {
-			loadExistingModel(modelURI, true)
-		} else {
-			createModel(modelURI)
-		}
+	override getModel(VURI modelURI) {
+		modelURI.getModel(false)
 	}
-	
-	def private ModelInstance createModel(VURI modelURI) {
+		
+	private def getModel(VURI modelURI, boolean forceLoadAndRelinkUuids) {
 		checkState(getDomainForURI(modelURI) !== null, "Cannot create a new model instance at the URI '%s' because no domain is registered for that URI", modelURI)
-		var modelResource = this.resourceSet.getResource(modelURI.EMFUri, false)
-		if (modelResource === null) {
-			modelResource = this.resourceSet.createResource(modelURI.EMFUri)
+		val resource = if (modelURI.EMFUri.toString().startsWith("pathmap") || forceLoadAndRelinkUuids) {
+			loadResource(modelURI, !forceLoadAndRelinkUuids)
+		} else {
+			createResource(modelURI)
 		}
-		val modelInstance = new ModelInstance(modelURI, modelResource)
+		val modelInstance = new ModelInstance(modelURI, resource)
 		registerModelInstance(modelURI, modelInstance)
 		return modelInstance
+	}
+	
+	def private createResource(VURI modelURI) {
+		var resource = this.resourceSet.getResource(modelURI.EMFUri, false)
+		if (resource === null) {
+			resource = this.resourceSet.createResource(modelURI.EMFUri)
+		}
+		return resource
 	}
 
-	def private ModelInstance loadExistingModel(VURI modelURI, boolean generateUuids) {
-		checkState(getDomainForURI(modelURI) !== null, "Cannot create a new model instance at the URI '%s' because no domain is registered for that URI", modelURI)
-		val modelResource = URIUtil.loadResourceAtURI(modelURI.EMFUri, this.resourceSet)
-		val modelInstance = new ModelInstance(modelURI, modelResource)
+	def private loadResource(VURI modelURI, boolean generateUuids) {
+		val resource = URIUtil.loadResourceAtURI(modelURI.EMFUri, this.resourceSet)
 		if (!generateUuids) {
-			relinkUuids(modelInstance)
+			relinkUuids(resource)
 		} else {
-			generateUuids(modelInstance)
+			generateUuids(resource)
 		}
-		registerModelInstance(modelURI, modelInstance)
-		return modelInstance
+		return resource
 	}
 	
-	def private void relinkUuids(ModelInstance modelInstance) {
-		modelInstance.resource.allContents.forEachRemaining [uuidGeneratorAndResolver.registerEObject(it)]
+	def private void relinkUuids(Resource resource) {
+		resource.allContents.forEachRemaining [uuidGeneratorAndResolver.registerEObject(it)]
 	}
 	
-	def private void generateUuids(ModelInstance modelInstance) {
-		modelInstance.resource.allContents.forEachRemaining [uuidGeneratorAndResolver.generateUuid(it)]
+	def private void generateUuids(Resource resource) {
+		resource.allContents.forEachRemaining [uuidGeneratorAndResolver.generateUuid(it)]
 	}
 	
 	def private void registerModelInstance(VURI modelUri, ModelInstance modelInstance) {
@@ -171,8 +173,7 @@ class ResourceRepositoryImpl implements ModelRepository {
 
 	def private void loadVURIsOfVSMUModelInstances() {
 		for (VURI vuri : fileSystemLayout.loadVsumVURIs()) {
-			var modelInstance = loadExistingModel(vuri, false)
-			registerModelInstance(vuri, modelInstance)
+			getModel(vuri, true)
 		}
 	}
 
