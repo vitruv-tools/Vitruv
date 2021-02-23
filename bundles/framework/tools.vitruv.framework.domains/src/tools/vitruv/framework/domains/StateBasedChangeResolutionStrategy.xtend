@@ -19,8 +19,7 @@ interface StateBasedChangeResolutionStrategy {
 	 * @param uuidGeneratorAndResolver is the UUID resolver of the virtual model using this propagation strategy.
 	 * @return a {@link CompositeChange} that contains the individual change sequences.
 	 */
-	def CompositeChange<VitruviusChange> getChangeSequences(Resource newState, Resource currentState,
-		UuidGeneratorAndResolver uuidGeneratorAndResolver)
+	def VitruviusChange getChangeSequences(Resource newState, Resource currentState, UuidGeneratorAndResolver resolver)
 
 	/**
 	 * Resolves the state-based delta of two EObjects and returns the correlating change sequences.
@@ -29,5 +28,8 @@ interface StateBasedChangeResolutionStrategy {
 	 * @param uuidGeneratorAndResolver is the UUID resolver of the virtual model using this propagation strategy.
 	 * @return a {@link CompositeChange} that contains the individual change sequences.
 	 */
-	def CompositeChange<VitruviusChange> getChangeSequences(EObject newState, EObject currentState, UuidGeneratorAndResolver resolver)
+	def VitruviusChange getChangeSequences(EObject newState, EObject currentState, UuidGeneratorAndResolver resolver) {
+		return getChangeSequences(newState?.eResource, currentState?.eResource, resolver)
+	}
+	
 }
