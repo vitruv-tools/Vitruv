@@ -42,6 +42,23 @@ public final class EcoreResourceBridge {
 	}
 
 	/**
+	 * Returns a {@link Resource} that is either already loaded into and retrieved from
+	 * the given {@link ResourceSet}, or creates a new {@link Resource} if it does 
+	 * not exist yet.
+	 *
+	 * @param resourceSet the {@link ResourceSet} to load the {@link Resource} into
+	 * @param uri         the {@link URI} of the {@link Resource} to get or create
+	 * @return a {@link Resource} created for or retrieved from the given {@link URI}
+	 */
+	public static Resource getOrCreateResource(ResourceSet resourceSet, URI uri) {
+		var resource = resourceSet.getResource(uri, false);
+		if (resource == null) {
+			resource = resourceSet.createResource(uri);
+		}
+		return resource;
+	}
+	
+	/**
 	 * Returns a {@link Resource} that is either loaded from the given {@link URI}
 	 * if some model is persisted at that {@link URI}, or creates a new
 	 * {@link Resource} if it does not exist yet.
