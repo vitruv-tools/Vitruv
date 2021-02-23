@@ -6,7 +6,6 @@ import java.util.HashSet
 import org.apache.log4j.Logger
 import java.util.Map
 import java.util.HashMap
-import org.eclipse.emf.ecore.change.impl.ChangeDescriptionImpl
 import tools.vitruv.framework.uuid.UuidGeneratorAndResolver
 import tools.vitruv.framework.change.recording.ChangeRecorder
 
@@ -38,7 +37,7 @@ class ModelRepositoryImpl {
 	def void cleanupRootElements() {
 		val elementsToRemove = newArrayList() 
 		for (rootElement : rootElements) {
-			if (rootElement.eContainer !== null && !(rootElement.eContainer instanceof ChangeDescriptionImpl)) {
+			if (rootElement.eContainer !== null) {
 				elementsToRemove += rootElement;
 			}
 		}
