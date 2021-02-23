@@ -26,7 +26,6 @@ class TestLogging implements BeforeAllCallback {
 	 * The default root log level. Defaults to {@link Level#WARN}. 
 	 */
 	public static val VM_ARGUMENT_LOG_LEVEL = "vitruv.logLevel"
-	public static val VM_ARGUMENT_ENABLE_ID_LOGGERS = "vitruv.enableIdLoggers"
 	static val LOG_PATTERN = "%d{HH:mm:ss.SSS} [%35.35c{1}] %5p: %m%n"
 	static val VITRUV_LOG_ROOTS = List.of("tools.vitruv", "mir.reactions", "mir.routines")
 
