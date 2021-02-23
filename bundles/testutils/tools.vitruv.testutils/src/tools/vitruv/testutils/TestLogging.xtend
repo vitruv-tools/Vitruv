@@ -14,7 +14,6 @@ import static org.apache.log4j.Logger.getRootLogger
 import static org.slf4j.Logger.ROOT_LOGGER_NAME
 
 import static extension org.apache.log4j.Logger.getLogger
-import tools.vitruv.framework.uuid.UuidGeneratorAndResolverImpl
 import java.util.List
 
 /** 
@@ -41,9 +40,6 @@ class TestLogging implements BeforeAllCallback {
 		rootLogger.addAppender(new ConsoleAppender(new PatternLayout(LOG_PATTERN)))
 		rootLogger.level = ERROR
 		VITRUV_LOG_ROOTS.forEach [logger.level = toLevel(desiredLogLevel, WARN)]
-		if (System.getProperty(VM_ARGUMENT_ENABLE_ID_LOGGERS) != "true") {
-			UuidGeneratorAndResolverImpl.logger.level = ERROR
-		}	
 		TestProjectManager.logger.level = INFO
 	}
 	
