@@ -34,6 +34,7 @@ import static extension tools.vitruv.framework.domains.repository.DomainAwareRes
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import tools.vitruv.framework.vsum.helper.VsumFileSystemLayout
 import tools.vitruv.framework.change.recording.ChangeRecorder
+import static com.google.common.base.Preconditions.checkState
 
 class ResourceRepositoryImpl implements ModelRepository {
 	static val logger = Logger.getLogger(ResourceRepositoryImpl)
@@ -60,57 +61,48 @@ class ResourceRepositoryImpl implements ModelRepository {
 		]
 	}
 
-	/** 
-	 * Supports three cases: 1) get registered 2) create non-existing 3) get unregistered but
-	 * existing that contains at most a root element without children. But throws an exception if an
-	 * instance that contains more than one element exists at the uri.
-	 * DECISION Since we do not throw an exception (which can happen in 3) we always return a valid
-	 * model. Hence the caller do not have to check whether the retrieved model is null.
-	 */
-	def private ModelInstance getAndLoadModelInstanceOriginal(VURI modelURI, boolean forceLoadByDoingUnloadBeforeLoad) {
-		val ModelInstance modelInstance = getModelInstanceOriginal(modelURI)
-		try {
-			if (modelURI.EMFUri.toString().startsWith("pathmap") || URIUtil.existsResourceAtUri(modelURI.EMFUri)) {
-				modelInstance.load(forceLoadByDoingUnloadBeforeLoad)
-				relinkUuids(modelInstance)
-			}
-		} catch (RuntimeException re) {
-			// could not load model instance --> this should only be the case when the
-			// model is not existing yet
-			logger.info('''Exception during loading of model instance «modelInstance» occured: «re»''')
-		}
-
-		return modelInstance
-	}
-
-	def private void relinkUuids(ModelInstance modelInstance) {
-		for (EObject root : modelInstance.rootElements) {
-			root.eAllContents.forEachRemaining [uuidGeneratorAndResolver.registerEObject(it)]
-		}
-	}
-
 	override ModelInstance getModel(VURI modelURI) {
-		return getAndLoadModelInstanceOriginal(modelURI, false)
-	}
-
-	override void forceReloadModelIfExisting(VURI modelURI) {
-		if (existsModelInstance(modelURI)) {
-			getAndLoadModelInstanceOriginal(modelURI, true)
+		if (modelURI.EMFUri.toString().startsWith("pathmap")) {
+			loadExistingModel(modelURI, true)
+		} else {
+			createModel(modelURI)
 		}
 	}
-
-	def private ModelInstance getModelInstanceOriginal(VURI modelURI) {
-		var ModelInstance modelInstance = modelInstances.get(modelURI)
-		if (modelInstance === null) {
-			executeAsCommand [
-				// case 2 or 3
-				var ModelInstance internalModelInstance = getOrCreateUnregisteredModelInstance(modelURI)
-				registerModelInstance(modelURI, internalModelInstance)
-			]
-			modelInstance = modelInstances.get(modelURI)
+	
+	def private ModelInstance createModel(VURI modelURI) {
+		checkState(getDomainForURI(modelURI) !== null, "Cannot create a new model instance at the uri '%s' because no domain is registered for that URI", modelURI)
+		var modelResource = this.resourceSet.getResource(modelURI.EMFUri, false)
+		if (modelResource === null) {
+			modelResource = this.resourceSet.createResource(modelURI.EMFUri)
 		}
+		val modelInstance = new ModelInstance(modelURI, modelResource)
+		registerModelInstance(modelURI, modelInstance)
 		return modelInstance
 	}
+
+	def private ModelInstance loadExistingModel(VURI modelURI, boolean generateUuids) {
+		checkState(getDomainForURI(modelURI) !== null, "Cannot create a new model instance at the uri '%s' because no domain is registered for that URI", modelURI)
+		executeAsCommand [
+			val modelResource = URIUtil.loadResourceAtURI(modelURI.EMFUri, this.resourceSet)
+			val modelInstance = new ModelInstance(modelURI, modelResource)
+			if (!generateUuids) {
+				relinkUuids(modelInstance)
+			} else {
+				generateUuids(modelInstance)
+			}
+			registerModelInstance(modelURI, modelInstance)
+			return modelInstance
+		]
+	}
+	
+	def private void relinkUuids(ModelInstance modelInstance) {
+		modelInstance.resource.allContents.forEachRemaining [uuidGeneratorAndResolver.registerEObject(it)]
+	}
+	
+	def private void generateUuids(ModelInstance modelInstance) {
+		modelInstance.resource.allContents.forEachRemaining [uuidGeneratorAndResolver.generateUuid(it)]
+	}
+	
 
 	def private void registerModelInstance(VURI modelUri, ModelInstance modelInstance) {
 		this.modelInstances.put(modelUri, modelInstance)
@@ -126,8 +118,27 @@ class ResourceRepositoryImpl implements ModelRepository {
 		saveVURIsOfVsumModelInstances()
 	}
 
-	def private boolean existsModelInstance(VURI modelURI) {
-		return modelInstances.containsKey(modelURI)
+	override void persistAsRoot(EObject rootEObject, VURI vuri) {
+		val ModelInstance modelInstance = getModel(vuri)
+		executeAsCommand [
+			val resource = modelInstance.resource
+			resource.contents += rootEObject
+			resource.modified = true
+			logger.debug('''Create model with resource: «resource»'''.toString)
+		]
+	}
+
+	override void saveAllModels() {
+		logger.debug('''Saving all models of model repository for VSUM «fileSystemLayout»''')
+		deleteEmptyModels()
+		for (modelInstance : this.modelInstances.values) {
+			val resourceToSave = modelInstance.resource
+			if (resourceToSave.modified) {
+				logger.trace('''Saving resource: «resourceToSave»''')
+				saveModelInstance(modelInstance)
+				resourceToSave.setModified(false)
+			}
+		}
 	}
 
 	def private void saveModelInstance(ModelInstance modelInstance) {
@@ -146,46 +157,24 @@ class ResourceRepositoryImpl implements ModelRepository {
 		]
 	}
 
-	override void persistAsRoot(EObject rootEObject, VURI vuri) {
-		val ModelInstance modelInstance = getModelInstanceOriginal(vuri)
-		executeAsCommand [
-			val resource = modelInstance.resource
-			resource.contents += rootEObject
-			resource.modified = true
-			logger.debug('''Create model with resource: «resource»'''.toString)
-		]
-	}
-
-	override void saveAllModels() {
-		logger.debug('''Saving all models of model repository for VSUM «fileSystemLayout»''')
-		saveAllChangedModels()
-	}
-
 	def private void deleteEmptyModels() {
 		// materialize the models to delete because else we’ll get a ConcurrentModificationException
-		modelInstances.values.filter[rootElements.isEmpty].toList.forEach[deleteModel(it.URI)]
+		modelInstances.values.filter[resource.contents.isEmpty].toList.forEach[deleteModel(it.URI)]
 	}
-
-	def private void saveAllChangedModels() {
-		deleteEmptyModels()
-		for (modelInstance : this.modelInstances.values) {
-			val resourceToSave = modelInstance.resource
-			if (resourceToSave.isModified()) {
-				logger.trace('''Saving resource: «resourceToSave»''')
-				saveModelInstance(modelInstance)
-				resourceToSave.setModified(false)
+	
+	def private void deleteModel(VURI vuri) {
+		val modelInstance = getModel(vuri)
+		val resource = modelInstance.resource
+		executeAsCommand [
+			try {
+				logger.debug('''Deleting resource: «resource»''')
+				resource.delete(null)
+				modelInstances.remove(vuri)
+			} catch (IOException e) {
+				logger.error('''Deletion of resource «resource» did not work.''', e)
+				return null
 			}
-		}
-	}
-
-	def private ModelInstance getOrCreateUnregisteredModelInstance(VURI modelURI) {
-		if (getDomainForURI(modelURI) === null) {
-			throw new RuntimeException( '''Cannot create a new model instance at the uri '«modelURI»' because no domain is registered for the URI «modelURI»!''')
-		}
-		val modelResource = URIUtil.loadResourceAtURI(modelURI.EMFUri, this.resourceSet)
-		val modelInstance = new ModelInstance(modelURI, modelResource)
-		relinkUuids(modelInstance)
-		return modelInstance
+		]
 	}
 
 	def private initializeUuidProviderAndResolver() {
@@ -203,7 +192,7 @@ class ResourceRepositoryImpl implements ModelRepository {
 
 	def private void loadVURIsOfVSMUModelInstances() {
 		for (VURI vuri : fileSystemLayout.loadVsumVURIs()) {
-			var modelInstance = getOrCreateUnregisteredModelInstance(vuri)
+			var modelInstance = loadExistingModel(vuri, false)
 			registerModelInstance(vuri, modelInstance)
 		}
 	}
@@ -236,21 +225,6 @@ class ResourceRepositoryImpl implements ModelRepository {
 		].filter[it.containsConcreteChange()]
 	}
 
-	def private void deleteModel(VURI vuri) {
-		val modelInstance = getModelInstanceOriginal(vuri)
-		val resource = modelInstance.resource
-		executeAsCommand [
-			try {
-				logger.debug('''Deleting resource: «resource»''')
-				resource.delete(null)
-				modelInstances.remove(vuri)
-			} catch (IOException e) {
-				logger.error('''Deletion of resource «resource» did not work.''', e)
-				return null
-			}
-		]
-	}
-
 	override <T> T executeAsCommand(Callable<T> command) {
 		resourceSet.requiredTransactionalEditingDomain.executeVitruviusRecordingCommandAndFlushHistory(command)
 	}
@@ -268,7 +242,7 @@ class ResourceRepositoryImpl implements ModelRepository {
 	}
 
 	override Resource getModelResource(VURI vuri) {
-		getModelInstanceOriginal(vuri).resource
+		getModel(vuri).resource
 	}
 
 	def dispose() {
