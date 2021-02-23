@@ -57,10 +57,14 @@ class ResourceRepositoryImpl implements ModelRepository {
 	}
 
 	override getModel(VURI modelURI) {
-		modelURI.getModel(false)
+		val existingInstance = modelInstances.get(modelURI)
+		if (existingInstance !== null) {
+			return existingInstance
+		}
+		modelURI.createOrLoadModel(false)
 	}
-		
-	private def getModel(VURI modelURI, boolean forceLoadAndRelinkUuids) {
+	
+	def private createOrLoadModel(VURI modelURI, boolean forceLoadAndRelinkUuids) {
 		checkState(getDomainForURI(modelURI) !== null, "Cannot create a new model instance at the URI '%s' because no domain is registered for that URI", modelURI)
 		val resource = if (modelURI.EMFUri.toString().startsWith("pathmap") || forceLoadAndRelinkUuids) {
 			loadResource(modelURI, !forceLoadAndRelinkUuids)
@@ -173,7 +177,7 @@ class ResourceRepositoryImpl implements ModelRepository {
 
 	def private void loadVURIsOfVSMUModelInstances() {
 		for (VURI vuri : fileSystemLayout.loadVsumVURIs()) {
-			getModel(vuri, true)
+			createOrLoadModel(vuri, true)
 		}
 	}
 
