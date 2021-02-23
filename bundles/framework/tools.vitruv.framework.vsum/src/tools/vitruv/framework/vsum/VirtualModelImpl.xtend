@@ -2,7 +2,6 @@ package tools.vitruv.framework.vsum
 
 import java.util.Collections
 import java.util.List
-import java.util.concurrent.Callable
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.resource.Resource
 import tools.vitruv.framework.change.description.PropagatedChange
@@ -55,7 +54,8 @@ class VirtualModelImpl implements InternalVirtualModel {
 			changePropagationSpecificationProvider,
 			domainRepository,
 			getCorrespondenceModel(),
-			userInteractor
+			userInteractor,
+			uuidGeneratorAndResolver
 		)
 	}
 
@@ -74,10 +74,6 @@ class VirtualModelImpl implements InternalVirtualModel {
 
 	override synchronized persistRootElement(VURI persistenceVuri, EObject rootElement) {
 		this.resourceRepository.persistAsRoot(rootElement, persistenceVuri)
-	}
-
-	override synchronized executeCommand(Callable<Void> command) {
-		this.resourceRepository.executeAsCommand(command);
 	}
 
 	override synchronized propagateChange(VitruviusChange change) {
@@ -144,10 +140,7 @@ class VirtualModelImpl implements InternalVirtualModel {
 	}
 
 	override synchronized reverseChanges(List<PropagatedChange> changes) {
-		resourceRepository.executeAsCommand([|
-			changes.reverseView.forEach[it.applyBackward(uuidGeneratorAndResolver)]
-			return null
-		])
+		changes.reverseView.forEach[it.applyBackward(uuidGeneratorAndResolver)]
 
 		// TODO HK Instead of this make the changes set the modified flag of the resource when applied
 		changes.flatMap[originalChange.affectedEObjects + consequentialChanges.affectedEObjects]

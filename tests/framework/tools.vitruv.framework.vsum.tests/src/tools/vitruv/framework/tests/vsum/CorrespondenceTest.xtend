@@ -30,7 +30,7 @@ class CorrespondenceTest extends VsumTest {
 	@Test
 	def void testAllInCommand() {
 		val InternalVirtualModel vsum = createVirtualModelAndModelInstances()
-		vsum.executeCommand[testAll(vsum); null]
+		testAll(vsum)
 	}
 
 	def private void testAll(InternalVirtualModel vsum) {
@@ -55,33 +55,28 @@ class CorrespondenceTest extends VsumTest {
 	@Test
 	def void testCorrespondenceUpdate() {
 		val InternalVirtualModel vsum = createVirtualModelAndModelInstances()
-		vsum.executeCommand([ // create vsum and Repo and UPackage
-			var Repository repo = testLoadObject(vsum, getDefaultPcmInstanceURI(), Repository)
-			var UPackage pkg = testLoadObject(vsum, getDefaultUMLInstanceURI(), UPackage)
-			// create correspondence
-			var CorrespondenceModel correspondenceModel = testCorrespondenceModelCreation(vsum)
-			correspondenceModel.createAndAddCorrespondence(repo, pkg)
-			removePkgFromFileAndUpdateCorrespondence(pkg, correspondenceModel)
-			saveUPackageInNewFileAndUpdateCorrespondence(vsum, pkg, correspondenceModel)
-			assertRepositoryCorrespondences(repo, correspondenceModel)
-			return null
-		])
+		// create vsum and Repo and UPackage
+		var Repository repo = testLoadObject(vsum, getDefaultPcmInstanceURI(), Repository)
+		var UPackage pkg = testLoadObject(vsum, getDefaultUMLInstanceURI(), UPackage)
+		// create correspondence
+		var CorrespondenceModel correspondenceModel = testCorrespondenceModelCreation(vsum)
+		correspondenceModel.createAndAddCorrespondence(repo, pkg)
+		removePkgFromFileAndUpdateCorrespondence(pkg, correspondenceModel)
+		saveUPackageInNewFileAndUpdateCorrespondence(vsum, pkg, correspondenceModel)
+		assertRepositoryCorrespondences(repo, correspondenceModel)
 	}
 
 	@Test
 	def void testMoveRootEObjectBetweenResource() {
 		val InternalVirtualModel vsum = createVirtualModelAndModelInstances()
-		vsum.executeCommand([
-			var Repository repo = testLoadObject(vsum, getDefaultPcmInstanceURI(), Repository)
-			var UPackage pkg = testLoadObject(vsum, getDefaultUMLInstanceURI(), UPackage)
-			// create correspondence
-			var CorrespondenceModel correspondenceModel = testCorrespondenceModelCreation(vsum)
-			correspondenceModel.createAndAddCorrespondence(repo, pkg) // execute the test
-			moveUMLPackageTo(pkg, getTmpUMLInstanceURI(), vsum, correspondenceModel)
-			moveUMLPackageTo(pkg, getNewUMLInstanceURI(), vsum, correspondenceModel)
-			assertRepositoryCorrespondences(repo, correspondenceModel)
-			return null
-		])
+		var Repository repo = testLoadObject(vsum, getDefaultPcmInstanceURI(), Repository)
+		var UPackage pkg = testLoadObject(vsum, getDefaultUMLInstanceURI(), UPackage)
+		// create correspondence
+		var CorrespondenceModel correspondenceModel = testCorrespondenceModelCreation(vsum)
+		correspondenceModel.createAndAddCorrespondence(repo, pkg) // execute the test
+		moveUMLPackageTo(pkg, getTmpUMLInstanceURI(), vsum, correspondenceModel)
+		moveUMLPackageTo(pkg, getNewUMLInstanceURI(), vsum, correspondenceModel)
+		assertRepositoryCorrespondences(repo, correspondenceModel)
 	}
 
 	def private void assertRepositoryCorrespondences(Repository repo, CorrespondenceModel correspondenceModel) {

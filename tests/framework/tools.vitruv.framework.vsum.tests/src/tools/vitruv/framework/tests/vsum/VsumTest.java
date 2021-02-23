@@ -1,7 +1,6 @@
 package tools.vitruv.framework.tests.vsum;
 
 import java.nio.file.Path;
-import java.util.concurrent.Callable;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
@@ -80,39 +79,21 @@ public abstract class VsumTest {
 		ModelInstance mi = vsum.getModelInstance(vuri);
 		final Repository repo = Pcm_mockupFactory.eINSTANCE.createRepository();
 		vsum.persistRootElement(vuri, repo);
-		vsum.executeCommand(new Callable<Void>() {
-			@Override
-			public Void call() {
-				Component component = Pcm_mockupFactory.eINSTANCE.createComponent();
-				repo.getComponents().add(component);
-				return null;
-			}
-		});
+		Component component = Pcm_mockupFactory.eINSTANCE.createComponent();
+		repo.getComponents().add(component);
 		vsum.save();// (vuri);
-		vsum.executeCommand(new Callable<Void>() {
-			@Override
-			public Void call() {
-				PInterface mockIf = Pcm_mockupFactory.eINSTANCE.createPInterface();
-				repo.getInterfaces().add(mockIf);
-				return null;
-			}
-		});
+		PInterface mockIf = Pcm_mockupFactory.eINSTANCE.createPInterface();
+		repo.getInterfaces().add(mockIf);
 		vsum.save();// (vuri);
 
 		// create UML
 		VURI vuriUML = VURI.getInstance(getAlterantiveUMLInstanceURI());
 		final UPackage uPackage = Uml_mockupFactory.eINSTANCE.createUPackage();
 		vsum.persistRootElement(vuriUML, uPackage);
-		vsum.executeCommand(new Callable<Void>() {
-			@Override
-			public Void call() {
-				UClass uClass = Uml_mockupFactory.eINSTANCE.createUClass();
-				uPackage.getClasses().add(uClass);
-				uml_mockup.UInterface uInterface = Uml_mockupFactory.eINSTANCE.createUInterface();
-				uPackage.getInterfaces().add(uInterface);
-				return null;
-			}
-		});
+		UClass uClass = Uml_mockupFactory.eINSTANCE.createUClass();
+		uPackage.getClasses().add(uClass);
+		uml_mockup.UInterface uInterface = Uml_mockupFactory.eINSTANCE.createUInterface();
+		uPackage.getInterfaces().add(uInterface);
 		vsum.save();// (vuriUML);
 
 		return mi;
@@ -155,26 +136,20 @@ public abstract class VsumTest {
 	private void createPcmMockupModel(final VURI modelURI, final InternalVirtualModel vsum) {
 		ModelInstance model = vsum.getModelInstance(modelURI);
 		final EList<EObject> contents = model.getResource().getContents();
-		vsum.executeCommand(() -> {
-			Repository repo = Pcm_mockupFactory.eINSTANCE.createRepository();
-			repo.getInterfaces().add(Pcm_mockupFactory.eINSTANCE.createPInterface());
-			repo.getComponents().add(Pcm_mockupFactory.eINSTANCE.createComponent());
-			contents.add(repo);
-			return null;
-		});
+		Repository repo = Pcm_mockupFactory.eINSTANCE.createRepository();
+		repo.getInterfaces().add(Pcm_mockupFactory.eINSTANCE.createPInterface());
+		repo.getComponents().add(Pcm_mockupFactory.eINSTANCE.createComponent());
+		contents.add(repo);
 		vsum.save();// (modelURI);
 	}
 
 	private void createUmlMockupModel(final VURI modelURI, final InternalVirtualModel vsum) {
 		ModelInstance model = vsum.getModelInstance(modelURI);
 		final EList<EObject> contents = model.getResource().getContents();
-		vsum.executeCommand(() -> {
-			UPackage pckg = Uml_mockupFactory.eINSTANCE.createUPackage();
-			pckg.getInterfaces().add(Uml_mockupFactory.eINSTANCE.createUInterface());
-			pckg.getClasses().add(Uml_mockupFactory.eINSTANCE.createUClass());
-			contents.add(pckg);
-			return null;
-		});
+		UPackage pckg = Uml_mockupFactory.eINSTANCE.createUPackage();
+		pckg.getInterfaces().add(Uml_mockupFactory.eINSTANCE.createUInterface());
+		pckg.getClasses().add(Uml_mockupFactory.eINSTANCE.createUClass());
+		contents.add(pckg);
 		vsum.save();// (modelURI);
 	}
 
