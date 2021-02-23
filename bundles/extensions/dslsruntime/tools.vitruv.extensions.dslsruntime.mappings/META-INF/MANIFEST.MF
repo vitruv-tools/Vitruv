@@ -8,9 +8,5 @@ Bundle-Vendor: %providerName
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Require-Bundle: edu.kit.ipd.sdq.activextendannotations,
  tools.vitruv.extensions.dslsruntime.reactions;visibility:=reexport
-Export-Package: tools.vitruv.extensions.dslsruntime.mappings,
- tools.vitruv.extensions.dslsruntime.mappings.impl;x-internal:=true,
- tools.vitruv.extensions.dslsruntime.mappings.interfaces,
- tools.vitruv.extensions.dslsruntime.mappings.marker,
+Export-Package: tools.vitruv.extensions.dslsruntime.mappings.marker,
  tools.vitruv.extensions.dslsruntime.mappings.updates
-

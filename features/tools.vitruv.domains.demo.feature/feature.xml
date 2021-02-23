@@ -21,11 +21,9 @@
 
    <requires>
       <import plugin="tools.vitruv.framework.domains"/>
-      <import plugin="edu.kit.ipd.sdq.metamodels.addresses"/>
       <import plugin="edu.kit.ipd.sdq.metamodels.families"/>
       <import plugin="edu.kit.ipd.sdq.metamodels.insurance"/>
       <import plugin="edu.kit.ipd.sdq.metamodels.persons"/>
-      <import plugin="edu.kit.ipd.sdq.metamodels.recipients"/>
       <import plugin="com.google.guava"/>
       <import plugin="org.eclipse.xtext.xbase.lib"/>
       <import plugin="org.eclipse.xtend.lib"/>
