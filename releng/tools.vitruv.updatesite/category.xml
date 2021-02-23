@@ -48,12 +48,6 @@
    <feature id="tools.vitruv.applications.demo.familiespersons.feature.source" version="2.1.0.qualifier">
       <category name="Vitruv Demos"/>
    </feature>
-   <feature url="features/tools.vitruv.applications.demo.addressesrecipients.feature_2.1.0.qualifier.jar" id="tools.vitruv.applications.demo.addressesrecipients.feature" version="2.1.0.qualifier">
-      <category name="Vitruv Demos"/>
-   </feature>
-   <feature id="tools.vitruv.applications.demo.addressesrecipients.feature.source" version="2.1.0.qualifier">
-      <category name="Vitruv Demos"/>
-   </feature>
    <feature url="features/tools.vitruv.domains.demo.feature_2.1.0.qualifier.jar" id="tools.vitruv.domains.demo.feature" version="2.1.0.qualifier">
       <category name="Vitruv Demos"/>
    </feature>
