@@ -18,7 +18,7 @@ public interface InternalCorrespondenceModel extends GenericCorrespondenceModel<
 	/**
 	 * Saves this correspondence model instance.
 	 */
-	public void saveModel();
+	public void save();
 
 	/**
 	 * Creates a correspondence of given type <C> with the given tag between the

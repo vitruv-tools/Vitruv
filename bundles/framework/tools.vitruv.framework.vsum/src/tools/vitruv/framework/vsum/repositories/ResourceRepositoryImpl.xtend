@@ -1,7 +1,6 @@
 package tools.vitruv.framework.vsum.repositories
 
 import edu.kit.ipd.sdq.commons.util.org.eclipse.emf.common.util.URIUtil
-import java.io.IOException
 import java.util.HashMap
 import java.util.Map
 import org.apache.log4j.Logger
@@ -13,14 +12,12 @@ import tools.vitruv.framework.change.description.TransactionalChange
 import tools.vitruv.framework.change.description.VitruviusChangeFactory
 import tools.vitruv.framework.domains.VitruvDomain
 import tools.vitruv.framework.domains.repository.VitruvDomainRepository
-import tools.vitruv.framework.util.bridges.EcoreResourceBridge
 import tools.vitruv.framework.util.datatypes.ModelInstance
 import tools.vitruv.framework.util.datatypes.VURI
 import tools.vitruv.framework.uuid.UuidGeneratorAndResolver
 import tools.vitruv.framework.uuid.UuidGeneratorAndResolverImpl
 import tools.vitruv.framework.vsum.ModelRepository
 
-import static java.util.Collections.emptyMap
 import static extension tools.vitruv.framework.util.bridges.EcoreResourceBridge.loadOrCreateResource
 import static extension tools.vitruv.framework.util.ResourceSetUtil.withGlobalFactories
 import static extension tools.vitruv.framework.domains.repository.DomainAwareResourceSet.awareOfDomains
@@ -50,12 +47,6 @@ class ResourceRepositoryImpl implements ModelRepository {
 		resourceSet.eAdapters += new ResourceRegistrationAdapter [getModel(VURI.getInstance(it))]
 	}
 
-	def private ChangeRecorder getOrCreateChangeRecorder(VURI vuri) {
-		domainToRecorder.computeIfAbsent(getDomainForURI(vuri)) [
-			new ChangeRecorder(this.uuidGeneratorAndResolver)
-		]
-	}
-
 	override getModel(VURI modelURI) {
 		val existingInstance = modelInstances.get(modelURI)
 		if (existingInstance !== null) {
@@ -71,8 +62,9 @@ class ResourceRepositoryImpl implements ModelRepository {
 		} else {
 			createResource(modelURI)
 		}
-		val modelInstance = new ModelInstance(modelURI, resource)
-		registerModelInstance(modelURI, modelInstance)
+		val modelInstance = new ModelInstance(resource)
+		this.modelInstances.put(modelURI, modelInstance)
+		modelInstance.registerRecorder()
 		return modelInstance
 	}
 	
@@ -102,66 +94,34 @@ class ResourceRepositoryImpl implements ModelRepository {
 		resource.allContents.forEachRemaining [uuidGeneratorAndResolver.generateUuid(it)]
 	}
 	
-	def private void registerModelInstance(VURI modelUri, ModelInstance modelInstance) {
-		this.modelInstances.put(modelUri, modelInstance)
-		// Do not record other URI types than file and platform (e.g. pathmap) because they cannot
-		// be modified
-		if (modelUri.EMFUri.isFile() || modelUri.EMFUri.isPlatform()) {
-			var recorder = getOrCreateChangeRecorder(modelUri)
-			recorder.addToRecording(modelInstance.resource)
-			if (isRecording && !recorder.isRecording()) {
-				recorder.beginRecording()
+	def private void registerRecorder(ModelInstance modelInstance) {
+		// Only monitor modifiable models (file / platform URIs, not pathmap URIs)
+		if (modelInstance.URI.EMFUri.isFile() || modelInstance.URI.EMFUri.isPlatform()) {
+			domainToRecorder.computeIfAbsent(getDomainForURI(modelInstance.URI)) [
+				new ChangeRecorder(this.uuidGeneratorAndResolver)
+			] => [
+				addToRecording(modelInstance.resource)
+				if (isRecording && !it.isRecording) {
+					beginRecording()
+				}
+			]
+		}
+	}
+	
+	override void persistAsRoot(EObject rootEObject, VURI vuri) {
+		vuri.model.addRoot(rootEObject)
+	}
+
+	override void saveOrDeleteModels() {
+		logger.debug('''Saving all models of model repository for VSUM «fileSystemLayout»''')
+		for (modelInstance : modelInstances.values) {
+			if (modelInstance.empty) {
+				modelInstance.delete
+			} else {
+				modelInstance.save
 			}
 		}
 		saveVURIsOfVsumModelInstances()
-	}
-
-	override void persistAsRoot(EObject rootEObject, VURI vuri) {
-		val ModelInstance modelInstance = getModel(vuri)
-		val resource = modelInstance.resource
-		resource.contents += rootEObject
-		resource.modified = true
-		logger.debug('''Create model with resource: «resource»'''.toString)
-	}
-
-	override void saveAllModels() {
-		logger.debug('''Saving all models of model repository for VSUM «fileSystemLayout»''')
-		deleteEmptyModels()
-		for (modelInstance : this.modelInstances.values) {
-			val resourceToSave = modelInstance.resource
-			if (resourceToSave.modified) {
-				logger.trace('''Saving resource: «resourceToSave»''')
-				saveModelInstance(modelInstance)
-				resourceToSave.setModified(false)
-			}
-		}
-	}
-
-	def private void saveModelInstance(ModelInstance modelInstance) {
-		var resourceToSave = modelInstance.resource
-		try {
-			EcoreResourceBridge.saveResource(resourceToSave, emptyMap)
-		} catch (IOException e) {
-			logger.warn('''Model could not be saved: «modelInstance.URI»''')
-			throw new RuntimeException('''Could not save VURI «modelInstance.URI»''', e)
-		}
-	}
-
-	def private void deleteEmptyModels() {
-		// materialize the models to delete because else we’ll get a ConcurrentModificationException
-		modelInstances.values.filter[resource.contents.isEmpty].toList.forEach[deleteModel(it.URI)]
-	}
-	
-	def private void deleteModel(VURI vuri) {
-		val modelInstance = getModel(vuri)
-		val resource = modelInstance.resource
-		try {
-			logger.debug('''Deleting resource: «resource»''')
-			resource.delete(null)
-			modelInstances.remove(vuri)
-		} catch (IOException e) {
-			logger.error('''Deletion of resource «resource» did not work.''', e)
-		}
 	}
 
 	def private initializeUuidProviderAndResolver() {

@@ -68,8 +68,8 @@ class VirtualModelImpl implements InternalVirtualModel {
 	}
 
 	override synchronized save() {
-		this.resourceRepository.saveAllModels()
-		this.correspondenceModel.saveModel()
+		this.resourceRepository.saveOrDeleteModels()
+		this.correspondenceModel.save()
 	}
 
 	override synchronized persistRootElement(VURI persistenceVuri, EObject rootElement) {
