@@ -14,7 +14,6 @@ import tools.vitruv.framework.change.processing.ChangePropagationObserver
 import tools.vitruv.framework.change.description.PropagatedChange
 import tools.vitruv.framework.change.description.VitruviusChangeFactory
 import tools.vitruv.framework.vsum.ModelRepository
-import tools.vitruv.framework.uuid.UuidResolver
 import tools.vitruv.framework.change.description.CompositeChange
 
 import tools.vitruv.framework.change.description.CompositeTransactionalChange
@@ -64,11 +63,7 @@ class ChangePropagatorImpl implements ChangePropagationObserver, UserInteraction
 		TransactionalChange change,
 		ChangedResourcesTracker changedResourcesTracker
 	) {
-		this.resourceRepository.executeOnUuidResolver [ UuidResolver uuidResolver |
-			change.resolveBeforeAndApplyForward(uuidResolver)
-			// If change has a URI, add the model to the repository
-			if(change.URI !== null) resourceRepository.getModel(change.getURI())
-		]
+		this.resourceRepository.executeOnUuidResolver [ change.resolveBeforeAndApplyForward(it) ]
 
 		val changedObjects = change.affectedEObjects
 		checkState(!changedObjects.nullOrEmpty, "There are no objects affected by the given changes")

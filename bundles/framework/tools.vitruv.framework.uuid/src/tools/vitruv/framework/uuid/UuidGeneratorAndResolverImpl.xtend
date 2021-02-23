@@ -16,6 +16,7 @@ import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.common.util
 import static com.google.common.base.Preconditions.checkArgument
 import static com.google.common.base.Preconditions.checkState
 import static extension tools.vitruv.framework.util.ResourceSetUtil.getTransactionalEditingDomain
+import tools.vitruv.framework.util.ResourceRegistrationAdapter
 
 /**
  * {@link UuidGeneratorAndResolver}
