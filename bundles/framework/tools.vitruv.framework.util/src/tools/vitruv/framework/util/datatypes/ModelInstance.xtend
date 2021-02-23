@@ -38,12 +38,12 @@ class ModelInstance extends AbstractURIHaving {
 		if (!resource.modified) {
 			return
 		}
-		LOGGER.trace('''Save resource: «resource»''')
+		LOGGER.debug('''Save resource: «resource»''')
 		try {
 			resource.saveResource
 			resource.modified = false
 		} catch (IOException e) {
-			LOGGER.warn('''Model could not be saved: «URI»''')
+			LOGGER.error('''Model could not be saved: «URI»''', e)
 			throw new IllegalStateException('''Could not save VURI «URI»''', e)
 		}
 	}
