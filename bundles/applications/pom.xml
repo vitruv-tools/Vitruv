@@ -14,7 +14,6 @@
 	<name>Applications Modules</name>
 
 	<modules>
-		<module>tools.vitruv.applications.demo.addressrecipients</module>
 		<module>tools.vitruv.applications.demo.familiespersons</module>
 	</modules>
 
