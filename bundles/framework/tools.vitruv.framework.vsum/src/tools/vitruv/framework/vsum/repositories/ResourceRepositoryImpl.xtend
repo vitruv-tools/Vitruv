@@ -57,10 +57,10 @@ class ResourceRepositoryImpl implements ModelRepository {
 	
 	def private createOrLoadModel(VURI modelURI, boolean forceLoadAndRelinkUuids) {
 		checkState(getDomainForURI(modelURI) !== null, "Cannot create a new model instance at the URI '%s' because no domain is registered for that URI", modelURI)
-		val resource = if (modelURI.EMFUri.toString().startsWith("pathmap") || forceLoadAndRelinkUuids) {
-			loadOrCreateResource(modelURI, !forceLoadAndRelinkUuids)
-		} else {
+		val resource = if ((modelURI.EMFUri.isFile || modelURI.EMFUri.isPlatform) && !forceLoadAndRelinkUuids) {
 			getOrCreateResource(modelURI)
+		} else {
+			loadOrCreateResource(modelURI, !forceLoadAndRelinkUuids)
 		}
 		val modelInstance = new ModelInstance(resource)
 		this.modelInstances.put(modelURI, modelInstance)
