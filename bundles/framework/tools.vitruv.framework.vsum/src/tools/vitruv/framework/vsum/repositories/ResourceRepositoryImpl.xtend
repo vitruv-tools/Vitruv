@@ -43,8 +43,8 @@ class ResourceRepositoryImpl implements ModelRepository {
 		this.fileSystemLayout = fileSystemLayout
 		this.resourceSet = new ResourceSetImpl().withGlobalFactories().awareOfDomains(domainRepository)
 		this.uuidGeneratorAndResolver = initializeUuidProviderAndResolver()
+		this.resourceSet.eAdapters += new ResourceRegistrationAdapter [getModel(VURI.getInstance(it))]
 		loadVURIsOfVSMUModelInstances()
-		resourceSet.eAdapters += new ResourceRegistrationAdapter [getModel(VURI.getInstance(it))]
 	}
 
 	override getModel(VURI modelURI) {
