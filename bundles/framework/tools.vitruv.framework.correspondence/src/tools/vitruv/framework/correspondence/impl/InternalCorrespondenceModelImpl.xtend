@@ -30,11 +30,10 @@ import java.util.LinkedHashSet
 class InternalCorrespondenceModelImpl extends ModelInstance implements InternalCorrespondenceModel {
 	static val logger = Logger.getLogger(InternalCorrespondenceModelImpl)
 	final Correspondences correspondences
-	boolean modified = false
 	final UuidResolver uuidResolver
 
 	new(UuidResolver uuidResolver, VURI correspondencesVURI, Resource correspondencesResource) {
-		super(correspondencesVURI, correspondencesResource)
+		super(correspondencesResource)
 		this.correspondences = loadAndRegisterCorrespondences(correspondencesResource)
 		this.uuidResolver = uuidResolver
 	}
@@ -63,20 +62,6 @@ class InternalCorrespondenceModelImpl extends ModelInstance implements InternalC
 			correspondencesResource.getContents().add(correspondences)
 		}
 		return correspondences
-	}
-	
-	override void saveModel() {
-		if (!modified) {
-			return
-		}
-		try {
-			EcoreResourceBridge.saveResource(getResource(), saveAndLoadOptions)
-			modified = false
-		} catch (IOException e) {
-			throw new RuntimeException(
-				'''Could not save correspondence instance ‹«this»› using the resource ‹«resource»› and the options ‹«
-				saveAndLoadOptions»›''', e)
-		}
 	}
 	
 	override <C extends Correspondence> C createAndAddCorrespondence(List<EObject> eObjects1, List<EObject> eObjects2,
@@ -111,13 +96,13 @@ class InternalCorrespondenceModelImpl extends ModelInstance implements InternalC
 			it.tag = tag
 		]
 		this.correspondences.correspondences += correspondence 
-		this.modified = true
+		markModified()
 		return correspondence
 	}
 	
 	def private removeCorrespondence(Correspondence correspondence) {
 		EcoreUtil.remove(correspondence)
-		modified = true
+		markModified()
 	}
 	
 	override <C extends Correspondence> Set<Correspondence> removeCorrespondencesBetween(Class<C> correspondenceType,
