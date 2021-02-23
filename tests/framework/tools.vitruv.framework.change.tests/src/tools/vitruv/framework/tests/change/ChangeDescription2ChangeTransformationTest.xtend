@@ -4,7 +4,6 @@ import allElementTypes.Root
 import java.util.List
 
 import tools.vitruv.framework.change.echange.EChange
-import tools.vitruv.framework.change.recording.AtomicEmfChangeRecorder
 import tools.vitruv.framework.util.bridges.EMFBridge
 import tools.vitruv.framework.uuid.UuidGeneratorAndResolverImpl
 import static extension tools.vitruv.framework.change.echange.resolve.EChangeResolverAndApplicator.*
@@ -28,10 +27,12 @@ import tools.vitruv.testutils.domains.TestDomainsRepository
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import static extension tools.vitruv.framework.util.ResourceSetUtil.withGlobalFactories
 import static extension tools.vitruv.framework.domains.repository.DomainAwareResourceSet.awareOfDomains
+import tools.vitruv.framework.change.recording.ChangeRecorder
+import tools.vitruv.framework.change.description.TransactionalChange
 
 @ExtendWith(TestProjectManager, RegisterMetamodelsInStandalone)
 abstract class ChangeDescription2ChangeTransformationTest {
-	var AtomicEmfChangeRecorder changeRecorder
+	var ChangeRecorder changeRecorder
 	var UuidGeneratorAndResolver uuidGeneratorAndResolver
 	var ResourceSet resourceSet
 	var Path tempFolder
@@ -44,14 +45,13 @@ abstract class ChangeDescription2ChangeTransformationTest {
 		this.tempFolder = tempFolder
 		this.resourceSet = new ResourceSetImpl().withGlobalFactories().awareOfDomains(TestDomainsRepository.INSTANCE)
 		this.uuidGeneratorAndResolver = new UuidGeneratorAndResolverImpl(resourceSet, true)
-		this.changeRecorder = new AtomicEmfChangeRecorder(uuidGeneratorAndResolver)
+		this.changeRecorder = new ChangeRecorder(uuidGeneratorAndResolver)
 		this.resourceSet.startRecording
 	}
 
 	@AfterEach
 	def void afterTest() {
-		resourceSet.stopRecording
-		changeRecorder.dispose()
+		changeRecorder.close()
 	}
 
 	protected def <T extends Notifier> record(T objectToRecord, Consumer<T> operationToRecord) {
@@ -59,8 +59,9 @@ abstract class ChangeDescription2ChangeTransformationTest {
 		objectToRecord.startRecording
 		operationToRecord.accept(objectToRecord)
 		objectToRecord.stopRecording
+		val recordedChanges = changeRecorder.changes
 		resourceSet.startRecording
-		return prepareChanges
+		return prepareChanges(recordedChanges)
 	}
 
 	protected def resourceAt(String name) {
@@ -94,8 +95,7 @@ abstract class ChangeDescription2ChangeTransformationTest {
 		this.changeRecorder.removeFromRecording(notifier)
 	}
 
-	private def List<EChange> prepareChanges() {
-		val changeDescriptions = changeRecorder.changes
+	private def List<EChange> prepareChanges(List<? extends TransactionalChange> changeDescriptions) {
 		val monitoredChanges = changeDescriptions.map[EChanges].flatten
 		monitoredChanges.forEach[EChangeUnresolver.unresolve(it)]
 		val resultingChanges = newArrayList

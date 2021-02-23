@@ -33,6 +33,10 @@
       <import plugin="org.eclipse.emf.compare.rcp"/>
       <import plugin="org.junit.jupiter.params"/>
       <import plugin="org.eclipse.xtext.xbase.lib"/>
+      <import plugin="org.eclipse.xtext.ui.testing"/>
+      <import plugin="org.slf4j.api"/>
+      <import plugin="ch.qos.logback.classic"/>
+      <import plugin="ch.qos.logback.core"/>
    </requires>
 
    <plugin

@@ -149,16 +149,6 @@ class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 			}
 		}
 
-		val objectUri = EcoreUtil.getURI(eObject)
-		// Finally look for a proxy in the repository (due to a deleted object) and match the URI
-		val uuidByProxy = repository.EObjectToUuid.entrySet
-			.filter [key !== null && key.eIsProxy]
-			.findFirst [EcoreUtil.getURI(key) == objectUri]
-			?.value
-		if (uuidByProxy !== null) {
-			return uuidByProxy
-		}
-
 		if (eObject instanceof EClass) {
 			return generateUuid(eObject)
 		}
@@ -339,16 +329,29 @@ class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 	}
 	
 	def private static getResolvableUri(EObject object) {
-		val resourceUri = object.eResource.URI
 		// we cannot simply use EcoreUtil#getURI, because object’s domain might use XMI	UUIDs. Since
 		// XMI UUIDs can be different for different resource sets, we cannot use URIs with XMI UUIDs to identify objects
 		// across resource sets. Hence, we force hierarchical URIs. This assumes that the resolved object’s graph
-		// has the same topology in the resolving resource set. This assumption holds when we use this method.  
-		val fragmentPath = EcoreUtil.getRelativeURIFragmentPath(null, object)
-		if (fragmentPath.isEmpty) {
-			resourceUri.appendFragment('/')
+		// has the same topology in the resolving resource set. This assumption holds when we use this method.
+		val resource = object.eResource
+		var rootElementIndex = 0;
+		val resourceRoot = if (resource.contents.size <= 1) {
+			object.eResource.firstRootEObject
 		} else {
-			resourceUri.appendFragment('//' + fragmentPath)
+			// move up containment hierarchy until some container is one of the resource's root elements
+			var container = object
+			while (container !== null && (rootElementIndex = resource.contents.indexOf(container)) == -1) {
+    			container = container.eContainer
+			}
+			checkState(container !== null, "some container of %s must be a root element of its resource", object)
+			container
+		}  
+		val fragmentPath = EcoreUtil.getRelativeURIFragmentPath(resourceRoot, object)
+		if (fragmentPath.isEmpty) {
+			resource.URI.appendFragment('/' +  rootElementIndex)
+		} else {
+			resource.URI.appendFragment('/' +  rootElementIndex + '/' + fragmentPath)
 		}
 	}
+	
 }
