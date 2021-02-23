@@ -35,6 +35,7 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import tools.vitruv.framework.vsum.helper.VsumFileSystemLayout
 import tools.vitruv.framework.change.recording.ChangeRecorder
 import static com.google.common.base.Preconditions.checkState
+import tools.vitruv.framework.util.ResourceRegistrationAdapter
 
 class ResourceRepositoryImpl implements ModelRepository {
 	static val logger = Logger.getLogger(ResourceRepositoryImpl)
@@ -53,6 +54,7 @@ class ResourceRepositoryImpl implements ModelRepository {
 		this.resourceSet = new ResourceSetImpl().withGlobalFactories().awareOfDomains(domainRepository)
 		this.uuidGeneratorAndResolver = initializeUuidProviderAndResolver()
 		loadVURIsOfVSMUModelInstances()
+		resourceSet.eAdapters += new ResourceRegistrationAdapter [createModel(VURI.getInstance(it))]
 	}
 
 	def private ChangeRecorder getOrCreateChangeRecorder(VURI vuri) {
@@ -70,7 +72,7 @@ class ResourceRepositoryImpl implements ModelRepository {
 	}
 	
 	def private ModelInstance createModel(VURI modelURI) {
-		checkState(getDomainForURI(modelURI) !== null, "Cannot create a new model instance at the uri '%s' because no domain is registered for that URI", modelURI)
+		checkState(getDomainForURI(modelURI) !== null, "Cannot create a new model instance at the URI '%s' because no domain is registered for that URI", modelURI)
 		var modelResource = this.resourceSet.getResource(modelURI.EMFUri, false)
 		if (modelResource === null) {
 			modelResource = this.resourceSet.createResource(modelURI.EMFUri)
@@ -81,7 +83,7 @@ class ResourceRepositoryImpl implements ModelRepository {
 	}
 
 	def private ModelInstance loadExistingModel(VURI modelURI, boolean generateUuids) {
-		checkState(getDomainForURI(modelURI) !== null, "Cannot create a new model instance at the uri '%s' because no domain is registered for that URI", modelURI)
+		checkState(getDomainForURI(modelURI) !== null, "Cannot create a new model instance at the URI '%s' because no domain is registered for that URI", modelURI)
 		executeAsCommand [
 			val modelResource = URIUtil.loadResourceAtURI(modelURI.EMFUri, this.resourceSet)
 			val modelInstance = new ModelInstance(modelURI, modelResource)
@@ -103,7 +105,6 @@ class ResourceRepositoryImpl implements ModelRepository {
 		modelInstance.resource.allContents.forEachRemaining [uuidGeneratorAndResolver.generateUuid(it)]
 	}
 	
-
 	def private void registerModelInstance(VURI modelUri, ModelInstance modelInstance) {
 		this.modelInstances.put(modelUri, modelInstance)
 		// Do not record other URI types than file and platform (e.g. pathmap) because they cannot

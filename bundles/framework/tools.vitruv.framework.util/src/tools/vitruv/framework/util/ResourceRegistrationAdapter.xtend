@@ -1,4 +1,4 @@
-package tools.vitruv.framework.uuid
+package tools.vitruv.framework.util
 
 import org.eclipse.emf.common.notify.Adapter
 import org.eclipse.emf.ecore.resource.ResourceSet
@@ -11,19 +11,19 @@ import org.eclipse.emf.common.notify.Notifier
  * An adapter that reacts to additions of resources in a {@link ResourceSet} to call the
  * callback function for that resource given to the constructor. 
  */
-package class ResourceRegistrationAdapter implements Adapter {
-	val Consumer<Resource> resourceRegistrationFunction;
+class ResourceRegistrationAdapter implements Adapter {
+	val Consumer<Resource> resourceRegistrationFunction
 
 	new(Consumer<Resource> resourceRegistrationFunction) {
-		this.resourceRegistrationFunction = resourceRegistrationFunction;
+		this.resourceRegistrationFunction = resourceRegistrationFunction
 	}
 
 	override getTarget() {
-		return null;
+		return null
 	}
 
 	override isAdapterForType(Object type) {
-		return false;
+		return false
 	}
 
 	override notifyChanged(Notification notification) {
@@ -31,7 +31,7 @@ package class ResourceRegistrationAdapter implements Adapter {
 			if (notification.notifier instanceof ResourceSet) {
 				if (notification.newValue instanceof Resource) {
 					val resource = notification.newValue as Resource
-					resourceRegistrationFunction.accept(resource);
+					resourceRegistrationFunction.accept(resource)
 				}
 			}
 		}
