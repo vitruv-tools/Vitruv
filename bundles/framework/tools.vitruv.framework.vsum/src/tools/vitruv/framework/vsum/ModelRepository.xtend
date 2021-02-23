@@ -10,7 +10,6 @@ import tools.vitruv.framework.util.command.CommandCreatorAndExecutor
 
 interface ModelRepository extends CommandCreatorAndExecutor, ResourceAccess {
 	def ModelInstance getModel(VURI modelVuri);
-	def void forceReloadModelIfExisting(VURI modelVuri);
     def void saveAllModels();
     
     /**
