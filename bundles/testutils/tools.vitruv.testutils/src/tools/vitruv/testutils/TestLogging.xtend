@@ -35,19 +35,7 @@ class TestLogging implements BeforeAllCallback {
 
 	override beforeAll(ExtensionContext context) throws Exception {
 		configureLog4J()
-		
-		// Vitruv currently (2021-02-12) doesn’t use slf4j. So we only want to configure it if it is on the classpath,
-		// without forcing clients to have it on the classpath.
-		val logbackAvailable = try {
-			ch.qos.logback.classic.Logger.name
-			LoggerFactory.name
-			true
-		} catch (ClassNotFoundException | NoClassDefFoundError e) {
-			false
-		}
-		if (logbackAvailable) {
-			new LogbackConfiguration().apply()
-		}
+		configureSlf4J()
 	}
 	
 	def private static configureLog4J() {
@@ -63,10 +51,8 @@ class TestLogging implements BeforeAllCallback {
 		TestProjectManager.logger.level = INFO
 	}
 	
-	// must be its own class so that the logback types are not required when loading the parent class
-	private static class LogbackConfiguration {
-		def void apply() {
-			val root = LoggerFactory.ILoggerFactory.getLogger(ROOT_LOGGER_NAME)
+	def private static configureSlf4J() {
+		val root = LoggerFactory.ILoggerFactory.getLogger(ROOT_LOGGER_NAME)
 			if (root instanceof ch.qos.logback.classic.Logger) {
 				val consoleAppender = new ch.qos.logback.core.ConsoleAppender => [
 					name = "console"
@@ -87,6 +73,5 @@ class TestLogging implements BeforeAllCallback {
 						.level = Level.toLevel(desiredLogLevel, Level.WARN)
 				]
 			}
-		}
 	}
 }
