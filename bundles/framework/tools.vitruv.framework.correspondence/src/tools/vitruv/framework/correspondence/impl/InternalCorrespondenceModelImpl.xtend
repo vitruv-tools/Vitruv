@@ -134,22 +134,11 @@ class InternalCorrespondenceModelImpl extends ModelInstance implements InternalC
 		}
 	}
 	
-	private def haveUuids(List<EObject> eObjects) {
-		if (eObjects.forall[uuidResolver.hasPotentiallyCachedUuid(it)]) {
-			return true
-		} else {
-			logger.warn("UUID resolver has no UUID for one of the elements: " + eObjects)
-		}
-		return false
-	}
-
 	override <C extends Correspondence> Set<C> getCorrespondences(Class<C> correspondenceType,
 		Predicate<C> correspondencesFilter, List<EObject> eObjects, String tag) {
 		val correspondences = new HashSet<Correspondence>()
-		if (eObjects.haveUuids) {
-			val uuids = eObjects.map[uuidResolver.getPotentiallyCachedUuid(it)]
-			correspondences += getCorrespondencesForUuids(uuids)
-		}
+		val uuids = eObjects.map[uuidResolver.getPotentiallyCachedUuid(it)]
+		correspondences += getCorrespondencesForUuids(uuids)
 
 		return correspondences
 			.filter(correspondenceType).filter(correspondencesFilter)
