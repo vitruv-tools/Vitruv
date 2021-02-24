@@ -182,7 +182,7 @@ class ResourceRepositoryImpl implements ModelRepository {
 		getModel(vuri).resource
 	}
 
-	def dispose() {
+	override close() {
 		resourceSet.resources.forEach[unload]
 		resourceSet.resources.clear
 	}

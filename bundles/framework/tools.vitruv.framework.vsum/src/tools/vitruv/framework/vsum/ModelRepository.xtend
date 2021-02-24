@@ -7,7 +7,7 @@ import tools.vitruv.framework.util.command.ResourceAccess
 import tools.vitruv.framework.uuid.UuidGeneratorAndResolver
 import tools.vitruv.framework.correspondence.CorrespondenceModel
 
-interface ModelRepository extends ResourceAccess {
+interface ModelRepository extends ResourceAccess, AutoCloseable {
 	def UuidGeneratorAndResolver getUuidGeneratorAndResolver()
 	def CorrespondenceModel getCorrespondenceModel()
 	def ModelInstance getModel(VURI modelVuri)

@@ -24,7 +24,7 @@ import java.util.LinkedList
 
 class VirtualModelImpl implements InternalVirtualModel {
 	static val Logger LOGGER = Logger.getLogger(VirtualModelImpl)
-	val ResourceRepositoryImpl resourceRepository
+	val ModelRepository resourceRepository
 	val VitruvDomainRepository domainRepository
 	val ChangePropagatorImpl changePropagator
 	val VsumFileSystemLayout fileSystemLayout
@@ -211,7 +211,7 @@ class VirtualModelImpl implements InternalVirtualModel {
 	}
 
 	override void dispose() {
-		resourceRepository.dispose
+		resourceRepository.close()
 	}
 
 }
