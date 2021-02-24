@@ -227,7 +227,7 @@ class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 		} else if (hasUuid(eObject)) {
 			registerEObject(getUuid(eObject), eObject)
 		} else {
-			throw new IllegalStateException("EObject '" + EObject + "' cannot be registered because it does not have a UUID yet")
+			throw new IllegalStateException("EObject '" + eObject + "' cannot be registered because it does not have a UUID yet")
 		}
 	}
 
