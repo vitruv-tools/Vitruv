@@ -17,7 +17,6 @@ import org.junit.jupiter.api.Disabled
 import static extension tools.vitruv.testutils.domains.DomainModelCreators.allElementTypes
 import tools.vitruv.dsls.reactions.tests.ReactionsExecutionTest
 import tools.vitruv.dsls.reactions.tests.TestReactionsCompiler
-import static extension tools.vitruv.testutils.matchers.CorrespondenceMatchers.hasNoCorrespondences
 
 class SimpleChangesTests extends ReactionsExecutionTest {
 	static val SOURCE_MODEL = 'SimpleChangeSource'.allElementTypes
@@ -132,7 +131,6 @@ class SimpleChangesTests extends ReactionsExecutionTest {
 
 		assertThat(executionMonitor, observedExecutions(DeleteEObject, DeleteNonRootEObjectSingle))
 		assertThat(resourceAt(TARGET_MODEL), containsModelOf(resourceAt(SOURCE_MODEL)))
-		assertThat(oldElement, hasNoCorrespondences)
 	}
 
 	@Test
