@@ -48,7 +48,7 @@ class ChangePropagator {
 	}
 
 	def List<PropagatedChange> propagateChange(VitruviusChange change) {
-		change.transactionalChangeSequence.forEach [applySingleChange(it)]
+		change.transactionalChangeSequence.forEach [resolveBeforeAndApplyForward(uuidResolver)]
 		
 		val changedDomain = change.changedDomain
 		if (logger.isTraceEnabled) {
@@ -60,12 +60,6 @@ class ChangePropagator {
 		return new ChangePropagation(this, change, changedDomain, null).propagateChanges()
 	}
 
-	def private void applySingleChange(TransactionalChange change) {
-		change.resolveBeforeAndApplyForward(uuidResolver)
-		// add all affected models to the repository
-		change.changedVURIs.forEach [resourceRepository.getModel(it)]
-	}
-	
 	@FinalFieldsConstructor
 	private static class ChangePropagation implements ChangePropagationObserver, UserInteractionListener {
 		extension val ChangePropagator outer
