@@ -1,6 +1,5 @@
 package tools.vitruv.framework.correspondence
 
-import com.google.common.collect.Sets
 import java.util.Set
 import org.eclipse.emf.ecore.EObject
 
@@ -22,12 +21,8 @@ class CorrespondenceModelUtil {
 	 * @return all corresponding objects for the specified object and an empty set if the object has
 	 *         no correspondences.
 	 */
-	// FIXME ML is this method correct? Is there some cool Xtend feature which makes this method shorter? 
 	def static Set<EObject> getCorrespondingEObjects(CorrespondenceModelView<?> ci, EObject eObject) {
-		val correspondingEObjects = ci.getCorrespondingEObjects(List.of(eObject))
-		val eObjects = Sets.newHashSet
-		correspondingEObjects.forEach(list|eObjects.addAll(list))
-		return eObjects
+		ci.getCorrespondingEObjects(List.of(eObject)).flatten.toSet
 	}
 
 	/**
@@ -75,10 +70,7 @@ class CorrespondenceModelUtil {
 	 */
 	def static <T, U extends Correspondence> Set<T> getCorrespondingEObjectsByType(CorrespondenceModelView<U> ci,
 		EObject eObject, Class<T> type) {
-		// return getCorrespondingEObjects(ci, eObject).filter[eObj | type.isInstance(eObj)].toSet
-		val Set<T> retSet = Sets.newHashSet
-		getCorrespondingEObjects(ci, eObject).forEach[if (type.isInstance(it)) {retSet.add(it as T)}]
-		return retSet
+		getCorrespondingEObjects(ci, eObject).filter(type).toSet
 	}
 
 }

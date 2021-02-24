@@ -3,7 +3,6 @@ package tools.vitruv.extensions.dslsruntime.reactions
 import tools.vitruv.extensions.dslsruntime.reactions.IReactionRealization
 import tools.vitruv.extensions.dslsruntime.reactions.structure.CallHierarchyHaving
 import tools.vitruv.framework.change.echange.EChange
-import tools.vitruv.framework.tuid.TuidManager
 import org.eclipse.xtend.lib.annotations.Accessors
 import tools.vitruv.framework.userinteraction.UserInteractor
 
@@ -35,11 +34,6 @@ abstract class AbstractReactionRealization extends CallHierarchyHaving implement
 		} finally {
 			// reset the routines facade execution state:
 			routinesFacade._getExecutionState().reset();
-
-			// The reactions was completely executed, so remove all objects registered for modification 
-			// by the effects as they are no longer under modification
-			// even if there was an exception!
-			TuidManager.instance.flushRegisteredObjectsUnderModification();	
 		}
 	}
 	

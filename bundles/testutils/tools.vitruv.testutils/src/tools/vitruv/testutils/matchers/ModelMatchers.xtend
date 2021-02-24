@@ -9,9 +9,7 @@ import org.eclipse.emf.ecore.resource.Resource
 import org.hamcrest.Matcher
 import static com.google.common.base.Preconditions.checkArgument
 import java.util.Set
-import tools.vitruv.testutils.matchers.ModelDeepEqualityOption.EqualityFeatureFilter
 import org.eclipse.emf.ecore.EClass
-import tools.vitruv.testutils.matchers.ModelDeepEqualityOption.EqualityStrategy
 
 @Utility
 class ModelMatchers {
@@ -89,33 +87,13 @@ class ModelMatchers {
 	def static EqualityFeatureFilter ignoringAllExceptFeaturesOfType(EClassifier... featureTypes) {
 		new IgnoreAllExceptTypedFeatures(Set.of(featureTypes))
 	}
-
-	/**
-	 * Limits an {@link EqualityFeatureFilter} to the provided {@code types}.
-	 */
-	def static EqualityFeatureFilter on(EqualityFeatureFilter target, Class<? extends EObject>... types) {
-		new TypeIncludingFeatureFilter(Set.of(types), target)
-	}
-
-	/**
-	 * Creates an exception for an {@link EqualityFeatureFilter} by making it not apply to the provided {@code types}.
-	 */
-	def static EqualityFeatureFilter unlessOn(EqualityFeatureFilter target, Class<? extends EObject>... types) {
-		new TypeExcludingFeatureFilter(Set.of(types), target)
-	}
 	
 	/**
-	 * Ignores all features that are unset on the reference object.
+	 * Uses {@link Object#equals} to compare instances of the provided {@code eClasses} if they are referenced in
+	 * <em>non-containment</em> references.
 	 */
-	def static EqualityFeatureFilter ignoringUnsetFeatures() {
-		new IgnoreUnsetFeaturesFilter
-	}
-	
-	/**
-	 * Uses {@link Object#equals} to instances of the provided {@code eClasses}.
-	 */
-	def static EqualityStrategy usingEqualsFor(EClass... eClasses) {
-		new EqualsStrategy(Set.of(eClasses))
+	def static EqualityStrategy usingEqualsForReferencesTo(EClass... eClasses) {
+		new EqualsBasedEqualityStrategy(Set.of(eClasses))
 	}
 
 	def static Matcher<? super EObject> whose(EStructuralFeature feature, Matcher<?> featureMatcher) {

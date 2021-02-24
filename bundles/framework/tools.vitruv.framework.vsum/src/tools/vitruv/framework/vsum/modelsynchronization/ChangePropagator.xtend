@@ -18,15 +18,14 @@ import tools.vitruv.framework.domains.repository.VitruvDomainRepository
 import tools.vitruv.framework.userinteraction.InternalUserInteractor
 import tools.vitruv.framework.userinteraction.UserInteractionFactory
 import tools.vitruv.framework.userinteraction.UserInteractionListener
-import tools.vitruv.framework.uuid.UuidResolver
 import tools.vitruv.framework.vsum.ModelRepository
-import tools.vitruv.framework.vsum.repositories.ModelRepositoryImpl
 
 import static com.google.common.base.Preconditions.checkNotNull
 import static com.google.common.base.Preconditions.checkState
 import org.eclipse.xtend.lib.annotations.FinalFieldsConstructor
 import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
 import tools.vitruv.framework.correspondence.CorrespondenceModel
+import tools.vitruv.framework.uuid.UuidResolver
 
 class ChangePropagator {
 	static val logger = Logger.getLogger(ChangePropagator)
@@ -34,18 +33,18 @@ class ChangePropagator {
 	val ModelRepository resourceRepository
 	val ChangePropagationSpecificationProvider changePropagationProvider
 	val CorrespondenceModel correspondenceModel
-	val ModelRepositoryImpl modelRepository
 	val InternalUserInteractor userInteractor
+	val UuidResolver uuidResolver
 
 	new(ModelRepository resourceRepository, ChangePropagationSpecificationProvider changePropagationProvider,
-		VitruvDomainRepository domainRepository, ModelRepositoryImpl modelRepository,
-		CorrespondenceModel correspondenceModel, InternalUserInteractor userInteractor) {
+		VitruvDomainRepository domainRepository, CorrespondenceModel correspondenceModel,
+		InternalUserInteractor userInteractor, UuidResolver uuidResolver) {
 		this.resourceRepository = resourceRepository
-		this.modelRepository = modelRepository
 		this.changePropagationProvider = changePropagationProvider
 		this.correspondenceModel = correspondenceModel
 		this.domainRepository = domainRepository
 		this.userInteractor = userInteractor
+		this.uuidResolver = uuidResolver
 	}
 
 	def List<PropagatedChange> propagateChange(VitruviusChange change) {
@@ -62,13 +61,9 @@ class ChangePropagator {
 	}
 
 	def private void applySingleChange(TransactionalChange change) {
-		resourceRepository.executeOnUuidResolver [ UuidResolver uuidResolver |
-			change.resolveBeforeAndApplyForward(uuidResolver)
-			// add all affected models to the repository
-			change.changedVURIs.forEach [resourceRepository.getModel(it)]
-			change.affectedAndReferencedEObjects.forEach [modelRepository.addRootElement(it)]
-		]
-		modelRepository.cleanupRootElements()
+		change.resolveBeforeAndApplyForward(uuidResolver)
+		// add all affected models to the repository
+		change.changedVURIs.forEach [resourceRepository.getModel(it)]
 	}
 	
 	@FinalFieldsConstructor
@@ -141,14 +136,13 @@ class ChangePropagator {
 			TransactionalChange change,
 			ChangePropagationSpecification propagationSpecification
 		) {
-			// modelRepository.startRecording
 			resourceRepository.startRecording()
+			
 			// TODO HK: Clone the changes for each synchronization! Should even be cloned for
 			// each consistency repair routines that uses it,
 			// or: make them read only, i.e. give them a read-only interface!
 			propagationSpecification.propagateChange(change, correspondenceModel, resourceRepository)
-			modelRepository.cleanupRootElements()
-			val changes = resourceRepository.endRecording() /* + modelRepository.endRecording() */
+			val changes = resourceRepository.endRecording()
 	
 			// Store modification information
 			changes.flatMap [affectedEObjects].forEach [changedResourcesTracker.addInvolvedModelResource(eResource)]
@@ -171,7 +165,6 @@ class ChangePropagator {
 		
 		
 		def private void handleObjectsWithoutResource() {
-			modelRepository.cleanupRootElementsWithoutResource
 			// Find created objects without resource
 			for (createdObjectWithoutResource : createdObjects.filter[eResource === null]) {
 				checkState(!correspondenceModel.hasCorrespondences(List.of(createdObjectWithoutResource)),
@@ -183,7 +176,6 @@ class ChangePropagator {
 		
 		override objectCreated(EObject createdObject) {
 			createdObjects += createdObject
-			modelRepository.addRootElement(createdObject)
 		}
 		
 		override onUserInteractionReceived(UserInteractionBase interaction) {

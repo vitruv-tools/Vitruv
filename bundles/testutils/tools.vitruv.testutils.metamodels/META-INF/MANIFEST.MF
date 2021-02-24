@@ -34,7 +34,9 @@ Export-Package: allElementTypes,
 Require-Bundle: org.eclipse.xtend.lib,
  tools.vitruv.testutils,
  org.junit.jupiter.params,
- org.junit.jupiter.api
+ org.junit.jupiter.api,
+ org.eclipse.core.runtime,
+ org.eclipse.emf.ecore;visibility:=reexport
 Bundle-ActivationPolicy: lazy
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin

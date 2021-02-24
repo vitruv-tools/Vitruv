@@ -1,7 +1,6 @@
 package tools.vitruv.testutils.matchers
 
 import java.util.HashSet
-import java.util.Iterator
 import java.util.List
 import java.util.Set
 import java.util.regex.Pattern
@@ -15,7 +14,6 @@ import org.eclipse.emf.compare.ReferenceChange
 import org.eclipse.emf.compare.diff.DefaultDiffEngine
 import org.eclipse.emf.compare.diff.DiffBuilder
 import org.eclipse.emf.compare.diff.FeatureFilter
-import org.eclipse.emf.compare.rcp.EMFCompareRCPPlugin
 import org.eclipse.emf.compare.scope.DefaultComparisonScope
 import org.eclipse.emf.compare.utils.UseIdentifiers
 import org.eclipse.emf.ecore.EObject
@@ -23,7 +21,6 @@ import org.eclipse.emf.ecore.EStructuralFeature
 import org.eclipse.xtend.lib.annotations.FinalFieldsConstructor
 import org.hamcrest.Description
 import org.hamcrest.TypeSafeMatcher
-import tools.vitruv.testutils.printing.HamcrestDescriptionPrintTarget
 import tools.vitruv.testutils.printing.PrintResult
 import tools.vitruv.testutils.printing.PrintTarget
 
@@ -37,12 +34,9 @@ import org.eclipse.emf.common.util.Monitor
 import org.eclipse.emf.compare.postprocessor.BasicPostProcessorDescriptorImpl
 import tools.vitruv.testutils.printing.ModelPrinting
 import tools.vitruv.testutils.printing.ModelPrinter
-import org.eclipse.core.runtime.Platform
 import org.eclipse.emf.compare.match.impl.MatchEngineFactoryRegistryImpl
 import org.eclipse.emf.compare.postprocessor.PostProcessorDescriptorRegistryImpl
-import java.util.HashMap
 import java.util.Collection
-import java.util.function.Predicate
 import static tools.vitruv.testutils.printing.PrintResult.*
 import edu.kit.ipd.sdq.activextendannotations.CloseResource
 
@@ -51,10 +45,8 @@ import tools.vitruv.testutils.printing.PrintIdProvider
 import org.eclipse.emf.ecore.EReference
 import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
 import org.eclipse.emf.compare.match.eobject.EqualityHelperExtensionProviderDescriptorRegistryImpl
-import tools.vitruv.testutils.matchers.ModelDeepEqualityOption.EqualityFeatureFilter
-import tools.vitruv.testutils.matchers.ModelDeepEqualityOption.EqualityStrategy
-import org.eclipse.emf.compare.match.eobject.EqualityHelperExtensionProvider
-import org.eclipse.emf.compare.utils.IEqualityHelper
+import tools.vitruv.testutils.matchers.EqualityFeatureFilter
+import tools.vitruv.testutils.matchers.EqualityStrategy
 import static extension tools.vitruv.testutils.printing.TestMessages.*
 import org.eclipse.emf.compare.match.IMatchEngine
 import org.eclipse.emf.compare.scope.IComparisonScope
@@ -63,34 +55,40 @@ import org.eclipse.emf.compare.match.DefaultMatchEngine
 import org.eclipse.emf.compare.match.eobject.WeightProviderDescriptorRegistryImpl
 import org.eclipse.emf.compare.match.DefaultComparisonFactory
 import org.eclipse.emf.compare.match.DefaultEqualityHelperFactory
-import org.eclipse.emf.compare.utils.EqualityHelper
 import org.eclipse.emf.compare.match.resource.StrategyResourceMatcher
+import org.eclipse.emf.compare.utils.EqualityHelper
+import com.google.common.cache.LoadingCache
+import org.eclipse.emf.common.util.URI
+import org.eclipse.emf.compare.match.eobject.WeightProvider
+import org.eclipse.xtend.lib.annotations.Delegate
+import static com.google.common.base.Preconditions.checkState
 
 package class ModelDeepEqualityMatcher<O extends EObject> extends TypeSafeMatcher<O> {
 	val O expectedObject
-	val List<? extends EqualityFeatureFilter> featureFilters
-	val List<? extends EqualityStrategy> equalityStrategies 
+	val List<? extends ModelDeepEqualityOption> options
 	val idProvider = new ComparisonAwarePrintIdProvider
 	val ModelPrinter descriptionPrinter
+	val EqualityFeatureFilter featureFilter
 	val FeatureFilter emfCompareFeatureFilter
 	var Comparison comparison
 
 	package new(O expectedEObject, List<? extends ModelDeepEqualityOption> options) {
 		this.expectedObject = expectedEObject
-		this.featureFilters = options.filter(EqualityFeatureFilter).toList
-		this.equalityStrategies = options.filter(EqualityStrategy).toList
-		descriptionPrinter = new IgnoredFeaturesPrinter(featureFilters)
+		this.options = options
+		val featureFilters = options.filter(EqualityFeatureFilter).toList
+		featureFilter = new MultiEqualityFeatureFilter(featureFilters)
+		descriptionPrinter = new IgnoredFeaturesPrinter(featureFilter)
 		emfCompareFeatureFilter = if (featureFilters.isEmpty)
-			new FeatureFilter()
+			new FixOrderingFeatureFilter()
 		else
-			new EmfCompareEqualityFeatureFilter(featureFilters)
+			new EmfCompareEqualityFeatureFilter(featureFilter)
 	}
 
 	override matchesSafely(EObject item) {
 		comparison = buildEmfCompare(item).compare(new DefaultComparisonScope(item, expectedObject, null))
 		return comparison.differences.isEmpty
 	}
-	
+
 	override describeTo(Description description) {
 		describeTo(ModelPrinting.prepend(descriptionPrinter), description)
 	}
@@ -104,118 +102,83 @@ package class ModelDeepEqualityMatcher<O extends EObject> extends TypeSafeMatche
 		describeMismatchSafely(ModelPrinting.prepend(descriptionPrinter), item, mismatchDescription)
 	}
 
-	private def void describeMismatchSafely(@CloseResource AutoCloseable printerChange, EObject item,
+	def private void describeMismatchSafely(@CloseResource AutoCloseable printerChange, EObject item,
 		Description mismatchDescription) {
 		comparison.getMatch(expectedObject)
-		mismatchDescription.appendText('found the following differences: ')
+		mismatchDescription.appendText('found the following differences:')
 
-		val previouslyPrinted = idProvider.alreadyPrinted
-		idProvider.alreadyPrinted = new HashSet()
-		new ComparisonPrinter(idProvider, comparison, emfCompareFeatureFilter, ModelPrinting.printer)
-			.printDifferenceRecursively(new HamcrestDescriptionPrintTarget(mismatchDescription), expectedObject)
-
-		idProvider.alreadyPrinted = previouslyPrinted
 		idProvider.comparison = comparison
+		mismatchDescription.appendPrintResult [ target |
+			new ComparisonPrinter(idProvider, comparison, emfCompareFeatureFilter, ModelPrinting.printer)
+				.printDifferences(target, expectedObject)
+		]
+
 		mismatchDescription.appendText('    for object ').appendModelValue(item, idProvider)
-		if (!featureFilters.isEmpty || !equalityStrategies.isEmpty) {
-			mismatchDescription.appendText(System.lineSeparator).appendText(System.lineSeparator)
-				.appendText('    (the comparison ')
-				.appendText((featureFilters  + equalityStrategies).joinSemantic('and', ';')[target, it | describeTo(target)])
-				.appendText(')')
+		if (!options.isEmpty) {
+			mismatchDescription.appendText(System.lineSeparator).appendText(System.lineSeparator).appendText(
+				'    (the comparison ').appendText(options.joinSemantic('and', ';')[target, it|describeTo(target)]).
+				appendText(')')
 		}
 	}
 
-	private def buildEmfCompare(EObject item) {
+	def private buildEmfCompare(EObject item) {
+		// most EMF Compare factories have a RCP version hat can be configured via extension points. We don’t 
+		// use those on purpose, because we want to achieve consistent results, no matter which other Eclipse 
+		// bundles might be loaded in a test. 
 		(EMFCompare.builder => [
-			matchEngineFactoryRegistry = appropriateMatchEngineFactoryRegistry => [
-				// identifiers are often wrong or irrelevant in tests. Content-based matching yield better results
-				// in these cases.
-				add(new ParametersAwareMatcheEngineFactory(
+			matchEngineFactoryRegistry = MatchEngineFactoryRegistryImpl.createStandaloneInstance => [
+				add(new ParametersAwareMatchEngineFactory(
+					// identifiers are often wrong or irrelevant in tests. Content-based matching yield better results
+					// in these cases.
 					UseIdentifiers.NEVER,
-					appropriateEqualityHelperExtensionProviderDescriptorRegistry => [
-						var strategyCounter = 1
-						for (equalityStrategy : equalityStrategies) {
-							put("Strategy#" + strategyCounter++, new EqualityStrategyDescriptor(equalityStrategy))
-						}
-					]
+					new MultiEqualityStrategy(options.filter(EqualityStrategy).toList),
+					featureFilter
 				))
 			]
 			diffEngine = new DefaultDiffEngine(new DiffBuilder) {
 				override createFeatureFilter() { emfCompareFeatureFilter }
 			}
-			postProcessorRegistry = appropriatePostProcessorRegistry => [
+			postProcessorRegistry = new PostProcessorDescriptorRegistryImpl => [
 				put(
-					RepairWrongMatches.name,
+					MatchRoots.name,
 					new BasicPostProcessorDescriptorImpl(
-						new RepairWrongMatches(item, expectedObject, emfCompareFeatureFilter),
-						Pattern.compile('.*'), null)
+						new MatchRoots(item, expectedObject),
+						Pattern.compile('.*'), null
+					)
 				)
 			]
 		]).build()
 	}
 
-	private def getAppropriateMatchEngineFactoryRegistry() {
-		if (Platform.isRunning)
-			EMFCompareRCPPlugin.^default.matchEngineFactoryRegistry
-		else
-			MatchEngineFactoryRegistryImpl.createStandaloneInstance
-	}
-
-	private def getAppropriatePostProcessorRegistry() {
-		if (Platform.isRunning)
-			EMFCompareRCPPlugin.^default.postProcessorRegistry
-		else
-			new PostProcessorDescriptorRegistryImpl
-	}
-	
-	private def getAppropriateEqualityHelperExtensionProviderDescriptorRegistry() {
-		if (Platform.isRunning)
-			EMFCompareRCPPlugin.^default.equalityHelperExtensionProviderRegistry
-		else 
-			EqualityHelperExtensionProviderDescriptorRegistryImpl.createStandaloneInstance()
+	private static class FixOrderingFeatureFilter extends FeatureFilter {
+		override checkForOrderingChanges(EStructuralFeature feature) {
+			// EMF Compare’s default implementation always checks for ordering changes for containment references.
+			// This seems to make little sense and produces wrong results.
+			feature.isMany && feature.isOrdered
+		}
 	}
 
 	@FinalFieldsConstructor
-	private static class EmfCompareEqualityFeatureFilter extends FeatureFilter {
-		val List<? extends EqualityFeatureFilter> featureFilters
+	private static class EmfCompareEqualityFeatureFilter extends FixOrderingFeatureFilter {
+		val EqualityFeatureFilter featureFilter
 
 		override getAttributesToCheck(Match match) {
-			filter(match, super.getAttributesToCheck(match))
+			super.getAttributesToCheck(match).filter [featureFilter.includeFeature(it)]
 		}
 
 		override getReferencesToCheck(Match match) {
-			filter(match, super.getReferencesToCheck(match))
-		}
-
-		private def <T extends EStructuralFeature> filter(Match match, Iterator<T> iterator) {
-			val object = match.right ?: match.left
-			iterator.filter [ feature |
-				featureFilters.all [includeFeature(object, feature)]
-			]
+			super.getReferencesToCheck(match).filter [featureFilter.includeFeature(it)]
 		}
 	}
 
 	/* 
-	 * Fixes all the quirks of EMF Compare’s matching algorithm that stem from a combination of a bad implementation on
-	 * EMF Compare’s behalf and the fact that EMF Compare was written with another intention (visualizing changes).
-	 * Differences become difficult to read if EMF Compare does to match objects together. If the objects are the two
-	 * root objects, some differences can even not be recovered. Furthermore, matching does *not* consider the ignored
-	 * features, which can lead to wrong results:
-	 *   * Two objects might not get matched because they differ only in an ignored feature or reference.
-	 *   * Objects that can only be navigated via an ignored reference should not be compared at all, however, EMF 
-	 *     Compare considers them.
-	 * This assertion will fail in those cases will then even though it shouldn’t.
-	 * Hence, we repair any missing match by matching it with its topological partner. Furthermore, we remove all 
-	 * matches for objects that cannot be navigated to.
+	 * It is central for tests that we match both roots together, otherwise there might be no differences at all.
+	 * The request ‘compare these two objects’ has to be translated to EMF Compare by matching those two objects.
 	 */
 	@FinalFieldsConstructor
-	private static class RepairWrongMatches implements IPostProcessor {
+	private static class MatchRoots implements IPostProcessor {
 		val EObject leftRoot
 		val EObject rightRoot
-		val FeatureFilter featureFilter
-		val Set<EObject> navigable = new HashSet()
-		val Set<EObject> checked = new HashSet()
-		val HashMap<Pair<EObject, EObject>, Boolean> matchCache = new HashMap()
 
 		override postComparison(Comparison comparison, Monitor monitor) {}
 
@@ -227,10 +190,6 @@ package class ModelDeepEqualityMatcher<O extends EObject> extends TypeSafeMatche
 
 		override postMatch(Comparison comparison, Monitor monitor) {
 			ensureMatched(comparison, leftRoot, rightRoot)
-			checkMatches(comparison, leftRoot, rightRoot)
-			collectNavigableObjects(comparison, leftRoot)
-			collectNavigableObjects(comparison, rightRoot)
-			removeNotNavigableMatches(comparison)
 		}
 
 		def private ensureMatched(Comparison comparison, EObject left, EObject right) {
@@ -244,162 +203,14 @@ package class ModelDeepEqualityMatcher<O extends EObject> extends TypeSafeMatche
 
 		def private combineMatches(Comparison comparison, EObject left, EObject right, Match leftMatch,
 			Match rightMatch) {
-			// these checks guarantee that we do not throw away any values
-			if (rightMatch.left !== null) throw new IllegalStateException(
-				'''«right» is to be matched with «left», but it is already matched with «rightMatch.left»!'''
-			)
-			if (leftMatch.right !== null) throw new IllegalStateException(
-				'''«left» is to be matched with «right», but it is already matched with «leftMatch.right»!'''
-			)
+			checkState(leftMatch.right === null, 
+				"%s should be matched with %s, but is already matched with %s!", left, right, leftMatch.right)
+			checkState(rightMatch.left === null, 
+				"%s should be matched with %s, but is already matched with %s!", right, left, rightMatch.left)
 			rightMatch.submatches += leftMatch.submatches
 			val leftContainer = leftMatch.eContainer.eGet(leftMatch.eContainingFeature) as Collection<EObject>
 			leftContainer -= leftMatch
 			rightMatch.left = left
-			return rightMatch
-		}
-
-		// this is rather expensive because of the comparison.getMatch calls. However, we cannot merge this with 
-		// iterateReferenceMatches because iterateReferenceMatches may not visit all objects.
-		def private void collectNavigableObjects(Comparison comparison, EObject object) {
-			if (object === null || navigable.contains(object)) return; 
-			navigable += object
-			val match = comparison.getMatch(object)
-			if (match === null) return;
-			
-			for (val references = featureFilter.getReferencesToCheck(match); references.hasNext();) {
-				val reference = references.next() 
-				if (reference.isMany) {
-					for (referenced : object.eGet(reference) as Collection<? extends EObject>) {
-						collectNavigableObjects(comparison, referenced)
-					}
-				} else {
-					collectNavigableObjects(comparison, object.eGet(reference) as EObject)
-				}
-			}
-		}
-
-		def private void removeNotNavigableMatches(Comparison comparison) {
-			// fix the list before navigating it to avoid a ConcurrentModificationException
-			for (match : comparison.allMatches.toList) {
-				if ((match.left === null || !navigable.contains(match.left)) &&
-					(match.right === null || !navigable.contains(match.right))) {
-					val matchContainer = match.eContainer
-					switch (matchContainer) {
-						Match: {
-							matchContainer.submatches += match.submatches
-							matchContainer.submatches -= match
-						}
-						case comparison: {
-							comparison.matches += match.submatches
-							comparison.matches -= match
-						}
-						default: throw new IllegalStateException('''Unexpected match container: «matchContainer» (of «match»)''')
-					}
-				}
-			}
-		}
-
-		def private void checkMatches(Comparison comparison, EObject left, EObject right) {
-			// if we match values that should not be matched, the error messages will be harder to read.
-			// if do not match values that should be matched, the result can be wrong.
-			// hence, it is better to match too much than not enough
-			if (left === null || right === null || (checked.contains(left) && checked.contains(right))) return;
-			checked += left
-			checked += right
-
-			var leftMatch = comparison.getMatch(left)
-			var rightMatch = comparison.getMatch(right)
-			if (leftMatch === null && rightMatch === null) return;
-			if (leftMatch === null) throw new IllegalStateException('''right match without left match: «rightMatch»''')
-			if (rightMatch === null) throw new IllegalStateException('''left match without right match: «rightMatch»''')
-			
-			if (leftMatch.right === null && rightMatch.left === null && left.eClass == right.eClass) {
-				leftMatch = combineMatches(comparison, left, right, leftMatch, rightMatch)
-				rightMatch = leftMatch
-			}
-
-			if (leftMatch == rightMatch) {
-				iterateReferenceMatches(comparison, left, right, rightMatch)
-			}
-		}
-
-		def private iterateReferenceMatches(Comparison comparison, EObject left, EObject right, Match rightMatch) {
-			for (val references = featureFilter.getReferencesToCheck(rightMatch); references.hasNext();) {
-				val reference = references.next()
-				if (!reference.isMany) {
-					checkMatches(comparison, left.eGet(reference) as EObject, right.eGet(reference) as EObject)
-				} else {
-					val leftItems = left.eGet(reference) as List<? extends EObject>
-					val rightItems = right.eGet(reference) as List<? extends EObject>
-					if (leftItems.size == rightItems.size) {
-						if (reference.isOrdered) {
-							if (leftItems.size == rightItems.size) {
-								for (var i = 0; i < leftItems.size; i += 1) {
-									checkMatches(comparison, leftItems.get(i), rightItems.get(i))
-								}
-							}
-						} else {
-							// tricky, because we can’t use topology here. Hence: leave everything that already has
-							// a match, and try to find matches that definitely belong together.
-							val leftToMatch = new HashSet(rightItems)
-							for (rightItem : rightItems) {
-								val rightItemMatch = comparison.getMatch(rightItem)
-								val leftCandidate = rightItemMatch.left ?: leftToMatch.findFirst [
-									shouldDefinitelyBeMatched(comparison, it, rightItem, rightItemMatch)
-								]
-								if (leftCandidate !== null) {
-									leftToMatch -= leftCandidate
-									checkMatches(comparison, leftCandidate, rightItem)
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-
-		def private boolean shouldBeMatched(Comparison comparison, EObject left, EObject right) {
-			shouldDefinitelyBeMatched(comparison, left, right, comparison.getMatch(right))
-		}
-
-		def private boolean shouldDefinitelyBeMatched(Comparison comparison, EObject left, EObject right,
-			Match rightMatch) {
-			val pair = left -> right
-			matchCache.get(pair) ?: {
-				val quickResult = (left.eClass == right.eClass) && featureFilter.getAttributesToCheck(rightMatch).all [ attribute |
-					left.eGet(attribute) == right.eGet(attribute)
-				]
-				// save attribute result already here, in case we come back while checking references
-				matchCache.put(pair, quickResult)
-				if (quickResult) {
-					val referenceResult = featureFilter.getReferencesToCheck(rightMatch).all [ reference |
-						if (!reference.isMany) {
-							shouldBeMatched(comparison, left.eGet(reference) as EObject,
-								right.eGet(reference) as EObject)
-						} else {
-							val leftObjects = left.eGet(reference) as Collection<? extends EObject>
-							val rightObjects = right.eGet(reference) as Collection<? extends EObject>
-							leftObjects.size != rightObjects.size || {
-								if (reference.isOrdered) {
-									leftObjects.allIndexed [ leftItem, index |
-										val rightItem = rightObjects.get(index)
-										shouldBeMatched(comparison, leftItem, rightItem)
-									]
-								} else {
-									leftObjects.all [ leftItem |
-										rightObjects.exists [ rightItem |
-											shouldBeMatched(comparison, leftItem, rightItem)
-										]
-									]
-								}
-							}
-						}
-					]
-					matchCache.put(pair, referenceResult)
-					referenceResult
-				} else
-					false
-			}
 		}
 
 		override postRequirements(Comparison comparison, Monitor monitor) {}
@@ -407,7 +218,7 @@ package class ModelDeepEqualityMatcher<O extends EObject> extends TypeSafeMatche
 
 	@FinalFieldsConstructor
 	private static class IgnoredFeaturesPrinter implements ModelPrinter {
-		val List<? extends EqualityFeatureFilter> featureFilters
+		val EqualityFeatureFilter featureFilter
 
 		override withSubPrinter(ModelPrinter subPrinter) {
 			this
@@ -420,9 +231,9 @@ package class ModelDeepEqualityMatcher<O extends EObject> extends TypeSafeMatche
 			EStructuralFeature feature,
 			Object value
 		) {
-			printIfIgnored(target, object, feature)
+			printIfIgnored(target, feature)
 		}
-		
+
 		override PrintResult printFeatureValueSet(
 			PrintTarget target,
 			PrintIdProvider idProvider,
@@ -430,9 +241,9 @@ package class ModelDeepEqualityMatcher<O extends EObject> extends TypeSafeMatche
 			EStructuralFeature feature,
 			Collection<?> values
 		) {
-			printIfIgnored(target, object, feature)
+			printIfIgnored(target, feature)
 		}
-		
+
 		override PrintResult printFeatureValueList(
 			PrintTarget target,
 			PrintIdProvider idProvider,
@@ -440,38 +251,33 @@ package class ModelDeepEqualityMatcher<O extends EObject> extends TypeSafeMatche
 			EStructuralFeature feature,
 			Collection<?> values
 		) {
-			printIfIgnored(target, object, feature)
+			printIfIgnored(target, feature)
 		}
-		
-		def private printIfIgnored(extension PrintTarget target, EObject object, EStructuralFeature feature) {
-			if (featureFilters.exists[!includeFeature(object, feature)]) {
+
+		def private printIfIgnored(extension PrintTarget target, EStructuralFeature feature) {
+			if (!featureFilter.includeFeature(feature)) {
 				print('…')
 			} else {
 				NOT_RESPONSIBLE
 			}
-		} 
+		}
 	}
 
 	private static class ComparisonAwarePrintIdProvider implements PrintIdProvider {
 		val delegate = new DefaultPrintIdProvider
-		var alreadyPrinted = new HashSet<EObject>()
 		var Comparison comparison
 
-		override <T extends EObject> ifAlreadyPrintedElse(T object, (T, String)=>PrintResult existingPrinter,
-			(T, String)=>PrintResult newPrinter) {
-			delegate.printWithId(replaceWithRight(object)) [ toPrint, id |
-				if (alreadyPrinted.contains(toPrint)) {
-					existingPrinter.apply(toPrint, id)
-				} else {
-					alreadyPrinted += toPrint
-					newPrinter.apply(toPrint, id)
-				}
-			]
+		override getFallbackId(Object object) {
+			switch (object) {
+				EObject: delegate.getFallbackId(replaceWithRight(object))
+				default: delegate.getFallbackId(object)
+			}
 		}
 
 		def <T extends EObject> replaceWithRight(T object) {
 			val match = comparison?.getMatch(object)
-			if (match !== null && match.allDifferences.isEmpty) {
+			// use the same ID if all attributes are equal
+			if (match !== null && !match.allDifferences.exists[it instanceof AttributeChange]) {
 				match.right as T ?: object
 			} else
 				object
@@ -480,40 +286,53 @@ package class ModelDeepEqualityMatcher<O extends EObject> extends TypeSafeMatche
 
 	@FinalFieldsConstructor
 	private static class ComparisonPrinter {
+		static val DIFFERENCE_PRINT_MODE = multiLineIfAtLeast(1).withSeparator('')
 		val PrintIdProvider idProvider
 		val Comparison comparison
 		val FeatureFilter featureFilter
 		extension val ModelPrinter modelPrinter
-		val Set<Match> seen = new HashSet
+		val Set<Diff> seenDiffs = new HashSet
+		val Set<Match> seenMatches = new HashSet
 
-		def private PrintResult printDifferenceRecursively(extension PrintTarget target, EObject root) {
-			printIterableElements(root.getDifferencesWithContext(""), MULTI_LINE) [ subTarget, difference |
+		def private PrintResult printDifferences(extension PrintTarget target, EObject root) {
+			printIterableElements(root.getDifferencesWithContext(), DIFFERENCE_PRINT_MODE) [ subTarget, difference |
 				subTarget.printDifference(difference.key, difference.value)
 			]
 		}
 
-		def private Iterable<Pair<String, Diff>> getDifferencesWithContext(EObject object, String context) {
-			if (object === null) return emptyList()
-			val thisMatch = comparison.getMatch(object)
-			if (thisMatch === null || seen.contains(thisMatch)) return emptyList()
-			seen += thisMatch
-
-			thisMatch.differences.map[difference|context -> difference] //
-			+ featureFilter.getReferencesToCheck(thisMatch).toIterable.flatMap [ reference |
-				(thisMatch.left?.getReferenceDifferencesWithContext(context, reference) ?: emptyList()) +
-					(thisMatch.right?.getReferenceDifferencesWithContext(context, reference) ?: emptyList())
-			]
+		def private Iterable<Pair<String, Diff>> getDifferencesWithContext(EObject object) {
+			val viaContainment = object.getDifferencesWithContext("", true)
+			seenMatches.clear()
+			val viaNonContainment = object.getDifferencesWithContext("", false)
+			return viaContainment + viaNonContainment
 		}
 
-		def private getReferenceDifferencesWithContext(EObject object, String context, EReference reference) {
+		def private Iterable<Pair<String, Diff>> getDifferencesWithContext(EObject object, String context,
+			boolean containment) {
+			if (object === null) return emptyList()
+			val thisMatch = comparison.getMatch(object)
+			if (thisMatch === null || !(seenMatches += thisMatch)) return emptyList()
+
+			thisMatch.differences.filter[seenDiffs += it].map[difference|context -> difference] +
+				featureFilter.getReferencesToCheck(thisMatch).filter[isContainment == containment].toIterable.
+					flatMapFixed [ reference |
+						(thisMatch.left?.getReferenceDifferencesWithContext(context, reference, containment) 
+							?: emptyList)
+						+ (thisMatch.right?.getReferenceDifferencesWithContext(context, reference, containment) 
+							?: emptyList)
+					]
+		}
+
+		def private getReferenceDifferencesWithContext(EObject object, String context, EReference reference,
+			boolean containment) {
 			val referenceContext = '''«context».«reference.name»'''
 			if (reference.isMany) {
 				(object.eGet(reference) as Iterable<? extends EObject>).flatMapFixedIndexed [ index, element |
 					val elementIndicator = if (reference.isOrdered) '''[«index»]''' else '''{«index»}'''
-					element.getDifferencesWithContext(referenceContext + elementIndicator)
+					element.getDifferencesWithContext(referenceContext + elementIndicator, containment)
 				]
 			} else {
-				(object.eGet(reference) as EObject).getDifferencesWithContext(referenceContext)
+				(object.eGet(reference) as EObject).getDifferencesWithContext(referenceContext, containment)
 			}
 		}
 
@@ -530,13 +349,12 @@ package class ModelDeepEqualityMatcher<O extends EObject> extends TypeSafeMatche
 
 		def private PrintResult printFeatureDifference(extension PrintTarget target, EStructuralFeature feature,
 			String context, Diff difference, Object value) {
-			print(context)
-				+ (if (difference.match.left !== null) {
-					print(' (') + idProvider.printWithId(difference.match.left)[_, id|print(id)] + print(')')
-				} else {
-					PRINTED_NO_OUTPUT
-				}) + print('.') + print(feature.name) + print(' ') + print(difference.kind.verb) + print(': ')
-			+ target.printFeatureValue(idProvider, difference.match.left ?: difference.match.right, feature, value)
+			print(context) + (if (difference.match.left !== null) {
+				print(' (') + modelPrinter.printObjectShortened(target, idProvider, difference.match.left) + print(')')
+			} else {
+				PRINTED_NO_OUTPUT
+			}) + print('.') + print(feature.name) + print(' ') + print(difference.kind.verb) + print(': ') +
+				target.printFeatureValue(idProvider, difference.match.left ?: difference.match.right, feature, value)
 		}
 
 		def private String getVerb(DifferenceKind kind) {
@@ -544,93 +362,89 @@ package class ModelDeepEqualityMatcher<O extends EObject> extends TypeSafeMatche
 				case ADD: "contained the unexpected value"
 				case DELETE: "was missing the value"
 				case CHANGE: "had the wrong value"
-				case MOVE: "was moved"
+				case MOVE: "had a different position for"
 			}
 		}
 	}
-	
-	
-	@FinalFieldsConstructor
-	private static class EqualityStrategyDescriptor 
-		implements EqualityHelperExtensionProvider.Descriptor, EqualityHelperExtensionProvider {
-		val EqualityStrategy strategy
-		
-		override getEqualityHelperExtensionProvider() {
-			this
+
+	private static class EqualityStrategyEqualityHelper extends EqualityHelper {
+		val EqualityStrategy equalityStrategy
+
+		private new(LoadingCache<EObject, URI> uriCache, EqualityStrategy equalityStrategy) {
+			super(uriCache)
+			this.equalityStrategy = equalityStrategy
 		}
-		
-		override getNsURI() {
-			Pattern.compile(strategy.targetNsUris.join('|') [Pattern.quote(it)])
-		}
-		
-		override getRanking() {
-			MAX_VALUE
-		}
-		
-		override matchingEObjects(EObject object1, EObject object2, IEqualityHelper equalityHelper) {
-			strategy.compare(object1, object2, equalityHelper)
+
+		override matchingEObjects(EObject object1, EObject object2) {
+			return switch (equalityStrategy.compare(object1, object2)) {
+				case EqualityStrategy.Result.EQUAL: true
+				case EqualityStrategy.Result.UNEQUAL: false
+				case EqualityStrategy.Result.UNKNOWN: super.matchingEObjects(object1, object2)
+			}
 		}
 	}
-	
+
 	@FinalFieldsConstructor
-	private static class ParametersAwareMatcheEngineFactory implements IMatchEngine.Factory {
+	private static class FilteredFeaturesAwareWeightProvider implements WeightProvider {
+		@Delegate val WeightProvider delegate
+		val EqualityFeatureFilter featureFilter
+
+		override getWeight(EStructuralFeature attribute) {
+			if (featureFilter.includeFeature(attribute)) delegate.getWeight(attribute) else 0
+		}
+	}
+
+	@FinalFieldsConstructor
+	private static class ParametersAwareMatchEngineFactory implements IMatchEngine.Factory {
 		val UseIdentifiers useIdentifiers
-		val EqualityHelperExtensionProvider.Descriptor.Registry equalityHelperExtensionProviderDescriptorRegistry
+		val EqualityStrategy equalityStrategy
+		val EqualityFeatureFilter featureFilter
 		@Accessors
 		var int ranking = MAX_VALUE
-		
+
 		override getMatchEngine() {
 			val comparisonFactory = new DefaultComparisonFactory(
 				new DefaultEqualityHelperFactory() {
 					override createEqualityHelper() {
-						new EqualityHelper(
+						new EqualityStrategyEqualityHelper(
 							EqualityHelper.createDefaultCache(cacheBuilder),
-							equalityHelperExtensionProviderDescriptorRegistry
+							equalityStrategy
 						)
 					}
 				}
 			)
 			val eObjectMatcher = DefaultMatchEngine.createDefaultEObjectMatcher(
 				useIdentifiers,
-				WeightProviderDescriptorRegistryImpl.createStandaloneInstance(),
-				equalityHelperExtensionProviderDescriptorRegistry
+				parameterAwareWeightProviderDescriptorRegistry,
+				EqualityHelperExtensionProviderDescriptorRegistryImpl.createStandaloneInstance
 			)
 			return new DefaultMatchEngine(eObjectMatcher, new StrategyResourceMatcher, comparisonFactory)
 		}
-		
+
 		override isMatchEngineFactoryFor(IComparisonScope scope) {
 			true
 		}
+
+		def private parameterAwareWeightProviderDescriptorRegistry() {
+			val resultRegistry = new WeightProviderDescriptorRegistryImpl
+			val sourceRegistry = WeightProviderDescriptorRegistryImpl.createStandaloneInstance
+			for (descriptor : sourceRegistry.descriptors) {
+				resultRegistry.put(descriptor.weightProvider.class.name, new WeightProviderDescriptorImpl(
+					new FilteredFeaturesAwareWeightProvider(descriptor.weightProvider, featureFilter),
+					descriptor.ranking,
+					descriptor.nsURI
+				))
+			}
+			return resultRegistry
+		}
 	}
 	
-	/**
-	 * An iterator for the whole match hierarchy under and including {@code match}, in bottom-up order.
-	 */
-	def private static Iterable<Match> getAllMatches(Match match) {
-		match.submatches.flatMap[allMatches] + match.submatches
-	}
-
-	/**
-	 * An iterator for the whole match hierarchy under {@code comparison}, in bottom-up order.
-	 */
-	def private static Iterable<Match> getAllMatches(Comparison comparison) {
-		comparison.matches.flatMap[allMatches] + comparison.matches
-	}
-
-	def private static <T> boolean all(Iterator<? extends T> elements, Predicate<T> predicate) {
-		!elements.exists(predicate.negate())
-	}
-
-	def private static <T> boolean all(Iterable<? extends T> elements, Predicate<T> predicate) {
-		!elements.exists(predicate.negate())
-	}
-
-	def private static <T> boolean allIndexed(Collection<? extends T> elements, (T, Integer)=>Boolean predicate) {
-		for (var i = 0; i < elements.size; i++) {
-			if (!predicate.apply(elements.get(i), i)) {
-				return false
-			}
-		}
-		return true
+	// EMF Compare’s implementation has discouraged access, so we roll our own
+	@FinalFieldsConstructor
+	@Accessors 
+	private static class WeightProviderDescriptorImpl implements WeightProvider.Descriptor {
+		val WeightProvider weightProvider
+		val int ranking
+		val Pattern nsURI
 	}
 }

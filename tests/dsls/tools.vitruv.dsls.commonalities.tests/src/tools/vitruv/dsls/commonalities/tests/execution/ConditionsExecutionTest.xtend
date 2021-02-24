@@ -41,8 +41,8 @@ class ConditionsExecutionTest extends IdentifiedExecutionTest {
 					has id {
 						= AllElementTypes:Root.id
 						= AllElementTypes2:Root2.id2
-						= PcmMockup:Repository.id
-						= UmlMockup:UPackage.id
+						= PcmMockup:Repository.name
+						= UmlMockup:UPackage.name
 						-> AllElementTypes:Resource.name
 						-> AllElementTypes2:Resource.name
 						-> PcmMockup:Resource.name

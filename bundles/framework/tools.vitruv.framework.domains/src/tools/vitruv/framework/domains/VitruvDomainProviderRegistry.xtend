@@ -19,6 +19,7 @@ import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
  */
 final class VitruvDomainProviderRegistry {
 	static val LOGGER = Logger.getLogger(VitruvDomainProviderRegistry)
+	static val EXTENSION_POINT_ID = "tools.vitruv.framework.domains.provider"
 
 	private new() {
 	}
@@ -26,7 +27,6 @@ final class VitruvDomainProviderRegistry {
 	@Lazy(value = PRIVATE, synchronizeInitialization = true) 
 	static val List<VitruvDomainProvider<?>> staticallyRegisteredProviders = readAllDomainProvidersFromPlatform()
 	static val runtimeRegisteredProviders = new HashMap<String, VitruvDomainProvider<?>>
-	public static val EXTENSION_POINT_ID = "tools.vitruv.framework.domains.provider"
 
 	/**
 	 * Registers a domain provider that provides the domain {@code domainName}.

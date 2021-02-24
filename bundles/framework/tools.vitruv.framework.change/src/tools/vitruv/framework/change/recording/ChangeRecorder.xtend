@@ -237,9 +237,9 @@ class ChangeRecorder implements AutoCloseable {
 	
 	def private boolean isInOurResourceSet(Notifier notifier) {
 		switch (notifier) {
-			EObject: 
-				notifier.eResource === null || notifier.eResource.resourceSet == uuidGeneratorAndResolver.resourceSet
-			Resource: notifier.resourceSet == uuidGeneratorAndResolver.resourceSet
+			case null: true
+			EObject: isInOurResourceSet(notifier?.eResource)
+			Resource: isInOurResourceSet(notifier?.resourceSet)
 			ResourceSet: notifier == uuidGeneratorAndResolver.resourceSet
 			default: throw new IllegalStateException("Unexpected notifier type: " + notifier.class.simpleName)
 		}
@@ -265,8 +265,8 @@ class ChangeRecorder implements AutoCloseable {
 						case ADD,
 						case SET: infect(notification.newValue)
 						case ADD_MANY: (notification.newValue as Iterable<?>).forEach [infect()]
-						// RESOLVE can only be dispatched for non-containment references, so we don’t need
-						// to react to it
+						// We currently resolve all containment references in #recursively, which is why we don’t
+						// need to react to RESOLVE notifications here.
 					}
 				}
 			}
@@ -282,15 +282,11 @@ class ChangeRecorder implements AutoCloseable {
 		}
 		
 		private def infect(Object newValue) {
-			if (newValue !== null) {
-				(newValue as Notifier).recursively [addAdapter()]
-			}
+			(newValue as Notifier)?.recursively [addAdapter()]
 		}
 		
 		private def desinfect(Object oldValue) {
-			if (oldValue !== null) {
-				(oldValue as Notifier).recursively [removeAdapter()]
-			}
+			(oldValue as Notifier)?.recursively [removeAdapter()]
 		}
 		
 		override getTarget() { null }

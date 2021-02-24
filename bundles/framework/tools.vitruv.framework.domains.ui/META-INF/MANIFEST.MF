@@ -13,6 +13,7 @@ Require-Bundle: org.apache.log4j,
  org.eclipse.xtend.lib,
  org.eclipse.core.expressions;visibility:=reexport,
  tools.vitruv.framework.vsum,
+ tools.vitruv.framework.util,
  edu.kit.ipd.sdq.activextendannotations
 Export-Package: tools.vitruv.framework.domains.ui.monitorededitor,
  tools.vitruv.framework.domains.ui.builder

@@ -21,7 +21,6 @@ import static extension tools.vitruv.testutils.domains.DomainModelCreators.*
 import static org.hamcrest.MatcherAssert.assertThat
 import static tools.vitruv.testutils.matchers.ModelMatchers.contains
 import static tools.vitruv.testutils.matchers.ModelMatchers.ignoringFeatures
-import static extension tools.vitruv.testutils.matchers.ModelMatchers.unlessOn
 import uml_mockup.UPackage
 import pcm_mockup.Repository
 import static tools.vitruv.testutils.matchers.ModelMatchers.doesNotExist
@@ -56,8 +55,8 @@ class IdentifiedExecutionTest extends VitruvApplicationTest {
 					has id {
 						= AllElementTypes:Root.id
 						= AllElementTypes2:Root2.id2
-						= PcmMockup:Repository.id
-						= UmlMockup:UPackage.id
+						= PcmMockup:Repository.name
+						= UmlMockup:UPackage.name
 						-> AllElementTypes:Resource.name
 						-> AllElementTypes2:Resource.name
 						-> PcmMockup:Resource.name
@@ -111,8 +110,10 @@ class IdentifiedExecutionTest extends VitruvApplicationTest {
 
 		assertThat(resourceAt('testid'.allElementTypes2), contains(aet2.Root2 => [id2 = 'testid']))
 		assertThat(resourceAt('testid'.allElementTypes), contains(aet.Root => [id = 'testid']))
-		assertThat(resourceAt('testid'.pcm_mockup), contains(pcm.Repository => [id = 'testid']))
-		assertThat(resourceAt('testid'.uml_mockup), contains(uml.Package => [id = 'testid']))
+		assertThat(resourceAt('testid'.pcm_mockup), 
+			contains(pcm.Repository => [name = 'testid'], ignoringFeatures('id')))
+		assertThat(resourceAt('testid'.uml_mockup), 
+			contains(uml.Package => [name = 'testid'], ignoringFeatures('id')))
 	}
 
 	@Test
@@ -126,18 +127,24 @@ class IdentifiedExecutionTest extends VitruvApplicationTest {
 
 		assertThat(resourceAt('first'.allElementTypes2), contains(aet2.Root2 => [id2 = 'first']))
 		assertThat(resourceAt('first'.allElementTypes), contains(aet.Root => [id = 'first']))
-		assertThat(resourceAt('first'.pcm_mockup), contains(pcm.Repository => [id = 'first']))
-		assertThat(resourceAt('first'.uml_mockup), contains(uml.Package => [id = 'first']))
+		assertThat(resourceAt('first'.pcm_mockup),
+			contains(pcm.Repository => [name = 'first'], ignoringFeatures('id')))
+		assertThat(resourceAt('first'.uml_mockup),
+			contains(uml.Package => [name = 'first'], ignoringFeatures('id')))
 
 		assertThat(resourceAt('second'.allElementTypes2), contains(aet2.Root2 => [id2 = 'second']))
 		assertThat(resourceAt('second'.allElementTypes), contains(aet.Root => [id = 'second']))
-		assertThat(resourceAt('second'.pcm_mockup), contains(pcm.Repository => [id = 'second']))
-		assertThat(resourceAt('second'.uml_mockup), contains(uml.Package => [id = 'second']))
+		assertThat(resourceAt('second'.pcm_mockup),
+			contains(pcm.Repository => [name = 'second'], ignoringFeatures('id')))
+		assertThat(resourceAt('second'.uml_mockup),
+			contains(uml.Package => [name = 'second'], ignoringFeatures('id')))
 
 		assertThat(resourceAt('third'.allElementTypes2), contains(aet2.Root2 => [id2 = 'third']))
 		assertThat(resourceAt('third'.allElementTypes), contains(aet.Root => [id = 'third']))
-		assertThat(resourceAt('third'.pcm_mockup), contains(pcm.Repository => [id = 'third']))
-		assertThat(resourceAt('third'.uml_mockup), contains(uml.Package => [id = 'third']))
+		assertThat(resourceAt('third'.pcm_mockup),
+			contains(pcm.Repository => [name = 'third'], ignoringFeatures('id')))
+		assertThat(resourceAt('third'.uml_mockup),
+			contains(uml.Package => [name = 'third'], ignoringFeatures('id')))
 	}
 
 	@Test
@@ -164,26 +171,26 @@ class IdentifiedExecutionTest extends VitruvApplicationTest {
 		Root2.from('startid'.allElementTypes2).propagate[id2 = '1st id']
 		assertThat(resourceAt('startid'.allElementTypes2), contains(aet2.Root2 => [id2 = '1st id']))
 		assertThat(resourceAt('startid'.allElementTypes), contains(aet.Root => [id = '1st id']))
-		assertThat(resourceAt('startid'.pcm_mockup), contains(pcm.Repository => [id = '1st id']))
-		assertThat(resourceAt('startid'.uml_mockup), contains(uml.Package => [id = '1st id']))
+		assertThat(resourceAt('startid'.pcm_mockup), contains(pcm.Repository => [name = '1st id'], ignoringFeatures('id')))
+		assertThat(resourceAt('startid'.uml_mockup), contains(uml.Package => [name = '1st id'], ignoringFeatures('id')))
 
 		Root.from('startid'.allElementTypes).propagate[id = '2nd id']
 		assertThat(resourceAt('startid'.allElementTypes2), contains(aet2.Root2 => [id2 = '2nd id']))
 		assertThat(resourceAt('startid'.allElementTypes), contains(aet.Root => [id = '2nd id']))
-		assertThat(resourceAt('startid'.pcm_mockup), contains(pcm.Repository => [id = '2nd id']))
-		assertThat(resourceAt('startid'.uml_mockup), contains(uml.Package => [id = '2nd id']))
+		assertThat(resourceAt('startid'.pcm_mockup), contains(pcm.Repository => [name = '2nd id'], ignoringFeatures('id')))
+		assertThat(resourceAt('startid'.uml_mockup), contains(uml.Package => [name = '2nd id'], ignoringFeatures('id')))
 
-		Repository.from('startid'.pcm_mockup).propagate[id = '3th id']
+		Repository.from('startid'.pcm_mockup).propagate[name = '3th id']
 		assertThat(resourceAt('startid'.allElementTypes2), contains(aet2.Root2 => [id2 = '3th id']))
 		assertThat(resourceAt('startid'.allElementTypes), contains(aet.Root => [id = '3th id']))
-		assertThat(resourceAt('startid'.pcm_mockup), contains(pcm.Repository => [id = '3th id']))
-		assertThat(resourceAt('startid'.uml_mockup), contains(uml.Package => [id = '3th id']))
+		assertThat(resourceAt('startid'.pcm_mockup), contains(pcm.Repository => [name = '3th id'], ignoringFeatures('id')))
+		assertThat(resourceAt('startid'.uml_mockup), contains(uml.Package => [name = '3th id'], ignoringFeatures('id')))
 
-		UPackage.from('startid'.uml_mockup).propagate[id = '4th id']
+		UPackage.from('startid'.uml_mockup).propagate[name = '4th id']
 		assertThat(resourceAt('startid'.allElementTypes2), contains(aet2.Root2 => [id2 = '4th id']))
 		assertThat(resourceAt('startid'.allElementTypes), contains(aet.Root => [id = '4th id']))
-		assertThat(resourceAt('startid'.pcm_mockup), contains(pcm.Repository => [id = '4th id']))
-		assertThat(resourceAt('startid'.uml_mockup), contains(uml.Package => [id = '4th id']))
+		assertThat(resourceAt('startid'.pcm_mockup), contains(pcm.Repository => [name = '4th id'], ignoringFeatures('id')))
+		assertThat(resourceAt('startid'.uml_mockup), contains(uml.Package => [name = '4th id'], ignoringFeatures('id')))
 	}
 
 	@Test
@@ -317,13 +324,13 @@ class IdentifiedExecutionTest extends VitruvApplicationTest {
 			multiValuedContainmentEReference += aet.NonRoot => [id = 'testname']
 		]))
 		assertThat(resourceAt('testid'.pcm_mockup), contains(pcm.Repository => [
-			id = 'testid'
+			name = 'testid'
 			components += pcm.Component => [name = 'testname']
-		], ignoringFeatures('id').unlessOn(Repository)))
+		], ignoringFeatures('id')))
 		assertThat(resourceAt('testid'.uml_mockup), contains(uml.Package => [
-			id = 'testid'
+			name = 'testid'
 			classes += uml.Class => [name = 'testname']
-		], ignoringFeatures('id').unlessOn(UPackage)))
+		], ignoringFeatures('id')))
 	}
 
 	@Test
@@ -354,19 +361,19 @@ class IdentifiedExecutionTest extends VitruvApplicationTest {
 			]
 		]))
 		assertThat(resourceAt('testid'.pcm_mockup), contains(pcm.Repository => [
-			id = 'testid'
+			name = 'testid'
 			components += #[
 				pcm.Component => [name = 'first'],
 				pcm.Component => [name = 'second']
 			]
-		], ignoringFeatures('id').unlessOn(Repository)))
+		], ignoringFeatures('id')))
 		assertThat(resourceAt('testid'.uml_mockup), contains(uml.Package => [
-			id = 'testid'
+			name = 'testid'
 			classes += #[
 				uml.Class => [name = 'first'],
 				uml.Class => [name = 'second']
 			]
-		], ignoringFeatures('id').unlessOn(UPackage)))
+		], ignoringFeatures('id')))
 
 		Repository.from('testid'.pcm_mockup).propagate [
 			components += pcm.Component => [name = 'third']
@@ -388,20 +395,20 @@ class IdentifiedExecutionTest extends VitruvApplicationTest {
 			]
 		]))
 		assertThat(resourceAt('testid'.pcm_mockup), contains(pcm.Repository => [
-			id = 'testid'
+			name = 'testid'
 			components += #[
 				pcm.Component => [name = 'first'],
 				pcm.Component => [name = 'second'],
 				pcm.Component => [name = 'third']
 			]
-		], ignoringFeatures('id').unlessOn(Repository)))
+		], ignoringFeatures('id')))
 		assertThat(resourceAt('testid'.uml_mockup), contains(uml.Package => [
-			id = 'testid'
+			name = 'testid'
 			classes += #[
 				uml.Class => [name = 'first'],
 				uml.Class => [name = 'second'],
 				uml.Class => [name = 'third']
 			]
-		], ignoringFeatures('id').unlessOn(UPackage)))
+		], ignoringFeatures('id')))
 	}
 }

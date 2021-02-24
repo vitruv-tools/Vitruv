@@ -21,7 +21,6 @@
 
    <requires>
       <import plugin="tools.vitruv.extensions.dslsruntime.reactions"/>
-      <import plugin="tools.vitruv.framework.tuid"/>
    </requires>
 
    <plugin

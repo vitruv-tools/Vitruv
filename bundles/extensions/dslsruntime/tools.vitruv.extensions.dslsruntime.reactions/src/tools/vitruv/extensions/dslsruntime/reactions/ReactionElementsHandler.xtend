@@ -6,6 +6,4 @@ interface ReactionElementsHandler {
 	def void addCorrespondenceBetween(EObject firstElement, EObject secondElement, String tag);
 	def void removeCorrespondenceBetween(EObject firstElement, EObject secondElement, String tag);
 	def void deleteObject(EObject element);
-	def void registerObjectUnderModification(EObject element);
-	def void postprocessElements();
 }

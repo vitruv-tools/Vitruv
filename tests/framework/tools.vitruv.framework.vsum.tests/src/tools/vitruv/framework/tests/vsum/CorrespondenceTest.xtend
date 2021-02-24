@@ -10,7 +10,6 @@ import pcm_mockup.PInterface
 import pcm_mockup.Repository
 import tools.vitruv.framework.correspondence.Correspondence
 import tools.vitruv.framework.correspondence.CorrespondenceModel
-import tools.vitruv.framework.tuid.TuidManager
 import tools.vitruv.framework.util.datatypes.ModelInstance
 import tools.vitruv.framework.util.datatypes.VURI
 import tools.vitruv.framework.vsum.InternalVirtualModel
@@ -23,6 +22,7 @@ import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
 import static extension tools.vitruv.framework.correspondence.CorrespondenceModelUtil.*
 
 import org.junit.jupiter.api.Test
+import tools.vitruv.framework.util.bridges.EcoreResourceBridge
 
 class CorrespondenceTest extends VsumTest {
 	static final Logger LOGGER = Logger.getLogger(CorrespondenceTest)
@@ -114,10 +114,7 @@ class CorrespondenceTest extends VsumTest {
 	}
 
 	def private void removePkgFromFileAndUpdateCorrespondence(UPackage pkg, CorrespondenceModel correspondenceModel) {
-		TuidManager.instance.registerObjectUnderModification(pkg)
 		EcoreUtil.remove(pkg)
-		TuidManager.instance.updateTuidsOfRegisteredObjects
-		TuidManager.instance.flushRegisteredObjectsUnderModification
 	}
 
 	def private void testCorrespondencePersistence(InternalVirtualModel vsum, Repository repo, UPackage pkg,
@@ -146,8 +143,8 @@ class CorrespondenceTest extends VsumTest {
 	def private <T extends EObject> T testLoadObject(InternalVirtualModel vsum, URI uri, Class<T> clazz) {
 		var VURI vURI = VURI.getInstance(uri)
 		var ModelInstance instance = vsum.getModelInstance(vURI)
-		var T obj = instance.getUniqueRootEObjectIfCorrectlyTyped(clazz)
-		return obj
+		return EcoreResourceBridge.getUniqueContentRootIfCorrectlyTyped(instance.resource, instance.URI.toString(),
+				clazz);
 	}
 
 	def private CorrespondenceModel testCorrespondenceModelCreation(InternalVirtualModel vsum) {

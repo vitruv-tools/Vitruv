@@ -6,12 +6,6 @@
 
 <plugin>
    <extension
-         name="Vitruv Addresses Demo Domain Provider"
-         point="tools.vitruv.framework.domains.provider">
-      <domainProvider
-            class="tools.vitruv.domains.demo.addresses.AddressesDomainProvider"></domainProvider>
-   </extension>
-   <extension
          name="Vitruv Families Demo Domain Provider"
          point="tools.vitruv.framework.domains.provider">
       <domainProvider
@@ -32,12 +26,4 @@
             class="tools.vitruv.domains.demo.persons.PersonsDomainProvider">
       </domainProvider>
    </extension>
-   <extension
-         name="Vitruv Recipients Demo Domain Provider"
-         point="tools.vitruv.framework.domains.provider">
-      <domainProvider
-            class="tools.vitruv.domains.demo.recipients.RecipientsDomainProvider">
-      </domainProvider>
-   </extension>
-
 </plugin>
