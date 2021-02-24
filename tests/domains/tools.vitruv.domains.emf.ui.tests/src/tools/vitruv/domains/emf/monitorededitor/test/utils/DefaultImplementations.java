@@ -11,6 +11,7 @@
 
 package tools.vitruv.domains.emf.monitorededitor.test.utils;
 
+import java.net.URL;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -18,14 +19,17 @@ import java.util.List;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 
 import tools.vitruv.domains.emf.monitorededitor.ISynchronizingMonitoredEmfEditor.ResourceChangeSynchronizing;
 import tools.vitruv.domains.emf.monitorededitor.IVitruviusEMFEditorMonitor.IVitruviusAccessor;
+import tools.vitruv.domains.emf.monitorededitor.test.testmodels.Models;
 import tools.vitruv.framework.change.description.PropagatedChange;
 import tools.vitruv.framework.change.description.VitruviusChange;
 import tools.vitruv.framework.util.datatypes.ModelInstance;
 import tools.vitruv.framework.util.datatypes.VURI;
 import tools.vitruv.framework.uuid.UuidGeneratorAndResolver;
+import tools.vitruv.framework.uuid.UuidGeneratorAndResolverImpl;
 import tools.vitruv.framework.vsum.VirtualModel;
 
 public class DefaultImplementations {
@@ -33,43 +37,6 @@ public class DefaultImplementations {
 
         @Override
         public void synchronizeChanges(List<VitruviusChange> changes, VURI sourceModelURI, Resource res) {
-        }
-
-    };
-
-    public static final VirtualModel EFFECTLESS_VIRTUAL_MODEL = new VirtualModel() {
-        @Override
-        public List<PropagatedChange> propagateChange(VitruviusChange change) {
-            return null;
-        }
-
-        @Override
-        public ModelInstance getModelInstance(VURI modelVuri) {
-            return null;
-        }
-
-        @Override
-        public Path getFolder() {
-            return null;
-        }
-
-        @Override
-        public void reverseChanges(List<PropagatedChange> changes) {
-        }
-
-        @Override
-        public UuidGeneratorAndResolver getUuidGeneratorAndResolver() {
-            return null;
-        }
-
-        @Override
-        public List<PropagatedChange> propagateChangedState(Resource newState) {
-            return null;
-        }
-
-        @Override
-        public List<PropagatedChange> propagateChangedState(Resource newState, URI oldLocation) {
-            return null;
         }
 
     };
@@ -94,7 +61,8 @@ public class DefaultImplementations {
         private VURI lastVURI = null;
         private List<VitruviusChange> lastChanges = null;
         private int executionCount = 0;
-
+        private UuidGeneratorAndResolver uuidGeneratorAndResolver = new UuidGeneratorAndResolverImpl(new ResourceSetImpl(), true);
+        
         @Override
         public void synchronizeChanges(List<VitruviusChange> changes, VURI sourceModelURI, Resource res) {
             this.lastChanges = new ArrayList<>();
@@ -103,6 +71,11 @@ public class DefaultImplementations {
             }
             this.lastVURI = sourceModelURI;
             this.executionCount++;
+        }
+        
+        public void registerExistingModel(URL testResourceURL) {
+        	Resource testResource = uuidGeneratorAndResolver.getResourceSet().getResource(Models.loadModel(testResourceURL).getURI(), true);
+        	testResource.getAllContents().forEachRemaining(obj -> uuidGeneratorAndResolver.generateUuid(obj));
         }
 
         public boolean hasBeenExecuted() {
@@ -147,7 +120,7 @@ public class DefaultImplementations {
 
         @Override
         public UuidGeneratorAndResolver getUuidGeneratorAndResolver() {
-            return null;
+            return uuidGeneratorAndResolver;
         }
 
         @Override
