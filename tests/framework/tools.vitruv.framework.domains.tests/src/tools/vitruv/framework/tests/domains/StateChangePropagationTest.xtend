@@ -31,6 +31,7 @@ import tools.vitruv.testutils.domains.TestDomainsRepository
 import static extension tools.vitruv.framework.util.ResourceSetUtil.withGlobalFactories
 import static extension tools.vitruv.framework.domains.repository.DomainAwareResourceSet.awareOfDomains
 import tools.vitruv.framework.change.recording.ChangeRecorder
+import org.eclipse.emf.ecore.util.EcoreUtil
 
 @ExtendWith(TestProjectManager, TestLogging, RegisterMetamodelsInStandalone)
 abstract class StateChangePropagationTest {
@@ -93,7 +94,18 @@ abstract class StateChangePropagationTest {
 		val stateBasedChange = strategyToTest.getChangeSequences(model, checkpoint, checkpointResolver)
 		assertNotNull(stateBasedChange)
 		val message = getTextualRepresentation(stateBasedChange, deltaBasedChange)
-		assertTrue(stateBasedChange.changedEObjectEquals(deltaBasedChange), message)
+		val stateBasedChangedObjects = stateBasedChange.affectedAndReferencedEObjects
+		val deltaBasedChangedObjects = deltaBasedChange.affectedAndReferencedEObjects
+		assertEquals(stateBasedChangedObjects.size, deltaBasedChangedObjects.size, '''
+			Got a different number of changed objects:
+			«message»''')
+		stateBasedChangedObjects.forEach [ stateBasedChangedObject |
+			assertTrue(deltaBasedChangedObjects.exists [EcoreUtil.equals(it, stateBasedChangedObject)], '''
+				Could not find this changed object in the delta based change:
+				«stateBasedChangedObject»
+				
+				«message»''')
+		]
 	}
 
 	/**

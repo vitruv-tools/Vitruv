@@ -12,21 +12,21 @@ import tools.vitruv.framework.userinteraction.InternalUserInteractor
 import tools.vitruv.framework.util.datatypes.VURI
 import tools.vitruv.framework.vsum.helper.ChangeDomainExtractor
 import tools.vitruv.framework.vsum.modelsynchronization.ChangePropagationListener
-import tools.vitruv.framework.vsum.modelsynchronization.ChangePropagatorImpl
 import tools.vitruv.framework.vsum.repositories.ResourceRepositoryImpl
 import org.apache.log4j.Logger
 import org.eclipse.emf.common.util.URI
 import tools.vitruv.framework.vsum.helper.VsumFileSystemLayout
 import java.nio.file.Path
-import static com.google.common.base.Preconditions.checkState
 import static com.google.common.base.Preconditions.checkNotNull
 import java.util.LinkedList
+import static com.google.common.base.Preconditions.checkArgument
+import tools.vitruv.framework.vsum.modelsynchronization.ChangePropagator
 
 class VirtualModelImpl implements InternalVirtualModel {
 	static val Logger LOGGER = Logger.getLogger(VirtualModelImpl)
 	val ModelRepository resourceRepository
 	val VitruvDomainRepository domainRepository
-	val ChangePropagatorImpl changePropagator
+	val ChangePropagator changePropagator
 	val VsumFileSystemLayout fileSystemLayout
 	val List<ChangePropagationListener> changePropagationListeners = new LinkedList()
 	val List<PropagatedChangeListener> propagatedChangeListeners = new LinkedList()
@@ -39,7 +39,7 @@ class VirtualModelImpl implements InternalVirtualModel {
 		this.domainRepository = domainRepository
 		this.resourceRepository = new ResourceRepositoryImpl(fileSystemLayout, domainRepository)
 		this.changeDomainExtractor = new ChangeDomainExtractor(domainRepository)
-		this.changePropagator = new ChangePropagatorImpl(
+		this.changePropagator = new ChangePropagator(
 			resourceRepository,
 			changePropagationSpecificationProvider,
 			domainRepository,
@@ -64,39 +64,41 @@ class VirtualModelImpl implements InternalVirtualModel {
 	}
 
 	override synchronized propagateChange(VitruviusChange change) {
-		LOGGER.info('''Start change propagation''')
-		checkState(change !== null, '''Given change must not be empty''')
-		if (!change.containsConcreteChange()) {
-			LOGGER.info('''The change does not contain any changes to synchronize: «change»''')
-			return Collections.emptyList()
-		}
-		checkState(change.validate(), '''Change contains changes from different models: «change»''')
+		checkNotNull(change, "change to propagate")
+		checkArgument(change.containsConcreteChange, 
+			"This change contains no concrete changes:%s%s", System.lineSeparator, change)
+
+		LOGGER.info("Start change propagation")
 		startChangePropagation(change)
 
 		change.unresolveIfApplicable
 		val result = changePropagator.propagateChange(change)
 		save()
-		LOGGER.trace('''
-			Propagated changes:
-			«FOR propagatedChange : result»
-				Propagated Change:
-				«propagatedChange»«ENDFOR»
-		''')
-
+		
+		if (LOGGER.isTraceEnabled) {
+			LOGGER.trace('''
+				Propagated changes:
+				«FOR propagatedChange : result»
+					Propagated Change:
+					«propagatedChange»
+				«ENDFOR»
+			''')
+		}
+		
 		finishChangePropagation(change)
 		informPropagatedChangeListeners(result)
-		LOGGER.info('''Finished change propagation''')
+		LOGGER.info("Finished change propagation")
 		return result
 	}
 
 	private def void startChangePropagation(VitruviusChange change) {
-		LOGGER.debug('''Started synchronizing change: «change»''')
+		if (LOGGER.isDebugEnabled) LOGGER.debug('''Started synchronizing change: «change»''')
 		changePropagationListeners.forEach[startedChangePropagation]
 	}
 
 	private def void finishChangePropagation(VitruviusChange change) {
-		changePropagationListeners.forEach[finishedChangePropagation]
-		LOGGER.debug('''Finished synchronizing change: «change»''')
+		changePropagationListeners.forEach [finishedChangePropagation]
+		if (LOGGER.isDebugEnabled) LOGGER.debug('''Finished synchronizing change: «change»''')
 	}
 
 	/**
@@ -126,11 +128,11 @@ class VirtualModelImpl implements InternalVirtualModel {
 	}
 
 	override synchronized reverseChanges(List<PropagatedChange> changes) {
-		changes.reverseView.forEach[it.applyBackward(uuidResolver)]
+		changes.reverseView.forEach [applyBackward(uuidResolver)]
 
 		// TODO HK Instead of this make the changes set the modified flag of the resource when applied
-		changes.flatMap[originalChange.affectedEObjects + consequentialChanges.affectedEObjects]
-			.map[eResource]
+		changes.flatMap [originalChange.affectedEObjects + consequentialChanges.affectedEObjects]
+			.map [eResource]
 			.filterNull
 			.forEach[modified = true]
 		save()

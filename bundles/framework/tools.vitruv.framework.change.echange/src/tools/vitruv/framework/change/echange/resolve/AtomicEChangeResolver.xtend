@@ -88,28 +88,27 @@ class AtomicEChangeResolver {
 	 * 							{@code false} if the model is in state after.
 	 */
 	def private static <A extends EObject> boolean resolveEObjectExistenceEChange(EObjectExistenceEChange<A> change,
-		UuidResolver uuidResolver, boolean newObject) {
+		UuidResolver uuidResolver, boolean isNewObject) {
 		if (change.affectedEObjectID === null || !change.resolveEChange(uuidResolver, true)) {
 			return false
 		}
 
 		// Resolve the affected object
-		if (newObject) {
+		if (isNewObject) {
 			// Create new one
-			change.affectedEObject = EcoreUtil.create(change.affectedEObjectType) as A;
+			val newObject = EcoreUtil.create(change.affectedEObjectType) as A
+			change.affectedEObject = newObject
+			uuidResolver.registerEObject(change.affectedEObjectID, newObject)
 		} else {
 			// Object still exists
-			change.affectedEObject = uuidResolver.getEObject(change.affectedEObjectID) as A;
-		}
-		
-		uuidResolver.registerEObject(change.affectedEObjectID, change.affectedEObject);
-		
-		if (change.affectedEObject === null || change.affectedEObject.eIsProxy) {
-			return false
+			change.affectedEObject = uuidResolver.getEObject(change.affectedEObjectID) as A
+			if (change.affectedEObject === null || change.affectedEObject.eIsProxy) {
+				return false
+			}
 		}
 		
 		if (change.idAttributeValue !== null) {
-			EcoreUtil.setID(change.affectedEObject, change.idAttributeValue);
+			EcoreUtil.setID(change.affectedEObject, change.idAttributeValue)
 		}
 		
 		return true
