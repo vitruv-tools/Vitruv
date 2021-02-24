@@ -23,16 +23,21 @@
       <import plugin="tools.vitruv.framework.vsum"/>
       <import plugin="org.apache.log4j"/>
       <import plugin="tools.vitruv.framework.change.processing"/>
-      <import plugin="org.eclipse.emf.transaction"/>
       <import plugin="org.eclipse.xtend.lib"/>
       <import plugin="edu.kit.ipd.sdq.activextendannotations"/>
       <import plugin="org.hamcrest.core"/>
       <import plugin="org.junit.jupiter.api"/>
       <import plugin="org.junit.platform.commons"/>
       <import plugin="org.eclipse.emf.compare"/>
-      <import plugin="org.eclipse.emf.compare.rcp"/>
       <import plugin="org.junit.jupiter.params"/>
+      <import plugin="org.eclipse.xtext.ui.testing"/>
+      <import plugin="org.slf4j.api"/>
+      <import plugin="ch.qos.logback.classic"/>
+      <import plugin="ch.qos.logback.core"/>
       <import plugin="org.eclipse.xtext.xbase.lib"/>
+      <import plugin="tools.vitruv.framework.util"/>
+      <import plugin="org.eclipse.core.runtime"/>
+      <import plugin="org.eclipse.emf.ecore"/>
    </requires>
 
    <plugin

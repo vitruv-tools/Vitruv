@@ -10,7 +10,6 @@ import pcm_mockup.PInterface
 import pcm_mockup.Repository
 import tools.vitruv.framework.correspondence.Correspondence
 import tools.vitruv.framework.correspondence.CorrespondenceModel
-import tools.vitruv.framework.tuid.TuidManager
 import tools.vitruv.framework.util.datatypes.ModelInstance
 import tools.vitruv.framework.util.datatypes.VURI
 import tools.vitruv.framework.vsum.InternalVirtualModel
@@ -23,6 +22,7 @@ import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
 import static extension tools.vitruv.framework.correspondence.CorrespondenceModelUtil.*
 
 import org.junit.jupiter.api.Test
+import tools.vitruv.framework.util.bridges.EcoreResourceBridge
 
 class CorrespondenceTest extends VsumTest {
 	static final Logger LOGGER = Logger.getLogger(CorrespondenceTest)
@@ -30,7 +30,7 @@ class CorrespondenceTest extends VsumTest {
 	@Test
 	def void testAllInCommand() {
 		val InternalVirtualModel vsum = createVirtualModelAndModelInstances()
-		vsum.executeCommand[testAll(vsum); null]
+		testAll(vsum)
 	}
 
 	def private void testAll(InternalVirtualModel vsum) {
@@ -55,33 +55,28 @@ class CorrespondenceTest extends VsumTest {
 	@Test
 	def void testCorrespondenceUpdate() {
 		val InternalVirtualModel vsum = createVirtualModelAndModelInstances()
-		vsum.executeCommand([ // create vsum and Repo and UPackage
-			var Repository repo = testLoadObject(vsum, getDefaultPcmInstanceURI(), Repository)
-			var UPackage pkg = testLoadObject(vsum, getDefaultUMLInstanceURI(), UPackage)
-			// create correspondence
-			var CorrespondenceModel correspondenceModel = testCorrespondenceModelCreation(vsum)
-			correspondenceModel.createAndAddCorrespondence(repo, pkg)
-			removePkgFromFileAndUpdateCorrespondence(pkg, correspondenceModel)
-			saveUPackageInNewFileAndUpdateCorrespondence(vsum, pkg, correspondenceModel)
-			assertRepositoryCorrespondences(repo, correspondenceModel)
-			return null
-		])
+		// create vsum and Repo and UPackage
+		var Repository repo = testLoadObject(vsum, getDefaultPcmInstanceURI(), Repository)
+		var UPackage pkg = testLoadObject(vsum, getDefaultUMLInstanceURI(), UPackage)
+		// create correspondence
+		var CorrespondenceModel correspondenceModel = testCorrespondenceModelCreation(vsum)
+		correspondenceModel.createAndAddCorrespondence(repo, pkg)
+		removePkgFromFileAndUpdateCorrespondence(pkg, correspondenceModel)
+		saveUPackageInNewFileAndUpdateCorrespondence(vsum, pkg, correspondenceModel)
+		assertRepositoryCorrespondences(repo, correspondenceModel)
 	}
 
 	@Test
 	def void testMoveRootEObjectBetweenResource() {
 		val InternalVirtualModel vsum = createVirtualModelAndModelInstances()
-		vsum.executeCommand([
-			var Repository repo = testLoadObject(vsum, getDefaultPcmInstanceURI(), Repository)
-			var UPackage pkg = testLoadObject(vsum, getDefaultUMLInstanceURI(), UPackage)
-			// create correspondence
-			var CorrespondenceModel correspondenceModel = testCorrespondenceModelCreation(vsum)
-			correspondenceModel.createAndAddCorrespondence(repo, pkg) // execute the test
-			moveUMLPackageTo(pkg, getTmpUMLInstanceURI(), vsum, correspondenceModel)
-			moveUMLPackageTo(pkg, getNewUMLInstanceURI(), vsum, correspondenceModel)
-			assertRepositoryCorrespondences(repo, correspondenceModel)
-			return null
-		])
+		var Repository repo = testLoadObject(vsum, getDefaultPcmInstanceURI(), Repository)
+		var UPackage pkg = testLoadObject(vsum, getDefaultUMLInstanceURI(), UPackage)
+		// create correspondence
+		var CorrespondenceModel correspondenceModel = testCorrespondenceModelCreation(vsum)
+		correspondenceModel.createAndAddCorrespondence(repo, pkg) // execute the test
+		moveUMLPackageTo(pkg, getTmpUMLInstanceURI(), vsum, correspondenceModel)
+		moveUMLPackageTo(pkg, getNewUMLInstanceURI(), vsum, correspondenceModel)
+		assertRepositoryCorrespondences(repo, correspondenceModel)
 	}
 
 	def private void assertRepositoryCorrespondences(Repository repo, CorrespondenceModel correspondenceModel) {
@@ -119,10 +114,7 @@ class CorrespondenceTest extends VsumTest {
 	}
 
 	def private void removePkgFromFileAndUpdateCorrespondence(UPackage pkg, CorrespondenceModel correspondenceModel) {
-		TuidManager.instance.registerObjectUnderModification(pkg)
 		EcoreUtil.remove(pkg)
-		TuidManager.instance.updateTuidsOfRegisteredObjects
-		TuidManager.instance.flushRegisteredObjectsUnderModification
 	}
 
 	def private void testCorrespondencePersistence(InternalVirtualModel vsum, Repository repo, UPackage pkg,
@@ -151,8 +143,8 @@ class CorrespondenceTest extends VsumTest {
 	def private <T extends EObject> T testLoadObject(InternalVirtualModel vsum, URI uri, Class<T> clazz) {
 		var VURI vURI = VURI.getInstance(uri)
 		var ModelInstance instance = vsum.getModelInstance(vURI)
-		var T obj = instance.getUniqueRootEObjectIfCorrectlyTyped(clazz)
-		return obj
+		return EcoreResourceBridge.getUniqueContentRootIfCorrectlyTyped(instance.resource, instance.URI.toString(),
+				clazz);
 	}
 
 	def private CorrespondenceModel testCorrespondenceModelCreation(InternalVirtualModel vsum) {

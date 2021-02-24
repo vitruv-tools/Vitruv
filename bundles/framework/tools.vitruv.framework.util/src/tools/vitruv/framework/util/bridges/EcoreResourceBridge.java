@@ -42,6 +42,23 @@ public final class EcoreResourceBridge {
 	}
 
 	/**
+	 * Returns a {@link Resource} that is either already loaded into and retrieved from
+	 * the given {@link ResourceSet}, or creates a new {@link Resource} if it does 
+	 * not exist yet.
+	 *
+	 * @param resourceSet the {@link ResourceSet} to load the {@link Resource} into
+	 * @param uri         the {@link URI} of the {@link Resource} to get or create
+	 * @return a {@link Resource} created for or retrieved from the given {@link URI}
+	 */
+	public static Resource getOrCreateResource(ResourceSet resourceSet, URI uri) {
+		var resource = resourceSet.getResource(uri, false);
+		if (resource == null) {
+			resource = resourceSet.createResource(uri);
+		}
+		return resource;
+	}
+	
+	/**
 	 * Returns a {@link Resource} that is either loaded from the given {@link URI}
 	 * if some model is persisted at that {@link URI}, or creates a new
 	 * {@link Resource} if it does not exist yet.
@@ -162,7 +179,7 @@ public final class EcoreResourceBridge {
 	/**
 	 * Returns the root element of the model instance, which is the first one. It is
 	 * NOT necessary to have exactly one root element. If there is not at least one
-	 * root element a {@link java.lang.RuntimeException RuntimeException} is thrown.
+	 * root element a {@link java.lang.IllegalStateException IllegalStateException} is thrown.
 	 *
 	 * @param resource  a resource
 	 * @param modelName the name of the model represented by this resource (for
@@ -171,10 +188,22 @@ public final class EcoreResourceBridge {
 	 */
 	public static EObject getFirstRootEObject(final Resource resource, final String modelName) {
 		if (resource.getContents().size() < 1) {
-			throw new RuntimeException("The resource " + modelName + " does not contain a root element.");
+			throw new IllegalStateException("The resource " + modelName + " does not contain a root element.");
 		}
 		return resource.getContents().get(0);
 	}
+	
+	/**
+	 * Returns the root element of the model instance, which is the first one. It is
+	 * NOT necessary to have exactly one root element. If there is not at least one
+	 * root element a {@link java.lang.IllegalStateException IllegalStateException} is thrown.
+	 *
+	 * @param resource  a resource
+	 * @return the root element
+	 */
+	public static EObject getFirstRootEObject(final Resource resource) {
+		return getFirstRootEObject(resource, resource.getURI().toString());
+	}	
 
 	/**
 	 * Returns a set containing all contents of the given resource.

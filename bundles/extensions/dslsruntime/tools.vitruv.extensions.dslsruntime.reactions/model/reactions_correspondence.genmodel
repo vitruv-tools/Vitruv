@@ -1,19 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
-    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/tools.vitruv.extensions.dslsruntime.reactions/src-gen"
+<genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel"
+    modelDirectory="/tools.vitruv.extensions.dslsruntime.reactions/src-gen"
     modelPluginID="tools.vitruv.extensions.dslsruntime.reactions" modelName="Reactions_correspondence"
     editPluginClass="tools.vitruv.extensions.dslsruntime.reactions.reactions.provider.Reactions_correspondenceEditPlugin"
     editorPluginClass="tools.vitruv.extensions.dslsruntime.reactions.reactions.presentation.Reactions_correspondenceEditorPlugin"
     rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container" testSuiteClass="tools.vitruv.extensions.dslsruntime.reactions.reactions.tests.Reactions_correspondenceAllTests"
     importerID="org.eclipse.emf.importer.ecore" complianceLevel="8.0" copyrightFields="false"
     editPluginID="tools.vitruv.extensions.dslsruntime.reactions.edit" editorPluginID="tools.vitruv.extensions.dslsruntime.reactions.editor"
-    usedGenPackages="../../tools.vitruv.framework.correspondence/metamodel/correspondence.genmodel#//correspondence"
+    usedGenPackages="../../tools.vitruv.framework.correspondence/metamodel/correspondence.genmodel#//correspondence ../../tools.vitruv.framework.uuid/model/Uuid.genmodel#//uuid"
     importOrganizing="true">
   <foreignModel>reactions_correspondence.ecore</foreignModel>
   <genPackages prefix="Reactions" basePackage="tools.vitruv.dsls.reactions.meta.correspondence"
       disposableProviderFactory="true" ecorePackage="reactions_correspondence.ecore#/">
-    <genClasses ecoreClass="reactions_correspondence.ecore#//ReactionsCorrespondence">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute reactions_correspondence.ecore#//ReactionsCorrespondence/Tag"/>
-    </genClasses>
+    <genClasses ecoreClass="reactions_correspondence.ecore#//ReactionsCorrespondence"/>
   </genPackages>
 </genmodel:GenModel>

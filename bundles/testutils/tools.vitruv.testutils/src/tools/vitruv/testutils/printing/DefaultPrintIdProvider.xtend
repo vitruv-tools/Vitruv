@@ -1,29 +1,21 @@
 package tools.vitruv.testutils.printing
 
 import java.util.HashMap
-import org.eclipse.emf.ecore.EClass
 import org.eclipse.emf.ecore.EObject
 
 class DefaultPrintIdProvider implements PrintIdProvider {
-	val printed = new HashMap<EObject, String>()
-	val classCount = new HashMap<EClass, Integer>()
+	val printed = new HashMap<Object, String>()
+	val classCount = new HashMap<Object, Integer>()
 
-	override <T extends EObject> ifAlreadyPrintedElse(T object, (T, String)=>PrintResult existingPrinter,
-		(T, String)=>PrintResult newPrinter) {
-		var objectId = printed.get(object)
-		if (objectId !== null) {
-			existingPrinter.apply(object, objectId)
-		} else {
-			objectId = assignId(object)
-			printed.put(object, objectId)
-			newPrinter.apply(object, objectId)
-		}
-	}
-
-	def private assignId(EObject object) {
-		val index = classCount.compute(object.eClass) [ key, oldValue |
-			if (oldValue === null) 1 else oldValue + 1
+	override getFallbackId(Object object) {
+		printed.computeIfAbsent(object) [ theObject |
+			val classKey = switch (theObject) {
+				EObject: theObject.eClass
+				default: theObject.class
+			}
+			classCount.compute(classKey) [ key, value |
+				if (value === null) 1 else value + 1
+			].toString()
 		]
-		object.eClass.name + "#" + index
 	}
 }

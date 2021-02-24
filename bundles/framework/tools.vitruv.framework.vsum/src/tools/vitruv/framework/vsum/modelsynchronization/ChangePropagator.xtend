@@ -18,7 +18,6 @@ import tools.vitruv.framework.domains.repository.VitruvDomainRepository
 import tools.vitruv.framework.userinteraction.InternalUserInteractor
 import tools.vitruv.framework.userinteraction.UserInteractionFactory
 import tools.vitruv.framework.userinteraction.UserInteractionListener
-import tools.vitruv.framework.uuid.UuidResolver
 import tools.vitruv.framework.vsum.ModelRepository
 
 import static com.google.common.base.Preconditions.checkNotNull
@@ -26,6 +25,8 @@ import static com.google.common.base.Preconditions.checkState
 import org.eclipse.xtend.lib.annotations.FinalFieldsConstructor
 import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
 import tools.vitruv.framework.correspondence.CorrespondenceModel
+import tools.vitruv.framework.uuid.UuidGeneratorAndResolver
+import tools.vitruv.framework.uuid.UuidResolver
 
 class ChangePropagator {
 	static val logger = Logger.getLogger(ChangePropagator)
@@ -34,15 +35,17 @@ class ChangePropagator {
 	val ChangePropagationSpecificationProvider changePropagationProvider
 	val CorrespondenceModel correspondenceModel
 	val InternalUserInteractor userInteractor
+	val UuidResolver uuidResolver
 
 	new(ModelRepository resourceRepository, ChangePropagationSpecificationProvider changePropagationProvider,
 		VitruvDomainRepository domainRepository, CorrespondenceModel correspondenceModel,
-		InternalUserInteractor userInteractor) {
+		InternalUserInteractor userInteractor, UuidResolver uuidResolver) {
 		this.resourceRepository = resourceRepository
 		this.changePropagationProvider = changePropagationProvider
 		this.correspondenceModel = correspondenceModel
 		this.domainRepository = domainRepository
 		this.userInteractor = userInteractor
+		this.uuidResolver = uuidResolver
 	}
 
 	def List<PropagatedChange> propagateChange(VitruviusChange change) {
@@ -59,11 +62,9 @@ class ChangePropagator {
 	}
 
 	def private void applySingleChange(TransactionalChange change) {
-		resourceRepository.executeOnUuidResolver [ UuidResolver uuidResolver |
-			change.resolveBeforeAndApplyForward(uuidResolver)
-			// add all affected models to the repository
-			change.changedVURIs.forEach [resourceRepository.getModel(it)]
-		]
+		change.resolveBeforeAndApplyForward(uuidResolver)
+		// add all affected models to the repository
+		change.changedVURIs.forEach [resourceRepository.getModel(it)]
 	}
 	
 	@FinalFieldsConstructor
@@ -141,7 +142,7 @@ class ChangePropagator {
 			// TODO HK: Clone the changes for each synchronization! Should even be cloned for
 			// each consistency repair routines that uses it,
 			// or: make them read only, i.e. give them a read-only interface!
-			val changedEObjects = resourceRepository.executeAsCommand [
+			val changedEObjects =
 				propagationSpecification.propagateChange(change, correspondenceModel, resourceRepository)
 			].affectedObjects.filter(EObject)
 	

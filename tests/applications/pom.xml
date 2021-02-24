@@ -15,7 +15,6 @@
 
 	<modules>
 		<module>tools.vitruv.applications.demo.familiespersons.tests</module>
-		<module>tools.vitruv.applications.demo.addressesrecipients.tests</module>
 	</modules>
 
 </project>

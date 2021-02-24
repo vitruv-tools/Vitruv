@@ -9,7 +9,6 @@ import org.eclipse.emf.compare.EMFCompare
 import org.eclipse.emf.compare.merge.BatchMerger
 import org.eclipse.emf.compare.merge.IMerger
 import org.eclipse.emf.compare.scope.DefaultComparisonScope
-import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import org.eclipse.emf.ecore.util.EcoreUtil
@@ -36,14 +35,6 @@ class DefaultStateBasedChangeResolutionStrategy implements StateBasedChangeResol
 	}
 
 	override getChangeSequences(Resource newState, Resource currentState, UuidGeneratorAndResolver resolver) {
-		return resolveChangeSequences(newState, currentState, resolver)
-	}
-
-	override getChangeSequences(EObject newState, EObject currentState, UuidGeneratorAndResolver resolver) {
-		return resolveChangeSequences(newState?.eResource, currentState?.eResource, resolver)
-	}
-
-	def private resolveChangeSequences(Resource newState, Resource currentState, UuidGeneratorAndResolver resolver) {
 		if (resolver === null) {
 			throw new IllegalArgumentException("UUID generator and resolver cannot be null!")
 		} else if (newState === null || currentState === null) {

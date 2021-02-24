@@ -8,10 +8,10 @@ Bundle-ClassPath: ., jars/reflections-0.9.10.jar, jars/javassist-3.19.0-GA.jar
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Require-Bundle: org.apache.log4j,
  org.eclipse.xtend.lib,
- org.eclipse.emf.transaction,
- tools.vitruv.framework.tuid;visibility:=reexport,
  tools.vitruv.framework.change,
+ tools.vitruv.framework.util;visibility:=reexport,
  org.eclipse.emf.compare,
+ org.eclipse.core.runtime,
  edu.kit.ipd.sdq.activextendannotations
 Bundle-ActivationPolicy: lazy
 Export-Package: tools.vitruv.framework.domains,

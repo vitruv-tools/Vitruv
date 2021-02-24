@@ -8,7 +8,6 @@
   <foreignModel>correspondence.ecore</foreignModel>
   <genPackages prefix="Correspondence" basePackage="tools.vitruv.framework" disposableProviderFactory="true"
       ecorePackage="correspondence.ecore#/">
-    <genDataTypes ecoreDataType="correspondence.ecore#//Tuid"/>
     <genClasses ecoreClass="correspondence.ecore#//Correspondences">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference correspondence.ecore#//Correspondences/correspondences"/>
     </genClasses>
@@ -16,8 +15,6 @@
       <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference correspondence.ecore#//Correspondence/parent"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference correspondence.ecore#//Correspondence/dependsOn"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference correspondence.ecore#//Correspondence/dependedOnBy"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute correspondence.ecore#//Correspondence/aTuids"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute correspondence.ecore#//Correspondence/bTuids"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute correspondence.ecore#//Correspondence/aUuids"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute correspondence.ecore#//Correspondence/bUuids"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute correspondence.ecore#//Correspondence/tag"/>
