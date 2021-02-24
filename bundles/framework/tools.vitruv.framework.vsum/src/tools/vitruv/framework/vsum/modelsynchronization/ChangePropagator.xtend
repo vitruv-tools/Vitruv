@@ -51,7 +51,7 @@ class ChangePropagator {
 	}
 
 	def List<PropagatedChange> propagateChange(VitruviusChange change) {
-		change.transactionalChangeSequence.forEach [resolveBeforeAndApplyForward(uuidResolver)]
+		change.resolveBeforeAndApplyForward(uuidResolver)
 		
 		val changedDomain = change.changedDomain
 		if (logger.isTraceEnabled) {
