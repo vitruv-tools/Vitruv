@@ -137,7 +137,7 @@ class InternalCorrespondenceModelImpl extends ModelInstance implements InternalC
 	override <C extends Correspondence> Set<C> getCorrespondences(Class<C> correspondenceType,
 		Predicate<C> correspondencesFilter, List<EObject> eObjects, String tag) {
 		val correspondences = new HashSet<Correspondence>()
-		val uuids = eObjects.map[uuidResolver.getPotentiallyCachedUuid(it)]
+		val uuids = eObjects.mapFixed [uuidResolver.getPotentiallyCachedUuid(it)]
 		correspondences += getCorrespondencesForUuids(uuids)
 
 		return correspondences
