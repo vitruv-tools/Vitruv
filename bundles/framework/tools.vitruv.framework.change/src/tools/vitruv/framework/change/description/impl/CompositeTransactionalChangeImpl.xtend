@@ -6,13 +6,12 @@ import tools.vitruv.framework.uuid.UuidResolver
 import tools.vitruv.framework.change.interaction.UserInteractionBase
 import java.util.List
 import java.util.ArrayList
-import java.util.Collection
 import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
 
 class CompositeTransactionalChangeImpl extends AbstractCompositeChangeImpl<TransactionalChange> implements CompositeTransactionalChange {
 	List<UserInteractionBase> userInteractions = new ArrayList<UserInteractionBase>
 	
-	new(Collection<? extends TransactionalChange> changes) {
+	new(List<? extends TransactionalChange> changes) {
 		super(changes)
 	}
 	

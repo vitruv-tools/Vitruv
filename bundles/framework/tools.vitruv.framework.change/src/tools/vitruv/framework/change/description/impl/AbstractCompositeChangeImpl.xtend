@@ -7,12 +7,11 @@ import tools.vitruv.framework.change.description.VitruviusChange
 import tools.vitruv.framework.uuid.UuidResolver
 import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
 import java.util.LinkedHashSet
-import java.util.Collection
 
 abstract class AbstractCompositeChangeImpl<C extends VitruviusChange> implements CompositeChange<C> {
 	List<C> changes
 
-	new(Collection<? extends C> changes) {
+	new(List<? extends C> changes) {
 		this.changes = List.copyOf(changes)
 	}
 
