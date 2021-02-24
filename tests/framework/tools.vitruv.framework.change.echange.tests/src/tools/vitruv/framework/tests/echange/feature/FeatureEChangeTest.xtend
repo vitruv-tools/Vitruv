@@ -45,7 +45,7 @@ class FeatureEChangeTest extends EChangeTest {
 		// Load model in second resource
 		val resourceSet2 = new ResourceSetImpl().withGlobalFactories
 		this.resource2 = resourceSet2.getResource(resource.URI, true)
-		this.uuidResolver2 = new UuidGeneratorAndResolverImpl(resourceSet2, true)
+		this.uuidResolver2 = new UuidGeneratorAndResolverImpl(resourceSet2)
 	}
 
 	/**

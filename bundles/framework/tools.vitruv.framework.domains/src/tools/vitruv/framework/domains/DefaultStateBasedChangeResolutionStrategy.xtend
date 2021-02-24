@@ -42,7 +42,7 @@ class DefaultStateBasedChangeResolutionStrategy implements StateBasedChangeResol
 		}
 		// Setup resolver and copy state:
 		val copyResourceSet = new ResourceSetImpl
-		val uuidGeneratorAndResolver = new UuidGeneratorAndResolverImpl(resolver, copyResourceSet, true)
+		val uuidGeneratorAndResolver = new UuidGeneratorAndResolverImpl(resolver, copyResourceSet)
 		val currentStateCopy = currentState.copyInto(copyResourceSet)
 		// Create change sequences:
 		val diffs = compareStates(newState, currentStateCopy)
