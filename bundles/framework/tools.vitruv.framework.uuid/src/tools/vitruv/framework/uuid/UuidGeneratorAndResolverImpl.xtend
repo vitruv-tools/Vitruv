@@ -101,7 +101,7 @@ class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 
 	override getUuid(EObject eObject) {
 		val result = internalGetUuid(eObject)
-		checkState(result !== null, '''No UUID registered for EObject: «eObject»''')
+		checkState(result !== null, "No UUID registered for EObject: %s", eObject)
 		return result
 	}
 
