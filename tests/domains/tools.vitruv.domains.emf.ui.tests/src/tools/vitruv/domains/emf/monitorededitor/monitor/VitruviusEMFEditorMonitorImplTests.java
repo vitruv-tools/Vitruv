@@ -104,7 +104,7 @@ public class VitruviusEMFEditorMonitorImplTests extends BasicTestCase {
         assert !virtualModel.getLastChanges().isEmpty();
 
         for (VitruviusChange change : virtualModel.getLastChanges()) {
-            assert change.getURI() == VURI.getInstance(getURI(Files.EXAMPLEMODEL_ECORE));
+            assert change.getChangedVURIs().iterator().next() == VURI.getInstance(getURI(Files.EXAMPLEMODEL_ECORE));
         }
     }
 

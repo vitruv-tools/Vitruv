@@ -44,7 +44,7 @@ class ChangeRecorderTest {
 	// this test only covers general behaviour of ChangeRecorder. Whether it always produces correct change sequences
 	// is covered by other tests
 	val ResourceSet resourceSet = new ResourceSetImpl().withGlobalFactories()
-	val UuidGeneratorAndResolver uuidGeneratorAndResolver = new UuidGeneratorAndResolverImpl(resourceSet, true)
+	val UuidGeneratorAndResolver uuidGeneratorAndResolver = new UuidGeneratorAndResolverImpl(resourceSet)
 	var ChangeRecorder changeRecorder = new ChangeRecorder(uuidGeneratorAndResolver)
 
 	private def <T extends EObject> T wrapIntoRecordedResource(T object) {
@@ -682,8 +682,8 @@ class ChangeRecorderTest {
 	@Test
 	@DisplayName("registers the recorded object and all its contents at the UUID resolver")
 	def void registersAtUuidResolver() {
-		val parentResolver = new UuidGeneratorAndResolverImpl(new ResourceSetImpl, true)
-		val localResolver = new UuidGeneratorAndResolverImpl(parentResolver, resourceSet, true)
+		val parentResolver = new UuidGeneratorAndResolverImpl(new ResourceSetImpl)
+		val localResolver = new UuidGeneratorAndResolverImpl(parentResolver, resourceSet)
 		var ChangeRecorder changeRecorder = new ChangeRecorder(localResolver)
 
 		val root = aet.Root => [

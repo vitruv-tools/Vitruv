@@ -30,6 +30,7 @@ import tools.vitruv.framework.util.datatypes.ModelInstance;
 import tools.vitruv.framework.util.datatypes.VURI;
 import tools.vitruv.framework.uuid.UuidGeneratorAndResolver;
 import tools.vitruv.framework.uuid.UuidGeneratorAndResolverImpl;
+import tools.vitruv.framework.uuid.UuidResolver;
 import tools.vitruv.framework.vsum.VirtualModel;
 
 public class DefaultImplementations {
@@ -61,7 +62,7 @@ public class DefaultImplementations {
         private VURI lastVURI = null;
         private List<VitruviusChange> lastChanges = null;
         private int executionCount = 0;
-        private UuidGeneratorAndResolver uuidGeneratorAndResolver = new UuidGeneratorAndResolverImpl(new ResourceSetImpl(), true);
+        private UuidGeneratorAndResolver uuidGeneratorAndResolver = new UuidGeneratorAndResolverImpl(new ResourceSetImpl());
         
         @Override
         public void synchronizeChanges(List<VitruviusChange> changes, VURI sourceModelURI, Resource res) {
@@ -119,8 +120,8 @@ public class DefaultImplementations {
         }
 
         @Override
-        public UuidGeneratorAndResolver getUuidGeneratorAndResolver() {
-            return uuidGeneratorAndResolver;
+        public UuidResolver getUuidResolver() {
+        	return uuidGeneratorAndResolver;
         }
 
         @Override

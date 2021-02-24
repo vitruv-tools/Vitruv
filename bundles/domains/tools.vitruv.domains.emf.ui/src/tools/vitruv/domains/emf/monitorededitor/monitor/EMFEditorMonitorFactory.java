@@ -12,12 +12,10 @@
 package tools.vitruv.domains.emf.monitorededitor.monitor;
 
 import java.util.Collection;
-
 import tools.vitruv.domains.emf.monitorededitor.IEditorPartAdapterFactory;
 import tools.vitruv.domains.emf.monitorededitor.IVitruviusEMFEditorMonitor;
 import tools.vitruv.domains.emf.monitorededitor.IVitruviusEMFEditorMonitor.IVitruviusAccessor;
 import tools.vitruv.framework.vsum.VirtualModel;
-import tools.vitruv.framework.vsum.modelsynchronization.ChangePropagator;
 
 /**
  * A factory for classes residing in this package.

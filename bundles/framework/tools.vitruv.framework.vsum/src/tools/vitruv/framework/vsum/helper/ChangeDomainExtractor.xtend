@@ -48,7 +48,7 @@ class ChangeDomainExtractor {
 			return null
 		}
 
-		val affectedEObjects = changes.map[affectedEObjects].filterNull.flatten;
+		val affectedEObjects = changes.map[affectedAndReferencedEObjects].filterNull.flatten;
 		for (EObject eObject : affectedEObjects) {
 			if (this.domainRepository.hasDomain(eObject)) {
 				return this.domainRepository.getDomain(eObject);

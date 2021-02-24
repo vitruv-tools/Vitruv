@@ -23,6 +23,7 @@ import static extension tools.vitruv.framework.util.ResourceSetUtil.withGlobalFa
 import static extension tools.vitruv.framework.domains.repository.DomainAwareResourceSet.awareOfDomains
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import tools.vitruv.framework.change.recording.ChangeRecorder
+import tools.vitruv.framework.uuid.UuidResolver
 
 /**
  * A test view that will record and publish the changes created in it.
@@ -58,12 +59,12 @@ class ChangePublishingTestView implements NonTransactionalTestView {
 		Path persistenceDirectory,
 		TestUserInteraction userInteraction,
 		UriMode uriMode,
-		UuidGeneratorAndResolver parentResolver,
+		UuidResolver parentResolver,
 		VitruvDomainRepository targetDomains
 	) {
 		this.resourceSet = new ResourceSetImpl().withGlobalFactories().awareOfDomains(targetDomains)
 		this.delegate = new BasicTestView(persistenceDirectory, resourceSet, userInteraction, uriMode)
-		val uuidResolver = new UuidGeneratorAndResolverImpl(parentResolver, resourceSet, true)
+		val uuidResolver = new UuidGeneratorAndResolverImpl(parentResolver, resourceSet)
 		this.changeRecorder = new ChangeRecorder(uuidResolver)
 		changeRecorder.beginRecording()
 	}
@@ -80,7 +81,7 @@ class ChangePublishingTestView implements NonTransactionalTestView {
 		VirtualModel virtualModel,
 		VitruvDomainRepository targetDomains
 	) {
-		this(persistenceDirectory, userInteraction, uriMode, virtualModel.uuidGeneratorAndResolver, targetDomains)
+		this(persistenceDirectory, userInteraction, uriMode, virtualModel.uuidResolver, targetDomains)
 		registerChangeProcessor [change|virtualModel.propagateChange(change)]
 	}
 
@@ -109,14 +110,17 @@ class ChangePublishingTestView implements NonTransactionalTestView {
 	override propagate() {
 		changeRecorder.endRecording()
 		val recordedChanges = changeRecorder.changes
-		val delegateChanges = recordedChanges.map [changedResource]
-			.filterNull.toSet
-			.flatMapFixed [changedResource | 
-				// Propagating an empty modification for every changed resource gives the delegate a 
-				// chance to participate in change propagation (e.g. BasicTestView saves or cleans up resources).
-				// This is not a meaningful operation at all, but rather a hack to bridge between this 
-				// non-transactional operation and the transactional delegate.
-				delegate.propagate(changedResource) []
+		val delegateChanges = recordedChanges.flatMap [changedVURIs]
+			.toSet
+			.flatMapFixed [changedVURI | 
+				val changedResource = resourceSet.getResource(changedVURI.EMFUri, false)
+				if (changedResource !== null) {
+					// Propagating an empty modification for every changed resource gives the delegate a 
+					// chance to participate in change propagation (e.g. BasicTestView saves or cleans up resources).
+					// This is not a meaningful operation at all, but rather a hack to bridge between this 
+					// non-transactional operation and the transactional delegate.
+					delegate.propagate(changedResource) []
+				}
 			] 
 		val ourChanges = propagateChanges(recordedChanges)
 		changeRecorder.beginRecording()
@@ -125,7 +129,6 @@ class ChangePublishingTestView implements NonTransactionalTestView {
 	
 	def private propagateChanges(Iterable<? extends TransactionalChange> changes) {
 		val compositeChange = VitruviusChangeFactory.instance.createCompositeChange(changes)
-		checkState(compositeChange.validate, "The recorded change set is not valid!")
 		val propagationResult = changeProcessors.flatMapFixed [apply(compositeChange)]
 		if (renewResourceCacheAfterPropagation) {
 			renewResourceCache()

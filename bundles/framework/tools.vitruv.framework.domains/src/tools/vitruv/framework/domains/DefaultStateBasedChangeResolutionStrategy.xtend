@@ -18,6 +18,7 @@ import tools.vitruv.framework.uuid.UuidGeneratorAndResolver
 import tools.vitruv.framework.uuid.UuidGeneratorAndResolverImpl
 import tools.vitruv.framework.change.recording.ChangeRecorder
 import org.eclipse.emf.ecore.resource.ResourceSet
+import tools.vitruv.framework.uuid.UuidResolver
 
 /**
  * This default strategy for diff based state changes uses EMFCompare to resolve a 
@@ -34,7 +35,7 @@ class DefaultStateBasedChangeResolutionStrategy implements StateBasedChangeResol
 		changeFactory = VitruviusChangeFactory.instance
 	}
 
-	override getChangeSequences(Resource newState, Resource currentState, UuidGeneratorAndResolver resolver) {
+	override getChangeSequences(Resource newState, Resource currentState, UuidResolver resolver) {
 		if (resolver === null) {
 			throw new IllegalArgumentException("UUID generator and resolver cannot be null!")
 		} else if (newState === null || currentState === null) {
@@ -42,7 +43,7 @@ class DefaultStateBasedChangeResolutionStrategy implements StateBasedChangeResol
 		}
 		// Setup resolver and copy state:
 		val copyResourceSet = new ResourceSetImpl
-		val uuidGeneratorAndResolver = new UuidGeneratorAndResolverImpl(resolver, copyResourceSet, true)
+		val uuidGeneratorAndResolver = new UuidGeneratorAndResolverImpl(resolver, copyResourceSet)
 		val currentStateCopy = currentState.copyInto(copyResourceSet)
 		// Create change sequences:
 		val diffs = compareStates(newState, currentStateCopy)

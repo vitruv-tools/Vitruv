@@ -6,9 +6,9 @@ import tools.vitruv.framework.change.description.PropagatedChange
 import tools.vitruv.framework.change.description.VitruviusChange
 import tools.vitruv.framework.util.datatypes.ModelInstance
 import tools.vitruv.framework.util.datatypes.VURI
-import tools.vitruv.framework.uuid.UuidGeneratorAndResolver
 import org.eclipse.emf.common.util.URI
 import java.nio.file.Path
+import tools.vitruv.framework.uuid.UuidResolver
 
 interface VirtualModel {
 	def Path getFolder();
@@ -36,5 +36,5 @@ interface VirtualModel {
 
 	def ModelInstance getModelInstance(VURI modelVuri);
 
-	def UuidGeneratorAndResolver getUuidGeneratorAndResolver();
+	def UuidResolver getUuidResolver();
 }

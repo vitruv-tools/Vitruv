@@ -1,34 +1,25 @@
 package tools.vitruv.framework.change.description.impl
 
-import tools.vitruv.framework.util.datatypes.VURI
 import tools.vitruv.framework.change.description.TransactionalChange
 import tools.vitruv.framework.uuid.UuidResolver
 import tools.vitruv.framework.change.interaction.UserInteractionBase
-import tools.vitruv.framework.change.description.VitruviusChange
 
-class EmptyChangeImpl extends AbstractVitruviusChangeImpl implements TransactionalChange {
-	val VURI vuri;
-
-	new(VURI vuri) {
-		this.vuri = vuri;
-	}
+class EmptyChange implements TransactionalChange {
+	public static val INSTANCE = new EmptyChange()
+	private new(){}
 
 	override containsConcreteChange() {
-		return true;
+		false
 	}
-
-	override validate() {
-		return true;
+	
+	override getChangedVURIs() {
+		emptySet
 	}
 
 	override getEChanges() {
-		return #[];
+		emptyList
 	}
-
-	override getURI() {
-		return vuri;
-	}
-
+	
 	override resolveBeforeAndApplyForward(UuidResolver uuidResolver) {
 		// Do nothing		
 	}
@@ -40,25 +31,36 @@ class EmptyChangeImpl extends AbstractVitruviusChangeImpl implements Transaction
 	override unresolveIfApplicable() {
 		// Do nothing
 	}
-
+	
 	override getAffectedEObjects() {
-		return #[]
+		emptySet
+	}
+	
+	override getAffectedEObjectIds() {
+		emptySet
 	}
 
-	override getAffectedEObjectIds() {
-		return #[]
+	override getAffectedAndReferencedEObjects() {
+		emptySet
+	}
+
+	override getAffectedAndReferencedEObjectIds() {
+		emptySet
 	}
 
 	override getUserInteractions() {
-		#[]
+		emptyList
 	}
 
 	override setUserInteractions(Iterable<UserInteractionBase> userInputs) {
 		throw new UnsupportedOperationException("Adding interactions to an empty change is not supported")
 	}
 
-	override changedEObjectEquals(VitruviusChange change) {
-		return change.affectedEObjects.empty
+	override EmptyChange copy() {
+		this
 	}
 	
+	override toString() {
+		"empty change"
+	}
 }
