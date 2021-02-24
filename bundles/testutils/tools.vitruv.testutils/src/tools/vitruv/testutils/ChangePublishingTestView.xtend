@@ -63,7 +63,7 @@ class ChangePublishingTestView implements NonTransactionalTestView {
 	) {
 		this.resourceSet = new ResourceSetImpl().withGlobalFactories().awareOfDomains(targetDomains)
 		this.delegate = new BasicTestView(persistenceDirectory, resourceSet, userInteraction, uriMode)
-		val uuidResolver = new UuidGeneratorAndResolverImpl(parentResolver, resourceSet, true)
+		val uuidResolver = new UuidGeneratorAndResolverImpl(parentResolver, resourceSet)
 		this.changeRecorder = new ChangeRecorder(uuidResolver)
 		changeRecorder.beginRecording()
 	}

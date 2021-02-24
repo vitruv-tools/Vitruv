@@ -120,11 +120,7 @@ class ResourceRepositoryImpl implements ModelRepository {
 		var uuidProviderVURI = fileSystemLayout.uuidProviderAndResolverVURI
 		logger.trace('''Creating or loading uuid provider and resolver model from: «uuidProviderVURI»''')
 		var Resource uuidProviderResource = resourceSet.loadOrCreateResource(uuidProviderVURI.EMFUri)
-		// TODO HK We cannot enable strict mode here, because for textual views we will not get
-		// create changes in any case. We should therefore use one monitor per model and turn on
-		// strict mode
-		// depending on the kind of model/view (textual vs. semantic)
-		new UuidGeneratorAndResolverImpl(this.resourceSet, uuidProviderResource, false)
+		new UuidGeneratorAndResolverImpl(this.resourceSet, uuidProviderResource)
 	}
 
 	def private void loadVURIsOfVSMUModelInstances() {

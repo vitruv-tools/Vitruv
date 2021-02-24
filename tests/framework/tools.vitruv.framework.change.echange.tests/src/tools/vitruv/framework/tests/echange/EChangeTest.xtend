@@ -68,7 +68,7 @@ abstract class EChangeTest {
 		resource.save(null)
 
 		// Factories for creating changes
-		this.uuidGeneratorAndResolver = new UuidGeneratorAndResolverImpl(resourceSet, true)
+		this.uuidGeneratorAndResolver = new UuidGeneratorAndResolverImpl(resourceSet)
 		atomicFactory = new TypeInferringUnresolvingAtomicEChangeFactory(uuidGeneratorAndResolver)
 		compoundFactory = new TypeInferringUnresolvingCompoundEChangeFactory(uuidGeneratorAndResolver)
 	}

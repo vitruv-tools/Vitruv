@@ -44,7 +44,7 @@ abstract class ChangeDescription2ChangeTransformationTest {
 	def void beforeTest(@TestProject Path tempFolder) {
 		this.tempFolder = tempFolder
 		this.resourceSet = new ResourceSetImpl().withGlobalFactories().awareOfDomains(TestDomainsRepository.INSTANCE)
-		this.uuidGeneratorAndResolver = new UuidGeneratorAndResolverImpl(resourceSet, true)
+		this.uuidGeneratorAndResolver = new UuidGeneratorAndResolverImpl(resourceSet)
 		this.changeRecorder = new ChangeRecorder(uuidGeneratorAndResolver)
 		this.resourceSet.startRecording
 	}

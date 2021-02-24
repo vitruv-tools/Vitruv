@@ -60,7 +60,7 @@ abstract class StateChangePropagationTest {
 		strategyToTest = new DefaultStateBasedChangeResolutionStrategy
 		resourceSet = new ResourceSetImpl().withGlobalFactories().awareOfDomains(TestDomainsRepository.INSTANCE)
 		checkpointResourceSet = new ResourceSetImpl().withGlobalFactories().awareOfDomains(TestDomainsRepository.INSTANCE)
-		setupResolver = new UuidGeneratorAndResolverImpl(resourceSet, true)
+		setupResolver = new UuidGeneratorAndResolverImpl(resourceSet)
 		changeRecorder = new ChangeRecorder(setupResolver)
 		// Create mockup models:
 		resourceSet.startRecording
@@ -68,7 +68,7 @@ abstract class StateChangePropagationTest {
 		createUmlMockupModel()
 		endRecording
 		// change to new recorder with test resolver, create model checkpoints and start recording:
-		checkpointResolver = new UuidGeneratorAndResolverImpl(setupResolver, checkpointResourceSet, true)
+		checkpointResolver = new UuidGeneratorAndResolverImpl(setupResolver, checkpointResourceSet)
 		umlCheckpoint = umlModel.createCheckpoint
 		pcmCheckpoint = pcmModel.createCheckpoint
 		umlModel.startRecording

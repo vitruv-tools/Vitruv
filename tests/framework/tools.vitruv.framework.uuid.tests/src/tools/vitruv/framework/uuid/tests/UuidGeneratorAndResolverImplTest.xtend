@@ -20,7 +20,7 @@ import org.junit.jupiter.api.BeforeEach
 @ExtendWith(TestProjectManager, RegisterMetamodelsInStandalone)
 class UuidGeneratorAndResolverImplTest {
 	val resourceSet = new ResourceSetImpl().withGlobalFactories()
-	val uuidGeneratorAndResolver = new UuidGeneratorAndResolverImpl(resourceSet, true)
+	val uuidGeneratorAndResolver = new UuidGeneratorAndResolverImpl(resourceSet)
 	var Path testProjectPath
 
 	@BeforeEach
@@ -32,8 +32,7 @@ class UuidGeneratorAndResolverImplTest {
 	@DisplayName("resolve UUID in parent resolver for object with root container not being its resource root")
 	def void parentResolveRootContainerNotResourceRoot() {
 		val childResourceSet = new ResourceSetImpl().withGlobalFactories()
-		val childUuidGeneratorAndResolver = new UuidGeneratorAndResolverImpl(uuidGeneratorAndResolver, childResourceSet,
-			true)
+		val childUuidGeneratorAndResolver = new UuidGeneratorAndResolverImpl(uuidGeneratorAndResolver, childResourceSet)
 
 		// Model generation
 		val nonRoot = aet.NonRoot
@@ -63,8 +62,7 @@ class UuidGeneratorAndResolverImplTest {
 	@DisplayName("resolve UUID in parent resolver for multiple root elements")
 	def void parentResolveOneOfMultipleRootElements() {
 		val childResourceSet = new ResourceSetImpl().withGlobalFactories()
-		val childUuidGeneratorAndResolver = new UuidGeneratorAndResolverImpl(uuidGeneratorAndResolver, childResourceSet,
-			true)
+		val childUuidGeneratorAndResolver = new UuidGeneratorAndResolverImpl(uuidGeneratorAndResolver, childResourceSet)
 
 		// Model generation
 		val firstRoot = aet.Root
@@ -94,7 +92,7 @@ class UuidGeneratorAndResolverImplTest {
 	@DisplayName("resolve UUID in parent resolver for contents of multiple root elements")
 	def void parentResolveElementsContainedInOneOfMultipleRootElements() {
 		val childResourceSet = new ResourceSetImpl().withGlobalFactories()
-		val childUuidGeneratorAndResolver = new UuidGeneratorAndResolverImpl(uuidGeneratorAndResolver, childResourceSet, true)
+		val childUuidGeneratorAndResolver = new UuidGeneratorAndResolverImpl(uuidGeneratorAndResolver, childResourceSet)
 
 		// Model generation
 		val firstNonRoot = aet.NonRoot
