@@ -3,7 +3,6 @@ package tools.vitruv.framework.change.description.impl
 import tools.vitruv.framework.change.description.TransactionalChange
 import tools.vitruv.framework.uuid.UuidResolver
 import tools.vitruv.framework.change.interaction.UserInteractionBase
-import tools.vitruv.framework.change.description.VitruviusChange
 
 class EmptyChange implements TransactionalChange {
 	public static val INSTANCE = new EmptyChange()
@@ -57,10 +56,6 @@ class EmptyChange implements TransactionalChange {
 		throw new UnsupportedOperationException("Adding interactions to an empty change is not supported")
 	}
 
-	override changedEObjectEquals(VitruviusChange change) {
-		change.affectedAndReferencedEObjects.empty
-	}
-	
 	override EmptyChange copy() {
 		this
 	}

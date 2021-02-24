@@ -1,6 +1,5 @@
 package tools.vitruv.framework.change.description.impl
 
-import java.util.LinkedList
 import java.util.List
 import tools.vitruv.framework.change.description.CompositeChange
 import tools.vitruv.framework.change.description.VitruviusChange
@@ -91,18 +90,5 @@ abstract class AbstractCompositeChangeImpl<C extends VitruviusChange> implements
 	
 	override hashCode() {
 		changes.hashCode()
-	}
-
-	override boolean changedEObjectEquals(VitruviusChange change) {
-		if (change instanceof CompositeChange<?>) {
-			if (changes.size != change.changes.size) {
-			 	false
-			} else {
-				val remainingChanges = new LinkedList(change.changes)
-				remainingChanges.removeIf [theirChange|changes.exists [ourChange|theirChange.changedEObjectEquals(ourChange)]]
-				remainingChanges.isEmpty
-			}
-		}
-		else false
 	}
 }

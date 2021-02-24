@@ -16,7 +16,6 @@ import tools.vitruv.framework.change.echange.feature.FeatureEChange
 import tools.vitruv.framework.change.echange.root.RemoveRootEObject
 import tools.vitruv.framework.change.echange.root.InsertRootEObject
 import tools.vitruv.framework.change.description.ConcreteChange
-import tools.vitruv.framework.change.description.VitruviusChange
 import org.eclipse.emf.ecore.util.EcoreUtil
 import tools.vitruv.framework.util.datatypes.VURI
 import org.eclipse.emf.ecore.InternalEObject
@@ -154,12 +153,6 @@ class ConcreteChangeImpl implements ConcreteChange {
 		eChange.hashCode()
 	}
 
-	override boolean changedEObjectEquals(VitruviusChange change) {
-		if (change instanceof ConcreteChange) {
-			EcoreUtil.equals(EChange.involvedEObjects, change.EChange.involvedEObjects)
-		} else false
-	}
-	
 	private def getObjectVuri(EObject object) {
 		val objectResource = object.eResource
 		if (objectResource !== null) {

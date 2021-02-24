@@ -82,10 +82,5 @@ interface VitruviusChange {
 	 */
 	def Iterable<UserInteractionBase> getUserInteractions()
 
-	/**
-	 * Checks whether the affected EObjects of this change are equal to the EObjects of the other change.
-	 */
-	def boolean changedEObjectEquals(VitruviusChange change)
-	
 	def VitruviusChange copy()
 }

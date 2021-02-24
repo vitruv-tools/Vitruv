@@ -19,12 +19,6 @@
         <details key="documentation" value="*&#xA;Returns if all IDs in this chang eare resolved to {@link EObjects}.&#xA;Needs to be true to apply the change.&#xA;@return&#x9;Whether elements in this change are resolved or not."/>
       </eAnnotations>
     </eOperations>
-    <eOperations name="getInvolvedEObjects" upperBound="-1" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject">
-      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-        <details key="body" value="org.eclipse.emf.common.util.EList&lt;EObject> result = new org.eclipse.emf.common.util.BasicEList&lt;EObject>();&#xD;&#xA;for (EObject involvedEObject : tools.vitruv.framework.change.echange.EChangeInformationExtractor.getInvolvedEObjects(this)) {&#xD;&#xA;&#x9;result.add(involvedEObject);&#xD;&#xA;}&#xD;&#xA;return result;"/>
-        <details key="documentation" value="*&#xA;Returns the objects involved in this change, which includes all affected objects, new values and old values.&#xA;@return&#x9;All elements involved in this change."/>
-      </eAnnotations>
-    </eOperations>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="AdditiveEChange" abstract="true" eSuperTypes="#//EChange">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
