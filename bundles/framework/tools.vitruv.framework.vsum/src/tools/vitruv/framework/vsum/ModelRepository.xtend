@@ -9,9 +9,14 @@ import tools.vitruv.framework.uuid.UuidResolver
 
 interface ModelRepository extends ResourceAccess, AutoCloseable {
 	def UuidResolver getUuidResolver()
+
 	def CorrespondenceModel getCorrespondenceModel()
+
 	def ModelInstance getModel(VURI modelVuri)
-    def void saveOrDeleteModels()
-    def void startRecording()
-    def Iterable<? extends TransactionalChange> endRecording()
+
+	def void saveOrDeleteModels()
+
+	def void startRecording()
+
+	def Iterable<? extends TransactionalChange> endRecording()
 }
