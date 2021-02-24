@@ -149,9 +149,8 @@ public abstract class EMFModelChangeRecordingEditorSaveListener {
         UuidGeneratorAndResolver globalUuidGeneratorAndResolver = virtualModel != null
                 ? virtualModel.getUuidGeneratorAndResolver()
                 : null;
-        // TODO Set strict mode to false
         UuidGeneratorAndResolver localUuidResolver = new UuidGeneratorAndResolverImpl(globalUuidGeneratorAndResolver,
-                targetResource.getResourceSet(), false);
+                targetResource.getResourceSet());
 
         changeRecorder = new ChangeRecorder(localUuidResolver);
         changeRecorder.addToRecording(targetResource);

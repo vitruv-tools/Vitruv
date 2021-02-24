@@ -32,7 +32,7 @@ class EdgeCaseStateChangeTest extends StateChangePropagationTest {
 	@Test
 	def void testNullResources() {
 		val resourceSet = new ResourceSetImpl
-		val resolver = new UuidGeneratorAndResolverImpl(resourceSet, false)
+		val resolver = new UuidGeneratorAndResolverImpl(resourceSet)
 		val Resource nullResource = null
 		val change = strategyToTest.getChangeSequences(nullResource, nullResource, resolver)
 		assertTrue(change.EChanges.empty, "Composite change contains children!")
