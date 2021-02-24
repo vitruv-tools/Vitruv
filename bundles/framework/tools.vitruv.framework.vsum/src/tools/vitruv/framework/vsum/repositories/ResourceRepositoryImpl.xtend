@@ -48,11 +48,8 @@ class ResourceRepositoryImpl implements ModelRepository {
 	}
 
 	override getModel(VURI modelURI) {
-		val existingInstance = modelInstances.get(modelURI)
-		if (existingInstance !== null) {
-			return existingInstance
-		}
-		modelURI.createOrLoadModel(false)
+		modelInstances.get(modelURI)
+			?: createOrLoadModel(modelURI, false)
 	}
 	
 	def private createOrLoadModel(VURI modelURI, boolean forceLoadAndRelinkUuids) {
@@ -92,15 +89,14 @@ class ResourceRepositoryImpl implements ModelRepository {
 	
 	def private void registerRecorder(ModelInstance modelInstance) {
 		// Only monitor modifiable models (file / platform URIs, not pathmap URIs)
-		if (modelInstance.URI.EMFUri.isFile() || modelInstance.URI.EMFUri.isPlatform()) {
-			domainToRecorder.computeIfAbsent(getDomainForURI(modelInstance.URI)) [
+		if (modelInstance.URI.EMFUri.isFile || modelInstance.URI.EMFUri.isPlatform) {
+			val recorder = domainToRecorder.computeIfAbsent(getDomainForURI(modelInstance.URI)) [
 				new ChangeRecorder(this.uuidGeneratorAndResolver)
-			] => [
-				addToRecording(modelInstance.resource)
-				if (isRecording && !it.isRecording) {
-					beginRecording()
-				}
 			]
+			recorder.addToRecording(modelInstance.resource)
+			if (this.isRecording && !recorder.isRecording) {
+				recorder.beginRecording()
+			}
 		}
 	}
 	
@@ -109,12 +105,12 @@ class ResourceRepositoryImpl implements ModelRepository {
 	}
 
 	override void saveOrDeleteModels() {
-		logger.debug('''Saving all models of model repository for VSUM «fileSystemLayout»''')
+		if (logger.isDebugEnabled) logger.debug('''Saving all models of model repository for VSUM «fileSystemLayout»''')
 		for (modelInstance : modelInstances.values) {
 			if (modelInstance.empty) {
-				modelInstance.delete
+				modelInstance.delete()
 			} else {
-				modelInstance.save
+				modelInstance.save()
 			}
 		}
 		saveVURIsOfVsumModelInstances()
@@ -151,12 +147,11 @@ class ResourceRepositoryImpl implements ModelRepository {
 	override Iterable<? extends TransactionalChange> endRecording() {
 		logger.debug("End recording virtual model")
 		isRecording = false
-		domainToRecorder.values.forEach[endRecording()]
-		return domainToRecorder.values.map [ recorder |
-			val compChange = VitruviusChangeFactory.instance.createCompositeTransactionalChange()
-			recorder.changes.forEach[compChange.addChange(it)]
-			return compChange
-		].filter[it.containsConcreteChange()]
+		domainToRecorder.values.forEach [endRecording()]
+		return domainToRecorder.values
+			.map [recorder | VitruviusChangeFactory.instance.createCompositeTransactionalChange(recorder.changes)]
+			.filter [containsConcreteChange]
+			.toList()
 	}
 
 	override VURI getMetadataModelURI(String... metadataKey) {

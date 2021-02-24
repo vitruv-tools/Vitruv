@@ -16,8 +16,6 @@ import static extension tools.vitruv.framework.change.echange.resolve.EChangeRes
 import org.junit.jupiter.api.BeforeEach
 import static org.junit.jupiter.api.Assertions.assertFalse
 import static org.junit.jupiter.api.Assertions.assertTrue
-import static org.junit.jupiter.api.Assertions.assertNull
-import static org.junit.jupiter.api.Assertions.assertNotNull
 import static extension tools.vitruv.framework.util.ResourceSetUtil.withGlobalFactories
 import org.eclipse.xtend.lib.annotations.Accessors
 import static tools.vitruv.testutils.metamodels.AllElementTypesCreators.*
@@ -83,9 +81,6 @@ abstract class EChangeTest {
 	def protected static void assertIsNotResolved(List<? extends EChange> changes) {
 		for (change : changes) {
 			assertFalse(change.isResolved)
-			for (involvedObject : change.involvedEObjects) {
-				assertNull(involvedObject)
-			}
 		}
 	}
 
@@ -95,9 +90,6 @@ abstract class EChangeTest {
 	def protected static void assertIsResolved(List<? extends EChange> changes) {
 		for (change : changes) {
 			assertTrue(change.isResolved)
-			for (involvedObject : change.involvedEObjects) {
-				assertNotNull(involvedObject)
-			}
 		}
 	}
 

@@ -1,5 +1,7 @@
 package tools.vitruv.framework.util.datatypes;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -51,6 +53,7 @@ public class VURI implements Comparable<VURI> {
     }
 
     public static VURI getInstance(final URI uri) {
+        checkNotNull(uri, "URI for VURI");
         if (null == uri.toFileString()) {
             return getInstance(uri.toString());
         }

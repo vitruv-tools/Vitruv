@@ -9,4 +9,5 @@ import tools.vitruv.framework.change.interaction.UserInteractionBase
  */
 interface TransactionalChange extends VitruviusChange {
 	def void setUserInteractions(Iterable<UserInteractionBase> userInputs)
+	override TransactionalChange copy()
 }

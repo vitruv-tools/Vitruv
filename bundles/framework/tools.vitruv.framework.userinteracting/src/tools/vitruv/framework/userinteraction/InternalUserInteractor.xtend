@@ -14,6 +14,11 @@ interface InternalUserInteractor extends UserInteractor {
 	def void registerUserInputListener(UserInteractionListener listener)
 	
 	/**
+	 * Removes the given {@link UserInteractionListener} from the list of listeners that get notified about interactions.
+	 */
+	def void deregisterUserInputListener(UserInteractionListener listener)
+	
+	/**
 	 * Replaces the current {@link InteractionResultProvider} with the one provided by the given {@code replacementProvider}.
 	 * 
 	 * @param replacementProvider - function that gets the current {@link InteractionResultProvider} and returns the new one.
