@@ -36,9 +36,6 @@ class ResourceRepositoryImpl implements ModelRepository {
 	val Map<VURI, ModelInstance> modelInstances = new HashMap()
 	val VsumFileSystemLayout fileSystemLayout
 	val UuidGeneratorAndResolver uuidGeneratorAndResolver
-	override getUuidResolver() {
-		return uuidGeneratorAndResolver
-	}
 	@Accessors(PUBLIC_GETTER)
 	val CorrespondenceModel correspondenceModel
 	val Map<VitruvDomain, ChangeRecorder> domainToRecorder = new HashMap()
@@ -52,6 +49,10 @@ class ResourceRepositoryImpl implements ModelRepository {
 		this.correspondenceModel = initializeCorrespondenceModel().genericView
 		this.resourceSet.eAdapters += new ResourceRegistrationAdapter [getModel(VURI.getInstance(it))]
 		loadVURIsOfVSMUModelInstances()
+	}
+	
+	override getUuidResolver() {
+		return uuidGeneratorAndResolver
 	}
 
 	override getModel(VURI modelURI) {
