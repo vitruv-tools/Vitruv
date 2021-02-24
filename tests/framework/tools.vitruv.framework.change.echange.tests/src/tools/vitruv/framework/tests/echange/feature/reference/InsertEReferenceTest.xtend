@@ -286,6 +286,7 @@ class InsertEReferenceTest extends ReferenceEChangeTest {
 		// Set state before
 		isNonContainmentTest
 		val invalidAffectedEObject = newValue2 // NonRoot element
+		uuidGeneratorAndResolver.generateUuid(newValue2) // Must have a UUID if used as affected object
 		// Create and resolve change
 		val resolvedChange = atomicFactory.<NonRoot, NonRoot>createInsertReferenceChange(invalidAffectedEObject,
 			affectedFeature, newValue, 0).resolveBefore

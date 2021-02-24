@@ -33,6 +33,7 @@ class CreateAndReplaceAndDeleteNonRootTest extends ReferenceEChangeTest {
 	@BeforeEach
 	def void prepareState() {
 		oldValue = aet.NonRoot
+		uuidGeneratorAndResolver.generateUuid(oldValue)
 		affectedFeature = AllElementTypesPackage.Literals.ROOT__SINGLE_VALUED_CONTAINMENT_EREFERENCE
 		prepareStateBefore
 	}

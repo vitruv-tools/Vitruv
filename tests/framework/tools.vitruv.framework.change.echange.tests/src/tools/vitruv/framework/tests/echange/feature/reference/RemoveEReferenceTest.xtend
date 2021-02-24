@@ -20,6 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows
 import static extension tools.vitruv.framework.change.echange.resolve.EChangeResolverAndApplicator.*
 import static org.hamcrest.MatcherAssert.assertThat
 import static tools.vitruv.testutils.matchers.ModelMatchers.equalsDeeply
+import org.junit.jupiter.api.BeforeEach
 
 /**
  * Test class for the concrete {@link RemoveEReference} EChange, 
@@ -29,6 +30,12 @@ class RemoveEReferenceTest extends ReferenceEChangeTest {
 	var EReference affectedFeature
 	var EList<NonRoot> referenceContent
 
+	@BeforeEach
+	def void before() {
+		uuidGeneratorAndResolver.generateUuid(newValue) // Used as existing value, so needs a UUID
+		uuidGeneratorAndResolver.generateUuid(newValue2) // Used as existing value, so needs a UUID
+	}
+	
 	/**
 	 * Test resolves a {@link RemoveEReference} EChange with correct parameters.
 	 * The model is in state before the change was applied forward.

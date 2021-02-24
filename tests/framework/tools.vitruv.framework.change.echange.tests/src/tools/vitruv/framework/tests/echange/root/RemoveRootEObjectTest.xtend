@@ -28,6 +28,8 @@ class RemoveRootEObjectTest extends RootEChangeTest {
 	@BeforeEach
 	def void prepareState() {
 		prepareStateBefore
+		uuidGeneratorAndResolver.generateUuid(newRootObject) // Used as existing element, so must have a UUID
+		uuidGeneratorAndResolver.generateUuid(newRootObject2) // Used as existing element, so must have a UUID
 	}
 
 	/**

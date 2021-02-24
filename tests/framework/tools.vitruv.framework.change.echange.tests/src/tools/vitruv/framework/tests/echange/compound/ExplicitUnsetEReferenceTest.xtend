@@ -45,9 +45,13 @@ class ExplicitUnsetEReferenceTest extends EChangeTest {
 	@BeforeEach
 	def void beforeTest() {
 		affectedEObject = rootObject
+		uuidGeneratorAndResolver.generateUuid(affectedEObject)
 		oldValue = aet.NonRoot
+		uuidGeneratorAndResolver.generateUuid(oldValue)
 		oldValue2 = aet.NonRoot
+		uuidGeneratorAndResolver.generateUuid(oldValue2)
 		oldValue3 = aet.NonRoot
+		uuidGeneratorAndResolver.generateUuid(oldValue3)
 	}
 
 	/**

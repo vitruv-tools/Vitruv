@@ -35,6 +35,8 @@ class RemoveAndDeleteNonRootTest extends ReferenceEChangeTest {
 	def void prepareState() {
 		affectedFeature = AllElementTypesPackage.Literals.ROOT__MULTI_VALUED_CONTAINMENT_EREFERENCE
 		referenceContent = affectedEObject.eGet(affectedFeature) as EList<NonRoot>
+		uuidGeneratorAndResolver.generateUuid(newValue) // used as old value, so no UUID generated
+		uuidGeneratorAndResolver.generateUuid(newValue2) // used as old value, so no UUID generated
 		prepareStateBefore
 	}
 

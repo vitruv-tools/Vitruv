@@ -26,6 +26,7 @@ abstract class InsertRemoveEAttributeTest extends EChangeTest {
 	@BeforeEach
 	def void beforeTest() {
 		affectedEObject = rootObject
+		uuidGeneratorAndResolver.generateUuid(affectedEObject)
 		affectedFeature = AllElementTypesPackage.Literals.ROOT__MULTI_VALUED_EATTRIBUTE
 		attributeContent = affectedEObject.eGet(affectedFeature) as EList<Integer>
 	}

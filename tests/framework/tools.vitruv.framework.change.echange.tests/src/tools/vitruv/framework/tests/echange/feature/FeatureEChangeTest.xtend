@@ -40,6 +40,7 @@ class FeatureEChangeTest extends EChangeTest {
 	@BeforeEach
 	def final void beforeTest() {
 		affectedEObject = rootObject
+		uuidGeneratorAndResolver.generateUuid(affectedEObject)
 		affectedFeature = AllElementTypesPackage.Literals.IDENTIFIED__ID
 
 		// Load model in second resource
@@ -150,6 +151,7 @@ class FeatureEChangeTest extends EChangeTest {
 	 */
 	def private Root prepareSecondRoot() {
 		val root = aet.Root
+		uuidGeneratorAndResolver.generateUuid(root)
 		resource.contents.add(root)
 		return root
 	}
