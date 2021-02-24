@@ -26,6 +26,9 @@ import org.eclipse.xtend.lib.annotations.FinalFieldsConstructor
 import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
 import tools.vitruv.framework.correspondence.CorrespondenceModel
 import tools.vitruv.framework.uuid.UuidResolver
+import java.util.HashSet
+import java.util.Set
+import org.eclipse.emf.ecore.resource.Resource
 
 class ChangePropagator {
 	static val logger = Logger.getLogger(ChangePropagator)
@@ -66,14 +69,14 @@ class ChangePropagator {
 		val VitruviusChange sourceChange
 		val VitruvDomain sourceDomain
 		val ChangePropagation previous
-		val ChangedResourcesTracker changedResourcesTracker = new ChangedResourcesTracker
+		val Set<Resource> changedResources = new HashSet
 		val List<EObject> createdObjects = new ArrayList
 		val List<UserInteractionBase> userInteractions = new ArrayList
 		
 		def private propagateChanges() {
 			val result = sourceChange.transactionalChangeSequence.flatMapFixed [propagateSingleChange(it)]
 			handleObjectsWithoutResource()
-			changedResourcesTracker.markNonSourceResourceAsChanged()
+			changedResources.forEach [modified = true]
 			return result
 		}
 		
@@ -139,8 +142,7 @@ class ChangePropagator {
 			val changes = resourceRepository.endRecording()
 	
 			// Store modification information
-			changes.flatMap [affectedEObjects].forEach [changedResourcesTracker.addInvolvedModelResource(eResource)]
-			changedResourcesTracker.addSourceResourceOfChange(change)
+			changedResources += changes.flatMap [affectedEObjects].map [eResource].filterNull
 			
 			return changes
 		}
