@@ -24,8 +24,6 @@ import static com.google.common.base.Preconditions.checkNotNull
 import static com.google.common.base.Preconditions.checkState
 import org.eclipse.xtend.lib.annotations.FinalFieldsConstructor
 import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
-import tools.vitruv.framework.correspondence.CorrespondenceModel
-import tools.vitruv.framework.uuid.UuidResolver
 import java.util.HashSet
 import java.util.Set
 import org.eclipse.emf.ecore.resource.Resource
@@ -35,23 +33,18 @@ class ChangePropagator {
 	val VitruvDomainRepository domainRepository
 	val ModelRepository resourceRepository
 	val ChangePropagationSpecificationProvider changePropagationProvider
-	val CorrespondenceModel correspondenceModel
 	val InternalUserInteractor userInteractor
-	val UuidResolver uuidResolver
 
 	new(ModelRepository resourceRepository, ChangePropagationSpecificationProvider changePropagationProvider,
-		VitruvDomainRepository domainRepository, CorrespondenceModel correspondenceModel,
-		InternalUserInteractor userInteractor, UuidResolver uuidResolver) {
+		VitruvDomainRepository domainRepository, InternalUserInteractor userInteractor) {
 		this.resourceRepository = resourceRepository
 		this.changePropagationProvider = changePropagationProvider
-		this.correspondenceModel = correspondenceModel
 		this.domainRepository = domainRepository
 		this.userInteractor = userInteractor
-		this.uuidResolver = uuidResolver
 	}
 
 	def List<PropagatedChange> propagateChange(VitruviusChange change) {
-		change.resolveBeforeAndApplyForward(uuidResolver)
+		change.resolveBeforeAndApplyForward(resourceRepository.uuidResolver)
 		
 		val changedDomain = change.changedDomain
 		if (logger.isTraceEnabled) {
@@ -138,7 +131,7 @@ class ChangePropagator {
 			// TODO HK: Clone the changes for each synchronization! Should even be cloned for
 			// each consistency repair routines that uses it,
 			// or: make them read only, i.e. give them a read-only interface!
-			propagationSpecification.propagateChange(change, correspondenceModel, resourceRepository)
+			propagationSpecification.propagateChange(change, resourceRepository.correspondenceModel, resourceRepository)
 			val changes = resourceRepository.endRecording()
 	
 			// Store modification information
@@ -163,7 +156,7 @@ class ChangePropagator {
 		def private void handleObjectsWithoutResource() {
 			// Find created objects without resource
 			for (createdObjectWithoutResource : createdObjects.filter[eResource === null]) {
-				checkState(!correspondenceModel.hasCorrespondences(List.of(createdObjectWithoutResource)),
+				checkState(!resourceRepository.correspondenceModel.hasCorrespondences(List.of(createdObjectWithoutResource)),
 					"This object is part of a correspondence but not in any resource: %s", createdObjectWithoutResource)
 				logger.warn("Object was created but has no correspondence and is thus lost: " 
 					+ createdObjectWithoutResource)

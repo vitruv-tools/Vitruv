@@ -23,6 +23,7 @@ import static extension tools.vitruv.framework.util.ResourceSetUtil.withGlobalFa
 import static extension tools.vitruv.framework.domains.repository.DomainAwareResourceSet.awareOfDomains
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import tools.vitruv.framework.change.recording.ChangeRecorder
+import tools.vitruv.framework.uuid.UuidResolver
 
 /**
  * A test view that will record and publish the changes created in it.
@@ -58,7 +59,7 @@ class ChangePublishingTestView implements NonTransactionalTestView {
 		Path persistenceDirectory,
 		TestUserInteraction userInteraction,
 		UriMode uriMode,
-		UuidGeneratorAndResolver parentResolver,
+		UuidResolver parentResolver,
 		VitruvDomainRepository targetDomains
 	) {
 		this.resourceSet = new ResourceSetImpl().withGlobalFactories().awareOfDomains(targetDomains)
@@ -80,7 +81,7 @@ class ChangePublishingTestView implements NonTransactionalTestView {
 		VirtualModel virtualModel,
 		VitruvDomainRepository targetDomains
 	) {
-		this(persistenceDirectory, userInteraction, uriMode, virtualModel.uuidGeneratorAndResolver, targetDomains)
+		this(persistenceDirectory, userInteraction, uriMode, virtualModel.uuidResolver, targetDomains)
 		registerChangeProcessor [change|virtualModel.propagateChange(change)]
 	}
 

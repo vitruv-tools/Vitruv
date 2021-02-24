@@ -12,16 +12,10 @@ import tools.vitruv.framework.userinteraction.InternalUserInteractor
 import tools.vitruv.framework.util.datatypes.VURI
 import tools.vitruv.framework.vsum.helper.ChangeDomainExtractor
 import tools.vitruv.framework.vsum.modelsynchronization.ChangePropagationListener
-import tools.vitruv.framework.vsum.repositories.ModelRepositoryImpl
 import tools.vitruv.framework.vsum.repositories.ResourceRepositoryImpl
 import org.apache.log4j.Logger
 import org.eclipse.emf.common.util.URI
 import tools.vitruv.framework.vsum.helper.VsumFileSystemLayout
-import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
-import static extension tools.vitruv.framework.util.ResourceSetUtil.withGlobalFactories
-import static extension tools.vitruv.framework.util.bridges.EcoreResourceBridge.loadOrCreateResource
-import tools.vitruv.framework.correspondence.CorrespondenceModelFactory
-import tools.vitruv.framework.correspondence.InternalCorrespondenceModel
 import java.nio.file.Path
 import static com.google.common.base.Preconditions.checkNotNull
 import java.util.LinkedList
@@ -30,12 +24,10 @@ import tools.vitruv.framework.vsum.modelsynchronization.ChangePropagator
 
 class VirtualModelImpl implements InternalVirtualModel {
 	static val Logger LOGGER = Logger.getLogger(VirtualModelImpl)
-	val ResourceRepositoryImpl resourceRepository
-	val ModelRepositoryImpl modelRepository
+	val ModelRepository resourceRepository
 	val VitruvDomainRepository domainRepository
 	val ChangePropagator changePropagator
 	val VsumFileSystemLayout fileSystemLayout
-	val InternalCorrespondenceModel correspondenceModel
 	val List<ChangePropagationListener> changePropagationListeners = new LinkedList()
 	val List<PropagatedChangeListener> propagatedChangeListeners = new LinkedList()
 	val extension ChangeDomainExtractor changeDomainExtractor
@@ -46,30 +38,25 @@ class VirtualModelImpl implements InternalVirtualModel {
 		this.fileSystemLayout = fileSystemLayout
 		this.domainRepository = domainRepository
 		this.resourceRepository = new ResourceRepositoryImpl(fileSystemLayout, domainRepository)
-		this.modelRepository = new ModelRepositoryImpl(resourceRepository.uuidGeneratorAndResolver)
 		this.changeDomainExtractor = new ChangeDomainExtractor(domainRepository)
-		this.correspondenceModel = loadCorrespondenceModel()
 		this.changePropagator = new ChangePropagator(
 			resourceRepository,
 			changePropagationSpecificationProvider,
 			domainRepository,
-			getCorrespondenceModel(),
-			userInteractor,
-			uuidGeneratorAndResolver
+			userInteractor
 		)
 	}
 
-	override getCorrespondenceModel() {
-		correspondenceModel.genericView
+	override synchronized getCorrespondenceModel() {
+		this.resourceRepository.correspondenceModel
 	}
 
 	override synchronized getModelInstance(VURI modelVuri) {
-		return this.resourceRepository.getModel(modelVuri)
+		this.resourceRepository.getModel(modelVuri)
 	}
 
 	override synchronized save() {
 		this.resourceRepository.saveOrDeleteModels()
-		this.correspondenceModel.save()
 	}
 
 	override synchronized persistRootElement(VURI persistenceVuri, EObject rootElement) {
@@ -89,7 +76,6 @@ class VirtualModelImpl implements InternalVirtualModel {
 		save()
 		
 		if (LOGGER.isTraceEnabled) {
-			LOGGER.trace(modelRepository)
 			LOGGER.trace('''
 				Propagated changes:
 				«FOR propagatedChange : result»
@@ -134,7 +120,7 @@ class VirtualModelImpl implements InternalVirtualModel {
 		val currentState = resourceRepository.getModel(vuri).resource
 		if (currentState.isValid(newState)) {
 			val strategy = vitruvDomain.stateChangePropagationStrategy
-			val compositeChange = strategy.getChangeSequences(newState, currentState, uuidGeneratorAndResolver)
+			val compositeChange = strategy.getChangeSequences(newState, currentState, uuidResolver)
 			return propagateChange(compositeChange)
 		}
 		LOGGER.error("Could not load current state for new state. No changes were propagated!")
@@ -142,7 +128,7 @@ class VirtualModelImpl implements InternalVirtualModel {
 	}
 
 	override synchronized reverseChanges(List<PropagatedChange> changes) {
-		changes.reverseView.forEach [applyBackward(uuidGeneratorAndResolver)]
+		changes.reverseView.forEach [applyBackward(uuidResolver)]
 
 		// TODO HK Instead of this make the changes set the modified flag of the resource when applied
 		changes.flatMap [originalChange.affectedEObjects + consequentialChanges.affectedEObjects]
@@ -156,8 +142,8 @@ class VirtualModelImpl implements InternalVirtualModel {
 		return fileSystemLayout.vsumProjectFolder
 	}
 
-	override getUuidGeneratorAndResolver() {
-		return resourceRepository.uuidGeneratorAndResolver
+	override getUuidResolver() {
+		return resourceRepository.uuidResolver
 	}
 
 	/**
@@ -225,17 +211,7 @@ class VirtualModelImpl implements InternalVirtualModel {
 	}
 
 	override void dispose() {
-		resourceRepository.dispose
+		resourceRepository.close()
 	}
 
-	def private loadCorrespondenceModel() {
-		var correspondencesVURI = fileSystemLayout.correspondencesVURI
-		if (LOGGER.isTraceEnabled) {
-			LOGGER.trace('''Creating or loading correspondence model from: «correspondencesVURI»''')
-		}
-		val correspondencesResource = new ResourceSetImpl().withGlobalFactories()
-			.loadOrCreateResource(correspondencesVURI.EMFUri)
-		CorrespondenceModelFactory.instance.createCorrespondenceModel(
-			uuidGeneratorAndResolver, correspondencesVURI, correspondencesResource)
-	}
 }

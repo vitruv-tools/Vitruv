@@ -1,11 +1,12 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Vitruv Framework UUID Management
+Bundle-Name: %pluginName
 Bundle-SymbolicName: tools.vitruv.framework.uuid;singleton:=true
 Automatic-Module-Name: tools.vitruv.framework.uuid
 Bundle-Version: 2.1.0.qualifier
 Bundle-ClassPath: .
-Bundle-Vendor: tools.vitruv
+Bundle-Vendor: %providerName
+Bundle-Localization: plugin
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Export-Package: tools.vitruv.framework.uuid.impl,
  tools.vitruv.framework.uuid.util,
