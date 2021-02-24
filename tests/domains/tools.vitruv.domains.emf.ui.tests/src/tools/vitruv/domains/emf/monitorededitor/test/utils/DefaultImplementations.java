@@ -75,7 +75,7 @@ public class DefaultImplementations {
         }
         
         public void registerExistingModel(URL testResourceURL) {
-        	Resource testResource = uuidGeneratorAndResolver.getResourceSet().getResource(Models.loadModel(testResourceURL).getURI(), true);
+        	Resource testResource = Models.loadModel(uuidGeneratorAndResolver.getResourceSet(), testResourceURL);
         	testResource.getAllContents().forEachRemaining(obj -> uuidGeneratorAndResolver.generateUuid(obj));
         }
 

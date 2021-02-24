@@ -32,9 +32,11 @@ public class Models {
     public static final String ROOT_OBJECT_URI = "/";
 
     public static Resource loadModel(URL modelURL) {
-
-        ResourceSet resSet = new ResourceSetImpl();
-        resSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(Resource.Factory.Registry.DEFAULT_EXTENSION,
+    	return loadModel(new ResourceSetImpl(), modelURL);
+    }
+    
+    public static Resource loadModel(ResourceSet resourceSet, URL modelURL) {
+    	resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(Resource.Factory.Registry.DEFAULT_EXTENSION,
                 new XMIResourceFactoryImpl());
 
         EcoreResourceFactoryImpl ecoreResFact = new EcoreResourceFactoryImpl();
@@ -47,7 +49,7 @@ public class Models {
             fail("Could not load " + Files.EXAMPLEMODEL_ECORE.getFile() + ". Reason: " + e);
         }
 
-        resSet.getResources().add(ecoreRes);
+        resourceSet.getResources().add(ecoreRes);
 
         return ecoreRes;
     }
