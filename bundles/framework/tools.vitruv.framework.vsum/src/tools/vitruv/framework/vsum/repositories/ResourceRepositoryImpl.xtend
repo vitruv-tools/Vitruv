@@ -31,7 +31,8 @@ import tools.vitruv.framework.correspondence.CorrespondenceModel
 
 class ResourceRepositoryImpl implements ModelRepository {
 	static val logger = Logger.getLogger(ResourceRepositoryImpl)
-	val ResourceSet resourceSet
+	val ResourceSet modelsResourceSet
+	val ResourceSet correspondencesResourceSet
 	val VitruvDomainRepository domainRepository
 	val Map<VURI, ModelInstance> modelInstances = new HashMap()
 	val VsumFileSystemLayout fileSystemLayout
@@ -44,10 +45,11 @@ class ResourceRepositoryImpl implements ModelRepository {
 	new(VsumFileSystemLayout fileSystemLayout, VitruvDomainRepository domainRepository) {
 		this.domainRepository = domainRepository
 		this.fileSystemLayout = fileSystemLayout
-		this.resourceSet = new ResourceSetImpl().withGlobalFactories().awareOfDomains(domainRepository)
+		this.modelsResourceSet = new ResourceSetImpl().withGlobalFactories().awareOfDomains(domainRepository)
+		this.correspondencesResourceSet = new ResourceSetImpl().withGlobalFactories()
 		this.uuidGeneratorAndResolver = initializeUuidProviderAndResolver()
 		this.correspondenceModel = initializeCorrespondenceModel().genericView
-		this.resourceSet.eAdapters += new ResourceRegistrationAdapter [getModel(VURI.getInstance(it))]
+		this.modelsResourceSet.eAdapters += new ResourceRegistrationAdapter [getModel(VURI.getInstance(it))]
 		loadVURIsOfVSMUModelInstances()
 	}
 	
@@ -77,11 +79,11 @@ class ResourceRepositoryImpl implements ModelRepository {
 	}
 	
 	def private getOrCreateResource(VURI modelURI) {
-		return resourceSet.getOrCreateResource(modelURI.EMFUri)
+		return modelsResourceSet.getOrCreateResource(modelURI.EMFUri)
 	}
 
 	def private loadOrCreateResource(VURI modelURI, boolean generateUuids) {
-		val resource = resourceSet.loadOrCreateResource(modelURI.EMFUri)
+		val resource = modelsResourceSet.loadOrCreateResource(modelURI.EMFUri)
 		if (!generateUuids) {
 			relinkUuids(resource)
 		} else {
@@ -131,14 +133,14 @@ class ResourceRepositoryImpl implements ModelRepository {
 	def private initializeUuidProviderAndResolver() {
 		var uuidProviderVURI = fileSystemLayout.uuidProviderAndResolverVURI
 		logger.trace('''Creating or loading uuid provider and resolver model from: «uuidProviderVURI»''')
-		var Resource uuidProviderResource = resourceSet.loadOrCreateResource(uuidProviderVURI.EMFUri)
-		new UuidGeneratorAndResolverImpl(this.resourceSet, uuidProviderResource)
+		var Resource uuidProviderResource = modelsResourceSet.loadOrCreateResource(uuidProviderVURI.EMFUri)
+		new UuidGeneratorAndResolverImpl(this.modelsResourceSet, uuidProviderResource)
 	}
 	
 	def private initializeCorrespondenceModel() {
 		var correspondencesVURI = fileSystemLayout.correspondencesVURI
 		logger.trace('''Creating or loading correspondence model from: «correspondencesVURI»''')
-		val correspondencesResource = resourceSet.withGlobalFactories().loadOrCreateResource(
+		val correspondencesResource = correspondencesResourceSet.loadOrCreateResource(
 			correspondencesVURI.EMFUri)
 		modelInstances.put(correspondencesVURI, new ModelInstance(correspondencesResource))
 		CorrespondenceModelFactory.instance.createCorrespondenceModel(
@@ -186,8 +188,10 @@ class ResourceRepositoryImpl implements ModelRepository {
 	}
 
 	override close() {
-		resourceSet.resources.forEach[unload]
-		resourceSet.resources.clear
+		modelsResourceSet.resources.forEach[unload]
+		correspondencesResourceSet.resources.forEach[unload]
+		modelsResourceSet.resources.clear
+		correspondencesResourceSet.resources.clear
 	}
 
 }
