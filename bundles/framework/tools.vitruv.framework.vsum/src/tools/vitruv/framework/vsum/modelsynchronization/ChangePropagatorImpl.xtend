@@ -24,8 +24,6 @@ import tools.vitruv.framework.userinteraction.UserInteractionListener
 import tools.vitruv.framework.change.interaction.UserInteractionBase
 import tools.vitruv.framework.userinteraction.UserInteractionFactory
 import static com.google.common.base.Preconditions.checkState
-import tools.vitruv.framework.correspondence.CorrespondenceModel
-import tools.vitruv.framework.uuid.UuidResolver
 
 class ChangePropagatorImpl implements ChangePropagationObserver, UserInteractionListener {
 	static Logger logger = Logger.getLogger(ChangePropagatorImpl)
@@ -35,17 +33,14 @@ class ChangePropagatorImpl implements ChangePropagationObserver, UserInteraction
 	final InternalUserInteractor userInteractor
 	final List<EObject> objectsCreatedDuringPropagation = newArrayList
 	final List<UserInteractionBase> userInteractions = newArrayList
-	final UuidResolver uuidResolver
 	
 	new(ModelRepository resourceRepository, ChangePropagationSpecificationProvider changePropagationProvider,
-		VitruvDomainRepository metamodelRepository, CorrespondenceModel correspondenceModel,
-		InternalUserInteractor userInteractor, UuidResolver uuidResolver) {
+		VitruvDomainRepository metamodelRepository, InternalUserInteractor userInteractor) {
 		this.resourceRepository = resourceRepository
 		this.changePropagationProvider = changePropagationProvider
 		changePropagationProvider.forEach[it.registerObserver(this)]
 		this.metamodelRepository = metamodelRepository
 		this.userInteractor = userInteractor
-		this.uuidResolver = uuidResolver
 		userInteractor.registerUserInputListener(this)
 	}
 
@@ -64,7 +59,7 @@ class ChangePropagatorImpl implements ChangePropagationObserver, UserInteraction
 		TransactionalChange change,
 		ChangedResourcesTracker changedResourcesTracker
 	) {
-		change.resolveBeforeAndApplyForward(uuidResolver)
+		change.resolveBeforeAndApplyForward(resourceRepository.uuidResolver)
 
 		val changedObjects = change.affectedEObjects
 		checkState(!changedObjects.nullOrEmpty, "There are no objects affected by the given changes")

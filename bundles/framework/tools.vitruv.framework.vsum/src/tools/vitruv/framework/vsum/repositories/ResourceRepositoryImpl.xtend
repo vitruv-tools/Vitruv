@@ -35,8 +35,10 @@ class ResourceRepositoryImpl implements ModelRepository {
 	val VitruvDomainRepository domainRepository
 	val Map<VURI, ModelInstance> modelInstances = new HashMap()
 	val VsumFileSystemLayout fileSystemLayout
-	@Accessors(PUBLIC_GETTER)
 	val UuidGeneratorAndResolver uuidGeneratorAndResolver
+	override getUuidResolver() {
+		return uuidGeneratorAndResolver
+	}
 	@Accessors(PUBLIC_GETTER)
 	val CorrespondenceModel correspondenceModel
 	val Map<VitruvDomain, ChangeRecorder> domainToRecorder = new HashMap()

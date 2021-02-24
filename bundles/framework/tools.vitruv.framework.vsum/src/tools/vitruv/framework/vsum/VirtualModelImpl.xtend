@@ -43,9 +43,7 @@ class VirtualModelImpl implements InternalVirtualModel {
 			resourceRepository,
 			changePropagationSpecificationProvider,
 			domainRepository,
-			getCorrespondenceModel(),
-			userInteractor,
-			uuidGeneratorAndResolver
+			userInteractor
 		)
 	}
 
@@ -120,7 +118,7 @@ class VirtualModelImpl implements InternalVirtualModel {
 		val currentState = resourceRepository.getModel(vuri).resource
 		if (currentState.isValid(newState)) {
 			val strategy = vitruvDomain.stateChangePropagationStrategy
-			val compositeChange = strategy.getChangeSequences(newState, currentState, uuidGeneratorAndResolver)
+			val compositeChange = strategy.getChangeSequences(newState, currentState, uuidResolver)
 			return propagateChange(compositeChange)
 		}
 		LOGGER.error("Could not load current state for new state. No changes were propagated!")
@@ -128,7 +126,7 @@ class VirtualModelImpl implements InternalVirtualModel {
 	}
 
 	override synchronized reverseChanges(List<PropagatedChange> changes) {
-		changes.reverseView.forEach[it.applyBackward(uuidGeneratorAndResolver)]
+		changes.reverseView.forEach[it.applyBackward(uuidResolver)]
 
 		// TODO HK Instead of this make the changes set the modified flag of the resource when applied
 		changes.flatMap[originalChange.affectedEObjects + consequentialChanges.affectedEObjects]
@@ -142,8 +140,8 @@ class VirtualModelImpl implements InternalVirtualModel {
 		return fileSystemLayout.vsumProjectFolder
 	}
 
-	override getUuidGeneratorAndResolver() {
-		return resourceRepository.uuidGeneratorAndResolver
+	override getUuidResolver() {
+		return resourceRepository.uuidResolver
 	}
 
 	/**
