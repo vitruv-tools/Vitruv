@@ -81,10 +81,10 @@ public abstract class VsumTest {
 		vsum.persistRootElement(vuri, repo);
 		Component component = Pcm_mockupFactory.eINSTANCE.createComponent();
 		repo.getComponents().add(component);
-		vsum.save();// (vuri);
+		vsum.save();
 		PInterface mockIf = Pcm_mockupFactory.eINSTANCE.createPInterface();
 		repo.getInterfaces().add(mockIf);
-		vsum.save();// (vuri);
+		vsum.save();
 
 		// create UML
 		VURI vuriUML = VURI.getInstance(getAlterantiveUMLInstanceURI());
@@ -94,7 +94,7 @@ public abstract class VsumTest {
 		uPackage.getClasses().add(uClass);
 		uml_mockup.UInterface uInterface = Uml_mockupFactory.eINSTANCE.createUInterface();
 		uPackage.getInterfaces().add(uInterface);
-		vsum.save();// (vuriUML);
+		vsum.save();
 
 		return mi;
 	}
@@ -140,7 +140,7 @@ public abstract class VsumTest {
 		repo.getInterfaces().add(Pcm_mockupFactory.eINSTANCE.createPInterface());
 		repo.getComponents().add(Pcm_mockupFactory.eINSTANCE.createComponent());
 		contents.add(repo);
-		vsum.save();// (modelURI);
+		vsum.save();
 	}
 
 	private void createUmlMockupModel(final VURI modelURI, final InternalVirtualModel vsum) {
@@ -150,7 +150,7 @@ public abstract class VsumTest {
 		pckg.getInterfaces().add(Uml_mockupFactory.eINSTANCE.createUInterface());
 		pckg.getClasses().add(Uml_mockupFactory.eINSTANCE.createUClass());
 		contents.add(pckg);
-		vsum.save();// (modelURI);
+		vsum.save();
 	}
 
 }
