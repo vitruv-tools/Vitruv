@@ -9,6 +9,7 @@ import tools.vitruv.framework.change.echange.eobject.CreateEObject
 import tools.vitruv.framework.uuid.UuidGeneratorAndResolver
 import org.eclipse.emf.ecore.EObject
 import tools.vitruv.framework.change.echange.feature.reference.UpdateReferenceEChange
+import static com.google.common.base.Preconditions.checkState
 
 /**
  * Provides logic for initializing the IDs within changes and for updating
@@ -49,7 +50,7 @@ class EChangeIdManager {
 	def boolean isCreateChange(EObjectAddedEChange<?> addedEChange) {
 		// We do not check the containment of the reference, because an element may be inserted into a non-containment
 		// reference before inserting it into a containment reference so that the create change has to be added
-		// for the inserting into the non-containment reference
+		// for the insertion into the non-containment reference
 		var create = addedEChange.newValue !== null && !(uuidGeneratorAndResolver.hasUuid(addedEChange.newValue))
 		// Look if the new value has no resource or if it is a reference change, if the resource of the affected
 		// object is the same. Otherwise, the create has to be handled by an insertion/reference in that resource, as
@@ -58,53 +59,51 @@ class EChangeIdManager {
 		return create;
 	}
 	
-	private def String getOrGenerateValue(EObject object) {
+	private def String getOrGenerateUuid(EObject object) {
 		if (uuidGeneratorAndResolver.hasUuid(object)) {
 			return uuidGeneratorAndResolver.getUuid(object);
 		}
 		return uuidGeneratorAndResolver.generateUuidWithoutCreate(object);
 	}
 	
+	private def String getUuid(EObject object) {
+		return uuidGeneratorAndResolver.getUuid(object);
+	}
+	
 	private def void setOrGenerateNewValueId(EObjectAddedEChange<?> addedEChange) {
 		if(addedEChange.newValue === null) {
 			return;
 		}
-		addedEChange.newValueID = getOrGenerateValue(addedEChange.newValue);
+		addedEChange.newValueID = getOrGenerateUuid(addedEChange.newValue)
 	}	
 
 	private def void setOrGenerateOldValueId(EObjectSubtractedEChange<?> subtractedEChange) {
 		if(subtractedEChange.oldValue === null) {
 			return;
 		}
-		subtractedEChange.oldValueID = getOrGenerateValue(subtractedEChange.oldValue);
+		subtractedEChange.oldValueID = subtractedEChange.oldValue.uuid
 	}
 
 	private def dispatch void setOrGenerateAffectedEObjectId(CreateEObject<?> createChange) {
-		if(createChange.affectedEObject === null) {
-			throw new IllegalStateException();
-		}
+		checkState(createChange.affectedEObject !== null, "Create change must have an affected EObject: %s", createChange)
 		val affectedObject = createChange.affectedEObject
 		if (!uuidGeneratorAndResolver.hasUuid(affectedObject)) {
 			createChange.affectedEObjectID = uuidGeneratorAndResolver.generateUuid(affectedObject);	
 		} else {
-			createChange.affectedEObjectID = uuidGeneratorAndResolver.getUuid(affectedObject);
+			createChange.affectedEObjectID = affectedObject.uuid;
 		}
 		
 	}
 	
 	private def dispatch void setOrGenerateAffectedEObjectId(DeleteEObject<?> deleteChange) {
-		if(deleteChange.affectedEObject === null) {
-			throw new IllegalStateException();
-		}
-		deleteChange.affectedEObjectID = getOrGenerateValue(deleteChange.affectedEObject);
+		checkState(deleteChange.affectedEObject !== null, "Delete change must have an affected EObject: %s", deleteChange)
+		deleteChange.affectedEObjectID = deleteChange.affectedEObject.uuid
 		deleteChange.consequentialRemoveChanges.forEach[setOrGenerateIds]
 	}
 
 	private def dispatch void setOrGenerateAffectedEObjectId(FeatureEChange<?, ?> featureChange) {
-		if(featureChange.affectedEObject === null) {
-			throw new IllegalStateException();
-		}
-		featureChange.affectedEObjectID = getOrGenerateValue(featureChange.affectedEObject);
+		checkState(featureChange.affectedEObject !== null, "Feature change must have an affected EObject: %s", featureChange)
+		featureChange.affectedEObjectID = featureChange.affectedEObject.uuid
 	}
 
 }

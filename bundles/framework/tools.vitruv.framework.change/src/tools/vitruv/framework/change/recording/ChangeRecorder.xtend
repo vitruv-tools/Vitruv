@@ -50,31 +50,33 @@ class ChangeRecorder implements AutoCloseable {
 	List<CompositeTransactionalChange> resultChanges = emptyList
 	val NotificationToEChangeConverter converter
 	val UuidGeneratorAndResolver uuidGeneratorAndResolver
-	
-	new (UuidGeneratorAndResolver uuidGeneratorAndResolver) {
+
+	new(UuidGeneratorAndResolver uuidGeneratorAndResolver) {
 		this.uuidGeneratorAndResolver = uuidGeneratorAndResolver
 		this.converter = new NotificationToEChangeConverter(new EChangeIdManager(uuidGeneratorAndResolver))
 	}
-	
+
 	/**
 	 * Add the given elements and all its contained elements ({@link Resource}s, {@link EObject}s) to the recorder.
+	 * Register all existing elements at the {@link UuidGeneratorAndResolver} with existing UUIDs.
 	 * 
 	 * @param notifier - the {@link Notifier} to add the recorder to
+	 * @throws IllegalStateException if no UUID exists yet for some of the existing elements or if the recorder is already disposed
 	 */
 	def void addToRecording(Notifier notifier) {
 		checkNotDisposed()
 		checkNotNull(notifier, "notifier")
 		checkArgument(notifier.isInOurResourceSet,
 			"cannot record changes in a different resource set than that of our UUID resolver!")
-		
+
 		if (rootObjects += notifier) {
 			notifier.recursively [
-				if (it instanceof EObject) uuidGeneratorAndResolver.registerEObject(it)
+				if(it instanceof EObject) uuidGeneratorAndResolver.registerEObject(it)
 				addAdapter()
 			]
 		}
 	}
-	
+
 	/**
 	 * Removes the given elements and all its contained elements (resources, EObjects) from the recorder.
 	 * @param notifier - the {@link Notifier} to remove the recorder from
@@ -83,9 +85,9 @@ class ChangeRecorder implements AutoCloseable {
 		checkNotDisposed()
 		checkNotNull(notifier, "notifier")
 		rootObjects -= notifier
-		notifier.recursively [removeAdapter()]
+		notifier.recursively[removeAdapter()]
 	}
-	
+
 	/**
 	 * Starts recording changes on the registered elements.
 	 */
@@ -95,15 +97,15 @@ class ChangeRecorder implements AutoCloseable {
 		isRecording = true
 		resultChanges = new ArrayList
 	}
-	
+
 	override close() {
 		isRecording = false
 		resultChanges = null
 		val rootCopy = Set.copyOf(rootObjects)
 		rootObjects.clear()
-		rootCopy.forEach [recursively [removeAdapter()]]
+		rootCopy.forEach[recursively [removeAdapter()]]
 	}
-	
+
 	def private checkNotDisposed() {
 		checkState(resultChanges !== null, "This recorder has already been disposed!")
 	}
@@ -119,38 +121,39 @@ class ChangeRecorder implements AutoCloseable {
 		isRecording = false
 		resultChanges = List.copyOf(postprocessRemovals(resultChanges))
 	}
-	
+
 	def private postprocessRemovals(List<CompositeTransactionalChange> changes) {
-		if (changes.isEmpty) return changes
-		
+		if(changes.isEmpty) return changes
+
 		val Set<String> removedIds = new HashSet
-		for (eChange : changes.flatMap [EChanges]) {
-			switch(eChange) {
+		for (eChange : changes.flatMap[EChanges]) {
+			switch (eChange) {
 				EObjectSubtractedEChange<?> case eChange.isContainmentRemoval:
 					removedIds += eChange.oldValueID
 				EObjectAddedEChange<?> case eChange.isContainmentInsertion:
 					removedIds -= eChange.newValueID
 			}
 		}
-	
+
 		return if (removedIds.isEmpty) {
-		 	changes
+			changes
 		} else {
 			changes.mapFixed [
 				insertChanges [ innerChange |
 					switch (eChange: innerChange.EChange) {
-						EObjectSubtractedEChange<?> case 
-							eChange.isContainmentRemoval && removedIds.contains(eChange.oldValueID): 
+						EObjectSubtractedEChange<?> case eChange.isContainmentRemoval &&
+							removedIds.contains(eChange.oldValueID):
 							VitruviusChangeFactory.instance.createConcreteApplicableChange(
 								converter.createDeleteChange(eChange)
 							)
-						default: null
+						default:
+							null
 					}
 				]
 			]
 		}
 	}
-	
+
 	/**
 	 * Iterates over the {@code target} change tree and returns a modified tree, where all new changes
 	 * provided by {@code inserter} have been inserted.
@@ -184,14 +187,17 @@ class ChangeRecorder implements AutoCloseable {
 					}
 					resultChanges?.add(result)
 				}
-				default: throw new IllegalStateException('''unexpected change type «change.class.simpleName»: «change»''')
+				default:
+					throw new IllegalStateException('''unexpected change type «change.class.simpleName»: «change»''')
 			}
 		}
 		return if (resultChanges !== null) {
 			VitruviusChangeFactory.instance.createCompositeTransactionalChange(resultChanges)
-		} else target
+		} else {
+			target
+		}
 	}
-	
+
 	def List<? extends TransactionalChange> getChanges() {
 		checkNotDisposed()
 		checkState(!isRecording, "This recorder is still recording!")
@@ -201,20 +207,20 @@ class ChangeRecorder implements AutoCloseable {
 	def isRecording() {
 		isRecording
 	}
-	
+
 	// action indicates with the return value whether we should continue on the children.
 	def private static dispatch void recursively(ResourceSet resourceSet, (Notifier)=>boolean action) {
 		if (action.apply(resourceSet)) {
-			resourceSet.resources.forEach [recursively(action)]
+			resourceSet.resources.forEach[recursively(action)]
 		}
 	}
-	
+
 	def private static dispatch void recursively(Resource resource, (Notifier)=>boolean action) {
 		if (action.apply(resource)) {
-			resource.contents.forEach [recursively(action)]
+			resource.contents.forEach[recursively(action)]
 		}
 	}
-	 
+
 	def private static dispatch void recursively(EObject object, (Notifier)=>boolean action) {
 		if (action.apply(object)) {
 			for (val properContents = object.getAllProperContents(true); properContents.hasNext;) {
@@ -234,7 +240,7 @@ class ChangeRecorder implements AutoCloseable {
 		val eAdapters = notifier.eAdapters
 		!eAdapters.contains(recordingAdapter) && (eAdapters += recordingAdapter)
 	}
-	
+
 	def private boolean isInOurResourceSet(Notifier notifier) {
 		switch (notifier) {
 			case null: true
@@ -244,55 +250,55 @@ class ChangeRecorder implements AutoCloseable {
 			default: throw new IllegalStateException("Unexpected notifier type: " + notifier.class.simpleName)
 		}
 	}
-	
+
 	@FinalFieldsConstructor
 	private static class NotificationRecorder implements Adapter {
 		extension val ChangeRecorder outer
-		
+
 		override notifyChanged(Notification notification) {
 			switch (feature: notification.feature) {
 				EReference case feature.isContainment,
-				case notification.notifier instanceof Resource 
-					&& notification.getFeatureID(Resource) === RESOURCE__CONTENTS,
-				case notification.notifier instanceof ResourceSet 
-					&& notification.getFeatureID(ResourceSet) === RESOURCE_SET__RESOURCES: {
+				case notification.notifier instanceof Resource &&
+					notification.getFeatureID(Resource) === RESOURCE__CONTENTS,
+				case notification.notifier instanceof ResourceSet &&
+					notification.getFeatureID(ResourceSet) === RESOURCE_SET__RESOURCES: {
 					switch (notification.eventType) {
 						case SET,
 						case REMOVE: desinfect(notification.oldValue)
-						case REMOVE_MANY: (notification.oldValue as Iterable<?>).forEach [desinfect()]
+						case REMOVE_MANY: (notification.oldValue as Iterable<?>).forEach[desinfect()]
 					}
 					switch (notification.eventType) {
 						case ADD,
 						case SET: infect(notification.newValue)
-						case ADD_MANY: (notification.newValue as Iterable<?>).forEach [infect()]
-						// We currently resolve all containment references in #recursively, which is why we don’t
-						// need to react to RESOLVE notifications here.
+						case ADD_MANY: (notification.newValue as Iterable<?>).forEach[infect()]
+					// We currently resolve all containment references in #recursively, which is why we don’t
+					// need to react to RESOLVE notifications here.
 					}
 				}
 			}
-			
+
 			if (isRecording) {
 				val newChanges = converter.convert(new NotificationInfo(notification))
 				if (!newChanges.isEmpty) {
 					resultChanges += VitruviusChangeFactory.instance.createCompositeTransactionalChange(
-						newChanges.map [VitruviusChangeFactory.instance.createConcreteApplicableChange(it)]
+						newChanges.map[VitruviusChangeFactory.instance.createConcreteApplicableChange(it)]
 					)
 				}
 			}
 		}
-		
+
 		private def infect(Object newValue) {
-			(newValue as Notifier)?.recursively [addAdapter()]
+			(newValue as Notifier)?.recursively[addAdapter()]
 		}
-		
+
 		private def desinfect(Object oldValue) {
-			(oldValue as Notifier)?.recursively [removeAdapter()]
+			(oldValue as Notifier)?.recursively[removeAdapter()]
 		}
-		
+
 		override getTarget() { null }
-	
+
 		override isAdapterForType(Object type) { false }
-	
+
 		override setTarget(Notifier newTarget) {}
 	}
 }
