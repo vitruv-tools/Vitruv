@@ -32,7 +32,6 @@ class ChangePropagatorImpl implements ChangePropagationObserver, UserInteraction
 	final VitruvDomainRepository metamodelRepository
 	final ModelRepository resourceRepository
 	final ChangePropagationSpecificationProvider changePropagationProvider
-	final CorrespondenceModel correspondenceModel
 	final InternalUserInteractor userInteractor
 	final List<EObject> objectsCreatedDuringPropagation = newArrayList
 	final List<UserInteractionBase> userInteractions = newArrayList
@@ -45,7 +44,6 @@ class ChangePropagatorImpl implements ChangePropagationObserver, UserInteraction
 		this.changePropagationProvider = changePropagationProvider
 		changePropagationProvider.forEach[it.registerObserver(this)]
 		this.metamodelRepository = metamodelRepository
-		this.correspondenceModel = correspondenceModel
 		this.userInteractor = userInteractor
 		this.uuidResolver = uuidResolver
 		userInteractor.registerUserInputListener(this)
@@ -172,7 +170,7 @@ class ChangePropagatorImpl implements ChangePropagationObserver, UserInteraction
 	private def void handleObjectsWithoutResource() {
 		// Find created objects without resource
 		for (createdObjectWithoutResource : objectsCreatedDuringPropagation.filter[eResource === null]) {
-			val hasCorrespondence = correspondenceModel.hasCorrespondences(List.of(createdObjectWithoutResource))
+			val hasCorrespondence = resourceRepository.correspondenceModel.hasCorrespondences(List.of(createdObjectWithoutResource))
 			checkState(
 				!hasCorrespondence, '''Every object must be contained within a resource: «createdObjectWithoutResource»''')
 			logger.warn("Object was created but has no correspondence and is thus lost: " +
@@ -187,7 +185,7 @@ class ChangePropagatorImpl implements ChangePropagationObserver, UserInteraction
 		// TODO HK: Clone the changes for each synchronization! Should even be cloned for
 		// each consistency repair routines that uses it,
 		// or: make them read only, i.e. give them a read-only interface!
-		propagationSpecification.propagateChange(change, correspondenceModel, resourceRepository)
+		propagationSpecification.propagateChange(change, resourceRepository.correspondenceModel, resourceRepository)
 	}
 
 	override objectCreated(EObject createdObject) {
