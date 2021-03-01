@@ -16,6 +16,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals
 import static org.junit.jupiter.api.Assertions.assertNotEquals
 import static extension org.eclipse.emf.ecore.util.EcoreUtil.getURI
 import org.junit.jupiter.api.BeforeEach
+import org.eclipse.emf.ecore.util.EcoreUtil
+import static org.junit.jupiter.api.Assertions.assertThrows
 
 @ExtendWith(TestProjectManager, RegisterMetamodelsInStandalone)
 class UuidGeneratorAndResolverImplTest {
@@ -37,7 +39,7 @@ class UuidGeneratorAndResolverImplTest {
 		// Model generation
 		val nonRoot = aet.NonRoot
 		childResourceSet.createResource(URI.createFileURI(testProjectPath.resolve("root.aet").toString)) => [
-			contents += aet.Root=> [
+			contents += aet.Root => [
 				singleValuedContainmentEReference = nonRoot
 			]
 			save(null)
@@ -132,6 +134,64 @@ class UuidGeneratorAndResolverImplTest {
 			uuidGeneratorAndResolver.getEObject(secondNonRootUuid))
 		assertNotEquals(childUuidGeneratorAndResolver.getEObject(deeperContainedElementUuid),
 			uuidGeneratorAndResolver.getEObject(deeperContainedElementUuid))
+	}
+
+	@Test
+	@DisplayName("generate UUID and resolve it after element deletion")
+	def void elementDeletionDoesNotRemoveUiud() {
+		val root = aet.Root
+		resourceSet.createResource(URI.createFileURI(testProjectPath.resolve("root.aet").toString)) => [
+			contents += root
+		]
+		val uuid = uuidGeneratorAndResolver.generateUuid(root)
+		EcoreUtil.delete(root)
+		assertEquals(uuid, uuidGeneratorAndResolver.getUuid(root))
+	}
+
+	@Test
+	@DisplayName("resolve UUID for element moved to different container")
+	def void elementMovementKeepsUuid() {
+		val root = aet.Root
+		resourceSet.createResource(URI.createFileURI(testProjectPath.resolve("root.aet").toString)) => [
+			contents += root
+		]
+		val uuid = uuidGeneratorAndResolver.generateUuid(root)
+		resourceSet.createResource(URI.createFileURI(testProjectPath.resolve("root2.aet").toString)) => [
+			contents += root
+		]
+		assertEquals(uuid, uuidGeneratorAndResolver.getUuid(root))
+	}
+	
+	@Test
+	@DisplayName("resolve UUID during element movement to different container")
+	def void elementMovementWithResolutionInTransientStateKeepsUuid() {
+		val root = aet.Root
+		val resource = resourceSet.createResource(URI.createFileURI(testProjectPath.resolve("root.aet").toString)) => [
+			contents += root
+		]
+		val uuid = uuidGeneratorAndResolver.generateUuid(root)
+		resource.contents.clear
+		assertEquals(uuid, uuidGeneratorAndResolver.getUuid(root))
+		resourceSet.createResource(URI.createFileURI(testProjectPath.resolve("root2.aet").toString)) => [
+			contents += root
+		]
+		assertEquals(uuid, uuidGeneratorAndResolver.getUuid(root))
+	}
+	
+	@Test
+	@DisplayName("cleanup resolver after element removal from resource")
+	def void cleanupAfterElementRemovalRemovesUuid() {
+		val root = aet.Root
+		val resource = resourceSet.createResource(URI.createFileURI(testProjectPath.resolve("root.aet").toString)) => [
+			contents += root
+		]
+		val uuid = uuidGeneratorAndResolver.generateUuid(root)
+		uuidGeneratorAndResolver.cleanupRemovedElements
+		assertEquals(uuid, uuidGeneratorAndResolver.getUuid(root))
+		resource.contents.clear
+		assertEquals(uuid, uuidGeneratorAndResolver.getUuid(root))
+		uuidGeneratorAndResolver.cleanupRemovedElements
+		assertThrows(IllegalStateException) [uuidGeneratorAndResolver.getUuid(root)]
 	}
 
 }
