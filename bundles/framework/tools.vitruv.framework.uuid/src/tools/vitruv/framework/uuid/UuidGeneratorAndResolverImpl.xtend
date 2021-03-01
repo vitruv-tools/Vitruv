@@ -81,6 +81,11 @@ class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 	new(UuidResolver parentUuidResolver, ResourceSet resourceSet, Resource uuidResource) {
 		checkArgument(resourceSet !== null, "Resource set may not be null")
 		this.resourceSet = resourceSet
+		if (uuidResource?.resourceSet == resourceSet) {
+			// Using the same resource set for models and the UUID resource can lead to accidental
+			// UUID removals, such as EcoreUtil.delete(element) removing the UUID mapping for element
+			logger.warn("UUID resource should not be placed into the same resource set as the models")
+		}
 		this.parentUuidResolver = parentUuidResolver ?: UuidResolver.EMPTY
 		loadAndRegisterUuidProviderAndResolver(uuidResource)
 		this.resourceSet.eAdapters += new ResourceRegistrationAdapter[resource|loadUuidsFromParent(resource)]
