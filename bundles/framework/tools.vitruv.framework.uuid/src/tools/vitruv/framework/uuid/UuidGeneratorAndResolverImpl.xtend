@@ -310,4 +310,15 @@ class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 		}
 	}
 	
+	override cleanupRemovedElements() {
+		for (val iterator = repository.EObjectToUuid.keySet.iterator(); iterator.hasNext(); ) {
+			val object = iterator.next()
+			if (object.eResource === null) {
+				val uuid = repository.EObjectToUuid.get(object)
+				repository.uuidToEObject.removeKey(uuid)
+				iterator.remove()
+			}
+		}
+	}
+
 }
