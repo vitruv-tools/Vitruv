@@ -10,7 +10,7 @@ import org.eclipse.emf.ecore.EObject
  * It registers a notifier on that {@link ResourceSet}, which informs about newly added/loaded {@link Resource}s
  * and automatically loads the assigned {@link Uuid}s for contained elements from the parent resolver.
  */
-interface UuidGeneratorAndResolver extends UuidResolver {
+interface UuidGeneratorAndResolver extends UuidResolver, AutoCloseable {
 	/**
 	 * Registers an object and returns the generated UUID for it.
 	 */
