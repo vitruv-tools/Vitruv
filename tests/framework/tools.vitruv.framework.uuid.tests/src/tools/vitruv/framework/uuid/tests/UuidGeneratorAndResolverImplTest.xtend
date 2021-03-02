@@ -312,7 +312,7 @@ class UuidGeneratorAndResolverImplTest {
 		uuidGeneratorAndResolver.generateUuid(root)
 		uuidGeneratorAndResolver.save()
 		val newResourceSet = new ResourceSetImpl().withGlobalFactories
-		assertThrows(IllegalStateException) [new UuidGeneratorAndResolverImpl(newResourceSet , uuidUri)]
+		assertThrows(IllegalStateException) [new UuidGeneratorAndResolverImpl(newResourceSet, uuidUri)]
 	}
 	
 	@Test
@@ -327,7 +327,25 @@ class UuidGeneratorAndResolverImplTest {
 		uuidGeneratorAndResolver.generateUuid(root)
 		uuidGeneratorAndResolver.save()
 		val newResourceSet = new ResourceSetImpl().withGlobalFactories
-		assertThrows(IllegalStateException) [new UuidGeneratorAndResolverImpl(newResourceSet , uuidUri)]
+		assertThrows(IllegalStateException) [new UuidGeneratorAndResolverImpl(newResourceSet, uuidUri)]
+	}
+	
+	@Test
+	@DisplayName("store and load UUIDs multiple times")
+	def void storeAndReloadUuidRepositoryMultipleTimes() {
+		val uuidUri = URI.createFileURI(testProjectPath.resolve("uuid.uuid").toString)
+		uuidGeneratorAndResolver = new UuidGeneratorAndResolverImpl(resourceSet, uuidUri)
+		val root = aet.Root
+		resourceSet.createResource(URI.createFileURI(testProjectPath.resolve("root.aet").toString)) => [
+			contents += root
+		]
+		val rootUuid = uuidGeneratorAndResolver.generateUuid(root)
+		uuidGeneratorAndResolver.save()
+		uuidGeneratorAndResolver = new UuidGeneratorAndResolverImpl(resourceSet, uuidUri)
+		uuidGeneratorAndResolver.save()
+		assertEquals(1, new ResourceSetImpl().withGlobalFactories.getResource(uuidUri, true).contents.size)
+		uuidGeneratorAndResolver = new UuidGeneratorAndResolverImpl(resourceSet, uuidUri)
+		assertEquals(rootUuid, uuidGeneratorAndResolver.getUuid(root))
 	}
 
 }
