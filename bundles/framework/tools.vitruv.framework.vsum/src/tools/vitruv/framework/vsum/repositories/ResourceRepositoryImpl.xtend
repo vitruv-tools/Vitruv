@@ -32,7 +32,6 @@ import tools.vitruv.framework.correspondence.CorrespondenceModel
 class ResourceRepositoryImpl implements ModelRepository {
 	static val logger = Logger.getLogger(ResourceRepositoryImpl)
 	val ResourceSet modelsResourceSet
-	val ResourceSet uuidResourceSet
 	val ResourceSet correspondencesResourceSet
 	val VitruvDomainRepository domainRepository
 	val Map<VURI, ModelInstance> modelInstances = new HashMap()
@@ -47,9 +46,8 @@ class ResourceRepositoryImpl implements ModelRepository {
 		this.domainRepository = domainRepository
 		this.fileSystemLayout = fileSystemLayout
 		this.modelsResourceSet = new ResourceSetImpl().withGlobalFactories().awareOfDomains(domainRepository)
-		this.uuidResourceSet = new ResourceSetImpl().withGlobalFactories()
 		this.correspondencesResourceSet = new ResourceSetImpl().withGlobalFactories()
-		this.uuidGeneratorAndResolver = initializeUuidProviderAndResolver()
+		this.uuidGeneratorAndResolver = new UuidGeneratorAndResolverImpl(this.modelsResourceSet, fileSystemLayout.uuidProviderAndResolverVURI.EMFUri)
 		this.correspondenceModel = initializeCorrespondenceModel().genericView
 		this.modelsResourceSet.eAdapters += new ResourceRegistrationAdapter [getModel(VURI.getInstance(it))]
 		loadVURIsOfVSMUModelInstances()
@@ -125,24 +123,10 @@ class ResourceRepositoryImpl implements ModelRepository {
 				modelInstance.save()
 			}
 		}
+		uuidGeneratorAndResolver.save()
 		saveVURIsOfVsumModelInstances()
 	}
 
-	def private initializeUuidProviderAndResolver() {
-		var uuidProviderVURI = fileSystemLayout.uuidProviderAndResolverVURI
-		logger.trace('''Creating or loading uuid provider and resolver model from: «uuidProviderVURI»''')
-		var Resource uuidProviderResource = uuidResourceSet.loadOrCreateResource(uuidProviderVURI.EMFUri)
-		val modelInstance = new ModelInstance(uuidProviderResource) {
-			override save() {
-				uuidGeneratorAndResolver.cleanupRemovedElements()
-				resource.modified = true
-				super.save()
-			}
-		}
-		modelInstances.put(uuidProviderVURI, modelInstance)
-		new UuidGeneratorAndResolverImpl(this.modelsResourceSet, uuidProviderResource)
-	}
-	
 	def private initializeCorrespondenceModel() {
 		var correspondencesVURI = fileSystemLayout.correspondencesVURI
 		logger.trace('''Creating or loading correspondence model from: «correspondencesVURI»''')

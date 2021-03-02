@@ -24,7 +24,7 @@ interface UuidGeneratorAndResolver extends UuidResolver {
 	def String generateUuidWithoutCreate(EObject eObject);
 
 	/**
-	 * Cleans up elements that have been removed, i.e., that are not contained in a resource anymore
+	 * Saves the mapping between {@link Uuids}s and {@link EObject}s to an underlying resource.
 	 */
-	def void cleanupRemovedElements()
+	def void save()
 }

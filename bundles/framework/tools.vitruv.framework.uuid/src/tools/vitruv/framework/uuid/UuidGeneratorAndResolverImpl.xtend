@@ -15,16 +15,19 @@ import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.common.util
 import static com.google.common.base.Preconditions.checkArgument
 import static com.google.common.base.Preconditions.checkState
 import tools.vitruv.framework.util.ResourceRegistrationAdapter
+import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
+import static extension tools.vitruv.framework.util.ResourceSetUtil.withGlobalFactories
 
 /**
  * {@link UuidGeneratorAndResolver}
  */
 class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 	static val logger = Logger.getLogger(UuidGeneratorAndResolverImpl)
-	final ResourceSet resourceSet
-	final UuidResolver parentUuidResolver
-	UuidToEObjectRepository repository
-	UuidToEObjectRepository cache
+	val ResourceSet resourceSet
+	val Resource uuidResource
+	val UuidResolver parentUuidResolver
+	val UuidToEObjectRepository repository
+	val UuidToEObjectRepository cache
 
 	/**
 	 * Instantiates a UUID generator and resolver with no parent resolver, 
@@ -55,44 +58,41 @@ class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 	/**
 	 * Instantiates a UUID generator and resolver with no parent resolver, 
 	 * the given {@link ResourceSet} for resolving objects
-	 * and the given {@link Resource} for storing the mapping.
+	 * and a resource at the given {@link URI} for storing the mapping in.
 	 * @param resourceSet -
 	 * 		the {@link ResourceSet} to load model elements from, may not be null
-	 * @param uuidResource -
-	 * 		the {@link Resource} to store the mapping in, may be null
+	 * @param resourceUri -
+	 * 		the {@link URI} to place a resource for storing the mapping in, may be null
 	 * @throws IllegalArgumentException if given {@link ResourceSet} is null
 	 */
-	new(ResourceSet resourceSet, Resource uuidResource) {
-		this(null, resourceSet, uuidResource)
+	new(ResourceSet resourceSet, URI resourceUri) {
+		this(null, resourceSet, resourceUri)
 	}
 
 	/**
 	 * Instantiates a UUID generator and resolver with the given parent resolver, used when
 	 * this resolver cannot resolve a UUID, the given {@link ResourceSet} for resolving objects
-	 * and the given {@link Resource} for storing the mapping.
+	 * and a resource at the given {@link URI} for storing the mapping in.
 	 * @param parentUuidResolver -
 	 * 		the parent {@link UuidResolver} used to resolve UUID if this contains no appropriate mapping, may be null
 	 * @param resourceSet -
 	 * 		the {@link ResourceSet} to load model elements from, may not be null
-	 * @param uuidResource -
-	 * 		the {@link Resource} to store the mapping in, may be null
+	 * @param resourceUri -
+	 * 		the {@link URI} to place a resource for storing the mapping in, may be null
 	 * @throws IllegalArgumentException if given {@link ResourceSet} is null
 	 */
-	new(UuidResolver parentUuidResolver, ResourceSet resourceSet, Resource uuidResource) {
+	new(UuidResolver parentUuidResolver, ResourceSet resourceSet, URI resourceUri) {
 		checkArgument(resourceSet !== null, "Resource set may not be null")
 		this.resourceSet = resourceSet
-		if (uuidResource?.resourceSet == resourceSet) {
-			// Using the same resource set for models and the UUID resource can lead to accidental
-			// UUID removals, such as EcoreUtil.delete(element) removing the UUID mapping for element
-			logger.warn("UUID resource should not be placed into the same resource set as the models")
-		}
 		this.parentUuidResolver = parentUuidResolver ?: UuidResolver.EMPTY
-		loadAndRegisterUuidProviderAndResolver(uuidResource)
+		this.uuidResource = if (resourceUri !== null) new ResourceSetImpl().withGlobalFactories.loadOrCreateResource(resourceUri)
+		this.repository = loadOrGenerateUuidRepository(uuidResource)
+		this.cache = UuidFactory.eINSTANCE.createUuidToEObjectRepository
 		this.resourceSet.eAdapters += new ResourceRegistrationAdapter[resource|loadUuidsFromParent(resource)]
 	}
-
-	def private loadAndRegisterUuidProviderAndResolver(Resource uuidResource) {
-		var UuidToEObjectRepository repository = uuidResource?.resourceContentRootIfUnique
+	
+	def private loadOrGenerateUuidRepository(Resource uuidResource) {
+		var repository = uuidResource?.resourceContentRootIfUnique
 			?.dynamicCast(UuidToEObjectRepository, "uuid provider and resolver model")
 		if (repository === null) {
 			repository = UuidFactory.eINSTANCE.createUuidToEObjectRepository
@@ -100,8 +100,7 @@ class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 				uuidResource.contents += repository
 			}
 		}
-		this.repository = repository
-		this.cache = UuidFactory.eINSTANCE.createUuidToEObjectRepository
+		return repository
 	}
 
 	override getUuid(EObject eObject) {
@@ -315,8 +314,13 @@ class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 		}
 	}
 	
-	override cleanupRemovedElements() {
-		for (val iterator = repository.EObjectToUuid.keySet.iterator(); iterator.hasNext(); ) {
+	override save() {
+		cleanupRemovedElements()
+		uuidResource?.save(null)
+	}
+	
+	private def cleanupRemovedElements() {
+		for (val iterator = repository.EObjectToUuid.keySet.iterator(); iterator.hasNext();) {
 			val object = iterator.next()
 			if (object.eResource === null) {
 				val uuid = repository.EObjectToUuid.get(object)

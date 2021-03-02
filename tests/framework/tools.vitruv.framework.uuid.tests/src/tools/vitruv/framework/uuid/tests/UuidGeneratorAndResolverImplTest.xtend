@@ -161,7 +161,7 @@ class UuidGeneratorAndResolverImplTest {
 		]
 		assertEquals(uuid, uuidGeneratorAndResolver.getUuid(root))
 	}
-	
+
 	@Test
 	@DisplayName("resolve UUID during element movement to different container")
 	def void elementMovementWithResolutionInTransientStateKeepsUuid() {
@@ -177,7 +177,7 @@ class UuidGeneratorAndResolverImplTest {
 		]
 		assertEquals(uuid, uuidGeneratorAndResolver.getUuid(root))
 	}
-	
+
 	@Test
 	@DisplayName("cleanup resolver after element removal from resource")
 	def void cleanupAfterElementRemovalRemovesUuid() {
@@ -186,12 +186,12 @@ class UuidGeneratorAndResolverImplTest {
 			contents += root
 		]
 		val uuid = uuidGeneratorAndResolver.generateUuid(root)
-		uuidGeneratorAndResolver.cleanupRemovedElements
+		uuidGeneratorAndResolver.save()
 		assertEquals(uuid, uuidGeneratorAndResolver.getUuid(root))
 		resource.contents.clear
 		assertEquals(uuid, uuidGeneratorAndResolver.getUuid(root))
-		uuidGeneratorAndResolver.cleanupRemovedElements
-		assertThrows(IllegalStateException) [uuidGeneratorAndResolver.getUuid(root)]
+		uuidGeneratorAndResolver.save()
+		assertThrows(IllegalStateException)[uuidGeneratorAndResolver.getUuid(root)]
 	}
 
 }
