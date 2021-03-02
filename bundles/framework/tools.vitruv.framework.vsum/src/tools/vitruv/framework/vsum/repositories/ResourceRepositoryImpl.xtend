@@ -179,8 +179,9 @@ class ResourceRepositoryImpl implements ModelRepository {
 	override close() {
 		modelsResourceSet.resources.forEach[unload]
 		correspondencesResourceSet.resources.forEach[unload]
-		modelsResourceSet.resources.clear
-		correspondencesResourceSet.resources.clear
+		modelsResourceSet.resources.clear()
+		correspondencesResourceSet.resources.clear()
+		uuidGeneratorAndResolver.close()
 	}
 
 }
