@@ -62,7 +62,8 @@ class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 	 * @param resourceSet -
 	 * 		the {@link ResourceSet} to load model elements from, may not be null
 	 * @param resourceUri -
-	 * 		the {@link URI} to place a resource for storing the mapping in, may be null
+	 * 		the {@link URI} to persist this repository to when {@link #save} is called. If {@code null}, this 
+	 * 		UUID repository will not be persisted.
 	 * @throws IllegalArgumentException if given {@link ResourceSet} is null
 	 */
 	new(ResourceSet resourceSet, URI resourceUri) {
@@ -78,7 +79,8 @@ class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 	 * @param resourceSet -
 	 * 		the {@link ResourceSet} to load model elements from, may not be null
 	 * @param resourceUri -
-	 * 		the {@link URI} to place a resource for storing the mapping in, may be null
+	 * 		the {@link URI} to persist this repository to when {@link #save} is called. If {@code null}, this 
+	 * 		UUID repository will not be persisted.
 	 * @throws IllegalArgumentException if given {@link ResourceSet} is null
 	 */
 	new(UuidResolver parentUuidResolver, ResourceSet resourceSet, URI resourceUri) {
