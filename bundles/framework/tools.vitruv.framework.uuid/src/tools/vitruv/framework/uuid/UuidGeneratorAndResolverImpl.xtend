@@ -104,6 +104,9 @@ class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 		if (loadedRepository !== null) {
 			for (proxyEntry : loadedRepository.EObjectToUuid.entrySet) {
 				val resolvedObject = EcoreUtil.resolve(proxyEntry.key, resourceSet)
+				if (resolvedObject.eIsProxy) {
+					throw new IllegalStateException("Object " + proxyEntry.key + " has a UUID but could not be resolved")
+				}
 				registerEObject(proxyEntry.value, resolvedObject)
 			}
 		}
@@ -337,6 +340,10 @@ class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 				iterator.remove()
 			}
 		}
+	}
+	
+	override close() {
+		this.uuidResource.unload
 	}
 
 }
