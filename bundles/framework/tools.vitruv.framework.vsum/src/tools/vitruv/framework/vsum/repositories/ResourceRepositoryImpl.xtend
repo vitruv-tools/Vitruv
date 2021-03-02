@@ -124,7 +124,6 @@ class ResourceRepositoryImpl implements ModelRepository {
 			}
 		}
 		uuidGeneratorAndResolver.save()
-		saveVURIsOfVsumModelInstances()
 	}
 
 	def private initializeCorrespondenceModel() {
@@ -141,11 +140,6 @@ class ResourceRepositoryImpl implements ModelRepository {
 		for (VURI vuri : fileSystemLayout.loadVsumVURIs()) {
 			createOrLoadModel(vuri, true)
 		}
-	}
-
-	def private void saveVURIsOfVsumModelInstances() {
-		// TODO Reimplement saving of V-SUM with a proper reload mechanism
-		// fileSystemHelper.saveVsumVURIsToFile(modelInstances.keySet)
 	}
 
 	def private VitruvDomain getDomainForURI(VURI uri) {
