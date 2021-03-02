@@ -205,31 +205,40 @@ class ConcreteChangeImpl implements ConcreteChange {
     	}
     }
     
-    def private getNewValueString(EObjectAddedEChange<?> change) {
-    	change.newValue?.toString ?: "id=" + change.newValueID
-    }
-    
-    def private getOldValueString(EObjectSubtractedEChange<?> change) {
-    	change.oldValue?.toString ?: "id=" + change.oldValueID
-    }
+	def private getNewValueString(EObjectAddedEChange<?> change) {
+		formatValueString(change.newValue, change.newValueID)
+	}
+	
+	def private getOldValueString(EObjectSubtractedEChange<?> change) {
+		formatValueString(change.oldValue, change.oldValueID)
+	}
+	
+	def private getAffectedObjectString(EObjectExistenceEChange<?> change) {
+		formatValueString(change.affectedEObject, change.affectedEObjectID)
+	}
+	
+	def private getAffectedObjectString(FeatureEChange<?, ?> change) {
+		formatValueString(change.affectedEObject, change.affectedEObjectID)
+	}
+	
+	def private getAffectedFeatureString(FeatureEChange<?, ?> change) {
+		'''«change.affectedObjectString».«change.affectedFeature.name»'''
+	}
+	
+	def private newValueString(AdditiveReferenceEChange<?, ?> change) {
+		formatValueString(change.newValue, change.newValueID)
+	}
+	
+	def private oldValueString(SubtractiveReferenceEChange<?, ?> change) {
+		formatValueString(change.oldValue, change.oldValueID)
+	}
+	
+	def private formatValueString(Object value, String id) {
+		if (value !== null) {
+			'''«value» (id=«id»)'''
+		} else {
+			'''id=«id»'''
+		}
+	}
 
-    def private getAffectedObjectString(EObjectExistenceEChange<?> change) {
-    	change.affectedEObject?.toString ?: change.affectedEObjectType.name + " id=" + change.affectedEObjectID
-    }
-    
-    def private getAffectedObjectString(FeatureEChange<?, ?> change) {
-    	change.affectedEObject?.toString ?: "id=" + change.affectedEObjectID
-    }
-    
-    def private getAffectedFeatureString(FeatureEChange<?, ?> change) {
-    	'''«change.affectedObjectString».«change.affectedFeature.name»'''
-    }
-    
-    def private newValueString(AdditiveReferenceEChange<?, ?> change) {
-    	change.newValue?.toString ?: "id=" + change.newValueID
-    }
-    
-    def private oldValueString(SubtractiveReferenceEChange<?, ?> change) {
-    	change.oldValue?.toString ?: "id=" + change.oldValueID
-    }
 }

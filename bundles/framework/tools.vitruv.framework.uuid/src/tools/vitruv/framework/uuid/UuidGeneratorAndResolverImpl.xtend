@@ -202,7 +202,7 @@ class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 
 	override registerEObject(String uuid, EObject eObject) {
 		checkState(eObject !== null, "Object must not be null")
-		if (logger.isDebugEnabled) logger.debug('''Adding UUID «uuid» for EObject: «eObject»''')
+		if (logger.isTraceEnabled) logger.trace('''Adding UUID «uuid» for EObject: «eObject»''')
 		
 		val uuidMapped = repository.uuidToEObject.put(uuid, eObject)
 		if (uuidMapped !== null) {
