@@ -59,6 +59,8 @@ class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 	 * Instantiates a UUID generator and resolver with no parent resolver, 
 	 * the given {@link ResourceSet} for resolving objects
 	 * and a resource at the given {@link URI} for storing the mapping in.
+	 * When loading an existing repository from the given {@link URI}, the referenced objects
+	 * are resolved in the given {@link ResourceSet}.
 	 * @param resourceSet -
 	 * 		the {@link ResourceSet} to load model elements from, may not be null
 	 * @param resourceUri -
@@ -74,6 +76,8 @@ class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 	 * Instantiates a UUID generator and resolver with the given parent resolver, used when
 	 * this resolver cannot resolve a UUID, the given {@link ResourceSet} for resolving objects
 	 * and a resource at the given {@link URI} for storing the mapping in.
+	 * When loading an existing repository from the given {@link URI}, the referenced objects
+	 * are resolved in the given {@link ResourceSet}.
 	 * @param parentUuidResolver -
 	 * 		the parent {@link UuidResolver} used to resolve UUID if this contains no appropriate mapping, may be null
 	 * @param resourceSet -
@@ -88,21 +92,24 @@ class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 		this.resourceSet = resourceSet
 		this.parentUuidResolver = parentUuidResolver ?: UuidResolver.EMPTY
 		this.uuidResource = if (resourceUri !== null) new ResourceSetImpl().withGlobalFactories.loadOrCreateResource(resourceUri)
-		this.repository = loadOrGenerateUuidRepository(uuidResource)
+		this.repository =  UuidFactory.eINSTANCE.createUuidToEObjectRepository
 		this.cache = UuidFactory.eINSTANCE.createUuidToEObjectRepository
+		resolveObjectsInLoadedRepository()
 		this.resourceSet.eAdapters += new ResourceRegistrationAdapter[resource|loadUuidsFromParent(resource)]
 	}
 	
-	def private loadOrGenerateUuidRepository(Resource uuidResource) {
-		var repository = uuidResource?.resourceContentRootIfUnique
+	def private resolveObjectsInLoadedRepository() {
+		var loadedRepository = uuidResource?.resourceContentRootIfUnique
 			?.dynamicCast(UuidToEObjectRepository, "uuid provider and resolver model")
-		if (repository === null) {
-			repository = UuidFactory.eINSTANCE.createUuidToEObjectRepository
-			if (uuidResource !== null) {
-				uuidResource.contents += repository
+		if (loadedRepository !== null) {
+			for (proxyEntry : loadedRepository.EObjectToUuid.entrySet) {
+				val resolvedObject = EcoreUtil.resolve(proxyEntry.key, resourceSet)
+				registerEObject(proxyEntry.value, resolvedObject)
 			}
 		}
-		return repository
+		if (uuidResource !== null) {
+			uuidResource.contents += repository
+		}
 	}
 
 	override getUuid(EObject eObject) {
