@@ -16,6 +16,11 @@ import org.eclipse.emf.ecore.EObject;
  */
 public interface InternalCorrespondenceModel extends GenericCorrespondenceModel<Correspondence> {
 	/**
+	 * Loads the correspondence model from its persistence if existing.
+	 */
+	public void loadSerializedCorrespondences();
+	
+	/**
 	 * Saves this correspondence model instance.
 	 */
 	public void save();

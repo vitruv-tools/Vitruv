@@ -33,10 +33,6 @@ class CorrespondenceModelViewImpl<T extends Correspondence> implements Correspon
 		this.correspondenceCreator = correspondenceCreator
 	}
 	
-	override getURI() {
-		return correspondenceModelDelegate.getURI;
-	}
-
 	override createAndAddCorrespondence(List<EObject> eObjects1, List<EObject> eObjects2) {
 		createAndAddCorrespondence(eObjects1, eObjects2, null)
 	}

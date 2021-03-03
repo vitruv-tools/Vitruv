@@ -25,9 +25,9 @@ import tools.vitruv.framework.vsum.helper.VsumFileSystemLayout
 import tools.vitruv.framework.change.recording.ChangeRecorder
 import static com.google.common.base.Preconditions.checkState
 import tools.vitruv.framework.util.ResourceRegistrationAdapter
-import tools.vitruv.framework.correspondence.CorrespondenceModelFactory
-import tools.vitruv.framework.correspondence.CorrespondenceModel
-import static tools.vitruv.framework.uuid.UuidGeneratorAndResolverFactory.createAndLoadUuidGeneratorAndResolver
+import static tools.vitruv.framework.uuid.UuidGeneratorAndResolverFactory.createUuidGeneratorAndResolver
+import static tools.vitruv.framework.correspondence.CorrespondenceModelFactory.createCorrespondenceModel
+import tools.vitruv.framework.correspondence.InternalCorrespondenceModel
 
 class ResourceRepositoryImpl implements ModelRepository {
 	static val logger = Logger.getLogger(ResourceRepositoryImpl)
@@ -37,8 +37,7 @@ class ResourceRepositoryImpl implements ModelRepository {
 	val Map<VURI, ModelInstance> modelInstances = new HashMap()
 	val VsumFileSystemLayout fileSystemLayout
 	val UuidGeneratorAndResolver uuidGeneratorAndResolver
-	@Accessors(PUBLIC_GETTER)
-	val CorrespondenceModel correspondenceModel
+	val InternalCorrespondenceModel correspondenceModel
 	val Map<VitruvDomain, ChangeRecorder> domainToRecorder = new HashMap()
 	var isRecording = false
 
@@ -49,8 +48,9 @@ class ResourceRepositoryImpl implements ModelRepository {
 		this.correspondencesResourceSet = new ResourceSetImpl().withGlobalFactories()
 		this.uuidGeneratorAndResolver = createUuidGeneratorAndResolver(modelsResourceSet,
 			fileSystemLayout.uuidProviderAndResolverVURI.EMFUri)
-		this.correspondenceModel = initializeCorrespondenceModel().genericView
-		this.modelsResourceSet.eAdapters += new ResourceRegistrationAdapter [getModel(VURI.getInstance(it))]
+		this.correspondenceModel = createCorrespondenceModel(uuidGeneratorAndResolver,
+			fileSystemLayout.correspondencesVURI.EMFUri)
+		this.modelsResourceSet.eAdapters += new ResourceRegistrationAdapter[getModel(VURI.getInstance(it))]
 		loadVURIsOfVSMUModelInstances()
 	}
 	
@@ -58,24 +58,29 @@ class ResourceRepositoryImpl implements ModelRepository {
 		return uuidGeneratorAndResolver
 	}
 
+	override getCorrespondenceModel() {
+		correspondenceModel.genericView
+	}
+
 	override getModel(VURI modelURI) {
 		modelInstances.get(modelURI)
 			?: createOrLoadModel(modelURI, false)
 	}
-	
+
 	def private createOrLoadModel(VURI modelURI, boolean forceLoadAndRelinkUuids) {
-		checkState(getDomainForURI(modelURI) !== null, "Cannot create a new model instance at the URI '%s' because no domain is registered for that URI", modelURI)
+		checkState(getDomainForURI(modelURI) !== null,
+			"Cannot create a new model instance at the URI '%s' because no domain is registered for that URI", modelURI)
 		val resource = if ((modelURI.EMFUri.isFile || modelURI.EMFUri.isPlatform) && !forceLoadAndRelinkUuids) {
-			getOrCreateResource(modelURI)
-		} else {
-			loadOrCreateResource(modelURI, !forceLoadAndRelinkUuids)
-		}
+				getOrCreateResource(modelURI)
+			} else {
+				loadOrCreateResource(modelURI, !forceLoadAndRelinkUuids)
+			}
 		val modelInstance = new ModelInstance(resource)
 		this.modelInstances.put(modelURI, modelInstance)
 		modelInstance.registerRecorder()
 		return modelInstance
 	}
-	
+
 	def private getOrCreateResource(VURI modelURI) {
 		return modelsResourceSet.getOrCreateResource(modelURI.EMFUri)
 	}
@@ -124,17 +129,8 @@ class ResourceRepositoryImpl implements ModelRepository {
 				modelInstance.save()
 			}
 		}
+		correspondenceModel.save()
 		uuidGeneratorAndResolver.save()
-	}
-
-	def private initializeCorrespondenceModel() {
-		var correspondencesVURI = fileSystemLayout.correspondencesVURI
-		logger.trace('''Creating or loading correspondence model from: «correspondencesVURI»''')
-		val correspondencesResource = correspondencesResourceSet.loadOrCreateResource(
-			correspondencesVURI.EMFUri)
-		modelInstances.put(correspondencesVURI, new ModelInstance(correspondencesResource))
-		CorrespondenceModelFactory.instance.createCorrespondenceModel(
-			uuidGeneratorAndResolver, correspondencesVURI, correspondencesResource)
 	}
 
 	def private void loadVURIsOfVSMUModelInstances() {

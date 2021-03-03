@@ -1,12 +1,10 @@
 package tools.vitruv.framework.correspondence.impl
 
-import java.io.IOException
 import java.util.HashSet
 import java.util.List
 import java.util.Map
 import java.util.Set
 import java.util.function.Supplier
-import org.apache.log4j.Logger
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.emf.ecore.util.EcoreUtil
@@ -14,9 +12,6 @@ import tools.vitruv.framework.correspondence.Correspondence
 import tools.vitruv.framework.correspondence.CorrespondenceFactory
 import tools.vitruv.framework.correspondence.Correspondences
 import tools.vitruv.framework.util.VitruviusConstants
-import tools.vitruv.framework.util.bridges.EcoreResourceBridge
-import tools.vitruv.framework.util.datatypes.ModelInstance
-import tools.vitruv.framework.util.datatypes.VURI
 import tools.vitruv.framework.uuid.UuidResolver
 
 import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
@@ -26,44 +21,45 @@ import tools.vitruv.framework.correspondence.CorrespondenceModelView
 import tools.vitruv.framework.correspondence.CorrespondenceModelViewFactory
 import java.util.function.Predicate
 import java.util.LinkedHashSet
+import org.eclipse.emf.common.util.URI
+import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
+import static extension tools.vitruv.framework.util.ResourceSetUtil.withGlobalFactories
+import static extension tools.vitruv.framework.util.bridges.EcoreResourceBridge.loadOrCreateResource
+import static extension tools.vitruv.framework.util.bridges.EcoreResourceBridge.getResourceContentRootIfUnique
+import static com.google.common.base.Preconditions.checkState
 
-class InternalCorrespondenceModelImpl extends ModelInstance implements InternalCorrespondenceModel {
-	static val logger = Logger.getLogger(InternalCorrespondenceModelImpl)
-	final Correspondences correspondences
-	final UuidResolver uuidResolver
+class InternalCorrespondenceModelImpl implements InternalCorrespondenceModel {
+	static val saveAndLoadOptions = Map.of(VitruviusConstants.optionProcessDanglingHref,
+		VitruviusConstants.optionProcessDanglingHrefDiscard)
+	val Correspondences correspondences
+	val UuidResolver uuidResolver
+	val Resource correspondencesResource
 
-	new(UuidResolver uuidResolver, VURI correspondencesVURI, Resource correspondencesResource) {
-		super(correspondencesResource)
-		this.correspondences = loadAndRegisterCorrespondences(correspondencesResource)
+	new(UuidResolver uuidResolver, URI resourceUri) {
 		this.uuidResolver = uuidResolver
-	}
-	
-	def private getSaveAndLoadOptions() {
-		Map.of(
-			VitruviusConstants.optionProcessDanglingHref, VitruviusConstants.optionProcessDanglingHrefDiscard
-		)
+		this.correspondences = CorrespondenceFactory::eINSTANCE.createCorrespondences()
+		this.correspondencesResource = if (resourceUri !== null)
+			new ResourceSetImpl().withGlobalFactories.createResource(resourceUri) => [
+				contents += correspondences
+			]
 	}
 
-	def private Correspondences loadAndRegisterCorrespondences(Resource correspondencesResource) {
-		try {
-			correspondencesResource.load(saveAndLoadOptions)
-		} catch (IOException e) {
-			if (e.cause instanceof Exception) {
-				logger.trace(
-					"Could not load correspondence resource - creating new correspondence instance resource."
-				)
-			}
+	override loadSerializedCorrespondences() {
+		checkState(correspondencesResource !== null,
+			"Correspondences resource must be specified to load existing correspondences")
+		val loadedResource = (new ResourceSetImpl().withGlobalFactories => [loadOptions += saveAndLoadOptions]).
+			loadOrCreateResource(correspondencesResource.URI)
+		val loadedCorrespondences = loadedResource.resourceContentRootIfUnique?.dynamicCast(Correspondences,
+			"Correspondences model")
+		if (loadedCorrespondences !== null) {
+			this.correspondences.correspondences += loadedCorrespondences.correspondences
 		}
-		// TODO implement lazy loading for correspondences because they may get really big
-		var Correspondences correspondences = EcoreResourceBridge.getResourceContentRootIfUnique(getResource())?.
-			dynamicCast(Correspondences, "correspondence model")
-		if (correspondences === null) {
-			correspondences = CorrespondenceFactory::eINSTANCE.createCorrespondences()
-			correspondencesResource.getContents().add(correspondences)
-		}
-		return correspondences
 	}
 	
+	override save() {
+		this.correspondencesResource?.save(saveAndLoadOptions)
+	}
+
 	override <C extends Correspondence> C createAndAddCorrespondence(List<EObject> eObjects1, List<EObject> eObjects2,
 		String tag, Supplier<C> correspondenceCreator) {
 		val correspondence = correspondenceCreator.get
@@ -95,16 +91,14 @@ class InternalCorrespondenceModelImpl extends ModelInstance implements InternalC
 			]
 			it.tag = tag
 		]
-		this.correspondences.correspondences += correspondence 
-		markModified()
+		this.correspondences.correspondences += correspondence
 		return correspondence
 	}
-	
+
 	def private removeCorrespondence(Correspondence correspondence) {
 		EcoreUtil.remove(correspondence)
-		markModified()
 	}
-	
+
 	override <C extends Correspondence> Set<Correspondence> removeCorrespondencesBetween(Class<C> correspondenceType,
 		Predicate<C> correspondencesFilter, List<EObject> aEObjects, List<EObject> bEObjects, String tag) {
 		getCorrespondences(correspondenceType, correspondencesFilter, aEObjects, tag)
@@ -133,7 +127,7 @@ class InternalCorrespondenceModelImpl extends ModelInstance implements InternalC
 			markCorrespondenceAndDependingCorrespondencesRecursively(markedCorrespondences, dependingCorrespondence)
 		}
 	}
-	
+
 	override <C extends Correspondence> Set<C> getCorrespondences(Class<C> correspondenceType,
 		Predicate<C> correspondencesFilter, List<EObject> eObjects, String tag) {
 		val correspondences = new HashSet<Correspondence>()
