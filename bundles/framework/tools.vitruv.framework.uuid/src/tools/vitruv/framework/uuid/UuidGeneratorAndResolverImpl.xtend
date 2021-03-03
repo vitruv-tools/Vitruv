@@ -62,7 +62,7 @@ package class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 	 * given in the constructor and resolves the referenced {@link EObject}s in the {@link ResourceSet}
 	 * given in the constructor.
 	 */
-	def loadUuidsAndModelsFromSerializedUuidRepository() {
+	def package loadUuidsAndModelsFromSerializedUuidRepository() {
 		checkState(uuidResource !== null, "UUID resource must be specified to load existing UUIDs")
 		val loadedResource = new ResourceSetImpl().withGlobalFactories.loadOrCreateResource(uuidResource.URI)
 		val loadedRepository = loadedResource.resourceContentRootIfUnique?.dynamicCast(UuidToEObjectRepository,
