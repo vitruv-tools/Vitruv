@@ -57,12 +57,7 @@ package class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 		this.resourceSet.eAdapters += new ResourceRegistrationAdapter[resource|loadUuidsFromParent(resource)]
 	}
 
-	/**
-	 * Loads the mapping between UUIDs and {@link EObject}s from the persistence at the {@link URI}
-	 * given in the constructor and resolves the referenced {@link EObject}s in the {@link ResourceSet}
-	 * given in the constructor.
-	 */
-	def package loadUuidsAndModelsFromSerializedUuidRepository() {
+	override loadUuidsAndModelsFromSerializedUuidRepository() {
 		checkState(uuidResource !== null, "UUID resource must be specified to load existing UUIDs")
 		val loadedResource = new ResourceSetImpl().withGlobalFactories.loadOrCreateResource(uuidResource.URI)
 		val loadedRepository = loadedResource.resourceContentRootIfUnique?.dynamicCast(UuidToEObjectRepository,
@@ -77,6 +72,26 @@ package class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 				registerEObject(proxyEntry.value, resolvedObject)
 			}
 		}
+	}
+	
+	override save() {
+		cleanupRemovedElements()
+		uuidResource?.save(null)
+	}
+
+	private def cleanupRemovedElements() {
+		for (val iterator = repository.EObjectToUuid.keySet.iterator(); iterator.hasNext();) {
+			val object = iterator.next()
+			if (object.eResource === null) {
+				val uuid = repository.EObjectToUuid.get(object)
+				repository.uuidToEObject.removeKey(uuid)
+				iterator.remove()
+			}
+		}
+	}
+
+	override close() {
+		this.uuidResource.unload
 	}
 
 	override getUuid(EObject eObject) {
@@ -282,26 +297,6 @@ package class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 		} else {
 			resource.URI.appendFragment('/' + rootElementIndex + '/' + fragmentPath)
 		}
-	}
-
-	override save() {
-		cleanupRemovedElements()
-		uuidResource?.save(null)
-	}
-
-	private def cleanupRemovedElements() {
-		for (val iterator = repository.EObjectToUuid.keySet.iterator(); iterator.hasNext();) {
-			val object = iterator.next()
-			if (object.eResource === null) {
-				val uuid = repository.EObjectToUuid.get(object)
-				repository.uuidToEObject.removeKey(uuid)
-				iterator.remove()
-			}
-		}
-	}
-
-	override close() {
-		this.uuidResource.unload
 	}
 
 }

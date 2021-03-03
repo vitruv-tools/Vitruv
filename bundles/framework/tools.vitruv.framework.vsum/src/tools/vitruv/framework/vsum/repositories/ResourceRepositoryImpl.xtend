@@ -47,7 +47,8 @@ class ResourceRepositoryImpl implements ModelRepository {
 		this.fileSystemLayout = fileSystemLayout
 		this.modelsResourceSet = new ResourceSetImpl().withGlobalFactories().awareOfDomains(domainRepository)
 		this.correspondencesResourceSet = new ResourceSetImpl().withGlobalFactories()
-		this.uuidGeneratorAndResolver = createAndLoadUuidGeneratorAndResolver(this.modelsResourceSet, fileSystemLayout.uuidProviderAndResolverVURI.EMFUri)
+		this.uuidGeneratorAndResolver = createUuidGeneratorAndResolver(modelsResourceSet,
+			fileSystemLayout.uuidProviderAndResolverVURI.EMFUri)
 		this.correspondenceModel = initializeCorrespondenceModel().genericView
 		this.modelsResourceSet.eAdapters += new ResourceRegistrationAdapter [getModel(VURI.getInstance(it))]
 		loadVURIsOfVSMUModelInstances()
