@@ -14,6 +14,8 @@ interface ModelRepository extends ResourceAccess, AutoCloseable {
 
 	def ModelInstance getModel(VURI modelVuri)
 
+	def void loadExistingModels()
+
 	def void saveOrDeleteModels()
 
 	def void startRecording()

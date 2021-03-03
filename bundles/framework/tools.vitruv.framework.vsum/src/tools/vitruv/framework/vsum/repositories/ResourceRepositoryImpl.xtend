@@ -53,7 +53,12 @@ class ResourceRepositoryImpl implements ModelRepository {
 		this.modelsResourceSet.eAdapters += new ResourceRegistrationAdapter[getModel(VURI.getInstance(it))]
 		loadVURIsOfVSMUModelInstances()
 	}
-	
+
+	override loadExistingModels() {
+		uuidGeneratorAndResolver.loadUuidsAndModelsFromSerializedUuidRepository()
+		correspondenceModel.loadFromPersistence()
+	}
+
 	override getUuidResolver() {
 		return uuidGeneratorAndResolver
 	}
