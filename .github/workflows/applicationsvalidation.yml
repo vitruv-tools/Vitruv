@@ -1,0 +1,43 @@
+name: Application Validation
+
+on:
+  pull_request:
+
+jobs:
+  applicationvalidation:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          path: framework
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          path: cbsdomains
+          repository: vitruv-tools/Vitruv-Domains-ComponentBasedSystems
+          ref: ${{ github.base_ref }}
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          path: cbsapplications
+          repository: vitruv-tools/Vitruv-Applications-ComponentBasedSystems
+          ref: ${{ github.base_ref }}
+      - name: Cache
+        uses: actions/cache@v2
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml', '**/MANIFEST.MF') }}
+          restore-keys: ${{ runner.os }}-m2
+      - name: Set up JDK
+        uses: actions/setup-java@v1
+        with:
+          java-version: 11
+      - name: Build Domains
+        working-directory: ./cbsdomain
+        run: >
+            ls releng/
+            ls releng/tools.vitruv.domains.cbs.parent/
+            sed -i 's%https://vitruv-tools.github.io/updatesite/nightly/framework/%file:///${maven.multiModuleProjectDirectory}/../framework/releng/tools.vitruv.updatesite.aggregated/target/final%g' releng/tools.vitruv.domains.cbs.parent/pom.xml
+        env: 
+          MAVEN_OPTS: -Djansi.force=true
