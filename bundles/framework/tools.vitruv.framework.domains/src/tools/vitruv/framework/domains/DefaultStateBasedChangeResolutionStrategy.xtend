@@ -15,10 +15,10 @@ import org.eclipse.emf.ecore.util.EcoreUtil
 import tools.vitruv.framework.change.description.TransactionalChange
 import tools.vitruv.framework.change.description.VitruviusChangeFactory
 import tools.vitruv.framework.uuid.UuidGeneratorAndResolver
-import tools.vitruv.framework.uuid.UuidGeneratorAndResolverImpl
 import tools.vitruv.framework.change.recording.ChangeRecorder
 import org.eclipse.emf.ecore.resource.ResourceSet
 import tools.vitruv.framework.uuid.UuidResolver
+import static tools.vitruv.framework.uuid.UuidGeneratorAndResolverFactory.createUuidGeneratorAndResolver
 
 /**
  * This default strategy for diff based state changes uses EMFCompare to resolve a 
@@ -43,7 +43,7 @@ class DefaultStateBasedChangeResolutionStrategy implements StateBasedChangeResol
 		}
 		// Setup resolver and copy state:
 		val copyResourceSet = new ResourceSetImpl
-		val uuidGeneratorAndResolver = new UuidGeneratorAndResolverImpl(resolver, copyResourceSet)
+		val uuidGeneratorAndResolver = createUuidGeneratorAndResolver(resolver, copyResourceSet)
 		val currentStateCopy = currentState.copyInto(copyResourceSet)
 		// Create change sequences:
 		val diffs = compareStates(newState, currentStateCopy)

@@ -14,7 +14,6 @@ import tools.vitruv.framework.domains.repository.VitruvDomainRepository
 import tools.vitruv.framework.util.datatypes.ModelInstance
 import tools.vitruv.framework.util.datatypes.VURI
 import tools.vitruv.framework.uuid.UuidGeneratorAndResolver
-import tools.vitruv.framework.uuid.UuidGeneratorAndResolverImpl
 import tools.vitruv.framework.vsum.ModelRepository
 
 import static extension tools.vitruv.framework.util.bridges.EcoreResourceBridge.loadOrCreateResource
@@ -28,6 +27,7 @@ import static com.google.common.base.Preconditions.checkState
 import tools.vitruv.framework.util.ResourceRegistrationAdapter
 import tools.vitruv.framework.correspondence.CorrespondenceModelFactory
 import tools.vitruv.framework.correspondence.CorrespondenceModel
+import static tools.vitruv.framework.uuid.UuidGeneratorAndResolverFactory.createAndLoadUuidGeneratorAndResolver
 
 class ResourceRepositoryImpl implements ModelRepository {
 	static val logger = Logger.getLogger(ResourceRepositoryImpl)
@@ -47,7 +47,7 @@ class ResourceRepositoryImpl implements ModelRepository {
 		this.fileSystemLayout = fileSystemLayout
 		this.modelsResourceSet = new ResourceSetImpl().withGlobalFactories().awareOfDomains(domainRepository)
 		this.correspondencesResourceSet = new ResourceSetImpl().withGlobalFactories()
-		this.uuidGeneratorAndResolver = new UuidGeneratorAndResolverImpl(this.modelsResourceSet, fileSystemLayout.uuidProviderAndResolverVURI.EMFUri)
+		this.uuidGeneratorAndResolver = createAndLoadUuidGeneratorAndResolver(this.modelsResourceSet, fileSystemLayout.uuidProviderAndResolverVURI.EMFUri)
 		this.correspondenceModel = initializeCorrespondenceModel().genericView
 		this.modelsResourceSet.eAdapters += new ResourceRegistrationAdapter [getModel(VURI.getInstance(it))]
 		loadVURIsOfVSMUModelInstances()

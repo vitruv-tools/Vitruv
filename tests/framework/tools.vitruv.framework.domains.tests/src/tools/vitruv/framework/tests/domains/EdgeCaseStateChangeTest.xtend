@@ -3,10 +3,10 @@ package tools.vitruv.framework.tests.domains
 import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import org.junit.jupiter.api.Test
-import tools.vitruv.framework.uuid.UuidGeneratorAndResolverImpl
 
 import static org.junit.jupiter.api.Assertions.assertThrows
 import static org.junit.jupiter.api.Assertions.assertTrue
+import static tools.vitruv.framework.uuid.UuidGeneratorAndResolverFactory.createUuidGeneratorAndResolver
 
 class EdgeCaseStateChangeTest extends StateChangePropagationTest {
 
@@ -32,7 +32,7 @@ class EdgeCaseStateChangeTest extends StateChangePropagationTest {
 	@Test
 	def void testNullResources() {
 		val resourceSet = new ResourceSetImpl
-		val resolver = new UuidGeneratorAndResolverImpl(resourceSet)
+		val resolver = createUuidGeneratorAndResolver(resourceSet)
 		val Resource nullResource = null
 		val change = strategyToTest.getChangeSequences(nullResource, nullResource, resolver)
 		assertTrue(change.EChanges.empty, "Composite change contains children!")

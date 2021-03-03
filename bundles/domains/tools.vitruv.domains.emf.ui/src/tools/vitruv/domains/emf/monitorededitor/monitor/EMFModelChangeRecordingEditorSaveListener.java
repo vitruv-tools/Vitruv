@@ -25,9 +25,9 @@ import tools.vitruv.domains.emf.monitorededitor.tools.SaveEventListenerMgr;
 import tools.vitruv.framework.change.description.TransactionalChange;
 import tools.vitruv.framework.change.recording.ChangeRecorder;
 import tools.vitruv.framework.uuid.UuidGeneratorAndResolver;
-import tools.vitruv.framework.uuid.UuidGeneratorAndResolverImpl;
 import tools.vitruv.framework.uuid.UuidResolver;
 import tools.vitruv.framework.vsum.VirtualModel;
+import static tools.vitruv.framework.uuid.UuidGeneratorAndResolverFactory.createUuidGeneratorAndResolver;
 
 /**
  * <p>
@@ -150,7 +150,7 @@ public abstract class EMFModelChangeRecordingEditorSaveListener {
         UuidResolver globalUuidGeneratorAndResolver = virtualModel != null
                 ? virtualModel.getUuidResolver()
                 : null;
-        UuidGeneratorAndResolver localUuidResolver = new UuidGeneratorAndResolverImpl(globalUuidGeneratorAndResolver,
+        UuidGeneratorAndResolver localUuidResolver = createUuidGeneratorAndResolver(globalUuidGeneratorAndResolver,
                 targetResource.getResourceSet());
 
         changeRecorder = new ChangeRecorder(localUuidResolver);
