@@ -2,7 +2,6 @@ package tools.vitruv.framework.tests.change.recording
 
 import org.junit.jupiter.api.Test
 import tools.vitruv.framework.change.recording.ChangeRecorder
-import tools.vitruv.framework.uuid.UuidGeneratorAndResolverImpl
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import org.eclipse.emf.ecore.resource.ResourceSet
 import org.junit.jupiter.api.DisplayName
@@ -36,13 +35,14 @@ import tools.vitruv.testutils.RegisterMetamodelsInStandalone
 import static org.junit.jupiter.api.Assertions.assertTrue
 import static extension org.eclipse.emf.ecore.util.EcoreUtil.*
 import org.eclipse.emf.ecore.InternalEObject
+import static tools.vitruv.framework.uuid.UuidGeneratorAndResolverFactory.createUuidGeneratorAndResolver
 
 @ExtendWith(TestProjectManager, RegisterMetamodelsInStandalone)
 class ChangeRecorderTest {
 	// this test only covers general behaviour of ChangeRecorder. Whether it always produces correct change sequences
 	// is covered by other tests
 	val ResourceSet resourceSet = new ResourceSetImpl().withGlobalFactories()
-	var ChangeRecorder changeRecorder = new ChangeRecorder(new UuidGeneratorAndResolverImpl(resourceSet))
+	var ChangeRecorder changeRecorder = new ChangeRecorder(createUuidGeneratorAndResolver(resourceSet))
 	
 	@Test
 	@DisplayName("records direct changes to an object")
@@ -660,8 +660,8 @@ class ChangeRecorderTest {
 	@Test
 	@DisplayName("registers the recorded object and all its contents at the UUID resolver")
 	def void registersAtUuidResolver() {
-		val parentResolver = new UuidGeneratorAndResolverImpl(new ResourceSetImpl)
-		val localResolver = new UuidGeneratorAndResolverImpl(parentResolver, resourceSet)
+		val parentResolver = createUuidGeneratorAndResolver(new ResourceSetImpl())
+		val localResolver = createUuidGeneratorAndResolver(parentResolver, resourceSet)
 		var ChangeRecorder changeRecorder = new ChangeRecorder(localResolver)
 		
 		val root = aet.Root => [

@@ -8,7 +8,6 @@ import tools.vitruv.framework.change.echange.TypeInferringAtomicEChangeFactory
 import tools.vitruv.framework.change.echange.TypeInferringCompoundEChangeFactory
 import tools.vitruv.framework.change.echange.TypeInferringUnresolvingAtomicEChangeFactory
 import tools.vitruv.framework.change.echange.TypeInferringUnresolvingCompoundEChangeFactory
-import tools.vitruv.framework.uuid.UuidGeneratorAndResolverImpl
 import tools.vitruv.framework.uuid.UuidGeneratorAndResolver
 import java.util.List
 import tools.vitruv.framework.change.echange.EChange
@@ -22,6 +21,7 @@ import static tools.vitruv.testutils.metamodels.AllElementTypesCreators.*
 import java.nio.file.Path
 import tools.vitruv.framework.util.bridges.EMFBridge
 import org.junit.jupiter.api.io.TempDir
+import static tools.vitruv.framework.uuid.UuidGeneratorAndResolverFactory.createUuidGeneratorAndResolver
 
 /**
  * Default class for testing EChange changes.
@@ -66,7 +66,7 @@ abstract class EChangeTest {
 		resource.save(null)
 
 		// Factories for creating changes
-		this.uuidGeneratorAndResolver = new UuidGeneratorAndResolverImpl(resourceSet)
+		this.uuidGeneratorAndResolver = createUuidGeneratorAndResolver(resourceSet)
 		atomicFactory = new TypeInferringUnresolvingAtomicEChangeFactory(uuidGeneratorAndResolver)
 		compoundFactory = new TypeInferringUnresolvingCompoundEChangeFactory(uuidGeneratorAndResolver)
 	}
