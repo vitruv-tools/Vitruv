@@ -65,15 +65,17 @@ package class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 	def loadUuidsAndModelsFromSerializedUuidRepository() {
 		checkState(uuidResource !== null, "UUID resource must be specified to load existing UUIDs")
 		val loadedResource = new ResourceSetImpl().withGlobalFactories.loadOrCreateResource(uuidResource.URI)
-		val loadedRepository = checkNotNull(loadedResource.resourceContentRootIfUnique,
-			"UUID resource does not contain a root element").dynamicCast(UuidToEObjectRepository,
+		val loadedRepository = loadedResource.resourceContentRootIfUnique?.dynamicCast(UuidToEObjectRepository,
 			"UUID provider and resolver model")
-		for (proxyEntry : loadedRepository.EObjectToUuid.entrySet) {
-			val resolvedObject = EcoreUtil.resolve(proxyEntry.key, resourceSet)
-			if (resolvedObject.eIsProxy) {
-				throw new IllegalStateException("Object " + proxyEntry.key + " has a UUID but could not be resolved")
+		if (loadedRepository !== null) {
+			for (proxyEntry : loadedRepository.EObjectToUuid.entrySet) {
+				val resolvedObject = EcoreUtil.resolve(proxyEntry.key, resourceSet)
+				if (resolvedObject.eIsProxy) {
+					throw new IllegalStateException("Object " + proxyEntry.key +
+						" has a UUID but could not be resolved")
+				}
+				registerEObject(proxyEntry.value, resolvedObject)
 			}
-			registerEObject(proxyEntry.value, resolvedObject)
 		}
 	}
 
