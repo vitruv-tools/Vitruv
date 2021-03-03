@@ -56,7 +56,7 @@ class ResourceRepositoryImpl implements ModelRepository {
 
 	override loadExistingModels() {
 		uuidGeneratorAndResolver.loadUuidsAndModelsFromSerializedUuidRepository()
-		correspondenceModel.loadFromPersistence()
+		correspondenceModel.loadSerializedCorrespondences()
 	}
 
 	override getUuidResolver() {
