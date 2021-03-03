@@ -4,8 +4,6 @@ import java.util.List;
 
 import org.eclipse.emf.ecore.EObject;
 
-import tools.vitruv.framework.util.datatypes.URIHaving;
-
 /**
  * Contains and manages correspondences, each consisting of two pairs of
  * elements in different models. A correspondence describes the sematic relation
@@ -21,7 +19,7 @@ import tools.vitruv.framework.util.datatypes.URIHaving;
  * @param <T>
  *            - the type of correspondence that is handled
  */
-public interface GenericCorrespondenceModel<T extends Correspondence> extends URIHaving {
+public interface GenericCorrespondenceModel<T extends Correspondence> {
 	/**
 	 * Creates a {@link ManualCorresponendce} with the given tag between the given
 	 * lists of {@link EObject}s.
