@@ -14,7 +14,6 @@ import tools.vitruv.framework.domains.repository.VitruvDomainRepository
 import tools.vitruv.framework.util.datatypes.ModelInstance
 import tools.vitruv.framework.util.datatypes.VURI
 import tools.vitruv.framework.uuid.UuidGeneratorAndResolver
-import tools.vitruv.framework.uuid.UuidGeneratorAndResolverImpl
 import tools.vitruv.framework.vsum.ModelRepository
 
 import static extension tools.vitruv.framework.util.bridges.EcoreResourceBridge.loadOrCreateResource
@@ -28,6 +27,7 @@ import static com.google.common.base.Preconditions.checkState
 import tools.vitruv.framework.util.ResourceRegistrationAdapter
 import tools.vitruv.framework.correspondence.CorrespondenceModelFactory
 import tools.vitruv.framework.correspondence.CorrespondenceModel
+import static tools.vitruv.framework.uuid.UuidGeneratorAndResolverFactory.createAndLoadUuidGeneratorAndResolver
 
 class ResourceRepositoryImpl implements ModelRepository {
 	static val logger = Logger.getLogger(ResourceRepositoryImpl)
@@ -47,7 +47,7 @@ class ResourceRepositoryImpl implements ModelRepository {
 		this.fileSystemLayout = fileSystemLayout
 		this.modelsResourceSet = new ResourceSetImpl().withGlobalFactories().awareOfDomains(domainRepository)
 		this.correspondencesResourceSet = new ResourceSetImpl().withGlobalFactories()
-		this.uuidGeneratorAndResolver = initializeUuidProviderAndResolver()
+		this.uuidGeneratorAndResolver = createAndLoadUuidGeneratorAndResolver(this.modelsResourceSet, fileSystemLayout.uuidProviderAndResolverVURI.EMFUri)
 		this.correspondenceModel = initializeCorrespondenceModel().genericView
 		this.modelsResourceSet.eAdapters += new ResourceRegistrationAdapter [getModel(VURI.getInstance(it))]
 		loadVURIsOfVSMUModelInstances()
@@ -123,16 +123,9 @@ class ResourceRepositoryImpl implements ModelRepository {
 				modelInstance.save()
 			}
 		}
-		saveVURIsOfVsumModelInstances()
+		uuidGeneratorAndResolver.save()
 	}
 
-	def private initializeUuidProviderAndResolver() {
-		var uuidProviderVURI = fileSystemLayout.uuidProviderAndResolverVURI
-		logger.trace('''Creating or loading uuid provider and resolver model from: «uuidProviderVURI»''')
-		var Resource uuidProviderResource = modelsResourceSet.loadOrCreateResource(uuidProviderVURI.EMFUri)
-		new UuidGeneratorAndResolverImpl(this.modelsResourceSet, uuidProviderResource)
-	}
-	
 	def private initializeCorrespondenceModel() {
 		var correspondencesVURI = fileSystemLayout.correspondencesVURI
 		logger.trace('''Creating or loading correspondence model from: «correspondencesVURI»''')
@@ -147,11 +140,6 @@ class ResourceRepositoryImpl implements ModelRepository {
 		for (VURI vuri : fileSystemLayout.loadVsumVURIs()) {
 			createOrLoadModel(vuri, true)
 		}
-	}
-
-	def private void saveVURIsOfVsumModelInstances() {
-		// TODO Reimplement saving of V-SUM with a proper reload mechanism
-		// fileSystemHelper.saveVsumVURIsToFile(modelInstances.keySet)
 	}
 
 	def private VitruvDomain getDomainForURI(VURI uri) {
@@ -185,8 +173,9 @@ class ResourceRepositoryImpl implements ModelRepository {
 	override close() {
 		modelsResourceSet.resources.forEach[unload]
 		correspondencesResourceSet.resources.forEach[unload]
-		modelsResourceSet.resources.clear
-		correspondencesResourceSet.resources.clear
+		modelsResourceSet.resources.clear()
+		correspondencesResourceSet.resources.clear()
+		uuidGeneratorAndResolver.close()
 	}
 
 }

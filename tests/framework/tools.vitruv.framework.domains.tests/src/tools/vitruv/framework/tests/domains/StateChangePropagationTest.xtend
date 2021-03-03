@@ -11,7 +11,6 @@ import tools.vitruv.framework.change.description.VitruviusChangeFactory
 import tools.vitruv.framework.util.bridges.EMFBridge
 import tools.vitruv.framework.util.bridges.EcoreResourceBridge
 import tools.vitruv.framework.uuid.UuidGeneratorAndResolver
-import tools.vitruv.framework.uuid.UuidGeneratorAndResolverImpl
 import uml_mockup.UPackage
 import tools.vitruv.framework.domains.StateBasedChangeResolutionStrategy
 import tools.vitruv.framework.domains.DefaultStateBasedChangeResolutionStrategy
@@ -32,6 +31,7 @@ import static extension tools.vitruv.framework.util.ResourceSetUtil.withGlobalFa
 import static extension tools.vitruv.framework.domains.repository.DomainAwareResourceSet.awareOfDomains
 import tools.vitruv.framework.change.recording.ChangeRecorder
 import org.eclipse.emf.ecore.util.EcoreUtil
+import static tools.vitruv.framework.uuid.UuidGeneratorAndResolverFactory.createUuidGeneratorAndResolver
 
 @ExtendWith(TestProjectManager, TestLogging, RegisterMetamodelsInStandalone)
 abstract class StateChangePropagationTest {
@@ -61,7 +61,7 @@ abstract class StateChangePropagationTest {
 		strategyToTest = new DefaultStateBasedChangeResolutionStrategy
 		resourceSet = new ResourceSetImpl().withGlobalFactories().awareOfDomains(TestDomainsRepository.INSTANCE)
 		checkpointResourceSet = new ResourceSetImpl().withGlobalFactories().awareOfDomains(TestDomainsRepository.INSTANCE)
-		setupResolver = new UuidGeneratorAndResolverImpl(resourceSet)
+		setupResolver = createUuidGeneratorAndResolver(resourceSet)
 		changeRecorder = new ChangeRecorder(setupResolver)
 		// Create mockup models:
 		resourceSet.startRecording
@@ -69,7 +69,7 @@ abstract class StateChangePropagationTest {
 		createUmlMockupModel()
 		endRecording
 		// change to new recorder with test resolver, create model checkpoints and start recording:
-		checkpointResolver = new UuidGeneratorAndResolverImpl(setupResolver, checkpointResourceSet)
+		checkpointResolver = createUuidGeneratorAndResolver(setupResolver, checkpointResourceSet)
 		umlCheckpoint = umlModel.createCheckpoint
 		pcmCheckpoint = pcmModel.createCheckpoint
 		umlModel.startRecording

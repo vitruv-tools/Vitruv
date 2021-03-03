@@ -5,7 +5,6 @@ import java.util.List
 
 import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.util.bridges.EMFBridge
-import tools.vitruv.framework.uuid.UuidGeneratorAndResolverImpl
 import static extension tools.vitruv.framework.change.echange.resolve.EChangeResolverAndApplicator.*
 import tools.vitruv.framework.uuid.UuidGeneratorAndResolver
 import tools.vitruv.framework.change.echange.resolve.EChangeUnresolver
@@ -29,6 +28,7 @@ import static extension tools.vitruv.framework.util.ResourceSetUtil.withGlobalFa
 import static extension tools.vitruv.framework.domains.repository.DomainAwareResourceSet.awareOfDomains
 import tools.vitruv.framework.change.recording.ChangeRecorder
 import tools.vitruv.framework.change.description.TransactionalChange
+import static tools.vitruv.framework.uuid.UuidGeneratorAndResolverFactory.createUuidGeneratorAndResolver
 
 @ExtendWith(TestProjectManager, RegisterMetamodelsInStandalone)
 abstract class ChangeDescription2ChangeTransformationTest {
@@ -44,7 +44,7 @@ abstract class ChangeDescription2ChangeTransformationTest {
 	def void beforeTest(@TestProject Path tempFolder) {
 		this.tempFolder = tempFolder
 		this.resourceSet = new ResourceSetImpl().withGlobalFactories().awareOfDomains(TestDomainsRepository.INSTANCE)
-		this.uuidGeneratorAndResolver = new UuidGeneratorAndResolverImpl(resourceSet)
+		this.uuidGeneratorAndResolver = createUuidGeneratorAndResolver(resourceSet)
 		this.changeRecorder = new ChangeRecorder(uuidGeneratorAndResolver)
 		this.resourceSet.startRecording
 	}

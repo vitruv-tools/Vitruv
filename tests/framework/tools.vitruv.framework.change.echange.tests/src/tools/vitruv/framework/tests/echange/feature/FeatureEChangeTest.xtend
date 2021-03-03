@@ -13,7 +13,6 @@ import tools.vitruv.framework.tests.echange.EChangeTest
 import static extension tools.vitruv.framework.change.echange.resolve.EChangeResolverAndApplicator.*
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import tools.vitruv.framework.uuid.UuidResolver
-import tools.vitruv.framework.uuid.UuidGeneratorAndResolverImpl
 import static extension tools.vitruv.framework.util.ResourceSetUtil.withGlobalFactories
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -24,6 +23,7 @@ import static org.junit.jupiter.api.Assertions.assertSame
 import static org.junit.jupiter.api.Assertions.assertNotSame
 import static org.junit.jupiter.api.Assertions.assertThrows
 import static tools.vitruv.testutils.metamodels.AllElementTypesCreators.*
+import static tools.vitruv.framework.uuid.UuidGeneratorAndResolverFactory.createUuidGeneratorAndResolver
 
 /**
  * Test class for {@link FeatureEChange} which is used by every {@link EChange} which modifies {@link EStructuralFeature}s 
@@ -46,7 +46,7 @@ class FeatureEChangeTest extends EChangeTest {
 		// Load model in second resource
 		val resourceSet2 = new ResourceSetImpl().withGlobalFactories
 		this.resource2 = resourceSet2.getResource(resource.URI, true)
-		this.uuidResolver2 = new UuidGeneratorAndResolverImpl(resourceSet2)
+		this.uuidResolver2 = createUuidGeneratorAndResolver(resourceSet2)
 	}
 
 	/**

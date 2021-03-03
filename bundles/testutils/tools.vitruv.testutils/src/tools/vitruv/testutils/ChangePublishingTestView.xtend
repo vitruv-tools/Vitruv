@@ -4,7 +4,6 @@ import org.eclipse.emf.common.notify.Notifier
 import java.util.function.Consumer
 import java.nio.file.Path
 import org.eclipse.emf.ecore.resource.ResourceSet
-import tools.vitruv.framework.uuid.UuidGeneratorAndResolverImpl
 import tools.vitruv.framework.uuid.UuidGeneratorAndResolver
 import static com.google.common.base.Preconditions.checkState
 import static com.google.common.base.Preconditions.checkArgument
@@ -24,6 +23,7 @@ import static extension tools.vitruv.framework.domains.repository.DomainAwareRes
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import tools.vitruv.framework.change.recording.ChangeRecorder
 import tools.vitruv.framework.uuid.UuidResolver
+import static tools.vitruv.framework.uuid.UuidGeneratorAndResolverFactory.createUuidGeneratorAndResolver
 
 /**
  * A test view that will record and publish the changes created in it.
@@ -64,7 +64,7 @@ class ChangePublishingTestView implements NonTransactionalTestView {
 	) {
 		this.resourceSet = new ResourceSetImpl().withGlobalFactories().awareOfDomains(targetDomains)
 		this.delegate = new BasicTestView(persistenceDirectory, resourceSet, userInteraction, uriMode)
-		val uuidResolver = new UuidGeneratorAndResolverImpl(parentResolver, resourceSet)
+		val uuidResolver = createUuidGeneratorAndResolver(parentResolver, resourceSet)
 		this.changeRecorder = new ChangeRecorder(uuidResolver)
 		changeRecorder.beginRecording()
 	}
