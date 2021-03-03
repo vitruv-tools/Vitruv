@@ -22,6 +22,7 @@ import tools.vitruv.domains.emf.monitorededitor.test.mocking.EclipseMock;
 import tools.vitruv.domains.emf.monitorededitor.test.testmodels.Files;
 import tools.vitruv.domains.emf.monitorededitor.test.utils.BasicTestCase;
 import tools.vitruv.domains.emf.monitorededitor.test.utils.DefaultImplementations;
+import tools.vitruv.domains.emf.monitorededitor.test.utils.DefaultImplementations.TestVirtualModel;
 import tools.vitruv.domains.emf.monitorededitor.tools.EclipseAdapterProvider;
 import tools.vitruv.domains.emf.monitorededitor.tools.IEclipseAdapter;
 import tools.vitruv.framework.util.datatypes.VURI;
@@ -30,19 +31,23 @@ public class VitruviusEMFEditorMonitorImplInternalTests extends BasicTestCase {
     private EclipseMock eclipseMockCtrl;
     private IEclipseAdapter eclipseUtils;
     private IEditorPartAdapterFactory factory;
-
+    private TestVirtualModel virtualModel;
+    
     @BeforeEach
     public void setUp() {
         this.eclipseMockCtrl = new EclipseMock();
         this.eclipseUtils = eclipseMockCtrl.getEclipseUtils();
         EclipseAdapterProvider.getInstance().setProvidedEclipseAdapter(eclipseUtils);
         this.factory = new DefaultEditorPartAdapterFactoryImpl(Files.ECORE_FILE_EXTENSION);
+        this.virtualModel = TestVirtualModel.createInstance();
+        this.virtualModel.registerExistingModel(Files.EXAMPLEMODEL_ECORE);
+        this.virtualModel.registerExistingModel(Files.DATATYPE_ECORE);
     }
 
     @Test
     public void EMFEditorsCanBeFoundByVURI() {
         VitruviusEMFEditorMonitorImpl syncMgr = new VitruviusEMFEditorMonitorImpl(factory,
-                DefaultImplementations.EFFECTLESS_VIRTUAL_MODEL, DefaultImplementations.ALL_ACCEPTING_VITRUV_ACCESSOR);
+                virtualModel, DefaultImplementations.ALL_ACCEPTING_VITRUV_ACCESSOR);
         syncMgr.initialize();
 
         IEditorPart exampleEditor = eclipseMockCtrl.openNewEMFDiagramEditorPart(Files.EXAMPLEMODEL_ECORE,

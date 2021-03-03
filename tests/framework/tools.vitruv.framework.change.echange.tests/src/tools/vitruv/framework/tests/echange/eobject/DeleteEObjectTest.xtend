@@ -15,6 +15,8 @@ class DeleteEObjectTest extends EObjectTest {
 	@BeforeEach
 	def void beforeTest() {
 		prepareStateBefore(createdObject)
+		uuidGeneratorAndResolver.generateUuid(createdObject) // Is used as existing object, so needs to have a UUID
+		uuidGeneratorAndResolver.generateUuid(createdObject2) // Is used as existing object, so needs to have a UUID
 	}
 
 	/**

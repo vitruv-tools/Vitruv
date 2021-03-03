@@ -35,6 +35,8 @@ import tools.vitruv.testutils.RegisterMetamodelsInStandalone
 import static org.junit.jupiter.api.Assertions.assertTrue
 import static extension org.eclipse.emf.ecore.util.EcoreUtil.*
 import org.eclipse.emf.ecore.InternalEObject
+import org.eclipse.emf.ecore.EObject
+import tools.vitruv.framework.uuid.UuidGeneratorAndResolver
 import static tools.vitruv.framework.uuid.UuidGeneratorAndResolverFactory.createUuidGeneratorAndResolver
 
 @ExtendWith(TestProjectManager, RegisterMetamodelsInStandalone)
@@ -42,162 +44,202 @@ class ChangeRecorderTest {
 	// this test only covers general behaviour of ChangeRecorder. Whether it always produces correct change sequences
 	// is covered by other tests
 	val ResourceSet resourceSet = new ResourceSetImpl().withGlobalFactories()
-	var ChangeRecorder changeRecorder = new ChangeRecorder(createUuidGeneratorAndResolver(resourceSet))
-	
+	val UuidGeneratorAndResolver uuidGeneratorAndResolver = (createUuidGeneratorAndResolver(resourceSet))
+	var ChangeRecorder changeRecorder = new ChangeRecorder(uuidGeneratorAndResolver)
+
+	private def <T extends EObject> T wrapIntoRecordedResource(T object) {
+		val resource = resourceSet.createResource(URI.createURI('test://test.aet'))
+		changeRecorder.addToRecording(resource)
+		record [
+			resource.contents += object
+		]
+		return object
+	}
+
+	private def record(()=>void changes) {
+		changeRecorder.beginRecording()
+		changes.apply
+		changeRecorder.endRecording()
+	}
+
+	private def recordIf(boolean condition, ()=>void changes) {
+		if(condition) changeRecorder.beginRecording()
+		changes.apply
+		if(condition) changeRecorder.endRecording()
+	}
+
 	@Test
-	@DisplayName("records direct changes to an object")
+	@DisplayName("records direct changes to an object having a UUID")
 	def void recordOnObject() {
 		val root = aet.Root
+		uuidGeneratorAndResolver.generateUuid(root)
 		changeRecorder.addToRecording(root)
-		changeRecorder.beginRecording()
-		root.id = 'test'
-		changeRecorder.endRecording()
-		
+		record [
+			root.id = 'test'
+		]
+
 		assertThat(changeRecorder.changes, hasEChanges(ReplaceSingleValuedEAttribute))
 	}
-	
+
+	@Test
+	@DisplayName("refuses to record changes of an element that does not already have a UUID")
+	def void dontRecordObjectWithoutUuid() {
+		assertThrows(IllegalStateException) [
+			changeRecorder.addToRecording(aet.Root)
+		]
+	}
+
+	@Test
+	@DisplayName("refuses to record changes of an element that contains an element that does not already have a UUID")
+	def void dontRecordObjectContainingElementWithoutUuid() {
+		val root = aet.Root => [
+			singleValuedContainmentEReference = aet.NonRoot
+		]
+		uuidGeneratorAndResolver.generateUuid(root)
+		assertThrows(IllegalStateException) [
+			changeRecorder.addToRecording(aet.Root)
+		]
+	}
+
 	@Test
 	@DisplayName("records direct changes to a resource")
 	def void recordOnResource() {
 		val resource = resourceSet.createResource(URI.createURI('test://test.aet'))
 		changeRecorder.addToRecording(resource)
-		changeRecorder.beginRecording()
-		resource.contents += aet.Root
-		changeRecorder.endRecording()
-		
+		record [
+			resource.contents += aet.Root
+		]
+
 		assertThat(changeRecorder.changes, hasEChanges(CreateEObject, InsertRootEObject, ReplaceSingleValuedEAttribute))
 	}
-	
+
 	@Test
 	@DisplayName("stops recording changes for an object")
 	def void stopRecordingOnObject() {
-		val root = aet.Root
-		changeRecorder.addToRecording(root)
-		changeRecorder.beginRecording()
-		changeRecorder.removeFromRecording(root)
-		root.id = 'test'
-		changeRecorder.endRecording()
-		
+		val root = aet.Root.wrapIntoRecordedResource()
+		record [
+			changeRecorder.removeFromRecording(root)
+			root.id = 'test'
+		]
+
 		assertThat(changeRecorder.changes, hasNoChanges)
 	}
-	
+
 	@Test
 	@DisplayName("stops recording changes for a resource")
 	def void stopRecordingOnResource() {
 		val resource = resourceSet.createResource(URI.createURI('test://test.aet'))
 		changeRecorder.addToRecording(resource)
-		changeRecorder.beginRecording()
-		changeRecorder.removeFromRecording(resource)
-		resource.contents += aet.Root
-		changeRecorder.endRecording()
-		
+		record [
+			changeRecorder.removeFromRecording(resource)
+			resource.contents += aet.Root
+		]
+
 		assertThat(changeRecorder.changes, hasNoChanges)
 	}
-	
+
 	@Test
 	@DisplayName("records changes to all children of an object")
 	def void recordsOnObjectChildren() {
 		val inner = aet.NonRoot
-		val root = aet.Root => [
-			nonRootObjectContainerHelper = aet.NonRootObjectContainerHelper => [
-				nonRootObjectsContainment += aet.NonRoot
-				nonRootObjectsContainment += inner
-			]
-		]
-		changeRecorder.addToRecording(root)
-		changeRecorder.beginRecording()
-		inner.id = 'test'
-		changeRecorder.endRecording()
-		
-		assertThat(changeRecorder.changes, hasEChanges(ReplaceSingleValuedEAttribute))
-	}
-	
-	@Test
-	@DisplayName("records changes to all children of a resource")
-	def void recordsOnResourceChildren() {
-		val inner = aet.NonRoot
-		val resource = resourceSet.createResource(URI.createURI('test://test.aet')) => [
-			contents += aet.Root => [
+		aet.Root.wrapIntoRecordedResource() => [
+			record [
 				nonRootObjectContainerHelper = aet.NonRootObjectContainerHelper => [
 					nonRootObjectsContainment += aet.NonRoot
 					nonRootObjectsContainment += inner
 				]
 			]
 		]
-		changeRecorder.addToRecording(resource)
-		changeRecorder.beginRecording()
-		inner.id = 'test'
+		record [
+			inner.id = 'test'
+		]
 		changeRecorder.endRecording()
 
 		assertThat(changeRecorder.changes, hasEChanges(ReplaceSingleValuedEAttribute))
 	}
-	
+
+	@Test
+	@DisplayName("records changes to all children of a resource")
+	def void recordsOnResourceChildren() {
+		val inner = aet.NonRoot
+		resourceSet.createResource(URI.createURI('test://test.aet')) => [
+			changeRecorder.addToRecording(it)
+			record [
+				contents += aet.Root => [
+					nonRootObjectContainerHelper = aet.NonRootObjectContainerHelper => [
+						nonRootObjectsContainment += aet.NonRoot
+						nonRootObjectsContainment += inner
+					]
+				]
+			]
+		]
+		record [
+			inner.id = 'test'
+		]
+
+		assertThat(changeRecorder.changes, hasEChanges(ReplaceSingleValuedEAttribute))
+	}
+
 	@Test
 	@DisplayName("records changes to all children of a resource set")
 	def void recordsOnResourceSetChildren() {
 		val inner = aet.NonRoot
+		changeRecorder.addToRecording(resourceSet)
 		val resource = resourceSet.createResource(URI.createURI('test://test.aet')) => [
-			contents += aet.Root => [
-				nonRootObjectContainerHelper = aet.NonRootObjectContainerHelper => [
-					nonRootObjectsContainment += aet.NonRoot
-					nonRootObjectsContainment += inner
+			record [
+				contents += aet.Root => [
+					nonRootObjectContainerHelper = aet.NonRootObjectContainerHelper => [
+						nonRootObjectsContainment += aet.NonRoot
+						nonRootObjectsContainment += inner
+					]
 				]
 			]
 		]
-		changeRecorder.addToRecording(resourceSet)
-		changeRecorder.beginRecording()
-		inner.id = 'test'
-		changeRecorder.endRecording()
-		
+		record [
+			inner.id = 'test'
+		]
+
 		assertThat(changeRecorder.changes, hasEChanges(ReplaceSingleValuedEAttribute))
-		
-		changeRecorder.beginRecording()
-		resource.contents.clear()
-		changeRecorder.endRecording()
-		
+
+		record [
+			resource.contents.clear()
+		]
+
 		assertThat(changeRecorder.changes, hasEChanges(RemoveRootEObject, DeleteEObject))
 	}
-	
-	@ParameterizedTest(name = "while isRecording={0}")
+
 	@DisplayName("adds an object set as containment to the recording")
-	@ValueSource(booleans = #[false, true])
-	def void recordsOnSetContainment(boolean isRecordingWhileAddingObject) {
-		val root = aet.Root
-		changeRecorder.addToRecording(root)
+	def void recordsOnSetContainment() {
+		val root = aet.Root.wrapIntoRecordedResource()
 		val nonRoot = aet.NonRoot
-		if (isRecordingWhileAddingObject) changeRecorder.beginRecording()
-		root.singleValuedContainmentEReference = nonRoot
-		if (isRecordingWhileAddingObject) changeRecorder.endRecording()
-		
-		changeRecorder.beginRecording()
-		nonRoot.id = 'foobar'
-		changeRecorder.endRecording()
-		
+		record [
+			root.singleValuedContainmentEReference = nonRoot
+		]
+
+		record [
+			nonRoot.id = 'foobar'
+		]
+
 		assertThat(changeRecorder.changes, hasEChanges(ReplaceSingleValuedEAttribute))
 	}
-	
-	@ParameterizedTest(name = "while isRecording={0}")
+
 	@DisplayName("adds an object added as containment to the recording")
-	@ValueSource(booleans = #[false, true])
-	def void recordsOnAddedContainment(boolean isRecordingWhileAddingObject) {
-		val root = aet.Root
-		changeRecorder.addToRecording(root)
+	def void recordsOnAddedContainment() {
+		val root = aet.Root.wrapIntoRecordedResource()
 		val nonRoot = aet.NonRoot
-		if (isRecordingWhileAddingObject) changeRecorder.beginRecording()
-		root.multiValuedContainmentEReference += nonRoot
-		if (isRecordingWhileAddingObject) changeRecorder.endRecording()
-		
-		changeRecorder.beginRecording()
-		nonRoot.id = 'foobar'
-		changeRecorder.endRecording()
-		
+		record [
+			root.multiValuedContainmentEReference += nonRoot
+		]
+
+		record [
+			nonRoot.id = 'foobar'
+		]
+
 		assertThat(changeRecorder.changes, hasEChanges(ReplaceSingleValuedEAttribute))
 	}
-	
-	@ParameterizedTest(name = "while isRecording={0}")
+
 	@DisplayName("adds an object that was resolved from its proxy to the recording")
-	@ValueSource(booleans = #[false, true])
-	def void recordsOnResolvedProxyInContainment(boolean isRecordingWhileAddingObject, @TestProject Path testDir) {
+	def void recordsOnResolvedProxyInContainment(@TestProject Path testDir) {
 		val savedNonRoot = aet.NonRoot
 		resourceSet.createResource(URI.createFileURI(testDir.resolve('test.aet').toString)) => [
 			contents += aet.Root => [
@@ -211,82 +253,73 @@ class ChangeRecorderTest {
 			]
 		]
 		// proxy resolving should be done in resources
-		resourceSet.createResource(URI.createURI('test://test2.aet')) => [contents += root]
-		if (isRecordingWhileAddingObject) changeRecorder.beginRecording()
-		// we currently resolve containment proxies when adding an object
-		changeRecorder.addToRecording(root)
+		resourceSet.createResource(URI.createURI('test://test2.aet')) => [
+			// we currently resolve containment proxies when adding an object
+			changeRecorder.addToRecording(it)
+			contents += root
+		]
 		val nonRoot = root.singleValuedContainmentEReference
-		if (isRecordingWhileAddingObject) changeRecorder.endRecording()
-		
-		changeRecorder.beginRecording()
-		nonRoot.id = 'foobar'
-		changeRecorder.endRecording()
-		
+
+		record [
+			nonRoot.id = 'foobar'
+		]
+
 		assertThat(changeRecorder.changes, hasEChanges(ReplaceSingleValuedEAttribute))
 	}
-	
-	@ParameterizedTest(name = "while isRecording={0}")
+
 	@DisplayName("adds multiple objects added as containments to the recording")
-	@ValueSource(booleans = #[false, true])
-	def void recordsOnMultipleAddedContainment(boolean isRecordingWhileAddingObject) {
-		val root = aet.Root
-		changeRecorder.addToRecording(root)
+	def void recordsOnMultipleAddedContainment() {
+		val root = aet.Root.wrapIntoRecordedResource()
 		val nonRoot1 = aet.NonRoot
 		val nonRoot2 = aet.NonRoot
-		if (isRecordingWhileAddingObject) changeRecorder.beginRecording()
-		root.multiValuedContainmentEReference += List.of(nonRoot1, nonRoot2)
-		if (isRecordingWhileAddingObject) changeRecorder.endRecording()
-		
-		changeRecorder.beginRecording()
-		nonRoot1.id = 'foobar1'
-		nonRoot2.id = 'foobar2'
-		changeRecorder.endRecording()
-		
+		record [
+			root.multiValuedContainmentEReference += List.of(nonRoot1, nonRoot2)
+		]
+
+		record [
+			nonRoot1.id = 'foobar1'
+			nonRoot2.id = 'foobar2'
+		]
+
 		assertThat(changeRecorder.changes, hasEChanges(ReplaceSingleValuedEAttribute, ReplaceSingleValuedEAttribute))
 	}
-	
-	@ParameterizedTest(name = "while isRecording={0}")
+
 	@DisplayName("adds an object added as root to the recording")
-	@ValueSource(booleans = #[false, true])
-	def void recordsOnAddedRoot(boolean isRecordingWhileAddingObject) {
+	def void recordsOnAddedRoot() {
 		val resource = resourceSet.createResource(URI.createURI('test://test.aet'))
 		val root = aet.Root
 		changeRecorder.addToRecording(resource)
-		if (isRecordingWhileAddingObject) changeRecorder.beginRecording()
-		resource.contents += root
-		if (isRecordingWhileAddingObject) changeRecorder.endRecording()
-		
-		changeRecorder.beginRecording()
-		root.id = 'foobar'
-		changeRecorder.endRecording()
-		
+		record [
+			resource.contents += root
+		]
+
+		record [
+			root.id = 'foobar'
+		]
+
 		assertThat(changeRecorder.changes, hasEChanges(ReplaceSingleValuedEAttribute))
 	}
-	
-	@ParameterizedTest(name = "while isRecording={0}")
+
 	@DisplayName("adds multiple objects added as roots to the recording")
-	@ValueSource(booleans = #[false, true])
-	def void recordsOnMultipleAddedRoot(boolean isRecordingWhileAddingObject) {
+	def void recordsOnMultipleAddedRoot() {
 		val resource = resourceSet.createResource(URI.createURI('test://test.aet'))
 		val root1 = aet.Root
 		val root2 = aet.Root
 		changeRecorder.addToRecording(resource)
-		if (isRecordingWhileAddingObject) changeRecorder.beginRecording()
-		resource.contents += List.of(root1, root2)
-		if (isRecordingWhileAddingObject) changeRecorder.endRecording()
-		
-		changeRecorder.beginRecording()
-		root1.id = 'foobar1'
-		root2.id = 'foobar2'
-		changeRecorder.endRecording()
-		
+		record [
+			resource.contents += List.of(root1, root2)
+		]
+
+		record [
+			root1.id = 'foobar1'
+			root2.id = 'foobar2'
+		]
+
 		assertThat(changeRecorder.changes, hasEChanges(ReplaceSingleValuedEAttribute, ReplaceSingleValuedEAttribute))
 	}
-	
-	@ParameterizedTest(name = "while isRecording={0}")
+
 	@DisplayName("adds loaded objects to the recording")
-	@ValueSource(booleans = #[false, true])
-	def void recordesOnLoadedObject(boolean isRecordingWhileAddingObject, @TestProject Path testProject) {
+	def void recordesOnLoadedObject(@TestProject Path testProject) {
 		val resourceUri = URI.createFileURI(testProject.resolve("test.aet").toString)
 		resourceSet.createResource(resourceUri) => [
 			contents += aet.Root => [
@@ -297,243 +330,257 @@ class ChangeRecorderTest {
 		resourceSet.resources.clear()
 		val resource = resourceSet.createResource(resourceUri)
 		changeRecorder.addToRecording(resource)
-		if (isRecordingWhileAddingObject) changeRecorder.beginRecording()
-		resource.load(emptyMap)
-		if (isRecordingWhileAddingObject) changeRecorder.endRecording()
-		
-		changeRecorder.beginRecording()
-		(resource.contents.get(0) as Root).singleValuedContainmentEReference.id = 'test'
-		changeRecorder.endRecording()
-		
+		record [
+			resource.load(emptyMap)
+		]
+
+		record [
+			(resource.contents.get(0) as Root).singleValuedContainmentEReference.id = 'test'
+		]
+
 		assertThat(changeRecorder.changes, hasEChanges(ReplaceSingleValuedEAttribute))
 	}
-	
-	@ParameterizedTest(name = "while isRecording={0}")
+
+	@ParameterizedTest(name="while isRecording={0}")
 	@DisplayName("adds a resource to the recording")
-	@ValueSource(booleans = #[false, true])
+	@ValueSource(booleans=#[false, true])
 	def void recordsOnAddedResource(boolean isRecordingWhileAddingObject) {
 		changeRecorder.addToRecording(resourceSet)
-		if (isRecordingWhileAddingObject) changeRecorder.beginRecording()
+		if(isRecordingWhileAddingObject) changeRecorder.beginRecording()
 		val resource = resourceSet.createResource(URI.createURI('test://test.aet'))
-		if (isRecordingWhileAddingObject) changeRecorder.endRecording()
-		
-		changeRecorder.beginRecording()
-		resource.contents += aet.Root
-		changeRecorder.endRecording()
-		
+		if(isRecordingWhileAddingObject) changeRecorder.endRecording()
+
+		record[
+			resource.contents += aet.Root
+		]
+
 		assertThat(changeRecorder.changes, hasEChanges(CreateEObject, InsertRootEObject, ReplaceSingleValuedEAttribute))
 	}
-	
-	@ParameterizedTest(name = "while isRecording={0}")
+
+	@ParameterizedTest(name="while isRecording={0}")
 	@DisplayName("adds multiple added resources to the recording")
-	@ValueSource(booleans = #[false, true])
+	@ValueSource(booleans=#[false, true])
 	def void recordsOnMultipleAddedResource(boolean isRecordingWhileAddingObject) {
 		val foreignResourceSet = new ResourceSetImpl().withGlobalFactories()
 		val resource1 = foreignResourceSet.createResource(URI.createURI('test://test1.aet'))
 		val resource2 = foreignResourceSet.createResource(URI.createURI('test://test2.aet'))
 		changeRecorder.addToRecording(resourceSet)
-		if (isRecordingWhileAddingObject) changeRecorder.beginRecording()
-		resourceSet.resources += List.of(resource1, resource2)
-		if (isRecordingWhileAddingObject) changeRecorder.endRecording()
-		
-		changeRecorder.beginRecording()
-		resource1.contents += aet.Root
-		resource2.contents += aet.Root
-		changeRecorder.endRecording()
-		
+		recordIf(isRecordingWhileAddingObject) [
+			resourceSet.resources += List.of(resource1, resource2)
+		]
+
+		record [
+			resource1.contents += aet.Root
+			resource2.contents += aet.Root
+		]
+
 		assertThat(changeRecorder.changes, hasEChanges(
-			CreateEObject, InsertRootEObject, ReplaceSingleValuedEAttribute,
-			CreateEObject, InsertRootEObject, ReplaceSingleValuedEAttribute
+			CreateEObject,
+			InsertRootEObject,
+			ReplaceSingleValuedEAttribute,
+			CreateEObject,
+			InsertRootEObject,
+			ReplaceSingleValuedEAttribute
 		))
 	}
-	
-	@ParameterizedTest(name = "while isRecording={0}")
+
+	@ParameterizedTest(name="while isRecording={0}")
 	@DisplayName("removes an object unset from a containment reference from the recording")
-	@ValueSource(booleans = #[false, true])
+	@ValueSource(booleans=#[false, true])
 	def void removeAfterContainmentUnset(boolean isRecordingWhileRemovingObject) {
 		val nonRoot = aet.NonRoot
-		val root = aet.Root => [
-			singleValuedContainmentEReference = nonRoot
+		val root = aet.Root.wrapIntoRecordedResource() => [
+			record [
+				singleValuedContainmentEReference = nonRoot
+			]
 		]
-		changeRecorder.addToRecording(root)
-		if (isRecordingWhileRemovingObject) changeRecorder.beginRecording()
-		root.singleValuedContainmentEReference = null
-		if (isRecordingWhileRemovingObject) changeRecorder.endRecording()
-		
-		changeRecorder.beginRecording()
-		nonRoot.id = 'foobar'
-		changeRecorder.endRecording()
-		
+		recordIf(isRecordingWhileRemovingObject) [
+			root.singleValuedContainmentEReference = null
+		]
+
+		record [
+			nonRoot.id = 'foobar'
+		]
+
 		assertThat(changeRecorder.changes, hasNoChanges)
 	}
-	
-	@ParameterizedTest(name = "while isRecording={0}")
+
+	@ParameterizedTest(name="while isRecording={0}")
 	@DisplayName("removes an object removed from a containment reference from the recording")
-	@ValueSource(booleans = #[false, true])
+	@ValueSource(booleans=#[false, true])
 	def void removeAfterContainmentRemove(boolean isRecordingWhileRemovingObject) {
 		val nonRoot = aet.NonRoot
-		val root = aet.Root => [
-			multiValuedContainmentEReference += nonRoot
+		val root = aet.Root.wrapIntoRecordedResource() => [
+			record [
+				multiValuedContainmentEReference += nonRoot
+			]
 		]
-		changeRecorder.addToRecording(root)
-		if (isRecordingWhileRemovingObject) changeRecorder.beginRecording()
-		root.multiValuedContainmentEReference.clear()
-		if (isRecordingWhileRemovingObject) changeRecorder.endRecording()
-		
-		changeRecorder.beginRecording()
-		nonRoot.id = 'foobar'
-		changeRecorder.endRecording()
-		
+		recordIf(isRecordingWhileRemovingObject) [
+			root.multiValuedContainmentEReference.clear()
+		]
+
+		record [
+			nonRoot.id = 'foobar'
+		]
+
 		assertThat(changeRecorder.changes, hasNoChanges)
 	}
-	
-	@ParameterizedTest(name = "while isRecording={0}")
+
+	@ParameterizedTest(name="while isRecording={0}")
 	@DisplayName("removes multiple objects removed from a containment reference from the recording")
-	@ValueSource(booleans = #[false, true])
+	@ValueSource(booleans=#[false, true])
 	def void removeAfterContainmentMultipleRemove(boolean isRecordingWhileRemovingObject) {
 		val nonRoot1 = aet.NonRoot
 		val nonRoot2 = aet.NonRoot
 		val nonRoot3 = aet.NonRoot
-		val root = aet.Root => [
-			multiValuedContainmentEReference += List.of(nonRoot1, nonRoot2, nonRoot3)
+		val root = aet.Root.wrapIntoRecordedResource() => [
+			record [
+				multiValuedContainmentEReference += List.of(nonRoot1, nonRoot2, nonRoot3)
+			]
 		]
-		changeRecorder.addToRecording(root)
-		if (isRecordingWhileRemovingObject) changeRecorder.beginRecording()
-		root.multiValuedContainmentEReference -= List.of(nonRoot1, nonRoot3)
-		if (isRecordingWhileRemovingObject) changeRecorder.endRecording()
-		
-		changeRecorder.beginRecording()
-		nonRoot1.id = 'foobar1'
-		nonRoot2.id = 'foobar2'
-		nonRoot3.id = 'foobar3'
-		changeRecorder.endRecording()
-		
+		recordIf(isRecordingWhileRemovingObject) [
+			root.multiValuedContainmentEReference -= List.of(nonRoot1, nonRoot3)
+		]
+
+		record [
+			nonRoot1.id = 'foobar1'
+			nonRoot2.id = 'foobar2'
+			nonRoot3.id = 'foobar3'
+		]
+
 		assertThat(changeRecorder.changes, hasEChanges(ReplaceSingleValuedEAttribute))
 	}
-	
-	@ParameterizedTest(name = "while isRecording={0}")
+
+	@ParameterizedTest(name="while isRecording={0}")
 	@DisplayName("removes a removed resource from the recording")
-	@ValueSource(booleans = #[false, true])
+	@ValueSource(booleans=#[false, true])
 	def void removeAfterRemovedResource(boolean isRecordingWhileRemovingObject) {
 		changeRecorder.addToRecording(resourceSet)
 		val resource = resourceSet.createResource(URI.createURI('test://test1.aet'))
-		
-		if (isRecordingWhileRemovingObject) changeRecorder.beginRecording()
-		resourceSet.resources.clear()
-		if (isRecordingWhileRemovingObject) changeRecorder.endRecording()
-		
-		changeRecorder.beginRecording()
-		resource.contents += aet.Root
-		changeRecorder.endRecording()
-		
+
+		recordIf(isRecordingWhileRemovingObject) [
+			resourceSet.resources.clear()
+		]
+
+		record [
+			resource.contents += aet.Root
+		]
+
 		assertThat(changeRecorder.changes, hasNoChanges)
 	}
-	
-	@ParameterizedTest(name = "while isRecording={0}")
+
+	@ParameterizedTest(name="while isRecording={0}")
 	@DisplayName("removes multiple removed resources from the recording")
-	@ValueSource(booleans = #[false, true])
+	@ValueSource(booleans=#[false, true])
 	def void removeAfterMultipleRemovedResource(boolean isRecordingWhileRemovingObject) {
 		val resource1 = resourceSet.createResource(URI.createURI('test://test1.aet'))
 		val resource2 = resourceSet.createResource(URI.createURI('test://test2.aet'))
 		val resource3 = resourceSet.createResource(URI.createURI('test://test3.aet'))
 		changeRecorder.addToRecording(resourceSet)
-		if (isRecordingWhileRemovingObject) changeRecorder.beginRecording()
-		resourceSet.resources -= List.of(resource1, resource3)
-		if (isRecordingWhileRemovingObject) changeRecorder.endRecording()
-		
-		changeRecorder.beginRecording()
-		resource1.contents += aet.Root
-		resource2.contents += aet.Root
-		resource3.contents += aet.Root
-		changeRecorder.endRecording()
-		
+		recordIf(isRecordingWhileRemovingObject) [
+			resourceSet.resources -= List.of(resource1, resource3)
+		]
+
+		record [
+			resource1.contents += aet.Root
+			resource2.contents += aet.Root
+			resource3.contents += aet.Root
+		]
+
 		assertThat(changeRecorder.changes, hasEChanges(CreateEObject, InsertRootEObject, ReplaceSingleValuedEAttribute))
 	}
-	
-	@ParameterizedTest(name = "while isRecording={0}")
+
+	@ParameterizedTest(name="while isRecording={0}")
 	@DisplayName("removes unloaded objects from the recording")
-	@ValueSource(booleans = #[false, true])
+	@ValueSource(booleans=#[false, true])
 	def void removeAfterUnload(boolean isRecordingWhileRemovingObject) {
 		val nonRoot = aet.NonRoot
 		val resource = resourceSet.createResource(URI.createURI('test://test1.aet')) => [
-			contents += aet.Root => [
-				singleValuedContainmentEReference = nonRoot
+			changeRecorder.addToRecording(it)
+			record [
+				contents += aet.Root => [
+					singleValuedContainmentEReference = nonRoot
+				]
 			]
 		]
-		changeRecorder.addToRecording(resource)
-		if (isRecordingWhileRemovingObject) changeRecorder.beginRecording()
-		resource.unload()
-		if (isRecordingWhileRemovingObject) changeRecorder.endRecording()
-		
-		changeRecorder.beginRecording()
-		nonRoot.id = 'test'
-		changeRecorder.endRecording()
-		
+		recordIf(isRecordingWhileRemovingObject) [
+			resource.unload()
+		]
+
+		record [
+			nonRoot.id = 'test'
+		]
+
 		assertThat(changeRecorder.changes, hasNoChanges)
 	}
-	
-	@ParameterizedTest(name = "while isRecording={0}")
+
+	@ParameterizedTest(name="while isRecording={0}")
 	@DisplayName("removes an object removed as root from the recording")
-	@ValueSource(booleans = #[false, true])
+	@ValueSource(booleans=#[false, true])
 	def void removeAfterRemovedRoot(boolean isRecordingWhileRemovingObject) {
 		val root = aet.Root
 		val resource = resourceSet.createResource(URI.createURI('test://test.aet')) => [
-			contents += root
+			changeRecorder.addToRecording(it)
+			record [
+				contents += root
+			]
 		]
-		changeRecorder.addToRecording(resource)
-		if (isRecordingWhileRemovingObject) changeRecorder.beginRecording()
-		resource.contents.clear()
-		if (isRecordingWhileRemovingObject) changeRecorder.endRecording()
-		
-		changeRecorder.beginRecording()
-		root.id = 'foobar'
-		changeRecorder.endRecording()
-		
+		recordIf(isRecordingWhileRemovingObject) [
+			resource.contents.clear()
+		]
+
+		record [
+			root.id = 'foobar'
+		]
+
 		assertThat(changeRecorder.changes, hasNoChanges)
 	}
-	
-	@ParameterizedTest(name = "while isRecording={0}")
+
+	@ParameterizedTest(name="while isRecording={0}")
 	@DisplayName("removes multiple objects removed as roots from the recording")
-	@ValueSource(booleans = #[false, true])
+	@ValueSource(booleans=#[false, true])
 	def void removeAfterMultipleRemovedRoot(boolean isRecordingWhileAddingObject) {
 		val root1 = aet.Root
 		val root2 = aet.Root
 		val root3 = aet.Root
 		val resource = resourceSet.createResource(URI.createURI('test://test.aet')) => [
-			contents += List.of(root1, root2, root3)
+			changeRecorder.addToRecording(it)
+			record [
+				contents += List.of(root1, root2, root3)
+			]
 		]
-		changeRecorder.addToRecording(resource)
-		if (isRecordingWhileAddingObject) changeRecorder.beginRecording()
+		if(isRecordingWhileAddingObject) changeRecorder.beginRecording()
 		resource.contents -= List.of(root1, root3)
-		if (isRecordingWhileAddingObject) changeRecorder.endRecording()
-		
-		changeRecorder.beginRecording()
-		root1.id = 'foobar1'
-		root2.id = 'foobar2'
-		root3.id = 'foobar3'
-		changeRecorder.endRecording()
-		
+		if(isRecordingWhileAddingObject) changeRecorder.endRecording()
+
+		record [
+			root1.id = 'foobar1'
+			root2.id = 'foobar2'
+			root3.id = 'foobar3'
+		]
+
 		assertThat(changeRecorder.changes, hasEChanges(ReplaceSingleValuedEAttribute))
 	}
-	
+
 	@Test
 	@DisplayName("does not remove explicitly added child objects")
 	def void dontRemoveExplicitlyAddedChild() {
 		val nonRoot = aet.NonRoot
-		changeRecorder.addToRecording(nonRoot)
-		val root = aet.Root => [
-			singleValuedContainmentEReference = nonRoot
+		val root = aet.Root.wrapIntoRecordedResource() => [
+			record [
+				singleValuedContainmentEReference = nonRoot
+			]
 		]
-		changeRecorder.addToRecording(root)
+		changeRecorder.addToRecording(nonRoot)
 		root.singleValuedContainmentEReference = null
-		
-		changeRecorder.beginRecording()
-		nonRoot.id = 'testid'
-		changeRecorder.endRecording()
-		
+
+		record [
+			nonRoot.id = 'testid'
+		]
+
 		assertThat(changeRecorder.changes, hasEChanges(ReplaceSingleValuedEAttribute))
 	}
-	
+
 	@Test
 	@DisplayName("does not remove explicitly added root objects")
 	def void dontRemoveExplicitlyAddedRoot() {
@@ -541,44 +588,44 @@ class ChangeRecorderTest {
 		val root = aet.Root => [
 			singleValuedContainmentEReference = nonRoot
 		]
-		changeRecorder.addToRecording(root)
 		val resource = resourceSet.createResource(URI.createURI('test://test.aet')) => [
-			contents += root
+			changeRecorder.addToRecording(it)
+			record [
+				contents += root
+			]
 		]
-		changeRecorder.addToRecording(resource)
+		changeRecorder.addToRecording(root)
 		resource.contents.clear()
-		
-		changeRecorder.beginRecording()
-		root.id = 'rootid'
-		nonRoot.id = 'testid'
-		changeRecorder.endRecording()
-		
+
+		record[
+			root.id = 'rootid'
+			nonRoot.id = 'testid'
+		]
+
 		assertThat(changeRecorder.changes, hasEChanges(ReplaceSingleValuedEAttribute, ReplaceSingleValuedEAttribute))
 	}
-	
+
 	@Test
 	@DisplayName("resets the recorded changes after ending the recording")
 	def void resetsChangesAfterEndRecording() {
-		val root = aet.Root
-		changeRecorder.addToRecording(root)
-		changeRecorder.beginRecording()
-		root.id = 'test'
-		changeRecorder.endRecording()
-		
+		val root = aet.Root.wrapIntoRecordedResource()
+		record [
+			root.id = 'test'
+		]
+
 		assertThat(changeRecorder.changes, hasEChanges(ReplaceSingleValuedEAttribute))
-		
-		changeRecorder.beginRecording()
-		changeRecorder.endRecording()
-		
+
+		record []
+
 		assertThat(changeRecorder.changes, hasNoChanges)
-		
-		changeRecorder.beginRecording()
-		root.multiValuedNonContainmentEReference += aet.NonRoot
-		changeRecorder.endRecording()
-		
+
+		record [
+			root.multiValuedNonContainmentEReference += aet.NonRoot
+		]
+
 		assertThat(changeRecorder.changes, hasEChanges(CreateEObject, InsertEReference, ReplaceSingleValuedEAttribute))
 	}
-	
+
 	@Test
 	@DisplayName("refuses to record changes on a different resource set than the one of the UUID resolver")
 	def void differentResourceSet() {
@@ -586,7 +633,7 @@ class ChangeRecorderTest {
 			changeRecorder.addToRecording(new ResourceSetImpl)
 		]
 	}
-	
+
 	@Test
 	@DisplayName("refuses to record changes on a resource from a different resource set than the one of the UUID resolver")
 	def void resourceFromDifferentResourceSet() {
@@ -595,45 +642,20 @@ class ChangeRecorderTest {
 			changeRecorder.addToRecording(foreignResourceSet.createResource(URI.createURI('test://test.aet')))
 		]
 	}
-	
+
 	@Test
 	@DisplayName("refuses to record changes on an object from a different resource set than the one of the UUID resolver")
 	def void objectFromDifferentResourceSet() {
 		val foreignResourceSet = new ResourceSetImpl().withGlobalFactories()
 		val root = aet.Root
-		foreignResourceSet.createResource(URI.createURI('test://test.aet')) => [
+		val foreignResource = foreignResourceSet.createResource(URI.createURI('test://test.aet')) => [
 			contents += root
 		]
 		assertThrows(IllegalArgumentException) [
-			changeRecorder.addToRecording(root)
+			changeRecorder.addToRecording(foreignResource)
 		]
 	}
-	
-	@Test
-	@DisplayName("tolerates an object without a resource")
-	def void toleratesObjectWithoutResource() {
-		assertDoesNotThrow [changeRecorder.addToRecording(aet.Root)]
-	}
-	
-	@Test
-	@DisplayName("tolerates an object without a resource set")
-	def void toleratesObjectWithoutResourceSet() {
-		val uri = URI.createURI('test://test.aet')
-		val root = aet.Root
-		// we need to record the creation so an UUID will be assigned, because the UUID cannot be 
-		// resolved later
-		changeRecorder.addToRecording(resourceSet)
-		changeRecorder.beginRecording()
-		resourceSet.createResource(uri) => [
-			contents += root 
-		]
-		changeRecorder.endRecording()
-		changeRecorder.removeFromRecording(resourceSet)
-		resourceSet.resources.clear()
-		
-		assertDoesNotThrow [changeRecorder.addToRecording(root)]
-	}
-	
+
 	@Test
 	@DisplayName("tolerates a resource without a resource set")
 	def void toleratesResourceWithoutResourceSet() {
@@ -641,29 +663,29 @@ class ChangeRecorderTest {
 		val resource = resourceSet.resourceFactoryRegistry.getFactory(uri).createResource(uri)
 		assertDoesNotThrow [changeRecorder.addToRecording(resource)]
 	}
-	
+
 	@Test
 	@DisplayName("allows no interactions after being closed")
 	def void noInteractionsAfterClose() {
-		changeRecorder.addToRecording(aet.Root)
+		aet.Root.wrapIntoRecordedResource()
 		changeRecorder.beginRecording()
 		changeRecorder.close()
-		
+
 		assertThat(changeRecorder.isRecording, is(false))
-		assertThrows(IllegalStateException) [changeRecorder.beginRecording()]
-		assertThrows(IllegalStateException) [changeRecorder.endRecording()]
-		assertThrows(IllegalStateException) [changeRecorder.changes]
-		assertThrows(IllegalStateException) [changeRecorder.addToRecording(aet.Root)]
-		assertThrows(IllegalStateException) [changeRecorder.removeFromRecording(aet.Root)]
+		assertThrows(IllegalStateException)[changeRecorder.beginRecording()]
+		assertThrows(IllegalStateException)[changeRecorder.endRecording()]
+		assertThrows(IllegalStateException)[changeRecorder.changes]
+		assertThrows(IllegalStateException)[changeRecorder.addToRecording(aet.Root)]
+		assertThrows(IllegalStateException)[changeRecorder.removeFromRecording(aet.Root)]
 	}
-	
+
 	@Test
 	@DisplayName("registers the recorded object and all its contents at the UUID resolver")
 	def void registersAtUuidResolver() {
 		val parentResolver = createUuidGeneratorAndResolver(new ResourceSetImpl())
 		val localResolver = createUuidGeneratorAndResolver(parentResolver, resourceSet)
 		var ChangeRecorder changeRecorder = new ChangeRecorder(localResolver)
-		
+
 		val root = aet.Root => [
 			parentResolver.registerEObject("uuid1", it)
 			singleValuedContainmentEReference = aet.NonRoot => [
@@ -680,51 +702,51 @@ class ChangeRecorderTest {
 			]
 		]
 		resourceSet.createResource(URI.createURI('test://test.aet')) => [
-			contents += root 
+			contents += root
 		]
 		root.nonRootObjectContainerHelper
 		changeRecorder.addToRecording(resourceSet)
-		
+
 		assertTrue(localResolver.hasUuid(root))
 		assertTrue(localResolver.hasUuid(root.singleValuedContainmentEReference))
 		assertTrue(localResolver.hasUuid(root.nonRootObjectContainerHelper))
 		assertTrue(localResolver.hasUuid(root.nonRootObjectContainerHelper.nonRootObjectsContainment.get(0)))
 		assertTrue(localResolver.hasUuid(root.nonRootObjectContainerHelper.nonRootObjectsContainment.get(1)))
 	}
-	
+
 	@Test
 	@DisplayName("can be closed twice")
 	def void closeTwice() {
 		changeRecorder.close()
 		assertDoesNotThrow [changeRecorder.close()]
 	}
-	
+
 	def private static hasEChanges(Class<? extends EChange>... expectedTypes) {
 		new EChangeSequenceMatcher(expectedTypes)
 	}
-	
+
 	def private static hasNoChanges() {
 		new EChangeSequenceMatcher(emptyList)
 	}
-	
+
 	@FinalFieldsConstructor
 	private static class EChangeSequenceMatcher extends TypeSafeMatcher<Iterable<? extends TransactionalChange>> {
 		val List<Class<? extends EChange>> expectedTypes
-		
+
 		override describeTo(Description description) {
 			if (expectedTypes.isEmpty) {
 				description.appendText("no changes")
 			} else {
-				description.appendText("this sequence of EChanges: ")
-					.appendText(expectedTypes.join("[", ", ", "]") [simpleName])
+				description.appendText("this sequence of EChanges: ") //
+				.appendText(expectedTypes.join("[", ", ", "]")[simpleName])
 			}
 		}
-		
+
 		override protected matchesSafely(Iterable<? extends TransactionalChange> item) {
-			val actualTypes = item.flatMap [EChanges].map [class].iterator
+			val actualTypes = item.flatMap[EChanges].map[class].iterator
 			for (val expectedTypesIt = expectedTypes.iterator; expectedTypesIt.hasNext;) {
 				if (!actualTypes.hasNext || !expectedTypesIt.next.isAssignableFrom(actualTypes.next)) {
-					return false	
+					return false
 				}
 			}
 			return !actualTypes.hasNext

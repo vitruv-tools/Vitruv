@@ -37,6 +37,7 @@ abstract class EChangeTest {
 	@Accessors(PROTECTED_GETTER)
 	var Resource resource
 	var ResourceSet resourceSet
+	@Accessors(PROTECTED_GETTER)
 	var UuidGeneratorAndResolver uuidGeneratorAndResolver
 
 	@Accessors(PROTECTED_GETTER)

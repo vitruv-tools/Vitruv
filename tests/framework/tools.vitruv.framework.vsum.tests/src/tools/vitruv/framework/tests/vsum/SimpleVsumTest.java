@@ -47,13 +47,10 @@ public class SimpleVsumTest extends VsumTest {
         repo.getComponents().add(component);
 
         // save test model
-        vsum.save();// (vuri);
+        vsum.save();
 
         // this is fine, the component is contained in the resource
         assertTrue(null != component.eResource(), "Resource of component is null");
-        // causes a unload and a load of the model
-        // TODO This is buillshit... Why should we reload a model in the VSUM?
-        // vsum.reloadModelInstance(vuri);
         mi = vsum.getModelInstance(vuri);
 
         // not fine anymore: component is not contained in the resource and it is a proxy
@@ -82,7 +79,7 @@ public class SimpleVsumTest extends VsumTest {
         vsum.persistRootElement(vuri, repo);
         final Component component = Pcm_mockupFactory.eINSTANCE.createComponent();
         repo.getComponents().add(component);
-        vsum.save();// (vuri);
+        vsum.save();
         // simulate external change
         changeTestModelExternally(vuri);
 

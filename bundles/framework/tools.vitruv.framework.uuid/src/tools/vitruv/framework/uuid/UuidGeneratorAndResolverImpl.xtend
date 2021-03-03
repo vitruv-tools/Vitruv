@@ -81,7 +81,7 @@ package class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 
 	override getUuid(EObject eObject) {
 		val result = internalGetUuid(eObject)
-		checkState(result !== null, '''No UUID registered for EObject: «eObject»''')
+		checkState(result !== null, "No UUID registered for EObject: %s", eObject)
 		return result
 	}
 
@@ -115,9 +115,7 @@ package class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 
 	override getEObject(String uuid) {
 		val eObject = internalGetEObject(uuid)
-		if (eObject === null) {
-			throw new IllegalStateException("No EObject could be found for UUID: " + uuid)
-		}
+		checkState(eObject !== null, "No EObject could be found for UUID: %s", uuid)
 		return eObject
 	}
 
@@ -207,7 +205,7 @@ package class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 		} else if (hasUuid(eObject)) {
 			registerEObject(getUuid(eObject), eObject)
 		} else {
-			// throw new IllegalStateException("Given EObject has no UUID yet: " + eObject)
+			throw new IllegalStateException("EObject '" + eObject + "' cannot be registered because it does not have a UUID yet")
 		}
 	}
 

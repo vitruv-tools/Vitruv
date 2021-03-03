@@ -45,13 +45,16 @@ public class VitruviusEMFEditorMonitorImplTests extends BasicTestCase {
     private EclipseMock eclipseMockCtrl;
     private IEclipseAdapter eclipseUtils;
     private IEditorPartAdapterFactory factory;
-
+    private TestVirtualModel virtualModel;
+    
     @BeforeEach
     public void setUp() {
         this.eclipseMockCtrl = new EclipseMock();
         this.eclipseUtils = eclipseMockCtrl.getEclipseUtils();
         EclipseAdapterProvider.getInstance().setProvidedEclipseAdapter(eclipseUtils);
         this.factory = new DefaultEditorPartAdapterFactoryImpl(Files.ECORE_FILE_EXTENSION);
+        this.virtualModel = TestVirtualModel.createInstance();
+        this.virtualModel.registerExistingModel(Files.EXAMPLEMODEL_ECORE);
     }
 
     @Test
@@ -69,7 +72,7 @@ public class VitruviusEMFEditorMonitorImplTests extends BasicTestCase {
         };
 
         VitruviusEMFEditorMonitorImpl syncMgr = new VitruviusEMFEditorMonitorImpl(
-                DefaultImplementations.EFFECTLESS_VIRTUAL_MODEL, va);
+        		virtualModel, va);
         syncMgr.disableSynchronizationLagRecognition();
         syncMgr.initialize();
 
@@ -85,9 +88,7 @@ public class VitruviusEMFEditorMonitorImplTests extends BasicTestCase {
 
     @Test
     public void changesToAutomaticallyRegisteredEditorsAreSynchronized() {
-        TestVirtualModel cs = TestVirtualModel.createInstance();
-
-        VitruviusEMFEditorMonitorImpl syncMgr = new VitruviusEMFEditorMonitorImpl(factory, cs,
+        VitruviusEMFEditorMonitorImpl syncMgr = new VitruviusEMFEditorMonitorImpl(factory, virtualModel,
                 DefaultImplementations.ALL_ACCEPTING_VITRUV_ACCESSOR);
         syncMgr.disableSynchronizationLagRecognition();
         syncMgr.initialize();
@@ -99,19 +100,17 @@ public class VitruviusEMFEditorMonitorImplTests extends BasicTestCase {
         eclipseMockCtrl.issueSaveEvent(SaveEventKind.SAVE);
         syncMgr.triggerSynchronisation(VURI.getInstance(root.eResource()));
 
-        assert cs.getExecutionCount() == 1;
-        assert !cs.getLastChanges().isEmpty();
+        assert virtualModel.getExecutionCount() == 1;
+        assert !virtualModel.getLastChanges().isEmpty();
 
-        for (VitruviusChange change : cs.getLastChanges()) {
+        for (VitruviusChange change : virtualModel.getLastChanges()) {
             assert change.getChangedVURIs().iterator().next() == VURI.getInstance(getURI(Files.EXAMPLEMODEL_ECORE));
         }
     }
 
     @Test
     public void changesToRefusedEditorsAreNotSynchronized() {
-        TestVirtualModel cs = TestVirtualModel.createInstance();
-
-        VitruviusEMFEditorMonitorImpl syncMgr = new VitruviusEMFEditorMonitorImpl(factory, cs,
+        VitruviusEMFEditorMonitorImpl syncMgr = new VitruviusEMFEditorMonitorImpl(factory, virtualModel,
                 DefaultImplementations.NONE_ACCEPTING_VITRUV_ACCESSOR);
         syncMgr.disableSynchronizationLagRecognition();
         syncMgr.initialize();
@@ -123,14 +122,12 @@ public class VitruviusEMFEditorMonitorImplTests extends BasicTestCase {
         eclipseMockCtrl.issueSaveEvent(SaveEventKind.SAVE);
         syncMgr.triggerSynchronisation(VURI.getInstance(root.eResource()));
 
-        assert !cs.hasBeenExecuted();
+        assert !virtualModel.hasBeenExecuted();
     }
 
     @Test
     public void changeListsAreJoinedWhenUserSavesMultipleTimesBeforeBuilding() {
-        TestVirtualModel cs = TestVirtualModel.createInstance();
-
-        VitruviusEMFEditorMonitorImpl syncMgr = new VitruviusEMFEditorMonitorImpl(factory, cs,
+        VitruviusEMFEditorMonitorImpl syncMgr = new VitruviusEMFEditorMonitorImpl(factory, virtualModel,
                 DefaultImplementations.ALL_ACCEPTING_VITRUV_ACCESSOR);
         syncMgr.disableSynchronizationLagRecognition();
         syncMgr.initialize();
@@ -147,20 +144,18 @@ public class VitruviusEMFEditorMonitorImplTests extends BasicTestCase {
 
         syncMgr.triggerSynchronisation(VURI.getInstance(root.eResource()));
 
-        assert cs.getExecutionCount() == 1 : "Got " + cs.getExecutionCount() + " syncs instead of 1.";
-        assert !cs.getLastChanges().isEmpty();
-        assert cs.hasBeenExecuted();
-        assert cs.getLastChanges().size() == 1;
-        assert cs.getLastChanges().get(0) instanceof CompositeContainerChange;
-        int changeCount = ((CompositeContainerChange) cs.getLastChanges().get(0)).getChanges().size();
+        assert virtualModel.getExecutionCount() == 1 : "Got " + virtualModel.getExecutionCount() + " syncs instead of 1.";
+        assert !virtualModel.getLastChanges().isEmpty();
+        assert virtualModel.hasBeenExecuted();
+        assert virtualModel.getLastChanges().size() == 1;
+        assert virtualModel.getLastChanges().get(0) instanceof CompositeContainerChange;
+        int changeCount = ((CompositeContainerChange) virtualModel.getLastChanges().get(0)).getChanges().size();
         assert changeCount == 2 : "Got " + changeCount + " changes instead of 2.";
     }
 
     @Test
     public void changeListsAreJoinedWhenMultipleModelInstancesAreEdited() {
-        TestVirtualModel cs = TestVirtualModel.createInstance();
-
-        VitruviusEMFEditorMonitorImpl syncMgr = new VitruviusEMFEditorMonitorImpl(factory, cs,
+        VitruviusEMFEditorMonitorImpl syncMgr = new VitruviusEMFEditorMonitorImpl(factory, virtualModel,
                 DefaultImplementations.ALL_ACCEPTING_VITRUV_ACCESSOR);
         syncMgr.disableSynchronizationLagRecognition();
         syncMgr.initialize();
@@ -181,37 +176,34 @@ public class VitruviusEMFEditorMonitorImplTests extends BasicTestCase {
 
         syncMgr.triggerSynchronisation(VURI.getInstance(root1.eResource()));
 
-        assert cs.getExecutionCount() == 1 : "Got " + cs.getExecutionCount() + " syncs instead of 1.";
-        assert !cs.getLastChanges().isEmpty();
-        assert cs.hasBeenExecuted();
-        assert cs.getLastChanges().size() == 1;
-        assert cs.getLastChanges().get(0) instanceof CompositeContainerChange;
-        int changeCount = ((CompositeContainerChange) cs.getLastChanges().get(0)).getChanges().size();
+        assert virtualModel.getExecutionCount() == 1 : "Got " + virtualModel.getExecutionCount() + " syncs instead of 1.";
+        assert !virtualModel.getLastChanges().isEmpty();
+        assert virtualModel.hasBeenExecuted();
+        assert virtualModel.getLastChanges().size() == 1;
+        assert virtualModel.getLastChanges().get(0) instanceof CompositeContainerChange;
+        int changeCount = ((CompositeContainerChange) virtualModel.getLastChanges().get(0)).getChanges().size();
         assert changeCount == 3 : "Got " + changeCount + " changes instead of 3.";
 
-        FeatureEChange<?, ?> attrChange = (FeatureEChange<?, ?>) (cs.getLastChanges().get(0).getEChanges().get(0));
+        FeatureEChange<?, ?> attrChange = (FeatureEChange<?, ?>) (virtualModel.getLastChanges().get(0).getEChanges().get(0));
         EObject root = attrChange.getAffectedEObject();
         assert root instanceof EPackage;
 
         List<VitruviusChange> changes = new ArrayList<VitruviusChange>(
-                ((CompositeContainerChange) cs.getLastChanges().get(0)).getChanges());
-        // System.err.println(root);
-        //
-        // ChangeAssert.printChangeList(changes);
+                ((CompositeContainerChange) virtualModel.getLastChanges().get(0)).getChanges());
+
         ChangeAssert.assertContainsSingleValuedAttributeChange(changes, root.eClass().getEStructuralFeature("name"),
                 root2NewName);
         ChangeAssert.assertContainsSingleValuedAttributeChange(changes, root.eClass().getEStructuralFeature("nsPrefix"),
                 root1NewPrefix);
-
     }
 
     @Test
     public void modelCanBeMonitoredAfterEditorCreationWhenVitruviusDecidesItBecomesMonitorable() {
         RoleChangingVitruviusAccessor va = new RoleChangingVitruviusAccessor();
         va.setAcceptNone();
-
+        
         VitruviusEMFEditorMonitorImpl syncMgr = new VitruviusEMFEditorMonitorImpl(factory,
-                DefaultImplementations.EFFECTLESS_VIRTUAL_MODEL, va);
+        		virtualModel, va);
         syncMgr.disableSynchronizationLagRecognition();
         syncMgr.initialize();
 
@@ -228,7 +220,7 @@ public class VitruviusEMFEditorMonitorImplTests extends BasicTestCase {
     @Test
     public void modelIsStoppedBeingMonitoredWhenVitruviusDecidesItBecomesNotMonitorable() {
         VitruviusEMFEditorMonitorImpl syncMgr = new VitruviusEMFEditorMonitorImpl(factory,
-                DefaultImplementations.EFFECTLESS_VIRTUAL_MODEL, DefaultImplementations.ALL_ACCEPTING_VITRUV_ACCESSOR);
+        		virtualModel, DefaultImplementations.ALL_ACCEPTING_VITRUV_ACCESSOR);
         syncMgr.disableSynchronizationLagRecognition();
         syncMgr.initialize();
         ISynchronizingMonitoredEmfEditor listener = syncMgr.getChangeRecorderMonitor();

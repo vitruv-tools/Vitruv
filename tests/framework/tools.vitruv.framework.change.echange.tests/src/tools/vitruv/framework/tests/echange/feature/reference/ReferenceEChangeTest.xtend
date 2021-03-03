@@ -25,6 +25,7 @@ abstract class ReferenceEChangeTest extends EChangeTest {
 	@BeforeEach
 	def final void beforeTest() {
 		affectedEObject = rootObject
+		uuidGeneratorAndResolver.generateUuid(affectedEObject)
 		newValue = aet.NonRoot
 		newValue2 = aet.NonRoot
 	}
