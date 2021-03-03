@@ -45,8 +45,8 @@ class UuidGeneratorAndResolverFactory {
 	 * 		the parent {@link UuidResolver} used to resolve UUID if this contains no appropriate mapping, may 
 	 * 		be {@link null}
 	 * @param resourceSet -
-	 * 		the {@link ResourceSet} to load model elements from, may not be {@link null}
-	 * @throws IllegalArgumentException if given {@link ResourceSet} is {@link null}
+	 * 		the {@link ResourceSet} to load model elements from, may not be {@code null}
+	 * @throws IllegalArgumentException if given {@link ResourceSet} is {@code null}
 	 */
 	static def UuidGeneratorAndResolver createUuidGeneratorAndResolver(UuidResolver parentUuidResolver, ResourceSet resourceSet) {
 		return new UuidGeneratorAndResolverImpl(parentUuidResolver, resourceSet, null)
@@ -58,7 +58,7 @@ class UuidGeneratorAndResolverFactory {
 	 * 
 	 * @param resourceSet -
 	 * 		the {@link ResourceSet} to load model elements from, may not be {@code null}
-	 * @throws IllegalArgumentException if given {@link ResourceSet} is {@link null}
+	 * @throws IllegalArgumentException if given {@link ResourceSet} is {@code null}
 	 */
 	static def UuidGeneratorAndResolver createUuidGeneratorAndResolver(ResourceSet resourceSet) {
 		return new UuidGeneratorAndResolverImpl(null, resourceSet, null)
