@@ -46,6 +46,10 @@ class VirtualModelImpl implements InternalVirtualModel {
 			userInteractor
 		)
 	}
+	
+	package def loadExistingModels() {
+		this.resourceRepository.loadExistingModels()
+	}
 
 	override synchronized getCorrespondenceModel() {
 		this.resourceRepository.correspondenceModel
