@@ -51,7 +51,6 @@ class ResourceRepositoryImpl implements ModelRepository {
 		this.correspondenceModel = createCorrespondenceModel(uuidGeneratorAndResolver,
 			fileSystemLayout.correspondencesVURI.EMFUri)
 		this.modelsResourceSet.eAdapters += new ResourceRegistrationAdapter[getModel(VURI.getInstance(it))]
-		loadVURIsOfVSMUModelInstances()
 	}
 
 	override loadExistingModels() {
@@ -136,12 +135,6 @@ class ResourceRepositoryImpl implements ModelRepository {
 		}
 		correspondenceModel.save()
 		uuidGeneratorAndResolver.save()
-	}
-
-	def private void loadVURIsOfVSMUModelInstances() {
-		for (VURI vuri : fileSystemLayout.loadVsumVURIs()) {
-			createOrLoadModel(vuri, true)
-		}
 	}
 
 	def private VitruvDomain getDomainForURI(VURI uri) {
