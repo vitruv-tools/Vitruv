@@ -3,6 +3,7 @@
  */
 package tools.vitruv.dsls.reactions
 
+import static tools.vitruv.dsls.common.elements.CommonLanguageElementsInitialization.initializeVitruvDomainsRepository
 
 /**
  * Initialization support for running Xtext languages without Equinox extension registry.
@@ -10,6 +11,7 @@ package tools.vitruv.dsls.reactions
 class ReactionsLanguageStandaloneSetup extends ReactionsLanguageStandaloneSetupGenerated {
 
 	def static void doSetup() {
+		initializeVitruvDomainsRepository()
 		new ReactionsLanguageStandaloneSetup().createInjectorAndDoEMFRegistration()
 	}
 }
