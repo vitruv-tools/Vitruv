@@ -16,8 +16,8 @@ Workflow {
 		from = "http://www.eclipse.org/emf/2002/Ecore"
 		to = "platform:/resource/org.eclipse.emf.ecore/model/Ecore.ecore"
 	}
-    
-	component = tools.vitruv.dsls.reactions.postprocessor.ReactionsLanguageExtendedGenerator {
+
+	component = XtextGenerator {
 		configuration = {
 			project = StandardProjectConfig {
 				baseName = projectName
@@ -51,7 +51,14 @@ Workflow {
 				generateStub = true
 			}
 			referencedResource = "platform:/resource/tools.vitruv.dsls.common/model/CommonLanguageElements.genmodel"
+			referencedResource = "platform:/resource/tools.vitruv.dsls.reactions/model/TopLevelElements.genmodel"
 		}
+	}
+	
+	component = EcoreGenerator {
+		srcPath = "platform:/resource/tools.vitruv.dsls.reactions/model-gen"
+		genModel = "platform:/resource/tools.vitruv.dsls.reactions/model/TopLevelElements.genmodel"
+		generateCustomClasses = false
 	}
 	
 	component = EcoreGenerator {

@@ -28,7 +28,7 @@ import tools.vitruv.dsls.reactions.scoping.ReactionsLanguageScopeProviderDelegat
 import static tools.vitruv.dsls.common.elements.ElementsPackage.Literals.*
 import tools.vitruv.dsls.mappings.mappingsLanguage.ExistingMappingCorrespondence
 import tools.vitruv.dsls.mappings.mappingsLanguage.ObserveChange
-import tools.vitruv.dsls.reactions.reactionsLanguage.NamedMetaclassReference
+import tools.vitruv.dsls.common.elements.NamedMetaclassReference
 
 class MappingsLanguageScopeProviderDelegate extends ReactionsLanguageScopeProviderDelegate {
 

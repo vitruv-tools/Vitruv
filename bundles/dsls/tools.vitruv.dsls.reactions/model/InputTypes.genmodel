@@ -6,7 +6,7 @@
     importerID="org.eclipse.emf.importer.ecore" complianceLevel="8.0" copyrightFields="false"
     operationReflection="true" importOrganizing="true">
   <foreignModel>InputTypes.ecore</foreignModel>
-  <genPackages prefix="InputTypes" basePackage="tools.vitruv.dsls.reactions.reactionsLanguage"
+  <genPackages prefix="InputTypes" basePackage="tools.vitruv.dsls.reactions.language"
       disposableProviderFactory="true" ecorePackage="InputTypes.ecore#/">
     <genClasses ecoreClass="InputTypes.ecore#//String"/>
     <genClasses ecoreClass="InputTypes.ecore#//Int"/>

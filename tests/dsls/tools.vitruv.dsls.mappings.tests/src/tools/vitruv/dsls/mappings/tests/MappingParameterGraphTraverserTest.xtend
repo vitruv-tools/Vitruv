@@ -22,7 +22,7 @@ import static org.hamcrest.MatcherAssert.assertThat
 import static org.hamcrest.CoreMatchers.is
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow
 import static org.hamcrest.CoreMatchers.instanceOf
-import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsLanguageFactory
+import tools.vitruv.dsls.common.elements.ElementsFactory
 
 class MappingParameterGraphTraverserTest {
 	static Logger LOGGER = Logger.getLogger(MappingParameterGraphTraverserTest)
@@ -238,7 +238,7 @@ class MappingParameterGraphTraverserTest {
 
 	private def toParameter(String param) {
 		MappingsLanguageFactory.eINSTANCE.createMappingParameter => [
-			value = ReactionsLanguageFactory.eINSTANCE.createNamedMetaclassReference => [
+			value = ElementsFactory.eINSTANCE.createNamedMetaclassReference => [
 				name = param
 			]
 		]

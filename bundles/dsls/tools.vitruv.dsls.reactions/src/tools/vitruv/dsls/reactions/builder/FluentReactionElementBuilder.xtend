@@ -20,11 +20,11 @@ import org.eclipse.xtext.xtype.XtypeFactory
 import tools.vitruv.dsls.common.elements.MetaclassEAttributeReference
 import tools.vitruv.dsls.common.elements.MetaclassEReferenceReference
 import tools.vitruv.dsls.common.elements.MetaclassReference
-import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsFile
+import tools.vitruv.dsls.reactions.language.toplevelelements.ReactionsFile
 
 import static com.google.common.base.Preconditions.*
 import tools.vitruv.dsls.common.elements.ElementsFactory
-import tools.vitruv.dsls.reactions.reactionsLanguage.NamedJavaElementReference
+import tools.vitruv.dsls.reactions.language.toplevelelements.NamedJavaElementReference
 
 /**
  * Parent class of all fluent builders. The builders work in three phases:

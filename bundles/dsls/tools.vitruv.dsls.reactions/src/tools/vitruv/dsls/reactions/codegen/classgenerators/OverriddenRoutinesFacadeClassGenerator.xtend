@@ -5,7 +5,7 @@ import org.eclipse.xtext.common.types.JvmGenericType
 import org.eclipse.xtext.common.types.JvmVisibility
 import tools.vitruv.dsls.common.ClassNameGenerator
 import tools.vitruv.dsls.reactions.codegen.typesbuilder.TypesBuilderExtensionProvider
-import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsSegment
+import tools.vitruv.dsls.reactions.language.toplevelelements.ReactionsSegment
 import tools.vitruv.extensions.dslsruntime.reactions.structure.ReactionsImportPath
 
 import static extension tools.vitruv.dsls.reactions.codegen.helper.ClassNamesGenerators.*

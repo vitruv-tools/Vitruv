@@ -9,10 +9,10 @@ import org.eclipse.xtext.xbase.jvmmodel.IJvmDeclaredTypeAcceptor
 import tools.vitruv.dsls.reactions.codegen.classgenerators.ExecutorClassGenerator
 import tools.vitruv.dsls.reactions.codegen.classgenerators.RoutineFacadeClassGenerator
 import tools.vitruv.dsls.reactions.codegen.classgenerators.RoutineClassGenerator
-import tools.vitruv.dsls.reactions.reactionsLanguage.Routine
-import tools.vitruv.dsls.reactions.reactionsLanguage.Reaction
-import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsFile
-import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsSegment
+import tools.vitruv.dsls.reactions.language.toplevelelements.Routine
+import tools.vitruv.dsls.reactions.language.toplevelelements.Reaction
+import tools.vitruv.dsls.reactions.language.toplevelelements.ReactionsFile
+import tools.vitruv.dsls.reactions.language.toplevelelements.ReactionsSegment
 import tools.vitruv.dsls.reactions.codegen.typesbuilder.JvmTypesBuilderWithoutAssociations
 import tools.vitruv.dsls.reactions.codegen.typesbuilder.TypesBuilderExtensionProvider
 import tools.vitruv.dsls.reactions.codegen.classgenerators.ReactionClassGenerator

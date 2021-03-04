@@ -5,26 +5,25 @@ package tools.vitruv.dsls.reactions.ui.outline
 
 import org.eclipse.xtext.ui.editor.outline.impl.DefaultOutlineTreeProvider
 import org.eclipse.xtext.ui.editor.outline.impl.DocumentRootNode
-import tools.vitruv.dsls.reactions.reactionsLanguage.Trigger
-import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsLanguagePackage
+import tools.vitruv.dsls.reactions.language.toplevelelements.Trigger
+import tools.vitruv.dsls.reactions.language.toplevelelements.TopLevelElementsPackage
 import org.eclipse.xtext.ui.editor.outline.impl.EStructuralFeatureNode
 import tools.vitruv.dsls.common.elements.MetamodelImport
 import tools.vitruv.dsls.common.elements.ElementsPackage
-import tools.vitruv.dsls.reactions.reactionsLanguage.Routine
-import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsFile
-import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsSegment
-import tools.vitruv.dsls.reactions.reactionsLanguage.Reaction
-import tools.vitruv.dsls.reactions.reactionsLanguage.Action
-// import static extension tools.vitruv.dsls.reactions.codegen.changetyperepresentation.ChangeTypeRepresentationExtractor.*
+import tools.vitruv.dsls.reactions.language.toplevelelements.Routine
+import tools.vitruv.dsls.reactions.language.toplevelelements.ReactionsFile
+import tools.vitruv.dsls.reactions.language.toplevelelements.ReactionsSegment
+import tools.vitruv.dsls.reactions.language.toplevelelements.Reaction
+import tools.vitruv.dsls.reactions.language.toplevelelements.Action
 import static extension tools.vitruv.dsls.reactions.util.ReactionsLanguageUtil.*
-import tools.vitruv.dsls.reactions.reactionsLanguage.Matcher
-import tools.vitruv.dsls.reactions.reactionsLanguage.RoutineInput
-import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsImport
-import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionRoutineCall
+import tools.vitruv.dsls.reactions.language.toplevelelements.Matcher
+import tools.vitruv.dsls.reactions.language.toplevelelements.RoutineInput
+import tools.vitruv.dsls.reactions.language.toplevelelements.ReactionsImport
+import tools.vitruv.dsls.reactions.language.toplevelelements.RoutineCallBlock
 import org.eclipse.xtext.ui.editor.outline.impl.EObjectNode
-import tools.vitruv.dsls.reactions.reactionsLanguage.ModelElementChange
-import tools.vitruv.dsls.reactions.reactionsLanguage.ModelAttributeChange
-import tools.vitruv.dsls.reactions.reactionsLanguage.ArbitraryModelChange
+import tools.vitruv.dsls.reactions.language.ModelElementChange
+import tools.vitruv.dsls.reactions.language.ModelAttributeChange
+import tools.vitruv.dsls.reactions.language.ArbitraryModelChange
 
 /**
  * Outline structure definition for a reactions file.
@@ -34,7 +33,7 @@ import tools.vitruv.dsls.reactions.reactionsLanguage.ArbitraryModelChange
 class ReactionsLanguageOutlineTreeProvider extends DefaultOutlineTreeProvider {
 	protected def void _createChildren(DocumentRootNode root, ReactionsFile reactionsFile) {
 		val importsNode = createEStructuralFeatureNode(root, reactionsFile, 
-			ReactionsLanguagePackage.Literals.REACTIONS_FILE__METAMODEL_IMPORTS,
+			TopLevelElementsPackage.Literals.REACTIONS_FILE__METAMODEL_IMPORTS,
 			imageDispatcher.invoke(reactionsFile), "imports", false);
 		for (imp : reactionsFile.metamodelImports) {
 			createChildren(importsNode, imp);
@@ -47,17 +46,17 @@ class ReactionsLanguageOutlineTreeProvider extends DefaultOutlineTreeProvider {
 	protected def void _createChildren(DocumentRootNode parentNode, ReactionsSegment reactionsSegment) {
 		val segmentNode = createEObjectNode(parentNode, reactionsSegment);
 		val reactionsImportsNode = createEStructuralFeatureNode(segmentNode, reactionsSegment,
-			ReactionsLanguagePackage.Literals.REACTIONS_SEGMENT__REACTIONS_IMPORTS, imageDispatcher.invoke(reactionsSegment),
+			TopLevelElementsPackage.Literals.REACTIONS_SEGMENT__REACTIONS_IMPORTS, imageDispatcher.invoke(reactionsSegment),
 			"reactionsImports", false);
 		for (reactionsImport : reactionsSegment.reactionsImports) {
 			createChildren(reactionsImportsNode, reactionsSegment);
 		}
 		val reactionsNode = createEStructuralFeatureNode(segmentNode, reactionsSegment, 
-			ReactionsLanguagePackage.Literals.REACTIONS_SEGMENT__REACTIONS, imageDispatcher.invoke(reactionsSegment), "reactions", false)
+			TopLevelElementsPackage.Literals.REACTIONS_SEGMENT__REACTIONS, imageDispatcher.invoke(reactionsSegment), "reactions", false)
 		for (reaction : reactionsSegment.reactions) {
 			createChildren(reactionsNode, reactionsSegment);	
 		}
-		val routinesNode = createEStructuralFeatureNode(segmentNode, reactionsSegment, ReactionsLanguagePackage.Literals.REACTIONS_SEGMENT__ROUTINES, imageDispatcher.invoke(reactionsSegment), "routines", false)
+		val routinesNode = createEStructuralFeatureNode(segmentNode, reactionsSegment, TopLevelElementsPackage.Literals.REACTIONS_SEGMENT__ROUTINES, imageDispatcher.invoke(reactionsSegment), "routines", false)
 		for (routine : reactionsSegment.routines) {
 			createChildren(routinesNode, reactionsSegment);	
 		}
@@ -74,7 +73,7 @@ class ReactionsLanguageOutlineTreeProvider extends DefaultOutlineTreeProvider {
 	protected def void _createChildren(EStructuralFeatureNode parentNode, ReactionsImport reactionsImport) {
 		val importNode = createEObjectNode(parentNode, reactionsImport);
 		createEStructuralFeatureNode(importNode, reactionsImport,
-			ReactionsLanguagePackage.Literals.REACTIONS_IMPORT__IMPORTED_REACTIONS_SEGMENT,
+			TopLevelElementsPackage.Literals.REACTIONS_IMPORT__IMPORTED_REACTIONS_SEGMENT,
 			imageDispatcher.invoke(reactionsImport.importedReactionsSegment),
 			reactionsImport.importedReactionsSegment?.name, true);
 	}
@@ -83,7 +82,7 @@ class ReactionsLanguageOutlineTreeProvider extends DefaultOutlineTreeProvider {
 		val reactionNode = createEObjectNode(parentNode, reaction);
 		if (reaction.documentation !== null) {
 			createEStructuralFeatureNode(reactionNode, reaction,
-				ReactionsLanguagePackage.Literals.REACTION__DOCUMENTATION,
+				TopLevelElementsPackage.Literals.REACTION__DOCUMENTATION,
 				imageDispatcher.invoke(reaction.documentation),
 				"documentation", true);
 		}
@@ -158,7 +157,7 @@ class ReactionsLanguageOutlineTreeProvider extends DefaultOutlineTreeProvider {
 		return true;
 	}
 	
-	protected def boolean _isLeaf(ReactionRoutineCall element) {
+	protected def boolean _isLeaf(RoutineCallBlock element) {
 		return true;
 	}
 	

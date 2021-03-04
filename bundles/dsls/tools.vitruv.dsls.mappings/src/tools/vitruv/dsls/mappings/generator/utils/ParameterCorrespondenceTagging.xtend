@@ -2,7 +2,7 @@ package tools.vitruv.dsls.mappings.generator.utils
 
 import tools.vitruv.dsls.mappings.mappingsLanguage.MappingParameter
 import tools.vitruv.dsls.mappings.generator.MappingGeneratorContext
-import tools.vitruv.dsls.reactions.reactionsLanguage.NamedMetaclassReference
+import tools.vitruv.dsls.common.elements.NamedMetaclassReference
 
 class ParameterCorrespondenceTagging {
 

@@ -2,10 +2,10 @@ package tools.vitruv.dsls.mappings.generator.integration
 
 import org.eclipse.xtend.lib.annotations.Accessors
 import tools.vitruv.dsls.mappings.mappingsLanguage.MappingsSegment
-import tools.vitruv.dsls.reactions.reactionsLanguage.Reaction
-import tools.vitruv.dsls.reactions.reactionsLanguage.Routine
-import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsSegment
-import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsLanguageFactory
+import tools.vitruv.dsls.reactions.language.toplevelelements.Reaction
+import tools.vitruv.dsls.reactions.language.toplevelelements.Routine
+import tools.vitruv.dsls.reactions.language.toplevelelements.ReactionsSegment
+import tools.vitruv.dsls.reactions.language.toplevelelements.TopLevelElementsFactory
 
 class StandaloneReactionIntegration implements IReactionIntegrateable{
 	
@@ -13,7 +13,7 @@ class StandaloneReactionIntegration implements IReactionIntegrateable{
 	var ReactionsSegment reactionsSegment
 
     new(MappingsSegment segment, boolean l2r){
-    	reactionsSegment = ReactionsLanguageFactory.eINSTANCE.createReactionsSegment
+    	reactionsSegment = TopLevelElementsFactory.eINSTANCE.createReactionsSegment
 		reactionsSegment.name = segment.name+'Integration'
 		reactionsSegment.fromDomain = getDomain(segment, l2r)
 		reactionsSegment.toDomain = getDomain(segment, !l2r)

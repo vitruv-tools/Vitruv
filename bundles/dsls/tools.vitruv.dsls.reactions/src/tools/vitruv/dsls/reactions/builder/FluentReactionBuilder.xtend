@@ -14,14 +14,15 @@ import org.eclipse.xtext.xbase.XExpression
 import org.eclipse.xtext.xbase.XbaseFactory
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.RoutineCallParameter
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.RoutineStartBuilder
-import tools.vitruv.dsls.reactions.reactionsLanguage.ElementChangeType
-import tools.vitruv.dsls.reactions.reactionsLanguage.ModelElementChange
-import tools.vitruv.dsls.reactions.reactionsLanguage.Reaction
-import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionRoutineCall
-import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsLanguageFactory
+import tools.vitruv.dsls.reactions.language.ElementChangeType
+import tools.vitruv.dsls.reactions.language.ModelElementChange
+import tools.vitruv.dsls.reactions.language.toplevelelements.Reaction
+import tools.vitruv.dsls.reactions.language.toplevelelements.TopLevelElementsFactory
 
 import static com.google.common.base.Preconditions.*
 import tools.vitruv.dsls.common.elements.ElementsFactory
+import tools.vitruv.dsls.reactions.language.LanguageFactory
+import tools.vitruv.dsls.reactions.language.toplevelelements.RoutineCallBlock
 
 class FluentReactionBuilder extends FluentReactionsSegmentChildBuilder {
 
@@ -37,7 +38,7 @@ class FluentReactionBuilder extends FluentReactionsSegmentChildBuilder {
 
 	package new(String reactionName, FluentBuilderContext context) {
 		super(context)
-		reaction = ReactionsLanguageFactory.eINSTANCE.createReaction => [
+		reaction = TopLevelElementsFactory.eINSTANCE.createReaction => [
 			name = reactionName
 		]
 	}
@@ -71,12 +72,12 @@ class FluentReactionBuilder extends FluentReactionsSegmentChildBuilder {
 		}
 
 		def afterAnyChange() {
-			reaction.trigger = ReactionsLanguageFactory.eINSTANCE.createArbitraryModelChange
+			reaction.trigger = LanguageFactory.eINSTANCE.createArbitraryModelChange
 			return new PreconditionOrRoutineCallBuilder(builder)
 		}
 
 		def afterElement(EClass element) {
-			val change = ReactionsLanguageFactory.eINSTANCE.createModelElementChange => [
+			val change = LanguageFactory.eINSTANCE.createModelElementChange => [
 				elementType = ElementsFactory.eINSTANCE.createMetaclassReference.reference(element)
 			]
 			reaction.trigger = change
@@ -84,7 +85,7 @@ class FluentReactionBuilder extends FluentReactionsSegmentChildBuilder {
 		}
 
 		def afterElement() {
-			val change = ReactionsLanguageFactory.eINSTANCE.createModelElementChange
+			val change = LanguageFactory.eINSTANCE.createModelElementChange
 			reaction.trigger = change
 			return new ChangeTypeBuilder(builder, change, null)
 		}
@@ -96,7 +97,7 @@ class FluentReactionBuilder extends FluentReactionsSegmentChildBuilder {
 		def afterAttributeInsertIn(EClass eClass, EAttribute attribute) {
 			valueType = attribute.EType
 			affectedObjectType = eClass
-			reaction.trigger = ReactionsLanguageFactory.eINSTANCE.createModelAttributeInsertedChange => [
+			reaction.trigger = LanguageFactory.eINSTANCE.createModelAttributeInsertedChange => [
 				feature = ElementsFactory.eINSTANCE.createMetaclassEAttributeReference.reference(eClass, attribute)
 			]
 			return new PreconditionOrRoutineCallBuilder(builder)
@@ -109,7 +110,7 @@ class FluentReactionBuilder extends FluentReactionsSegmentChildBuilder {
 		def afterAttributeReplacedAt(EClass eClass, EAttribute attribute) {
 			valueType = attribute.EType
 			affectedObjectType = eClass
-			reaction.trigger = ReactionsLanguageFactory.eINSTANCE.createModelAttributeReplacedChange => [
+			reaction.trigger = LanguageFactory.eINSTANCE.createModelAttributeReplacedChange => [
 				feature = ElementsFactory.eINSTANCE.createMetaclassEAttributeReference.reference(eClass, attribute)
 			]
 			return new PreconditionOrRoutineCallBuilder(builder)
@@ -122,7 +123,7 @@ class FluentReactionBuilder extends FluentReactionsSegmentChildBuilder {
 		def afterAttributeRemoveFrom(EClass eClass, EAttribute attribute) {
 			valueType = attribute.EType
 			affectedObjectType = eClass
-			reaction.trigger = ReactionsLanguageFactory.eINSTANCE.createModelAttributeRemovedChange => [
+			reaction.trigger = LanguageFactory.eINSTANCE.createModelAttributeRemovedChange => [
 				feature = ElementsFactory.eINSTANCE.createMetaclassEAttributeReference.reference(eClass, attribute)
 			]
 			return new PreconditionOrRoutineCallBuilder(builder)
@@ -142,17 +143,17 @@ class FluentReactionBuilder extends FluentReactionsSegmentChildBuilder {
 
 		def created() {
 			affectedObjectType = element ?: EcorePackage.eINSTANCE.EObject
-			continueWithChangeType(ReactionsLanguageFactory.eINSTANCE.createElementCreationChangeType)
+			continueWithChangeType(LanguageFactory.eINSTANCE.createElementCreationChangeType)
 		}
 
 		def deleted() {
 			affectedObjectType = element ?: EcorePackage.eINSTANCE.EObject
-			continueWithChangeType(ReactionsLanguageFactory.eINSTANCE.createElementDeletionChangeType)
+			continueWithChangeType(LanguageFactory.eINSTANCE.createElementDeletionChangeType)
 		}
 
 		def insertedAsRoot() {
 			valueType = element ?: EcorePackage.eINSTANCE.EObject
-			continueWithChangeType(ReactionsLanguageFactory.eINSTANCE.createElementInsertionAsRootChangeType)
+			continueWithChangeType(LanguageFactory.eINSTANCE.createElementInsertionAsRootChangeType)
 		}
 
 		def insertedIn(EReference reference) {
@@ -162,7 +163,7 @@ class FluentReactionBuilder extends FluentReactionsSegmentChildBuilder {
 		def insertedIn(EClass eClass, EReference reference) {
 			valueType = element ?: reference.EReferenceType
 			affectedObjectType = eClass
-			continueWithChangeType(ReactionsLanguageFactory.eINSTANCE.createElementInsertionInListChangeType => [
+			continueWithChangeType(LanguageFactory.eINSTANCE.createElementInsertionInListChangeType => [
 				feature = ElementsFactory.eINSTANCE.createMetaclassEReferenceReference.reference(eClass, reference)
 			])
 		}
@@ -174,14 +175,14 @@ class FluentReactionBuilder extends FluentReactionsSegmentChildBuilder {
 		def removedFrom(EClass eClass, EReference reference) {
 			valueType = element ?: reference.EReferenceType
 			affectedObjectType = eClass
-			continueWithChangeType(ReactionsLanguageFactory.eINSTANCE.createElementRemovalFromListChangeType => [
+			continueWithChangeType(LanguageFactory.eINSTANCE.createElementRemovalFromListChangeType => [
 				feature = ElementsFactory.eINSTANCE.createMetaclassEReferenceReference.reference(eClass, reference)
 			])
 		}
 
 		def removedAsRoot() {
 			valueType = element ?: EcorePackage.eINSTANCE.EObject
-			continueWithChangeType(ReactionsLanguageFactory.eINSTANCE.createElementRemovalAsRootChangeType)
+			continueWithChangeType(LanguageFactory.eINSTANCE.createElementRemovalAsRootChangeType)
 		}
 
 		def replacedAt(EReference reference) {
@@ -191,7 +192,7 @@ class FluentReactionBuilder extends FluentReactionsSegmentChildBuilder {
 		def replacedAt(EClass eClass, EReference reference) {
 			valueType = element ?: reference.EReferenceType
 			affectedObjectType = eClass
-			continueWithChangeType(ReactionsLanguageFactory.eINSTANCE.createElementReplacementChangeType => [
+			continueWithChangeType(LanguageFactory.eINSTANCE.createElementReplacementChangeType => [
 				feature = ElementsFactory.eINSTANCE.createMetaclassEReferenceReference.reference(eClass, reference)
 			])
 		}
@@ -246,7 +247,7 @@ class FluentReactionBuilder extends FluentReactionsSegmentChildBuilder {
 
 		def private addRoutineCall(FluentRoutineBuilder routineBuilder, RoutineCallParameter... parameters) {
 			if (reaction.callRoutine === null) {
-				reaction.callRoutine = ReactionsLanguageFactory.eINSTANCE.createReactionRoutineCall => [
+				reaction.callRoutine = TopLevelElementsFactory.eINSTANCE.createReactionRoutineCall => [
 					code = routineCall(routineBuilder, parameters)
 				]
 			} else {
@@ -275,7 +276,7 @@ class FluentReactionBuilder extends FluentReactionsSegmentChildBuilder {
 				routineInitializer)
 		}
 
-		def private routineCall(ReactionRoutineCall routineCall, FluentRoutineBuilder routineBuilder,
+		def private routineCall(RoutineCallBlock routineCall, FluentRoutineBuilder routineBuilder,
 			RoutineCallParameter... parameters) {
 			(XbaseFactory.eINSTANCE.createXFeatureCall => [
 				explicitOperationCall = true
@@ -312,7 +313,7 @@ class FluentReactionBuilder extends FluentReactionsSegmentChildBuilder {
 		}
 
 		def with(Function<TypeProvider, XExpression> expressionProvider) {
-			reaction.trigger.precondition = ReactionsLanguageFactory.eINSTANCE.createPreconditionCodeBlock => [
+			reaction.trigger.precondition = TopLevelElementsFactory.eINSTANCE.createPreconditionCodeBlock => [
 				code = XbaseFactory.eINSTANCE.createXBlockExpression.whenJvmTypes [
 					expressions += extractExpressions(expressionProvider.apply(typeProvider))
 				]

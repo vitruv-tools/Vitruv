@@ -5,23 +5,23 @@ package tools.vitruv.dsls.reactions.validation
 
 import com.google.inject.Inject
 import org.eclipse.xtext.validation.Check
-import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsLanguagePackage
+import tools.vitruv.dsls.reactions.language.toplevelelements.TopLevelElementsPackage
 import java.util.HashMap
-import tools.vitruv.dsls.reactions.reactionsLanguage.Routine
-import tools.vitruv.dsls.reactions.reactionsLanguage.RetrieveModelElement
-import tools.vitruv.dsls.reactions.reactionsLanguage.CreateModelElement
-import tools.vitruv.dsls.reactions.reactionsLanguage.Reaction
-import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsSegment
-import tools.vitruv.dsls.reactions.reactionsLanguage.ModelElementChange
-import tools.vitruv.dsls.reactions.reactionsLanguage.ElementReferenceChangeType
+import tools.vitruv.dsls.reactions.language.toplevelelements.Routine
+import tools.vitruv.dsls.reactions.language.RetrieveModelElement
+import tools.vitruv.dsls.reactions.language.CreateModelElement
+import tools.vitruv.dsls.reactions.language.toplevelelements.Reaction
+import tools.vitruv.dsls.reactions.language.toplevelelements.ReactionsSegment
+import tools.vitruv.dsls.reactions.language.ModelElementChange
+import tools.vitruv.dsls.reactions.language.ElementReferenceChangeType
 import org.eclipse.emf.ecore.EClass
-import tools.vitruv.dsls.reactions.reactionsLanguage.ElementCreationAndInsertionChangeType
-import tools.vitruv.dsls.reactions.reactionsLanguage.ElementChangeType
-import tools.vitruv.dsls.reactions.reactionsLanguage.ElementDeletionAndRemovalChangeType
-import tools.vitruv.dsls.reactions.reactionsLanguage.ElementDeletionAndCreationAndReplacementChangeType
-import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsFile
+import tools.vitruv.dsls.reactions.language.ElementCreationAndInsertionChangeType
+import tools.vitruv.dsls.reactions.language.ElementChangeType
+import tools.vitruv.dsls.reactions.language.ElementDeletionAndRemovalChangeType
+import tools.vitruv.dsls.reactions.language.ElementDeletionAndCreationAndReplacementChangeType
+import tools.vitruv.dsls.reactions.language.toplevelelements.ReactionsFile
 import tools.vitruv.dsls.reactions.scoping.ReactionsImportScopeHelper
-import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsImport
+import tools.vitruv.dsls.reactions.language.toplevelelements.ReactionsImport
 import static extension tools.vitruv.dsls.reactions.codegen.helper.ReactionsLanguageHelper.*
 import static extension tools.vitruv.dsls.reactions.codegen.helper.ReactionsImportsHelper.*
 import static extension tools.vitruv.dsls.reactions.util.ReactionsLanguageUtil.*
@@ -29,6 +29,7 @@ import tools.vitruv.dsls.common.elements.DomainReference
 import tools.vitruv.framework.domains.VitruvDomainProviderRegistry
 import tools.vitruv.dsls.common.elements.ElementsPackage
 import static extension tools.vitruv.dsls.common.elements.CommonLanguageElementsValidation.isValid
+import tools.vitruv.dsls.reactions.language.LanguagePackage
 
 /**
  * This class contains custom validation rules. 
@@ -46,9 +47,9 @@ class ReactionsLanguageValidator extends AbstractReactionsLanguageValidator {
 			val reactionsSegmentName = reactionsSegment.formattedName;
 			if (alreadyCheckedSegments.putIfAbsent(reactionsSegmentName, reactionsSegment) !== null) {
 				val errorMessage = "Duplicate reactions segment name: " + reactionsSegmentName;
-				error(errorMessage, reactionsSegment, ReactionsLanguagePackage.Literals.REACTIONS_SEGMENT__NAME);
+				error(errorMessage, reactionsSegment, TopLevelElementsPackage.Literals.REACTIONS_SEGMENT__NAME);
 				val duplicateNameSegment = alreadyCheckedSegments.get(reactionsSegmentName);
-				error(errorMessage, duplicateNameSegment, ReactionsLanguagePackage.Literals.REACTIONS_SEGMENT__NAME);
+				error(errorMessage, duplicateNameSegment, TopLevelElementsPackage.Literals.REACTIONS_SEGMENT__NAME);
 			}
 		}
 	}
@@ -60,11 +61,11 @@ class ReactionsLanguageValidator extends AbstractReactionsLanguageValidator {
 		val segmentFormattedName = reactionsSegment.formattedName;
 		if (segmentName.startsWith("_")) {
 			error("Reactions segment names must not start with an underscore.",
-				ReactionsLanguagePackage.Literals.REACTIONS_SEGMENT__NAME);
+				TopLevelElementsPackage.Literals.REACTIONS_SEGMENT__NAME);
 		}
 		if (!Character.isLowerCase(segmentName.charAt(0))) {
 			warning("Reactions segment names should start lower case.",
-				ReactionsLanguagePackage.Literals.REACTIONS_SEGMENT__NAME);
+				TopLevelElementsPackage.Literals.REACTIONS_SEGMENT__NAME);
 		}
 
 		// check for duplicate reactions segment names globally:
@@ -81,7 +82,7 @@ class ReactionsLanguageValidator extends AbstractReactionsLanguageValidator {
 				"Duplicate reactions segment name '" + segmentFormattedName + "': Already defined in " +
 					pathToOtherSegment,
 				reactionsSegment,
-				ReactionsLanguagePackage.Literals.REACTIONS_SEGMENT__NAME
+				TopLevelElementsPackage.Literals.REACTIONS_SEGMENT__NAME
 			);
 		}
 
@@ -124,7 +125,7 @@ class ReactionsLanguageValidator extends AbstractReactionsLanguageValidator {
 				val errorMessage = "Cannot import reactions segment using a different metamodel pair: " +
 					importedMetamodelPairName;
 				error(errorMessage, reactionsImport,
-					ReactionsLanguagePackage.Literals.REACTIONS_IMPORT__IMPORTED_REACTIONS_SEGMENT);
+					TopLevelElementsPackage.Literals.REACTIONS_IMPORT__IMPORTED_REACTIONS_SEGMENT);
 			}
 		}
 	}
@@ -139,9 +140,9 @@ class ReactionsLanguageValidator extends AbstractReactionsLanguageValidator {
 			if (duplicateImport !== null) {
 				val errorMessage = "Duplicate reactions import: " + importedSegmentFormattedName;
 				error(errorMessage, reactionsImport,
-					ReactionsLanguagePackage.Literals.REACTIONS_IMPORT__IMPORTED_REACTIONS_SEGMENT);
+					TopLevelElementsPackage.Literals.REACTIONS_IMPORT__IMPORTED_REACTIONS_SEGMENT);
 				error(errorMessage, duplicateImport,
-					ReactionsLanguagePackage.Literals.REACTIONS_IMPORT__IMPORTED_REACTIONS_SEGMENT);
+					TopLevelElementsPackage.Literals.REACTIONS_IMPORT__IMPORTED_REACTIONS_SEGMENT);
 			}
 		}
 	}
@@ -155,7 +156,7 @@ class ReactionsLanguageValidator extends AbstractReactionsLanguageValidator {
 			if (importImportedSegments.findFirst[it.formattedName.equals(segmentFormattedName)] !== null) {
 				val errorMessage = "Cyclic reactions import! Cannot transitively import self: " + segmentFormattedName;
 				error(errorMessage, reactionsImport,
-					ReactionsLanguagePackage.Literals.REACTIONS_IMPORT__IMPORTED_REACTIONS_SEGMENT);
+					TopLevelElementsPackage.Literals.REACTIONS_IMPORT__IMPORTED_REACTIONS_SEGMENT);
 			}
 		}
 	}
@@ -175,9 +176,9 @@ class ReactionsLanguageValidator extends AbstractReactionsLanguageValidator {
 						includedReactionsSegmentFormattedName +
 						"') more than once. Consider importing only the routines for one of them.";
 					error(errorMessage, reactionsImport,
-						ReactionsLanguagePackage.Literals.REACTIONS_IMPORT__IMPORTED_REACTIONS_SEGMENT);
+						TopLevelElementsPackage.Literals.REACTIONS_IMPORT__IMPORTED_REACTIONS_SEGMENT);
 					error(errorMessage, duplicateReactionsImport,
-						ReactionsLanguagePackage.Literals.REACTIONS_IMPORT__IMPORTED_REACTIONS_SEGMENT);
+						TopLevelElementsPackage.Literals.REACTIONS_IMPORT__IMPORTED_REACTIONS_SEGMENT);
 				}
 			}
 		}
@@ -197,7 +198,7 @@ class ReactionsLanguageValidator extends AbstractReactionsLanguageValidator {
 				val errorMessage = "A reaction with this name ('" + importedReactionName +
 					"') already exists in segment '" + importedReaction.reactionsSegment.formattedName +
 					"'. Consider using a different name.";
-				warning(errorMessage, duplicateReaction, ReactionsLanguagePackage.Literals.REACTION__NAME);
+				warning(errorMessage, duplicateReaction, TopLevelElementsPackage.Literals.REACTION__NAME);
 			}
 		}
 	}
@@ -219,8 +220,8 @@ class ReactionsLanguageValidator extends AbstractReactionsLanguageValidator {
 					val errorMessage = "Name-clash between imported and local routine ('" + includedRoutineName +
 						"'). Consider importing using qualified names.";
 					error(errorMessage, reactionsImport,
-						ReactionsLanguagePackage.Literals.REACTIONS_IMPORT__IMPORTED_REACTIONS_SEGMENT);
-					error(errorMessage, duplicateRoutine, ReactionsLanguagePackage.Literals.ROUTINE__NAME);
+						TopLevelElementsPackage.Literals.REACTIONS_IMPORT__IMPORTED_REACTIONS_SEGMENT);
+					error(errorMessage, duplicateRoutine, TopLevelElementsPackage.Literals.ROUTINE__NAME);
 				}
 
 				// check for name clashes with included routines from other imports:
@@ -230,9 +231,9 @@ class ReactionsLanguageValidator extends AbstractReactionsLanguageValidator {
 					val errorMessage = "Name-clash between imported routines ('" + includedRoutineName +
 						"'). Consider importing one of them using qualified names.";
 					error(errorMessage, reactionsImport,
-						ReactionsLanguagePackage.Literals.REACTIONS_IMPORT__IMPORTED_REACTIONS_SEGMENT);
+						TopLevelElementsPackage.Literals.REACTIONS_IMPORT__IMPORTED_REACTIONS_SEGMENT);
 					error(errorMessage, duplicateReactionsImport,
-						ReactionsLanguagePackage.Literals.REACTIONS_IMPORT__IMPORTED_REACTIONS_SEGMENT);
+						TopLevelElementsPackage.Literals.REACTIONS_IMPORT__IMPORTED_REACTIONS_SEGMENT);
 				}
 			}
 		}
@@ -275,9 +276,9 @@ class ReactionsLanguageValidator extends AbstractReactionsLanguageValidator {
 		val errorMessage = "Name-clash between routines imported (possibly transitively) with qualified names ('" +
 			conflictingSegmentName + "'). Consider importing one of them without qualified names.";
 		error(errorMessage, checkedImport,
-			ReactionsLanguagePackage.Literals.REACTIONS_IMPORT__IMPORTED_REACTIONS_SEGMENT);
+			TopLevelElementsPackage.Literals.REACTIONS_IMPORT__IMPORTED_REACTIONS_SEGMENT);
 		error(errorMessage, conflictingImport,
-			ReactionsLanguagePackage.Literals.REACTIONS_IMPORT__IMPORTED_REACTIONS_SEGMENT);
+			TopLevelElementsPackage.Literals.REACTIONS_IMPORT__IMPORTED_REACTIONS_SEGMENT);
 	}
 
 	private def void checkNoDuplicateReactionNames(ReactionsSegment reactionsSegment) {
@@ -286,11 +287,11 @@ class ReactionsLanguageValidator extends AbstractReactionsLanguageValidator {
 			val reactionName = reaction.displayName;
 			if (alreadyCheckedReactions.putIfAbsent(reactionName, reaction) !== null) {
 				val errorMessage = "Duplicate reaction name: " + reactionName;
-				error(errorMessage, reaction, ReactionsLanguagePackage.Literals.REACTION__NAME);
+				error(errorMessage, reaction, TopLevelElementsPackage.Literals.REACTION__NAME);
 				error(
 					errorMessage,
 					alreadyCheckedReactions.get(reactionName),
-					ReactionsLanguagePackage.Literals.REACTION__NAME
+					TopLevelElementsPackage.Literals.REACTION__NAME
 				);
 			}
 		}
@@ -302,9 +303,9 @@ class ReactionsLanguageValidator extends AbstractReactionsLanguageValidator {
 			val routineName = routine.displayName;
 			if (alreadyCheckedRoutines.putIfAbsent(routineName, routine) !== null) {
 				val errorMessage = "Duplicate routine name: " + routineName;
-				error(errorMessage, routine, ReactionsLanguagePackage.Literals.ROUTINE__NAME);
+				error(errorMessage, routine, TopLevelElementsPackage.Literals.ROUTINE__NAME);
 				val duplicateNameRoutine = alreadyCheckedRoutines.get(routineName);
-				error(errorMessage, duplicateNameRoutine, ReactionsLanguagePackage.Literals.ROUTINE__NAME);
+				error(errorMessage, duplicateNameRoutine, TopLevelElementsPackage.Literals.ROUTINE__NAME);
 			}
 		}
 	}
@@ -313,7 +314,7 @@ class ReactionsLanguageValidator extends AbstractReactionsLanguageValidator {
 	def checkRetrieveElementName(RetrieveModelElement element) {
 		if (!element.name.nullOrEmpty && element.name.startsWith("_")) {
 			error("Element names must not start with an underscore.",
-				ReactionsLanguagePackage.Literals.RETRIEVE_MODEL_ELEMENT__NAME);
+				LanguagePackage.Literals.RETRIEVE_MODEL_ELEMENT__NAME);
 		}
 	}
 
@@ -321,7 +322,7 @@ class ReactionsLanguageValidator extends AbstractReactionsLanguageValidator {
 	def checkCreateElementName(CreateModelElement element) {
 		if (!element.name.nullOrEmpty && element.name.startsWith("_")) {
 			error("Element names must not start with an underscore.",
-				ReactionsLanguagePackage.Literals.CREATE_MODEL_ELEMENT__NAME);
+				LanguagePackage.Literals.CREATE_MODEL_ELEMENT__NAME);
 		}
 	}
 
@@ -329,23 +330,23 @@ class ReactionsLanguageValidator extends AbstractReactionsLanguageValidator {
 //	def checkEffects(Effect effect) {
 //		if (effect.impact.codeBlock === null && !effect.impact..filter(CorrespondingModelElementCreate).nullOrEmpty) {
 //			warning("Created elements must be initialized and inserted into the target model in the execute block.",
-//				ReactionsLanguagePackage.Literals.EFFECT__CODE_BLOCK);
+//				TopLevelElementsPackage.Literals.EFFECT__CODE_BLOCK);
 //		}
 //	}
 //	@Check
 //	def checkEffectInput(RoutineInput effectInput) {
 //		if (!effectInput.javaInputElements.empty) {
 //			warning("Using plain Java elements is discouraged. Try to use model elements and make list inputs to single valued input of other effect that is called for each element.",
-//				ReactionsLanguagePackage.Literals.ROUTINE_INPUT__JAVA_INPUT_ELEMENTS);
+//				TopLevelElementsPackage.Literals.ROUTINE_INPUT__JAVA_INPUT_ELEMENTS);
 //		}
 //	}
 	@Check
 	def checkRoutine(Routine routine) {
 		if (routine.name.startsWith("_")) {
-			error("Routine names must not start with an underscore.", ReactionsLanguagePackage.Literals.ROUTINE__NAME);
+			error("Routine names must not start with an underscore.", TopLevelElementsPackage.Literals.ROUTINE__NAME);
 		}
 		if (!Character.isLowerCase(routine.name.charAt(0))) {
-			warning("Routine names should start lower case", ReactionsLanguagePackage.Literals.ROUTINE__NAME);
+			warning("Routine names should start lower case", TopLevelElementsPackage.Literals.ROUTINE__NAME);
 		}
 
 		// validate routine overrides:
@@ -354,14 +355,14 @@ class ReactionsLanguageValidator extends AbstractReactionsLanguageValidator {
 			if (!routine.overrideImportPath.isComplete) {
 				// incomplete override import path:
 				val errorMessage = "Incomplete override import path: " + overrideImportPath.pathString;
-				error(errorMessage, routine, ReactionsLanguagePackage.Literals.ROUTINE__OVERRIDE_IMPORT_PATH);
+				error(errorMessage, routine, TopLevelElementsPackage.Literals.ROUTINE__OVERRIDE_IMPORT_PATH);
 			} else {
 				val overriddenReactionsSegment = routine.reactionsSegment.getReactionsSegment(overrideImportPath);
 				if (overriddenReactionsSegment === null) {
 					// invalid override import path:
 					val errorMessage = "Can not find overridden reactions segment for this import path: " +
 						overrideImportPath.pathString;
-					error(errorMessage, routine, ReactionsLanguagePackage.Literals.ROUTINE__OVERRIDE_IMPORT_PATH);
+					error(errorMessage, routine, TopLevelElementsPackage.Literals.ROUTINE__OVERRIDE_IMPORT_PATH);
 				} else {
 					// check for matching name:
 					val routineName = routine.formattedName;
@@ -371,7 +372,7 @@ class ReactionsLanguageValidator extends AbstractReactionsLanguageValidator {
 					if (overriddenRoutine === null) {
 						val errorMessage = "Routine name does not match any routine in the overridden reactions segment: " +
 							routineName;
-						error(errorMessage, routine, ReactionsLanguagePackage.Literals.ROUTINE__NAME);
+						error(errorMessage, routine, TopLevelElementsPackage.Literals.ROUTINE__NAME);
 					} else {
 						// check for matching parameters / signature:
 						val inputSignature = routine.inputSignature;
@@ -379,7 +380,7 @@ class ReactionsLanguageValidator extends AbstractReactionsLanguageValidator {
 						if (!inputSignature.equals(overriddenInputSignature)) {
 							val errorMessage = "Input parameters need to match those of the overridden routine: " +
 								overriddenInputSignature;
-							error(errorMessage, routine, ReactionsLanguagePackage.Literals.ROUTINE__INPUT);
+							error(errorMessage, routine, TopLevelElementsPackage.Literals.ROUTINE__INPUT);
 						}
 					}
 				}
@@ -404,7 +405,7 @@ class ReactionsLanguageValidator extends AbstractReactionsLanguageValidator {
 	@Check
 	def checkReaction(Reaction reaction) {
 		if (!Character.isUpperCase(reaction.name.charAt(0))) {
-			warning("Reaction names should start upper case", ReactionsLanguagePackage.Literals.REACTION__NAME);
+			warning("Reaction names should start upper case", TopLevelElementsPackage.Literals.REACTION__NAME);
 		}
 
 		// reaction overrides must have matching name:
@@ -416,7 +417,7 @@ class ReactionsLanguageValidator extends AbstractReactionsLanguageValidator {
 			if (overriddenReaction === null) {
 				val errorMessage = "Reaction name does not match any reaction in the overridden reactions segment: " +
 					reactionName;
-				error(errorMessage, reaction, ReactionsLanguagePackage.Literals.REACTION__NAME);
+				error(errorMessage, reaction, TopLevelElementsPackage.Literals.REACTION__NAME);
 			}
 		}
 	}
@@ -444,7 +445,7 @@ class ReactionsLanguageValidator extends AbstractReactionsLanguageValidator {
 					warning(
 						"Element of specified type cannot be contained in the specified features",
 						elementChange,
-						ReactionsLanguagePackage.Literals.MODEL_ELEMENT_CHANGE__ELEMENT_TYPE
+						LanguagePackage.Literals.MODEL_ELEMENT_CHANGE__ELEMENT_TYPE
 					)
 				}
 			}

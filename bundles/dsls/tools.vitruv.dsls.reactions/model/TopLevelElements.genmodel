@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/tools.vitruv.dsls.reactions/src-gen" modelPluginID="tools.vitruv.dsls.reactions"
+    modelName="TopLevelElements" rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container"
+    importerID="org.eclipse.emf.importer.ecore" complianceLevel="5.0" copyrightFields="false"
+    usedGenPackages="../../tools.vitruv.dsls.common/model/CommonLanguageElements.genmodel#//elements ../../org.eclipse.emf.ecore/model/Ecore.genmodel#//ecore ../../org.eclipse.xtext.common.types/model/JavaVMTypes.genmodel#//types ../../org.eclipse.xtext.xbase/model/Xbase.genmodel#//xtype ../../org.eclipse.xtext.xbase/model/Xbase.genmodel#//xbase"
+    operationReflection="true" importOrganizing="true">
+  <foreignModel>TopLevelElements.ecore</foreignModel>
+  <genPackages prefix="TopLevelElements" basePackage="tools.vitruv.dsls.reactions.language"
+      disposableProviderFactory="true" fileExtensions="" ecorePackage="TopLevelElements.ecore#/">
+    <genClasses ecoreClass="TopLevelElements.ecore#//ReactionsFile">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference TopLevelElements.ecore#//ReactionsFile/namespaceImports"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference TopLevelElements.ecore#//ReactionsFile/metamodelImports"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference TopLevelElements.ecore#//ReactionsFile/reactionsSegments"/>
+    </genClasses>
+    <genClasses ecoreClass="TopLevelElements.ecore#//ReactionsSegment">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute TopLevelElements.ecore#//ReactionsSegment/name"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference TopLevelElements.ecore#//ReactionsSegment/fromDomain"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference TopLevelElements.ecore#//ReactionsSegment/toDomain"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference TopLevelElements.ecore#//ReactionsSegment/reactionsImports"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference TopLevelElements.ecore#//ReactionsSegment/reactions"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference TopLevelElements.ecore#//ReactionsSegment/routines"/>
+    </genClasses>
+    <genClasses ecoreClass="TopLevelElements.ecore#//ReactionsImport">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute TopLevelElements.ecore#//ReactionsImport/routinesOnly"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference TopLevelElements.ecore#//ReactionsImport/importedReactionsSegment"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute TopLevelElements.ecore#//ReactionsImport/useQualifiedNames"/>
+    </genClasses>
+    <genClasses ecoreClass="TopLevelElements.ecore#//Reaction">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute TopLevelElements.ecore#//Reaction/documentation"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference TopLevelElements.ecore#//Reaction/overriddenReactionsSegment"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute TopLevelElements.ecore#//Reaction/name"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference TopLevelElements.ecore#//Reaction/trigger"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference TopLevelElements.ecore#//Reaction/callRoutine"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference TopLevelElements.ecore#//Reaction/reactionsSegment"/>
+    </genClasses>
+    <genClasses ecoreClass="TopLevelElements.ecore#//ReactionRoutineCall"/>
+    <genClasses ecoreClass="TopLevelElements.ecore#//Trigger">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference TopLevelElements.ecore#//Trigger/precondition"/>
+    </genClasses>
+    <genClasses ecoreClass="TopLevelElements.ecore#//Routine">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute TopLevelElements.ecore#//Routine/documentation"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference TopLevelElements.ecore#//Routine/overrideImportPath"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute TopLevelElements.ecore#//Routine/name"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference TopLevelElements.ecore#//Routine/input"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference TopLevelElements.ecore#//Routine/matcher"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference TopLevelElements.ecore#//Routine/action"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference TopLevelElements.ecore#//Routine/reactionsSegment"/>
+    </genClasses>
+    <genClasses ecoreClass="TopLevelElements.ecore#//RoutineOverrideImportPath">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference TopLevelElements.ecore#//RoutineOverrideImportPath/reactionsSegment"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference TopLevelElements.ecore#//RoutineOverrideImportPath/parent"/>
+    </genClasses>
+    <genClasses ecoreClass="TopLevelElements.ecore#//RoutineInput">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference TopLevelElements.ecore#//RoutineInput/modelInputElements"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference TopLevelElements.ecore#//RoutineInput/javaInputElements"/>
+    </genClasses>
+    <genClasses ecoreClass="TopLevelElements.ecore#//Matcher">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference TopLevelElements.ecore#//Matcher/matcherStatements"/>
+    </genClasses>
+    <genClasses ecoreClass="TopLevelElements.ecore#//MatcherStatement"/>
+    <genClasses ecoreClass="TopLevelElements.ecore#//Action">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference TopLevelElements.ecore#//Action/actionStatements"/>
+    </genClasses>
+    <genClasses ecoreClass="TopLevelElements.ecore#//ActionStatement"/>
+    <genClasses ecoreClass="TopLevelElements.ecore#//CodeBlock">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference TopLevelElements.ecore#//CodeBlock/code"/>
+    </genClasses>
+    <genClasses ecoreClass="TopLevelElements.ecore#//RoutineCallBlock"/>
+    <genClasses ecoreClass="TopLevelElements.ecore#//NamedMetaclassReference">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute TopLevelElements.ecore#//NamedMetaclassReference/name"/>
+    </genClasses>
+    <genClasses ecoreClass="TopLevelElements.ecore#//PreconditionCodeBlock"/>
+    <genClasses ecoreClass="TopLevelElements.ecore#//NamedJavaElementReference">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute TopLevelElements.ecore#//NamedJavaElementReference/name"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference TopLevelElements.ecore#//NamedJavaElementReference/type"/>
+    </genClasses>
+  </genPackages>
+</genmodel:GenModel>
