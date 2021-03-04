@@ -41,7 +41,7 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 11
-      - name: Adapt Updatesite
+      - name: Adapt Updatesites
         run: |
           sed -i 's#https://vitruv-tools.github.io/updatesite/nightly/framework/#file:///${maven.multiModuleProjectDirectory}/../framework/releng/tools.vitruv.updatesite.aggregated/target/final#wresult' cbsdomains/releng/tools.vitruv.domains.cbs.parent/pom.xml
           if [ ! -s result ]; then exit 1; fi;
