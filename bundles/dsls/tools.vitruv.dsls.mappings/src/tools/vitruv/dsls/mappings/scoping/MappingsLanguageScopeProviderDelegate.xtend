@@ -21,14 +21,14 @@ import tools.vitruv.dsls.mappings.mappingsLanguage.MultiValueConditionOperator
 import tools.vitruv.dsls.mappings.mappingsLanguage.NumCompareCondition
 import tools.vitruv.dsls.mappings.mappingsLanguage.ObserveChanges
 import tools.vitruv.dsls.mappings.mappingsLanguage.SingleSidedCondition
-import tools.vitruv.dsls.mirbase.mirBase.MetaclassFeatureReference
-import tools.vitruv.dsls.mirbase.mirBase.MetaclassReference
-import tools.vitruv.dsls.mirbase.mirBase.NamedMetaclassReference
+import tools.vitruv.dsls.common.elements.MetaclassFeatureReference
+import tools.vitruv.dsls.common.elements.MetaclassReference
 import tools.vitruv.dsls.reactions.scoping.ReactionsLanguageScopeProviderDelegate
 
-import static tools.vitruv.dsls.mirbase.mirBase.MirBasePackage.Literals.*
+import static tools.vitruv.dsls.common.elements.ElementsPackage.Literals.*
 import tools.vitruv.dsls.mappings.mappingsLanguage.ExistingMappingCorrespondence
 import tools.vitruv.dsls.mappings.mappingsLanguage.ObserveChange
+import tools.vitruv.dsls.reactions.reactionsLanguage.NamedMetaclassReference
 
 class MappingsLanguageScopeProviderDelegate extends ReactionsLanguageScopeProviderDelegate {
 
@@ -95,7 +95,7 @@ class MappingsLanguageScopeProviderDelegate extends ReactionsLanguageScopeProvid
 				// both sides
 				return createMappingNamedMetaclassesScope(mapping, true, true);
 			} else if (contextContainer instanceof ObserveChange) { // for observe changes
-				super.createQualifiedEClassScope((context as MetaclassFeatureReference).metamodel)
+				createQualifiedEClassScope((context as MetaclassFeatureReference).metamodel)
 			} else if (contextContainer instanceof AbstractMappingParameter) {
 				// check if its the super or instance type
 				if (context == contextContainer.value) {
