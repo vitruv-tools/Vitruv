@@ -15,8 +15,8 @@ import tools.vitruv.dsls.reactions.api.generator.IReactionsGenerator
 import static com.google.common.base.Preconditions.*
 import java.util.ArrayList
 import org.eclipse.xtext.resource.XtextResourceSet
-import tools.vitruv.dsls.mirbase.mirBase.DomainReference
-import tools.vitruv.dsls.mirbase.mirBase.MirBaseFactory
+import tools.vitruv.dsls.common.elements.DomainReference
+import tools.vitruv.dsls.common.elements.ElementsFactory
 import tools.vitruv.dsls.reactions.builder.FluentReactionsFileBuilder
 import org.eclipse.xtext.resource.IResourceFactory
 import org.eclipse.emf.ecore.resource.ResourceSet
@@ -94,7 +94,7 @@ class InternalReactionsGenerator implements IReactionsGenerator {
 	}
 
 	def private copy(DomainReference referenceToCopy) {
-		MirBaseFactory.eINSTANCE.createDomainReference => [
+		ElementsFactory.eINSTANCE.createDomainReference => [
 			domain = referenceToCopy.domain
 		]
 	}

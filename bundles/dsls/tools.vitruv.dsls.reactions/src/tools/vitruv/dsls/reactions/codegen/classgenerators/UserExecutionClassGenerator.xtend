@@ -105,7 +105,7 @@ class UserExecutionClassGenerator extends ClassGenerator {
 		Iterable<AccessibleElement> accessibleElements) {
 		val methodName = "getCorrespondingModelElementsPrecondition" + (elementRetrieve.retrieveOrRequireAbscenceMethodSuffix?: counterGetCorrespondenceSource++);
 		return elementRetrieve.precondition.getOrGenerateMethod(methodName, typeRef(Boolean.TYPE)) [
-			val elementParameter = generateModelElementParameter(elementRetrieve, name?: RETRIEVAL_PRECONDITION_METHOD_TARGET);
+			val elementParameter = generateModelElementParameter(elementRetrieve.elementType, name?: RETRIEVAL_PRECONDITION_METHOD_TARGET);
 			parameters += generateAccessibleElementsParameters(accessibleElements);
 			parameters += elementParameter;
 			body = elementRetrieve.precondition.code;

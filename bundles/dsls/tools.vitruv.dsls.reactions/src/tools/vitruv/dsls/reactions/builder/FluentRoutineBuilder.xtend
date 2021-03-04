@@ -10,7 +10,6 @@ import org.eclipse.xtext.EcoreUtil2
 import org.eclipse.xtext.common.types.JvmOperation
 import org.eclipse.xtext.xbase.XExpression
 import org.eclipse.xtext.xbase.XbaseFactory
-import tools.vitruv.dsls.mirbase.mirBase.MirBaseFactory
 import tools.vitruv.dsls.reactions.reactionsLanguage.CreateCorrespondence
 import tools.vitruv.dsls.reactions.reactionsLanguage.CreateModelElement
 import tools.vitruv.dsls.reactions.reactionsLanguage.ExecuteActionStatement
@@ -79,7 +78,7 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 	}
 
 	def private dispatch void addInputElement(EClass type, String parameterName) {
-		routine.input.modelInputElements += (MirBaseFactory.eINSTANCE.createNamedMetaclassReference => [
+		routine.input.modelInputElements += (ReactionsLanguageFactory.eINSTANCE.createNamedMetaclassReference => [
 			name = parameterName
 		]).reference(type)
 	}
@@ -89,7 +88,7 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 	}
 
 	def private dispatch void addInputElement(Class<?> type, String parameterName) {
-		routine.input.javaInputElements += (MirBaseFactory.eINSTANCE.createNamedJavaElement => [
+		routine.input.javaInputElements += (ReactionsLanguageFactory.eINSTANCE.createNamedJavaElementReference => [
 			name = parameterName
 		]).reference(type)
 	}
@@ -287,7 +286,7 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 		}
 
 		private def void reference(EClass modelElement) {
-			statement.reference(modelElement)
+			statement.elementType = ReactionsLanguageFactory.eINSTANCE.createNamedMetaclassReference().reference(modelElement)
 		}
 	}
 
@@ -359,8 +358,9 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 		}
 
 		def requireAbsenceOf(EClass absentMetaclass) {
-			val statement = ReactionsLanguageFactory.eINSTANCE.createRequireAbscenceOfModelElement.reference(
-				absentMetaclass)
+			val statement = ReactionsLanguageFactory.eINSTANCE.createRequireAbscenceOfModelElement() => [
+				elementType = ReactionsLanguageFactory.eINSTANCE.createNamedMetaclassReference().reference(absentMetaclass)
+			]
 			routine.matcher.matcherStatements += statement
 			return new RetrieveModelElementMatcherStatementCorrespondenceBuilder(builder, statement)
 		}
@@ -610,7 +610,7 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 		}
 
 		def create(EClass element) {
-			statement.reference(element)
+			statement.elementType = ReactionsLanguageFactory.eINSTANCE.createNamedMetaclassReference().reference(element)
 			new CreateStatementIntializationBuilder(builder, statement)
 		}
 	}

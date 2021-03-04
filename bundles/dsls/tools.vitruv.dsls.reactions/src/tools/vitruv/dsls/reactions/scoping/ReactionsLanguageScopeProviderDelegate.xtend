@@ -11,10 +11,9 @@ import org.eclipse.xtext.resource.EObjectDescription
 import org.eclipse.xtext.scoping.IScope
 import org.eclipse.xtext.scoping.Scopes
 import org.eclipse.xtext.scoping.impl.SimpleScope
-import tools.vitruv.dsls.mirbase.mirBase.MetaclassFeatureReference
-import tools.vitruv.dsls.mirbase.mirBase.MetaclassReference
-import tools.vitruv.dsls.mirbase.mirBase.MetamodelImport
-import tools.vitruv.dsls.mirbase.scoping.MirBaseScopeProviderDelegate
+import tools.vitruv.dsls.common.elements.MetaclassFeatureReference
+import tools.vitruv.dsls.common.elements.MetaclassReference
+import tools.vitruv.dsls.common.elements.MetamodelImport
 import tools.vitruv.dsls.reactions.reactionsLanguage.CreateModelElement
 import tools.vitruv.dsls.reactions.reactionsLanguage.ElementChangeType
 import tools.vitruv.dsls.reactions.reactionsLanguage.ElementReplacementChangeType
@@ -28,15 +27,20 @@ import tools.vitruv.dsls.reactions.reactionsLanguage.RoutineInput
 import tools.vitruv.dsls.reactions.reactionsLanguage.RoutineOverrideImportPath
 import tools.vitruv.dsls.reactions.reactionsLanguage.inputTypes.InputTypesPackage
 
-import static tools.vitruv.dsls.mirbase.mirBase.MirBasePackage.Literals.*
+import static tools.vitruv.dsls.common.elements.ElementsPackage.Literals.*
 import static tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsLanguagePackage.Literals.*
 
 import static extension tools.vitruv.dsls.reactions.codegen.helper.ReactionsImportsHelper.*
 import static extension tools.vitruv.dsls.reactions.util.ReactionsLanguageUtil.*
+import tools.vitruv.dsls.common.elements.CommonLanguageElementsScopeProviderDelegate
+import org.eclipse.xtext.xbase.scoping.XImportSectionNamespaceScopeProvider
+import tools.vitruv.dsls.reactions.reactionsLanguage.RetrieveOrRequireAbscenceOfModelElement
 
-class ReactionsLanguageScopeProviderDelegate extends MirBaseScopeProviderDelegate {
+class ReactionsLanguageScopeProviderDelegate extends XImportSectionNamespaceScopeProvider {
+	@Inject
+	protected extension CommonLanguageElementsScopeProviderDelegate commonScopeProvider
 
-	@Inject ReactionsImportScopeHelper reactionsImportScopeHelper;
+	@Inject ReactionsImportScopeHelper reactionsImportScopeHelper
 
 	override getScope(EObject context, EReference reference) {
 		// context differs during content assist: 
@@ -45,24 +49,22 @@ class ReactionsLanguageScopeProviderDelegate extends MirBaseScopeProviderDelegat
 		if (reference.equals(METACLASS_FEATURE_REFERENCE__FEATURE))
 			return createEStructuralFeatureScope(context as MetaclassFeatureReference)
 		else if (reference.equals(METACLASS_REFERENCE__METACLASS)) {
-			val contextContainer = context.eContainer();
-			if (context instanceof ModelElementChange) {
-				return createQualifiedEClassScopeWithEObject(context.elementType?.metamodel);
-			} else if (contextContainer instanceof ModelElementChange) {
-				return createQualifiedEClassScopeWithEObject(contextContainer.elementType?.metamodel);
-			} else if (context instanceof CreateModelElement) {
-				return createQualifiedEClassScopeWithoutAbstract(context.metamodel);
-			} else if (contextContainer instanceof CreateModelElement) {
-				return createQualifiedEClassScopeWithoutAbstract(contextContainer.metamodel);
-			} else if (contextContainer instanceof RoutineInput) {
-				val inputElement = context as MetaclassReference;
-				return createQualifiedEClassScopeWithSpecialInputTypes(inputElement.metamodel);
-			} else if (context instanceof RoutineInput) {
-				return createQualifiedEClassScopeWithSpecialInputTypes(null);
-			} else if (context instanceof MetaclassReference) {
-				return createQualifiedEClassScopeWithEObject(context.metamodel)
-			} else if (contextContainer instanceof MetaclassReference) {
-				return createQualifiedEClassScopeWithEObject(contextContainer.metamodel)
+			val container = if (context instanceof MetaclassReference) {
+					context.eContainer()
+				} else {
+					context
+				}
+			val potentialMetaclassReference = if(context instanceof MetaclassReference) context
+			if (container instanceof ModelElementChange) {
+				return createQualifiedEClassScopeWithEObject(potentialMetaclassReference?.metamodel);
+			} else if (container instanceof CreateModelElement) {
+				return createQualifiedEClassScopeWithoutAbstract(potentialMetaclassReference.metamodel);
+			} else if (container instanceof RoutineInput) {
+				return createQualifiedEClassScopeWithSpecialInputTypes(potentialMetaclassReference?.metamodel);
+			} else if (container instanceof RetrieveOrRequireAbscenceOfModelElement) {
+				return createQualifiedEClassScopeWithEObject(potentialMetaclassReference?.metamodel)
+			} else if (container instanceof MetaclassReference) {
+				return createQualifiedEClassScopeWithEObject(container.metamodel)
 			}
 		} else if (reference.equals(REACTIONS_IMPORT__IMPORTED_REACTIONS_SEGMENT)) {
 			if (context instanceof ReactionsImport) {
@@ -90,23 +92,27 @@ class ReactionsLanguageScopeProviderDelegate extends MirBaseScopeProviderDelegat
 				}
 			}
 		}
-		super.getScope(context, reference)
+
+		commonScopeProvider.getScope(context, reference) 
+			?: super.getScope(context, reference)
 	}
 
 	def createReactionsImportScope(ReactionsSegment reactionsSegment) {
-		val visibleReactionsSegmentDescriptions = reactionsImportScopeHelper.getVisibleReactionsSegmentDescriptions(reactionsSegment);
+		val visibleReactionsSegmentDescriptions = reactionsImportScopeHelper.
+			getVisibleReactionsSegmentDescriptions(reactionsSegment);
 		return new SimpleScope(visibleReactionsSegmentDescriptions);
 	}
 
 	def createReactionOverrideScope(ReactionsSegment reactionsSegment) {
 		// excluding the root reactions segment here:
-		val reactionsImportHierarchyWithoutRoot = reactionsSegment.reactionsImportHierarchy.filter[k, v | k.length > 1];
+		val reactionsImportHierarchyWithoutRoot = reactionsSegment.reactionsImportHierarchy.filter[k, v|k.length > 1];
 		return new SimpleScope(reactionsImportHierarchyWithoutRoot.entrySet.map [
 			EObjectDescription.create(QualifiedName.create(it.key.lastSegment), it.value);
 		]);
 	}
 
-	def createRoutineOverrideScope(ReactionsSegment reactionsSegment, RoutineOverrideImportPath routineOverrideImportPath) {
+	def createRoutineOverrideScope(ReactionsSegment reactionsSegment,
+		RoutineOverrideImportPath routineOverrideImportPath) {
 		// the reactions segment to use to determine the next possible segments in the import path:
 		var importPathLastSegment = reactionsSegment;
 		if (routineOverrideImportPath?.parent !== null) {
@@ -117,37 +123,40 @@ class ReactionsLanguageScopeProviderDelegate extends MirBaseScopeProviderDelegat
 				return IScope.NULLSCOPE;
 			}
 		}
-		return Scopes.scopeFor(importPathLastSegment.reactionsImports.filter[it.isResolvable].map[it.importedReactionsSegment]);
+		return Scopes.scopeFor(importPathLastSegment.reactionsImports.filter[it.isResolvable].map [
+			it.importedReactionsSegment
+		]);
 	}
 
 	def createEStructuralFeatureScope(MetaclassFeatureReference featureReference) {
 		if (featureReference?.metaclass !== null) {
 			val changeType = featureReference.eContainer;
 			val multiplicityFilterFunction = if (changeType instanceof ElementReplacementChangeType) {
-				[EStructuralFeature feat | !feat.many];
-			} else {
-				[EStructuralFeature feat | true];
-			}
+					[EStructuralFeature feat|!feat.many];
+				} else {
+					[EStructuralFeature feat|true];
+				}
 			val typeFilterFunction = if (changeType instanceof ModelAttributeChange) {
-				[EStructuralFeature feat | feat instanceof EAttribute];
-			} else if (changeType instanceof ElementChangeType) {
-				[EStructuralFeature feat | feat instanceof EReference];
-			} else {
-				throw new IllegalStateException();
-			}
-			createScope(IScope.NULLSCOPE, featureReference.metaclass.EAllStructuralFeatures.
-				filter(multiplicityFilterFunction).filter(typeFilterFunction).iterator, [
-				EObjectDescription.create(it.name, it)
-			])
+					[EStructuralFeature feat|feat instanceof EAttribute];
+				} else if (changeType instanceof ElementChangeType) {
+					[EStructuralFeature feat|feat instanceof EReference];
+				} else {
+					throw new IllegalStateException();
+				}
+			createScope(IScope.NULLSCOPE,
+				featureReference.metaclass.EAllStructuralFeatures.filter(multiplicityFilterFunction).filter(
+					typeFilterFunction).iterator, [
+					EObjectDescription.create(it.name, it)
+				])
 		} else {
 			return IScope.NULLSCOPE
 		}
 	}
 
 	def createQualifiedEClassScopeWithSpecialInputTypes(MetamodelImport metamodelImport) {
-		val classifierDescriptions = 
-			if (metamodelImport === null || metamodelImport.package === null) {
-				#[createEObjectDescription(EcorePackage.Literals.EOBJECT, false),
+		val classifierDescriptions = if (metamodelImport === null || metamodelImport.package === null) {
+				#[
+					createEObjectDescription(EcorePackage.Literals.EOBJECT, false),
 					createEObjectDescription(InputTypesPackage.Literals.STRING, false),
 					createEObjectDescription(InputTypesPackage.Literals.INTEGER, false),
 					createEObjectDescription(InputTypesPackage.Literals.BOOLEAN, false),
@@ -159,7 +168,7 @@ class ReactionsLanguageScopeProviderDelegate extends MirBaseScopeProviderDelegat
 					createEObjectDescription(InputTypesPackage.Literals.DOUBLE, false)
 				];
 			} else {
-				collectObjectDescriptions(metamodelImport.package, true, metamodelImport.useQualifiedNames,null)		
+				collectObjectDescriptions(metamodelImport.package, true, metamodelImport.useQualifiedNames, null)
 			}
 
 		var resultScope = new SimpleScope(IScope.NULLSCOPE, classifierDescriptions)

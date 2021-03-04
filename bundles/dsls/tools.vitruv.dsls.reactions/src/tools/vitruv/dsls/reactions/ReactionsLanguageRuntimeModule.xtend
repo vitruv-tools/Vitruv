@@ -11,13 +11,13 @@ import org.eclipse.xtext.linking.ILinkingService
 import tools.vitruv.dsls.reactions.linking.ReactionsLinkingService
 import tools.vitruv.dsls.reactions.scoping.ReactionsLanguageScopeProviderDelegate
 import tools.vitruv.dsls.reactions.scoping.ReactionsLanguageGlobalScopeProvider
-import tools.vitruv.dsls.mirbase.scoping.MirBaseQualifiedNameConverter
 import org.eclipse.xtext.generator.IGenerator2
 import tools.vitruv.dsls.reactions.generator.ReactionsLanguageGenerator
 import tools.vitruv.dsls.reactions.generator.InternalReactionsGenerator
 import tools.vitruv.dsls.reactions.api.generator.IReactionsGenerator
 import tools.vitruv.dsls.reactions.generator.ExternalReactionsGenerator
 import tools.vitruv.dsls.reactions.builder.FluentReactionsLanguageBuilder
+import tools.vitruv.dsls.common.elements.CommonLanguageElementsQualifiedNameConverter
 
 /**
  * Use this class to register components to be used at runtime / without the Equinox extension registry.
@@ -34,7 +34,7 @@ class ReactionsLanguageRuntimeModule extends AbstractReactionsLanguageRuntimeMod
 	}
 	
 	override Class<? extends IQualifiedNameConverter> bindIQualifiedNameConverter() {
-		return MirBaseQualifiedNameConverter;
+		return CommonLanguageElementsQualifiedNameConverter;
 	}
 	
 	override Class<? extends ILinkingService> bindILinkingService() {

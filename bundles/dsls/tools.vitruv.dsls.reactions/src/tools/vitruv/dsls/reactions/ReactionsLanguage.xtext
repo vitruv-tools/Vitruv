@@ -1,16 +1,19 @@
-grammar tools.vitruv.dsls.reactions.ReactionsLanguage with tools.vitruv.dsls.mirbase.MirBase
+grammar tools.vitruv.dsls.reactions.ReactionsLanguage with org.eclipse.xtext.xbase.Xbase
 hidden(WS, SL_COMMENT)
 
 generate reactionsLanguage "http://vitruv.tools/dsls/reactions/ReactionsLanguage"
 
 import "http://www.eclipse.org/emf/2002/Ecore" as ecore
-import "http://www.kit.edu/ipd/sdq/vitruvius/dsls/mirbase/MirBase" as mirbase
+import "http://vitruv.tools/dsls/common/elements" as common
 
 
 ReactionsFile:
 	(namespaceImports=XImportSection)?
-	MirBaseFile
+	(metamodelImports+=MetamodelImport)*
 	(reactionsSegments+=ReactionsSegment)+;
+
+MetamodelImport returns common::MetamodelImport:
+	'import' package=[ecore::EPackage|STRING] 'as' name=ValidID (useQualifiedNames?='using' 'qualified' 'names')?;
 
 ReactionsSegment:
 	'reactions:' name=ValidID
@@ -55,8 +58,8 @@ ConcreteModelChange:
 	ModelElementChange | ModelAttributeChange;
 
 ModelElementChange:
+	{ModelElementChange}
 	'element' (elementType=UnnamedMetaclassReference)? changeType=ElementChangeType;
-
 
 ModelAttributeChange:
 	'attribute' ({ModelAttributeInsertedChange} 'inserted' 'in' |
@@ -85,7 +88,7 @@ ElementDeletionChangeType returns ElementDeletionChangeType:
 fragment ElementReferenceChangeType:
 	feature=MetaclassEReferenceReference;
 
-// This is just for a complete type hierachy
+// This is just for a complete type hierarchy
 ElementRootChangeType returns ElementRootChangeType:
 	ElementInsertionAsRootChangeType | ElementRemovalAsRootChangeType;
 
@@ -144,8 +147,8 @@ RoutineOverrideImportPath:
 
 RoutineInput:
 	{RoutineInput}
-	'(' ((modelInputElements+=ClassicallyNamedModelElement | "plain" javaInputElements+=NamedJavaElement)
-		(',' (modelInputElements+=ClassicallyNamedModelElement | "plain" javaInputElements+=NamedJavaElement))*)? ')';
+	'(' ((modelInputElements+=NamedMetaclassReference | "plain" javaInputElements+=NamedJavaElementReference)
+		(',' (modelInputElements+=NamedMetaclassReference | "plain" javaInputElements+=NamedJavaElementReference))*)? ')';
 
 // *********** MATCHER ***********
 
@@ -159,7 +162,7 @@ MatcherStatement:
 	RetrieveOrRequireAbscenceOfModelElement | MatcherCheckStatement;
 
 RetrieveOrRequireAbscenceOfModelElement:
-	(RequireAbscenceOfModelElement | RetrieveModelElement) MetaclassReference 
+	(RequireAbscenceOfModelElement | RetrieveModelElement) elementType=UnnamedMetaclassReference 
 	'corresponding' 'to' correspondenceSource=CorrespondingObjectCodeBlock ('tagged' 'with' Taggable)? 
 	('with' precondition=PreconditionCodeBlock)?; 
 
@@ -168,8 +171,8 @@ RequireAbscenceOfModelElement returns RequireAbscenceOfModelElement:
 	'require' 'absence' 'of';
 	
 RetrieveModelElement:
+	{RetrieveModelElement}
 	('val' name=ValidID '=')? 'retrieve' retrievalType=RetrieveModelElementTypeStatement;
-
 
 RetrieveModelElementTypeStatement returns RetrieveModelElementType:
 	{RetrieveOneModelElement} (optional?='optional' | asserted?='asserted')? |
@@ -203,7 +206,7 @@ ExecuteActionStatement returns ExecuteActionStatement:
 
 CreateModelElementStatement returns CreateModelElement:
 	{CreateModelElement}
-	'val' name=ValidID '=' 'create' MetaclassReference ('and' 'initialize' initializationBlock=ExecutionCodeBlock)?;
+	'val' name=ValidID '=' 'create' elementType=UnnamedMetaclassReference ('and' 'initialize' initializationBlock=ExecutionCodeBlock)?;
 	
 DeleteModelElementStatement returns DeleteModelElement:
 	{DeleteModelElement}
@@ -253,3 +256,24 @@ CorrespondingObjectCodeBlock returns CorrespondingObjectCodeBlock:
 ExecutionCodeBlock returns ExecutionCodeBlock:
 	{ExecutionCodeBlock}
 	CodeBlock;
+
+fragment MetaclassReference returns common::MetaclassReference:
+	(metamodel=[common::MetamodelImport] '::')? metaclass=[ecore::EClass|QualifiedName];
+
+UnnamedMetaclassReference returns common::MetaclassReference:
+	MetaclassReference;
+
+NamedMetaclassReference:
+	MetaclassReference name=ValidID;
+
+NamedJavaElementReference:
+	type=JvmTypeReference 'as' name=ValidID;
+
+MetaclassEAttributeReference returns common::MetaclassEAttributeReference:
+	MetaclassReference '[' feature=[ecore::EAttribute|ValidID] ']';
+
+MetaclassEReferenceReference returns common::MetaclassEReferenceReference:
+	MetaclassReference '[' feature=[ecore::EReference|ValidID] ']';
+
+DomainReference returns common::DomainReference:
+	domain=ValidID;

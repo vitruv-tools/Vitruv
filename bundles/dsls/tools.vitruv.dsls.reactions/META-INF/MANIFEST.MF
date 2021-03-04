@@ -9,7 +9,6 @@ Bundle-SymbolicName: tools.vitruv.dsls.reactions;singleton:=true
 Automatic-Module-Name: tools.vitruv.dsls.reactions
 Require-Bundle: edu.kit.ipd.sdq.activextendannotations,
  tools.vitruv.dsls.common;visibility:=reexport,
- tools.vitruv.dsls.mirbase;visibility:=reexport,
  tools.vitruv.extensions.dslsruntime.reactions;visibility:=reexport,
  org.eclipse.xtext.xbase,
  org.antlr.runtime;bundle-version="[3.2.0,3.2.1)",
