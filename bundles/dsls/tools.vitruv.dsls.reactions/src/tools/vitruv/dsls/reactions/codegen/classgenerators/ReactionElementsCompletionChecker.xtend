@@ -1,6 +1,6 @@
 package tools.vitruv.dsls.reactions.codegen.classgenerators
 
-import tools.vitruv.dsls.reactions.reactionsLanguage.RetrieveModelElement
+import tools.vitruv.dsls.reactions.language.RetrieveModelElement
 import org.eclipse.emf.ecore.EClass
 
 class ReactionElementsCompletionChecker {

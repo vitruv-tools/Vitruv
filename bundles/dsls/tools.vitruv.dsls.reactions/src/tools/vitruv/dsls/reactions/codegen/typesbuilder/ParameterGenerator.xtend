@@ -8,16 +8,16 @@ import org.eclipse.xtext.common.types.JvmTypeReference
 import tools.vitruv.framework.userinteraction.UserInteractor
 import tools.vitruv.extensions.dslsruntime.reactions.ReactionExecutionState
 import org.eclipse.emf.ecore.EClass
-import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsSegment
-import tools.vitruv.dsls.reactions.reactionsLanguage.inputTypes.InputTypesPackage
+import tools.vitruv.dsls.reactions.language.toplevelelements.ReactionsSegment
+import tools.vitruv.dsls.reactions.language.inputTypes.InputTypesPackage
 import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.dsls.common.elements.MetaclassReference
 import static extension tools.vitruv.dsls.reactions.codegen.helper.ReactionsLanguageHelper.*;
 import static extension tools.vitruv.dsls.reactions.codegen.helper.ClassNamesGenerators.*;
 import tools.vitruv.dsls.reactions.codegen.helper.AccessibleElement
 import static tools.vitruv.dsls.reactions.codegen.ReactionsLanguageConstants.*;
-import tools.vitruv.dsls.reactions.reactionsLanguage.NamedMetaclassReference
-import tools.vitruv.dsls.reactions.reactionsLanguage.NamedJavaElementReference
+import tools.vitruv.dsls.reactions.language.toplevelelements.NamedJavaElementReference
+import tools.vitruv.dsls.common.elements.NamedMetaclassReference
 
 class ParameterGenerator {
 	protected final extension JvmTypeReferenceBuilder _typeReferenceBuilder;

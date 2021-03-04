@@ -10,21 +10,22 @@ import org.eclipse.xtext.EcoreUtil2
 import org.eclipse.xtext.common.types.JvmOperation
 import org.eclipse.xtext.xbase.XExpression
 import org.eclipse.xtext.xbase.XbaseFactory
-import tools.vitruv.dsls.reactions.reactionsLanguage.CreateCorrespondence
-import tools.vitruv.dsls.reactions.reactionsLanguage.CreateModelElement
-import tools.vitruv.dsls.reactions.reactionsLanguage.ExecuteActionStatement
-import tools.vitruv.dsls.reactions.reactionsLanguage.ExistingElementReference
-import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsLanguageFactory
-import tools.vitruv.dsls.reactions.reactionsLanguage.RemoveCorrespondence
-import tools.vitruv.dsls.reactions.reactionsLanguage.RetrieveModelElement
-import tools.vitruv.dsls.reactions.reactionsLanguage.RetrieveOrRequireAbscenceOfModelElement
-import tools.vitruv.dsls.reactions.reactionsLanguage.Routine
-import tools.vitruv.dsls.reactions.reactionsLanguage.RoutineCallStatement
-import tools.vitruv.dsls.reactions.reactionsLanguage.RoutineOverrideImportPath
-import tools.vitruv.dsls.reactions.reactionsLanguage.Taggable
+import tools.vitruv.dsls.reactions.language.CreateCorrespondence
+import tools.vitruv.dsls.reactions.language.CreateModelElement
+import tools.vitruv.dsls.reactions.language.ExecuteActionStatement
+import tools.vitruv.dsls.reactions.language.ExistingElementReference
+import tools.vitruv.dsls.reactions.language.toplevelelements.TopLevelElementsFactory
+import tools.vitruv.dsls.reactions.language.RemoveCorrespondence
+import tools.vitruv.dsls.reactions.language.RetrieveModelElement
+import tools.vitruv.dsls.reactions.language.RetrieveOrRequireAbscenceOfModelElement
+import tools.vitruv.dsls.reactions.language.toplevelelements.Routine
+import tools.vitruv.dsls.reactions.language.RoutineCallStatement
+import tools.vitruv.dsls.reactions.language.toplevelelements.RoutineOverrideImportPath
+import tools.vitruv.dsls.reactions.language.Taggable
 
 import static com.google.common.base.Preconditions.*
 import static tools.vitruv.dsls.reactions.codegen.ReactionsLanguageConstants.*
+import tools.vitruv.dsls.reactions.language.LanguageFactory
 import tools.vitruv.dsls.common.elements.ElementsFactory
 
 class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
@@ -45,9 +46,9 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 
 	package new(String routineName, FluentBuilderContext context) {
 		super(context)
-		this.routine = ReactionsLanguageFactory.eINSTANCE.createRoutine => [
+		this.routine = TopLevelElementsFactory.eINSTANCE.createRoutine => [
 			name = routineName
-			input = ReactionsLanguageFactory.eINSTANCE.createRoutineInput
+			input = TopLevelElementsFactory.eINSTANCE.createRoutineInput
 		]
 	}
 
@@ -79,7 +80,7 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 	}
 
 	def private dispatch void addInputElement(EClass type, String parameterName) {
-		routine.input.modelInputElements += (ReactionsLanguageFactory.eINSTANCE.createNamedMetaclassReference => [
+		routine.input.modelInputElements += (ElementsFactory.eINSTANCE.createNamedMetaclassReference => [
 			name = parameterName
 		]).reference(type)
 	}
@@ -89,7 +90,7 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 	}
 
 	def private dispatch void addInputElement(Class<?> type, String parameterName) {
-		routine.input.javaInputElements += (ReactionsLanguageFactory.eINSTANCE.createNamedJavaElementReference => [
+		routine.input.javaInputElements += (TopLevelElementsFactory.eINSTANCE.createNamedJavaElementReference => [
 			name = parameterName
 		]).reference(type)
 	}
@@ -139,7 +140,7 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 		}
 
 		def match(Consumer<UndecidedMatcherStatementBuilder> matchers) {
-			val matcher = ReactionsLanguageFactory.eINSTANCE.createMatcher
+			val matcher = TopLevelElementsFactory.eINSTANCE.createMatcher
 			routine.matcher = matcher
 			val statementsBuilder = new UndecidedMatcherStatementBuilder(builder)
 			matchers.accept(statementsBuilder)
@@ -188,7 +189,7 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 			if (!importPathSegmentBuilders.nullOrEmpty) {
 				var RoutineOverrideImportPath currentImportPath = null
 				for (pathSegmentBuilder : importPathSegmentBuilders) {
-					val nextPathSegment = ReactionsLanguageFactory.eINSTANCE.createRoutineOverrideImportPath
+					val nextPathSegment = TopLevelElementsFactory.eINSTANCE.createRoutineOverrideImportPath
 					nextPathSegment.reactionsSegment = pathSegmentBuilder.segment
 					nextPathSegment.parent = currentImportPath
 					currentImportPath = nextPathSegment
@@ -275,13 +276,13 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 
 		def retrieveMany(EClass modelElement) {
 			reference(modelElement)
-			statement.retrievalType = ReactionsLanguageFactory.eINSTANCE.createRetrieveManyModelElements();
+			statement.retrievalType = LanguageFactory.eINSTANCE.createRetrieveManyModelElements();
 			return new RetrieveModelElementMatcherStatementCorrespondenceBuilder(builder, statement)
 		}
 
 		private def internalRetrieveOne(EClass modelElement) {
 			reference(modelElement)
-			val retrieveOneElement = ReactionsLanguageFactory.eINSTANCE.createRetrieveOneModelElement();
+			val retrieveOneElement = LanguageFactory.eINSTANCE.createRetrieveOneModelElement();
 			statement.retrievalType = retrieveOneElement
 			return retrieveOneElement
 		}
@@ -351,7 +352,7 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 		}
 
 		def vall(String valName) {
-			val statement = ReactionsLanguageFactory.eINSTANCE.createRetrieveModelElement => [
+			val statement = LanguageFactory.eINSTANCE.createRetrieveModelElement => [
 				name = valName
 			]
 			routine.matcher.matcherStatements += statement
@@ -359,7 +360,7 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 		}
 
 		def requireAbsenceOf(EClass absentMetaclass) {
-			val statement = ReactionsLanguageFactory.eINSTANCE.createRequireAbscenceOfModelElement() => [
+			val statement = LanguageFactory.eINSTANCE.createRequireAbscenceOfModelElement() => [
 				elementType = ElementsFactory.eINSTANCE.createMetaclassReference().reference(absentMetaclass)
 			]
 			routine.matcher.matcherStatements += statement
@@ -367,7 +368,7 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 		}
 
 		def check(Function<TypeProvider, XExpression> expressionBuilder) {
-			val statement = ReactionsLanguageFactory.eINSTANCE.createMatcherCheckStatement => [
+			val statement = LanguageFactory.eINSTANCE.createMatcherCheckStatement => [
 				code = XbaseFactory.eINSTANCE.createXBlockExpression.whenJvmTypes [
 					expressions += extractExpressions(expressionBuilder.apply(typeProvider))
 				]
@@ -392,7 +393,7 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 		}
 
 		def void taggedWith(String tag) {
-			taggable.tag = ReactionsLanguageFactory.eINSTANCE.createTagCodeBlock => [
+			taggable.tag = LanguageFactory.eINSTANCE.createTagCodeBlock => [
 				code = XbaseFactory.eINSTANCE.createXStringLiteral => [
 					value = tag
 				]
@@ -400,7 +401,7 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 		}
 
 		def void taggedWith(Function<TypeProvider, XExpression> tagExpressionBuilder) {
-			taggable.tag = ReactionsLanguageFactory.eINSTANCE.createTagCodeBlock => [
+			taggable.tag = LanguageFactory.eINSTANCE.createTagCodeBlock => [
 				code = XbaseFactory.eINSTANCE.createXBlockExpression.whenJvmTypes [
 					expressions += extractExpressions(tagExpressionBuilder.apply(typeProvider))
 				]
@@ -416,7 +417,7 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 		}
 
 		def action(Consumer<ActionStatementBuilder> actions) {
-			routine.action = ReactionsLanguageFactory.eINSTANCE.createAction
+			routine.action = TopLevelElementsFactory.eINSTANCE.createAction
 			val statementBuilder = new ActionStatementBuilder(builder)
 			actions.accept(statementBuilder)
 			if (routine.action.actionStatements.size == 0) {
@@ -435,14 +436,14 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 		}
 
 		def delete(String existingElement) {
-			val statement = ReactionsLanguageFactory.eINSTANCE.createDeleteModelElement => [
+			val statement = LanguageFactory.eINSTANCE.createDeleteModelElement => [
 				element = existingElement(existingElement)
 			]
 			routine.action.actionStatements += statement
 		}
 
 		def vall(String vallName) {
-			val statement = ReactionsLanguageFactory.eINSTANCE.createCreateModelElement => [
+			val statement = LanguageFactory.eINSTANCE.createCreateModelElement => [
 				name = vallName
 			]
 			routine.action.actionStatements += statement
@@ -450,7 +451,7 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 		}
 
 		def addCorrespondenceBetween() {
-			val statement = ReactionsLanguageFactory.eINSTANCE.createCreateCorrespondence
+			val statement = LanguageFactory.eINSTANCE.createCreateCorrespondence
 			routine.action.actionStatements += statement
 			new CorrespondenceElementBuilder(builder, new CorrespondenceTargetBuilder(builder, statement), [
 				statement.firstElement = it
@@ -458,7 +459,7 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 		}
 
 		def addCorrespondenceBetween(String existingElement) {
-			val statement = ReactionsLanguageFactory.eINSTANCE.createCreateCorrespondence => [
+			val statement = LanguageFactory.eINSTANCE.createCreateCorrespondence => [
 				firstElement = existingElement(existingElement)
 			]
 			routine.action.actionStatements += statement
@@ -466,7 +467,7 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 		}
 
 		def addCorrespondenceBetween(Function<TypeProvider, XExpression> expressionBuilder) {
-			val statement = ReactionsLanguageFactory.eINSTANCE.createCreateCorrespondence => [
+			val statement = LanguageFactory.eINSTANCE.createCreateCorrespondence => [
 				firstElement = existingElement(expressionBuilder)
 			]
 			routine.action.actionStatements += statement
@@ -474,9 +475,9 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 		}
 
 		def void update(String existingElement, Function<TypeProvider, XExpression> expressionBuilder) {
-			routine.action.actionStatements += ReactionsLanguageFactory.eINSTANCE.createUpdateModelElement => [
+			routine.action.actionStatements += LanguageFactory.eINSTANCE.createUpdateModelElement => [
 				element = existingElement(existingElement)
-				updateBlock = ReactionsLanguageFactory.eINSTANCE.createExecutionCodeBlock => [
+				updateBlock = LanguageFactory.eINSTANCE.createExecutionCodeBlock => [
 					code = XbaseFactory.eINSTANCE.createXBlockExpression.whenJvmTypes [
 						expressions += extractExpressions(expressionBuilder.apply(typeProvider))
 					]
@@ -485,7 +486,7 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 		}
 
 		def removeCorrespondenceBetween() {
-			val statement = ReactionsLanguageFactory.eINSTANCE.createRemoveCorrespondence
+			val statement = LanguageFactory.eINSTANCE.createRemoveCorrespondence
 			routine.action.actionStatements += statement
 			new CorrespondenceElementBuilder(builder, new CorrespondenceTargetBuilder(builder, statement), [
 				statement.firstElement = it
@@ -493,7 +494,7 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 		}
 
 		def removeCorrespondenceBetween(String existingElement) {
-			val statement = ReactionsLanguageFactory.eINSTANCE.createRemoveCorrespondence => [
+			val statement = LanguageFactory.eINSTANCE.createRemoveCorrespondence => [
 				firstElement = existingElement(existingElement)
 			]
 			routine.action.actionStatements += statement
@@ -501,7 +502,7 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 		}
 
 		def removeCorrespondenceBetween(Function<TypeProvider, XExpression> expressionBuilder) {
-			val statement = ReactionsLanguageFactory.eINSTANCE.createRemoveCorrespondence => [
+			val statement = LanguageFactory.eINSTANCE.createRemoveCorrespondence => [
 				firstElement = existingElement(expressionBuilder)
 			]
 			routine.action.actionStatements += statement
@@ -509,7 +510,7 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 		}
 
 		def execute(Function<TypeProvider, XExpression> expressionBuilder) {
-			routine.action.actionStatements += ReactionsLanguageFactory.eINSTANCE.createExecuteActionStatement => [
+			routine.action.actionStatements += LanguageFactory.eINSTANCE.createExecuteActionStatement => [
 				code = XbaseFactory.eINSTANCE.createXBlockExpression.whenJvmTypes [
 					expressions += extractExpressions(expressionBuilder.apply(typeProvider))
 				]
@@ -518,7 +519,7 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 		}
 
 		def call(Function<TypeProvider, XExpression> expressionBuilder) {
-			routine.action.actionStatements += ReactionsLanguageFactory.eINSTANCE.createRoutineCallStatement => [
+			routine.action.actionStatements += LanguageFactory.eINSTANCE.createRoutineCallStatement => [
 				code = XbaseFactory.eINSTANCE.createXBlockExpression.whenJvmTypes [
 					expressions += extractExpressions(expressionBuilder.apply(typeProvider))
 				]
@@ -552,7 +553,7 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 		}
 
 		def private addRoutineCall(FluentRoutineBuilder routineBuilder, RoutineCallParameter... parameters) {
-			routine.action.actionStatements += ReactionsLanguageFactory.eINSTANCE.createRoutineCallStatement => [
+			routine.action.actionStatements += LanguageFactory.eINSTANCE.createRoutineCallStatement => [
 				code = routineBuilder.routineCall(it, parameters)
 			]
 		}
@@ -626,7 +627,7 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 		}
 
 		def andInitialize(Function<TypeProvider, XExpression> expressionBuilder) {
-			statement.initializationBlock = ReactionsLanguageFactory.eINSTANCE.createExecutionCodeBlock => [
+			statement.initializationBlock = LanguageFactory.eINSTANCE.createExecutionCodeBlock => [
 				code = XbaseFactory.eINSTANCE.createXBlockExpression.whenJvmTypes [
 					expressions += extractExpressions(expressionBuilder.apply(typeProvider))
 				]
@@ -700,7 +701,7 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 	}
 
 	def private existingElement(String name) {
-		ReactionsLanguageFactory.eINSTANCE.createExistingElementReference => [
+		LanguageFactory.eINSTANCE.createExistingElementReference => [
 			code = XbaseFactory.eINSTANCE.createXFeatureCall.whenJvmTypes [
 				feature = correspondingMethodParameter(name)
 			]
@@ -708,7 +709,7 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 	}
 
 	def private existingElement(Function<TypeProvider, XExpression> expressionBuilder) {
-		ReactionsLanguageFactory.eINSTANCE.createExistingElementReference => [
+		LanguageFactory.eINSTANCE.createExistingElementReference => [
 			code = XbaseFactory.eINSTANCE.createXBlockExpression.whenJvmTypes [
 				expressions += extractExpressions(expressionBuilder.apply(typeProvider))
 			]
@@ -716,7 +717,7 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 	}
 
 	def private correspondingElement(String name) {
-		ReactionsLanguageFactory.eINSTANCE.createCorrespondingObjectCodeBlock => [
+		LanguageFactory.eINSTANCE.createCorrespondingObjectCodeBlock => [
 			code = XbaseFactory.eINSTANCE.createXFeatureCall.whenJvmTypes [
 				feature = correspondingMethodParameter(name)
 			]
@@ -724,7 +725,7 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 	}
 
 	def private correspondingElement(Function<TypeProvider, XExpression> expressionBuilder) {
-		ReactionsLanguageFactory.eINSTANCE.createCorrespondingObjectCodeBlock => [
+		LanguageFactory.eINSTANCE.createCorrespondingObjectCodeBlock => [
 			code = XbaseFactory.eINSTANCE.createXBlockExpression.whenJvmTypes [
 				expressions += extractExpressions(expressionBuilder.apply(typeProvider))
 			]

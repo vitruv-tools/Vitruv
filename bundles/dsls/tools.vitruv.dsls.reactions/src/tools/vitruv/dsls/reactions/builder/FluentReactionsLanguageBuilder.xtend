@@ -6,9 +6,9 @@ import java.util.function.Consumer
 import org.eclipse.emf.ecore.util.EcoreUtil
 import tools.vitruv.dsls.common.elements.MetaclassReference
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.InputBuilder
-import tools.vitruv.dsls.reactions.reactionsLanguage.Reaction
-import tools.vitruv.dsls.reactions.reactionsLanguage.Routine
-import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsLanguageFactory
+import tools.vitruv.dsls.reactions.language.toplevelelements.Reaction
+import tools.vitruv.dsls.reactions.language.toplevelelements.Routine
+import tools.vitruv.dsls.reactions.language.toplevelelements.TopLevelElementsFactory
 
 /**
  * Entry point for fluent reaction builders. The offered methods each create a 
@@ -58,7 +58,7 @@ class FluentReactionsLanguageBuilder {
 		new(Routine routine, Consumer<InputBuilder> inputBuilder, FluentBuilderContext context) {
 			super(null, context)
 			this.routine = routine
-			this.routine.input = ReactionsLanguageFactory.eINSTANCE.createRoutineInput
+			this.routine.input = TopLevelElementsFactory.eINSTANCE.createRoutineInput
 			start().input(inputBuilder)
 			init()
 		}

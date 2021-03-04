@@ -3,7 +3,7 @@ package tools.vitruv.dsls.reactions.codegen.classgenerators
 import org.eclipse.xtext.common.types.JvmGenericType
 import tools.vitruv.dsls.reactions.codegen.classgenerators.ClassGenerator
 import org.eclipse.xtext.common.types.JvmVisibility
-import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsSegment
+import tools.vitruv.dsls.reactions.language.toplevelelements.ReactionsSegment
 import tools.vitruv.extensions.dslsruntime.reactions.AbstractReactionsExecutor
 import tools.vitruv.extensions.dslsruntime.reactions.RoutinesFacadesProvider
 import tools.vitruv.extensions.dslsruntime.reactions.structure.ReactionsImportPath

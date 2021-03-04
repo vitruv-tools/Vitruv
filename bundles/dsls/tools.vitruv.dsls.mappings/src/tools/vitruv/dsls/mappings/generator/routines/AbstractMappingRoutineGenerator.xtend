@@ -17,8 +17,8 @@ import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.MatcherOrActionB
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.RoutineCallParameter
 import tools.vitruv.dsls.reactions.builder.TypeProvider
 import tools.vitruv.dsls.reactions.codegen.ReactionsLanguageConstants
-import tools.vitruv.dsls.reactions.reactionsLanguage.ExecuteActionStatement
-import tools.vitruv.dsls.reactions.reactionsLanguage.RoutineCallStatement
+import tools.vitruv.dsls.reactions.language.ExecuteActionStatement
+import tools.vitruv.dsls.reactions.language.RoutineCallStatement
 
 abstract class AbstractMappingRoutineGenerator extends AbstractRoutineContentGenerator {
 

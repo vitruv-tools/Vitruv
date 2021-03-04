@@ -3,15 +3,15 @@ package tools.vitruv.dsls.reactions.builder
 import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.xtend.lib.annotations.Accessors
 import tools.vitruv.dsls.common.elements.MetamodelImport
-import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsFile
-import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsLanguageFactory
+import tools.vitruv.dsls.reactions.language.toplevelelements.ReactionsFile
+import tools.vitruv.dsls.reactions.language.toplevelelements.TopLevelElementsFactory
 
 import static com.google.common.base.Preconditions.*
 
 class FluentReactionsFileBuilder extends FluentReactionElementBuilder {
 
 	@Accessors(PUBLIC_GETTER)
-	val ReactionsFile reactionsFile = ReactionsLanguageFactory.eINSTANCE.createReactionsFile
+	val ReactionsFile reactionsFile = TopLevelElementsFactory.eINSTANCE.createReactionsFile
 
 	@Accessors(PUBLIC_GETTER)
 	var String fileName

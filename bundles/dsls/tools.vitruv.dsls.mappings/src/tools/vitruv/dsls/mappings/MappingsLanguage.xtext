@@ -4,7 +4,7 @@ SL_COMMENT)
 generate mappingsLanguage "http://vitruv.tools/dsls/mappings/MappingsLanguage"
 import "http://www.eclipse.org/emf/2002/Ecore" as ecore
 import "http://vitruv.tools/dsls/common/elements" as common
-import "http://vitruv.tools/dsls/reactions/ReactionsLanguage" as reactions
+import "http://vitruv.tools/dsls/reactions/language" as reactions
 
 MappingsFile:
 	(namespaceImports=XImportSection)?

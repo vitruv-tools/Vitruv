@@ -1,9 +1,9 @@
 package tools.vitruv.dsls.reactions.builder
 
 import org.eclipse.xtend.lib.annotations.Accessors
-import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsImport
-import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsLanguageFactory
-import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsSegment
+import tools.vitruv.dsls.reactions.language.toplevelelements.ReactionsImport
+import tools.vitruv.dsls.reactions.language.toplevelelements.TopLevelElementsFactory
+import tools.vitruv.dsls.reactions.language.toplevelelements.ReactionsSegment
 import tools.vitruv.framework.domains.VitruvDomain
 
 import static com.google.common.base.Preconditions.*
@@ -15,7 +15,7 @@ class FluentReactionsSegmentBuilder extends FluentReactionElementBuilder {
 
 	package new(String segmentName, FluentBuilderContext context) {
 		super(context)
-		this.segment = ReactionsLanguageFactory.eINSTANCE.createReactionsSegment => [
+		this.segment = TopLevelElementsFactory.eINSTANCE.createReactionsSegment => [
 			name = segmentName
 		]
 	}
@@ -81,7 +81,7 @@ class FluentReactionsSegmentBuilder extends FluentReactionElementBuilder {
 
 		private new(FluentReactionsSegmentBuilder builder, FluentReactionsSegmentBuilder reactionsSegmentBuilder) {
 			this.builder = builder
-			this.reactionsImport = ReactionsLanguageFactory.eINSTANCE.createReactionsImport => [
+			this.reactionsImport = TopLevelElementsFactory.eINSTANCE.createReactionsImport => [
 				importedReactionsSegment = reactionsSegmentBuilder.segment
 			]
 			builder.segment.reactionsImports += reactionsImport

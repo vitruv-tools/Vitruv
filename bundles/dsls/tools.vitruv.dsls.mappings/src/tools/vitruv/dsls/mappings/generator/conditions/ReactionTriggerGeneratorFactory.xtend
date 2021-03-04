@@ -11,7 +11,7 @@ import tools.vitruv.dsls.mappings.generator.reactions.DeletedReactionTriggerGene
 import tools.vitruv.dsls.mappings.generator.reactions.InsertedReactionTriggerGenerator
 import tools.vitruv.dsls.mappings.generator.reactions.RemovedReactionTriggerGenerator
 import tools.vitruv.dsls.mappings.generator.reactions.ConflictingTriggerCheck
-import tools.vitruv.dsls.reactions.reactionsLanguage.NamedMetaclassReference
+import tools.vitruv.dsls.common.elements.NamedMetaclassReference
 
 class ReactionTriggerGeneratorFactory {
 

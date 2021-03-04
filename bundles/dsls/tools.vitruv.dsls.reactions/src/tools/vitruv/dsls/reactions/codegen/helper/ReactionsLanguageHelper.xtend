@@ -5,20 +5,20 @@ import org.eclipse.xtext.xbase.XExpression
 import org.eclipse.xtext.xbase.XBlockExpression
 import tools.vitruv.dsls.common.elements.MetaclassReference
 import tools.vitruv.dsls.common.elements.DomainReference
-import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsSegment
+import tools.vitruv.dsls.reactions.language.toplevelelements.ReactionsSegment
 import edu.kit.ipd.sdq.commons.util.java.Pair
 import tools.vitruv.framework.domains.VitruvDomainProvider
 import tools.vitruv.framework.domains.VitruvDomain
-import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsFile
+import tools.vitruv.dsls.reactions.language.toplevelelements.ReactionsFile
 import org.eclipse.emf.ecore.resource.Resource
 import static com.google.common.base.Preconditions.*
 import tools.vitruv.framework.domains.VitruvDomainProviderRegistry
 import tools.vitruv.dsls.reactions.api.generator.ReferenceClassNameAdapter
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EClassifier
-import tools.vitruv.dsls.reactions.reactionsLanguage.Reaction
-import tools.vitruv.dsls.reactions.reactionsLanguage.Routine
-import tools.vitruv.dsls.reactions.reactionsLanguage.RoutineOverrideImportPath
+import tools.vitruv.dsls.reactions.language.toplevelelements.Reaction
+import tools.vitruv.dsls.reactions.language.toplevelelements.Routine
+import tools.vitruv.dsls.reactions.language.toplevelelements.RoutineOverrideImportPath
 import static extension tools.vitruv.dsls.reactions.util.ReactionsLanguageUtil.*;
 
 final class ReactionsLanguageHelper {

@@ -14,27 +14,27 @@ import org.eclipse.xtext.scoping.impl.SimpleScope
 import tools.vitruv.dsls.common.elements.MetaclassFeatureReference
 import tools.vitruv.dsls.common.elements.MetaclassReference
 import tools.vitruv.dsls.common.elements.MetamodelImport
-import tools.vitruv.dsls.reactions.reactionsLanguage.CreateModelElement
-import tools.vitruv.dsls.reactions.reactionsLanguage.ElementChangeType
-import tools.vitruv.dsls.reactions.reactionsLanguage.ElementReplacementChangeType
-import tools.vitruv.dsls.reactions.reactionsLanguage.ModelAttributeChange
-import tools.vitruv.dsls.reactions.reactionsLanguage.ModelElementChange
-import tools.vitruv.dsls.reactions.reactionsLanguage.Reaction
-import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsImport
-import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsSegment
-import tools.vitruv.dsls.reactions.reactionsLanguage.Routine
-import tools.vitruv.dsls.reactions.reactionsLanguage.RoutineInput
-import tools.vitruv.dsls.reactions.reactionsLanguage.RoutineOverrideImportPath
-import tools.vitruv.dsls.reactions.reactionsLanguage.inputTypes.InputTypesPackage
+import tools.vitruv.dsls.reactions.language.CreateModelElement
+import tools.vitruv.dsls.reactions.language.ElementChangeType
+import tools.vitruv.dsls.reactions.language.ElementReplacementChangeType
+import tools.vitruv.dsls.reactions.language.ModelAttributeChange
+import tools.vitruv.dsls.reactions.language.ModelElementChange
+import tools.vitruv.dsls.reactions.language.toplevelelements.Reaction
+import tools.vitruv.dsls.reactions.language.toplevelelements.ReactionsImport
+import tools.vitruv.dsls.reactions.language.toplevelelements.ReactionsSegment
+import tools.vitruv.dsls.reactions.language.toplevelelements.Routine
+import tools.vitruv.dsls.reactions.language.toplevelelements.RoutineInput
+import tools.vitruv.dsls.reactions.language.toplevelelements.RoutineOverrideImportPath
+import tools.vitruv.dsls.reactions.language.inputTypes.InputTypesPackage
 
 import static tools.vitruv.dsls.common.elements.ElementsPackage.Literals.*
-import static tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsLanguagePackage.Literals.*
+import static tools.vitruv.dsls.reactions.language.toplevelelements.TopLevelElementsPackage.Literals.*
 
 import static extension tools.vitruv.dsls.reactions.codegen.helper.ReactionsImportsHelper.*
 import static extension tools.vitruv.dsls.reactions.util.ReactionsLanguageUtil.*
 import tools.vitruv.dsls.common.elements.CommonLanguageElementsScopeProviderDelegate
 import org.eclipse.xtext.xbase.scoping.XImportSectionNamespaceScopeProvider
-import tools.vitruv.dsls.reactions.reactionsLanguage.RetrieveOrRequireAbscenceOfModelElement
+import tools.vitruv.dsls.reactions.language.RetrieveOrRequireAbscenceOfModelElement
 
 class ReactionsLanguageScopeProviderDelegate extends XImportSectionNamespaceScopeProvider {
 	@Inject

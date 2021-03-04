@@ -1,16 +1,16 @@
 package tools.vitruv.dsls.reactions.generator;
 
 import org.eclipse.xtext.generator.IFileSystemAccess
-import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsLanguageFactory
+import tools.vitruv.dsls.reactions.language.toplevelelements.TopLevelElementsFactory
 import org.eclipse.emf.ecore.resource.Resource
 import com.google.inject.Inject
 import org.eclipse.emf.common.util.URI
 import org.eclipse.xtext.generator.IFileSystemAccess2
 import org.eclipse.xtext.generator.IGenerator
 import static extension tools.vitruv.dsls.reactions.codegen.helper.ReactionsLanguageHelper.*;
-import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsFile
-import tools.vitruv.dsls.reactions.reactionsLanguage.Reaction
-import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsSegment
+import tools.vitruv.dsls.reactions.language.toplevelelements.ReactionsFile
+import tools.vitruv.dsls.reactions.language.toplevelelements.Reaction
+import tools.vitruv.dsls.reactions.language.toplevelelements.ReactionsSegment
 import tools.vitruv.dsls.reactions.api.generator.IReactionsGenerator
 import static com.google.common.base.Preconditions.*
 import java.util.ArrayList
@@ -84,7 +84,7 @@ class InternalReactionsGenerator implements IReactionsGenerator {
 
 	def private ReactionsSegment addReactionsSegment(ReactionsFile fileToAddTo, ReactionsSegment originalSegment,
 		String segmentName) {
-		val newSegment = ReactionsLanguageFactory.eINSTANCE.createReactionsSegment() => [
+		val newSegment = TopLevelElementsFactory.eINSTANCE.createReactionsSegment() => [
 			fromDomain = originalSegment.fromDomain.copy()
 			toDomain = originalSegment.toDomain.copy()
 			name = segmentName;
@@ -130,7 +130,7 @@ class InternalReactionsGenerator implements IReactionsGenerator {
 
 	def private createSyntheticResourceWithReactionsFile(String sourceFileName) {
 		val singleReactionResource = createSyntheticResource(sourceFileName)
-		val reactionsFile = ReactionsLanguageFactory.eINSTANCE.createReactionsFile
+		val reactionsFile = TopLevelElementsFactory.eINSTANCE.createReactionsFile
 		singleReactionResource.contents.add(reactionsFile);
 		return reactionsFile;
 	}

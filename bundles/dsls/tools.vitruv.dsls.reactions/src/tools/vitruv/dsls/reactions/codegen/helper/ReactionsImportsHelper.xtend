@@ -10,12 +10,12 @@ import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EStructuralFeature
 import org.eclipse.xtext.nodemodel.util.NodeModelUtils
 import org.eclipse.xtext.util.Tuples
-import tools.vitruv.dsls.reactions.reactionsLanguage.Reaction
-import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsImport
-import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsLanguagePackage
-import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsSegment
-import tools.vitruv.dsls.reactions.reactionsLanguage.Routine
-import tools.vitruv.dsls.reactions.reactionsLanguage.RoutineOverrideImportPath
+import tools.vitruv.dsls.reactions.language.toplevelelements.Reaction
+import tools.vitruv.dsls.reactions.language.toplevelelements.ReactionsImport
+import tools.vitruv.dsls.reactions.language.toplevelelements.TopLevelElementsPackage
+import tools.vitruv.dsls.reactions.language.toplevelelements.ReactionsSegment
+import tools.vitruv.dsls.reactions.language.toplevelelements.Routine
+import tools.vitruv.dsls.reactions.language.toplevelelements.RoutineOverrideImportPath
 import tools.vitruv.extensions.dslsruntime.reactions.structure.ReactionsImportPath
 
 import static extension tools.vitruv.dsls.reactions.codegen.helper.ReactionsLanguageHelper.*
@@ -41,7 +41,7 @@ class ReactionsImportsHelper {
 	 *         other reaction
 	 */
 	static def String getParsedOverriddenReactionsSegmentName(Reaction reaction) {
-		val parsed = reaction.getFeatureNodeText(ReactionsLanguagePackage.Literals.REACTION__OVERRIDDEN_REACTIONS_SEGMENT);
+		val parsed = reaction.getFeatureNodeText(TopLevelElementsPackage.Literals.REACTION__OVERRIDDEN_REACTIONS_SEGMENT);
 		if (!parsed.nullOrEmpty) return parsed;
 		return reaction.overriddenReactionsSegment?.name;
 	}
@@ -78,7 +78,7 @@ class ReactionsImportsHelper {
 		if (routineOverrideImportPath === null) return null;
 		// getting the parsed text of each individual segment (instead of the whole import path) to skip hidden tokens in between:
 		val parsedSegments = routineOverrideImportPath.fullPath.map [
-			val parsed = it.getFeatureNodeText(ReactionsLanguagePackage.Literals.ROUTINE_OVERRIDE_IMPORT_PATH__REACTIONS_SEGMENT);
+			val parsed = it.getFeatureNodeText(TopLevelElementsPackage.Literals.ROUTINE_OVERRIDE_IMPORT_PATH__REACTIONS_SEGMENT);
 			if (!parsed.isNullOrEmpty) return parsed;
 			return (it.reactionsSegment?.name) ?: "";
 		];

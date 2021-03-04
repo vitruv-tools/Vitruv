@@ -9,14 +9,14 @@ import com.google.inject.Inject
 import tools.vitruv.dsls.reactions.services.ReactionsLanguageGrammarAccess
 import org.eclipse.jface.text.contentassist.ICompletionProposal
 import org.eclipse.xtext.Keyword
-import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsSegment
+import tools.vitruv.dsls.reactions.language.toplevelelements.ReactionsSegment
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.xtext.Assignment
-import tools.vitruv.dsls.reactions.reactionsLanguage.ModelAttributeChange
-import tools.vitruv.dsls.reactions.reactionsLanguage.ModelElementChange
-import tools.vitruv.dsls.reactions.reactionsLanguage.ElementCompoundChangeType
-import tools.vitruv.dsls.reactions.reactionsLanguage.Matcher
-import tools.vitruv.dsls.reactions.reactionsLanguage.ActionStatement
+import tools.vitruv.dsls.reactions.language.ModelAttributeChange
+import tools.vitruv.dsls.reactions.language.ModelElementChange
+import tools.vitruv.dsls.reactions.language.ElementCompoundChangeType
+import tools.vitruv.dsls.reactions.language.toplevelelements.Matcher
+import tools.vitruv.dsls.reactions.language.toplevelelements.ActionStatement
 
 /**
  * See https://www.eclipse.org/Xtext/documentation/304_ide_concepts.html#content-assist

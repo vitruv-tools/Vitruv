@@ -2,13 +2,13 @@ package tools.vitruv.dsls.reactions.api.generator;
 
 import org.eclipse.xtext.generator.IFileSystemAccess2
 import com.google.inject.ImplementedBy
-import tools.vitruv.dsls.reactions.reactionsLanguage.Reaction
+import tools.vitruv.dsls.reactions.language.toplevelelements.Reaction
 import org.eclipse.xtext.resource.XtextResourceSet
 import tools.vitruv.dsls.reactions.builder.FluentReactionsFileBuilder
 import tools.vitruv.dsls.reactions.generator.ExternalReactionsGenerator
 import org.eclipse.emf.ecore.resource.ResourceSet
 import java.io.IOException
-import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsFile
+import tools.vitruv.dsls.reactions.language.toplevelelements.ReactionsFile
 
 /**
  * Generates all code that is necessary to run reactions. Reactions to generate

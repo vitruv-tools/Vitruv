@@ -13,32 +13,32 @@ import org.eclipse.xtext.common.types.JvmMember
 import org.eclipse.xtext.common.types.JvmConstructor
 import static tools.vitruv.dsls.reactions.codegen.ReactionsLanguageConstants.*;
 import tools.vitruv.extensions.dslsruntime.reactions.structure.CallHierarchyHaving
-import tools.vitruv.dsls.reactions.reactionsLanguage.CreateCorrespondence
+import tools.vitruv.dsls.reactions.language.CreateCorrespondence
 import java.util.List
-import tools.vitruv.dsls.reactions.reactionsLanguage.Routine
-import tools.vitruv.dsls.reactions.reactionsLanguage.RemoveCorrespondence
+import tools.vitruv.dsls.reactions.language.toplevelelements.Routine
+import tools.vitruv.dsls.reactions.language.RemoveCorrespondence
 import java.util.ArrayList
-import tools.vitruv.dsls.reactions.reactionsLanguage.RoutineCallStatement
-import tools.vitruv.dsls.reactions.reactionsLanguage.MatcherCheckStatement
-import tools.vitruv.dsls.reactions.reactionsLanguage.MatcherStatement
+import tools.vitruv.dsls.reactions.language.RoutineCallStatement
+import tools.vitruv.dsls.reactions.language.MatcherCheckStatement
+import tools.vitruv.dsls.reactions.language.toplevelelements.MatcherStatement
 import tools.vitruv.extensions.dslsruntime.reactions.AbstractRepairRoutineRealization
-import tools.vitruv.dsls.reactions.reactionsLanguage.CreateModelElement
-import tools.vitruv.dsls.reactions.reactionsLanguage.RetrieveModelElement
-import tools.vitruv.dsls.reactions.reactionsLanguage.DeleteModelElement
-import tools.vitruv.dsls.reactions.reactionsLanguage.UpdateModelElement
-import tools.vitruv.dsls.reactions.reactionsLanguage.ActionStatement
+import tools.vitruv.dsls.reactions.language.CreateModelElement
+import tools.vitruv.dsls.reactions.language.RetrieveModelElement
+import tools.vitruv.dsls.reactions.language.DeleteModelElement
+import tools.vitruv.dsls.reactions.language.UpdateModelElement
+import tools.vitruv.dsls.reactions.language.toplevelelements.ActionStatement
 import static extension tools.vitruv.dsls.reactions.codegen.helper.ClassNamesGenerators.*
 import tools.vitruv.dsls.reactions.codegen.helper.AccessibleElement
 import tools.vitruv.dsls.reactions.codegen.typesbuilder.TypesBuilderExtensionProvider
-import tools.vitruv.dsls.reactions.reactionsLanguage.ExecuteActionStatement
-import tools.vitruv.dsls.reactions.reactionsLanguage.RetrieveOneModelElement
-import tools.vitruv.dsls.reactions.reactionsLanguage.RequireAbscenceOfModelElement
-import tools.vitruv.dsls.reactions.reactionsLanguage.RetrieveOrRequireAbscenceOfModelElement
-import tools.vitruv.dsls.reactions.reactionsLanguage.RetrieveManyModelElements
+import tools.vitruv.dsls.reactions.language.ExecuteActionStatement
+import tools.vitruv.dsls.reactions.language.RetrieveOneModelElement
+import tools.vitruv.dsls.reactions.language.RequireAbscenceOfModelElement
+import tools.vitruv.dsls.reactions.language.RetrieveOrRequireAbscenceOfModelElement
+import tools.vitruv.dsls.reactions.language.RetrieveManyModelElements
 import java.util.Optional
 import tools.vitruv.dsls.common.ClassNameGenerator
-import tools.vitruv.dsls.reactions.reactionsLanguage.NamedJavaElementReference
-import tools.vitruv.dsls.reactions.reactionsLanguage.NamedMetaclassReference
+import tools.vitruv.dsls.reactions.language.toplevelelements.NamedJavaElementReference
+import tools.vitruv.dsls.common.elements.NamedMetaclassReference
 
 class RoutineClassGenerator extends ClassGenerator {
 	protected final Routine routine;

@@ -5,21 +5,21 @@ import org.eclipse.emf.ecore.EObject
 import org.eclipse.xtext.common.types.JvmVisibility
 import tools.vitruv.extensions.dslsruntime.reactions.structure.CallHierarchyHaving
 import org.eclipse.xtext.common.types.JvmOperation
-import tools.vitruv.dsls.reactions.reactionsLanguage.CodeBlock
-import tools.vitruv.dsls.reactions.reactionsLanguage.Taggable
-import tools.vitruv.dsls.reactions.reactionsLanguage.ExistingElementReference
+import tools.vitruv.dsls.reactions.language.toplevelelements.CodeBlock
+import tools.vitruv.dsls.reactions.language.Taggable
+import tools.vitruv.dsls.reactions.language.ExistingElementReference
 import org.eclipse.xtext.common.types.JvmTypeReference
-import tools.vitruv.dsls.reactions.reactionsLanguage.RoutineCallBlock
-import tools.vitruv.dsls.reactions.reactionsLanguage.MatcherCheckStatement
+import tools.vitruv.dsls.reactions.language.toplevelelements.RoutineCallBlock
+import tools.vitruv.dsls.reactions.language.MatcherCheckStatement
 import tools.vitruv.extensions.dslsruntime.reactions.AbstractRepairRoutineRealization
-import tools.vitruv.dsls.reactions.reactionsLanguage.RetrieveModelElement
+import tools.vitruv.dsls.reactions.language.RetrieveModelElement
 import tools.vitruv.dsls.reactions.codegen.helper.AccessibleElement
 import tools.vitruv.dsls.reactions.codegen.typesbuilder.TypesBuilderExtensionProvider
 import org.eclipse.xtext.common.types.JvmGenericType
 import org.eclipse.xtext.xbase.XExpression
-import tools.vitruv.dsls.reactions.reactionsLanguage.ExecuteActionStatement
+import tools.vitruv.dsls.reactions.language.ExecuteActionStatement
 import static tools.vitruv.dsls.reactions.codegen.ReactionsLanguageConstants.*
-import tools.vitruv.dsls.reactions.reactionsLanguage.RetrieveOrRequireAbscenceOfModelElement
+import tools.vitruv.dsls.reactions.language.RetrieveOrRequireAbscenceOfModelElement
 
 class UserExecutionClassGenerator extends ClassGenerator {
 	val EObject objectMappedToClass;

@@ -10,12 +10,12 @@ import tools.vitruv.dsls.reactions.builder.FluentReactionBuilder.TriggerBuilder
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder
 import tools.vitruv.dsls.reactions.builder.TypeProvider
 import tools.vitruv.dsls.reactions.codegen.helper.ReactionsLanguageHelper
-import tools.vitruv.dsls.reactions.reactionsLanguage.ExecuteActionStatement
-import tools.vitruv.dsls.reactions.reactionsLanguage.RoutineCallStatement
 import tools.vitruv.extensions.dslruntime.commonalities.intermediatemodelbase.IntermediateModelBasePackage
 
 import static extension tools.vitruv.dsls.commonalities.generator.reactions.util.JvmTypeProviderHelper.*
 import static extension tools.vitruv.dsls.commonalities.generator.reactions.util.XbaseHelper.*
+import tools.vitruv.dsls.reactions.language.RoutineCallStatement
+import tools.vitruv.dsls.reactions.language.ExecuteActionStatement
 
 @Utility
 class ReactionsHelper {

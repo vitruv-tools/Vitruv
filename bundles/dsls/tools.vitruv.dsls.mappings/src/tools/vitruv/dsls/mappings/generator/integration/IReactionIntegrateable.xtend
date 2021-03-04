@@ -1,7 +1,7 @@
 package tools.vitruv.dsls.mappings.generator.integration
 
-import tools.vitruv.dsls.reactions.reactionsLanguage.Reaction
-import tools.vitruv.dsls.reactions.reactionsLanguage.Routine
+import tools.vitruv.dsls.reactions.language.toplevelelements.Reaction
+import tools.vitruv.dsls.reactions.language.toplevelelements.Routine
 
 interface IReactionIntegrateable {
 	
