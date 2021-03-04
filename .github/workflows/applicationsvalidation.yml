@@ -17,12 +17,14 @@ jobs:
           path: cbsdomains
           repository: vitruv-tools/Vitruv-Domains-ComponentBasedSystems
           ref: master
+          fetch-depth: 0
       - name: Checkout CBS Applications
         uses: actions/checkout@v2
         with:
           path: cbsapplications
           repository: vitruv-tools/Vitruv-Applications-ComponentBasedSystems
           ref: master
+          fetch-depth: 0
       - name: Checkout Matching Domains/Applications Branches
         run: |
           cd cbsdomains
