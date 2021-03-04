@@ -17,14 +17,14 @@ import org.eclipse.xtext.common.types.JvmIdentifiableElement
 import org.eclipse.xtext.common.types.JvmMember
 import org.eclipse.xtext.common.types.JvmOperation
 import org.eclipse.xtext.xtype.XtypeFactory
-import tools.vitruv.dsls.mirbase.mirBase.MetaclassEAttributeReference
-import tools.vitruv.dsls.mirbase.mirBase.MetaclassEReferenceReference
-import tools.vitruv.dsls.mirbase.mirBase.MetaclassReference
-import tools.vitruv.dsls.mirbase.mirBase.MirBaseFactory
-import tools.vitruv.dsls.mirbase.mirBase.NamedJavaElement
+import tools.vitruv.dsls.common.elements.MetaclassEAttributeReference
+import tools.vitruv.dsls.common.elements.MetaclassEReferenceReference
+import tools.vitruv.dsls.common.elements.MetaclassReference
 import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsFile
 
 import static com.google.common.base.Preconditions.*
+import tools.vitruv.dsls.common.elements.ElementsFactory
+import tools.vitruv.dsls.reactions.reactionsLanguage.NamedJavaElementReference
 
 /**
  * Parent class of all fluent builders. The builders work in three phases:
@@ -250,7 +250,7 @@ abstract package class FluentReactionElementBuilder {
 	}
 
 	def private createMetamodelImport(EPackage ePackage, String pname) {
-		val newImport = MirBaseFactory.eINSTANCE.createMetamodelImport => [
+		val newImport = ElementsFactory.eINSTANCE.createMetamodelImport => [
 			package = ePackage
 			name = pname
 		]
@@ -286,7 +286,7 @@ abstract package class FluentReactionElementBuilder {
 		]
 	}
 
-	def protected <T extends NamedJavaElement> reference(T javaElementReference, Class<?> clazz) {
+	def protected <T extends NamedJavaElementReference> reference(T javaElementReference, Class<?> clazz) {
 		javaElementReference.beforeAttached [
 			type = context.typeReferences.getTypeForName(clazz, targetResource)
 		]

@@ -2,7 +2,7 @@ package tools.vitruv.dsls.reactions.builder
 
 import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.xtend.lib.annotations.Accessors
-import tools.vitruv.dsls.mirbase.mirBase.MetamodelImport
+import tools.vitruv.dsls.common.elements.MetamodelImport
 import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsFile
 import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsLanguageFactory
 

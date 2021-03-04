@@ -12,6 +12,11 @@ var testBasePath = "${testRootPath}/${projectName}"
 
 Workflow {
 
+    bean = tools.vitruv.dsls.common.elements.RemapEcoreModel {
+		from = "http://www.eclipse.org/emf/2002/Ecore"
+		to = "platform:/resource/org.eclipse.emf.ecore/model/Ecore.ecore"
+	}
+    
 	component = tools.vitruv.dsls.reactions.postprocessor.ReactionsLanguageExtendedGenerator {
 		configuration = {
 			project = StandardProjectConfig {
@@ -45,7 +50,7 @@ Workflow {
 			formatter = {
 				generateStub = true
 			}
-			referencedResource = "platform:/resource/tools.vitruv.dsls.mirbase/model/generated/MirBase.genmodel"
+			referencedResource = "platform:/resource/tools.vitruv.dsls.common/model/CommonLanguageElements.genmodel"
 		}
 	}
 	

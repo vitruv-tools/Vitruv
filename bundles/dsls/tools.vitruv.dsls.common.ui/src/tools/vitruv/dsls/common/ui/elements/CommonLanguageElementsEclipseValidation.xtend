@@ -6,7 +6,7 @@ import tools.vitruv.dsls.common.ui.validation.ProjectValidation
 import org.eclipse.xtext.common.types.util.TypeReferences
 import tools.vitruv.dsls.common.elements.CommonLanguageElementsValidation
 
-class CommonLanguageEclipseValidation {
+class CommonLanguageElementsEclipseValidation {
 
 	def static checkDomainDependency(ValidationMessageAcceptor acceptor, TypeReferences typeReferences,
 		DomainReference domainReference) {

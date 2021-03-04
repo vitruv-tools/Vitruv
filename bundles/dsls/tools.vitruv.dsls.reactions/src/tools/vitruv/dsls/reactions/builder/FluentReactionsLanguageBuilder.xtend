@@ -4,7 +4,7 @@ import com.google.inject.Inject
 import com.google.inject.Singleton
 import java.util.function.Consumer
 import org.eclipse.emf.ecore.util.EcoreUtil
-import tools.vitruv.dsls.mirbase.mirBase.MetaclassReference
+import tools.vitruv.dsls.common.elements.MetaclassReference
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.InputBuilder
 import tools.vitruv.dsls.reactions.reactionsLanguage.Reaction
 import tools.vitruv.dsls.reactions.reactionsLanguage.Routine

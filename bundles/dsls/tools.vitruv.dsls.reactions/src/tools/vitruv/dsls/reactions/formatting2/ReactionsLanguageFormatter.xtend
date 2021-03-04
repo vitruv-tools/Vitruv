@@ -38,13 +38,17 @@ import tools.vitruv.dsls.reactions.reactionsLanguage.RetrieveOrRequireAbscenceOf
 import org.eclipse.xtext.xbase.XBinaryOperation
 import org.eclipse.xtext.xbase.XCastedExpression
 import org.eclipse.xtext.common.types.JvmTypeReference
-import tools.vitruv.dsls.mirbase.formatting2.MirBaseFormatter
 import tools.vitruv.dsls.reactions.reactionsLanguage.MatcherCheckStatement
+import tools.vitruv.dsls.common.elements.MetaclassReference
+import tools.vitruv.dsls.common.elements.MetaclassEAttributeReference
+import tools.vitruv.dsls.common.elements.MetaclassEReferenceReference
+import org.eclipse.xtext.formatting2.AbstractFormatter2
 
-class ReactionsLanguageFormatter extends MirBaseFormatter {
+class ReactionsLanguageFormatter extends AbstractFormatter2 {
 	
 	def dispatch void format(ReactionsFile reactionsFile, extension IFormattableDocument document) {
-		reactionsFile.formatMirBaseFile(document)
+		reactionsFile.metamodelImports.tail.forEach[prepend [newLine]]
+		reactionsFile.metamodelImports.last?.append[newLines = 2]
 		reactionsFile.formatReactionsFile(document)
 	}
 
@@ -150,7 +154,7 @@ class ReactionsLanguageFormatter extends MirBaseFormatter {
 
 	def dispatch void formatIndividually(RetrieveOrRequireAbscenceOfModelElement retrieveStatement,
 		extension IFormattableDocument document) {
-		retrieveStatement.formatMetaclassReference(document)
+		retrieveStatement.elementType.formatMetaclassReference(document)
 		retrieveStatement.formatTaggable(document)
 	}
 
@@ -171,7 +175,7 @@ class ReactionsLanguageFormatter extends MirBaseFormatter {
 
 	def dispatch void formatIndividually(CreateModelElement createModelElement,
 		extension IFormattableDocument document) {
-		createModelElement.formatMetaclassReference(document)
+		createModelElement.elementType.formatMetaclassReference(document)
 		createModelElement.initializationBlock?.code?.formatIndividually(document)
 	}
 
@@ -281,5 +285,24 @@ class ReactionsLanguageFormatter extends MirBaseFormatter {
 			element.regionFor.keyword('}').prepend[newLine],
 			[indent]
 		)
+	}
+	
+	def protected void formatMetaclassReference(MetaclassReference metaclassReference,
+		extension IFormattableDocument document) {
+		metaclassReference.regionFor.keyword('::').prepend[noSpace].append[noSpace]
+	}
+
+	def protected void formatEAttributeReference(MetaclassEAttributeReference attributeReference,
+		extension IFormattableDocument document) {
+		attributeReference.formatMetaclassReference(document)
+		attributeReference.regionFor.keyword('[').prepend[noSpace].append[noSpace]
+		attributeReference.regionFor.keyword(']').prepend[noSpace]
+	}
+
+	def protected void formatEReferenceReference(MetaclassEReferenceReference referenceReference,
+		extension IFormattableDocument document) {
+		referenceReference.formatMetaclassReference(document)
+		referenceReference.regionFor.keyword('[').prepend[noSpace].append[noSpace]
+		referenceReference.regionFor.keyword(']').prepend[noSpace]
 	}
 }

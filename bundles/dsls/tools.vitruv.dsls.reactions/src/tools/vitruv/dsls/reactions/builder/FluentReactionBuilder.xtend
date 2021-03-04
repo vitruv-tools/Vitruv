@@ -12,7 +12,6 @@ import org.eclipse.emf.ecore.EcorePackage
 import org.eclipse.xtext.xbase.XBlockExpression
 import org.eclipse.xtext.xbase.XExpression
 import org.eclipse.xtext.xbase.XbaseFactory
-import tools.vitruv.dsls.mirbase.mirBase.MirBaseFactory
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.RoutineCallParameter
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.RoutineStartBuilder
 import tools.vitruv.dsls.reactions.reactionsLanguage.ElementChangeType
@@ -22,6 +21,7 @@ import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionRoutineCall
 import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsLanguageFactory
 
 import static com.google.common.base.Preconditions.*
+import tools.vitruv.dsls.common.elements.ElementsFactory
 
 class FluentReactionBuilder extends FluentReactionsSegmentChildBuilder {
 
@@ -77,7 +77,7 @@ class FluentReactionBuilder extends FluentReactionsSegmentChildBuilder {
 
 		def afterElement(EClass element) {
 			val change = ReactionsLanguageFactory.eINSTANCE.createModelElementChange => [
-				elementType = MirBaseFactory.eINSTANCE.createMetaclassReference.reference(element)
+				elementType = ElementsFactory.eINSTANCE.createMetaclassReference.reference(element)
 			]
 			reaction.trigger = change
 			return new ChangeTypeBuilder(builder, change, element)
@@ -97,7 +97,7 @@ class FluentReactionBuilder extends FluentReactionsSegmentChildBuilder {
 			valueType = attribute.EType
 			affectedObjectType = eClass
 			reaction.trigger = ReactionsLanguageFactory.eINSTANCE.createModelAttributeInsertedChange => [
-				feature = MirBaseFactory.eINSTANCE.createMetaclassEAttributeReference.reference(eClass, attribute)
+				feature = ElementsFactory.eINSTANCE.createMetaclassEAttributeReference.reference(eClass, attribute)
 			]
 			return new PreconditionOrRoutineCallBuilder(builder)
 		}
@@ -110,7 +110,7 @@ class FluentReactionBuilder extends FluentReactionsSegmentChildBuilder {
 			valueType = attribute.EType
 			affectedObjectType = eClass
 			reaction.trigger = ReactionsLanguageFactory.eINSTANCE.createModelAttributeReplacedChange => [
-				feature = MirBaseFactory.eINSTANCE.createMetaclassEAttributeReference.reference(eClass, attribute)
+				feature = ElementsFactory.eINSTANCE.createMetaclassEAttributeReference.reference(eClass, attribute)
 			]
 			return new PreconditionOrRoutineCallBuilder(builder)
 		}
@@ -123,7 +123,7 @@ class FluentReactionBuilder extends FluentReactionsSegmentChildBuilder {
 			valueType = attribute.EType
 			affectedObjectType = eClass
 			reaction.trigger = ReactionsLanguageFactory.eINSTANCE.createModelAttributeRemovedChange => [
-				feature = MirBaseFactory.eINSTANCE.createMetaclassEAttributeReference.reference(eClass, attribute)
+				feature = ElementsFactory.eINSTANCE.createMetaclassEAttributeReference.reference(eClass, attribute)
 			]
 			return new PreconditionOrRoutineCallBuilder(builder)
 		}
@@ -163,7 +163,7 @@ class FluentReactionBuilder extends FluentReactionsSegmentChildBuilder {
 			valueType = element ?: reference.EReferenceType
 			affectedObjectType = eClass
 			continueWithChangeType(ReactionsLanguageFactory.eINSTANCE.createElementInsertionInListChangeType => [
-				feature = MirBaseFactory.eINSTANCE.createMetaclassEReferenceReference.reference(eClass, reference)
+				feature = ElementsFactory.eINSTANCE.createMetaclassEReferenceReference.reference(eClass, reference)
 			])
 		}
 
@@ -175,7 +175,7 @@ class FluentReactionBuilder extends FluentReactionsSegmentChildBuilder {
 			valueType = element ?: reference.EReferenceType
 			affectedObjectType = eClass
 			continueWithChangeType(ReactionsLanguageFactory.eINSTANCE.createElementRemovalFromListChangeType => [
-				feature = MirBaseFactory.eINSTANCE.createMetaclassEReferenceReference.reference(eClass, reference)
+				feature = ElementsFactory.eINSTANCE.createMetaclassEReferenceReference.reference(eClass, reference)
 			])
 		}
 
@@ -192,7 +192,7 @@ class FluentReactionBuilder extends FluentReactionsSegmentChildBuilder {
 			valueType = element ?: reference.EReferenceType
 			affectedObjectType = eClass
 			continueWithChangeType(ReactionsLanguageFactory.eINSTANCE.createElementReplacementChangeType => [
-				feature = MirBaseFactory.eINSTANCE.createMetaclassEReferenceReference.reference(eClass, reference)
+				feature = ElementsFactory.eINSTANCE.createMetaclassEReferenceReference.reference(eClass, reference)
 			])
 		}
 

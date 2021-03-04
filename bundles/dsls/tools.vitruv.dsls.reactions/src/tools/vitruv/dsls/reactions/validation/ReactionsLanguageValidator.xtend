@@ -25,6 +25,10 @@ import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsImport
 import static extension tools.vitruv.dsls.reactions.codegen.helper.ReactionsLanguageHelper.*
 import static extension tools.vitruv.dsls.reactions.codegen.helper.ReactionsImportsHelper.*
 import static extension tools.vitruv.dsls.reactions.util.ReactionsLanguageUtil.*
+import tools.vitruv.dsls.common.elements.DomainReference
+import tools.vitruv.framework.domains.VitruvDomainProviderRegistry
+import tools.vitruv.dsls.common.elements.ElementsPackage
+import static extension tools.vitruv.dsls.common.elements.CommonLanguageElementsValidation.isValid
 
 /**
  * This class contains custom validation rules. 
@@ -32,7 +36,6 @@ import static extension tools.vitruv.dsls.reactions.util.ReactionsLanguageUtil.*
  * See https://www.eclipse.org/Xtext/documentation/303_runtime_concepts.html#validation
  */
 class ReactionsLanguageValidator extends AbstractReactionsLanguageValidator {
-
 	@Inject ReactionsImportScopeHelper reactionsImportScopeHelper;
 
 	@Check
@@ -445,6 +448,18 @@ class ReactionsLanguageValidator extends AbstractReactionsLanguageValidator {
 					)
 				}
 			}
+		}
+	}
+	
+	@Check
+	def checkDomainReference(DomainReference domainReference) {
+		if (!domainReference.isValid) {
+			val domainNames = VitruvDomainProviderRegistry.allDomainProviders.map[domain.name]
+			error(
+				'''No domain with the specified name found. Available domains are : «FOR domainName : domainNames SEPARATOR ", "»«domainName»«ENDFOR»''',
+				domainReference,
+				ElementsPackage.Literals.DOMAIN_REFERENCE__DOMAIN
+			)
 		}
 	}
 

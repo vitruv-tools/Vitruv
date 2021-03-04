@@ -8,8 +8,8 @@ import org.eclipse.xtext.ui.editor.outline.impl.DocumentRootNode
 import tools.vitruv.dsls.reactions.reactionsLanguage.Trigger
 import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsLanguagePackage
 import org.eclipse.xtext.ui.editor.outline.impl.EStructuralFeatureNode
-import tools.vitruv.dsls.mirbase.mirBase.MetamodelImport
-import tools.vitruv.dsls.mirbase.mirBase.MirBasePackage
+import tools.vitruv.dsls.common.elements.MetamodelImport
+import tools.vitruv.dsls.common.elements.ElementsPackage
 import tools.vitruv.dsls.reactions.reactionsLanguage.Routine
 import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsFile
 import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsSegment
@@ -34,7 +34,7 @@ import tools.vitruv.dsls.reactions.reactionsLanguage.ArbitraryModelChange
 class ReactionsLanguageOutlineTreeProvider extends DefaultOutlineTreeProvider {
 	protected def void _createChildren(DocumentRootNode root, ReactionsFile reactionsFile) {
 		val importsNode = createEStructuralFeatureNode(root, reactionsFile, 
-			MirBasePackage.Literals.MIR_BASE_FILE__METAMODEL_IMPORTS,
+			ReactionsLanguagePackage.Literals.REACTIONS_FILE__METAMODEL_IMPORTS,
 			imageDispatcher.invoke(reactionsFile), "imports", false);
 		for (imp : reactionsFile.metamodelImports) {
 			createChildren(importsNode, imp);
@@ -66,9 +66,9 @@ class ReactionsLanguageOutlineTreeProvider extends DefaultOutlineTreeProvider {
 	protected def void _createChildren(EStructuralFeatureNode parentNode, MetamodelImport imp) {
 		val importNode = createEObjectNode(parentNode, imp);
 		createEStructuralFeatureNode(importNode,
-			imp, MirBasePackage.Literals.METAMODEL_IMPORT__PACKAGE,
-			imageDispatcher.invoke(imp.package),
-			imp.package.name, true);
+			imp, ElementsPackage.Literals.METAMODEL_IMPORT__PACKAGE,
+			imageDispatcher.invoke(imp?.package),
+			imp?.package?.name, true);
 	}
 	
 	protected def void _createChildren(EStructuralFeatureNode parentNode, ReactionsImport reactionsImport) {

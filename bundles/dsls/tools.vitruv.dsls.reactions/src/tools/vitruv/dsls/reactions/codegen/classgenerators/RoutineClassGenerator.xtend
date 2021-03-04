@@ -15,7 +15,6 @@ import static tools.vitruv.dsls.reactions.codegen.ReactionsLanguageConstants.*;
 import tools.vitruv.extensions.dslsruntime.reactions.structure.CallHierarchyHaving
 import tools.vitruv.dsls.reactions.reactionsLanguage.CreateCorrespondence
 import java.util.List
-import tools.vitruv.dsls.mirbase.mirBase.NamedJavaElement
 import tools.vitruv.dsls.reactions.reactionsLanguage.Routine
 import tools.vitruv.dsls.reactions.reactionsLanguage.RemoveCorrespondence
 import java.util.ArrayList
@@ -28,7 +27,6 @@ import tools.vitruv.dsls.reactions.reactionsLanguage.RetrieveModelElement
 import tools.vitruv.dsls.reactions.reactionsLanguage.DeleteModelElement
 import tools.vitruv.dsls.reactions.reactionsLanguage.UpdateModelElement
 import tools.vitruv.dsls.reactions.reactionsLanguage.ActionStatement
-import tools.vitruv.dsls.mirbase.mirBase.NamedMetaclassReference
 import static extension tools.vitruv.dsls.reactions.codegen.helper.ClassNamesGenerators.*
 import tools.vitruv.dsls.reactions.codegen.helper.AccessibleElement
 import tools.vitruv.dsls.reactions.codegen.typesbuilder.TypesBuilderExtensionProvider
@@ -39,6 +37,8 @@ import tools.vitruv.dsls.reactions.reactionsLanguage.RetrieveOrRequireAbscenceOf
 import tools.vitruv.dsls.reactions.reactionsLanguage.RetrieveManyModelElements
 import java.util.Optional
 import tools.vitruv.dsls.common.ClassNameGenerator
+import tools.vitruv.dsls.reactions.reactionsLanguage.NamedJavaElementReference
+import tools.vitruv.dsls.reactions.reactionsLanguage.NamedMetaclassReference
 
 class RoutineClassGenerator extends ClassGenerator {
 	protected final Routine routine;
@@ -47,7 +47,7 @@ class RoutineClassGenerator extends ClassGenerator {
 	final ClassNameGenerator routineClassNameGenerator;
 	var ClassNameGenerator routinesFacadeClassNameGenerator;
 	var List<NamedMetaclassReference> modelInputElements;
-	var List<NamedJavaElement> javaInputElements;
+	var List<NamedJavaElementReference> javaInputElements;
 	extension var UserExecutionClassGenerator userExecutionClassGenerator;
 	var List<AccessibleElement> currentlyAccessibleElements;
 	static val USER_EXECUTION_FIELD_NAME = "userExecution";
@@ -140,7 +140,7 @@ class RoutineClassGenerator extends ClassGenerator {
 	}
 
 	private def dispatch StringConcatenationClient createStatements(CreateModelElement createElement) {
-		this.currentlyAccessibleElements += new AccessibleElement(createElement.name, createElement.javaClassName)
+		this.currentlyAccessibleElements += new AccessibleElement(createElement.name, createElement.elementType.javaClassName)
 		val initializeMethod = if (createElement.initializationBlock !== null)
 				generateUpdateElementMethod(createElement.name, createElement.initializationBlock,
 					currentlyAccessibleElements);
@@ -168,7 +168,7 @@ class RoutineClassGenerator extends ClassGenerator {
 	private def dispatch StringConcatenationClient createStatements(RetrieveModelElement retrieveElement) {
 		val retrieveStatementArguments = getGeneralGetCorrespondingElementStatementArguments(retrieveElement,
 			retrieveElement.name);
-		val affectedElementClass = retrieveElement.metaclass;
+		val affectedElementClass = retrieveElement.elementType.metaclass;
 		return createStatements(retrieveElement.retrievalType, retrieveElement.name, affectedElementClass.javaClassName,
 			retrieveStatementArguments)
 	}
@@ -342,7 +342,7 @@ class RoutineClassGenerator extends ClassGenerator {
 
 	private def StringConcatenationClient getPreconditionChecker(
 		RetrieveOrRequireAbscenceOfModelElement retrieveElement, String name) {
-		val affectedElementClass = retrieveElement.javaClassName;
+		val affectedElementClass = retrieveElement.elementType.javaClassName;
 		if (retrieveElement.precondition === null) {
 			return '''(«affectedElementClass» _element) -> true''';
 		}
@@ -353,7 +353,7 @@ class RoutineClassGenerator extends ClassGenerator {
 
 	private def StringConcatenationClient getGeneralGetCorrespondingElementStatementArguments(
 		RetrieveOrRequireAbscenceOfModelElement retrieveElement, String name) {
-		val affectedElementClass = retrieveElement.javaClassName;
+		val affectedElementClass = retrieveElement.elementType.javaClassName;
 		val correspondingElementPreconditionChecker = getPreconditionChecker(retrieveElement, name);
 		val correspondenceSourceMethod = generateMethodGetCorrespondenceSource(retrieveElement,
 			currentlyAccessibleElements);
@@ -367,7 +367,7 @@ class RoutineClassGenerator extends ClassGenerator {
 	}
 
 	private def StringConcatenationClient getElementCreationCode(CreateModelElement elementCreate) {
-		val affectedElementClass = elementCreate.metaclass;
+		val affectedElementClass = elementCreate.elementType.metaclass;
 		val createdClassFactory = affectedElementClass.EPackage.EFactoryInstance.runtimeClassName
 		return '''
 		«affectedElementClass.javaClassName» «elementCreate.name» = «createdClassFactory».eINSTANCE.create«affectedElementClass.name»();

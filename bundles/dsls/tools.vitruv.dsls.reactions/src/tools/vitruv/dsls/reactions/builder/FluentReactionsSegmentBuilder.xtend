@@ -1,13 +1,13 @@
 package tools.vitruv.dsls.reactions.builder
 
 import org.eclipse.xtend.lib.annotations.Accessors
-import tools.vitruv.dsls.mirbase.mirBase.MirBaseFactory
 import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsImport
 import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsLanguageFactory
 import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsSegment
 import tools.vitruv.framework.domains.VitruvDomain
 
 import static com.google.common.base.Preconditions.*
+import tools.vitruv.dsls.common.elements.ElementsFactory
 
 @Accessors(PACKAGE_GETTER)
 class FluentReactionsSegmentBuilder extends FluentReactionElementBuilder {
@@ -66,7 +66,7 @@ class FluentReactionsSegmentBuilder extends FluentReactionElementBuilder {
 	}
 
 	def private static domainReference(String domainName) {
-		MirBaseFactory.eINSTANCE.createDomainReference => [
+		ElementsFactory.eINSTANCE.createDomainReference => [
 			domain = domainName
 		]
 	}

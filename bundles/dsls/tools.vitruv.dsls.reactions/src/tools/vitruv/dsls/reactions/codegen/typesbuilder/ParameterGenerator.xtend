@@ -6,18 +6,18 @@ import org.eclipse.emf.ecore.EObject
 import java.util.ArrayList
 import org.eclipse.xtext.common.types.JvmTypeReference
 import tools.vitruv.framework.userinteraction.UserInteractor
-import tools.vitruv.dsls.mirbase.mirBase.NamedJavaElement
 import tools.vitruv.extensions.dslsruntime.reactions.ReactionExecutionState
 import org.eclipse.emf.ecore.EClass
 import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsSegment
 import tools.vitruv.dsls.reactions.reactionsLanguage.inputTypes.InputTypesPackage
 import tools.vitruv.framework.change.echange.EChange
-import tools.vitruv.dsls.mirbase.mirBase.MetaclassReference
+import tools.vitruv.dsls.common.elements.MetaclassReference
 import static extension tools.vitruv.dsls.reactions.codegen.helper.ReactionsLanguageHelper.*;
 import static extension tools.vitruv.dsls.reactions.codegen.helper.ClassNamesGenerators.*;
-import tools.vitruv.dsls.mirbase.mirBase.NamedMetaclassReference
 import tools.vitruv.dsls.reactions.codegen.helper.AccessibleElement
 import static tools.vitruv.dsls.reactions.codegen.ReactionsLanguageConstants.*;
+import tools.vitruv.dsls.reactions.reactionsLanguage.NamedMetaclassReference
+import tools.vitruv.dsls.reactions.reactionsLanguage.NamedJavaElementReference
 
 class ParameterGenerator {
 	protected final extension JvmTypeReferenceBuilder _typeReferenceBuilder;
@@ -71,12 +71,12 @@ class ParameterGenerator {
 		return context.toParameter(parameterName, changeType);
 	}
 	
-	def Iterable<AccessibleElement> getInputElements(EObject contextObject, Iterable<NamedMetaclassReference> metaclassReferences, Iterable<NamedJavaElement> javaElements) {
+	def Iterable<AccessibleElement> getInputElements(EObject contextObject, Iterable<NamedMetaclassReference> metaclassReferences, Iterable<NamedJavaElementReference> javaElements) {
 		return metaclassReferences.map[new AccessibleElement(it.name, it.metaclass.mappedInstanceClassCanonicalName)]
 			+ javaElements.map[new AccessibleElement(it.name, it.type.qualifiedName)];
 	}
 	
-	def Iterable<JvmFormalParameter> generateMethodInputParameters(EObject contextObject, Iterable<NamedMetaclassReference> metaclassReferences, Iterable<NamedJavaElement> javaElements) {
+	def Iterable<JvmFormalParameter> generateMethodInputParameters(EObject contextObject, Iterable<NamedMetaclassReference> metaclassReferences, Iterable<NamedJavaElementReference> javaElements) {
 		return contextObject.generateMethodInputParameters(contextObject.getInputElements(metaclassReferences, javaElements));
 	}
 	

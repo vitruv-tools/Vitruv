@@ -3,8 +3,8 @@ package tools.vitruv.dsls.reactions.codegen.helper
 import org.eclipse.xtext.nodemodel.util.NodeModelUtils
 import org.eclipse.xtext.xbase.XExpression
 import org.eclipse.xtext.xbase.XBlockExpression
-import tools.vitruv.dsls.mirbase.mirBase.MetaclassReference
-import tools.vitruv.dsls.mirbase.mirBase.DomainReference
+import tools.vitruv.dsls.common.elements.MetaclassReference
+import tools.vitruv.dsls.common.elements.DomainReference
 import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsSegment
 import edu.kit.ipd.sdq.commons.util.java.Pair
 import tools.vitruv.framework.domains.VitruvDomainProvider
