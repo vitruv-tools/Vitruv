@@ -7,11 +7,11 @@ import tools.vitruv.dsls.mappings.generator.reactions.AbstractReactionTriggerGen
 import tools.vitruv.dsls.mappings.generator.reactions.ElementReplacedReactionTriggerGenerator
 import tools.vitruv.dsls.mappings.mappingsLanguage.MappingParameter
 import tools.vitruv.dsls.mappings.mappingsLanguage.SingleSidedCondition
-import tools.vitruv.dsls.mirbase.mirBase.NamedMetaclassReference
 import tools.vitruv.dsls.mappings.generator.reactions.DeletedReactionTriggerGenerator
 import tools.vitruv.dsls.mappings.generator.reactions.InsertedReactionTriggerGenerator
 import tools.vitruv.dsls.mappings.generator.reactions.RemovedReactionTriggerGenerator
 import tools.vitruv.dsls.mappings.generator.reactions.ConflictingTriggerCheck
+import tools.vitruv.dsls.reactions.reactionsLanguage.NamedMetaclassReference
 
 class ReactionTriggerGeneratorFactory {
 

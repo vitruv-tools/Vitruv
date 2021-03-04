@@ -14,7 +14,6 @@ import tools.vitruv.dsls.mappings.generator.conditions.MappingParameterGraphTrav
 import tools.vitruv.dsls.mappings.generator.conditions.impl.InValueConditionGenerator
 import tools.vitruv.dsls.mappings.mappingsLanguage.MappingsLanguageFactory
 import tools.vitruv.dsls.mappings.mappingsLanguage.MultiValueConditionOperator
-import tools.vitruv.dsls.mirbase.mirBase.MirBaseFactory
 
 import org.apache.log4j.Logger
 import org.junit.jupiter.api.Test
@@ -23,6 +22,7 @@ import static org.hamcrest.MatcherAssert.assertThat
 import static org.hamcrest.CoreMatchers.is
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow
 import static org.hamcrest.CoreMatchers.instanceOf
+import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsLanguageFactory
 
 class MappingParameterGraphTraverserTest {
 	static Logger LOGGER = Logger.getLogger(MappingParameterGraphTraverserTest)
@@ -238,7 +238,7 @@ class MappingParameterGraphTraverserTest {
 
 	private def toParameter(String param) {
 		MappingsLanguageFactory.eINSTANCE.createMappingParameter => [
-			value = MirBaseFactory.eINSTANCE.createNamedMetaclassReference => [
+			value = ReactionsLanguageFactory.eINSTANCE.createNamedMetaclassReference => [
 				name = param
 			]
 		]

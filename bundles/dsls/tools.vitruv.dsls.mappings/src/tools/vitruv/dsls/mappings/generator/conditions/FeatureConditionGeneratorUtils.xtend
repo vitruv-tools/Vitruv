@@ -11,10 +11,10 @@ import tools.vitruv.dsls.mappings.mappingsLanguage.MappingParameterReference
 import tools.vitruv.dsls.mappings.mappingsLanguage.NullValue
 import tools.vitruv.dsls.mappings.mappingsLanguage.NumberValue
 import tools.vitruv.dsls.mappings.mappingsLanguage.StringValue
-import tools.vitruv.dsls.mirbase.mirBase.MirBaseFactory
 import tools.vitruv.dsls.reactions.builder.TypeProvider
 
 import static extension tools.vitruv.dsls.mappings.generator.utils.XBaseMethodFinder.*
+import tools.vitruv.dsls.common.elements.ElementsFactory
 
 class FeatureConditionGeneratorUtils {
 
@@ -23,7 +23,7 @@ class FeatureConditionGeneratorUtils {
 	}
 
 	def static getRightFeatureReference(FeatureCondition condition) {
-		MirBaseFactory.eINSTANCE.createMetaclassFeatureReference => [
+		ElementsFactory.eINSTANCE.createMetaclassFeatureReference => [
 			metaclass = condition.feature.parameter.value.metaclass
 			feature = condition.feature.feature
 		]
