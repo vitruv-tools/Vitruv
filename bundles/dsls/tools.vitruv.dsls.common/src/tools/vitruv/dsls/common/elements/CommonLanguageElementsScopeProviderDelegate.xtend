@@ -43,7 +43,7 @@ class CommonLanguageElementsScopeProviderDelegate {
 			return createEReferenceScope((context as MetaclassEReferenceReference)?.metaclass)
 		} else if (reference.equals(METACLASS_REFERENCE__METACLASS)) {
 			val potentialMetaclassReference = if(context instanceof MetaclassReference) context
-			createQualifiedEClassScope(potentialMetaclassReference?.metamodel)
+			return createQualifiedEClassScope(potentialMetaclassReference?.metamodel)
 		}
 		return null
 	}
