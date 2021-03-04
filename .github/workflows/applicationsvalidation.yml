@@ -28,9 +28,9 @@ jobs:
       - name: Checkout Matching Domains/Applications Branches
         run: |
           cd cbsdomains
-          git checkout -B ${{ github.head_ref }}
+          git checkout -B ${{ github.head_ref }} origin/${{ github.head_ref }} || true
           cd ../cbsapplications
-          git checkout -B ${{ github.head_ref }}
+          git checkout -B ${{ github.head_ref }} origin/${{ github.head_ref }} || true
       - name: Cache
         uses: actions/cache@v2
         with:
