@@ -56,13 +56,13 @@ Workflow {
 	}
 	
 	component = EcoreGenerator {
-		srcPath = "platform:/resource/tools.vitruv.dsls.reactions/model-gen"
+		srcPath = "platform:/resource/tools.vitruv.dsls.reactions/src"
 		genModel = "platform:/resource/tools.vitruv.dsls.reactions/model/TopLevelElements.genmodel"
 		generateCustomClasses = false
 	}
 	
 	component = EcoreGenerator {
-		srcPath = "platform:/resource/tools.vitruv.dsls.reactions/model-gen"
+		srcPath = "platform:/resource/tools.vitruv.dsls.reactions/src"
 		genModel = "platform:/resource/tools.vitruv.dsls.reactions/model/InputTypes.genmodel"
 		generateCustomClasses = false
 	}
