@@ -25,6 +25,7 @@ import tools.vitruv.dsls.reactions.reactionsLanguage.Taggable
 
 import static com.google.common.base.Preconditions.*
 import static tools.vitruv.dsls.reactions.codegen.ReactionsLanguageConstants.*
+import tools.vitruv.dsls.common.elements.ElementsFactory
 
 class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 
@@ -286,7 +287,7 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 		}
 
 		private def void reference(EClass modelElement) {
-			statement.elementType = ReactionsLanguageFactory.eINSTANCE.createNamedMetaclassReference().reference(modelElement)
+			statement.elementType = ElementsFactory.eINSTANCE.createMetaclassReference().reference(modelElement)
 		}
 	}
 
@@ -359,7 +360,7 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 
 		def requireAbsenceOf(EClass absentMetaclass) {
 			val statement = ReactionsLanguageFactory.eINSTANCE.createRequireAbscenceOfModelElement() => [
-				elementType = ReactionsLanguageFactory.eINSTANCE.createNamedMetaclassReference().reference(absentMetaclass)
+				elementType = ElementsFactory.eINSTANCE.createMetaclassReference().reference(absentMetaclass)
 			]
 			routine.matcher.matcherStatements += statement
 			return new RetrieveModelElementMatcherStatementCorrespondenceBuilder(builder, statement)
@@ -610,7 +611,7 @@ class FluentRoutineBuilder extends FluentReactionsSegmentChildBuilder {
 		}
 
 		def create(EClass element) {
-			statement.elementType = ReactionsLanguageFactory.eINSTANCE.createNamedMetaclassReference().reference(element)
+			statement.elementType = ElementsFactory.eINSTANCE.createMetaclassReference().reference(element)
 			new CreateStatementIntializationBuilder(builder, statement)
 		}
 	}
