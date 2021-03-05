@@ -154,24 +154,21 @@ class ReactionsLanguageScopeProviderDelegate extends XImportSectionNamespaceScop
 	}
 
 	def createQualifiedEClassScopeWithSpecialInputTypes(MetamodelImport metamodelImport) {
-		val classifierDescriptions = if (metamodelImport === null || metamodelImport.package === null) {
-				#[
-					createEObjectDescription(EcorePackage.Literals.EOBJECT, false),
-					createEObjectDescription(InputTypesPackage.Literals.STRING, false),
-					createEObjectDescription(InputTypesPackage.Literals.INTEGER, false),
-					createEObjectDescription(InputTypesPackage.Literals.BOOLEAN, false),
-					createEObjectDescription(InputTypesPackage.Literals.SHORT, false),
-					createEObjectDescription(InputTypesPackage.Literals.LONG, false),
-					createEObjectDescription(InputTypesPackage.Literals.BYTE, false),
-					createEObjectDescription(InputTypesPackage.Literals.CHARACTER, false),
-					createEObjectDescription(InputTypesPackage.Literals.FLOAT, false),
-					createEObjectDescription(InputTypesPackage.Literals.DOUBLE, false)
-				];
-			} else {
-				collectObjectDescriptions(metamodelImport.package, true, metamodelImport.useQualifiedNames, null)
-			}
-
-		var resultScope = new SimpleScope(IScope.NULLSCOPE, classifierDescriptions)
-		return resultScope
+		if (metamodelImport === null || metamodelImport.package === null) {
+			new SimpleScope(IScope.NULLSCOPE, #[
+				EObjectDescription.create(EcorePackage.Literals.EOBJECT.name, EcorePackage.Literals.EOBJECT),
+				EObjectDescription.create(InputTypesPackage.Literals.STRING.name, InputTypesPackage.Literals.STRING),
+				EObjectDescription.create(InputTypesPackage.Literals.INTEGER.name, InputTypesPackage.Literals.INTEGER),
+				EObjectDescription.create(InputTypesPackage.Literals.BOOLEAN.name, InputTypesPackage.Literals.BOOLEAN),
+				EObjectDescription.create(InputTypesPackage.Literals.SHORT.name, InputTypesPackage.Literals.SHORT),
+				EObjectDescription.create(InputTypesPackage.Literals.LONG.name, InputTypesPackage.Literals.LONG),
+				EObjectDescription.create(InputTypesPackage.Literals.BYTE.name, InputTypesPackage.Literals.BYTE),
+				EObjectDescription.create(InputTypesPackage.Literals.CHARACTER.name, InputTypesPackage.Literals.CHARACTER),
+				EObjectDescription.create(InputTypesPackage.Literals.FLOAT.name, InputTypesPackage.Literals.FLOAT),
+				EObjectDescription.create(InputTypesPackage.Literals.DOUBLE.name, InputTypesPackage.Literals.DOUBLE)
+			])
+		} else {
+			createQualifiedEClassScopeWithEObject(metamodelImport)
+		}
 	}
 }
