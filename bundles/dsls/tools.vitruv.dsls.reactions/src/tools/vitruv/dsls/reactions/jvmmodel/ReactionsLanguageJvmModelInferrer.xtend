@@ -21,7 +21,7 @@ import tools.vitruv.dsls.reactions.codegen.classgenerators.ChangePropagationSpec
 import tools.vitruv.dsls.reactions.codegen.classgenerators.OverriddenRoutinesFacadeClassGenerator
 import tools.vitruv.dsls.reactions.codegen.classgenerators.RoutinesFacadesProviderClassGenerator
 import static extension tools.vitruv.dsls.reactions.codegen.helper.ReactionsImportsHelper.*
-import static extension tools.vitruv.dsls.reactions.codegen.helper.ReactionsLanguageHelper.*
+import static extension tools.vitruv.dsls.reactions.codegen.helper.ReactionsElementsCompletionChecker.isComplete
 
 /**
  * <p>Infers a JVM model for the Xtend code blocks of the reaction file model.</p> 

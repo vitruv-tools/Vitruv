@@ -12,13 +12,13 @@ import tools.vitruv.extensions.dslsruntime.reactions.structure.ReactionsImportPa
 import tools.vitruv.dsls.reactions.language.toplevelelements.ReactionsSegment
 import static extension tools.vitruv.dsls.reactions.codegen.helper.ClassNamesGenerators.*
 import static extension tools.vitruv.dsls.reactions.codegen.helper.ReactionsImportsHelper.*
-import static extension tools.vitruv.dsls.reactions.codegen.helper.ReactionsLanguageHelper.*
 import tools.vitruv.dsls.reactions.codegen.typesbuilder.TypesBuilderExtensionProvider
 import org.eclipse.xtext.common.types.JvmGenericType
 import tools.vitruv.dsls.common.ClassNameGenerator
 import tools.vitruv.extensions.dslsruntime.reactions.ReactionExecutionState
 import tools.vitruv.extensions.dslsruntime.reactions.structure.CallHierarchyHaving
 import tools.vitruv.extensions.dslsruntime.reactions.RoutinesFacadeExecutionState
+import static extension tools.vitruv.dsls.reactions.codegen.helper.ReactionsElementsCompletionChecker.isComplete
 
 class RoutineFacadeClassGenerator extends ClassGenerator {
 	val ReactionsSegment reactionsSegment

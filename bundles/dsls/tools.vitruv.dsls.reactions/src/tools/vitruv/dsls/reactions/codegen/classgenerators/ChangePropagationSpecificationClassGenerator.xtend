@@ -9,6 +9,7 @@ import tools.vitruv.framework.change.processing.ChangePropagationSpecification
 
 import static extension tools.vitruv.dsls.reactions.codegen.helper.ClassNamesGenerators.*
 import static extension tools.vitruv.dsls.reactions.codegen.helper.ReactionsLanguageHelper.*
+import static extension tools.vitruv.dsls.reactions.codegen.helper.ReactionsElementsCompletionChecker.isComplete
 
 class ChangePropagationSpecificationClassGenerator extends ClassGenerator {
 	final ReactionsSegment reactionsSegment;

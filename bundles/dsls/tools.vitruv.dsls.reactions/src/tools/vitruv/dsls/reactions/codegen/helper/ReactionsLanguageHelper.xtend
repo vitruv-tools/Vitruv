@@ -16,15 +16,11 @@ import tools.vitruv.framework.domains.VitruvDomainProviderRegistry
 import tools.vitruv.dsls.reactions.api.generator.ReferenceClassNameAdapter
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EClassifier
-import tools.vitruv.dsls.reactions.language.toplevelelements.Reaction
-import tools.vitruv.dsls.reactions.language.toplevelelements.Routine
-import tools.vitruv.dsls.reactions.language.toplevelelements.RoutineOverrideImportPath
-import static extension tools.vitruv.dsls.reactions.util.ReactionsLanguageUtil.*;
+import edu.kit.ipd.sdq.activextendannotations.Utility
 
-final class ReactionsLanguageHelper {
-	private new() {
-	}
-
+@Utility
+class ReactionsLanguageHelper {
+	
 	static def dispatch String getXBlockExpressionText(XExpression expression) '''
 	{
 		«NodeModelUtils.getNode(expression).text»
@@ -104,42 +100,4 @@ final class ReactionsLanguageHelper {
 		resource.optionalReactionsFile !== null
 	}
 	
-	def static isComplete(ReactionsSegment reactionsSegment) {
-		if (reactionsSegment === null) return false;
-		if (reactionsSegment.name === null) return false;
-		if (reactionsSegment.fromDomain === null) return false;
-		if (reactionsSegment.toDomain === null) return false;
-		return true;
-	}
-	
-	def static isComplete(Reaction reaction) {
-		if (reaction === null) return false;
-		if (reaction.name === null) return false;
-		if (reaction.trigger === null) return false;
-		if (reaction.callRoutine === null) return false;
-		return true;
-	}
-	
-	def static isComplete(Routine routine) {
-		if (routine === null) return false;
-		if (routine.name === null) return false;
-		if (routine.action === null) return false;
-		if (routine.input === null) return false;
-		if (routine.input.javaInputElements.findFirst[it.name === null || it.type === null || it.type.qualifiedName === null] !== null) {
-			return false;
-		}
-		if (routine.input.modelInputElements.findFirst[it.name === null || it.metaclass === null || it.metaclass.javaClassName === null] !== null) {
-			return false;
-		}
-		return true;
-	}
-	
-	// note: this triggers a resolve of cross-references
-	def static isComplete(RoutineOverrideImportPath routineOverrideImportPath) {
-		if (routineOverrideImportPath === null) return false;
-		if (routineOverrideImportPath.fullPath.findFirst[it.reactionsSegment === null || it.reactionsSegment.name === null] !== null) {
-			return false;
-		} 
-		return true;
-	}
 }

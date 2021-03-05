@@ -18,7 +18,7 @@ import tools.vitruv.dsls.reactions.codegen.helper.AccessibleElement
 import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
 import tools.vitruv.dsls.reactions.codegen.changetyperepresentation.ChangeSequenceRepresentation
 import tools.vitruv.dsls.common.ClassNameGenerator
-import static extension tools.vitruv.dsls.reactions.codegen.helper.ReactionsLanguageHelper.*
+import static extension tools.vitruv.dsls.reactions.codegen.helper.ReactionsElementsCompletionChecker.isComplete
 
 class ReactionClassGenerator extends ClassGenerator {
 	static val String CHANCE_COUNTER_VARIABLE = "currentlyMatchedChange";
