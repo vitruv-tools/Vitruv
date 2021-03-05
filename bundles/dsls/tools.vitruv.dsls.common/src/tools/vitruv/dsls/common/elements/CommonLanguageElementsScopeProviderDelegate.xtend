@@ -14,7 +14,6 @@ import org.eclipse.xtext.scoping.IScope
 import org.eclipse.xtext.scoping.impl.SimpleScope
 
 import static tools.vitruv.dsls.common.elements.ElementsPackage.Literals.*
-import tools.vitruv.dsls.common.elements.ElementsPackage
 import tools.vitruv.dsls.common.elements.MetamodelImport
 import org.eclipse.emf.ecore.EPackage
 import org.eclipse.emf.ecore.EcorePackage
@@ -49,17 +48,41 @@ class CommonLanguageElementsScopeProviderDelegate {
 		}
 		return null
 	}
-
-	def createImportsScope(Resource resource) {
+	
+	private def createImportsScope(Resource resource) {
+		if (resource === null) {
+			return IScope.NULLSCOPE
+		}
 		createScope(IScope.NULLSCOPE, resource.metamodelImports.iterator, [EObjectDescription.create(it.name, it)])
 	}
+	
+	/**
+	 * Returns all packages that have been imported by import statements
+	 * in the given resource.
+	 */
+	private def getMetamodelImports(Resource res) {
+		var contents = res.getAllContentsOfEClass(ElementsPackage.eINSTANCE.getMetamodelImport, true).toList
+		val validImports = contents.filter(MetamodelImport).filter[package !== null].map [
+			it.name = it.name ?: it.package.name;
+			it
+		]
 
-	def hasQualifiedName(EObject eObject) {
-		val qn = qualifiedNameProvider.getFullyQualifiedName(eObject);
-		return ((qn !== null) && (!qn.empty));
+		return validImports
 	}
 
-	def createEStructuralFeatureScope(Iterator<? extends EStructuralFeature> featuresIterator) {
+	private def createEStructuralFeatureScope(EClass eClass) {
+		return createEStructuralFeatureScope(eClass?.EAllStructuralFeatures.iterator);
+	}
+
+	private def createEAttributeScope(EClass eClass) {
+		return createEStructuralFeatureScope(eClass?.EAllAttributes.iterator);
+	}
+
+	private def createEReferenceScope(EClass eClass) {
+		return createEStructuralFeatureScope(eClass?.EAllReferences.iterator);
+	}
+
+	private def createEStructuralFeatureScope(Iterator<? extends EStructuralFeature> featuresIterator) {
 		if (featuresIterator !== null) {
 			createScope(IScope.NULLSCOPE, featuresIterator, [
 				EObjectDescription.create(it.name, it)
@@ -67,18 +90,6 @@ class CommonLanguageElementsScopeProviderDelegate {
 		} else {
 			return IScope.NULLSCOPE
 		}
-	}
-
-	def createEStructuralFeatureScope(EClass eClass) {
-		return createEStructuralFeatureScope(eClass?.EAllStructuralFeatures.iterator);
-	}
-
-	def createEAttributeScope(EClass eClass) {
-		return createEStructuralFeatureScope(eClass?.EAllAttributes.iterator);
-	}
-
-	def createEReferenceScope(EClass eClass) {
-		return createEStructuralFeatureScope(eClass?.EAllReferences.iterator);
 	}
 
 	/**
@@ -94,60 +105,26 @@ class CommonLanguageElementsScopeProviderDelegate {
 	}
 
 	/**
-	 * Returns all packages that have been imported by import statements
-	 * in the given resource.
+	 * Creates an {@link IScope} that represents all {@link EClass}es
+	 * that are provided by the metamodel of the given {@link MetamodelImport}
+	 * by a fully qualified name.
+	 * 
+	 * @param metamodelImport - the metamodel to provide all classes of
 	 */
-	def getMetamodelImports(Resource res) {
-		var contents = res.getAllContentsOfEClass(ElementsPackage.eINSTANCE.getMetamodelImport, true).toList
-		val validImports = contents.filter(MetamodelImport).filter[package !== null].map [
-			it.name = it.name ?: it.package.name;
-			it
-		]
-
-		return validImports
+	def createQualifiedEClassScope(MetamodelImport metamodelImport) {
+		return createQualifiedEClassScope(metamodelImport, false, null);
 	}
 
 	/**
-	 * Create an {@link IScope} that represents all {@link EClass}es
-	 * that are referencable inside the {@link Resource} via {@link Import}s
-	 * by a fully qualified name.
+	 * Creates an {@link IScope} that represents all {@link EClass}es
+	 * that are provided by the metamodel of the given {@link MetamodelImport}
+	 * by a fully qualified name, and {@link EObject} if the given import does not
+	 * reference a proper metamodel.
 	 * 
-	 * @see MIRScopeProviderDelegate#createQualifiedEClassifierScope(Resource)
+	 * @param metamodelImport - the metamodel to provide the classes of
 	 */
-	private def createQualifiedEClassScope(Resource res, boolean includeEObject, Function<EClass, Boolean> filter) {
-		val classifierDescriptions = res.metamodelImports.map [ import |
-			collectObjectDescriptions(import.package, true, import.useQualifiedNames, filter)
-		].flatten + if (includeEObject) {
-			#[createEObjectDescription(EcorePackage.Literals.EOBJECT, false)];
-		} else {
-			#[];
-		}
-
-		var resultScope = new SimpleScope(IScope.NULLSCOPE, classifierDescriptions)
-		return resultScope
-	}
-
-	/**
-	 * Create an {@link IScope} that represents all {@link EClass}es
-	 * that are referencable inside the {@link Resource} via {@link Import}s
-	 * by a fully qualified name.
-	 * 
-	 * @see MIRScopeProviderDelegate#createQualifiedEClassifierScope(Resource)
-	 */
-	private def createQualifiedEClassScope(MetamodelImport metamodelImport, boolean includeEObject,
-		Function<EClass, Boolean> filter) {
-		val classifierDescriptions = if (metamodelImport === null || metamodelImport.package === null) {
-				if (includeEObject) {
-					#[createEObjectDescription(EcorePackage.Literals.EOBJECT, false)];
-				} else {
-					#[];
-				}
-			} else {
-				collectObjectDescriptions(metamodelImport.package, true, metamodelImport.useQualifiedNames, filter)
-			}
-
-		var resultScope = new SimpleScope(IScope.NULLSCOPE, classifierDescriptions)
-		return resultScope
+	def createQualifiedEClassScopeWithEObject(MetamodelImport metamodelImport) {
+		return createQualifiedEClassScope(metamodelImport, true, null);
 	}
 
 	/**
@@ -190,34 +167,44 @@ class CommonLanguageElementsScopeProviderDelegate {
 		]);
 	}
 
-	def createQualifiedEClassScope(Resource res) {
-		return createQualifiedEClassScope(res, false, null);
-	}
-
 	/**
-	 * Creates an {@link IScope} that represents all {@link EClass}es
-	 * that are provided by the metamodel of the given {@link MetamodelImport}
+	 * Create an {@link IScope} that represents all {@link EClass}es
+	 * that are referencable inside the {@link Resource} via {@link Import}s
 	 * by a fully qualified name.
 	 * 
-	 * @param metamodelImport - the metamodel to provide all classes of
+	 * @see #createQualifiedEClassifierScope(Resource)
 	 */
-	def createQualifiedEClassScope(MetamodelImport metamodelImport) {
-		return createQualifiedEClassScope(metamodelImport, false, null);
-	}
+	private def createQualifiedEClassScope(MetamodelImport metamodelImport, boolean includeEObject,
+		Function<EClass, Boolean> filter) {
+		val classifierDescriptions = if (metamodelImport === null || metamodelImport.package === null) {
+				if (includeEObject) {
+					#[createEObjectDescription(EcorePackage.Literals.EOBJECT, false)];
+				} else {
+					#[];
+				}
+			} else {
+				collectObjectDescriptions(metamodelImport.package, true, metamodelImport.useQualifiedNames, filter)
+			}
 
+		var resultScope = new SimpleScope(IScope.NULLSCOPE, classifierDescriptions)
+		return resultScope
+	}
+	
 	/**
-	 * Creates an {@link IScope} that represents all {@link EClass}es
-	 * that are provided by the metamodel of the given {@link MetamodelImport}
-	 * by a fully qualified name, and {@link EObject} if the given import does not
-	 * reference a proper metamodel.
-	 * 
-	 * @param metamodelImport - the metamodel to provide the classes of
+	 * Creates and returns a {@link EObjectDescription} with simple name
+	 * or in case of a qualified name with the given package prefix.
 	 */
-	def createQualifiedEClassScopeWithEObject(MetamodelImport metamodelImport) {
-		return createQualifiedEClassScope(metamodelImport, true, null);
+	private def IEObjectDescription createEObjectDescription(EClassifier classifier, boolean useQualifiedNames) {
+		var QualifiedName qualifiedName;
+		if (useQualifiedNames) {
+			qualifiedName = qualifiedNameProvider.getFullyQualifiedName(classifier).skipFirst(1);
+		} else {
+			qualifiedName = QualifiedName.create(classifier.name);
+		}
+		return EObjectDescription.create(qualifiedName, classifier);
 	}
-
-	def Iterable<IEObjectDescription> collectObjectDescriptions(EPackage pckg, boolean includeSubpackages,
+	
+	private def Iterable<IEObjectDescription> collectObjectDescriptions(EPackage pckg, boolean includeSubpackages,
 		boolean useQualifiedNames, Function<EClass, Boolean> filter) {
 		var classes = collectEClasses(pckg, includeSubpackages)
 		if (filter !== null) {
@@ -235,17 +222,4 @@ class CommonLanguageElementsScopeProviderDelegate {
 		return recursiveResult + result;
 	}
 
-	/**
-	 * Creates and returns a {@link EObjectDescription} with simple name
-	 * or in case of a qualified name with the given package prefix.
-	 */
-	def IEObjectDescription createEObjectDescription(EClassifier classifier, boolean useQualifiedNames) {
-		var QualifiedName qualifiedName;
-		if (useQualifiedNames) {
-			qualifiedName = qualifiedNameProvider.getFullyQualifiedName(classifier).skipFirst(1);
-		} else {
-			qualifiedName = QualifiedName.create(classifier.name);
-		}
-		return EObjectDescription.create(qualifiedName, classifier);
-	}
 }
