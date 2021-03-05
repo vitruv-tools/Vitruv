@@ -41,6 +41,8 @@ class CommonLanguageElementsScopeProviderDelegate {
 			return createEAttributeScope((context as MetaclassEAttributeReference)?.metaclass)
 		} else if (reference.equals(METACLASS_EREFERENCE_REFERENCE__FEATURE)) {
 			return createEReferenceScope((context as MetaclassEReferenceReference)?.metaclass)
+		} else if (reference.equals(METACLASS_REFERENCE__METAMODEL)) {
+			return createImportsScope(context.eResource)
 		} else if (reference.equals(METACLASS_REFERENCE__METACLASS)) {
 			val potentialMetaclassReference = if(context instanceof MetaclassReference) context
 			return createQualifiedEClassScope(potentialMetaclassReference?.metamodel)
