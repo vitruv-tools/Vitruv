@@ -10,8 +10,8 @@ import tools.vitruv.extensions.dslsruntime.reactions.structure.ReactionsImportPa
 
 import static extension tools.vitruv.dsls.reactions.codegen.helper.ClassNamesGenerators.*
 import static extension tools.vitruv.dsls.reactions.codegen.helper.ReactionsImportsHelper.*
-import static extension tools.vitruv.dsls.reactions.codegen.helper.ReactionsLanguageHelper.*
 import static extension tools.vitruv.dsls.reactions.util.ReactionsLanguageUtil.*
+import static extension tools.vitruv.dsls.reactions.codegen.helper.ReactionsElementsCompletionChecker.isComplete
 
 class OverriddenRoutinesFacadeClassGenerator extends RoutineFacadeClassGenerator {
 

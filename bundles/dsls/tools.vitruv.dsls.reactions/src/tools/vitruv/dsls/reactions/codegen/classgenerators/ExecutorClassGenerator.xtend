@@ -11,6 +11,7 @@ import static extension tools.vitruv.dsls.reactions.codegen.helper.ClassNamesGen
 import tools.vitruv.dsls.reactions.codegen.typesbuilder.TypesBuilderExtensionProvider
 import static extension tools.vitruv.dsls.reactions.codegen.helper.ReactionsLanguageHelper.*;
 import static extension tools.vitruv.dsls.reactions.codegen.helper.ReactionsImportsHelper.*;
+import static extension tools.vitruv.dsls.reactions.codegen.helper.ReactionsElementsCompletionChecker.isComplete
 
 class ExecutorClassGenerator extends ClassGenerator {
 	final ReactionsSegment reactionsSegment;

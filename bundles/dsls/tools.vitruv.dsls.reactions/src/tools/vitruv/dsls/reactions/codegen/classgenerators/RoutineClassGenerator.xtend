@@ -39,10 +39,10 @@ import java.util.Optional
 import tools.vitruv.dsls.common.ClassNameGenerator
 import tools.vitruv.dsls.reactions.language.toplevelelements.NamedJavaElementReference
 import tools.vitruv.dsls.common.elements.NamedMetaclassReference
+import static extension tools.vitruv.dsls.reactions.codegen.helper.ReactionsElementsCompletionChecker.isComplete
 
 class RoutineClassGenerator extends ClassGenerator {
 	protected final Routine routine;
-	protected extension ReactionElementsCompletionChecker _completionChecker;
 	var String generalUserExecutionClassQualifiedName;
 	final ClassNameGenerator routineClassNameGenerator;
 	var ClassNameGenerator routinesFacadeClassNameGenerator;
@@ -61,7 +61,6 @@ class RoutineClassGenerator extends ClassGenerator {
 			throw new IllegalArgumentException("incomplete");
 		}
 		this.routine = routine;
-		this._completionChecker = new ReactionElementsCompletionChecker();
 		this.routineClassNameGenerator = routine.routineClassNameGenerator;
 		this.routinesFacadeClassNameGenerator = routine.reactionsSegment.routinesFacadeClassNameGenerator;
 		this.generalUserExecutionClassQualifiedName = routineClassNameGenerator.qualifiedName + "." +

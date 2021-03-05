@@ -18,17 +18,16 @@ import tools.vitruv.dsls.reactions.language.toplevelelements.Routine
 import tools.vitruv.dsls.reactions.language.toplevelelements.RoutineOverrideImportPath
 import tools.vitruv.extensions.dslsruntime.reactions.structure.ReactionsImportPath
 
-import static extension tools.vitruv.dsls.reactions.codegen.helper.ReactionsLanguageHelper.*
+import static extension tools.vitruv.dsls.reactions.codegen.helper.ReactionsElementsCompletionChecker.isComplete
 import static extension tools.vitruv.dsls.reactions.util.ReactionsLanguageUtil.*
 import static com.google.common.base.Preconditions.*
+import edu.kit.ipd.sdq.activextendannotations.Utility
 
 /**
  * Utilities related to reactions imports, import hierarchies, and reaction and routine overrides.
  */
+@Utility
 class ReactionsImportsHelper {
-
-	private new() {
-	}
 
 	/**
 	 * Gets the name of the overridden reactions segment.

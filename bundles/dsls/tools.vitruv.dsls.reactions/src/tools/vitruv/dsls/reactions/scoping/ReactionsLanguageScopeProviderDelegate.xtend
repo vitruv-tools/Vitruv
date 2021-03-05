@@ -58,7 +58,7 @@ class ReactionsLanguageScopeProviderDelegate extends XImportSectionNamespaceScop
 			if (container instanceof ModelElementChange) {
 				return createQualifiedEClassScopeWithEObject(potentialMetaclassReference?.metamodel);
 			} else if (container instanceof CreateModelElement) {
-				return createQualifiedEClassScopeWithoutAbstract(potentialMetaclassReference.metamodel);
+				return createQualifiedEClassScopeWithoutAbstract(potentialMetaclassReference?.metamodel);
 			} else if (container instanceof RoutineInput) {
 				return createQualifiedEClassScopeWithSpecialInputTypes(potentialMetaclassReference?.metamodel);
 			} else if (container instanceof RetrieveOrRequireAbscenceOfModelElement) {

@@ -9,7 +9,8 @@ import tools.vitruv.extensions.dslsruntime.reactions.structure.ReactionsImportPa
 import edu.kit.ipd.sdq.activextendannotations.Utility
 import tools.vitruv.dsls.common.ClassNameGenerator
 
-@Utility class ClassNamesGenerators {
+@Utility
+class ClassNamesGenerators {
 	static val String BASIC_PACKAGE = "mir"
 	static val REACTIONS_PACKAGE = "reactions"
 	static val String ROUTINES_PACKAGE = "routines"
