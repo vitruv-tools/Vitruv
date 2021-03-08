@@ -39,15 +39,17 @@ import java.util.Optional
 import tools.vitruv.dsls.common.ClassNameGenerator
 import tools.vitruv.dsls.reactions.language.toplevelelements.NamedJavaElementReference
 import tools.vitruv.dsls.common.elements.NamedMetaclassReference
-import static extension tools.vitruv.dsls.reactions.codegen.helper.ReactionsElementsCompletionChecker.isComplete
+import static extension tools.vitruv.dsls.reactions.codegen.helper.ReactionsElementsCompletionChecker.isReferenceable
 
 class RoutineClassGenerator extends ClassGenerator {
+	static val MISSING_NAME = "/* Name missing */"
+	static val MISSING_TYPE = "/* Type missing */"
 	protected final Routine routine;
 	var String generalUserExecutionClassQualifiedName;
 	final ClassNameGenerator routineClassNameGenerator;
 	var ClassNameGenerator routinesFacadeClassNameGenerator;
-	var List<NamedMetaclassReference> modelInputElements;
-	var List<NamedJavaElementReference> javaInputElements;
+	var Iterable<NamedMetaclassReference> modelInputElements;
+	var Iterable<NamedJavaElementReference> javaInputElements;
 	extension var UserExecutionClassGenerator userExecutionClassGenerator;
 	var List<AccessibleElement> currentlyAccessibleElements;
 	static val USER_EXECUTION_FIELD_NAME = "userExecution";
@@ -57,7 +59,7 @@ class RoutineClassGenerator extends ClassGenerator {
 
 	new(Routine routine, TypesBuilderExtensionProvider typesBuilderExtensionProvider) {
 		super(typesBuilderExtensionProvider)
-		if (!routine.isComplete) {
+		if (!routine.isReferenceable) {
 			throw new IllegalArgumentException("incomplete");
 		}
 		this.routine = routine;
@@ -67,8 +69,8 @@ class RoutineClassGenerator extends ClassGenerator {
 			EFFECT_USER_EXECUTION_SIMPLE_NAME;
 		this.userExecutionClassGenerator = new UserExecutionClassGenerator(typesBuilderExtensionProvider, routine,
 			routineClassNameGenerator.qualifiedName + "." + EFFECT_USER_EXECUTION_SIMPLE_NAME);
-		this.modelInputElements = routine.input.modelInputElements;
-		this.javaInputElements = routine.input.javaInputElements;
+		this.modelInputElements = routine.input.modelInputElements
+		this.javaInputElements = routine.input.javaInputElements
 		this.elementUpdateCounter = 0;
 		this.currentlyAccessibleElements = new ArrayList();
 		this.currentlyAccessibleElements += routine.getInputElements(modelInputElements, javaInputElements);
@@ -139,16 +141,14 @@ class RoutineClassGenerator extends ClassGenerator {
 	}
 
 	private def dispatch StringConcatenationClient createStatements(CreateModelElement createElement) {
-		this.currentlyAccessibleElements += new AccessibleElement(createElement.name, createElement.elementType.javaClassName)
+		this.currentlyAccessibleElements += new AccessibleElement(createElement.name?: MISSING_NAME, createElement.elementType?.javaClassName)
 		val initializeMethod = if (createElement.initializationBlock !== null)
-				generateUpdateElementMethod(createElement.name, createElement.initializationBlock,
+				generateUpdateElementMethod(createElement.name ?: MISSING_NAME, createElement.initializationBlock,
 					currentlyAccessibleElements);
-		val initializeMethodCall = if (initializeMethod !== null) initializeMethod.userExecutionMethodCallString;
+		val initializeMethodCall = initializeMethod?.userExecutionMethodCallString;
 		return '''
 			«getElementCreationCode(createElement)»
-			«IF initializeMethod !== null»
-				«initializeMethodCall»;
-			«ENDIF»
+			«initializeMethodCall»;
 		'''
 	}
 
@@ -167,8 +167,8 @@ class RoutineClassGenerator extends ClassGenerator {
 	private def dispatch StringConcatenationClient createStatements(RetrieveModelElement retrieveElement) {
 		val retrieveStatementArguments = getGeneralGetCorrespondingElementStatementArguments(retrieveElement,
 			retrieveElement.name);
-		val affectedElementClass = retrieveElement.elementType.metaclass;
-		return createStatements(retrieveElement.retrievalType, retrieveElement.name, affectedElementClass.javaClassName,
+		val affectedElementClass = retrieveElement.elementType?.metaclass;
+		return createStatements(retrieveElement.retrievalType, retrieveElement.name, affectedElementClass?.javaClassName,
 			retrieveStatementArguments)
 	}
 
@@ -220,7 +220,7 @@ class RoutineClassGenerator extends ClassGenerator {
 
 	private def dispatch StringConcatenationClient createStatements(MatcherCheckStatement checkStatement) {
 		val checkMethod = generateMethodMatcherPrecondition(checkStatement, currentlyAccessibleElements);
-		val checkMethodCall = checkMethod.userExecutionMethodCallString;
+		val checkMethodCall = checkMethod?.userExecutionMethodCallString;
 		return '''
 		if (!«checkMethodCall») {
 			«IF checkStatement.asserted»
@@ -232,19 +232,19 @@ class RoutineClassGenerator extends ClassGenerator {
 	}
 
 	private def dispatch StringConcatenationClient createStatements(DeleteModelElement deleteElement) {
-		val getElementMethod = generateMethodGetElement(deleteElement.element, currentlyAccessibleElements);
-		val getElementMethodCall = getElementMethod.userExecutionMethodCallString;
+		val getElementMethod = generateMethodGetElement(deleteElement.element, currentlyAccessibleElements, typeRef(EObject));
+		val getElementMethodCall = getElementMethod?.userExecutionMethodCallString;
 		return '''
 			deleteObject(«getElementMethodCall»);
 		'''
 	}
 
 	private def dispatch StringConcatenationClient createStatements(UpdateModelElement updateElement) {
-		val getElementMethod = generateMethodGetElement(updateElement.element, currentlyAccessibleElements);
-		val getElementMethodCall = getElementMethod.userExecutionMethodCallString;
+		val getElementMethod = generateMethodGetElement(updateElement.element, currentlyAccessibleElements, updateElement?.element.code?.inferredType);
+		val getElementMethodCall = getElementMethod?.userExecutionMethodCallString;
 		val updateMethod = generateUpdateElementMethod("" + elementUpdateCounter++, updateElement.updateBlock,
 			currentlyAccessibleElements);
-		val updateMethodCall = updateMethod.userExecutionMethodCallString;
+		val updateMethodCall = updateMethod?.userExecutionMethodCallString;
 		return '''
 			// val updatedElement «getElementMethodCall»;
 			«updateMethodCall»;
@@ -253,11 +253,11 @@ class RoutineClassGenerator extends ClassGenerator {
 
 	private def dispatch StringConcatenationClient createStatements(CreateCorrespondence createCorrespondence) {
 		val getFirstElementMethod = generateMethodGetElement(createCorrespondence.firstElement,
-			currentlyAccessibleElements);
-		val getFirstElementMethodCall = getFirstElementMethod.userExecutionMethodCallString;
+			currentlyAccessibleElements, typeRef(EObject));
+		val getFirstElementMethodCall = getFirstElementMethod?.userExecutionMethodCallString;
 		val getSecondElementMethod = generateMethodGetElement(createCorrespondence.secondElement,
-			currentlyAccessibleElements);
-		val getSecondElementMethodCall = getSecondElementMethod.userExecutionMethodCallString;
+			currentlyAccessibleElements, typeRef(EObject));
+		val getSecondElementMethodCall = getSecondElementMethod?.userExecutionMethodCallString;
 		val tagMethod = if (createCorrespondence.tag !== null)
 				generateMethodGetCreateTag(createCorrespondence, currentlyAccessibleElements);
 		val tagMethodCall = if (tagMethod !== null) tagMethod.userExecutionMethodCallString else '''""''';
@@ -268,11 +268,11 @@ class RoutineClassGenerator extends ClassGenerator {
 
 	private def dispatch StringConcatenationClient createStatements(RemoveCorrespondence removeCorrespondence) {
 		val getFirstElementMethod = generateMethodGetElement(removeCorrespondence.firstElement,
-			currentlyAccessibleElements);
-		val getFirstElementMethodCall = getFirstElementMethod.userExecutionMethodCallString
+			currentlyAccessibleElements, typeRef(EObject));
+		val getFirstElementMethodCall = getFirstElementMethod?.userExecutionMethodCallString
 		val getSecondElementMethod = generateMethodGetElement(removeCorrespondence.secondElement,
-			currentlyAccessibleElements);
-		val getSecondElementMethodCall = getSecondElementMethod.userExecutionMethodCallString;
+			currentlyAccessibleElements, typeRef(EObject));
+		val getSecondElementMethodCall = getSecondElementMethod?.userExecutionMethodCallString;
 		val tagMethod = if (removeCorrespondence.tag !== null)
 				generateMethodGetCreateTag(removeCorrespondence, currentlyAccessibleElements);
 		val tagMethodCall = if (tagMethod !== null) tagMethod.userExecutionMethodCallString else '''""''';
@@ -341,7 +341,7 @@ class RoutineClassGenerator extends ClassGenerator {
 
 	private def StringConcatenationClient getPreconditionChecker(
 		RetrieveOrRequireAbscenceOfModelElement retrieveElement, String name) {
-		val affectedElementClass = retrieveElement.elementType.javaClassName;
+		val affectedElementClass = retrieveElement.elementType?.javaClassName;
 		if (retrieveElement.precondition === null) {
 			return '''(«affectedElementClass» _element) -> true''';
 		}
@@ -352,25 +352,25 @@ class RoutineClassGenerator extends ClassGenerator {
 
 	private def StringConcatenationClient getGeneralGetCorrespondingElementStatementArguments(
 		RetrieveOrRequireAbscenceOfModelElement retrieveElement, String name) {
-		val affectedElementClass = retrieveElement.elementType.javaClassName;
+		val affectedElementClass = retrieveElement.elementType?.javaClassName;
 		val correspondingElementPreconditionChecker = getPreconditionChecker(retrieveElement, name);
 		val correspondenceSourceMethod = generateMethodGetCorrespondenceSource(retrieveElement,
 			currentlyAccessibleElements);
-		val correspondenceSourceMethodCall = correspondenceSourceMethod.userExecutionMethodCallString;
+		val correspondenceSourceMethodCall = correspondenceSourceMethod?.userExecutionMethodCallString;
 		val tagString = getTagString(retrieveElement);
 		return '''
 		«correspondenceSourceMethodCall», // correspondence source supplier
-		«affectedElementClass».class,
+		«affectedElementClass ?: MISSING_TYPE».class,
 		«correspondingElementPreconditionChecker», // correspondence precondition checker
 		«tagString»'''
 	}
 
 	private def StringConcatenationClient getElementCreationCode(CreateModelElement elementCreate) {
-		val affectedElementClass = elementCreate.elementType.metaclass;
-		val createdClassFactory = affectedElementClass.EPackage.EFactoryInstance.runtimeClassName
+		val affectedElementClass = elementCreate.elementType?.metaclass;
+		val createdClassFactory = affectedElementClass?.EPackage?.EFactoryInstance?.runtimeClassName
 		return '''
-		«affectedElementClass.javaClassName» «elementCreate.name» = «createdClassFactory».eINSTANCE.create«affectedElementClass.name»();
-		notifyObjectCreated(«elementCreate.name»);'''
+		«affectedElementClass.javaClassName» «elementCreate.name ?: MISSING_NAME» = «createdClassFactory?: MISSING_TYPE».eINSTANCE.create«affectedElementClass?.name?: MISSING_TYPE»();
+		notifyObjectCreated(«elementCreate.name ?: MISSING_NAME»);'''
 	}
 
 }

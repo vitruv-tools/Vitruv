@@ -43,7 +43,7 @@ class ReactionsLanguageHelper {
 	}
 
 	static def getJavaClassName(MetaclassReference metaclassReference) {
-		metaclassReference.metaclass.javaClassName;
+		metaclassReference.metaclass?.javaClassName;
 	}
 
 	static def VitruvDomainProvider<?> getProviderForDomain(VitruvDomain domain) {

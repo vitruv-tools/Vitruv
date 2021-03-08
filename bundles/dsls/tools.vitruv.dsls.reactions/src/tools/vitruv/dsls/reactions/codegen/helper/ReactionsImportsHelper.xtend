@@ -18,10 +18,10 @@ import tools.vitruv.dsls.reactions.language.toplevelelements.Routine
 import tools.vitruv.dsls.reactions.language.toplevelelements.RoutineOverrideImportPath
 import tools.vitruv.extensions.dslsruntime.reactions.structure.ReactionsImportPath
 
-import static extension tools.vitruv.dsls.reactions.codegen.helper.ReactionsElementsCompletionChecker.isComplete
 import static extension tools.vitruv.dsls.reactions.util.ReactionsLanguageUtil.*
 import static com.google.common.base.Preconditions.*
 import edu.kit.ipd.sdq.activextendannotations.Utility
+import static extension tools.vitruv.dsls.reactions.codegen.helper.ReactionsElementsCompletionChecker.isReferenceable
 
 /**
  * Utilities related to reactions imports, import hierarchies, and reaction and routine overrides.
@@ -100,7 +100,7 @@ class ReactionsImportsHelper {
 	 * @see #getParsedOverrideImportPath(Routine)
 	 */
 	static def Set<ReactionsImportPath> getParsedOverriddenRoutinesImportPaths(ReactionsSegment reactionsSegment) {
-		return reactionsSegment.overrideRoutines.filter[it.isComplete].map[it.parsedOverrideImportPath].toSet;
+		return reactionsSegment.overrideRoutines.filter[it.isReferenceable].map[it.parsedOverrideImportPath].toSet;
 	}
 
 	/**
@@ -325,7 +325,7 @@ class ReactionsImportsHelper {
 				val reactionsByQualifiedName = data.first;
 				val reactionsToImportPath = data.second;
 				// add own reactions and replace overridden reactions:
-				for (reaction : currentReactionsSegment.reactions.filter[it.isComplete]) {
+				for (reaction : currentReactionsSegment.reactions.filter[it.isReferenceable]) {
 					val qualifiedName = reaction.qualifiedName;
 					// this replaces any overridden reaction for the same qualified name:
 					val previousReaction = reactionsByQualifiedName.put(qualifiedName, reaction);
@@ -385,7 +385,7 @@ class ReactionsImportsHelper {
 				val routinesByFullyQualifiedName = data.second;
 				val routinesToImportPath = data.third;
 				// add own routines:
-				for (routine : currentReactionsSegment.regularRoutines.filter[it.isComplete]) {
+				for (routine : currentReactionsSegment.regularRoutines.filter[it.isReferenceable]) {
 					// only include one (top-most) routine for each unique formatted routine name:
 					if (routinesByName.putIfAbsent(routine.formattedName, routine) === null) {
 						// fully qualified name originating from root reactions segment:
@@ -402,7 +402,7 @@ class ReactionsImportsHelper {
 				val routinesByFullyQualifiedName = data.second;
 				val routinesToImportPath = data.third;
 				// replace overridden routines:
-				for (routine : currentReactionsSegment.overrideRoutines.filter[it.isComplete]) {
+				for (routine : currentReactionsSegment.overrideRoutines.filter[it.isReferenceable]) {
 					// fully qualified name originating from root reactions segment:
 					var fullyQualifiedName = routine.getFullyQualifiedName(currentImportPath);
 					// only include override routines if the overridden routine (same fully qualified name) is included:
@@ -452,7 +452,7 @@ class ReactionsImportsHelper {
 				val segmentsByName = data.first;
 				val segmentsToImportPath = data.second;
 				// add included routines facades:
-				val currentSegmentIncludedImports = currentReactionsSegment.reactionsImports.filter[it.isResolvable && it.useQualifiedNames];
+				val currentSegmentIncludedImports = currentReactionsSegment.reactionsImports.filter[it.isReferenceable && it.isResolvable && it.useQualifiedNames];
 				val currentSegmentIncludedSegments = currentSegmentIncludedImports.map[it.importedReactionsSegment];
 				for (includedSegment : currentSegmentIncludedSegments) {
 					val includedSegmentFormattedName = includedSegment.formattedName;

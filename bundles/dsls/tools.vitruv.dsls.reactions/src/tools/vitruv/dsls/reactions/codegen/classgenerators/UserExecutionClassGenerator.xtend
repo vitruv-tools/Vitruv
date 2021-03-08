@@ -16,7 +16,6 @@ import tools.vitruv.dsls.reactions.language.RetrieveModelElement
 import tools.vitruv.dsls.reactions.codegen.helper.AccessibleElement
 import tools.vitruv.dsls.reactions.codegen.typesbuilder.TypesBuilderExtensionProvider
 import org.eclipse.xtext.common.types.JvmGenericType
-import org.eclipse.xtext.xbase.XExpression
 import tools.vitruv.dsls.reactions.language.ExecuteActionStatement
 import static tools.vitruv.dsls.reactions.codegen.ReactionsLanguageConstants.*
 import tools.vitruv.dsls.reactions.language.RetrieveOrRequireAbscenceOfModelElement
@@ -75,7 +74,7 @@ class UserExecutionClassGenerator extends ClassGenerator {
 	protected def JvmOperation generateUpdateElementMethod(String elementName, CodeBlock codeBlock,
 		Iterable<AccessibleElement> accessibleElements) {
 		val code = codeBlock.code;
-		return code.getOrGenerateMethod("update" + elementName.toFirstUpper + "Element", typeRef(Void.TYPE)) [
+		return codeBlock.getOrGenerateMethod("update" + elementName?.toFirstUpper + "Element", typeRef(Void.TYPE)) [
 			parameters += generateAccessibleElementsParameters(accessibleElements);
 			body = code;
 		]
@@ -85,7 +84,7 @@ class UserExecutionClassGenerator extends ClassGenerator {
 		Iterable<AccessibleElement> accessibleElements) {
 		val methodName = "getRetrieveTag" + counterGetRetrieveTagMethods++;
 
-		return taggable.tag.getOrGenerateMethod(methodName, typeRef(String)) [
+		return taggable.tag?.getOrGenerateMethod(methodName, typeRef(String)) [
 			parameters += generateAccessibleElementsParameters(accessibleElements);
 			body = taggable.tag.code;
 		];
@@ -95,7 +94,7 @@ class UserExecutionClassGenerator extends ClassGenerator {
 		Iterable<AccessibleElement> accessibleElements) {
 		val methodName = "getTag" + counterGetTagMethods++;
 
-		return taggable.tag.getOrGenerateMethod(methodName, typeRef(String)) [
+		return taggable.tag?.getOrGenerateMethod(methodName, typeRef(String)) [
 			parameters += generateAccessibleElementsParameters(accessibleElements);
 			body = taggable.tag.code;
 		];
@@ -104,7 +103,7 @@ class UserExecutionClassGenerator extends ClassGenerator {
 	protected def generateMethodCorrespondencePrecondition(RetrieveOrRequireAbscenceOfModelElement elementRetrieve, String name,
 		Iterable<AccessibleElement> accessibleElements) {
 		val methodName = "getCorrespondingModelElementsPrecondition" + (elementRetrieve.retrieveOrRequireAbscenceMethodSuffix?: counterGetCorrespondenceSource++);
-		return elementRetrieve.precondition.getOrGenerateMethod(methodName, typeRef(Boolean.TYPE)) [
+		return elementRetrieve.precondition?.getOrGenerateMethod(methodName, typeRef(Boolean.TYPE)) [
 			val elementParameter = generateModelElementParameter(elementRetrieve.elementType, name?: RETRIEVAL_PRECONDITION_METHOD_TARGET);
 			parameters += generateAccessibleElementsParameters(accessibleElements);
 			parameters += elementParameter;
@@ -116,18 +115,18 @@ class UserExecutionClassGenerator extends ClassGenerator {
 		Iterable<AccessibleElement> accessibleElements) {
 		val methodName = "getCorrepondenceSource" + (elementRetrieve.retrieveOrRequireAbscenceMethodSuffix?: counterGetCorrespondenceSource++);
 
-		val correspondenceSourceBlock = elementRetrieve.correspondenceSource.code;
-		return correspondenceSourceBlock.getOrGenerateMethod(methodName, typeRef(EObject)) [
+		val correspondenceSourceBlock = elementRetrieve.correspondenceSource;
+		return correspondenceSourceBlock?.getOrGenerateMethod(methodName, typeRef(EObject)) [
 			parameters += generateAccessibleElementsParameters(accessibleElements);
-			body = correspondenceSourceBlock;
+			body = correspondenceSourceBlock.code;
 		];
 	}
 
 	protected def generateMethodGetElement(ExistingElementReference reference,
-		Iterable<AccessibleElement> accessibleElements) {
+		Iterable<AccessibleElement> accessibleElements, JvmTypeReference expectedType) {
 		val methodName = "getElement" + counterGetElementMethods++;
 
-		return reference.code.getOrGenerateMethod(methodName, reference?.code?.inferredType?: typeRef(EObject)) [
+		return reference?.getOrGenerateMethod(methodName, expectedType) [
 			parameters += generateAccessibleElementsParameters(accessibleElements);
 			val correspondenceSourceBlock = reference?.code;
 			body = correspondenceSourceBlock;
@@ -145,34 +144,28 @@ class UserExecutionClassGenerator extends ClassGenerator {
 
 	protected def JvmOperation generateMethodExecuteAction(ExecuteActionStatement executeAction,
 		Iterable<AccessibleElement> accessibleElements, JvmTypeReference facadeClassTypeReference) {
-		if (executeAction.code === null) {
-			return null;
-		}
 		val methodName = "executeAction" + counterExecuteActionMethods++;
-		return generateExecutionMethod(executeAction.code, methodName, accessibleElements, facadeClassTypeReference)
+		return generateExecutionMethod(executeAction, methodName, accessibleElements, facadeClassTypeReference)
 	}
 
 	protected def JvmOperation generateMethodCallRoutine(RoutineCallBlock routineCall,
 		Iterable<AccessibleElement> accessibleElements, JvmTypeReference facadeClassTypeReference) {
-		if (routineCall.code === null) {
-			return null;
-		}
 		val methodName = "callRoutine" + counterCallRoutineMethods++;
-		return generateExecutionMethod(routineCall.code, methodName, accessibleElements, facadeClassTypeReference)
+		return generateExecutionMethod(routineCall, methodName, accessibleElements, facadeClassTypeReference)
 	}
 
-	private def JvmOperation generateExecutionMethod(XExpression codeBlock, String methodName,
+	private def JvmOperation generateExecutionMethod(CodeBlock codeBlock, String methodName,
 		Iterable<AccessibleElement> accessibleElements, JvmTypeReference facadeClassTypeReference) {
 		if (codeBlock === null) {
 			return null;
 		}
-		return codeBlock.getOrGenerateMethod(methodName, typeRef(Void.TYPE)) [
+		return codeBlock?.getOrGenerateMethod(methodName, typeRef(Void.TYPE)) [
 			parameters += generateAccessibleElementsParameters(accessibleElements);
 			val facadeParam = toParameter(REACTION_USER_EXECUTION_ROUTINE_CALL_FACADE_PARAMETER_NAME,
 				facadeClassTypeReference);
 			facadeParam.annotations += annotationRef(Extension);
 			parameters += facadeParam
-			body = codeBlock;
+			body = codeBlock.code;
 		]
 	}
 	
