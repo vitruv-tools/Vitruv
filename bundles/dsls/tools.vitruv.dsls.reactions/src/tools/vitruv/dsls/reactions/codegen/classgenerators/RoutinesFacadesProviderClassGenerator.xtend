@@ -14,7 +14,7 @@ import tools.vitruv.extensions.dslsruntime.reactions.structure.ReactionsImportPa
 
 import static extension tools.vitruv.dsls.reactions.codegen.helper.ClassNamesGenerators.*
 import static extension tools.vitruv.dsls.reactions.codegen.helper.ReactionsImportsHelper.*
-import static extension tools.vitruv.dsls.reactions.codegen.helper.ReactionsElementsCompletionChecker.isComplete
+import static extension tools.vitruv.dsls.reactions.codegen.helper.ReactionsElementsCompletionChecker.isReferenceable
 
 class RoutinesFacadesProviderClassGenerator extends ClassGenerator {
 
@@ -23,7 +23,7 @@ class RoutinesFacadesProviderClassGenerator extends ClassGenerator {
 
 	new(ReactionsSegment reactionsSegment, TypesBuilderExtensionProvider typesBuilderExtensionProvider) {
 		super(typesBuilderExtensionProvider)
-		if (!reactionsSegment.isComplete) {
+		if (!reactionsSegment.isReferenceable) {
 			throw new IllegalArgumentException("incomplete");
 		}
 		this.reactionsSegment = reactionsSegment;

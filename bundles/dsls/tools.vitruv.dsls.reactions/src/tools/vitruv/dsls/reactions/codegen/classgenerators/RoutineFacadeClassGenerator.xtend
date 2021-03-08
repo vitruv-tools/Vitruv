@@ -18,7 +18,7 @@ import tools.vitruv.dsls.common.ClassNameGenerator
 import tools.vitruv.extensions.dslsruntime.reactions.ReactionExecutionState
 import tools.vitruv.extensions.dslsruntime.reactions.structure.CallHierarchyHaving
 import tools.vitruv.extensions.dslsruntime.reactions.RoutinesFacadeExecutionState
-import static extension tools.vitruv.dsls.reactions.codegen.helper.ReactionsElementsCompletionChecker.isComplete
+import static extension tools.vitruv.dsls.reactions.codegen.helper.ReactionsElementsCompletionChecker.isReferenceable
 
 class RoutineFacadeClassGenerator extends ClassGenerator {
 	val ReactionsSegment reactionsSegment
@@ -28,7 +28,7 @@ class RoutineFacadeClassGenerator extends ClassGenerator {
 
 	new(ReactionsSegment reactionsSegment, TypesBuilderExtensionProvider typesBuilderExtensionProvider) {
 		super(typesBuilderExtensionProvider);
-		if (!reactionsSegment.isComplete) {
+		if (!reactionsSegment.isReferenceable) {
 			throw new IllegalArgumentException("incomplete");
 		}
 		this.reactionsSegment = reactionsSegment;

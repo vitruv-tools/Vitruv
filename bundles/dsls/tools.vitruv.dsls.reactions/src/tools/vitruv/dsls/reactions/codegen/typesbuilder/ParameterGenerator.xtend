@@ -20,6 +20,8 @@ import tools.vitruv.dsls.reactions.language.toplevelelements.NamedJavaElementRef
 import tools.vitruv.dsls.common.elements.NamedMetaclassReference
 
 class ParameterGenerator {
+	static val MISSING_PARAMETER_NAME = "/* Name missing */"
+	
 	protected final extension JvmTypeReferenceBuilder _typeReferenceBuilder;
 	protected final extension JvmTypesBuilderWithoutAssociations _typesBuilder;	
 	
@@ -72,8 +74,8 @@ class ParameterGenerator {
 	}
 	
 	def Iterable<AccessibleElement> getInputElements(EObject contextObject, Iterable<NamedMetaclassReference> metaclassReferences, Iterable<NamedJavaElementReference> javaElements) {
-		return metaclassReferences.map[new AccessibleElement(it.name, it.metaclass.mappedInstanceClassCanonicalName)]
-			+ javaElements.map[new AccessibleElement(it.name, it.type.qualifiedName)];
+		return metaclassReferences.map[new AccessibleElement(it.name ?: MISSING_PARAMETER_NAME, it.metaclass?.mappedInstanceClassCanonicalName)]
+			+ javaElements.map[new AccessibleElement(it.name ?: MISSING_PARAMETER_NAME, it.type?.qualifiedName)];
 	}
 	
 	def Iterable<JvmFormalParameter> generateMethodInputParameters(EObject contextObject, Iterable<NamedMetaclassReference> metaclassReferences, Iterable<NamedJavaElementReference> javaElements) {

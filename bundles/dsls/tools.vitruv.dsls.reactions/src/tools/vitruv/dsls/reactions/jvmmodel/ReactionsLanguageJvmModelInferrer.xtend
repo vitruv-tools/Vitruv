@@ -21,7 +21,7 @@ import tools.vitruv.dsls.reactions.codegen.classgenerators.ChangePropagationSpec
 import tools.vitruv.dsls.reactions.codegen.classgenerators.OverriddenRoutinesFacadeClassGenerator
 import tools.vitruv.dsls.reactions.codegen.classgenerators.RoutinesFacadesProviderClassGenerator
 import static extension tools.vitruv.dsls.reactions.codegen.helper.ReactionsImportsHelper.*
-import static extension tools.vitruv.dsls.reactions.codegen.helper.ReactionsElementsCompletionChecker.isComplete
+import static extension tools.vitruv.dsls.reactions.codegen.helper.ReactionsElementsCompletionChecker.isReferenceable
 
 /**
  * <p>Infers a JVM model for the Xtend code blocks of the reaction file model.</p> 
@@ -51,16 +51,16 @@ class ReactionsLanguageJvmModelInferrer extends AbstractModelInferrer  {
 	def dispatch void infer(ReactionsFile file, IJvmDeclaredTypeAcceptor acceptor, boolean isPreIndexingPhase) {
 		updateBuilders();
 		
-		for (reactionsSegment : file.reactionsSegments.filter[it.isComplete]) {
+		for (reactionsSegment : file.reactionsSegments.filter[it.isReferenceable]) {
 			acceptor.accept(new RoutineFacadeClassGenerator(reactionsSegment, typesBuilderExtensionProvider), reactionsSegment);
 			for (overriddenRoutinesImportPath : reactionsSegment.parsedOverriddenRoutinesImportPaths) {
 				acceptor.accept(new OverriddenRoutinesFacadeClassGenerator(reactionsSegment, overriddenRoutinesImportPath, typesBuilderExtensionProvider), reactionsSegment);
 			}
 			acceptor.accept(new RoutinesFacadesProviderClassGenerator(reactionsSegment, typesBuilderExtensionProvider), reactionsSegment);
-			for (effect : reactionsSegment.routines.filter[it.isComplete]) {
+			for (effect : reactionsSegment.routines.filter[it.isReferenceable]) {
 				generate(effect, acceptor, isPreIndexingPhase);
 			}
-			for (reaction : reactionsSegment.reactions.filter[it.isComplete]) {
+			for (reaction : reactionsSegment.reactions.filter[it.isReferenceable]) {
 				generate(reaction, acceptor, isPreIndexingPhase);
 			}
 			acceptor.accept(new ExecutorClassGenerator(reactionsSegment, typesBuilderExtensionProvider), reactionsSegment);

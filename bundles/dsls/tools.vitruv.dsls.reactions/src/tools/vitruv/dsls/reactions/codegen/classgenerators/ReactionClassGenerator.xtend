@@ -18,7 +18,7 @@ import tools.vitruv.dsls.reactions.codegen.helper.AccessibleElement
 import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
 import tools.vitruv.dsls.reactions.codegen.changetyperepresentation.ChangeSequenceRepresentation
 import tools.vitruv.dsls.common.ClassNameGenerator
-import static extension tools.vitruv.dsls.reactions.codegen.helper.ReactionsElementsCompletionChecker.isComplete
+import static extension tools.vitruv.dsls.reactions.codegen.helper.ReactionsElementsCompletionChecker.isReferenceable
 
 class ReactionClassGenerator extends ClassGenerator {
 	static val String CHANCE_COUNTER_VARIABLE = "currentlyMatchedChange";
@@ -32,12 +32,12 @@ class ReactionClassGenerator extends ClassGenerator {
 	
 	new(Reaction reaction, TypesBuilderExtensionProvider typesBuilderExtensionProvider) {
 		super(typesBuilderExtensionProvider);
-		if (!reaction.isComplete) {
+		if (!reaction.isReferenceable) {
 			throw new IllegalArgumentException("incomplete");
 		}
 		this.reaction = reaction;
-		this.hasPreconditionBlock = reaction.trigger.precondition !== null;
-		this.changeSequenceRepresentation = reaction.trigger.extractChangeSequenceRepresentation;
+		this.hasPreconditionBlock = reaction.trigger?.precondition !== null;
+		this.changeSequenceRepresentation = reaction.trigger?.extractChangeSequenceRepresentation;
 		this.reactionClassNameGenerator = reaction.reactionClassNameGenerator;
 		this.routinesFacadeClassNameGenerator = reaction.reactionsSegment.routinesFacadeClassNameGenerator;
 		this.userExecutionClassGenerator = new UserExecutionClassGenerator(typesBuilderExtensionProvider, reaction, 
@@ -52,12 +52,12 @@ class ReactionClassGenerator extends ClassGenerator {
 	}
 	
 	override generateBody() {
-		generateMethodExecuteReaction()
+		if (changeSequenceRepresentation !== null) generateMethodExecuteReaction()
 		
 		generatedClass => [
 			documentation = getCommentWithoutMarkers(reaction.documentation)
 			superTypes += typeRef(AbstractReactionRealization)
-			members += changeSequenceRepresentation.fields.map[
+			members += changeSequenceRepresentation?.fields.map[
 				reaction.toField(name, it.generateTypeRef(_typeReferenceBuilder))
 			]
 			members += reaction.toField(CHANCE_COUNTER_VARIABLE, typeRef(Integer.TYPE))
@@ -111,7 +111,7 @@ class ReactionClassGenerator extends ClassGenerator {
 	protected def generateMethodExecuteReaction() {
 		val methodName = "executeReaction";
 		val matchChangesMethod = generateMatchChangesMethod
-		val resetChangesMethod = generateResetChangesMethod;
+		val resetChangesMethod = generateResetChangesMethod
 		val accessibleElementList = changeSequenceRepresentation.generatePropertiesParameterList();
 		val callRoutineMethod = userExecutionClassGenerator.generateMethodCallRoutine(reaction.callRoutine, 
 			accessibleElementList, typeRef(routinesFacadeClassNameGenerator.qualifiedName));
@@ -186,7 +186,7 @@ class ReactionClassGenerator extends ClassGenerator {
 
 	protected def JvmOperation generateMethodCheckUserDefinedPrecondition(PreconditionCodeBlock preconditionBlock) {
 		val methodName = USER_DEFINED_TRIGGER_PRECONDITION_METHOD_NAME;
-		return preconditionBlock.code.getOrGenerateMethod(methodName, typeRef(Boolean.TYPE)) [
+		return preconditionBlock.getOrGenerateMethod(methodName, typeRef(Boolean.TYPE)) [
 			visibility = JvmVisibility.PRIVATE;
 			parameters += generateAccessibleElementsParameters(changeSequenceRepresentation.generatePropertiesParameterList());
 			body = preconditionBlock.code;

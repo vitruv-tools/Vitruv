@@ -131,9 +131,9 @@ final class ChangeTypeRepresentationExtractor {
 				name = REPLACE_CHANGE_NAME
 			}
 		}
-		val affectedEObject = modelElementChange.feature.metaclass.javaClassName;
-		val affectedValue = if (elementClass !== null) elementClass.javaClassName else modelElementChange.feature.feature.EType.javaClassName;
-		val affectedFeature = modelElementChange.feature.feature; 
+		val affectedEObject = modelElementChange.feature?.metaclass?.javaClassName;
+		val affectedValue = if (elementClass !== null) elementClass.javaClassName else modelElementChange.feature?.feature?.EType?.javaClassName;
+		val affectedFeature = modelElementChange.feature?.feature; 
 		return #[new AtomicChangeTypeRepresentation(name, clazz.instanceClass, affectedEObject, affectedValue, hasOldValue, hasNewValue, affectedFeature, hasIndex)];
 	}
 	

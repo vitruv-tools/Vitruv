@@ -11,6 +11,7 @@ import static extension tools.vitruv.dsls.reactions.codegen.helper.ClassNamesGen
 import tools.vitruv.dsls.reactions.codegen.typesbuilder.TypesBuilderExtensionProvider
 import static extension tools.vitruv.dsls.reactions.codegen.helper.ReactionsLanguageHelper.*;
 import static extension tools.vitruv.dsls.reactions.codegen.helper.ReactionsImportsHelper.*;
+import static extension tools.vitruv.dsls.reactions.codegen.helper.ReactionsElementsCompletionChecker.isReferenceable
 import static extension tools.vitruv.dsls.reactions.codegen.helper.ReactionsElementsCompletionChecker.isComplete
 
 class ExecutorClassGenerator extends ClassGenerator {
@@ -19,7 +20,7 @@ class ExecutorClassGenerator extends ClassGenerator {
 	
 	new(ReactionsSegment reactionsSegment, TypesBuilderExtensionProvider typesBuilderExtensionProvider) {
 		super(typesBuilderExtensionProvider)
-		if (!reactionsSegment.isComplete) {
+		if (!reactionsSegment.isReferenceable) {
 			throw new IllegalArgumentException("incomplete");
 		}
 		this.reactionsSegment = reactionsSegment;
@@ -52,7 +53,7 @@ class ExecutorClassGenerator extends ClassGenerator {
 			members += reactionsSegment.toMethod("setup", typeRef(Void.TYPE)) [
 				visibility = JvmVisibility.PROTECTED;
 				body = '''
-					«FOR reactionEntry : reactionsSegment.includedReactions.entrySet»
+					«FOR reactionEntry : reactionsSegment.includedReactions.entrySet.filter[key.isReferenceable]»
 						«val reaction = reactionEntry.key»
 						«val reactionsImportPath = reactionEntry.value»
 						«val reactionsNameGenerator = reaction.reactionClassNameGenerator»
