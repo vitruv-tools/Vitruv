@@ -112,7 +112,7 @@ class VirtualModelTest {
 
 	@Test
 	@DisplayName("persist element as resource root also contained in other persisted element")
-	def void singleChangeForElementInMultipleResource() {
+	def void singleChangeForRootElementInMultipleResource() {
 		val virtualModel = createAndLoadTestVirtualModelWithConsistencyPreservation(projectFolder.resolve("vsum"))
 		val resourceSet = new ResourceSetImpl().withGlobalFactories
 		val changeRecorder = new ChangeRecorder(createUuidGeneratorAndResolver(virtualModel.uuidResolver, resourceSet))
@@ -134,6 +134,38 @@ class VirtualModelTest {
 		assertEquals(2, consequentialChanges.filter(InsertRootEObject).size)
 		assertEquals(1, consequentialChanges.filter(ReplaceSingleValuedEReference).size)
 		assertEquals(5, consequentialChanges.size)
+	}
+	
+	@Test
+	@DisplayName("add element to containment of element persisted in two resources")
+	def void singleChangeForElementContainedInRootElementInMultipleResource() {
+		val virtualModel = createAndLoadTestVirtualModelWithConsistencyPreservation(projectFolder.resolve("vsum"))
+		val resourceSet = new ResourceSetImpl().withGlobalFactories
+		val changeRecorder = new ChangeRecorder(createUuidGeneratorAndResolver(virtualModel.uuidResolver, resourceSet))
+		changeRecorder.addToRecording(resourceSet)
+		changeRecorder.beginRecording
+		val containedRoot = aet.Root
+		val containedInContainedRoot = aet.Root
+		resourceSet.createResource(createTestModelResourceUri("")) => [
+			contents += aet.Root => [
+				recursiveRoot = containedRoot => [
+					recursiveRoot = containedInContainedRoot
+				]
+			]
+		]
+		resourceSet.createResource(createTestModelResourceUri("Contained")) => [
+			contents += containedRoot
+		]
+		resourceSet.createResource(createTestModelResourceUri("ContainedInContained")) => [
+			contents += containedInContainedRoot
+		]
+		val recordedChange = changeRecorder.endRecording
+		val propagatedChanges = virtualModel.propagateChange(recordedChange.compose)
+		val consequentialChanges = propagatedChanges.map[consequentialChanges.EChanges].flatten
+		assertEquals(3, consequentialChanges.filter(CreateEObject).size)
+		assertEquals(3, consequentialChanges.filter(InsertRootEObject).size)
+		assertEquals(2, consequentialChanges.filter(ReplaceSingleValuedEReference).size)
+		assertEquals(8, consequentialChanges.size)
 	}
 
 	@Test
