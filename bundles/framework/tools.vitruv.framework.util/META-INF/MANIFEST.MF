@@ -10,15 +10,12 @@ Export-Package: tools.vitruv.framework.util,
  tools.vitruv.framework.util.command,
  tools.vitruv.framework.util.datatypes
 Require-Bundle: org.apache.log4j,
- org.junit,
- org.junit.jupiter.api,
- org.apache.commons.lang,
- org.eclipse.emf.transaction,
+ org.eclipse.core.resources;visibility:=reexport,
+ org.eclipse.core.runtime;visibility:=reexport,
  org.eclipse.emf.ecore.xmi,
  org.eclipse.xtend.lib,
  edu.kit.ipd.sdq.commons.util.eclipse;visibility:=reexport,
  edu.kit.ipd.sdq.commons.util.emf;visibility:=reexport,
  edu.kit.ipd.sdq.commons.util.java;visibility:=reexport,
- edu.kit.ipd.sdq.activextendannotations,
- org.eclipse.core.expressions
+ edu.kit.ipd.sdq.activextendannotations
 Bundle-Vendor: vitruv.tools

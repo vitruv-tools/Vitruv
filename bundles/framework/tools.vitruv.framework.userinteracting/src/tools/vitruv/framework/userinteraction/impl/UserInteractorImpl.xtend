@@ -26,17 +26,16 @@ import static com.google.common.base.Preconditions.checkNotNull
  * @author Heiko Klare
  */
 class UserInteractorImpl implements InternalUserInteractor {
-	WindowModality defaultWindowModality = WindowModality.MODELESS;
-	final List<UserInteractionListener> userInteractionListener;
-	InteractionResultProvider interactionResultProvider;
-	InteractionFactory interactionFactory;
+	WindowModality defaultWindowModality = WindowModality.MODELESS
+	val List<UserInteractionListener> userInteractionListeners = new ArrayList
+	InteractionResultProvider interactionResultProvider
+	InteractionFactory interactionFactory
 
 	new(InteractionResultProvider interactionResultProvider) {
 		if (interactionResultProvider === null) {
 			throw new IllegalArgumentException("Interaction result provider must not be null");
 		}
 		this.interactionResultProvider = interactionResultProvider;
-		this.userInteractionListener = new ArrayList<UserInteractionListener>();
 		updateInteractionFactory();
 	}
 
@@ -46,27 +45,31 @@ class UserInteractorImpl implements InternalUserInteractor {
 	}
 
 	override NotificationInteractionBuilder getNotificationDialogBuilder() {
-		return new NotificationInteractionBuilderImpl(interactionFactory, userInteractionListener);
+		return new NotificationInteractionBuilderImpl(interactionFactory, userInteractionListeners);
 	}
 
 	override ConfirmationInteractionBuilder getConfirmationDialogBuilder() {
-		return new ConfirmationInteractionBuilderImpl(interactionFactory, userInteractionListener);
+		return new ConfirmationInteractionBuilderImpl(interactionFactory, userInteractionListeners);
 	}
 
 	override TextInputInteractionBuilder getTextInputDialogBuilder() {
-		return new TextInputInteractionBuilderImpl(interactionFactory, userInteractionListener);
+		return new TextInputInteractionBuilderImpl(interactionFactory, userInteractionListeners);
 	}
 
 	override MultipleChoiceSingleSelectionInteractionBuilder getSingleSelectionDialogBuilder() {
-		return new MultipleChoiceSingleSelectionInteractionBuilderImpl(interactionFactory, userInteractionListener);
+		return new MultipleChoiceSingleSelectionInteractionBuilderImpl(interactionFactory, userInteractionListeners);
 	}
 
 	override MultipleChoiceMultiSelectionInteractionBuilder getMultiSelectionDialogBuilder() {
-		return new MultipleChoiceMultiSelectionInteractionBuilderImpl(interactionFactory, userInteractionListener);
+		return new MultipleChoiceMultiSelectionInteractionBuilderImpl(interactionFactory, userInteractionListeners);
 	}
 
 	override registerUserInputListener(UserInteractionListener listener) {
-		this.userInteractionListener += listener;
+		this.userInteractionListeners += listener;
+	}
+	
+	override deregisterUserInputListener(UserInteractionListener listener) {
+		this.userInteractionListeners -= listener
 	}
 
 	override replaceUserInteractionResultProvider(

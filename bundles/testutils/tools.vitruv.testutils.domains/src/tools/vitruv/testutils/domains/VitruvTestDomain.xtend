@@ -2,16 +2,13 @@ package tools.vitruv.testutils.domains
 
 import org.eclipse.emf.ecore.EPackage
 import org.eclipse.emf.ecore.EAttribute
-import tools.vitruv.framework.tuid.AttributeTuidCalculatorAndResolver
-import tools.vitruv.framework.domains.AbstractTuidAwareVitruvDomain
+import tools.vitruv.framework.domains.AbstractVitruvDomain
 
-package abstract class VitruvTestDomain extends AbstractTuidAwareVitruvDomain {
+package abstract class VitruvTestDomain extends AbstractVitruvDomain {
 
 	new(String name, EPackage metamodelRootPackage, Iterable<EAttribute> identifyingAttributes,
 		String... fileExtensions) {
-		super(name, metamodelRootPackage,
-			new AttributeTuidCalculatorAndResolver(metamodelRootPackage.nsURI, identifyingAttributes.map[it.name]),
-			fileExtensions)
+		super(name, metamodelRootPackage, fileExtensions)
 	}
 
 	override isUserVisible() {

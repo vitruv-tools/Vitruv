@@ -9,10 +9,12 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="UuidToEObjectMapEntry" instanceClassName="java.util.Map$Entry">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="key" eType="#//Uuid"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="value" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="value" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"
+        resolveProxies="false"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="EObjectToUuidMapEntry" instanceClassName="java.util.Map$Entry">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="key" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="key" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"
+        resolveProxies="false"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" eType="#//Uuid"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EDataType" name="Uuid" instanceClassName="java.lang.String"/>

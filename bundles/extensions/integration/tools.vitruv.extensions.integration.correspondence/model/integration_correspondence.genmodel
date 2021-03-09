@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
     xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/tools.vitruv.extensions.integration.correspondence/src-gen"
-    modelPluginID="tools.vitruv.extensions.integration.correspondence"
-    modelName="Integration_correspondence" rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container"
-    importerID="org.eclipse.emf.importer.ecore" complianceLevel="8.0" copyrightFields="false"
-    usedGenPackages="../../tools.vitruv.framework.correspondence/metamodel/correspondence.genmodel#//correspondence ../../tools.vitruv.extensions.dslsruntime.reactions/model/reactions_correspondence.genmodel#//reactions"
+    modelPluginID="tools.vitruv.extensions.integration.correspondence" modelName="Integration_correspondence"
+    rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container" importerID="org.eclipse.emf.importer.ecore"
+    complianceLevel="8.0" copyrightFields="false" usedGenPackages="../../tools.vitruv.framework.correspondence/metamodel/correspondence.genmodel#//correspondence ../../tools.vitruv.extensions.dslsruntime.reactions/model/reactions_correspondence.genmodel#//reactions ../../tools.vitruv.framework.uuid/model/Uuid.genmodel#//uuid"
     importOrganizing="true">
   <foreignModel>../../tools.vitruv.extensions.dslsruntime.reactions/model/reactions_correspondence.ecore</foreignModel>
   <foreignModel>../../tools.vitruv.framework.correspondence/metamodel/correspondence.ecore</foreignModel>

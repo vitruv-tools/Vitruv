@@ -33,6 +33,7 @@ class ExplicitUnsetEAttributeTest extends EChangeTest {
 	@BeforeEach
 	def void beforeTest() {
 		affectedEObject = rootObject
+		uuidGeneratorAndResolver.generateUuid(affectedEObject)
 	}
 
 	/**

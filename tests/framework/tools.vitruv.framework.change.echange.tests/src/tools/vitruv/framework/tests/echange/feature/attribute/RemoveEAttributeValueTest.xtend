@@ -119,6 +119,7 @@ class RemoveEAttributeValueTest extends InsertRemoveEAttributeTest {
 	@Test
 	def void invalidAttributeTest() {
 		val affectedNonRootEObject = aet.NonRoot
+		uuidGeneratorAndResolver.generateUuid(affectedNonRootEObject)
 		resource.contents.add(affectedNonRootEObject)
 
 		// Create change and resolve

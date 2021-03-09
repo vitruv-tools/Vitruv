@@ -8,7 +8,6 @@ import tools.vitruv.framework.change.echange.TypeInferringAtomicEChangeFactory
 import tools.vitruv.framework.change.echange.TypeInferringCompoundEChangeFactory
 import tools.vitruv.framework.change.echange.TypeInferringUnresolvingAtomicEChangeFactory
 import tools.vitruv.framework.change.echange.TypeInferringUnresolvingCompoundEChangeFactory
-import tools.vitruv.framework.uuid.UuidGeneratorAndResolverImpl
 import tools.vitruv.framework.uuid.UuidGeneratorAndResolver
 import java.util.List
 import tools.vitruv.framework.change.echange.EChange
@@ -16,14 +15,13 @@ import static extension tools.vitruv.framework.change.echange.resolve.EChangeRes
 import org.junit.jupiter.api.BeforeEach
 import static org.junit.jupiter.api.Assertions.assertFalse
 import static org.junit.jupiter.api.Assertions.assertTrue
-import static org.junit.jupiter.api.Assertions.assertNull
-import static org.junit.jupiter.api.Assertions.assertNotNull
 import static extension tools.vitruv.framework.util.ResourceSetUtil.withGlobalFactories
 import org.eclipse.xtend.lib.annotations.Accessors
 import static tools.vitruv.testutils.metamodels.AllElementTypesCreators.*
 import java.nio.file.Path
 import tools.vitruv.framework.util.bridges.EMFBridge
 import org.junit.jupiter.api.io.TempDir
+import static tools.vitruv.framework.uuid.UuidGeneratorAndResolverFactory.createUuidGeneratorAndResolver
 
 /**
  * Default class for testing EChange changes.
@@ -39,6 +37,7 @@ abstract class EChangeTest {
 	@Accessors(PROTECTED_GETTER)
 	var Resource resource
 	var ResourceSet resourceSet
+	@Accessors(PROTECTED_GETTER)
 	var UuidGeneratorAndResolver uuidGeneratorAndResolver
 
 	@Accessors(PROTECTED_GETTER)
@@ -68,7 +67,7 @@ abstract class EChangeTest {
 		resource.save(null)
 
 		// Factories for creating changes
-		this.uuidGeneratorAndResolver = new UuidGeneratorAndResolverImpl(resourceSet, true)
+		this.uuidGeneratorAndResolver = createUuidGeneratorAndResolver(resourceSet)
 		atomicFactory = new TypeInferringUnresolvingAtomicEChangeFactory(uuidGeneratorAndResolver)
 		compoundFactory = new TypeInferringUnresolvingCompoundEChangeFactory(uuidGeneratorAndResolver)
 	}
@@ -83,9 +82,6 @@ abstract class EChangeTest {
 	def protected static void assertIsNotResolved(List<? extends EChange> changes) {
 		for (change : changes) {
 			assertFalse(change.isResolved)
-			for (involvedObject : change.involvedEObjects) {
-				assertNull(involvedObject)
-			}
 		}
 	}
 
@@ -95,9 +91,6 @@ abstract class EChangeTest {
 	def protected static void assertIsResolved(List<? extends EChange> changes) {
 		for (change : changes) {
 			assertTrue(change.isResolved)
-			for (involvedObject : change.involvedEObjects) {
-				assertNotNull(involvedObject)
-			}
 		}
 	}
 

@@ -10,14 +10,13 @@ import static com.google.common.base.Preconditions.checkState
 import static tools.vitruv.testutils.printing.PrintResult.NOT_RESPONSIBLE
 
 final class ModelPrinting {
-	private new() {
-	}
+	private new() {}
 
 	@Accessors(PUBLIC_GETTER)
 	static var ModelPrinter printer = new DefaultModelPrinter()
 
 	def static appendModelValue(Description description, Object object, PrintIdProvider idProvider) {
-		description.applyAsPrintTarget [
+		description.appendPrintResult [
 			printValue(object) [ subTarget, theObject |
 				printer.printObject(subTarget, idProvider, theObject)
 			]
@@ -26,7 +25,7 @@ final class ModelPrinting {
 
 	def static appendModelValueList(Description description, List<?> objects, PrintMode mode,
 		PrintIdProvider idProvider) {
-		description.applyAsPrintTarget [
+		description.appendPrintResult [
 			printList(objects, mode) [ target, element |
 				printer.printObject(target, idProvider, element)
 			]
@@ -35,7 +34,7 @@ final class ModelPrinting {
 
 	def static appendModelValueSet(Description description, Set<?> objects, PrintMode mode,
 		PrintIdProvider idProvider) {
-		description.applyAsPrintTarget [
+		description.appendPrintResult [
 			printSet(objects, mode) [ target, element |
 				printer.printObject(target, idProvider, element)
 			]
@@ -43,7 +42,7 @@ final class ModelPrinting {
 	}
 
 	def static appendShortenedModelValue(Description description, Object object, PrintIdProvider idProvider) {
-		description.applyAsPrintTarget [
+		description.appendPrintResult [
 			printValue(object) [ subTarget, theObject |
 				printer.printObjectShortened(subTarget, idProvider, theObject)
 			]
@@ -52,7 +51,7 @@ final class ModelPrinting {
 
 	def static appendShortenedModelValueList(Description description, List<?> objects, PrintMode mode,
 		PrintIdProvider idProvider) {
-		description.applyAsPrintTarget [
+		description.appendPrintResult [
 			printList(objects, mode) [ target, element |
 				printer.printObjectShortened(target, idProvider, element)
 			]
@@ -61,7 +60,7 @@ final class ModelPrinting {
 
 	def static appendShortenedModelValueSet(Description description, Set<?> objects, PrintMode mode,
 		PrintIdProvider idProvider) {
-		description.applyAsPrintTarget [
+		description.appendPrintResult [
 			printSet(objects, mode) [ target, element |
 				printer.printObjectShortened(target, idProvider, element)
 			]
@@ -112,14 +111,16 @@ final class ModelPrinting {
 	 * @return A closeable that, when closed, will revert the printer change. 
 	 */
 	def static AutoCloseable prepend(ModelPrinter... printers) {
-		use[currentPrinter|new CombinedModelPrinter(printers, currentPrinter)]
+		use [currentPrinter | new CombinedModelPrinter(printers, currentPrinter)]
 	}
 
-	def private static Description applyAsPrintTarget(Description description, (PrintTarget)=>PrintResult block) {
+	def static Description appendPrintResult(Description description, (PrintTarget)=>PrintResult block) {
 		// printing can be expensive, so avoid it if the result will not be used anyway
 		if (description instanceof NullDescription) return description
 
-		assertResponsible(block.apply(new HamcrestDescriptionPrintTarget(description)))
+		val printTarget = new DefaultPrintTarget()
+		assertResponsible(block.apply(printTarget))
+		description.appendText(printTarget.toString())
 		return description
 	}
 

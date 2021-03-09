@@ -29,7 +29,9 @@ class RemoveAndDeleteRootTest extends EChangeTest {
 	@BeforeEach
 	def void beforeTest() {
 		newRootObject = aet.Root
+		uuidGeneratorAndResolver.generateUuid(newRootObject)
 		newRootObject2 = aet.Root
+		uuidGeneratorAndResolver.generateUuid(newRootObject2)
 		prepareStateBefore
 
 	}

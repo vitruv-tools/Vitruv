@@ -11,7 +11,8 @@ class PropagatedChange {
 	override toString() '''
 	Original change:
 		«originalChange»
-	Consequential change: «consequentialChanges»
+	Consequential change:
+		«consequentialChanges»
 	'''
 	
 	def applyBackward(UuidResolver uuidResolver) {
@@ -20,5 +21,4 @@ class PropagatedChange {
 		consequentialChanges.resolveAfterAndApplyBackward(uuidResolver);
 		originalChange.resolveAfterAndApplyBackward(uuidResolver);
 	}
-	
 }

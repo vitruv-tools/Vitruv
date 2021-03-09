@@ -8,7 +8,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.Iterator;
-import java.util.concurrent.Callable;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
@@ -34,7 +33,6 @@ public class SimpleVsumTest extends VsumTest {
         createDefaultVirtualModel();
     }
 
-    @Disabled
     @Test
     public void testVsumAddGetChangeAndSaveModel() {
         // create VSUM
@@ -46,22 +44,13 @@ public class SimpleVsumTest extends VsumTest {
         final Repository repo = Pcm_mockupFactory.eINSTANCE.createRepository();
         vsum.persistRootElement(vuri, repo);
         final Component component = Pcm_mockupFactory.eINSTANCE.createComponent();
-        vsum.executeCommand(new Callable<Void>() {
-            @Override
-            public Void call() {
-                repo.getComponents().add(component);
-                return null;
-            }
-        });
+        repo.getComponents().add(component);
 
         // save test model
-        vsum.save();// (vuri);
+        vsum.save();
 
         // this is fine, the component is contained in the resource
         assertTrue(null != component.eResource(), "Resource of component is null");
-        // causes a unload and a load of the model
-        // TODO This is buillshit... Why should we reload a model in the VSUM?
-        // vsum.reloadModelInstance(vuri);
         mi = vsum.getModelInstance(vuri);
 
         // not fine anymore: component is not contained in the resource and it is a proxy
@@ -77,7 +66,7 @@ public class SimpleVsumTest extends VsumTest {
         assertNotNull(mi.getResource(), "Resource of model instance is null");
     }
 
-    @Disabled // Only because Travis-CI cannot handle this
+    @Disabled
     @Test
     public void testVUMResourceIsChangedExternally() throws IOException {
         // same as above
@@ -89,14 +78,8 @@ public class SimpleVsumTest extends VsumTest {
         final Repository repo = Pcm_mockupFactory.eINSTANCE.createRepository();
         vsum.persistRootElement(vuri, repo);
         final Component component = Pcm_mockupFactory.eINSTANCE.createComponent();
-        vsum.executeCommand(new Callable<Void>() {
-            @Override
-            public Void call() {
-                repo.getComponents().add(component);
-                return null;
-            }
-        });
-        vsum.save();// (vuri);
+        repo.getComponents().add(component);
+        vsum.save();
         // simulate external change
         changeTestModelExternally(vuri);
 

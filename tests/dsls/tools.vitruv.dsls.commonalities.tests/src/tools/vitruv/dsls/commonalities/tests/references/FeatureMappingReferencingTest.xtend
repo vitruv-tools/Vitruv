@@ -17,11 +17,11 @@ import static extension tools.vitruv.dsls.commonalities.language.extensions.Comm
 import static tools.vitruv.testutils.metamodels.AllElementTypesCreators.aet
 import static extension tools.vitruv.testutils.domains.DomainModelCreators.*
 import static allElementTypes.AllElementTypesPackage.Literals.*
-import static tools.vitruv.testutils.matchers.ModelMatchers.usingEqualsFor
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.CsvSource
 import static tools.vitruv.testutils.matchers.ModelMatchers.ignoringFeatures
 import static tools.vitruv.dsls.commonalities.language.LanguagePackage.Literals.*
+import static tools.vitruv.testutils.matchers.ModelMatchers.usingEqualsForReferencesTo
 
 @ExtendWith(InjectionExtension, ModelPrinterChange)
 @InjectWith(CommonalitiesLanguageInjectorProvider)
@@ -231,7 +231,7 @@ class FeatureMappingReferencingTest {
 	
 	
 	static def usingEqualsForEmfReferences(){
-		usingEqualsFor(
+		usingEqualsForReferencesTo(
 			commonalities.languageElements.EClassMetaclass.eClass,
 			commonalities.languageElements.EFeatureAttribute.eClass
 		)

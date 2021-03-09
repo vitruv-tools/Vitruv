@@ -8,11 +8,7 @@ class PersonsDomain extends VitruvDemoDomain {
 	public static val String FILE_EXTENSION = "persons"
 
 	package new() {
-		super(METAMODEL_NAME, PersonsPackage.eINSTANCE, identifyingAttributes, FILE_EXTENSION)
-	}
-
-	def private static getIdentifyingAttributes() {
-		#[PersonsPackage.Literals.PERSON_REGISTER__ID, PersonsPackage.Literals.PERSON__FULL_NAME]
+		super(METAMODEL_NAME, PersonsPackage.eINSTANCE, FILE_EXTENSION)
 	}
 
 }

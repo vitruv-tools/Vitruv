@@ -16,9 +16,7 @@ import org.eclipse.xtext.xbase.compiler.JvmModelGenerator
 import org.eclipse.xtext.xbase.jvmmodel.JvmTypeReferenceBuilder
 import tools.vitruv.dsls.commonalities.generator.SubGenerator
 import tools.vitruv.extensions.dslruntime.commonalities.IntermediateVitruvDomain
-import tools.vitruv.extensions.dslruntime.commonalities.intermediatemodelbase.IntermediateModelBasePackage
 import tools.vitruv.framework.domains.VitruvDomainProvider
-import tools.vitruv.framework.tuid.AttributeTuidCalculatorAndResolver
 
 import static extension tools.vitruv.dsls.commonalities.generator.domain.ConceptDomainConstants.*
 import static extension tools.vitruv.dsls.commonalities.generator.intermediatemodel.IntermediateModelConstants.*
@@ -66,13 +64,7 @@ class ConceptDomainGenerator implements SubGenerator {
 					visibility = JvmVisibility.PUBLIC
 					body = '''
 					super("«conceptName.conceptDomainName»",
-						«'''«conceptName.intermediateMetamodelPackageClassName.simpleName»'''».eINSTANCE,«
-						»«
-						// Tuid calculation: Uses the 'intermediateId' attribute
-						// This attribute delegates to 'fullPath' for intermediate resource bridges
-						// TODO remove once resource creation is handled by domains
-						»
-						new «AttributeTuidCalculatorAndResolver.typeRef»("«conceptName.intermediateMetamodelPackage.nsURI»", "«IntermediateModelBasePackage.eINSTANCE.intermediate_IntermediateId.name»"),
+						«'''«conceptName.intermediateMetamodelPackageClassName.simpleName»'''».eINSTANCE,
 						"«conceptName.intermediateModelFileExtension»");'''
 				]
 			)

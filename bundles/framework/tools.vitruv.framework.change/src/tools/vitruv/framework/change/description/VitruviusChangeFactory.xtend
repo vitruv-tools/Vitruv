@@ -6,13 +6,12 @@ import org.eclipse.emf.ecore.resource.Resource
 import tools.vitruv.framework.change.description.impl.CompositeContainerChangeImpl
 import tools.vitruv.framework.change.description.impl.CompositeTransactionalChangeImpl
 import tools.vitruv.framework.change.description.impl.ConcreteChangeImpl
-import tools.vitruv.framework.change.description.impl.EmptyChangeImpl
 import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.change.echange.TypeInferringCompoundEChangeFactory
 import tools.vitruv.framework.util.datatypes.VURI
 import tools.vitruv.framework.change.description.impl.ConcreteApplicableChangeImpl
-import tools.vitruv.framework.change.description.impl.ConcreteChangeWithUriImpl
 import java.util.List
+import tools.vitruv.framework.change.description.impl.EmptyChange
 
 class VitruviusChangeFactory {
 	static val logger = Logger.getLogger(VitruviusChangeFactory);
@@ -40,10 +39,6 @@ class VitruviusChangeFactory {
 		return new ConcreteChangeImpl(change);
 	}
 	
-	def ConcreteChange createConcreteChangeWithVuri(EChange change, VURI vuri) {
-		return new ConcreteChangeWithUriImpl(vuri, change);
-	}
-	
 	def List<ConcreteChange> createFileChange(FileChangeKind kind, Resource changedFileResource) {
 		if (kind == FileChangeKind.Create) {
 			return generateFileCreateChange(changedFileResource).map[new ConcreteChangeImpl(it)];
@@ -52,38 +47,18 @@ class VitruviusChangeFactory {
 		}
 	}
 	
-	def CompositeContainerChange createCompositeContainerChange() {
-		return new CompositeContainerChangeImpl();
-	}
-	
-	def CompositeTransactionalChange createCompositeTransactionalChange() {
-		return new CompositeTransactionalChangeImpl();
+	def CompositeContainerChange createCompositeChange(Iterable<? extends VitruviusChange> innerChanges) {
+		new CompositeContainerChangeImpl(innerChanges.toList)
 	}
 	
 	def CompositeTransactionalChange createCompositeTransactionalChange(Iterable<? extends TransactionalChange> innerChanges) {
-		val compositeChange = new CompositeTransactionalChangeImpl();
-		for (innerChange : innerChanges) {
-			compositeChange.addChange(innerChange);
-		}
-		return compositeChange;
+		new CompositeTransactionalChangeImpl(innerChanges.toList)
 	}
 	
-	def TransactionalChange createEmptyChange(VURI vuri) {
-		return new EmptyChangeImpl(vuri);
+	def TransactionalChange emptyChange() {
+		return EmptyChange.INSTANCE
 	}
-	
-	def CompositeContainerChange createCompositeChange(Iterable<? extends VitruviusChange> innerChanges) {
-		val compositeChange = new CompositeContainerChangeImpl();
-		for (innerChange : innerChanges) {
-			compositeChange.addChange(innerChange);
-		}
-		return compositeChange;
-	}
-	
-	def <T extends VitruviusChange> T clone(T originalChange) {
-		return new ChangeCloner().clone(originalChange) as T;
-	}
-		
+
 	private def List<EChange> generateFileCreateChange(Resource resource) {
 		var EObject rootElement = null;
 		var index = 0

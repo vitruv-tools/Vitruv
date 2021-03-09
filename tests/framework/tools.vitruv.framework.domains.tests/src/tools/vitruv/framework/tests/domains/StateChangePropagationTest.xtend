@@ -11,7 +11,6 @@ import tools.vitruv.framework.change.description.VitruviusChangeFactory
 import tools.vitruv.framework.util.bridges.EMFBridge
 import tools.vitruv.framework.util.bridges.EcoreResourceBridge
 import tools.vitruv.framework.uuid.UuidGeneratorAndResolver
-import tools.vitruv.framework.uuid.UuidGeneratorAndResolverImpl
 import uml_mockup.UPackage
 import tools.vitruv.framework.domains.StateBasedChangeResolutionStrategy
 import tools.vitruv.framework.domains.DefaultStateBasedChangeResolutionStrategy
@@ -31,6 +30,8 @@ import tools.vitruv.testutils.domains.TestDomainsRepository
 import static extension tools.vitruv.framework.util.ResourceSetUtil.withGlobalFactories
 import static extension tools.vitruv.framework.domains.repository.DomainAwareResourceSet.awareOfDomains
 import tools.vitruv.framework.change.recording.ChangeRecorder
+import org.eclipse.emf.ecore.util.EcoreUtil
+import static tools.vitruv.framework.uuid.UuidGeneratorAndResolverFactory.createUuidGeneratorAndResolver
 
 @ExtendWith(TestProjectManager, TestLogging, RegisterMetamodelsInStandalone)
 abstract class StateChangePropagationTest {
@@ -60,7 +61,7 @@ abstract class StateChangePropagationTest {
 		strategyToTest = new DefaultStateBasedChangeResolutionStrategy
 		resourceSet = new ResourceSetImpl().withGlobalFactories().awareOfDomains(TestDomainsRepository.INSTANCE)
 		checkpointResourceSet = new ResourceSetImpl().withGlobalFactories().awareOfDomains(TestDomainsRepository.INSTANCE)
-		setupResolver = new UuidGeneratorAndResolverImpl(resourceSet, true)
+		setupResolver = createUuidGeneratorAndResolver(resourceSet)
 		changeRecorder = new ChangeRecorder(setupResolver)
 		// Create mockup models:
 		resourceSet.startRecording
@@ -68,7 +69,7 @@ abstract class StateChangePropagationTest {
 		createUmlMockupModel()
 		endRecording
 		// change to new recorder with test resolver, create model checkpoints and start recording:
-		checkpointResolver = new UuidGeneratorAndResolverImpl(setupResolver, checkpointResourceSet, true)
+		checkpointResolver = createUuidGeneratorAndResolver(setupResolver, checkpointResourceSet)
 		umlCheckpoint = umlModel.createCheckpoint
 		pcmCheckpoint = pcmModel.createCheckpoint
 		umlModel.startRecording
@@ -93,7 +94,18 @@ abstract class StateChangePropagationTest {
 		val stateBasedChange = strategyToTest.getChangeSequences(model, checkpoint, checkpointResolver)
 		assertNotNull(stateBasedChange)
 		val message = getTextualRepresentation(stateBasedChange, deltaBasedChange)
-		assertTrue(stateBasedChange.changedEObjectEquals(deltaBasedChange), message)
+		val stateBasedChangedObjects = stateBasedChange.affectedAndReferencedEObjects
+		val deltaBasedChangedObjects = deltaBasedChange.affectedAndReferencedEObjects
+		assertEquals(stateBasedChangedObjects.size, deltaBasedChangedObjects.size, '''
+			Got a different number of changed objects:
+			«message»''')
+		stateBasedChangedObjects.forEach [ stateBasedChangedObject |
+			assertTrue(deltaBasedChangedObjects.exists [EcoreUtil.equals(it, stateBasedChangedObject)], '''
+				Could not find this changed object in the delta based change:
+				«stateBasedChangedObject»
+				
+				«message»''')
+		]
 	}
 
 	/**
