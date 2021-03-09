@@ -12,7 +12,7 @@ public class Vave2Featureide {
 	private static final String MODEL_PATH = "models";
 	private static final String VAVE_MODEL = MODEL_PATH + "/" + "vaveTest.vavemodel";
 
-	VaveModelImpl vavemodel = new VaveModelImpl();
+//	VaveModelImpl vavemodel = new VaveModelImpl();
 	ResourceSet resSet = new ResourceSetImpl();
 
 	@Test

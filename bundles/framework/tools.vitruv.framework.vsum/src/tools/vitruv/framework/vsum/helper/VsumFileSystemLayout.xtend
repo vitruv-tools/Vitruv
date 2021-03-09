@@ -36,6 +36,7 @@ class VsumFileSystemLayout {
 	def void prepare() throws IOException {
 		createDirectories(uuidProviderAndResolverFolder) 
 		createDirectories(correspondenceFolder) 
+		createDirectories(vaveFolder) 
 		createDirectories(vsumFolder) 
 		createDirectories(consistencyMetadataFolder) 
 		prepared = true 
@@ -83,6 +84,15 @@ class VsumFileSystemLayout {
 	
 	def private getCorrespondenceModelPath() {
 		correspondenceFolder.resolve('''Correspondences«fileExtSeparator»«correspondencesFileExt»''')
+	}
+	
+	def VURI getVaveVURI() {
+		checkPrepared()
+		return VURI.getInstance(EMFBridge.getEmfFileUriForFile(vaveModelPath.toFile)) 
+	}
+	
+	def private getVaveModelPath() {
+		vaveFolder.resolve('''Vave«fileExtSeparator»«vaveFileExt»''')
 	}
 	
 	def VURI getUuidProviderAndResolverVURI() {
@@ -187,6 +197,10 @@ class VsumFileSystemLayout {
 
 	def private getCorrespondenceFolder() {
 		vsumProjectFolder.resolve(CORRESPONDENCE_FOLDER_NAME) 
+	}
+	
+	def private getVaveFolder() {
+		vsumProjectFolder.resolve(VAVE_FOLDER_NAME) 
 	}
 
 	def private getUuidProviderAndResolverFolder() {

@@ -32,7 +32,6 @@ class VirtualModelImpl implements InternalVirtualModel {
 	val List<ChangePropagationListener> changePropagationListeners = new LinkedList()
 	val List<PropagatedChangeListener> propagatedChangeListeners = new LinkedList()
 	val extension ChangeDomainExtractor changeDomainExtractor
-//	val VaveModelImpl vaveModel
 
 	package new(VsumFileSystemLayout fileSystemLayout, InternalUserInteractor userInteractor,
 		VitruvDomainRepository domainRepository,
@@ -53,9 +52,9 @@ class VirtualModelImpl implements InternalVirtualModel {
 		this.resourceRepository.correspondenceModel
 	}
 	
-//	override synchronized getVaveModel() {
-//		this.resourceRepository.getVaveModel()
-//	}
+	override synchronized getVaveModel() {
+		this.resourceRepository.vaveModel
+	}
 
 	override synchronized getModelInstance(VURI modelVuri) {
 		this.resourceRepository.getModel(modelVuri)
