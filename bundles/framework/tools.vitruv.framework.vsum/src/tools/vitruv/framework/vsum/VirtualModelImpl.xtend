@@ -16,6 +16,7 @@ import tools.vitruv.framework.vsum.modelsynchronization.ChangePropagationListene
 import tools.vitruv.framework.vsum.modelsynchronization.ChangePropagatorImpl
 import tools.vitruv.framework.vsum.repositories.ModelRepositoryImpl
 import tools.vitruv.framework.vsum.repositories.ResourceRepositoryImpl
+import tools.vitruv.framework.variability.vave.impl.VaveModelImpl
 import org.apache.log4j.Logger
 import org.eclipse.emf.common.util.URI
 import tools.vitruv.framework.vsum.helper.VsumFileSystemLayout
@@ -41,6 +42,7 @@ class VirtualModelImpl implements InternalVirtualModel {
 	val List<ChangePropagationListener> changePropagationListeners = new LinkedList()
 	val List<PropagatedChangeListener> propagatedChangeListeners = new LinkedList()
 	val extension ChangeDomainExtractor changeDomainExtractor
+//	val VaveModelImpl vaveModel
 
 	package new(VsumFileSystemLayout fileSystemLayout, InternalUserInteractor userInteractor,
 		VitruvDomainRepository domainRepository,
@@ -51,6 +53,7 @@ class VirtualModelImpl implements InternalVirtualModel {
 		this.modelRepository = new ModelRepositoryImpl(resourceRepository.uuidGeneratorAndResolver)
 		this.changeDomainExtractor = new ChangeDomainExtractor(domainRepository)
 		this.correspondenceModel = loadCorrespondenceModel()
+//		this vaveModel = loadVaveModel()
 		this.changePropagator = new ChangePropagatorImpl(
 			resourceRepository,
 			changePropagationSpecificationProvider,

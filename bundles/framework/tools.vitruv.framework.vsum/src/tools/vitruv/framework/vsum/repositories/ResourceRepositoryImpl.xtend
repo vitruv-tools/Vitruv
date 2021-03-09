@@ -27,7 +27,6 @@ import tools.vitruv.framework.vsum.ModelRepository
 import tools.vitruv.framework.variability.vave.VaveProviding
 import tools.vitruv.framework.variability.vave.VaveModelFactory
 import tools.vitruv.framework.variability.vave.VaveModel
-import tools.vitruv.framework.variability.vave.impl.VaveModelImpl
 
 import static java.util.Collections.emptyMap
 import static extension tools.vitruv.framework.util.ResourceSetUtil.getRequiredTransactionalEditingDomain
@@ -52,14 +51,12 @@ class ResourceRepositoryImpl implements ModelRepository, VaveProviding {
 	val UuidGeneratorAndResolver uuidGeneratorAndResolver
 	val Map<VitruvDomain, ChangeRecorder> domainToRecorder = new HashMap()
 	var isRecording = false
-//	val VaveModelImpl vaveModel;
 
 	new(VsumFileSystemLayout fileSystemLayout, VitruvDomainRepository domainRepository) {
 		this.domainRepository = domainRepository
 		this.fileSystemLayout = fileSystemLayout
 		this.resourceSet = new ResourceSetImpl().withGlobalFactories().awareOfDomains(domainRepository)
 		this.uuidGeneratorAndResolver = initializeUuidProviderAndResolver()
-//		this.vaveModel = initializeVaveModel()
 		loadVURIsOfVSMUModelInstances()
 	}
 
