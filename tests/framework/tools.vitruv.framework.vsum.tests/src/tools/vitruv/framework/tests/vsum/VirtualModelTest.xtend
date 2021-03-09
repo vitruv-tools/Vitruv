@@ -37,6 +37,7 @@ import tools.vitruv.framework.change.description.TransactionalChange
 import static extension tools.vitruv.framework.correspondence.CorrespondenceModelUtil.getCorrespondingEObjects
 import static extension tools.vitruv.framework.correspondence.CorrespondenceModelUtil.getCorrespondingEObjectsByType
 import static com.google.common.base.Preconditions.checkState
+import tools.vitruv.framework.change.echange.feature.attribute.ReplaceSingleValuedEAttribute
 
 @ExtendWith(TestProjectManager)
 class VirtualModelTest {
@@ -81,7 +82,9 @@ class VirtualModelTest {
 		changeRecorder.addToRecording(resourceSet)
 		changeRecorder.beginRecording
 		val monitoredResource = resourceSet.createResource(createTestModelResourceUri("")) => [
-			contents += aet.Root
+			contents += aet.Root => [
+				id = 'root'
+			]
 		]
 		val recordedChanges = changeRecorder.endRecording
 		virtualModel.propagateChange(recordedChanges.compose)
@@ -98,7 +101,9 @@ class VirtualModelTest {
 		changeRecorder.addToRecording(resourceSet)
 		changeRecorder.beginRecording
 		val monitoredResource = resourceSet.createResource(createTestModelResourceUri("")) => [
-			contents += aet.Root
+			contents += aet.Root => [
+				id = 'root'
+			]
 		]
 		val recordedChange = changeRecorder.endRecording
 		virtualModel.propagateChange(recordedChange.compose)
@@ -121,7 +126,10 @@ class VirtualModelTest {
 		val containedRoot = aet.Root
 		resourceSet.createResource(createTestModelResourceUri("")) => [
 			contents += aet.Root => [
-				recursiveRoot = containedRoot
+				id = 'root'
+				recursiveRoot = containedRoot => [
+					id = 'containedRoot'
+				]
 			]
 		]
 		resourceSet.createResource(createTestModelResourceUri("Contained")) => [
@@ -133,9 +141,10 @@ class VirtualModelTest {
 		assertEquals(2, consequentialChanges.filter(CreateEObject).size)
 		assertEquals(2, consequentialChanges.filter(InsertRootEObject).size)
 		assertEquals(1, consequentialChanges.filter(ReplaceSingleValuedEReference).size)
-		assertEquals(5, consequentialChanges.size)
+		assertEquals(2, consequentialChanges.filter(ReplaceSingleValuedEAttribute).size)
+		assertEquals(7, consequentialChanges.size)
 	}
-	
+
 	@Test
 	@DisplayName("add element to containment of element persisted in two resources")
 	def void singleChangeForElementContainedInRootElementInMultipleResource() {
@@ -148,8 +157,12 @@ class VirtualModelTest {
 		val containedInContainedRoot = aet.Root
 		resourceSet.createResource(createTestModelResourceUri("")) => [
 			contents += aet.Root => [
+				id = 'root'
 				recursiveRoot = containedRoot => [
-					recursiveRoot = containedInContainedRoot
+					id = 'containedRoot'
+					recursiveRoot = containedInContainedRoot => [
+						id = 'containedInContained'
+					]
 				]
 			]
 		]
@@ -165,7 +178,8 @@ class VirtualModelTest {
 		assertEquals(3, consequentialChanges.filter(CreateEObject).size)
 		assertEquals(3, consequentialChanges.filter(InsertRootEObject).size)
 		assertEquals(2, consequentialChanges.filter(ReplaceSingleValuedEReference).size)
-		assertEquals(8, consequentialChanges.size)
+		assertEquals(3, consequentialChanges.filter(ReplaceSingleValuedEAttribute).size)
+		assertEquals(11, consequentialChanges.size)
 	}
 
 	@Test
@@ -177,7 +191,9 @@ class VirtualModelTest {
 		changeRecorder.addToRecording(resourceSet)
 		changeRecorder.beginRecording
 		val monitoredResource = resourceSet.createResource(createTestModelResourceUri("")) => [
-			contents += aet.Root
+			contents += aet.Root => [
+				id = 'root'
+			]
 		]
 		val recordedChange = changeRecorder.endRecording
 		virtualModel.propagateChange(recordedChange.compose)
@@ -196,7 +212,9 @@ class VirtualModelTest {
 		changeRecorder.beginRecording
 		val root = aet.Root
 		val monitoredResource = resourceSet.createResource(createTestModelResourceUri("")) => [
-			contents += root
+			contents += root => [
+				id = 'root'
+			]
 		]
 		val recordedChange = changeRecorder.endRecording
 		virtualModel.propagateChange(recordedChange.compose)
@@ -223,7 +241,9 @@ class VirtualModelTest {
 		changeRecorder.beginRecording
 		val root = aet.Root
 		val monitoredResource = resourceSet.createResource(createTestModelResourceUri("")) => [
-			contents += root
+			contents += root => [
+				id = 'root'
+			]
 		]
 		val recordedChange = changeRecorder.endRecording
 		virtualModel.propagateChange(recordedChange.compose)
@@ -261,7 +281,9 @@ class VirtualModelTest {
 			}
 			val typedChange = change as InsertRootEObject<Root>
 			val insertedRoot = typedChange.newValue
-			val newRoot = aet.Root
+			val newRoot = aet.Root => [
+				id = insertedRoot.id
+			]
 			CorrespondenceModelUtil.createAndAddCorrespondence(correspondenceModel, insertedRoot, newRoot)
 			if (insertedRoot.eContainer !== null) {
 				val correspondingObjects = correspondenceModel.getCorrespondingEObjectsByType(insertedRoot.eContainer,
