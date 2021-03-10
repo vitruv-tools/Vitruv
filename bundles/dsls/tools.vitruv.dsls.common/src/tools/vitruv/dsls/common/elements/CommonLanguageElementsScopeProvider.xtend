@@ -26,7 +26,7 @@ import com.google.inject.Inject
 import org.eclipse.xtext.naming.IQualifiedNameProvider
 import com.google.inject.Provider
 
-class CommonLanguageElementsScopeProviderDelegate {
+class CommonLanguageElementsScopeProvider {
 	@Inject IQualifiedNameProvider qualifiedNameProvider
 	@Inject Provider<EPackageRegistryScope> packagesScope
 
