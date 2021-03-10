@@ -24,9 +24,11 @@ import tools.vitruv.dsls.common.elements.MetaclassEAttributeReference
 import tools.vitruv.dsls.common.elements.MetaclassEReferenceReference
 import com.google.inject.Inject
 import org.eclipse.xtext.naming.IQualifiedNameProvider
+import com.google.inject.Provider
 
 class CommonLanguageElementsScopeProviderDelegate {
 	@Inject IQualifiedNameProvider qualifiedNameProvider
+	@Inject Provider<EPackageRegistryScope> packagesScope
 
 	def <T> IScope createScope(IScope parentScope, Iterator<? extends T> elements,
 		Function<T, IEObjectDescription> descriptionCreation) {
@@ -34,7 +36,9 @@ class CommonLanguageElementsScopeProviderDelegate {
 	}
 
 	def getScope(EObject context, EReference reference) {
-		if (reference.equals(METACLASS_FEATURE_REFERENCE__FEATURE)) {
+		if (reference.equals(METAMODEL_IMPORT__PACKAGE)) {
+			return packagesScope.get()
+		} else if (reference.equals(METACLASS_FEATURE_REFERENCE__FEATURE)) {
 			return createEStructuralFeatureScope((context as MetaclassFeatureReference)?.metaclass)
 		} else if (reference.equals(METACLASS_EATTRIBUTE_REFERENCE__FEATURE)) {
 			return createEAttributeScope((context as MetaclassEAttributeReference)?.metaclass)

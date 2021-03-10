@@ -8,13 +8,11 @@ import com.google.inject.name.Names
 import org.eclipse.xtext.generator.IGenerator2
 import org.eclipse.xtext.linking.ILinkingService
 import org.eclipse.xtext.naming.IQualifiedNameConverter
-import org.eclipse.xtext.scoping.IGlobalScopeProvider
 import org.eclipse.xtext.scoping.IScopeProvider
 import org.eclipse.xtext.scoping.impl.AbstractDeclarativeScopeProvider
 import tools.vitruv.dsls.mappings.generator.MappingsLanguageGenerator
 import tools.vitruv.dsls.mappings.scoping.MappingsLanguageScopeProviderDelegate
 import tools.vitruv.dsls.reactions.linking.ReactionsLinkingService
-import tools.vitruv.dsls.reactions.scoping.ReactionsLanguageGlobalScopeProvider
 import tools.vitruv.dsls.common.elements.CommonLanguageElementsQualifiedNameConverter
 
 /**
@@ -33,10 +31,6 @@ class MappingsLanguageRuntimeModule extends AbstractMappingsLanguageRuntimeModul
 	
 	override Class<? extends IQualifiedNameConverter> bindIQualifiedNameConverter() {
 		return CommonLanguageElementsQualifiedNameConverter;
-	}
-	
-	override Class<? extends IGlobalScopeProvider> bindIGlobalScopeProvider() {
-		return ReactionsLanguageGlobalScopeProvider;
 	}
 	
 	override Class<? extends ILinkingService> bindILinkingService() {
