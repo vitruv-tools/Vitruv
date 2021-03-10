@@ -32,7 +32,7 @@ class AccessibleElement {
 		if (fullyQualifiedTypeName === null) {
 			return typeRef(UNKNOWN_TYPEREF_NAME)
 		}
-		val typeParameterReferences = typeParameters.mapFixed [typeRef]
+		val typeParameterReferences = typeParameters.map[if (it === null) UNKNOWN_TYPEREF_NAME else it].mapFixed [typeRef]
 		// TODO this is a hack to make Xtext print parameterized types even if one of
 		// the parameter classes are not currently on the classpath. While Xtext prints
 		// a direct type reference to some unknown class normally, it does not print type
