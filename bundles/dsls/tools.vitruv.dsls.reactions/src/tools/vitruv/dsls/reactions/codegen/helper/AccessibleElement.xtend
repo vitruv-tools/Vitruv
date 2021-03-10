@@ -7,6 +7,7 @@ import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
 import org.eclipse.xtext.common.types.JvmUnknownTypeReference
 
 class AccessibleElement {
+	static val UNKNOWN_TYPEREF_NAME = "unknown"
 	@Accessors(PUBLIC_GETTER)
 	val String name;
 	val String fullyQualifiedTypeName;
@@ -28,6 +29,9 @@ class AccessibleElement {
 	}
 	
 	def generateTypeRef(@Extension JvmTypeReferenceBuilder typeReferenceBuilder) {
+		if (fullyQualifiedTypeName === null) {
+			return typeRef(UNKNOWN_TYPEREF_NAME)
+		}
 		val typeParameterReferences = typeParameters.mapFixed [typeRef]
 		// TODO this is a hack to make Xtext print parameterized types even if one of
 		// the parameter classes are not currently on the classpath. While Xtext prints

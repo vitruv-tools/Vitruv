@@ -13,9 +13,9 @@ import org.eclipse.xtext.scoping.IScopeProvider
 import org.eclipse.xtext.scoping.impl.AbstractDeclarativeScopeProvider
 import tools.vitruv.dsls.mappings.generator.MappingsLanguageGenerator
 import tools.vitruv.dsls.mappings.scoping.MappingsLanguageScopeProviderDelegate
-import tools.vitruv.dsls.mirbase.scoping.MirBaseQualifiedNameConverter
 import tools.vitruv.dsls.reactions.linking.ReactionsLinkingService
 import tools.vitruv.dsls.reactions.scoping.ReactionsLanguageGlobalScopeProvider
+import tools.vitruv.dsls.common.elements.CommonLanguageElementsQualifiedNameConverter
 
 /**
  * Use this class to register components to be used at runtime / without the Equinox extension registry.
@@ -32,7 +32,7 @@ class MappingsLanguageRuntimeModule extends AbstractMappingsLanguageRuntimeModul
 	}
 	
 	override Class<? extends IQualifiedNameConverter> bindIQualifiedNameConverter() {
-		return MirBaseQualifiedNameConverter;
+		return CommonLanguageElementsQualifiedNameConverter;
 	}
 	
 	override Class<? extends IGlobalScopeProvider> bindIGlobalScopeProvider() {

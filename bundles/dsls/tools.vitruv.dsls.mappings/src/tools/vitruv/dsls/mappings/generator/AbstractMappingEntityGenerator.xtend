@@ -9,9 +9,9 @@ import tools.vitruv.dsls.mappings.mappingsLanguage.AbstractMappingParameter
 import tools.vitruv.dsls.mappings.mappingsLanguage.ExistingMappingCorrespondence
 import tools.vitruv.dsls.mappings.mappingsLanguage.MappingParameter
 import tools.vitruv.dsls.mappings.mappingsLanguage.StandardMappingParameter
-import tools.vitruv.dsls.mirbase.mirBase.MetaclassEAttributeReference
-import tools.vitruv.dsls.mirbase.mirBase.MetaclassFeatureReference
-import tools.vitruv.dsls.mirbase.mirBase.MetaclassReference
+import tools.vitruv.dsls.common.elements.MetaclassEAttributeReference
+import tools.vitruv.dsls.common.elements.MetaclassFeatureReference
+import tools.vitruv.dsls.common.elements.MetaclassReference
 import tools.vitruv.dsls.reactions.builder.FluentRoutineBuilder.TaggedWithBuilder
 
 abstract class AbstractMappingEntityGenerator {

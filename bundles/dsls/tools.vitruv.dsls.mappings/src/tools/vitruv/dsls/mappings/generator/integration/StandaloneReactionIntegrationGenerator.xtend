@@ -4,7 +4,7 @@ import java.util.ArrayList
 import java.util.List
 import org.eclipse.xtext.generator.IFileSystemAccess2
 import tools.vitruv.dsls.reactions.api.generator.IReactionsGenerator
-import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsLanguageFactory
+import tools.vitruv.dsls.reactions.language.toplevelelements.TopLevelElementsFactory
 
 /**
  * Writes a separate reactions file for the integrated routines and reactions.
@@ -23,7 +23,7 @@ class StandaloneReactionIntegrationGenerator extends AbstractReactionIntegration
 	}
 
 	override generate(IFileSystemAccess2 fsa, IReactionsGenerator reactionsGenerator) {
-		val file = ReactionsLanguageFactory.eINSTANCE.createReactionsFile
+		val file = TopLevelElementsFactory.eINSTANCE.createReactionsFile
 		integrations.filter[filled].forEach [
 			file.reactionsSegments.add(it.reactionsSegment)
 		]

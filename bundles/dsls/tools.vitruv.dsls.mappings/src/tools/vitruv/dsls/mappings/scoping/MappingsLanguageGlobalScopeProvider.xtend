@@ -1,7 +1,7 @@
 package tools.vitruv.dsls.mappings.scoping
 
-import tools.vitruv.dsls.mirbase.scoping.MirBaseGlobalScopeProvider
+import tools.vitruv.dsls.reactions.scoping.ReactionsLanguageGlobalScopeProvider
 
-class MappingsLanguageGlobalScopeProvider  extends MirBaseGlobalScopeProvider {
+class MappingsLanguageGlobalScopeProvider extends ReactionsLanguageGlobalScopeProvider {
 	
 }

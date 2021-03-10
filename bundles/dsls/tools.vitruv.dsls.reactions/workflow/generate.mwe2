@@ -12,7 +12,12 @@ var testBasePath = "${testRootPath}/${projectName}"
 
 Workflow {
 
-	component = tools.vitruv.dsls.reactions.postprocessor.ReactionsLanguageExtendedGenerator {
+    bean = tools.vitruv.dsls.common.elements.RemapEcoreModel {
+		from = "http://www.eclipse.org/emf/2002/Ecore"
+		to = "platform:/resource/org.eclipse.emf.ecore/model/Ecore.ecore"
+	}
+
+	component = XtextGenerator {
 		configuration = {
 			project = StandardProjectConfig {
 				baseName = projectName
@@ -45,12 +50,19 @@ Workflow {
 			formatter = {
 				generateStub = true
 			}
-			referencedResource = "platform:/resource/tools.vitruv.dsls.mirbase/model/generated/MirBase.genmodel"
+			referencedResource = "platform:/resource/tools.vitruv.dsls.common/model/CommonLanguageElements.genmodel"
+			referencedResource = "platform:/resource/tools.vitruv.dsls.reactions/model/TopLevelElements.genmodel"
 		}
 	}
 	
 	component = EcoreGenerator {
-		srcPath = "platform:/resource/tools.vitruv.dsls.reactions/model-gen"
+		srcPath = "platform:/resource/tools.vitruv.dsls.reactions/src"
+		genModel = "platform:/resource/tools.vitruv.dsls.reactions/model/TopLevelElements.genmodel"
+		generateCustomClasses = false
+	}
+	
+	component = EcoreGenerator {
+		srcPath = "platform:/resource/tools.vitruv.dsls.reactions/src"
 		genModel = "platform:/resource/tools.vitruv.dsls.reactions/model/InputTypes.genmodel"
 		generateCustomClasses = false
 	}

@@ -5,13 +5,13 @@ import org.eclipse.xtext.common.types.JvmGenericType
 import org.eclipse.xtext.common.types.JvmVisibility
 import tools.vitruv.dsls.common.ClassNameGenerator
 import tools.vitruv.dsls.reactions.codegen.typesbuilder.TypesBuilderExtensionProvider
-import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsSegment
+import tools.vitruv.dsls.reactions.language.toplevelelements.ReactionsSegment
 import tools.vitruv.extensions.dslsruntime.reactions.structure.ReactionsImportPath
 
 import static extension tools.vitruv.dsls.reactions.codegen.helper.ClassNamesGenerators.*
 import static extension tools.vitruv.dsls.reactions.codegen.helper.ReactionsImportsHelper.*
-import static extension tools.vitruv.dsls.reactions.codegen.helper.ReactionsLanguageHelper.*
 import static extension tools.vitruv.dsls.reactions.util.ReactionsLanguageUtil.*
+import static extension tools.vitruv.dsls.reactions.codegen.helper.ReactionsElementsCompletionChecker.isReferenceable
 
 class OverriddenRoutinesFacadeClassGenerator extends RoutineFacadeClassGenerator {
 
@@ -24,7 +24,7 @@ class OverriddenRoutinesFacadeClassGenerator extends RoutineFacadeClassGenerator
 
 	new(ReactionsSegment reactionsSegment, ReactionsImportPath relativeImportPath, TypesBuilderExtensionProvider typesBuilderExtensionProvider) {
 		super(reactionsSegment, typesBuilderExtensionProvider);
-		if (!reactionsSegment.isComplete) {
+		if (!reactionsSegment.isReferenceable) {
 			throw new IllegalArgumentException("incomplete");
 		}
 		this.reactionsSegment = reactionsSegment;
@@ -58,7 +58,7 @@ class OverriddenRoutinesFacadeClassGenerator extends RoutineFacadeClassGenerator
 			members += generateConstructor();
 
 			// override routines:
-			reactionsSegment.overrideRoutines.filter[it.isComplete].filter [
+			reactionsSegment.overrideRoutines.filter[it.isReferenceable].filter [
 				it.overrideImportPath.toReactionsImportPath.equals(relativeImportPath)
 			].forEach [
 				generatedClass.members += it.generateCallMethod;

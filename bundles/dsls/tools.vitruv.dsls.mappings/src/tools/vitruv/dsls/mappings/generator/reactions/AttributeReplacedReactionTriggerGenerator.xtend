@@ -3,9 +3,9 @@ package tools.vitruv.dsls.mappings.generator.reactions
 import org.eclipse.emf.ecore.EAttribute
 import tools.vitruv.dsls.mappings.generator.MappingGeneratorContext
 import tools.vitruv.dsls.mappings.generator.MappingScenarioType
-import tools.vitruv.dsls.mirbase.mirBase.MetaclassEAttributeReference
-import tools.vitruv.dsls.mirbase.mirBase.MetaclassFeatureReference
-import tools.vitruv.dsls.mirbase.mirBase.MirBaseFactory
+import tools.vitruv.dsls.common.elements.MetaclassEAttributeReference
+import tools.vitruv.dsls.common.elements.MetaclassFeatureReference
+import tools.vitruv.dsls.common.elements.ElementsFactory
 
 class AttributeReplacedReactionTriggerGenerator extends AbstractReactionTriggerGenerator {
 
@@ -15,7 +15,7 @@ class AttributeReplacedReactionTriggerGenerator extends AbstractReactionTriggerG
 		super(reference.metaclass, MappingScenarioType.CREATE_OR_DELETE)
 		val refFeature = reference.feature
 		if (refFeature instanceof EAttribute) {
-			this.attribute = MirBaseFactory.eINSTANCE.createMetaclassEAttributeReference => [
+			this.attribute = ElementsFactory.eINSTANCE.createMetaclassEAttributeReference => [
 				metaclass = reference.metaclass
 				feature = refFeature
 			]

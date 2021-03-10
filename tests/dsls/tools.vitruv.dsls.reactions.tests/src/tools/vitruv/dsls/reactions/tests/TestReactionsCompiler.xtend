@@ -19,7 +19,7 @@ import org.eclipse.xtext.testing.util.ParseHelper
 import org.osgi.framework.FrameworkUtil
 import org.osgi.framework.wiring.BundleWiring
 import tools.vitruv.dsls.reactions.api.generator.IReactionsGenerator
-import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsFile
+import tools.vitruv.dsls.reactions.language.toplevelelements.ReactionsFile
 import tools.vitruv.framework.change.processing.ChangePropagationSpecification
 
 import static com.google.common.base.Preconditions.checkState

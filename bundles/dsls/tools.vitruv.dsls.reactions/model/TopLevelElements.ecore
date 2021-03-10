@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="toplevelelements" nsURI="http://vitruv.tools/dsls/reactions/language/toplevelelements"
+    nsPrefix="toplevelelements">
+  <eClassifiers xsi:type="ecore:EClass" name="ReactionsFile">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="namespaceImports" eType="ecore:EClass ../../org.eclipse.xtext.xbase/model/Xtype.ecore#//XImportSection"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="metamodelImports" upperBound="-1"
+        eType="ecore:EClass ../../tools.vitruv.dsls.common/model/CommonLanguageElements.ecore#//MetamodelImport"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="reactionsSegments" upperBound="-1"
+        eType="#//ReactionsSegment" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ReactionsSegment">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="fromDomain" eType="ecore:EClass ../../tools.vitruv.dsls.common/model/CommonLanguageElements.ecore#//DomainReference"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="toDomain" eType="ecore:EClass ../../tools.vitruv.dsls.common/model/CommonLanguageElements.ecore#//DomainReference"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="reactionsImports" upperBound="-1"
+        eType="#//ReactionsImport" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="reactions" upperBound="-1"
+        eType="#//Reaction" containment="true" eOpposite="#//Reaction/reactionsSegment"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="routines" upperBound="-1"
+        eType="#//Routine" containment="true" eOpposite="#//Routine/reactionsSegment"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ReactionsImport">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="routinesOnly" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="importedReactionsSegment"
+        eType="#//ReactionsSegment"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="useQualifiedNames" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Reaction">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="documentation" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="overriddenReactionsSegment"
+        eType="#//ReactionsSegment"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="trigger" eType="#//Trigger"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="callRoutine" eType="#//ReactionRoutineCall"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="reactionsSegment" lowerBound="1"
+        eType="#//ReactionsSegment" eOpposite="#//ReactionsSegment/reactions"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Trigger">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="precondition" eType="#//PreconditionCodeBlock"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Routine">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="documentation" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="overrideImportPath" eType="#//RoutineOverrideImportPath"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="input" eType="#//RoutineInput"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="matcher" eType="#//Matcher"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="action" eType="#//Action"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="reactionsSegment" lowerBound="1"
+        eType="#//ReactionsSegment" eOpposite="#//ReactionsSegment/routines"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="RoutineOverrideImportPath">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="reactionsSegment" eType="#//ReactionsSegment"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="parent" eType="#//RoutineOverrideImportPath"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="RoutineInput">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="modelInputElements" upperBound="-1"
+        eType="ecore:EClass ../../tools.vitruv.dsls.common/model/CommonLanguageElements.ecore#//NamedMetaclassReference"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="javaInputElements" upperBound="-1"
+        eType="#//NamedJavaElementReference" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Matcher">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="matcherStatements" upperBound="-1"
+        eType="#//MatcherStatement" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="MatcherStatement"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Action">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="actionStatements" upperBound="-1"
+        eType="#//ActionStatement" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ActionStatement"/>
+  <eClassifiers xsi:type="ecore:EClass" name="CodeBlock">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="code" eType="ecore:EClass ../../org.eclipse.xtext.xbase/model/Xbase.ecore#//XExpression"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="PreconditionCodeBlock" eSuperTypes="#//CodeBlock"/>
+  <eClassifiers xsi:type="ecore:EClass" name="NamedJavaElementReference">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="ecore:EClass ../../org.eclipse.xtext.common.types/model/JavaVMTypes.ecore#//JvmTypeReference"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="RoutineCallBlock" eSuperTypes="#//CodeBlock"/>
+  <eClassifiers xsi:type="ecore:EClass" name="ReactionRoutineCall" eSuperTypes="#//RoutineCallBlock"/>
+</ecore:EPackage>

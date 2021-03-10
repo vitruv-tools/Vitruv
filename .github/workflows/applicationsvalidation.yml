@@ -17,18 +17,20 @@ jobs:
           path: cbsdomains
           repository: vitruv-tools/Vitruv-Domains-ComponentBasedSystems
           ref: master
+          fetch-depth: 0
       - name: Checkout CBS Applications
         uses: actions/checkout@v2
         with:
           path: cbsapplications
           repository: vitruv-tools/Vitruv-Applications-ComponentBasedSystems
           ref: master
+          fetch-depth: 0
       - name: Checkout Matching Domains/Applications Branches
         run: |
           cd cbsdomains
-          git checkout -B ${{ github.head_ref }}
+          git checkout -B ${{ github.head_ref }} origin/${{ github.head_ref }} || true
           cd ../cbsapplications
-          git checkout -B ${{ github.head_ref }}
+          git checkout -B ${{ github.head_ref }} origin/${{ github.head_ref }} || true
       - name: Cache
         uses: actions/cache@v2
         with:
@@ -39,7 +41,7 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 11
-      - name: Adapt Updatesite
+      - name: Adapt Updatesites
         run: |
           sed -i 's#https://vitruv-tools.github.io/updatesite/nightly/framework/#file:///${maven.multiModuleProjectDirectory}/../framework/releng/tools.vitruv.updatesite.aggregated/target/final#wresult' cbsdomains/releng/tools.vitruv.domains.cbs.parent/pom.xml
           if [ ! -s result ]; then exit 1; fi;
@@ -52,7 +54,7 @@ jobs:
         with:
           working-directory: ./framework
           run: >
-            ./mvnw -B clean verify 
+            ./mvnw -B package -Dmaven.test.skip=true
             -Dstyle.color=always
             -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
             -Dorg.slf4j.simpleLogger.log.org.eclipse.tycho.core.resolver.DefaultTychoResolver=warn

@@ -2,7 +2,7 @@ package tools.vitruv.dsls.mappings.generator.reactions
 
 import tools.vitruv.dsls.mappings.generator.MappingGeneratorContext
 import tools.vitruv.dsls.mappings.generator.MappingScenarioType
-import tools.vitruv.dsls.mirbase.mirBase.MetaclassReference
+import tools.vitruv.dsls.common.elements.MetaclassReference
 
 class DeletedReactionTriggerGenerator extends AbstractReactionTriggerGenerator {
 

@@ -4,7 +4,7 @@ import org.eclipse.emf.ecore.EClass
 import org.eclipse.emf.ecore.EStructuralFeature
 import org.eclipse.xtext.common.types.JvmDeclaredType
 import org.eclipse.xtext.common.types.JvmMember
-import tools.vitruv.dsls.mirbase.mirBase.MetaclassFeatureReference
+import tools.vitruv.dsls.common.elements.MetaclassFeatureReference
 import tools.vitruv.dsls.reactions.builder.TypeProvider
 
 class XBaseMethodFinder {

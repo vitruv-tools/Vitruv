@@ -3,7 +3,7 @@ package tools.vitruv.dsls.mappings.generator
 import java.util.List
 import tools.vitruv.dsls.mappings.mappingsLanguage.Mapping
 import tools.vitruv.dsls.mappings.mappingsLanguage.MappingParameter
-import tools.vitruv.dsls.mirbase.mirBase.DomainReference
+import tools.vitruv.dsls.common.elements.DomainReference
 import org.eclipse.emf.ecore.EPackage
 import tools.vitruv.framework.domains.VitruvDomainProviderRegistry
 

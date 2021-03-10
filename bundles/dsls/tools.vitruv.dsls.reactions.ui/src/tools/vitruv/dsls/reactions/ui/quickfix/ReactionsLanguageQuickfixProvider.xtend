@@ -3,19 +3,19 @@
  */
 package tools.vitruv.dsls.reactions.ui.quickfix
 
-import tools.vitruv.dsls.mirbase.ui.quickfix.MirBaseQuickfixProvider
 import org.eclipse.xtext.ui.editor.quickfix.Fix
 import tools.vitruv.dsls.common.ui.validation.ProjectValidation
 import org.eclipse.xtext.validation.Issue
 import org.eclipse.xtext.ui.editor.quickfix.IssueResolutionAcceptor
 import tools.vitruv.dsls.common.ui.quickfix.ProjectQuickfix
+import org.eclipse.xtext.xbase.ui.quickfix.XbaseQuickfixProvider
 
 /**
  * Custom quickfixes.
  * 
  * See https://www.eclipse.org/Xtext/documentation/304_ide_concepts.html#quick-fixes
  */
-class ReactionsLanguageQuickfixProvider extends MirBaseQuickfixProvider {
+class ReactionsLanguageQuickfixProvider extends XbaseQuickfixProvider {
 	@Fix(ProjectValidation.ErrorCodes.BUNDLE_MISSING_ON_CLASSPATH)
 	def addBundleToProject(Issue issue, IssueResolutionAcceptor acceptor) {
 		ProjectQuickfix.addBundleToProject(issue, acceptor)
