@@ -37,6 +37,7 @@ import static extension tools.vitruv.dsls.reactions.codegen.helper.ReactionsImpo
 import static extension tools.vitruv.dsls.reactions.util.ReactionsLanguageUtil.*
 import tools.vitruv.dsls.reactions.language.RetrieveOrRequireAbscenceOfModelElement
 import tools.vitruv.dsls.common.elements.CommonLanguageElementsScopeProvider
+import tools.vitruv.dsls.reactions.language.toplevelelements.Matcher
 
 /**
  * This class contains custom scoping description.
@@ -69,7 +70,7 @@ class ReactionsLanguageScopeProvider extends AbstractReactionsLanguageScopeProvi
 				return createQualifiedEClassScopeWithoutAbstract(potentialMetaclassReference?.metamodel);
 			} else if (container instanceof RoutineInput) {
 				return createQualifiedEClassScopeWithSpecialInputTypes(potentialMetaclassReference?.metamodel);
-			} else if (container instanceof RetrieveOrRequireAbscenceOfModelElement) {
+			} else if (container instanceof RetrieveOrRequireAbscenceOfModelElement || container instanceof Matcher) {
 				return createQualifiedEClassScopeWithEObject(potentialMetaclassReference?.metamodel)
 			} else if (container instanceof MetaclassReference) {
 				return createQualifiedEClassScopeWithEObject(container.metamodel)
