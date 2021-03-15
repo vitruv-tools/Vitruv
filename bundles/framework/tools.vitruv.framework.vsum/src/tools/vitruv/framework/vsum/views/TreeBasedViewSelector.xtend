@@ -15,4 +15,5 @@ interface TreeBasedViewSelector extends ViewSelector {
     }
 
     def boolean isComplete()
+
 }
