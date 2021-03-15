@@ -31,6 +31,7 @@ import static tools.vitruv.framework.uuid.UuidGeneratorAndResolverFactory.create
 import tools.vitruv.framework.uuid.UuidResolver;
 import tools.vitruv.framework.vsum.ModelInstance;
 import tools.vitruv.framework.vsum.VirtualModel;
+import tools.vitruv.framework.vsum.views.ViewTypeRepository;
 
 public class DefaultImplementations {
     public static final ResourceChangeSynchronizing EFFECTLESS_CHANGESYNC = new ResourceChangeSynchronizing() {
@@ -61,8 +62,9 @@ public class DefaultImplementations {
         private URI lastURI = null;
         private List<VitruviusChange> lastChanges = null;
         private int executionCount = 0;
-        private UuidGeneratorAndResolver uuidGeneratorAndResolver = createUuidGeneratorAndResolver(new ResourceSetImpl());
-        
+        private UuidGeneratorAndResolver uuidGeneratorAndResolver = createUuidGeneratorAndResolver(
+                new ResourceSetImpl());
+
         @Override
         public void synchronizeChanges(List<VitruviusChange> changes, URI sourceModelURI, Resource res) {
             this.lastChanges = new ArrayList<>();
@@ -72,10 +74,10 @@ public class DefaultImplementations {
             this.lastURI = sourceModelURI;
             this.executionCount++;
         }
-        
+
         public void registerExistingModel(URL testResourceURL) {
-        	Resource testResource = Models.loadModel(uuidGeneratorAndResolver.getResourceSet(), testResourceURL);
-        	testResource.getAllContents().forEachRemaining(obj -> uuidGeneratorAndResolver.generateUuid(obj));
+            Resource testResource = Models.loadModel(uuidGeneratorAndResolver.getResourceSet(), testResourceURL);
+            testResource.getAllContents().forEachRemaining(obj -> uuidGeneratorAndResolver.generateUuid(obj));
         }
 
         public boolean hasBeenExecuted() {
@@ -120,7 +122,7 @@ public class DefaultImplementations {
 
         @Override
         public UuidResolver getUuidResolver() {
-        	return uuidGeneratorAndResolver;
+            return uuidGeneratorAndResolver;
         }
 
         @Override
@@ -130,6 +132,11 @@ public class DefaultImplementations {
 
         @Override
         public List<PropagatedChange> propagateChangedState(Resource newState, URI oldLocation) {
+            return null;
+        }
+
+        @Override
+        public ViewTypeRepository getViewTypeRepository() {
             return null;
         }
 
