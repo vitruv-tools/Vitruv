@@ -1,14 +1,13 @@
 package tools.vitruv.framework.vsum.views;
 
-import org.eclipse.emf.ecore.ENamedElement
 import org.eclipse.xtend.lib.annotations.Accessors
 
 @Accessors
-package class SelectableElement {
-    val ENamedElement element
+package class SelectableElement<T> {
+    val T element
     boolean selected
 
-    new(ENamedElement element) {
+    new(T element) {
         this.element = element
         selected = false
     }

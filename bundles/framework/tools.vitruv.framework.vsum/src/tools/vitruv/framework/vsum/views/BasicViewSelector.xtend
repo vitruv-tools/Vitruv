@@ -3,7 +3,7 @@ package tools.vitruv.framework.vsum.views
 import java.util.ArrayList
 import java.util.Collection
 import java.util.List
-import org.eclipse.emf.ecore.ENamedElement
+import org.eclipse.emf.ecore.EObject
 
 /**
  * Basic view selector for a view that represents a set of model elements.
@@ -11,14 +11,14 @@ import org.eclipse.emf.ecore.ENamedElement
 class BasicViewSelector implements ViewSelector {
 
     val ViewType owner
-    protected val List<SelectableElement> selectableElements
+    protected val List<SelectableElement<EObject>> selectableElements
 
-    protected new(ViewType owner) {
+    new(ViewType owner) {
         this.owner = owner
         selectableElements = new ArrayList
     }
 
-    protected new(ViewType owner, Collection<ENamedElement> elements) {
+    new(ViewType owner, Collection<EObject> elements) {
         this(owner)
         elements.forEach[this.selectableElements.add(new SelectableElement(it))]
     }
@@ -47,7 +47,7 @@ class BasicViewSelector implements ViewSelector {
         return owner.createView(this)
     }
 
-    override getIndexOf(ENamedElement element) {
+    override getIndexOf(EObject element) {
         for (i : 0 ..< size) {
             if(selectableElements.get(i).element.equals(element)) {
                 return i

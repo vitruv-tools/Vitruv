@@ -1,11 +1,11 @@
 package tools.vitruv.framework.vsum.views
 
-import org.eclipse.emf.ecore.ENamedElement
+import org.eclipse.emf.ecore.EObject
 
 interface ViewSelector {
     def int size()
 
-    def Iterable<ENamedElement> getElements()
+    def Iterable<EObject> getElements()
 
     def void setSelected(int index, boolean value)
 
@@ -15,7 +15,7 @@ interface ViewSelector {
 
     def boolean isSelected(int index)
 
-    def Iterable<ENamedElement> getSelectedElements()
+    def Iterable<EObject> getSelectedElements()
 
-    def int getIndexOf(ENamedElement element)
+    def int getIndexOf(EObject element)
 }

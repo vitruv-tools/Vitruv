@@ -1,11 +1,11 @@
 package tools.vitruv.framework.vsum.views
 
-import org.eclipse.emf.ecore.ENamedElement
+import org.eclipse.emf.ecore.EObject
 
 abstract class AbstractTreeBasedViewSelector extends BasicViewSelector implements TreeBasedViewSelector {
-    val ENamedElement root
+    val EObject root
 
-    new(ENamedElement root, ViewType owner) {
+    new(EObject root, ViewType owner) {
         super(owner)
         this.root = root
         addRecursively(root)
@@ -15,7 +15,7 @@ abstract class AbstractTreeBasedViewSelector extends BasicViewSelector implement
         return root
     }
 
-    def private void addRecursively(ENamedElement parent) {
+    def private void addRecursively(EObject parent) {
         selectableElements.add(new SelectableElement(parent))
         parent.children.forEach[addRecursively]
     }
