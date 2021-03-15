@@ -8,9 +8,9 @@ import org.eclipse.emf.ecore.resource.Resource
 import tools.vitruv.framework.change.description.PropagatedChange
 import tools.vitruv.framework.change.description.VitruviusChange
 import tools.vitruv.framework.uuid.UuidResolver
+import tools.vitruv.framework.vsum.views.ViewSelector
 import tools.vitruv.framework.vsum.views.ViewType
 import tools.vitruv.framework.vsum.views.ViewTypeRepository
-import tools.vitruv.framework.vsum.views.ViewSelector
 
 interface VirtualModel {
 	def Path getFolder();

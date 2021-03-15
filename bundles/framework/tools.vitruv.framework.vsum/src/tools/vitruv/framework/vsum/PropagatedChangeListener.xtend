@@ -1,9 +1,8 @@
 package tools.vitruv.framework.vsum;
 
-import java.util.List;
-
-import tools.vitruv.framework.change.description.PropagatedChange;
-import tools.vitruv.framework.domains.VitruvDomain;
+import java.util.List
+import tools.vitruv.framework.change.description.PropagatedChange
+import tools.vitruv.framework.domains.VitruvDomain
 
 /**
  * The {@link PropagatedChangeListener} is an interface that can be registered at a {@link InternalVirtualModel} 

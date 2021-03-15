@@ -1,7 +1,7 @@
 package tools.vitruv.framework.vsum
 
-import tools.vitruv.framework.vsum.modelsynchronization.ChangePropagationListener
 import tools.vitruv.framework.correspondence.CorrespondenceModel
+import tools.vitruv.framework.vsum.modelsynchronization.ChangePropagationListener
 
 interface InternalVirtualModel extends VirtualModel {
 	def CorrespondenceModel getCorrespondenceModel()
