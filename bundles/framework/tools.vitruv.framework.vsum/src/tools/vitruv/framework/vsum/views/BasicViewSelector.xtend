@@ -2,8 +2,8 @@ package tools.vitruv.framework.vsum.views
 
 import java.util.ArrayList
 import java.util.Collection
-import org.eclipse.emf.ecore.ENamedElement
 import java.util.List
+import org.eclipse.emf.ecore.ENamedElement
 
 /**
  * Basic view selector for a view that represents a set of model elements.

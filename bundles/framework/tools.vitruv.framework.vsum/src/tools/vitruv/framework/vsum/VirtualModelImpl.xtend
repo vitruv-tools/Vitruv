@@ -1,29 +1,33 @@
 package tools.vitruv.framework.vsum
 
+import java.nio.file.Path
+import java.util.Collections
+import java.util.LinkedList
 import java.util.List
+import org.apache.log4j.Logger
+import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.resource.Resource
 import tools.vitruv.framework.change.description.PropagatedChange
 import tools.vitruv.framework.change.description.VitruviusChange
-import tools.vitruv.framework.propagation.ChangePropagationSpecificationProvider
 import tools.vitruv.framework.domains.repository.VitruvDomainRepository
+import tools.vitruv.framework.propagation.ChangePropagationSpecificationProvider
 import tools.vitruv.framework.userinteraction.InternalUserInteractor
 import tools.vitruv.framework.vsum.helper.ChangeDomainExtractor
-import tools.vitruv.framework.vsum.modelsynchronization.ChangePropagationListener
-import tools.vitruv.framework.vsum.repositories.ResourceRepositoryImpl
-import org.apache.log4j.Logger
-import org.eclipse.emf.common.util.URI
 import tools.vitruv.framework.vsum.helper.VsumFileSystemLayout
-import java.nio.file.Path
-import static com.google.common.base.Preconditions.checkNotNull
-import java.util.LinkedList
-import static com.google.common.base.Preconditions.checkArgument
-import static com.google.common.base.Preconditions.checkState
+import tools.vitruv.framework.vsum.modelsynchronization.ChangePropagationListener
 import tools.vitruv.framework.vsum.modelsynchronization.ChangePropagator
+import tools.vitruv.framework.vsum.repositories.ResourceRepositoryImpl
+import tools.vitruv.framework.vsum.views.ViewTypeRepository
+
+import static com.google.common.base.Preconditions.checkArgument
+import static com.google.common.base.Preconditions.checkNotNull
+import static com.google.common.base.Preconditions.checkState
 
 class VirtualModelImpl implements InternalVirtualModel {
 	static val Logger LOGGER = Logger.getLogger(VirtualModelImpl)
 	val ModelRepository resourceRepository
 	val VitruvDomainRepository domainRepository
+	val ViewTypeRepository viewTypeRepository
 	val ChangePropagator changePropagator
 	val VsumFileSystemLayout fileSystemLayout
 	val List<ChangePropagationListener> changePropagationListeners = new LinkedList()
@@ -35,9 +39,10 @@ class VirtualModelImpl implements InternalVirtualModel {
 		ChangePropagationSpecificationProvider changePropagationSpecificationProvider) {
 		this.fileSystemLayout = fileSystemLayout
 		this.domainRepository = domainRepository
-		this.resourceRepository = new ResourceRepositoryImpl(fileSystemLayout, domainRepository)
-		this.changeDomainExtractor = new ChangeDomainExtractor(domainRepository)
-		this.changePropagator = new ChangePropagator(
+		viewTypeRepository = new ViewTypeRepository
+		resourceRepository = new ResourceRepositoryImpl(fileSystemLayout, domainRepository)
+		changeDomainExtractor = new ChangeDomainExtractor(domainRepository)
+		changePropagator = new ChangePropagator(
 			resourceRepository,
 			changePropagationSpecificationProvider,
 			domainRepository,
@@ -100,14 +105,14 @@ class VirtualModelImpl implements InternalVirtualModel {
 	}
 
 	/**
-	 * @see tools.vitruv.framework.vsum.VirtualModel#propagateChangedState(Resource)
+	 * @see VirtualModel#propagateChangedState(Resource)
 	 */
 	override synchronized propagateChangedState(Resource newState) {
 		return propagateChangedState(newState, newState?.URI)
 	}
 
 	/**
-	 * @see tools.vitruv.framework.vsum.VirtualModel#propagateChangedState(Resource, URI)
+	 * @see VirtualModel#propagateChangedState(Resource, URI)
 	 */
 	override synchronized propagateChangedState(Resource newState, URI oldLocation) {
 		checkArgument(oldLocation !== null || newState !== null, "either new state or old location must not be null")
@@ -213,8 +218,19 @@ class VirtualModelImpl implements InternalVirtualModel {
 		}
 	}
 
-	override void dispose() {
-		resourceRepository.close()
-	}
+    /**
+     * Confirms whether the current state is retrievable via its URI from the resource set of the new state.
+     */
+    private def boolean isValid(Resource currentState, Resource newState) {
+        newState.resourceSet.URIConverter.exists(currentState.URI, Collections.emptyMap)
+    }
+
+    override void dispose() {
+        resourceRepository.close()
+    }
+
+    override getViewTypeRepository() {
+        return viewTypeRepository
+    }
 
 }

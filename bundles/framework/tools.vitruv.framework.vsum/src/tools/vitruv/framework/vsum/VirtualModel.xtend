@@ -1,12 +1,16 @@
 package tools.vitruv.framework.vsum
 
+import java.nio.file.Path
+import java.util.Collection
 import java.util.List
+import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.resource.Resource
 import tools.vitruv.framework.change.description.PropagatedChange
 import tools.vitruv.framework.change.description.VitruviusChange
-import org.eclipse.emf.common.util.URI
-import java.nio.file.Path
 import tools.vitruv.framework.uuid.UuidResolver
+import tools.vitruv.framework.vsum.views.ViewType
+import tools.vitruv.framework.vsum.views.ViewTypeRepository
+import tools.vitruv.framework.vsum.views.ViewSelector
 
 interface VirtualModel {
 	def Path getFolder();
@@ -35,4 +39,18 @@ interface VirtualModel {
 	def ModelInstance getModelInstance(URI modelUri);
 
 	def UuidResolver getUuidResolver();
+
+	def ViewTypeRepository getViewTypeRepository()
+
+    def boolean isCompatible(ViewType viewType) {
+        viewTypes.contains(viewType) // TODO TS What do we understand as a ViewType being compatible with a VSUM?
+    }
+
+    def Collection<ViewType> getViewTypes() { // TODO TS These two methods are specified by the design, but are only convenience methods.
+        return viewTypeRepository.viewTypes
+    }
+
+    def ViewSelector getViewCreator(ViewType viewType) {
+        return viewType.createSelector
+    }
 }
