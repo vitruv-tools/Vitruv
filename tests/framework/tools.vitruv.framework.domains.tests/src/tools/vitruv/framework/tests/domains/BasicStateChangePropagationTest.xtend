@@ -1,0 +1,272 @@
+package tools.vitruv.framework.tests.domains
+
+import tools.vitruv.framework.tests.domains.StateChangePropagationTest
+import static tools.vitruv.testutils.metamodels.AllElementTypesCreators.aet
+import tools.vitruv.framework.util.bridges.EcoreResourceBridge
+import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
+import tools.vitruv.framework.uuid.UuidGeneratorAndResolverFactory
+import static org.junit.jupiter.api.Assertions.assertEquals
+import static org.junit.jupiter.api.Assertions.assertTrue
+import tools.vitruv.framework.change.echange.root.InsertRootEObject
+import tools.vitruv.framework.change.echange.eobject.CreateEObject
+import tools.vitruv.framework.change.echange.feature.attribute.ReplaceSingleValuedEAttribute
+import static org.hamcrest.MatcherAssert.assertThat
+import static tools.vitruv.testutils.matchers.ModelMatchers.containsModelOf
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.DisplayName
+import tools.vitruv.framework.change.echange.eobject.DeleteEObject
+import tools.vitruv.framework.change.echange.root.RemoveRootEObject
+import org.eclipse.emf.ecore.resource.Resource
+import tools.vitruv.framework.util.Capture
+import static extension tools.vitruv.framework.util.Capture.operator_doubleGreaterThan
+import static extension tools.vitruv.framework.domains.repository.DomainAwareResourceSet.awareOfDomains
+import tools.vitruv.testutils.domains.TestDomainsRepository
+import static extension tools.vitruv.framework.util.ResourceSetUtil.withGlobalFactories
+
+class BasicStateChangePropagationTest extends StateChangePropagationTest {
+	private def getTestUri() {
+		getModelURI("Test.allElementTypes")
+	}
+
+	@Test
+	@DisplayName("create new resource and calculate state-based difference")
+	def void createNewResource() {
+		val modelResource = new ResourceSetImpl().createResource(testUri) => [
+			contents += aet.Root => [
+				id = "Root"
+			]
+		]
+		EcoreResourceBridge.saveResource(modelResource)
+		val changes = strategyToTest.getChangeSequenceForCreated(modelResource, setupResolver)
+		assertEquals(3, changes.EChanges.size)
+		assertEquals(1, changes.EChanges.filter(InsertRootEObject).size)
+		assertEquals(1, changes.EChanges.filter(CreateEObject).size)
+		assertEquals(1, changes.EChanges.filter(ReplaceSingleValuedEAttribute).size)
+
+		// Create empty resource to apply generated changes to
+		changes.unresolveIfApplicable
+		val validationResourceSet = new ResourceSetImpl()
+		validationResourceSet.createResource(testUri)
+		val validationResolver = UuidGeneratorAndResolverFactory.createUuidGeneratorAndResolver(setupResolver,
+			validationResourceSet)
+		changes.resolveBeforeAndApplyForward(validationResolver)
+
+		assertEquals(1, validationResourceSet.resources.size)
+		assertThat(validationResourceSet.resources.get(0), containsModelOf(modelResource))
+	}
+
+	@Test
+	@DisplayName("delete existing resource and calculate state-based difference")
+	def void deleteResource() {
+		val modelResource = new Capture<Resource>
+		resourceSet.record [
+			createResource(testUri) => [
+				contents += aet.Root => [
+					id = "Root"
+				]
+			] >> modelResource
+		]
+		EcoreResourceBridge.saveResource(-modelResource)
+		val changes = strategyToTest.getChangeSequenceForDeleted(-modelResource, setupResolver)
+		assertEquals(2, changes.EChanges.size)
+		assertEquals(1, changes.EChanges.filter(RemoveRootEObject).size)
+		assertEquals(1, changes.EChanges.filter(DeleteEObject).size)
+
+		// Load resource to apply generated changes to
+		changes.unresolveIfApplicable
+		val validationResourceSet = new ResourceSetImpl()
+		val validationResolver = UuidGeneratorAndResolverFactory.createUuidGeneratorAndResolver(setupResolver,
+			validationResourceSet)
+		validationResourceSet.getResource(testUri, true)
+		changes.resolveBeforeAndApplyForward(validationResolver)
+
+		assertEquals(1, validationResourceSet.resources.size)
+		assertTrue(validationResourceSet.resources.get(0).contents.empty)
+	}
+
+	@Test
+	@DisplayName("change a root element id and calculate state-based difference")
+	def void changeRootElementId() {
+		val modelResource = new Capture<Resource>
+		val root = aet.Root
+		resourceSet.record [
+			createResource(testUri) => [
+				contents += root => [
+					id = "Root"
+				]
+			] >> modelResource
+		]
+		EcoreResourceBridge.saveResource(-modelResource)
+
+		resourceSet.record [
+			root.id = "Change"
+		]
+
+		val validationResourceSet = new ResourceSetImpl().withGlobalFactories().awareOfDomains(
+			TestDomainsRepository.INSTANCE)
+		val validationResolver = UuidGeneratorAndResolverFactory.createUuidGeneratorAndResolver(setupResolver,
+			validationResourceSet)
+		val oldState = validationResourceSet.getResource(testUri, true)
+		val changes = strategyToTest.getChangeSequenceBetween(-modelResource, oldState, validationResolver)
+
+		changes.unresolveIfApplicable
+		changes.resolveBeforeAndApplyForward(validationResolver)
+
+		assertEquals(1, validationResourceSet.resources.size)
+		assertThat(validationResourceSet.resources.get(0), containsModelOf(-modelResource))
+	}
+
+	@Test
+	@DisplayName("change a root element property and calculate state-based difference")
+	def void changeRootElementFeature() {
+		val modelResource = new Capture<Resource>
+		val root = aet.Root
+		resourceSet.record [
+			createResource(testUri) => [
+				contents += root => [
+					id = "Root"
+				]
+			] >> modelResource
+		]
+		EcoreResourceBridge.saveResource(-modelResource)
+
+		resourceSet.record [
+			root.singleValuedEAttribute = 2
+		]
+
+		val validationResourceSet = new ResourceSetImpl().withGlobalFactories().awareOfDomains(
+			TestDomainsRepository.INSTANCE)
+		val validationResolver = UuidGeneratorAndResolverFactory.createUuidGeneratorAndResolver(setupResolver,
+			validationResourceSet)
+		val oldState = validationResourceSet.getResource(testUri, true)
+		val changes = strategyToTest.getChangeSequenceBetween(-modelResource, oldState, validationResolver)
+		assertEquals(1, changes.EChanges.size)
+		assertEquals(1, changes.EChanges.filter(ReplaceSingleValuedEAttribute).size)
+
+		changes.unresolveIfApplicable
+		changes.resolveBeforeAndApplyForward(validationResolver)
+
+		assertEquals(1, validationResourceSet.resources.size)
+		assertThat(validationResourceSet.resources.get(0), containsModelOf(-modelResource))
+	}
+
+	@Test
+	@DisplayName("change a non-root element property and calculate state-based difference")
+	def void changeNonRootElementFeature() {
+		val modelResource = new Capture<Resource>
+		val root = aet.Root
+		val containedRoot = aet.Root
+		resourceSet.record [
+			createResource(testUri) => [
+				contents += root => [
+					id = "Root"
+					recursiveRoot = containedRoot => [
+						id = "ContainedRoot"
+					]
+				]
+			] >> modelResource
+		]
+		EcoreResourceBridge.saveResource(-modelResource)
+
+		resourceSet.record [
+			containedRoot.id = "Changed"
+		]
+
+		val validationResourceSet = new ResourceSetImpl().withGlobalFactories().awareOfDomains(
+			TestDomainsRepository.INSTANCE)
+		val validationResolver = UuidGeneratorAndResolverFactory.createUuidGeneratorAndResolver(setupResolver,
+			validationResourceSet)
+		val oldState = validationResourceSet.getResource(testUri, true)
+		val changes = strategyToTest.getChangeSequenceBetween(-modelResource, oldState, setupResolver)
+
+		changes.unresolveIfApplicable
+		changes.resolveBeforeAndApplyForward(validationResolver)
+
+		assertEquals(1, validationResourceSet.resources.size)
+		assertThat(validationResourceSet.resources.get(0), containsModelOf(-modelResource))
+	}
+
+	@Test
+	@DisplayName("move a resource to new location and calculate state-based difference")
+	def void moveResource() {
+		val model = new Capture<Resource>
+		val root = aet.Root
+		resourceSet.record [
+			createResource(testUri) => [
+				contents += root => [
+					id = "Root"
+				]
+			] >> model
+		]
+		EcoreResourceBridge.saveResource(-model)
+
+		val validationResourceSet = new ResourceSetImpl().withGlobalFactories().awareOfDomains(
+			TestDomainsRepository.INSTANCE)
+		val validationResolver = UuidGeneratorAndResolverFactory.createUuidGeneratorAndResolver(setupResolver,
+			validationResourceSet)
+		val oldState = validationResourceSet.getResource(testUri, true)
+
+		val movedResourceUri = getModelURI("moved.allElementTypes")
+		resourceSet.record [
+			createResource(movedResourceUri) => [
+				contents += root
+			] >> model
+		]
+		EcoreResourceBridge.saveResource(-model)
+
+		val changes = strategyToTest.getChangeSequenceBetween(-model, oldState, validationResolver)
+		assertEquals(2, changes.EChanges.size)
+		assertEquals(1, changes.EChanges.filter(RemoveRootEObject).size)
+		assertEquals(1, changes.EChanges.filter(InsertRootEObject).size)
+
+		changes.unresolveIfApplicable
+		changes.resolveBeforeAndApplyForward(validationResolver)
+
+		assertEquals(2, validationResourceSet.resources.size)
+		assertThat(validationResourceSet.getResource(movedResourceUri, false), containsModelOf(-model))
+	}
+
+	@Test
+	@DisplayName("move a resource to new location and calculate state-based difference")
+	def void moveResourceAndChangeRootFeature() {
+		val modelResource = new Capture<Resource>
+		val root = aet.Root
+		resourceSet.record [
+			createResource(testUri) => [
+				contents += root => [
+					id = "Root"
+				]
+			] >> modelResource
+		]
+		EcoreResourceBridge.saveResource(-modelResource)
+
+		val validationResourceSet = new ResourceSetImpl().withGlobalFactories().awareOfDomains(
+			TestDomainsRepository.INSTANCE)
+		val validationResolver = UuidGeneratorAndResolverFactory.createUuidGeneratorAndResolver(setupResolver,
+			validationResourceSet)
+		val oldState = validationResourceSet.getResource(testUri, true)
+
+		val movedResourceUri = getModelURI("moved.allElementTypes")
+		resourceSet.record [
+			(-modelResource).contents -= root
+			root.singleValuedEAttribute = 2
+			createResource(movedResourceUri) => [
+				contents += root
+			] >> modelResource
+		]
+		EcoreResourceBridge.saveResource(-modelResource)
+
+		val changes = strategyToTest.getChangeSequenceBetween(-modelResource, oldState, validationResolver)
+		assertEquals(3, changes.EChanges.size)
+		assertEquals(1, changes.EChanges.filter(RemoveRootEObject).size)
+		assertEquals(1, changes.EChanges.filter(InsertRootEObject).size)
+		assertEquals(1, changes.EChanges.filter(ReplaceSingleValuedEAttribute).size)
+
+		changes.unresolveIfApplicable
+		changes.resolveBeforeAndApplyForward(validationResolver)
+
+		assertEquals(2, validationResourceSet.resources.size)
+		assertThat(validationResourceSet.getResource(movedResourceUri, false), containsModelOf(-modelResource))
+	}
+
+}
