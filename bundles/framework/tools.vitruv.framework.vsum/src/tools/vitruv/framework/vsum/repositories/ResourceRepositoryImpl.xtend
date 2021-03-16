@@ -171,5 +171,9 @@ class ResourceRepositoryImpl implements ModelRepository {
 		correspondencesResourceSet.resources.clear()
 		uuidGeneratorAndResolver.close()
 	}
+	
+	override hasModel(VURI modelVuri) {
+		modelInstances.containsKey(modelVuri)
+	}
 
 }

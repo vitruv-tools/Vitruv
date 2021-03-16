@@ -12,6 +12,8 @@ interface ModelRepository extends ResourceAccess, AutoCloseable {
 
 	def CorrespondenceModel getCorrespondenceModel()
 
+	def boolean hasModel(VURI modelVuri)
+	
 	def ModelInstance getModel(VURI modelVuri)
 
 	def void loadExistingModels()
