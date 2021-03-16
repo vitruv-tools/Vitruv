@@ -32,42 +32,52 @@ import static extension tools.vitruv.framework.domains.repository.DomainAwareRes
 import tools.vitruv.framework.change.recording.ChangeRecorder
 import org.eclipse.emf.ecore.util.EcoreUtil
 import static tools.vitruv.framework.uuid.UuidGeneratorAndResolverFactory.createUuidGeneratorAndResolver
+import org.eclipse.xtend.lib.annotations.Accessors
 
 @ExtendWith(TestProjectManager, TestLogging, RegisterMetamodelsInStandalone)
 abstract class StateChangePropagationTest {
 	protected static final String PCM_FILE_EXT = "pcm_mockup"
 	protected static final String UML_FILE_EXT = "uml_mockup"
-	protected var Path testProjectFolder
-	protected var StateBasedChangeResolutionStrategy strategyToTest
-	protected var Resource umlCheckpoint
-	protected var Resource pcmCheckpoint
-	protected var Resource umlModel
-	protected var Resource pcmModel
-	protected var Repository pcmRoot
-	protected var UPackage umlRoot
-	protected var ChangeRecorder changeRecorder
-	protected var UuidGeneratorAndResolver setupResolver
-	protected var UuidGeneratorAndResolver checkpointResolver
-	protected var ResourceSet resourceSet
-	protected var ResourceSet checkpointResourceSet
+	var Path testProjectFolder
+	@Accessors(PROTECTED_GETTER)
+	var StateBasedChangeResolutionStrategy strategyToTest
+	@Accessors(PROTECTED_GETTER)
+	var Resource umlCheckpoint
+	@Accessors(PROTECTED_GETTER)
+	var Resource pcmCheckpoint
+	@Accessors(PROTECTED_GETTER)
+	var Resource umlModel
+	@Accessors(PROTECTED_GETTER)
+	var Resource pcmModel
+	@Accessors(PROTECTED_GETTER)
+	var Repository pcmRoot
+	@Accessors(PROTECTED_GETTER)
+	var UPackage umlRoot
+	var ChangeRecorder changeRecorder
+	@Accessors(PROTECTED_GETTER)
+	var UuidGeneratorAndResolver setupResolver
+	var UuidGeneratorAndResolver checkpointResolver
+	@Accessors(PROTECTED_GETTER)
+	var ResourceSet resourceSet
+	var ResourceSet checkpointResourceSet
 
 	/**
-	 * Creates the strategy, sets up the test model and prepares everything for detemining changes.
+	 * Creates the strategy, sets up the test model and prepares everything for determining changes.
 	 */
 	@BeforeEach
 	def void setup(@TestProject Path testProjectFolder) {
 		this.testProjectFolder = testProjectFolder
 		// Setup:
-		strategyToTest = new DefaultStateBasedChangeResolutionStrategy
+		strategyToTest = new DefaultStateBasedChangeResolutionStrategy(TestDomainsRepository.DOMAINS)
 		resourceSet = new ResourceSetImpl().withGlobalFactories().awareOfDomains(TestDomainsRepository.INSTANCE)
 		checkpointResourceSet = new ResourceSetImpl().withGlobalFactories().awareOfDomains(TestDomainsRepository.INSTANCE)
 		setupResolver = createUuidGeneratorAndResolver(resourceSet)
 		changeRecorder = new ChangeRecorder(setupResolver)
 		// Create mockup models:
-		resourceSet.startRecording
-		createPcmMockupModel()
-		createUmlMockupModel()
-		endRecording
+		resourceSet.record [
+			createPcmMockupModel()
+			createUmlMockupModel()
+		]
 		// change to new recorder with test resolver, create model checkpoints and start recording:
 		checkpointResolver = createUuidGeneratorAndResolver(setupResolver, checkpointResourceSet)
 		umlCheckpoint = umlModel.createCheckpoint
@@ -90,8 +100,8 @@ abstract class StateChangePropagationTest {
 	 */
 	protected def compareChanges(Resource model, Resource checkpoint) {
 		EcoreResourceBridge.saveResource(model)
-		val deltaBasedChange = endRecording
-		val stateBasedChange = strategyToTest.getChangeSequences(model, checkpoint, checkpointResolver)
+		val deltaBasedChange = resourceSet.endRecording
+		val stateBasedChange = strategyToTest.getChangeSequenceBetween(model, checkpoint, checkpointResolver)
 		assertNotNull(stateBasedChange)
 		val message = getTextualRepresentation(stateBasedChange, deltaBasedChange)
 		val stateBasedChangedObjects = stateBasedChange.affectedAndReferencedEObjects
@@ -111,7 +121,8 @@ abstract class StateChangePropagationTest {
 	/**
 	 * Returns the recorded change sequences (the "original" changes) for a specific model instance.
 	 */
-	private def VitruviusChange endRecording() {
+	private def VitruviusChange endRecording(Notifier notifier) {
+		changeRecorder.removeFromRecording(notifier)
 		changeRecorder.endRecording
 		return VitruviusChangeFactory.instance.createCompositeChange(changeRecorder.changes)
 	}
@@ -122,7 +133,7 @@ abstract class StateChangePropagationTest {
 	'''
 
 	private def createPcmMockupModel() {
-		pcmModel = resourceSet.createResource(getModelVURI("My.pcm_mockup")) => [
+		pcmModel = resourceSet.createResource(getModelURI("My.pcm_mockup")) => [
 			contents += (pcmRoot = pcm.Repository => [
 				name = "RootRepository"
 				interfaces += pcm.Interface
@@ -133,7 +144,7 @@ abstract class StateChangePropagationTest {
 	}
 
 	private def createUmlMockupModel() {
-		umlModel = resourceSet.createResource(getModelVURI("My.uml_mockup")) => [
+		umlModel = resourceSet.createResource(getModelURI("My.uml_mockup")) => [
 			contents += (umlRoot = uml.Package => [
 				name = "RootPackage"
 				interfaces += uml.Interface
@@ -149,12 +160,18 @@ abstract class StateChangePropagationTest {
 			changeRecorder.beginRecording
 		}
 	}
+	
+	protected def <T extends Notifier> record(T notifier, (T) => void function) {
+		notifier.startRecording
+		function.apply(notifier)
+		return notifier.endRecording
+	}
 
 	private def Resource createCheckpoint(Resource original) {
 		return checkpointResourceSet.getResource(original.URI, true)
 	}
 
-	private def URI getModelVURI(String fileName) {
-		return EMFBridge.getEmfFileUriForFile(testProjectFolder.resolve("model").resolve(fileName).toFile())
+	protected def URI getModelURI(String modelFileName) {
+		return EMFBridge.getEmfFileUriForFile(testProjectFolder.resolve("model").resolve(modelFileName).toFile())
 	}
 }
