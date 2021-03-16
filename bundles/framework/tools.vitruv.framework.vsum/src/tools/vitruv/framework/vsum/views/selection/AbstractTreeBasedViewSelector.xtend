@@ -1,6 +1,7 @@
-package tools.vitruv.framework.vsum.views
+package tools.vitruv.framework.vsum.views.selection
 
 import org.eclipse.emf.ecore.EObject
+import tools.vitruv.framework.vsum.views.ViewType
 
 abstract class AbstractTreeBasedViewSelector extends BasicViewSelector implements TreeBasedViewSelector {
     val EObject root

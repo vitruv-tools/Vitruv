@@ -1,6 +1,7 @@
-package tools.vitruv.framework.vsum.views
+package tools.vitruv.framework.vsum.views.selection
 
 import org.eclipse.emf.ecore.EObject
+import tools.vitruv.framework.vsum.views.View
 
 interface ViewSelector {
     def int size()

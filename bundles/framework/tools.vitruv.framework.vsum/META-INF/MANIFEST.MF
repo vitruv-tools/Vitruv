@@ -16,5 +16,6 @@ Export-Package: tools.vitruv.framework.vsum,
  tools.vitruv.framework.vsum.helper,
  tools.vitruv.framework.vsum.modelsynchronization,
  tools.vitruv.framework.vsum.repositories;x-internal:=true,
- tools.vitruv.framework.vsum.views
+ tools.vitruv.framework.vsum.views,
+ tools.vitruv.framework.vsum.views.selection
 Bundle-Vendor: vitruv.tools

@@ -3,8 +3,8 @@ package tools.vitruv.framework.tests.vsum.views
 import org.junit.jupiter.api.Test
 import pcm_mockup.Pcm_mockupFactory
 import tools.vitruv.framework.tests.vsum.VsumTest
-import tools.vitruv.framework.vsum.views.BasicViewSelector
-import tools.vitruv.framework.vsum.views.ViewSelector
+import tools.vitruv.framework.vsum.views.selection.BasicViewSelector
+import tools.vitruv.framework.vsum.views.selection.ViewSelector
 
 import static org.junit.jupiter.api.Assertions.assertEquals
 import static org.junit.jupiter.api.Assertions.assertFalse
