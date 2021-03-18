@@ -180,6 +180,7 @@ package class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 	}
 
 	override String generateUuid(EObject eObject) {
+		checkState(!eObject.eIsProxy, "Cannot generate UUID for proxy object: " + eObject)
 		val cachedUuid = cache.EObjectToUuid.removeKey(eObject)
 		if (cachedUuid !== null) {
 			cache.uuidToEObject.remove(cachedUuid)
