@@ -701,7 +701,7 @@ class ChangeRecorderTest {
 				]
 			]
 		]
-		resourceSet.createResource(URI.createURI('test://test.aet')) => [
+		resourceSet.createResource(URI.createURI('file://test.aet')) => [
 			contents += root
 		]
 		root.nonRootObjectContainerHelper
