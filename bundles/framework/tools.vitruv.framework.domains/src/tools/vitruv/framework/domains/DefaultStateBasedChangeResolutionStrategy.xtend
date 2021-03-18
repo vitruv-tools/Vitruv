@@ -46,7 +46,7 @@ class DefaultStateBasedChangeResolutionStrategy implements StateBasedChangeResol
 		checkArgument(oldState !== null && newState !== null, "old state or new state must not be null!")
 		val resourceSet = createResourceSet()
 		val currentStateCopy = oldState.copyInto(resourceSet)
-		val diffs = resourceSet.record(resolver) [
+		val diffs = currentStateCopy.record(resolver) [
 			if (oldState.URI != newState.URI) {
 				currentStateCopy.URI = newState.URI
 			}
@@ -63,7 +63,7 @@ class DefaultStateBasedChangeResolutionStrategy implements StateBasedChangeResol
 		val resourceSet = createResourceSet()
 		val newResource = resourceSet.createResource(newState.URI)
 		newResource.contents.clear()
-		val diffs = resourceSet.record(resolver) [
+		val diffs = newResource.record(resolver) [
 			newResource.contents += EcoreUtil.copyAll(newState.contents)
 		]
 		return changeFactory.createCompositeChange(diffs)
@@ -75,17 +75,17 @@ class DefaultStateBasedChangeResolutionStrategy implements StateBasedChangeResol
 		// Setup resolver and copy state:
 		val copyResourceSet = createResourceSet()
 		val currentStateCopy = oldState.copyInto(copyResourceSet)
-		val diffs = copyResourceSet.record(resolver) [
+		val diffs = currentStateCopy.record(resolver) [
 			currentStateCopy.contents.clear()
 		]
 		return changeFactory.createCompositeChange(diffs)
 	}
 	
-	private def <T extends Notifier> record(ResourceSet resourceSet, UuidResolver parentResolver, () => void function) {
-		val uuidGeneratorAndResolver = createUuidGeneratorAndResolver(parentResolver, resourceSet)
+	private def <T extends Notifier> record(Resource resource, UuidResolver parentResolver, () => void function) {
+		val uuidGeneratorAndResolver = createUuidGeneratorAndResolver(parentResolver, resource.resourceSet)
 		try (val changeRecorder = new ChangeRecorder(uuidGeneratorAndResolver)) {
 			changeRecorder.beginRecording
-			changeRecorder.addToRecording(resourceSet)
+			changeRecorder.addToRecording(resource)
 			function.apply()
 			return changeRecorder.endRecording
 		}
@@ -98,7 +98,7 @@ class DefaultStateBasedChangeResolutionStrategy implements StateBasedChangeResol
 		val scope = new DefaultComparisonScope(newState, currentState, null)
 		val comparison = EMFCompare.builder.build.compare(scope)
 		// Assign the eResource of a root element, as otherwise the DomainAwareResource is used
-		// and can lead to a mismatch with the ordinars resource in the EMF merger 
+		// and can lead to a mismatch with the ordinary resource in the EMF merger 
 		comparison.matchedResources.forEach[
 			it.right = it.right.contents.get(0).eResource()
 			it.left = it.left.contents.get(0).eResource()
