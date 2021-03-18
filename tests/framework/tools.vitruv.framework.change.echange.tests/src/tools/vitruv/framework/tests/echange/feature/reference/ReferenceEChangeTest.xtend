@@ -27,7 +27,9 @@ abstract class ReferenceEChangeTest extends EChangeTest {
 		affectedEObject = rootObject
 		uuidGeneratorAndResolver.generateUuid(affectedEObject)
 		newValue = aet.NonRoot
+		uuidGeneratorAndResolver.generateUuid(newValue)
 		newValue2 = aet.NonRoot
+		uuidGeneratorAndResolver.generateUuid(newValue2)
 	}
 
 	/**
