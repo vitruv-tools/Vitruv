@@ -59,13 +59,6 @@ class EChangeIdManager {
 		return create;
 	}
 	
-	private def String getOrGenerateUuid(EObject object) {
-		if (uuidGeneratorAndResolver.hasUuid(object)) {
-			return uuidGeneratorAndResolver.getUuid(object);
-		}
-		return uuidGeneratorAndResolver.generateUuidWithoutCreate(object);
-	}
-	
 	private def String getUuid(EObject object) {
 		return uuidGeneratorAndResolver.getUuid(object);
 	}
@@ -74,7 +67,7 @@ class EChangeIdManager {
 		if(addedEChange.newValue === null) {
 			return;
 		}
-		addedEChange.newValueID = getOrGenerateUuid(addedEChange.newValue)
+		addedEChange.newValueID = addedEChange.newValue.uuid
 	}	
 
 	private def void setOrGenerateOldValueId(EObjectSubtractedEChange<?> subtractedEChange) {

@@ -17,13 +17,6 @@ interface UuidGeneratorAndResolver extends UuidResolver, AutoCloseable {
 	def String generateUuid(EObject eObject)
 
 	/**
-	 * Registers an object that was not created before and thus has no UUID.
-	 * This is only successful if the element is globally accessible (third party element) or if
-	 * we are not in strict mode. Otherwise an exception is thrown, because a previous create is missing. 
-	 */
-	def String generateUuidWithoutCreate(EObject eObject)
-
-	/**
 	 * Loads the mapping between UUIDs and {@link EObject}s from the persistence at the {@link URI}
 	 * given in the constructor and resolves the referenced {@link EObject}s in the {@link ResourceSet}
 	 * given in the constructor.
