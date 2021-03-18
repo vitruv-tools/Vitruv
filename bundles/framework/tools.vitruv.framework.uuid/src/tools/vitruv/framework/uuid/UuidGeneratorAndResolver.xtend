@@ -13,6 +13,7 @@ import org.eclipse.emf.ecore.EObject
 interface UuidGeneratorAndResolver extends UuidResolver, AutoCloseable {
 	/**
 	 * Registers an object and returns the generated UUID for it.
+	 * Object must not be a proxy.
 	 */
 	def String generateUuid(EObject eObject)
 
