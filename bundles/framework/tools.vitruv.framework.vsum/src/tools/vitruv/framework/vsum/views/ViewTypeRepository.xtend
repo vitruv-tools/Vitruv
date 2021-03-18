@@ -27,4 +27,8 @@ class ViewTypeRepository {
         return viewTypeID
     }
 
+    def ViewType findViewType(UUID viewTypeID) {
+        return registeredViewTypes.get(viewTypeID)
+    }
+
 }
