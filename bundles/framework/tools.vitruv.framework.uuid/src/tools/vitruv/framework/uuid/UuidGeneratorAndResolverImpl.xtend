@@ -73,7 +73,7 @@ package class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 			}
 		}
 	}
-	
+
 	override save() {
 		cleanupRemovedElements()
 		uuidResource?.save(null)
@@ -91,21 +91,36 @@ package class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 	}
 
 	override close() {
-		this.uuidResource.unload
+		this.uuidResource.unload()
 	}
 
 	override getUuid(EObject eObject) {
-		val result = internalGetUuid(eObject)
+		val result = eObject.getUuidOrNull()
 		checkState(result !== null, "No UUID registered for EObject: %s", eObject)
 		return result
 	}
-
-	private def internalGetUuid(EObject eObject) {
+	
+	private def getUuidOrNull(EObject eObject) {
+		return eObject.getUuidIfObjectReadonly()
+			?: eObject.getUuidIfStoredEObject()
+			?: eObject.getUuidIfEClass()
+			?: null
+	}
+	
+	private def getUuidIfObjectReadonly(EObject eObject) {
+		if (eObject.eResource !== null) {
+			if (eObject.eResource.URI.readOnly) {
+				return eObject.resolvableUri.toString
+			}
+		}
+	}
+	
+	private def getUuidIfStoredEObject(EObject eObject) {
 		val localResult = repository.EObjectToUuid.get(eObject)
 		if (localResult !== null) {
 			return localResult
 		}
-
+		
 		// If the object already has a resource, but is not from the resolver’s resource set, resolve it and try again
 		val objectResource = eObject.eResource
 		if (objectResource !== null && objectResource.resourceSet != resourceSet) {
@@ -120,16 +135,16 @@ package class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 				}
 			}
 		}
-
+	}
+	
+	private def getUuidIfEClass(EObject eObject) {
 		if (eObject instanceof EClass) {
 			return generateUuid(eObject)
 		}
-
-		return null
 	}
-
+	
 	override getEObject(String uuid) {
-		val eObject = internalGetEObject(uuid)
+		val eObject = uuid.getEObjectOrNull()
 		checkState(eObject !== null, "No EObject could be found for UUID: %s", uuid)
 		return eObject
 	}
@@ -138,7 +153,20 @@ package class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 		cache.uuidToEObject.get(uuid) ?: getEObject(uuid)
 	}
 
-	private def EObject internalGetEObject(String uuid) {
+	private def EObject getEObjectOrNull(String uuid) {
+		return uuid.getEObjectIfReadonlyUri()
+			?: uuid.getStoredEObject()
+			?: null
+	}
+	
+	private def getEObjectIfReadonlyUri(String uuid) {
+		val potentialURI = URI.createURI(uuid);
+		if (potentialURI.readOnly) {
+			return resolve(potentialURI)
+		}
+	}
+	
+	private def getStoredEObject(String uuid) {
 		val eObject = repository.uuidToEObject.get(uuid)
 		if (eObject === null) {
 			return null
@@ -162,17 +190,6 @@ package class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 		return uuid
 	}
 
-	override String generateUuidWithoutCreate(EObject eObject) {
-		val uuid = generateUuid(eObject)
-		// Register UUID globally for third party elements that are statically accessible and are never created.
-		// Since this is called in the moment when an element gets created, the object can only be globally resolved
-		// if it a third party element.
-		if (!parentUuidResolver.registerUuidForGlobalUri(uuid, EcoreUtil.getURI(eObject))) {
-			throw new IllegalStateException("Object has no UUID and is not globally accessible: " + eObject)
-		}
-		return uuid
-	}
-
 	private def String generateUuid() {
 		return EcoreUtil.generateUUID()
 	}
@@ -189,29 +206,19 @@ package class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 	}
 
 	override hasPotentiallyCachedEObject(String uuid) {
-		cache.uuidToEObject.containsKey(uuid) || internalGetEObject(uuid) !== null
+		cache.uuidToEObject.containsKey(uuid) || uuid.getEObjectOrNull() !== null
 	}
 
 	override hasUuid(EObject object) {
-		return internalGetUuid(object) !== null
+		return object.getUuidOrNull() !== null
 	}
 
 	override hasEObject(String uuid) {
-		return internalGetEObject(uuid) !== null
+		return uuid.getEObjectOrNull() !== null
 	}
 
 	override getResourceSet() {
 		return resourceSet
-	}
-
-	override registerUuidForGlobalUri(String uuid, URI uri) {
-		val localObject = resolve(uri)
-		if (localObject !== null) {
-			registerEObject(uuid, localObject)
-			// Recursively do that
-			return parentUuidResolver.registerUuidForGlobalUri(uuid, uri)
-		}
-		return false
 	}
 
 	override registerEObject(EObject eObject) {
@@ -220,7 +227,8 @@ package class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 		} else if (hasUuid(eObject)) {
 			registerEObject(getUuid(eObject), eObject)
 		} else {
-			throw new IllegalStateException("EObject '" + eObject + "' cannot be registered because it does not have a UUID yet")
+			throw new IllegalStateException("EObject '" + eObject +
+				"' cannot be registered because it does not have a UUID yet")
 		}
 	}
 
@@ -242,8 +250,8 @@ package class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 	}
 
 	override void loadUuidsToChild(UuidResolver childResolver, URI uri) {
-		// Only load UUIDs if resource exists (a pathmap resource always exists)
-		if (((uri.isFile || uri.isPlatform) && uri.existsResourceAtUri) || uri.isPathmap) {
+		// Only load UUIDs if resource exists and is not read only
+		if (!uri.readOnly && uri.existsResourceAtUri) {
 			val childContents = childResolver.resourceSet.getResource(uri, true).allContents
 			val ourContents = this.resourceSet.getResource(uri, true).allContents
 			while (childContents.hasNext) {
@@ -252,10 +260,6 @@ package class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 				val ourObject = ourContents.next
 
 				var objectUuid = repository.EObjectToUuid.get(ourObject)
-				// Not having a UUID is only supported for pathmap resources
-				if (objectUuid === null && uri.isPathmap) {
-					objectUuid = generateUuid(ourObject)
-				}
 				if (objectUuid === null) {
 					throw new IllegalStateException('''Element does not have a UUID but should have one: «ourObject»''')
 				}
@@ -297,6 +301,10 @@ package class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 		} else {
 			resource.URI.appendFragment('/' + rootElementIndex + '/' + fragmentPath)
 		}
+	}
+	
+	private static def isReadOnly(URI uri) {
+		uri.isPathmap || uri.isArchive
 	}
 
 }
