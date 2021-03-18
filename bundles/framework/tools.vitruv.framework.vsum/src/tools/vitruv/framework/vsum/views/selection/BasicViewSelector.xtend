@@ -14,7 +14,7 @@ class BasicViewSelector implements ViewSelector {
     val ViewType owner
     protected val List<SelectableElement<EObject>> selectableElements
 
-    new(ViewType owner) {
+    protected new(ViewType owner) {
         this.owner = owner
         selectableElements = new ArrayList
     }

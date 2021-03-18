@@ -8,20 +8,16 @@ import org.eclipse.emf.ecore.util.EcoreUtil
 import tools.vitruv.framework.util.datatypes.ModelInstance
 
 /**
- * A basic read-only view that passes the entirety of its underlying model as it is.
+ * A basic read-only view that passes by default the entirety of its underlying model as it is.
  */
 class BasicModelView implements View {
-    val ModelInstance model
-    Resource resource
-    boolean modelChanged
+    protected val ModelInstance model
+    protected Resource resource
+    protected boolean modelChanged
 
     new(ModelInstance model) {
         this.model = model
-        model.resource.eAdapters.add(new AdapterImpl {
-            override notifyChanged(Notification notification) {
-                modelChanged = true
-            }
-        })
+        registerModelChangeListener
         update
     }
 
@@ -48,6 +44,14 @@ class BasicModelView implements View {
 
     override commit() {
         return false // read only 
+    }
+
+    def private registerModelChangeListener() {
+        model.resource.eAdapters.add(new AdapterImpl {
+            override notifyChanged(Notification notification) {
+                modelChanged = true
+            }
+        })
     }
 
 }
