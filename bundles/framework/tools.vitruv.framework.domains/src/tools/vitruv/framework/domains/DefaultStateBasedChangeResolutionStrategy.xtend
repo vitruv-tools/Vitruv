@@ -19,6 +19,7 @@ import tools.vitruv.framework.domains.repository.VitruvDomainRepository
 import tools.vitruv.framework.domains.repository.VitruvDomainRepositoryImpl
 import static com.google.common.base.Preconditions.checkArgument
 import java.util.Set
+import static extension tools.vitruv.framework.util.bridges.EcoreResourceBridge.getReferencedProxies
 
 /**
  * This default strategy for diff based state changes uses EMFCompare to resolve a 
@@ -40,10 +41,17 @@ class DefaultStateBasedChangeResolutionStrategy implements StateBasedChangeResol
 	private def createResourceSet() {
 		new ResourceSetImpl().awareOfDomains(domainRepository)
 	}
+	
+	private def checkNoProxies(Resource resource, String stateNotice) {
+		val proxies = resource.referencedProxies
+		checkArgument(proxies.empty, "%s '%s' should not contain proxies, but contains the following: %s", stateNotice, resource.URI, String.join(", ", proxies.map[toString]))
+	}
 
 	override getChangeSequenceBetween(Resource newState, Resource oldState, UuidResolver resolver) {
 		checkArgument(resolver !== null, "UUID generator and resolver cannot be null!")
 		checkArgument(oldState !== null && newState !== null, "old state or new state must not be null!")
+		newState.checkNoProxies("new state")
+		oldState.checkNoProxies("old state")
 		val resourceSet = createResourceSet()
 		val currentStateCopy = oldState.copyInto(resourceSet)
 		val diffs = currentStateCopy.record(resolver) [
@@ -58,6 +66,7 @@ class DefaultStateBasedChangeResolutionStrategy implements StateBasedChangeResol
 	override getChangeSequenceForCreated(Resource newState, UuidResolver resolver) {
 		checkArgument(resolver !== null, "UUID generator and resolver cannot be null!")
 		checkArgument(newState !== null, "new state must not be null!")
+		newState.checkNoProxies("new state")
 		// It is possible that root elements are automatically generated during resource creation (e.g., Java packages).
 		// Thus, we create the resource and then monitor the re-insertion of the elements
 		val resourceSet = createResourceSet()
@@ -72,6 +81,7 @@ class DefaultStateBasedChangeResolutionStrategy implements StateBasedChangeResol
 	override getChangeSequenceForDeleted(Resource oldState, UuidResolver resolver) {
 		checkArgument(resolver !== null, "UUID generator and resolver cannot be null!")
 		checkArgument(oldState !== null, "old state must not be null!")
+		oldState.checkNoProxies("old state")
 		// Setup resolver and copy state:
 		val copyResourceSet = createResourceSet()
 		val currentStateCopy = oldState.copyInto(copyResourceSet)
