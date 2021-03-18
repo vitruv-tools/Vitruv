@@ -67,16 +67,16 @@ class ResourceRepositoryImpl implements ModelRepository {
 
 	override getModel(VURI modelURI) {
 		modelInstances.get(modelURI)
-			?: createOrLoadModel(modelURI, false)
+			?: createOrLoadModel(modelURI)
 	}
 
-	def private createOrLoadModel(VURI modelURI, boolean forceLoadAndRelinkUuids) {
+	def private createOrLoadModel(VURI modelURI) {
 		checkState(getDomainForURI(modelURI) !== null,
 			"Cannot create a new model instance at the URI '%s' because no domain is registered for that URI", modelURI)
-		val resource = if ((modelURI.EMFUri.isFile || modelURI.EMFUri.isPlatform) && !forceLoadAndRelinkUuids) {
-				getOrCreateResource(modelURI)
+		val resource = if ((modelURI.EMFUri.isFile || modelURI.EMFUri.isPlatform)) {
+				modelsResourceSet.getOrCreateResource(modelURI.EMFUri)
 			} else {
-				loadOrCreateResource(modelURI, !forceLoadAndRelinkUuids)
+				modelsResourceSet.loadOrCreateResource(modelURI.EMFUri)
 			}
 		val modelInstance = new ModelInstance(resource)
 		this.modelInstances.put(modelURI, modelInstance)
@@ -84,28 +84,6 @@ class ResourceRepositoryImpl implements ModelRepository {
 		return modelInstance
 	}
 
-	def private getOrCreateResource(VURI modelURI) {
-		return modelsResourceSet.getOrCreateResource(modelURI.EMFUri)
-	}
-
-	def private loadOrCreateResource(VURI modelURI, boolean generateUuids) {
-		val resource = modelsResourceSet.loadOrCreateResource(modelURI.EMFUri)
-		if (!generateUuids) {
-			relinkUuids(resource)
-		} else {
-			generateUuids(resource)
-		}
-		return resource
-	}
-	
-	def private void relinkUuids(Resource resource) {
-		resource.allContents.forEachRemaining [uuidGeneratorAndResolver.registerEObject(it)]
-	}
-	
-	def private void generateUuids(Resource resource) {
-		resource.allContents.forEachRemaining [uuidGeneratorAndResolver.generateUuid(it)]
-	}
-	
 	def private void registerRecorder(ModelInstance modelInstance) {
 		// Only monitor modifiable models (file / platform URIs, not pathmap URIs)
 		if (modelInstance.URI.EMFUri.isFile || modelInstance.URI.EMFUri.isPlatform) {
