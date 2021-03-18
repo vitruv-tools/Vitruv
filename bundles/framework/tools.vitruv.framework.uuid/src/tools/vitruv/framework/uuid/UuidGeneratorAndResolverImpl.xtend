@@ -253,7 +253,9 @@ package class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 		// Only load UUIDs if resource exists and is not read only
 		if (!uri.readOnly && uri.existsResourceAtUri) {
 			val childContents = childResolver.resourceSet.getResource(uri, true).allContents
-			val ourContents = this.resourceSet.getResource(uri, true).allContents
+			val ourResource = this.resourceSet.getResource(uri, false)
+			checkState(ourResource !== null, "no matching resource at '%s' in parent resolver", uri)
+			val ourContents = ourResource.allContents
 			while (childContents.hasNext) {
 				val childObject = childContents.next
 				checkState(ourContents.hasNext, "Cannot find %s in our resource set!", childObject)
