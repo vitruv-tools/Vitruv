@@ -164,6 +164,7 @@ class BasicStateChangePropagationTest extends StateChangePropagationTest {
 					id = "Root"
 					recursiveRoot = containedRoot => [
 						id = "ContainedRoot"
+						singleValuedEAttribute = 0
 					]
 				]
 			] >> modelResource
@@ -171,7 +172,7 @@ class BasicStateChangePropagationTest extends StateChangePropagationTest {
 		EcoreResourceBridge.saveResource(-modelResource)
 
 		resourceSet.record [
-			containedRoot.id = "Changed"
+			containedRoot.singleValuedEAttribute = 1
 		]
 
 		val validationResourceSet = new ResourceSetImpl().withGlobalFactories().awareOfDomains(
