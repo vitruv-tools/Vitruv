@@ -6,6 +6,8 @@ import java.util.List
 import org.eclipse.emf.ecore.EObject
 import tools.vitruv.framework.vsum.views.ViewType
 
+import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
+
 /**
  * Basic view selector for a view that represents a set of model elements.
  */
@@ -29,7 +31,7 @@ class BasicViewSelector implements ViewSelector {
     }
 
     override getElements() {
-        return selectableElements.map[element]
+        return selectableElements.mapFixed[element]
     }
 
     override setSelected(int index, boolean value) {
@@ -41,7 +43,7 @@ class BasicViewSelector implements ViewSelector {
     }
 
     override getSelectedElements() {
-        return selectableElements.filter[selected == true].map[element]
+        return selectableElements.filter[selected == true].mapFixed[element]
     }
 
     override createView() {

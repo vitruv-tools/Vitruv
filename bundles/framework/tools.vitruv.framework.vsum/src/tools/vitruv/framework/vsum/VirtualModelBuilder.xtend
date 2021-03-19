@@ -1,19 +1,20 @@
 package tools.vitruv.framework.vsum
 
-import tools.vitruv.framework.domains.repository.VitruvDomainRepository
+import java.io.File
+import java.nio.file.Path
+import java.util.HashSet
 import java.util.Set
 import tools.vitruv.framework.domains.VitruvDomain
-import static com.google.common.base.Preconditions.checkState
-import tools.vitruv.framework.propagation.ChangePropagationSpecification
-import java.util.HashSet
-import java.io.File
-import tools.vitruv.framework.userinteraction.InternalUserInteractor
-import java.nio.file.Path
+import tools.vitruv.framework.domains.repository.VitruvDomainRepository
 import tools.vitruv.framework.domains.repository.VitruvDomainRepositoryImpl
+import tools.vitruv.framework.propagation.ChangePropagationSpecification
 import tools.vitruv.framework.propagation.ChangePropagationSpecificationRepository
 import tools.vitruv.framework.userinteraction.InteractionResultProvider
+import tools.vitruv.framework.userinteraction.InternalUserInteractor
 import tools.vitruv.framework.userinteraction.UserInteractionFactory
 import tools.vitruv.framework.vsum.helper.VsumFileSystemLayout
+
+import static com.google.common.base.Preconditions.checkState
 
 class VirtualModelBuilder {
 	var VitruvDomainRepository domainRepository = null

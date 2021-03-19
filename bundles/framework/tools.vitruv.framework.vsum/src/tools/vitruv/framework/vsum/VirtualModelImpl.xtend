@@ -229,8 +229,8 @@ class VirtualModelImpl implements InternalVirtualModel {
         resourceRepository.close()
     }
 
-    override getViewTypeRepository() {
-        return viewTypeRepository
+    override getViewTypes() {
+        return viewTypeRepository.viewTypes
     }
 
 }

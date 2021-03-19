@@ -16,18 +16,18 @@ class ViewSelectorTest extends VsumTest {
     @Test
     def void testBasicViewSelector() {
         // Create view selector:
-        val repository = Pcm_mockupFactory::eINSTANCE.createRepository
-        val component = Pcm_mockupFactory::eINSTANCE.createComponent
-        var ViewSelector selector = new BasicViewSelector(null, #[repository, component])
+        val repository1 = Pcm_mockupFactory::eINSTANCE.createRepository
+        val repository2 = Pcm_mockupFactory::eINSTANCE.createRepository
+        var ViewSelector selector = new BasicViewSelector(null, #[repository1, repository2])
 
         // Check initial state:
-        assertIterableEquals(#[repository, component], selector.elements)
+        assertIterableEquals(#[repository1, repository2], selector.elements)
         assertEquals(2, selector.size)
         assertEquals(0, selector.selectedElements.size)
         assertFalse(selector.valid)
 
         // Select the repository
-        val index = selector.getIndexOf(repository)
+        val index = selector.getIndexOf(repository1)
         selector.setSelected(index, true)
 
         // Check state after selection:
@@ -35,6 +35,6 @@ class ViewSelectorTest extends VsumTest {
         assertTrue(selector.isSelected(0))
         assertFalse(selector.isSelected(1))
         assertEquals(1, selector.selectedElements.size)
-        assertTrue(selector.selectedElements.contains(repository))
+        assertTrue(selector.selectedElements.contains(repository1))
     }
 }

@@ -9,8 +9,9 @@ import tools.vitruv.framework.util.datatypes.ModelInstance
 
 /**
  * A basic read-only view that passes by default the entirety of its underlying model as it is.
+ * IMPORTANT: This is a prototypical implementation for concept exploration and therefore only temporary.
  */
-class BasicModelView implements View {
+class BasicModelView implements View { // TODO TS use resource sets or a collection of resources instead of model instances
     protected val ModelInstance model
     protected Resource resource
     protected boolean modelChanged

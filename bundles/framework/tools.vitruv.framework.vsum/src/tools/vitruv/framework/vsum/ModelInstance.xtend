@@ -1,12 +1,13 @@
 package tools.vitruv.framework.vsum
 
-import org.apache.log4j.Logger
-import org.eclipse.emf.ecore.resource.Resource
-import static com.google.common.base.Preconditions.checkArgument
-import org.eclipse.xtend.lib.annotations.Accessors
 import java.io.IOException
-import org.eclipse.emf.ecore.EObject
+import org.apache.log4j.Logger
 import org.eclipse.emf.common.util.URI
+import org.eclipse.emf.ecore.EObject
+import org.eclipse.emf.ecore.resource.Resource
+import org.eclipse.xtend.lib.annotations.Accessors
+
+import static com.google.common.base.Preconditions.checkArgument
 
 class ModelInstance {
 	static val LOGGER = Logger.getLogger(ModelInstance)

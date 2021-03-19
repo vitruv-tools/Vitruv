@@ -4,9 +4,12 @@ import java.util.ArrayList
 import java.util.Collection
 import org.eclipse.emf.ecore.EObject
 import tools.vitruv.framework.util.datatypes.ModelInstance
+import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
+import org.eclipse.emf.ecore.util.EcoreUtil
 
 /**
  * A basic read-only view on a model that passes through only some of the model elements.
+ *  IMPORTANT: This is a prototypical implementation for concept exploration and therefore only temporary.
  */
 class FilterableModelView extends BasicModelView {
     val Collection<EObject> elementsToShow
@@ -17,8 +20,14 @@ class FilterableModelView extends BasicModelView {
         update
     }
 
-    override update() {
-        // TODO TS implement filtering update method
+    override update() { // TODO TS duplicated code from super class
+        modelChanged = false
+        val resourceSet = new ResourceSetImpl()
+        val uri = model.resource.URI
+        resource = resourceSet.resourceFactoryRegistry.getFactory(uri).createResource(uri)
+        val filteredContent = model.resource.contents.filter[elementsToShow?.contains(it)].toList
+        resource.contents.addAll(EcoreUtil.copyAll(filteredContent))
+        resourceSet.resources += resource
     }
 
 }

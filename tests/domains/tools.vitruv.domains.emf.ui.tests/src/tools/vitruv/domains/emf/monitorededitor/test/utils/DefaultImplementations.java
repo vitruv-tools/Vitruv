@@ -11,9 +11,12 @@
 
 package tools.vitruv.domains.emf.monitorededitor.test.utils;
 
+import static tools.vitruv.framework.uuid.UuidGeneratorAndResolverFactory.createUuidGeneratorAndResolver;
+
 import java.net.URL;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -27,11 +30,10 @@ import tools.vitruv.domains.emf.monitorededitor.test.testmodels.Models;
 import tools.vitruv.framework.change.description.PropagatedChange;
 import tools.vitruv.framework.change.description.VitruviusChange;
 import tools.vitruv.framework.uuid.UuidGeneratorAndResolver;
-import static tools.vitruv.framework.uuid.UuidGeneratorAndResolverFactory.createUuidGeneratorAndResolver;
 import tools.vitruv.framework.uuid.UuidResolver;
 import tools.vitruv.framework.vsum.ModelInstance;
 import tools.vitruv.framework.vsum.VirtualModel;
-import tools.vitruv.framework.vsum.views.ViewTypeRepository;
+import tools.vitruv.framework.vsum.views.ViewType;
 
 public class DefaultImplementations {
     public static final ResourceChangeSynchronizing EFFECTLESS_CHANGESYNC = new ResourceChangeSynchronizing() {
@@ -136,7 +138,7 @@ public class DefaultImplementations {
         }
 
         @Override
-        public ViewTypeRepository getViewTypeRepository() {
+        public Collection<ViewType> getViewTypes() {
             return null;
         }
 

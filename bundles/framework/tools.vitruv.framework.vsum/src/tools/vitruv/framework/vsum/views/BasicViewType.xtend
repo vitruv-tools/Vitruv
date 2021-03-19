@@ -7,8 +7,10 @@ import tools.vitruv.framework.vsum.views.selection.ViewSelector
 class BasicViewType implements ViewType {
 
     val ModelInstance model
+    val String name
 
-    new(ModelInstance model) {
+    new(String name, ModelInstance model) {
+        this.name = name
         this.model = model
     }
 
@@ -18,6 +20,10 @@ class BasicViewType implements ViewType {
 
     override createView(ViewSelector selector) {
         return new FilterableModelView(model, selector.selectedElements)
+    }
+
+    override getName() {
+        return name
     }
 
 }

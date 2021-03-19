@@ -4,14 +4,13 @@ import java.util.ArrayList
 import java.util.Collection
 import java.util.HashMap
 import java.util.Map
-import java.util.UUID
 
 /**
  * Stores and manages all ViewTypes.
  */
 class ViewTypeRepository {
 
-    val Map<UUID, ViewType> registeredViewTypes
+    val Map<String, ViewType> registeredViewTypes
 
     new() {
         registeredViewTypes = new HashMap
@@ -21,14 +20,15 @@ class ViewTypeRepository {
         return new ArrayList(registeredViewTypes.values)
     }
 
-    def UUID register(ViewType viewType) { // TODO (TS) the design specifies retrieval via an ID. What kind of ID do we want here? (and why?)
-        val viewTypeID = UUID.randomUUID
-        registeredViewTypes.put(viewTypeID, viewType)
-        return viewTypeID
+    def void register(ViewType viewType) {
+        if(registeredViewTypes.containsKey(viewType.name)) {
+            throw new IllegalArgumentException("ViewType name already taken by another ViewType: " + viewType.name)
+        }
+        registeredViewTypes.put(viewType.name, viewType)
     }
 
-    def ViewType findViewType(UUID viewTypeID) {
-        return registeredViewTypes.get(viewTypeID)
+    def ViewType findViewType(String viewTypeName) {
+        return registeredViewTypes.get(viewTypeName)
     }
 
 }
