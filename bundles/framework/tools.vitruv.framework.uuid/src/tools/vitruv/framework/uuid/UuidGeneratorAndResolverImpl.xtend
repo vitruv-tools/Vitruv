@@ -167,17 +167,7 @@ package class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 	}
 	
 	private def getStoredEObject(String uuid) {
-		val eObject = repository.uuidToEObject.get(uuid)
-		if (eObject === null) {
-			return null
-		}
-		if (eObject.eIsProxy) {
-			// Try to resolve the proxy. This can still lead to a valid proxy element if it is a proxy on purpose
-			val resolvedObject = EcoreUtil.resolve(eObject, resourceSet)
-			return resolvedObject
-		} else {
-			return eObject
-		}
+		return repository.uuidToEObject.get(uuid)
 	}
 
 	override String generateUuid(EObject eObject) {
