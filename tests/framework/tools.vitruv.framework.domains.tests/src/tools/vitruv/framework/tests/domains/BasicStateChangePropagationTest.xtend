@@ -85,21 +85,23 @@ class BasicStateChangePropagationTest extends StateChangePropagationTest {
 	}
 
 	@Test
-	@DisplayName("change a root element id and calculate state-based difference")
-	def void changeRootElementId() {
+	@DisplayName("replace root element and calculate state-based difference")
+	def void replaceRootElement() {
 		val modelResource = new Capture<Resource>
-		val root = aet.Root
 		resourceSet.record [
 			createResource(testUri) => [
-				contents += root => [
+				contents += aet.Root => [
 					id = "Root"
 				]
 			] >> modelResource
 		]
 		EcoreResourceBridge.saveResource(-modelResource)
 
-		resourceSet.record [
-			root.id = "Change"
+		(-modelResource).record [
+			contents.clear()
+			contents += aet.Root => [
+					id = "Root2"
+				]
 		]
 
 		val validationResourceSet = new ResourceSetImpl().withGlobalFactories().awareOfDomains(
