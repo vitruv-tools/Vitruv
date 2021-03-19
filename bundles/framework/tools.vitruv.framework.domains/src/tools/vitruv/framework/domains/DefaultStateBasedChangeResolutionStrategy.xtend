@@ -38,10 +38,6 @@ class DefaultStateBasedChangeResolutionStrategy implements StateBasedChangeResol
 		changeFactory = VitruviusChangeFactory.instance
 	}
 	
-	private def createResourceSet() {
-		new ResourceSetImpl().awareOfDomains(domainRepository)
-	}
-	
 	private def checkNoProxies(Resource resource, String stateNotice) {
 		val proxies = resource.referencedProxies
 		checkArgument(proxies.empty, "%s '%s' should not contain proxies, but contains the following: %s", stateNotice, resource.URI, String.join(", ", proxies.map[toString]))
@@ -52,13 +48,15 @@ class DefaultStateBasedChangeResolutionStrategy implements StateBasedChangeResol
 		checkArgument(oldState !== null && newState !== null, "old state or new state must not be null!")
 		newState.checkNoProxies("new state")
 		oldState.checkNoProxies("old state")
-		val resourceSet = createResourceSet()
-		val currentStateCopy = oldState.copyInto(resourceSet)
+		val oldResourceSet = new ResourceSetImpl()
+		val newResourceSet = new ResourceSetImpl()
+		val currentStateCopy = oldState.copyInto(oldResourceSet)
+		val newStateCopy = newState.copyInto(newResourceSet)
 		val diffs = currentStateCopy.record(resolver) [
 			if (oldState.URI != newState.URI) {
-				currentStateCopy.URI = newState.URI
+				currentStateCopy.URI = newStateCopy.URI
 			}
-			compareStatesAndReplayChanges(newState, currentStateCopy)
+			compareStatesAndReplayChanges(newStateCopy, currentStateCopy)
 		]
 		return changeFactory.createCompositeChange(diffs)
 	}
@@ -69,7 +67,7 @@ class DefaultStateBasedChangeResolutionStrategy implements StateBasedChangeResol
 		newState.checkNoProxies("new state")
 		// It is possible that root elements are automatically generated during resource creation (e.g., Java packages).
 		// Thus, we create the resource and then monitor the re-insertion of the elements
-		val resourceSet = createResourceSet()
+		val resourceSet = new ResourceSetImpl().awareOfDomains(domainRepository)
 		val newResource = resourceSet.createResource(newState.URI)
 		newResource.contents.clear()
 		val diffs = newResource.record(resolver) [
@@ -83,7 +81,7 @@ class DefaultStateBasedChangeResolutionStrategy implements StateBasedChangeResol
 		checkArgument(oldState !== null, "old state must not be null!")
 		oldState.checkNoProxies("old state")
 		// Setup resolver and copy state:
-		val copyResourceSet = createResourceSet()
+		val copyResourceSet = new ResourceSetImpl()
 		val currentStateCopy = oldState.copyInto(copyResourceSet)
 		val diffs = currentStateCopy.record(resolver) [
 			currentStateCopy.contents.clear()
@@ -107,12 +105,6 @@ class DefaultStateBasedChangeResolutionStrategy implements StateBasedChangeResol
 	private def compareStatesAndReplayChanges(Notifier newState, Notifier currentState) {
 		val scope = new DefaultComparisonScope(newState, currentState, null)
 		val comparison = EMFCompare.builder.build.compare(scope)
-		// Assign the eResource of a root element, as otherwise the DomainAwareResource is used
-		// and can lead to a mismatch with the ordinary resource in the EMF merger 
-		comparison.matchedResources.forEach[
-			it.right = it.right.contents.get(0).eResource()
-			it.left = it.left.contents.get(0).eResource()
-		]
 		val changes = comparison.differences
 		// Replay the EMF compare differences
 		val mergerRegistry = IMerger.RegistryImpl.createStandaloneInstance()
