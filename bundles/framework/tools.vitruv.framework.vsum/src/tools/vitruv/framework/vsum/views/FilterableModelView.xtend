@@ -21,13 +21,16 @@ class FilterableModelView extends BasicModelView {
     }
 
     override update() { // TODO TS duplicated code from super class
-        modelChanged = false
-        val resourceSet = new ResourceSetImpl()
-        val uri = model.resource.URI
-        resource = resourceSet.resourceFactoryRegistry.getFactory(uri).createResource(uri)
-        val filteredContent = model.resource.contents.filter[elementsToShow?.contains(it)].toList
-        resource.contents.addAll(EcoreUtil.copyAll(filteredContent))
-        resourceSet.resources += resource
+        if(elementsToShow === null) {
+            super.update
+        } else {
+            modelChanged = false
+            val resourceSet = new ResourceSetImpl()
+            val uri = model.resource.URI
+            resource = resourceSet.resourceFactoryRegistry.getFactory(uri).createResource(uri)
+            val filteredContent = model.resource.contents.filter[elementsToShow.contains(it)].toList
+            resource.contents.addAll(EcoreUtil.copyAll(filteredContent))
+            resourceSet.resources += resource
+        }
     }
-
 }
