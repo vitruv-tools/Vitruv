@@ -24,6 +24,8 @@ import static extension tools.vitruv.framework.util.ResourceSetUtil.withGlobalFa
  */
 package class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 	static val logger = Logger.getLogger(UuidGeneratorAndResolverImpl)
+	static val NON_READONLY_PREFIX = "ord_"
+	
 	val ResourceSet resourceSet
 	val Resource uuidResource
 	val UuidResolver parentUuidResolver
@@ -159,9 +161,8 @@ package class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 	}
 	
 	private def getEObjectIfReadonlyUri(String uuid) {
-		val potentialURI = URI.createURI(uuid);
-		if (potentialURI.readOnly) {
-			return resolve(potentialURI)
+		if (!uuid.startsWith(NON_READONLY_PREFIX)) {
+			return resolve(URI.createURI(uuid))
 		}
 	}
 	
@@ -191,7 +192,7 @@ package class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 	}
 
 	private def String generateUuid() {
-		return EcoreUtil.generateUUID()
+		return NON_READONLY_PREFIX + EcoreUtil.generateUUID()
 	}
 
 	override registerEObject(String uuid, EObject eObject) {
