@@ -21,7 +21,7 @@
 		<repository>
 			<id>SDQ Commons</id>
 			<layout>p2</layout>
-			<url>http://kit-sdq.github.io/updatesite/release/commons/1.10.0/</url>
+			<url>http://kit-sdq.github.io/updatesite/release/commons/2.0.0/</url>
 		</repository>
 		<repository>
 			<id>XAnnotations</id>

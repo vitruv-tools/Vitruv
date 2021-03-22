@@ -26,7 +26,7 @@ import org.junit.jupiter.api.DisplayName
 import static org.hamcrest.MatcherAssert.assertThat
 import static org.hamcrest.CoreMatchers.is
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceImpl
-import static extension tools.vitruv.framework.util.ResourceSetUtil.withGlobalFactories
+import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceSetUtil.withGlobalFactories
 import org.junit.jupiter.api.BeforeEach
 import static tools.vitruv.testutils.metamodels.AllElementTypes2Creators.aet2
 

@@ -10,16 +10,16 @@ import tools.vitruv.framework.change.description.PropagatedChange
 import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.emf.ecore.EObject
 import static com.google.common.base.Preconditions.checkArgument
-import tools.vitruv.framework.util.bridges.EMFBridge
 import static extension java.nio.file.Files.move
 import static java.nio.file.Files.createDirectories
 import tools.vitruv.framework.domains.repository.VitruvDomainRepository
-import static extension tools.vitruv.framework.util.ResourceSetUtil.withGlobalFactories
+import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceSetUtil.withGlobalFactories
 import static extension tools.vitruv.framework.domains.repository.DomainAwareResourceSet.awareOfDomains
-import static extension tools.vitruv.framework.util.bridges.EcoreResourceBridge.loadOrCreateResource
+import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceSetUtil.loadOrCreateResource
 import org.eclipse.emf.ecore.resource.ResourceSet
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
-
+import static edu.kit.ipd.sdq.commons.util.org.eclipse.emf.common.util.URIUtil.createFileURI
+import static org.eclipse.emf.common.util.URI.createPlatformResourceURI
 /**
  * A minimal test view that gives access to resources, but does not record any changes.
  */ 
@@ -124,10 +124,10 @@ class BasicTestView implements TestView {
 		return switch (uriMode) {
 			case PLATFORM_URIS: {
 				// platform URIs must always use '/' and be relative to the project (fileName) rather than the workspace
-				EMFBridge.createURI(persistenceDirectory.fileName.resolve(viewRelativePath).normalize().join('/'))
+				createPlatformResourceURI(persistenceDirectory.fileName.resolve(viewRelativePath).normalize().join('/'), true)
 			}
 			case FILE_URIS:
-				EMFBridge.getEmfFileUriForFile(persistenceDirectory.resolve(viewRelativePath).normalize().toFile())
+				createFileURI(persistenceDirectory.resolve(viewRelativePath).normalize().toFile())
 		}
 	}
 	

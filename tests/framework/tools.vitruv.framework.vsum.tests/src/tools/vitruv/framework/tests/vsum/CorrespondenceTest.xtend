@@ -22,7 +22,6 @@ import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
 import static extension tools.vitruv.framework.correspondence.CorrespondenceModelUtil.*
 
 import org.junit.jupiter.api.Test
-import tools.vitruv.framework.util.bridges.EcoreResourceBridge
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import org.junit.jupiter.api.BeforeEach
 import tools.vitruv.testutils.domains.PcmMockupDomainProvider
@@ -33,11 +32,13 @@ import uml_mockup.Uml_mockupFactory
 import tools.vitruv.framework.vsum.VirtualModelBuilder
 import tools.vitruv.framework.userinteraction.UserInteractionFactory
 import pcm_mockup.Pcm_mockupFactory
-import static extension tools.vitruv.framework.util.bridges.EMFBridge.getEmfFileUriForFile
 import tools.vitruv.testutils.TestLogging
 import org.junit.jupiter.api.^extension.ExtendWith
 import tools.vitruv.testutils.TestProjectManager
 import tools.vitruv.testutils.RegisterMetamodelsInStandalone
+import static org.hamcrest.CoreMatchers.instanceOf
+import static org.hamcrest.MatcherAssert.assertThat
+import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.common.util.URIUtil.createFileURI
 
 @ExtendWith(TestProjectManager, TestLogging, RegisterMetamodelsInStandalone)
 class CorrespondenceTest {
@@ -56,19 +57,19 @@ class CorrespondenceTest {
 	}
 
 	private def URI getDefaultPcmInstanceURI() {
-		return currentProjectModelFolder.resolve("My.pcm_mockup").toFile().emfFileUriForFile
+		return currentProjectModelFolder.resolve("My.pcm_mockup").toFile().createFileURI()
 	}
 
 	private def URI getDefaultUMLInstanceURI() {
-		return currentProjectModelFolder.resolve("My.uml_mockup").toFile().emfFileUriForFile
+		return currentProjectModelFolder.resolve("My.uml_mockup").toFile().createFileURI()
 	}
 
 	private def URI getAlternativePcmInstanceURI() {
-		return currentProjectModelFolder.resolve("NewPCMInstance.pcm_mockup").toFile().emfFileUriForFile
+		return currentProjectModelFolder.resolve("NewPCMInstance.pcm_mockup").toFile().createFileURI()
 	}
 
 	private def URI getAlterantiveUMLInstanceURI() {
-		return currentProjectModelFolder.resolve("NewUMLInstance.uml_mockup").toFile().emfFileUriForFile
+		return currentProjectModelFolder.resolve("NewUMLInstance.uml_mockup").toFile().createFileURI()
 	}
 
 	private def InternalVirtualModel createAlternativeVirtualModelAndModelInstances(URI pcmModelUri, URI umlModelUri) {
@@ -211,8 +212,10 @@ class CorrespondenceTest {
 	def private <T extends EObject> T testLoadObject(InternalVirtualModel vsum, URI uri, Class<T> clazz) {
 		val VURI vURI = VURI.getInstance(uri)
 		val ModelInstance instance = vsum.getModelInstance(vURI)
-		return EcoreResourceBridge.getUniqueContentRootIfCorrectlyTyped(instance.resource, instance.URI.toString(),
-			clazz)
+		assertEquals(1, instance.resource.contents.size)
+		val root = instance.resource.contents.get(0)
+		assertThat(root, instanceOf(clazz))
+		return root as T
 	}
 
 	def private CorrespondenceModel testCorrespondenceModelCreation(InternalVirtualModel vsum) {

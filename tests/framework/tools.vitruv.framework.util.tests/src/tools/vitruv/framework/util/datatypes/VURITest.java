@@ -8,8 +8,6 @@ import org.eclipse.emf.common.util.URI;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import tools.vitruv.framework.util.VitruviusConstants;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -39,7 +37,7 @@ public class VURITest {
 
 	@Test
 	public void testPlatformResourceKey() {
-		String testKeyWithPlatformRes = VitruviusConstants.getPlatformResourcePrefix() + "testResource";
+		String testKeyWithPlatformRes = URI.createPlatformResourceURI("testResource", true).toString();
 		VURI orgVURI = testWithKey(testKeyWithPlatformRes);
 		ensureStartsWithPlatformResource(orgVURI);
 		assertEquals(orgVURI.getEMFUri().toString(), testKeyWithPlatformRes,
@@ -98,7 +96,7 @@ public class VURITest {
 	}
 
 	private void ensureStartsWithPlatformResource(final VURI orgVURI) {
-		assertTrue(orgVURI.getEMFUri().toString().startsWith(VitruviusConstants.getPlatformResourcePrefix()),
+		assertTrue(orgVURI.getEMFUri().isPlatform(),
 				"VURI does not start with platform resource");
 	}
 
