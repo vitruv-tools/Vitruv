@@ -11,7 +11,7 @@
 
 package tools.vitruv.domains.emf.monitorededitor;
 
-import tools.vitruv.framework.util.datatypes.VURI;
+import org.eclipse.emf.common.util.URI;
 
 /**
  * An interface for front-ends of the EMF editor monitor system providing convenient usage within
@@ -39,18 +39,18 @@ public interface IVitruviusEMFEditorMonitor {
      * called when a model is added to the set of monitored EMF models after calling initialize().
      * 
      * @param uri
-     *            The respective EMF model's {@link VURI}.
+     *            The respective EMF model's {@link URI}.
      */
-    public void addModel(VURI uri);
+    public void addModel(URI uri);
 
     /**
      * Removes an EMF model from the set of EMF models whose editors are monitored for changes. If
      * the respective model is not part of that set, this method has no effect.
      * 
      * @param uri
-     *            The respective EMF model's {@link VURI}.
+     *            The respective EMF model's {@link URI}.
      */
-    public void removeModel(VURI uri);
+    public void removeModel(URI uri);
 
     /**
      * An interface for classes deciding whether a model's editors need to be monitored for changes.
@@ -58,11 +58,11 @@ public interface IVitruviusEMFEditorMonitor {
     public interface IVitruviusAccessor {
         /**
          * @param modelUri
-         *            An EMF model's {@link VURI}.
+         *            An EMF model's {@link URI}.
          * 
          * @return <code>true</code> if the model's editors need to be monitored for changes.
          */
-        public boolean isModelMonitored(VURI modelUri);
+        public boolean isModelMonitored(URI modelUri);
     }
 
     /**
@@ -73,7 +73,7 @@ public interface IVitruviusEMFEditorMonitor {
      * @param resourceURI
      *            The URI of the model whose changes are to be synchronized.
      */
-    public void triggerSynchronisation(final VURI resourceURI);
+    public void triggerSynchronisation(final URI resourceURI);
 
     public void setReportChanges(boolean b);
 }

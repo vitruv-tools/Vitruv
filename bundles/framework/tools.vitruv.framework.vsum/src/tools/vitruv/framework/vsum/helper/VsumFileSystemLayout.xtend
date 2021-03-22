@@ -3,7 +3,6 @@ package tools.vitruv.framework.vsum.helper
 import java.io.IOException
 import java.net.URLEncoder
 import java.nio.file.Path
-import tools.vitruv.framework.util.datatypes.VURI
 
 import static com.google.common.base.Preconditions.checkArgument
 import static com.google.common.base.Preconditions.checkState
@@ -11,6 +10,7 @@ import static java.nio.charset.StandardCharsets.UTF_8
 import static java.nio.file.Files.createDirectories
 import static tools.vitruv.framework.vsum.VsumConstants.*
 import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.common.util.URIUtil.createFileURI
+import org.eclipse.emf.common.util.URI
 
 class VsumFileSystemLayout {
 	static final String CORRESPONDENCES_FILE_EXT = "correspondence";
@@ -53,32 +53,32 @@ class VsumFileSystemLayout {
 	}
 	
 	/** 
-	 * Gets the {@link VURI} of a model that stores metadata.
+	 * Gets the {@link URI} of a model that stores metadata.
 	 * @param metadataKeyThe key uniquely identifying the metadata model. The different parts of the key
 	 * can be used to convey some sort of hierarchy in the metadata. The key may contain
 	 * arbitrary characters. The last key part contains the metadata model's file name
 	 * and extension.
-	 * @return the VURI of the specified metadata model
+	 * @return the URI of the specified metadata model
 	 */
-	def VURI getConsistencyMetadataModelVURI(String... metadataKey) {
+	def URI getConsistencyMetadataModelURI(String... metadataKey) {
 		checkPrepared()
 		var metadataPath = consistencyMetadataFolder.resolve(getMetadataFilePath(metadataKey)) 
-		return VURI.getInstance(metadataPath.toFile.createFileURI)
+		return metadataPath.toFile.createFileURI()
 	}
 	
-	def VURI getCorrespondencesVURI() {
+	def URI getCorrespondencesURI() {
 		checkPrepared()
-		return VURI.getInstance(correspondenceModelPath.toFile.createFileURI) 
+		return correspondenceModelPath.toFile.createFileURI()
 	}
 	
 	def private getCorrespondenceModelPath() {
 		correspondenceFolder.resolve('''Correspondences.«CORRESPONDENCES_FILE_EXT»''')
 	}
 	
-	def VURI getUuidProviderAndResolverVURI() {
+	def URI getUuidProviderAndResolverURI() {
 		checkPrepared()
 		val uuidPath = uuidProviderAndResolverFolder.resolve('''Uuid.«UUID_FILE_EXT»''')
-		return VURI.getInstance(uuidPath.toFile.createFileURI) 
+		return uuidPath.toFile.createFileURI() 
 	}
 	
 	def Path getVsumProjectFolder() {

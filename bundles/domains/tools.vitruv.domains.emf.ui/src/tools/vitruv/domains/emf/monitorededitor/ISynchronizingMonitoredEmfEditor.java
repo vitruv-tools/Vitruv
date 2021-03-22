@@ -13,11 +13,11 @@ package tools.vitruv.domains.emf.monitorededitor;
 
 import java.util.List;
 
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.ui.IEditorPart;
 
 import tools.vitruv.framework.change.description.VitruviusChange;
-import tools.vitruv.framework.util.datatypes.VURI;
 
 /**
  * An interface for monitors listening for model changes in EMF/GMF editors, triggering model
@@ -114,10 +114,10 @@ public interface ISynchronizingMonitoredEmfEditor {
          * @param changes
          *            A list {@link VitruviusChange} objects pertaining to the modified model.
          * @param sourceModelURI
-         *            The modified model's {@link VURI}.
+         *            The modified model's {@link URI}.
          * @param changesOrigin
          *            The modified model's {@link Resource}.
          */
-        void synchronizeChanges(List<VitruviusChange> changes, VURI sourceModelURI, Resource changesOrigin);
+        void synchronizeChanges(List<VitruviusChange> changes, URI sourceModelURI, Resource changesOrigin);
     }
 }

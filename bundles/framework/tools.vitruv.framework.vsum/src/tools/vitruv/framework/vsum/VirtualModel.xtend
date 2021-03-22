@@ -5,7 +5,6 @@ import org.eclipse.emf.ecore.resource.Resource
 import tools.vitruv.framework.change.description.PropagatedChange
 import tools.vitruv.framework.change.description.VitruviusChange
 import tools.vitruv.framework.util.datatypes.ModelInstance
-import tools.vitruv.framework.util.datatypes.VURI
 import org.eclipse.emf.common.util.URI
 import java.nio.file.Path
 import tools.vitruv.framework.uuid.UuidResolver
@@ -34,7 +33,7 @@ interface VirtualModel {
 
 	def void reverseChanges(List<PropagatedChange> changes);
 
-	def ModelInstance getModelInstance(VURI modelVuri);
+	def ModelInstance getModelInstance(URI modelUri);
 
 	def UuidResolver getUuidResolver();
 }

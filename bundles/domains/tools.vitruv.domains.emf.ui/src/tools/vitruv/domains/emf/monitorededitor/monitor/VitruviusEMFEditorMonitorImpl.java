@@ -20,6 +20,7 @@ import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.eclipse.core.resources.IFile;
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.ui.IEditorPart;
 
@@ -36,7 +37,6 @@ import tools.vitruv.domains.emf.monitorededitor.tools.IEclipseAdapter;
 import tools.vitruv.framework.change.description.CompositeContainerChange;
 import tools.vitruv.framework.change.description.VitruviusChange;
 import tools.vitruv.framework.change.description.VitruviusChangeFactory;
-import tools.vitruv.framework.util.datatypes.VURI;
 import tools.vitruv.framework.vsum.VirtualModel;
 
 /**
@@ -67,7 +67,7 @@ public class VitruviusEMFEditorMonitorImpl implements IVitruviusEMFEditorMonitor
 
     private final VirtualModel virtualModel;
 
-    private final Map<VURI, Long> lastSynchronizationRequestTimestamps;
+    private final Map<URI, Long> lastSynchronizationRequestTimestamps;
 
     /**
      * Setting this flag to <code>true</code> disables timestamp-based recognition of synchronization
@@ -133,14 +133,14 @@ public class VitruviusEMFEditorMonitorImpl implements IVitruviusEMFEditorMonitor
         this(new DefaultEditorPartAdapterFactoryImpl(), virtualModel, vitruvAccessor);
     }
 
-    private boolean isPendingSynchronizationRequest(VURI resourceURI) {
+    private boolean isPendingSynchronizationRequest(URI resourceURI) {
         if (isSynchronizationLagRecognitionDisabled) {
             return false;
         }
 
         synchronized (lastSynchronizationRequestTimestamps) {
             if (lastSynchronizationRequestTimestamps.containsKey(resourceURI)) {
-                IFile resourceFile = URIUtil.getIFileForEMFUri(resourceURI.getEMFUri());
+                IFile resourceFile = URIUtil.getIFileForEMFUri(resourceURI);
                 long currentSynchroTimestamp = resourceFile.getModificationStamp();
                 return currentSynchroTimestamp <= lastSynchronizationRequestTimestamps.get(resourceURI);
             } else {
@@ -152,8 +152,8 @@ public class VitruviusEMFEditorMonitorImpl implements IVitruviusEMFEditorMonitor
     private ResourceChangeSynchronizing createInternalChangeSynchronizing() {
         return new ResourceChangeSynchronizing() {
             @Override
-            public void synchronizeChanges(List<VitruviusChange> changes, VURI sourceModelURI, Resource origin) {
-                LOGGER.trace("Adding changes for VURI " + sourceModelURI);
+            public void synchronizeChanges(List<VitruviusChange> changes, URI sourceModelURI, Resource origin) {
+                LOGGER.trace("Adding changes for URI " + sourceModelURI);
                 collectedChanges.addAll(changes);
                 if (isPendingSynchronizationRequest(sourceModelURI)) {
                     triggerSynchronisation(sourceModelURI);
@@ -174,7 +174,7 @@ public class VitruviusEMFEditorMonitorImpl implements IVitruviusEMFEditorMonitor
     }
 
     @Override
-    public void addModel(VURI uri) {
+    public void addModel(URI uri) {
         for (IEditorPart editorPart : findEditorsForModel(uri)) {
             if (!changeRecorderMonitor.isMonitoringEditor(editorPart)) {
                 changeRecorderMonitor.enableMonitoring(editorPart);
@@ -183,7 +183,7 @@ public class VitruviusEMFEditorMonitorImpl implements IVitruviusEMFEditorMonitor
     }
 
     @Override
-    public void removeModel(VURI uri) {
+    public void removeModel(URI uri) {
         for (IEditorPart editorPart : findEditorsForModel(uri)) {
             if (changeRecorderMonitor.isMonitoringEditor(editorPart)) {
                 changeRecorderMonitor.disableMonitoring(editorPart);
@@ -192,27 +192,27 @@ public class VitruviusEMFEditorMonitorImpl implements IVitruviusEMFEditorMonitor
     }
 
     private boolean isMonitoredVitruviusResource(Resource r) {
-        return vitruvAccessor.isModelMonitored(VURI.getInstance(r.getURI()));
+        return vitruvAccessor.isModelMonitored(r.getURI());
     }
 
     /**
-     * Retrieves the Eclipse editors currently editing an EMF model with the given {@link VURI}.
+     * Retrieves the Eclipse editors currently editing an EMF model with the given {@link URI}.
      * 
      * This is a private method made protected for testing purposes only.
      * 
      * @param searchURI
-     *            The {@link VURI} for which the associated editors are to be looked up.
+     *            The {@link URI} for which the associated editors are to be looked up.
      * @return The editors currently editing an EMF model having the given <code>searchURI</code>.
      */
-    public Set<IEditorPart> findEditorsForModel(VURI searchURI) {
+    public Set<IEditorPart> findEditorsForModel(URI searchURI) {
         Set<IEditorPart> result = new HashSet<>();
 
         Set<IEditorPart> activeEditors = this.eclipseAdapter.getCurrentlyActiveEditors();
         for (IEditorPart part : activeEditors) {
             try {
                 IEditorPartAdapter partAdapter = this.editorPartAdapterFactory.createAdapter(part);
-                VURI partVURI = VURI.getInstance(partAdapter.getEditedModelResource());
-                if (partVURI == searchURI) {
+                URI partURI = partAdapter.getEditedModelResource().getURI();
+                if (partURI == searchURI) {
                     result.add(part);
                 }
             } catch (EditorNotMonitorableException e) {
@@ -232,7 +232,7 @@ public class VitruviusEMFEditorMonitorImpl implements IVitruviusEMFEditorMonitor
         return this.changeRecorderMonitor;
     }
 
-    private void updateSynchronizationTimestamp(VURI resourceURI) {
+    private void updateSynchronizationTimestamp(URI resourceURI) {
         if (isSynchronizationLagRecognitionDisabled) {
             return;
         }
@@ -240,7 +240,7 @@ public class VitruviusEMFEditorMonitorImpl implements IVitruviusEMFEditorMonitor
         long currentSynchroTimestamp;
         IFile resourceFile;
         synchronized (lastSynchronizationRequestTimestamps) {
-            resourceFile = URIUtil.getIFileForEMFUri(resourceURI.getEMFUri());
+            resourceFile = URIUtil.getIFileForEMFUri(resourceURI);
             currentSynchroTimestamp = resourceFile.getModificationStamp();
             lastSynchronizationRequestTimestamps.put(resourceURI, currentSynchroTimestamp);
 
@@ -254,7 +254,7 @@ public class VitruviusEMFEditorMonitorImpl implements IVitruviusEMFEditorMonitor
      * interpreted whenever triggerSynchronization is called here
      */
     @Override
-    public void triggerSynchronisation(final VURI resourceURI) {
+    public void triggerSynchronisation(final URI resourceURI) {
         if (!reportChanges) {
             return;
         }

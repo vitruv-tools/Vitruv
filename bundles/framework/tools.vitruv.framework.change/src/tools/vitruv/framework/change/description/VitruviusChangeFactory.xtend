@@ -8,7 +8,6 @@ import tools.vitruv.framework.change.description.impl.CompositeTransactionalChan
 import tools.vitruv.framework.change.description.impl.ConcreteChangeImpl
 import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.change.echange.TypeInferringCompoundEChangeFactory
-import tools.vitruv.framework.util.datatypes.VURI
 import tools.vitruv.framework.change.description.impl.ConcreteApplicableChangeImpl
 import java.util.List
 import tools.vitruv.framework.change.description.impl.EmptyChange
@@ -69,7 +68,7 @@ class VitruviusChangeFactory {
                     "The requested model instance resource '" + resource + "' has to contain at most one root element "
                             + "in order to be added to the VSUM without an explicit import!");
         } else { // resource.getContents().size() === null --> no element in newModelInstance
-            logger.info("Empty model file created: " + VURI.getInstance(resource)
+            logger.info("Empty model file created: " + resource
                     + ". Propagation of 'root element created' not triggered.");
             return null;
         }
@@ -83,7 +82,7 @@ class VitruviusChangeFactory {
             val EObject rootElement = resource.getContents().get(index);
             return TypeInferringCompoundEChangeFactory.instance.createRemoveAndDeleteRootChange(rootElement, resource, index);
         }
-        logger.info("Deleted resource " + VURI.getInstance(resource) + " did not contain any EObject");
+        logger.info("Deleted resource " + resource + " did not contain any EObject");
         return null;
 	}
 }

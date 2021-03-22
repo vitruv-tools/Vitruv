@@ -19,6 +19,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.ui.IEditorPart;
 
@@ -34,7 +35,6 @@ import tools.vitruv.domains.emf.monitorededitor.tools.IEclipseAdapter;
 import tools.vitruv.domains.emf.monitorededitor.tools.IEditorManagementListener;
 import tools.vitruv.framework.change.description.TransactionalChange;
 import tools.vitruv.framework.change.description.VitruviusChange;
-import tools.vitruv.framework.util.datatypes.VURI;
 import tools.vitruv.framework.vsum.VirtualModel;
 
 /**
@@ -246,24 +246,12 @@ public class SynchronizingMonitoredEmfEditorImpl implements ISynchronizingMonito
         editorManagementListenerMgr.dispose();
     }
 
-    // private List<VitruviusChange> getChangeList(List<EMFModelChange> changeDescriptions, Resource
-    // resource) {
-    // LOGGER.debug("Triggering synchronization for change description " + changeDescriptions + " on
-    // resource "
-    // + resource.getURI());
-    // /*
-    // * ChangeDescription2ChangeTransformation converter = new
-    // * ChangeDescription2ChangeTransformation( changeDescriptions, VURI.getInstance(resource));
-    // */
-    // return converter.getChanges();
-    // }
-
     private void triggerSynchronization(List<VitruviusChange> changes, Resource resource) {
         if (changes.isEmpty()) {
             LOGGER.debug("Not triggering synchronization for " + resource.getURI() + ": No changes detected.");
         } else {
-            VURI uri = VURI.getInstance(resource);
-            LOGGER.trace("Triggering synchronization for VURI " + uri.toString());
+            URI uri = resource.getURI();
+            LOGGER.trace("Triggering synchronization for URI " + uri);
             changeSynchronizing.synchronizeChanges(changes, uri, resource);
         }
     }

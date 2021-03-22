@@ -15,7 +15,7 @@ import tools.vitruv.extensions.dslsruntime.reactions.structure.Loggable
 import tools.vitruv.framework.correspondence.CorrespondenceModel
 import tools.vitruv.framework.userinteraction.UserInteractor
 import tools.vitruv.framework.propagation.ResourceAccess
-import tools.vitruv.framework.util.datatypes.VURI
+import org.eclipse.emf.common.util.URI
 
 abstract class AbstractRepairRoutineRealization extends CallHierarchyHaving implements RepairRoutine, ReactionElementsHandler {
 	val AbstractRepairRoutinesFacade routinesFacade;
@@ -128,8 +128,7 @@ abstract class AbstractRepairRoutineRealization extends CallHierarchyHaving impl
 			}
 
 			val _resourceURI = PersistenceHelper.getURIFromSourceProjectFolder(alreadyPersistedObject, persistencePath);
-			val modelURI = VURI.getInstance(_resourceURI)
-			persistAsRoot(elementToPersist, modelURI)
+			persistAsRoot(elementToPersist, _resourceURI)
 		}
 
 		/**
@@ -148,11 +147,11 @@ abstract class AbstractRepairRoutineRealization extends CallHierarchyHaving impl
 			persistAsRoot(rootObject, modelURI)
 		}
 
-		private def persistAsRoot(EObject rootObject, VURI vuri) {
-			logger.trace("Registered to persist root " + rootObject + " in: " + vuri)
-			if (rootObject.eResource?.URI !== vuri.EMFUri) {
+		private def persistAsRoot(EObject rootObject, URI uri) {
+			logger.trace("Registered to persist root " + rootObject + " in: " + uri)
+			if (rootObject.eResource?.URI !== uri) {
 				EcoreUtil.remove(rootObject)
-				resourceAccess.persistAsRoot(rootObject, vuri)
+				resourceAccess.persistAsRoot(rootObject, uri)
 			}
 		}
 	}

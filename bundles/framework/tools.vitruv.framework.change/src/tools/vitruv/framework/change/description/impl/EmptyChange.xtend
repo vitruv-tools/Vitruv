@@ -12,7 +12,7 @@ class EmptyChange implements TransactionalChange {
 		false
 	}
 	
-	override getChangedVURIs() {
+	override getChangedURIs() {
 		emptySet
 	}
 

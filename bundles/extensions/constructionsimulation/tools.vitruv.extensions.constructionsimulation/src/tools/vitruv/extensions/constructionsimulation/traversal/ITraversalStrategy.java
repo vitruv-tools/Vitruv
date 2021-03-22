@@ -22,7 +22,7 @@ public interface ITraversalStrategy<T extends EObject> {
      *
      * @param entity
      *            root element of the model
-     * @param vuri
+     * @param uri
      *            path to resource file
      * @param existingChanges
      *            the existing changes
@@ -30,6 +30,6 @@ public interface ITraversalStrategy<T extends EObject> {
      * @throws UnsupportedOperationException
      *             : existingChanges not as expected
      */
-    EList<VitruviusChange> traverse(T entity, URI vuri, EList<VitruviusChange> existingChanges) throws UnsupportedOperationException;
+    EList<VitruviusChange> traverse(T entity, URI uri, EList<VitruviusChange> existingChanges) throws UnsupportedOperationException;
 
 }

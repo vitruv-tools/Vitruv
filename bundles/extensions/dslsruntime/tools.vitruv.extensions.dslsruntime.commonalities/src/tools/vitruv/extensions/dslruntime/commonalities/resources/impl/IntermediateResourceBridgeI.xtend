@@ -9,7 +9,6 @@ import tools.vitruv.extensions.dslruntime.commonalities.resources.Resource
 import tools.vitruv.extensions.dslruntime.commonalities.resources.ResourcesPackage
 import tools.vitruv.extensions.dslsruntime.reactions.helper.PersistenceHelper
 import tools.vitruv.extensions.dslsruntime.reactions.helper.ReactionsCorrespondenceHelper
-import tools.vitruv.framework.util.datatypes.VURI
 
 import static com.google.common.base.Preconditions.*
 import static tools.vitruv.framework.util.XtendAssertHelper.*
@@ -94,7 +93,7 @@ class IntermediateResourceBridgeI extends IntermediateResourceBridgeImpl {
 	}
 
 	private def persist() {
-		resourceAccess.persistAsRoot(content, VURI.getInstance(resourceUri))
+		resourceAccess.persistAsRoot(content, resourceUri)
 		this.isPersisted = true
 		if (eContainer === null) {
 			throw new RuntimeException('''IntermediateResourceBridge has not been added to the intermediate model yet: «
@@ -153,7 +152,7 @@ class IntermediateResourceBridgeI extends IntermediateResourceBridgeImpl {
 			return null
 		}
 		val resourceUri = resourceUri
-		val resource = resourceAccess.getModelResource(VURI.getInstance(resourceUri))
+		val resource = resourceAccess.getModelResource(resourceUri)
 		return resource
 	}
 
