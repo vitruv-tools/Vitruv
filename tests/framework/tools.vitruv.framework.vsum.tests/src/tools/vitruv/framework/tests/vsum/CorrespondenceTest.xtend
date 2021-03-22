@@ -195,8 +195,6 @@ class CorrespondenceTest {
 		createRepo2PkgCorrespondence(repo, pkg, corresp)
 		// 1. EOC: repo _r5CW0PxiEeO_U4GJ6Zitkg <=> pkg _sJD6YPxjEeOD3p0i_uuRbQ
 		assertNotNull(corresp, "Correspondence instance is null")
-		// save instances in order to trigger saving for CorrespondenceModel(s)
-		vsum.save() // (pcmVURI)
 		// create a new vsum from disk and load correspondence instance from disk
 		val InternalVirtualModel vsum2 = createAlternativeVirtualModelAndModelInstances(alternativePcmInstanceURI,
 			alterantiveUMLInstanceURI)

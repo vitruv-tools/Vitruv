@@ -5,7 +5,6 @@ import tools.vitruv.framework.correspondence.CorrespondenceModel
 
 interface InternalVirtualModel extends VirtualModel {
 	def CorrespondenceModel getCorrespondenceModel()
-	def void save()
 	def void addChangePropagationListener(ChangePropagationListener propagationListener)
 	def void removeChangePropagationListener(ChangePropagationListener propagationListener)
 	def void addPropagatedChangeListener(PropagatedChangeListener propagatedChangeListener)
