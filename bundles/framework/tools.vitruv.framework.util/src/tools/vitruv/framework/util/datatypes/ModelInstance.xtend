@@ -6,17 +6,21 @@ import static com.google.common.base.Preconditions.checkArgument
 import org.eclipse.xtend.lib.annotations.Accessors
 import java.io.IOException
 import org.eclipse.emf.ecore.EObject
+import org.eclipse.emf.common.util.URI
 
-class ModelInstance extends AbstractURIHaving {
+class ModelInstance {
 	static val LOGGER = Logger.getLogger(ModelInstance)
 	@Accessors(PUBLIC_GETTER)
 	Resource resource
-
+	
 	new(Resource resource) {
-		super(resource.URI)
 		checkArgument(resource !== null, "cannot create a model instance at the URI %s for a null resource", URI)
 		this.resource = resource
 		LOGGER.debug('''Create model instance for resource with URI: «URI»''')
+	}
+	
+	def URI getURI() {
+		return resource.URI
 	}
 
 	def void addRoot(EObject root) {
