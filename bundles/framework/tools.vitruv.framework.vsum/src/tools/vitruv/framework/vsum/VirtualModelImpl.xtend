@@ -58,7 +58,7 @@ class VirtualModelImpl implements InternalVirtualModel {
 		this.resourceRepository.getModel(modelVuri)
 	}
 
-	override synchronized save() {
+	private def synchronized save() {
 		this.resourceRepository.saveOrDeleteModels()
 	}
 
