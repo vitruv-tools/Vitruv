@@ -23,17 +23,94 @@ import static extension tools.vitruv.framework.correspondence.CorrespondenceMode
 
 import org.junit.jupiter.api.Test
 import tools.vitruv.framework.util.bridges.EcoreResourceBridge
+import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
+import org.junit.jupiter.api.BeforeEach
+import tools.vitruv.testutils.domains.PcmMockupDomainProvider
+import tools.vitruv.testutils.TestProject
+import java.nio.file.Path
+import tools.vitruv.testutils.domains.UmlMockupDomainProvider
+import uml_mockup.Uml_mockupFactory
+import tools.vitruv.framework.vsum.VirtualModelBuilder
+import tools.vitruv.framework.userinteraction.UserInteractionFactory
+import pcm_mockup.Pcm_mockupFactory
+import static extension tools.vitruv.framework.util.bridges.EMFBridge.getEmfFileUriForFile
+import tools.vitruv.testutils.TestLogging
+import org.junit.jupiter.api.^extension.ExtendWith
+import tools.vitruv.testutils.TestProjectManager
+import tools.vitruv.testutils.RegisterMetamodelsInStandalone
 
-class CorrespondenceTest extends VsumTest {
+@ExtendWith(TestProjectManager, TestLogging, RegisterMetamodelsInStandalone)
+class CorrespondenceTest {
 	static final Logger LOGGER = Logger.getLogger(CorrespondenceTest)
+	static final String VSUM_NAME = "VsumProject"
+	
+	Path testProjectFolder
+	
+	@BeforeEach
+	def void acquireTestProjectFolder(@TestProject Path testProjectFolder) {
+		this.testProjectFolder = testProjectFolder
+	}
+
+	private def Path getCurrentProjectModelFolder() {
+		return this.testProjectFolder.resolve("model")
+	}
+
+	private def URI getDefaultPcmInstanceURI() {
+		return currentProjectModelFolder.resolve("My.pcm_mockup").toFile().emfFileUriForFile
+	}
+
+	private def URI getDefaultUMLInstanceURI() {
+		return currentProjectModelFolder.resolve("My.uml_mockup").toFile().emfFileUriForFile
+	}
+
+	private def URI getAlternativePcmInstanceURI() {
+		return currentProjectModelFolder.resolve("NewPCMInstance.pcm_mockup").toFile().emfFileUriForFile
+	}
+
+	private def URI getAlterantiveUMLInstanceURI() {
+		return currentProjectModelFolder.resolve("NewUMLInstance.uml_mockup").toFile().emfFileUriForFile
+	}
+
+	private def InternalVirtualModel createAlternativeVirtualModelAndModelInstances(URI pcmModelUri, URI umlModelUri) {
+		val vsum = createVirtualModel(VSUM_NAME + "2")
+		createMockupModels(pcmModelUri, umlModelUri, vsum)
+		return vsum
+	}
+
+	private def InternalVirtualModel createVirtualModelAndModelInstances() {
+		val vsum = createVirtualModel(VSUM_NAME)
+		createMockupModels(getDefaultPcmInstanceURI(), getDefaultUMLInstanceURI(), vsum)
+		return vsum
+	}
+
+	private def InternalVirtualModel createVirtualModel(String vsumName) {
+		return new VirtualModelBuilder()
+			.withStorageFolder(testProjectFolder.resolve(vsumName))
+			.withUserInteractorForResultProvider(UserInteractionFactory.instance.createPredefinedInteractionResultProvider(null))
+			.withDomains(new UmlMockupDomainProvider().getDomain(), new PcmMockupDomainProvider().getDomain())
+			.buildAndInitialize()
+	}
+
+	private def void createMockupModels(URI pcmModelUri, URI umlModelUri, InternalVirtualModel vsum) {
+		val pcmResource = new ResourceSetImpl().createResource(pcmModelUri)
+		val repo = Pcm_mockupFactory.eINSTANCE.createRepository()
+		repo.interfaces += Pcm_mockupFactory.eINSTANCE.createPInterface()
+		repo.components += Pcm_mockupFactory.eINSTANCE.createComponent()
+		pcmResource.contents += repo
+		vsum.propagateChangedState(pcmResource)
+		
+		val umlResource = new ResourceSetImpl().createResource(umlModelUri)
+		val pckg = Uml_mockupFactory.eINSTANCE.createUPackage()
+		pckg.interfaces += Uml_mockupFactory.eINSTANCE.createUInterface()
+		pckg.classes += Uml_mockupFactory.eINSTANCE.createUClass()
+		umlResource.contents += pckg
+		vsum.propagateChangedState(umlResource)
+	}
+
 
 	@Test
 	def void testAllInCommand() {
 		val InternalVirtualModel vsum = createVirtualModelAndModelInstances()
-		testAll(vsum)
-	}
-
-	def private void testAll(InternalVirtualModel vsum) {
 		val Repository repo = testLoadObject(vsum, getDefaultPcmInstanceURI(), Repository)
 		val UPackage pkg = testLoadObject(vsum, getDefaultUMLInstanceURI(), UPackage)
 		val CorrespondenceModel correspondenceModel = testCorrespondenceModelCreation(vsum)
@@ -73,8 +150,7 @@ class CorrespondenceTest extends VsumTest {
 		// create correspondence
 		val CorrespondenceModel correspondenceModel = testCorrespondenceModelCreation(vsum)
 		correspondenceModel.createAndAddCorrespondence(repo, pkg) // execute the test
-		moveUMLPackageTo(pkg, getTmpUMLInstanceURI(), vsum, correspondenceModel)
-		moveUMLPackageTo(pkg, getNewUMLInstanceURI(), vsum, correspondenceModel)
+		moveUMLPackageTo(pkg, vsum, correspondenceModel)
 		assertRepositoryCorrespondences(repo, correspondenceModel)
 	}
 
@@ -85,31 +161,28 @@ class CorrespondenceTest extends VsumTest {
 		assertEquals(1, correspondingObjects.size(), "Only one corresonding object is expected for the repository.")
 		for (correspondingObject : correspondingObjects) {
 			assertNotNull(correspondingObject, "Corresponding object is null")
-			val reverseCorrespondingObjects = correspondenceModel.getCorrespondingEObjects(List.of(correspondingObject)).
-				flatten
+			val reverseCorrespondingObjects = correspondenceModel.getCorrespondingEObjects(
+				List.of(correspondingObject)).flatten
 			assertNotNull(reverseCorrespondingObjects.claimOne, "Reverse corresponding object is null")
 			LOGGER.info('''A: «reverseCorrespondingObjects» corresponds to B: «correspondingObject»''')
 		}
 
 	}
 
-	def private void moveUMLPackageTo(UPackage pkg, String string, InternalVirtualModel vsum,
+	def private void moveUMLPackageTo(UPackage pkg, InternalVirtualModel vsum,
 		CorrespondenceModel correspondenceModel) {
 		saveUPackageInNewFileAndUpdateCorrespondence(vsum, pkg, correspondenceModel)
 	}
 
 	def private void saveUPackageInNewFileAndUpdateCorrespondence(InternalVirtualModel vsum, UPackage pkg,
 		CorrespondenceModel correspondenceModel) {
-		val VURI newVURI = VURI.getInstance(getNewUMLInstanceURI())
-		vsum.persistRootElement(newVURI, pkg)
+		val resource = new ResourceSetImpl().createResource(getNewUMLInstanceURI())
+		resource.contents += pkg
+		vsum.propagateChangedState(resource)
 	}
 
-	def private String getNewUMLInstanceURI() {
-		return '''«currentProjectModelFolder»/MyNewUML.uml_mockup'''
-	}
-
-	def private String getTmpUMLInstanceURI() {
-		return '''«currentProjectFolder.fileName»/MyTmpUML.uml_mockup'''
+	def private URI getNewUMLInstanceURI() {
+		return URI.createFileURI('''«currentProjectModelFolder»/MyNewUML.uml_mockup''')
 	}
 
 	def private void removePkgFromFileAndUpdateCorrespondence(UPackage pkg, CorrespondenceModel correspondenceModel) {
@@ -141,7 +214,7 @@ class CorrespondenceTest extends VsumTest {
 		val VURI vURI = VURI.getInstance(uri)
 		val ModelInstance instance = vsum.getModelInstance(vURI)
 		return EcoreResourceBridge.getUniqueContentRootIfCorrectlyTyped(instance.resource, instance.URI.toString(),
-				clazz);
+			clazz)
 	}
 
 	def private CorrespondenceModel testCorrespondenceModelCreation(InternalVirtualModel vsum) {
@@ -173,7 +246,7 @@ class CorrespondenceTest extends VsumTest {
 		val List<PInterface> interfaces = repo.getInterfaces()
 		assertEquals(interfaces.size(), 1)
 		val PInterface iface = interfaces.get(0)
-		assertThrows(IllegalStateException) [corresp.getCorrespondences(List.of(iface))]
+		assertFalse(corresp.hasCorrespondences(List.of(iface)))
 		val Set<Correspondence> allRepoCorrespondences = corresp.getCorrespondences(List.of(repo))
 		assertEquals(allRepoCorrespondences.size(), 1)
 		assertTrue(allRepoCorrespondences.contains(repo2pkg))
@@ -198,7 +271,7 @@ class CorrespondenceTest extends VsumTest {
 		val List<PInterface> repoInterfaces = repo.getInterfaces()
 		assertEquals(repoInterfaces.size(), 1)
 		val PInterface repoInterface = repoInterfaces.get(0)
-		assertThrows(IllegalStateException) [corresp.hasCorrespondences(List.of(repoInterface))]
+		assertFalse(corresp.hasCorrespondences(List.of(repoInterface)))
 		return repoInterface
 	}
 
@@ -248,7 +321,7 @@ class CorrespondenceTest extends VsumTest {
 		val Set<Repository> correspForRepoType = corresp.getAllEObjectsOfTypeInCorrespondences(Repository)
 		assertTrue(correspForRepoType.isEmpty())
 		val Set<UPackage> correspForPkgType = corresp.getAllEObjectsOfTypeInCorrespondences(UPackage)
-		assertTrue(correspForPkgType.isEmpty()) // FeatureInstance repoIfaceFI = repoIfaceFIAndPkgIfaceFI.getFirst()
+		assertTrue(correspForPkgType.isEmpty())
 	}
 
 }
