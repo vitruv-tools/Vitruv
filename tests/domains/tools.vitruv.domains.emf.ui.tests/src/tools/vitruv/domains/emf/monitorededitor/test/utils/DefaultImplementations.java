@@ -26,10 +26,10 @@ import tools.vitruv.domains.emf.monitorededitor.IVitruviusEMFEditorMonitor.IVitr
 import tools.vitruv.domains.emf.monitorededitor.test.testmodels.Models;
 import tools.vitruv.framework.change.description.PropagatedChange;
 import tools.vitruv.framework.change.description.VitruviusChange;
-import tools.vitruv.framework.util.datatypes.ModelInstance;
 import tools.vitruv.framework.uuid.UuidGeneratorAndResolver;
 import static tools.vitruv.framework.uuid.UuidGeneratorAndResolverFactory.createUuidGeneratorAndResolver;
 import tools.vitruv.framework.uuid.UuidResolver;
+import tools.vitruv.framework.vsum.ModelInstance;
 import tools.vitruv.framework.vsum.VirtualModel;
 
 public class DefaultImplementations {
