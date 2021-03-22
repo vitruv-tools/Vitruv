@@ -49,7 +49,7 @@ class ResourceRepositoryImpl implements ModelRepository {
 			fileSystemLayout.uuidProviderAndResolverVURI.EMFUri)
 		this.correspondenceModel = createCorrespondenceModel(uuidGeneratorAndResolver,
 			fileSystemLayout.correspondencesVURI.EMFUri)
-		this.modelsResourceSet.eAdapters += new ResourceRegistrationAdapter[getModel(VURI.getInstance(it))]
+		this.modelsResourceSet.eAdapters += new ResourceRegistrationAdapter[getCreateOrLoadModel(VURI.getInstance(it))]
 	}
 
 	override loadExistingModels() {
@@ -64,9 +64,13 @@ class ResourceRepositoryImpl implements ModelRepository {
 	override getCorrespondenceModel() {
 		correspondenceModel.genericView
 	}
-
+	
 	override getModel(VURI modelURI) {
 		modelInstances.get(modelURI)
+	}
+
+	private def getCreateOrLoadModel(VURI modelURI) {
+		getModel(modelURI)
 			?: createOrLoadModel(modelURI)
 	}
 
@@ -98,7 +102,7 @@ class ResourceRepositoryImpl implements ModelRepository {
 	}
 	
 	override void persistAsRoot(EObject rootEObject, VURI vuri) {
-		vuri.model.addRoot(rootEObject)
+		vuri.getCreateOrLoadModel().addRoot(rootEObject)
 	}
 
 	override void saveOrDeleteModels() {
@@ -139,7 +143,7 @@ class ResourceRepositoryImpl implements ModelRepository {
 	}
 
 	override Resource getModelResource(VURI vuri) {
-		getModel(vuri).resource
+		getCreateOrLoadModel(vuri).resource
 	}
 
 	override close() {
@@ -150,8 +154,4 @@ class ResourceRepositoryImpl implements ModelRepository {
 		uuidGeneratorAndResolver.close()
 	}
 	
-	override hasModel(VURI modelVuri) {
-		modelInstances.containsKey(modelVuri)
-	}
-
 }

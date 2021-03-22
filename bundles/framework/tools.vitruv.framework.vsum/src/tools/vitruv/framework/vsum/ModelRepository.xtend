@@ -12,8 +12,10 @@ interface ModelRepository extends ResourceAccess, AutoCloseable {
 
 	def CorrespondenceModel getCorrespondenceModel()
 
-	def boolean hasModel(VURI modelVuri)
-	
+	/**
+	 * Returns the model at the given {@link VURI} if it was already loaded to or created in
+	 * the repository. Returns <code>null</code> otherwise.
+	 */
 	def ModelInstance getModel(VURI modelVuri)
 
 	def void loadExistingModels()

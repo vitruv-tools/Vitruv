@@ -1,7 +1,6 @@
 package tools.vitruv.framework.vsum
 
 import java.util.List
-import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.resource.Resource
 import tools.vitruv.framework.change.description.PropagatedChange
 import tools.vitruv.framework.change.description.VitruviusChange
@@ -136,9 +135,7 @@ class VirtualModelImpl implements InternalVirtualModel {
 	private def retrieveCurrentModelState(URI location) {
 		if (location !== null) {
 			val vuri = VURI.getInstance(location)
-			if (resourceRepository.hasModel(vuri)) { // Only retrieve the model if it already exists
-				resourceRepository.getModel(vuri).resource
-			}
+			resourceRepository.getModel(vuri)?.resource
 		}
 	}
 
