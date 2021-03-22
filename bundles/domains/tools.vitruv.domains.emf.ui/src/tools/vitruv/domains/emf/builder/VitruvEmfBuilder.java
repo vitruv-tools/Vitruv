@@ -25,9 +25,9 @@ import tools.vitruv.framework.change.description.ConcreteChange;
 import tools.vitruv.framework.change.description.VitruviusChangeFactory;
 import tools.vitruv.framework.change.description.VitruviusChangeFactory.FileChangeKind;
 import tools.vitruv.framework.domains.ui.builder.VitruvProjectBuilder;
-import tools.vitruv.framework.util.datatypes.ModelInstance;
 import static edu.kit.ipd.sdq.commons.util.org.eclipse.emf.common.util.URIUtil.createPlatformResourceURI;
 import static edu.kit.ipd.sdq.commons.util.org.eclipse.emf.common.util.URIUtil.getIFileForEMFUri;
+import tools.vitruv.framework.vsum.ModelInstance;
 
 public class VitruvEmfBuilder extends VitruvProjectBuilder {
 	public static final String BUILDER_ID = "tools.vitruv.domains.emf.builder.VitruvEmfBuilder.id";

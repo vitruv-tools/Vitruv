@@ -4,7 +4,6 @@ import java.util.List
 import org.eclipse.emf.ecore.resource.Resource
 import tools.vitruv.framework.change.description.PropagatedChange
 import tools.vitruv.framework.change.description.VitruviusChange
-import tools.vitruv.framework.util.datatypes.ModelInstance
 import org.eclipse.emf.common.util.URI
 import java.nio.file.Path
 import tools.vitruv.framework.uuid.UuidResolver
