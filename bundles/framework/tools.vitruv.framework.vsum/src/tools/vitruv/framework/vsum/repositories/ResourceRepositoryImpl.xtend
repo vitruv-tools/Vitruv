@@ -15,9 +15,9 @@ import tools.vitruv.framework.util.datatypes.VURI
 import tools.vitruv.framework.uuid.UuidGeneratorAndResolver
 import tools.vitruv.framework.vsum.ModelRepository
 
-import static extension tools.vitruv.framework.util.bridges.EcoreResourceBridge.loadOrCreateResource
-import static extension tools.vitruv.framework.util.bridges.EcoreResourceBridge.getOrCreateResource
-import static extension tools.vitruv.framework.util.ResourceSetUtil.withGlobalFactories
+import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceSetUtil.loadOrCreateResource
+import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceSetUtil.getOrCreateResource
+import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceSetUtil.withGlobalFactories
 import static extension tools.vitruv.framework.domains.repository.DomainAwareResourceSet.awareOfDomains
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import tools.vitruv.framework.vsum.helper.VsumFileSystemLayout

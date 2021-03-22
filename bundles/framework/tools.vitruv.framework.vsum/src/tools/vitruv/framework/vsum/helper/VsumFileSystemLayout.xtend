@@ -3,7 +3,6 @@ package tools.vitruv.framework.vsum.helper
 import java.io.IOException
 import java.net.URLEncoder
 import java.nio.file.Path
-import tools.vitruv.framework.util.bridges.EMFBridge
 import tools.vitruv.framework.util.datatypes.VURI
 
 import static com.google.common.base.Preconditions.checkArgument
@@ -12,6 +11,7 @@ import static java.nio.charset.StandardCharsets.UTF_8
 import static java.nio.file.Files.createDirectories
 import static tools.vitruv.framework.util.VitruviusConstants.*
 import static tools.vitruv.framework.vsum.VsumConstants.*
+import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.common.util.URIUtil.createFileURI
 
 class VsumFileSystemLayout {
 	val Path vsumProjectFolder
@@ -61,12 +61,12 @@ class VsumFileSystemLayout {
 	def VURI getConsistencyMetadataModelVURI(String... metadataKey) {
 		checkPrepared()
 		var metadataPath = consistencyMetadataFolder.resolve(getMetadataFilePath(metadataKey)) 
-		return VURI.getInstance(EMFBridge.getEmfFileUriForFile(metadataPath.toFile)) 
+		return VURI.getInstance(metadataPath.toFile.createFileURI)
 	}
 	
 	def VURI getCorrespondencesVURI() {
 		checkPrepared()
-		return VURI.getInstance(EMFBridge.getEmfFileUriForFile(correspondenceModelPath.toFile)) 
+		return VURI.getInstance(correspondenceModelPath.toFile.createFileURI) 
 	}
 	
 	def private getCorrespondenceModelPath() {
@@ -76,7 +76,7 @@ class VsumFileSystemLayout {
 	def VURI getUuidProviderAndResolverVURI() {
 		checkPrepared()
 		val uuidPath = uuidProviderAndResolverFolder.resolve('''Uuid«fileExtSeparator»«uuidFileExt»''')
-		return VURI.getInstance(EMFBridge.getEmfFileUriForFile(uuidPath.toFile)) 
+		return VURI.getInstance(uuidPath.toFile.createFileURI) 
 	}
 	
 	def Path getVsumProjectFolder() {

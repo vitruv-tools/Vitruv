@@ -7,8 +7,8 @@ import org.eclipse.emf.ecore.resource.ResourceSet
 import org.eclipse.emf.ecore.util.EcoreUtil
 import org.eclipse.emf.ecore.resource.Resource
 import org.apache.log4j.Logger
-import static extension tools.vitruv.framework.util.bridges.EcoreResourceBridge.*
-import static extension tools.vitruv.framework.util.bridges.JavaBridge.*
+import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceSetUtil.loadOrCreateResource
+import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceSetUtil.withGlobalFactories
 import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.EClass
 import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.common.util.URIUtil.*
@@ -17,7 +17,7 @@ import static com.google.common.base.Preconditions.checkState
 import static com.google.common.base.Preconditions.checkNotNull
 import tools.vitruv.framework.util.ResourceRegistrationAdapter
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
-import static extension tools.vitruv.framework.util.ResourceSetUtil.withGlobalFactories
+import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceUtil.getFirstRootEObject
 
 /**
  * {@link UuidGeneratorAndResolver}
@@ -62,9 +62,8 @@ package class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 	override loadUuidsAndModelsFromSerializedUuidRepository() {
 		checkState(uuidResource !== null, "UUID resource must be specified to load existing UUIDs")
 		val loadedResource = new ResourceSetImpl().withGlobalFactories.loadOrCreateResource(uuidResource.URI)
-		val loadedRepository = loadedResource.resourceContentRootIfUnique?.dynamicCast(UuidToEObjectRepository,
-			"UUID provider and resolver model")
-		if (loadedRepository !== null) {
+		if (!loadedResource.contents.empty) {
+			val loadedRepository = loadedResource.contents.get(0) as UuidToEObjectRepository
 			for (proxyEntry : loadedRepository.EObjectToUuid.entrySet) {
 				val resolvedObject = EcoreUtil.resolve(proxyEntry.key, resourceSet)
 				if (resolvedObject.eIsProxy) {

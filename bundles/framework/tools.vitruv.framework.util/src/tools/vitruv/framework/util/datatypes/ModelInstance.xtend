@@ -4,7 +4,6 @@ import org.apache.log4j.Logger
 import org.eclipse.emf.ecore.resource.Resource
 import static com.google.common.base.Preconditions.checkArgument
 import org.eclipse.xtend.lib.annotations.Accessors
-import static extension tools.vitruv.framework.util.bridges.EcoreResourceBridge.saveResource
 import java.io.IOException
 import org.eclipse.emf.ecore.EObject
 
@@ -40,7 +39,7 @@ class ModelInstance extends AbstractURIHaving {
 		}
 		LOGGER.debug('''Save resource: «resource»''')
 		try {
-			resource.saveResource
+			resource.save(null)
 			resource.modified = false
 		} catch (IOException e) {
 			LOGGER.error('''Model could not be saved: «URI»''', e)

@@ -2,7 +2,6 @@ package tools.vitruv.framework.tests.domains
 
 import tools.vitruv.framework.tests.domains.StateChangePropagationTest
 import static tools.vitruv.testutils.metamodels.AllElementTypesCreators.aet
-import tools.vitruv.framework.util.bridges.EcoreResourceBridge
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import tools.vitruv.framework.uuid.UuidGeneratorAndResolverFactory
 import static org.junit.jupiter.api.Assertions.assertEquals
@@ -21,7 +20,7 @@ import tools.vitruv.framework.util.Capture
 import static extension tools.vitruv.framework.util.Capture.operator_doubleGreaterThan
 import static extension tools.vitruv.framework.domains.repository.DomainAwareResourceSet.awareOfDomains
 import tools.vitruv.testutils.domains.TestDomainsRepository
-import static extension tools.vitruv.framework.util.ResourceSetUtil.withGlobalFactories
+import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceSetUtil.withGlobalFactories
 
 class BasicStateChangePropagationTest extends StateChangePropagationTest {
 	private def getTestUri() {
@@ -36,7 +35,7 @@ class BasicStateChangePropagationTest extends StateChangePropagationTest {
 				id = "Root"
 			]
 		]
-		EcoreResourceBridge.saveResource(modelResource)
+		modelResource.save(null)
 		val changes = strategyToTest.getChangeSequenceForCreated(modelResource, setupResolver)
 		assertEquals(3, changes.EChanges.size)
 		assertEquals(1, changes.EChanges.filter(InsertRootEObject).size)
@@ -66,7 +65,7 @@ class BasicStateChangePropagationTest extends StateChangePropagationTest {
 				]
 			] >> modelResource
 		]
-		EcoreResourceBridge.saveResource(-modelResource)
+		(-modelResource).save(null)
 		val changes = strategyToTest.getChangeSequenceForDeleted(-modelResource, setupResolver)
 		assertEquals(2, changes.EChanges.size)
 		assertEquals(1, changes.EChanges.filter(RemoveRootEObject).size)
@@ -95,7 +94,7 @@ class BasicStateChangePropagationTest extends StateChangePropagationTest {
 				]
 			] >> modelResource
 		]
-		EcoreResourceBridge.saveResource(-modelResource)
+		(-modelResource).save(null)
 
 		(-modelResource).record [
 			contents.clear()
@@ -130,7 +129,7 @@ class BasicStateChangePropagationTest extends StateChangePropagationTest {
 				]
 			] >> modelResource
 		]
-		EcoreResourceBridge.saveResource(-modelResource)
+		(-modelResource).save(null)
 
 		resourceSet.record [
 			root.singleValuedEAttribute = 2
@@ -169,7 +168,7 @@ class BasicStateChangePropagationTest extends StateChangePropagationTest {
 				]
 			] >> modelResource
 		]
-		EcoreResourceBridge.saveResource(-modelResource)
+		(-modelResource).save(null)
 
 		resourceSet.record [
 			containedRoot.singleValuedEAttribute = 1
@@ -192,16 +191,16 @@ class BasicStateChangePropagationTest extends StateChangePropagationTest {
 	@Test
 	@DisplayName("move a resource to new location and calculate state-based difference")
 	def void moveResource() {
-		val model = new Capture<Resource>
+		val modelResource = new Capture<Resource>
 		val root = aet.Root
 		resourceSet.record [
 			createResource(testUri) => [
 				contents += root => [
 					id = "Root"
 				]
-			] >> model
+			] >> modelResource
 		]
-		EcoreResourceBridge.saveResource(-model)
+		(-modelResource).save(null)
 
 		val validationResourceSet = new ResourceSetImpl().withGlobalFactories().awareOfDomains(
 			TestDomainsRepository.INSTANCE)
@@ -213,11 +212,11 @@ class BasicStateChangePropagationTest extends StateChangePropagationTest {
 		resourceSet.record [
 			createResource(movedResourceUri) => [
 				contents += root
-			] >> model
+			] >> modelResource
 		]
-		EcoreResourceBridge.saveResource(-model)
+		(-modelResource).save(null)
 
-		val changes = strategyToTest.getChangeSequenceBetween(-model, oldState, validationResolver)
+		val changes = strategyToTest.getChangeSequenceBetween(-modelResource, oldState, validationResolver)
 		assertEquals(2, changes.EChanges.size)
 		assertEquals(1, changes.EChanges.filter(RemoveRootEObject).size)
 		assertEquals(1, changes.EChanges.filter(InsertRootEObject).size)
@@ -226,7 +225,7 @@ class BasicStateChangePropagationTest extends StateChangePropagationTest {
 		changes.resolveBeforeAndApplyForward(validationResolver)
 
 		assertEquals(2, validationResourceSet.resources.size)
-		assertThat(validationResourceSet.getResource(movedResourceUri, false), containsModelOf(-model))
+		assertThat(validationResourceSet.getResource(movedResourceUri, false), containsModelOf(-modelResource))
 	}
 
 	@Test
@@ -241,7 +240,7 @@ class BasicStateChangePropagationTest extends StateChangePropagationTest {
 				]
 			] >> modelResource
 		]
-		EcoreResourceBridge.saveResource(-modelResource)
+		(-modelResource).save(null)
 
 		val validationResourceSet = new ResourceSetImpl().withGlobalFactories().awareOfDomains(
 			TestDomainsRepository.INSTANCE)
@@ -257,7 +256,7 @@ class BasicStateChangePropagationTest extends StateChangePropagationTest {
 				contents += root
 			] >> modelResource
 		]
-		EcoreResourceBridge.saveResource(-modelResource)
+		(-modelResource).save(null)
 
 		val changes = strategyToTest.getChangeSequenceBetween(-modelResource, oldState, validationResolver)
 		assertEquals(3, changes.EChanges.size)

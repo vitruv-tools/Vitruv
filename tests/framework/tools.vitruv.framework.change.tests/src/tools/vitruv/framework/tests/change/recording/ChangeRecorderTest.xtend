@@ -11,7 +11,7 @@ import static org.hamcrest.CoreMatchers.is
 import static org.junit.jupiter.api.Assertions.assertThrows
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow
 import org.eclipse.emf.common.util.URI
-import static extension tools.vitruv.framework.util.ResourceSetUtil.withGlobalFactories
+import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceSetUtil.withGlobalFactories
 import tools.vitruv.framework.change.echange.EChange
 import org.hamcrest.Description
 import org.hamcrest.TypeSafeMatcher

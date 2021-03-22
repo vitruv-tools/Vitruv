@@ -4,7 +4,6 @@ import allElementTypes.Root
 import java.util.List
 
 import tools.vitruv.framework.change.echange.EChange
-import tools.vitruv.framework.util.bridges.EMFBridge
 import static extension tools.vitruv.framework.change.echange.resolve.EChangeResolverAndApplicator.*
 import tools.vitruv.framework.uuid.UuidGeneratorAndResolver
 import tools.vitruv.framework.change.echange.resolve.EChangeUnresolver
@@ -12,7 +11,6 @@ import org.eclipse.emf.ecore.resource.ResourceSet
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.AfterEach
 import static org.junit.jupiter.api.Assertions.assertEquals
-import tools.vitruv.framework.util.bridges.EcoreResourceBridge
 import static tools.vitruv.testutils.metamodels.AllElementTypesCreators.aet
 import org.eclipse.emf.common.notify.Notifier
 import java.util.function.Consumer
@@ -24,11 +22,13 @@ import java.nio.file.Path
 import tools.vitruv.testutils.RegisterMetamodelsInStandalone
 import tools.vitruv.testutils.domains.TestDomainsRepository
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
-import static extension tools.vitruv.framework.util.ResourceSetUtil.withGlobalFactories
+import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceSetUtil.withGlobalFactories
 import static extension tools.vitruv.framework.domains.repository.DomainAwareResourceSet.awareOfDomains
 import tools.vitruv.framework.change.recording.ChangeRecorder
 import tools.vitruv.framework.change.description.TransactionalChange
 import static tools.vitruv.framework.uuid.UuidGeneratorAndResolverFactory.createUuidGeneratorAndResolver
+import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.common.util.URIUtil.createFileURI
+import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceSetUtil.loadOrCreateResource
 
 @ExtendWith(TestProjectManager, RegisterMetamodelsInStandalone)
 abstract class ChangeDescription2ChangeTransformationTest {
@@ -65,11 +65,11 @@ abstract class ChangeDescription2ChangeTransformationTest {
 	}
 
 	protected def resourceAt(String name) {
-		EcoreResourceBridge.loadOrCreateResource(resourceSet, '''«name».xmi'''.uri)
+		resourceSet.loadOrCreateResource('''«name».xmi'''.uri)
 	}
 
 	protected def getUri(CharSequence relativePath) {
-		EMFBridge.getEmfFileUriForFile(tempFolder.resolve(relativePath.toString).toFile)
+		tempFolder.resolve(relativePath.toString).toFile().createFileURI()
 	}
 
 	protected def Root getUniquePersistedRoot() {

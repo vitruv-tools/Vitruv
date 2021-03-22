@@ -19,7 +19,7 @@ import tools.vitruv.framework.domains.repository.VitruvDomainRepository
 import tools.vitruv.framework.domains.repository.VitruvDomainRepositoryImpl
 import static com.google.common.base.Preconditions.checkArgument
 import java.util.Set
-import static extension tools.vitruv.framework.util.bridges.EcoreResourceBridge.getReferencedProxies
+import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceUtil.getReferencedProxies
 
 /**
  * This default strategy for diff based state changes uses EMFCompare to resolve a 

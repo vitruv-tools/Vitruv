@@ -6,7 +6,7 @@ import tools.vitruv.testutils.TestProject
 import java.nio.file.Path
 import tools.vitruv.framework.change.recording.ChangeRecorder
 import static tools.vitruv.framework.uuid.UuidGeneratorAndResolverFactory.createUuidGeneratorAndResolver
-import static extension tools.vitruv.framework.util.ResourceSetUtil.withGlobalFactories
+import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceSetUtil.withGlobalFactories
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import org.eclipse.emf.common.util.URI
 import static tools.vitruv.testutils.metamodels.AllElementTypesCreators.aet

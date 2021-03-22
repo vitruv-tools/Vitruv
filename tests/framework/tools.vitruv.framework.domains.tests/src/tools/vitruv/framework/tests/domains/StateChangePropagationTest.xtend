@@ -8,8 +8,6 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import pcm_mockup.Repository
 import tools.vitruv.framework.change.description.VitruviusChange
 import tools.vitruv.framework.change.description.VitruviusChangeFactory
-import tools.vitruv.framework.util.bridges.EMFBridge
-import tools.vitruv.framework.util.bridges.EcoreResourceBridge
 import tools.vitruv.framework.uuid.UuidGeneratorAndResolver
 import uml_mockup.UPackage
 import tools.vitruv.framework.domains.StateBasedChangeResolutionStrategy
@@ -27,12 +25,13 @@ import static tools.vitruv.testutils.metamodels.UmlMockupCreators.uml
 import tools.vitruv.testutils.TestProjectManager
 import tools.vitruv.testutils.RegisterMetamodelsInStandalone
 import tools.vitruv.testutils.domains.TestDomainsRepository
-import static extension tools.vitruv.framework.util.ResourceSetUtil.withGlobalFactories
+import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceSetUtil.withGlobalFactories
 import static extension tools.vitruv.framework.domains.repository.DomainAwareResourceSet.awareOfDomains
 import tools.vitruv.framework.change.recording.ChangeRecorder
 import org.eclipse.emf.ecore.util.EcoreUtil
 import static tools.vitruv.framework.uuid.UuidGeneratorAndResolverFactory.createUuidGeneratorAndResolver
 import org.eclipse.xtend.lib.annotations.Accessors
+import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.common.util.URIUtil.createFileURI
 
 @ExtendWith(TestProjectManager, TestLogging, RegisterMetamodelsInStandalone)
 abstract class StateChangePropagationTest {
@@ -99,7 +98,7 @@ abstract class StateChangePropagationTest {
 	 * Compares two changes: The recorded change sequence and the resolved changes by the state delta based strategy.
 	 */
 	protected def compareChanges(Resource model, Resource checkpoint) {
-		EcoreResourceBridge.saveResource(model)
+		model.save(null)
 		val deltaBasedChange = resourceSet.endRecording
 		val stateBasedChange = strategyToTest.getChangeSequenceBetween(model, checkpoint, checkpointResolver)
 		assertNotNull(stateBasedChange)
@@ -140,7 +139,7 @@ abstract class StateChangePropagationTest {
 				components += pcm.Component
 			])
 		]
-		EcoreResourceBridge.saveResource(pcmModel)
+		pcmModel.save(null)
 	}
 
 	private def createUmlMockupModel() {
@@ -151,7 +150,7 @@ abstract class StateChangePropagationTest {
 				classes += uml.Class
 			])
 		]
-		EcoreResourceBridge.saveResource(umlModel)
+		umlModel.save(null)
 	}
 
 	private def startRecording(Notifier notifier) {
@@ -172,6 +171,6 @@ abstract class StateChangePropagationTest {
 	}
 
 	protected def URI getModelURI(String modelFileName) {
-		return EMFBridge.getEmfFileUriForFile(testProjectFolder.resolve("model").resolve(modelFileName).toFile())
+		return testProjectFolder.resolve("model").resolve(modelFileName).toFile().createFileURI()
 	}
 }

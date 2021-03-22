@@ -7,7 +7,7 @@ import tools.vitruv.testutils.TestProjectManager
 import tools.vitruv.testutils.RegisterMetamodelsInStandalone
 import static tools.vitruv.testutils.metamodels.AllElementTypesCreators.aet
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
-import static extension tools.vitruv.framework.util.ResourceSetUtil.withGlobalFactories
+import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceSetUtil.withGlobalFactories
 import org.eclipse.emf.common.util.URI
 import tools.vitruv.testutils.TestProject
 import java.nio.file.Path

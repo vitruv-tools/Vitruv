@@ -18,7 +18,7 @@ import tools.vitruv.framework.domains.repository.VitruvDomainRepository
 import tools.vitruv.framework.change.description.TransactionalChange
 import java.util.ArrayList
 import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
-import static extension tools.vitruv.framework.util.ResourceSetUtil.withGlobalFactories
+import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceSetUtil.withGlobalFactories
 import static extension tools.vitruv.framework.domains.repository.DomainAwareResourceSet.awareOfDomains
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import tools.vitruv.framework.change.recording.ChangeRecorder

@@ -6,11 +6,11 @@ import java.util.Arrays
 import org.eclipse.core.runtime.CoreException
 import java.util.HashMap
 import org.apache.log4j.Logger
-import static extension tools.vitruv.framework.util.ProjectBuildUtils.hasBuilder
+import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.core.resources.IProjectUtil.hasBuilder
 import java.util.Set
 import static com.google.common.base.Preconditions.checkArgument
 import static extension tools.vitruv.framework.domains.ui.builder.VitruvProjectBuilderArguments.*
-import static extension tools.vitruv.framework.util.ProjectBuildUtils.buildIncrementally
+import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.core.resources.IProjectUtil.buildIncrementally
 import java.nio.file.Path
 
 final class VitruvProjectBuilderApplicatorImpl implements VitruvProjectBuilderApplicator {

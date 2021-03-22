@@ -15,7 +15,6 @@ import tools.vitruv.framework.util.VitruviusConstants
 import tools.vitruv.framework.uuid.UuidResolver
 
 import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
-import static extension tools.vitruv.framework.util.bridges.JavaBridge.*
 import tools.vitruv.framework.correspondence.InternalCorrespondenceModel
 import tools.vitruv.framework.correspondence.CorrespondenceModelView
 import tools.vitruv.framework.correspondence.CorrespondenceModelViewFactory
@@ -23,9 +22,8 @@ import java.util.function.Predicate
 import java.util.LinkedHashSet
 import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
-import static extension tools.vitruv.framework.util.ResourceSetUtil.withGlobalFactories
-import static extension tools.vitruv.framework.util.bridges.EcoreResourceBridge.loadOrCreateResource
-import static extension tools.vitruv.framework.util.bridges.EcoreResourceBridge.getResourceContentRootIfUnique
+import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceSetUtil.withGlobalFactories
+import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceSetUtil.loadOrCreateResource
 import static com.google.common.base.Preconditions.checkState
 
 class InternalCorrespondenceModelImpl implements InternalCorrespondenceModel {
@@ -49,9 +47,8 @@ class InternalCorrespondenceModelImpl implements InternalCorrespondenceModel {
 			"Correspondences resource must be specified to load existing correspondences")
 		val loadedResource = (new ResourceSetImpl().withGlobalFactories => [loadOptions += saveAndLoadOptions]).
 			loadOrCreateResource(correspondencesResource.URI)
-		val loadedCorrespondences = loadedResource.resourceContentRootIfUnique?.dynamicCast(Correspondences,
-			"Correspondences model")
-		if (loadedCorrespondences !== null) {
+		if (!loadedResource.contents.empty) {
+			val loadedCorrespondences = loadedResource.contents.get(0) as Correspondences
 			this.correspondences.correspondences += loadedCorrespondences.correspondences
 		}
 	}
