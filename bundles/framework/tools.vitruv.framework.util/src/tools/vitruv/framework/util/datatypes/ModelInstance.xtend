@@ -14,7 +14,7 @@ class ModelInstance {
 	Resource resource
 	
 	new(Resource resource) {
-		checkArgument(resource !== null, "cannot create a model instance at the URI %s for a null resource", URI)
+		checkArgument(resource !== null, "cannot create a model instance for a null resource")
 		this.resource = resource
 		LOGGER.debug('''Create model instance for resource with URI: «URI»''')
 	}
