@@ -63,10 +63,6 @@ class VirtualModelImpl implements InternalVirtualModel {
 		this.resourceRepository.saveOrDeleteModels()
 	}
 
-	override synchronized persistRootElement(VURI persistenceVuri, EObject rootElement) {
-		this.resourceRepository.persistAsRoot(rootElement, persistenceVuri)
-	}
-
 	override synchronized propagateChange(VitruviusChange change) {
 		checkNotNull(change, "change to propagate")
 		checkArgument(change.containsConcreteChange, 
