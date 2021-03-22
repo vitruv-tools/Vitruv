@@ -10,8 +10,6 @@ import org.eclipse.emf.common.CommonPlugin;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 
-import tools.vitruv.framework.util.bridges.EMFBridge;
-
 /**
  * Implements the multiton design pattern.
  *
@@ -25,8 +23,25 @@ public class VURI implements Comparable<VURI> {
 
     /** Multiton classes should not have a public or default constructor. */
     private VURI(final String uriString) {
-        this.emfURI = EMFBridge.createURI(uriString);
+    	if (uriString != null) {
+    		
+			if (!uriString.startsWith("platform") && !uriString.startsWith("pathmap")) {
+				if (startsWithWindowsDriveLetterColonBackslash(uriString) || uriString.startsWith("/")) {
+					emfURI = URI.createFileURI(uriString);
+					return;
+				} else if (!uriString.startsWith("http://")) {
+					emfURI = URI.createPlatformResourceURI(uriString, true);
+					return;
+				}
+			}
+		}
+    	emfURI = URI.createURI(uriString);
     }
+    
+    private static boolean startsWithWindowsDriveLetterColonBackslash(final String uriString) {
+		char firstChar = uriString.charAt(0);
+		return Character.isLetter(firstChar) && uriString.regionMatches(1, ":\\", 0, 2);
+	}
 
     public static synchronized VURI getInstance(final String key) {
         VURI instance = INSTANCES.get(key);
