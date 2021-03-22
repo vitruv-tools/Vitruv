@@ -110,10 +110,10 @@ class ChangePublishingTestView implements NonTransactionalTestView {
 	override propagate() {
 		changeRecorder.endRecording()
 		val recordedChanges = changeRecorder.changes
-		val delegateChanges = recordedChanges.flatMap [changedVURIs]
+		val delegateChanges = recordedChanges.flatMap [changedURIs]
 			.toSet
-			.flatMapFixed [changedVURI | 
-				val changedResource = resourceSet.getResource(changedVURI.EMFUri, false)
+			.flatMapFixed [changedURI | 
+				val changedResource = resourceSet.getResource(changedURI, false)
 				if (changedResource !== null) {
 					// Propagating an empty modification for every changed resource gives the delegate a 
 					// chance to participate in change propagation (e.g. BasicTestView saves or cleans up resources).

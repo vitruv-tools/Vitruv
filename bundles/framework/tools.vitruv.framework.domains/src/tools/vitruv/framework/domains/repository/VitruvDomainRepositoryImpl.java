@@ -7,11 +7,10 @@ import java.util.Map;
 import org.eclipse.emf.ecore.EObject;
 
 import tools.vitruv.framework.domains.VitruvDomain;
-import tools.vitruv.framework.util.datatypes.VURI;
 import static com.google.common.base.Preconditions.checkState;
 
 public class VitruvDomainRepositoryImpl implements VitruvDomainRepository {
-	private Map<VURI, VitruvDomain> nsUri2Domain = new HashMap<>();
+	private Map<String, VitruvDomain> nsUri2Domain = new HashMap<>();
 
 	/**
 	 * Maps all file extensions of all registered metamodels to the respective
@@ -22,13 +21,12 @@ public class VitruvDomainRepositoryImpl implements VitruvDomainRepository {
 
 	public VitruvDomainRepositoryImpl(Iterable<VitruvDomain> domains) {
 		for (var domain : domains) {
-			VURI mainPackageUri = domain.getURI();
-			checkState(!nsUri2Domain.containsKey(mainPackageUri),
-					"Duplicate metamodel registered for namespace " + mainPackageUri);
-			nsUri2Domain.put(mainPackageUri, domain);
+			String mainPackageNsUri = domain.getMetamodelRootPackage().getNsURI();
+			checkState(!nsUri2Domain.containsKey(mainPackageNsUri),
+					"Duplicate metamodel registered for namespace " + mainPackageNsUri);
+			nsUri2Domain.put(mainPackageNsUri, domain);
 			for (String nsURI : domain.getNsUris()) {
-				VURI nsVURI = VURI.getInstance(nsURI);
-				this.nsUri2Domain.put(nsVURI, domain);
+				this.nsUri2Domain.put(nsURI, domain);
 			}
 			for (String fileExtension : domain.getFileExtensions()) {
 				VitruvDomain mappedDomain = this.fileExtension2Domain.get(fileExtension);
@@ -38,11 +36,6 @@ public class VitruvDomainRepositoryImpl implements VitruvDomainRepository {
 				this.fileExtension2Domain.put(fileExtension, domain);
 			}
 		}
-	}
-
-	@Override
-	public VitruvDomain getDomain(final VURI uri) {
-		return this.nsUri2Domain.get(uri);
 	}
 
 	@Override

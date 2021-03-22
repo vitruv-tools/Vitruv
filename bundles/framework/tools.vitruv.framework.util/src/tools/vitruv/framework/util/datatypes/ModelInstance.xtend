@@ -13,10 +13,10 @@ class ModelInstance extends AbstractURIHaving {
 	Resource resource
 
 	new(Resource resource) {
-		super(VURI.getInstance(resource))
+		super(resource.URI)
 		checkArgument(resource !== null, "cannot create a model instance at the URI %s for a null resource", URI)
 		this.resource = resource
-		LOGGER.debug('''Create model instance for resource with URI: «URI.getEMFUri()»''')
+		LOGGER.debug('''Create model instance for resource with URI: «URI»''')
 	}
 
 	def void addRoot(EObject root) {
@@ -43,7 +43,7 @@ class ModelInstance extends AbstractURIHaving {
 			resource.modified = false
 		} catch (IOException e) {
 			LOGGER.error('''Model could not be saved: «URI»''', e)
-			throw new IllegalStateException('''Could not save VURI «URI»''', e)
+			throw new IllegalStateException('''Could not save URI «URI»''', e)
 		}
 	}
 
@@ -53,7 +53,7 @@ class ModelInstance extends AbstractURIHaving {
 			resource.delete(null)
 		} catch (IOException e) {
 			LOGGER.error('''Deletion of resource «resource» did not work.''', e)
-			throw new IllegalStateException('''Could not delete VURI «URI»''', e)
+			throw new IllegalStateException('''Could not delete URI «URI»''', e)
 		}
 	}
 

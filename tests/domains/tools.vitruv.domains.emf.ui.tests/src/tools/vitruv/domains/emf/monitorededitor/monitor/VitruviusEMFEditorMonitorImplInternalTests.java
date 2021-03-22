@@ -13,6 +13,7 @@ package tools.vitruv.domains.emf.monitorededitor.monitor;
 
 import java.util.Set;
 
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.ui.IEditorPart;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -25,7 +26,6 @@ import tools.vitruv.domains.emf.monitorededitor.test.utils.DefaultImplementation
 import tools.vitruv.domains.emf.monitorededitor.test.utils.DefaultImplementations.TestVirtualModel;
 import tools.vitruv.domains.emf.monitorededitor.tools.EclipseAdapterProvider;
 import tools.vitruv.domains.emf.monitorededitor.tools.IEclipseAdapter;
-import tools.vitruv.framework.util.datatypes.VURI;
 
 public class VitruviusEMFEditorMonitorImplInternalTests extends BasicTestCase {
     private EclipseMock eclipseMockCtrl;
@@ -45,7 +45,7 @@ public class VitruviusEMFEditorMonitorImplInternalTests extends BasicTestCase {
     }
 
     @Test
-    public void EMFEditorsCanBeFoundByVURI() {
+    public void EMFEditorsCanBeFoundByURI() {
         VitruviusEMFEditorMonitorImpl syncMgr = new VitruviusEMFEditorMonitorImpl(factory,
                 virtualModel, DefaultImplementations.ALL_ACCEPTING_VITRUV_ACCESSOR);
         syncMgr.initialize();
@@ -55,11 +55,11 @@ public class VitruviusEMFEditorMonitorImplInternalTests extends BasicTestCase {
         IEditorPart datatypeEditor = eclipseMockCtrl.openNewEMFTreeEditorPart(Files.DATATYPE_ECORE);
         eclipseMockCtrl.openNewNonEMFEditorPart();
 
-        VURI exampleVURI = VURI.getInstance(getURI(Files.EXAMPLEMODEL_ECORE));
-        VURI datatypeVURI = VURI.getInstance(getURI(Files.DATATYPE_ECORE));
+        URI exampleURI = getURI(Files.EXAMPLEMODEL_ECORE);
+        URI datatypeURI = getURI(Files.DATATYPE_ECORE);
 
-        Set<IEditorPart> foundExampleEditors = syncMgr.findEditorsForModel(exampleVURI);
-        Set<IEditorPart> foundDatatypeEditors = syncMgr.findEditorsForModel(datatypeVURI);
+        Set<IEditorPart> foundExampleEditors = syncMgr.findEditorsForModel(exampleURI);
+        Set<IEditorPart> foundDatatypeEditors = syncMgr.findEditorsForModel(datatypeURI);
 
         assert foundExampleEditors != null;
         assert foundDatatypeEditors != null;

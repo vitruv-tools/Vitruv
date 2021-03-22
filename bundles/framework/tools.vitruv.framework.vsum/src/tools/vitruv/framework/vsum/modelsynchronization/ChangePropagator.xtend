@@ -190,8 +190,8 @@ class ChangePropagator {
 	}
 
 	def private VitruvDomain getChangedDomain(VitruviusChange change) {
-		val changeDomain = change.changedVURIs.fold(null as VitruvDomain) [changeDomain, changedVuri |
-			val resourceDomain = domainRepository.getDomain(changedVuri.fileExtension)
+		val changeDomain = change.changedURIs.fold(null as VitruvDomain) [changeDomain, changedUri |
+			val resourceDomain = domainRepository.getDomain(changedUri.fileExtension)
 			if (changeDomain === null) {
 				resourceDomain
 			} else if (resourceDomain === null || resourceDomain == changeDomain) {

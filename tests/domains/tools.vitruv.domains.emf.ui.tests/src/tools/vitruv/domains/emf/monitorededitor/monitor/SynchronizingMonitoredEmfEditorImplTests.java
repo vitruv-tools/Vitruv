@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EcoreFactory;
@@ -41,7 +42,6 @@ import tools.vitruv.domains.emf.monitorededitor.tools.EclipseAdapterProvider;
 import tools.vitruv.domains.emf.monitorededitor.tools.IEclipseAdapter;
 import tools.vitruv.framework.change.description.VitruviusChange;
 import tools.vitruv.framework.change.echange.feature.FeatureEChange;
-import tools.vitruv.framework.util.datatypes.VURI;
 
 public class SynchronizingMonitoredEmfEditorImplTests extends BasicTestCase {
     private EclipseMock eclipseCtrl;
@@ -146,15 +146,15 @@ public class SynchronizingMonitoredEmfEditorImplTests extends BasicTestCase {
     @Test
     public void saveEventsCauseSyncForCurrentEditor() {
         Resource res = this.editorPartAdapter.getEditedModelResource();
-        final VURI resVURI = VURI.getInstance(res);
+        final URI resURI = res.getURI();
 
         final EnsureExecuted ensureExecuted = new EnsureExecuted();
         ResourceChangeSynchronizing cs = new ResourceChangeSynchronizing() {
 
             @Override
-            public void synchronizeChanges(List<VitruviusChange> changes, VURI sourceModelURI, Resource res) {
+            public void synchronizeChanges(List<VitruviusChange> changes, URI sourceModelURI, Resource res) {
                 ensureExecuted.markExecuted();
-                assert sourceModelURI == resVURI;
+                assert sourceModelURI == resURI;
             }
         };
 
@@ -177,7 +177,7 @@ public class SynchronizingMonitoredEmfEditorImplTests extends BasicTestCase {
         ResourceChangeSynchronizing cs = new ResourceChangeSynchronizing() {
 
             @Override
-            public void synchronizeChanges(List<VitruviusChange> changes, VURI sourceModelURI, Resource res) {
+            public void synchronizeChanges(List<VitruviusChange> changes, URI sourceModelURI, Resource res) {
                 ensureNotExecuted.markExecuted();
             }
         };
@@ -195,15 +195,15 @@ public class SynchronizingMonitoredEmfEditorImplTests extends BasicTestCase {
     @Test
     public void saveEventsCauseNoSyncWhenOtherEditorIsSaved() {
         Resource res = this.editorPartAdapter.getEditedModelResource();
-        final VURI resVURI = VURI.getInstance(res);
+        final URI resURI = res.getURI();
 
         final EnsureNotExecuted ensureNotExecuted = new EnsureNotExecuted();
         final EnsureExecuted ensureExecuted = new EnsureExecuted();
         ResourceChangeSynchronizing cs = new ResourceChangeSynchronizing() {
 
             @Override
-            public void synchronizeChanges(List<VitruviusChange> changes, VURI sourceModelURI, Resource res) {
-                if (sourceModelURI == resVURI) {
+            public void synchronizeChanges(List<VitruviusChange> changes, URI sourceModelURI, Resource res) {
+                if (sourceModelURI == resURI) {
                     ensureNotExecuted.markExecuted();
                 } else {
                     ensureExecuted.markExecuted();
@@ -239,15 +239,15 @@ public class SynchronizingMonitoredEmfEditorImplTests extends BasicTestCase {
     @Test
     public void resourceReloadCausesChangesToBeCleared() throws IOException {
         Resource res = this.editorPartAdapter.getEditedModelResource();
-        final VURI resVURI = VURI.getInstance(res);
+        final URI resURI = res.getURI();
 
         final EnsureExecuted ensureExecuted = new EnsureExecuted();
         ResourceChangeSynchronizing cs = new ResourceChangeSynchronizing() {
 
             @Override
-            public void synchronizeChanges(List<VitruviusChange> changes, VURI sourceModelURI, Resource res) {
+            public void synchronizeChanges(List<VitruviusChange> changes, URI sourceModelURI, Resource res) {
                 ensureExecuted.markExecuted();
-                assert sourceModelURI == resVURI;
+                assert sourceModelURI == resURI;
 
                 assert changes.size() == 1;
                 VitruviusChange emfChange = changes.get(0);

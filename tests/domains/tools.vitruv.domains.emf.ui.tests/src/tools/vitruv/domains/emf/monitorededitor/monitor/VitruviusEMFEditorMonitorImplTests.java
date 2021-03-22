@@ -15,6 +15,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EcoreFactory;
@@ -39,7 +40,6 @@ import tools.vitruv.domains.emf.monitorededitor.tools.IEclipseAdapter;
 import tools.vitruv.framework.change.description.CompositeContainerChange;
 import tools.vitruv.framework.change.description.VitruviusChange;
 import tools.vitruv.framework.change.echange.feature.FeatureEChange;
-import tools.vitruv.framework.util.datatypes.VURI;
 
 public class VitruviusEMFEditorMonitorImplTests extends BasicTestCase {
     private EclipseMock eclipseMockCtrl;
@@ -64,8 +64,8 @@ public class VitruviusEMFEditorMonitorImplTests extends BasicTestCase {
 
         IVitruviusAccessor va = new IVitruviusAccessor() {
             @Override
-            public boolean isModelMonitored(VURI modelUri) {
-                assert modelUri == VURI.getInstance(getURI(modelURL));
+            public boolean isModelMonitored(URI modelUri) {
+                assert modelUri == getURI(modelURL);
                 ensureExecuted.markExecuted();
                 return true;
             }
@@ -98,13 +98,13 @@ public class VitruviusEMFEditorMonitorImplTests extends BasicTestCase {
         root.setName(root.getName() + "!");
 
         eclipseMockCtrl.issueSaveEvent(SaveEventKind.SAVE);
-        syncMgr.triggerSynchronisation(VURI.getInstance(root.eResource()));
+        syncMgr.triggerSynchronisation(root.eResource().getURI());
 
         assert virtualModel.getExecutionCount() == 1;
         assert !virtualModel.getLastChanges().isEmpty();
 
         for (VitruviusChange change : virtualModel.getLastChanges()) {
-            assert change.getChangedVURIs().iterator().next() == VURI.getInstance(getURI(Files.EXAMPLEMODEL_ECORE));
+            assert change.getChangedURIs().iterator().next() == getURI(Files.EXAMPLEMODEL_ECORE);
         }
     }
 
@@ -120,7 +120,7 @@ public class VitruviusEMFEditorMonitorImplTests extends BasicTestCase {
         root.setName(root.getName() + "!");
 
         eclipseMockCtrl.issueSaveEvent(SaveEventKind.SAVE);
-        syncMgr.triggerSynchronisation(VURI.getInstance(root.eResource()));
+        syncMgr.triggerSynchronisation(root.eResource().getURI());
 
         assert !virtualModel.hasBeenExecuted();
     }
@@ -142,7 +142,7 @@ public class VitruviusEMFEditorMonitorImplTests extends BasicTestCase {
 
         eclipseMockCtrl.issueSaveEvent(SaveEventKind.SAVE);
 
-        syncMgr.triggerSynchronisation(VURI.getInstance(root.eResource()));
+        syncMgr.triggerSynchronisation(root.eResource().getURI());
 
         assert virtualModel.getExecutionCount() == 1 : "Got " + virtualModel.getExecutionCount() + " syncs instead of 1.";
         assert !virtualModel.getLastChanges().isEmpty();
@@ -174,7 +174,7 @@ public class VitruviusEMFEditorMonitorImplTests extends BasicTestCase {
         root2.setName(root2NewName);
         eclipseMockCtrl.issueSaveEvent(SaveEventKind.SAVE);
 
-        syncMgr.triggerSynchronisation(VURI.getInstance(root1.eResource()));
+        syncMgr.triggerSynchronisation(root1.eResource().getURI());
 
         assert virtualModel.getExecutionCount() == 1 : "Got " + virtualModel.getExecutionCount() + " syncs instead of 1.";
         assert !virtualModel.getLastChanges().isEmpty();
@@ -212,9 +212,9 @@ public class VitruviusEMFEditorMonitorImplTests extends BasicTestCase {
         assert va.getAcceptedModels().isEmpty();
 
         va.setAcceptAll();
-        syncMgr.addModel(VURI.getInstance(getURI(Files.EXAMPLEMODEL_ECORE)));
+        syncMgr.addModel(getURI(Files.EXAMPLEMODEL_ECORE));
 
-        assert va.getAcceptedModels().contains(VURI.getInstance(getURI(Files.EXAMPLEMODEL_ECORE)));
+        assert va.getAcceptedModels().contains(getURI(Files.EXAMPLEMODEL_ECORE));
     }
 
     @Test
@@ -229,7 +229,7 @@ public class VitruviusEMFEditorMonitorImplTests extends BasicTestCase {
 
         assert listener.isMonitoringEditor(editorPart);
 
-        syncMgr.removeModel(VURI.getInstance(getURI(Files.EXAMPLEMODEL_ECORE)));
+        syncMgr.removeModel(getURI(Files.EXAMPLEMODEL_ECORE));
 
         assert !listener.isMonitoringEditor(editorPart);
     }
@@ -237,10 +237,10 @@ public class VitruviusEMFEditorMonitorImplTests extends BasicTestCase {
     private static class RoleChangingVitruviusAccessor implements IVitruviusAccessor {
         boolean accepts = true;
         boolean executed = false;
-        private final List<VURI> acceptedModels = new ArrayList<>();
+        private final List<URI> acceptedModels = new ArrayList<>();
 
         @Override
-        public boolean isModelMonitored(VURI modelUri) {
+        public boolean isModelMonitored(URI modelUri) {
             executed = true;
             if (accepts) {
                 acceptedModels.add(modelUri);
@@ -260,7 +260,7 @@ public class VitruviusEMFEditorMonitorImplTests extends BasicTestCase {
             return executed;
         }
 
-        public List<VURI> getAcceptedModels() {
+        public List<URI> getAcceptedModels() {
             return acceptedModels;
         }
 

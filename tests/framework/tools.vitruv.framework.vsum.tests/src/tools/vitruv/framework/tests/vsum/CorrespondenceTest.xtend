@@ -11,7 +11,6 @@ import pcm_mockup.Repository
 import tools.vitruv.framework.correspondence.Correspondence
 import tools.vitruv.framework.correspondence.CorrespondenceModel
 import tools.vitruv.framework.util.datatypes.ModelInstance
-import tools.vitruv.framework.util.datatypes.VURI
 import tools.vitruv.framework.vsum.InternalVirtualModel
 import uml_mockup.UInterface
 import uml_mockup.UPackage
@@ -210,8 +209,7 @@ class CorrespondenceTest {
 	}
 
 	def private <T extends EObject> T testLoadObject(InternalVirtualModel vsum, URI uri, Class<T> clazz) {
-		val VURI vURI = VURI.getInstance(uri)
-		val ModelInstance instance = vsum.getModelInstance(vURI)
+		val ModelInstance instance = vsum.getModelInstance(uri)
 		assertEquals(1, instance.resource.contents.size)
 		val root = instance.resource.contents.get(0)
 		assertThat(root, instanceOf(clazz))

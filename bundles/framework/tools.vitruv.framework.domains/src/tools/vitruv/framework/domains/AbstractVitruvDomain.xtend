@@ -4,8 +4,6 @@ import java.util.Collections
 import java.util.Map
 import java.util.Set
 import org.eclipse.emf.ecore.EObject
-import tools.vitruv.framework.util.datatypes.VURI
-import tools.vitruv.framework.util.datatypes.AbstractURIHaving
 import org.eclipse.emf.ecore.EPackage
 import tools.vitruv.framework.domains.VitruvDomain
 import org.eclipse.emf.ecore.EClass
@@ -14,7 +12,7 @@ import java.util.HashMap
 import static java.util.Collections.emptySet
 import static java.util.Collections.emptyMap
 
-abstract class AbstractVitruvDomain extends AbstractURIHaving implements VitruvDomain {
+abstract class AbstractVitruvDomain implements VitruvDomain {
 	String name
 	Set<String> fileExtensions
 	Set<String> nsURIs
@@ -35,12 +33,10 @@ abstract class AbstractVitruvDomain extends AbstractURIHaving implements VitruvD
 	 * Convenience method if the domain consists of only a single namespace
 	 */
 	new(String name, EPackage metamodelRootPackage, String... fileExtensions) {
-		super(VURI.getInstance(metamodelRootPackage.nsURI))
 		initialize(name, metamodelRootPackage, emptySet, emptyMap, emptyMap, fileExtensions)
 	}
 
 	new(String name, EPackage metamodelRootPackage, Set<EPackage> furtherRootPackages, String... fileExtensions) {
-		super(VURI.getInstance(metamodelRootPackage.nsURI))
 		initialize(name, metamodelRootPackage, furtherRootPackages, emptyMap, emptyMap, fileExtensions)
 	}
 

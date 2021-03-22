@@ -27,7 +27,6 @@ import tools.vitruv.domains.emf.monitorededitor.test.testmodels.Models;
 import tools.vitruv.framework.change.description.PropagatedChange;
 import tools.vitruv.framework.change.description.VitruviusChange;
 import tools.vitruv.framework.util.datatypes.ModelInstance;
-import tools.vitruv.framework.util.datatypes.VURI;
 import tools.vitruv.framework.uuid.UuidGeneratorAndResolver;
 import static tools.vitruv.framework.uuid.UuidGeneratorAndResolverFactory.createUuidGeneratorAndResolver;
 import tools.vitruv.framework.uuid.UuidResolver;
@@ -37,7 +36,7 @@ public class DefaultImplementations {
     public static final ResourceChangeSynchronizing EFFECTLESS_CHANGESYNC = new ResourceChangeSynchronizing() {
 
         @Override
-        public void synchronizeChanges(List<VitruviusChange> changes, VURI sourceModelURI, Resource res) {
+        public void synchronizeChanges(List<VitruviusChange> changes, URI sourceModelURI, Resource res) {
         }
 
     };
@@ -45,7 +44,7 @@ public class DefaultImplementations {
     public static final IVitruviusAccessor ALL_ACCEPTING_VITRUV_ACCESSOR = new IVitruviusAccessor() {
 
         @Override
-        public boolean isModelMonitored(VURI modelUri) {
+        public boolean isModelMonitored(URI modelUri) {
             return true;
         }
     };
@@ -53,24 +52,24 @@ public class DefaultImplementations {
     public static final IVitruviusAccessor NONE_ACCEPTING_VITRUV_ACCESSOR = new IVitruviusAccessor() {
 
         @Override
-        public boolean isModelMonitored(VURI modelUri) {
+        public boolean isModelMonitored(URI modelUri) {
             return false;
         }
     };
 
     public static class TestVirtualModel implements ResourceChangeSynchronizing, VirtualModel {
-        private VURI lastVURI = null;
+        private URI lastURI = null;
         private List<VitruviusChange> lastChanges = null;
         private int executionCount = 0;
         private UuidGeneratorAndResolver uuidGeneratorAndResolver = createUuidGeneratorAndResolver(new ResourceSetImpl());
         
         @Override
-        public void synchronizeChanges(List<VitruviusChange> changes, VURI sourceModelURI, Resource res) {
+        public void synchronizeChanges(List<VitruviusChange> changes, URI sourceModelURI, Resource res) {
             this.lastChanges = new ArrayList<>();
             if (changes != null) {
                 this.lastChanges.addAll(changes);
             }
-            this.lastVURI = sourceModelURI;
+            this.lastURI = sourceModelURI;
             this.executionCount++;
         }
         
@@ -91,8 +90,8 @@ public class DefaultImplementations {
             return lastChanges;
         }
 
-        public VURI getLastVURI() {
-            return lastVURI;
+        public URI getLastURI() {
+            return lastURI;
         }
 
         public static TestVirtualModel createInstance() {
@@ -106,7 +105,7 @@ public class DefaultImplementations {
         }
 
         @Override
-        public ModelInstance getModelInstance(VURI modelVuri) {
+        public ModelInstance getModelInstance(URI modelUri) {
             return null;
         }
 

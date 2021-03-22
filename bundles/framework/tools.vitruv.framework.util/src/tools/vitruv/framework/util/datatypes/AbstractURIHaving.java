@@ -1,19 +1,21 @@
 package tools.vitruv.framework.util.datatypes;
 
-public abstract class AbstractURIHaving implements URIHaving, Comparable<URIHaving> {
-    private VURI uri;
+import org.eclipse.emf.common.util.URI;
 
-    public AbstractURIHaving(final VURI uri) {
+public abstract class AbstractURIHaving implements URIHaving, Comparable<URIHaving> {
+    private URI uri;
+
+    public AbstractURIHaving(final URI uri) {
         this.uri = uri;
     }
 
     @Override
-    public VURI getURI() {
+    public URI getURI() {
         return this.uri;
     }
 
     @Override
     public int compareTo(final URIHaving o) {
-        return getURI().compareTo(o.getURI());
+        return getURI().toString().compareTo(o.getURI().toString());
     }
 }

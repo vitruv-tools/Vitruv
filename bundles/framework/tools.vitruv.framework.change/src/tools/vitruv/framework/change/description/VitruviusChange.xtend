@@ -6,8 +6,8 @@ import org.eclipse.emf.ecore.EObject
 import tools.vitruv.framework.uuid.UuidResolver
 import tools.vitruv.framework.change.interaction.UserInteractionBase
 import org.eclipse.emf.ecore.resource.Resource
-import tools.vitruv.framework.util.datatypes.VURI
 import java.util.Set
+import org.eclipse.emf.common.util.URI
 
 /** 
  * Base interface for all kinds of changes in Vitruvius.
@@ -71,11 +71,11 @@ interface VitruviusChange {
 	def Set<String> getAffectedAndReferencedEObjectIds()
 
 	/**
-	 * Returns the {@link VURI}s of all {@link Resource}s changed by this change, i.e. the resources containing the 
+	 * Returns the {@link URI}s of all {@link Resource}s changed by this change, i.e. the resources containing the 
 	 * changed {@link EObject}s. The returned {@link Iterable} may be empty if no {@link EObject}s are affected by this
 	 * change or if this change was not resolved yet.
 	 */
-	def Set<VURI> getChangedVURIs()
+	def Set<URI> getChangedURIs()
 
 	/**
 	 * Returns all user interactions performed during application of this change and performing consistency preservation.

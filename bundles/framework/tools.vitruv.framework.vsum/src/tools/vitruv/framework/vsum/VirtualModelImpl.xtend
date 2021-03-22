@@ -7,7 +7,6 @@ import tools.vitruv.framework.change.description.VitruviusChange
 import tools.vitruv.framework.propagation.ChangePropagationSpecificationProvider
 import tools.vitruv.framework.domains.repository.VitruvDomainRepository
 import tools.vitruv.framework.userinteraction.InternalUserInteractor
-import tools.vitruv.framework.util.datatypes.VURI
 import tools.vitruv.framework.vsum.helper.ChangeDomainExtractor
 import tools.vitruv.framework.vsum.modelsynchronization.ChangePropagationListener
 import tools.vitruv.framework.vsum.repositories.ResourceRepositoryImpl
@@ -54,8 +53,8 @@ class VirtualModelImpl implements InternalVirtualModel {
 		this.resourceRepository.correspondenceModel
 	}
 
-	override synchronized getModelInstance(VURI modelVuri) {
-		this.resourceRepository.getModel(modelVuri)
+	override synchronized getModelInstance(URI modelUri) {
+		this.resourceRepository.getModel(modelUri)
 	}
 
 	private def synchronized save() {
@@ -134,8 +133,7 @@ class VirtualModelImpl implements InternalVirtualModel {
 	
 	private def retrieveCurrentModelState(URI location) {
 		if (location !== null) {
-			val vuri = VURI.getInstance(location)
-			resourceRepository.getModel(vuri)?.resource
+			resourceRepository.getModel(location)?.resource
 		}
 	}
 

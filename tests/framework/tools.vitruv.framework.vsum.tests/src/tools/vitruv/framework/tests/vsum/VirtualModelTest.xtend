@@ -11,7 +11,6 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import org.eclipse.emf.common.util.URI
 import static tools.vitruv.testutils.metamodels.AllElementTypesCreators.aet
 import tools.vitruv.framework.change.description.VitruviusChangeFactory
-import tools.vitruv.framework.util.datatypes.VURI
 import static tools.vitruv.testutils.matchers.ModelMatchers.containsModelOf
 import static org.hamcrest.MatcherAssert.assertThat
 import tools.vitruv.testutils.TestProjectManager
@@ -88,7 +87,7 @@ class VirtualModelTest {
 		]
 		val recordedChanges = changeRecorder.endRecording
 		virtualModel.propagateChange(recordedChanges.compose)
-		val vsumModel = virtualModel.getModelInstance(VURI.getInstance(createTestModelResourceUri("")))
+		val vsumModel = virtualModel.getModelInstance(createTestModelResourceUri(""))
 		assertThat(vsumModel.resource, containsModelOf(monitoredResource))
 	}
 
@@ -107,9 +106,9 @@ class VirtualModelTest {
 		]
 		val recordedChange = changeRecorder.endRecording
 		virtualModel.propagateChange(recordedChange.compose)
-		val sorceModel = virtualModel.getModelInstance(VURI.getInstance(createTestModelResourceUri("")))
+		val sorceModel = virtualModel.getModelInstance(createTestModelResourceUri(""))
 		val targetModel = virtualModel.getModelInstance(
-			RedundancyChangePropagationSpecification.getTargetResourceVuri(createTestModelResourceUri("")))
+			RedundancyChangePropagationSpecification.getTargetResourceUri(createTestModelResourceUri("")))
 		assertThat(targetModel.resource, containsModelOf(monitoredResource))
 		assertEquals(1,
 			virtualModel.correspondenceModel.getCorrespondingEObjects(sorceModel.resource.contents.get(0)).size)
@@ -218,9 +217,9 @@ class VirtualModelTest {
 		]
 		val recordedChange = changeRecorder.endRecording
 		virtualModel.propagateChange(recordedChange.compose)
-		val originalModel = virtualModel.getModelInstance(VURI.getInstance(createTestModelResourceUri("")))
+		val originalModel = virtualModel.getModelInstance(createTestModelResourceUri(""))
 		val reloadedVirtualModel = createAndLoadTestVirtualModel(projectFolder.resolve("vsum"))
-		val reloadedModel = reloadedVirtualModel.getModelInstance(VURI.getInstance(createTestModelResourceUri("")))
+		val reloadedModel = reloadedVirtualModel.getModelInstance(createTestModelResourceUri(""))
 		assertThat(reloadedModel.resource, containsModelOf(monitoredResource))
 		assertNotEquals(originalModel, reloadedModel)
 		// Propagate another change to reloaded virtual model to ensure that everything is loaded correctly
@@ -247,20 +246,20 @@ class VirtualModelTest {
 		]
 		val recordedChange = changeRecorder.endRecording
 		virtualModel.propagateChange(recordedChange.compose)
-		val originalModel = virtualModel.getModelInstance(VURI.getInstance(createTestModelResourceUri("")))
+		val originalModel = virtualModel.getModelInstance(createTestModelResourceUri(""))
 		val reloadedVirtualModel = createAndLoadTestVirtualModel(projectFolder.resolve("vsum"))
-		val reloadedModel = reloadedVirtualModel.getModelInstance(VURI.getInstance(createTestModelResourceUri("")))
+		val reloadedModel = reloadedVirtualModel.getModelInstance(createTestModelResourceUri(""))
 		assertThat(reloadedModel.resource, containsModelOf(monitoredResource))
 		assertNotEquals(originalModel, reloadedModel)
 		val reloadedTargetModel = reloadedVirtualModel.getModelInstance(
-			RedundancyChangePropagationSpecification.getTargetResourceVuri(createTestModelResourceUri("")))
+			RedundancyChangePropagationSpecification.getTargetResourceUri(createTestModelResourceUri("")))
 		assertThat(reloadedTargetModel.resource, containsModelOf(monitoredResource))
 		assertEquals(1, reloadedVirtualModel.correspondenceModel.getCorrespondingEObjects(root).size)
 	}
 
 	static class RedundancyChangePropagationSpecification extends AbstractEChangePropagationSpecification {
-		static def getTargetResourceVuri(URI sourceUri) {
-			VURI.getInstance(sourceUri.trimFileExtension.toFileString + "Copy." + sourceUri.fileExtension)
+		static def getTargetResourceUri(URI sourceUri) {
+			URI.createFileURI(sourceUri.trimFileExtension.toFileString + "Copy." + sourceUri.fileExtension)
 		}
 
 		new(VitruvDomain sourceDomain, VitruvDomain targetDomain) {
@@ -292,7 +291,7 @@ class VirtualModelTest {
 				correspondingObjects.get(0).recursiveRoot = newRoot
 			}
 			val resourceURI = typedChange.resource.URI
-			persistAsRoot(newRoot, resourceURI.targetResourceVuri)
+			persistAsRoot(newRoot, resourceURI.targetResourceUri)
 		}
 
 	}

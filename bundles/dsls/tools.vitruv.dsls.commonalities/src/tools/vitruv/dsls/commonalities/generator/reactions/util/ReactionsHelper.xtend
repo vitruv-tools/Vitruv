@@ -62,11 +62,11 @@ class ReactionsHelper {
 		]
 	}
 
-	static def callGetModelResource(extension TypeProvider typeProvider, XFeatureCall vuri) {
+	static def callGetModelResource(extension TypeProvider typeProvider, XFeatureCall uri) {
 		resourceAccess.memberFeatureCall => [
 			feature = resourceAccessType.findMethod('getModelResource')
 			explicitOperationCall = true
-			memberCallArguments += vuri
+			memberCallArguments += uri
 		]
 	}
 
