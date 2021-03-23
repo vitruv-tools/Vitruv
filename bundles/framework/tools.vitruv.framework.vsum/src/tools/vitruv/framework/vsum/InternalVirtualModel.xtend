@@ -3,7 +3,7 @@ package tools.vitruv.framework.vsum
 import tools.vitruv.framework.util.datatypes.VURI
 import org.eclipse.emf.ecore.EObject
 import tools.vitruv.framework.vsum.modelsynchronization.ChangePropagationListener
-import tools.vitruv.framework.variability.vave.VaveModel
+import tools.vitruv.framework.vsum.variability.VaveModel
 import tools.vitruv.framework.correspondence.CorrespondenceModel
 
 

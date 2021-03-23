@@ -29,8 +29,8 @@ import tools.vitruv.framework.util.ResourceRegistrationAdapter
 import tools.vitruv.framework.correspondence.CorrespondenceModelFactory
 import tools.vitruv.framework.correspondence.CorrespondenceModel
 import static tools.vitruv.framework.uuid.UuidGeneratorAndResolverFactory.createAndLoadUuidGeneratorAndResolver
-import tools.vitruv.framework.variability.vave.VaveModel
-import tools.vitruv.framework.variability.vave.VaveModelFactory
+import tools.vitruv.framework.vsum.variability.VaveModel
+import tools.vitruv.framework.vsum.variability.VaveModelFactory
 
 class ResourceRepositoryImpl implements ModelRepository {
 	static val logger = Logger.getLogger(ResourceRepositoryImpl)

@@ -1,4 +1,4 @@
-package tools.vitruv.framework.variability.vave.impl;
+package tools.vitruv.framework.vsum.variability;
 
 import java.io.IOException;
 import java.util.Map;
@@ -6,12 +6,12 @@ import java.util.Map;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.xtext.xbase.lib.Exceptions;
 
-import vavemodel.VavemodelFactory;
 import tools.vitruv.framework.util.VitruviusConstants;
 import tools.vitruv.framework.util.datatypes.ModelInstance;
 import tools.vitruv.framework.util.datatypes.VURI;
 import tools.vitruv.framework.uuid.UuidResolver;
-import tools.vitruv.framework.variability.vave.VaveModel;
+import tools.vitruv.framework.vsum.variability.VaveModel;
+import vavemodel.VavemodelFactory;
 
 public class VaveModelImpl extends ModelInstance implements VaveModel {
 	final UuidResolver uuidResolver;
@@ -57,5 +57,4 @@ public class VaveModelImpl extends ModelInstance implements VaveModel {
 //		vaveResource.getContents().add(system);
 //		system.setName(systemName);
 //	}
-
 }

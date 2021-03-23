@@ -1,12 +1,12 @@
-package tools.vitruv.framework.variability.vave
+package tools.vitruv.framework.vsum.variability
 
-import tools.vitruv.framework.variability.vave.impl.VaveModelImpl
+import tools.vitruv.framework.vsum.variability.VaveModelImpl
 import tools.vitruv.framework.uuid.UuidResolver
 import tools.vitruv.framework.util.datatypes.VURI
 import org.eclipse.emf.ecore.resource.Resource
 
 final class VaveModelFactory {
-	static VaveModelFactory instance;
+		static VaveModelFactory instance;
 	
 	private new() {	}
 	

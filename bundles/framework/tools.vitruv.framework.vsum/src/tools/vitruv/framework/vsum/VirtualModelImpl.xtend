@@ -13,7 +13,6 @@ import tools.vitruv.framework.util.datatypes.VURI
 import tools.vitruv.framework.vsum.helper.ChangeDomainExtractor
 import tools.vitruv.framework.vsum.modelsynchronization.ChangePropagationListener
 import tools.vitruv.framework.vsum.repositories.ResourceRepositoryImpl
-import tools.vitruv.framework.variability.vave.impl.VaveModelImpl
 import org.apache.log4j.Logger
 import org.eclipse.emf.common.util.URI
 import tools.vitruv.framework.vsum.helper.VsumFileSystemLayout

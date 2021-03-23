@@ -6,7 +6,7 @@ import tools.vitruv.framework.change.description.TransactionalChange
 import tools.vitruv.framework.util.command.ResourceAccess
 import tools.vitruv.framework.correspondence.CorrespondenceModel
 import tools.vitruv.framework.uuid.UuidResolver
-import tools.vitruv.framework.variability.vave.VaveModel
+import tools.vitruv.framework.vsum.variability.VaveModel
 
 interface ModelRepository extends ResourceAccess, AutoCloseable {
 	def UuidResolver getUuidResolver()

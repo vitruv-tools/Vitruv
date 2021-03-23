@@ -1,4 +1,4 @@
-package tools.vitruv.framework.variability.util;
+package tools.vitruv.framework.vsum.variability;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.TreeIterator;
@@ -45,5 +45,4 @@ public class VaveModelHelper {
 		Object attr = object.eGet(object.eClass().getEStructuralFeature(attrName));
 		return attr;
 	}
-
 }
