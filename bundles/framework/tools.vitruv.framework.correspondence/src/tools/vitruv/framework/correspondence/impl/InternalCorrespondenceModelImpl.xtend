@@ -11,7 +11,6 @@ import org.eclipse.emf.ecore.util.EcoreUtil
 import tools.vitruv.framework.correspondence.Correspondence
 import tools.vitruv.framework.correspondence.CorrespondenceFactory
 import tools.vitruv.framework.correspondence.Correspondences
-import tools.vitruv.framework.util.VitruviusConstants
 import tools.vitruv.framework.uuid.UuidResolver
 
 import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
@@ -27,8 +26,7 @@ import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resou
 import static com.google.common.base.Preconditions.checkState
 
 class InternalCorrespondenceModelImpl implements InternalCorrespondenceModel {
-	static val saveAndLoadOptions = Map.of(VitruviusConstants.optionProcessDanglingHref,
-		VitruviusConstants.optionProcessDanglingHrefDiscard)
+	static val saveAndLoadOptions = Map.of("PROCESS_DANGLING_HREF", "DISCARD")
 	val Correspondences correspondences
 	val UuidResolver uuidResolver
 	val Resource correspondencesResource
