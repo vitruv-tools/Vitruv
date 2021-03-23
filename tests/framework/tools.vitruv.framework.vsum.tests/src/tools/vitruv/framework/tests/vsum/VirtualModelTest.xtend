@@ -25,7 +25,7 @@ import org.junit.jupiter.api.DisplayName
 import tools.vitruv.framework.change.processing.impl.AbstractEChangePropagationSpecification
 import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.correspondence.CorrespondenceModel
-import tools.vitruv.framework.util.command.ResourceAccess
+import tools.vitruv.framework.change.processing.ResourceAccess
 import tools.vitruv.framework.domains.VitruvDomain
 import tools.vitruv.framework.change.echange.root.InsertRootEObject
 import allElementTypes.Root

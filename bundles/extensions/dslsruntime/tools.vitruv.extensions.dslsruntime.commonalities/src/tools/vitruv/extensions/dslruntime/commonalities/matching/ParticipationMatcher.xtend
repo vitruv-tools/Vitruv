@@ -12,7 +12,7 @@ import tools.vitruv.extensions.dslruntime.commonalities.resources.IntermediateRe
 import tools.vitruv.extensions.dslruntime.commonalities.resources.ResourcesFactory
 import tools.vitruv.extensions.dslsruntime.reactions.helper.ReactionsCorrespondenceHelper
 import tools.vitruv.framework.correspondence.CorrespondenceModel
-import tools.vitruv.framework.util.command.ResourceAccess
+import tools.vitruv.framework.change.processing.ResourceAccess
 
 import static com.google.common.base.Preconditions.*
 import static tools.vitruv.framework.util.XtendAssertHelper.*

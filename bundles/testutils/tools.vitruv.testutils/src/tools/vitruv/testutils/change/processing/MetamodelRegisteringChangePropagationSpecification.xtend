@@ -8,7 +8,7 @@ import java.util.List
 import tools.vitruv.framework.change.processing.ChangePropagationSpecification
 import tools.vitruv.framework.change.description.TransactionalChange
 import tools.vitruv.framework.correspondence.CorrespondenceModel
-import tools.vitruv.framework.util.command.ResourceAccess
+import tools.vitruv.framework.change.processing.ResourceAccess
 
 /**
  * Xtext tests reset the metamodel registry between test runs. Hence, it might

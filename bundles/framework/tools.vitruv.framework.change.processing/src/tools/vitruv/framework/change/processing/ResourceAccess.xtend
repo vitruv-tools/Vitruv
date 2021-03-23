@@ -1,4 +1,4 @@
-package tools.vitruv.framework.util.command
+package tools.vitruv.framework.change.processing
 
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.resource.Resource

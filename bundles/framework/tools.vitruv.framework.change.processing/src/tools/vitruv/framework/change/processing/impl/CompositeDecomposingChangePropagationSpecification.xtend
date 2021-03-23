@@ -4,7 +4,7 @@ import tools.vitruv.framework.change.processing.impl.CompositeChangePropagationS
 import tools.vitruv.framework.domains.VitruvDomain
 import tools.vitruv.framework.change.description.TransactionalChange
 import tools.vitruv.framework.correspondence.CorrespondenceModel
-import tools.vitruv.framework.util.command.ResourceAccess
+import tools.vitruv.framework.change.processing.ResourceAccess
 import tools.vitruv.framework.change.description.CompositeTransactionalChange
 import org.apache.log4j.Logger
 

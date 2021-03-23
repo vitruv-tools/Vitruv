@@ -10,7 +10,7 @@ import org.apache.log4j.Logger
 import tools.vitruv.framework.domains.VitruvDomain
 import tools.vitruv.framework.change.processing.ChangePropagationObserver
 import org.eclipse.emf.ecore.EObject
-import tools.vitruv.framework.util.command.ResourceAccess
+import tools.vitruv.framework.change.processing.ResourceAccess
 import org.eclipse.xtend.lib.annotations.Accessors
 
 abstract class CompositeChangePropagationSpecification extends AbstractChangePropagationSpecification implements ChangePropagationObserver {
