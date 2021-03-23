@@ -1,7 +1,7 @@
 package tools.vitruv.testutils.change.processing
 
-import tools.vitruv.framework.change.processing.ChangePropagationSpecification
-import tools.vitruv.framework.change.processing.impl.CompositeDecomposingChangePropagationSpecification
+import tools.vitruv.framework.propagation.ChangePropagationSpecification
+import tools.vitruv.framework.propagation.impl.CompositeDecomposingChangePropagationSpecification
 import tools.vitruv.framework.domains.VitruvDomain
 
 class CombinedChangePropagationSpecification extends CompositeDecomposingChangePropagationSpecification {

@@ -1,6 +1,6 @@
 package tools.vitruv.extensions.dslsruntime.reactions
 
-import tools.vitruv.framework.change.processing.impl.CompositeDecomposingChangePropagationSpecification
+import tools.vitruv.framework.propagation.impl.CompositeDecomposingChangePropagationSpecification
 import tools.vitruv.framework.domains.VitruvDomain
 
 /**

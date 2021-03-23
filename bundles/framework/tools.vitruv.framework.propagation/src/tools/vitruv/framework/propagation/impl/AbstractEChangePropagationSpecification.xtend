@@ -1,11 +1,11 @@
-package tools.vitruv.framework.change.processing.impl
+package tools.vitruv.framework.propagation.impl
 
 import tools.vitruv.framework.correspondence.CorrespondenceModel
 import tools.vitruv.framework.change.echange.EChange
 import org.apache.log4j.Logger
 import tools.vitruv.framework.change.description.TransactionalChange
 import tools.vitruv.framework.domains.VitruvDomain
-import tools.vitruv.framework.change.processing.ResourceAccess
+import tools.vitruv.framework.propagation.ResourceAccess
 
 abstract class AbstractEChangePropagationSpecification extends AbstractChangePropagationSpecification {
 	static val LOGGER = Logger.getLogger(AbstractEChangePropagationSpecification);

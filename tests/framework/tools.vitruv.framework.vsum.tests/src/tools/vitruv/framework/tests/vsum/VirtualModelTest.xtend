@@ -22,10 +22,10 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals
 import static org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
-import tools.vitruv.framework.change.processing.impl.AbstractEChangePropagationSpecification
+import tools.vitruv.framework.propagation.impl.AbstractEChangePropagationSpecification
 import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.correspondence.CorrespondenceModel
-import tools.vitruv.framework.change.processing.ResourceAccess
+import tools.vitruv.framework.propagation.ResourceAccess
 import tools.vitruv.framework.domains.VitruvDomain
 import tools.vitruv.framework.change.echange.root.InsertRootEObject
 import allElementTypes.Root

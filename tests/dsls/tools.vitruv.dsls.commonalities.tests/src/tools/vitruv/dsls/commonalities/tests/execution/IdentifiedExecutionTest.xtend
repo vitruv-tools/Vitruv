@@ -8,7 +8,7 @@ import javax.inject.Inject
 import tools.vitruv.testutils.TestProject
 import java.nio.file.Path
 import tools.vitruv.testutils.VitruvApplicationTest
-import tools.vitruv.framework.change.processing.ChangePropagationSpecification
+import tools.vitruv.framework.propagation.ChangePropagationSpecification
 import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.BeforeAll
 import org.eclipse.xtend.lib.annotations.Accessors

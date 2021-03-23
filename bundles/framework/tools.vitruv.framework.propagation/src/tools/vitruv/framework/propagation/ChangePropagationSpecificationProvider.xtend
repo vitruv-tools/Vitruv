@@ -1,4 +1,4 @@
-package tools.vitruv.framework.change.processing
+package tools.vitruv.framework.propagation
 
 import java.util.List
 import tools.vitruv.framework.domains.VitruvDomain

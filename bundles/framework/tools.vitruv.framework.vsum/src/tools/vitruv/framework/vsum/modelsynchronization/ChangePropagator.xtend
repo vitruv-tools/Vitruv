@@ -10,9 +10,9 @@ import tools.vitruv.framework.change.description.TransactionalChange
 import tools.vitruv.framework.change.description.VitruviusChange
 import tools.vitruv.framework.change.description.VitruviusChangeFactory
 import tools.vitruv.framework.change.interaction.UserInteractionBase
-import tools.vitruv.framework.change.processing.ChangePropagationObserver
-import tools.vitruv.framework.change.processing.ChangePropagationSpecification
-import tools.vitruv.framework.change.processing.ChangePropagationSpecificationProvider
+import tools.vitruv.framework.propagation.ChangePropagationObserver
+import tools.vitruv.framework.propagation.ChangePropagationSpecification
+import tools.vitruv.framework.propagation.ChangePropagationSpecificationProvider
 import tools.vitruv.framework.domains.VitruvDomain
 import tools.vitruv.framework.domains.repository.VitruvDomainRepository
 import tools.vitruv.framework.userinteraction.InternalUserInteractor

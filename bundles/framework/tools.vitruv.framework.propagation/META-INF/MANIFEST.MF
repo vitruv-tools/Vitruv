@@ -1,8 +1,8 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Vitruv Framework Change Processing
-Bundle-SymbolicName: tools.vitruv.framework.change.processing;singleton:=true
-Automatic-Module-Name: tools.vitruv.framework.change.processing
+Bundle-SymbolicName: tools.vitruv.framework.propagation;singleton:=true
+Automatic-Module-Name: tools.vitruv.framework.propagation
 Bundle-Version: 2.1.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Require-Bundle: org.apache.log4j,
@@ -12,6 +12,6 @@ Require-Bundle: org.apache.log4j,
  tools.vitruv.framework.change;visibility:=reexport,
  tools.vitruv.framework.domains,
  tools.vitruv.framework.util
-Export-Package: tools.vitruv.framework.change.processing,
- tools.vitruv.framework.change.processing.impl
+Export-Package: tools.vitruv.framework.propagation,
+ tools.vitruv.framework.propagation.impl
 Bundle-Vendor: vitruv.tools

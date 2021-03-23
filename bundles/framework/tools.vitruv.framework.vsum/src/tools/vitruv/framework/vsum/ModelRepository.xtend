@@ -3,7 +3,7 @@ package tools.vitruv.framework.vsum
 import tools.vitruv.framework.util.datatypes.ModelInstance
 import tools.vitruv.framework.util.datatypes.VURI
 import tools.vitruv.framework.change.description.TransactionalChange
-import tools.vitruv.framework.change.processing.ResourceAccess
+import tools.vitruv.framework.propagation.ResourceAccess
 import tools.vitruv.framework.correspondence.CorrespondenceModel
 import tools.vitruv.framework.uuid.UuidResolver
 

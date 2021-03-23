@@ -1,16 +1,16 @@
-package tools.vitruv.framework.change.processing.impl
+package tools.vitruv.framework.propagation.impl
 
 import tools.vitruv.framework.change.description.TransactionalChange
 import tools.vitruv.framework.correspondence.CorrespondenceModel
 import java.util.List
 import java.util.ArrayList
 import tools.vitruv.framework.userinteraction.UserInteractor
-import tools.vitruv.framework.change.processing.ChangePropagationSpecification
+import tools.vitruv.framework.propagation.ChangePropagationSpecification
 import org.apache.log4j.Logger
 import tools.vitruv.framework.domains.VitruvDomain
-import tools.vitruv.framework.change.processing.ChangePropagationObserver
+import tools.vitruv.framework.propagation.ChangePropagationObserver
 import org.eclipse.emf.ecore.EObject
-import tools.vitruv.framework.change.processing.ResourceAccess
+import tools.vitruv.framework.propagation.ResourceAccess
 import org.eclipse.xtend.lib.annotations.Accessors
 
 abstract class CompositeChangePropagationSpecification extends AbstractChangePropagationSpecification implements ChangePropagationObserver {

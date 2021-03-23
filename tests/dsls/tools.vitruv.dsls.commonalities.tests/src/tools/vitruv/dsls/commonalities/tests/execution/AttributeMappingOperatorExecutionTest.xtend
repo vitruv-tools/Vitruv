@@ -12,7 +12,7 @@ import tools.vitruv.dsls.commonalities.tests.CommonalitiesLanguageInjectorProvid
 import org.junit.jupiter.api.TestInstance
 import javax.inject.Inject
 import org.eclipse.xtend.lib.annotations.Accessors
-import tools.vitruv.framework.change.processing.ChangePropagationSpecification
+import tools.vitruv.framework.propagation.ChangePropagationSpecification
 import org.junit.jupiter.api.BeforeAll
 import tools.vitruv.testutils.TestProject
 import java.nio.file.Path

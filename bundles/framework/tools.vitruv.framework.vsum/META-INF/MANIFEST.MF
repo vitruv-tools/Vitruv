@@ -8,7 +8,7 @@ Bundle-RequiredExecutionEnvironment: JavaSE-11
 Require-Bundle: org.apache.log4j,
  tools.vitruv.framework.domains;visibility:=reexport,
  tools.vitruv.framework.change;visibility:=reexport,
- tools.vitruv.framework.change.processing,
+ tools.vitruv.framework.propagation,
  org.eclipse.xtend.lib,
  org.eclipse.emf.ecore.xmi,
  edu.kit.ipd.sdq.activextendannotations
