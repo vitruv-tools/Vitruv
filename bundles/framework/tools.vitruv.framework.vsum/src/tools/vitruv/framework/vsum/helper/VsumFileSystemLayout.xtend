@@ -9,11 +9,13 @@ import static com.google.common.base.Preconditions.checkArgument
 import static com.google.common.base.Preconditions.checkState
 import static java.nio.charset.StandardCharsets.UTF_8
 import static java.nio.file.Files.createDirectories
-import static tools.vitruv.framework.util.VitruviusConstants.*
 import static tools.vitruv.framework.vsum.VsumConstants.*
 import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.common.util.URIUtil.createFileURI
 
 class VsumFileSystemLayout {
+	static final String CORRESPONDENCES_FILE_EXT = "correspondence";
+	static final String UUID_FILE_EXT = "uuid";
+	
 	val Path vsumProjectFolder
 	var prepared = false
 	
@@ -31,7 +33,7 @@ class VsumFileSystemLayout {
 	
 	def private Path getMetadataFilePath(String... metadataKey) {
 		checkArgument(metadataKey !== null || metadataKey.length > 0, "The key must have at least one part!")
-		checkArgument(metadataKey.get(metadataKey.length - 1).contains(fileExtSeparator), "metadataKey is missing a file extension!")
+		checkArgument(metadataKey.get(metadataKey.length - 1).contains('.'), "metadataKey is missing a file extension!")
 		
 		return metadataKey.fold(Path.of("")) [ last, keyPart |
 			checkArgument(keyPart !== null, "A key part must not be null!")
@@ -70,12 +72,12 @@ class VsumFileSystemLayout {
 	}
 	
 	def private getCorrespondenceModelPath() {
-		correspondenceFolder.resolve('''Correspondences«fileExtSeparator»«correspondencesFileExt»''')
+		correspondenceFolder.resolve('''Correspondences.«CORRESPONDENCES_FILE_EXT»''')
 	}
 	
 	def VURI getUuidProviderAndResolverVURI() {
 		checkPrepared()
-		val uuidPath = uuidProviderAndResolverFolder.resolve('''Uuid«fileExtSeparator»«uuidFileExt»''')
+		val uuidPath = uuidProviderAndResolverFolder.resolve('''Uuid.«UUID_FILE_EXT»''')
 		return VURI.getInstance(uuidPath.toFile.createFileURI) 
 	}
 	

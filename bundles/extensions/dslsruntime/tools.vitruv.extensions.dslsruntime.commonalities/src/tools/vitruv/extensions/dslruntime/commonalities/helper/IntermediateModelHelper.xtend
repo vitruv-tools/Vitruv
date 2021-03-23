@@ -5,7 +5,6 @@ import org.eclipse.emf.ecore.EObject
 import tools.vitruv.extensions.dslruntime.commonalities.intermediatemodelbase.Intermediate
 import tools.vitruv.extensions.dslruntime.commonalities.resources.IntermediateResourceBridge
 import tools.vitruv.framework.correspondence.CorrespondenceModel
-import tools.vitruv.framework.util.VitruviusConstants
 
 import static com.google.common.base.Preconditions.*
 
@@ -17,7 +16,7 @@ class IntermediateModelHelper {
 	static def getMetadataModelKey(String conceptDomainName) {
 		return #[
 			'commonalities',
-			conceptDomainName + VitruviusConstants.fileExtSeparator + conceptDomainName.toFirstLower
+			conceptDomainName + '.' + conceptDomainName.toFirstLower
 		]
 	}
 
