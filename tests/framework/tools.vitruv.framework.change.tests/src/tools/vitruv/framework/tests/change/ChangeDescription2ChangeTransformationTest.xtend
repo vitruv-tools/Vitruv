@@ -55,13 +55,18 @@ abstract class ChangeDescription2ChangeTransformationTest {
 	}
 
 	protected def <T extends Notifier> record(T objectToRecord, Consumer<T> operationToRecord) {
+		val recordedChanges = objectToRecord.recordComposite(operationToRecord)
+		return prepareChanges(recordedChanges)
+	}
+	
+	protected def <T extends Notifier> recordComposite(T objectToRecord, Consumer<T> operationToRecord) {
 		resourceSet.stopRecording
 		objectToRecord.startRecording
 		operationToRecord.accept(objectToRecord)
 		objectToRecord.stopRecording
 		val recordedChanges = changeRecorder.changes
 		resourceSet.startRecording
-		return prepareChanges(recordedChanges)
+		return recordedChanges
 	}
 
 	protected def resourceAt(String name) {
