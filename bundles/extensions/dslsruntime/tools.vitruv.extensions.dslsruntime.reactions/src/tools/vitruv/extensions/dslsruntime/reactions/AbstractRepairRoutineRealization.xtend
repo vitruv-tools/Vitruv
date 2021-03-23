@@ -14,7 +14,7 @@ import tools.vitruv.extensions.dslsruntime.reactions.structure.CallHierarchyHavi
 import tools.vitruv.extensions.dslsruntime.reactions.structure.Loggable
 import tools.vitruv.framework.correspondence.CorrespondenceModel
 import tools.vitruv.framework.userinteraction.UserInteractor
-import tools.vitruv.framework.change.processing.ResourceAccess
+import tools.vitruv.framework.propagation.ResourceAccess
 import tools.vitruv.framework.util.datatypes.VURI
 
 abstract class AbstractRepairRoutineRealization extends CallHierarchyHaving implements RepairRoutine, ReactionElementsHandler {

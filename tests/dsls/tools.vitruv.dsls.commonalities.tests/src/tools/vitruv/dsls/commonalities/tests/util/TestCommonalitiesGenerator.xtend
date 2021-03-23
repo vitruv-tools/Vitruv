@@ -29,7 +29,7 @@ import org.eclipse.xtext.xbase.testing.JavaSource
 import static extension java.nio.file.Files.readString
 import static java.lang.System.lineSeparator
 import static java.util.stream.Collectors.toList
-import tools.vitruv.framework.change.processing.ChangePropagationSpecification
+import tools.vitruv.framework.propagation.ChangePropagationSpecification
 import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
 import org.eclipse.jdt.core.compiler.CategorizedProblem
 import static extension java.lang.reflect.Modifier.*

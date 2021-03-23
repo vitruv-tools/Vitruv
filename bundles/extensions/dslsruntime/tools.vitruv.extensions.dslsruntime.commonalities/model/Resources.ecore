@@ -37,7 +37,7 @@
         unique="false" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
         defaultValueLiteral="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EDataType" name="ResourceAccess" instanceClassName="tools.vitruv.framework.change.processing.ResourceAccess"/>
+  <eClassifiers xsi:type="ecore:EDataType" name="ResourceAccess" instanceClassName="tools.vitruv.framework.propagation.ResourceAccess"/>
   <eClassifiers xsi:type="ecore:EDataType" name="CorrespondenceModel" instanceClassName="tools.vitruv.framework.correspondence.CorrespondenceModel"/>
   <eClassifiers xsi:type="ecore:EDataType" name="URI" instanceClassName="org.eclipse.emf.common.util.URI"/>
   <eClassifiers xsi:type="ecore:EDataType" name="EmfResource" instanceClassName="org.eclipse.emf.ecore.resource.Resource"

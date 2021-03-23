@@ -5,7 +5,7 @@ import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.TestInfo
 import org.junit.jupiter.api.^extension.ExtendWith
-import tools.vitruv.framework.change.processing.ChangePropagationSpecification
+import tools.vitruv.framework.propagation.ChangePropagationSpecification
 import tools.vitruv.framework.correspondence.CorrespondenceModel
 import tools.vitruv.framework.vsum.InternalVirtualModel
 import tools.vitruv.testutils.matchers.CorrespondenceModelContainer

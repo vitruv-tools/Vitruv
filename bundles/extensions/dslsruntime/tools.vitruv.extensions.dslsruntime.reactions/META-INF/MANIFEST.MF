@@ -16,7 +16,7 @@ Require-Bundle: org.apache.log4j;visibility:=reexport,
  tools.vitruv.framework.correspondence;visibility:=reexport,
  tools.vitruv.framework.uuid;visibility:=reexport,
  tools.vitruv.framework.change;visibility:=reexport,
- tools.vitruv.framework.change.processing;visibility:=reexport,
+ tools.vitruv.framework.propagation;visibility:=reexport,
  tools.vitruv.framework.domains,
  tools.vitruv.framework.util;visibility:=reexport,
  tools.vitruv.framework.userinteraction;visibility:=reexport

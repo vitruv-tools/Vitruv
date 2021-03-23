@@ -1,9 +1,9 @@
-package tools.vitruv.framework.change.processing.impl
+package tools.vitruv.framework.propagation.impl
 
 import tools.vitruv.framework.userinteraction.UserInteractor
-import tools.vitruv.framework.change.processing.ChangePropagationSpecification
+import tools.vitruv.framework.propagation.ChangePropagationSpecification
 import tools.vitruv.framework.domains.VitruvDomain
-import tools.vitruv.framework.change.processing.ChangePropagationObserver
+import tools.vitruv.framework.propagation.ChangePropagationObserver
 import java.util.List
 import org.eclipse.emf.ecore.EObject
 

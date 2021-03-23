@@ -5,10 +5,10 @@ import org.eclipse.xtend.lib.annotations.Delegate
 import tools.vitruv.framework.domains.VitruvDomain
 import org.eclipse.emf.ecore.EPackage
 import java.util.List
-import tools.vitruv.framework.change.processing.ChangePropagationSpecification
+import tools.vitruv.framework.propagation.ChangePropagationSpecification
 import tools.vitruv.framework.change.description.TransactionalChange
 import tools.vitruv.framework.correspondence.CorrespondenceModel
-import tools.vitruv.framework.change.processing.ResourceAccess
+import tools.vitruv.framework.propagation.ResourceAccess
 
 /**
  * Xtext tests reset the metamodel registry between test runs. Hence, it might
