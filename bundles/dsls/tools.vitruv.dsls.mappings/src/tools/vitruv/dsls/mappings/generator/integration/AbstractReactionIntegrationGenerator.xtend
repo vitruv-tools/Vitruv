@@ -7,7 +7,7 @@ import tools.vitruv.dsls.mappings.mappingsLanguage.Mapping
 import tools.vitruv.dsls.mappings.mappingsLanguage.ReactionIntegration
 import tools.vitruv.dsls.mappings.mappingsLanguage.ReactionOrientation
 import tools.vitruv.dsls.mappings.mappingsLanguage.RoutineIntegration
-import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsLanguageFactory
+import tools.vitruv.dsls.reactions.language.toplevelelements.TopLevelElementsFactory
 
 abstract class AbstractReactionIntegrationGenerator implements IReactionIntegrationGenerator {
 
@@ -59,7 +59,7 @@ abstract class AbstractReactionIntegrationGenerator implements IReactionIntegrat
 	 * Creates a reaction from an integrated reaction specification
 	 */
 	static def generateReaction(ReactionIntegration reactionIntegration) {
-		val reaction = ReactionsLanguageFactory.eINSTANCE.createReaction
+		val reaction = TopLevelElementsFactory.eINSTANCE.createReaction
 		reaction.callRoutine = EcoreUtil.copy(reactionIntegration.callRoutine)
 		reaction.documentation = reactionIntegration.documentation
 		reaction.name = reactionIntegration.name
@@ -71,7 +71,7 @@ abstract class AbstractReactionIntegrationGenerator implements IReactionIntegrat
 	 * Creates a routine from an integrated routine specification
 	 */
 	static def generateRoutine(RoutineIntegration routineIntegration) {
-		val routine = ReactionsLanguageFactory.eINSTANCE.createRoutine
+		val routine = TopLevelElementsFactory.eINSTANCE.createRoutine
 		routine.name = routineIntegration.name
 		routine.input = EcoreUtil.copy(routineIntegration.input)
 //		routine.documentation = routineIntegration.documentation

@@ -3,17 +3,25 @@
 <plugin>
 	<extension point="org.eclipse.emf.ecore.generated_package">
 		<package 
-			uri = "http://vitruv.tools/dsls/reactions/ReactionsLanguage"
-			class = "tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsLanguagePackage"
+			uri = "http://vitruv.tools/dsls/reactions/language"
+			class = "tools.vitruv.dsls.reactions.language.LanguagePackage"
 			genModel = "model/generated/ReactionsLanguage.genmodel" />
 	</extension>
 
    <extension point="org.eclipse.emf.ecore.generated_package">
       <!-- @generated InputTypes -->
       <package
-            uri="http://vitruv.tools/dsls/reactions/ReactionsLanguage/InputTypes"
-            class="tools.vitruv.dsls.reactions.reactionsLanguage.inputTypes.InputTypesPackage"
+            uri="http://vitruv.tools/dsls/reactions/language/inputtypes"
+            class="tools.vitruv.dsls.reactions.language.inputTypes.InputTypesPackage"
             genModel="model/InputTypes.genmodel"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated TopLevelElements -->
+      <package
+            uri="http://vitruv.tools/dsls/reactions/language/toplevelelements"
+            class="tools.vitruv.dsls.reactions.language.toplevelelements.TopLevelElementsPackage"
+            genModel="model/TopLevelElements.genmodel"/>
    </extension>
 
 </plugin>

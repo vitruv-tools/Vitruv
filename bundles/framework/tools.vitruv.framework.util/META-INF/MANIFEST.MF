@@ -6,9 +6,8 @@ Automatic-Module-Name: tools.vitruv.framework.util
 Bundle-Version: 2.1.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Export-Package: tools.vitruv.framework.util,
- tools.vitruv.framework.util.bridges,
- tools.vitruv.framework.util.command,
- tools.vitruv.framework.util.datatypes
+ tools.vitruv.framework.util.datatypes,
+ tools.vitruv.framework.util.command
 Require-Bundle: org.apache.log4j,
  org.eclipse.core.resources;visibility:=reexport,
  org.eclipse.core.runtime;visibility:=reexport,

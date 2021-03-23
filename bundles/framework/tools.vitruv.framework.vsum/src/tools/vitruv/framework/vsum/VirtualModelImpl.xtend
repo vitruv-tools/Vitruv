@@ -1,8 +1,6 @@
 package tools.vitruv.framework.vsum
 
-import java.util.Collections
 import java.util.List
-import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.resource.Resource
 import tools.vitruv.framework.change.description.PropagatedChange
 import tools.vitruv.framework.change.description.VitruviusChange
@@ -20,6 +18,7 @@ import java.nio.file.Path
 import static com.google.common.base.Preconditions.checkNotNull
 import java.util.LinkedList
 import static com.google.common.base.Preconditions.checkArgument
+import static com.google.common.base.Preconditions.checkState
 import tools.vitruv.framework.vsum.modelsynchronization.ChangePropagator
 
 class VirtualModelImpl implements InternalVirtualModel {
@@ -31,7 +30,7 @@ class VirtualModelImpl implements InternalVirtualModel {
 	val List<ChangePropagationListener> changePropagationListeners = new LinkedList()
 	val List<PropagatedChangeListener> propagatedChangeListeners = new LinkedList()
 	val extension ChangeDomainExtractor changeDomainExtractor
-
+	
 	package new(VsumFileSystemLayout fileSystemLayout, InternalUserInteractor userInteractor,
 		VitruvDomainRepository domainRepository,
 		ChangePropagationSpecificationProvider changePropagationSpecificationProvider) {
@@ -46,6 +45,10 @@ class VirtualModelImpl implements InternalVirtualModel {
 			userInteractor
 		)
 	}
+	
+	package def loadExistingModels() {
+		this.resourceRepository.loadExistingModels()
+	}
 
 	override synchronized getCorrespondenceModel() {
 		this.resourceRepository.correspondenceModel
@@ -59,12 +62,8 @@ class VirtualModelImpl implements InternalVirtualModel {
 		this.resourceRepository.getModel(modelVuri)
 	}
 
-	override synchronized save() {
+	private def synchronized save() {
 		this.resourceRepository.saveOrDeleteModels()
-	}
-
-	override synchronized persistRootElement(VURI persistenceVuri, EObject rootElement) {
-		this.resourceRepository.persistAsRoot(rootElement, persistenceVuri)
 	}
 
 	override synchronized propagateChange(VitruviusChange change) {
@@ -116,19 +115,32 @@ class VirtualModelImpl implements InternalVirtualModel {
 	 * @see tools.vitruv.framework.vsum.VirtualModel#propagateChangedState(Resource, URI)
 	 */
 	override synchronized propagateChangedState(Resource newState, URI oldLocation) {
-		if (newState === null || oldLocation === null) {
-			throw new IllegalArgumentException("New state and old location cannot be null!")
+		checkArgument(oldLocation !== null || newState !== null, "either new state or old location must not be null")
+		val currentState = oldLocation.retrieveCurrentModelState()
+		if (currentState === null) {
+			checkState(newState !== null, "new state must not be null if no resource exists for old location " + oldLocation)
 		}
-		val vuri = VURI.getInstance(oldLocation) // using the URI of a resource allows using the model resource, the model root, or any model element as input.
-		val vitruvDomain = domainRepository.getDomain(vuri.fileExtension)
-		val currentState = resourceRepository.getModel(vuri).resource
-		if (currentState.isValid(newState)) {
-			val strategy = vitruvDomain.stateChangePropagationStrategy
-			val compositeChange = strategy.getChangeSequences(newState, currentState, uuidResolver)
-			return propagateChange(compositeChange)
+		val vitruvDomain = domainRepository.getDomain(if (oldLocation !== null) oldLocation.fileExtension else newState.URI.fileExtension)
+		val strategy = vitruvDomain.stateChangePropagationStrategy
+		val compositeChange = if (currentState === null) {
+				strategy.getChangeSequenceForCreated(newState, uuidResolver)
+			} else if (newState === null) {
+				strategy.getChangeSequenceForDeleted(currentState, uuidResolver)
+			} else {
+				strategy.getChangeSequenceBetween(newState, currentState, uuidResolver)
+			}
+		if (!compositeChange.containsConcreteChange) {
+			LOGGER.warn("State-based change for " + oldLocation + " was empty")
+			return emptyList
 		}
-		LOGGER.error("Could not load current state for new state. No changes were propagated!")
-		return emptyList
+		return propagateChange(compositeChange)
+	}
+	
+	private def retrieveCurrentModelState(URI location) {
+		if (location !== null) {
+			val vuri = VURI.getInstance(location)
+			resourceRepository.getModel(vuri)?.resource
+		}
 	}
 
 	override synchronized reverseChanges(List<PropagatedChange> changes) {
@@ -205,13 +217,6 @@ class VirtualModelImpl implements InternalVirtualModel {
 		for (PropagatedChangeListener propagatedChangeListener : this.propagatedChangeListeners) {
 			propagatedChangeListener.postChanges(name, sourceDomain, targetDomain, propagationResult)
 		}
-	}
-
-	/**
-	 * Confirms whether the current state is retrievable via its URI from the resource set of the new state.
-	 */
-	private def boolean isValid(Resource currentState, Resource newState) {
-		newState.resourceSet.URIConverter.exists(currentState.URI, Collections.emptyMap)
 	}
 
 	override void dispose() {

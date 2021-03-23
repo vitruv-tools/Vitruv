@@ -1,17 +1,12 @@
 package tools.vitruv.framework.vsum
 
-import tools.vitruv.framework.util.datatypes.VURI
-import org.eclipse.emf.ecore.EObject
 import tools.vitruv.framework.vsum.modelsynchronization.ChangePropagationListener
-import tools.vitruv.framework.vsum.variability.VaveModel
 import tools.vitruv.framework.correspondence.CorrespondenceModel
-
+import tools.vitruv.framework.vsum.variability.InternalVaveModel
 
 interface InternalVirtualModel extends VirtualModel {
 	def CorrespondenceModel getCorrespondenceModel()
-	def VaveModel getVaveModel()
-	def void save()
-	def void persistRootElement(VURI persistenceVuri, EObject rootElement)
+	def InternalVaveModel getVaveModel()
 	def void addChangePropagationListener(ChangePropagationListener propagationListener)
 	def void removeChangePropagationListener(ChangePropagationListener propagationListener)
 	def void addPropagatedChangeListener(PropagatedChangeListener propagatedChangeListener)

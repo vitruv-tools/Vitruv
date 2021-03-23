@@ -1,29 +1,17 @@
 package tools.vitruv.framework.vsum.helper
 
-import edu.kit.ipd.sdq.activextendannotations.CloseResource
 import java.io.IOException
-import java.io.InputStream
-import java.io.ObjectInputStream
-import java.io.ObjectOutputStream
-import java.io.ObjectStreamClass
 import java.net.URLEncoder
 import java.nio.file.Path
-import java.util.HashSet
-import java.util.Set
-import tools.vitruv.framework.util.bridges.EMFBridge
 import tools.vitruv.framework.util.datatypes.VURI
 
 import static com.google.common.base.Preconditions.checkArgument
 import static com.google.common.base.Preconditions.checkState
 import static java.nio.charset.StandardCharsets.UTF_8
-import static java.nio.file.Files.*
 import static java.nio.file.Files.createDirectories
-import static java.nio.file.Files.newOutputStream
 import static tools.vitruv.framework.util.VitruviusConstants.*
 import static tools.vitruv.framework.vsum.VsumConstants.*
-
-import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
-import java.nio.file.NoSuchFileException
+import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.common.util.URIUtil.createFileURI
 
 class VsumFileSystemLayout {
 	val Path vsumProjectFolder
@@ -74,12 +62,12 @@ class VsumFileSystemLayout {
 	def VURI getConsistencyMetadataModelVURI(String... metadataKey) {
 		checkPrepared()
 		var metadataPath = consistencyMetadataFolder.resolve(getMetadataFilePath(metadataKey)) 
-		return VURI.getInstance(EMFBridge.getEmfFileUriForFile(metadataPath.toFile)) 
+		return VURI.getInstance(metadataPath.toFile.createFileURI)
 	}
 	
 	def VURI getCorrespondencesVURI() {
 		checkPrepared()
-		return VURI.getInstance(EMFBridge.getEmfFileUriForFile(correspondenceModelPath.toFile)) 
+		return VURI.getInstance(correspondenceModelPath.toFile.createFileURI) 
 	}
 	
 	def private getCorrespondenceModelPath() {
@@ -88,7 +76,7 @@ class VsumFileSystemLayout {
 	
 	def VURI getVaveVURI() {
 		checkPrepared()
-		return VURI.getInstance(EMFBridge.getEmfFileUriForFile(vaveModelPath.toFile)) 
+		return VURI.getInstance(vaveModelPath.toFile.createFileURI) 
 	}
 	
 	def private getVaveModelPath() {
@@ -98,95 +86,9 @@ class VsumFileSystemLayout {
 	def VURI getUuidProviderAndResolverVURI() {
 		checkPrepared()
 		val uuidPath = uuidProviderAndResolverFolder.resolve('''Uuid«fileExtSeparator»«uuidFileExt»''')
-		return VURI.getInstance(EMFBridge.getEmfFileUriForFile(uuidPath.toFile)) 
+		return VURI.getInstance(uuidPath.toFile.createFileURI) 
 	}
 	
-	def void saveCorrespondenceModelMMURIs() {
-		checkPrepared()
-		// FIXME This does nothing reasonable anymore
-		var Set<VURI> mmURIsSet=new HashSet() 
-		// Arrays.asList(mmURIs));
-		saveVURISetToFile(mmURIsSet, correspondenceModelPath) 
-	}
-	
-	def void saveVsumVURIs(Set<VURI> vuris) {
-		checkPrepared()
-		saveVURISetToFile(vuris, vsumInstancesFile) 
-	}
-	
-	def private static void saveVURISetToFile(Set<VURI> vuris, Path file) {
-		val stringSet = vuris.mapFixedTo(new HashSet(vuris.size)) [EMFUri.toString]
-		saveObjectToFile(stringSet, file) 
-	}
-	
-	def private static void saveObjectToFile(Object object, Path file) {
-		try {
-			// TODO: this code could be optimized in a way that a new method is provide for sets of
-			// strings where only the new strings are appended to the file
-			saveObjectToStream(object, new ObjectOutputStream(newOutputStream(file)))
-		} catch (IOException e) {
-			throw new RuntimeException('''Could not save ‹«object»› to ‹«file»›''', e)
-		}
-	}
-	
-	def private static void saveObjectToStream(Object object, ObjectOutputStream outputStream) {
-		outputStream.writeObject(object)
-		outputStream.flush()
-	}
-	
-	def Set<VURI> loadVsumVURIs() {
-		checkPrepared()
-		loadVURISetFromFile(vsumInstancesFile) 
-	}
-	
-	def private static Set<VURI> loadVURISetFromFile(Path file) {
-		val stringSet = loadStringSetFromFile(file)
-		stringSet.mapFixedTo(new HashSet(stringSet.size)) [VURI.getInstance(it)]
-	}
-	
-	def private static Set<String> loadStringSetFromFile(Path file) {
-		val object = loadObjectFromFile(file)
-		switch(object) {
-			case null: emptySet
-			Set<String>: object
-			default: throw new RuntimeException('''The file '«file»' does not contain a set of strings!''')
-		} 
-	}
-	
-	def private static Object loadObjectFromFile(Path file) {
-		return loadObjectFromFile(file, null) 
-	}
-	
-	def private static Object loadObjectFromFile(Path file, ClassLoader cl) {
-		try {
-			loadObjectsFromStream(newInputStream(file), cl)
-		} catch (NoSuchFileException e) {
-			return null 
-		}
-	}
-	
-	def private static Object loadObjectsFromStream(@CloseResource InputStream inputStream, ClassLoader classLoader) {
-		val objectInputStream = if (classLoader === null) {
-			new ObjectInputStream(inputStream)
-		} else {
-			new ObjectInputStream(inputStream) {
-				override protected Class<?> resolveClass(ObjectStreamClass desc) throws IOException, ClassNotFoundException {
-					try {
-						super.resolveClass(desc) 
-					} catch (ClassNotFoundException e) {
-						var String name = desc.getName() 
-						Class.forName(name, false, classLoader) 
-					}
-				}
-			}
-		}
-		loadObjectsFromStream(objectInputStream) 
-	}
-	
-	def private static Object loadObjectsFromStream(@CloseResource ObjectInputStream objectStream) {
-		objectStream.readObject()
-	}
-
 	def Path getVsumProjectFolder() {
 		return this.vsumProjectFolder 
 	}

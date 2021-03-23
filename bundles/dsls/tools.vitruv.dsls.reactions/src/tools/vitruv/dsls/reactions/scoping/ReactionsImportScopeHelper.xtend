@@ -7,8 +7,8 @@ import org.eclipse.xtext.resource.IContainer
 import org.eclipse.xtext.resource.IEObjectDescription
 import org.eclipse.xtext.resource.IResourceDescription
 import org.eclipse.xtext.resource.IResourceDescriptionsProvider
-import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsLanguagePackage
-import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsSegment
+import tools.vitruv.dsls.reactions.language.toplevelelements.TopLevelElementsPackage
+import tools.vitruv.dsls.reactions.language.toplevelelements.ReactionsSegment
 import org.eclipse.emf.ecore.util.EcoreUtil
 
 @Singleton
@@ -32,7 +32,7 @@ class ReactionsImportScopeHelper {
 		];
 		val reactionsSegmentURI = EcoreUtil.getURI(reactionsSegment);
 		val visibleReactionsSegmentDescriptions = visibleReactionsResources.map [
-			getExportedObjectsByType(ReactionsLanguagePackage.eINSTANCE.reactionsSegment)
+			getExportedObjectsByType(TopLevelElementsPackage.eINSTANCE.reactionsSegment)
 		].flatten.filter [
 			// the validator also uses this to globally find reactions segments with duplicate names,
 			// so filtering out all reactions segments with equal name would break that,

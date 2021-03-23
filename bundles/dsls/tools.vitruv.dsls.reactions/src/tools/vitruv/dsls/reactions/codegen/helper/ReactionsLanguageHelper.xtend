@@ -3,28 +3,24 @@ package tools.vitruv.dsls.reactions.codegen.helper
 import org.eclipse.xtext.nodemodel.util.NodeModelUtils
 import org.eclipse.xtext.xbase.XExpression
 import org.eclipse.xtext.xbase.XBlockExpression
-import tools.vitruv.dsls.mirbase.mirBase.MetaclassReference
-import tools.vitruv.dsls.mirbase.mirBase.DomainReference
-import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsSegment
+import tools.vitruv.dsls.common.elements.MetaclassReference
+import tools.vitruv.dsls.common.elements.DomainReference
+import tools.vitruv.dsls.reactions.language.toplevelelements.ReactionsSegment
 import edu.kit.ipd.sdq.commons.util.java.Pair
 import tools.vitruv.framework.domains.VitruvDomainProvider
 import tools.vitruv.framework.domains.VitruvDomain
-import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsFile
+import tools.vitruv.dsls.reactions.language.toplevelelements.ReactionsFile
 import org.eclipse.emf.ecore.resource.Resource
 import static com.google.common.base.Preconditions.*
 import tools.vitruv.framework.domains.VitruvDomainProviderRegistry
 import tools.vitruv.dsls.reactions.api.generator.ReferenceClassNameAdapter
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EClassifier
-import tools.vitruv.dsls.reactions.reactionsLanguage.Reaction
-import tools.vitruv.dsls.reactions.reactionsLanguage.Routine
-import tools.vitruv.dsls.reactions.reactionsLanguage.RoutineOverrideImportPath
-import static extension tools.vitruv.dsls.reactions.util.ReactionsLanguageUtil.*;
+import edu.kit.ipd.sdq.activextendannotations.Utility
 
-final class ReactionsLanguageHelper {
-	private new() {
-	}
-
+@Utility
+class ReactionsLanguageHelper {
+	
 	static def dispatch String getXBlockExpressionText(XExpression expression) '''
 	{
 		«NodeModelUtils.getNode(expression).text»
@@ -47,7 +43,7 @@ final class ReactionsLanguageHelper {
 	}
 
 	static def getJavaClassName(MetaclassReference metaclassReference) {
-		metaclassReference.metaclass.javaClassName;
+		metaclassReference.metaclass?.javaClassName;
 	}
 
 	static def VitruvDomainProvider<?> getProviderForDomain(VitruvDomain domain) {
@@ -104,42 +100,4 @@ final class ReactionsLanguageHelper {
 		resource.optionalReactionsFile !== null
 	}
 	
-	def static isComplete(ReactionsSegment reactionsSegment) {
-		if (reactionsSegment === null) return false;
-		if (reactionsSegment.name === null) return false;
-		if (reactionsSegment.fromDomain === null) return false;
-		if (reactionsSegment.toDomain === null) return false;
-		return true;
-	}
-	
-	def static isComplete(Reaction reaction) {
-		if (reaction === null) return false;
-		if (reaction.name === null) return false;
-		if (reaction.trigger === null) return false;
-		if (reaction.callRoutine === null) return false;
-		return true;
-	}
-	
-	def static isComplete(Routine routine) {
-		if (routine === null) return false;
-		if (routine.name === null) return false;
-		if (routine.action === null) return false;
-		if (routine.input === null) return false;
-		if (routine.input.javaInputElements.findFirst[it.name === null || it.type === null || it.type.qualifiedName === null] !== null) {
-			return false;
-		}
-		if (routine.input.modelInputElements.findFirst[it.name === null || it.metaclass === null || it.metaclass.javaClassName === null] !== null) {
-			return false;
-		}
-		return true;
-	}
-	
-	// note: this triggers a resolve of cross-references
-	def static isComplete(RoutineOverrideImportPath routineOverrideImportPath) {
-		if (routineOverrideImportPath === null) return false;
-		if (routineOverrideImportPath.fullPath.findFirst[it.reactionsSegment === null || it.reactionsSegment.name === null] !== null) {
-			return false;
-		} 
-		return true;
-	}
 }

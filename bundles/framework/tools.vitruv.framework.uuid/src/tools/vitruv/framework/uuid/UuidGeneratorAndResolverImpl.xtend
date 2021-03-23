@@ -7,8 +7,8 @@ import org.eclipse.emf.ecore.resource.ResourceSet
 import org.eclipse.emf.ecore.util.EcoreUtil
 import org.eclipse.emf.ecore.resource.Resource
 import org.apache.log4j.Logger
-import static extension tools.vitruv.framework.util.bridges.EcoreResourceBridge.*
-import static extension tools.vitruv.framework.util.bridges.JavaBridge.*
+import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceSetUtil.loadOrCreateResource
+import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceSetUtil.withGlobalFactories
 import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.EClass
 import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.common.util.URIUtil.*
@@ -17,13 +17,15 @@ import static com.google.common.base.Preconditions.checkState
 import static com.google.common.base.Preconditions.checkNotNull
 import tools.vitruv.framework.util.ResourceRegistrationAdapter
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
-import static extension tools.vitruv.framework.util.ResourceSetUtil.withGlobalFactories
+import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceUtil.getFirstRootEObject
 
 /**
  * {@link UuidGeneratorAndResolver}
  */
 package class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 	static val logger = Logger.getLogger(UuidGeneratorAndResolverImpl)
+	static val NON_READONLY_PREFIX = "ord_"
+	
 	val ResourceSet resourceSet
 	val Resource uuidResource
 	val UuidResolver parentUuidResolver
@@ -57,17 +59,11 @@ package class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 		this.resourceSet.eAdapters += new ResourceRegistrationAdapter[resource|loadUuidsFromParent(resource)]
 	}
 
-	/**
-	 * Loads the mapping between UUIDs and {@link EObject}s from the persistence at the {@link URI}
-	 * given in the constructor and resolves the referenced {@link EObject}s in the {@link ResourceSet}
-	 * given in the constructor.
-	 */
-	def package loadUuidsAndModelsFromSerializedUuidRepository() {
+	override loadUuidsAndModelsFromSerializedUuidRepository() {
 		checkState(uuidResource !== null, "UUID resource must be specified to load existing UUIDs")
 		val loadedResource = new ResourceSetImpl().withGlobalFactories.loadOrCreateResource(uuidResource.URI)
-		val loadedRepository = loadedResource.resourceContentRootIfUnique?.dynamicCast(UuidToEObjectRepository,
-			"UUID provider and resolver model")
-		if (loadedRepository !== null) {
+		if (!loadedResource.contents.empty) {
+			val loadedRepository = loadedResource.contents.get(0) as UuidToEObjectRepository
 			for (proxyEntry : loadedRepository.EObjectToUuid.entrySet) {
 				val resolvedObject = EcoreUtil.resolve(proxyEntry.key, resourceSet)
 				if (resolvedObject.eIsProxy) {
@@ -79,18 +75,52 @@ package class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 		}
 	}
 
+	override save() {
+		cleanupRemovedElements()
+		uuidResource?.save(null)
+	}
+
+	private def cleanupRemovedElements() {
+		for (val iterator = repository.EObjectToUuid.keySet.iterator(); iterator.hasNext();) {
+			val object = iterator.next()
+			if (object.eResource === null) {
+				val uuid = repository.EObjectToUuid.get(object)
+				repository.uuidToEObject.removeKey(uuid)
+				iterator.remove()
+			}
+		}
+	}
+
+	override close() {
+		this.uuidResource.unload()
+	}
+
 	override getUuid(EObject eObject) {
-		val result = internalGetUuid(eObject)
+		val result = eObject.getUuidOrNull()
 		checkState(result !== null, "No UUID registered for EObject: %s", eObject)
 		return result
 	}
-
-	private def internalGetUuid(EObject eObject) {
+	
+	private def getUuidOrNull(EObject eObject) {
+		return eObject.getUuidIfObjectReadonly()
+			?: eObject.getUuidIfStoredEObject()
+			?: eObject.getUuidIfEClass()
+			?: null
+	}
+	
+	private def getUuidIfObjectReadonly(EObject eObject) {
+		val uri = EcoreUtil.getURI(eObject)
+		if (uri.isReadOnly()) {
+			return uri.toString
+		}
+	}
+	
+	private def getUuidIfStoredEObject(EObject eObject) {
 		val localResult = repository.EObjectToUuid.get(eObject)
 		if (localResult !== null) {
 			return localResult
 		}
-
+		
 		// If the object already has a resource, but is not from the resolver’s resource set, resolve it and try again
 		val objectResource = eObject.eResource
 		if (objectResource !== null && objectResource.resourceSet != resourceSet) {
@@ -105,16 +135,16 @@ package class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 				}
 			}
 		}
-
+	}
+	
+	private def getUuidIfEClass(EObject eObject) {
 		if (eObject instanceof EClass) {
 			return generateUuid(eObject)
 		}
-
-		return null
 	}
-
+	
 	override getEObject(String uuid) {
-		val eObject = internalGetEObject(uuid)
+		val eObject = uuid.getEObjectOrNull()
 		checkState(eObject !== null, "No EObject could be found for UUID: %s", uuid)
 		return eObject
 	}
@@ -123,21 +153,24 @@ package class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 		cache.uuidToEObject.get(uuid) ?: getEObject(uuid)
 	}
 
-	private def EObject internalGetEObject(String uuid) {
-		val eObject = repository.uuidToEObject.get(uuid)
-		if (eObject === null) {
-			return null
+	private def EObject getEObjectOrNull(String uuid) {
+		return uuid.getEObjectIfReadonlyUri()
+			?: uuid.getStoredEObject()
+			?: null
+	}
+	
+	private def getEObjectIfReadonlyUri(String uuid) {
+		if (!uuid.startsWith(NON_READONLY_PREFIX)) {
+			return resolve(URI.createURI(uuid))
 		}
-		if (eObject.eIsProxy) {
-			// Try to resolve the proxy. This can still lead to a valid proxy element if it is a proxy on purpose
-			val resolvedObject = EcoreUtil.resolve(eObject, resourceSet)
-			return resolvedObject
-		} else {
-			return eObject
-		}
+	}
+	
+	private def getStoredEObject(String uuid) {
+		return repository.uuidToEObject.get(uuid)
 	}
 
 	override String generateUuid(EObject eObject) {
+		checkState(!eObject.eIsProxy, "Cannot generate UUID for proxy object: " + eObject)
 		val cachedUuid = cache.EObjectToUuid.removeKey(eObject)
 		if (cachedUuid !== null) {
 			cache.uuidToEObject.remove(cachedUuid)
@@ -147,19 +180,8 @@ package class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 		return uuid
 	}
 
-	override String generateUuidWithoutCreate(EObject eObject) {
-		val uuid = generateUuid(eObject)
-		// Register UUID globally for third party elements that are statically accessible and are never created.
-		// Since this is called in the moment when an element gets created, the object can only be globally resolved
-		// if it a third party element.
-		if (!parentUuidResolver.registerUuidForGlobalUri(uuid, EcoreUtil.getURI(eObject))) {
-			throw new IllegalStateException("Object has no UUID and is not globally accessible: " + eObject)
-		}
-		return uuid
-	}
-
 	private def String generateUuid() {
-		return EcoreUtil.generateUUID()
+		return NON_READONLY_PREFIX + EcoreUtil.generateUUID()
 	}
 
 	override registerEObject(String uuid, EObject eObject) {
@@ -174,29 +196,19 @@ package class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 	}
 
 	override hasPotentiallyCachedEObject(String uuid) {
-		cache.uuidToEObject.containsKey(uuid) || internalGetEObject(uuid) !== null
+		cache.uuidToEObject.containsKey(uuid) || uuid.getEObjectOrNull() !== null
 	}
 
 	override hasUuid(EObject object) {
-		return internalGetUuid(object) !== null
+		return object.getUuidOrNull() !== null
 	}
 
 	override hasEObject(String uuid) {
-		return internalGetEObject(uuid) !== null
+		return uuid.getEObjectOrNull() !== null
 	}
 
 	override getResourceSet() {
 		return resourceSet
-	}
-
-	override registerUuidForGlobalUri(String uuid, URI uri) {
-		val localObject = resolve(uri)
-		if (localObject !== null) {
-			registerEObject(uuid, localObject)
-			// Recursively do that
-			return parentUuidResolver.registerUuidForGlobalUri(uuid, uri)
-		}
-		return false
 	}
 
 	override registerEObject(EObject eObject) {
@@ -205,7 +217,8 @@ package class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 		} else if (hasUuid(eObject)) {
 			registerEObject(getUuid(eObject), eObject)
 		} else {
-			throw new IllegalStateException("EObject '" + eObject + "' cannot be registered because it does not have a UUID yet")
+			throw new IllegalStateException("EObject '" + eObject +
+				"' cannot be registered because it does not have a UUID yet")
 		}
 	}
 
@@ -227,20 +240,18 @@ package class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 	}
 
 	override void loadUuidsToChild(UuidResolver childResolver, URI uri) {
-		// Only load UUIDs if resource exists (a pathmap resource always exists)
-		if (((uri.isFile || uri.isPlatform) && uri.existsResourceAtUri) || uri.isPathmap) {
+		// Only load UUIDs if resource exists and is not read only
+		if (!uri.readOnly && uri.existsResourceAtUri) {
 			val childContents = childResolver.resourceSet.getResource(uri, true).allContents
-			val ourContents = this.resourceSet.getResource(uri, true).allContents
+			val ourResource = this.resourceSet.getResource(uri, false)
+			checkState(ourResource !== null, "no matching resource at '%s' in parent resolver", uri)
+			val ourContents = ourResource.allContents
 			while (childContents.hasNext) {
 				val childObject = childContents.next
 				checkState(ourContents.hasNext, "Cannot find %s in our resource set!", childObject)
 				val ourObject = ourContents.next
 
 				var objectUuid = repository.EObjectToUuid.get(ourObject)
-				// Not having a UUID is only supported for pathmap resources
-				if (objectUuid === null && uri.isPathmap) {
-					objectUuid = generateUuid(ourObject)
-				}
 				if (objectUuid === null) {
 					throw new IllegalStateException('''Element does not have a UUID but should have one: «ourObject»''')
 				}
@@ -283,25 +294,9 @@ package class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 			resource.URI.appendFragment('/' + rootElementIndex + '/' + fragmentPath)
 		}
 	}
-
-	override save() {
-		cleanupRemovedElements()
-		uuidResource?.save(null)
-	}
-
-	private def cleanupRemovedElements() {
-		for (val iterator = repository.EObjectToUuid.keySet.iterator(); iterator.hasNext();) {
-			val object = iterator.next()
-			if (object.eResource === null) {
-				val uuid = repository.EObjectToUuid.get(object)
-				repository.uuidToEObject.removeKey(uuid)
-				iterator.remove()
-			}
-		}
-	}
-
-	override close() {
-		this.uuidResource.unload
+	
+	private static def isReadOnly(URI uri) {
+		uri.isPathmap || uri.isArchive
 	}
 
 }

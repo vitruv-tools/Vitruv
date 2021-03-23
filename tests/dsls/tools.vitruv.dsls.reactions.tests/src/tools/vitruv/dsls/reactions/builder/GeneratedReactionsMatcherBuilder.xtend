@@ -3,7 +3,7 @@ package tools.vitruv.dsls.reactions.builder
 import org.hamcrest.TypeSafeMatcher
 import org.hamcrest.Description
 import org.eclipse.xtext.testing.util.ParseHelper
-import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsFile
+import tools.vitruv.dsls.reactions.language.toplevelelements.ReactionsFile
 import tools.vitruv.dsls.reactions.api.generator.IReactionsGenerator
 import org.eclipse.xtext.generator.InMemoryFileSystemAccess
 import com.google.inject.Inject

@@ -8,7 +8,7 @@
       <repositories location="http://vitruv-tools.github.io/updatesite/release/license/1.0.0" mirrorArtifacts="false">
         <features name="tools.vitruv.license.feature.feature.group" versionRange="[1.0.0,1.0.1)"/>
       </repositories>
-      <repositories location="http://kit-sdq.github.io/updatesite/release/commons/1.10.0" mirrorArtifacts="false">
+      <repositories location="http://kit-sdq.github.io/updatesite/release/commons/2.0.0" mirrorArtifacts="false">
         <features name="edu.kit.ipd.sdq.commons.util.java.feature.feature.group"/>
         <features name="edu.kit.ipd.sdq.commons.util.emf.feature.feature.group"/>
         <features name="edu.kit.ipd.sdq.commons.util.eclipse.feature.feature.group"/>

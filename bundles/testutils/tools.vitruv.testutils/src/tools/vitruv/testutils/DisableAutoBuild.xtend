@@ -5,7 +5,9 @@ import org.junit.jupiter.api.^extension.BeforeEachCallback
 import org.junit.jupiter.api.^extension.ExtensionContext
 import org.junit.jupiter.api.^extension.ExtensionContext.Store.CloseableResource
 import org.junit.jupiter.api.^extension.ExtensionContext.Namespace
-import tools.vitruv.framework.util.bridges.EclipseBridge
+import static edu.kit.ipd.sdq.commons.util.org.eclipse.core.resources.IWorkspaceUtil.turnOffAutoBuildIfOn
+import static edu.kit.ipd.sdq.commons.util.org.eclipse.core.resources.IWorkspaceUtil.turnOnAutoBuild
+import org.eclipse.core.resources.ResourcesPlugin
 
 /**
  * Disables automatic building in an Eclipse workspace during the test, and sets it back
@@ -22,14 +24,14 @@ class DisableAutoBuild implements BeforeAllCallback, BeforeEachCallback {
 	}
 	
 	def private disableAutoBuilding(ExtensionContext context) {
-		if (EclipseBridge.turnOffAutoBuildIfOn()) {
+		if (turnOffAutoBuildIfOn(ResourcesPlugin.workspace)) {
 			context.getStore(Namespace.GLOBAL).put(EnableAutoBuildGuard.name, new EnableAutoBuildGuard)
 		}
 	}
 	
 	private static class EnableAutoBuildGuard implements CloseableResource {
 		override close() throws Throwable {
-			EclipseBridge.turnOnAutoBuild()
+			turnOnAutoBuild(ResourcesPlugin.workspace)
 		}
 	}
 }

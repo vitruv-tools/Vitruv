@@ -5,7 +5,6 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import org.junit.jupiter.api.Test
 
 import static org.junit.jupiter.api.Assertions.assertThrows
-import static org.junit.jupiter.api.Assertions.assertTrue
 import static tools.vitruv.framework.uuid.UuidGeneratorAndResolverFactory.createUuidGeneratorAndResolver
 
 class EdgeCaseStateChangeTest extends StateChangePropagationTest {
@@ -25,7 +24,7 @@ class EdgeCaseStateChangeTest extends StateChangePropagationTest {
 	def void testNoPcmChange() {
 		compareChanges(umlModel, umlCheckpoint)
 	}
-	
+
 	/**
 	 * Tests invalid input: null instead of state resources.
 	 */
@@ -34,8 +33,7 @@ class EdgeCaseStateChangeTest extends StateChangePropagationTest {
 		val resourceSet = new ResourceSetImpl
 		val resolver = createUuidGeneratorAndResolver(resourceSet)
 		val Resource nullResource = null
-		val change = strategyToTest.getChangeSequences(nullResource, nullResource, resolver)
-		assertTrue(change.EChanges.empty, "Composite change contains children!")
+		assertThrows(IllegalArgumentException)[strategyToTest.getChangeSequenceBetween(nullResource, nullResource, resolver)]
 	}
 
 	/**
@@ -44,7 +42,7 @@ class EdgeCaseStateChangeTest extends StateChangePropagationTest {
 	@Test
 	def void testNullResolver() {
 		assertThrows(IllegalArgumentException) [
-			strategyToTest.getChangeSequences(umlCheckpoint, umlCheckpoint, null)
+			strategyToTest.getChangeSequenceBetween(umlCheckpoint, umlCheckpoint, null)
 		]
 	}
 }

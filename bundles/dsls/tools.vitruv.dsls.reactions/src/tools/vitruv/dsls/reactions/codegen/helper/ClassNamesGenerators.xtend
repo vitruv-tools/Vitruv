@@ -2,14 +2,15 @@ package tools.vitruv.dsls.reactions.codegen.helper
 
 import static extension tools.vitruv.dsls.reactions.codegen.helper.ReactionsImportsHelper.*;
 import static extension tools.vitruv.dsls.reactions.util.ReactionsLanguageUtil.*
-import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsSegment
-import tools.vitruv.dsls.reactions.reactionsLanguage.Routine
-import tools.vitruv.dsls.reactions.reactionsLanguage.Reaction
+import tools.vitruv.dsls.reactions.language.toplevelelements.ReactionsSegment
+import tools.vitruv.dsls.reactions.language.toplevelelements.Routine
+import tools.vitruv.dsls.reactions.language.toplevelelements.Reaction
 import tools.vitruv.extensions.dslsruntime.reactions.structure.ReactionsImportPath
 import edu.kit.ipd.sdq.activextendannotations.Utility
 import tools.vitruv.dsls.common.ClassNameGenerator
 
-@Utility class ClassNamesGenerators {
+@Utility
+class ClassNamesGenerators {
 	static val String BASIC_PACKAGE = "mir"
 	static val REACTIONS_PACKAGE = "reactions"
 	static val String ROUTINES_PACKAGE = "routines"

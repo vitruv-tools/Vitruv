@@ -34,10 +34,6 @@ class EmptyUuidResolver implements UuidResolver {
 		throw new UnsupportedOperationException("This resolver is empty.");
 	}
 	
-	override registerUuidForGlobalUri(String uuid, URI uri) {
-		return true;
-	}
-	
 	override getPotentiallyCachedEObject(String uuid) {
 		throw new IllegalStateException("This resolver is empty.");
 	}

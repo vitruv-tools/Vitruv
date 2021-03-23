@@ -13,16 +13,17 @@ import org.eclipse.emf.ecore.EObject
 interface UuidGeneratorAndResolver extends UuidResolver, AutoCloseable {
 	/**
 	 * Registers an object and returns the generated UUID for it.
+	 * Object must not be a proxy.
 	 */
-	def String generateUuid(EObject eObject);
+	def String generateUuid(EObject eObject)
 
 	/**
-	 * Registers an object that was not created before and thus has no UUID.
-	 * This is only successful if the element is globally accessible (third party element) or if
-	 * we are not in strict mode. Otherwise an exception is thrown, because a previous create is missing. 
+	 * Loads the mapping between UUIDs and {@link EObject}s from the persistence at the {@link URI}
+	 * given in the constructor and resolves the referenced {@link EObject}s in the {@link ResourceSet}
+	 * given in the constructor.
 	 */
-	def String generateUuidWithoutCreate(EObject eObject);
-
+	def void loadUuidsAndModelsFromSerializedUuidRepository()
+	
 	/**
 	 * Saves the mapping between {@link Uuids}s and {@link EObject}s to an underlying resource.
 	 */

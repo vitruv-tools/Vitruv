@@ -2,23 +2,21 @@ package tools.vitruv.dsls.reactions.util
 
 import java.util.ArrayList
 import java.util.List
-import tools.vitruv.dsls.reactions.reactionsLanguage.Reaction
-import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsLanguagePackage
-import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsSegment
-import tools.vitruv.dsls.reactions.reactionsLanguage.Routine
-import tools.vitruv.dsls.reactions.reactionsLanguage.RoutineOverrideImportPath
+import tools.vitruv.dsls.reactions.language.toplevelelements.Reaction
+import tools.vitruv.dsls.reactions.language.toplevelelements.ReactionsSegment
+import tools.vitruv.dsls.reactions.language.toplevelelements.Routine
+import tools.vitruv.dsls.reactions.language.toplevelelements.RoutineOverrideImportPath
 import tools.vitruv.extensions.dslsruntime.reactions.structure.ReactionsImportPath
 
 import static tools.vitruv.dsls.reactions.codegen.ReactionsLanguageConstants.*
+import tools.vitruv.dsls.reactions.language.toplevelelements.TopLevelElementsPackage
+import edu.kit.ipd.sdq.activextendannotations.Utility
 
 /**
  * Utility methods working with the model objects of the Reactions Language, which might be of use outside of code generation.
  */
-final class ReactionsLanguageUtil {
-
-	private new() {
-	}
-
+@Utility
+class ReactionsLanguageUtil {
 	/**
 	 * Gets a formatted representation of the metamodel pair the given reactions segment applies to.
 	 * 
@@ -245,7 +243,7 @@ final class ReactionsLanguageUtil {
 	 */
 	static def isOverride(Reaction reaction) {
 		// check if overridden reactions segment is set, without resolving the cross-reference:
-		return reaction.eIsSet(ReactionsLanguagePackage.Literals.REACTION__OVERRIDDEN_REACTIONS_SEGMENT);
+		return reaction.eIsSet(TopLevelElementsPackage.Literals.REACTION__OVERRIDDEN_REACTIONS_SEGMENT);
 	}
 
 	/**

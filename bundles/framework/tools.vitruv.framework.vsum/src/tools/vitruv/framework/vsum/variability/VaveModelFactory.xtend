@@ -2,27 +2,16 @@ package tools.vitruv.framework.vsum.variability
 
 import tools.vitruv.framework.vsum.variability.VaveModelImpl
 import tools.vitruv.framework.uuid.UuidResolver
-import tools.vitruv.framework.util.datatypes.VURI
-import org.eclipse.emf.ecore.resource.Resource
+import org.eclipse.emf.common.util.URI
+import edu.kit.ipd.sdq.activextendannotations.Utility
 
-final class VaveModelFactory {
-		static VaveModelFactory instance;
-	
-	private new() {	}
-	
-	static def getInstance() {
-		if (instance === null) {
-			instance = new VaveModelFactory();
-		}
-		
-		return instance;
+@Utility
+class VaveModelFactory {
+	static def createVaveModel(UuidResolver uuidResolver, URI resourceUri) {
+		return new VaveModelImpl(uuidResolver, resourceUri);
 	}
-	
+
 //	def createVaveModel() {
 //		return new VaveModelImpl();
 //	}
-	
-	def createVaveModel(UuidResolver uuidResolver, VURI vaveVURI, Resource vaveResource) {
-		return new VaveModelImpl(uuidResolver, vaveVURI, vaveResource);
-	}
 }

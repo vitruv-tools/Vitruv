@@ -4,7 +4,7 @@ import org.eclipse.core.expressions.PropertyTester;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.Platform;
 
-import static tools.vitruv.framework.util.ProjectBuildUtils.hasBuilder;
+import static edu.kit.ipd.sdq.commons.util.org.eclipse.core.resources.IProjectUtil.hasBuilder;
 
 public class TestBuilderEnabled extends PropertyTester {
 

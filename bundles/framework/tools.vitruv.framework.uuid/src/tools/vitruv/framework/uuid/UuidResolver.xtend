@@ -44,14 +44,6 @@ interface UuidResolver {
 	def void registerEObject(String uuid, EObject eObject);
 	
 	/**
-	 * Registers the given UUID for the element at the given {@link URI} in the
-	 * {@link ResourceSet} of this resolver.
-	 * If the object cannot be resolved in the {@link ResourceSet} of this resolver,
-	 * <code>false</code> is returned, otherwise <code>true</code>.
-	 */
-	def boolean registerUuidForGlobalUri(String uuid, URI uri);
-	
-	/**
 	 * Returns the {@link ResourceSet} used in this UUID resolver.
 	 */
 	def ResourceSet getResourceSet();

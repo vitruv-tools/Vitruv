@@ -1,10 +1,7 @@
 package tools.vitruv.framework.domains
 
-import java.util.Collections
-import java.util.List
 import org.eclipse.emf.common.notify.Notifier
 import org.eclipse.emf.common.util.BasicMonitor
-import org.eclipse.emf.compare.Diff
 import org.eclipse.emf.compare.EMFCompare
 import org.eclipse.emf.compare.merge.BatchMerger
 import org.eclipse.emf.compare.merge.IMerger
@@ -12,13 +9,17 @@ import org.eclipse.emf.compare.scope.DefaultComparisonScope
 import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import org.eclipse.emf.ecore.util.EcoreUtil
-import tools.vitruv.framework.change.description.TransactionalChange
 import tools.vitruv.framework.change.description.VitruviusChangeFactory
-import tools.vitruv.framework.uuid.UuidGeneratorAndResolver
 import tools.vitruv.framework.change.recording.ChangeRecorder
 import org.eclipse.emf.ecore.resource.ResourceSet
 import tools.vitruv.framework.uuid.UuidResolver
 import static tools.vitruv.framework.uuid.UuidGeneratorAndResolverFactory.createUuidGeneratorAndResolver
+import static extension tools.vitruv.framework.domains.repository.DomainAwareResourceSet.awareOfDomains
+import tools.vitruv.framework.domains.repository.VitruvDomainRepository
+import tools.vitruv.framework.domains.repository.VitruvDomainRepositoryImpl
+import static com.google.common.base.Preconditions.checkArgument
+import java.util.Set
+import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceUtil.getReferencedProxies
 
 /**
  * This default strategy for diff based state changes uses EMFCompare to resolve a 
@@ -27,55 +28,88 @@ import static tools.vitruv.framework.uuid.UuidGeneratorAndResolverFactory.create
  */
 class DefaultStateBasedChangeResolutionStrategy implements StateBasedChangeResolutionStrategy {
 	val VitruviusChangeFactory changeFactory
-
+	val VitruvDomainRepository domainRepository
+	
 	/**
 	 * Creates the strategy.
 	 */
-	new() {
+	new(Set<VitruvDomain> domains) {
+		domainRepository = new VitruvDomainRepositoryImpl(domains)
 		changeFactory = VitruviusChangeFactory.instance
 	}
+	
+	private def checkNoProxies(Resource resource, String stateNotice) {
+		val proxies = resource.referencedProxies
+		checkArgument(proxies.empty, "%s '%s' should not contain proxies, but contains the following: %s", stateNotice, resource.URI, String.join(", ", proxies.map[toString]))
+	}
 
-	override getChangeSequences(Resource newState, Resource currentState, UuidResolver resolver) {
-		if (resolver === null) {
-			throw new IllegalArgumentException("UUID generator and resolver cannot be null!")
-		} else if (newState === null || currentState === null) {
-			return changeFactory.createCompositeChange(Collections.emptyList)
-		}
+	override getChangeSequenceBetween(Resource newState, Resource oldState, UuidResolver resolver) {
+		checkArgument(resolver !== null, "UUID generator and resolver cannot be null!")
+		checkArgument(oldState !== null && newState !== null, "old state or new state must not be null!")
+		newState.checkNoProxies("new state")
+		oldState.checkNoProxies("old state")
+		val oldResourceSet = new ResourceSetImpl()
+		val newResourceSet = new ResourceSetImpl()
+		val currentStateCopy = oldState.copyInto(oldResourceSet)
+		val newStateCopy = newState.copyInto(newResourceSet)
+		val diffs = currentStateCopy.record(resolver) [
+			if (oldState.URI != newState.URI) {
+				currentStateCopy.URI = newStateCopy.URI
+			}
+			compareStatesAndReplayChanges(newStateCopy, currentStateCopy)
+		]
+		return changeFactory.createCompositeChange(diffs)
+	}
+	
+	override getChangeSequenceForCreated(Resource newState, UuidResolver resolver) {
+		checkArgument(resolver !== null, "UUID generator and resolver cannot be null!")
+		checkArgument(newState !== null, "new state must not be null!")
+		newState.checkNoProxies("new state")
+		// It is possible that root elements are automatically generated during resource creation (e.g., Java packages).
+		// Thus, we create the resource and then monitor the re-insertion of the elements
+		val resourceSet = new ResourceSetImpl().awareOfDomains(domainRepository)
+		val newResource = resourceSet.createResource(newState.URI)
+		newResource.contents.clear()
+		val diffs = newResource.record(resolver) [
+			newResource.contents += EcoreUtil.copyAll(newState.contents)
+		]
+		return changeFactory.createCompositeChange(diffs)
+	}
+	
+	override getChangeSequenceForDeleted(Resource oldState, UuidResolver resolver) {
+		checkArgument(resolver !== null, "UUID generator and resolver cannot be null!")
+		checkArgument(oldState !== null, "old state must not be null!")
+		oldState.checkNoProxies("old state")
 		// Setup resolver and copy state:
-		val copyResourceSet = new ResourceSetImpl
-		val uuidGeneratorAndResolver = createUuidGeneratorAndResolver(resolver, copyResourceSet)
-		val currentStateCopy = currentState.copyInto(copyResourceSet)
-		// Create change sequences:
-		val diffs = compareStates(newState, currentStateCopy)
-		val vitruvDiffs = replayChanges(diffs, currentStateCopy, uuidGeneratorAndResolver)
-		return changeFactory.createCompositeChange(vitruvDiffs)
+		val copyResourceSet = new ResourceSetImpl()
+		val currentStateCopy = oldState.copyInto(copyResourceSet)
+		val diffs = currentStateCopy.record(resolver) [
+			currentStateCopy.contents.clear()
+		]
+		return changeFactory.createCompositeChange(diffs)
 	}
-
-	/**
-	 * Compares states using EMFCompare and returns a list of all differences.
-	 */
-	private def List<Diff> compareStates(Notifier newState, Notifier currentState) {
-		var scope = new DefaultComparisonScope(newState, currentState, null)
-		var comparison = EMFCompare.builder.build.compare(scope)
-		return comparison.differences
-	}
-
-	/**
-	 * Replays a list of of EMFCompare differences and records the changes to receive Vitruv change sequences. 
-	 */
-	private def List<? extends TransactionalChange> replayChanges(List<Diff> changesToReplay, Notifier currentState, UuidGeneratorAndResolver resolver) {
-		// Setup recorder:
-		try (val changeRecorder = new ChangeRecorder(resolver)) {
-			changeRecorder.addToRecording(currentState)
+	
+	private def <T extends Notifier> record(Resource resource, UuidResolver parentResolver, () => void function) {
+		val uuidGeneratorAndResolver = createUuidGeneratorAndResolver(parentResolver, resource.resourceSet)
+		try (val changeRecorder = new ChangeRecorder(uuidGeneratorAndResolver)) {
 			changeRecorder.beginRecording
-			// replay the EMF compare diffs:
-			val mergerRegistry = IMerger.RegistryImpl.createStandaloneInstance()
-			val merger = new BatchMerger(mergerRegistry)
-			merger.copyAllLeftToRight(changesToReplay, new BasicMonitor)
-			// Finish recording:
-			changeRecorder.endRecording
-			return changeRecorder.changes
+			changeRecorder.addToRecording(resource)
+			function.apply()
+			return changeRecorder.endRecording
 		}
+	}
+
+	/**
+	 * Compares states using EMFCompare and replays the changes to the current state.
+	 */
+	private def compareStatesAndReplayChanges(Notifier newState, Notifier currentState) {
+		val scope = new DefaultComparisonScope(newState, currentState, null)
+		val comparison = EMFCompare.builder.build.compare(scope)
+		val changes = comparison.differences
+		// Replay the EMF compare differences
+		val mergerRegistry = IMerger.RegistryImpl.createStandaloneInstance()
+		val merger = new BatchMerger(mergerRegistry)
+		merger.copyAllLeftToRight(changes, new BasicMonitor)
 	}
 
 	/**

@@ -1,18 +1,21 @@
-grammar tools.vitruv.dsls.reactions.ReactionsLanguage with tools.vitruv.dsls.mirbase.MirBase
+grammar tools.vitruv.dsls.reactions.ReactionsLanguage with org.eclipse.xtext.xbase.Xbase
 hidden(WS, SL_COMMENT)
 
-generate reactionsLanguage "http://vitruv.tools/dsls/reactions/ReactionsLanguage"
+generate language "http://vitruv.tools/dsls/reactions/language"
 
 import "http://www.eclipse.org/emf/2002/Ecore" as ecore
-import "http://www.kit.edu/ipd/sdq/vitruvius/dsls/mirbase/MirBase" as mirbase
+import "http://vitruv.tools/dsls/common/elements" as common
+import "http://vitruv.tools/dsls/reactions/language/toplevelelements" as toplevelelements
 
-
-ReactionsFile:
+ReactionsFile returns toplevelelements::ReactionsFile:
 	(namespaceImports=XImportSection)?
-	MirBaseFile
+	(metamodelImports+=MetamodelImport)*
 	(reactionsSegments+=ReactionsSegment)+;
 
-ReactionsSegment:
+MetamodelImport returns common::MetamodelImport:
+	'import' package=[ecore::EPackage|STRING] 'as' name=ValidID (useQualifiedNames?='using' 'qualified' 'names')?;
+
+ReactionsSegment returns toplevelelements::ReactionsSegment:
 	'reactions:' name=ValidID
 	'in' 'reaction' 'to' 'changes' 'in' fromDomain=DomainReference 
 	'execute' 'actions' 'in' toDomain=DomainReference
@@ -20,22 +23,21 @@ ReactionsSegment:
 	(reactions+=Reaction |
 		routines+=Routine)*;
 
-ReactionsImport:
-	'import' (routinesOnly?='routines')? importedReactionsSegment=[ReactionsSegment] (useQualifiedNames?='using' 'qualified' 'names')?;
+ReactionsImport returns toplevelelements::ReactionsImport:
+	'import' (routinesOnly?='routines')? importedReactionsSegment=[toplevelelements::ReactionsSegment] (useQualifiedNames?='using' 'qualified' 'names')?;
 
 // *********************************
 // *********** REACTIONS ***********
 // *********************************
 
-Reaction:
+Reaction returns toplevelelements::Reaction:
 	(documentation=ML_COMMENT)?
-	'reaction' (overriddenReactionsSegment=[ReactionsSegment] '::')? name=ValidID '{'
+	'reaction' (overriddenReactionsSegment=[toplevelelements::ReactionsSegment] '::')? name=ValidID '{'
 		trigger=Trigger
 		callRoutine=ReactionRoutineCall
 	'}';
 	
-ReactionRoutineCall:
-	{ReactionRoutineCall}
+ReactionRoutineCall returns toplevelelements::ReactionRoutineCall:
 	RoutineCallBlock;
 
 // *********** TRIGGER ***********
@@ -43,7 +45,7 @@ ReactionRoutineCall:
 InvariantViolationEvent:
 	'invariant' violation=[ecore::EClass|QualifiedName];
 
-Trigger:
+Trigger returns toplevelelements::Trigger:
 	// TODO HK Extend this by "before" executing the transformation before applying the change
 	'after' (ModelChange | InvariantViolationEvent)
 	('with' precondition=PreconditionCodeBlock)?;
@@ -55,8 +57,8 @@ ConcreteModelChange:
 	ModelElementChange | ModelAttributeChange;
 
 ModelElementChange:
+	{ModelElementChange}
 	'element' (elementType=UnnamedMetaclassReference)? changeType=ElementChangeType;
-
 
 ModelAttributeChange:
 	'attribute' ({ModelAttributeInsertedChange} 'inserted' 'in' |
@@ -85,7 +87,7 @@ ElementDeletionChangeType returns ElementDeletionChangeType:
 fragment ElementReferenceChangeType:
 	feature=MetaclassEReferenceReference;
 
-// This is just for a complete type hierachy
+// This is just for a complete type hierarchy
 ElementRootChangeType returns ElementRootChangeType:
 	ElementInsertionAsRootChangeType | ElementRemovalAsRootChangeType;
 
@@ -132,34 +134,34 @@ ElementCompoundChangeType returns ElementCompoundChangeType:
 // *********** REPAIR ROUTINES ***********
 // ***************************************
 
-Routine:
+Routine returns toplevelelements::Routine:
 	(documentation=ML_COMMENT)?
 	'routine' (overrideImportPath=RoutineOverrideImportPath '::')? name=ValidID input=RoutineInput '{'
 		matcher=MatcherBlock?
 		action=ActionBlock
 	'}';
 
-RoutineOverrideImportPath:
-	reactionsSegment=[ReactionsSegment] ({RoutineOverrideImportPath.parent=current} '.' reactionsSegment=[ReactionsSegment])*;
+RoutineOverrideImportPath returns toplevelelements::RoutineOverrideImportPath:
+	reactionsSegment=[toplevelelements::ReactionsSegment] ({toplevelelements::RoutineOverrideImportPath.parent=current} '.' reactionsSegment=[toplevelelements::ReactionsSegment])*;
 
-RoutineInput:
-	{RoutineInput}
-	'(' ((modelInputElements+=ClassicallyNamedModelElement | "plain" javaInputElements+=NamedJavaElement)
-		(',' (modelInputElements+=ClassicallyNamedModelElement | "plain" javaInputElements+=NamedJavaElement))*)? ')';
+RoutineInput returns toplevelelements::RoutineInput:
+	{toplevelelements::RoutineInput}
+	'(' ((modelInputElements+=NamedMetaclassReference | "plain" javaInputElements+=NamedJavaElementReference)
+		(',' (modelInputElements+=NamedMetaclassReference | "plain" javaInputElements+=NamedJavaElementReference))*)? ')';
 
 // *********** MATCHER ***********
 
-MatcherBlock returns Matcher:
-	{Matcher}
+MatcherBlock returns toplevelelements::Matcher:
+	{toplevelelements::Matcher}
 	'match' '{'
 		(matcherStatements+=MatcherStatement)+
 	'}';
 
-MatcherStatement:
+MatcherStatement returns toplevelelements::MatcherStatement:
 	RetrieveOrRequireAbscenceOfModelElement | MatcherCheckStatement;
 
 RetrieveOrRequireAbscenceOfModelElement:
-	(RequireAbscenceOfModelElement | RetrieveModelElement) MetaclassReference 
+	(RequireAbscenceOfModelElement | RetrieveModelElement) elementType=UnnamedMetaclassReference 
 	'corresponding' 'to' correspondenceSource=CorrespondingObjectCodeBlock ('tagged' 'with' Taggable)? 
 	('with' precondition=PreconditionCodeBlock)?; 
 
@@ -168,8 +170,8 @@ RequireAbscenceOfModelElement returns RequireAbscenceOfModelElement:
 	'require' 'absence' 'of';
 	
 RetrieveModelElement:
+	{RetrieveModelElement}
 	('val' name=ValidID '=')? 'retrieve' retrievalType=RetrieveModelElementTypeStatement;
-
 
 RetrieveModelElementTypeStatement returns RetrieveModelElementType:
 	{RetrieveOneModelElement} (optional?='optional' | asserted?='asserted')? |
@@ -184,8 +186,8 @@ MatcherCheckStatement:
 	
 // *********** EFFECTS ***********
 
-ActionBlock returns Action:
-	{Action}
+ActionBlock returns toplevelelements::Action:
+	{toplevelelements::Action}
 	'action' '{'
 		(actionStatements+=ActionStatement)+
 	'}';
@@ -194,7 +196,7 @@ RoutineCallStatement returns RoutineCallStatement:
 	{RoutineCallStatement}
 	RoutineCallBlock;
 
-ActionStatement:
+ActionStatement returns toplevelelements::ActionStatement:
 	CreateModelElementStatement | DeleteModelElementStatement | UpdateModelElementStatement | CreateCorrespondenceStatement | RemoveCorrespondenceStatement | ExecuteActionStatement | RoutineCallStatement;
 
 ExecuteActionStatement returns ExecuteActionStatement:
@@ -203,7 +205,7 @@ ExecuteActionStatement returns ExecuteActionStatement:
 
 CreateModelElementStatement returns CreateModelElement:
 	{CreateModelElement}
-	'val' name=ValidID '=' 'create' MetaclassReference ('and' 'initialize' initializationBlock=ExecutionCodeBlock)?;
+	'val' name=ValidID '=' 'create' elementType=UnnamedMetaclassReference ('and' 'initialize' initializationBlock=ExecutionCodeBlock)?;
 	
 DeleteModelElementStatement returns DeleteModelElement:
 	{DeleteModelElement}
@@ -226,10 +228,10 @@ RemoveCorrespondenceStatement returns RemoveCorrespondence:
 
 // ****** CODE BLOCKS ******
 
-fragment CodeBlock:
+fragment CodeBlock returns toplevelelements::CodeBlock:
 	code=XExpression;
 
-fragment RoutineCallBlock:
+fragment RoutineCallBlock returns toplevelelements::RoutineCallBlock:
 	'call' CodeBlock;
 
 fragment Taggable:
@@ -242,8 +244,8 @@ TagCodeBlock returns TagCodeBlock:
 	{TagCodeBlock}
 	CodeBlock;
 
-PreconditionCodeBlock returns PreconditionCodeBlock:
-	{PreconditionCodeBlock}
+PreconditionCodeBlock returns toplevelelements::PreconditionCodeBlock:
+	{toplevelelements::PreconditionCodeBlock}
 	CodeBlock;
 
 CorrespondingObjectCodeBlock returns CorrespondingObjectCodeBlock:
@@ -253,3 +255,24 @@ CorrespondingObjectCodeBlock returns CorrespondingObjectCodeBlock:
 ExecutionCodeBlock returns ExecutionCodeBlock:
 	{ExecutionCodeBlock}
 	CodeBlock;
+
+fragment MetaclassReference returns common::MetaclassReference:
+	(metamodel=[common::MetamodelImport] '::')? metaclass=[ecore::EClass|QualifiedName];
+
+UnnamedMetaclassReference returns common::MetaclassReference:
+	MetaclassReference;
+
+NamedMetaclassReference returns common::NamedMetaclassReference:
+	MetaclassReference name=ValidID;
+
+NamedJavaElementReference returns toplevelelements::NamedJavaElementReference:
+	type=JvmTypeReference 'as' name=ValidID;
+
+MetaclassEAttributeReference returns common::MetaclassEAttributeReference:
+	MetaclassReference '[' feature=[ecore::EAttribute|ValidID] ']';
+
+MetaclassEReferenceReference returns common::MetaclassEReferenceReference:
+	MetaclassReference '[' feature=[ecore::EReference|ValidID] ']';
+
+DomainReference returns common::DomainReference:
+	domain=ValidID;

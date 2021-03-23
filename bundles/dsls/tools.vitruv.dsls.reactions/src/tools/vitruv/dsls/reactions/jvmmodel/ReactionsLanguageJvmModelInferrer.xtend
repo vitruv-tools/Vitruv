@@ -9,10 +9,10 @@ import org.eclipse.xtext.xbase.jvmmodel.IJvmDeclaredTypeAcceptor
 import tools.vitruv.dsls.reactions.codegen.classgenerators.ExecutorClassGenerator
 import tools.vitruv.dsls.reactions.codegen.classgenerators.RoutineFacadeClassGenerator
 import tools.vitruv.dsls.reactions.codegen.classgenerators.RoutineClassGenerator
-import tools.vitruv.dsls.reactions.reactionsLanguage.Routine
-import tools.vitruv.dsls.reactions.reactionsLanguage.Reaction
-import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsFile
-import tools.vitruv.dsls.reactions.reactionsLanguage.ReactionsSegment
+import tools.vitruv.dsls.reactions.language.toplevelelements.Routine
+import tools.vitruv.dsls.reactions.language.toplevelelements.Reaction
+import tools.vitruv.dsls.reactions.language.toplevelelements.ReactionsFile
+import tools.vitruv.dsls.reactions.language.toplevelelements.ReactionsSegment
 import tools.vitruv.dsls.reactions.codegen.typesbuilder.JvmTypesBuilderWithoutAssociations
 import tools.vitruv.dsls.reactions.codegen.typesbuilder.TypesBuilderExtensionProvider
 import tools.vitruv.dsls.reactions.codegen.classgenerators.ReactionClassGenerator
@@ -21,7 +21,7 @@ import tools.vitruv.dsls.reactions.codegen.classgenerators.ChangePropagationSpec
 import tools.vitruv.dsls.reactions.codegen.classgenerators.OverriddenRoutinesFacadeClassGenerator
 import tools.vitruv.dsls.reactions.codegen.classgenerators.RoutinesFacadesProviderClassGenerator
 import static extension tools.vitruv.dsls.reactions.codegen.helper.ReactionsImportsHelper.*
-import static extension tools.vitruv.dsls.reactions.codegen.helper.ReactionsLanguageHelper.*
+import static extension tools.vitruv.dsls.reactions.codegen.helper.ReactionsElementsCompletionChecker.isReferenceable
 
 /**
  * <p>Infers a JVM model for the Xtend code blocks of the reaction file model.</p> 
@@ -51,16 +51,16 @@ class ReactionsLanguageJvmModelInferrer extends AbstractModelInferrer  {
 	def dispatch void infer(ReactionsFile file, IJvmDeclaredTypeAcceptor acceptor, boolean isPreIndexingPhase) {
 		updateBuilders();
 		
-		for (reactionsSegment : file.reactionsSegments.filter[it.isComplete]) {
+		for (reactionsSegment : file.reactionsSegments.filter[it.isReferenceable]) {
 			acceptor.accept(new RoutineFacadeClassGenerator(reactionsSegment, typesBuilderExtensionProvider), reactionsSegment);
 			for (overriddenRoutinesImportPath : reactionsSegment.parsedOverriddenRoutinesImportPaths) {
 				acceptor.accept(new OverriddenRoutinesFacadeClassGenerator(reactionsSegment, overriddenRoutinesImportPath, typesBuilderExtensionProvider), reactionsSegment);
 			}
 			acceptor.accept(new RoutinesFacadesProviderClassGenerator(reactionsSegment, typesBuilderExtensionProvider), reactionsSegment);
-			for (effect : reactionsSegment.routines.filter[it.isComplete]) {
+			for (effect : reactionsSegment.routines.filter[it.isReferenceable]) {
 				generate(effect, acceptor, isPreIndexingPhase);
 			}
-			for (reaction : reactionsSegment.reactions.filter[it.isComplete]) {
+			for (reaction : reactionsSegment.reactions.filter[it.isReferenceable]) {
 				generate(reaction, acceptor, isPreIndexingPhase);
 			}
 			acceptor.accept(new ExecutorClassGenerator(reactionsSegment, typesBuilderExtensionProvider), reactionsSegment);
