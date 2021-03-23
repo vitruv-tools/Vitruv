@@ -4,7 +4,7 @@ import tools.vitruv.framework.userinteraction.UserInteractor
 import tools.vitruv.framework.correspondence.CorrespondenceModel
 import tools.vitruv.framework.change.processing.ChangePropagationObservable
 import org.eclipse.xtend.lib.annotations.Data
-import tools.vitruv.framework.util.command.ResourceAccess
+import tools.vitruv.framework.change.processing.ResourceAccess
 
 @Data
 class ReactionExecutionState {

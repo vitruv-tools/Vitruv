@@ -4,7 +4,7 @@ import tools.vitruv.framework.correspondence.CorrespondenceModel
 import tools.vitruv.framework.change.description.TransactionalChange
 import tools.vitruv.framework.userinteraction.UserInteractor
 import tools.vitruv.framework.domains.VitruvDomain
-import tools.vitruv.framework.util.command.ResourceAccess
+import tools.vitruv.framework.change.processing.ResourceAccess
 
 interface ChangePropagationSpecification extends ChangePropagationObservable {
 	def void setUserInteractor(UserInteractor userInteractor);
