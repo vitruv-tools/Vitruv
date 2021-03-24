@@ -41,7 +41,12 @@ abstract class LegacyVitruvApplicationTest extends VitruvApplicationTest impleme
 	}
 	
 	private def dispatch EObject resolve(EObject object) {
-		virtualModel.uuidResolver.getEObject(virtualModel.uuidResolver.getUuid(object))
+		val uuid = try {
+			virtualModel.uuidResolver.getUuid(object)	
+		} catch (IllegalStateException e) {
+			return null
+		}
+		return virtualModel.uuidResolver.getEObject(uuid)
 	}
 	
 	private def dispatch EObject resolve(EClass eClass) {
