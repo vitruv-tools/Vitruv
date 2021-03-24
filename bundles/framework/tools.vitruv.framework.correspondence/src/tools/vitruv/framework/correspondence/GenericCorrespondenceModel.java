@@ -62,7 +62,7 @@ public interface GenericCorrespondenceModel<T extends Correspondence> {
 	 *            - the objects to get the corresponding ones for
 	 * @return the elements corresponding to the given ones
 	 */
-	public List<EObject> getCorrespondingEObjectsInCorrespondence(Correspondence correspondence, 
+	public List<EObject> getCorrespondingEObjects(Correspondence correspondence, 
 			List<EObject> eObjects);
 	
 	/**

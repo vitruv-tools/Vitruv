@@ -82,8 +82,8 @@ class CorrespondenceModelViewImpl<T extends Correspondence> implements Correspon
 		return correspondencesA.get(0);
 	}
 	
-	override getCorrespondingEObjectsInCorrespondence(Correspondence correspondence, List<EObject> eObjects) {
-		correspondenceModelDelegate.getCorrespondingEObjectsInCorrespondence(correspondence, eObjects);
+	override getCorrespondingEObjects(Correspondence correspondence, List<EObject> eObjects) {
+		correspondenceModelDelegate.getCorrespondingEObjects(correspondence, eObjects);
 	}
 
 	override getCorrespondingEObjects(List<EObject> eObjects) {

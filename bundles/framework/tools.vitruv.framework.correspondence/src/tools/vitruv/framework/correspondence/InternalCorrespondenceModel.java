@@ -6,6 +6,7 @@ import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.resource.ResourceSet;
 
 /**
  * An internal representation of the {@link GenericCorrespondenceModel},
@@ -18,7 +19,7 @@ public interface InternalCorrespondenceModel extends GenericCorrespondenceModel<
 	/**
 	 * Loads the correspondence model from its persistence if existing.
 	 */
-	public void loadSerializedCorrespondences();
+	public void loadSerializedCorrespondences(ResourceSet resolveIn);
 	
 	/**
 	 * Saves this correspondence model instance.

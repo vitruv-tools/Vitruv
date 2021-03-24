@@ -16,7 +16,7 @@ package class CorrespondenceSource implements SelfDescribing {
 		correspondenceModel.getCorrespondences(#[item]).filterWithOptions [ option, correspondences |
 			option.filterCorrespondences(correspondences)
 		].map [
-			correspondenceModel.getCorrespondingEObjectsInCorrespondence(it, #[item])
+			correspondenceModel.getCorrespondingEObjects(it, #[item])
 		].flatten.filterWithOptions[option, objects|option.filterResultObjects(objects)]
 	}
 
