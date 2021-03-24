@@ -254,7 +254,7 @@ class VirtualModelTest {
 		val reloadedTargetModel = reloadedVirtualModel.getModelInstance(
 			RedundancyChangePropagationSpecification.getTargetResourceUri(createTestModelResourceUri("")))
 		assertThat(reloadedTargetModel.resource, containsModelOf(monitoredResource))
-		assertEquals(1, reloadedVirtualModel.correspondenceModel.getCorrespondingEObjects(root).size)
+		assertEquals(1, reloadedVirtualModel.correspondenceModel.getCorrespondingEObjects(reloadedModel.resource.contents.get(0)).size)
 	}
 
 	static class RedundancyChangePropagationSpecification extends AbstractEChangePropagationSpecification {

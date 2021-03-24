@@ -47,14 +47,13 @@ class ResourceRepositoryImpl implements ModelRepository {
 		this.correspondencesResourceSet = new ResourceSetImpl().withGlobalFactories()
 		this.uuidGeneratorAndResolver = createUuidGeneratorAndResolver(modelsResourceSet,
 			fileSystemLayout.uuidProviderAndResolverURI)
-		this.correspondenceModel = createCorrespondenceModel(uuidGeneratorAndResolver,
-			fileSystemLayout.correspondencesURI)
+		this.correspondenceModel = createCorrespondenceModel(fileSystemLayout.correspondencesURI)
 		this.modelsResourceSet.eAdapters += new ResourceRegistrationAdapter[getCreateOrLoadModel(it.URI)]
 	}
 
 	override loadExistingModels() {
 		uuidGeneratorAndResolver.loadUuidsAndModelsFromSerializedUuidRepository()
-		correspondenceModel.loadSerializedCorrespondences()
+		correspondenceModel.loadSerializedCorrespondences(modelsResourceSet)
 	}
 
 	override getUuidResolver() {
