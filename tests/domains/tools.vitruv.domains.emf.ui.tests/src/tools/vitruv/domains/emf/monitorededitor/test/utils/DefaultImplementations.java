@@ -31,6 +31,7 @@ import static tools.vitruv.framework.uuid.UuidGeneratorAndResolverFactory.create
 import tools.vitruv.framework.uuid.UuidResolver;
 import tools.vitruv.framework.vsum.ModelInstance;
 import tools.vitruv.framework.vsum.VirtualModel;
+import tools.vitruv.framework.vsum.modelsynchronization.ChangePropagationListener;
 
 public class DefaultImplementations {
     public static final ResourceChangeSynchronizing EFFECTLESS_CHANGESYNC = new ResourceChangeSynchronizing() {
@@ -132,6 +133,14 @@ public class DefaultImplementations {
         public List<PropagatedChange> propagateChangedState(Resource newState, URI oldLocation) {
             return null;
         }
+
+		@Override
+		public void addChangePropagationListener(ChangePropagationListener propagationListener) {
+		}
+
+		@Override
+		public void removeChangePropagationListener(ChangePropagationListener propagationListener) {
+		}
 
     }
 }

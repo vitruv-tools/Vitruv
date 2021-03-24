@@ -2,19 +2,18 @@ package tools.vitruv.applications.demo.familiespersons.tests.families2Persons
 
 import edu.kit.ipd.sdq.metamodels.families.FamiliesFactory
 import edu.kit.ipd.sdq.metamodels.families.FamilyRegister
-import edu.kit.ipd.sdq.metamodels.persons.Person
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import tools.vitruv.domains.demo.families.FamiliesDomainProvider
 import tools.vitruv.domains.demo.persons.PersonsDomainProvider
-import tools.vitruv.framework.correspondence.CorrespondenceModelUtil
 
-import static org.hamcrest.CoreMatchers.is
 import static org.hamcrest.MatcherAssert.assertThat
 import static tools.vitruv.testutils.matchers.ModelMatchers.exists
 import tools.vitruv.testutils.VitruvApplicationTest
 import tools.vitruv.testutils.domains.DomainUtil
 import tools.vitruv.applications.demo.familiespersons.families2persons.FamiliesToPersonsChangePropagationSpecification
+import edu.kit.ipd.sdq.metamodels.persons.PersonRegister
+import static org.junit.jupiter.api.Assertions.assertEquals
 
 class FamiliesPersonsTest extends VitruvApplicationTest {
 	static val FAMILY_NAME = "Mustermann"
@@ -138,10 +137,8 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 		]
 
 		daughter.propagate[firstName = FIRST_NAME_MOTHER]
-		val corrObjs = CorrespondenceModelUtil.getCorrespondingEObjects(correspondenceModel, daughter).filter(Person)
-		assertThat(corrObjs.length, is(1))
-		val corrMember = corrObjs.get(0)
-		assertThat(corrMember.fullName.split(" ").get(0), is(FIRST_NAME_MOTHER))
+		val personsWithMothersName = PersonRegister.from(PERSONS_MODEL).persons.filter[fullName.split(" ").get(0) == FIRST_NAME_MOTHER]
+		assertEquals(1, personsWithMothersName.length) 
 	}
 
 	@Test
