@@ -7,6 +7,7 @@ import tools.vitruv.framework.domains.repository.VitruvDomainRepository
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EClass
 import static com.google.common.base.Preconditions.checkArgument
+import static extension tools.vitruv.framework.correspondence.CorrespondenceModelUtil.getCorrespondingEObjects
 
 /** 
  * DO NOT USE THIS CLASS! Use {@link VitruvApplicationTest} instead.
@@ -32,7 +33,7 @@ abstract class LegacyVitruvApplicationTest extends VitruvApplicationTest impleme
 		if (resolvedObject === null) {
 			return emptyList
 		} else {
-			return getCorrespondenceModel.getCorrespondingEObjects(#[resolvedObject], tag).flatten.filter(type)
+			return correspondenceModel.getCorrespondingEObjects(resolvedObject, type, tag)
 		}
 	}
 	

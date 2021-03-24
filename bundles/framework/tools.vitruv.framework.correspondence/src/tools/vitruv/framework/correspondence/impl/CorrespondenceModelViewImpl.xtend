@@ -57,11 +57,6 @@ class CorrespondenceModelViewImpl<T extends Correspondence> implements Correspon
 		correspondenceModelDelegate.hasCorrespondences();
 	}
 	
-	override getAllCorrespondences() {
-		correspondenceModelDelegate.allCorrespondences;
-	}
-	
-	
 	override getCorrespondences(List<EObject> eObjects) {
 		getCorrespondences(eObjects, null);
 	}
@@ -94,10 +89,6 @@ class CorrespondenceModelViewImpl<T extends Correspondence> implements Correspon
 		correspondenceModelDelegate.getCorrespondingEObjects(correspondenceType, defaultCorrespondenceFilter, eObjects, tag);
 	}
 
-	override <E> getAllEObjectsOfTypeInCorrespondences(Class<E> type) {
-		correspondenceModelDelegate.getAllEObjectsOfTypeInCorrespondences(correspondenceType, defaultCorrespondenceFilter, type);
-	}
-	
 	override removeCorrespondencesBetween(List<EObject> aEObjects, List<EObject> bEObjects, String tag) {
 		correspondenceModelDelegate.removeCorrespondencesBetween(correspondenceType, defaultCorrespondenceFilter, aEObjects, bEObjects, tag);
 	}

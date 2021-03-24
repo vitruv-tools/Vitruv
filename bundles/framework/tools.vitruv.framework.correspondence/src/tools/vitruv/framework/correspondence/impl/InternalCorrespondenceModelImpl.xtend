@@ -159,17 +159,6 @@ class InternalCorrespondenceModelImpl implements InternalCorrespondenceModel {
 		return correspondences !== null && correspondences.size() > 0
 	}
 
-	override getAllCorrespondences() {
-		return correspondences.correspondences
-	}
-
-	override <E, C extends Correspondence> getAllEObjectsOfTypeInCorrespondences(Class<C> correspondenceType,
-		Predicate<C> correspondencesFilter, Class<E> type) {
-		allCorrespondences.filter(correspondenceType).filter(correspondencesFilter).flatMap [
-			(it.leftEObjects + it.rightEObjects)
-		].filter(type).toSet
-	}
-
 	override <V extends CorrespondenceModelView<?>> getView(
 		CorrespondenceModelViewFactory<V> correspondenceModelViewFactory) {
 		return correspondenceModelViewFactory.createCorrespondenceModelView(this)
