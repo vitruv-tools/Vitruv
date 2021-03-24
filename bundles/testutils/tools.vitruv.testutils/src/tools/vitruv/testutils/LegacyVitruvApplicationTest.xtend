@@ -5,7 +5,8 @@ import java.nio.file.Path
 import edu.kit.ipd.sdq.activextendannotations.DelegateExcept
 import tools.vitruv.framework.domains.repository.VitruvDomainRepository
 import org.eclipse.emf.ecore.EObject
-import java.util.List
+import org.eclipse.emf.ecore.EClass
+import static com.google.common.base.Preconditions.checkArgument
 
 /** 
  * DO NOT USE THIS CLASS! Use {@link VitruvApplicationTest} instead.
@@ -25,24 +26,26 @@ abstract class LegacyVitruvApplicationTest extends VitruvApplicationTest impleme
 		this.testView = testView
 	}
 	
-	override <T extends EObject> Iterable<T> getCorrespondingEObjects(EObject eObject, Class<T> type) {
-		// TODO Catching exceptions is only necessary because element UUIDs may not be resolvable by the correspondence model
-		// which becomes obsolete as soon as correspondences do not use UUIDs anymore
-		try {
-			return correspondenceModel.getCorrespondingEObjects(List.of(eObject)).flatten.filter(type)	
-		} catch (IllegalStateException e) {
+	override <T extends EObject> Iterable<T> getCorrespondingEObjects(EObject object, Class<T> type, String tag) {
+		checkArgument(object !== null, "object must not be null")
+		val resolvedObject = object.resolve
+		if (resolvedObject === null) {
 			return emptyList
+		} else {
+			return getCorrespondenceModel.getCorrespondingEObjects(#[resolvedObject], tag).flatten.filter(type)
 		}
 	}
 	
-	override <T extends EObject> Iterable<T> getCorrespondingEObjects(EObject eObject, Class<T> type, String tag) {
-		// TODO Catching exceptions is only necessary because element UUIDs may not be resolvable by the correspondence model
-		// which becomes obsolete as soon as correspondences do not use UUIDs anymore
-		try {
-			return correspondenceModel.getCorrespondingEObjects(List.of(eObject), tag).flatten.filter(type)	
-		} catch (IllegalStateException e) {
-			return emptyList
-		}
+	override <T extends EObject> Iterable<T> getCorrespondingEObjects(EObject object, Class<T> type) {
+		getCorrespondingEObjects(object, type, null)
+	}
+	
+	private def dispatch EObject resolve(EObject object) {
+		virtualModel.uuidResolver.getEObject(virtualModel.uuidResolver.getUuid(object))
+	}
+	
+	private def dispatch EObject resolve(EClass eClass) {
+		eClass
 	}
 	
 }
