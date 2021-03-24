@@ -117,13 +117,4 @@ public interface CorrespondenceModelView<T extends Correspondence> extends Gener
 	 */
 	public Set<Correspondence> removeCorrespondencesFor(List<EObject> eObjects, String tag);
 
-	/**
-	 * Returns all eObjects that have some correspondence and are an instance of the
-	 * given class.
-	 * 
-	 * @param type the class for which instances should be returned
-	 * @return a set containing all eObjects of the given type that have a
-	 *         correspondence
-	 */
-	public <E> Set<E> getAllEObjectsOfTypeInCorrespondences(Class<E> type);
 }

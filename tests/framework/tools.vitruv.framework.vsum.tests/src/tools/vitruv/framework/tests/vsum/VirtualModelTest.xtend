@@ -28,15 +28,14 @@ import tools.vitruv.framework.propagation.ResourceAccess
 import tools.vitruv.framework.domains.VitruvDomain
 import tools.vitruv.framework.change.echange.root.InsertRootEObject
 import allElementTypes.Root
-import tools.vitruv.framework.correspondence.CorrespondenceModelUtil
 import tools.vitruv.framework.tests.vsum.VirtualModelTest.RedundancyChangePropagationSpecification
 import tools.vitruv.framework.change.echange.eobject.CreateEObject
 import tools.vitruv.framework.change.echange.feature.reference.ReplaceSingleValuedEReference
 import tools.vitruv.framework.change.description.TransactionalChange
-import static extension tools.vitruv.framework.correspondence.CorrespondenceModelUtil.getCorrespondingEObjects
-import static extension tools.vitruv.framework.correspondence.CorrespondenceModelUtil.getCorrespondingEObjectsByType
 import static com.google.common.base.Preconditions.checkState
 import tools.vitruv.framework.change.echange.feature.attribute.ReplaceSingleValuedEAttribute
+import java.util.List
+import static extension tools.vitruv.framework.correspondence.CorrespondenceModelUtil.getCorrespondingEObjects
 
 @ExtendWith(TestProjectManager)
 class VirtualModelTest {
@@ -283,10 +282,9 @@ class VirtualModelTest {
 			val newRoot = aet.Root => [
 				id = insertedRoot.id
 			]
-			CorrespondenceModelUtil.createAndAddCorrespondence(correspondenceModel, insertedRoot, newRoot)
+			correspondenceModel.createAndAddCorrespondence(List.of(insertedRoot), List.of(newRoot))
 			if (insertedRoot.eContainer !== null) {
-				val correspondingObjects = correspondenceModel.getCorrespondingEObjectsByType(insertedRoot.eContainer,
-					Root)
+				val correspondingObjects = correspondenceModel.getCorrespondingEObjects(insertedRoot.eContainer, Root)
 				checkState(correspondingObjects.size == 1)
 				correspondingObjects.get(0).recursiveRoot = newRoot
 			}
