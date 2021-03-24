@@ -34,26 +34,6 @@ class EmptyUuidResolver implements UuidResolver {
 		throw new UnsupportedOperationException("This resolver is empty.");
 	}
 	
-	override getPotentiallyCachedEObject(String uuid) {
-		throw new IllegalStateException("This resolver is empty.");
-	}
-	
-	override hasPotentiallyCachedEObject(String uuid) {
-		return false;
-	}
-	
-	override getPotentiallyCachedUuid(EObject eObject) {
-		throw new IllegalStateException("This resolver is empty. Use hasUuid to check that before!");
-	}
-	
-	override registerCachedEObject(EObject eObject) {
-		throw new UnsupportedOperationException("This resolver is empty.");
-	}
-	
-	override hasPotentiallyCachedUuid(EObject eObject) {
-		return false;
-	}
-	
 	override loadUuidsToChild(UuidResolver childResolver, URI uri) {
 		// Do nothing, as there are no entries
 	}

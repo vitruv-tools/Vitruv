@@ -29,7 +29,6 @@ package class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 	val ResourceSet resourceSet
 	val Resource uuidResource
 	val UuidResolver parentUuidResolver
-	val UuidToEObjectRepository cache
 	UuidToEObjectRepository repository
 
 	/**
@@ -50,7 +49,6 @@ package class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 		checkArgument(resourceSet !== null, "Resource set may not be null")
 		this.resourceSet = resourceSet
 		this.parentUuidResolver = parentUuidResolver ?: UuidResolver.EMPTY
-		this.cache = UuidFactory.eINSTANCE.createUuidToEObjectRepository
 		this.repository = UuidFactory.eINSTANCE.createUuidToEObjectRepository
 		this.uuidResource = if (resourceUri !== null)
 			new ResourceSetImpl().withGlobalFactories.createResource(resourceUri) => [
@@ -149,10 +147,6 @@ package class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 		return eObject
 	}
 
-	override getPotentiallyCachedEObject(String uuid) {
-		cache.uuidToEObject.get(uuid) ?: getEObject(uuid)
-	}
-
 	private def EObject getEObjectOrNull(String uuid) {
 		return uuid.getEObjectIfReadonlyUri()
 			?: uuid.getStoredEObject()
@@ -171,11 +165,7 @@ package class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 
 	override String generateUuid(EObject eObject) {
 		checkState(!eObject.eIsProxy, "Cannot generate UUID for proxy object: " + eObject)
-		val cachedUuid = cache.EObjectToUuid.removeKey(eObject)
-		if (cachedUuid !== null) {
-			cache.uuidToEObject.remove(cachedUuid)
-		}
-		val uuid = cachedUuid ?: generateUuid()
+		val uuid = generateUuid()
 		registerEObject(uuid, eObject)
 		return uuid
 	}
@@ -193,10 +183,6 @@ package class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 			repository.EObjectToUuid.remove(uuidMapped)
 		}
 		repository.EObjectToUuid.put(eObject, uuid)
-	}
-
-	override hasPotentiallyCachedEObject(String uuid) {
-		cache.uuidToEObject.containsKey(uuid) || uuid.getEObjectOrNull() !== null
 	}
 
 	override hasUuid(EObject object) {
@@ -220,23 +206,6 @@ package class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 			throw new IllegalStateException("EObject '" + eObject +
 				"' cannot be registered because it does not have a UUID yet")
 		}
-	}
-
-	override getPotentiallyCachedUuid(EObject eObject) {
-		return cache.EObjectToUuid.get(eObject) ?:
-			cache.EObjectToUuid.findFirst[EcoreUtil.equals(eObject, key)]?.value ?: getUuid(eObject)
-	}
-
-	override hasPotentiallyCachedUuid(EObject eObject) {
-		cache.EObjectToUuid.containsKey(eObject) || hasUuid(eObject)
-	}
-
-	override registerCachedEObject(EObject eObject) {
-		checkState(eObject !== null, "Object must not be null")
-		val uuid = generateUuid()
-		cache.EObjectToUuid.put(eObject, uuid)
-		cache.uuidToEObject.put(uuid, eObject)
-		return uuid
 	}
 
 	override void loadUuidsToChild(UuidResolver childResolver, URI uri) {
