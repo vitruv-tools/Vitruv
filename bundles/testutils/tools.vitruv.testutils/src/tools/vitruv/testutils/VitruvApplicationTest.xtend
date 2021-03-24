@@ -6,9 +6,7 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.TestInfo
 import org.junit.jupiter.api.^extension.ExtendWith
 import tools.vitruv.framework.propagation.ChangePropagationSpecification
-import tools.vitruv.framework.correspondence.CorrespondenceModel
 import tools.vitruv.framework.vsum.InternalVirtualModel
-import tools.vitruv.testutils.matchers.CorrespondenceModelContainer
 
 import org.eclipse.xtend.lib.annotations.Delegate
 import static tools.vitruv.testutils.UriMode.*
@@ -16,9 +14,11 @@ import java.util.List
 import tools.vitruv.framework.vsum.VirtualModelBuilder
 import tools.vitruv.framework.domains.repository.VitruvDomainRepository
 import tools.vitruv.framework.domains.repository.VitruvDomainRepositoryImpl
+import tools.vitruv.framework.vsum.VirtualModel
+import tools.vitruv.framework.correspondence.CorrespondenceModel
 
 @ExtendWith(TestLogging, TestProjectManager)
-abstract class VitruvApplicationTest implements CorrespondenceModelContainer, TestView {
+abstract class VitruvApplicationTest implements TestView {
 	InternalVirtualModel virtualModel
 	@Delegate
 	TestView testView
@@ -60,7 +60,8 @@ abstract class VitruvApplicationTest implements CorrespondenceModelContainer, Te
 		testView?.close()
 	}
 
-	override CorrespondenceModel getCorrespondenceModel() { virtualModel.correspondenceModel }
-
-	def protected InternalVirtualModel getVirtualModel() { virtualModel }
+	def package CorrespondenceModel getCorrespondenceModel() { virtualModel.correspondenceModel }
+	
+	def protected VirtualModel getVirtualModel() { virtualModel }
+	
 }
