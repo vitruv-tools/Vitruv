@@ -60,17 +60,6 @@ public interface CorrespondenceModelView<T extends Correspondence> extends Gener
 	public Set<T> getCorrespondences(List<EObject> eObjects, String tag);
 
 	/**
-	 * Returns the unique correspondence between the given lists of
-	 * {@link EObject}s. If there is no or more than one correspondence, an
-	 * {@link IllegalStateException} is thrown.
-	 * 
-	 * @param aEObjects - the first list of {@link EObjects}
-	 * @param bEObjects - the second list of {@link EObjects}
-	 * @return the unique correspondence between the given lists of elements.
-	 */
-	public T claimUniqueCorrespondence(final List<EObject> aEObjects, final List<EObject> bEObjects);
-
-	/**
 	 * Returns all elements corresponding to the given one.
 	 * 
 	 * @param eObjects

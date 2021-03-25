@@ -202,7 +202,8 @@ class CorrespondenceTest {
 		val CorrespondenceModel corresp2 = testCorrespondenceModelCreation(vsum2)
 		corresp2.createAndAddCorrespondence(List.of(repo2), List.of(pkg2))
 		assertTrue(corresp2.hasCorrespondences()) // obtain
-		val Correspondence repo2pkg2 = corresp2.claimUniqueCorrespondence(List.of(repo2), List.of(pkg2))
+		val Correspondence repo2pkg2 = corresp2.getCorrespondences(List.of(repo2)).claimOne
+		assertEquals(Set.of(repo2, pkg2), (repo2pkg2.leftEObjects + repo2pkg2.rightEObjects).toSet)
 		// test everything as if the correspondence would just have been created
 		testAllClaimersAndGettersForEObjectCorrespondences(repo2, pkg2, corresp2, repo2pkg2)
 	}
