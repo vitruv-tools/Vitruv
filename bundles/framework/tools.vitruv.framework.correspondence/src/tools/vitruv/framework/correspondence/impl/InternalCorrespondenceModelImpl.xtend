@@ -45,21 +45,27 @@ class InternalCorrespondenceModelImpl implements InternalCorrespondenceModel {
 		if (!loadedResource.contents.empty) {
 			val loadedCorrespondences = loadedResource.contents.get(0) as Correspondences
 			for (correspondence : loadedCorrespondences.correspondences) {
-				val resolvedLeftObjects = correspondence.leftEObjects.mapFixed[EcoreUtil.resolve(it, resolveIn)]
-				val resolvedRightObjects = correspondence.rightEObjects.mapFixed[EcoreUtil.resolve(it, resolveIn)]
-				for (resolvedObject : resolvedLeftObjects + resolvedRightObjects) {
-					if (resolvedObject.eIsProxy) {
-						throw new IllegalStateException("Object " + resolvedObject +
-							" is referenced in correspondence but could not be resolved")
-					}
-				}
-				correspondence.leftEObjects.clear
-				correspondence.leftEObjects += resolvedLeftObjects
-				correspondence.rightEObjects.clear
-				correspondence.rightEObjects += resolvedRightObjects
+				correspondence.leftEObjects => [
+					val resolvedObjects = it.resolve(resolveIn)
+					it.clear()
+					it += resolvedObjects	
+				]
+				correspondence.rightEObjects => [
+					val resolvedObjects = it.resolve(resolveIn)
+					it.clear()
+					it += resolvedObjects	
+				]
 			}
 			this.correspondences.correspondences += loadedCorrespondences.correspondences
 		}
+	}
+	
+	private static def resolve(Iterable<EObject> eObjects, ResourceSet resolveIn) {
+		val resolvedEObjects = eObjects.mapFixed[EcoreUtil.resolve(it, resolveIn)]
+		for (resolvedEObject : resolvedEObjects) {
+			checkState(!resolvedEObject.eIsProxy, "object %s is referenced in correspondence but could not be resolved", resolvedEObject)
+		}
+		return resolvedEObjects
 	}
 
 	override save() {

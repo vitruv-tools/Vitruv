@@ -18,6 +18,9 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 public interface InternalCorrespondenceModel extends GenericCorrespondenceModel<Correspondence> {
 	/**
 	 * Loads the correspondence model from its persistence if existing.
+	 * 
+	 * @param resolveIn
+	 * 			- the {@link ResourceSet} to resolve the corresponding objects in
 	 */
 	public void loadSerializedCorrespondences(ResourceSet resolveIn);
 	
