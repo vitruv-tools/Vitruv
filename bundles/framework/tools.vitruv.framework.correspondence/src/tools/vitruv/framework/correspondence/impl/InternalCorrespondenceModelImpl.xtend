@@ -142,7 +142,7 @@ class InternalCorrespondenceModelImpl implements InternalCorrespondenceModel {
 			new LinkedHashSet)[getCorrespondingEObjects(eObjects)]
 	}
 
-	override List<EObject> getCorrespondingEObjects(Correspondence correspondence, List<EObject> eObjects) {
+	private def List<EObject> getCorrespondingEObjects(Correspondence correspondence, List<EObject> eObjects) {
 		return if (correspondence.leftEObjects == eObjects) {
 			correspondence.rightEObjects
 		} else {

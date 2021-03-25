@@ -65,22 +65,6 @@ class CorrespondenceModelViewImpl<T extends Correspondence> implements Correspon
 		correspondenceModelDelegate.getCorrespondences(correspondenceType, defaultCorrespondenceFilter, eObjects, tag).toSet();
 	}
 
-	override claimUniqueCorrespondence(List<EObject> aEObjects, List<EObject> bEObjects) {
-		val correspondencesA = getCorrespondences(aEObjects)
-		val correspondencesB = getCorrespondences(bEObjects)
-		correspondencesA.retainAll(correspondencesB);
-		if (correspondencesA.size > 1) {
-			throw new IllegalStateException("Only one correspondence for " + aEObjects + " and " + bEObjects + " expected, but found more");
-		} else if (correspondencesA.size == 0) {
-			throw new IllegalStateException("No correspondence for '" + aEObjects + "' and '" + bEObjects + "' was found!");
-		}
-		return correspondencesA.get(0);
-	}
-	
-	override getCorrespondingEObjects(Correspondence correspondence, List<EObject> eObjects) {
-		correspondenceModelDelegate.getCorrespondingEObjects(correspondence, eObjects);
-	}
-
 	override getCorrespondingEObjects(List<EObject> eObjects) {
 		correspondenceModelDelegate.getCorrespondingEObjects(correspondenceType, defaultCorrespondenceFilter, eObjects, null);
 	}
