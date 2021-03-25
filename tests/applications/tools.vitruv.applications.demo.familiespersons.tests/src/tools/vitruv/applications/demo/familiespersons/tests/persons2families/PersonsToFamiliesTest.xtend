@@ -85,7 +85,9 @@ class PersonsToFamiliesTest extends VitruvApplicationTest {
 		person.propagate[fullName = SECOND_MALE_PERSON_NAME]
 		
 		val personFirstName = person.fullName.split(" ").get(0)
-		val membersWithFirstName = FamilyRegister.from(FAMILIES_MODEL).families.flatMap[daughters + sons + List.of(mother) + List.of(father)].filter[personFirstName == it?.firstName]
+		val membersWithFirstName = FamilyRegister.from(FAMILIES_MODEL).families
+			.flatMap[daughters + sons + List.of(mother) + List.of(father)]
+			.filter[personFirstName == it?.firstName]
 		assertEquals(1, membersWithFirstName.length)
 	}
 }

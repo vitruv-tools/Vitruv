@@ -137,7 +137,8 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 		]
 
 		daughter.propagate[firstName = FIRST_NAME_MOTHER]
-		val personsWithMothersName = PersonRegister.from(PERSONS_MODEL).persons.filter[fullName.split(" ").get(0) == FIRST_NAME_MOTHER]
+		val personsWithMothersName = PersonRegister.from(PERSONS_MODEL).persons
+			.filter[fullName.split(" ").get(0) == FIRST_NAME_MOTHER]
 		assertEquals(1, personsWithMothersName.length) 
 	}
 
