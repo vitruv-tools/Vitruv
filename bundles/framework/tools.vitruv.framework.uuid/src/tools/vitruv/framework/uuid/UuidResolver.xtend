@@ -30,14 +30,6 @@ interface UuidResolver {
 	 */
 	def EObject getEObject(String uuid) throws IllegalStateException;
 	
-	/** 
-	 * Registers the given {@link EObject} and uses the already created UUID for that object.
-	 * The UUID is retrieved from the local or a parent resolver. This is necessary, if an object
-	 * in a new instance of the same model shall be registered.
-	 * If no UUID was registered yet, an {@link IllegalStateException} is thrown.
-	 */
-	def void registerEObject(EObject eObject);
-		
 	/**
 	 * Registers the given {@link EObject} for the given UUID.
 	 */
