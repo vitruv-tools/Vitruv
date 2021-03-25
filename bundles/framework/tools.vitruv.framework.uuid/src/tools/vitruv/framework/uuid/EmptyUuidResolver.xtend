@@ -22,10 +22,6 @@ class EmptyUuidResolver implements UuidResolver {
 		throw new IllegalStateException("This resolver is empty.");
 	}
 	
-	override registerEObject(EObject eObject) {
-		throw new UnsupportedOperationException("TODO: auto-generated method stub")
-	}
-	
 	override registerEObject(String uuid, EObject eObject) {
 		throw new UnsupportedOperationException("This resolver is empty.");
 	}

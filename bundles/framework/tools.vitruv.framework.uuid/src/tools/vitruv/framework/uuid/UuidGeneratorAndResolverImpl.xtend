@@ -197,18 +197,7 @@ package class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 		return resourceSet
 	}
 
-	override registerEObject(EObject eObject) {
-		if (parentUuidResolver.hasUuid(eObject)) {
-			registerEObject(parentUuidResolver.getUuid(eObject), eObject)
-		} else if (hasUuid(eObject)) {
-			registerEObject(getUuid(eObject), eObject)
-		} else {
-			throw new IllegalStateException("EObject '" + eObject +
-				"' cannot be registered because it does not have a UUID yet")
-		}
-	}
-
-	override void loadUuidsToChild(UuidResolver childResolver, URI uri) {
+	private def void loadUuidsFromParent(URI uri) {
 		// Only load UUIDs if resource exists and is not read only
 		if (!uri.readOnly && uri.existsResourceAtUri) {
 			val childContents = childResolver.resourceSet.getResource(uri, true).allContents
