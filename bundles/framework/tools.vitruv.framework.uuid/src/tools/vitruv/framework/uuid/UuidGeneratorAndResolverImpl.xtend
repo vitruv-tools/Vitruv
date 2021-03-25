@@ -54,7 +54,7 @@ package class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 			new ResourceSetImpl().withGlobalFactories.createResource(resourceUri) => [
 				contents += repository
 			]
-		this.resourceSet.eAdapters += new ResourceRegistrationAdapter[resource|loadUuidsFromParent(resource)]
+		this.resourceSet.eAdapters += new ResourceRegistrationAdapter[resource|loadUuidsFromParent(resource.URI)]
 	}
 
 	override loadUuidsAndModelsFromSerializedUuidRepository() {
@@ -199,28 +199,24 @@ package class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 
 	private def void loadUuidsFromParent(URI uri) {
 		// Only load UUIDs if resource exists and is not read only
-		if (!uri.readOnly && uri.existsResourceAtUri) {
-			val childContents = childResolver.resourceSet.getResource(uri, true).allContents
-			val ourResource = this.resourceSet.getResource(uri, false)
-			checkState(ourResource !== null, "no matching resource at '%s' in parent resolver", uri)
-			val ourContents = ourResource.allContents
+		if (parentUuidResolver !== EMPTY && !uri.readOnly && uri.existsResourceAtUri) {
+			val childContents = this.resourceSet.getResource(uri, true).allContents
+			val parentResource = parentUuidResolver.resourceSet.getResource(uri, false)
+			checkState(parentResource !== null, "no matching resource at '%s' in parent resolver", uri)
+			val parentContents = parentResource.allContents
 			while (childContents.hasNext) {
 				val childObject = childContents.next
-				checkState(ourContents.hasNext, "Cannot find %s in our resource set!", childObject)
-				val ourObject = ourContents.next
+				checkState(parentContents.hasNext, "Cannot find %s in our resource set!", childObject)
+				val ourObject = parentContents.next
 
-				var objectUuid = repository.EObjectToUuid.get(ourObject)
+				var objectUuid = parentUuidResolver.getUuid(ourObject)
 				if (objectUuid === null) {
 					throw new IllegalStateException('''Element does not have a UUID but should have one: «ourObject»''')
 				}
 
-				childResolver.registerEObject(objectUuid, childObject)
+				registerEObject(objectUuid, childObject)
 			}
 		}
-	}
-
-	def void loadUuidsFromParent(Resource resource) {
-		parentUuidResolver.loadUuidsToChild(this, resource.URI)
 	}
 
 	private def EObject resolve(URI uri) {
