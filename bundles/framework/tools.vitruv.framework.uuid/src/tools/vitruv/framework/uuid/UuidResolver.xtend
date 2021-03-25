@@ -2,7 +2,6 @@ package tools.vitruv.framework.uuid
 
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.resource.ResourceSet
-import org.eclipse.emf.common.util.URI
 
 interface UuidResolver {
 	public static final UuidResolver EMPTY = new EmptyUuidResolver();
@@ -40,9 +39,4 @@ interface UuidResolver {
 	 */
 	def ResourceSet getResourceSet();
 	
-	/**
-	 * Loads the UUIDs for the resource of the given {@link URI} into the given
-	 * child {@link UuidResolver}.
-	 */
-	def void loadUuidsToChild(UuidResolver childResolver, URI uri);
 }

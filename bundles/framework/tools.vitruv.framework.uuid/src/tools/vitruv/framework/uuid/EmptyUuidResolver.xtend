@@ -1,7 +1,6 @@
 package tools.vitruv.framework.uuid
 
 import org.eclipse.emf.ecore.EObject
-import org.eclipse.emf.common.util.URI
 
 class EmptyUuidResolver implements UuidResolver {
 	package new() {}
@@ -28,10 +27,6 @@ class EmptyUuidResolver implements UuidResolver {
 	
 	override getResourceSet() {
 		throw new UnsupportedOperationException("This resolver is empty.");
-	}
-	
-	override loadUuidsToChild(UuidResolver childResolver, URI uri) {
-		// Do nothing, as there are no entries
 	}
 	
 }
