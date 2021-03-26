@@ -44,14 +44,16 @@ class ExplicitUnsetEReferenceTest extends EChangeTest {
 
 	@BeforeEach
 	def void beforeTest() {
-		affectedEObject = rootObject
-		uuidGeneratorAndResolver.generateUuid(affectedEObject)
-		oldValue = aet.NonRoot
-		uuidGeneratorAndResolver.generateUuid(oldValue)
-		oldValue2 = aet.NonRoot
-		uuidGeneratorAndResolver.generateUuid(oldValue2)
-		oldValue3 = aet.NonRoot
-		uuidGeneratorAndResolver.generateUuid(oldValue3)
+		affectedEObject = rootObject.withUuid.registerAsPreexisting
+		oldValue = aet.NonRoot.withUuid
+		oldValue2 = aet.NonRoot.withUuid
+		oldValue3 = aet.NonRoot.withUuid
+	}
+	
+	private def registerOldValuesAsPreexisting() {
+		oldValue.registerAsPreexisting
+		oldValue2.registerAsPreexisting
+		oldValue3.registerAsPreexisting
 	}
 
 	/**
@@ -77,6 +79,7 @@ class ExplicitUnsetEReferenceTest extends EChangeTest {
 		isSingleValuedContainmentTest
 
 		// Test
+		registerOldValuesAsPreexisting()
 		resolveBeforeTest
 	}
 
@@ -103,6 +106,7 @@ class ExplicitUnsetEReferenceTest extends EChangeTest {
 		isMultiValuedContainmentTest
 
 		// Test
+		registerOldValuesAsPreexisting()
 		resolveBeforeTest
 	}
 
@@ -169,7 +173,7 @@ class ExplicitUnsetEReferenceTest extends EChangeTest {
 		// Create change
 		val unresolvedChange = createUnresolvedChange()
 
-		// Resolve		
+		// Resolve
 		val resolvedChange = unresolvedChange.resolveBefore
 		unresolvedChange.assertDifferentChangeSameClass(resolvedChange)
 	}
@@ -197,6 +201,7 @@ class ExplicitUnsetEReferenceTest extends EChangeTest {
 		isSingleValuedContainmentTest
 
 		// Test
+		registerOldValuesAsPreexisting()
 		applyForwardTest
 	}
 
@@ -210,6 +215,7 @@ class ExplicitUnsetEReferenceTest extends EChangeTest {
 		isMultiValuedContainmentTest
 
 		// Test
+		registerOldValuesAsPreexisting()
 		applyForwardTest
 	}
 
@@ -223,6 +229,7 @@ class ExplicitUnsetEReferenceTest extends EChangeTest {
 		isMultiValuedContainmentTest
 
 		// Test
+		registerOldValuesAsPreexisting()
 		applyForwardTest
 	}
 
@@ -249,6 +256,7 @@ class ExplicitUnsetEReferenceTest extends EChangeTest {
 		isSingleValuedContainmentTest
 
 		// Test
+		registerOldValuesAsPreexisting()
 		applyBackwardTest
 	}
 
@@ -275,6 +283,7 @@ class ExplicitUnsetEReferenceTest extends EChangeTest {
 		isMultiValuedContainmentTest
 
 		// Test
+		registerOldValuesAsPreexisting()
 		applyBackwardTest
 	}
 
@@ -335,6 +344,7 @@ class ExplicitUnsetEReferenceTest extends EChangeTest {
 		resource.contents.add(oldValue)
 		resource.contents.add(oldValue2)
 		resource.contents.add(oldValue3)
+		registerOldValuesAsPreexisting()
 	}
 
 	/**
@@ -570,6 +580,7 @@ class ExplicitUnsetEReferenceTest extends EChangeTest {
 	 * Starts a test with resolving the change after the change is applied.
 	 */
 	def private void resolveAfterTest() {
+	
 		// State before
 		assertIsStateBefore
 
@@ -581,17 +592,15 @@ class ExplicitUnsetEReferenceTest extends EChangeTest {
 		prepareStateAfter
 		assertIsStateAfter
 
-		// Resolve 1
+		// Resolve
 		var resolvedChange = unresolvedChange.resolveAfter
 		resolvedChange.localAssertIsResolved
 
 		// Model should be unaffected.
 		assertIsStateAfter
 
-		// Resolve 2
-		var resolvedAndAppliedChange = unresolvedChange.resolveAfter
-		resolvedAndAppliedChange.applyBackward
-		resolvedAndAppliedChange.localAssertIsResolved
+		// Apply Backward
+		resolvedChange.applyBackward
 
 		// State before
 		assertIsStateBefore

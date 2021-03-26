@@ -39,8 +39,7 @@ class FeatureEChangeTest extends EChangeTest {
 
 	@BeforeEach
 	def final void beforeTest() {
-		affectedEObject = rootObject
-		uuidGeneratorAndResolver.generateUuid(affectedEObject)
+		affectedEObject = rootObject.withUuid.registerAsPreexisting
 		affectedFeature = AllElementTypesPackage.Literals.IDENTIFIED__ID
 
 		// Load model in second resource
@@ -150,8 +149,7 @@ class FeatureEChangeTest extends EChangeTest {
 	 * Creates and inserts a new root element in the resource 1.
 	 */
 	def private Root prepareSecondRoot() {
-		val root = aet.Root
-		uuidGeneratorAndResolver.generateUuid(root)
+		val root = aet.Root.withUuid.registerAsPreexisting
 		resource.contents.add(root)
 		return root
 	}

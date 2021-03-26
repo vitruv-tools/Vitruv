@@ -31,10 +31,9 @@ class CreateAndReplaceNonRootTest extends EChangeTest {
 
 	@BeforeEach
 	def void beforeTest() {
-		affectedEObject = rootObject
-		uuidGeneratorAndResolver.generateUuid(affectedEObject)
+		affectedEObject = rootObject.withUuid.registerAsPreexisting
 		affectedFeature = AllElementTypesPackage.Literals.ROOT__SINGLE_VALUED_CONTAINMENT_EREFERENCE
-		newNonRootObject = aet.NonRoot
+		newNonRootObject = aet.NonRoot.withUuid
 		prepareStateBefore
 	}
 
@@ -72,6 +71,7 @@ class CreateAndReplaceNonRootTest extends EChangeTest {
 		prepareStateAfter
 
 		// Resolve
+		newNonRootObject.registerAsPreexisting
 		val resolvedChange = unresolvedChange.resolveAfter
 		resolvedChange.assertIsResolved(affectedEObject, newNonRootObject)
 

@@ -69,6 +69,7 @@ class CreateEObjectTest extends EObjectTest {
 		prepareStateAfter(createdObject)
 
 		// Create change and resolve
+		createdObject.registerAsPreexisting
 		val resolvedChange = createUnresolvedChange(createdObject).resolveAfter as CreateEObject<Root>
 
 		// Apply backward

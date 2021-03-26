@@ -28,8 +28,6 @@ class RemoveRootEObjectTest extends RootEChangeTest {
 	@BeforeEach
 	def void prepareState() {
 		prepareStateBefore
-		uuidGeneratorAndResolver.generateUuid(newRootObject) // Used as existing element, so must have a UUID
-		uuidGeneratorAndResolver.generateUuid(newRootObject2) // Used as existing element, so must have a UUID
 	}
 
 	/**
@@ -62,6 +60,7 @@ class RemoveRootEObjectTest extends RootEChangeTest {
 		unresolvedChange.assertIsNotResolved(newRootObject)
 
 		// Resolve
+		newRootObject.registerAsPreexisting
 		val resolvedChange = unresolvedChange.resolveAfter as RemoveRootEObject<Root>
 		resolvedChange.assertIsResolved(newRootObject, resource)
 	}

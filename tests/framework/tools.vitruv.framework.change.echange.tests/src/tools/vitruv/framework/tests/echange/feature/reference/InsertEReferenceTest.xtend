@@ -19,6 +19,7 @@ import static extension tools.vitruv.framework.change.echange.resolve.EChangeRes
 import static org.junit.jupiter.api.Assertions.assertThrows
 import static org.hamcrest.MatcherAssert.assertThat
 import static tools.vitruv.testutils.matchers.ModelMatchers.equalsDeeply
+import org.junit.jupiter.api.BeforeEach
 
 /**
  * Test class for the concrete {@link InsertEReferenceValue} EChange,
@@ -27,6 +28,12 @@ import static tools.vitruv.testutils.matchers.ModelMatchers.equalsDeeply
 class InsertEReferenceTest extends ReferenceEChangeTest {
 	var EReference affectedFeature
 	var EList<NonRoot> referenceContent
+
+	@BeforeEach
+	def void before() {
+		newValue.registerAsPreexisting
+		newValue2.registerAsPreexisting
+	}
 
 	/**
 	 * Test resolves a {@link InsertEReference} EChange with correct parameters on
@@ -286,7 +293,6 @@ class InsertEReferenceTest extends ReferenceEChangeTest {
 		// Set state before
 		isNonContainmentTest
 		val invalidAffectedEObject = newValue2 // NonRoot element
-		uuidGeneratorAndResolver.generateUuid(newValue2) // Must have a UUID if used as affected object
 		// Create and resolve change
 		val resolvedChange = atomicFactory.<NonRoot, NonRoot>createInsertReferenceChange(invalidAffectedEObject,
 			affectedFeature, newValue, 0).resolveBefore

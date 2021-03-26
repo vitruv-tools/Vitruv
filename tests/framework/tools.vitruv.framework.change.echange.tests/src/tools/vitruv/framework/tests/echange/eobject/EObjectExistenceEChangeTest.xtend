@@ -22,7 +22,7 @@ class EObjectExistenceEChangeTest extends EObjectTest {
 	 * a new object which was not created yet. So the staging area will be filled.
 	 */
 	@Test
-	def void resovlveBeforeTest() {
+	def void resolveBeforeTest() {
 		// State before
 		assertIsStateBefore
 
@@ -54,6 +54,7 @@ class EObjectExistenceEChangeTest extends EObjectTest {
 		assertIsStateAfter
 
 		// Resolve
+		createdObject.registerAsPreexisting
 		val resolvedChange = unresolvedChange.resolveAfter as CreateEObject<Root>
 		resolvedChange.assertIsResolved(createdObject)
 

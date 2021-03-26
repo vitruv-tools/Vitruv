@@ -74,6 +74,7 @@ class CreateAndInsertRootTest extends EChangeTest {
 		prepareStateAfter
 
 		// Resolve
+		newRootObject.registerAsPreexisting
 		val resolvedChange = unresolvedChange.resolveAfter
 		resolvedChange.assertIsResolved(newRootObject)
 
