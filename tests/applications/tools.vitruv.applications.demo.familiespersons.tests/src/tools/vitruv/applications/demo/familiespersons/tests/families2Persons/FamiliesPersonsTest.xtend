@@ -14,6 +14,7 @@ import tools.vitruv.testutils.domains.DomainUtil
 import tools.vitruv.applications.demo.familiespersons.families2persons.FamiliesToPersonsChangePropagationSpecification
 import edu.kit.ipd.sdq.metamodels.persons.PersonRegister
 import static org.junit.jupiter.api.Assertions.assertEquals
+import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.claimOne
 
 class FamiliesPersonsTest extends VitruvApplicationTest {
 	static val FAMILY_NAME = "Mustermann"
@@ -131,14 +132,12 @@ class FamiliesPersonsTest extends VitruvApplicationTest {
 			families += family => [
 				daughters += daughter => [
 					firstName = FIRST_NAME_DAUGHTER
-					familyDaughter = family
 				]
 			]
 		]
-
-		daughter.propagate[firstName = FIRST_NAME_MOTHER]
-		val personsWithMothersName = PersonRegister.from(PERSONS_MODEL).persons
-			.filter[fullName.split(" ").get(0) == FIRST_NAME_MOTHER]
+		
+		FamilyRegister.from(FAMILIES_MODEL).families.claimOne.daughters.claimOne.propagate[firstName = FIRST_NAME_MOTHER]
+		val personsWithMothersName = PersonRegister.from(PERSONS_MODEL).persons.filter[fullName.split(" ").get(0) == FIRST_NAME_MOTHER]
 		assertEquals(1, personsWithMothersName.length) 
 	}
 
