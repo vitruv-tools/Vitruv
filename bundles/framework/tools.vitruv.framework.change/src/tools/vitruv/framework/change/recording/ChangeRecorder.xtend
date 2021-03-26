@@ -71,6 +71,7 @@ class ChangeRecorder implements AutoCloseable {
 
 		if (rootObjects += notifier) {
 			notifier.recursively [
+				if (notifier instanceof EObject) checkState(uuidGeneratorAndResolver.hasUuid(notifier))
 				addAdapter()
 			]
 		}
