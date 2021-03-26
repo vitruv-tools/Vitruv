@@ -15,8 +15,6 @@ class DeleteEObjectTest extends EObjectTest {
 	@BeforeEach
 	def void beforeTest() {
 		prepareStateBefore(createdObject)
-		uuidGeneratorAndResolver.generateUuid(createdObject) // Is used as existing object, so needs to have a UUID
-		uuidGeneratorAndResolver.generateUuid(createdObject2) // Is used as existing object, so needs to have a UUID
 	}
 
 	/**
@@ -29,6 +27,7 @@ class DeleteEObjectTest extends EObjectTest {
 		val unresolvedChange = createUnresolvedChange(createdObject)
 
 		// Resolve		
+		createdObject.registerAsPreexisting
 		val resolvedChange = unresolvedChange.resolveBefore
 		unresolvedChange.assertDifferentChangeSameClass(resolvedChange)
 	}
@@ -40,6 +39,7 @@ class DeleteEObjectTest extends EObjectTest {
 	@Test
 	def void applyForwardTest() {
 		// Create change and resolve
+		createdObject.registerAsPreexisting
 		val resolvedChange = createUnresolvedChange(createdObject).resolveBefore as DeleteEObject<Root>
 
 		// Apply forward
@@ -52,6 +52,7 @@ class DeleteEObjectTest extends EObjectTest {
 		prepareStateBefore(createdObject2)
 
 		// Create change and resolve 2
+		createdObject2.registerAsPreexisting
 		val resolvedChange2 = createUnresolvedChange(createdObject2).resolveBefore as DeleteEObject<Root>
 
 		// Apply forward 2

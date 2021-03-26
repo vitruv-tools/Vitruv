@@ -28,10 +28,8 @@ class RemoveAndDeleteRootTest extends EChangeTest {
 
 	@BeforeEach
 	def void beforeTest() {
-		newRootObject = aet.Root
-		uuidGeneratorAndResolver.generateUuid(newRootObject)
-		newRootObject2 = aet.Root
-		uuidGeneratorAndResolver.generateUuid(newRootObject2)
+		newRootObject = aet.Root.withUuid
+		newRootObject2 = aet.Root.withUuid
 		prepareStateBefore
 
 	}
@@ -48,6 +46,7 @@ class RemoveAndDeleteRootTest extends EChangeTest {
 		unresolvedChange.assertIsNotResolved
 
 		// Resolve
+		newRootObject.registerAsPreexisting
 		val resolvedChange = unresolvedChange.resolveBefore
 		resolvedChange.assertIsResolved(newRootObject)
 
@@ -86,6 +85,7 @@ class RemoveAndDeleteRootTest extends EChangeTest {
 		val unresolvedChange = createUnresolvedChange(newRootObject, 0)
 
 		// Resolve		
+		newRootObject.registerAsPreexisting
 		val resolvedChange = unresolvedChange.resolveBefore
 		unresolvedChange.assertDifferentChangeSameClass(resolvedChange)
 	}
@@ -97,6 +97,7 @@ class RemoveAndDeleteRootTest extends EChangeTest {
 	@Test
 	def void applyForwardTest() {
 		// Create and resolve change 1
+		newRootObject.registerAsPreexisting
 		val resolvedChange = createUnresolvedChange(newRootObject, 1).resolveBefore
 
 		// Apply 1
@@ -107,6 +108,7 @@ class RemoveAndDeleteRootTest extends EChangeTest {
 		assertTrue(resourceContent.contains(newRootObject2))
 
 		// Create and resolve change 2
+		newRootObject2.registerAsPreexisting
 		val resolvedChange2 = createUnresolvedChange(newRootObject2, 1).resolveBefore
 
 		// Apply 1
@@ -123,10 +125,12 @@ class RemoveAndDeleteRootTest extends EChangeTest {
 	@Test
 	def void applyBackwardTest() {
 		// Create and resolve and apply change 1
+		newRootObject.registerAsPreexisting
 		val resolvedChange = createUnresolvedChange(newRootObject, 0).resolveBefore
 		resolvedChange.assertApplyForward
 
 		// Create and resolve and apply change 2
+		newRootObject2.registerAsPreexisting
 		val resolvedChange2 = createUnresolvedChange(newRootObject2, 0).resolveBefore
 		resolvedChange2.assertApplyForward
 

@@ -70,6 +70,7 @@ class CreateAndInsertNonRootTest extends ReferenceEChangeTest {
 		prepareStateAfter
 
 		// Resolve
+		newValue.registerAsPreexisting
 		val resolvedChange = unresolvedChange.resolveAfter
 		resolvedChange.assertIsResolved(affectedEObject, newValue)
 

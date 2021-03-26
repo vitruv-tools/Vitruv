@@ -21,9 +21,7 @@ abstract class RootEChangeTest extends EChangeTest {
 	 */
 	@BeforeEach
 	def final void beforeTest() {
-		newRootObject = aet.Root
-		uuidGeneratorAndResolver.generateUuid(newRootObject)
-		newRootObject2 = aet.Root
-		uuidGeneratorAndResolver.generateUuid(newRootObject2)
+		newRootObject = aet.Root.withUuid
+		newRootObject2 = aet.Root.withUuid
 	}
 }
