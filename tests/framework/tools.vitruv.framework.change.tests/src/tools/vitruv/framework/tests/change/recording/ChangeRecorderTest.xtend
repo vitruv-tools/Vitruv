@@ -682,9 +682,7 @@ class ChangeRecorderTest {
 	@Test
 	@DisplayName("registers the recorded object and all its contents at the UUID resolver")
 	def void registersAtUuidResolver() {
-		val parentResolver = createUuidGeneratorAndResolver(new ResourceSetImpl())
-		val localResolver = createUuidGeneratorAndResolver(parentResolver, resourceSet)
-		var ChangeRecorder changeRecorder = new ChangeRecorder(localResolver)
+		val parentResolver = createUuidGeneratorAndResolver(resourceSet)
 
 		val root = aet.Root => [
 			parentResolver.registerEObject("uuid1", it)
@@ -704,7 +702,9 @@ class ChangeRecorderTest {
 		resourceSet.createResource(URI.createURI('file://test.aet')) => [
 			contents += root
 		]
-		root.nonRootObjectContainerHelper
+		
+		val localResolver = createUuidGeneratorAndResolver(parentResolver, resourceSet)
+		var ChangeRecorder changeRecorder = new ChangeRecorder(localResolver)
 		changeRecorder.addToRecording(resourceSet)
 
 		assertTrue(localResolver.hasUuid(root))
