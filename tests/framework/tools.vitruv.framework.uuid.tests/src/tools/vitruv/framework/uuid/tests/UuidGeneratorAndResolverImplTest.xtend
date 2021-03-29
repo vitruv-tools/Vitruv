@@ -18,9 +18,11 @@ import static extension org.eclipse.emf.ecore.util.EcoreUtil.getURI
 import org.junit.jupiter.api.BeforeEach
 import org.eclipse.emf.ecore.util.EcoreUtil
 import static org.junit.jupiter.api.Assertions.assertThrows
+import static org.junit.jupiter.api.Assertions.assertTrue
 import org.eclipse.emf.ecore.resource.ResourceSet
 import tools.vitruv.framework.uuid.UuidGeneratorAndResolver
 import static tools.vitruv.testutils.matchers.ModelMatchers.containsModelOf
+import static tools.vitruv.testutils.matchers.ModelMatchers.equalsDeeply
 import static org.hamcrest.MatcherAssert.assertThat
 import allElementTypes.Root
 import static tools.vitruv.framework.uuid.UuidGeneratorAndResolverFactory.createUuidGeneratorAndResolver
@@ -40,109 +42,120 @@ class UuidGeneratorAndResolverImplTest {
 	}
 
 	@Test
-	@DisplayName("resolve UUID in parent resolver for object with root container not being its resource root")
-	def void parentResolveRootContainerNotResourceRoot() {
-		val childResourceSet = new ResourceSetImpl().withGlobalFactories()
-		val childUuidGeneratorAndResolver = createUuidGeneratorAndResolver(uuidGeneratorAndResolver, childResourceSet)
-
+	@DisplayName("resolve UUID in copied into child resolver")
+	def void resolveInChildResolver() {
 		// Model generation
+		val root = aet.Root
 		val nonRoot = aet.NonRoot
-		childResourceSet.createResource(URI.createFileURI(testProjectPath.resolve("root.aet").toString)) => [
-			contents += aet.Root => [
+		val resourceUri = URI.createFileURI(testProjectPath.resolve("root.aet").toString)
+		resourceSet.createResource(resourceUri) => [
+			contents += root => [
 				singleValuedContainmentEReference = nonRoot
 			]
 			save(null)
 		]
-		childResourceSet.createResource(URI.createFileURI(testProjectPath.resolve("nonRoot.aet").toString)) => [
-			contents += nonRoot
-			save(null)
-		]
 
 		// UUID generation and registration
-		val generatedUuid = childUuidGeneratorAndResolver.generateUuid(nonRoot)
-		val parentResolverNonRoot = resourceSet.getEObject(nonRoot.URI, true)
-		uuidGeneratorAndResolver.registerEObject(generatedUuid, parentResolverNonRoot)
+		val generatedRootUuid = uuidGeneratorAndResolver.generateUuid(root)
+		val generatedNonRootUuid = uuidGeneratorAndResolver.generateUuid(nonRoot)
 
-		// This requires to resolve the element in the parent resolver's resource set with its URI
-		assertEquals(generatedUuid, uuidGeneratorAndResolver.getUuid(nonRoot))
-		assertNotEquals(childUuidGeneratorAndResolver.getEObject(generatedUuid),
-			uuidGeneratorAndResolver.getEObject(generatedUuid))
+		val childResourceSet = new ResourceSetImpl().withGlobalFactories()
+		val childUuidGeneratorAndResolver = createUuidGeneratorAndResolver(uuidGeneratorAndResolver, childResourceSet)
+		childResourceSet.getResource(resourceUri, true)
+
+		val childResolverRoot = resourceSet.getEObject(root.URI, true)
+		val childResolverNonRoot = resourceSet.getEObject(nonRoot.URI, true)
+
+		assertEquals(generatedRootUuid, uuidGeneratorAndResolver.getUuid(childResolverRoot))
+		assertEquals(generatedNonRootUuid, uuidGeneratorAndResolver.getUuid(childResolverNonRoot))
+		assertNotEquals(childUuidGeneratorAndResolver.getEObject(generatedRootUuid),
+			uuidGeneratorAndResolver.getEObject(generatedRootUuid))
+		assertNotEquals(childUuidGeneratorAndResolver.getEObject(generatedNonRootUuid),
+			uuidGeneratorAndResolver.getEObject(generatedNonRootUuid))
 	}
 
 	@Test
-	@DisplayName("resolve UUID in parent resolver for multiple root elements")
-	def void parentResolveOneOfMultipleRootElements() {
-		val childResourceSet = new ResourceSetImpl().withGlobalFactories()
-		val childUuidGeneratorAndResolver = createUuidGeneratorAndResolver(uuidGeneratorAndResolver, childResourceSet)
+	@DisplayName("try to assign different UUIDs for same object")
+	def void assignDifferentUuidsToObject() {
+		val object = aet.Root
+		val uuid = uuidGeneratorAndResolver.generateUuid(object)
+		assertThrows(IllegalStateException)[uuidGeneratorAndResolver.registerEObject(uuid + "2", object)]
+	}
 
+	@Test
+	@DisplayName("try to assign the same UUID multiple times for same object")
+	def void assignUuidMultipleTimes() {
+		val object = aet.Root
+		val uuid = uuidGeneratorAndResolver.generateUuid(object)
+		assertThrows(IllegalStateException) [uuidGeneratorAndResolver.registerEObject(uuid, object)]
+	}
+
+	@Test
+	@DisplayName("resolve UUID in child resolver for contents of multiple root elements stored in multiple resources")
+	def void childResolverElementsContainedInMultipleRootElementsAndResources() {
 		// Model generation
 		val firstRoot = aet.Root
 		val secondRoot = aet.Root
-		childResourceSet.createResource(URI.createFileURI(testProjectPath.resolve("test.aet").toString)) => [
-			contents += firstRoot
-			contents += secondRoot
-			save(null)
-		]
-
-		// UUID generation and registration
-		val firstRootUuid = childUuidGeneratorAndResolver.generateUuid(firstRoot)
-		val secondRootUuid = childUuidGeneratorAndResolver.generateUuid(secondRoot)
-		val parentResolverFirstRoot = resourceSet.getEObject(firstRoot.URI, true)
-		val parentResolverSecondRoot = resourceSet.getEObject(secondRoot.URI, true)
-		uuidGeneratorAndResolver.registerEObject(firstRootUuid, parentResolverFirstRoot)
-		uuidGeneratorAndResolver.registerEObject(secondRootUuid, parentResolverSecondRoot)
-
-		// This requires to resolve the elements in the parent resolver's resource set with its URI
-		assertEquals(firstRootUuid, uuidGeneratorAndResolver.getUuid(firstRoot))
-		assertEquals(secondRootUuid, uuidGeneratorAndResolver.getUuid(secondRoot))
-		assertNotEquals(childUuidGeneratorAndResolver.getEObject(firstRootUuid),
-			uuidGeneratorAndResolver.getEObject(firstRootUuid))
-	}
-
-	@Test
-	@DisplayName("resolve UUID in parent resolver for contents of multiple root elements")
-	def void parentResolveElementsContainedInOneOfMultipleRootElements() {
-		val childResourceSet = new ResourceSetImpl().withGlobalFactories()
-		val childUuidGeneratorAndResolver = createUuidGeneratorAndResolver(uuidGeneratorAndResolver, childResourceSet)
-
-		// Model generation
 		val firstNonRoot = aet.NonRoot
 		val secondNonRoot = aet.NonRoot
+		val containedRoot = aet.Root
 		val deeperContainedElement = aet.NonRoot
-		childResourceSet.createResource(URI.createFileURI(testProjectPath.resolve("root.aet").toString)) => [
-			contents += aet.Root => [
+		val elements = #[firstRoot, secondRoot, firstNonRoot, secondNonRoot, containedRoot, deeperContainedElement]
+		val containedRootResource = resourceSet.createResource(
+			URI.createFileURI(testProjectPath.resolve("containedRoot.aet").toString)) => [
+			contents += containedRoot
+		]
+		resourceSet.createResource(URI.createFileURI(testProjectPath.resolve("root.aet").toString)) => [
+			contents += firstRoot => [
 				singleValuedContainmentEReference = firstNonRoot
 			]
-			contents += aet.Root => [
+			contents += secondRoot => [
 				singleValuedContainmentEReference = secondNonRoot
-				recursiveRoot = aet.Root => [
+				recursiveRoot = containedRoot => [
 					singleValuedContainmentEReference = deeperContainedElement
 				]
 			]
 			save(null)
 		]
-
+		containedRootResource.save(null) // Save after creating second resource, because we indirectly perform changes to first resource
 		// UUID generation and registration
-		val firstNonRootUuid = childUuidGeneratorAndResolver.generateUuid(firstNonRoot)
-		val secondNonRootUuid = childUuidGeneratorAndResolver.generateUuid(secondNonRoot)
-		val deeperContainedElementUuid = childUuidGeneratorAndResolver.generateUuid(deeperContainedElement)
-		val parentResolverFirstNonRoot = resourceSet.getEObject(firstNonRoot.URI, true)
-		val parentResolverSecondNonRoot = resourceSet.getEObject(secondNonRoot.URI, true)
-		val parentResolverdeeperContainedElement = resourceSet.getEObject(deeperContainedElement.URI, true)
-		uuidGeneratorAndResolver.registerEObject(firstNonRootUuid, parentResolverFirstNonRoot)
-		uuidGeneratorAndResolver.registerEObject(secondNonRootUuid, parentResolverSecondNonRoot)
-		uuidGeneratorAndResolver.registerEObject(deeperContainedElementUuid, parentResolverdeeperContainedElement)
+		
+		elements.forEach[uuidGeneratorAndResolver.generateUuid(it)]
 
-		// This requires to resolve the elements in the parent resolver's resource set with its URI
-		assertEquals(firstNonRootUuid, uuidGeneratorAndResolver.getUuid(firstNonRoot))
-		assertEquals(secondNonRootUuid, uuidGeneratorAndResolver.getUuid(secondNonRoot))
-		assertEquals(deeperContainedElementUuid, uuidGeneratorAndResolver.getUuid(deeperContainedElement))
-		assertNotEquals(childUuidGeneratorAndResolver.getEObject(firstNonRootUuid),
-			uuidGeneratorAndResolver.getEObject(firstNonRootUuid))
-		assertNotEquals(childUuidGeneratorAndResolver.getEObject(secondNonRootUuid),
-			uuidGeneratorAndResolver.getEObject(secondNonRootUuid))
-		assertNotEquals(childUuidGeneratorAndResolver.getEObject(deeperContainedElementUuid),
-			uuidGeneratorAndResolver.getEObject(deeperContainedElementUuid))
+		val childResourceSet = new ResourceSetImpl().withGlobalFactories()
+		val childUuidGeneratorAndResolver = createUuidGeneratorAndResolver(uuidGeneratorAndResolver, childResourceSet)
+
+		elements.forEach[
+			val elementUuid = uuidGeneratorAndResolver.getUuid(it)
+			assertEquals(elementUuid, childUuidGeneratorAndResolver.getUuid(childResourceSet.getEObject(it.URI, true)))
+			assertNotEquals(uuidGeneratorAndResolver.getEObject(elementUuid), childUuidGeneratorAndResolver.getEObject(elementUuid))
+			assertTrue(EcoreUtil.equals(uuidGeneratorAndResolver.getEObject(elementUuid), childUuidGeneratorAndResolver.getEObject(elementUuid)))
+		]
+	}
+	
+	@Test
+	@DisplayName("loads resource into child resource set and afterwards adapt UUID resolver")
+	def void childResolverLoadsExistingUuids() {
+		// Model generation
+		val root = aet.Root
+		val nonRoot = aet.NonRoot
+		val uri = URI.createFileURI(testProjectPath.resolve("root.aet").toString)
+		resourceSet.createResource(uri) => [
+			contents += root => [
+				singleValuedContainmentEReference = nonRoot
+			]
+			save(null)
+		]
+		
+		val rootUuid = uuidGeneratorAndResolver.generateUuid(root)
+		val nonRootUuid = uuidGeneratorAndResolver.generateUuid(nonRoot)
+
+		val childResourceSet = new ResourceSetImpl().withGlobalFactories()
+		childResourceSet.getResource(uri, true)
+		val childUuidGeneratorAndResolver = createUuidGeneratorAndResolver(uuidGeneratorAndResolver, childResourceSet)
+
+		assertThat(root, equalsDeeply(childUuidGeneratorAndResolver.getEObject(rootUuid)))
+		assertThat(nonRoot, equalsDeeply(childUuidGeneratorAndResolver.getEObject(nonRootUuid)))
 	}
 
 	@Test
@@ -195,7 +208,7 @@ class UuidGeneratorAndResolverImplTest {
 		uuidGeneratorAndResolver.save()
 		assertThrows(IllegalStateException)[uuidGeneratorAndResolver.getUuid(root)]
 	}
-	
+
 	@Test
 	@DisplayName("cleanup resolver when saving resource after element removal")
 	def void cleanupAfterElementRemovalRemovesUuidWithResource() {
@@ -211,7 +224,7 @@ class UuidGeneratorAndResolverImplTest {
 		uuidGeneratorAndResolver.save()
 		assertThrows(IllegalStateException)[uuidGeneratorAndResolver.getUuid(root)]
 	}
-	
+
 	@Test
 	@DisplayName("load UUIDs stored to a resource")
 	def void existAllUuidsAfterReload() {
@@ -232,7 +245,7 @@ class UuidGeneratorAndResolverImplTest {
 		assertEquals(rootUuid, uuidGeneratorAndResolver.getUuid(root))
 		assertEquals(nonRootUuid, uuidGeneratorAndResolver.getUuid(nonRoot))
 	}
-	
+
 	@Test
 	@DisplayName("load UUIDs stored to a resource for part of model")
 	def void existAllUuidsAfterReloadForPartOfModel() {
@@ -250,9 +263,9 @@ class UuidGeneratorAndResolverImplTest {
 		uuidGeneratorAndResolver = createUuidGeneratorAndResolver(this.resourceSet, uuidUri)
 		uuidGeneratorAndResolver.loadUuidsAndModelsFromSerializedUuidRepository()
 		assertEquals(rootUuid, uuidGeneratorAndResolver.getUuid(root))
-		assertThrows(IllegalStateException) [uuidGeneratorAndResolver.getUuid(nonRoot)]
+		assertThrows(IllegalStateException)[uuidGeneratorAndResolver.getUuid(nonRoot)]
 	}
-	
+
 	@Test
 	@DisplayName("load UUIDs stored to a resource after cleanup")
 	def void existAllUuidsAfterReloadWithCleanup() {
@@ -272,9 +285,9 @@ class UuidGeneratorAndResolverImplTest {
 		uuidGeneratorAndResolver = createUuidGeneratorAndResolver(this.resourceSet, uuidUri)
 		uuidGeneratorAndResolver.loadUuidsAndModelsFromSerializedUuidRepository()
 		assertEquals(rootUuid, uuidGeneratorAndResolver.getUuid(root))
-		assertThrows(IllegalStateException) [uuidGeneratorAndResolver.getUuid(nonRoot)]
+		assertThrows(IllegalStateException)[uuidGeneratorAndResolver.getUuid(nonRoot)]
 	}
-	
+
 	@Test
 	@DisplayName("load UUIDs stored to a resource and resolve elements in new resource set")
 	def void existAllUuidsAfterReloadWithNewResourceSet() {
@@ -282,7 +295,8 @@ class UuidGeneratorAndResolverImplTest {
 		uuidGeneratorAndResolver = createUuidGeneratorAndResolver(this.resourceSet, uuidUri)
 		val root = aet.Root
 		val nonRoot = aet.NonRoot
-		val originalResource = resourceSet.createResource(URI.createFileURI(testProjectPath.resolve("root.aet").toString)) => [
+		val originalResource = resourceSet.createResource(
+			URI.createFileURI(testProjectPath.resolve("root.aet").toString)) => [
 			contents += root => [
 				singleValuedContainmentEReference = nonRoot
 			]
@@ -292,16 +306,14 @@ class UuidGeneratorAndResolverImplTest {
 		val nonRootUuid = uuidGeneratorAndResolver.generateUuid(nonRoot)
 		uuidGeneratorAndResolver.save()
 		val newResourceSet = new ResourceSetImpl().withGlobalFactories
-		uuidGeneratorAndResolver = createUuidGeneratorAndResolver(newResourceSet , uuidUri)
+		uuidGeneratorAndResolver = createUuidGeneratorAndResolver(newResourceSet, uuidUri)
 		uuidGeneratorAndResolver.loadUuidsAndModelsFromSerializedUuidRepository()
 		assertFalse(newResourceSet.resources.empty)
-		val newResource = newResourceSet.resources.get(0) 
+		val newResource = newResourceSet.resources.get(0)
 		assertFalse(newResource.contents.empty)
-		assertThat(newResource, containsModelOf(originalResource)) 
+		assertThat(newResource, containsModelOf(originalResource))
 		val newRoot = newResource.contents.get(0) as Root
-		assertEquals(rootUuid, uuidGeneratorAndResolver.getUuid(root))
 		assertEquals(rootUuid, uuidGeneratorAndResolver.getUuid(newRoot))
-		assertEquals(nonRootUuid, uuidGeneratorAndResolver.getUuid(root.singleValuedContainmentEReference))
 		assertEquals(nonRootUuid, uuidGeneratorAndResolver.getUuid(newRoot.singleValuedContainmentEReference))
 	}
 
@@ -318,9 +330,9 @@ class UuidGeneratorAndResolverImplTest {
 		uuidGeneratorAndResolver.save()
 		val newResourceSet = new ResourceSetImpl().withGlobalFactories
 		uuidGeneratorAndResolver = createUuidGeneratorAndResolver(newResourceSet, uuidUri)
-		assertThrows(IllegalStateException) [uuidGeneratorAndResolver.loadUuidsAndModelsFromSerializedUuidRepository()]
+		assertThrows(IllegalStateException)[uuidGeneratorAndResolver.loadUuidsAndModelsFromSerializedUuidRepository()]
 	}
-	
+
 	@Test
 	@DisplayName("try load UUIDs referencing elements in non-existent resource")
 	def void notIgnoreUuidsForNonExistentResource() {
@@ -334,9 +346,9 @@ class UuidGeneratorAndResolverImplTest {
 		uuidGeneratorAndResolver.save()
 		val newResourceSet = new ResourceSetImpl().withGlobalFactories
 		uuidGeneratorAndResolver = createUuidGeneratorAndResolver(newResourceSet, uuidUri)
-		assertThrows(IllegalStateException) [uuidGeneratorAndResolver.loadUuidsAndModelsFromSerializedUuidRepository()]
+		assertThrows(IllegalStateException)[uuidGeneratorAndResolver.loadUuidsAndModelsFromSerializedUuidRepository()]
 	}
-	
+
 	@Test
 	@DisplayName("store and load UUIDs multiple times")
 	def void storeAndReloadUuidRepositoryMultipleTimes() {
@@ -356,7 +368,7 @@ class UuidGeneratorAndResolverImplTest {
 		uuidGeneratorAndResolver.loadUuidsAndModelsFromSerializedUuidRepository()
 		assertEquals(rootUuid, uuidGeneratorAndResolver.getUuid(root))
 	}
-	
+
 	@Test
 	@DisplayName("create second UUID resource and overwrite first one")
 	def void overwriteExistingUuidsWhenCreatingResolverWithoutLoading() {

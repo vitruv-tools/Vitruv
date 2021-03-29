@@ -17,7 +17,7 @@ import static com.google.common.base.Preconditions.checkState
 import static com.google.common.base.Preconditions.checkNotNull
 import tools.vitruv.framework.util.ResourceRegistrationAdapter
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
-import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceUtil.getFirstRootEObject
+import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceSetUtil.getOrCreateResource
 
 /**
  * {@link UuidGeneratorAndResolver}
@@ -55,6 +55,7 @@ package class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 				contents += repository
 			]
 		this.resourceSet.eAdapters += new ResourceRegistrationAdapter[resource|loadUuidsFromParent(resource.URI)]
+		this.resourceSet.resources.forEach[resource|loadUuidsFromParent(resource.URI)]
 	}
 
 	override loadUuidsAndModelsFromSerializedUuidRepository() {
@@ -126,25 +127,7 @@ package class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 	}
 	
 	private def getUuidIfStoredEObject(EObject eObject) {
-		val localResult = repository.EObjectToUuid.get(eObject)
-		if (localResult !== null) {
-			return localResult
-		}
-		
-		// If the object already has a resource, but is not from the resolver’s resource set, resolve it and try again
-		val objectResource = eObject.eResource
-		if (objectResource !== null && objectResource.resourceSet != resourceSet) {
-			val resolvedObject = resolve(eObject.resolvableUri)
-			// The EClass check avoids that an objects of another type with the same URI is resolved
-			// This is, for example, the case if a modifier in a UML model is changed, as it is only a
-			// marker class that is replaced, having always the same URI on the same model element.
-			if (resolvedObject !== null && resolvedObject.eClass == eObject.eClass) {
-				val resolvedObjectUuid = repository.EObjectToUuid.get(resolvedObject)
-				if (resolvedObjectUuid !== null) {
-					return resolvedObjectUuid
-				}
-			}
-		}
+		return repository.EObjectToUuid.get(eObject)
 	}
 	
 	private def getUuidIfEClass(EObject eObject) {
@@ -167,7 +150,10 @@ package class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 	
 	private def getEObjectIfReadonlyUri(String uuid) {
 		if (!uuid.startsWith(NON_READONLY_PREFIX)) {
-			return resolve(URI.createURI(uuid))
+			val uri = URI.createURI(uuid)
+			if (uri.hasFragment) {
+				return resourceSet.getEObject(uri, true)
+			}
 		}
 	}
 	
@@ -232,36 +218,6 @@ package class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 		}
 	}
 
-	private def EObject resolve(URI uri) {
-		resourceSet.getEObject(uri, true)
-	}
-
-	def private static getResolvableUri(EObject object) {
-		// we cannot simply use EcoreUtil#getURI, because object’s domain might use XMI	UUIDs. Since
-		// XMI UUIDs can be different for different resource sets, we cannot use URIs with XMI UUIDs to identify objects
-		// across resource sets. Hence, we force hierarchical URIs. This assumes that the resolved object’s graph
-		// has the same topology in the resolving resource set. This assumption holds when we use this method.
-		val resource = object.eResource
-		var rootElementIndex = 0;
-		val resourceRoot = if (resource.contents.size <= 1) {
-				object.eResource.firstRootEObject
-			} else {
-				// move up containment hierarchy until some container is one of the resource's root elements
-				var container = object
-				while (container !== null && (rootElementIndex = resource.contents.indexOf(container)) == -1) {
-					container = container.eContainer
-				}
-				checkState(container !== null, "some container of %s must be a root element of its resource", object)
-				container
-			}
-		val fragmentPath = EcoreUtil.getRelativeURIFragmentPath(resourceRoot, object)
-		if (fragmentPath.isEmpty) {
-			resource.URI.appendFragment('/' + rootElementIndex)
-		} else {
-			resource.URI.appendFragment('/' + rootElementIndex + '/' + fragmentPath)
-		}
-	}
-	
 	private static def isReadOnly(URI uri) {
 		uri.isPathmap || uri.isArchive
 	}
