@@ -1,6 +1,7 @@
 package tools.vitruv.framework.uuid
 
 import org.eclipse.emf.ecore.EObject
+import org.eclipse.emf.ecore.resource.ResourceSet
 
 /**
  * A {@link UuidGeneratorAndResolver} assigns {@link Uuid}s to {@link EObject}s and is able to 
@@ -18,14 +19,20 @@ interface UuidGeneratorAndResolver extends UuidResolver, AutoCloseable {
 	def String generateUuid(EObject eObject)
 
 	/**
+	 * Returns the {@link ResourceSet} used in this UUID generator and resolver.
+	 */
+	def ResourceSet getResourceSet()
+
+	/**
 	 * Loads the mapping between UUIDs and {@link EObject}s from the persistence at the {@link URI}
 	 * given in the constructor and resolves the referenced {@link EObject}s in the {@link ResourceSet}
 	 * given in the constructor.
 	 */
 	def void loadUuidsAndModelsFromSerializedUuidRepository()
-	
+
 	/**
 	 * Saves the mapping between {@link Uuids}s and {@link EObject}s to an underlying resource.
 	 */
 	def void save()
+
 }

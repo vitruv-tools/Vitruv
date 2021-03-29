@@ -127,11 +127,7 @@ class AtomicEChangeResolver {
 			return false
 		}
 		// Get resource where the root object will be inserted / removed.
-		change.resource = uuidResolver.resourceSet.getResource(URI.createURI(change.uri), false)
-
-		if (change.resource === null) {
-			change.resource = uuidResolver.resourceSet.createResource(URI.createURI(change.uri))
-		}
+		change.resource = uuidResolver.getResource(URI.createURI(change.uri))
 		return true
 	}
 
