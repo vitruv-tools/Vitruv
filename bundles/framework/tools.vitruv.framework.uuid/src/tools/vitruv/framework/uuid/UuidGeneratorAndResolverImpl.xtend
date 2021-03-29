@@ -92,7 +92,19 @@ package class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 	override close() {
 		this.uuidResource.unload()
 	}
+	
+	override getResourceSet() {
+		return resourceSet
+	}
 
+	override getResource(URI uri) {
+		return resourceSet.getOrCreateResource(uri)
+	}
+	
+	override hasResource(URI uri) {
+		return resourceSet.getResource(uri, false) !== null
+	}
+	
 	override getUuid(EObject eObject) {
 		val result = eObject.getUuidOrNull()
 		checkState(result !== null, "No UUID registered for EObject: %s", eObject)
@@ -193,16 +205,11 @@ package class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 		return uuid.getEObjectOrNull() !== null
 	}
 
-	override getResourceSet() {
-		return resourceSet
-	}
-
 	private def void loadUuidsFromParent(URI uri) {
 		// Only load UUIDs if resource exists and is not read only
-		if (parentUuidResolver !== null && !uri.readOnly && uri.existsResourceAtUri) {
-			val childContents = this.resourceSet.getResource(uri, true).allContents
-			val parentResource = parentUuidResolver.resourceSet.getResource(uri, false)
-			checkState(parentResource !== null, "no matching resource at '%s' in parent resolver", uri)
+		if (parentUuidResolver !== null && !uri.readOnly && parentUuidResolver.hasResource(uri)) {
+			val childContents = this.resourceSet.loadOrCreateResource(uri).allContents
+			val parentResource = parentUuidResolver.getResource(uri)
 			val parentContents = parentResource.allContents
 			while (childContents.hasNext) {
 				val childObject = childContents.next
@@ -214,7 +221,13 @@ package class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 					throw new IllegalStateException('''Element does not have a UUID but should have one: «ourObject»''')
 				}
 
-				registerEObject(objectUuid, childObject)
+				// There may be proxy references across resources leading to duplicate processing of elements that were
+				// already loaded
+				if (objectUuid.hasEObject) {
+					checkState(objectUuid.EObject == childObject)
+				} else {
+					registerEObject(objectUuid, childObject)
+				}
 			}
 		}
 	}
