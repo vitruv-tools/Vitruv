@@ -120,9 +120,9 @@ package class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 	}
 	
 	private def getUuidIfObjectReadonly(EObject eObject) {
-		val uri = EcoreUtil.getURI(eObject)
-		if (uri.isReadOnly()) {
-			return uri.toString
+		val resourceURI = eObject.eResource?.URI
+		if (resourceURI !== null && resourceURI.isReadOnly) {
+			return EcoreUtil.getURI(eObject).toString
 		}
 	}
 	
