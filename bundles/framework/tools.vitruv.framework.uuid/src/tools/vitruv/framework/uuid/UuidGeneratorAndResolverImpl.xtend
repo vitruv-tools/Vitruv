@@ -48,7 +48,7 @@ package class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 	new(UuidResolver parentUuidResolver, ResourceSet resourceSet, URI resourceUri) {
 		checkArgument(resourceSet !== null, "Resource set may not be null")
 		this.resourceSet = resourceSet
-		this.parentUuidResolver = parentUuidResolver ?: UuidResolver.EMPTY
+		this.parentUuidResolver = parentUuidResolver
 		this.repository = UuidFactory.eINSTANCE.createUuidToEObjectRepository
 		this.uuidResource = if (resourceUri !== null)
 			new ResourceSetImpl().withGlobalFactories.createResource(resourceUri) => [
@@ -199,7 +199,7 @@ package class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 
 	private def void loadUuidsFromParent(URI uri) {
 		// Only load UUIDs if resource exists and is not read only
-		if (parentUuidResolver !== EMPTY && !uri.readOnly && uri.existsResourceAtUri) {
+		if (parentUuidResolver !== null && !uri.readOnly && uri.existsResourceAtUri) {
 			val childContents = this.resourceSet.getResource(uri, true).allContents
 			val parentResource = parentUuidResolver.resourceSet.getResource(uri, false)
 			checkState(parentResource !== null, "no matching resource at '%s' in parent resolver", uri)
