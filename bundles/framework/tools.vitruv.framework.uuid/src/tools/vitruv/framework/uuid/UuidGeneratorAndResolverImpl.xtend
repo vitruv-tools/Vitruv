@@ -81,7 +81,7 @@ package class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 	private def cleanupRemovedElements() {
 		for (val iterator = repository.EObjectToUuid.keySet.iterator(); iterator.hasNext();) {
 			val object = iterator.next()
-			if (object.eResource === null) {
+			if (object.eResource === null || object.eResource.resourceSet === null) {
 				val uuid = repository.EObjectToUuid.get(object)
 				repository.uuidToEObject.removeKey(uuid)
 				iterator.remove()
