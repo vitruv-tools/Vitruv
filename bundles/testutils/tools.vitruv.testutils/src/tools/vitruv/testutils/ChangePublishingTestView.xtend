@@ -34,8 +34,9 @@ class ChangePublishingTestView implements NonTransactionalTestView {
 	val TestView delegate
 	val ChangeRecorder changeRecorder
 	val List<(VitruviusChange)=>List<PropagatedChange>> changeProcessors = new LinkedList()
+	val UuidGeneratorAndResolver uuidGeneratorAndResolver
 	var renewResourceCacheAfterPropagation = true
-
+	
 	/**
 	 * Creates a test view for the provided {@code targetDomains} that will store its persisted resources in the provided
 	 * {@code persistenceDirectory}, allow to program interactions through the provided {@code userInteraction} and use
@@ -64,8 +65,8 @@ class ChangePublishingTestView implements NonTransactionalTestView {
 	) {
 		this.resourceSet = new ResourceSetImpl().withGlobalFactories().awareOfDomains(targetDomains)
 		this.delegate = new BasicTestView(persistenceDirectory, resourceSet, userInteraction, uriMode)
-		val uuidResolver = createUuidGeneratorAndResolver(parentResolver, resourceSet)
-		this.changeRecorder = new ChangeRecorder(uuidResolver)
+		uuidGeneratorAndResolver = createUuidGeneratorAndResolver(parentResolver, resourceSet)
+		this.changeRecorder = new ChangeRecorder(uuidGeneratorAndResolver)
 		changeRecorder.beginRecording()
 	}
 
@@ -138,6 +139,7 @@ class ChangePublishingTestView implements NonTransactionalTestView {
 
 	override renewResourceCache() {
 		resourceSet.resources.clear()
+		uuidGeneratorAndResolver.save()
 	}
 
 	/**
