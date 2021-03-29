@@ -4,33 +4,34 @@ import org.eclipse.emf.ecore.EObject
 import org.eclipse.core.resources.IFile
 import org.eclipse.core.resources.IProject
 import org.eclipse.emf.common.util.URI
-import edu.kit.ipd.sdq.commons.util.org.eclipse.emf.common.util.URIUtil
+import static edu.kit.ipd.sdq.commons.util.org.eclipse.emf.common.util.URIUtil.getIFileForEMFUri
 import tools.vitruv.framework.util.VitruviusConstants
+import org.eclipse.emf.ecore.resource.ResourceSet
 
 final class PersistenceHelper {
 	private new() {}
 	
 	static def EObject getModelRoot(EObject modelObject) {
-		var result = modelObject;
-		while (result.eContainer() !== null) {
-			result = result.eContainer();
+		var result = modelObject
+		while (result.eContainer !== null) {
+			result = result.eContainer
 		}
-		return result;
+		return result
 	}
 
 	private static def URI getURIOfElementResourceFolder(EObject element) {
-		return element.eResource().getURI().trimSegments(1);
+		return element.eResource.URI.trimSegments(1)
 	}
 
 	private static def URI getURIOfElementProject(EObject element) {
-		val elementUri = element.eResource().URI;
+		val elementUri = element.eResource.URI
 		if (elementUri.isPlatform) {
-			val IFile sourceModelFile = URIUtil.getIFileForEMFUri(elementUri);
-			val IProject projectSourceModel = sourceModelFile.getProject();
-			var String srcFolderPath = projectSourceModel.getFullPath().toString();
-			return URI.createPlatformResourceURI(srcFolderPath, true);
+			val IFile sourceModelFile = getIFileForEMFUri(elementUri)
+			val IProject projectSourceModel = sourceModelFile.project
+			var String srcFolderPath = projectSourceModel.fullPath.toString
+			return URI.createPlatformResourceURI(srcFolderPath, true)
 		} else if (elementUri.isFile) {
-			return findTestProjectInFileURI(elementUri);
+			return findTestProjectInFileURI(element.eResource.resourceSet, elementUri)
 		} else {
 			throw new UnsupportedOperationException("Other URI types than file and platform are currently not supported");
 		}
@@ -40,30 +41,30 @@ final class PersistenceHelper {
 	* although we are not in an Eclipse environment that knows about projects using
 	* PlatformURIS
 	*/
-	private static def URI findTestProjectInFileURI(URI elementUri) {
-		var potentialProjectUri = elementUri;
+	private static def URI findTestProjectInFileURI(ResourceSet resourceSet, URI elementUri) {
+		var potentialProjectUri = elementUri
 		// Remove last segment as long as the folder does not contain the 
-		while (!URIUtil.existsResourceAtUri(potentialProjectUri.appendSegment(VitruviusConstants.testProjectMarkerFileName))
+		while (!resourceSet.URIConverter.exists(potentialProjectUri.appendSegment(VitruviusConstants.testProjectMarkerFileName), null)
 			&& potentialProjectUri.lastSegment !== null) {
-			potentialProjectUri = potentialProjectUri.trimSegments(1);
+			potentialProjectUri = potentialProjectUri.trimSegments(1)
 		}
 		if (potentialProjectUri.lastSegment === null) {
-			throw new IllegalStateException("No project folder for " + elementUri+ " found");
+			throw new IllegalStateException("No project folder for " + elementUri+ " found")
 		}
-		return potentialProjectUri;
+		return potentialProjectUri
 	}
 
 	private static def URI appendPathToURI(URI baseURI, String relativePath) {
-		val newModelFileSegments = relativePath.split("/");
+		val newModelFileSegments = relativePath.split("/")
 		if (!newModelFileSegments.last.contains(".")) {
-			throw new IllegalArgumentException("File extension must be specified");
+			throw new IllegalArgumentException("File extension must be specified")
 		}
-		return baseURI.appendSegments(newModelFileSegments);
+		return baseURI.appendSegments(newModelFileSegments)
 	}
 
 	static def URI getURIFromSourceResourceFolder(EObject source, String relativePath) {
-		val baseURI = getURIOfElementResourceFolder(source);
-		return baseURI.appendPathToURI(relativePath);
+		val baseURI = getURIOfElementResourceFolder(source)
+		return baseURI.appendPathToURI(relativePath)
 	}
 	
 	/**
