@@ -16,7 +16,7 @@ import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.handlers.HandlerUtil;
 
 import tools.vitruv.extensions.changevisualization.ChangeVisualization;
-import tools.vitruv.framework.vsum.InternalVirtualModel;
+import tools.vitruv.framework.vsum.internal.InternalVirtualModel;
 import tools.vitruv.framework.vsum.VirtualModelManager;
 
 /**
@@ -25,6 +25,7 @@ import tools.vitruv.framework.vsum.VirtualModelManager;
  * 
  * @author Andreas Loeffler
  */
+@SuppressWarnings("restriction")
 public class ChangeVisualizationHandler extends AbstractHandler {
 
 	/**

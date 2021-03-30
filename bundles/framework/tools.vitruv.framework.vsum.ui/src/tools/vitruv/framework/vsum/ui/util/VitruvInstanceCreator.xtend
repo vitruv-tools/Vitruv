@@ -1,6 +1,5 @@
 package tools.vitruv.framework.vsum.ui.util
 
-import tools.vitruv.framework.vsum.InternalVirtualModel
 import tools.vitruv.framework.domains.VitruvDomain
 import tools.vitruv.framework.applications.VitruvApplication
 import java.util.Map
@@ -12,6 +11,7 @@ import tools.vitruv.framework.userinteraction.UserInteractionFactory
 import org.apache.log4j.Logger
 import tools.vitruv.framework.domains.ui.builder.VitruvProjectBuilderApplicator
 import tools.vitruv.framework.vsum.VirtualModelBuilder
+import tools.vitruv.framework.vsum.VirtualModel
 
 class VitruvInstanceCreator {
 	static val LOGGER = Logger.getLogger(VitruvInstanceCreator)
@@ -44,7 +44,7 @@ class VitruvInstanceCreator {
 		return true
 	}
 
-	private def InternalVirtualModel createVirtualModel(String vsumName) {
+	private def VirtualModel createVirtualModel(String vsumName) {
 		val domains = this.getDomains()
 		val project = ResourcesPlugin.workspace.root.getProject(vsumName)
 		project.create(null)

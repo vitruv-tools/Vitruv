@@ -16,7 +16,7 @@ import tools.vitruv.extensions.constructionsimulation.LoggerConfigurator;
 import tools.vitruv.framework.userinteraction.UserInteractionFactory;
 import tools.vitruv.framework.userinteraction.UserInteractor;
 import tools.vitruv.framework.userinteraction.UserInteractionOptions.WindowModality;
-import tools.vitruv.framework.vsum.InternalVirtualModel;
+import tools.vitruv.framework.vsum.VirtualModel;
 
 /**
  * Handler for the context menu event created when a user rightclicks a model and selects
@@ -35,7 +35,7 @@ public abstract class IntegrationHandler<T> extends AbstractHandler {
 
     private final Logger logger = LogManager.getRootLogger();
     protected boolean keepOldModel;
-    protected InternalVirtualModel vsum;
+    protected VirtualModel vsum;
 
     /*
      * (non-Javadoc)

@@ -29,9 +29,9 @@ import tools.vitruv.framework.change.description.VitruviusChange;
 import tools.vitruv.framework.uuid.UuidGeneratorAndResolver;
 import static tools.vitruv.framework.uuid.UuidGeneratorAndResolverFactory.createUuidGeneratorAndResolver;
 import tools.vitruv.framework.uuid.UuidResolver;
-import tools.vitruv.framework.vsum.ModelInstance;
+import tools.vitruv.framework.vsum.internal.ModelInstance;
 import tools.vitruv.framework.vsum.VirtualModel;
-import tools.vitruv.framework.vsum.modelsynchronization.ChangePropagationListener;
+import tools.vitruv.framework.vsum.ChangePropagationListener;
 
 public class DefaultImplementations {
     public static final ResourceChangeSynchronizing EFFECTLESS_CHANGESYNC = new ResourceChangeSynchronizing() {

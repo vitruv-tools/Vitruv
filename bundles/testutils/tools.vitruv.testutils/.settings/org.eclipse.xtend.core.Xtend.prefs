@@ -1,0 +1,3 @@
+ValidatorConfiguration.is_project_specific=true
+eclipse.preferences.version=1
+org.eclipse.xtext.xbase.validation.IssueCodes.discouraged_reference=info

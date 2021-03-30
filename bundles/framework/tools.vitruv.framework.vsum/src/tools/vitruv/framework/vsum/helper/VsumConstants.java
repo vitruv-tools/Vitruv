@@ -1,4 +1,4 @@
-package tools.vitruv.framework.vsum;
+package tools.vitruv.framework.vsum.helper;
 
 public class VsumConstants {
     /** Utility classes should not have a public or default constructor. */

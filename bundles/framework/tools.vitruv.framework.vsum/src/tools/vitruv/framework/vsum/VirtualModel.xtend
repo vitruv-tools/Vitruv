@@ -7,7 +7,7 @@ import tools.vitruv.framework.change.description.VitruviusChange
 import org.eclipse.emf.common.util.URI
 import java.nio.file.Path
 import tools.vitruv.framework.uuid.UuidResolver
-import tools.vitruv.framework.vsum.modelsynchronization.ChangePropagationListener
+import tools.vitruv.framework.vsum.ChangePropagationListener
 
 interface VirtualModel {
 	def Path getFolder()

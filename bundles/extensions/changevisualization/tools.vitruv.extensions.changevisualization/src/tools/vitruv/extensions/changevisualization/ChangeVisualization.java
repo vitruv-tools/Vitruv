@@ -16,7 +16,7 @@ import tools.vitruv.extensions.changevisualization.ui.ChangeVisualizationUI;
 import tools.vitruv.extensions.changevisualization.ui.ChangesTab;
 import tools.vitruv.framework.change.description.PropagatedChange;
 import tools.vitruv.framework.domains.VitruvDomain;
-import tools.vitruv.framework.vsum.PropagatedChangeListener;
+import tools.vitruv.framework.vsum.internal.PropagatedChangeListener;
 
 /**
  * This class provides a single instance used to communicate with the visualization ui.
@@ -26,6 +26,7 @@ import tools.vitruv.framework.vsum.PropagatedChangeListener;
  * @author Andreas Loeffler
  *
  */
+@SuppressWarnings("restriction")
 public final class ChangeVisualization implements PropagatedChangeListener{	
 	
 	/**
