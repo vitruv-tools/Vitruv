@@ -8,7 +8,6 @@ import tools.vitruv.framework.change.description.impl.CompositeTransactionalChan
 import tools.vitruv.framework.change.description.impl.ConcreteChangeImpl
 import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.change.echange.TypeInferringCompoundEChangeFactory
-import tools.vitruv.framework.change.description.impl.ConcreteApplicableChangeImpl
 import java.util.List
 import tools.vitruv.framework.change.description.impl.EmptyChange
 
@@ -28,10 +27,6 @@ class VitruviusChangeFactory {
 			instance = new VitruviusChangeFactory();
 		}
 		return instance;
-	}
-	
-	def ConcreteChange createConcreteApplicableChange(EChange change) {
-		return new ConcreteApplicableChangeImpl(change);
 	}
 	
 	def ConcreteChange createConcreteChange(EChange change) {
