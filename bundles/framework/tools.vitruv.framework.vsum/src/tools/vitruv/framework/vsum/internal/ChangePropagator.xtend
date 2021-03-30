@@ -1,4 +1,4 @@
-package tools.vitruv.framework.vsum.modelsynchronization
+package tools.vitruv.framework.vsum.internal
 
 import java.util.ArrayList
 import java.util.List
@@ -18,7 +18,6 @@ import tools.vitruv.framework.domains.repository.VitruvDomainRepository
 import tools.vitruv.framework.userinteraction.InternalUserInteractor
 import tools.vitruv.framework.userinteraction.UserInteractionFactory
 import tools.vitruv.framework.userinteraction.UserInteractionListener
-import tools.vitruv.framework.vsum.ModelRepository
 
 import static com.google.common.base.Preconditions.checkNotNull
 import static com.google.common.base.Preconditions.checkState
@@ -27,8 +26,9 @@ import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
 import java.util.HashSet
 import java.util.Set
 import org.eclipse.emf.ecore.resource.Resource
+import tools.vitruv.framework.vsum.internal.ModelRepository
 
-class ChangePropagator {
+package class ChangePropagator {
 	static val logger = Logger.getLogger(ChangePropagator)
 	val VitruvDomainRepository domainRepository
 	val ModelRepository resourceRepository

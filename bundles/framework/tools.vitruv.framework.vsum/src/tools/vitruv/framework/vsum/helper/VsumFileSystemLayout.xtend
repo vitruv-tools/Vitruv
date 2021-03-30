@@ -8,7 +8,7 @@ import static com.google.common.base.Preconditions.checkArgument
 import static com.google.common.base.Preconditions.checkState
 import static java.nio.charset.StandardCharsets.UTF_8
 import static java.nio.file.Files.createDirectories
-import static tools.vitruv.framework.vsum.VsumConstants.*
+import static tools.vitruv.framework.vsum.helper.VsumConstants.*
 import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.common.util.URIUtil.createFileURI
 import org.eclipse.emf.common.util.URI
 

@@ -1,4 +1,4 @@
-package tools.vitruv.framework.vsum.repositories
+package tools.vitruv.framework.vsum.internal
 
 import java.util.HashMap
 import java.util.Map
@@ -11,7 +11,6 @@ import tools.vitruv.framework.change.description.VitruviusChangeFactory
 import tools.vitruv.framework.domains.VitruvDomain
 import tools.vitruv.framework.domains.repository.VitruvDomainRepository
 import tools.vitruv.framework.uuid.UuidGeneratorAndResolver
-import tools.vitruv.framework.vsum.ModelRepository
 
 import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceSetUtil.loadOrCreateResource
 import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceSetUtil.getOrCreateResource
@@ -26,9 +25,8 @@ import static tools.vitruv.framework.uuid.UuidGeneratorAndResolverFactory.create
 import static tools.vitruv.framework.correspondence.CorrespondenceModelFactory.createCorrespondenceModel
 import tools.vitruv.framework.correspondence.InternalCorrespondenceModel
 import org.eclipse.emf.common.util.URI
-import tools.vitruv.framework.vsum.ModelInstance
 
-class ResourceRepositoryImpl implements ModelRepository {
+package class ResourceRepositoryImpl implements ModelRepository {
 	static val logger = Logger.getLogger(ResourceRepositoryImpl)
 	val ResourceSet modelsResourceSet
 	val ResourceSet correspondencesResourceSet

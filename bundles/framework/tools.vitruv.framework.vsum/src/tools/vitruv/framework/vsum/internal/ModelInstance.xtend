@@ -1,4 +1,4 @@
-package tools.vitruv.framework.vsum
+package tools.vitruv.framework.vsum.internal
 
 import org.apache.log4j.Logger
 import org.eclipse.emf.ecore.resource.Resource

@@ -1,4 +1,4 @@
-package tools.vitruv.framework.vsum
+package tools.vitruv.framework.vsum.internal
 
 import java.util.List
 import org.eclipse.emf.ecore.resource.Resource
@@ -8,8 +8,6 @@ import tools.vitruv.framework.propagation.ChangePropagationSpecificationProvider
 import tools.vitruv.framework.domains.repository.VitruvDomainRepository
 import tools.vitruv.framework.userinteraction.InternalUserInteractor
 import tools.vitruv.framework.vsum.helper.ChangeDomainExtractor
-import tools.vitruv.framework.vsum.modelsynchronization.ChangePropagationListener
-import tools.vitruv.framework.vsum.repositories.ResourceRepositoryImpl
 import org.apache.log4j.Logger
 import org.eclipse.emf.common.util.URI
 import tools.vitruv.framework.vsum.helper.VsumFileSystemLayout
@@ -18,7 +16,8 @@ import static com.google.common.base.Preconditions.checkNotNull
 import java.util.LinkedList
 import static com.google.common.base.Preconditions.checkArgument
 import static com.google.common.base.Preconditions.checkState
-import tools.vitruv.framework.vsum.modelsynchronization.ChangePropagator
+import tools.vitruv.framework.vsum.internal.ChangePropagator
+import tools.vitruv.framework.vsum.ChangePropagationListener
 
 class VirtualModelImpl implements InternalVirtualModel {
 	static val Logger LOGGER = Logger.getLogger(VirtualModelImpl)
@@ -30,7 +29,7 @@ class VirtualModelImpl implements InternalVirtualModel {
 	val List<PropagatedChangeListener> propagatedChangeListeners = new LinkedList()
 	val extension ChangeDomainExtractor changeDomainExtractor
 	
-	package new(VsumFileSystemLayout fileSystemLayout, InternalUserInteractor userInteractor,
+	new(VsumFileSystemLayout fileSystemLayout, InternalUserInteractor userInteractor,
 		VitruvDomainRepository domainRepository,
 		ChangePropagationSpecificationProvider changePropagationSpecificationProvider) {
 		this.fileSystemLayout = fileSystemLayout
@@ -45,7 +44,7 @@ class VirtualModelImpl implements InternalVirtualModel {
 		)
 	}
 	
-	package def loadExistingModels() {
+	def loadExistingModels() {
 		this.resourceRepository.loadExistingModels()
 	}
 

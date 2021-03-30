@@ -6,7 +6,7 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.TestInfo
 import org.junit.jupiter.api.^extension.ExtendWith
 import tools.vitruv.framework.propagation.ChangePropagationSpecification
-import tools.vitruv.framework.vsum.InternalVirtualModel
+import tools.vitruv.framework.vsum.internal.InternalVirtualModel
 
 import org.eclipse.xtend.lib.annotations.Delegate
 import static tools.vitruv.testutils.UriMode.*

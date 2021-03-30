@@ -1,4 +1,4 @@
-package tools.vitruv.framework.vsum;
+package tools.vitruv.framework.vsum.internal
 
 import java.util.List;
 

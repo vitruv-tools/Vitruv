@@ -10,7 +10,6 @@ import pcm_mockup.PInterface
 import pcm_mockup.Repository
 import tools.vitruv.framework.correspondence.Correspondence
 import tools.vitruv.framework.correspondence.CorrespondenceModel
-import tools.vitruv.framework.vsum.InternalVirtualModel
 import uml_mockup.UInterface
 import uml_mockup.UPackage
 
@@ -37,6 +36,7 @@ import static org.hamcrest.CoreMatchers.instanceOf
 import static org.hamcrest.MatcherAssert.assertThat
 import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.common.util.URIUtil.createFileURI
 import static extension tools.vitruv.framework.correspondence.CorrespondenceModelUtil.getCorrespondingEObjects
+import tools.vitruv.framework.vsum.internal.InternalVirtualModel
 
 @ExtendWith(TestProjectManager, TestLogging, RegisterMetamodelsInStandalone)
 class CorrespondenceTest {
