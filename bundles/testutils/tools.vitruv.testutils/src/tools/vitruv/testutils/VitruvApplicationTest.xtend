@@ -15,7 +15,6 @@ import tools.vitruv.framework.vsum.VirtualModelBuilder
 import tools.vitruv.framework.domains.repository.VitruvDomainRepository
 import tools.vitruv.framework.domains.repository.VitruvDomainRepositoryImpl
 import tools.vitruv.framework.vsum.VirtualModel
-import tools.vitruv.framework.correspondence.CorrespondenceModel
 
 @ExtendWith(TestLogging, TestProjectManager)
 abstract class VitruvApplicationTest implements TestView {
@@ -60,7 +59,7 @@ abstract class VitruvApplicationTest implements TestView {
 		testView?.close()
 	}
 
-	def package CorrespondenceModel getCorrespondenceModel() { virtualModel.correspondenceModel }
+	def package InternalVirtualModel getInternalVirtualModel() { virtualModel }
 	
 	def protected VirtualModel getVirtualModel() { virtualModel }
 	

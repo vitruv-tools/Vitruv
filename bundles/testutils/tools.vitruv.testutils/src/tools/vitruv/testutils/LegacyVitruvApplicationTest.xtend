@@ -36,7 +36,7 @@ abstract class LegacyVitruvApplicationTest extends VitruvApplicationTest impleme
 		if (resolvedObject === null) {
 			return emptyList
 		} else {
-			return correspondenceModel.getCorrespondingEObjects(resolvedObject, type, tag)
+			return internalVirtualModel.correspondenceModel.getCorrespondingEObjects(resolvedObject, type, tag)
 		}
 	}
 	
@@ -46,7 +46,7 @@ abstract class LegacyVitruvApplicationTest extends VitruvApplicationTest impleme
 	
 	private def dispatch EObject resolveInVirtualModel(EObject object) {
 		if (object.eResource !== null) {
-			virtualModel.uuidResolver.getResource(object.eResource.URI).getEObject(object.resolvableUriFragment)
+			internalVirtualModel.uuidResolver.getResource(object.eResource.URI).getEObject(object.resolvableUriFragment)
 		}
 	}
 	
