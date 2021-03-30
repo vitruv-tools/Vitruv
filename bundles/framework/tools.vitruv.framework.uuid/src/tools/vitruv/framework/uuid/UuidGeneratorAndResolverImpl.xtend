@@ -198,7 +198,7 @@ package class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 			val parentContents = parentResource.allContents
 			while (childContents.hasNext) {
 				val childObject = childContents.next
-				checkState(parentContents.hasNext, "Cannot find %s in our resource set!", childObject)
+				checkState(parentContents.hasNext, "Cannot find %s in parent resolver resource set!", childObject)
 				val ourObject = parentContents.next
 
 				var objectUuid = parentUuidResolver.getUuid(ourObject)
