@@ -143,7 +143,7 @@ class ChangeRecorder implements AutoCloseable {
 					switch (eChange: innerChange.EChange) {
 						EObjectSubtractedEChange<?> case eChange.isContainmentRemoval &&
 							removedIds.contains(eChange.oldValueID):
-							VitruviusChangeFactory.instance.createConcreteApplicableChange(
+							VitruviusChangeFactory.instance.createConcreteChange(
 								converter.createDeleteChange(eChange)
 							)
 						default:
@@ -281,7 +281,7 @@ class ChangeRecorder implements AutoCloseable {
 				val newChanges = converter.convert(new NotificationInfo(notification))
 				if (!newChanges.isEmpty) {
 					resultChanges += VitruviusChangeFactory.instance.createCompositeTransactionalChange(
-						newChanges.map[VitruviusChangeFactory.instance.createConcreteApplicableChange(it)]
+						newChanges.map[VitruviusChangeFactory.instance.createConcreteChange(it)]
 					)
 				}
 			}

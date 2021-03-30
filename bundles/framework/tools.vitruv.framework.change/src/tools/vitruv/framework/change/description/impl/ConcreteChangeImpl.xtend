@@ -1,7 +1,6 @@
 package tools.vitruv.framework.change.description.impl
 
 import tools.vitruv.framework.change.echange.EChange
-import org.apache.log4j.Logger
 import java.util.List
 import tools.vitruv.framework.change.interaction.UserInteractionBase
 import java.util.ArrayList
@@ -32,9 +31,11 @@ import tools.vitruv.framework.change.echange.feature.attribute.RemoveEAttributeV
 import java.util.Set
 import tools.vitruv.framework.change.echange.feature.attribute.UpdateAttributeEChange
 import org.eclipse.emf.common.util.URI
+import static com.google.common.base.Preconditions.checkState
+import tools.vitruv.framework.change.echange.resolve.EChangeUnresolver
+import static extension tools.vitruv.framework.change.echange.resolve.EChangeResolverAndApplicator.*
 
 class ConcreteChangeImpl implements ConcreteChange {
-	static val logger = Logger.getLogger(ConcreteChangeImpl)
 	var EChange eChange
 	val List<UserInteractionBase> userInteractions = new ArrayList()
 
@@ -67,15 +68,23 @@ class ConcreteChangeImpl implements ConcreteChange {
 	}
 	
 	override resolveBeforeAndApplyForward(UuidResolver uuidResolver) {
-		logger.warn("The resolveBeforeAndapplyForward method is not implemented for " + this.class.simpleName + " yet.")
+		// TODO HK Make a copy of the complete change instead of replacing it internally
+		val resolvedChange = this.EChange.resolveBefore(uuidResolver)
+		checkState(resolvedChange !== null, "Failed to resolve this change: %s", this.EChange)
+		this.EChange = resolvedChange
+		this.EChange.applyForward
 	}
 
 	override resolveAfterAndApplyBackward(UuidResolver uuidResolver) {
-		logger.warn("The resolveAfterAndApplyBackward method is not implemented for " + this.class.simpleName + " yet.")
+		// TODO HK Make a copy of the complete change instead of replacing it internally
+		val resolvedChange = this.EChange.resolveAfter(uuidResolver)
+		checkState(resolvedChange !== null, "Failed to resolve this change: %s", this.EChange)
+		this.EChange = resolvedChange
+		this.EChange.applyBackward
 	}
 
 	override unresolveIfApplicable() {
-		// Do nothing	
+		EChanges.forEach [EChangeUnresolver.unresolve(it)]	
 	}
 
 	override getAffectedEObjects() {
