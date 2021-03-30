@@ -19,6 +19,7 @@ import java.util.List;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 
 import tools.vitruv.domains.emf.monitorededitor.ISynchronizingMonitoredEmfEditor.ResourceChangeSynchronizing;
@@ -28,10 +29,8 @@ import tools.vitruv.framework.change.description.PropagatedChange;
 import tools.vitruv.framework.change.description.VitruviusChange;
 import tools.vitruv.framework.uuid.UuidGeneratorAndResolver;
 import static tools.vitruv.framework.uuid.UuidGeneratorAndResolverFactory.createUuidGeneratorAndResolver;
-import tools.vitruv.framework.uuid.UuidResolver;
-import tools.vitruv.framework.vsum.internal.ModelInstance;
-import tools.vitruv.framework.vsum.VirtualModel;
 import tools.vitruv.framework.vsum.ChangePropagationListener;
+import tools.vitruv.framework.vsum.VirtualModel;
 
 public class DefaultImplementations {
     public static final ResourceChangeSynchronizing EFFECTLESS_CHANGESYNC = new ResourceChangeSynchronizing() {
@@ -106,22 +105,12 @@ public class DefaultImplementations {
         }
 
         @Override
-        public ModelInstance getModelInstance(URI modelUri) {
-            return null;
-        }
-
-        @Override
         public Path getFolder() {
             return null;
         }
 
         @Override
         public void reverseChanges(List<PropagatedChange> changes) {
-        }
-
-        @Override
-        public UuidResolver getUuidResolver() {
-        	return uuidGeneratorAndResolver;
         }
 
         @Override
@@ -140,6 +129,11 @@ public class DefaultImplementations {
 
 		@Override
 		public void removeChangePropagationListener(ChangePropagationListener propagationListener) {
+		}
+
+		@Override
+		public UuidGeneratorAndResolver createChildUuidGeneratorAndResolver(ResourceSet resourceSet) {
+			return createUuidGeneratorAndResolver(uuidGeneratorAndResolver, resourceSet);
 		}
 
     }
