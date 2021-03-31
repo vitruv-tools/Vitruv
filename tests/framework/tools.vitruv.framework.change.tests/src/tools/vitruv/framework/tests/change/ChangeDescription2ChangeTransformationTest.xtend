@@ -4,7 +4,6 @@ import allElementTypes.Root
 import java.util.List
 
 import tools.vitruv.framework.change.echange.EChange
-import static extension tools.vitruv.framework.change.echange.resolve.EChangeResolverAndApplicator.*
 import tools.vitruv.framework.uuid.UuidGeneratorAndResolver
 import tools.vitruv.framework.change.echange.resolve.EChangeUnresolver
 import org.eclipse.emf.ecore.resource.ResourceSet
@@ -29,6 +28,7 @@ import tools.vitruv.framework.change.description.TransactionalChange
 import static tools.vitruv.framework.uuid.UuidGeneratorAndResolverFactory.createUuidGeneratorAndResolver
 import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.common.util.URIUtil.createFileURI
 import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceSetUtil.loadOrCreateResource
+import static extension tools.vitruv.framework.change.echange.resolve.EChangeResolver.*
 
 @ExtendWith(TestProjectManager, RegisterMetamodelsInStandalone)
 abstract class ChangeDescription2ChangeTransformationTest {
@@ -105,7 +105,9 @@ abstract class ChangeDescription2ChangeTransformationTest {
 		monitoredChanges.forEach[EChangeUnresolver.unresolve(it)]
 		val resultingChanges = newArrayList
 		for (change : monitoredChanges.toList.reverseView) {
-			resultingChanges += change.resolveAfterAndApplyBackward(this.uuidGeneratorAndResolver)
+			val resolvedChange = change.resolveAfter(uuidGeneratorAndResolver)
+			resolvedChange.applyBackward
+			resultingChanges += resolvedChange
 		}
 		resultingChanges.reverse
 		for (change : resultingChanges) {

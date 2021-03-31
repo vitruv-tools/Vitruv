@@ -11,7 +11,6 @@ import tools.vitruv.framework.change.echange.TypeInferringUnresolvingCompoundECh
 import tools.vitruv.framework.uuid.UuidGeneratorAndResolver
 import java.util.List
 import tools.vitruv.framework.change.echange.EChange
-import static extension tools.vitruv.framework.change.echange.resolve.EChangeResolverAndApplicator.*
 import org.junit.jupiter.api.BeforeEach
 import static org.junit.jupiter.api.Assertions.assertFalse
 import static org.junit.jupiter.api.Assertions.assertTrue
@@ -23,6 +22,7 @@ import org.junit.jupiter.api.io.TempDir
 import static tools.vitruv.framework.uuid.UuidGeneratorAndResolverFactory.createUuidGeneratorAndResolver
 import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.common.util.URIUtil.createFileURI
 import org.eclipse.emf.ecore.EObject
+import static extension tools.vitruv.framework.change.echange.resolve.EChangeResolver.*
 
 /**
  * Default class for testing EChange changes.
