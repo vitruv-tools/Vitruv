@@ -37,5 +37,6 @@ Export-Package: tools.vitruv.framework.change.echange,
 Require-Bundle: org.eclipse.xtend.lib,
  org.apache.log4j,
  org.eclipse.emf.ecore.edit,
- tools.vitruv.framework.uuid;visibility:=reexport
+ tools.vitruv.framework.uuid;visibility:=reexport,
+ edu.kit.ipd.sdq.activextendannotations
 Bundle-ActivationPolicy: lazy
