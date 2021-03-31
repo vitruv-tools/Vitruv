@@ -14,12 +14,14 @@ import tools.vitruv.framework.change.echange.feature.reference.RemoveEReference
 import tools.vitruv.framework.change.echange.root.RemoveRootEObject
 import tools.vitruv.framework.change.echange.feature.reference.AdditiveReferenceEChange
 import tools.vitruv.framework.change.echange.root.InsertRootEObject
+import static com.google.common.base.Preconditions.checkState
+import edu.kit.ipd.sdq.activextendannotations.Utility
 
 /**
  * Static utility class for the EChange package and subpackages.
  */
+@Utility
 class EChangeUtil {
-	
 	/**
 	 * Get the editing domain of the an object. If the object has no 
 	 * editing domain, it returns a new {@code AdapterFactoryEditingDomain}.
@@ -29,27 +31,25 @@ class EChangeUtil {
 	static def EditingDomain getEditingDomain(EObject object) {
 		val ed = AdapterFactoryEditingDomain.getEditingDomainFor(object)
 		if (ed === null) {
-			return new AdapterFactoryEditingDomain(new ComposedAdapterFactory(), new BasicCommandStack());
+			return new AdapterFactoryEditingDomain(new ComposedAdapterFactory(), new BasicCommandStack())
 		}
 		return ed
 	}
-	
+
 	static def boolean alreadyContainsObject(EObject affectedEObject, EReference feature, EObject value) {
-		if (!affectedEObject.eClass.EAllStructuralFeatures.contains(feature)) {
-			throw new IllegalStateException("Given object " + affectedEObject + " does not contain reference " + feature);
-		}
-		val List<EObject> featureContents = 
-			if (feature.many) {
+		checkState(affectedEObject.eClass.EAllStructuralFeatures.contains(feature),
+			"Given object %s does not contain reference %s", affectedEObject, feature)
+		val List<EObject> featureContents = if (feature.many) {
 				affectedEObject.eGet(feature) as List<EObject>
 			} else {
 				#[affectedEObject.eGet(feature) as EObject]
 			}
 		if (featureContents.contains(value)) {
-			return true;
+			return true
 		}
-		return false;
+		return false
 	}
-	
+
 	/**
 	 * Return the value of the ID attribute of the given {@link EObject}, according to
 	 * {@link EcoreUtil#getID(EObject) EcoreUtil}.
@@ -65,41 +65,42 @@ class EChangeUtil {
 	static def String getID(EObject eObject) {
 		val idAttribute = eObject.eClass.EIDAttribute
 		if (idAttribute !== null && !idAttribute.derived) {
-			return EcoreUtil.getID(eObject);
+			return EcoreUtil.getID(eObject)
 		}
-		return null;
+		return null
 	}
-	
-	
+
 	static def dispatch isContainmentRemoval(EChange change) {
-		return false;
+		return false
 	}
-	
-	static def dispatch isContainmentRemoval(ReplaceSingleValuedEReference<?,?> change) {
-		return change.affectedFeature.containment && change.oldValueID !== null && change.oldValueID !== change.newValueID;
+
+	static def dispatch isContainmentRemoval(ReplaceSingleValuedEReference<?, ?> change) {
+		return change.affectedFeature.containment &&
+			((change.oldValueID !== null && change.oldValueID !== change.newValueID) ||
+				(change.oldValue !== null && change.oldValue != change.newValue))
 	}
-	
-	static def dispatch isContainmentRemoval(RemoveEReference<?,?> change) {
-		return change.affectedFeature.containment;
+
+	static def dispatch isContainmentRemoval(RemoveEReference<?, ?> change) {
+		return change.affectedFeature.containment
 	}
-	
+
 	static def dispatch isContainmentRemoval(RemoveRootEObject<?> change) {
-		return true;
+		return true
 	}
-	
+
 	static def dispatch isContainmentInsertion(EChange change) {
-		return false;
+		return false
 	}
-	
-	static def dispatch isContainmentInsertion(AdditiveReferenceEChange<?,?> change) {
-		return change.affectedFeature.containment && change.newValueID !== null;
+
+	static def dispatch isContainmentInsertion(AdditiveReferenceEChange<?, ?> change) {
+		return change.affectedFeature.containment && (change.newValueID !== null || change.newValue !== null)
 	}
-	
+
 	static def dispatch isContainmentInsertion(RemoveRootEObject<?> change) {
-		return true;
+		return true
 	}
-	
+
 	static def dispatch isContainmentInsertion(InsertRootEObject<?> change) {
-		return true;
+		return true
 	}
 }
