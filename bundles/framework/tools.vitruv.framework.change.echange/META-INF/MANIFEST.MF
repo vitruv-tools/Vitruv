@@ -9,7 +9,6 @@ Bundle-Vendor: %providerName
 Bundle-Localization: plugin
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Export-Package: tools.vitruv.framework.change.echange,
- tools.vitruv.framework.change.echange.command,
  tools.vitruv.framework.change.echange.eobject,
  tools.vitruv.framework.change.echange.eobject.impl,
  tools.vitruv.framework.change.echange.eobject.util,
@@ -32,8 +31,7 @@ Export-Package: tools.vitruv.framework.change.echange,
  tools.vitruv.framework.change.echange.resolve,
  tools.vitruv.framework.change.echange.root,
  tools.vitruv.framework.change.echange.root.impl,
- tools.vitruv.framework.change.echange.root.util,
- tools.vitruv.framework.change.echange.util
+ tools.vitruv.framework.change.echange.root.util
 Require-Bundle: org.eclipse.xtend.lib,
  org.apache.log4j,
  org.eclipse.emf.ecore.edit,

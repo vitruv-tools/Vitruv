@@ -114,22 +114,14 @@ abstract class EChangeTest {
 		return result.reverse
 	}
 
-	static def protected boolean applyBackward(List<EChange> changes) {
+	static def protected void applyBackward(List<EChange> changes) {
 		assertIsResolved(changes)
-		var result = true
-		for (change : changes.reverseView) {
-			result = result && change.applyBackward
-		}
-		return result
+		changes.reverseView.forEach[applyBackward]
 	}
 
-	static def protected boolean applyForward(List<EChange> changes) {
+	static def protected void applyForward(List<EChange> changes) {
 		assertIsResolved(changes)
-		var result = true
-		for (change : changes) {
-			result = result && change.applyForward
-		}
-		return result
+		changes.forEach[applyForward]
 	}
 	
 	protected def <T extends EObject> T withUuid(T eObject) {

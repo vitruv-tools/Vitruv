@@ -209,11 +209,11 @@ class InsertEReferenceTest extends ReferenceEChangeTest {
 
 		// Create change and apply forward
 		val resolvedChange = createUnresolvedChange(newValue, 0).resolveBefore
-		assertTrue(resolvedChange.applyForward)
+		resolvedChange.applyForward
 
 		// Create change 2 and apply forward			
 		val resolvedChange2 = createUnresolvedChange(newValue2, 1).resolveBefore
-		assertTrue(resolvedChange2.applyForward)
+		resolvedChange2.applyForward
 
 		// State after
 		assertIsStateAfter

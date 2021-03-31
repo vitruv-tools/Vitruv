@@ -20,14 +20,17 @@ import java.util.List
 import tools.vitruv.framework.uuid.UuidResolver
 import static com.google.common.base.Preconditions.checkState
 import static com.google.common.base.Preconditions.checkArgument
-import org.eclipse.xtend.lib.annotations.FinalFieldsConstructor
 
 /**
  * Static class for resolving EChanges internally.
  */
-@FinalFieldsConstructor
 package class AtomicEChangeResolver {
 	val UuidResolver uuidResolver
+	
+	new (UuidResolver uuidResolver) {
+		checkArgument(uuidResolver !== null, "uuid resolver must not be null")
+		this.uuidResolver = uuidResolver
+	}
 	
 	/**
 	 * Resolves {@link FeatureEChange} attributes {@code affectedEObject} and {@code affectedFeature}.

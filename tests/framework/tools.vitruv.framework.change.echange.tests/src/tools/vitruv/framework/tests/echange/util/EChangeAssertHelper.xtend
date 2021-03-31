@@ -44,7 +44,7 @@ class EChangeAssertHelper {
 	def static void assertApplyForward(EChange change) {
 		assertNotNull(change)
 		assertTrue(change.isResolved)
-		assertTrue(change.applyForward)
+		change.applyForward
 	}
 
 	/**
@@ -60,7 +60,7 @@ class EChangeAssertHelper {
 	def static void assertApplyBackward(EChange change) {
 		assertNotNull(change)
 		assertTrue(change.isResolved)
-		assertTrue(change.applyBackward)
+		change.applyBackward
 	}
 
 	/**

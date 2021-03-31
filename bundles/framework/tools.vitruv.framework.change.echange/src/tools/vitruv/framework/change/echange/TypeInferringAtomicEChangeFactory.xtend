@@ -24,10 +24,11 @@ import tools.vitruv.framework.change.echange.root.RemoveRootEObject
 import tools.vitruv.framework.change.echange.root.RootEChange
 import tools.vitruv.framework.change.echange.root.RootFactory
 import org.eclipse.emf.ecore.resource.Resource
-import tools.vitruv.framework.change.echange.util.EChangeUtil
 import tools.vitruv.framework.change.echange.feature.FeatureFactory
 import tools.vitruv.framework.change.echange.feature.UnsetFeature
 import org.eclipse.emf.common.util.URI
+import org.eclipse.emf.ecore.util.EcoreUtil
+import static com.google.common.base.Preconditions.checkArgument
 
 /**
  * Factory singleton class for elements of change models.
@@ -102,9 +103,9 @@ class TypeInferringAtomicEChangeFactory {
 	 */
 	def protected <A extends EObject> void setEObjectExistenceChange(EObjectExistenceEChange<A> change,
 		A affectedEObject) {
-		change.affectedEObject = affectedEObject;
+		change.affectedEObject = affectedEObject
 		change.affectedEObjectType = change.affectedEObject.eClass
-		change.idAttributeValue = EChangeUtil.getID(change.affectedEObject);
+		change.idAttributeValue = change.affectedEObject.ID
 	}
 
 	/**
@@ -255,9 +256,7 @@ class TypeInferringAtomicEChangeFactory {
 	 * @return The created CreateEObject EChange.
 	 */
 	def <A extends EObject> CreateEObject<A> createCreateEObjectChange(A affectedEObject) {
-		if (affectedEObject === null) {
-			throw new IllegalArgumentException();
-		}
+		checkArgument(affectedEObject !== null, "affected object must not be null")
 		val c = EobjectFactory.eINSTANCE.createCreateEObject()
 		setEObjectExistenceChange(c, affectedEObject)
 		return c
@@ -269,9 +268,7 @@ class TypeInferringAtomicEChangeFactory {
 	 * @return The created DeleteEObject EChange.
 	 */
 	def <A extends EObject> DeleteEObject<A> createDeleteEObjectChange(A affectedEObject) {
-		if (affectedEObject === null) {
-			throw new IllegalArgumentException();
-		}
+		checkArgument(affectedEObject !== null, "affected object must not be null")
 		val c = EobjectFactory.eINSTANCE.createDeleteEObject()
 		setEObjectExistenceChange(c, affectedEObject)
 		return c
@@ -284,11 +281,30 @@ class TypeInferringAtomicEChangeFactory {
 	 * @return The created UnsetFeature EChange.
 	 */
 	def <A extends EObject, F extends EStructuralFeature> createUnsetFeatureChange(A affectedEObject, F affectedFeature) {
-		if (affectedEObject === null) {
-			throw new IllegalArgumentException();
-		}
+		checkArgument(affectedEObject !== null, "affected object must not be null")
 		val c = FeatureFactory.eINSTANCE.createUnsetFeature
 		setFeatureChangeFeatures(c, affectedEObject, affectedFeature)
 		return c
 	}
+	
+		/**
+	 * Return the value of the ID attribute of the given {@link EObject}, according to
+	 * {@link EcoreUtil#getID(EObject) EcoreUtil}.
+	 * If the object has no ID attribute or if is marked as <code>derived</code>, 
+	 * <code>null</code> will be returned.
+	 * 
+	 * @see 	EcoreUtil#getID(EObject)
+	 * @param 	eObject
+	 * 			The object to get the ID attribute value from
+	 * @return 	The ID attribute value of the given {@link EObject} or <code>null</code> 
+	 * 			if it has no ID attribute or if it is marked as <code>derived</code>.
+	 */
+	private static def String getID(EObject eObject) {
+		val idAttribute = eObject.eClass.EIDAttribute
+		if (idAttribute !== null && !idAttribute.derived) {
+			return EcoreUtil.getID(eObject)
+		}
+		return null
+	}
+
 }

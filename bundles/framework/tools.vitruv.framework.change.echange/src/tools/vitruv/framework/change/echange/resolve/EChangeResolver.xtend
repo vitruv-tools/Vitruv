@@ -1,11 +1,11 @@
 package tools.vitruv.framework.change.echange.resolve
 
 import tools.vitruv.framework.uuid.UuidResolver
-import tools.vitruv.framework.change.echange.util.ApplyEChangeSwitch
 import org.eclipse.emf.ecore.util.EcoreUtil
 import tools.vitruv.framework.change.echange.EChange
 import static com.google.common.base.Preconditions.checkArgument
 import edu.kit.ipd.sdq.activextendannotations.Utility
+import tools.vitruv.framework.change.echange.command.ApplyEChangeSwitch
 
 /**
  * Utility class for applying and resolving a given EChange.
@@ -20,12 +20,12 @@ class EChangeResolver {
 		return resolveCopy(eChange, uuidResolver, false);
 	}
 
-	static def boolean applyForward(EChange eChange) {
-		return ApplyEChangeSwitch.applyEChange(eChange, true);
+	static def void applyForward(EChange eChange) {
+		ApplyEChangeSwitch.applyEChange(eChange, true);
 	}
 
-	static def boolean applyBackward(EChange eChange) {
-		return ApplyEChangeSwitch.applyEChange(eChange, false);
+	static def void applyBackward(EChange eChange) {
+		ApplyEChangeSwitch.applyEChange(eChange, false);
 	}
 
 	/**
@@ -43,7 +43,7 @@ class EChangeResolver {
 	def private static EChange resolveCopy(EChange change, UuidResolver uuidResolver, boolean resolveBefore) {
 		checkArgument(!change.isResolved, "change must not be resolved when trying to resolve")
 		var EChange copy = EcoreUtil.copy(change)
-		new AtomicEChangeResolver(uuidResolver).resolve(change, resolveBefore)
+		new AtomicEChangeResolver(uuidResolver).resolve(copy, resolveBefore)
 		return copy
 	}
 	

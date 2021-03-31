@@ -17,7 +17,7 @@ import org.eclipse.xtend.lib.annotations.FinalFieldsConstructor
  * additional getter methods
  */
 @FinalFieldsConstructor
-class NotificationInfo implements Notification {
+package class NotificationInfo implements Notification {
 	@Delegate
 	val Notification notification
 	@Accessors
