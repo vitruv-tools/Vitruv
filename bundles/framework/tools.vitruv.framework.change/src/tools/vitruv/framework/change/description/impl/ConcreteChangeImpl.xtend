@@ -83,7 +83,7 @@ class ConcreteChangeImpl implements ConcreteChange {
 		this.EChange.applyBackward
 	}
 
-	override unresolveIfApplicable() {
+	override unresolve() {
 		EChanges.forEach [EChangeUnresolver.unresolve(it)]	
 	}
 

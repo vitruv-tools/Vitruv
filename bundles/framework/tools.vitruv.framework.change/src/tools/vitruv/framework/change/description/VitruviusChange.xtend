@@ -43,10 +43,9 @@ interface VitruviusChange {
 	def void resolveAfterAndApplyBackward(UuidResolver uuidResolver)
 
 	/**
-	 * Unresolves the change if it can be applied to a resource. If it is not applicable, it will not be unresolved
-	 * (as a new resolution is impossible).
+	 * Unresolves the change, such that all its affected and referenced {@link EObjects} are removed.
 	 */
-	def void unresolveIfApplicable()
+	def void unresolve()
 	
 	/**
 	 * Returns all {@link EObject}s directly affected by this change. This does not include referenced elements.

@@ -28,7 +28,7 @@ class EmptyChange implements TransactionalChange {
 		// Do nothing
 	}
 
-	override unresolveIfApplicable() {
+	override unresolve() {
 		// Do nothing
 	}
 	
