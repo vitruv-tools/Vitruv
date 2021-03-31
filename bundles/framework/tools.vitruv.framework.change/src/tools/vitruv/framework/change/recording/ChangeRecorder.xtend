@@ -31,6 +31,8 @@ import static com.google.common.base.Preconditions.checkNotNull
 import static com.google.common.base.Preconditions.checkArgument
 import static extension org.eclipse.emf.ecore.resource.Resource.RESOURCE__CONTENTS
 import static extension org.eclipse.emf.ecore.resource.ResourceSet.RESOURCE_SET__RESOURCES
+import tools.vitruv.framework.change.echange.eobject.DeleteEObject
+import tools.vitruv.framework.change.echange.feature.reference.UpdateReferenceEChange
 
 /**
  * Records changes to model elements as {@link CompositeTransactionalChanges}.
@@ -50,10 +52,25 @@ class ChangeRecorder implements AutoCloseable {
 	List<CompositeTransactionalChange> resultChanges = emptyList
 	val NotificationToEChangeConverter converter
 	val UuidGeneratorAndResolver uuidGeneratorAndResolver
-
+	val EChangeIdManager eChangeIdManager 
+	
 	new(UuidGeneratorAndResolver uuidGeneratorAndResolver) {
 		this.uuidGeneratorAndResolver = uuidGeneratorAndResolver
-		this.converter = new NotificationToEChangeConverter(new EChangeIdManager(uuidGeneratorAndResolver))
+		this.eChangeIdManager = new EChangeIdManager(uuidGeneratorAndResolver)
+		this.converter = new NotificationToEChangeConverter([isCreateChange(it)])
+	}
+
+	private def boolean isCreateChange(EObjectAddedEChange<?> addedEChange) {
+		// We do not check the containment of the reference, because an element may be inserted into a non-containment
+		// reference before inserting it into a containment reference so that the create change has to be added
+		// for the insertion into the non-containment reference
+		var create = addedEChange.newValue !== null && !uuidGeneratorAndResolver.hasUuid(addedEChange.newValue)
+		// Look if the new value has no resource or if it is a reference change, if the resource of the affected
+		// object is the same. Otherwise, the create has to be handled by an insertion/reference in that resource, as
+		// it can be potentially a reference to a third party model, for which no create shall be instantiated		
+		create = create && (addedEChange.newValue.eResource === null || !(addedEChange instanceof UpdateReferenceEChange<?>) || addedEChange.newValue.eResource == (addedEChange as UpdateReferenceEChange<?>).affectedEObject.eResource)
+		if (create) uuidGeneratorAndResolver.generateUuid(addedEChange.newValue)
+		return create;
 	}
 
 	/**
@@ -119,30 +136,42 @@ class ChangeRecorder implements AutoCloseable {
 	def endRecording() {
 		checkNotDisposed()
 		isRecording = false
-		resultChanges = List.copyOf(postprocessRemovals(resultChanges))
+		resultChanges = List.copyOf(resultChanges.postprocessRemovals().assignIds())
+	}
+	
+	def private List<CompositeTransactionalChange> assignIds(List<CompositeTransactionalChange> changes) {
+		for (change : changes) {
+			for (eChange : change.EChanges) {
+				eChangeIdManager.setOrGenerateIds(eChange)
+				if (eChange instanceof DeleteEObject) {
+					eChange.consequentialRemoveChanges.forEach[eChangeIdManager.setOrGenerateIds(eChange)]
+				}
+			}
+		}
+		return changes
 	}
 
 	def private postprocessRemovals(List<CompositeTransactionalChange> changes) {
 		if(changes.isEmpty) return changes
 
-		val Set<String> removedIds = new HashSet
+		val Set<EObject> removedElements = new HashSet
 		for (eChange : changes.flatMap[EChanges]) {
 			switch (eChange) {
 				EObjectSubtractedEChange<?> case eChange.isContainmentRemoval:
-					removedIds += eChange.oldValueID
+					removedElements += eChange.oldValue
 				EObjectAddedEChange<?> case eChange.isContainmentInsertion:
-					removedIds -= eChange.newValueID
+					removedElements -= eChange.newValue
 			}
 		}
 
-		return if (removedIds.isEmpty) {
+		return if (removedElements.isEmpty) {
 			changes
 		} else {
 			changes.mapFixed [
 				insertChanges [ innerChange |
 					switch (eChange: innerChange.EChange) {
 						EObjectSubtractedEChange<?> case eChange.isContainmentRemoval &&
-							removedIds.contains(eChange.oldValueID):
+							removedElements.contains(eChange.oldValue):
 							VitruviusChangeFactory.instance.createConcreteChange(
 								converter.createDeleteChange(eChange)
 							)
