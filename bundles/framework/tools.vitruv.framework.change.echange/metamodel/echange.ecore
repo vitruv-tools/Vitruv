@@ -16,7 +16,7 @@
     <eOperations name="isResolved" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
         <details key="body" value="return tools.vitruv.framework.change.echange.resolve.ResolutionChecker.isResolved(this);"/>
-        <details key="documentation" value="*&#xA;Returns if all IDs in this chang eare resolved to {@link EObjects}.&#xA;Needs to be true to apply the change.&#xA;@return&#x9;Whether elements in this change are resolved or not."/>
+        <details key="documentation" value="*&#xA;Returns if all IDs in this change are resolved to {@link EObjects}.&#xA;Needs to be true to apply the change.&#xA;@return&#x9;Whether elements in this change are resolved or not."/>
       </eAnnotations>
     </eOperations>
   </eClassifiers>
