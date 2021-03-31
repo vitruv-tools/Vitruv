@@ -135,7 +135,7 @@ class CreateAndReplaceAndDeleteNonRootTest extends ReferenceEChangeTest {
 		prepareStateAfter
 
 		// Apply backward
-		assertTrue(resolvedChange.applyBackward)
+		resolvedChange.applyBackward
 
 		// State before
 		assertIsStateBefore

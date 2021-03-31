@@ -21,9 +21,10 @@ import org.eclipse.emf.common.util.URI
  * @author Heiko Klare
  */
 @FinalFieldsConstructor
-final class NotificationToEChangeConverter {
-	val (EObjectAddedEChange<?>)=>boolean isCreateChange
+package final class NotificationToEChangeConverter {
 	extension val TypeInferringAtomicEChangeFactory changeFactory = TypeInferringAtomicEChangeFactory.instance
+	
+	val (EObjectAddedEChange<?>)=>boolean isCreateChange
 
 	def createDeleteChange(EObjectSubtractedEChange<?> change) {
 		val deleteChange = createDeleteEObjectChange(change.oldValue)

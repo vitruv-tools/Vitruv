@@ -23,9 +23,9 @@ import tools.vitruv.framework.uuid.UuidGeneratorAndResolver
 import static com.google.common.base.Preconditions.checkState
 import static org.eclipse.emf.common.notify.Notification.*
 
-import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
+import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.mapFixed
 import static extension org.eclipse.emf.ecore.util.EcoreUtil.*
-import static extension tools.vitruv.framework.change.echange.util.EChangeUtil.*
+import static extension tools.vitruv.framework.change.echange.EChangeUtil.*
 import org.eclipse.emf.ecore.EReference
 import static com.google.common.base.Preconditions.checkNotNull
 import static com.google.common.base.Preconditions.checkArgument

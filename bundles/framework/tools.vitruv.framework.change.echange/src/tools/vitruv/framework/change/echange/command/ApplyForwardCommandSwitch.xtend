@@ -1,4 +1,4 @@
-package tools.vitruv.framework.change.echange.util;
+package tools.vitruv.framework.change.echange.command
 
 import java.util.List
 import org.eclipse.emf.common.command.Command
@@ -20,11 +20,15 @@ import org.eclipse.emf.edit.command.RemoveCommand
 import org.apache.log4j.Logger
 import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.change.echange.feature.UnsetFeature
+import edu.kit.ipd.sdq.activextendannotations.Utility
+import static extension tools.vitruv.framework.change.echange.command.ChangeCommandUtil.getEditingDomain
+import static extension tools.vitruv.framework.change.echange.command.ChangeCommandUtil.alreadyContainsObject
 
 /**
  * Switch to create commands for all EChange classes.
  * The commands applies the EChanges forward.
  */
+@Utility
 package class ApplyForwardCommandSwitch {
 	static val Logger logger = Logger.getLogger(ApplyForwardCommandSwitch)
 	
@@ -37,7 +41,7 @@ package class ApplyForwardCommandSwitch {
 	 * @param object The change which commands should be created.
 	 */
 	def package dispatch static List<Command> getCommands(UnsetFeature<EObject, ?> change) {
-		val editingDomain = EChangeUtil.getEditingDomain(change.affectedEObject)
+		val editingDomain = change.affectedEObject.editingDomain
 		return #[new SetCommand(editingDomain, change.affectedEObject, change.affectedFeature, SetCommand.UNSET_VALUE)]
 	}
 	
@@ -46,7 +50,7 @@ package class ApplyForwardCommandSwitch {
 	 * @param object The change which commands should be created.
 	 */
 	def package dispatch static List<Command> getCommands(InsertEAttributeValue<EObject, Object> change) {
-		val editingDomain = EChangeUtil.getEditingDomain(change.affectedEObject)
+		val editingDomain = change.affectedEObject.editingDomain
 		return #[new AddCommand(editingDomain, change.affectedEObject, change.affectedFeature, change.newValue,
 				change.index)]
 	}
@@ -56,7 +60,7 @@ package class ApplyForwardCommandSwitch {
 	 * @param object The change which commands should be created.
 	 */
 	def package dispatch static List<Command> getCommands(RemoveEAttributeValue<EObject, Object> change) {
-		val editingDomain = EChangeUtil.getEditingDomain(change.affectedEObject)
+		val editingDomain = change.affectedEObject.editingDomain
 		return #[new RemoveAtCommand(editingDomain, change.affectedEObject, change.affectedFeature, change.oldValue, change.index)]
 	}
 
@@ -65,7 +69,7 @@ package class ApplyForwardCommandSwitch {
 	 * @param object The change which commands should be created.
 	 */
 	def package dispatch static List<Command> getCommands(ReplaceSingleValuedEAttribute<EObject, Object> change) {
-		val editingDomain = EChangeUtil.getEditingDomain(change.affectedEObject)
+		val editingDomain = change.affectedEObject.editingDomain
 		return #[new SetCommand(editingDomain, change.affectedEObject, change.affectedFeature, if (change.isIsUnset) SetCommand.UNSET_VALUE else change.newValue)]
 	}
 
@@ -74,8 +78,8 @@ package class ApplyForwardCommandSwitch {
 	 * @param object The change which commands should be created.
 	 */
 	def package dispatch static List<Command> getCommands(InsertEReference<EObject, EObject> change) {
-		val editingDomain = EChangeUtil.getEditingDomain(change.affectedEObject)
-		if(EChangeUtil.alreadyContainsObject(change.affectedEObject, change.affectedFeature, change.newValue)) {
+		val editingDomain = change.affectedEObject.editingDomain
+		if(change.affectedEObject.alreadyContainsObject(change.affectedFeature, change.newValue)) {
 			if (change.affectedFeature.EOpposite === null) {
 				logger.warn("Tried to add value " + change.newValue + ", but although not opposite feature was not contained in " + change.affectedEObject);
 			} 
@@ -90,8 +94,8 @@ package class ApplyForwardCommandSwitch {
 	 * @param object The change which commands should be created.
 	 */
 	def package dispatch static List<Command> getCommands(RemoveEReference<EObject, EObject> change) {
-		val editingDomain = EChangeUtil.getEditingDomain(change.affectedEObject)
-		if(!EChangeUtil.alreadyContainsObject(change.affectedEObject, change.affectedFeature, change.oldValue)) {
+		val editingDomain = change.affectedEObject.editingDomain
+		if(!change.affectedEObject.alreadyContainsObject(change.affectedFeature, change.oldValue)) {
 			if (change.affectedFeature.EOpposite === null) {
 				logger.warn("Tried to remove value " + change.oldValue + ", but although not opposite feature was not contained in " + change.affectedEObject);
 			} 
@@ -105,7 +109,7 @@ package class ApplyForwardCommandSwitch {
 	 * @param object The change which commands should be created.
 	 */
 	def package dispatch static List<Command> getCommands(ReplaceSingleValuedEReference<EObject, EObject> change) {
-		val editingDomain = EChangeUtil.getEditingDomain(change.affectedEObject)
+		val editingDomain = change.affectedEObject.editingDomain
 		return #[new SetCommand(editingDomain, change.affectedEObject, change.affectedFeature, if (change.isIsUnset) SetCommand.UNSET_VALUE else change.newValue)]
 	}
 
@@ -114,7 +118,7 @@ package class ApplyForwardCommandSwitch {
 	 * @param object The change which commands should be created.
 	 */
 	def package dispatch static List<Command> getCommands(InsertRootEObject<EObject> change) {
-		val editingDomain = EChangeUtil.getEditingDomain(change.newValue)
+		val editingDomain = change.newValue.editingDomain
 		// Will be automatically removed from resource because object can only be in one resource.	
 		return #[new AddCommand(editingDomain, change.resource.getContents, change.newValue, change.index)]
 	}
@@ -124,7 +128,7 @@ package class ApplyForwardCommandSwitch {
 	 * @param object The change which commands should be created.
 	 */
 	def package dispatch static List<Command> getCommands(RemoveRootEObject<EObject> change) {
-		val editingDomain = EChangeUtil.getEditingDomain(change.oldValue)
+		val editingDomain = change.oldValue.editingDomain
 		return #[new RemoveCommand(editingDomain, change.resource.getContents, change.oldValue)];
 	}
 

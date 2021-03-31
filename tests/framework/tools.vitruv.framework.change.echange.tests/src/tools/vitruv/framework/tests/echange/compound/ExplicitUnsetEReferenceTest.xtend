@@ -617,7 +617,7 @@ class ExplicitUnsetEReferenceTest extends EChangeTest {
 		val resolvedChange = createUnresolvedChange().resolveBefore
 
 		// Apply forward
-		assertTrue(resolvedChange.applyForward)
+		resolvedChange.applyForward
 
 		// State after
 		assertIsStateAfter
@@ -638,7 +638,7 @@ class ExplicitUnsetEReferenceTest extends EChangeTest {
 		assertIsStateAfter
 
 		// Apply forward
-		assertTrue(resolvedChange.applyBackward)
+		resolvedChange.applyBackward
 
 		// State before
 		assertIsStateBefore

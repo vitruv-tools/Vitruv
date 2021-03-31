@@ -15,6 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertSame
 import static org.junit.jupiter.api.Assertions.assertNotSame
 import static org.hamcrest.MatcherAssert.assertThat
 import static tools.vitruv.testutils.matchers.ModelMatchers.equalsDeeply
+import static org.junit.jupiter.api.Assertions.assertThrows
 
 /**
  * Test class for the concrete {@link RemoveRootEObject} EChange,
@@ -142,11 +143,10 @@ class RemoveRootEObjectTest extends RootEChangeTest {
 	 */
 	@Test
 	def void invalidIndexTest() {
-		var index = 5
+		val index = 5
 
 		// Create and resolve change
-		val resolvedChange = createUnresolvedChange(newRootObject, index).resolveBefore as RemoveRootEObject<Root>
-		assertNull(resolvedChange)
+		assertThrows(IllegalStateException) [createUnresolvedChange(newRootObject, index).resolveBefore as RemoveRootEObject<Root>]
 	}
 
 	/**

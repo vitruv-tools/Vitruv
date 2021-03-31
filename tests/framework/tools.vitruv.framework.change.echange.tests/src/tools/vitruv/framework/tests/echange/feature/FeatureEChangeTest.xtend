@@ -80,8 +80,7 @@ class FeatureEChangeTest extends EChangeTest {
 		unresolvedChange.assertIsNotResolved(affectedEObject, affectedFeature)
 
 		// Resolve
-		val resolvedChange = unresolvedChange.resolveBefore(uuidResolver2) as FeatureEChange<Root, EAttribute>
-		assertNull(resolvedChange)
+		assertThrows(IllegalStateException)[unresolvedChange.resolveBefore(uuidResolver2) as FeatureEChange<Root, EAttribute>]
 	}
 
 	/**
@@ -105,14 +104,7 @@ class FeatureEChangeTest extends EChangeTest {
 		affectedEObject = null
 
 		// Create change	
-		assertThrows(IllegalStateException, [createUnresolvedChange()])
-// 		assertFalse(unresolvedChange.isResolved)
-// 		assertNull(unresolvedChange.affectedEObject)
-// 		
-// 		// Resolve		
-// 		val resolvedChange = unresolvedChange.resolveBefore 
-// 			as FeatureEChange<Root, EAttribute>
-//		assertNull(resolvedChange)			
+		assertThrows(IllegalArgumentException) [createUnresolvedChange()]
 	}
 
 	/**
@@ -127,22 +119,7 @@ class FeatureEChangeTest extends EChangeTest {
 		unresolvedChange.assertIsNotResolved(affectedEObject, null)
 
 		// Resolve
-		val resolvedChange = unresolvedChange.resolveBefore as FeatureEChange<Root, EAttribute>
-		assertNull(resolvedChange)
-	}
-
-	/**
-	 * Tests whether resolving the EFeatureChange fails by giving a null uuidGeneratorAndResolver
-	 */
-	@Test
-	def void resolveEFeatureuuidGeneratorAndResolverNull() {
-		// Create change	
-		val unresolvedChange = createUnresolvedChange()
-		unresolvedChange.assertIsNotResolved(affectedEObject, affectedFeature)
-
-		// Resolve
-		val resolvedChange = unresolvedChange.resolveBefore(null) as FeatureEChange<Root, EAttribute>
-		assertNull(resolvedChange)
+		assertThrows(IllegalArgumentException) [unresolvedChange.resolveBefore as FeatureEChange<Root, EAttribute>]
 	}
 
 	/**
