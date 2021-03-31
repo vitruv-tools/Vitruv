@@ -1,4 +1,4 @@
-package tools.vitruv.framework.change.echange
+package tools.vitruv.framework.tests.echange
 
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.resource.Resource
@@ -9,6 +9,9 @@ import org.eclipse.emf.ecore.EReference
 import tools.vitruv.framework.uuid.UuidGeneratorAndResolver
 import org.eclipse.emf.ecore.EStructuralFeature
 import org.eclipse.emf.common.util.URI
+import tools.vitruv.framework.change.echange.TypeInferringAtomicEChangeFactory
+import tools.vitruv.framework.change.echange.EChangeIdManager
+import tools.vitruv.framework.change.echange.EChange
 
 /**
  * Factory singleton class for elements of change models.
@@ -17,7 +20,7 @@ import org.eclipse.emf.common.util.URI
  * 
  * Can be used by any transformation that creates change models.
  */
-final class TypeInferringUnresolvingAtomicEChangeFactory extends TypeInferringAtomicEChangeFactory {
+package final class TypeInferringUnresolvingAtomicEChangeFactory extends TypeInferringAtomicEChangeFactory {
 	val EChangeIdManager eChangeIdManager;
 	
 	new(UuidGeneratorAndResolver uuidProviderAndResolver) {
