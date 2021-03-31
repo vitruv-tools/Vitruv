@@ -19,62 +19,43 @@ import tools.vitruv.framework.change.echange.root.RootEChange
 import java.util.List
 import tools.vitruv.framework.uuid.UuidResolver
 import static com.google.common.base.Preconditions.checkState
+import static com.google.common.base.Preconditions.checkArgument
+import org.eclipse.xtend.lib.annotations.FinalFieldsConstructor
 
 /**
  * Static class for resolving EChanges internally.
  */
-class AtomicEChangeResolver {
+@FinalFieldsConstructor
+package class AtomicEChangeResolver {
+	val UuidResolver uuidResolver
 	
-	/**
-	 * Resolves {@link EChange} attributes.
-	 * @param change 		The change which should be resolved.
-	 * @param uuidResolver 	The {@link UuidResolver} to resolve {@link EObject}s from
-	 * @param resolveBefore	{@code true} if the model is in state before the change,
-	 * 						{@code false} if the model is in state after.
-	 */
-	def package static boolean resolveEChange(EChange change, UuidResolver uuidResolver, boolean resolveBefore) {
-		if (uuidResolver === null) {
-			return false
-		}
-		return true
-	}
-
 	/**
 	 * Resolves {@link FeatureEChange} attributes {@code affectedEObject} and {@code affectedFeature}.
 	 * @param change 		The change which should be resolved.
-	 * @param uuidResolver 	The {@link UuidResolver} to resolve {@link EObject}s from
 	 * @param resolveBefore	{@code true} if the model is in state before the change,
 	 * 						{@code false} if the model is in state after.
 	 */
-	def private static <A extends EObject, F extends EStructuralFeature> boolean resolveFeatureEChange(
-		FeatureEChange<A, F> change, UuidResolver uuidResolver, boolean resolveBefore) {
-		if (change.affectedEObjectID === null || !resolveEChange(change, uuidResolver, true)) {
-			return false
-		}
-
+	def private <A extends EObject, F extends EStructuralFeature> void resolveFeatureEChange(FeatureEChange<A, F> change, boolean resolveBefore) {
+		checkArgument(change.affectedEObjectID !== null, "change %s must have an affected EObject ID", change)
+		checkArgument(change.affectedFeature !== null, "change %s must have an affected feature", change)
 		if (uuidResolver.hasEObject(change.affectedEObjectID)) {
 			change.affectedEObject = uuidResolver.getEObject(change.affectedEObjectID) as A		
 		}
-
-		if (change.affectedFeature === null || change.affectedEObject === null || change.affectedEObject.eIsProxy) {
-			return false
-		}
-		return true
+		change.affectedEObject.checkNotNullAndNotProxy(change, "affected object")
 	}
 
 	/**
 	 * Resolves the value of the Reference EChange.
 	 * @param change		The Reference EChange which contains the affected EObject and affected feature
 	 * @param value			The value which shall be resolved.
-	 * @param uuidResolver 	The {@link UuidResolver} to resolve {@link EObject}s from
 	 * @param isInserted	{@code true} if the value is already inserted in the single / multi valued reference.
 	 * 						Depends on the concrete change and the state of the model.
 	 * @param index 		The index where the value is inserted in / removed from, if the feature is a multi valued reference.
 	 * 						Doesn't affect single valued references.
 	 * @return				The resolved EObject. If the value could not be resolved, the original value.
 	 */
-	def private static <A extends EObject, T extends EObject> EObject resolveReferenceValue(UpdateReferenceEChange<A> change, T value, String valueId,
-		UuidResolver uuidResolver, boolean isInserted, int index) {
+	def private <A extends EObject, T extends EObject> EObject resolveReferenceValue(UpdateReferenceEChange<A> change, T value, String valueId,
+		boolean isInserted, int index) {
 		if (valueId === null) {
 			return null;
 		}
@@ -84,15 +65,11 @@ class AtomicEChangeResolver {
 	/**
 	 * Resolves {@link EObjectExistenceEChange} attribute {@code affectedEObject}.
 	 * @param change 			The change which should be resolved.
-	 * @param uuidResolver 		The {@link UuidResolver} to resolve {@link EObject}s from
 	 * @param resolveBefore		{@code true} if the model is in state before the change,
 	 * 							{@code false} if the model is in state after.
 	 */
-	def private static <A extends EObject> boolean resolveEObjectExistenceEChange(EObjectExistenceEChange<A> change,
-		UuidResolver uuidResolver, boolean isNewObject) {
-		if (change.affectedEObjectID === null || !change.resolveEChange(uuidResolver, true)) {
-			return false
-		}
+	def private <A extends EObject> void resolveEObjectExistenceEChange(EObjectExistenceEChange<A> change, boolean isNewObject) {
+		checkArgument(change.affectedEObjectID !== null, "change %s must have an affected EObject ID", change)
 
 		// Resolve the affected object
 		if (isNewObject) {
@@ -110,45 +87,34 @@ class AtomicEChangeResolver {
 		} else {
 			// Object still exists
 			change.affectedEObject = uuidResolver.getEObject(change.affectedEObjectID) as A
-			if (change.affectedEObject === null || change.affectedEObject.eIsProxy) {
-				return false
-			}
+			change.affectedEObject.checkNotNullAndNotProxy(change, "affected object")
 		}
 		
 		if (change.idAttributeValue !== null) {
 			EcoreUtil.setID(change.affectedEObject, change.idAttributeValue)
 		}
-		
-		return true
 	}
 
 	/**
 	 * Resolves {@link RootEChange} attribute {@code resource}.
 	 * @param change 			The change which should be resolved.
-	 * @param uuidResolver 		The {@link UuidResolver} to resolve {@link EObject}s from
 	 * @param resolveBefore		{@code true} if the model is in state before the change,
 	 * 							{@code false} if the model is in state after.
 	 */
-	def private static boolean resolveRootEChange(RootEChange change, UuidResolver uuidResolver,
-		boolean resolveBefore) {
-		if (!resolveEChange(change, uuidResolver, resolveBefore)) {
-			return false
-		}
+	def private void resolveRootEChange(RootEChange change, boolean resolveBefore) {
 		// Get resource where the root object will be inserted / removed.
 		change.resource = uuidResolver.getResource(URI.createURI(change.uri))
-		return true
 	}
 
 	/**
 	 * Resolves the value of an {@link RootEChange}.
 	 * @param change		The change whose value shall be resolved.
 	 * @param value			The value which shall be resolved.
-	 * @param uuidResolver 	The {@link UuidResolver} to resolve {@link EObject}s from
 	 * @param isInserted	{@code true} if the concrete value is already inserted into the resource.
 	 * 						Depends on the kind of the change and the model state.
 	 * @returns				The resolved value.
 	 */
-	def private static <T extends EObject> resolveRootValue(RootEChange change, T value, UuidResolver uuidResolver, boolean isInserted) {
+	def private <T extends EObject> resolveRootValue(RootEChange change, T value, boolean isInserted) {
 		// Resolve the root object
 		if (isInserted) {
 			// Root object is in resource
@@ -169,176 +135,131 @@ class AtomicEChangeResolver {
 	/**
 	 * Dispatch method for resolving the {@link EChange}.
 	 * @param change 			The change which should be resolved.
-	 * @param uuidResolver 		The {@link UuidResolver} to resolve {@link EObject}s from
 	 * @param resolveBefore		{@code true} if the model is in state before the change,
 	 * 							{@code false} if the model is in state after.
 	 */
-	def package static dispatch boolean resolve(EChange change, UuidResolver uuidResolver, boolean resolveBefore) {
+	def package dispatch void resolve(EChange change, boolean resolveBefore) {
 		// If an EChange reaches this point, there is a dispatch method missing for the concrete type.
-		throw new UnsupportedOperationException
+		throw new UnsupportedOperationException("change of type " + change?.eClass + " is not supported")
 	}
 
 	/**
 	 * Dispatch method for resolving the {@link FeatureEChange} EChange.
 	 * @param change 			The change which should be resolved.
-	 * @param uuidResolver 		The {@link UuidResolver} to resolve {@link EObject}s from
 	 * @param resolveBefore		{@code true} if the model is in state before the change,
 	 * 							{@code false} if the model is in state after.
 	 */
-	def package static dispatch boolean resolve(FeatureEChange<EObject, EStructuralFeature> change,
-		UuidResolver uuidResolver, boolean resolveBefore) {
-		return change.resolveFeatureEChange(uuidResolver, resolveBefore)
+	def package dispatch void resolve(FeatureEChange<EObject, EStructuralFeature> change, boolean resolveBefore) {
+		change.resolveFeatureEChange(resolveBefore)
 	}
 
 	/**
 	 * Dispatch method for resolving the {@link InsertEReference} EChange.
 	 * @param change 			The change which should be resolved.
-	 * @param uuidResolver 		The {@link UuidResolver} to resolve {@link EObject}s from
 	 * @param resolveBefore		{@code true} if the model is in state before the change,
 	 * 							{@code false} if the model is in state after.
 	 */
-	def package static dispatch boolean resolve(InsertEReference<EObject, EObject> change, UuidResolver uuidResolver,
-		boolean resolveBefore) {
-		if (!change.resolveFeatureEChange(uuidResolver, resolveBefore)) {
-			return false
-		}
-		
-		change.newValue = change.resolveReferenceValue(change.newValue, change.newValueID, uuidResolver, !resolveBefore, change.index)
-
-		if (change.newValue !== null && change.newValue.eIsProxy) {
-			return false
-		}
-		return true
+	def package dispatch void resolve(InsertEReference<EObject, EObject> change, boolean resolveBefore) {
+		change.resolveFeatureEChange(resolveBefore)
+		change.newValue = change.resolveReferenceValue(change.newValue, change.newValueID, !resolveBefore, change.index)
+		change.newValue.checkNotNullAndNotProxy(change, "new value")
 	}
 
 	/**
 	 * Dispatch method for resolving the {@link RemoveEReference} EChange.
 	 * @param change 			The change which should be resolved.
-	 * @param uuidResolver 		The {@link UuidResolver} to resolve {@link EObject}s from
 	 * @param resolveBefore		{@code true} if the model is in state before the change,
 	 * 							{@code false} if the model is in state after.
 	 */
-	def package static dispatch boolean resolve(RemoveEReference<EObject, EObject> change, UuidResolver uuidResolver,
-		boolean resolveBefore) {
-		if (!change.resolveFeatureEChange(uuidResolver, resolveBefore)) {
-			return false
-		}
-		
-		change.oldValue = change.resolveReferenceValue(change.oldValue, change.oldValueID, uuidResolver, resolveBefore, change.index)
-
-		if (change.oldValue !== null && change.oldValue.eIsProxy) {
-			return false
-		}
-		return true
+	def package dispatch void resolve(RemoveEReference<EObject, EObject> change, boolean resolveBefore) {
+		change.resolveFeatureEChange(resolveBefore)		
+		change.oldValue = change.resolveReferenceValue(change.oldValue, change.oldValueID, resolveBefore, change.index)
+		change.oldValue.checkNotNullAndNotProxy(change, "old value")
 	}
 
 	/**
 	 * Dispatch method for resolving the {@link ReplaceSingleValuedEReferenceEReference} EChange.
 	 * @param change 			The change which should be resolved.
-	 * @param uuidResolver 		The {@link UuidResolver} to resolve {@link EObject}s from
 	 * @param resolveBefore		{@code true} if the model is in state before the change,
 	 * 							{@code false} if the model is in state after.
 	 */
-	def package static dispatch boolean resolve(ReplaceSingleValuedEReference<EObject, EObject> change,
-		UuidResolver uuidResolver, boolean resolveBefore) {
-		if (!change.resolveFeatureEChange(uuidResolver, resolveBefore)) {
-			return false
-		}
-
-		change.newValue = change.resolveReferenceValue(change.newValue, change.newValueID, uuidResolver, !resolveBefore, -1)
-		change.oldValue = change.resolveReferenceValue(change.oldValue, change.oldValueID, uuidResolver, resolveBefore, -1)
-
-		if ((change.newValue !== null && change.newValue.eIsProxy) ||
-			(change.oldValue !== null && change.oldValue.eIsProxy)) {
-			return false
-		}
-		return true
+	def package dispatch void resolve(ReplaceSingleValuedEReference<EObject, EObject> change, boolean resolveBefore) {
+		change.resolveFeatureEChange(resolveBefore)
+		change.newValue = change.resolveReferenceValue(change.newValue, change.newValueID, !resolveBefore, -1)
+		change.oldValue = change.resolveReferenceValue(change.oldValue, change.oldValueID, resolveBefore, -1)
+		change.oldValue.checkEitherNullOrNotProxy(change, "old value")
+		change.newValue.checkEitherNullOrNotProxy(change, "new value")
 	}
 
 	/**
 	 * Dispatch method for resolving the {@link InsertRootEObject} EChange.
 	 * @param change 			The change which should be resolved.
-	 * @param uuidResolver 		The {@link UuidResolver} to resolve {@link EObject}s from
 	 * @param resolveBefore		{@code true} if the model is in state before the change,
 	 * 							{@code false} if the model is in state after.
 	 */
-	def package static dispatch boolean resolve(InsertRootEObject<EObject> change, UuidResolver uuidResolver,
-		boolean resolveBefore) {
-		if (!change.resolveRootEChange(uuidResolver, resolveBefore)) {
-			return false
-		}
-
-		change.newValue = change.resolveRootValue(change.newValue, uuidResolver, !resolveBefore)
-
-		if (change.newValue === null || change.newValue.eIsProxy) {
-			return false
-		}
-		return true
+	def package dispatch void resolve(InsertRootEObject<EObject> change, boolean resolveBefore) {
+		change.resolveRootEChange(resolveBefore)
+		change.newValue = change.resolveRootValue(change.newValue, !resolveBefore)
+		change.newValue.checkNotNullAndNotProxy(change, "new value")
 	}
 
 	/**
 	 * Dispatch method for resolving the {@link RemoveRootEObject} EChange.
 	 * @param change 			The change which should be resolved.
-	 * @param uuidResolver 		The {@link UuidResolver} to resolve {@link EObject}s from
 	 * @param resolveBefore		{@code true} if the model is in state before the change,
 	 * 							{@code false} if the model is in state after.
 	 */
-	def package static dispatch boolean resolve(RemoveRootEObject<EObject> change, UuidResolver uuidResolver,
-		boolean resolveBefore) {
-		if (!change.resolveRootEChange(uuidResolver, resolveBefore)) {
-			return false
-		}
-
-		change.oldValue = change.resolveRootValue(change.oldValue, uuidResolver, resolveBefore)
-		
-		if (change.oldValue === null || change.oldValue.eIsProxy) {
-			return false
-		}
-		return true
+	def package dispatch void resolve(RemoveRootEObject<EObject> change, boolean resolveBefore) {
+		change.resolveRootEChange(resolveBefore)
+		change.oldValue = change.resolveRootValue(change.oldValue, resolveBefore)
+		change.oldValue.checkNotNullAndNotProxy(change, "old value")
 	}
 	
 	/**
 	 * Dispatch method for resolving the {@link CreateEObject} EChange.
 	 * @param change 			The change which should be resolved.
-	 * @param uuidResolver 		The {@link UuidResolver} to resolve {@link EObject}s from
 	 * @param resolveBefore		{@code true} if the model is in state before the change,
 	 * 							{@code false} if the model is in state after.
 	 */
-	def package static dispatch boolean resolve(CreateEObject<EObject> change, UuidResolver uuidResolver,
-		boolean resolveBefore) {
-		return change.resolveEObjectExistenceEChange(uuidResolver, resolveBefore)
+	def package dispatch void resolve(CreateEObject<EObject> change, boolean resolveBefore) {
+		change.resolveEObjectExistenceEChange(resolveBefore)
 	}
 
 	/**
 	 * Dispatch method for resolving the {@link DeleteEObject} EChange.
 	 * @param change 			The change which should be resolved.
-	 * @param uuidResolver 		The {@link UuidResolver} to resolve {@link EObject}s from
 	 * @param resolveBefore		{@code true} if the model is in state before the change,
 	 * 							{@code false} if the model is in state after.
 	 */
-	def package static dispatch boolean resolve(DeleteEObject<EObject> change, UuidResolver uuidResolver,
+	def package dispatch void resolve(DeleteEObject<EObject> change,
 		boolean resolveBefore) {
-		var result = true;
 		val consequentialChanges = change.consequentialRemoveChanges
 		if (resolveBefore) {
-			result = consequentialChanges.resolveChangeList(uuidResolver, resolveBefore);	
+			consequentialChanges.resolveChangeList(resolveBefore);	
 		}
-		result = result && change.resolveEObjectExistenceEChange(uuidResolver, !resolveBefore)
+		change.resolveEObjectExistenceEChange(!resolveBefore)
 		if (!resolveBefore) {
-			result = consequentialChanges.reverseView.resolveChangeList(uuidResolver, resolveBefore);	
+			consequentialChanges.reverseView.resolveChangeList(resolveBefore);	
 		}
-		return result;
 	}
 	
 	/**
 	 * Dispatch method for resolving the given list of changes.
 	 * @param changeList 		The change list which should be resolved.
-	 * @param uuidResolver 		The {@link UuidResolver} to resolve {@link EObject}s from
 	 * @param resolveBefore		{@code true} if the model is in state before the change,
 	 * 							{@code false} if the model is in state after.
 	 */
-	def private static boolean resolveChangeList(List<? extends EChange> changeList, UuidResolver uuidResolver, boolean resolveBefore) {
-		return changeList.fold(true, [res, localChange | res && EChangeResolverAndApplicator.resolve(localChange, uuidResolver, resolveBefore, false)]);	
+	def private void resolveChangeList(List<? extends EChange> changeList, boolean resolveBefore) {
+		changeList.forEach[resolve(resolveBefore)]
+	}
+	
+	def private static void checkNotNullAndNotProxy(EObject object, EChange change, String nameOfElementInChange) {
+		checkState(object !== null, "%s of change %s was resolved to null", change)
+		checkState(!object.eIsProxy, "%s of change %s was resolved to a proxy", object)
+	}
+	
+	def private static void checkEitherNullOrNotProxy(EObject object, EChange change, String nameOfElementInChange) {
+		checkState(object === null || !object.eIsProxy, "%s of change %s was resolved to a proxy", object)
 	}
 }
 	

@@ -5,7 +5,6 @@ import allElementTypes.Root
 import tools.vitruv.framework.change.echange.feature.attribute.InsertEAttributeValue
 
 import static extension tools.vitruv.framework.tests.echange.util.EChangeAssertHelper.*
-import static extension tools.vitruv.framework.change.echange.resolve.EChangeResolverAndApplicator.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import static org.junit.jupiter.api.Assertions.assertTrue
@@ -14,6 +13,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals
 import static org.junit.jupiter.api.Assertions.assertNull
 import static org.junit.jupiter.api.Assertions.assertThrows
 import static tools.vitruv.testutils.metamodels.AllElementTypesCreators.*
+import static extension tools.vitruv.framework.change.echange.resolve.EChangeResolver.*
 
 /**
  * Test class for the concrete {@link InsertEAttributeValue} EChange,

@@ -13,9 +13,9 @@ import static org.junit.jupiter.api.Assertions.assertNull
 import static org.junit.jupiter.api.Assertions.assertSame
 import static org.junit.jupiter.api.Assertions.assertNotSame
 import static org.junit.jupiter.api.Assertions.assertThrows
-import static extension tools.vitruv.framework.change.echange.resolve.EChangeResolverAndApplicator.*
 import static org.hamcrest.MatcherAssert.assertThat
 import static tools.vitruv.testutils.matchers.ModelMatchers.equalsDeeply
+import static extension tools.vitruv.framework.change.echange.resolve.EChangeResolver.*
 
 /**
  * Test class for the concrete {@link InsertRootEObject} EChange,
