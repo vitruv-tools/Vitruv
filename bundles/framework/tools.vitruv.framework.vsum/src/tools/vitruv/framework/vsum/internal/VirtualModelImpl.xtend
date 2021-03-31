@@ -70,7 +70,7 @@ class VirtualModelImpl implements InternalVirtualModel {
 		LOGGER.info("Start change propagation")
 		startChangePropagation(change)
 
-		change.unresolveIfApplicable
+		change.unresolve()
 		val result = changePropagator.propagateChange(change)
 		save()
 		

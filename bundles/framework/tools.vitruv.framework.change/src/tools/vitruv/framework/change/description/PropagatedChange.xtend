@@ -5,8 +5,8 @@ import tools.vitruv.framework.uuid.UuidResolver
 
 @Data
 class PropagatedChange {
-	val VitruviusChange originalChange;
-	val VitruviusChange consequentialChanges;
+	val VitruviusChange originalChange
+	val VitruviusChange consequentialChanges
 	
 	override toString() '''
 	Original change:
@@ -16,9 +16,9 @@ class PropagatedChange {
 	'''
 	
 	def applyBackward(UuidResolver uuidResolver) {
-		consequentialChanges.unresolveIfApplicable;
-		originalChange.unresolveIfApplicable;
-		consequentialChanges.resolveAfterAndApplyBackward(uuidResolver);
-		originalChange.resolveAfterAndApplyBackward(uuidResolver);
+		consequentialChanges.unresolve
+		originalChange.unresolve
+		consequentialChanges.resolveAfterAndApplyBackward(uuidResolver)
+		originalChange.resolveAfterAndApplyBackward(uuidResolver)
 	}
 }
