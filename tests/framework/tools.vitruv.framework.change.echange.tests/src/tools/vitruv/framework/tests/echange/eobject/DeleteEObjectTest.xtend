@@ -68,6 +68,7 @@ class DeleteEObjectTest extends EObjectTest {
 	 */
 	@Test
 	def void applyBackwardTest() {
+		createdObject.registerAsPreexisting
 		// Create change and resolve 1
 		val resolvedChange = createUnresolvedChange(createdObject).resolveBefore as DeleteEObject<Root>
 		resolvedChange.assertApplyForward
@@ -80,6 +81,7 @@ class DeleteEObjectTest extends EObjectTest {
 
 		// Now another change would be applied and the object would be inserted in.
 		// Create change and resolve 2
+		createdObject2.registerAsPreexisting
 		val resolvedChange2 = createUnresolvedChange(createdObject2).resolveBefore as DeleteEObject<Root>
 		resolvedChange2.assertApplyForward
 		
