@@ -75,52 +75,6 @@ class InsertEReferenceTest extends ReferenceEChangeTest {
 	}
 
 	/**
-	 * Test resolves a {@link InsertEReference} EChange with correct parameters on 
-	 * a model which is in state after the change.
-	 * The affected feature is a non containment reference, so the inserted
-	 * reference is already a root element.
-	 */
-	@Test
-	def void resolveAfterNonContainmentTest() {
-		// Set state before
-		isNonContainmentTest
-
-		// Create change
-		val unresolvedChange = createUnresolvedChange(newValue, 0)
-		unresolvedChange.assertIsNotResolved(affectedEObject, newValue)
-
-		// Set state after
-		prepareReference(newValue)
-
-		// Resolve
-		val resolvedChange = unresolvedChange.resolveAfter as InsertEReference<Root, NonRoot>
-		resolvedChange.assertIsResolved(affectedEObject, newValue)
-	}
-
-	/**
-	 * Test resolves a {@link InsertEReference} EChange with correct parameters on
-	 * a model which is in the state after the change.
-	 * The affected feature is a containment reference, so the inserted 
-	 * reference is in the resource after the change.
-	 */
-	@Test
-	def void resolveAfterContainmentTest() {
-		// Set state before
-		isContainmentTest
-
-		// Create change
-		val unresolvedChange = createUnresolvedChange(newValue, 0)
-		unresolvedChange.assertIsNotResolved(affectedEObject, newValue)
-
-		// Set state after
-		prepareReference(newValue)
-
-		// Resolve
-		val resolvedChange = unresolvedChange.resolveAfter as InsertEReference<Root, NonRoot>
-		resolvedChange.assertIsResolved(affectedEObject, newValue)
-	}
-
-	/**
 	 * Tests whether resolving the {@link InsertEReference} EChange
 	 * returns the same class.
 	 */
@@ -133,7 +87,7 @@ class InsertEReferenceTest extends ReferenceEChangeTest {
 		val unresolvedChange = createUnresolvedChange(newValue, 0)
 
 		// Resolve
-		val resolvedChange = unresolvedChange.resolveAfter
+		val resolvedChange = unresolvedChange.resolveBefore
 		unresolvedChange.assertDifferentChangeSameClass(resolvedChange)
 	}
 
@@ -322,14 +276,6 @@ class InsertEReferenceTest extends ReferenceEChangeTest {
 		referenceContent = affectedEObject.eGet(affectedFeature) as EList<NonRoot>
 		prepareResource
 		assertIsStateBefore
-	}
-
-	/**
-	 * Prepares the multivalued reference used in the tests 
-	 * and fills it with a new value.
-	 */
-	def private void prepareReference(NonRoot object) {
-		referenceContent.add(object)
 	}
 
 	/**

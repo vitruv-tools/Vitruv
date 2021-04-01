@@ -11,6 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertNotSame
 import static org.junit.jupiter.api.Assertions.assertThrows
 import static org.hamcrest.MatcherAssert.assertThat
 import static tools.vitruv.testutils.matchers.ModelMatchers.equalsDeeply
+import java.util.List
 
 /**
  * Test class for the abstract class {@link EObjectExistenceEChange} EChange,
@@ -50,12 +51,9 @@ class EObjectExistenceEChangeTest extends EObjectTest {
 		val unresolvedChange = createUnresolvedChange(createdObject)
 		unresolvedChange.assertIsNotResolved(createdObject)
 
-		// Set state after
-		assertIsStateAfter
-
 		// Resolve
-		createdObject.registerAsPreexisting
-		val resolvedChange = unresolvedChange.resolveAfter as CreateEObject<Root>
+		val resolvedChange = unresolvedChange.resolveBefore as CreateEObject<Root>
+		applyForward(List.of(resolvedChange))
 		resolvedChange.assertIsResolved(createdObject)
 
 		// State after
@@ -71,13 +69,7 @@ class EObjectExistenceEChangeTest extends EObjectTest {
 		createdObject = null
 
 		// Create change
-		// val unresolvedChange = 
 		assertThrows(IllegalArgumentException, [createUnresolvedChange(createdObject)])
-//		assertFalse(unresolvedChange.isResolved)
-//		
-//		// Resolve
-//		assertNull(unresolvedChange.resolveBefore as CreateEObject<Root>)
-//		assertNull(unresolvedChange.resolveAfter as CreateEObject<Root>)		
 	}
 
 	/**

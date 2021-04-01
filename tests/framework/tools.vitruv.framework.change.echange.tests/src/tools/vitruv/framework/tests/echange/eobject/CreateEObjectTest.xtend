@@ -65,12 +65,9 @@ class CreateEObjectTest extends EObjectTest {
 	 */
 	@Test
 	def void applyBackwardTest() {
-		// Set state after
-		prepareStateAfter(createdObject)
-
-		// Create change and resolve
-		createdObject.registerAsPreexisting
-		val resolvedChange = createUnresolvedChange(createdObject).resolveAfter as CreateEObject<Root>
+		// Create change, resolve it and apply it forward
+		val resolvedChange = createUnresolvedChange(createdObject).resolveBefore as CreateEObject<Root>
+		resolvedChange.assertApplyForward
 
 		// Apply backward
 		resolvedChange.assertApplyBackward
@@ -81,13 +78,6 @@ class CreateEObjectTest extends EObjectTest {
 	 */
 	def private void prepareStateBefore() {
 		assertIsStateBefore
-	}
-
-	/** 
-	 * Sets the state of the model after the change.
-	 */
-	def private void prepareStateAfter(Root object) {
-		assertIsStateAfter(object)
 	}
 
 	/**

@@ -77,49 +77,6 @@ class RemoveEReferenceTest extends ReferenceEChangeTest {
 	}
 
 	/**
-	 * Test resolves a {@link RemoveEReference} EChange with correct parameters.
-	 * The model is in state after the change was applied forward.
-	 * The value that was removed was in a non containment reference,
-	 * so the object is a root object in the resource.
-	 */
-	@Test
-	def void resolveAfterNonContainmentTest() {
-		// Set state before
-		isNonContainmentTest
-
-		// Create change
-		val unresolvedChange = createUnresolvedChange(newValue, 0)
-		unresolvedChange.assertIsNotResolved(affectedEObject, newValue)
-
-		// Set state after
-		prepareReferenceAfter
-
-		// Resolve
-		val resolvedChange = unresolvedChange.resolveAfter as RemoveEReference<Root, NonRoot>
-		resolvedChange.assertIsResolved(affectedEObject, newValue)
-	}
-
-	/**
-	 * Test resolves a {@link RemoveEReference} EChange with correct parameters.
-	 * The model is in the state after the change was applied forward.
-	 * The value that was removed was in a containment reference,
-	 * so the object is in the staging area.
-	 */
-	@Test
-	def void resolveAfterContainmentTestTest() {
-		// Set state before
-		isContainmentTest
-
-		// Create change
-		val unresolvedChange = createUnresolvedChange(newValue, 0)
-		unresolvedChange.assertIsNotResolved(affectedEObject, newValue)
-
-		// Resolve
-		val resolvedChange = unresolvedChange.resolveAfter as RemoveEReference<Root, NonRoot>
-		resolvedChange.assertIsResolved(affectedEObject, newValue)
-	}
-
-	/**
 	 * Tests whether resolving the {@link RemoveEReference} EChange
 	 * returns the same class.
 	 */
@@ -132,7 +89,7 @@ class RemoveEReferenceTest extends ReferenceEChangeTest {
 		val unresolvedChange = createUnresolvedChange(newValue, 0)
 
 		// Resolve
-		val resolvedChange = unresolvedChange.resolveAfter
+		val resolvedChange = unresolvedChange.resolveBefore
 		unresolvedChange.assertDifferentChangeSameClass(resolvedChange)
 	}
 
@@ -330,14 +287,6 @@ class RemoveEReferenceTest extends ReferenceEChangeTest {
 	def private void prepareReference() {
 		referenceContent.add(newValue)
 		referenceContent.add(newValue2)
-	}
-
-	/**
-	 * Prepares the multivalued reference after the change
-	 * was applied forward.
-	 */
-	def private void prepareReferenceAfter() {
-		referenceContent.clear
 	}
 
 	/**

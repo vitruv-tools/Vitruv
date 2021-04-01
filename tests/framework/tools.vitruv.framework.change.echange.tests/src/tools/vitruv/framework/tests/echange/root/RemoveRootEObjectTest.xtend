@@ -50,23 +50,6 @@ class RemoveRootEObjectTest extends RootEChangeTest {
 	}
 
 	/**
-	 * Test resolves a {@link RemoveRootEObject} EChange, with a root
-	 * object in the staging area. This happens when the model is
-	 * in state after the change was applied.
-	 */
-	@Test
-	def void resolveAfterTest() {
-		// Create change
-		val unresolvedChange = createUnresolvedChange(newRootObject, 1)
-		unresolvedChange.assertIsNotResolved(newRootObject)
-
-		// Resolve
-		newRootObject.registerAsPreexisting
-		val resolvedChange = unresolvedChange.resolveAfter as RemoveRootEObject<Root>
-		resolvedChange.assertIsResolved(newRootObject, resource)
-	}
-
-	/**
 	 * Tests whether resolving the {@link RemoveRootEObject} EChange
 	 * returns the same class.
 	 */
