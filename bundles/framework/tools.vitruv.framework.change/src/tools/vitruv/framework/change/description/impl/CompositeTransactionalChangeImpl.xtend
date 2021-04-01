@@ -15,9 +15,9 @@ class CompositeTransactionalChangeImpl extends AbstractCompositeChangeImpl<Trans
 		super(changes)
 	}
 	
-	override resolveBeforeAndApplyForward(UuidResolver uuidResolver) {
+	override resolveAndApply(UuidResolver uuidResolver) {
 		for (c : changes) {
-			c.resolveBeforeAndApplyForward(uuidResolver)
+			c.resolveAndApply(uuidResolver)
 		}
 	}
 

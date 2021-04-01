@@ -67,20 +67,12 @@ class ConcreteChangeImpl implements ConcreteChange {
 		this.eChange = eChange
 	}
 	
-	override resolveBeforeAndApplyForward(UuidResolver uuidResolver) {
+	override resolveAndApply(UuidResolver uuidResolver) {
 		// TODO HK Make a copy of the complete change instead of replacing it internally
 		val resolvedChange = this.EChange.resolveBefore(uuidResolver)
 		checkState(resolvedChange !== null, "Failed to resolve this change: %s", this.EChange)
 		this.EChange = resolvedChange
 		this.EChange.applyForward
-	}
-
-	override resolveAfterAndApplyBackward(UuidResolver uuidResolver) {
-		// TODO HK Make a copy of the complete change instead of replacing it internally
-		val resolvedChange = this.EChange.resolveAfter(uuidResolver)
-		checkState(resolvedChange !== null, "Failed to resolve this change: %s", this.EChange)
-		this.EChange = resolvedChange
-		this.EChange.applyBackward
 	}
 
 	override unresolve() {

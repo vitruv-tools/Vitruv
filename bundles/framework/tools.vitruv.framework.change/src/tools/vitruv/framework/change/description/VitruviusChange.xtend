@@ -30,17 +30,9 @@ interface VitruviusChange {
 	 * Resolves the change and applies it forward so that the model is in the state after the change afterwards.
 	 * It has to be ensured that the model is in a state the change can be applied to before calling this method.
 	 * 
-	 * @throws RuntimeException if the change cannot be resolved or is already resolved.
+	 * @throws IllegalStateException if the change cannot be resolved or is already resolved.
 	 */
-	def void resolveBeforeAndApplyForward(UuidResolver uuidResolver)
-
-	/**
-	 * Resolves the change and applies it backward so that the model is in the state before the change afterwards.
-	 * It has to be ensured that the model is in a state the change can be applied to before calling this method.
-	 *
-	 * @throws RuntimeException if the change cannot be resolved or is already resolved.
-	 */
-	def void resolveAfterAndApplyBackward(UuidResolver uuidResolver)
+	def void resolveAndApply(UuidResolver uuidResolver)
 
 	/**
 	 * Unresolves the change, such that all its affected and referenced {@link EObjects} are removed.

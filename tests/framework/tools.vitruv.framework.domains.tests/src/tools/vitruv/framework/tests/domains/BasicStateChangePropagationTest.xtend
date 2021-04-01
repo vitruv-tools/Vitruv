@@ -47,7 +47,7 @@ class BasicStateChangePropagationTest extends StateChangePropagationTest {
 		val validationResourceSet = new ResourceSetImpl()
 		val validationResolver = UuidGeneratorAndResolverFactory.createUuidGeneratorAndResolver(setupResolver,
 			validationResourceSet)
-		changes.resolveBeforeAndApplyForward(validationResolver)
+		changes.resolveAndApply(validationResolver)
 		
 		modelResource.save(null)
 		assertEquals(1, validationResourceSet.resources.size)
@@ -77,7 +77,7 @@ class BasicStateChangePropagationTest extends StateChangePropagationTest {
 		val validationResolver = UuidGeneratorAndResolverFactory.createUuidGeneratorAndResolver(setupResolver,
 			validationResourceSet)
 		validationResourceSet.getResource(testUri, true)
-		changes.resolveBeforeAndApplyForward(validationResolver)
+		changes.resolveAndApply(validationResolver)
 
 		assertEquals(1, validationResourceSet.resources.size)
 		assertTrue(validationResourceSet.resources.get(0).contents.empty)
@@ -111,7 +111,7 @@ class BasicStateChangePropagationTest extends StateChangePropagationTest {
 		val changes = strategyToTest.getChangeSequenceBetween(-modelResource, oldState, validationResolver)
 
 		changes.unresolve()
-		changes.resolveBeforeAndApplyForward(validationResolver)
+		changes.resolveAndApply(validationResolver)
 
 		assertEquals(1, validationResourceSet.resources.size)
 		assertThat(validationResourceSet.resources.get(0), containsModelOf(-modelResource))
@@ -145,7 +145,7 @@ class BasicStateChangePropagationTest extends StateChangePropagationTest {
 		assertEquals(1, changes.EChanges.filter(ReplaceSingleValuedEAttribute).size)
 
 		changes.unresolve()
-		changes.resolveBeforeAndApplyForward(validationResolver)
+		changes.resolveAndApply(validationResolver)
 
 		assertEquals(1, validationResourceSet.resources.size)
 		assertThat(validationResourceSet.resources.get(0), containsModelOf(-modelResource))
@@ -182,7 +182,7 @@ class BasicStateChangePropagationTest extends StateChangePropagationTest {
 		val changes = strategyToTest.getChangeSequenceBetween(-modelResource, oldState, validationResolver)
 
 		changes.unresolve()
-		changes.resolveBeforeAndApplyForward(validationResolver)
+		changes.resolveAndApply(validationResolver)
 
 		assertEquals(1, validationResourceSet.resources.size)
 		assertThat(validationResourceSet.resources.get(0), containsModelOf(-modelResource))
@@ -221,7 +221,7 @@ class BasicStateChangePropagationTest extends StateChangePropagationTest {
 		assertEquals(1, changes.EChanges.filter(InsertRootEObject).size)
 		
 		changes.unresolve()
-		changes.resolveBeforeAndApplyForward(validationResolver)
+		changes.resolveAndApply(validationResolver)
 
 		(-modelResource).save(null)
 		assertEquals(2, validationResourceSet.resources.size)
@@ -264,7 +264,7 @@ class BasicStateChangePropagationTest extends StateChangePropagationTest {
 		assertEquals(1, changes.EChanges.filter(ReplaceSingleValuedEAttribute).size)
 
 		changes.unresolve()
-		changes.resolveBeforeAndApplyForward(validationResolver)
+		changes.resolveAndApply(validationResolver)
 
 		(-modelResource).save(null)
 		assertEquals(2, validationResourceSet.resources.size)
