@@ -104,16 +104,6 @@ abstract class EChangeTest {
 		return result
 	}
 
-	def protected EChange resolveAfter(EChange change) {
-		return change.resolveAfter(reapplicationUuidGeneratorAndResolver)
-	}
-
-	def protected List<EChange> resolveAfter(List<? extends EChange> changes) {
-		val result = newArrayList
-		result += changes.reverseView.map[resolveAfter]
-		return result.reverse
-	}
-
 	static def protected void applyBackward(List<EChange> changes) {
 		assertIsResolved(changes)
 		changes.reverseView.forEach[applyBackward]

@@ -13,19 +13,15 @@ import tools.vitruv.framework.change.echange.command.ApplyEChangeSwitch
 @Utility
 class EChangeResolver {
 	static def EChange resolveBefore(EChange eChange, UuidResolver uuidResolver) {
-		return resolveCopy(eChange, uuidResolver, true);
-	}
-
-	static def EChange resolveAfter(EChange eChange, UuidResolver uuidResolver) {
-		return resolveCopy(eChange, uuidResolver, false);
+		return resolveCopy(eChange, uuidResolver)
 	}
 
 	static def void applyForward(EChange eChange) {
-		ApplyEChangeSwitch.applyEChange(eChange, true);
+		ApplyEChangeSwitch.applyEChange(eChange, true)
 	}
 
 	static def void applyBackward(EChange eChange) {
-		ApplyEChangeSwitch.applyEChange(eChange, false);
+		ApplyEChangeSwitch.applyEChange(eChange, false)
 	}
 
 	/**
@@ -40,10 +36,10 @@ class EChangeResolver {
 	 * @throws IllegalArgumentException The change is already resolved.
 	 * @throws IllegalStateException 	The change cannot be resolved.
 	 */
-	def private static EChange resolveCopy(EChange change, UuidResolver uuidResolver, boolean resolveBefore) {
+	def private static EChange resolveCopy(EChange change, UuidResolver uuidResolver) {
 		checkArgument(!change.isResolved, "change must not be resolved when trying to resolve")
 		var EChange copy = EcoreUtil.copy(change)
-		new AtomicEChangeResolver(uuidResolver).resolve(copy, resolveBefore)
+		new AtomicEChangeResolver(uuidResolver).resolve(copy)
 		return copy
 	}
 	

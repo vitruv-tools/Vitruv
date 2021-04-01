@@ -73,50 +73,6 @@ class ReplaceSingleValuedEReferenceTest extends ReferenceEChangeTest {
 	}
 
 	/**
-	 * Test resolves a {@link ReplaceSingleValuedEReference} EChange with correct parameters.
-	 * The model is in the state after the change.
-	 * The reference is a non containment reference, so the old value is in the resource.
-	 */
-	@Test
-	def void resolveAfterSingleValuedNonContainmentTest() {
-		// Set state before
-		isNonContainmentTest
-
-		// Create change
-		val unresolvedChange = createUnresolvedChange()
-		unresolvedChange.assertIsNotResolved(affectedEObject, oldValue, newValue)
-
-		// Set state after
-		prepareReference(newValue)
-
-		// Resolve
-		val resolvedChange = unresolvedChange.resolveAfter as ReplaceSingleValuedEReference<Root, NonRoot>
-		resolvedChange.assertIsResolved(affectedEObject, oldValue, newValue)
-	}
-
-	/**
-	 * Test resolves a {@link ReplaceSingleValuedEReference} EChange with correct parameters.
-	 * The model is in the state after the change.
-	 * The reference is a containment reference, so the old value is in the staging area.
-	 */
-	@Test
-	def void resolveAfterSingleValuedContainmentTest() {
-		// Set state before
-		isContainmentTest
-
-		// Create change
-		val unresolvedChange = createUnresolvedChange()
-		unresolvedChange.assertIsNotResolved(affectedEObject, oldValue, newValue)
-
-		// Set state after
-		prepareReference(newValue)
-
-		// Resolve
-		val resolvedChange = unresolvedChange.resolveAfter as ReplaceSingleValuedEReference<Root, NonRoot>
-		resolvedChange.assertIsResolved(affectedEObject, oldValue, newValue)
-	}
-
-	/**
 	 * Tests whether resolving the {@link ReplaceSingleValuedEReference} EChange
 	 * returns the same class.
 	 */

@@ -101,19 +101,17 @@ abstract class ChangeDescription2ChangeTransformationTest {
 	}
 
 	private def List<EChange> prepareChanges(List<? extends TransactionalChange> changeDescriptions) {
+		// Revert changes, unresolve them, re-resolve and re-apply them to ensure that this process is idempotent
 		val monitoredChanges = changeDescriptions.map[EChanges].flatten
-		monitoredChanges.forEach[EChangeUnresolver.unresolve(it)]
-		val resultingChanges = newArrayList
-		for (change : monitoredChanges.toList.reverseView) {
-			val resolvedChange = change.resolveAfter(uuidGeneratorAndResolver)
-			resolvedChange.applyBackward
-			resultingChanges += resolvedChange
-		}
-		resultingChanges.reverse
-		for (change : resultingChanges) {
-			change.applyForward
-		}
-		return resultingChanges
+		monitoredChanges.toList.reverseView.forEach[monitoredChange|
+			monitoredChange.applyBackward
+			EChangeUnresolver.unresolve(monitoredChange)
+		]
+		return monitoredChanges.map[
+			val resolvedChange = resolveBefore(uuidGeneratorAndResolver)
+			resolvedChange.applyForward
+			resolvedChange
+		].toList
 	}
 
 	static def assertChangeCount(Iterable<? extends EChange> changes, int expectedCount) {

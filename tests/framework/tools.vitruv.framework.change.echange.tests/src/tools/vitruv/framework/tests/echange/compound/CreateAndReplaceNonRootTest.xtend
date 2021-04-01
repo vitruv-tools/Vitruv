@@ -57,29 +57,6 @@ class CreateAndReplaceNonRootTest extends EChangeTest {
 	}
 
 	/**
-	 * Resolves a {@link CreateAndReplaceNonRoot} EChange. The model is in state
-	 * after the change, so the new non root element is already created and
-	 * in the single valued containment reference.
-	 */
-	@Test
-	def void resolveAfterTest() {
-		// Create change
-		val unresolvedChange = createUnresolvedChange(newNonRootObject)
-		unresolvedChange.assertIsNotResolved
-
-		// Set state after
-		prepareStateAfter
-
-		// Resolve
-		newNonRootObject.registerAsPreexisting
-		val resolvedChange = unresolvedChange.resolveAfter
-		resolvedChange.assertIsResolved(affectedEObject, newNonRootObject)
-
-		// Resolving applies all changes and reverts them, so the model should be unaffected.
-		assertIsStateAfter
-	}
-
-	/**
 	 * Tests whether resolving the {@link CreateAndReplaceNonRoot} EChange
 	 * returns the same class.
 	 */

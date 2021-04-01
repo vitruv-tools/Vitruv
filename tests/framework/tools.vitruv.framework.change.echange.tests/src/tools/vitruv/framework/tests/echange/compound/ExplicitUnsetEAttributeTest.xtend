@@ -49,19 +49,6 @@ class ExplicitUnsetEAttributeTest extends EChangeTest {
 	}
 
 	/**
-	 * Resolves a {@link ExplicitUnsetEAttribute} EChange. The feature is a single 
-	 * valued attribute and the model is in state after the change.
-	 */
-	@Test
-	def void resolveAfterSingleValuedAttributeTest() {
-		// Set state before
-		isSingleValuedAttributeTest
-
-		// Test
-		resolveAfterTest
-	}
-
-	/**
 	 * Resolves a {@link ExplicitUnsetEAttribute} EChange. The feature is a multi
 	 * valued attribute and the model is in state before the change.
 	 */
@@ -72,19 +59,6 @@ class ExplicitUnsetEAttributeTest extends EChangeTest {
 
 		// Test
 		resolveBeforeTest
-	}
-
-	/**
-	 * Resolves a {@link ExplicitUnsetEAttribute} EChange. The feature is a single 
-	 * valued attribute and the model is in state after the change.
-	 */
-	@Test
-	def void resolveAfterUnsetMultiValuedAttributeTest() {
-		// Set state before
-		isMultiValuedAttributeTest
-
-		// Test
-		resolveAfterTest
 	}
 
 	/**
@@ -276,36 +250,6 @@ class ExplicitUnsetEAttributeTest extends EChangeTest {
 
 		// State after
 		assertIsStateAfter
-	}
-
-	/**
-	 * Starts a test with resolving the change after the change is applied.
-	 */
-	def private void resolveAfterTest() {
-		// State Before
-		assertIsStateBefore
-
-		// Create change
-		val unresolvedChange = createUnresolvedChange()
-		unresolvedChange.assertIsNotResolved
-
-		// Set state after
-		prepareStateAfter
-
-		// Resolve 1
-		var resolvedChange = unresolvedChange.resolveAfter
-		resolvedChange.assertIsResolved(affectedEObject)
-
-		// Model should be unaffected.
-		assertIsStateAfter
-
-		// Resolve 2
-		var resolvedAndAppliedChange = unresolvedChange.resolveAfter
-		resolvedAndAppliedChange.applyBackward
-		resolvedAndAppliedChange.assertIsResolved(affectedEObject)
-
-		// State before
-		assertIsStateBefore
 	}
 
 	/**

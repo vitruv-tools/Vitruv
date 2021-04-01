@@ -111,58 +111,6 @@ class ExplicitUnsetEReferenceTest extends EChangeTest {
 	}
 
 	/**
-	 * Resolves a {@link ExplicitUnsetEReference} EChange. The feature is a single 
-	 * valued non containment reference and the model is in state after the change.
-	 */
-	@Test
-	def void resolveAfterSingleValuedNonContainmentReferenceTest() {
-		// Set state before
-		isSingleValuedNonContainmentTest
-
-		// Test
-		resolveAfterTest
-	}
-
-	/**
-	 * Resolves a {@link ExplicitUnsetEReference} EChange. The feature is a single 
-	 * valued containment reference and the model is in state after the change.
-	 */
-	@Test
-	def void resolveAfterSingleValuedContainmentReferenceTest() {
-		// Set state before
-		isSingleValuedContainmentTest
-
-		// Test
-		resolveAfterTest
-	}
-
-	/**
-	 * Resolves a {@link ExplicitUnsetEReference} EChange. The feature is a multi 
-	 * valued non containment reference and the model is in state after the change.
-	 */
-	@Test
-	def void resolveAfterMultiValuedNonContainmentReferenceTest() {
-		// Set state before
-		isMultiValuedNonContainmentTest
-
-		// Test
-		resolveAfterTest
-	}
-
-	/**
-	 * Resolves a {@link ExplicitUnsetEReference} EChange. The feature is a multi 
-	 * valued containment reference and the model is in state after the change.
-	 */
-	@Test
-	def void resolveAfterMultiValuedContainmentReferenceTest() {
-		// Set state before
-		isMultiValuedContainmentTest
-
-		// Test
-		resolveAfterTest
-	}
-
-	/**
 	 * Tests whether the {@link ExplicitUnsetEReference} EChange resolves to the correct type.
 	 */
 	@Test
@@ -574,36 +522,6 @@ class ExplicitUnsetEReferenceTest extends EChangeTest {
 
 		// State after
 		assertIsStateAfter
-	}
-
-	/**
-	 * Starts a test with resolving the change after the change is applied.
-	 */
-	def private void resolveAfterTest() {
-	
-		// State before
-		assertIsStateBefore
-
-		// Create change
-		val unresolvedChange = createUnresolvedChange()
-		unresolvedChange.localAssertIsNotResolved()
-
-		// Set state after
-		prepareStateAfter
-		assertIsStateAfter
-
-		// Resolve
-		var resolvedChange = unresolvedChange.resolveAfter
-		resolvedChange.localAssertIsResolved
-
-		// Model should be unaffected.
-		assertIsStateAfter
-
-		// Apply Backward
-		resolvedChange.applyBackward
-
-		// State before
-		assertIsStateBefore
 	}
 
 	/**

@@ -42,26 +42,6 @@ class InsertRootEObjectTest extends RootEChangeTest {
 	}
 
 	/**
-	 * Test resolves a {@link InsertRootEObject} EChange with a root object which is already
-	 * in the resource. This happens when the model is in state after the change
-	 * and the change will be applied backward.
-	 */
-	@Test
-	def void resolveAfterTest() {
-		// Create change
-		val unresolvedChange = createUnresolvedChange(newRootObject, 1)
-		unresolvedChange.assertIsNotResolved(newRootObject)
-		assertIsStateBefore
-
-		// Set state after
-		resourceContent.add(1, newRootObject)
-
-		// Resolve
-		val resolvedChange = unresolvedChange.resolveAfter as InsertRootEObject<Root>
-		resolvedChange.assertIsResolved(newRootObject, resource)
-	}
-
-	/**
 	 * Tests whether resolving the {@link InsertRootEObject} EChange
 	 * returns the same class.
 	 */
