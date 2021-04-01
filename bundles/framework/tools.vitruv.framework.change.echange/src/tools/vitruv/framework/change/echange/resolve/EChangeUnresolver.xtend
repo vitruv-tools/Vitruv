@@ -95,7 +95,6 @@ class EChangeUnresolver {
 	 */	
 	def dispatch static void unresolve(DeleteEObject<EObject> change) {
 		change.unresolveEObjectExistenceEChange
-		change.consequentialRemoveChanges.forEach[unresolve];
 	}
 	
 	/**

@@ -28,7 +28,6 @@ package final class NotificationToEChangeConverter {
 
 	def createDeleteChange(EObjectSubtractedEChange<?> change) {
 		val deleteChange = createDeleteEObjectChange(change.oldValue)
-		deleteChange.consequentialRemoveChanges += allSubstractiveChangesForChangeRelevantFeatures(change.oldValue)
 		return deleteChange
 	}
 	
@@ -248,15 +247,6 @@ package final class NotificationToEChangeConverter {
 		) + eObject.walkChangeRelevantFeatures(null) [ object, reference |
 			if (!reference.isContainment) createAdditiveChangesForValue(object, reference)
 		]
-	}
-
-	def private Iterable<? extends EChange> allSubstractiveChangesForChangeRelevantFeatures(EObject eObject) {
-		eObject.walkChangeRelevantFeatures(null) [ object, reference |
-			if (!reference.isContainment) createSubtractiveChangesForValue(object, reference)
-		] + eObject.walkChangeRelevantFeatures(
-			[object, attribute|createSubtractiveChangesForValue(object, attribute)],
-			[object, reference|if (reference.isContainment) createSubtractiveChangesForValue(object, reference)]
-		)
 	}
 
 	def private static Iterable<? extends EChange> walkChangeRelevantFeatures(

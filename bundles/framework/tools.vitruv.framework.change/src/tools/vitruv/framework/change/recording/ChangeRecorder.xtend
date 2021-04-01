@@ -31,7 +31,6 @@ import static com.google.common.base.Preconditions.checkNotNull
 import static com.google.common.base.Preconditions.checkArgument
 import static extension org.eclipse.emf.ecore.resource.Resource.RESOURCE__CONTENTS
 import static extension org.eclipse.emf.ecore.resource.ResourceSet.RESOURCE_SET__RESOURCES
-import tools.vitruv.framework.change.echange.eobject.DeleteEObject
 import tools.vitruv.framework.change.echange.feature.reference.UpdateReferenceEChange
 
 /**
@@ -143,9 +142,6 @@ class ChangeRecorder implements AutoCloseable {
 		for (change : changes) {
 			for (eChange : change.EChanges) {
 				eChangeIdManager.setOrGenerateIds(eChange)
-				if (eChange instanceof DeleteEObject) {
-					eChange.consequentialRemoveChanges.forEach[eChangeIdManager.setOrGenerateIds(eChange)]
-				}
 			}
 		}
 		return changes
