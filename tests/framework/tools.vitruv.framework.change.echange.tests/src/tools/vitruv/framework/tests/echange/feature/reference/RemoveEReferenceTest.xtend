@@ -20,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows
 import static org.hamcrest.MatcherAssert.assertThat
 import static tools.vitruv.testutils.matchers.ModelMatchers.equalsDeeply
 import org.junit.jupiter.api.BeforeEach
-import static extension tools.vitruv.framework.change.echange.resolve.EChangeResolver.*
+import static extension tools.vitruv.framework.change.echange.resolve.EChangeResolverAndApplicator.*
 
 /**
  * Test class for the concrete {@link RemoveEReference} EChange, 

@@ -20,7 +20,7 @@ import org.junit.jupiter.api.io.TempDir
 import static tools.vitruv.framework.uuid.UuidGeneratorAndResolverFactory.createUuidGeneratorAndResolver
 import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.common.util.URIUtil.createFileURI
 import org.eclipse.emf.ecore.EObject
-import static extension tools.vitruv.framework.change.echange.resolve.EChangeResolver.*
+import static extension tools.vitruv.framework.change.echange.resolve.EChangeResolverAndApplicator.*
 
 /**
  * Default class for testing EChange changes.

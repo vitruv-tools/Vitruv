@@ -33,7 +33,7 @@ import tools.vitruv.framework.change.echange.feature.attribute.UpdateAttributeEC
 import org.eclipse.emf.common.util.URI
 import static com.google.common.base.Preconditions.checkState
 import tools.vitruv.framework.change.echange.resolve.EChangeUnresolver
-import static extension tools.vitruv.framework.change.echange.resolve.EChangeResolver.*
+import static extension tools.vitruv.framework.change.echange.resolve.EChangeResolverAndApplicator.*
 
 class ConcreteChangeImpl implements ConcreteChange {
 	var EChange eChange
