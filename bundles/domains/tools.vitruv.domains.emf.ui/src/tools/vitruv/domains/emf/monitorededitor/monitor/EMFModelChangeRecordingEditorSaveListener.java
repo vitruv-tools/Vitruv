@@ -25,7 +25,7 @@ import tools.vitruv.domains.emf.monitorededitor.tools.SaveEventListenerMgr;
 import tools.vitruv.framework.change.description.TransactionalChange;
 import tools.vitruv.framework.change.recording.ChangeRecorder;
 import tools.vitruv.framework.uuid.UuidGeneratorAndResolver;
-import tools.vitruv.framework.vsum.VirtualModel;
+import static tools.vitruv.framework.uuid.UuidGeneratorAndResolverFactory.createUuidGeneratorAndResolver;
 
 /**
  * <p>
@@ -63,8 +63,6 @@ public abstract class EMFModelChangeRecordingEditorSaveListener {
 
     /** The listener getting fired when the user saves the edited file. */
     private final SaveEventListenerMgr saveActionListenerManager;
-
-    private VirtualModel virtualModel;
 
     /**
      * A constructor for {@link EMFModelChangeRecordingEditorSaveListener} instances. The listener
@@ -145,9 +143,7 @@ public abstract class EMFModelChangeRecordingEditorSaveListener {
      */
     protected void resetChangeRecorder() {
         deactivateChangeRecorder();
-        UuidGeneratorAndResolver localUuidResolver = virtualModel != null
-                ? virtualModel.createChildUuidGeneratorAndResolver(targetResource.getResourceSet())
-                : null;
+        UuidGeneratorAndResolver localUuidResolver = createUuidGeneratorAndResolver(targetResource.getResourceSet());
 
         changeRecorder = new ChangeRecorder(localUuidResolver);
         changeRecorder.addToRecording(targetResource);
@@ -166,8 +162,7 @@ public abstract class EMFModelChangeRecordingEditorSaveListener {
      * Initializes the listener. After calling this method, the listener is active until
      * <code>dispose()</code> is called.
      */
-    public void initialize(VirtualModel virtualModel) {
-        this.virtualModel = virtualModel;
+    public void initialize() {
         if (!isInitialized) {
             resetChangeRecorder();
             installResourceReloadListener();

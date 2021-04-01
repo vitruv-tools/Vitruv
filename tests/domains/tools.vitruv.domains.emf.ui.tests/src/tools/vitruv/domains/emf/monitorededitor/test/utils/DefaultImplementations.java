@@ -19,7 +19,6 @@ import java.util.List;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 
 import tools.vitruv.domains.emf.monitorededitor.ISynchronizingMonitoredEmfEditor.ResourceChangeSynchronizing;
@@ -75,7 +74,7 @@ public class DefaultImplementations {
         
         public void registerExistingModel(URL testResourceURL) {
         	Resource testResource = Models.loadModel(uuidGeneratorAndResolver.getResourceSet(), testResourceURL);
-        	testResource.getAllContents().forEachRemaining(obj -> uuidGeneratorAndResolver.generateUuid(obj));
+        	testResource.getAllContents().forEachRemaining(obj -> uuidGeneratorAndResolver.getAndUpdateId(obj));
         }
 
         public boolean hasBeenExecuted() {
@@ -125,11 +124,6 @@ public class DefaultImplementations {
 
 		@Override
 		public void removeChangePropagationListener(ChangePropagationListener propagationListener) {
-		}
-
-		@Override
-		public UuidGeneratorAndResolver createChildUuidGeneratorAndResolver(ResourceSet resourceSet) {
-			return createUuidGeneratorAndResolver(uuidGeneratorAndResolver, resourceSet);
 		}
 
     }
