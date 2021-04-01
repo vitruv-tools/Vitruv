@@ -234,7 +234,7 @@ package final class NotificationToEChangeConverter {
 		val oldUri = notification.oldValue as URI
 		notifierResource.contents.mapFixedIndexed [ index, value |
 			val valueIndex = initialIndex + notifierResource.contents.size - 1 - index
-			createRemoveRootChange(value, notifierResource, oldUri, valueIndex)
+			createRemoveRootChange(value, notifierResource.resourceSet.createResource(oldUri), oldUri, valueIndex)
 		] + notifierResource.contents.flatMapFixedIndexed [ index, value |
 			createInsertRootChange(value, notifierResource, initialIndex + index).
 				surroundWithCreateAndFeatureChangesIfNecessary()
