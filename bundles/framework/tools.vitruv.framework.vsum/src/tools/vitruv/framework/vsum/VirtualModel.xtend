@@ -7,8 +7,6 @@ import tools.vitruv.framework.change.description.VitruviusChange
 import org.eclipse.emf.common.util.URI
 import java.nio.file.Path
 import tools.vitruv.framework.vsum.ChangePropagationListener
-import tools.vitruv.framework.uuid.UuidGeneratorAndResolver
-import org.eclipse.emf.ecore.resource.ResourceSet
 
 interface VirtualModel {
 	def Path getFolder()
@@ -35,13 +33,4 @@ interface VirtualModel {
 	 */
 	def List<PropagatedChange> propagateChangedState(Resource newState, URI oldLocation)
 
-	/**
-	 * Creates a {@link UuidGeneratorAndResolver} for the given {@link ResourceSet} based on the UUID resolver used in this {@link VirtualModel} as a parent
-	 * resolver.
-	 * It can, in particular, be used to create a {@link UuidGeneratorAndResolver} for view resource sets, as long as no comprehensive mechanism for
-	 * deriving views from a {@link VirtualModel} is provided.
-	 * 
-	 * @param resourceSet is the {@link ResourceSet} to create the {@link UuidGeneratorAndResolver} for
-	 */
-	def UuidGeneratorAndResolver createChildUuidGeneratorAndResolver(ResourceSet resourceSet)
 }

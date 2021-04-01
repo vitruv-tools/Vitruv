@@ -18,8 +18,6 @@ import static com.google.common.base.Preconditions.checkArgument
 import static com.google.common.base.Preconditions.checkState
 import tools.vitruv.framework.vsum.internal.ChangePropagator
 import tools.vitruv.framework.vsum.ChangePropagationListener
-import org.eclipse.emf.ecore.resource.ResourceSet
-import static tools.vitruv.framework.uuid.UuidGeneratorAndResolverFactory.createUuidGeneratorAndResolver
 
 class VirtualModelImpl implements InternalVirtualModel {
 	static val Logger LOGGER = Logger.getLogger(VirtualModelImpl)
@@ -146,10 +144,6 @@ class VirtualModelImpl implements InternalVirtualModel {
 		return resourceRepository.uuidResolver
 	}
 		
-	override createChildUuidGeneratorAndResolver(ResourceSet resourceSet) {
-		createUuidGeneratorAndResolver(uuidResolver, resourceSet)
-	}
-
 	/**
 	 * Registers the given {@link ChangePropagationListener}.
 	 * The listener must not be <code>null</code>.

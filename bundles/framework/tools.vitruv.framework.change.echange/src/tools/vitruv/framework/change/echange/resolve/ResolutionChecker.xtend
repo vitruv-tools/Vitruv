@@ -18,8 +18,7 @@ class ResolutionChecker {
 	}
 	
 	static def dispatch isResolved(EObjectExistenceEChange<?> existenceChange) {
-		return (existenceChange.getAffectedEObject() !== null &&
-			!existenceChange.getAffectedEObject().eIsProxy());
+		return existenceChange.getAffectedEObject() !== null
 	}
 	
 	static def dispatch isResolved(FeatureEChange<?,?> featureChange) {
@@ -67,8 +66,7 @@ class ResolutionChecker {
 	}
 	
 	static def dispatch isResolved(RemoveRootEObject<?> removeRootChange) {
-		return removeRootChange.oldValue !== null &&
-			!removeRootChange.oldValue.eIsProxy && 
+		return removeRootChange.oldValue !== null && 
 			removeRootChange.isRootChangeResolved;
 	}
 	

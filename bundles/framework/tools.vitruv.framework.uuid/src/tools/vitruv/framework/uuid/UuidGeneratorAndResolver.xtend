@@ -11,13 +11,7 @@ import org.eclipse.emf.ecore.resource.ResourceSet
  * It registers a notifier on that {@link ResourceSet}, which informs about newly added/loaded {@link Resource}s
  * and automatically loads the assigned {@link Uuid}s for contained elements from the parent resolver.
  */
-interface UuidGeneratorAndResolver extends UuidResolver, AutoCloseable {
-	/**
-	 * Registers an object and returns the generated UUID for it.
-	 * Object must not be a proxy.
-	 */
-	def String generateUuid(EObject eObject)
-
+interface UuidGeneratorAndResolver extends UuidResolver, AutoCloseable {	
 	/**
 	 * Returns the {@link ResourceSet} used in this UUID generator and resolver.
 	 */

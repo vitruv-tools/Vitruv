@@ -15,6 +15,7 @@ import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
 import org.eclipse.xtend.lib.annotations.FinalFieldsConstructor
 import org.eclipse.emf.ecore.EAttribute
 import org.eclipse.emf.common.util.URI
+import tools.vitruv.framework.change.echange.feature.reference.UpdateReferenceEChange
 
 /** 
  * Converts an EMF notification to an {@link EChange}.
@@ -24,7 +25,7 @@ import org.eclipse.emf.common.util.URI
 package final class NotificationToEChangeConverter {
 	extension val TypeInferringAtomicEChangeFactory changeFactory = TypeInferringAtomicEChangeFactory.instance
 	
-	val (EObjectAddedEChange<?>)=>boolean isCreateChange
+	val (EObject, EObject)=>boolean isCreateChange
 
 	def createDeleteChange(EObjectSubtractedEChange<?> change) {
 		val deleteChange = createDeleteEObjectChange(change.oldValue)
@@ -244,12 +245,12 @@ package final class NotificationToEChangeConverter {
 		]
 	}
 
-	def private Iterable<? extends EChange> allAdditiveChangesForChangeRelevantFeatures(EObject eObject) {
-		eObject.walkChangeRelevantFeatures(
-			[object, attribute|createAdditiveChangesForValue(object, attribute)],
-			[object, reference|if (reference.isContainment) createAdditiveCreateChangesForValue(object, reference)]
-		) + eObject.walkChangeRelevantFeatures(null) [ object, reference |
-			if (!reference.isContainment) createAdditiveChangesForValue(object, reference)
+	def private Iterable<? extends EChange> allAdditiveChangesForChangeRelevantFeatures(EObjectAddedEChange<?> change, EObject eObject) {
+		change.newValue.walkChangeRelevantFeatures(
+			[object, attribute|createAdditiveEChangeForAttribute(object, attribute)],
+			[object, reference|if (reference.isContainment) createAdditiveEChangeForReferencedObject(object, reference, [referencedObject | isCreateChange.apply(object, referencedObject)])]
+		) + change.newValue.walkChangeRelevantFeatures(null) [ object, reference |
+			if (!reference.isContainment) createAdditiveEChangeForReferencedObject(object, reference, [false])
 		]
 	}
 
@@ -306,9 +307,9 @@ package final class NotificationToEChangeConverter {
 
 	private def Iterable<? extends EChange> surroundWithCreateAndFeatureChangesIfNecessary(
 		EObjectAddedEChange<?> change) {
-		return if (isCreateChange.apply(change)) {
+		return if (isCreateChange.apply(if (change instanceof UpdateReferenceEChange<?>) change.affectedEObject, change.newValue)) {
 			val createChange = createCreateEObjectChange(change.newValue)
-			List.of(createChange, change) + allAdditiveChangesForChangeRelevantFeatures(change.newValue)
+			List.of(createChange, change) + allAdditiveChangesForChangeRelevantFeatures(change, change.newValue)
 		} else
 			List.of(change)
 	}
