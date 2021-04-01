@@ -78,7 +78,7 @@ abstract class StateChangePropagationTest {
 			createUmlMockupModel()
 		]
 		// change to new recorder with test resolver, create model checkpoints and start recording:
-		checkpointResolver = createUuidGeneratorAndResolver(setupResolver, checkpointResourceSet)
+		checkpointResolver = createUuidGeneratorAndResolver(checkpointResourceSet)
 		umlCheckpoint = umlModel.createCheckpoint
 		pcmCheckpoint = pcmModel.createCheckpoint
 		umlModel.startRecording
