@@ -20,12 +20,8 @@ class EmptyChange implements TransactionalChange {
 		emptyList
 	}
 	
-	override resolveBeforeAndApplyForward(UuidResolver uuidResolver) {
+	override resolveAndApply(UuidResolver uuidResolver) {
 		// Do nothing		
-	}
-
-	override resolveAfterAndApplyBackward(UuidResolver uuidResolver) {
-		// Do nothing
 	}
 
 	override unresolve() {

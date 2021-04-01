@@ -110,10 +110,6 @@ public class DefaultImplementations {
         }
 
         @Override
-        public void reverseChanges(List<PropagatedChange> changes) {
-        }
-
-        @Override
         public List<PropagatedChange> propagateChangedState(Resource newState) {
             return null;
         }
