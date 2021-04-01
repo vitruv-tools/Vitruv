@@ -12,15 +12,20 @@ import static org.hamcrest.MatcherAssert.assertThat
 import static org.hamcrest.core.IsInstanceOf.instanceOf
 import static org.hamcrest.core.Is.is
 import static extension tools.vitruv.framework.change.echange.resolve.EChangeResolverAndApplicator.*
+import org.eclipse.xtend.lib.annotations.FinalFieldsConstructor
+import tools.vitruv.framework.uuid.UuidResolver
 
 /**
  * Utility class for frequently used assert methods in the tests.
  */
+@FinalFieldsConstructor
 class EChangeAssertHelper {
+	val UuidResolver uuidResolver
+	
 	/**
 	 * Tests whether a unresolved change and a resolved change are the same class.
 	 */
-	def static void assertDifferentChangeSameClass(EChange unresolvedChange, EChange resolvedChange) {
+	def void assertDifferentChangeSameClass(EChange unresolvedChange, EChange resolvedChange) {
 		assertFalse(unresolvedChange.isResolved)
 		assertTrue(resolvedChange.isResolved)
 		assertNotSame(unresolvedChange, resolvedChange)
@@ -30,7 +35,7 @@ class EChangeAssertHelper {
 	/**
 	 * Tests whether a unresolved changes and a resolved changes are the same classes.
 	 */
-	def static void assertDifferentChangeSameClass(List<? extends EChange> unresolvedChange,
+	def void assertDifferentChangeSameClass(List<? extends EChange> unresolvedChange,
 		List<? extends EChange> resolvedChange) {
 		assertEquals(unresolvedChange.size, resolvedChange.size)
 		for (var i = 0; i < unresolvedChange.size; i++) {
@@ -41,23 +46,23 @@ class EChangeAssertHelper {
 	/**
 	 * Tests whether a change is resolved and applies it forward.
 	 */
-	def static void assertApplyForward(EChange change) {
+	def void assertApplyForward(EChange change) {
 		assertNotNull(change)
 		assertTrue(change.isResolved)
-		change.applyForward
+		change.applyForward(uuidResolver)
 	}
 
 	/**
 	 * Tests whether a change sequence is resolved and applies it forward.
 	 */
-	def static void assertApplyForward(List<EChange> change) {
+	def void assertApplyForward(List<EChange> change) {
 		change.forEach[assertApplyForward]
 	}
 
 	/**
 	 * Tests whether a change is resolved and applies it backward.
 	 */
-	def static void assertApplyBackward(EChange change) {
+	def void assertApplyBackward(EChange change) {
 		assertNotNull(change)
 		assertTrue(change.isResolved)
 		change.applyBackward
@@ -66,7 +71,7 @@ class EChangeAssertHelper {
 	/**
 	 * Tests whether a change sequence is resolved and applies it backward.
 	 */
-	def static void assertApplyBackward(List<EChange> change) {
+	def void assertApplyBackward(List<EChange> change) {
 		change.reverseView.forEach[assertApplyBackward]
 	}
 	

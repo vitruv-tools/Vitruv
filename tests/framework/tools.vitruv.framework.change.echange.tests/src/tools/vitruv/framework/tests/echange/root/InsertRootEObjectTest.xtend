@@ -4,7 +4,6 @@ import allElementTypes.Root
 import org.eclipse.emf.ecore.resource.Resource
 import tools.vitruv.framework.change.echange.root.InsertRootEObject
 
-import static extension tools.vitruv.framework.tests.echange.util.EChangeAssertHelper.*
 import org.junit.jupiter.api.Test
 import static org.junit.jupiter.api.Assertions.assertTrue
 import static org.junit.jupiter.api.Assertions.assertFalse
@@ -15,7 +14,6 @@ import static org.junit.jupiter.api.Assertions.assertNotSame
 import static org.junit.jupiter.api.Assertions.assertThrows
 import static org.hamcrest.MatcherAssert.assertThat
 import static tools.vitruv.testutils.matchers.ModelMatchers.equalsDeeply
-import static extension tools.vitruv.framework.change.echange.resolve.EChangeResolverAndApplicator.*
 
 /**
  * Test class for the concrete {@link InsertRootEObject} EChange,

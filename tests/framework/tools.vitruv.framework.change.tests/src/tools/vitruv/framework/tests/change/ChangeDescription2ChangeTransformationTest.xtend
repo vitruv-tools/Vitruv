@@ -109,7 +109,7 @@ abstract class ChangeDescription2ChangeTransformationTest {
 		]
 		return monitoredChanges.map[
 			val resolvedChange = resolveBefore(uuidGeneratorAndResolver)
-			resolvedChange.applyForward
+			resolvedChange.applyForward(uuidGeneratorAndResolver)
 			resolvedChange
 		].toList
 	}

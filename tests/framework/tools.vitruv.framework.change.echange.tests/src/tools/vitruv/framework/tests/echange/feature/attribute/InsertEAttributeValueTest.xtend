@@ -4,7 +4,6 @@ import allElementTypes.NonRoot
 import allElementTypes.Root
 import tools.vitruv.framework.change.echange.feature.attribute.InsertEAttributeValue
 
-import static extension tools.vitruv.framework.tests.echange.util.EChangeAssertHelper.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import static org.junit.jupiter.api.Assertions.assertTrue

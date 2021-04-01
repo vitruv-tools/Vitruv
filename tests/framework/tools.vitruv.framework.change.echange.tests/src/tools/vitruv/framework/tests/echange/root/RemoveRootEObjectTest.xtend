@@ -4,7 +4,6 @@ import allElementTypes.Root
 import org.eclipse.emf.ecore.resource.Resource
 import tools.vitruv.framework.change.echange.root.RemoveRootEObject
 
-import static extension tools.vitruv.framework.tests.echange.util.EChangeAssertHelper.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import static org.junit.jupiter.api.Assertions.assertTrue

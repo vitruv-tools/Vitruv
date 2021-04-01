@@ -8,7 +8,6 @@ import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.EReference
 import tools.vitruv.framework.change.echange.feature.reference.RemoveEReference
 
-import static extension tools.vitruv.framework.tests.echange.util.EChangeAssertHelper.*
 import org.junit.jupiter.api.Test
 import static org.junit.jupiter.api.Assertions.assertTrue
 import static org.junit.jupiter.api.Assertions.assertFalse
