@@ -45,8 +45,7 @@ class BasicStateChangePropagationTest extends StateChangePropagationTest {
 		// Create empty resource to apply generated changes to
 		changes.unresolve()
 		val validationResourceSet = new ResourceSetImpl()
-		val validationResolver = UuidGeneratorAndResolverFactory.createUuidGeneratorAndResolver(setupResolver,
-			validationResourceSet)
+		val validationResolver = UuidGeneratorAndResolverFactory.createUuidGeneratorAndResolver(validationResourceSet)
 		changes.resolveAndApply(validationResolver)
 		
 		modelResource.save(null)
@@ -74,8 +73,7 @@ class BasicStateChangePropagationTest extends StateChangePropagationTest {
 		// Load resource to apply generated changes to
 		changes.unresolve()
 		val validationResourceSet = new ResourceSetImpl()
-		val validationResolver = UuidGeneratorAndResolverFactory.createUuidGeneratorAndResolver(setupResolver,
-			validationResourceSet)
+		val validationResolver = UuidGeneratorAndResolverFactory.createUuidGeneratorAndResolver(validationResourceSet)
 		validationResourceSet.getResource(testUri, true)
 		changes.resolveAndApply(validationResolver)
 
@@ -105,8 +103,7 @@ class BasicStateChangePropagationTest extends StateChangePropagationTest {
 
 		val validationResourceSet = new ResourceSetImpl().withGlobalFactories().awareOfDomains(
 			TestDomainsRepository.INSTANCE)
-		val validationResolver = UuidGeneratorAndResolverFactory.createUuidGeneratorAndResolver(setupResolver,
-			validationResourceSet)
+		val validationResolver = UuidGeneratorAndResolverFactory.createUuidGeneratorAndResolver(validationResourceSet)
 		val oldState = validationResourceSet.getResource(testUri, true)
 		val changes = strategyToTest.getChangeSequenceBetween(-modelResource, oldState, validationResolver)
 
@@ -137,9 +134,9 @@ class BasicStateChangePropagationTest extends StateChangePropagationTest {
 
 		val validationResourceSet = new ResourceSetImpl().withGlobalFactories().awareOfDomains(
 			TestDomainsRepository.INSTANCE)
-		val validationResolver = UuidGeneratorAndResolverFactory.createUuidGeneratorAndResolver(setupResolver,
-			validationResourceSet)
+		val validationResolver = UuidGeneratorAndResolverFactory.createUuidGeneratorAndResolver(validationResourceSet)
 		val oldState = validationResourceSet.getResource(testUri, true)
+		oldState.allContents.forEach[validationResolver.getAndUpdateId(it)]
 		val changes = strategyToTest.getChangeSequenceBetween(-modelResource, oldState, validationResolver)
 		assertEquals(1, changes.EChanges.size)
 		assertEquals(1, changes.EChanges.filter(ReplaceSingleValuedEAttribute).size)
@@ -176,9 +173,9 @@ class BasicStateChangePropagationTest extends StateChangePropagationTest {
 
 		val validationResourceSet = new ResourceSetImpl().withGlobalFactories().awareOfDomains(
 			TestDomainsRepository.INSTANCE)
-		val validationResolver = UuidGeneratorAndResolverFactory.createUuidGeneratorAndResolver(setupResolver,
-			validationResourceSet)
+		val validationResolver = UuidGeneratorAndResolverFactory.createUuidGeneratorAndResolver(validationResourceSet)
 		val oldState = validationResourceSet.getResource(testUri, true)
+		oldState.allContents.forEach[validationResolver.getAndUpdateId(it)]
 		val changes = strategyToTest.getChangeSequenceBetween(-modelResource, oldState, validationResolver)
 
 		changes.unresolve()
@@ -204,8 +201,7 @@ class BasicStateChangePropagationTest extends StateChangePropagationTest {
 
 		val validationResourceSet = new ResourceSetImpl().withGlobalFactories().awareOfDomains(
 			TestDomainsRepository.INSTANCE)
-		val validationResolver = UuidGeneratorAndResolverFactory.createUuidGeneratorAndResolver(setupResolver,
-			validationResourceSet)
+		val validationResolver = UuidGeneratorAndResolverFactory.createUuidGeneratorAndResolver(validationResourceSet)
 		val oldState = validationResourceSet.getResource(testUri, true)
 
 		val movedResourceUri = getModelURI("moved.allElementTypes")
@@ -244,8 +240,7 @@ class BasicStateChangePropagationTest extends StateChangePropagationTest {
 
 		val validationResourceSet = new ResourceSetImpl().withGlobalFactories().awareOfDomains(
 			TestDomainsRepository.INSTANCE)
-		val validationResolver = UuidGeneratorAndResolverFactory.createUuidGeneratorAndResolver(setupResolver,
-			validationResourceSet)
+		val validationResolver = UuidGeneratorAndResolverFactory.createUuidGeneratorAndResolver(validationResourceSet)
 		val oldState = validationResourceSet.getResource(testUri, true)
 
 		val movedResourceUri = getModelURI("moved.allElementTypes")
