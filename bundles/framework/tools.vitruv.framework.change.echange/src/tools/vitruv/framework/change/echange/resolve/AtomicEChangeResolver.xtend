@@ -200,7 +200,7 @@ package class AtomicEChangeResolver {
 	def package dispatch void resolve(DeleteEObject<EObject> change) {
 		val consequentialChanges = change.consequentialRemoveChanges
 		consequentialChanges.resolveChangeList();	
-		change.resolveEObjectExistenceEChange(!false)
+		change.resolveEObjectExistenceEChange(false)
 	}
 	
 	/**
