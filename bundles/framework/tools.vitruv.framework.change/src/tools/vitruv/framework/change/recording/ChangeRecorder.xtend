@@ -31,7 +31,10 @@ import static com.google.common.base.Preconditions.checkNotNull
 import static com.google.common.base.Preconditions.checkArgument
 import static extension org.eclipse.emf.ecore.resource.Resource.RESOURCE__CONTENTS
 import static extension org.eclipse.emf.ecore.resource.ResourceSet.RESOURCE_SET__RESOURCES
-import tools.vitruv.framework.change.echange.feature.reference.UpdateReferenceEChange
+import static extension tools.vitruv.framework.change.echange.resolve.EChangeResolverAndApplicator.applyForward
+import static extension tools.vitruv.framework.change.echange.resolve.EChangeResolverAndApplicator.applyBackward
+import tools.vitruv.framework.change.description.VitruviusChange
+import tools.vitruv.framework.change.description.CompositeChange
 
 /**
  * Records changes to model elements as {@link CompositeTransactionalChanges}.
@@ -51,24 +54,25 @@ class ChangeRecorder implements AutoCloseable {
 	List<CompositeTransactionalChange> resultChanges = emptyList
 	val NotificationToEChangeConverter converter
 	val UuidGeneratorAndResolver uuidGeneratorAndResolver
-	val EChangeIdManager eChangeIdManager 
+	val EChangeIdManager eChangeIdManager
+	val Set<EObject> objectsCreatedDuringMonitoring = new HashSet
 	
 	new(UuidGeneratorAndResolver uuidGeneratorAndResolver) {
 		this.uuidGeneratorAndResolver = uuidGeneratorAndResolver
 		this.eChangeIdManager = new EChangeIdManager(uuidGeneratorAndResolver)
-		this.converter = new NotificationToEChangeConverter([isCreateChange(it)])
+		this.converter = new NotificationToEChangeConverter([affectedObject, addedObject | isCreateChange(affectedObject, addedObject)])
 	}
 
-	private def boolean isCreateChange(EObjectAddedEChange<?> addedEChange) {
+	private def boolean isCreateChange(EObject affectedObject, EObject addedObject) {
 		// We do not check the containment of the reference, because an element may be inserted into a non-containment
 		// reference before inserting it into a containment reference so that the create change has to be added
 		// for the insertion into the non-containment reference
-		var create = addedEChange.newValue !== null && !uuidGeneratorAndResolver.hasUuid(addedEChange.newValue)
+		var create = addedObject !== null && !objectsCreatedDuringMonitoring.contains(addedObject) && !uuidGeneratorAndResolver.hasUuid(addedObject)
 		// Look if the new value has no resource or if it is a reference change, if the resource of the affected
 		// object is the same. Otherwise, the create has to be handled by an insertion/reference in that resource, as
 		// it can be potentially a reference to a third party model, for which no create shall be instantiated		
-		create = create && (addedEChange.newValue.eResource === null || !(addedEChange instanceof UpdateReferenceEChange<?>) || addedEChange.newValue.eResource == (addedEChange as UpdateReferenceEChange<?>).affectedEObject.eResource)
-		if (create) uuidGeneratorAndResolver.generateUuid(addedEChange.newValue)
+		create = create && (addedObject.eResource === null || affectedObject === null || addedObject.eResource == affectedObject.eResource)
+		if (create) objectsCreatedDuringMonitoring += addedObject // uuidGeneratorAndResolver.generateCacheUuid(addedEChange.newValue)
 		return create;
 	}
 
@@ -87,7 +91,7 @@ class ChangeRecorder implements AutoCloseable {
 
 		if (rootObjects += notifier) {
 			notifier.recursively [
-				if (it instanceof EObject) checkState(uuidGeneratorAndResolver.hasUuid(it), "Existing object %s must have a UUID when added to recording", notifier)
+				if (it instanceof EObject) uuidGeneratorAndResolver.getAndUpdateId(it)
 				addAdapter()
 			]
 		}
@@ -112,6 +116,7 @@ class ChangeRecorder implements AutoCloseable {
 		checkState(!isRecording, "This recorder is already recording!")
 		isRecording = true
 		resultChanges = new ArrayList
+		objectsCreatedDuringMonitoring.clear()
 	}
 
 	override close() {
@@ -136,15 +141,26 @@ class ChangeRecorder implements AutoCloseable {
 		checkNotDisposed()
 		isRecording = false
 		resultChanges = List.copyOf(resultChanges.postprocessRemovals().assignIds())
+		uuidGeneratorAndResolver.save()
+		return resultChanges
+		
 	}
 	
 	def private List<CompositeTransactionalChange> assignIds(List<CompositeTransactionalChange> changes) {
-		for (change : changes) {
-			for (eChange : change.EChanges) {
-				eChangeIdManager.setOrGenerateIds(eChange)
+		changes.flatMap[EChanges].toList.reverseView.forEach[applyBackward]
+		changes.forEach[assignIds]
+		return changes
+	}
+	
+	def private void assignIds(VitruviusChange change) {
+		switch (change) {
+			CompositeChange<?>: 
+				change.changes.forEach[assignIds]
+			ConcreteChange: {
+				eChangeIdManager.setOrGenerateIds(change.EChange)
+				change.EChange.applyForward(uuidGeneratorAndResolver)
 			}
 		}
-		return changes
 	}
 
 	def private postprocessRemovals(List<CompositeTransactionalChange> changes) {

@@ -22,6 +22,7 @@ import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resou
 import static extension tools.vitruv.framework.domains.repository.DomainAwareResourceSet.awareOfDomains
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import tools.vitruv.framework.change.recording.ChangeRecorder
+import static tools.vitruv.framework.uuid.UuidGeneratorAndResolverFactory.createUuidGeneratorAndResolver
 
 /**
  * A test view that will record and publish the changes created in it.
@@ -36,34 +37,19 @@ class ChangePublishingTestView implements NonTransactionalTestView {
 	var renewResourceCacheAfterPropagation = true
 	
 	/**
-	 * Creates a test view for the provided {@code targetDomains} that will store its persisted resources in the provided
-	 * {@code persistenceDirectory}, allow to program interactions through the provided {@code userInteraction} and use
-	 * the provided {@code uriMode}.
-	 */
-	new(
-		Path persistenceDirectory,
-		TestUserInteraction userInteraction,
-		UriMode uriMode,
-		VitruvDomainRepository targetDomains
-	) {
-		this(persistenceDirectory, userInteraction, uriMode, [null], targetDomains)
-	}
-
-	/**
 	 * Creates a test view for the provided {@code targetDomains} that will store its persisted resources in the 
 	 * provided {@code persistenceDirectory}, allow to program interactions through the provided {@code userInteraction},
-	 * use the provided {@code uriMode} and use the provider for a {@link UuidGeneratorAndResolver} for UUID resolving.
+	 * use the provided {@code uriMode}.
 	 */
 	new(
 		Path persistenceDirectory,
 		TestUserInteraction userInteraction,
 		UriMode uriMode,
-		(ResourceSet)=>UuidGeneratorAndResolver generatorAndResolverProvider,
 		VitruvDomainRepository targetDomains
 	) {
 		this.resourceSet = new ResourceSetImpl().withGlobalFactories().awareOfDomains(targetDomains)
 		this.delegate = new BasicTestView(persistenceDirectory, resourceSet, userInteraction, uriMode)
-		uuidGeneratorAndResolver = generatorAndResolverProvider.apply(resourceSet)
+		uuidGeneratorAndResolver = createUuidGeneratorAndResolver(resourceSet)
 		this.changeRecorder = new ChangeRecorder(uuidGeneratorAndResolver)
 		changeRecorder.beginRecording()
 	}
@@ -80,7 +66,7 @@ class ChangePublishingTestView implements NonTransactionalTestView {
 		VirtualModel virtualModel,
 		VitruvDomainRepository targetDomains
 	) {
-		this(persistenceDirectory, userInteraction, uriMode, [virtualModel.createChildUuidGeneratorAndResolver(it)], targetDomains)
+		this(persistenceDirectory, userInteraction, uriMode, targetDomains)
 		registerChangeProcessor [change|virtualModel.propagateChange(change)]
 	}
 

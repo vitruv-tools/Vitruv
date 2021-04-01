@@ -16,11 +16,10 @@ interface UuidResolver {
 	def boolean hasEObject(String uuid)
 
 	/**
-	 * Returns the UUID for the given {@link EObject}.
-	 * If no UUID is registered for it, an {@link IllegalStateException} is thrown.
+	 * Calculates and returns the ID of the given {@link EObject} and updates the stored ID.
 	 */
-	def String getUuid(EObject eObject) throws IllegalStateException
-
+	def String getAndUpdateId(EObject eObject)
+	
 	/**
 	 * Returns the {@link EObject} for the given UUID. If more than one object was registered
 	 * for the UUID, the last one is returned.
@@ -30,10 +29,8 @@ interface UuidResolver {
 
 	/**
 	 * Registers the given {@link EObject} for the given UUID.
-	 * @throws IllegalStateException if there is already a UUID registered for the given {@link EObject}
-	 * or vice versa
 	 */
-	def void registerEObject(String uuid, EObject eObject) throws IllegalStateException
+	def void registerEObject(String uuid, EObject eObject)
 
 	/**
 	 * Returns the {@link Resource} for the given {@link URI}. If the resource does not exist yet,

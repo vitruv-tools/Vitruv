@@ -22,28 +22,6 @@ import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
  * 
  */
 class EMFModelChangeTransformationUtil {
-	def static List<EChange> createAdditiveCreateChangesForValue(EObject eObject, EReference reference) {
-		return createAdditiveEChangeForReferencedObject(eObject, reference, true)
-	}
-
-	def static List<EChange> createSubtractiveChangesForValue(EObject eObject, EReference reference) {
-		return createSubtractiveEChangeForReferencedObject(eObject, reference, false)
-	}
-
-	def static List<SubtractiveAttributeEChange<?, Object>> createSubtractiveChangesForValue(EObject eObject,
-		EAttribute attribute) {
-		return createSubtractiveEChangeForAttribute(eObject, attribute)
-	}
-
-	def static List<EChange> createAdditiveChangesForValue(EObject eObject, EReference reference) {
-		return createAdditiveEChangeForReferencedObject(eObject, reference, false)
-	}
-
-	def static List<AdditiveAttributeEChange<?, Object>> createAdditiveChangesForValue(EObject eObject,
-		EAttribute attribute) {
-		return createAdditiveEChangeForAttribute(eObject, attribute)
-	}
-
 	def static <A extends EObject> List<AdditiveAttributeEChange<?, Object>> createAdditiveEChangeForAttribute(
 		A affectedEObject, EAttribute affectedAttribute) {
 		if (affectedAttribute.many) {
@@ -89,16 +67,17 @@ class EMFModelChangeTransformationUtil {
 	}
 
 	def static List<EChange> createAdditiveEChangeForReferencedObject(EObject referencingEObject, EReference reference,
-		boolean forceCreate) {
+		(EObject)=>boolean isCreate) {
 		return if (reference.isMany) {
 			referencingEObject.getReferenceValueList(reference).flatMapFixed [ referenceValue |
 				createInsertReferenceChange(referencingEObject, reference,
 					(referencingEObject.eGet(reference) as EList<?>).indexOf(referenceValue), referenceValue,
-					forceCreate)
+					isCreate.apply(referenceValue))
 			]
 		} else {
+			val referenceValue = referencingEObject.getReferenceValueList(reference).get(0)
 			createReplaceSingleValuedReferenceChange(referencingEObject, reference, null,
-				referencingEObject.getReferenceValueList(reference).get(0), forceCreate)
+				referenceValue, isCreate.apply(referenceValue))
 		}
 	}
 

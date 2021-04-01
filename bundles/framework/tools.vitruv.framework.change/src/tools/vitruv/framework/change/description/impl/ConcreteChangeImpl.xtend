@@ -72,7 +72,7 @@ class ConcreteChangeImpl implements ConcreteChange {
 		val resolvedChange = this.EChange.resolveBefore(uuidResolver)
 		checkState(resolvedChange !== null, "Failed to resolve this change: %s", this.EChange)
 		this.EChange = resolvedChange
-		this.EChange.applyForward
+		this.EChange.applyForward(uuidResolver)
 	}
 
 	override unresolve() {
