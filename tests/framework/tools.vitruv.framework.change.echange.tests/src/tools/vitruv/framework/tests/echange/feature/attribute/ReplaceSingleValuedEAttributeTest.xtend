@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse
 import static org.junit.jupiter.api.Assertions.assertEquals
 import static tools.vitruv.testutils.metamodels.AllElementTypesCreators.*
 import static org.junit.jupiter.api.Assertions.assertThrows
-import static extension tools.vitruv.framework.change.echange.resolve.EChangeResolver.*
+import static extension tools.vitruv.framework.change.echange.resolve.EChangeResolverAndApplicator.*
 
 /**
  * Test class for the concrete {@link ReplaceSingleValuedEAttribute} EChange, 

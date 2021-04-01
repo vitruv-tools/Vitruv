@@ -23,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.assertNotSame
 import static org.junit.jupiter.api.Assertions.assertThrows
 import static tools.vitruv.testutils.metamodels.AllElementTypesCreators.*
 import static tools.vitruv.framework.uuid.UuidGeneratorAndResolverFactory.createUuidGeneratorAndResolver
-import static extension tools.vitruv.framework.change.echange.resolve.EChangeResolver.*
+import static extension tools.vitruv.framework.change.echange.resolve.EChangeResolverAndApplicator.*
 
 /**
  * Test class for {@link FeatureEChange} which is used by every {@link EChange} which modifies {@link EStructuralFeature}s 

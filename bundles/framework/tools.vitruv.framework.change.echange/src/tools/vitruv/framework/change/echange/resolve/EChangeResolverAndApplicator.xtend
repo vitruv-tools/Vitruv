@@ -11,7 +11,7 @@ import tools.vitruv.framework.change.echange.command.ApplyEChangeSwitch
  * Utility class for applying and resolving a given EChange.
  */
 @Utility
-class EChangeResolver {
+class EChangeResolverAndApplicator {
 	static def EChange resolveBefore(EChange eChange, UuidResolver uuidResolver) {
 		return resolveCopy(eChange, uuidResolver)
 	}

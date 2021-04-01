@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertNotSame
 import static org.hamcrest.MatcherAssert.assertThat
 import static org.hamcrest.core.IsInstanceOf.instanceOf
 import static org.hamcrest.core.Is.is
-import static extension tools.vitruv.framework.change.echange.resolve.EChangeResolver.*
+import static extension tools.vitruv.framework.change.echange.resolve.EChangeResolverAndApplicator.*
 
 /**
  * Utility class for frequently used assert methods in the tests.
