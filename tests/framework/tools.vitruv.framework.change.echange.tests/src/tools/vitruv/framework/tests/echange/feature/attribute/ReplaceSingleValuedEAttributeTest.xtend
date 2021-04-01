@@ -7,7 +7,6 @@ import org.eclipse.emf.ecore.EAttribute
 import tools.vitruv.framework.change.echange.feature.attribute.ReplaceSingleValuedEAttribute
 import tools.vitruv.framework.tests.echange.EChangeTest
 
-import static extension tools.vitruv.framework.tests.echange.util.EChangeAssertHelper.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import static org.junit.jupiter.api.Assertions.assertTrue

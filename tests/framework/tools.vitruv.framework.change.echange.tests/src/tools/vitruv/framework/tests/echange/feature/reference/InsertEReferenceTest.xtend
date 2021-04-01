@@ -7,7 +7,6 @@ import org.eclipse.emf.common.util.EList
 import org.eclipse.emf.ecore.EReference
 import tools.vitruv.framework.change.echange.feature.reference.InsertEReference
 
-import static extension tools.vitruv.framework.tests.echange.util.EChangeAssertHelper.*
 import org.junit.jupiter.api.Test
 import static org.junit.jupiter.api.Assertions.assertTrue
 import static org.junit.jupiter.api.Assertions.assertFalse

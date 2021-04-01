@@ -21,6 +21,7 @@ import static tools.vitruv.framework.uuid.UuidGeneratorAndResolverFactory.create
 import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.common.util.URIUtil.createFileURI
 import org.eclipse.emf.ecore.EObject
 import static extension tools.vitruv.framework.change.echange.resolve.EChangeResolverAndApplicator.*
+import tools.vitruv.framework.tests.echange.util.EChangeAssertHelper
 
 /**
  * Default class for testing EChange changes.
@@ -43,7 +44,8 @@ abstract class EChangeTest {
 	var TypeInferringAtomicEChangeFactory atomicFactory
 	@Accessors(PROTECTED_GETTER)
 	var TypeInferringCompoundEChangeFactory compoundFactory
-
+	protected var extension EChangeAssertHelper helper
+	 
 	/**
 	 * Sets up a new model and the two model instances before every test.
 	 * The model is stored in a temporary file with filename {@link MODEL_FILE_NAME} 
@@ -70,6 +72,7 @@ abstract class EChangeTest {
 		this.reapplicationUuidGeneratorAndResolver = createUuidGeneratorAndResolver(resourceSet)
 		atomicFactory = new TypeInferringUnresolvingAtomicEChangeFactory(creationUuidGeneratorAndResolver)
 		compoundFactory = new TypeInferringUnresolvingCompoundEChangeFactory(creationUuidGeneratorAndResolver)
+		helper = new EChangeAssertHelper(creationUuidGeneratorAndResolver)
 	}
 
 	protected def final getResourceContent() {
@@ -90,8 +93,12 @@ abstract class EChangeTest {
 	 */
 	def protected static void assertIsResolved(List<? extends EChange> changes) {
 		for (change : changes) {
-			assertTrue(change.isResolved)
+			change.assertIsResolved()
 		}
+	}
+	
+	def protected static void assertIsResolved(EChange change) {
+		assertTrue(change.isResolved)
 	}
 
 	def protected EChange resolveBefore(EChange change) {
@@ -104,23 +111,27 @@ abstract class EChangeTest {
 		return result
 	}
 
-	static def protected void applyBackward(List<EChange> changes) {
+	def protected void applyBackward(List<EChange> changes) {
 		assertIsResolved(changes)
 		changes.reverseView.forEach[applyBackward]
 	}
 
-	static def protected void applyForward(List<EChange> changes) {
-		assertIsResolved(changes)
+	def protected void applyForward(List<EChange> changes) {
 		changes.forEach[applyForward]
 	}
 	
+	def protected void applyForward(EChange change) {
+		assertIsResolved(change)
+		change.assertApplyForward
+	}
+	
 	protected def <T extends EObject> T withUuid(T eObject) {
-		creationUuidGeneratorAndResolver.generateUuid(eObject)
+		creationUuidGeneratorAndResolver.getAndUpdateId(eObject)
 		return eObject
 	}
 	
 	protected def <T extends EObject> T registerAsPreexisting(T eObject) {
-		reapplicationUuidGeneratorAndResolver.registerEObject(creationUuidGeneratorAndResolver.getUuid(eObject), eObject)
+		reapplicationUuidGeneratorAndResolver.registerEObject(creationUuidGeneratorAndResolver.getAndUpdateId(eObject), eObject)
 		return eObject
 	}
 }

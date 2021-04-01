@@ -72,7 +72,7 @@ class ChangeRecorderTest {
 	@DisplayName("records direct changes to an object having a UUID")
 	def void recordOnObject() {
 		val root = aet.Root
-		uuidGeneratorAndResolver.generateUuid(root)
+		uuidGeneratorAndResolver.getAndUpdateId(root)
 		changeRecorder.addToRecording(root)
 		record [
 			root.id = 'test'
@@ -95,7 +95,7 @@ class ChangeRecorderTest {
 		val root = aet.Root => [
 			singleValuedContainmentEReference = aet.NonRoot
 		]
-		uuidGeneratorAndResolver.generateUuid(root)
+		uuidGeneratorAndResolver.getAndUpdateId(root)
 		assertThrows(IllegalStateException) [
 			changeRecorder.addToRecording(aet.Root)
 		]
@@ -703,7 +703,7 @@ class ChangeRecorderTest {
 			contents += root
 		]
 		
-		val localResolver = createUuidGeneratorAndResolver(parentResolver, resourceSet)
+		val localResolver = createUuidGeneratorAndResolver(resourceSet)
 		var ChangeRecorder changeRecorder = new ChangeRecorder(localResolver)
 		changeRecorder.addToRecording(resourceSet)
 
