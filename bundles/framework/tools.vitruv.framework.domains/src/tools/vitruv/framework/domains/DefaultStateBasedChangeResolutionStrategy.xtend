@@ -51,7 +51,7 @@ class DefaultStateBasedChangeResolutionStrategy implements StateBasedChangeResol
 		newState.checkNoProxies("new state")
 		oldState.checkNoProxies("old state")
 		val monitoredResourceSet = new ResourceSetImpl()
-		val monitoredSetGeneratorAndResolver = createUuidGeneratorAndResolver(resolver, monitoredResourceSet)
+		val monitoredSetGeneratorAndResolver = createUuidGeneratorAndResolver(monitoredResourceSet)
 		val newResourceSet = new ResourceSetImpl()
 		val currentStateCopy = oldState.copyInto(monitoredResourceSet)
 		val newStateCopy = newState.copyInto(newResourceSet)
@@ -73,7 +73,7 @@ class DefaultStateBasedChangeResolutionStrategy implements StateBasedChangeResol
 		val resourceSet = new ResourceSetImpl().awareOfDomains(domainRepository)
 		val newResource = resourceSet.createResource(newState.URI)
 		newResource.contents.clear()
-		val monitoredSetGeneratorAndResolver = createUuidGeneratorAndResolver(resolver, resourceSet)
+		val monitoredSetGeneratorAndResolver = createUuidGeneratorAndResolver(resourceSet)
 		val diffs = newResource.record(monitoredSetGeneratorAndResolver) [
 			newResource.contents += EcoreUtil.copyAll(newState.contents)
 		]
@@ -86,7 +86,7 @@ class DefaultStateBasedChangeResolutionStrategy implements StateBasedChangeResol
 		oldState.checkNoProxies("old state")
 		// Setup resolver and copy state:
 		val monitoredResourceSet = new ResourceSetImpl()
-		val monitoredSetGeneratorAndResolver = createUuidGeneratorAndResolver(resolver, monitoredResourceSet)
+		val monitoredSetGeneratorAndResolver = createUuidGeneratorAndResolver(monitoredResourceSet)
 		val currentStateCopy = oldState.copyInto(monitoredResourceSet)
 		val diffs = currentStateCopy.record(monitoredSetGeneratorAndResolver) [
 			currentStateCopy.contents.clear()
