@@ -84,7 +84,7 @@ package class ApplyBackwardCommandSwitch {
 		val editingDomain = change.affectedEObject.editingDomain
 		if(!change.affectedEObject.alreadyContainsObject(change.affectedFeature, change.newValue)) {
 			if (change.affectedFeature.EOpposite === null) {
-				logger.warn("Tried to remove value " + change.newValue + ", but although not opposite feature was not contained in " + change.affectedEObject);
+				logger.warn("Tried to remove value " + change.newValue + ", but although there is no opposite feature it was not contained in " + change.affectedEObject);
 			} 
 			return #[];
 		}
@@ -103,7 +103,7 @@ package class ApplyBackwardCommandSwitch {
 		val editingDomain = change.affectedEObject.editingDomain
 		if(change.affectedEObject.alreadyContainsObject(change.affectedFeature, change.oldValue)) {
 			if (change.affectedFeature.EOpposite === null) {
-				logger.warn("Tried to add value " + change.oldValue + ", but although not opposite feature was not contained in " + change.affectedEObject);
+				logger.warn("Tried to add value " + change.oldValue + ", but although there is no opposite feature it was already contained in " + change.affectedEObject);
 			} 
 			return #[];
 		}
@@ -116,6 +116,12 @@ package class ApplyBackwardCommandSwitch {
 	 */
 	def package dispatch static List<Command> getCommands(ReplaceSingleValuedEReference<EObject, EObject> change) {
 		val editingDomain = change.affectedEObject.editingDomain
+		if(change.affectedEObject.alreadyContainsObject(change.affectedFeature, change.oldValue)) {
+			if (change.affectedFeature.EOpposite === null) {
+				logger.warn("Tried to add value " + change.oldValue + ", but although there is no opposite feature it was already contained in " + change.affectedEObject);
+			} 
+			return #[];
+		}
 		return #[new SetCommand(editingDomain, change.affectedEObject, change.affectedFeature, if (change.isWasUnset) SetCommand.UNSET_VALUE else change.oldValue)]
 	}
 
@@ -151,7 +157,7 @@ package class ApplyBackwardCommandSwitch {
 	 * @param object The change which commands should be created.
 	 */
 	def package dispatch static List<Command> getCommands(DeleteEObject<EObject> change) {
-		return change.consequentialRemoveChanges.reverseView.map[commands].flatten.toList;
+		return #[]
 	}
 
 }
