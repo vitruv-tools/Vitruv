@@ -138,17 +138,6 @@ class VirtualModelImpl implements InternalVirtualModel {
 		}
 	}
 
-	override synchronized reverseChanges(List<PropagatedChange> changes) {
-		changes.reverseView.forEach [applyBackward(uuidResolver)]
-
-		// TODO HK Instead of this make the changes set the modified flag of the resource when applied
-		changes.flatMap [originalChange.affectedEObjects + consequentialChanges.affectedEObjects]
-			.map [eResource]
-			.filterNull
-			.forEach[modified = true]
-		save()
-	}
-
 	override Path getFolder() {
 		return fileSystemLayout.vsumProjectFolder
 	}

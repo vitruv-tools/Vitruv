@@ -35,8 +35,6 @@ interface VirtualModel {
 	 */
 	def List<PropagatedChange> propagateChangedState(Resource newState, URI oldLocation)
 
-	def void reverseChanges(List<PropagatedChange> changes)
-	
 	/**
 	 * Creates a {@link UuidGeneratorAndResolver} for the given {@link ResourceSet} based on the UUID resolver used in this {@link VirtualModel} as a parent
 	 * resolver.
