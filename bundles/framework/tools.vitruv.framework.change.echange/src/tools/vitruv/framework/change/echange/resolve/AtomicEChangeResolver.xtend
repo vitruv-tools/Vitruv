@@ -15,7 +15,6 @@ import tools.vitruv.framework.change.echange.feature.reference.ReplaceSingleValu
 import tools.vitruv.framework.change.echange.root.InsertRootEObject
 import tools.vitruv.framework.change.echange.root.RemoveRootEObject
 import tools.vitruv.framework.change.echange.root.RootEChange
-import java.util.List
 import tools.vitruv.framework.uuid.UuidResolver
 import static com.google.common.base.Preconditions.checkState
 import static com.google.common.base.Preconditions.checkArgument
@@ -198,17 +197,7 @@ package class AtomicEChangeResolver {
 	 * @param change 			The change which should be resolved.
 	 */
 	def package dispatch void resolve(DeleteEObject<EObject> change) {
-		val consequentialChanges = change.consequentialRemoveChanges
-		consequentialChanges.resolveChangeList();	
 		change.resolveEObjectExistenceEChange(false)
-	}
-	
-	/**
-	 * Dispatch method for resolving the given list of changes.
-	 * @param changeList 		The change list which should be resolved.
-	 */
-	def private void resolveChangeList(List<? extends EChange> changeList) {
-		changeList.forEach[resolve()]
 	}
 	
 	def private static void checkNotNullAndNotProxy(EObject object, EChange change, String nameOfElementInChange) {

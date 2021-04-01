@@ -168,7 +168,6 @@
     </genClasses>
     <genClasses ecoreClass="eobject.ecore#//DeleteEObject">
       <genTypeParameters ecoreTypeParameter="eobject.ecore#//DeleteEObject/A"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference eobject.ecore#//DeleteEObject/consequentialRemoveChanges"/>
     </genClasses>
   </genPackages>
   <genPackages prefix="Root" basePackage="tools.vitruv.framework.change.echange" disposableProviderFactory="true"

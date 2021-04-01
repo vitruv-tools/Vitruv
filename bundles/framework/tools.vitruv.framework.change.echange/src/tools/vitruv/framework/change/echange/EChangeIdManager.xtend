@@ -75,7 +75,6 @@ class EChangeIdManager {
 		val affectedEObject = deleteChange.affectedEObject
 		checkArgument(affectedEObject !== null, "Delete change must have an affected EObject: %s", deleteChange)
 		deleteChange.affectedEObjectID = affectedEObject.uuid
-		deleteChange.consequentialRemoveChanges.forEach[setOrGenerateIds]
 	}
 
 	private def dispatch void setOrGenerateAffectedEObjectId(FeatureEChange<?, ?> featureChange) {

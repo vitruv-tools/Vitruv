@@ -71,8 +71,6 @@
     <eTypeParameters name="A">
       <eBounds eClassifier="ecore:EClass ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EObject"/>
     </eTypeParameters>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="consequentialRemoveChanges"
-        upperBound="-1" eType="ecore:EClass echange.ecore#//EChange"/>
     <eGenericSuperTypes eClassifier="#//EObjectExistenceEChange">
       <eTypeArguments eTypeParameter="#//DeleteEObject/A"/>
     </eGenericSuperTypes>
