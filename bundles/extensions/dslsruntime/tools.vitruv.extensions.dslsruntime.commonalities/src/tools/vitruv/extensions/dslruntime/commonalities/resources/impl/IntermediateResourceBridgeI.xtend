@@ -107,7 +107,7 @@ class IntermediateResourceBridgeI extends IntermediateResourceBridgeImpl {
 
 	private def getResourceUri(String path, String name, String fileExtension) {
 		assertTrue(baseURI !== null && path !== null && name !== null && fileExtension !== null)
-		val relativePathUri = URI.createURI(fullPath)
+		val relativePathUri = URI.createURI(fullPath(path, name, fileExtension))
 		val resourceUri = relativePathUri.resolve(baseURI)
 		return resourceUri
 	}
