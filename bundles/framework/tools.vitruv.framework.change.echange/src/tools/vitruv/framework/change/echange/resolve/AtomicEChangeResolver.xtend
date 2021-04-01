@@ -201,12 +201,12 @@ package class AtomicEChangeResolver {
 	}
 	
 	def private static void checkNotNullAndNotProxy(EObject object, EChange change, String nameOfElementInChange) {
-		checkState(object !== null, "%s of change %s was resolved to null", change)
-		checkState(!object.eIsProxy, "%s of change %s was resolved to a proxy", object)
+		checkState(object !== null, "%s of change %s was resolved to null", nameOfElementInChange, change)
+		checkState(!object.eIsProxy, "%s of change %s was resolved to a proxy", nameOfElementInChange, object)
 	}
 	
 	def private static void checkEitherNullOrNotProxy(EObject object, EChange change, String nameOfElementInChange) {
-		checkState(object === null || !object.eIsProxy, "%s of change %s was resolved to a proxy", object)
+		checkState(object === null || !object.eIsProxy, "%s of change %s was resolved to a proxy", nameOfElementInChange, object)
 	}
 }
 	
