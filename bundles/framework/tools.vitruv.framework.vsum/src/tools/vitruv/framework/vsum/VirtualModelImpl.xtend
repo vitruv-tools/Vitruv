@@ -1,7 +1,6 @@
 package tools.vitruv.framework.vsum
 
 import java.nio.file.Path
-import java.util.Collections
 import java.util.LinkedList
 import java.util.List
 import org.apache.log4j.Logger
@@ -217,13 +216,6 @@ class VirtualModelImpl implements InternalVirtualModel {
 			propagatedChangeListener.postChanges(name, sourceDomain, targetDomain, propagationResult)
 		}
 	}
-
-    /**
-     * Confirms whether the current state is retrievable via its URI from the resource set of the new state.
-     */
-    private def boolean isValid(Resource currentState, Resource newState) {
-        newState.resourceSet.URIConverter.exists(currentState.URI, Collections.emptyMap)
-    }
 
     override void dispose() {
         resourceRepository.close()

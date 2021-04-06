@@ -5,7 +5,7 @@ import org.eclipse.emf.common.notify.impl.AdapterImpl
 import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import org.eclipse.emf.ecore.util.EcoreUtil
-import tools.vitruv.framework.util.datatypes.ModelInstance
+import tools.vitruv.framework.vsum.ModelInstance
 
 /**
  * A basic read-only view that passes by default the entirety of its underlying model as it is.

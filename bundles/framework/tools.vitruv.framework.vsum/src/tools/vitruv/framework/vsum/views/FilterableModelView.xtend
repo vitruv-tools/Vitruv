@@ -3,9 +3,9 @@ package tools.vitruv.framework.vsum.views
 import java.util.ArrayList
 import java.util.Collection
 import org.eclipse.emf.ecore.EObject
-import tools.vitruv.framework.util.datatypes.ModelInstance
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import org.eclipse.emf.ecore.util.EcoreUtil
+import tools.vitruv.framework.vsum.ModelInstance
 
 /**
  * A basic read-only view on a model that passes through only some of the model elements.
