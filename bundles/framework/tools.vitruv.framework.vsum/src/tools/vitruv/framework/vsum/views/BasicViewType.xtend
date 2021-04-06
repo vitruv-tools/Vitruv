@@ -1,8 +1,8 @@
 package tools.vitruv.framework.vsum.views
 
+import tools.vitruv.framework.vsum.ModelInstance
 import tools.vitruv.framework.vsum.views.selection.BasicViewSelector
 import tools.vitruv.framework.vsum.views.selection.ViewSelector
-import tools.vitruv.framework.vsum.ModelInstance
 
 class BasicViewType implements ViewType {
 
