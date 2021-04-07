@@ -1,6 +1,5 @@
 package tools.vitruv.domains.emf.builder;
 
-import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
@@ -12,21 +11,18 @@ import org.eclipse.core.resources.IResourceDeltaVisitor;
 import org.eclipse.core.resources.IResourceVisitor;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 
-import edu.kit.ipd.sdq.commons.util.org.eclipse.emf.common.util.URIUtil;
 import tools.vitruv.domains.emf.monitorededitor.IEditorPartAdapterFactory;
 import tools.vitruv.domains.emf.monitorededitor.IVitruviusEMFEditorMonitor;
 import tools.vitruv.domains.emf.monitorededitor.IVitruviusEMFEditorMonitor.IVitruviusAccessor;
 import tools.vitruv.domains.emf.monitorededitor.monitor.DefaultEditorPartAdapterFactoryImpl;
 import tools.vitruv.domains.emf.monitorededitor.monitor.EMFEditorMonitorFactory;
-import tools.vitruv.framework.change.description.CompositeChange;
-import tools.vitruv.framework.change.description.ConcreteChange;
-import tools.vitruv.framework.change.description.VitruviusChangeFactory;
 import tools.vitruv.framework.change.description.VitruviusChangeFactory.FileChangeKind;
 import tools.vitruv.framework.domains.ui.builder.VitruvProjectBuilder;
-import tools.vitruv.framework.util.datatypes.ModelInstance;
-import tools.vitruv.framework.util.datatypes.VURI;
+import static edu.kit.ipd.sdq.commons.util.org.eclipse.emf.common.util.URIUtil.createPlatformResourceURI;
+import static edu.kit.ipd.sdq.commons.util.org.eclipse.emf.common.util.URIUtil.getIFileForEMFUri;
 
 public class VitruvEmfBuilder extends VitruvProjectBuilder {
 	public static final String BUILDER_ID = "tools.vitruv.domains.emf.builder.VitruvEmfBuilder.id";
@@ -96,8 +92,8 @@ public class VitruvEmfBuilder extends VitruvProjectBuilder {
     private IVitruviusAccessor createVitruviusAccessor() {
         return new IVitruviusAccessor() {
             @Override
-            public boolean isModelMonitored(final VURI modelUri) {
-                boolean doMonitor = getMonitoredFileExtensions().contains(modelUri.getFileExtension());
+            public boolean isModelMonitored(final URI modelUri) {
+                boolean doMonitor = getMonitoredFileExtensions().contains(modelUri.fileExtension());
                 doMonitor &= VitruvEmfBuilder.this.isFileBelongingToThisProject(modelUri);
                 LOGGER.trace("Monitor " + modelUri + "? " + doMonitor);
                 return doMonitor;
@@ -105,14 +101,14 @@ public class VitruvEmfBuilder extends VitruvProjectBuilder {
         };
     }
 
-    private boolean isFileBelongingToThisProject(final VURI fileVURI) {
+    private boolean isFileBelongingToThisProject(final URI fileURI) {
         if (this.isInTestingMode == false) {
             if (this.getBuildConfig() == null) {
-                LOGGER.warn("Unable to determine whether " + fileVURI
+                LOGGER.warn("Unable to determine whether " + fileURI
                         + " should be monitored with this builder: No build configuration.");
                 return true;
             }
-            final IFile referencedFile = URIUtil.getIFileForEMFUri(fileVURI.getEMFUri());
+            final IFile referencedFile = getIFileForEMFUri(fileURI);
             return referencedFile.getProject() == this.projectProviding.getProject();
         } else {
             return true;
@@ -134,15 +130,12 @@ public class VitruvEmfBuilder extends VitruvProjectBuilder {
             if (isMonitoredResource) {
                 switch (delta.getKind()) {
                 case IResourceDelta.ADDED:
-                    LOGGER.debug("Importing to Vitruvius: " + iResource);
                     VitruvEmfBuilder.this.importToVitruvius(iResource);
                     break;
                 case IResourceDelta.REMOVED:
-                    LOGGER.debug("Removing from Vitruvius: " + iResource);
                     VitruvEmfBuilder.this.removeFromVitruvius(iResource);
                     break;
                 case IResourceDelta.CHANGED:
-                    // LOGGER.debug("Resource changed: " + iResource);
                     VitruvEmfBuilder.this.triggerSynchronisation(iResource);
                     break;
                 default:
@@ -206,8 +199,7 @@ public class VitruvEmfBuilder extends VitruvProjectBuilder {
      */
     private void importToVitruvius(final IResource iResource) {
         LOGGER.trace("Importing " + iResource);
-        final VURI resUri = VURI.getInstance(iResource);
-        this.emfMonitor.addModel(resUri);
+        this.emfMonitor.addModel(createPlatformResourceURI(iResource));
         this.triggerFileChangeSynchronisation(iResource, FileChangeKind.Create);
     }
 
@@ -219,21 +211,21 @@ public class VitruvEmfBuilder extends VitruvProjectBuilder {
      */
     private void removeFromVitruvius(final IResource iResource) {
         LOGGER.trace("Removing " + iResource);
-        final VURI resUri = VURI.getInstance(iResource);
-        this.emfMonitor.removeModel(resUri);
+        this.emfMonitor.removeModel(createPlatformResourceURI(iResource));
         this.triggerFileChangeSynchronisation(iResource, FileChangeKind.Delete);
     }
 
     private void triggerFileChangeSynchronisation(final IResource iResource, final FileChangeKind fileChangeKind) {
         final String fileExtension = iResource.getFileExtension();
         if (getMonitoredFileExtensions().contains(fileExtension)) {
-            final VURI vuri = VURI.getInstance(iResource);
-            ModelInstance modelInstance = this.getVirtualModel().getModelInstance(vuri);
-            if (modelInstance != null) {
-            	Resource modelResource = this.getVirtualModel().getModelInstance(vuri).getResource();
-            	final List<ConcreteChange> fileChange = VitruviusChangeFactory.getInstance().createFileChange(fileChangeKind, modelResource);
-            	CompositeChange<?> compositeChange = VitruviusChangeFactory.getInstance().createCompositeChange(fileChange);
-            	this.getVirtualModel().propagateChange(compositeChange);
+            final URI uri = createPlatformResourceURI(iResource);
+            switch (fileChangeKind) {
+            	case Create:
+            		this.getVirtualModel().propagateChangedState(new ResourceSetImpl().getResource(uri, true));
+            		break;
+            	case Delete:
+            		this.getVirtualModel().propagateChangedState(null, uri);
+            		break;
             }
         }
     }
@@ -241,8 +233,8 @@ public class VitruvEmfBuilder extends VitruvProjectBuilder {
     private void triggerSynchronisation(final IResource iResource) {
         LOGGER.trace("Triggering synchronization for " + iResource);
         if (getMonitoredFileExtensions().contains(iResource.getFileExtension())) {
-            final VURI vuri = VURI.getInstance(iResource);
-            this.emfMonitor.triggerSynchronisation(vuri);
+            final URI uri = createPlatformResourceURI(iResource);
+            this.emfMonitor.triggerSynchronisation(uri);
         }
     }
 

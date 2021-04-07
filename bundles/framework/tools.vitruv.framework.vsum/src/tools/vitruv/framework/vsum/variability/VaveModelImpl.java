@@ -23,23 +23,16 @@ import tools.vitruv.framework.correspondence.Correspondences;
 import tools.vitruv.framework.correspondence.InternalCorrespondenceModel;
 import tools.vitruv.framework.correspondence.impl.InternalCorrespondenceModelImpl;
 import tools.vitruv.framework.util.VitruviusConstants;
-import tools.vitruv.framework.util.datatypes.ModelInstance;
-import tools.vitruv.framework.util.datatypes.VURI;
 import tools.vitruv.framework.uuid.UuidResolver;
 import tools.vitruv.framework.vsum.variability.InternalVaveModel;
 import vavemodel.VavemodelFactory;
 
-@SuppressWarnings("all")
 public class VaveModelImpl implements InternalVaveModel {
-	private static final Map<String, String> saveAndLoadOptions = Map.<String, String>of(
-			VitruviusConstants.getOptionProcessDanglingHref(),
-			VitruviusConstants.getOptionProcessDanglingHrefDiscard());
+	private static final Map<String, String> saveOptions = Map.<String, String>of("PROCESS_DANGLING_HREF", "DISCARD");
 	private final vavemodel.System system;
-	private final UuidResolver uuidResolver;
 	private final Resource vaveResource;
 
-	public VaveModelImpl(final UuidResolver uuidResolver, final URI resourceUri) {
-		this.uuidResolver = uuidResolver;
+	public VaveModelImpl(final URI resourceUri) {
 		this.system = VavemodelFactory.eINSTANCE.createSystem();
 		// vaveResource.getContents().add(system);
 		Resource _xifexpression = null;
@@ -57,34 +50,27 @@ public class VaveModelImpl implements InternalVaveModel {
 
 	public void loadSerializedVave() {
 		Preconditions.checkState((this.vaveResource != null),
-				"Correspondences resource must be specified to load existing correspondences");
-		ResourceSet _withGlobalFactories = ResourceSetUtil.withGlobalFactories(new ResourceSetImpl());
-		final Procedure1<ResourceSet> _function = (ResourceSet it) -> {
-			Map<Object, Object> _loadOptions = it.getLoadOptions();
-			_loadOptions.putAll(VaveModelImpl.saveAndLoadOptions);
-		};
-		final Resource loadedResource = ResourceSetUtil.loadOrCreateResource(
-				ObjectExtensions.<ResourceSet>operator_doubleArrow(_withGlobalFactories, _function),
-				this.vaveResource.getURI());
+				"Vave resource must be specified to load existing vave model");
+	    final Resource loadedResource = ResourceSetUtil.loadOrCreateResource(ResourceSetUtil.withGlobalFactories(new ResourceSetImpl()), this.vaveResource.getURI());
 		boolean _isEmpty = loadedResource.getContents().isEmpty();
 		boolean _not = (!_isEmpty);
 		if (_not) {
 			EObject _get = loadedResource.getContents().get(0);
-			final Correspondences loadedCorrespondences = ((Correspondences) _get);
+	//		final Correspondences loadedCorrespondences = ((Correspondences) _get);
 		}
 	}
-
-	@Override
-	public void save() {
-		try {
-			Resource _vaveResource = this.vaveResource;
-			if (_vaveResource != null) {
-				_vaveResource.save(VaveModelImpl.saveAndLoadOptions);
-			}
-		} catch (Throwable _e) {
-			throw Exceptions.sneakyThrow(_e);
-		}
-	}
+	
+	  @Override
+	  public void save() {
+	    try {
+	      Resource _vaveResource = this.vaveResource;
+	      if (_vaveResource!=null) {
+	        _vaveResource.save(VaveModelImpl.saveOptions);
+	      }
+	    } catch (Throwable _e) {
+	      throw Exceptions.sneakyThrow(_e);
+	    }
+	  }
 
 //	public VaveModelImpl(Resource vaveResource, String systemName) {
 //		loadVave(vaveResource, systemName);

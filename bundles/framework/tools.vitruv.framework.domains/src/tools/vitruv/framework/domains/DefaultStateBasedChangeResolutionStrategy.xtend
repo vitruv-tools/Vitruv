@@ -13,13 +13,14 @@ import tools.vitruv.framework.change.description.VitruviusChangeFactory
 import tools.vitruv.framework.change.recording.ChangeRecorder
 import org.eclipse.emf.ecore.resource.ResourceSet
 import tools.vitruv.framework.uuid.UuidResolver
-import static tools.vitruv.framework.uuid.UuidGeneratorAndResolverFactory.createUuidGeneratorAndResolver
 import static extension tools.vitruv.framework.domains.repository.DomainAwareResourceSet.awareOfDomains
 import tools.vitruv.framework.domains.repository.VitruvDomainRepository
 import tools.vitruv.framework.domains.repository.VitruvDomainRepositoryImpl
 import static com.google.common.base.Preconditions.checkArgument
 import java.util.Set
 import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceUtil.getReferencedProxies
+import static tools.vitruv.framework.uuid.UuidGeneratorAndResolverFactory.createUuidGeneratorAndResolver
+import tools.vitruv.framework.uuid.UuidGeneratorAndResolver
 
 /**
  * This default strategy for diff based state changes uses EMFCompare to resolve a 
@@ -29,7 +30,7 @@ import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resou
 class DefaultStateBasedChangeResolutionStrategy implements StateBasedChangeResolutionStrategy {
 	val VitruviusChangeFactory changeFactory
 	val VitruvDomainRepository domainRepository
-	
+
 	/**
 	 * Creates the strategy.
 	 */
@@ -37,10 +38,11 @@ class DefaultStateBasedChangeResolutionStrategy implements StateBasedChangeResol
 		domainRepository = new VitruvDomainRepositoryImpl(domains)
 		changeFactory = VitruviusChangeFactory.instance
 	}
-	
+
 	private def checkNoProxies(Resource resource, String stateNotice) {
 		val proxies = resource.referencedProxies
-		checkArgument(proxies.empty, "%s '%s' should not contain proxies, but contains the following: %s", stateNotice, resource.URI, String.join(", ", proxies.map[toString]))
+		checkArgument(proxies.empty, "%s '%s' should not contain proxies, but contains the following: %s", stateNotice,
+			resource.URI, String.join(", ", proxies.map[toString]))
 	}
 
 	override getChangeSequenceBetween(Resource newState, Resource oldState, UuidResolver resolver) {
@@ -48,11 +50,12 @@ class DefaultStateBasedChangeResolutionStrategy implements StateBasedChangeResol
 		checkArgument(oldState !== null && newState !== null, "old state or new state must not be null!")
 		newState.checkNoProxies("new state")
 		oldState.checkNoProxies("old state")
-		val oldResourceSet = new ResourceSetImpl()
+		val monitoredResourceSet = new ResourceSetImpl()
+		val monitoredSetGeneratorAndResolver = createUuidGeneratorAndResolver(resolver, monitoredResourceSet)
 		val newResourceSet = new ResourceSetImpl()
-		val currentStateCopy = oldState.copyInto(oldResourceSet)
+		val currentStateCopy = oldState.copyInto(monitoredResourceSet)
 		val newStateCopy = newState.copyInto(newResourceSet)
-		val diffs = currentStateCopy.record(resolver) [
+		val diffs = currentStateCopy.record(monitoredSetGeneratorAndResolver) [
 			if (oldState.URI != newState.URI) {
 				currentStateCopy.URI = newStateCopy.URI
 			}
@@ -60,7 +63,7 @@ class DefaultStateBasedChangeResolutionStrategy implements StateBasedChangeResol
 		]
 		return changeFactory.createCompositeChange(diffs)
 	}
-	
+
 	override getChangeSequenceForCreated(Resource newState, UuidResolver resolver) {
 		checkArgument(resolver !== null, "UUID generator and resolver cannot be null!")
 		checkArgument(newState !== null, "new state must not be null!")
@@ -70,28 +73,30 @@ class DefaultStateBasedChangeResolutionStrategy implements StateBasedChangeResol
 		val resourceSet = new ResourceSetImpl().awareOfDomains(domainRepository)
 		val newResource = resourceSet.createResource(newState.URI)
 		newResource.contents.clear()
-		val diffs = newResource.record(resolver) [
+		val monitoredSetGeneratorAndResolver = createUuidGeneratorAndResolver(resolver, resourceSet)
+		val diffs = newResource.record(monitoredSetGeneratorAndResolver) [
 			newResource.contents += EcoreUtil.copyAll(newState.contents)
 		]
 		return changeFactory.createCompositeChange(diffs)
 	}
-	
+
 	override getChangeSequenceForDeleted(Resource oldState, UuidResolver resolver) {
 		checkArgument(resolver !== null, "UUID generator and resolver cannot be null!")
 		checkArgument(oldState !== null, "old state must not be null!")
 		oldState.checkNoProxies("old state")
 		// Setup resolver and copy state:
-		val copyResourceSet = new ResourceSetImpl()
-		val currentStateCopy = oldState.copyInto(copyResourceSet)
-		val diffs = currentStateCopy.record(resolver) [
+		val monitoredResourceSet = new ResourceSetImpl()
+		val monitoredSetGeneratorAndResolver = createUuidGeneratorAndResolver(resolver, monitoredResourceSet)
+		val currentStateCopy = oldState.copyInto(monitoredResourceSet)
+		val diffs = currentStateCopy.record(monitoredSetGeneratorAndResolver) [
 			currentStateCopy.contents.clear()
 		]
 		return changeFactory.createCompositeChange(diffs)
 	}
-	
-	private def <T extends Notifier> record(Resource resource, UuidResolver parentResolver, () => void function) {
-		val uuidGeneratorAndResolver = createUuidGeneratorAndResolver(parentResolver, resource.resourceSet)
-		try (val changeRecorder = new ChangeRecorder(uuidGeneratorAndResolver)) {
+
+	private def <T extends Notifier> record(Resource resource,
+		UuidGeneratorAndResolver monitoredResourceUuidGeneratorAndResolver, ()=>void function) {
+		try (val changeRecorder = new ChangeRecorder(monitoredResourceUuidGeneratorAndResolver)) {
 			changeRecorder.beginRecording
 			changeRecorder.addToRecording(resource)
 			function.apply()
@@ -118,7 +123,9 @@ class DefaultStateBasedChangeResolutionStrategy implements StateBasedChangeResol
 	private def Resource copyInto(Resource resource, ResourceSet resourceSet) {
 		val uri = resource.URI
 		val copy = resourceSet.resourceFactoryRegistry.getFactory(uri).createResource(uri)
-		copy.contents.addAll(EcoreUtil.copyAll(resource.contents))
+		val elementsCopy = EcoreUtil.copyAll(resource.contents)
+		elementsCopy.forEach[eAdapters.clear]
+		copy.contents.addAll(elementsCopy)
 		resourceSet.resources += copy
 		return copy
 	}

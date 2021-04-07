@@ -35,7 +35,7 @@ class BasicStateChangePropagationTest extends StateChangePropagationTest {
 				id = "Root"
 			]
 		]
-		modelResource.save(null)
+		
 		val changes = strategyToTest.getChangeSequenceForCreated(modelResource, setupResolver)
 		assertEquals(3, changes.EChanges.size)
 		assertEquals(1, changes.EChanges.filter(InsertRootEObject).size)
@@ -45,11 +45,11 @@ class BasicStateChangePropagationTest extends StateChangePropagationTest {
 		// Create empty resource to apply generated changes to
 		changes.unresolveIfApplicable
 		val validationResourceSet = new ResourceSetImpl()
-		validationResourceSet.createResource(testUri)
 		val validationResolver = UuidGeneratorAndResolverFactory.createUuidGeneratorAndResolver(setupResolver,
 			validationResourceSet)
 		changes.resolveBeforeAndApplyForward(validationResolver)
-
+		
+		modelResource.save(null)
 		assertEquals(1, validationResourceSet.resources.size)
 		assertThat(validationResourceSet.resources.get(0), containsModelOf(modelResource))
 	}
@@ -179,7 +179,7 @@ class BasicStateChangePropagationTest extends StateChangePropagationTest {
 		val validationResolver = UuidGeneratorAndResolverFactory.createUuidGeneratorAndResolver(setupResolver,
 			validationResourceSet)
 		val oldState = validationResourceSet.getResource(testUri, true)
-		val changes = strategyToTest.getChangeSequenceBetween(-modelResource, oldState, setupResolver)
+		val changes = strategyToTest.getChangeSequenceBetween(-modelResource, oldState, validationResolver)
 
 		changes.unresolveIfApplicable
 		changes.resolveBeforeAndApplyForward(validationResolver)
@@ -214,22 +214,22 @@ class BasicStateChangePropagationTest extends StateChangePropagationTest {
 				contents += root
 			] >> modelResource
 		]
-		(-modelResource).save(null)
 
 		val changes = strategyToTest.getChangeSequenceBetween(-modelResource, oldState, validationResolver)
 		assertEquals(2, changes.EChanges.size)
 		assertEquals(1, changes.EChanges.filter(RemoveRootEObject).size)
 		assertEquals(1, changes.EChanges.filter(InsertRootEObject).size)
-
+		
 		changes.unresolveIfApplicable
 		changes.resolveBeforeAndApplyForward(validationResolver)
 
+		(-modelResource).save(null)
 		assertEquals(2, validationResourceSet.resources.size)
 		assertThat(validationResourceSet.getResource(movedResourceUri, false), containsModelOf(-modelResource))
 	}
 
 	@Test
-	@DisplayName("move a resource to new location and calculate state-based difference")
+	@DisplayName("move a resource to new location changing root feature and calculate state-based difference")
 	def void moveResourceAndChangeRootFeature() {
 		val modelResource = new Capture<Resource>
 		val root = aet.Root
@@ -256,8 +256,7 @@ class BasicStateChangePropagationTest extends StateChangePropagationTest {
 				contents += root
 			] >> modelResource
 		]
-		(-modelResource).save(null)
-
+		
 		val changes = strategyToTest.getChangeSequenceBetween(-modelResource, oldState, validationResolver)
 		assertEquals(3, changes.EChanges.size)
 		assertEquals(1, changes.EChanges.filter(RemoveRootEObject).size)
@@ -267,6 +266,7 @@ class BasicStateChangePropagationTest extends StateChangePropagationTest {
 		changes.unresolveIfApplicable
 		changes.resolveBeforeAndApplyForward(validationResolver)
 
+		(-modelResource).save(null)
 		assertEquals(2, validationResourceSet.resources.size)
 		assertThat(validationResourceSet.getResource(movedResourceUri, false), containsModelOf(-modelResource))
 	}

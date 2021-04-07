@@ -32,8 +32,8 @@ class RemoveEReferenceTest extends ReferenceEChangeTest {
 
 	@BeforeEach
 	def void before() {
-		uuidGeneratorAndResolver.generateUuid(newValue) // Used as existing value, so needs a UUID
-		uuidGeneratorAndResolver.generateUuid(newValue2) // Used as existing value, so needs a UUID
+		newValue.registerAsPreexisting
+		newValue2.registerAsPreexisting
 	}
 	
 	/**

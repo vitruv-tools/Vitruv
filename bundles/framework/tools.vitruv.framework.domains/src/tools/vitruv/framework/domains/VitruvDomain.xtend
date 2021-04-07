@@ -4,9 +4,8 @@ import org.eclipse.emf.ecore.EPackage
 import java.util.Map
 import java.util.Set
 import org.eclipse.emf.ecore.EObject
-import tools.vitruv.framework.util.datatypes.URIHaving
 
-interface VitruvDomain extends URIHaving, Comparable<URIHaving> {
+interface VitruvDomain {
 	def String getName()
 
 	def EPackage getMetamodelRootPackage()

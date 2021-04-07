@@ -17,7 +17,7 @@ import static com.google.common.base.Preconditions.checkState
 import static com.google.common.base.Preconditions.checkNotNull
 import tools.vitruv.framework.util.ResourceRegistrationAdapter
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
-import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceUtil.getFirstRootEObject
+import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceSetUtil.getOrCreateResource
 
 /**
  * {@link UuidGeneratorAndResolver}
@@ -29,7 +29,6 @@ package class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 	val ResourceSet resourceSet
 	val Resource uuidResource
 	val UuidResolver parentUuidResolver
-	val UuidToEObjectRepository cache
 	UuidToEObjectRepository repository
 
 	/**
@@ -49,14 +48,14 @@ package class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 	new(UuidResolver parentUuidResolver, ResourceSet resourceSet, URI resourceUri) {
 		checkArgument(resourceSet !== null, "Resource set may not be null")
 		this.resourceSet = resourceSet
-		this.parentUuidResolver = parentUuidResolver ?: UuidResolver.EMPTY
-		this.cache = UuidFactory.eINSTANCE.createUuidToEObjectRepository
+		this.parentUuidResolver = parentUuidResolver
 		this.repository = UuidFactory.eINSTANCE.createUuidToEObjectRepository
 		this.uuidResource = if (resourceUri !== null)
 			new ResourceSetImpl().withGlobalFactories.createResource(resourceUri) => [
 				contents += repository
 			]
-		this.resourceSet.eAdapters += new ResourceRegistrationAdapter[resource|loadUuidsFromParent(resource)]
+		this.resourceSet.eAdapters += new ResourceRegistrationAdapter[resource|loadUuidsFromParent(resource.URI)]
+		this.resourceSet.resources.forEach[resource|loadUuidsFromParent(resource.URI)]
 	}
 
 	override loadUuidsAndModelsFromSerializedUuidRepository() {
@@ -83,7 +82,7 @@ package class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 	private def cleanupRemovedElements() {
 		for (val iterator = repository.EObjectToUuid.keySet.iterator(); iterator.hasNext();) {
 			val object = iterator.next()
-			if (object.eResource === null) {
+			if (object.eResource === null || object.eResource.resourceSet === null) {
 				val uuid = repository.EObjectToUuid.get(object)
 				repository.uuidToEObject.removeKey(uuid)
 				iterator.remove()
@@ -94,7 +93,19 @@ package class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 	override close() {
 		this.uuidResource.unload()
 	}
+	
+	override getResourceSet() {
+		return resourceSet
+	}
 
+	override getResource(URI uri) {
+		return resourceSet.getOrCreateResource(uri)
+	}
+	
+	override hasResource(URI uri) {
+		return resourceSet.getResource(uri, false) !== null
+	}
+	
 	override getUuid(EObject eObject) {
 		val result = eObject.getUuidOrNull()
 		checkState(result !== null, "No UUID registered for EObject: %s", eObject)
@@ -109,32 +120,14 @@ package class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 	}
 	
 	private def getUuidIfObjectReadonly(EObject eObject) {
-		val uri = EcoreUtil.getURI(eObject)
-		if (uri.isReadOnly()) {
-			return uri.toString
+		val resourceURI = eObject.eResource?.URI
+		if (resourceURI !== null && resourceURI.isReadOnly) {
+			return EcoreUtil.getURI(eObject).toString
 		}
 	}
 	
 	private def getUuidIfStoredEObject(EObject eObject) {
-		val localResult = repository.EObjectToUuid.get(eObject)
-		if (localResult !== null) {
-			return localResult
-		}
-		
-		// If the object already has a resource, but is not from the resolver’s resource set, resolve it and try again
-		val objectResource = eObject.eResource
-		if (objectResource !== null && objectResource.resourceSet != resourceSet) {
-			val resolvedObject = resolve(eObject.resolvableUri)
-			// The EClass check avoids that an objects of another type with the same URI is resolved
-			// This is, for example, the case if a modifier in a UML model is changed, as it is only a
-			// marker class that is replaced, having always the same URI on the same model element.
-			if (resolvedObject !== null && resolvedObject.eClass == eObject.eClass) {
-				val resolvedObjectUuid = repository.EObjectToUuid.get(resolvedObject)
-				if (resolvedObjectUuid !== null) {
-					return resolvedObjectUuid
-				}
-			}
-		}
+		return repository.EObjectToUuid.get(eObject)
 	}
 	
 	private def getUuidIfEClass(EObject eObject) {
@@ -149,10 +142,6 @@ package class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 		return eObject
 	}
 
-	override getPotentiallyCachedEObject(String uuid) {
-		cache.uuidToEObject.get(uuid) ?: getEObject(uuid)
-	}
-
 	private def EObject getEObjectOrNull(String uuid) {
 		return uuid.getEObjectIfReadonlyUri()
 			?: uuid.getStoredEObject()
@@ -161,7 +150,10 @@ package class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 	
 	private def getEObjectIfReadonlyUri(String uuid) {
 		if (!uuid.startsWith(NON_READONLY_PREFIX)) {
-			return resolve(URI.createURI(uuid))
+			val uri = URI.createURI(uuid)
+			if (uri.hasFragment) {
+				return resourceSet.getEObject(uri, true)
+			}
 		}
 	}
 	
@@ -171,11 +163,7 @@ package class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 
 	override String generateUuid(EObject eObject) {
 		checkState(!eObject.eIsProxy, "Cannot generate UUID for proxy object: " + eObject)
-		val cachedUuid = cache.EObjectToUuid.removeKey(eObject)
-		if (cachedUuid !== null) {
-			cache.uuidToEObject.remove(cachedUuid)
-		}
-		val uuid = cachedUuid ?: generateUuid()
+		val uuid = generateUuid()
 		registerEObject(uuid, eObject)
 		return uuid
 	}
@@ -186,17 +174,12 @@ package class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 
 	override registerEObject(String uuid, EObject eObject) {
 		checkState(eObject !== null, "Object must not be null")
+		checkState(repository.EObjectToUuid.get(eObject) === null, "object is already registered")
+		checkState(repository.uuidToEObject.get(uuid) === null , "uuid is already registered")
 		if(logger.isTraceEnabled) logger.trace('''Adding UUID «uuid» for EObject: «eObject»''')
 
-		val uuidMapped = repository.uuidToEObject.put(uuid, eObject)
-		if (uuidMapped !== null) {
-			repository.EObjectToUuid.remove(uuidMapped)
-		}
+		repository.uuidToEObject.put(uuid, eObject)
 		repository.EObjectToUuid.put(eObject, uuid)
-	}
-
-	override hasPotentiallyCachedEObject(String uuid) {
-		cache.uuidToEObject.containsKey(uuid) || uuid.getEObjectOrNull() !== null
 	}
 
 	override hasUuid(EObject object) {
@@ -207,94 +190,33 @@ package class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 		return uuid.getEObjectOrNull() !== null
 	}
 
-	override getResourceSet() {
-		return resourceSet
-	}
-
-	override registerEObject(EObject eObject) {
-		if (parentUuidResolver.hasUuid(eObject)) {
-			registerEObject(parentUuidResolver.getUuid(eObject), eObject)
-		} else if (hasUuid(eObject)) {
-			registerEObject(getUuid(eObject), eObject)
-		} else {
-			throw new IllegalStateException("EObject '" + eObject +
-				"' cannot be registered because it does not have a UUID yet")
-		}
-	}
-
-	override getPotentiallyCachedUuid(EObject eObject) {
-		return cache.EObjectToUuid.get(eObject) ?:
-			cache.EObjectToUuid.findFirst[EcoreUtil.equals(eObject, key)]?.value ?: getUuid(eObject)
-	}
-
-	override hasPotentiallyCachedUuid(EObject eObject) {
-		cache.EObjectToUuid.containsKey(eObject) || hasUuid(eObject)
-	}
-
-	override registerCachedEObject(EObject eObject) {
-		checkState(eObject !== null, "Object must not be null")
-		val uuid = generateUuid()
-		cache.EObjectToUuid.put(eObject, uuid)
-		cache.uuidToEObject.put(uuid, eObject)
-		return uuid
-	}
-
-	override void loadUuidsToChild(UuidResolver childResolver, URI uri) {
+	private def void loadUuidsFromParent(URI uri) {
 		// Only load UUIDs if resource exists and is not read only
-		if (!uri.readOnly && uri.existsResourceAtUri) {
-			val childContents = childResolver.resourceSet.getResource(uri, true).allContents
-			val ourResource = this.resourceSet.getResource(uri, false)
-			checkState(ourResource !== null, "no matching resource at '%s' in parent resolver", uri)
-			val ourContents = ourResource.allContents
+		if (parentUuidResolver !== null && !uri.readOnly && parentUuidResolver.hasResource(uri)) {
+			val childContents = this.resourceSet.loadOrCreateResource(uri).allContents
+			val parentResource = parentUuidResolver.getResource(uri)
+			val parentContents = parentResource.allContents
 			while (childContents.hasNext) {
 				val childObject = childContents.next
-				checkState(ourContents.hasNext, "Cannot find %s in our resource set!", childObject)
-				val ourObject = ourContents.next
+				checkState(parentContents.hasNext, "Cannot find %s in parent resolver resource set!", childObject)
+				val ourObject = parentContents.next
 
-				var objectUuid = repository.EObjectToUuid.get(ourObject)
+				var objectUuid = parentUuidResolver.getUuid(ourObject)
 				if (objectUuid === null) {
 					throw new IllegalStateException('''Element does not have a UUID but should have one: «ourObject»''')
 				}
 
-				childResolver.registerEObject(objectUuid, childObject)
-			}
-		}
-	}
-
-	def void loadUuidsFromParent(Resource resource) {
-		parentUuidResolver.loadUuidsToChild(this, resource.URI)
-	}
-
-	private def EObject resolve(URI uri) {
-		resourceSet.getEObject(uri, true)
-	}
-
-	def private static getResolvableUri(EObject object) {
-		// we cannot simply use EcoreUtil#getURI, because object’s domain might use XMI	UUIDs. Since
-		// XMI UUIDs can be different for different resource sets, we cannot use URIs with XMI UUIDs to identify objects
-		// across resource sets. Hence, we force hierarchical URIs. This assumes that the resolved object’s graph
-		// has the same topology in the resolving resource set. This assumption holds when we use this method.
-		val resource = object.eResource
-		var rootElementIndex = 0;
-		val resourceRoot = if (resource.contents.size <= 1) {
-				object.eResource.firstRootEObject
-			} else {
-				// move up containment hierarchy until some container is one of the resource's root elements
-				var container = object
-				while (container !== null && (rootElementIndex = resource.contents.indexOf(container)) == -1) {
-					container = container.eContainer
+				// There may be proxy references across resources leading to duplicate processing of elements that were
+				// already loaded
+				if (objectUuid.hasEObject) {
+					checkState(objectUuid.EObject == childObject)
+				} else {
+					registerEObject(objectUuid, childObject)
 				}
-				checkState(container !== null, "some container of %s must be a root element of its resource", object)
-				container
 			}
-		val fragmentPath = EcoreUtil.getRelativeURIFragmentPath(resourceRoot, object)
-		if (fragmentPath.isEmpty) {
-			resource.URI.appendFragment('/' + rootElementIndex)
-		} else {
-			resource.URI.appendFragment('/' + rootElementIndex + '/' + fragmentPath)
 		}
 	}
-	
+
 	private static def isReadOnly(URI uri) {
 		uri.isPathmap || uri.isArchive
 	}

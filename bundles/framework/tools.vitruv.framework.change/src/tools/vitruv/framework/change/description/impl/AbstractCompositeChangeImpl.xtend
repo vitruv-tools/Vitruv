@@ -22,8 +22,8 @@ abstract class AbstractCompositeChangeImpl<C extends VitruviusChange> implements
 		changes.exists [containsConcreteChange]
 	}
 	
-	override getChangedVURIs() {
-		changes.flatMapFixedTo(new LinkedHashSet) [changedVURIs]
+	override getChangedURIs() {
+		changes.flatMapFixedTo(new LinkedHashSet) [changedURIs]
 	}
 
 	override getEChanges() {

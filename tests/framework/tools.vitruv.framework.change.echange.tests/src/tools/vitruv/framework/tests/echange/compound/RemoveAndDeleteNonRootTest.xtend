@@ -35,8 +35,6 @@ class RemoveAndDeleteNonRootTest extends ReferenceEChangeTest {
 	def void prepareState() {
 		affectedFeature = AllElementTypesPackage.Literals.ROOT__MULTI_VALUED_CONTAINMENT_EREFERENCE
 		referenceContent = affectedEObject.eGet(affectedFeature) as EList<NonRoot>
-		uuidGeneratorAndResolver.generateUuid(newValue) // used as old value, so no UUID generated
-		uuidGeneratorAndResolver.generateUuid(newValue2) // used as old value, so no UUID generated
 		prepareStateBefore
 	}
 
@@ -51,6 +49,7 @@ class RemoveAndDeleteNonRootTest extends ReferenceEChangeTest {
 		unresolvedChange.assertIsNotResolved
 
 		// Resolve
+		newValue.registerAsPreexisting
 		val resolvedChange = unresolvedChange.resolveBefore
 		resolvedChange.assertIsResolved(affectedEObject, newValue)
 
@@ -86,6 +85,7 @@ class RemoveAndDeleteNonRootTest extends ReferenceEChangeTest {
 	@Test
 	def void resolveToCorrectType() {
 		// Create change
+		newValue.registerAsPreexisting
 		val unresolvedChange = createUnresolvedChange(affectedEObject, newValue, 0)
 
 		// Resolve		
@@ -100,6 +100,7 @@ class RemoveAndDeleteNonRootTest extends ReferenceEChangeTest {
 	@Test
 	def void applyForwardTest() {
 		// Create and resolve change 1
+		newValue.registerAsPreexisting
 		val resolvedChange = createUnresolvedChange(affectedEObject, newValue, 0).resolveBefore
 
 		// Apply forward 1
@@ -110,6 +111,7 @@ class RemoveAndDeleteNonRootTest extends ReferenceEChangeTest {
 		assertTrue(referenceContent.contains(newValue2))
 
 		// Create and resolve change 2
+		newValue2.registerAsPreexisting
 		val resolvedChange2 = createUnresolvedChange(affectedEObject, newValue2, 0).resolveBefore
 
 		// Apply forward 2
@@ -126,10 +128,12 @@ class RemoveAndDeleteNonRootTest extends ReferenceEChangeTest {
 	@Test
 	def void applyBackwardTest() {
 		// Create and resolve and apply change 1
+		newValue.registerAsPreexisting
 		val resolvedChange = createUnresolvedChange(affectedEObject, newValue, 0).resolveBefore
 		resolvedChange.assertApplyForward
 
 		// Create and resolve and apply change 2
+		newValue2.registerAsPreexisting
 		val resolvedChange2 = createUnresolvedChange(affectedEObject, newValue2, 0).resolveBefore
 		resolvedChange2.assertApplyForward
 

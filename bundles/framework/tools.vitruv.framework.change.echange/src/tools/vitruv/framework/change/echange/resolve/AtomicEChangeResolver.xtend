@@ -18,6 +18,7 @@ import tools.vitruv.framework.change.echange.root.RemoveRootEObject
 import tools.vitruv.framework.change.echange.root.RootEChange
 import java.util.List
 import tools.vitruv.framework.uuid.UuidResolver
+import static com.google.common.base.Preconditions.checkState
 
 /**
  * Static class for resolving EChanges internally.
@@ -95,10 +96,17 @@ class AtomicEChangeResolver {
 
 		// Resolve the affected object
 		if (isNewObject) {
-			// Create new one
-			val newObject = EcoreUtil.create(change.affectedEObjectType) as A
-			change.affectedEObject = newObject
-			uuidResolver.registerEObject(change.affectedEObjectID, newObject)
+			// Check if UUID resolver may still contain the removed object
+			if (uuidResolver.hasEObject(change.affectedEObjectID)) {
+				val stillExistingObject = uuidResolver.getEObject(change.affectedEObjectID) as A
+				checkState(!stillExistingObject.eIsProxy, "object in UUID resolver is a proxy")
+				change.affectedEObject = stillExistingObject
+			} else {
+				// Create new one
+				val newObject = EcoreUtil.create(change.affectedEObjectType) as A
+				change.affectedEObject = newObject
+				uuidResolver.registerEObject(change.affectedEObjectID, newObject)
+			}
 		} else {
 			// Object still exists
 			change.affectedEObject = uuidResolver.getEObject(change.affectedEObjectID) as A
@@ -127,11 +135,7 @@ class AtomicEChangeResolver {
 			return false
 		}
 		// Get resource where the root object will be inserted / removed.
-		change.resource = uuidResolver.resourceSet.getResource(URI.createURI(change.uri), false)
-
-		if (change.resource === null) {
-			change.resource = uuidResolver.resourceSet.createResource(URI.createURI(change.uri))
-		}
+		change.resource = uuidResolver.getResource(URI.createURI(change.uri))
 		return true
 	}
 

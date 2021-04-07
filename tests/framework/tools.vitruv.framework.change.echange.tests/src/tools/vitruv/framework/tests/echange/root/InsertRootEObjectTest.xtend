@@ -35,6 +35,7 @@ class InsertRootEObjectTest extends RootEChangeTest {
 		assertIsStateBefore
 
 		// Resolve
+		newRootObject.registerAsPreexisting
 		val resolvedChange = unresolvedChange.resolveBefore as InsertRootEObject<Root>
 		resolvedChange.assertIsResolved(newRootObject, resource)
 		assertIsStateBefore
@@ -70,6 +71,7 @@ class InsertRootEObjectTest extends RootEChangeTest {
 		val unresolvedChange = createUnresolvedChange(newRootObject, 1)
 
 		// Resolve
+		newRootObject.registerAsPreexisting
 		val resolvedChange = unresolvedChange.resolveBefore
 		unresolvedChange.assertDifferentChangeSameClass(resolvedChange)
 	}
@@ -83,6 +85,7 @@ class InsertRootEObjectTest extends RootEChangeTest {
 		assertIsStateBefore
 
 		// Create change and resolve 1
+		newRootObject.registerAsPreexisting
 		val resolvedChange = createUnresolvedChange(newRootObject, 1).resolveBefore as InsertRootEObject<Root>
 		resolvedChange.assertIsResolved(newRootObject, resource)
 
@@ -93,6 +96,7 @@ class InsertRootEObjectTest extends RootEChangeTest {
 		assertTrue(newRootObject == resourceContent.get(1))
 
 		// Create change and resolve 2
+		newRootObject2.registerAsPreexisting
 		val resolvedChange2 = createUnresolvedChange(newRootObject2, 2).resolveBefore as InsertRootEObject<Root>
 		resolvedChange2.assertIsResolved(newRootObject2, resource)
 
@@ -113,10 +117,12 @@ class InsertRootEObjectTest extends RootEChangeTest {
 		assertIsStateBefore
 
 		// Create change and resolve and apply forward 1
+		newRootObject.registerAsPreexisting
 		val resolvedChange = createUnresolvedChange(newRootObject, 1).resolveBefore as InsertRootEObject<Root>
 		resolvedChange.assertApplyForward
 
 		// Create change and resolve and apply forward 2
+		newRootObject2.registerAsPreexisting
 		val resolvedChange2 = createUnresolvedChange(newRootObject2, 2).resolveBefore as InsertRootEObject<Root>
 		resolvedChange2.assertApplyForward
 
@@ -146,6 +152,7 @@ class InsertRootEObjectTest extends RootEChangeTest {
 		assertTrue(resourceContent.size < index)
 
 		// Create change and resolve
+		newRootObject.registerAsPreexisting
 		val resolvedChange = createUnresolvedChange(newRootObject, index).resolveBefore as InsertRootEObject<Root>
 		resolvedChange.assertIsResolved(newRootObject, resource)
 

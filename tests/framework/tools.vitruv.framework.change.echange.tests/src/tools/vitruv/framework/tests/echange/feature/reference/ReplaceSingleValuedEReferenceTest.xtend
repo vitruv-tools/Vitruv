@@ -29,8 +29,8 @@ class ReplaceSingleValuedEReferenceTest extends ReferenceEChangeTest {
 
 	@BeforeEach
 	def void prepareElements() {
-		oldValue = aet.NonRoot
-		uuidGeneratorAndResolver.generateUuid(oldValue)
+		oldValue = aet.NonRoot.withUuid.registerAsPreexisting
+		newValue.registerAsPreexisting
 	}
 
 	/**
@@ -89,7 +89,7 @@ class ReplaceSingleValuedEReferenceTest extends ReferenceEChangeTest {
 		// Set state after
 		prepareReference(newValue)
 
-		// Resolve	
+		// Resolve
 		val resolvedChange = unresolvedChange.resolveAfter as ReplaceSingleValuedEReference<Root, NonRoot>
 		resolvedChange.assertIsResolved(affectedEObject, oldValue, newValue)
 	}

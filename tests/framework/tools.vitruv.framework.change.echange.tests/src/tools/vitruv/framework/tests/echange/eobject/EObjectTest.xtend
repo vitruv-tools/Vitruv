@@ -21,7 +21,7 @@ abstract class EObjectTest extends EChangeTest {
 	 */
 	@BeforeEach
 	def final void initializeRoots() {
-		createdObject = aet.Root
-		createdObject2 = aet.Root
+		createdObject = aet.Root.withUuid
+		createdObject2 = aet.Root.withUuid
 	}
 }

@@ -25,11 +25,15 @@
       <import plugin="org.eclipse.core.resources"/>
       <import plugin="org.eclipse.core.runtime"/>
       <import plugin="tools.vitruv.framework.change"/>
-      <import plugin="tools.vitruv.framework.change.processing"/>
       <import plugin="tools.vitruv.framework.domains"/>
       <import plugin="tools.vitruv.framework.util"/>
       <import plugin="tools.vitruv.framework.userinteraction"/>
       <import plugin="org.eclipse.emf.ecore.xmi"/>
+      <import plugin="org.eclipse.emf.ecore"/>
+      <import plugin="tools.vitruv.framework.correspondence"/>
+      <import plugin="tools.vitruv.framework.uuid"/>
+      <import plugin="tools.vitruv.framework.propagation"/>
+      <import plugin="edu.kit.ipd.sdq.commons.util.java"/>
    </requires>
 
    <plugin
@@ -52,7 +56,7 @@
          install-size="0"
          version="0.0.0"
          unpack="false"/>
-         
+
    <plugin
          id="tools.vitruv.extensions.dslsruntime.commonalities.operators"
          download-size="0"

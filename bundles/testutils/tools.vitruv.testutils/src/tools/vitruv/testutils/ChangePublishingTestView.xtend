@@ -22,8 +22,6 @@ import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resou
 import static extension tools.vitruv.framework.domains.repository.DomainAwareResourceSet.awareOfDomains
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import tools.vitruv.framework.change.recording.ChangeRecorder
-import tools.vitruv.framework.uuid.UuidResolver
-import static tools.vitruv.framework.uuid.UuidGeneratorAndResolverFactory.createUuidGeneratorAndResolver
 
 /**
  * A test view that will record and publish the changes created in it.
@@ -34,8 +32,9 @@ class ChangePublishingTestView implements NonTransactionalTestView {
 	val TestView delegate
 	val ChangeRecorder changeRecorder
 	val List<(VitruviusChange)=>List<PropagatedChange>> changeProcessors = new LinkedList()
+	val UuidGeneratorAndResolver uuidGeneratorAndResolver
 	var renewResourceCacheAfterPropagation = true
-
+	
 	/**
 	 * Creates a test view for the provided {@code targetDomains} that will store its persisted resources in the provided
 	 * {@code persistenceDirectory}, allow to program interactions through the provided {@code userInteraction} and use
@@ -47,25 +46,25 @@ class ChangePublishingTestView implements NonTransactionalTestView {
 		UriMode uriMode,
 		VitruvDomainRepository targetDomains
 	) {
-		this(persistenceDirectory, userInteraction, uriMode, null as UuidGeneratorAndResolver, targetDomains)
+		this(persistenceDirectory, userInteraction, uriMode, [null], targetDomains)
 	}
 
 	/**
 	 * Creates a test view for the provided {@code targetDomains} that will store its persisted resources in the 
 	 * provided {@code persistenceDirectory}, allow to program interactions through the provided {@code userInteraction},
-	 * use the provided {@code uriMode} and use the provided {@code parentResolver} as parent resolver for UUID resolving.
+	 * use the provided {@code uriMode} and use the provider for a {@link UuidGeneratorAndResolver} for UUID resolving.
 	 */
 	new(
 		Path persistenceDirectory,
 		TestUserInteraction userInteraction,
 		UriMode uriMode,
-		UuidResolver parentResolver,
+		(ResourceSet)=>UuidGeneratorAndResolver generatorAndResolverProvider,
 		VitruvDomainRepository targetDomains
 	) {
 		this.resourceSet = new ResourceSetImpl().withGlobalFactories().awareOfDomains(targetDomains)
 		this.delegate = new BasicTestView(persistenceDirectory, resourceSet, userInteraction, uriMode)
-		val uuidResolver = createUuidGeneratorAndResolver(parentResolver, resourceSet)
-		this.changeRecorder = new ChangeRecorder(uuidResolver)
+		uuidGeneratorAndResolver = generatorAndResolverProvider.apply(resourceSet)
+		this.changeRecorder = new ChangeRecorder(uuidGeneratorAndResolver)
 		changeRecorder.beginRecording()
 	}
 
@@ -81,7 +80,7 @@ class ChangePublishingTestView implements NonTransactionalTestView {
 		VirtualModel virtualModel,
 		VitruvDomainRepository targetDomains
 	) {
-		this(persistenceDirectory, userInteraction, uriMode, virtualModel.uuidResolver, targetDomains)
+		this(persistenceDirectory, userInteraction, uriMode, [virtualModel.createChildUuidGeneratorAndResolver(it)], targetDomains)
 		registerChangeProcessor [change|virtualModel.propagateChange(change)]
 	}
 
@@ -110,10 +109,10 @@ class ChangePublishingTestView implements NonTransactionalTestView {
 	override propagate() {
 		changeRecorder.endRecording()
 		val recordedChanges = changeRecorder.changes
-		val delegateChanges = recordedChanges.flatMap [changedVURIs]
+		val delegateChanges = recordedChanges.flatMap [changedURIs]
 			.toSet
-			.flatMapFixed [changedVURI | 
-				val changedResource = resourceSet.getResource(changedVURI.EMFUri, false)
+			.flatMapFixed [changedURI | 
+				val changedResource = resourceSet.getResource(changedURI, false)
 				if (changedResource !== null) {
 					// Propagating an empty modification for every changed resource gives the delegate a 
 					// chance to participate in change propagation (e.g. BasicTestView saves or cleans up resources).
@@ -138,6 +137,7 @@ class ChangePublishingTestView implements NonTransactionalTestView {
 
 	override renewResourceCache() {
 		resourceSet.resources.clear()
+		uuidGeneratorAndResolver.save()
 	}
 
 	/**
