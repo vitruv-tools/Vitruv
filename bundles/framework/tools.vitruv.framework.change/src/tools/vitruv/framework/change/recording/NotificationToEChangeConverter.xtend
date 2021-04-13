@@ -234,10 +234,7 @@ package final class NotificationToEChangeConverter {
 		val oldUri = notification.oldValue as URI
 		notifierResource.contents.mapFixedIndexed [ index, value |
 			val valueIndex = initialIndex + notifierResource.contents.size - 1 - index
-			// FIXME Temporary workaround to avoid that the UuidGeneratorAndResolverImpl loads UUIDs for the resource from parent.
-			// Has to be removed as soon as UUIDs have been replaced
-			val oldResource = notifierResource.resourceSet.createResource(oldUri.trimFileExtension.appendSegment("_temp_load" + oldUri.fileExtension))
-			oldResource.URI = oldUri
+			val oldResource = notifierResource.resourceSet.createResource(oldUri)
 			createRemoveRootChange(value, oldResource, oldUri, valueIndex)
 		] + notifierResource.contents.flatMapFixedIndexed [ index, value |
 			createInsertRootChange(value, notifierResource, initialIndex + index).
