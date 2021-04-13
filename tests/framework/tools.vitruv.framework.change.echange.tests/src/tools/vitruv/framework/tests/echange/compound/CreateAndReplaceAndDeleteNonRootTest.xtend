@@ -32,7 +32,7 @@ class CreateAndReplaceAndDeleteNonRootTest extends ReferenceEChangeTest {
 
 	@BeforeEach
 	def void prepareState() {
-		oldValue = aet.NonRoot.withUuid
+		oldValue = aet.NonRoot
 		affectedFeature = AllElementTypesPackage.Literals.ROOT__SINGLE_VALUED_CONTAINMENT_EREFERENCE
 		prepareStateBefore
 	}
@@ -49,7 +49,6 @@ class CreateAndReplaceAndDeleteNonRootTest extends ReferenceEChangeTest {
 		unresolvedChange.assertIsNotResolved()
 
 		// Resolve
-		oldValue.registerAsPreexisting
 		val resolvedChange = unresolvedChange.resolveBefore
 		resolvedChange.assertIsResolved(affectedEObject, oldValue, newValue)
 
@@ -64,7 +63,6 @@ class CreateAndReplaceAndDeleteNonRootTest extends ReferenceEChangeTest {
 	@Test
 	def void applyForwardTest() {
 		// Create and resolve 1
-		oldValue.registerAsPreexisting
 		val resolvedChange = createUnresolvedChange(newValue).resolveBefore
 
 		// Apply change 1 forward
@@ -90,7 +88,6 @@ class CreateAndReplaceAndDeleteNonRootTest extends ReferenceEChangeTest {
 	@Test
 	def void applyBackwardTest() {
 		// Create change 
-		oldValue.registerAsPreexisting
 		val resolvedChange = createUnresolvedChange(newValue).resolveBefore
 
 		// Set state after change 

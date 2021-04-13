@@ -31,9 +31,9 @@ class CreateAndReplaceNonRootTest extends EChangeTest {
 
 	@BeforeEach
 	def void beforeTest() {
-		affectedEObject = rootObject.withUuid.registerAsPreexisting
+		affectedEObject = rootObject
 		affectedFeature = AllElementTypesPackage.Literals.ROOT__SINGLE_VALUED_CONTAINMENT_EREFERENCE
-		newNonRootObject = aet.NonRoot.withUuid
+		newNonRootObject = aet.NonRoot
 		prepareStateBefore
 	}
 

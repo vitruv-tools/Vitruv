@@ -32,7 +32,7 @@ class ExplicitUnsetEAttributeTest extends EChangeTest {
 
 	@BeforeEach
 	def void beforeTest() {
-		affectedEObject = rootObject.withUuid.registerAsPreexisting
+		affectedEObject = rootObject
 	}
 
 	/**
