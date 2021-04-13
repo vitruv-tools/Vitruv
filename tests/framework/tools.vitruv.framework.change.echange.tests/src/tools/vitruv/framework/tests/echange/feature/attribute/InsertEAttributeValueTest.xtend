@@ -120,7 +120,7 @@ class InsertEAttributeValueTest extends InsertRemoveEAttributeTest {
 	@Test
 	def void invalidAttributeTest() {
 		// NonRoot has no multi-valued int attribute
-		val affectedNonRootEObject = aet.NonRoot.withUuid.registerAsPreexisting
+		val affectedNonRootEObject = aet.NonRoot
 		resource.contents.add(affectedNonRootEObject)
 
 		// Resolving the change will be tested in EFeatureChange

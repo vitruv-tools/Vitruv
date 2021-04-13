@@ -44,18 +44,12 @@ class ExplicitUnsetEReferenceTest extends EChangeTest {
 
 	@BeforeEach
 	def void beforeTest() {
-		affectedEObject = rootObject.withUuid.registerAsPreexisting
-		oldValue = aet.NonRoot.withUuid
-		oldValue2 = aet.NonRoot.withUuid
-		oldValue3 = aet.NonRoot.withUuid
+		affectedEObject = rootObject
+		oldValue = aet.NonRoot
+		oldValue2 = aet.NonRoot
+		oldValue3 = aet.NonRoot
 	}
 	
-	private def registerOldValuesAsPreexisting() {
-		oldValue.registerAsPreexisting
-		oldValue2.registerAsPreexisting
-		oldValue3.registerAsPreexisting
-	}
-
 	/**
 	 * Resolves a {@link ExplicitUnsetEReference} EChange. The feature is a single 
 	 * valued non containment reference and the model is in state before the change.
@@ -79,7 +73,6 @@ class ExplicitUnsetEReferenceTest extends EChangeTest {
 		isSingleValuedContainmentTest
 
 		// Test
-		registerOldValuesAsPreexisting()
 		resolveBeforeTest
 	}
 
@@ -106,7 +99,6 @@ class ExplicitUnsetEReferenceTest extends EChangeTest {
 		isMultiValuedContainmentTest
 
 		// Test
-		registerOldValuesAsPreexisting()
 		resolveBeforeTest
 	}
 
@@ -149,7 +141,6 @@ class ExplicitUnsetEReferenceTest extends EChangeTest {
 		isSingleValuedContainmentTest
 
 		// Test
-		registerOldValuesAsPreexisting()
 		applyForwardTest
 	}
 
@@ -163,7 +154,6 @@ class ExplicitUnsetEReferenceTest extends EChangeTest {
 		isMultiValuedContainmentTest
 
 		// Test
-		registerOldValuesAsPreexisting()
 		applyForwardTest
 	}
 
@@ -177,7 +167,6 @@ class ExplicitUnsetEReferenceTest extends EChangeTest {
 		isMultiValuedContainmentTest
 
 		// Test
-		registerOldValuesAsPreexisting()
 		applyForwardTest
 	}
 
@@ -204,7 +193,6 @@ class ExplicitUnsetEReferenceTest extends EChangeTest {
 		isSingleValuedContainmentTest
 
 		// Test
-		registerOldValuesAsPreexisting()
 		applyBackwardTest
 	}
 
@@ -231,7 +219,6 @@ class ExplicitUnsetEReferenceTest extends EChangeTest {
 		isMultiValuedContainmentTest
 
 		// Test
-		registerOldValuesAsPreexisting()
 		applyBackwardTest
 	}
 
@@ -292,7 +279,6 @@ class ExplicitUnsetEReferenceTest extends EChangeTest {
 		resource.contents.add(oldValue)
 		resource.contents.add(oldValue2)
 		resource.contents.add(oldValue3)
-		registerOldValuesAsPreexisting()
 	}
 
 	/**

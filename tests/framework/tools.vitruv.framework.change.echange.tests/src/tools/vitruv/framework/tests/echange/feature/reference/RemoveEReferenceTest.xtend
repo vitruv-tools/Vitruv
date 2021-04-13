@@ -18,7 +18,6 @@ import static org.junit.jupiter.api.Assertions.assertNotSame
 import static org.junit.jupiter.api.Assertions.assertThrows
 import static org.hamcrest.MatcherAssert.assertThat
 import static tools.vitruv.testutils.matchers.ModelMatchers.equalsDeeply
-import org.junit.jupiter.api.BeforeEach
 import static extension tools.vitruv.framework.change.echange.resolve.EChangeResolverAndApplicator.*
 
 /**
@@ -29,12 +28,6 @@ class RemoveEReferenceTest extends ReferenceEChangeTest {
 	var EReference affectedFeature
 	var EList<NonRoot> referenceContent
 
-	@BeforeEach
-	def void before() {
-		newValue.registerAsPreexisting
-		newValue2.registerAsPreexisting
-	}
-	
 	/**
 	 * Test resolves a {@link RemoveEReference} EChange with correct parameters.
 	 * The model is in state before the change was applied forward.

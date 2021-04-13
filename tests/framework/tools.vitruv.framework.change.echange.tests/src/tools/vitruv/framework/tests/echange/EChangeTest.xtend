@@ -19,7 +19,6 @@ import java.nio.file.Path
 import org.junit.jupiter.api.io.TempDir
 import static tools.vitruv.framework.uuid.UuidGeneratorAndResolverFactory.createUuidGeneratorAndResolver
 import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.common.util.URIUtil.createFileURI
-import org.eclipse.emf.ecore.EObject
 import static extension tools.vitruv.framework.change.echange.resolve.EChangeResolverAndApplicator.*
 import tools.vitruv.framework.tests.echange.util.EChangeAssertHelper
 
@@ -37,8 +36,7 @@ abstract class EChangeTest {
 	@Accessors(PROTECTED_GETTER)
 	var Resource resource
 	var ResourceSet resourceSet
-	var UuidGeneratorAndResolver creationUuidGeneratorAndResolver
-	var UuidGeneratorAndResolver reapplicationUuidGeneratorAndResolver
+	var UuidGeneratorAndResolver uuidGeneratorAndResolver
 
 	@Accessors(PROTECTED_GETTER)
 	var TypeInferringAtomicEChangeFactory atomicFactory
@@ -68,11 +66,10 @@ abstract class EChangeTest {
 		resource.save(null)
 
 		// Factories for creating changes
-		this.creationUuidGeneratorAndResolver = createUuidGeneratorAndResolver(resourceSet)
-		this.reapplicationUuidGeneratorAndResolver = createUuidGeneratorAndResolver(resourceSet)
-		atomicFactory = new TypeInferringUnresolvingAtomicEChangeFactory(creationUuidGeneratorAndResolver)
-		compoundFactory = new TypeInferringUnresolvingCompoundEChangeFactory(creationUuidGeneratorAndResolver)
-		helper = new EChangeAssertHelper(creationUuidGeneratorAndResolver)
+		uuidGeneratorAndResolver = createUuidGeneratorAndResolver(resourceSet)
+		atomicFactory = new TypeInferringUnresolvingAtomicEChangeFactory(uuidGeneratorAndResolver)
+		compoundFactory = new TypeInferringUnresolvingCompoundEChangeFactory(uuidGeneratorAndResolver)
+		helper = new EChangeAssertHelper(uuidGeneratorAndResolver)
 	}
 
 	protected def final getResourceContent() {
@@ -102,7 +99,7 @@ abstract class EChangeTest {
 	}
 
 	def protected EChange resolveBefore(EChange change) {
-		return change.resolveBefore(reapplicationUuidGeneratorAndResolver)
+		return change.resolveBefore(uuidGeneratorAndResolver)
 	}
 
 	def protected List<EChange> resolveBefore(List<? extends EChange> changes) {
@@ -125,13 +122,4 @@ abstract class EChangeTest {
 		change.assertApplyForward
 	}
 	
-	protected def <T extends EObject> T withUuid(T eObject) {
-		creationUuidGeneratorAndResolver.getAndUpdateId(eObject)
-		return eObject
-	}
-	
-	protected def <T extends EObject> T registerAsPreexisting(T eObject) {
-		reapplicationUuidGeneratorAndResolver.registerEObject(creationUuidGeneratorAndResolver.getAndUpdateId(eObject), eObject)
-		return eObject
-	}
 }

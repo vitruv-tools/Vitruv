@@ -31,7 +31,7 @@ class ReplaceSingleValuedEAttributeTest extends EChangeTest {
 
 	@BeforeEach
 	def void beforeTest() {
-		affectedEObject = rootObject.withUuid.registerAsPreexisting
+		affectedEObject = rootObject
 		affectedFeature = AllElementTypesPackage.Literals.IDENTIFIED__ID
 		oldValue = DEFAULT_ROOT_NAME
 		newValue = "New Root ID"
@@ -93,7 +93,7 @@ class ReplaceSingleValuedEAttributeTest extends EChangeTest {
 	@Test
 	def void invalidAttributeTest() {
 		// NonRoot element has no int attribute.
-		val affectedNonRootEObject = aet.NonRoot.withUuid.registerAsPreexisting
+		val affectedNonRootEObject = aet.NonRoot
 		resource.contents.add(affectedNonRootEObject)
 		val affectedRootFeature = AllElementTypesPackage.Literals.ROOT__SINGLE_VALUED_EATTRIBUTE
 		val oldIntValue = DEFAULT_SINGLE_VALUED_EATTRIBUTE_VALUE

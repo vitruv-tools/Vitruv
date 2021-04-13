@@ -28,8 +28,7 @@ class ReplaceSingleValuedEReferenceTest extends ReferenceEChangeTest {
 
 	@BeforeEach
 	def void prepareElements() {
-		oldValue = aet.NonRoot.withUuid.registerAsPreexisting
-		newValue.registerAsPreexisting
+		oldValue = aet.NonRoot
 	}
 
 	/**
