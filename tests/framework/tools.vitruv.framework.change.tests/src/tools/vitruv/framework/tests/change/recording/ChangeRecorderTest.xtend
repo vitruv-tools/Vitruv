@@ -69,36 +69,15 @@ class ChangeRecorderTest {
 	}
 
 	@Test
-	@DisplayName("records direct changes to an object having a UUID")
+	@DisplayName("records direct changes to an object")
 	def void recordOnObject() {
 		val root = aet.Root
-		uuidGeneratorAndResolver.getAndUpdateId(root)
 		changeRecorder.addToRecording(root)
 		record [
 			root.id = 'test'
 		]
 
 		assertThat(changeRecorder.changes, hasEChanges(ReplaceSingleValuedEAttribute))
-	}
-
-	@Test
-	@DisplayName("refuses to record changes of an element that does not already have a UUID")
-	def void dontRecordObjectWithoutUuid() {
-		assertThrows(IllegalStateException) [
-			changeRecorder.addToRecording(aet.Root)
-		]
-	}
-
-	@Test
-	@DisplayName("refuses to record changes of an element that contains an element that does not already have a UUID")
-	def void dontRecordObjectContainingElementWithoutUuid() {
-		val root = aet.Root => [
-			singleValuedContainmentEReference = aet.NonRoot
-		]
-		uuidGeneratorAndResolver.getAndUpdateId(root)
-		assertThrows(IllegalStateException) [
-			changeRecorder.addToRecording(aet.Root)
-		]
 	}
 
 	@Test
