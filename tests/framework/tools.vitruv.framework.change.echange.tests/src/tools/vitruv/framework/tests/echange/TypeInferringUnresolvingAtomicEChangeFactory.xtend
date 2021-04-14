@@ -6,12 +6,12 @@ import org.eclipse.emf.ecore.resource.Resource
 import static extension tools.vitruv.framework.change.echange.resolve.EChangeUnresolver.*
 import org.eclipse.emf.ecore.EAttribute
 import org.eclipse.emf.ecore.EReference
-import tools.vitruv.framework.uuid.UuidGeneratorAndResolver
 import org.eclipse.emf.ecore.EStructuralFeature
 import org.eclipse.emf.common.util.URI
 import tools.vitruv.framework.change.echange.TypeInferringAtomicEChangeFactory
 import tools.vitruv.framework.change.echange.EChangeIdManager
 import tools.vitruv.framework.change.echange.EChange
+import tools.vitruv.framework.change.id.IdResolverAndRepository
 
 /**
  * Factory singleton class for elements of change models.
@@ -23,8 +23,8 @@ import tools.vitruv.framework.change.echange.EChange
 package final class TypeInferringUnresolvingAtomicEChangeFactory extends TypeInferringAtomicEChangeFactory {
 	val EChangeIdManager eChangeIdManager;
 	
-	new(UuidGeneratorAndResolver uuidProviderAndResolver) {
-		this.eChangeIdManager = new EChangeIdManager(uuidProviderAndResolver);
+	new(IdResolverAndRepository idResolverAndRepository) {
+		this.eChangeIdManager = new EChangeIdManager(idResolverAndRepository);
 	}
 	
 	def private setIds(EChange change) {

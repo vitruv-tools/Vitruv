@@ -13,14 +13,14 @@ import static org.hamcrest.core.IsInstanceOf.instanceOf
 import static org.hamcrest.core.Is.is
 import static extension tools.vitruv.framework.change.echange.resolve.EChangeResolverAndApplicator.*
 import org.eclipse.xtend.lib.annotations.FinalFieldsConstructor
-import tools.vitruv.framework.uuid.UuidResolver
+import tools.vitruv.framework.change.id.IdResolver
 
 /**
  * Utility class for frequently used assert methods in the tests.
  */
 @FinalFieldsConstructor
 class EChangeAssertHelper {
-	val UuidResolver uuidResolver
+	val IdResolver idResolver
 	
 	/**
 	 * Tests whether a unresolved change and a resolved change are the same class.
@@ -49,7 +49,7 @@ class EChangeAssertHelper {
 	def void assertApplyForward(EChange change) {
 		assertNotNull(change)
 		assertTrue(change.isResolved)
-		change.applyForward(uuidResolver)
+		change.applyForward(idResolver)
 	}
 
 	/**

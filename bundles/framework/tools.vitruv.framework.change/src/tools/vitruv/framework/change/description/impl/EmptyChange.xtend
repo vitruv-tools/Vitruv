@@ -1,8 +1,8 @@
 package tools.vitruv.framework.change.description.impl
 
 import tools.vitruv.framework.change.description.TransactionalChange
-import tools.vitruv.framework.uuid.UuidResolver
 import tools.vitruv.framework.change.interaction.UserInteractionBase
+import tools.vitruv.framework.change.id.IdResolver
 
 class EmptyChange implements TransactionalChange {
 	public static val INSTANCE = new EmptyChange()
@@ -20,7 +20,7 @@ class EmptyChange implements TransactionalChange {
 		emptyList
 	}
 	
-	override resolveAndApply(UuidResolver uuidResolver) {
+	override resolveAndApply(IdResolver idResolver) {
 		// Do nothing		
 	}
 

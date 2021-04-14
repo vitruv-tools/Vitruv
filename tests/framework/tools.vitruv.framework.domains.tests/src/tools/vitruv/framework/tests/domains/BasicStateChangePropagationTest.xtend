@@ -3,7 +3,6 @@ package tools.vitruv.framework.tests.domains
 import tools.vitruv.framework.tests.domains.StateChangePropagationTest
 import static tools.vitruv.testutils.metamodels.AllElementTypesCreators.aet
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
-import tools.vitruv.framework.uuid.UuidGeneratorAndResolverFactory
 import static org.junit.jupiter.api.Assertions.assertEquals
 import static org.junit.jupiter.api.Assertions.assertTrue
 import tools.vitruv.framework.change.echange.root.InsertRootEObject
@@ -21,6 +20,7 @@ import static extension tools.vitruv.framework.util.Capture.operator_doubleGreat
 import static extension tools.vitruv.framework.domains.repository.DomainAwareResourceSet.awareOfDomains
 import tools.vitruv.testutils.domains.TestDomainsRepository
 import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceSetUtil.withGlobalFactories
+import tools.vitruv.framework.change.id.IdResolverAndRepositoryFactory
 
 class BasicStateChangePropagationTest extends StateChangePropagationTest {
 	private def getTestUri() {
@@ -45,7 +45,7 @@ class BasicStateChangePropagationTest extends StateChangePropagationTest {
 		// Create empty resource to apply generated changes to
 		changes.unresolve()
 		val validationResourceSet = new ResourceSetImpl()
-		val validationResolver = UuidGeneratorAndResolverFactory.createUuidGeneratorAndResolver(validationResourceSet)
+		val validationResolver = IdResolverAndRepositoryFactory.createIdResolverAndRepository(validationResourceSet)
 		changes.resolveAndApply(validationResolver)
 		
 		modelResource.save(null)
@@ -73,7 +73,7 @@ class BasicStateChangePropagationTest extends StateChangePropagationTest {
 		// Load resource to apply generated changes to
 		changes.unresolve()
 		val validationResourceSet = new ResourceSetImpl()
-		val validationResolver = UuidGeneratorAndResolverFactory.createUuidGeneratorAndResolver(validationResourceSet)
+		val validationResolver = IdResolverAndRepositoryFactory.createIdResolverAndRepository(validationResourceSet)
 		validationResourceSet.getResource(testUri, true)
 		changes.resolveAndApply(validationResolver)
 
@@ -103,7 +103,7 @@ class BasicStateChangePropagationTest extends StateChangePropagationTest {
 
 		val validationResourceSet = new ResourceSetImpl().withGlobalFactories().awareOfDomains(
 			TestDomainsRepository.INSTANCE)
-		val validationResolver = UuidGeneratorAndResolverFactory.createUuidGeneratorAndResolver(validationResourceSet)
+		val validationResolver = IdResolverAndRepositoryFactory.createIdResolverAndRepository(validationResourceSet)
 		val oldState = validationResourceSet.getResource(testUri, true)
 		val changes = strategyToTest.getChangeSequenceBetween(-modelResource, oldState, validationResolver)
 
@@ -134,7 +134,7 @@ class BasicStateChangePropagationTest extends StateChangePropagationTest {
 
 		val validationResourceSet = new ResourceSetImpl().withGlobalFactories().awareOfDomains(
 			TestDomainsRepository.INSTANCE)
-		val validationResolver = UuidGeneratorAndResolverFactory.createUuidGeneratorAndResolver(validationResourceSet)
+		val validationResolver = IdResolverAndRepositoryFactory.createIdResolverAndRepository(validationResourceSet)
 		val oldState = validationResourceSet.getResource(testUri, true)
 		oldState.allContents.forEach[validationResolver.getAndUpdateId(it)]
 		val changes = strategyToTest.getChangeSequenceBetween(-modelResource, oldState, validationResolver)
@@ -173,7 +173,7 @@ class BasicStateChangePropagationTest extends StateChangePropagationTest {
 
 		val validationResourceSet = new ResourceSetImpl().withGlobalFactories().awareOfDomains(
 			TestDomainsRepository.INSTANCE)
-		val validationResolver = UuidGeneratorAndResolverFactory.createUuidGeneratorAndResolver(validationResourceSet)
+		val validationResolver = IdResolverAndRepositoryFactory.createIdResolverAndRepository(validationResourceSet)
 		val oldState = validationResourceSet.getResource(testUri, true)
 		oldState.allContents.forEach[validationResolver.getAndUpdateId(it)]
 		val changes = strategyToTest.getChangeSequenceBetween(-modelResource, oldState, validationResolver)
@@ -201,7 +201,7 @@ class BasicStateChangePropagationTest extends StateChangePropagationTest {
 
 		val validationResourceSet = new ResourceSetImpl().withGlobalFactories().awareOfDomains(
 			TestDomainsRepository.INSTANCE)
-		val validationResolver = UuidGeneratorAndResolverFactory.createUuidGeneratorAndResolver(validationResourceSet)
+		val validationResolver = IdResolverAndRepositoryFactory.createIdResolverAndRepository(validationResourceSet)
 		val oldState = validationResourceSet.getResource(testUri, true)
 
 		val movedResourceUri = getModelURI("moved.allElementTypes")
@@ -240,7 +240,7 @@ class BasicStateChangePropagationTest extends StateChangePropagationTest {
 
 		val validationResourceSet = new ResourceSetImpl().withGlobalFactories().awareOfDomains(
 			TestDomainsRepository.INSTANCE)
-		val validationResolver = UuidGeneratorAndResolverFactory.createUuidGeneratorAndResolver(validationResourceSet)
+		val validationResolver = IdResolverAndRepositoryFactory.createIdResolverAndRepository(validationResourceSet)
 		val oldState = validationResourceSet.getResource(testUri, true)
 
 		val movedResourceUri = getModelURI("moved.allElementTypes")

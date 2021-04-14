@@ -11,7 +11,7 @@ import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.change.echange.feature.FeatureEChange
 import tools.vitruv.framework.tests.echange.EChangeTest
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
-import tools.vitruv.framework.uuid.UuidResolver
+import tools.vitruv.framework.change.id.IdResolver
 import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceSetUtil.withGlobalFactories
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -22,8 +22,8 @@ import static org.junit.jupiter.api.Assertions.assertSame
 import static org.junit.jupiter.api.Assertions.assertNotSame
 import static org.junit.jupiter.api.Assertions.assertThrows
 import static tools.vitruv.testutils.metamodels.AllElementTypesCreators.*
-import static tools.vitruv.framework.uuid.UuidGeneratorAndResolverFactory.createUuidGeneratorAndResolver
 import static extension tools.vitruv.framework.change.echange.resolve.EChangeResolverAndApplicator.*
+import static tools.vitruv.framework.change.id.IdResolverAndRepositoryFactory.createIdResolverAndRepository
 
 /**
  * Test class for {@link FeatureEChange} which is used by every {@link EChange} which modifies {@link EStructuralFeature}s 
@@ -34,7 +34,7 @@ class FeatureEChangeTest extends EChangeTest {
 	var EAttribute affectedFeature
 
 	// Second model instance
-	var UuidResolver uuidResolver2
+	var IdResolver idResolver2
 	var Resource resource2
 
 	@BeforeEach
@@ -45,7 +45,7 @@ class FeatureEChangeTest extends EChangeTest {
 		// Load model in second resource
 		val resourceSet2 = new ResourceSetImpl().withGlobalFactories
 		this.resource2 = resourceSet2.getResource(resource.URI, true)
-		this.uuidResolver2 = createUuidGeneratorAndResolver(resourceSet2)
+		this.idResolver2 = createIdResolverAndRepository(resourceSet2)
 	}
 
 	/**
@@ -80,7 +80,7 @@ class FeatureEChangeTest extends EChangeTest {
 		unresolvedChange.assertIsNotResolved(affectedEObject, affectedFeature)
 
 		// Resolve
-		assertThrows(IllegalStateException)[unresolvedChange.resolveBefore(uuidResolver2) as FeatureEChange<Root, EAttribute>]
+		assertThrows(IllegalStateException)[unresolvedChange.resolveBefore(idResolver2)]
 	}
 
 	/**
@@ -119,7 +119,7 @@ class FeatureEChangeTest extends EChangeTest {
 		unresolvedChange.assertIsNotResolved(affectedEObject, null)
 
 		// Resolve
-		assertThrows(IllegalArgumentException) [unresolvedChange.resolveBefore as FeatureEChange<Root, EAttribute>]
+		assertThrows(IllegalArgumentException) [unresolvedChange.resolveBefore]
 	}
 
 	/**

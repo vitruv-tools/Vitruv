@@ -117,11 +117,11 @@ class VirtualModelImpl implements InternalVirtualModel {
 		val vitruvDomain = domainRepository.getDomain(if (oldLocation !== null) oldLocation.fileExtension else newState.URI.fileExtension)
 		val strategy = vitruvDomain.stateChangePropagationStrategy
 		val compositeChange = if (currentState === null) {
-				strategy.getChangeSequenceForCreated(newState, uuidResolver)
+				strategy.getChangeSequenceForCreated(newState, idResolver)
 			} else if (newState === null) {
-				strategy.getChangeSequenceForDeleted(currentState, uuidResolver)
+				strategy.getChangeSequenceForDeleted(currentState, idResolver)
 			} else {
-				strategy.getChangeSequenceBetween(newState, currentState, uuidResolver)
+				strategy.getChangeSequenceBetween(newState, currentState, idResolver)
 			}
 		if (!compositeChange.containsConcreteChange) {
 			LOGGER.warn("State-based change for " + oldLocation + " was empty")
@@ -140,8 +140,8 @@ class VirtualModelImpl implements InternalVirtualModel {
 		return fileSystemLayout.vsumProjectFolder
 	}
 
-	override getUuidResolver() {
-		return resourceRepository.uuidResolver
+	override getIdResolver() {
+		return resourceRepository.idResolver
 	}
 		
 	/**

@@ -5,7 +5,6 @@ import java.util.List
 import tools.vitruv.framework.change.interaction.UserInteractionBase
 import java.util.ArrayList
 import static com.google.common.base.Preconditions.checkNotNull
-import tools.vitruv.framework.uuid.UuidResolver
 import org.eclipse.emf.ecore.EObject
 import tools.vitruv.framework.change.echange.feature.reference.RemoveEReference
 import tools.vitruv.framework.change.echange.feature.reference.InsertEReference
@@ -34,6 +33,7 @@ import org.eclipse.emf.common.util.URI
 import static com.google.common.base.Preconditions.checkState
 import tools.vitruv.framework.change.echange.resolve.EChangeUnresolver
 import static extension tools.vitruv.framework.change.echange.resolve.EChangeResolverAndApplicator.*
+import tools.vitruv.framework.change.id.IdResolver
 
 class ConcreteChangeImpl implements ConcreteChange {
 	var EChange eChange
@@ -67,12 +67,12 @@ class ConcreteChangeImpl implements ConcreteChange {
 		this.eChange = eChange
 	}
 	
-	override resolveAndApply(UuidResolver uuidResolver) {
+	override resolveAndApply(IdResolver idResolver) {
 		// TODO HK Make a copy of the complete change instead of replacing it internally
-		val resolvedChange = this.EChange.resolveBefore(uuidResolver)
+		val resolvedChange = this.EChange.resolveBefore(idResolver)
 		checkState(resolvedChange !== null, "Failed to resolve this change: %s", this.EChange)
 		this.EChange = resolvedChange
-		this.EChange.applyForward(uuidResolver)
+		this.EChange.applyForward(idResolver)
 	}
 
 	override unresolve() {

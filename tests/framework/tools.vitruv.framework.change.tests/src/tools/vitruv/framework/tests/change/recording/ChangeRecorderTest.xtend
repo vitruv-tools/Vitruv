@@ -36,16 +36,16 @@ import static org.junit.jupiter.api.Assertions.assertTrue
 import static extension org.eclipse.emf.ecore.util.EcoreUtil.*
 import org.eclipse.emf.ecore.InternalEObject
 import org.eclipse.emf.ecore.EObject
-import tools.vitruv.framework.uuid.UuidGeneratorAndResolver
-import static tools.vitruv.framework.uuid.UuidGeneratorAndResolverFactory.createUuidGeneratorAndResolver
+import tools.vitruv.framework.change.id.IdResolverAndRepository
+import static tools.vitruv.framework.change.id.IdResolverAndRepositoryFactory.createIdResolverAndRepository
 
 @ExtendWith(TestProjectManager, RegisterMetamodelsInStandalone)
 class ChangeRecorderTest {
 	// this test only covers general behaviour of ChangeRecorder. Whether it always produces correct change sequences
 	// is covered by other tests
 	val ResourceSet resourceSet = new ResourceSetImpl().withGlobalFactories()
-	val UuidGeneratorAndResolver uuidGeneratorAndResolver = (createUuidGeneratorAndResolver(resourceSet))
-	var ChangeRecorder changeRecorder = new ChangeRecorder(uuidGeneratorAndResolver)
+	val IdResolverAndRepository idResolverAndRepository = (createIdResolverAndRepository(resourceSet))
+	var ChangeRecorder changeRecorder = new ChangeRecorder(idResolverAndRepository)
 
 	private def <T extends EObject> T wrapIntoRecordedResource(T object) {
 		val resource = resourceSet.createResource(URI.createURI('test://test.aet'))
@@ -606,7 +606,7 @@ class ChangeRecorderTest {
 	}
 
 	@Test
-	@DisplayName("refuses to record changes on a different resource set than the one of the UUID resolver")
+	@DisplayName("refuses to record changes on a different resource set than the one of the ID resolver")
 	def void differentResourceSet() {
 		assertThrows(IllegalArgumentException) [
 			changeRecorder.addToRecording(new ResourceSetImpl)
@@ -614,7 +614,7 @@ class ChangeRecorderTest {
 	}
 
 	@Test
-	@DisplayName("refuses to record changes on a resource from a different resource set than the one of the UUID resolver")
+	@DisplayName("refuses to record changes on a resource from a different resource set than the one of the ID resolver")
 	def void resourceFromDifferentResourceSet() {
 		val foreignResourceSet = new ResourceSetImpl().withGlobalFactories()
 		assertThrows(IllegalArgumentException) [
@@ -623,7 +623,7 @@ class ChangeRecorderTest {
 	}
 
 	@Test
-	@DisplayName("refuses to record changes on an object from a different resource set than the one of the UUID resolver")
+	@DisplayName("refuses to record changes on an object from a different resource set than the one of the ID resolver")
 	def void objectFromDifferentResourceSet() {
 		val foreignResourceSet = new ResourceSetImpl().withGlobalFactories()
 		val root = aet.Root
@@ -659,22 +659,22 @@ class ChangeRecorderTest {
 	}
 
 	@Test
-	@DisplayName("registers the recorded object and all its contents at the UUID resolver")
-	def void registersAtUuidResolver() {
-		val parentResolver = createUuidGeneratorAndResolver(resourceSet)
+	@DisplayName("registers the recorded object and all its contents at the ID resolver")
+	def void registersAtIdResolver() {
+		val parentResolver = createIdResolverAndRepository(resourceSet)
 
 		val root = aet.Root => [
-			parentResolver.registerEObject("uuid1", it)
+			parentResolver.register("id1", it)
 			singleValuedContainmentEReference = aet.NonRoot => [
-				parentResolver.registerEObject("uuid2", it)
+				parentResolver.register("id2", it)
 			]
 			nonRootObjectContainerHelper = aet.NonRootObjectContainerHelper => [
-				parentResolver.registerEObject("uuid3", it)
+				parentResolver.register("id3", it)
 				nonRootObjectsContainment += aet.NonRoot => [
-					parentResolver.registerEObject("uuid4", it)
+					parentResolver.register("id4", it)
 				]
 				nonRootObjectsContainment += aet.NonRoot => [
-					parentResolver.registerEObject("uuid5", it)
+					parentResolver.register("id5", it)
 				]
 			]
 		]
@@ -682,15 +682,15 @@ class ChangeRecorderTest {
 			contents += root
 		]
 		
-		val localResolver = createUuidGeneratorAndResolver(resourceSet)
+		val localResolver = createIdResolverAndRepository(resourceSet)
 		var ChangeRecorder changeRecorder = new ChangeRecorder(localResolver)
 		changeRecorder.addToRecording(resourceSet)
 
-		assertTrue(localResolver.hasUuid(root))
-		assertTrue(localResolver.hasUuid(root.singleValuedContainmentEReference))
-		assertTrue(localResolver.hasUuid(root.nonRootObjectContainerHelper))
-		assertTrue(localResolver.hasUuid(root.nonRootObjectContainerHelper.nonRootObjectsContainment.get(0)))
-		assertTrue(localResolver.hasUuid(root.nonRootObjectContainerHelper.nonRootObjectsContainment.get(1)))
+		assertTrue(localResolver.hasId(root))
+		assertTrue(localResolver.hasId(root.singleValuedContainmentEReference))
+		assertTrue(localResolver.hasId(root.nonRootObjectContainerHelper))
+		assertTrue(localResolver.hasId(root.nonRootObjectContainerHelper.nonRootObjectsContainment.get(0)))
+		assertTrue(localResolver.hasId(root.nonRootObjectContainerHelper.nonRootObjectsContainment.get(1)))
 	}
 
 	@Test

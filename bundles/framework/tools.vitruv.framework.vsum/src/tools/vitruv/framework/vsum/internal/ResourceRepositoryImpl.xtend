@@ -10,7 +10,6 @@ import tools.vitruv.framework.change.description.TransactionalChange
 import tools.vitruv.framework.change.description.VitruviusChangeFactory
 import tools.vitruv.framework.domains.VitruvDomain
 import tools.vitruv.framework.domains.repository.VitruvDomainRepository
-import tools.vitruv.framework.uuid.UuidGeneratorAndResolver
 
 import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceSetUtil.loadOrCreateResource
 import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceSetUtil.getOrCreateResource
@@ -21,10 +20,11 @@ import tools.vitruv.framework.vsum.helper.VsumFileSystemLayout
 import tools.vitruv.framework.change.recording.ChangeRecorder
 import static com.google.common.base.Preconditions.checkState
 import tools.vitruv.framework.util.ResourceRegistrationAdapter
-import static tools.vitruv.framework.uuid.UuidGeneratorAndResolverFactory.createUuidGeneratorAndResolver
 import static tools.vitruv.framework.correspondence.CorrespondenceModelFactory.createCorrespondenceModel
 import tools.vitruv.framework.correspondence.InternalCorrespondenceModel
 import org.eclipse.emf.common.util.URI
+import tools.vitruv.framework.change.id.IdResolverAndRepository
+import static tools.vitruv.framework.change.id.IdResolverAndRepositoryFactory.createIdResolverAndRepository
 
 package class ResourceRepositoryImpl implements ModelRepository {
 	static val logger = Logger.getLogger(ResourceRepositoryImpl)
@@ -33,7 +33,7 @@ package class ResourceRepositoryImpl implements ModelRepository {
 	val VitruvDomainRepository domainRepository
 	val Map<URI, ModelInstance> modelInstances = new HashMap()
 	val VsumFileSystemLayout fileSystemLayout
-	val UuidGeneratorAndResolver uuidGeneratorAndResolver
+	val IdResolverAndRepository idResolverAndRepository
 	val InternalCorrespondenceModel correspondenceModel
 	val Map<VitruvDomain, ChangeRecorder> domainToRecorder = new HashMap()
 	var isRecording = false
@@ -43,19 +43,19 @@ package class ResourceRepositoryImpl implements ModelRepository {
 		this.fileSystemLayout = fileSystemLayout
 		this.modelsResourceSet = new ResourceSetImpl().withGlobalFactories().awareOfDomains(domainRepository)
 		this.correspondencesResourceSet = new ResourceSetImpl().withGlobalFactories()
-		this.uuidGeneratorAndResolver = createUuidGeneratorAndResolver(modelsResourceSet,
-			fileSystemLayout.uuidProviderAndResolverURI)
+		this.idResolverAndRepository = createIdResolverAndRepository(modelsResourceSet,
+			fileSystemLayout.idResolverAndRepositoryURI)
 		this.correspondenceModel = createCorrespondenceModel(fileSystemLayout.correspondencesURI)
 		this.modelsResourceSet.eAdapters += new ResourceRegistrationAdapter[getCreateOrLoadModel(it.URI)]
 	}
 
 	override loadExistingModels() {
-		uuidGeneratorAndResolver.loadUuidsAndModelsFromSerializedUuidRepository()
+		idResolverAndRepository.loadIdsAndModelsFromSerializedIdRepository()
 		correspondenceModel.loadSerializedCorrespondences(modelsResourceSet)
 	}
 
-	override getUuidResolver() {
-		return uuidGeneratorAndResolver
+	override getIdResolver() {
+		return idResolverAndRepository
 	}
 
 	override getCorrespondenceModel() {
@@ -89,7 +89,7 @@ package class ResourceRepositoryImpl implements ModelRepository {
 		// Only monitor modifiable models (file / platform URIs, not pathmap URIs)
 		if (modelInstance.URI.isFile || modelInstance.URI.isPlatform) {
 			val recorder = domainToRecorder.computeIfAbsent(getDomainForURI(modelInstance.URI)) [
-				new ChangeRecorder(this.uuidGeneratorAndResolver)
+				new ChangeRecorder(this.idResolverAndRepository)
 			]
 			recorder.addToRecording(modelInstance.resource)
 			if (this.isRecording && !recorder.isRecording) {
@@ -112,7 +112,7 @@ package class ResourceRepositoryImpl implements ModelRepository {
 			}
 		}
 		correspondenceModel.save()
-		uuidGeneratorAndResolver.save()
+		idResolverAndRepository.save()
 	}
 
 	def private VitruvDomain getDomainForURI(URI uri) {
@@ -148,7 +148,7 @@ package class ResourceRepositoryImpl implements ModelRepository {
 		correspondencesResourceSet.resources.forEach[unload]
 		modelsResourceSet.resources.clear()
 		correspondencesResourceSet.resources.clear()
-		uuidGeneratorAndResolver.close()
+		idResolverAndRepository.close()
 	}
 	
 }

@@ -18,7 +18,6 @@ import tools.vitruv.framework.change.description.VitruviusChangeFactory
 import tools.vitruv.framework.change.echange.EChangeIdManager
 import tools.vitruv.framework.change.echange.eobject.EObjectAddedEChange
 import tools.vitruv.framework.change.echange.eobject.EObjectSubtractedEChange
-import tools.vitruv.framework.uuid.UuidGeneratorAndResolver
 
 import static com.google.common.base.Preconditions.checkState
 import static org.eclipse.emf.common.notify.Notification.*
@@ -35,6 +34,7 @@ import static extension tools.vitruv.framework.change.echange.resolve.EChangeRes
 import static extension tools.vitruv.framework.change.echange.resolve.EChangeResolverAndApplicator.applyBackward
 import tools.vitruv.framework.change.description.VitruviusChange
 import tools.vitruv.framework.change.description.CompositeChange
+import tools.vitruv.framework.change.id.IdResolverAndRepository
 
 /**
  * Records changes to model elements as {@link CompositeTransactionalChanges}.
@@ -53,13 +53,13 @@ class ChangeRecorder implements AutoCloseable {
 	// closed: null
 	List<CompositeTransactionalChange> resultChanges = emptyList
 	val NotificationToEChangeConverter converter
-	val UuidGeneratorAndResolver uuidGeneratorAndResolver
+	val IdResolverAndRepository idResolverAndRepository
 	val EChangeIdManager eChangeIdManager
 	val Set<EObject> objectsCreatedDuringMonitoring = new HashSet
 	
-	new(UuidGeneratorAndResolver uuidGeneratorAndResolver) {
-		this.uuidGeneratorAndResolver = uuidGeneratorAndResolver
-		this.eChangeIdManager = new EChangeIdManager(uuidGeneratorAndResolver)
+	new(IdResolverAndRepository idResolverAndRepository) {
+		this.idResolverAndRepository = idResolverAndRepository
+		this.eChangeIdManager = new EChangeIdManager(idResolverAndRepository)
 		this.converter = new NotificationToEChangeConverter([affectedObject, addedObject | isCreateChange(affectedObject, addedObject)])
 	}
 
@@ -67,31 +67,31 @@ class ChangeRecorder implements AutoCloseable {
 		// We do not check the containment of the reference, because an element may be inserted into a non-containment
 		// reference before inserting it into a containment reference so that the create change has to be added
 		// for the insertion into the non-containment reference
-		var create = addedObject !== null && !objectsCreatedDuringMonitoring.contains(addedObject) && !uuidGeneratorAndResolver.hasUuid(addedObject)
+		var create = addedObject !== null && !objectsCreatedDuringMonitoring.contains(addedObject) && !idResolverAndRepository.hasId(addedObject)
 		// Look if the new value has no resource or if it is a reference change, if the resource of the affected
 		// object is the same. Otherwise, the create has to be handled by an insertion/reference in that resource, as
 		// it can be potentially a reference to a third party model, for which no create shall be instantiated		
 		create = create && (addedObject.eResource === null || affectedObject === null || addedObject.eResource == affectedObject.eResource)
-		if (create) objectsCreatedDuringMonitoring += addedObject // uuidGeneratorAndResolver.generateCacheUuid(addedEChange.newValue)
+		if (create) objectsCreatedDuringMonitoring += addedObject
 		return create;
 	}
 
 	/**
 	 * Add the given elements and all its contained elements ({@link Resource}s, {@link EObject}s) to the recorder.
-	 * Register all existing elements at the {@link UuidGeneratorAndResolver} with existing UUIDs.
+	 * Register all existing elements at the {@link IdResolverAndRepository} with existing UUIDs.
 	 * 
 	 * @param notifier - the {@link Notifier} to add the recorder to
-	 * @throws IllegalStateException if no UUID exists yet for some of the existing elements or if the recorder is already disposed
+	 * @throws IllegalStateException if the recorder is already disposed
 	 */
 	def void addToRecording(Notifier notifier) {
 		checkNotDisposed()
 		checkNotNull(notifier, "notifier")
 		checkArgument(notifier.isInOurResourceSet,
-			"cannot record changes in a different resource set than that of our UUID resolver!")
+			"cannot record changes in a different resource set than that of our ID resolver!")
 
 		if (rootObjects += notifier) {
 			notifier.recursively [
-				if (it instanceof EObject) uuidGeneratorAndResolver.getAndUpdateId(it)
+				if (it instanceof EObject) idResolverAndRepository.getAndUpdateId(it)
 				addAdapter()
 			]
 		}
@@ -141,7 +141,7 @@ class ChangeRecorder implements AutoCloseable {
 		checkNotDisposed()
 		isRecording = false
 		resultChanges = List.copyOf(resultChanges.postprocessRemovals().assignIds())
-		uuidGeneratorAndResolver.save()
+		idResolverAndRepository.save()
 		return resultChanges
 		
 	}
@@ -158,7 +158,7 @@ class ChangeRecorder implements AutoCloseable {
 				change.changes.forEach[assignIds]
 			ConcreteChange: {
 				eChangeIdManager.setOrGenerateIds(change.EChange)
-				change.EChange.applyForward(uuidGeneratorAndResolver)
+				change.EChange.applyForward(idResolverAndRepository)
 			}
 		}
 	}
@@ -287,7 +287,7 @@ class ChangeRecorder implements AutoCloseable {
 			case null: true
 			EObject: isInOurResourceSet(notifier?.eResource)
 			Resource: isInOurResourceSet(notifier?.resourceSet)
-			ResourceSet: notifier == uuidGeneratorAndResolver.resourceSet
+			ResourceSet: notifier == idResolverAndRepository.resourceSet
 			default: throw new IllegalStateException("Unexpected notifier type: " + notifier.class.simpleName)
 		}
 	}

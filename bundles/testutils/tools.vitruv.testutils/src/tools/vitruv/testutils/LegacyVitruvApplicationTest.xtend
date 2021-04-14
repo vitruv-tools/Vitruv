@@ -46,7 +46,7 @@ abstract class LegacyVitruvApplicationTest extends VitruvApplicationTest impleme
 
 	private def dispatch EObject resolveInVirtualModel(EObject object) {
 		if (object.eResource !== null) {
-			internalVirtualModel.uuidResolver.getResource(object.eResource.URI).getEObject(object.hierarchicUriFragment)
+			internalVirtualModel.idResolver.getResource(object.eResource.URI).getEObject(object.hierarchicUriFragment)
 		}
 	}
 

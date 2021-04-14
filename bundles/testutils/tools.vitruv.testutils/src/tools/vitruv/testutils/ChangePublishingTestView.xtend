@@ -4,7 +4,6 @@ import org.eclipse.emf.common.notify.Notifier
 import java.util.function.Consumer
 import java.nio.file.Path
 import org.eclipse.emf.ecore.resource.ResourceSet
-import tools.vitruv.framework.uuid.UuidGeneratorAndResolver
 import static com.google.common.base.Preconditions.checkState
 import static com.google.common.base.Preconditions.checkArgument
 import tools.vitruv.framework.change.description.VitruviusChange
@@ -22,7 +21,8 @@ import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resou
 import static extension tools.vitruv.framework.domains.repository.DomainAwareResourceSet.awareOfDomains
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import tools.vitruv.framework.change.recording.ChangeRecorder
-import static tools.vitruv.framework.uuid.UuidGeneratorAndResolverFactory.createUuidGeneratorAndResolver
+import tools.vitruv.framework.change.id.IdResolverAndRepository
+import static tools.vitruv.framework.change.id.IdResolverAndRepositoryFactory.createIdResolverAndRepository
 
 /**
  * A test view that will record and publish the changes created in it.
@@ -33,7 +33,7 @@ class ChangePublishingTestView implements NonTransactionalTestView {
 	val TestView delegate
 	val ChangeRecorder changeRecorder
 	val List<(VitruviusChange)=>List<PropagatedChange>> changeProcessors = new LinkedList()
-	val UuidGeneratorAndResolver uuidGeneratorAndResolver
+	val IdResolverAndRepository idResolverAndRepository
 	var renewResourceCacheAfterPropagation = true
 	
 	/**
@@ -49,8 +49,8 @@ class ChangePublishingTestView implements NonTransactionalTestView {
 	) {
 		this.resourceSet = new ResourceSetImpl().withGlobalFactories().awareOfDomains(targetDomains)
 		this.delegate = new BasicTestView(persistenceDirectory, resourceSet, userInteraction, uriMode)
-		uuidGeneratorAndResolver = createUuidGeneratorAndResolver(resourceSet)
-		this.changeRecorder = new ChangeRecorder(uuidGeneratorAndResolver)
+		idResolverAndRepository = createIdResolverAndRepository(resourceSet)
+		this.changeRecorder = new ChangeRecorder(idResolverAndRepository)
 		changeRecorder.beginRecording()
 	}
 
@@ -123,7 +123,7 @@ class ChangePublishingTestView implements NonTransactionalTestView {
 
 	override renewResourceCache() {
 		resourceSet.resources.clear()
-		uuidGeneratorAndResolver.save()
+		idResolverAndRepository.save()
 	}
 
 	/**

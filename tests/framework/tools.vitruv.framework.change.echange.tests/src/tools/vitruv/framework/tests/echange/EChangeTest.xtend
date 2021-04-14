@@ -6,7 +6,6 @@ import org.eclipse.emf.ecore.resource.ResourceSet
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import tools.vitruv.framework.change.echange.TypeInferringAtomicEChangeFactory
 import tools.vitruv.framework.change.echange.TypeInferringCompoundEChangeFactory
-import tools.vitruv.framework.uuid.UuidGeneratorAndResolver
 import java.util.List
 import tools.vitruv.framework.change.echange.EChange
 import org.junit.jupiter.api.BeforeEach
@@ -17,10 +16,11 @@ import org.eclipse.xtend.lib.annotations.Accessors
 import static tools.vitruv.testutils.metamodels.AllElementTypesCreators.*
 import java.nio.file.Path
 import org.junit.jupiter.api.io.TempDir
-import static tools.vitruv.framework.uuid.UuidGeneratorAndResolverFactory.createUuidGeneratorAndResolver
 import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.common.util.URIUtil.createFileURI
 import static extension tools.vitruv.framework.change.echange.resolve.EChangeResolverAndApplicator.*
 import tools.vitruv.framework.tests.echange.util.EChangeAssertHelper
+import tools.vitruv.framework.change.id.IdResolverAndRepository
+import static tools.vitruv.framework.change.id.IdResolverAndRepositoryFactory.createIdResolverAndRepository
 
 /**
  * Default class for testing EChange changes.
@@ -36,7 +36,7 @@ abstract class EChangeTest {
 	@Accessors(PROTECTED_GETTER)
 	var Resource resource
 	var ResourceSet resourceSet
-	var UuidGeneratorAndResolver uuidGeneratorAndResolver
+	var IdResolverAndRepository idResolverAndRepository
 
 	@Accessors(PROTECTED_GETTER)
 	var TypeInferringAtomicEChangeFactory atomicFactory
@@ -66,10 +66,10 @@ abstract class EChangeTest {
 		resource.save(null)
 
 		// Factories for creating changes
-		uuidGeneratorAndResolver = createUuidGeneratorAndResolver(resourceSet)
-		atomicFactory = new TypeInferringUnresolvingAtomicEChangeFactory(uuidGeneratorAndResolver)
-		compoundFactory = new TypeInferringUnresolvingCompoundEChangeFactory(uuidGeneratorAndResolver)
-		helper = new EChangeAssertHelper(uuidGeneratorAndResolver)
+		idResolverAndRepository = createIdResolverAndRepository(resourceSet)
+		atomicFactory = new TypeInferringUnresolvingAtomicEChangeFactory(idResolverAndRepository)
+		compoundFactory = new TypeInferringUnresolvingCompoundEChangeFactory(idResolverAndRepository)
+		helper = new EChangeAssertHelper(idResolverAndRepository)
 	}
 
 	protected def final getResourceContent() {
@@ -99,7 +99,7 @@ abstract class EChangeTest {
 	}
 
 	def protected EChange resolveBefore(EChange change) {
-		return change.resolveBefore(uuidGeneratorAndResolver)
+		return change.resolveBefore(idResolverAndRepository)
 	}
 
 	def protected List<EChange> resolveBefore(List<? extends EChange> changes) {

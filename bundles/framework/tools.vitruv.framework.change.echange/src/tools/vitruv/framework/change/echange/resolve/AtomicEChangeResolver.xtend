@@ -15,19 +15,19 @@ import tools.vitruv.framework.change.echange.feature.reference.ReplaceSingleValu
 import tools.vitruv.framework.change.echange.root.InsertRootEObject
 import tools.vitruv.framework.change.echange.root.RemoveRootEObject
 import tools.vitruv.framework.change.echange.root.RootEChange
-import tools.vitruv.framework.uuid.UuidResolver
 import static com.google.common.base.Preconditions.checkState
 import static com.google.common.base.Preconditions.checkArgument
+import tools.vitruv.framework.change.id.IdResolver
 
 /**
  * Static class for resolving EChanges internally.
  */
 package class AtomicEChangeResolver {
-	val UuidResolver uuidResolver
+	val IdResolver idResolver
 	
-	new (UuidResolver uuidResolver) {
-		checkArgument(uuidResolver !== null, "uuid resolver must not be null")
-		this.uuidResolver = uuidResolver
+	new (IdResolver idResolver) {
+		checkArgument(idResolver !== null, "id resolver must not be null")
+		this.idResolver = idResolver
 	}
 	
 	/**
@@ -37,8 +37,8 @@ package class AtomicEChangeResolver {
 	def private <A extends EObject, F extends EStructuralFeature> void resolveFeatureEChange(FeatureEChange<A, F> change) {
 		checkArgument(change.affectedEObjectID !== null, "change %s must have an affected EObject ID", change)
 		checkArgument(change.affectedFeature !== null, "change %s must have an affected feature", change)
-		if (uuidResolver.hasEObject(change.affectedEObjectID)) {
-			change.affectedEObject = uuidResolver.getEObject(change.affectedEObjectID) as A		
+		if (idResolver.hasEObject(change.affectedEObjectID)) {
+			change.affectedEObject = idResolver.getEObject(change.affectedEObjectID) as A		
 		}
 		change.affectedEObject.checkNotNullAndNotProxy(change, "affected object")
 	}
@@ -47,7 +47,7 @@ package class AtomicEChangeResolver {
 		if (valueId === null) {
 			return null
 		}
-		return uuidResolver.getEObject(valueId)
+		return idResolver.getEObject(valueId)
 	}
 
 	/**
@@ -59,20 +59,20 @@ package class AtomicEChangeResolver {
 
 		// Resolve the affected object
 		if (isNewObject) {
-			// Check if UUID resolver may still contain the removed object
-			if (uuidResolver.hasEObject(change.affectedEObjectID)) {
-				val stillExistingObject = uuidResolver.getEObject(change.affectedEObjectID) as A
+			// Check if ID resolver may still contain the removed object
+			if (idResolver.hasEObject(change.affectedEObjectID)) {
+				val stillExistingObject = idResolver.getEObject(change.affectedEObjectID) as A
 				change.affectedEObject = stillExistingObject
 				change.affectedEObject.checkNotNullAndNotProxy(change, "affected object")
 			} else {
 				// Create new one
 				val newObject = EcoreUtil.create(change.affectedEObjectType) as A
 				change.affectedEObject = newObject
-				uuidResolver.registerEObject(change.affectedEObjectID, newObject)
+				idResolver.register(change.affectedEObjectID, newObject)
 			}
 		} else {
 			// Object still exists
-			change.affectedEObject = uuidResolver.getEObject(change.affectedEObjectID) as A
+			change.affectedEObject = idResolver.getEObject(change.affectedEObjectID) as A
 			change.affectedEObject.checkNotNullAndNotProxy(change, "affected object")
 		}
 		
@@ -87,7 +87,7 @@ package class AtomicEChangeResolver {
 	 */
 	def private void resolveRootEChange(RootEChange change) {
 		// Get resource where the root object will be inserted / removed.
-		change.resource = uuidResolver.getResource(URI.createURI(change.uri))
+		change.resource = idResolver.getResource(URI.createURI(change.uri))
 	}
 
 	/**
@@ -107,9 +107,9 @@ package class AtomicEChangeResolver {
 		} else {
 			// Root object is in staging area
 			if (change instanceof InsertRootEObject<?>) {
-				return uuidResolver.getEObject(change.newValueID)	
+				return idResolver.getEObject(change.newValueID)	
 			} else if (change instanceof RemoveRootEObject<?>) {
-				return uuidResolver.getEObject(change.oldValueID)	
+				return idResolver.getEObject(change.oldValueID)	
 			}
 		}
 		return value		
