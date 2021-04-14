@@ -5,7 +5,7 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import org.junit.jupiter.api.Test
 
 import static org.junit.jupiter.api.Assertions.assertThrows
-import static tools.vitruv.framework.uuid.UuidGeneratorAndResolverFactory.createUuidGeneratorAndResolver
+import static tools.vitruv.framework.change.id.IdResolverAndRepositoryFactory.createIdResolverAndRepository
 
 class EdgeCaseStateChangeTest extends StateChangePropagationTest {
 
@@ -31,13 +31,13 @@ class EdgeCaseStateChangeTest extends StateChangePropagationTest {
 	@Test
 	def void testNullResources() {
 		val resourceSet = new ResourceSetImpl
-		val resolver = createUuidGeneratorAndResolver(resourceSet)
+		val resolver = createIdResolverAndRepository(resourceSet)
 		val Resource nullResource = null
 		assertThrows(IllegalArgumentException)[strategyToTest.getChangeSequenceBetween(nullResource, nullResource, resolver)]
 	}
 
 	/**
-	 * Tests invalid input: null instead of UuidGeneratorAndResolver.
+	 * Tests invalid input: null instead of IdResolver.
 	 */
 	@Test
 	def void testNullResolver() {

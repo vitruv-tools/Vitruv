@@ -4,7 +4,6 @@ import allElementTypes.Root
 import java.util.List
 
 import tools.vitruv.framework.change.echange.EChange
-import tools.vitruv.framework.uuid.UuidGeneratorAndResolver
 import tools.vitruv.framework.change.echange.resolve.EChangeUnresolver
 import org.eclipse.emf.ecore.resource.ResourceSet
 import org.junit.jupiter.api.BeforeEach
@@ -25,7 +24,6 @@ import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resou
 import static extension tools.vitruv.framework.domains.repository.DomainAwareResourceSet.awareOfDomains
 import tools.vitruv.framework.change.recording.ChangeRecorder
 import tools.vitruv.framework.change.description.TransactionalChange
-import static tools.vitruv.framework.uuid.UuidGeneratorAndResolverFactory.createUuidGeneratorAndResolver
 import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.common.util.URIUtil.createFileURI
 import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceSetUtil.loadOrCreateResource
 import static extension tools.vitruv.framework.change.echange.resolve.EChangeResolverAndApplicator.*
@@ -35,11 +33,13 @@ import static org.hamcrest.MatcherAssert.assertThat
 import static org.junit.jupiter.api.Assertions.assertTrue
 import static org.junit.jupiter.api.Assertions.assertNotNull
 import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceUtil.getFirstRootEObject
+import tools.vitruv.framework.change.id.IdResolverAndRepository
+import static tools.vitruv.framework.change.id.IdResolverAndRepositoryFactory.createIdResolverAndRepository
 
 @ExtendWith(TestProjectManager, RegisterMetamodelsInStandalone)
 abstract class ChangeDescription2ChangeTransformationTest {
 	var ChangeRecorder changeRecorder
-	var UuidGeneratorAndResolver uuidGeneratorAndResolver
+	var IdResolverAndRepository idResolverAndRepository
 	var ResourceSet resourceSet
 	var Path tempFolder
 	
@@ -50,8 +50,8 @@ abstract class ChangeDescription2ChangeTransformationTest {
 	def void beforeTest(@TestProject Path tempFolder) {
 		this.tempFolder = tempFolder
 		this.resourceSet = new ResourceSetImpl().withGlobalFactories().awareOfDomains(TestDomainsRepository.INSTANCE)
-		this.uuidGeneratorAndResolver = createUuidGeneratorAndResolver(resourceSet)
-		this.changeRecorder = new ChangeRecorder(uuidGeneratorAndResolver)
+		this.idResolverAndRepository = createIdResolverAndRepository(resourceSet)
+		this.changeRecorder = new ChangeRecorder(idResolverAndRepository)
 		this.resourceSet.startRecording
 	}
 
@@ -117,7 +117,7 @@ abstract class ChangeDescription2ChangeTransformationTest {
 		val comparisonResourceSet = new ResourceSetImpl().withGlobalFactories().awareOfDomains(TestDomainsRepository.INSTANCE)
 		val comparisonIdManager = resourceSet.copyTo(comparisonResourceSet)
 		monitoredChanges.map[
-			applyForward(uuidGeneratorAndResolver)
+			applyForward(idResolverAndRepository)
 			EcoreUtil.copy(it)
 		].forEach[
 			EChangeUnresolver.unresolve(it)
@@ -130,7 +130,7 @@ abstract class ChangeDescription2ChangeTransformationTest {
 	}
 	
 	private static def copyTo(ResourceSet original, ResourceSet target) {
-		val comparisonIdManager = createUuidGeneratorAndResolver(target)
+		val comparisonIdManager = createIdResolverAndRepository(target)
 		for (originalResource : original.resources) {
 			val comparisonResource = target.createResource(originalResource.URI)
 			if (!originalResource.contents.empty) {

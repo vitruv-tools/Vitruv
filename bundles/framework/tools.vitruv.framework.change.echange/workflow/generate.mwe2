@@ -8,7 +8,6 @@ Workflow {
 	bean = StandaloneSetup {
 		scanClassPath = true
 		platformUri = "."
-		registerGenModelFile = "platform:/resource/tools.vitruv.framework.uuid/model/Uuid.genmodel"
 	}
 
 	component = EcoreGenerator {

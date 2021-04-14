@@ -26,97 +26,97 @@ import tools.vitruv.domains.emf.monitorededitor.IVitruviusEMFEditorMonitor.IVitr
 import tools.vitruv.domains.emf.monitorededitor.test.testmodels.Models;
 import tools.vitruv.framework.change.description.PropagatedChange;
 import tools.vitruv.framework.change.description.VitruviusChange;
-import tools.vitruv.framework.uuid.UuidGeneratorAndResolver;
-import static tools.vitruv.framework.uuid.UuidGeneratorAndResolverFactory.createUuidGeneratorAndResolver;
+import tools.vitruv.framework.change.id.IdResolverAndRepository;
+import static tools.vitruv.framework.change.id.IdResolverAndRepositoryFactory.createIdResolverAndRepository;
 import tools.vitruv.framework.vsum.ChangePropagationListener;
 import tools.vitruv.framework.vsum.VirtualModel;
 
 public class DefaultImplementations {
-    public static final ResourceChangeSynchronizing EFFECTLESS_CHANGESYNC = new ResourceChangeSynchronizing() {
+	public static final ResourceChangeSynchronizing EFFECTLESS_CHANGESYNC = new ResourceChangeSynchronizing() {
 
-        @Override
-        public void synchronizeChanges(List<VitruviusChange> changes, URI sourceModelURI, Resource res) {
-        }
+		@Override
+		public void synchronizeChanges(List<VitruviusChange> changes, URI sourceModelURI, Resource res) {
+		}
 
-    };
+	};
 
-    public static final IVitruviusAccessor ALL_ACCEPTING_VITRUV_ACCESSOR = new IVitruviusAccessor() {
+	public static final IVitruviusAccessor ALL_ACCEPTING_VITRUV_ACCESSOR = new IVitruviusAccessor() {
 
-        @Override
-        public boolean isModelMonitored(URI modelUri) {
-            return true;
-        }
-    };
+		@Override
+		public boolean isModelMonitored(URI modelUri) {
+			return true;
+		}
+	};
 
-    public static final IVitruviusAccessor NONE_ACCEPTING_VITRUV_ACCESSOR = new IVitruviusAccessor() {
+	public static final IVitruviusAccessor NONE_ACCEPTING_VITRUV_ACCESSOR = new IVitruviusAccessor() {
 
-        @Override
-        public boolean isModelMonitored(URI modelUri) {
-            return false;
-        }
-    };
+		@Override
+		public boolean isModelMonitored(URI modelUri) {
+			return false;
+		}
+	};
 
-    public static class TestVirtualModel implements ResourceChangeSynchronizing, VirtualModel {
-        private URI lastURI = null;
-        private List<VitruviusChange> lastChanges = null;
-        private int executionCount = 0;
-        private UuidGeneratorAndResolver uuidGeneratorAndResolver = createUuidGeneratorAndResolver(new ResourceSetImpl());
-        
-        @Override
-        public void synchronizeChanges(List<VitruviusChange> changes, URI sourceModelURI, Resource res) {
-            this.lastChanges = new ArrayList<>();
-            if (changes != null) {
-                this.lastChanges.addAll(changes);
-            }
-            this.lastURI = sourceModelURI;
-            this.executionCount++;
-        }
-        
-        public void registerExistingModel(URL testResourceURL) {
-        	Resource testResource = Models.loadModel(uuidGeneratorAndResolver.getResourceSet(), testResourceURL);
-        	testResource.getAllContents().forEachRemaining(obj -> uuidGeneratorAndResolver.getAndUpdateId(obj));
-        }
+	public static class TestVirtualModel implements ResourceChangeSynchronizing, VirtualModel {
+		private URI lastURI = null;
+		private List<VitruviusChange> lastChanges = null;
+		private int executionCount = 0;
+		private IdResolverAndRepository idResolverAndRepository = createIdResolverAndRepository(new ResourceSetImpl());
 
-        public boolean hasBeenExecuted() {
-            return executionCount > 0;
-        }
+		@Override
+		public void synchronizeChanges(List<VitruviusChange> changes, URI sourceModelURI, Resource res) {
+			this.lastChanges = new ArrayList<>();
+			if (changes != null) {
+				this.lastChanges.addAll(changes);
+			}
+			this.lastURI = sourceModelURI;
+			this.executionCount++;
+		}
 
-        public int getExecutionCount() {
-            return executionCount;
-        }
+		public void registerExistingModel(URL testResourceURL) {
+			Resource testResource = Models.loadModel(idResolverAndRepository.getResourceSet(), testResourceURL);
+			testResource.getAllContents().forEachRemaining(obj -> idResolverAndRepository.getAndUpdateId(obj));
+		}
 
-        public List<VitruviusChange> getLastChanges() {
-            return lastChanges;
-        }
+		public boolean hasBeenExecuted() {
+			return executionCount > 0;
+		}
 
-        public URI getLastURI() {
-            return lastURI;
-        }
+		public int getExecutionCount() {
+			return executionCount;
+		}
 
-        public static TestVirtualModel createInstance() {
-            return new TestVirtualModel();
-        }
+		public List<VitruviusChange> getLastChanges() {
+			return lastChanges;
+		}
 
-        @Override
-        public List<PropagatedChange> propagateChange(VitruviusChange change) {
-            synchronizeChanges(Collections.singletonList(change), null, null);
-            return null;
-        }
+		public URI getLastURI() {
+			return lastURI;
+		}
 
-        @Override
-        public Path getFolder() {
-            return null;
-        }
+		public static TestVirtualModel createInstance() {
+			return new TestVirtualModel();
+		}
 
-        @Override
-        public List<PropagatedChange> propagateChangedState(Resource newState) {
-            return null;
-        }
+		@Override
+		public List<PropagatedChange> propagateChange(VitruviusChange change) {
+			synchronizeChanges(Collections.singletonList(change), null, null);
+			return null;
+		}
 
-        @Override
-        public List<PropagatedChange> propagateChangedState(Resource newState, URI oldLocation) {
-            return null;
-        }
+		@Override
+		public Path getFolder() {
+			return null;
+		}
+
+		@Override
+		public List<PropagatedChange> propagateChangedState(Resource newState) {
+			return null;
+		}
+
+		@Override
+		public List<PropagatedChange> propagateChangedState(Resource newState, URI oldLocation) {
+			return null;
+		}
 
 		@Override
 		public void addChangePropagationListener(ChangePropagationListener propagationListener) {
@@ -126,5 +126,5 @@ public class DefaultImplementations {
 		public void removeChangePropagationListener(ChangePropagationListener propagationListener) {
 		}
 
-    }
+	}
 }

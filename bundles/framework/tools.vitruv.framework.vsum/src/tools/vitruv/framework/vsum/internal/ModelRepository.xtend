@@ -3,11 +3,11 @@ package tools.vitruv.framework.vsum.internal
 import tools.vitruv.framework.change.description.TransactionalChange
 import tools.vitruv.framework.propagation.ResourceAccess
 import tools.vitruv.framework.correspondence.CorrespondenceModel
-import tools.vitruv.framework.uuid.UuidResolver
+import tools.vitruv.framework.change.id.IdResolver
 import org.eclipse.emf.common.util.URI
 
 package interface ModelRepository extends ResourceAccess, AutoCloseable {
-	def UuidResolver getUuidResolver()
+	def IdResolver getIdResolver()
 
 	def CorrespondenceModel getCorrespondenceModel()
 

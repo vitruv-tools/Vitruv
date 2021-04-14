@@ -27,14 +27,20 @@ Export-Package: tools.vitruv.framework.change.echange,
  tools.vitruv.framework.change.echange.feature.single.impl,
  tools.vitruv.framework.change.echange.feature.single.util,
  tools.vitruv.framework.change.echange.feature.util,
+ tools.vitruv.framework.change.echange.id,
+ tools.vitruv.framework.change.echange.id.impl,
+ tools.vitruv.framework.change.echange.id.util,
  tools.vitruv.framework.change.echange.impl,
  tools.vitruv.framework.change.echange.resolve,
  tools.vitruv.framework.change.echange.root,
  tools.vitruv.framework.change.echange.root.impl,
- tools.vitruv.framework.change.echange.root.util
+ tools.vitruv.framework.change.echange.root.util,
+ tools.vitruv.framework.change.echange.util,
+ tools.vitruv.framework.change.id
 Require-Bundle: org.eclipse.xtend.lib,
  org.apache.log4j,
  org.eclipse.emf.ecore.edit,
- tools.vitruv.framework.uuid;visibility:=reexport,
- edu.kit.ipd.sdq.activextendannotations
+ org.eclipse.emf.ecore;visibility:=reexport,
+ edu.kit.ipd.sdq.activextendannotations,
+ tools.vitruv.framework.util
 Bundle-ActivationPolicy: lazy

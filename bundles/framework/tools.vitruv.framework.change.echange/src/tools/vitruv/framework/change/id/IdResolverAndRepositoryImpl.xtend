@@ -1,8 +1,8 @@
-package tools.vitruv.framework.uuid
+package tools.vitruv.framework.change.id
 
 import org.eclipse.emf.ecore.EObject
-import tools.vitruv.framework.uuid.UuidToEObjectRepository
-import tools.vitruv.framework.uuid.UuidFactory
+import tools.vitruv.framework.change.echange.id.IdEObjectRepository
+import tools.vitruv.framework.change.echange.id.IdFactory
 import org.eclipse.emf.ecore.resource.ResourceSet
 import org.eclipse.emf.ecore.util.EcoreUtil
 import org.eclipse.emf.ecore.resource.Resource
@@ -21,19 +21,19 @@ import static extension tools.vitruv.framework.util.ObjectResolutionUtil.getHier
 import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceSetUtil.getOrCreateResource
 
 /**
- * {@link UuidGeneratorAndResolver}
+ * {@link IdResolverAndRepository}
  */
-package class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
-	static val logger = Logger.getLogger(UuidGeneratorAndResolverImpl)
+package class IdResolverAndRepositoryImpl implements IdResolverAndRepository {
+	static val logger = Logger.getLogger(IdResolverAndRepositoryImpl)
 
 	static val CACHE_PREFIX = "cache:/"
 	
 	val ResourceSet resourceSet
-	val Resource uuidResource
-	UuidToEObjectRepository repository
+	val Resource idResource
+	IdEObjectRepository repository
 
 	/**
-	 * Instantiates a UUID generator and resolver, the given {@link ResourceSet} for resolving objects
+	 * Instantiates an ID resolver and repository, the given {@link ResourceSet} for resolving objects
 	 * and a resource at the given {@link URI} for storing the mapping in.
 	 * 
 	 * @param resourceSet -
@@ -45,43 +45,43 @@ package class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 	new(ResourceSet resourceSet, URI resourceUri) {
 		checkArgument(resourceSet !== null, "Resource set may not be null")
 		this.resourceSet = resourceSet
-		this.repository = UuidFactory.eINSTANCE.createUuidToEObjectRepository
-		this.uuidResource = if (resourceUri !== null)
+		this.repository = IdFactory.eINSTANCE.createIdEObjectRepository
+		this.idResource = if (resourceUri !== null)
 			new ResourceSetImpl().withGlobalFactories.createResource(resourceUri) => [
 				contents += repository
 			]
 	}
 
-	override loadUuidsAndModelsFromSerializedUuidRepository() {
-		checkState(uuidResource !== null, "UUID resource must be specified to load existing UUIDs")
-		val loadedResource = new ResourceSetImpl().withGlobalFactories.loadOrCreateResource(uuidResource.URI)
+	override loadIdsAndModelsFromSerializedIdRepository() {
+		checkState(idResource !== null, "ID resource must be specified to load existing IDs")
+		val loadedResource = new ResourceSetImpl().withGlobalFactories.loadOrCreateResource(idResource.URI)
 		if (!loadedResource.contents.empty) {
-			val loadedRepository = loadedResource.contents.get(0) as UuidToEObjectRepository
-			for (proxyEntry : loadedRepository.EObjectToUuid.entrySet) {
+			val loadedRepository = loadedResource.contents.get(0) as IdEObjectRepository
+			for (proxyEntry : loadedRepository.EObjectToId.entrySet) {
 				val resolvedObject = EcoreUtil.resolve(proxyEntry.key, resourceSet)
 				if (resolvedObject.eIsProxy) {
 					throw new IllegalStateException("Object " + proxyEntry.key +
-						" has a UUID but could not be resolved")
+						" has an ID but could not be resolved")
 				}
-				registerEObject(proxyEntry.value, resolvedObject)
+				register(proxyEntry.value, resolvedObject)
 			}
 		}
 	}
 
 	override save() {
 		cleanupRemovedElements()
-		uuidResource?.save(null)
+		idResource?.save(null)
 		checkState(cacheIds.noneMissing, "there are still elements in cache although a transaction has been closed")
 	}
 
 	private def cleanupRemovedElements() {
-		for (val iterator = repository.EObjectToUuid.keySet.iterator(); iterator.hasNext();) {
+		for (val iterator = repository.EObjectToId.keySet.iterator(); iterator.hasNext();) {
 			val object = iterator.next()
 			if (object.eResource === null || object.eResource.resourceSet === null) {
-				val uuid = repository.EObjectToUuid.get(object)
-				repository.uuidToEObject.removeKey(uuid)
-				if (uuid.isCache) {
-					cacheIds.push(uuid)
+				val id = repository.EObjectToId.get(object)
+				repository.idToEObject.removeKey(id)
+				if (id.isCache) {
+					cacheIds.push(id)
 				}
 				iterator.remove()
 			}
@@ -89,7 +89,7 @@ package class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 	}
 
 	override close() {
-		this.uuidResource.unload()
+		this.idResource.unload()
 	}
 	
 	override getResourceSet() {
@@ -104,38 +104,38 @@ package class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 		return resourceSet.getResource(uri, false) !== null
 	}
 	
-	private def getUuidOrNull(EObject eObject) {
-		return eObject.getUuidIfObjectReadonly()
-			?: eObject.getUuidIfStoredEObject()
-			?: eObject.getUuidIfEClass()
+	private def getIdOrNull(EObject eObject) {
+		return eObject.getIdIfObjectReadonly()
+			?: eObject.getIdIfStoredEObject()
+			?: eObject.getIdIfEClass()
 			?: null
 	}
 	
-	private def getUuidIfObjectReadonly(EObject eObject) {
+	private def getIdIfObjectReadonly(EObject eObject) {
 		val resourceURI = eObject.eResource?.URI
 		if (resourceURI.isReadOnly) {
 			return EcoreUtil.getURI(eObject).toString
 		}
 	}
 	
-	private def getUuidIfStoredEObject(EObject eObject) {
-		return repository.EObjectToUuid.get(eObject)
+	private def getIdIfStoredEObject(EObject eObject) {
+		return repository.EObjectToId.get(eObject)
 	}
 	
-	private def getUuidIfEClass(EObject eObject) {
+	private def getIdIfEClass(EObject eObject) {
 		if (eObject instanceof EClass) {
 			return getAndUpdateId(eObject)
 		}
 	}
 	
-	override getEObject(String uuid) {
-		val eObject = uuid.getEObjectOrNull()
-		checkState(eObject !== null, "No EObject could be found for UUID: %s", uuid)
+	override getEObject(String id) {
+		val eObject = id.getEObjectOrNull()
+		checkState(eObject !== null, "no EObject could be found for ID: %s", id)
 		return eObject
 	}
 
-	private def EObject getEObjectOrNull(String uuid) {
-		val uri = URI.createURI(uuid)
+	private def EObject getEObjectOrNull(String id) {
+		val uri = URI.createURI(id)
 		return uri.getEObjectIfReadonlyUri()
 			?: uri.getStoredEObject()
 			?: null
@@ -150,7 +150,7 @@ package class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 	}
 	
 	private def getStoredEObject(URI uri) {
-		return repository.uuidToEObject.get(uri.toString)
+		return repository.idToEObject.get(uri.toString)
 	}
 
 	override String getAndUpdateId(EObject eObject) {
@@ -162,56 +162,56 @@ package class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 	}
 	
 	private def String registerObjectInResource(EObject eObject) {
-		val uuid = eObject.eResource.URI.appendFragment(eObject.hierarchicUriFragment).toString
-		registerEObject(uuid, eObject)
-		return uuid
+		val id = eObject.eResource.URI.appendFragment(eObject.hierarchicUriFragment).toString
+		register(id, eObject)
+		return id
 	}
 	
 	private def getOrRegisterCachedObject(EObject eObject) {
-		if (getUuidIfStoredEObject(eObject).isCache) {
-			return getUuidIfStoredEObject(eObject)
+		if (getIdIfStoredEObject(eObject).isCache) {
+			return getIdIfStoredEObject(eObject)
 		} else {
-			val uuid = cacheIds.peek()
-			registerEObject(uuid, eObject)
-			return uuid
+			val id = cacheIds.peek()
+			register(id, eObject)
+			return id
 		}
 	}
 	
-	override registerEObject(String uuid, EObject eObject) {
-		checkState(eObject !== null, "Object must not be null")
-		if(logger.isTraceEnabled) logger.trace('''Adding UUID «uuid» for EObject: «eObject»''')
+	override register(String id, EObject eObject) {
+		checkState(eObject !== null, "object must not be null")
+		if(logger.isTraceEnabled) logger.trace('''Adding ID «id» for EObject: «eObject»''')
 
-		val oldObject = repository.uuidToEObject.put(uuid, eObject)
-		val oldUuid = repository.EObjectToUuid.put(eObject, uuid)
+		val oldObject = repository.idToEObject.put(id, eObject)
+		val oldId = repository.EObjectToId.put(eObject, id)
 		if (oldObject !== null && oldObject !== eObject) {
-			repository.EObjectToUuid.remove(oldObject)
+			repository.EObjectToId.remove(oldObject)
 		}
-		if (oldUuid !== null && oldUuid !== uuid) {
-			repository.uuidToEObject.remove(oldUuid)
+		if (oldId !== null && oldId !== id) {
+			repository.idToEObject.remove(oldId)
 		}
-		if (oldUuid.isCache) {
-			cacheIds.push(oldUuid)
+		if (oldId.isCache) {
+			cacheIds.push(oldId)
 		}
-		if (uuid.isCache) {
+		if (id.isCache) {
 			val entry = cacheIds.pop()
-			checkState(uuid == entry, "expected cache ID was %s but actually gave %s", uuid, entry)
+			checkState(id == entry, "expected cache ID was %s but actually gave %s", id, entry)
 		}
 	}
 
-	override hasUuid(EObject object) {
-		return object.getUuidOrNull() !== null
+	override hasId(EObject object) {
+		return object.getIdOrNull() !== null
 	}
 
-	override hasEObject(String uuid) {
-		return uuid.getEObjectOrNull() !== null
+	override hasEObject(String id) {
+		return id.getEObjectOrNull() !== null
 	}
 
 	private static def isReadOnly(URI uri) {
 		uri !== null && (uri.isPathmap || uri.isArchive)
 	}
 	
-	private static def isCache(String uuid) {
-		uuid !== null && uuid.startsWith(CACHE_PREFIX)
+	private static def isCache(String id) {
+		id !== null && id.startsWith(CACHE_PREFIX)
 	}
 	
 	val cacheIds = new CacheIdsRepository()
@@ -236,7 +236,7 @@ package class UuidGeneratorAndResolverImpl implements UuidGeneratorAndResolver {
 		}
 		
 		def push(String value) {
-			checkState(value.isCache, "%s is a not a cache UUID", value)
+			checkState(value.isCache, "%s is a not a cache ID", value)
 			entries.add(value)
 		}
 		

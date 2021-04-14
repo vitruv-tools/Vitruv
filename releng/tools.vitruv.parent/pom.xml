@@ -184,11 +184,6 @@
 							</dependency>
 							<dependency>
 								<groupId>tools.vitruv</groupId>
-								<artifactId>tools.vitruv.framework.uuid</artifactId>
-								<version>2.1.0-SNAPSHOT</version>
-							</dependency>
-							<dependency>
-								<groupId>tools.vitruv</groupId>
 								<artifactId>tools.vitruv.framework.util</artifactId>
 								<version>2.1.0-SNAPSHOT</version>
 							</dependency>

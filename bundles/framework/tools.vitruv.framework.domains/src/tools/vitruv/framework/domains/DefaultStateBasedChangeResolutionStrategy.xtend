@@ -12,15 +12,15 @@ import org.eclipse.emf.ecore.util.EcoreUtil
 import tools.vitruv.framework.change.description.VitruviusChangeFactory
 import tools.vitruv.framework.change.recording.ChangeRecorder
 import org.eclipse.emf.ecore.resource.ResourceSet
-import tools.vitruv.framework.uuid.UuidResolver
 import static extension tools.vitruv.framework.domains.repository.DomainAwareResourceSet.awareOfDomains
 import tools.vitruv.framework.domains.repository.VitruvDomainRepository
 import tools.vitruv.framework.domains.repository.VitruvDomainRepositoryImpl
 import static com.google.common.base.Preconditions.checkArgument
 import java.util.Set
 import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceUtil.getReferencedProxies
-import static tools.vitruv.framework.uuid.UuidGeneratorAndResolverFactory.createUuidGeneratorAndResolver
-import tools.vitruv.framework.uuid.UuidGeneratorAndResolver
+import tools.vitruv.framework.change.id.IdResolver
+import tools.vitruv.framework.change.id.IdResolverAndRepository
+import static tools.vitruv.framework.change.id.IdResolverAndRepositoryFactory.createIdResolverAndRepository
 
 /**
  * This default strategy for diff based state changes uses EMFCompare to resolve a 
@@ -45,13 +45,13 @@ class DefaultStateBasedChangeResolutionStrategy implements StateBasedChangeResol
 			resource.URI, String.join(", ", proxies.map[toString]))
 	}
 
-	override getChangeSequenceBetween(Resource newState, Resource oldState, UuidResolver resolver) {
-		checkArgument(resolver !== null, "UUID generator and resolver cannot be null!")
+	override getChangeSequenceBetween(Resource newState, Resource oldState, IdResolver resolver) {
+		checkArgument(resolver !== null, "id resolver must not be null!")
 		checkArgument(oldState !== null && newState !== null, "old state or new state must not be null!")
 		newState.checkNoProxies("new state")
 		oldState.checkNoProxies("old state")
 		val monitoredResourceSet = new ResourceSetImpl()
-		val monitoredSetGeneratorAndResolver = createUuidGeneratorAndResolver(monitoredResourceSet)
+		val monitoredSetGeneratorAndResolver = createIdResolverAndRepository(monitoredResourceSet)
 		val newResourceSet = new ResourceSetImpl()
 		val currentStateCopy = oldState.copyInto(monitoredResourceSet)
 		val newStateCopy = newState.copyInto(newResourceSet)
@@ -64,8 +64,8 @@ class DefaultStateBasedChangeResolutionStrategy implements StateBasedChangeResol
 		return changeFactory.createCompositeChange(diffs)
 	}
 
-	override getChangeSequenceForCreated(Resource newState, UuidResolver resolver) {
-		checkArgument(resolver !== null, "UUID generator and resolver cannot be null!")
+	override getChangeSequenceForCreated(Resource newState, IdResolver resolver) {
+		checkArgument(resolver !== null, "id resolver must not be null!")
 		checkArgument(newState !== null, "new state must not be null!")
 		newState.checkNoProxies("new state")
 		// It is possible that root elements are automatically generated during resource creation (e.g., Java packages).
@@ -73,20 +73,20 @@ class DefaultStateBasedChangeResolutionStrategy implements StateBasedChangeResol
 		val resourceSet = new ResourceSetImpl().awareOfDomains(domainRepository)
 		val newResource = resourceSet.createResource(newState.URI)
 		newResource.contents.clear()
-		val monitoredSetGeneratorAndResolver = createUuidGeneratorAndResolver(resourceSet)
+		val monitoredSetGeneratorAndResolver = createIdResolverAndRepository(resourceSet)
 		val diffs = newResource.record(monitoredSetGeneratorAndResolver) [
 			newResource.contents += EcoreUtil.copyAll(newState.contents)
 		]
 		return changeFactory.createCompositeChange(diffs)
 	}
 
-	override getChangeSequenceForDeleted(Resource oldState, UuidResolver resolver) {
-		checkArgument(resolver !== null, "UUID generator and resolver cannot be null!")
+	override getChangeSequenceForDeleted(Resource oldState, IdResolver resolver) {
+		checkArgument(resolver !== null, "id resolver must not be null!")
 		checkArgument(oldState !== null, "old state must not be null!")
 		oldState.checkNoProxies("old state")
 		// Setup resolver and copy state:
 		val monitoredResourceSet = new ResourceSetImpl()
-		val monitoredSetGeneratorAndResolver = createUuidGeneratorAndResolver(monitoredResourceSet)
+		val monitoredSetGeneratorAndResolver = createIdResolverAndRepository(monitoredResourceSet)
 		val currentStateCopy = oldState.copyInto(monitoredResourceSet)
 		val diffs = currentStateCopy.record(monitoredSetGeneratorAndResolver) [
 			currentStateCopy.contents.clear()
@@ -95,8 +95,8 @@ class DefaultStateBasedChangeResolutionStrategy implements StateBasedChangeResol
 	}
 
 	private def <T extends Notifier> record(Resource resource,
-		UuidGeneratorAndResolver monitoredResourceUuidGeneratorAndResolver, ()=>void function) {
-		try (val changeRecorder = new ChangeRecorder(monitoredResourceUuidGeneratorAndResolver)) {
+		IdResolverAndRepository monitoredResourceIdResolver, ()=>void function) {
+		try (val changeRecorder = new ChangeRecorder(monitoredResourceIdResolver)) {
 			changeRecorder.beginRecording
 			changeRecorder.addToRecording(resource)
 			function.apply()

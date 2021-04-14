@@ -14,7 +14,7 @@ import org.eclipse.emf.common.util.URI
 
 class VsumFileSystemLayout {
 	static final String CORRESPONDENCES_FILE_EXT = "correspondence";
-	static final String UUID_FILE_EXT = "uuid";
+	static final String ID_FILE_EXT = "id";
 	
 	val Path vsumProjectFolder
 	var prepared = false
@@ -24,7 +24,7 @@ class VsumFileSystemLayout {
 	}
 	
 	def void prepare() throws IOException {
-		createDirectories(uuidProviderAndResolverFolder) 
+		createDirectories(idResolverAndRepositoryFolder) 
 		createDirectories(correspondenceFolder) 
 		createDirectories(vsumFolder) 
 		createDirectories(consistencyMetadataFolder) 
@@ -75,10 +75,10 @@ class VsumFileSystemLayout {
 		correspondenceFolder.resolve('''Correspondences.«CORRESPONDENCES_FILE_EXT»''')
 	}
 	
-	def URI getUuidProviderAndResolverURI() {
+	def URI getIdResolverAndRepositoryURI() {
 		checkPrepared()
-		val uuidPath = uuidProviderAndResolverFolder.resolve('''Uuid.«UUID_FILE_EXT»''')
-		return uuidPath.toFile.createFileURI() 
+		val idPath = idResolverAndRepositoryFolder.resolve('''Id.«ID_FILE_EXT»''')
+		return idPath.toFile.createFileURI() 
 	}
 	
 	def Path getVsumProjectFolder() {
@@ -93,8 +93,8 @@ class VsumFileSystemLayout {
 		vsumProjectFolder.resolve(CORRESPONDENCE_FOLDER_NAME) 
 	}
 
-	def private getUuidProviderAndResolverFolder() {
-		vsumProjectFolder.resolve(UUID_PROVIDER_AND_RESOLVER_FOLDER_NAME) 
+	def private getIdResolverAndRepositoryFolder() {
+		vsumProjectFolder.resolve(ID_RESOLVER_AND_REPOSITORY_FOLDER_NAME) 
 	}
 
 	def private Path getConsistencyMetadataFolder() {

@@ -8,7 +8,6 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import pcm_mockup.Repository
 import tools.vitruv.framework.change.description.VitruviusChange
 import tools.vitruv.framework.change.description.VitruviusChangeFactory
-import tools.vitruv.framework.uuid.UuidGeneratorAndResolver
 import uml_mockup.UPackage
 import tools.vitruv.framework.domains.StateBasedChangeResolutionStrategy
 import tools.vitruv.framework.domains.DefaultStateBasedChangeResolutionStrategy
@@ -29,9 +28,10 @@ import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resou
 import static extension tools.vitruv.framework.domains.repository.DomainAwareResourceSet.awareOfDomains
 import tools.vitruv.framework.change.recording.ChangeRecorder
 import org.eclipse.emf.ecore.util.EcoreUtil
-import static tools.vitruv.framework.uuid.UuidGeneratorAndResolverFactory.createUuidGeneratorAndResolver
 import org.eclipse.xtend.lib.annotations.Accessors
 import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.common.util.URIUtil.createFileURI
+import tools.vitruv.framework.change.id.IdResolverAndRepository
+import static tools.vitruv.framework.change.id.IdResolverAndRepositoryFactory.createIdResolverAndRepository
 
 @ExtendWith(TestProjectManager, TestLogging, RegisterMetamodelsInStandalone)
 abstract class StateChangePropagationTest {
@@ -54,8 +54,8 @@ abstract class StateChangePropagationTest {
 	var UPackage umlRoot
 	var ChangeRecorder changeRecorder
 	@Accessors(PROTECTED_GETTER)
-	var UuidGeneratorAndResolver setupResolver
-	var UuidGeneratorAndResolver checkpointResolver
+	var IdResolverAndRepository setupResolver
+	var IdResolverAndRepository checkpointResolver
 	@Accessors(PROTECTED_GETTER)
 	var ResourceSet resourceSet
 	var ResourceSet checkpointResourceSet
@@ -70,7 +70,7 @@ abstract class StateChangePropagationTest {
 		strategyToTest = new DefaultStateBasedChangeResolutionStrategy(TestDomainsRepository.DOMAINS)
 		resourceSet = new ResourceSetImpl().withGlobalFactories().awareOfDomains(TestDomainsRepository.INSTANCE)
 		checkpointResourceSet = new ResourceSetImpl().withGlobalFactories().awareOfDomains(TestDomainsRepository.INSTANCE)
-		setupResolver = createUuidGeneratorAndResolver(resourceSet)
+		setupResolver = createIdResolverAndRepository(resourceSet)
 		changeRecorder = new ChangeRecorder(setupResolver)
 		// Create mockup models:
 		resourceSet.record [
@@ -78,7 +78,7 @@ abstract class StateChangePropagationTest {
 			createUmlMockupModel()
 		]
 		// change to new recorder with test resolver, create model checkpoints and start recording:
-		checkpointResolver = createUuidGeneratorAndResolver(checkpointResourceSet)
+		checkpointResolver = createIdResolverAndRepository(checkpointResourceSet)
 		umlCheckpoint = umlModel.createCheckpoint
 		pcmCheckpoint = pcmModel.createCheckpoint
 		umlModel.startRecording
