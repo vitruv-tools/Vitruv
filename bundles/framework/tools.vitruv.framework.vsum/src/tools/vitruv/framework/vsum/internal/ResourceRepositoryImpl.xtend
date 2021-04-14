@@ -25,7 +25,6 @@ import tools.vitruv.framework.correspondence.InternalCorrespondenceModel
 import org.eclipse.emf.common.util.URI
 import static tools.vitruv.framework.change.id.IdResolverAndRepositoryFactory.createIdResolver
 import java.nio.file.Files
-import tools.vitruv.framework.change.id.IdResolver
 import java.nio.file.NoSuchFileException
 
 package class ResourceRepositoryImpl implements ModelRepository {
@@ -35,7 +34,6 @@ package class ResourceRepositoryImpl implements ModelRepository {
 	val VitruvDomainRepository domainRepository
 	val Map<URI, ModelInstance> modelInstances = new HashMap()
 	val VsumFileSystemLayout fileSystemLayout
-	val IdResolver idResolver
 	val InternalCorrespondenceModel correspondenceModel
 	val Map<VitruvDomain, ChangeRecorder> domainToRecorder = new HashMap()
 	var isRecording = false
@@ -46,7 +44,6 @@ package class ResourceRepositoryImpl implements ModelRepository {
 		this.fileSystemLayout = fileSystemLayout
 		this.modelsResourceSet = new ResourceSetImpl().withGlobalFactories().awareOfDomains(domainRepository)
 		this.correspondencesResourceSet = new ResourceSetImpl().withGlobalFactories()
-		this.idResolver = createIdResolver(modelsResourceSet)
 		this.correspondenceModel = createCorrespondenceModel(fileSystemLayout.correspondencesURI)
 		this.modelsResourceSet.eAdapters += new ResourceRegistrationAdapter [
 			if(!isLoading) getCreateOrLoadModel(it.URI)
@@ -77,7 +74,7 @@ package class ResourceRepositoryImpl implements ModelRepository {
 	}
 
 	override getIdResolver() {
-		return idResolver
+		return createIdResolver(modelsResourceSet)
 	}
 
 	override getCorrespondenceModel() {
@@ -111,7 +108,7 @@ package class ResourceRepositoryImpl implements ModelRepository {
 		// Only monitor modifiable models (file / platform URIs, not pathmap URIs)
 		if (modelInstance.URI.isFile || modelInstance.URI.isPlatform) {
 			val recorder = domainToRecorder.computeIfAbsent(getDomainForURI(modelInstance.URI)) [
-				new ChangeRecorder(idResolver)
+				new ChangeRecorder(modelsResourceSet)
 			]
 			recorder.addToRecording(modelInstance.resource)
 			if (this.isRecording && !recorder.isRecording) {
