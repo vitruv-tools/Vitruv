@@ -19,8 +19,8 @@ import org.junit.jupiter.api.io.TempDir
 import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.common.util.URIUtil.createFileURI
 import static extension tools.vitruv.framework.change.echange.resolve.EChangeResolverAndApplicator.*
 import tools.vitruv.framework.tests.echange.util.EChangeAssertHelper
-import tools.vitruv.framework.change.id.IdResolverAndRepository
-import static tools.vitruv.framework.change.id.IdResolverAndRepositoryFactory.createIdResolverAndRepository
+import static tools.vitruv.framework.change.id.IdResolverAndRepositoryFactory.createIdResolver
+import tools.vitruv.framework.change.id.IdResolver
 
 /**
  * Default class for testing EChange changes.
@@ -36,7 +36,7 @@ abstract class EChangeTest {
 	@Accessors(PROTECTED_GETTER)
 	var Resource resource
 	var ResourceSet resourceSet
-	var IdResolverAndRepository idResolverAndRepository
+	var IdResolver idResolver
 
 	@Accessors(PROTECTED_GETTER)
 	var TypeInferringAtomicEChangeFactory atomicFactory
@@ -66,10 +66,10 @@ abstract class EChangeTest {
 		resource.save(null)
 
 		// Factories for creating changes
-		idResolverAndRepository = createIdResolverAndRepository(resourceSet)
-		atomicFactory = new TypeInferringUnresolvingAtomicEChangeFactory(idResolverAndRepository)
-		compoundFactory = new TypeInferringUnresolvingCompoundEChangeFactory(idResolverAndRepository)
-		helper = new EChangeAssertHelper(idResolverAndRepository)
+		idResolver = createIdResolver(resourceSet)
+		atomicFactory = new TypeInferringUnresolvingAtomicEChangeFactory(idResolver)
+		compoundFactory = new TypeInferringUnresolvingCompoundEChangeFactory(idResolver)
+		helper = new EChangeAssertHelper(idResolver)
 	}
 
 	protected def final getResourceContent() {
@@ -99,7 +99,7 @@ abstract class EChangeTest {
 	}
 
 	def protected EChange resolveBefore(EChange change) {
-		return change.resolveBefore(idResolverAndRepository)
+		return change.resolveBefore(idResolver)
 	}
 
 	def protected List<EChange> resolveBefore(List<? extends EChange> changes) {

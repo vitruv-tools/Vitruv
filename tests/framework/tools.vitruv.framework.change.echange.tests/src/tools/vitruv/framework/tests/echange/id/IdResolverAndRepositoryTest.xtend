@@ -23,20 +23,26 @@ import org.eclipse.emf.ecore.resource.ResourceSet
 import static tools.vitruv.testutils.matchers.ModelMatchers.containsModelOf
 import static org.hamcrest.MatcherAssert.assertThat
 import allElementTypes.Root
-import static tools.vitruv.framework.change.id.IdResolverAndRepositoryFactory.createIdResolverAndRepository
-import tools.vitruv.framework.change.id.IdResolverAndRepository
+import static tools.vitruv.framework.change.id.IdResolverAndRepositoryFactory.createIdResolver
+import static tools.vitruv.framework.change.id.IdResolverAndRepositoryFactory.createPersistedIdResolver
+import tools.vitruv.framework.change.id.PersistedIdResolver
+import tools.vitruv.framework.change.id.IdResolver
 
 @ExtendWith(#[TestProjectManager, RegisterMetamodelsInStandalone])
 class IdResolverAndRepositoryTest {
 	var ResourceSet resourceSet
-	var IdResolverAndRepository idResolver
+	var IdResolver idResolver
+	var PersistedIdResolver persistedIdResolver
+	var URI idUri
 	var Path testProjectPath
 
 	@BeforeEach
 	def void setup(@TestProject Path testProjectPath) {
 		this.testProjectPath = testProjectPath
 		this.resourceSet = new ResourceSetImpl().withGlobalFactories()
-		this.idResolver = createIdResolverAndRepository(resourceSet)
+		this.idResolver = createIdResolver(resourceSet)
+		this.idUri = URI.createFileURI(testProjectPath.resolve("id.id").toString)
+		this.persistedIdResolver = createPersistedIdResolver(resourceSet, idUri)
 	}
 	
 	@Test
@@ -159,7 +165,7 @@ class IdResolverAndRepositoryTest {
 		val generatedNonRootId = idResolver.getAndUpdateId(nonRoot)
 
 		val childResourceSet = new ResourceSetImpl().withGlobalFactories()
-		val childidResolver = createIdResolverAndRepository(childResourceSet)
+		val childidResolver = createIdResolver(childResourceSet)
 		childResourceSet.getResource(resourceUri, true)
 
 		val childResolverRoot = resourceSet.getEObject(root.URI, true)
@@ -171,14 +177,6 @@ class IdResolverAndRepositoryTest {
 			idResolver.getEObject(generatedRootId))
 		assertEquals(childidResolver.getEObject(generatedNonRootId),
 			idResolver.getEObject(generatedNonRootId))
-	}
-
-	@Test
-	@DisplayName("try to assign different IDs for same object")
-	def void assignDifferentIdsToObject() {
-		val object = aet.Root
-		val id = idResolver.getAndUpdateId(object)
-		assertThrows(IllegalStateException)[idResolver.register(id + "2", object)]
 	}
 
 	@Test
@@ -222,7 +220,7 @@ class IdResolverAndRepositoryTest {
 		elements.forEach[idResolver.getAndUpdateId(it)]
 
 		val additionalResourceSet = new ResourceSetImpl().withGlobalFactories()
-		val additionalidResolver = createIdResolverAndRepository(additionalResourceSet)
+		val additionalidResolver = createIdResolver(additionalResourceSet)
 
 		elements.forEach[
 			val elementId = idResolver.getAndUpdateId(it)
@@ -285,7 +283,7 @@ class IdResolverAndRepositoryTest {
 	def void cleanupAfterElementRemovalRemovesId() {
 		val root = aet.Root
 		val id = idResolver.getAndUpdateId(root)
-		idResolver.save()
+		idResolver.endTransaction()
 		assertThrows(IllegalStateException)[idResolver.getEObject(id)]
 	}
 
@@ -297,20 +295,18 @@ class IdResolverAndRepositoryTest {
 			contents += root
 		]
 		val rootId = idResolver.getAndUpdateId(root)
-		idResolver.save()
+		idResolver.endTransaction()
 		assertEquals(rootId, idResolver.getAndUpdateId(root))
 		resource.contents.clear
 		assertEquals(root, idResolver.getEObject(rootId))
 		assertNotEquals(rootId, idResolver.getAndUpdateId(root))
-		idResolver.save()
+		idResolver.endTransaction()
 		assertThrows(IllegalStateException)[idResolver.getEObject(rootId)]
 	}
 
 	@Test
 	@DisplayName("load IDs stored to a resource")
 	def void existAllIdsAfterReload() {
-		val idUri = URI.createFileURI(testProjectPath.resolve("id.id").toString)
-		idResolver = createIdResolverAndRepository(this.resourceSet, idUri)
 		val root = aet.Root
 		val nonRoot = aet.NonRoot
 		resourceSet.createResource(URI.createFileURI(testProjectPath.resolve("root.aet").toString)) => [
@@ -318,20 +314,17 @@ class IdResolverAndRepositoryTest {
 				singleValuedContainmentEReference = nonRoot
 			]
 		]
-		val rootId = idResolver.getAndUpdateId(root)
-		val nonRootId = idResolver.getAndUpdateId(nonRoot)
-		idResolver.save()
-		idResolver = createIdResolverAndRepository(this.resourceSet, idUri)
-		idResolver.loadIdsAndModelsFromSerializedIdRepository()
-		assertEquals(rootId, idResolver.getAndUpdateId(root))
-		assertEquals(nonRootId, idResolver.getAndUpdateId(nonRoot))
+		val rootId = persistedIdResolver.getAndUpdateId(root)
+		val nonRootId = persistedIdResolver.getAndUpdateId(nonRoot)
+		persistedIdResolver.save()
+		persistedIdResolver.loadIdsAndModelsFromSerializedIdRepository()
+		assertEquals(rootId, persistedIdResolver.getAndUpdateId(root))
+		assertEquals(nonRootId, persistedIdResolver.getAndUpdateId(nonRoot))
 	}
 
 	@Test
 	@DisplayName("load IDs stored to a resource after cleanup")
 	def void existAllIdsAfterReloadWithCleanup() {
-		val idUri = URI.createFileURI(testProjectPath.resolve("id.id").toString)
-		idResolver = createIdResolverAndRepository(this.resourceSet, idUri)
 		val root = aet.Root
 		val nonRoot = aet.NonRoot
 		resourceSet.createResource(URI.createFileURI(testProjectPath.resolve("root.aet").toString)) => [
@@ -339,21 +332,19 @@ class IdResolverAndRepositoryTest {
 				singleValuedContainmentEReference = nonRoot
 			]
 		]
-		val rootId = idResolver.getAndUpdateId(root)
-		val nonRootId = idResolver.getAndUpdateId(nonRoot)
+		val rootId = persistedIdResolver.getAndUpdateId(root)
+		val nonRootId = persistedIdResolver.getAndUpdateId(nonRoot)
 		root.singleValuedContainmentEReference = null
-		idResolver.save()
-		idResolver = createIdResolverAndRepository(this.resourceSet, idUri)
-		idResolver.loadIdsAndModelsFromSerializedIdRepository()
-		assertEquals(rootId, idResolver.getAndUpdateId(root))
-		assertThrows(IllegalStateException)[idResolver.getEObject(nonRootId)]
+		persistedIdResolver.save()
+		persistedIdResolver = createPersistedIdResolver(this.resourceSet, idUri)
+		persistedIdResolver.loadIdsAndModelsFromSerializedIdRepository()
+		assertEquals(rootId, persistedIdResolver.getAndUpdateId(root))
+		assertThrows(IllegalStateException)[persistedIdResolver.getEObject(nonRootId)]
 	}
 
 	@Test
 	@DisplayName("load IDs stored to a resource and resolve elements in new resource set")
 	def void existAllIdsAfterReloadWithNewResourceSet() {
-		val idUri = URI.createFileURI(testProjectPath.resolve("id.id").toString)
-		idResolver = createIdResolverAndRepository(this.resourceSet, idUri)
 		val root = aet.Root
 		val nonRoot = aet.NonRoot
 		val originalResource = resourceSet.createResource(
@@ -363,71 +354,65 @@ class IdResolverAndRepositoryTest {
 			]
 		]
 		originalResource.save(null)
-		val rootId = idResolver.getAndUpdateId(root)
-		val nonRootId = idResolver.getAndUpdateId(nonRoot)
-		idResolver.save()
+		val rootId = persistedIdResolver.getAndUpdateId(root)
+		val nonRootId = persistedIdResolver.getAndUpdateId(nonRoot)
+		persistedIdResolver.save()
 		val newResourceSet = new ResourceSetImpl().withGlobalFactories
-		idResolver = createIdResolverAndRepository(newResourceSet, idUri)
-		idResolver.loadIdsAndModelsFromSerializedIdRepository()
+		persistedIdResolver = createPersistedIdResolver(newResourceSet, idUri)
+		persistedIdResolver.loadIdsAndModelsFromSerializedIdRepository()
 		assertFalse(newResourceSet.resources.empty)
 		val newResource = newResourceSet.resources.get(0)
 		assertFalse(newResource.contents.empty)
 		assertThat(newResource, containsModelOf(originalResource))
 		val newRoot = newResource.contents.get(0) as Root
-		assertEquals(rootId, idResolver.getAndUpdateId(newRoot))
-		assertEquals(nonRootId, idResolver.getAndUpdateId(newRoot.singleValuedContainmentEReference))
+		assertEquals(rootId, persistedIdResolver.getAndUpdateId(newRoot))
+		assertEquals(nonRootId, persistedIdResolver.getAndUpdateId(newRoot.singleValuedContainmentEReference))
 	}
 
 	@Test
 	@DisplayName("try load IDs referencing non-existent elements")
 	def void notIgnoreIdsForNonExistentElements() {
-		val idUri = URI.createFileURI(testProjectPath.resolve("id.id").toString)
-		idResolver = createIdResolverAndRepository(this.resourceSet, idUri)
 		val root = aet.Root
 		resourceSet.createResource(URI.createFileURI(testProjectPath.resolve("root.aet").toString)) => [
 			contents += root
 		]
-		idResolver.getAndUpdateId(root)
-		idResolver.save()
+		persistedIdResolver.getAndUpdateId(root)
+		persistedIdResolver.save()
 		val newResourceSet = new ResourceSetImpl().withGlobalFactories
-		idResolver = createIdResolverAndRepository(newResourceSet, idUri)
-		assertThrows(IllegalStateException)[idResolver.loadIdsAndModelsFromSerializedIdRepository()]
+		persistedIdResolver = createPersistedIdResolver(newResourceSet, idUri)
+		assertThrows(IllegalStateException)[persistedIdResolver.loadIdsAndModelsFromSerializedIdRepository()]
 	}
 
 	@Test
 	@DisplayName("try load IDs referencing elements in non-existent resource")
 	def void notIgnoreIdsForNonExistentResource() {
-		val idUri = URI.createFileURI(testProjectPath.resolve("id.id").toString)
-		idResolver = createIdResolverAndRepository(this.resourceSet, idUri)
 		val root = aet.Root
 		resourceSet.createResource(URI.createFileURI(testProjectPath.resolve("root.aet").toString)) => [
 			contents += root
 		]
-		idResolver.getAndUpdateId(root)
-		idResolver.save()
+		persistedIdResolver.getAndUpdateId(root)
+		persistedIdResolver.save()
 		val newResourceSet = new ResourceSetImpl().withGlobalFactories
-		idResolver = createIdResolverAndRepository(newResourceSet, idUri)
-		assertThrows(IllegalStateException)[idResolver.loadIdsAndModelsFromSerializedIdRepository()]
+		persistedIdResolver = createPersistedIdResolver(newResourceSet, idUri)
+		assertThrows(IllegalStateException)[persistedIdResolver.loadIdsAndModelsFromSerializedIdRepository()]
 	}
 
 	@Test
 	@DisplayName("store and load IDs multiple times")
 	def void storeAndReloadIdRepositoryMultipleTimes() {
-		val idUri = URI.createFileURI(testProjectPath.resolve("id.id").toString)
-		idResolver = createIdResolverAndRepository(resourceSet, idUri)
 		val root = aet.Root
 		resourceSet.createResource(URI.createFileURI(testProjectPath.resolve("root.aet").toString)) => [
 			contents += root
 		]
-		val rootId = idResolver.getAndUpdateId(root)
-		idResolver.save()
-		idResolver = createIdResolverAndRepository(resourceSet, idUri)
-		idResolver.loadIdsAndModelsFromSerializedIdRepository()
-		idResolver.save()
+		val rootId = persistedIdResolver.getAndUpdateId(root)
+		persistedIdResolver.save()
+		persistedIdResolver = createPersistedIdResolver(resourceSet, idUri)
+		persistedIdResolver.loadIdsAndModelsFromSerializedIdRepository()
+		persistedIdResolver.save()
 		assertEquals(1, new ResourceSetImpl().withGlobalFactories.getResource(idUri, true).contents.size)
-		idResolver = createIdResolverAndRepository(resourceSet, idUri)
-		idResolver.loadIdsAndModelsFromSerializedIdRepository()
-		assertEquals(rootId, idResolver.getAndUpdateId(root))
+		persistedIdResolver = createPersistedIdResolver(resourceSet, idUri)
+		persistedIdResolver.loadIdsAndModelsFromSerializedIdRepository()
+		assertEquals(rootId, persistedIdResolver.getAndUpdateId(root))
 	}
 
 }

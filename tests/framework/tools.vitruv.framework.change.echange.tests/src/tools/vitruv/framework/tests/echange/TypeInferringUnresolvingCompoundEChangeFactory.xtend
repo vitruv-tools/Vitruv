@@ -1,12 +1,12 @@
 package tools.vitruv.framework.tests.echange
 
 import tools.vitruv.framework.change.echange.TypeInferringCompoundEChangeFactory
-import tools.vitruv.framework.change.id.IdResolverAndRepository
+import tools.vitruv.framework.change.id.IdResolver
 
 package final class TypeInferringUnresolvingCompoundEChangeFactory extends TypeInferringCompoundEChangeFactory {
 	
-	new(IdResolverAndRepository idResolverAndRepository) {
-		super(new TypeInferringUnresolvingAtomicEChangeFactory(idResolverAndRepository));
+	new(IdResolver idResolver) {
+		super(new TypeInferringUnresolvingAtomicEChangeFactory(idResolver));
 	}
 	
 }

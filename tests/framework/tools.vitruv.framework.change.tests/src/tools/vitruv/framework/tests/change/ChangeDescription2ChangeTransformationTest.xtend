@@ -33,13 +33,13 @@ import static org.hamcrest.MatcherAssert.assertThat
 import static org.junit.jupiter.api.Assertions.assertTrue
 import static org.junit.jupiter.api.Assertions.assertNotNull
 import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceUtil.getFirstRootEObject
-import tools.vitruv.framework.change.id.IdResolverAndRepository
-import static tools.vitruv.framework.change.id.IdResolverAndRepositoryFactory.createIdResolverAndRepository
+import static tools.vitruv.framework.change.id.IdResolverAndRepositoryFactory.createIdResolver
+import tools.vitruv.framework.change.id.IdResolver
 
 @ExtendWith(TestProjectManager, RegisterMetamodelsInStandalone)
 abstract class ChangeDescription2ChangeTransformationTest {
 	var ChangeRecorder changeRecorder
-	var IdResolverAndRepository idResolverAndRepository
+	var IdResolver idResolver
 	var ResourceSet resourceSet
 	var Path tempFolder
 	
@@ -50,8 +50,8 @@ abstract class ChangeDescription2ChangeTransformationTest {
 	def void beforeTest(@TestProject Path tempFolder) {
 		this.tempFolder = tempFolder
 		this.resourceSet = new ResourceSetImpl().withGlobalFactories().awareOfDomains(TestDomainsRepository.INSTANCE)
-		this.idResolverAndRepository = createIdResolverAndRepository(resourceSet)
-		this.changeRecorder = new ChangeRecorder(idResolverAndRepository)
+		this.idResolver = createIdResolver(resourceSet)
+		this.changeRecorder = new ChangeRecorder(resourceSet)
 		this.resourceSet.startRecording
 	}
 
@@ -117,7 +117,7 @@ abstract class ChangeDescription2ChangeTransformationTest {
 		val comparisonResourceSet = new ResourceSetImpl().withGlobalFactories().awareOfDomains(TestDomainsRepository.INSTANCE)
 		val comparisonIdManager = resourceSet.copyTo(comparisonResourceSet)
 		monitoredChanges.map[
-			applyForward(idResolverAndRepository)
+			applyForward(idResolver)
 			EcoreUtil.copy(it)
 		].forEach[
 			EChangeUnresolver.unresolve(it)
@@ -130,7 +130,7 @@ abstract class ChangeDescription2ChangeTransformationTest {
 	}
 	
 	private static def copyTo(ResourceSet original, ResourceSet target) {
-		val comparisonIdManager = createIdResolverAndRepository(target)
+		val comparisonIdManager = createIdResolver(target)
 		for (originalResource : original.resources) {
 			val comparisonResource = target.createResource(originalResource.URI)
 			if (!originalResource.contents.empty) {

@@ -7,23 +7,23 @@ import tools.vitruv.framework.change.echange.feature.FeatureEChange
 import org.eclipse.emf.ecore.EObject
 import static com.google.common.base.Preconditions.checkArgument
 import static com.google.common.base.Preconditions.checkState
-import tools.vitruv.framework.change.id.IdResolverAndRepository
+import tools.vitruv.framework.change.id.IdResolver
 
 /**
  * Provides logic for initializing the IDs within changes. 
  */
 class EChangeIdManager {
-	val IdResolverAndRepository idResolverAndRepository
+	val IdResolver idResolver
 
 	/**
-	 * Initializes the manager with a {@link IdResolverAndRepository}.
+	 * Initializes the manager with a {@link IdResolver}.
 	 * 
-	 * @param idResolverAndRepository -
-	 * 		the {@link IdResolverAndRepository} to use for ID management
+	 * @param idResolver -
+	 * 		the {@link IdResolver} to use for ID management
 	 */
-	new(IdResolverAndRepository idResolverAndRepository) {
-		checkArgument(idResolverAndRepository !== null, "id generator and resolver must not be null")
-		this.idResolverAndRepository = idResolverAndRepository
+	new(IdResolver idResolver) {
+		checkArgument(idResolver !== null, "id resolver must not be null")
+		this.idResolver = idResolver
 	}
 
 	def void setOrGenerateIds(EChange eChange) {
@@ -44,7 +44,7 @@ class EChangeIdManager {
 	}
 
 	private def String getId(EObject object) {
-		val id = idResolverAndRepository.getAndUpdateId(object)
+		val id = idResolver.getAndUpdateId(object)
 		checkState(id !== null, "id must not be null")
 		return id
 	}

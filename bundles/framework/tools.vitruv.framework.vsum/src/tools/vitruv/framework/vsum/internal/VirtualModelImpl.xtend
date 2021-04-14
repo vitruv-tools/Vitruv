@@ -117,11 +117,11 @@ class VirtualModelImpl implements InternalVirtualModel {
 		val vitruvDomain = domainRepository.getDomain(if (oldLocation !== null) oldLocation.fileExtension else newState.URI.fileExtension)
 		val strategy = vitruvDomain.stateChangePropagationStrategy
 		val compositeChange = if (currentState === null) {
-				strategy.getChangeSequenceForCreated(newState, idResolver)
+				strategy.getChangeSequenceForCreated(newState)
 			} else if (newState === null) {
-				strategy.getChangeSequenceForDeleted(currentState, idResolver)
+				strategy.getChangeSequenceForDeleted(currentState)
 			} else {
-				strategy.getChangeSequenceBetween(newState, currentState, idResolver)
+				strategy.getChangeSequenceBetween(newState, currentState)
 			}
 		if (!compositeChange.containsConcreteChange) {
 			LOGGER.warn("State-based change for " + oldLocation + " was empty")
@@ -140,10 +140,6 @@ class VirtualModelImpl implements InternalVirtualModel {
 		return fileSystemLayout.vsumProjectFolder
 	}
 
-	override getIdResolver() {
-		return resourceRepository.idResolver
-	}
-		
 	/**
 	 * Registers the given {@link ChangePropagationListener}.
 	 * The listener must not be <code>null</code>.

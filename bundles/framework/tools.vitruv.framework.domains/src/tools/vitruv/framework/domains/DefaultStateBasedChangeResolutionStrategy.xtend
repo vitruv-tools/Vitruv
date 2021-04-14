@@ -18,9 +18,6 @@ import tools.vitruv.framework.domains.repository.VitruvDomainRepositoryImpl
 import static com.google.common.base.Preconditions.checkArgument
 import java.util.Set
 import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceUtil.getReferencedProxies
-import tools.vitruv.framework.change.id.IdResolver
-import tools.vitruv.framework.change.id.IdResolverAndRepository
-import static tools.vitruv.framework.change.id.IdResolverAndRepositoryFactory.createIdResolverAndRepository
 
 /**
  * This default strategy for diff based state changes uses EMFCompare to resolve a 
@@ -45,17 +42,15 @@ class DefaultStateBasedChangeResolutionStrategy implements StateBasedChangeResol
 			resource.URI, String.join(", ", proxies.map[toString]))
 	}
 
-	override getChangeSequenceBetween(Resource newState, Resource oldState, IdResolver resolver) {
-		checkArgument(resolver !== null, "id resolver must not be null!")
+	override getChangeSequenceBetween(Resource newState, Resource oldState) {
 		checkArgument(oldState !== null && newState !== null, "old state or new state must not be null!")
 		newState.checkNoProxies("new state")
 		oldState.checkNoProxies("old state")
 		val monitoredResourceSet = new ResourceSetImpl()
-		val monitoredSetGeneratorAndResolver = createIdResolverAndRepository(monitoredResourceSet)
 		val newResourceSet = new ResourceSetImpl()
 		val currentStateCopy = oldState.copyInto(monitoredResourceSet)
 		val newStateCopy = newState.copyInto(newResourceSet)
-		val diffs = currentStateCopy.record(monitoredSetGeneratorAndResolver) [
+		val diffs = currentStateCopy.record [
 			if (oldState.URI != newState.URI) {
 				currentStateCopy.URI = newStateCopy.URI
 			}
@@ -64,8 +59,7 @@ class DefaultStateBasedChangeResolutionStrategy implements StateBasedChangeResol
 		return changeFactory.createCompositeChange(diffs)
 	}
 
-	override getChangeSequenceForCreated(Resource newState, IdResolver resolver) {
-		checkArgument(resolver !== null, "id resolver must not be null!")
+	override getChangeSequenceForCreated(Resource newState) {
 		checkArgument(newState !== null, "new state must not be null!")
 		newState.checkNoProxies("new state")
 		// It is possible that root elements are automatically generated during resource creation (e.g., Java packages).
@@ -73,30 +67,26 @@ class DefaultStateBasedChangeResolutionStrategy implements StateBasedChangeResol
 		val resourceSet = new ResourceSetImpl().awareOfDomains(domainRepository)
 		val newResource = resourceSet.createResource(newState.URI)
 		newResource.contents.clear()
-		val monitoredSetGeneratorAndResolver = createIdResolverAndRepository(resourceSet)
-		val diffs = newResource.record(monitoredSetGeneratorAndResolver) [
+		val diffs = newResource.record [
 			newResource.contents += EcoreUtil.copyAll(newState.contents)
 		]
 		return changeFactory.createCompositeChange(diffs)
 	}
 
-	override getChangeSequenceForDeleted(Resource oldState, IdResolver resolver) {
-		checkArgument(resolver !== null, "id resolver must not be null!")
+	override getChangeSequenceForDeleted(Resource oldState) {
 		checkArgument(oldState !== null, "old state must not be null!")
 		oldState.checkNoProxies("old state")
 		// Setup resolver and copy state:
 		val monitoredResourceSet = new ResourceSetImpl()
-		val monitoredSetGeneratorAndResolver = createIdResolverAndRepository(monitoredResourceSet)
 		val currentStateCopy = oldState.copyInto(monitoredResourceSet)
-		val diffs = currentStateCopy.record(monitoredSetGeneratorAndResolver) [
+		val diffs = currentStateCopy.record [
 			currentStateCopy.contents.clear()
 		]
 		return changeFactory.createCompositeChange(diffs)
 	}
 
-	private def <T extends Notifier> record(Resource resource,
-		IdResolverAndRepository monitoredResourceIdResolver, ()=>void function) {
-		try (val changeRecorder = new ChangeRecorder(monitoredResourceIdResolver)) {
+	private def <T extends Notifier> record(Resource resource, ()=>void function) {
+		try (val changeRecorder = new ChangeRecorder(resource.resourceSet)) {
 			changeRecorder.beginRecording
 			changeRecorder.addToRecording(resource)
 			function.apply()

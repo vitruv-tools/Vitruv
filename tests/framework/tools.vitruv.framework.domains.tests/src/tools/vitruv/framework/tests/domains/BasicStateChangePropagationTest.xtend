@@ -36,7 +36,7 @@ class BasicStateChangePropagationTest extends StateChangePropagationTest {
 			]
 		]
 		
-		val changes = strategyToTest.getChangeSequenceForCreated(modelResource, setupResolver)
+		val changes = strategyToTest.getChangeSequenceForCreated(modelResource)
 		assertEquals(3, changes.EChanges.size)
 		assertEquals(1, changes.EChanges.filter(InsertRootEObject).size)
 		assertEquals(1, changes.EChanges.filter(CreateEObject).size)
@@ -45,7 +45,7 @@ class BasicStateChangePropagationTest extends StateChangePropagationTest {
 		// Create empty resource to apply generated changes to
 		changes.unresolve()
 		val validationResourceSet = new ResourceSetImpl()
-		val validationResolver = IdResolverAndRepositoryFactory.createIdResolverAndRepository(validationResourceSet)
+		val validationResolver = IdResolverAndRepositoryFactory.createIdResolver(validationResourceSet)
 		changes.resolveAndApply(validationResolver)
 		
 		modelResource.save(null)
@@ -65,7 +65,7 @@ class BasicStateChangePropagationTest extends StateChangePropagationTest {
 			] >> modelResource
 		]
 		(-modelResource).save(null)
-		val changes = strategyToTest.getChangeSequenceForDeleted(-modelResource, setupResolver)
+		val changes = strategyToTest.getChangeSequenceForDeleted(-modelResource)
 		assertEquals(2, changes.EChanges.size)
 		assertEquals(1, changes.EChanges.filter(RemoveRootEObject).size)
 		assertEquals(1, changes.EChanges.filter(DeleteEObject).size)
@@ -73,7 +73,7 @@ class BasicStateChangePropagationTest extends StateChangePropagationTest {
 		// Load resource to apply generated changes to
 		changes.unresolve()
 		val validationResourceSet = new ResourceSetImpl()
-		val validationResolver = IdResolverAndRepositoryFactory.createIdResolverAndRepository(validationResourceSet)
+		val validationResolver = IdResolverAndRepositoryFactory.createIdResolver(validationResourceSet)
 		validationResourceSet.getResource(testUri, true)
 		changes.resolveAndApply(validationResolver)
 
@@ -103,9 +103,9 @@ class BasicStateChangePropagationTest extends StateChangePropagationTest {
 
 		val validationResourceSet = new ResourceSetImpl().withGlobalFactories().awareOfDomains(
 			TestDomainsRepository.INSTANCE)
-		val validationResolver = IdResolverAndRepositoryFactory.createIdResolverAndRepository(validationResourceSet)
+		val validationResolver = IdResolverAndRepositoryFactory.createIdResolver(validationResourceSet)
 		val oldState = validationResourceSet.getResource(testUri, true)
-		val changes = strategyToTest.getChangeSequenceBetween(-modelResource, oldState, validationResolver)
+		val changes = strategyToTest.getChangeSequenceBetween(-modelResource, oldState)
 
 		changes.unresolve()
 		changes.resolveAndApply(validationResolver)
@@ -134,10 +134,10 @@ class BasicStateChangePropagationTest extends StateChangePropagationTest {
 
 		val validationResourceSet = new ResourceSetImpl().withGlobalFactories().awareOfDomains(
 			TestDomainsRepository.INSTANCE)
-		val validationResolver = IdResolverAndRepositoryFactory.createIdResolverAndRepository(validationResourceSet)
+		val validationResolver = IdResolverAndRepositoryFactory.createIdResolver(validationResourceSet)
 		val oldState = validationResourceSet.getResource(testUri, true)
 		oldState.allContents.forEach[validationResolver.getAndUpdateId(it)]
-		val changes = strategyToTest.getChangeSequenceBetween(-modelResource, oldState, validationResolver)
+		val changes = strategyToTest.getChangeSequenceBetween(-modelResource, oldState)
 		assertEquals(1, changes.EChanges.size)
 		assertEquals(1, changes.EChanges.filter(ReplaceSingleValuedEAttribute).size)
 
@@ -173,10 +173,10 @@ class BasicStateChangePropagationTest extends StateChangePropagationTest {
 
 		val validationResourceSet = new ResourceSetImpl().withGlobalFactories().awareOfDomains(
 			TestDomainsRepository.INSTANCE)
-		val validationResolver = IdResolverAndRepositoryFactory.createIdResolverAndRepository(validationResourceSet)
+		val validationResolver = IdResolverAndRepositoryFactory.createIdResolver(validationResourceSet)
 		val oldState = validationResourceSet.getResource(testUri, true)
 		oldState.allContents.forEach[validationResolver.getAndUpdateId(it)]
-		val changes = strategyToTest.getChangeSequenceBetween(-modelResource, oldState, validationResolver)
+		val changes = strategyToTest.getChangeSequenceBetween(-modelResource, oldState)
 
 		changes.unresolve()
 		changes.resolveAndApply(validationResolver)
@@ -201,7 +201,7 @@ class BasicStateChangePropagationTest extends StateChangePropagationTest {
 
 		val validationResourceSet = new ResourceSetImpl().withGlobalFactories().awareOfDomains(
 			TestDomainsRepository.INSTANCE)
-		val validationResolver = IdResolverAndRepositoryFactory.createIdResolverAndRepository(validationResourceSet)
+		val validationResolver = IdResolverAndRepositoryFactory.createIdResolver(validationResourceSet)
 		val oldState = validationResourceSet.getResource(testUri, true)
 
 		val movedResourceUri = getModelURI("moved.allElementTypes")
@@ -211,7 +211,7 @@ class BasicStateChangePropagationTest extends StateChangePropagationTest {
 			] >> modelResource
 		]
 
-		val changes = strategyToTest.getChangeSequenceBetween(-modelResource, oldState, validationResolver)
+		val changes = strategyToTest.getChangeSequenceBetween(-modelResource, oldState)
 		assertEquals(2, changes.EChanges.size)
 		assertEquals(1, changes.EChanges.filter(RemoveRootEObject).size)
 		assertEquals(1, changes.EChanges.filter(InsertRootEObject).size)
@@ -240,7 +240,7 @@ class BasicStateChangePropagationTest extends StateChangePropagationTest {
 
 		val validationResourceSet = new ResourceSetImpl().withGlobalFactories().awareOfDomains(
 			TestDomainsRepository.INSTANCE)
-		val validationResolver = IdResolverAndRepositoryFactory.createIdResolverAndRepository(validationResourceSet)
+		val validationResolver = IdResolverAndRepositoryFactory.createIdResolver(validationResourceSet)
 		val oldState = validationResourceSet.getResource(testUri, true)
 
 		val movedResourceUri = getModelURI("moved.allElementTypes")
@@ -252,7 +252,7 @@ class BasicStateChangePropagationTest extends StateChangePropagationTest {
 			] >> modelResource
 		]
 		
-		val changes = strategyToTest.getChangeSequenceBetween(-modelResource, oldState, validationResolver)
+		val changes = strategyToTest.getChangeSequenceBetween(-modelResource, oldState)
 		assertEquals(3, changes.EChanges.size)
 		assertEquals(1, changes.EChanges.filter(RemoveRootEObject).size)
 		assertEquals(1, changes.EChanges.filter(InsertRootEObject).size)

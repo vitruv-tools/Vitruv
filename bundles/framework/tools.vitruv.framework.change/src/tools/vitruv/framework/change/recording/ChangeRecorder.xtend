@@ -34,7 +34,8 @@ import static extension tools.vitruv.framework.change.echange.resolve.EChangeRes
 import static extension tools.vitruv.framework.change.echange.resolve.EChangeResolverAndApplicator.applyBackward
 import tools.vitruv.framework.change.description.VitruviusChange
 import tools.vitruv.framework.change.description.CompositeChange
-import tools.vitruv.framework.change.id.IdResolverAndRepository
+import static tools.vitruv.framework.change.id.IdResolverAndRepositoryFactory.createIdResolver
+import tools.vitruv.framework.change.id.IdResolver
 
 /**
  * Records changes to model elements as {@link CompositeTransactionalChanges}.
@@ -53,13 +54,17 @@ class ChangeRecorder implements AutoCloseable {
 	// closed: null
 	List<CompositeTransactionalChange> resultChanges = emptyList
 	val NotificationToEChangeConverter converter
-	val IdResolverAndRepository idResolverAndRepository
+	val IdResolver idResolver
 	val EChangeIdManager eChangeIdManager
 	val Set<EObject> objectsCreatedDuringMonitoring = new HashSet
 	
-	new(IdResolverAndRepository idResolverAndRepository) {
-		this.idResolverAndRepository = idResolverAndRepository
-		this.eChangeIdManager = new EChangeIdManager(idResolverAndRepository)
+	new(ResourceSet resourceSet) {
+		this(createIdResolver(resourceSet))
+	}
+	
+	new(IdResolver idResolver) {
+		this.idResolver = idResolver
+		this.eChangeIdManager = new EChangeIdManager(idResolver)
 		this.converter = new NotificationToEChangeConverter([affectedObject, addedObject | isCreateChange(affectedObject, addedObject)])
 	}
 
@@ -67,7 +72,7 @@ class ChangeRecorder implements AutoCloseable {
 		// We do not check the containment of the reference, because an element may be inserted into a non-containment
 		// reference before inserting it into a containment reference so that the create change has to be added
 		// for the insertion into the non-containment reference
-		var create = addedObject !== null && !objectsCreatedDuringMonitoring.contains(addedObject) && !idResolverAndRepository.hasId(addedObject)
+		var create = addedObject !== null && !objectsCreatedDuringMonitoring.contains(addedObject) && !idResolver.hasId(addedObject)
 		// Look if the new value has no resource or if it is a reference change, if the resource of the affected
 		// object is the same. Otherwise, the create has to be handled by an insertion/reference in that resource, as
 		// it can be potentially a reference to a third party model, for which no create shall be instantiated		
@@ -91,7 +96,7 @@ class ChangeRecorder implements AutoCloseable {
 
 		if (rootObjects += notifier) {
 			notifier.recursively [
-				if (it instanceof EObject) idResolverAndRepository.getAndUpdateId(it)
+				if (it instanceof EObject) idResolver.getAndUpdateId(it)
 				addAdapter()
 			]
 		}
@@ -141,7 +146,7 @@ class ChangeRecorder implements AutoCloseable {
 		checkNotDisposed()
 		isRecording = false
 		resultChanges = List.copyOf(resultChanges.postprocessRemovals().assignIds())
-		idResolverAndRepository.save()
+		idResolver.endTransaction()
 		return resultChanges
 		
 	}
@@ -158,7 +163,7 @@ class ChangeRecorder implements AutoCloseable {
 				change.changes.forEach[assignIds]
 			ConcreteChange: {
 				eChangeIdManager.setOrGenerateIds(change.EChange)
-				change.EChange.applyForward(idResolverAndRepository)
+				change.EChange.applyForward(idResolver)
 			}
 		}
 	}
@@ -283,13 +288,7 @@ class ChangeRecorder implements AutoCloseable {
 	}
 
 	def private boolean isInOurResourceSet(Notifier notifier) {
-		switch (notifier) {
-			case null: true
-			EObject: isInOurResourceSet(notifier?.eResource)
-			Resource: isInOurResourceSet(notifier?.resourceSet)
-			ResourceSet: notifier == idResolverAndRepository.resourceSet
-			default: throw new IllegalStateException("Unexpected notifier type: " + notifier.class.simpleName)
-		}
+		idResolver.canCalculateIdsIn(notifier)
 	}
 
 	@FinalFieldsConstructor

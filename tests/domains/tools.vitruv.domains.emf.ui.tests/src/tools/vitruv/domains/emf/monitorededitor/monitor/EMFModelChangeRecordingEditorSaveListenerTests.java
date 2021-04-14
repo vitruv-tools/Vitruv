@@ -28,7 +28,6 @@ import tools.vitruv.domains.emf.monitorededitor.test.mocking.EclipseMock;
 import tools.vitruv.domains.emf.monitorededitor.test.mocking.EclipseMock.SaveEventKind;
 import tools.vitruv.domains.emf.monitorededitor.test.testmodels.Files;
 import tools.vitruv.domains.emf.monitorededitor.test.utils.BasicTestCase;
-import tools.vitruv.domains.emf.monitorededitor.test.utils.DefaultImplementations.TestVirtualModel;
 import tools.vitruv.domains.emf.monitorededitor.test.utils.EnsureExecuted;
 import tools.vitruv.domains.emf.monitorededitor.test.utils.EnsureNotExecuted;
 import tools.vitruv.domains.emf.monitorededitor.tools.EclipseAdapterProvider;
@@ -43,7 +42,6 @@ public class EMFModelChangeRecordingEditorSaveListenerTests extends BasicTestCas
     private IEditorPartAdapter editorPartAdapter;
 
     private final EObject DUMMY_EOBJECT = EcoreFactory.eINSTANCE.createEClass();
-    private TestVirtualModel virtualModel;
     
     @BeforeEach
     public void setUp() {
@@ -54,8 +52,6 @@ public class EMFModelChangeRecordingEditorSaveListenerTests extends BasicTestCas
                 Files.ECORE_FILE_EXTENSION);
         editorPart = eclipseCtrl.openNewEMFTreeEditorPart(Files.EXAMPLEMODEL_ECORE);
         editorPartAdapter = adapterFactory.createAdapter(editorPart);
-        this.virtualModel = TestVirtualModel.createInstance();
-        this.virtualModel.registerExistingModel(Files.EXAMPLEMODEL_ECORE);
     }
 
     @AfterEach

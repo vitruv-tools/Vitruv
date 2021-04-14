@@ -32,20 +32,16 @@ import allElementTypes.Root
 import org.junit.jupiter.api.^extension.ExtendWith
 import tools.vitruv.testutils.TestProjectManager
 import tools.vitruv.testutils.RegisterMetamodelsInStandalone
-import static org.junit.jupiter.api.Assertions.assertTrue
 import static extension org.eclipse.emf.ecore.util.EcoreUtil.*
 import org.eclipse.emf.ecore.InternalEObject
 import org.eclipse.emf.ecore.EObject
-import tools.vitruv.framework.change.id.IdResolverAndRepository
-import static tools.vitruv.framework.change.id.IdResolverAndRepositoryFactory.createIdResolverAndRepository
 
 @ExtendWith(TestProjectManager, RegisterMetamodelsInStandalone)
 class ChangeRecorderTest {
 	// this test only covers general behaviour of ChangeRecorder. Whether it always produces correct change sequences
 	// is covered by other tests
 	val ResourceSet resourceSet = new ResourceSetImpl().withGlobalFactories()
-	val IdResolverAndRepository idResolverAndRepository = (createIdResolverAndRepository(resourceSet))
-	var ChangeRecorder changeRecorder = new ChangeRecorder(idResolverAndRepository)
+	var ChangeRecorder changeRecorder = new ChangeRecorder(resourceSet)
 
 	private def <T extends EObject> T wrapIntoRecordedResource(T object) {
 		val resource = resourceSet.createResource(URI.createURI('test://test.aet'))
@@ -656,41 +652,6 @@ class ChangeRecorderTest {
 		assertThrows(IllegalStateException)[changeRecorder.changes]
 		assertThrows(IllegalStateException)[changeRecorder.addToRecording(aet.Root)]
 		assertThrows(IllegalStateException)[changeRecorder.removeFromRecording(aet.Root)]
-	}
-
-	@Test
-	@DisplayName("registers the recorded object and all its contents at the ID resolver")
-	def void registersAtIdResolver() {
-		val parentResolver = createIdResolverAndRepository(resourceSet)
-
-		val root = aet.Root => [
-			parentResolver.register("id1", it)
-			singleValuedContainmentEReference = aet.NonRoot => [
-				parentResolver.register("id2", it)
-			]
-			nonRootObjectContainerHelper = aet.NonRootObjectContainerHelper => [
-				parentResolver.register("id3", it)
-				nonRootObjectsContainment += aet.NonRoot => [
-					parentResolver.register("id4", it)
-				]
-				nonRootObjectsContainment += aet.NonRoot => [
-					parentResolver.register("id5", it)
-				]
-			]
-		]
-		resourceSet.createResource(URI.createURI('file://test.aet')) => [
-			contents += root
-		]
-		
-		val localResolver = createIdResolverAndRepository(resourceSet)
-		var ChangeRecorder changeRecorder = new ChangeRecorder(localResolver)
-		changeRecorder.addToRecording(resourceSet)
-
-		assertTrue(localResolver.hasId(root))
-		assertTrue(localResolver.hasId(root.singleValuedContainmentEReference))
-		assertTrue(localResolver.hasId(root.nonRootObjectContainerHelper))
-		assertTrue(localResolver.hasId(root.nonRootObjectContainerHelper.nonRootObjectsContainment.get(0)))
-		assertTrue(localResolver.hasId(root.nonRootObjectContainerHelper.nonRootObjectsContainment.get(1)))
 	}
 
 	@Test
