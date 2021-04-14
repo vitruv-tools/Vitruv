@@ -23,8 +23,10 @@ import tools.vitruv.framework.util.ResourceRegistrationAdapter
 import static tools.vitruv.framework.correspondence.CorrespondenceModelFactory.createCorrespondenceModel
 import tools.vitruv.framework.correspondence.InternalCorrespondenceModel
 import org.eclipse.emf.common.util.URI
-import static tools.vitruv.framework.change.id.IdResolverAndRepositoryFactory.createPersistedIdResolver
-import tools.vitruv.framework.change.id.PersistedIdResolver
+import static tools.vitruv.framework.change.id.IdResolverAndRepositoryFactory.createIdResolver
+import java.nio.file.Files
+import tools.vitruv.framework.change.id.IdResolver
+import java.nio.file.NoSuchFileException
 
 package class ResourceRepositoryImpl implements ModelRepository {
 	static val logger = Logger.getLogger(ResourceRepositoryImpl)
@@ -33,41 +35,61 @@ package class ResourceRepositoryImpl implements ModelRepository {
 	val VitruvDomainRepository domainRepository
 	val Map<URI, ModelInstance> modelInstances = new HashMap()
 	val VsumFileSystemLayout fileSystemLayout
-	val PersistedIdResolver idResolverAndRepository
+	val IdResolver idResolver
 	val InternalCorrespondenceModel correspondenceModel
 	val Map<VitruvDomain, ChangeRecorder> domainToRecorder = new HashMap()
 	var isRecording = false
+	var isLoading = false
 
 	new(VsumFileSystemLayout fileSystemLayout, VitruvDomainRepository domainRepository) {
 		this.domainRepository = domainRepository
 		this.fileSystemLayout = fileSystemLayout
 		this.modelsResourceSet = new ResourceSetImpl().withGlobalFactories().awareOfDomains(domainRepository)
 		this.correspondencesResourceSet = new ResourceSetImpl().withGlobalFactories()
-		this.idResolverAndRepository = createPersistedIdResolver(modelsResourceSet,
-			fileSystemLayout.idResolverAndRepositoryURI)
+		this.idResolver = createIdResolver(modelsResourceSet)
 		this.correspondenceModel = createCorrespondenceModel(fileSystemLayout.correspondencesURI)
-		this.modelsResourceSet.eAdapters += new ResourceRegistrationAdapter[getCreateOrLoadModel(it.URI)]
+		this.modelsResourceSet.eAdapters += new ResourceRegistrationAdapter [
+			if(!isLoading) getCreateOrLoadModel(it.URI)
+		]
 	}
 
 	override loadExistingModels() {
-		idResolverAndRepository.loadIdsAndModelsFromSerializedIdRepository()
+		isLoading = true
+		readModelsFile()
 		correspondenceModel.loadSerializedCorrespondences(modelsResourceSet)
+		isLoading = false
+	}
+
+	private def writeModelsFile() {
+		Files.write(fileSystemLayout.modelsNamesFilesPath, modelsResourceSet.resources.map[URI.toString])
+	}
+
+	private def readModelsFile() {
+		try {
+			for (modelPath : Files.readAllLines(fileSystemLayout.modelsNamesFilesPath)) {
+				val uri = URI.createURI(modelPath)
+				modelsResourceSet.loadOrCreateResource(uri)
+				createOrLoadModel(uri)
+			}
+		} catch (NoSuchFileException e) {
+			// There are no existing models, so don't do anything
+		}
 	}
 
 	override getIdResolver() {
-		return idResolverAndRepository
+		return idResolver
 	}
 
 	override getCorrespondenceModel() {
 		correspondenceModel.genericView
 	}
-	
+
 	override getModel(URI modelURI) {
 		modelInstances.get(modelURI)
 	}
 
 	private def getCreateOrLoadModel(URI modelURI) {
-		getModel(modelURI)
+		getModel(modelURI) 
 			?: createOrLoadModel(modelURI)
 	}
 
@@ -89,7 +111,7 @@ package class ResourceRepositoryImpl implements ModelRepository {
 		// Only monitor modifiable models (file / platform URIs, not pathmap URIs)
 		if (modelInstance.URI.isFile || modelInstance.URI.isPlatform) {
 			val recorder = domainToRecorder.computeIfAbsent(getDomainForURI(modelInstance.URI)) [
-				new ChangeRecorder(idResolverAndRepository)
+				new ChangeRecorder(idResolver)
 			]
 			recorder.addToRecording(modelInstance.resource)
 			if (this.isRecording && !recorder.isRecording) {
@@ -97,13 +119,13 @@ package class ResourceRepositoryImpl implements ModelRepository {
 			}
 		}
 	}
-	
+
 	override void persistAsRoot(EObject rootEObject, URI uri) {
 		getCreateOrLoadModel(uri).addRoot(rootEObject)
 	}
 
 	override void saveOrDeleteModels() {
-		if (logger.isDebugEnabled) logger.debug('''Saving all models of model repository for VSUM «fileSystemLayout»''')
+		if(logger.isDebugEnabled) logger.debug('''Saving all models of model repository for VSUM «fileSystemLayout»''')
 		for (modelInstance : modelInstances.values) {
 			if (modelInstance.empty) {
 				modelInstance.delete()
@@ -112,7 +134,7 @@ package class ResourceRepositoryImpl implements ModelRepository {
 			}
 		}
 		correspondenceModel.save()
-		idResolverAndRepository.save()
+		writeModelsFile()
 	}
 
 	def private VitruvDomain getDomainForURI(URI uri) {
@@ -128,10 +150,10 @@ package class ResourceRepositoryImpl implements ModelRepository {
 	override Iterable<? extends TransactionalChange> endRecording() {
 		logger.debug("End recording virtual model")
 		isRecording = false
-		domainToRecorder.values.forEach [endRecording()]
+		domainToRecorder.values.forEach[endRecording()]
 		return domainToRecorder.values
 			.map [recorder | VitruviusChangeFactory.instance.createCompositeTransactionalChange(recorder.changes)]
-			.filter [containsConcreteChange]
+			.filter[containsConcreteChange]
 			.toList()
 	}
 
@@ -149,7 +171,6 @@ package class ResourceRepositoryImpl implements ModelRepository {
 		correspondencesResourceSet.resources.forEach[unload]
 		modelsResourceSet.resources.clear()
 		correspondencesResourceSet.resources.clear()
-		idResolverAndRepository.close()
 	}
-	
+
 }
