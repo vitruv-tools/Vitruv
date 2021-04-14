@@ -111,6 +111,7 @@ package class IdResolverImpl implements IdResolver {
 		val uri = URI.createURI(id)
 		return uri.getEObjectIfReadonlyUri()
 			?: uri.getStoredEObject()
+			?: uri.getAndRegisterNonStoredEObject()
 			?: null
 	}
 	
@@ -125,6 +126,13 @@ package class IdResolverImpl implements IdResolver {
 	private def getStoredEObject(URI uri) {
 		return repository.idToEObject.get(uri.toString)
 	}
+	
+	private def getAndRegisterNonStoredEObject(URI uri) {
+		val candidate = resourceSet.getEObject(uri, false)
+		if (candidate !== null) getAndUpdateId(candidate)
+		return candidate
+	}
+	
 
 	override String getAndUpdateId(EObject eObject) {
 		return if (eObject.eResource !== null) {

@@ -36,6 +36,7 @@ import tools.vitruv.framework.change.description.VitruviusChange
 import tools.vitruv.framework.change.description.CompositeChange
 import static tools.vitruv.framework.change.id.IdResolverAndRepositoryFactory.createIdResolver
 import tools.vitruv.framework.change.id.IdResolver
+import tools.vitruv.framework.change.echange.feature.reference.UpdateReferenceEChange
 
 /**
  * Records changes to model elements as {@link CompositeTransactionalChanges}.
@@ -56,7 +57,7 @@ class ChangeRecorder implements AutoCloseable {
 	val NotificationToEChangeConverter converter
 	val IdResolver idResolver
 	val EChangeIdManager eChangeIdManager
-	val Set<EObject> objectsCreatedDuringMonitoring = new HashSet
+	val Set<EObject> existingObjects = new HashSet
 	
 	new(ResourceSet resourceSet) {
 		this(createIdResolver(resourceSet))
@@ -72,12 +73,12 @@ class ChangeRecorder implements AutoCloseable {
 		// We do not check the containment of the reference, because an element may be inserted into a non-containment
 		// reference before inserting it into a containment reference so that the create change has to be added
 		// for the insertion into the non-containment reference
-		var create = addedObject !== null && !objectsCreatedDuringMonitoring.contains(addedObject) && !idResolver.hasId(addedObject)
+		var create = addedObject !== null && !existingObjects.contains(addedObject)
 		// Look if the new value has no resource or if it is a reference change, if the resource of the affected
 		// object is the same. Otherwise, the create has to be handled by an insertion/reference in that resource, as
 		// it can be potentially a reference to a third party model, for which no create shall be instantiated		
 		create = create && (addedObject.eResource === null || affectedObject === null || addedObject.eResource == affectedObject.eResource)
-		if (create) objectsCreatedDuringMonitoring += addedObject
+		if (create) existingObjects += addedObject
 		return create;
 	}
 
@@ -96,7 +97,7 @@ class ChangeRecorder implements AutoCloseable {
 
 		if (rootObjects += notifier) {
 			notifier.recursively [
-				if (it instanceof EObject) idResolver.getAndUpdateId(it)
+				if (it instanceof EObject) existingObjects.add(it)
 				addAdapter()
 			]
 		}
@@ -121,7 +122,6 @@ class ChangeRecorder implements AutoCloseable {
 		checkState(!isRecording, "This recorder is already recording!")
 		isRecording = true
 		resultChanges = new ArrayList
-		objectsCreatedDuringMonitoring.clear()
 	}
 
 	override close() {
@@ -317,9 +317,16 @@ class ChangeRecorder implements AutoCloseable {
 				}
 			}
 
-			if (isRecording) {
-				val newChanges = converter.convert(new NotificationInfo(notification))
-				if (!newChanges.isEmpty) {
+			val newChanges = converter.convert(new NotificationInfo(notification))
+			if (!newChanges.isEmpty) {
+				// Register any added object as existing, even if we are not recording
+				newChanges.forEach[
+					if (it instanceof EObjectAddedEChange<?>) {
+						existingObjects += newValue
+						if (it instanceof UpdateReferenceEChange<?>) existingObjects += affectedEObject 	
+					}
+				]
+				if (isRecording) {
 					resultChanges += VitruviusChangeFactory.instance.createCompositeTransactionalChange(
 						newChanges.map[VitruviusChangeFactory.instance.createConcreteChange(it)]
 					)

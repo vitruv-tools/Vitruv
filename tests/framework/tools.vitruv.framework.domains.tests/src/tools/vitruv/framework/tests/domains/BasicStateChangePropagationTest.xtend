@@ -136,7 +136,6 @@ class BasicStateChangePropagationTest extends StateChangePropagationTest {
 			TestDomainsRepository.INSTANCE)
 		val validationResolver = IdResolverAndRepositoryFactory.createIdResolver(validationResourceSet)
 		val oldState = validationResourceSet.getResource(testUri, true)
-		oldState.allContents.forEach[validationResolver.getAndUpdateId(it)]
 		val changes = strategyToTest.getChangeSequenceBetween(-modelResource, oldState)
 		assertEquals(1, changes.EChanges.size)
 		assertEquals(1, changes.EChanges.filter(ReplaceSingleValuedEAttribute).size)
@@ -175,7 +174,6 @@ class BasicStateChangePropagationTest extends StateChangePropagationTest {
 			TestDomainsRepository.INSTANCE)
 		val validationResolver = IdResolverAndRepositoryFactory.createIdResolver(validationResourceSet)
 		val oldState = validationResourceSet.getResource(testUri, true)
-		oldState.allContents.forEach[validationResolver.getAndUpdateId(it)]
 		val changes = strategyToTest.getChangeSequenceBetween(-modelResource, oldState)
 
 		changes.unresolve()

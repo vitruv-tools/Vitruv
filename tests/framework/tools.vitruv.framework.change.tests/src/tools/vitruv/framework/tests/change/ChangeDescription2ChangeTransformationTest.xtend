@@ -115,14 +115,15 @@ abstract class ChangeDescription2ChangeTransformationTest {
 			monitoredChange.applyBackward
 		]
 		val comparisonResourceSet = new ResourceSetImpl().withGlobalFactories().awareOfDomains(TestDomainsRepository.INSTANCE)
-		val comparisonIdManager = resourceSet.copyTo(comparisonResourceSet)
+		val comparisonIdResolver = createIdResolver(comparisonResourceSet)
+		resourceSet.copyTo(comparisonResourceSet)
 		monitoredChanges.map[
 			applyForward(idResolver)
 			EcoreUtil.copy(it)
 		].forEach[
 			EChangeUnresolver.unresolve(it)
-			val resolvedChange = it.resolveBefore(comparisonIdManager)
-			resolvedChange.applyForward(comparisonIdManager)
+			val resolvedChange = it.resolveBefore(comparisonIdResolver)
+			resolvedChange.applyForward(comparisonIdResolver)
 		]
 		resourceSet.assertContains(comparisonResourceSet)
 		comparisonResourceSet.assertContains(resourceSet)
@@ -130,15 +131,12 @@ abstract class ChangeDescription2ChangeTransformationTest {
 	}
 	
 	private static def copyTo(ResourceSet original, ResourceSet target) {
-		val comparisonIdManager = createIdResolver(target)
 		for (originalResource : original.resources) {
 			val comparisonResource = target.createResource(originalResource.URI)
 			if (!originalResource.contents.empty) {
 				comparisonResource.contents += EcoreUtil.copyAll(originalResource.contents)
 			}
-			comparisonResource.allContents.forEach[comparisonIdManager.getAndUpdateId(it)]			
 		}
-		return comparisonIdManager
 	}
 	
 	private static def assertContains(ResourceSet first, ResourceSet second) {
