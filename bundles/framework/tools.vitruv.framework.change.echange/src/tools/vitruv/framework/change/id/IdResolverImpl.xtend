@@ -7,73 +7,48 @@ import org.eclipse.emf.ecore.resource.ResourceSet
 import org.eclipse.emf.ecore.util.EcoreUtil
 import org.eclipse.emf.ecore.resource.Resource
 import org.apache.log4j.Logger
-import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceSetUtil.loadOrCreateResource
-import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceSetUtil.withGlobalFactories
 import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.EClass
 import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.common.util.URIUtil.*
 import static com.google.common.base.Preconditions.checkArgument
 import static com.google.common.base.Preconditions.checkState
 import static com.google.common.base.Preconditions.checkNotNull
-import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import java.util.PriorityQueue
 import static extension tools.vitruv.framework.util.ObjectResolutionUtil.getHierarchicUriFragment
 import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceSetUtil.getOrCreateResource
+import org.eclipse.emf.common.notify.Notifier
+import org.eclipse.xtend.lib.annotations.Accessors
 
 /**
- * {@link IdResolverAndRepository}
+ * {@link IdResolver}
  */
-package class IdResolverAndRepositoryImpl implements IdResolverAndRepository {
-	static val logger = Logger.getLogger(IdResolverAndRepositoryImpl)
-
+package class IdResolverImpl implements IdResolver {
+	static val logger = Logger.getLogger(IdResolverImpl)
 	static val CACHE_PREFIX = "cache:/"
 	
+	@Accessors(PROTECTED_GETTER)
 	val ResourceSet resourceSet
-	val Resource idResource
+	@Accessors(PROTECTED_GETTER)
 	IdEObjectRepository repository
 
 	/**
-	 * Instantiates an ID resolver and repository, the given {@link ResourceSet} for resolving objects
-	 * and a resource at the given {@link URI} for storing the mapping in.
+	 * Instantiates an ID resolver and repository, the given {@link ResourceSet} for resolving objects.
 	 * 
 	 * @param resourceSet -
 	 * 		the {@link ResourceSet} to load model elements from, may not be {@code null}
-	 * @param resourceUri -
-	 * 		the {@link URI} to place a resource for storing the mapping in, may be {@code null}
 	 * @throws IllegalArgumentExceptionif given {@link ResourceSet} is {@code null}
 	 */
-	new(ResourceSet resourceSet, URI resourceUri) {
+	new(ResourceSet resourceSet) {
 		checkArgument(resourceSet !== null, "Resource set may not be null")
 		this.resourceSet = resourceSet
 		this.repository = IdFactory.eINSTANCE.createIdEObjectRepository
-		this.idResource = if (resourceUri !== null)
-			new ResourceSetImpl().withGlobalFactories.createResource(resourceUri) => [
-				contents += repository
-			]
 	}
-
-	override loadIdsAndModelsFromSerializedIdRepository() {
-		checkState(idResource !== null, "ID resource must be specified to load existing IDs")
-		val loadedResource = new ResourceSetImpl().withGlobalFactories.loadOrCreateResource(idResource.URI)
-		if (!loadedResource.contents.empty) {
-			val loadedRepository = loadedResource.contents.get(0) as IdEObjectRepository
-			for (proxyEntry : loadedRepository.EObjectToId.entrySet) {
-				val resolvedObject = EcoreUtil.resolve(proxyEntry.key, resourceSet)
-				if (resolvedObject.eIsProxy) {
-					throw new IllegalStateException("Object " + proxyEntry.key +
-						" has an ID but could not be resolved")
-				}
-				register(proxyEntry.value, resolvedObject)
-			}
-		}
-	}
-
-	override save() {
+	
+	override endTransaction() {
 		cleanupRemovedElements()
-		idResource?.save(null)
 		checkState(cacheIds.noneMissing, "there are still elements in cache although a transaction has been closed")
 	}
-
+	
 	private def cleanupRemovedElements() {
 		for (val iterator = repository.EObjectToId.keySet.iterator(); iterator.hasNext();) {
 			val object = iterator.next()
@@ -87,21 +62,19 @@ package class IdResolverAndRepositoryImpl implements IdResolverAndRepository {
 			}
 		}
 	}
-
-	override close() {
-		this.idResource.unload()
+	
+	override canCalculateIdsIn(Notifier notifier) {
+		switch (notifier) {
+			case null: true
+			EObject: canCalculateIdsIn(notifier?.eResource)
+			Resource: canCalculateIdsIn(notifier?.resourceSet)
+			ResourceSet: notifier == resourceSet
+			default: throw new IllegalStateException("Unexpected notifier type: " + notifier.class.simpleName)
+		}
 	}
 	
-	override getResourceSet() {
-		return resourceSet
-	}
-
 	override getResource(URI uri) {
 		return resourceSet.getOrCreateResource(uri)
-	}
-	
-	override hasResource(URI uri) {
-		return resourceSet.getResource(uri, false) !== null
 	}
 	
 	private def getIdOrNull(EObject eObject) {
@@ -177,7 +150,7 @@ package class IdResolverAndRepositoryImpl implements IdResolverAndRepository {
 		}
 	}
 	
-	override register(String id, EObject eObject) {
+	private def register(String id, EObject eObject) {
 		checkState(eObject !== null, "object must not be null")
 		if(logger.isTraceEnabled) logger.trace('''Adding ID «id» for EObject: «eObject»''')
 

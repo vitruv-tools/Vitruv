@@ -30,8 +30,6 @@ import tools.vitruv.framework.change.recording.ChangeRecorder
 import org.eclipse.emf.ecore.util.EcoreUtil
 import org.eclipse.xtend.lib.annotations.Accessors
 import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.common.util.URIUtil.createFileURI
-import tools.vitruv.framework.change.id.IdResolverAndRepository
-import static tools.vitruv.framework.change.id.IdResolverAndRepositoryFactory.createIdResolverAndRepository
 
 @ExtendWith(TestProjectManager, TestLogging, RegisterMetamodelsInStandalone)
 abstract class StateChangePropagationTest {
@@ -54,9 +52,6 @@ abstract class StateChangePropagationTest {
 	var UPackage umlRoot
 	var ChangeRecorder changeRecorder
 	@Accessors(PROTECTED_GETTER)
-	var IdResolverAndRepository setupResolver
-	var IdResolverAndRepository checkpointResolver
-	@Accessors(PROTECTED_GETTER)
 	var ResourceSet resourceSet
 	var ResourceSet checkpointResourceSet
 
@@ -70,15 +65,13 @@ abstract class StateChangePropagationTest {
 		strategyToTest = new DefaultStateBasedChangeResolutionStrategy(TestDomainsRepository.DOMAINS)
 		resourceSet = new ResourceSetImpl().withGlobalFactories().awareOfDomains(TestDomainsRepository.INSTANCE)
 		checkpointResourceSet = new ResourceSetImpl().withGlobalFactories().awareOfDomains(TestDomainsRepository.INSTANCE)
-		setupResolver = createIdResolverAndRepository(resourceSet)
-		changeRecorder = new ChangeRecorder(setupResolver)
+		changeRecorder = new ChangeRecorder(resourceSet)
 		// Create mockup models:
 		resourceSet.record [
 			createPcmMockupModel()
 			createUmlMockupModel()
 		]
-		// change to new recorder with test resolver, create model checkpoints and start recording:
-		checkpointResolver = createIdResolverAndRepository(checkpointResourceSet)
+		// create model checkpoints and start recording:
 		umlCheckpoint = umlModel.createCheckpoint
 		pcmCheckpoint = pcmModel.createCheckpoint
 		umlModel.startRecording
@@ -100,7 +93,7 @@ abstract class StateChangePropagationTest {
 	protected def compareChanges(Resource model, Resource checkpoint) {
 		model.save(null)
 		val deltaBasedChange = resourceSet.endRecording
-		val stateBasedChange = strategyToTest.getChangeSequenceBetween(model, checkpoint, checkpointResolver)
+		val stateBasedChange = strategyToTest.getChangeSequenceBetween(model, checkpoint)
 		assertNotNull(stateBasedChange)
 		val message = getTextualRepresentation(stateBasedChange, deltaBasedChange)
 		val stateBasedChangedObjects = stateBasedChange.affectedAndReferencedEObjects

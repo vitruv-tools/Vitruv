@@ -13,11 +13,11 @@ class IdResolverAndRepositoryFactory {
 	 * @param resourceSet -
 	 * 		the {@link ResourceSet} to load model elements from, may not be {@code null}
 	 * @param resourceUri -
-	 * 		the {@link URI} to place a resource for storing the mapping in, may be {@code null}
-	 * @throws IllegalArgumentException if given {@link ResourceSet} is {@code null}
+	 * 		the {@link URI} to place a resource for storing the mapping in, may not be {@code null}
+	 * @throws IllegalArgumentException if given {@link ResourceSet} or {@link URI} is {@code null}
 	 */
-	static def IdResolverAndRepository createIdResolverAndRepository(ResourceSet resourceSet, URI resourceUri) {
-		return new IdResolverAndRepositoryImpl(resourceSet, resourceUri)
+	static def PersistedIdResolver createPersistedIdResolver(ResourceSet resourceSet, URI resourceUri) {
+		return new PersistedIdResolverImpl(resourceSet, resourceUri)
 	}
 		
 	/**
@@ -28,8 +28,8 @@ class IdResolverAndRepositoryFactory {
 	 * 		the {@link ResourceSet} to load model elements from, may not be {@code null}
 	 * @throws IllegalArgumentException if given {@link ResourceSet} is {@code null}
 	 */
-	static def IdResolverAndRepository createIdResolverAndRepository(ResourceSet resourceSet) {
-		return new IdResolverAndRepositoryImpl(resourceSet, null)
+	static def IdResolver createIdResolver(ResourceSet resourceSet) {
+		return new IdResolverImpl(resourceSet)
 	}
 	
 }

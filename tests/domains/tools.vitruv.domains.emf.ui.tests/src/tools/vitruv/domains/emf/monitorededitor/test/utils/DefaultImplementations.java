@@ -11,7 +11,6 @@
 
 package tools.vitruv.domains.emf.monitorededitor.test.utils;
 
-import java.net.URL;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -19,15 +18,11 @@ import java.util.List;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 
 import tools.vitruv.domains.emf.monitorededitor.ISynchronizingMonitoredEmfEditor.ResourceChangeSynchronizing;
 import tools.vitruv.domains.emf.monitorededitor.IVitruviusEMFEditorMonitor.IVitruviusAccessor;
-import tools.vitruv.domains.emf.monitorededitor.test.testmodels.Models;
 import tools.vitruv.framework.change.description.PropagatedChange;
 import tools.vitruv.framework.change.description.VitruviusChange;
-import tools.vitruv.framework.change.id.IdResolverAndRepository;
-import static tools.vitruv.framework.change.id.IdResolverAndRepositoryFactory.createIdResolverAndRepository;
 import tools.vitruv.framework.vsum.ChangePropagationListener;
 import tools.vitruv.framework.vsum.VirtualModel;
 
@@ -60,7 +55,6 @@ public class DefaultImplementations {
 		private URI lastURI = null;
 		private List<VitruviusChange> lastChanges = null;
 		private int executionCount = 0;
-		private IdResolverAndRepository idResolverAndRepository = createIdResolverAndRepository(new ResourceSetImpl());
 
 		@Override
 		public void synchronizeChanges(List<VitruviusChange> changes, URI sourceModelURI, Resource res) {
@@ -70,11 +64,6 @@ public class DefaultImplementations {
 			}
 			this.lastURI = sourceModelURI;
 			this.executionCount++;
-		}
-
-		public void registerExistingModel(URL testResourceURL) {
-			Resource testResource = Models.loadModel(idResolverAndRepository.getResourceSet(), testResourceURL);
-			testResource.getAllContents().forEachRemaining(obj -> idResolverAndRepository.getAndUpdateId(obj));
 		}
 
 		public boolean hasBeenExecuted() {

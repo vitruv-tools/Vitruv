@@ -11,7 +11,7 @@ import org.eclipse.emf.common.util.URI
 import tools.vitruv.framework.change.echange.TypeInferringAtomicEChangeFactory
 import tools.vitruv.framework.change.echange.EChangeIdManager
 import tools.vitruv.framework.change.echange.EChange
-import tools.vitruv.framework.change.id.IdResolverAndRepository
+import tools.vitruv.framework.change.id.IdResolver
 
 /**
  * Factory singleton class for elements of change models.
@@ -23,8 +23,8 @@ import tools.vitruv.framework.change.id.IdResolverAndRepository
 package final class TypeInferringUnresolvingAtomicEChangeFactory extends TypeInferringAtomicEChangeFactory {
 	val EChangeIdManager eChangeIdManager;
 	
-	new(IdResolverAndRepository idResolverAndRepository) {
-		this.eChangeIdManager = new EChangeIdManager(idResolverAndRepository);
+	new(IdResolver idResolver) {
+		this.eChangeIdManager = new EChangeIdManager(idResolver);
 	}
 	
 	def private setIds(EChange change) {

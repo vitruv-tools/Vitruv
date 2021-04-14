@@ -23,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.assertNotSame
 import static org.junit.jupiter.api.Assertions.assertThrows
 import static tools.vitruv.testutils.metamodels.AllElementTypesCreators.*
 import static extension tools.vitruv.framework.change.echange.resolve.EChangeResolverAndApplicator.*
-import static tools.vitruv.framework.change.id.IdResolverAndRepositoryFactory.createIdResolverAndRepository
+import static tools.vitruv.framework.change.id.IdResolverAndRepositoryFactory.createIdResolver
 
 /**
  * Test class for {@link FeatureEChange} which is used by every {@link EChange} which modifies {@link EStructuralFeature}s 
@@ -45,7 +45,7 @@ class FeatureEChangeTest extends EChangeTest {
 		// Load model in second resource
 		val resourceSet2 = new ResourceSetImpl().withGlobalFactories
 		this.resource2 = resourceSet2.getResource(resource.URI, true)
-		this.idResolver2 = createIdResolverAndRepository(resourceSet2)
+		this.idResolver2 = createIdResolver(resourceSet2)
 	}
 
 	/**

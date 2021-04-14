@@ -21,8 +21,6 @@ import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resou
 import static extension tools.vitruv.framework.domains.repository.DomainAwareResourceSet.awareOfDomains
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import tools.vitruv.framework.change.recording.ChangeRecorder
-import tools.vitruv.framework.change.id.IdResolverAndRepository
-import static tools.vitruv.framework.change.id.IdResolverAndRepositoryFactory.createIdResolverAndRepository
 
 /**
  * A test view that will record and publish the changes created in it.
@@ -33,7 +31,6 @@ class ChangePublishingTestView implements NonTransactionalTestView {
 	val TestView delegate
 	val ChangeRecorder changeRecorder
 	val List<(VitruviusChange)=>List<PropagatedChange>> changeProcessors = new LinkedList()
-	val IdResolverAndRepository idResolverAndRepository
 	var renewResourceCacheAfterPropagation = true
 	
 	/**
@@ -49,8 +46,7 @@ class ChangePublishingTestView implements NonTransactionalTestView {
 	) {
 		this.resourceSet = new ResourceSetImpl().withGlobalFactories().awareOfDomains(targetDomains)
 		this.delegate = new BasicTestView(persistenceDirectory, resourceSet, userInteraction, uriMode)
-		idResolverAndRepository = createIdResolverAndRepository(resourceSet)
-		this.changeRecorder = new ChangeRecorder(idResolverAndRepository)
+		this.changeRecorder = new ChangeRecorder(resourceSet)
 		changeRecorder.beginRecording()
 	}
 
@@ -123,7 +119,6 @@ class ChangePublishingTestView implements NonTransactionalTestView {
 
 	override renewResourceCache() {
 		resourceSet.resources.clear()
-		idResolverAndRepository.save()
 	}
 
 	/**

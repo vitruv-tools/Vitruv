@@ -68,7 +68,8 @@ package class AtomicEChangeResolver {
 				// Create new one
 				val newObject = EcoreUtil.create(change.affectedEObjectType) as A
 				change.affectedEObject = newObject
-				idResolver.register(change.affectedEObjectID, newObject)
+				val id = idResolver.getAndUpdateId(newObject)
+				checkState(id == change.affectedEObjectID, "generated ID %s does not match the original ID %s on element creation", id, change.affectedEObjectID)
 			}
 		} else {
 			// Object still exists

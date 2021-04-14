@@ -3,6 +3,7 @@ package tools.vitruv.framework.change.id
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.resource.Resource
+import org.eclipse.emf.common.notify.Notifier
 
 interface IdResolver {
 	/**
@@ -19,29 +20,30 @@ interface IdResolver {
 	 * Calculates and returns the ID of the given {@link EObject} and updates the stored ID.
 	 */
 	def String getAndUpdateId(EObject eObject)
-	
+
 	/**
 	 * Returns the {@link EObject} for the given ID. If more than one object was registered
 	 * for the ID, the last one is returned.
-	 * If no element was registered, an {@link IllegalStateException} is thrown.
+	 * @throws IllegalStateException if no element was registered for the ID
 	 */
 	def EObject getEObject(String id) throws IllegalStateException
-
-	/**
-	 * Registers the given {@link EObject} for the given ID.
-	 */
-	def void register(String id, EObject eObject)
 
 	/**
 	 * Returns the {@link Resource} for the given {@link URI}. If the resource does not exist yet,
 	 * it gets created.
 	 */
-	def Resource getResource(URI uri);
+	def Resource getResource(URI uri)
 
 	/**
-	 * Returns whether there is a {@link Resource} for the given {@link URI} loaded within the managed
-	 * {@link ResourceSet}.
+	 * Returns whether this {@link IdResolver} can calculate IDs for {@link EObject}s within the given
+	 * {@link Notifier}.
 	 */
-	def boolean hasResource(URI uri);
+	def boolean canCalculateIdsIn(Notifier notifier)
+	
+	/**
+	 * Ends a transactions such that all {@link EObject}s not being contained in a resource, which is
+	 * contained in a resource set, are removed from the ID mapping.
+	 */
+	def void endTransaction()
 
 }

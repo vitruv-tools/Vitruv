@@ -11,12 +11,7 @@ import org.eclipse.emf.ecore.resource.ResourceSet
  * It registers a notifier on that {@link ResourceSet}, which informs about newly added/loaded {@link Resource}s
  * and automatically loads the assigned IDs for contained elements from the parent resolver.
  */
-interface IdResolverAndRepository extends IdResolver, AutoCloseable {	
-	/**
-	 * Returns the {@link ResourceSet} used in this ID repository.
-	 */
-	def ResourceSet getResourceSet()
-
+interface PersistedIdResolver extends IdResolver, AutoCloseable {	
 	/**
 	 * Loads the mapping between IDs and {@link EObject}s from the persistence at the {@link URI}
 	 * given in the constructor and resolves the referenced {@link EObject}s in the {@link ResourceSet}
@@ -25,7 +20,8 @@ interface IdResolverAndRepository extends IdResolver, AutoCloseable {
 	def void loadIdsAndModelsFromSerializedIdRepository()
 
 	/**
-	 * Saves the mapping between IDs and {@link EObject}s to an underlying resource.
+	 * Saves the mapping between IDs and {@link EObject}s to an underlying resource and ends a
+	 * transaction according to {@link #endTransaction endTransaction}.
 	 */
 	def void save()
 
