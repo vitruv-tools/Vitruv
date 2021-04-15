@@ -9,7 +9,6 @@ import tools.vitruv.framework.change.description.impl.ConcreteChangeImpl
 import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.change.echange.TypeInferringCompoundEChangeFactory
 import java.util.List
-import tools.vitruv.framework.change.description.impl.EmptyChange
 
 class VitruviusChangeFactory {
 	static val logger = Logger.getLogger(VitruviusChangeFactory);
@@ -49,10 +48,6 @@ class VitruviusChangeFactory {
 		new CompositeTransactionalChangeImpl(innerChanges.toList)
 	}
 	
-	def TransactionalChange emptyChange() {
-		return EmptyChange.INSTANCE
-	}
-
 	private def List<EChange> generateFileCreateChange(Resource resource) {
 		var EObject rootElement = null;
 		var index = 0

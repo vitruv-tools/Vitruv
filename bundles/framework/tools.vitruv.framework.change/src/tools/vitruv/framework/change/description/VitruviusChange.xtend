@@ -45,21 +45,10 @@ interface VitruviusChange {
 	def Set<EObject> getAffectedEObjects()
 	
 	/**
-	 * Returns the ID all {@link EObject}s directly affected by this change. This does not include referenced elements.
-	 */
-	def Set<String> getAffectedEObjectIds()
-
-	/**
 	 * Returns all {@link EObject}s affected by this change, including both the elements of which an attribute or
 	 * reference was changes, as well as the referenced elements.
 	 */
 	def Set<EObject> getAffectedAndReferencedEObjects()
-
-	/**
-	 * Returns the IDs of all {@link EObject}s affected by this change, including both the elements of which an attribute or
-	 * reference was changes, as well as the referenced elements.
-	 */
-	def Set<String> getAffectedAndReferencedEObjectIds()
 
 	/**
 	 * Returns the {@link URI}s of all {@link Resource}s changed by this change, i.e. the resources containing the 

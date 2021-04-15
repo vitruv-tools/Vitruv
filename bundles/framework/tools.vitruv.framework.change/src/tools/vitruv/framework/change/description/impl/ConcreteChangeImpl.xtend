@@ -88,15 +88,6 @@ class ConcreteChangeImpl implements ConcreteChange {
 		}
 	}
 	
-	override getAffectedEObjectIds() {
-		switch (eChange) {
-			FeatureEChange<?, ?>: Set.of(eChange.affectedEObjectID)
-			EObjectExistenceEChange<?>: Set.of(eChange.affectedEObjectID)
-			InsertRootEObject<?>: Set.of(eChange.newValueID)
-			RemoveRootEObject<?>: Set.of(eChange.oldValueID)
-		}
-	}
-
 	override getAffectedAndReferencedEObjects() {
 		switch (eChange) {
 			UpdateAttributeEChange<?>: Set.of(eChange.affectedEObject)
@@ -107,19 +98,6 @@ class ConcreteChangeImpl implements ConcreteChange {
 			EObjectExistenceEChange<?>: Set.of(eChange.affectedEObject)
 			InsertRootEObject<?>: Set.of(eChange.newValue)
 			RemoveRootEObject<?>: Set.of(eChange.oldValue)
-		}
-	}
-	
-	override getAffectedAndReferencedEObjectIds() {
-		switch (eChange) {
-			UpdateAttributeEChange<?>: Set.of(eChange.affectedEObjectID)
-			ReplaceSingleValuedEReference<?, ?>: 
-				setOfNotNull(eChange.affectedEObjectID, eChange.oldValueID, eChange.newValueID)
-			InsertEReference<?, ?>: Set.of(eChange.affectedEObjectID, eChange.newValueID)
-			RemoveEReference<?, ?>: Set.of(eChange.affectedEObjectID, eChange.oldValueID)
-			EObjectExistenceEChange<?>: Set.of(eChange.affectedEObjectID)
-			InsertRootEObject<?>: Set.of(eChange.newValueID)
-			RemoveRootEObject<?>: Set.of(eChange.oldValueID)
 		}
 	}
 
