@@ -38,16 +38,8 @@ abstract class AbstractCompositeChangeImpl<C extends VitruviusChange> implements
 		changes.flatMapFixedTo(new LinkedHashSet) [affectedEObjects]
 	}
 	
-	override getAffectedEObjectIds() {
-		changes.flatMapFixedTo(new LinkedHashSet) [affectedEObjectIds]
-	}
-
 	override getAffectedAndReferencedEObjects() {
 		changes.flatMapFixedTo(new LinkedHashSet) [affectedAndReferencedEObjects]
-	}
-
-	override getAffectedAndReferencedEObjectIds() {
-		changes.flatMapFixedTo(new LinkedHashSet) [affectedAndReferencedEObjectIds]
 	}
 
 	override unresolve() {
