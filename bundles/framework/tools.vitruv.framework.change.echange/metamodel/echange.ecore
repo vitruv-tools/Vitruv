@@ -48,5 +48,7 @@
       </eAnnotations>
       <eGenericType eTypeParameter="#//SubtractiveEChange/T"/>
     </eOperations>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="Test" eType="#//Id"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EDataType" name="Id" instanceClassName="java.lang.String"/>
 </ecore:EPackage>

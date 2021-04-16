@@ -15,7 +15,7 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="newValue" lowerBound="1">
       <eGenericType eTypeParameter="#//EObjectAddedEChange/T"/>
     </eStructuralFeatures>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="newValueID" eType="ecore:EDataType id.ecore#//Id"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="newValueID" eType="ecore:EDataType echange.ecore#//Id"/>
     <eGenericSuperTypes eClassifier="ecore:EClass echange.ecore#//AdditiveEChange">
       <eTypeArguments eTypeParameter="#//EObjectAddedEChange/T"/>
     </eGenericSuperTypes>
@@ -30,7 +30,7 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="oldValue" lowerBound="1">
       <eGenericType eTypeParameter="#//EObjectSubtractedEChange/T"/>
     </eStructuralFeatures>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="oldValueID" eType="ecore:EDataType id.ecore#//Id"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="oldValueID" eType="ecore:EDataType echange.ecore#//Id"/>
     <eGenericSuperTypes eClassifier="ecore:EClass echange.ecore#//SubtractiveEChange">
       <eTypeArguments eTypeParameter="#//EObjectSubtractedEChange/T"/>
     </eGenericSuperTypes>
@@ -50,7 +50,7 @@
       <eGenericType eTypeParameter="#//EObjectExistenceEChange/A"/>
     </eStructuralFeatures>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="idAttributeValue" eType="ecore:EDataType ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="affectedEObjectID" eType="ecore:EDataType id.ecore#//Id"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="affectedEObjectID" eType="ecore:EDataType echange.ecore#//Id"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="affectedEObjectType" eType="ecore:EClass ../../org.eclipse.emf.ecore/model/Ecore.ecore#//EClass"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="CreateEObject">
