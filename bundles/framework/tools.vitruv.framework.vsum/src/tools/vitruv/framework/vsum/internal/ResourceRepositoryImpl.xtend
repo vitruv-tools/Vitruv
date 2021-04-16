@@ -22,9 +22,9 @@ import tools.vitruv.framework.util.ResourceRegistrationAdapter
 import static tools.vitruv.framework.correspondence.CorrespondenceModelFactory.createCorrespondenceModel
 import tools.vitruv.framework.correspondence.InternalCorrespondenceModel
 import org.eclipse.emf.common.util.URI
-import static tools.vitruv.framework.change.id.IdResolverAndRepositoryFactory.createIdResolver
 import java.nio.file.Files
 import java.nio.file.NoSuchFileException
+import tools.vitruv.framework.change.description.VitruviusChange
 
 package class ResourceRepositoryImpl implements ModelRepository {
 	static val logger = Logger.getLogger(ResourceRepositoryImpl)
@@ -70,10 +70,6 @@ package class ResourceRepositoryImpl implements ModelRepository {
 		} catch (NoSuchFileException e) {
 			// There are no existing models, so don't do anything
 		}
-	}
-
-	override getIdResolver() {
-		return createIdResolver(modelsResourceSet)
 	}
 
 	override getCorrespondenceModel() {
@@ -153,6 +149,10 @@ package class ResourceRepositoryImpl implements ModelRepository {
 			.toList()
 	}
 
+	override applyChange(VitruviusChange change) {
+		change.resolveAndApply(modelsResourceSet)
+	}
+	
 	override URI getMetadataModelURI(String... metadataKey) {
 		fileSystemLayout.getConsistencyMetadataModelURI(metadataKey)
 	}

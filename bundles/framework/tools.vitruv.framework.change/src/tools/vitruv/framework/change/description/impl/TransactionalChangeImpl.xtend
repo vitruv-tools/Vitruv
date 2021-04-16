@@ -31,10 +31,11 @@ import tools.vitruv.framework.change.echange.feature.attribute.UpdateAttributeEC
 import org.eclipse.emf.common.util.URI
 import tools.vitruv.framework.change.echange.resolve.EChangeUnresolver
 import static extension tools.vitruv.framework.change.echange.resolve.EChangeResolverAndApplicator.*
-import tools.vitruv.framework.change.id.IdResolver
 import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.mapFixed
 import tools.vitruv.framework.change.description.TransactionalChange
 import java.util.Collections
+import org.eclipse.emf.ecore.resource.ResourceSet
+import static tools.vitruv.framework.change.id.IdResolverAndRepositoryFactory.createIdResolver
 
 class TransactionalChangeImpl implements TransactionalChange {
 	var List<? extends EChange> eChanges
@@ -64,8 +65,9 @@ class TransactionalChangeImpl implements TransactionalChange {
 		eChanges.map[changedURI].filterNull.toSet
 	}
 
-	override resolveAndApply(IdResolver idResolver) {
+	override resolveAndApply(ResourceSet resourceSet) {
 		// TODO HK Make a copy of the complete change instead of replacing it internally
+		val idResolver = createIdResolver(resourceSet)
 		eChanges = eChanges.mapFixed[
 			val resolvedChange = resolveBefore(idResolver)
 			resolvedChange.applyForward(idResolver)
