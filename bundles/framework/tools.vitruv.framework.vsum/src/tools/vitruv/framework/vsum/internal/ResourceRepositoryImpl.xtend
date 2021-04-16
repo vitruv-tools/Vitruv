@@ -149,7 +149,7 @@ package class ResourceRepositoryImpl implements ModelRepository {
 			.toList()
 	}
 
-	override applyChange(VitruviusChange change) {
+	override VitruviusChange applyChange(VitruviusChange change) {
 		change.resolveAndApply(modelsResourceSet)
 	}
 	

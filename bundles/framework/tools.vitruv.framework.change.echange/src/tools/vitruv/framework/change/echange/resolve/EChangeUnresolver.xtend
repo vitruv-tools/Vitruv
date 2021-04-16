@@ -21,7 +21,7 @@ import edu.kit.ipd.sdq.activextendannotations.Utility
  * Utility class to unresolve a given EChange.
  */
 @Utility
-class EChangeUnresolver {
+package class EChangeUnresolver {
 	/**
 	 * Unresolves the attributes of the {@link RootEChange} class.
 	 * @param The RootEChange.

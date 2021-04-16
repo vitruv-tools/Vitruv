@@ -19,6 +19,12 @@ import tools.vitruv.framework.change.id.IdResolver
  */
 @Utility
 class EChangeResolverAndApplicator {
+	static def <C extends EChange> C unresolve(C eChange) {
+		val copy = EcoreUtil.copy(eChange)
+		EChangeUnresolver.unresolve(copy)
+		return copy
+	}
+	
 	static def EChange resolveBefore(EChange eChange, IdResolver idResolver) {
 		return resolveCopy(eChange, idResolver)
 	}

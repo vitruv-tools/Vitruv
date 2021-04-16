@@ -4,7 +4,6 @@ import allElementTypes.Root
 import java.util.List
 
 import tools.vitruv.framework.change.echange.EChange
-import tools.vitruv.framework.change.echange.resolve.EChangeUnresolver
 import org.eclipse.emf.ecore.resource.ResourceSet
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.AfterEach
@@ -121,8 +120,8 @@ abstract class ChangeDescription2ChangeTransformationTest {
 			applyForward(idResolver)
 			EcoreUtil.copy(it)
 		].forEach[
-			EChangeUnresolver.unresolve(it)
-			val resolvedChange = it.resolveBefore(comparisonIdResolver)
+			val unresolvedChange = it.unresolve()
+			val resolvedChange = unresolvedChange.resolveBefore(comparisonIdResolver)
 			resolvedChange.applyForward(comparisonIdResolver)
 		]
 		resourceSet.assertContains(comparisonResourceSet)

@@ -29,15 +29,16 @@ interface VitruviusChange {
 	/**
 	 * Resolves the change and applies it forward so that the model is in the state after the change afterwards.
 	 * It has to be ensured that the model is in a state the change can be applied to before calling this method.
+	 * Returns the resolved change
 	 * 
 	 * @throws IllegalStateException if the change cannot be resolved or is already resolved.
 	 */
-	def void resolveAndApply(ResourceSet resourceSet)
+	def VitruviusChange resolveAndApply(ResourceSet resourceSet)
 
 	/**
-	 * Unresolves the change, such that all its affected and referenced {@link EObjects} are removed.
+	 * Returns an unresolved change, such that all its affected and referenced {@link EObjects} are removed.
 	 */
-	def void unresolve()
+	def VitruviusChange unresolve()
 	
 	/**
 	 * Returns all {@link EObject}s directly affected by this change. This does not include referenced elements.

@@ -7,7 +7,7 @@ import org.eclipse.emf.common.util.URI
 import tools.vitruv.framework.change.description.VitruviusChange
 
 package interface ModelRepository extends ResourceAccess, AutoCloseable {
-	def void applyChange(VitruviusChange change)
+	def VitruviusChange applyChange(VitruviusChange change)
 
 	def CorrespondenceModel getCorrespondenceModel()
 

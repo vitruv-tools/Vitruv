@@ -29,7 +29,6 @@ import tools.vitruv.framework.change.echange.feature.attribute.RemoveEAttributeV
 import java.util.Set
 import tools.vitruv.framework.change.echange.feature.attribute.UpdateAttributeEChange
 import org.eclipse.emf.common.util.URI
-import tools.vitruv.framework.change.echange.resolve.EChangeUnresolver
 import static extension tools.vitruv.framework.change.echange.resolve.EChangeResolverAndApplicator.*
 import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.mapFixed
 import tools.vitruv.framework.change.description.TransactionalChange
@@ -66,17 +65,18 @@ class TransactionalChangeImpl implements TransactionalChange {
 	}
 
 	override resolveAndApply(ResourceSet resourceSet) {
-		// TODO HK Make a copy of the complete change instead of replacing it internally
 		val idResolver = createIdResolver(resourceSet)
-		eChanges = eChanges.mapFixed[
+		val resolvedChanges = eChanges.mapFixed[
 			val resolvedChange = resolveBefore(idResolver)
 			resolvedChange.applyForward(idResolver)
 			resolvedChange
 		]
+		return new TransactionalChangeImpl(resolvedChanges)
 	}
 
 	override unresolve() {
-		EChanges.forEach [EChangeUnresolver.unresolve(it)]	
+		val unresolvedChanges = EChanges.mapFixed[it.unresolve()]
+		return new TransactionalChangeImpl(unresolvedChanges)
 	}
 	
 	override getAffectedEObjects() {

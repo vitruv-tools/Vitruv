@@ -5,7 +5,6 @@ import tools.vitruv.framework.change.description.CompositeChange
 import tools.vitruv.framework.change.description.VitruviusChange
 import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
 import java.util.LinkedHashSet
-import org.eclipse.emf.ecore.resource.ResourceSet
 
 abstract class AbstractCompositeChangeImpl<C extends VitruviusChange> implements CompositeChange<C> {
 	List<C> changes
@@ -30,20 +29,12 @@ abstract class AbstractCompositeChangeImpl<C extends VitruviusChange> implements
 		return changes.flatMapFixed [EChanges]
 	}
 	
-	override resolveAndApply(ResourceSet resourceSet) {
-		changes.forEach [resolveAndApply(resourceSet)]
-	}
-
 	override getAffectedEObjects() {
 		changes.flatMapFixedTo(new LinkedHashSet) [affectedEObjects]
 	}
 	
 	override getAffectedAndReferencedEObjects() {
 		changes.flatMapFixedTo(new LinkedHashSet) [affectedAndReferencedEObjects]
-	}
-
-	override unresolve() {
-		changes.forEach [unresolve]
 	}
 
 	override getUserInteractions() {

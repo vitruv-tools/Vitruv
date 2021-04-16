@@ -44,17 +44,17 @@ package class ChangePropagator {
 	}
 
 	def List<PropagatedChange> propagateChange(VitruviusChange change) {
-		resourceRepository.applyChange(change)
-		change.affectedEObjects.map[eResource].filterNull.forEach[modified = true]
+		val resolvedChange = resourceRepository.applyChange(change)
+		resolvedChange.affectedEObjects.map[eResource].filterNull.forEach[modified = true]
 		
-		val changedDomain = change.changedDomain
+		val changedDomain = resolvedChange.changedDomain
 		if (logger.isTraceEnabled) {
 			logger.trace('''
 				Will now propagate this input change:
 					«change»
 			''')
 		}
-		return new ChangePropagation(this, change, changedDomain, null).propagateChanges()
+		return new ChangePropagation(this, resolvedChange, changedDomain, null).propagateChanges()
 	}
 
 	@FinalFieldsConstructor
@@ -128,10 +128,6 @@ package class ChangePropagator {
 			ChangePropagationSpecification propagationSpecification
 		) {
 			resourceRepository.startRecording()
-			
-			// TODO HK: Clone the changes for each synchronization! Should even be cloned for
-			// each consistency repair routines that uses it,
-			// or: make them read only, i.e. give them a read-only interface!
 			for (eChange : change.EChanges) {
 				propagationSpecification.propagateChange(eChange, resourceRepository.correspondenceModel, resourceRepository)
 			}
