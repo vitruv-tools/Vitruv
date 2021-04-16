@@ -2,7 +2,6 @@ package tools.vitruv.framework.change.echange.id
 
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.resource.ResourceSet
-import org.eclipse.emf.ecore.resource.Resource
 import org.apache.log4j.Logger
 import org.eclipse.emf.common.util.URI
 import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.common.util.URIUtil.*
@@ -12,7 +11,6 @@ import static com.google.common.base.Preconditions.checkNotNull
 import java.util.PriorityQueue
 import static extension tools.vitruv.framework.util.ObjectResolutionUtil.getHierarchicUriFragment
 import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceSetUtil.getOrCreateResource
-import org.eclipse.emf.common.notify.Notifier
 import com.google.common.collect.BiMap
 import com.google.common.collect.HashBiMap
 
@@ -54,16 +52,6 @@ package class IdResolverImpl implements IdResolver {
 				}
 				iterator.remove()
 			}
-		}
-	}
-	
-	override canCalculateIdsIn(Notifier notifier) {
-		switch (notifier) {
-			case null: true
-			EObject: canCalculateIdsIn(notifier?.eResource)
-			Resource: canCalculateIdsIn(notifier?.resourceSet)
-			ResourceSet: notifier == resourceSet
-			default: throw new IllegalStateException("Unexpected notifier type: " + notifier.class.simpleName)
 		}
 	}
 	
