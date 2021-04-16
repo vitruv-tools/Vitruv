@@ -33,7 +33,6 @@ import tools.vitruv.domains.emf.monitorededitor.tools.EclipseAdapterProvider;
 import tools.vitruv.domains.emf.monitorededitor.tools.EditorManagementListenerMgr;
 import tools.vitruv.domains.emf.monitorededitor.tools.IEclipseAdapter;
 import tools.vitruv.domains.emf.monitorededitor.tools.IEditorManagementListener;
-import tools.vitruv.framework.change.description.TransactionalChange;
 import tools.vitruv.framework.change.description.VitruviusChange;
 
 /**
@@ -171,35 +170,13 @@ public class SynchronizingMonitoredEmfEditorImpl implements ISynchronizingMonito
     private void setupMonitorForEditor(final IEditorPartAdapter editorPart) {
         EMFModelChangeRecordingEditorSaveListener listener = new EMFModelChangeRecordingEditorSaveListener(editorPart) {
             @Override
-            protected void onSavedResource(final List<? extends TransactionalChange> changeDescriptions) {
-                LOGGER.trace("Received change descriptions " + changeDescriptions);
-                if (null == changeDescriptions || changeDescriptions.isEmpty()) {
+            protected void onSavedResource(VitruviusChange changeDescription) {
+                LOGGER.trace("Received change description " + changeDescription);
+                if (null == changeDescription || !changeDescription.containsConcreteChange()) {
                     LOGGER.trace("changeDescription is null. Change can not be synchronized: " + this);
                     return;
                 }
-                // final List<List<VitruviusChange>> changes = new ArrayList<>();
-                // The following code needs to be executed within the editor's
-                // context because even though it does not change the EMF model
-                // in the sense of equality, it does apply changes to the EMF
-                // model. This is esp. relevant for editors using transactional
-                // editing domains.
-                // editorPart.executeCommand(new Runnable() {
-                // @Override
-                // public void run() {
-                // changes.add(getChangeList(changeDescriptions,
-                // editorPart.getEditedModelResource()));
-                // }
-                // });
-                // changes.add(new ArrayList<EMFModelChange>(changeDescriptions));
-                // assert changes.size() == 1;
-                // for (int i = changeDescriptions.size() - 1; i >= 0; i--) {
-                // changeDescriptions.get(i).getChangeDescription().applyAndReverse();
-                // }
-                // List<VitruviusChange> transformedChanges = new ArrayList<VitruviusChange>(
-                // new ChangeDescription2ChangeTransformation(changeDescriptions,
-                // true).getChanges());
-                triggerSynchronization(new ArrayList<VitruviusChange>(changeDescriptions),
-                        editorPart.getEditedModelResource());
+                triggerSynchronization(List.of(changeDescription), editorPart.getEditedModelResource());
             }
         };
 

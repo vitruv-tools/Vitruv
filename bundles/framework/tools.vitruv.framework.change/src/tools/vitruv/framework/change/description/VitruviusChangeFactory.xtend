@@ -4,11 +4,10 @@ import org.apache.log4j.Logger
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.resource.Resource
 import tools.vitruv.framework.change.description.impl.CompositeContainerChangeImpl
-import tools.vitruv.framework.change.description.impl.CompositeTransactionalChangeImpl
-import tools.vitruv.framework.change.description.impl.ConcreteChangeImpl
 import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.change.echange.TypeInferringCompoundEChangeFactory
 import java.util.List
+import tools.vitruv.framework.change.description.impl.TransactionalChangeImpl
 
 class VitruviusChangeFactory {
 	static val logger = Logger.getLogger(VitruviusChangeFactory);
@@ -28,24 +27,20 @@ class VitruviusChangeFactory {
 		return instance;
 	}
 	
-	def ConcreteChange createConcreteChange(EChange change) {
-		return new ConcreteChangeImpl(change);
+	def TransactionalChange createTransactionalChange(Iterable<? extends EChange> changes) {
+		return new TransactionalChangeImpl(changes);
 	}
 	
-	def List<ConcreteChange> createFileChange(FileChangeKind kind, Resource changedFileResource) {
+	def List<TransactionalChange> createFileChange(FileChangeKind kind, Resource changedFileResource) {
 		if (kind == FileChangeKind.Create) {
-			return generateFileCreateChange(changedFileResource).map[new ConcreteChangeImpl(it)];
+			return generateFileCreateChange(changedFileResource).map[new TransactionalChangeImpl(List.of(it))];
 		} else {
-			return generateFileDeleteChange(changedFileResource).map[new ConcreteChangeImpl(it)];
+			return generateFileDeleteChange(changedFileResource).map[new TransactionalChangeImpl(List.of(it))];
 		}
 	}
 	
 	def CompositeContainerChange createCompositeChange(Iterable<? extends VitruviusChange> innerChanges) {
 		new CompositeContainerChangeImpl(innerChanges.toList)
-	}
-	
-	def CompositeTransactionalChange createCompositeTransactionalChange(Iterable<? extends TransactionalChange> innerChanges) {
-		new CompositeTransactionalChangeImpl(innerChanges.toList)
 	}
 	
 	private def List<EChange> generateFileCreateChange(Resource resource) {

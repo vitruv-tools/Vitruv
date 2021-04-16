@@ -13,8 +13,6 @@ package tools.vitruv.domains.emf.monitorededitor.monitor;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.util.List;
-
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EcoreFactory;
@@ -32,7 +30,7 @@ import tools.vitruv.domains.emf.monitorededitor.test.utils.EnsureExecuted;
 import tools.vitruv.domains.emf.monitorededitor.test.utils.EnsureNotExecuted;
 import tools.vitruv.domains.emf.monitorededitor.tools.EclipseAdapterProvider;
 import tools.vitruv.domains.emf.monitorededitor.tools.IEclipseAdapter;
-import tools.vitruv.framework.change.description.TransactionalChange;
+import tools.vitruv.framework.change.description.VitruviusChange;
 
 public class EMFModelChangeRecordingEditorSaveListenerTests extends BasicTestCase {
     private EclipseMock eclipseCtrl;
@@ -66,9 +64,9 @@ public class EMFModelChangeRecordingEditorSaveListenerTests extends BasicTestCas
         EMFModelChangeRecordingEditorSaveListener listener = new EMFModelChangeRecordingEditorSaveListener(
                 editorPartAdapter) {
             @Override
-            protected void onSavedResource(List<? extends TransactionalChange> changeDescriptions) {
-                assert changeDescriptions != null;
-                changeDescriptions.forEach((TransactionalChange descr) -> assertTrue(descr.getEChanges().isEmpty()));
+            protected void onSavedResource(VitruviusChange changeDescription) {
+                assert changeDescription != null;
+                assertTrue(changeDescription.getEChanges().isEmpty());
                 ensureExecuted.markExecuted();
             }
         };
@@ -90,14 +88,9 @@ public class EMFModelChangeRecordingEditorSaveListenerTests extends BasicTestCas
         EMFModelChangeRecordingEditorSaveListener listener = new EMFModelChangeRecordingEditorSaveListener(
                 editorPartAdapter) {
             @Override
-            protected void onSavedResource(List<? extends TransactionalChange> changeDescriptions) {
-                assert changeDescriptions != null;
-                // assert changeDescriptions.size() == 1;
-                int counter = 0;
-                for (TransactionalChange descr : changeDescriptions) {
-                    counter += descr.getEChanges().size();
-                }
-                assert counter == 1;
+            protected void onSavedResource(VitruviusChange changeDescription) {
+                assert changeDescription != null;
+                assert changeDescription.getEChanges().size() == 1;
 
                 // assert
                 // changeDescriptions.get(0).getChangeDescription().getObjectChanges().containsKey(rootObj);
@@ -127,7 +120,7 @@ public class EMFModelChangeRecordingEditorSaveListenerTests extends BasicTestCas
         EMFModelChangeRecordingEditorSaveListener listener = new EMFModelChangeRecordingEditorSaveListener(
                 editorPartAdapter) {
             @Override
-            protected void onSavedResource(List<? extends TransactionalChange> changeDescriptions) {
+            protected void onSavedResource(VitruviusChange changeDescription) {
                 ensureNotExecuted.markExecuted();
             }
         };

@@ -73,7 +73,7 @@ class ChangeRecorderTest {
 			root.id = 'test'
 		]
 
-		assertThat(changeRecorder.changes, hasEChanges(ReplaceSingleValuedEAttribute))
+		assertThat(changeRecorder.change, hasEChanges(ReplaceSingleValuedEAttribute))
 	}
 
 	@Test
@@ -85,7 +85,7 @@ class ChangeRecorderTest {
 			resource.contents += aet.Root
 		]
 
-		assertThat(changeRecorder.changes, hasEChanges(CreateEObject, InsertRootEObject, ReplaceSingleValuedEAttribute))
+		assertThat(changeRecorder.change, hasEChanges(CreateEObject, InsertRootEObject, ReplaceSingleValuedEAttribute))
 	}
 
 	@Test
@@ -97,7 +97,7 @@ class ChangeRecorderTest {
 			root.id = 'test'
 		]
 
-		assertThat(changeRecorder.changes, hasNoChanges)
+		assertThat(changeRecorder.change, hasNoChanges)
 	}
 
 	@Test
@@ -110,7 +110,7 @@ class ChangeRecorderTest {
 			resource.contents += aet.Root
 		]
 
-		assertThat(changeRecorder.changes, hasNoChanges)
+		assertThat(changeRecorder.change, hasNoChanges)
 	}
 
 	@Test
@@ -130,7 +130,7 @@ class ChangeRecorderTest {
 		]
 		changeRecorder.endRecording()
 
-		assertThat(changeRecorder.changes, hasEChanges(ReplaceSingleValuedEAttribute))
+		assertThat(changeRecorder.change, hasEChanges(ReplaceSingleValuedEAttribute))
 	}
 
 	@Test
@@ -152,7 +152,7 @@ class ChangeRecorderTest {
 			inner.id = 'test'
 		]
 
-		assertThat(changeRecorder.changes, hasEChanges(ReplaceSingleValuedEAttribute))
+		assertThat(changeRecorder.change, hasEChanges(ReplaceSingleValuedEAttribute))
 	}
 
 	@Test
@@ -174,13 +174,13 @@ class ChangeRecorderTest {
 			inner.id = 'test'
 		]
 
-		assertThat(changeRecorder.changes, hasEChanges(ReplaceSingleValuedEAttribute))
+		assertThat(changeRecorder.change, hasEChanges(ReplaceSingleValuedEAttribute))
 
 		record [
 			resource.contents.clear()
 		]
 
-		assertThat(changeRecorder.changes, hasEChanges(RemoveRootEObject, DeleteEObject))
+		assertThat(changeRecorder.change, hasEChanges(RemoveRootEObject, DeleteEObject))
 	}
 
 	@DisplayName("adds an object set as containment to the recording")
@@ -195,7 +195,7 @@ class ChangeRecorderTest {
 			nonRoot.id = 'foobar'
 		]
 
-		assertThat(changeRecorder.changes, hasEChanges(ReplaceSingleValuedEAttribute))
+		assertThat(changeRecorder.change, hasEChanges(ReplaceSingleValuedEAttribute))
 	}
 
 	@DisplayName("adds an object added as containment to the recording")
@@ -210,7 +210,7 @@ class ChangeRecorderTest {
 			nonRoot.id = 'foobar'
 		]
 
-		assertThat(changeRecorder.changes, hasEChanges(ReplaceSingleValuedEAttribute))
+		assertThat(changeRecorder.change, hasEChanges(ReplaceSingleValuedEAttribute))
 	}
 
 	@DisplayName("adds an object that was resolved from its proxy to the recording")
@@ -239,7 +239,7 @@ class ChangeRecorderTest {
 			nonRoot.id = 'foobar'
 		]
 
-		assertThat(changeRecorder.changes, hasEChanges(ReplaceSingleValuedEAttribute))
+		assertThat(changeRecorder.change, hasEChanges(ReplaceSingleValuedEAttribute))
 	}
 
 	@DisplayName("adds multiple objects added as containments to the recording")
@@ -256,7 +256,7 @@ class ChangeRecorderTest {
 			nonRoot2.id = 'foobar2'
 		]
 
-		assertThat(changeRecorder.changes, hasEChanges(ReplaceSingleValuedEAttribute, ReplaceSingleValuedEAttribute))
+		assertThat(changeRecorder.change, hasEChanges(ReplaceSingleValuedEAttribute, ReplaceSingleValuedEAttribute))
 	}
 
 	@DisplayName("adds an object added as root to the recording")
@@ -272,7 +272,7 @@ class ChangeRecorderTest {
 			root.id = 'foobar'
 		]
 
-		assertThat(changeRecorder.changes, hasEChanges(ReplaceSingleValuedEAttribute))
+		assertThat(changeRecorder.change, hasEChanges(ReplaceSingleValuedEAttribute))
 	}
 
 	@DisplayName("adds multiple objects added as roots to the recording")
@@ -290,7 +290,7 @@ class ChangeRecorderTest {
 			root2.id = 'foobar2'
 		]
 
-		assertThat(changeRecorder.changes, hasEChanges(ReplaceSingleValuedEAttribute, ReplaceSingleValuedEAttribute))
+		assertThat(changeRecorder.change, hasEChanges(ReplaceSingleValuedEAttribute, ReplaceSingleValuedEAttribute))
 	}
 
 	@DisplayName("adds loaded objects to the recording")
@@ -313,7 +313,7 @@ class ChangeRecorderTest {
 			(resource.contents.get(0) as Root).singleValuedContainmentEReference.id = 'test'
 		]
 
-		assertThat(changeRecorder.changes, hasEChanges(ReplaceSingleValuedEAttribute))
+		assertThat(changeRecorder.change, hasEChanges(ReplaceSingleValuedEAttribute))
 	}
 
 	@ParameterizedTest(name="while isRecording={0}")
@@ -329,7 +329,7 @@ class ChangeRecorderTest {
 			resource.contents += aet.Root
 		]
 
-		assertThat(changeRecorder.changes, hasEChanges(CreateEObject, InsertRootEObject, ReplaceSingleValuedEAttribute))
+		assertThat(changeRecorder.change, hasEChanges(CreateEObject, InsertRootEObject, ReplaceSingleValuedEAttribute))
 	}
 
 	@ParameterizedTest(name="while isRecording={0}")
@@ -349,7 +349,7 @@ class ChangeRecorderTest {
 			resource2.contents += aet.Root
 		]
 
-		assertThat(changeRecorder.changes, hasEChanges(
+		assertThat(changeRecorder.change, hasEChanges(
 			CreateEObject,
 			InsertRootEObject,
 			ReplaceSingleValuedEAttribute,
@@ -377,7 +377,7 @@ class ChangeRecorderTest {
 			nonRoot.id = 'foobar'
 		]
 
-		assertThat(changeRecorder.changes, hasNoChanges)
+		assertThat(changeRecorder.change, hasNoChanges)
 	}
 
 	@ParameterizedTest(name="while isRecording={0}")
@@ -398,7 +398,7 @@ class ChangeRecorderTest {
 			nonRoot.id = 'foobar'
 		]
 
-		assertThat(changeRecorder.changes, hasNoChanges)
+		assertThat(changeRecorder.change, hasNoChanges)
 	}
 
 	@ParameterizedTest(name="while isRecording={0}")
@@ -423,7 +423,7 @@ class ChangeRecorderTest {
 			nonRoot3.id = 'foobar3'
 		]
 
-		assertThat(changeRecorder.changes, hasEChanges(ReplaceSingleValuedEAttribute))
+		assertThat(changeRecorder.change, hasEChanges(ReplaceSingleValuedEAttribute))
 	}
 
 	@ParameterizedTest(name="while isRecording={0}")
@@ -441,7 +441,7 @@ class ChangeRecorderTest {
 			resource.contents += aet.Root
 		]
 
-		assertThat(changeRecorder.changes, hasNoChanges)
+		assertThat(changeRecorder.change, hasNoChanges)
 	}
 
 	@ParameterizedTest(name="while isRecording={0}")
@@ -462,7 +462,7 @@ class ChangeRecorderTest {
 			resource3.contents += aet.Root
 		]
 
-		assertThat(changeRecorder.changes, hasEChanges(CreateEObject, InsertRootEObject, ReplaceSingleValuedEAttribute))
+		assertThat(changeRecorder.change, hasEChanges(CreateEObject, InsertRootEObject, ReplaceSingleValuedEAttribute))
 	}
 
 	@ParameterizedTest(name="while isRecording={0}")
@@ -486,7 +486,7 @@ class ChangeRecorderTest {
 			nonRoot.id = 'test'
 		]
 
-		assertThat(changeRecorder.changes, hasNoChanges)
+		assertThat(changeRecorder.change, hasNoChanges)
 	}
 
 	@ParameterizedTest(name="while isRecording={0}")
@@ -508,7 +508,7 @@ class ChangeRecorderTest {
 			root.id = 'foobar'
 		]
 
-		assertThat(changeRecorder.changes, hasNoChanges)
+		assertThat(changeRecorder.change, hasNoChanges)
 	}
 
 	@ParameterizedTest(name="while isRecording={0}")
@@ -534,7 +534,7 @@ class ChangeRecorderTest {
 			root3.id = 'foobar3'
 		]
 
-		assertThat(changeRecorder.changes, hasEChanges(ReplaceSingleValuedEAttribute))
+		assertThat(changeRecorder.change, hasEChanges(ReplaceSingleValuedEAttribute))
 	}
 
 	@Test
@@ -553,7 +553,7 @@ class ChangeRecorderTest {
 			nonRoot.id = 'testid'
 		]
 
-		assertThat(changeRecorder.changes, hasEChanges(ReplaceSingleValuedEAttribute))
+		assertThat(changeRecorder.change, hasEChanges(ReplaceSingleValuedEAttribute))
 	}
 
 	@Test
@@ -577,7 +577,7 @@ class ChangeRecorderTest {
 			nonRoot.id = 'testid'
 		]
 
-		assertThat(changeRecorder.changes, hasEChanges(ReplaceSingleValuedEAttribute, ReplaceSingleValuedEAttribute))
+		assertThat(changeRecorder.change, hasEChanges(ReplaceSingleValuedEAttribute, ReplaceSingleValuedEAttribute))
 	}
 
 	@Test
@@ -588,17 +588,17 @@ class ChangeRecorderTest {
 			root.id = 'test'
 		]
 
-		assertThat(changeRecorder.changes, hasEChanges(ReplaceSingleValuedEAttribute))
+		assertThat(changeRecorder.change, hasEChanges(ReplaceSingleValuedEAttribute))
 
 		record []
 
-		assertThat(changeRecorder.changes, hasNoChanges)
+		assertThat(changeRecorder.change, hasNoChanges)
 
 		record [
 			root.multiValuedNonContainmentEReference += aet.NonRoot
 		]
 
-		assertThat(changeRecorder.changes, hasEChanges(CreateEObject, InsertEReference, ReplaceSingleValuedEAttribute))
+		assertThat(changeRecorder.change, hasEChanges(CreateEObject, InsertEReference, ReplaceSingleValuedEAttribute))
 	}
 
 	@Test
@@ -649,7 +649,7 @@ class ChangeRecorderTest {
 		assertThat(changeRecorder.isRecording, is(false))
 		assertThrows(IllegalStateException)[changeRecorder.beginRecording()]
 		assertThrows(IllegalStateException)[changeRecorder.endRecording()]
-		assertThrows(IllegalStateException)[changeRecorder.changes]
+		assertThrows(IllegalStateException)[changeRecorder.change]
 		assertThrows(IllegalStateException)[changeRecorder.addToRecording(aet.Root)]
 		assertThrows(IllegalStateException)[changeRecorder.removeFromRecording(aet.Root)]
 	}
@@ -670,7 +670,7 @@ class ChangeRecorderTest {
 	}
 
 	@FinalFieldsConstructor
-	private static class EChangeSequenceMatcher extends TypeSafeMatcher<Iterable<? extends TransactionalChange>> {
+	private static class EChangeSequenceMatcher extends TypeSafeMatcher<TransactionalChange> {
 		val List<Class<? extends EChange>> expectedTypes
 
 		override describeTo(Description description) {
@@ -682,8 +682,8 @@ class ChangeRecorderTest {
 			}
 		}
 
-		override protected matchesSafely(Iterable<? extends TransactionalChange> item) {
-			val actualTypes = item.flatMap[EChanges].map[class].iterator
+		override protected matchesSafely(TransactionalChange item) {
+			val actualTypes = item.EChanges.map[class].iterator
 			for (val expectedTypesIt = expectedTypes.iterator; expectedTypesIt.hasNext;) {
 				if (!actualTypes.hasNext || !expectedTypesIt.next.isAssignableFrom(actualTypes.next)) {
 					return false

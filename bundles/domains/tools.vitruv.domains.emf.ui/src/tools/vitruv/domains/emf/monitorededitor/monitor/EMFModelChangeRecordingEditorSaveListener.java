@@ -11,8 +11,6 @@
 
 package tools.vitruv.domains.emf.monitorededitor.monitor;
 
-import java.util.List;
-
 import org.apache.log4j.Logger;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.emf.ecore.change.ChangeDescription;
@@ -22,7 +20,7 @@ import tools.vitruv.domains.emf.monitorededitor.IEditorPartAdapterFactory.IEdito
 import tools.vitruv.domains.emf.monitorededitor.tools.ISaveEventListener;
 import tools.vitruv.domains.emf.monitorededitor.tools.ResourceReloadListener;
 import tools.vitruv.domains.emf.monitorededitor.tools.SaveEventListenerMgr;
-import tools.vitruv.framework.change.description.TransactionalChange;
+import tools.vitruv.framework.change.description.VitruviusChange;
 import tools.vitruv.framework.change.recording.ChangeRecorder;
 
 /**
@@ -99,9 +97,9 @@ public abstract class EMFModelChangeRecordingEditorSaveListener {
 
             @Override
             public void onPostSave() {
-                var changes = readOutChangesAndEndRecording();
-                LOGGER.trace("Detected a user save action, got change descriptions: " + changes);
-                onSavedResource(changes);
+                var change = readOutChangesAndEndRecording();
+                LOGGER.trace("Detected a user save action, got change description: " + change);
+                onSavedResource(change);
                 resetChangeRecorder();
             }
 
@@ -149,9 +147,8 @@ public abstract class EMFModelChangeRecordingEditorSaveListener {
     /**
      * @return The changes recorded since last resetting the change recorder.
      */
-    protected List<? extends TransactionalChange> readOutChangesAndEndRecording() {
-        changeRecorder.endRecording();
-        return changeRecorder.getChanges();
+    protected VitruviusChange readOutChangesAndEndRecording() {
+        return changeRecorder.endRecording();
     }
 
     /**
@@ -201,5 +198,5 @@ public abstract class EMFModelChangeRecordingEditorSaveListener {
      *            saving it (rsp. since opening it, in case it has not been saved yet). This object is
      *            provided "as is" from a {@link ChangeRecorder} instance.
      */
-    protected abstract void onSavedResource(List<? extends TransactionalChange> changeDescription);
+    protected abstract void onSavedResource(VitruviusChange changeDescription);
 }

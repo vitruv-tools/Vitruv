@@ -9,7 +9,6 @@ import org.eclipse.emf.compare.scope.DefaultComparisonScope
 import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import org.eclipse.emf.ecore.util.EcoreUtil
-import tools.vitruv.framework.change.description.VitruviusChangeFactory
 import tools.vitruv.framework.change.recording.ChangeRecorder
 import org.eclipse.emf.ecore.resource.ResourceSet
 import static extension tools.vitruv.framework.domains.repository.DomainAwareResourceSet.awareOfDomains
@@ -25,7 +24,6 @@ import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resou
  * @author Timur Saglam
  */
 class DefaultStateBasedChangeResolutionStrategy implements StateBasedChangeResolutionStrategy {
-	val VitruviusChangeFactory changeFactory
 	val VitruvDomainRepository domainRepository
 
 	/**
@@ -33,7 +31,6 @@ class DefaultStateBasedChangeResolutionStrategy implements StateBasedChangeResol
 	 */
 	new(Set<VitruvDomain> domains) {
 		domainRepository = new VitruvDomainRepositoryImpl(domains)
-		changeFactory = VitruviusChangeFactory.instance
 	}
 
 	private def checkNoProxies(Resource resource, String stateNotice) {
@@ -50,13 +47,12 @@ class DefaultStateBasedChangeResolutionStrategy implements StateBasedChangeResol
 		val newResourceSet = new ResourceSetImpl()
 		val currentStateCopy = oldState.copyInto(monitoredResourceSet)
 		val newStateCopy = newState.copyInto(newResourceSet)
-		val diffs = currentStateCopy.record [
+		return currentStateCopy.record [
 			if (oldState.URI != newState.URI) {
 				currentStateCopy.URI = newStateCopy.URI
 			}
 			compareStatesAndReplayChanges(newStateCopy, currentStateCopy)
 		]
-		return changeFactory.createCompositeChange(diffs)
 	}
 
 	override getChangeSequenceForCreated(Resource newState) {
@@ -67,10 +63,9 @@ class DefaultStateBasedChangeResolutionStrategy implements StateBasedChangeResol
 		val resourceSet = new ResourceSetImpl().awareOfDomains(domainRepository)
 		val newResource = resourceSet.createResource(newState.URI)
 		newResource.contents.clear()
-		val diffs = newResource.record [
+		return newResource.record [
 			newResource.contents += EcoreUtil.copyAll(newState.contents)
 		]
-		return changeFactory.createCompositeChange(diffs)
 	}
 
 	override getChangeSequenceForDeleted(Resource oldState) {
@@ -79,10 +74,9 @@ class DefaultStateBasedChangeResolutionStrategy implements StateBasedChangeResol
 		// Setup resolver and copy state:
 		val monitoredResourceSet = new ResourceSetImpl()
 		val currentStateCopy = oldState.copyInto(monitoredResourceSet)
-		val diffs = currentStateCopy.record [
+		return currentStateCopy.record [
 			currentStateCopy.contents.clear()
 		]
-		return changeFactory.createCompositeChange(diffs)
 	}
 
 	private def <T extends Notifier> record(Resource resource, ()=>void function) {
