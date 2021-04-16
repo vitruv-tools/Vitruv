@@ -51,7 +51,7 @@ package class ChangePropagator {
 		if (logger.isTraceEnabled) {
 			logger.trace('''
 				Will now propagate this input change:
-					«change»
+					«resolvedChange»
 			''')
 		}
 		return new ChangePropagation(this, resolvedChange, changedDomain, null).propagateChanges()
