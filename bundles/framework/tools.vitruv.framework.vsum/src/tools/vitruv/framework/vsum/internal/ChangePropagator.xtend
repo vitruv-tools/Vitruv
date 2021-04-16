@@ -44,7 +44,7 @@ package class ChangePropagator {
 	}
 
 	def List<PropagatedChange> propagateChange(VitruviusChange change) {
-		change.resolveAndApply(resourceRepository.idResolver)
+		resourceRepository.applyChange(change)
 		change.affectedEObjects.map[eResource].filterNull.forEach[modified = true]
 		
 		val changedDomain = change.changedDomain

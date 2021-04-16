@@ -7,7 +7,7 @@ import tools.vitruv.framework.change.interaction.UserInteractionBase
 import org.eclipse.emf.ecore.resource.Resource
 import java.util.Set
 import org.eclipse.emf.common.util.URI
-import tools.vitruv.framework.change.id.IdResolver
+import org.eclipse.emf.ecore.resource.ResourceSet
 
 /** 
  * Base interface for all kinds of changes in Vitruvius.
@@ -32,7 +32,7 @@ interface VitruviusChange {
 	 * 
 	 * @throws IllegalStateException if the change cannot be resolved or is already resolved.
 	 */
-	def void resolveAndApply(IdResolver idResolver)
+	def void resolveAndApply(ResourceSet resourceSet)
 
 	/**
 	 * Unresolves the change, such that all its affected and referenced {@link EObjects} are removed.
