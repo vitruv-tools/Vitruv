@@ -1,16 +1,12 @@
-package tools.vitruv.framework.change.id
+package tools.vitruv.framework.change.echange.id
 
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.emf.common.notify.Notifier
+import org.eclipse.emf.ecore.resource.ResourceSet
 
 interface IdResolver {
-	/**
-	 * Returns whether the given {@link EObject} has a registered ID or not. 
-	 */
-	def boolean hasId(EObject eObject)
-
 	/**
 	 * Returns whether an {@link EObject} is registered for the given ID or not. 
 	 */
@@ -45,5 +41,16 @@ interface IdResolver {
 	 * contained in a resource set, are removed from the ID mapping.
 	 */
 	def void endTransaction()
-
+	
+	/**
+	 * Instantiates a {@link IdResolverAndRepository} with the given {@link ResourceSet}
+	 * for resolving objects.
+	 * 
+	 * @param resourceSet -
+	 * 		the {@link ResourceSet} to load model elements from, may not be {@code null}
+	 * @throws IllegalArgumentException if given {@link ResourceSet} is {@code null}
+	 */
+	static def IdResolver create(ResourceSet resourceSet) {
+		return new IdResolverImpl(resourceSet)
+	}
 }

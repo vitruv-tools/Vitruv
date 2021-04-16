@@ -11,7 +11,7 @@ import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.change.echange.feature.FeatureEChange
 import tools.vitruv.framework.tests.echange.EChangeTest
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
-import tools.vitruv.framework.change.id.IdResolver
+import tools.vitruv.framework.change.echange.id.IdResolver
 import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceSetUtil.withGlobalFactories
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -23,7 +23,6 @@ import static org.junit.jupiter.api.Assertions.assertNotSame
 import static org.junit.jupiter.api.Assertions.assertThrows
 import static tools.vitruv.testutils.metamodels.AllElementTypesCreators.*
 import static extension tools.vitruv.framework.change.echange.resolve.EChangeResolverAndApplicator.*
-import static tools.vitruv.framework.change.id.IdResolverAndRepositoryFactory.createIdResolver
 
 /**
  * Test class for {@link FeatureEChange} which is used by every {@link EChange} which modifies {@link EStructuralFeature}s 
@@ -45,7 +44,7 @@ class FeatureEChangeTest extends EChangeTest {
 		// Load model in second resource
 		val resourceSet2 = new ResourceSetImpl().withGlobalFactories
 		this.resource2 = resourceSet2.getResource(resource.URI, true)
-		this.idResolver2 = createIdResolver(resourceSet2)
+		this.idResolver2 = IdResolver.create(resourceSet2)
 	}
 
 	/**

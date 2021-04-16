@@ -19,8 +19,7 @@ import org.junit.jupiter.api.io.TempDir
 import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.common.util.URIUtil.createFileURI
 import static extension tools.vitruv.framework.change.echange.resolve.EChangeResolverAndApplicator.*
 import tools.vitruv.framework.tests.echange.util.EChangeAssertHelper
-import static tools.vitruv.framework.change.id.IdResolverAndRepositoryFactory.createIdResolver
-import tools.vitruv.framework.change.id.IdResolver
+import tools.vitruv.framework.change.echange.id.IdResolver
 
 /**
  * Default class for testing EChange changes.
@@ -66,7 +65,7 @@ abstract class EChangeTest {
 		resource.save(null)
 
 		// Factories for creating changes
-		idResolver = createIdResolver(resourceSet)
+		idResolver = IdResolver.create(resourceSet)
 		atomicFactory = new TypeInferringUnresolvingAtomicEChangeFactory(idResolver)
 		compoundFactory = new TypeInferringUnresolvingCompoundEChangeFactory(idResolver)
 		helper = new EChangeAssertHelper(idResolver)

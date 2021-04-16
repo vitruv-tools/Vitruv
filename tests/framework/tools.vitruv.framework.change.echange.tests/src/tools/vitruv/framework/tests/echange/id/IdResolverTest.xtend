@@ -19,11 +19,10 @@ import org.eclipse.emf.ecore.util.EcoreUtil
 import static org.junit.jupiter.api.Assertions.assertThrows
 import static org.junit.jupiter.api.Assertions.assertTrue
 import org.eclipse.emf.ecore.resource.ResourceSet
-import static tools.vitruv.framework.change.id.IdResolverAndRepositoryFactory.createIdResolver
-import tools.vitruv.framework.change.id.IdResolver
+import tools.vitruv.framework.change.echange.id.IdResolver
 
 @ExtendWith(#[TestProjectManager, RegisterMetamodelsInStandalone])
-class IdResolverAndRepositoryTest {
+class IdResolverTest {
 	var ResourceSet resourceSet
 	var IdResolver idResolver
 	var Path testProjectPath
@@ -32,7 +31,7 @@ class IdResolverAndRepositoryTest {
 	def void setup(@TestProject Path testProjectPath) {
 		this.testProjectPath = testProjectPath
 		this.resourceSet = new ResourceSetImpl().withGlobalFactories()
-		this.idResolver = createIdResolver(resourceSet)
+		this.idResolver = IdResolver.create(resourceSet)
 	}
 	
 	@Test
@@ -155,7 +154,7 @@ class IdResolverAndRepositoryTest {
 		val generatedNonRootId = idResolver.getAndUpdateId(nonRoot)
 
 		val childResourceSet = new ResourceSetImpl().withGlobalFactories()
-		val childidResolver = createIdResolver(childResourceSet)
+		val childidResolver = IdResolver.create(childResourceSet)
 		childResourceSet.getResource(resourceUri, true)
 
 		val childResolverRoot = resourceSet.getEObject(root.URI, true)
@@ -210,7 +209,7 @@ class IdResolverAndRepositoryTest {
 		elements.forEach[idResolver.getAndUpdateId(it)]
 
 		val additionalResourceSet = new ResourceSetImpl().withGlobalFactories()
-		val additionalidResolver = createIdResolver(additionalResourceSet)
+		val additionalidResolver = IdResolver.create(additionalResourceSet)
 
 		elements.forEach[
 			val elementId = idResolver.getAndUpdateId(it)

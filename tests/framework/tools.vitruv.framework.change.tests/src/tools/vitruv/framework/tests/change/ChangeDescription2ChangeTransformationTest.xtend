@@ -32,8 +32,7 @@ import static org.hamcrest.MatcherAssert.assertThat
 import static org.junit.jupiter.api.Assertions.assertTrue
 import static org.junit.jupiter.api.Assertions.assertNotNull
 import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceUtil.getFirstRootEObject
-import static tools.vitruv.framework.change.id.IdResolverAndRepositoryFactory.createIdResolver
-import tools.vitruv.framework.change.id.IdResolver
+import tools.vitruv.framework.change.echange.id.IdResolver
 
 @ExtendWith(TestProjectManager, RegisterMetamodelsInStandalone)
 abstract class ChangeDescription2ChangeTransformationTest {
@@ -49,7 +48,7 @@ abstract class ChangeDescription2ChangeTransformationTest {
 	def void beforeTest(@TestProject Path tempFolder) {
 		this.tempFolder = tempFolder
 		this.resourceSet = new ResourceSetImpl().withGlobalFactories().awareOfDomains(TestDomainsRepository.INSTANCE)
-		this.idResolver = createIdResolver(resourceSet)
+		this.idResolver = IdResolver.create(resourceSet)
 		this.changeRecorder = new ChangeRecorder(resourceSet)
 		this.resourceSet.startRecording
 	}
@@ -114,7 +113,7 @@ abstract class ChangeDescription2ChangeTransformationTest {
 			monitoredChange.applyBackward
 		]
 		val comparisonResourceSet = new ResourceSetImpl().withGlobalFactories().awareOfDomains(TestDomainsRepository.INSTANCE)
-		val comparisonIdResolver = createIdResolver(comparisonResourceSet)
+		val comparisonIdResolver = IdResolver.create(comparisonResourceSet)
 		resourceSet.copyTo(comparisonResourceSet)
 		monitoredChanges.map[
 			applyForward(idResolver)
