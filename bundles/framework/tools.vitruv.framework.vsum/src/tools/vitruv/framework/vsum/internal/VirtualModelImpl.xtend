@@ -64,12 +64,12 @@ class VirtualModelImpl implements InternalVirtualModel {
 		checkNotNull(change, "change to propagate")
 		checkArgument(change.containsConcreteChange, 
 			"This change contains no concrete changes:%s%s", System.lineSeparator, change)
-
+		val unresolvedChange = change.unresolve()
+		
 		LOGGER.info("Start change propagation")
-		startChangePropagation(change)
-
-		change.unresolve()
-		val result = changePropagator.propagateChange(change)
+		startChangePropagation(unresolvedChange)
+		
+		val result = changePropagator.propagateChange(unresolvedChange)
 		save()
 		
 		if (LOGGER.isTraceEnabled) {
@@ -82,7 +82,7 @@ class VirtualModelImpl implements InternalVirtualModel {
 			''')
 		}
 		
-		finishChangePropagation(change)
+		finishChangePropagation(unresolvedChange)
 		informPropagatedChangeListeners(result)
 		LOGGER.info("Finished change propagation")
 		return result

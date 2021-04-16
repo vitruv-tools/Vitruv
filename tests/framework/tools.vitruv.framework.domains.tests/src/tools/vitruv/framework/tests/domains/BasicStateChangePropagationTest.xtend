@@ -42,9 +42,8 @@ class BasicStateChangePropagationTest extends StateChangePropagationTest {
 		assertEquals(1, changes.EChanges.filter(ReplaceSingleValuedEAttribute).size)
 
 		// Create empty resource to apply generated changes to
-		changes.unresolve()
 		val validationResourceSet = new ResourceSetImpl()
-		changes.resolveAndApply(validationResourceSet)
+		changes.unresolve().resolveAndApply(validationResourceSet)
 		
 		modelResource.save(null)
 		assertEquals(1, validationResourceSet.resources.size)
@@ -69,10 +68,9 @@ class BasicStateChangePropagationTest extends StateChangePropagationTest {
 		assertEquals(1, changes.EChanges.filter(DeleteEObject).size)
 
 		// Load resource to apply generated changes to
-		changes.unresolve()
 		val validationResourceSet = new ResourceSetImpl()
 		validationResourceSet.getResource(testUri, true)
-		changes.resolveAndApply(validationResourceSet)
+		changes.unresolve().resolveAndApply(validationResourceSet)
 
 		assertEquals(1, validationResourceSet.resources.size)
 		assertTrue(validationResourceSet.resources.get(0).contents.empty)
@@ -103,8 +101,7 @@ class BasicStateChangePropagationTest extends StateChangePropagationTest {
 		val oldState = validationResourceSet.getResource(testUri, true)
 		val changes = strategyToTest.getChangeSequenceBetween(-modelResource, oldState)
 
-		changes.unresolve()
-		changes.resolveAndApply(validationResourceSet)
+		changes.unresolve().resolveAndApply(validationResourceSet)
 
 		assertEquals(1, validationResourceSet.resources.size)
 		assertThat(validationResourceSet.resources.get(0), containsModelOf(-modelResource))
@@ -135,8 +132,7 @@ class BasicStateChangePropagationTest extends StateChangePropagationTest {
 		assertEquals(1, changes.EChanges.size)
 		assertEquals(1, changes.EChanges.filter(ReplaceSingleValuedEAttribute).size)
 
-		changes.unresolve()
-		changes.resolveAndApply(validationResourceSet)
+		changes.unresolve().resolveAndApply(validationResourceSet)
 
 		assertEquals(1, validationResourceSet.resources.size)
 		assertThat(validationResourceSet.resources.get(0), containsModelOf(-modelResource))
@@ -170,8 +166,7 @@ class BasicStateChangePropagationTest extends StateChangePropagationTest {
 		val oldState = validationResourceSet.getResource(testUri, true)
 		val changes = strategyToTest.getChangeSequenceBetween(-modelResource, oldState)
 
-		changes.unresolve()
-		changes.resolveAndApply(validationResourceSet)
+		changes.unresolve().resolveAndApply(validationResourceSet)
 
 		assertEquals(1, validationResourceSet.resources.size)
 		assertThat(validationResourceSet.resources.get(0), containsModelOf(-modelResource))
@@ -207,8 +202,7 @@ class BasicStateChangePropagationTest extends StateChangePropagationTest {
 		assertEquals(1, changes.EChanges.filter(RemoveRootEObject).size)
 		assertEquals(1, changes.EChanges.filter(InsertRootEObject).size)
 		
-		changes.unresolve()
-		changes.resolveAndApply(validationResourceSet)
+		changes.unresolve().resolveAndApply(validationResourceSet)
 
 		(-modelResource).save(null)
 		assertEquals(2, validationResourceSet.resources.size)
@@ -248,8 +242,7 @@ class BasicStateChangePropagationTest extends StateChangePropagationTest {
 		assertEquals(1, changes.EChanges.filter(InsertRootEObject).size)
 		assertEquals(1, changes.EChanges.filter(ReplaceSingleValuedEAttribute).size)
 
-		changes.unresolve()
-		changes.resolveAndApply(validationResourceSet)
+		changes.unresolve().resolveAndApply(validationResourceSet)
 
 		(-modelResource).save(null)
 		assertEquals(2, validationResourceSet.resources.size)
