@@ -19,7 +19,6 @@ import tools.vitruv.domains.emf.monitorededitor.IVitruviusEMFEditorMonitor;
 import tools.vitruv.domains.emf.monitorededitor.IVitruviusEMFEditorMonitor.IVitruviusAccessor;
 import tools.vitruv.domains.emf.monitorededitor.monitor.DefaultEditorPartAdapterFactoryImpl;
 import tools.vitruv.domains.emf.monitorededitor.monitor.EMFEditorMonitorFactory;
-import tools.vitruv.framework.change.description.VitruviusChangeFactory.FileChangeKind;
 import tools.vitruv.framework.domains.ui.builder.VitruvProjectBuilder;
 import static edu.kit.ipd.sdq.commons.util.org.eclipse.emf.common.util.URIUtil.createPlatformResourceURI;
 import static edu.kit.ipd.sdq.commons.util.org.eclipse.emf.common.util.URIUtil.getIFileForEMFUri;
@@ -215,6 +214,11 @@ public class VitruvEmfBuilder extends VitruvProjectBuilder {
         this.triggerFileChangeSynchronisation(iResource, FileChangeKind.Delete);
     }
 
+    enum FileChangeKind {
+		Create,
+		Delete		
+	}
+    
     private void triggerFileChangeSynchronisation(final IResource iResource, final FileChangeKind fileChangeKind) {
         final String fileExtension = iResource.getFileExtension();
         if (getMonitoredFileExtensions().contains(fileExtension)) {
