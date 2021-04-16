@@ -1,19 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
     xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/tools.vitruv.framework.change.echange/src-gen"
-    modelPluginID="tools.vitruv.framework.change.echange" modelName="Change" rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container"
-    importerID="org.eclipse.emf.importer.ecore" complianceLevel="5.0" copyrightFields="false"
-    usedGenPackages="../../org.eclipse.emf.ecore/model/Ecore.genmodel#//ecore" operationReflection="true"
-    importOrganizing="true">
-  <foreignModel>attribute.ecore</foreignModel>
-  <foreignModel>echange.ecore</foreignModel>
-  <foreignModel>eobject.ecore</foreignModel>
-  <foreignModel>feature.ecore</foreignModel>
-  <foreignModel>id.ecore</foreignModel>
-  <foreignModel>list.ecore</foreignModel>
-  <foreignModel>reference.ecore</foreignModel>
-  <foreignModel>root.ecore</foreignModel>
-  <foreignModel>single.ecore</foreignModel>
+    editDirectory="" editorDirectory="" modelPluginID="tools.vitruv.framework.change.echange"
+    modelName="Change" rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container"
+    testsDirectory="" containmentProxies="true" complianceLevel="8.0" copyrightFields="false"
+    usedGenPackages="../../org.eclipse.emf.ecore/model/Ecore.genmodel#//ecore"
+    operationReflection="true" importOrganizing="true">
+  <genAnnotations source="http://www.eclipse.org/emf/2002/GenModel/exporter/org.eclipse.xsd.ecore.exporter">
+    <genAnnotations source="selectedPackages">
+      <details key="http://www.eclipse.org/emf/2002/Ecore" value="Ecore.xsd"/>
+    </genAnnotations>
+    <details key="directoryURI" value="."/>
+  </genAnnotations>
+  <genAnnotations source="http://www.eclipse.org/emf/2002/GenModel/exporter/org.eclipse.xsd.ecore.exporter.xmi">
+    <genAnnotations source="selectedPackages">
+      <details key="http://www.eclipse.org/emf/2002/Ecore" value="EcoreXMI.xsd"/>
+    </genAnnotations>
+    <details key="directoryURI" value="."/>
+  </genAnnotations>
+  <modelPluginVariables>org.eclipse.xtext.xbase.lib</modelPluginVariables>
   <genPackages prefix="Attribute" basePackage="tools.vitruv.framework.change.echange.feature"
       disposableProviderFactory="true" ecorePackage="attribute.ecore#/">
     <genClasses image="false" ecoreClass="attribute.ecore#//UpdateAttributeEChange">
@@ -43,46 +48,6 @@
       <genTypeParameters ecoreTypeParameter="attribute.ecore#//ReplaceSingleValuedEAttribute/T"/>
     </genClasses>
   </genPackages>
-  <genPackages prefix="EChange" basePackage="tools.vitruv.framework.change" disposableProviderFactory="true"
-      ecorePackage="echange.ecore#/">
-    <genClasses image="false" ecoreClass="echange.ecore#//EChange">
-      <genOperations ecoreOperation="echange.ecore#//EChange/isResolved" body="return tools.vitruv.framework.change.echange.resolve.ResolutionChecker.isResolved(this);"/>
-    </genClasses>
-    <genClasses image="false" ecoreClass="echange.ecore#//AdditiveEChange">
-      <genTypeParameters ecoreTypeParameter="echange.ecore#//AdditiveEChange/T"/>
-      <genOperations ecoreOperation="echange.ecore#//AdditiveEChange/getNewValue"/>
-    </genClasses>
-    <genClasses image="false" ecoreClass="echange.ecore#//SubtractiveEChange">
-      <genTypeParameters ecoreTypeParameter="echange.ecore#//SubtractiveEChange/T"/>
-      <genOperations ecoreOperation="echange.ecore#//SubtractiveEChange/getOldValue"/>
-    </genClasses>
-  </genPackages>
-  <genPackages prefix="Eobject" basePackage="tools.vitruv.framework.change.echange"
-      disposableProviderFactory="true" ecorePackage="eobject.ecore#/">
-    <genClasses image="false" ecoreClass="eobject.ecore#//EObjectAddedEChange">
-      <genTypeParameters ecoreTypeParameter="eobject.ecore#//EObjectAddedEChange/T"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference eobject.ecore#//EObjectAddedEChange/newValue"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eobject.ecore#//EObjectAddedEChange/newValueID"/>
-    </genClasses>
-    <genClasses image="false" ecoreClass="eobject.ecore#//EObjectSubtractedEChange">
-      <genTypeParameters ecoreTypeParameter="eobject.ecore#//EObjectSubtractedEChange/T"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference eobject.ecore#//EObjectSubtractedEChange/oldValue"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eobject.ecore#//EObjectSubtractedEChange/oldValueID"/>
-    </genClasses>
-    <genClasses image="false" ecoreClass="eobject.ecore#//EObjectExistenceEChange">
-      <genTypeParameters ecoreTypeParameter="eobject.ecore#//EObjectExistenceEChange/A"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference eobject.ecore#//EObjectExistenceEChange/affectedEObject"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eobject.ecore#//EObjectExistenceEChange/idAttributeValue"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eobject.ecore#//EObjectExistenceEChange/affectedEObjectID"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference eobject.ecore#//EObjectExistenceEChange/affectedEObjectType"/>
-    </genClasses>
-    <genClasses ecoreClass="eobject.ecore#//CreateEObject">
-      <genTypeParameters ecoreTypeParameter="eobject.ecore#//CreateEObject/A"/>
-    </genClasses>
-    <genClasses ecoreClass="eobject.ecore#//DeleteEObject">
-      <genTypeParameters ecoreTypeParameter="eobject.ecore#//DeleteEObject/A"/>
-    </genClasses>
-  </genPackages>
   <genPackages prefix="Feature" basePackage="tools.vitruv.framework.change.echange"
       disposableProviderFactory="true" ecorePackage="feature.ecore#/">
     <genClasses image="false" ecoreClass="feature.ecore#//FeatureEChange">
@@ -105,20 +70,20 @@
       <genTypeParameters ecoreTypeParameter="feature.ecore#//UnsetFeature/F"/>
     </genClasses>
   </genPackages>
-  <genPackages prefix="Id" basePackage="tools.vitruv.framework.change.echange" disposableProviderFactory="true"
-      ecorePackage="id.ecore#/">
-    <genDataTypes ecoreDataType="id.ecore#//Id"/>
-    <genClasses ecoreClass="id.ecore#//IdEObjectRepository">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference id.ecore#//IdEObjectRepository/idToEObject"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference id.ecore#//IdEObjectRepository/eObjectToId"/>
+  <genPackages prefix="EChange" basePackage="tools.vitruv.framework.change" disposableProviderFactory="true"
+      ecorePackage="echange.ecore#/">
+    <genDataTypes ecoreDataType="echange.ecore#//Id"/>
+    <genClasses image="false" ecoreClass="echange.ecore#//EChange">
+      <genOperations ecoreOperation="echange.ecore#//EChange/isResolved" body="return tools.vitruv.framework.change.echange.resolve.ResolutionChecker.isResolved(this);"/>
     </genClasses>
-    <genClasses ecoreClass="id.ecore#//IdToEObjectMapEntry">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute id.ecore#//IdToEObjectMapEntry/key"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference id.ecore#//IdToEObjectMapEntry/value"/>
+    <genClasses image="false" ecoreClass="echange.ecore#//AdditiveEChange">
+      <genTypeParameters ecoreTypeParameter="echange.ecore#//AdditiveEChange/T"/>
+      <genOperations ecoreOperation="echange.ecore#//AdditiveEChange/getNewValue"/>
     </genClasses>
-    <genClasses ecoreClass="id.ecore#//EObjectToIdMapEntry">
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference id.ecore#//EObjectToIdMapEntry/key"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute id.ecore#//EObjectToIdMapEntry/value"/>
+    <genClasses image="false" ecoreClass="echange.ecore#//SubtractiveEChange">
+      <genTypeParameters ecoreTypeParameter="echange.ecore#//SubtractiveEChange/T"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute echange.ecore#//SubtractiveEChange/Test"/>
+      <genOperations ecoreOperation="echange.ecore#//SubtractiveEChange/getOldValue"/>
     </genClasses>
   </genPackages>
   <genPackages prefix="List" basePackage="tools.vitruv.framework.change.echange.feature"
@@ -137,6 +102,19 @@
       <genTypeParameters ecoreTypeParameter="list.ecore#//RemoveFromListEChange/A"/>
       <genTypeParameters ecoreTypeParameter="list.ecore#//RemoveFromListEChange/F"/>
       <genTypeParameters ecoreTypeParameter="list.ecore#//RemoveFromListEChange/T"/>
+    </genClasses>
+  </genPackages>
+  <genPackages prefix="Single" basePackage="tools.vitruv.framework.change.echange.feature"
+      disposableProviderFactory="true" ecorePackage="single.ecore#/">
+    <genClasses image="false" ecoreClass="single.ecore#//ReplaceSingleValuedFeatureEChange">
+      <genTypeParameters ecoreTypeParameter="single.ecore#//ReplaceSingleValuedFeatureEChange/A"/>
+      <genTypeParameters ecoreTypeParameter="single.ecore#//ReplaceSingleValuedFeatureEChange/F"/>
+      <genTypeParameters ecoreTypeParameter="single.ecore#//ReplaceSingleValuedFeatureEChange/T"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute single.ecore#//ReplaceSingleValuedFeatureEChange/isUnset"/>
+      <genOperations ecoreOperation="single.ecore#//ReplaceSingleValuedFeatureEChange/isFromNonDefaultValue"
+          body="T _oldValue = this.getOldValue();&#xA;F _affectedFeature = this.getAffectedFeature();&#xA;&lt;%java.lang.Object%> _defaultValue = _affectedFeature.getDefaultValue();&#xA;boolean _equals = &lt;%java.util.Objects%>.equals(_oldValue, _defaultValue);&#xA;return (!_equals);"/>
+      <genOperations ecoreOperation="single.ecore#//ReplaceSingleValuedFeatureEChange/isToNonDefaultValue"
+          body="T _newValue = this.getNewValue();&#xA;F _affectedFeature = this.getAffectedFeature();&#xA;&lt;%java.lang.Object%> _defaultValue = _affectedFeature.getDefaultValue();&#xA;boolean _equals = &lt;%java.util.Objects%>.equals(_newValue, _defaultValue);&#xA;return (!_equals);"/>
     </genClasses>
   </genPackages>
   <genPackages prefix="Reference" basePackage="tools.vitruv.framework.change.echange.feature"
@@ -168,6 +146,32 @@
       <genTypeParameters ecoreTypeParameter="reference.ecore#//ReplaceSingleValuedEReference/T"/>
     </genClasses>
   </genPackages>
+  <genPackages prefix="Eobject" basePackage="tools.vitruv.framework.change.echange"
+      disposableProviderFactory="true" ecorePackage="eobject.ecore#/">
+    <genClasses image="false" ecoreClass="eobject.ecore#//EObjectAddedEChange">
+      <genTypeParameters ecoreTypeParameter="eobject.ecore#//EObjectAddedEChange/T"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference eobject.ecore#//EObjectAddedEChange/newValue"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eobject.ecore#//EObjectAddedEChange/newValueID"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="eobject.ecore#//EObjectSubtractedEChange">
+      <genTypeParameters ecoreTypeParameter="eobject.ecore#//EObjectSubtractedEChange/T"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference eobject.ecore#//EObjectSubtractedEChange/oldValue"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eobject.ecore#//EObjectSubtractedEChange/oldValueID"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="eobject.ecore#//EObjectExistenceEChange">
+      <genTypeParameters ecoreTypeParameter="eobject.ecore#//EObjectExistenceEChange/A"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference eobject.ecore#//EObjectExistenceEChange/affectedEObject"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eobject.ecore#//EObjectExistenceEChange/idAttributeValue"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eobject.ecore#//EObjectExistenceEChange/affectedEObjectID"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference eobject.ecore#//EObjectExistenceEChange/affectedEObjectType"/>
+    </genClasses>
+    <genClasses ecoreClass="eobject.ecore#//CreateEObject">
+      <genTypeParameters ecoreTypeParameter="eobject.ecore#//CreateEObject/A"/>
+    </genClasses>
+    <genClasses ecoreClass="eobject.ecore#//DeleteEObject">
+      <genTypeParameters ecoreTypeParameter="eobject.ecore#//DeleteEObject/A"/>
+    </genClasses>
+  </genPackages>
   <genPackages prefix="Root" basePackage="tools.vitruv.framework.change.echange" disposableProviderFactory="true"
       ecorePackage="root.ecore#/">
     <genDataTypes ecoreDataType="root.ecore#//Resource"/>
@@ -181,19 +185,6 @@
     </genClasses>
     <genClasses ecoreClass="root.ecore#//RemoveRootEObject">
       <genTypeParameters ecoreTypeParameter="root.ecore#//RemoveRootEObject/T"/>
-    </genClasses>
-  </genPackages>
-  <genPackages prefix="Single" basePackage="tools.vitruv.framework.change.echange.feature"
-      disposableProviderFactory="true" ecorePackage="single.ecore#/">
-    <genClasses image="false" ecoreClass="single.ecore#//ReplaceSingleValuedFeatureEChange">
-      <genTypeParameters ecoreTypeParameter="single.ecore#//ReplaceSingleValuedFeatureEChange/A"/>
-      <genTypeParameters ecoreTypeParameter="single.ecore#//ReplaceSingleValuedFeatureEChange/F"/>
-      <genTypeParameters ecoreTypeParameter="single.ecore#//ReplaceSingleValuedFeatureEChange/T"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute single.ecore#//ReplaceSingleValuedFeatureEChange/isUnset"/>
-      <genOperations ecoreOperation="single.ecore#//ReplaceSingleValuedFeatureEChange/isFromNonDefaultValue"
-          body="T _oldValue = this.getOldValue();&#xA;F _affectedFeature = this.getAffectedFeature();&#xA;&lt;%java.lang.Object%> _defaultValue = _affectedFeature.getDefaultValue();&#xA;boolean _equals = &lt;%java.util.Objects%>.equals(_oldValue, _defaultValue);&#xA;return (!_equals);"/>
-      <genOperations ecoreOperation="single.ecore#//ReplaceSingleValuedFeatureEChange/isToNonDefaultValue"
-          body="T _newValue = this.getNewValue();&#xA;F _affectedFeature = this.getAffectedFeature();&#xA;&lt;%java.lang.Object%> _defaultValue = _affectedFeature.getDefaultValue();&#xA;boolean _equals = &lt;%java.util.Objects%>.equals(_newValue, _defaultValue);&#xA;return (!_equals);"/>
     </genClasses>
   </genPackages>
 </genmodel:GenModel>

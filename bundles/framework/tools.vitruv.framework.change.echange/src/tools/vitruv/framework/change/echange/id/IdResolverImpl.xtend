@@ -1,8 +1,6 @@
 package tools.vitruv.framework.change.echange.id
 
 import org.eclipse.emf.ecore.EObject
-import tools.vitruv.framework.change.echange.id.IdEObjectRepository
-import tools.vitruv.framework.change.echange.id.IdFactory
 import org.eclipse.emf.ecore.resource.ResourceSet
 import org.eclipse.emf.ecore.resource.Resource
 import org.apache.log4j.Logger
@@ -15,7 +13,8 @@ import java.util.PriorityQueue
 import static extension tools.vitruv.framework.util.ObjectResolutionUtil.getHierarchicUriFragment
 import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceSetUtil.getOrCreateResource
 import org.eclipse.emf.common.notify.Notifier
-import org.eclipse.xtend.lib.annotations.Accessors
+import com.google.common.collect.BiMap
+import com.google.common.collect.HashBiMap
 
 /**
  * {@link IdResolver}
@@ -24,10 +23,9 @@ package class IdResolverImpl implements IdResolver {
 	static val logger = Logger.getLogger(IdResolverImpl)
 	static val CACHE_PREFIX = "cache:/"
 	
-	@Accessors(PROTECTED_GETTER)
 	val ResourceSet resourceSet
-	@Accessors(PROTECTED_GETTER)
-	IdEObjectRepository repository
+	val BiMap<EObject, String> eObjectToId = HashBiMap.create()
+	
 
 	/**
 	 * Instantiates an ID resolver and repository, the given {@link ResourceSet} for resolving objects.
@@ -39,7 +37,6 @@ package class IdResolverImpl implements IdResolver {
 	new(ResourceSet resourceSet) {
 		checkArgument(resourceSet !== null, "Resource set may not be null")
 		this.resourceSet = resourceSet
-		this.repository = IdFactory.eINSTANCE.createIdEObjectRepository
 	}
 	
 	override endTransaction() {
@@ -48,11 +45,10 @@ package class IdResolverImpl implements IdResolver {
 	}
 	
 	private def cleanupRemovedElements() {
-		for (val iterator = repository.EObjectToId.keySet.iterator(); iterator.hasNext();) {
+		for (val iterator = eObjectToId.keySet.iterator(); iterator.hasNext();) {
 			val object = iterator.next()
 			if (object.eResource === null || object.eResource.resourceSet === null) {
-				val id = repository.EObjectToId.get(object)
-				repository.idToEObject.removeKey(id)
+				val id = eObjectToId.get(object)
 				if (id.isCache) {
 					cacheIds.push(id)
 				}
@@ -90,7 +86,7 @@ package class IdResolverImpl implements IdResolver {
 	}
 	
 	private def getOrRegisterCachedObject(EObject eObject) {
-		val storedId = repository.EObjectToId.get(eObject)
+		val storedId = eObjectToId.get(eObject)
 		if (storedId.isCache) {
 			return storedId
 		} else {
@@ -123,7 +119,7 @@ package class IdResolverImpl implements IdResolver {
 	}
 	
 	private def getStoredEObject(URI uri) {
-		return repository.idToEObject.get(uri.toString)
+		return eObjectToId.inverse.get(uri.toString)
 	}
 	
 	private def getAndRegisterNonStoredEObject(URI uri) {
@@ -136,14 +132,15 @@ package class IdResolverImpl implements IdResolver {
 		checkState(eObject !== null, "object must not be null")
 		if(logger.isTraceEnabled) logger.trace('''Adding ID «id» for EObject: «eObject»''')
 
-		val oldObject = repository.idToEObject.put(id, eObject)
-		val oldId = repository.EObjectToId.put(eObject, id)
+		val oldObject = eObjectToId.inverse.get(id)
+		val oldId = eObjectToId.get(eObject)
 		if (oldObject !== null && oldObject !== eObject) {
-			repository.EObjectToId.remove(oldObject)
+			eObjectToId.remove(oldObject)
 		}
 		if (oldId !== null && oldId !== id) {
-			repository.idToEObject.remove(oldId)
+			eObjectToId.inverse.remove(oldId)
 		}
+		eObjectToId.put(eObject, id)
 		if (oldId.isCache) {
 			cacheIds.push(oldId)
 		}
