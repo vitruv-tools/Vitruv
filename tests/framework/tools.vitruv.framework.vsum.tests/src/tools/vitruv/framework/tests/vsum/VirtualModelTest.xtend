@@ -20,7 +20,6 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals
 import static org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
-import tools.vitruv.framework.propagation.impl.AbstractEChangePropagationSpecification
 import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.correspondence.CorrespondenceModel
 import tools.vitruv.framework.propagation.ResourceAccess
@@ -34,6 +33,7 @@ import tools.vitruv.framework.change.description.TransactionalChange
 import tools.vitruv.framework.change.echange.feature.attribute.ReplaceSingleValuedEAttribute
 import java.util.List
 import static extension tools.vitruv.framework.correspondence.CorrespondenceModelUtil.getCorrespondingEObjects
+import tools.vitruv.framework.propagation.impl.AbstractChangePropagationSpecification
 
 @ExtendWith(TestProjectManager)
 class VirtualModelTest {
@@ -254,7 +254,7 @@ class VirtualModelTest {
 		assertEquals(1, reloadedVirtualModel.correspondenceModel.getCorrespondingEObjects(reloadedModel.resource.contents.get(0)).size)
 	}
 
-	static class RedundancyChangePropagationSpecification extends AbstractEChangePropagationSpecification {
+	static class RedundancyChangePropagationSpecification extends AbstractChangePropagationSpecification {
 		static def getTargetResourceUri(URI sourceUri) {
 			URI.createFileURI(sourceUri.trimFileExtension.toFileString + "Copy." + sourceUri.fileExtension)
 		}
@@ -263,14 +263,14 @@ class VirtualModelTest {
 			super(sourceDomain, targetDomain)
 		}
 
-		override protected doesHandleChange(EChange change, CorrespondenceModel correspondenceModel) {
+		override doesHandleChange(EChange change, CorrespondenceModel correspondenceModel) {
 			if (change instanceof InsertRootEObject) {
 				return change.newValue instanceof Root
 			}
 			return false
 		}
 
-		override protected propagateChange(EChange change, CorrespondenceModel correspondenceModel,
+		override propagateChange(EChange change, CorrespondenceModel correspondenceModel,
 			extension ResourceAccess resourceAccess) {
 			if (!doesHandleChange(change, correspondenceModel)) {
 				return
