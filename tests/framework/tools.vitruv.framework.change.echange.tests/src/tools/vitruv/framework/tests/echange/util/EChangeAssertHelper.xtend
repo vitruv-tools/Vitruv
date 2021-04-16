@@ -13,7 +13,7 @@ import static org.hamcrest.core.IsInstanceOf.instanceOf
 import static org.hamcrest.core.Is.is
 import static extension tools.vitruv.framework.change.echange.resolve.EChangeResolverAndApplicator.*
 import org.eclipse.xtend.lib.annotations.FinalFieldsConstructor
-import tools.vitruv.framework.change.id.IdResolver
+import tools.vitruv.framework.change.echange.id.IdResolver
 
 /**
  * Utility class for frequently used assert methods in the tests.

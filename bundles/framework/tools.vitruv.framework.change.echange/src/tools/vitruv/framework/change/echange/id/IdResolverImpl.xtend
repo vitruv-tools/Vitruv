@@ -1,14 +1,12 @@
-package tools.vitruv.framework.change.id
+package tools.vitruv.framework.change.echange.id
 
 import org.eclipse.emf.ecore.EObject
 import tools.vitruv.framework.change.echange.id.IdEObjectRepository
 import tools.vitruv.framework.change.echange.id.IdFactory
 import org.eclipse.emf.ecore.resource.ResourceSet
-import org.eclipse.emf.ecore.util.EcoreUtil
 import org.eclipse.emf.ecore.resource.Resource
 import org.apache.log4j.Logger
 import org.eclipse.emf.common.util.URI
-import org.eclipse.emf.ecore.EClass
 import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.common.util.URIUtil.*
 import static com.google.common.base.Preconditions.checkArgument
 import static com.google.common.base.Preconditions.checkState
@@ -77,27 +75,28 @@ package class IdResolverImpl implements IdResolver {
 		return resourceSet.getOrCreateResource(uri)
 	}
 	
-	private def getIdOrNull(EObject eObject) {
-		return eObject.getIdIfObjectReadonly()
-			?: eObject.getIdIfStoredEObject()
-			?: eObject.getIdIfEClass()
-			?: null
-	}
-	
-	private def getIdIfObjectReadonly(EObject eObject) {
-		val resourceURI = eObject.eResource?.URI
-		if (resourceURI.isReadOnly) {
-			return EcoreUtil.getURI(eObject).toString
+	override String getAndUpdateId(EObject eObject) {
+		return if (eObject.eResource !== null) {
+			eObject.registerObjectInResource()
+		} else {
+			eObject.getOrRegisterCachedObject()
 		}
 	}
 	
-	private def getIdIfStoredEObject(EObject eObject) {
-		return repository.EObjectToId.get(eObject)
+	private def String registerObjectInResource(EObject eObject) {
+		val id = eObject.eResource.URI.appendFragment(eObject.hierarchicUriFragment).toString
+		register(id, eObject)
+		return id
 	}
 	
-	private def getIdIfEClass(EObject eObject) {
-		if (eObject instanceof EClass) {
-			return getAndUpdateId(eObject)
+	private def getOrRegisterCachedObject(EObject eObject) {
+		val storedId = repository.EObjectToId.get(eObject)
+		if (storedId.isCache) {
+			return storedId
+		} else {
+			val id = cacheIds.peek()
+			register(id, eObject)
+			return id
 		}
 	}
 	
@@ -133,31 +132,6 @@ package class IdResolverImpl implements IdResolver {
 		return candidate
 	}
 	
-
-	override String getAndUpdateId(EObject eObject) {
-		return if (eObject.eResource !== null) {
-			eObject.registerObjectInResource()
-		} else {
-			eObject.getOrRegisterCachedObject()
-		}
-	}
-	
-	private def String registerObjectInResource(EObject eObject) {
-		val id = eObject.eResource.URI.appendFragment(eObject.hierarchicUriFragment).toString
-		register(id, eObject)
-		return id
-	}
-	
-	private def getOrRegisterCachedObject(EObject eObject) {
-		if (getIdIfStoredEObject(eObject).isCache) {
-			return getIdIfStoredEObject(eObject)
-		} else {
-			val id = cacheIds.peek()
-			register(id, eObject)
-			return id
-		}
-	}
-	
 	private def register(String id, EObject eObject) {
 		checkState(eObject !== null, "object must not be null")
 		if(logger.isTraceEnabled) logger.trace('''Adding ID «id» for EObject: «eObject»''')
@@ -177,10 +151,6 @@ package class IdResolverImpl implements IdResolver {
 			val entry = cacheIds.pop()
 			checkState(id == entry, "expected cache ID was %s but actually gave %s", id, entry)
 		}
-	}
-
-	override hasId(EObject object) {
-		return object.getIdOrNull() !== null
 	}
 
 	override hasEObject(String id) {

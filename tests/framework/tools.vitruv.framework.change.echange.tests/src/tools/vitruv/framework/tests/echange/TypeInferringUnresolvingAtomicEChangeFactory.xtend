@@ -11,7 +11,7 @@ import org.eclipse.emf.common.util.URI
 import tools.vitruv.framework.change.echange.TypeInferringAtomicEChangeFactory
 import tools.vitruv.framework.change.echange.EChangeIdManager
 import tools.vitruv.framework.change.echange.EChange
-import tools.vitruv.framework.change.id.IdResolver
+import tools.vitruv.framework.change.echange.id.IdResolver
 
 /**
  * Factory singleton class for elements of change models.

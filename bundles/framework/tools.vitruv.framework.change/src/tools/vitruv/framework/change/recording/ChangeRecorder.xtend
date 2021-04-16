@@ -29,8 +29,7 @@ import static extension org.eclipse.emf.ecore.resource.Resource.RESOURCE__CONTEN
 import static extension org.eclipse.emf.ecore.resource.ResourceSet.RESOURCE_SET__RESOURCES
 import static extension tools.vitruv.framework.change.echange.resolve.EChangeResolverAndApplicator.applyForward
 import static extension tools.vitruv.framework.change.echange.resolve.EChangeResolverAndApplicator.applyBackward
-import static tools.vitruv.framework.change.id.IdResolverAndRepositoryFactory.createIdResolver
-import tools.vitruv.framework.change.id.IdResolver
+import tools.vitruv.framework.change.echange.id.IdResolver
 import tools.vitruv.framework.change.echange.feature.reference.UpdateReferenceEChange
 import tools.vitruv.framework.change.echange.EChange
 
@@ -56,7 +55,7 @@ class ChangeRecorder implements AutoCloseable {
 	val Set<EObject> existingObjects = new HashSet
 	
 	new(ResourceSet resourceSet) {
-		this(createIdResolver(resourceSet))
+		this(IdResolver.create(resourceSet))
 	}
 	
 	new(IdResolver idResolver) {

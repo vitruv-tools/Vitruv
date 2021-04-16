@@ -12,7 +12,7 @@ import tools.vitruv.framework.change.echange.root.RemoveRootEObject
 import org.eclipse.emf.ecore.EObject
 import tools.vitruv.framework.change.echange.feature.reference.UpdateReferenceEChange
 import tools.vitruv.framework.change.echange.feature.reference.SubtractiveReferenceEChange
-import tools.vitruv.framework.change.id.IdResolver
+import tools.vitruv.framework.change.echange.id.IdResolver
 
 /**
  * Utility class for applying and resolving a given EChange.

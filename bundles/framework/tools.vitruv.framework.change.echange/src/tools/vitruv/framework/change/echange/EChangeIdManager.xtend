@@ -7,7 +7,7 @@ import tools.vitruv.framework.change.echange.feature.FeatureEChange
 import org.eclipse.emf.ecore.EObject
 import static com.google.common.base.Preconditions.checkArgument
 import static com.google.common.base.Preconditions.checkState
-import tools.vitruv.framework.change.id.IdResolver
+import tools.vitruv.framework.change.echange.id.IdResolver
 
 /**
  * Provides logic for initializing the IDs within changes. 
