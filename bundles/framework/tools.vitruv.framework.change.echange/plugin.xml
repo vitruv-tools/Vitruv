@@ -31,14 +31,6 @@
    </extension>
 
    <extension point="org.eclipse.emf.ecore.generated_package">
-      <!-- @generated Id -->
-      <package
-            uri="http://tools.vitruv/EChange/Id/1.0"
-            class="tools.vitruv.framework.change.echange.id.IdPackage"
-            genModel="metamodel/echange.genmodel"/>
-   </extension>
-
-   <extension point="org.eclipse.emf.ecore.generated_package">
       <!-- @generated List -->
       <package
             uri="http://tools.vitruv/EChange/Feature/List/1.0"
