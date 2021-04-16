@@ -7,7 +7,6 @@ import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.emf.ecore.resource.ResourceSet
 import tools.vitruv.framework.change.description.TransactionalChange
-import tools.vitruv.framework.change.description.VitruviusChangeFactory
 import tools.vitruv.framework.domains.VitruvDomain
 import tools.vitruv.framework.domains.repository.VitruvDomainRepository
 
@@ -149,7 +148,7 @@ package class ResourceRepositoryImpl implements ModelRepository {
 		isRecording = false
 		domainToRecorder.values.forEach[endRecording()]
 		return domainToRecorder.values
-			.map [recorder | VitruviusChangeFactory.instance.createCompositeTransactionalChange(recorder.changes)]
+			.map [recorder | recorder.change]
 			.filter[containsConcreteChange]
 			.toList()
 	}

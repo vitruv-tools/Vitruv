@@ -9,7 +9,6 @@ import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resou
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import org.eclipse.emf.common.util.URI
 import static tools.vitruv.testutils.metamodels.AllElementTypesCreators.aet
-import tools.vitruv.framework.change.description.VitruviusChangeFactory
 import static tools.vitruv.testutils.matchers.ModelMatchers.containsModelOf
 import static org.hamcrest.MatcherAssert.assertThat
 import tools.vitruv.testutils.TestProjectManager
@@ -29,7 +28,6 @@ import allElementTypes.Root
 import tools.vitruv.framework.tests.vsum.VirtualModelTest.RedundancyChangePropagationSpecification
 import tools.vitruv.framework.change.echange.eobject.CreateEObject
 import tools.vitruv.framework.change.echange.feature.reference.ReplaceSingleValuedEReference
-import tools.vitruv.framework.change.description.TransactionalChange
 import tools.vitruv.framework.change.echange.feature.attribute.ReplaceSingleValuedEAttribute
 import java.util.List
 import static extension tools.vitruv.framework.correspondence.CorrespondenceModelUtil.getCorrespondingEObjects
@@ -65,10 +63,6 @@ class VirtualModelTest {
 		URI.createFileURI(projectFolder.resolve("root" + suffix + ".allElementTypes").toString)
 	}
 
-	private def compose(Iterable<? extends TransactionalChange> changes) {
-		VitruviusChangeFactory.instance.createCompositeTransactionalChange(changes)
-	}
-
 	@Test
 	@DisplayName("propagate a simple change into a virtual model")
 	def void propagateIntoVirtualModel() {
@@ -82,8 +76,8 @@ class VirtualModelTest {
 				id = 'root'
 			]
 		]
-		val recordedChanges = changeRecorder.endRecording
-		virtualModel.propagateChange(recordedChanges.compose)
+		val recordedChange = changeRecorder.endRecording
+		virtualModel.propagateChange(recordedChange)
 		val vsumModel = virtualModel.getModelInstance(createTestModelResourceUri(""))
 		assertThat(vsumModel.resource, containsModelOf(monitoredResource))
 	}
@@ -102,7 +96,7 @@ class VirtualModelTest {
 			]
 		]
 		val recordedChange = changeRecorder.endRecording
-		virtualModel.propagateChange(recordedChange.compose)
+		virtualModel.propagateChange(recordedChange)
 		val sorceModel = virtualModel.getModelInstance(createTestModelResourceUri(""))
 		val targetModel = virtualModel.getModelInstance(
 			RedundancyChangePropagationSpecification.getTargetResourceUri(createTestModelResourceUri("")))
@@ -132,7 +126,7 @@ class VirtualModelTest {
 			contents += containedRoot
 		]
 		val recordedChange = changeRecorder.endRecording
-		val propagatedChanges = virtualModel.propagateChange(recordedChange.compose)
+		val propagatedChanges = virtualModel.propagateChange(recordedChange)
 		val consequentialChanges = propagatedChanges.map[consequentialChanges.EChanges].flatten
 		assertEquals(2, consequentialChanges.filter(CreateEObject).size)
 		assertEquals(2, consequentialChanges.filter(InsertRootEObject).size)
@@ -169,7 +163,7 @@ class VirtualModelTest {
 			contents += containedInContainedRoot
 		]
 		val recordedChange = changeRecorder.endRecording
-		val propagatedChanges = virtualModel.propagateChange(recordedChange.compose)
+		val propagatedChanges = virtualModel.propagateChange(recordedChange)
 		val consequentialChanges = propagatedChanges.map[consequentialChanges.EChanges].flatten
 		assertEquals(3, consequentialChanges.filter(CreateEObject).size)
 		assertEquals(3, consequentialChanges.filter(InsertRootEObject).size)
@@ -192,7 +186,7 @@ class VirtualModelTest {
 			]
 		]
 		val recordedChange = changeRecorder.endRecording
-		virtualModel.propagateChange(recordedChange.compose)
+		virtualModel.propagateChange(recordedChange)
 		val reloadedResource = new ResourceSetImpl().withGlobalFactories.getResource(createTestModelResourceUri(""),
 			true)
 		assertThat(reloadedResource, containsModelOf(monitoredResource))
@@ -213,7 +207,7 @@ class VirtualModelTest {
 			]
 		]
 		val recordedChange = changeRecorder.endRecording
-		virtualModel.propagateChange(recordedChange.compose)
+		virtualModel.propagateChange(recordedChange)
 		val originalModel = virtualModel.getModelInstance(createTestModelResourceUri(""))
 		val reloadedVirtualModel = createAndLoadTestVirtualModel(projectFolder.resolve("vsum"))
 		val reloadedModel = reloadedVirtualModel.getModelInstance(createTestModelResourceUri(""))
@@ -223,7 +217,7 @@ class VirtualModelTest {
 		changeRecorder.beginRecording
 		root.singleValuedEAttribute = 1
 		val secondRecordedChange = changeRecorder.endRecording
-		val propagatedChange = reloadedVirtualModel.propagateChange(secondRecordedChange.compose)
+		val propagatedChange = reloadedVirtualModel.propagateChange(secondRecordedChange)
 		assertEquals(1, propagatedChange.size)
 	}
 
@@ -242,7 +236,7 @@ class VirtualModelTest {
 			]
 		]
 		val recordedChange = changeRecorder.endRecording
-		virtualModel.propagateChange(recordedChange.compose)
+		virtualModel.propagateChange(recordedChange)
 		val originalModel = virtualModel.getModelInstance(createTestModelResourceUri(""))
 		val reloadedVirtualModel = createAndLoadTestVirtualModel(projectFolder.resolve("vsum"))
 		val reloadedModel = reloadedVirtualModel.getModelInstance(createTestModelResourceUri(""))

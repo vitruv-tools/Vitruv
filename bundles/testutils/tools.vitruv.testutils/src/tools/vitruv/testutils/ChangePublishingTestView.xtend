@@ -10,7 +10,6 @@ import tools.vitruv.framework.change.description.VitruviusChange
 import java.util.List
 import java.util.LinkedList
 import tools.vitruv.framework.change.description.PropagatedChange
-import tools.vitruv.framework.change.description.VitruviusChangeFactory
 import tools.vitruv.framework.vsum.VirtualModel
 import org.eclipse.xtend.lib.annotations.Delegate
 import tools.vitruv.framework.domains.repository.VitruvDomainRepository
@@ -83,16 +82,15 @@ class ChangePublishingTestView implements NonTransactionalTestView {
 	override <T extends Notifier> List<PropagatedChange> propagate(T notifier, Consumer<T> consumer) {
 		val delegateChanges = delegate.propagate(notifier) [record(consumer)]
 		changeRecorder.endRecording()
-		val ourChanges = propagateChanges(changeRecorder.changes)
+		val ourChanges = propagateChanges(changeRecorder.change)
 		changeRecorder.beginRecording()
 		return delegateChanges + ourChanges
 	}
 
 	override propagate() {
 		changeRecorder.endRecording()
-		val recordedChanges = changeRecorder.changes
-		val delegateChanges = recordedChanges.flatMap [changedURIs]
-			.toSet
+		val recordedChange = changeRecorder.change
+		val delegateChanges = recordedChange.changedURIs
 			.flatMapFixed [changedURI | 
 				val changedResource = resourceSet.getResource(changedURI, false)
 				if (changedResource !== null) {
@@ -103,14 +101,13 @@ class ChangePublishingTestView implements NonTransactionalTestView {
 					delegate.propagate(changedResource) []
 				}
 			] 
-		val ourChanges = propagateChanges(recordedChanges)
+		val ourChanges = propagateChanges(recordedChange)
 		changeRecorder.beginRecording()
 		return delegateChanges + ourChanges
 	}
 	
-	def private propagateChanges(Iterable<? extends TransactionalChange> changes) {
-		val compositeChange = VitruviusChangeFactory.instance.createCompositeChange(changes)
-		val propagationResult = changeProcessors.flatMapFixed [apply(compositeChange)]
+	def private propagateChanges(TransactionalChange change) {
+		val propagationResult = changeProcessors.flatMapFixed [apply(change)]
 		if (renewResourceCacheAfterPropagation) {
 			renewResourceCache()
 		}

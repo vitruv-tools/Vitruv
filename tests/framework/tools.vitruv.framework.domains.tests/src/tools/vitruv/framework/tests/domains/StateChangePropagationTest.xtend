@@ -7,7 +7,6 @@ import org.eclipse.emf.ecore.resource.ResourceSet
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import pcm_mockup.Repository
 import tools.vitruv.framework.change.description.VitruviusChange
-import tools.vitruv.framework.change.description.VitruviusChangeFactory
 import uml_mockup.UPackage
 import tools.vitruv.framework.domains.StateBasedChangeResolutionStrategy
 import tools.vitruv.framework.domains.DefaultStateBasedChangeResolutionStrategy
@@ -115,8 +114,7 @@ abstract class StateChangePropagationTest {
 	 */
 	private def VitruviusChange endRecording(Notifier notifier) {
 		changeRecorder.removeFromRecording(notifier)
-		changeRecorder.endRecording
-		return VitruviusChangeFactory.instance.createCompositeChange(changeRecorder.changes)
+		return changeRecorder.endRecording
 	}
 
 	private def String getTextualRepresentation(VitruviusChange stateBasedChange, VitruviusChange deltaBasedChange) '''

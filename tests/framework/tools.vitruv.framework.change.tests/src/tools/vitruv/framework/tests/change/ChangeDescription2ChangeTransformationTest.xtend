@@ -62,7 +62,7 @@ abstract class ChangeDescription2ChangeTransformationTest {
 
 	protected def <T extends Notifier> record(T objectToRecord, Consumer<T> operationToRecord) {
 		val recordedChanges = objectToRecord.recordComposite(operationToRecord)
-		return validateChanges(recordedChanges)
+		return validateChange(recordedChanges)
 	}
 	
 	protected def <T extends Notifier> recordComposite(T objectToRecord, Consumer<T> operationToRecord) {
@@ -70,9 +70,9 @@ abstract class ChangeDescription2ChangeTransformationTest {
 		objectToRecord.startRecording
 		operationToRecord.accept(objectToRecord)
 		objectToRecord.stopRecording
-		val recordedChanges = changeRecorder.changes
+		val recordedChange = changeRecorder.change
 		resourceSet.startRecording
-		return recordedChanges
+		return recordedChange
 	}
 
 	protected def resourceAt(String name) {
@@ -106,11 +106,11 @@ abstract class ChangeDescription2ChangeTransformationTest {
 		this.changeRecorder.removeFromRecording(notifier)
 	}
 
-	private def List<EChange> validateChanges(List<? extends TransactionalChange> changeDescriptions) {
+	private def List<EChange> validateChange(TransactionalChange change) {
 		// Rollback changes, copy the state before their execution, reapply the changes to restore the state
 		// and re-resolve the changes for the copied state and apply them to check whether they can properly
 		// be applied to a different state
-		val monitoredChanges = changeDescriptions.map[EChanges].flatten.toList
+		val monitoredChanges = change.EChanges
 		monitoredChanges.reverseView.forEach[monitoredChange|
 			monitoredChange.applyBackward
 		]
