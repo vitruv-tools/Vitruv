@@ -53,13 +53,11 @@ class ChangeRecorder implements AutoCloseable {
 	val IdResolver idResolver
 	val EChangeIdManager eChangeIdManager
 	val Set<EObject> existingObjects = new HashSet
+	val ResourceSet resourceSet
 	
 	new(ResourceSet resourceSet) {
-		this(IdResolver.create(resourceSet))
-	}
-	
-	new(IdResolver idResolver) {
-		this.idResolver = idResolver
+		this.resourceSet = resourceSet
+		this.idResolver = IdResolver.create(resourceSet)
 		this.eChangeIdManager = new EChangeIdManager(idResolver)
 		this.converter = new NotificationToEChangeConverter([affectedObject, addedObject | isCreateChange(affectedObject, addedObject)])
 	}
@@ -260,7 +258,13 @@ class ChangeRecorder implements AutoCloseable {
 	}
 
 	def private boolean isInOurResourceSet(Notifier notifier) {
-		idResolver.canCalculateIdsIn(notifier)
+		switch (notifier) {
+			case null: true
+			EObject: isInOurResourceSet(notifier?.eResource)
+			Resource: isInOurResourceSet(notifier?.resourceSet)
+			ResourceSet: notifier == resourceSet
+			default: throw new IllegalStateException("Unexpected notifier type: " + notifier.class.simpleName)
+		}
 	}
 
 	@FinalFieldsConstructor

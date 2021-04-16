@@ -3,7 +3,6 @@ package tools.vitruv.framework.change.echange.id
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.resource.Resource
-import org.eclipse.emf.common.notify.Notifier
 import org.eclipse.emf.ecore.resource.ResourceSet
 
 interface IdResolver {
@@ -30,12 +29,6 @@ interface IdResolver {
 	 */
 	def Resource getResource(URI uri)
 
-	/**
-	 * Returns whether this {@link IdResolver} can calculate IDs for {@link EObject}s within the given
-	 * {@link Notifier}.
-	 */
-	def boolean canCalculateIdsIn(Notifier notifier)
-	
 	/**
 	 * Ends a transactions such that all {@link EObject}s not being contained in a resource, which is
 	 * contained in a resource set, are removed from the ID mapping.
