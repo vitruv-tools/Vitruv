@@ -132,7 +132,9 @@ package class ChangePropagator {
 			// TODO HK: Clone the changes for each synchronization! Should even be cloned for
 			// each consistency repair routines that uses it,
 			// or: make them read only, i.e. give them a read-only interface!
-			propagationSpecification.propagateChange(change, resourceRepository.correspondenceModel, resourceRepository)
+			for (eChange : change.EChanges) {
+				propagationSpecification.propagateChange(eChange, resourceRepository.correspondenceModel, resourceRepository)
+			}
 			val changes = resourceRepository.endRecording()
 	
 			// Store modification information
