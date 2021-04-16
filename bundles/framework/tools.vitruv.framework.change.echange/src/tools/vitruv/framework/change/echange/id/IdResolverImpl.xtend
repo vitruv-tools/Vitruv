@@ -26,7 +26,7 @@ package class IdResolverImpl implements IdResolver {
 	
 
 	/**
-	 * Instantiates an ID resolver and repository, the given {@link ResourceSet} for resolving objects.
+	 * Instantiates an ID resolver with the given {@link ResourceSet} for resolving objects.
 	 * 
 	 * @param resourceSet -
 	 * 		the {@link ResourceSet} to load model elements from, may not be {@code null}
@@ -152,6 +152,11 @@ package class IdResolverImpl implements IdResolver {
 	
 	val cacheIds = new CacheIdsRepository()
 	
+	/**
+	 * The cache IDs repository provides cache IDs with values starting from 0, always providing the
+	 * one with the lowest index first. It ensures that the same sequence of taking and pushing entries
+	 * always gives the same values.
+	 */
 	static class CacheIdsRepository {
 		val entries = new PriorityQueue<String>
 		var int maxValue
