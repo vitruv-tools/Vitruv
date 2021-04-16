@@ -1,4 +1,4 @@
-package tools.vitruv.framework.change.preparation
+package tools.vitruv.framework.change.recording
 
 import java.util.List
 import org.eclipse.emf.common.util.EList
@@ -12,16 +12,17 @@ import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.change.echange.TypeInferringAtomicEChangeFactory
 import tools.vitruv.framework.change.echange.TypeInferringCompoundEChangeFactory
 import tools.vitruv.framework.change.echange.feature.attribute.AdditiveAttributeEChange
-import tools.vitruv.framework.change.echange.feature.attribute.SubtractiveAttributeEChange
 
 import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.EObjectUtil.*
 import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
+import edu.kit.ipd.sdq.activextendannotations.Utility
 
 /**
  * A utility class providing extension methods for transforming change descriptions to change models.
  * 
  */
-class EMFModelChangeTransformationUtil {
+@Utility
+package class EChangeCreationUtil {
 	def static <A extends EObject> List<AdditiveAttributeEChange<?, Object>> createAdditiveEChangeForAttribute(
 		A affectedEObject, EAttribute affectedAttribute) {
 		if (affectedAttribute.many) {
@@ -39,31 +40,8 @@ class EMFModelChangeTransformationUtil {
 		}
 	}
 
-	def static <A extends EObject> List<SubtractiveAttributeEChange<?, Object>> createSubtractiveEChangeForAttribute(
-		A affectedEObject, EAttribute affectedAttribute) {
-		return if (affectedAttribute.many) {
-			val oldValues = affectedEObject.getFeatureValues(affectedAttribute)
-			oldValues.reverseView.mapFixedIndexed [ index, value |
-				val valueIndex = oldValues.size - 1 - index
-				TypeInferringAtomicEChangeFactory.instance.createRemoveAttributeChange(affectedEObject,
-					affectedAttribute, valueIndex, value)
-			]
-		} else {
-			val oldValue = affectedEObject.getFeatureValue(affectedAttribute)
-			val newValue = affectedAttribute.defaultValue
-
-			return List.of(
-				TypeInferringAtomicEChangeFactory.instance.createReplaceSingleAttributeChange(affectedEObject,
-					affectedAttribute, oldValue, newValue))
-		}
-	}
-
 	def static EList<EObject> getReferenceValueList(EObject eObject, EReference reference) {
 		return getValueList(eObject, reference) as EList<EObject>
-	}
-
-	def static EList<Object> getReferenceValueList(EObject eObject, EAttribute attribute) {
-		return getValueList(eObject, attribute) as EList<Object>
 	}
 
 	def static List<EChange> createAdditiveEChangeForReferencedObject(EObject referencingEObject, EReference reference,
@@ -78,20 +56,6 @@ class EMFModelChangeTransformationUtil {
 			val referenceValue = referencingEObject.getReferenceValueList(reference).get(0)
 			createReplaceSingleValuedReferenceChange(referencingEObject, reference, null,
 				referenceValue, isCreate.apply(referenceValue))
-		}
-	}
-
-	def static List<EChange> createSubtractiveEChangeForReferencedObject(EObject referencingEObject,
-		EReference reference, boolean forceDelete) {
-		return if (reference.isMany) {
-			referencingEObject.getReferenceValueList(reference).reverseView.flatMapFixed [ referenceValue |
-				createRemoveReferenceChange(referencingEObject, reference,
-					(referencingEObject.eGet(reference) as EList<?>).indexOf(referenceValue), referenceValue, null,
-					null, forceDelete)
-			]
-		} else {
-			createReplaceSingleValuedReferenceChange(referencingEObject, reference,
-				referencingEObject.getReferenceValueList(reference).get(0), null, forceDelete)
 		}
 	}
 

@@ -5,7 +5,6 @@ import org.eclipse.emf.ecore.EObject
 import tools.vitruv.framework.change.echange.EChange
 import tools.vitruv.framework.change.echange.feature.attribute.AttributeFactory
 import tools.vitruv.framework.change.echange.TypeInferringAtomicEChangeFactory
-import static extension tools.vitruv.framework.change.preparation.EMFModelChangeTransformationUtil.*
 import org.eclipse.emf.ecore.EReference
 import org.eclipse.emf.ecore.resource.Resource
 import tools.vitruv.framework.change.echange.eobject.EObjectAddedEChange
@@ -16,6 +15,7 @@ import org.eclipse.xtend.lib.annotations.FinalFieldsConstructor
 import org.eclipse.emf.ecore.EAttribute
 import org.eclipse.emf.common.util.URI
 import tools.vitruv.framework.change.echange.feature.reference.UpdateReferenceEChange
+import static extension tools.vitruv.framework.change.recording.EChangeCreationUtil.*
 
 /** 
  * Converts an EMF notification to an {@link EChange}.
