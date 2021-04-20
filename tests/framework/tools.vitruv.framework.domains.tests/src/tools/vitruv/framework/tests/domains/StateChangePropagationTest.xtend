@@ -22,9 +22,7 @@ import static tools.vitruv.testutils.metamodels.PcmMockupCreators.pcm
 import static tools.vitruv.testutils.metamodels.UmlMockupCreators.uml
 import tools.vitruv.testutils.TestProjectManager
 import tools.vitruv.testutils.RegisterMetamodelsInStandalone
-import tools.vitruv.testutils.domains.TestDomainsRepository
 import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceSetUtil.withGlobalFactories
-import static extension tools.vitruv.framework.domains.repository.DomainAwareResourceSet.awareOfDomains
 import tools.vitruv.framework.change.recording.ChangeRecorder
 import org.eclipse.emf.ecore.util.EcoreUtil
 import org.eclipse.xtend.lib.annotations.Accessors
@@ -61,9 +59,9 @@ abstract class StateChangePropagationTest {
 	def void setup(@TestProject Path testProjectFolder) {
 		this.testProjectFolder = testProjectFolder
 		// Setup:
-		strategyToTest = new DefaultStateBasedChangeResolutionStrategy(TestDomainsRepository.DOMAINS)
-		resourceSet = new ResourceSetImpl().withGlobalFactories().awareOfDomains(TestDomainsRepository.INSTANCE)
-		checkpointResourceSet = new ResourceSetImpl().withGlobalFactories().awareOfDomains(TestDomainsRepository.INSTANCE)
+		strategyToTest = new DefaultStateBasedChangeResolutionStrategy()
+		resourceSet = new ResourceSetImpl().withGlobalFactories()
+		checkpointResourceSet = new ResourceSetImpl().withGlobalFactories()
 		changeRecorder = new ChangeRecorder(resourceSet)
 		// Create mockup models:
 		resourceSet.record [

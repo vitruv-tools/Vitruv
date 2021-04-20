@@ -14,7 +14,6 @@ import static extension java.nio.file.Files.move
 import static java.nio.file.Files.createDirectories
 import tools.vitruv.framework.domains.repository.VitruvDomainRepository
 import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceSetUtil.withGlobalFactories
-import static extension tools.vitruv.framework.domains.repository.DomainAwareResourceSet.awareOfDomains
 import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceSetUtil.loadOrCreateResource
 import org.eclipse.emf.ecore.resource.ResourceSet
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
@@ -51,7 +50,7 @@ class BasicTestView implements TestView {
 	) {
 		this(
 			persistenceDirectory,
-			new ResourceSetImpl().withGlobalFactories().awareOfDomains(targetDomains),
+			new ResourceSetImpl().withGlobalFactories(),
 			userInteraction,
 			uriMode
 		)
