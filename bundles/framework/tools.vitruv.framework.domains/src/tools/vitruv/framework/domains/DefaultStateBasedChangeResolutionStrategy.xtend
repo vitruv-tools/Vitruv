@@ -11,11 +11,7 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import org.eclipse.emf.ecore.util.EcoreUtil
 import tools.vitruv.framework.change.recording.ChangeRecorder
 import org.eclipse.emf.ecore.resource.ResourceSet
-import static extension tools.vitruv.framework.domains.repository.DomainAwareResourceSet.awareOfDomains
-import tools.vitruv.framework.domains.repository.VitruvDomainRepository
-import tools.vitruv.framework.domains.repository.VitruvDomainRepositoryImpl
 import static com.google.common.base.Preconditions.checkArgument
-import java.util.Set
 import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceUtil.getReferencedProxies
 
 /**
@@ -24,15 +20,6 @@ import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resou
  * @author Timur Saglam
  */
 class DefaultStateBasedChangeResolutionStrategy implements StateBasedChangeResolutionStrategy {
-	val VitruvDomainRepository domainRepository
-
-	/**
-	 * Creates the strategy.
-	 */
-	new(Set<VitruvDomain> domains) {
-		domainRepository = new VitruvDomainRepositoryImpl(domains)
-	}
-
 	private def checkNoProxies(Resource resource, String stateNotice) {
 		val proxies = resource.referencedProxies
 		checkArgument(proxies.empty, "%s '%s' should not contain proxies, but contains the following: %s", stateNotice,
@@ -44,14 +31,12 @@ class DefaultStateBasedChangeResolutionStrategy implements StateBasedChangeResol
 		newState.checkNoProxies("new state")
 		oldState.checkNoProxies("old state")
 		val monitoredResourceSet = new ResourceSetImpl()
-		val newResourceSet = new ResourceSetImpl()
 		val currentStateCopy = oldState.copyInto(monitoredResourceSet)
-		val newStateCopy = newState.copyInto(newResourceSet)
 		return currentStateCopy.record [
 			if (oldState.URI != newState.URI) {
-				currentStateCopy.URI = newStateCopy.URI
+				currentStateCopy.URI = newState.URI
 			}
-			compareStatesAndReplayChanges(newStateCopy, currentStateCopy)
+			compareStatesAndReplayChanges(newState, currentStateCopy)
 		]
 	}
 
@@ -60,8 +45,8 @@ class DefaultStateBasedChangeResolutionStrategy implements StateBasedChangeResol
 		newState.checkNoProxies("new state")
 		// It is possible that root elements are automatically generated during resource creation (e.g., Java packages).
 		// Thus, we create the resource and then monitor the re-insertion of the elements
-		val resourceSet = new ResourceSetImpl().awareOfDomains(domainRepository)
-		val newResource = resourceSet.createResource(newState.URI)
+		val monitoredResourceSet = new ResourceSetImpl()
+		val newResource = monitoredResourceSet.createResource(newState.URI)
 		newResource.contents.clear()
 		return newResource.record [
 			newResource.contents += EcoreUtil.copyAll(newState.contents)

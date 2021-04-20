@@ -49,7 +49,7 @@ abstract class AbstractVitruvDomain implements VitruvDomain {
 		this.nsURIs = (metamodelRootPackage.nsURIsRecursive + furtherRootPackages.map[nsURIsRecursive].flatten).toSet
 		this.defaultLoadOptions = new HashMap(defaultLoadOptions)
 		this.defaultSaveOptions = new HashMap(defaultSaveOptions)
-		stateChangePropagationStrategy = new DefaultStateBasedChangeResolutionStrategy(#{this})
+		stateChangePropagationStrategy = new DefaultStateBasedChangeResolutionStrategy()
 	}
 
 	override StateBasedChangeResolutionStrategy getStateChangePropagationStrategy() {

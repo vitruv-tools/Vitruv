@@ -17,10 +17,8 @@ import tools.vitruv.testutils.TestProjectManager
 import tools.vitruv.testutils.TestProject
 import java.nio.file.Path
 import tools.vitruv.testutils.RegisterMetamodelsInStandalone
-import tools.vitruv.testutils.domains.TestDomainsRepository
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceSetUtil.withGlobalFactories
-import static extension tools.vitruv.framework.domains.repository.DomainAwareResourceSet.awareOfDomains
 import tools.vitruv.framework.change.recording.ChangeRecorder
 import tools.vitruv.framework.change.description.TransactionalChange
 import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.common.util.URIUtil.createFileURI
@@ -47,7 +45,7 @@ abstract class ChangeDescription2ChangeTransformationTest {
 	@BeforeEach
 	def void beforeTest(@TestProject Path tempFolder) {
 		this.tempFolder = tempFolder
-		this.resourceSet = new ResourceSetImpl().withGlobalFactories().awareOfDomains(TestDomainsRepository.INSTANCE)
+		this.resourceSet = new ResourceSetImpl().withGlobalFactories()
 		this.idResolver = IdResolver.create(resourceSet)
 		this.changeRecorder = new ChangeRecorder(resourceSet)
 		this.resourceSet.startRecording
@@ -112,7 +110,7 @@ abstract class ChangeDescription2ChangeTransformationTest {
 		monitoredChanges.reverseView.forEach[monitoredChange|
 			monitoredChange.applyBackward
 		]
-		val comparisonResourceSet = new ResourceSetImpl().withGlobalFactories().awareOfDomains(TestDomainsRepository.INSTANCE)
+		val comparisonResourceSet = new ResourceSetImpl().withGlobalFactories()
 		val comparisonIdResolver = IdResolver.create(comparisonResourceSet)
 		resourceSet.copyTo(comparisonResourceSet)
 		monitoredChanges.map[

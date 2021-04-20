@@ -13,7 +13,6 @@ import tools.vitruv.framework.domains.repository.VitruvDomainRepository
 import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceSetUtil.loadOrCreateResource
 import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceSetUtil.getOrCreateResource
 import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceSetUtil.withGlobalFactories
-import static extension tools.vitruv.framework.domains.repository.DomainAwareResourceSet.awareOfDomains
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import tools.vitruv.framework.vsum.helper.VsumFileSystemLayout
 import tools.vitruv.framework.change.recording.ChangeRecorder
@@ -41,7 +40,7 @@ package class ResourceRepositoryImpl implements ModelRepository {
 	new(VsumFileSystemLayout fileSystemLayout, VitruvDomainRepository domainRepository) {
 		this.domainRepository = domainRepository
 		this.fileSystemLayout = fileSystemLayout
-		this.modelsResourceSet = new ResourceSetImpl().withGlobalFactories().awareOfDomains(domainRepository)
+		this.modelsResourceSet = new ResourceSetImpl().withGlobalFactories()
 		this.correspondencesResourceSet = new ResourceSetImpl().withGlobalFactories()
 		this.correspondenceModel = createCorrespondenceModel(fileSystemLayout.correspondencesURI)
 		this.modelsResourceSet.eAdapters += new ResourceRegistrationAdapter [

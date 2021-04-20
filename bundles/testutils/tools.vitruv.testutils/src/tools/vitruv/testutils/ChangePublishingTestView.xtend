@@ -17,7 +17,6 @@ import tools.vitruv.framework.change.description.TransactionalChange
 import java.util.ArrayList
 import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
 import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceSetUtil.withGlobalFactories
-import static extension tools.vitruv.framework.domains.repository.DomainAwareResourceSet.awareOfDomains
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import tools.vitruv.framework.change.recording.ChangeRecorder
 
@@ -43,7 +42,7 @@ class ChangePublishingTestView implements NonTransactionalTestView {
 		UriMode uriMode,
 		VitruvDomainRepository targetDomains
 	) {
-		this.resourceSet = new ResourceSetImpl().withGlobalFactories().awareOfDomains(targetDomains)
+		this.resourceSet = new ResourceSetImpl().withGlobalFactories()
 		this.delegate = new BasicTestView(persistenceDirectory, resourceSet, userInteraction, uriMode)
 		this.changeRecorder = new ChangeRecorder(resourceSet)
 		changeRecorder.beginRecording()

@@ -17,8 +17,6 @@ import tools.vitruv.framework.change.echange.root.RemoveRootEObject
 import org.eclipse.emf.ecore.resource.Resource
 import tools.vitruv.framework.util.Capture
 import static extension tools.vitruv.framework.util.Capture.operator_doubleGreaterThan
-import static extension tools.vitruv.framework.domains.repository.DomainAwareResourceSet.awareOfDomains
-import tools.vitruv.testutils.domains.TestDomainsRepository
 import static extension edu.kit.ipd.sdq.commons.util.org.eclipse.emf.ecore.resource.ResourceSetUtil.withGlobalFactories
 
 class BasicStateChangePropagationTest extends StateChangePropagationTest {
@@ -96,8 +94,7 @@ class BasicStateChangePropagationTest extends StateChangePropagationTest {
 				]
 		]
 
-		val validationResourceSet = new ResourceSetImpl().withGlobalFactories().awareOfDomains(
-			TestDomainsRepository.INSTANCE)
+		val validationResourceSet = new ResourceSetImpl().withGlobalFactories()
 		val oldState = validationResourceSet.getResource(testUri, true)
 		val changes = strategyToTest.getChangeSequenceBetween(-modelResource, oldState)
 
@@ -125,8 +122,7 @@ class BasicStateChangePropagationTest extends StateChangePropagationTest {
 			root.singleValuedEAttribute = 2
 		]
 
-		val validationResourceSet = new ResourceSetImpl().withGlobalFactories().awareOfDomains(
-			TestDomainsRepository.INSTANCE)
+		val validationResourceSet = new ResourceSetImpl().withGlobalFactories()
 		val oldState = validationResourceSet.getResource(testUri, true)
 		val changes = strategyToTest.getChangeSequenceBetween(-modelResource, oldState)
 		assertEquals(1, changes.EChanges.size)
@@ -161,8 +157,7 @@ class BasicStateChangePropagationTest extends StateChangePropagationTest {
 			containedRoot.singleValuedEAttribute = 1
 		]
 
-		val validationResourceSet = new ResourceSetImpl().withGlobalFactories().awareOfDomains(
-			TestDomainsRepository.INSTANCE)
+		val validationResourceSet = new ResourceSetImpl().withGlobalFactories()
 		val oldState = validationResourceSet.getResource(testUri, true)
 		val changes = strategyToTest.getChangeSequenceBetween(-modelResource, oldState)
 
@@ -186,8 +181,7 @@ class BasicStateChangePropagationTest extends StateChangePropagationTest {
 		]
 		(-modelResource).save(null)
 
-		val validationResourceSet = new ResourceSetImpl().withGlobalFactories().awareOfDomains(
-			TestDomainsRepository.INSTANCE)
+		val validationResourceSet = new ResourceSetImpl().withGlobalFactories()
 		val oldState = validationResourceSet.getResource(testUri, true)
 
 		val movedResourceUri = getModelURI("moved.allElementTypes")
@@ -223,8 +217,7 @@ class BasicStateChangePropagationTest extends StateChangePropagationTest {
 		]
 		(-modelResource).save(null)
 
-		val validationResourceSet = new ResourceSetImpl().withGlobalFactories().awareOfDomains(
-			TestDomainsRepository.INSTANCE)
+		val validationResourceSet = new ResourceSetImpl().withGlobalFactories()
 		val oldState = validationResourceSet.getResource(testUri, true)
 
 		val movedResourceUri = getModelURI("moved.allElementTypes")
