@@ -90,16 +90,14 @@ class ChangePublishingTestView implements NonTransactionalTestView {
 		changeRecorder.endRecording()
 		val recordedChange = changeRecorder.change
 		val delegateChanges = recordedChange.changedURIs
-			.flatMapFixed [changedURI | 
-				val changedResource = resourceSet.getResource(changedURI, false)
-				if (changedResource !== null) {
-					// Propagating an empty modification for every changed resource gives the delegate a 
-					// chance to participate in change propagation (e.g. BasicTestView saves or cleans up resources).
-					// This is not a meaningful operation at all, but rather a hack to bridge between this 
-					// non-transactional operation and the transactional delegate.
-					delegate.propagate(changedResource) []
-				}
-			] 
+			.map[resourceSet.getResource(it, false)].filterNull
+			.flatMapFixed [changedResource | 
+				// Propagating an empty modification for every changed resource gives the delegate a 
+				// chance to participate in change propagation (e.g. BasicTestView saves or cleans up resources).
+				// This is not a meaningful operation at all, but rather a hack to bridge between this 
+				// non-transactional operation and the transactional delegate.
+				delegate.propagate(changedResource) []
+			]
 		val ourChanges = propagateChanges(recordedChange)
 		changeRecorder.beginRecording()
 		return delegateChanges + ourChanges
