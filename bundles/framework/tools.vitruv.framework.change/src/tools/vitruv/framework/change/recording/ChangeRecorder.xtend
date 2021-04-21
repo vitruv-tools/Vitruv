@@ -53,6 +53,7 @@ class ChangeRecorder implements AutoCloseable {
 	val IdResolver idResolver
 	val EChangeIdManager eChangeIdManager
 	val Set<EObject> existingObjects = new HashSet
+	val Set<Notifier> toDesinfect = new HashSet
 	val ResourceSet resourceSet
 	
 	new(ResourceSet resourceSet) {
@@ -113,6 +114,8 @@ class ChangeRecorder implements AutoCloseable {
 	def beginRecording() {
 		checkNotDisposed()
 		checkState(!isRecording, "This recorder is already recording!")
+		toDesinfect.forEach[recursively [removeAdapter()]]
+		toDesinfect.clear()
 		isRecording = true
 		resultChanges = new ArrayList
 	}
@@ -309,11 +312,12 @@ class ChangeRecorder implements AutoCloseable {
 		}
 
 		private def infect(Object newValue) {
-			(newValue as Notifier)?.recursively[addAdapter()]
+			(newValue as Notifier)?.recursively[toDesinfect -= it; addAdapter()]
 		}
 
 		private def desinfect(Object oldValue) {
-			(oldValue as Notifier)?.recursively[removeAdapter()]
+			// Defer desinfect to ensure that elements moved from removed element containments to new containments are recognized properly
+			if (oldValue instanceof Notifier) toDesinfect += oldValue
 		}
 
 		override getTarget() { null }
