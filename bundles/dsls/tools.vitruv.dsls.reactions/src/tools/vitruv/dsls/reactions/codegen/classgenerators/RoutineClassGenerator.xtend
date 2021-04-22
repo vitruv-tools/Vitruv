@@ -319,9 +319,9 @@ class RoutineClassGenerator extends ClassGenerator {
 			body = '''
 				if (getLogger().isTraceEnabled()) {
 					getLogger().trace("Called routine «routineClassNameGenerator.simpleName» with input:");
-				«FOR inputParameter : inputParameters»
-					getLogger().trace("   «inputParameter.name»: " + this.«inputParameter.name»);
-				«ENDFOR»
+					«FOR inputParameter : inputParameters»
+						getLogger().trace("   «inputParameter.name»: " + this.«inputParameter.name»);
+					«ENDFOR»
 				}
 				
 				«FOR matcherStatement : matcherStatements»
