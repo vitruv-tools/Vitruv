@@ -19,7 +19,6 @@ import tools.vitruv.framework.userinteraction.InternalUserInteractor
 import tools.vitruv.framework.userinteraction.UserInteractionFactory
 import tools.vitruv.framework.userinteraction.UserInteractionListener
 
-import static com.google.common.base.Preconditions.checkNotNull
 import static com.google.common.base.Preconditions.checkState
 import org.eclipse.xtend.lib.annotations.FinalFieldsConstructor
 import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
@@ -156,7 +155,8 @@ package class ChangePropagator {
 			// Find created objects without resource
 			for (createdObjectWithoutResource : createdObjects.filter[eResource === null]) {
 				checkState(!resourceRepository.correspondenceModel.hasCorrespondences(List.of(createdObjectWithoutResource)),
-					"This object is part of a correspondence but not in any resource: %s", createdObjectWithoutResource)
+					"The object %s is part of a correspondence to %s but not in any resource", createdObjectWithoutResource,
+					resourceRepository.correspondenceModel.getCorrespondingEObjects(#[createdObjectWithoutResource]))
 				logger.warn("Object was created but has no correspondence and is thus lost: " 
 					+ createdObjectWithoutResource)
 			}
