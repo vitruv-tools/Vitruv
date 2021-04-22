@@ -1,3 +1,5 @@
+import static extension tools.vitruv.domains.demo.families.FamiliesUtil.getMembers
+
 import "edu.kit.ipd.sdq.metamodels.persons" as persons
 import "edu.kit.ipd.sdq.metamodels.families" as families
 
@@ -124,27 +126,29 @@ reaction DeletedMember {
 	call deletePerson(affectedEObject)
 }
 
-routine deletePerson(families::Member member){
+routine deletePerson(families::Member member) {
 	match{
 		val person = retrieve persons::Person corresponding to member
+		val family = retrieve families::Family corresponding to person
 	}
-	
-	action{
+	action {
+		remove correspondence between family and person
 		delete person
 	}
 }
 
-//reaction DeletedFamily {
-//	after element families::Family deleted
-//	call deletePersonsOfFamily(affectedEObject)
-//}
+reaction DeletedFamily {
+	after element families::Family deleted
+	call deletePersonsOfFamily(affectedEObject)
+}
 
-//routine deletePersonsOfFamily(families::Family family){
-//	match{
-//		val father = retrieve persons::Person corresponding to family[]
-// Wie kriege ich hier alle Familienmitglieder
-//	}
-//}
+routine deletePersonsOfFamily(families::Family family){
+	action {
+		call {
+			family.members.forEach[deletePerson()]
+		}
+	}
+}
 
 reaction ChangedFirstName {
 	after attribute replaced at families::Member[firstName]
