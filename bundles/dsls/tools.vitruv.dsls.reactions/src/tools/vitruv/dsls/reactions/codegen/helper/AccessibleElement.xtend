@@ -5,6 +5,7 @@ import org.eclipse.xtend.lib.annotations.Accessors
 import org.eclipse.xtext.xbase.jvmmodel.JvmTypeReferenceBuilder
 import static extension edu.kit.ipd.sdq.commons.util.java.lang.IterableUtil.*
 import org.eclipse.xtext.common.types.JvmUnknownTypeReference
+import java.util.Optional
 
 class AccessibleElement {
 	static val UNKNOWN_TYPEREF_NAME = "unknown"
@@ -26,6 +27,10 @@ class AccessibleElement {
 	
 	new(String name, Class<?> type) {
 		this(name, type.name)
+	}
+	
+	def boolean isOptional() {
+		return Optional.name.equals(fullyQualifiedTypeName)
 	}
 	
 	def generateTypeRef(@Extension JvmTypeReferenceBuilder typeReferenceBuilder) {

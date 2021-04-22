@@ -24,7 +24,6 @@ class ReactionElementsHandlerImpl implements ReactionElementsHandler {
 		if (element === null) {
 			return;
 		}
-		ReactionsCorrespondenceHelper.removeCorrespondencesOfObject(correspondenceModel, element);
 		if (logger.debugEnabled) {
 			logger.debug("Removing object " + element + " from container " + element.eContainer());
 		}
