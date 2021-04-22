@@ -313,10 +313,12 @@ class RoutineClassGenerator extends ClassGenerator {
 			visibility = JvmVisibility.PROTECTED;
 			exceptions += typeRef(IOException);
 			body = '''
-				getLogger().trace("Called routine «routineClassNameGenerator.simpleName» with input:");
+				if (getLogger().isTraceEnabled()) {
+					getLogger().trace("Called routine «routineClassNameGenerator.simpleName» with input:");
 				«FOR inputParameter : inputParameters»
 					getLogger().trace("   «inputParameter.name»: " + this.«inputParameter.name»);
 				«ENDFOR»
+				}
 				
 				«FOR matcherStatement : matcherStatements»
 					«matcherStatementsMap.get(matcherStatement)»
