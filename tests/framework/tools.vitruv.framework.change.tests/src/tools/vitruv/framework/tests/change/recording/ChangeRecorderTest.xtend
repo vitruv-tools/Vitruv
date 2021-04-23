@@ -128,7 +128,6 @@ class ChangeRecorderTest {
 		record [
 			inner.id = 'test'
 		]
-		changeRecorder.endRecording()
 
 		assertThat(changeRecorder.change, hasEChanges(ReplaceSingleValuedEAttribute))
 	}
