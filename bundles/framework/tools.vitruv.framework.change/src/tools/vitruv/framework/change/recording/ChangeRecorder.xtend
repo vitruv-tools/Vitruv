@@ -140,6 +140,7 @@ class ChangeRecorder implements AutoCloseable {
 	 */
 	def TransactionalChange endRecording() {
 		checkNotDisposed()
+		checkState(isRecording, "This recorder is not recording")
 		isRecording = false
 		resultChanges = List.copyOf(resultChanges.postprocessRemovals().assignIds())
 		idResolver.endTransaction()
