@@ -63,6 +63,14 @@ class ChangeRecorderTest {
 		changes.apply
 		if(condition) changeRecorder.endRecording()
 	}
+	
+	@Test
+	@DisplayName("does not allow end recording twice")
+	def void endRecordingTwice() {
+		changeRecorder.beginRecording()
+		changeRecorder.endRecording()
+		assertThrows(IllegalStateException) [changeRecorder.endRecording()]
+	}
 
 	@Test
 	@DisplayName("records direct changes to an object")
