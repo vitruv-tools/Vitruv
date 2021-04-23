@@ -17,6 +17,7 @@ import tools.vitruv.framework.userinteraction.UserInteractionFactory
 import tools.vitruv.testutils.domains.AllElementTypesDomainProvider
 import static org.junit.jupiter.api.Assertions.assertNotEquals
 import static org.junit.jupiter.api.Assertions.assertEquals
+import static org.junit.jupiter.api.Assertions.assertNull
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
 import tools.vitruv.framework.change.echange.EChange
@@ -25,7 +26,6 @@ import tools.vitruv.framework.propagation.ResourceAccess
 import tools.vitruv.framework.domains.VitruvDomain
 import tools.vitruv.framework.change.echange.root.InsertRootEObject
 import allElementTypes.Root
-import tools.vitruv.framework.tests.vsum.VirtualModelTest.RedundancyChangePropagationSpecification
 import tools.vitruv.framework.change.echange.eobject.CreateEObject
 import tools.vitruv.framework.change.echange.feature.reference.ReplaceSingleValuedEReference
 import tools.vitruv.framework.change.echange.feature.attribute.ReplaceSingleValuedEAttribute
@@ -247,6 +247,40 @@ class VirtualModelTest {
 		assertThat(reloadedTargetModel.resource, containsModelOf(monitoredResource))
 		assertEquals(1, reloadedVirtualModel.correspondenceModel.getCorrespondingEObjects(reloadedModel.resource.contents.get(0)).size)
 	}
+	
+	@Test
+	@DisplayName("move element such that corresponding element is moved from one resource to another and back")
+	def void moveCorrespondingToOtherResourceAndBack() {
+		val virtualModel = createAndLoadTestVirtualModelWithConsistencyPreservation(projectFolder.resolve("vsum"))
+		val resourceSet = new ResourceSetImpl().withGlobalFactories
+		val changeRecorder = new ChangeRecorder(resourceSet)
+		changeRecorder.addToRecording(resourceSet)
+		changeRecorder.beginRecording
+		val root = aet.Root
+		val testUri = createTestModelResourceUri("")
+		val monitoredResource = resourceSet.createResource(testUri) => [
+			contents += root => [
+				id = 'root'
+			]
+		]
+		virtualModel.propagateChange(changeRecorder.endRecording)
+		changeRecorder.beginRecording
+		val testIntermediateUri = createTestModelResourceUri("intermediate")
+		resourceSet.createResource(testIntermediateUri) => [
+			contents += root
+		]
+		virtualModel.propagateChange(changeRecorder.endRecording)
+		// There must not be the old and the old corresponding model
+		assertNull(virtualModel.getModelInstance(testUri))
+		assertNull(virtualModel.getModelInstance(RedundancyChangePropagationSpecification.getTargetResourceUri(testUri)))
+		changeRecorder.beginRecording
+		monitoredResource => [
+			contents += root
+		]
+		virtualModel.propagateChange(changeRecorder.endRecording)
+		assertNull(virtualModel.getModelInstance(testIntermediateUri))
+		assertNull(virtualModel.getModelInstance(RedundancyChangePropagationSpecification.getTargetResourceUri(testIntermediateUri)))
+	}
 
 	static class RedundancyChangePropagationSpecification extends AbstractChangePropagationSpecification {
 		static def getTargetResourceUri(URI sourceUri) {
@@ -271,18 +305,26 @@ class VirtualModelTest {
 			}
 			val typedChange = change as InsertRootEObject<Root>
 			val insertedRoot = typedChange.newValue
-			val newRoot = aet.Root => [
-				id = insertedRoot.id
-			]
-			correspondenceModel.createAndAddCorrespondence(List.of(insertedRoot), List.of(newRoot))
+			// If there is a corresponding element, reuse it, otherwise creat one
+			val correspondingRoots = correspondenceModel.getCorrespondingEObjects(insertedRoot).filter(Root)
+			val correspondingRoot = if (correspondingRoots.size == 1) {
+				correspondingRoots.get(0)
+			} else {
+				val newRoot = aet.Root => [
+					id = insertedRoot.id
+				]
+				correspondenceModel.createAndAddCorrespondence(List.of(insertedRoot), List.of(newRoot))
+				newRoot
+			}
+			
 			if (insertedRoot.eContainer !== null) {
 				val correspondingObjects = correspondenceModel.getCorrespondingEObjects(insertedRoot.eContainer, Root)
 				assertEquals(1, correspondingObjects.size)
-				correspondingObjects.get(0).recursiveRoot = newRoot
+				correspondingObjects.get(0).recursiveRoot = correspondingRoot
 			}
 			val resourceURI = typedChange.resource.URI
-			persistAsRoot(newRoot, resourceURI.targetResourceUri)
+			persistAsRoot(correspondingRoot, resourceURI.targetResourceUri)
 		}
-
 	}
+	
 }
