@@ -117,9 +117,12 @@ package class ResourceRepositoryImpl implements ModelRepository {
 
 	override void saveOrDeleteModels() {
 		if(logger.isDebugEnabled) logger.debug('''Saving all models of model repository for VSUM «fileSystemLayout»''')
-		for (modelInstance : modelInstances.values) {
+		val modelInstancesIterator = modelInstances.entrySet.iterator
+		while (modelInstancesIterator.hasNext()) {
+			val modelInstance = modelInstancesIterator.next().value
 			if (modelInstance.empty) {
 				modelInstance.delete()
+				modelInstancesIterator.remove()
 			} else {
 				modelInstance.save()
 			}
