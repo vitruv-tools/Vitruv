@@ -30,7 +30,7 @@ Workflow {
     	registerGenModelFile = "platform:/resource/tools.vitruv.dsls.reactions/model/generated/ReactionsLanguage.genmodel"
     }
 
-	component = tools.vitruv.dsls.mappings.postprocessor.MappingsLanguageExtendedGenerator {
+	component = XtextGenerator {
 		configuration = {
 			project = StandardProjectConfig {
 				baseName = projectName

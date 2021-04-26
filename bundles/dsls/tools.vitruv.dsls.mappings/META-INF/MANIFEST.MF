@@ -40,7 +40,6 @@ Export-Package: tools.vitruv.dsls.mappings,
  tools.vitruv.dsls.mappings.serializer,
  tools.vitruv.dsls.mappings.services,
  tools.vitruv.dsls.mappings.generator;x-internal:=true,
- tools.vitruv.dsls.mappings.postprocessor;x-internal:=true,
  tools.vitruv.dsls.mappings.validation
 Import-Package: org.apache.log4j,
  org.eclipse.xtext.builder
